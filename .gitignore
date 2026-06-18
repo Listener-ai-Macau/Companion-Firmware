@@ -1,0 +1,26 @@
+# Local build output
+Debug/
+Release/
+build/
+out/
+
+# STM32CubeIDE workspace metadata
+.metadata/
+.settings/
+
+# Generated firmware artifacts
+*.bin
+*.elf
+*.hex
+*.map
+*.list
+*.su
+
+# Keep upstream reference binaries inside the ST submodule.
+!third_party/STM32CubeWB/**/*.bin
+!third_party/STM32CubeWB/**/*.hex
+
+# Local validation artifacts
+artifacts/
+*.log
+*.tmp
