@@ -2,7 +2,7 @@
 
 ## Source Baseline
 
-The old FDCT planning notes resolved the first firmware path to:
+The earlier Companion planning notes resolved the first firmware path to:
 
 - First product: low-power BLE e-paper pendant.
 - First board: `NUCLEO-WB55RG`.
