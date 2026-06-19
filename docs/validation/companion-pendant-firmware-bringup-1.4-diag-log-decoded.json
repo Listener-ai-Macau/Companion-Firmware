@@ -1,0 +1,414 @@
+{
+  "schema_id": "companion.pendant.diag_log.v1",
+  "schema_version": 1,
+  "source": {
+    "header": "app\\companion_pendant\\diag_log\\diag_log_events.h",
+    "decoder": "tools/decode_diag_log.py"
+  },
+  "definitions": {
+    "sources": {
+      "boot": {
+        "id": 1,
+        "symbol": "BOOT"
+      },
+      "ble": {
+        "id": 2,
+        "symbol": "BLE"
+      },
+      "gatt": {
+        "id": 3,
+        "symbol": "GATT"
+      },
+      "e_paper": {
+        "id": 4,
+        "symbol": "EPAPER"
+      },
+      "recording_fsm": {
+        "id": 5,
+        "symbol": "RECORDING_FSM"
+      },
+      "microphone": {
+        "id": 6,
+        "symbol": "MICROPHONE"
+      },
+      "spi_flash_cache": {
+        "id": 7,
+        "symbol": "SPI_FLASH_CACHE"
+      },
+      "ota": {
+        "id": 8,
+        "symbol": "OTA"
+      },
+      "battery_charging": {
+        "id": 9,
+        "symbol": "BATTERY_CHARGING"
+      },
+      "power_lpm": {
+        "id": 10,
+        "symbol": "POWER_LPM"
+      },
+      "warnings": {
+        "id": 11,
+        "symbol": "WARNINGS"
+      },
+      "errors": {
+        "id": 12,
+        "symbol": "ERRORS"
+      }
+    },
+    "events": {
+      "boot.start": {
+        "source": "boot",
+        "event_id": 1,
+        "symbol": "START",
+        "default_severity": "info"
+      },
+      "boot.init_result": {
+        "source": "boot",
+        "event_id": 2,
+        "symbol": "INIT_RESULT",
+        "default_severity": "info"
+      },
+      "ble.advertising": {
+        "source": "ble",
+        "event_id": 1,
+        "symbol": "ADVERTISING",
+        "default_severity": "info"
+      },
+      "ble.connection": {
+        "source": "ble",
+        "event_id": 2,
+        "symbol": "CONNECTION",
+        "default_severity": "info"
+      },
+      "gatt.service_ready": {
+        "source": "gatt",
+        "event_id": 1,
+        "symbol": "SERVICE_READY",
+        "default_severity": "info"
+      },
+      "gatt.log_export_request": {
+        "source": "gatt",
+        "event_id": 2,
+        "symbol": "LOG_EXPORT_REQUEST",
+        "default_severity": "info"
+      },
+      "e_paper.render_request": {
+        "source": "e_paper",
+        "event_id": 1,
+        "symbol": "RENDER_REQUEST",
+        "default_severity": "info"
+      },
+      "e_paper.update_result": {
+        "source": "e_paper",
+        "event_id": 2,
+        "symbol": "UPDATE_RESULT",
+        "default_severity": "info"
+      },
+      "recording_fsm.transition": {
+        "source": "recording_fsm",
+        "event_id": 1,
+        "symbol": "TRANSITION",
+        "default_severity": "info"
+      },
+      "recording_fsm.rejected": {
+        "source": "recording_fsm",
+        "event_id": 2,
+        "symbol": "REJECTED",
+        "default_severity": "warn"
+      },
+      "microphone.capture_start": {
+        "source": "microphone",
+        "event_id": 1,
+        "symbol": "CAPTURE_START",
+        "default_severity": "info"
+      },
+      "microphone.capture_drop": {
+        "source": "microphone",
+        "event_id": 2,
+        "symbol": "CAPTURE_DROP",
+        "default_severity": "warn"
+      },
+      "spi_flash_cache.write": {
+        "source": "spi_flash_cache",
+        "event_id": 1,
+        "symbol": "WRITE",
+        "default_severity": "info"
+      },
+      "spi_flash_cache.read": {
+        "source": "spi_flash_cache",
+        "event_id": 2,
+        "symbol": "READ",
+        "default_severity": "info"
+      },
+      "ota.manifest": {
+        "source": "ota",
+        "event_id": 1,
+        "symbol": "MANIFEST",
+        "default_severity": "info"
+      },
+      "ota.block_result": {
+        "source": "ota",
+        "event_id": 2,
+        "symbol": "BLOCK_RESULT",
+        "default_severity": "info"
+      },
+      "battery_charging.sample": {
+        "source": "battery_charging",
+        "event_id": 1,
+        "symbol": "SAMPLE",
+        "default_severity": "info"
+      },
+      "battery_charging.state": {
+        "source": "battery_charging",
+        "event_id": 2,
+        "symbol": "STATE",
+        "default_severity": "info"
+      },
+      "power_lpm.state": {
+        "source": "power_lpm",
+        "event_id": 1,
+        "symbol": "STATE",
+        "default_severity": "info"
+      },
+      "power_lpm.blocker": {
+        "source": "power_lpm",
+        "event_id": 2,
+        "symbol": "BLOCKER",
+        "default_severity": "warn"
+      },
+      "warnings.rate_limited": {
+        "source": "warnings",
+        "event_id": 1,
+        "symbol": "RATE_LIMITED",
+        "default_severity": "warn"
+      },
+      "warnings.recovered": {
+        "source": "warnings",
+        "event_id": 2,
+        "symbol": "RECOVERED",
+        "default_severity": "info"
+      },
+      "errors.assert": {
+        "source": "errors",
+        "event_id": 1,
+        "symbol": "ASSERT",
+        "default_severity": "error"
+      },
+      "errors.fault": {
+        "source": "errors",
+        "event_id": 2,
+        "symbol": "FAULT",
+        "default_severity": "error"
+      }
+    }
+  },
+  "summary": {
+    "event_count": 4,
+    "sources_seen": [
+      "boot",
+      "errors",
+      "gatt",
+      "spi_flash_cache"
+    ],
+    "warnings_or_errors": [
+      {
+        "index": 3,
+        "sequence": 4,
+        "t_ms": 40,
+        "source": {
+          "raw": "errors",
+          "id": 12,
+          "name": "errors",
+          "symbol": "ERRORS"
+        },
+        "event": {
+          "raw": 1,
+          "name": "errors.assert",
+          "symbol": "ASSERT",
+          "severity_default": "error"
+        },
+        "severity": {
+          "raw": "error",
+          "level": 2,
+          "name": "error"
+        },
+        "args": {
+          "arg0": 3735928559,
+          "arg1": 0,
+          "arg2": 0,
+          "arg3": 0
+        },
+        "raw_event": {
+          "sequence": 4,
+          "t_ms": 40,
+          "source": "errors",
+          "event_id": 1,
+          "severity": "error",
+          "arg0": 3735928559,
+          "arg1": 0,
+          "arg2": 0,
+          "arg3": 0
+        }
+      }
+    ]
+  },
+  "events": [
+    {
+      "index": 0,
+      "sequence": 1,
+      "t_ms": 10,
+      "source": {
+        "raw": "boot",
+        "id": 1,
+        "name": "boot",
+        "symbol": "BOOT"
+      },
+      "event": {
+        "raw": 1,
+        "name": "boot.start",
+        "symbol": "START",
+        "severity_default": "info"
+      },
+      "severity": {
+        "raw": "info",
+        "level": 0,
+        "name": "info"
+      },
+      "args": {
+        "arg0": 1,
+        "arg1": 0,
+        "arg2": 0,
+        "arg3": 0
+      },
+      "raw_event": {
+        "sequence": 1,
+        "t_ms": 10,
+        "source": "boot",
+        "event_id": 1,
+        "severity": "info",
+        "arg0": 1,
+        "arg1": 0,
+        "arg2": 0,
+        "arg3": 0
+      }
+    },
+    {
+      "index": 1,
+      "sequence": 2,
+      "t_ms": 20,
+      "source": {
+        "raw": "gatt",
+        "id": 3,
+        "name": "gatt",
+        "symbol": "GATT"
+      },
+      "event": {
+        "raw": 2,
+        "name": "gatt.log_export_request",
+        "symbol": "LOG_EXPORT_REQUEST",
+        "severity_default": "info"
+      },
+      "severity": {
+        "raw": "info",
+        "level": 0,
+        "name": "info"
+      },
+      "args": {
+        "arg0": 16,
+        "arg1": 4,
+        "arg2": 0,
+        "arg3": 0
+      },
+      "raw_event": {
+        "sequence": 2,
+        "t_ms": 20,
+        "source": "gatt",
+        "event_id": 2,
+        "severity": "info",
+        "arg0": 16,
+        "arg1": 4,
+        "arg2": 0,
+        "arg3": 0
+      }
+    },
+    {
+      "index": 2,
+      "sequence": 3,
+      "t_ms": 30,
+      "source": {
+        "raw": "spi_flash_cache",
+        "id": 7,
+        "name": "spi_flash_cache",
+        "symbol": "SPI_FLASH_CACHE"
+      },
+      "event": {
+        "raw": 1,
+        "name": "spi_flash_cache.write",
+        "symbol": "WRITE",
+        "severity_default": "info"
+      },
+      "severity": {
+        "raw": "info",
+        "level": 0,
+        "name": "info"
+      },
+      "args": {
+        "arg0": 4096,
+        "arg1": 64,
+        "arg2": 0,
+        "arg3": 0
+      },
+      "raw_event": {
+        "sequence": 3,
+        "t_ms": 30,
+        "source": "spi_flash_cache",
+        "event_id": 1,
+        "severity": "info",
+        "arg0": 4096,
+        "arg1": 64,
+        "arg2": 0,
+        "arg3": 0
+      }
+    },
+    {
+      "index": 3,
+      "sequence": 4,
+      "t_ms": 40,
+      "source": {
+        "raw": "errors",
+        "id": 12,
+        "name": "errors",
+        "symbol": "ERRORS"
+      },
+      "event": {
+        "raw": 1,
+        "name": "errors.assert",
+        "symbol": "ASSERT",
+        "severity_default": "error"
+      },
+      "severity": {
+        "raw": "error",
+        "level": 2,
+        "name": "error"
+      },
+      "args": {
+        "arg0": 3735928559,
+        "arg1": 0,
+        "arg2": 0,
+        "arg3": 0
+      },
+      "raw_event": {
+        "sequence": 4,
+        "t_ms": 40,
+        "source": "errors",
+        "event_id": 1,
+        "severity": "error",
+        "arg0": 3735928559,
+        "arg1": 0,
+        "arg2": 0,
+        "arg3": 0
+      }
+    }
+  ]
+}
