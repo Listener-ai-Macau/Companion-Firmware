@@ -44,6 +44,10 @@
     X(SPI_FLASH_CACHE, READ, 0x02u, COMP_DIAG_SEV_INFO, "spi_flash_cache.read") \
     X(OTA, MANIFEST, 0x01u, COMP_DIAG_SEV_INFO, "ota.manifest") \
     X(OTA, BLOCK_RESULT, 0x02u, COMP_DIAG_SEV_INFO, "ota.block_result") \
+    X(OTA, READINESS, 0x03u, COMP_DIAG_SEV_INFO, "ota.readiness") \
+    X(OTA, BLOCKER, 0x04u, COMP_DIAG_SEV_WARN, "ota.blocker") \
+    X(OTA, INTERRUPTED_TRANSFER, 0x05u, COMP_DIAG_SEV_WARN, "ota.interrupted_transfer") \
+    X(OTA, POST_UPDATE_SELF_CHECK, 0x06u, COMP_DIAG_SEV_INFO, "ota.post_update_self_check") \
     X(BATTERY_CHARGING, SAMPLE, 0x01u, COMP_DIAG_SEV_INFO, "battery_charging.sample") \
     X(BATTERY_CHARGING, STATE, 0x02u, COMP_DIAG_SEV_INFO, "battery_charging.state") \
     X(POWER_LPM, STATE, 0x01u, COMP_DIAG_SEV_INFO, "power_lpm.state") \
