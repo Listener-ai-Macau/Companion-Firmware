@@ -42,6 +42,11 @@
     X(MICROPHONE, CAPTURE_DROP, 0x02u, COMP_DIAG_SEV_WARN, "microphone.capture_drop") \
     X(SPI_FLASH_CACHE, WRITE, 0x01u, COMP_DIAG_SEV_INFO, "spi_flash_cache.write") \
     X(SPI_FLASH_CACHE, READ, 0x02u, COMP_DIAG_SEV_INFO, "spi_flash_cache.read") \
+    X(SPI_FLASH_CACHE, DELETE, 0x03u, COMP_DIAG_SEV_INFO, "spi_flash_cache.delete") \
+    X(SPI_FLASH_CACHE, LOW_STORAGE, 0x04u, COMP_DIAG_SEV_WARN, "spi_flash_cache.low_storage") \
+    X(SPI_FLASH_CACHE, INTERRUPTED_WRITE, 0x05u, COMP_DIAG_SEV_WARN, "spi_flash_cache.interrupted_write") \
+    X(SPI_FLASH_CACHE, INTERRUPTED_READ, 0x06u, COMP_DIAG_SEV_WARN, "spi_flash_cache.interrupted_read") \
+    X(SPI_FLASH_CACHE, PRIVACY_ERASE, 0x07u, COMP_DIAG_SEV_WARN, "spi_flash_cache.privacy_erase") \
     X(OTA, MANIFEST, 0x01u, COMP_DIAG_SEV_INFO, "ota.manifest") \
     X(OTA, BLOCK_RESULT, 0x02u, COMP_DIAG_SEV_INFO, "ota.block_result") \
     X(OTA, READINESS, 0x03u, COMP_DIAG_SEV_INFO, "ota.readiness") \

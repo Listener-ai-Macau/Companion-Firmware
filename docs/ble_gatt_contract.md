@@ -71,6 +71,12 @@ requests the next missing `byte_offset`. The device starts exactly at that
 offset. The host deduplicates by byte offset and total length, then uses packet
 sequence only as an ordering and loss-detection aid.
 
+Pendant recording storage is backed by the Companion recording cache model. The
+cache owns immutable byte length, sample format, CRC, SHA-256, created time/tick,
+sync state, and delete state for every stored recording. The cache may map a
+known packet sequence back to a byte offset when the host resumes with the same
+payload size, but byte offset and total length remain authoritative.
+
 This explicitly avoids reintroducing Listener's old chunk/fragment ambiguity.
 There are no independent `chunk_index`, `fragment_index`, or `fragment_count`
 fields in Companion recording packets. The single source of truth is the byte

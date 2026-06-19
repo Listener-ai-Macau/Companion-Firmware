@@ -1,0 +1,787 @@
+{
+  "backend": {
+    "current": "file_backed_simulator",
+    "later": "external_spi_nor",
+    "real_spi_nor_driver_timing_power": "deferred_to_hardware_gate"
+  },
+  "chunk_pull": {
+    "byte_count_verified": 160000,
+    "final_sha256_verified": true,
+    "packet_count": 40,
+    "packets": [
+      {
+        "byte_offset": 0,
+        "final_sha256": null,
+        "flags": [],
+        "packet_crc32": "0xb1be2f59",
+        "packet_sequence": 0,
+        "payload_crc32": "0x185902c9",
+        "payload_length": 4096,
+        "payload_sha256": "285324821f6039ad57fc0a0dedd4f337bb3e70763b493920f55a400303947122",
+        "recording_id": 1,
+        "total_length": 160000
+      },
+      {
+        "byte_offset": 4096,
+        "final_sha256": null,
+        "flags": [],
+        "packet_crc32": "0x7f0e7ce5",
+        "packet_sequence": 1,
+        "payload_crc32": "0x3477c457",
+        "payload_length": 4096,
+        "payload_sha256": "3a1059e3a33b9eb77148d1a3d7d21a1a352e15b0378a8255cd0a91b023b671a7",
+        "recording_id": 1,
+        "total_length": 160000
+      },
+      {
+        "byte_offset": 8192,
+        "final_sha256": null,
+        "flags": [],
+        "packet_crc32": "0xecc72512",
+        "packet_sequence": 2,
+        "payload_crc32": "0x5b6c2487",
+        "payload_length": 4096,
+        "payload_sha256": "d8c783cd025e724d66255d707f5c23f95be266aae37b5b4cf0f0b71458f55722",
+        "recording_id": 1,
+        "total_length": 160000
+      },
+      {
+        "byte_offset": 12288,
+        "final_sha256": null,
+        "flags": [],
+        "packet_crc32": "0x28d2c757",
+        "packet_sequence": 3,
+        "payload_crc32": "0x7de753e0",
+        "payload_length": 4096,
+        "payload_sha256": "c8ed09486b35b67f7a0977e228eede5c661212ca57c49a5875976e5a2b3d1718",
+        "recording_id": 1,
+        "total_length": 160000
+      },
+      {
+        "byte_offset": 16384,
+        "final_sha256": null,
+        "flags": [],
+        "packet_crc32": "0x5488dce9",
+        "packet_sequence": 4,
+        "payload_crc32": "0xc1f7a973",
+        "payload_length": 4096,
+        "payload_sha256": "f638c1628b6739bfadcdbbd259f6228408dd5e7858000f6a4249a87bdd3f4888",
+        "recording_id": 1,
+        "total_length": 160000
+      },
+      {
+        "byte_offset": 20480,
+        "final_sha256": null,
+        "flags": [],
+        "packet_crc32": "0xb4824027",
+        "packet_sequence": 5,
+        "payload_crc32": "0xc363a09f",
+        "payload_length": 4096,
+        "payload_sha256": "9e8ef60beb40266a2184a33c839e326dd911ebbb9ff6f5d4f3f2ef90075e28f9",
+        "recording_id": 1,
+        "total_length": 160000
+      },
+      {
+        "byte_offset": 24576,
+        "final_sha256": null,
+        "flags": [],
+        "packet_crc32": "0x3a87892a",
+        "packet_sequence": 6,
+        "payload_crc32": "0xb1b4d0b5",
+        "payload_length": 4096,
+        "payload_sha256": "04bc5caaf6d746e19a15666259a98256fdefc2e90df1f43b1e23c74fe426012e",
+        "recording_id": 1,
+        "total_length": 160000
+      },
+      {
+        "byte_offset": 28672,
+        "final_sha256": null,
+        "flags": [],
+        "packet_crc32": "0x8b4519ee",
+        "packet_sequence": 7,
+        "payload_crc32": "0xe2e8d553",
+        "payload_length": 4096,
+        "payload_sha256": "b58d139bfde6eb01fdaebfa62c7238da808dfd3ec6829ac9de639e79a447e560",
+        "recording_id": 1,
+        "total_length": 160000
+      },
+      {
+        "byte_offset": 32768,
+        "final_sha256": null,
+        "flags": [],
+        "packet_crc32": "0xf3e93465",
+        "packet_sequence": 8,
+        "payload_crc32": "0x233ea9e1",
+        "payload_length": 4096,
+        "payload_sha256": "9cc1cd8a68fa4375cc6f48c74b7324a0c48fbff4a63596cf6dfca54fa093239f",
+        "recording_id": 1,
+        "total_length": 160000
+      },
+      {
+        "byte_offset": 36864,
+        "final_sha256": null,
+        "flags": [],
+        "packet_crc32": "0x6cef258d",
+        "packet_sequence": 9,
+        "payload_crc32": "0x5ea62d2b",
+        "payload_length": 4096,
+        "payload_sha256": "b61546170afbaaa08e228ab98da82abd6d1fe22572844301f661215bf117e892",
+        "recording_id": 1,
+        "total_length": 160000
+      },
+      {
+        "byte_offset": 40960,
+        "final_sha256": null,
+        "flags": [],
+        "packet_crc32": "0x86f3f723",
+        "packet_sequence": 10,
+        "payload_crc32": "0x486846a2",
+        "payload_length": 4096,
+        "payload_sha256": "eadd8f1f03e0816f4d897780d3ebe5c37ad425b4df438582856bc3c04942d956",
+        "recording_id": 1,
+        "total_length": 160000
+      },
+      {
+        "byte_offset": 45056,
+        "final_sha256": null,
+        "flags": [],
+        "packet_crc32": "0x0a528ea8",
+        "packet_sequence": 11,
+        "payload_crc32": "0x2657aa0b",
+        "payload_length": 4096,
+        "payload_sha256": "61e027327cf14a92f174dd06a71a5b89c7872d3e012f1ebd4f5be3eefc601213",
+        "recording_id": 1,
+        "total_length": 160000
+      },
+      {
+        "byte_offset": 49152,
+        "final_sha256": null,
+        "flags": [],
+        "packet_crc32": "0xe8511c57",
+        "packet_sequence": 12,
+        "payload_crc32": "0x041ed9d9",
+        "payload_length": 4096,
+        "payload_sha256": "84f38ef40fb8e9787e035b951386a3f2d9c63fc6060505530cdfa71665f1bfe1",
+        "recording_id": 1,
+        "total_length": 160000
+      },
+      {
+        "byte_offset": 53248,
+        "final_sha256": null,
+        "flags": [],
+        "packet_crc32": "0xeec938f9",
+        "packet_sequence": 13,
+        "payload_crc32": "0xe0186855",
+        "payload_length": 4096,
+        "payload_sha256": "b3f1aade674dc0c8f6aed1be62fbbe617518e4d3e9c1a531a9fd8c17b037923e",
+        "recording_id": 1,
+        "total_length": 160000
+      },
+      {
+        "byte_offset": 57344,
+        "final_sha256": null,
+        "flags": [],
+        "packet_crc32": "0xa25e6985",
+        "packet_sequence": 14,
+        "payload_crc32": "0x505d800e",
+        "payload_length": 4096,
+        "payload_sha256": "5c2277cd56eb183cadd1d2933791bf70e0343e6f4f611794cfd341a5a3fc5e85",
+        "recording_id": 1,
+        "total_length": 160000
+      },
+      {
+        "byte_offset": 61440,
+        "final_sha256": null,
+        "flags": [],
+        "packet_crc32": "0x766b1563",
+        "packet_sequence": 15,
+        "payload_crc32": "0x66f669ca",
+        "payload_length": 4096,
+        "payload_sha256": "ffb7470324f78307eaa528e8640b93756afc9b46d7c73a6bc56b55bff884e786",
+        "recording_id": 1,
+        "total_length": 160000
+      },
+      {
+        "byte_offset": 65536,
+        "final_sha256": null,
+        "flags": [],
+        "packet_crc32": "0x8881a6c0",
+        "packet_sequence": 16,
+        "payload_crc32": "0xd307eb78",
+        "payload_length": 4096,
+        "payload_sha256": "21c31c1e403ce5b424738b44efff17493ce08f7850bb51e4e521841ff89b09b8",
+        "recording_id": 1,
+        "total_length": 160000
+      },
+      {
+        "byte_offset": 69632,
+        "final_sha256": null,
+        "flags": [],
+        "packet_crc32": "0xb3fcf322",
+        "packet_sequence": 17,
+        "payload_crc32": "0x0ae42bb8",
+        "payload_length": 4096,
+        "payload_sha256": "e3ee0751dbf058ccdcf23a3f431dc2b23d45dfcc4be829d076b0252d53d6bf55",
+        "recording_id": 1,
+        "total_length": 160000
+      },
+      {
+        "byte_offset": 73728,
+        "final_sha256": null,
+        "flags": [],
+        "packet_crc32": "0xea45e92c",
+        "packet_sequence": 18,
+        "payload_crc32": "0xaf8f8891",
+        "payload_length": 4096,
+        "payload_sha256": "fda8eff2009b7658202e7564b410595cc77ca43cefdfbbb333d382da0f6c82f1",
+        "recording_id": 1,
+        "total_length": 160000
+      },
+      {
+        "byte_offset": 77824,
+        "final_sha256": null,
+        "flags": [],
+        "packet_crc32": "0x3ab5b2a2",
+        "packet_sequence": 19,
+        "payload_crc32": "0x9de1463d",
+        "payload_length": 4096,
+        "payload_sha256": "dfc71a05e9ff7b7bd9f9ac09cc6c59c381732a703883d3767521887aeefbfbe2",
+        "recording_id": 1,
+        "total_length": 160000
+      },
+      {
+        "byte_offset": 81920,
+        "final_sha256": null,
+        "flags": [],
+        "packet_crc32": "0xca28bc82",
+        "packet_sequence": 20,
+        "payload_crc32": "0xad36a930",
+        "payload_length": 4096,
+        "payload_sha256": "19e7326883b3a3840940033b330d4c2cf44d688bb5db6ad29445e4bbf115ea82",
+        "recording_id": 1,
+        "total_length": 160000
+      },
+      {
+        "byte_offset": 86016,
+        "final_sha256": null,
+        "flags": [],
+        "packet_crc32": "0xe9ec506d",
+        "packet_sequence": 21,
+        "payload_crc32": "0x6c6cd0fd",
+        "payload_length": 4096,
+        "payload_sha256": "d54e99edabb8d88d2b12b351197a22bc74bc12c81cdd27690a0ed16a64328213",
+        "recording_id": 1,
+        "total_length": 160000
+      },
+      {
+        "byte_offset": 90112,
+        "final_sha256": null,
+        "flags": [],
+        "packet_crc32": "0x7ff345e9",
+        "packet_sequence": 22,
+        "payload_crc32": "0x06a17c5e",
+        "payload_length": 4096,
+        "payload_sha256": "25beb985a5cc50a4513a043f169658f6e609abb1c52d22c1a580a9e6b725ec04",
+        "recording_id": 1,
+        "total_length": 160000
+      },
+      {
+        "byte_offset": 94208,
+        "final_sha256": null,
+        "flags": [],
+        "packet_crc32": "0xfe7c2156",
+        "packet_sequence": 23,
+        "payload_crc32": "0x65b08dc3",
+        "payload_length": 4096,
+        "payload_sha256": "83b2fdc5a2ee3ef66687eb14c074ad706744e28a7617b284141fc838b6a7e0b2",
+        "recording_id": 1,
+        "total_length": 160000
+      },
+      {
+        "byte_offset": 98304,
+        "final_sha256": null,
+        "flags": [],
+        "packet_crc32": "0x44028669",
+        "packet_sequence": 24,
+        "payload_crc32": "0x66b47bc5",
+        "payload_length": 4096,
+        "payload_sha256": "2bc44497a05c085753d9dd0471ba2aa9d5259d4cc8db3512c7340dbfdc8b3e42",
+        "recording_id": 1,
+        "total_length": 160000
+      },
+      {
+        "byte_offset": 102400,
+        "final_sha256": null,
+        "flags": [],
+        "packet_crc32": "0xd8716a47",
+        "packet_sequence": 25,
+        "payload_crc32": "0x185902c9",
+        "payload_length": 4096,
+        "payload_sha256": "285324821f6039ad57fc0a0dedd4f337bb3e70763b493920f55a400303947122",
+        "recording_id": 1,
+        "total_length": 160000
+      },
+      {
+        "byte_offset": 106496,
+        "final_sha256": null,
+        "flags": [],
+        "packet_crc32": "0x088d15fe",
+        "packet_sequence": 26,
+        "payload_crc32": "0x3477c457",
+        "payload_length": 4096,
+        "payload_sha256": "3a1059e3a33b9eb77148d1a3d7d21a1a352e15b0378a8255cd0a91b023b671a7",
+        "recording_id": 1,
+        "total_length": 160000
+      },
+      {
+        "byte_offset": 110592,
+        "final_sha256": null,
+        "flags": [],
+        "packet_crc32": "0x8508600c",
+        "packet_sequence": 27,
+        "payload_crc32": "0x5b6c2487",
+        "payload_length": 4096,
+        "payload_sha256": "d8c783cd025e724d66255d707f5c23f95be266aae37b5b4cf0f0b71458f55722",
+        "recording_id": 1,
+        "total_length": 160000
+      },
+      {
+        "byte_offset": 114688,
+        "final_sha256": null,
+        "flags": [],
+        "packet_crc32": "0x63c9f646",
+        "packet_sequence": 28,
+        "payload_crc32": "0x7de753e0",
+        "payload_length": 4096,
+        "payload_sha256": "c8ed09486b35b67f7a0977e228eede5c661212ca57c49a5875976e5a2b3d1718",
+        "recording_id": 1,
+        "total_length": 160000
+      },
+      {
+        "byte_offset": 118784,
+        "final_sha256": null,
+        "flags": [],
+        "packet_crc32": "0x3d4799f7",
+        "packet_sequence": 29,
+        "payload_crc32": "0xc1f7a973",
+        "payload_length": 4096,
+        "payload_sha256": "f638c1628b6739bfadcdbbd259f6228408dd5e7858000f6a4249a87bdd3f4888",
+        "recording_id": 1,
+        "total_length": 160000
+      },
+      {
+        "byte_offset": 122880,
+        "final_sha256": null,
+        "flags": [],
+        "packet_crc32": "0xc301293c",
+        "packet_sequence": 30,
+        "payload_crc32": "0xc363a09f",
+        "payload_length": 4096,
+        "payload_sha256": "9e8ef60beb40266a2184a33c839e326dd911ebbb9ff6f5d4f3f2ef90075e28f9",
+        "recording_id": 1,
+        "total_length": 160000
+      },
+      {
+        "byte_offset": 126976,
+        "final_sha256": null,
+        "flags": [],
+        "packet_crc32": "0x5348cc34",
+        "packet_sequence": 31,
+        "payload_crc32": "0xb1b4d0b5",
+        "payload_length": 4096,
+        "payload_sha256": "04bc5caaf6d746e19a15666259a98256fdefc2e90df1f43b1e23c74fe426012e",
+        "recording_id": 1,
+        "total_length": 160000
+      },
+      {
+        "byte_offset": 131072,
+        "final_sha256": null,
+        "flags": [],
+        "packet_crc32": "0x74bc3ed2",
+        "packet_sequence": 32,
+        "payload_crc32": "0xe2e8d553",
+        "payload_length": 4096,
+        "payload_sha256": "b58d139bfde6eb01fdaebfa62c7238da808dfd3ec6829ac9de639e79a447e560",
+        "recording_id": 1,
+        "total_length": 160000
+      },
+      {
+        "byte_offset": 135168,
+        "final_sha256": null,
+        "flags": [],
+        "packet_crc32": "0x57f4d742",
+        "packet_sequence": 33,
+        "payload_crc32": "0x233ea9e1",
+        "payload_length": 4096,
+        "payload_sha256": "9cc1cd8a68fa4375cc6f48c74b7324a0c48fbff4a63596cf6dfca54fa093239f",
+        "recording_id": 1,
+        "total_length": 160000
+      },
+      {
+        "byte_offset": 139264,
+        "final_sha256": null,
+        "flags": [],
+        "packet_crc32": "0xd6beeaaf",
+        "packet_sequence": 34,
+        "payload_crc32": "0x5ea62d2b",
+        "payload_length": 4096,
+        "payload_sha256": "b61546170afbaaa08e228ab98da82abd6d1fe22572844301f661215bf117e892",
+        "recording_id": 1,
+        "total_length": 160000
+      },
+      {
+        "byte_offset": 143360,
+        "final_sha256": null,
+        "flags": [],
+        "packet_crc32": "0x22ee1404",
+        "packet_sequence": 35,
+        "payload_crc32": "0x486846a2",
+        "payload_length": 4096,
+        "payload_sha256": "eadd8f1f03e0816f4d897780d3ebe5c37ad425b4df438582856bc3c04942d956",
+        "recording_id": 1,
+        "total_length": 160000
+      },
+      {
+        "byte_offset": 147456,
+        "final_sha256": null,
+        "flags": [],
+        "packet_crc32": "0x8c9b1980",
+        "packet_sequence": 36,
+        "payload_crc32": "0x2657aa0b",
+        "payload_length": 4096,
+        "payload_sha256": "61e027327cf14a92f174dd06a71a5b89c7872d3e012f1ebd4f5be3eefc601213",
+        "recording_id": 1,
+        "total_length": 160000
+      },
+      {
+        "byte_offset": 151552,
+        "final_sha256": null,
+        "flags": [],
+        "packet_crc32": "0x4c4cff70",
+        "packet_sequence": 37,
+        "payload_crc32": "0x041ed9d9",
+        "payload_length": 4096,
+        "payload_sha256": "84f38ef40fb8e9787e035b951386a3f2d9c63fc6060505530cdfa71665f1bfe1",
+        "recording_id": 1,
+        "total_length": 160000
+      },
+      {
+        "byte_offset": 155648,
+        "final_sha256": null,
+        "flags": [],
+        "packet_crc32": "0x5498f7db",
+        "packet_sequence": 38,
+        "payload_crc32": "0xe0186855",
+        "payload_length": 4096,
+        "payload_sha256": "b3f1aade674dc0c8f6aed1be62fbbe617518e4d3e9c1a531a9fd8c17b037923e",
+        "recording_id": 1,
+        "total_length": 160000
+      },
+      {
+        "byte_offset": 159744,
+        "final_sha256": "91c8695e95f80bfeb2b62d4948eb7e9f62d2a835e532fe83155240c875055f53",
+        "flags": [
+          "final"
+        ],
+        "packet_crc32": "0xef7eb46e",
+        "packet_sequence": 39,
+        "payload_crc32": "0xece27a6b",
+        "payload_length": 256,
+        "payload_sha256": "ce824db149dc8974fa52243af7316f521cbcb8e542cfc16487a98a0c3ba01603",
+        "recording_id": 1,
+        "total_length": 160000
+      }
+    ],
+    "request": {
+      "byte_offset": 0,
+      "max_payload": 4096,
+      "recording_id": 1,
+      "requested_length": 160000
+    },
+    "status": "ok"
+  },
+  "delete_after_sync": {
+    "accepted_after_length_and_sha256": {
+      "metadata": {
+        "byte_offset_ready": 160000,
+        "crc32": "0xdbb9c9be",
+        "created_tick_ms": 42000,
+        "created_unix_s": 1800000000,
+        "delete_state": "deleted",
+        "duration_ms": 5000,
+        "packet_sequence_next": 4,
+        "recording_id": 1,
+        "sample_format": {
+          "bits_per_sample": 16,
+          "channels": 1,
+          "codec": "pcm16",
+          "frame_samples": 160,
+          "sample_rate_hz": 16000,
+          "source_family": "SPH0645-compatible PDM MEMS",
+          "stm32_ingress": "software_fixture_for_HAL_LL_SAI_I2S_PDM_boundary"
+        },
+        "sha256": "91c8695e95f80bfeb2b62d4948eb7e9f62d2a835e532fe83155240c875055f53",
+        "sha256_prefix": "91c8695e95f80bfe",
+        "sync_state": "deleted",
+        "total_length": 160000
+      },
+      "status": "deleted"
+    },
+    "duplicate_delete": {
+      "status": "duplicate_delete"
+    },
+    "refused_before_host_verification": {
+      "delete_state": "delete_after_sync_requested",
+      "status": "refused_before_host_verification"
+    }
+  },
+  "diag_events": [
+    {
+      "arg0": 160000,
+      "arg1": 5000,
+      "detail": "write",
+      "diag_name": "spi_flash_cache.write",
+      "recording_id": 1,
+      "severity": "info"
+    },
+    {
+      "arg0": 0,
+      "arg1": 160000,
+      "detail": "read",
+      "diag_name": "spi_flash_cache.read",
+      "recording_id": 1,
+      "severity": "info"
+    },
+    {
+      "arg0": 8192,
+      "arg1": 8192,
+      "detail": "read",
+      "diag_name": "spi_flash_cache.read",
+      "recording_id": 1,
+      "severity": "info"
+    },
+    {
+      "arg0": 8192,
+      "arg1": 8192,
+      "detail": "read",
+      "diag_name": "spi_flash_cache.read",
+      "recording_id": 1,
+      "severity": "info"
+    },
+    {
+      "arg0": 160000,
+      "arg1": 0,
+      "detail": "delete_after_sync",
+      "diag_name": "spi_flash_cache.delete",
+      "recording_id": 1,
+      "severity": "info"
+    },
+    {
+      "arg0": 0,
+      "arg1": 0,
+      "detail": "duplicate_delete",
+      "diag_name": "spi_flash_cache.delete",
+      "recording_id": 1,
+      "severity": "warn"
+    },
+    {
+      "arg0": 160000,
+      "arg1": 1024,
+      "detail": "low_storage",
+      "diag_name": "spi_flash_cache.low_storage",
+      "recording_id": 2,
+      "severity": "warn"
+    },
+    {
+      "arg0": 4096,
+      "arg1": 160000,
+      "detail": "interrupted_write",
+      "diag_name": "spi_flash_cache.interrupted_write",
+      "recording_id": 3,
+      "severity": "warn"
+    },
+    {
+      "arg0": 160000,
+      "arg1": 5000,
+      "detail": "write",
+      "diag_name": "spi_flash_cache.write",
+      "recording_id": 4,
+      "severity": "info"
+    },
+    {
+      "arg0": 8192,
+      "arg1": 160000,
+      "detail": "interrupted_read",
+      "diag_name": "spi_flash_cache.interrupted_read",
+      "recording_id": 4,
+      "severity": "warn"
+    },
+    {
+      "arg0": 160000,
+      "arg1": 5000,
+      "detail": "write",
+      "diag_name": "spi_flash_cache.write",
+      "recording_id": 5,
+      "severity": "info"
+    },
+    {
+      "arg0": 1,
+      "arg1": 0,
+      "detail": "privacy_erase",
+      "diag_name": "spi_flash_cache.privacy_erase",
+      "recording_id": 0,
+      "severity": "warn"
+    }
+  ],
+  "mode": "synthetic-no-hardware-recording-cache-fixture",
+  "negative_cases": {
+    "interrupted_read": {
+      "packets": [
+        {
+          "byte_offset": 0,
+          "final_sha256": null,
+          "flags": [],
+          "packet_crc32": "0xeb9054ff",
+          "packet_sequence": 0,
+          "payload_crc32": "0x185902c9",
+          "payload_length": 4096,
+          "payload_sha256": "285324821f6039ad57fc0a0dedd4f337bb3e70763b493920f55a400303947122",
+          "recording_id": 4,
+          "total_length": 160000
+        },
+        {
+          "byte_offset": 4096,
+          "final_sha256": null,
+          "flags": [],
+          "packet_crc32": "0x25200743",
+          "packet_sequence": 1,
+          "payload_crc32": "0x3477c457",
+          "payload_length": 4096,
+          "payload_sha256": "3a1059e3a33b9eb77148d1a3d7d21a1a352e15b0378a8255cd0a91b023b671a7",
+          "recording_id": 4,
+          "total_length": 160000
+        }
+      ],
+      "status": "interrupted_read"
+    },
+    "interrupted_write": {
+      "metadata": {
+        "byte_offset_ready": 4096,
+        "crc32": "0x185902c9",
+        "created_tick_ms": 44000,
+        "created_unix_s": 1800000002,
+        "delete_state": "interrupted_write",
+        "duration_ms": 0,
+        "packet_sequence_next": 0,
+        "recording_id": 3,
+        "sample_format": {
+          "bits_per_sample": 16,
+          "channels": 1,
+          "codec": "pcm16",
+          "frame_samples": 160,
+          "sample_rate_hz": 16000,
+          "source_family": "SPH0645-compatible PDM MEMS",
+          "stm32_ingress": "software_fixture_for_HAL_LL_SAI_I2S_PDM_boundary"
+        },
+        "sha256": "285324821f6039ad57fc0a0dedd4f337bb3e70763b493920f55a400303947122",
+        "sha256_prefix": "285324821f6039ad",
+        "sync_state": "unsynced",
+        "total_length": 4096
+      },
+      "status": "interrupted_write"
+    },
+    "low_storage": {
+      "available_bytes": 1024,
+      "requested_bytes": 160000,
+      "status": "low_storage"
+    },
+    "privacy_erase": {
+      "erased_count": 1,
+      "status": "privacy_erased"
+    }
+  },
+  "quality_claim": "cache and BLE pull metadata only; real SPI NOR timing and power remain a later hardware gate",
+  "recording_list": [
+    {
+      "codec": "pcm16",
+      "delete_state": "stored",
+      "duration_ms": 5000,
+      "recording_id": 1,
+      "sha256_prefix": "91c8695e95f80bfe",
+      "started_unix_s": 1800000000,
+      "sync_state": "unsynced",
+      "total_length": 160000
+    }
+  ],
+  "recording_metadata": {
+    "byte_offset_ready": 160000,
+    "crc32": "0xdbb9c9be",
+    "created_tick_ms": 42000,
+    "created_unix_s": 1800000000,
+    "delete_state": "deleted",
+    "duration_ms": 5000,
+    "packet_sequence_next": 4,
+    "recording_id": 1,
+    "sample_format": {
+      "bits_per_sample": 16,
+      "channels": 1,
+      "codec": "pcm16",
+      "frame_samples": 160,
+      "sample_rate_hz": 16000,
+      "source_family": "SPH0645-compatible PDM MEMS",
+      "stm32_ingress": "software_fixture_for_HAL_LL_SAI_I2S_PDM_boundary"
+    },
+    "sha256": "91c8695e95f80bfeb2b62d4948eb7e9f62d2a835e532fe83155240c875055f53",
+    "sha256_prefix": "91c8695e95f80bfe",
+    "sync_state": "deleted",
+    "total_length": 160000
+  },
+  "resume": {
+    "by_byte_offset": {
+      "byte_offset": 8192,
+      "first_packet": {
+        "byte_offset": 8192,
+        "final_sha256": null,
+        "flags": [],
+        "packet_crc32": "0x95a508d0",
+        "packet_sequence": 0,
+        "payload_crc32": "0x5b6c2487",
+        "payload_length": 4096,
+        "payload_sha256": "d8c783cd025e724d66255d707f5c23f95be266aae37b5b4cf0f0b71458f55722",
+        "recording_id": 1,
+        "total_length": 160000
+      }
+    },
+    "by_packet_sequence": {
+      "first_packet": {
+        "byte_offset": 8192,
+        "final_sha256": null,
+        "flags": [],
+        "packet_crc32": "0xecc72512",
+        "packet_sequence": 2,
+        "payload_crc32": "0x5b6c2487",
+        "payload_length": 4096,
+        "payload_sha256": "d8c783cd025e724d66255d707f5c23f95be266aae37b5b4cf0f0b71458f55722",
+        "recording_id": 1,
+        "total_length": 160000
+      },
+      "packet_sequence": 2
+    }
+  },
+  "schema_version": 1,
+  "synthetic_audio": {
+    "byte_count": 160000,
+    "crc32": "0xdbb9c9be",
+    "duration_ms": 5000,
+    "sample_format": {
+      "bits_per_sample": 16,
+      "channels": 1,
+      "codec": "pcm16",
+      "frame_samples": 160,
+      "sample_rate_hz": 16000,
+      "source_family": "SPH0645-compatible PDM MEMS",
+      "stm32_ingress": "software_fixture_for_HAL_LL_SAI_I2S_PDM_boundary"
+    },
+    "sha256": "91c8695e95f80bfeb2b62d4948eb7e9f62d2a835e532fe83155240c875055f53"
+  }
+}
