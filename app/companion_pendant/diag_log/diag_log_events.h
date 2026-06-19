@@ -32,6 +32,12 @@
     X(EPAPER, UPDATE_RESULT, 0x02u, COMP_DIAG_SEV_INFO, "e_paper.update_result") \
     X(RECORDING_FSM, TRANSITION, 0x01u, COMP_DIAG_SEV_INFO, "recording_fsm.transition") \
     X(RECORDING_FSM, REJECTED, 0x02u, COMP_DIAG_SEV_WARN, "recording_fsm.rejected") \
+    X(RECORDING_FSM, START_REQUEST, 0x03u, COMP_DIAG_SEV_INFO, "recording_fsm.start_request") \
+    X(RECORDING_FSM, STOP_REQUEST, 0x04u, COMP_DIAG_SEV_INFO, "recording_fsm.stop_request") \
+    X(RECORDING_FSM, CANCEL_REQUEST, 0x05u, COMP_DIAG_SEV_INFO, "recording_fsm.cancel_request") \
+    X(RECORDING_FSM, SESSION_FINISHED, 0x06u, COMP_DIAG_SEV_INFO, "recording_fsm.session_finished") \
+    X(RECORDING_FSM, ERROR, 0x07u, COMP_DIAG_SEV_ERROR, "recording_fsm.error") \
+    X(RECORDING_FSM, RECOVERY, 0x08u, COMP_DIAG_SEV_INFO, "recording_fsm.recovery") \
     X(MICROPHONE, CAPTURE_START, 0x01u, COMP_DIAG_SEV_INFO, "microphone.capture_start") \
     X(MICROPHONE, CAPTURE_DROP, 0x02u, COMP_DIAG_SEV_WARN, "microphone.capture_drop") \
     X(SPI_FLASH_CACHE, WRITE, 0x01u, COMP_DIAG_SEV_INFO, "spi_flash_cache.write") \
