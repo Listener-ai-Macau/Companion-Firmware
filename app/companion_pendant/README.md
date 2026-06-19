@@ -25,3 +25,8 @@ Product rules:
 
 The next firmware step may copy or generate a Companion-specific CubeIDE project
 under this directory after the official BLE_p2pServer baseline is proven.
+
+Diagnostic logging starts in `diag_log/` as a portable RAM ring with bounded
+tail export helpers. A later SPI flash retained ring may mirror events, but it
+must keep the same bounded cursor/source contract and avoid ESP partition
+assumptions.
