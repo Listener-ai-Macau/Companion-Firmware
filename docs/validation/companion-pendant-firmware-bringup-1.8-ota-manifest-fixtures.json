@@ -1,0 +1,63 @@
+{
+  "schema_id": "companion.pendant.ota_manifest_fixture_report.v1",
+  "status": "PASS",
+  "required_blockers": [
+    "recording_active",
+    "transfer_active",
+    "diag_export_active",
+    "low_battery",
+    "wrong_board_target",
+    "invalid_hash",
+    "interrupted_transfer"
+  ],
+  "required_post_update_self_checks": [
+    "boot_version_reported",
+    "ble_advertising",
+    "ota_readiness_notify",
+    "diag_log_tail"
+  ],
+  "cases": [
+    {
+      "case": "good",
+      "manifest": "docs\\validation\\ota\\good_manifest.json",
+      "expected_valid": true,
+      "actual_valid": true,
+      "status": "PASS",
+      "errors": []
+    },
+    {
+      "case": "bad_invalid_hash",
+      "manifest": "docs\\validation\\ota\\bad_invalid_hash_manifest.json",
+      "expected_valid": false,
+      "actual_valid": false,
+      "status": "PASS",
+      "errors": [
+        "invalid_hash: manifest hash does not match image"
+      ]
+    },
+    {
+      "case": "bad_wrong_board",
+      "manifest": "docs\\validation\\ota\\bad_wrong_board_manifest.json",
+      "expected_valid": false,
+      "actual_valid": false,
+      "status": "PASS",
+      "errors": [
+        "wrong_board_target: expected NUCLEO-WB55RG"
+      ]
+    },
+    {
+      "case": "bad_missing_blockers",
+      "manifest": "docs\\validation\\ota\\bad_missing_blockers_manifest.json",
+      "expected_valid": false,
+      "actual_valid": false,
+      "status": "PASS",
+      "errors": [
+        "Missing blocker: diag_export_active",
+        "Missing blocker: low_battery",
+        "Missing blocker: wrong_board_target",
+        "Missing blocker: invalid_hash",
+        "Missing blocker: interrupted_transfer"
+      ]
+    }
+  ]
+}

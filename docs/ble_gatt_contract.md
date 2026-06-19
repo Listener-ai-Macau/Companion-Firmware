@@ -22,12 +22,12 @@ write-with-response unless the characteristic explicitly says notify-only.
 | settings | settings | host -> device read/write; device -> host notify | `SettingsV1`: locale, time_zone_offset_min, quiet_hours, display_brightness, recorder_profile_id, flags | Device validates supported ranges and notifies committed settings_revision. |
 | diagnostics | diagnostics/log pull | host -> device write request; device -> host notify packets | `DiagLogPullV1`: cursor, max_events, max_bytes, source mask, severity_mask. Response: cursor, next_cursor, total_available, event records or log payload, CRC | Host pulls default bounded tails without unbounded full dumps and without blocking recording or display work. |
 | privacy | delete/privacy | host -> device write; device -> host notify | `DeletePrivacyV1`: request_id, operation delete_recording/delete_all_recordings/factory_privacy_wipe, recording_id, validated_total_length, validated_sha256 | Device deletes only after the request matches stored metadata or after a full privacy wipe confirmation. |
-| OTA | OTA readiness | device -> host read/notify | `OtaReadinessV1`: ready_state, boot_slot, battery_percent, charger_present, minimum_required_mv, blocker_bitmap | This only reports OTA readiness; the later OTA data path must reuse an ST OTA reference rather than inventing a custom large-write path here. |
+| OTA | OTA readiness | device -> host read/notify | `OtaReadinessV1`: ready_state, boot_slot, battery_percent, charger_present, minimum_required_mv, blocker_bitmap, manifest_version, image_size, image_sha256_prefix, interrupted_transfer_resume_token | This only reports OTA readiness and blockers; the later OTA data path must reuse an ST OTA reference rather than inventing a custom large-write path here. |
 
 ## Diagnostics Log Pull
 
-`diagnostics/log pull` is a bounded export command, not a full dump surface. The
-default request asks for a small tail window:
+`diagnostics/log pull` is a bounded log export command, not a full dump surface.
+The default request asks for a small tail window:
 
 ```json
 {
@@ -42,8 +42,8 @@ default request asks for a small tail window:
 
 The firmware may return fewer than `max_events` or `max_bytes`. The host
 advances by `next_cursor` and returned sequence numbers. A later retained SPI
-flash ring keeps the same bounded cursor/source contract instead of exposing
-whole-device dumps.
+flash ring keeps the same bounded cursor/source contract so the protocol is
+not unbounded full dumps or whole-device dumps.
 
 ## Recording Transfer
 
@@ -123,6 +123,29 @@ OTA readiness is only a readiness/status contract in this step. The actual OTA
 transport must be selected later from ST's STM32WB OTA examples, such as
 `BLE_p2pServer_ota` or `BLE_Ota`, after the basic Companion GATT server is
 working.
+
+## OTA Readiness
+
+`OTA readiness` is a read/notify placeholder that lets the host decide whether
+it may offer an update package before any firmware swap path exists. It exposes
+only status, blocker, and manifest summary fields. The firmware must not accept
+OTA data writes in this step.
+
+The `blocker_bitmap` names are stable host-facing values:
+
+| bit | blocker | trigger |
+| --- | --- | --- |
+| 0 | recording_active | Local recording FSM is not idle. |
+| 1 | transfer_active | Recording chunk pull or any other large BLE transfer is active. |
+| 2 | diag_export_active | `diagnostics/log pull` is active. |
+| 3 | low_battery | Battery is below the manifest `min_battery_percent` guard or below `minimum_required_mv`. |
+| 4 | wrong_board_target | Manifest board target is not `NUCLEO-WB55RG` / `STM32WB55`. |
+| 5 | invalid_hash | Manifest SHA-256 does not match the package payload. |
+| 6 | interrupted_transfer | A previous OTA transfer stopped before verification and must be recovered or discarded. |
+
+Every readiness transition should emit bounded diagnostic events under the
+`ota` source, including `ota.manifest`, `ota.readiness`, `ota.blocker`,
+`ota.interrupted_transfer`, and `ota.post_update_self_check`.
 
 ## Host Probe Contract
 
