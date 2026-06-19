@@ -37,9 +37,13 @@ $features = [ordered]@{
         "Keep ST upstream code under third_party/STM32CubeWB read-only for product work."
     )
     key_paths = @(
+        "app/companion_pendant/",
         "docs/bringup_steps.md",
+        "docs/stm32wb_official_starter.md",
         "docs/listener_reuse_map.md",
         "tools/bootstrap_stm32cubewb.ps1",
+        "tools/build.ps1",
+        "tools/flash.ps1",
         "third_party/STM32CubeWB/"
     )
     validation_commands = @(
@@ -102,6 +106,20 @@ if ($Check) {
         "Listener-Type",
         "STM32_WPAN",
         "no reuse"
+    )
+    Assert-FileContains -RelativePath "docs/stm32wb_official_starter.md" -Needles @(
+        "v1.24.0",
+        "7c5aa7dcd2c0abe787f922bb06a6213c724d08e4",
+        "BLE_p2pServer_reference.hex",
+        "stm32wb5x_BLE_Stack_full_fw.bin",
+        "app/companion_pendant",
+        "aiw with-lock -Resource Companion-WB55"
+    )
+    Assert-FileContains -RelativePath "app/companion_pendant/README.md" -Needles @(
+        "product-owned starter surface",
+        "NUCLEO-WB55RG",
+        "BLE_p2pServer",
+        "aiw with-lock -Resource Companion-WB55"
     )
     if (-not (Test-Path -LiteralPath (Join-Path $RepoRoot "third_party\STM32CubeWB") -PathType Container)) {
         throw "Missing third_party/STM32CubeWB submodule directory"
