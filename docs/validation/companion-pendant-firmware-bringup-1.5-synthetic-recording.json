@@ -1,0 +1,70 @@
+{
+  "diag_events": [
+    "recording_fsm.start_request",
+    "microphone.capture_start",
+    "recording_fsm.stop_request",
+    "recording_fsm.session_finished",
+    "recording_fsm.rejected",
+    "recording_fsm.error"
+  ],
+  "duration_ms": 5000,
+  "fsm_trace": [
+    [
+      "idle",
+      "start_request",
+      "recording"
+    ],
+    [
+      "recording",
+      "stop_request",
+      "stopping"
+    ],
+    [
+      "stopping",
+      "session_finished",
+      "transfer_ready"
+    ],
+    [
+      "transfer_ready",
+      "transfer_begin",
+      "transfer_active"
+    ],
+    [
+      "transfer_active",
+      "transfer_finished",
+      "transferred"
+    ]
+  ],
+  "mode": "synthetic-no-hardware-recording-fixture",
+  "negative_cases": [
+    "reject_start_while_recording",
+    "reject_start_while_stopping",
+    "cancel_pending_start",
+    "error_during_recording",
+    "recovery_complete_to_idle"
+  ],
+  "quality_claim": "fixture metadata only; real microphone audio quality remains a later hardware gate",
+  "recording_metadata": {
+    "byte_offset_final": 160000,
+    "byte_offset_first": 0,
+    "crc32": "0xdbb9c9be",
+    "delete_after_sync_requested": false,
+    "frame_count": 500,
+    "packet_sequence_first": 0,
+    "packet_sequence_last": 499,
+    "recording_id": 1,
+    "sha256": "91c8695e95f80bfeb2b62d4948eb7e9f62d2a835e532fe83155240c875055f53",
+    "sync_state": "transfer_ready",
+    "total_length": 160000
+  },
+  "sample_format": {
+    "bits_per_sample": 16,
+    "channels": 1,
+    "codec": "pcm16",
+    "frame_samples": 160,
+    "sample_rate_hz": 16000,
+    "source_family": "SPH0645-compatible PDM MEMS",
+    "stm32_ingress": "software_fixture_for_HAL_LL_SAI_I2S_PDM_boundary"
+  },
+  "schema_version": 1
+}
