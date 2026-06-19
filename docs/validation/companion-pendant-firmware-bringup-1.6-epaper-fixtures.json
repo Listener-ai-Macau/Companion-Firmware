@@ -1,0 +1,208 @@
+{
+  "ble_card_write_mapping": {
+    "body": "BLE mapped payload",
+    "card_id": "ble_card_write",
+    "card_slot": 2,
+    "card_type": "event",
+    "display_flags": 2,
+    "footer": "REQ 42",
+    "locale": "en",
+    "request_id": 42,
+    "state": "idle",
+    "title": "Event"
+  },
+  "display_variants": {
+    "1.54in": {
+      "format": "PBM P4 1-bit monochrome",
+      "height": 200,
+      "label": "1.54 inch square",
+      "width": 200
+    },
+    "2.13in": {
+      "format": "PBM P4 1-bit monochrome",
+      "height": 122,
+      "label": "2.13 inch landscape",
+      "width": 250
+    }
+  },
+  "dithering": "deterministic 4x4 Bayer thresholding",
+  "fixtures": [
+    {
+      "card": {
+        "body": "Ready for BLE card write. Meeting fallback: \u4f1a\u8bae",
+        "card_id": "boot_default",
+        "card_slot": 0,
+        "card_type": "boot",
+        "display_flags": 0,
+        "footer": "BOOT DEFAULT",
+        "locale": "en",
+        "request_id": 0,
+        "state": "default",
+        "title": "Companion"
+      },
+      "height": 122,
+      "id": "boot_default",
+      "path": "docs/validation/epaper/boot_default_2_13in.pbm",
+      "sha256": "2005ab8885fcde7312cf38c777aec4d917e340aa18335e0b2fc75e4e5b460420",
+      "variant": "2.13in",
+      "width": 250
+    },
+    {
+      "card": {
+        "body": "Ready for BLE card write. Meeting fallback: \u4f1a\u8bae",
+        "card_id": "boot_default",
+        "card_slot": 0,
+        "card_type": "boot",
+        "display_flags": 0,
+        "footer": "BOOT DEFAULT",
+        "locale": "en",
+        "request_id": 0,
+        "state": "default",
+        "title": "Companion"
+      },
+      "height": 200,
+      "id": "boot_default",
+      "path": "docs/validation/epaper/boot_default_1_54in.pbm",
+      "sha256": "5e2e385554f4e57093dc94a67bff0a65be72d2c81da68a89da1fe685b8943a26",
+      "variant": "1.54in",
+      "width": 200
+    },
+    {
+      "card": {
+        "body": "00:12 captured locally. BLE pull will verify length and hash.",
+        "card_id": "recording",
+        "card_slot": 0,
+        "card_type": "recording",
+        "display_flags": 0,
+        "footer": "REC ACTIVE",
+        "locale": "en",
+        "request_id": 0,
+        "state": "recording",
+        "title": "Recording"
+      },
+      "height": 122,
+      "id": "recording",
+      "path": "docs/validation/epaper/recording_2_13in.pbm",
+      "sha256": "0d906ce0b9572316e4a4d502ad240e0f2fd428fc1207cf84e7ad4235209dad9e",
+      "variant": "2.13in",
+      "width": 250
+    },
+    {
+      "card": {
+        "body": "00:12 captured locally. BLE pull will verify length and hash.",
+        "card_id": "recording",
+        "card_slot": 0,
+        "card_type": "recording",
+        "display_flags": 0,
+        "footer": "REC ACTIVE",
+        "locale": "en",
+        "request_id": 0,
+        "state": "recording",
+        "title": "Recording"
+      },
+      "height": 200,
+      "id": "recording",
+      "path": "docs/validation/epaper/recording_1_54in.pbm",
+      "sha256": "ca606aa2387a1a4d4ea73ef58b7c90a714fcf36cb477f89a6e16047d1e2d96ae",
+      "variant": "1.54in",
+      "width": 200
+    },
+    {
+      "card": {
+        "body": "Recording transferred. Delete needs validated length and SHA.",
+        "card_id": "sync_complete",
+        "card_slot": 0,
+        "card_type": "sync_complete",
+        "display_flags": 0,
+        "footer": "SYNC COMPLETE",
+        "locale": "en",
+        "request_id": 0,
+        "state": "sync_complete",
+        "title": "Synced"
+      },
+      "height": 122,
+      "id": "sync_complete",
+      "path": "docs/validation/epaper/sync_complete_2_13in.pbm",
+      "sha256": "e97fda8bd391d52350894cc54d4d613e15788aa6bbe37c4208dde967c9612abf",
+      "variant": "2.13in",
+      "width": 250
+    },
+    {
+      "card": {
+        "body": "Recording transferred. Delete needs validated length and SHA.",
+        "card_id": "sync_complete",
+        "card_slot": 0,
+        "card_type": "sync_complete",
+        "display_flags": 0,
+        "footer": "SYNC COMPLETE",
+        "locale": "en",
+        "request_id": 0,
+        "state": "sync_complete",
+        "title": "Synced"
+      },
+      "height": 200,
+      "id": "sync_complete",
+      "path": "docs/validation/epaper/sync_complete_1_54in.pbm",
+      "sha256": "427ca9d478e3d62f50730ad3d22dc00d5d3515d93dac86c88b897542a392d8c9",
+      "variant": "1.54in",
+      "width": 200
+    }
+  ],
+  "hardware_boundary": {
+    "ai_testable_now": [
+      "card model",
+      "text fallback",
+      "dithering",
+      "framebuffer dimensions",
+      "PBM bitmap export"
+    ],
+    "deferred_to_hardware_gates": [
+      "real e-paper SPI timing",
+      "busy-pin handling",
+      "refresh waveform validation"
+    ]
+  },
+  "schema_id": "companion.pendant.epaper_fixtures.v1",
+  "state_card_coverage": [
+    "boot",
+    "error",
+    "event",
+    "low_battery",
+    "mood",
+    "name",
+    "recording",
+    "reminder",
+    "sync_complete"
+  ],
+  "state_coverage": [
+    "default",
+    "error",
+    "idle",
+    "low_battery",
+    "recording",
+    "sync_complete"
+  ],
+  "supported_card_types": [
+    "boot",
+    "error",
+    "event",
+    "low_battery",
+    "mood",
+    "name",
+    "recording",
+    "reminder",
+    "sync_complete"
+  ],
+  "supported_states": [
+    "default",
+    "error",
+    "idle",
+    "low_battery",
+    "recording",
+    "sync_complete"
+  ],
+  "text_fallback": {
+    "ascii_font": "built-in 5x7",
+    "unsupported_unicode": "deterministic codepoint placeholder boxes"
+  }
+}
