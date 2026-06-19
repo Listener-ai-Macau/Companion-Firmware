@@ -1,0 +1,56 @@
+{
+  "probe": "companion_ble_probe",
+  "mode": "fixture-self-test",
+  "status": "PASS",
+  "contract": "docs\\ble_gatt_contract.md",
+  "uuid_table": "docs\\ble_uuid_table.json",
+  "anchors_checked": [
+    "| service | characteristic | direction | payload | validation |",
+    "| error | trigger | device behavior | host behavior |",
+    "recording chunk pull",
+    "packet sequence",
+    "CRC",
+    "delete-after-sync",
+    "diagnostics/log pull",
+    "OTA readiness",
+    "STM32_WPAN"
+  ],
+  "required_characteristics_checked": [
+    "device_status",
+    "battery_charge",
+    "e_paper_card_write",
+    "e_paper_card_status",
+    "recording_control",
+    "recording_list",
+    "recording_chunk_pull",
+    "settings",
+    "diagnostics_log_pull",
+    "delete_privacy",
+    "ota_readiness"
+  ],
+  "recording_fixture": {
+    "recording_id": "0000002a",
+    "total_length": 33,
+    "sha256": "f7fc8341de87678ce23c15cf5f424388874d4d13e52fd4352111d224dda44c20",
+    "delete_after_sync_requested": false,
+    "packets": [
+      {
+        "packet_sequence": 0,
+        "byte_offset": 0,
+        "total_length": 33,
+        "payload_length": 16,
+        "crc32": "0x449e4dcc",
+        "resume": false
+      },
+      {
+        "packet_sequence": 1,
+        "byte_offset": 16,
+        "total_length": 33,
+        "payload_length": 17,
+        "crc32": "0x5bcb3ef6",
+        "resume": true
+      }
+    ]
+  },
+  "stm32_surface": "STM32_WPAN GATT server via aci_gatt_add_service, aci_gatt_add_char, aci_gatt_update_char_value, and SVCCTL_App_Notification"
+}

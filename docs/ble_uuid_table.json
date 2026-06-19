@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "namespace": "Companion pendant BLE GATT v1",
+  "uuid_base_note": "Companion-owned 128-bit UUIDs for the STM32WB GATT server; do not reuse Listener ESP/NimBLE UUIDs.",
+  "services": [
+    {
+      "service": "device_status",
+      "uuid": "8f7a0001-7b7d-4f3d-9d6f-6c2d1b7c0000",
+      "characteristics": [
+        {
+          "name": "device_status",
+          "uuid": "8f7a1001-7b7d-4f3d-9d6f-6c2d1b7c0000",
+          "direction": ["read", "notify"],
+          "payload": "DeviceStatusV1"
+        },
+        {
+          "name": "battery_charge",
+          "label": "battery/charge",
+          "uuid": "8f7a1002-7b7d-4f3d-9d6f-6c2d1b7c0000",
+          "direction": ["read", "notify"],
+          "payload": "BatteryChargeV1"
+        }
+      ]
+    },
+    {
+      "service": "e_paper_card",
+      "uuid": "8f7a0002-7b7d-4f3d-9d6f-6c2d1b7c0000",
+      "characteristics": [
+        {
+          "name": "e_paper_card_write",
+          "uuid": "8f7a2001-7b7d-4f3d-9d6f-6c2d1b7c0000",
+          "direction": ["write-with-response"],
+          "payload": "CardWriteV1"
+        },
+        {
+          "name": "e_paper_card_status",
+          "uuid": "8f7a2002-7b7d-4f3d-9d6f-6c2d1b7c0000",
+          "direction": ["read", "notify"],
+          "payload": "CardStatusV1"
+        }
+      ]
+    },
+    {
+      "service": "recording",
+      "uuid": "8f7a0003-7b7d-4f3d-9d6f-6c2d1b7c0000",
+      "characteristics": [
+        {
+          "name": "recording_control",
+          "uuid": "8f7a3001-7b7d-4f3d-9d6f-6c2d1b7c0000",
+          "direction": ["write-with-response", "notify"],
+          "payload": "RecordingControlV1"
+        },
+        {
+          "name": "recording_list",
+          "uuid": "8f7a3002-7b7d-4f3d-9d6f-6c2d1b7c0000",
+          "direction": ["read", "notify"],
+          "payload": "RecordingListV1"
+        },
+        {
+          "name": "recording_chunk_pull",
+          "label": "recording chunk pull",
+          "uuid": "8f7a3003-7b7d-4f3d-9d6f-6c2d1b7c0000",
+          "direction": ["write-with-response", "notify"],
+          "payload": "RecordingChunkPullV1"
+        }
+      ]
+    },
+    {
+      "service": "settings",
+      "uuid": "8f7a0004-7b7d-4f3d-9d6f-6c2d1b7c0000",
+      "characteristics": [
+        {
+          "name": "settings",
+          "uuid": "8f7a4001-7b7d-4f3d-9d6f-6c2d1b7c0000",
+          "direction": ["read", "write-with-response", "notify"],
+          "payload": "SettingsV1"
+        }
+      ]
+    },
+    {
+      "service": "diagnostics",
+      "uuid": "8f7a0005-7b7d-4f3d-9d6f-6c2d1b7c0000",
+      "characteristics": [
+        {
+          "name": "diagnostics_log_pull",
+          "label": "diagnostics/log pull",
+          "uuid": "8f7a5001-7b7d-4f3d-9d6f-6c2d1b7c0000",
+          "direction": ["write-with-response", "notify"],
+          "payload": "DiagLogPullV1"
+        }
+      ]
+    },
+    {
+      "service": "privacy",
+      "uuid": "8f7a0006-7b7d-4f3d-9d6f-6c2d1b7c0000",
+      "characteristics": [
+        {
+          "name": "delete_privacy",
+          "label": "delete/privacy",
+          "uuid": "8f7a6001-7b7d-4f3d-9d6f-6c2d1b7c0000",
+          "direction": ["write-with-response", "notify"],
+          "payload": "DeletePrivacyV1"
+        }
+      ]
+    },
+    {
+      "service": "ota",
+      "uuid": "8f7a0007-7b7d-4f3d-9d6f-6c2d1b7c0000",
+      "characteristics": [
+        {
+          "name": "ota_readiness",
+          "label": "OTA readiness",
+          "uuid": "8f7a7001-7b7d-4f3d-9d6f-6c2d1b7c0000",
+          "direction": ["read", "notify"],
+          "payload": "OtaReadinessV1"
+        }
+      ]
+    }
+  ]
+}
