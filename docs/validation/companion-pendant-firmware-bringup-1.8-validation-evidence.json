@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "plan": "companion-pendant-firmware-bringup",
+  "step_id": "1.8",
+  "generated_at": "2026-06-19T17:16:47.5995565+08:00",
+  "result": "PASS",
+  "repo_root": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware",
+  "worktree": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-wt-oai3-companion-pendant-firmware-bringup-1.8",
+  "branch": "ai/oai3-companion-pendant-firmware-bringup-1.8",
+  "commit": "df8c863788efe6d8ad8b688d458b7438df520ba1",
+  "branch_mode": "branch_required",
+  "timeout_seconds": 120,
+  "commands": [
+    {
+      "index": 1,
+      "command": "pwsh -NoProfile -File .\\tools\\check_ota_manifest.ps1 -Fixture",
+      "runnable": true,
+      "worktree": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-wt-oai3-companion-pendant-firmware-bringup-1.8",
+      "branch": "ai/oai3-companion-pendant-firmware-bringup-1.8",
+      "commit": "df8c863788efe6d8ad8b688d458b7438df520ba1",
+      "status": "PASS",
+      "started_at": "2026-06-19T17:16:43.0974092+08:00",
+      "finished_at": "2026-06-19T17:16:44.7446049+08:00",
+      "duration_ms": 1647,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_summary": [
+        "PASS: Companion OTA manifest fixture validation -> docs/validation/companion-pendant-firmware-bringup-1.8-ota-manifest-fixtures.json"
+      ],
+      "stderr_summary": [],
+      "output_sha256": "d8cf938c369dbfd49b6115bcf5749daa92e9f5a504233e7448c656519e6aab03",
+      "evidence_refs": [],
+      "artifacts": []
+    },
+    {
+      "index": 2,
+      "command": "python .\\tools\\verify_ota_contract_static.py",
+      "runnable": true,
+      "worktree": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-wt-oai3-companion-pendant-firmware-bringup-1.8",
+      "branch": "ai/oai3-companion-pendant-firmware-bringup-1.8",
+      "commit": "df8c863788efe6d8ad8b688d458b7438df520ba1",
+      "status": "PASS",
+      "started_at": "2026-06-19T17:16:44.7987715+08:00",
+      "finished_at": "2026-06-19T17:16:45.5653608+08:00",
+      "duration_ms": 767,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_summary": [
+        "PASS: Companion OTA readiness contract static checks passed."
+      ],
+      "stderr_summary": [],
+      "output_sha256": "815ead27e1100861f6d6616d8bc969fb3425e91317a7903df7919b66b304e627",
+      "evidence_refs": [],
+      "artifacts": []
+    },
+    {
+      "index": 3,
+      "command": "pwsh -NoProfile -Command '$p=\"docs/ota_readiness.md\"; if(!(Test-Path $p)){ throw \"missing ota_readiness\" }; foreach($n in @(\"BLE_Ota\",\"BLE_p2pServer_ota\",\"low-battery\",\"rollback\",\"manifest\",\"Listener\")){ if(!(Select-String -LiteralPath $p -Pattern $n -SimpleMatch -Quiet)){ throw (\"missing OTA anchor: \"+$n) } }'",
+      "runnable": true,
+      "worktree": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-wt-oai3-companion-pendant-firmware-bringup-1.8",
+      "branch": "ai/oai3-companion-pendant-firmware-bringup-1.8",
+      "commit": "df8c863788efe6d8ad8b688d458b7438df520ba1",
+      "status": "PASS",
+      "started_at": "2026-06-19T17:16:45.5676934+08:00",
+      "finished_at": "2026-06-19T17:16:46.9288116+08:00",
+      "duration_ms": 1361,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_summary": [],
+      "stderr_summary": [],
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "evidence_refs": [],
+      "artifacts": []
+    },
+    {
+      "index": 4,
+      "command": "git diff --check",
+      "runnable": true,
+      "worktree": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-wt-oai3-companion-pendant-firmware-bringup-1.8",
+      "branch": "ai/oai3-companion-pendant-firmware-bringup-1.8",
+      "commit": "df8c863788efe6d8ad8b688d458b7438df520ba1",
+      "status": "PASS",
+      "started_at": "2026-06-19T17:16:46.9305697+08:00",
+      "finished_at": "2026-06-19T17:16:47.5985558+08:00",
+      "duration_ms": 668,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_summary": [],
+      "stderr_summary": [
+        "warning: in the working copy of 'app/companion_pendant/diag_log/diag_log_events.h', LF will be replaced by CRLF the next time Git touches it",
+        "warning: in the working copy of 'docs/ble_gatt_contract.md', LF will be replaced by CRLF the next time Git touches it"
+      ],
+      "output_sha256": "a985736c6b7c41f8ac353d2ac0eccbec4b36e7e8b117637b798433fe6a6d1670",
+      "evidence_refs": [],
+      "artifacts": []
+    }
+  ],
+  "errors": []
+}
