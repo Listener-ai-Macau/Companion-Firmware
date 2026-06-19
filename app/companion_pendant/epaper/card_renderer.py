@@ -305,15 +305,20 @@ def sha256_hex(data: bytes) -> str:
 def decode_ble_text(value: Any, length_key: str | None = None, payload: dict[str, Any] | None = None) -> str:
     if value is None:
         return ""
-    if isinstance(value, bytes):
-        text = value.decode("utf-8", errors="replace")
-    elif isinstance(value, list):
-        text = bytes(int(item) & 0xFF for item in value).decode("utf-8", errors="replace")
-    else:
-        text = str(value)
+    byte_length: int | None = None
     if length_key and payload and isinstance(payload.get(length_key), int):
-        return text[: int(payload[length_key])]
-    return text
+        byte_length = max(0, int(payload[length_key]))
+    if isinstance(value, bytes):
+        raw = value
+    elif isinstance(value, list):
+        raw = bytes(int(item) & 0xFF for item in value)
+    elif isinstance(value, bytearray):
+        raw = bytes(value)
+    else:
+        raw = str(value).encode("utf-8")
+    if byte_length is not None:
+        raw = raw[:byte_length]
+    return raw.decode("utf-8", errors="replace")
 
 
 def card_from_ble_write(payload: dict[str, Any]) -> CardModel:

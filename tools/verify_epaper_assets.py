@@ -130,6 +130,21 @@ def check_ble_mapping(errors: list[str]) -> None:
     require(card.title == "Reminder", "BLE CardWriteV1 title length mapping failed", errors)
     require(card.body == "Hydrate soon"[:12], "BLE CardWriteV1 body length mapping failed", errors)
 
+    multibyte_card = card_from_ble_write(
+        {
+            "request_id": 8,
+            "card_slot": 2,
+            "utf8_title_len": 3,
+            "utf8_body_len": 6,
+            "title": list("你好XYZ".encode("utf-8")),
+            "body": list("会议TAIL".encode("utf-8")),
+            "display_flags": 0x02,
+        }
+    )
+    require(multibyte_card.card_type == "event", "BLE CardWriteV1 multibyte fixture did not map to event", errors)
+    require(multibyte_card.title == "你", "BLE CardWriteV1 title byte-length mapping leaked trailing bytes", errors)
+    require(multibyte_card.body == "会议", "BLE CardWriteV1 body byte-length mapping leaked trailing bytes", errors)
+
 
 def check_model_render_coverage(errors: list[str]) -> None:
     for card in required_state_cards():
