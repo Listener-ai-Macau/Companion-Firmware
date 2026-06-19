@@ -1,0 +1,390 @@
+{
+  "actionable_failures": [
+    {
+      "failure": "no_device",
+      "host_result": "show reconnect action; do not claim sync success",
+      "simulated_trigger": "scan returns no Companion service UUID",
+      "user_action": "Power the pendant, keep it near the host, and retry scan/pairing."
+    },
+    {
+      "failure": "wrong_service_uuid",
+      "host_result": "reject the device before any characteristic read",
+      "simulated_trigger": "advertisement lacks Companion service UUID",
+      "user_action": "Select the Companion pendant advertising name or forget the stale device and scan again."
+    },
+    {
+      "failure": "timeout",
+      "host_result": "surface timeout with retry/reconnect option",
+      "simulated_trigger": "status read or transfer notify exceeds budget",
+      "user_action": "Retry once, then reconnect the pendant if the timeout repeats."
+    },
+    {
+      "failure": "crc_mismatch",
+      "host_result": "do not mark recording synced and do not delete",
+      "simulated_trigger": "recording packet CRC does not match header+payload",
+      "user_action": "Retry the recording pull from byte offset zero and export diagnostics if it repeats."
+    },
+    {
+      "failure": "low_battery",
+      "host_result": "block OTA transfer writes",
+      "simulated_trigger": "OTA readiness reports low_battery blocker",
+      "user_action": "Charge the pendant above the package minimum before retrying OTA."
+    },
+    {
+      "failure": "no_recording",
+      "host_result": "disable recording pull/delete for that id",
+      "simulated_trigger": "recording_list is empty or recording_id is missing",
+      "user_action": "Record a new sample or refresh the list after reconnecting."
+    },
+    {
+      "failure": "transfer_canceled",
+      "host_result": "keep local partial state separate from synced state",
+      "simulated_trigger": "user cancels recording pull before final SHA-256",
+      "user_action": "Resume the transfer later from the next verified byte offset."
+    }
+  ],
+  "artifact_policy": {
+    "allowed_roots": [
+      "docs/validation",
+      "tests/fixtures"
+    ],
+    "primary_artifact": "docs/validation/companion_ble_matrix.json"
+  },
+  "backend": "fixture",
+  "fixtures": {
+    "ota_manifest_report": "docs/validation/companion-pendant-firmware-bringup-1.8-ota-manifest-fixtures.json",
+    "recording_cache": "docs/validation/companion-pendant-firmware-bringup-1.7-recording-cache-fixture.json",
+    "uuid_table": "docs/ble_uuid_table.json"
+  },
+  "generated_at": "static-fixture",
+  "generated_by": "tools/companion_ble_tool.py --self-test",
+  "no_hardware": true,
+  "operation_coverage": {
+    "card_write": {
+      "card_slot": 0,
+      "content_crc32": "0x09c1d21f",
+      "operation": "card_write",
+      "render_state": "accepted",
+      "request_id": 17,
+      "status": "PASS",
+      "utf8_body_len": 56,
+      "utf8_title_len": 13
+    },
+    "delete": {
+      "delete_after_sync": {
+        "accepted_after_length_and_sha256": "deleted",
+        "duplicate_delete": "duplicate_delete",
+        "refused_before_host_verification": "refused_before_host_verification"
+      },
+      "host_must_match_total_length_and_sha256": true,
+      "operation": "delete",
+      "privacy_erase_supported": true,
+      "status": "PASS"
+    },
+    "log_pull": {
+      "bounded_tail": true,
+      "crc32": "0x78ebb5b2",
+      "cursor": 0,
+      "event_count": 3,
+      "next_cursor": 3,
+      "operation": "log_pull",
+      "status": "PASS",
+      "total_available": 3
+    },
+    "ota_status": {
+      "battery_percent": 18,
+      "blocked_case": "low_battery",
+      "blocker_bitmap_names": [
+        "recording_active",
+        "transfer_active",
+        "diag_export_active",
+        "low_battery",
+        "wrong_board_target",
+        "invalid_hash",
+        "interrupted_transfer"
+      ],
+      "boot_slot": "slot_a",
+      "fixture_cases": [
+        "good",
+        "bad_invalid_hash",
+        "bad_wrong_board",
+        "bad_missing_blockers"
+      ],
+      "minimum_required_mv": 3700,
+      "operation": "ota_status",
+      "ota_data_path_enabled": false,
+      "ready_state": "not_ready",
+      "status": "PASS"
+    },
+    "recording_list": {
+      "count": 1,
+      "entry": {
+        "codec": "pcm16",
+        "delete_state": "stored",
+        "duration_ms": 5000,
+        "recording_id": 1,
+        "sample_rate_hz": 16000,
+        "sha256_prefix": "91c8695e95f80bfe",
+        "sync_state": "unsynced",
+        "total_length": 160000
+      },
+      "operation": "recording_list",
+      "status": "PASS"
+    },
+    "recording_pull": {
+      "byte_count_verified": 160000,
+      "crc_model": "packet_crc32 over header+payload; final packet carries SHA-256",
+      "final_sha256_verified": true,
+      "operation": "recording_pull",
+      "packet_count": 40,
+      "recording_id": 1,
+      "resume": {
+        "by_byte_offset": {
+          "byte_offset": 8192,
+          "first_packet": {
+            "byte_offset": 8192,
+            "final_sha256": null,
+            "flags": [],
+            "packet_crc32": "0x95a508d0",
+            "packet_sequence": 0,
+            "payload_crc32": "0x5b6c2487",
+            "payload_length": 4096,
+            "payload_sha256": "d8c783cd025e724d66255d707f5c23f95be266aae37b5b4cf0f0b71458f55722",
+            "recording_id": 1,
+            "total_length": 160000
+          }
+        },
+        "by_packet_sequence": {
+          "first_packet": {
+            "byte_offset": 8192,
+            "final_sha256": null,
+            "flags": [],
+            "packet_crc32": "0xecc72512",
+            "packet_sequence": 2,
+            "payload_crc32": "0x5b6c2487",
+            "payload_length": 4096,
+            "payload_sha256": "d8c783cd025e724d66255d707f5c23f95be266aae37b5b4cf0f0b71458f55722",
+            "recording_id": 1,
+            "total_length": 160000
+          },
+          "packet_sequence": 2
+        }
+      },
+      "status": "PASS",
+      "total_length": 160000
+    },
+    "scan_result_parsing": {
+      "device_count": 2,
+      "ignored_device_count": 1,
+      "operation": "scan_result_parsing",
+      "required_service_uuid": "8f7a1001-7b7d-4f3d-9d6f-6c2d1b7c0000",
+      "rssi": -48,
+      "selected_address": "F1:E2:D3:C4:B5:A6",
+      "selected_name": "Companion Pendant Dev",
+      "status": "PASS"
+    },
+    "status_read": {
+      "battery_charge": {
+        "charge_state": "discharging",
+        "charger_present": false,
+        "millivolts": 4012,
+        "percent": 84,
+        "temperature_c_x10": 261
+      },
+      "device_status": {
+        "active_mode": "idle",
+        "advertising_name": "Companion Pendant Dev",
+        "board_id": "NUCLEO-WB55RG",
+        "build_id": "fixture-b109442",
+        "fault_bitmap": 0,
+        "firmware_semver": "0.1.0-fixture",
+        "schema_version": 1,
+        "uptime_ms": 123456
+      },
+      "operation": "status_read",
+      "status": "PASS"
+    }
+  },
+  "product_matrix": [
+    {
+      "artifact_requirements": [
+        "docs/validation/companion_ble_matrix.json"
+      ],
+      "case_id": "C1",
+      "category": "normal_use",
+      "expected_host_behavior": "Host reaches a coherent idle Companion state and can exercise every first GATT surface without hardware.",
+      "failure_classification": "contract_or_fixture_drift",
+      "fixture_operations": [
+        "scan_result_parsing",
+        "status_read",
+        "card_write",
+        "recording_list",
+        "recording_pull",
+        "log_pull",
+        "delete",
+        "ota_status"
+      ],
+      "result": "PASS",
+      "scenario": "Scan, read status, write a card, list recordings, pull one recording, pull logs, and read OTA status in one fixture session."
+    },
+    {
+      "artifact_requirements": [
+        "docs/validation/companion_ble_matrix.json"
+      ],
+      "case_id": "C2",
+      "category": "retry",
+      "expected_host_behavior": "Retry resumes by byte offset instead of duplicating already verified recording bytes.",
+      "failure_classification": "retry_not_idempotent",
+      "fixture_operations": [
+        "status_read",
+        "recording_list",
+        "recording_pull"
+      ],
+      "result": "PASS",
+      "scenario": "Retry after a timeout or busy response rereads status and repeats the idempotent operation once."
+    },
+    {
+      "artifact_requirements": [
+        "docs/validation/companion_ble_matrix.json"
+      ],
+      "case_id": "C3",
+      "category": "cancel",
+      "expected_host_behavior": "User sees transfer canceled and can retry; no delete-after-sync is sent.",
+      "failure_classification": "transfer_canceled",
+      "fixture_operations": [
+        "recording_pull",
+        "recording_list"
+      ],
+      "result": "PASS",
+      "scenario": "A transfer cancel stops the active pull and leaves the recording available for a later byte-offset resume."
+    },
+    {
+      "artifact_requirements": [
+        "docs/validation/companion_ble_matrix.json"
+      ],
+      "case_id": "C4",
+      "category": "disconnect_reconnect",
+      "expected_host_behavior": "Host recovers through scan/connect and does not trust stale packet sequence without total_length continuity.",
+      "failure_classification": "reconnect_or_resume_failed",
+      "fixture_operations": [
+        "scan_result_parsing",
+        "recording_list",
+        "recording_pull"
+      ],
+      "result": "PASS",
+      "scenario": "Disconnect after partial recording pull, reconnect, reread recording_list, and resume from the next byte offset."
+    },
+    {
+      "artifact_requirements": [
+        "docs/validation/companion-pendant-firmware-bringup-1.7-recording-cache-fixture.json"
+      ],
+      "case_id": "C5",
+      "category": "long_recording_metadata",
+      "expected_host_behavior": "Host treats total_length and final SHA-256 as authoritative before delete-after-sync.",
+      "failure_classification": "metadata_mismatch",
+      "fixture_operations": [
+        "recording_list",
+        "recording_pull"
+      ],
+      "result": "PASS",
+      "scenario": "Host validates long recording metadata before transfer: 160000 bytes, sample format, CRC/hash, and created time/tick."
+    },
+    {
+      "artifact_requirements": [
+        "docs/validation/companion_ble_matrix.json"
+      ],
+      "case_id": "C6",
+      "category": "idle_resume",
+      "expected_host_behavior": "Stale local UI state is refreshed or an actionable timeout is surfaced.",
+      "failure_classification": "idle_resume_stale_state",
+      "fixture_operations": [
+        "status_read",
+        "recording_list"
+      ],
+      "result": "PASS",
+      "scenario": "After idle, host rereads status and recording_list before offering a sync action."
+    },
+    {
+      "artifact_requirements": [
+        "docs/validation/companion_ble_matrix.json"
+      ],
+      "case_id": "C7",
+      "category": "log_export",
+      "expected_host_behavior": "Support package includes cursor, event count, and CRC without attempting an unbounded full dump.",
+      "failure_classification": "diagnostics_missing",
+      "fixture_operations": [
+        "log_pull"
+      ],
+      "result": "PASS",
+      "scenario": "Host requests a bounded diagnostic tail after an error or blocked transfer."
+    },
+    {
+      "artifact_requirements": [
+        "docs/validation/companion-pendant-firmware-bringup-1.8-ota-manifest-fixtures.json"
+      ],
+      "case_id": "C8",
+      "category": "ota_blocked",
+      "expected_host_behavior": "Host shows blocker names and does not offer OTA transfer writes.",
+      "failure_classification": "ota_blocker_not_actionable",
+      "fixture_operations": [
+        "ota_status"
+      ],
+      "result": "PASS",
+      "scenario": "OTA readiness is not ready while low battery, transfer, diag export, wrong-board, invalid-hash, or interrupted-transfer blockers are present."
+    }
+  ],
+  "real_ble_adapter_plan": [
+    "python-bleak",
+    "windows-ble-apis",
+    "listener-type-ble-approach"
+  ],
+  "schema_id": "companion.pendant.ble_fixture_matrix.v1",
+  "schema_version": 1,
+  "self_test": {
+    "required_failures": [
+      "no_device",
+      "wrong_service_uuid",
+      "timeout",
+      "crc_mismatch",
+      "low_battery",
+      "no_recording",
+      "transfer_canceled"
+    ],
+    "required_matrix_categories": [
+      "normal_use",
+      "retry",
+      "cancel",
+      "disconnect_reconnect",
+      "long_recording_metadata",
+      "idle_resume",
+      "log_export",
+      "ota_blocked"
+    ],
+    "required_operations": [
+      "scan_result_parsing",
+      "status_read",
+      "card_write",
+      "recording_list",
+      "recording_pull",
+      "log_pull",
+      "delete",
+      "ota_status"
+    ],
+    "result": "PASS"
+  },
+  "source_refs_used": {
+    "depends_on_forbidden_dependencies": false,
+    "forbidden_dependencies": [
+      "Listener device names",
+      "HID keyboard behavior",
+      "ESP-specific BLE services"
+    ],
+    "listener_matrix_mindset": [
+      "case catalog",
+      "failure classification",
+      "artifact requirements",
+      "actionable error checks"
+    ]
+  },
+  "status": "PASS"
+}
