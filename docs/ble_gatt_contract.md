@@ -26,8 +26,8 @@ write-with-response unless the characteristic explicitly says notify-only.
 
 ## Diagnostics Log Pull
 
-`diagnostics/log pull` is a bounded export command, not a full dump surface. The
-default request asks for a small tail window:
+`diagnostics/log pull` is a bounded log export command, not a full dump surface.
+The default request asks for a small tail window:
 
 ```json
 {
@@ -42,8 +42,8 @@ default request asks for a small tail window:
 
 The firmware may return fewer than `max_events` or `max_bytes`. The host
 advances by `next_cursor` and returned sequence numbers. A later retained SPI
-flash ring keeps the same bounded cursor/source contract instead of exposing
-whole-device dumps.
+flash ring keeps the same bounded cursor/source contract so the protocol is
+not unbounded full dumps or whole-device dumps.
 
 ## Recording Transfer
 
