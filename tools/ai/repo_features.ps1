@@ -34,6 +34,7 @@ $features = [ordered]@{
     responsibilities = @(
         "Prove the official ST BLE_p2pServer example before custom Companion services.",
         "Own Companion GATT, diagnostic log foundation, microphone capture, e-paper update path, SPI flash recording cache, and BLE OTA readiness.",
+        "Own the Listener feature migration track, including reuse boundaries, forbidden direct reuse, and guardrail validation.",
         "Keep ST upstream code under third_party/STM32CubeWB read-only for product work."
     )
     key_paths = @(
@@ -41,6 +42,7 @@ $features = [ordered]@{
         "docs/bringup_steps.md",
         "docs/stm32wb_official_starter.md",
         "docs/listener_reuse_map.md",
+        "docs/listener_feature_migration.md",
         "tools/bootstrap_stm32cubewb.ps1",
         "tools/build.ps1",
         "tools/flash.ps1",
@@ -48,10 +50,20 @@ $features = [ordered]@{
     )
     validation_commands = @(
         "pwsh -NoProfile -File .\tools\ai\repo_features.ps1 -Check",
+        'pwsh -NoProfile -Command ''$p="docs/listener_feature_migration.md"; if(!(Test-Path $p)){ throw "missing listener_feature_migration" }; $need=@("| Listener capability | Companion target | reuse mode | first implementation step | validation | risk |","Listener-Type BLE recovery","actionable BLE failure","diagnostics bundle","recording byte-offset transfer","delete-after-sync","OTA manifest","low-power state","forbidden direct reuse","ESP-IDF","NimBLE","PWR_HOLD"); foreach($n in $need){ if(-not (Select-String -LiteralPath $p -Pattern $n -SimpleMatch -Quiet)){ throw ("missing migration anchor: "+$n) } }''',
         "pwsh -NoProfile -Command `"Test-Path third_party\STM32CubeWB\Projects\P-NUCLEO-WB55.Nucleo\Applications\BLE\BLE_p2pServer`"",
         "git submodule status -- third_party/STM32CubeWB",
         "git diff --check"
     )
+    migration_track = [ordered]@{
+        name = "Listener feature migration guardrails"
+        map = "docs/listener_feature_migration.md"
+        proves = @(
+            "Listener-Type BLE recovery and actionable BLE failure classification are mapped to Companion host fixtures.",
+            "Diagnostics bundle, recording byte-offset transfer, delete-after-sync privacy, OTA manifest discipline, low-power state modeling, and product validation matrices have first-step targets.",
+            "ESP-IDF, NimBLE, HID keyboard behavior, ESP partitions/NVS, PWR_HOLD, Listener LEDs, and Listener device names are forbidden direct reuse."
+        )
+    }
     hardware_lock_rule = "Real flash, serial monitor, BLE capture, or board validation must use the workflow hardware lock around the shortest exclusive window; code edits and static checks run outside the lock."
     boundaries = @(
         "Listener-Firmware is read-only source_ref material for reuse classification.",
@@ -107,6 +119,25 @@ if ($Check) {
         "STM32_WPAN",
         "no reuse"
     )
+    Assert-FileContains -RelativePath "docs/listener_feature_migration.md" -Needles @(
+        "| Listener capability | Companion target | reuse mode | first implementation step | validation | risk |",
+        "Listener-Type BLE recovery",
+        "actionable BLE failure",
+        "diagnostics bundle",
+        "recording byte-offset transfer",
+        "delete-after-sync",
+        "OTA manifest",
+        "low-power state",
+        "product validation matrices",
+        "forbidden direct reuse",
+        "ESP-IDF drivers",
+        "NimBLE services",
+        "HID keyboard behavior",
+        "ESP partitions/NVS",
+        "PWR_HOLD",
+        "Listener LEDs",
+        "Listener device names"
+    )
     Assert-FileContains -RelativePath "docs/stm32wb_official_starter.md" -Needles @(
         "v1.24.0",
         "7c5aa7dcd2c0abe787f922bb06a6213c724d08e4",
@@ -124,7 +155,9 @@ if ($Check) {
     if (-not (Test-Path -LiteralPath (Join-Path $RepoRoot "third_party\STM32CubeWB") -PathType Container)) {
         throw "Missing third_party/STM32CubeWB submodule directory"
     }
-    Write-Output "PASS: Companion-Firmware repo feature check passed for STM32CubeWB/NUCLEO-WB55RG bring-up context."
+    Write-Output "PASS: Companion-Firmware repo feature check passed for STM32CubeWB/NUCLEO-WB55RG bring-up and Listener feature migration guardrails."
+    Write-Output "Migration track: docs/listener_feature_migration.md"
+    Write-Output "Guardrail validation commands: pwsh -NoProfile -Command '<listener_feature_migration anchor check>'; pwsh -NoProfile -File .\tools\ai\repo_features.ps1 -Check; git diff --check"
     exit 0
 }
 
