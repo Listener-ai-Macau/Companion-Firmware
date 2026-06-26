@@ -20,6 +20,7 @@ REQUIRED_OPERATIONS = {
     "card_write",
     "recording_list",
     "recording_pull",
+    "byte_offset_resume",
     "log_pull",
     "delete",
     "ota_status",
@@ -29,6 +30,10 @@ REQUIRED_MATRIX_CATEGORIES = {
     "retry",
     "cancel",
     "disconnect_reconnect",
+    "byte_offset_resume",
+    "gatt_cache_stale",
+    "cccd_notify_failure",
+    "recovered_event_suppressed",
     "long_recording_metadata",
     "idle_resume",
     "log_export",
@@ -38,10 +43,15 @@ REQUIRED_FAILURES = {
     "no_device",
     "wrong_service_uuid",
     "timeout",
+    "disconnected",
+    "gatt_cache_stale",
+    "cccd_notify_failure",
     "crc_mismatch",
+    "hash_mismatch",
     "low_battery",
     "no_recording",
     "transfer_canceled",
+    "ota_blocked",
 }
 REQUIRED_REAL_ADAPTERS = {"python-bleak", "windows-ble-apis", "listener-type-ble-approach"}
 
@@ -75,6 +85,20 @@ def verify_operation_coverage(matrix: dict[str, Any], errors: list[str]) -> None
     recording_pull = operations.get("recording_pull", {})
     require(int(recording_pull.get("packet_count", 0)) > 1, "recording pull must include multiple packets", errors)
     require(bool(recording_pull.get("final_sha256_verified")), "recording pull must verify final SHA-256", errors)
+    resume = operations.get("byte_offset_resume", {})
+    require(resume.get("resume_strategy") == "byte_offset_resume", "resume operation must be byte-offset based", errors)
+    require(
+        resume.get("disconnect_reason_classification") == "disconnected",
+        "resume operation must classify the disconnect",
+        errors,
+    )
+    request = resume.get("request", {})
+    first_packet = resume.get("first_resumed_packet", {})
+    require(
+        request.get("byte_offset") == first_packet.get("byte_offset"),
+        "byte-offset resume request and first packet must align",
+        errors,
+    )
     delete = operations.get("delete", {}).get("delete_after_sync", {})
     require(delete.get("accepted_after_length_and_sha256") == "deleted", "delete-after-sync success evidence missing", errors)
     ota = operations.get("ota_status", {})
@@ -116,6 +140,44 @@ def verify_actionable_failures(matrix: dict[str, Any], errors: list[str]) -> Non
         name = str(item.get("failure", "<missing>"))
         require(bool(str(item.get("user_action", "")).strip()), f"failure {name} missing user action", errors)
         require(bool(str(item.get("host_result", "")).strip()), f"failure {name} missing host result", errors)
+        require(isinstance(item.get("retryable"), bool), f"failure {name} missing retryable boolean", errors)
+        require(
+            isinstance(item.get("automatic_recovery"), bool),
+            f"failure {name} missing automatic_recovery boolean",
+            errors,
+        )
+        require(
+            bool(str(item.get("diagnostic_context", "")).strip()),
+            f"failure {name} missing diagnostic context",
+            errors,
+        )
+    failure_matrix = matrix.get("failure_classification_matrix")
+    require(isinstance(failure_matrix, list), "failure_classification_matrix must be a list", errors)
+    if isinstance(failure_matrix, list):
+        matrix_names = {str(item.get("failure")) for item in failure_matrix if isinstance(item, dict)}
+        missing_matrix = sorted(REQUIRED_FAILURES - matrix_names)
+        require(not missing_matrix, f"missing failure classifications: {', '.join(missing_matrix)}", errors)
+
+
+def verify_recovery_event_policy(matrix: dict[str, Any], errors: list[str]) -> None:
+    policy = matrix.get("recovery_event_policy")
+    require(isinstance(policy, dict), "recovery_event_policy must be an object", errors)
+    if not isinstance(policy, dict):
+        return
+    require(
+        int(policy.get("max_visible_recovered_events_per_window", 0)) == 1,
+        "recovery event policy must allow only one visible recovered event per window",
+        errors,
+    )
+    cases = policy.get("cases", [])
+    require(isinstance(cases, list) and cases, "recovery_event_policy.cases must be a non-empty list", errors)
+    if not isinstance(cases, list):
+        return
+    events = {str(item.get("event_id")) for item in cases if isinstance(item, dict)}
+    require("recovered_event_suppressed" in events, "missing recovered_event_suppressed policy", errors)
+    suppressed = [item for item in cases if isinstance(item, dict) and item.get("event_id") == "recovered_event_suppressed"]
+    if suppressed:
+        require(suppressed[0].get("visible_to_user") is False, "recovered_event_suppressed must not be user-visible", errors)
 
 
 def verify_adapter_and_artifact_policy(matrix: dict[str, Any], errors: list[str]) -> None:
@@ -149,6 +211,7 @@ def main() -> int:
     verify_operation_coverage(matrix, errors)
     verify_product_matrix(matrix, errors)
     verify_actionable_failures(matrix, errors)
+    verify_recovery_event_policy(matrix, errors)
     if errors:
         print("FAIL: Companion BLE matrix verification failed:", file=sys.stderr)
         for error in errors:
