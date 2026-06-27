@@ -91,9 +91,10 @@ Symptom:
 
 - Type A1/A2 headless capture opened the notify session and sent `TYPE:READY`,
   but no Companion audio stream started unless a manual control path was used.
-- The first A1/A2 gate only verified PCM transport. A2 now uses
-  `TYPE:READY:A2` to open a longer real-microphone window and requires Type to
-  return an ASR final text field.
+- The first A1/A2 gate only verified PCM transport. Hardware acceptance now
+  requires ASR final text for both A1 and A2. The wrapper uses
+  `TYPE:READY:A2` for text-required rounds so the real microphone window is long
+  enough while normal `TYPE:READY` remains a lightweight link-ready behavior.
 
 Root cause:
 

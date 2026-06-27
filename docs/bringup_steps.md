@@ -173,11 +173,11 @@ Companion A1/A2 reuse the Listener acceptance meaning:
 
 - A1: 5 to 8 quick short-recording rounds through Type's embedded BLE stream.
   Each round must complete `session_start -> audio_data -> session_stop`, create
-  Type history with embedded audio stats, and be ready for the next round within
-  the normal Listener short-smoke cadence.
+  Type history with embedded audio stats and ASR final text, and be ready for the
+  next round within the normal Listener short-smoke cadence.
 - A2: one approximately one-minute recording through the same stream. The Type
-  side must show continuous audio progress, final text or a bounded ASR warning,
-  complete embedded audio stats, and no transport timeout.
+  side must show continuous audio progress, ASR final text, complete embedded
+  audio stats, and no transport timeout.
 
 The CLI proof path is Type's existing embedded BLE stream command:
 
@@ -196,8 +196,11 @@ The wrapper is dry-run by default. With `-Execute`, it must already be inside
 the workflow hardware lock, shows a Chinese desktop prompt with an audible
 notification, runs the Type BLE subscription probe, runs A1 as six short
 `--submit-embedded-audio-ble-stream 45000` rounds, then runs A2 as one
-`--submit-embedded-audio-ble-stream 120000` long window. It records a JSON and
-Markdown summary under `.cache/validation/companion-type-a1-a2-*`.
+`--submit-embedded-audio-ble-stream 120000` long window. Hardware acceptance
+defaults to `RequireA1Text=true` and `RequireA2Text=true`; add
+`-PromptOperator` for the audible Chinese speech prompt when a human must speak
+into the real microphone. It records a JSON and Markdown summary under
+`.cache/validation/companion-type-a1-a2-*`.
 
 The temporary Type debug page should call the same underlying BLE/VKA1 and OTA
 commands. Until that UI branch is accepted, the CLI plus logs are the canonical

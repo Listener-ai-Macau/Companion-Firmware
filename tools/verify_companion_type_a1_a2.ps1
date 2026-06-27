@@ -11,8 +11,9 @@ param(
     [int] $CliRetries = 2,
     [int] $RetryDelayMs = 5000,
     [int] $RoundCooldownMs = 5000,
+    [bool] $RequireA1Text = $true,
     [bool] $RequireA2Text = $true,
-    [int] $MinA2FinalTextChars = 1,
+    [int] $MinFinalTextChars = 1,
     [switch] $PromptOperator,
     [switch] $Execute,
     [switch] $WorkflowLockHeld
@@ -333,7 +334,7 @@ function New-StreamResult {
     }
 
     $finalTextChars = $finalText.Trim().Length
-    $textOk = -not $RequireText -or $finalTextChars -ge $MinA2FinalTextChars
+    $textOk = -not $RequireText -or $finalTextChars -ge $MinFinalTextChars
     $packetOk = $missing -le $MaxMissingPackets
     [pscustomobject]@{
         case = $CaseId
@@ -367,7 +368,7 @@ if (-not $Execute) {
     Write-Host "Run with workflow hardware lock:"
     Write-Host "  $lockCommand"
     Write-Host "This script will run probe=$ProbeTimeoutMs ms, A1=$A1Rounds rounds x $A1TimeoutMs ms, A2=$A2TimeoutMs ms."
-    Write-Host "A2 text gate: $RequireA2Text (min final chars: $MinA2FinalTextChars)."
+    Write-Host "A1 text gate: $RequireA1Text; A2 text gate: $RequireA2Text (min final chars: $MinFinalTextChars)."
     Write-Host "Blocking operator prompt: $([bool]$PromptOperator). Add -PromptOperator only for real-time human action or observation."
     exit 0
 }
@@ -411,6 +412,11 @@ try {
         if ($round -gt 1 -and $RoundCooldownMs -gt 0) {
             Start-Sleep -Milliseconds $RoundCooldownMs
         }
+        if ($RequireA1Text -and $PromptOperator) {
+            Show-OperatorPrompt `
+                -Title "Companion A1 文字识别 $round/$A1Rounds" `
+                -Message "点击 OK 后请马上对着 Companion 麦克风说一句清晰的话。脚本会为 A1 第 $round/$A1Rounds 轮打开真实麦克风语音窗口，并要求 Type 返回 ASR final text。"
+        }
         $attempt = Invoke-ListenerCliWithRetry `
             -Label "A1 round $round" `
             -Arguments @("--submit-embedded-audio-ble-stream", [string]$A1TimeoutMs) `
@@ -422,12 +428,17 @@ try {
             -MaxRetries $CliRetries `
             -DelayMs $RetryDelayMs `
             -RetryRecords $retries `
-            -ReadyCommand "TYPE:READY" `
-            -StatsOnly $true
-        $result = New-StreamResult -CaseId "A1" -Round $round -Match $attempt.match -Attempts $attempt.attempts -RequireText $false
+            -ReadyCommand $(if ($RequireA1Text) { "TYPE:READY:A2" } else { "TYPE:READY" }) `
+            -StatsOnly (-not $RequireA1Text)
+        $result = New-StreamResult -CaseId "A1" -Round $round -Match $attempt.match -Attempts $attempt.attempts -RequireText $RequireA1Text
         $results.Add($result) | Out-Null
         if ($result.status -ne "PASS") {
-            $errors.Add("A1 round $round missing_packets=$($result.missing_packets) > $MaxMissingPackets") | Out-Null
+            if ($result.missing_packets -gt $MaxMissingPackets) {
+                $errors.Add("A1 round $round missing_packets=$($result.missing_packets) > $MaxMissingPackets") | Out-Null
+            }
+            if ($RequireA1Text -and $result.final_text_chars -lt $MinFinalTextChars) {
+                $errors.Add("A1 round $round final_text_chars=$($result.final_text_chars) < $MinFinalTextChars") | Out-Null
+            }
         }
     }
 
@@ -458,8 +469,8 @@ try {
         if ($a2Result.missing_packets -gt $MaxMissingPackets) {
             $errors.Add("A2 missing_packets=$($a2Result.missing_packets) > $MaxMissingPackets") | Out-Null
         }
-        if ($RequireA2Text -and $a2Result.final_text_chars -lt $MinA2FinalTextChars) {
-            $errors.Add("A2 final_text_chars=$($a2Result.final_text_chars) < $MinA2FinalTextChars") | Out-Null
+        if ($RequireA2Text -and $a2Result.final_text_chars -lt $MinFinalTextChars) {
+            $errors.Add("A2 final_text_chars=$($a2Result.final_text_chars) < $MinFinalTextChars") | Out-Null
         }
     }
 } catch {
@@ -483,8 +494,9 @@ $summary = [ordered]@{
     cli_retries = $CliRetries
     retry_delay_ms = $RetryDelayMs
     round_cooldown_ms = $RoundCooldownMs
+    require_a1_text = $RequireA1Text
     require_a2_text = $RequireA2Text
-    min_a2_final_text_chars = $MinA2FinalTextChars
+    min_final_text_chars = $MinFinalTextChars
     prompt_operator = [bool]$PromptOperator
     results = @($results)
     retries = @($retries)
