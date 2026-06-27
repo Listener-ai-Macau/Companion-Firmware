@@ -49,11 +49,11 @@ The STM32WB service layer should follow the official `BLE_p2pServer` split:
 - `aci_gatt_update_char_value()` for Listener-compatible notify packets and
   read-only readiness/capabilities text.
 
-The adapter intentionally fixes its notify value size to 244 bytes because
-ST's normal `aci_gatt_update_char_value()` takes a `uint8_t` length and the
-current Listener-Type path already expects the 244-byte value. Do not raise this
-to the portable 500-byte maximum unless the adapter is moved to
-`aci_gatt_update_char_value_ext()` and Type-side validation is updated.
+The STM32WB adapter fixes its notify value size to 153 bytes, which is the
+payload available with the current NUCLEO WB55 ATT MTU of 156 bytes. The
+portable VKA1 framing still supports larger packets, but this backend must not
+advertise the 244-byte Listener/ESP value until the STM32WB ATT/mblock settings
+and validation fixture are raised together.
 
 `tools/verify_listener_vka1_static.py` compares this module against the current
 Listener-Type parser, Listener firmware protocol header, and STM32_WPAN adapter

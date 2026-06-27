@@ -52,7 +52,7 @@ static const uint8_t COMP_AUDIO_STREAM_STM32WB_DEFAULT_READINESS[] =
     "ready:listener_vka1 sample_rate=16000 channels=1 width_bits=16";
 
 static const uint8_t COMP_AUDIO_STREAM_STM32WB_DEFAULT_CAPABILITIES[] =
-    "caps:vka1=1 pcm16=1 live_notify=1 gatt_value=244";
+    "caps:vka1=1 pcm16=1 live_notify=1 gatt_value=153";
 
 PLACE_IN_SECTION("BLE_DRIVER_CONTEXT")
 static comp_audio_stream_stm32wb_context_t s_comp_audio_stream_stm32wb;

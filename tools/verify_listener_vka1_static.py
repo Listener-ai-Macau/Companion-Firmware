@@ -146,7 +146,7 @@ def check_companion_surface(header: str, source: str, errors: list[str]) -> None
 
 def check_stm32wb_adapter(header: str, source: str, errors: list[str]) -> None:
     required_header_tokens = (
-        "COMP_AUDIO_STREAM_STM32WB_GATT_VALUE_BYTES COMP_AUDIO_STREAM_DEFAULT_GATT_VALUE_BYTES",
+        "COMP_AUDIO_STREAM_STM32WB_GATT_VALUE_BYTES 153u",
         "COMP_AUDIO_STREAM_STM32WB_CONTROL_VALUE_BYTES 64u",
         "COMP_AUDIO_STREAM_STM32WB_READINESS_VALUE_BYTES 96u",
         "COMP_AUDIO_STREAM_STM32WB_CAPABILITIES_VALUE_BYTES 96u",
@@ -180,7 +180,7 @@ def check_stm32wb_adapter(header: str, source: str, errors: list[str]) -> None:
         "CHAR_PROP_WRITE | CHAR_PROP_WRITE_WITHOUT_RESP",
         "CHAR_PROP_READ",
         "COMP_AUDIO_STREAM_STM32WB_GATT_VALUE_BYTES",
-        "gatt_value=244",
+        "gatt_value=153",
         "sample_rate=16000",
     )
     for token in required_source_tokens:
@@ -268,7 +268,7 @@ def check_type_companion_debug_page(companion_section: str, settings_page: str, 
         "settings.companion.verifyPackageCommand",
         "tools\\\\verify_type_companion_package_static.ps1",
         "settings.companion.flashPackageCommand",
-        "Companion wired factory flash validation",
+        "settings.companion.flashPackageCommand",
         "tools\\\\verify_companion_wired_flash.ps1",
         "-PackagePath <companion-package.zip>",
         "import { FirmwareOtaPanel } from './FirmwareOtaPanel';",
@@ -339,7 +339,7 @@ def check_docs(errors: list[str]) -> None:
         "Listener-Compatible Live Audio",
         "VKA1",
         "audio_stream_stm32wb.c",
-        "244-byte notify value",
+        "153-byte notify value",
         SERVICE_UUID,
         NOTIFY_UUID,
         CONTROL_UUID,
@@ -408,7 +408,9 @@ def check_stm32wb_audio_fixture(errors: list[str]) -> None:
         "COMP_AUDIO_CONTROL_TYPE_READY",
         "COMP_AUDIO_CONTROL_RECORDING_TOGGLE",
         "APP_BLE_Key_Button1_Action",
-        "Audio_Fixture_SendSyntheticSession();",
+        "Audio_Fixture_StartOrDeferSyntheticSession(\"TYPE:READY\")",
+        "AUDIO_FIXTURE_PHASE_AUDIO",
+        "COMPANION_AUDIO_FIXTURE_PACKET_GAP_MS",
     ):
         require(token in app_ble, f"BLE audio fixture app_ble missing {token}", errors)
 
@@ -430,8 +432,8 @@ def check_stm32wb_audio_fixture(errors: list[str]) -> None:
         require(token in flash_tool, f"flash.ps1 missing BLE audio fixture flash token {token}", errors)
 
 
-def build_fixture_packets(payload_size: int = 224) -> list[bytes]:
-    pcm = bytes((index * 17) & 0xFF for index in range(960))
+def build_fixture_packets(payload_size: int = 133, packet_count: int = 12) -> list[bytes]:
+    pcm = bytes((index * 17) & 0xFF for index in range(payload_size * packet_count))
     packets: list[bytes] = []
 
     def packet(packet_type: int, session_id: int, sequence_or_count: int, payload: bytes, pcm_bytes: int) -> bytes:
@@ -456,11 +458,11 @@ def build_fixture_packets(payload_size: int = 224) -> list[bytes]:
 
 def check_fixture_model(errors: list[str]) -> None:
     packets = build_fixture_packets()
-    require(len(packets) == 7, "fixture should produce start + 5 audio + stop packets", errors)
+    require(len(packets) == 14, "fixture should produce start + 12 audio + stop packets", errors)
     require(packets[0][:20].hex() == "564b413101001400070000000000000100000000", "fixture session_start header drifted", errors)
     require(packets[1][4] == PACKET_TYPES["AUDIO_DATA"], "fixture first audio packet type drifted", errors)
     require(int.from_bytes(packets[1][12:14], "little") == 0, "fixture first audio sequence drifted", errors)
-    require(int.from_bytes(packets[-1][12:14], "little") == 5, "fixture stop expected_packet_count drifted", errors)
+    require(int.from_bytes(packets[-1][12:14], "little") == 12, "fixture stop expected_packet_count drifted", errors)
 
 
 def main() -> int:

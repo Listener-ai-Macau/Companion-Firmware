@@ -56,6 +56,7 @@
 #define COMPANION_BLE_MITM_PROTECTION 0
 #define COMPANION_BLE_ADDRESS_OFFSET 0u
 #define COMPANION_AUDIO_FIXTURE_PACKET_COUNT 12u
+#define COMPANION_AUDIO_FIXTURE_PACKET_GAP_MS 12u
 #define COMPANION_AUDIO_FIXTURE_AUTOSTART_ON_TYPE_READY 1u
 
 #define BD_ADDR_SIZE_LOCAL    6
@@ -115,8 +116,20 @@ uint8_t a_ManufData[14] = {
 };
 
 /* USER CODE BEGIN PV */
+typedef enum
+{
+  AUDIO_FIXTURE_PHASE_IDLE = 0,
+  AUDIO_FIXTURE_PHASE_START,
+  AUDIO_FIXTURE_PHASE_AUDIO,
+  AUDIO_FIXTURE_PHASE_STOP,
+} audio_fixture_phase_t;
+
 static comp_audio_stream_t s_audio_fixture_stream;
 static uint32_t s_audio_fixture_next_session_id = 1u;
+static uint32_t s_audio_fixture_session_id;
+static uint32_t s_audio_fixture_packet_index;
+static uint8_t s_audio_fixture_start_pending;
+static audio_fixture_phase_t s_audio_fixture_phase = AUDIO_FIXTURE_PHASE_IDLE;
 
 /* USER CODE END PV */
 
@@ -137,6 +150,9 @@ static void Audio_Fixture_Control(void *context,
                                   const uint8_t *data,
                                   size_t length);
 static void Audio_Fixture_SendSyntheticSession(void);
+static void Audio_Fixture_ScheduleSyntheticStep(void);
+static void Audio_Fixture_ScheduleSyntheticStepAfterGap(void);
+static void Audio_Fixture_StartOrDeferSyntheticSession(const char *reason);
 
 /* USER CODE END PFP */
 
@@ -231,6 +247,9 @@ void APP_BLE_Init( void )
    */
   SVCCTL_Init();
   Audio_Fixture_Init();
+  UTIL_SEQ_RegTask(1 << CFG_TASK_SW1_BUTTON_PUSHED_ID,
+                   UTIL_SEQ_RFU,
+                   Audio_Fixture_SendSyntheticSession);
 
   /**
    * From here, all initialization are BLE application specific
@@ -381,7 +400,7 @@ SVCCTL_UserEvtFlowStatus_t SVCCTL_App_Notification( void *p_Pckt )
 
 void APP_BLE_Key_Button1_Action(void)
 {
-  Audio_Fixture_SendSyntheticSession();
+  Audio_Fixture_StartOrDeferSyntheticSession("BUTTON1");
 }
 
 void APP_BLE_Key_Button2_Action(void)
@@ -408,7 +427,7 @@ static void Audio_Fixture_Init(void)
     static const uint8_t readiness[] =
         "ready:listener_vka1 fixture=synthetic sample_rate=16000 channels=1 width_bits=16";
     static const uint8_t capabilities[] =
-        "caps:vka1=1 pcm16=1 live_notify=1 gatt_value=244 fixture=synthetic";
+        "caps:vka1=1 pcm16=1 live_notify=1 gatt_value=153 fixture=synthetic";
     (void)comp_audio_stream_stm32wb_update_readiness(readiness,
                                                      (uint8_t)(sizeof(readiness) - 1u));
     (void)comp_audio_stream_stm32wb_update_capabilities(capabilities,
@@ -442,41 +461,97 @@ static void Audio_Fixture_SendSyntheticSession(void)
   if (!comp_audio_stream_is_ready(&s_audio_fixture_stream))
   {
     APP_DBG_MSG("  Info   : Companion VKA1 fixture not ready; wait for Type notify subscription + TYPE:READY\n");
+    s_audio_fixture_phase = AUDIO_FIXTURE_PHASE_IDLE;
     return;
   }
 
-  uint32_t session_id = s_audio_fixture_next_session_id++;
-  stream_status = comp_audio_stream_send_session_start(&s_audio_fixture_stream, session_id);
-  if (stream_status != COMP_AUDIO_STREAM_OK)
+  if (s_audio_fixture_phase == AUDIO_FIXTURE_PHASE_START)
   {
-    APP_DBG_MSG("  Fail   : VKA1 fixture session_start %s\n",
-                comp_audio_stream_status_name(stream_status));
+    s_audio_fixture_session_id = s_audio_fixture_next_session_id++;
+    s_audio_fixture_packet_index = 0u;
+    stream_status = comp_audio_stream_send_session_start(&s_audio_fixture_stream,
+                                                         s_audio_fixture_session_id);
+    if (stream_status != COMP_AUDIO_STREAM_OK)
+    {
+      APP_DBG_MSG("  Fail   : VKA1 fixture session_start %s\n",
+                  comp_audio_stream_status_name(stream_status));
+      s_audio_fixture_phase = AUDIO_FIXTURE_PHASE_IDLE;
+      return;
+    }
+
+    s_audio_fixture_phase = AUDIO_FIXTURE_PHASE_AUDIO;
+    Audio_Fixture_ScheduleSyntheticStepAfterGap();
     return;
   }
 
-  for (uint32_t packet_index = 0u;
-       packet_index < COMPANION_AUDIO_FIXTURE_PACKET_COUNT;
-       packet_index++)
+  if (s_audio_fixture_phase == AUDIO_FIXTURE_PHASE_AUDIO)
   {
-    Audio_Fixture_FillPcm(pcm, (uint16_t)sizeof(pcm), packet_index);
+    Audio_Fixture_FillPcm(pcm,
+                          (uint16_t)sizeof(pcm),
+                          s_audio_fixture_packet_index);
     stream_status = comp_audio_stream_send_session_audio(&s_audio_fixture_stream,
                                                          pcm,
                                                          (uint16_t)sizeof(pcm));
     if (stream_status != COMP_AUDIO_STREAM_OK)
     {
       APP_DBG_MSG("  Fail   : VKA1 fixture audio packet %lu %s\n",
-                  packet_index,
+                  s_audio_fixture_packet_index,
                   comp_audio_stream_status_name(stream_status));
       (void)comp_audio_stream_send_session_error(&s_audio_fixture_stream,
                                                  COMP_AUDIO_SESSION_ERROR_TRANSPORT);
+      s_audio_fixture_phase = AUDIO_FIXTURE_PHASE_IDLE;
       return;
     }
+
+    s_audio_fixture_packet_index++;
+    s_audio_fixture_phase =
+        s_audio_fixture_packet_index >= COMPANION_AUDIO_FIXTURE_PACKET_COUNT
+            ? AUDIO_FIXTURE_PHASE_STOP
+            : AUDIO_FIXTURE_PHASE_AUDIO;
+    Audio_Fixture_ScheduleSyntheticStepAfterGap();
+    return;
   }
 
-  stream_status = comp_audio_stream_send_session_stop(&s_audio_fixture_stream);
-  APP_DBG_MSG("  Info   : VKA1 fixture session %lu done: %s\n",
-              session_id,
-              comp_audio_stream_status_name(stream_status));
+  if (s_audio_fixture_phase == AUDIO_FIXTURE_PHASE_STOP)
+  {
+    stream_status = comp_audio_stream_send_session_stop(&s_audio_fixture_stream);
+    APP_DBG_MSG("  Info   : VKA1 fixture session %lu done: %s\n",
+                s_audio_fixture_session_id,
+                comp_audio_stream_status_name(stream_status));
+    s_audio_fixture_phase = AUDIO_FIXTURE_PHASE_IDLE;
+  }
+}
+
+static void Audio_Fixture_ScheduleSyntheticStep(void)
+{
+  UTIL_SEQ_SetTask(1 << CFG_TASK_SW1_BUTTON_PUSHED_ID, CFG_SCH_PRIO_0);
+}
+
+static void Audio_Fixture_ScheduleSyntheticStepAfterGap(void)
+{
+  HAL_Delay(COMPANION_AUDIO_FIXTURE_PACKET_GAP_MS);
+  Audio_Fixture_ScheduleSyntheticStep();
+}
+
+static void Audio_Fixture_StartOrDeferSyntheticSession(const char *reason)
+{
+  if (comp_audio_stream_is_ready(&s_audio_fixture_stream))
+  {
+    if (s_audio_fixture_phase != AUDIO_FIXTURE_PHASE_IDLE)
+    {
+      APP_DBG_MSG("  Info   : VKA1 fixture start ignored while session active (%s)\n", reason);
+      return;
+    }
+
+    s_audio_fixture_start_pending = 0u;
+    APP_DBG_MSG("  Info   : VKA1 fixture schedule synthetic session (%s)\n", reason);
+    s_audio_fixture_phase = AUDIO_FIXTURE_PHASE_START;
+    Audio_Fixture_ScheduleSyntheticStep();
+    return;
+  }
+
+  s_audio_fixture_start_pending = 1u;
+  APP_DBG_MSG("  Info   : VKA1 fixture start deferred until notify ready (%s)\n", reason);
 }
 
 static void Audio_Fixture_Control(void *context,
@@ -494,18 +569,19 @@ static void Audio_Fixture_Control(void *context,
   if (control == COMP_AUDIO_CONTROL_TYPE_READY)
   {
 #if (COMPANION_AUDIO_FIXTURE_AUTOSTART_ON_TYPE_READY == 1u)
-    APP_DBG_MSG("  Info   : VKA1 fixture TYPE:READY auto-start synthetic session\n");
-    Audio_Fixture_SendSyntheticSession();
+    Audio_Fixture_StartOrDeferSyntheticSession("TYPE:READY");
 #endif
   }
   else if (control == COMP_AUDIO_CONTROL_RECORDING_TOGGLE)
   {
-    Audio_Fixture_SendSyntheticSession();
+    Audio_Fixture_StartOrDeferSyntheticSession("VREC:TOGGLE");
   }
   else if (control == COMP_AUDIO_CONTROL_RECORDING_STOP ||
            control == COMP_AUDIO_CONTROL_RECORDING_CANCEL ||
            control == COMP_AUDIO_CONTROL_TYPE_STOP)
   {
+    s_audio_fixture_start_pending = 0u;
+    s_audio_fixture_phase = AUDIO_FIXTURE_PHASE_IDLE;
     if (s_audio_fixture_stream.session_active)
     {
       (void)comp_audio_stream_send_session_cancel(&s_audio_fixture_stream);
@@ -525,10 +601,17 @@ void comp_audio_stream_stm32wb_app_notification(
   {
     case COMP_AUDIO_STREAM_STM32WB_NOTIFY_ENABLED:
       APP_DBG_MSG("  Info   : VKA1 notify enabled\n");
+      if (s_audio_fixture_start_pending != 0u &&
+          comp_audio_stream_is_ready(&s_audio_fixture_stream))
+      {
+        Audio_Fixture_StartOrDeferSyntheticSession("pending TYPE:READY");
+      }
       break;
 
     case COMP_AUDIO_STREAM_STM32WB_NOTIFY_DISABLED:
       APP_DBG_MSG("  Info   : VKA1 notify disabled\n");
+      s_audio_fixture_start_pending = 0u;
+      s_audio_fixture_phase = AUDIO_FIXTURE_PHASE_IDLE;
       break;
 
     case COMP_AUDIO_STREAM_STM32WB_CONTROL_WRITE:

@@ -71,6 +71,7 @@ function Set-CompanionTypeEnvironment {
     $env:LISTENER_TYPE_BLE_TARGET_NAME = "companion"
     $env:LISTENER_TYPE_HIDE_MAIN_ON_START = "1"
     $env:LISTENER_TYPE_DISABLE_BACKGROUND_BLE = "1"
+    $env:LISTENER_TYPE_EMBEDDED_BLE_STATS_ONLY = "1"
 }
 
 function New-ValidationOutputDir {
