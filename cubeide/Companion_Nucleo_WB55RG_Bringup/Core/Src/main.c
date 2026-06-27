@@ -43,6 +43,11 @@ COMPANION_PLACE_IN_SECTION("TAG_OTA_START") const uint32_t MagicKeywordAddress =
 #define HEARTBEAT_PERIOD_MS 5000u
 #define MANUAL_RECORDING_LOG_EVERY_BLOCKS 50u
 
+#ifndef COMPANION_TYPE_READY_AUTOSTREAM_BLOCKS
+#define COMPANION_TYPE_READY_AUTOSTREAM_BLOCKS 24u
+#endif
+#define COMPANION_TYPE_READY_AUTOSTREAM_PCM_BYTES 128u
+
 #define MIC_SAMPLE_RATE_HZ 16000u
 #define MIC_FRAMES_PER_BATCH 160u
 #define MIC_SLOT_COUNT 2u
@@ -122,6 +127,9 @@ static board_button_t s_buttons[] = {
 static uint32_t s_manual_recording_block_count;
 static bool s_ble_link_ready;
 static bool s_ble_session_active;
+static bool s_ble_type_ready_autostream_active;
+static bool s_ble_type_ready_autostream_pending;
+static uint32_t s_ble_type_ready_autostream_blocks_remaining;
 static uint32_t s_ble_session_id;
 
 static void SystemClock_Config(void);
@@ -145,6 +153,8 @@ static void cancel_recording(comp_recording_source_t source, const char *reason)
 static void start_manual_recording(void);
 static void stop_manual_recording(const char *reason);
 static void cancel_manual_recording(void);
+static void request_ble_type_ready_autostream(const char *reason);
+static void clear_ble_type_ready_autostream(void);
 static void start_ble_session_if_ready(const char *reason);
 static void end_ble_session_if_active(bool cancel, const char *reason);
 static void run_manual_probe_request(void);
@@ -294,8 +304,24 @@ int main(void)
 
         if (s_recording_fsm.state == COMP_RECORDING_STATE_RECORDING) {
             bool verbose = (s_manual_recording_block_count % MANUAL_RECORDING_LOG_EVERY_BLOCKS) == 0u;
-            capture_microphone_block(s_manual_recording_block_count, verbose, "mic-manual");
+            bool captured = capture_microphone_block(s_manual_recording_block_count,
+                                                     verbose,
+                                                     "mic-manual");
             s_manual_recording_block_count++;
+            if (captured &&
+                s_ble_type_ready_autostream_active &&
+                s_ble_type_ready_autostream_blocks_remaining > 0u) {
+                s_ble_type_ready_autostream_blocks_remaining--;
+                if (s_ble_type_ready_autostream_blocks_remaining == 0u &&
+                    s_recording_fsm.state == COMP_RECORDING_STATE_RECORDING) {
+                    s_ble_type_ready_autostream_active = false;
+                    MX_APPE_Process();
+                    HAL_Delay(40u);
+                    MX_APPE_Process();
+                    stop_recording(COMP_RECORDING_SOURCE_HOST_BLE_CONTROL,
+                                   "ble_type_ready_autostream");
+                }
+            }
             MX_APPE_Process();
             continue;
         }
@@ -376,9 +402,23 @@ void Companion_App_HandleBleLinkReadyChanged(bool ready)
            comp_recording_state_name(s_recording_fsm.state));
 
     if (ready) {
-        start_ble_session_if_ready("link_ready");
+        if (s_ble_type_ready_autostream_pending) {
+            request_ble_type_ready_autostream("pending_type_ready");
+        } else {
+            start_ble_session_if_ready("link_ready");
+        }
     } else {
         s_ble_session_active = false;
+        if (s_ble_type_ready_autostream_active &&
+            s_recording_fsm.state == COMP_RECORDING_STATE_RECORDING) {
+            s_ble_type_ready_autostream_active = false;
+            s_ble_type_ready_autostream_pending = false;
+            s_ble_type_ready_autostream_blocks_remaining = 0u;
+            cancel_recording(COMP_RECORDING_SOURCE_HOST_BLE_CONTROL,
+                             "ble_notify_disabled");
+        } else {
+            clear_ble_type_ready_autostream();
+        }
     }
 }
 
@@ -396,13 +436,18 @@ void Companion_App_HandleBleControl(comp_audio_control_t control,
 
     switch (control) {
     case COMP_AUDIO_CONTROL_TYPE_READY:
+        s_ble_link_ready = true;
+        request_ble_type_ready_autostream("type_ready");
+        break;
+
     case COMP_AUDIO_CONTROL_TYPE_HEARTBEAT:
         s_ble_link_ready = true;
-        start_ble_session_if_ready("type_ready");
+        start_ble_session_if_ready("type_heartbeat");
         break;
 
     case COMP_AUDIO_CONTROL_TYPE_STOP:
         s_ble_link_ready = false;
+        clear_ble_type_ready_autostream();
         cancel_recording(COMP_RECORDING_SOURCE_HOST_BLE_CONTROL, "ble_type_stop");
         break;
 
@@ -452,6 +497,50 @@ static void start_ble_session_if_ready(const char *reason)
            reason,
            (unsigned long)s_ble_session_id,
            comp_audio_stream_status_name(status));
+}
+
+static void clear_ble_type_ready_autostream(void)
+{
+    s_ble_type_ready_autostream_active = false;
+    s_ble_type_ready_autostream_pending = false;
+    s_ble_type_ready_autostream_blocks_remaining = 0u;
+}
+
+static void request_ble_type_ready_autostream(const char *reason)
+{
+#if (COMPANION_TYPE_READY_AUTOSTREAM_BLOCKS > 0u)
+    if (!Companion_BleAudio_IsReady()) {
+        s_ble_type_ready_autostream_pending = true;
+        printf("[ble] %s autostream=pending stream_ready=%u state=%s\r\n",
+               reason,
+               Companion_BleAudio_IsReady() ? 1u : 0u,
+               comp_recording_state_name(s_recording_fsm.state));
+        return;
+    }
+
+    s_ble_type_ready_autostream_pending = false;
+    if (s_recording_fsm.state == COMP_RECORDING_STATE_RECORDING) {
+        start_ble_session_if_ready(reason);
+        return;
+    }
+    if (s_recording_fsm.state != COMP_RECORDING_STATE_IDLE) {
+        printf("[ble] %s autostream=ignored state=%s\r\n",
+               reason,
+               comp_recording_state_name(s_recording_fsm.state));
+        return;
+    }
+
+    s_ble_type_ready_autostream_active = true;
+    s_ble_type_ready_autostream_blocks_remaining =
+        COMPANION_TYPE_READY_AUTOSTREAM_BLOCKS;
+    start_recording(COMP_RECORDING_SOURCE_HOST_BLE_CONTROL, reason);
+    if (s_recording_fsm.state != COMP_RECORDING_STATE_RECORDING) {
+        clear_ble_type_ready_autostream();
+    }
+#else
+    (void)reason;
+    start_ble_session_if_ready("type_ready");
+#endif
 }
 
 static void end_ble_session_if_active(bool cancel, const char *reason)
@@ -515,6 +604,7 @@ static void stop_recording(comp_recording_source_t source, const char *reason)
            comp_recording_state_name(s_recording_fsm.state));
     print_recording_summary(reason);
     end_ble_session_if_active(false, reason);
+    clear_ble_type_ready_autostream();
 
     (void)comp_recording_fsm_dispatch(&s_recording_fsm,
                                       COMP_RECORDING_EVENT_TRANSFER_BEGIN,
@@ -537,6 +627,7 @@ static void cancel_recording(comp_recording_source_t source, const char *reason)
         COMP_RECORDING_EVENT_CANCEL_REQUEST,
         source);
     end_ble_session_if_active(true, reason);
+    clear_ble_type_ready_autostream();
     printf("[record] %s action=cancel source=%lu result=%lu state=%s\r\n",
            reason,
            (unsigned long)source,
@@ -1348,9 +1439,14 @@ static bool capture_microphone_block(uint32_t block_index, bool verbose, const c
         comp_recording_fsm_feed_microphone_frames(&s_recording_fsm, &batch);
 
     if (s_ble_session_active) {
+        uint16_t ble_pcm_bytes = (uint16_t)sizeof(pcm_samples);
+        if (s_ble_type_ready_autostream_active &&
+            ble_pcm_bytes > COMPANION_TYPE_READY_AUTOSTREAM_PCM_BYTES) {
+            ble_pcm_bytes = COMPANION_TYPE_READY_AUTOSTREAM_PCM_BYTES;
+        }
         comp_audio_stream_status_t stream_status =
             Companion_BleAudio_SendPcmBytes((const uint8_t *)pcm_samples,
-                                            (uint16_t)sizeof(pcm_samples));
+                                            ble_pcm_bytes);
         if (stream_status != COMP_AUDIO_STREAM_OK) {
             printf("[%s] ble_audio status=%s id=%lu\r\n",
                    tag,

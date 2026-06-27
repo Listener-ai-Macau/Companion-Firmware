@@ -25,6 +25,8 @@ $referenceHex = Join-Path $repoRoot $referenceHexRelative
 $bleStackBinary = Join-Path $repoRoot $bleStackRelative
 $nucleoBringupHex = Join-Path $repoRoot $nucleoBringupHexRelative
 $audioFixtureHex = Join-Path $repoRoot $audioFixtureHexRelative
+$otaHandoffBaseAddress = "0x20000000"
+$otaHandoffFwApp = @("0x00", "0x07", "0x00", "0xC3")
 
 function Assert-Path {
     param(
@@ -201,6 +203,23 @@ function Invoke-ProgrammerWrite {
     }
 }
 
+function Invoke-ProgrammerOtaFwAppHandoff {
+    param(
+        [Parameter(Mandatory = $true)][string[]] $ConnectArgs
+    )
+
+    $programmerArgs = @("-c") + $ConnectArgs +
+        @("-w8", $otaHandoffBaseAddress) + $otaHandoffFwApp +
+        @("-r8", $otaHandoffBaseAddress, "4", "-rst")
+
+    Write-Output "Writing OTA loader handoff so the wired package boots the Companion app"
+    Write-Output "SRAM handoff: $otaHandoffBaseAddress = $($otaHandoffFwApp -join ' ')"
+    & $programmer @programmerArgs
+    if ($LASTEXITCODE -ne 0) {
+        throw "STM32CubeProgrammer OTA FW app handoff failed with exit code $LASTEXITCODE."
+    }
+}
+
 if ($CheckOnly) {
     if ($programmer) {
         Write-Output "CHECK: STM32CubeProgrammer CLI found: $programmer"
@@ -225,6 +244,7 @@ if ($CheckOnly) {
         foreach ($artifact in $checkArtifacts) {
             Write-Output "CHECK: Factory artifact $($artifact.Role): $($artifact.Path)"
         }
+        Write-Output "CHECK: Wired factory package app handoff: STM32_Programmer_CLI.exe -c port=$Port mode=UR reset=HWrst freq=4000 -w8 $otaHandoffBaseAddress $($otaHandoffFwApp -join ' ') -r8 $otaHandoffBaseAddress 4 -rst"
     }
     exit 0
 }
@@ -293,8 +313,9 @@ if ($FlashPackage) {
 
     for ($index = 0; $index -lt $packageArtifacts.Count; $index++) {
         $artifact = $packageArtifacts[$index]
-        Invoke-ProgrammerWrite -Image $artifact.Path -Label "factory artifact $($artifact.Role)" -ConnectArgs $connectArgs -ResetAfter:($index -eq ($packageArtifacts.Count - 1))
+        Invoke-ProgrammerWrite -Image $artifact.Path -Label "factory artifact $($artifact.Role)" -ConnectArgs $connectArgs
     }
+    Invoke-ProgrammerOtaFwAppHandoff -ConnectArgs $connectArgs
 } else {
     if ($PromptOperator) {
         Show-OperatorPrompt -Title "Companion WB55 有线刷机确认" -Message "请确认 Companion/NUCLEO-WB55 已通过板载 ST-LINK USB 接好，Type/串口监视器已停止占用设备。将刷入：$targetLabel$([Environment]::NewLine)$targetImage$([Environment]::NewLine)$([Environment]::NewLine)点击 OK 开始刷机；点击 Cancel 取消。"

@@ -334,6 +334,19 @@ function Invoke-TypeStm32OtaConfirmCheck {
         Assert-TextContains -Text $embedded -Needle $token -Label "Type STM32WB ST OTA confirmation check"
     }
 
+    foreach ($token in @(
+        "if properties.contains(GattCharacteristicProperties::Write)",
+        "Ok(GattWriteOption::WriteWithResponse)",
+        "STM32WB ST OTA raw characteristic is not writable",
+        "permit response echoes the payload",
+        ".min(ATT_DEFAULT_PAYLOAD_BYTES)",
+        ".min(STM32WB_ST_OTA_RAW_DATA_SIZE)",
+        "stm32wb_st_ota_prefers_with_response_when_available",
+        "stm32wb_st_ota_caps_no_response_chunks_to_default_att_payload"
+    )) {
+        Assert-TextContains -Text $embedded -Needle $token -Label "Type STM32WB ST OTA stable raw write check"
+    }
+
     if ($embedded.Contains("set COMPANION_STM32WB_ST_OTA_CONFIRM=1 to test ST indication confirm")) {
         throw "Type embedded BLE must not default STM32WB ST OTA to the old no-confirm path."
     }
@@ -348,7 +361,7 @@ function Invoke-TypeStm32OtaConfirmCheck {
         Assert-TextContains -Text $firmwareOta -Needle $token -Label "Type STM32WB ST OTA manifest confirmation check"
     }
 
-    Write-Output "PASS: Type STM32WB ST OTA enables ST confirmation indication by default."
+    Write-Output "PASS: Type STM32WB ST OTA enables ST confirmation indication, write-response raw writes, and 20-byte chunks by default."
 }
 
 Add-Type -AssemblyName System.IO.Compression.FileSystem

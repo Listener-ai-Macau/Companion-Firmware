@@ -209,6 +209,7 @@ static void JumpSelectionOnPowerUp( void );
 #define COMPANION_OTA_FW_APP_COOKIE_MSG    (*(uint8_t*)(SRAM1_BASE+3))
 
 static uint8_t CompanionConsumeFwAppCookie( void );
+static uint8_t CompanionConsumeBleOtaEraseCookie( void );
 #endif /* COMPANION_OTA_LOADER_ALWAYS_ADVERTISE */
 
 /**
@@ -265,6 +266,20 @@ static uint8_t CompanionConsumeFwAppCookie( void )
 
   return 0;
 }
+
+static uint8_t CompanionConsumeBleOtaEraseCookie( void )
+{
+  if((COMPANION_OTA_FW_APP_COOKIE_MSG == COMPANION_OTA_FW_APP_COOKIE_VALUE) &&
+     (CFG_OTA_REBOOT_VAL_MSG == CFG_REBOOT_ON_BLE_OTA_APP) &&
+     (CFG_OTA_START_SECTOR_IDX_VAL_MSG == CFG_APP_START_SECTOR_INDEX) &&
+     (CFG_OTA_NBR_OF_SECTOR_VAL_MSG != 0))
+  {
+    COMPANION_OTA_FW_APP_COOKIE_MSG = 0;
+    return 1;
+  }
+
+  return 0;
+}
 #endif /* COMPANION_OTA_LOADER_ALWAYS_ADVERTISE */
 
 /**
@@ -300,6 +315,21 @@ static void JumpFwApp( void )
  */
 static void BootModeCheck( void )
 {
+#ifdef COMPANION_OTA_LOADER_ALWAYS_ADVERTISE
+  if(CompanionConsumeBleOtaEraseCookie() != 0)
+  {
+    return;
+  }
+
+  if((CFG_OTA_REBOOT_VAL_MSG == CFG_REBOOT_ON_FW_APP) &&
+     (CFG_OTA_START_SECTOR_IDX_VAL_MSG == CFG_APP_START_SECTOR_INDEX) &&
+     (CompanionConsumeFwAppCookie() != 0) &&
+     (CheckFwAppValidity( ) != 0))
+  {
+    JumpFwApp();
+  }
+#endif /* COMPANION_OTA_LOADER_ALWAYS_ADVERTISE */
+
   if(LL_RCC_IsActiveFlag_SFTRST( ) || LL_RCC_IsActiveFlag_OBLRST( ))
   {
     /**

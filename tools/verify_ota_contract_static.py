@@ -20,6 +20,10 @@ OTA_LOADER_APP_BLE = REPO_ROOT / "cubeide/Companion_BLE_Ota_Loader/Src/app_ble.c
 OTA_LOADER_OTAS_APP = REPO_ROOT / "cubeide/Companion_BLE_Ota_Loader/Src/otas_app.c"
 OTA_LOADER_OTAS_STM = REPO_ROOT / "cubeide/Companion_BLE_Ota_Loader/Src/otas_stm.c"
 OTA_LOADER_MAKEFILE = REPO_ROOT / "cubeide/Companion_BLE_Ota_Loader/Makefile"
+OTA_LOADER_SVC_CTL = (
+    REPO_ROOT
+    / "third_party/STM32CubeWB/Middlewares/ST/STM32_WPAN/ble/svc/Src/svc_ctl.c"
+)
 OTA_LOADER_SYSTEM = (
     REPO_ROOT
     / "cubeide/Companion_BLE_Ota_Loader/Src/system_stm32wbxx.c"
@@ -186,6 +190,7 @@ def check_local_ota_loader(errors: list[str]) -> None:
     otas_app = read_text(OTA_LOADER_OTAS_APP, errors)
     otas_stm = read_text(OTA_LOADER_OTAS_STM, errors)
     makefile = read_text(OTA_LOADER_MAKEFILE, errors)
+    svc_ctl = read_text(OTA_LOADER_SVC_CTL, errors)
     system = read_text(OTA_LOADER_SYSTEM, errors)
     for anchor in [
         '#define COMPANION_BLE_PRODUCT_NAME "companion"',
@@ -194,15 +199,26 @@ def check_local_ota_loader(errors: list[str]) -> None:
         "#define COMPANION_BLE_MITM_PROTECTION 0",
         '#include "otas_stm.h"',
         "SVCCTL_Init();",
-        "OTAS_STM_Init();",
         "aci_gatt_update_char_value(gap_service_handle, gap_dev_name_char_handle",
     ]:
         require(anchor in text, f"local OTA loader missing anchor: {anchor}", errors)
     require(
-        text.find("SVCCTL_Init();") < text.find("OTAS_STM_Init();") < text.find("Adv_Request();"),
-        "local OTA loader must register OTAS_STM service after SVCCTL_Init and before advertising",
+        text.find("SVCCTL_Init();") < text.find("Adv_Request();"),
+        "local OTA loader must initialize services before advertising",
         errors,
     )
+    require(
+        "OTAS_STM_Init();" not in text,
+        "local OTA loader app_ble.c must not manually call OTAS_STM_Init; SVCCTL_SvcInit already registers it",
+        errors,
+    )
+    require(
+        all(anchor in svc_ctl for anchor in ["void SVCCTL_Init( void )", "SVCCTL_SvcInit();", "__WEAK void SVCCTL_SvcInit(void)", "OTAS_STM_Init();"]),
+        "ST svc_ctl.c must keep OTAS_STM_Init inside the SVCCTL_SvcInit service-registration path",
+        errors,
+    )
+    svc_init = re.search(r"__WEAK\s+void\s+SVCCTL_SvcInit\s*\(void\)\s*\{(?P<body>.*?)\n\}", svc_ctl, re.S)
+    require(svc_init is not None and "OTAS_STM_Init();" in svc_init.group("body"), "SVCCTL_SvcInit must be the single OTAS_STM_Init owner", errors)
     for anchor in [
         "OTA := $(CUBE)/Projects/P-NUCLEO-WB55.Nucleo/Applications/BLE/BLE_Ota",
         "$(OTA)/Core/Src/app_entry.c",
@@ -219,6 +235,7 @@ def check_local_ota_loader(errors: list[str]) -> None:
         "COMPANION_OTA_FW_APP_COOKIE_VALUE",
         "COMPANION_OTA_FW_APP_COOKIE_MSG    (*(uint8_t*)(SRAM1_BASE+3))",
         "static uint8_t CompanionConsumeFwAppCookie( void )",
+        "CFG_OTA_START_SECTOR_IDX_VAL_MSG == CFG_APP_START_SECTOR_INDEX",
         "if(CompanionConsumeFwAppCookie() != 0)",
         "JumpSelectionOnPowerUp();",
         "Companion bring-up packages need the wired factory image to leave the board",
@@ -228,15 +245,25 @@ def check_local_ota_loader(errors: list[str]) -> None:
         "#endif /* COMPANION_OTA_LOADER_ALWAYS_ADVERTISE */",
     ]:
         require(anchor in system, f"local OTA loader system boot policy missing anchor: {anchor}", errors)
+    require(
+        system.find("CompanionConsumeFwAppCookie() != 0") < system.find("if(LL_RCC_IsActiveFlag_SFTRST"),
+        "local OTA loader must honor wired factory app handoff before reset-flag-specific ST paths",
+        errors,
+    )
     for anchor in [
         "8f7a0007-7b7d-4f3d-9d6f-6c2d1b7c0000",
         "8f7a7002-7b7d-4f3d-9d6f-6c2d1b7c0000",
         "8f7a7003-7b7d-4f3d-9d6f-6c2d1b7c0000",
         "8f7a7004-7b7d-4f3d-9d6f-6c2d1b7c0000",
         "CHAR_PROP_WRITE | CHAR_PROP_WRITE_WITHOUT_RESP,\n                    ATTR_PERMISSION_NONE,\n                    GATT_NOTIFY_ATTRIBUTE_WRITE,",
-        "CHAR_PROP_WRITE_WITHOUT_RESP,\n                    ATTR_PERMISSION_NONE,\n                    GATT_NOTIFY_ATTRIBUTE_WRITE | GATT_NOTIFY_WRITE_REQ_AND_WAIT_FOR_APPL_RESP,",
+        "CHAR_PROP_WRITE | CHAR_PROP_WRITE_WITHOUT_RESP,\n                    ATTR_PERMISSION_NONE,\n                    GATT_NOTIFY_ATTRIBUTE_WRITE | GATT_NOTIFY_WRITE_REQ_AND_WAIT_FOR_APPL_RESP,",
         "GATT_NOTIFY_WRITE_REQ_AND_WAIT_FOR_APPL_RESP",
         "OTAS_STM_Is_Value_Handle",
+        "Raw data is handled in ACI_GATT_WRITE_PERMIT_REQ_VSEVT_CODE",
+        "write_status = aci_gatt_write_resp",
+        "if(write_status == BLE_STATUS_SUCCESS)",
+        "notification.ChardId = OTAS_STM_RAW_DATA_ID;",
+        "notification.pPayload = (uint8_t *)&(write_perm_req->Data[0]);",
     ]:
         require(anchor in otas_stm, f"local OTAS_STM adapter missing anchor: {anchor}", errors)
     require(
@@ -296,6 +323,12 @@ def check_wired_package_tooling(errors: list[str]) -> None:
         "ota_loader",
         "Factory artifact hash mismatch",
         "Invoke-ProgrammerWrite",
+        "$otaHandoffBaseAddress = \"0x20000000\"",
+        "$otaHandoffFwApp = @(\"0x00\", \"0x07\", \"0x00\", \"0xC3\")",
+        "Invoke-ProgrammerOtaFwAppHandoff",
+        "Wired factory package app handoff",
+        "@(\"-w8\", $otaHandoffBaseAddress) + $otaHandoffFwApp",
+        "@(\"-r8\", $otaHandoffBaseAddress, \"4\", \"-rst\")",
         "factory artifact $($artifact.Role)",
         "PASS: $targetLabel flashed.",
         "tools\\provision_companion_wireless_stack.ps1 -CheckOnly",
@@ -315,9 +348,10 @@ def check_wired_package_tooling(errors: list[str]) -> None:
         "$popup.Popup",
         "stm32wb5x_BLE_Stack_full_fw.bin",
         "$installAddress = \"0x080D0000\"",
+        "$connectArgs = @(\"port=$Port\", \"mode=UR\", \"reset=HWrst\", \"freq=4000\")",
         "Wireless Coprocessor Binary Table, STM32WB5xxG(1M), V1.24.0",
         "FUS_v2 only",
-        "STM32_Programmer_CLI.exe -c port=$Port -startfus",
+        "STM32_Programmer_CLI.exe -c $($connectArgs -join ' ') -startfus",
         "$fusInfoAddress = \"0x20030030\"",
         "$fusFallbackAddress = \"0x20010010\"",
         "02020[0-9A-F]00",
@@ -378,6 +412,8 @@ def check_wired_package_tooling(errors: list[str]) -> None:
         "function isStm32WbSwdTarget",
         "stm32wb55ceux",
         "STM32WB ST OTA confirmation indication is required",
+        "Type STM32WB ST OTA stable raw write check",
+        "write-response raw writes, and 20-byte chunks",
         "PASS: Companion package is accepted by Type Companion OTA/wired static integration checks.",
     ]:
         require(anchor in type_package, f"verify_type_companion_package_static.ps1 missing anchor: {anchor}", errors)

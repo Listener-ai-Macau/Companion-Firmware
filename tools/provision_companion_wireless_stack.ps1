@@ -24,6 +24,7 @@ $releaseNotes = Join-Path $repoRoot $releaseNotesRelative
 $installAddress = "0x080D0000"
 $fusInfoAddress = "0x20030030"
 $fusFallbackAddress = "0x20010010"
+$connectArgs = @("port=$Port", "mode=UR", "reset=HWrst", "freq=4000")
 $stamp = Get-Date -Format "yyyyMMdd-HHmmss"
 $outputDir = if ($OutDir) {
     New-Item -ItemType Directory -Force -Path $OutDir | Out-Null
@@ -197,6 +198,7 @@ function Write-Summary {
         ble_stack_sha256 = if (Test-Path -LiteralPath $bleStackBinary -PathType Leaf) { (Get-FileHash -LiteralPath $bleStackBinary -Algorithm SHA256).Hash.ToLowerInvariant() } else { $null }
         install_address = $installAddress
         install_address_source = "$releaseNotesRelative Wireless Coprocessor Binary Table, STM32WB5xxG(1M), V1.24.0, FUS_v2 only"
+        connect_args = $connectArgs
         prompt_operator = [bool]$PromptOperator
         fus_word = $FusWord
         fus_word_source = $FusSource
@@ -249,8 +251,9 @@ if ($CheckOnly -and -not $Execute) {
     Write-Output "CHECK: BLE stack SHA256: $((Get-FileHash -LiteralPath $bleStackBinary -Algorithm SHA256).Hash.ToLowerInvariant())"
     Write-Output "CHECK: Install address: $installAddress"
     Write-Output "CHECK: Install address source: $releaseNotesRelative Wireless Coprocessor Binary Table, STM32WB5xxG(1M), V1.24.0, FUS_v2 only"
-    Write-Output "CHECK: FUS read command: STM32_Programmer_CLI.exe -c port=$Port -startfus ; STM32_Programmer_CLI.exe -c port=$Port mode=UR -r32 $fusInfoAddress 1"
-    Write-Output "CHECK: BLE stack install command: STM32_Programmer_CLI.exe -c port=$Port mode=UR -fwupgrade $bleStackRelative $installAddress firstinstall=0"
+    Write-Output "CHECK: Connect args: $($connectArgs -join ' ')"
+    Write-Output "CHECK: FUS read command: STM32_Programmer_CLI.exe -c $($connectArgs -join ' ') -startfus ; STM32_Programmer_CLI.exe -c $($connectArgs -join ' ') -r32 $fusInfoAddress 1"
+    Write-Output "CHECK: BLE stack install command: STM32_Programmer_CLI.exe -c $($connectArgs -join ' ') -fwupgrade $bleStackRelative $installAddress firstinstall=0"
     Write-Output "CHECK: Blocking operator prompt: $([bool]$PromptOperator)"
     Write-Output "CHECK: Add -PromptOperator only when the wireless-stack operation is waiting for a real human action or observation."
     Write-Output "CHECK: Real hardware commands must run inside workflow lock:"
@@ -293,9 +296,9 @@ if ($PromptOperator) {
 }
 
 try {
-    $steps.Add((Invoke-Programmer -Programmer $programmer -Arguments @("-c", "port=$Port", "-startfus") -Label "start FUS")) | Out-Null
+    $steps.Add((Invoke-Programmer -Programmer $programmer -Arguments (@("-c") + $connectArgs + @("-startfus")) -Label "start FUS")) | Out-Null
 
-    $primaryRead = Invoke-Programmer -Programmer $programmer -Arguments @("-c", "port=$Port", "mode=UR", "-r32", $fusInfoAddress, "1") -Label "read FUS version at $fusInfoAddress" -AllowFailure
+    $primaryRead = Invoke-Programmer -Programmer $programmer -Arguments (@("-c") + $connectArgs + @("-r32", $fusInfoAddress, "1")) -Label "read FUS version at $fusInfoAddress" -AllowFailure
     $steps.Add($primaryRead) | Out-Null
     if ($primaryRead.exit_code -eq 0) {
         $fusWord = Get-FusWordFromText -Text $primaryRead.output
@@ -303,7 +306,7 @@ try {
     }
 
     if (-not $fusWord) {
-        $fallbackRead = Invoke-Programmer -Programmer $programmer -Arguments @("-c", "port=$Port", "mode=UR", "-r32", $fusFallbackAddress, "1") -Label "read FUS version at $fusFallbackAddress" -AllowFailure
+        $fallbackRead = Invoke-Programmer -Programmer $programmer -Arguments (@("-c") + $connectArgs + @("-r32", $fusFallbackAddress, "1")) -Label "read FUS version at $fusFallbackAddress" -AllowFailure
         $steps.Add($fallbackRead) | Out-Null
         if ($fallbackRead.exit_code -eq 0) {
             $fusWord = Get-FusWordFromText -Text $fallbackRead.output
@@ -318,9 +321,9 @@ try {
             throw "FUS word '$fusWord' classified as '$fusClass'. This script will not auto-upgrade FUS; follow ST incremental FUS upgrade steps first."
         }
 
-        $steps.Add((Invoke-Programmer -Programmer $programmer -Arguments @("-c", "port=$Port", "mode=UR", "-fwupgrade", $bleStackBinary, $installAddress, "firstinstall=0") -Label "install stm32wb5x_BLE_Stack_full_fw.bin")) | Out-Null
-        $steps.Add((Invoke-Programmer -Programmer $programmer -Arguments @("-c", "port=$Port", "mode=UR", "-ob", "nSWboot0=1", "nboot1=1", "nboot0=1") -Label "restore default option-byte boot configuration")) | Out-Null
-        $steps.Add((Invoke-Programmer -Programmer $programmer -Arguments @("-c", "port=$Port", "mode=UR", "-rst") -Label "reset after BLE stack install" -AllowFailure)) | Out-Null
+        $steps.Add((Invoke-Programmer -Programmer $programmer -Arguments (@("-c") + $connectArgs + @("-fwupgrade", $bleStackBinary, $installAddress, "firstinstall=0")) -Label "install stm32wb5x_BLE_Stack_full_fw.bin")) | Out-Null
+        $steps.Add((Invoke-Programmer -Programmer $programmer -Arguments (@("-c") + $connectArgs + @("-ob", "nSWboot0=1", "nboot1=1", "nboot0=1")) -Label "restore default option-byte boot configuration")) | Out-Null
+        $steps.Add((Invoke-Programmer -Programmer $programmer -Arguments (@("-c") + $connectArgs + @("-rst")) -Label "reset after BLE stack install" -AllowFailure)) | Out-Null
     }
 } catch {
     $status = "FAIL"

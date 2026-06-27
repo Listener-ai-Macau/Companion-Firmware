@@ -8,6 +8,9 @@ param(
     [int] $A1Rounds = 6,
     [int] $A2TimeoutMs = 120000,
     [int] $MaxMissingPackets = 0,
+    [int] $CliRetries = 2,
+    [int] $RetryDelayMs = 5000,
+    [int] $RoundCooldownMs = 5000,
     [switch] $PromptOperator,
     [switch] $Execute,
     [switch] $WorkflowLockHeld
@@ -194,26 +197,94 @@ function Invoke-ListenerCli {
     Write-Host "RUN: $ListenerExePath $argumentList"
     Set-CompanionTypeEnvironment
     $process = Start-Process -FilePath $ListenerExePath -ArgumentList $Arguments -PassThru -WindowStyle Hidden
-    if ($process.WaitForExit(3000) -and $process.ExitCode -ne 0) {
-        $latest = Read-LogTail -Path $LogPath -Offset $offset
-        $fail = [regex]::Match($latest, $FailPattern, [System.Text.RegularExpressions.RegexOptions]::Singleline)
-        if ($fail.Success) {
-            throw "$Label failed: $($fail.Groups['error'].Value.Trim())"
+    try {
+        if ($process.WaitForExit(3000) -and $process.ExitCode -ne 0) {
+            $latest = Read-LogTail -Path $LogPath -Offset $offset
+            $fail = [regex]::Match($latest, $FailPattern, [System.Text.RegularExpressions.RegexOptions]::Singleline)
+            if ($fail.Success) {
+                throw "$Label failed: $($fail.Groups['error'].Value.Trim())"
+            }
+            $snippet = $latest
+            if ($snippet.Length -gt 2000) {
+                $snippet = $snippet.Substring($snippet.Length - 2000)
+            }
+            throw "$Label launcher exited with code $($process.ExitCode). Log tail:`n$snippet"
         }
-        $snippet = $latest
-        if ($snippet.Length -gt 2000) {
-            $snippet = $snippet.Substring($snippet.Length - 2000)
+        $match = Wait-ListenerLogResult -Label $Label -LogPath $LogPath -StartOffset $offset -PassPattern $PassPattern -FailPattern $FailPattern -TimeoutMs $TimeoutMs
+        if (-not $process.WaitForExit(5000)) {
+            throw "$Label logged PASS but listener-type process did not exit within 5000 ms."
         }
-        throw "$Label launcher exited with code $($process.ExitCode). Log tail:`n$snippet"
+        if ($process.ExitCode -ne 0) {
+            throw "$Label logged PASS but listener-type exited with code $($process.ExitCode)."
+        }
+        return $match
+    } catch {
+        if ($process -and -not $process.HasExited) {
+            try {
+                $process.Kill()
+                $process.WaitForExit(5000) | Out-Null
+            } catch {
+                Write-Warning "$Label cleanup could not stop listener-type process $($process.Id): $($_.Exception.Message)"
+            }
+        }
+        throw
     }
-    return Wait-ListenerLogResult -Label $Label -LogPath $LogPath -StartOffset $offset -PassPattern $PassPattern -FailPattern $FailPattern -TimeoutMs $TimeoutMs
+}
+
+function Invoke-ListenerCliWithRetry {
+    param(
+        [Parameter(Mandatory = $true)][string] $Label,
+        [Parameter(Mandatory = $true)][string[]] $Arguments,
+        [Parameter(Mandatory = $true)][int] $TimeoutMs,
+        [Parameter(Mandatory = $true)][string] $PassPattern,
+        [Parameter(Mandatory = $true)][string] $FailPattern,
+        [Parameter(Mandatory = $true)][string] $ListenerExePath,
+        [Parameter(Mandatory = $true)][string] $LogPath,
+        [Parameter(Mandatory = $true)][int] $MaxRetries,
+        [Parameter(Mandatory = $true)][int] $DelayMs,
+        [Parameter(Mandatory = $true)] $RetryRecords
+    )
+
+    $maxAttempts = 1 + [Math]::Max(0, $MaxRetries)
+    for ($attempt = 1; $attempt -le $maxAttempts; $attempt++) {
+        try {
+            $match = Invoke-ListenerCli `
+                -Label "$Label attempt $attempt" `
+                -Arguments $Arguments `
+                -TimeoutMs $TimeoutMs `
+                -PassPattern $PassPattern `
+                -FailPattern $FailPattern `
+                -ListenerExePath $ListenerExePath `
+                -LogPath $LogPath
+            return [pscustomobject]@{
+                match = $match
+                attempts = $attempt
+            }
+        } catch {
+            $message = $_.Exception.Message
+            if ($attempt -ge $maxAttempts) {
+                throw $message
+            }
+            $RetryRecords.Add([pscustomobject]@{
+                label = $Label
+                attempt = $attempt
+                retry_after_ms = $DelayMs
+                error = $message
+            }) | Out-Null
+            Write-Warning "$Label attempt $attempt failed; retrying in $DelayMs ms: $message"
+            Start-Sleep -Milliseconds $DelayMs
+        }
+    }
+
+    throw "$Label retry loop exited unexpectedly."
 }
 
 function New-StreamResult {
     param(
         [Parameter(Mandatory = $true)][string] $CaseId,
         [Parameter(Mandatory = $true)][int] $Round,
-        [Parameter(Mandatory = $true)] $Match
+        [Parameter(Mandatory = $true)] $Match,
+        [Parameter(Mandatory = $true)][int] $Attempts
     )
 
     $pcm = [int64] $Match.Groups["pcm"].Value
@@ -224,6 +295,7 @@ function New-StreamResult {
         status = if ($missing -le $MaxMissingPackets) { "PASS" } else { "FAIL" }
         pcm_bytes = $pcm
         missing_packets = $missing
+        attempts = $Attempts
     }
 }
 
@@ -261,48 +333,64 @@ if ($PromptOperator) {
 
 $startedAt = (Get-Date).ToUniversalTime().ToString("o")
 $results = [System.Collections.Generic.List[object]]::new()
+$retries = [System.Collections.Generic.List[object]]::new()
 $errors = [System.Collections.Generic.List[string]]::new()
 
 try {
     $probePass = "probe-embedded-audio-ble-subscription PASS"
     $probeFail = "probe-embedded-audio-ble-subscription failed: (?<error>.*)"
-    [void](Invoke-ListenerCli `
+    [void](Invoke-ListenerCliWithRetry `
         -Label "probe" `
         -Arguments @("--probe-embedded-audio-ble-subscription", [string]$ProbeTimeoutMs) `
         -TimeoutMs $ProbeTimeoutMs `
         -PassPattern $probePass `
         -FailPattern $probeFail `
         -ListenerExePath $listenerExePath `
-        -LogPath $logPath)
+        -LogPath $logPath `
+        -MaxRetries $CliRetries `
+        -DelayMs $RetryDelayMs `
+        -RetryRecords $retries)
 
     $streamPass = "submit-embedded-audio-ble-stream done: pcm_bytes=(?<pcm>\d+) missing_packets=(?<missing>\d+)"
     $streamFail = "submit-embedded-audio-ble-stream failed: (?<error>.*)"
 
     for ($round = 1; $round -le $A1Rounds; $round++) {
-        $match = Invoke-ListenerCli `
+        if ($round -gt 1 -and $RoundCooldownMs -gt 0) {
+            Start-Sleep -Milliseconds $RoundCooldownMs
+        }
+        $attempt = Invoke-ListenerCliWithRetry `
             -Label "A1 round $round" `
             -Arguments @("--submit-embedded-audio-ble-stream", [string]$A1TimeoutMs) `
             -TimeoutMs $A1TimeoutMs `
             -PassPattern $streamPass `
             -FailPattern $streamFail `
             -ListenerExePath $listenerExePath `
-            -LogPath $logPath
-        $result = New-StreamResult -CaseId "A1" -Round $round -Match $match
+            -LogPath $logPath `
+            -MaxRetries $CliRetries `
+            -DelayMs $RetryDelayMs `
+            -RetryRecords $retries
+        $result = New-StreamResult -CaseId "A1" -Round $round -Match $attempt.match -Attempts $attempt.attempts
         $results.Add($result) | Out-Null
         if ($result.status -ne "PASS") {
             $errors.Add("A1 round $round missing_packets=$($result.missing_packets) > $MaxMissingPackets") | Out-Null
         }
     }
 
-    $a2Match = Invoke-ListenerCli `
+    if ($RoundCooldownMs -gt 0) {
+        Start-Sleep -Milliseconds $RoundCooldownMs
+    }
+    $a2Attempt = Invoke-ListenerCliWithRetry `
         -Label "A2" `
         -Arguments @("--submit-embedded-audio-ble-stream", [string]$A2TimeoutMs) `
         -TimeoutMs $A2TimeoutMs `
         -PassPattern $streamPass `
         -FailPattern $streamFail `
         -ListenerExePath $listenerExePath `
-        -LogPath $logPath
-    $a2Result = New-StreamResult -CaseId "A2" -Round 1 -Match $a2Match
+        -LogPath $logPath `
+        -MaxRetries $CliRetries `
+        -DelayMs $RetryDelayMs `
+        -RetryRecords $retries
+    $a2Result = New-StreamResult -CaseId "A2" -Round 1 -Match $a2Attempt.match -Attempts $a2Attempt.attempts
     $results.Add($a2Result) | Out-Null
     if ($a2Result.status -ne "PASS") {
         $errors.Add("A2 missing_packets=$($a2Result.missing_packets) > $MaxMissingPackets") | Out-Null
@@ -325,8 +413,12 @@ $summary = [ordered]@{
     a1_timeout_ms = $A1TimeoutMs
     a2_timeout_ms = $A2TimeoutMs
     max_missing_packets = $MaxMissingPackets
+    cli_retries = $CliRetries
+    retry_delay_ms = $RetryDelayMs
+    round_cooldown_ms = $RoundCooldownMs
     prompt_operator = [bool]$PromptOperator
     results = @($results)
+    retries = @($retries)
     errors = @($errors)
 }
 
@@ -346,7 +438,14 @@ $md = @(
     "## Results"
 )
 foreach ($item in $results) {
-    $md += "- $($item.case) round $($item.round): $($item.status), pcm=$($item.pcm_bytes), missing=$($item.missing_packets)"
+    $md += "- $($item.case) round $($item.round): $($item.status), pcm=$($item.pcm_bytes), missing=$($item.missing_packets), attempts=$($item.attempts)"
+}
+if ($retries.Count -gt 0) {
+    $md += ""
+    $md += "## Retries"
+    foreach ($retryItem in $retries) {
+        $md += "- $($retryItem.label) attempt $($retryItem.attempt): retry_after_ms=$($retryItem.retry_after_ms)"
+    }
 }
 if ($errors.Count -gt 0) {
     $md += ""

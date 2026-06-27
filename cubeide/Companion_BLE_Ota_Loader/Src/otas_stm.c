@@ -124,7 +124,9 @@ static uint8_t OTAS_STM_Is_Value_Handle(uint16_t event_handle, uint16_t char_han
 
 static uint8_t OTAS_STM_Is_Value_Handle(uint16_t event_handle, uint16_t char_handle)
 {
-  return ((event_handle == char_handle) || (event_handle == (char_handle + 1u)));
+  return ((event_handle == char_handle) ||
+          (event_handle == (char_handle + 1u)) ||
+          (event_handle == (char_handle + 2u)));
 }
 
 /**
@@ -168,15 +170,12 @@ static SVCCTL_EvtAckStatus_t OTAS_Event_Handler(void *Event)
           }
           else if(OTAS_STM_Is_Value_Handle(attribute_modified->Attr_Handle, OTAS_Context.OTAS_Raw_Data_CharHdle))
           {
-            /**
-             * Raw Data
+            /*
+             * Raw data is handled in ACI_GATT_WRITE_PERMIT_REQ_VSEVT_CODE so
+             * each accepted packet is written once, regardless of whether the
+             * central uses write request or write command.
              */
             return_value = SVCCTL_EvtAckFlowEnable;
-
-            notification.ChardId = OTAS_STM_RAW_DATA_ID;
-            notification.pPayload = (uint8_t*)&attribute_modified->Attr_Data[0];
-            notification.ValueLength = attribute_modified->Attr_Data_Length;
-            OTAS_STM_Notification( &notification );
           }
         }
         break;
@@ -206,13 +205,23 @@ static SVCCTL_EvtAckStatus_t OTAS_Event_Handler(void *Event)
             write_perm_req = (aci_gatt_write_permit_req_event_rp0*)blecore_evt->data;
                 if(OTAS_STM_Is_Value_Handle(write_perm_req->Attribute_Handle, OTAS_Context.OTAS_Raw_Data_CharHdle))
                 {
+                  tBleStatus write_status;
+
                   return_value = SVCCTL_EvtAckFlowEnable;
-                  aci_gatt_write_resp(write_perm_req->Connection_Handle,
-                                          write_perm_req->Attribute_Handle,
-                                          0x00, /* write_status = 0 (no error))*/
-                                          0x00, /* err_code */
-                                          write_perm_req->Data_Length,
-                                          (uint8_t *)&(write_perm_req->Data[0]));
+                  write_status = aci_gatt_write_resp(write_perm_req->Connection_Handle,
+                                                     write_perm_req->Attribute_Handle,
+                                                     0x00, /* write_status = 0 (no error))*/
+                                                     0x00, /* err_code */
+                                                     write_perm_req->Data_Length,
+                                                     (uint8_t *)&(write_perm_req->Data[0]));
+
+                  if(write_status == BLE_STATUS_SUCCESS)
+                  {
+                    notification.ChardId = OTAS_STM_RAW_DATA_ID;
+                    notification.pPayload = (uint8_t *)&(write_perm_req->Data[0]);
+                    notification.ValueLength = write_perm_req->Data_Length;
+                    OTAS_STM_Notification( &notification );
+                  }
                 }
           }
           break;
@@ -281,12 +290,16 @@ void OTAS_STM_Init(void)
 
   /**
    *  Add Raw Data Characteristic
+   *
+   * Windows waits for the write response when using CHAR_PROP_WRITE. The
+   * write-permit event lets this service explicitly accept each packet and
+   * synchronously pass the payload to the ST OTA flash writer.
    */
   aci_gatt_add_char(OTAS_Context.OTAS_SvcHdle,
                     OTA_UUID_LENGTH,
                     (Char_UUID_t *)OTA_RAW_DATA_CHAR_UUID,
                     OTA_RAW_DATA_CHAR_SIZE,
-                    CHAR_PROP_WRITE_WITHOUT_RESP,
+                    CHAR_PROP_WRITE | CHAR_PROP_WRITE_WITHOUT_RESP,
                     ATTR_PERMISSION_NONE,
                     GATT_NOTIFY_ATTRIBUTE_WRITE | GATT_NOTIFY_WRITE_REQ_AND_WAIT_FOR_APPL_RESP,
                     10,

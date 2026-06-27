@@ -241,6 +241,9 @@ function Test-WiredFlashReport {
     if (-not $log.Contains("STM32WB wired factory flash completed and verified by STM32CubeProgrammer")) {
         $errors.Add("Type wired flash log did not include STM32CubeProgrammer completion.") | Out-Null
     }
+    if (-not $log.Contains("Wrote STM32WB OTA FW_APP SRAM handoff")) {
+        $errors.Add("Type wired flash log did not include STM32WB FW_APP SRAM handoff evidence.") | Out-Null
+    }
     return @($errors)
 }
 

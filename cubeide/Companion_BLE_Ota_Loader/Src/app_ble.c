@@ -222,7 +222,6 @@ void APP_BLE_Init( void )
    * Initialization of the BLE Services
    */
   SVCCTL_Init();
-  OTAS_STM_Init();
 
   /**
    * From here, all initialization are BLE application specific

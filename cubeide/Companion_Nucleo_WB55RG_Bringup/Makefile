@@ -135,6 +135,9 @@ $(BUILD_DIR):
 $(BUILD_DIR)/main.o: Core/Src/main.c | $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c "$<" -o "$@"
 
+$(BUILD_DIR)/system_stm32wbxx.o: $(SYSTEM_SOURCE) | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c "$<" -o "$@"
+
 $(BUILD_DIR)/%.o: %.c | $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c "$<" -o "$@"
 

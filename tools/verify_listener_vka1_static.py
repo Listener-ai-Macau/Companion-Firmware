@@ -391,6 +391,8 @@ def check_stm32wb_unified_bringup_app(errors: list[str]) -> None:
         "$(ROOT)/app/companion_pendant/audio_stream",
         "$(ROOT)/app/companion_pendant/audio_stream/audio_stream.c",
         "$(ROOT)/app/companion_pendant/audio_stream/audio_stream_stm32wb.c",
+        "SYSTEM_SOURCE := $(CUBE)/Projects/P-NUCLEO-WB55.Nucleo/Applications/BLE/BLE_p2pServer_ota/Core/Src/system_stm32wbxx.c",
+        "$(BUILD_DIR)/system_stm32wbxx.o: $(SYSTEM_SOURCE) | $(BUILD_DIR)",
     ):
         require(token in makefile, f"NUCLEO bringup Makefile missing {token}", errors)
 
