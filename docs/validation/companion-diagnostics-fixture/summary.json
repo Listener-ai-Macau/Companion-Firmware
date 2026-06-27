@@ -1,0 +1,439 @@
+{
+  "schema_id": "companion.pendant.diagnostics_bundle.v1",
+  "schema_version": 1,
+  "mode": "fixture",
+  "generated_at": "fixture-deterministic",
+  "bounded": true,
+  "hardware_action": false,
+  "source_refs": [
+    "app/companion_pendant/diag_log/diag_log_events.h",
+    "docs/ble_gatt_contract.md",
+    "tools/decode_diag_log.py"
+  ],
+  "privacy": {
+    "private_audio_payload_exported": false,
+    "raw_recording_payload_exported": false,
+    "no_unbounded_full_dumps": true,
+    "fixture_contains_synthetic_metadata_only": true
+  },
+  "device_status": {
+    "product": "companion",
+    "board_target": "NUCLEO-WB55RG",
+    "mcu": "STM32WB55RG",
+    "firmware_semver": "0.1.0-fixture",
+    "build_id": "diagnostics-fixture",
+    "active_mode": "idle",
+    "fault_bitmap": 0,
+    "uptime_ms": 340
+  },
+  "ble": {
+    "backend": "fixture-no-hardware",
+    "selected_device": {
+      "name": "Companion Pendant Dev",
+      "address": "F1:E2:D3:C4:B5:A6",
+      "service_uuid": "8f7a0001-7b7d-4f3d-9d6f-6c2d1b7c0000",
+      "rssi": -47
+    },
+    "scan_summary": {
+      "scanned_devices": 2,
+      "matched_companion_devices": 1,
+      "ignored_devices": 1
+    }
+  },
+  "recording": {
+    "fsm_state": "stored",
+    "session_id": "fixture-rec-0001",
+    "last_transition": "recording_fsm.transition",
+    "active": false,
+    "transfer_active": false
+  },
+  "recording_cache": {
+    "backend": "external_spi_nor_contract_fixture",
+    "count": 1,
+    "total_bytes": 32768,
+    "entries": [
+      {
+        "recording_id": 1,
+        "duration_ms": 2400,
+        "codec": "pcm16",
+        "sample_rate_hz": 16000,
+        "total_length": 32768,
+        "sha256_prefix": "fixture_sha256_0001",
+        "sync_state": "unsynced",
+        "delete_state": "stored"
+      }
+    ]
+  },
+  "last_transfer_result": {
+    "operation": "recording_chunk_pull",
+    "status": "fixture_not_started",
+    "byte_offset": 0,
+    "requested_length": 0,
+    "final_sha256_verified": false
+  },
+  "epaper": {
+    "last_card_slot": 0,
+    "last_card_type": "status",
+    "render_state": "rendered",
+    "content_crc32": "0x00000011",
+    "refresh_count": 1
+  },
+  "ota": {
+    "manifest": {
+      "version": "0.1.0-fixture",
+      "board_target": "NUCLEO-WB55RG",
+      "image_size": 94032,
+      "sha256_prefix": "fixture_ota_hash"
+    },
+    "readiness": {
+      "ready_state": "ready",
+      "blocker_bitmap": 0,
+      "minimum_required_mv": 3600,
+      "charger_required": false
+    },
+    "blockers": []
+  },
+  "battery": {
+    "percent": 84,
+    "millivolts": 4012,
+    "charge_state": "discharging",
+    "charger_present": false,
+    "temperature_c_x10": 261
+  },
+  "diag_tail": {
+    "bounded": true,
+    "contract": "diagnostics/log pull cursor/source/severity model",
+    "request": {
+      "cursor": 0,
+      "max_events": 8,
+      "max_bytes": 1024,
+      "source": "all",
+      "severity_mask": "info|warn|error"
+    },
+    "total_available": 12,
+    "returned_count": 8,
+    "next_cursor": 112,
+    "decoded_path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\companion-diagnostics-fixture\\diag_tail_decoded.json",
+    "raw_path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\companion-diagnostics-fixture\\diag_tail_raw.jsonl",
+    "events": [
+      {
+        "index": 4,
+        "sequence": 105,
+        "t_ms": 160,
+        "source": {
+          "raw": "spi_flash_cache",
+          "id": 7,
+          "name": "spi_flash_cache",
+          "symbol": "SPI_FLASH_CACHE"
+        },
+        "event": {
+          "raw": 1,
+          "name": "spi_flash_cache.write",
+          "symbol": "WRITE",
+          "severity_default": "info"
+        },
+        "severity": {
+          "raw": "info",
+          "level": 0,
+          "name": "info"
+        },
+        "args": {
+          "arg0": 32768,
+          "arg1": 2400,
+          "arg2": 0,
+          "arg3": 0
+        },
+        "raw_event": {
+          "sequence": 105,
+          "t_ms": 160,
+          "source": "spi_flash_cache",
+          "event_id": 1,
+          "severity": "info",
+          "arg0": 32768,
+          "arg1": 2400,
+          "arg2": 0,
+          "arg3": 0
+        }
+      },
+      {
+        "index": 5,
+        "sequence": 106,
+        "t_ms": 190,
+        "source": {
+          "raw": "e_paper",
+          "id": 4,
+          "name": "e_paper",
+          "symbol": "EPAPER"
+        },
+        "event": {
+          "raw": 2,
+          "name": "e_paper.update_result",
+          "symbol": "UPDATE_RESULT",
+          "severity_default": "info"
+        },
+        "severity": {
+          "raw": "info",
+          "level": 0,
+          "name": "info"
+        },
+        "args": {
+          "arg0": 17,
+          "arg1": 0,
+          "arg2": 0,
+          "arg3": 0
+        },
+        "raw_event": {
+          "sequence": 106,
+          "t_ms": 190,
+          "source": "e_paper",
+          "event_id": 2,
+          "severity": "info",
+          "arg0": 17,
+          "arg1": 0,
+          "arg2": 0,
+          "arg3": 0
+        }
+      },
+      {
+        "index": 6,
+        "sequence": 107,
+        "t_ms": 220,
+        "source": {
+          "raw": "ota",
+          "id": 8,
+          "name": "ota",
+          "symbol": "OTA"
+        },
+        "event": {
+          "raw": 1,
+          "name": "ota.manifest",
+          "symbol": "MANIFEST",
+          "severity_default": "info"
+        },
+        "severity": {
+          "raw": "info",
+          "level": 0,
+          "name": "info"
+        },
+        "args": {
+          "arg0": 1,
+          "arg1": 94032,
+          "arg2": 0,
+          "arg3": 0
+        },
+        "raw_event": {
+          "sequence": 107,
+          "t_ms": 220,
+          "source": "ota",
+          "event_id": 1,
+          "severity": "info",
+          "arg0": 1,
+          "arg1": 94032,
+          "arg2": 0,
+          "arg3": 0
+        }
+      },
+      {
+        "index": 7,
+        "sequence": 108,
+        "t_ms": 240,
+        "source": {
+          "raw": "ota",
+          "id": 8,
+          "name": "ota",
+          "symbol": "OTA"
+        },
+        "event": {
+          "raw": 3,
+          "name": "ota.readiness",
+          "symbol": "READINESS",
+          "severity_default": "info"
+        },
+        "severity": {
+          "raw": "info",
+          "level": 0,
+          "name": "info"
+        },
+        "args": {
+          "arg0": 1,
+          "arg1": 0,
+          "arg2": 0,
+          "arg3": 0
+        },
+        "raw_event": {
+          "sequence": 108,
+          "t_ms": 240,
+          "source": "ota",
+          "event_id": 3,
+          "severity": "info",
+          "arg0": 1,
+          "arg1": 0,
+          "arg2": 0,
+          "arg3": 0
+        }
+      },
+      {
+        "index": 8,
+        "sequence": 109,
+        "t_ms": 260,
+        "source": {
+          "raw": "battery_charging",
+          "id": 9,
+          "name": "battery_charging",
+          "symbol": "BATTERY_CHARGING"
+        },
+        "event": {
+          "raw": 1,
+          "name": "battery_charging.sample",
+          "symbol": "SAMPLE",
+          "severity_default": "info"
+        },
+        "severity": {
+          "raw": "info",
+          "level": 0,
+          "name": "info"
+        },
+        "args": {
+          "arg0": 84,
+          "arg1": 4012,
+          "arg2": 0,
+          "arg3": 0
+        },
+        "raw_event": {
+          "sequence": 109,
+          "t_ms": 260,
+          "source": "battery_charging",
+          "event_id": 1,
+          "severity": "info",
+          "arg0": 84,
+          "arg1": 4012,
+          "arg2": 0,
+          "arg3": 0
+        }
+      },
+      {
+        "index": 9,
+        "sequence": 110,
+        "t_ms": 290,
+        "source": {
+          "raw": "power_lpm",
+          "id": 10,
+          "name": "power_lpm",
+          "symbol": "POWER_LPM"
+        },
+        "event": {
+          "raw": 2,
+          "name": "power_lpm.blocker",
+          "symbol": "BLOCKER",
+          "severity_default": "warn"
+        },
+        "severity": {
+          "raw": "warn",
+          "level": 1,
+          "name": "warn"
+        },
+        "args": {
+          "arg0": 2,
+          "arg1": 1,
+          "arg2": 0,
+          "arg3": 0
+        },
+        "raw_event": {
+          "sequence": 110,
+          "t_ms": 290,
+          "source": "power_lpm",
+          "event_id": 2,
+          "severity": "warn",
+          "arg0": 2,
+          "arg1": 1,
+          "arg2": 0,
+          "arg3": 0
+        }
+      },
+      {
+        "index": 10,
+        "sequence": 111,
+        "t_ms": 310,
+        "source": {
+          "raw": "warnings",
+          "id": 11,
+          "name": "warnings",
+          "symbol": "WARNINGS"
+        },
+        "event": {
+          "raw": 2,
+          "name": "warnings.recovered",
+          "symbol": "RECOVERED",
+          "severity_default": "info"
+        },
+        "severity": {
+          "raw": "info",
+          "level": 0,
+          "name": "info"
+        },
+        "args": {
+          "arg0": 1,
+          "arg1": 0,
+          "arg2": 0,
+          "arg3": 0
+        },
+        "raw_event": {
+          "sequence": 111,
+          "t_ms": 310,
+          "source": "warnings",
+          "event_id": 2,
+          "severity": "info",
+          "arg0": 1,
+          "arg1": 0,
+          "arg2": 0,
+          "arg3": 0
+        }
+      },
+      {
+        "index": 11,
+        "sequence": 112,
+        "t_ms": 340,
+        "source": {
+          "raw": "errors",
+          "id": 12,
+          "name": "errors",
+          "symbol": "ERRORS"
+        },
+        "event": {
+          "raw": 1,
+          "name": "errors.assert",
+          "symbol": "ASSERT",
+          "severity_default": "error"
+        },
+        "severity": {
+          "raw": "error",
+          "level": 2,
+          "name": "error"
+        },
+        "args": {
+          "arg0": 0,
+          "arg1": 0,
+          "arg2": 0,
+          "arg3": 0
+        },
+        "raw_event": {
+          "sequence": 112,
+          "t_ms": 340,
+          "source": "errors",
+          "event_id": 1,
+          "severity": "error",
+          "arg0": 0,
+          "arg1": 0,
+          "arg2": 0,
+          "arg3": 0
+        }
+      }
+    ]
+  },
+  "artifacts": {
+    "summary_json": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\companion-diagnostics-fixture\\summary.json",
+    "summary_md": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\companion-diagnostics-fixture\\summary.md",
+    "diag_tail_raw_jsonl": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\companion-diagnostics-fixture\\diag_tail_raw.jsonl",
+    "diag_tail_decoded_json": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\companion-diagnostics-fixture\\diag_tail_decoded.json"
+  }
+}

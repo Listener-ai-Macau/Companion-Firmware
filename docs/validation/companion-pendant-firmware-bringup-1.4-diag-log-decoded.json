@@ -117,6 +117,42 @@
         "symbol": "REJECTED",
         "default_severity": "warn"
       },
+      "recording_fsm.start_request": {
+        "source": "recording_fsm",
+        "event_id": 3,
+        "symbol": "START_REQUEST",
+        "default_severity": "info"
+      },
+      "recording_fsm.stop_request": {
+        "source": "recording_fsm",
+        "event_id": 4,
+        "symbol": "STOP_REQUEST",
+        "default_severity": "info"
+      },
+      "recording_fsm.cancel_request": {
+        "source": "recording_fsm",
+        "event_id": 5,
+        "symbol": "CANCEL_REQUEST",
+        "default_severity": "info"
+      },
+      "recording_fsm.session_finished": {
+        "source": "recording_fsm",
+        "event_id": 6,
+        "symbol": "SESSION_FINISHED",
+        "default_severity": "info"
+      },
+      "recording_fsm.error": {
+        "source": "recording_fsm",
+        "event_id": 7,
+        "symbol": "ERROR",
+        "default_severity": "error"
+      },
+      "recording_fsm.recovery": {
+        "source": "recording_fsm",
+        "event_id": 8,
+        "symbol": "RECOVERY",
+        "default_severity": "info"
+      },
       "microphone.capture_start": {
         "source": "microphone",
         "event_id": 1,
@@ -141,6 +177,36 @@
         "symbol": "READ",
         "default_severity": "info"
       },
+      "spi_flash_cache.delete": {
+        "source": "spi_flash_cache",
+        "event_id": 3,
+        "symbol": "DELETE",
+        "default_severity": "info"
+      },
+      "spi_flash_cache.low_storage": {
+        "source": "spi_flash_cache",
+        "event_id": 4,
+        "symbol": "LOW_STORAGE",
+        "default_severity": "warn"
+      },
+      "spi_flash_cache.interrupted_write": {
+        "source": "spi_flash_cache",
+        "event_id": 5,
+        "symbol": "INTERRUPTED_WRITE",
+        "default_severity": "warn"
+      },
+      "spi_flash_cache.interrupted_read": {
+        "source": "spi_flash_cache",
+        "event_id": 6,
+        "symbol": "INTERRUPTED_READ",
+        "default_severity": "warn"
+      },
+      "spi_flash_cache.privacy_erase": {
+        "source": "spi_flash_cache",
+        "event_id": 7,
+        "symbol": "PRIVACY_ERASE",
+        "default_severity": "warn"
+      },
       "ota.manifest": {
         "source": "ota",
         "event_id": 1,
@@ -151,6 +217,30 @@
         "source": "ota",
         "event_id": 2,
         "symbol": "BLOCK_RESULT",
+        "default_severity": "info"
+      },
+      "ota.readiness": {
+        "source": "ota",
+        "event_id": 3,
+        "symbol": "READINESS",
+        "default_severity": "info"
+      },
+      "ota.blocker": {
+        "source": "ota",
+        "event_id": 4,
+        "symbol": "BLOCKER",
+        "default_severity": "warn"
+      },
+      "ota.interrupted_transfer": {
+        "source": "ota",
+        "event_id": 5,
+        "symbol": "INTERRUPTED_TRANSFER",
+        "default_severity": "warn"
+      },
+      "ota.post_update_self_check": {
+        "source": "ota",
+        "event_id": 6,
+        "symbol": "POST_UPDATE_SELF_CHECK",
         "default_severity": "info"
       },
       "battery_charging.sample": {
