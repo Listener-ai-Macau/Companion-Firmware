@@ -8,9 +8,11 @@ Repo commit: `3f3e553`
 
 ## Current Result
 
-Status: blocked.
+Status: ready for locked FUS/BLE-stack diagnostic.
 
-The official STM32CubeWB package artifacts and local STM32 command-line tools needed for the first flash gate are present, but the local bench is not ready for real WB55 hardware validation yet because no WB55/ST-LINK board resource is confirmed.
+The official STM32CubeWB package artifacts, local STM32 command-line tools, and the first WB55 bench resource are present. The board is recorded in the workflow board ledger as `Companion-WB55`, and real flash, FUS, serial, BLE capture, or real-device validation must still run only through the workflow hardware lock.
+
+The latest user-visible symptom is that the Companion BLE device is not found from Type. Treat that as a CPU2 wireless-stack/FUS diagnostic gate before A1/A2 or OTA acceptance; do not assume the STM32WB BLE stack is provisioned until `tools/provision_companion_wireless_stack.ps1 -Execute -ReadFusInfo` succeeds under lock.
 
 ## Automatic Checks
 
@@ -40,23 +42,39 @@ Repo commit before update: `cad0808`
 | `tools/flash.ps1 -CheckOnly` after script update | PASS | Detects the CubeIDE-bundled STM32CubeProgrammer CLI, reference hex, and BLE full stack binary |
 | `tools/build.ps1` headless official example build | PASS | `BLE_p2pServer/Debug` built with `stm32cubeidec.exe`; build output reported 0 errors, 0 warnings, size `text=72744 data=578 bss=13767` |
 
+## Bench Resource Update
+
+Recorded: `2026-06-27T10:24:46+08:00`
+Recorder: `codex`
+Repo commit before update: `78a5a59`
+
+| Resource | Result | Evidence |
+|---|---|---|
+| First WB55 board | PASS | `NUCLEO-WB55RG`, ST-LINK serial number `066EFF535570514867221931`, observed by prior locked hardware acceptance flash evidence; board voltage evidence was 3.24 V |
+| Workflow board ledger | PASS | `aiw board-ledger get -Resource Companion-WB55` returns board id `nucleo-wb55rg-stlink-066EFF535570514867221931` and board rev `NUCLEO-WB55RG` |
+| Debug / flash resource | PASS | Use workflow resource `Companion-WB55` for SWD, FUS, wireless-stack provisioning, and STM32CubeProgrammer flash operations |
+| BLE validation resource | PASS | Use workflow resource pair `Companion-WB55,BLE-Companion` for Type Companion BLE discovery, A1/A2, BLE OTA, and aggregate hardware acceptance |
+| Serial VCP | DEFERRED | USART/ST-LINK VCP capture is useful for boot logs, but the first unblock path only requires the SWD/FUS/BLE resources above; record the COM port when `tools/capture_nucleo_serial.ps1` is used |
+| Product peripheral bench | DEFERRED | E-paper, PDM MEMS microphone, SPI NOR flash, button, battery/charger/fuel gauge, and measurement method are deferred to the later pendant MVP bench gate; the NUCLEO first gate is flash/FUS/BLE bring-up |
+| FUS/BLE stack state | PENDING | A locked FUS read was attempted on `2026-06-27`, but the Chinese operator prompt timed out/cancelled before any hardware command ran; run the FUS diagnostic again while the operator can confirm the prompt |
+
 ## Human Confirmation
 
 A visible Chinese Windows prompt was shown for the operator to choose whether the Companion WB55 bench was ready despite automatic detection failure.
 
-Operator result: `continue blocked`.
+Operator result: `continue blocked` on `2026-06-22`; superseded by the `2026-06-27` bench resource update above.
 
 ## Blocking Items
 
-- `NUCLEO-WB55RG` or the selected STM32WB board is not confirmed on the bench.
-- Companion debug/serial resource is not recorded in the workflow board ledger.
-- E-paper, MEMS microphone, SPI NOR flash, button, battery/charger/fuel gauge, and measurement method are not confirmed for the later bench gate.
+- CPU2 FUS / BLE wireless-stack state is not yet read; the current Type-side symptom is "Companion BLE not found".
+- USART/ST-LINK VCP COM port is not yet recorded; capture it when boot logs are needed.
+- E-paper, MEMS microphone, SPI NOR flash, button, battery/charger/fuel gauge, and measurement method remain deferred for the later pendant MVP bench gate.
 
 ## Unblock Requirements
 
 Before `2.2` real flash or BLE validation begins:
 
-- Connect or identify the `NUCLEO-WB55RG` or selected STM32WB board.
-- Install STM32CubeIDE and STM32CubeProgrammer, or provide exact executable paths.
-- Record the narrowed debug/serial/BLE resource as `Companion-WB55` in the workflow board ledger.
+- Keep the `Companion-WB55` board-ledger entry available for this bench.
+- Use `tools/provision_companion_wireless_stack.ps1 -Execute -ReadFusInfo` under `aiw with-lock -Resource Companion-WB55` before expecting BLE advertising.
+- If FUS is classified as `fus_v2_2_ready_for_wireless_stack`, install `stm32wb5x_BLE_Stack_full_fw.bin` at `0x080D0000` under the same lock before A1/A2 or OTA validation.
 - Run real flash and BLE capture only inside `aiw with-lock -Resource Companion-WB55`.
