@@ -31,6 +31,7 @@ REQUIRED_OPERATIONS = (
     "card_write",
     "recording_list",
     "recording_pull",
+    "byte_offset_resume",
     "log_pull",
     "delete",
     "ota_status",
@@ -40,6 +41,10 @@ REQUIRED_MATRIX_CATEGORIES = (
     "retry",
     "cancel",
     "disconnect_reconnect",
+    "byte_offset_resume",
+    "gatt_cache_stale",
+    "cccd_notify_failure",
+    "recovered_event_suppressed",
     "long_recording_metadata",
     "idle_resume",
     "log_export",
@@ -49,10 +54,15 @@ REQUIRED_FAILURES = (
     "no_device",
     "wrong_service_uuid",
     "timeout",
+    "disconnected",
+    "gatt_cache_stale",
+    "cccd_notify_failure",
     "crc_mismatch",
+    "hash_mismatch",
     "low_battery",
     "no_recording",
     "transfer_canceled",
+    "ota_blocked",
 )
 
 
@@ -225,6 +235,35 @@ class CompanionFixtureAdapter:
             "resume": self.recording_fixture.get("resume", {}),
         }
 
+    def resume_after_disconnect(self) -> dict[str, Any]:
+        resume = self.recording_fixture.get("resume", {}).get("by_byte_offset", {})
+        first_packet = dict(resume.get("first_packet", {}))
+        byte_offset = int(resume.get("byte_offset", -1))
+        if byte_offset < 0 or int(first_packet.get("byte_offset", -2)) != byte_offset:
+            raise RuntimeError("byte-offset resume fixture is not aligned")
+        return {
+            "operation": "byte_offset_resume",
+            "status": "PASS",
+            "disconnect_reason_classification": "disconnected",
+            "resume_strategy": "byte_offset_resume",
+            "previous_verified_byte_offset": byte_offset,
+            "request": {
+                "recording_id": first_packet["recording_id"],
+                "byte_offset": byte_offset,
+                "requested_length": 8192,
+                "host_resume_token": "fixture-disconnect-reconnect-token",
+            },
+            "first_resumed_packet": {
+                "recording_id": first_packet["recording_id"],
+                "byte_offset": first_packet["byte_offset"],
+                "packet_sequence": first_packet["packet_sequence"],
+                "total_length": first_packet["total_length"],
+                "payload_length": first_packet["payload_length"],
+                "packet_crc32": first_packet["packet_crc32"],
+            },
+            "host_result": "reread recording_list, resume from absolute byte offset, and do not duplicate verified bytes",
+        }
+
     def pull_log(self) -> dict[str, Any]:
         event_lines = [
             "gatt.scan selected Companion service",
@@ -281,6 +320,7 @@ class CompanionFixtureAdapter:
             self.write_card(),
             self.list_recordings(),
             self.pull_recording(),
+            self.resume_after_disconnect(),
             self.pull_log(),
             self.delete_recording(),
             self.read_ota_status(),
@@ -333,6 +373,46 @@ def product_matrix(operations: dict[str, dict[str, Any]]) -> list[dict[str, Any]
         },
         {
             "case_id": "C5",
+            "category": "byte_offset_resume",
+            "scenario": "BLE link drops after 8192 verified bytes; host reconnects, rereads recording_list, and requests the next absolute byte offset.",
+            "result": "PASS",
+            "fixture_operations": ["scan_result_parsing", "recording_list", "byte_offset_resume"],
+            "expected_host_behavior": "Host resumes by byte_offset and total_length, not by stale packet sequence or local UI state.",
+            "failure_classification": "disconnected",
+            "artifact_requirements": ["docs/validation/companion_ble_matrix.json"],
+        },
+        {
+            "case_id": "C6",
+            "category": "gatt_cache_stale",
+            "scenario": "Host sees Companion service changed/stale GATT cache symptoms after reconnect before any firmware data transfer.",
+            "result": "PASS",
+            "fixture_operations": ["scan_result_parsing", "status_read"],
+            "expected_host_behavior": "Classify gatt_cache_stale, refresh service discovery once, then suggest re-pair and diagnostic export if it repeats.",
+            "failure_classification": "gatt_cache_stale",
+            "artifact_requirements": ["docs/validation/companion_ble_matrix.json"],
+        },
+        {
+            "case_id": "C7",
+            "category": "cccd_notify_failure",
+            "scenario": "Notify subscription cannot enable CCCD for recording or diagnostic packets.",
+            "result": "PASS",
+            "fixture_operations": ["recording_pull", "log_pull"],
+            "expected_host_behavior": "Classify cccd_notify_failure, reopen notify subscription once, and keep delete-after-sync disabled until host verification.",
+            "failure_classification": "cccd_notify_failure",
+            "artifact_requirements": ["docs/validation/companion_ble_matrix.json"],
+        },
+        {
+            "case_id": "C8",
+            "category": "recovered_event_suppressed",
+            "scenario": "Repeated automatic BLE recovery succeeds several times during one sync session.",
+            "result": "PASS",
+            "fixture_operations": ["status_read", "recording_list", "byte_offset_resume"],
+            "expected_host_behavior": "Only the first reconnected event may be user-visible; repeated recovered_event_suppressed entries stay diagnostic-only.",
+            "failure_classification": "disconnected",
+            "artifact_requirements": ["docs/validation/companion_ble_matrix.json"],
+        },
+        {
+            "case_id": "C9",
             "category": "long_recording_metadata",
             "scenario": f"Host validates long recording metadata before transfer: {recording_total} bytes, sample format, CRC/hash, and created time/tick.",
             "result": "PASS",
@@ -342,7 +422,7 @@ def product_matrix(operations: dict[str, dict[str, Any]]) -> list[dict[str, Any]
             "artifact_requirements": ["docs/validation/companion-pendant-firmware-bringup-1.7-recording-cache-fixture.json"],
         },
         {
-            "case_id": "C6",
+            "case_id": "C10",
             "category": "idle_resume",
             "scenario": "After idle, host rereads status and recording_list before offering a sync action.",
             "result": "PASS",
@@ -352,7 +432,7 @@ def product_matrix(operations: dict[str, dict[str, Any]]) -> list[dict[str, Any]
             "artifact_requirements": ["docs/validation/companion_ble_matrix.json"],
         },
         {
-            "case_id": "C7",
+            "case_id": "C11",
             "category": "log_export",
             "scenario": "Host requests a bounded diagnostic tail after an error or blocked transfer.",
             "result": "PASS",
@@ -362,7 +442,7 @@ def product_matrix(operations: dict[str, dict[str, Any]]) -> list[dict[str, Any]
             "artifact_requirements": ["docs/validation/companion_ble_matrix.json"],
         },
         {
-            "case_id": "C8",
+            "case_id": "C12",
             "category": "ota_blocked",
             "scenario": "OTA readiness is not ready while low battery, transfer, diag export, wrong-board, invalid-hash, or interrupted-transfer blockers are present.",
             "result": "PASS",
@@ -371,7 +451,7 @@ def product_matrix(operations: dict[str, dict[str, Any]]) -> list[dict[str, Any]
             "failure_classification": "ota_blocker_not_actionable",
             "artifact_requirements": ["docs/validation/companion-pendant-firmware-bringup-1.8-ota-manifest-fixtures.json"],
         },
-    ]
+]
 
 
 def actionable_failures() -> list[dict[str, Any]]:
@@ -381,49 +461,143 @@ def actionable_failures() -> list[dict[str, Any]]:
             "simulated_trigger": "scan returns no Companion service UUID",
             "user_action": "Power the pendant, keep it near the host, and retry scan/pairing.",
             "host_result": "show reconnect action; do not claim sync success",
+            "retryable": True,
+            "automatic_recovery": False,
+            "diagnostic_context": "scan_result_parsing",
         },
         {
             "failure": "wrong_service_uuid",
             "simulated_trigger": "advertisement lacks Companion service UUID",
             "user_action": "Select the Companion pendant advertising name or forget the stale device and scan again.",
             "host_result": "reject the device before any characteristic read",
+            "retryable": True,
+            "automatic_recovery": False,
+            "diagnostic_context": "scan_result_parsing",
         },
         {
             "failure": "timeout",
             "simulated_trigger": "status read or transfer notify exceeds budget",
             "user_action": "Retry once, then reconnect the pendant if the timeout repeats.",
             "host_result": "surface timeout with retry/reconnect option",
+            "retryable": True,
+            "automatic_recovery": True,
+            "diagnostic_context": "operation_timeout",
+        },
+        {
+            "failure": "disconnected",
+            "simulated_trigger": "link drops after a verified recording byte offset",
+            "user_action": "Keep the pendant nearby; the host should reconnect and resume automatically, then offer manual retry if it repeats.",
+            "host_result": "reread status and recording_list, then resume by byte_offset",
+            "retryable": True,
+            "automatic_recovery": True,
+            "diagnostic_context": "disconnect_reconnect",
+        },
+        {
+            "failure": "gatt_cache_stale",
+            "simulated_trigger": "service changed or cached GATT table no longer exposes Companion characteristics",
+            "user_action": "Refresh the Companion device, re-pair if stale services persist, and export diagnostics for repeated cache failures.",
+            "host_result": "refresh discovery once; repeated failures are diagnostic-only and may suggest re-pair",
+            "retryable": True,
+            "automatic_recovery": True,
+            "diagnostic_context": "gatt_cache_stale",
+        },
+        {
+            "failure": "cccd_notify_failure",
+            "simulated_trigger": "notify subscription or CCCD write fails for recording/log packets",
+            "user_action": "Retry after the host reopens notification subscription; export diagnostics if repeated.",
+            "host_result": "do not trust partial transfer; reopen notify path before continuing",
+            "retryable": True,
+            "automatic_recovery": True,
+            "diagnostic_context": "cccd_notify_failure",
         },
         {
             "failure": "crc_mismatch",
             "simulated_trigger": "recording packet CRC does not match header+payload",
             "user_action": "Retry the recording pull from byte offset zero and export diagnostics if it repeats.",
             "host_result": "do not mark recording synced and do not delete",
+            "retryable": True,
+            "automatic_recovery": False,
+            "diagnostic_context": "recording_pull",
+        },
+        {
+            "failure": "hash_mismatch",
+            "simulated_trigger": "final recording SHA-256 does not match recording_list metadata",
+            "user_action": "Retry the full recording pull and keep the pendant recording stored until a verified transfer succeeds.",
+            "host_result": "do not mark synced and do not send delete-after-sync",
+            "retryable": True,
+            "automatic_recovery": False,
+            "diagnostic_context": "recording_pull",
         },
         {
             "failure": "low_battery",
             "simulated_trigger": "OTA readiness reports low_battery blocker",
             "user_action": "Charge the pendant above the package minimum before retrying OTA.",
             "host_result": "block OTA transfer writes",
+            "retryable": False,
+            "automatic_recovery": False,
+            "diagnostic_context": "ota_status",
         },
         {
             "failure": "no_recording",
             "simulated_trigger": "recording_list is empty or recording_id is missing",
             "user_action": "Record a new sample or refresh the list after reconnecting.",
             "host_result": "disable recording pull/delete for that id",
+            "retryable": True,
+            "automatic_recovery": False,
+            "diagnostic_context": "recording_list",
         },
         {
             "failure": "transfer_canceled",
             "simulated_trigger": "user cancels recording pull before final SHA-256",
             "user_action": "Resume the transfer later from the next verified byte offset.",
             "host_result": "keep local partial state separate from synced state",
+            "retryable": True,
+            "automatic_recovery": False,
+            "diagnostic_context": "recording_pull",
+        },
+        {
+            "failure": "ota_blocked",
+            "simulated_trigger": "OTA readiness blocker_bitmap is non-zero",
+            "user_action": "Resolve the named blocker before retrying the update.",
+            "host_result": "show blocker names and keep OTA data path disabled",
+            "retryable": False,
+            "automatic_recovery": False,
+            "diagnostic_context": "ota_status",
         },
     ]
+
+
+def recovery_event_policy() -> dict[str, Any]:
+    return {
+        "rate_limit_window_seconds": 60,
+        "max_visible_recovered_events_per_window": 1,
+        "cases": [
+            {
+                "event_id": "reconnected_event_visible",
+                "trigger": "first automatic disconnect recovery in a sync session",
+                "visible_to_user": True,
+                "host_result": "show one concise reconnected confirmation",
+            },
+            {
+                "event_id": "recovered_event_suppressed",
+                "trigger": "second or later automatic recovery within the rate-limit window",
+                "visible_to_user": False,
+                "host_result": "record diagnostic context without spamming the host UX",
+            },
+            {
+                "event_id": "gatt_cache_stale_diagnostic_only",
+                "trigger": "repeated stale GATT/cache or CCCD notify failure after automatic retry",
+                "visible_to_user": False,
+                "host_result": "keep bounded diagnostics and show re-pair guidance only when manual action is needed",
+            },
+        ],
+    }
 
 
 def build_matrix() -> dict[str, Any]:
     adapter = CompanionFixtureAdapter()
     operations = adapter.run_operations()
+    failures = actionable_failures()
     return {
         "schema_id": "companion.pendant.ble_fixture_matrix.v1",
         "schema_version": 1,
@@ -454,7 +628,9 @@ def build_matrix() -> dict[str, Any]:
         },
         "operation_coverage": operations,
         "product_matrix": product_matrix(operations),
-        "actionable_failures": actionable_failures(),
+        "actionable_failures": failures,
+        "failure_classification_matrix": failures,
+        "recovery_event_policy": recovery_event_policy(),
         "artifact_policy": {
             "primary_artifact": rel(MATRIX_PATH),
             "allowed_roots": ["docs/validation", "tests/fixtures"],
