@@ -72,6 +72,16 @@ function Write-JsonFile {
     $Value | ConvertTo-Json -Depth $Depth | Set-Content -LiteralPath $Path -Encoding UTF8
 }
 
+function Get-DisplayPath {
+    param([Parameter(Mandatory = $true)][string] $Path)
+
+    $resolved = (Resolve-Path -LiteralPath $Path).Path
+    if ($resolved.StartsWith($repoRoot, [System.StringComparison]::OrdinalIgnoreCase)) {
+        return [System.IO.Path]::GetRelativePath($repoRoot, $resolved).Replace("\", "/")
+    }
+    return $resolved
+}
+
 $rawEvents = @()
 $rawEvents += New-DiagEvent -Sequence 101 -TimeMs 10 -Source "boot" -EventId 1 -Severity "info" -Arg0 1
 $rawEvents += New-DiagEvent -Sequence 102 -TimeMs 45 -Source "ble" -EventId 1 -Severity "info" -Arg0 1 -Arg1 -47
@@ -220,15 +230,15 @@ $summary = [ordered]@{
         total_available = $decodedEvents.Count
         returned_count = $tailEvents.Count
         next_cursor = $lastSequence
-        decoded_path = $decodedJson
-        raw_path = $rawJsonl
+        decoded_path = Get-DisplayPath -Path $decodedJson
+        raw_path = Get-DisplayPath -Path $rawJsonl
         events = $tailEvents
     }
     artifacts = [ordered]@{
-        summary_json = $summaryJson
-        summary_md = $summaryMd
-        diag_tail_raw_jsonl = $rawJsonl
-        diag_tail_decoded_json = $decodedJson
+        summary_json = Get-DisplayPath -Path $summaryJson
+        summary_md = Get-DisplayPath -Path $summaryMd
+        diag_tail_raw_jsonl = Get-DisplayPath -Path $rawJsonl
+        diag_tail_decoded_json = Get-DisplayPath -Path $decodedJson
     }
 }
 
@@ -248,8 +258,8 @@ $md = @(
     "- OTA readiness: ready",
     "- Battery: 84 percent / 4012 mV",
     "- Diag tail: $($tailEvents.Count) of $($decodedEvents.Count) events, cursor $lastSequence",
-    "- Summary JSON: $summaryJson",
-    "- Decoded tail: $decodedJson"
+    "- Summary JSON: $(Get-DisplayPath -Path $summaryJson)",
+    "- Decoded tail: $(Get-DisplayPath -Path $decodedJson)"
 )
 $md | Set-Content -LiteralPath $summaryMd -Encoding UTF8
 
