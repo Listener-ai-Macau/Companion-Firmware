@@ -291,6 +291,8 @@ def check_wired_package_tooling(errors: list[str]) -> None:
         "firstinstall=0",
         "nSWboot0=1",
         "Companion WB55 无线栈操作确认",
+        "$status = \"CANCELLED\"",
+        "wireless stack action cancelled before hardware access",
         "Refusing to touch Companion WB55 hardware without workflow lock acknowledgement",
         "This script will not auto-upgrade FUS",
         "companion_wireless_stack_result_json=",

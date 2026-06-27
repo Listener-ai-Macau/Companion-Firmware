@@ -56,7 +56,7 @@ Repo commit before update: `78a5a59`
 | BLE validation resource | PASS | Use workflow resource pair `Companion-WB55,BLE-Companion` for Type Companion BLE discovery, A1/A2, BLE OTA, and aggregate hardware acceptance |
 | Serial VCP | PASS | `tools/capture_nucleo_serial.ps1 -CheckOnly` auto-detected `STMicroelectronics STLink Virtual COM Port (COM13)` with PNP id `USB\VID_0483&PID_374B&MI_02\7&ECAD0C&0&0002`; board ledger now records `com=COM13` |
 | Product peripheral bench | DEFERRED | E-paper, PDM MEMS microphone, SPI NOR flash, button, battery/charger/fuel gauge, and measurement method are deferred to the later pendant MVP bench gate; the NUCLEO first gate is flash/FUS/BLE bring-up |
-| FUS/BLE stack state | PENDING | A locked FUS read was attempted on `2026-06-27`, but the Chinese operator prompt timed out/cancelled before any hardware command ran; run the FUS diagnostic again while the operator can confirm the prompt |
+| FUS/BLE stack state | PENDING | A locked FUS read was attempted on `2026-06-27T10:54:33+08:00`, but the Chinese operator prompt timed out/cancelled before any hardware command ran; evidence: `.cache/validation/companion-wireless-stack-20260627-105431/companion-wireless-stack-summary.json` has `status=CANCELLED` and `steps=[]`. Run the FUS diagnostic again while the operator can confirm the prompt |
 
 ## Human Confirmation
 

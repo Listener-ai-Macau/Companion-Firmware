@@ -264,13 +264,6 @@ if (-not $WorkflowLockHeld) {
     throw "Refusing to touch Companion WB55 hardware without workflow lock acknowledgement. Run through aiw with-lock -Resource Companion-WB55 and pass -WorkflowLockHeld inside the locked command."
 }
 
-if (-not $programmer) {
-    throw "STM32CubeProgrammer CLI not found. Install STM32CubeProgrammer, add STM32_Programmer_CLI.exe to PATH, or pass -ProgrammerPath."
-}
-
-$actionText = if ($InstallBleStack) { "安装/更新 CPU2 BLE full stack" } else { "读取 FUS 状态" }
-Show-OperatorPrompt -Title "Companion WB55 无线栈操作确认" -Message "请确认 NUCLEO-WB55RG 已通过板载 ST-LINK USB 接好，Type/串口监视器/其它刷机工具已停止占用设备。本次将执行：$actionText。若选择安装，会使用 STM32CubeWB v1.24.0 的 stm32wb5x_BLE_Stack_full_fw.bin，安装地址 $installAddress。点击 OK 继续；点击 Cancel 取消。"
-
 $steps = [System.Collections.Generic.List[object]]::new()
 $errors = [System.Collections.Generic.List[string]]::new()
 $fusWord = $null
@@ -278,6 +271,20 @@ $fusSource = $null
 $fusClass = "unknown"
 $status = "PASS"
 $mode = if ($InstallBleStack) { "install-ble-stack" } else { "read-fus-info" }
+
+if (-not $programmer) {
+    throw "STM32CubeProgrammer CLI not found. Install STM32CubeProgrammer, add STM32_Programmer_CLI.exe to PATH, or pass -ProgrammerPath."
+}
+
+$actionText = if ($InstallBleStack) { "安装/更新 CPU2 BLE full stack" } else { "读取 FUS 状态" }
+try {
+    Show-OperatorPrompt -Title "Companion WB55 无线栈操作确认" -Message "请确认 NUCLEO-WB55RG 已通过板载 ST-LINK USB 接好，Type/串口监视器/其它刷机工具已停止占用设备。本次将执行：$actionText。若选择安装，会使用 STM32CubeWB v1.24.0 的 stm32wb5x_BLE_Stack_full_fw.bin，安装地址 $installAddress。点击 OK 继续；点击 Cancel 取消。"
+} catch {
+    $status = "CANCELLED"
+    $errors.Add($_.Exception.Message) | Out-Null
+    Write-Summary -Status $status -FusWord $fusWord -FusSource $fusSource -FusClass $fusClass -Steps @($steps) -Errors @($errors) -Mode $mode
+    throw "Companion WB55 wireless stack action cancelled before hardware access. See $summaryJson"
+}
 
 try {
     $steps.Add((Invoke-Programmer -Programmer $programmer -Arguments @("-c", "port=$Port", "-startfus") -Label "start FUS")) | Out-Null
