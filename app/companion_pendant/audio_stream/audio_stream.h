@@ -118,6 +118,11 @@ comp_audio_stream_status_t comp_audio_stream_send_session_start(comp_audio_strea
 comp_audio_stream_status_t comp_audio_stream_send_session_audio(comp_audio_stream_t *stream,
                                                                 const uint8_t *pcm,
                                                                 uint16_t pcm_bytes);
+comp_audio_stream_status_t comp_audio_stream_send_session_audio_frame(
+    comp_audio_stream_t *stream,
+    const uint8_t *pcm,
+    uint16_t payload_bytes,
+    uint16_t packet_pcm_bytes);
 comp_audio_stream_status_t comp_audio_stream_send_session_stop(comp_audio_stream_t *stream);
 comp_audio_stream_status_t comp_audio_stream_send_session_cancel(comp_audio_stream_t *stream);
 comp_audio_stream_status_t comp_audio_stream_send_session_error(comp_audio_stream_t *stream,

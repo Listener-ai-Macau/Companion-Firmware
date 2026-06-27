@@ -489,6 +489,16 @@ comp_audio_stream_status_t Companion_BleAudio_SendPcmBytes(const uint8_t *pcm,
                                               pcm_bytes);
 }
 
+comp_audio_stream_status_t Companion_BleAudio_SendPcmFrame(const uint8_t *pcm,
+                                                           uint16_t payload_bytes,
+                                                           uint16_t packet_pcm_bytes)
+{
+  return comp_audio_stream_send_session_audio_frame(&s_companion_audio_stream,
+                                                    pcm,
+                                                    payload_bytes,
+                                                    packet_pcm_bytes);
+}
+
 comp_audio_stream_status_t Companion_BleAudio_SendSessionStop(void)
 {
   return comp_audio_stream_send_session_stop(&s_companion_audio_stream);

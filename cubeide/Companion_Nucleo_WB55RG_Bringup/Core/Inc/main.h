@@ -20,6 +20,9 @@ uint32_t Companion_BleAudio_NextSessionId(void);
 comp_audio_stream_status_t Companion_BleAudio_SendSessionStart(uint32_t session_id);
 comp_audio_stream_status_t Companion_BleAudio_SendPcmBytes(const uint8_t *pcm,
                                                            uint16_t pcm_bytes);
+comp_audio_stream_status_t Companion_BleAudio_SendPcmFrame(const uint8_t *pcm,
+                                                           uint16_t payload_bytes,
+                                                           uint16_t packet_pcm_bytes);
 comp_audio_stream_status_t Companion_BleAudio_SendSessionStop(void);
 comp_audio_stream_status_t Companion_BleAudio_SendSessionCancel(void);
 comp_audio_stream_status_t Companion_BleAudio_SendSessionError(comp_audio_session_error_t error_code);

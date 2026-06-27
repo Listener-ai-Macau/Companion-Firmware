@@ -12,6 +12,8 @@
 #define COMP_AUDIO_STREAM_STM32WB_NOTIFY_CCCD_OFFSET 2u
 #define COMP_AUDIO_STREAM_STM32WB_VALUE_HANDLE_OFFSET 1u
 #define COMP_AUDIO_STREAM_STM32WB_SERVICE_ATTRIBUTE_RECORDS (1u + 3u + 2u + 2u + 2u)
+#define COMP_AUDIO_STREAM_STM32WB_NOTIFY_RETRY_LIMIT 96u
+#define COMP_AUDIO_STREAM_STM32WB_NOTIFY_RETRY_EVENT_PUMPS 6u
 
 typedef struct {
     uint16_t service_handle;
@@ -56,6 +58,10 @@ static const uint8_t COMP_AUDIO_STREAM_STM32WB_DEFAULT_CAPABILITIES[] =
 
 PLACE_IN_SECTION("BLE_DRIVER_CONTEXT")
 static comp_audio_stream_stm32wb_context_t s_comp_audio_stream_stm32wb;
+static volatile tBleStatus s_comp_audio_stream_stm32wb_last_notify_status =
+    BLE_STATUS_SUCCESS;
+static volatile uint32_t s_comp_audio_stream_stm32wb_tx_pool_available_seq;
+static volatile uint32_t s_comp_audio_stream_stm32wb_notification_complete_seq;
 
 static SVCCTL_EvtAckStatus_t comp_audio_stream_stm32wb_event_handler(void *event);
 
@@ -71,6 +77,55 @@ static uint8_t comp_audio_stream_stm32wb_is_value_handle(uint16_t event_handle,
 {
     return event_handle ==
            (uint16_t)(char_handle + COMP_AUDIO_STREAM_STM32WB_VALUE_HANDLE_OFFSET);
+}
+
+static uint8_t comp_audio_stream_stm32wb_is_notify_value_handle(uint16_t event_handle)
+{
+    return comp_audio_stream_stm32wb_is_value_handle(
+               event_handle,
+               s_comp_audio_stream_stm32wb.notify_char_handle) ||
+           event_handle == s_comp_audio_stream_stm32wb.notify_char_handle;
+}
+
+static uint8_t comp_audio_stream_stm32wb_is_retryable_status(tBleStatus status)
+{
+    return status == BLE_STATUS_BUSY ||
+           status == BLE_STATUS_INSUFFICIENT_RESOURCES;
+}
+
+static void comp_audio_stream_stm32wb_note_tx_pool_available(void)
+{
+    s_comp_audio_stream_stm32wb_tx_pool_available_seq++;
+}
+
+static void comp_audio_stream_stm32wb_note_notification_complete(uint16_t attr_handle)
+{
+    if (comp_audio_stream_stm32wb_is_notify_value_handle(attr_handle)) {
+        s_comp_audio_stream_stm32wb_notification_complete_seq++;
+    }
+}
+
+static void comp_audio_stream_stm32wb_wait_for_retry_window(
+    tBleStatus status,
+    uint32_t tx_pool_available_seq,
+    uint32_t notification_complete_seq)
+{
+    for (uint8_t i = 0u; i < COMP_AUDIO_STREAM_STM32WB_NOTIFY_RETRY_EVENT_PUMPS; ++i) {
+        comp_audio_stream_stm32wb_notify_pump();
+        if (status == BLE_STATUS_INSUFFICIENT_RESOURCES &&
+            s_comp_audio_stream_stm32wb_tx_pool_available_seq != tx_pool_available_seq) {
+            break;
+        }
+        if (status == BLE_STATUS_BUSY &&
+            s_comp_audio_stream_stm32wb_notification_complete_seq !=
+                notification_complete_seq) {
+            break;
+        }
+        if (s_comp_audio_stream_stm32wb.stream != 0 &&
+            !comp_audio_stream_is_ready(s_comp_audio_stream_stm32wb.stream)) {
+            break;
+        }
+    }
 }
 
 static void comp_audio_stream_stm32wb_emit_event(
@@ -152,6 +207,19 @@ static SVCCTL_EvtAckStatus_t comp_audio_stream_stm32wb_event_handler(void *event
     }
 
     blecore_evt = (evt_blecore_aci *)event_pckt->data;
+    if (blecore_evt->ecode == ACI_GATT_TX_POOL_AVAILABLE_VSEVT_CODE) {
+        comp_audio_stream_stm32wb_note_tx_pool_available();
+        return SVCCTL_EvtAckFlowEnable;
+    }
+
+    if (blecore_evt->ecode == ACI_GATT_NOTIFICATION_COMPLETE_VSEVT_CODE) {
+        aci_gatt_notification_complete_event_rp0 *notification_complete =
+            (aci_gatt_notification_complete_event_rp0 *)blecore_evt->data;
+        comp_audio_stream_stm32wb_note_notification_complete(
+            notification_complete->Attr_Handle);
+        return SVCCTL_EvtAckFlowEnable;
+    }
+
     if (blecore_evt->ecode != ACI_GATT_ATTRIBUTE_MODIFIED_VSEVT_CODE) {
         return return_value;
     }
@@ -217,6 +285,8 @@ tBleStatus comp_audio_stream_stm32wb_init(comp_audio_stream_t *stream)
 
     memset(&s_comp_audio_stream_stm32wb, 0, sizeof(s_comp_audio_stream_stm32wb));
     s_comp_audio_stream_stm32wb.stream = stream;
+    s_comp_audio_stream_stm32wb_tx_pool_available_seq = 0u;
+    s_comp_audio_stream_stm32wb_notification_complete_seq = 0u;
 
     SVCCTL_RegisterSvcHandler(comp_audio_stream_stm32wb_event_handler);
 
@@ -234,7 +304,7 @@ tBleStatus comp_audio_stream_stm32wb_init(comp_audio_stream_t *stream)
         COMP_AUDIO_STREAM_STM32WB_NOTIFY_UUID,
         COMP_AUDIO_STREAM_STM32WB_GATT_VALUE_BYTES,
         CHAR_PROP_NOTIFY,
-        GATT_NOTIFY_ATTRIBUTE_WRITE,
+        GATT_NOTIFY_ATTRIBUTE_WRITE | GATT_NOTIFY_NOTIFICATION_COMPLETION,
         1u,
         &s_comp_audio_stream_stm32wb.notify_char_handle);
     if (status != BLE_STATUS_SUCCESS) {
@@ -298,17 +368,38 @@ comp_audio_stream_status_t comp_audio_stream_stm32wb_notify(void *context,
         return COMP_AUDIO_STREAM_PACKET_TOO_LARGE;
     }
 
-    tBleStatus status = aci_gatt_update_char_value(
-        s_comp_audio_stream_stm32wb.service_handle,
-        s_comp_audio_stream_stm32wb.notify_char_handle,
-        0u,
-        (uint8_t)length,
-        data);
-    if (status != BLE_STATUS_SUCCESS) {
-        return COMP_AUDIO_STREAM_NOTIFY_FAILED;
+    tBleStatus status = BLE_STATUS_FAILED;
+    for (uint8_t attempt = 0u;
+         attempt <= COMP_AUDIO_STREAM_STM32WB_NOTIFY_RETRY_LIMIT;
+         ++attempt) {
+        uint32_t tx_pool_available_seq =
+            s_comp_audio_stream_stm32wb_tx_pool_available_seq;
+        uint32_t notification_complete_seq =
+            s_comp_audio_stream_stm32wb_notification_complete_seq;
+        status = aci_gatt_update_char_value(
+            s_comp_audio_stream_stm32wb.service_handle,
+            s_comp_audio_stream_stm32wb.notify_char_handle,
+            0u,
+            (uint8_t)length,
+            data);
+        s_comp_audio_stream_stm32wb_last_notify_status = status;
+        if (status == BLE_STATUS_SUCCESS) {
+            comp_audio_stream_stm32wb_notify_pump();
+            return COMP_AUDIO_STREAM_OK;
+        }
+        if (!comp_audio_stream_stm32wb_is_retryable_status(status)) {
+            break;
+        }
+        comp_audio_stream_stm32wb_wait_for_retry_window(status,
+                                                        tx_pool_available_seq,
+                                                        notification_complete_seq);
     }
-    comp_audio_stream_stm32wb_notify_pump();
-    return COMP_AUDIO_STREAM_OK;
+    return COMP_AUDIO_STREAM_NOTIFY_FAILED;
+}
+
+tBleStatus comp_audio_stream_stm32wb_last_notify_status(void)
+{
+    return s_comp_audio_stream_stm32wb_last_notify_status;
 }
 
 tBleStatus comp_audio_stream_stm32wb_update_readiness(const uint8_t *data,
@@ -343,4 +434,17 @@ __WEAK void comp_audio_stream_stm32wb_app_notification(
 
 __WEAK void comp_audio_stream_stm32wb_notify_pump(void)
 {
+}
+
+void aci_gatt_tx_pool_available_event(uint16_t Connection_Handle,
+                                      uint16_t Available_Buffers)
+{
+    (void)Connection_Handle;
+    (void)Available_Buffers;
+    comp_audio_stream_stm32wb_note_tx_pool_available();
+}
+
+void aci_gatt_notification_complete_event(uint16_t Attr_Handle)
+{
+    comp_audio_stream_stm32wb_note_notification_complete(Attr_Handle);
 }

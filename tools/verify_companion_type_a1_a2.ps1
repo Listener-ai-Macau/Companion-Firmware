@@ -15,6 +15,14 @@ param(
     [bool] $RequireA2Text = $true,
     [int] $MinFinalTextChars = 1,
     [string] $A2PlaybackText = "明天下午两点提醒我检查蓝牙音频丢包率。",
+    [double] $TtsGain = 4.0,
+    [int] $TtsRate = 0,
+    [double] $MinTranscriptAccuracy = 0.60,
+    [int] $PrePlaybackDelayMs = 300,
+    [ValidateSet("wav", "speech")]
+    [string] $PlaybackMode = "wav",
+    [int] $PlaybackVolumePercent = 90,
+    [switch] $KeepPlaybackVolume,
     [switch] $DisableTtsPlayback,
     [switch] $PromptOperator,
     [switch] $Execute,
@@ -85,12 +93,164 @@ function Set-CompanionTypeEnvironment {
     $env:LISTENER_TYPE_HIDE_MAIN_ON_START = "1"
     $env:LISTENER_TYPE_DISABLE_BACKGROUND_BLE = "1"
     $env:LISTENER_TYPE_EMBEDDED_BLE_READY_COMMAND = $ReadyCommand
+    $env:LISTENER_TYPE_RECORD_EMBEDDED_AUDIO_FOR_DEBUG = "1"
     if ($StatsOnly) {
         $env:LISTENER_TYPE_EMBEDDED_BLE_STATS_ONLY = "1"
         Remove-Item Env:\LISTENER_TYPE_FORCE_RAW_OUTPUT -ErrorAction SilentlyContinue
     } else {
         Remove-Item Env:\LISTENER_TYPE_EMBEDDED_BLE_STATS_ONLY -ErrorAction SilentlyContinue
         $env:LISTENER_TYPE_FORCE_RAW_OUTPUT = "1"
+    }
+}
+
+function Initialize-CompanionPlaybackVolumeApi {
+    if ("CompanionPlaybackAudioEndpoint" -as [type]) {
+        return
+    }
+
+    Add-Type -TypeDefinition @'
+using System;
+using System.Runtime.InteropServices;
+
+[ComImport]
+[Guid("BCDE0395-E52F-467C-8E3D-C4579291692E")]
+internal class CompanionMMDeviceEnumerator
+{
+}
+
+internal enum CompanionEDataFlow
+{
+    eRender = 0,
+    eCapture = 1,
+    eAll = 2
+}
+
+internal enum CompanionERole
+{
+    eConsole = 0,
+    eMultimedia = 1,
+    eCommunications = 2
+}
+
+[ComImport]
+[Guid("A95664D2-9614-4F35-A746-DE8DB63617E6")]
+[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+internal interface ICompanionMMDeviceEnumerator
+{
+    int EnumAudioEndpoints();
+
+    [PreserveSig]
+    int GetDefaultAudioEndpoint(CompanionEDataFlow dataFlow, CompanionERole role, out ICompanionMMDevice ppDevice);
+}
+
+[ComImport]
+[Guid("D666063F-1587-4E43-81F1-B948E807363F")]
+[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+internal interface ICompanionMMDevice
+{
+    [PreserveSig]
+    int Activate(ref Guid iid, int dwClsCtx, IntPtr pActivationParams, out ICompanionAudioEndpointVolume ppInterface);
+}
+
+[ComImport]
+[Guid("5CDF2C82-841E-4546-9722-0CF74078229A")]
+[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+internal interface ICompanionAudioEndpointVolume
+{
+    int RegisterControlChangeNotify(IntPtr pNotify);
+    int UnregisterControlChangeNotify(IntPtr pNotify);
+    int GetChannelCount(out uint pnChannelCount);
+    int SetMasterVolumeLevel(float fLevelDB, Guid pguidEventContext);
+    int SetMasterVolumeLevelScalar(float fLevel, Guid pguidEventContext);
+    int GetMasterVolumeLevel(out float pfLevelDB);
+    int GetMasterVolumeLevelScalar(out float pfLevel);
+    int SetChannelVolumeLevel(uint nChannel, float fLevelDB, Guid pguidEventContext);
+    int SetChannelVolumeLevelScalar(uint nChannel, float fLevel, Guid pguidEventContext);
+    int GetChannelVolumeLevel(uint nChannel, out float pfLevelDB);
+    int GetChannelVolumeLevelScalar(uint nChannel, out float pfLevel);
+    int SetMute([MarshalAs(UnmanagedType.Bool)] bool bMute, Guid pguidEventContext);
+    int GetMute(out bool pbMute);
+}
+
+public sealed class CompanionPlaybackAudioEndpoint
+{
+    public float Volume;
+    public bool Muted;
+
+    private static ICompanionAudioEndpointVolume GetEndpoint()
+    {
+        var enumerator = (ICompanionMMDeviceEnumerator)(new CompanionMMDeviceEnumerator());
+        ICompanionMMDevice device;
+        int hr = enumerator.GetDefaultAudioEndpoint(CompanionEDataFlow.eRender, CompanionERole.eMultimedia, out device);
+        if (hr != 0)
+        {
+            Marshal.ThrowExceptionForHR(hr);
+        }
+
+        Guid iid = typeof(ICompanionAudioEndpointVolume).GUID;
+        ICompanionAudioEndpointVolume endpoint;
+        hr = device.Activate(ref iid, 23, IntPtr.Zero, out endpoint);
+        if (hr != 0)
+        {
+            Marshal.ThrowExceptionForHR(hr);
+        }
+        return endpoint;
+    }
+
+    public static CompanionPlaybackAudioEndpoint Snapshot()
+    {
+        var endpoint = GetEndpoint();
+        float volume;
+        bool muted;
+        endpoint.GetMasterVolumeLevelScalar(out volume);
+        endpoint.GetMute(out muted);
+        return new CompanionPlaybackAudioEndpoint { Volume = volume, Muted = muted };
+    }
+
+    public static void Set(float volume, bool muted)
+    {
+        var endpoint = GetEndpoint();
+        var context = Guid.Empty;
+        endpoint.SetMute(muted, context);
+        endpoint.SetMasterVolumeLevelScalar(volume, context);
+    }
+}
+'@
+}
+
+function Set-CompanionPlaybackVolume {
+    param([int] $Percent)
+
+    if ($Percent -lt 0) {
+        Write-Host "PLAYBACK_VOLUME: skipped"
+        return $null
+    }
+
+    try {
+        Initialize-CompanionPlaybackVolumeApi
+        $snapshot = [CompanionPlaybackAudioEndpoint]::Snapshot()
+        $target = [Math]::Max(0.01, [Math]::Min(1.0, [double]$Percent / 100.0))
+        [CompanionPlaybackAudioEndpoint]::Set([single]$target, $false)
+        Write-Host ("PLAYBACK_VOLUME: set target={0} previous={1:0.###} muted={2}" -f $Percent, [double]$snapshot.Volume, [bool]$snapshot.Muted)
+        return $snapshot
+    } catch {
+        Write-Warning "Failed to set playback volume before Companion audio validation: $($_.Exception.Message)"
+        return $null
+    }
+}
+
+function Restore-CompanionPlaybackVolume {
+    param($Snapshot)
+
+    if ($KeepPlaybackVolume -or $null -eq $Snapshot) {
+        return
+    }
+
+    try {
+        [CompanionPlaybackAudioEndpoint]::Set([single]$Snapshot.Volume, [bool]$Snapshot.Muted)
+        Write-Host ("PLAYBACK_VOLUME: restored volume={0:0.###} muted={1}" -f [double]$Snapshot.Volume, [bool]$Snapshot.Muted)
+    } catch {
+        Write-Warning "Failed to restore playback volume after Companion audio validation: $($_.Exception.Message)"
     }
 }
 
@@ -154,10 +314,80 @@ function Get-A1PlaybackText {
     return $A1PlaybackTexts[$index]
 }
 
+function Normalize-TranscriptAccuracyText {
+    param([string] $Text)
+    if ($null -eq $Text) {
+        return ""
+    }
+    $normalized = $Text.Normalize([System.Text.NormalizationForm]::FormKC).ToLowerInvariant()
+    $builder = [System.Text.StringBuilder]::new()
+    foreach ($ch in $normalized.ToCharArray()) {
+        if ([char]::IsLetterOrDigit($ch)) {
+            [void] $builder.Append($ch)
+        }
+    }
+    return $builder.ToString()
+}
+
+function Get-TranscriptEditDistance {
+    param(
+        [string] $Expected,
+        [string] $Actual
+    )
+
+    if ($Expected -eq $Actual) {
+        return 0
+    }
+
+    $previous = New-Object int[] ($Actual.Length + 1)
+    for ($i = 0; $i -le $Actual.Length; $i++) {
+        $previous[$i] = $i
+    }
+    for ($i = 1; $i -le $Expected.Length; $i++) {
+        $current = New-Object int[] ($Actual.Length + 1)
+        $current[0] = $i
+        for ($j = 1; $j -le $Actual.Length; $j++) {
+            $cost = if ($Expected[$i - 1] -eq $Actual[$j - 1]) { 0 } else { 1 }
+            $insertCost = $current[$j - 1] + 1
+            $deleteCost = $previous[$j] + 1
+            $replaceCost = $previous[$j - 1] + $cost
+            $current[$j] = [Math]::Min([Math]::Min($insertCost, $deleteCost), $replaceCost)
+        }
+        $previous = $current
+    }
+    return $previous[$Actual.Length]
+}
+
+function Measure-TranscriptAccuracy {
+    param(
+        [string] $Expected,
+        [string] $Transcript
+    )
+
+    $expectedNormalized = Normalize-TranscriptAccuracyText -Text $Expected
+    $transcriptNormalized = Normalize-TranscriptAccuracyText -Text $Transcript
+    $distance = Get-TranscriptEditDistance -Expected $expectedNormalized -Actual $transcriptNormalized
+    if ($expectedNormalized.Length -eq 0) {
+        $cer = if ($transcriptNormalized.Length -eq 0) { 0.0 } else { 1.0 }
+    } else {
+        $cer = $distance / [double] $expectedNormalized.Length
+    }
+    $accuracy = [Math]::Max(0.0, 1.0 - $cer)
+    return [ordered]@{
+        normalized_expected = $expectedNormalized
+        normalized_transcript = $transcriptNormalized
+        edit_distance = $distance
+        reference_length = $expectedNormalized.Length
+        cer = [Math]::Round($cer, 6)
+        accuracy = [Math]::Round($accuracy, 6)
+    }
+}
+
 function New-TtsWav {
     param(
         [Parameter(Mandatory = $true)][string] $Text,
-        [Parameter(Mandatory = $true)][string] $Path
+        [Parameter(Mandatory = $true)][string] $Path,
+        [int] $Rate = 0
     )
 
     $parent = Split-Path -Parent $Path
@@ -168,6 +398,8 @@ function New-TtsWav {
     Add-Type -AssemblyName System.Speech
     $synth = [System.Speech.Synthesis.SpeechSynthesizer]::new()
     try {
+        $synth.Volume = 100
+        $synth.Rate = [Math]::Max(-10, [Math]::Min(10, $Rate))
         $zhVoice = $synth.GetInstalledVoices() |
             Where-Object { $_.VoiceInfo.Culture.Name -like "zh-*" } |
             Select-Object -First 1
@@ -187,7 +419,114 @@ function New-TtsWav {
     }
 }
 
-function Start-WavPlaybackLoop {
+function Boost-WavPcm16 {
+    param(
+        [Parameter(Mandatory = $true)][string] $Path,
+        [double] $Gain
+    )
+
+    if ($Gain -le 1.0) {
+        return
+    }
+
+    $bytes = [System.IO.File]::ReadAllBytes($Path)
+    if ($bytes.Length -lt 44) {
+        return
+    }
+    $riff = [System.Text.Encoding]::ASCII.GetString($bytes, 0, 4)
+    $wave = [System.Text.Encoding]::ASCII.GetString($bytes, 8, 4)
+    if ($riff -ne "RIFF" -or $wave -ne "WAVE") {
+        return
+    }
+
+    $offset = 12
+    $bitsPerSample = $null
+    $dataOffset = $null
+    $dataSize = $null
+    while ($offset + 8 -le $bytes.Length) {
+        $chunkId = [System.Text.Encoding]::ASCII.GetString($bytes, $offset, 4)
+        $chunkSize = [BitConverter]::ToInt32($bytes, $offset + 4)
+        $chunkDataOffset = $offset + 8
+        if ($chunkSize -lt 0 -or $chunkDataOffset + $chunkSize -gt $bytes.Length) {
+            break
+        }
+        if ($chunkId -eq "fmt " -and $chunkSize -ge 16) {
+            $audioFormat = [BitConverter]::ToInt16($bytes, $chunkDataOffset)
+            $bitsPerSample = [BitConverter]::ToInt16($bytes, $chunkDataOffset + 14)
+            if ($audioFormat -ne 1) {
+                return
+            }
+        } elseif ($chunkId -eq "data") {
+            $dataOffset = $chunkDataOffset
+            $dataSize = $chunkSize
+        }
+        $offset = $chunkDataOffset + $chunkSize
+        if (($chunkSize % 2) -eq 1) {
+            $offset += 1
+        }
+    }
+    if ($bitsPerSample -ne 16 -or $null -eq $dataOffset -or $null -eq $dataSize) {
+        return
+    }
+
+    $peak = 0
+    for ($i = $dataOffset; $i + 1 -lt ($dataOffset + $dataSize); $i += 2) {
+        $sample = [BitConverter]::ToInt16($bytes, $i)
+        $abs = [Math]::Abs([int]$sample)
+        if ($abs -gt $peak) {
+            $peak = $abs
+        }
+    }
+    if ($peak -le 0) {
+        return
+    }
+
+    $targetPeak = 26000.0
+    $effectiveGain = [Math]::Min($Gain, $targetPeak / [double]$peak)
+    if ($effectiveGain -le 0.0) {
+        return
+    }
+    Write-Host ("TTS_GAIN: requested={0:0.###} effective={1:0.###} peak={2} target_peak={3}" -f $Gain, $effectiveGain, $peak, [int]$targetPeak)
+
+    for ($i = $dataOffset; $i + 1 -lt ($dataOffset + $dataSize); $i += 2) {
+        $sample = [BitConverter]::ToInt16($bytes, $i)
+        $scaled = [int][Math]::Round($sample * $effectiveGain)
+        if ($scaled -gt [int16]::MaxValue) {
+            $scaled = [int16]::MaxValue
+        } elseif ($scaled -lt [int16]::MinValue) {
+            $scaled = [int16]::MinValue
+        }
+        [BitConverter]::GetBytes([int16]$scaled).CopyTo($bytes, $i)
+    }
+    [System.IO.File]::WriteAllBytes($Path, $bytes)
+}
+
+function Invoke-TtsPlaybackSync {
+    param(
+        [Parameter(Mandatory = $true)][string] $Text,
+        [string] $PreferredVoice,
+        [int] $Rate = 0
+    )
+
+    Add-Type -AssemblyName System.Speech
+    $synth = [System.Speech.Synthesis.SpeechSynthesizer]::new()
+    try {
+        $synth.Volume = 100
+        $synth.Rate = [Math]::Max(-10, [Math]::Min(10, $Rate))
+        if (-not [string]::IsNullOrWhiteSpace($PreferredVoice)) {
+            $voices = @($synth.GetInstalledVoices() | ForEach-Object { $_.VoiceInfo.Name })
+            if ($voices -contains $PreferredVoice) {
+                $synth.SelectVoice($PreferredVoice)
+            }
+        }
+        $synth.SetOutputToDefaultAudioDevice()
+        $synth.Speak($Text) | Out-Null
+    } finally {
+        $synth.Dispose()
+    }
+}
+
+function Start-WavPlaybackOnce {
     param([string] $Path)
     if ([string]::IsNullOrWhiteSpace($Path)) {
         return $null
@@ -196,7 +535,7 @@ function Start-WavPlaybackLoop {
     Add-Type -AssemblyName System.Windows.Extensions -ErrorAction SilentlyContinue
     $player = [System.Media.SoundPlayer]::new($Path)
     $player.Load()
-    $player.PlayLooping()
+    $player.PlaySync()
     return $player
 }
 
@@ -222,12 +561,14 @@ function New-PlaybackFixture {
     $wavPath = Join-Path $outputDir ("{0}-round{1}-tts.wav" -f $CaseId.ToLowerInvariant(), $Round)
     $voiceName = $null
     if (-not $DisableTtsPlayback) {
-        $voiceName = New-TtsWav -Text $Text -Path $wavPath
+        $voiceName = New-TtsWav -Text $Text -Path $wavPath -Rate $TtsRate
+        Boost-WavPcm16 -Path $wavPath -Gain $TtsGain
     }
 
     [pscustomobject]@{
         expected_text = $Text
         playback_wav = if ($DisableTtsPlayback) { $null } else { $wavPath }
+        playback_text = $Text
         tts_voice = $voiceName
     }
 }
@@ -293,6 +634,33 @@ function Wait-ListenerLogResult {
     throw "$Label timed out after $($TimeoutMs + 10000) ms. Log tail:`n$snippet"
 }
 
+function Wait-ListenerLogPattern {
+    param(
+        [Parameter(Mandatory = $true)][string] $Label,
+        [Parameter(Mandatory = $true)][string] $LogPath,
+        [Parameter(Mandatory = $true)][int64] $StartOffset,
+        [Parameter(Mandatory = $true)][string] $Pattern,
+        [Parameter(Mandatory = $true)][int] $TimeoutMs
+    )
+
+    $deadline = [DateTime]::UtcNow.AddMilliseconds($TimeoutMs)
+    $latest = ""
+    while ([DateTime]::UtcNow -lt $deadline) {
+        $latest = Read-LogTail -Path $LogPath -Offset $StartOffset
+        $match = [regex]::Match($latest, $Pattern, [System.Text.RegularExpressions.RegexOptions]::Singleline)
+        if ($match.Success) {
+            return $match
+        }
+        Start-Sleep -Milliseconds 200
+    }
+
+    $snippet = $latest
+    if ($snippet.Length -gt 2000) {
+        $snippet = $snippet.Substring($snippet.Length - 2000)
+    }
+    throw "$Label timed out waiting for BLE ready before playback after $TimeoutMs ms. Log tail:`n$snippet"
+}
+
 function Invoke-ListenerCli {
     param(
         [Parameter(Mandatory = $true)][string] $Label,
@@ -304,7 +672,9 @@ function Invoke-ListenerCli {
         [Parameter(Mandatory = $true)][string] $LogPath,
         [string] $ReadyCommand = "TYPE:READY",
         [bool] $StatsOnly = $true,
-        [string] $PlaybackWav
+        [string] $PlaybackWav,
+        [string] $PlaybackText,
+        [string] $TtsVoice
     )
 
     $offset = Get-LogOffset -Path $LogPath
@@ -312,12 +682,28 @@ function Invoke-ListenerCli {
     Write-Host "RUN: $ListenerExePath $argumentList"
     Set-CompanionTypeEnvironment -ReadyCommand $ReadyCommand -StatsOnly $StatsOnly
     $player = $null
-    if (-not [string]::IsNullOrWhiteSpace($PlaybackWav)) {
-        Write-Host "PLAY: $PlaybackWav"
-        $player = Start-WavPlaybackLoop -Path $PlaybackWav
-    }
+    $playbackVolumeSnapshot = $null
     $process = Start-Process -FilePath $ListenerExePath -ArgumentList $Arguments -PassThru -WindowStyle Hidden
     try {
+        if (-not [string]::IsNullOrWhiteSpace($PlaybackWav)) {
+            $readyTimeoutMs = [Math]::Min([Math]::Max($TimeoutMs, 10000), 30000)
+            [void](Wait-ListenerLogPattern `
+                -Label "$Label playback gate" `
+                -LogPath $LogPath `
+                -StartOffset $offset `
+                -Pattern "Type heartbeat ready sent" `
+                -TimeoutMs $readyTimeoutMs)
+            if ($PrePlaybackDelayMs -gt 0) {
+                Start-Sleep -Milliseconds $PrePlaybackDelayMs
+            }
+            Write-Host "PLAY: mode=$PlaybackMode wav=$PlaybackWav text=$PlaybackText"
+            $playbackVolumeSnapshot = Set-CompanionPlaybackVolume -Percent $PlaybackVolumePercent
+            if ($PlaybackMode -eq "speech") {
+                Invoke-TtsPlaybackSync -Text $PlaybackText -PreferredVoice $TtsVoice -Rate $TtsRate
+            } else {
+                $player = Start-WavPlaybackOnce -Path $PlaybackWav
+            }
+        }
         if ($process.WaitForExit(3000) -and $process.ExitCode -ne 0) {
             $latest = Read-LogTail -Path $LogPath -Offset $offset
             $fail = [regex]::Match($latest, $FailPattern, [System.Text.RegularExpressions.RegexOptions]::Singleline)
@@ -350,6 +736,7 @@ function Invoke-ListenerCli {
         throw
     } finally {
         Stop-WavPlaybackLoop -Player $player
+        Restore-CompanionPlaybackVolume -Snapshot $playbackVolumeSnapshot
     }
 }
 
@@ -367,7 +754,9 @@ function Invoke-ListenerCliWithRetry {
         [Parameter(Mandatory = $true)] $RetryRecords,
         [string] $ReadyCommand = "TYPE:READY",
         [bool] $StatsOnly = $true,
-        [string] $PlaybackWav
+        [string] $PlaybackWav,
+        [string] $PlaybackText,
+        [string] $TtsVoice
     )
 
     $maxAttempts = 1 + [Math]::Max(0, $MaxRetries)
@@ -383,7 +772,9 @@ function Invoke-ListenerCliWithRetry {
                 -LogPath $LogPath `
                 -ReadyCommand $ReadyCommand `
                 -StatsOnly $StatsOnly `
-                -PlaybackWav $PlaybackWav
+                -PlaybackWav $PlaybackWav `
+                -PlaybackText $PlaybackText `
+                -TtsVoice $TtsVoice
             return [pscustomobject]@{
                 match = $match
                 attempts = $attempt
@@ -430,9 +821,13 @@ function New-StreamResult {
         $missing = [int] $json.stats.missingPacketCount
         $asrPcm = [int64] $json.stats.asrBoundaryPcmBytes
         $duration = [double] $json.stats.asrBoundaryDurationSeconds
-        $finalText = if ($json.transcript) { [string] $json.transcript.finalText } else { "" }
-        $rawTranscript = if ($json.transcript) { [string] $json.transcript.rawTranscript } else { "" }
-        $transcriptError = if ($json.transcript) { $json.transcript.errorCode } else { $null }
+        $transcript = $null
+        if ($json.PSObject.Properties.Name -contains "transcript") {
+            $transcript = $json.transcript
+        }
+        $finalText = if ($transcript) { [string] $transcript.finalText } else { "" }
+        $rawTranscript = if ($transcript) { [string] $transcript.rawTranscript } else { "" }
+        $transcriptError = if ($transcript) { $transcript.errorCode } else { $null }
     } else {
         $pcm = [int64] $Match.Groups["pcm"].Value
         $missing = [int] $Match.Groups["missing"].Value
@@ -444,7 +839,16 @@ function New-StreamResult {
     }
 
     $finalTextChars = $finalText.Trim().Length
-    $textOk = -not $RequireText -or $finalTextChars -ge $MinFinalTextChars
+    $accuracyReport = if (-not [string]::IsNullOrWhiteSpace($ExpectedText)) {
+        Measure-TranscriptAccuracy -Expected $ExpectedText -Transcript $finalText
+    } else {
+        $null
+    }
+    $accuracy = if ($accuracyReport) { [double] $accuracyReport.accuracy } else { $null }
+    $textOk = -not $RequireText -or (
+        $finalTextChars -ge $MinFinalTextChars -and
+        ($null -eq $accuracy -or $accuracy -ge $MinTranscriptAccuracy)
+    )
     $packetOk = $missing -le $MaxMissingPackets
     [pscustomobject]@{
         case = $CaseId
@@ -457,6 +861,10 @@ function New-StreamResult {
         final_text_chars = $finalTextChars
         final_text = $finalText
         expected_text = $ExpectedText
+        normalized_expected = if ($accuracyReport) { [string] $accuracyReport.normalized_expected } else { "" }
+        normalized_transcript = if ($accuracyReport) { [string] $accuracyReport.normalized_transcript } else { "" }
+        transcript_accuracy = $accuracy
+        transcript_cer = if ($accuracyReport) { [double] $accuracyReport.cer } else { $null }
         playback_wav = $PlaybackWav
         tts_voice = $TtsVoice
         raw_transcript = $rawTranscript
@@ -483,6 +891,9 @@ if (-not $Execute) {
     Write-Host "This script will run probe=$ProbeTimeoutMs ms, A1=$A1Rounds rounds x $A1TimeoutMs ms, A2=$A2TimeoutMs ms."
     Write-Host "A1 text gate: $RequireA1Text; A2 text gate: $RequireA2Text (min final chars: $MinFinalTextChars)."
     Write-Host "Automatic TTS playback: $(-not [bool]$DisableTtsPlayback). A2 text: $A2PlaybackText"
+    Write-Host "TTS gain/rate: gain=$TtsGain, rate=$TtsRate; min transcript accuracy=$MinTranscriptAccuracy."
+    Write-Host "Playback mode: $PlaybackMode; pre-playback delay: $PrePlaybackDelayMs ms."
+    Write-Host "Playback volume percent: $PlaybackVolumePercent (restored after each run unless -KeepPlaybackVolume)."
     Write-Host "Blocking operator prompt: $([bool]$PromptOperator). Add -PromptOperator only for real-time human action or observation."
     exit 0
 }
@@ -519,8 +930,8 @@ try {
         -DelayMs $RetryDelayMs `
         -RetryRecords $retries)
 
-    $streamPass = "embedded_audio_ble_stream_result_json=(?<json>\{[^\r\n]*\})|submit-embedded-audio-ble-stream done: pcm_bytes=(?<pcm>\d+) missing_packets=(?<missing>\d+)"
-    $streamFail = "submit-embedded-audio-ble-stream failed: (?<error>.*)"
+    $streamPass = "embedded_audio_ble_(?:stream|once)_result_json=(?<json>\{[^\r\n]*\})|submit-embedded-audio-ble-(?:stream|once) done: pcm_bytes=(?<pcm>\d+) missing_packets=(?<missing>\d+)"
+    $streamFail = "submit-embedded-audio-ble-(?:stream|once) failed: (?<error>.*)"
 
     for ($round = 1; $round -le $A1Rounds; $round++) {
         if ($round -gt 1 -and $RoundCooldownMs -gt 0) {
@@ -531,9 +942,10 @@ try {
         } else {
             $null
         }
+        $a1BleCommand = if ($RequireA1Text) { "--submit-embedded-audio-ble-once" } else { "--submit-embedded-audio-ble-stream" }
         $attempt = Invoke-ListenerCliWithRetry `
             -Label "A1 round $round" `
-            -Arguments @("--submit-embedded-audio-ble-stream", [string]$A1TimeoutMs) `
+            -Arguments @($a1BleCommand, [string]$A1TimeoutMs) `
             -TimeoutMs $A1TimeoutMs `
             -PassPattern $streamPass `
             -FailPattern $streamFail `
@@ -544,7 +956,9 @@ try {
             -RetryRecords $retries `
             -ReadyCommand $(if ($RequireA1Text) { "TYPE:READY:A1" } else { "TYPE:READY" }) `
             -StatsOnly (-not $RequireA1Text) `
-            -PlaybackWav $(if ($fixture) { $fixture.playback_wav } else { $null })
+            -PlaybackWav $(if ($fixture) { $fixture.playback_wav } else { $null }) `
+            -PlaybackText $(if ($fixture) { $fixture.playback_text } else { $null }) `
+            -TtsVoice $(if ($fixture) { $fixture.tts_voice } else { $null })
         $result = New-StreamResult `
             -CaseId "A1" `
             -Round $round `
@@ -562,6 +976,9 @@ try {
             if ($RequireA1Text -and $result.final_text_chars -lt $MinFinalTextChars) {
                 $errors.Add("A1 round $round final_text_chars=$($result.final_text_chars) < $MinFinalTextChars") | Out-Null
             }
+            if ($RequireA1Text -and ($null -ne $result.transcript_accuracy) -and $result.transcript_accuracy -lt $MinTranscriptAccuracy) {
+                $errors.Add("A1 round $round transcript_accuracy=$($result.transcript_accuracy) < $MinTranscriptAccuracy expected=`"$($result.expected_text)`" final=`"$($result.final_text)`"") | Out-Null
+            }
         }
     }
 
@@ -573,9 +990,10 @@ try {
     } else {
         $null
     }
+    $a2BleCommand = if ($RequireA2Text) { "--submit-embedded-audio-ble-once" } else { "--submit-embedded-audio-ble-stream" }
     $a2Attempt = Invoke-ListenerCliWithRetry `
         -Label "A2" `
-        -Arguments @("--submit-embedded-audio-ble-stream", [string]$A2TimeoutMs) `
+        -Arguments @($a2BleCommand, [string]$A2TimeoutMs) `
         -TimeoutMs $A2TimeoutMs `
         -PassPattern $streamPass `
         -FailPattern $streamFail `
@@ -586,7 +1004,9 @@ try {
         -RetryRecords $retries `
         -ReadyCommand $(if ($RequireA2Text) { "TYPE:READY:A2" } else { "TYPE:READY" }) `
         -StatsOnly (-not $RequireA2Text) `
-        -PlaybackWav $(if ($a2Fixture) { $a2Fixture.playback_wav } else { $null })
+        -PlaybackWav $(if ($a2Fixture) { $a2Fixture.playback_wav } else { $null }) `
+        -PlaybackText $(if ($a2Fixture) { $a2Fixture.playback_text } else { $null }) `
+        -TtsVoice $(if ($a2Fixture) { $a2Fixture.tts_voice } else { $null })
     $a2Result = New-StreamResult `
         -CaseId "A2" `
         -Round 1 `
@@ -603,6 +1023,9 @@ try {
         }
         if ($RequireA2Text -and $a2Result.final_text_chars -lt $MinFinalTextChars) {
             $errors.Add("A2 final_text_chars=$($a2Result.final_text_chars) < $MinFinalTextChars") | Out-Null
+        }
+        if ($RequireA2Text -and ($null -ne $a2Result.transcript_accuracy) -and $a2Result.transcript_accuracy -lt $MinTranscriptAccuracy) {
+            $errors.Add("A2 transcript_accuracy=$($a2Result.transcript_accuracy) < $MinTranscriptAccuracy expected=`"$($a2Result.expected_text)`" final=`"$($a2Result.final_text)`"") | Out-Null
         }
     }
 } catch {
@@ -626,10 +1049,18 @@ $summary = [ordered]@{
     cli_retries = $CliRetries
     retry_delay_ms = $RetryDelayMs
     round_cooldown_ms = $RoundCooldownMs
+    pre_playback_delay_ms = $PrePlaybackDelayMs
+    playback_mode = $PlaybackMode
     require_a1_text = $RequireA1Text
     require_a2_text = $RequireA2Text
     min_final_text_chars = $MinFinalTextChars
+    min_transcript_accuracy = $MinTranscriptAccuracy
     automatic_tts_playback = -not [bool]$DisableTtsPlayback
+    tts_gain = $TtsGain
+    tts_rate = $TtsRate
+    playback_volume_percent = $PlaybackVolumePercent
+    keep_playback_volume = [bool]$KeepPlaybackVolume
+    text_ble_mode = "batch-once"
     a1_playback_texts = @($A1PlaybackTexts)
     a2_playback_text = $A2PlaybackText
     prompt_operator = [bool]$PromptOperator
@@ -650,14 +1081,20 @@ $md = @(
     "- A1 rounds: $A1Rounds x $A1TimeoutMs ms",
     "- A2 timeout: $A2TimeoutMs ms",
     "- Max missing packets: $MaxMissingPackets",
+    "- Min transcript accuracy: $MinTranscriptAccuracy",
+    "- Playback mode: $PlaybackMode",
+    "- Pre-playback delay: $PrePlaybackDelayMs ms",
     "- Automatic TTS playback: $(-not [bool]$DisableTtsPlayback)",
+    "- TTS gain: $TtsGain",
+    "- TTS rate: $TtsRate",
     "",
     "## Results"
 )
 foreach ($item in $results) {
     $textPart = if ($item.final_text_chars -gt 0) { ", final_text_chars=$($item.final_text_chars), final_text=`"$($item.final_text)`"" } else { "" }
     $expectedPart = if (-not [string]::IsNullOrWhiteSpace($item.expected_text)) { ", expected_text=`"$($item.expected_text)`"" } else { "" }
-    $md += "- $($item.case) round $($item.round): $($item.status), pcm=$($item.pcm_bytes), missing=$($item.missing_packets), attempts=$($item.attempts)$textPart$expectedPart"
+    $accuracyPart = if ($null -ne $item.transcript_accuracy) { ", accuracy=$($item.transcript_accuracy)" } else { "" }
+    $md += "- $($item.case) round $($item.round): $($item.status), pcm=$($item.pcm_bytes), missing=$($item.missing_packets), attempts=$($item.attempts)$textPart$expectedPart$accuracyPart"
 }
 if ($retries.Count -gt 0) {
     $md += ""

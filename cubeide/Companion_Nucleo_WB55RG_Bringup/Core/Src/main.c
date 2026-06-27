@@ -2,6 +2,7 @@
 
 #include "app_conf.h"
 #include "app_entry.h"
+#include "audio_stream_stm32wb.h"
 #include "comp_qspi_nor.h"
 #include "diag_log.h"
 #include "recording_fsm.h"
@@ -50,17 +51,19 @@ COMPANION_PLACE_IN_SECTION("TAG_OTA_START") const uint32_t MagicKeywordAddress =
 #ifndef COMPANION_TYPE_READY_A1_AUTOSTREAM_BLOCKS
 #define COMPANION_TYPE_READY_A1_AUTOSTREAM_BLOCKS 900u
 #endif
-#define COMPANION_TYPE_READY_A1_AUTOSTREAM_PCM_BYTES 128u
+#define COMPANION_TYPE_READY_A1_AUTOSTREAM_PCM_BYTES 132u
 #ifndef COMPANION_TYPE_READY_A2_AUTOSTREAM_BLOCKS
 #define COMPANION_TYPE_READY_A2_AUTOSTREAM_BLOCKS 3000u
 #endif
-#define COMPANION_TYPE_READY_A2_AUTOSTREAM_PCM_BYTES 128u
+#define COMPANION_TYPE_READY_A2_AUTOSTREAM_PCM_BYTES 132u
+#define COMPANION_BLE_NOTIFY_PUMP_DELAY_MS 1u
 
 #define MIC_SAMPLE_RATE_HZ 16000u
 #define MIC_FRAMES_PER_BATCH 160u
 #define MIC_SLOT_COUNT 2u
 #define MIC_I2S_WORDS (MIC_FRAMES_PER_BATCH * MIC_SLOT_COUNT)
 #define MIC_CAPTURE_BLOCKS 4u
+#define MIC_PREAMP_SHIFT 4u
 
 #define FLASH_TEST_ADDRESS 0x00FFF000u
 #define FLASH_TEST_SIZE 256u
@@ -98,6 +101,18 @@ typedef struct {
     uint32_t clipped_count;
     uint32_t crc32;
 } pcm_stats_t;
+
+typedef struct {
+    uint32_t selected_slot;
+    int32_t slot_mean[MIC_SLOT_COUNT];
+    int16_t slot_min[MIC_SLOT_COUNT];
+    int16_t slot_max[MIC_SLOT_COUNT];
+    uint32_t slot_zero_count[MIC_SLOT_COUNT];
+    uint32_t slot_ac_peak[MIC_SLOT_COUNT];
+    uint64_t slot_ac_energy[MIC_SLOT_COUNT];
+    uint32_t preamp_shift;
+    uint32_t preamp_clip_count;
+} mic_decode_stats_t;
 
 typedef struct {
     const char *name;
@@ -292,7 +307,8 @@ int main(void)
 
     printf("\r\n[boot] Companion NUCLEO-WB55RG bringup\r\n");
     printf("[boot] uart=USART1 PB6/PB7 115200 flash=QSPI PA2/PA3/PB9/PB8/PA7/PA6 mic=SAI1 PA8/PB12/PC3\r\n");
-    printf("[boot] mic=i2s_master_rx_32bit_slots_downshift16 ble=companion_vka1 ota=ble_package_ready\r\n");
+    printf("[boot] mic=inmp441_i2s_slot_auto_dc_preamp%lu ble=companion_vka1 ota=ble_package_ready\r\n",
+           (unsigned long)(1u << MIC_PREAMP_SHIFT));
     printf("[boot] buttons: SW1=PC4 start/stop recording, SW2=PD0 cancel/recover, SW3=PD1 flash+ota+diag probe\r\n");
     init_board_buttons();
 
@@ -424,8 +440,8 @@ void Companion_App_HandleBleLinkReadyChanged(bool ready)
         }
     } else {
         s_ble_session_active = false;
-        if (s_ble_type_ready_autostream_active &&
-            s_recording_fsm.state == COMP_RECORDING_STATE_RECORDING) {
+        if (s_recording_fsm.state == COMP_RECORDING_STATE_RECORDING &&
+            s_recording_fsm.active_source == COMP_RECORDING_SOURCE_HOST_BLE_CONTROL) {
             clear_ble_type_ready_autostream();
             cancel_recording(COMP_RECORDING_SOURCE_HOST_BLE_CONTROL,
                              "ble_notify_disabled");
@@ -438,7 +454,7 @@ void Companion_App_HandleBleLinkReadyChanged(bool ready)
 void comp_audio_stream_stm32wb_notify_pump(void)
 {
     MX_APPE_Process();
-    HAL_Delay(2u);
+    HAL_Delay(COMPANION_BLE_NOTIFY_PUMP_DELAY_MS);
     MX_APPE_Process();
 }
 
@@ -567,6 +583,12 @@ static void request_ble_type_ready_autostream(const char *reason,
     s_ble_type_ready_autostream_pending_blocks = 0u;
     s_ble_type_ready_autostream_pending_pcm_bytes = 0u;
     if (s_recording_fsm.state == COMP_RECORDING_STATE_RECORDING) {
+        if (s_recording_fsm.active_source == COMP_RECORDING_SOURCE_HOST_BLE_CONTROL) {
+            s_ble_type_ready_autostream_active = true;
+            s_ble_type_ready_autostream_blocks_remaining = blocks;
+            s_ble_type_ready_autostream_pcm_bytes = pcm_bytes;
+            s_manual_recording_block_count = 0u;
+        }
         start_ble_session_if_ready(reason);
         return;
     }
@@ -1328,6 +1350,17 @@ static int16_t i2s_word_to_pcm16(uint32_t word)
     return (int16_t)((int32_t)word >> 16);
 }
 
+static int16_t clamp_pcm16_from_i32(int32_t value)
+{
+    if (value > INT16_MAX) {
+        return INT16_MAX;
+    }
+    if (value < INT16_MIN) {
+        return INT16_MIN;
+    }
+    return (int16_t)value;
+}
+
 static void raw_stats_init(raw_stats_t *stats)
 {
     stats->min = UINT_MAX;
@@ -1348,13 +1381,30 @@ static void pcm_stats_init(pcm_stats_t *stats)
     stats->crc32 = 0u;
 }
 
+static void mic_decode_stats_init(mic_decode_stats_t *stats)
+{
+    stats->selected_slot = 0u;
+    stats->preamp_shift = MIC_PREAMP_SHIFT;
+    stats->preamp_clip_count = 0u;
+    for (uint32_t slot = 0u; slot < MIC_SLOT_COUNT; ++slot) {
+        stats->slot_mean[slot] = 0;
+        stats->slot_min[slot] = INT16_MAX;
+        stats->slot_max[slot] = INT16_MIN;
+        stats->slot_zero_count[slot] = 0u;
+        stats->slot_ac_peak[slot] = 0u;
+        stats->slot_ac_energy[slot] = 0u;
+    }
+}
+
 static void analyze_capture(const uint32_t *raw_words,
                             int16_t *pcm_samples,
                             raw_stats_t *raw_stats,
-                            pcm_stats_t *pcm_stats)
+                            pcm_stats_t *pcm_stats,
+                            mic_decode_stats_t *decode_stats)
 {
     raw_stats_init(raw_stats);
     pcm_stats_init(pcm_stats);
+    mic_decode_stats_init(decode_stats);
 
     uint32_t previous = raw_words[0];
     for (uint32_t i = 0u; i < MIC_I2S_WORDS; ++i) {
@@ -1378,9 +1428,64 @@ static void analyze_capture(const uint32_t *raw_words,
                                     (const uint8_t *)raw_words,
                                     MIC_I2S_WORDS * sizeof(raw_words[0]));
 
+    int64_t slot_sum[MIC_SLOT_COUNT] = { 0 };
     for (uint32_t i = 0u; i < MIC_FRAMES_PER_BATCH; ++i) {
-        int16_t sample = i2s_word_to_pcm16(raw_words[i * MIC_SLOT_COUNT]);
+        for (uint32_t slot = 0u; slot < MIC_SLOT_COUNT; ++slot) {
+            int16_t sample =
+                i2s_word_to_pcm16(raw_words[(i * MIC_SLOT_COUNT) + slot]);
+            if (sample < decode_stats->slot_min[slot]) {
+                decode_stats->slot_min[slot] = sample;
+            }
+            if (sample > decode_stats->slot_max[slot]) {
+                decode_stats->slot_max[slot] = sample;
+            }
+            if (sample == 0) {
+                decode_stats->slot_zero_count[slot]++;
+            }
+            slot_sum[slot] += sample;
+        }
+    }
+
+    for (uint32_t slot = 0u; slot < MIC_SLOT_COUNT; ++slot) {
+        decode_stats->slot_mean[slot] =
+            (int32_t)(slot_sum[slot] / (int64_t)MIC_FRAMES_PER_BATCH);
+    }
+
+    for (uint32_t i = 0u; i < MIC_FRAMES_PER_BATCH; ++i) {
+        for (uint32_t slot = 0u; slot < MIC_SLOT_COUNT; ++slot) {
+            int16_t sample =
+                i2s_word_to_pcm16(raw_words[(i * MIC_SLOT_COUNT) + slot]);
+            int64_t centered =
+                (int64_t)sample - (int64_t)decode_stats->slot_mean[slot];
+            uint32_t magnitude =
+                (uint32_t)(centered < 0 ? -centered : centered);
+            if (magnitude > decode_stats->slot_ac_peak[slot]) {
+                decode_stats->slot_ac_peak[slot] = magnitude;
+            }
+            decode_stats->slot_ac_energy[slot] +=
+                ((uint64_t)magnitude * (uint64_t)magnitude);
+        }
+    }
+
+    if ((decode_stats->slot_ac_energy[1] > decode_stats->slot_ac_energy[0]) ||
+        ((decode_stats->slot_ac_energy[1] == decode_stats->slot_ac_energy[0]) &&
+         (decode_stats->slot_ac_peak[1] > decode_stats->slot_ac_peak[0]))) {
+        decode_stats->selected_slot = 1u;
+    }
+
+    const uint32_t selected_slot = decode_stats->selected_slot;
+    const int32_t preamp_gain = (int32_t)(1u << MIC_PREAMP_SHIFT);
+    for (uint32_t i = 0u; i < MIC_FRAMES_PER_BATCH; ++i) {
+        int16_t raw_sample =
+            i2s_word_to_pcm16(raw_words[(i * MIC_SLOT_COUNT) + selected_slot]);
+        int32_t centered =
+            (int32_t)raw_sample - decode_stats->slot_mean[selected_slot];
+        int32_t amplified = centered * preamp_gain;
+        int16_t sample = clamp_pcm16_from_i32(amplified);
         pcm_samples[i] = sample;
+        if ((int32_t)sample != amplified) {
+            decode_stats->preamp_clip_count++;
+        }
         if (sample < pcm_stats->min) {
             pcm_stats->min = sample;
         }
@@ -1452,6 +1557,7 @@ static bool capture_microphone_block(uint32_t block_index, bool verbose, const c
 {
     static uint32_t raw_words[MIC_I2S_WORDS];
     static int16_t pcm_samples[MIC_FRAMES_PER_BATCH];
+    static int16_t ble_compacted_samples[MIC_FRAMES_PER_BATCH];
 
     memset(raw_words, 0, sizeof(raw_words));
     HAL_StatusTypeDef status = HAL_SAI_Receive(&hsai_BlockA1,
@@ -1474,7 +1580,8 @@ static bool capture_microphone_block(uint32_t block_index, bool verbose, const c
 
     raw_stats_t raw_stats;
     pcm_stats_t pcm_stats;
-    analyze_capture(raw_words, pcm_samples, &raw_stats, &pcm_stats);
+    mic_decode_stats_t decode_stats;
+    analyze_capture(raw_words, pcm_samples, &raw_stats, &pcm_stats, &decode_stats);
 
     comp_microphone_frame_batch_t batch = {
         .frame_count = 1u,
@@ -1488,27 +1595,66 @@ static bool capture_microphone_block(uint32_t block_index, bool verbose, const c
         comp_recording_fsm_feed_microphone_frames(&s_recording_fsm, &batch);
 
     if (s_ble_session_active) {
-        uint16_t ble_pcm_bytes = (uint16_t)sizeof(pcm_samples);
+        uint16_t mic_frame_pcm_bytes = (uint16_t)sizeof(pcm_samples);
+        uint16_t ble_payload_bytes = mic_frame_pcm_bytes;
+        const uint8_t *ble_payload = (const uint8_t *)pcm_samples;
+        bool use_partial_ble_frame = false;
         if (s_ble_type_ready_autostream_active &&
             s_ble_type_ready_autostream_pcm_bytes > 0u &&
-            ble_pcm_bytes > s_ble_type_ready_autostream_pcm_bytes) {
-            ble_pcm_bytes = s_ble_type_ready_autostream_pcm_bytes;
+            ble_payload_bytes > s_ble_type_ready_autostream_pcm_bytes) {
+            /*
+             * Keep BLE load bounded while preserving the real microphone time span.
+             * The payload is an evenly sampled compact view of this full 10 ms frame.
+             */
+            ble_payload_bytes = s_ble_type_ready_autostream_pcm_bytes;
+            use_partial_ble_frame = true;
         }
-        comp_audio_stream_status_t stream_status =
-            Companion_BleAudio_SendPcmBytes((const uint8_t *)pcm_samples,
-                                            ble_pcm_bytes);
+        comp_audio_stream_status_t stream_status = COMP_AUDIO_STREAM_OK;
+        if (use_partial_ble_frame) {
+            uint16_t payload_samples =
+                (uint16_t)(ble_payload_bytes / sizeof(pcm_samples[0]));
+            ble_payload_bytes = (uint16_t)(payload_samples * sizeof(pcm_samples[0]));
+            if (payload_samples == 0u) {
+                stream_status = COMP_AUDIO_STREAM_BAD_ARGUMENT;
+            } else {
+                for (uint16_t i = 0u; i < payload_samples; ++i) {
+                    uint32_t source_index = 0u;
+                    if (payload_samples > 1u) {
+                        source_index =
+                            ((uint32_t)i * (MIC_FRAMES_PER_BATCH - 1u)) +
+                            (((uint32_t)payload_samples - 1u) / 2u);
+                        source_index /= ((uint32_t)payload_samples - 1u);
+                    }
+                    ble_compacted_samples[i] = pcm_samples[source_index];
+                }
+                ble_payload = (const uint8_t *)ble_compacted_samples;
+                stream_status = Companion_BleAudio_SendPcmFrame(ble_payload,
+                                                               ble_payload_bytes,
+                                                               mic_frame_pcm_bytes);
+            }
+        } else {
+            stream_status = Companion_BleAudio_SendPcmBytes(ble_payload,
+                                                           mic_frame_pcm_bytes);
+        }
         if (stream_status != COMP_AUDIO_STREAM_OK) {
-            printf("[%s] ble_audio status=%s id=%lu\r\n",
+            printf("[%s] ble_audio status=%s raw=0x%02X id=%lu block=%lu\r\n",
                    tag,
                    comp_audio_stream_status_name(stream_status),
-                   (unsigned long)s_ble_session_id);
+                   (unsigned int)comp_audio_stream_stm32wb_last_notify_status(),
+                   (unsigned long)s_ble_session_id,
+                   (unsigned long)block_index);
             (void)Companion_BleAudio_SendSessionError(COMP_AUDIO_SESSION_ERROR_TRANSPORT);
             s_ble_session_active = false;
+            if (s_recording_fsm.active_source == COMP_RECORDING_SOURCE_HOST_BLE_CONTROL) {
+                clear_ble_type_ready_autostream();
+                cancel_recording(COMP_RECORDING_SOURCE_HOST_BLE_CONTROL,
+                                 "ble_audio_notify_failed");
+            }
         }
     }
 
     if (verbose) {
-        printf("[%s] block=%lu status=ok raw_min=0x%08lX raw_max=0x%08lX raw_zero=%lu raw_same=%lu raw_crc=0x%08lX pcm_min=%d pcm_max=%d pcm_mean=%ld pcm_zero=%lu pcm_clip=%lu pcm_crc=0x%08lX feed=%lu\r\n",
+        printf("[%s] block=%lu status=ok raw_min=0x%08lX raw_max=0x%08lX raw_zero=%lu raw_same=%lu raw_crc=0x%08lX slot=%lu slot0_mean=%ld slot0_peak=%lu slot1_mean=%ld slot1_peak=%lu gain=%lux preclip=%lu pcm_min=%d pcm_max=%d pcm_mean=%ld pcm_zero=%lu pcm_clip=%lu pcm_crc=0x%08lX feed=%lu\r\n",
                tag,
                (unsigned long)block_index,
                (unsigned long)raw_stats.min,
@@ -1516,6 +1662,13 @@ static bool capture_microphone_block(uint32_t block_index, bool verbose, const c
                (unsigned long)raw_stats.zero_count,
                (unsigned long)raw_stats.same_count,
                (unsigned long)raw_stats.crc32,
+               (unsigned long)decode_stats.selected_slot,
+               (long)decode_stats.slot_mean[0],
+               (unsigned long)decode_stats.slot_ac_peak[0],
+               (long)decode_stats.slot_mean[1],
+               (unsigned long)decode_stats.slot_ac_peak[1],
+               (unsigned long)(1u << decode_stats.preamp_shift),
+               (unsigned long)decode_stats.preamp_clip_count,
                (int)pcm_stats.min,
                (int)pcm_stats.max,
                (long)(pcm_stats.sum / (int64_t)MIC_FRAMES_PER_BATCH),

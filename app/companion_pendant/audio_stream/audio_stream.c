@@ -294,6 +294,47 @@ comp_audio_stream_status_t comp_audio_stream_send_session_audio(comp_audio_strea
     return COMP_AUDIO_STREAM_OK;
 }
 
+comp_audio_stream_status_t comp_audio_stream_send_session_audio_frame(
+    comp_audio_stream_t *stream,
+    const uint8_t *pcm,
+    uint16_t payload_bytes,
+    uint16_t packet_pcm_bytes)
+{
+    if (stream == 0 || pcm == 0 || payload_bytes == 0u || packet_pcm_bytes == 0u) {
+        return COMP_AUDIO_STREAM_BAD_ARGUMENT;
+    }
+    if (!stream->session_active) {
+        return COMP_AUDIO_STREAM_NOT_ACTIVE;
+    }
+    if (packet_pcm_bytes < payload_bytes) {
+        return COMP_AUDIO_STREAM_BAD_ARGUMENT;
+    }
+
+    uint16_t max_payload_bytes = comp_audio_stream_payload_bytes(stream);
+    if (max_payload_bytes == 0u || payload_bytes > max_payload_bytes) {
+        return COMP_AUDIO_STREAM_PACKET_TOO_LARGE;
+    }
+    if (stream->next_packet_sequence == UINT16_MAX) {
+        return COMP_AUDIO_STREAM_SEQUENCE_OVERFLOW;
+    }
+
+    comp_audio_stream_status_t status =
+        comp_audio_stream_notify_packet(stream,
+                                        COMP_AUDIO_PACKET_AUDIO_DATA,
+                                        stream->session_id,
+                                        stream->next_packet_sequence,
+                                        pcm,
+                                        payload_bytes,
+                                        packet_pcm_bytes);
+    if (status != COMP_AUDIO_STREAM_OK) {
+        return status;
+    }
+
+    stream->next_packet_sequence++;
+    stream->expected_packet_count = stream->next_packet_sequence;
+    return COMP_AUDIO_STREAM_OK;
+}
+
 comp_audio_stream_status_t comp_audio_stream_send_session_stop(comp_audio_stream_t *stream)
 {
     if (stream == 0) {
