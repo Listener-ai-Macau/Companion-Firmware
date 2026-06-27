@@ -812,15 +812,44 @@ static void Ble_Hci_Gap_Gatt_Init(void)
 
 }
 
-static void Adv_Request(void){
-  aci_gap_set_discoverable(ADV_IND,
-                           CFG_FAST_CONN_ADV_INTERVAL_MIN,
-                           CFG_FAST_CONN_ADV_INTERVAL_MAX,
-                           CFG_BLE_ADDRESS_TYPE,
-                           NO_WHITE_LIST_USE, sizeof(a_LocalName), (uint8_t*) &a_LocalName, 0, 0, 0, 0);
+static void Adv_Request(void)
+{
+  tBleStatus ret;
+
+  APP_DBG_MSG("==>> Companion advertising request name=%s name_len=%u addr_type=%u\n",
+              COMPANION_BLE_PRODUCT_NAME,
+              (unsigned int)APPBLE_GAP_DEVICE_NAME_LENGTH,
+              (unsigned int)CFG_BLE_ADDRESS_TYPE);
+
+  ret = aci_gap_set_discoverable(ADV_IND,
+                                 CFG_FAST_CONN_ADV_INTERVAL_MIN,
+                                 CFG_FAST_CONN_ADV_INTERVAL_MAX,
+                                 CFG_BLE_ADDRESS_TYPE,
+                                 NO_WHITE_LIST_USE,
+                                 sizeof(a_LocalName),
+                                 (uint8_t*) &a_LocalName,
+                                 0,
+                                 0,
+                                 0,
+                                 0);
+  if (ret != BLE_STATUS_SUCCESS)
+  {
+    APP_DBG_MSG("==>> Companion advertising start failed: aci_gap_set_discoverable result=0x%x\n",
+                ret);
+    return;
+  }
+  APP_DBG_MSG("==>> Companion advertising discoverable started\n");
 
   /* Send Advertising data */
-  aci_gap_update_adv_data(sizeof(a_ManufData), (uint8_t*) a_ManufData);
+  ret = aci_gap_update_adv_data(sizeof(a_ManufData), (uint8_t*) a_ManufData);
+  if (ret != BLE_STATUS_SUCCESS)
+  {
+    APP_DBG_MSG("==>> Companion advertising data update failed: result=0x%x\n", ret);
+    return;
+  }
+  APP_DBG_MSG("==>> Companion advertising data active name=%s manuf_len=%u\n",
+              COMPANION_BLE_PRODUCT_NAME,
+              (unsigned int)sizeof(a_ManufData));
 }
 
 #if (CFG_IDENTITY_ADDRESS == GAP_PUBLIC_ADDR)

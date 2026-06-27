@@ -2,7 +2,7 @@ TARGET := Companion_BLE_Audio_Fixture
 BUILD_DIR := build
 ROOT := ../..
 CUBE := $(ROOT)/third_party/STM32CubeWB
-OTA := $(CUBE)/Projects/P-NUCLEO-WB55.Nucleo/Applications/BLE/BLE_Ota
+P2P := $(CUBE)/Projects/P-NUCLEO-WB55.Nucleo/Applications/BLE/BLE_p2pServer
 AUDIO := $(ROOT)/app/companion_pendant/audio_stream
 
 TOOLCHAIN ?= C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin
@@ -15,14 +15,14 @@ CPU := -mcpu=cortex-m4 -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=hard
 DEFS := -DUSE_HAL_DRIVER -DUSE_STM32WBXX_NUCLEO -DCORE_CM4 -DSTM32WB55xx
 
 INC_DIRS := \
-	$(OTA)/Core/Inc \
+	$(P2P)/Core/Inc \
 	$(CUBE)/Utilities/lpm/tiny_lpm \
 	$(CUBE)/Middlewares/ST/STM32_WPAN/interface/patterns/ble_thread/shci \
 	$(CUBE)/Utilities/sequencer \
 	$(CUBE)/Drivers/CMSIS/Device/ST/STM32WBxx/Include \
 	$(CUBE)/Middlewares/ST/STM32_WPAN/interface/patterns/ble_thread \
 	$(CUBE)/Middlewares/ST/STM32_WPAN/interface/patterns/ble_thread/tl \
-	$(OTA)/STM32_WPAN/App \
+	$(P2P)/STM32_WPAN/App \
 	$(CUBE)/Middlewares/ST/STM32_WPAN/ble/core \
 	$(CUBE)/Middlewares/ST/STM32_WPAN \
 	$(CUBE)/Middlewares/ST/STM32_WPAN/ble/core/template \
@@ -40,19 +40,19 @@ INCLUDES := $(addprefix -I,$(INC_DIRS))
 
 C_SOURCES := \
 	Src/app_ble.c \
-	$(OTA)/Core/Src/app_debug.c \
-	$(OTA)/Core/Src/app_entry.c \
-	$(OTA)/Core/Src/hw_timerserver.c \
-	$(OTA)/Core/Src/hw_uart.c \
-	$(OTA)/Core/Src/main.c \
-	$(OTA)/Core/Src/stm32_lpm_if.c \
-	$(OTA)/Core/Src/stm32wbxx_it.c \
-	$(OTA)/Core/Src/system_stm32wbxx.c \
+	$(P2P)/Core/Src/app_debug.c \
+	$(P2P)/Core/Src/app_entry.c \
+	$(P2P)/Core/Src/hw_timerserver.c \
+	$(P2P)/Core/Src/hw_uart.c \
+	$(P2P)/Core/Src/main.c \
+	$(P2P)/Core/Src/stm32_lpm_if.c \
+	$(P2P)/Core/Src/stm32wbxx_it.c \
+	$(P2P)/Core/Src/system_stm32wbxx.c \
 	$(AUDIO)/audio_stream.c \
 	$(AUDIO)/audio_stream_stm32wb.c \
-	$(OTA)/STM32_WPAN/Target/hw_ipcc.c \
-	$(OTA)/STM32CubeIDE/Application/Core/syscalls.c \
-	$(OTA)/STM32CubeIDE/Application/Core/sysmem.c \
+	$(P2P)/STM32_WPAN/Target/hw_ipcc.c \
+	$(P2P)/STM32CubeIDE/Application/Core/syscalls.c \
+	$(P2P)/STM32CubeIDE/Application/Core/sysmem.c \
 	$(CUBE)/Utilities/lpm/tiny_lpm/stm32_lpm.c \
 	$(CUBE)/Utilities/sequencer/stm32_seq.c \
 	$(CUBE)/Drivers/STM32WBxx_HAL_Driver/Src/stm32wbxx_hal.c \
@@ -60,13 +60,17 @@ C_SOURCES := \
 	$(CUBE)/Drivers/STM32WBxx_HAL_Driver/Src/stm32wbxx_hal_adc_ex.c \
 	$(CUBE)/Drivers/STM32WBxx_HAL_Driver/Src/stm32wbxx_hal_cortex.c \
 	$(CUBE)/Drivers/STM32WBxx_HAL_Driver/Src/stm32wbxx_hal_dma.c \
+	$(CUBE)/Drivers/STM32WBxx_HAL_Driver/Src/stm32wbxx_hal_exti.c \
 	$(CUBE)/Drivers/STM32WBxx_HAL_Driver/Src/stm32wbxx_hal_flash.c \
 	$(CUBE)/Drivers/STM32WBxx_HAL_Driver/Src/stm32wbxx_hal_flash_ex.c \
 	$(CUBE)/Drivers/STM32WBxx_HAL_Driver/Src/stm32wbxx_hal_gpio.c \
+	$(CUBE)/Drivers/STM32WBxx_HAL_Driver/Src/stm32wbxx_hal_hsem.c \
+	$(CUBE)/Drivers/STM32WBxx_HAL_Driver/Src/stm32wbxx_hal_ipcc.c \
 	$(CUBE)/Drivers/STM32WBxx_HAL_Driver/Src/stm32wbxx_hal_pwr.c \
 	$(CUBE)/Drivers/STM32WBxx_HAL_Driver/Src/stm32wbxx_hal_pwr_ex.c \
 	$(CUBE)/Drivers/STM32WBxx_HAL_Driver/Src/stm32wbxx_hal_rcc.c \
 	$(CUBE)/Drivers/STM32WBxx_HAL_Driver/Src/stm32wbxx_hal_rcc_ex.c \
+	$(CUBE)/Drivers/STM32WBxx_HAL_Driver/Src/stm32wbxx_hal_rng.c \
 	$(CUBE)/Drivers/STM32WBxx_HAL_Driver/Src/stm32wbxx_hal_rtc.c \
 	$(CUBE)/Drivers/STM32WBxx_HAL_Driver/Src/stm32wbxx_hal_rtc_ex.c \
 	$(CUBE)/Drivers/STM32WBxx_HAL_Driver/Src/stm32wbxx_hal_spi.c \
@@ -92,8 +96,8 @@ C_SOURCES := \
 	$(CUBE)/Middlewares/ST/STM32_WPAN/interface/patterns/ble_thread/tl/shci_tl_if.c \
 	$(CUBE)/Middlewares/ST/STM32_WPAN/interface/patterns/ble_thread/tl/tl_mbox.c
 
-ASM_SOURCE := $(OTA)/STM32CubeIDE/Application/Startup/startup_stm32wb55rgvx.s
-LD_SCRIPT := $(OTA)/STM32CubeIDE/STM32WB55RGVX_FLASH.ld
+ASM_SOURCE := $(P2P)/STM32CubeIDE/Application/User/Startup/startup_stm32wb55rgvx.s
+LD_SCRIPT := $(P2P)/STM32CubeIDE/STM32WB55RGVX_FLASH.ld
 
 OBJECTS := $(addprefix $(BUILD_DIR)/,$(notdir $(C_SOURCES:.c=.o)))
 ASM_OBJECT := $(BUILD_DIR)/$(notdir $(ASM_SOURCE:.s=.o))
