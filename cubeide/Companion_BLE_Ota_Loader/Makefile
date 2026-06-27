@@ -11,7 +11,7 @@ OBJCOPY := $(TOOLCHAIN)/arm-none-eabi-objcopy
 SIZE := $(TOOLCHAIN)/arm-none-eabi-size
 
 CPU := -mcpu=cortex-m4 -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=hard
-DEFS := -DUSE_HAL_DRIVER -DUSE_STM32WBXX_NUCLEO -DCORE_CM4 -DSTM32WB55xx
+DEFS := -DUSE_HAL_DRIVER -DUSE_STM32WBXX_NUCLEO -DCORE_CM4 -DSTM32WB55xx -DCOMPANION_OTA_LOADER_ALWAYS_ADVERTISE
 
 INC_DIRS := \
 	$(OTA)/Core/Inc \
@@ -46,7 +46,7 @@ C_SOURCES := \
 	$(OTA)/Core/Src/main.c \
 	$(OTA)/Core/Src/stm32_lpm_if.c \
 	$(OTA)/Core/Src/stm32wbxx_it.c \
-	$(OTA)/Core/Src/system_stm32wbxx.c \
+	Src/system_stm32wbxx.c \
 	Src/otas_app.c \
 	$(OTA)/STM32_WPAN/Target/hw_ipcc.c \
 	$(OTA)/STM32CubeIDE/Application/Core/syscalls.c \
@@ -118,6 +118,9 @@ $(BUILD_DIR)/otas_app.o: Src/otas_app.c | $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c "$<" -o "$@"
 
 $(BUILD_DIR)/otas_stm.o: Src/otas_stm.c | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c "$<" -o "$@"
+
+$(BUILD_DIR)/system_stm32wbxx.o: Src/system_stm32wbxx.c | $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c "$<" -o "$@"
 
 $(BUILD_DIR)/%.o: %.c | $(BUILD_DIR)

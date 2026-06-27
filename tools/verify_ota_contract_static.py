@@ -20,6 +20,10 @@ OTA_LOADER_APP_BLE = REPO_ROOT / "cubeide/Companion_BLE_Ota_Loader/Src/app_ble.c
 OTA_LOADER_OTAS_APP = REPO_ROOT / "cubeide/Companion_BLE_Ota_Loader/Src/otas_app.c"
 OTA_LOADER_OTAS_STM = REPO_ROOT / "cubeide/Companion_BLE_Ota_Loader/Src/otas_stm.c"
 OTA_LOADER_MAKEFILE = REPO_ROOT / "cubeide/Companion_BLE_Ota_Loader/Makefile"
+OTA_LOADER_SYSTEM = (
+    REPO_ROOT
+    / "cubeide/Companion_BLE_Ota_Loader/Src/system_stm32wbxx.c"
+)
 FLASH_TOOL = REPO_ROOT / "tools/flash.ps1"
 WIRELESS_STACK_TOOL = REPO_ROOT / "tools/provision_companion_wireless_stack.ps1"
 PACKAGE_TOOL = REPO_ROOT / "tools/package_ota_firmware.ps1"
@@ -182,6 +186,7 @@ def check_local_ota_loader(errors: list[str]) -> None:
     otas_app = read_text(OTA_LOADER_OTAS_APP, errors)
     otas_stm = read_text(OTA_LOADER_OTAS_STM, errors)
     makefile = read_text(OTA_LOADER_MAKEFILE, errors)
+    system = read_text(OTA_LOADER_SYSTEM, errors)
     for anchor in [
         '#define COMPANION_BLE_PRODUCT_NAME "companion"',
         "#define COMPANION_BLE_IO_CAPABILITY CFG_IO_CAPABILITY_NO_INPUT_NO_OUTPUT",
@@ -202,27 +207,51 @@ def check_local_ota_loader(errors: list[str]) -> None:
         "OTA := $(CUBE)/Projects/P-NUCLEO-WB55.Nucleo/Applications/BLE/BLE_Ota",
         "$(OTA)/Core/Src/app_entry.c",
         "$(OTA)/Core/Src/flash_driver.c",
+        "Src/system_stm32wbxx.c",
+        "$(BUILD_DIR)/system_stm32wbxx.o: Src/system_stm32wbxx.c | $(BUILD_DIR)",
         "$(CUBE)/Middlewares/ST/STM32_WPAN/ble/svc/Src/svc_ctl.c",
         "$(CUBE)/Middlewares/ST/STM32_WPAN/ble/core/auto/ble_gatt_aci.c",
+        "COMPANION_OTA_LOADER_ALWAYS_ADVERTISE",
     ]:
         require(anchor in makefile, f"local OTA loader Makefile must keep ST BLE_Ota source anchor: {anchor}", errors)
+    for anchor in [
+        "#ifdef COMPANION_OTA_LOADER_ALWAYS_ADVERTISE",
+        "COMPANION_OTA_FW_APP_COOKIE_VALUE",
+        "COMPANION_OTA_FW_APP_COOKIE_MSG    (*(uint8_t*)(SRAM1_BASE+3))",
+        "static uint8_t CompanionConsumeFwAppCookie( void )",
+        "if(CompanionConsumeFwAppCookie() != 0)",
+        "JumpSelectionOnPowerUp();",
+        "Companion bring-up packages need the wired factory image to leave the board",
+        "CFG_OTA_REBOOT_VAL_MSG = CFG_REBOOT_ON_BLE_OTA_APP;",
+        "CFG_OTA_START_SECTOR_IDX_VAL_MSG = CFG_APP_START_SECTOR_INDEX;",
+        "CFG_OTA_NBR_OF_SECTOR_VAL_MSG = 0;",
+        "#endif /* COMPANION_OTA_LOADER_ALWAYS_ADVERTISE */",
+    ]:
+        require(anchor in system, f"local OTA loader system boot policy missing anchor: {anchor}", errors)
     for anchor in [
         "8f7a0007-7b7d-4f3d-9d6f-6c2d1b7c0000",
         "8f7a7002-7b7d-4f3d-9d6f-6c2d1b7c0000",
         "8f7a7003-7b7d-4f3d-9d6f-6c2d1b7c0000",
         "8f7a7004-7b7d-4f3d-9d6f-6c2d1b7c0000",
+        "CHAR_PROP_WRITE | CHAR_PROP_WRITE_WITHOUT_RESP,\n                    ATTR_PERMISSION_NONE,\n                    GATT_NOTIFY_ATTRIBUTE_WRITE,",
+        "CHAR_PROP_WRITE_WITHOUT_RESP,\n                    ATTR_PERMISSION_NONE,\n                    GATT_NOTIFY_ATTRIBUTE_WRITE | GATT_NOTIFY_WRITE_REQ_AND_WAIT_FOR_APPL_RESP,",
         "GATT_NOTIFY_WRITE_REQ_AND_WAIT_FOR_APPL_RESP",
         "OTAS_STM_Is_Value_Handle",
     ]:
         require(anchor in otas_stm, f"local OTAS_STM adapter missing anchor: {anchor}", errors)
+    require(
+        "OTAS_Context.OTAS_Base_Addr_CharHdle) ||" not in otas_stm,
+        "local OTAS_STM base address write must follow ST write-without-response path, not write-permit response",
+        errors,
+    )
     finish = re.search(r"case\s+OTAS_STM_UPLOAD_FINISHED:(?P<body>.*?)case\s+OTAS_STM_CANCEL_UPLOAD:", otas_app, re.S)
     require(finish is not None, "local OTA app missing OTAS_STM_UPLOAD_FINISHED block", errors)
     if finish is not None:
         body = finish.group("body")
         require("OTAS_STM_UpdateChar(OTAS_STM_CONF_ID" in body, "OTA finish must send ST reboot confirmation indication", errors)
         require(
-            "OTAS_APP_FinalizeUpload();" not in body,
-            "OTA finish must wait for ACI_GATT_SERVER_CONFIRMATION before finalizing/rebooting",
+            "OTAS_APP_FinalizeUpload();" in body,
+            "OTA finish must finalize/reboot so Windows can observe reboot handoff when ST confirmation indication is not delivered",
             errors,
         )
     confirm = re.search(r"case\s+OTAS_STM_CONF_EVENT_ID:(?P<body>.*?)break;", otas_app, re.S)
@@ -230,9 +259,15 @@ def check_local_ota_loader(errors: list[str]) -> None:
     if confirm is not None:
         require(
             "OTAS_APP_FinalizeUpload();" in confirm.group("body"),
-            "OTA app must finalize/reboot only from the ST confirmation event",
+            "OTA app must keep the ST confirmation event finalize/reboot fallback",
             errors,
         )
+    for anchor in [
+        "COMPANION_OTA_FW_APP_COOKIE_VALUE",
+        "COMPANION_OTA_FW_APP_COOKIE_MSG    (*(uint8_t*)(SRAM1_BASE+3))",
+        "COMPANION_OTA_FW_APP_COOKIE_MSG = COMPANION_OTA_FW_APP_COOKIE_VALUE;",
+    ]:
+        require(anchor in otas_app, f"local OTA app must set Companion fw-app cookie before reboot: {anchor}", errors)
 
 
 def check_wired_package_tooling(errors: list[str]) -> None:

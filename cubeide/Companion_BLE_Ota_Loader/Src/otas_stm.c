@@ -204,8 +204,7 @@ static SVCCTL_EvtAckStatus_t OTAS_Event_Handler(void *Event)
           {
             aci_gatt_write_permit_req_event_rp0 * write_perm_req;
             write_perm_req = (aci_gatt_write_permit_req_event_rp0*)blecore_evt->data;
-                if(OTAS_STM_Is_Value_Handle(write_perm_req->Attribute_Handle, OTAS_Context.OTAS_Base_Addr_CharHdle) ||
-                   OTAS_STM_Is_Value_Handle(write_perm_req->Attribute_Handle, OTAS_Context.OTAS_Raw_Data_CharHdle))
+                if(OTAS_STM_Is_Value_Handle(write_perm_req->Attribute_Handle, OTAS_Context.OTAS_Raw_Data_CharHdle))
                 {
                   return_value = SVCCTL_EvtAckFlowEnable;
                   aci_gatt_write_resp(write_perm_req->Connection_Handle,
@@ -261,7 +260,7 @@ void OTAS_STM_Init(void)
                     OTA_BASE_ADR_CHAR_SIZE,
                     CHAR_PROP_WRITE | CHAR_PROP_WRITE_WITHOUT_RESP,
                     ATTR_PERMISSION_NONE,
-                    GATT_NOTIFY_ATTRIBUTE_WRITE | GATT_NOTIFY_WRITE_REQ_AND_WAIT_FOR_APPL_RESP,
+                    GATT_NOTIFY_ATTRIBUTE_WRITE,
                     10,
                     0,
                     &(OTAS_Context.OTAS_Base_Addr_CharHdle));
@@ -287,7 +286,7 @@ void OTAS_STM_Init(void)
                     OTA_UUID_LENGTH,
                     (Char_UUID_t *)OTA_RAW_DATA_CHAR_UUID,
                     OTA_RAW_DATA_CHAR_SIZE,
-                    CHAR_PROP_WRITE | CHAR_PROP_WRITE_WITHOUT_RESP,
+                    CHAR_PROP_WRITE_WITHOUT_RESP,
                     ATTR_PERMISSION_NONE,
                     GATT_NOTIFY_ATTRIBUTE_WRITE | GATT_NOTIFY_WRITE_REQ_AND_WAIT_FOR_APPL_RESP,
                     10,

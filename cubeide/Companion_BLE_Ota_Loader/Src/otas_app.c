@@ -49,6 +49,11 @@ typedef struct
 /* Number of bytes to be written in flash on each programming sequence */
 #define DOUBLEWORD_SIZE_FOR_FLASH_PROGRAMMING       (8)
 
+#ifdef COMPANION_OTA_LOADER_ALWAYS_ADVERTISE
+#define COMPANION_OTA_FW_APP_COOKIE_VALUE  (0xC3u)
+#define COMPANION_OTA_FW_APP_COOKIE_MSG    (*(uint8_t*)(SRAM1_BASE+3))
+#endif /* COMPANION_OTA_LOADER_ALWAYS_ADVERTISE */
+
 /* Private variables ---------------------------------------------------------*/
 OTAS_APP_Context_t OTAS_APP_Context;
 
@@ -96,6 +101,9 @@ static void OTAS_APP_FinalizeUpload(void)
       /**
        * Reboot on FW Application
        */
+#ifdef COMPANION_OTA_LOADER_ALWAYS_ADVERTISE
+      COMPANION_OTA_FW_APP_COOKIE_MSG = COMPANION_OTA_FW_APP_COOKIE_VALUE;
+#endif /* COMPANION_OTA_LOADER_ALWAYS_ADVERTISE */
       CFG_OTA_REBOOT_VAL_MSG = CFG_REBOOT_ON_FW_APP;
 
 #ifdef OTA_SBSFU
@@ -169,6 +177,7 @@ void OTAS_STM_Notification( OTA_STM_Notification_t *p_notification )
         case OTAS_STM_UPLOAD_FINISHED:
           msg_conf = OTAS_STM_REBOOT_CONFIRMED;
           (void) OTAS_STM_UpdateChar(OTAS_STM_CONF_ID, (uint8_t*)&msg_conf);
+          OTAS_APP_FinalizeUpload();
           break;
 
         case OTAS_STM_CANCEL_UPLOAD:
