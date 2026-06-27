@@ -11,6 +11,7 @@ param(
     [int] $A1Rounds = 6,
     [int] $A2TimeoutMs = 120000,
     [int] $MaxMissingPackets = 0,
+    [switch] $SkipWirelessStackProvisioning,
     [switch] $Execute,
     [switch] $WorkflowLockHeld
 )
@@ -162,6 +163,7 @@ function ConvertTo-HardwareAcceptanceMarkdown {
         "- Type UI: ``$($Report["evidence"]["type_ui"])``",
         "- Wired flash: ``$($Report["evidence"]["wired_flash"])``",
         "- BLE OTA: ``$($Report["evidence"]["ble_ota"])``",
+        "- Wireless stack: ``$($Report["evidence"]["wireless_stack"])``",
         "- Manual gate report: ``$($Report["evidence"]["manual_gate_report"])``",
         "",
         "## Steps"
@@ -188,11 +190,13 @@ $bleDir = Join-Path $outDirResolved "ble-ota"
 $wiredDir = Join-Path $outDirResolved "wired-flash"
 $typeUiDir = Join-Path $outDirResolved "type-ui-manual"
 $manualDir = Join-Path $outDirResolved "manual-gate-evidence"
+$wirelessDir = Join-Path $outDirResolved "wireless-stack"
 $a1Summary = Join-Path $a1Dir "companion-type-a1-a2-summary.json"
 $bleSummary = Join-Path $bleDir "companion-ble-ota-summary.json"
 $wiredSummary = Join-Path $wiredDir "companion-wired-flash-summary.json"
 $typeUiSummary = Join-Path $typeUiDir "companion-type-ui-manual-summary.json"
 $manualSummary = Join-Path $manualDir "companion-manual-gate-evidence-summary.json"
+$wirelessSummary = Join-Path $wirelessDir "companion-wireless-stack-summary.json"
 $fixtureFlashLog = Join-Path $outDirResolved (Get-SafeLogName "prep flash Companion BLE audio fixture")
 
 $aiw = "C:\Users\Billy\Desktop\Denzic\ai-collaboration-workflow\scripts\aiw.ps1"
@@ -201,6 +205,12 @@ $lockCommand = "pwsh -NoProfile -File $aiw with-lock -Resource Companion-WB55,BL
 $steps = [System.Collections.Generic.List[object]]::new()
 $errors = [System.Collections.Generic.List[string]]::new()
 
+$wirelessArgs = @(
+    "-NoProfile", "-File", ".\tools\provision_companion_wireless_stack.ps1",
+    "-Execute", "-WorkflowLockHeld",
+    "-InstallBleStack",
+    "-OutDir", $wirelessDir
+)
 $fixtureArgs = @(
     "-NoProfile", "-File", ".\tools\flash.ps1",
     "-Execute", "-WorkflowLockHeld",
@@ -263,6 +273,7 @@ $manualArgs = @(
 
 if (-not $Execute) {
     $dryRunSteps = @(
+        [ordered]@{ name = "ensure CPU2 BLE wireless stack"; status = $(if ($SkipWirelessStackProvisioning) { "SKIPPED" } else { "DRY_RUN" }); message = $(if ($SkipWirelessStackProvisioning) { "skipped by -SkipWirelessStackProvisioning; only use after a PASS provisioning summary exists" } else { "not executed; reads FUS and installs STM32CubeWB BLE full stack before CPU1 BLE apps" }); command = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $wirelessArgs; evidence = $wirelessSummary },
         [ordered]@{ name = "prep flash Companion BLE audio fixture"; status = "DRY_RUN"; message = "not executed; prepares the board for Listener-compatible A1/A2 and Type UI smoke"; command = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $fixtureArgs; evidence = $fixtureFlashLog },
         [ordered]@{ name = "real Companion Type A1/A2"; status = "DRY_RUN"; message = "not executed; requires workflow hardware lock"; command = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $a1Args; evidence = $a1Summary },
         [ordered]@{ name = "Type temporary Companion debug page"; status = "DRY_RUN"; message = "not executed; runs while the VKA1 audio fixture is still flashed"; command = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $typeUiArgs; evidence = $typeUiSummary },
@@ -285,6 +296,7 @@ if (-not $Execute) {
             ble_ota = $bleSummary
             wired_flash = $wiredSummary
             type_ui = $typeUiSummary
+            wireless_stack = $wirelessSummary
             manual_gate_report = $manualSummary
         }
         steps = $dryRunSteps
@@ -309,9 +321,25 @@ if (-not $WorkflowLockHeld) {
 $startedAt = (Get-Date).ToUniversalTime().ToString("o")
 Show-OperatorPrompt `
     -Title "Companion 总体验收即将开始" `
-    -Message "请确认 Companion NUCLEO 的 ST-LINK USB、电脑蓝牙、Listener Type 都处于测试状态。点击 OK 后脚本会在当前硬件锁内依次执行：刷入 BLE audio fixture、A1/A2 录音链路、Type Companion 页面人工确认、有线 SWD 同包刷机、BLE OTA 同包传输，最后汇总四份证据。Type 页面验收必须在包刷写前完成，因为包内 bring-up app 当前不是 VKA1 audio fixture；BLE OTA 必须在有线同包刷机之后执行，让 OTA loader 先回到板子上。输出目录：$outDirResolved"
+    -Message "请确认 Companion NUCLEO 的 ST-LINK USB、电脑蓝牙、Listener Type 都处于测试状态。点击 OK 后脚本会在当前硬件锁内依次执行：CPU2 BLE wireless stack 预检/安装、刷入 BLE audio fixture、A1/A2 录音链路、Type Companion 页面人工确认、有线 SWD 同包刷机、BLE OTA 同包传输，最后汇总证据。Type 页面验收必须在包刷写前完成，因为包内 bring-up app 当前不是 VKA1 audio fixture；BLE OTA 必须在有线同包刷机之后执行，让 OTA loader 先回到板子上。输出目录：$outDirResolved"
 
 try {
+    if ($SkipWirelessStackProvisioning) {
+        $steps.Add([ordered]@{
+            name = "ensure CPU2 BLE wireless stack"
+            status = "SKIPPED"
+            command = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $wirelessArgs
+            working_directory = $repoRoot
+            exit_code = 0
+            log = $null
+            started_at = (Get-Date).ToString("o")
+            ended_at = (Get-Date).ToString("o")
+            duration_ms = 0
+            message = "Skipped by -SkipWirelessStackProvisioning; caller must provide prior PASS wireless-stack evidence."
+        }) | Out-Null
+    } else {
+        Invoke-AcceptanceStep -Name "ensure CPU2 BLE wireless stack" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments $wirelessArgs
+    }
     Invoke-AcceptanceStep -Name "prep flash Companion BLE audio fixture" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments $fixtureArgs
     Invoke-AcceptanceStep -Name "real Companion Type A1/A2" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments $a1Args
     Invoke-AcceptanceStep -Name "Type temporary Companion debug page" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments $typeUiArgs
@@ -340,6 +368,7 @@ $report = [ordered]@{
         ble_ota = $bleSummary
         wired_flash = $wiredSummary
         type_ui = $typeUiSummary
+        wireless_stack = $wirelessSummary
         manual_gate_report = $manualSummary
     }
     steps = @($steps)

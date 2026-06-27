@@ -468,11 +468,14 @@ def check_wired_package_tooling(errors: list[str]) -> None:
         "companion.hardware_acceptance.validation.v1",
         "[switch] $Execute",
         "[switch] $WorkflowLockHeld",
+        "[switch] $SkipWirelessStackProvisioning",
         "Show-OperatorPrompt",
         "[System.Media.SystemSounds]::Exclamation.Play()",
         "[Console]::Beep(880, 220)",
         "Companion 总体验收即将开始",
         "with-lock -Resource Companion-WB55,BLE-Companion",
+        "provision_companion_wireless_stack.ps1",
+        "-InstallBleStack",
         "verify_companion_type_a1_a2.ps1",
         "verify_companion_ble_ota.ps1",
         "verify_companion_wired_flash.ps1",
@@ -480,15 +483,18 @@ def check_wired_package_tooling(errors: list[str]) -> None:
         "verify_companion_manual_gate_evidence.ps1",
         ".\\tools\\flash.ps1",
         "-FlashAudioFixture",
+        "ensure CPU2 BLE wireless stack",
         "prep flash Companion BLE audio fixture",
         "-A1A2SummaryPath",
         "-BleOtaEvidencePath",
         "-WiredFlashEvidencePath",
         "-TypeUiEvidencePath",
+        "- Wireless stack: ``$($Report[\"evidence\"][\"wireless_stack\"])``",
         "manual gate evidence verifier",
         "companion_hardware_acceptance_result_json=",
         "DRY-RUN: Companion hardware acceptance runner is ready.",
         "Refusing to run Companion hardware acceptance without -WorkflowLockHeld.",
+        "CPU2 BLE wireless stack 预检/安装",
         "runs while the VKA1 audio fixture is still flashed",
         "prepares the board for Listener-compatible A1/A2 and Type UI smoke",
         "restores the package OTA loader before BLE OTA",
@@ -497,10 +503,16 @@ def check_wired_package_tooling(errors: list[str]) -> None:
     ]:
         require(anchor in hardware_acceptance, f"verify_companion_hardware_acceptance.ps1 missing anchor: {anchor}", errors)
     type_ui_call = 'Invoke-AcceptanceStep -Name "Type temporary Companion debug page"'
+    wireless_call = 'Invoke-AcceptanceStep -Name "ensure CPU2 BLE wireless stack"'
     fixture_call = 'Invoke-AcceptanceStep -Name "prep flash Companion BLE audio fixture"'
     a1_a2_call = 'Invoke-AcceptanceStep -Name "real Companion Type A1/A2"'
     wired_call = 'Invoke-AcceptanceStep -Name "real Companion wired flash from same package"'
     ble_ota_call = 'Invoke-AcceptanceStep -Name "real Companion BLE OTA through Type"'
+    require(
+        0 <= hardware_acceptance.find(wireless_call) < hardware_acceptance.find(fixture_call),
+        "hardware acceptance runner must provision/read the CPU2 BLE wireless stack before flashing CPU1 BLE fixtures",
+        errors,
+    )
     require(
         0 <= hardware_acceptance.find(fixture_call) < hardware_acceptance.find(a1_a2_call),
         "hardware acceptance runner must flash the BLE audio fixture before A1/A2",
