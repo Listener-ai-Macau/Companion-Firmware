@@ -21,8 +21,9 @@ HEADER = AUDIO_DIR / "audio_stream.h"
 SOURCE = AUDIO_DIR / "audio_stream.c"
 STM32WB_HEADER = AUDIO_DIR / "audio_stream_stm32wb.h"
 STM32WB_SOURCE = AUDIO_DIR / "audio_stream_stm32wb.c"
-AUDIO_FIXTURE_APP_BLE = REPO_ROOT / "cubeide/Companion_BLE_Audio_Fixture/Src/app_ble.c"
-AUDIO_FIXTURE_MAKEFILE = REPO_ROOT / "cubeide/Companion_BLE_Audio_Fixture/Makefile"
+BRINGUP_APP_BLE = REPO_ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c"
+BRINGUP_MAIN = REPO_ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/main.c"
+BRINGUP_MAKEFILE = REPO_ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile"
 FLASH_TOOL = REPO_ROOT / "tools/flash.ps1"
 A1_A2_TOOL = REPO_ROOT / "tools/verify_companion_type_a1_a2.ps1"
 UUID_TABLE = REPO_ROOT / "docs/ble_uuid_table.json"
@@ -378,17 +379,20 @@ def check_type_a1_a2_validation_tool(errors: list[str]) -> None:
         require(token in tool, f"verify_companion_type_a1_a2.ps1 missing {token}", errors)
 
 
-def check_stm32wb_audio_fixture(errors: list[str]) -> None:
-    app_ble = read(AUDIO_FIXTURE_APP_BLE)
-    makefile = read(AUDIO_FIXTURE_MAKEFILE)
+def check_stm32wb_unified_bringup_app(errors: list[str]) -> None:
+    app_ble = read(BRINGUP_APP_BLE)
+    main_c = read(BRINGUP_MAIN)
+    makefile = read(BRINGUP_MAKEFILE)
     flash_tool = read(FLASH_TOOL)
     for token in (
-        "Companion_BLE_Audio_Fixture",
-        "$(AUDIO)/audio_stream.c",
-        "$(AUDIO)/audio_stream_stm32wb.c",
-        "$(AUDIO)",
+        "Companion_Nucleo_WB55RG_Bringup",
+        "Core/Src/app_ble.c",
+        "$(P2P)/Core/Src/app_entry.c",
+        "$(ROOT)/app/companion_pendant/audio_stream",
+        "$(ROOT)/app/companion_pendant/audio_stream/audio_stream.c",
+        "$(ROOT)/app/companion_pendant/audio_stream/audio_stream_stm32wb.c",
     ):
-        require(token in makefile, f"BLE audio fixture Makefile missing {token}", errors)
+        require(token in makefile, f"NUCLEO bringup Makefile missing {token}", errors)
 
     for token in (
         '#define COMPANION_BLE_PRODUCT_NAME "companion"',
@@ -396,40 +400,54 @@ def check_stm32wb_audio_fixture(errors: list[str]) -> None:
         "#define COMPANION_BLE_BONDING_MODE 0",
         "#define COMPANION_BLE_MITM_PROTECTION 0",
         "#define COMPANION_BLE_ADDRESS_OFFSET 0u",
-        "#define COMPANION_AUDIO_FIXTURE_PACKET_COUNT 12u",
-        "#define COMPANION_AUDIO_FIXTURE_AUTOSTART_ON_TYPE_READY 1u",
-        "0x00 /* Companion audio fixture */",
-        "Audio_Fixture_Init();",
+        "0x01 /* Companion app */",
+        "source=mic",
+        "ready:listener_vka1 app=companion",
+        "Companion_App_HandleBleControl",
         "comp_audio_stream_stm32wb_default_config",
         "comp_audio_stream_stm32wb_init",
         "comp_audio_stream_send_session_start",
         "comp_audio_stream_send_session_audio",
         "comp_audio_stream_send_session_stop",
-        "COMP_AUDIO_CONTROL_TYPE_READY",
         "COMP_AUDIO_CONTROL_RECORDING_TOGGLE",
         "APP_BLE_Key_Button1_Action",
-        "Audio_Fixture_StartOrDeferSyntheticSession(\"TYPE:READY\")",
-        "AUDIO_FIXTURE_PHASE_AUDIO",
-        "COMPANION_AUDIO_FIXTURE_PACKET_GAP_MS",
+        "Companion_BleAudio_SendSessionStart",
+        "Companion_BleAudio_SendPcmBytes",
     ):
-        require(token in app_ble, f"BLE audio fixture app_ble missing {token}", errors)
+        require(token in app_ble, f"NUCLEO bringup app_ble missing {token}", errors)
+
+    for token in (
+        "Companion_App_HandleBleControl",
+        "COMP_AUDIO_CONTROL_TYPE_READY",
+        "start_recording(COMP_RECORDING_SOURCE_HOST_BLE_CONTROL",
+        "Companion_BleAudio_SendPcmBytes",
+        "capture_microphone_block",
+        "MX_APPE_Init",
+        "MX_APPE_Process",
+        "ble=companion_vka1",
+    ):
+        require(token in main_c, f"NUCLEO bringup main.c missing {token}", errors)
 
     for forbidden in (
+        "Audio_Fixture_Init",
+        "Audio_Fixture_StartOrDeferSyntheticSession",
+        "COMPANION_AUDIO_FIXTURE_AUTOSTART_ON_TYPE_READY",
+        "COMPANION_AUDIO_FIXTURE_PACKET_COUNT",
         "Delete_Sectors",
         "FD_EraseSectors",
         "OTAS_STM_Init",
         "otas_stm.h",
     ):
-        require(forbidden not in app_ble and forbidden not in makefile, f"BLE audio fixture must not contain {forbidden}", errors)
+        require(forbidden not in app_ble and forbidden not in main_c and forbidden not in makefile, f"NUCLEO bringup app must not contain {forbidden}", errors)
 
     for token in (
-        "[switch] $FlashAudioFixture",
-        "Companion_BLE_Audio_Fixture.hex",
-        "flash Companion BLE audio fixture",
-        "Companion BLE audio fixture image",
+        "[switch] $FlashNucleoBringup",
+        "Companion_Nucleo_WB55RG_Bringup.hex",
+        "flash Companion NUCLEO bring-up",
+        "Companion NUCLEO bring-up image",
         "Show-OperatorPrompt",
     ):
-        require(token in flash_tool, f"flash.ps1 missing BLE audio fixture flash token {token}", errors)
+        require(token in flash_tool, f"flash.ps1 missing NUCLEO bringup flash token {token}", errors)
 
 
 def build_fixture_packets(payload_size: int = 133, packet_count: int = 12) -> list[bytes]:
@@ -478,7 +496,7 @@ def main() -> int:
         check_uuid_table(errors)
         check_docs(errors)
         check_type_a1_a2_validation_tool(errors)
-        check_stm32wb_audio_fixture(errors)
+        check_stm32wb_unified_bringup_app(errors)
         check_fixture_model(errors)
     except Exception as exc:  # noqa: BLE001 - compact verifier output.
         print(f"FAIL: Companion Listener VKA1 static check crashed: {exc}", file=sys.stderr)

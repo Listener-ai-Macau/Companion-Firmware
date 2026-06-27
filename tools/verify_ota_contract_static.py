@@ -518,10 +518,8 @@ def check_wired_package_tooling(errors: list[str]) -> None:
         "verify_companion_wired_flash.ps1",
         "verify_companion_type_ui_manual.ps1",
         "verify_companion_manual_gate_evidence.ps1",
-        ".\\tools\\flash.ps1",
-        "-FlashAudioFixture",
         "ensure CPU2 BLE wireless stack",
-        "prep flash Companion BLE audio fixture",
+        "real Companion wired flash from same package",
         "-A1A2SummaryPath",
         "-BleOtaEvidencePath",
         "-WiredFlashEvidencePath",
@@ -532,37 +530,36 @@ def check_wired_package_tooling(errors: list[str]) -> None:
         "DRY-RUN: Companion hardware acceptance runner is ready.",
         "Refusing to run Companion hardware acceptance without -WorkflowLockHeld.",
         "CPU2 BLE wireless stack 预检/安装",
-        "runs while the VKA1 audio fixture is still flashed",
-        "prepares the board for Listener-compatible A1/A2 and Type UI smoke",
-        "restores the package OTA loader before BLE OTA",
-        "Type 页面验收必须在包刷写前完成",
-        "BLE OTA 必须在有线同包刷机之后执行",
+        "flashes the same package OTA loader and unified Companion VKA1 app before A1/A2",
+        "runs against the same unified Companion VKA1 app",
+        "transfers the same package over the STM32WB ST OTA path",
+        "A1/A2 和 Type 页面现在都跑在统一 Companion app 上",
+        "BLE OTA gate 会继续验证同一个 package",
     ]:
         require(anchor in hardware_acceptance, f"verify_companion_hardware_acceptance.ps1 missing anchor: {anchor}", errors)
     type_ui_call = 'Invoke-AcceptanceStep -Name "Type temporary Companion debug page"'
     wireless_call = 'Invoke-AcceptanceStep -Name "ensure CPU2 BLE wireless stack"'
-    fixture_call = 'Invoke-AcceptanceStep -Name "prep flash Companion BLE audio fixture"'
     a1_a2_call = 'Invoke-AcceptanceStep -Name "real Companion Type A1/A2"'
     wired_call = 'Invoke-AcceptanceStep -Name "real Companion wired flash from same package"'
     ble_ota_call = 'Invoke-AcceptanceStep -Name "real Companion BLE OTA through Type"'
     require(
-        0 <= hardware_acceptance.find(wireless_call) < hardware_acceptance.find(fixture_call),
-        "hardware acceptance runner must provision/read the CPU2 BLE wireless stack before flashing CPU1 BLE fixtures",
+        0 <= hardware_acceptance.find(wireless_call) < hardware_acceptance.find(wired_call),
+        "hardware acceptance runner must provision/read the CPU2 BLE wireless stack before wired package flashing",
         errors,
     )
     require(
-        0 <= hardware_acceptance.find(fixture_call) < hardware_acceptance.find(a1_a2_call),
-        "hardware acceptance runner must flash the BLE audio fixture before A1/A2",
+        0 <= hardware_acceptance.find(wired_call) < hardware_acceptance.find(a1_a2_call),
+        "hardware acceptance runner must flash the unified package app before A1/A2",
+        errors,
+    )
+    require(
+        0 <= hardware_acceptance.find(a1_a2_call) < hardware_acceptance.find(type_ui_call),
+        "hardware acceptance runner must execute Type UI after A1/A2 on the same unified app",
         errors,
     )
     require(
         0 <= hardware_acceptance.find(type_ui_call) < hardware_acceptance.find(ble_ota_call),
-        "hardware acceptance runner must execute Type UI while the VKA1 fixture is still flashed, before BLE OTA",
-        errors,
-    )
-    require(
-        0 <= hardware_acceptance.find(wired_call) < hardware_acceptance.find(ble_ota_call),
-        "hardware acceptance runner must restore the package OTA loader through wired flash before BLE OTA",
+        "hardware acceptance runner must execute Type UI before BLE OTA",
         errors,
     )
 

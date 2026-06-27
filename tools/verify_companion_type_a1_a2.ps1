@@ -256,7 +256,7 @@ if (-not $WorkflowLockHeld) {
 if ($PromptOperator) {
     Show-OperatorPrompt `
         -Title "Companion A1/A2 验证即将开始" `
-        -Message "请确认 Companion NUCLEO 已刷入 BLE audio fixture，设备蓝牙名为 companion，Listener Type 可运行，电脑声音/蓝牙处于测试状态。点击 OK 后脚本会自动执行 BLE 订阅探测、A1 六轮短链路、A2 长窗口，并把证据写入：$outputDir"
+        -Message "请确认 Companion NUCLEO 已刷入统一 Companion app 或同一个 Companion package，设备蓝牙名为 companion，Listener Type 可运行，电脑声音/蓝牙处于测试状态。点击 OK 后脚本会自动执行 BLE 订阅探测、A1 六轮短链路、A2 长窗口，并把证据写入：$outputDir"
 }
 
 $startedAt = (Get-Date).ToUniversalTime().ToString("o")

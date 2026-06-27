@@ -197,7 +197,6 @@ $wiredSummary = Join-Path $wiredDir "companion-wired-flash-summary.json"
 $typeUiSummary = Join-Path $typeUiDir "companion-type-ui-manual-summary.json"
 $manualSummary = Join-Path $manualDir "companion-manual-gate-evidence-summary.json"
 $wirelessSummary = Join-Path $wirelessDir "companion-wireless-stack-summary.json"
-$fixtureFlashLog = Join-Path $outDirResolved (Get-SafeLogName "prep flash Companion BLE audio fixture")
 
 $aiw = "C:\Users\Billy\Desktop\Denzic\ai-collaboration-workflow\scripts\aiw.ps1"
 $lockCommand = "pwsh -NoProfile -File $aiw with-lock -Resource Companion-WB55,BLE-Companion -Purpose `"Companion hardware acceptance`" -Run pwsh -NoProfile -File .\tools\verify_companion_hardware_acceptance.ps1 -Execute -WorkflowLockHeld -PackagePath `"$resolvedPackage`" -EvidencePath <type-ui-screenshot-or-log>"
@@ -210,11 +209,6 @@ $wirelessArgs = @(
     "-Execute", "-WorkflowLockHeld",
     "-InstallBleStack",
     "-OutDir", $wirelessDir
-)
-$fixtureArgs = @(
-    "-NoProfile", "-File", ".\tools\flash.ps1",
-    "-Execute", "-WorkflowLockHeld",
-    "-FlashAudioFixture"
 )
 $a1Args = @(
     "-NoProfile", "-File", ".\tools\verify_companion_type_a1_a2.ps1",
@@ -274,11 +268,10 @@ $manualArgs = @(
 if (-not $Execute) {
     $dryRunSteps = @(
         [ordered]@{ name = "ensure CPU2 BLE wireless stack"; status = $(if ($SkipWirelessStackProvisioning) { "SKIPPED" } else { "DRY_RUN" }); message = $(if ($SkipWirelessStackProvisioning) { "skipped by -SkipWirelessStackProvisioning; only use after a PASS provisioning summary exists" } else { "not executed; reads FUS and installs STM32CubeWB BLE full stack before CPU1 BLE apps" }); command = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $wirelessArgs; evidence = $wirelessSummary },
-        [ordered]@{ name = "prep flash Companion BLE audio fixture"; status = "DRY_RUN"; message = "not executed; prepares the board for Listener-compatible A1/A2 and Type UI smoke"; command = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $fixtureArgs; evidence = $fixtureFlashLog },
+        [ordered]@{ name = "real Companion wired flash from same package"; status = "DRY_RUN"; message = "not executed; flashes the same package OTA loader and unified Companion VKA1 app before A1/A2"; command = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $wiredArgs; evidence = $wiredSummary },
         [ordered]@{ name = "real Companion Type A1/A2"; status = "DRY_RUN"; message = "not executed; requires workflow hardware lock"; command = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $a1Args; evidence = $a1Summary },
-        [ordered]@{ name = "Type temporary Companion debug page"; status = "DRY_RUN"; message = "not executed; runs while the VKA1 audio fixture is still flashed"; command = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $typeUiArgs; evidence = $typeUiSummary },
-        [ordered]@{ name = "real Companion wired flash from same package"; status = "DRY_RUN"; message = "not executed; restores the package OTA loader before BLE OTA"; command = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $wiredArgs; evidence = $wiredSummary },
-        [ordered]@{ name = "real Companion BLE OTA through Type"; status = "DRY_RUN"; message = "not executed; runs after wired factory flash puts the OTA loader back on the board"; command = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $bleArgs; evidence = $bleSummary },
+        [ordered]@{ name = "Type temporary Companion debug page"; status = "DRY_RUN"; message = "not executed; runs against the same unified Companion VKA1 app"; command = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $typeUiArgs; evidence = $typeUiSummary },
+        [ordered]@{ name = "real Companion BLE OTA through Type"; status = "DRY_RUN"; message = "not executed; transfers the same package over the STM32WB ST OTA path"; command = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $bleArgs; evidence = $bleSummary },
         [ordered]@{ name = "manual gate evidence verifier"; status = "DRY_RUN"; message = "not executed until all four gate summaries exist"; command = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $manualArgs; evidence = $manualSummary }
     )
     $report = [ordered]@{
@@ -321,7 +314,7 @@ if (-not $WorkflowLockHeld) {
 $startedAt = (Get-Date).ToUniversalTime().ToString("o")
 Show-OperatorPrompt `
     -Title "Companion 总体验收即将开始" `
-    -Message "请确认 Companion NUCLEO 的 ST-LINK USB、电脑蓝牙、Listener Type 都处于测试状态。点击 OK 后脚本会在当前硬件锁内依次执行：CPU2 BLE wireless stack 预检/安装、刷入 BLE audio fixture、A1/A2 录音链路、Type Companion 页面人工确认、有线 SWD 同包刷机、BLE OTA 同包传输，最后汇总证据。Type 页面验收必须在包刷写前完成，因为包内 bring-up app 当前不是 VKA1 audio fixture；BLE OTA 必须在有线同包刷机之后执行，让 OTA loader 先回到板子上。输出目录：$outDirResolved"
+    -Message "请确认 Companion NUCLEO 的 ST-LINK USB、电脑蓝牙、Listener Type 都处于测试状态。点击 OK 后脚本会在当前硬件锁内依次执行：CPU2 BLE wireless stack 预检/安装、有线 SWD 刷入同一个 Companion package、A1/A2 录音链路、Type Companion 页面人工确认、BLE OTA 同包传输，最后汇总证据。A1/A2 和 Type 页面现在都跑在统一 Companion app 上；BLE OTA gate 会继续验证同一个 package 的 STM32WB ST OTA 传输路径。输出目录：$outDirResolved"
 
 try {
     if ($SkipWirelessStackProvisioning) {
@@ -340,10 +333,9 @@ try {
     } else {
         Invoke-AcceptanceStep -Name "ensure CPU2 BLE wireless stack" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments $wirelessArgs
     }
-    Invoke-AcceptanceStep -Name "prep flash Companion BLE audio fixture" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments $fixtureArgs
+    Invoke-AcceptanceStep -Name "real Companion wired flash from same package" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments $wiredArgs
     Invoke-AcceptanceStep -Name "real Companion Type A1/A2" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments $a1Args
     Invoke-AcceptanceStep -Name "Type temporary Companion debug page" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments $typeUiArgs
-    Invoke-AcceptanceStep -Name "real Companion wired flash from same package" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments $wiredArgs
     Invoke-AcceptanceStep -Name "real Companion BLE OTA through Type" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments $bleArgs
     Invoke-AcceptanceStep -Name "manual gate evidence verifier" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments $manualArgs
 } catch {

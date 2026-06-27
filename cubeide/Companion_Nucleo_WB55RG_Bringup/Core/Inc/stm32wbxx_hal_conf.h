@@ -7,9 +7,13 @@
 #define HAL_EXTI_MODULE_ENABLED
 #define HAL_FLASH_MODULE_ENABLED
 #define HAL_GPIO_MODULE_ENABLED
+#define HAL_HSEM_MODULE_ENABLED
+#define HAL_IPCC_MODULE_ENABLED
 #define HAL_PWR_MODULE_ENABLED
 #define HAL_QSPI_MODULE_ENABLED
 #define HAL_RCC_MODULE_ENABLED
+#define HAL_RNG_MODULE_ENABLED
+#define HAL_RTC_MODULE_ENABLED
 #define HAL_SAI_MODULE_ENABLED
 #define HAL_SPI_MODULE_ENABLED
 #define HAL_UART_MODULE_ENABLED
@@ -36,6 +40,12 @@
 #ifdef HAL_GPIO_MODULE_ENABLED
 #include "stm32wbxx_hal_gpio.h"
 #endif
+#ifdef HAL_HSEM_MODULE_ENABLED
+#include "stm32wbxx_hal_hsem.h"
+#endif
+#ifdef HAL_IPCC_MODULE_ENABLED
+#include "stm32wbxx_hal_ipcc.h"
+#endif
 #ifdef HAL_DMA_MODULE_ENABLED
 #include "stm32wbxx_hal_dma.h"
 #endif
@@ -53,6 +63,12 @@
 #endif
 #ifdef HAL_QSPI_MODULE_ENABLED
 #include "stm32wbxx_hal_qspi.h"
+#endif
+#ifdef HAL_RNG_MODULE_ENABLED
+#include "stm32wbxx_hal_rng.h"
+#endif
+#ifdef HAL_RTC_MODULE_ENABLED
+#include "stm32wbxx_hal_rtc.h"
 #endif
 #ifdef HAL_SAI_MODULE_ENABLED
 #include "stm32wbxx_hal_sai.h"

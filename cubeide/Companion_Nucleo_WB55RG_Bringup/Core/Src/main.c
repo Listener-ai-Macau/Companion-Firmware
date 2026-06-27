@@ -1,5 +1,7 @@
 #include "main.h"
 
+#include "app_conf.h"
+#include "app_entry.h"
 #include "comp_qspi_nor.h"
 #include "diag_log.h"
 #include "recording_fsm.h"
@@ -99,8 +101,13 @@ typedef struct {
     uint32_t last_change_ms;
 } board_button_t;
 
+UART_HandleTypeDef hlpuart1;
 UART_HandleTypeDef huart1;
+DMA_HandleTypeDef hdma_usart1_tx;
+IPCC_HandleTypeDef hipcc;
 QSPI_HandleTypeDef hqspi;
+RNG_HandleTypeDef hrng;
+RTC_HandleTypeDef hrtc;
 SAI_HandleTypeDef hsai_BlockA1;
 
 static comp_recording_fsm_t s_recording_fsm;
@@ -113,20 +120,33 @@ static board_button_t s_buttons[] = {
     {"SW3", BOARD_SW3_GPIO_PORT, BOARD_SW3_PIN, false, false, 0u},
 };
 static uint32_t s_manual_recording_block_count;
+static bool s_ble_link_ready;
+static bool s_ble_session_active;
+static uint32_t s_ble_session_id;
 
 static void SystemClock_Config(void);
 static void PeriphCommonClock_Config(void);
 static void MX_GPIO_Init(void);
-static void MX_USART1_UART_Init(void);
+static void MX_DMA_Init(void);
+static void MX_IPCC_Init(void);
+static void MX_RNG_Init(void);
+static void MX_RTC_Init(void);
+static void MX_RF_Init(void);
+void MX_USART1_UART_Init(void);
 static void MX_QUADSPI_Init(void);
 static void MX_SAI1_Init(void);
 
 static void init_board_buttons(void);
 static void poll_board_buttons(void);
 static void handle_button_press(size_t index);
+static void start_recording(comp_recording_source_t source, const char *reason);
+static void stop_recording(comp_recording_source_t source, const char *reason);
+static void cancel_recording(comp_recording_source_t source, const char *reason);
 static void start_manual_recording(void);
 static void stop_manual_recording(const char *reason);
 static void cancel_manual_recording(void);
+static void start_ble_session_if_ready(const char *reason);
+static void end_ble_session_if_active(bool cancel, const char *reason);
 static void run_manual_probe_request(void);
 static void run_flash_probe(void);
 static HAL_StatusTypeDef apply_flash_qspi_probe_config(const flash_qspi_probe_config_t *config);
@@ -200,13 +220,25 @@ int main(void)
 {
     s_error_stage = "HAL_Init";
     HAL_Init();
+    s_error_stage = "MX_APPE_Config";
+    MX_APPE_Config();
     s_error_stage = "SystemClock_Config";
     SystemClock_Config();
     s_error_stage = "PeriphCommonClock_Config";
     PeriphCommonClock_Config();
+    s_error_stage = "MX_IPCC_Init";
+    MX_IPCC_Init();
 
     s_error_stage = "MX_GPIO_Init";
     MX_GPIO_Init();
+    s_error_stage = "MX_DMA_Init";
+    MX_DMA_Init();
+    s_error_stage = "MX_RTC_Init";
+    MX_RTC_Init();
+    s_error_stage = "MX_RNG_Init";
+    MX_RNG_Init();
+    s_error_stage = "MX_RF_Init";
+    MX_RF_Init();
     s_error_stage = "MX_USART1_UART_Init";
     MX_USART1_UART_Init();
     s_uart_ready = true;
@@ -237,24 +269,34 @@ int main(void)
 
     printf("\r\n[boot] Companion NUCLEO-WB55RG bringup\r\n");
     printf("[boot] uart=USART1 PB6/PB7 115200 flash=QSPI PA2/PA3/PB9/PB8/PA7/PA6 mic=SAI1 PA8/PB12/PC3\r\n");
-    printf("[boot] mic=i2s_master_rx_32bit_slots_downshift16 ota=readiness_contract_only\r\n");
+    printf("[boot] mic=i2s_master_rx_32bit_slots_downshift16 ble=companion_vka1 ota=ble_package_ready\r\n");
     printf("[boot] buttons: SW1=PC4 start/stop recording, SW2=PD0 cancel/recover, SW3=PD1 flash+ota+diag probe\r\n");
     init_board_buttons();
 
+    s_error_stage = "MX_APPE_Init";
+    MX_APPE_Init();
+    printf("[stage] ble app init requested name=companion service=VKA1\r\n");
+
     printf("\r\n[tick] boot_selftest t_ms=%lu\r\n", (unsigned long)HAL_GetTick());
+    MX_APPE_Process();
     run_flash_probe();
+    MX_APPE_Process();
     run_ota_readiness_probe();
+    MX_APPE_Process();
     run_microphone_probe();
+    MX_APPE_Process();
     print_diag_tail();
 
     uint32_t last_heartbeat_ms = HAL_GetTick();
     while (1) {
+        MX_APPE_Process();
         poll_board_buttons();
 
         if (s_recording_fsm.state == COMP_RECORDING_STATE_RECORDING) {
             bool verbose = (s_manual_recording_block_count % MANUAL_RECORDING_LOG_EVERY_BLOCKS) == 0u;
             capture_microphone_block(s_manual_recording_block_count, verbose, "mic-manual");
             s_manual_recording_block_count++;
+            MX_APPE_Process();
             continue;
         }
 
@@ -265,6 +307,7 @@ int main(void)
                    (unsigned long)now,
                    comp_recording_state_name(s_recording_fsm.state));
         }
+        MX_APPE_Process();
         HAL_Delay(BUTTON_IDLE_POLL_MS);
     }
 }
@@ -323,65 +366,180 @@ static void handle_button_press(size_t index)
     }
 }
 
-static void start_manual_recording(void)
+void Companion_App_HandleBleLinkReadyChanged(bool ready)
+{
+    s_ble_link_ready = ready;
+    printf("[ble] link_ready=%u stream_ready=%u session_active=%u state=%s\r\n",
+           ready ? 1u : 0u,
+           Companion_BleAudio_IsReady() ? 1u : 0u,
+           s_ble_session_active ? 1u : 0u,
+           comp_recording_state_name(s_recording_fsm.state));
+
+    if (ready) {
+        start_ble_session_if_ready("link_ready");
+    } else {
+        s_ble_session_active = false;
+    }
+}
+
+void Companion_App_HandleBleControl(comp_audio_control_t control,
+                                    const uint8_t *data,
+                                    size_t length)
+{
+    (void)data;
+    (void)length;
+
+    printf("[ble] control=%s state=%s ready=%u\r\n",
+           comp_audio_stream_control_name(control),
+           comp_recording_state_name(s_recording_fsm.state),
+           Companion_BleAudio_IsReady() ? 1u : 0u);
+
+    switch (control) {
+    case COMP_AUDIO_CONTROL_TYPE_READY:
+    case COMP_AUDIO_CONTROL_TYPE_HEARTBEAT:
+        s_ble_link_ready = true;
+        start_ble_session_if_ready("type_ready");
+        break;
+
+    case COMP_AUDIO_CONTROL_TYPE_STOP:
+        s_ble_link_ready = false;
+        cancel_recording(COMP_RECORDING_SOURCE_HOST_BLE_CONTROL, "ble_type_stop");
+        break;
+
+    case COMP_AUDIO_CONTROL_RECORDING_TOGGLE:
+        if (s_recording_fsm.state == COMP_RECORDING_STATE_RECORDING) {
+            stop_recording(COMP_RECORDING_SOURCE_HOST_BLE_CONTROL, "ble_toggle");
+        } else {
+            start_recording(COMP_RECORDING_SOURCE_HOST_BLE_CONTROL, "ble_toggle");
+        }
+        break;
+
+    case COMP_AUDIO_CONTROL_RECORDING_STOP:
+        stop_recording(COMP_RECORDING_SOURCE_HOST_BLE_CONTROL, "ble_stop");
+        break;
+
+    case COMP_AUDIO_CONTROL_RECORDING_CANCEL:
+        cancel_recording(COMP_RECORDING_SOURCE_HOST_BLE_CONTROL, "ble_cancel");
+        break;
+
+    case COMP_AUDIO_CONTROL_RECORDING_PROCESSING_START:
+    case COMP_AUDIO_CONTROL_RECORDING_PROCESSING_STOP:
+    case COMP_AUDIO_CONTROL_RECORDING_PROCESSING_DONE:
+    case COMP_AUDIO_CONTROL_RECORDING_PROCESSING_WARN:
+        printf("[ble] processing_control=%s observed\r\n",
+               comp_audio_stream_control_name(control));
+        break;
+
+    default:
+        break;
+    }
+}
+
+static void start_ble_session_if_ready(const char *reason)
+{
+    if (s_ble_session_active ||
+        s_recording_fsm.state != COMP_RECORDING_STATE_RECORDING ||
+        !Companion_BleAudio_IsReady()) {
+        return;
+    }
+
+    s_ble_session_id = Companion_BleAudio_NextSessionId();
+    comp_audio_stream_status_t status = Companion_BleAudio_SendSessionStart(s_ble_session_id);
+    if (status == COMP_AUDIO_STREAM_OK) {
+        s_ble_session_active = true;
+    }
+    printf("[ble] %s session_start id=%lu status=%s\r\n",
+           reason,
+           (unsigned long)s_ble_session_id,
+           comp_audio_stream_status_name(status));
+}
+
+static void end_ble_session_if_active(bool cancel, const char *reason)
+{
+    if (!s_ble_session_active) {
+        return;
+    }
+
+    comp_audio_stream_status_t status =
+        cancel ? Companion_BleAudio_SendSessionCancel()
+               : Companion_BleAudio_SendSessionStop();
+    printf("[ble] %s session_%s id=%lu status=%s\r\n",
+           reason,
+           cancel ? "cancel" : "stop",
+           (unsigned long)s_ble_session_id,
+           comp_audio_stream_status_name(status));
+    s_ble_session_active = false;
+}
+
+static void start_recording(comp_recording_source_t source, const char *reason)
 {
     if (s_recording_fsm.state == COMP_RECORDING_STATE_ERROR_RECOVERY ||
         s_recording_fsm.state == COMP_RECORDING_STATE_CANCELED ||
         s_recording_fsm.state == COMP_RECORDING_STATE_TRANSFERRED) {
         (void)comp_recording_fsm_dispatch(&s_recording_fsm,
                                           COMP_RECORDING_EVENT_RECOVERY_COMPLETE,
-                                          COMP_RECORDING_SOURCE_USER_BUTTON);
+                                          source);
     }
 
     comp_recording_result_t result = comp_recording_fsm_dispatch(
         &s_recording_fsm,
         COMP_RECORDING_EVENT_START_REQUEST,
-        COMP_RECORDING_SOURCE_USER_BUTTON);
+        source);
     s_manual_recording_block_count = 0u;
-    printf("[button] sw1 action=start result=%lu state=%s\r\n",
+    if (s_recording_fsm.state == COMP_RECORDING_STATE_RECORDING) {
+        start_ble_session_if_ready(reason);
+    }
+    printf("[record] %s action=start source=%lu result=%lu state=%s\r\n",
+           reason,
+           (unsigned long)source,
            (unsigned long)result,
            comp_recording_state_name(s_recording_fsm.state));
 }
 
-static void stop_manual_recording(const char *reason)
+static void stop_recording(comp_recording_source_t source, const char *reason)
 {
     comp_recording_result_t stop_result = comp_recording_fsm_dispatch(
         &s_recording_fsm,
         COMP_RECORDING_EVENT_STOP_REQUEST,
-        COMP_RECORDING_SOURCE_USER_BUTTON);
+        source);
     comp_recording_result_t finish_result = comp_recording_fsm_dispatch(
         &s_recording_fsm,
         COMP_RECORDING_EVENT_SESSION_FINISHED,
-        COMP_RECORDING_SOURCE_USER_BUTTON);
+        source);
 
-    printf("[button] %s action=stop stop_result=%lu finish_result=%lu state=%s\r\n",
+    printf("[record] %s action=stop source=%lu stop_result=%lu finish_result=%lu state=%s\r\n",
            reason,
+           (unsigned long)source,
            (unsigned long)stop_result,
            (unsigned long)finish_result,
            comp_recording_state_name(s_recording_fsm.state));
-    print_recording_summary("manual_stop");
+    print_recording_summary(reason);
+    end_ble_session_if_active(false, reason);
 
     (void)comp_recording_fsm_dispatch(&s_recording_fsm,
                                       COMP_RECORDING_EVENT_TRANSFER_BEGIN,
-                                      COMP_RECORDING_SOURCE_USER_BUTTON);
+                                      source);
     (void)comp_recording_fsm_dispatch(&s_recording_fsm,
                                       COMP_RECORDING_EVENT_TRANSFER_FINISHED,
-                                      COMP_RECORDING_SOURCE_USER_BUTTON);
+                                      source);
     (void)comp_recording_fsm_dispatch(&s_recording_fsm,
                                       COMP_RECORDING_EVENT_RECOVERY_COMPLETE,
-                                      COMP_RECORDING_SOURCE_USER_BUTTON);
-    printf("[button] %s action=sync_complete state=%s\r\n",
+                                      source);
+    printf("[record] %s action=sync_complete state=%s\r\n",
            reason,
            comp_recording_state_name(s_recording_fsm.state));
 }
 
-static void cancel_manual_recording(void)
+static void cancel_recording(comp_recording_source_t source, const char *reason)
 {
     comp_recording_result_t cancel_result = comp_recording_fsm_dispatch(
         &s_recording_fsm,
         COMP_RECORDING_EVENT_CANCEL_REQUEST,
-        COMP_RECORDING_SOURCE_USER_BUTTON);
-    printf("[button] sw2 action=cancel result=%lu state=%s\r\n",
+        source);
+    end_ble_session_if_active(true, reason);
+    printf("[record] %s action=cancel source=%lu result=%lu state=%s\r\n",
+           reason,
+           (unsigned long)source,
            (unsigned long)cancel_result,
            comp_recording_state_name(s_recording_fsm.state));
     if (s_recording_fsm.state == COMP_RECORDING_STATE_CANCELED ||
@@ -389,10 +547,26 @@ static void cancel_manual_recording(void)
         s_recording_fsm.state == COMP_RECORDING_STATE_TRANSFERRED) {
         (void)comp_recording_fsm_dispatch(&s_recording_fsm,
                                           COMP_RECORDING_EVENT_RECOVERY_COMPLETE,
-                                          COMP_RECORDING_SOURCE_USER_BUTTON);
-        printf("[button] sw2 action=recover state=%s\r\n",
+                                          source);
+        printf("[record] %s action=recover state=%s\r\n",
+               reason,
                comp_recording_state_name(s_recording_fsm.state));
     }
+}
+
+static void start_manual_recording(void)
+{
+    start_recording(COMP_RECORDING_SOURCE_USER_BUTTON, "sw1");
+}
+
+static void stop_manual_recording(const char *reason)
+{
+    stop_recording(COMP_RECORDING_SOURCE_USER_BUTTON, reason);
+}
+
+static void cancel_manual_recording(void)
+{
+    cancel_recording(COMP_RECORDING_SOURCE_USER_BUTTON, "sw2");
 }
 
 static void run_manual_probe_request(void)
@@ -1151,6 +1325,10 @@ static bool capture_microphone_block(uint32_t block_index, bool verbose, const c
                hal_status_name(status),
                (unsigned long)HAL_SAI_GetError(&hsai_BlockA1));
         feed_drop_to_recording_fsm();
+        if (s_ble_session_active) {
+            (void)Companion_BleAudio_SendSessionError(COMP_AUDIO_SESSION_ERROR_TRANSPORT);
+            s_ble_session_active = false;
+        }
         return false;
     }
 
@@ -1168,6 +1346,20 @@ static bool capture_microphone_block(uint32_t block_index, bool verbose, const c
     };
     comp_recording_result_t result =
         comp_recording_fsm_feed_microphone_frames(&s_recording_fsm, &batch);
+
+    if (s_ble_session_active) {
+        comp_audio_stream_status_t stream_status =
+            Companion_BleAudio_SendPcmBytes((const uint8_t *)pcm_samples,
+                                            (uint16_t)sizeof(pcm_samples));
+        if (stream_status != COMP_AUDIO_STREAM_OK) {
+            printf("[%s] ble_audio status=%s id=%lu\r\n",
+                   tag,
+                   comp_audio_stream_status_name(stream_status),
+                   (unsigned long)s_ble_session_id);
+            (void)Companion_BleAudio_SendSessionError(COMP_AUDIO_SESSION_ERROR_TRANSPORT);
+            s_ble_session_active = false;
+        }
+    }
 
     if (verbose) {
         printf("[%s] block=%lu status=ok raw_min=0x%08lX raw_max=0x%08lX raw_zero=%lu raw_same=%lu raw_crc=0x%08lX pcm_min=%d pcm_max=%d pcm_mean=%ld pcm_zero=%lu pcm_clip=%lu pcm_crc=0x%08lX feed=%lu\r\n",
@@ -1292,6 +1484,55 @@ static void PeriphCommonClock_Config(void)
     }
 }
 
+static void MX_IPCC_Init(void)
+{
+    hipcc.Instance = IPCC;
+    if (HAL_IPCC_Init(&hipcc) != HAL_OK) {
+        Error_Handler();
+    }
+}
+
+static void MX_RNG_Init(void)
+{
+    hrng.Instance = RNG;
+    hrng.Init.ClockErrorDetection = RNG_CED_ENABLE;
+    if (HAL_RNG_Init(&hrng) != HAL_OK) {
+        Error_Handler();
+    }
+}
+
+static void MX_RTC_Init(void)
+{
+    hrtc.Instance = RTC;
+    hrtc.Init.HourFormat = RTC_HOURFORMAT_24;
+    hrtc.Init.AsynchPrediv = CFG_RTC_ASYNCH_PRESCALER;
+    hrtc.Init.SynchPrediv = CFG_RTC_SYNCH_PRESCALER;
+    hrtc.Init.OutPut = RTC_OUTPUT_DISABLE;
+    hrtc.Init.OutPutPolarity = RTC_OUTPUT_POLARITY_HIGH;
+    hrtc.Init.OutPutType = RTC_OUTPUT_TYPE_OPENDRAIN;
+    hrtc.Init.OutPutRemap = RTC_OUTPUT_REMAP_NONE;
+    if (HAL_RTC_Init(&hrtc) != HAL_OK) {
+        Error_Handler();
+    }
+    if (HAL_RTCEx_SetWakeUpTimer_IT(&hrtc, 0u, RTC_WAKEUPCLOCK_RTCCLK_DIV16) != HAL_OK) {
+        Error_Handler();
+    }
+}
+
+static void MX_RF_Init(void)
+{
+}
+
+static void MX_DMA_Init(void)
+{
+    __HAL_RCC_DMAMUX1_CLK_ENABLE();
+    __HAL_RCC_DMA1_CLK_ENABLE();
+    __HAL_RCC_DMA2_CLK_ENABLE();
+
+    HAL_NVIC_SetPriority(DMA2_Channel4_IRQn, 15, 0);
+    HAL_NVIC_EnableIRQ(DMA2_Channel4_IRQn);
+}
+
 static void MX_GPIO_Init(void)
 {
     GPIO_InitTypeDef GPIO_InitStruct = {0};
@@ -1314,7 +1555,7 @@ static void MX_GPIO_Init(void)
     HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 }
 
-static void MX_USART1_UART_Init(void)
+void MX_USART1_UART_Init(void)
 {
     huart1.Instance = USART1;
     huart1.Init.BaudRate = 115200;
@@ -1393,11 +1634,88 @@ static void MX_SAI1_Init(void)
 
 void HAL_MspInit(void)
 {
+    __HAL_RCC_HSEM_CLK_ENABLE();
+
+    HAL_NVIC_SetPriority(HSEM_IRQn, 0, 0);
+    HAL_NVIC_EnableIRQ(HSEM_IRQn);
+}
+
+void HAL_IPCC_MspInit(IPCC_HandleTypeDef *ipccHandle)
+{
+    if (ipccHandle->Instance == IPCC) {
+        __HAL_RCC_IPCC_CLK_ENABLE();
+
+        HAL_NVIC_SetPriority(IPCC_C1_RX_IRQn, 0, 0);
+        HAL_NVIC_EnableIRQ(IPCC_C1_RX_IRQn);
+        HAL_NVIC_SetPriority(IPCC_C1_TX_IRQn, 0, 0);
+        HAL_NVIC_EnableIRQ(IPCC_C1_TX_IRQn);
+    }
+}
+
+void HAL_IPCC_MspDeInit(IPCC_HandleTypeDef *ipccHandle)
+{
+    if (ipccHandle->Instance == IPCC) {
+        HAL_NVIC_DisableIRQ(IPCC_C1_RX_IRQn);
+        HAL_NVIC_DisableIRQ(IPCC_C1_TX_IRQn);
+        __HAL_RCC_IPCC_CLK_DISABLE();
+    }
+}
+
+void HAL_RNG_MspInit(RNG_HandleTypeDef *rngHandle)
+{
+    RCC_PeriphCLKInitTypeDef PeriphClkInitStruct = {0};
+
+    if (rngHandle->Instance == RNG) {
+        PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_RNG;
+        PeriphClkInitStruct.RngClockSelection = RCC_RNGCLKSOURCE_HSI48;
+        if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK) {
+            Error_Handler();
+        }
+
+        __HAL_RCC_RNG_CLK_ENABLE();
+    }
+}
+
+void HAL_RNG_MspDeInit(RNG_HandleTypeDef *rngHandle)
+{
+    if (rngHandle->Instance == RNG) {
+        __HAL_RCC_RNG_CLK_DISABLE();
+    }
+}
+
+void HAL_RTC_MspInit(RTC_HandleTypeDef *rtcHandle)
+{
+    RCC_PeriphCLKInitTypeDef PeriphClkInitStruct = {0};
+
+    if (rtcHandle->Instance == RTC) {
+        PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_RTC;
+        PeriphClkInitStruct.RTCClockSelection = RCC_RTCCLKSOURCE_LSE;
+        if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK) {
+            Error_Handler();
+        }
+
+        __HAL_RCC_RTC_ENABLE();
+        __HAL_RCC_RTCAPB_CLK_ENABLE();
+
+        HAL_NVIC_SetPriority(RTC_WKUP_IRQn, 0, 0);
+        HAL_NVIC_EnableIRQ(RTC_WKUP_IRQn);
+        HAL_RTCEx_EnableBypassShadow(rtcHandle);
+    }
+}
+
+void HAL_RTC_MspDeInit(RTC_HandleTypeDef *rtcHandle)
+{
+    if (rtcHandle->Instance == RTC) {
+        HAL_NVIC_DisableIRQ(RTC_WKUP_IRQn);
+        __HAL_RCC_RTC_DISABLE();
+        __HAL_RCC_RTCAPB_CLK_DISABLE();
+    }
 }
 
 void HAL_UART_MspInit(UART_HandleTypeDef *uartHandle)
 {
     GPIO_InitTypeDef GPIO_InitStruct = {0};
+    HAL_DMA_MuxSyncConfigTypeDef pSyncConfig = {0};
     RCC_PeriphCLKInitTypeDef PeriphClkInitStruct = {0};
 
     if (uartHandle->Instance == USART1) {
@@ -1416,6 +1734,33 @@ void HAL_UART_MspInit(UART_HandleTypeDef *uartHandle)
         GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
         GPIO_InitStruct.Alternate = GPIO_AF7_USART1;
         HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+        hdma_usart1_tx.Instance = DMA2_Channel4;
+        hdma_usart1_tx.Init.Request = DMA_REQUEST_USART1_TX;
+        hdma_usart1_tx.Init.Direction = DMA_MEMORY_TO_PERIPH;
+        hdma_usart1_tx.Init.PeriphInc = DMA_PINC_DISABLE;
+        hdma_usart1_tx.Init.MemInc = DMA_MINC_ENABLE;
+        hdma_usart1_tx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+        hdma_usart1_tx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
+        hdma_usart1_tx.Init.Mode = DMA_NORMAL;
+        hdma_usart1_tx.Init.Priority = DMA_PRIORITY_LOW;
+        if (HAL_DMA_Init(&hdma_usart1_tx) != HAL_OK) {
+            Error_Handler();
+        }
+
+        pSyncConfig.SyncSignalID = HAL_DMAMUX1_SYNC_DMAMUX1_CH1_EVT;
+        pSyncConfig.SyncPolarity = HAL_DMAMUX_SYNC_NO_EVENT;
+        pSyncConfig.SyncEnable = DISABLE;
+        pSyncConfig.EventEnable = DISABLE;
+        pSyncConfig.RequestNumber = 1u;
+        if (HAL_DMAEx_ConfigMuxSync(&hdma_usart1_tx, &pSyncConfig) != HAL_OK) {
+            Error_Handler();
+        }
+
+        __HAL_LINKDMA(uartHandle, hdmatx, hdma_usart1_tx);
+
+        HAL_NVIC_SetPriority(USART1_IRQn, 0, 0);
+        HAL_NVIC_EnableIRQ(USART1_IRQn);
     }
 }
 
@@ -1512,6 +1857,36 @@ void HAL_SAI_MspInit(SAI_HandleTypeDef *saiHandle)
         GPIO_InitStruct.Alternate = GPIO_AF13_SAI1;
         HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
     }
+}
+
+void USART1_IRQHandler(void)
+{
+    HAL_UART_IRQHandler(&huart1);
+}
+
+void DMA2_Channel4_IRQHandler(void)
+{
+    HAL_DMA_IRQHandler(&hdma_usart1_tx);
+}
+
+void RTC_WKUP_IRQHandler(void)
+{
+    HAL_RTCEx_WakeUpTimerIRQHandler(&hrtc);
+}
+
+void IPCC_C1_RX_IRQHandler(void)
+{
+    HAL_IPCC_RX_IRQHandler(&hipcc);
+}
+
+void IPCC_C1_TX_IRQHandler(void)
+{
+    HAL_IPCC_TX_IRQHandler(&hipcc);
+}
+
+void HSEM_IRQHandler(void)
+{
+    HAL_HSEM_IRQHandler();
 }
 
 void SysTick_Handler(void)

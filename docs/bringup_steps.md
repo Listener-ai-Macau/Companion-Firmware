@@ -149,25 +149,25 @@ Acceptance:
 
 ## Current Listener-Compatible A1/A2 Gate
 
-Before the real microphone path is ready, the NUCLEO smoke image for the
-Listener-compatible VKA1 stream is:
+The NUCLEO Companion app now carries the Listener-compatible BLE advertising,
+GATT, VKA1 control path, and real microphone stream in one image:
 
 ```powershell
-.\tools\build_companion_ble_audio_fixture.ps1 -Force
+.\tools\build_nucleo_bringup.ps1 -Force
 ```
 
-Flash it only inside the workflow hardware lock:
+For direct bring-up flashing, program it only inside the workflow hardware lock:
 
 ```powershell
-pwsh -NoProfile -File <ai-collaboration-workflow>\scripts\aiw.ps1 with-lock -Resource Companion-WB55 -Purpose "flash Companion BLE audio fixture" -Run pwsh -NoProfile -File .\tools\flash.ps1 -Execute -WorkflowLockHeld -FlashAudioFixture
+pwsh -NoProfile -File <ai-collaboration-workflow>\scripts\aiw.ps1 with-lock -Resource Companion-WB55 -Purpose "flash Companion NUCLEO bring-up" -Run pwsh -NoProfile -File .\tools\flash.ps1 -Execute -WorkflowLockHeld -FlashNucleoBringup
 ```
 
 The flash tool must show a Chinese desktop confirmation prompt and play a sound
 before programming the board. After flashing, the device advertises as
-`companion`, uses no PIN/bonding, and sends deterministic VKA1 PCM when Type
-writes `TYPE:READY` after notification subscription. The fixture keeps
-`VREC:TOGGLE` and SW1 on the same path for control-write and physical-button
-checks, but the temporary Type A1/A2 smoke buttons do not require a board press.
+`companion`, uses no PIN/bonding, and sends VKA1 PCM from the microphone when
+Type subscribes and sends the recording control path. `VREC:TOGGLE` and SW1
+share the same Companion recording FSM path, matching the Listener rule that
+host control and physical keys drive the same business logic.
 
 Companion A1/A2 reuse the Listener acceptance meaning:
 
@@ -304,7 +304,7 @@ Before final static signoff, run the full preflight:
 .\tools\verify_companion_bringup_readiness.ps1 -Full
 ```
 
-`-Full` rebuilds the BLE audio fixture, OTA loader, normal bring-up app, OTA app,
+`-Full` rebuilds the OTA loader, normal bring-up app, OTA app,
 regenerates the shared OTA/wired package, runs Type build/tests, and then emits
 the same manual-gate list. Real flashing, BLE OTA, A1/A2, and Type UI button
 operation still require the workflow hardware lock plus Chinese audible
@@ -316,14 +316,12 @@ When hardware is ready, the preferred path is the aggregate acceptance runner:
 pwsh -NoProfile -File <ai-collaboration-workflow>\scripts\aiw.ps1 with-lock -Resource Companion-WB55,BLE-Companion -Purpose "Companion hardware acceptance" -Run pwsh -NoProfile -File .\tools\verify_companion_hardware_acceptance.ps1 -Execute -WorkflowLockHeld -PackagePath <companion-package.zip> -EvidencePath <companion_ui_screenshot_or_log>
 ```
 
-The runner first flashes the BLE audio fixture, then executes the A1/A2 wrapper,
-then the Type UI manual wrapper while the board is still running that fixture,
-then the wired SWD flash wrapper, and then the BLE OTA wrapper inside one locked
-operator flow. This order matters: the package currently contains the bring-up
-app, not the VKA1 audio fixture, so the Type page A1/A2 checks must finish before
-OTA/wired package flashing. BLE OTA then runs after the same package has restored
-the OTA loader through the wired factory flash path. The runner then feeds the
-four summary files into
+The runner first ensures the CPU2 BLE stack, then flashes the same Companion
+package over wired SWD so the board is running the unified Companion app, then
+executes the A1/A2 wrapper, the Type UI manual wrapper, and the BLE OTA wrapper
+inside one locked operator flow. This order keeps the Type smoke tests and
+package tests on the same app image instead of a synthetic fixture. The runner
+then feeds the four summary files into
 `verify_companion_manual_gate_evidence.ps1`. The no-hardware readiness preflight
 dry-runs this aggregate entry and records
 `companion-hardware-acceptance-summary.json` under the readiness report directory.

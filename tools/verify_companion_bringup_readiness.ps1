@@ -192,7 +192,6 @@ function ConvertTo-ReadinessMarkdown {
 }
 
 if ($Full) {
-    Invoke-ReadinessStep -Name "build BLE audio fixture" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments @("-NoProfile", "-File", ".\tools\build_companion_ble_audio_fixture.ps1", "-Force")
     Invoke-ReadinessStep -Name "build OTA loader" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments @("-NoProfile", "-File", ".\tools\build_companion_ota_loader.ps1", "-Force")
     Invoke-ReadinessStep -Name "build NUCLEO bringup" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments @("-NoProfile", "-File", ".\tools\build_nucleo_bringup.ps1", "-Force")
     Invoke-ReadinessStep -Name "build NUCLEO OTA app" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments @("-NoProfile", "-File", ".\tools\build_nucleo_bringup.ps1", "-OtaApp", "-Force")
