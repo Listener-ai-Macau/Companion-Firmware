@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "plan": "companion-listener-feature-migration",
+  "step_id": "1.4",
+  "generated_at": "2026-06-27T11:33:58.6113382+08:00",
+  "result": "PASS",
+  "repo_root": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware",
+  "worktree": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-wt-codex-companion-listener-feature-migration-1.4",
+  "branch": "ai/codex-companion-listener-feature-migration-1.4",
+  "commit": "772de89a94d75782640f3bc3c6fdb47c4a11662c",
+  "branch_mode": "branch_required",
+  "timeout_seconds": 120,
+  "commands": [
+    {
+      "index": 1,
+      "command": "pwsh -NoProfile -File .\\tools\\verify_recording_fsm_static.ps1",
+      "runnable": true,
+      "worktree": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-wt-codex-companion-listener-feature-migration-1.4",
+      "branch": "ai/codex-companion-listener-feature-migration-1.4",
+      "commit": "772de89a94d75782640f3bc3c6fdb47c4a11662c",
+      "status": "PASS",
+      "started_at": "2026-06-27T11:33:55.0851068+08:00",
+      "finished_at": "2026-06-27T11:33:56.4832707+08:00",
+      "duration_ms": 1398,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_summary": [
+        "PASS: Companion recording FSM static checks passed; synthetic fixture written to docs\\validation\\companion-pendant-firmware-bringup-1.5-synthetic-recording.json."
+      ],
+      "stderr_summary": [],
+      "output_sha256": "5cad4ce10c17bd033a8cf163276203989bd3414b32efdfca84150be72cebdff5",
+      "evidence_refs": [],
+      "artifacts": []
+    },
+    {
+      "index": 2,
+      "command": "python .\\tools\\verify_recording_cache_model.py",
+      "runnable": true,
+      "worktree": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-wt-codex-companion-listener-feature-migration-1.4",
+      "branch": "ai/codex-companion-listener-feature-migration-1.4",
+      "commit": "772de89a94d75782640f3bc3c6fdb47c4a11662c",
+      "status": "PASS",
+      "started_at": "2026-06-27T11:33:56.5238178+08:00",
+      "finished_at": "2026-06-27T11:33:57.2552106+08:00",
+      "duration_ms": 731,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_summary": [
+        "PASS: Companion recording cache model verified; fixture written to docs\\validation\\companion-pendant-firmware-bringup-1.7-recording-cache-fixture.json."
+      ],
+      "stderr_summary": [],
+      "output_sha256": "bb280d1692cf6ef384d8a93daa6ee50e49f283a13ac6e44bda4a0ed79f5324b8",
+      "evidence_refs": [],
+      "artifacts": []
+    },
+    {
+      "index": 3,
+      "command": "python .\\tools\\companion_ble_tool.py --self-test",
+      "runnable": true,
+      "worktree": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-wt-codex-companion-listener-feature-migration-1.4",
+      "branch": "ai/codex-companion-listener-feature-migration-1.4",
+      "commit": "772de89a94d75782640f3bc3c6fdb47c4a11662c",
+      "status": "PASS",
+      "started_at": "2026-06-27T11:33:57.2567899+08:00",
+      "finished_at": "2026-06-27T11:33:57.9512539+08:00",
+      "duration_ms": 694,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_summary": [
+        "PASS: Companion BLE fixture self-test wrote docs/validation/companion_ble_matrix.json with 8 operation(s), 8 matrix case(s), and 7 actionable failure(s)."
+      ],
+      "stderr_summary": [],
+      "output_sha256": "9478887b42628228848d28d1abc5af226eb59b92f0b60af40fe077ac591aab6f",
+      "evidence_refs": [],
+      "artifacts": []
+    },
+    {
+      "index": 4,
+      "command": "git diff --check",
+      "runnable": true,
+      "worktree": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-wt-codex-companion-listener-feature-migration-1.4",
+      "branch": "ai/codex-companion-listener-feature-migration-1.4",
+      "commit": "772de89a94d75782640f3bc3c6fdb47c4a11662c",
+      "status": "PASS",
+      "started_at": "2026-06-27T11:33:57.9522699+08:00",
+      "finished_at": "2026-06-27T11:33:58.6101116+08:00",
+      "duration_ms": 658,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_summary": [],
+      "stderr_summary": [],
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "evidence_refs": [],
+      "artifacts": []
+    }
+  ],
+  "errors": []
+}
