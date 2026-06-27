@@ -54,7 +54,7 @@ Repo commit before update: `78a5a59`
 | Workflow board ledger | PASS | `aiw board-ledger get -Resource Companion-WB55` returns board id `nucleo-wb55rg-stlink-066EFF535570514867221931` and board rev `NUCLEO-WB55RG` |
 | Debug / flash resource | PASS | Use workflow resource `Companion-WB55` for SWD, FUS, wireless-stack provisioning, and STM32CubeProgrammer flash operations |
 | BLE validation resource | PASS | Use workflow resource pair `Companion-WB55,BLE-Companion` for Type Companion BLE discovery, A1/A2, BLE OTA, and aggregate hardware acceptance |
-| Serial VCP | DEFERRED | USART/ST-LINK VCP capture is useful for boot logs, but the first unblock path only requires the SWD/FUS/BLE resources above; record the COM port when `tools/capture_nucleo_serial.ps1` is used |
+| Serial VCP | PASS | `tools/capture_nucleo_serial.ps1 -CheckOnly` auto-detected `STMicroelectronics STLink Virtual COM Port (COM13)` with PNP id `USB\VID_0483&PID_374B&MI_02\7&ECAD0C&0&0002`; board ledger now records `com=COM13` |
 | Product peripheral bench | DEFERRED | E-paper, PDM MEMS microphone, SPI NOR flash, button, battery/charger/fuel gauge, and measurement method are deferred to the later pendant MVP bench gate; the NUCLEO first gate is flash/FUS/BLE bring-up |
 | FUS/BLE stack state | PENDING | A locked FUS read was attempted on `2026-06-27`, but the Chinese operator prompt timed out/cancelled before any hardware command ran; run the FUS diagnostic again while the operator can confirm the prompt |
 
@@ -67,7 +67,6 @@ Operator result: `continue blocked` on `2026-06-22`; superseded by the `2026-06-
 ## Blocking Items
 
 - CPU2 FUS / BLE wireless-stack state is not yet read; the current Type-side symptom is "Companion BLE not found".
-- USART/ST-LINK VCP COM port is not yet recorded; capture it when boot logs are needed.
 - E-paper, MEMS microphone, SPI NOR flash, button, battery/charger/fuel gauge, and measurement method remain deferred for the later pendant MVP bench gate.
 
 ## Unblock Requirements

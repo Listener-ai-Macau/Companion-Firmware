@@ -35,7 +35,8 @@ For NUCLEO bring-up:
 ```powershell
 pwsh -NoProfile -File .\tools\build_nucleo_bringup.ps1
 pwsh -NoProfile -File .\tools\flash_nucleo_bringup.ps1
-pwsh -NoProfile -File .\tools\capture_nucleo_serial.ps1 -Port COM13 -Seconds 30
+pwsh -NoProfile -File .\tools\capture_nucleo_serial.ps1 -CheckOnly
+pwsh -NoProfile -File C:\Users\Billy\Desktop\Denzic\ai-collaboration-workflow\scripts\aiw.ps1 with-lock -Resource Companion-WB55 -Purpose "Companion NUCLEO serial capture" -Run pwsh -NoProfile -File .\tools\capture_nucleo_serial.ps1 -Execute -WorkflowLockHeld -Seconds 30 -ResetAfterOpen
 ```
 
 For product CubeIDE work:

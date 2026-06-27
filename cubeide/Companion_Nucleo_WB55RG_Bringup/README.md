@@ -65,5 +65,6 @@ pwsh -NoProfile -File .\tools\flash_nucleo_bringup.ps1
 Capture logs:
 
 ```powershell
-pwsh -NoProfile -File .\tools\capture_nucleo_serial.ps1 -Port COM13 -Seconds 15
+pwsh -NoProfile -File .\tools\capture_nucleo_serial.ps1 -CheckOnly
+pwsh -NoProfile -File C:\Users\Billy\Desktop\Denzic\ai-collaboration-workflow\scripts\aiw.ps1 with-lock -Resource Companion-WB55 -Purpose "Companion NUCLEO serial capture" -Run pwsh -NoProfile -File .\tools\capture_nucleo_serial.ps1 -Execute -WorkflowLockHeld -Seconds 15 -ResetAfterOpen
 ```
