@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "namespace": "Companion pendant BLE GATT v1",
-  "uuid_base_note": "Companion-owned 128-bit UUIDs for the STM32WB GATT server; do not reuse Listener ESP/NimBLE UUIDs.",
+  "uuid_base_note": "Companion-native 128-bit UUIDs for the STM32WB GATT server; Listener UUIDs appear only under compatibility_services for VKA1/A1/A2 validation.",
   "services": [
     {
       "service": "device_status",
@@ -113,6 +113,60 @@
           "uuid": "8f7a7001-7b7d-4f3d-9d6f-6c2d1b7c0000",
           "direction": ["read", "notify"],
           "payload": "OtaReadinessV1"
+        },
+        {
+          "name": "ota_st_base_address",
+          "label": "ST OTA base address",
+          "uuid": "8f7a7002-7b7d-4f3d-9d6f-6c2d1b7c0000",
+          "direction": ["write-with-response", "write-without-response"],
+          "payload": "StOtaBaseAddressV1"
+        },
+        {
+          "name": "ota_st_confirm",
+          "label": "ST OTA reboot confirm",
+          "uuid": "8f7a7003-7b7d-4f3d-9d6f-6c2d1b7c0000",
+          "direction": ["indicate"],
+          "payload": "StOtaConfirmV1"
+        },
+        {
+          "name": "ota_st_raw_data",
+          "label": "ST OTA raw data",
+          "uuid": "8f7a7004-7b7d-4f3d-9d6f-6c2d1b7c0000",
+          "direction": ["write-with-response", "write-without-response"],
+          "payload": "StOtaRawDataV1"
+        }
+      ]
+    }
+  ],
+  "compatibility_services": [
+    {
+      "service": "listener_vka1_audio_stream",
+      "uuid": "710af845-6d9f-6583-0c4d-9e5b3bc3091a",
+      "purpose": "Listener-Type A1/A2 compatible live PCM16 VKA1 notify stream; this does not replace Companion-native recording pull/storage services.",
+      "characteristics": [
+        {
+          "name": "listener_vka1_audio_notify",
+          "uuid": "710af845-6d9f-6583-0c4d-9e5b3bc3091b",
+          "direction": ["notify"],
+          "payload": "VKA1 session_start/audio_data/session_stop/session_cancel/session_error packets"
+        },
+        {
+          "name": "listener_vka1_audio_readiness",
+          "uuid": "710af845-6d9f-6583-0c4d-9e5b3bc3091c",
+          "direction": ["read"],
+          "payload": "factory/readiness text compatible with Listener-Type diagnostics"
+        },
+        {
+          "name": "listener_vka1_audio_capabilities",
+          "uuid": "710af845-6d9f-6583-0c4d-9e5b3bc3091d",
+          "direction": ["read"],
+          "payload": "capabilities text compatible with Listener-Type diagnostics"
+        },
+        {
+          "name": "listener_vka1_audio_control",
+          "uuid": "710af845-6d9f-6583-0c4d-9e5b3bc3091e",
+          "direction": ["write-with-response"],
+          "payload": "TYPE:READY/TYPE:HB and VREC:TOGGLE/VREC:STOP/VREC:CANCEL control text"
         }
       ]
     }

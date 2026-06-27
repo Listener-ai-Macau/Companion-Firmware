@@ -8,8 +8,8 @@ for this step.
 |---|---|---|---|---|
 | `Listener-Firmware/ports/esp32/audio_capture/` | adaptation | STM32 HAL/LL PDM or SAI/DFSDM-style capture path, DMA buffers, and low-power mic gating | Step 1.5 microphone capture and recording FSM port | Keep microphone behavior and validation ideas, but do not copy ESP-IDF I2S/PDM drivers, ESP task wiring, or ESP GPIO/power policy. |
 | `Listener-Firmware/components/voice_recording_control/` | adaptation | Companion recording FSM independent from ESP FreeRTOS assumptions, using STM32 scheduler/timer hooks and Companion BLE state | Step 1.5 microphone capture and recording FSM port | Reuse state-machine lessons such as pending start, cancel, recovery, host cleanup, and transfer boundaries; do not copy ESP-specific control effects. |
-| `Listener-Firmware/ports/esp32/ble_audio_stream/` | reference only | STM32_WPAN GATT recording-list and chunk-pull characteristics | Step 1.3 Companion BLE GATT protocol and host probe contract | BLE audio/chunk transfer lessons are useful, but NimBLE-only code and MTU/event-loop assumptions are no reuse. |
-| `Listener-Firmware/components/firmware_ota/` | reference only | STM32CubeWB BLE OTA readiness notes, manifest discipline, low-battery blockers, interrupted-transfer behavior, and recovery path | Step 1.8 BLE OTA readiness contract and manifest discipline | ESP-IDF OTA slots, ESP partition assumptions, rollback APIs, and bootloader layout are no reuse. |
+| `Listener-Firmware/ports/esp32/ble_audio_stream/` and `protocols/listener_proto/include/listener_audio_proto.h` | adaptation for compatibility surface; reference only for native Companion services | Portable `app/companion_pendant/audio_stream` VKA1 encoder plus later STM32_WPAN GATT notify/control service for Type A1/A2; native Companion recording-list and chunk-pull characteristics remain Companion-owned | Step 1.5 STM32 GATT service skeleton and payload queue boundary | Reuse UUIDs and VKA1 wire semantics only for the explicitly named Listener-compatible live audio service. Do not copy NimBLE code, ESP event-loop assumptions, or use Listener UUIDs for Companion-native services. |
+| `Listener-Firmware/components/firmware_ota/` | reference only | STM32CubeWB BLE OTA readiness notes, manifest discipline, low-battery blockers, interrupted-transfer behavior, CE bootloader policy, external QSPI single staging, and recovery path | Step 1.8 BLE OTA readiness contract and manifest discipline | ESP-IDF OTA slots, ESP partition assumptions, rollback APIs, and bootloader layout are no reuse. |
 | `Listener-Firmware/ports/esp32/ble_firmware_ota/` | reference only | STM32_WPAN OTA control/data GATT shape after official ST OTA reference is understood | Step 1.8 BLE OTA readiness contract and manifest discipline | Reuse preflight and host-transfer concepts, not NimBLE service code. |
 | `Listener-Firmware/components/diag_log/` | adaptation | STM32 diagnostic log module backed first by RAM/serial, later SPI flash ring if needed | Step 1.4 STM32 diagnostic log foundation | Event schema, source masks, bounded dump, and AI-readable summaries are useful; ESP flash partition and NVS assumptions are no reuse. |
 | `Listener-Firmware/tools/` | adaptation | Companion build, bootstrap, static checks, CubeProgrammer flash wrappers, serial capture, BLE probe, and validation artifact tools | Step 1.2 STM32CubeWB official BLE starter scaffold and later validation steps | Script shape and evidence style transfer well; commands must use STM32CubeIDE/CMake/CubeProgrammer, not idf.py or esptool. |
@@ -29,6 +29,8 @@ Companion-Firmware must replace ESP-specific surfaces with:
 - RTC/LPM for low-power wake and recording/display scheduling.
 - STM32CubeProgrammer for flashing, wireless stack provisioning, and recovery.
 - NUCLEO-WB55RG board support for the first bench target.
+- COMPANION-PENDANT-CE / STM32WB55CEUx linker, bootloader, and external QSPI
+  staging layout for the product target.
 
 ## Forbidden Copy Rules
 
@@ -36,6 +38,8 @@ Do not copy:
 
 - ESP-IDF drivers or `idf.py` build assumptions.
 - ESP partition assumptions, OTA slot layout, NVS storage model, or ESP bootloader rollback APIs.
+- ESP-style dual OTA slots for the first CE product layout; Companion uses one
+  external QSPI `ota_staging` partition plus one internal runnable app.
 - NimBLE-only code, event names, or connection-state assumptions.
 - ESP GPIO/power policy, PWR_HOLD behavior, or Listener board-specific battery/current-sense contracts.
 

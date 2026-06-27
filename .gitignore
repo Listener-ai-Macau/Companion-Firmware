@@ -2,6 +2,7 @@
 Debug/
 Release/
 build/
+build_*/
 out/
 
 # STM32CubeIDE workspace metadata
@@ -21,6 +22,7 @@ out/
 !third_party/STM32CubeWB/**/*.hex
 
 # Local validation artifacts
+.cache/
 artifacts/
 *.log
 *.tmp

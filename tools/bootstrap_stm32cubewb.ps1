@@ -22,7 +22,9 @@ $sparsePaths = @(
     "Middlewares/ST/STM32_WPAN",
     "Utilities/lpm/tiny_lpm",
     "Utilities/sequencer",
+    "Projects/P-NUCLEO-WB55.Nucleo/Applications/BLE/BLE_Ota",
     "Projects/P-NUCLEO-WB55.Nucleo/Applications/BLE/BLE_p2pServer",
+    "Projects/P-NUCLEO-WB55.Nucleo/Applications/BLE/BLE_p2pServer_ota",
     "Projects/STM32WB_Copro_Wireless_Binaries"
 )
 
@@ -37,6 +39,12 @@ $requiredPaths = @(
     "Projects/P-NUCLEO-WB55.Nucleo/Applications/BLE/BLE_p2pServer/STM32CubeIDE/.project",
     "Projects/P-NUCLEO-WB55.Nucleo/Applications/BLE/BLE_p2pServer/STM32CubeIDE/.cproject",
     "Projects/P-NUCLEO-WB55.Nucleo/Applications/BLE/BLE_p2pServer/Binary/BLE_p2pServer_reference.hex",
+    "Projects/P-NUCLEO-WB55.Nucleo/Applications/BLE/BLE_Ota/STM32CubeIDE/.project",
+    "Projects/P-NUCLEO-WB55.Nucleo/Applications/BLE/BLE_Ota/STM32CubeIDE/.cproject",
+    "Projects/P-NUCLEO-WB55.Nucleo/Applications/BLE/BLE_Ota/Binary/BLE_Ota_reference.hex",
+    "Projects/P-NUCLEO-WB55.Nucleo/Applications/BLE/BLE_p2pServer_ota/STM32CubeIDE/.project",
+    "Projects/P-NUCLEO-WB55.Nucleo/Applications/BLE/BLE_p2pServer_ota/STM32CubeIDE/.cproject",
+    "Projects/P-NUCLEO-WB55.Nucleo/Applications/BLE/BLE_p2pServer_ota/Binary/BLE_p2pServer_ota_reference.bin",
     "Projects/STM32WB_Copro_Wireless_Binaries/STM32WB5x/stm32wb5x_BLE_Stack_full_fw.bin",
     "Middlewares/ST/STM32_WPAN/ble/svc/Src/p2p_stm.c",
     "Utilities/sequencer/stm32_seq.c",
@@ -131,6 +139,8 @@ try {
     $short = (& git -C $submodulePath rev-parse --short HEAD).Trim()
     Write-Host "STM32CubeWB ready: $tag ($short)"
     Write-Host "Example: third_party/STM32CubeWB/Projects/P-NUCLEO-WB55.Nucleo/Applications/BLE/BLE_p2pServer"
+    Write-Host "OTA example: third_party/STM32CubeWB/Projects/P-NUCLEO-WB55.Nucleo/Applications/BLE/BLE_Ota"
+    Write-Host "OTA app example: third_party/STM32CubeWB/Projects/P-NUCLEO-WB55.Nucleo/Applications/BLE/BLE_p2pServer_ota"
 }
 finally {
     Pop-Location

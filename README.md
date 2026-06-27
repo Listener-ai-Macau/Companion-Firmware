@@ -20,6 +20,18 @@ Run this after cloning or when the submodule checkout is incomplete:
 
 Then follow [docs/bringup_steps.md](docs/bringup_steps.md).
 
+For the recommended Codex + CubeIDE development loop, see
+[docs/codex_development_workflow.md](docs/codex_development_workflow.md).
+
+## Product CubeIDE project
+
+The Companion Pendant product CubeMX/CubeIDE configuration lives at the repo
+root as `Companion_Pendant.ioc` (target MCU STM32WB55CEUx / UFQFPN48). Pinout,
+peripheral mapping, and open/generate/build steps are documented in
+[docs/companion_pendant_ioc.md](docs/companion_pendant_ioc.md). Product
+application source (recording / diag_log / e-paper) stays under
+`app/companion_pendant/` and is linked into the project as a source folder.
+
 Do not edit files directly under `third_party/STM32CubeWB` for product work.
 Use it as the official reference package. Product firmware should be copied or
 generated into this repo's own application directory after the official BLE

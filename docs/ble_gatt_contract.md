@@ -10,6 +10,44 @@ The device advertises a Companion-specific name and exposes these GATT
 services. Multi-byte integers are little-endian. Host writes use
 write-with-response unless the characteristic explicitly says notify-only.
 
+## Listener-Compatible Live Audio
+
+For early A1/A2 validation with the existing Listener-Type recorder path, the
+STM32WB firmware also exposes a deliberately named compatibility service. This
+service reuses Listener's live audio UUIDs and VKA1 packet format so Type can
+exercise the same capsule/session/transport/insertion path before Companion's
+native pull-model sync is wired into the UI.
+
+This compatibility surface is separate from Companion-native recording storage.
+It streams live PCM16 mono 16 kHz notifications only while Type is connected and
+subscribed.
+
+| service | characteristic | UUID | direction | payload |
+| --- | --- | --- | --- | --- |
+| listener_vka1_audio_stream | listener_vka1_audio_notify | `710af845-6d9f-6583-0c4d-9e5b3bc3091b` | device -> host notify | `VKA1` packets with 20-byte headers: session_start=1, audio_data=2, session_stop=3, session_cancel=4, session_error=5. |
+| listener_vka1_audio_stream | listener_vka1_audio_control | `710af845-6d9f-6583-0c4d-9e5b3bc3091e` | host -> device write-with-response | `TYPE:READY`, `TYPE:HB`, `TYPE:STOP`/`TYPE:BYE`, `VREC:TOGGLE`, `VREC:STOP`, `VREC:CANCEL`, and processing state text used by Type. |
+| listener_vka1_audio_stream | listener_vka1_audio_readiness | `710af845-6d9f-6583-0c4d-9e5b3bc3091c` | device -> host read | Short readiness text for Type diagnostics. |
+| listener_vka1_audio_stream | listener_vka1_audio_capabilities | `710af845-6d9f-6583-0c4d-9e5b3bc3091d` | device -> host read | Short capabilities text for Type diagnostics. |
+
+The service UUID is `710af845-6d9f-6583-0c4d-9e5b3bc3091a`. STM32_WPAN code
+maps the portable `app/companion_pendant/audio_stream` module through
+`audio_stream_stm32wb.c`: `aci_gatt_add_service`, `aci_gatt_add_char`, control
+write handling, CCCD notify enable state, and `aci_gatt_update_char_value`. The
+portable module intentionally does not include STM32 HAL, STM32_WPAN, NimBLE, or
+ESP-IDF symbols.
+
+The STM32WB adapter advertises a 244-byte notify value for this compatibility
+service. That matches the current Listener-Type live audio path and avoids
+silently exceeding the normal ST `aci_gatt_update_char_value()` command length;
+larger values require an explicit switch to `aci_gatt_update_char_value_ext()`.
+
+`cubeide/Companion_BLE_Audio_Fixture` is the NUCLEO smoke-test image for this
+surface. It keeps the product name `companion`, disables PIN/bonding, registers
+only the Listener-compatible VKA1 audio service, and sends a deterministic
+synthetic PCM session when Type writes `TYPE:READY` after notify subscription.
+It also keeps `VREC:TOGGLE` and the board SW1 button on the same fixture path
+for manual control-path checks.
+
 | service | characteristic | direction | payload | validation |
 | --- | --- | --- | --- | --- |
 | device status | device_status | device -> host read/notify | `DeviceStatusV1`: schema version, firmware semantic version, build id, board id, uptime_ms, fault_bitmap, active_mode, advertising_name | Host reads after connect; notify is sent when mode or fault_bitmap changes. |
@@ -22,7 +60,7 @@ write-with-response unless the characteristic explicitly says notify-only.
 | settings | settings | host -> device read/write; device -> host notify | `SettingsV1`: locale, time_zone_offset_min, quiet_hours, display_brightness, recorder_profile_id, flags | Device validates supported ranges and notifies committed settings_revision. |
 | diagnostics | diagnostics/log pull | host -> device write request; device -> host notify packets | `DiagLogPullV1`: cursor, max_events, max_bytes, source mask, severity_mask. Response: cursor, next_cursor, total_available, event records or log payload, CRC | Host pulls default bounded tails without unbounded full dumps and without blocking recording or display work. |
 | privacy | delete/privacy | host -> device write; device -> host notify | `DeletePrivacyV1`: request_id, operation delete_recording/delete_all_recordings/factory_privacy_wipe, recording_id, validated_total_length, validated_sha256 | Device deletes only after the request matches stored metadata or after a full privacy wipe confirmation. |
-| OTA | OTA readiness | device -> host read/notify | `OtaReadinessV1`: ready_state, boot_slot, battery_percent, charger_present, minimum_required_mv, blocker_bitmap, manifest_version, image_size, image_sha256_prefix, interrupted_transfer_resume_token | This only reports OTA readiness and blockers; the later OTA data path must reuse an ST OTA reference rather than inventing a custom large-write path here. |
+| OTA | OTA readiness | device -> host read/notify | `OtaReadinessV1`: ready_state, boot_slot, battery_percent, charger_present, minimum_required_mv, blocker_bitmap, manifest_version, board_target, mcu, image_size, image_sha256_prefix, interrupted_transfer_resume_token | This only reports OTA readiness and blockers; the later OTA data path must reuse an ST OTA reference rather than inventing a custom large-write path here. |
 
 ## Diagnostics Log Pull
 
@@ -145,7 +183,7 @@ The `blocker_bitmap` names are stable host-facing values:
 | 1 | transfer_active | Recording chunk pull or any other large BLE transfer is active. |
 | 2 | diag_export_active | `diagnostics/log pull` is active. |
 | 3 | low_battery | Battery is below the manifest `min_battery_percent` guard or below `minimum_required_mv`. |
-| 4 | wrong_board_target | Manifest board target is not `NUCLEO-WB55RG` / `STM32WB55`. |
+| 4 | wrong_board_target | Manifest board target does not match the active target, such as `COMPANION-PENDANT-CE` / `STM32WB55CEUx` for product OTA or `NUCLEO-WB55RG` for bench bring-up packages. |
 | 5 | invalid_hash | Manifest SHA-256 does not match the package payload. |
 | 6 | interrupted_transfer | A previous OTA transfer stopped before verification and must be recovered or discarded. |
 

@@ -6,7 +6,7 @@
     "version": "0.1.0-companion-ota",
     "git_commit": "0000000000000000000000000000000000000000",
     "board_target": "LISTENER-ESP32S3",
-    "mcu": "STM32WB55"
+    "mcu": "STM32WB55CEUx"
   },
   "image": {
     "file": "companion_ota_good.bin",
@@ -17,6 +17,18 @@
     "st_reference": "BLE_Ota or BLE_p2pServer_ota",
     "stm32cube_wb": "v1.24.0",
     "gatt_contract": "companion_ble_gatt_v1"
+  },
+  "bootloader": {
+    "kind": "stm32wb_resident_bootloader",
+    "recovery": "ROM DFU or SWD via STM32CubeProgrammer",
+    "internal_flash_policy": "single_runnable_app_no_dual_internal_slots",
+    "vector_table_policy": "app_base_linker_offset_with_bootloader_jump"
+  },
+  "external_flash": {
+    "kind": "external_qspi_nor",
+    "ota_staging": "single_ota_staging_partition",
+    "partition_policy": "boot_meta_a_b + ota_staging + recording_cache + diag_log_mirror",
+    "dual_ota_partitions": false
   },
   "guards": {
     "min_battery_percent": 40,

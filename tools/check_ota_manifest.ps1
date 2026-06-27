@@ -28,6 +28,11 @@ $requiredSelfChecks = @(
     "diag_log_tail"
 )
 
+$acceptedTargets = @{
+    "COMPANION-PENDANT-CE" = @("STM32WB55CEUx", "STM32WB55CE", "STM32WB55")
+    "NUCLEO-WB55RG" = @("STM32WB55RGVX", "STM32WB55")
+}
+
 function Get-JsonValue {
     param(
         [Parameter(Mandatory = $true)][AllowNull()] $Object,
@@ -122,18 +127,45 @@ function Test-Manifest {
     $imageSha = Require-String -Manifest $manifest -Path "image.sha256" -Errors $errors
     Require-String -Manifest $manifest -Path "compatibility.st_reference" -Errors $errors | Out-Null
     Require-String -Manifest $manifest -Path "compatibility.gatt_contract" -Errors $errors | Out-Null
+    Require-String -Manifest $manifest -Path "bootloader.kind" -Errors $errors | Out-Null
+    Require-String -Manifest $manifest -Path "bootloader.recovery" -Errors $errors | Out-Null
+    Require-String -Manifest $manifest -Path "bootloader.internal_flash_policy" -Errors $errors | Out-Null
+    Require-String -Manifest $manifest -Path "bootloader.vector_table_policy" -Errors $errors | Out-Null
+    Require-String -Manifest $manifest -Path "external_flash.kind" -Errors $errors | Out-Null
+    Require-String -Manifest $manifest -Path "external_flash.ota_staging" -Errors $errors | Out-Null
+    Require-String -Manifest $manifest -Path "external_flash.partition_policy" -Errors $errors | Out-Null
     Require-String -Manifest $manifest -Path "rollback.strategy" -Errors $errors | Out-Null
     Require-String -Manifest $manifest -Path "rollback.notes" -Errors $errors | Out-Null
     Require-String -Manifest $manifest -Path "recovery.factory_reflash" -Errors $errors | Out-Null
     Require-String -Manifest $manifest -Path "recovery.interrupted_transfer" -Errors $errors | Out-Null
 
     $boardTarget = (Get-JsonValue -Object $manifest -Path "firmware.board_target").Value
-    if ([string] $boardTarget -ne "NUCLEO-WB55RG") {
-        Add-Error -Errors $errors -Message "wrong_board_target: expected NUCLEO-WB55RG"
+    $boardKey = [string] $boardTarget
+    if (-not $acceptedTargets.ContainsKey($boardKey)) {
+        Add-Error -Errors $errors -Message "wrong_board_target: expected COMPANION-PENDANT-CE or NUCLEO-WB55RG"
     }
     $mcu = (Get-JsonValue -Object $manifest -Path "firmware.mcu").Value
-    if ([string] $mcu -ne "STM32WB55") {
-        Add-Error -Errors $errors -Message "wrong_board_target: expected STM32WB55"
+    if ($acceptedTargets.ContainsKey($boardKey) -and ([string] $mcu) -notin $acceptedTargets[$boardKey]) {
+        Add-Error -Errors $errors -Message "wrong_board_target: MCU $mcu does not match $boardKey"
+    }
+
+    $bootloaderKind = [string] (Get-JsonValue -Object $manifest -Path "bootloader.kind").Value
+    if ($bootloaderKind -and $bootloaderKind -notmatch "resident|st_reference|stm32wb") {
+        Add-Error -Errors $errors -Message "bootloader.kind must name the STM32WB resident bootloader policy"
+    }
+    $externalKind = [string] (Get-JsonValue -Object $manifest -Path "external_flash.kind").Value
+    if ($externalKind -and $externalKind -notmatch "qspi|nor") {
+        Add-Error -Errors $errors -Message "external_flash.kind must describe QSPI NOR"
+    }
+    $otaStaging = [string] (Get-JsonValue -Object $manifest -Path "external_flash.ota_staging").Value
+    if ($otaStaging -and $otaStaging -notmatch "single|ota_staging") {
+        Add-Error -Errors $errors -Message "external_flash.ota_staging must describe the single ota_staging partition"
+    }
+    $dualExternal = Get-JsonValue -Object $manifest -Path "external_flash.dual_ota_partitions"
+    if (-not $dualExternal.Exists) {
+        Add-Error -Errors $errors -Message "Missing external_flash.dual_ota_partitions"
+    } elseif ([bool] $dualExternal.Value) {
+        Add-Error -Errors $errors -Message "external_flash.dual_ota_partitions must be false for the first CE layout"
     }
 
     if ($imageSha -and $imageSha -cnotmatch "^[0-9a-f]{64}$") {
@@ -206,8 +238,8 @@ function New-FixtureFiles {
             project = "Companion-Firmware"
             version = "0.1.0-companion-ota"
             git_commit = "0000000000000000000000000000000000000000"
-            board_target = "NUCLEO-WB55RG"
-            mcu = "STM32WB55"
+            board_target = "COMPANION-PENDANT-CE"
+            mcu = "STM32WB55CEUx"
         }
         image = [ordered]@{
             file = "companion_ota_good.bin"
@@ -218,6 +250,18 @@ function New-FixtureFiles {
             st_reference = "BLE_Ota or BLE_p2pServer_ota"
             stm32cube_wb = "v1.24.0"
             gatt_contract = "companion_ble_gatt_v1"
+        }
+        bootloader = [ordered]@{
+            kind = "stm32wb_resident_bootloader"
+            recovery = "ROM DFU or SWD via STM32CubeProgrammer"
+            internal_flash_policy = "single_runnable_app_no_dual_internal_slots"
+            vector_table_policy = "app_base_linker_offset_with_bootloader_jump"
+        }
+        external_flash = [ordered]@{
+            kind = "external_qspi_nor"
+            ota_staging = "single_ota_staging_partition"
+            partition_policy = "boot_meta_a_b + ota_staging + recording_cache + diag_log_mirror"
+            dual_ota_partitions = $false
         }
         guards = [ordered]@{
             min_battery_percent = 40
@@ -238,6 +282,13 @@ function New-FixtureFiles {
     $goodPath = Join-Path $fixtureDir "good_manifest.json"
     $good | ConvertTo-Json -Depth 12 | Set-Content -LiteralPath $goodPath -Encoding utf8
 
+    $goodNucleo = $good | ConvertTo-Json -Depth 12 | ConvertFrom-Json
+    $goodNucleo.firmware.version = "0.1.0-nucleo-bench-ota"
+    $goodNucleo.firmware.board_target = "NUCLEO-WB55RG"
+    $goodNucleo.firmware.mcu = "STM32WB55"
+    $goodNucleoPath = Join-Path $fixtureDir "good_nucleo_manifest.json"
+    $goodNucleo | ConvertTo-Json -Depth 12 | Set-Content -LiteralPath $goodNucleoPath -Encoding utf8
+
     $invalidHash = $good | ConvertTo-Json -Depth 12 | ConvertFrom-Json
     $invalidHash.image.sha256 = ("0" * 64)
     $invalidHashPath = Join-Path $fixtureDir "bad_invalid_hash_manifest.json"
@@ -255,6 +306,7 @@ function New-FixtureFiles {
 
     return @(
         [pscustomobject]@{ path = $goodPath; expected = $true; case = "good" },
+        [pscustomobject]@{ path = $goodNucleoPath; expected = $true; case = "good_nucleo_bringup" },
         [pscustomobject]@{ path = $invalidHashPath; expected = $false; case = "bad_invalid_hash" },
         [pscustomobject]@{ path = $wrongBoardPath; expected = $false; case = "bad_wrong_board" },
         [pscustomobject]@{ path = $missingGuardPath; expected = $false; case = "bad_missing_blockers" }

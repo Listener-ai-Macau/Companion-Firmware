@@ -26,6 +26,14 @@
       "errors": []
     },
     {
+      "case": "good_nucleo_bringup",
+      "manifest": "docs\\validation\\ota\\good_nucleo_manifest.json",
+      "expected_valid": true,
+      "actual_valid": true,
+      "status": "PASS",
+      "errors": []
+    },
+    {
       "case": "bad_invalid_hash",
       "manifest": "docs\\validation\\ota\\bad_invalid_hash_manifest.json",
       "expected_valid": false,
@@ -42,7 +50,7 @@
       "actual_valid": false,
       "status": "PASS",
       "errors": [
-        "wrong_board_target: expected NUCLEO-WB55RG"
+        "wrong_board_target: expected COMPANION-PENDANT-CE or NUCLEO-WB55RG"
       ]
     },
     {
