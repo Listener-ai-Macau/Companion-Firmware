@@ -21,6 +21,7 @@ OTA_LOADER_OTAS_APP = REPO_ROOT / "cubeide/Companion_BLE_Ota_Loader/Src/otas_app
 OTA_LOADER_OTAS_STM = REPO_ROOT / "cubeide/Companion_BLE_Ota_Loader/Src/otas_stm.c"
 OTA_LOADER_MAKEFILE = REPO_ROOT / "cubeide/Companion_BLE_Ota_Loader/Makefile"
 FLASH_TOOL = REPO_ROOT / "tools/flash.ps1"
+WIRELESS_STACK_TOOL = REPO_ROOT / "tools/provision_companion_wireless_stack.ps1"
 PACKAGE_TOOL = REPO_ROOT / "tools/package_ota_firmware.ps1"
 TYPE_PACKAGE_TOOL = REPO_ROOT / "tools/verify_type_companion_package_static.ps1"
 BRINGUP_READINESS_TOOL = REPO_ROOT / "tools/verify_companion_bringup_readiness.ps1"
@@ -236,6 +237,7 @@ def check_local_ota_loader(errors: list[str]) -> None:
 
 def check_wired_package_tooling(errors: list[str]) -> None:
     flash = read_text(FLASH_TOOL, errors)
+    wireless_stack = read_text(WIRELESS_STACK_TOOL, errors)
     package = read_text(PACKAGE_TOOL, errors)
     type_package = read_text(TYPE_PACKAGE_TOOL, errors)
     readiness = read_text(BRINGUP_READINESS_TOOL, errors)
@@ -261,8 +263,40 @@ def check_wired_package_tooling(errors: list[str]) -> None:
         "Invoke-ProgrammerWrite",
         "factory artifact $($artifact.Role)",
         "PASS: $targetLabel flashed.",
+        "tools\\provision_companion_wireless_stack.ps1 -CheckOnly",
     ]:
         require(anchor in flash, f"flash.ps1 missing wired package anchor: {anchor}", errors)
+
+    for anchor in [
+        "companion.wb55_wireless_stack.provisioning.v1",
+        "[switch] $ReadFusInfo",
+        "[switch] $InstallBleStack",
+        "[switch] $WorkflowLockHeld",
+        "function Show-OperatorPrompt",
+        "[System.Media.SystemSounds]::Exclamation.Play()",
+        "[Console]::Beep(880, 220)",
+        "[int] $PromptTimeoutSeconds = 90",
+        "WScript.Shell",
+        "$popup.Popup",
+        "stm32wb5x_BLE_Stack_full_fw.bin",
+        "$installAddress = \"0x080D0000\"",
+        "Wireless Coprocessor Binary Table, STM32WB5xxG(1M), V1.24.0",
+        "FUS_v2 only",
+        "STM32_Programmer_CLI.exe -c port=$Port -startfus",
+        "$fusInfoAddress = \"0x20030030\"",
+        "$fusFallbackAddress = \"0x20010010\"",
+        "02020[0-9A-F]00",
+        "fus_v2_2_ready_for_wireless_stack",
+        "-fwupgrade",
+        "firstinstall=0",
+        "nSWboot0=1",
+        "Companion WB55 无线栈操作确认",
+        "Refusing to touch Companion WB55 hardware without workflow lock acknowledgement",
+        "This script will not auto-upgrade FUS",
+        "companion_wireless_stack_result_json=",
+        "companion-wireless-stack-summary.json",
+    ]:
+        require(anchor in wireless_stack, f"provision_companion_wireless_stack.ps1 missing anchor: {anchor}", errors)
 
     for anchor in [
         "-FlashPackage -PackagePath",

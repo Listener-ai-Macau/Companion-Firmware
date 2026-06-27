@@ -57,6 +57,31 @@ stack. In the current ST package, the expected binary is:
 third_party/STM32CubeWB/Projects/STM32WB_Copro_Wireless_Binaries/STM32WB5x/stm32wb5x_BLE_Stack_full_fw.bin
 ```
 
+Use the Companion-owned provisioning wrapper before flashing any CPU1 BLE app:
+
+```powershell
+.\tools\provision_companion_wireless_stack.ps1 -CheckOnly
+```
+
+For real hardware, first read the FUS state under the workflow lock:
+
+```powershell
+pwsh -NoProfile -File C:\Users\Billy\Desktop\Denzic\ai-collaboration-workflow\scripts\aiw.ps1 with-lock -Resource Companion-WB55 -Purpose "Companion WB55 FUS diagnostic" -Run pwsh -NoProfile -File .\tools\provision_companion_wireless_stack.ps1 -Execute -WorkflowLockHeld -ReadFusInfo
+```
+
+Only when the report classifies FUS as `fus_v2_2_ready_for_wireless_stack`, install
+the BLE full stack:
+
+```powershell
+pwsh -NoProfile -File C:\Users\Billy\Desktop\Denzic\ai-collaboration-workflow\scripts\aiw.ps1 with-lock -Resource Companion-WB55 -Purpose "Companion WB55 BLE stack provisioning" -Run pwsh -NoProfile -File .\tools\provision_companion_wireless_stack.ps1 -Execute -WorkflowLockHeld -InstallBleStack
+```
+
+The wrapper uses ST's current STM32CubeWB v1.24.0 `Release_Notes.html`
+Wireless Coprocessor Binary Table. For the NUCLEO-WB55RG's 1 MB WB55G part,
+`stm32wb5x_BLE_Stack_full_fw.bin` installs at `0x080D0000` and is marked
+`FUS_v2 only`. The wrapper deliberately refuses to upgrade FUS automatically;
+follow ST's incremental FUS upgrade flow if the readback is not v2.2.x.
+
 Build and flash the application from STM32CubeIDE, or flash the official
 reference image first:
 

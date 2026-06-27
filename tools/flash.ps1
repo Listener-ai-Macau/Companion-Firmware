@@ -208,6 +208,7 @@ if ($CheckOnly) {
     }
     Write-Output "CHECK: Reference hex exists: $referenceHexRelative -> $((Test-Path -LiteralPath $referenceHex -PathType Leaf))"
     Write-Output "CHECK: BLE full stack binary exists: $bleStackRelative -> $((Test-Path -LiteralPath $bleStackBinary -PathType Leaf))"
+    Write-Output "CHECK: CPU2 BLE stack provisioning is separate; run tools\provision_companion_wireless_stack.ps1 -CheckOnly and, on hardware, -Execute -ReadFusInfo/-InstallBleStack before expecting BLE advertising."
     Write-Output "CHECK: NUCLEO bring-up hex exists: $nucleoBringupHexRelative -> $((Test-Path -LiteralPath $nucleoBringupHex -PathType Leaf))"
     Write-Output "CHECK: BLE audio fixture hex exists: $audioFixtureHexRelative -> $((Test-Path -LiteralPath $audioFixtureHex -PathType Leaf))"
     Write-Output "CHECK: Real flash must run inside workflow lock:"
