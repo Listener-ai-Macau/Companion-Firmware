@@ -49,6 +49,7 @@ PACKET_TYPES = {
 }
 CONTROL_COMMANDS = (
     "TYPE:READY",
+    "TYPE:READY:A1",
     "TYPE:READY:A2",
     "TYPE:HB",
     "TYPE:STOP",
@@ -241,7 +242,7 @@ def check_type_contract(type_audio: str, type_ble: str, errors: list[str]) -> No
         require(command in type_ble, f"Type BLE code missing control command {command}", errors)
     require(
         "LISTENER_TYPE_EMBEDDED_BLE_READY_COMMAND" in type_ble,
-        "Type BLE code missing configurable ready-command hook for TYPE:READY:A2",
+        "Type BLE code missing configurable ready-command hook for TYPE:READY:A1/A2",
         errors,
     )
 
@@ -351,6 +352,7 @@ def check_docs(errors: list[str]) -> None:
         NOTIFY_UUID,
         CONTROL_UUID,
         "TYPE:READY",
+        "TYPE:READY:A1",
         "TYPE:READY:A2",
         "VREC:TOGGLE",
     ):
@@ -360,7 +362,8 @@ def check_docs(errors: list[str]) -> None:
         "A1 as six short",
         "--submit-embedded-audio-ble-stream 45000",
         "--submit-embedded-audio-ble-stream 120000",
-        "Chinese desktop prompt with an audible",
+        "16 kHz mono Chinese TTS WAV fixtures",
+        "TYPE:READY:A1",
     ):
         require(token in bringup, f"bringup steps missing A1/A2 validation token {token}", errors)
 
@@ -377,10 +380,14 @@ def check_type_a1_a2_validation_tool(errors: list[str]) -> None:
         "[System.Media.SystemSounds]::Exclamation.Play()",
         "[Console]::Beep(880, 220)",
         "Companion A1/A2 验证即将开始",
+        "New-TtsWav",
+        "Start-WavPlaybackLoop",
+        "TYPE:READY:A1",
         "--probe-embedded-audio-ble-subscription",
         "--submit-embedded-audio-ble-stream",
         "Companion-WB55,BLE-Companion",
         "companion.type_a1_a2.validation.v1",
+        "expected_text",
         "Refusing to run Companion A1/A2 hardware validation without -WorkflowLockHeld.",
     ):
         require(token in tool, f"verify_companion_type_a1_a2.ps1 missing {token}", errors)

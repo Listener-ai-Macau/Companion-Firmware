@@ -35,6 +35,7 @@ tBleStatus comp_audio_stream_stm32wb_init(comp_audio_stream_t *stream);
 comp_audio_stream_status_t comp_audio_stream_stm32wb_notify(void *context,
                                                             const uint8_t *data,
                                                             uint16_t length);
+void comp_audio_stream_stm32wb_notify_pump(void);
 tBleStatus comp_audio_stream_stm32wb_update_readiness(const uint8_t *data,
                                                       uint8_t length);
 tBleStatus comp_audio_stream_stm32wb_update_capabilities(const uint8_t *data,

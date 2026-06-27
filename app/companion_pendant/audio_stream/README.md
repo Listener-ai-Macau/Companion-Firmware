@@ -9,7 +9,8 @@ It owns:
   service.
 - VKA1 packet construction for session start, audio data, stop, cancel, and
   error packets.
-- Type control write classification for `TYPE:READY`, `TYPE:READY:A2`, `TYPE:HB`,
+- Type control write classification for `TYPE:READY`, `TYPE:READY:A1`,
+  `TYPE:READY:A2`, `TYPE:HB`,
   `TYPE:STOP`/`TYPE:BYE`, `VREC:TOGGLE`, `VREC:STOP`, `VREC:CANCEL`, and Type
   processing-state commands.
 - GATT value sizing and packet sequence tracking.

@@ -166,7 +166,7 @@
           "name": "listener_vka1_audio_control",
           "uuid": "710af845-6d9f-6583-0c4d-9e5b3bc3091e",
           "direction": ["write-with-response"],
-          "payload": "TYPE:READY/TYPE:READY:A2/TYPE:HB and VREC:TOGGLE/VREC:STOP/VREC:CANCEL control text"
+          "payload": "TYPE:READY/TYPE:READY:A1/TYPE:READY:A2/TYPE:HB and VREC:TOGGLE/VREC:STOP/VREC:CANCEL control text"
         }
       ]
     }

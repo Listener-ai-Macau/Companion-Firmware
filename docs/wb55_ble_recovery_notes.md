@@ -92,9 +92,10 @@ Symptom:
 - Type A1/A2 headless capture opened the notify session and sent `TYPE:READY`,
   but no Companion audio stream started unless a manual control path was used.
 - The first A1/A2 gate only verified PCM transport. Hardware acceptance now
-  requires ASR final text for both A1 and A2. The wrapper uses
-  `TYPE:READY:A2` for text-required rounds so the real microphone window is long
-  enough while normal `TYPE:READY` remains a lightweight link-ready behavior.
+  requires ASR final text for both A1 and A2. The wrapper now generates and
+  plays fixed TTS audio like Listener's BLE TTS smoke test: `TYPE:READY:A1`
+  opens the short A1 text window, `TYPE:READY:A2` opens the long A2 text window,
+  and normal `TYPE:READY` remains a lightweight link-ready behavior.
 
 Root cause:
 
@@ -107,8 +108,13 @@ Fix:
 - `cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/main.c` now starts a bounded
   Type-ready autostream on `TYPE:READY`: 24 blocks, 128 PCM bytes per BLE packet,
   paced with `MX_APPE_Process()` and a terminal stop.
-- The same app accepts `TYPE:READY:A2` for text-recognition validation:
-  400 microphone blocks with full 320-byte PCM batches, then a terminal stop.
+- The same app accepts `TYPE:READY:A1` for short text-recognition validation:
+  600 microphone blocks with full 320-byte PCM batches, then a terminal stop.
+- The same app accepts `TYPE:READY:A2` for longer text-recognition validation:
+  3000 microphone blocks with full 320-byte PCM batches, then a terminal stop.
+- The STM32WB notify adapter pumps `MX_APPE_Process()` between fragmented
+  153-byte GATT notifications so a full 320-byte PCM block can drain before the
+  next microphone block is queued.
 
 Validation evidence:
 

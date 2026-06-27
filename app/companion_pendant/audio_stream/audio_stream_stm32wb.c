@@ -304,8 +304,11 @@ comp_audio_stream_status_t comp_audio_stream_stm32wb_notify(void *context,
         0u,
         (uint8_t)length,
         data);
-    return status == BLE_STATUS_SUCCESS ? COMP_AUDIO_STREAM_OK
-                                        : COMP_AUDIO_STREAM_NOTIFY_FAILED;
+    if (status != BLE_STATUS_SUCCESS) {
+        return COMP_AUDIO_STREAM_NOTIFY_FAILED;
+    }
+    comp_audio_stream_stm32wb_notify_pump();
+    return COMP_AUDIO_STREAM_OK;
 }
 
 tBleStatus comp_audio_stream_stm32wb_update_readiness(const uint8_t *data,
@@ -336,4 +339,8 @@ __WEAK void comp_audio_stream_stm32wb_app_notification(
     const comp_audio_stream_stm32wb_notification_t *notification)
 {
     (void)notification;
+}
+
+__WEAK void comp_audio_stream_stm32wb_notify_pump(void)
+{
 }

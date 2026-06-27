@@ -193,14 +193,16 @@ pwsh -NoProfile -File <ai-collaboration-workflow>\scripts\aiw.ps1 with-lock -Res
 ```
 
 The wrapper is dry-run by default. With `-Execute`, it must already be inside
-the workflow hardware lock, shows a Chinese desktop prompt with an audible
-notification, runs the Type BLE subscription probe, runs A1 as six short
-`--submit-embedded-audio-ble-stream 45000` rounds, then runs A2 as one
-`--submit-embedded-audio-ble-stream 120000` long window. Hardware acceptance
-defaults to `RequireA1Text=true` and `RequireA2Text=true`; add
-`-PromptOperator` for the audible Chinese speech prompt when a human must speak
-into the real microphone. It records a JSON and Markdown summary under
-`.cache/validation/companion-type-a1-a2-*`.
+the workflow hardware lock, runs the Type BLE subscription probe, generates
+16 kHz mono Chinese TTS WAV fixtures, plays them from the PC speaker near the
+Companion microphone, runs A1 as six short
+`--submit-embedded-audio-ble-stream 45000` rounds with `TYPE:READY:A1`, then
+runs A2 as one `--submit-embedded-audio-ble-stream 120000` long window with
+`TYPE:READY:A2`. Hardware acceptance defaults to `RequireA1Text=true` and
+`RequireA2Text=true`; `-PromptOperator` is only for a physical placement prompt,
+not for asking a human to speak. It records a JSON and Markdown summary under
+`.cache/validation/companion-type-a1-a2-*`, including expected text, playback
+WAV path, TTS voice, ASR final text, and transport stats.
 
 The temporary Type debug page should call the same underlying BLE/VKA1 and OTA
 commands. Until that UI branch is accepted, the CLI plus logs are the canonical

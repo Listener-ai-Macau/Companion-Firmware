@@ -14,6 +14,8 @@ param(
     [bool] $RequireA1Text = $true,
     [bool] $RequireA2Text = $true,
     [int] $MinFinalTextChars = 1,
+    [string] $A2PlaybackText = "明天下午两点提醒我检查蓝牙音频丢包率。",
+    [switch] $DisableTtsPlayback,
     [switch] $PromptOperator,
     [switch] $Execute,
     [switch] $WorkflowLockHeld
@@ -135,6 +137,101 @@ function Show-OperatorPrompt {
     }
 }
 
+$A1PlaybackTexts = @(
+    "打开设置",
+    "新建文件",
+    "保存文件",
+    "撤销操作",
+    "关闭窗口",
+    "复制内容",
+    "粘贴内容",
+    "全部选中"
+)
+
+function Get-A1PlaybackText {
+    param([Parameter(Mandatory = $true)][int] $Round)
+    $index = ($Round - 1) % $A1PlaybackTexts.Count
+    return $A1PlaybackTexts[$index]
+}
+
+function New-TtsWav {
+    param(
+        [Parameter(Mandatory = $true)][string] $Text,
+        [Parameter(Mandatory = $true)][string] $Path
+    )
+
+    $parent = Split-Path -Parent $Path
+    if ($parent -and -not (Test-Path -LiteralPath $parent)) {
+        New-Item -ItemType Directory -Force -Path $parent | Out-Null
+    }
+
+    Add-Type -AssemblyName System.Speech
+    $synth = [System.Speech.Synthesis.SpeechSynthesizer]::new()
+    try {
+        $zhVoice = $synth.GetInstalledVoices() |
+            Where-Object { $_.VoiceInfo.Culture.Name -like "zh-*" } |
+            Select-Object -First 1
+        if ($null -ne $zhVoice) {
+            $synth.SelectVoice($zhVoice.VoiceInfo.Name)
+        }
+        $format = [System.Speech.AudioFormat.SpeechAudioFormatInfo]::new(
+            16000,
+            [System.Speech.AudioFormat.AudioBitsPerSample]::Sixteen,
+            [System.Speech.AudioFormat.AudioChannel]::Mono
+        )
+        $synth.SetOutputToWaveFile($Path, $format)
+        $synth.Speak($Text) | Out-Null
+        return $synth.Voice.Name
+    } finally {
+        $synth.Dispose()
+    }
+}
+
+function Start-WavPlaybackLoop {
+    param([string] $Path)
+    if ([string]::IsNullOrWhiteSpace($Path)) {
+        return $null
+    }
+
+    Add-Type -AssemblyName System.Windows.Extensions -ErrorAction SilentlyContinue
+    $player = [System.Media.SoundPlayer]::new($Path)
+    $player.Load()
+    $player.PlayLooping()
+    return $player
+}
+
+function Stop-WavPlaybackLoop {
+    param($Player)
+    if ($null -eq $Player) {
+        return
+    }
+    try {
+        $Player.Stop()
+    } finally {
+        $Player.Dispose()
+    }
+}
+
+function New-PlaybackFixture {
+    param(
+        [Parameter(Mandatory = $true)][string] $CaseId,
+        [Parameter(Mandatory = $true)][int] $Round,
+        [Parameter(Mandatory = $true)][string] $Text
+    )
+
+    $wavPath = Join-Path $outputDir ("{0}-round{1}-tts.wav" -f $CaseId.ToLowerInvariant(), $Round)
+    $voiceName = $null
+    if (-not $DisableTtsPlayback) {
+        $voiceName = New-TtsWav -Text $Text -Path $wavPath
+    }
+
+    [pscustomobject]@{
+        expected_text = $Text
+        playback_wav = if ($DisableTtsPlayback) { $null } else { $wavPath }
+        tts_voice = $voiceName
+    }
+}
+
 function Get-LogOffset {
     param([Parameter(Mandatory = $true)][string] $Path)
     if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) { return 0L }
@@ -206,13 +303,19 @@ function Invoke-ListenerCli {
         [Parameter(Mandatory = $true)][string] $ListenerExePath,
         [Parameter(Mandatory = $true)][string] $LogPath,
         [string] $ReadyCommand = "TYPE:READY",
-        [bool] $StatsOnly = $true
+        [bool] $StatsOnly = $true,
+        [string] $PlaybackWav
     )
 
     $offset = Get-LogOffset -Path $LogPath
     $argumentList = $Arguments -join " "
     Write-Host "RUN: $ListenerExePath $argumentList"
     Set-CompanionTypeEnvironment -ReadyCommand $ReadyCommand -StatsOnly $StatsOnly
+    $player = $null
+    if (-not [string]::IsNullOrWhiteSpace($PlaybackWav)) {
+        Write-Host "PLAY: $PlaybackWav"
+        $player = Start-WavPlaybackLoop -Path $PlaybackWav
+    }
     $process = Start-Process -FilePath $ListenerExePath -ArgumentList $Arguments -PassThru -WindowStyle Hidden
     try {
         if ($process.WaitForExit(3000) -and $process.ExitCode -ne 0) {
@@ -245,6 +348,8 @@ function Invoke-ListenerCli {
             }
         }
         throw
+    } finally {
+        Stop-WavPlaybackLoop -Player $player
     }
 }
 
@@ -261,7 +366,8 @@ function Invoke-ListenerCliWithRetry {
         [Parameter(Mandatory = $true)][int] $DelayMs,
         [Parameter(Mandatory = $true)] $RetryRecords,
         [string] $ReadyCommand = "TYPE:READY",
-        [bool] $StatsOnly = $true
+        [bool] $StatsOnly = $true,
+        [string] $PlaybackWav
     )
 
     $maxAttempts = 1 + [Math]::Max(0, $MaxRetries)
@@ -276,7 +382,8 @@ function Invoke-ListenerCliWithRetry {
                 -ListenerExePath $ListenerExePath `
                 -LogPath $LogPath `
                 -ReadyCommand $ReadyCommand `
-                -StatsOnly $StatsOnly
+                -StatsOnly $StatsOnly `
+                -PlaybackWav $PlaybackWav
             return [pscustomobject]@{
                 match = $match
                 attempts = $attempt
@@ -306,7 +413,10 @@ function New-StreamResult {
         [Parameter(Mandatory = $true)][int] $Round,
         [Parameter(Mandatory = $true)] $Match,
         [Parameter(Mandatory = $true)][int] $Attempts,
-        [bool] $RequireText = $false
+        [bool] $RequireText = $false,
+        [string] $ExpectedText,
+        [string] $PlaybackWav,
+        [string] $TtsVoice
     )
 
     $json = $null
@@ -346,6 +456,9 @@ function New-StreamResult {
         missing_packets = $missing
         final_text_chars = $finalTextChars
         final_text = $finalText
+        expected_text = $ExpectedText
+        playback_wav = $PlaybackWav
+        tts_voice = $TtsVoice
         raw_transcript = $rawTranscript
         transcript_error_code = $transcriptError
         attempts = $Attempts
@@ -369,6 +482,7 @@ if (-not $Execute) {
     Write-Host "  $lockCommand"
     Write-Host "This script will run probe=$ProbeTimeoutMs ms, A1=$A1Rounds rounds x $A1TimeoutMs ms, A2=$A2TimeoutMs ms."
     Write-Host "A1 text gate: $RequireA1Text; A2 text gate: $RequireA2Text (min final chars: $MinFinalTextChars)."
+    Write-Host "Automatic TTS playback: $(-not [bool]$DisableTtsPlayback). A2 text: $A2PlaybackText"
     Write-Host "Blocking operator prompt: $([bool]$PromptOperator). Add -PromptOperator only for real-time human action or observation."
     exit 0
 }
@@ -382,7 +496,7 @@ if (-not $WorkflowLockHeld) {
 if ($PromptOperator) {
     Show-OperatorPrompt `
         -Title "Companion A1/A2 验证即将开始" `
-        -Message "请确认 Companion NUCLEO 已刷入统一 Companion app 或同一个 Companion package，设备蓝牙名为 companion，Listener Type 可运行，电脑声音/蓝牙处于测试状态。点击 OK 后脚本会自动执行 BLE 订阅探测、A1 六轮短链路、A2 长窗口，并把证据写入：$outputDir"
+        -Message "请确认 Companion NUCLEO 已刷入统一 Companion app 或同一个 Companion package，设备蓝牙名为 companion，Listener Type 可运行，电脑扬声器靠近 Companion 麦克风且音量正常。点击 OK 后脚本会自动播放测试语音、执行 BLE 订阅探测、A1 六轮短句识别、A2 长句识别，并把证据写入：$outputDir"
 }
 
 $startedAt = (Get-Date).ToUniversalTime().ToString("o")
@@ -412,10 +526,10 @@ try {
         if ($round -gt 1 -and $RoundCooldownMs -gt 0) {
             Start-Sleep -Milliseconds $RoundCooldownMs
         }
-        if ($RequireA1Text -and $PromptOperator) {
-            Show-OperatorPrompt `
-                -Title "Companion A1 文字识别 $round/$A1Rounds" `
-                -Message "点击 OK 后请马上对着 Companion 麦克风说一句清晰的话。脚本会为 A1 第 $round/$A1Rounds 轮打开真实麦克风语音窗口，并要求 Type 返回 ASR final text。"
+        $fixture = if ($RequireA1Text) {
+            New-PlaybackFixture -CaseId "A1" -Round $round -Text (Get-A1PlaybackText -Round $round)
+        } else {
+            $null
         }
         $attempt = Invoke-ListenerCliWithRetry `
             -Label "A1 round $round" `
@@ -428,9 +542,18 @@ try {
             -MaxRetries $CliRetries `
             -DelayMs $RetryDelayMs `
             -RetryRecords $retries `
-            -ReadyCommand $(if ($RequireA1Text) { "TYPE:READY:A2" } else { "TYPE:READY" }) `
-            -StatsOnly (-not $RequireA1Text)
-        $result = New-StreamResult -CaseId "A1" -Round $round -Match $attempt.match -Attempts $attempt.attempts -RequireText $RequireA1Text
+            -ReadyCommand $(if ($RequireA1Text) { "TYPE:READY:A1" } else { "TYPE:READY" }) `
+            -StatsOnly (-not $RequireA1Text) `
+            -PlaybackWav $(if ($fixture) { $fixture.playback_wav } else { $null })
+        $result = New-StreamResult `
+            -CaseId "A1" `
+            -Round $round `
+            -Match $attempt.match `
+            -Attempts $attempt.attempts `
+            -RequireText $RequireA1Text `
+            -ExpectedText $(if ($fixture) { $fixture.expected_text } else { $null }) `
+            -PlaybackWav $(if ($fixture) { $fixture.playback_wav } else { $null }) `
+            -TtsVoice $(if ($fixture) { $fixture.tts_voice } else { $null })
         $results.Add($result) | Out-Null
         if ($result.status -ne "PASS") {
             if ($result.missing_packets -gt $MaxMissingPackets) {
@@ -445,10 +568,10 @@ try {
     if ($RoundCooldownMs -gt 0) {
         Start-Sleep -Milliseconds $RoundCooldownMs
     }
-    if ($RequireA2Text -and $PromptOperator) {
-        Show-OperatorPrompt `
-            -Title "Companion A2 文字识别" `
-            -Message "点击 OK 后请马上对着 Companion 麦克风说一句清晰的话。脚本会用 TYPE:READY:A2 打开长录音窗口，并要求 Type 返回 ASR final text。"
+    $a2Fixture = if ($RequireA2Text) {
+        New-PlaybackFixture -CaseId "A2" -Round 1 -Text $A2PlaybackText
+    } else {
+        $null
     }
     $a2Attempt = Invoke-ListenerCliWithRetry `
         -Label "A2" `
@@ -462,8 +585,17 @@ try {
         -DelayMs $RetryDelayMs `
         -RetryRecords $retries `
         -ReadyCommand $(if ($RequireA2Text) { "TYPE:READY:A2" } else { "TYPE:READY" }) `
-        -StatsOnly (-not $RequireA2Text)
-    $a2Result = New-StreamResult -CaseId "A2" -Round 1 -Match $a2Attempt.match -Attempts $a2Attempt.attempts -RequireText $RequireA2Text
+        -StatsOnly (-not $RequireA2Text) `
+        -PlaybackWav $(if ($a2Fixture) { $a2Fixture.playback_wav } else { $null })
+    $a2Result = New-StreamResult `
+        -CaseId "A2" `
+        -Round 1 `
+        -Match $a2Attempt.match `
+        -Attempts $a2Attempt.attempts `
+        -RequireText $RequireA2Text `
+        -ExpectedText $(if ($a2Fixture) { $a2Fixture.expected_text } else { $null }) `
+        -PlaybackWav $(if ($a2Fixture) { $a2Fixture.playback_wav } else { $null }) `
+        -TtsVoice $(if ($a2Fixture) { $a2Fixture.tts_voice } else { $null })
     $results.Add($a2Result) | Out-Null
     if ($a2Result.status -ne "PASS") {
         if ($a2Result.missing_packets -gt $MaxMissingPackets) {
@@ -497,6 +629,9 @@ $summary = [ordered]@{
     require_a1_text = $RequireA1Text
     require_a2_text = $RequireA2Text
     min_final_text_chars = $MinFinalTextChars
+    automatic_tts_playback = -not [bool]$DisableTtsPlayback
+    a1_playback_texts = @($A1PlaybackTexts)
+    a2_playback_text = $A2PlaybackText
     prompt_operator = [bool]$PromptOperator
     results = @($results)
     retries = @($retries)
@@ -515,12 +650,14 @@ $md = @(
     "- A1 rounds: $A1Rounds x $A1TimeoutMs ms",
     "- A2 timeout: $A2TimeoutMs ms",
     "- Max missing packets: $MaxMissingPackets",
+    "- Automatic TTS playback: $(-not [bool]$DisableTtsPlayback)",
     "",
     "## Results"
 )
 foreach ($item in $results) {
     $textPart = if ($item.final_text_chars -gt 0) { ", final_text_chars=$($item.final_text_chars), final_text=`"$($item.final_text)`"" } else { "" }
-    $md += "- $($item.case) round $($item.round): $($item.status), pcm=$($item.pcm_bytes), missing=$($item.missing_packets), attempts=$($item.attempts)$textPart"
+    $expectedPart = if (-not [string]::IsNullOrWhiteSpace($item.expected_text)) { ", expected_text=`"$($item.expected_text)`"" } else { "" }
+    $md += "- $($item.case) round $($item.round): $($item.status), pcm=$($item.pcm_bytes), missing=$($item.missing_packets), attempts=$($item.attempts)$textPart$expectedPart"
 }
 if ($retries.Count -gt 0) {
     $md += ""

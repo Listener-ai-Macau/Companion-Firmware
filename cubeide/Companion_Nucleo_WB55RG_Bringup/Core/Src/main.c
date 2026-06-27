@@ -47,8 +47,12 @@ COMPANION_PLACE_IN_SECTION("TAG_OTA_START") const uint32_t MagicKeywordAddress =
 #define COMPANION_TYPE_READY_AUTOSTREAM_BLOCKS 24u
 #endif
 #define COMPANION_TYPE_READY_AUTOSTREAM_PCM_BYTES 128u
+#ifndef COMPANION_TYPE_READY_A1_AUTOSTREAM_BLOCKS
+#define COMPANION_TYPE_READY_A1_AUTOSTREAM_BLOCKS 600u
+#endif
+#define COMPANION_TYPE_READY_A1_AUTOSTREAM_PCM_BYTES (MIC_FRAMES_PER_BATCH * sizeof(int16_t))
 #ifndef COMPANION_TYPE_READY_A2_AUTOSTREAM_BLOCKS
-#define COMPANION_TYPE_READY_A2_AUTOSTREAM_BLOCKS 400u
+#define COMPANION_TYPE_READY_A2_AUTOSTREAM_BLOCKS 3000u
 #endif
 #define COMPANION_TYPE_READY_A2_AUTOSTREAM_PCM_BYTES (MIC_FRAMES_PER_BATCH * sizeof(int16_t))
 
@@ -431,6 +435,13 @@ void Companion_App_HandleBleLinkReadyChanged(bool ready)
     }
 }
 
+void comp_audio_stream_stm32wb_notify_pump(void)
+{
+    MX_APPE_Process();
+    HAL_Delay(2u);
+    MX_APPE_Process();
+}
+
 void Companion_App_HandleBleControl(comp_audio_control_t control,
                                     const uint8_t *data,
                                     size_t length)
@@ -449,6 +460,13 @@ void Companion_App_HandleBleControl(comp_audio_control_t control,
         request_ble_type_ready_autostream("type_ready",
                                           COMPANION_TYPE_READY_AUTOSTREAM_BLOCKS,
                                           COMPANION_TYPE_READY_AUTOSTREAM_PCM_BYTES);
+        break;
+
+    case COMP_AUDIO_CONTROL_TYPE_READY_A1:
+        s_ble_link_ready = true;
+        request_ble_type_ready_autostream("type_ready_a1",
+                                          COMPANION_TYPE_READY_A1_AUTOSTREAM_BLOCKS,
+                                          COMPANION_TYPE_READY_A1_AUTOSTREAM_PCM_BYTES);
         break;
 
     case COMP_AUDIO_CONTROL_TYPE_READY_A2:
@@ -532,6 +550,7 @@ static void request_ble_type_ready_autostream(const char *reason,
                                               uint16_t pcm_bytes)
 {
 #if (COMPANION_TYPE_READY_AUTOSTREAM_BLOCKS > 0u) || \
+    (COMPANION_TYPE_READY_A1_AUTOSTREAM_BLOCKS > 0u) || \
     (COMPANION_TYPE_READY_A2_AUTOSTREAM_BLOCKS > 0u)
     if (!Companion_BleAudio_IsReady()) {
         s_ble_type_ready_autostream_pending = true;
