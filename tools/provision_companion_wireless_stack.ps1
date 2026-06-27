@@ -6,6 +6,7 @@ param(
     [switch] $InstallBleStack,
     [string] $ProgrammerPath,
     [string] $Port = "SWD",
+    [switch] $PromptOperator,
     [int] $PromptTimeoutSeconds = 90,
     [string] $OutDir
 )
@@ -196,6 +197,7 @@ function Write-Summary {
         ble_stack_sha256 = if (Test-Path -LiteralPath $bleStackBinary -PathType Leaf) { (Get-FileHash -LiteralPath $bleStackBinary -Algorithm SHA256).Hash.ToLowerInvariant() } else { $null }
         install_address = $installAddress
         install_address_source = "$releaseNotesRelative Wireless Coprocessor Binary Table, STM32WB5xxG(1M), V1.24.0, FUS_v2 only"
+        prompt_operator = [bool]$PromptOperator
         fus_word = $FusWord
         fus_word_source = $FusSource
         fus_classification = $FusClass
@@ -249,6 +251,8 @@ if ($CheckOnly -and -not $Execute) {
     Write-Output "CHECK: Install address source: $releaseNotesRelative Wireless Coprocessor Binary Table, STM32WB5xxG(1M), V1.24.0, FUS_v2 only"
     Write-Output "CHECK: FUS read command: STM32_Programmer_CLI.exe -c port=$Port -startfus ; STM32_Programmer_CLI.exe -c port=$Port mode=UR -r32 $fusInfoAddress 1"
     Write-Output "CHECK: BLE stack install command: STM32_Programmer_CLI.exe -c port=$Port mode=UR -fwupgrade $bleStackRelative $installAddress firstinstall=0"
+    Write-Output "CHECK: Blocking operator prompt: $([bool]$PromptOperator)"
+    Write-Output "CHECK: Add -PromptOperator only when the wireless-stack operation is waiting for a real human action or observation."
     Write-Output "CHECK: Real hardware commands must run inside workflow lock:"
     Write-Output "  $lockReadCommand"
     Write-Output "  $lockInstallCommand"
@@ -277,13 +281,15 @@ if (-not $programmer) {
 }
 
 $actionText = if ($InstallBleStack) { "安装/更新 CPU2 BLE full stack" } else { "读取 FUS 状态" }
-try {
-    Show-OperatorPrompt -Title "Companion WB55 无线栈操作确认" -Message "请确认 NUCLEO-WB55RG 已通过板载 ST-LINK USB 接好，Type/串口监视器/其它刷机工具已停止占用设备。本次将执行：$actionText。若选择安装，会使用 STM32CubeWB v1.24.0 的 stm32wb5x_BLE_Stack_full_fw.bin，安装地址 $installAddress。点击 OK 继续；点击 Cancel 取消。"
-} catch {
-    $status = "CANCELLED"
-    $errors.Add($_.Exception.Message) | Out-Null
-    Write-Summary -Status $status -FusWord $fusWord -FusSource $fusSource -FusClass $fusClass -Steps @($steps) -Errors @($errors) -Mode $mode
-    throw "Companion WB55 wireless stack action cancelled before hardware access. See $summaryJson"
+if ($PromptOperator) {
+    try {
+        Show-OperatorPrompt -Title "Companion WB55 无线栈操作确认" -Message "请确认 NUCLEO-WB55RG 已通过板载 ST-LINK USB 接好，Type/串口监视器/其它刷机工具已停止占用设备。本次将执行：$actionText。若选择安装，会使用 STM32CubeWB v1.24.0 的 stm32wb5x_BLE_Stack_full_fw.bin，安装地址 $installAddress。点击 OK 继续；点击 Cancel 取消。"
+    } catch {
+        $status = "CANCELLED"
+        $errors.Add($_.Exception.Message) | Out-Null
+        Write-Summary -Status $status -FusWord $fusWord -FusSource $fusSource -FusClass $fusClass -Steps @($steps) -Errors @($errors) -Mode $mode
+        throw "Companion WB55 wireless stack action cancelled before hardware access. See $summaryJson"
+    }
 }
 
 try {

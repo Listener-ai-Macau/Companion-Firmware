@@ -3,6 +3,7 @@ param(
     [string] $TypeRepoRoot = (Join-Path $PSScriptRoot "..\..\..\Listener\Listener-Type"),
     [string] $ListenerExe,
     [string] $OutDir,
+    [switch] $PromptOperator,
     [switch] $Execute,
     [switch] $WorkflowLockHeld
 )
@@ -219,6 +220,7 @@ if (-not $Execute) {
         protocol = [string]$manifest.protocol.name
         command = $commandLine
         lock_command = $lockCommand
+        prompt_operator = [bool]$PromptOperator
         raw_log = $rawLog
         type_report_json = $null
         errors = @()
@@ -232,6 +234,7 @@ if (-not $Execute) {
     Write-Host "Firmware: $($payload.firmware_path)"
     Write-Host "Run with workflow hardware lock:"
     Write-Host "  $lockCommand"
+    Write-Host "Blocking operator prompt: $([bool]$PromptOperator). Add -PromptOperator only for real-time human action or observation."
     Write-Host "Summary: $summaryJson"
     exit 0
 }
@@ -242,9 +245,11 @@ if (-not $WorkflowLockHeld) {
     throw "Refusing to run Companion BLE OTA validation without -WorkflowLockHeld."
 }
 
-Show-OperatorPrompt `
-    -Title "Companion BLE OTA 验证即将开始" `
-    -Message "请确认 Companion 已刷入 OTA loader，设备蓝牙名为 companion，Listener Type 后台未在录音/传输，电脑蓝牙可连接。点击 OK 后脚本会通过 Type headless BLE OTA 把同一个 Companion package 传输到设备，并把 firmware_ota_result_json 证据写入：$outDirResolved"
+if ($PromptOperator) {
+    Show-OperatorPrompt `
+        -Title "Companion BLE OTA 验证即将开始" `
+        -Message "请确认 Companion 已刷入 OTA loader，设备蓝牙名为 companion，Listener Type 后台未在录音/传输，电脑蓝牙可连接。点击 OK 后脚本会通过 Type headless BLE OTA 把同一个 Companion package 传输到设备，并把 firmware_ota_result_json 证据写入：$outDirResolved"
+}
 
 $errors = [System.Collections.Generic.List[string]]::new()
 $startedAt = (Get-Date).ToUniversalTime().ToString("o")
@@ -299,6 +304,7 @@ $summary = [ordered]@{
     manifest_version = [string]$manifest.version
     protocol = [string]$manifest.protocol.name
     command = $commandLine
+    prompt_operator = [bool]$PromptOperator
     raw_log = $rawLog
     type_report_json = if ($typeReport) { $typeReportJson } else { $null }
     exit_code = $exitCode

@@ -8,6 +8,7 @@ param(
     [int] $A1Rounds = 6,
     [int] $A2TimeoutMs = 120000,
     [int] $MaxMissingPackets = 0,
+    [switch] $PromptOperator,
     [switch] $Execute,
     [switch] $WorkflowLockHeld
 )
@@ -241,6 +242,7 @@ if (-not $Execute) {
     Write-Host "Run with workflow hardware lock:"
     Write-Host "  $lockCommand"
     Write-Host "This script will run probe=$ProbeTimeoutMs ms, A1=$A1Rounds rounds x $A1TimeoutMs ms, A2=$A2TimeoutMs ms."
+    Write-Host "Blocking operator prompt: $([bool]$PromptOperator). Add -PromptOperator only for real-time human action or observation."
     exit 0
 }
 
@@ -250,9 +252,11 @@ if (-not $WorkflowLockHeld) {
     throw "Refusing to run Companion A1/A2 hardware validation without -WorkflowLockHeld."
 }
 
-Show-OperatorPrompt `
-    -Title "Companion A1/A2 验证即将开始" `
-    -Message "请确认 Companion NUCLEO 已刷入 BLE audio fixture，设备蓝牙名为 companion，Listener Type 可运行，电脑声音/蓝牙处于测试状态。点击 OK 后脚本会自动执行 BLE 订阅探测、A1 六轮短链路、A2 长窗口，并把证据写入：$outputDir"
+if ($PromptOperator) {
+    Show-OperatorPrompt `
+        -Title "Companion A1/A2 验证即将开始" `
+        -Message "请确认 Companion NUCLEO 已刷入 BLE audio fixture，设备蓝牙名为 companion，Listener Type 可运行，电脑声音/蓝牙处于测试状态。点击 OK 后脚本会自动执行 BLE 订阅探测、A1 六轮短链路、A2 长窗口，并把证据写入：$outputDir"
+}
 
 $startedAt = (Get-Date).ToUniversalTime().ToString("o")
 $results = [System.Collections.Generic.List[object]]::new()
@@ -320,6 +324,7 @@ $summary = [ordered]@{
     a1_timeout_ms = $A1TimeoutMs
     a2_timeout_ms = $A2TimeoutMs
     max_missing_packets = $MaxMissingPackets
+    prompt_operator = [bool]$PromptOperator
     results = @($results)
     errors = @($errors)
 }

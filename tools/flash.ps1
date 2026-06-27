@@ -9,7 +9,8 @@ param(
     [string] $ImagePath,
     [string] $PackagePath,
     [string] $ProgrammerPath,
-    [string] $Port = "SWD"
+    [string] $Port = "SWD",
+    [switch] $PromptOperator
 )
 
 $ErrorActionPreference = "Stop"
@@ -211,6 +212,8 @@ if ($CheckOnly) {
     Write-Output "CHECK: CPU2 BLE stack provisioning is separate; run tools\provision_companion_wireless_stack.ps1 -CheckOnly and, on hardware, -Execute -ReadFusInfo/-InstallBleStack before expecting BLE advertising."
     Write-Output "CHECK: NUCLEO bring-up hex exists: $nucleoBringupHexRelative -> $((Test-Path -LiteralPath $nucleoBringupHex -PathType Leaf))"
     Write-Output "CHECK: BLE audio fixture hex exists: $audioFixtureHexRelative -> $((Test-Path -LiteralPath $audioFixtureHex -PathType Leaf))"
+    Write-Output "CHECK: Blocking operator prompt: $([bool]$PromptOperator)"
+    Write-Output "CHECK: Add -PromptOperator only when the flash is waiting for a real human action or observation."
     Write-Output "CHECK: Real flash must run inside workflow lock:"
     Write-Output "  $referenceLockCommand"
     Write-Output "  $nucleoLockCommand"
@@ -284,14 +287,18 @@ if ($FlashNucleoBringup -or $FlashAudioFixture -or $FlashPackage) {
 
 if ($FlashPackage) {
     $artifactLines = ($packageArtifacts | ForEach-Object { " - $($_.Role): $($_.Path)" }) -join [Environment]::NewLine
-    Show-OperatorPrompt -Title "Companion WB55 有线刷机确认" -Message "请确认 Companion/NUCLEO-WB55 已通过板载 ST-LINK USB 接好，Type/串口监视器已停止占用设备。将从同一个 Companion package 顺序刷入 OTA loader 和 app：$([Environment]::NewLine)$artifactLines$([Environment]::NewLine)$([Environment]::NewLine)点击 OK 开始刷机；点击 Cancel 取消。"
+    if ($PromptOperator) {
+        Show-OperatorPrompt -Title "Companion WB55 有线刷机确认" -Message "请确认 Companion/NUCLEO-WB55 已通过板载 ST-LINK USB 接好，Type/串口监视器已停止占用设备。将从同一个 Companion package 顺序刷入 OTA loader 和 app：$([Environment]::NewLine)$artifactLines$([Environment]::NewLine)$([Environment]::NewLine)点击 OK 开始刷机；点击 Cancel 取消。"
+    }
 
     for ($index = 0; $index -lt $packageArtifacts.Count; $index++) {
         $artifact = $packageArtifacts[$index]
         Invoke-ProgrammerWrite -Image $artifact.Path -Label "factory artifact $($artifact.Role)" -ConnectArgs $connectArgs -ResetAfter:($index -eq ($packageArtifacts.Count - 1))
     }
 } else {
-    Show-OperatorPrompt -Title "Companion WB55 有线刷机确认" -Message "请确认 Companion/NUCLEO-WB55 已通过板载 ST-LINK USB 接好，Type/串口监视器已停止占用设备。将刷入：$targetLabel$([Environment]::NewLine)$targetImage$([Environment]::NewLine)$([Environment]::NewLine)点击 OK 开始刷机；点击 Cancel 取消。"
+    if ($PromptOperator) {
+        Show-OperatorPrompt -Title "Companion WB55 有线刷机确认" -Message "请确认 Companion/NUCLEO-WB55 已通过板载 ST-LINK USB 接好，Type/串口监视器已停止占用设备。将刷入：$targetLabel$([Environment]::NewLine)$targetImage$([Environment]::NewLine)$([Environment]::NewLine)点击 OK 开始刷机；点击 Cancel 取消。"
+    }
     Invoke-ProgrammerWrite -Image $targetImage -Label $targetLabel -ConnectArgs $connectArgs -ResetAfter
 }
 

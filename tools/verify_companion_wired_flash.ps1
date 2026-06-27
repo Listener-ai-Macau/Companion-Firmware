@@ -5,6 +5,7 @@ param(
     [string] $OutDir,
     [string] $Port = "SWD",
     [uint32] $Baud = 0,
+    [switch] $PromptOperator,
     [switch] $Execute,
     [switch] $WorkflowLockHeld
 )
@@ -300,6 +301,7 @@ if (-not $Execute) {
         port = $Port
         command = $commandLine
         lock_command = $lockCommand
+        prompt_operator = [bool]$PromptOperator
         raw_log = $rawLog
         type_report_json = if ($typeReport) { $typeReportJson } else { $null }
         exit_code = $exitCode
@@ -313,6 +315,7 @@ if (-not $Execute) {
     Write-Host "ListenerExe: $listenerExePath"
     Write-Host "Run real wired flash with workflow hardware lock:"
     Write-Host "  $lockCommand"
+    Write-Host "Blocking operator prompt: $([bool]$PromptOperator). Add -PromptOperator only for real-time human action or observation."
     Write-Host "Summary: $summaryJson"
     Write-Host "companion_wired_flash_result_json=$($summary | ConvertTo-Json -Depth 8 -Compress)"
     if ($typeReport) {
@@ -330,9 +333,11 @@ if (-not $WorkflowLockHeld) {
     throw "Refusing to run Companion wired flash validation without -WorkflowLockHeld."
 }
 
-Show-OperatorPrompt `
-    -Title "Companion 有线刷机验证即将开始" `
-    -Message "请确认 NUCLEO-WB55RG 已通过内置 ST-LINK 的 USB 数据线连接，Companion 目标板供电稳定，当前没有其它工具占用 STM32CubeProgrammer/ST-LINK。点击 OK 后脚本会通过 Type headless 有线刷机把同一个 Companion package 写入设备，并把 wired_firmware_result_json 证据写入：$outDirResolved"
+if ($PromptOperator) {
+    Show-OperatorPrompt `
+        -Title "Companion 有线刷机验证即将开始" `
+        -Message "请确认 NUCLEO-WB55RG 已通过内置 ST-LINK 的 USB 数据线连接，Companion 目标板供电稳定，当前没有其它工具占用 STM32CubeProgrammer/ST-LINK。点击 OK 后脚本会通过 Type headless 有线刷机把同一个 Companion package 写入设备，并把 wired_firmware_result_json 证据写入：$outDirResolved"
+}
 
 $commandArgs = @("--wired-firmware-flash", $resolvedPackage, $Port)
 if ($Baud -gt 0) {
@@ -360,6 +365,7 @@ $summary = [ordered]@{
     port = $Port
     baud = if ($Baud -gt 0) { $Baud } else { $null }
     command = $commandLine
+    prompt_operator = [bool]$PromptOperator
     raw_log = $rawLog
     type_report_json = if ($typeReport) { $typeReportJson } else { $null }
     exit_code = $exitCode
