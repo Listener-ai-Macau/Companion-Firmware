@@ -338,11 +338,11 @@ function Invoke-TypeStm32OtaConfirmCheck {
         "if properties.contains(GattCharacteristicProperties::Write)",
         "Ok(GattWriteOption::WriteWithResponse)",
         "STM32WB ST OTA raw characteristic is not writable",
-        "permit response echoes the payload",
         ".min(ATT_DEFAULT_PAYLOAD_BYTES)",
         ".min(STM32WB_ST_OTA_RAW_DATA_SIZE)",
+        "stm32wb_st_ota_raw_chunk_bytes_from_payload",
         "stm32wb_st_ota_prefers_with_response_when_available",
-        "stm32wb_st_ota_caps_no_response_chunks_to_default_att_payload"
+        "stm32wb_st_ota_uses_large_confirmed_chunks_and_caps_no_response"
     )) {
         Assert-TextContains -Text $embedded -Needle $token -Label "Type STM32WB ST OTA stable raw write check"
     }
@@ -361,7 +361,7 @@ function Invoke-TypeStm32OtaConfirmCheck {
         Assert-TextContains -Text $firmwareOta -Needle $token -Label "Type STM32WB ST OTA manifest confirmation check"
     }
 
-    Write-Output "PASS: Type STM32WB ST OTA enables ST confirmation indication, write-response raw writes, and 20-byte chunks by default."
+    Write-Output "PASS: Type STM32WB ST OTA enables ST confirmation indication, large write-response raw chunks, and 20-byte no-response fallback chunks."
 }
 
 Add-Type -AssemblyName System.IO.Compression.FileSystem

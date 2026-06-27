@@ -25,7 +25,7 @@ subscribed.
 | service | characteristic | UUID | direction | payload |
 | --- | --- | --- | --- | --- |
 | listener_vka1_audio_stream | listener_vka1_audio_notify | `710af845-6d9f-6583-0c4d-9e5b3bc3091b` | device -> host notify | `VKA1` packets with 20-byte headers: session_start=1, audio_data=2, session_stop=3, session_cancel=4, session_error=5. |
-| listener_vka1_audio_stream | listener_vka1_audio_control | `710af845-6d9f-6583-0c4d-9e5b3bc3091e` | host -> device write-with-response | `TYPE:READY`, `TYPE:HB`, `TYPE:STOP`/`TYPE:BYE`, `VREC:TOGGLE`, `VREC:STOP`, `VREC:CANCEL`, and processing state text used by Type. |
+| listener_vka1_audio_stream | listener_vka1_audio_control | `710af845-6d9f-6583-0c4d-9e5b3bc3091e` | host -> device write-with-response | `TYPE:READY`, `TYPE:READY:A2`, `TYPE:HB`, `TYPE:STOP`/`TYPE:BYE`, `VREC:TOGGLE`, `VREC:STOP`, `VREC:CANCEL`, and processing state text used by Type. `TYPE:READY:A2` opens the longer hardware-microphone ASR validation window. |
 | listener_vka1_audio_stream | listener_vka1_audio_readiness | `710af845-6d9f-6583-0c4d-9e5b3bc3091c` | device -> host read | Short readiness text for Type diagnostics. |
 | listener_vka1_audio_stream | listener_vka1_audio_capabilities | `710af845-6d9f-6583-0c4d-9e5b3bc3091d` | device -> host read | Short capabilities text for Type diagnostics. |
 
@@ -46,6 +46,8 @@ validation fixture are raised together.
 surface. It keeps the product name `companion`, disables PIN/bonding, registers
 only the Listener-compatible VKA1 audio service, and sends a deterministic
 synthetic PCM session when Type writes `TYPE:READY` after notify subscription.
+The product bring-up app additionally accepts `TYPE:READY:A2` for the longer
+real-microphone text-recognition validation path.
 It also keeps `VREC:TOGGLE` and the board SW1 button on the same fixture path
 for manual control-path checks.
 

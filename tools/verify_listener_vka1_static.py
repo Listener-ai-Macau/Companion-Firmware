@@ -49,6 +49,7 @@ PACKET_TYPES = {
 }
 CONTROL_COMMANDS = (
     "TYPE:READY",
+    "TYPE:READY:A2",
     "TYPE:HB",
     "TYPE:STOP",
     "TYPE:BYE",
@@ -238,6 +239,11 @@ def check_type_contract(type_audio: str, type_ble: str, errors: list[str]) -> No
 
     for command in ("TYPE:READY", "TYPE:HB", "VREC:TOGGLE", "VREC:STOP", "VREC:CANCEL"):
         require(command in type_ble, f"Type BLE code missing control command {command}", errors)
+    require(
+        "LISTENER_TYPE_EMBEDDED_BLE_READY_COMMAND" in type_ble,
+        "Type BLE code missing configurable ready-command hook for TYPE:READY:A2",
+        errors,
+    )
 
 
 def check_type_companion_debug_page(companion_section: str, settings_page: str, errors: list[str]) -> None:
@@ -345,6 +351,7 @@ def check_docs(errors: list[str]) -> None:
         NOTIFY_UUID,
         CONTROL_UUID,
         "TYPE:READY",
+        "TYPE:READY:A2",
         "VREC:TOGGLE",
     ):
         require(token in contract, f"BLE contract missing Listener-compatible audio token {token}", errors)

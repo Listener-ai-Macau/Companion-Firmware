@@ -91,6 +91,9 @@ Symptom:
 
 - Type A1/A2 headless capture opened the notify session and sent `TYPE:READY`,
   but no Companion audio stream started unless a manual control path was used.
+- The first A1/A2 gate only verified PCM transport. A2 now uses
+  `TYPE:READY:A2` to open a longer real-microphone window and requires Type to
+  return an ASR final text field.
 
 Root cause:
 
@@ -103,6 +106,8 @@ Fix:
 - `cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/main.c` now starts a bounded
   Type-ready autostream on `TYPE:READY`: 24 blocks, 128 PCM bytes per BLE packet,
   paced with `MX_APPE_Process()` and a terminal stop.
+- The same app accepts `TYPE:READY:A2` for text-recognition validation:
+  400 microphone blocks with full 320-byte PCM batches, then a terminal stop.
 
 Validation evidence:
 
@@ -153,7 +158,8 @@ Fix:
 - Do not write flash from the raw `ACI_GATT_ATTRIBUTE_MODIFIED_VSEVT_CODE` path;
   it only acknowledges the event so accepted packets are not double-written.
 - In Listener-Type, prefer `GattWriteOption::WriteWithResponse` when the
-  characteristic supports `Write`, and cap STM32WB ST OTA raw chunks to the
+  characteristic supports `Write`, and use the negotiated ATT payload up to the
+  ST raw 248-byte block size. Keep the no-response fallback capped to the
   default 20-byte ATT payload until a larger-MTU ACK/credit path exists.
 
 Validation evidence:
@@ -163,6 +169,10 @@ Validation evidence:
 - The transfer wrote `59956` bytes in `2998` chunks. The finish write timed out
   during the reboot handoff, but Type observed the WB55 disconnect/reboot and
   marked the transfer PASS.
+- 2026-06-27 follow-up: the host-side cap was raised for confirmed
+  WriteWithResponse raw writes. With a 251-byte negotiated MTU the same 59956
+  byte image should transfer in about 242 raw chunks instead of 2998; validate
+  this on hardware before treating the speed target as closed.
 - A1/A2 after BLE OTA passed:
   `.cache/validation/companion-type-a1-a2-20260627-193325/companion-type-a1-a2-summary.json`.
 - The same-package wired flash path passed before BLE OTA:

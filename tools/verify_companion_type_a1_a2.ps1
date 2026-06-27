@@ -11,6 +11,8 @@ param(
     [int] $CliRetries = 2,
     [int] $RetryDelayMs = 5000,
     [int] $RoundCooldownMs = 5000,
+    [bool] $RequireA2Text = $true,
+    [int] $MinA2FinalTextChars = 1,
     [switch] $PromptOperator,
     [switch] $Execute,
     [switch] $WorkflowLockHeld
@@ -70,11 +72,23 @@ function Resolve-ListenerLogPath {
 }
 
 function Set-CompanionTypeEnvironment {
+    param(
+        [string] $ReadyCommand = "TYPE:READY",
+        [bool] $StatsOnly = $true
+    )
+
     $env:LISTENER_TYPE_APP_PROFILE = "companion"
     $env:LISTENER_TYPE_BLE_TARGET_NAME = "companion"
     $env:LISTENER_TYPE_HIDE_MAIN_ON_START = "1"
     $env:LISTENER_TYPE_DISABLE_BACKGROUND_BLE = "1"
-    $env:LISTENER_TYPE_EMBEDDED_BLE_STATS_ONLY = "1"
+    $env:LISTENER_TYPE_EMBEDDED_BLE_READY_COMMAND = $ReadyCommand
+    if ($StatsOnly) {
+        $env:LISTENER_TYPE_EMBEDDED_BLE_STATS_ONLY = "1"
+        Remove-Item Env:\LISTENER_TYPE_FORCE_RAW_OUTPUT -ErrorAction SilentlyContinue
+    } else {
+        Remove-Item Env:\LISTENER_TYPE_EMBEDDED_BLE_STATS_ONLY -ErrorAction SilentlyContinue
+        $env:LISTENER_TYPE_FORCE_RAW_OUTPUT = "1"
+    }
 }
 
 function New-ValidationOutputDir {
@@ -189,13 +203,15 @@ function Invoke-ListenerCli {
         [Parameter(Mandatory = $true)][string] $PassPattern,
         [Parameter(Mandatory = $true)][string] $FailPattern,
         [Parameter(Mandatory = $true)][string] $ListenerExePath,
-        [Parameter(Mandatory = $true)][string] $LogPath
+        [Parameter(Mandatory = $true)][string] $LogPath,
+        [string] $ReadyCommand = "TYPE:READY",
+        [bool] $StatsOnly = $true
     )
 
     $offset = Get-LogOffset -Path $LogPath
     $argumentList = $Arguments -join " "
     Write-Host "RUN: $ListenerExePath $argumentList"
-    Set-CompanionTypeEnvironment
+    Set-CompanionTypeEnvironment -ReadyCommand $ReadyCommand -StatsOnly $StatsOnly
     $process = Start-Process -FilePath $ListenerExePath -ArgumentList $Arguments -PassThru -WindowStyle Hidden
     try {
         if ($process.WaitForExit(3000) -and $process.ExitCode -ne 0) {
@@ -242,7 +258,9 @@ function Invoke-ListenerCliWithRetry {
         [Parameter(Mandatory = $true)][string] $LogPath,
         [Parameter(Mandatory = $true)][int] $MaxRetries,
         [Parameter(Mandatory = $true)][int] $DelayMs,
-        [Parameter(Mandatory = $true)] $RetryRecords
+        [Parameter(Mandatory = $true)] $RetryRecords,
+        [string] $ReadyCommand = "TYPE:READY",
+        [bool] $StatsOnly = $true
     )
 
     $maxAttempts = 1 + [Math]::Max(0, $MaxRetries)
@@ -255,7 +273,9 @@ function Invoke-ListenerCliWithRetry {
                 -PassPattern $PassPattern `
                 -FailPattern $FailPattern `
                 -ListenerExePath $ListenerExePath `
-                -LogPath $LogPath
+                -LogPath $LogPath `
+                -ReadyCommand $ReadyCommand `
+                -StatsOnly $StatsOnly
             return [pscustomobject]@{
                 match = $match
                 attempts = $attempt
@@ -284,17 +304,49 @@ function New-StreamResult {
         [Parameter(Mandatory = $true)][string] $CaseId,
         [Parameter(Mandatory = $true)][int] $Round,
         [Parameter(Mandatory = $true)] $Match,
-        [Parameter(Mandatory = $true)][int] $Attempts
+        [Parameter(Mandatory = $true)][int] $Attempts,
+        [bool] $RequireText = $false
     )
 
-    $pcm = [int64] $Match.Groups["pcm"].Value
-    $missing = [int] $Match.Groups["missing"].Value
+    $json = $null
+    $jsonText = $Match.Groups["json"].Value
+    if (-not [string]::IsNullOrWhiteSpace($jsonText)) {
+        $json = $jsonText | ConvertFrom-Json
+    }
+
+    if ($json) {
+        $pcm = [int64] $json.reconstructedPcmBytes
+        $missing = [int] $json.stats.missingPacketCount
+        $asrPcm = [int64] $json.stats.asrBoundaryPcmBytes
+        $duration = [double] $json.stats.asrBoundaryDurationSeconds
+        $finalText = if ($json.transcript) { [string] $json.transcript.finalText } else { "" }
+        $rawTranscript = if ($json.transcript) { [string] $json.transcript.rawTranscript } else { "" }
+        $transcriptError = if ($json.transcript) { $json.transcript.errorCode } else { $null }
+    } else {
+        $pcm = [int64] $Match.Groups["pcm"].Value
+        $missing = [int] $Match.Groups["missing"].Value
+        $asrPcm = $pcm
+        $duration = [Math]::Round($pcm / 32000.0, 3)
+        $finalText = ""
+        $rawTranscript = ""
+        $transcriptError = $null
+    }
+
+    $finalTextChars = $finalText.Trim().Length
+    $textOk = -not $RequireText -or $finalTextChars -ge $MinA2FinalTextChars
+    $packetOk = $missing -le $MaxMissingPackets
     [pscustomobject]@{
         case = $CaseId
         round = $Round
-        status = if ($missing -le $MaxMissingPackets) { "PASS" } else { "FAIL" }
+        status = if ($packetOk -and $textOk) { "PASS" } else { "FAIL" }
         pcm_bytes = $pcm
+        asr_boundary_pcm_bytes = $asrPcm
+        asr_boundary_duration_seconds = $duration
         missing_packets = $missing
+        final_text_chars = $finalTextChars
+        final_text = $finalText
+        raw_transcript = $rawTranscript
+        transcript_error_code = $transcriptError
         attempts = $Attempts
     }
 }
@@ -315,6 +367,7 @@ if (-not $Execute) {
     Write-Host "Run with workflow hardware lock:"
     Write-Host "  $lockCommand"
     Write-Host "This script will run probe=$ProbeTimeoutMs ms, A1=$A1Rounds rounds x $A1TimeoutMs ms, A2=$A2TimeoutMs ms."
+    Write-Host "A2 text gate: $RequireA2Text (min final chars: $MinA2FinalTextChars)."
     Write-Host "Blocking operator prompt: $([bool]$PromptOperator). Add -PromptOperator only for real-time human action or observation."
     exit 0
 }
@@ -351,7 +404,7 @@ try {
         -DelayMs $RetryDelayMs `
         -RetryRecords $retries)
 
-    $streamPass = "submit-embedded-audio-ble-stream done: pcm_bytes=(?<pcm>\d+) missing_packets=(?<missing>\d+)"
+    $streamPass = "embedded_audio_ble_stream_result_json=(?<json>\{[^\r\n]*\})|submit-embedded-audio-ble-stream done: pcm_bytes=(?<pcm>\d+) missing_packets=(?<missing>\d+)"
     $streamFail = "submit-embedded-audio-ble-stream failed: (?<error>.*)"
 
     for ($round = 1; $round -le $A1Rounds; $round++) {
@@ -368,8 +421,10 @@ try {
             -LogPath $logPath `
             -MaxRetries $CliRetries `
             -DelayMs $RetryDelayMs `
-            -RetryRecords $retries
-        $result = New-StreamResult -CaseId "A1" -Round $round -Match $attempt.match -Attempts $attempt.attempts
+            -RetryRecords $retries `
+            -ReadyCommand "TYPE:READY" `
+            -StatsOnly $true
+        $result = New-StreamResult -CaseId "A1" -Round $round -Match $attempt.match -Attempts $attempt.attempts -RequireText $false
         $results.Add($result) | Out-Null
         if ($result.status -ne "PASS") {
             $errors.Add("A1 round $round missing_packets=$($result.missing_packets) > $MaxMissingPackets") | Out-Null
@@ -378,6 +433,11 @@ try {
 
     if ($RoundCooldownMs -gt 0) {
         Start-Sleep -Milliseconds $RoundCooldownMs
+    }
+    if ($RequireA2Text -and $PromptOperator) {
+        Show-OperatorPrompt `
+            -Title "Companion A2 文字识别" `
+            -Message "点击 OK 后请马上对着 Companion 麦克风说一句清晰的话。脚本会用 TYPE:READY:A2 打开长录音窗口，并要求 Type 返回 ASR final text。"
     }
     $a2Attempt = Invoke-ListenerCliWithRetry `
         -Label "A2" `
@@ -389,11 +449,18 @@ try {
         -LogPath $logPath `
         -MaxRetries $CliRetries `
         -DelayMs $RetryDelayMs `
-        -RetryRecords $retries
-    $a2Result = New-StreamResult -CaseId "A2" -Round 1 -Match $a2Attempt.match -Attempts $a2Attempt.attempts
+        -RetryRecords $retries `
+        -ReadyCommand $(if ($RequireA2Text) { "TYPE:READY:A2" } else { "TYPE:READY" }) `
+        -StatsOnly (-not $RequireA2Text)
+    $a2Result = New-StreamResult -CaseId "A2" -Round 1 -Match $a2Attempt.match -Attempts $a2Attempt.attempts -RequireText $RequireA2Text
     $results.Add($a2Result) | Out-Null
     if ($a2Result.status -ne "PASS") {
-        $errors.Add("A2 missing_packets=$($a2Result.missing_packets) > $MaxMissingPackets") | Out-Null
+        if ($a2Result.missing_packets -gt $MaxMissingPackets) {
+            $errors.Add("A2 missing_packets=$($a2Result.missing_packets) > $MaxMissingPackets") | Out-Null
+        }
+        if ($RequireA2Text -and $a2Result.final_text_chars -lt $MinA2FinalTextChars) {
+            $errors.Add("A2 final_text_chars=$($a2Result.final_text_chars) < $MinA2FinalTextChars") | Out-Null
+        }
     }
 } catch {
     $errors.Add($_.Exception.Message) | Out-Null
@@ -416,6 +483,8 @@ $summary = [ordered]@{
     cli_retries = $CliRetries
     retry_delay_ms = $RetryDelayMs
     round_cooldown_ms = $RoundCooldownMs
+    require_a2_text = $RequireA2Text
+    min_a2_final_text_chars = $MinA2FinalTextChars
     prompt_operator = [bool]$PromptOperator
     results = @($results)
     retries = @($retries)
@@ -438,7 +507,8 @@ $md = @(
     "## Results"
 )
 foreach ($item in $results) {
-    $md += "- $($item.case) round $($item.round): $($item.status), pcm=$($item.pcm_bytes), missing=$($item.missing_packets), attempts=$($item.attempts)"
+    $textPart = if ($item.final_text_chars -gt 0) { ", final_text_chars=$($item.final_text_chars), final_text=`"$($item.final_text)`"" } else { "" }
+    $md += "- $($item.case) round $($item.round): $($item.status), pcm=$($item.pcm_bytes), missing=$($item.missing_packets), attempts=$($item.attempts)$textPart"
 }
 if ($retries.Count -gt 0) {
     $md += ""

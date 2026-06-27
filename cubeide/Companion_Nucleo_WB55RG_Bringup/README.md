@@ -12,7 +12,8 @@ It verifies three early production paths:
 
 - USART1 logs through the ST-LINK VCP at 115200 baud.
 - BLE advertises as `companion` and exposes the Companion VKA1 audio service.
-  `TYPE:READY` marks the Type link ready; `VREC:TOGGLE`, `VREC:STOP`, and
+  `TYPE:READY` marks the Type link ready, `TYPE:READY:A2` opens the longer
+  Type ASR validation window; `VREC:TOGGLE`, `VREC:STOP`, and
   `VREC:CANCEL` drive the same recording FSM path as the temporary board
   buttons.
 - External flash is probed non-destructively through the QSPI wiring with

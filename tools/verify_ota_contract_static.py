@@ -413,7 +413,7 @@ def check_wired_package_tooling(errors: list[str]) -> None:
         "stm32wb55ceux",
         "STM32WB ST OTA confirmation indication is required",
         "Type STM32WB ST OTA stable raw write check",
-        "write-response raw writes, and 20-byte chunks",
+        "large write-response raw chunks, and 20-byte no-response fallback chunks",
         "PASS: Companion package is accepted by Type Companion OTA/wired static integration checks.",
     ]:
         require(anchor in type_package, f"verify_type_companion_package_static.ps1 missing anchor: {anchor}", errors)

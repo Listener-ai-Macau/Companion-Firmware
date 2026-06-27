@@ -73,6 +73,9 @@ static comp_audio_control_t comp_audio_stream_classify_control(const uint8_t *da
     if (comp_audio_stream_command_equals(data, length, "TYPE:READY")) {
         return COMP_AUDIO_CONTROL_TYPE_READY;
     }
+    if (comp_audio_stream_command_equals(data, length, "TYPE:READY:A2")) {
+        return COMP_AUDIO_CONTROL_TYPE_READY_A2;
+    }
     if (comp_audio_stream_command_equals(data, length, "TYPE:HB")) {
         return COMP_AUDIO_CONTROL_TYPE_HEARTBEAT;
     }
@@ -208,6 +211,7 @@ comp_audio_stream_status_t comp_audio_stream_handle_control_write(comp_audio_str
     comp_audio_control_t control = comp_audio_stream_classify_control(command, command_len);
 
     if (control == COMP_AUDIO_CONTROL_TYPE_READY ||
+        control == COMP_AUDIO_CONTROL_TYPE_READY_A2 ||
         control == COMP_AUDIO_CONTROL_TYPE_HEARTBEAT) {
         stream->type_link_ready = true;
         stream->type_heartbeat_count++;
@@ -419,6 +423,8 @@ const char *comp_audio_stream_control_name(comp_audio_control_t control)
         return "none";
     case COMP_AUDIO_CONTROL_TYPE_READY:
         return "type_ready";
+    case COMP_AUDIO_CONTROL_TYPE_READY_A2:
+        return "type_ready_a2";
     case COMP_AUDIO_CONTROL_TYPE_HEARTBEAT:
         return "type_heartbeat";
     case COMP_AUDIO_CONTROL_TYPE_STOP:
