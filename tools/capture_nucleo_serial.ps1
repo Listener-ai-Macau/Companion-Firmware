@@ -8,6 +8,7 @@ param(
     [switch] $ResetAfterOpen,
     [string] $ProgrammerPath,
     [string] $ProgrammerRoot = "C:\ST\STM32CubeIDE_2.1.1\STM32CubeIDE\plugins",
+    [switch] $PromptOperator,
     [int] $PromptTimeoutSeconds = 90,
     [string] $OutDir
 )
@@ -185,6 +186,7 @@ function Write-Summary {
         baud_rate = $BaudRate
         seconds = $Seconds
         reset_after_open = [bool]$ResetAfterOpen
+        prompt_operator = [bool]$PromptOperator
         raw_log = $rawLog
         candidates = @($Candidates)
         available_ports = @($AvailablePorts)
@@ -214,6 +216,7 @@ if ($CheckOnly -and -not $Execute) {
     Write-Output "CHECK: Selected port: $($resolved.port)"
     Write-Output "CHECK: Auto detected: $($resolved.auto_detected)"
     Write-Output "CHECK: Present ports: $($resolved.available_ports -join ', ')"
+    Write-Output "CHECK: Blocking operator prompt: $([bool]$PromptOperator)"
     foreach ($candidate in @($resolved.candidates)) {
         Write-Output "CHECK: ST-LINK candidate $($candidate.port): $($candidate.name)"
     }
@@ -221,6 +224,7 @@ if ($CheckOnly -and -not $Execute) {
     if ($programmer) { Write-Output "CHECK: Programmer: $programmer" }
     Write-Output "CHECK: Real serial capture must run inside workflow lock:"
     Write-Output "  $lockCommand"
+    Write-Output "CHECK: Add -PromptOperator only when the capture is waiting for a real human action or observation."
     Write-Summary -Status "DRY-RUN" -PortName $resolved.port -Candidates @($resolved.candidates) -AvailablePorts @($resolved.available_ports) -BytesRead 0 -Errors @() -Mode "check-only"
     exit 0
 }
@@ -237,7 +241,9 @@ if ($ResetAfterOpen -and -not $programmer) {
     throw "STM32CubeProgrammer CLI not found. Pass -ProgrammerPath, set STM32CUBEPROGRAMMER_CLI, or omit -ResetAfterOpen."
 }
 
-Show-OperatorPrompt -Title "Companion NUCLEO 串口抓日志确认" -Message "请确认 NUCLEO-WB55RG 已通过板载 ST-LINK USB 接好，Type/其它串口监视器已停止占用端口。脚本将打开 $($resolved.port)，波特率 $BaudRate，抓取 $Seconds 秒日志$(if ($ResetAfterOpen) { '，并通过 ST-LINK 复位一次目标板' } else { '' })。输出日志：$rawLog。点击 OK 继续；超时或 Cancel 将取消。"
+if ($PromptOperator) {
+    Show-OperatorPrompt -Title "Companion NUCLEO 串口抓日志确认" -Message "请确认 NUCLEO-WB55RG 已通过板载 ST-LINK USB 接好，Type/其它串口监视器已停止占用端口。脚本将打开 $($resolved.port)，波特率 $BaudRate，抓取 $Seconds 秒日志$(if ($ResetAfterOpen) { '，并通过 ST-LINK 复位一次目标板' } else { '' })。输出日志：$rawLog。点击 OK 继续；超时或 Cancel 将取消。"
+}
 
 $serial = [System.IO.Ports.SerialPort]::new($resolved.port, $BaudRate, [System.IO.Ports.Parity]::None, 8, [System.IO.Ports.StopBits]::One)
 $serial.ReadTimeout = 250
@@ -246,6 +252,8 @@ $serial.NewLine = "`n"
 try {
     "" | Set-Content -LiteralPath $rawLog -Encoding UTF8
     $serial.Open()
+    $serial.DiscardInBuffer()
+    $serial.DiscardOutBuffer()
     if ($ResetAfterOpen) {
         $resetArgs = @("-c", "port=SWD", "mode=UR", "reset=HWrst", "freq=4000", "-rst")
         $resetLine = "RUN: $programmer $($resetArgs -join ' ')"
