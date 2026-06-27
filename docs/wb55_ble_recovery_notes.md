@@ -109,12 +109,15 @@ Fix:
   Type-ready autostream on `TYPE:READY`: 24 blocks, 128 PCM bytes per BLE packet,
   paced with `MX_APPE_Process()` and a terminal stop.
 - The same app accepts `TYPE:READY:A1` for short text-recognition validation:
-  600 microphone blocks with full 320-byte PCM batches, then a terminal stop.
+  900 microphone blocks with 128-byte PCM packets, then a terminal stop.
 - The same app accepts `TYPE:READY:A2` for longer text-recognition validation:
-  3000 microphone blocks with full 320-byte PCM batches, then a terminal stop.
-- The STM32WB notify adapter pumps `MX_APPE_Process()` between fragmented
-  153-byte GATT notifications so a full 320-byte PCM block can drain before the
-  next microphone block is queued.
+  3000 microphone blocks with 128-byte PCM packets, then a terminal stop.
+- Keep WB55 live-audio validation packets within one 153-byte GATT value until
+  the STM32WB ATT/mblock settings are raised and revalidated. A 320-byte
+  microphone batch splits into multiple VKA1 notifications and repeatedly
+  stalled after the first batch on hardware; the adapter still pumps
+  `MX_APPE_Process()` after notify, but the stable acceptance path is one
+  complete VKA1 packet per microphone block.
 
 Validation evidence:
 
