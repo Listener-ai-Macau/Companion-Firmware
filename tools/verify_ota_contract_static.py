@@ -197,8 +197,15 @@ def check_local_ota_loader(errors: list[str]) -> None:
         "#define COMPANION_BLE_IO_CAPABILITY CFG_IO_CAPABILITY_NO_INPUT_NO_OUTPUT",
         "#define COMPANION_BLE_BONDING_MODE 0",
         "#define COMPANION_BLE_MITM_PROTECTION 0",
+        '#include "ble_l2cap_aci.h"',
+        "#define COMPANION_OTA_CONN_INTERVAL_MIN 0x0006u",
+        "#define COMPANION_OTA_CONN_INTERVAL_MAX 0x000Cu",
+        "#define COMPANION_OTA_CONN_LATENCY 0x0000u",
+        "#define COMPANION_OTA_CONN_TIMEOUT 0x0190u",
         '#include "otas_stm.h"',
         "SVCCTL_Init();",
+        "Companion_Ota_RequestFastConnection(connectionHandle);",
+        "aci_l2cap_connection_parameter_update_req",
         "aci_gatt_update_char_value(gap_service_handle, gap_dev_name_char_handle",
     ]:
         require(anchor in text, f"local OTA loader missing anchor: {anchor}", errors)

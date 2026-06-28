@@ -36,11 +36,13 @@ write handling, CCCD notify enable state, and `aci_gatt_update_char_value`. The
 portable module intentionally does not include STM32 HAL, STM32_WPAN, NimBLE, or
 ESP-IDF symbols.
 
-The STM32WB adapter advertises a 153-byte notify value for this compatibility
-service. The current NUCLEO WB55 fixture inherits the ST example ATT MTU of 156,
-so each notification can carry 153 bytes after ATT overhead. Do not advertise the
-larger 244-byte Listener/ESP value until the STM32WB ATT/mblock settings and
-validation fixture are raised together.
+The STM32WB adapter advertises a 248-byte notify value for this compatibility
+service. The NUCLEO WB55 bring-up app overrides the ST p2pServer example ATT MTU
+to 251 locally, so each notification can carry 248 bytes after ATT overhead.
+A1 keeps the conservative 132-byte validation payload, while A2 sends the full
+320-byte content of each 10 ms microphone frame. With a 248-byte notify value,
+the full A2 frame is intentionally split across two VKA1 audio packets so fast
+speech is not limited by the older compact sampling view.
 
 `cubeide/Companion_BLE_Audio_Fixture` is the NUCLEO smoke-test image for this
 surface. It keeps the product name `companion`, disables PIN/bonding, registers

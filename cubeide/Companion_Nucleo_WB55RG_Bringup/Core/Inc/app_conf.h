@@ -1,0 +1,9 @@
+#ifndef COMPANION_NUCLEO_WB55RG_APP_CONF_H
+#define COMPANION_NUCLEO_WB55RG_APP_CONF_H
+
+#include_next "app_conf.h"
+
+#undef CFG_BLE_MAX_ATT_MTU
+#define CFG_BLE_MAX_ATT_MTU (251)
+
+#endif /* COMPANION_NUCLEO_WB55RG_APP_CONF_H */

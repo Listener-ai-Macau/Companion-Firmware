@@ -1,6 +1,6 @@
 # STM32WB55 BLE Recovery Notes
 
-Last updated: 2026-06-27
+Last updated: 2026-06-28
 
 This note records the Companion WB55 BLE/OTA fixes and the operating rules for
 future BLE work. Keep it current whenever WB55 BLE, GATT, OTA loader handoff, or
@@ -111,13 +111,13 @@ Fix:
 - The same app accepts `TYPE:READY:A1` for short text-recognition validation:
   900 microphone blocks with 128-byte PCM packets, then a terminal stop.
 - The same app accepts `TYPE:READY:A2` for longer text-recognition validation:
-  3000 microphone blocks with 128-byte PCM packets, then a terminal stop.
-- Keep WB55 live-audio validation packets within one 153-byte GATT value until
-  the STM32WB ATT/mblock settings are raised and revalidated. A 320-byte
-  microphone batch splits into multiple VKA1 notifications and repeatedly
-  stalled after the first batch on hardware; the adapter still pumps
-  `MX_APPE_Process()` after notify, but the stable acceptance path is one
-  complete VKA1 packet per microphone block.
+  3000 microphone blocks with the full 320-byte 10 ms PCM frame, then a
+  terminal stop.
+- The NUCLEO bring-up app now locally overrides the ST p2pServer ATT MTU to
+  251 and the VKA1 notify value to 248 bytes. A1 keeps a conservative 132-byte
+  payload; A2 sends the full 320-byte microphone frame, which the portable VKA1
+  sender splits across two notifications. This keeps fast speech on the real
+  INMP441 path from being limited by the older compact-sampling view.
 
 Validation evidence:
 
@@ -127,6 +127,14 @@ Validation evidence:
   `.cache/validation/companion-type-a1-a2-20260627-175020/companion-type-a1-a2-summary.json`.
 - Type wired flash with SRAM handoff passed:
   `.cache/validation/companion-wired-flash-20260627-180055/companion-wired-flash-summary.json`.
+- 2026-06-28 MTU251/full-frame regression passed:
+  `.cache/validation/a1-a2-fullframe-20260628-regression/companion-type-a1-a2-summary.json`.
+  A1 reached 100% text accuracy; A2 had no missing packets and 0.833333 text
+  accuracy on the normal Listener-style TTS phrase.
+- 2026-06-28 fast-speech A2 passed:
+  `.cache/validation/a2-fullframe-fast-speech-20260628/companion-type-a1-a2-summary.json`.
+  A2 uploaded `960000` PCM bytes in one 30 s session with `missing_packets=0`.
+  The remaining phrase confusion is audio/acoustic/ASR quality, not BLE loss.
 
 ### BLE OTA raw writes timed out or transferred without flashing
 
@@ -171,6 +179,12 @@ Fix:
   characteristic supports `Write`, and use the negotiated ATT payload up to the
   ST raw 248-byte block size. Keep the no-response fallback capped to the
   default 20-byte ATT payload until a larger-MTU ACK/credit path exists.
+- On connection complete, the Companion OTA loader requests a fast connection
+  interval through `aci_l2cap_connection_parameter_update_req()`:
+  min `0x0006` (7.5 ms), max `0x000C` (15 ms), latency `0`, timeout `0x0190`
+  (4 s). Keep this loader-side request guarded by
+  `tools/verify_ota_contract_static.py`; the safe data path is still
+  WriteWithResponse, not optimistic no-response streaming.
 
 Validation evidence:
 
@@ -179,10 +193,14 @@ Validation evidence:
 - The transfer wrote `59956` bytes in `2998` chunks. The finish write timed out
   during the reboot handoff, but Type observed the WB55 disconnect/reboot and
   marked the transfer PASS.
-- 2026-06-27 follow-up: the host-side cap was raised for confirmed
-  WriteWithResponse raw writes. With a 251-byte negotiated MTU the same 59956
-  byte image should transfer in about 242 raw chunks instead of 2998; validate
-  this on hardware before treating the speed target as closed.
+- 2026-06-28 MTU251 plus loader fast-connection validation passed:
+  `.cache/validation/companion-ble-ota-6d50cee-20260628/companion-ble-ota-summary.json`.
+  The `61724` byte OTA image transferred in `249` confirmed chunks of up to
+  248 bytes. Data phase time dropped from about 22.8 s to about 7.9 s; the full
+  BLE capture window dropped from about 36.0 s to 13.4 s on the clean
+  `6d50cee` package.
+- The matching same-package wired factory flash passed before BLE OTA:
+  `.cache/validation/companion-wired-factory-6d50cee-20260628/companion-wired-flash-summary.json`.
 - A1/A2 after BLE OTA passed:
   `.cache/validation/companion-type-a1-a2-20260627-193325/companion-type-a1-a2-summary.json`.
 - The same-package wired flash path passed before BLE OTA:
@@ -264,6 +282,31 @@ Useful external field reports:
 - Community reports are useful to recognize Windows BLE cache/session symptoms,
   but the design authority remains ST examples, ST application notes, and
   Microsoft WinRT documentation.
+
+## Microphone Migration Note
+
+Current Companion NUCLEO validation uses the confirmed INMP441 bench wiring.
+That part outputs I2S PCM, so the WB55 bring-up app captures it through SAI1
+I2S-style input and then forwards PCM16 16 kHz frames through the VKA1 bridge.
+
+Listener's active N16R8 validation build is different: it uses an SPH0655 PDM
+digital microphone and ESP-IDF's I2S PDM2PCM path. Local Listener evidence:
+
+- `Listener-Firmware/docs/features/firmware-feature-map.md` records
+  `SPH0655 PDM audio through ESP-IDF PDM2PCM`.
+- `Listener-Firmware/ports/esp32/audio_capture/audio_capture_esp32.c` selects
+  `CONFIG_AUDIO_CAPTURE_MIC_SPH0655_PDM`, requires hardware PDM2PCM support,
+  configures `I2S_PDM_RX_CLK_DEFAULT_CONFIG`, and applies both hardware and
+  software gain.
+- Listener board diagnostics name the PDM clock/data pins as GPIO48/GPIO47.
+
+Changing Companion from INMP441 to the Listener microphone family is therefore
+hardware-medium and firmware-medium complexity. Hardware is only two signal
+lines plus power, but firmware must switch from I2S PCM capture to PDM capture,
+decimation/filtering, gain, DC/high-pass tuning, and new audio quality gates.
+Keep the portable recording/VKA1 business layer unchanged; add a separate
+STM32 PDM backend under the microphone abstraction after checking the exact
+WB55CE or WBA peripheral support and Cube example path.
 
 ## STM32WBA Migration Impact
 

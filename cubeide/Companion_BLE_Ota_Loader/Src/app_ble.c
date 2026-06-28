@@ -38,6 +38,7 @@
 
 #include "flash_driver.h"
 #include "otas_stm.h"
+#include "ble_l2cap_aci.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -56,6 +57,10 @@
 #define COMPANION_BLE_BONDING_MODE 0
 #define COMPANION_BLE_MITM_PROTECTION 0
 #define COMPANION_BLE_OTA_ADDRESS_OFFSET 2u
+#define COMPANION_OTA_CONN_INTERVAL_MIN 0x0006u /* 7.5 ms */
+#define COMPANION_OTA_CONN_INTERVAL_MAX 0x000Cu /* 15 ms */
+#define COMPANION_OTA_CONN_LATENCY 0x0000u
+#define COMPANION_OTA_CONN_TIMEOUT 0x0190u /* 4 s */
 
 #define BD_ADDR_SIZE_LOCAL    6
 
@@ -129,6 +134,7 @@ static void Adv_Request(void);
 static void Delete_Sectors( void );
 
 /* USER CODE BEGIN PFP */
+static void Companion_Ota_RequestFastConnection(uint16_t handle);
 
 /* USER CODE END PFP */
 
@@ -316,6 +322,7 @@ SVCCTL_UserEvtFlowStatus_t SVCCTL_App_Notification( void *p_Pckt )
           connectionHandle = p_connection_complete_event->Connection_Handle;
 
           /* USER CODE BEGIN HCI_EVT_LE_CONN_COMPLETE */
+          Companion_Ota_RequestFastConnection(connectionHandle);
 
           /* USER CODE END HCI_EVT_LE_CONN_COMPLETE */
           break; /* HCI_LE_CONNECTION_COMPLETE_SUBEVT_CODE */
@@ -692,6 +699,29 @@ static void Adv_Request(void)
   APP_DBG_MSG("==>> Companion OTA advertising data active name=%s manuf_len=%u\n",
               COMPANION_BLE_PRODUCT_NAME,
               (unsigned int)sizeof(a_ManufData));
+}
+
+static void Companion_Ota_RequestFastConnection(uint16_t handle)
+{
+  tBleStatus ret = aci_l2cap_connection_parameter_update_req(
+      handle,
+      COMPANION_OTA_CONN_INTERVAL_MIN,
+      COMPANION_OTA_CONN_INTERVAL_MAX,
+      COMPANION_OTA_CONN_LATENCY,
+      COMPANION_OTA_CONN_TIMEOUT);
+
+  if (ret == BLE_STATUS_SUCCESS)
+  {
+    APP_DBG_MSG("==>> Companion OTA requested fast connection interval min=0x%04X max=0x%04X latency=%u timeout=0x%04X\n",
+                COMPANION_OTA_CONN_INTERVAL_MIN,
+                COMPANION_OTA_CONN_INTERVAL_MAX,
+                COMPANION_OTA_CONN_LATENCY,
+                COMPANION_OTA_CONN_TIMEOUT);
+  }
+  else
+  {
+    APP_DBG_MSG("==>> Companion OTA fast connection request failed: result=0x%x\n", ret);
+  }
 }
 
 static void Delete_Sectors( void )

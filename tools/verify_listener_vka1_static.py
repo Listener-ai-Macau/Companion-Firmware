@@ -21,6 +21,7 @@ HEADER = AUDIO_DIR / "audio_stream.h"
 SOURCE = AUDIO_DIR / "audio_stream.c"
 STM32WB_HEADER = AUDIO_DIR / "audio_stream_stm32wb.h"
 STM32WB_SOURCE = AUDIO_DIR / "audio_stream_stm32wb.c"
+BRINGUP_APP_CONF = REPO_ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Inc/app_conf.h"
 BRINGUP_APP_BLE = REPO_ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c"
 BRINGUP_MAIN = REPO_ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/main.c"
 BRINGUP_MAKEFILE = REPO_ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile"
@@ -149,7 +150,7 @@ def check_companion_surface(header: str, source: str, errors: list[str]) -> None
 
 def check_stm32wb_adapter(header: str, source: str, errors: list[str]) -> None:
     required_header_tokens = (
-        "COMP_AUDIO_STREAM_STM32WB_GATT_VALUE_BYTES 153u",
+        "COMP_AUDIO_STREAM_STM32WB_GATT_VALUE_BYTES 248u",
         "COMP_AUDIO_STREAM_STM32WB_CONTROL_VALUE_BYTES 64u",
         "COMP_AUDIO_STREAM_STM32WB_READINESS_VALUE_BYTES 96u",
         "COMP_AUDIO_STREAM_STM32WB_CAPABILITIES_VALUE_BYTES 96u",
@@ -183,7 +184,7 @@ def check_stm32wb_adapter(header: str, source: str, errors: list[str]) -> None:
         "CHAR_PROP_WRITE | CHAR_PROP_WRITE_WITHOUT_RESP",
         "CHAR_PROP_READ",
         "COMP_AUDIO_STREAM_STM32WB_GATT_VALUE_BYTES",
-        "gatt_value=153",
+        "gatt_value=248",
         "sample_rate=16000",
     )
     for token in required_source_tokens:
@@ -347,7 +348,7 @@ def check_docs(errors: list[str]) -> None:
         "Listener-Compatible Live Audio",
         "VKA1",
         "audio_stream_stm32wb.c",
-        "153-byte notify value",
+        "248-byte notify value",
         SERVICE_UUID,
         NOTIFY_UUID,
         CONTROL_UUID,
@@ -397,10 +398,17 @@ def check_type_a1_a2_validation_tool(errors: list[str]) -> None:
 
 
 def check_stm32wb_unified_bringup_app(errors: list[str]) -> None:
+    app_conf = read(BRINGUP_APP_CONF)
     app_ble = read(BRINGUP_APP_BLE)
     main_c = read(BRINGUP_MAIN)
     makefile = read(BRINGUP_MAKEFILE)
     flash_tool = read(FLASH_TOOL)
+    for token in (
+        "#include_next \"app_conf.h\"",
+        "#define CFG_BLE_MAX_ATT_MTU (251)",
+    ):
+        require(token in app_conf, f"NUCLEO bringup app_conf.h missing {token}", errors)
+
     for token in (
         "Companion_Nucleo_WB55RG_Bringup",
         "Core/Src/app_ble.c",
@@ -437,6 +445,7 @@ def check_stm32wb_unified_bringup_app(errors: list[str]) -> None:
 
     for token in (
         "Companion_App_HandleBleControl",
+        "COMPANION_TYPE_READY_A2_AUTOSTREAM_PCM_BYTES 320u",
         "COMP_AUDIO_CONTROL_TYPE_READY",
         "start_recording(COMP_RECORDING_SOURCE_HOST_BLE_CONTROL",
         "Companion_BleAudio_SendPcmBytes",
