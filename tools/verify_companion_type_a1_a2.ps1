@@ -24,6 +24,7 @@ param(
     [double] $MinTranscriptAccuracy = 0.60,
     [switch] $GateA1TranscriptAccuracy,
     [switch] $GateA2TranscriptAccuracy,
+    [string] $A1PlaybackTextList = "",
     [int] $PrePlaybackDelayMs = 300,
     [ValidateSet("wav", "speech")]
     [string] $PlaybackMode = "wav",
@@ -77,7 +78,9 @@ function Resolve-ListenerLogPath {
         return (Resolve-Path -LiteralPath $Requested).Path
     }
 
-    $defaultPath = Join-Path $env:LOCALAPPDATA "Listener Type Companion\Logs\listener-type.log"
+    # Listener-Type's debug CLI writes to lib::log_dir_path(), which is still
+    # %LOCALAPPDATA%\Listener Type\Logs even when the Companion BLE target is set.
+    $defaultPath = Join-Path $env:LOCALAPPDATA "Listener Type\Logs\listener-type.log"
     $parentPath = Split-Path -Parent $defaultPath
     if (-not (Test-Path -LiteralPath $parentPath)) {
         New-Item -ItemType Directory -Force -Path $parentPath | Out-Null
@@ -305,7 +308,7 @@ function Show-OperatorPrompt {
     }
 }
 
-$A1PlaybackTexts = @(
+$DefaultA1PlaybackTexts = @(
     "打开设置",
     "新建文件",
     "保存文件",
@@ -315,6 +318,13 @@ $A1PlaybackTexts = @(
     "粘贴内容",
     "全部选中"
 )
+$A1PlaybackTexts = @($A1PlaybackTextList -split "\|" | Where-Object { -not [string]::IsNullOrWhiteSpace($_) } | ForEach-Object { $_.Trim() })
+if ($A1PlaybackTexts.Count -eq 0) {
+    $A1PlaybackTexts = @($DefaultA1PlaybackTexts)
+}
+if ($A1PlaybackTexts.Count -eq 0) {
+    throw "A1 playback text list must not be empty."
+}
 
 function Get-CompanionExtraAsrHotwords {
     $extra = @(

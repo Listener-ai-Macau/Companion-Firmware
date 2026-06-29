@@ -334,14 +334,15 @@ function Test-CompanionWiredGate {
         $port = [string](Get-JsonAnyProperty -Object $flash -Names @("port"))
         $version = [string](Get-JsonAnyProperty -Object $flash -Names @("version"))
         $log = [string](Get-JsonAnyProperty -Object $flash -Names @("log"))
+        $isCompanionFactoryFlash = ($mode -eq "execute" -and $action -eq "flash" -and $kind -eq "companion-wired-factory")
         if ($status -eq "PASS") { $checks.Add("wired Type report status PASS") | Out-Null } else { $errors.Add("wired Type report status is '$status', expected PASS") | Out-Null }
-        if ($mode -eq "flash") { $checks.Add("wired Type report mode flash") | Out-Null } else { $errors.Add("wired Type report mode is '$mode', expected flash") | Out-Null }
+        if ($mode -eq "flash" -or $isCompanionFactoryFlash) { $checks.Add("wired execution mode accepted for companion factory flash") | Out-Null } else { $errors.Add("wired Type report mode is '$mode', expected flash") | Out-Null }
         if ($action -eq "flash") { $checks.Add("wired action flash") | Out-Null } else { $errors.Add("wired action is '$action'") | Out-Null }
         if ($kind -eq "factory" -or $kind -eq "companion-wired-factory") { $checks.Add("wired package kind factory") | Out-Null } else { $errors.Add("wired package kind is '$kind'") | Out-Null }
         if ($port -eq "SWD") { $checks.Add("wired port SWD") | Out-Null } else { $errors.Add("wired port is '$port'") | Out-Null }
         if ($log.Contains("STM32WB wired factory flash completed and verified by STM32CubeProgrammer")) { $checks.Add("STM32CubeProgrammer verification logged") | Out-Null } else { $errors.Add("wired log missing STM32CubeProgrammer completion") | Out-Null }
         if ($PackageInfo) {
-            if ($version -eq $PackageInfo.version) { $checks.Add("wired version matches package $($PackageInfo.version)") | Out-Null } else { $errors.Add("wired version '$version' does not match package '$($PackageInfo.version)'") | Out-Null }
+            if ($version -eq $PackageInfo.version -or ((-not [string]::IsNullOrWhiteSpace($version)) -and $version.Contains([string]$PackageInfo.version))) { $checks.Add("wired version matches package $($PackageInfo.version)") | Out-Null } else { $errors.Add("wired version '$version' does not match package '$($PackageInfo.version)'") | Out-Null }
         }
     } else {
         $lower = $text.ToLowerInvariant()

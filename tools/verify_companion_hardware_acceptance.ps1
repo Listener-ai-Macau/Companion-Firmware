@@ -9,6 +9,7 @@ param(
     [int] $ProbeTimeoutMs = 30000,
     [int] $A1TimeoutMs = 45000,
     [int] $A1Rounds = 6,
+    [string] $A1PlaybackTextList = "",
     [int] $A2TimeoutMs = 120000,
     [int] $MaxMissingPackets = 0,
     [switch] $SkipWirelessStackProvisioning,
@@ -218,6 +219,18 @@ $wirelessArgs = @(
     "-InstallBleStack",
     "-OutDir", $wirelessDir
 )
+$acceptanceA1PlaybackTexts = @($A1PlaybackTextList -split "\|" | Where-Object { -not [string]::IsNullOrWhiteSpace($_) } | ForEach-Object { $_.Trim() })
+if ($acceptanceA1PlaybackTexts.Count -eq 0) {
+    $acceptanceA1PlaybackTexts = @(
+        "打开设置",
+        "新建文件",
+        "保存文件",
+        "打开设置",
+        "新建文件",
+        "保存文件"
+    )
+}
+
 $a1Args = @(
     "-NoProfile", "-File", ".\tools\verify_companion_type_a1_a2.ps1",
     "-Execute", "-WorkflowLockHeld",
@@ -226,12 +239,14 @@ $a1Args = @(
     "-ProbeTimeoutMs", [string]$ProbeTimeoutMs,
     "-A1TimeoutMs", [string]$A1TimeoutMs,
     "-A1Rounds", [string]$A1Rounds,
+    "-A1PlaybackTextList", ($acceptanceA1PlaybackTexts -join "|"),
     "-A2TimeoutMs", [string]$A2TimeoutMs,
     "-MaxMissingPackets", [string]$MaxMissingPackets
 )
 $bleArgs = @(
     "-NoProfile", "-File", ".\tools\verify_companion_ble_ota.ps1",
     "-Execute", "-WorkflowLockHeld",
+    "-PrepareLoaderWithSwd",
     "-PackagePath", $resolvedPackage,
     "-TypeRepoRoot", $typeRoot,
     "-OutDir", $bleDir

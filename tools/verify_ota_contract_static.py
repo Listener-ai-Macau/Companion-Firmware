@@ -37,6 +37,7 @@ BRINGUP_READINESS_TOOL = REPO_ROOT / "tools/verify_companion_bringup_readiness.p
 MANUAL_GATE_TOOL = REPO_ROOT / "tools/verify_companion_manual_gate_evidence.ps1"
 BLE_OTA_TOOL = REPO_ROOT / "tools/verify_companion_ble_ota.ps1"
 WIRED_FLASH_TOOL = REPO_ROOT / "tools/verify_companion_wired_flash.ps1"
+TYPE_A1_A2_TOOL = REPO_ROOT / "tools/verify_companion_type_a1_a2.ps1"
 TYPE_VISUAL_TOOL = REPO_ROOT / "tools/capture_type_companion_visual.ps1"
 TYPE_UI_MANUAL_TOOL = REPO_ROOT / "tools/verify_companion_type_ui_manual.ps1"
 HARDWARE_ACCEPTANCE_TOOL = REPO_ROOT / "tools/verify_companion_hardware_acceptance.ps1"
@@ -406,6 +407,7 @@ def check_wired_package_tooling(errors: list[str]) -> None:
     manual_gate = read_text(MANUAL_GATE_TOOL, errors)
     ble_ota = read_text(BLE_OTA_TOOL, errors)
     wired_flash = read_text(WIRED_FLASH_TOOL, errors)
+    type_a1_a2 = read_text(TYPE_A1_A2_TOOL, errors)
     type_visual = read_text(TYPE_VISUAL_TOOL, errors)
     type_ui_manual = read_text(TYPE_UI_MANUAL_TOOL, errors)
     hardware_acceptance = read_text(HARDWARE_ACCEPTANCE_TOOL, errors)
@@ -604,6 +606,8 @@ def check_wired_package_tooling(errors: list[str]) -> None:
         "companion_wired_flash_result_json=",
         "companion_type_ui_manual_result_json=",
         "type_report_json",
+        "companion-wired-factory",
+        "wired execution mode accepted for companion factory flash",
         "verify_companion_ble_ota.ps1",
         "verify_companion_wired_flash.ps1",
         "wired_firmware_result_json=",
@@ -661,6 +665,7 @@ def check_wired_package_tooling(errors: list[str]) -> None:
         "-InstallBleStack",
         "verify_companion_type_a1_a2.ps1",
         "verify_companion_ble_ota.ps1",
+        "-PrepareLoaderWithSwd",
         "verify_companion_wired_flash.ps1",
         "verify_companion_type_ui_manual.ps1",
         "verify_companion_manual_gate_evidence.ps1",
@@ -707,6 +712,17 @@ def check_wired_package_tooling(errors: list[str]) -> None:
         "hardware acceptance runner must execute Type UI before BLE OTA",
         errors,
     )
+
+    for anchor in [
+        "companion.type_a1_a2.validation.v1",
+        "Listener Type\\Logs\\listener-type.log",
+        "[string] $A1PlaybackTextList",
+        "$DefaultA1PlaybackTexts",
+        "--probe-embedded-audio-ble-subscription",
+        "companion_type_a1_a2_result_json=",
+        "Refusing to run Companion A1/A2 hardware validation without -WorkflowLockHeld.",
+    ]:
+        require(anchor in type_a1_a2, f"verify_companion_type_a1_a2.ps1 missing anchor: {anchor}", errors)
 
     for anchor in [
         "companion.ble_ota.validation.v1",
