@@ -119,6 +119,39 @@ def check_stm32_surface(source: str, app_ble: str, errors: list[str]) -> None:
     require("CFG_TASK_COMPANION_GATT_ID" in read(APP_CONF), "app_conf must define Companion GATT task id", errors)
 
 
+def app_conf_define(text: str, name: str) -> int | None:
+    match = re.search(rf"#define\s+{re.escape(name)}\s+\(?\s*(\d+)\s*\)?", text)
+    if match is None:
+        return None
+    return int(match.group(1))
+
+
+def check_nucleo_ble_capacity(errors: list[str]) -> None:
+    app_conf = read(APP_CONF)
+    uuid_table = json.loads(UUID_TABLE.read_text(encoding="utf-8"))
+    required_services = 2 + 1 + len(uuid_table["services"])
+
+    service_count = app_conf_define(app_conf, "CFG_BLE_NUM_GATT_SERVICES")
+    attr_count = app_conf_define(app_conf, "CFG_BLE_NUM_GATT_ATTRIBUTES")
+    value_array_size = app_conf_define(app_conf, "CFG_BLE_ATT_VALUE_ARRAY_SIZE")
+
+    require(
+        service_count is not None and service_count >= required_services,
+        f"CFG_BLE_NUM_GATT_SERVICES must cover GAP/GATT, VKA1, and Companion services; need >= {required_services}",
+        errors,
+    )
+    require(
+        attr_count is not None and attr_count >= 96,
+        "CFG_BLE_NUM_GATT_ATTRIBUTES must be sized for VKA1 plus Companion-native services",
+        errors,
+    )
+    require(
+        value_array_size is not None and value_array_size >= 4096,
+        "CFG_BLE_ATT_VALUE_ARRAY_SIZE must be sized for 248-byte notify/read values",
+        errors,
+    )
+
+
 def check_build_integration(errors: list[str]) -> None:
     makefile = read(MAKEFILE)
     for token in [
@@ -152,6 +185,7 @@ def main() -> int:
     app_ble = read(APP_BLE)
     check_uuid_table(source, errors)
     check_stm32_surface(source, app_ble, errors)
+    check_nucleo_ble_capacity(errors)
     check_build_integration(errors)
     check_forbidden_apis(errors)
 
