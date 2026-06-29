@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Static checks for the Companion STM32WB GATT skeleton."""
+"""Static checks for the Companion STM32WB GATT bench surface."""
 
 from __future__ import annotations
 
@@ -16,6 +16,8 @@ GATT_HEADER = REPO_ROOT / "app" / "companion_pendant" / "gatt" / "companion_gatt
 GATT_SOURCE = REPO_ROOT / "app" / "companion_pendant" / "gatt" / "companion_gatt_stm32wb.c"
 APP_BLE = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Core" / "Src" / "app_ble.c"
 APP_CONF = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Core" / "Inc" / "app_conf.h"
+BLE_CONF = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Core" / "Inc" / "ble_conf.h"
+MAIN_SOURCE = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Core" / "Src" / "main.c"
 MAKEFILE = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Makefile"
 
 
@@ -53,6 +55,14 @@ def check_uuid_table(source: str, errors: list[str]) -> None:
         "RecordingListV1": "companion_gatt_recording_list_v1_t",
         "RecordingChunkPullV1": "companion_gatt_recording_chunk_pull_v1_t",
         "SettingsV1": "companion_gatt_settings_v1_t",
+        "BleNameConfigV1": "companion_gatt_ble_name_config_v1_t",
+        "MeetingControlV1": "companion_gatt_meeting_control_v1_t",
+        "MeetingStatusV1": "companion_gatt_meeting_status_v1_t",
+        "ImuStatusV1": "companion_gatt_imu_status_v1_t",
+        "SpeakerControlV1": "companion_gatt_speaker_control_v1_t",
+        "SpeakerStatusV1": "companion_gatt_speaker_status_v1_t",
+        "WakeWordControlV1": "companion_gatt_wake_word_control_v1_t",
+        "WakeWordStatusV1": "companion_gatt_wake_word_status_v1_t",
         "DiagLogPullV1": "companion_gatt_diag_log_pull_v1_t",
         "DeletePrivacyV1": "companion_gatt_delete_privacy_v1_t",
         "OtaReadinessV1": "companion_gatt_ota_readiness_v1_t",
@@ -99,6 +109,18 @@ def check_stm32_surface(source: str, app_ble: str, errors: list[str]) -> None:
     ]:
         require(anchor in source or anchor in app_ble, f"missing STM32 GATT anchor {anchor}", errors)
 
+    for anchor in [
+        "char_service_handles",
+        "companion_gatt_add_char(uint16_t service_handle",
+        "aci_gatt_update_char_value(service_handle",
+    ]:
+        require(anchor in source, f"missing per-characteristic service handle guard {anchor}", errors)
+    require(
+        "s_companion_gatt.service_handle" not in source,
+        "GATT publish must not use a single overwritten service handle for every characteristic",
+        errors,
+    )
+
     start = source.find("static SVCCTL_EvtAckStatus_t companion_gatt_stm32wb_event_handler")
     end = source.find("static companion_gatt_parse_result_t companion_gatt_copy_fixed")
     require(start >= 0 and end > start, "missing GATT event handler body", errors)
@@ -117,6 +139,73 @@ def check_stm32_surface(source: str, app_ble: str, errors: list[str]) -> None:
 
     require("UTIL_SEQ_SetTask" in app_ble, "app must schedule queued GATT work through STM32 sequencer", errors)
     require("CFG_TASK_COMPANION_GATT_ID" in read(APP_CONF), "app_conf must define Companion GATT task id", errors)
+
+    for anchor in [
+        "Companion_Gatt_PublishInitialState",
+        "Companion_Gatt_PublishCardStatus",
+        "Companion_Gatt_PublishRecordingChunkRefusal",
+        "Companion_Gatt_PublishDeletePrivacyRefusal",
+        "Companion_Gatt_PublishOtaReadiness",
+        "companion_gatt_parse_card_write_v1",
+        "companion_gatt_parse_delete_privacy_v1",
+    ]:
+        require(anchor in app_ble, f"app_ble.c missing real GATT bench response anchor {anchor}", errors)
+
+
+def app_conf_define(text: str, name: str) -> int | None:
+    match = re.search(rf"#define\s+{re.escape(name)}\s+\(?\s*(\d+)\s*\)?", text)
+    if match is None:
+        return None
+    return int(match.group(1))
+
+
+def check_nucleo_ble_capacity(errors: list[str]) -> None:
+    app_conf = read(APP_CONF)
+    ble_conf = read(BLE_CONF)
+    uuid_table = json.loads(UUID_TABLE.read_text(encoding="utf-8"))
+    required_services = 2 + 1 + len(uuid_table["services"])
+
+    service_count = app_conf_define(app_conf, "CFG_BLE_NUM_GATT_SERVICES")
+    attr_count = app_conf_define(app_conf, "CFG_BLE_NUM_GATT_ATTRIBUTES")
+    value_array_size = app_conf_define(app_conf, "CFG_BLE_ATT_VALUE_ARRAY_SIZE")
+    service_callback_count = app_conf_define(ble_conf, "BLE_CFG_SVC_MAX_NBR_CB")
+
+    require(
+        service_count is not None and service_count >= required_services,
+        f"CFG_BLE_NUM_GATT_SERVICES must cover GAP/GATT, VKA1, and Companion services; need >= {required_services}",
+        errors,
+    )
+    require(
+        attr_count is not None and attr_count >= 96,
+        "CFG_BLE_NUM_GATT_ATTRIBUTES must be sized for VKA1 plus Companion-native services",
+        errors,
+    )
+    require(
+        value_array_size is not None and value_array_size >= 4096,
+        "CFG_BLE_ATT_VALUE_ARRAY_SIZE must be sized for 248-byte notify/read values",
+        errors,
+    )
+    require(
+        service_callback_count is not None and service_callback_count >= 2,
+        "BLE_CFG_SVC_MAX_NBR_CB must cover both VKA1 audio and Companion-native GATT service handlers",
+        errors,
+    )
+
+
+def check_nucleo_boot_path(errors: list[str]) -> None:
+    main_source = read(MAIN_SOURCE)
+    boot_selftests = app_conf_define(main_source, "COMPANION_RUN_BOOT_SELFTESTS")
+
+    require(
+        boot_selftests == 0,
+        "COMPANION_RUN_BOOT_SELFTESTS must default to 0 so BLE acceptance reaches the main loop",
+        errors,
+    )
+    require(
+        "#if COMPANION_RUN_BOOT_SELFTESTS" in main_source and "boot_selftests=skipped" in main_source,
+        "main.c must gate boot selftests behind COMPANION_RUN_BOOT_SELFTESTS",
+        errors,
+    )
 
 
 def check_build_integration(errors: list[str]) -> None:
@@ -152,6 +241,8 @@ def main() -> int:
     app_ble = read(APP_BLE)
     check_uuid_table(source, errors)
     check_stm32_surface(source, app_ble, errors)
+    check_nucleo_ble_capacity(errors)
+    check_nucleo_boot_path(errors)
     check_build_integration(errors)
     check_forbidden_apis(errors)
 
@@ -170,7 +261,7 @@ def main() -> int:
             print(f" - {error}", file=sys.stderr)
         return 1
 
-    print("PASS: Companion STM32WB GATT skeleton static checks passed.")
+    print("PASS: Companion STM32WB GATT bench static checks passed.")
     return 0
 
 

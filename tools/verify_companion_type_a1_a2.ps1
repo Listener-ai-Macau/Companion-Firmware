@@ -4,6 +4,7 @@ param(
     [string] $ListenerLogPath,
     [string] $OutDir,
     [int] $ProbeTimeoutMs = 30000,
+    [switch] $SkipInitialProbe,
     [int] $A1TimeoutMs = 45000,
     [int] $A1Rounds = 6,
     [int] $A2TimeoutMs = 120000,
@@ -975,7 +976,8 @@ if (-not $Execute) {
     Write-Host "OutDir: $outputDir"
     Write-Host "Run with workflow hardware lock:"
     Write-Host "  $lockCommand"
-    Write-Host "This script will run probe=$ProbeTimeoutMs ms, A1=$A1Rounds rounds x $A1TimeoutMs ms, A2=$A2TimeoutMs ms."
+    $probeLabel = if ($SkipInitialProbe) { "skipped" } else { "$ProbeTimeoutMs ms" }
+    Write-Host "This script will run probe=$probeLabel, A1=$A1Rounds rounds x $A1TimeoutMs ms, A2=$A2TimeoutMs ms."
     Write-Host "A1 text gate: $RequireA1Text; A2 text gate: $RequireA2Text (min final chars: $MinFinalTextChars)."
     Write-Host "BLE failure recovery: stop_timeout=$BleCleanupStopTimeoutMs ms, delay=$BleRecoveryDelayMs ms, probe=$BleRecoveryProbeTimeoutMs ms."
     Write-Host "Automatic TTS playback: $(-not [bool]$DisableTtsPlayback). A2 text: $A2PlaybackText"
@@ -1009,19 +1011,24 @@ $warnings = [System.Collections.Generic.List[string]]::new()
 try {
     $probePass = "probe-embedded-audio-ble-subscription PASS"
     $probeFail = "probe-embedded-audio-ble-subscription failed: (?<error>.*)"
-    [void](Invoke-ListenerCliWithRetry `
-        -Label "probe" `
-        -Arguments @("--probe-embedded-audio-ble-subscription", [string]$ProbeTimeoutMs) `
-        -TimeoutMs $ProbeTimeoutMs `
-        -PassPattern $probePass `
-        -FailPattern $probeFail `
-        -ListenerExePath $listenerExePath `
-        -LogPath $logPath `
-        -MaxRetries $CliRetries `
-        -DelayMs $RetryDelayMs `
-        -RetryRecords $retries `
-        -ReadyCommand "TYPE:HB" `
-        -StatsOnly $true)
+    if ($SkipInitialProbe) {
+        $warnings.Add("Initial BLE notify probe skipped; A1/A2 streams perform the real scan/connect path.") | Out-Null
+        Write-Host "SKIP: initial BLE notify probe skipped; A1/A2 streams will validate scan/connect."
+    } else {
+        [void](Invoke-ListenerCliWithRetry `
+            -Label "probe" `
+            -Arguments @("--probe-embedded-audio-ble-subscription", [string]$ProbeTimeoutMs) `
+            -TimeoutMs $ProbeTimeoutMs `
+            -PassPattern $probePass `
+            -FailPattern $probeFail `
+            -ListenerExePath $listenerExePath `
+            -LogPath $logPath `
+            -MaxRetries $CliRetries `
+            -DelayMs $RetryDelayMs `
+            -RetryRecords $retries `
+            -ReadyCommand "TYPE:HB" `
+            -StatsOnly $true)
+    }
 
     $streamPass = "embedded_audio_ble_(?:stream|once)_result_json=(?<json>\{[^\r\n]*\})|submit-embedded-audio-ble-(?:stream|once) done: pcm_bytes=(?<pcm>\d+) missing_packets=(?<missing>\d+)"
     $streamFail = "submit-embedded-audio-ble-(?:stream|once) failed: (?<error>.*)"
@@ -1143,6 +1150,7 @@ $summary = [ordered]@{
     listener_exe = $listenerExePath
     listener_log = $logPath
     probe_timeout_ms = $ProbeTimeoutMs
+    skip_initial_probe = [bool]$SkipInitialProbe
     a1_rounds = $A1Rounds
     a1_timeout_ms = $A1TimeoutMs
     a2_timeout_ms = $A2TimeoutMs

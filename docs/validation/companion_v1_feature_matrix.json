@@ -1,0 +1,175 @@
+{
+  "artifacts": {
+    "matrix": "docs/validation/companion_v1_feature_matrix.json",
+    "uuid_table": "docs/ble_uuid_table.json"
+  },
+  "ble_name_policy": {
+    "apply_result": "restart_ble_or_reboot_required",
+    "default_name": "companion",
+    "forbidden_bytes": [
+      "quote",
+      "apostrophe",
+      "semicolon",
+      "equals",
+      "backslash",
+      "control"
+    ],
+    "invalid_examples": [
+      {
+        "accepted": false,
+        "name": ""
+      },
+      {
+        "accepted": false,
+        "name": "bad=name"
+      },
+      {
+        "accepted": false,
+        "name": "bad;name"
+      },
+      {
+        "accepted": false,
+        "name": "bad\\name"
+      },
+      {
+        "accepted": false,
+        "name": "bad\"name"
+      }
+    ],
+    "max_len": 29,
+    "printable_ascii_only": true,
+    "valid_example": "companion-v1",
+    "valid_example_passed": true
+  },
+  "features": [
+    {
+      "diagnostic_anchors": [
+        "meeting.start",
+        "meeting.stop",
+        "meeting.finalize",
+        "meeting.rejected"
+      ],
+      "feature": "meeting_recording",
+      "fixture_result": "PASS",
+      "host_surface": "meeting sessions stay separate from one-shot dictation history",
+      "state_flow": [
+        "idle",
+        "recording",
+        "finalized",
+        "sync_ready"
+      ]
+    },
+    {
+      "diagnostic_anchors": [
+        "imu.sample",
+        "imu.motion",
+        "imu.unavailable"
+      ],
+      "feature": "imu",
+      "fixture_result": "PASS",
+      "host_surface": "host can show missing dev-board IMU separately from sensor failure",
+      "state_flow": [
+        "not_populated",
+        "calibration_pending",
+        "sample_contract_ready"
+      ]
+    },
+    {
+      "diagnostic_anchors": [
+        "speaker.prompt",
+        "speaker.result",
+        "speaker.rejected"
+      ],
+      "feature": "speaker",
+      "fixture_result": "PASS",
+      "host_surface": "host can request bounded prompts and show unavailable hardware",
+      "state_flow": [
+        "not_populated",
+        "prompt_accepted",
+        "pending_hardware"
+      ]
+    },
+    {
+      "diagnostic_anchors": [
+        "wake_word.armed",
+        "wake_word.detected",
+        "wake_word.disabled",
+        "wake_word.rejected"
+      ],
+      "feature": "voice_wake",
+      "fixture_result": "PASS",
+      "host_surface": "host can arm/disarm wake-word state before always-on DSP validation",
+      "state_flow": [
+        "disabled",
+        "armed",
+        "detected",
+        "rejected"
+      ]
+    },
+    {
+      "diagnostic_anchors": [
+        "device_settings.ble_name.accepted",
+        "device_settings.ble_name.rejected",
+        "device_settings.ble_name.applied"
+      ],
+      "feature": "ble_name_config",
+      "fixture_result": "PASS",
+      "host_surface": "host stages a Companion BLE name using Listener-compatible ASCII 1..29 policy",
+      "state_flow": [
+        "active",
+        "staged",
+        "restart_required",
+        "rejected"
+      ]
+    }
+  ],
+  "generated_by": "tools/companion_v1_feature_fixture.py",
+  "hardware_gate": {
+    "current_board_limits": [
+      "imu_not_populated",
+      "speaker_not_populated",
+      "wake_word_dsp_not_validated"
+    ],
+    "required_for_production": true
+  },
+  "negative_cases": [
+    {
+      "case": "invalid_ble_name_empty",
+      "expected_result": "rejected",
+      "host_action": "keep previous advertised name and show validation message"
+    },
+    {
+      "case": "invalid_ble_name_equals",
+      "expected_result": "rejected",
+      "host_action": "do not send apply/restart until user edits the name"
+    },
+    {
+      "case": "unsupported_meeting_command",
+      "expected_result": "meeting.rejected",
+      "host_action": "refresh meeting_status and keep current session state"
+    },
+    {
+      "case": "wake_detect_while_disarmed",
+      "expected_result": "wake_word.rejected",
+      "host_action": "show wake disabled instead of claiming wake success"
+    },
+    {
+      "case": "speaker_unknown_command",
+      "expected_result": "speaker.rejected",
+      "host_action": "keep prompt controls disabled until supported command is selected"
+    }
+  ],
+  "no_hardware": true,
+  "schema_id": "companion.v1.feature_matrix.v1",
+  "status": "PASS",
+  "uuid_characteristics": {
+    "ble_name_config": "8f7a4002-7b7d-4f3d-9d6f-6c2d1b7c0000",
+    "imu_status": "8f7a9001-7b7d-4f3d-9d6f-6c2d1b7c0000",
+    "meeting_control": "8f7a8001-7b7d-4f3d-9d6f-6c2d1b7c0000",
+    "meeting_status": "8f7a8002-7b7d-4f3d-9d6f-6c2d1b7c0000",
+    "speaker_control": "8f7aa001-7b7d-4f3d-9d6f-6c2d1b7c0000",
+    "speaker_status": "8f7aa002-7b7d-4f3d-9d6f-6c2d1b7c0000",
+    "wake_word_control": "8f7aa003-7b7d-4f3d-9d6f-6c2d1b7c0000",
+    "wake_word_status": "8f7aa004-7b7d-4f3d-9d6f-6c2d1b7c0000"
+  }
+}

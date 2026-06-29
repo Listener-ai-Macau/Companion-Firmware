@@ -4,9 +4,11 @@ param(
     [string] $ListenerExe,
     [string] $EvidencePath,
     [string] $OutDir,
+    [string] $ProgrammerPath,
     [string] $Port = "SWD",
     [uint32] $Baud = 0,
     [int] $ProbeTimeoutMs = 30000,
+    [int] $PostFlashAppSettleSeconds = 5,
     [int] $A1TimeoutMs = 45000,
     [int] $A1Rounds = 6,
     [string] $A1PlaybackTextList = "",
@@ -68,6 +70,37 @@ function ConvertTo-CommandLine {
 function Get-SafeLogName {
     param([Parameter(Mandatory = $true)][string] $Name)
     return (($Name.ToLowerInvariant() -replace '[^a-z0-9_.-]+', '-') -replace '^-|-$', '') + ".log"
+}
+
+function Find-CubeProgrammerCli {
+    param([string] $RequestedPath)
+
+    $candidates = @()
+    if ($RequestedPath) { $candidates += $RequestedPath }
+    if ($env:STM32CUBEPROGRAMMER_CLI) { $candidates += $env:STM32CUBEPROGRAMMER_CLI }
+    if ($env:STM32CUBEPROGRAMMER_PATH) { $candidates += (Join-Path $env:STM32CUBEPROGRAMMER_PATH "STM32_Programmer_CLI.exe") }
+
+    foreach ($commandName in @("STM32_Programmer_CLI.exe", "STM32_Programmer_CLI")) {
+        $command = Get-Command $commandName -ErrorAction SilentlyContinue
+        if ($command) { $candidates += $command.Source }
+    }
+
+    $candidates += @(
+        "C:\ST\STM32CubeIDE_*\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.externaltools.cubeprogrammer.win32_*\tools\bin\STM32_Programmer_CLI.exe",
+        "C:\Program Files\STMicroelectronics\STM32CubeIDE_*\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.externaltools.cubeprogrammer.win32_*\tools\bin\STM32_Programmer_CLI.exe",
+        "C:\Program Files\STMicroelectronics\STM32Cube\STM32CubeIDE\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.externaltools.cubeprogrammer.win32_*\tools\bin\STM32_Programmer_CLI.exe",
+        "C:\Program Files\STMicroelectronics\STM32Cube\STM32CubeProgrammer\bin\STM32_Programmer_CLI.exe",
+        "C:\ST\STM32CubeProgrammer\bin\STM32_Programmer_CLI.exe"
+    )
+
+    foreach ($candidate in $candidates) {
+        if ([string]::IsNullOrWhiteSpace($candidate)) { continue }
+        $matches = @(Get-ChildItem -Path $candidate -File -ErrorAction SilentlyContinue | Sort-Object FullName -Descending)
+        if ($matches.Count -gt 0) { return $matches[0].FullName }
+        if (Test-Path -LiteralPath $candidate -PathType Leaf) { return (Resolve-Path -LiteralPath $candidate).Path }
+    }
+
+    return $null
 }
 
 function Show-OperatorPrompt {
@@ -203,6 +236,8 @@ $wiredSummary = Join-Path $wiredDir "companion-wired-flash-summary.json"
 $typeUiSummary = Join-Path $typeUiDir "companion-type-ui-manual-summary.json"
 $manualSummary = Join-Path $manualDir "companion-manual-gate-evidence-summary.json"
 $wirelessSummary = Join-Path $wirelessDir "companion-wireless-stack-summary.json"
+$programmer = Find-CubeProgrammerCli -RequestedPath $ProgrammerPath
+$programmerForCommand = if ($programmer) { $programmer } else { "STM32_Programmer_CLI.exe" }
 
 $aiw = "C:\Users\Billy\Desktop\Denzic\ai-collaboration-workflow\scripts\aiw.ps1"
 $lockCommand = "pwsh -NoProfile -File $aiw with-lock -Resource Companion-WB55,BLE-Companion -Purpose `"Companion hardware acceptance`" -Run pwsh -NoProfile -File .\tools\verify_companion_hardware_acceptance.ps1 -Execute -WorkflowLockHeld -PackagePath `"$resolvedPackage`""
@@ -236,6 +271,7 @@ $a1Args = @(
     "-Execute", "-WorkflowLockHeld",
     "-TypeRepoRoot", $typeRoot,
     "-OutDir", $a1Dir,
+    "-SkipInitialProbe",
     "-ProbeTimeoutMs", [string]$ProbeTimeoutMs,
     "-A1TimeoutMs", [string]$A1TimeoutMs,
     "-A1Rounds", [string]$A1Rounds,
@@ -259,6 +295,12 @@ $wiredArgs = @(
     "-OutDir", $wiredDir,
     "-Port", $Port
 )
+$postFlashResetScript = @"
+& '$programmerForCommand' -c port=$Port mode=UR reset=HWrst freq=4000 -w8 0x20000000 0x00 0x07 0x00 0xC3 -r8 0x20000000 4 -rst
+if (`$LASTEXITCODE -ne 0) { exit `$LASTEXITCODE }
+Start-Sleep -Seconds $PostFlashAppSettleSeconds
+"@
+$postFlashResetArgs = @("-NoProfile", "-Command", $postFlashResetScript)
 $typeUiArgs = @(
     "-NoProfile", "-File", ".\tools\verify_companion_type_ui_manual.ps1",
     "-Execute", "-WorkflowLockHeld",
@@ -294,6 +336,7 @@ if (-not $Execute) {
     $dryRunSteps = @(
         [ordered]@{ name = "ensure CPU2 BLE wireless stack"; status = $(if ($SkipWirelessStackProvisioning) { "SKIPPED" } else { "DRY_RUN" }); message = $(if ($SkipWirelessStackProvisioning) { "skipped by -SkipWirelessStackProvisioning; only use after a PASS provisioning summary exists" } else { "not executed; reads FUS and installs STM32CubeWB BLE full stack before CPU1 BLE apps" }); command = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $wirelessArgs; evidence = $wirelessSummary },
         [ordered]@{ name = "real Companion wired flash from same package"; status = "DRY_RUN"; message = "not executed; flashes the same package OTA loader and unified Companion VKA1 app before A1/A2"; command = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $wiredArgs; evidence = $wiredSummary },
+        [ordered]@{ name = "post-flash Companion app handoff reset"; status = "DRY_RUN"; message = "not executed; rewrites OTA app handoff, hard-resets the board, then waits $PostFlashAppSettleSeconds seconds before BLE capture"; command = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $postFlashResetArgs; evidence = $null },
         [ordered]@{ name = "real Companion A1/A2 bench validation"; status = "DRY_RUN"; message = "not executed; requires workflow hardware lock"; command = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $a1Args; evidence = $a1Summary },
         [ordered]@{ name = "real Companion BLE OTA bench validation"; status = "DRY_RUN"; message = "not executed; transfers the same package over the Companion OTA v2 path"; command = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $bleArgs; evidence = $bleSummary }
     )
@@ -360,7 +403,11 @@ try {
     } else {
         Invoke-AcceptanceStep -Name "ensure CPU2 BLE wireless stack" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments $wirelessArgs
     }
+    if (-not $programmer) {
+        throw "STM32CubeProgrammer CLI not found for post-flash Companion app handoff reset. Pass -ProgrammerPath or set STM32CUBEPROGRAMMER_CLI."
+    }
     Invoke-AcceptanceStep -Name "real Companion wired flash from same package" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments $wiredArgs
+    Invoke-AcceptanceStep -Name "post-flash Companion app handoff reset" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments $postFlashResetArgs
     Invoke-AcceptanceStep -Name "real Companion A1/A2 bench validation" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments $a1Args
     if ($IncludeTypeUiGate) {
         Invoke-AcceptanceStep -Name "Type temporary Companion debug page" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments $typeUiArgs

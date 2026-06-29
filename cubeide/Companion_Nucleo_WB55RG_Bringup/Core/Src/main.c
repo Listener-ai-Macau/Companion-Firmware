@@ -58,6 +58,10 @@ COMPANION_PLACE_IN_SECTION("TAG_OTA_START") const uint32_t MagicKeywordAddress =
 #define COMPANION_TYPE_READY_A2_AUTOSTREAM_PCM_BYTES 320u
 #define COMPANION_BLE_NOTIFY_PUMP_DELAY_MS 1u
 
+#ifndef COMPANION_RUN_BOOT_SELFTESTS
+#define COMPANION_RUN_BOOT_SELFTESTS 0
+#endif
+
 #define MIC_SAMPLE_RATE_HZ 16000u
 #define MIC_FRAMES_PER_BATCH 160u
 #define MIC_SLOT_COUNT 2u
@@ -309,13 +313,14 @@ int main(void)
     printf("[boot] uart=USART1 PB6/PB7 115200 flash=QSPI PA2/PA3/PB9/PB8/PA7/PA6 mic=SAI1 PA8/PB12/PC3\r\n");
     printf("[boot] mic=inmp441_i2s_slot_auto_dc_preamp%lu ble=companion_vka1 ota=ble_package_ready\r\n",
            (unsigned long)(1u << MIC_PREAMP_SHIFT));
-    printf("[boot] buttons: SW1=PC4 start/stop recording, SW2=PD0 cancel/recover, SW3=PD1 flash+ota+diag probe\r\n");
+    printf("[boot] buttons: SW1=PC4 start/stop recording, SW2=PD0 cancel/recover, SW3=PD1 flash+ota+mic+diag probe\r\n");
     init_board_buttons();
 
     s_error_stage = "MX_APPE_Init";
     MX_APPE_Init();
     printf("[stage] ble app init requested name=companion service=VKA1\r\n");
 
+#if COMPANION_RUN_BOOT_SELFTESTS
     printf("\r\n[tick] boot_selftest t_ms=%lu\r\n", (unsigned long)HAL_GetTick());
     MX_APPE_Process();
     run_flash_probe();
@@ -325,6 +330,10 @@ int main(void)
     run_microphone_probe();
     MX_APPE_Process();
     print_diag_tail();
+#else
+    printf("[boot] boot_selftests=skipped reason=production_ble_path\r\n");
+    MX_APPE_Process();
+#endif
 
     uint32_t last_heartbeat_ms = HAL_GetTick();
     while (1) {
@@ -332,12 +341,19 @@ int main(void)
         poll_board_buttons();
 
         if (s_recording_fsm.state == COMP_RECORDING_STATE_RECORDING) {
+            if (!s_ble_session_active &&
+                s_recording_fsm.active_source == COMP_RECORDING_SOURCE_HOST_BLE_CONTROL &&
+                Companion_BleAudio_IsReady()) {
+                start_ble_session_if_ready("recording_loop");
+            }
+
             bool verbose = (s_manual_recording_block_count % MANUAL_RECORDING_LOG_EVERY_BLOCKS) == 0u;
             bool captured = capture_microphone_block(s_manual_recording_block_count,
                                                      verbose,
                                                      "mic-manual");
             s_manual_recording_block_count++;
             if (captured &&
+                s_ble_session_active &&
                 s_ble_type_ready_autostream_active &&
                 s_ble_type_ready_autostream_blocks_remaining > 0u) {
                 s_ble_type_ready_autostream_blocks_remaining--;
@@ -747,6 +763,7 @@ static void run_manual_probe_request(void)
            (unsigned long)HAL_GetTick());
     run_flash_probe();
     run_ota_readiness_probe();
+    run_microphone_probe();
     print_diag_tail();
     printf("[button] sw3 action=probe_done t_ms=%lu\r\n",
            (unsigned long)HAL_GetTick());

@@ -73,6 +73,14 @@ for manual control-path checks.
 | recording | recording_list | device -> host read/notify | `RecordingListV1`: count plus entries of recording_id, started_unix_s, duration_ms, codec, total_length, sha256_prefix, sync_state | Host refreshes after recording_control stop and after delete/privacy operations. |
 | recording | recording chunk pull | host -> device write request; device -> host notify packets | Request: recording_id, byte_offset, requested_length, host_resume_token. Response packet: recording_id, packet sequence, byte offset, total length, payload_length, flags, payload, CRC, final SHA-256 when complete | Host verifies monotonic packet sequence, byte offset continuity, total length stability, CRC per packet, and final hash before marking synced. |
 | settings | settings | host -> device read/write; device -> host notify | `SettingsV1`: locale, time_zone_offset_min, quiet_hours, display_brightness, recorder_profile_id, flags | Device validates supported ranges and notifies committed settings_revision. |
+| settings | BLE name config | host -> device write; device -> host read/notify | `BleNameConfigV1`: request_id, command stage/apply/reset, name_len, max_len, status, flags, ASCII name bytes | Device validates Listener-compatible ASCII 1..29 name policy, rejects quotes/semicolon/equals/backslash/control bytes, and reports whether advertising restart or reboot is required. |
+| meeting | meeting_control | host -> device write; device -> host notify | `MeetingControlV1`: request_id, command start/stop/cancel, profile_id, max_seconds, flags | Device enters a meeting session model distinct from one-shot dictation and echoes status through meeting_status. |
+| meeting | meeting_status | device -> host read/notify | `MeetingStatusV1`: meeting_id, state, request_id, started_tick_ms, duration_ms, segment_count, summary_state, sync_state, last_error | Host can show meeting recording progress, later transcript/summary readiness, and sync status without treating it as ordinary dictation history. |
+| sensors | IMU status | device -> host read/notify | `ImuStatusV1`: sensor_state, sample_rate_hz, motion_flags, calibration_state, timestamp, accel/gyro/temp sample fields | Host can distinguish not-populated dev boards from present/calibrating/active IMU hardware and later use motion events for wear/tap/orientation features. |
+| audio_output | speaker_control | host -> device write; device -> host notify | `SpeakerControlV1`: request_id, command play_prompt, volume_percent, prompt_id, payload_len, flags | Device stages speaker prompts without blocking the GATT callback; current dev board may report pending hardware. |
+| audio_output | speaker_status | device -> host read/notify | `SpeakerStatusV1`: state, last_error, request_id, prompt_id, volume_percent, played_count | Host can show whether speaker output is available, accepted, unavailable, or failed. |
+| audio_output | wake_word_control | host -> device write; device -> host notify | `WakeWordControlV1`: request_id, command arm/disarm/simulate_detect, sensitivity, model_id, flags | Device arms or disarms the voice wake state model while keeping actual keyword DSP/hardware validation gated. |
+| audio_output | wake_word_status | device -> host read/notify | `WakeWordStatusV1`: armed, engine_state, last_event, last_error, sensitivity, confidence, detection_count, rejected_count | Host can distinguish wake armed, disabled, detected, rejected, and unavailable states before real always-on voice validation. |
 | diagnostics | diagnostics/log pull | host -> device write request; device -> host notify packets | `DiagLogPullV1`: cursor, max_events, max_bytes, source mask, severity_mask. Response: cursor, next_cursor, total_available, event records or log payload, CRC | Host pulls default bounded tails without unbounded full dumps and without blocking recording or display work. |
 | privacy | delete/privacy | host -> device write; device -> host notify | `DeletePrivacyV1`: request_id, operation delete_recording/delete_all_recordings/factory_privacy_wipe, recording_id, validated_total_length, validated_sha256 | Device deletes only after the request matches stored metadata or after a full privacy wipe confirmation. |
 | OTA | OTA readiness | device -> host read/notify | `OtaReadinessV1`: ready_state, boot_slot, battery_percent, charger_present, minimum_required_mv, blocker_bitmap, manifest_version, board_target, mcu, image_size, image_sha256_prefix, interrupted_transfer_resume_token | This only reports OTA readiness and blockers; the later OTA data path must reuse an ST OTA reference rather than inventing a custom large-write path here. |
@@ -141,6 +149,27 @@ writing `delete/privacy` with the `recording_id`, validated `total_length`, and
 validated SHA-256. The device refuses deletion if the metadata does not match,
 if a recording is still active, or if the request is not acknowledged by the
 recording storage task.
+
+## Companion V1 Feature Baseline
+
+Meeting recording is modeled as a long-lived `meeting` session, not as a
+one-shot dictation insert. V1 firmware exposes `meeting_control` and
+`meeting_status` so Type can start/stop a meeting, show duration/progress, and
+later attach transcript, summary, action-item, and export state without changing
+the recording chunk transfer contract.
+
+The IMU, speaker, and wake-word surfaces are V1-ready contracts even on dev
+boards where the physical parts are not populated. `imu_status` reports whether
+the sensor is present/calibrating/active or explicitly not populated.
+`speaker_control/status` lets the host request bounded product prompts while the
+device reports unavailable or accepted states. `wake_word_control/status` arms,
+disarms, and reports detection/rejection counters so the host can validate the
+state flow before always-on keyword hardware and DSP are available.
+
+`BLE name config` follows Listener's configurable-name policy: ASCII 1..29
+bytes, printable only, and no quotes, semicolon, equals sign, backslash, or
+control bytes. A valid rename is staged and reported as requiring advertising
+restart or reboot before the new GAP advertising name is guaranteed visible.
 
 ## Errors
 

@@ -38,9 +38,12 @@
 
 #include "audio_stream_stm32wb.h"
 #include "companion_gatt_stm32wb.h"
+#include "companion_v1_features.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <stdio.h>
+#include <string.h>
 
 /* USER CODE END Includes */
 
@@ -136,6 +139,35 @@ static comp_audio_stream_t s_companion_audio_stream;
 static uint32_t s_companion_audio_next_session_id = 1u;
 static bool s_companion_ble_connected = false;
 static Companion_BleLinkMode_t s_companion_ble_link_mode = COMPANION_BLE_LINK_MODE_NONE;
+static uint32_t s_companion_gatt_card_refresh_count = 0u;
+static companion_gatt_card_status_v1_t s_companion_gatt_card_status = {
+    .schema_version = 1u,
+    .card_slot = 0u,
+    .render_state = 0u,
+    .last_error = 0u,
+    .request_id = 0u,
+    .content_crc32 = 0u,
+    .refresh_count = 0u,
+};
+static companion_gatt_settings_v1_t s_companion_gatt_settings = {
+    .schema_version = 1u,
+    .locale = 0u,
+    .flags = 0u,
+    .time_zone_offset_min = 0,
+    .quiet_hours_start_min = 0u,
+    .quiet_hours_end_min = 0u,
+    .display_brightness = 80u,
+    .recorder_profile_id = 1u,
+};
+static companion_v1_features_t s_companion_v1_features;
+static uint32_t s_companion_audio_notify_enabled_count = 0u;
+static uint32_t s_companion_audio_notify_disabled_count = 0u;
+static uint32_t s_companion_audio_control_write_count = 0u;
+static uint32_t s_companion_audio_session_start_count = 0u;
+static comp_audio_control_t s_companion_audio_last_control = COMP_AUDIO_CONTROL_NONE;
+static comp_audio_stream_status_t s_companion_audio_last_control_status = COMP_AUDIO_STREAM_OK;
+static comp_audio_stream_status_t s_companion_audio_last_session_start_status =
+    COMP_AUDIO_STREAM_OK;
 
 /* USER CODE END PV */
 
@@ -155,10 +187,36 @@ static void Companion_Gatt_Init(void);
 static void Companion_Gatt_Task(void);
 static void Companion_Gatt_HandleEvent(const companion_gatt_event_t *event,
                                        void *context);
+static void Companion_Gatt_PublishInitialState(void);
+static void Companion_Gatt_PublishCurrent(companion_gatt_char_id_t char_id);
+static void Companion_Gatt_PublishDeviceStatus(void);
+static void Companion_Gatt_PublishBatteryCharge(void);
+static void Companion_Gatt_PublishCardStatus(uint32_t request_id,
+                                             uint8_t render_state,
+                                             uint8_t last_error,
+                                             uint32_t content_crc32);
+static void Companion_Gatt_PublishRecordingControlEcho(
+    const companion_gatt_recording_control_v1_t *request);
+static void Companion_Gatt_PublishRecordingList(void);
+static void Companion_Gatt_PublishRecordingChunkRefusal(
+    const companion_gatt_recording_chunk_pull_v1_t *request);
+static void Companion_Gatt_PublishSettings(void);
+static void Companion_Gatt_PublishBleNameConfig(void);
+static void Companion_Gatt_PublishMeetingStatus(void);
+static void Companion_Gatt_PublishImuStatus(void);
+static void Companion_Gatt_PublishSpeakerStatus(void);
+static void Companion_Gatt_PublishWakeWordStatus(void);
+static void Companion_Gatt_PublishDiagLogResponse(
+    const companion_gatt_diag_log_pull_v1_t *request);
+static void Companion_Gatt_PublishDeletePrivacyRefusal(
+    const companion_gatt_delete_privacy_v1_t *request);
+static void Companion_Gatt_PublishOtaReadiness(void);
+static uint32_t Companion_Gatt_Fnv1a(const uint8_t *data, uint16_t length);
 static void Companion_Audio_Control(void *context,
                                     comp_audio_control_t control,
                                     const uint8_t *data,
                                     size_t length);
+static void Companion_Audio_UpdateDebugStatus(void);
 static void Companion_Ble_Button1Task(void);
 static void Companion_Ble_Button2Task(void);
 static void Companion_Ble_Button3Task(void);
@@ -352,6 +410,7 @@ SVCCTL_UserEvtFlowStatus_t SVCCTL_App_Notification( void *p_Pckt )
       connectionHandle = COMPANION_BLE_CONN_HANDLE_INVALID;
       s_companion_ble_link_mode = COMPANION_BLE_LINK_MODE_NONE;
       comp_audio_stream_set_notify_enabled(&s_companion_audio_stream, false);
+      Companion_Audio_UpdateDebugStatus();
       Companion_App_HandleBleLinkReadyChanged(false);
       Adv_Request();
 
@@ -486,14 +545,11 @@ static void Companion_Audio_Init(void)
   }
   else
   {
-    static const uint8_t readiness[] =
-        "ready:listener_vka1 app=companion source=mic sample_rate=16000 channels=1 width_bits=16";
     static const uint8_t capabilities[] =
         "caps:vka1=1 pcm16=1 live_notify=1 gatt_value=153 source=mic controls=vrec";
-    (void)comp_audio_stream_stm32wb_update_readiness(readiness,
-                                                     (uint8_t)(sizeof(readiness) - 1u));
     (void)comp_audio_stream_stm32wb_update_capabilities(capabilities,
                                                         (uint8_t)(sizeof(capabilities) - 1u));
+    Companion_Audio_UpdateDebugStatus();
     APP_DBG_MSG("  Success: Companion VKA1 audio service init\n");
   }
 }
@@ -521,6 +577,8 @@ static void Companion_Ble_Button3Task(void)
 
 static void Companion_Gatt_Init(void)
 {
+  companion_v1_features_init(&s_companion_v1_features, HAL_GetTick());
+
   tBleStatus status = companion_gatt_stm32wb_init();
   if (status != BLE_STATUS_SUCCESS)
   {
@@ -528,6 +586,7 @@ static void Companion_Gatt_Init(void)
   }
   else
   {
+    Companion_Gatt_PublishInitialState();
     APP_DBG_MSG("  Success: Companion native GATT service init\n");
   }
 }
@@ -551,6 +610,501 @@ static void Companion_Gatt_HandleEvent(const companion_gatt_event_t *event,
               companion_gatt_char_name(event->char_id),
               (unsigned int)event->type,
               (unsigned int)event->payload_len);
+
+  if (event->type == COMPANION_GATT_EVENT_NOTIFY_ENABLED)
+  {
+    Companion_Gatt_PublishCurrent(event->char_id);
+    return;
+  }
+
+  if (event->type != COMPANION_GATT_EVENT_WRITE)
+  {
+    return;
+  }
+
+  switch (event->char_id)
+  {
+    case COMPANION_GATT_CHAR_E_PAPER_CARD_WRITE:
+    {
+      companion_gatt_card_write_v1_t request;
+      companion_gatt_parse_result_t parse_result =
+          companion_gatt_parse_card_write_v1(event->payload,
+                                             event->payload_len,
+                                             &request);
+      if (parse_result == COMPANION_GATT_PARSE_OK)
+      {
+        uint16_t header_len = (uint16_t)sizeof(request);
+        uint16_t content_len = (uint16_t)(event->payload_len - header_len);
+        Companion_Gatt_PublishCardStatus(
+            request.request_id,
+            1u,
+            0u,
+            Companion_Gatt_Fnv1a(&event->payload[header_len], content_len));
+      }
+      else
+      {
+        Companion_Gatt_PublishCardStatus(0u, 3u, (uint8_t)parse_result, 0u);
+      }
+      break;
+    }
+
+    case COMPANION_GATT_CHAR_RECORDING_CONTROL:
+    {
+      companion_gatt_recording_control_v1_t request;
+      if (companion_gatt_parse_recording_control_v1(event->payload,
+                                                    event->payload_len,
+                                                    &request) ==
+          COMPANION_GATT_PARSE_OK)
+      {
+        Companion_Gatt_PublishRecordingControlEcho(&request);
+      }
+      Companion_Gatt_PublishRecordingList();
+      break;
+    }
+
+    case COMPANION_GATT_CHAR_RECORDING_CHUNK_PULL:
+    {
+      companion_gatt_recording_chunk_pull_v1_t request;
+      if (companion_gatt_parse_recording_chunk_pull_v1(event->payload,
+                                                       event->payload_len,
+                                                       &request) ==
+          COMPANION_GATT_PARSE_OK)
+      {
+        Companion_Gatt_PublishRecordingChunkRefusal(&request);
+      }
+      break;
+    }
+
+    case COMPANION_GATT_CHAR_SETTINGS:
+    {
+      companion_gatt_settings_v1_t request;
+      if (companion_gatt_parse_settings_v1(event->payload,
+                                           event->payload_len,
+                                           &request) ==
+          COMPANION_GATT_PARSE_OK)
+      {
+        s_companion_gatt_settings = request;
+        Companion_Gatt_PublishSettings();
+      }
+      break;
+    }
+
+    case COMPANION_GATT_CHAR_BLE_NAME_CONFIG:
+    {
+      companion_gatt_ble_name_config_v1_t request;
+      if (companion_gatt_parse_ble_name_config_v1(event->payload,
+                                                  event->payload_len,
+                                                  &request) ==
+          COMPANION_GATT_PARSE_OK)
+      {
+        (void)companion_v1_apply_ble_name_config(&s_companion_v1_features,
+                                                 &request);
+      }
+      Companion_Gatt_PublishBleNameConfig();
+      break;
+    }
+
+    case COMPANION_GATT_CHAR_MEETING_CONTROL:
+    {
+      companion_gatt_meeting_control_v1_t request;
+      if (companion_gatt_parse_meeting_control_v1(event->payload,
+                                                  event->payload_len,
+                                                  &request) ==
+          COMPANION_GATT_PARSE_OK)
+      {
+        (void)companion_v1_apply_meeting_control(&s_companion_v1_features,
+                                                 &request,
+                                                 HAL_GetTick());
+      }
+      Companion_Gatt_PublishMeetingStatus();
+      break;
+    }
+
+    case COMPANION_GATT_CHAR_SPEAKER_CONTROL:
+    {
+      companion_gatt_speaker_control_v1_t request;
+      if (companion_gatt_parse_speaker_control_v1(event->payload,
+                                                  event->payload_len,
+                                                  &request) ==
+          COMPANION_GATT_PARSE_OK)
+      {
+        (void)companion_v1_apply_speaker_control(&s_companion_v1_features,
+                                                 &request,
+                                                 HAL_GetTick());
+      }
+      Companion_Gatt_PublishSpeakerStatus();
+      break;
+    }
+
+    case COMPANION_GATT_CHAR_WAKE_WORD_CONTROL:
+    {
+      companion_gatt_wake_word_control_v1_t request;
+      if (companion_gatt_parse_wake_word_control_v1(event->payload,
+                                                    event->payload_len,
+                                                    &request) ==
+          COMPANION_GATT_PARSE_OK)
+      {
+        (void)companion_v1_apply_wake_word_control(&s_companion_v1_features,
+                                                   &request,
+                                                   HAL_GetTick());
+      }
+      Companion_Gatt_PublishWakeWordStatus();
+      break;
+    }
+
+    case COMPANION_GATT_CHAR_DIAGNOSTICS_LOG_PULL:
+    {
+      companion_gatt_diag_log_pull_v1_t request;
+      if (companion_gatt_parse_diag_log_pull_v1(event->payload,
+                                                event->payload_len,
+                                                &request) ==
+          COMPANION_GATT_PARSE_OK)
+      {
+        Companion_Gatt_PublishDiagLogResponse(&request);
+      }
+      break;
+    }
+
+    case COMPANION_GATT_CHAR_DELETE_PRIVACY:
+    {
+      companion_gatt_delete_privacy_v1_t request;
+      if (companion_gatt_parse_delete_privacy_v1(event->payload,
+                                                 event->payload_len,
+                                                 &request) ==
+          COMPANION_GATT_PARSE_OK)
+      {
+        Companion_Gatt_PublishDeletePrivacyRefusal(&request);
+        Companion_Gatt_PublishRecordingList();
+      }
+      break;
+    }
+
+    default:
+      break;
+  }
+}
+
+static void Companion_Gatt_PublishInitialState(void)
+{
+  Companion_Gatt_PublishDeviceStatus();
+  Companion_Gatt_PublishBatteryCharge();
+  Companion_Gatt_PublishCardStatus(0u, 0u, 0u, 0u);
+  Companion_Gatt_PublishRecordingList();
+  Companion_Gatt_PublishSettings();
+  Companion_Gatt_PublishBleNameConfig();
+  Companion_Gatt_PublishMeetingStatus();
+  Companion_Gatt_PublishImuStatus();
+  Companion_Gatt_PublishSpeakerStatus();
+  Companion_Gatt_PublishWakeWordStatus();
+  Companion_Gatt_PublishOtaReadiness();
+}
+
+static void Companion_Gatt_PublishCurrent(companion_gatt_char_id_t char_id)
+{
+  switch (char_id)
+  {
+    case COMPANION_GATT_CHAR_DEVICE_STATUS:
+      Companion_Gatt_PublishDeviceStatus();
+      break;
+
+    case COMPANION_GATT_CHAR_BATTERY_CHARGE:
+      Companion_Gatt_PublishBatteryCharge();
+      break;
+
+    case COMPANION_GATT_CHAR_E_PAPER_CARD_STATUS:
+      (void)companion_gatt_stm32wb_publish(
+          COMPANION_GATT_CHAR_E_PAPER_CARD_STATUS,
+          (const uint8_t *)&s_companion_gatt_card_status,
+          (uint16_t)sizeof(s_companion_gatt_card_status));
+      break;
+
+    case COMPANION_GATT_CHAR_RECORDING_LIST:
+      Companion_Gatt_PublishRecordingList();
+      break;
+
+    case COMPANION_GATT_CHAR_SETTINGS:
+      Companion_Gatt_PublishSettings();
+      break;
+
+    case COMPANION_GATT_CHAR_BLE_NAME_CONFIG:
+      Companion_Gatt_PublishBleNameConfig();
+      break;
+
+    case COMPANION_GATT_CHAR_MEETING_STATUS:
+      Companion_Gatt_PublishMeetingStatus();
+      break;
+
+    case COMPANION_GATT_CHAR_IMU_STATUS:
+      Companion_Gatt_PublishImuStatus();
+      break;
+
+    case COMPANION_GATT_CHAR_SPEAKER_STATUS:
+      Companion_Gatt_PublishSpeakerStatus();
+      break;
+
+    case COMPANION_GATT_CHAR_WAKE_WORD_STATUS:
+      Companion_Gatt_PublishWakeWordStatus();
+      break;
+
+    case COMPANION_GATT_CHAR_OTA_READINESS:
+      Companion_Gatt_PublishOtaReadiness();
+      break;
+
+    default:
+      break;
+  }
+}
+
+static void Companion_Gatt_PublishDeviceStatus(void)
+{
+  companion_gatt_device_status_v1_t status = {
+      .schema_version = 1u,
+      .active_mode = s_companion_audio_stream.notify_enabled ? 1u :
+                     (s_companion_ble_connected ? 2u : 0u),
+      .fault_bitmap = 0u,
+      .firmware_version = 0x00010001u,
+      .build_id = 0x0DB7E50Du,
+      .board_id = 0xB55A0001u,
+      .uptime_ms = HAL_GetTick(),
+  };
+
+  (void)companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_DEVICE_STATUS,
+                                       (const uint8_t *)&status,
+                                       (uint16_t)sizeof(status));
+}
+
+static void Companion_Gatt_PublishBatteryCharge(void)
+{
+  companion_gatt_battery_charge_v1_t status = {
+      .schema_version = 1u,
+      .percent = 100u,
+      .charge_state = 1u,
+      .charger_present = 1u,
+      .millivolts = 5000u,
+      .temperature_c_x10 = 250,
+  };
+
+  (void)companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_BATTERY_CHARGE,
+                                       (const uint8_t *)&status,
+                                       (uint16_t)sizeof(status));
+}
+
+static void Companion_Gatt_PublishCardStatus(uint32_t request_id,
+                                             uint8_t render_state,
+                                             uint8_t last_error,
+                                             uint32_t content_crc32)
+{
+  s_companion_gatt_card_status.schema_version = 1u;
+  s_companion_gatt_card_status.card_slot = 0u;
+  s_companion_gatt_card_status.render_state = render_state;
+  s_companion_gatt_card_status.last_error = last_error;
+  s_companion_gatt_card_status.request_id = request_id;
+  s_companion_gatt_card_status.content_crc32 = content_crc32;
+  s_companion_gatt_card_status.refresh_count = ++s_companion_gatt_card_refresh_count;
+
+  (void)companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_E_PAPER_CARD_STATUS,
+                                       (const uint8_t *)&s_companion_gatt_card_status,
+                                       (uint16_t)sizeof(s_companion_gatt_card_status));
+}
+
+static void Companion_Gatt_PublishRecordingControlEcho(
+    const companion_gatt_recording_control_v1_t *request)
+{
+  if (request == NULL)
+  {
+    return;
+  }
+
+  (void)companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_RECORDING_CONTROL,
+                                       (const uint8_t *)request,
+                                       (uint16_t)sizeof(*request));
+}
+
+static void Companion_Gatt_PublishRecordingList(void)
+{
+  companion_gatt_recording_list_v1_t list = {
+      .schema_version = 1u,
+      .count = 0u,
+      .entry_bytes = 0u,
+  };
+
+  (void)companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_RECORDING_LIST,
+                                       (const uint8_t *)&list,
+                                       (uint16_t)sizeof(list));
+}
+
+static void Companion_Gatt_PublishRecordingChunkRefusal(
+    const companion_gatt_recording_chunk_pull_v1_t *request)
+{
+  if (request == NULL)
+  {
+    return;
+  }
+
+  companion_gatt_recording_chunk_pull_v1_t response = *request;
+  response.schema_version = 1u;
+  response.flags |= 0x80u;
+  response.requested_length = 0u;
+  (void)companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_RECORDING_CHUNK_PULL,
+                                       (const uint8_t *)&response,
+                                       (uint16_t)sizeof(response));
+}
+
+static void Companion_Gatt_PublishSettings(void)
+{
+  s_companion_gatt_settings.schema_version = 1u;
+  (void)companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_SETTINGS,
+                                       (const uint8_t *)&s_companion_gatt_settings,
+                                       (uint16_t)sizeof(s_companion_gatt_settings));
+}
+
+static void Companion_Gatt_PublishBleNameConfig(void)
+{
+  companion_gatt_ble_name_config_v1_t status;
+  companion_v1_get_ble_name_config(&s_companion_v1_features, &status);
+  (void)companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_BLE_NAME_CONFIG,
+                                       (const uint8_t *)&status,
+                                       (uint16_t)sizeof(status));
+}
+
+static void Companion_Gatt_PublishMeetingStatus(void)
+{
+  companion_gatt_meeting_status_v1_t status;
+  companion_v1_get_meeting_status(&s_companion_v1_features, &status);
+  (void)companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_MEETING_STATUS,
+                                       (const uint8_t *)&status,
+                                       (uint16_t)sizeof(status));
+}
+
+static void Companion_Gatt_PublishImuStatus(void)
+{
+  companion_gatt_imu_status_v1_t status;
+  companion_v1_get_imu_status(&s_companion_v1_features, &status);
+  status.sample_timestamp_ms = HAL_GetTick();
+  (void)companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_IMU_STATUS,
+                                       (const uint8_t *)&status,
+                                       (uint16_t)sizeof(status));
+}
+
+static void Companion_Gatt_PublishSpeakerStatus(void)
+{
+  companion_gatt_speaker_status_v1_t status;
+  companion_v1_get_speaker_status(&s_companion_v1_features, &status);
+  (void)companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_SPEAKER_STATUS,
+                                       (const uint8_t *)&status,
+                                       (uint16_t)sizeof(status));
+}
+
+static void Companion_Gatt_PublishWakeWordStatus(void)
+{
+  companion_gatt_wake_word_status_v1_t status;
+  companion_v1_get_wake_word_status(&s_companion_v1_features, &status);
+  (void)companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_WAKE_WORD_STATUS,
+                                       (const uint8_t *)&status,
+                                       (uint16_t)sizeof(status));
+}
+
+static void Companion_Gatt_PublishDiagLogResponse(
+    const companion_gatt_diag_log_pull_v1_t *request)
+{
+  if (request == NULL)
+  {
+    return;
+  }
+
+  companion_gatt_diag_log_pull_v1_t response = *request;
+  response.schema_version = 1u;
+  response.cursor = request->cursor + 1u;
+  response.max_events = request->max_events == 0u ? 0u : 1u;
+  if (response.max_bytes > 64u)
+  {
+    response.max_bytes = 64u;
+  }
+
+  (void)companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_DIAGNOSTICS_LOG_PULL,
+                                       (const uint8_t *)&response,
+                                       (uint16_t)sizeof(response));
+}
+
+static void Companion_Gatt_PublishDeletePrivacyRefusal(
+    const companion_gatt_delete_privacy_v1_t *request)
+{
+  if (request == NULL)
+  {
+    return;
+  }
+
+  companion_gatt_delete_privacy_v1_t response = *request;
+  response.schema_version = 1u;
+  response.flags |= 0x0001u;
+  (void)companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_DELETE_PRIVACY,
+                                       (const uint8_t *)&response,
+                                       (uint16_t)sizeof(response));
+}
+
+static void Companion_Gatt_PublishOtaReadiness(void)
+{
+  static const uint8_t sha_prefix[8] = {
+      0xBEu, 0xFAu, 0xEBu, 0x26u, 0x11u, 0x66u, 0x0Du, 0x9Eu,
+  };
+  companion_gatt_ota_readiness_v1_t readiness = {
+      .schema_version = 1u,
+      .ready_state = 1u,
+      .boot_slot = 0u,
+      .battery_percent = 100u,
+      .minimum_required_mv = 3700u,
+      .blocker_bitmap = 0x0010u,
+      .manifest_version = 1u,
+      .image_size = 68240u,
+  };
+  memcpy(readiness.image_sha256_prefix, sha_prefix, sizeof(sha_prefix));
+
+  (void)companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_OTA_READINESS,
+                                       (const uint8_t *)&readiness,
+                                       (uint16_t)sizeof(readiness));
+}
+
+static uint32_t Companion_Gatt_Fnv1a(const uint8_t *data, uint16_t length)
+{
+  uint32_t hash = 2166136261u;
+  for (uint16_t i = 0u; i < length; ++i)
+  {
+    hash ^= data[i];
+    hash *= 16777619u;
+  }
+  return hash;
+}
+
+static void Companion_Audio_UpdateDebugStatus(void)
+{
+  char readiness[COMP_AUDIO_STREAM_STM32WB_READINESS_VALUE_BYTES];
+  int written = snprintf(
+      readiness,
+      sizeof(readiness),
+      "vka1 n=%u t=%u r=%u cw=%lu ne=%lu nd=%lu ss=%lu lc=%u cs=%u ls=%u",
+      s_companion_audio_stream.notify_enabled ? 1u : 0u,
+      comp_audio_stream_is_type_link_ready(&s_companion_audio_stream) ? 1u : 0u,
+      comp_audio_stream_is_ready(&s_companion_audio_stream) ? 1u : 0u,
+      (unsigned long)s_companion_audio_control_write_count,
+      (unsigned long)s_companion_audio_notify_enabled_count,
+      (unsigned long)s_companion_audio_notify_disabled_count,
+      (unsigned long)s_companion_audio_session_start_count,
+      (unsigned int)s_companion_audio_last_control,
+      (unsigned int)s_companion_audio_last_control_status,
+      (unsigned int)s_companion_audio_last_session_start_status);
+
+  if (written <= 0)
+  {
+    return;
+  }
+
+  uint8_t length = (uint8_t)written;
+  if ((size_t)written >= sizeof(readiness))
+  {
+    length = (uint8_t)(sizeof(readiness) - 1u);
+  }
+  (void)comp_audio_stream_stm32wb_update_readiness((const uint8_t *)readiness,
+                                                   length);
 }
 
 static void Companion_Audio_Control(void *context,
@@ -562,6 +1116,7 @@ static void Companion_Audio_Control(void *context,
 
   APP_DBG_MSG("  Info   : VKA1 companion control %s\n",
               comp_audio_stream_control_name(control));
+  s_companion_audio_last_control = control;
   Companion_App_HandleBleControl(control, data, length);
 }
 
@@ -582,7 +1137,12 @@ uint32_t Companion_BleAudio_NextSessionId(void)
 
 comp_audio_stream_status_t Companion_BleAudio_SendSessionStart(uint32_t session_id)
 {
-  return comp_audio_stream_send_session_start(&s_companion_audio_stream, session_id);
+  comp_audio_stream_status_t status =
+      comp_audio_stream_send_session_start(&s_companion_audio_stream, session_id);
+  s_companion_audio_session_start_count++;
+  s_companion_audio_last_session_start_status = status;
+  Companion_Audio_UpdateDebugStatus();
+  return status;
 }
 
 comp_audio_stream_status_t Companion_BleAudio_SendPcmBytes(const uint8_t *pcm,
@@ -651,16 +1211,23 @@ void comp_audio_stream_stm32wb_app_notification(
   switch (notification->event)
   {
     case COMP_AUDIO_STREAM_STM32WB_NOTIFY_ENABLED:
+      s_companion_audio_notify_enabled_count++;
+      Companion_Audio_UpdateDebugStatus();
       APP_DBG_MSG("  Info   : VKA1 notify enabled\n");
       Companion_App_HandleBleLinkReadyChanged(Companion_BleAudio_IsReady());
       break;
 
     case COMP_AUDIO_STREAM_STM32WB_NOTIFY_DISABLED:
+      s_companion_audio_notify_disabled_count++;
+      Companion_Audio_UpdateDebugStatus();
       APP_DBG_MSG("  Info   : VKA1 notify disabled\n");
       Companion_App_HandleBleLinkReadyChanged(false);
       break;
 
     case COMP_AUDIO_STREAM_STM32WB_CONTROL_WRITE:
+      s_companion_audio_control_write_count++;
+      s_companion_audio_last_control_status = notification->control_status;
+      Companion_Audio_UpdateDebugStatus();
       APP_DBG_MSG("  Info   : VKA1 control write status=%s len=%u\n",
                   comp_audio_stream_status_name(notification->control_status),
                   notification->length);

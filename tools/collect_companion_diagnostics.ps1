@@ -75,7 +75,11 @@ function Write-JsonFile {
 function Get-DisplayPath {
     param([Parameter(Mandatory = $true)][string] $Path)
 
-    $resolved = (Resolve-Path -LiteralPath $Path).Path
+    $resolved = if (Test-Path -LiteralPath $Path) {
+        (Resolve-Path -LiteralPath $Path).Path
+    } else {
+        [System.IO.Path]::GetFullPath($Path)
+    }
     if ($resolved.StartsWith($repoRoot, [System.StringComparison]::OrdinalIgnoreCase)) {
         return [System.IO.Path]::GetRelativePath($repoRoot, $resolved).Replace("\", "/")
     }
@@ -95,6 +99,12 @@ $rawEvents += New-DiagEvent -Sequence 109 -TimeMs 260 -Source "battery_charging"
 $rawEvents += New-DiagEvent -Sequence 110 -TimeMs 290 -Source "power_lpm" -EventId 2 -Severity "warn" -Arg0 2 -Arg1 1
 $rawEvents += New-DiagEvent -Sequence 111 -TimeMs 310 -Source "warnings" -EventId 2 -Severity "info" -Arg0 1
 $rawEvents += New-DiagEvent -Sequence 112 -TimeMs 340 -Source "errors" -EventId 1 -Severity "error" -Arg0 0
+$rawEvents += New-DiagEvent -Sequence 113 -TimeMs 360 -Source "meeting" -EventId 1 -Severity "info" -Arg0 1
+$rawEvents += New-DiagEvent -Sequence 114 -TimeMs 390 -Source "meeting" -EventId 3 -Severity "info" -Arg0 1 -Arg1 2400
+$rawEvents += New-DiagEvent -Sequence 115 -TimeMs 420 -Source "imu" -EventId 3 -Severity "warn" -Arg0 1
+$rawEvents += New-DiagEvent -Sequence 116 -TimeMs 450 -Source "speaker" -EventId 1 -Severity "info" -Arg0 7
+$rawEvents += New-DiagEvent -Sequence 117 -TimeMs 480 -Source "wake_word" -EventId 1 -Severity "info" -Arg0 50
+$rawEvents += New-DiagEvent -Sequence 118 -TimeMs 510 -Source "device_settings" -EventId 1 -Severity "info" -Arg0 12
 
 $rawEvents |
     ForEach-Object { $_ | ConvertTo-Json -Compress -Depth 8 } |
@@ -141,7 +151,7 @@ $summary = [ordered]@{
         build_id = "diagnostics-fixture"
         active_mode = "idle"
         fault_bitmap = 0
-        uptime_ms = 340
+        uptime_ms = 510
     }
     ble = [ordered]@{
         backend = "fixture-no-hardware"
@@ -187,6 +197,40 @@ $summary = [ordered]@{
         byte_offset = 0
         requested_length = 0
         final_sha256_verified = $false
+    }
+    meeting = [ordered]@{
+        state = "finalized"
+        meeting_id = 1
+        duration_ms = 2400
+        segment_count = 1
+        summary_state = "pending_host_summary"
+        sync_state = "ready_for_host_sync"
+    }
+    imu = [ordered]@{
+        sensor_state = "not_populated_on_current_dev_board"
+        motion_flags = @()
+        sample_rate_hz = 0
+        calibration_state = "pending_hardware"
+    }
+    speaker = [ordered]@{
+        state = "prompt_contract_ready_pending_hardware"
+        prompt_id = 7
+        volume_percent = 50
+        played_count = 1
+    }
+    voice_wake = [ordered]@{
+        armed = $true
+        engine_state = "armed_fixture"
+        sensitivity = 50
+        detection_count = 0
+        rejected_count = 0
+    }
+    ble_name_config = [ordered]@{
+        active_name = "companion"
+        staged_name = "companion-v1"
+        max_len = 29
+        policy = "printable_ascii_1_29_no_quotes_semicolon_equals_backslash"
+        apply = "restart_ble_or_reboot_required"
     }
     epaper = [ordered]@{
         last_card_slot = 0
