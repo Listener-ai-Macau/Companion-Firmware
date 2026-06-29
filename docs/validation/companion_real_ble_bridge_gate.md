@@ -21,7 +21,8 @@ This evidence covers the Companion NUCLEO-WB55RG BLE audio bridge on real hardwa
 - Firmware package: `.cache/ota_firmware/companion-ota-nucleo-wb55rg-c31125b-20260629-170753.zip`
 - OTA binary: `firmware_ota.bin`, 68240 bytes, SHA-256 `befaeb2611660d9ef9a2a5ef322a0d8a6211993aeb610de9d1983440a8570da3`
 - Factory app: `Companion_Nucleo_WB55RG_Bringup_ota_app.hex`, SHA-256 `a49e66cbfd5443538d8c300b5cfa73085d39d9dbddbb806eb581e51c8000f83c`
-- Type HEAD used for final stats-only smoke: `63f8cd0 Allow BLE one-shot stats-only capture`
+- Type HEAD used for A1 stats-only smoke: `63f8cd0 Allow BLE one-shot stats-only capture`
+- Type HEAD used for A2 stats-only smoke: `20dcc94 Prefer serial recovery for BLE name changes`
 - STM32CubeProgrammer: v2.22.0
 
 ## Fix Summary
@@ -60,6 +61,7 @@ Real hardware evidence:
 - Pre-fix A1 failure: `.cache/validation/companion-short-a1-27e9f18/type-a1-smoke.log`
 - Post-fix ASR-path A1: `.cache/validation/companion-short-a1-c31125b/type-a1-smoke.log`
 - Final stats-only A1 PASS: `.cache/validation/companion-a1-stats-c31125b/type-a1-stats-only.log`
+- Final stats-only A2 PASS: `../Listener/Listener-Type/.cache/validation/companion-a2-stats-20dcc94/type-a2-stats-only.log`
 
 Final A1 stats-only result:
 
@@ -71,6 +73,18 @@ Final A1 stats-only result:
 - 160000 reconstructed PCM bytes.
 - 0 missing packets.
 - 5.0 seconds duration.
+- Terminal stop packet received.
+
+Final A2 stats-only result:
+
+- GATT session active.
+- Notify CCCD enabled.
+- `TYPE:READY:A2` sent through the Type readiness command path.
+- First VKA1 notification received immediately after ready.
+- 6000 of 6000 packets received.
+- 960000 reconstructed PCM bytes.
+- 0 missing packets.
+- 30.0 seconds duration.
 - Terminal stop packet received.
 
 ## Remaining Gaps
