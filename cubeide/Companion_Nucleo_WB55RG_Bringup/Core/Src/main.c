@@ -332,12 +332,19 @@ int main(void)
         poll_board_buttons();
 
         if (s_recording_fsm.state == COMP_RECORDING_STATE_RECORDING) {
+            if (!s_ble_session_active &&
+                s_recording_fsm.active_source == COMP_RECORDING_SOURCE_HOST_BLE_CONTROL &&
+                Companion_BleAudio_IsReady()) {
+                start_ble_session_if_ready("recording_loop");
+            }
+
             bool verbose = (s_manual_recording_block_count % MANUAL_RECORDING_LOG_EVERY_BLOCKS) == 0u;
             bool captured = capture_microphone_block(s_manual_recording_block_count,
                                                      verbose,
                                                      "mic-manual");
             s_manual_recording_block_count++;
             if (captured &&
+                s_ble_session_active &&
                 s_ble_type_ready_autostream_active &&
                 s_ble_type_ready_autostream_blocks_remaining > 0u) {
                 s_ble_type_ready_autostream_blocks_remaining--;
