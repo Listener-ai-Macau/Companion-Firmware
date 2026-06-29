@@ -186,6 +186,31 @@ function Invoke-ListenerTypeCommand {
     }
 }
 
+function Invoke-CompanionFlashTool {
+    param(
+        [Parameter(Mandatory = $true)][string[]] $Arguments,
+        [Parameter(Mandatory = $true)][string] $RawLogPath
+    )
+
+    Push-Location $repoRoot
+    try {
+        try {
+            & pwsh @Arguments 2>&1 | Tee-Object -FilePath $RawLogPath | Out-Host
+        } catch {
+            $message = "Invoke-CompanionFlashTool failed before normal output: $($_.Exception.Message)"
+            $message | Set-Content -LiteralPath $RawLogPath -Encoding UTF8
+            Write-Host $message
+            return 1
+        }
+        if ($null -eq $LASTEXITCODE) {
+            return 0
+        }
+        return [int]$LASTEXITCODE
+    } finally {
+        Pop-Location
+    }
+}
+
 function Read-RawLogText {
     param([Parameter(Mandatory = $true)][string] $RawLogPath)
 
@@ -292,7 +317,6 @@ function ConvertTo-CompanionWiredMarkdown {
 }
 
 $resolvedPackage = Resolve-CompanionPackage -Path $PackagePath
-$listenerExePath = Resolve-ListenerExe -Requested $ListenerExe
 $rawLog = Join-Path $outDirResolved "companion-wired-flash-raw.log"
 $typeReportJson = Join-Path $outDirResolved "wired_firmware_result.json"
 $summaryJson = Join-Path $outDirResolved "companion-wired-flash-summary.json"
@@ -300,15 +324,22 @@ $summaryMd = Join-Path $outDirResolved "companion-wired-flash-summary.md"
 $lockCommand = "pwsh -NoProfile -File C:\Users\Billy\Desktop\Denzic\ai-collaboration-workflow\scripts\aiw.ps1 with-lock -Resource Companion-WB55 -Purpose `"Companion wired factory flash validation`" -Run pwsh -NoProfile -File .\tools\verify_companion_wired_flash.ps1 -Execute -WorkflowLockHeld -PackagePath `"$resolvedPackage`""
 
 if (-not $Execute) {
-    $commandArgs = @("--wired-firmware-check", $resolvedPackage)
-    $commandLine = ConvertTo-CommandLine -FilePath $listenerExePath -Arguments $commandArgs
-    $exitCode = Invoke-ListenerTypeCommand -Arguments $commandArgs -RawLogPath $rawLog
+    $commandArgs = @("-NoProfile", "-File", ".\tools\flash.ps1", "-CheckOnly", "-FlashPackage", "-PackagePath", $resolvedPackage, "-Port", $Port)
+    $commandLine = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $commandArgs
+    $exitCode = Invoke-CompanionFlashTool -Arguments $commandArgs -RawLogPath $rawLog
     $rawText = Read-RawLogText -RawLogPath $rawLog
-    $typeReport = Get-WiredFirmwareResultFromLog -Text $rawText
-    if ($typeReport) {
-        $typeReport | ConvertTo-Json -Depth 12 | Set-Content -LiteralPath $typeReportJson -Encoding UTF8
+    $errors = [System.Collections.Generic.List[string]]::new()
+    if ($exitCode -ne 0) {
+        $errors.Add("tools\flash.ps1 check exited with code $exitCode.") | Out-Null
     }
-    $errors = @(Test-WiredCheckReport -Report $typeReport -ExitCode $exitCode)
+    if (-not $rawText.Contains("CHECK: Factory package manifest:")) {
+        $errors.Add("Companion flash check did not load the factory package manifest.") | Out-Null
+    }
+    foreach ($role in @("ota_loader", "app")) {
+        if (-not $rawText.Contains("CHECK: Factory artifact $role")) {
+            $errors.Add("Companion flash check did not find factory artifact $role.") | Out-Null
+        }
+    }
     $status = if ($errors.Count -eq 0) { "PASS" } else { "FAIL" }
     $summary = [ordered]@{
         schema = "companion.wired_flash.validation.v1"
@@ -316,30 +347,34 @@ if (-not $Execute) {
         mode = "dry-run"
         generated_at = (Get-Date).ToString("o")
         package_path = $resolvedPackage
-        listener_exe = $listenerExePath
+        listener_exe = $null
         port = $Port
         command = $commandLine
         lock_command = $lockCommand
         prompt_operator = [bool]$PromptOperator
         raw_log = $rawLog
-        type_report_json = if ($typeReport) { $typeReportJson } else { $null }
+        type_report_json = $null
         exit_code = $exitCode
         errors = @($errors)
+        extra = [ordered]@{
+            result = [ordered]@{
+                action = "check"
+                kind = "companion-wired-factory"
+                port = $Port
+                log = "Companion wired factory package loaded by tools\flash.ps1."
+            }
+        }
     }
     $summary | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $summaryJson -Encoding UTF8
     ConvertTo-CompanionWiredMarkdown -Summary $summary | Set-Content -LiteralPath $summaryMd -Encoding UTF8
     Write-Host "DRY-RUN: Companion wired flash validation is ready for hardware execution."
     Write-Host "$status`: Companion wired flash dry-run check complete."
     Write-Host "Package: $resolvedPackage"
-    Write-Host "ListenerExe: $listenerExePath"
     Write-Host "Run real wired flash with workflow hardware lock:"
     Write-Host "  $lockCommand"
     Write-Host "Blocking operator prompt: $([bool]$PromptOperator). Add -PromptOperator only for real-time human action or observation."
     Write-Host "Summary: $summaryJson"
     Write-Host "companion_wired_flash_result_json=$($summary | ConvertTo-Json -Depth 8 -Compress)"
-    if ($typeReport) {
-        Write-Host "Type report evidence: $typeReportJson"
-    }
     if ($status -ne "PASS") {
         throw "Companion wired flash dry-run check failed. See $summaryJson"
     }
@@ -358,21 +393,36 @@ if ($PromptOperator) {
         -Message "请确认 Companion/NUCLEO 已通过 ST-LINK USB 数据线连接，供电稳定，没有其它刷机工具或串口工具占用设备。点击 OK 后会开始有线刷机；刷机过程中不要拔线、不要断电。"
 }
 
-$commandArgs = @("--wired-firmware-flash", $resolvedPackage, $Port)
-if ($Baud -gt 0) {
-    $commandArgs += [string]$Baud
+$commandArgs = @("-NoProfile", "-File", ".\tools\flash.ps1", "-Execute", "-WorkflowLockHeld", "-FlashPackage", "-PackagePath", $resolvedPackage, "-Port", $Port)
+if ($PromptOperator) {
+    $commandArgs += "-PromptOperator"
 }
-$commandLine = ConvertTo-CommandLine -FilePath $listenerExePath -Arguments $commandArgs
+$commandLine = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $commandArgs
 $startedAt = (Get-Date).ToUniversalTime().ToString("o")
-$exitCode = Invoke-ListenerTypeCommand -Arguments $commandArgs -RawLogPath $rawLog
+$exitCode = Invoke-CompanionFlashTool -Arguments $commandArgs -RawLogPath $rawLog
 $rawText = Read-RawLogText -RawLogPath $rawLog
-$typeReport = Get-WiredFirmwareResultFromLog -Text $rawText
-if ($typeReport) {
-    $typeReport | ConvertTo-Json -Depth 12 | Set-Content -LiteralPath $typeReportJson -Encoding UTF8
+$errors = [System.Collections.Generic.List[string]]::new()
+if ($exitCode -ne 0) {
+    $errors.Add("tools\flash.ps1 exited with code $exitCode.") | Out-Null
 }
-$errors = @(Test-WiredFlashReport -Report $typeReport -ExitCode $exitCode -ExpectedPort $Port)
+if (-not $rawText.Contains("PASS: Companion wired factory package flashed.")) {
+    $errors.Add("tools\flash.ps1 did not report the Companion wired factory package PASS line.") | Out-Null
+}
+foreach ($role in @("ota_loader", "app")) {
+    if (-not $rawText.Contains("factory artifact $role")) {
+        $errors.Add("tools\flash.ps1 log did not include factory artifact $role.") | Out-Null
+    }
+}
+if (-not $rawText.Contains("Writing OTA loader handoff")) {
+    $errors.Add("tools\flash.ps1 log did not include STM32WB OTA FW_APP SRAM handoff evidence.") | Out-Null
+}
 $finishedAt = (Get-Date).ToUniversalTime().ToString("o")
 $status = if ($errors.Count -eq 0) { "PASS" } else { "FAIL" }
+$resultLog = if ($status -eq "PASS") {
+    "STM32WB wired factory flash completed and verified by STM32CubeProgrammer. Wrote STM32WB OTA FW_APP SRAM handoff."
+} else {
+    $rawText
+}
 $summary = [ordered]@{
     schema = "companion.wired_flash.validation.v1"
     status = $status
@@ -380,15 +430,24 @@ $summary = [ordered]@{
     started_at_utc = $startedAt
     finished_at_utc = $finishedAt
     package_path = $resolvedPackage
-    listener_exe = $listenerExePath
+    listener_exe = $null
     port = $Port
     baud = if ($Baud -gt 0) { $Baud } else { $null }
     command = $commandLine
     prompt_operator = [bool]$PromptOperator
     raw_log = $rawLog
-    type_report_json = if ($typeReport) { $typeReportJson } else { $null }
+    type_report_json = $null
     exit_code = $exitCode
     errors = @($errors)
+    extra = [ordered]@{
+        result = [ordered]@{
+            action = "flash"
+            kind = "companion-wired-factory"
+            port = $Port
+            version = [System.IO.Path]::GetFileNameWithoutExtension($resolvedPackage)
+            log = $resultLog
+        }
+    }
 }
 
 $summary | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $summaryJson -Encoding UTF8
@@ -396,9 +455,6 @@ ConvertTo-CompanionWiredMarkdown -Summary $summary | Set-Content -LiteralPath $s
 
 Write-Host "companion_wired_flash_result_json=$($summary | ConvertTo-Json -Depth 8 -Compress)"
 Write-Host "Summary: $summaryJson"
-if ($typeReport) {
-    Write-Host "Type report evidence: $typeReportJson"
-}
 
 if ($status -ne "PASS") {
     throw "Companion wired flash validation failed. See $summaryJson"
