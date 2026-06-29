@@ -74,6 +74,13 @@
           "uuid": "8f7a4001-7b7d-4f3d-9d6f-6c2d1b7c0000",
           "direction": ["read", "write-with-response", "notify"],
           "payload": "SettingsV1"
+        },
+        {
+          "name": "ble_name_config",
+          "label": "BLE name config",
+          "uuid": "8f7a4002-7b7d-4f3d-9d6f-6c2d1b7c0000",
+          "direction": ["read", "write-with-response", "notify"],
+          "payload": "BleNameConfigV1"
         }
       ]
     },
@@ -134,6 +141,67 @@
           "uuid": "8f7a7004-7b7d-4f3d-9d6f-6c2d1b7c0000",
           "direction": ["write-with-response", "write-without-response"],
           "payload": "StOtaRawDataV1"
+        }
+      ]
+    },
+    {
+      "service": "meeting",
+      "uuid": "8f7a0008-7b7d-4f3d-9d6f-6c2d1b7c0000",
+      "characteristics": [
+        {
+          "name": "meeting_control",
+          "uuid": "8f7a8001-7b7d-4f3d-9d6f-6c2d1b7c0000",
+          "direction": ["write-with-response", "notify"],
+          "payload": "MeetingControlV1"
+        },
+        {
+          "name": "meeting_status",
+          "uuid": "8f7a8002-7b7d-4f3d-9d6f-6c2d1b7c0000",
+          "direction": ["read", "notify"],
+          "payload": "MeetingStatusV1"
+        }
+      ]
+    },
+    {
+      "service": "sensors",
+      "uuid": "8f7a0009-7b7d-4f3d-9d6f-6c2d1b7c0000",
+      "characteristics": [
+        {
+          "name": "imu_status",
+          "label": "IMU status",
+          "uuid": "8f7a9001-7b7d-4f3d-9d6f-6c2d1b7c0000",
+          "direction": ["read", "notify"],
+          "payload": "ImuStatusV1"
+        }
+      ]
+    },
+    {
+      "service": "audio_output",
+      "uuid": "8f7a000a-7b7d-4f3d-9d6f-6c2d1b7c0000",
+      "characteristics": [
+        {
+          "name": "speaker_control",
+          "uuid": "8f7aa001-7b7d-4f3d-9d6f-6c2d1b7c0000",
+          "direction": ["write-with-response", "notify"],
+          "payload": "SpeakerControlV1"
+        },
+        {
+          "name": "speaker_status",
+          "uuid": "8f7aa002-7b7d-4f3d-9d6f-6c2d1b7c0000",
+          "direction": ["read", "notify"],
+          "payload": "SpeakerStatusV1"
+        },
+        {
+          "name": "wake_word_control",
+          "uuid": "8f7aa003-7b7d-4f3d-9d6f-6c2d1b7c0000",
+          "direction": ["write-with-response", "notify"],
+          "payload": "WakeWordControlV1"
+        },
+        {
+          "name": "wake_word_status",
+          "uuid": "8f7aa004-7b7d-4f3d-9d6f-6c2d1b7c0000",
+          "direction": ["read", "notify"],
+          "payload": "WakeWordStatusV1"
         }
       ]
     }

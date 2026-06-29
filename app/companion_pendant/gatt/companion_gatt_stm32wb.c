@@ -57,6 +57,7 @@ static const companion_gatt_char_def_t COMPANION_GATT_RECORDING_CHARS[] = {
 
 static const companion_gatt_char_def_t COMPANION_GATT_SETTINGS_CHARS[] = {
     {COMPANION_GATT_CHAR_SETTINGS, 0x4001u, 96u, CHAR_PROP_READ | CHAR_PROP_WRITE | CHAR_PROP_NOTIFY, GATT_NOTIFY_ATTRIBUTE_WRITE, 1u},
+    {COMPANION_GATT_CHAR_BLE_NAME_CONFIG, 0x4002u, 64u, CHAR_PROP_READ | CHAR_PROP_WRITE | CHAR_PROP_NOTIFY, GATT_NOTIFY_ATTRIBUTE_WRITE, 1u},
 };
 
 static const companion_gatt_char_def_t COMPANION_GATT_DIAGNOSTICS_CHARS[] = {
@@ -71,14 +72,33 @@ static const companion_gatt_char_def_t COMPANION_GATT_OTA_CHARS[] = {
     {COMPANION_GATT_CHAR_OTA_READINESS, 0x7001u, 128u, CHAR_PROP_READ | CHAR_PROP_NOTIFY, GATT_DONT_NOTIFY_EVENTS, 1u},
 };
 
+static const companion_gatt_char_def_t COMPANION_GATT_MEETING_CHARS[] = {
+    {COMPANION_GATT_CHAR_MEETING_CONTROL, 0x8001u, 32u, CHAR_PROP_WRITE | CHAR_PROP_NOTIFY, GATT_NOTIFY_ATTRIBUTE_WRITE, 1u},
+    {COMPANION_GATT_CHAR_MEETING_STATUS, 0x8002u, 64u, CHAR_PROP_READ | CHAR_PROP_NOTIFY, GATT_DONT_NOTIFY_EVENTS, 1u},
+};
+
+static const companion_gatt_char_def_t COMPANION_GATT_SENSOR_CHARS[] = {
+    {COMPANION_GATT_CHAR_IMU_STATUS, 0x9001u, 64u, CHAR_PROP_READ | CHAR_PROP_NOTIFY, GATT_DONT_NOTIFY_EVENTS, 1u},
+};
+
+static const companion_gatt_char_def_t COMPANION_GATT_AUDIO_OUTPUT_CHARS[] = {
+    {COMPANION_GATT_CHAR_SPEAKER_CONTROL, 0xa001u, 32u, CHAR_PROP_WRITE | CHAR_PROP_NOTIFY, GATT_NOTIFY_ATTRIBUTE_WRITE, 1u},
+    {COMPANION_GATT_CHAR_SPEAKER_STATUS, 0xa002u, 64u, CHAR_PROP_READ | CHAR_PROP_NOTIFY, GATT_DONT_NOTIFY_EVENTS, 1u},
+    {COMPANION_GATT_CHAR_WAKE_WORD_CONTROL, 0xa003u, 32u, CHAR_PROP_WRITE | CHAR_PROP_NOTIFY, GATT_NOTIFY_ATTRIBUTE_WRITE, 1u},
+    {COMPANION_GATT_CHAR_WAKE_WORD_STATUS, 0xa004u, 64u, CHAR_PROP_READ | CHAR_PROP_NOTIFY, GATT_DONT_NOTIFY_EVENTS, 1u},
+};
+
 static const companion_gatt_service_def_t COMPANION_GATT_SERVICES[] = {
     {0x0001u, 7u, 2u, COMPANION_GATT_DEVICE_STATUS_CHARS},
     {0x0002u, 7u, 2u, COMPANION_GATT_EPAPER_CHARS},
     {0x0003u, 10u, 3u, COMPANION_GATT_RECORDING_CHARS},
-    {0x0004u, 4u, 1u, COMPANION_GATT_SETTINGS_CHARS},
+    {0x0004u, 7u, 2u, COMPANION_GATT_SETTINGS_CHARS},
     {0x0005u, 4u, 1u, COMPANION_GATT_DIAGNOSTICS_CHARS},
     {0x0006u, 4u, 1u, COMPANION_GATT_PRIVACY_CHARS},
     {0x0007u, 4u, 1u, COMPANION_GATT_OTA_CHARS},
+    {0x0008u, 7u, 2u, COMPANION_GATT_MEETING_CHARS},
+    {0x0009u, 4u, 1u, COMPANION_GATT_SENSOR_CHARS},
+    {0x000au, 13u, 4u, COMPANION_GATT_AUDIO_OUTPUT_CHARS},
 };
 
 PLACE_IN_SECTION("BLE_DRIVER_CONTEXT")
@@ -449,6 +469,78 @@ companion_gatt_parse_result_t companion_gatt_parse_settings_v1(
     return companion_gatt_copy_fixed(payload, length, out, sizeof(*out));
 }
 
+companion_gatt_parse_result_t companion_gatt_parse_ble_name_config_v1(
+    const uint8_t *payload,
+    uint16_t length,
+    companion_gatt_ble_name_config_v1_t *out)
+{
+    companion_gatt_parse_result_t result =
+        companion_gatt_copy_fixed(payload, length, out, sizeof(*out));
+    if (result != COMPANION_GATT_PARSE_OK) {
+        return result;
+    }
+    if (out->name_len > COMPANION_GATT_BLE_NAME_MAX_BYTES) {
+        return COMPANION_GATT_PARSE_BAD_LENGTH;
+    }
+    return COMPANION_GATT_PARSE_OK;
+}
+
+companion_gatt_parse_result_t companion_gatt_parse_meeting_control_v1(
+    const uint8_t *payload,
+    uint16_t length,
+    companion_gatt_meeting_control_v1_t *out)
+{
+    return companion_gatt_copy_fixed(payload, length, out, sizeof(*out));
+}
+
+companion_gatt_parse_result_t companion_gatt_parse_meeting_status_v1(
+    const uint8_t *payload,
+    uint16_t length,
+    companion_gatt_meeting_status_v1_t *out)
+{
+    return companion_gatt_copy_fixed(payload, length, out, sizeof(*out));
+}
+
+companion_gatt_parse_result_t companion_gatt_parse_imu_status_v1(
+    const uint8_t *payload,
+    uint16_t length,
+    companion_gatt_imu_status_v1_t *out)
+{
+    return companion_gatt_copy_fixed(payload, length, out, sizeof(*out));
+}
+
+companion_gatt_parse_result_t companion_gatt_parse_speaker_control_v1(
+    const uint8_t *payload,
+    uint16_t length,
+    companion_gatt_speaker_control_v1_t *out)
+{
+    return companion_gatt_copy_fixed(payload, length, out, sizeof(*out));
+}
+
+companion_gatt_parse_result_t companion_gatt_parse_speaker_status_v1(
+    const uint8_t *payload,
+    uint16_t length,
+    companion_gatt_speaker_status_v1_t *out)
+{
+    return companion_gatt_copy_fixed(payload, length, out, sizeof(*out));
+}
+
+companion_gatt_parse_result_t companion_gatt_parse_wake_word_control_v1(
+    const uint8_t *payload,
+    uint16_t length,
+    companion_gatt_wake_word_control_v1_t *out)
+{
+    return companion_gatt_copy_fixed(payload, length, out, sizeof(*out));
+}
+
+companion_gatt_parse_result_t companion_gatt_parse_wake_word_status_v1(
+    const uint8_t *payload,
+    uint16_t length,
+    companion_gatt_wake_word_status_v1_t *out)
+{
+    return companion_gatt_copy_fixed(payload, length, out, sizeof(*out));
+}
+
 companion_gatt_parse_result_t companion_gatt_parse_diag_log_pull_v1(
     const uint8_t *payload,
     uint16_t length,
@@ -492,12 +584,28 @@ const char *companion_gatt_char_name(companion_gatt_char_id_t char_id)
         return "recording_chunk_pull";
     case COMPANION_GATT_CHAR_SETTINGS:
         return "settings";
+    case COMPANION_GATT_CHAR_BLE_NAME_CONFIG:
+        return "ble_name_config";
     case COMPANION_GATT_CHAR_DIAGNOSTICS_LOG_PULL:
         return "diagnostics_log_pull";
     case COMPANION_GATT_CHAR_DELETE_PRIVACY:
         return "delete_privacy";
     case COMPANION_GATT_CHAR_OTA_READINESS:
         return "ota_readiness";
+    case COMPANION_GATT_CHAR_MEETING_CONTROL:
+        return "meeting_control";
+    case COMPANION_GATT_CHAR_MEETING_STATUS:
+        return "meeting_status";
+    case COMPANION_GATT_CHAR_IMU_STATUS:
+        return "imu_status";
+    case COMPANION_GATT_CHAR_SPEAKER_CONTROL:
+        return "speaker_control";
+    case COMPANION_GATT_CHAR_SPEAKER_STATUS:
+        return "speaker_status";
+    case COMPANION_GATT_CHAR_WAKE_WORD_CONTROL:
+        return "wake_word_control";
+    case COMPANION_GATT_CHAR_WAKE_WORD_STATUS:
+        return "wake_word_status";
     default:
         return "unknown";
     }

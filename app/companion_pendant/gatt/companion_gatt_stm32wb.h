@@ -14,6 +14,7 @@ extern "C" {
 
 #define COMPANION_GATT_MAX_PAYLOAD_BYTES 248u
 #define COMPANION_GATT_QUEUE_DEPTH 8u
+#define COMPANION_GATT_BLE_NAME_MAX_BYTES 29u
 
 typedef enum {
     COMPANION_GATT_CHAR_DEVICE_STATUS = 0,
@@ -27,6 +28,14 @@ typedef enum {
     COMPANION_GATT_CHAR_DIAGNOSTICS_LOG_PULL,
     COMPANION_GATT_CHAR_DELETE_PRIVACY,
     COMPANION_GATT_CHAR_OTA_READINESS,
+    COMPANION_GATT_CHAR_BLE_NAME_CONFIG,
+    COMPANION_GATT_CHAR_MEETING_CONTROL,
+    COMPANION_GATT_CHAR_MEETING_STATUS,
+    COMPANION_GATT_CHAR_IMU_STATUS,
+    COMPANION_GATT_CHAR_SPEAKER_CONTROL,
+    COMPANION_GATT_CHAR_SPEAKER_STATUS,
+    COMPANION_GATT_CHAR_WAKE_WORD_CONTROL,
+    COMPANION_GATT_CHAR_WAKE_WORD_STATUS,
     COMPANION_GATT_CHAR_COUNT,
 } companion_gatt_char_id_t;
 
@@ -129,6 +138,107 @@ typedef struct {
 
 typedef struct {
     uint8_t schema_version;
+    uint8_t command;
+    uint16_t flags;
+    uint32_t request_id;
+    uint8_t name_len;
+    uint8_t max_len;
+    uint8_t status;
+    uint8_t reserved;
+    uint8_t name[COMPANION_GATT_BLE_NAME_MAX_BYTES];
+} companion_gatt_ble_name_config_v1_t;
+
+typedef struct {
+    uint8_t schema_version;
+    uint8_t command;
+    uint16_t flags;
+    uint32_t request_id;
+    uint16_t max_seconds;
+    uint8_t profile_id;
+    uint8_t reserved;
+} companion_gatt_meeting_control_v1_t;
+
+typedef struct {
+    uint8_t schema_version;
+    uint8_t state;
+    uint8_t last_error;
+    uint8_t summary_state;
+    uint16_t flags;
+    uint16_t segment_count;
+    uint32_t request_id;
+    uint32_t meeting_id;
+    uint32_t started_tick_ms;
+    uint32_t duration_ms;
+    uint8_t sync_state;
+    uint8_t reserved[3];
+} companion_gatt_meeting_status_v1_t;
+
+typedef struct {
+    uint8_t schema_version;
+    uint8_t sensor_state;
+    uint8_t motion_flags;
+    uint8_t calibration_state;
+    uint16_t sample_rate_hz;
+    uint16_t reserved;
+    uint32_t sample_timestamp_ms;
+    int16_t accel_x_mg;
+    int16_t accel_y_mg;
+    int16_t accel_z_mg;
+    int16_t gyro_x_dps;
+    int16_t gyro_y_dps;
+    int16_t gyro_z_dps;
+    int16_t temperature_c_x10;
+} companion_gatt_imu_status_v1_t;
+
+typedef struct {
+    uint8_t schema_version;
+    uint8_t command;
+    uint8_t volume_percent;
+    uint8_t prompt_id;
+    uint32_t request_id;
+    uint16_t payload_len;
+    uint16_t flags;
+} companion_gatt_speaker_control_v1_t;
+
+typedef struct {
+    uint8_t schema_version;
+    uint8_t state;
+    uint8_t last_error;
+    uint8_t volume_percent;
+    uint32_t request_id;
+    uint8_t prompt_id;
+    uint8_t reserved[3];
+    uint32_t played_count;
+} companion_gatt_speaker_status_v1_t;
+
+typedef struct {
+    uint8_t schema_version;
+    uint8_t command;
+    uint8_t sensitivity;
+    uint8_t reserved;
+    uint16_t flags;
+    uint16_t model_id;
+    uint32_t request_id;
+} companion_gatt_wake_word_control_v1_t;
+
+typedef struct {
+    uint8_t schema_version;
+    uint8_t armed;
+    uint8_t engine_state;
+    uint8_t last_event;
+    uint8_t last_error;
+    uint8_t sensitivity;
+    uint8_t last_confidence;
+    uint8_t reserved;
+    uint16_t flags;
+    uint16_t model_id;
+    uint32_t request_id;
+    uint32_t detection_count;
+    uint32_t rejected_count;
+} companion_gatt_wake_word_status_v1_t;
+
+typedef struct {
+    uint8_t schema_version;
     uint8_t source_mask;
     uint16_t severity_mask;
     uint32_t cursor;
@@ -203,6 +313,38 @@ companion_gatt_parse_result_t companion_gatt_parse_settings_v1(
     const uint8_t *payload,
     uint16_t length,
     companion_gatt_settings_v1_t *out);
+companion_gatt_parse_result_t companion_gatt_parse_ble_name_config_v1(
+    const uint8_t *payload,
+    uint16_t length,
+    companion_gatt_ble_name_config_v1_t *out);
+companion_gatt_parse_result_t companion_gatt_parse_meeting_control_v1(
+    const uint8_t *payload,
+    uint16_t length,
+    companion_gatt_meeting_control_v1_t *out);
+companion_gatt_parse_result_t companion_gatt_parse_meeting_status_v1(
+    const uint8_t *payload,
+    uint16_t length,
+    companion_gatt_meeting_status_v1_t *out);
+companion_gatt_parse_result_t companion_gatt_parse_imu_status_v1(
+    const uint8_t *payload,
+    uint16_t length,
+    companion_gatt_imu_status_v1_t *out);
+companion_gatt_parse_result_t companion_gatt_parse_speaker_control_v1(
+    const uint8_t *payload,
+    uint16_t length,
+    companion_gatt_speaker_control_v1_t *out);
+companion_gatt_parse_result_t companion_gatt_parse_speaker_status_v1(
+    const uint8_t *payload,
+    uint16_t length,
+    companion_gatt_speaker_status_v1_t *out);
+companion_gatt_parse_result_t companion_gatt_parse_wake_word_control_v1(
+    const uint8_t *payload,
+    uint16_t length,
+    companion_gatt_wake_word_control_v1_t *out);
+companion_gatt_parse_result_t companion_gatt_parse_wake_word_status_v1(
+    const uint8_t *payload,
+    uint16_t length,
+    companion_gatt_wake_word_status_v1_t *out);
 companion_gatt_parse_result_t companion_gatt_parse_diag_log_pull_v1(
     const uint8_t *payload,
     uint16_t length,

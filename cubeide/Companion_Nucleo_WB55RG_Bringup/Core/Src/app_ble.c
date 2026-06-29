@@ -38,6 +38,7 @@
 
 #include "audio_stream_stm32wb.h"
 #include "companion_gatt_stm32wb.h"
+#include "companion_v1_features.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -158,6 +159,7 @@ static companion_gatt_settings_v1_t s_companion_gatt_settings = {
     .display_brightness = 80u,
     .recorder_profile_id = 1u,
 };
+static companion_v1_features_t s_companion_v1_features;
 static uint32_t s_companion_audio_notify_enabled_count = 0u;
 static uint32_t s_companion_audio_notify_disabled_count = 0u;
 static uint32_t s_companion_audio_control_write_count = 0u;
@@ -199,6 +201,11 @@ static void Companion_Gatt_PublishRecordingList(void);
 static void Companion_Gatt_PublishRecordingChunkRefusal(
     const companion_gatt_recording_chunk_pull_v1_t *request);
 static void Companion_Gatt_PublishSettings(void);
+static void Companion_Gatt_PublishBleNameConfig(void);
+static void Companion_Gatt_PublishMeetingStatus(void);
+static void Companion_Gatt_PublishImuStatus(void);
+static void Companion_Gatt_PublishSpeakerStatus(void);
+static void Companion_Gatt_PublishWakeWordStatus(void);
 static void Companion_Gatt_PublishDiagLogResponse(
     const companion_gatt_diag_log_pull_v1_t *request);
 static void Companion_Gatt_PublishDeletePrivacyRefusal(
@@ -570,6 +577,8 @@ static void Companion_Ble_Button3Task(void)
 
 static void Companion_Gatt_Init(void)
 {
+  companion_v1_features_init(&s_companion_v1_features, HAL_GetTick());
+
   tBleStatus status = companion_gatt_stm32wb_init();
   if (status != BLE_STATUS_SUCCESS)
   {
@@ -680,6 +689,69 @@ static void Companion_Gatt_HandleEvent(const companion_gatt_event_t *event,
       break;
     }
 
+    case COMPANION_GATT_CHAR_BLE_NAME_CONFIG:
+    {
+      companion_gatt_ble_name_config_v1_t request;
+      if (companion_gatt_parse_ble_name_config_v1(event->payload,
+                                                  event->payload_len,
+                                                  &request) ==
+          COMPANION_GATT_PARSE_OK)
+      {
+        (void)companion_v1_apply_ble_name_config(&s_companion_v1_features,
+                                                 &request);
+      }
+      Companion_Gatt_PublishBleNameConfig();
+      break;
+    }
+
+    case COMPANION_GATT_CHAR_MEETING_CONTROL:
+    {
+      companion_gatt_meeting_control_v1_t request;
+      if (companion_gatt_parse_meeting_control_v1(event->payload,
+                                                  event->payload_len,
+                                                  &request) ==
+          COMPANION_GATT_PARSE_OK)
+      {
+        (void)companion_v1_apply_meeting_control(&s_companion_v1_features,
+                                                 &request,
+                                                 HAL_GetTick());
+      }
+      Companion_Gatt_PublishMeetingStatus();
+      break;
+    }
+
+    case COMPANION_GATT_CHAR_SPEAKER_CONTROL:
+    {
+      companion_gatt_speaker_control_v1_t request;
+      if (companion_gatt_parse_speaker_control_v1(event->payload,
+                                                  event->payload_len,
+                                                  &request) ==
+          COMPANION_GATT_PARSE_OK)
+      {
+        (void)companion_v1_apply_speaker_control(&s_companion_v1_features,
+                                                 &request,
+                                                 HAL_GetTick());
+      }
+      Companion_Gatt_PublishSpeakerStatus();
+      break;
+    }
+
+    case COMPANION_GATT_CHAR_WAKE_WORD_CONTROL:
+    {
+      companion_gatt_wake_word_control_v1_t request;
+      if (companion_gatt_parse_wake_word_control_v1(event->payload,
+                                                    event->payload_len,
+                                                    &request) ==
+          COMPANION_GATT_PARSE_OK)
+      {
+        (void)companion_v1_apply_wake_word_control(&s_companion_v1_features,
+                                                   &request,
+                                                   HAL_GetTick());
+      }
+      Companion_Gatt_PublishWakeWordStatus();
+      break;
+    }
+
     case COMPANION_GATT_CHAR_DIAGNOSTICS_LOG_PULL:
     {
       companion_gatt_diag_log_pull_v1_t request;
@@ -719,6 +791,11 @@ static void Companion_Gatt_PublishInitialState(void)
   Companion_Gatt_PublishCardStatus(0u, 0u, 0u, 0u);
   Companion_Gatt_PublishRecordingList();
   Companion_Gatt_PublishSettings();
+  Companion_Gatt_PublishBleNameConfig();
+  Companion_Gatt_PublishMeetingStatus();
+  Companion_Gatt_PublishImuStatus();
+  Companion_Gatt_PublishSpeakerStatus();
+  Companion_Gatt_PublishWakeWordStatus();
   Companion_Gatt_PublishOtaReadiness();
 }
 
@@ -747,6 +824,26 @@ static void Companion_Gatt_PublishCurrent(companion_gatt_char_id_t char_id)
 
     case COMPANION_GATT_CHAR_SETTINGS:
       Companion_Gatt_PublishSettings();
+      break;
+
+    case COMPANION_GATT_CHAR_BLE_NAME_CONFIG:
+      Companion_Gatt_PublishBleNameConfig();
+      break;
+
+    case COMPANION_GATT_CHAR_MEETING_STATUS:
+      Companion_Gatt_PublishMeetingStatus();
+      break;
+
+    case COMPANION_GATT_CHAR_IMU_STATUS:
+      Companion_Gatt_PublishImuStatus();
+      break;
+
+    case COMPANION_GATT_CHAR_SPEAKER_STATUS:
+      Companion_Gatt_PublishSpeakerStatus();
+      break;
+
+    case COMPANION_GATT_CHAR_WAKE_WORD_STATUS:
+      Companion_Gatt_PublishWakeWordStatus();
       break;
 
     case COMPANION_GATT_CHAR_OTA_READINESS:
@@ -859,6 +956,52 @@ static void Companion_Gatt_PublishSettings(void)
   (void)companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_SETTINGS,
                                        (const uint8_t *)&s_companion_gatt_settings,
                                        (uint16_t)sizeof(s_companion_gatt_settings));
+}
+
+static void Companion_Gatt_PublishBleNameConfig(void)
+{
+  companion_gatt_ble_name_config_v1_t status;
+  companion_v1_get_ble_name_config(&s_companion_v1_features, &status);
+  (void)companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_BLE_NAME_CONFIG,
+                                       (const uint8_t *)&status,
+                                       (uint16_t)sizeof(status));
+}
+
+static void Companion_Gatt_PublishMeetingStatus(void)
+{
+  companion_gatt_meeting_status_v1_t status;
+  companion_v1_get_meeting_status(&s_companion_v1_features, &status);
+  (void)companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_MEETING_STATUS,
+                                       (const uint8_t *)&status,
+                                       (uint16_t)sizeof(status));
+}
+
+static void Companion_Gatt_PublishImuStatus(void)
+{
+  companion_gatt_imu_status_v1_t status;
+  companion_v1_get_imu_status(&s_companion_v1_features, &status);
+  status.sample_timestamp_ms = HAL_GetTick();
+  (void)companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_IMU_STATUS,
+                                       (const uint8_t *)&status,
+                                       (uint16_t)sizeof(status));
+}
+
+static void Companion_Gatt_PublishSpeakerStatus(void)
+{
+  companion_gatt_speaker_status_v1_t status;
+  companion_v1_get_speaker_status(&s_companion_v1_features, &status);
+  (void)companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_SPEAKER_STATUS,
+                                       (const uint8_t *)&status,
+                                       (uint16_t)sizeof(status));
+}
+
+static void Companion_Gatt_PublishWakeWordStatus(void)
+{
+  companion_gatt_wake_word_status_v1_t status;
+  companion_v1_get_wake_word_status(&s_companion_v1_features, &status);
+  (void)companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_WAKE_WORD_STATUS,
+                                       (const uint8_t *)&status,
+                                       (uint16_t)sizeof(status));
 }
 
 static void Companion_Gatt_PublishDiagLogResponse(

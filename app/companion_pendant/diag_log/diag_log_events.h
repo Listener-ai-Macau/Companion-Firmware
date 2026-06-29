@@ -19,7 +19,12 @@
     X(BATTERY_CHARGING, 0x09u, "battery_charging") \
     X(POWER_LPM, 0x0Au, "power_lpm") \
     X(WARNINGS, 0x0Bu, "warnings") \
-    X(ERRORS, 0x0Cu, "errors")
+    X(ERRORS, 0x0Cu, "errors") \
+    X(MEETING, 0x0Du, "meeting") \
+    X(IMU, 0x0Eu, "imu") \
+    X(SPEAKER, 0x0Fu, "speaker") \
+    X(WAKE_WORD, 0x10u, "wake_word") \
+    X(DEVICE_SETTINGS, 0x11u, "device_settings")
 
 #define COMP_DIAG_EVENT_LIST(X) \
     X(BOOT, START, 0x01u, COMP_DIAG_SEV_INFO, "boot.start") \
@@ -60,7 +65,24 @@
     X(WARNINGS, RATE_LIMITED, 0x01u, COMP_DIAG_SEV_WARN, "warnings.rate_limited") \
     X(WARNINGS, RECOVERED, 0x02u, COMP_DIAG_SEV_INFO, "warnings.recovered") \
     X(ERRORS, ASSERT, 0x01u, COMP_DIAG_SEV_ERROR, "errors.assert") \
-    X(ERRORS, FAULT, 0x02u, COMP_DIAG_SEV_ERROR, "errors.fault")
+    X(ERRORS, FAULT, 0x02u, COMP_DIAG_SEV_ERROR, "errors.fault") \
+    X(MEETING, START, 0x01u, COMP_DIAG_SEV_INFO, "meeting.start") \
+    X(MEETING, STOP, 0x02u, COMP_DIAG_SEV_INFO, "meeting.stop") \
+    X(MEETING, FINALIZE, 0x03u, COMP_DIAG_SEV_INFO, "meeting.finalize") \
+    X(MEETING, REJECTED, 0x04u, COMP_DIAG_SEV_WARN, "meeting.rejected") \
+    X(IMU, SAMPLE, 0x01u, COMP_DIAG_SEV_INFO, "imu.sample") \
+    X(IMU, MOTION, 0x02u, COMP_DIAG_SEV_INFO, "imu.motion") \
+    X(IMU, UNAVAILABLE, 0x03u, COMP_DIAG_SEV_WARN, "imu.unavailable") \
+    X(SPEAKER, PROMPT, 0x01u, COMP_DIAG_SEV_INFO, "speaker.prompt") \
+    X(SPEAKER, RESULT, 0x02u, COMP_DIAG_SEV_INFO, "speaker.result") \
+    X(SPEAKER, REJECTED, 0x03u, COMP_DIAG_SEV_WARN, "speaker.rejected") \
+    X(WAKE_WORD, ARMED, 0x01u, COMP_DIAG_SEV_INFO, "wake_word.armed") \
+    X(WAKE_WORD, DETECTED, 0x02u, COMP_DIAG_SEV_INFO, "wake_word.detected") \
+    X(WAKE_WORD, DISABLED, 0x03u, COMP_DIAG_SEV_INFO, "wake_word.disabled") \
+    X(WAKE_WORD, REJECTED, 0x04u, COMP_DIAG_SEV_WARN, "wake_word.rejected") \
+    X(DEVICE_SETTINGS, BLE_NAME_ACCEPTED, 0x01u, COMP_DIAG_SEV_INFO, "device_settings.ble_name.accepted") \
+    X(DEVICE_SETTINGS, BLE_NAME_REJECTED, 0x02u, COMP_DIAG_SEV_WARN, "device_settings.ble_name.rejected") \
+    X(DEVICE_SETTINGS, BLE_NAME_APPLIED, 0x03u, COMP_DIAG_SEV_INFO, "device_settings.ble_name.applied")
 
 typedef enum {
 #define COMP_DIAG_SOURCE_ENUM(symbol, value, name) COMP_DIAG_SRC_##symbol = (value),

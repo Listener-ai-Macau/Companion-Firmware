@@ -1,0 +1,1262 @@
+{
+  "schema_id": "companion.pendant.diag_log.v1",
+  "schema_version": 1,
+  "source": {
+    "header": "app\\companion_pendant\\diag_log\\diag_log_events.h",
+    "decoder": "tools/decode_diag_log.py"
+  },
+  "definitions": {
+    "sources": {
+      "boot": {
+        "id": 1,
+        "symbol": "BOOT"
+      },
+      "ble": {
+        "id": 2,
+        "symbol": "BLE"
+      },
+      "gatt": {
+        "id": 3,
+        "symbol": "GATT"
+      },
+      "e_paper": {
+        "id": 4,
+        "symbol": "EPAPER"
+      },
+      "recording_fsm": {
+        "id": 5,
+        "symbol": "RECORDING_FSM"
+      },
+      "microphone": {
+        "id": 6,
+        "symbol": "MICROPHONE"
+      },
+      "spi_flash_cache": {
+        "id": 7,
+        "symbol": "SPI_FLASH_CACHE"
+      },
+      "ota": {
+        "id": 8,
+        "symbol": "OTA"
+      },
+      "battery_charging": {
+        "id": 9,
+        "symbol": "BATTERY_CHARGING"
+      },
+      "power_lpm": {
+        "id": 10,
+        "symbol": "POWER_LPM"
+      },
+      "warnings": {
+        "id": 11,
+        "symbol": "WARNINGS"
+      },
+      "errors": {
+        "id": 12,
+        "symbol": "ERRORS"
+      },
+      "meeting": {
+        "id": 13,
+        "symbol": "MEETING"
+      },
+      "imu": {
+        "id": 14,
+        "symbol": "IMU"
+      },
+      "speaker": {
+        "id": 15,
+        "symbol": "SPEAKER"
+      },
+      "wake_word": {
+        "id": 16,
+        "symbol": "WAKE_WORD"
+      },
+      "device_settings": {
+        "id": 17,
+        "symbol": "DEVICE_SETTINGS"
+      }
+    },
+    "events": {
+      "boot.start": {
+        "source": "boot",
+        "event_id": 1,
+        "symbol": "START",
+        "default_severity": "info"
+      },
+      "boot.init_result": {
+        "source": "boot",
+        "event_id": 2,
+        "symbol": "INIT_RESULT",
+        "default_severity": "info"
+      },
+      "ble.advertising": {
+        "source": "ble",
+        "event_id": 1,
+        "symbol": "ADVERTISING",
+        "default_severity": "info"
+      },
+      "ble.connection": {
+        "source": "ble",
+        "event_id": 2,
+        "symbol": "CONNECTION",
+        "default_severity": "info"
+      },
+      "gatt.service_ready": {
+        "source": "gatt",
+        "event_id": 1,
+        "symbol": "SERVICE_READY",
+        "default_severity": "info"
+      },
+      "gatt.log_export_request": {
+        "source": "gatt",
+        "event_id": 2,
+        "symbol": "LOG_EXPORT_REQUEST",
+        "default_severity": "info"
+      },
+      "e_paper.render_request": {
+        "source": "e_paper",
+        "event_id": 1,
+        "symbol": "RENDER_REQUEST",
+        "default_severity": "info"
+      },
+      "e_paper.update_result": {
+        "source": "e_paper",
+        "event_id": 2,
+        "symbol": "UPDATE_RESULT",
+        "default_severity": "info"
+      },
+      "recording_fsm.transition": {
+        "source": "recording_fsm",
+        "event_id": 1,
+        "symbol": "TRANSITION",
+        "default_severity": "info"
+      },
+      "recording_fsm.rejected": {
+        "source": "recording_fsm",
+        "event_id": 2,
+        "symbol": "REJECTED",
+        "default_severity": "warn"
+      },
+      "recording_fsm.start_request": {
+        "source": "recording_fsm",
+        "event_id": 3,
+        "symbol": "START_REQUEST",
+        "default_severity": "info"
+      },
+      "recording_fsm.stop_request": {
+        "source": "recording_fsm",
+        "event_id": 4,
+        "symbol": "STOP_REQUEST",
+        "default_severity": "info"
+      },
+      "recording_fsm.cancel_request": {
+        "source": "recording_fsm",
+        "event_id": 5,
+        "symbol": "CANCEL_REQUEST",
+        "default_severity": "info"
+      },
+      "recording_fsm.session_finished": {
+        "source": "recording_fsm",
+        "event_id": 6,
+        "symbol": "SESSION_FINISHED",
+        "default_severity": "info"
+      },
+      "recording_fsm.error": {
+        "source": "recording_fsm",
+        "event_id": 7,
+        "symbol": "ERROR",
+        "default_severity": "error"
+      },
+      "recording_fsm.recovery": {
+        "source": "recording_fsm",
+        "event_id": 8,
+        "symbol": "RECOVERY",
+        "default_severity": "info"
+      },
+      "microphone.capture_start": {
+        "source": "microphone",
+        "event_id": 1,
+        "symbol": "CAPTURE_START",
+        "default_severity": "info"
+      },
+      "microphone.capture_drop": {
+        "source": "microphone",
+        "event_id": 2,
+        "symbol": "CAPTURE_DROP",
+        "default_severity": "warn"
+      },
+      "spi_flash_cache.write": {
+        "source": "spi_flash_cache",
+        "event_id": 1,
+        "symbol": "WRITE",
+        "default_severity": "info"
+      },
+      "spi_flash_cache.read": {
+        "source": "spi_flash_cache",
+        "event_id": 2,
+        "symbol": "READ",
+        "default_severity": "info"
+      },
+      "spi_flash_cache.delete": {
+        "source": "spi_flash_cache",
+        "event_id": 3,
+        "symbol": "DELETE",
+        "default_severity": "info"
+      },
+      "spi_flash_cache.low_storage": {
+        "source": "spi_flash_cache",
+        "event_id": 4,
+        "symbol": "LOW_STORAGE",
+        "default_severity": "warn"
+      },
+      "spi_flash_cache.interrupted_write": {
+        "source": "spi_flash_cache",
+        "event_id": 5,
+        "symbol": "INTERRUPTED_WRITE",
+        "default_severity": "warn"
+      },
+      "spi_flash_cache.interrupted_read": {
+        "source": "spi_flash_cache",
+        "event_id": 6,
+        "symbol": "INTERRUPTED_READ",
+        "default_severity": "warn"
+      },
+      "spi_flash_cache.privacy_erase": {
+        "source": "spi_flash_cache",
+        "event_id": 7,
+        "symbol": "PRIVACY_ERASE",
+        "default_severity": "warn"
+      },
+      "ota.manifest": {
+        "source": "ota",
+        "event_id": 1,
+        "symbol": "MANIFEST",
+        "default_severity": "info"
+      },
+      "ota.block_result": {
+        "source": "ota",
+        "event_id": 2,
+        "symbol": "BLOCK_RESULT",
+        "default_severity": "info"
+      },
+      "ota.readiness": {
+        "source": "ota",
+        "event_id": 3,
+        "symbol": "READINESS",
+        "default_severity": "info"
+      },
+      "ota.blocker": {
+        "source": "ota",
+        "event_id": 4,
+        "symbol": "BLOCKER",
+        "default_severity": "warn"
+      },
+      "ota.interrupted_transfer": {
+        "source": "ota",
+        "event_id": 5,
+        "symbol": "INTERRUPTED_TRANSFER",
+        "default_severity": "warn"
+      },
+      "ota.post_update_self_check": {
+        "source": "ota",
+        "event_id": 6,
+        "symbol": "POST_UPDATE_SELF_CHECK",
+        "default_severity": "info"
+      },
+      "battery_charging.sample": {
+        "source": "battery_charging",
+        "event_id": 1,
+        "symbol": "SAMPLE",
+        "default_severity": "info"
+      },
+      "battery_charging.state": {
+        "source": "battery_charging",
+        "event_id": 2,
+        "symbol": "STATE",
+        "default_severity": "info"
+      },
+      "power_lpm.state": {
+        "source": "power_lpm",
+        "event_id": 1,
+        "symbol": "STATE",
+        "default_severity": "info"
+      },
+      "power_lpm.blocker": {
+        "source": "power_lpm",
+        "event_id": 2,
+        "symbol": "BLOCKER",
+        "default_severity": "warn"
+      },
+      "warnings.rate_limited": {
+        "source": "warnings",
+        "event_id": 1,
+        "symbol": "RATE_LIMITED",
+        "default_severity": "warn"
+      },
+      "warnings.recovered": {
+        "source": "warnings",
+        "event_id": 2,
+        "symbol": "RECOVERED",
+        "default_severity": "info"
+      },
+      "errors.assert": {
+        "source": "errors",
+        "event_id": 1,
+        "symbol": "ASSERT",
+        "default_severity": "error"
+      },
+      "errors.fault": {
+        "source": "errors",
+        "event_id": 2,
+        "symbol": "FAULT",
+        "default_severity": "error"
+      },
+      "meeting.start": {
+        "source": "meeting",
+        "event_id": 1,
+        "symbol": "START",
+        "default_severity": "info"
+      },
+      "meeting.stop": {
+        "source": "meeting",
+        "event_id": 2,
+        "symbol": "STOP",
+        "default_severity": "info"
+      },
+      "meeting.finalize": {
+        "source": "meeting",
+        "event_id": 3,
+        "symbol": "FINALIZE",
+        "default_severity": "info"
+      },
+      "meeting.rejected": {
+        "source": "meeting",
+        "event_id": 4,
+        "symbol": "REJECTED",
+        "default_severity": "warn"
+      },
+      "imu.sample": {
+        "source": "imu",
+        "event_id": 1,
+        "symbol": "SAMPLE",
+        "default_severity": "info"
+      },
+      "imu.motion": {
+        "source": "imu",
+        "event_id": 2,
+        "symbol": "MOTION",
+        "default_severity": "info"
+      },
+      "imu.unavailable": {
+        "source": "imu",
+        "event_id": 3,
+        "symbol": "UNAVAILABLE",
+        "default_severity": "warn"
+      },
+      "speaker.prompt": {
+        "source": "speaker",
+        "event_id": 1,
+        "symbol": "PROMPT",
+        "default_severity": "info"
+      },
+      "speaker.result": {
+        "source": "speaker",
+        "event_id": 2,
+        "symbol": "RESULT",
+        "default_severity": "info"
+      },
+      "speaker.rejected": {
+        "source": "speaker",
+        "event_id": 3,
+        "symbol": "REJECTED",
+        "default_severity": "warn"
+      },
+      "wake_word.armed": {
+        "source": "wake_word",
+        "event_id": 1,
+        "symbol": "ARMED",
+        "default_severity": "info"
+      },
+      "wake_word.detected": {
+        "source": "wake_word",
+        "event_id": 2,
+        "symbol": "DETECTED",
+        "default_severity": "info"
+      },
+      "wake_word.disabled": {
+        "source": "wake_word",
+        "event_id": 3,
+        "symbol": "DISABLED",
+        "default_severity": "info"
+      },
+      "wake_word.rejected": {
+        "source": "wake_word",
+        "event_id": 4,
+        "symbol": "REJECTED",
+        "default_severity": "warn"
+      },
+      "device_settings.ble_name.accepted": {
+        "source": "device_settings",
+        "event_id": 1,
+        "symbol": "BLE_NAME_ACCEPTED",
+        "default_severity": "info"
+      },
+      "device_settings.ble_name.rejected": {
+        "source": "device_settings",
+        "event_id": 2,
+        "symbol": "BLE_NAME_REJECTED",
+        "default_severity": "warn"
+      },
+      "device_settings.ble_name.applied": {
+        "source": "device_settings",
+        "event_id": 3,
+        "symbol": "BLE_NAME_APPLIED",
+        "default_severity": "info"
+      }
+    }
+  },
+  "summary": {
+    "event_count": 18,
+    "sources_seen": [
+      "battery_charging",
+      "ble",
+      "boot",
+      "device_settings",
+      "e_paper",
+      "errors",
+      "gatt",
+      "imu",
+      "meeting",
+      "ota",
+      "power_lpm",
+      "recording_fsm",
+      "speaker",
+      "spi_flash_cache",
+      "wake_word",
+      "warnings"
+    ],
+    "warnings_or_errors": [
+      {
+        "index": 9,
+        "sequence": 110,
+        "t_ms": 290,
+        "source": {
+          "raw": "power_lpm",
+          "id": 10,
+          "name": "power_lpm",
+          "symbol": "POWER_LPM"
+        },
+        "event": {
+          "raw": 2,
+          "name": "power_lpm.blocker",
+          "symbol": "BLOCKER",
+          "severity_default": "warn"
+        },
+        "severity": {
+          "raw": "warn",
+          "level": 1,
+          "name": "warn"
+        },
+        "args": {
+          "arg0": 2,
+          "arg1": 1,
+          "arg2": 0,
+          "arg3": 0
+        },
+        "raw_event": {
+          "sequence": 110,
+          "t_ms": 290,
+          "source": "power_lpm",
+          "event_id": 2,
+          "severity": "warn",
+          "arg0": 2,
+          "arg1": 1,
+          "arg2": 0,
+          "arg3": 0
+        }
+      },
+      {
+        "index": 11,
+        "sequence": 112,
+        "t_ms": 340,
+        "source": {
+          "raw": "errors",
+          "id": 12,
+          "name": "errors",
+          "symbol": "ERRORS"
+        },
+        "event": {
+          "raw": 1,
+          "name": "errors.assert",
+          "symbol": "ASSERT",
+          "severity_default": "error"
+        },
+        "severity": {
+          "raw": "error",
+          "level": 2,
+          "name": "error"
+        },
+        "args": {
+          "arg0": 0,
+          "arg1": 0,
+          "arg2": 0,
+          "arg3": 0
+        },
+        "raw_event": {
+          "sequence": 112,
+          "t_ms": 340,
+          "source": "errors",
+          "event_id": 1,
+          "severity": "error",
+          "arg0": 0,
+          "arg1": 0,
+          "arg2": 0,
+          "arg3": 0
+        }
+      },
+      {
+        "index": 14,
+        "sequence": 115,
+        "t_ms": 420,
+        "source": {
+          "raw": "imu",
+          "id": 14,
+          "name": "imu",
+          "symbol": "IMU"
+        },
+        "event": {
+          "raw": 3,
+          "name": "imu.unavailable",
+          "symbol": "UNAVAILABLE",
+          "severity_default": "warn"
+        },
+        "severity": {
+          "raw": "warn",
+          "level": 1,
+          "name": "warn"
+        },
+        "args": {
+          "arg0": 1,
+          "arg1": 0,
+          "arg2": 0,
+          "arg3": 0
+        },
+        "raw_event": {
+          "sequence": 115,
+          "t_ms": 420,
+          "source": "imu",
+          "event_id": 3,
+          "severity": "warn",
+          "arg0": 1,
+          "arg1": 0,
+          "arg2": 0,
+          "arg3": 0
+        }
+      }
+    ]
+  },
+  "events": [
+    {
+      "index": 0,
+      "sequence": 101,
+      "t_ms": 10,
+      "source": {
+        "raw": "boot",
+        "id": 1,
+        "name": "boot",
+        "symbol": "BOOT"
+      },
+      "event": {
+        "raw": 1,
+        "name": "boot.start",
+        "symbol": "START",
+        "severity_default": "info"
+      },
+      "severity": {
+        "raw": "info",
+        "level": 0,
+        "name": "info"
+      },
+      "args": {
+        "arg0": 1,
+        "arg1": 0,
+        "arg2": 0,
+        "arg3": 0
+      },
+      "raw_event": {
+        "sequence": 101,
+        "t_ms": 10,
+        "source": "boot",
+        "event_id": 1,
+        "severity": "info",
+        "arg0": 1,
+        "arg1": 0,
+        "arg2": 0,
+        "arg3": 0
+      }
+    },
+    {
+      "index": 1,
+      "sequence": 102,
+      "t_ms": 45,
+      "source": {
+        "raw": "ble",
+        "id": 2,
+        "name": "ble",
+        "symbol": "BLE"
+      },
+      "event": {
+        "raw": 1,
+        "name": "ble.advertising",
+        "symbol": "ADVERTISING",
+        "severity_default": "info"
+      },
+      "severity": {
+        "raw": "info",
+        "level": 0,
+        "name": "info"
+      },
+      "args": {
+        "arg0": 1,
+        "arg1": -47,
+        "arg2": 0,
+        "arg3": 0
+      },
+      "raw_event": {
+        "sequence": 102,
+        "t_ms": 45,
+        "source": "ble",
+        "event_id": 1,
+        "severity": "info",
+        "arg0": 1,
+        "arg1": -47,
+        "arg2": 0,
+        "arg3": 0
+      }
+    },
+    {
+      "index": 2,
+      "sequence": 103,
+      "t_ms": 88,
+      "source": {
+        "raw": "gatt",
+        "id": 3,
+        "name": "gatt",
+        "symbol": "GATT"
+      },
+      "event": {
+        "raw": 2,
+        "name": "gatt.log_export_request",
+        "symbol": "LOG_EXPORT_REQUEST",
+        "severity_default": "info"
+      },
+      "severity": {
+        "raw": "info",
+        "level": 0,
+        "name": "info"
+      },
+      "args": {
+        "arg0": 0,
+        "arg1": 8,
+        "arg2": 1024,
+        "arg3": 0
+      },
+      "raw_event": {
+        "sequence": 103,
+        "t_ms": 88,
+        "source": "gatt",
+        "event_id": 2,
+        "severity": "info",
+        "arg0": 0,
+        "arg1": 8,
+        "arg2": 1024,
+        "arg3": 0
+      }
+    },
+    {
+      "index": 3,
+      "sequence": 104,
+      "t_ms": 130,
+      "source": {
+        "raw": "recording_fsm",
+        "id": 5,
+        "name": "recording_fsm",
+        "symbol": "RECORDING_FSM"
+      },
+      "event": {
+        "raw": 1,
+        "name": "recording_fsm.transition",
+        "symbol": "TRANSITION",
+        "severity_default": "info"
+      },
+      "severity": {
+        "raw": "info",
+        "level": 0,
+        "name": "info"
+      },
+      "args": {
+        "arg0": 1,
+        "arg1": 2,
+        "arg2": 0,
+        "arg3": 0
+      },
+      "raw_event": {
+        "sequence": 104,
+        "t_ms": 130,
+        "source": "recording_fsm",
+        "event_id": 1,
+        "severity": "info",
+        "arg0": 1,
+        "arg1": 2,
+        "arg2": 0,
+        "arg3": 0
+      }
+    },
+    {
+      "index": 4,
+      "sequence": 105,
+      "t_ms": 160,
+      "source": {
+        "raw": "spi_flash_cache",
+        "id": 7,
+        "name": "spi_flash_cache",
+        "symbol": "SPI_FLASH_CACHE"
+      },
+      "event": {
+        "raw": 1,
+        "name": "spi_flash_cache.write",
+        "symbol": "WRITE",
+        "severity_default": "info"
+      },
+      "severity": {
+        "raw": "info",
+        "level": 0,
+        "name": "info"
+      },
+      "args": {
+        "arg0": 32768,
+        "arg1": 2400,
+        "arg2": 0,
+        "arg3": 0
+      },
+      "raw_event": {
+        "sequence": 105,
+        "t_ms": 160,
+        "source": "spi_flash_cache",
+        "event_id": 1,
+        "severity": "info",
+        "arg0": 32768,
+        "arg1": 2400,
+        "arg2": 0,
+        "arg3": 0
+      }
+    },
+    {
+      "index": 5,
+      "sequence": 106,
+      "t_ms": 190,
+      "source": {
+        "raw": "e_paper",
+        "id": 4,
+        "name": "e_paper",
+        "symbol": "EPAPER"
+      },
+      "event": {
+        "raw": 2,
+        "name": "e_paper.update_result",
+        "symbol": "UPDATE_RESULT",
+        "severity_default": "info"
+      },
+      "severity": {
+        "raw": "info",
+        "level": 0,
+        "name": "info"
+      },
+      "args": {
+        "arg0": 17,
+        "arg1": 0,
+        "arg2": 0,
+        "arg3": 0
+      },
+      "raw_event": {
+        "sequence": 106,
+        "t_ms": 190,
+        "source": "e_paper",
+        "event_id": 2,
+        "severity": "info",
+        "arg0": 17,
+        "arg1": 0,
+        "arg2": 0,
+        "arg3": 0
+      }
+    },
+    {
+      "index": 6,
+      "sequence": 107,
+      "t_ms": 220,
+      "source": {
+        "raw": "ota",
+        "id": 8,
+        "name": "ota",
+        "symbol": "OTA"
+      },
+      "event": {
+        "raw": 1,
+        "name": "ota.manifest",
+        "symbol": "MANIFEST",
+        "severity_default": "info"
+      },
+      "severity": {
+        "raw": "info",
+        "level": 0,
+        "name": "info"
+      },
+      "args": {
+        "arg0": 1,
+        "arg1": 94032,
+        "arg2": 0,
+        "arg3": 0
+      },
+      "raw_event": {
+        "sequence": 107,
+        "t_ms": 220,
+        "source": "ota",
+        "event_id": 1,
+        "severity": "info",
+        "arg0": 1,
+        "arg1": 94032,
+        "arg2": 0,
+        "arg3": 0
+      }
+    },
+    {
+      "index": 7,
+      "sequence": 108,
+      "t_ms": 240,
+      "source": {
+        "raw": "ota",
+        "id": 8,
+        "name": "ota",
+        "symbol": "OTA"
+      },
+      "event": {
+        "raw": 3,
+        "name": "ota.readiness",
+        "symbol": "READINESS",
+        "severity_default": "info"
+      },
+      "severity": {
+        "raw": "info",
+        "level": 0,
+        "name": "info"
+      },
+      "args": {
+        "arg0": 1,
+        "arg1": 0,
+        "arg2": 0,
+        "arg3": 0
+      },
+      "raw_event": {
+        "sequence": 108,
+        "t_ms": 240,
+        "source": "ota",
+        "event_id": 3,
+        "severity": "info",
+        "arg0": 1,
+        "arg1": 0,
+        "arg2": 0,
+        "arg3": 0
+      }
+    },
+    {
+      "index": 8,
+      "sequence": 109,
+      "t_ms": 260,
+      "source": {
+        "raw": "battery_charging",
+        "id": 9,
+        "name": "battery_charging",
+        "symbol": "BATTERY_CHARGING"
+      },
+      "event": {
+        "raw": 1,
+        "name": "battery_charging.sample",
+        "symbol": "SAMPLE",
+        "severity_default": "info"
+      },
+      "severity": {
+        "raw": "info",
+        "level": 0,
+        "name": "info"
+      },
+      "args": {
+        "arg0": 84,
+        "arg1": 4012,
+        "arg2": 0,
+        "arg3": 0
+      },
+      "raw_event": {
+        "sequence": 109,
+        "t_ms": 260,
+        "source": "battery_charging",
+        "event_id": 1,
+        "severity": "info",
+        "arg0": 84,
+        "arg1": 4012,
+        "arg2": 0,
+        "arg3": 0
+      }
+    },
+    {
+      "index": 9,
+      "sequence": 110,
+      "t_ms": 290,
+      "source": {
+        "raw": "power_lpm",
+        "id": 10,
+        "name": "power_lpm",
+        "symbol": "POWER_LPM"
+      },
+      "event": {
+        "raw": 2,
+        "name": "power_lpm.blocker",
+        "symbol": "BLOCKER",
+        "severity_default": "warn"
+      },
+      "severity": {
+        "raw": "warn",
+        "level": 1,
+        "name": "warn"
+      },
+      "args": {
+        "arg0": 2,
+        "arg1": 1,
+        "arg2": 0,
+        "arg3": 0
+      },
+      "raw_event": {
+        "sequence": 110,
+        "t_ms": 290,
+        "source": "power_lpm",
+        "event_id": 2,
+        "severity": "warn",
+        "arg0": 2,
+        "arg1": 1,
+        "arg2": 0,
+        "arg3": 0
+      }
+    },
+    {
+      "index": 10,
+      "sequence": 111,
+      "t_ms": 310,
+      "source": {
+        "raw": "warnings",
+        "id": 11,
+        "name": "warnings",
+        "symbol": "WARNINGS"
+      },
+      "event": {
+        "raw": 2,
+        "name": "warnings.recovered",
+        "symbol": "RECOVERED",
+        "severity_default": "info"
+      },
+      "severity": {
+        "raw": "info",
+        "level": 0,
+        "name": "info"
+      },
+      "args": {
+        "arg0": 1,
+        "arg1": 0,
+        "arg2": 0,
+        "arg3": 0
+      },
+      "raw_event": {
+        "sequence": 111,
+        "t_ms": 310,
+        "source": "warnings",
+        "event_id": 2,
+        "severity": "info",
+        "arg0": 1,
+        "arg1": 0,
+        "arg2": 0,
+        "arg3": 0
+      }
+    },
+    {
+      "index": 11,
+      "sequence": 112,
+      "t_ms": 340,
+      "source": {
+        "raw": "errors",
+        "id": 12,
+        "name": "errors",
+        "symbol": "ERRORS"
+      },
+      "event": {
+        "raw": 1,
+        "name": "errors.assert",
+        "symbol": "ASSERT",
+        "severity_default": "error"
+      },
+      "severity": {
+        "raw": "error",
+        "level": 2,
+        "name": "error"
+      },
+      "args": {
+        "arg0": 0,
+        "arg1": 0,
+        "arg2": 0,
+        "arg3": 0
+      },
+      "raw_event": {
+        "sequence": 112,
+        "t_ms": 340,
+        "source": "errors",
+        "event_id": 1,
+        "severity": "error",
+        "arg0": 0,
+        "arg1": 0,
+        "arg2": 0,
+        "arg3": 0
+      }
+    },
+    {
+      "index": 12,
+      "sequence": 113,
+      "t_ms": 360,
+      "source": {
+        "raw": "meeting",
+        "id": 13,
+        "name": "meeting",
+        "symbol": "MEETING"
+      },
+      "event": {
+        "raw": 1,
+        "name": "meeting.start",
+        "symbol": "START",
+        "severity_default": "info"
+      },
+      "severity": {
+        "raw": "info",
+        "level": 0,
+        "name": "info"
+      },
+      "args": {
+        "arg0": 1,
+        "arg1": 0,
+        "arg2": 0,
+        "arg3": 0
+      },
+      "raw_event": {
+        "sequence": 113,
+        "t_ms": 360,
+        "source": "meeting",
+        "event_id": 1,
+        "severity": "info",
+        "arg0": 1,
+        "arg1": 0,
+        "arg2": 0,
+        "arg3": 0
+      }
+    },
+    {
+      "index": 13,
+      "sequence": 114,
+      "t_ms": 390,
+      "source": {
+        "raw": "meeting",
+        "id": 13,
+        "name": "meeting",
+        "symbol": "MEETING"
+      },
+      "event": {
+        "raw": 3,
+        "name": "meeting.finalize",
+        "symbol": "FINALIZE",
+        "severity_default": "info"
+      },
+      "severity": {
+        "raw": "info",
+        "level": 0,
+        "name": "info"
+      },
+      "args": {
+        "arg0": 1,
+        "arg1": 2400,
+        "arg2": 0,
+        "arg3": 0
+      },
+      "raw_event": {
+        "sequence": 114,
+        "t_ms": 390,
+        "source": "meeting",
+        "event_id": 3,
+        "severity": "info",
+        "arg0": 1,
+        "arg1": 2400,
+        "arg2": 0,
+        "arg3": 0
+      }
+    },
+    {
+      "index": 14,
+      "sequence": 115,
+      "t_ms": 420,
+      "source": {
+        "raw": "imu",
+        "id": 14,
+        "name": "imu",
+        "symbol": "IMU"
+      },
+      "event": {
+        "raw": 3,
+        "name": "imu.unavailable",
+        "symbol": "UNAVAILABLE",
+        "severity_default": "warn"
+      },
+      "severity": {
+        "raw": "warn",
+        "level": 1,
+        "name": "warn"
+      },
+      "args": {
+        "arg0": 1,
+        "arg1": 0,
+        "arg2": 0,
+        "arg3": 0
+      },
+      "raw_event": {
+        "sequence": 115,
+        "t_ms": 420,
+        "source": "imu",
+        "event_id": 3,
+        "severity": "warn",
+        "arg0": 1,
+        "arg1": 0,
+        "arg2": 0,
+        "arg3": 0
+      }
+    },
+    {
+      "index": 15,
+      "sequence": 116,
+      "t_ms": 450,
+      "source": {
+        "raw": "speaker",
+        "id": 15,
+        "name": "speaker",
+        "symbol": "SPEAKER"
+      },
+      "event": {
+        "raw": 1,
+        "name": "speaker.prompt",
+        "symbol": "PROMPT",
+        "severity_default": "info"
+      },
+      "severity": {
+        "raw": "info",
+        "level": 0,
+        "name": "info"
+      },
+      "args": {
+        "arg0": 7,
+        "arg1": 0,
+        "arg2": 0,
+        "arg3": 0
+      },
+      "raw_event": {
+        "sequence": 116,
+        "t_ms": 450,
+        "source": "speaker",
+        "event_id": 1,
+        "severity": "info",
+        "arg0": 7,
+        "arg1": 0,
+        "arg2": 0,
+        "arg3": 0
+      }
+    },
+    {
+      "index": 16,
+      "sequence": 117,
+      "t_ms": 480,
+      "source": {
+        "raw": "wake_word",
+        "id": 16,
+        "name": "wake_word",
+        "symbol": "WAKE_WORD"
+      },
+      "event": {
+        "raw": 1,
+        "name": "wake_word.armed",
+        "symbol": "ARMED",
+        "severity_default": "info"
+      },
+      "severity": {
+        "raw": "info",
+        "level": 0,
+        "name": "info"
+      },
+      "args": {
+        "arg0": 50,
+        "arg1": 0,
+        "arg2": 0,
+        "arg3": 0
+      },
+      "raw_event": {
+        "sequence": 117,
+        "t_ms": 480,
+        "source": "wake_word",
+        "event_id": 1,
+        "severity": "info",
+        "arg0": 50,
+        "arg1": 0,
+        "arg2": 0,
+        "arg3": 0
+      }
+    },
+    {
+      "index": 17,
+      "sequence": 118,
+      "t_ms": 510,
+      "source": {
+        "raw": "device_settings",
+        "id": 17,
+        "name": "device_settings",
+        "symbol": "DEVICE_SETTINGS"
+      },
+      "event": {
+        "raw": 1,
+        "name": "device_settings.ble_name.accepted",
+        "symbol": "BLE_NAME_ACCEPTED",
+        "severity_default": "info"
+      },
+      "severity": {
+        "raw": "info",
+        "level": 0,
+        "name": "info"
+      },
+      "args": {
+        "arg0": 12,
+        "arg1": 0,
+        "arg2": 0,
+        "arg3": 0
+      },
+      "raw_event": {
+        "sequence": 118,
+        "t_ms": 510,
+        "source": "device_settings",
+        "event_id": 1,
+        "severity": "info",
+        "arg0": 12,
+        "arg1": 0,
+        "arg2": 0,
+        "arg3": 0
+      }
+    }
+  ]
+}

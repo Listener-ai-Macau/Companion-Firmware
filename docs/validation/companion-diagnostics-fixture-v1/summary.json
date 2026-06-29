@@ -1,0 +1,473 @@
+{
+  "schema_id": "companion.pendant.diagnostics_bundle.v1",
+  "schema_version": 1,
+  "mode": "fixture",
+  "generated_at": "fixture-deterministic",
+  "bounded": true,
+  "hardware_action": false,
+  "source_refs": [
+    "app/companion_pendant/diag_log/diag_log_events.h",
+    "docs/ble_gatt_contract.md",
+    "tools/decode_diag_log.py"
+  ],
+  "privacy": {
+    "private_audio_payload_exported": false,
+    "raw_recording_payload_exported": false,
+    "no_unbounded_full_dumps": true,
+    "fixture_contains_synthetic_metadata_only": true
+  },
+  "device_status": {
+    "product": "companion",
+    "board_target": "NUCLEO-WB55RG",
+    "mcu": "STM32WB55RG",
+    "firmware_semver": "0.1.0-fixture",
+    "build_id": "diagnostics-fixture",
+    "active_mode": "idle",
+    "fault_bitmap": 0,
+    "uptime_ms": 510
+  },
+  "ble": {
+    "backend": "fixture-no-hardware",
+    "selected_device": {
+      "name": "Companion Pendant Dev",
+      "address": "F1:E2:D3:C4:B5:A6",
+      "service_uuid": "8f7a0001-7b7d-4f3d-9d6f-6c2d1b7c0000",
+      "rssi": -47
+    },
+    "scan_summary": {
+      "scanned_devices": 2,
+      "matched_companion_devices": 1,
+      "ignored_devices": 1
+    }
+  },
+  "recording": {
+    "fsm_state": "stored",
+    "session_id": "fixture-rec-0001",
+    "last_transition": "recording_fsm.transition",
+    "active": false,
+    "transfer_active": false
+  },
+  "recording_cache": {
+    "backend": "external_spi_nor_contract_fixture",
+    "count": 1,
+    "total_bytes": 32768,
+    "entries": [
+      {
+        "recording_id": 1,
+        "duration_ms": 2400,
+        "codec": "pcm16",
+        "sample_rate_hz": 16000,
+        "total_length": 32768,
+        "sha256_prefix": "fixture_sha256_0001",
+        "sync_state": "unsynced",
+        "delete_state": "stored"
+      }
+    ]
+  },
+  "last_transfer_result": {
+    "operation": "recording_chunk_pull",
+    "status": "fixture_not_started",
+    "byte_offset": 0,
+    "requested_length": 0,
+    "final_sha256_verified": false
+  },
+  "meeting": {
+    "state": "finalized",
+    "meeting_id": 1,
+    "duration_ms": 2400,
+    "segment_count": 1,
+    "summary_state": "pending_host_summary",
+    "sync_state": "ready_for_host_sync"
+  },
+  "imu": {
+    "sensor_state": "not_populated_on_current_dev_board",
+    "motion_flags": [],
+    "sample_rate_hz": 0,
+    "calibration_state": "pending_hardware"
+  },
+  "speaker": {
+    "state": "prompt_contract_ready_pending_hardware",
+    "prompt_id": 7,
+    "volume_percent": 50,
+    "played_count": 1
+  },
+  "voice_wake": {
+    "armed": true,
+    "engine_state": "armed_fixture",
+    "sensitivity": 50,
+    "detection_count": 0,
+    "rejected_count": 0
+  },
+  "ble_name_config": {
+    "active_name": "companion",
+    "staged_name": "companion-v1",
+    "max_len": 29,
+    "policy": "printable_ascii_1_29_no_quotes_semicolon_equals_backslash",
+    "apply": "restart_ble_or_reboot_required"
+  },
+  "epaper": {
+    "last_card_slot": 0,
+    "last_card_type": "status",
+    "render_state": "rendered",
+    "content_crc32": "0x00000011",
+    "refresh_count": 1
+  },
+  "ota": {
+    "manifest": {
+      "version": "0.1.0-fixture",
+      "board_target": "NUCLEO-WB55RG",
+      "image_size": 94032,
+      "sha256_prefix": "fixture_ota_hash"
+    },
+    "readiness": {
+      "ready_state": "ready",
+      "blocker_bitmap": 0,
+      "minimum_required_mv": 3600,
+      "charger_required": false
+    },
+    "blockers": []
+  },
+  "battery": {
+    "percent": 84,
+    "millivolts": 4012,
+    "charge_state": "discharging",
+    "charger_present": false,
+    "temperature_c_x10": 261
+  },
+  "diag_tail": {
+    "bounded": true,
+    "contract": "diagnostics/log pull cursor/source/severity model",
+    "request": {
+      "cursor": 0,
+      "max_events": 8,
+      "max_bytes": 1024,
+      "source": "all",
+      "severity_mask": "info|warn|error"
+    },
+    "total_available": 18,
+    "returned_count": 8,
+    "next_cursor": 118,
+    "decoded_path": "docs/validation/companion-diagnostics-fixture-v1/diag_tail_decoded.json",
+    "raw_path": "docs/validation/companion-diagnostics-fixture-v1/diag_tail_raw.jsonl",
+    "events": [
+      {
+        "index": 10,
+        "sequence": 111,
+        "t_ms": 310,
+        "source": {
+          "raw": "warnings",
+          "id": 11,
+          "name": "warnings",
+          "symbol": "WARNINGS"
+        },
+        "event": {
+          "raw": 2,
+          "name": "warnings.recovered",
+          "symbol": "RECOVERED",
+          "severity_default": "info"
+        },
+        "severity": {
+          "raw": "info",
+          "level": 0,
+          "name": "info"
+        },
+        "args": {
+          "arg0": 1,
+          "arg1": 0,
+          "arg2": 0,
+          "arg3": 0
+        },
+        "raw_event": {
+          "sequence": 111,
+          "t_ms": 310,
+          "source": "warnings",
+          "event_id": 2,
+          "severity": "info",
+          "arg0": 1,
+          "arg1": 0,
+          "arg2": 0,
+          "arg3": 0
+        }
+      },
+      {
+        "index": 11,
+        "sequence": 112,
+        "t_ms": 340,
+        "source": {
+          "raw": "errors",
+          "id": 12,
+          "name": "errors",
+          "symbol": "ERRORS"
+        },
+        "event": {
+          "raw": 1,
+          "name": "errors.assert",
+          "symbol": "ASSERT",
+          "severity_default": "error"
+        },
+        "severity": {
+          "raw": "error",
+          "level": 2,
+          "name": "error"
+        },
+        "args": {
+          "arg0": 0,
+          "arg1": 0,
+          "arg2": 0,
+          "arg3": 0
+        },
+        "raw_event": {
+          "sequence": 112,
+          "t_ms": 340,
+          "source": "errors",
+          "event_id": 1,
+          "severity": "error",
+          "arg0": 0,
+          "arg1": 0,
+          "arg2": 0,
+          "arg3": 0
+        }
+      },
+      {
+        "index": 12,
+        "sequence": 113,
+        "t_ms": 360,
+        "source": {
+          "raw": "meeting",
+          "id": 13,
+          "name": "meeting",
+          "symbol": "MEETING"
+        },
+        "event": {
+          "raw": 1,
+          "name": "meeting.start",
+          "symbol": "START",
+          "severity_default": "info"
+        },
+        "severity": {
+          "raw": "info",
+          "level": 0,
+          "name": "info"
+        },
+        "args": {
+          "arg0": 1,
+          "arg1": 0,
+          "arg2": 0,
+          "arg3": 0
+        },
+        "raw_event": {
+          "sequence": 113,
+          "t_ms": 360,
+          "source": "meeting",
+          "event_id": 1,
+          "severity": "info",
+          "arg0": 1,
+          "arg1": 0,
+          "arg2": 0,
+          "arg3": 0
+        }
+      },
+      {
+        "index": 13,
+        "sequence": 114,
+        "t_ms": 390,
+        "source": {
+          "raw": "meeting",
+          "id": 13,
+          "name": "meeting",
+          "symbol": "MEETING"
+        },
+        "event": {
+          "raw": 3,
+          "name": "meeting.finalize",
+          "symbol": "FINALIZE",
+          "severity_default": "info"
+        },
+        "severity": {
+          "raw": "info",
+          "level": 0,
+          "name": "info"
+        },
+        "args": {
+          "arg0": 1,
+          "arg1": 2400,
+          "arg2": 0,
+          "arg3": 0
+        },
+        "raw_event": {
+          "sequence": 114,
+          "t_ms": 390,
+          "source": "meeting",
+          "event_id": 3,
+          "severity": "info",
+          "arg0": 1,
+          "arg1": 2400,
+          "arg2": 0,
+          "arg3": 0
+        }
+      },
+      {
+        "index": 14,
+        "sequence": 115,
+        "t_ms": 420,
+        "source": {
+          "raw": "imu",
+          "id": 14,
+          "name": "imu",
+          "symbol": "IMU"
+        },
+        "event": {
+          "raw": 3,
+          "name": "imu.unavailable",
+          "symbol": "UNAVAILABLE",
+          "severity_default": "warn"
+        },
+        "severity": {
+          "raw": "warn",
+          "level": 1,
+          "name": "warn"
+        },
+        "args": {
+          "arg0": 1,
+          "arg1": 0,
+          "arg2": 0,
+          "arg3": 0
+        },
+        "raw_event": {
+          "sequence": 115,
+          "t_ms": 420,
+          "source": "imu",
+          "event_id": 3,
+          "severity": "warn",
+          "arg0": 1,
+          "arg1": 0,
+          "arg2": 0,
+          "arg3": 0
+        }
+      },
+      {
+        "index": 15,
+        "sequence": 116,
+        "t_ms": 450,
+        "source": {
+          "raw": "speaker",
+          "id": 15,
+          "name": "speaker",
+          "symbol": "SPEAKER"
+        },
+        "event": {
+          "raw": 1,
+          "name": "speaker.prompt",
+          "symbol": "PROMPT",
+          "severity_default": "info"
+        },
+        "severity": {
+          "raw": "info",
+          "level": 0,
+          "name": "info"
+        },
+        "args": {
+          "arg0": 7,
+          "arg1": 0,
+          "arg2": 0,
+          "arg3": 0
+        },
+        "raw_event": {
+          "sequence": 116,
+          "t_ms": 450,
+          "source": "speaker",
+          "event_id": 1,
+          "severity": "info",
+          "arg0": 7,
+          "arg1": 0,
+          "arg2": 0,
+          "arg3": 0
+        }
+      },
+      {
+        "index": 16,
+        "sequence": 117,
+        "t_ms": 480,
+        "source": {
+          "raw": "wake_word",
+          "id": 16,
+          "name": "wake_word",
+          "symbol": "WAKE_WORD"
+        },
+        "event": {
+          "raw": 1,
+          "name": "wake_word.armed",
+          "symbol": "ARMED",
+          "severity_default": "info"
+        },
+        "severity": {
+          "raw": "info",
+          "level": 0,
+          "name": "info"
+        },
+        "args": {
+          "arg0": 50,
+          "arg1": 0,
+          "arg2": 0,
+          "arg3": 0
+        },
+        "raw_event": {
+          "sequence": 117,
+          "t_ms": 480,
+          "source": "wake_word",
+          "event_id": 1,
+          "severity": "info",
+          "arg0": 50,
+          "arg1": 0,
+          "arg2": 0,
+          "arg3": 0
+        }
+      },
+      {
+        "index": 17,
+        "sequence": 118,
+        "t_ms": 510,
+        "source": {
+          "raw": "device_settings",
+          "id": 17,
+          "name": "device_settings",
+          "symbol": "DEVICE_SETTINGS"
+        },
+        "event": {
+          "raw": 1,
+          "name": "device_settings.ble_name.accepted",
+          "symbol": "BLE_NAME_ACCEPTED",
+          "severity_default": "info"
+        },
+        "severity": {
+          "raw": "info",
+          "level": 0,
+          "name": "info"
+        },
+        "args": {
+          "arg0": 12,
+          "arg1": 0,
+          "arg2": 0,
+          "arg3": 0
+        },
+        "raw_event": {
+          "sequence": 118,
+          "t_ms": 510,
+          "source": "device_settings",
+          "event_id": 1,
+          "severity": "info",
+          "arg0": 12,
+          "arg1": 0,
+          "arg2": 0,
+          "arg3": 0
+        }
+      }
+    ]
+  },
+  "artifacts": {
+    "summary_json": "docs/validation/companion-diagnostics-fixture-v1/summary.json",
+    "summary_md": "docs/validation/companion-diagnostics-fixture-v1/summary.md",
+    "diag_tail_raw_jsonl": "docs/validation/companion-diagnostics-fixture-v1/diag_tail_raw.jsonl",
+    "diag_tail_decoded_json": "docs/validation/companion-diagnostics-fixture-v1/diag_tail_decoded.json"
+  }
+}
