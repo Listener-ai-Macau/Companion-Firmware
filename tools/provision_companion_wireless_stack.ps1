@@ -20,6 +20,7 @@ $bleStackRelative = "third_party\STM32CubeWB\Projects\STM32WB_Copro_Wireless_Bin
 $releaseNotesRelative = "third_party\STM32CubeWB\Projects\STM32WB_Copro_Wireless_Binaries\STM32WB5x\Release_Notes.html"
 $bleStackBinary = Join-Path $repoRoot $bleStackRelative
 $releaseNotes = Join-Path $repoRoot $releaseNotesRelative
+$fusOperatorFileName = "0x495_FUS_Operator.bin"
 
 $installAddress = "0x080D0000"
 $fusInfoAddress = "0x20030030"
@@ -37,6 +38,41 @@ $outputDir = if ($OutDir) {
 $rawLog = Join-Path $outputDir "companion-wireless-stack-raw.log"
 $summaryJson = Join-Path $outputDir "companion-wireless-stack-summary.json"
 $summaryMd = Join-Path $outputDir "companion-wireless-stack-summary.md"
+
+function Get-FusOperatorCandidatePaths {
+    param([AllowNull()][string] $Programmer)
+
+    $paths = [System.Collections.Generic.List[string]]::new()
+    if (-not [string]::IsNullOrWhiteSpace($Programmer)) {
+        $programmerDir = Split-Path -Parent $Programmer
+        $programmerRoot = Split-Path -Parent $programmerDir
+        foreach ($base in @($programmerDir, $programmerRoot)) {
+            if ([string]::IsNullOrWhiteSpace($base)) { continue }
+            $paths.Add((Join-Path $base "FlashLoader\$fusOperatorFileName")) | Out-Null
+        }
+    }
+    if ($env:STM32CUBEPROGRAMMER_PATH) {
+        $paths.Add((Join-Path $env:STM32CUBEPROGRAMMER_PATH "FlashLoader\$fusOperatorFileName")) | Out-Null
+        $paths.Add((Join-Path $env:STM32CUBEPROGRAMMER_PATH "bin\FlashLoader\$fusOperatorFileName")) | Out-Null
+    }
+    $paths.Add("C:\Program Files\STMicroelectronics\STM32Cube\STM32CubeProgrammer\bin\FlashLoader\$fusOperatorFileName") | Out-Null
+    $paths.Add("C:\Program Files\STMicroelectronics\STM32Cube\STM32CubeProgrammer\FlashLoader\$fusOperatorFileName") | Out-Null
+    $paths.Add("C:\ST\STM32CubeProgrammer\bin\FlashLoader\$fusOperatorFileName") | Out-Null
+    $paths.Add("C:\ST\STM32CubeProgrammer\FlashLoader\$fusOperatorFileName") | Out-Null
+
+    return @($paths | Where-Object { -not [string]::IsNullOrWhiteSpace($_) } | Select-Object -Unique)
+}
+
+function Find-FusOperatorForProgrammer {
+    param([AllowNull()][string] $Programmer)
+
+    foreach ($candidate in (Get-FusOperatorCandidatePaths -Programmer $Programmer)) {
+        if (Test-Path -LiteralPath $candidate -PathType Leaf) {
+            return (Resolve-Path -LiteralPath $candidate).Path
+        }
+    }
+    return $null
+}
 
 function Find-CubeProgrammerCli {
     param([string] $RequestedPath)
@@ -59,11 +95,30 @@ function Find-CubeProgrammerCli {
         "C:\ST\STM32CubeProgrammer\bin\STM32_Programmer_CLI.exe"
     )
 
+    $resolvedCandidates = [System.Collections.Generic.List[string]]::new()
     foreach ($candidate in $candidates) {
         if ([string]::IsNullOrWhiteSpace($candidate)) { continue }
         $matches = @(Get-ChildItem -Path $candidate -File -ErrorAction SilentlyContinue | Sort-Object FullName -Descending)
-        if ($matches.Count -gt 0) { return $matches[0].FullName }
-        if (Test-Path -LiteralPath $candidate -PathType Leaf) { return (Resolve-Path -LiteralPath $candidate).Path }
+        foreach ($match in $matches) {
+            if (-not $resolvedCandidates.Contains($match.FullName)) {
+                $resolvedCandidates.Add($match.FullName) | Out-Null
+            }
+        }
+        if (Test-Path -LiteralPath $candidate -PathType Leaf) {
+            $resolved = (Resolve-Path -LiteralPath $candidate).Path
+            if (-not $resolvedCandidates.Contains($resolved)) {
+                $resolvedCandidates.Add($resolved) | Out-Null
+            }
+        }
+    }
+
+    foreach ($candidate in $resolvedCandidates) {
+        if (Find-FusOperatorForProgrammer -Programmer $candidate) {
+            return $candidate
+        }
+    }
+    if ($resolvedCandidates.Count -gt 0) {
+        return $resolvedCandidates[0]
     }
 
     return $null
@@ -196,6 +251,8 @@ function Write-Summary {
         port = $Port
         ble_stack_binary = $bleStackBinary
         ble_stack_sha256 = if (Test-Path -LiteralPath $bleStackBinary -PathType Leaf) { (Get-FileHash -LiteralPath $bleStackBinary -Algorithm SHA256).Hash.ToLowerInvariant() } else { $null }
+        fus_operator_binary = $fusOperator
+        fus_operator_required = $fusOperatorFileName
         install_address = $installAddress
         install_address_source = "$releaseNotesRelative Wireless Coprocessor Binary Table, STM32WB5xxG(1M), V1.24.0, FUS_v2 only"
         connect_args = $connectArgs
@@ -234,6 +291,7 @@ function Write-Summary {
 }
 
 $programmer = Find-CubeProgrammerCli -RequestedPath $ProgrammerPath
+$fusOperator = Find-FusOperatorForProgrammer -Programmer $programmer
 $lockReadCommand = "pwsh -NoProfile -File C:\Users\Billy\Desktop\Denzic\ai-collaboration-workflow\scripts\aiw.ps1 with-lock -Resource Companion-WB55 -Purpose `"Companion WB55 FUS diagnostic`" -Run pwsh -NoProfile -File .\tools\provision_companion_wireless_stack.ps1 -Execute -WorkflowLockHeld -ReadFusInfo"
 $lockInstallCommand = "pwsh -NoProfile -File C:\Users\Billy\Desktop\Denzic\ai-collaboration-workflow\scripts\aiw.ps1 with-lock -Resource Companion-WB55 -Purpose `"Companion WB55 BLE stack provisioning`" -Run pwsh -NoProfile -File .\tools\provision_companion_wireless_stack.ps1 -Execute -WorkflowLockHeld -InstallBleStack"
 
@@ -247,6 +305,12 @@ Assert-Path -Path $releaseNotes -Label "STM32CubeWB Release_Notes.html"
 if ($CheckOnly -and -not $Execute) {
     Write-Output "CHECK: STM32CubeProgrammer CLI found: $([bool]$programmer)"
     if ($programmer) { Write-Output "CHECK: Programmer: $programmer" }
+    Write-Output "CHECK: FUS operator binary found: $([bool]$fusOperator)"
+    if ($fusOperator) {
+        Write-Output "CHECK: FUS operator: $fusOperator"
+    } else {
+        Write-Output "CHECK: Missing FUS operator: $fusOperatorFileName. Install standalone STM32CubeProgrammer with FlashLoader support files, or set STM32CUBEPROGRAMMER_PATH to that install."
+    }
     Write-Output "CHECK: BLE stack binary: $bleStackRelative"
     Write-Output "CHECK: BLE stack SHA256: $((Get-FileHash -LiteralPath $bleStackBinary -Algorithm SHA256).Hash.ToLowerInvariant())"
     Write-Output "CHECK: Install address: $installAddress"
@@ -259,7 +323,12 @@ if ($CheckOnly -and -not $Execute) {
     Write-Output "CHECK: Real hardware commands must run inside workflow lock:"
     Write-Output "  $lockReadCommand"
     Write-Output "  $lockInstallCommand"
-    Write-Summary -Status "DRY-RUN" -FusWord $null -FusSource $null -FusClass "not_read" -Steps @() -Errors @() -Mode "check-only"
+    $checkErrors = @()
+    if (-not $fusOperator) {
+        $checkErrors += "STM32CubeProgrammer FUS operator '$fusOperatorFileName' was not found next to the selected programmer; -startfus/-fwupgrade cannot run until a complete standalone STM32CubeProgrammer install is available."
+    }
+    $checkStatus = if ($checkErrors.Count -eq 0) { "DRY-RUN" } else { "BLOCKED_TOOLCHAIN" }
+    Write-Summary -Status $checkStatus -FusWord $null -FusSource $null -FusClass "not_read" -Steps @() -Errors $checkErrors -Mode "check-only"
     exit 0
 }
 
@@ -281,6 +350,14 @@ $mode = if ($InstallBleStack) { "install-ble-stack" } else { "read-fus-info" }
 
 if (-not $programmer) {
     throw "STM32CubeProgrammer CLI not found. Install STM32CubeProgrammer, add STM32_Programmer_CLI.exe to PATH, or pass -ProgrammerPath."
+}
+
+$missingFusOperatorMessage = "STM32CubeProgrammer FUS operator '$fusOperatorFileName' was not found next to the selected programmer '$programmer'. Install standalone STM32CubeProgrammer with FlashLoader support files, or set STM32CUBEPROGRAMMER_PATH to that install, before running -startfus/-fwupgrade."
+if (-not $fusOperator) {
+    $status = "BLOCKED_TOOLCHAIN"
+    $errors.Add($missingFusOperatorMessage) | Out-Null
+    Write-Summary -Status $status -FusWord $fusWord -FusSource $fusSource -FusClass $fusClass -Steps @($steps) -Errors @($errors) -Mode $mode
+    throw "Companion WB55 wireless stack provisioning blocked by incomplete STM32CubeProgrammer support files. See $summaryJson"
 }
 
 $actionText = if ($InstallBleStack) { "安装/更新 CPU2 BLE full stack" } else { "读取 FUS 状态" }
