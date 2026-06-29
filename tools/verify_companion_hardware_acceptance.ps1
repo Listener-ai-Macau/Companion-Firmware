@@ -236,6 +236,7 @@ $a1Args = @(
     "-Execute", "-WorkflowLockHeld",
     "-TypeRepoRoot", $typeRoot,
     "-OutDir", $a1Dir,
+    "-SkipInitialProbe",
     "-ProbeTimeoutMs", [string]$ProbeTimeoutMs,
     "-A1TimeoutMs", [string]$A1TimeoutMs,
     "-A1Rounds", [string]$A1Rounds,
