@@ -32,6 +32,7 @@ OTA_LOADER_SYSTEM = (
 FLASH_TOOL = REPO_ROOT / "tools/flash.ps1"
 WIRELESS_STACK_TOOL = REPO_ROOT / "tools/provision_companion_wireless_stack.ps1"
 PACKAGE_TOOL = REPO_ROOT / "tools/package_ota_firmware.ps1"
+OTA_STATIC_WRAPPER = REPO_ROOT / "tools/verify_ota_contract_static.ps1"
 TYPE_PACKAGE_TOOL = REPO_ROOT / "tools/verify_type_companion_package_static.ps1"
 BRINGUP_READINESS_TOOL = REPO_ROOT / "tools/verify_companion_bringup_readiness.ps1"
 MANUAL_GATE_TOOL = REPO_ROOT / "tools/verify_companion_manual_gate_evidence.ps1"
@@ -163,15 +164,57 @@ def check_fixture_report(errors: list[str]) -> None:
     data = json.loads(FIXTURE_REPORT.read_text(encoding="utf-8"))
     require(data.get("status") == "PASS", "OTA manifest fixture report did not PASS", errors)
     cases = {case.get("case"): case for case in data.get("cases", [])}
-    for case_name in ["good", "good_nucleo_bringup", "bad_invalid_hash", "bad_wrong_board", "bad_missing_blockers"]:
+    for case_name in [
+        "good",
+        "good_nucleo_bringup",
+        "bad_invalid_hash",
+        "bad_wrong_board",
+        "bad_missing_blockers",
+        "bad_low_battery",
+        "bad_interrupted_transfer",
+        "bad_recording_active",
+    ]:
         require(case_name in cases, f"missing fixture case: {case_name}", errors)
         if case_name in cases:
             require(cases[case_name].get("status") == "PASS", f"fixture case did not PASS: {case_name}", errors)
     require(REQUIRED_BLOCKERS <= set(data.get("required_blockers", [])), "fixture report missing required blockers", errors)
+    required_bits = data.get("required_blocker_bits", {})
+    for bit, blocker in enumerate(
+        [
+            "recording_active",
+            "transfer_active",
+            "diag_export_active",
+            "low_battery",
+            "wrong_board_target",
+            "invalid_hash",
+            "interrupted_transfer",
+        ]
+    ):
+        require(str(required_bits.get(blocker)) == str(bit), f"fixture report missing blocker bit {blocker}={bit}", errors)
     good = cases.get("good", {})
     require(good.get("actual_valid") is True, "good CE manifest fixture must validate", errors)
     good_nucleo = cases.get("good_nucleo_bringup", {})
     require(good_nucleo.get("actual_valid") is True, "good NUCLEO manifest fixture must validate", errors)
+    expected_messages = {
+        "bad_invalid_hash": "invalid_hash",
+        "bad_wrong_board": "wrong_board_target",
+        "bad_low_battery": "low_battery",
+        "bad_interrupted_transfer": "interrupted_transfer",
+        "bad_recording_active": "recording_active",
+    }
+    for case_name, blocker in expected_messages.items():
+        messages = cases.get(case_name, {}).get("host_messages", [])
+        require(
+            any(item.get("blocker") == blocker and item.get("action") for item in messages),
+            f"fixture case {case_name} missing actionable host message for {blocker}",
+            errors,
+        )
+
+
+def check_validation_entrypoints(errors: list[str]) -> None:
+    wrapper = read_text(OTA_STATIC_WRAPPER, errors)
+    for anchor in ["verify_ota_contract_static.py", "Python 3 is required"]:
+        require(anchor in wrapper, f"verify_ota_contract_static.ps1 missing anchor: {anchor}", errors)
 
 
 def check_reuse_boundary(errors: list[str]) -> None:
@@ -480,6 +523,9 @@ def check_wired_package_tooling(errors: list[str]) -> None:
         "factory\\$factoryPackageName\\manifest.json",
         "restore both the ST BLE_Ota loader and Companion app over SWD",
         "Use STM32CubeProgrammer or tools/flash.ps1 -FlashPackage",
+        "blocker_bitmap",
+        "charger_required",
+        "host_messages",
     ]:
         require(anchor in package, f"package_ota_firmware.ps1 missing wired package anchor: {anchor}", errors)
 
@@ -773,6 +819,7 @@ def main() -> int:
     check_ble_contract(errors)
     check_diag_events(errors)
     check_fixture_report(errors)
+    check_validation_entrypoints(errors)
     check_reuse_boundary(errors)
     check_local_ota_loader(errors)
     check_wired_package_tooling(errors)

@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "created_at_utc": "2026-06-19T00:00:00Z",
+  "firmware": {
+    "project": "Companion-Firmware",
+    "version": "0.1.0-companion-ota",
+    "git_commit": "0000000000000000000000000000000000000000",
+    "board_target": "COMPANION-PENDANT-CE",
+    "mcu": "STM32WB55CEUx"
+  },
+  "image": {
+    "file": "companion_ota_good.bin",
+    "size_bytes": 128,
+    "sha256": "5a878aab98a988c5479b48c00d8e2bef988c946dc648583ffe7ac598d76bacd5"
+  },
+  "compatibility": {
+    "st_reference": "BLE_Ota or BLE_p2pServer_ota",
+    "stm32cube_wb": "v1.24.0",
+    "gatt_contract": "companion_ble_gatt_v1"
+  },
+  "bootloader": {
+    "kind": "stm32wb_resident_bootloader",
+    "recovery": "ROM DFU or SWD via STM32CubeProgrammer",
+    "internal_flash_policy": "single_runnable_app_no_dual_internal_slots",
+    "vector_table_policy": "app_base_linker_offset_with_bootloader_jump"
+  },
+  "external_flash": {
+    "kind": "external_qspi_nor",
+    "ota_staging": "single_ota_staging_partition",
+    "partition_policy": "boot_meta_a_b + ota_staging + recording_cache + diag_log_mirror",
+    "dual_ota_partitions": false
+  },
+  "guards": {
+    "min_battery_percent": 40,
+    "minimum_required_mv": 3700,
+    "charger_required": false,
+    "blockers": [
+      "recording_active",
+      "transfer_active",
+      "diag_export_active",
+      "low_battery",
+      "wrong_board_target",
+      "invalid_hash",
+      "interrupted_transfer"
+    ],
+    "blocker_bitmap": {
+      "recording_active": 0,
+      "transfer_active": 1,
+      "diag_export_active": 2,
+      "low_battery": 3,
+      "wrong_board_target": 4,
+      "invalid_hash": 5,
+      "interrupted_transfer": 6
+    }
+  },
+  "host_messages": {
+    "recording_active": {
+      "message": "Recording is active.",
+      "action": "Stop or save the current recording before starting OTA.",
+      "retryable": true
+    },
+    "transfer_active": {
+      "message": "A large transfer is active.",
+      "action": "Wait for the current recording or diagnostics transfer to finish, then retry OTA.",
+      "retryable": true
+    },
+    "diag_export_active": {
+      "message": "Diagnostics export is active.",
+      "action": "Let diagnostics export finish before offering OTA.",
+      "retryable": true
+    },
+    "low_battery": {
+      "message": "Battery is below the OTA safety threshold.",
+      "action": "Charge the pendant above the package battery and voltage minimum before retrying.",
+      "retryable": true
+    },
+    "wrong_board_target": {
+      "message": "The package targets a different Companion board.",
+      "action": "Choose a package whose board target and MCU match the connected Companion.",
+      "retryable": false
+    },
+    "invalid_hash": {
+      "message": "The package image hash or size does not match the manifest.",
+      "action": "Download or rebuild the package and retry only after the SHA-256 check passes.",
+      "retryable": false
+    },
+    "interrupted_transfer": {
+      "message": "A previous OTA transfer was interrupted.",
+      "action": "Resume or discard the interrupted transfer from the host before starting a new OTA.",
+      "retryable": true
+    }
+  },
+  "preflight_probe": {
+    "battery_percent": 84,
+    "millivolts": 4012,
+    "charger_present": false,
+    "active_blockers": [
+      "recording_active"
+    ],
+    "interrupted_transfer_resume_token": null,
+    "transfer_offered": false
+  },
+  "rollback": {
+    "strategy": "stm32wb_reference_ota_pending_verify",
+    "notes": "rollback is selected with the later ST OTA reference and must not copy ESP bootloader rollback"
+  },
+  "recovery": {
+    "factory_reflash": "Use STM32CubeProgrammer with the accepted Companion image.",
+    "interrupted_transfer": "Report interrupted_transfer and require host recovery before accepting new data."
+  },
+  "post_update_self_checks": [
+    "boot_version_reported",
+    "ble_advertising",
+    "ota_readiness_notify",
+    "diag_log_tail"
+  ]
+}

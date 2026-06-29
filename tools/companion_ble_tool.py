@@ -300,16 +300,27 @@ class CompanionFixtureAdapter:
 
     def read_ota_status(self) -> dict[str, Any]:
         blockers = list(self.ota_fixture.get("required_blockers", []))
+        cases = [case["case"] for case in self.ota_fixture.get("cases", [])]
         return {
             "operation": "ota_status",
             "status": "PASS",
             "ready_state": "not_ready",
             "boot_slot": "slot_a",
             "battery_percent": 18,
+            "charger_present": False,
+            "charger_required": False,
             "minimum_required_mv": 3700,
+            "min_battery_percent": 40,
             "blocker_bitmap_names": blockers,
+            "blocker_bitmap": self.ota_fixture.get("required_blocker_bits", {}),
             "blocked_case": "low_battery",
-            "fixture_cases": [case["case"] for case in self.ota_fixture.get("cases", [])],
+            "fixture_cases": cases,
+            "fixture_blocked_cases": [
+                case
+                for case in cases
+                if case.startswith("bad_")
+            ],
+            "host_messages": self.ota_fixture.get("host_messages", {}),
             "ota_data_path_enabled": False,
         }
 
