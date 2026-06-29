@@ -16,6 +16,7 @@ GATT_HEADER = REPO_ROOT / "app" / "companion_pendant" / "gatt" / "companion_gatt
 GATT_SOURCE = REPO_ROOT / "app" / "companion_pendant" / "gatt" / "companion_gatt_stm32wb.c"
 APP_BLE = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Core" / "Src" / "app_ble.c"
 APP_CONF = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Core" / "Inc" / "app_conf.h"
+MAIN_SOURCE = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Core" / "Src" / "main.c"
 MAKEFILE = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Makefile"
 
 
@@ -152,6 +153,22 @@ def check_nucleo_ble_capacity(errors: list[str]) -> None:
     )
 
 
+def check_nucleo_boot_path(errors: list[str]) -> None:
+    main_source = read(MAIN_SOURCE)
+    boot_selftests = app_conf_define(main_source, "COMPANION_RUN_BOOT_SELFTESTS")
+
+    require(
+        boot_selftests == 0,
+        "COMPANION_RUN_BOOT_SELFTESTS must default to 0 so BLE acceptance reaches the main loop",
+        errors,
+    )
+    require(
+        "#if COMPANION_RUN_BOOT_SELFTESTS" in main_source and "boot_selftests=skipped" in main_source,
+        "main.c must gate boot selftests behind COMPANION_RUN_BOOT_SELFTESTS",
+        errors,
+    )
+
+
 def check_build_integration(errors: list[str]) -> None:
     makefile = read(MAKEFILE)
     for token in [
@@ -186,6 +203,7 @@ def main() -> int:
     check_uuid_table(source, errors)
     check_stm32_surface(source, app_ble, errors)
     check_nucleo_ble_capacity(errors)
+    check_nucleo_boot_path(errors)
     check_build_integration(errors)
     check_forbidden_apis(errors)
 
