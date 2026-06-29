@@ -30,7 +30,7 @@ typedef struct {
 } companion_gatt_service_def_t;
 
 typedef struct {
-    uint16_t service_handle;
+    uint16_t char_service_handles[COMPANION_GATT_CHAR_COUNT];
     uint16_t char_handles[COMPANION_GATT_CHAR_COUNT];
     companion_gatt_event_t queue[COMPANION_GATT_QUEUE_DEPTH];
     uint8_t head;
@@ -181,38 +181,43 @@ static bool companion_gatt_enqueue(companion_gatt_event_type_t type,
     return true;
 }
 
-static tBleStatus companion_gatt_add_char(const companion_gatt_char_def_t *def)
+static tBleStatus companion_gatt_add_char(uint16_t service_handle,
+                                          const companion_gatt_char_def_t *def)
 {
     uint8_t uuid[16];
     companion_gatt_make_uuid(def->uuid_prefix, uuid);
-    return aci_gatt_add_char(s_companion_gatt.service_handle,
-                             UUID_TYPE_128,
-                             (Char_UUID_t *)uuid,
-                             def->value_len,
-                             def->properties,
-                             ATTR_PERMISSION_NONE,
-                             def->event_mask,
-                             COMPANION_GATT_ENCRY_KEY_SIZE,
-                             def->variable,
-                             &s_companion_gatt.char_handles[def->id]);
+    tBleStatus status = aci_gatt_add_char(service_handle,
+                                          UUID_TYPE_128,
+                                          (Char_UUID_t *)uuid,
+                                          def->value_len,
+                                          def->properties,
+                                          ATTR_PERMISSION_NONE,
+                                          def->event_mask,
+                                          COMPANION_GATT_ENCRY_KEY_SIZE,
+                                          def->variable,
+                                          &s_companion_gatt.char_handles[def->id]);
+    if (status == BLE_STATUS_SUCCESS) {
+        s_companion_gatt.char_service_handles[def->id] = service_handle;
+    }
+    return status;
 }
 
 static tBleStatus companion_gatt_add_service(
     const companion_gatt_service_def_t *service)
 {
     uint8_t uuid[16];
+    uint16_t service_handle = 0u;
     companion_gatt_make_uuid(service->uuid_prefix, uuid);
     tBleStatus status = aci_gatt_add_service(UUID_TYPE_128,
                                              (Service_UUID_t *)uuid,
                                              PRIMARY_SERVICE,
                                              service->attr_records,
-                                             &s_companion_gatt.service_handle);
+                                             &service_handle);
     if (status != BLE_STATUS_SUCCESS) {
         return status;
     }
-
     for (uint8_t i = 0u; i < service->char_count; ++i) {
-        status = companion_gatt_add_char(&service->chars[i]);
+        status = companion_gatt_add_char(service_handle, &service->chars[i]);
         if (status != BLE_STATUS_SUCCESS) {
             return status;
         }
@@ -350,11 +355,12 @@ tBleStatus companion_gatt_stm32wb_publish(companion_gatt_char_id_t char_id,
     }
 
     uint16_t char_handle = s_companion_gatt.char_handles[char_id];
-    if (s_companion_gatt.service_handle == 0u || char_handle == 0u) {
+    uint16_t service_handle = s_companion_gatt.char_service_handles[char_id];
+    if (service_handle == 0u || char_handle == 0u) {
         return BLE_STATUS_INVALID_PARAMS;
     }
 
-    return aci_gatt_update_char_value(s_companion_gatt.service_handle,
+    return aci_gatt_update_char_value(service_handle,
                                       char_handle,
                                       0u,
                                       (uint8_t)length,

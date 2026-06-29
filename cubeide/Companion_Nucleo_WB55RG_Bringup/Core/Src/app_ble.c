@@ -42,6 +42,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
+#include <string.h>
 
 /* USER CODE END Includes */
 
@@ -137,6 +138,26 @@ static comp_audio_stream_t s_companion_audio_stream;
 static uint32_t s_companion_audio_next_session_id = 1u;
 static bool s_companion_ble_connected = false;
 static Companion_BleLinkMode_t s_companion_ble_link_mode = COMPANION_BLE_LINK_MODE_NONE;
+static uint32_t s_companion_gatt_card_refresh_count = 0u;
+static companion_gatt_card_status_v1_t s_companion_gatt_card_status = {
+    .schema_version = 1u,
+    .card_slot = 0u,
+    .render_state = 0u,
+    .last_error = 0u,
+    .request_id = 0u,
+    .content_crc32 = 0u,
+    .refresh_count = 0u,
+};
+static companion_gatt_settings_v1_t s_companion_gatt_settings = {
+    .schema_version = 1u,
+    .locale = 0u,
+    .flags = 0u,
+    .time_zone_offset_min = 0,
+    .quiet_hours_start_min = 0u,
+    .quiet_hours_end_min = 0u,
+    .display_brightness = 80u,
+    .recorder_profile_id = 1u,
+};
 static uint32_t s_companion_audio_notify_enabled_count = 0u;
 static uint32_t s_companion_audio_notify_disabled_count = 0u;
 static uint32_t s_companion_audio_control_write_count = 0u;
@@ -164,6 +185,26 @@ static void Companion_Gatt_Init(void);
 static void Companion_Gatt_Task(void);
 static void Companion_Gatt_HandleEvent(const companion_gatt_event_t *event,
                                        void *context);
+static void Companion_Gatt_PublishInitialState(void);
+static void Companion_Gatt_PublishCurrent(companion_gatt_char_id_t char_id);
+static void Companion_Gatt_PublishDeviceStatus(void);
+static void Companion_Gatt_PublishBatteryCharge(void);
+static void Companion_Gatt_PublishCardStatus(uint32_t request_id,
+                                             uint8_t render_state,
+                                             uint8_t last_error,
+                                             uint32_t content_crc32);
+static void Companion_Gatt_PublishRecordingControlEcho(
+    const companion_gatt_recording_control_v1_t *request);
+static void Companion_Gatt_PublishRecordingList(void);
+static void Companion_Gatt_PublishRecordingChunkRefusal(
+    const companion_gatt_recording_chunk_pull_v1_t *request);
+static void Companion_Gatt_PublishSettings(void);
+static void Companion_Gatt_PublishDiagLogResponse(
+    const companion_gatt_diag_log_pull_v1_t *request);
+static void Companion_Gatt_PublishDeletePrivacyRefusal(
+    const companion_gatt_delete_privacy_v1_t *request);
+static void Companion_Gatt_PublishOtaReadiness(void);
+static uint32_t Companion_Gatt_Fnv1a(const uint8_t *data, uint16_t length);
 static void Companion_Audio_Control(void *context,
                                     comp_audio_control_t control,
                                     const uint8_t *data,
@@ -536,6 +577,7 @@ static void Companion_Gatt_Init(void)
   }
   else
   {
+    Companion_Gatt_PublishInitialState();
     APP_DBG_MSG("  Success: Companion native GATT service init\n");
   }
 }
@@ -559,6 +601,335 @@ static void Companion_Gatt_HandleEvent(const companion_gatt_event_t *event,
               companion_gatt_char_name(event->char_id),
               (unsigned int)event->type,
               (unsigned int)event->payload_len);
+
+  if (event->type == COMPANION_GATT_EVENT_NOTIFY_ENABLED)
+  {
+    Companion_Gatt_PublishCurrent(event->char_id);
+    return;
+  }
+
+  if (event->type != COMPANION_GATT_EVENT_WRITE)
+  {
+    return;
+  }
+
+  switch (event->char_id)
+  {
+    case COMPANION_GATT_CHAR_E_PAPER_CARD_WRITE:
+    {
+      companion_gatt_card_write_v1_t request;
+      companion_gatt_parse_result_t parse_result =
+          companion_gatt_parse_card_write_v1(event->payload,
+                                             event->payload_len,
+                                             &request);
+      if (parse_result == COMPANION_GATT_PARSE_OK)
+      {
+        uint16_t header_len = (uint16_t)sizeof(request);
+        uint16_t content_len = (uint16_t)(event->payload_len - header_len);
+        Companion_Gatt_PublishCardStatus(
+            request.request_id,
+            1u,
+            0u,
+            Companion_Gatt_Fnv1a(&event->payload[header_len], content_len));
+      }
+      else
+      {
+        Companion_Gatt_PublishCardStatus(0u, 3u, (uint8_t)parse_result, 0u);
+      }
+      break;
+    }
+
+    case COMPANION_GATT_CHAR_RECORDING_CONTROL:
+    {
+      companion_gatt_recording_control_v1_t request;
+      if (companion_gatt_parse_recording_control_v1(event->payload,
+                                                    event->payload_len,
+                                                    &request) ==
+          COMPANION_GATT_PARSE_OK)
+      {
+        Companion_Gatt_PublishRecordingControlEcho(&request);
+      }
+      Companion_Gatt_PublishRecordingList();
+      break;
+    }
+
+    case COMPANION_GATT_CHAR_RECORDING_CHUNK_PULL:
+    {
+      companion_gatt_recording_chunk_pull_v1_t request;
+      if (companion_gatt_parse_recording_chunk_pull_v1(event->payload,
+                                                       event->payload_len,
+                                                       &request) ==
+          COMPANION_GATT_PARSE_OK)
+      {
+        Companion_Gatt_PublishRecordingChunkRefusal(&request);
+      }
+      break;
+    }
+
+    case COMPANION_GATT_CHAR_SETTINGS:
+    {
+      companion_gatt_settings_v1_t request;
+      if (companion_gatt_parse_settings_v1(event->payload,
+                                           event->payload_len,
+                                           &request) ==
+          COMPANION_GATT_PARSE_OK)
+      {
+        s_companion_gatt_settings = request;
+        Companion_Gatt_PublishSettings();
+      }
+      break;
+    }
+
+    case COMPANION_GATT_CHAR_DIAGNOSTICS_LOG_PULL:
+    {
+      companion_gatt_diag_log_pull_v1_t request;
+      if (companion_gatt_parse_diag_log_pull_v1(event->payload,
+                                                event->payload_len,
+                                                &request) ==
+          COMPANION_GATT_PARSE_OK)
+      {
+        Companion_Gatt_PublishDiagLogResponse(&request);
+      }
+      break;
+    }
+
+    case COMPANION_GATT_CHAR_DELETE_PRIVACY:
+    {
+      companion_gatt_delete_privacy_v1_t request;
+      if (companion_gatt_parse_delete_privacy_v1(event->payload,
+                                                 event->payload_len,
+                                                 &request) ==
+          COMPANION_GATT_PARSE_OK)
+      {
+        Companion_Gatt_PublishDeletePrivacyRefusal(&request);
+        Companion_Gatt_PublishRecordingList();
+      }
+      break;
+    }
+
+    default:
+      break;
+  }
+}
+
+static void Companion_Gatt_PublishInitialState(void)
+{
+  Companion_Gatt_PublishDeviceStatus();
+  Companion_Gatt_PublishBatteryCharge();
+  Companion_Gatt_PublishCardStatus(0u, 0u, 0u, 0u);
+  Companion_Gatt_PublishRecordingList();
+  Companion_Gatt_PublishSettings();
+  Companion_Gatt_PublishOtaReadiness();
+}
+
+static void Companion_Gatt_PublishCurrent(companion_gatt_char_id_t char_id)
+{
+  switch (char_id)
+  {
+    case COMPANION_GATT_CHAR_DEVICE_STATUS:
+      Companion_Gatt_PublishDeviceStatus();
+      break;
+
+    case COMPANION_GATT_CHAR_BATTERY_CHARGE:
+      Companion_Gatt_PublishBatteryCharge();
+      break;
+
+    case COMPANION_GATT_CHAR_E_PAPER_CARD_STATUS:
+      (void)companion_gatt_stm32wb_publish(
+          COMPANION_GATT_CHAR_E_PAPER_CARD_STATUS,
+          (const uint8_t *)&s_companion_gatt_card_status,
+          (uint16_t)sizeof(s_companion_gatt_card_status));
+      break;
+
+    case COMPANION_GATT_CHAR_RECORDING_LIST:
+      Companion_Gatt_PublishRecordingList();
+      break;
+
+    case COMPANION_GATT_CHAR_SETTINGS:
+      Companion_Gatt_PublishSettings();
+      break;
+
+    case COMPANION_GATT_CHAR_OTA_READINESS:
+      Companion_Gatt_PublishOtaReadiness();
+      break;
+
+    default:
+      break;
+  }
+}
+
+static void Companion_Gatt_PublishDeviceStatus(void)
+{
+  companion_gatt_device_status_v1_t status = {
+      .schema_version = 1u,
+      .active_mode = s_companion_audio_stream.notify_enabled ? 1u :
+                     (s_companion_ble_connected ? 2u : 0u),
+      .fault_bitmap = 0u,
+      .firmware_version = 0x00010001u,
+      .build_id = 0x0DB7E50Du,
+      .board_id = 0xB55A0001u,
+      .uptime_ms = HAL_GetTick(),
+  };
+
+  (void)companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_DEVICE_STATUS,
+                                       (const uint8_t *)&status,
+                                       (uint16_t)sizeof(status));
+}
+
+static void Companion_Gatt_PublishBatteryCharge(void)
+{
+  companion_gatt_battery_charge_v1_t status = {
+      .schema_version = 1u,
+      .percent = 100u,
+      .charge_state = 1u,
+      .charger_present = 1u,
+      .millivolts = 5000u,
+      .temperature_c_x10 = 250,
+  };
+
+  (void)companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_BATTERY_CHARGE,
+                                       (const uint8_t *)&status,
+                                       (uint16_t)sizeof(status));
+}
+
+static void Companion_Gatt_PublishCardStatus(uint32_t request_id,
+                                             uint8_t render_state,
+                                             uint8_t last_error,
+                                             uint32_t content_crc32)
+{
+  s_companion_gatt_card_status.schema_version = 1u;
+  s_companion_gatt_card_status.card_slot = 0u;
+  s_companion_gatt_card_status.render_state = render_state;
+  s_companion_gatt_card_status.last_error = last_error;
+  s_companion_gatt_card_status.request_id = request_id;
+  s_companion_gatt_card_status.content_crc32 = content_crc32;
+  s_companion_gatt_card_status.refresh_count = ++s_companion_gatt_card_refresh_count;
+
+  (void)companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_E_PAPER_CARD_STATUS,
+                                       (const uint8_t *)&s_companion_gatt_card_status,
+                                       (uint16_t)sizeof(s_companion_gatt_card_status));
+}
+
+static void Companion_Gatt_PublishRecordingControlEcho(
+    const companion_gatt_recording_control_v1_t *request)
+{
+  if (request == NULL)
+  {
+    return;
+  }
+
+  (void)companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_RECORDING_CONTROL,
+                                       (const uint8_t *)request,
+                                       (uint16_t)sizeof(*request));
+}
+
+static void Companion_Gatt_PublishRecordingList(void)
+{
+  companion_gatt_recording_list_v1_t list = {
+      .schema_version = 1u,
+      .count = 0u,
+      .entry_bytes = 0u,
+  };
+
+  (void)companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_RECORDING_LIST,
+                                       (const uint8_t *)&list,
+                                       (uint16_t)sizeof(list));
+}
+
+static void Companion_Gatt_PublishRecordingChunkRefusal(
+    const companion_gatt_recording_chunk_pull_v1_t *request)
+{
+  if (request == NULL)
+  {
+    return;
+  }
+
+  companion_gatt_recording_chunk_pull_v1_t response = *request;
+  response.schema_version = 1u;
+  response.flags |= 0x80u;
+  response.requested_length = 0u;
+  (void)companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_RECORDING_CHUNK_PULL,
+                                       (const uint8_t *)&response,
+                                       (uint16_t)sizeof(response));
+}
+
+static void Companion_Gatt_PublishSettings(void)
+{
+  s_companion_gatt_settings.schema_version = 1u;
+  (void)companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_SETTINGS,
+                                       (const uint8_t *)&s_companion_gatt_settings,
+                                       (uint16_t)sizeof(s_companion_gatt_settings));
+}
+
+static void Companion_Gatt_PublishDiagLogResponse(
+    const companion_gatt_diag_log_pull_v1_t *request)
+{
+  if (request == NULL)
+  {
+    return;
+  }
+
+  companion_gatt_diag_log_pull_v1_t response = *request;
+  response.schema_version = 1u;
+  response.cursor = request->cursor + 1u;
+  response.max_events = request->max_events == 0u ? 0u : 1u;
+  if (response.max_bytes > 64u)
+  {
+    response.max_bytes = 64u;
+  }
+
+  (void)companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_DIAGNOSTICS_LOG_PULL,
+                                       (const uint8_t *)&response,
+                                       (uint16_t)sizeof(response));
+}
+
+static void Companion_Gatt_PublishDeletePrivacyRefusal(
+    const companion_gatt_delete_privacy_v1_t *request)
+{
+  if (request == NULL)
+  {
+    return;
+  }
+
+  companion_gatt_delete_privacy_v1_t response = *request;
+  response.schema_version = 1u;
+  response.flags |= 0x0001u;
+  (void)companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_DELETE_PRIVACY,
+                                       (const uint8_t *)&response,
+                                       (uint16_t)sizeof(response));
+}
+
+static void Companion_Gatt_PublishOtaReadiness(void)
+{
+  static const uint8_t sha_prefix[8] = {
+      0xBEu, 0xFAu, 0xEBu, 0x26u, 0x11u, 0x66u, 0x0Du, 0x9Eu,
+  };
+  companion_gatt_ota_readiness_v1_t readiness = {
+      .schema_version = 1u,
+      .ready_state = 1u,
+      .boot_slot = 0u,
+      .battery_percent = 100u,
+      .minimum_required_mv = 3700u,
+      .blocker_bitmap = 0x0010u,
+      .manifest_version = 1u,
+      .image_size = 68240u,
+  };
+  memcpy(readiness.image_sha256_prefix, sha_prefix, sizeof(sha_prefix));
+
+  (void)companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_OTA_READINESS,
+                                       (const uint8_t *)&readiness,
+                                       (uint16_t)sizeof(readiness));
+}
+
+static uint32_t Companion_Gatt_Fnv1a(const uint8_t *data, uint16_t length)
+{
+  uint32_t hash = 2166136261u;
+  for (uint16_t i = 0u; i < length; ++i)
+  {
+    hash ^= data[i];
+    hash *= 16777619u;
+  }
+  return hash;
 }
 
 static void Companion_Audio_UpdateDebugStatus(void)

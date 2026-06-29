@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Static checks for the Companion STM32WB GATT skeleton."""
+"""Static checks for the Companion STM32WB GATT bench surface."""
 
 from __future__ import annotations
 
@@ -101,6 +101,18 @@ def check_stm32_surface(source: str, app_ble: str, errors: list[str]) -> None:
     ]:
         require(anchor in source or anchor in app_ble, f"missing STM32 GATT anchor {anchor}", errors)
 
+    for anchor in [
+        "char_service_handles",
+        "companion_gatt_add_char(uint16_t service_handle",
+        "aci_gatt_update_char_value(service_handle",
+    ]:
+        require(anchor in source, f"missing per-characteristic service handle guard {anchor}", errors)
+    require(
+        "s_companion_gatt.service_handle" not in source,
+        "GATT publish must not use a single overwritten service handle for every characteristic",
+        errors,
+    )
+
     start = source.find("static SVCCTL_EvtAckStatus_t companion_gatt_stm32wb_event_handler")
     end = source.find("static companion_gatt_parse_result_t companion_gatt_copy_fixed")
     require(start >= 0 and end > start, "missing GATT event handler body", errors)
@@ -119,6 +131,17 @@ def check_stm32_surface(source: str, app_ble: str, errors: list[str]) -> None:
 
     require("UTIL_SEQ_SetTask" in app_ble, "app must schedule queued GATT work through STM32 sequencer", errors)
     require("CFG_TASK_COMPANION_GATT_ID" in read(APP_CONF), "app_conf must define Companion GATT task id", errors)
+
+    for anchor in [
+        "Companion_Gatt_PublishInitialState",
+        "Companion_Gatt_PublishCardStatus",
+        "Companion_Gatt_PublishRecordingChunkRefusal",
+        "Companion_Gatt_PublishDeletePrivacyRefusal",
+        "Companion_Gatt_PublishOtaReadiness",
+        "companion_gatt_parse_card_write_v1",
+        "companion_gatt_parse_delete_privacy_v1",
+    ]:
+        require(anchor in app_ble, f"app_ble.c missing real GATT bench response anchor {anchor}", errors)
 
 
 def app_conf_define(text: str, name: str) -> int | None:
@@ -230,7 +253,7 @@ def main() -> int:
             print(f" - {error}", file=sys.stderr)
         return 1
 
-    print("PASS: Companion STM32WB GATT skeleton static checks passed.")
+    print("PASS: Companion STM32WB GATT bench static checks passed.")
     return 0
 
 
