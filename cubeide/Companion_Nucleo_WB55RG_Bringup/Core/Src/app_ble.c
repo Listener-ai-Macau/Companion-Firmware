@@ -37,6 +37,7 @@
 #endif /* OTA_SBSFU */
 
 #include "audio_stream_stm32wb.h"
+#include "companion_gatt_stm32wb.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -150,6 +151,10 @@ static void Adv_Request(void);
 
 /* USER CODE BEGIN PFP */
 static void Companion_Audio_Init(void);
+static void Companion_Gatt_Init(void);
+static void Companion_Gatt_Task(void);
+static void Companion_Gatt_HandleEvent(const companion_gatt_event_t *event,
+                                       void *context);
 static void Companion_Audio_Control(void *context,
                                     comp_audio_control_t control,
                                     const uint8_t *data,
@@ -259,6 +264,7 @@ void APP_BLE_Init( void )
    */
   SVCCTL_Init();
   Companion_Audio_Init();
+  Companion_Gatt_Init();
   UTIL_SEQ_RegTask(1 << CFG_TASK_SW1_BUTTON_PUSHED_ID,
                    UTIL_SEQ_RFU,
                    Companion_Ble_Button1Task);
@@ -268,6 +274,9 @@ void APP_BLE_Init( void )
   UTIL_SEQ_RegTask(1 << CFG_TASK_SW3_BUTTON_PUSHED_ID,
                    UTIL_SEQ_RFU,
                    Companion_Ble_Button3Task);
+  UTIL_SEQ_RegTask(1 << CFG_TASK_COMPANION_GATT_ID,
+                   UTIL_SEQ_RFU,
+                   Companion_Gatt_Task);
 
   /**
    * From here, all initialization are BLE application specific
@@ -510,6 +519,40 @@ static void Companion_Ble_Button3Task(void)
                                  7u);
 }
 
+static void Companion_Gatt_Init(void)
+{
+  tBleStatus status = companion_gatt_stm32wb_init();
+  if (status != BLE_STATUS_SUCCESS)
+  {
+    APP_DBG_MSG("  Fail   : Companion native GATT service init, result: 0x%x\n", status);
+  }
+  else
+  {
+    APP_DBG_MSG("  Success: Companion native GATT service init\n");
+  }
+}
+
+static void Companion_Gatt_Task(void)
+{
+  (void)companion_gatt_stm32wb_drain(Companion_Gatt_HandleEvent, NULL);
+}
+
+static void Companion_Gatt_HandleEvent(const companion_gatt_event_t *event,
+                                       void *context)
+{
+  (void)context;
+
+  if (event == NULL)
+  {
+    return;
+  }
+
+  APP_DBG_MSG("  Info   : Companion GATT %s event=%u len=%u\n",
+              companion_gatt_char_name(event->char_id),
+              (unsigned int)event->type,
+              (unsigned int)event->payload_len);
+}
+
 static void Companion_Audio_Control(void *context,
                                     comp_audio_control_t control,
                                     const uint8_t *data,
@@ -626,6 +669,11 @@ void comp_audio_stream_stm32wb_app_notification(
     default:
       break;
   }
+}
+
+void companion_gatt_stm32wb_schedule_task(void)
+{
+  UTIL_SEQ_SetTask(1 << CFG_TASK_COMPANION_GATT_ID, CFG_SCH_PRIO_0);
 }
 
 static bool Companion_Ble_IsConnected(void)

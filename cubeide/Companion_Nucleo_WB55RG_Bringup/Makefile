@@ -41,6 +41,7 @@ INC_DIRS := \
 	$(CUBE)/Drivers/CMSIS/Include \
 	$(ROOT)/app/companion_pendant/audio_stream \
 	$(ROOT)/app/companion_pendant/diag_log \
+	$(ROOT)/app/companion_pendant/gatt \
 	$(ROOT)/app/companion_pendant/recording
 
 INCLUDES := $(addprefix -I,$(INC_DIRS))
@@ -102,6 +103,7 @@ C_SOURCES := \
 	$(ROOT)/app/companion_pendant/audio_stream/audio_stream.c \
 	$(ROOT)/app/companion_pendant/audio_stream/audio_stream_stm32wb.c \
 	$(ROOT)/app/companion_pendant/diag_log/diag_log.c \
+	$(ROOT)/app/companion_pendant/gatt/companion_gatt_stm32wb.c \
 	$(ROOT)/app/companion_pendant/recording/microphone.c \
 	$(ROOT)/app/companion_pendant/recording/recording_fsm.c
 
