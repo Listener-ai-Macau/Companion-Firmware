@@ -57,13 +57,20 @@ The Companion manifest is validated before the host offers an update. It covers:
 - board target and MCU compatibility
 - image size and SHA-256 hash
 - compatibility with the STM32CubeWB baseline and Companion GATT contract
-- low-battery guard
+- low-battery guard, `minimum_required_mv`, and whether the package requires a
+  connected charger before transfer
+- the stable `blocker_bitmap` mapping used by the OTA readiness characteristic
+- user-actionable host messages for wrong board, invalid hash, low battery,
+  active recording, active transfer, diagnostics export, and interrupted
+  transfer blockers
 - rollback notes
 - recovery notes
 - required post-update self-checks
 
 The low-battery guard is a policy gate, not a user-facing prompt in this step.
 The host should treat a low-battery blocker as retryable after charge.
+The host must not offer a transfer while any required blocker bit is set or
+while the manifest image size/SHA-256 check fails.
 
 Required blockers:
 
@@ -74,6 +81,11 @@ Required blockers:
 - `wrong_board_target`
 - `invalid_hash`
 - `interrupted_transfer`
+
+The fixture manifest report covers valid CE and NUCLEO packages plus negative
+cases for wrong board, missing blockers, invalid hash, low battery, interrupted
+transfer, and active recording. Each negative case carries the host action that
+Type or another host surface can show before enabling any OTA data path.
 
 ## Shared Wireless And Wired Package
 

@@ -41,6 +41,54 @@ $requiredBlockers = @(
     "interrupted_transfer"
 )
 
+$requiredBlockerBits = [ordered]@{
+    recording_active = 0
+    transfer_active = 1
+    diag_export_active = 2
+    low_battery = 3
+    wrong_board_target = 4
+    invalid_hash = 5
+    interrupted_transfer = 6
+}
+
+$hostActionMessages = [ordered]@{
+    recording_active = [ordered]@{
+        message = "Recording is active."
+        action = "Stop or save the current recording before starting OTA."
+        retryable = $true
+    }
+    transfer_active = [ordered]@{
+        message = "A large transfer is active."
+        action = "Wait for the current recording or diagnostics transfer to finish, then retry OTA."
+        retryable = $true
+    }
+    diag_export_active = [ordered]@{
+        message = "Diagnostics export is active."
+        action = "Let diagnostics export finish before offering OTA."
+        retryable = $true
+    }
+    low_battery = [ordered]@{
+        message = "Battery is below the OTA safety threshold."
+        action = "Charge the pendant above the package battery and voltage minimum before retrying."
+        retryable = $true
+    }
+    wrong_board_target = [ordered]@{
+        message = "The package targets a different Companion board."
+        action = "Choose a package whose board target and MCU match the connected Companion."
+        retryable = $false
+    }
+    invalid_hash = [ordered]@{
+        message = "The package image hash or size does not match the manifest."
+        action = "Download or rebuild the package and retry only after the SHA-256 check passes."
+        retryable = $false
+    }
+    interrupted_transfer = [ordered]@{
+        message = "A previous OTA transfer was interrupted."
+        action = "Resume or discard the interrupted transfer from the host before starting a new OTA."
+        retryable = $true
+    }
+}
+
 $requiredSelfChecks = @(
     "boot_version_reported",
     "ble_advertising",
@@ -188,8 +236,11 @@ $manifest = [ordered]@{
     guards = [ordered]@{
         min_battery_percent = $MinBatteryPercent
         minimum_required_mv = $minimumRequiredMv
+        charger_required = $false
         blockers = $requiredBlockers
+        blocker_bitmap = $requiredBlockerBits
     }
+    host_messages = $hostActionMessages
     rollback = [ordered]@{
         strategy = "stm32wb_reference_ota_pending_verify"
         notes = "Resident bootloader verifies external QSPI ota_staging before installing the single runnable CPU1 app."

@@ -202,6 +202,12 @@ The `blocker_bitmap` names are stable host-facing values:
 | 5 | invalid_hash | Manifest SHA-256 does not match the package payload. |
 | 6 | interrupted_transfer | A previous OTA transfer stopped before verification and must be recovered or discarded. |
 
+The host preflight maps each blocker bit to a concrete user action before any
+transfer button is enabled. Wrong-board and invalid-hash blockers require a new
+package; low-battery requires charge above both manifest thresholds; recording,
+transfer, diagnostics, and interrupted-transfer blockers require clearing the
+named active state first.
+
 Every readiness transition should emit bounded diagnostic events under the
 `ota` source, including `ota.manifest`, `ota.readiness`, `ota.blocker`,
 `ota.interrupted_transfer`, and `ota.post_update_self_check`.

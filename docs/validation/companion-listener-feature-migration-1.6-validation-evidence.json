@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "plan": "companion-listener-feature-migration",
+  "step_id": "1.6",
+  "generated_at": "2026-06-29T14:21:02.0748989+08:00",
+  "result": "PASS",
+  "repo_root": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware",
+  "worktree": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-wt-codex-companion-listener-feature-migration-1.6",
+  "branch": "ai/codex-companion-listener-feature-migration-1.6",
+  "commit": "d79749143885d67f191979a3339f7696a0b12bae",
+  "branch_mode": "branch_required",
+  "timeout_seconds": 120,
+  "commands": [
+    {
+      "index": 1,
+      "command": "pwsh -NoProfile -File .\\tools\\check_ota_manifest.ps1 -Fixtures",
+      "runnable": true,
+      "worktree": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-wt-codex-companion-listener-feature-migration-1.6",
+      "branch": "ai/codex-companion-listener-feature-migration-1.6",
+      "commit": "d79749143885d67f191979a3339f7696a0b12bae",
+      "status": "PASS",
+      "started_at": "2026-06-29T14:20:55.6476726+08:00",
+      "finished_at": "2026-06-29T14:20:58.0989816+08:00",
+      "duration_ms": 2451,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_summary": [
+        "PASS: Companion OTA manifest fixture validation -> docs/validation/companion-pendant-firmware-bringup-1.8-ota-manifest-fixtures.json"
+      ],
+      "stderr_summary": [],
+      "output_sha256": "d8cf938c369dbfd49b6115bcf5749daa92e9f5a504233e7448c656519e6aab03",
+      "evidence_refs": [],
+      "artifacts": []
+    },
+    {
+      "index": 2,
+      "command": "pwsh -NoProfile -File .\\tools\\verify_ota_contract_static.ps1",
+      "runnable": true,
+      "worktree": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-wt-codex-companion-listener-feature-migration-1.6",
+      "branch": "ai/codex-companion-listener-feature-migration-1.6",
+      "commit": "d79749143885d67f191979a3339f7696a0b12bae",
+      "status": "PASS",
+      "started_at": "2026-06-29T14:20:58.1574533+08:00",
+      "finished_at": "2026-06-29T14:21:00.1493995+08:00",
+      "duration_ms": 1992,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_summary": [
+        "PASS: Companion OTA readiness contract static checks passed."
+      ],
+      "stderr_summary": [],
+      "output_sha256": "815ead27e1100861f6d6616d8bc969fb3425e91317a7903df7919b66b304e627",
+      "evidence_refs": [],
+      "artifacts": []
+    },
+    {
+      "index": 3,
+      "command": "python .\\tools\\companion_ble_tool.py --self-test",
+      "runnable": true,
+      "worktree": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-wt-codex-companion-listener-feature-migration-1.6",
+      "branch": "ai/codex-companion-listener-feature-migration-1.6",
+      "commit": "d79749143885d67f191979a3339f7696a0b12bae",
+      "status": "PASS",
+      "started_at": "2026-06-29T14:21:00.1508825+08:00",
+      "finished_at": "2026-06-29T14:21:01.2140590+08:00",
+      "duration_ms": 1063,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_summary": [
+        "PASS: Companion BLE fixture self-test wrote docs/validation/companion_ble_matrix.json with 9 operation(s), 12 matrix case(s), and 12 actionable failure(s)."
+      ],
+      "stderr_summary": [],
+      "output_sha256": "27f807b8fb08d344c5347d98eae983227cf02f686350d05cecf78c9cf2a47497",
+      "evidence_refs": [],
+      "artifacts": []
+    },
+    {
+      "index": 4,
+      "command": "git diff --check",
+      "runnable": true,
+      "worktree": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-wt-codex-companion-listener-feature-migration-1.6",
+      "branch": "ai/codex-companion-listener-feature-migration-1.6",
+      "commit": "d79749143885d67f191979a3339f7696a0b12bae",
+      "status": "PASS",
+      "started_at": "2026-06-29T14:21:01.2172689+08:00",
+      "finished_at": "2026-06-29T14:21:02.0738854+08:00",
+      "duration_ms": 857,
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_summary": [],
+      "stderr_summary": [
+        "warning: in the working copy of 'docs/ble_gatt_contract.md', LF will be replaced by CRLF the next time Git touches it",
+        "warning: in the working copy of 'docs/ota_readiness.md', LF will be replaced by CRLF the next time Git touches it",
+        "warning: in the working copy of 'tools/check_ota_manifest.ps1', LF will be replaced by CRLF the next time Git touches it",
+        "warning: in the working copy of 'tools/companion_ble_tool.py', LF will be replaced by CRLF the next time Git touches it",
+        "warning: in the working copy of 'tools/package_ota_firmware.ps1', LF will be replaced by CRLF the next time Git touches it",
+        "warning: in the working copy of 'tools/verify_ota_contract_static.py', LF will be replaced by CRLF the next time Git touches it"
+      ],
+      "output_sha256": "d69944db057e63e8383c5a02b5c0e5932c240926b77498c31044bf4760e31967",
+      "evidence_refs": [],
+      "artifacts": []
+    }
+  ],
+  "errors": []
+}
