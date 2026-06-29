@@ -16,6 +16,7 @@ GATT_HEADER = REPO_ROOT / "app" / "companion_pendant" / "gatt" / "companion_gatt
 GATT_SOURCE = REPO_ROOT / "app" / "companion_pendant" / "gatt" / "companion_gatt_stm32wb.c"
 APP_BLE = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Core" / "Src" / "app_ble.c"
 APP_CONF = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Core" / "Inc" / "app_conf.h"
+BLE_CONF = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Core" / "Inc" / "ble_conf.h"
 MAIN_SOURCE = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Core" / "Src" / "main.c"
 MAKEFILE = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Makefile"
 
@@ -129,12 +130,14 @@ def app_conf_define(text: str, name: str) -> int | None:
 
 def check_nucleo_ble_capacity(errors: list[str]) -> None:
     app_conf = read(APP_CONF)
+    ble_conf = read(BLE_CONF)
     uuid_table = json.loads(UUID_TABLE.read_text(encoding="utf-8"))
     required_services = 2 + 1 + len(uuid_table["services"])
 
     service_count = app_conf_define(app_conf, "CFG_BLE_NUM_GATT_SERVICES")
     attr_count = app_conf_define(app_conf, "CFG_BLE_NUM_GATT_ATTRIBUTES")
     value_array_size = app_conf_define(app_conf, "CFG_BLE_ATT_VALUE_ARRAY_SIZE")
+    service_callback_count = app_conf_define(ble_conf, "BLE_CFG_SVC_MAX_NBR_CB")
 
     require(
         service_count is not None and service_count >= required_services,
@@ -149,6 +152,11 @@ def check_nucleo_ble_capacity(errors: list[str]) -> None:
     require(
         value_array_size is not None and value_array_size >= 4096,
         "CFG_BLE_ATT_VALUE_ARRAY_SIZE must be sized for 248-byte notify/read values",
+        errors,
+    )
+    require(
+        service_callback_count is not None and service_callback_count >= 2,
+        "BLE_CFG_SVC_MAX_NBR_CB must cover both VKA1 audio and Companion-native GATT service handlers",
         errors,
     )
 
