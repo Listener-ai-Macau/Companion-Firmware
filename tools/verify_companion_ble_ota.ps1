@@ -351,7 +351,7 @@ if ($PrepareLoaderWithSwd) {
 if ($PromptOperator) {
     Show-OperatorPrompt `
         -Title "Companion BLE OTA 验证即将开始" `
-        -Message "请确认 Companion 已刷入 OTA loader，设备蓝牙名为 companion，Listener Type 后台未在录音/传输，电脑蓝牙可连接。点击 OK 后脚本会通过 Type headless BLE OTA 把同一个 Companion package 传输到设备，并把 firmware_ota_result_json 证据写入：$outDirResolved"
+        -Message "请确认 Companion 已开机，电脑蓝牙可用，Listener Type 没有正在录音或传输。点击 OK 后会开始蓝牙升级；升级过程中不要断电、不要关闭 Listener Type。设备重启或短暂断开再恢复是正常现象。"
 }
 
 $errors = [System.Collections.Generic.List[string]]::new()
@@ -383,11 +383,11 @@ try {
         $errors.Add("Type OTA report status is '$($typeReport.status)', expected PASS.") | Out-Null
     }
     if ($typeReport -and $typeReport.transfer) {
-        if ([string]$typeReport.transfer.transport -ne "stm32wb_st_ble_ota") {
-            $errors.Add("Type OTA transfer transport is '$($typeReport.transfer.transport)', expected stm32wb_st_ble_ota.") | Out-Null
+        if ([string]$typeReport.transfer.transport -ne "companion_ota_v2") {
+            $errors.Add("Type OTA transfer transport is '$($typeReport.transfer.transport)', expected companion_ota_v2.") | Out-Null
         }
         if (-not [bool]$typeReport.transfer.versionConfirmed) {
-            $errors.Add("Type OTA report did not confirm STM32WB ST reboot handoff.") | Out-Null
+            $errors.Add("Type OTA report did not confirm Companion OTA v2 completion/reboot handoff.") | Out-Null
         }
     } elseif ($typeReport) {
         $errors.Add("Type OTA report did not include transfer details.") | Out-Null

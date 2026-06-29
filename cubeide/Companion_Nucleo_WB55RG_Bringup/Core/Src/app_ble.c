@@ -45,6 +45,12 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
+typedef enum
+{
+  COMPANION_BLE_LINK_MODE_NONE = 0,
+  COMPANION_BLE_LINK_MODE_ACTIVE_AUDIO = 1,
+  COMPANION_BLE_LINK_MODE_IDLE = 2,
+} Companion_BleLinkMode_t;
 
 /* USER CODE END PTD */
 
@@ -55,6 +61,18 @@
 #define COMPANION_BLE_BONDING_MODE 0
 #define COMPANION_BLE_MITM_PROTECTION 0
 #define COMPANION_BLE_ADDRESS_OFFSET 0u
+#define COMPANION_BLE_CONN_HANDLE_INVALID 0xFFFFu
+#define COMPANION_BLE_LINK_ACTIVE_INTERVAL_MIN 0x0006u
+#define COMPANION_BLE_LINK_ACTIVE_INTERVAL_MAX 0x0006u
+#define COMPANION_BLE_LINK_ACTIVE_LATENCY 0x0000u
+#define COMPANION_BLE_LINK_ACTIVE_TIMEOUT 0x0320u
+#define COMPANION_BLE_LINK_IDLE_INTERVAL_MIN 0x0050u
+#define COMPANION_BLE_LINK_IDLE_INTERVAL_MAX 0x0078u
+#define COMPANION_BLE_LINK_IDLE_LATENCY 0x0009u
+#define COMPANION_BLE_LINK_IDLE_TIMEOUT 0x0258u
+#define COMPANION_BLE_LINK_PHY_ALL_SPECIFIED 0x00u
+#define COMPANION_BLE_LINK_PHY_2M 0x02u
+#define COMPANION_BLE_LINK_PHY_OPTIONS_NONE 0x0000u
 
 #define BD_ADDR_SIZE_LOCAL    6
 
@@ -92,7 +110,7 @@ static const uint8_t a_BLE_CfgIrValue[16] = CFG_BLE_IR;
  * Encryption root key used to derive LTK(Legacy) and CSRK
  */
 static const uint8_t a_BLE_CfgErValue[16] = CFG_BLE_ER;
-static uint16_t connectionHandle;
+static uint16_t connectionHandle = COMPANION_BLE_CONN_HANDLE_INVALID;
 
 static const char a_LocalName[] = { AD_TYPE_COMPLETE_LOCAL_NAME, 'c', 'o', 'm', 'p', 'a', 'n', 'i', 'o', 'n' };
 uint8_t a_ManufData[14] = {
@@ -115,6 +133,8 @@ uint8_t a_ManufData[14] = {
 /* USER CODE BEGIN PV */
 static comp_audio_stream_t s_companion_audio_stream;
 static uint32_t s_companion_audio_next_session_id = 1u;
+static bool s_companion_ble_connected = false;
+static Companion_BleLinkMode_t s_companion_ble_link_mode = COMPANION_BLE_LINK_MODE_NONE;
 
 /* USER CODE END PV */
 
@@ -137,6 +157,14 @@ static void Companion_Audio_Control(void *context,
 static void Companion_Ble_Button1Task(void);
 static void Companion_Ble_Button2Task(void);
 static void Companion_Ble_Button3Task(void);
+static bool Companion_Ble_IsConnected(void);
+static tBleStatus Companion_Ble_RequestConnectionParams(const char *reason,
+                                                        uint16_t interval_min,
+                                                        uint16_t interval_max,
+                                                        uint16_t latency,
+                                                        uint16_t timeout,
+                                                        Companion_BleLinkMode_t mode);
+static tBleStatus Companion_Ble_RequestPreferred2MPhy(const char *reason);
 
 /* USER CODE END PFP */
 
@@ -311,7 +339,11 @@ SVCCTL_UserEvtFlowStatus_t SVCCTL_App_Notification( void *p_Pckt )
   {
     case HCI_DISCONNECTION_COMPLETE_EVT_CODE:
     {
-
+      s_companion_ble_connected = false;
+      connectionHandle = COMPANION_BLE_CONN_HANDLE_INVALID;
+      s_companion_ble_link_mode = COMPANION_BLE_LINK_MODE_NONE;
+      comp_audio_stream_set_notify_enabled(&s_companion_audio_stream, false);
+      Companion_App_HandleBleLinkReadyChanged(false);
       Adv_Request();
 
     }
@@ -330,11 +362,40 @@ SVCCTL_UserEvtFlowStatus_t SVCCTL_App_Notification( void *p_Pckt )
         case HCI_LE_CONNECTION_COMPLETE_SUBEVT_CODE:
           p_connection_complete_event = (hci_le_connection_complete_event_rp0 *) p_meta_evt->data;
           connectionHandle = p_connection_complete_event->Connection_Handle;
+          s_companion_ble_connected = true;
+          s_companion_ble_link_mode = COMPANION_BLE_LINK_MODE_NONE;
+          APP_DBG_MSG("==>> Companion connected handle=0x%04X; audio high-speed link deferred until active recording\n",
+                      connectionHandle);
 
           /* USER CODE BEGIN HCI_EVT_LE_CONN_COMPLETE */
 
           /* USER CODE END HCI_EVT_LE_CONN_COMPLETE */
           break; /* HCI_LE_CONNECTION_COMPLETE_SUBEVT_CODE */
+
+        case HCI_LE_CONNECTION_UPDATE_COMPLETE_SUBEVT_CODE:
+        {
+          hci_le_connection_update_complete_event_rp0 *p_connection_update_complete_event =
+              (hci_le_connection_update_complete_event_rp0 *)p_meta_evt->data;
+          APP_DBG_MSG("==>> Companion connection update status=0x%02X interval=0x%04X latency=%u timeout=0x%04X mode=%u\n",
+                      p_connection_update_complete_event->Status,
+                      p_connection_update_complete_event->Conn_Interval,
+                      p_connection_update_complete_event->Conn_Latency,
+                      p_connection_update_complete_event->Supervision_Timeout,
+                      (unsigned int)s_companion_ble_link_mode);
+          break;
+        }
+
+        case HCI_LE_PHY_UPDATE_COMPLETE_SUBEVT_CODE:
+        {
+          hci_le_phy_update_complete_event_rp0 *p_phy_update_complete_event =
+              (hci_le_phy_update_complete_event_rp0 *)p_meta_evt->data;
+          APP_DBG_MSG("==>> Companion PHY update status=0x%02X handle=0x%04X tx_phy=%u rx_phy=%u\n",
+                      p_phy_update_complete_event->Status,
+                      p_phy_update_complete_event->Connection_Handle,
+                      p_phy_update_complete_event->TX_PHY,
+                      p_phy_update_complete_event->RX_PHY);
+          break;
+        }
 
         default:
           /* USER CODE BEGIN SUBEVENT_DEFAULT */
@@ -514,6 +575,28 @@ comp_audio_stream_status_t Companion_BleAudio_SendSessionError(comp_audio_sessio
   return comp_audio_stream_send_session_error(&s_companion_audio_stream, error_code);
 }
 
+void Companion_BleAudio_RequestActiveLink(const char *reason)
+{
+  const char *request_reason = reason != NULL ? reason : "active_audio";
+  (void)Companion_Ble_RequestConnectionParams(request_reason,
+                                             COMPANION_BLE_LINK_ACTIVE_INTERVAL_MIN,
+                                             COMPANION_BLE_LINK_ACTIVE_INTERVAL_MAX,
+                                             COMPANION_BLE_LINK_ACTIVE_LATENCY,
+                                             COMPANION_BLE_LINK_ACTIVE_TIMEOUT,
+                                             COMPANION_BLE_LINK_MODE_ACTIVE_AUDIO);
+  (void)Companion_Ble_RequestPreferred2MPhy(request_reason);
+}
+
+void Companion_BleAudio_RequestIdleLink(const char *reason)
+{
+  Companion_Ble_RequestConnectionParams(reason != NULL ? reason : "idle",
+                                       COMPANION_BLE_LINK_IDLE_INTERVAL_MIN,
+                                       COMPANION_BLE_LINK_IDLE_INTERVAL_MAX,
+                                       COMPANION_BLE_LINK_IDLE_LATENCY,
+                                       COMPANION_BLE_LINK_IDLE_TIMEOUT,
+                                       COMPANION_BLE_LINK_MODE_IDLE);
+}
+
 void comp_audio_stream_stm32wb_app_notification(
     const comp_audio_stream_stm32wb_notification_t *notification)
 {
@@ -543,6 +626,89 @@ void comp_audio_stream_stm32wb_app_notification(
     default:
       break;
   }
+}
+
+static bool Companion_Ble_IsConnected(void)
+{
+  return s_companion_ble_connected &&
+         connectionHandle != COMPANION_BLE_CONN_HANDLE_INVALID;
+}
+
+static tBleStatus Companion_Ble_RequestConnectionParams(const char *reason,
+                                                        uint16_t interval_min,
+                                                        uint16_t interval_max,
+                                                        uint16_t latency,
+                                                        uint16_t timeout,
+                                                        Companion_BleLinkMode_t mode)
+{
+  if (!Companion_Ble_IsConnected())
+  {
+    APP_DBG_MSG("==>> Companion BLE link %s skipped: not connected\n",
+                reason != NULL ? reason : "request");
+    return BLE_STATUS_INVALID_PARAMS;
+  }
+  if (s_companion_ble_link_mode == mode)
+  {
+    APP_DBG_MSG("==>> Companion BLE link %s already requested mode=%u handle=0x%04X\n",
+                reason != NULL ? reason : "request",
+                (unsigned int)mode,
+                connectionHandle);
+    return BLE_STATUS_SUCCESS;
+  }
+
+  tBleStatus ret = aci_l2cap_connection_parameter_update_req(connectionHandle,
+                                                            interval_min,
+                                                            interval_max,
+                                                            latency,
+                                                            timeout);
+  if (ret == BLE_STATUS_SUCCESS)
+  {
+    s_companion_ble_link_mode = mode;
+    APP_DBG_MSG("==>> Companion BLE link %s requested interval=0x%04X-0x%04X latency=%u timeout=0x%04X mode=%u\n",
+                reason != NULL ? reason : "request",
+                interval_min,
+                interval_max,
+                latency,
+                timeout,
+                (unsigned int)mode);
+  }
+  else
+  {
+    APP_DBG_MSG("==>> Companion BLE link %s request failed: result=0x%x mode=%u\n",
+                reason != NULL ? reason : "request",
+                ret,
+                (unsigned int)mode);
+  }
+  return ret;
+}
+
+static tBleStatus Companion_Ble_RequestPreferred2MPhy(const char *reason)
+{
+  if (!Companion_Ble_IsConnected())
+  {
+    APP_DBG_MSG("==>> Companion BLE PHY %s skipped: not connected\n",
+                reason != NULL ? reason : "request");
+    return BLE_STATUS_INVALID_PARAMS;
+  }
+
+  tBleStatus ret = hci_le_set_phy(connectionHandle,
+                                  COMPANION_BLE_LINK_PHY_ALL_SPECIFIED,
+                                  COMPANION_BLE_LINK_PHY_2M,
+                                  COMPANION_BLE_LINK_PHY_2M,
+                                  COMPANION_BLE_LINK_PHY_OPTIONS_NONE);
+  if (ret == BLE_STATUS_SUCCESS)
+  {
+    APP_DBG_MSG("==>> Companion BLE PHY %s requested 2M handle=0x%04X\n",
+                reason != NULL ? reason : "request",
+                connectionHandle);
+  }
+  else
+  {
+    APP_DBG_MSG("==>> Companion BLE PHY %s request failed: result=0x%x\n",
+                reason != NULL ? reason : "request",
+                ret);
+  }
+  return ret;
 }
 
 /* USER CODE END FD*/

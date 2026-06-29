@@ -109,15 +109,17 @@ Fix:
   Type-ready autostream on `TYPE:READY`: 24 blocks, 128 PCM bytes per BLE packet,
   paced with `MX_APPE_Process()` and a terminal stop.
 - The same app accepts `TYPE:READY:A1` for short text-recognition validation:
-  900 microphone blocks with 128-byte PCM packets, then a terminal stop.
+  500 microphone blocks with the full 320-byte 10 ms PCM frame, then a terminal stop. This
+  keeps the short-command window near 5 s instead of recording extra room audio
+  after a 1-2 s TTS phrase.
 - The same app accepts `TYPE:READY:A2` for longer text-recognition validation:
   3000 microphone blocks with the full 320-byte 10 ms PCM frame, then a
   terminal stop.
 - The NUCLEO bring-up app now locally overrides the ST p2pServer ATT MTU to
-  251 and the VKA1 notify value to 248 bytes. A1 keeps a conservative 132-byte
-  payload; A2 sends the full 320-byte microphone frame, which the portable VKA1
-  sender splits across two notifications. This keeps fast speech on the real
-  INMP441 path from being limited by the older compact-sampling view.
+  251 and the VKA1 notify value to 248 bytes. A1 and A2 both send the full
+  320-byte microphone frame, which the portable VKA1 sender splits across two
+  notifications. This keeps short commands and fast speech on the real INMP441
+  path from being limited by the older compact-sampling view.
 
 Validation evidence:
 
@@ -135,6 +137,42 @@ Validation evidence:
   `.cache/validation/a2-fullframe-fast-speech-20260628/companion-type-a1-a2-summary.json`.
   A2 uploaded `960000` PCM bytes in one 30 s session with `missing_packets=0`.
   The remaining phrase confusion is audio/acoustic/ASR quality, not BLE loss.
+- 2026-06-28 six-round A1 + A2 retry validation passed:
+  `.cache/validation/companion-type-a1-a2-recovery-20260628-175130/companion-type-a1-a2-summary.json`.
+  It proved the VKA1 notify path stayed lossless (`missing_packets=0`) but also
+  exposed two follow-up hardening points: Windows BLE control writes for
+  processing/LED feedback can delay headless process exit after the audio path
+  has already passed, and a 9 s A1 capture window picks up too much room audio
+  for short TTS phrases. Type-side headless validation now disables the
+  processing LED sync through
+  `LISTENER_TYPE_DISABLE_EMBEDDED_BLE_PROCESSING_SYNC=1`, while the app A1
+  autostream window is shortened to 500 blocks.
+- 2026-06-28 no-one-shot-heartbeat A1 validation exposed the compact-A1 quality
+  limit:
+  `.cache/validation/companion-type-a1-a2-nohb-20260628-182142/companion-type-a1-a2-summary.json`.
+  BLE transport was mostly lossless (`missing_packets=0` for completed rounds),
+  but A1's 132-byte compact payload produced wrong or empty short-command ASR.
+  The A1 path is therefore moved to the same full 320-byte frame contract as A2.
+- 2026-06-28 latest same-package hardware chain passed with package
+  `.cache/ota_firmware/companion-ota-nucleo-wb55rg-d4acb9f-dirty-20260628-183529.zip`.
+  Wired flash passed at
+  `.cache/validation/companion-wired-flash-a1full-20260628-183554/companion-wired-flash-summary.json`.
+  Six-round A1 plus A2 passed at
+  `.cache/validation/companion-type-a1-a2-a1full-20260628-183640/companion-type-a1-a2-summary.json`:
+  all completed rounds had `missing_packets=0`, A1 text accuracy was 100%, and
+  A2 uploaded `960000` PCM bytes with `missing_packets=0`.
+- 2026-06-28 Type one-shot heartbeat regression was re-fixed after fast-speech
+  testing showed back-to-back A1 sessions could stall or disconnect when
+  foreground one-shot capture kept sending periodic `TYPE:HB`. Keep one-shot
+  capture to the initial `TYPE:READY` only; reserve periodic heartbeat for the
+  background listener.
+- 2026-06-28 fast-speech validation passed after restoring no-one-shot
+  heartbeat and adding env-scoped ASR hotwords for Companion validation:
+  `.cache/validation/companion-type-a1-a2-fast-hotwords-20260628-190919/companion-type-a1-a2-summary.json`.
+  A1 rounds 1-4 passed first try with `missing_packets=0` and 100% text
+  accuracy. A2 passed with `missing_packets=0`; English/product-name words may
+  still be phonetically localized by the ASR, so keep transcript accuracy
+  threshold evidence instead of treating brand-word spelling as BLE loss.
 
 ### BLE OTA raw writes timed out or transferred without flashing
 
@@ -179,12 +217,38 @@ Fix:
   characteristic supports `Write`, and use the negotiated ATT payload up to the
   ST raw 248-byte block size. Keep the no-response fallback capped to the
   default 20-byte ATT payload until a larger-MTU ACK/credit path exists.
+- Keep the ST base/finish characteristic on the same explicit write-permit path
+  as raw data. The 4-byte `OTAS_STM_UPLOAD_FINISHED` command must receive
+  `aci_gatt_write_resp()` before the OTA app schedules the confirmation/reset
+  work, otherwise Windows can hold the finish write until the disconnect
+  handoff.
+- In Listener-Type, keep the finish command on the ordinary
+  `write_stm32wb_st_ota_value_with_fallback()` path with
+  `target.base_write_option`. A Type-side no-wait finish write was tested on
+  hardware and did not shorten the finish tail, so leave the transport contract
+  simple and loader-driven.
 - On connection complete, the Companion OTA loader requests a fast connection
   interval through `aci_l2cap_connection_parameter_update_req()`:
-  min `0x0006` (7.5 ms), max `0x000C` (15 ms), latency `0`, timeout `0x0190`
-  (4 s). Keep this loader-side request guarded by
+  min `0x0006` (7.5 ms), max `0x0006` (7.5 ms), latency `0`, timeout `0x0064`
+  (1 s). Keep this loader-side request guarded by
   `tools/verify_ota_contract_static.py`; the safe data path is still
   WriteWithResponse, not optimistic no-response streaming.
+- Keep the ST BLE_Ota finish write callback short: `OTAS_STM_UPLOAD_FINISHED`
+  only schedules the reboot sequencer task and returns. The task sends
+  `OTAS_STM_REBOOT_CONFIRMED`, gives Windows a short grace window, and then
+  finalizes flash/resets; `ACI_GATT_SERVER_CONFIRMATION` remains a valid early
+  finalize path. Do not call `OTAS_STM_UpdateChar()`, `HAL_Delay()`, or reset
+  inside the finish write callback because that makes Windows wait for the
+  disconnect handoff instead of completing the finish write promptly.
+- Drain that deferred finalize from the local `BLE_UserEvtRx()` tail, after
+  `SVCCTL_UserEvtRx()` has finished processing the ST service event. This avoids
+  a private sequencer task bit and keeps the confirmation/reset work tied to the
+  existing HCI async event path.
+- Do not change the existing confirmation characteristic properties in place to
+  add Notify under the same UUID. Hardware validation showed Windows continued
+  to expose the cached Indicate-only property, and the experimental notify build
+  failed mid-transfer. A notify/credit completion path needs a new characteristic
+  or protocol version, not an in-place property change.
 
 Validation evidence:
 
@@ -199,8 +263,45 @@ Validation evidence:
   248 bytes. Data phase time dropped from about 22.8 s to about 7.9 s; the full
   BLE capture window dropped from about 36.0 s to 13.4 s on the clean
   `6d50cee` package.
+- 2026-06-28 Listener BLE OTA benchmark from retained Type logs is about
+  19-20 KB/s with 500-byte confirmed chunks. Companion's safe ST BLE_Ota path is
+  about 7.9 KB/s with 248-byte confirmed chunks before the tighter 7.5 ms / 1 s
+  connection-parameter retune. Reaching Listener-like throughput requires a
+  real STM32WB ACK/credit or offset/CRC path before uncapping large
+  WriteWithoutResponse packets; otherwise Type can report progress for data the
+  loader did not flash.
+- 2026-06-28 hardware retunes showed the 7.5 ms / 1 s connection request and a
+  Type-side finish no-wait attempt did not remove the roughly 4 s finish tail.
+- 2026-06-28 base/finish write-permit hardware validation also kept the roughly
+  4 s finish tail by itself. The current loader-side candidate fix keeps raw
+  data confirmed, moves confirmation/reset out of the finish write callback into
+  a 300 ms deferred HCI-event grace path, makes the base/finish characteristic use
+  `GATT_NOTIFY_WRITE_REQ_AND_WAIT_FOR_APPL_RESP`, and drains the deferred
+  finalize from the local HCI event task after ST service event processing.
+- A 2026-06-28 notify-confirm experiment was rejected: Windows kept using the
+  cached Indicate-only GATT metadata for the same UUID and one hardware run
+  aborted at 120/249 chunks. Do not keep this in the product path without a new
+  characteristic UUID/protocol version and a full reconnect/cache validation.
+- 2026-06-28 final stable validation passed with package
+  `.cache/ota_firmware/companion-ota-nucleo-wb55rg-d4acb9f-dirty-20260628-111242.zip`
+  and evidence
+  `.cache/validation/companion-ble-ota-stable-final-20260628/companion-ble-ota-summary.json`.
+  The transfer still used 249 confirmed 248-byte chunks for 61,724 bytes. The
+  data phase completed in about 7.6 s, the full capture was 13.63 s, and the
+  finish-to-disconnect tail stayed about 4.08 s. Treat this as the safe limit of
+  the current ST BLE_Ota/WinRT path; Listener-like 19-20 KB/s needs a new
+  Companion OTA protocol with explicit ACK/credit/offset/CRC semantics rather
+  than uncapping WriteWithoutResponse on the ST raw characteristic.
 - The matching same-package wired factory flash passed before BLE OTA:
   `.cache/validation/companion-wired-factory-6d50cee-20260628/companion-wired-flash-summary.json`.
+- 2026-06-28 Companion OTA v2 latest same-package transfer passed with package
+  `.cache/ota_firmware/companion-ota-nucleo-wb55rg-d4acb9f-dirty-20260628-183529.zip`
+  and evidence
+  `.cache/validation/companion-ble-ota-a1full-20260628-184231/companion-ble-ota-summary.json`.
+  The v2 path transferred `63288` bytes in `264` chunks of 240 bytes with
+  `window=24`, then confirmed completion/reboot handoff.
+- The same package also passed wired recovery after BLE OTA:
+  `.cache/validation/companion-wired-recovery-a1full-20260628-184519/companion-wired-flash-summary.json`.
 - A1/A2 after BLE OTA passed:
   `.cache/validation/companion-type-a1-a2-20260627-193325/companion-type-a1-a2-summary.json`.
 - The same-package wired flash path passed before BLE OTA:
@@ -213,6 +314,63 @@ pwsh -NoProfile -File .\tools\verify_companion_wired_flash.ps1 `
   -Execute -WorkflowLockHeld `
   -PackagePath .cache\ota_firmware\companion-ota-nucleo-wb55rg-d5c2a80-dirty-20260627-192554.zip
 ```
+
+### Companion OTA v2 adds a Listener-style fast path
+
+Symptom:
+
+- The stable ST BLE_Ota path topped out around 7.5-8 KB/s on Windows because
+  every 248-byte raw write was confirmed and the finish handoff had a long
+  disconnect tail.
+- Listener OTA was already around 19-20 KB/s with larger host-paced chunks, so
+  Companion needed an explicit credit/status protocol before using
+  WriteWithoutResponse.
+
+Root cause:
+
+- The official ST BLE_Ota service is safe but not a high-throughput Windows
+  bulk-transfer protocol.
+- Changing the existing ST confirmation characteristic properties in place is
+  not reliable on Windows; previous hardware validation showed cached GATT
+  metadata could keep the old Indicate-only view.
+
+Fix:
+
+- Keep the ST BLE_Ota service as a fallback and add a new Companion OTA v2
+  service with fresh UUIDs:
+  `8f7a8007-7b7d-4f3d-9d6f-6c2d1b7c0000` service,
+  `8f7a8002-...` control, `8f7a8004-...` data, and
+  `8f7a8005-...` status.
+- Register v2 from the ST custom service hook after the ST OTA service, and
+  guard it with `tools/verify_ota_contract_static.py`.
+- Use a 16-byte binary control command (`COV2` magic, op, version, expected
+  size, chunk size, window) and 4-byte-offset data packets.
+- Make offset mismatch recoverable. The loader keeps state `RECEIVING`, updates
+  status with `COMPANION_OTA_V2_ERROR_OFFSET_MISMATCH`, and Type resumes from
+  the device-reported `bytes_written` instead of treating one dropped packet as
+  fatal.
+- Type sends a window of WriteWithoutResponse data packets, writes a sync
+  control command, reads the status characteristic, shrinks the window on
+  offset mismatch, and grows it again after clean windows.
+- Companion OTA packages now advertise `protocol.name=companion_ota_v2` and
+  no longer include the ST `confirm_uuid` in the primary manifest. The old ST
+  transport remains in Type only as a fallback/recovery contract.
+
+Validation rule:
+
+- Static validation must cover all three sides before hardware: OTA loader build
+  includes `Src/companion_ota_v2.c`, package manifest UUIDs/chunk size match
+  Type, and the manual/hardware gate expects `transport=companion_ota_v2`.
+- Hardware validation must still prove real BLE transfer and reboot handoff
+  because STM32WB/GDMA/WinRT timing is not fully proven by compilation.
+
+WBA migration note:
+
+- The v2 host protocol should port to WBA because it depends only on GATT
+  control/data/status semantics, not WB55 CPU2/FUS.
+- The flash writer, service registration hook, boot handoff, and final reset
+  path must be rewritten from the WBA Cube example/flash API rather than copying
+  WB55 `SVCCTL_InitCustomSvc`, SRAM1 cookie, or `FD_WriteData` details.
 
 ## Current Open Risk
 

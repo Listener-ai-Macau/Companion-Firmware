@@ -40,6 +40,8 @@
 #include "otas_stm.h"
 #include "ble_l2cap_aci.h"
 
+void OTAS_APP_ProcessDeferredFinalize(void);
+
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -58,9 +60,9 @@
 #define COMPANION_BLE_MITM_PROTECTION 0
 #define COMPANION_BLE_OTA_ADDRESS_OFFSET 2u
 #define COMPANION_OTA_CONN_INTERVAL_MIN 0x0006u /* 7.5 ms */
-#define COMPANION_OTA_CONN_INTERVAL_MAX 0x000Cu /* 15 ms */
+#define COMPANION_OTA_CONN_INTERVAL_MAX 0x0006u /* 7.5 ms */
 #define COMPANION_OTA_CONN_LATENCY 0x0000u
-#define COMPANION_OTA_CONN_TIMEOUT 0x0190u /* 4 s */
+#define COMPANION_OTA_CONN_TIMEOUT 0x0064u /* 1 s */
 
 #define BD_ADDR_SIZE_LOCAL    6
 
@@ -769,8 +771,15 @@ static void Delete_Sectors( void )
     NbrOfSectorToBeErased = first_secure_sector_idx - CFG_OTA_START_SECTOR_IDX_VAL_MSG;
   }
 
-  FD_EraseSectors(CFG_OTA_START_SECTOR_IDX_VAL_MSG,
-                  NbrOfSectorToBeErased);
+  if(FD_EraseSectors(CFG_OTA_START_SECTOR_IDX_VAL_MSG,
+                     NbrOfSectorToBeErased) == 0u)
+  {
+    CFG_OTA_NBR_OF_SECTOR_VAL_MSG = (uint8_t)NbrOfSectorToBeErased;
+  }
+  else
+  {
+    CFG_OTA_NBR_OF_SECTOR_VAL_MSG = 0u;
+  }
   return;
 #endif /* OTA_SBSFU */
 }
@@ -878,6 +887,8 @@ static void BLE_UserEvtRx(void *p_Payload)
   {
     p_param->status = HCI_TL_UserEventFlow_Disable;
   }
+
+  OTAS_APP_ProcessDeferredFinalize();
 
   return;
 }

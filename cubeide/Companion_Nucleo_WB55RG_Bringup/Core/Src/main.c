@@ -49,9 +49,9 @@ COMPANION_PLACE_IN_SECTION("TAG_OTA_START") const uint32_t MagicKeywordAddress =
 #endif
 #define COMPANION_TYPE_READY_AUTOSTREAM_PCM_BYTES 128u
 #ifndef COMPANION_TYPE_READY_A1_AUTOSTREAM_BLOCKS
-#define COMPANION_TYPE_READY_A1_AUTOSTREAM_BLOCKS 900u
+#define COMPANION_TYPE_READY_A1_AUTOSTREAM_BLOCKS 500u
 #endif
-#define COMPANION_TYPE_READY_A1_AUTOSTREAM_PCM_BYTES 132u
+#define COMPANION_TYPE_READY_A1_AUTOSTREAM_PCM_BYTES 320u
 #ifndef COMPANION_TYPE_READY_A2_AUTOSTREAM_BLOCKS
 #define COMPANION_TYPE_READY_A2_AUTOSTREAM_BLOCKS 3000u
 #endif
@@ -568,6 +568,7 @@ static void request_ble_type_ready_autostream(const char *reason,
 #if (COMPANION_TYPE_READY_AUTOSTREAM_BLOCKS > 0u) || \
     (COMPANION_TYPE_READY_A1_AUTOSTREAM_BLOCKS > 0u) || \
     (COMPANION_TYPE_READY_A2_AUTOSTREAM_BLOCKS > 0u)
+    Companion_BleAudio_RequestActiveLink(reason);
     if (!Companion_BleAudio_IsReady()) {
         s_ble_type_ready_autostream_pending = true;
         s_ble_type_ready_autostream_pending_blocks = blocks;
@@ -647,6 +648,7 @@ static void start_recording(comp_recording_source_t source, const char *reason)
         source);
     s_manual_recording_block_count = 0u;
     if (s_recording_fsm.state == COMP_RECORDING_STATE_RECORDING) {
+        Companion_BleAudio_RequestActiveLink(reason);
         start_ble_session_if_ready(reason);
     }
     printf("[record] %s action=start source=%lu result=%lu state=%s\r\n",
@@ -676,6 +678,7 @@ static void stop_recording(comp_recording_source_t source, const char *reason)
     print_recording_summary(reason);
     end_ble_session_if_active(false, reason);
     clear_ble_type_ready_autostream();
+    Companion_BleAudio_RequestIdleLink(reason);
 
     (void)comp_recording_fsm_dispatch(&s_recording_fsm,
                                       COMP_RECORDING_EVENT_TRANSFER_BEGIN,
@@ -699,6 +702,7 @@ static void cancel_recording(comp_recording_source_t source, const char *reason)
         source);
     end_ble_session_if_active(true, reason);
     clear_ble_type_ready_autostream();
+    Companion_BleAudio_RequestIdleLink(reason);
     printf("[record] %s action=cancel source=%lu result=%lu state=%s\r\n",
            reason,
            (unsigned long)source,
@@ -1574,6 +1578,7 @@ static bool capture_microphone_block(uint32_t block_index, bool verbose, const c
         if (s_ble_session_active) {
             (void)Companion_BleAudio_SendSessionError(COMP_AUDIO_SESSION_ERROR_TRANSPORT);
             s_ble_session_active = false;
+            Companion_BleAudio_RequestIdleLink("mic_capture_failed");
         }
         return false;
     }

@@ -48,6 +48,7 @@ C_SOURCES := \
 	$(OTA)/Core/Src/stm32wbxx_it.c \
 	Src/system_stm32wbxx.c \
 	Src/otas_app.c \
+	Src/companion_ota_v2.c \
 	$(OTA)/STM32_WPAN/Target/hw_ipcc.c \
 	$(OTA)/STM32CubeIDE/Application/Core/syscalls.c \
 	$(OTA)/STM32CubeIDE/Application/Core/sysmem.c \

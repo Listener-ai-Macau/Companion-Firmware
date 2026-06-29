@@ -19,6 +19,7 @@ FIXTURE_REPORT = REPO_ROOT / "docs/validation/companion-pendant-firmware-bringup
 OTA_LOADER_APP_BLE = REPO_ROOT / "cubeide/Companion_BLE_Ota_Loader/Src/app_ble.c"
 OTA_LOADER_OTAS_APP = REPO_ROOT / "cubeide/Companion_BLE_Ota_Loader/Src/otas_app.c"
 OTA_LOADER_OTAS_STM = REPO_ROOT / "cubeide/Companion_BLE_Ota_Loader/Src/otas_stm.c"
+OTA_LOADER_COMPANION_V2 = REPO_ROOT / "cubeide/Companion_BLE_Ota_Loader/Src/companion_ota_v2.c"
 OTA_LOADER_MAKEFILE = REPO_ROOT / "cubeide/Companion_BLE_Ota_Loader/Makefile"
 OTA_LOADER_SVC_CTL = (
     REPO_ROOT
@@ -189,6 +190,7 @@ def check_local_ota_loader(errors: list[str]) -> None:
     text = read_text(OTA_LOADER_APP_BLE, errors)
     otas_app = read_text(OTA_LOADER_OTAS_APP, errors)
     otas_stm = read_text(OTA_LOADER_OTAS_STM, errors)
+    companion_v2 = read_text(OTA_LOADER_COMPANION_V2, errors)
     makefile = read_text(OTA_LOADER_MAKEFILE, errors)
     svc_ctl = read_text(OTA_LOADER_SVC_CTL, errors)
     system = read_text(OTA_LOADER_SYSTEM, errors)
@@ -199,14 +201,16 @@ def check_local_ota_loader(errors: list[str]) -> None:
         "#define COMPANION_BLE_MITM_PROTECTION 0",
         '#include "ble_l2cap_aci.h"',
         "#define COMPANION_OTA_CONN_INTERVAL_MIN 0x0006u",
-        "#define COMPANION_OTA_CONN_INTERVAL_MAX 0x000Cu",
+        "#define COMPANION_OTA_CONN_INTERVAL_MAX 0x0006u",
         "#define COMPANION_OTA_CONN_LATENCY 0x0000u",
-        "#define COMPANION_OTA_CONN_TIMEOUT 0x0190u",
+        "#define COMPANION_OTA_CONN_TIMEOUT 0x0064u",
         '#include "otas_stm.h"',
         "SVCCTL_Init();",
         "Companion_Ota_RequestFastConnection(connectionHandle);",
         "aci_l2cap_connection_parameter_update_req",
         "aci_gatt_update_char_value(gap_service_handle, gap_dev_name_char_handle",
+        "void OTAS_APP_ProcessDeferredFinalize(void);",
+        "OTAS_APP_ProcessDeferredFinalize();",
     ]:
         require(anchor in text, f"local OTA loader missing anchor: {anchor}", errors)
     require(
@@ -235,8 +239,19 @@ def check_local_ota_loader(errors: list[str]) -> None:
         "$(CUBE)/Middlewares/ST/STM32_WPAN/ble/svc/Src/svc_ctl.c",
         "$(CUBE)/Middlewares/ST/STM32_WPAN/ble/core/auto/ble_gatt_aci.c",
         "COMPANION_OTA_LOADER_ALWAYS_ADVERTISE",
+        "Src/companion_ota_v2.c",
     ]:
         require(anchor in makefile, f"local OTA loader Makefile must keep ST BLE_Ota source anchor: {anchor}", errors)
+    require(
+        "SVCCTL_InitCustomSvc();" in svc_ctl,
+        "ST svc_ctl.c must keep the custom service hook after the ST OTA service registration",
+        errors,
+    )
+    require(
+        svc_ctl.find("OTAS_STM_Init();") < svc_ctl.find("SVCCTL_InitCustomSvc();"),
+        "Companion OTA v2 must register after the ST OTA fallback service from the generated custom hook",
+        errors,
+    )
     for anchor in [
         "#ifdef COMPANION_OTA_LOADER_ALWAYS_ADVERTISE",
         "COMPANION_OTA_FW_APP_COOKIE_VALUE",
@@ -262,30 +277,43 @@ def check_local_ota_loader(errors: list[str]) -> None:
         "8f7a7002-7b7d-4f3d-9d6f-6c2d1b7c0000",
         "8f7a7003-7b7d-4f3d-9d6f-6c2d1b7c0000",
         "8f7a7004-7b7d-4f3d-9d6f-6c2d1b7c0000",
-        "CHAR_PROP_WRITE | CHAR_PROP_WRITE_WITHOUT_RESP,\n                    ATTR_PERMISSION_NONE,\n                    GATT_NOTIFY_ATTRIBUTE_WRITE,",
+        "CHAR_PROP_INDICATE",
         "CHAR_PROP_WRITE | CHAR_PROP_WRITE_WITHOUT_RESP,\n                    ATTR_PERMISSION_NONE,\n                    GATT_NOTIFY_ATTRIBUTE_WRITE | GATT_NOTIFY_WRITE_REQ_AND_WAIT_FOR_APPL_RESP,",
         "GATT_NOTIFY_WRITE_REQ_AND_WAIT_FOR_APPL_RESP",
         "OTAS_STM_Is_Value_Handle",
+        "Base address and finish commands are handled in",
         "Raw data is handled in ACI_GATT_WRITE_PERMIT_REQ_VSEVT_CODE",
+        "OTAS_STM_Is_Value_Handle(write_perm_req->Attribute_Handle, OTAS_Context.OTAS_Base_Addr_CharHdle) ||",
+        "OTAS_STM_Is_Value_Handle(write_perm_req->Attribute_Handle, OTAS_Context.OTAS_Raw_Data_CharHdle)",
         "write_status = aci_gatt_write_resp",
         "if(write_status == BLE_STATUS_SUCCESS)",
+        "notification.ChardId = OTAS_STM_BASE_ADDR_ID;",
         "notification.ChardId = OTAS_STM_RAW_DATA_ID;",
         "notification.pPayload = (uint8_t *)&(write_perm_req->Data[0]);",
     ]:
         require(anchor in otas_stm, f"local OTAS_STM adapter missing anchor: {anchor}", errors)
     require(
-        "OTAS_Context.OTAS_Base_Addr_CharHdle) ||" not in otas_stm,
-        "local OTAS_STM base address write must follow ST write-without-response path, not write-permit response",
+        otas_stm.count("GATT_NOTIFY_ATTRIBUTE_WRITE | GATT_NOTIFY_WRITE_REQ_AND_WAIT_FOR_APPL_RESP") >= 2,
+        "local OTAS_STM base and raw data characteristics must both wait for app write-permit responses",
+        errors,
+    )
+    require(
+        "CHAR_PROP_WRITE | CHAR_PROP_WRITE_WITHOUT_RESP,\n                    ATTR_PERMISSION_NONE,\n                    GATT_NOTIFY_ATTRIBUTE_WRITE," not in otas_stm,
+        "local OTAS_STM write characteristics must not regress to unacknowledged attribute-write callbacks",
         errors,
     )
     finish = re.search(r"case\s+OTAS_STM_UPLOAD_FINISHED:(?P<body>.*?)case\s+OTAS_STM_CANCEL_UPLOAD:", otas_app, re.S)
     require(finish is not None, "local OTA app missing OTAS_STM_UPLOAD_FINISHED block", errors)
     if finish is not None:
         body = finish.group("body")
-        require("OTAS_STM_UpdateChar(OTAS_STM_CONF_ID" in body, "OTA finish must send ST reboot confirmation indication", errors)
         require(
-            "OTAS_APP_FinalizeUpload();" in body,
-            "OTA finish must finalize/reboot so Windows can observe reboot handoff when ST confirmation indication is not delivered",
+            "OTAS_APP_RequestDeferredFinalize();" in body,
+            "OTA finish must defer confirmation/finalize outside the finish write callback",
+            errors,
+        )
+        require(
+            "OTAS_APP_FinalizeUpload" not in body and "NVIC_SystemReset" not in body and "OTAS_STM_UpdateChar" not in body,
+            "OTA finish write callback must return promptly; confirmation/finalize/reset belongs to the sequencer task or confirmation event",
             errors,
         )
     confirm = re.search(r"case\s+OTAS_STM_CONF_EVENT_ID:(?P<body>.*?)break;", otas_app, re.S)
@@ -293,15 +321,80 @@ def check_local_ota_loader(errors: list[str]) -> None:
     if confirm is not None:
         require(
             "OTAS_APP_FinalizeUpload();" in confirm.group("body"),
-            "OTA app must keep the ST confirmation event finalize/reboot fallback",
+            "OTA app must finalize/reboot from the ST indication confirmation event",
             errors,
         )
+    require(
+        "HAL_Delay(" not in finish.group("body") if finish is not None else True,
+        "OTA finish write callback must not block the BLE event path with HAL_Delay before reset",
+        errors,
+    )
+    ble_user_evt_idx = text.find("static void BLE_UserEvtRx")
+    svc_evt_idx = text.find("SVCCTL_UserEvtRx", ble_user_evt_idx)
+    drain_idx = text.find("OTAS_APP_ProcessDeferredFinalize();", svc_evt_idx)
+    drain_return_idx = text.find("return;", drain_idx)
+    require(ble_user_evt_idx >= 0, "local OTA loader missing BLE_UserEvtRx body", errors)
+    require(
+        ble_user_evt_idx >= 0 and svc_evt_idx > ble_user_evt_idx and drain_idx > svc_evt_idx,
+        "Companion OTA deferred finalize must be drained after ST service event processing",
+        errors,
+    )
+    require(
+        drain_return_idx > drain_idx,
+        "Companion OTA deferred finalize must run before BLE_UserEvtRx returns",
+        errors,
+    )
     for anchor in [
+        "#define COMPANION_OTA_REBOOT_CONFIRM_GRACE_MS",
+        "OTAS_STM_UpdateChar(OTAS_STM_CONF_ID",
+        "static void OTAS_APP_FinalizeUpload(void)",
+        "static void OTAS_APP_ResetCompletionState(void)",
+        "static void OTAS_APP_RequestDeferredFinalize(void)",
+        "void OTAS_APP_ProcessDeferredFinalize(void)",
+        "HAL_Delay(COMPANION_OTA_REBOOT_CONFIRM_GRACE_MS)",
         "COMPANION_OTA_FW_APP_COOKIE_VALUE",
         "COMPANION_OTA_FW_APP_COOKIE_MSG    (*(uint8_t*)(SRAM1_BASE+3))",
         "COMPANION_OTA_FW_APP_COOKIE_MSG = COMPANION_OTA_FW_APP_COOKIE_VALUE;",
     ]:
         require(anchor in otas_app, f"local OTA app must set Companion fw-app cookie before reboot: {anchor}", errors)
+    require(
+        all(token not in otas_app for token in [
+            '#include "stm32_seq.h"',
+            "COMPANION_OTA_REBOOT_TASK_ID",
+            "COMPANION_OTA_REBOOT_TASK_BM",
+            "UTIL_SEQ_RegTask",
+            "UTIL_SEQ_SetTask",
+        ]),
+        "Companion OTA deferred finalize must not depend on a private sequencer task bit",
+        errors,
+    )
+    for anchor in [
+        '#include "companion_ota_v2.h"',
+        "void SVCCTL_InitCustomSvc(void)",
+        "Companion_Ota_V2_Init();",
+        "COMPANION_OTA_V2_SERVICE_UUID",
+        "COMPANION_OTA_V2_CONTROL_UUID",
+        "COMPANION_OTA_V2_DATA_UUID",
+        "COMPANION_OTA_V2_STATUS_UUID",
+        "CHAR_PROP_WRITE | CHAR_PROP_WRITE_WITHOUT_RESP",
+        "CHAR_PROP_READ",
+        "GATT_NOTIFY_ATTRIBUTE_WRITE",
+        "COMPANION_OTA_V2_DATA_PAYLOAD_MAX",
+        "COMPANION_OTA_V2_DEFAULT_WINDOW_CHUNKS",
+        "COMPANION_OTA_V2_ERROR_OFFSET_MISMATCH",
+        "Companion_Ota_V2_Set_Recoverable_Error(COMPANION_OTA_V2_ERROR_OFFSET_MISMATCH)",
+        "CompanionOtaV2Context.state = COMPANION_OTA_V2_STATE_RECEIVING;",
+        "FD_EraseSectors(CFG_APP_START_SECTOR_INDEX",
+        "FD_WriteData(CompanionOtaV2Context.flash_address",
+        "CFG_OTA_REBOOT_VAL_MSG = CFG_REBOOT_ON_FW_APP;",
+        "HAL_Delay(COMPANION_OTA_V2_REBOOT_GRACE_MS);",
+    ]:
+        require(anchor in companion_v2, f"Companion OTA v2 service missing anchor: {anchor}", errors)
+    require(
+        "Companion_Ota_V2_Set_Error(COMPANION_OTA_V2_ERROR_OFFSET_MISMATCH)" not in companion_v2,
+        "Companion OTA v2 offset mismatch must remain recoverable so Type can resync from device status",
+        errors,
+    )
 
 
 def check_wired_package_tooling(errors: list[str]) -> None:
@@ -420,7 +513,12 @@ def check_wired_package_tooling(errors: list[str]) -> None:
         "stm32wb55ceux",
         "STM32WB ST OTA confirmation indication is required",
         "Type STM32WB ST OTA stable raw write check",
-        "large write-response raw chunks, and 20-byte no-response fallback chunks",
+        "stm32wb_st_ota_uses_large_confirmed_chunks_and_caps_no_response",
+        "COMPANION_OTA_V2_TRANSPORT_BOUNDARY",
+        "isCompanionOtaV2Manifest",
+        "request.manifest.protocolName === COMPANION_OTA_V2_TRANSPORT_BOUNDARY.protocolName",
+        "Companion OTA v2 window/status transport",
+        "companion_ota_v2",
         "PASS: Companion package is accepted by Type Companion OTA/wired static integration checks.",
     ]:
         require(anchor in type_package, f"verify_type_companion_package_static.ps1 missing anchor: {anchor}", errors)
@@ -438,7 +536,13 @@ def check_wired_package_tooling(errors: list[str]) -> None:
         "verify_companion_hardware_acceptance.ps1",
         "capture_type_companion_visual.ps1",
         "-SkipTypeRust",
-        "-SkipTypeCompanionVisual",
+        "-IncludeTypeHarness",
+        "independent_release_gate",
+        "type_harness_included",
+        "Companion build environment check",
+        "Companion BLE probe self-test",
+        "Companion recording cache model",
+        "Companion diagnostics static",
         "npm.cmd",
         "PASS_STATIC_MANUAL_GATES_REMAIN",
         "ConvertTo-ReadinessMarkdown",
@@ -446,8 +550,8 @@ def check_wired_package_tooling(errors: list[str]) -> None:
         "Manual Gates Remaining",
         "summary.md",
         "summary_markdown",
-        "Companion Type A1/A2 validation",
-        "real Companion BLE OTA through Type",
+        "Companion A1/A2 bench validation",
+        "real Companion BLE OTA bench validation",
         "Companion BLE OTA validation",
         "Companion BLE OTA dry run",
         "Companion wired factory flash validation",
@@ -505,17 +609,17 @@ def check_wired_package_tooling(errors: list[str]) -> None:
         "wired_firmware_result_json=",
         "extra",
         "result",
-        "stm32wb_st_ble_ota",
+        "companion_ota_v2",
         "STM32WB wired factory flash completed and verified by STM32CubeProgrammer",
-        "real Companion Type A1/A2",
-        "real Companion BLE OTA through Type",
+        "real Companion A1/A2 bench validation",
+        "real Companion BLE OTA bench validation",
         "real Companion wired flash from same package",
         "Type temporary Companion debug page",
         "companion.type_ui_manual.validation.v1",
         "operator_confirmed",
         "Type UI required actions include the aggregate hardware acceptance command",
         "总体验收 / Companion hardware acceptance",
-        "including 总体验收 command visibility",
+        "including visible BLE OTA, wired flash, and 总体验收 entries",
         "Companion Manual Gate Evidence",
     ]:
         require(anchor in manual_gate, f"verify_companion_manual_gate_evidence.ps1 missing anchor: {anchor}", errors)
@@ -529,18 +633,17 @@ def check_wired_package_tooling(errors: list[str]) -> None:
         "[Console]::Beep(880, 220)",
         "Companion Type 页面真机验证",
         "确认 Companion Type 页面结果",
-        "BLE 订阅 PASS",
-        "A1 smoke PASS",
-        "A2 smoke PASS",
-        "ST-LINK / SWD",
+        "BLE 订阅是绿色 PASS",
+        "A1 短语音测试是绿色 PASS",
+        "A2 长语音测试是绿色 PASS",
+        "蓝牙升级和有线刷机入口都能看到",
         "with-lock -Resource Companion-WB55,BLE-Companion",
         "companion_type_ui_manual_result_json=",
         "DRY-RUN: Companion Type UI manual validation is ready.",
         "Refusing to run Companion Type UI manual validation without -WorkflowLockHeld.",
         "companion-type-ui-manual-summary.json",
         "总体验收",
-        "Companion hardware acceptance 命令",
-        "aggregate acceptance command",
+        "aggregate acceptance entry",
     ]:
         require(anchor in type_ui_manual, f"verify_companion_type_ui_manual.ps1 missing anchor: {anchor}", errors)
 
@@ -572,19 +675,18 @@ def check_wired_package_tooling(errors: list[str]) -> None:
         "companion_hardware_acceptance_result_json=",
         "DRY-RUN: Companion hardware acceptance runner is ready.",
         "Refusing to run Companion hardware acceptance without -WorkflowLockHeld.",
-        "CPU2 BLE wireless stack 预检/安装",
+        "请确认 Companion 已接好 ST-LINK USB",
         "flashes the same package OTA loader and unified Companion VKA1 app before A1/A2",
-        "runs against the same unified Companion VKA1 app",
-        "transfers the same package over the STM32WB ST OTA path",
-        "A1/A2 和 Type 页面现在都跑在统一 Companion app 上",
-        "BLE OTA gate 会继续验证同一个 package",
+        "optional legacy Type UI gate against the same unified Companion VKA1 app",
+        "transfers the same package over the Companion OTA v2 path",
+        "有线刷机、录音链路和蓝牙升级",
     ]:
         require(anchor in hardware_acceptance, f"verify_companion_hardware_acceptance.ps1 missing anchor: {anchor}", errors)
     type_ui_call = 'Invoke-AcceptanceStep -Name "Type temporary Companion debug page"'
     wireless_call = 'Invoke-AcceptanceStep -Name "ensure CPU2 BLE wireless stack"'
-    a1_a2_call = 'Invoke-AcceptanceStep -Name "real Companion Type A1/A2"'
+    a1_a2_call = 'Invoke-AcceptanceStep -Name "real Companion A1/A2 bench validation"'
     wired_call = 'Invoke-AcceptanceStep -Name "real Companion wired flash from same package"'
-    ble_ota_call = 'Invoke-AcceptanceStep -Name "real Companion BLE OTA through Type"'
+    ble_ota_call = 'Invoke-AcceptanceStep -Name "real Companion BLE OTA bench validation"'
     require(
         0 <= hardware_acceptance.find(wireless_call) < hardware_acceptance.find(wired_call),
         "hardware acceptance runner must provision/read the CPU2 BLE wireless stack before wired package flashing",
@@ -617,7 +719,7 @@ def check_wired_package_tooling(errors: list[str]) -> None:
         "--firmware-ota-transfer",
         "firmware_ota_result_json=",
         "companion_ble_ota_result_json=",
-        "stm32wb_st_ble_ota",
+        "companion_ota_v2",
         "versionConfirmed",
         "DRY-RUN: Companion BLE OTA validation is ready.",
         "Refusing to run Companion BLE OTA validation without -WorkflowLockHeld.",

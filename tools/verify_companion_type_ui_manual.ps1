@@ -70,6 +70,30 @@ function Show-OperatorPrompt {
     }
 }
 
+function Read-OperatorFailureNote {
+    param(
+        [Parameter(Mandatory = $true)][string] $Title,
+        [Parameter(Mandatory = $true)][string] $Message
+    )
+
+    try {
+        [System.Media.SystemSounds]::Exclamation.Play()
+        [Console]::Beep(660, 220)
+    } catch {
+        Write-Warning "Could not play operator prompt sound: $($_.Exception.Message)"
+    }
+
+    try {
+        Add-Type -AssemblyName Microsoft.VisualBasic
+        return [Microsoft.VisualBasic.Interaction]::InputBox($Message, $Title, "")
+    } catch {
+        Write-Host ""
+        Write-Host "=== $Title ==="
+        Write-Host $Message
+        return Read-Host "没通过的地方"
+    }
+}
+
 function Copy-ManualEvidence {
     param([string] $Path)
 
@@ -100,6 +124,9 @@ function ConvertTo-TypeUiMarkdown {
         "- Operator confirmed: $($Summary["operator_confirmed"])",
         "- Prompt transcript: ``$($Summary["prompt_transcript"])``"
     )
+    if ($Summary.Contains("operator_failure_note") -and $Summary["operator_failure_note"]) {
+        $lines += "- Operator failure note: $($Summary["operator_failure_note"])"
+    }
     if ($Summary["evidence_path"]) {
         $lines += "- Original evidence: ``$($Summary["evidence_path"])``"
     }
@@ -127,13 +154,12 @@ $promptTranscript = Join-Path $outDirResolved "companion-type-ui-manual-prompt.m
 $visualRoute = "http://127.0.0.1:<vite-port>/?visual=settings-companion&theme=dark"
 $lockCommand = "pwsh -NoProfile -File C:\Users\Billy\Desktop\Denzic\ai-collaboration-workflow\scripts\aiw.ps1 with-lock -Resource Companion-WB55,BLE-Companion -Purpose `"Companion Type UI validation`" -Run pwsh -NoProfile -File .\tools\verify_companion_type_ui_manual.ps1 -Execute -WorkflowLockHeld -PackagePath `"$resolvedPackage`" -EvidencePath <screenshot-or-log>"
 $requiredActions = @(
-    "打开 Listener Type 的 Settings > Companion Pendant bring-up，或开发可视化路由 $visualRoute。",
-    "确认页面在 Companion section，选择或沿用同一个 Companion package：$resolvedPackage。",
-    "确认 Companion 真机可连接，点击 BLE 订阅并看到 PASS。",
-    "点击 A1 smoke，等待短链路 PASS，确认 PCM bytes 大于 0 且 missing 为 0。",
-    "点击 A2 smoke，等待长窗口 PASS，确认 PCM bytes 大于 0 且 missing 为 0。",
-    "确认页面仍显示同包 BLE OTA + 有线刷机入口，并显示 ST-LINK / SWD。",
-    "确认页面有总体验收按钮，并能复制 Companion hardware acceptance 命令。"
+    "打开 Listener Type 的 Companion 测试页面。",
+    "确认 Companion 真机可连接。",
+    "点击 BLE 订阅测试并看到绿色 PASS。",
+    "点击 A1 短语音测试并看到绿色 PASS。",
+    "点击 A2 长语音测试并看到绿色 PASS。",
+    "确认页面显示蓝牙升级、有线刷机和总体验收入口。"
 )
 
 if (-not $Execute) {
@@ -151,6 +177,7 @@ if (-not $Execute) {
         operator_confirmed = $false
         evidence_path = $EvidencePath
         copied_evidence_path = $null
+        operator_failure_note = ""
         prompt_transcript = $promptTranscript
         checks = @("manual UI wrapper is ready; execute requires workflow hardware lock and Chinese audible prompts")
         errors = @()
@@ -174,38 +201,36 @@ if (-not $WorkflowLockHeld) {
 
 $startedAt = (Get-Date).ToUniversalTime().ToString("o")
 $operatorConfirmed = $false
+$operatorFailureNote = ""
 $errors = [System.Collections.Generic.List[string]]::new()
 $checks = [System.Collections.Generic.List[string]]::new()
 $copiedEvidence = $null
 
 $promptText = @(
-    "请现在操作 Listener Type 的 Companion Pendant bring-up 页面：",
+    "请在 Listener Type 的 Companion 测试页面完成这几步：",
     "",
-    "1. 打开 Settings > Companion Pendant bring-up，或开发可视化路由 $visualRoute。",
-    "2. 使用同一个 Companion package：$resolvedPackage。",
-    "3. 确认 Companion 真机可连接。",
-    "4. 点击 BLE 订阅，看到 PASS。",
-    "5. 点击 A1 smoke，看到 PASS，PCM bytes 大于 0，missing 为 0。",
-    "6. 点击 A2 smoke，看到 PASS，PCM bytes 大于 0，missing 为 0。",
-    "7. 确认页面仍有 BLE OTA + 有线刷机入口，且有线显示 ST-LINK / SWD。",
-    "8. 点击或确认总体验收按钮，确认它能复制 Companion hardware acceptance 命令。",
+    "1. 确认页面能看到 Companion 设备，并且可以连接。",
+    "2. 点击 BLE 订阅测试，看到绿色 PASS。",
+    "3. 点击 A1 短语音测试，看到绿色 PASS。",
+    "4. 点击 A2 长语音测试，看到绿色 PASS。",
+    "5. 确认页面里能看到蓝牙升级和有线刷机入口。",
+    "6. 确认有总体验收入口。",
     "",
-    "完成后点击 OK。若需要截图或日志，请保存后用 -EvidencePath 传给本脚本。"
+    "全部完成后点击 OK。遇到红色错误、找不到设备或找不到入口，就先别点 OK，直接告诉 Codex。"
 ) -join [Environment]::NewLine
 
 [void](Show-OperatorPrompt -Title "Companion Type 页面真机验证" -Message $promptText)
 
 $confirmText = @(
-    "请确认刚才 Type Companion 页面三项真机验证都已经通过：",
+    "请按你刚才看到的真实页面结果确认：",
     "",
-    "- BLE 订阅 PASS",
-    "- A1 smoke PASS，PCM bytes > 0，missing = 0",
-    "- A2 smoke PASS，PCM bytes > 0，missing = 0",
-    "- 同一个 package 的 BLE OTA / 有线刷机入口可见",
-    "- 有线入口显示 ST-LINK / SWD",
-    "- 总体验收入口可见，并能复制 Companion hardware acceptance 命令",
+    "- BLE 订阅是绿色 PASS",
+    "- A1 短语音测试是绿色 PASS",
+    "- A2 长语音测试是绿色 PASS",
+    "- 蓝牙升级和有线刷机入口都能看到",
+    "- 总体验收入口能看到",
     "",
-    "点击 Yes 记录 PASS；点击 No 记录 FAIL。"
+    "点击 Yes 表示这轮真实验收通过；点击 No 表示没通过，需要继续修。"
 ) -join [Environment]::NewLine
 
 $dialog = Show-OperatorPrompt `
@@ -216,9 +241,16 @@ $dialog = Show-OperatorPrompt `
 
 if ($dialog -eq [System.Windows.Forms.DialogResult]::Yes) {
     $operatorConfirmed = $true
-    $checks.Add("operator confirmed BLE subscription, A1 smoke, A2 smoke, aggregate acceptance command, same-package controls, and ST-LINK / SWD") | Out-Null
+    $checks.Add("operator confirmed BLE subscription, A1 smoke, A2 smoke, OTA/wired entries, and aggregate acceptance entry") | Out-Null
 } else {
-    $errors.Add("operator reported Companion Type UI validation did not pass") | Out-Null
+    $operatorFailureNote = Read-OperatorFailureNote `
+        -Title "哪一步没过？" `
+        -Message "请用一句话写下没通过的地方，例如：找不到 Companion、BLE 订阅红色错误、A1 没有 PASS、A2 没有 PASS、没看到升级入口。留空也可以。"
+    if ([string]::IsNullOrWhiteSpace($operatorFailureNote)) {
+        $errors.Add("operator reported Companion Type UI validation did not pass") | Out-Null
+    } else {
+        $errors.Add("operator reported Companion Type UI validation did not pass: $operatorFailureNote") | Out-Null
+    }
 }
 
 try {
@@ -240,6 +272,7 @@ $promptLines = @(
     "- Finished UTC: $finishedAt",
     "- Package: ``$resolvedPackage``",
     "- Operator confirmed: $operatorConfirmed",
+    "- Operator failure note: $operatorFailureNote",
     "",
     "## Prompt",
     "",
@@ -266,6 +299,7 @@ $summary = [ordered]@{
     visual_route = $visualRoute
     required_actions = @($requiredActions)
     operator_confirmed = $operatorConfirmed
+    operator_failure_note = $operatorFailureNote
     evidence_path = $EvidencePath
     copied_evidence_path = $copiedEvidence
     prompt_transcript = $promptTranscript

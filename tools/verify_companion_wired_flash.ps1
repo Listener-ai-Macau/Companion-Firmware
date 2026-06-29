@@ -169,7 +169,14 @@ function Invoke-ListenerTypeCommand {
 
     Push-Location $typeRoot
     try {
-        & $listenerExePath @Arguments 2>&1 | Tee-Object -FilePath $RawLogPath | Out-Host
+        try {
+            & $listenerExePath @Arguments 2>&1 | Tee-Object -FilePath $RawLogPath | Out-Host
+        } catch {
+            $message = "Invoke-ListenerTypeCommand failed before normal output: $($_.Exception.Message)"
+            $message | Set-Content -LiteralPath $RawLogPath -Encoding UTF8
+            Write-Host $message
+            return 1
+        }
         if ($null -eq $LASTEXITCODE) {
             return 0
         }
@@ -177,6 +184,15 @@ function Invoke-ListenerTypeCommand {
     } finally {
         Pop-Location
     }
+}
+
+function Read-RawLogText {
+    param([Parameter(Mandatory = $true)][string] $RawLogPath)
+
+    if (Test-Path -LiteralPath $RawLogPath -PathType Leaf) {
+        return Get-Content -LiteralPath $RawLogPath -Raw -Encoding UTF8
+    }
+    return ""
 }
 
 function Test-WiredCheckReport {
@@ -287,7 +303,7 @@ if (-not $Execute) {
     $commandArgs = @("--wired-firmware-check", $resolvedPackage)
     $commandLine = ConvertTo-CommandLine -FilePath $listenerExePath -Arguments $commandArgs
     $exitCode = Invoke-ListenerTypeCommand -Arguments $commandArgs -RawLogPath $rawLog
-    $rawText = Get-Content -LiteralPath $rawLog -Raw -Encoding UTF8
+    $rawText = Read-RawLogText -RawLogPath $rawLog
     $typeReport = Get-WiredFirmwareResultFromLog -Text $rawText
     if ($typeReport) {
         $typeReport | ConvertTo-Json -Depth 12 | Set-Content -LiteralPath $typeReportJson -Encoding UTF8
@@ -339,7 +355,7 @@ if (-not $WorkflowLockHeld) {
 if ($PromptOperator) {
     Show-OperatorPrompt `
         -Title "Companion 有线刷机验证即将开始" `
-        -Message "请确认 NUCLEO-WB55RG 已通过内置 ST-LINK 的 USB 数据线连接，Companion 目标板供电稳定，当前没有其它工具占用 STM32CubeProgrammer/ST-LINK。点击 OK 后脚本会通过 Type headless 有线刷机把同一个 Companion package 写入设备，并把 wired_firmware_result_json 证据写入：$outDirResolved"
+        -Message "请确认 Companion/NUCLEO 已通过 ST-LINK USB 数据线连接，供电稳定，没有其它刷机工具或串口工具占用设备。点击 OK 后会开始有线刷机；刷机过程中不要拔线、不要断电。"
 }
 
 $commandArgs = @("--wired-firmware-flash", $resolvedPackage, $Port)
@@ -349,7 +365,7 @@ if ($Baud -gt 0) {
 $commandLine = ConvertTo-CommandLine -FilePath $listenerExePath -Arguments $commandArgs
 $startedAt = (Get-Date).ToUniversalTime().ToString("o")
 $exitCode = Invoke-ListenerTypeCommand -Arguments $commandArgs -RawLogPath $rawLog
-$rawText = Get-Content -LiteralPath $rawLog -Raw -Encoding UTF8
+$rawText = Read-RawLogText -RawLogPath $rawLog
 $typeReport = Get-WiredFirmwareResultFromLog -Text $rawText
 if ($typeReport) {
     $typeReport | ConvertTo-Json -Depth 12 | Set-Content -LiteralPath $typeReportJson -Encoding UTF8

@@ -5,7 +5,8 @@ param(
     [switch] $SkipTypeBuild,
     [switch] $SkipRustChecks,
     [switch] $SkipA1A2DryRun,
-    [switch] $SkipTypeCompanionVisual
+    [switch] $SkipTypeCompanionVisual,
+    [switch] $IncludeTypeHarness
 )
 
 $ErrorActionPreference = "Stop"
@@ -13,7 +14,10 @@ Set-StrictMode -Version Latest
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
-$typeRoot = (Resolve-Path $TypeRepoRoot).Path
+$typeRoot = $null
+if ($IncludeTypeHarness) {
+    $typeRoot = (Resolve-Path $TypeRepoRoot).Path
+}
 $stamp = Get-Date -Format "yyyyMMdd-HHmmss"
 $outDir = Join-Path $repoRoot ".cache\validation\companion-bringup-readiness-$stamp"
 New-Item -ItemType Directory -Force -Path $outDir | Out-Null
@@ -163,7 +167,7 @@ function ConvertTo-ReadinessMarkdown {
     $lines += ""
     $lines += "These gates intentionally require real Companion hardware/operator evidence and are not executed by the no-hardware readiness preflight."
     $lines += ""
-    $lines += "To run all four hardware gates in one locked operator flow:"
+    $lines += "To run the listed hardware gates in one locked operator flow:"
     $lines += ""
     $lines += "``````powershell"
     $lines += $Report["hardware_acceptance_runner"]
@@ -199,58 +203,79 @@ if ($Full) {
 }
 
 $resolvedPackagePath = Resolve-CompanionPackage -Path $PackagePath
+$typeUiManualDryRunSummary = $null
+$hardwareAcceptanceDryRunSummary = $null
 
-Invoke-ReadinessStep -Name "verify Listener VKA1 static contract" -WorkingDirectory $repoRoot -FilePath "python" -Arguments @(".\tools\verify_listener_vka1_static.py")
+Invoke-ReadinessStep -Name "Companion build environment check" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments @("-NoProfile", "-File", ".\tools\build.ps1", "-CheckOnly")
 Invoke-ReadinessStep -Name "verify Companion OTA static contract" -WorkingDirectory $repoRoot -FilePath "python" -Arguments @(".\tools\verify_ota_contract_static.py")
+Invoke-ReadinessStep -Name "Companion BLE probe self-test" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments @("-NoProfile", "-File", ".\tools\companion_ble_probe.ps1", "-SelfTest")
+Invoke-ReadinessStep -Name "Companion recording cache model" -WorkingDirectory $repoRoot -FilePath "python" -Arguments @(".\tools\verify_recording_cache_model.py")
+Invoke-ReadinessStep -Name "Companion recording FSM static" -WorkingDirectory $repoRoot -FilePath "python" -Arguments @(".\tools\verify_recording_fsm_static.py")
+Invoke-ReadinessStep -Name "Companion diagnostics static" -WorkingDirectory $repoRoot -FilePath "python" -Arguments @(".\tools\verify_companion_diagnostics_static.py")
 
-$typePackageArgs = @("-NoProfile", "-File", ".\tools\verify_type_companion_package_static.ps1", "-PackagePath", $resolvedPackagePath)
-if ((-not $Full) -or $SkipRustChecks) {
-    $typePackageArgs += "-SkipTypeRust"
+if ($IncludeTypeHarness) {
+    Invoke-ReadinessStep -Name "verify Listener VKA1 static contract" -WorkingDirectory $repoRoot -FilePath "python" -Arguments @(".\tools\verify_listener_vka1_static.py")
+
+    $typePackageArgs = @("-NoProfile", "-File", ".\tools\verify_type_companion_package_static.ps1", "-PackagePath", $resolvedPackagePath)
+    if ((-not $Full) -or $SkipRustChecks) {
+        $typePackageArgs += "-SkipTypeRust"
+    }
+    Invoke-ReadinessStep -Name "verify Type Companion package integration" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments $typePackageArgs
+
+    if (-not $SkipTypeCompanionVisual) {
+        Invoke-ReadinessStep -Name "Type temporary Companion visual smoke" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments @("-NoProfile", "-File", ".\tools\capture_type_companion_visual.ps1", "-TypeRepoRoot", $typeRoot, "-OutputDir", (Join-Path $outDir "type-companion-visual"))
+    }
+
+    if ($Full -and -not $SkipTypeBuild) {
+        Invoke-ReadinessStep -Name "Type firmware OTA frontend tests" -WorkingDirectory $typeRoot -FilePath "npm.cmd" -Arguments @("run", "test:firmware-ota")
+        Invoke-ReadinessStep -Name "Type production build" -WorkingDirectory $typeRoot -FilePath "npm.cmd" -Arguments @("run", "build")
+    }
+
+    if ($Full -and -not $SkipRustChecks) {
+        Invoke-ReadinessStep -Name "Type firmware_ota rust tests" -WorkingDirectory (Join-Path $typeRoot "src-tauri") -FilePath "cargo" -Arguments @("test", "--lib", "firmware_ota")
+        Invoke-ReadinessStep -Name "Type stm32wb_st_ota rust tests" -WorkingDirectory (Join-Path $typeRoot "src-tauri") -FilePath "cargo" -Arguments @("test", "--lib", "stm32wb_st_ota")
+    }
+
+    if (-not $SkipA1A2DryRun) {
+        Invoke-ReadinessStep -Name "Companion Type A1 A2 dry run" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments @("-NoProfile", "-File", ".\tools\verify_companion_type_a1_a2.ps1", "-TypeRepoRoot", $typeRoot)
+    }
+
+    Invoke-ReadinessStep -Name "Companion BLE OTA dry run" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments @("-NoProfile", "-File", ".\tools\verify_companion_ble_ota.ps1", "-PackagePath", $resolvedPackagePath, "-TypeRepoRoot", $typeRoot)
+    Invoke-ReadinessStep -Name "Companion wired flash dry run" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments @("-NoProfile", "-File", ".\tools\verify_companion_wired_flash.ps1", "-PackagePath", $resolvedPackagePath, "-TypeRepoRoot", $typeRoot)
+    $typeUiManualDryRunDir = Join-Path $outDir "type-ui-manual-dry-run"
+    $typeUiManualDryRunSummary = Join-Path $typeUiManualDryRunDir "companion-type-ui-manual-summary.json"
+    Invoke-ReadinessStep -Name "Companion Type UI manual dry run" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments @("-NoProfile", "-File", ".\tools\verify_companion_type_ui_manual.ps1", "-PackagePath", $resolvedPackagePath, "-TypeRepoRoot", $typeRoot, "-OutDir", $typeUiManualDryRunDir)
+    $hardwareAcceptanceDryRunDir = Join-Path $outDir "hardware-acceptance-dry-run"
+    $hardwareAcceptanceDryRunSummary = Join-Path $hardwareAcceptanceDryRunDir "companion-hardware-acceptance-summary.json"
+    Invoke-ReadinessStep -Name "Companion hardware acceptance dry run" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments @("-NoProfile", "-File", ".\tools\verify_companion_hardware_acceptance.ps1", "-PackagePath", $resolvedPackagePath, "-TypeRepoRoot", $typeRoot, "-OutDir", $hardwareAcceptanceDryRunDir, "-IncludeTypeUiGate")
 }
-Invoke-ReadinessStep -Name "verify Type Companion package integration" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments $typePackageArgs
 
-if (-not $SkipTypeCompanionVisual) {
-    Invoke-ReadinessStep -Name "Type temporary Companion visual smoke" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments @("-NoProfile", "-File", ".\tools\capture_type_companion_visual.ps1", "-TypeRepoRoot", $typeRoot, "-OutputDir", (Join-Path $outDir "type-companion-visual"))
-}
-
-if ($Full -and -not $SkipTypeBuild) {
-    Invoke-ReadinessStep -Name "Type firmware OTA frontend tests" -WorkingDirectory $typeRoot -FilePath "npm.cmd" -Arguments @("run", "test:firmware-ota")
-    Invoke-ReadinessStep -Name "Type production build" -WorkingDirectory $typeRoot -FilePath "npm.cmd" -Arguments @("run", "build")
-}
-
-if ($Full -and -not $SkipRustChecks) {
-    Invoke-ReadinessStep -Name "Type firmware_ota rust tests" -WorkingDirectory (Join-Path $typeRoot "src-tauri") -FilePath "cargo" -Arguments @("test", "--lib", "firmware_ota")
-    Invoke-ReadinessStep -Name "Type stm32wb_st_ota rust tests" -WorkingDirectory (Join-Path $typeRoot "src-tauri") -FilePath "cargo" -Arguments @("test", "--lib", "stm32wb_st_ota")
-}
-
-if (-not $SkipA1A2DryRun) {
-    Invoke-ReadinessStep -Name "Companion Type A1 A2 dry run" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments @("-NoProfile", "-File", ".\tools\verify_companion_type_a1_a2.ps1")
-}
-
-Invoke-ReadinessStep -Name "Companion BLE OTA dry run" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments @("-NoProfile", "-File", ".\tools\verify_companion_ble_ota.ps1", "-PackagePath", $resolvedPackagePath)
-Invoke-ReadinessStep -Name "Companion wired flash dry run" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments @("-NoProfile", "-File", ".\tools\verify_companion_wired_flash.ps1", "-PackagePath", $resolvedPackagePath)
-$typeUiManualDryRunDir = Join-Path $outDir "type-ui-manual-dry-run"
-$typeUiManualDryRunSummary = Join-Path $typeUiManualDryRunDir "companion-type-ui-manual-summary.json"
-Invoke-ReadinessStep -Name "Companion Type UI manual dry run" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments @("-NoProfile", "-File", ".\tools\verify_companion_type_ui_manual.ps1", "-PackagePath", $resolvedPackagePath, "-OutDir", $typeUiManualDryRunDir)
-$hardwareAcceptanceDryRunDir = Join-Path $outDir "hardware-acceptance-dry-run"
-$hardwareAcceptanceDryRunSummary = Join-Path $hardwareAcceptanceDryRunDir "companion-hardware-acceptance-summary.json"
-Invoke-ReadinessStep -Name "Companion hardware acceptance dry run" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments @("-NoProfile", "-File", ".\tools\verify_companion_hardware_acceptance.ps1", "-PackagePath", $resolvedPackagePath, "-TypeRepoRoot", $typeRoot, "-OutDir", $hardwareAcceptanceDryRunDir)
-Invoke-ReadinessStep -Name "Companion manual gate evidence checklist" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments @("-NoProfile", "-File", ".\tools\verify_companion_manual_gate_evidence.ps1", "-ChecklistOnly", "-PackagePath", $resolvedPackagePath, "-TypeUiEvidencePath", $typeUiManualDryRunSummary)
+Invoke-ReadinessStep -Name "Companion manual gate evidence checklist" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments @("-NoProfile", "-File", ".\tools\verify_companion_manual_gate_evidence.ps1", "-ChecklistOnly", "-PackagePath", $resolvedPackagePath)
 Invoke-ReadinessStep -Name "Companion git diff check" -WorkingDirectory $repoRoot -FilePath "git" -Arguments @("diff", "--check")
-Invoke-ReadinessStep -Name "Type git diff check" -WorkingDirectory $typeRoot -FilePath "git" -Arguments @("diff", "--check")
+if ($IncludeTypeHarness) {
+    Invoke-ReadinessStep -Name "Type git diff check" -WorkingDirectory $typeRoot -FilePath "git" -Arguments @("diff", "--check")
+}
 
 $aiw = "C:\Users\Billy\Desktop\Denzic\ai-collaboration-workflow\scripts\aiw.ps1"
-$hardwareAcceptanceCommand = "pwsh -NoProfile -File $aiw with-lock -Resource Companion-WB55,BLE-Companion -Purpose `"Companion hardware acceptance`" -Run pwsh -NoProfile -File .\tools\verify_companion_hardware_acceptance.ps1 -Execute -WorkflowLockHeld -PackagePath `"$resolvedPackagePath`" -EvidencePath <companion_ui_screenshot_or_log>"
-$a1a2Command = "pwsh -NoProfile -File $aiw with-lock -Resource Companion-WB55,BLE-Companion -Purpose `"Companion Type A1/A2 validation`" -Run pwsh -NoProfile -File .\tools\verify_companion_type_a1_a2.ps1 -Execute -WorkflowLockHeld"
+$hardwareAcceptanceCommand = "pwsh -NoProfile -File $aiw with-lock -Resource Companion-WB55,BLE-Companion -Purpose `"Companion hardware acceptance`" -Run pwsh -NoProfile -File .\tools\verify_companion_hardware_acceptance.ps1 -Execute -WorkflowLockHeld -PackagePath `"$resolvedPackagePath`""
+if ($IncludeTypeHarness) {
+    $hardwareAcceptanceCommand += " -IncludeTypeUiGate -EvidencePath <companion_ui_screenshot_or_log>"
+}
+$a1a2Command = "pwsh -NoProfile -File $aiw with-lock -Resource Companion-WB55,BLE-Companion -Purpose `"Companion A1/A2 bench validation`" -Run pwsh -NoProfile -File .\tools\verify_companion_type_a1_a2.ps1 -Execute -WorkflowLockHeld"
 $bleOtaCommand = "pwsh -NoProfile -File $aiw with-lock -Resource Companion-WB55,BLE-Companion -Purpose `"Companion BLE OTA validation`" -Run pwsh -NoProfile -File .\tools\verify_companion_ble_ota.ps1 -Execute -WorkflowLockHeld -PackagePath `"$resolvedPackagePath`""
 $wiredCommand = "pwsh -NoProfile -File $aiw with-lock -Resource Companion-WB55 -Purpose `"Companion wired factory flash validation`" -Run pwsh -NoProfile -File .\tools\verify_companion_wired_flash.ps1 -Execute -WorkflowLockHeld -PackagePath `"$resolvedPackagePath`""
 $typeUiCommand = "pwsh -NoProfile -File $aiw with-lock -Resource Companion-WB55,BLE-Companion -Purpose `"Companion Type UI validation`" -Run pwsh -NoProfile -File .\tools\verify_companion_type_ui_manual.ps1 -Execute -WorkflowLockHeld -PackagePath `"$resolvedPackagePath`" -EvidencePath <companion_ui_screenshot_or_log>"
-$manualEvidenceCommand = "pwsh -NoProfile -File .\tools\verify_companion_manual_gate_evidence.ps1 -PackagePath '$resolvedPackagePath' -A1A2SummaryPath <companion-type-a1-a2-summary.json> -BleOtaEvidencePath <firmware_ota_result_or_log> -WiredFlashEvidencePath <wired_flash_result_or_log> -TypeUiEvidencePath <companion-type-ui-manual-summary.json>"
+$manualEvidenceCommand = "pwsh -NoProfile -File .\tools\verify_companion_manual_gate_evidence.ps1 -PackagePath '$resolvedPackagePath' -A1A2SummaryPath <companion-type-a1-a2-summary.json> -BleOtaEvidencePath <firmware_ota_result_or_log> -WiredFlashEvidencePath <wired_flash_result_or_log>"
+if ($IncludeTypeHarness) {
+    $manualEvidenceCommand += " -TypeUiEvidencePath <companion-type-ui-manual-summary.json> -IncludeTypeUiGate"
+}
 
-Add-ManualGate -Name "real Companion Type A1/A2" -Evidence "JSON and Markdown under .cache\validation\companion-type-a1-a2-* with status PASS." -Command $a1a2Command
-Add-ManualGate -Name "real Companion BLE OTA through Type" -Evidence "tools\verify_companion_ble_ota.ps1 writes firmware_ota_result_json with status PASS, versionConfirmed=true, and transport=stm32wb_st_ble_ota." -Command $bleOtaCommand
+Add-ManualGate -Name "real Companion A1/A2 bench validation" -Evidence "JSON and Markdown under .cache\validation\companion-type-a1-a2-* with status PASS." -Command $a1a2Command
+Add-ManualGate -Name "real Companion BLE OTA bench validation" -Evidence "tools\verify_companion_ble_ota.ps1 writes firmware_ota_result_json with status PASS, versionConfirmed=true, and transport=companion_ota_v2." -Command $bleOtaCommand
 Add-ManualGate -Name "real Companion wired flash from same package" -Evidence "tools\verify_companion_wired_flash.ps1 writes wired_firmware_result_json with status PASS, mode=flash, port=SWD, and STM32CubeProgrammer verification." -Command $wiredCommand
-Add-ManualGate -Name "Type temporary Companion debug page" -Evidence "tools\verify_companion_type_ui_manual.ps1 writes companion_type_ui_manual_result_json with status PASS after the operator confirms BLE subscription, A1 smoke, A2 smoke, same-package controls, and ST-LINK / SWD." -Command $typeUiCommand
+if ($IncludeTypeHarness) {
+    Add-ManualGate -Name "Type temporary Companion debug page" -Evidence "tools\verify_companion_type_ui_manual.ps1 writes companion_type_ui_manual_result_json with status PASS after the operator confirms BLE subscription, A1, A2, BLE OTA entry, wired flash entry, and 总体验收 entry." -Command $typeUiCommand
+}
 
 $status = if ($requiredFailureCount -gt 0) {
     "FAIL"
@@ -266,14 +291,16 @@ $report = [ordered]@{
     mode = if ($Full) { "full" } else { "fast" }
     generated_at = (Get-Date).ToString("o")
     repo_root = $repoRoot
+    independent_release_gate = -not [bool]$IncludeTypeHarness
+    type_harness_included = [bool]$IncludeTypeHarness
     type_repo_root = $typeRoot
     package_path = $resolvedPackagePath
     output_dir = $outDir
-    type_visual_summary = Join-Path $outDir "type-companion-visual\type-companion-visual-summary.json"
+    type_visual_summary = if ($IncludeTypeHarness) { Join-Path $outDir "type-companion-visual\type-companion-visual-summary.json" } else { $null }
     hardware_acceptance_dry_run = $hardwareAcceptanceDryRunSummary
     hardware_acceptance_runner = $hardwareAcceptanceCommand
     manual_evidence_verifier = $manualEvidenceCommand
-    full_static_note = if ($Full) { "Full static rebuild/check path was requested. Pass -SkipTypeCompanionVisual only when a headless browser is unavailable." } else { "Fast mode reuses the latest package and skips Type production build plus Rust checks; run with -Full before final static signoff. Pass -SkipTypeCompanionVisual only when a headless browser is unavailable." }
+    full_static_note = if ($Full) { "Full independent Companion rebuild/check path was requested. Pass -IncludeTypeHarness only for legacy Listener-Type bench integration checks." } else { "Fast mode reuses the latest package and skips firmware rebuilds. Run with -Full before final static signoff; pass -IncludeTypeHarness only for legacy Listener-Type bench integration checks." }
     steps = @($steps)
     manual_gates = @($manualGates)
 }

@@ -108,6 +108,15 @@ $otaBinDest = Join-Path $packageDir $otaBinName
 Copy-Item -LiteralPath $otaBinSource -Destination $otaBinDest -Force
 $otaHash = (Get-FileHash -LiteralPath $otaBinDest -Algorithm SHA256).Hash.ToLowerInvariant()
 $otaSize = (Get-Item -LiteralPath $otaBinDest).Length
+$companionOtaV2ChunkBytes = 240
+$chunkOverride = [Environment]::GetEnvironmentVariable("COMPANION_OTA_V2_CHUNK_BYTES")
+if (-not [string]::IsNullOrWhiteSpace($chunkOverride)) {
+    $parsedChunk = 0
+    if (-not [int]::TryParse($chunkOverride.Trim(), [ref] $parsedChunk) -or $parsedChunk -lt 1 -or $parsedChunk -gt 241) {
+        throw "Unsupported COMPANION_OTA_V2_CHUNK_BYTES=$chunkOverride; use a chunk size from 1 to 241 bytes."
+    }
+    $companionOtaV2ChunkBytes = $parsedChunk
+}
 
 $mcu = if ($BoardTarget -eq "NUCLEO-WB55RG") { "STM32WB55" } else { "STM32WB55CEUx" }
 $hardwareRevision = $BoardTarget
@@ -130,17 +139,17 @@ $manifest = [ordered]@{
         sha256 = $otaHash
     }
     protocol = [ordered]@{
-        name = "stm32wb_st_ble_ota"
+        name = "companion_ota_v2"
         version = 1
-        firmware_capability = "stm32wb_st_ble_ota_v1"
+        firmware_capability = "companion_ota_v2"
         app_base_address = $otaAppBaseAddress
         app_start_sector = $otaAppStartSector
         gatt = [ordered]@{
-            service_uuid = "8f7a0007-7b7d-4f3d-9d6f-6c2d1b7c0000"
-            control_uuid = "8f7a7002-7b7d-4f3d-9d6f-6c2d1b7c0000"
-            data_uuid = "8f7a7004-7b7d-4f3d-9d6f-6c2d1b7c0000"
-            confirm_uuid = "8f7a7003-7b7d-4f3d-9d6f-6c2d1b7c0000"
-            chunk_bytes = 248
+            service_uuid = "8f7a8007-7b7d-4f3d-9d6f-6c2d1b7c0000"
+            control_uuid = "8f7a8002-7b7d-4f3d-9d6f-6c2d1b7c0000"
+            data_uuid = "8f7a8004-7b7d-4f3d-9d6f-6c2d1b7c0000"
+            status_uuid = "8f7a8005-7b7d-4f3d-9d6f-6c2d1b7c0000"
+            chunk_bytes = $companionOtaV2ChunkBytes
         }
     }
     firmware = [ordered]@{
@@ -159,9 +168,9 @@ $manifest = [ordered]@{
         sha256 = $otaHash
     }
     compatibility = [ordered]@{
-        st_reference = "BLE_Ota or BLE_p2pServer_ota"
+        st_reference = "BLE_Ota loader with Companion OTA v2 custom service"
         stm32cube_wb = "v1.24.0"
-        gatt_contract = "companion_ble_gatt_v1"
+        gatt_contract = "companion_ble_ota_v2"
         min_desktop_version = $MinDesktopVersion
     }
     bootloader = [ordered]@{
@@ -185,7 +194,7 @@ $manifest = [ordered]@{
         strategy = "stm32wb_reference_ota_pending_verify"
         notes = "Resident bootloader verifies external QSPI ota_staging before installing the single runnable CPU1 app."
         instructions = @(
-            "If the ST BLE_Ota transfer is interrupted before reboot, retry from the companion loader.",
+            "If the Companion OTA v2 transfer is interrupted before reboot, retry from the companion loader.",
             "If the app does not boot, use the wired factory path in the same package to restore BLE_Ota plus the app."
         )
     }
@@ -194,7 +203,7 @@ $manifest = [ordered]@{
         interrupted_transfer = "Report interrupted_transfer and require host recovery before accepting new OTA data."
         instructions = @(
             "Use the package factory directory or Type wired flashing to restore both the ST BLE_Ota loader and Companion app over SWD.",
-            "If Windows cannot see companion advertising the ST OTA service, reset the board into the wired factory image first."
+            "If Windows cannot see companion advertising the Companion OTA v2 service, reset the board into the wired factory image first."
         )
     }
     post_update_self_checks = $requiredSelfChecks

@@ -48,6 +48,7 @@ typedef struct
 /* Private macros ------------------------------------------------------------*/
 /* Number of bytes to be written in flash on each programming sequence */
 #define DOUBLEWORD_SIZE_FOR_FLASH_PROGRAMMING       (8)
+#define COMPANION_OTA_REBOOT_CONFIRM_GRACE_MS       (300u)
 
 #ifdef COMPANION_OTA_LOADER_ALWAYS_ADVERTISE
 #define COMPANION_OTA_FW_APP_COOKIE_VALUE  (0xC3u)
@@ -56,15 +57,28 @@ typedef struct
 
 /* Private variables ---------------------------------------------------------*/
 OTAS_APP_Context_t OTAS_APP_Context;
+static uint8_t RebootFinalizeRequested;
+static uint8_t RebootConfirmationSent;
+static uint8_t UploadFinalized;
 
 /* Global variables ----------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
 static void OTAS_APP_FinalizeUpload(void);
+static void OTAS_APP_ResetCompletionState(void);
+static void OTAS_APP_RequestDeferredFinalize(void);
 
 /* Functions Definition ------------------------------------------------------*/
 /* Private functions ----------------------------------------------------------*/
 static void OTAS_APP_FinalizeUpload(void)
 {
+  if(UploadFinalized != 0u)
+  {
+    return;
+  }
+
+  UploadFinalized = 1u;
+  RebootFinalizeRequested = 0u;
+
   /**
    * Write now in Flash the remaining data that has not been written before because they were less than
    * DOUBLEWORD_SIZE_FOR_FLASH_PROGRAMMING bytes to be written
@@ -139,13 +153,40 @@ static void OTAS_APP_FinalizeUpload(void)
   }
 }
 
+static void OTAS_APP_ResetCompletionState(void)
+{
+  RebootFinalizeRequested = 0u;
+  RebootConfirmationSent = 0u;
+  UploadFinalized = 0u;
+}
+
+static void OTAS_APP_RequestDeferredFinalize(void)
+{
+  RebootFinalizeRequested = 1u;
+}
+
 /* Public functions ----------------------------------------------------------*/
+void OTAS_APP_ProcessDeferredFinalize(void)
+{
+  if((RebootFinalizeRequested != 0u) && (UploadFinalized == 0u))
+  {
+    if(RebootConfirmationSent == 0u)
+    {
+      OTAS_STM_Indication_Msg_t msg_conf;
+
+      RebootConfirmationSent = 1u;
+      msg_conf = OTAS_STM_REBOOT_CONFIRMED;
+      (void) OTAS_STM_UpdateChar(OTAS_STM_CONF_ID, (uint8_t*)&msg_conf);
+    }
+    HAL_Delay(COMPANION_OTA_REBOOT_CONFIRM_GRACE_MS);
+    OTAS_APP_FinalizeUpload();
+  }
+}
 
 void OTAS_STM_Notification( OTA_STM_Notification_t *p_notification )
 {
   uint32_t count;
   uint32_t size_left;
-  OTAS_STM_Indication_Msg_t msg_conf;
 
   switch(p_notification->ChardId)
   {
@@ -157,6 +198,7 @@ void OTAS_STM_Notification( OTA_STM_Notification_t *p_notification )
           break;
 
         case OTAS_STM_WIRELESS_FW_UPLOAD:
+          OTAS_APP_ResetCompletionState();
           OTAS_APP_Context.file_type = Wireless_Fw;
           OTAS_APP_Context.base_address = FLASH_BASE;
           ((uint8_t*)&OTAS_APP_Context.base_address)[0] = (((uint8_t*)((OTA_STM_Base_Addr_Event_Format_t*)(p_notification->pPayload))->Base_Addr))[2];
@@ -166,6 +208,7 @@ void OTAS_STM_Notification( OTA_STM_Notification_t *p_notification )
           break;
 
         case OTAS_STM_APPLICATION_UPLOAD:
+          OTAS_APP_ResetCompletionState();
           OTAS_APP_Context.file_type = Fw_App;
           OTAS_APP_Context.base_address = FLASH_BASE;
           ((uint8_t*)&OTAS_APP_Context.base_address)[0] = (((uint8_t*)((OTA_STM_Base_Addr_Event_Format_t*)(p_notification->pPayload))->Base_Addr))[2];
@@ -175,12 +218,11 @@ void OTAS_STM_Notification( OTA_STM_Notification_t *p_notification )
           break;
 
         case OTAS_STM_UPLOAD_FINISHED:
-          msg_conf = OTAS_STM_REBOOT_CONFIRMED;
-          (void) OTAS_STM_UpdateChar(OTAS_STM_CONF_ID, (uint8_t*)&msg_conf);
-          OTAS_APP_FinalizeUpload();
+          OTAS_APP_RequestDeferredFinalize();
           break;
 
         case OTAS_STM_CANCEL_UPLOAD:
+          OTAS_APP_ResetCompletionState();
           break;
 
         default:

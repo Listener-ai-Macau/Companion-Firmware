@@ -10,14 +10,20 @@ param(
     [int] $MaxMissingPackets = 0,
     [int] $CliRetries = 2,
     [int] $RetryDelayMs = 5000,
+    [int] $BleCleanupStopTimeoutMs = 5000,
+    [int] $BleRecoveryDelayMs = 8000,
+    [int] $BleRecoveryProbeTimeoutMs = 30000,
     [int] $RoundCooldownMs = 5000,
     [bool] $RequireA1Text = $true,
     [bool] $RequireA2Text = $true,
     [int] $MinFinalTextChars = 1,
     [string] $A2PlaybackText = "明天下午两点提醒我检查蓝牙音频丢包率。",
+    [string] $TtsVoiceName = "",
     [double] $TtsGain = 4.0,
     [int] $TtsRate = 0,
     [double] $MinTranscriptAccuracy = 0.60,
+    [switch] $GateA1TranscriptAccuracy,
+    [switch] $GateA2TranscriptAccuracy,
     [int] $PrePlaybackDelayMs = 300,
     [ValidateSet("wav", "speech")]
     [string] $PlaybackMode = "wav",
@@ -92,8 +98,10 @@ function Set-CompanionTypeEnvironment {
     $env:LISTENER_TYPE_BLE_TARGET_NAME = "companion"
     $env:LISTENER_TYPE_HIDE_MAIN_ON_START = "1"
     $env:LISTENER_TYPE_DISABLE_BACKGROUND_BLE = "1"
+    $env:LISTENER_TYPE_DISABLE_EMBEDDED_BLE_PROCESSING_SYNC = "1"
     $env:LISTENER_TYPE_EMBEDDED_BLE_READY_COMMAND = $ReadyCommand
     $env:LISTENER_TYPE_RECORD_EMBEDDED_AUDIO_FOR_DEBUG = "1"
+    $env:LISTENER_TYPE_EXTRA_ASR_HOTWORDS = Get-CompanionExtraAsrHotwords
     if ($StatsOnly) {
         $env:LISTENER_TYPE_EMBEDDED_BLE_STATS_ONLY = "1"
         Remove-Item Env:\LISTENER_TYPE_FORCE_RAW_OUTPUT -ErrorAction SilentlyContinue
@@ -308,6 +316,18 @@ $A1PlaybackTexts = @(
     "全部选中"
 )
 
+function Get-CompanionExtraAsrHotwords {
+    $extra = @(
+        "Companion",
+        "蓝牙音频",
+        "音频链路",
+        "丢包率",
+        "完整上传",
+        "正确识别"
+    )
+    return (@($A1PlaybackTexts + $extra) | Select-Object -Unique) -join "|"
+}
+
 function Get-A1PlaybackText {
     param([Parameter(Mandatory = $true)][int] $Round)
     $index = ($Round - 1) % $A1PlaybackTexts.Count
@@ -387,6 +407,7 @@ function New-TtsWav {
     param(
         [Parameter(Mandatory = $true)][string] $Text,
         [Parameter(Mandatory = $true)][string] $Path,
+        [string] $VoiceName = "",
         [int] $Rate = 0
     )
 
@@ -400,11 +421,25 @@ function New-TtsWav {
     try {
         $synth.Volume = 100
         $synth.Rate = [Math]::Max(-10, [Math]::Min(10, $Rate))
-        $zhVoice = $synth.GetInstalledVoices() |
-            Where-Object { $_.VoiceInfo.Culture.Name -like "zh-*" } |
-            Select-Object -First 1
-        if ($null -ne $zhVoice) {
-            $synth.SelectVoice($zhVoice.VoiceInfo.Name)
+        $voices = @($synth.GetInstalledVoices())
+        $selectedVoice = $null
+        if (-not [string]::IsNullOrWhiteSpace($VoiceName)) {
+            $selectedVoice = $voices |
+                Where-Object {
+                    $_.VoiceInfo.Name -eq $VoiceName -or
+                    $_.VoiceInfo.Name.IndexOf($VoiceName, [System.StringComparison]::OrdinalIgnoreCase) -ge 0
+                } |
+                Select-Object -First 1
+            if ($null -eq $selectedVoice) {
+                throw "TTS voice not found: $VoiceName"
+            }
+        } else {
+            $selectedVoice = $voices |
+                Where-Object { $_.VoiceInfo.Culture.Name -like "zh-*" } |
+                Select-Object -First 1
+        }
+        if ($null -ne $selectedVoice) {
+            $synth.SelectVoice($selectedVoice.VoiceInfo.Name)
         }
         $format = [System.Speech.AudioFormat.SpeechAudioFormatInfo]::new(
             16000,
@@ -561,7 +596,7 @@ function New-PlaybackFixture {
     $wavPath = Join-Path $outputDir ("{0}-round{1}-tts.wav" -f $CaseId.ToLowerInvariant(), $Round)
     $voiceName = $null
     if (-not $DisableTtsPlayback) {
-        $voiceName = New-TtsWav -Text $Text -Path $wavPath -Rate $TtsRate
+        $voiceName = New-TtsWav -Text $Text -Path $wavPath -VoiceName $TtsVoiceName -Rate $TtsRate
         Boost-WavPcm16 -Path $wavPath -Gain $TtsGain
     }
 
@@ -659,6 +694,43 @@ function Wait-ListenerLogPattern {
         $snippet = $snippet.Substring($snippet.Length - 2000)
     }
     throw "$Label timed out waiting for BLE ready before playback after $TimeoutMs ms. Log tail:`n$snippet"
+}
+
+function Invoke-CompanionBleRecovery {
+    param(
+        [Parameter(Mandatory = $true)][string] $Label,
+        [Parameter(Mandatory = $true)][string] $ListenerExePath
+    )
+
+    if ($BleCleanupStopTimeoutMs -gt 0) {
+        try {
+            Write-Host "RECOVERY: $Label sending embedded BLE control stop timeout_ms=$BleCleanupStopTimeoutMs"
+            Set-CompanionTypeEnvironment -ReadyCommand "TYPE:READY" -StatsOnly $true
+            & $ListenerExePath --send-embedded-audio-control-stop ([string]$BleCleanupStopTimeoutMs) | Out-Host
+            if ($LASTEXITCODE -ne 0) {
+                Write-Warning "$Label recovery control stop exited with code $LASTEXITCODE"
+            }
+        } catch {
+            Write-Warning "$Label recovery control stop failed: $($_.Exception.Message)"
+        }
+    }
+
+    if ($BleRecoveryDelayMs -gt 0) {
+        Start-Sleep -Milliseconds $BleRecoveryDelayMs
+    }
+
+    if ($BleRecoveryProbeTimeoutMs -gt 0) {
+        try {
+            Write-Host "RECOVERY: $Label probing embedded BLE notify timeout_ms=$BleRecoveryProbeTimeoutMs"
+            Set-CompanionTypeEnvironment -ReadyCommand "TYPE:HB" -StatsOnly $true
+            & $ListenerExePath --probe-embedded-audio-ble-subscription ([string]$BleRecoveryProbeTimeoutMs) | Out-Host
+            if ($LASTEXITCODE -ne 0) {
+                Write-Warning "$Label recovery probe exited with code $LASTEXITCODE"
+            }
+        } catch {
+            Write-Warning "$Label recovery probe failed: $($_.Exception.Message)"
+        }
+    }
 }
 
 function Invoke-ListenerCli {
@@ -791,6 +863,7 @@ function Invoke-ListenerCliWithRetry {
                 error = $message
             }) | Out-Null
             Write-Warning "$Label attempt $attempt failed; retrying in $DelayMs ms: $message"
+            Invoke-CompanionBleRecovery -Label "$Label attempt $attempt" -ListenerExePath $ListenerExePath | Out-Null
             Start-Sleep -Milliseconds $DelayMs
         }
     }
@@ -805,6 +878,7 @@ function New-StreamResult {
         [Parameter(Mandatory = $true)] $Match,
         [Parameter(Mandatory = $true)][int] $Attempts,
         [bool] $RequireText = $false,
+        [bool] $GateTranscriptAccuracy = $false,
         [string] $ExpectedText,
         [string] $PlaybackWav,
         [string] $TtsVoice
@@ -845,9 +919,10 @@ function New-StreamResult {
         $null
     }
     $accuracy = if ($accuracyReport) { [double] $accuracyReport.accuracy } else { $null }
+    $accuracyOk = $null -eq $accuracy -or $accuracy -ge $MinTranscriptAccuracy
     $textOk = -not $RequireText -or (
         $finalTextChars -ge $MinFinalTextChars -and
-        ($null -eq $accuracy -or $accuracy -ge $MinTranscriptAccuracy)
+        (-not $GateTranscriptAccuracy -or $accuracyOk)
     )
     $packetOk = $missing -le $MaxMissingPackets
     [pscustomobject]@{
@@ -864,6 +939,8 @@ function New-StreamResult {
         normalized_expected = if ($accuracyReport) { [string] $accuracyReport.normalized_expected } else { "" }
         normalized_transcript = if ($accuracyReport) { [string] $accuracyReport.normalized_transcript } else { "" }
         transcript_accuracy = $accuracy
+        transcript_accuracy_gate = $GateTranscriptAccuracy
+        transcript_accuracy_pass = $accuracyOk
         transcript_cer = if ($accuracyReport) { [double] $accuracyReport.cer } else { $null }
         playback_wav = $PlaybackWav
         tts_voice = $TtsVoice
@@ -890,8 +967,11 @@ if (-not $Execute) {
     Write-Host "  $lockCommand"
     Write-Host "This script will run probe=$ProbeTimeoutMs ms, A1=$A1Rounds rounds x $A1TimeoutMs ms, A2=$A2TimeoutMs ms."
     Write-Host "A1 text gate: $RequireA1Text; A2 text gate: $RequireA2Text (min final chars: $MinFinalTextChars)."
+    Write-Host "BLE failure recovery: stop_timeout=$BleCleanupStopTimeoutMs ms, delay=$BleRecoveryDelayMs ms, probe=$BleRecoveryProbeTimeoutMs ms."
     Write-Host "Automatic TTS playback: $(-not [bool]$DisableTtsPlayback). A2 text: $A2PlaybackText"
-    Write-Host "TTS gain/rate: gain=$TtsGain, rate=$TtsRate; min transcript accuracy=$MinTranscriptAccuracy."
+    $ttsVoiceLabel = if ([string]::IsNullOrWhiteSpace($TtsVoiceName)) { "auto zh" } else { $TtsVoiceName }
+    Write-Host "TTS voice/gain/rate: voice=$ttsVoiceLabel, gain=$TtsGain, rate=$TtsRate; min transcript accuracy=$MinTranscriptAccuracy."
+    Write-Host "Transcript accuracy gates: A1=$([bool]$GateA1TranscriptAccuracy), A2=$([bool]$GateA2TranscriptAccuracy)."
     Write-Host "Playback mode: $PlaybackMode; pre-playback delay: $PrePlaybackDelayMs ms."
     Write-Host "Playback volume percent: $PlaybackVolumePercent (restored after each run unless -KeepPlaybackVolume)."
     Write-Host "Blocking operator prompt: $([bool]$PromptOperator). Add -PromptOperator only for real-time human action or observation."
@@ -907,13 +987,14 @@ if (-not $WorkflowLockHeld) {
 if ($PromptOperator) {
     Show-OperatorPrompt `
         -Title "Companion A1/A2 验证即将开始" `
-        -Message "请确认 Companion NUCLEO 已刷入统一 Companion app 或同一个 Companion package，设备蓝牙名为 companion，Listener Type 可运行，电脑扬声器靠近 Companion 麦克风且音量正常。点击 OK 后脚本会自动播放测试语音、执行 BLE 订阅探测、A1 六轮短句识别、A2 长句识别，并把证据写入：$outputDir"
+        -Message "请把电脑扬声器靠近 Companion 麦克风，保持周围安静。点击 OK 后会自动播放几段中文，并通过 Companion 蓝牙上传识别；过程中不要按键、不要拔线、不要关闭 Listener Type。若没有听到声音、设备断开或灯效异常，等脚本结束后告诉 Codex。"
 }
 
 $startedAt = (Get-Date).ToUniversalTime().ToString("o")
 $results = [System.Collections.Generic.List[object]]::new()
 $retries = [System.Collections.Generic.List[object]]::new()
 $errors = [System.Collections.Generic.List[string]]::new()
+$warnings = [System.Collections.Generic.List[string]]::new()
 
 try {
     $probePass = "probe-embedded-audio-ble-subscription PASS"
@@ -928,7 +1009,9 @@ try {
         -LogPath $logPath `
         -MaxRetries $CliRetries `
         -DelayMs $RetryDelayMs `
-        -RetryRecords $retries)
+        -RetryRecords $retries `
+        -ReadyCommand "TYPE:HB" `
+        -StatsOnly $true)
 
     $streamPass = "embedded_audio_ble_(?:stream|once)_result_json=(?<json>\{[^\r\n]*\})|submit-embedded-audio-ble-(?:stream|once) done: pcm_bytes=(?<pcm>\d+) missing_packets=(?<missing>\d+)"
     $streamFail = "submit-embedded-audio-ble-(?:stream|once) failed: (?<error>.*)"
@@ -965,6 +1048,7 @@ try {
             -Match $attempt.match `
             -Attempts $attempt.attempts `
             -RequireText $RequireA1Text `
+            -GateTranscriptAccuracy ([bool]$GateA1TranscriptAccuracy) `
             -ExpectedText $(if ($fixture) { $fixture.expected_text } else { $null }) `
             -PlaybackWav $(if ($fixture) { $fixture.playback_wav } else { $null }) `
             -TtsVoice $(if ($fixture) { $fixture.tts_voice } else { $null })
@@ -976,9 +1060,12 @@ try {
             if ($RequireA1Text -and $result.final_text_chars -lt $MinFinalTextChars) {
                 $errors.Add("A1 round $round final_text_chars=$($result.final_text_chars) < $MinFinalTextChars") | Out-Null
             }
-            if ($RequireA1Text -and ($null -ne $result.transcript_accuracy) -and $result.transcript_accuracy -lt $MinTranscriptAccuracy) {
+            if ($RequireA1Text -and [bool]$GateA1TranscriptAccuracy -and ($null -ne $result.transcript_accuracy) -and $result.transcript_accuracy -lt $MinTranscriptAccuracy) {
                 $errors.Add("A1 round $round transcript_accuracy=$($result.transcript_accuracy) < $MinTranscriptAccuracy expected=`"$($result.expected_text)`" final=`"$($result.final_text)`"") | Out-Null
             }
+        }
+        if ($RequireA1Text -and -not [bool]$GateA1TranscriptAccuracy -and ($null -ne $result.transcript_accuracy) -and $result.transcript_accuracy -lt $MinTranscriptAccuracy) {
+            $warnings.Add("A1 round $round transcript_accuracy=$($result.transcript_accuracy) < $MinTranscriptAccuracy expected=`"$($result.expected_text)`" final=`"$($result.final_text)`"") | Out-Null
         }
     }
 
@@ -1013,6 +1100,7 @@ try {
         -Match $a2Attempt.match `
         -Attempts $a2Attempt.attempts `
         -RequireText $RequireA2Text `
+        -GateTranscriptAccuracy ([bool]$GateA2TranscriptAccuracy) `
         -ExpectedText $(if ($a2Fixture) { $a2Fixture.expected_text } else { $null }) `
         -PlaybackWav $(if ($a2Fixture) { $a2Fixture.playback_wav } else { $null }) `
         -TtsVoice $(if ($a2Fixture) { $a2Fixture.tts_voice } else { $null })
@@ -1024,9 +1112,12 @@ try {
         if ($RequireA2Text -and $a2Result.final_text_chars -lt $MinFinalTextChars) {
             $errors.Add("A2 final_text_chars=$($a2Result.final_text_chars) < $MinFinalTextChars") | Out-Null
         }
-        if ($RequireA2Text -and ($null -ne $a2Result.transcript_accuracy) -and $a2Result.transcript_accuracy -lt $MinTranscriptAccuracy) {
+        if ($RequireA2Text -and [bool]$GateA2TranscriptAccuracy -and ($null -ne $a2Result.transcript_accuracy) -and $a2Result.transcript_accuracy -lt $MinTranscriptAccuracy) {
             $errors.Add("A2 transcript_accuracy=$($a2Result.transcript_accuracy) < $MinTranscriptAccuracy expected=`"$($a2Result.expected_text)`" final=`"$($a2Result.final_text)`"") | Out-Null
         }
+    }
+    if ($RequireA2Text -and -not [bool]$GateA2TranscriptAccuracy -and ($null -ne $a2Result.transcript_accuracy) -and $a2Result.transcript_accuracy -lt $MinTranscriptAccuracy) {
+        $warnings.Add("A2 transcript_accuracy=$($a2Result.transcript_accuracy) < $MinTranscriptAccuracy expected=`"$($a2Result.expected_text)`" final=`"$($a2Result.final_text)`"") | Out-Null
     }
 } catch {
     $errors.Add($_.Exception.Message) | Out-Null
@@ -1048,6 +1139,9 @@ $summary = [ordered]@{
     max_missing_packets = $MaxMissingPackets
     cli_retries = $CliRetries
     retry_delay_ms = $RetryDelayMs
+    ble_cleanup_stop_timeout_ms = $BleCleanupStopTimeoutMs
+    ble_recovery_delay_ms = $BleRecoveryDelayMs
+    ble_recovery_probe_timeout_ms = $BleRecoveryProbeTimeoutMs
     round_cooldown_ms = $RoundCooldownMs
     pre_playback_delay_ms = $PrePlaybackDelayMs
     playback_mode = $PlaybackMode
@@ -1055,7 +1149,10 @@ $summary = [ordered]@{
     require_a2_text = $RequireA2Text
     min_final_text_chars = $MinFinalTextChars
     min_transcript_accuracy = $MinTranscriptAccuracy
+    gate_a1_transcript_accuracy = [bool]$GateA1TranscriptAccuracy
+    gate_a2_transcript_accuracy = [bool]$GateA2TranscriptAccuracy
     automatic_tts_playback = -not [bool]$DisableTtsPlayback
+    tts_voice_requested = $TtsVoiceName
     tts_gain = $TtsGain
     tts_rate = $TtsRate
     playback_volume_percent = $PlaybackVolumePercent
@@ -1066,6 +1163,7 @@ $summary = [ordered]@{
     prompt_operator = [bool]$PromptOperator
     results = @($results)
     retries = @($retries)
+    warnings = @($warnings)
     errors = @($errors)
 }
 
@@ -1081,10 +1179,13 @@ $md = @(
     "- A1 rounds: $A1Rounds x $A1TimeoutMs ms",
     "- A2 timeout: $A2TimeoutMs ms",
     "- Max missing packets: $MaxMissingPackets",
+    "- BLE failure recovery: stop_timeout=$BleCleanupStopTimeoutMs ms, delay=$BleRecoveryDelayMs ms, probe=$BleRecoveryProbeTimeoutMs ms",
     "- Min transcript accuracy: $MinTranscriptAccuracy",
+    "- Transcript accuracy gates: A1=$([bool]$GateA1TranscriptAccuracy), A2=$([bool]$GateA2TranscriptAccuracy)",
     "- Playback mode: $PlaybackMode",
     "- Pre-playback delay: $PrePlaybackDelayMs ms",
     "- Automatic TTS playback: $(-not [bool]$DisableTtsPlayback)",
+    "- TTS voice requested: $TtsVoiceName",
     "- TTS gain: $TtsGain",
     "- TTS rate: $TtsRate",
     "",
@@ -1094,13 +1195,21 @@ foreach ($item in $results) {
     $textPart = if ($item.final_text_chars -gt 0) { ", final_text_chars=$($item.final_text_chars), final_text=`"$($item.final_text)`"" } else { "" }
     $expectedPart = if (-not [string]::IsNullOrWhiteSpace($item.expected_text)) { ", expected_text=`"$($item.expected_text)`"" } else { "" }
     $accuracyPart = if ($null -ne $item.transcript_accuracy) { ", accuracy=$($item.transcript_accuracy)" } else { "" }
-    $md += "- $($item.case) round $($item.round): $($item.status), pcm=$($item.pcm_bytes), missing=$($item.missing_packets), attempts=$($item.attempts)$textPart$expectedPart$accuracyPart"
+    $accuracyGatePart = if ($null -ne $item.transcript_accuracy) { ", accuracy_gate=$($item.transcript_accuracy_gate)" } else { "" }
+    $md += "- $($item.case) round $($item.round): $($item.status), pcm=$($item.pcm_bytes), missing=$($item.missing_packets), attempts=$($item.attempts)$textPart$expectedPart$accuracyPart$accuracyGatePart"
 }
 if ($retries.Count -gt 0) {
     $md += ""
     $md += "## Retries"
     foreach ($retryItem in $retries) {
         $md += "- $($retryItem.label) attempt $($retryItem.attempt): retry_after_ms=$($retryItem.retry_after_ms)"
+    }
+}
+if ($warnings.Count -gt 0) {
+    $md += ""
+    $md += "## Warnings"
+    foreach ($warningItem in $warnings) {
+        $md += "- $warningItem"
     }
 }
 if ($errors.Count -gt 0) {

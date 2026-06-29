@@ -306,9 +306,8 @@ if ($FlashNucleoBringup -or $FlashAudioFixture -or $FlashPackage) {
 }
 
 if ($FlashPackage) {
-    $artifactLines = ($packageArtifacts | ForEach-Object { " - $($_.Role): $($_.Path)" }) -join [Environment]::NewLine
     if ($PromptOperator) {
-        Show-OperatorPrompt -Title "Companion WB55 有线刷机确认" -Message "请确认 Companion/NUCLEO-WB55 已通过板载 ST-LINK USB 接好，Type/串口监视器已停止占用设备。将从同一个 Companion package 顺序刷入 OTA loader 和 app：$([Environment]::NewLine)$artifactLines$([Environment]::NewLine)$([Environment]::NewLine)点击 OK 开始刷机；点击 Cancel 取消。"
+        Show-OperatorPrompt -Title "Companion WB55 有线刷机确认" -Message "请确认 Companion/NUCLEO-WB55 已通过板载 ST-LINK USB 接好，Type/串口监视器已停止占用设备。点击 OK 后会顺序刷入 OTA loader 和 app；刷机过程中不要拔线、不要断电。点击 Cancel 取消。"
     }
 
     for ($index = 0; $index -lt $packageArtifacts.Count; $index++) {
@@ -318,7 +317,7 @@ if ($FlashPackage) {
     Invoke-ProgrammerOtaFwAppHandoff -ConnectArgs $connectArgs
 } else {
     if ($PromptOperator) {
-        Show-OperatorPrompt -Title "Companion WB55 有线刷机确认" -Message "请确认 Companion/NUCLEO-WB55 已通过板载 ST-LINK USB 接好，Type/串口监视器已停止占用设备。将刷入：$targetLabel$([Environment]::NewLine)$targetImage$([Environment]::NewLine)$([Environment]::NewLine)点击 OK 开始刷机；点击 Cancel 取消。"
+        Show-OperatorPrompt -Title "Companion WB55 有线刷机确认" -Message "请确认 Companion/NUCLEO-WB55 已通过板载 ST-LINK USB 接好，Type/串口监视器已停止占用设备。点击 OK 后会刷入 $targetLabel；刷机过程中不要拔线、不要断电。点击 Cancel 取消。"
     }
     Invoke-ProgrammerWrite -Image $targetImage -Label $targetLabel -ConnectArgs $connectArgs -ResetAfter
 }

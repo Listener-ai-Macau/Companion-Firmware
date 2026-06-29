@@ -12,6 +12,7 @@ param(
     [int] $A2TimeoutMs = 120000,
     [int] $MaxMissingPackets = 0,
     [switch] $SkipWirelessStackProvisioning,
+    [switch] $IncludeTypeUiGate,
     [switch] $Execute,
     [switch] $WorkflowLockHeld
 )
@@ -160,7 +161,6 @@ function ConvertTo-HardwareAcceptanceMarkdown {
         "## Evidence",
         "",
         "- A1/A2: ``$($Report["evidence"]["a1_a2"])``",
-        "- Type UI: ``$($Report["evidence"]["type_ui"])``",
         "- Wired flash: ``$($Report["evidence"]["wired_flash"])``",
         "- BLE OTA: ``$($Report["evidence"]["ble_ota"])``",
         "- Wireless stack: ``$($Report["evidence"]["wireless_stack"])``",
@@ -168,6 +168,11 @@ function ConvertTo-HardwareAcceptanceMarkdown {
         "",
         "## Steps"
     )
+    if ($Report["evidence"]["type_ui"]) {
+        $lines = $lines[0..8] + "- Type UI: ``$($Report["evidence"]["type_ui"])``" + $lines[9..($lines.Count - 1)]
+    } else {
+        $lines = $lines[0..8] + "- Type UI: skipped (independent Companion release gate)" + $lines[9..($lines.Count - 1)]
+    }
     foreach ($step in @($Report["steps"])) {
         $message = if ($step.Contains("message")) { $step["message"] } else { "" }
         $lines += "- $($step["name"]): $($step["status"]) ($message)"
@@ -199,7 +204,10 @@ $manualSummary = Join-Path $manualDir "companion-manual-gate-evidence-summary.js
 $wirelessSummary = Join-Path $wirelessDir "companion-wireless-stack-summary.json"
 
 $aiw = "C:\Users\Billy\Desktop\Denzic\ai-collaboration-workflow\scripts\aiw.ps1"
-$lockCommand = "pwsh -NoProfile -File $aiw with-lock -Resource Companion-WB55,BLE-Companion -Purpose `"Companion hardware acceptance`" -Run pwsh -NoProfile -File .\tools\verify_companion_hardware_acceptance.ps1 -Execute -WorkflowLockHeld -PackagePath `"$resolvedPackage`" -EvidencePath <type-ui-screenshot-or-log>"
+$lockCommand = "pwsh -NoProfile -File $aiw with-lock -Resource Companion-WB55,BLE-Companion -Purpose `"Companion hardware acceptance`" -Run pwsh -NoProfile -File .\tools\verify_companion_hardware_acceptance.ps1 -Execute -WorkflowLockHeld -PackagePath `"$resolvedPackage`""
+if ($IncludeTypeUiGate) {
+    $lockCommand += " -IncludeTypeUiGate -EvidencePath <type-ui-screenshot-or-log>"
+}
 
 $steps = [System.Collections.Generic.List[object]]::new()
 $errors = [System.Collections.Generic.List[string]]::new()
@@ -261,19 +269,23 @@ $manualArgs = @(
     "-A1A2SummaryPath", $a1Summary,
     "-BleOtaEvidencePath", $bleSummary,
     "-WiredFlashEvidencePath", $wiredSummary,
-    "-TypeUiEvidencePath", $typeUiSummary,
     "-OutDir", $manualDir
 )
+if ($IncludeTypeUiGate) {
+    $manualArgs += @("-TypeUiEvidencePath", $typeUiSummary, "-IncludeTypeUiGate")
+}
 
 if (-not $Execute) {
     $dryRunSteps = @(
         [ordered]@{ name = "ensure CPU2 BLE wireless stack"; status = $(if ($SkipWirelessStackProvisioning) { "SKIPPED" } else { "DRY_RUN" }); message = $(if ($SkipWirelessStackProvisioning) { "skipped by -SkipWirelessStackProvisioning; only use after a PASS provisioning summary exists" } else { "not executed; reads FUS and installs STM32CubeWB BLE full stack before CPU1 BLE apps" }); command = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $wirelessArgs; evidence = $wirelessSummary },
         [ordered]@{ name = "real Companion wired flash from same package"; status = "DRY_RUN"; message = "not executed; flashes the same package OTA loader and unified Companion VKA1 app before A1/A2"; command = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $wiredArgs; evidence = $wiredSummary },
-        [ordered]@{ name = "real Companion Type A1/A2"; status = "DRY_RUN"; message = "not executed; requires workflow hardware lock"; command = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $a1Args; evidence = $a1Summary },
-        [ordered]@{ name = "Type temporary Companion debug page"; status = "DRY_RUN"; message = "not executed; runs against the same unified Companion VKA1 app"; command = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $typeUiArgs; evidence = $typeUiSummary },
-        [ordered]@{ name = "real Companion BLE OTA through Type"; status = "DRY_RUN"; message = "not executed; transfers the same package over the STM32WB ST OTA path"; command = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $bleArgs; evidence = $bleSummary },
-        [ordered]@{ name = "manual gate evidence verifier"; status = "DRY_RUN"; message = "not executed until all four gate summaries exist"; command = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $manualArgs; evidence = $manualSummary }
+        [ordered]@{ name = "real Companion A1/A2 bench validation"; status = "DRY_RUN"; message = "not executed; requires workflow hardware lock"; command = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $a1Args; evidence = $a1Summary },
+        [ordered]@{ name = "real Companion BLE OTA bench validation"; status = "DRY_RUN"; message = "not executed; transfers the same package over the Companion OTA v2 path"; command = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $bleArgs; evidence = $bleSummary }
     )
+    if ($IncludeTypeUiGate) {
+        $dryRunSteps += [ordered]@{ name = "Type temporary Companion debug page"; status = "DRY_RUN"; message = "not executed; optional legacy Type UI gate against the same unified Companion VKA1 app"; command = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $typeUiArgs; evidence = $typeUiSummary }
+    }
+    $dryRunSteps += [ordered]@{ name = "manual gate evidence verifier"; status = "DRY_RUN"; message = "not executed until all required gate summaries exist"; command = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $manualArgs; evidence = $manualSummary }
     $report = [ordered]@{
         schema = "companion.hardware_acceptance.validation.v1"
         status = "DRY_RUN"
@@ -288,7 +300,7 @@ if (-not $Execute) {
             a1_a2 = $a1Summary
             ble_ota = $bleSummary
             wired_flash = $wiredSummary
-            type_ui = $typeUiSummary
+            type_ui = if ($IncludeTypeUiGate) { $typeUiSummary } else { $null }
             wireless_stack = $wirelessSummary
             manual_gate_report = $manualSummary
         }
@@ -314,7 +326,7 @@ if (-not $WorkflowLockHeld) {
 $startedAt = (Get-Date).ToUniversalTime().ToString("o")
 Show-OperatorPrompt `
     -Title "Companion 总体验收即将开始" `
-    -Message "请确认 Companion NUCLEO 的 ST-LINK USB、电脑蓝牙、Listener Type 都处于测试状态。点击 OK 后脚本会在当前硬件锁内依次执行：CPU2 BLE wireless stack 预检/安装、有线 SWD 刷入同一个 Companion package、A1/A2 录音链路、Type Companion 页面人工确认、BLE OTA 同包传输，最后汇总证据。A1/A2 和 Type 页面现在都跑在统一 Companion app 上；BLE OTA gate 会继续验证同一个 package 的 STM32WB ST OTA 传输路径。输出目录：$outDirResolved"
+    -Message "请确认 Companion 已接好 ST-LINK USB，电脑蓝牙可用，bench host harness 可运行。点击 OK 后会依次做有线刷机、录音链路和蓝牙升级；过程中按后续弹窗操作，刷机或升级时不要拔线、不要断电。"
 
 try {
     if ($SkipWirelessStackProvisioning) {
@@ -334,9 +346,11 @@ try {
         Invoke-AcceptanceStep -Name "ensure CPU2 BLE wireless stack" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments $wirelessArgs
     }
     Invoke-AcceptanceStep -Name "real Companion wired flash from same package" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments $wiredArgs
-    Invoke-AcceptanceStep -Name "real Companion Type A1/A2" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments $a1Args
-    Invoke-AcceptanceStep -Name "Type temporary Companion debug page" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments $typeUiArgs
-    Invoke-AcceptanceStep -Name "real Companion BLE OTA through Type" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments $bleArgs
+    Invoke-AcceptanceStep -Name "real Companion A1/A2 bench validation" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments $a1Args
+    if ($IncludeTypeUiGate) {
+        Invoke-AcceptanceStep -Name "Type temporary Companion debug page" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments $typeUiArgs
+    }
+    Invoke-AcceptanceStep -Name "real Companion BLE OTA bench validation" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments $bleArgs
     Invoke-AcceptanceStep -Name "manual gate evidence verifier" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments $manualArgs
 } catch {
     $errors.Add($_.Exception.Message) | Out-Null
@@ -359,7 +373,7 @@ $report = [ordered]@{
         a1_a2 = $a1Summary
         ble_ota = $bleSummary
         wired_flash = $wiredSummary
-        type_ui = $typeUiSummary
+        type_ui = if ($IncludeTypeUiGate) { $typeUiSummary } else { $null }
         wireless_stack = $wirelessSummary
         manual_gate_report = $manualSummary
     }

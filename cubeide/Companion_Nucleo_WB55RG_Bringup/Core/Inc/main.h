@@ -26,5 +26,7 @@ comp_audio_stream_status_t Companion_BleAudio_SendPcmFrame(const uint8_t *pcm,
 comp_audio_stream_status_t Companion_BleAudio_SendSessionStop(void);
 comp_audio_stream_status_t Companion_BleAudio_SendSessionCancel(void);
 comp_audio_stream_status_t Companion_BleAudio_SendSessionError(comp_audio_session_error_t error_code);
+void Companion_BleAudio_RequestActiveLink(const char *reason);
+void Companion_BleAudio_RequestIdleLink(const char *reason);
 
 #endif /* COMPANION_NUCLEO_BRINGUP_MAIN_H */

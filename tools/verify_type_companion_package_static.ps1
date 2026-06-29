@@ -18,13 +18,21 @@ $typeIpc = Join-Path $typeRoot "src\lib\ipc.ts"
 $typeEmbeddedBle = Join-Path $typeRoot "src-tauri\src\embedded_ble.rs"
 $typeFirmwareOtaRust = Join-Path $typeRoot "src-tauri\src\firmware_ota.rs"
 
-$stm32ProtocolName = "stm32wb_st_ble_ota"
-$stm32Capability = "stm32wb_st_ble_ota_v1"
-$stm32ServiceUuid = "8f7a0007-7b7d-4f3d-9d6f-6c2d1b7c0000"
-$stm32ControlUuid = "8f7a7002-7b7d-4f3d-9d6f-6c2d1b7c0000"
-$stm32DataUuid = "8f7a7004-7b7d-4f3d-9d6f-6c2d1b7c0000"
-$stm32ConfirmUuid = "8f7a7003-7b7d-4f3d-9d6f-6c2d1b7c0000"
-$stm32ChunkBytes = 248
+$companionOtaV2ProtocolName = "companion_ota_v2"
+$companionOtaV2Capability = "companion_ota_v2"
+$companionOtaV2ServiceUuid = "8f7a8007-7b7d-4f3d-9d6f-6c2d1b7c0000"
+$companionOtaV2ControlUuid = "8f7a8002-7b7d-4f3d-9d6f-6c2d1b7c0000"
+$companionOtaV2DataUuid = "8f7a8004-7b7d-4f3d-9d6f-6c2d1b7c0000"
+$companionOtaV2StatusUuid = "8f7a8005-7b7d-4f3d-9d6f-6c2d1b7c0000"
+$companionOtaV2ChunkBytes = 240
+$chunkOverride = [Environment]::GetEnvironmentVariable("COMPANION_OTA_V2_CHUNK_BYTES")
+if (-not [string]::IsNullOrWhiteSpace($chunkOverride)) {
+    $parsedChunk = 0
+    if (-not [int]::TryParse($chunkOverride.Trim(), [ref] $parsedChunk) -or $parsedChunk -lt 1 -or $parsedChunk -gt 241) {
+        throw "Unsupported COMPANION_OTA_V2_CHUNK_BYTES=$chunkOverride; use a chunk size from 1 to 241 bytes."
+    }
+    $companionOtaV2ChunkBytes = $parsedChunk
+}
 
 function Resolve-PackagePath {
     param([string] $Path)
@@ -144,44 +152,48 @@ function Invoke-TypeFrontendCheck {
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import {
-  STM32WB_ST_OTA_TRANSPORT_BOUNDARY,
+  COMPANION_OTA_V2_TRANSPORT_BOUNDARY,
   evaluateFirmwareOtaPreflight,
   validateFirmwareOtaPackage,
 } from './src/lib/firmwareOta.ts';
 
 const manifestText = readFileSync(process.env.COMPANION_OTA_MANIFEST_PATH, 'utf8');
 const firmwareBytes = new Uint8Array(readFileSync(process.env.COMPANION_OTA_FIRMWARE_PATH));
+const expectedCompanionChunkBytes = Number(
+  process.env.COMPANION_OTA_V2_CHUNK_BYTES ?? COMPANION_OTA_V2_TRANSPORT_BOUNDARY.gatt.maxChunkBytes,
+);
 const validation = await validateFirmwareOtaPackage(manifestText, firmwareBytes, {
   desktopVersion: '1.0.0',
   expectedHardwareRevision: 'LISTENER-KEYBOARD',
   currentFirmwareVersion: null,
 });
 assert.equal(validation.ok, true, validation.errors.join('\n'));
-assert.equal(validation.manifest.protocolName, STM32WB_ST_OTA_TRANSPORT_BOUNDARY.protocolName);
-assert.equal(validation.manifest.firmwareCapability, STM32WB_ST_OTA_TRANSPORT_BOUNDARY.firmwareCapability);
-assert.equal(validation.manifest.gattServiceUuid, STM32WB_ST_OTA_TRANSPORT_BOUNDARY.gatt.serviceUuid);
-assert.equal(validation.manifest.gattControlUuid, STM32WB_ST_OTA_TRANSPORT_BOUNDARY.gatt.controlUuid);
-assert.equal(validation.manifest.gattDataUuid, STM32WB_ST_OTA_TRANSPORT_BOUNDARY.gatt.dataUuid);
-assert.equal(validation.manifest.gattConfirmUuid, STM32WB_ST_OTA_TRANSPORT_BOUNDARY.gatt.confirmUuid);
-assert.equal(validation.manifest.gattChunkBytes, STM32WB_ST_OTA_TRANSPORT_BOUNDARY.gatt.maxChunkBytes);
+assert.equal(validation.manifest.protocolName, COMPANION_OTA_V2_TRANSPORT_BOUNDARY.protocolName);
+assert.equal(validation.manifest.firmwareCapability, COMPANION_OTA_V2_TRANSPORT_BOUNDARY.firmwareCapability);
+assert.equal(validation.manifest.gattServiceUuid, COMPANION_OTA_V2_TRANSPORT_BOUNDARY.gatt.serviceUuid);
+assert.equal(validation.manifest.gattControlUuid, COMPANION_OTA_V2_TRANSPORT_BOUNDARY.gatt.controlUuid);
+assert.equal(validation.manifest.gattDataUuid, COMPANION_OTA_V2_TRANSPORT_BOUNDARY.gatt.dataUuid);
+assert.equal(validation.manifest.gattStatusUuid, COMPANION_OTA_V2_TRANSPORT_BOUNDARY.gatt.statusUuid);
+assert.equal(validation.manifest.gattConfirmUuid, null);
+assert.equal(validation.manifest.gattChunkBytes, expectedCompanionChunkBytes);
 
 const preflight = evaluateFirmwareOtaPreflight({
   manifest: validation.manifest,
   device: {
-    connected: false,
-    hardwareRevision: null,
-    firmwareVersion: null,
-    capabilities: [],
+    connected: true,
+    hardwareRevision: 'NUCLEO-WB55RG',
+    firmwareVersion: 'companion OTA v2 loader',
+    capabilities: [COMPANION_OTA_V2_TRANSPORT_BOUNDARY.firmwareCapability],
     batteryPercent: null,
     usbPowered: null,
-    detail: 'No Listener snapshot; STM32WB backend owns target discovery.',
+    detail: 'Companion OTA v2 loader static snapshot.',
   },
   desktopVersion: '1.0.0',
   recordingActive: false,
   transferActive: false,
 });
 assert.equal(preflight.ok, true, JSON.stringify(preflight.blockers));
-console.log('PASS: Type frontend accepts Companion STM32WB OTA manifest and preflight.');
+console.log('PASS: Type frontend accepts Companion OTA v2 manifest and preflight.');
 '@
 
     $oldManifest = $env:COMPANION_OTA_MANIFEST_PATH
@@ -240,6 +252,7 @@ function Invoke-TypeUiSamePackageCheck {
         "settings.recording.firmwareModeWired",
         "transferFirmwareOtaBle({",
         "isStm32wbStBleOtaManifest(selectedPackage.manifest)",
+        "isCompanionOtaV2Manifest(selectedPackage.manifest)",
         "transferResult?.transport === selectedPackage.manifest.protocolName",
         "FirmwareWiredFlashPanel ref={wiredRef} packagePath={selectedPackage?.path ?? null}",
         "loadWiredFirmwarePackage(packagePath)",
@@ -273,14 +286,17 @@ function Invoke-TypeUiSamePackageCheck {
 
     foreach ($token in @(
         "FIRMWARE_OTA_TRANSPORT_BOUNDARY,",
+        "COMPANION_OTA_V2_TRANSPORT_BOUNDARY,",
         "STM32WB_ST_OTA_TRANSPORT_BOUNDARY,",
         "loadFirmwareOtaPackage(path: string)",
         "export type FirmwareOtaBleTransferTransport =",
         "| typeof FIRMWARE_OTA_TRANSPORT_BOUNDARY.protocolName",
+        "| typeof COMPANION_OTA_V2_TRANSPORT_BOUNDARY.protocolName",
         "| typeof STM32WB_ST_OTA_TRANSPORT_BOUNDARY.protocolName",
         "transport: FirmwareOtaBleTransferTransport;",
         "transferFirmwareOtaBle(",
         "request.manifest.protocolName === STM32WB_ST_OTA_TRANSPORT_BOUNDARY.protocolName",
+        "request.manifest.protocolName === COMPANION_OTA_V2_TRANSPORT_BOUNDARY.protocolName",
         "loadWiredFirmwarePackage(path: string)",
         "flashWiredFirmwarePackage(options:",
         "WiredFirmwarePackagePayload"
@@ -342,9 +358,24 @@ function Invoke-TypeStm32OtaConfirmCheck {
         ".min(STM32WB_ST_OTA_RAW_DATA_SIZE)",
         "stm32wb_st_ota_raw_chunk_bytes_from_payload",
         "stm32wb_st_ota_prefers_with_response_when_available",
+        'let finish_result = write_stm32wb_st_ota_value_with_fallback(',
+        "target.base_write_option",
         "stm32wb_st_ota_uses_large_confirmed_chunks_and_caps_no_response"
     )) {
         Assert-TextContains -Text $embedded -Needle $token -Label "Type STM32WB ST OTA stable raw write check"
+    }
+
+    foreach ($token in @(
+        "target.base_finish_write_option",
+        "base_finish_write_option",
+        "stm32wb_st_ota_finish_write_option",
+        "write_gatt_value_without_wait",
+        "finish_write_keepalive",
+        "write_stm32wb_st_ota_finish_value"
+    )) {
+        if ($embedded.Contains($token)) {
+            throw "Type STM32WB ST OTA must not keep the discarded finish no-wait experiment: $token"
+        }
     }
 
     if ($embedded.Contains("set COMPANION_STM32WB_ST_OTA_CONFIRM=1 to test ST indication confirm")) {
@@ -353,15 +384,44 @@ function Invoke-TypeStm32OtaConfirmCheck {
 
     foreach ($token in @(
         "pub gatt_confirm_uuid: Option<String>,",
+        "pub gatt_status_uuid: Option<String>,",
         'optional_gatt_optional_string(gatt, "confirm_uuid", "confirmUuid")',
+        'optional_gatt_optional_string(gatt, "status_uuid", "statusUuid")',
         "STM32WB_ST_OTA_CONFIRM_UUID",
+        "COMPANION_OTA_V2_STATUS_UUID",
         ".gatt_confirm_uuid",
+        ".gatt_status_uuid",
         "stm32wb_st_manifest_requires_confirm_gatt_boundary"
     )) {
         Assert-TextContains -Text $firmwareOta -Needle $token -Label "Type STM32WB ST OTA manifest confirmation check"
     }
 
-    Write-Output "PASS: Type STM32WB ST OTA enables ST confirmation indication, large write-response raw chunks, and 20-byte no-response fallback chunks."
+    foreach ($token in @(
+        "COMPANION_OTA_V2_SERVICE_UUID",
+        "COMPANION_OTA_V2_STATUS_UUID",
+        "prepare_companion_ota_v2_transfer",
+        "transfer_companion_ota_v2",
+        "transfer_companion_ota_v2_to_target",
+        "COMPANION_OTA_V2_WINDOW_ENV",
+        "read_companion_ota_v2_status",
+        "COMPANION_OTA_V2_ERROR_OFFSET_MISMATCH",
+        'transport: "companion_ota_v2"'
+    )) {
+        Assert-TextContains -Text $embedded -Needle $token -Label "Type Companion OTA v2 transport check"
+    }
+
+    foreach ($token in @(
+        "COMPANION_OTA_V2_PROTOCOL_NAME",
+        "COMPANION_OTA_V2_FIRMWARE_CAPABILITY",
+        "COMPANION_OTA_V2_CHUNK_BYTES",
+        "is_companion_ota_v2",
+        "prepare_companion_ota_v2_transfer",
+        "run_companion_ota_v2_transfer_preflight_and_write"
+    )) {
+        Assert-TextContains -Text $firmwareOta -Needle $token -Label "Type Companion OTA v2 manifest/dispatch check"
+    }
+
+    Write-Output "PASS: Type keeps STM32WB ST OTA fallback hardening and exposes Companion OTA v2 window/status transport."
 }
 
 Add-Type -AssemblyName System.IO.Compression.FileSystem
@@ -383,13 +443,14 @@ try {
     Assert-Equal -Actual $manifest.file.name -Expected "firmware_ota.bin" -Label "OTA file.name"
     Assert-Equal -Actual ([int64] $manifest.file.size_bytes) -Expected ([int64] $firmwareBytes.Length) -Label "OTA file.size_bytes"
     Assert-Equal -Actual ([string] $manifest.file.sha256).ToLowerInvariant() -Expected $firmwareHash -Label "OTA file.sha256"
-    Assert-Equal -Actual $manifest.protocol.name -Expected $stm32ProtocolName -Label "OTA protocol.name"
-    Assert-Equal -Actual $manifest.protocol.firmware_capability -Expected $stm32Capability -Label "OTA protocol.firmware_capability"
-    Assert-Equal -Actual $manifest.protocol.gatt.service_uuid -Expected $stm32ServiceUuid -Label "OTA protocol.gatt.service_uuid"
-    Assert-Equal -Actual $manifest.protocol.gatt.control_uuid -Expected $stm32ControlUuid -Label "OTA protocol.gatt.control_uuid"
-    Assert-Equal -Actual $manifest.protocol.gatt.data_uuid -Expected $stm32DataUuid -Label "OTA protocol.gatt.data_uuid"
-    Assert-Equal -Actual $manifest.protocol.gatt.confirm_uuid -Expected $stm32ConfirmUuid -Label "OTA protocol.gatt.confirm_uuid"
-    Assert-Equal -Actual ([int] $manifest.protocol.gatt.chunk_bytes) -Expected $stm32ChunkBytes -Label "OTA protocol.gatt.chunk_bytes"
+    Assert-Equal -Actual $manifest.protocol.name -Expected $companionOtaV2ProtocolName -Label "OTA protocol.name"
+    Assert-Equal -Actual $manifest.protocol.firmware_capability -Expected $companionOtaV2Capability -Label "OTA protocol.firmware_capability"
+    Assert-Equal -Actual $manifest.protocol.gatt.service_uuid -Expected $companionOtaV2ServiceUuid -Label "OTA protocol.gatt.service_uuid"
+    Assert-Equal -Actual $manifest.protocol.gatt.control_uuid -Expected $companionOtaV2ControlUuid -Label "OTA protocol.gatt.control_uuid"
+    Assert-Equal -Actual $manifest.protocol.gatt.data_uuid -Expected $companionOtaV2DataUuid -Label "OTA protocol.gatt.data_uuid"
+    Assert-Equal -Actual $manifest.protocol.gatt.status_uuid -Expected $companionOtaV2StatusUuid -Label "OTA protocol.gatt.status_uuid"
+    Assert-True -Condition (-not ($manifest.protocol.gatt.PSObject.Properties.Name -contains "confirm_uuid")) -Message "Companion OTA v2 manifest must not include protocol.gatt.confirm_uuid."
+    Assert-Equal -Actual ([int] $manifest.protocol.gatt.chunk_bytes) -Expected $companionOtaV2ChunkBytes -Label "OTA protocol.gatt.chunk_bytes"
 
     $factoryManifestEntries = @($archive.Entries | Where-Object {
             $name = ConvertTo-NormalizedZipName $_.FullName

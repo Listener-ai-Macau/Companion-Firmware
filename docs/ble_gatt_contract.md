@@ -44,6 +44,14 @@ A1 keeps the conservative 132-byte validation payload, while A2 sends the full
 the full A2 frame is intentionally split across two VKA1 audio packets so fast
 speech is not limited by the older compact sampling view.
 
+Companion follows the Listener active-recording link policy instead of keeping
+the BLE connection permanently tuned for audio. On connection, the firmware
+leaves the high-speed request deferred. When `TYPE:READY:A1/A2` or a recording
+start enters the microphone path, it requests a 7.5 ms connection interval and a
+2M PHY preference. When the session stops, is cancelled, or the microphone path
+fails, it requests the bounded idle interval again and clears stale notify/type
+ready state on disconnect.
+
 `cubeide/Companion_BLE_Audio_Fixture` is the NUCLEO smoke-test image for this
 surface. It keeps the product name `companion`, disables PIN/bonding, registers
 only the Listener-compatible VKA1 audio service, and sends a deterministic

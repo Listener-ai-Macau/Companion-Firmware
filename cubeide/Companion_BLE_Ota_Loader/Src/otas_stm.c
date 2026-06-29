@@ -158,15 +158,12 @@ static SVCCTL_EvtAckStatus_t OTAS_Event_Handler(void *Event)
         {
           if(OTAS_STM_Is_Value_Handle(attribute_modified->Attr_Handle, OTAS_Context.OTAS_Base_Addr_CharHdle))
           {
-            /**
-             * Base Address
+            /*
+             * Base address and finish commands are handled in
+             * ACI_GATT_WRITE_PERMIT_REQ_VSEVT_CODE so Windows receives an
+             * explicit write response before the OTA app schedules reboot.
              */
             return_value = SVCCTL_EvtAckFlowEnable;
-
-            notification.ChardId = OTAS_STM_BASE_ADDR_ID;
-            notification.pPayload = (uint8_t*)&attribute_modified->Attr_Data[0];
-            notification.ValueLength = attribute_modified->Attr_Data_Length;
-            OTAS_STM_Notification( &notification );
           }
           else if(OTAS_STM_Is_Value_Handle(attribute_modified->Attr_Handle, OTAS_Context.OTAS_Raw_Data_CharHdle))
           {
@@ -203,7 +200,8 @@ static SVCCTL_EvtAckStatus_t OTAS_Event_Handler(void *Event)
           {
             aci_gatt_write_permit_req_event_rp0 * write_perm_req;
             write_perm_req = (aci_gatt_write_permit_req_event_rp0*)blecore_evt->data;
-                if(OTAS_STM_Is_Value_Handle(write_perm_req->Attribute_Handle, OTAS_Context.OTAS_Raw_Data_CharHdle))
+                if(OTAS_STM_Is_Value_Handle(write_perm_req->Attribute_Handle, OTAS_Context.OTAS_Base_Addr_CharHdle) ||
+                   OTAS_STM_Is_Value_Handle(write_perm_req->Attribute_Handle, OTAS_Context.OTAS_Raw_Data_CharHdle))
                 {
                   tBleStatus write_status;
 
@@ -217,7 +215,14 @@ static SVCCTL_EvtAckStatus_t OTAS_Event_Handler(void *Event)
 
                   if(write_status == BLE_STATUS_SUCCESS)
                   {
-                    notification.ChardId = OTAS_STM_RAW_DATA_ID;
+                    if(OTAS_STM_Is_Value_Handle(write_perm_req->Attribute_Handle, OTAS_Context.OTAS_Base_Addr_CharHdle))
+                    {
+                      notification.ChardId = OTAS_STM_BASE_ADDR_ID;
+                    }
+                    else
+                    {
+                      notification.ChardId = OTAS_STM_RAW_DATA_ID;
+                    }
                     notification.pPayload = (uint8_t *)&(write_perm_req->Data[0]);
                     notification.ValueLength = write_perm_req->Data_Length;
                     OTAS_STM_Notification( &notification );
@@ -269,9 +274,9 @@ void OTAS_STM_Init(void)
                     OTA_BASE_ADR_CHAR_SIZE,
                     CHAR_PROP_WRITE | CHAR_PROP_WRITE_WITHOUT_RESP,
                     ATTR_PERMISSION_NONE,
-                    GATT_NOTIFY_ATTRIBUTE_WRITE,
+                    GATT_NOTIFY_ATTRIBUTE_WRITE | GATT_NOTIFY_WRITE_REQ_AND_WAIT_FOR_APPL_RESP,
                     10,
-                    0,
+                    1,
                     &(OTAS_Context.OTAS_Base_Addr_CharHdle));
 
   /**

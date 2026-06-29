@@ -189,7 +189,7 @@ listener-type --submit-embedded-audio-ble-stream 120000
 The repeatable Companion wrapper is:
 
 ```powershell
-pwsh -NoProfile -File <ai-collaboration-workflow>\scripts\aiw.ps1 with-lock -Resource Companion-WB55,BLE-Companion -Purpose "Companion Type A1/A2 validation" -Run pwsh -NoProfile -File .\tools\verify_companion_type_a1_a2.ps1 -Execute -WorkflowLockHeld
+pwsh -NoProfile -File <ai-collaboration-workflow>\scripts\aiw.ps1 with-lock -Resource Companion-WB55,BLE-Companion -Purpose "Companion A1/A2 bench validation" -Run pwsh -NoProfile -File .\tools\verify_companion_type_a1_a2.ps1 -Execute -WorkflowLockHeld
 ```
 
 The wrapper is dry-run by default. With `-Execute`, it must already be inside
@@ -225,8 +225,8 @@ listener-type --firmware-ota-transfer ota_manifest.json firmware_ota.bin
 
 It records the raw Type output plus a `firmware_ota_result.json` evidence file
 under `.cache/validation/companion-ble-ota-*`. The BLE OTA gate passes only when
-Type reports `status=PASS`, `transport=stm32wb_st_ble_ota`, and the STM32WB ST
-OTA reboot handoff is confirmed.
+Type reports `status=PASS`, `transport=companion_ota_v2`, and the Companion OTA
+v2 completion/reboot handoff is confirmed.
 
 The matching wired-flash wrapper is:
 
@@ -257,22 +257,22 @@ listener-type --wired-firmware-flash <companion-package.zip> SWD
 and passes only when Type reports `status=PASS`, `mode=flash`, `port=SWD`, and
 the STM32CubeProgrammer verification line is present.
 
-The Listener Type temporary Companion page also embeds the shared firmware
-panel. Use Settings > Companion Pendant bring-up to choose the same Companion
-zip once, then switch between `蓝牙 OTA` and `有线刷机` in that page for manual
-validation. When that selected package targets STM32WB/Companion, the wired
-panel must present `ST-LINK / SWD` and `STM32CubeProgrammer` instead of serial
-port, baud rate, OTA-preserve, or Boot-repair controls.
+Companion is now treated as an independent product line. Listener-Type can
+still be used as a temporary bench harness for early BLE/audio/flash evidence,
+but the Companion release gate must not require Listener-Type product UI,
+`CompanionSection`, or Type frontend OTA constants. Any Type harness evidence
+is compatibility evidence only, not a Companion release dependency.
 
-For no-hardware visual review in a Type dev server, open:
+The retired Listener Type temporary Companion page can still be reviewed for
+legacy bench comparison. In a Type dev server, open:
 
 ```text
 http://127.0.0.1:<vite-port>/?visual=settings-companion&theme=dark
 ```
 
-This renders the temporary Companion page directly so screenshots can prove the
-A1/A2 controls, the aggregate `总体验收` command, same-package OTA/wired
-controls, and ST-LINK/SWD copy are visible before the real board gate.
+This renders the temporary Companion page directly when that legacy surface is
+present. Screenshots from this path are optional and should not be used as the
+default independent Companion release gate.
 
 The same check can be captured automatically without touching hardware:
 
@@ -283,8 +283,8 @@ The same check can be captured automatically without touching hardware:
 It starts a local Type dev server, captures a headless browser screenshot and
 rendered DOM, checks the page anchors, then writes
 `type-companion-visual-summary.json` under `.cache/validation/type-companion-visual-*`.
-The readiness preflight runs this visual smoke step unless
-`-SkipTypeCompanionVisual` is passed.
+The readiness preflight only runs this legacy smoke step when
+`-IncludeTypeHarness` is passed.
 
 Before taking hardware, run the fast no-hardware readiness preflight:
 
@@ -292,16 +292,22 @@ Before taking hardware, run the fast no-hardware readiness preflight:
 .\tools\verify_companion_bringup_readiness.ps1
 ```
 
-The fast preflight reuses the latest Companion package, checks the Listener
-VKA1 contract, checks the Companion OTA/static contract, verifies that Type can
-read the same package as both BLE OTA and wired factory input, captures the Type
-temporary Companion visual smoke artifact, dry-runs the A1/A2 wrapper, dry-runs
-the BLE OTA, wired-flash, and Type UI manual wrappers, and writes a JSON report under
-`.cache/validation/companion-bringup-readiness-*`. It also writes `summary.md`
-beside `summary.json`; the Markdown report is the human handoff checklist for
-the remaining real-device gates, with the exact command/action and expected
+The fast preflight reuses the latest Companion package, checks the Companion
+build environment, OTA/static contract, BLE probe fixture, recording cache
+model, recording FSM, diagnostics static rules, manual-gate checklist, and git
+diff hygiene. It writes a JSON report under
+`.cache/validation/companion-bringup-readiness-*` and `summary.md` beside
+`summary.json`; the Markdown report is the human handoff checklist for the
+remaining real-device gates, with the exact command/action and expected
 evidence for each gate. It exits with `PASS_STATIC_MANUAL_GATES_REMAIN` when
 all automatic checks pass and only the real-device gates remain.
+
+To run the older Listener-Type bench harness checks as compatibility evidence,
+use:
+
+```powershell
+.\tools\verify_companion_bringup_readiness.ps1 -IncludeTypeHarness
+```
 
 Before final static signoff, run the full preflight:
 
@@ -309,11 +315,12 @@ Before final static signoff, run the full preflight:
 .\tools\verify_companion_bringup_readiness.ps1 -Full
 ```
 
-`-Full` rebuilds the OTA loader, normal bring-up app, OTA app,
-regenerates the shared OTA/wired package, runs Type build/tests, and then emits
-the same manual-gate list. Real flashing, BLE OTA, A1/A2, and Type UI button
-operation still require the workflow hardware lock plus Chinese audible
-operator prompts owned by their wrapper tools.
+`-Full` rebuilds the OTA loader, normal bring-up app, OTA app, regenerates the
+shared OTA/wired package, and then emits the same manual-gate list. Real
+flashing, BLE OTA, and A1/A2 still require the workflow hardware lock plus
+Chinese audible operator prompts owned by their wrapper tools. Add
+`-IncludeTypeHarness` only when the legacy Listener-Type bench harness should
+also be checked.
 
 When hardware is ready, the preferred path is the aggregate acceptance runner:
 
@@ -323,15 +330,14 @@ pwsh -NoProfile -File <ai-collaboration-workflow>\scripts\aiw.ps1 with-lock -Res
 
 The runner first ensures the CPU2 BLE stack, then flashes the same Companion
 package over wired SWD so the board is running the unified Companion app, then
-executes the A1/A2 wrapper, the Type UI manual wrapper, and the BLE OTA wrapper
-inside one locked operator flow. This order keeps the Type smoke tests and
-package tests on the same app image instead of a synthetic fixture. The runner
-then feeds the four summary files into
+executes the A1/A2 wrapper and the BLE OTA wrapper inside one locked operator
+flow. The runner then feeds the required summary files into
 `verify_companion_manual_gate_evidence.ps1`. The no-hardware readiness preflight
 dry-runs this aggregate entry and records
 `companion-hardware-acceptance-summary.json` under the readiness report directory.
 
-The Type temporary Companion page real-device gate has its own wrapper:
+The Type temporary Companion page real-device gate is optional legacy bench
+evidence. Enable it explicitly with `-IncludeTypeUiGate`:
 
 ```powershell
 pwsh -NoProfile -File <ai-collaboration-workflow>\scripts\aiw.ps1 with-lock -Resource Companion-WB55,BLE-Companion -Purpose "Companion Type UI validation" -Run pwsh -NoProfile -File .\tools\verify_companion_type_ui_manual.ps1 -Execute -WorkflowLockHeld -PackagePath <companion-package.zip> -EvidencePath <companion_ui_screenshot_or_log>
@@ -345,15 +351,14 @@ Type page, then writes `companion-type-ui-manual-summary.json` with
 After the real-device runs, close the gate with the evidence verifier:
 
 ```powershell
-.\tools\verify_companion_manual_gate_evidence.ps1 -PackagePath <companion-package.zip> -A1A2SummaryPath <companion-type-a1-a2-summary.json> -BleOtaEvidencePath <firmware_ota_result_or_log> -WiredFlashEvidencePath <wired_flash_result_or_log> -TypeUiEvidencePath <companion-type-ui-manual-summary.json>
+.\tools\verify_companion_manual_gate_evidence.ps1 -PackagePath <companion-package.zip> -A1A2SummaryPath <companion-type-a1-a2-summary.json> -BleOtaEvidencePath <firmware_ota_result_or_log> -WiredFlashEvidencePath <wired_flash_result_or_log>
 ```
 
 Run it with `-ChecklistOnly` before hardware to generate a pending checklist
-without failing. Without `-ChecklistOnly`, it requires all four manual gates to
-pass: A1/A2 JSON status `PASS`, BLE OTA `transport=stm32wb_st_ble_ota`, wired
-ST-LINK/SWD factory flash completion, and Type temporary Companion debug-page
-summary status `PASS` with `operator_confirmed=true` and the `总体验收` command in
-its required action list.
+without failing. Without `-ChecklistOnly`, the independent gate requires A1/A2
+JSON status `PASS`, BLE OTA `transport=companion_ota_v2`, and wired ST-LINK/SWD
+factory flash completion. Add `-TypeUiEvidencePath <companion-type-ui-manual-summary.json>`
+plus `-IncludeTypeUiGate` only when collecting the optional legacy Type page evidence.
 
 ## Step 6 - SPI Flash Audio Storage
 

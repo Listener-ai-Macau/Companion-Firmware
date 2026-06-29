@@ -242,7 +242,7 @@ if ($ResetAfterOpen -and -not $programmer) {
 }
 
 if ($PromptOperator) {
-    Show-OperatorPrompt -Title "Companion NUCLEO 串口抓日志确认" -Message "请确认 NUCLEO-WB55RG 已通过板载 ST-LINK USB 接好，Type/其它串口监视器已停止占用端口。脚本将打开 $($resolved.port)，波特率 $BaudRate，抓取 $Seconds 秒日志$(if ($ResetAfterOpen) { '，并通过 ST-LINK 复位一次目标板' } else { '' })。输出日志：$rawLog。点击 OK 继续；超时或 Cancel 将取消。"
+    Show-OperatorPrompt -Title "Companion NUCLEO 串口抓日志确认" -Message "请确认 NUCLEO-WB55RG 已通过板载 ST-LINK USB 接好，Type/其它串口监视器已停止占用设备。点击 OK 后会抓取一小段设备日志$(if ($ResetAfterOpen) { '，并复位一次目标板' } else { '' })；过程中不要拔线。点击 Cancel 取消。"
 }
 
 $serial = [System.IO.Ports.SerialPort]::new($resolved.port, $BaudRate, [System.IO.Ports.Parity]::None, 8, [System.IO.Ports.StopBits]::One)

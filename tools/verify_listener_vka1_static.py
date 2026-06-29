@@ -440,6 +440,14 @@ def check_stm32wb_unified_bringup_app(errors: list[str]) -> None:
         "APP_BLE_Key_Button1_Action",
         "Companion_BleAudio_SendSessionStart",
         "Companion_BleAudio_SendPcmBytes",
+        "Companion_BleAudio_RequestActiveLink",
+        "Companion_BleAudio_RequestIdleLink",
+        "aci_l2cap_connection_parameter_update_req",
+        "hci_le_set_phy",
+        "COMPANION_BLE_LINK_ACTIVE_INTERVAL_MIN 0x0006u",
+        "COMPANION_BLE_LINK_IDLE_INTERVAL_MIN 0x0050u",
+        "audio high-speed link deferred until active recording",
+        "comp_audio_stream_set_notify_enabled(&s_companion_audio_stream, false)",
     ):
         require(token in app_ble, f"NUCLEO bringup app_ble missing {token}", errors)
 
@@ -449,6 +457,9 @@ def check_stm32wb_unified_bringup_app(errors: list[str]) -> None:
         "COMP_AUDIO_CONTROL_TYPE_READY",
         "start_recording(COMP_RECORDING_SOURCE_HOST_BLE_CONTROL",
         "Companion_BleAudio_SendPcmBytes",
+        "Companion_BleAudio_RequestActiveLink(reason)",
+        "Companion_BleAudio_RequestIdleLink(reason)",
+        'Companion_BleAudio_RequestIdleLink("mic_capture_failed")',
         "capture_microphone_block",
         "MX_APPE_Init",
         "MX_APPE_Process",

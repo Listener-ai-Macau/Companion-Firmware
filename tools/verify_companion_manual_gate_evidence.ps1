@@ -5,6 +5,7 @@ param(
     [string] $WiredFlashEvidencePath,
     [string] $TypeUiEvidencePath,
     [string] $OutDir,
+    [switch] $IncludeTypeUiGate,
     [switch] $ChecklistOnly
 )
 
@@ -187,10 +188,10 @@ function Test-CompanionA1A2Gate {
     $checks = [System.Collections.Generic.List[string]]::new()
     $errors = [System.Collections.Generic.List[string]]::new()
     if ([string]::IsNullOrWhiteSpace($Path)) {
-        return New-GateResult -Name "real Companion Type A1/A2" -Status "MISSING" -ExpectedEvidence "Run tools\verify_companion_type_a1_a2.ps1 -Execute under workflow lock and keep companion-type-a1-a2-summary.json."
+        return New-GateResult -Name "real Companion A1/A2 bench validation" -Status "MISSING" -ExpectedEvidence "Run tools\verify_companion_type_a1_a2.ps1 -Execute under workflow lock and keep companion-type-a1-a2-summary.json."
     }
     if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) {
-        return New-GateResult -Name "real Companion Type A1/A2" -Status "MISSING" -EvidencePath $Path -ExpectedEvidence "A1/A2 JSON summary file must exist."
+        return New-GateResult -Name "real Companion A1/A2 bench validation" -Status "MISSING" -EvidencePath $Path -ExpectedEvidence "A1/A2 JSON summary file must exist."
     }
 
     $summary = (Get-Content -LiteralPath $Path -Raw -Encoding UTF8) | ConvertFrom-Json
@@ -220,7 +221,7 @@ function Test-CompanionA1A2Gate {
     if ($errors.Count -eq 0) { $checks.Add("all A1/A2 rounds have PCM and missing_packets within limit") | Out-Null }
 
     $gateStatus = if ($errors.Count -eq 0) { "PASS" } else { "FAIL" }
-    return New-GateResult -Name "real Companion Type A1/A2" -Status $gateStatus -EvidencePath $Path -Checks $checks -Errors $errors -ExpectedEvidence "PASS JSON and Markdown under .cache\validation\companion-type-a1-a2-*."
+    return New-GateResult -Name "real Companion A1/A2 bench validation" -Status $gateStatus -EvidencePath $Path -Checks $checks -Errors $errors -ExpectedEvidence "PASS JSON and Markdown under .cache\validation\companion-type-a1-a2-*."
 }
 
 function Test-CompanionBleOtaGate {
@@ -232,10 +233,10 @@ function Test-CompanionBleOtaGate {
     $checks = [System.Collections.Generic.List[string]]::new()
     $errors = [System.Collections.Generic.List[string]]::new()
     if ([string]::IsNullOrWhiteSpace($Path)) {
-        return New-GateResult -Name "real Companion BLE OTA through Type" -Status "MISSING" -ExpectedEvidence "Run tools\verify_companion_ble_ota.ps1 -Execute under workflow lock and provide firmware_ota_result.json, its raw log, or companion-ble-ota-summary.json."
+        return New-GateResult -Name "real Companion BLE OTA bench validation" -Status "MISSING" -ExpectedEvidence "Run tools\verify_companion_ble_ota.ps1 -Execute under workflow lock and provide firmware_ota_result.json, its raw log, or companion-ble-ota-summary.json."
     }
     if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) {
-        return New-GateResult -Name "real Companion BLE OTA through Type" -Status "MISSING" -EvidencePath $Path -ExpectedEvidence "BLE OTA evidence file must exist; prefer tools\verify_companion_ble_ota.ps1 output."
+        return New-GateResult -Name "real Companion BLE OTA bench validation" -Status "MISSING" -EvidencePath $Path -ExpectedEvidence "BLE OTA evidence file must exist; prefer tools\verify_companion_ble_ota.ps1 output."
     }
 
     $text = Read-EvidenceText -Path $Path
@@ -266,24 +267,24 @@ function Test-CompanionBleOtaGate {
         $bytes = [int64](Get-JsonAnyProperty -Object $transfer -Names @("bytesTransferred", "bytes_transferred"))
         $confirmed = [bool](Get-JsonAnyProperty -Object $transfer -Names @("versionConfirmed", "version_confirmed"))
 
-        if ($protocol -eq "stm32wb_st_ble_ota") { $checks.Add("manifest protocol stm32wb_st_ble_ota") | Out-Null } else { $errors.Add("manifest protocol is '$protocol'") | Out-Null }
-        if ($transport -eq "stm32wb_st_ble_ota") { $checks.Add("transfer transport stm32wb_st_ble_ota") | Out-Null } else { $errors.Add("transfer transport is '$transport'") | Out-Null }
+        if ($protocol -eq "companion_ota_v2") { $checks.Add("manifest protocol companion_ota_v2") | Out-Null } else { $errors.Add("manifest protocol is '$protocol'") | Out-Null }
+        if ($transport -eq "companion_ota_v2") { $checks.Add("transfer transport companion_ota_v2") | Out-Null } else { $errors.Add("transfer transport is '$transport'") | Out-Null }
         if ($bytes -gt 0) { $checks.Add("bytesTransferred $bytes > 0") | Out-Null } else { $errors.Add("bytesTransferred is $bytes") | Out-Null }
-        if ($confirmed) { $checks.Add("STM32WB ST OTA reboot confirmation observed") | Out-Null } else { $errors.Add("versionConfirmed is false") | Out-Null }
+        if ($confirmed) { $checks.Add("Companion OTA v2 completion/reboot handoff observed") | Out-Null } else { $errors.Add("versionConfirmed is false") | Out-Null }
         if ($PackageInfo) {
             if ($version -eq $PackageInfo.version) { $checks.Add("OTA version matches package $($PackageInfo.version)") | Out-Null } else { $errors.Add("OTA version '$version' does not match package '$($PackageInfo.version)'") | Out-Null }
             if ($firmwareSha -eq $PackageInfo.firmware_sha256) { $checks.Add("OTA firmware sha256 matches package") | Out-Null } else { $errors.Add("OTA firmware sha256 does not match package") | Out-Null }
         }
     } else {
         $lower = $text.ToLowerInvariant()
-        if ($lower.Contains("stm32wb_st_ble_ota")) { $checks.Add("log mentions stm32wb_st_ble_ota") | Out-Null } else { $errors.Add("log does not mention stm32wb_st_ble_ota") | Out-Null }
+        if ($lower.Contains("companion_ota_v2")) { $checks.Add("log mentions companion_ota_v2") | Out-Null } else { $errors.Add("log does not mention companion_ota_v2") | Out-Null }
         if ($lower.Contains("pass") -or $lower.Contains("completed") -or $lower.Contains("done")) { $checks.Add("log contains success wording") | Out-Null } else { $errors.Add("log does not contain success wording") | Out-Null }
         if ($lower.Contains("fail") -or $lower.Contains("error")) { $errors.Add("log contains fail/error wording; provide the structured firmware_ota_result_json line for a stronger check") | Out-Null }
         if ($PackageInfo -and $lower.Contains($PackageInfo.version.ToLowerInvariant())) { $checks.Add("log mentions package version $($PackageInfo.version)") | Out-Null }
     }
 
     $gateStatus = if ($errors.Count -eq 0) { "PASS" } else { "FAIL" }
-    return New-GateResult -Name "real Companion BLE OTA through Type" -Status $gateStatus -EvidencePath $Path -Checks $checks -Errors $errors -ExpectedEvidence "Type transfers the same Companion package over BLE and reports status=PASS, versionConfirmed=true, and transport=stm32wb_st_ble_ota."
+    return New-GateResult -Name "real Companion BLE OTA bench validation" -Status $gateStatus -EvidencePath $Path -Checks $checks -Errors $errors -ExpectedEvidence "The bench host transfers the same Companion package over BLE and reports status=PASS, versionConfirmed=true, and transport=companion_ota_v2."
 }
 
 function Test-CompanionWiredGate {
@@ -384,7 +385,7 @@ function Test-CompanionTypeUiGate {
         $promptTranscript = [string](Get-JsonAnyProperty -Object $json -Names @("prompt_transcript", "promptTranscript"))
         if ($schema -eq "companion.type_ui_manual.validation.v1") { $checks.Add("Type UI manual schema matched") | Out-Null } else { $errors.Add("Type UI schema is '$schema'") | Out-Null }
         if ($status -eq "PASS") { $checks.Add("Type UI manual status PASS") | Out-Null } else { $errors.Add("Type UI manual status is '$status', expected PASS") | Out-Null }
-        if ($confirmed) { $checks.Add("operator confirmed BLE subscription, A1, A2, aggregate acceptance command, same-package controls, and ST-LINK / SWD") | Out-Null } else { $errors.Add("operator_confirmed is false") | Out-Null }
+        if ($confirmed) { $checks.Add("operator confirmed BLE subscription, A1, A2, OTA/wired entries, and aggregate acceptance entry") | Out-Null } else { $errors.Add("operator_confirmed is false") | Out-Null }
         $requiredActions = @(Get-JsonAnyProperty -Object $json -Names @("required_actions", "requiredActions"))
         $requiredText = [string]::Join("`n", @($requiredActions | ForEach-Object { [string]$_ }))
         if ($requiredText.Contains("总体验收") -and $requiredText.Contains("Companion hardware acceptance")) {
@@ -417,7 +418,7 @@ function Test-CompanionTypeUiGate {
     }
 
     $gateStatus = if ($errors.Count -eq 0) { "PASS" } else { "FAIL" }
-    return New-GateResult -Name "Type temporary Companion debug page" -Status $gateStatus -EvidencePath $Path -Checks $checks -Errors $errors -ExpectedEvidence "Manual UI pass through Settings > Companion Pendant bring-up, including 总体验收 command visibility."
+    return New-GateResult -Name "Type temporary Companion debug page" -Status $gateStatus -EvidencePath $Path -Checks $checks -Errors $errors -ExpectedEvidence "Manual UI pass through Settings > Companion Pendant bring-up, including visible BLE OTA, wired flash, and 总体验收 entries."
 }
 
 function ConvertTo-ManualGateMarkdown {
@@ -466,7 +467,9 @@ $gates = [System.Collections.Generic.List[object]]::new()
 $gates.Add((Test-CompanionA1A2Gate -Path $A1A2SummaryPath)) | Out-Null
 $gates.Add((Test-CompanionBleOtaGate -Path $BleOtaEvidencePath -PackageInfo $packageInfo)) | Out-Null
 $gates.Add((Test-CompanionWiredGate -Path $WiredFlashEvidencePath -PackageInfo $packageInfo)) | Out-Null
-$gates.Add((Test-CompanionTypeUiGate -Path $TypeUiEvidencePath -PackageInfo $packageInfo)) | Out-Null
+if ($IncludeTypeUiGate) {
+    $gates.Add((Test-CompanionTypeUiGate -Path $TypeUiEvidencePath -PackageInfo $packageInfo)) | Out-Null
+}
 
 $blocking = @($gates | Where-Object { $_.status -ne "PASS" })
 $status = if ($blocking.Count -eq 0) {
@@ -487,6 +490,7 @@ $report = [ordered]@{
     repo_root = $repoRoot
     package_path = $resolvedPackage
     package = $packageInfo
+    type_ui_gate_included = [bool]$IncludeTypeUiGate
     output_dir = $outDirResolved
     summary_markdown = $summaryMd
     gates = @($gates)

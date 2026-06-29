@@ -286,7 +286,7 @@ if (-not $programmer) {
 $actionText = if ($InstallBleStack) { "安装/更新 CPU2 BLE full stack" } else { "读取 FUS 状态" }
 if ($PromptOperator) {
     try {
-        Show-OperatorPrompt -Title "Companion WB55 无线栈操作确认" -Message "请确认 NUCLEO-WB55RG 已通过板载 ST-LINK USB 接好，Type/串口监视器/其它刷机工具已停止占用设备。本次将执行：$actionText。若选择安装，会使用 STM32CubeWB v1.24.0 的 stm32wb5x_BLE_Stack_full_fw.bin，安装地址 $installAddress。点击 OK 继续；点击 Cancel 取消。"
+        Show-OperatorPrompt -Title "Companion WB55 无线栈操作确认" -Message "请确认 NUCLEO-WB55RG 已通过板载 ST-LINK USB 接好，Type/串口监视器/其它刷机工具已停止占用设备。点击 OK 后会检查或安装蓝牙无线栈；安装过程中不要拔线、不要断电。点击 Cancel 取消。"
     } catch {
         $status = "CANCELLED"
         $errors.Add($_.Exception.Message) | Out-Null
