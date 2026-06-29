@@ -41,6 +41,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <stdio.h>
 
 /* USER CODE END Includes */
 
@@ -136,6 +137,14 @@ static comp_audio_stream_t s_companion_audio_stream;
 static uint32_t s_companion_audio_next_session_id = 1u;
 static bool s_companion_ble_connected = false;
 static Companion_BleLinkMode_t s_companion_ble_link_mode = COMPANION_BLE_LINK_MODE_NONE;
+static uint32_t s_companion_audio_notify_enabled_count = 0u;
+static uint32_t s_companion_audio_notify_disabled_count = 0u;
+static uint32_t s_companion_audio_control_write_count = 0u;
+static uint32_t s_companion_audio_session_start_count = 0u;
+static comp_audio_control_t s_companion_audio_last_control = COMP_AUDIO_CONTROL_NONE;
+static comp_audio_stream_status_t s_companion_audio_last_control_status = COMP_AUDIO_STREAM_OK;
+static comp_audio_stream_status_t s_companion_audio_last_session_start_status =
+    COMP_AUDIO_STREAM_OK;
 
 /* USER CODE END PV */
 
@@ -159,6 +168,7 @@ static void Companion_Audio_Control(void *context,
                                     comp_audio_control_t control,
                                     const uint8_t *data,
                                     size_t length);
+static void Companion_Audio_UpdateDebugStatus(void);
 static void Companion_Ble_Button1Task(void);
 static void Companion_Ble_Button2Task(void);
 static void Companion_Ble_Button3Task(void);
@@ -352,6 +362,7 @@ SVCCTL_UserEvtFlowStatus_t SVCCTL_App_Notification( void *p_Pckt )
       connectionHandle = COMPANION_BLE_CONN_HANDLE_INVALID;
       s_companion_ble_link_mode = COMPANION_BLE_LINK_MODE_NONE;
       comp_audio_stream_set_notify_enabled(&s_companion_audio_stream, false);
+      Companion_Audio_UpdateDebugStatus();
       Companion_App_HandleBleLinkReadyChanged(false);
       Adv_Request();
 
@@ -486,14 +497,11 @@ static void Companion_Audio_Init(void)
   }
   else
   {
-    static const uint8_t readiness[] =
-        "ready:listener_vka1 app=companion source=mic sample_rate=16000 channels=1 width_bits=16";
     static const uint8_t capabilities[] =
         "caps:vka1=1 pcm16=1 live_notify=1 gatt_value=153 source=mic controls=vrec";
-    (void)comp_audio_stream_stm32wb_update_readiness(readiness,
-                                                     (uint8_t)(sizeof(readiness) - 1u));
     (void)comp_audio_stream_stm32wb_update_capabilities(capabilities,
                                                         (uint8_t)(sizeof(capabilities) - 1u));
+    Companion_Audio_UpdateDebugStatus();
     APP_DBG_MSG("  Success: Companion VKA1 audio service init\n");
   }
 }
@@ -553,6 +561,38 @@ static void Companion_Gatt_HandleEvent(const companion_gatt_event_t *event,
               (unsigned int)event->payload_len);
 }
 
+static void Companion_Audio_UpdateDebugStatus(void)
+{
+  char readiness[COMP_AUDIO_STREAM_STM32WB_READINESS_VALUE_BYTES];
+  int written = snprintf(
+      readiness,
+      sizeof(readiness),
+      "vka1 n=%u t=%u r=%u cw=%lu ne=%lu nd=%lu ss=%lu lc=%u cs=%u ls=%u",
+      s_companion_audio_stream.notify_enabled ? 1u : 0u,
+      comp_audio_stream_is_type_link_ready(&s_companion_audio_stream) ? 1u : 0u,
+      comp_audio_stream_is_ready(&s_companion_audio_stream) ? 1u : 0u,
+      (unsigned long)s_companion_audio_control_write_count,
+      (unsigned long)s_companion_audio_notify_enabled_count,
+      (unsigned long)s_companion_audio_notify_disabled_count,
+      (unsigned long)s_companion_audio_session_start_count,
+      (unsigned int)s_companion_audio_last_control,
+      (unsigned int)s_companion_audio_last_control_status,
+      (unsigned int)s_companion_audio_last_session_start_status);
+
+  if (written <= 0)
+  {
+    return;
+  }
+
+  uint8_t length = (uint8_t)written;
+  if ((size_t)written >= sizeof(readiness))
+  {
+    length = (uint8_t)(sizeof(readiness) - 1u);
+  }
+  (void)comp_audio_stream_stm32wb_update_readiness((const uint8_t *)readiness,
+                                                   length);
+}
+
 static void Companion_Audio_Control(void *context,
                                     comp_audio_control_t control,
                                     const uint8_t *data,
@@ -562,6 +602,7 @@ static void Companion_Audio_Control(void *context,
 
   APP_DBG_MSG("  Info   : VKA1 companion control %s\n",
               comp_audio_stream_control_name(control));
+  s_companion_audio_last_control = control;
   Companion_App_HandleBleControl(control, data, length);
 }
 
@@ -582,7 +623,12 @@ uint32_t Companion_BleAudio_NextSessionId(void)
 
 comp_audio_stream_status_t Companion_BleAudio_SendSessionStart(uint32_t session_id)
 {
-  return comp_audio_stream_send_session_start(&s_companion_audio_stream, session_id);
+  comp_audio_stream_status_t status =
+      comp_audio_stream_send_session_start(&s_companion_audio_stream, session_id);
+  s_companion_audio_session_start_count++;
+  s_companion_audio_last_session_start_status = status;
+  Companion_Audio_UpdateDebugStatus();
+  return status;
 }
 
 comp_audio_stream_status_t Companion_BleAudio_SendPcmBytes(const uint8_t *pcm,
@@ -651,16 +697,23 @@ void comp_audio_stream_stm32wb_app_notification(
   switch (notification->event)
   {
     case COMP_AUDIO_STREAM_STM32WB_NOTIFY_ENABLED:
+      s_companion_audio_notify_enabled_count++;
+      Companion_Audio_UpdateDebugStatus();
       APP_DBG_MSG("  Info   : VKA1 notify enabled\n");
       Companion_App_HandleBleLinkReadyChanged(Companion_BleAudio_IsReady());
       break;
 
     case COMP_AUDIO_STREAM_STM32WB_NOTIFY_DISABLED:
+      s_companion_audio_notify_disabled_count++;
+      Companion_Audio_UpdateDebugStatus();
       APP_DBG_MSG("  Info   : VKA1 notify disabled\n");
       Companion_App_HandleBleLinkReadyChanged(false);
       break;
 
     case COMP_AUDIO_STREAM_STM32WB_CONTROL_WRITE:
+      s_companion_audio_control_write_count++;
+      s_companion_audio_last_control_status = notification->control_status;
+      Companion_Audio_UpdateDebugStatus();
       APP_DBG_MSG("  Info   : VKA1 control write status=%s len=%u\n",
                   comp_audio_stream_status_name(notification->control_status),
                   notification->length);
