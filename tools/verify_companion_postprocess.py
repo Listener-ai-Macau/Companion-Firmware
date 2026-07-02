@@ -24,10 +24,11 @@ from app.companion_pendant.postprocess.meeting_minutes import (  # noqa: E402
 )
 
 
-WORKDIR = REPO_ROOT / "docs" / "validation" / ".companion-postprocess-workdir"
+WORKDIR = REPO_ROOT / ".cache" / "validation" / "companion-postprocess-fixture-workdir"
 FIXTURE = REPO_ROOT / "docs" / "validation" / "companion-recording-postprocess-fixture.json"
 DOC = REPO_ROOT / "docs" / "companion_recording_postprocess.md"
 CLI = REPO_ROOT / "tools" / "companion_recording_postprocess.py"
+NORMALIZED_REPO_ROOT = "<repo>"
 
 TRANSCRIPT = """Billy: 你好 Companion，今天确认 Companion 录音先走 SW3 开始停止，录到外部 flash，再通过 BLE 拉取。
 oai1: 会议结论是 MCU 只保存音频和元数据，转写摘要在电脑或手机端处理。
@@ -56,6 +57,26 @@ def write_fixture_wav(path: pathlib.Path, duration_s: float = 1.2, sample_rate: 
 
 def load_json(path: pathlib.Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def normalize_fixture_value(value: Any) -> Any:
+    if isinstance(value, dict):
+        normalized: dict[str, Any] = {}
+        for key, item in value.items():
+            if key in {"started_at", "finished_at"} and isinstance(item, str):
+                normalized[key] = "<validation-time>"
+            else:
+                normalized[key] = normalize_fixture_value(item)
+        return normalized
+    if isinstance(value, list):
+        return [normalize_fixture_value(item) for item in value]
+    if isinstance(value, str):
+        text = value.replace(str(REPO_ROOT), NORMALIZED_REPO_ROOT)
+        text = text.replace(str(REPO_ROOT).replace("\\", "/"), NORMALIZED_REPO_ROOT)
+        text = text.replace(str(sys.executable), "<python>")
+        text = text.replace(str(sys.executable).replace("\\", "/"), "<python>")
+        return text
+    return value
 
 
 def check_report(report: dict[str, Any], markdown: str, errors: list[str]) -> None:
@@ -171,6 +192,7 @@ def main() -> int:
             "docs_updated": DOC.exists(),
         },
     }
+    fixture = normalize_fixture_value(fixture)
     FIXTURE.write_text(json.dumps(fixture, indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8")
 
     if errors:

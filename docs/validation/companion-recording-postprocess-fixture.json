@@ -10,8 +10,8 @@
   },
   "cli_report": {
     "artifacts": {
-      "json_path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\.companion-postprocess-workdir\\cli-output\\companion-meeting-minutes.json",
-      "markdown_path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\.companion-postprocess-workdir\\cli-output\\companion-meeting-minutes.md"
+      "json_path": "<repo>\\.cache\\validation\\companion-postprocess-fixture-workdir\\cli-output\\companion-meeting-minutes.json",
+      "markdown_path": "<repo>\\.cache\\validation\\companion-postprocess-fixture-workdir\\cli-output\\companion-meeting-minutes.md"
     },
     "next_processing": [
       "show summary, decisions, action items, and questions in the host app",
@@ -32,7 +32,7 @@
         "container": "wav",
         "duration_s": 1.2,
         "frame_count": 19200,
-        "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\.companion-postprocess-workdir\\companion-postprocess-source.wav",
+        "path": "<repo>\\.cache\\validation\\companion-postprocess-fixture-workdir\\companion-postprocess-source.wav",
         "sample_rate_hz": 16000,
         "sample_width_bytes": 2,
         "sha256": "e092c60aa86b3356679c6f13fb6cfe0ccb168ce7af393b8e6341d46efef449e2"
@@ -109,7 +109,7 @@
     },
     "transcript": {
       "language_hint": "zh-CN",
-      "provider": "file:C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\.companion-postprocess-workdir\\transcript.txt",
+      "provider": "file:<repo>\\.cache\\validation\\companion-postprocess-fixture-workdir\\transcript.txt",
       "segments": [
         {
           "end_s": 0.5,
@@ -182,7 +182,7 @@
         "container": "wav",
         "duration_s": 1.2,
         "frame_count": 19200,
-        "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\.companion-postprocess-workdir\\companion-postprocess-source.wav",
+        "path": "<repo>\\.cache\\validation\\companion-postprocess-fixture-workdir\\companion-postprocess-source.wav",
         "sample_rate_hz": 16000,
         "sample_width_bytes": 2,
         "sha256": "e092c60aa86b3356679c6f13fb6cfe0ccb168ce7af393b8e6341d46efef449e2"
@@ -317,6 +317,6 @@
   },
   "mode": "synthetic-audio-with-provided-transcript",
   "schema_version": 1,
-  "source_wav": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\.companion-postprocess-workdir\\companion-postprocess-source.wav",
+  "source_wav": "<repo>\\.cache\\validation\\companion-postprocess-fixture-workdir\\companion-postprocess-source.wav",
   "status": "PASS"
 }

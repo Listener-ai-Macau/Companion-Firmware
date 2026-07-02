@@ -25,6 +25,7 @@ GATT_DOC = REPO_ROOT / "docs" / "ble_gatt_contract.md"
 MAIN_SOURCE = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Core" / "Src" / "main.c"
 QSPI_HEADER = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Core" / "Inc" / "comp_qspi_nor.h"
 QSPI_SOURCE = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Core" / "Src" / "comp_qspi_nor.c"
+NORMALIZED_REPO_ROOT = "<repo>"
 
 
 def require(condition: bool, message: str, errors: list[str]) -> None:
@@ -43,6 +44,26 @@ def write_fixture_wav(path: pathlib.Path, duration_s: float = 2.0, sample_rate: 
             envelope = 0.35 + 0.65 * ((index // 1600) % 2)
             value = int(1200 * envelope * math.sin(2 * math.pi * 440 * index / sample_rate))
             wav_file.writeframesraw(struct.pack("<h", value))
+
+
+def normalize_fixture_value(value: Any) -> Any:
+    if isinstance(value, dict):
+        normalized: dict[str, Any] = {}
+        for key, item in value.items():
+            if key in {"started_at", "finished_at"} and isinstance(item, str):
+                normalized[key] = "<validation-time>"
+            else:
+                normalized[key] = normalize_fixture_value(item)
+        return normalized
+    if isinstance(value, list):
+        return [normalize_fixture_value(item) for item in value]
+    if isinstance(value, str):
+        text = value.replace(str(REPO_ROOT), NORMALIZED_REPO_ROOT)
+        text = text.replace(str(REPO_ROOT).replace("\\", "/"), NORMALIZED_REPO_ROOT)
+        text = text.replace(str(sys.executable), "<python>")
+        text = text.replace(str(sys.executable).replace("\\", "/"), "<python>")
+        return text
+    return value
 
 
 def run_cli(wav_path: pathlib.Path, errors: list[str]) -> dict[str, Any]:
@@ -186,6 +207,7 @@ def main() -> int:
         },
     }
     FIXTURE.parent.mkdir(parents=True, exist_ok=True)
+    fixture = normalize_fixture_value(fixture)
     FIXTURE.write_text(json.dumps(fixture, indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8")
 
     if errors:

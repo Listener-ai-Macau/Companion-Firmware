@@ -1,15 +1,15 @@
 {
   "chain_report": {
     "artifacts": {
-      "minutes_json": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\companion-recording-to-minutes-fixture-workdir\\cli-output\\companion-meeting-minutes.json",
-      "minutes_markdown": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\companion-recording-to-minutes-fixture-workdir\\cli-output\\companion-meeting-minutes.md",
-      "report_json": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\companion-recording-to-minutes-fixture-workdir\\cli-output\\companion-recording-to-minutes.json"
+      "minutes_json": "<repo>\\.cache\\validation\\companion-recording-to-minutes-fixture-workdir\\cli-output\\companion-meeting-minutes.json",
+      "minutes_markdown": "<repo>\\.cache\\validation\\companion-recording-to-minutes-fixture-workdir\\cli-output\\companion-meeting-minutes.md",
+      "report_json": "<repo>\\.cache\\validation\\companion-recording-to-minutes-fixture-workdir\\cli-output\\companion-recording-to-minutes.json"
     },
     "asr": {
       "provider": "provided_text",
       "status": "PASS"
     },
-    "bundle_dir": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\companion-recording-to-minutes-fixture-workdir\\cli-output",
+    "bundle_dir": "<repo>\\.cache\\validation\\companion-recording-to-minutes-fixture-workdir\\cli-output",
     "capacity": {
       "nucleo_raw_flash_max_bytes": 1920000,
       "nucleo_raw_flash_max_seconds": 60,
@@ -37,7 +37,7 @@
           "container": "wav",
           "duration_s": 2.0,
           "frame_count": 32000,
-          "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\companion-recording-to-minutes-fixture-workdir\\companion-recording-to-minutes-source.wav",
+          "path": "<repo>\\.cache\\validation\\companion-recording-to-minutes-fixture-workdir\\companion-recording-to-minutes-source.wav",
           "sample_rate_hz": 16000,
           "sample_width_bytes": 2,
           "sha256": "6a1e3ae2de802f28d2360529a4c4ebf8a05983d2863df4d3eb2e10660d03f9eb"
@@ -147,20 +147,20 @@
     "mode": "companion_recording_to_minutes",
     "schema_version": 1,
     "source": {
-      "audio_path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\companion-recording-to-minutes-fixture-workdir\\companion-recording-to-minutes-source.wav",
+      "audio_path": "<repo>\\.cache\\validation\\companion-recording-to-minutes-fixture-workdir\\companion-recording-to-minutes-source.wav",
       "recording_chain_artifact": null,
       "result": {
         "source_mode": "audio_path",
         "status": "PASS"
       }
     },
-    "started_at": "2026-06-30T08:58:06+00:00",
+    "started_at": "<validation-time>",
     "status": "PASS",
     "validation_command": [
-      "C:\\Users\\Billy\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
-      "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\tools\\companion_recording_to_minutes.py",
+      "<python>",
+      "<repo>\\tools\\companion_recording_to_minutes.py",
       "--audio-path",
-      "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\companion-recording-to-minutes-fixture-workdir\\companion-recording-to-minutes-source.wav",
+      "<repo>\\.cache\\validation\\companion-recording-to-minutes-fixture-workdir\\companion-recording-to-minutes-source.wav",
       "--transcript-text",
       "Billy: 你好 Companion，听到了吗？\noai1: 决定把 Companion 录音链路做成录音到会议纪要的一键命令。\nBilly: oai1 的待办是接入 Type ASR provider，并写清楚一小时会议容量限制。\noai1: 当前问题是 16MiB flash 是否能保存一小时 raw PCM？",
       "--meeting-title",
@@ -169,7 +169,7 @@
       "你好 companion",
       "--require-transcript",
       "--output-dir",
-      "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\companion-recording-to-minutes-fixture-workdir\\cli-output",
+      "<repo>\\.cache\\validation\\companion-recording-to-minutes-fixture-workdir\\cli-output",
       "--json"
     ]
   },
@@ -181,5 +181,5 @@
   },
   "mode": "synthetic_no_hardware_recording_to_minutes_fixture",
   "schema_version": 1,
-  "source_wav": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\companion-recording-to-minutes-fixture-workdir\\companion-recording-to-minutes-source.wav"
+  "source_wav": "<repo>\\.cache\\validation\\companion-recording-to-minutes-fixture-workdir\\companion-recording-to-minutes-source.wav"
 }
