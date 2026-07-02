@@ -1,0 +1,322 @@
+{
+  "checks": {
+    "action_item_extracted": true,
+    "decision_extracted": true,
+    "docs_updated": true,
+    "markdown_generated": true,
+    "minutes_ready": true,
+    "question_extracted": true,
+    "wake_word_detected": true
+  },
+  "cli_report": {
+    "artifacts": {
+      "json_path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\.companion-postprocess-workdir\\cli-output\\companion-meeting-minutes.json",
+      "markdown_path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\.companion-postprocess-workdir\\cli-output\\companion-meeting-minutes.md"
+    },
+    "next_processing": [
+      "show summary, decisions, action items, and questions in the host app",
+      "allow user edits before export/share",
+      "keep source SHA-256 attached so minutes can be traced back to the verified recording"
+    ],
+    "postprocess_state": "minutes_ready",
+    "privacy": {
+      "consent_note": "recording UI must make capture state visible before real user deployment",
+      "local_minutes_delete_policy": "host_owned; delete JSON/Markdown and cached WAV together on privacy erase",
+      "raw_audio_delete_policy": "delete_after_sync_only_after_host_sha256_verification"
+    },
+    "schema_version": 1,
+    "source": {
+      "audio": {
+        "byte_count": 38444,
+        "channels": 1,
+        "container": "wav",
+        "duration_s": 1.2,
+        "frame_count": 19200,
+        "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\.companion-postprocess-workdir\\companion-postprocess-source.wav",
+        "sample_rate_hz": 16000,
+        "sample_width_bytes": 2,
+        "sha256": "e092c60aa86b3356679c6f13fb6cfe0ccb168ce7af393b8e6341d46efef449e2"
+      },
+      "recording_chain_artifact": null,
+      "recording_chain_status": null,
+      "recording_id": null
+    },
+    "summary": {
+      "action_items": [
+        {
+          "due": "unspecified",
+          "id": "A01",
+          "owner": "Billy",
+          "source_end_s": 0.5,
+          "source_start_s": 0.0,
+          "text": "你好 Companion，今天确认 Companion 录音先走 SW3 开始停止，录到外部 flash，再通过 BLE 拉取。"
+        },
+        {
+          "due": "unspecified",
+          "id": "A02",
+          "owner": "待办",
+          "source_end_s": 1.2,
+          "source_start_s": 1.2,
+          "text": "oai1 负责做后处理脚本，明天验证会议纪要导出。"
+        },
+        {
+          "due": "unspecified",
+          "id": "A03",
+          "owner": "oai1",
+          "source_end_s": 1.2,
+          "source_start_s": 1.2,
+          "text": "问题是以后要不要接云端 ASR？需要保留隐私删除和本地原始音频路径。"
+        }
+      ],
+      "bullets": [
+        "你好 Companion，今天确认 Companion 录音先走 SW3 开始停止，录到外部 flash，再通过 BLE 拉取。",
+        "会议结论是 MCU 只保存音频和元数据，转写摘要在电脑或手机端处理。",
+        "Billy:",
+        "oai1 负责做后处理脚本，明天验证会议纪要导出。",
+        "问题是以后要不要接云端 ASR？需要保留隐私删除和本地原始音频路径。"
+      ],
+      "decisions": [
+        {
+          "source_end_s": 0.5,
+          "source_start_s": 0.0,
+          "text": "你好 Companion，今天确认 Companion 录音先走 SW3 开始停止，录到外部 flash，再通过 BLE 拉取。"
+        },
+        {
+          "source_end_s": 1.0,
+          "source_start_s": 0.5,
+          "text": "会议结论是 MCU 只保存音频和元数据，转写摘要在电脑或手机端处理。"
+        }
+      ],
+      "keywords": [
+        "companion",
+        "sw3",
+        "flash",
+        "ble",
+        "你好",
+        "今天确认",
+        "录音先走",
+        "开始停止"
+      ],
+      "overview": "你好 Companion，今天确认 Companion 录音先走 SW3 开始停止，录到外部 flash，再通过 BLE 拉取。 会议结论是 MCU 只保存音频和元数据，转写摘要在电脑或手机端处理。 Billy:",
+      "questions": [
+        {
+          "source_end_s": 1.2,
+          "source_start_s": 1.2,
+          "text": "问题是以后要不要接云端 ASR？需要保留隐私删除和本地原始音频路径。"
+        }
+      ],
+      "title": "Companion 录音后处理验证"
+    },
+    "transcript": {
+      "language_hint": "zh-CN",
+      "provider": "file:C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\.companion-postprocess-workdir\\transcript.txt",
+      "segments": [
+        {
+          "end_s": 0.5,
+          "speaker": "Billy",
+          "start_s": 0.0,
+          "text": "你好 Companion，今天确认 Companion 录音先走 SW3 开始停止，录到外部 flash，再通过 BLE 拉取。"
+        },
+        {
+          "end_s": 1.0,
+          "speaker": "oai1",
+          "start_s": 0.5,
+          "text": "会议结论是 MCU 只保存音频和元数据，转写摘要在电脑或手机端处理。"
+        },
+        {
+          "end_s": 1.2,
+          "speaker": "unknown",
+          "start_s": 1.0,
+          "text": "Billy:"
+        },
+        {
+          "end_s": 1.2,
+          "speaker": "待办",
+          "start_s": 1.2,
+          "text": "oai1 负责做后处理脚本，明天验证会议纪要导出。"
+        },
+        {
+          "end_s": 1.2,
+          "speaker": "oai1",
+          "start_s": 1.2,
+          "text": "问题是以后要不要接云端 ASR？需要保留隐私删除和本地原始音频路径。"
+        }
+      ],
+      "text": "Billy: 你好 Companion，今天确认 Companion 录音先走 SW3 开始停止，录到外部 flash，再通过 BLE 拉取。\noai1: 会议结论是 MCU 只保存音频和元数据，转写摘要在电脑或手机端处理。\nBilly: 待办：oai1 负责做后处理脚本，明天验证会议纪要导出。\noai1: 问题是以后要不要接云端 ASR？需要保留隐私删除和本地原始音频路径。"
+    },
+    "wake_word": {
+      "detections": [
+        {
+          "mode": "transcript_postprocess",
+          "phrase": "你好 companion",
+          "source_end_s": 0.5,
+          "source_start_s": 0.0,
+          "speaker": "Billy"
+        }
+      ],
+      "device_control_surface": "wake_word_control/status arm/disarm/simulate_detect",
+      "phrases": [
+        "你好 companion"
+      ],
+      "production_note": "transcript detection is not always-on local keyword spotting; production wake requires an on-device or companion-host KWS engine with power and false-trigger validation",
+      "state": "detected"
+    }
+  },
+  "direct_report": {
+    "next_processing": [
+      "show summary, decisions, action items, and questions in the host app",
+      "allow user edits before export/share",
+      "keep source SHA-256 attached so minutes can be traced back to the verified recording"
+    ],
+    "postprocess_state": "minutes_ready",
+    "privacy": {
+      "consent_note": "recording UI must make capture state visible before real user deployment",
+      "local_minutes_delete_policy": "host_owned; delete JSON/Markdown and cached WAV together on privacy erase",
+      "raw_audio_delete_policy": "delete_after_sync_only_after_host_sha256_verification"
+    },
+    "schema_version": 1,
+    "source": {
+      "audio": {
+        "byte_count": 38444,
+        "channels": 1,
+        "container": "wav",
+        "duration_s": 1.2,
+        "frame_count": 19200,
+        "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\.companion-postprocess-workdir\\companion-postprocess-source.wav",
+        "sample_rate_hz": 16000,
+        "sample_width_bytes": 2,
+        "sha256": "e092c60aa86b3356679c6f13fb6cfe0ccb168ce7af393b8e6341d46efef449e2"
+      },
+      "recording_chain_artifact": null,
+      "recording_chain_status": null,
+      "recording_id": null
+    },
+    "summary": {
+      "action_items": [
+        {
+          "due": "unspecified",
+          "id": "A01",
+          "owner": "Billy",
+          "source_end_s": 0.5,
+          "source_start_s": 0.0,
+          "text": "你好 Companion，今天确认 Companion 录音先走 SW3 开始停止，录到外部 flash，再通过 BLE 拉取。"
+        },
+        {
+          "due": "unspecified",
+          "id": "A02",
+          "owner": "待办",
+          "source_end_s": 1.2,
+          "source_start_s": 1.2,
+          "text": "oai1 负责做后处理脚本，明天验证会议纪要导出。"
+        },
+        {
+          "due": "unspecified",
+          "id": "A03",
+          "owner": "oai1",
+          "source_end_s": 1.2,
+          "source_start_s": 1.2,
+          "text": "问题是以后要不要接云端 ASR？需要保留隐私删除和本地原始音频路径。"
+        }
+      ],
+      "bullets": [
+        "你好 Companion，今天确认 Companion 录音先走 SW3 开始停止，录到外部 flash，再通过 BLE 拉取。",
+        "会议结论是 MCU 只保存音频和元数据，转写摘要在电脑或手机端处理。",
+        "Billy:",
+        "oai1 负责做后处理脚本，明天验证会议纪要导出。",
+        "问题是以后要不要接云端 ASR？需要保留隐私删除和本地原始音频路径。"
+      ],
+      "decisions": [
+        {
+          "source_end_s": 0.5,
+          "source_start_s": 0.0,
+          "text": "你好 Companion，今天确认 Companion 录音先走 SW3 开始停止，录到外部 flash，再通过 BLE 拉取。"
+        },
+        {
+          "source_end_s": 1.0,
+          "source_start_s": 0.5,
+          "text": "会议结论是 MCU 只保存音频和元数据，转写摘要在电脑或手机端处理。"
+        }
+      ],
+      "keywords": [
+        "companion",
+        "sw3",
+        "flash",
+        "ble",
+        "你好",
+        "今天确认",
+        "录音先走",
+        "开始停止"
+      ],
+      "overview": "你好 Companion，今天确认 Companion 录音先走 SW3 开始停止，录到外部 flash，再通过 BLE 拉取。 会议结论是 MCU 只保存音频和元数据，转写摘要在电脑或手机端处理。 Billy:",
+      "questions": [
+        {
+          "source_end_s": 1.2,
+          "source_start_s": 1.2,
+          "text": "问题是以后要不要接云端 ASR？需要保留隐私删除和本地原始音频路径。"
+        }
+      ],
+      "title": "Companion 录音后处理验证"
+    },
+    "transcript": {
+      "language_hint": "zh-CN",
+      "provider": "synthetic_fixture_text",
+      "segments": [
+        {
+          "end_s": 0.5,
+          "speaker": "Billy",
+          "start_s": 0.0,
+          "text": "你好 Companion，今天确认 Companion 录音先走 SW3 开始停止，录到外部 flash，再通过 BLE 拉取。"
+        },
+        {
+          "end_s": 1.0,
+          "speaker": "oai1",
+          "start_s": 0.5,
+          "text": "会议结论是 MCU 只保存音频和元数据，转写摘要在电脑或手机端处理。"
+        },
+        {
+          "end_s": 1.2,
+          "speaker": "unknown",
+          "start_s": 1.0,
+          "text": "Billy:"
+        },
+        {
+          "end_s": 1.2,
+          "speaker": "待办",
+          "start_s": 1.2,
+          "text": "oai1 负责做后处理脚本，明天验证会议纪要导出。"
+        },
+        {
+          "end_s": 1.2,
+          "speaker": "oai1",
+          "start_s": 1.2,
+          "text": "问题是以后要不要接云端 ASR？需要保留隐私删除和本地原始音频路径。"
+        }
+      ],
+      "text": "Billy: 你好 Companion，今天确认 Companion 录音先走 SW3 开始停止，录到外部 flash，再通过 BLE 拉取。\noai1: 会议结论是 MCU 只保存音频和元数据，转写摘要在电脑或手机端处理。\nBilly: 待办：oai1 负责做后处理脚本，明天验证会议纪要导出。\noai1: 问题是以后要不要接云端 ASR？需要保留隐私删除和本地原始音频路径。"
+    },
+    "wake_word": {
+      "detections": [
+        {
+          "mode": "transcript_postprocess",
+          "phrase": "你好 companion",
+          "source_end_s": 0.5,
+          "source_start_s": 0.0,
+          "speaker": "Billy"
+        }
+      ],
+      "device_control_surface": "wake_word_control/status arm/disarm/simulate_detect",
+      "phrases": [
+        "你好 companion",
+        "hello companion",
+        "hi companion",
+        "小伴"
+      ],
+      "production_note": "transcript detection is not always-on local keyword spotting; production wake requires an on-device or companion-host KWS engine with power and false-trigger validation",
+      "state": "detected"
+    }
+  },
+  "mode": "synthetic-audio-with-provided-transcript",
+  "schema_version": 1,
+  "source_wav": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\.companion-postprocess-workdir\\companion-postprocess-source.wav",
+  "status": "PASS"
+}

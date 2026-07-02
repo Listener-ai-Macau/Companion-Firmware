@@ -23,6 +23,7 @@ APP_BLE = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Core" / "
 APP_CONF = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Core" / "Inc" / "app_conf.h"
 MAKEFILE = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Makefile"
 FIXTURE = REPO_ROOT / "tools" / "companion_v1_feature_fixture.py"
+REAL_BENCH = REPO_ROOT / "tools" / "companion_ble_real_bench.py"
 
 REQUIRED_CHARS = {
     "ble_name_config": "BleNameConfigV1",
@@ -188,8 +189,8 @@ def check_diag_and_capacity(errors: list[str]) -> None:
         require(anchor in diag, f"missing diag anchor {anchor}", errors)
     app_conf = read(APP_CONF)
     require("#define CFG_BLE_NUM_GATT_SERVICES 16" in app_conf, "GATT service count not raised for V1 services", errors)
-    require("#define CFG_BLE_NUM_GATT_ATTRIBUTES 128" in app_conf, "GATT attr count not raised for V1 services", errors)
-    require("CFG_BLE_ATT_VALUE_ARRAY_SIZE (6144)" in app_conf, "ATT value array not raised for V1 services", errors)
+    require("#define CFG_BLE_NUM_GATT_ATTRIBUTES 96" in app_conf, "GATT attr count not raised for V1 services", errors)
+    require("CFG_BLE_ATT_VALUE_ARRAY_SIZE (4096)" in app_conf, "ATT value array not raised for V1 services", errors)
 
 
 def check_fixture(errors: list[str]) -> None:
@@ -211,6 +212,25 @@ def check_fixture(errors: list[str]) -> None:
     )
 
 
+def check_real_bench(errors: list[str]) -> None:
+    bench = read(REAL_BENCH)
+    for token in [
+        "parse_ble_name_config",
+        "parse_meeting_status",
+        "parse_imu_status",
+        "parse_speaker_status",
+        "parse_wake_word_status",
+        '"operation": "ble_name_config"',
+        '"operation": "meeting_control"',
+        '"operation": "imu_status"',
+        '"operation": "speaker_control"',
+        '"operation": "wake_word_control"',
+        "wake detect while disarmed",
+        "BLE name reset did not restore default name",
+    ]:
+        require(token in bench, f"real BLE bench missing V1 coverage token {token}", errors)
+
+
 def check_forbidden_diff(errors: list[str]) -> None:
     changed_third_party = git_output("diff", "--name-only", "--", "third_party/STM32CubeWB").strip()
     require(not changed_third_party, f"third_party/STM32CubeWB modified: {changed_third_party}", errors)
@@ -218,7 +238,7 @@ def check_forbidden_diff(errors: list[str]) -> None:
 
 def main() -> int:
     errors: list[str] = []
-    for path in [UUID_TABLE, GATT_HEADER, GATT_SOURCE, V1_HEADER, V1_SOURCE, DIAG_EVENTS, APP_BLE, APP_CONF, MAKEFILE, FIXTURE]:
+    for path in [UUID_TABLE, GATT_HEADER, GATT_SOURCE, V1_HEADER, V1_SOURCE, DIAG_EVENTS, APP_BLE, APP_CONF, MAKEFILE, FIXTURE, REAL_BENCH]:
         require(path.exists(), f"missing required path {path.relative_to(REPO_ROOT)}", errors)
     if not errors:
         check_uuid_and_gatt(errors)
@@ -226,6 +246,7 @@ def main() -> int:
         check_app_ble(errors)
         check_diag_and_capacity(errors)
         check_fixture(errors)
+        check_real_bench(errors)
         check_forbidden_diff(errors)
     if errors:
         print("FAIL: Companion V1 feature static checks failed:", file=sys.stderr)

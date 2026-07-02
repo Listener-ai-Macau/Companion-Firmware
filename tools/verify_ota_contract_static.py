@@ -282,10 +282,14 @@ def check_local_ota_loader(errors: list[str]) -> None:
         "$(BUILD_DIR)/system_stm32wbxx.o: Src/system_stm32wbxx.c | $(BUILD_DIR)",
         "$(CUBE)/Middlewares/ST/STM32_WPAN/ble/svc/Src/svc_ctl.c",
         "$(CUBE)/Middlewares/ST/STM32_WPAN/ble/core/auto/ble_gatt_aci.c",
-        "COMPANION_OTA_LOADER_ALWAYS_ADVERTISE",
         "Src/companion_ota_v2.c",
     ]:
         require(anchor in makefile, f"local OTA loader Makefile must keep ST BLE_Ota source anchor: {anchor}", errors)
+    require(
+        "COMPANION_OTA_LOADER_ALWAYS_ADVERTISE" not in makefile,
+        "local OTA loader must boot a valid Companion app by default; do not compile ALWAYS_ADVERTISE",
+        errors,
+    )
     require(
         "SVCCTL_InitCustomSvc();" in svc_ctl,
         "ST svc_ctl.c must keep the custom service hook after the ST OTA service registration",
@@ -297,23 +301,18 @@ def check_local_ota_loader(errors: list[str]) -> None:
         errors,
     )
     for anchor in [
-        "#ifdef COMPANION_OTA_LOADER_ALWAYS_ADVERTISE",
-        "COMPANION_OTA_FW_APP_COOKIE_VALUE",
-        "COMPANION_OTA_FW_APP_COOKIE_MSG    (*(uint8_t*)(SRAM1_BASE+3))",
-        "static uint8_t CompanionConsumeFwAppCookie( void )",
-        "CFG_OTA_START_SECTOR_IDX_VAL_MSG == CFG_APP_START_SECTOR_INDEX",
-        "if(CompanionConsumeFwAppCookie() != 0)",
-        "JumpSelectionOnPowerUp();",
-        "Companion bring-up packages need the wired factory image to leave the board",
+        "static uint8_t  CheckFwAppValidity( void );",
+        "if(CheckFwAppValidity( ) != 0)",
+        "CFG_OTA_REBOOT_VAL_MSG = CFG_REBOOT_ON_FW_APP;",
+        "JumpFwApp();",
         "CFG_OTA_REBOOT_VAL_MSG = CFG_REBOOT_ON_BLE_OTA_APP;",
         "CFG_OTA_START_SECTOR_IDX_VAL_MSG = CFG_APP_START_SECTOR_INDEX;",
-        "CFG_OTA_NBR_OF_SECTOR_VAL_MSG = 0;",
-        "#endif /* COMPANION_OTA_LOADER_ALWAYS_ADVERTISE */",
+        "CFG_OTA_NBR_OF_SECTOR_VAL_MSG = 0xFF;",
     ]:
-        require(anchor in system, f"local OTA loader system boot policy missing anchor: {anchor}", errors)
+        require(anchor in system, f"local OTA loader default boot policy missing anchor: {anchor}", errors)
     require(
-        system.find("CompanionConsumeFwAppCookie() != 0") < system.find("if(LL_RCC_IsActiveFlag_SFTRST"),
-        "local OTA loader must honor wired factory app handoff before reset-flag-specific ST paths",
+        "COMPANION_OTA_LOADER_ALWAYS_ADVERTISE" not in system,
+        "local OTA loader system boot path must not keep the old always-advertise branch",
         errors,
     )
     for anchor in [
@@ -396,11 +395,14 @@ def check_local_ota_loader(errors: list[str]) -> None:
         "static void OTAS_APP_RequestDeferredFinalize(void)",
         "void OTAS_APP_ProcessDeferredFinalize(void)",
         "HAL_Delay(COMPANION_OTA_REBOOT_CONFIRM_GRACE_MS)",
-        "COMPANION_OTA_FW_APP_COOKIE_VALUE",
-        "COMPANION_OTA_FW_APP_COOKIE_MSG    (*(uint8_t*)(SRAM1_BASE+3))",
-        "COMPANION_OTA_FW_APP_COOKIE_MSG = COMPANION_OTA_FW_APP_COOKIE_VALUE;",
+        "CFG_OTA_REBOOT_VAL_MSG = CFG_REBOOT_ON_FW_APP;",
     ]:
-        require(anchor in otas_app, f"local OTA app must set Companion fw-app cookie before reboot: {anchor}", errors)
+        require(anchor in otas_app, f"local OTA app completion path missing anchor: {anchor}", errors)
+    require(
+        "COMPANION_OTA_FW_APP_COOKIE" not in otas_app,
+        "local OTA app completion path must not depend on the removed fw-app cookie",
+        errors,
+    )
     require(
         all(token not in otas_app for token in [
             '#include "stm32_seq.h"',
@@ -434,6 +436,11 @@ def check_local_ota_loader(errors: list[str]) -> None:
         "HAL_Delay(COMPANION_OTA_V2_REBOOT_GRACE_MS);",
     ]:
         require(anchor in companion_v2, f"Companion OTA v2 service missing anchor: {anchor}", errors)
+    require(
+        "COMPANION_OTA_V2_FW_APP_COOKIE" not in companion_v2,
+        "Companion OTA v2 completion path must not depend on the removed fw-app cookie",
+        errors,
+    )
     require(
         "Companion_Ota_V2_Set_Error(COMPANION_OTA_V2_ERROR_OFFSET_MISMATCH)" not in companion_v2,
         "Companion OTA v2 offset mismatch must remain recoverable so Type can resync from device status",
@@ -602,7 +609,7 @@ def check_wired_package_tooling(errors: list[str]) -> None:
         "Manual Gates Remaining",
         "summary.md",
         "summary_markdown",
-        "Companion A1/A2 bench validation",
+        "Companion legacy Type A1/A2 bench validation",
         "real Companion BLE OTA bench validation",
         "Companion BLE OTA validation",
         "Companion BLE OTA dry run",
@@ -651,11 +658,11 @@ def check_wired_package_tooling(errors: list[str]) -> None:
         "companion.manual_gate_evidence.v1",
         "[switch] $ChecklistOnly",
         "CHECKLIST_PENDING",
-        "firmware_ota_result_json=",
         "companion_ble_ota_result_json=",
         "companion_wired_flash_result_json=",
         "companion_type_ui_manual_result_json=",
-        "type_report_json",
+        "transfer_report_json",
+        "real Companion-native BLE GATT bench validation",
         "companion-wired-factory",
         "wired execution mode accepted for companion factory flash",
         "verify_companion_ble_ota.ps1",
@@ -665,7 +672,7 @@ def check_wired_package_tooling(errors: list[str]) -> None:
         "result",
         "companion_ota_v2",
         "STM32WB wired factory flash completed and verified by STM32CubeProgrammer",
-        "real Companion A1/A2 bench validation",
+        "legacy Type A1/A2 bench validation",
         "real Companion BLE OTA bench validation",
         "real Companion wired flash from same package",
         "Type temporary Companion debug page",
@@ -706,6 +713,7 @@ def check_wired_package_tooling(errors: list[str]) -> None:
         "[switch] $Execute",
         "[switch] $WorkflowLockHeld",
         "[switch] $SkipWirelessStackProvisioning",
+        "[switch] $IncludeTypeHarness",
         "Show-OperatorPrompt",
         "[System.Media.SystemSounds]::Exclamation.Play()",
         "[Console]::Beep(880, 220)",
@@ -714,6 +722,7 @@ def check_wired_package_tooling(errors: list[str]) -> None:
         "provision_companion_wireless_stack.ps1",
         "-InstallBleStack",
         "verify_companion_type_a1_a2.ps1",
+        "companion_ble_real_bench.py",
         "verify_companion_ble_ota.ps1",
         "-PrepareLoaderWithSwd",
         "verify_companion_wired_flash.ps1",
@@ -721,6 +730,9 @@ def check_wired_package_tooling(errors: list[str]) -> None:
         "verify_companion_manual_gate_evidence.ps1",
         "ensure CPU2 BLE wireless stack",
         "real Companion wired flash from same package",
+        "real Companion-native BLE GATT bench validation",
+        "post-OTA Companion-native BLE GATT bench validation",
+        "-NativeBleBenchPath",
         "-A1A2SummaryPath",
         "-BleOtaEvidencePath",
         "-WiredFlashEvidencePath",
@@ -731,15 +743,16 @@ def check_wired_package_tooling(errors: list[str]) -> None:
         "DRY-RUN: Companion hardware acceptance runner is ready.",
         "Refusing to run Companion hardware acceptance without -WorkflowLockHeld.",
         "请确认 Companion 已接好 ST-LINK USB",
-        "flashes the same package OTA loader and unified Companion VKA1 app before A1/A2",
+        "exercises the Companion-native GATT contract without Listener-Type",
         "optional legacy Type UI gate against the same unified Companion VKA1 app",
         "transfers the same package over the Companion OTA v2 path",
-        "有线刷机、录音链路和蓝牙升级",
+        "有线刷机、原生 BLE GATT 和蓝牙升级",
     ]:
         require(anchor in hardware_acceptance, f"verify_companion_hardware_acceptance.ps1 missing anchor: {anchor}", errors)
     type_ui_call = 'Invoke-AcceptanceStep -Name "Type temporary Companion debug page"'
     wireless_call = 'Invoke-AcceptanceStep -Name "ensure CPU2 BLE wireless stack"'
-    a1_a2_call = 'Invoke-AcceptanceStep -Name "real Companion A1/A2 bench validation"'
+    native_ble_call = 'Invoke-AcceptanceStep -Name "real Companion-native BLE GATT bench validation"'
+    post_ota_native_ble_call = 'Invoke-AcceptanceStep -Name "post-OTA Companion-native BLE GATT bench validation"'
     wired_call = 'Invoke-AcceptanceStep -Name "real Companion wired flash from same package"'
     ble_ota_call = 'Invoke-AcceptanceStep -Name "real Companion BLE OTA bench validation"'
     require(
@@ -748,18 +761,18 @@ def check_wired_package_tooling(errors: list[str]) -> None:
         errors,
     )
     require(
-        0 <= hardware_acceptance.find(wired_call) < hardware_acceptance.find(a1_a2_call),
-        "hardware acceptance runner must flash the unified package app before A1/A2",
+        0 <= hardware_acceptance.find(wired_call) < hardware_acceptance.find(native_ble_call),
+        "hardware acceptance runner must flash the unified package app before native BLE GATT",
         errors,
     )
     require(
-        0 <= hardware_acceptance.find(a1_a2_call) < hardware_acceptance.find(type_ui_call),
-        "hardware acceptance runner must execute Type UI after A1/A2 on the same unified app",
+        0 <= hardware_acceptance.find(native_ble_call) < hardware_acceptance.find(ble_ota_call),
+        "hardware acceptance runner must validate native BLE before BLE OTA",
         errors,
     )
     require(
-        0 <= hardware_acceptance.find(type_ui_call) < hardware_acceptance.find(ble_ota_call),
-        "hardware acceptance runner must execute Type UI before BLE OTA",
+        0 <= hardware_acceptance.find(ble_ota_call) < hardware_acceptance.find(post_ota_native_ble_call),
+        "hardware acceptance runner must re-check native BLE after BLE OTA",
         errors,
     )
 
@@ -782,8 +795,8 @@ def check_wired_package_tooling(errors: list[str]) -> None:
         "[System.Media.SystemSounds]::Exclamation.Play()",
         "[Console]::Beep(880, 220)",
         "Companion BLE OTA 验证即将开始",
-        "--firmware-ota-transfer",
-        "firmware_ota_result_json=",
+        "companion_ble_ota_v2.py",
+        "transfer_report_json",
         "companion_ble_ota_result_json=",
         "companion_ota_v2",
         "versionConfirmed",

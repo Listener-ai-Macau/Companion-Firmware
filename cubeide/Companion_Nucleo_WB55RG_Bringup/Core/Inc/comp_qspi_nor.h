@@ -56,6 +56,7 @@ comp_qspi_nor_status_t comp_qspi_nor_write(comp_qspi_nor_t *nor,
                                            const uint8_t *data,
                                            size_t length);
 comp_qspi_nor_status_t comp_qspi_nor_erase_4k(comp_qspi_nor_t *nor, uint32_t address);
+comp_qspi_nor_status_t comp_qspi_nor_erase_64k(comp_qspi_nor_t *nor, uint32_t address);
 comp_qspi_nor_status_t comp_qspi_nor_wait_ready(comp_qspi_nor_t *nor, uint32_t timeout_ms);
 comp_qspi_nor_status_t comp_qspi_nor_release_powerdown(comp_qspi_nor_t *nor);
 

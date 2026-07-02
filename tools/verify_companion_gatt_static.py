@@ -143,13 +143,24 @@ def check_stm32_surface(source: str, app_ble: str, errors: list[str]) -> None:
     for anchor in [
         "Companion_Gatt_PublishInitialState",
         "Companion_Gatt_PublishCardStatus",
-        "Companion_Gatt_PublishRecordingChunkRefusal",
-        "Companion_Gatt_PublishDeletePrivacyRefusal",
+        "Companion_Gatt_PublishRecordingChunk",
+        "Companion_Gatt_PublishDeletePrivacyStatus",
+        "Companion_RecordingFlash_HandleControl",
+        "Companion_RecordingFlash_ReadChunk",
+        "Companion_RecordingFlash_Delete",
         "Companion_Gatt_PublishOtaReadiness",
         "companion_gatt_parse_card_write_v1",
         "companion_gatt_parse_delete_privacy_v1",
     ]:
         require(anchor in app_ble, f"app_ble.c missing real GATT bench response anchor {anchor}", errors)
+
+    for anchor in [
+        "Companion_Gatt_RecordingListEntryV1_t",
+        "Companion_Gatt_RecordingChunkHeaderV1_t",
+        "COMPANION_GATT_RECORDING_FLAG_ERROR",
+        "COMPANION_GATT_RECORDING_FLAG_FINAL",
+    ]:
+        require(anchor in app_ble, f"app_ble.c missing recording flash transfer anchor {anchor}", errors)
 
 
 def app_conf_define(text: str, name: str) -> int | None:

@@ -10,17 +10,20 @@ The device advertises a Companion-specific name and exposes these GATT
 services. Multi-byte integers are little-endian. Host writes use
 write-with-response unless the characteristic explicitly says notify-only.
 
-## Listener-Compatible Live Audio
+## Legacy Listener-Compatible Live Audio
 
-For early A1/A2 validation with the existing Listener-Type recorder path, the
-STM32WB firmware also exposes a deliberately named compatibility service. This
-service reuses Listener's live audio UUIDs and VKA1 packet format so Type can
-exercise the same capsule/session/transport/insertion path before Companion's
-native pull-model sync is wired into the UI.
+The STM32WB firmware also exposes a deliberately named compatibility service
+for legacy A1/A2 bench comparison. This service reuses Listener's live audio
+UUIDs and VKA1 packet format so an old Type harness can exercise the same
+capsule/session/transport/insertion path. It is not the Companion product host
+contract and must not be used as a release dependency for the now-independent
+Companion app stack.
 
 This compatibility surface is separate from Companion-native recording storage.
-It streams live PCM16 mono 16 kHz notifications only while Type is connected and
-subscribed.
+The native path remains the GATT services below: recording control/list/chunk
+pull, diagnostics, privacy, OTA readiness, and the Companion-owned OTA v2
+loader. The legacy service streams live PCM16 mono 16 kHz notifications only
+while a compatibility host is connected and subscribed.
 
 | service | characteristic | UUID | direction | payload |
 | --- | --- | --- | --- | --- |
@@ -52,16 +55,19 @@ start enters the microphone path, it requests a 7.5 ms connection interval and a
 fails, it requests the bounded idle interval again and clears stale notify/type
 ready state on disconnect.
 
-`cubeide/Companion_BLE_Audio_Fixture` is the NUCLEO smoke-test image for this
+`cubeide/Companion_BLE_Audio_Fixture` is the legacy NUCLEO smoke-test image for this
 surface. It keeps the product name `companion`, disables PIN/bonding, registers
 only the Listener-compatible VKA1 audio service, and sends a deterministic
 synthetic PCM session when Type writes `TYPE:READY` after notify subscription.
 The product bring-up app additionally accepts `TYPE:READY:A1` and
-`TYPE:READY:A2` for automated TTS playback through the real microphone: A1 uses
-short command phrases, while A2 uses a longer sentence for text-recognition
-validation.
-It also keeps `VREC:TOGGLE` and the board SW1 button on the same fixture path
-for manual control-path checks.
+`TYPE:READY:A2` for optional legacy automated TTS playback through the real
+microphone: A1 uses short command phrases, while A2 uses a longer sentence for
+text-recognition validation.
+It also keeps `VREC:TOGGLE` and the board SW3/B3 user button (PD1 on the
+NUCLEO-WB55RG MB1355 board) on the same recording FSM path for manual
+control-path checks. SW3 is only the local trigger; the stored object is still
+exposed through the Companion-native `recording_list`, `recording chunk pull`,
+diagnostics, and `delete/privacy` characteristics below.
 
 | service | characteristic | direction | payload | validation |
 | --- | --- | --- | --- | --- |
@@ -70,8 +76,8 @@ for manual control-path checks.
 | e-paper card | e_paper_card_write | host -> device write | `CardWriteV1`: request_id, card_slot, utf8_title_len, utf8_body_len, title/body UTF-8 bytes, display_flags | Device validates UTF-8, size, and slot, then stages the update for the display task. |
 | e-paper card | e_paper_card_status | device -> host read/notify | `CardStatusV1`: request_id, card_slot, render_state, last_error, content_crc32, refresh_count | Notify confirms accepted, rendered, failed, or busy after a card write. |
 | recording | recording_control | host -> device write; device -> host notify | `RecordingControlV1`: request_id, command start/stop/cancel, profile_id, max_seconds, privacy_flags | Device echoes request_id and transitions through idle, recording, stopping, stored, or failed. |
-| recording | recording_list | device -> host read/notify | `RecordingListV1`: count plus entries of recording_id, started_unix_s, duration_ms, codec, total_length, sha256_prefix, sync_state | Host refreshes after recording_control stop and after delete/privacy operations. |
-| recording | recording chunk pull | host -> device write request; device -> host notify packets | Request: recording_id, byte_offset, requested_length, host_resume_token. Response packet: recording_id, packet sequence, byte offset, total length, payload_length, flags, payload, CRC, final SHA-256 when complete | Host verifies monotonic packet sequence, byte offset continuity, total length stability, CRC per packet, and final hash before marking synced. |
+| recording | recording_list | device -> host read/notify | `RecordingListV1`: count plus 32-byte entries of recording_id, started_unix_s, duration_ms, codec, sync_state, source_mode, total_length, sha256_prefix, content_crc32 | Host refreshes after recording_control stop and after delete/privacy operations. `source_mode=1` is the NUCLEO SAI microphone path. |
+| recording | recording chunk pull | host -> device write request; device -> host notify packets | Request: recording_id, byte_offset, requested_length, host_resume_token. Response packet header: schema_version, flags, payload_length, recording_id, packet_sequence, byte_offset, total_length, packet_crc32, final_sha256, followed by payload bytes | Host verifies monotonic packet sequence, byte offset continuity, total length stability, CRC per packet, and final hash before marking synced. |
 | settings | settings | host -> device read/write; device -> host notify | `SettingsV1`: locale, time_zone_offset_min, quiet_hours, display_brightness, recorder_profile_id, flags | Device validates supported ranges and notifies committed settings_revision. |
 | settings | BLE name config | host -> device write; device -> host read/notify | `BleNameConfigV1`: request_id, command stage/apply/reset, name_len, max_len, status, flags, ASCII name bytes | Device validates Listener-compatible ASCII 1..29 name policy, rejects quotes/semicolon/equals/backslash/control bytes, and reports whether advertising restart or reboot is required. |
 | meeting | meeting_control | host -> device write; device -> host notify | `MeetingControlV1`: request_id, command start/stop/cancel, profile_id, max_seconds, flags | Device enters a meeting session model distinct from one-shot dictation and echoes status through meeting_status. |
@@ -126,17 +132,85 @@ Every response packet contains:
 - `hash`: the final packet also carries the full recording SHA-256 so the host
   can verify the complete object before sync is accepted.
 
+The current STM32WB NUCLEO wire packet uses a fixed 56-byte chunk response
+header followed by `payload_length` bytes:
+
+```text
+uint8 schema_version
+uint8 flags              bit0=final, bit7=error
+uint16 payload_length
+uint32 recording_id
+uint32 packet_sequence
+uint32 byte_offset
+uint32 total_length
+uint32 packet_crc32      CRC32 over recording_id, packet_sequence, byte_offset, total_length, payload
+uint8 final_sha256[32]   all zero until the final packet
+uint8 payload[payload_length]
+```
+
+`recording_list.entry_bytes=32` for the current STM32WB implementation:
+
+```text
+uint32 recording_id
+uint32 started_unix_s
+uint32 duration_ms
+uint8 codec              1=PCM16 mono
+uint8 sync_state
+uint8 source_mode        1=SAI microphone capture path
+uint8 reserved
+uint32 total_length
+uint8 sha256_prefix[8]
+uint32 content_crc32
+```
+
 Resume behavior is byte-offset based. If the BLE link drops after a partial
 transfer, the host rereads `recording_list`, keeps the same `recording_id`, and
 requests the next missing `byte_offset`. The device starts exactly at that
 offset. The host deduplicates by byte offset and total length, then uses packet
 sequence only as an ordering and loss-detection aid.
 
-Pendant recording storage is backed by the Companion recording cache model. The
-cache owns immutable byte length, sample format, CRC, SHA-256, created time/tick,
-sync state, and delete state for every stored recording. The cache may map a
-known packet sequence back to a byte offset when the host resumes with the same
-payload size, but byte offset and total length remain authoritative.
+Pendant recording storage is backed by the Companion recording cache model and,
+on the NUCLEO hardware path, by external QSPI NOR. The cache owns immutable byte
+length, sample format, CRC, SHA-256, created time/tick, sync state, and delete
+state for every stored recording. The cache may map a known packet sequence
+back to a byte offset when the host resumes with the same payload size, but byte
+offset and total length remain authoritative.
+
+The NUCLEO bench app stores up to `FLASH_RECORDING_DEV_MAX_SECONDS=60`
+seconds per validation recording. PCM16 mono at 16 kHz is `32,000`
+bytes/second, so the current raw cap is `1,920,000` bytes before the recording
+header. A one-hour meeting in this raw format is `115,200,000` bytes and does
+not fit the current 16 MiB external flash part; one-hour product behavior must
+use streaming to the host/phone, audio compression, or a larger storage part.
+BLE `recording_control` and the physical SW3/B3 button both finalize the same
+persistent QSPI header and data format. Host validation exports the pulled
+bytes as 16 kHz mono WAV/PCM artifacts. Firmware erases the recording region
+with 64 KiB block erase where aligned, falling back to 4 KiB sector erase for
+the tail or unsupported cases, so the 60-second dev cap does not require
+hundreds of small erases on the normal path. The SW3 path also runs basic
+audio-quality checks, hard-resets the target, proves the same recording is
+still listed and byte-identical after reset, verifies bad offset and bad-SHA
+delete refusals, pulls a bounded diagnostics/log response, and only then
+deletes with matching `validated_total_length` and SHA-256.
+
+Current real hardware evidence for this path is:
+
+```text
+.cache/validation/companion-button-recording-chain-20260630-155232/companion-button-recording-chain.json
+.cache/validation/companion-flash-recording-chain-20260630-155826/companion-flash-recording-chain.json
+```
+
+The SW3 physical-button run, collected before the 60-second cap change, wrote
+SAI microphone PCM to QSPI flash through the
+local PD1 button path, pulled 32768 bytes as a 16 kHz mono WAV, passed the
+basic audio-quality checks (`duration_s=1.024`, `rms=359.91`, `peak=1840`),
+proved reset persistence, rejected bad offset and bad-SHA delete requests,
+pulled bounded diagnostics, then deleted the object with matching
+`validated_total_length` and `validated_sha256`. The automatic BLE-triggered
+run separately proved the same storage format with a 23360-byte object,
+130 transfer packets, matching CRC/SHA, and an empty `recording_list` after
+delete. New BLE-triggered runs also export `ble-recording-16k-mono.wav` and
+`.pcm` artifacts for host postprocess.
 
 This explicitly avoids reintroducing Listener's old chunk/fragment ambiguity.
 There are no independent `chunk_index`, `fragment_index`, or `fragment_count`
@@ -149,6 +223,25 @@ writing `delete/privacy` with the `recording_id`, validated `total_length`, and
 validated SHA-256. The device refuses deletion if the metadata does not match,
 if a recording is still active, or if the request is not acknowledged by the
 recording storage task.
+
+Recording postprocess and meeting minutes are host-side derived artifacts. The
+device contract stops at verified audio transfer, meeting/recording status, and
+privacy/delete state. Host tools may attach a transcript, summary bullets,
+decisions, action items, questions, keywords, and Markdown/JSON exports to the
+verified WAV. Those derived artifacts must keep the source audio SHA-256 and
+`recording_id` so a user or sync service can trace minutes back to the stored
+recording and apply privacy erase consistently. The current host-side baseline
+is documented in `docs/companion_recording_postprocess.md` and validated by
+`tools/verify_companion_postprocess.py` plus
+`tools/verify_companion_recording_to_minutes.py`. The one-command wrapper is
+`tools/companion_recording_to_minutes.py`; it may bridge to Listener-Type ASR
+through Type's existing embedded-audio CLI, but it does not modify
+Listener-Type and does not make Type UI part of the Companion release contract.
+
+Wake-word GATT status is a control and state surface until a real keyword
+spotting engine is selected and power/false-trigger tests pass. The current
+`simulate_detect` command is for product-chain validation and host UI wiring;
+it must not be presented as a physical microphone wake hit.
 
 ## Companion V1 Feature Baseline
 
@@ -170,6 +263,13 @@ state flow before always-on keyword hardware and DSP are available.
 bytes, printable only, and no quotes, semicolon, equals sign, backslash, or
 control bytes. A valid rename is staged and reported as requiring advertising
 restart or reboot before the new GAP advertising name is guaranteed visible.
+
+The native real-device bench, `tools/companion_ble_real_bench.py`, must exercise
+these V1 surfaces on hardware: invalid and valid BLE name config, meeting
+start/stop plus unsupported-command rejection, IMU status read, speaker prompt
+plus unsupported-command rejection, and wake-word reject/arm/detect/disarm. The
+current NUCLEO bench may report IMU/speaker/wake hardware as not populated or
+pending, but the GATT state flow must still be host-visible and validated.
 
 ## Errors
 
@@ -251,8 +351,10 @@ path. It validates:
 - Fixture `recording chunk pull` behavior including packet sequence, byte
   offset, total length, CRC, resume behavior, final hash, and delete-after-sync
   refusal before host verification.
+- V1 feature matrix coverage for BLE name config, meeting, IMU, speaker, and
+  wake-word state surfaces before hardware is available.
 
-Future hardware BLE probing must be added as a separate mode after the board is
-advertising. Scanning, connecting, BLE capture, and real-device validation must
-run only inside the workflow hardware lock window requested for that hardware
-activity.
+Hardware BLE probing is handled by `tools/companion_ble_real_bench.py` after
+the board is advertising. Scanning, connecting, BLE capture, and real-device
+validation must run only inside the workflow hardware lock window requested for
+that hardware activity.

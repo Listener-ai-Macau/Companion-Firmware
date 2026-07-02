@@ -1,10 +1,12 @@
 param(
     [string] $PackagePath,
+    [string] $NativeBleBenchPath,
     [string] $A1A2SummaryPath,
     [string] $BleOtaEvidencePath,
     [string] $WiredFlashEvidencePath,
     [string] $TypeUiEvidencePath,
     [string] $OutDir,
+    [switch] $IncludeTypeHarness,
     [switch] $IncludeTypeUiGate,
     [switch] $ChecklistOnly
 )
@@ -123,6 +125,15 @@ function Resolve-LatestA1A2Summary {
     return $null
 }
 
+function Resolve-LatestNativeBleBench {
+    $root = Join-Path $repoRoot ".cache\validation"
+    $latest = Get-ChildItem -LiteralPath $root -Filter "companion-ble-real-bench.json" -Recurse -File -ErrorAction SilentlyContinue |
+        Sort-Object LastWriteTime -Descending |
+        Select-Object -First 1
+    if ($latest) { return $latest.FullName }
+    return $null
+}
+
 function Read-EvidenceText {
     param([string] $Path)
 
@@ -188,10 +199,10 @@ function Test-CompanionA1A2Gate {
     $checks = [System.Collections.Generic.List[string]]::new()
     $errors = [System.Collections.Generic.List[string]]::new()
     if ([string]::IsNullOrWhiteSpace($Path)) {
-        return New-GateResult -Name "real Companion A1/A2 bench validation" -Status "MISSING" -ExpectedEvidence "Run tools\verify_companion_type_a1_a2.ps1 -Execute under workflow lock and keep companion-type-a1-a2-summary.json."
+        return New-GateResult -Name "legacy Type A1/A2 bench validation" -Status "MISSING" -ExpectedEvidence "Run tools\verify_companion_type_a1_a2.ps1 -Execute under workflow lock and keep companion-type-a1-a2-summary.json."
     }
     if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) {
-        return New-GateResult -Name "real Companion A1/A2 bench validation" -Status "MISSING" -EvidencePath $Path -ExpectedEvidence "A1/A2 JSON summary file must exist."
+        return New-GateResult -Name "legacy Type A1/A2 bench validation" -Status "MISSING" -EvidencePath $Path -ExpectedEvidence "A1/A2 JSON summary file must exist."
     }
 
     $summary = (Get-Content -LiteralPath $Path -Raw -Encoding UTF8) | ConvertFrom-Json
@@ -221,7 +232,49 @@ function Test-CompanionA1A2Gate {
     if ($errors.Count -eq 0) { $checks.Add("all A1/A2 rounds have PCM and missing_packets within limit") | Out-Null }
 
     $gateStatus = if ($errors.Count -eq 0) { "PASS" } else { "FAIL" }
-    return New-GateResult -Name "real Companion A1/A2 bench validation" -Status $gateStatus -EvidencePath $Path -Checks $checks -Errors $errors -ExpectedEvidence "PASS JSON and Markdown under .cache\validation\companion-type-a1-a2-*."
+    return New-GateResult -Name "legacy Type A1/A2 bench validation" -Status $gateStatus -EvidencePath $Path -Checks $checks -Errors $errors -ExpectedEvidence "PASS JSON and Markdown under .cache\validation\companion-type-a1-a2-*."
+}
+
+function Test-CompanionNativeBleGate {
+    param([string] $Path)
+
+    $checks = [System.Collections.Generic.List[string]]::new()
+    $errors = [System.Collections.Generic.List[string]]::new()
+    if ([string]::IsNullOrWhiteSpace($Path)) {
+        return New-GateResult -Name "real Companion-native BLE GATT bench validation" -Status "MISSING" -ExpectedEvidence "Run tools\companion_ble_real_bench.py against real Companion hardware under workflow lock and keep companion-ble-real-bench.json."
+    }
+    if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) {
+        return New-GateResult -Name "real Companion-native BLE GATT bench validation" -Status "MISSING" -EvidencePath $Path -ExpectedEvidence "Native BLE bench JSON summary file must exist."
+    }
+
+    $summary = (Get-Content -LiteralPath $Path -Raw -Encoding UTF8) | ConvertFrom-Json
+    $status = [string](Get-JsonAnyProperty -Object $summary -Names @("status"))
+    if ($status -eq "PASS") { $checks.Add("native BLE bench status PASS") | Out-Null } else { $errors.Add("native BLE bench status is '$status', expected PASS") | Out-Null }
+
+    $operationsValue = Get-JsonAnyProperty -Object $summary -Names @("operations")
+    $operations = @()
+    if ($operationsValue) {
+        $operations = @($operationsValue)
+    }
+    $operationNames = @($operations | ForEach-Object { [string](Get-JsonAnyProperty -Object $_ -Names @("operation")) })
+    foreach ($required in @("scan", "service_discovery", "status_read", "card_write", "recording_control_and_list", "recording_chunk_refusal", "settings_write", "diagnostics_log_pull", "delete_privacy_refusal", "ota_readiness")) {
+        if ($operationNames -contains $required) {
+            $checks.Add("native BLE operation '$required' present") | Out-Null
+        } else {
+            $errors.Add("native BLE operation '$required' missing") | Out-Null
+        }
+    }
+
+    $discovery = @($operations | Where-Object { [string](Get-JsonAnyProperty -Object $_ -Names @("operation")) -eq "service_discovery" }) | Select-Object -First 1
+    if ($discovery) {
+        $serviceCount = [int](Get-JsonAnyProperty -Object $discovery -Names @("service_count"))
+        $charCount = [int](Get-JsonAnyProperty -Object $discovery -Names @("characteristic_count"))
+        if ($serviceCount -ge 10) { $checks.Add("native BLE service_count $serviceCount >= 10") | Out-Null } else { $errors.Add("native BLE service_count $serviceCount < 10") | Out-Null }
+        if ($charCount -ge 20) { $checks.Add("native BLE characteristic_count $charCount >= 20") | Out-Null } else { $errors.Add("native BLE characteristic_count $charCount < 20") | Out-Null }
+    }
+
+    $gateStatus = if ($errors.Count -eq 0) { "PASS" } else { "FAIL" }
+    return New-GateResult -Name "real Companion-native BLE GATT bench validation" -Status $gateStatus -EvidencePath $Path -Checks $checks -Errors $errors -ExpectedEvidence "PASS JSON from tools\companion_ble_real_bench.py showing scan, service discovery, native writes/reads, diagnostics, privacy refusal, and OTA readiness."
 }
 
 function Test-CompanionBleOtaGate {
@@ -242,16 +295,16 @@ function Test-CompanionBleOtaGate {
     $text = Read-EvidenceText -Path $Path
     $json = ConvertFrom-EvidenceJson -Text $text -Prefixes @("firmware_ota_result_json=", "companion_ble_ota_result_json=")
     if ($json) {
-        $wrapperReportPath = [string](Get-JsonAnyProperty -Object $json -Names @("type_report_json", "typeReportJson"))
+        $wrapperReportPath = [string](Get-JsonAnyProperty -Object $json -Names @("transfer_report_json", "transferReportJson", "type_report_json", "typeReportJson"))
         if ($wrapperReportPath) {
             if (-not [System.IO.Path]::IsPathRooted($wrapperReportPath)) {
                 $wrapperReportPath = Join-Path (Split-Path -Parent $Path) $wrapperReportPath
             }
             if (Test-Path -LiteralPath $wrapperReportPath -PathType Leaf) {
                 $json = (Get-Content -LiteralPath $wrapperReportPath -Raw -Encoding UTF8) | ConvertFrom-Json
-                $checks.Add("loaded Type firmware_ota_result_json from Companion BLE OTA wrapper") | Out-Null
+                $checks.Add("loaded Companion OTA transfer report from wrapper") | Out-Null
             } else {
-                $errors.Add("Companion BLE OTA wrapper type_report_json does not exist: $wrapperReportPath") | Out-Null
+                $errors.Add("Companion BLE OTA wrapper transfer_report_json does not exist: $wrapperReportPath") | Out-Null
             }
         }
 
@@ -279,7 +332,7 @@ function Test-CompanionBleOtaGate {
         $lower = $text.ToLowerInvariant()
         if ($lower.Contains("companion_ota_v2")) { $checks.Add("log mentions companion_ota_v2") | Out-Null } else { $errors.Add("log does not mention companion_ota_v2") | Out-Null }
         if ($lower.Contains("pass") -or $lower.Contains("completed") -or $lower.Contains("done")) { $checks.Add("log contains success wording") | Out-Null } else { $errors.Add("log does not contain success wording") | Out-Null }
-        if ($lower.Contains("fail") -or $lower.Contains("error")) { $errors.Add("log contains fail/error wording; provide the structured firmware_ota_result_json line for a stronger check") | Out-Null }
+        if ($lower.Contains("fail") -or $lower.Contains("error")) { $errors.Add("log contains fail/error wording; provide the structured companion_ble_ota_result_json line for a stronger check") | Out-Null }
         if ($PackageInfo -and $lower.Contains($PackageInfo.version.ToLowerInvariant())) { $checks.Add("log mentions package version $($PackageInfo.version)") | Out-Null }
     }
 
@@ -296,7 +349,7 @@ function Test-CompanionWiredGate {
     $checks = [System.Collections.Generic.List[string]]::new()
     $errors = [System.Collections.Generic.List[string]]::new()
     if ([string]::IsNullOrWhiteSpace($Path)) {
-        return New-GateResult -Name "real Companion wired flash from same package" -Status "MISSING" -ExpectedEvidence "Provide tools\verify_companion_wired_flash.ps1 execute output, tools\flash.ps1 output, or Listener Type wired_firmware_result_json for the same Companion package."
+        return New-GateResult -Name "real Companion wired flash from same package" -Status "MISSING" -ExpectedEvidence "Provide tools\verify_companion_wired_flash.ps1 execute output, tools\flash.ps1 output, or companion_wired_flash_result_json for the same Companion package."
     }
     if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) {
         return New-GateResult -Name "real Companion wired flash from same package" -Status "MISSING" -EvidencePath $Path -ExpectedEvidence "Wired flash evidence file must exist."
@@ -460,12 +513,18 @@ function ConvertTo-ManualGateMarkdown {
 
 $resolvedPackage = Resolve-CompanionPackage -Path $PackagePath
 $packageInfo = Get-CompanionPackageInfo -Path $resolvedPackage
-if ([string]::IsNullOrWhiteSpace($A1A2SummaryPath)) {
+if ([string]::IsNullOrWhiteSpace($NativeBleBenchPath)) {
+    $NativeBleBenchPath = Resolve-LatestNativeBleBench
+}
+if ($IncludeTypeHarness -and [string]::IsNullOrWhiteSpace($A1A2SummaryPath)) {
     $A1A2SummaryPath = Resolve-LatestA1A2Summary
 }
 
 $gates = [System.Collections.Generic.List[object]]::new()
-$gates.Add((Test-CompanionA1A2Gate -Path $A1A2SummaryPath)) | Out-Null
+$gates.Add((Test-CompanionNativeBleGate -Path $NativeBleBenchPath)) | Out-Null
+if ($IncludeTypeHarness) {
+    $gates.Add((Test-CompanionA1A2Gate -Path $A1A2SummaryPath)) | Out-Null
+}
 $gates.Add((Test-CompanionBleOtaGate -Path $BleOtaEvidencePath -PackageInfo $packageInfo)) | Out-Null
 $gates.Add((Test-CompanionWiredGate -Path $WiredFlashEvidencePath -PackageInfo $packageInfo)) | Out-Null
 if ($IncludeTypeUiGate) {
@@ -491,6 +550,7 @@ $report = [ordered]@{
     repo_root = $repoRoot
     package_path = $resolvedPackage
     package = $packageInfo
+    type_harness_included = [bool]$IncludeTypeHarness
     type_ui_gate_included = [bool]$IncludeTypeUiGate
     output_dir = $outDirResolved
     summary_markdown = $summaryMd

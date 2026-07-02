@@ -56,6 +56,35 @@ typedef enum
   COMPANION_BLE_LINK_MODE_IDLE = 2,
 } Companion_BleLinkMode_t;
 
+#pragma pack(push, 1)
+typedef struct
+{
+  uint32_t recording_id;
+  uint32_t started_unix_s;
+  uint32_t duration_ms;
+  uint8_t codec;
+  uint8_t sync_state;
+  uint8_t source_mode;
+  uint8_t reserved;
+  uint32_t total_length;
+  uint8_t sha256_prefix[8];
+  uint32_t content_crc32;
+} Companion_Gatt_RecordingListEntryV1_t;
+
+typedef struct
+{
+  uint8_t schema_version;
+  uint8_t flags;
+  uint16_t payload_length;
+  uint32_t recording_id;
+  uint32_t packet_sequence;
+  uint32_t byte_offset;
+  uint32_t total_length;
+  uint32_t packet_crc32;
+  uint8_t final_sha256[COMPANION_RECORDING_FLASH_SHA256_BYTES];
+} Companion_Gatt_RecordingChunkHeaderV1_t;
+#pragma pack(pop)
+
 /* USER CODE END PTD */
 
 /* Private defines -----------------------------------------------------------*/
@@ -77,6 +106,10 @@ typedef enum
 #define COMPANION_BLE_LINK_PHY_ALL_SPECIFIED 0x00u
 #define COMPANION_BLE_LINK_PHY_2M 0x02u
 #define COMPANION_BLE_LINK_PHY_OPTIONS_NONE 0x0000u
+#define COMPANION_GATT_RECORDING_FLAG_FINAL 0x01u
+#define COMPANION_GATT_RECORDING_FLAG_ERROR 0x80u
+#define COMPANION_GATT_RECORDING_CHUNK_PAYLOAD_MAX \
+  (COMPANION_GATT_MAX_PAYLOAD_BYTES - sizeof(Companion_Gatt_RecordingChunkHeaderV1_t))
 
 #define BD_ADDR_SIZE_LOCAL    6
 
@@ -196,9 +229,9 @@ static void Companion_Gatt_PublishCardStatus(uint32_t request_id,
                                              uint8_t last_error,
                                              uint32_t content_crc32);
 static void Companion_Gatt_PublishRecordingControlEcho(
-    const companion_gatt_recording_control_v1_t *request);
-static void Companion_Gatt_PublishRecordingList(void);
-static void Companion_Gatt_PublishRecordingChunkRefusal(
+    const companion_gatt_recording_control_v1_t *request,
+    bool accepted);
+static void Companion_Gatt_PublishRecordingChunk(
     const companion_gatt_recording_chunk_pull_v1_t *request);
 static void Companion_Gatt_PublishSettings(void);
 static void Companion_Gatt_PublishBleNameConfig(void);
@@ -208,8 +241,9 @@ static void Companion_Gatt_PublishSpeakerStatus(void);
 static void Companion_Gatt_PublishWakeWordStatus(void);
 static void Companion_Gatt_PublishDiagLogResponse(
     const companion_gatt_diag_log_pull_v1_t *request);
-static void Companion_Gatt_PublishDeletePrivacyRefusal(
-    const companion_gatt_delete_privacy_v1_t *request);
+static void Companion_Gatt_PublishDeletePrivacyStatus(
+    const companion_gatt_delete_privacy_v1_t *request,
+    bool accepted);
 static void Companion_Gatt_PublishOtaReadiness(void);
 static uint32_t Companion_Gatt_Fnv1a(const uint8_t *data, uint16_t length);
 static void Companion_Audio_Control(void *context,
@@ -656,7 +690,9 @@ static void Companion_Gatt_HandleEvent(const companion_gatt_event_t *event,
                                                     &request) ==
           COMPANION_GATT_PARSE_OK)
       {
-        Companion_Gatt_PublishRecordingControlEcho(&request);
+        bool accepted = Companion_RecordingFlash_HandleControl(request.command,
+                                                               request.max_seconds);
+        Companion_Gatt_PublishRecordingControlEcho(&request, accepted);
       }
       Companion_Gatt_PublishRecordingList();
       break;
@@ -670,7 +706,7 @@ static void Companion_Gatt_HandleEvent(const companion_gatt_event_t *event,
                                                        &request) ==
           COMPANION_GATT_PARSE_OK)
       {
-        Companion_Gatt_PublishRecordingChunkRefusal(&request);
+        Companion_Gatt_PublishRecordingChunk(&request);
       }
       break;
     }
@@ -773,7 +809,11 @@ static void Companion_Gatt_HandleEvent(const companion_gatt_event_t *event,
                                                  &request) ==
           COMPANION_GATT_PARSE_OK)
       {
-        Companion_Gatt_PublishDeletePrivacyRefusal(&request);
+        bool accepted = Companion_RecordingFlash_Delete(request.operation,
+                                                        request.recording_id,
+                                                        request.validated_total_length,
+                                                        request.validated_sha256);
+        Companion_Gatt_PublishDeletePrivacyStatus(&request, accepted);
         Companion_Gatt_PublishRecordingList();
       }
       break;
@@ -908,32 +948,63 @@ static void Companion_Gatt_PublishCardStatus(uint32_t request_id,
 }
 
 static void Companion_Gatt_PublishRecordingControlEcho(
-    const companion_gatt_recording_control_v1_t *request)
+    const companion_gatt_recording_control_v1_t *request,
+    bool accepted)
 {
   if (request == NULL)
   {
     return;
   }
 
+  companion_gatt_recording_control_v1_t response = *request;
+  response.schema_version = 1u;
+  if (!accepted)
+  {
+    response.privacy_flags |= COMPANION_GATT_RECORDING_FLAG_ERROR;
+  }
   (void)companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_RECORDING_CONTROL,
-                                       (const uint8_t *)request,
-                                       (uint16_t)sizeof(*request));
+                                       (const uint8_t *)&response,
+                                       (uint16_t)sizeof(response));
 }
 
-static void Companion_Gatt_PublishRecordingList(void)
+void Companion_Gatt_PublishRecordingList(void)
 {
+  companion_recording_flash_metadata_t metadata;
+  bool has_recording = Companion_RecordingFlash_GetMetadata(&metadata);
+  uint8_t payload[sizeof(companion_gatt_recording_list_v1_t) +
+                  sizeof(Companion_Gatt_RecordingListEntryV1_t)];
   companion_gatt_recording_list_v1_t list = {
       .schema_version = 1u,
-      .count = 0u,
-      .entry_bytes = 0u,
+      .count = has_recording ? 1u : 0u,
+      .entry_bytes = has_recording
+          ? (uint16_t)sizeof(Companion_Gatt_RecordingListEntryV1_t)
+          : 0u,
   };
+  memcpy(payload, &list, sizeof(list));
 
+  uint16_t payload_len = (uint16_t)sizeof(list);
+  if (has_recording)
+  {
+    Companion_Gatt_RecordingListEntryV1_t entry;
+    memset(&entry, 0, sizeof(entry));
+    entry.recording_id = metadata.recording_id;
+    entry.started_unix_s = metadata.started_unix_s;
+    entry.duration_ms = metadata.duration_ms;
+    entry.codec = metadata.codec;
+    entry.sync_state = metadata.sync_state;
+    entry.source_mode = metadata.source_mode;
+    entry.total_length = metadata.total_length;
+    memcpy(entry.sha256_prefix, metadata.sha256, sizeof(entry.sha256_prefix));
+    entry.content_crc32 = metadata.content_crc32;
+    memcpy(&payload[payload_len], &entry, sizeof(entry));
+    payload_len = (uint16_t)(payload_len + sizeof(entry));
+  }
   (void)companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_RECORDING_LIST,
-                                       (const uint8_t *)&list,
-                                       (uint16_t)sizeof(list));
+                                       payload,
+                                       payload_len);
 }
 
-static void Companion_Gatt_PublishRecordingChunkRefusal(
+static void Companion_Gatt_PublishRecordingChunk(
     const companion_gatt_recording_chunk_pull_v1_t *request)
 {
   if (request == NULL)
@@ -941,13 +1012,51 @@ static void Companion_Gatt_PublishRecordingChunkRefusal(
     return;
   }
 
-  companion_gatt_recording_chunk_pull_v1_t response = *request;
-  response.schema_version = 1u;
-  response.flags |= 0x80u;
-  response.requested_length = 0u;
+  uint8_t payload[COMPANION_GATT_MAX_PAYLOAD_BYTES];
+  Companion_Gatt_RecordingChunkHeaderV1_t header;
+  memset(&header, 0, sizeof(header));
+  uint16_t payload_capacity =
+      (uint16_t)COMPANION_GATT_RECORDING_CHUNK_PAYLOAD_MAX;
+  uint16_t requested_length = request->requested_length;
+  if (requested_length > payload_capacity)
+  {
+    requested_length = payload_capacity;
+  }
+
+  companion_recording_flash_chunk_t chunk;
+  bool ok = Companion_RecordingFlash_ReadChunk(request->recording_id,
+                                               request->byte_offset,
+                                               requested_length,
+                                               &payload[sizeof(header)],
+                                               payload_capacity,
+                                               &chunk);
+  header.schema_version = 1u;
+  if (ok)
+  {
+    header.flags = chunk.final_packet ? COMPANION_GATT_RECORDING_FLAG_FINAL : 0u;
+    header.payload_length = chunk.payload_length;
+    header.recording_id = chunk.recording_id;
+    header.packet_sequence = chunk.packet_sequence;
+    header.byte_offset = chunk.byte_offset;
+    header.total_length = chunk.total_length;
+    header.packet_crc32 = chunk.packet_crc32;
+    memcpy(header.final_sha256, chunk.final_sha256, sizeof(header.final_sha256));
+  }
+  else
+  {
+    header.flags = COMPANION_GATT_RECORDING_FLAG_ERROR;
+    header.payload_length = 0u;
+    header.recording_id = request->recording_id;
+    header.packet_sequence = chunk.packet_sequence;
+    header.byte_offset = request->byte_offset;
+    header.total_length = chunk.total_length;
+    header.packet_crc32 = chunk.error_code;
+  }
+
+  memcpy(payload, &header, sizeof(header));
   (void)companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_RECORDING_CHUNK_PULL,
-                                       (const uint8_t *)&response,
-                                       (uint16_t)sizeof(response));
+                                       payload,
+                                       (uint16_t)(sizeof(header) + header.payload_length));
 }
 
 static void Companion_Gatt_PublishSettings(void)
@@ -1026,8 +1135,9 @@ static void Companion_Gatt_PublishDiagLogResponse(
                                        (uint16_t)sizeof(response));
 }
 
-static void Companion_Gatt_PublishDeletePrivacyRefusal(
-    const companion_gatt_delete_privacy_v1_t *request)
+static void Companion_Gatt_PublishDeletePrivacyStatus(
+    const companion_gatt_delete_privacy_v1_t *request,
+    bool accepted)
 {
   if (request == NULL)
   {
@@ -1036,7 +1146,14 @@ static void Companion_Gatt_PublishDeletePrivacyRefusal(
 
   companion_gatt_delete_privacy_v1_t response = *request;
   response.schema_version = 1u;
-  response.flags |= 0x0001u;
+  if (accepted)
+  {
+    response.flags &= (uint16_t)~0x0001u;
+  }
+  else
+  {
+    response.flags |= 0x0001u;
+  }
   (void)companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_DELETE_PRIVACY,
                                        (const uint8_t *)&response,
                                        (uint16_t)sizeof(response));
@@ -1081,17 +1198,13 @@ static void Companion_Audio_UpdateDebugStatus(void)
   int written = snprintf(
       readiness,
       sizeof(readiness),
-      "vka1 n=%u t=%u r=%u cw=%lu ne=%lu nd=%lu ss=%lu lc=%u cs=%u ls=%u",
+      "ready:listener_vka1 app=companion n=%u t=%u r=%u ss=%lu lc=%u cs=%u",
       s_companion_audio_stream.notify_enabled ? 1u : 0u,
       comp_audio_stream_is_type_link_ready(&s_companion_audio_stream) ? 1u : 0u,
       comp_audio_stream_is_ready(&s_companion_audio_stream) ? 1u : 0u,
-      (unsigned long)s_companion_audio_control_write_count,
-      (unsigned long)s_companion_audio_notify_enabled_count,
-      (unsigned long)s_companion_audio_notify_disabled_count,
       (unsigned long)s_companion_audio_session_start_count,
       (unsigned int)s_companion_audio_last_control,
-      (unsigned int)s_companion_audio_last_control_status,
-      (unsigned int)s_companion_audio_last_session_start_status);
+      (unsigned int)s_companion_audio_last_control_status);
 
   if (written <= 0)
   {

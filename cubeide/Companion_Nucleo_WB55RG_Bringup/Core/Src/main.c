@@ -73,6 +73,29 @@ COMPANION_PLACE_IN_SECTION("TAG_OTA_START") const uint32_t MagicKeywordAddress =
 #define FLASH_TEST_SIZE 256u
 #define FLASH_BUSY_TIMEOUT_MS 5000u
 
+#define FLASH_RECORDING_MAGIC 0x31434552u
+#define FLASH_RECORDING_VERSION 1u
+#define FLASH_RECORDING_BASE_PREFERRED 0x00010000u
+#define FLASH_RECORDING_SAMPLE_RATE_HZ 16000u
+#define FLASH_RECORDING_BITS_PER_SAMPLE 16u
+#define FLASH_RECORDING_BYTES_PER_SECOND \
+    ((FLASH_RECORDING_SAMPLE_RATE_HZ * FLASH_RECORDING_BITS_PER_SAMPLE) / 8u)
+#define FLASH_RECORDING_DEV_MAX_SECONDS 60u
+#define FLASH_RECORDING_MAX_BYTES \
+    (FLASH_RECORDING_BYTES_PER_SECOND * FLASH_RECORDING_DEV_MAX_SECONDS)
+#define FLASH_RECORDING_CODEC_PCM16 1u
+#define FLASH_RECORDING_SYNC_UNSYNCED 0u
+#define FLASH_RECORDING_SYNC_TRANSFER_ACTIVE 1u
+#define FLASH_RECORDING_SYNC_TRANSFERRED 2u
+#define FLASH_RECORDING_SYNC_DELETED 3u
+#define FLASH_RECORDING_SOURCE_MIC_SAI_VALUE 1u
+
+enum {
+    COMPANION_RECORDING_CONTROL_START = 1u,
+    COMPANION_RECORDING_CONTROL_STOP = 2u,
+    COMPANION_RECORDING_CONTROL_CANCEL = 3u,
+};
+
 typedef enum {
     OTA_READY_STATE_READY = 0,
     OTA_READY_STATE_BLOCKED = 1,
@@ -133,6 +156,49 @@ typedef struct {
     uint32_t last_change_ms;
 } board_button_t;
 
+typedef struct {
+    uint32_t state[8];
+    uint64_t bit_count;
+    uint8_t block[64];
+    uint32_t block_len;
+} comp_sha256_ctx_t;
+
+#pragma pack(push, 1)
+typedef struct {
+    uint32_t magic;
+    uint32_t version;
+    uint32_t recording_id;
+    uint32_t started_unix_s;
+    uint32_t started_tick_ms;
+    uint32_t duration_ms;
+    uint32_t total_length;
+    uint32_t content_crc32;
+    uint8_t sha256[COMPANION_RECORDING_FLASH_SHA256_BYTES];
+    uint8_t codec;
+    uint8_t sync_state;
+    uint8_t source_mode;
+    uint8_t reserved;
+} recording_flash_header_t;
+#pragma pack(pop)
+
+typedef struct {
+    bool ready;
+    bool capture_active;
+    bool stored;
+    bool write_failed;
+    uint32_t base_address;
+    uint32_t data_address;
+    uint32_t capacity_bytes;
+    uint32_t recording_id;
+    uint32_t next_recording_id;
+    uint32_t started_tick_ms;
+    uint32_t bytes_written;
+    uint32_t content_crc32;
+    uint32_t packet_sequence_next;
+    recording_flash_header_t header;
+    comp_sha256_ctx_t sha256;
+} recording_flash_state_t;
+
 UART_HandleTypeDef hlpuart1;
 UART_HandleTypeDef huart1;
 DMA_HandleTypeDef hdma_usart1_tx;
@@ -144,6 +210,7 @@ SAI_HandleTypeDef hsai_BlockA1;
 
 static comp_recording_fsm_t s_recording_fsm;
 static comp_qspi_nor_t s_flash;
+static recording_flash_state_t s_recording_flash;
 static const char *s_error_stage = "reset";
 static bool s_uart_ready;
 static board_button_t s_buttons[] = {
@@ -175,6 +242,7 @@ static void MX_QUADSPI_Init(void);
 static void MX_SAI1_Init(void);
 
 static void init_board_buttons(void);
+static void disable_board_button_exti_irqs(void);
 static void poll_board_buttons(void);
 static void handle_button_press(size_t index);
 static void start_recording(comp_recording_source_t source, const char *reason);
@@ -215,6 +283,22 @@ static void run_microphone_probe(void);
 static void print_diag_tail(void);
 static bool capture_microphone_block(uint32_t block_index, bool verbose, const char *tag);
 static void print_recording_summary(const char *tag);
+static bool recording_flash_ensure_ready(void);
+static bool recording_flash_begin_capture(uint16_t max_seconds);
+static void recording_flash_append_pcm(const uint8_t *pcm, uint32_t length);
+static bool recording_flash_finalize_capture(void);
+static bool recording_flash_load_header(void);
+static void recording_flash_clear_state(void);
+static bool recording_flash_erase_region(void);
+static uint32_t recording_flash_sector_count(uint32_t bytes);
+static uint32_t recording_flash_total_region_bytes(void);
+static uint32_t recording_flash_limit_bytes_for_seconds(uint16_t max_seconds);
+static uint32_t recording_flash_compute_base(const comp_qspi_nor_info_t *info);
+static void sha256_init(comp_sha256_ctx_t *ctx);
+static void sha256_update(comp_sha256_ctx_t *ctx, const uint8_t *data, uint32_t length);
+static void sha256_final(comp_sha256_ctx_t *ctx,
+                         uint8_t digest[COMPANION_RECORDING_FLASH_SHA256_BYTES]);
+static void write_le32(uint8_t *out, uint32_t value);
 
 static uint32_t diag_clock_ms(void *context)
 {
@@ -240,6 +324,148 @@ static uint32_t crc32_update(uint32_t crc, const uint8_t *data, uint32_t len)
         }
     }
     return ~crc;
+}
+
+static uint32_t rotr32(uint32_t value, uint32_t bits)
+{
+    return (value >> bits) | (value << (32u - bits));
+}
+
+static void sha256_process_block(comp_sha256_ctx_t *ctx, const uint8_t block[64])
+{
+    static const uint32_t k[64] = {
+        0x428A2F98u, 0x71374491u, 0xB5C0FBCFu, 0xE9B5DBA5u,
+        0x3956C25Bu, 0x59F111F1u, 0x923F82A4u, 0xAB1C5ED5u,
+        0xD807AA98u, 0x12835B01u, 0x243185BEu, 0x550C7DC3u,
+        0x72BE5D74u, 0x80DEB1FEu, 0x9BDC06A7u, 0xC19BF174u,
+        0xE49B69C1u, 0xEFBE4786u, 0x0FC19DC6u, 0x240CA1CCu,
+        0x2DE92C6Fu, 0x4A7484AAu, 0x5CB0A9DCu, 0x76F988DAu,
+        0x983E5152u, 0xA831C66Du, 0xB00327C8u, 0xBF597FC7u,
+        0xC6E00BF3u, 0xD5A79147u, 0x06CA6351u, 0x14292967u,
+        0x27B70A85u, 0x2E1B2138u, 0x4D2C6DFCu, 0x53380D13u,
+        0x650A7354u, 0x766A0ABBu, 0x81C2C92Eu, 0x92722C85u,
+        0xA2BFE8A1u, 0xA81A664Bu, 0xC24B8B70u, 0xC76C51A3u,
+        0xD192E819u, 0xD6990624u, 0xF40E3585u, 0x106AA070u,
+        0x19A4C116u, 0x1E376C08u, 0x2748774Cu, 0x34B0BCB5u,
+        0x391C0CB3u, 0x4ED8AA4Au, 0x5B9CCA4Fu, 0x682E6FF3u,
+        0x748F82EEu, 0x78A5636Fu, 0x84C87814u, 0x8CC70208u,
+        0x90BEFFFAu, 0xA4506CEBu, 0xBEF9A3F7u, 0xC67178F2u,
+    };
+    uint32_t w[64];
+    for (uint32_t i = 0u; i < 16u; ++i) {
+        w[i] = ((uint32_t)block[i * 4u] << 24) |
+               ((uint32_t)block[(i * 4u) + 1u] << 16) |
+               ((uint32_t)block[(i * 4u) + 2u] << 8) |
+               (uint32_t)block[(i * 4u) + 3u];
+    }
+    for (uint32_t i = 16u; i < 64u; ++i) {
+        uint32_t s0 = rotr32(w[i - 15u], 7u) ^ rotr32(w[i - 15u], 18u) ^ (w[i - 15u] >> 3);
+        uint32_t s1 = rotr32(w[i - 2u], 17u) ^ rotr32(w[i - 2u], 19u) ^ (w[i - 2u] >> 10);
+        w[i] = w[i - 16u] + s0 + w[i - 7u] + s1;
+    }
+
+    uint32_t a = ctx->state[0];
+    uint32_t b = ctx->state[1];
+    uint32_t c = ctx->state[2];
+    uint32_t d = ctx->state[3];
+    uint32_t e = ctx->state[4];
+    uint32_t f = ctx->state[5];
+    uint32_t g = ctx->state[6];
+    uint32_t h = ctx->state[7];
+
+    for (uint32_t i = 0u; i < 64u; ++i) {
+        uint32_t s1 = rotr32(e, 6u) ^ rotr32(e, 11u) ^ rotr32(e, 25u);
+        uint32_t ch = (e & f) ^ ((~e) & g);
+        uint32_t temp1 = h + s1 + ch + k[i] + w[i];
+        uint32_t s0 = rotr32(a, 2u) ^ rotr32(a, 13u) ^ rotr32(a, 22u);
+        uint32_t maj = (a & b) ^ (a & c) ^ (b & c);
+        uint32_t temp2 = s0 + maj;
+        h = g;
+        g = f;
+        f = e;
+        e = d + temp1;
+        d = c;
+        c = b;
+        b = a;
+        a = temp1 + temp2;
+    }
+
+    ctx->state[0] += a;
+    ctx->state[1] += b;
+    ctx->state[2] += c;
+    ctx->state[3] += d;
+    ctx->state[4] += e;
+    ctx->state[5] += f;
+    ctx->state[6] += g;
+    ctx->state[7] += h;
+}
+
+static void sha256_init(comp_sha256_ctx_t *ctx)
+{
+    memset(ctx, 0, sizeof(*ctx));
+    ctx->state[0] = 0x6A09E667u;
+    ctx->state[1] = 0xBB67AE85u;
+    ctx->state[2] = 0x3C6EF372u;
+    ctx->state[3] = 0xA54FF53Au;
+    ctx->state[4] = 0x510E527Fu;
+    ctx->state[5] = 0x9B05688Cu;
+    ctx->state[6] = 0x1F83D9ABu;
+    ctx->state[7] = 0x5BE0CD19u;
+}
+
+static void sha256_update(comp_sha256_ctx_t *ctx, const uint8_t *data, uint32_t length)
+{
+    if (ctx == NULL || data == NULL || length == 0u) {
+        return;
+    }
+    ctx->bit_count += ((uint64_t)length * 8u);
+    for (uint32_t i = 0u; i < length; ++i) {
+        ctx->block[ctx->block_len++] = data[i];
+        if (ctx->block_len == sizeof(ctx->block)) {
+            sha256_process_block(ctx, ctx->block);
+            ctx->block_len = 0u;
+        }
+    }
+}
+
+static void sha256_final(comp_sha256_ctx_t *ctx,
+                         uint8_t digest[COMPANION_RECORDING_FLASH_SHA256_BYTES])
+{
+    if (ctx == NULL || digest == NULL) {
+        return;
+    }
+
+    uint64_t bit_count = ctx->bit_count;
+    ctx->block[ctx->block_len++] = 0x80u;
+    if (ctx->block_len > 56u) {
+        while (ctx->block_len < sizeof(ctx->block)) {
+            ctx->block[ctx->block_len++] = 0u;
+        }
+        sha256_process_block(ctx, ctx->block);
+        ctx->block_len = 0u;
+    }
+    while (ctx->block_len < 56u) {
+        ctx->block[ctx->block_len++] = 0u;
+    }
+    for (int i = 7; i >= 0; --i) {
+        ctx->block[ctx->block_len++] = (uint8_t)(bit_count >> ((uint32_t)i * 8u));
+    }
+    sha256_process_block(ctx, ctx->block);
+
+    for (uint32_t i = 0u; i < 8u; ++i) {
+        digest[(i * 4u)] = (uint8_t)(ctx->state[i] >> 24);
+        digest[(i * 4u) + 1u] = (uint8_t)(ctx->state[i] >> 16);
+        digest[(i * 4u) + 2u] = (uint8_t)(ctx->state[i] >> 8);
+        digest[(i * 4u) + 3u] = (uint8_t)ctx->state[i];
+    }
+}
+
+static void write_le32(uint8_t *out, uint32_t value)
+{
+    out[0] = (uint8_t)value;
+    out[1] = (uint8_t)(value >> 8);
+    out[2] = (uint8_t)(value >> 16);
+    out[3] = (uint8_t)(value >> 24);
 }
 
 static const char *hal_status_name(HAL_StatusTypeDef status)
@@ -313,12 +539,12 @@ int main(void)
     printf("[boot] uart=USART1 PB6/PB7 115200 flash=QSPI PA2/PA3/PB9/PB8/PA7/PA6 mic=SAI1 PA8/PB12/PC3\r\n");
     printf("[boot] mic=inmp441_i2s_slot_auto_dc_preamp%lu ble=companion_vka1 ota=ble_package_ready\r\n",
            (unsigned long)(1u << MIC_PREAMP_SHIFT));
-    printf("[boot] buttons: SW1=PC4 start/stop recording, SW2=PD0 cancel/recover, SW3=PD1 flash+ota+mic+diag probe\r\n");
-    init_board_buttons();
+    printf("[boot] buttons: SW1=PC4 flash+ota+mic+diag probe, SW2=PD0 cancel/recover, SW3=PD1 start/stop recording\r\n");
 
     s_error_stage = "MX_APPE_Init";
     MX_APPE_Init();
     printf("[stage] ble app init requested name=companion service=VKA1\r\n");
+    init_board_buttons();
 
 #if COMPANION_RUN_BOOT_SELFTESTS
     printf("\r\n[tick] boot_selftest t_ms=%lu\r\n", (unsigned long)HAL_GetTick());
@@ -374,9 +600,12 @@ int main(void)
         uint32_t now = HAL_GetTick();
         if ((now - last_heartbeat_ms) >= HEARTBEAT_PERIOD_MS) {
             last_heartbeat_ms = now;
-            printf("\r\n[tick] t_ms=%lu state=%s buttons=ready\r\n",
+            printf("\r\n[tick] t_ms=%lu state=%s buttons=ready raw=SW1:%u SW2:%u SW3:%u\r\n",
                    (unsigned long)now,
-                   comp_recording_state_name(s_recording_fsm.state));
+                   comp_recording_state_name(s_recording_fsm.state),
+                   HAL_GPIO_ReadPin(BOARD_SW1_GPIO_PORT, BOARD_SW1_PIN) == GPIO_PIN_SET ? 1u : 0u,
+                   HAL_GPIO_ReadPin(BOARD_SW2_GPIO_PORT, BOARD_SW2_PIN) == GPIO_PIN_SET ? 1u : 0u,
+                   HAL_GPIO_ReadPin(BOARD_SW3_GPIO_PORT, BOARD_SW3_PIN) == GPIO_PIN_SET ? 1u : 0u);
         }
         MX_APPE_Process();
         HAL_Delay(BUTTON_IDLE_POLL_MS);
@@ -390,12 +619,31 @@ static bool button_is_pressed(const board_button_t *button)
 
 static void init_board_buttons(void)
 {
+    disable_board_button_exti_irqs();
+    MX_GPIO_Init();
     for (size_t i = 0u; i < sizeof(s_buttons) / sizeof(s_buttons[0]); ++i) {
         bool pressed = button_is_pressed(&s_buttons[i]);
         s_buttons[i].last_raw_pressed = pressed;
         s_buttons[i].stable_pressed = pressed;
         s_buttons[i].last_change_ms = HAL_GetTick();
     }
+    printf("[button] gpio_poll_ready raw=SW1:%u SW2:%u SW3:%u\r\n",
+           HAL_GPIO_ReadPin(BOARD_SW1_GPIO_PORT, BOARD_SW1_PIN) == GPIO_PIN_SET ? 1u : 0u,
+           HAL_GPIO_ReadPin(BOARD_SW2_GPIO_PORT, BOARD_SW2_PIN) == GPIO_PIN_SET ? 1u : 0u,
+           HAL_GPIO_ReadPin(BOARD_SW3_GPIO_PORT, BOARD_SW3_PIN) == GPIO_PIN_SET ? 1u : 0u);
+}
+
+static void disable_board_button_exti_irqs(void)
+{
+    HAL_NVIC_DisableIRQ(EXTI4_IRQn);
+    HAL_NVIC_ClearPendingIRQ(EXTI4_IRQn);
+    HAL_NVIC_DisableIRQ(EXTI0_IRQn);
+    HAL_NVIC_ClearPendingIRQ(EXTI0_IRQn);
+    HAL_NVIC_DisableIRQ(EXTI1_IRQn);
+    HAL_NVIC_ClearPendingIRQ(EXTI1_IRQn);
+    __HAL_GPIO_EXTI_CLEAR_IT(BOARD_SW1_PIN);
+    __HAL_GPIO_EXTI_CLEAR_IT(BOARD_SW2_PIN);
+    __HAL_GPIO_EXTI_CLEAR_IT(BOARD_SW3_PIN);
 }
 
 static void poll_board_buttons(void)
@@ -406,6 +654,11 @@ static void poll_board_buttons(void)
         if (raw_pressed != s_buttons[i].last_raw_pressed) {
             s_buttons[i].last_raw_pressed = raw_pressed;
             s_buttons[i].last_change_ms = now;
+            printf("[button-raw] %s active_low=%u gpio_level=%u t_ms=%lu\r\n",
+                   s_buttons[i].name,
+                   raw_pressed ? 1u : 0u,
+                   raw_pressed ? 0u : 1u,
+                   (unsigned long)now);
         }
         if (raw_pressed != s_buttons[i].stable_pressed &&
             (now - s_buttons[i].last_change_ms) >= BUTTON_DEBOUNCE_MS) {
@@ -425,15 +678,15 @@ static void handle_button_press(size_t index)
            comp_recording_state_name(s_recording_fsm.state));
 
     if (index == 0u) {
-        if (s_recording_fsm.state == COMP_RECORDING_STATE_RECORDING) {
-            stop_manual_recording("sw1");
-        } else {
-            start_manual_recording();
-        }
+        run_manual_probe_request();
     } else if (index == 1u) {
         cancel_manual_recording();
     } else if (index == 2u) {
-        run_manual_probe_request();
+        if (s_recording_fsm.state == COMP_RECORDING_STATE_RECORDING) {
+            stop_manual_recording("sw3");
+        } else {
+            start_manual_recording();
+        }
     }
 }
 
@@ -738,34 +991,64 @@ static void cancel_recording(comp_recording_source_t source, const char *reason)
 
 static void start_manual_recording(void)
 {
-    start_recording(COMP_RECORDING_SOURCE_USER_BUTTON, "sw1");
+    if (s_recording_flash.capture_active) {
+        printf("[record] sw3 action=start ignored=flash_capture_active state=%s\r\n",
+               comp_recording_state_name(s_recording_fsm.state));
+        return;
+    }
+    if (!recording_flash_begin_capture(0u)) {
+        printf("[record] sw3 action=start rejected=flash_capture_begin_failed state=%s\r\n",
+               comp_recording_state_name(s_recording_fsm.state));
+        return;
+    }
+    start_recording(COMP_RECORDING_SOURCE_USER_BUTTON, "sw3");
+    if (s_recording_fsm.state != COMP_RECORDING_STATE_RECORDING) {
+        s_recording_flash.capture_active = false;
+        printf("[record] sw3 action=start rejected=recording_fsm_state state=%s\r\n",
+               comp_recording_state_name(s_recording_fsm.state));
+    }
 }
 
 static void stop_manual_recording(const char *reason)
 {
     stop_recording(COMP_RECORDING_SOURCE_USER_BUTTON, reason);
+    bool stored = recording_flash_finalize_capture();
+    printf("[record] %s action=manual_store result=%u state=%s\r\n",
+           reason,
+           stored ? 1u : 0u,
+           comp_recording_state_name(s_recording_fsm.state));
+    Companion_Gatt_PublishRecordingList();
 }
 
 static void cancel_manual_recording(void)
 {
     cancel_recording(COMP_RECORDING_SOURCE_USER_BUTTON, "sw2");
+    if (s_recording_flash.capture_active || s_recording_flash.stored) {
+        if (recording_flash_ensure_ready()) {
+            (void)recording_flash_erase_region();
+        }
+        recording_flash_clear_state();
+        printf("[record] sw2 action=manual_flash_clear state=%s\r\n",
+               comp_recording_state_name(s_recording_fsm.state));
+        Companion_Gatt_PublishRecordingList();
+    }
 }
 
 static void run_manual_probe_request(void)
 {
     if (s_recording_fsm.state == COMP_RECORDING_STATE_RECORDING ||
         s_recording_fsm.state == COMP_RECORDING_STATE_STOPPING) {
-        printf("[button] sw3 action=probe ignored=recording_active state=%s\r\n",
+        printf("[button] sw1 action=probe ignored=recording_active state=%s\r\n",
                comp_recording_state_name(s_recording_fsm.state));
         return;
     }
-    printf("\r\n[button] sw3 action=probe_begin t_ms=%lu\r\n",
+    printf("\r\n[button] sw1 action=probe_begin t_ms=%lu\r\n",
            (unsigned long)HAL_GetTick());
     run_flash_probe();
     run_ota_readiness_probe();
     run_microphone_probe();
     print_diag_tail();
-    printf("[button] sw3 action=probe_done t_ms=%lu\r\n",
+    printf("[button] sw1 action=probe_done t_ms=%lu\r\n",
            (unsigned long)HAL_GetTick());
 }
 
@@ -1043,6 +1326,529 @@ static void run_flash_write_read_smoke(uint32_t jedec)
                               test_address,
                               pattern_crc,
                               read_crc);
+}
+
+static uint32_t recording_flash_total_region_bytes(void)
+{
+    return (uint32_t)sizeof(recording_flash_header_t) + FLASH_RECORDING_MAX_BYTES;
+}
+
+static uint32_t recording_flash_limit_bytes_for_seconds(uint16_t max_seconds)
+{
+    if (max_seconds == 0u) {
+        return FLASH_RECORDING_MAX_BYTES;
+    }
+
+    uint32_t requested = (uint32_t)max_seconds * FLASH_RECORDING_BYTES_PER_SECOND;
+    if (requested == 0u || requested > FLASH_RECORDING_MAX_BYTES) {
+        return FLASH_RECORDING_MAX_BYTES;
+    }
+    return requested;
+}
+
+static uint32_t recording_flash_sector_count(uint32_t bytes)
+{
+    uint32_t sector_size = s_flash.info.sector_size != 0u ? s_flash.info.sector_size : 4096u;
+    return (bytes + sector_size - 1u) / sector_size;
+}
+
+static uint32_t recording_flash_compute_base(const comp_qspi_nor_info_t *info)
+{
+    uint32_t sector_size = info->sector_size != 0u ? info->sector_size : 4096u;
+    uint32_t region_sectors = recording_flash_sector_count(recording_flash_total_region_bytes());
+    uint32_t region_bytes = region_sectors * sector_size;
+
+    if ((FLASH_RECORDING_BASE_PREFERRED + region_bytes) <= info->size_bytes) {
+        return FLASH_RECORDING_BASE_PREFERRED;
+    }
+    if (region_bytes < info->size_bytes) {
+        return (info->size_bytes - region_bytes) & ~(sector_size - 1u);
+    }
+    return 0u;
+}
+
+static bool recording_flash_load_header(void)
+{
+    recording_flash_header_t header;
+    memset(&header, 0, sizeof(header));
+    comp_qspi_nor_status_t status = comp_qspi_nor_read(&s_flash,
+                                                       s_recording_flash.base_address,
+                                                       (uint8_t *)&header,
+                                                       sizeof(header));
+    if (status != COMP_QSPI_NOR_OK ||
+        header.magic != FLASH_RECORDING_MAGIC ||
+        header.version != FLASH_RECORDING_VERSION ||
+        header.total_length == 0u ||
+        header.total_length > FLASH_RECORDING_MAX_BYTES ||
+        header.sync_state == FLASH_RECORDING_SYNC_DELETED) {
+        return false;
+    }
+
+    s_recording_flash.header = header;
+    s_recording_flash.recording_id = header.recording_id;
+    s_recording_flash.bytes_written = header.total_length;
+    s_recording_flash.content_crc32 = header.content_crc32;
+    s_recording_flash.packet_sequence_next = 0u;
+    s_recording_flash.stored = true;
+    if (s_recording_flash.next_recording_id <= header.recording_id) {
+        s_recording_flash.next_recording_id = header.recording_id + 1u;
+    }
+    return true;
+}
+
+static bool recording_flash_ensure_ready(void)
+{
+    if (s_recording_flash.ready) {
+        return true;
+    }
+
+    comp_qspi_nor_init(&s_flash, &hqspi);
+    comp_qspi_nor_info_t info;
+    comp_qspi_nor_status_t status = comp_qspi_nor_probe(&s_flash, &info);
+    if (status != COMP_QSPI_NOR_OK ||
+        info.size_bytes < recording_flash_total_region_bytes()) {
+        printf("[rec-flash] probe=%s size=%lu required=%lu ready=0\r\n",
+               comp_qspi_nor_status_name(status),
+               (unsigned long)(status == COMP_QSPI_NOR_OK ? info.size_bytes : 0u),
+               (unsigned long)recording_flash_total_region_bytes());
+        comp_diag_log_record_code(COMP_DIAG_EVT_SPI_FLASH_CACHE_LOW_STORAGE,
+                                  COMP_DIAG_SEV_WARN,
+                                  status == COMP_QSPI_NOR_OK ? info.size_bytes : 0u,
+                                  recording_flash_total_region_bytes(),
+                                  (uint32_t)status,
+                                  0u);
+        return false;
+    }
+
+    s_recording_flash.ready = true;
+    s_recording_flash.base_address = recording_flash_compute_base(&info);
+    s_recording_flash.data_address =
+        s_recording_flash.base_address + (uint32_t)sizeof(recording_flash_header_t);
+    s_recording_flash.capacity_bytes = FLASH_RECORDING_MAX_BYTES;
+    if (s_recording_flash.next_recording_id == 0u) {
+        s_recording_flash.next_recording_id = 1u;
+    }
+    (void)recording_flash_load_header();
+    printf("[rec-flash] ready=1 jedec=0x%06lX base=0x%08lX data=0x%08lX capacity=%lu\r\n",
+           (unsigned long)info.jedec_id,
+           (unsigned long)s_recording_flash.base_address,
+           (unsigned long)s_recording_flash.data_address,
+           (unsigned long)s_recording_flash.capacity_bytes);
+    return true;
+}
+
+static void recording_flash_clear_state(void)
+{
+    s_recording_flash.capture_active = false;
+    s_recording_flash.stored = false;
+    s_recording_flash.write_failed = false;
+    s_recording_flash.bytes_written = 0u;
+    s_recording_flash.content_crc32 = 0u;
+    s_recording_flash.packet_sequence_next = 0u;
+    memset(&s_recording_flash.header, 0, sizeof(s_recording_flash.header));
+    sha256_init(&s_recording_flash.sha256);
+}
+
+static bool recording_flash_erase_region(void)
+{
+    uint32_t sector_size = s_flash.info.sector_size != 0u ? s_flash.info.sector_size : 4096u;
+    uint32_t sectors = recording_flash_sector_count(recording_flash_total_region_bytes());
+    uint32_t remaining = sectors * sector_size;
+    uint32_t address = s_recording_flash.base_address;
+    const uint32_t block_size = 65536u;
+
+    while (remaining > 0u) {
+        if (remaining >= block_size && (address % block_size) == 0u) {
+            comp_qspi_nor_status_t block_status = comp_qspi_nor_erase_64k(&s_flash, address);
+            if (block_status == COMP_QSPI_NOR_OK) {
+                address += block_size;
+                remaining -= block_size;
+                continue;
+            }
+            printf("[rec-flash] erase64 address=0x%08lX status=%s fallback=4k\r\n",
+                   (unsigned long)address,
+                   comp_qspi_nor_status_name(block_status));
+        }
+
+        comp_qspi_nor_status_t status = comp_qspi_nor_erase_4k(&s_flash, address);
+        if (status != COMP_QSPI_NOR_OK) {
+            printf("[rec-flash] erase address=0x%08lX status=%s\r\n",
+                   (unsigned long)address,
+                   comp_qspi_nor_status_name(status));
+            return false;
+        }
+        address += sector_size;
+        remaining = remaining > sector_size ? (remaining - sector_size) : 0u;
+    }
+    return true;
+}
+
+static bool recording_flash_begin_capture(uint16_t max_seconds)
+{
+    if (!recording_flash_ensure_ready()) {
+        return false;
+    }
+    if (!recording_flash_erase_region()) {
+        comp_diag_log_record_code(COMP_DIAG_EVT_SPI_FLASH_CACHE_INTERRUPTED_WRITE,
+                                  COMP_DIAG_SEV_WARN,
+                                  s_recording_flash.base_address,
+                                  recording_flash_total_region_bytes(),
+                                  0u,
+                                  0u);
+        return false;
+    }
+
+    recording_flash_clear_state();
+    s_recording_flash.capacity_bytes = recording_flash_limit_bytes_for_seconds(max_seconds);
+    s_recording_flash.capture_active = true;
+    s_recording_flash.recording_id = s_recording_flash.next_recording_id++;
+    s_recording_flash.started_tick_ms = HAL_GetTick();
+    printf("[rec-flash] capture_begin id=%lu base=0x%08lX max=%lu max_seconds=%u\r\n",
+           (unsigned long)s_recording_flash.recording_id,
+           (unsigned long)s_recording_flash.base_address,
+           (unsigned long)s_recording_flash.capacity_bytes,
+           (unsigned)max_seconds);
+    comp_diag_log_record_code(COMP_DIAG_EVT_SPI_FLASH_CACHE_WRITE,
+                              COMP_DIAG_SEV_INFO,
+                              s_recording_flash.recording_id,
+                              s_recording_flash.base_address,
+                              s_recording_flash.capacity_bytes,
+                              0u);
+    return true;
+}
+
+static void recording_flash_append_pcm(const uint8_t *pcm, uint32_t length)
+{
+    if (!s_recording_flash.capture_active ||
+        s_recording_flash.write_failed ||
+        pcm == NULL ||
+        length == 0u) {
+        return;
+    }
+
+    uint32_t remaining = s_recording_flash.capacity_bytes - s_recording_flash.bytes_written;
+    uint32_t chunk = length <= remaining ? length : remaining;
+    if (chunk == 0u) {
+        return;
+    }
+
+    uint32_t address = s_recording_flash.data_address + s_recording_flash.bytes_written;
+    comp_qspi_nor_status_t status = comp_qspi_nor_write(&s_flash, address, pcm, chunk);
+    if (status != COMP_QSPI_NOR_OK) {
+        s_recording_flash.write_failed = true;
+        printf("[rec-flash] append_failed id=%lu offset=%lu length=%lu status=%s\r\n",
+               (unsigned long)s_recording_flash.recording_id,
+               (unsigned long)s_recording_flash.bytes_written,
+               (unsigned long)chunk,
+               comp_qspi_nor_status_name(status));
+        comp_diag_log_record_code(COMP_DIAG_EVT_SPI_FLASH_CACHE_INTERRUPTED_WRITE,
+                                  COMP_DIAG_SEV_WARN,
+                                  s_recording_flash.recording_id,
+                                  s_recording_flash.bytes_written,
+                                  chunk,
+                                  (uint32_t)status);
+        return;
+    }
+
+    s_recording_flash.content_crc32 =
+        crc32_update(s_recording_flash.content_crc32, pcm, chunk);
+    sha256_update(&s_recording_flash.sha256, pcm, chunk);
+    s_recording_flash.bytes_written += chunk;
+}
+
+static bool recording_flash_finalize_capture(void)
+{
+    if (!s_recording_flash.capture_active) {
+        return s_recording_flash.stored;
+    }
+    s_recording_flash.capture_active = false;
+
+    if (s_recording_flash.write_failed || s_recording_flash.bytes_written == 0u) {
+        printf("[rec-flash] capture_finalize_failed id=%lu bytes=%lu write_failed=%u\r\n",
+               (unsigned long)s_recording_flash.recording_id,
+               (unsigned long)s_recording_flash.bytes_written,
+               s_recording_flash.write_failed ? 1u : 0u);
+        comp_diag_log_record_code(COMP_DIAG_EVT_SPI_FLASH_CACHE_INTERRUPTED_WRITE,
+                                  COMP_DIAG_SEV_WARN,
+                                  s_recording_flash.recording_id,
+                                  s_recording_flash.bytes_written,
+                                  s_recording_flash.write_failed ? 1u : 0u,
+                                  0u);
+        return false;
+    }
+
+    recording_flash_header_t header;
+    memset(&header, 0, sizeof(header));
+    header.magic = FLASH_RECORDING_MAGIC;
+    header.version = FLASH_RECORDING_VERSION;
+    header.recording_id = s_recording_flash.recording_id;
+    header.started_unix_s = 0u;
+    header.started_tick_ms = s_recording_flash.started_tick_ms;
+    header.total_length = s_recording_flash.bytes_written;
+    uint64_t duration_ms =
+        ((uint64_t)s_recording_flash.bytes_written * 8u * 1000u) /
+        (FLASH_RECORDING_SAMPLE_RATE_HZ * FLASH_RECORDING_BITS_PER_SAMPLE);
+    header.duration_ms = duration_ms > 0xFFFFFFFFu ? 0xFFFFFFFFu : (uint32_t)duration_ms;
+    header.content_crc32 = s_recording_flash.content_crc32;
+    header.codec = FLASH_RECORDING_CODEC_PCM16;
+    header.sync_state = FLASH_RECORDING_SYNC_UNSYNCED;
+    header.source_mode = FLASH_RECORDING_SOURCE_MIC_SAI_VALUE;
+    sha256_final(&s_recording_flash.sha256, header.sha256);
+
+    comp_qspi_nor_status_t status = comp_qspi_nor_write(&s_flash,
+                                                        s_recording_flash.base_address,
+                                                        (const uint8_t *)&header,
+                                                        sizeof(header));
+    if (status != COMP_QSPI_NOR_OK) {
+        printf("[rec-flash] header_write_failed id=%lu status=%s\r\n",
+               (unsigned long)header.recording_id,
+               comp_qspi_nor_status_name(status));
+        return false;
+    }
+
+    s_recording_flash.header = header;
+    s_recording_flash.stored = true;
+    s_recording_flash.packet_sequence_next = 0u;
+    printf("[rec-flash] stored id=%lu bytes=%lu duration_ms=%lu crc=0x%08lX sha_prefix=%02X%02X%02X%02X%02X%02X%02X%02X\r\n",
+           (unsigned long)header.recording_id,
+           (unsigned long)header.total_length,
+           (unsigned long)header.duration_ms,
+           (unsigned long)header.content_crc32,
+           header.sha256[0],
+           header.sha256[1],
+           header.sha256[2],
+           header.sha256[3],
+           header.sha256[4],
+           header.sha256[5],
+           header.sha256[6],
+           header.sha256[7]);
+    comp_diag_log_record_code(COMP_DIAG_EVT_SPI_FLASH_CACHE_WRITE,
+                              COMP_DIAG_SEV_INFO,
+                              header.recording_id,
+                              header.total_length,
+                              header.duration_ms,
+                              header.content_crc32);
+    return true;
+}
+
+bool Companion_RecordingFlash_HandleControl(uint8_t command,
+                                            uint16_t max_seconds)
+{
+    switch (command) {
+    case COMPANION_RECORDING_CONTROL_START:
+        if (s_recording_flash.capture_active) {
+            return false;
+        }
+        if (!recording_flash_begin_capture(max_seconds)) {
+            return false;
+        }
+        start_recording(COMP_RECORDING_SOURCE_HOST_BLE_CONTROL, "gatt_recording_start");
+        if (s_recording_fsm.state != COMP_RECORDING_STATE_RECORDING) {
+            s_recording_flash.capture_active = false;
+            return false;
+        }
+        return true;
+
+    case COMPANION_RECORDING_CONTROL_STOP:
+        if (!s_recording_flash.capture_active) {
+            return false;
+        }
+        stop_recording(COMP_RECORDING_SOURCE_HOST_BLE_CONTROL, "gatt_recording_stop");
+        return recording_flash_finalize_capture();
+
+    case COMPANION_RECORDING_CONTROL_CANCEL:
+        if (s_recording_flash.capture_active) {
+            cancel_recording(COMP_RECORDING_SOURCE_HOST_BLE_CONTROL, "gatt_recording_cancel");
+        }
+        if (recording_flash_ensure_ready()) {
+            (void)recording_flash_erase_region();
+        }
+        recording_flash_clear_state();
+        return true;
+
+    default:
+        return false;
+    }
+}
+
+bool Companion_RecordingFlash_GetMetadata(companion_recording_flash_metadata_t *out)
+{
+    if (out == NULL || !recording_flash_ensure_ready()) {
+        return false;
+    }
+    if (!s_recording_flash.stored && !recording_flash_load_header()) {
+        return false;
+    }
+
+    memset(out, 0, sizeof(*out));
+    out->recording_id = s_recording_flash.header.recording_id;
+    out->started_unix_s = s_recording_flash.header.started_unix_s;
+    out->started_tick_ms = s_recording_flash.header.started_tick_ms;
+    out->duration_ms = s_recording_flash.header.duration_ms;
+    out->total_length = s_recording_flash.header.total_length;
+    out->content_crc32 = s_recording_flash.header.content_crc32;
+    memcpy(out->sha256, s_recording_flash.header.sha256, sizeof(out->sha256));
+    out->codec = s_recording_flash.header.codec;
+    out->sync_state = s_recording_flash.header.sync_state;
+    out->source_mode = s_recording_flash.header.source_mode;
+    return true;
+}
+
+bool Companion_RecordingFlash_ReadChunk(uint32_t recording_id,
+                                        uint32_t byte_offset,
+                                        uint16_t requested_length,
+                                        uint8_t *payload,
+                                        uint16_t payload_capacity,
+                                        companion_recording_flash_chunk_t *out)
+{
+    if (out != NULL) {
+        memset(out, 0, sizeof(*out));
+        out->recording_id = recording_id;
+        out->byte_offset = byte_offset;
+    }
+
+    if (payload == NULL ||
+        out == NULL ||
+        requested_length == 0u ||
+        payload_capacity == 0u) {
+        if (out != NULL) {
+            out->error_code = COMPANION_RECORDING_FLASH_READ_BAD_ARGUMENT;
+        }
+        return false;
+    }
+    if (!recording_flash_ensure_ready()) {
+        out->error_code = COMPANION_RECORDING_FLASH_READ_NOT_READY;
+        return false;
+    }
+    if (!s_recording_flash.stored && !recording_flash_load_header()) {
+        out->error_code = COMPANION_RECORDING_FLASH_READ_NO_STORED_RECORDING;
+        return false;
+    }
+    out->total_length = s_recording_flash.header.total_length;
+    if (recording_id != s_recording_flash.header.recording_id) {
+        out->error_code = COMPANION_RECORDING_FLASH_READ_ID_MISMATCH;
+        return false;
+    }
+    if (byte_offset >= s_recording_flash.header.total_length) {
+        out->error_code = COMPANION_RECORDING_FLASH_READ_OFFSET_OUT_OF_RANGE;
+        return false;
+    }
+
+    uint32_t available = s_recording_flash.header.total_length - byte_offset;
+    uint32_t length = requested_length;
+    if (length > payload_capacity) {
+        length = payload_capacity;
+    }
+    if (length > available) {
+        length = available;
+    }
+
+    comp_qspi_nor_status_t status = comp_qspi_nor_read(&s_flash,
+                                                       s_recording_flash.data_address + byte_offset,
+                                                       payload,
+                                                       length);
+    if (status != COMP_QSPI_NOR_OK) {
+        out->error_code = COMPANION_RECORDING_FLASH_READ_QSPI_BASE |
+                          (((uint32_t)(-(int32_t)status)) & 0xFFu);
+        out->payload_length = (uint16_t)length;
+        printf("[rec-flash] read_error id=%lu offset=%lu length=%lu status=%s code=0x%08lX total=%lu\r\n",
+               (unsigned long)recording_id,
+               (unsigned long)byte_offset,
+               (unsigned long)length,
+               comp_qspi_nor_status_name(status),
+               (unsigned long)out->error_code,
+               (unsigned long)s_recording_flash.header.total_length);
+        comp_diag_log_record_code(COMP_DIAG_EVT_SPI_FLASH_CACHE_INTERRUPTED_READ,
+                                  COMP_DIAG_SEV_WARN,
+                                  recording_id,
+                                  byte_offset,
+                                  length,
+                                  (uint32_t)status);
+        return false;
+    }
+
+    if (byte_offset == 0u) {
+        s_recording_flash.packet_sequence_next = 0u;
+    }
+    uint32_t sequence = s_recording_flash.packet_sequence_next++;
+    bool final_packet = (byte_offset + length) >= s_recording_flash.header.total_length;
+
+    uint8_t crc_header[16];
+    write_le32(&crc_header[0], recording_id);
+    write_le32(&crc_header[4], sequence);
+    write_le32(&crc_header[8], byte_offset);
+    write_le32(&crc_header[12], s_recording_flash.header.total_length);
+    uint32_t packet_crc = crc32_update(0u, crc_header, sizeof(crc_header));
+    packet_crc = crc32_update(packet_crc, payload, length);
+
+    s_recording_flash.header.sync_state =
+        final_packet ? FLASH_RECORDING_SYNC_TRANSFERRED : FLASH_RECORDING_SYNC_TRANSFER_ACTIVE;
+    out->recording_id = recording_id;
+    out->packet_sequence = sequence;
+    out->byte_offset = byte_offset;
+    out->total_length = s_recording_flash.header.total_length;
+    out->packet_crc32 = packet_crc;
+    out->error_code = COMPANION_RECORDING_FLASH_READ_OK;
+    out->payload_length = (uint16_t)length;
+    out->final_packet = final_packet;
+    if (final_packet) {
+        memcpy(out->final_sha256,
+               s_recording_flash.header.sha256,
+               sizeof(out->final_sha256));
+    }
+    comp_diag_log_record_code(COMP_DIAG_EVT_SPI_FLASH_CACHE_READ,
+                              COMP_DIAG_SEV_INFO,
+                              recording_id,
+                              byte_offset,
+                              length,
+                              packet_crc);
+    return true;
+}
+
+bool Companion_RecordingFlash_Delete(uint8_t operation,
+                                     uint32_t recording_id,
+                                     uint32_t validated_total_length,
+                                     const uint8_t validated_sha256[COMPANION_RECORDING_FLASH_SHA256_BYTES])
+{
+    if (!recording_flash_ensure_ready()) {
+        return false;
+    }
+    if (!s_recording_flash.stored && !recording_flash_load_header()) {
+        return false;
+    }
+
+    bool delete_all = operation == 2u || operation == 3u;
+    bool exact_match =
+        operation == 1u &&
+        recording_id == s_recording_flash.header.recording_id &&
+        validated_total_length == s_recording_flash.header.total_length &&
+        validated_sha256 != NULL &&
+        memcmp(validated_sha256,
+               s_recording_flash.header.sha256,
+               COMPANION_RECORDING_FLASH_SHA256_BYTES) == 0;
+    if (!delete_all && !exact_match) {
+        comp_diag_log_record_code(COMP_DIAG_EVT_SPI_FLASH_CACHE_DELETE,
+                                  COMP_DIAG_SEV_WARN,
+                                  recording_id,
+                                  validated_total_length,
+                                  s_recording_flash.header.total_length,
+                                  0u);
+        return false;
+    }
+
+    bool erased = recording_flash_erase_region();
+    if (erased) {
+        s_recording_flash.header.sync_state = FLASH_RECORDING_SYNC_DELETED;
+        recording_flash_clear_state();
+    }
+    comp_diag_log_record_code(delete_all ? COMP_DIAG_EVT_SPI_FLASH_CACHE_PRIVACY_ERASE
+                                         : COMP_DIAG_EVT_SPI_FLASH_CACHE_DELETE,
+                              erased ? COMP_DIAG_SEV_INFO : COMP_DIAG_SEV_WARN,
+                              recording_id,
+                              validated_total_length,
+                              delete_all ? 1u : 0u,
+                              erased ? 0u : 1u);
+    return erased;
 }
 
 static HAL_StatusTypeDef apply_flash_qspi_probe_config(const flash_qspi_probe_config_t *config)
@@ -1604,6 +2410,7 @@ static bool capture_microphone_block(uint32_t block_index, bool verbose, const c
     pcm_stats_t pcm_stats;
     mic_decode_stats_t decode_stats;
     analyze_capture(raw_words, pcm_samples, &raw_stats, &pcm_stats, &decode_stats);
+    recording_flash_append_pcm((const uint8_t *)pcm_samples, sizeof(pcm_samples));
 
     comp_microphone_frame_batch_t batch = {
         .frame_count = 1u,

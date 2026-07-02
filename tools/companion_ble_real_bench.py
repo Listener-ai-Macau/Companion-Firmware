@@ -180,6 +180,115 @@ def parse_settings(payload: bytes) -> dict[str, Any]:
     )
 
 
+def parse_ble_name_config(payload: bytes) -> dict[str, Any]:
+    parsed = parse_struct(
+        "<BBHIBBBB29s",
+        (
+            "schema_version",
+            "command",
+            "flags",
+            "request_id",
+            "name_len",
+            "max_len",
+            "status",
+            "reserved",
+            "name",
+        ),
+        payload,
+    )
+    name_len = min(int(parsed["name_len"]), len(parsed["name"]))
+    parsed["name_ascii"] = parsed["name"][:name_len].decode("ascii", errors="replace")
+    parsed["name"] = parsed["name"].hex()
+    return parsed
+
+
+def parse_meeting_status(payload: bytes) -> dict[str, Any]:
+    parsed = parse_struct(
+        "<BBBBHHIIIIB3s",
+        (
+            "schema_version",
+            "state",
+            "last_error",
+            "summary_state",
+            "flags",
+            "segment_count",
+            "request_id",
+            "meeting_id",
+            "started_tick_ms",
+            "duration_ms",
+            "sync_state",
+            "reserved",
+        ),
+        payload,
+    )
+    parsed["reserved"] = parsed["reserved"].hex()
+    return parsed
+
+
+def parse_imu_status(payload: bytes) -> dict[str, Any]:
+    return parse_struct(
+        "<BBBBHHIhhhhhhh",
+        (
+            "schema_version",
+            "sensor_state",
+            "motion_flags",
+            "calibration_state",
+            "sample_rate_hz",
+            "reserved",
+            "sample_timestamp_ms",
+            "accel_x_mg",
+            "accel_y_mg",
+            "accel_z_mg",
+            "gyro_x_dps",
+            "gyro_y_dps",
+            "gyro_z_dps",
+            "temperature_c_x10",
+        ),
+        payload,
+    )
+
+
+def parse_speaker_status(payload: bytes) -> dict[str, Any]:
+    parsed = parse_struct(
+        "<BBBBIB3sI",
+        (
+            "schema_version",
+            "state",
+            "last_error",
+            "volume_percent",
+            "request_id",
+            "prompt_id",
+            "reserved",
+            "played_count",
+        ),
+        payload,
+    )
+    parsed["reserved"] = parsed["reserved"].hex()
+    return parsed
+
+
+def parse_wake_word_status(payload: bytes) -> dict[str, Any]:
+    return parse_struct(
+        "<BBBBBBBBHHIII",
+        (
+            "schema_version",
+            "armed",
+            "engine_state",
+            "last_event",
+            "last_error",
+            "sensitivity",
+            "last_confidence",
+            "reserved",
+            "flags",
+            "model_id",
+            "request_id",
+            "detection_count",
+            "rejected_count",
+        ),
+        payload,
+    )
+
+
 def parse_diag_log_pull(payload: bytes) -> dict[str, Any]:
     return parse_struct(
         "<BBHIHH",
@@ -236,6 +345,24 @@ def parse_ota_readiness(payload: bytes) -> dict[str, Any]:
 def assert_true(condition: bool, message: str) -> None:
     if not condition:
         raise BenchError(message)
+
+
+def ble_name_payload(command: int, request_id: int, name: str = "") -> bytes:
+    raw = name.encode("ascii")
+    if len(raw) > 29:
+        raise ValueError("BLE name fixture is too long")
+    return struct.pack(
+        "<BBHIBBBB29s",
+        SCHEMA_VERSION,
+        command,
+        0,
+        request_id,
+        len(raw),
+        29,
+        0,
+        0,
+        raw.ljust(29, b"\x00"),
+    )
 
 
 def normalize_address(address: str | None) -> str:
@@ -464,6 +591,211 @@ async def run_connected_bench(client: Any, uuids: dict[str, str], args: argparse
         args.notify_timeout,
     )
     operations.append({"operation": "settings_write", "status": "PASS", "settings": settings})
+
+    ble_name_initial = await read_and_parse(client, uuids["ble_name_config"], parse_ble_name_config)
+    assert_true(ble_name_initial["max_len"] == 29, "BLE name config max_len mismatch")
+    assert_true(ble_name_initial["name_ascii"], "BLE name config did not expose an active name")
+    invalid_ble_name_request_id = 91
+    invalid_ble_name = await notify_write_wait(
+        client,
+        uuids["ble_name_config"],
+        uuids["ble_name_config"],
+        ble_name_payload(1, invalid_ble_name_request_id, ""),
+        parse_ble_name_config,
+        lambda parsed: parsed["request_id"] == invalid_ble_name_request_id,
+        args.notify_timeout,
+    )
+    assert_true(invalid_ble_name["status"] == 0x80, "empty BLE name was not rejected")
+    valid_ble_name_request_id = 92
+    valid_ble_name = await notify_write_wait(
+        client,
+        uuids["ble_name_config"],
+        uuids["ble_name_config"],
+        ble_name_payload(1, valid_ble_name_request_id, "companion-v1"),
+        parse_ble_name_config,
+        lambda parsed: parsed["request_id"] == valid_ble_name_request_id,
+        args.notify_timeout,
+    )
+    assert_true(valid_ble_name["status"] == 1, "valid BLE name was not staged")
+    assert_true((valid_ble_name["flags"] & 0x0001) != 0, "valid BLE name did not require restart")
+    apply_ble_name_request_id = 93
+    applied_ble_name = await notify_write_wait(
+        client,
+        uuids["ble_name_config"],
+        uuids["ble_name_config"],
+        ble_name_payload(2, apply_ble_name_request_id),
+        parse_ble_name_config,
+        lambda parsed: parsed["request_id"] == apply_ble_name_request_id,
+        args.notify_timeout,
+    )
+    assert_true(applied_ble_name["status"] == 2, "BLE name apply did not report restart_required")
+    reset_ble_name_request_id = 94
+    reset_ble_name = await notify_write_wait(
+        client,
+        uuids["ble_name_config"],
+        uuids["ble_name_config"],
+        ble_name_payload(3, reset_ble_name_request_id),
+        parse_ble_name_config,
+        lambda parsed: parsed["request_id"] == reset_ble_name_request_id,
+        args.notify_timeout,
+    )
+    assert_true(reset_ble_name["name_ascii"] == "companion", "BLE name reset did not restore default name")
+    operations.append(
+        {
+            "operation": "ble_name_config",
+            "status": "PASS",
+            "initial": ble_name_initial,
+            "invalid_empty": invalid_ble_name,
+            "staged": valid_ble_name,
+            "applied": applied_ble_name,
+            "reset": reset_ble_name,
+        }
+    )
+
+    meeting_start_request_id = 101
+    meeting_start_payload = struct.pack("<BBHIHBB", SCHEMA_VERSION, 1, 0, meeting_start_request_id, 60, 1, 0)
+    meeting_start = await notify_write_wait(
+        client,
+        uuids["meeting_status"],
+        uuids["meeting_control"],
+        meeting_start_payload,
+        parse_meeting_status,
+        lambda parsed: parsed["request_id"] == meeting_start_request_id,
+        args.notify_timeout,
+    )
+    assert_true(meeting_start["state"] == 1, "meeting start did not enter recording state")
+    assert_true(meeting_start["meeting_id"] > 0, "meeting start did not allocate a meeting id")
+    meeting_stop_request_id = 102
+    meeting_stop_payload = struct.pack("<BBHIHBB", SCHEMA_VERSION, 2, 0, meeting_stop_request_id, 0, 1, 0)
+    meeting_stop = await notify_write_wait(
+        client,
+        uuids["meeting_status"],
+        uuids["meeting_control"],
+        meeting_stop_payload,
+        parse_meeting_status,
+        lambda parsed: parsed["request_id"] == meeting_stop_request_id,
+        args.notify_timeout,
+    )
+    assert_true(meeting_stop["state"] == 2, "meeting stop did not finalize the meeting")
+    assert_true(meeting_stop["summary_state"] == 1, "meeting stop did not mark summary readiness")
+    unsupported_meeting_request_id = 103
+    unsupported_meeting_payload = struct.pack("<BBHIHBB", SCHEMA_VERSION, 99, 0, unsupported_meeting_request_id, 0, 1, 0)
+    unsupported_meeting = await notify_write_wait(
+        client,
+        uuids["meeting_status"],
+        uuids["meeting_control"],
+        unsupported_meeting_payload,
+        parse_meeting_status,
+        lambda parsed: parsed["request_id"] == unsupported_meeting_request_id,
+        args.notify_timeout,
+    )
+    assert_true(unsupported_meeting["last_error"] != 0, "unsupported meeting command was not reported")
+    operations.append(
+        {
+            "operation": "meeting_control",
+            "status": "PASS",
+            "start": meeting_start,
+            "stop": meeting_stop,
+            "unsupported": unsupported_meeting,
+        }
+    )
+
+    imu_status = await read_and_parse(client, uuids["imu_status"], parse_imu_status)
+    assert_true(imu_status["sensor_state"] == 1, "NUCLEO bench should report IMU not populated")
+    operations.append({"operation": "imu_status", "status": "PASS", "imu_status": imu_status})
+
+    speaker_request_id = 111
+    speaker_payload = struct.pack("<BBBBIHH", SCHEMA_VERSION, 1, 55, 2, speaker_request_id, 0, 0)
+    speaker_status = await notify_write_wait(
+        client,
+        uuids["speaker_status"],
+        uuids["speaker_control"],
+        speaker_payload,
+        parse_speaker_status,
+        lambda parsed: parsed["request_id"] == speaker_request_id,
+        args.notify_timeout,
+    )
+    assert_true(speaker_status["state"] == 2, "speaker prompt was not accepted into pending hardware state")
+    unsupported_speaker_request_id = 112
+    unsupported_speaker_payload = struct.pack("<BBBBIHH", SCHEMA_VERSION, 99, 55, 2, unsupported_speaker_request_id, 0, 0)
+    unsupported_speaker = await notify_write_wait(
+        client,
+        uuids["speaker_status"],
+        uuids["speaker_control"],
+        unsupported_speaker_payload,
+        parse_speaker_status,
+        lambda parsed: parsed["request_id"] == unsupported_speaker_request_id,
+        args.notify_timeout,
+    )
+    assert_true(unsupported_speaker["last_error"] != 0, "unsupported speaker command was not reported")
+    operations.append(
+        {
+            "operation": "speaker_control",
+            "status": "PASS",
+            "prompt": speaker_status,
+            "unsupported": unsupported_speaker,
+        }
+    )
+
+    rejected_wake_request_id = 121
+    rejected_wake_payload = struct.pack("<BBBBHHI", SCHEMA_VERSION, 3, 66, 0, 0, 1, rejected_wake_request_id)
+    rejected_wake = await notify_write_wait(
+        client,
+        uuids["wake_word_status"],
+        uuids["wake_word_control"],
+        rejected_wake_payload,
+        parse_wake_word_status,
+        lambda parsed: parsed["request_id"] == rejected_wake_request_id,
+        args.notify_timeout,
+    )
+    assert_true(rejected_wake["last_error"] != 0, "wake detect while disarmed was not rejected")
+    arm_wake_request_id = 122
+    arm_wake_payload = struct.pack("<BBBBHHI", SCHEMA_VERSION, 1, 66, 0, 0, 1, arm_wake_request_id)
+    armed_wake = await notify_write_wait(
+        client,
+        uuids["wake_word_status"],
+        uuids["wake_word_control"],
+        arm_wake_payload,
+        parse_wake_word_status,
+        lambda parsed: parsed["request_id"] == arm_wake_request_id,
+        args.notify_timeout,
+    )
+    assert_true(armed_wake["armed"] == 1 and armed_wake["engine_state"] == 1, "wake word did not arm")
+    detect_wake_request_id = 123
+    detect_wake_payload = struct.pack("<BBBBHHI", SCHEMA_VERSION, 3, 66, 0, 0, 1, detect_wake_request_id)
+    detected_wake = await notify_write_wait(
+        client,
+        uuids["wake_word_status"],
+        uuids["wake_word_control"],
+        detect_wake_payload,
+        parse_wake_word_status,
+        lambda parsed: parsed["request_id"] == detect_wake_request_id,
+        args.notify_timeout,
+    )
+    assert_true(detected_wake["last_event"] == 2, "wake word simulate_detect did not report detection")
+    assert_true(detected_wake["detection_count"] >= 1, "wake word detection count did not advance")
+    disarm_wake_request_id = 124
+    disarm_wake_payload = struct.pack("<BBBBHHI", SCHEMA_VERSION, 2, 66, 0, 0, 1, disarm_wake_request_id)
+    disarmed_wake = await notify_write_wait(
+        client,
+        uuids["wake_word_status"],
+        uuids["wake_word_control"],
+        disarm_wake_payload,
+        parse_wake_word_status,
+        lambda parsed: parsed["request_id"] == disarm_wake_request_id,
+        args.notify_timeout,
+    )
+    assert_true(disarmed_wake["armed"] == 0 and disarmed_wake["engine_state"] == 0, "wake word did not disarm")
+    operations.append(
+        {
+            "operation": "wake_word_control",
+            "status": "PASS",
+            "rejected_while_disarmed": rejected_wake,
+            "armed": armed_wake,
+            "detected": detected_wake,
+            "disarmed": disarmed_wake,
+        }
+    )
 
     diag_payload = struct.pack("<BBHIHH", SCHEMA_VERSION, 1, 0xFFFF, 0, 4, 64)
     diag = await notify_write_wait(

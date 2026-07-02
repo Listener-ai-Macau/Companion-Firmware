@@ -1,0 +1,24 @@
+{
+  "schema": "companion.diagnostics_pull_probe.v1",
+  "selected": {
+    "operation": "scan",
+    "status": "PASS",
+    "selected_name": "companion",
+    "selected_address": "00:80:E1:27:B8:EA",
+    "rssi": -52,
+    "advertised_service_uuids": [],
+    "advertised_required_service_uuids": [],
+    "candidate_count": 1,
+    "seen_count": 17
+  },
+  "service_count": 13,
+  "characteristic_count": 27,
+  "diagnostics_response": {
+    "schema_version": 1,
+    "source_mask": 1,
+    "severity_mask": 65535,
+    "cursor": 1,
+    "max_events": 1,
+    "max_bytes": 64
+  }
+}

@@ -1,7 +1,6 @@
 param(
     [string] $PackagePath,
-    [string] $TypeRepoRoot = (Join-Path $PSScriptRoot "..\..\..\Listener\Listener-Type"),
-    [string] $ListenerExe,
+    [string] $ProgrammerPath,
     [string] $OutDir,
     [string] $Port = "SWD",
     [uint32] $Baud = 0,
@@ -15,7 +14,6 @@ Set-StrictMode -Version Latest
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
-$typeRoot = (Resolve-Path $TypeRepoRoot).Path
 $stamp = Get-Date -Format "yyyyMMdd-HHmmss"
 if ([string]::IsNullOrWhiteSpace($OutDir)) {
     $OutDir = Join-Path $repoRoot ".cache\validation\companion-wired-flash-$stamp"
@@ -38,27 +36,6 @@ function Resolve-CompanionPackage {
         throw "No Companion OTA package found under $packageRoot. Run tools\package_ota_firmware.ps1 first."
     }
     return $latest.FullName
-}
-
-function Resolve-ListenerExe {
-    param([string] $Requested)
-
-    $candidates = @()
-    if ($Requested) { $candidates += $Requested }
-    $candidates += @(
-        (Join-Path $typeRoot "src-tauri\target\debug\listener-type.exe"),
-        (Join-Path $typeRoot "src-tauri\target\release\listener-type.exe"),
-        (Join-Path $typeRoot "src-tauri\target\debug\listener-type"),
-        (Join-Path $typeRoot "src-tauri\target\release\listener-type")
-    )
-
-    foreach ($candidate in $candidates) {
-        if ([string]::IsNullOrWhiteSpace($candidate)) { continue }
-        if (Test-Path -LiteralPath $candidate -PathType Leaf) {
-            return (Resolve-Path -LiteralPath $candidate).Path
-        }
-    }
-    throw "listener-type executable not found. Build Listener-Type first or pass -ListenerExe."
 }
 
 function Show-OperatorPrompt {
@@ -159,31 +136,6 @@ function Get-WiredPackageObject {
         return $null
     }
     return Get-JsonAnyProperty -Object $extra -Names @("package")
-}
-
-function Invoke-ListenerTypeCommand {
-    param(
-        [Parameter(Mandatory = $true)][string[]] $Arguments,
-        [Parameter(Mandatory = $true)][string] $RawLogPath
-    )
-
-    Push-Location $typeRoot
-    try {
-        try {
-            & $listenerExePath @Arguments 2>&1 | Tee-Object -FilePath $RawLogPath | Out-Host
-        } catch {
-            $message = "Invoke-ListenerTypeCommand failed before normal output: $($_.Exception.Message)"
-            $message | Set-Content -LiteralPath $RawLogPath -Encoding UTF8
-            Write-Host $message
-            return 1
-        }
-        if ($null -eq $LASTEXITCODE) {
-            return 0
-        }
-        return [int]$LASTEXITCODE
-    } finally {
-        Pop-Location
-    }
 }
 
 function Invoke-CompanionFlashTool {
@@ -322,9 +274,15 @@ $typeReportJson = Join-Path $outDirResolved "wired_firmware_result.json"
 $summaryJson = Join-Path $outDirResolved "companion-wired-flash-summary.json"
 $summaryMd = Join-Path $outDirResolved "companion-wired-flash-summary.md"
 $lockCommand = "pwsh -NoProfile -File C:\Users\Billy\Desktop\Denzic\ai-collaboration-workflow\scripts\aiw.ps1 with-lock -Resource Companion-WB55 -Purpose `"Companion wired factory flash validation`" -Run pwsh -NoProfile -File .\tools\verify_companion_wired_flash.ps1 -Execute -WorkflowLockHeld -PackagePath `"$resolvedPackage`""
+if (-not [string]::IsNullOrWhiteSpace($ProgrammerPath)) {
+    $lockCommand += " -ProgrammerPath `"$ProgrammerPath`""
+}
 
 if (-not $Execute) {
     $commandArgs = @("-NoProfile", "-File", ".\tools\flash.ps1", "-CheckOnly", "-FlashPackage", "-PackagePath", $resolvedPackage, "-Port", $Port)
+    if (-not [string]::IsNullOrWhiteSpace($ProgrammerPath)) {
+        $commandArgs += @("-ProgrammerPath", $ProgrammerPath)
+    }
     $commandLine = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $commandArgs
     $exitCode = Invoke-CompanionFlashTool -Arguments $commandArgs -RawLogPath $rawLog
     $rawText = Read-RawLogText -RawLogPath $rawLog
@@ -394,6 +352,9 @@ if ($PromptOperator) {
 }
 
 $commandArgs = @("-NoProfile", "-File", ".\tools\flash.ps1", "-Execute", "-WorkflowLockHeld", "-FlashPackage", "-PackagePath", $resolvedPackage, "-Port", $Port)
+if (-not [string]::IsNullOrWhiteSpace($ProgrammerPath)) {
+    $commandArgs += @("-ProgrammerPath", $ProgrammerPath)
+}
 if ($PromptOperator) {
     $commandArgs += "-PromptOperator"
 }

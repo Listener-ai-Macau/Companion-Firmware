@@ -240,16 +240,20 @@ if ($IncludeTypeHarness) {
         Invoke-ReadinessStep -Name "Companion Type A1 A2 dry run" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments @("-NoProfile", "-File", ".\tools\verify_companion_type_a1_a2.ps1", "-TypeRepoRoot", $typeRoot)
     }
 
-    Invoke-ReadinessStep -Name "Companion BLE OTA dry run" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments @("-NoProfile", "-File", ".\tools\verify_companion_ble_ota.ps1", "-PackagePath", $resolvedPackagePath, "-TypeRepoRoot", $typeRoot)
-    Invoke-ReadinessStep -Name "Companion wired flash dry run" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments @("-NoProfile", "-File", ".\tools\verify_companion_wired_flash.ps1", "-PackagePath", $resolvedPackagePath, "-TypeRepoRoot", $typeRoot)
     $typeUiManualDryRunDir = Join-Path $outDir "type-ui-manual-dry-run"
     $typeUiManualDryRunSummary = Join-Path $typeUiManualDryRunDir "companion-type-ui-manual-summary.json"
     Invoke-ReadinessStep -Name "Companion Type UI manual dry run" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments @("-NoProfile", "-File", ".\tools\verify_companion_type_ui_manual.ps1", "-PackagePath", $resolvedPackagePath, "-TypeRepoRoot", $typeRoot, "-OutDir", $typeUiManualDryRunDir)
-    $hardwareAcceptanceDryRunDir = Join-Path $outDir "hardware-acceptance-dry-run"
-    $hardwareAcceptanceDryRunSummary = Join-Path $hardwareAcceptanceDryRunDir "companion-hardware-acceptance-summary.json"
-    Invoke-ReadinessStep -Name "Companion hardware acceptance dry run" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments @("-NoProfile", "-File", ".\tools\verify_companion_hardware_acceptance.ps1", "-PackagePath", $resolvedPackagePath, "-TypeRepoRoot", $typeRoot, "-OutDir", $hardwareAcceptanceDryRunDir, "-IncludeTypeUiGate")
 }
 
+Invoke-ReadinessStep -Name "Companion BLE OTA dry run" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments @("-NoProfile", "-File", ".\tools\verify_companion_ble_ota.ps1", "-PackagePath", $resolvedPackagePath)
+Invoke-ReadinessStep -Name "Companion wired flash dry run" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments @("-NoProfile", "-File", ".\tools\verify_companion_wired_flash.ps1", "-PackagePath", $resolvedPackagePath)
+$hardwareAcceptanceDryRunDir = Join-Path $outDir "hardware-acceptance-dry-run"
+$hardwareAcceptanceDryRunSummary = Join-Path $hardwareAcceptanceDryRunDir "companion-hardware-acceptance-summary.json"
+$hardwareAcceptanceDryRunArgs = @("-NoProfile", "-File", ".\tools\verify_companion_hardware_acceptance.ps1", "-PackagePath", $resolvedPackagePath, "-OutDir", $hardwareAcceptanceDryRunDir)
+if ($IncludeTypeHarness) {
+    $hardwareAcceptanceDryRunArgs += @("-TypeRepoRoot", $typeRoot, "-IncludeTypeHarness", "-IncludeTypeUiGate")
+}
+Invoke-ReadinessStep -Name "Companion hardware acceptance dry run" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments $hardwareAcceptanceDryRunArgs
 Invoke-ReadinessStep -Name "Companion manual gate evidence checklist" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments @("-NoProfile", "-File", ".\tools\verify_companion_manual_gate_evidence.ps1", "-ChecklistOnly", "-PackagePath", $resolvedPackagePath)
 Invoke-ReadinessStep -Name "Companion git diff check" -WorkingDirectory $repoRoot -FilePath "git" -Arguments @("diff", "--check")
 if ($IncludeTypeHarness) {
@@ -259,19 +263,23 @@ if ($IncludeTypeHarness) {
 $aiw = "C:\Users\Billy\Desktop\Denzic\ai-collaboration-workflow\scripts\aiw.ps1"
 $hardwareAcceptanceCommand = "pwsh -NoProfile -File $aiw with-lock -Resource Companion-WB55,BLE-Companion -Purpose `"Companion hardware acceptance`" -Run pwsh -NoProfile -File .\tools\verify_companion_hardware_acceptance.ps1 -Execute -WorkflowLockHeld -PackagePath `"$resolvedPackagePath`""
 if ($IncludeTypeHarness) {
-    $hardwareAcceptanceCommand += " -IncludeTypeUiGate -EvidencePath <companion_ui_screenshot_or_log>"
+    $hardwareAcceptanceCommand += " -IncludeTypeHarness -IncludeTypeUiGate -EvidencePath <companion_ui_screenshot_or_log>"
 }
-$a1a2Command = "pwsh -NoProfile -File $aiw with-lock -Resource Companion-WB55,BLE-Companion -Purpose `"Companion A1/A2 bench validation`" -Run pwsh -NoProfile -File .\tools\verify_companion_type_a1_a2.ps1 -Execute -WorkflowLockHeld"
+$nativeBleCommand = "pwsh -NoProfile -File $aiw with-lock -Resource Companion-WB55,BLE-Companion -Purpose `"Companion native BLE GATT bench validation`" -Run python .\tools\companion_ble_real_bench.py --name companion --timeout 20 --notify-timeout 10 --output .\.cache\validation\companion-real-ble-gatt-<timestamp>\companion-ble-real-bench.json --json"
+$a1a2Command = "pwsh -NoProfile -File $aiw with-lock -Resource Companion-WB55,BLE-Companion -Purpose `"Companion legacy Type A1/A2 bench validation`" -Run pwsh -NoProfile -File .\tools\verify_companion_type_a1_a2.ps1 -Execute -WorkflowLockHeld"
 $bleOtaCommand = "pwsh -NoProfile -File $aiw with-lock -Resource Companion-WB55,BLE-Companion -Purpose `"Companion BLE OTA validation`" -Run pwsh -NoProfile -File .\tools\verify_companion_ble_ota.ps1 -Execute -WorkflowLockHeld -PackagePath `"$resolvedPackagePath`""
 $wiredCommand = "pwsh -NoProfile -File $aiw with-lock -Resource Companion-WB55 -Purpose `"Companion wired factory flash validation`" -Run pwsh -NoProfile -File .\tools\verify_companion_wired_flash.ps1 -Execute -WorkflowLockHeld -PackagePath `"$resolvedPackagePath`""
 $typeUiCommand = "pwsh -NoProfile -File $aiw with-lock -Resource Companion-WB55,BLE-Companion -Purpose `"Companion Type UI validation`" -Run pwsh -NoProfile -File .\tools\verify_companion_type_ui_manual.ps1 -Execute -WorkflowLockHeld -PackagePath `"$resolvedPackagePath`" -EvidencePath <companion_ui_screenshot_or_log>"
-$manualEvidenceCommand = "pwsh -NoProfile -File .\tools\verify_companion_manual_gate_evidence.ps1 -PackagePath '$resolvedPackagePath' -A1A2SummaryPath <companion-type-a1-a2-summary.json> -BleOtaEvidencePath <firmware_ota_result_or_log> -WiredFlashEvidencePath <wired_flash_result_or_log>"
+$manualEvidenceCommand = "pwsh -NoProfile -File .\tools\verify_companion_manual_gate_evidence.ps1 -PackagePath '$resolvedPackagePath' -NativeBleBenchPath <companion-ble-real-bench.json> -BleOtaEvidencePath <companion-ble-ota-summary.json> -WiredFlashEvidencePath <companion-wired-flash-summary.json>"
 if ($IncludeTypeHarness) {
-    $manualEvidenceCommand += " -TypeUiEvidencePath <companion-type-ui-manual-summary.json> -IncludeTypeUiGate"
+    $manualEvidenceCommand += " -A1A2SummaryPath <companion-type-a1-a2-summary.json> -IncludeTypeHarness -TypeUiEvidencePath <companion-type-ui-manual-summary.json> -IncludeTypeUiGate"
 }
 
-Add-ManualGate -Name "real Companion A1/A2 bench validation" -Evidence "JSON and Markdown under .cache\validation\companion-type-a1-a2-* with status PASS." -Command $a1a2Command
-Add-ManualGate -Name "real Companion BLE OTA bench validation" -Evidence "tools\verify_companion_ble_ota.ps1 writes firmware_ota_result_json with status PASS, versionConfirmed=true, and transport=companion_ota_v2." -Command $bleOtaCommand
+Add-ManualGate -Name "real Companion-native BLE GATT bench validation" -Evidence "tools\companion_ble_real_bench.py writes companion-ble-real-bench.json with status PASS after scan, service discovery, native GATT reads/writes, diagnostics, privacy refusal, and OTA readiness." -Command $nativeBleCommand
+if ($IncludeTypeHarness) {
+    Add-ManualGate -Name "legacy Type A1/A2 bench validation" -Evidence "Compatibility JSON and Markdown under .cache\validation\companion-type-a1-a2-* with status PASS." -Command $a1a2Command
+}
+Add-ManualGate -Name "real Companion BLE OTA bench validation" -Evidence "tools\verify_companion_ble_ota.ps1 writes companion_ble_ota_result_json with status PASS, versionConfirmed=true, and transport=companion_ota_v2." -Command $bleOtaCommand
 Add-ManualGate -Name "real Companion wired flash from same package" -Evidence "tools\verify_companion_wired_flash.ps1 writes wired_firmware_result_json with status PASS, mode=flash, port=SWD, and STM32CubeProgrammer verification." -Command $wiredCommand
 if ($IncludeTypeHarness) {
     Add-ManualGate -Name "Type temporary Companion debug page" -Evidence "tools\verify_companion_type_ui_manual.ps1 writes companion_type_ui_manual_result_json with status PASS after the operator confirms BLE subscription, A1, A2, BLE OTA entry, wired flash entry, and 总体验收 entry." -Command $typeUiCommand

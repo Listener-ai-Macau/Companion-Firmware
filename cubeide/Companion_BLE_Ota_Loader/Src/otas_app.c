@@ -50,11 +50,6 @@ typedef struct
 #define DOUBLEWORD_SIZE_FOR_FLASH_PROGRAMMING       (8)
 #define COMPANION_OTA_REBOOT_CONFIRM_GRACE_MS       (300u)
 
-#ifdef COMPANION_OTA_LOADER_ALWAYS_ADVERTISE
-#define COMPANION_OTA_FW_APP_COOKIE_VALUE  (0xC3u)
-#define COMPANION_OTA_FW_APP_COOKIE_MSG    (*(uint8_t*)(SRAM1_BASE+3))
-#endif /* COMPANION_OTA_LOADER_ALWAYS_ADVERTISE */
-
 /* Private variables ---------------------------------------------------------*/
 OTAS_APP_Context_t OTAS_APP_Context;
 static uint8_t RebootFinalizeRequested;
@@ -115,9 +110,6 @@ static void OTAS_APP_FinalizeUpload(void)
       /**
        * Reboot on FW Application
        */
-#ifdef COMPANION_OTA_LOADER_ALWAYS_ADVERTISE
-      COMPANION_OTA_FW_APP_COOKIE_MSG = COMPANION_OTA_FW_APP_COOKIE_VALUE;
-#endif /* COMPANION_OTA_LOADER_ALWAYS_ADVERTISE */
       CFG_OTA_REBOOT_VAL_MSG = CFG_REBOOT_ON_FW_APP;
 
 #ifdef OTA_SBSFU

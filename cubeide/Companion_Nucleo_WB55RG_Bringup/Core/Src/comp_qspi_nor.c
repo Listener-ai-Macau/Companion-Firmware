@@ -13,6 +13,7 @@
 #define NOR_CMD_QUAD_OUT_FAST_READ 0x6Bu
 #define NOR_CMD_PAGE_PROGRAM 0x02u
 #define NOR_CMD_SECTOR_ERASE_4K 0x20u
+#define NOR_CMD_BLOCK_ERASE_64K 0xD8u
 
 #define NOR_SR1_WIP 0x01u
 #define NOR_SR1_WEL 0x02u
@@ -20,8 +21,10 @@
 
 #define NOR_DEFAULT_TIMEOUT_MS 200u
 #define NOR_READY_TIMEOUT_MS 5000u
+#define NOR_BLOCK_ERASE_TIMEOUT_MS 30000u
 #define NOR_PAGE_SIZE 256u
 #define NOR_SECTOR_SIZE 4096u
+#define NOR_BLOCK_SIZE 65536u
 
 static comp_qspi_nor_status_t map_hal_status(HAL_StatusTypeDef status)
 {
@@ -428,12 +431,16 @@ comp_qspi_nor_status_t comp_qspi_nor_write(comp_qspi_nor_t *nor,
     return COMP_QSPI_NOR_OK;
 }
 
-comp_qspi_nor_status_t comp_qspi_nor_erase_4k(comp_qspi_nor_t *nor, uint32_t address)
+static comp_qspi_nor_status_t erase_aligned(comp_qspi_nor_t *nor,
+                                            uint8_t command,
+                                            uint32_t address,
+                                            uint32_t alignment,
+                                            uint32_t timeout_ms)
 {
     if (nor == NULL || nor->hqspi == NULL) {
         return COMP_QSPI_NOR_BAD_PARAM;
     }
-    if ((address % NOR_SECTOR_SIZE) != 0u) {
+    if ((address % alignment) != 0u) {
         return COMP_QSPI_NOR_BAD_PARAM;
     }
 
@@ -447,10 +454,28 @@ comp_qspi_nor_status_t comp_qspi_nor_erase_4k(comp_qspi_nor_t *nor, uint32_t add
         return status;
     }
 
-    status = address_command(nor, NOR_CMD_SECTOR_ERASE_4K, address);
+    status = address_command(nor, command, address);
     if (status != COMP_QSPI_NOR_OK) {
         return status;
     }
 
-    return comp_qspi_nor_wait_ready(nor, NOR_READY_TIMEOUT_MS);
+    return comp_qspi_nor_wait_ready(nor, timeout_ms);
+}
+
+comp_qspi_nor_status_t comp_qspi_nor_erase_4k(comp_qspi_nor_t *nor, uint32_t address)
+{
+    return erase_aligned(nor,
+                         NOR_CMD_SECTOR_ERASE_4K,
+                         address,
+                         NOR_SECTOR_SIZE,
+                         NOR_READY_TIMEOUT_MS);
+}
+
+comp_qspi_nor_status_t comp_qspi_nor_erase_64k(comp_qspi_nor_t *nor, uint32_t address)
+{
+    return erase_aligned(nor,
+                         NOR_CMD_BLOCK_ERASE_64K,
+                         address,
+                         NOR_BLOCK_SIZE,
+                         NOR_BLOCK_ERASE_TIMEOUT_MS);
 }

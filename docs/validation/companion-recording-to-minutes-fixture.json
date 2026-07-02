@@ -1,0 +1,185 @@
+{
+  "chain_report": {
+    "artifacts": {
+      "minutes_json": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\companion-recording-to-minutes-fixture-workdir\\cli-output\\companion-meeting-minutes.json",
+      "minutes_markdown": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\companion-recording-to-minutes-fixture-workdir\\cli-output\\companion-meeting-minutes.md",
+      "report_json": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\companion-recording-to-minutes-fixture-workdir\\cli-output\\companion-recording-to-minutes.json"
+    },
+    "asr": {
+      "provider": "provided_text",
+      "status": "PASS"
+    },
+    "bundle_dir": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\companion-recording-to-minutes-fixture-workdir\\cli-output",
+    "capacity": {
+      "nucleo_raw_flash_max_bytes": 1920000,
+      "nucleo_raw_flash_max_seconds": 60,
+      "one_hour_note": "raw 16 kHz mono PCM16 one-hour meetings need streaming, compression, or larger storage",
+      "one_hour_raw_pcm_bytes": 115200000,
+      "raw_pcm_bytes_per_second": 32000
+    },
+    "minutes": {
+      "next_processing": [
+        "show summary, decisions, action items, and questions in the host app",
+        "allow user edits before export/share",
+        "keep source SHA-256 attached so minutes can be traced back to the verified recording"
+      ],
+      "postprocess_state": "minutes_ready",
+      "privacy": {
+        "consent_note": "recording UI must make capture state visible before real user deployment",
+        "local_minutes_delete_policy": "host_owned; delete JSON/Markdown and cached WAV together on privacy erase",
+        "raw_audio_delete_policy": "delete_after_sync_only_after_host_sha256_verification"
+      },
+      "schema_version": 1,
+      "source": {
+        "audio": {
+          "byte_count": 64044,
+          "channels": 1,
+          "container": "wav",
+          "duration_s": 2.0,
+          "frame_count": 32000,
+          "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\companion-recording-to-minutes-fixture-workdir\\companion-recording-to-minutes-source.wav",
+          "sample_rate_hz": 16000,
+          "sample_width_bytes": 2,
+          "sha256": "6a1e3ae2de802f28d2360529a4c4ebf8a05983d2863df4d3eb2e10660d03f9eb"
+        },
+        "recording_chain_artifact": null,
+        "recording_chain_status": null,
+        "recording_id": null
+      },
+      "summary": {
+        "action_items": [
+          {
+            "due": "unspecified",
+            "id": "A01",
+            "owner": "Billy",
+            "source_end_s": 1.654,
+            "source_start_s": 1.0,
+            "text": "oai1 的待办是接入 Type ASR provider，并写清楚一小时会议容量限制。"
+          }
+        ],
+        "bullets": [
+          "你好 Companion，听到了吗？",
+          "决定把 Companion 录音链路做成录音到会议纪要的一键命令。",
+          "oai1 的待办是接入 Type ASR provider，并写清楚一小时会议容量限制。",
+          "当前问题是 16MiB flash 是否能保存一小时 raw PCM？"
+        ],
+        "decisions": [
+          {
+            "source_end_s": 1.0,
+            "source_start_s": 0.5,
+            "text": "决定把 Companion 录音链路做成录音到会议纪要的一键命令。"
+          }
+        ],
+        "keywords": [
+          "companion",
+          "你好",
+          "听到了吗",
+          "决定把",
+          "录音链路做成录音到会议纪要的一键命令",
+          "oai1",
+          "type",
+          "asr"
+        ],
+        "overview": "你好 Companion，听到了吗？ 决定把 Companion 录音链路做成录音到会议纪要的一键命令。 oai1 的待办是接入 Type ASR provider，并写清楚一小时会议容量限制。",
+        "questions": [
+          {
+            "source_end_s": 0.5,
+            "source_start_s": 0.0,
+            "text": "你好 Companion，听到了吗？"
+          },
+          {
+            "source_end_s": 2.0,
+            "source_start_s": 1.654,
+            "text": "当前问题是 16MiB flash 是否能保存一小时 raw PCM？"
+          }
+        ],
+        "title": "Companion 录音到会议纪要验证"
+      },
+      "transcript": {
+        "language_hint": "zh-CN",
+        "provider": "provided_text",
+        "segments": [
+          {
+            "end_s": 0.5,
+            "speaker": "Billy",
+            "start_s": 0.0,
+            "text": "你好 Companion，听到了吗？"
+          },
+          {
+            "end_s": 1.0,
+            "speaker": "oai1",
+            "start_s": 0.5,
+            "text": "决定把 Companion 录音链路做成录音到会议纪要的一键命令。"
+          },
+          {
+            "end_s": 1.654,
+            "speaker": "Billy",
+            "start_s": 1.0,
+            "text": "oai1 的待办是接入 Type ASR provider，并写清楚一小时会议容量限制。"
+          },
+          {
+            "end_s": 2.0,
+            "speaker": "oai1",
+            "start_s": 1.654,
+            "text": "当前问题是 16MiB flash 是否能保存一小时 raw PCM？"
+          }
+        ],
+        "text": "Billy: 你好 Companion，听到了吗？\noai1: 决定把 Companion 录音链路做成录音到会议纪要的一键命令。\nBilly: oai1 的待办是接入 Type ASR provider，并写清楚一小时会议容量限制。\noai1: 当前问题是 16MiB flash 是否能保存一小时 raw PCM？"
+      },
+      "wake_word": {
+        "detections": [
+          {
+            "mode": "transcript_postprocess",
+            "phrase": "你好 companion",
+            "source_end_s": 0.5,
+            "source_start_s": 0.0,
+            "speaker": "Billy"
+          }
+        ],
+        "device_control_surface": "wake_word_control/status arm/disarm/simulate_detect",
+        "phrases": [
+          "你好 companion"
+        ],
+        "production_note": "transcript detection is not always-on local keyword spotting; production wake requires an on-device or companion-host KWS engine with power and false-trigger validation",
+        "state": "detected"
+      }
+    },
+    "mode": "companion_recording_to_minutes",
+    "schema_version": 1,
+    "source": {
+      "audio_path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\companion-recording-to-minutes-fixture-workdir\\companion-recording-to-minutes-source.wav",
+      "recording_chain_artifact": null,
+      "result": {
+        "source_mode": "audio_path",
+        "status": "PASS"
+      }
+    },
+    "started_at": "2026-06-30T08:58:06+00:00",
+    "status": "PASS",
+    "validation_command": [
+      "C:\\Users\\Billy\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+      "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\tools\\companion_recording_to_minutes.py",
+      "--audio-path",
+      "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\companion-recording-to-minutes-fixture-workdir\\companion-recording-to-minutes-source.wav",
+      "--transcript-text",
+      "Billy: 你好 Companion，听到了吗？\noai1: 决定把 Companion 录音链路做成录音到会议纪要的一键命令。\nBilly: oai1 的待办是接入 Type ASR provider，并写清楚一小时会议容量限制。\noai1: 当前问题是 16MiB flash 是否能保存一小时 raw PCM？",
+      "--meeting-title",
+      "Companion 录音到会议纪要验证",
+      "--wake-phrase",
+      "你好 companion",
+      "--require-transcript",
+      "--output-dir",
+      "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\companion-recording-to-minutes-fixture-workdir\\cli-output",
+      "--json"
+    ]
+  },
+  "checks": {
+    "minutes_ready": true,
+    "nucleo_raw_flash_max_bytes": 1920000,
+    "one_hour_raw_pcm_bytes": 115200000,
+    "wake_word_detected": true
+  },
+  "mode": "synthetic_no_hardware_recording_to_minutes_fixture",
+  "schema_version": 1,
+  "source_wav": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\companion-recording-to-minutes-fixture-workdir\\companion-recording-to-minutes-source.wav"
+}
