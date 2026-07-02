@@ -217,7 +217,6 @@ def ble_chain(matrix: dict[str, Any], real_ble: dict[str, Any], hardware: dict[s
         "status_read",
         "card_write",
         "recording_control_and_list",
-        "recording_chunk_refusal",
         "settings_write",
         "diagnostics_log_pull",
         "delete_privacy_refusal",
@@ -229,8 +228,15 @@ def ble_chain(matrix: dict[str, Any], real_ble: dict[str, Any], hardware: dict[s
     require(status_of(real_ble) == "PASS", "real BLE bench status must be PASS", errors)
     real_ops = operation_names(real_ble)
     require(required_real_ops <= real_ops, f"real BLE bench missing {sorted(required_real_ops - real_ops)}", errors)
+    chunk_refusal_ops = {"recording_chunk_refusal", "recording_chunk_missing_refusal"}
+    require(
+        bool(chunk_refusal_ops & real_ops),
+        f"real BLE bench missing recording chunk refusal evidence {sorted(chunk_refusal_ops)}",
+        errors,
+    )
     require(v1_ops <= real_ops, f"real BLE V1 feature bench missing {sorted(v1_ops - real_ops)}", errors)
     require(status_of(hardware) == "PASS", "hardware acceptance summary must be PASS", errors)
+    chunk_refusal_operation = next((name for name in sorted(chunk_refusal_ops) if name in real_ops), None)
     return {
         "human_action": "Open host BLE tool, scan/connect, read status, write card, sync recording metadata/chunks, export bounded logs, and inspect OTA blocker state.",
         "automated_probe": "Real Bleak bench proves the live NUCLEO Companion GATT surface; fixture matrix proves full recording pull/delete and failure classification.",
@@ -242,6 +248,7 @@ def ble_chain(matrix: dict[str, Any], real_ble: dict[str, Any], hardware: dict[s
             "real_operation_count": len(real_ble.get("operations", [])),
             "fixture_operations": sorted(required_matrix_ops),
             "v1_feature_operations": sorted(v1_ops),
+            "recording_chunk_refusal_operation": chunk_refusal_operation,
         },
         "physical_boundary": {
             "real_board": True,

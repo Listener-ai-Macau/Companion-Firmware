@@ -145,7 +145,37 @@ def parse_recording_control(payload: bytes) -> dict[str, Any]:
 
 
 def parse_recording_list(payload: bytes) -> dict[str, Any]:
-    return parse_struct("<BBH", ("schema_version", "count", "entry_bytes"), payload)
+    header = parse_struct("<BBH", ("schema_version", "count", "entry_bytes"), payload)
+    entries = []
+    entry_fmt = "<IIIBBBBI8sI"
+    expected_entry_size = struct.calcsize(entry_fmt)
+    if int(header["count"]) > 0 and int(header["entry_bytes"]) != expected_entry_size:
+        raise BenchError(
+            f"unexpected recording list entry_bytes={header['entry_bytes']} expected={expected_entry_size}"
+        )
+    offset = struct.calcsize("<BBH")
+    for _index in range(int(header["count"])):
+        if len(payload) < offset + expected_entry_size:
+            raise BenchError("recording_list entry truncated")
+        values = struct.unpack(entry_fmt, payload[offset:offset + expected_entry_size])
+        entries.append(
+            {
+                "recording_id": values[0],
+                "started_unix_s": values[1],
+                "duration_ms": values[2],
+                "codec": values[3],
+                "sync_state": values[4],
+                "source_mode": values[5],
+                "reserved": values[6],
+                "total_length": values[7],
+                "sha256_prefix": values[8].hex(),
+                "content_crc32": f"0x{values[9]:08x}",
+            }
+        )
+        offset += expected_entry_size
+    header["entries"] = entries
+    header["raw_length"] = len(payload)
+    return header
 
 
 def parse_recording_chunk_pull(payload: bytes) -> dict[str, Any]:
@@ -551,17 +581,20 @@ async def run_connected_bench(client: Any, uuids: dict[str, str], args: argparse
         args.notify_timeout,
     )
     recording_list = await read_and_parse(client, uuids["recording_list"], parse_recording_list)
-    assert_true(recording_list["count"] == 0, "NUCLEO bench should expose an empty recording list")
+    recording_list_count = int(recording_list["count"])
+    recording_ids = [int(entry["recording_id"]) for entry in recording_list.get("entries", [])]
     operations.append(
         {
             "operation": "recording_control_and_list",
             "status": "PASS",
+            "list_state": "empty" if recording_list_count == 0 else "non_empty_metadata_present",
             "recording_control_echo": recording_echo,
             "recording_list": recording_list,
         }
     )
 
-    chunk_payload = struct.pack("<BBHIII", SCHEMA_VERSION, 0, 64, 1, 0, 0x1234)
+    missing_recording_id = max(recording_ids, default=0) + 1
+    chunk_payload = struct.pack("<BBHIII", SCHEMA_VERSION, 0, 64, missing_recording_id, 0, 0x1234)
     chunk_response = await notify_write_wait(
         client,
         uuids["recording_chunk_pull"],
@@ -574,8 +607,9 @@ async def run_connected_bench(client: Any, uuids: dict[str, str], args: argparse
     assert_true(chunk_response["requested_length"] == 0, "recording chunk refusal did not clear requested_length")
     operations.append(
         {
-            "operation": "recording_chunk_refusal",
+            "operation": "recording_chunk_missing_refusal",
             "status": "PASS",
+            "requested_recording_id": missing_recording_id,
             "recording_chunk_pull": chunk_response,
         }
     )
