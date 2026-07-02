@@ -2,7 +2,9 @@ param(
     [string] $OutDir,
     [string] $EvidenceMarkdown,
     [switch] $Execute,
-    [switch] $WorkflowLockHeld
+    [switch] $WorkflowLockHeld,
+    [switch] $NoEpaperPanel,
+    [string] $NoEpaperNote = "no e-paper panel installed"
 )
 
 $ErrorActionPreference = "Stop"
@@ -10,7 +12,7 @@ Set-StrictMode -Version Latest
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
-$stamp = Get-Date -Format "yyyyMMdd-HHmmss"
+$stamp = Get-Date -Format "yyyyMMdd-HHmmss-fff"
 if ([string]::IsNullOrWhiteSpace($OutDir)) {
     $OutDir = Join-Path $repoRoot ".cache\validation\companion-physical-signoff-$stamp"
 }
@@ -89,6 +91,22 @@ function Convert-DialogToResult {
     return "FAIL"
 }
 
+function New-CheckResult {
+    param(
+        [Parameter(Mandatory = $true)][string] $Id,
+        [Parameter(Mandatory = $true)][string] $Title,
+        [Parameter(Mandatory = $true)][string] $Result,
+        [string] $Note = ""
+    )
+
+    return [ordered]@{
+        id = $Id
+        title = $Title
+        result = $Result
+        note = $Note
+    }
+}
+
 function Ask-Check {
     param(
         [Parameter(Mandatory = $true)][string] $Id,
@@ -106,12 +124,7 @@ function Ask-Check {
     if ($result -ne "PASS") {
         $note = Read-OperatorText -Title "$Title 说明" -Message "请写明原因，例如：屏没接、没有刷新、按钮没反应、显示内容不对。留空也可以。"
     }
-    return [ordered]@{
-        id = $Id
-        title = $Title
-        result = $result
-        note = $note
-    }
+    return New-CheckResult -Id $Id -Title $Title -Result $result -Note $note
 }
 
 function Read-Measurement {
@@ -134,6 +147,15 @@ function Read-Measurement {
         raw = $value
         measured = $numeric
         current_ma = $number
+    }
+}
+
+$knownMissingHardware = @()
+if ($NoEpaperPanel) {
+    $knownMissingHardware += [ordered]@{
+        id = "epaper_panel"
+        status = "not_installed"
+        note = $NoEpaperNote
     }
 }
 
@@ -187,6 +209,9 @@ function ConvertTo-SignoffMarkdown {
 }
 
 $lockCommand = "pwsh -NoProfile -File C:\Users\Billy\Desktop\Denzic\ai-collaboration-workflow\scripts\aiw.ps1 with-lock -Resource Companion-WB55 -Purpose `"Companion final physical signoff`" -Run pwsh -NoProfile -File .\tools\verify_companion_physical_signoff.ps1 -Execute -WorkflowLockHeld"
+if ($NoEpaperPanel) {
+    $lockCommand += " -NoEpaperPanel -NoEpaperNote `"$NoEpaperNote`""
+}
 
 if (-not $Execute) {
     $dryRun = [ordered]@{
@@ -197,8 +222,14 @@ if (-not $Execute) {
         output_dir = $outDirResolved
         evidence_markdown = $evidenceMarkdownResolved
         lock_command = $lockCommand
+        no_epaper_panel = [bool]$NoEpaperPanel
+        known_missing_hardware = @($knownMissingHardware)
         checks = @(
-            "real e-paper default/recording/sync-complete/BLE-written cards; if no panel is connected, record N/A instead of PASS",
+            if ($NoEpaperPanel) {
+                "real e-paper default/recording/sync-complete/BLE-written cards are pre-recorded as N/A because no panel is installed"
+            } else {
+                "real e-paper default/recording/sync-complete/BLE-written cards; if no panel is connected, record N/A instead of PASS"
+            }
             "real dev-board button capture affordance using $devBoardButtonLabel",
             "power measurements for boot/idle, advertising, connected idle, recording, e-paper refresh, chunk transfer, charge/external-power",
             "PCB go/no-go decision"
@@ -232,6 +263,7 @@ $intro = @(
     "",
     $devBoardButtonInstruction,
     $epaperUnavailableInstruction,
+    $(if ($NoEpaperPanel) { "本次已指定 -NoEpaperPanel：e-paper 相关观察和 e-paper refresh 电流会自动记录为 N/A，说明：$NoEpaperNote。" }),
     "没有电流表或本轮未测量时请输入 NA 并说明原因；不要填 0 代替未测量。",
     "",
     "每一步请按真实结果点 Yes / No / Cancel。Cancel 表示硬件未安装或本轮不适用。"
@@ -239,10 +271,19 @@ $intro = @(
 [void](Show-OperatorPrompt -Title "开始 Companion 物理验收" -Message $intro)
 
 $physicalChecks = @()
-$physicalChecks += Ask-Check -Id "epaper_default" -Title "e-paper 默认卡" -Instruction "请看真实目标 e-paper：上电或空闲状态能看到默认/固定卡片，且内容完整、没有明显花屏或错位。$epaperUnavailableInstruction"
-$physicalChecks += Ask-Check -Id "epaper_recording" -Title "e-paper 录音状态卡" -Instruction "让设备进入录音状态，观察真实 e-paper 是否显示录音/捕获状态卡，状态变化清楚。$epaperUnavailableInstruction"
-$physicalChecks += Ask-Check -Id "epaper_sync_complete" -Title "e-paper 同步完成卡" -Instruction "让设备完成同步/传输后，观察真实 e-paper 是否显示同步完成状态卡。$epaperUnavailableInstruction"
-$physicalChecks += Ask-Check -Id "epaper_ble_written_card" -Title "BLE 写入短句卡" -Instruction "确认 BLE 写入的短句或 fixture payload 能显示在真实 e-paper 上；期望短句类似 1234567 chain verified 或本轮测试短句。$epaperUnavailableInstruction"
+$epaperChecks = @(
+    @{ Id = "epaper_default"; Title = "e-paper 默认卡"; Instruction = "请看真实目标 e-paper：上电或空闲状态能看到默认/固定卡片，且内容完整、没有明显花屏或错位。$epaperUnavailableInstruction" },
+    @{ Id = "epaper_recording"; Title = "e-paper 录音状态卡"; Instruction = "让设备进入录音状态，观察真实 e-paper 是否显示录音/捕获状态卡，状态变化清楚。$epaperUnavailableInstruction" },
+    @{ Id = "epaper_sync_complete"; Title = "e-paper 同步完成卡"; Instruction = "让设备完成同步/传输后，观察真实 e-paper 是否显示同步完成状态卡。$epaperUnavailableInstruction" },
+    @{ Id = "epaper_ble_written_card"; Title = "BLE 写入短句卡"; Instruction = "确认 BLE 写入的短句或 fixture payload 能显示在真实 e-paper 上；期望短句类似 1234567 chain verified 或本轮测试短句。$epaperUnavailableInstruction" }
+)
+foreach ($check in $epaperChecks) {
+    if ($NoEpaperPanel) {
+        $physicalChecks += New-CheckResult -Id $check.Id -Title $check.Title -Result "N/A" -Note $NoEpaperNote
+    } else {
+        $physicalChecks += Ask-Check -Id $check.Id -Title $check.Title -Instruction $check.Instruction
+    }
+}
 $physicalChecks += Ask-Check -Id "button_capture_affordance" -Title "真实按钮 capture affordance" -Instruction "$devBoardButtonInstruction 观察设备是否出现明确的录音/capture affordance，例如显示切换、状态反馈、LED/日志/主机状态变化。"
 
 $powerMeasurements = @()
@@ -250,7 +291,17 @@ $powerMeasurements += Read-Measurement -Id "boot_idle" -Label "boot/idle" -Promp
 $powerMeasurements += Read-Measurement -Id "advertising" -Label "BLE advertising" -Prompt "设备未连接、正在 BLE 广播时，读取电流。没有仪表就输入 NA。"
 $powerMeasurements += Read-Measurement -Id "connected_idle" -Label "connected idle" -Prompt "BLE 已连接但没有录音/刷新/传输时，读取电流。没有仪表就输入 NA。"
 $powerMeasurements += Read-Measurement -Id "recording" -Label "recording" -Prompt "正在录音并写入本地存储时，读取电流。没有仪表就输入 NA。"
-$powerMeasurements += Read-Measurement -Id "epaper_refresh" -Label "e-paper refresh" -Prompt "e-paper 正在刷新时，读取峰值或稳定读数；如只能读峰值，请在备注说明。没有屏幕或仪表就输入 NA。"
+if ($NoEpaperPanel) {
+    $powerMeasurements += [ordered]@{
+        id = "epaper_refresh"
+        label = "e-paper refresh"
+        raw = $NoEpaperNote
+        measured = $false
+        current_ma = $null
+    }
+} else {
+    $powerMeasurements += Read-Measurement -Id "epaper_refresh" -Label "e-paper refresh" -Prompt "e-paper 正在刷新时，读取峰值或稳定读数；如只能读峰值，请在备注说明。没有屏幕或仪表就输入 NA。"
+}
 $powerMeasurements += Read-Measurement -Id "chunk_transfer" -Label "BLE chunk transfer" -Prompt "BLE 正在拉取录音 chunk 时，读取电流。没有仪表就输入 NA。"
 $powerMeasurements += Read-Measurement -Id "charge_external_power" -Label "charge/external-power" -Prompt "外部供电/充电状态下，读取电流；没有充电/电源测量硬件就输入 NA 并说明原因。"
 
@@ -305,6 +356,7 @@ $summary = [ordered]@{
     summary_markdown = $summaryMd
     evidence_markdown = $evidenceMarkdownResolved
     prompt_transcript = $promptTranscript
+    known_missing_hardware = @($knownMissingHardware)
     physical_checks = @($physicalChecks)
     power_measurements = @($powerMeasurements)
     physical_all_pass = $allPhysicalPass

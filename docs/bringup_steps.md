@@ -414,7 +414,8 @@ For the current development-board checklist, use
 `docs/companion_devboard_physical_checklist.md`. In this phase the physical
 record button is the NUCLEO-WB55RG `SW3/B3` user button on `PD1`. If no real
 e-paper panel is connected, record `N/A` rather than treating PBM fallback
-renders as panel evidence.
+renders as panel evidence. Use `-NoEpaperPanel` with
+`tools\verify_companion_physical_signoff.ps1` for the current no-panel bench.
 
 The Type temporary Companion page real-device gate is optional legacy bench
 evidence. Enable it explicitly with `-IncludeTypeUiGate`:

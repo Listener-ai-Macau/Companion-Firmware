@@ -29,19 +29,24 @@ python .\tools\verify_companion_operator_chain.py --hardware-acceptance-summary 
 Dry-run the prompt without touching hardware:
 
 ```powershell
-pwsh -NoProfile -File .\tools\verify_companion_physical_signoff.ps1
+pwsh -NoProfile -File .\tools\verify_companion_physical_signoff.ps1 -NoEpaperPanel
 ```
 
 Execute it only under the workflow hardware lock:
 
 ```powershell
-pwsh -NoProfile -File C:\Users\Billy\Desktop\Denzic\ai-collaboration-workflow\scripts\aiw.ps1 with-lock -Resource Companion-WB55 -Purpose "Companion final physical signoff" -Run pwsh -NoProfile -File .\tools\verify_companion_physical_signoff.ps1 -Execute -WorkflowLockHeld
+pwsh -NoProfile -File C:\Users\Billy\Desktop\Denzic\ai-collaboration-workflow\scripts\aiw.ps1 with-lock -Resource Companion-WB55 -Purpose "Companion final physical signoff" -Run pwsh -NoProfile -File .\tools\verify_companion_physical_signoff.ps1 -Execute -WorkflowLockHeld -NoEpaperPanel
 ```
+
+`-NoEpaperPanel` records all e-paper observation checks and the e-paper refresh
+current row as `N/A` with the note `no e-paper panel installed`. Remove the flag
+only after a real panel is connected.
 
 ## Human Observations To Record
 
 - Real e-paper default card, recording card, sync-complete card, and BLE-written
-  short card, or explicit `N/A` if no panel is installed.
+  short card, or explicit `N/A` if no panel is installed. Use
+  `-NoEpaperPanel` for the current no-panel bench.
 - Real `SW3/B3` button press causes a capture or recording affordance.
 - Real microphone/storage chain can capture, pull a non-empty recording, verify
   length plus SHA-256, and delete only after host verification.
