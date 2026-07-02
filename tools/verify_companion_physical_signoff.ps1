@@ -4,7 +4,9 @@ param(
     [switch] $Execute,
     [switch] $WorkflowLockHeld,
     [switch] $NoEpaperPanel,
-    [string] $NoEpaperNote = "no e-paper panel installed"
+    [string] $NoEpaperNote = "no e-paper panel installed",
+    [switch] $NoPopup,
+    [switch] $WriteEvidenceOnCancel
 )
 
 $ErrorActionPreference = "Stop"
@@ -13,6 +15,7 @@ Set-StrictMode -Version Latest
 
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
 $stamp = Get-Date -Format "yyyyMMdd-HHmmss-fff"
+$evidenceMarkdownWasProvided = -not [string]::IsNullOrWhiteSpace($EvidenceMarkdown)
 if ([string]::IsNullOrWhiteSpace($OutDir)) {
     $OutDir = Join-Path $repoRoot ".cache\validation\companion-physical-signoff-$stamp"
 }
@@ -175,7 +178,7 @@ function ConvertTo-SignoffMarkdown {
         "## Automated Evidence Already Passed",
         "",
         "- Operator chain: attach the current ``.cache\validation\companion-operator-chain-<timestamp>\companion-operator-chain-summary.json``.",
-        "- Recording chain: attach the current flash or SW3 button recording chain JSON that proves non-empty capture, pull, SHA-256, and delete-after-sync.",
+        "- Recording chain: attach the current flash or SW3 button recording chain JSON that proves non-empty capture, pull, SHA-256, and delete-after-sync; for preservation-only board checks, attach a no-delete existing recording pull artifact.",
         "- Real BLE GATT bench: attach the current ``.cache\validation\companion-v1-real-ble-gatt-<timestamp>\companion-ble-real-bench.json``.",
         "",
         "## Physical Checks",
@@ -212,6 +215,9 @@ $lockCommand = "pwsh -NoProfile -File C:\Users\Billy\Desktop\Denzic\ai-collabora
 if ($NoEpaperPanel) {
     $lockCommand += " -NoEpaperPanel -NoEpaperNote `"$NoEpaperNote`""
 }
+if ($NoPopup) {
+    $lockCommand += " -NoPopup"
+}
 
 if (-not $Execute) {
     $dryRun = [ordered]@{
@@ -223,6 +229,7 @@ if (-not $Execute) {
         evidence_markdown = $evidenceMarkdownResolved
         lock_command = $lockCommand
         no_epaper_panel = [bool]$NoEpaperPanel
+        no_popup = [bool]$NoPopup
         known_missing_hardware = @($knownMissingHardware)
         checks = @(
             if ($NoEpaperPanel) {
@@ -243,13 +250,102 @@ if (-not $Execute) {
     exit 0
 }
 
-if (-not $WorkflowLockHeld) {
+if (-not $WorkflowLockHeld -and -not $NoPopup) {
     Write-Host "Use the workflow hardware lock before executing:"
     Write-Host "  $lockCommand"
     throw "Refusing to run physical signoff without -WorkflowLockHeld."
 }
+if (-not $WorkflowLockHeld -and $NoPopup) {
+    Write-Host "NO-POPUP: no human prompt or hardware action will run, so this partial artifact does not take a workflow lock."
+}
 
 $startedAt = (Get-Date).ToString("o")
+if ($NoPopup) {
+    $physicalChecks = @()
+    $epaperCheckTitles = @(
+        @{ Id = "epaper_default"; Title = "e-paper 默认卡" },
+        @{ Id = "epaper_recording"; Title = "e-paper 录音状态卡" },
+        @{ Id = "epaper_sync_complete"; Title = "e-paper 同步完成卡" },
+        @{ Id = "epaper_ble_written_card"; Title = "BLE 写入短句卡" }
+    )
+    foreach ($check in $epaperCheckTitles) {
+        if ($NoEpaperPanel) {
+            $physicalChecks += New-CheckResult -Id $check.Id -Title $check.Title -Result "N/A" -Note $NoEpaperNote
+        } else {
+            $physicalChecks += New-CheckResult -Id $check.Id -Title $check.Title -Result "PENDING_HUMAN" -Note "not collected: -NoPopup"
+        }
+    }
+    $physicalChecks += New-CheckResult -Id "button_capture_affordance" -Title "真实按钮 capture affordance" -Result "PENDING_HUMAN" -Note "not collected: -NoPopup"
+
+    $powerMeasurements = @(
+        [ordered]@{ id = "boot_idle"; label = "boot/idle"; raw = "not collected: -NoPopup"; measured = $false; current_ma = $null },
+        [ordered]@{ id = "advertising"; label = "BLE advertising"; raw = "not collected: -NoPopup"; measured = $false; current_ma = $null },
+        [ordered]@{ id = "connected_idle"; label = "connected idle"; raw = "not collected: -NoPopup"; measured = $false; current_ma = $null },
+        [ordered]@{ id = "recording"; label = "recording"; raw = "not collected: -NoPopup"; measured = $false; current_ma = $null },
+        [ordered]@{ id = "epaper_refresh"; label = "e-paper refresh"; raw = $(if ($NoEpaperPanel) { $NoEpaperNote } else { "not collected: -NoPopup" }); measured = $false; current_ma = $null },
+        [ordered]@{ id = "chunk_transfer"; label = "BLE chunk transfer"; raw = "not collected: -NoPopup"; measured = $false; current_ma = $null },
+        [ordered]@{ id = "charge_external_power"; label = "charge/external-power"; raw = "not collected: -NoPopup"; measured = $false; current_ma = $null }
+    )
+    $finishedAt = (Get-Date).ToString("o")
+    $summary = [ordered]@{
+        schema = "companion.physical_signoff.v1"
+        status = "PENDING_HUMAN"
+        artifact_mode = "NO_POPUP_PARTIAL"
+        no_popup = $true
+        started_at = $startedAt
+        finished_at = $finishedAt
+        operator = "not_collected_no_popup"
+        repo_root = $repoRoot
+        output_dir = $outDirResolved
+        summary_json = $summaryJson
+        summary_markdown = $summaryMd
+        evidence_markdown = $evidenceMarkdownResolved
+        prompt_transcript = $promptTranscript
+        known_missing_hardware = @($knownMissingHardware)
+        physical_checks = @($physicalChecks)
+        power_measurements = @($powerMeasurements)
+        physical_all_pass = $false
+        power_all_measured = $false
+        pcb_decision = [ordered]@{
+            accepted_current_no_go = $false
+            decision = "pending_operator_signoff"
+            reason = "NoPopup mode intentionally did not ask for a human PCB decision."
+        }
+        operator_notes = "Partial artifact generated with -NoPopup; no desktop prompts, operator observations, or power measurements were collected."
+    }
+    $writeEvidenceMarkdown = $evidenceMarkdownWasProvided
+    $summary["evidence_markdown_written"] = $writeEvidenceMarkdown
+
+    $transcriptLines = @(
+        "# Companion Physical Signoff Prompt Transcript",
+        "",
+        "- Started: $startedAt",
+        "- Finished: $finishedAt",
+        "- Operator: not_collected_no_popup",
+        "- Mode: NO_POPUP_PARTIAL",
+        "",
+        "No desktop prompts were shown because -NoPopup was specified."
+    )
+    $transcriptLines | Set-Content -LiteralPath $promptTranscript -Encoding UTF8
+    $md = ConvertTo-SignoffMarkdown -Summary ([pscustomobject]$summary)
+    $md | Set-Content -LiteralPath $summaryMd -Encoding UTF8
+    if ($writeEvidenceMarkdown) {
+        $md | Set-Content -LiteralPath $evidenceMarkdownResolved -Encoding UTF8
+    }
+    $summary | ConvertTo-Json -Depth 10 | Set-Content -LiteralPath $summaryJson -Encoding UTF8
+
+    Write-Host "companion_physical_signoff_result_json=$($summary | ConvertTo-Json -Depth 10 -Compress)"
+    Write-Host "NO-POPUP: Companion physical signoff partial artifact written; status=PENDING_HUMAN."
+    Write-Host "Summary: $summaryJson"
+    Write-Host "Markdown: $summaryMd"
+    if ($writeEvidenceMarkdown) {
+        Write-Host "Evidence: $evidenceMarkdownResolved"
+    } else {
+        Write-Host "Evidence: not updated because -EvidenceMarkdown was not explicitly provided."
+    }
+    exit 0
+}
+
 $operator = Read-OperatorText -Title "Companion 最终物理验收" -Message "请输入验收人名字或缩写，用于 evidence 记录。" -Default "Billy"
 
 $intro = @(
@@ -347,6 +443,8 @@ $finishedAt = (Get-Date).ToString("o")
 $summary = [ordered]@{
     schema = "companion.physical_signoff.v1"
     status = $status
+    artifact_mode = "INTERACTIVE"
+    no_popup = $false
     started_at = $startedAt
     finished_at = $finishedAt
     operator = $operator
@@ -368,6 +466,11 @@ $summary = [ordered]@{
     }
     operator_notes = $operatorNotes
 }
+$writeEvidenceMarkdown = $true
+if ($status -eq "CANCELLED" -and -not $WriteEvidenceOnCancel) {
+    $writeEvidenceMarkdown = $false
+}
+$summary["evidence_markdown_written"] = $writeEvidenceMarkdown
 
 $transcriptLines = @(
     "# Companion Physical Signoff Prompt Transcript",
@@ -385,12 +488,18 @@ $transcriptLines | Set-Content -LiteralPath $promptTranscript -Encoding UTF8
 $summary | ConvertTo-Json -Depth 10 | Set-Content -LiteralPath $summaryJson -Encoding UTF8
 $md = ConvertTo-SignoffMarkdown -Summary ([pscustomobject]$summary)
 $md | Set-Content -LiteralPath $summaryMd -Encoding UTF8
-$md | Set-Content -LiteralPath $evidenceMarkdownResolved -Encoding UTF8
+if ($writeEvidenceMarkdown) {
+    $md | Set-Content -LiteralPath $evidenceMarkdownResolved -Encoding UTF8
+}
 
 Write-Host "companion_physical_signoff_result_json=$($summary | ConvertTo-Json -Depth 10 -Compress)"
 Write-Host "Summary: $summaryJson"
 Write-Host "Markdown: $summaryMd"
-Write-Host "Evidence: $evidenceMarkdownResolved"
+if ($writeEvidenceMarkdown) {
+    Write-Host "Evidence: $evidenceMarkdownResolved"
+} else {
+    Write-Host "Evidence: not updated because status=CANCELLED; pass -WriteEvidenceOnCancel to override."
+}
 
 if ($status -eq "CANCELLED") {
     throw "Companion physical signoff was cancelled by operator. See $summaryJson"

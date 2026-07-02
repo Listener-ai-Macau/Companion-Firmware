@@ -5,7 +5,9 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import binascii
 import datetime as dt
+import hashlib
 import json
 import pathlib
 import struct
@@ -19,6 +21,8 @@ sys.dont_write_bytecode = True
 REPO_ROOT = pathlib.Path(__file__).resolve().parents[1]
 UUID_TABLE_PATH = REPO_ROOT / "docs" / "ble_uuid_table.json"
 SCHEMA_VERSION = 1
+RECORDING_ERROR_FLAG = 0x80
+RECORDING_FINAL_FLAG = 0x01
 
 
 class BenchError(RuntimeError):
@@ -191,6 +195,48 @@ def parse_recording_chunk_pull(payload: bytes) -> dict[str, Any]:
         ),
         payload,
     )
+
+
+def parse_recording_chunk_packet(payload: bytes) -> dict[str, Any]:
+    header_fmt = "<BBHIIIII32s"
+    header_size = struct.calcsize(header_fmt)
+    parsed = parse_struct(
+        header_fmt,
+        (
+            "schema_version",
+            "flags",
+            "payload_length",
+            "recording_id",
+            "packet_sequence",
+            "byte_offset",
+            "total_length",
+            "packet_crc32",
+            "final_sha256",
+        ),
+        payload,
+    )
+    payload_length = int(parsed["payload_length"])
+    if len(payload) < header_size + payload_length:
+        raise BenchError("recording chunk payload truncated")
+    parsed["payload"] = payload[header_size:header_size + payload_length]
+    parsed["final_sha256"] = bytes(parsed["final_sha256"]).hex()
+    parsed["packet_crc32_hex"] = f"0x{int(parsed['packet_crc32']) & 0xFFFFFFFF:08x}"
+    return parsed
+
+
+def verify_recording_packet_crc(packet: dict[str, Any]) -> str:
+    crc_payload = struct.pack(
+        "<IIII",
+        int(packet["recording_id"]),
+        int(packet["packet_sequence"]),
+        int(packet["byte_offset"]),
+        int(packet["total_length"]),
+    )
+    crc = binascii.crc32(crc_payload + bytes(packet["payload"])) & 0xFFFFFFFF
+    expected = int(packet["packet_crc32"]) & 0xFFFFFFFF
+    if crc != expected:
+        raise BenchError(f"recording packet CRC mismatch: got 0x{crc:08x}, expected 0x{expected:08x}")
+    return f"0x{crc:08x}"
 
 
 def parse_settings(payload: bytes) -> dict[str, Any]:
@@ -537,6 +583,114 @@ async def notify_write_wait(
         await client.stop_notify(notify_uuid)
 
 
+async def pull_existing_recording_no_delete(
+    client: Any,
+    uuids: dict[str, str],
+    recording_list: dict[str, Any],
+    args: argparse.Namespace,
+) -> dict[str, Any]:
+    entries = list(recording_list.get("entries", []))
+    if not entries:
+        raise BenchError("--pull-existing-recording requires a non-empty recording_list")
+
+    entry = entries[0]
+    recording_id = int(entry["recording_id"])
+    total_length = int(entry["total_length"])
+    if total_length <= 0:
+        raise BenchError(f"selected recording has empty total_length: {entry}")
+
+    offset = 0
+    expected_sequence = 0
+    data = bytearray()
+    packet_summaries: list[dict[str, Any]] = []
+    final_sha256 = ""
+    queue: asyncio.Queue[bytes] = asyncio.Queue()
+
+    def callback(_sender: Any, raw: bytearray) -> None:
+        queue.put_nowait(bytes(raw))
+
+    await client.start_notify(uuids["recording_chunk_pull"], callback)
+    try:
+        await asyncio.sleep(0.15)
+        while offset < total_length:
+            request_length = min(int(args.chunk_bytes), total_length - offset)
+            request = struct.pack("<BBHIII", SCHEMA_VERSION, 0, request_length, recording_id, offset, 0)
+            await client.write_gatt_char(uuids["recording_chunk_pull"], request, response=True)
+            deadline = time.monotonic() + float(args.notify_timeout)
+            packet: dict[str, Any] | None = None
+            last: dict[str, Any] | None = None
+            while time.monotonic() < deadline:
+                try:
+                    raw = await asyncio.wait_for(queue.get(), timeout=max(0.1, deadline - time.monotonic()))
+                except asyncio.TimeoutError as exc:
+                    raise BenchError(f"recording chunk notify timeout at offset={offset}; last={last}") from exc
+                parsed = parse_recording_chunk_packet(raw)
+                last = parsed
+                if int(parsed["recording_id"]) == recording_id and int(parsed["byte_offset"]) == offset:
+                    packet = parsed
+                    break
+            if packet is None:
+                raise BenchError(f"recording chunk notify predicate not satisfied at offset={offset}; last={last}")
+            if int(packet["flags"]) & RECORDING_ERROR_FLAG:
+                raise BenchError(f"recording chunk error flag at offset={offset}: {packet}")
+            if int(packet["packet_sequence"]) != expected_sequence:
+                raise BenchError(
+                    f"recording packet sequence mismatch: got {packet['packet_sequence']} "
+                    f"expected {expected_sequence}"
+                )
+            if int(packet["total_length"]) != total_length:
+                raise BenchError("recording total_length changed during transfer")
+            payload = bytes(packet["payload"])
+            if len(payload) != int(packet["payload_length"]):
+                raise BenchError("recording payload_length mismatch")
+            packet_crc = verify_recording_packet_crc(packet)
+            data.extend(payload)
+            packet_summaries.append(
+                {
+                    "packet_sequence": int(packet["packet_sequence"]),
+                    "byte_offset": int(packet["byte_offset"]),
+                    "payload_length": int(packet["payload_length"]),
+                    "packet_crc32": packet_crc,
+                    "flags": int(packet["flags"]),
+                }
+            )
+            offset += len(payload)
+            expected_sequence += 1
+            if int(packet["flags"]) & RECORDING_FINAL_FLAG:
+                final_sha256 = str(packet["final_sha256"])
+                break
+    finally:
+        await client.stop_notify(uuids["recording_chunk_pull"])
+
+    if len(data) != total_length:
+        raise BenchError(f"recording byte count mismatch: got {len(data)}, expected {total_length}")
+    host_sha256 = hashlib.sha256(data).hexdigest()
+    if not final_sha256:
+        raise BenchError("final recording packet did not include SHA-256")
+    if final_sha256 != host_sha256:
+        raise BenchError(f"final SHA mismatch: device={final_sha256} host={host_sha256}")
+    if not host_sha256.startswith(str(entry["sha256_prefix"])):
+        raise BenchError("recording_list sha256_prefix did not match pulled object")
+    host_crc32 = f"0x{binascii.crc32(data) & 0xFFFFFFFF:08x}"
+    if host_crc32.lower() != str(entry["content_crc32"]).lower():
+        raise BenchError(f"recording_list CRC mismatch: list={entry['content_crc32']} host={host_crc32}")
+
+    return {
+        "operation": "recording_pull_existing_no_delete",
+        "status": "PASS",
+        "no_delete": True,
+        "recording_id": recording_id,
+        "total_length": total_length,
+        "chunk_bytes": int(args.chunk_bytes),
+        "packet_count": len(packet_summaries),
+        "host_sha256": host_sha256,
+        "device_final_sha256": final_sha256,
+        "host_crc32": host_crc32,
+        "selected_recording_list_entry": entry,
+        "packets": packet_summaries,
+    }
+
+
 async def run_connected_bench(client: Any, uuids: dict[str, str], args: argparse.Namespace) -> list[dict[str, Any]]:
     operations: list[dict[str, Any]] = []
 
@@ -592,6 +746,9 @@ async def run_connected_bench(client: Any, uuids: dict[str, str], args: argparse
             "recording_list": recording_list,
         }
     )
+
+    if args.pull_existing_recording:
+        operations.append(await pull_existing_recording_no_delete(client, uuids, recording_list, args))
 
     missing_recording_id = max(recording_ids, default=0) + 1
     chunk_payload = struct.pack("<BBHIII", SCHEMA_VERSION, 0, 64, missing_recording_id, 0, 0x1234)
@@ -925,9 +1082,18 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--address", default=None, help="Optional exact BLE address filter")
     parser.add_argument("--timeout", type=float, default=12.0, help="Scan/connect timeout seconds")
     parser.add_argument("--notify-timeout", type=float, default=6.0, help="Notify wait timeout seconds")
+    parser.add_argument(
+        "--pull-existing-recording",
+        action="store_true",
+        help="Pull and validate the first recording_list entry without deleting it",
+    )
+    parser.add_argument("--chunk-bytes", type=int, default=160, help="Requested bytes per recording chunk pull")
     parser.add_argument("--output", type=pathlib.Path, default=None, help="Optional JSON artifact path")
     parser.add_argument("--json", action="store_true", help="Print the full JSON artifact")
-    return parser.parse_args(argv)
+    args = parser.parse_args(argv)
+    if args.chunk_bytes < 1 or args.chunk_bytes > 0xFFFF:
+        parser.error("--chunk-bytes must be between 1 and 65535")
+    return args
 
 
 def write_output(path: pathlib.Path, result: dict[str, Any]) -> None:
