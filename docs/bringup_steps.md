@@ -410,6 +410,12 @@ default machine recommendation is to continue dev-board iteration before the
 first pendant PCB when display, storage, or power are still fallback/dev-board
 evidence.
 
+For the current development-board checklist, use
+`docs/companion_devboard_physical_checklist.md`. In this phase the physical
+record button is the NUCLEO-WB55RG `SW3/B3` user button on `PD1`. If no real
+e-paper panel is connected, record `N/A` rather than treating PBM fallback
+renders as panel evidence.
+
 The Type temporary Companion page real-device gate is optional legacy bench
 evidence. Enable it explicitly with `-IncludeTypeUiGate`:
 

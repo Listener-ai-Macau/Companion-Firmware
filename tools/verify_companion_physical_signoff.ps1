@@ -24,6 +24,9 @@ $summaryJson = Join-Path $outDirResolved "companion-physical-signoff-summary.jso
 $summaryMd = Join-Path $outDirResolved "companion-physical-signoff-summary.md"
 $promptTranscript = Join-Path $outDirResolved "companion-physical-signoff-prompt.md"
 $evidenceMarkdownResolved = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($EvidenceMarkdown)
+$devBoardButtonLabel = "NUCLEO-WB55RG SW3/B3 user button (PD1)"
+$devBoardButtonInstruction = "开发板阶段请按 NUCLEO-WB55RG 开发板上的 SW3/B3 user button (PD1)。不要按 RESET、ST-LINK reset、BOOT0，或电脑键盘。"
+$epaperUnavailableInstruction = "如果本轮开发板没有接真实 e-paper panel，请点 Cancel=N/A，并在说明里写 no e-paper panel；不要把 PBM fallback 当作真实屏幕 PASS。"
 
 function Show-OperatorPrompt {
     param(
@@ -149,9 +152,9 @@ function ConvertTo-SignoffMarkdown {
         "",
         "## Automated Evidence Already Passed",
         "",
-        "- Operator chain: ``C:\Users\Billy\Desktop\Denzic\Companion\Companion-Firmware\.cache\validation\companion-operator-chain-20260630-121232\companion-operator-chain-summary.json``",
-        "- Real SAI microphone -> QSPI flash -> BLE pull -> CRC/SHA -> delete: ``C:\Users\Billy\Desktop\Denzic\Companion\Companion-Firmware\.cache\validation\companion-flash-recording-chain-20260630-124303\companion-flash-recording-chain.json``",
-        "- Real BLE GATT bench: ``.cache\validation\companion-v1-real-ble-gatt-20260630-114513\companion-ble-real-bench.json``",
+        "- Operator chain: attach the current ``.cache\validation\companion-operator-chain-<timestamp>\companion-operator-chain-summary.json``.",
+        "- Recording chain: attach the current flash or SW3 button recording chain JSON that proves non-empty capture, pull, SHA-256, and delete-after-sync.",
+        "- Real BLE GATT bench: attach the current ``.cache\validation\companion-v1-real-ble-gatt-<timestamp>\companion-ble-real-bench.json``.",
         "",
         "## Physical Checks",
         "",
@@ -195,8 +198,8 @@ if (-not $Execute) {
         evidence_markdown = $evidenceMarkdownResolved
         lock_command = $lockCommand
         checks = @(
-            "real e-paper default/recording/sync-complete/BLE-written cards",
-            "real button capture affordance",
+            "real e-paper default/recording/sync-complete/BLE-written cards; if no panel is connected, record N/A instead of PASS",
+            "real dev-board button capture affordance using $devBoardButtonLabel",
             "power measurements for boot/idle, advertising, connected idle, recording, e-paper refresh, chunk transfer, charge/external-power",
             "PCB go/no-go decision"
         )
@@ -223,29 +226,33 @@ $intro = @(
     "",
     "你需要真实观察或测量：",
     "1. e-paper 默认卡、录音卡、同步完成卡、BLE 写入短句卡。",
-    "2. 按真实按钮后是否有 capture/录音 affordance。",
+    "2. 开发板阶段按 $devBoardButtonLabel 后是否有 capture/录音 affordance。",
     "3. 用电流表或功耗仪记录各状态电流。",
     "4. 接受或推翻当前 PCB 暂不 go 的建议。",
+    "",
+    $devBoardButtonInstruction,
+    $epaperUnavailableInstruction,
+    "没有电流表或本轮未测量时请输入 NA 并说明原因；不要填 0 代替未测量。",
     "",
     "每一步请按真实结果点 Yes / No / Cancel。Cancel 表示硬件未安装或本轮不适用。"
 ) -join [Environment]::NewLine
 [void](Show-OperatorPrompt -Title "开始 Companion 物理验收" -Message $intro)
 
 $physicalChecks = @()
-$physicalChecks += Ask-Check -Id "epaper_default" -Title "e-paper 默认卡" -Instruction "请看真实目标 e-paper：上电或空闲状态能看到默认/固定卡片，且内容完整、没有明显花屏或错位。"
-$physicalChecks += Ask-Check -Id "epaper_recording" -Title "e-paper 录音状态卡" -Instruction "让设备进入录音状态，观察真实 e-paper 是否显示录音/捕获状态卡，状态变化清楚。"
-$physicalChecks += Ask-Check -Id "epaper_sync_complete" -Title "e-paper 同步完成卡" -Instruction "让设备完成同步/传输后，观察真实 e-paper 是否显示同步完成状态卡。"
-$physicalChecks += Ask-Check -Id "epaper_ble_written_card" -Title "BLE 写入短句卡" -Instruction "确认 BLE 写入的短句或 fixture payload 能显示在真实 e-paper 上；期望短句类似 1234567 chain verified 或本轮测试短句。"
-$physicalChecks += Ask-Check -Id "button_capture_affordance" -Title "真实按钮 capture affordance" -Instruction "请按一次 Companion 真实按钮，观察设备是否出现明确的录音/capture affordance，例如显示切换、状态反馈、LED/日志/主机状态变化。"
+$physicalChecks += Ask-Check -Id "epaper_default" -Title "e-paper 默认卡" -Instruction "请看真实目标 e-paper：上电或空闲状态能看到默认/固定卡片，且内容完整、没有明显花屏或错位。$epaperUnavailableInstruction"
+$physicalChecks += Ask-Check -Id "epaper_recording" -Title "e-paper 录音状态卡" -Instruction "让设备进入录音状态，观察真实 e-paper 是否显示录音/捕获状态卡，状态变化清楚。$epaperUnavailableInstruction"
+$physicalChecks += Ask-Check -Id "epaper_sync_complete" -Title "e-paper 同步完成卡" -Instruction "让设备完成同步/传输后，观察真实 e-paper 是否显示同步完成状态卡。$epaperUnavailableInstruction"
+$physicalChecks += Ask-Check -Id "epaper_ble_written_card" -Title "BLE 写入短句卡" -Instruction "确认 BLE 写入的短句或 fixture payload 能显示在真实 e-paper 上；期望短句类似 1234567 chain verified 或本轮测试短句。$epaperUnavailableInstruction"
+$physicalChecks += Ask-Check -Id "button_capture_affordance" -Title "真实按钮 capture affordance" -Instruction "$devBoardButtonInstruction 观察设备是否出现明确的录音/capture affordance，例如显示切换、状态反馈、LED/日志/主机状态变化。"
 
 $powerMeasurements = @()
-$powerMeasurements += Read-Measurement -Id "boot_idle" -Label "boot/idle" -Prompt "设备启动完成并处于空闲状态时，读取电流。"
-$powerMeasurements += Read-Measurement -Id "advertising" -Label "BLE advertising" -Prompt "设备未连接、正在 BLE 广播时，读取电流。"
-$powerMeasurements += Read-Measurement -Id "connected_idle" -Label "connected idle" -Prompt "BLE 已连接但没有录音/刷新/传输时，读取电流。"
-$powerMeasurements += Read-Measurement -Id "recording" -Label "recording" -Prompt "正在录音并写入本地存储时，读取电流。"
-$powerMeasurements += Read-Measurement -Id "epaper_refresh" -Label "e-paper refresh" -Prompt "e-paper 正在刷新时，读取峰值或稳定读数；如只能读峰值，请在备注说明。"
-$powerMeasurements += Read-Measurement -Id "chunk_transfer" -Label "BLE chunk transfer" -Prompt "BLE 正在拉取录音 chunk 时，读取电流。"
-$powerMeasurements += Read-Measurement -Id "charge_external_power" -Label "charge/external-power" -Prompt "外部供电/充电状态下，读取电流或输入 NA 并说明硬件原因。"
+$powerMeasurements += Read-Measurement -Id "boot_idle" -Label "boot/idle" -Prompt "设备启动完成并处于空闲状态时，读取电流。没有仪表就输入 NA。"
+$powerMeasurements += Read-Measurement -Id "advertising" -Label "BLE advertising" -Prompt "设备未连接、正在 BLE 广播时，读取电流。没有仪表就输入 NA。"
+$powerMeasurements += Read-Measurement -Id "connected_idle" -Label "connected idle" -Prompt "BLE 已连接但没有录音/刷新/传输时，读取电流。没有仪表就输入 NA。"
+$powerMeasurements += Read-Measurement -Id "recording" -Label "recording" -Prompt "正在录音并写入本地存储时，读取电流。没有仪表就输入 NA。"
+$powerMeasurements += Read-Measurement -Id "epaper_refresh" -Label "e-paper refresh" -Prompt "e-paper 正在刷新时，读取峰值或稳定读数；如只能读峰值，请在备注说明。没有屏幕或仪表就输入 NA。"
+$powerMeasurements += Read-Measurement -Id "chunk_transfer" -Label "BLE chunk transfer" -Prompt "BLE 正在拉取录音 chunk 时，读取电流。没有仪表就输入 NA。"
+$powerMeasurements += Read-Measurement -Id "charge_external_power" -Label "charge/external-power" -Prompt "外部供电/充电状态下，读取电流；没有充电/电源测量硬件就输入 NA 并说明原因。"
 
 $acceptNoGo = Show-OperatorPrompt `
     -Title "PCB Go/No-Go 决策" `
