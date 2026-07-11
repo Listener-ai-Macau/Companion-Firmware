@@ -271,7 +271,7 @@ if ($IncludeTypeHarness) {
 }
 
 Add-ManualGate -Name "real Companion A1/A2 bench validation" -Evidence "JSON and Markdown under .cache\validation\companion-type-a1-a2-* with status PASS." -Command $a1a2Command
-Add-ManualGate -Name "real Companion BLE OTA bench validation" -Evidence "tools\verify_companion_ble_ota.ps1 writes firmware_ota_result_json with status PASS, versionConfirmed=true, and transport=companion_ota_v2." -Command $bleOtaCommand
+Add-ManualGate -Name "real Companion BLE OTA bench validation" -Evidence "tools\verify_companion_ble_ota.ps1 writes firmware_ota_result_json with status PASS, versionConfirmed=true, and transport=denzic_ota_v1." -Command $bleOtaCommand
 Add-ManualGate -Name "real Companion wired flash from same package" -Evidence "tools\verify_companion_wired_flash.ps1 writes wired_firmware_result_json with status PASS, mode=flash, port=SWD, and STM32CubeProgrammer verification." -Command $wiredCommand
 if ($IncludeTypeHarness) {
     Add-ManualGate -Name "Type temporary Companion debug page" -Evidence "tools\verify_companion_type_ui_manual.ps1 writes companion_type_ui_manual_result_json with status PASS after the operator confirms BLE subscription, A1, A2, BLE OTA entry, wired flash entry, and 总体验收 entry." -Command $typeUiCommand

@@ -1,7 +1,8 @@
 param(
     [string] $PackagePath,
-    [string] $TypeRepoRoot = (Join-Path $PSScriptRoot "..\..\..\Listener\Listener-Type"),
-    [string] $ListenerExe,
+    [string] $TypeRepoRoot = (Join-Path $PSScriptRoot "..\..\Companion-Type"),
+    [Alias("ListenerExe")]
+    [string] $CompanionExe,
     [string] $ProgrammerPath,
     [string] $Port = "SWD",
     [string] $OutDir,
@@ -42,16 +43,16 @@ function Resolve-CompanionPackage {
     return $latest.FullName
 }
 
-function Resolve-ListenerExe {
+function Resolve-CompanionExe {
     param([string] $Requested)
 
     $candidates = @()
     if ($Requested) { $candidates += $Requested }
     $candidates += @(
-        (Join-Path $typeRoot "src-tauri\target\debug\listener-type.exe"),
-        (Join-Path $typeRoot "src-tauri\target\release\listener-type.exe"),
-        (Join-Path $typeRoot "src-tauri\target\debug\listener-type"),
-        (Join-Path $typeRoot "src-tauri\target\release\listener-type")
+        (Join-Path $typeRoot "apps\windows\src-tauri\target\debug\companion-type.exe"),
+        (Join-Path $typeRoot "apps\windows\src-tauri\target\release\companion-type.exe"),
+        (Join-Path $typeRoot "apps\windows\src-tauri\target\debug\companion-type"),
+        (Join-Path $typeRoot "apps\windows\src-tauri\target\release\companion-type")
     )
 
     foreach ($candidate in $candidates) {
@@ -60,7 +61,7 @@ function Resolve-ListenerExe {
             return (Resolve-Path -LiteralPath $candidate).Path
         }
     }
-    throw "listener-type executable not found. Build Listener-Type first or pass -ListenerExe."
+    throw "companion-type executable not found. Build Companion-Type first or pass -CompanionExe."
 }
 
 function Find-CubeProgrammerCli {
@@ -166,13 +167,6 @@ function Show-OperatorPrompt {
     }
 }
 
-function Set-CompanionTypeEnvironment {
-    $env:LISTENER_TYPE_APP_PROFILE = "companion"
-    $env:LISTENER_TYPE_BLE_TARGET_NAME = "companion"
-    $env:LISTENER_TYPE_HIDE_MAIN_ON_START = "1"
-    $env:LISTENER_TYPE_DISABLE_BACKGROUND_BLE = "1"
-}
-
 function ConvertTo-SafeFileName {
     param([Parameter(Mandatory = $true)][string] $Name)
     return (($Name.ToLowerInvariant() -replace '[^a-z0-9_.-]+', '-') -replace '^-|-$', '')
@@ -276,7 +270,7 @@ function ConvertTo-CompanionBleOtaMarkdown {
 }
 
 $resolvedPackage = Resolve-CompanionPackage -Path $PackagePath
-$listenerExePath = Resolve-ListenerExe -Requested $ListenerExe
+$companionExePath = Resolve-CompanionExe -Requested $CompanionExe
 $payload = Expand-CompanionOtaPayload -Path $resolvedPackage -DestinationDir $outDirResolved
 $manifestText = Get-Content -LiteralPath $payload.manifest_path -Raw -Encoding UTF8
 $manifest = $manifestText | ConvertFrom-Json
@@ -288,7 +282,7 @@ $summaryMd = Join-Path $outDirResolved "companion-ble-ota-summary.md"
 $programmer = if ($PrepareLoaderWithSwd) { Find-CubeProgrammerCli -RequestedPath $ProgrammerPath } else { $null }
 $appSectorCount = if ($PrepareLoaderWithSwd) { Get-AppSectorCount -FirmwarePath $payload.firmware_path } else { $null }
 $commandArgs = @("--firmware-ota-transfer", $payload.manifest_path, $payload.firmware_path)
-$commandLine = '"' + $listenerExePath + '" ' + (($commandArgs | ForEach-Object { '"' + ($_ -replace '"', '\"') + '"' }) -join " ")
+$commandLine = '"' + $companionExePath + '" ' + (($commandArgs | ForEach-Object { '"' + ($_ -replace '"', '\"') + '"' }) -join " ")
 $lockCommand = "pwsh -NoProfile -File C:\Users\Billy\Desktop\Denzic\ai-collaboration-workflow\scripts\aiw.ps1 with-lock -Resource Companion-WB55,BLE-Companion -Purpose `"Companion BLE OTA validation`" -Run pwsh -NoProfile -File .\tools\verify_companion_ble_ota.ps1 -Execute -WorkflowLockHeld -PackagePath `"$resolvedPackage`""
 if ($PrepareLoaderWithSwd) {
     $lockCommand += " -PrepareLoaderWithSwd"
@@ -301,7 +295,7 @@ if (-not $Execute) {
         mode = "dry-run"
         generated_at = (Get-Date).ToString("o")
         package_path = $resolvedPackage
-        listener_exe = $listenerExePath
+        companion_exe = $companionExePath
         manifest_path = $payload.manifest_path
         firmware_path = $payload.firmware_path
         manifest_version = [string]$manifest.version
@@ -322,7 +316,7 @@ if (-not $Execute) {
     ConvertTo-CompanionBleOtaMarkdown -Summary $summary | Set-Content -LiteralPath $summaryMd -Encoding UTF8
     Write-Host "DRY-RUN: Companion BLE OTA validation is ready."
     Write-Host "Package: $resolvedPackage"
-    Write-Host "ListenerExe: $listenerExePath"
+    Write-Host "CompanionExe: $companionExePath"
     Write-Host "Manifest: $($payload.manifest_path)"
     Write-Host "Firmware: $($payload.firmware_path)"
     Write-Host "Run with workflow hardware lock:"
@@ -351,7 +345,7 @@ if ($PrepareLoaderWithSwd) {
 if ($PromptOperator) {
     Show-OperatorPrompt `
         -Title "Companion BLE OTA 验证即将开始" `
-        -Message "请确认 Companion 已开机，电脑蓝牙可用，Listener Type 没有正在录音或传输。点击 OK 后会开始蓝牙升级；升级过程中不要断电、不要关闭 Listener Type。设备重启或短暂断开再恢复是正常现象。"
+        -Message "请确认 Companion 已开机，电脑蓝牙可用，Companion Type 没有正在录音或传输。点击 OK 后会开始蓝牙升级；升级过程中不要断电、不要关闭 Companion Type。设备重启或短暂断开再恢复是正常现象。"
 }
 
 $errors = [System.Collections.Generic.List[string]]::new()
@@ -362,8 +356,7 @@ $typeReport = $null
 try {
     Push-Location $typeRoot
     try {
-        Set-CompanionTypeEnvironment
-        & $listenerExePath @commandArgs 2>&1 | Tee-Object -FilePath $rawLog
+        & $companionExePath @commandArgs 2>&1 | Tee-Object -FilePath $rawLog
         $exitCode = if ($null -eq $LASTEXITCODE) { 0 } else { [int]$LASTEXITCODE }
     } finally {
         Pop-Location
@@ -377,20 +370,19 @@ try {
         $errors.Add("firmware_ota_result_json line was not found in Type output.") | Out-Null
     }
     if ($exitCode -ne 0) {
-        $errors.Add("listener-type exited with code $exitCode.") | Out-Null
+        $errors.Add("companion-type exited with code $exitCode.") | Out-Null
     }
     if ($typeReport -and [string]$typeReport.status -ne "PASS") {
         $errors.Add("Type OTA report status is '$($typeReport.status)', expected PASS.") | Out-Null
     }
-    if ($typeReport -and $typeReport.transfer) {
-        if ([string]$typeReport.transfer.transport -ne "companion_ota_v2") {
-            $errors.Add("Type OTA transfer transport is '$($typeReport.transfer.transport)', expected companion_ota_v2.") | Out-Null
-        }
-        if (-not [bool]$typeReport.transfer.versionConfirmed) {
-            $errors.Add("Type OTA report did not confirm Companion OTA v2 completion/reboot handoff.") | Out-Null
-        }
-    } elseif ($typeReport) {
-        $errors.Add("Type OTA report did not include transfer details.") | Out-Null
+    if ($typeReport -and [string]$typeReport.protocol -ne "denzic_ota_v1") {
+        $errors.Add("Companion Type OTA protocol is '$($typeReport.protocol)', expected denzic_ota_v1.") | Out-Null
+    }
+    if ($typeReport -and ([int64]$typeReport.firmwareBytes -le 0 -or [int64]$typeReport.dataWrites -le 0 -or [int64]$typeReport.statusReads -le 0)) {
+        $errors.Add("Companion Type OTA report lacks positive firmware/data/status evidence.") | Out-Null
+    }
+    if ($typeReport -and -not [bool]$typeReport.activeLinkConfirmed) {
+        $errors.Add("Companion Type OTA report did not confirm an active BLE link.") | Out-Null
     }
 } catch {
     $errors.Add($_.Exception.Message) | Out-Null
@@ -405,7 +397,7 @@ $summary = [ordered]@{
     started_at_utc = $startedAt
     finished_at_utc = $finishedAt
     package_path = $resolvedPackage
-    listener_exe = $listenerExePath
+    companion_exe = $companionExePath
     manifest_path = $payload.manifest_path
     firmware_path = $payload.firmware_path
     manifest_version = [string]$manifest.version

@@ -37,10 +37,7 @@
 #endif /* OTA_SBSFU */
 
 #include "flash_driver.h"
-#include "otas_stm.h"
 #include "ble_l2cap_aci.h"
-
-void OTAS_APP_ProcessDeferredFinalize(void);
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -887,8 +884,6 @@ static void BLE_UserEvtRx(void *p_Payload)
   {
     p_param->status = HCI_TL_UserEventFlow_Disable;
   }
-
-  OTAS_APP_ProcessDeferredFinalize();
 
   return;
 }

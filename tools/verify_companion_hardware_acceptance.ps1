@@ -2,6 +2,8 @@ param(
     [string] $PackagePath,
     [string] $TypeRepoRoot = (Join-Path $PSScriptRoot "..\..\..\Listener\Listener-Type"),
     [string] $ListenerExe,
+    [string] $CompanionTypeRepoRoot = (Join-Path $PSScriptRoot "..\..\Companion-Type"),
+    [string] $CompanionExe,
     [string] $EvidencePath,
     [string] $OutDir,
     [string] $ProgrammerPath,
@@ -26,6 +28,7 @@ Set-StrictMode -Version Latest
 
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
 $typeRoot = (Resolve-Path $TypeRepoRoot).Path
+$companionTypeRoot = (Resolve-Path $CompanionTypeRepoRoot).Path
 $stamp = Get-Date -Format "yyyyMMdd-HHmmss"
 if ([string]::IsNullOrWhiteSpace($OutDir)) {
     $OutDir = Join-Path $repoRoot ".cache\validation\companion-hardware-acceptance-$stamp"
@@ -284,7 +287,7 @@ $bleArgs = @(
     "-Execute", "-WorkflowLockHeld",
     "-PrepareLoaderWithSwd",
     "-PackagePath", $resolvedPackage,
-    "-TypeRepoRoot", $typeRoot,
+    "-TypeRepoRoot", $companionTypeRoot,
     "-OutDir", $bleDir
 )
 $wiredArgs = @(
@@ -310,8 +313,10 @@ $typeUiArgs = @(
 )
 if (-not [string]::IsNullOrWhiteSpace($ListenerExe)) {
     $a1Args += @("-ListenerExe", $ListenerExe)
-    $bleArgs += @("-ListenerExe", $ListenerExe)
     $wiredArgs += @("-ListenerExe", $ListenerExe)
+}
+if (-not [string]::IsNullOrWhiteSpace($CompanionExe)) {
+    $bleArgs += @("-CompanionExe", $CompanionExe)
 }
 if ($Baud -gt 0) {
     $wiredArgs += @("-Baud", [string]$Baud)
@@ -338,7 +343,7 @@ if (-not $Execute) {
         [ordered]@{ name = "real Companion wired flash from same package"; status = "DRY_RUN"; message = "not executed; flashes the same package OTA loader and unified Companion VKA1 app before A1/A2"; command = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $wiredArgs; evidence = $wiredSummary },
         [ordered]@{ name = "post-flash Companion app handoff reset"; status = "DRY_RUN"; message = "not executed; rewrites OTA app handoff, hard-resets the board, then waits $PostFlashAppSettleSeconds seconds before BLE capture"; command = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $postFlashResetArgs; evidence = $null },
         [ordered]@{ name = "real Companion A1/A2 bench validation"; status = "DRY_RUN"; message = "not executed; requires workflow hardware lock"; command = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $a1Args; evidence = $a1Summary },
-        [ordered]@{ name = "real Companion BLE OTA bench validation"; status = "DRY_RUN"; message = "not executed; transfers the same package over the Companion OTA v2 path"; command = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $bleArgs; evidence = $bleSummary }
+        [ordered]@{ name = "real Companion BLE OTA bench validation"; status = "DRY_RUN"; message = "not executed; transfers the same package over the Denzic OTA v1 path"; command = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $bleArgs; evidence = $bleSummary }
     )
     if ($IncludeTypeUiGate) {
         $dryRunSteps += [ordered]@{ name = "Type temporary Companion debug page"; status = "DRY_RUN"; message = "not executed; optional legacy Type UI gate against the same unified Companion VKA1 app"; command = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $typeUiArgs; evidence = $typeUiSummary }

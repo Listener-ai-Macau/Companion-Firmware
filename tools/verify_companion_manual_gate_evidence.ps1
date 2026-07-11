@@ -267,24 +267,24 @@ function Test-CompanionBleOtaGate {
         $bytes = [int64](Get-JsonAnyProperty -Object $transfer -Names @("bytesTransferred", "bytes_transferred"))
         $confirmed = [bool](Get-JsonAnyProperty -Object $transfer -Names @("versionConfirmed", "version_confirmed"))
 
-        if ($protocol -eq "companion_ota_v2") { $checks.Add("manifest protocol companion_ota_v2") | Out-Null } else { $errors.Add("manifest protocol is '$protocol'") | Out-Null }
-        if ($transport -eq "companion_ota_v2") { $checks.Add("transfer transport companion_ota_v2") | Out-Null } else { $errors.Add("transfer transport is '$transport'") | Out-Null }
+        if ($protocol -eq "denzic_ota_v1") { $checks.Add("manifest protocol denzic_ota_v1") | Out-Null } else { $errors.Add("manifest protocol is '$protocol'") | Out-Null }
+        if ($transport -eq "denzic_ota_v1") { $checks.Add("transfer transport denzic_ota_v1") | Out-Null } else { $errors.Add("transfer transport is '$transport'") | Out-Null }
         if ($bytes -gt 0) { $checks.Add("bytesTransferred $bytes > 0") | Out-Null } else { $errors.Add("bytesTransferred is $bytes") | Out-Null }
-        if ($confirmed) { $checks.Add("Companion OTA v2 completion/reboot handoff observed") | Out-Null } else { $errors.Add("versionConfirmed is false") | Out-Null }
+        if ($confirmed) { $checks.Add("Denzic OTA v1 completion/reboot handoff observed") | Out-Null } else { $errors.Add("versionConfirmed is false") | Out-Null }
         if ($PackageInfo) {
             if ($version -eq $PackageInfo.version) { $checks.Add("OTA version matches package $($PackageInfo.version)") | Out-Null } else { $errors.Add("OTA version '$version' does not match package '$($PackageInfo.version)'") | Out-Null }
             if ($firmwareSha -eq $PackageInfo.firmware_sha256) { $checks.Add("OTA firmware sha256 matches package") | Out-Null } else { $errors.Add("OTA firmware sha256 does not match package") | Out-Null }
         }
     } else {
         $lower = $text.ToLowerInvariant()
-        if ($lower.Contains("companion_ota_v2")) { $checks.Add("log mentions companion_ota_v2") | Out-Null } else { $errors.Add("log does not mention companion_ota_v2") | Out-Null }
+        if ($lower.Contains("denzic_ota_v1")) { $checks.Add("log mentions denzic_ota_v1") | Out-Null } else { $errors.Add("log does not mention denzic_ota_v1") | Out-Null }
         if ($lower.Contains("pass") -or $lower.Contains("completed") -or $lower.Contains("done")) { $checks.Add("log contains success wording") | Out-Null } else { $errors.Add("log does not contain success wording") | Out-Null }
         if ($lower.Contains("fail") -or $lower.Contains("error")) { $errors.Add("log contains fail/error wording; provide the structured firmware_ota_result_json line for a stronger check") | Out-Null }
         if ($PackageInfo -and $lower.Contains($PackageInfo.version.ToLowerInvariant())) { $checks.Add("log mentions package version $($PackageInfo.version)") | Out-Null }
     }
 
     $gateStatus = if ($errors.Count -eq 0) { "PASS" } else { "FAIL" }
-    return New-GateResult -Name "real Companion BLE OTA bench validation" -Status $gateStatus -EvidencePath $Path -Checks $checks -Errors $errors -ExpectedEvidence "The bench host transfers the same Companion package over BLE and reports status=PASS, versionConfirmed=true, and transport=companion_ota_v2."
+    return New-GateResult -Name "real Companion BLE OTA bench validation" -Status $gateStatus -EvidencePath $Path -Checks $checks -Errors $errors -ExpectedEvidence "The bench host transfers the same Companion package over BLE and reports status=PASS, versionConfirmed=true, and transport=denzic_ota_v1."
 }
 
 function Test-CompanionWiredGate {

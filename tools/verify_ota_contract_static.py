@@ -1,64 +1,23 @@
 #!/usr/bin/env python3
-"""Static checks for Companion OTA readiness and manifest discipline."""
+"""Verify the single Denzic OTA v1 contract across host and embedded products."""
 
 from __future__ import annotations
 
 import json
-import pathlib
-import re
+from pathlib import Path
 import sys
 
 
-REPO_ROOT = pathlib.Path(__file__).resolve().parents[1]
-OTA_DOC = REPO_ROOT / "docs/ota_readiness.md"
-FLASH_DOC = REPO_ROOT / "docs/bootloader_flash_layout.md"
-BLE_CONTRACT = REPO_ROOT / "docs/ble_gatt_contract.md"
-REUSE_MAP = REPO_ROOT / "docs/listener_reuse_map.md"
-DIAG_EVENTS = REPO_ROOT / "app/companion_pendant/diag_log/diag_log_events.h"
-FIXTURE_REPORT = REPO_ROOT / "docs/validation/companion-pendant-firmware-bringup-1.8-ota-manifest-fixtures.json"
-OTA_LOADER_APP_BLE = REPO_ROOT / "cubeide/Companion_BLE_Ota_Loader/Src/app_ble.c"
-OTA_LOADER_OTAS_APP = REPO_ROOT / "cubeide/Companion_BLE_Ota_Loader/Src/otas_app.c"
-OTA_LOADER_OTAS_STM = REPO_ROOT / "cubeide/Companion_BLE_Ota_Loader/Src/otas_stm.c"
-OTA_LOADER_COMPANION_V2 = REPO_ROOT / "cubeide/Companion_BLE_Ota_Loader/Src/companion_ota_v2.c"
-OTA_LOADER_MAKEFILE = REPO_ROOT / "cubeide/Companion_BLE_Ota_Loader/Makefile"
-OTA_LOADER_SVC_CTL = (
-    REPO_ROOT
-    / "third_party/STM32CubeWB/Middlewares/ST/STM32_WPAN/ble/svc/Src/svc_ctl.c"
-)
-OTA_LOADER_SYSTEM = (
-    REPO_ROOT
-    / "cubeide/Companion_BLE_Ota_Loader/Src/system_stm32wbxx.c"
-)
-FLASH_TOOL = REPO_ROOT / "tools/flash.ps1"
-WIRELESS_STACK_TOOL = REPO_ROOT / "tools/provision_companion_wireless_stack.ps1"
-PACKAGE_TOOL = REPO_ROOT / "tools/package_ota_firmware.ps1"
-OTA_STATIC_WRAPPER = REPO_ROOT / "tools/verify_ota_contract_static.ps1"
-TYPE_PACKAGE_TOOL = REPO_ROOT / "tools/verify_type_companion_package_static.ps1"
-BRINGUP_READINESS_TOOL = REPO_ROOT / "tools/verify_companion_bringup_readiness.ps1"
-MANUAL_GATE_TOOL = REPO_ROOT / "tools/verify_companion_manual_gate_evidence.ps1"
-BLE_OTA_TOOL = REPO_ROOT / "tools/verify_companion_ble_ota.ps1"
-WIRED_FLASH_TOOL = REPO_ROOT / "tools/verify_companion_wired_flash.ps1"
-TYPE_A1_A2_TOOL = REPO_ROOT / "tools/verify_companion_type_a1_a2.ps1"
-TYPE_VISUAL_TOOL = REPO_ROOT / "tools/capture_type_companion_visual.ps1"
-TYPE_UI_MANUAL_TOOL = REPO_ROOT / "tools/verify_companion_type_ui_manual.ps1"
-HARDWARE_ACCEPTANCE_TOOL = REPO_ROOT / "tools/verify_companion_hardware_acceptance.ps1"
+REPO_ROOT = Path(__file__).resolve().parents[1]
+TYPE_ROOT = REPO_ROOT.parent / "Companion-Type"
+PLATFORM_OTA = REPO_ROOT / "third_party" / "denzic-platform" / "ota"
 
-REQUIRED_BLOCKERS = {
-    "recording_active",
-    "transfer_active",
-    "diag_export_active",
-    "low_battery",
-    "wrong_board_target",
-    "invalid_hash",
-    "interrupted_transfer",
-}
-REQUIRED_DIAG_EVENTS = {
-    "ota.manifest",
-    "ota.readiness",
-    "ota.blocker",
-    "ota.interrupted_transfer",
-    "ota.post_update_self_check",
-}
+
+def read(path: Path, errors: list[str]) -> str:
+    if not path.is_file():
+        errors.append(f"missing file: {path}")
+        return ""
+    return path.read_text(encoding="utf-8")
 
 
 def require(condition: bool, message: str, errors: list[str]) -> None:
@@ -66,770 +25,204 @@ def require(condition: bool, message: str, errors: list[str]) -> None:
         errors.append(message)
 
 
-def read_text(path: pathlib.Path, errors: list[str]) -> str:
-    require(path.exists(), f"missing {path.relative_to(REPO_ROOT)}", errors)
-    if not path.exists():
-        return ""
-    return path.read_text(encoding="utf-8")
+def require_tokens(text: str, tokens: list[str], label: str, errors: list[str]) -> None:
+    for token in tokens:
+        require(token in text, f"{label} missing token: {token}", errors)
 
 
-def check_ota_doc(errors: list[str]) -> None:
-    text = read_text(OTA_DOC, errors)
-    for anchor in [
-        "BLE_Ota",
-        "BLE_p2pServer_ota",
-        "COMPANION-PENDANT-CE",
-        "STM32WB55CEUx",
-        "ota_staging",
-        "recording_cache",
-        "low-battery",
-        "rollback",
-        "manifest",
-        "Listener",
-        "STM32_WPAN",
-        "STM32CubeProgrammer",
-        "Shared Wireless And Wired Package",
-        "tools/flash.ps1 -FlashPackage -PackagePath",
-        "Companion_BLE_Ota_Loader.hex",
-        "first, then the",
-        "must not be copied",
-    ]:
-        require(anchor in text, f"ota_readiness missing anchor: {anchor}", errors)
-    for blocker in REQUIRED_BLOCKERS:
-        require(blocker in text, f"ota_readiness missing blocker: {blocker}", errors)
-    require("not a firmware swap implementation" in text, "ota_readiness must defer real firmware swap", errors)
+def forbid_tokens(text: str, tokens: list[str], label: str, errors: list[str]) -> None:
+    for token in tokens:
+        require(token not in text, f"{label} contains obsolete token: {token}", errors)
 
 
-def check_flash_doc(errors: list[str]) -> None:
-    text = read_text(FLASH_DOC, errors)
-    for anchor in [
-        "COMPANION-PENDANT-CE",
-        "STM32WB55CEUx",
-        "ROM bootloader",
-        "STM32CubeProgrammer",
-        "external-QSPI",
-        "ota_staging",
-        "recording_cache",
-        "diag_log_mirror",
-        "single runnable CPU1 app",
-        "must not be copied",
-    ]:
-        require(anchor in text, f"bootloader_flash_layout missing anchor: {anchor}", errors)
-    require(
-        re.search(r"dual\s+external OTA partitions", text, re.IGNORECASE) is not None,
-        "flash layout must state dual external OTA partition policy",
-        errors,
-    )
-    require(
-        re.search(r"must not require two complete internal app\s+slots", text, re.IGNORECASE) is not None,
-        "flash layout must forbid two internal app slots",
-        errors,
-    )
-
-
-def check_ble_contract(errors: list[str]) -> None:
-    text = read_text(BLE_CONTRACT, errors)
-    for anchor in [
-        "OTA readiness",
-        "OtaReadinessV1",
-        "blocker_bitmap",
-        "board_target",
-        "mcu",
-        "manifest_version",
-        "image_sha256_prefix",
-        "interrupted_transfer_resume_token",
-        "must not accept\nOTA data writes",
-    ]:
-        require(anchor in text, f"BLE contract missing OTA anchor: {anchor}", errors)
-    for blocker in REQUIRED_BLOCKERS:
-        require(blocker in text, f"BLE contract missing blocker: {blocker}", errors)
-
-
-def check_diag_events(errors: list[str]) -> None:
-    text = read_text(DIAG_EVENTS, errors)
-    require('"ota"' in text, "diag events missing ota source", errors)
-    for event in REQUIRED_DIAG_EVENTS:
-        require(f'"{event}"' in text, f"diag events missing {event}", errors)
-
-    pairs = re.findall(r"X\(OTA,\s*([A-Z0-9_]+),\s*(0x[0-9A-Fa-f]+|\d+)u?", text)
-    ids = [int(value, 0) for _, value in pairs]
-    duplicate_ids = sorted({value for value in ids if ids.count(value) > 1})
-    require(not duplicate_ids, f"duplicate OTA diag event ids: {duplicate_ids}", errors)
-
-
-def check_fixture_report(errors: list[str]) -> None:
-    require(FIXTURE_REPORT.exists(), f"missing fixture report: {FIXTURE_REPORT.relative_to(REPO_ROOT)}", errors)
-    if not FIXTURE_REPORT.exists():
+def check_shared_core(errors: list[str]) -> None:
+    protocol_path = PLATFORM_OTA / "protocol" / "ota_v1.json"
+    host_rust = PLATFORM_OTA / "host" / "rust" / "src" / "lib.rs"
+    host_typescript = PLATFORM_OTA / "host" / "typescript" / "src" / "index.ts"
+    embedded_header = PLATFORM_OTA / "embedded" / "c" / "include" / "denzic_ota_v1.h"
+    embedded_source = PLATFORM_OTA / "embedded" / "c" / "src" / "denzic_ota_v1.c"
+    for path in [protocol_path, host_rust, host_typescript, embedded_header, embedded_source]:
+        require(path.is_file(), f"Denzic-Platform OTA layer missing: {path}", errors)
+    if not protocol_path.is_file():
         return
-    data = json.loads(FIXTURE_REPORT.read_text(encoding="utf-8"))
-    require(data.get("status") == "PASS", "OTA manifest fixture report did not PASS", errors)
-    cases = {case.get("case"): case for case in data.get("cases", [])}
-    for case_name in [
-        "good",
-        "good_nucleo_bringup",
-        "bad_invalid_hash",
-        "bad_wrong_board",
-        "bad_missing_blockers",
-        "bad_low_battery",
-        "bad_interrupted_transfer",
-        "bad_recording_active",
-    ]:
-        require(case_name in cases, f"missing fixture case: {case_name}", errors)
-        if case_name in cases:
-            require(cases[case_name].get("status") == "PASS", f"fixture case did not PASS: {case_name}", errors)
-    require(REQUIRED_BLOCKERS <= set(data.get("required_blockers", [])), "fixture report missing required blockers", errors)
-    required_bits = data.get("required_blocker_bits", {})
-    for bit, blocker in enumerate(
+    protocol = json.loads(protocol_path.read_text(encoding="utf-8"))
+    require(protocol.get("name") == "denzic_ota_v1", "shared protocol name drifted", errors)
+    require(protocol.get("version") == 1, "shared protocol version drifted", errors)
+    require(protocol.get("magic_ascii") == "DOV1", "shared protocol magic drifted", errors)
+    require(protocol.get("control_bytes") == 16, "shared control size drifted", errors)
+    require(protocol.get("data_header_bytes") == 4, "shared data header size drifted", errors)
+    require(protocol.get("status_bytes") == 24, "shared status size drifted", errors)
+
+
+def check_embedded_product(errors: list[str]) -> None:
+    makefile = read(REPO_ROOT / "cubeide" / "Companion_BLE_Ota_Loader" / "Makefile", errors)
+    adapter = read(
+        REPO_ROOT
+        / "cubeide"
+        / "Companion_BLE_Ota_Loader"
+        / "Src"
+        / "companion_ota_v1.c",
+        errors,
+    )
+    app_ble = read(
+        REPO_ROOT / "cubeide" / "Companion_BLE_Ota_Loader" / "Src" / "app_ble.c",
+        errors,
+    )
+    package_tool = read(REPO_ROOT / "tools" / "package_ota_firmware.ps1", errors)
+    require_tokens(
+        makefile,
         [
-            "recording_active",
-            "transfer_active",
-            "diag_export_active",
-            "low_battery",
-            "wrong_board_target",
-            "invalid_hash",
-            "interrupted_transfer",
-        ]
-    ):
-        require(str(required_bits.get(blocker)) == str(bit), f"fixture report missing blocker bit {blocker}={bit}", errors)
-    good = cases.get("good", {})
-    require(good.get("actual_valid") is True, "good CE manifest fixture must validate", errors)
-    good_nucleo = cases.get("good_nucleo_bringup", {})
-    require(good_nucleo.get("actual_valid") is True, "good NUCLEO manifest fixture must validate", errors)
-    expected_messages = {
-        "bad_invalid_hash": "invalid_hash",
-        "bad_wrong_board": "wrong_board_target",
-        "bad_low_battery": "low_battery",
-        "bad_interrupted_transfer": "interrupted_transfer",
-        "bad_recording_active": "recording_active",
-    }
-    for case_name, blocker in expected_messages.items():
-        messages = cases.get(case_name, {}).get("host_messages", [])
-        require(
-            any(item.get("blocker") == blocker and item.get("action") for item in messages),
-            f"fixture case {case_name} missing actionable host message for {blocker}",
-            errors,
-        )
-
-
-def check_validation_entrypoints(errors: list[str]) -> None:
-    wrapper = read_text(OTA_STATIC_WRAPPER, errors)
-    for anchor in ["verify_ota_contract_static.py", "Python 3 is required"]:
-        require(anchor in wrapper, f"verify_ota_contract_static.ps1 missing anchor: {anchor}", errors)
-
-
-def check_reuse_boundary(errors: list[str]) -> None:
-    text = read_text(REUSE_MAP, errors)
-    for anchor in [
-        "components/firmware_ota",
-        "ports/esp32/ble_firmware_ota",
-        "manifest discipline",
-        "ESP-IDF OTA slots",
-        "NimBLE service code",
-        "no reuse",
-    ]:
-        require(anchor in text, f"reuse map missing OTA boundary: {anchor}", errors)
-
-
-def check_local_ota_loader(errors: list[str]) -> None:
-    text = read_text(OTA_LOADER_APP_BLE, errors)
-    otas_app = read_text(OTA_LOADER_OTAS_APP, errors)
-    otas_stm = read_text(OTA_LOADER_OTAS_STM, errors)
-    companion_v2 = read_text(OTA_LOADER_COMPANION_V2, errors)
-    makefile = read_text(OTA_LOADER_MAKEFILE, errors)
-    svc_ctl = read_text(OTA_LOADER_SVC_CTL, errors)
-    system = read_text(OTA_LOADER_SYSTEM, errors)
-    for anchor in [
-        '#define COMPANION_BLE_PRODUCT_NAME "companion"',
-        "#define COMPANION_BLE_IO_CAPABILITY CFG_IO_CAPABILITY_NO_INPUT_NO_OUTPUT",
-        "#define COMPANION_BLE_BONDING_MODE 0",
-        "#define COMPANION_BLE_MITM_PROTECTION 0",
-        '#include "ble_l2cap_aci.h"',
-        "#define COMPANION_OTA_CONN_INTERVAL_MIN 0x0006u",
-        "#define COMPANION_OTA_CONN_INTERVAL_MAX 0x0006u",
-        "#define COMPANION_OTA_CONN_LATENCY 0x0000u",
-        "#define COMPANION_OTA_CONN_TIMEOUT 0x0064u",
-        '#include "otas_stm.h"',
-        "SVCCTL_Init();",
-        "Companion_Ota_RequestFastConnection(connectionHandle);",
-        "aci_l2cap_connection_parameter_update_req",
-        "aci_gatt_update_char_value(gap_service_handle, gap_dev_name_char_handle",
-        "void OTAS_APP_ProcessDeferredFinalize(void);",
-        "OTAS_APP_ProcessDeferredFinalize();",
-    ]:
-        require(anchor in text, f"local OTA loader missing anchor: {anchor}", errors)
-    require(
-        text.find("SVCCTL_Init();") < text.find("Adv_Request();"),
-        "local OTA loader must initialize services before advertising",
+            "Src/companion_ota_v1.c",
+            "$(DENZIC_OTA)/src/denzic_ota_v1.c",
+            "$(DENZIC_OTA)/include",
+        ],
+        "embedded Makefile",
         errors,
     )
-    require(
-        "OTAS_STM_Init();" not in text,
-        "local OTA loader app_ble.c must not manually call OTAS_STM_Init; SVCCTL_SvcInit already registers it",
+    require_tokens(
+        adapter,
+        [
+            "void SVCCTL_SvcInit(void)",
+            "denzic_ota_v1_init",
+            "denzic_ota_v1_handle_control",
+            "denzic_ota_v1_handle_data",
+            "denzic_ota_v1_encode_status",
+            "COMPANION_OTA_V1_REBOOT_GRACE_MS",
+        ],
+        "Companion embedded adapter",
         errors,
     )
-    require(
-        all(anchor in svc_ctl for anchor in ["void SVCCTL_Init( void )", "SVCCTL_SvcInit();", "__WEAK void SVCCTL_SvcInit(void)", "OTAS_STM_Init();"]),
-        "ST svc_ctl.c must keep OTAS_STM_Init inside the SVCCTL_SvcInit service-registration path",
+    require_tokens(
+        package_tool,
+        [
+            'name = "denzic_ota_v1"',
+            "version = 1",
+            'firmware_capability = "denzic_ota_v1"',
+            'gatt_contract = "denzic_ota_v1"',
+            'kind = "denzic_ota_v1_stm32wb_loader"',
+        ],
+        "Companion package tool",
         errors,
     )
-    svc_init = re.search(r"__WEAK\s+void\s+SVCCTL_SvcInit\s*\(void\)\s*\{(?P<body>.*?)\n\}", svc_ctl, re.S)
-    require(svc_init is not None and "OTAS_STM_Init();" in svc_init.group("body"), "SVCCTL_SvcInit must be the single OTAS_STM_Init owner", errors)
-    for anchor in [
-        "OTA := $(CUBE)/Projects/P-NUCLEO-WB55.Nucleo/Applications/BLE/BLE_Ota",
-        "$(OTA)/Core/Src/app_entry.c",
-        "$(OTA)/Core/Src/flash_driver.c",
-        "Src/system_stm32wbxx.c",
-        "$(BUILD_DIR)/system_stm32wbxx.o: Src/system_stm32wbxx.c | $(BUILD_DIR)",
-        "$(CUBE)/Middlewares/ST/STM32_WPAN/ble/svc/Src/svc_ctl.c",
-        "$(CUBE)/Middlewares/ST/STM32_WPAN/ble/core/auto/ble_gatt_aci.c",
-        "COMPANION_OTA_LOADER_ALWAYS_ADVERTISE",
-        "Src/companion_ota_v2.c",
-    ]:
-        require(anchor in makefile, f"local OTA loader Makefile must keep ST BLE_Ota source anchor: {anchor}", errors)
-    require(
-        "SVCCTL_InitCustomSvc();" in svc_ctl,
-        "ST svc_ctl.c must keep the custom service hook after the ST OTA service registration",
-        errors,
-    )
-    require(
-        svc_ctl.find("OTAS_STM_Init();") < svc_ctl.find("SVCCTL_InitCustomSvc();"),
-        "Companion OTA v2 must register after the ST OTA fallback service from the generated custom hook",
-        errors,
-    )
-    for anchor in [
-        "#ifdef COMPANION_OTA_LOADER_ALWAYS_ADVERTISE",
-        "COMPANION_OTA_FW_APP_COOKIE_VALUE",
-        "COMPANION_OTA_FW_APP_COOKIE_MSG    (*(uint8_t*)(SRAM1_BASE+3))",
-        "static uint8_t CompanionConsumeFwAppCookie( void )",
-        "CFG_OTA_START_SECTOR_IDX_VAL_MSG == CFG_APP_START_SECTOR_INDEX",
-        "if(CompanionConsumeFwAppCookie() != 0)",
-        "JumpSelectionOnPowerUp();",
-        "Companion bring-up packages need the wired factory image to leave the board",
-        "CFG_OTA_REBOOT_VAL_MSG = CFG_REBOOT_ON_BLE_OTA_APP;",
-        "CFG_OTA_START_SECTOR_IDX_VAL_MSG = CFG_APP_START_SECTOR_INDEX;",
-        "CFG_OTA_NBR_OF_SECTOR_VAL_MSG = 0;",
-        "#endif /* COMPANION_OTA_LOADER_ALWAYS_ADVERTISE */",
-    ]:
-        require(anchor in system, f"local OTA loader system boot policy missing anchor: {anchor}", errors)
-    require(
-        system.find("CompanionConsumeFwAppCookie() != 0") < system.find("if(LL_RCC_IsActiveFlag_SFTRST"),
-        "local OTA loader must honor wired factory app handoff before reset-flag-specific ST paths",
-        errors,
-    )
-    for anchor in [
-        "8f7a0007-7b7d-4f3d-9d6f-6c2d1b7c0000",
-        "8f7a7002-7b7d-4f3d-9d6f-6c2d1b7c0000",
-        "8f7a7003-7b7d-4f3d-9d6f-6c2d1b7c0000",
-        "8f7a7004-7b7d-4f3d-9d6f-6c2d1b7c0000",
-        "CHAR_PROP_INDICATE",
-        "CHAR_PROP_WRITE | CHAR_PROP_WRITE_WITHOUT_RESP,\n                    ATTR_PERMISSION_NONE,\n                    GATT_NOTIFY_ATTRIBUTE_WRITE | GATT_NOTIFY_WRITE_REQ_AND_WAIT_FOR_APPL_RESP,",
-        "GATT_NOTIFY_WRITE_REQ_AND_WAIT_FOR_APPL_RESP",
-        "OTAS_STM_Is_Value_Handle",
-        "Base address and finish commands are handled in",
-        "Raw data is handled in ACI_GATT_WRITE_PERMIT_REQ_VSEVT_CODE",
-        "OTAS_STM_Is_Value_Handle(write_perm_req->Attribute_Handle, OTAS_Context.OTAS_Base_Addr_CharHdle) ||",
-        "OTAS_STM_Is_Value_Handle(write_perm_req->Attribute_Handle, OTAS_Context.OTAS_Raw_Data_CharHdle)",
-        "write_status = aci_gatt_write_resp",
-        "if(write_status == BLE_STATUS_SUCCESS)",
-        "notification.ChardId = OTAS_STM_BASE_ADDR_ID;",
-        "notification.ChardId = OTAS_STM_RAW_DATA_ID;",
-        "notification.pPayload = (uint8_t *)&(write_perm_req->Data[0]);",
-    ]:
-        require(anchor in otas_stm, f"local OTAS_STM adapter missing anchor: {anchor}", errors)
-    require(
-        otas_stm.count("GATT_NOTIFY_ATTRIBUTE_WRITE | GATT_NOTIFY_WRITE_REQ_AND_WAIT_FOR_APPL_RESP") >= 2,
-        "local OTAS_STM base and raw data characteristics must both wait for app write-permit responses",
-        errors,
-    )
-    require(
-        "CHAR_PROP_WRITE | CHAR_PROP_WRITE_WITHOUT_RESP,\n                    ATTR_PERMISSION_NONE,\n                    GATT_NOTIFY_ATTRIBUTE_WRITE," not in otas_stm,
-        "local OTAS_STM write characteristics must not regress to unacknowledged attribute-write callbacks",
-        errors,
-    )
-    finish = re.search(r"case\s+OTAS_STM_UPLOAD_FINISHED:(?P<body>.*?)case\s+OTAS_STM_CANCEL_UPLOAD:", otas_app, re.S)
-    require(finish is not None, "local OTA app missing OTAS_STM_UPLOAD_FINISHED block", errors)
-    if finish is not None:
-        body = finish.group("body")
-        require(
-            "OTAS_APP_RequestDeferredFinalize();" in body,
-            "OTA finish must defer confirmation/finalize outside the finish write callback",
-            errors,
-        )
-        require(
-            "OTAS_APP_FinalizeUpload" not in body and "NVIC_SystemReset" not in body and "OTAS_STM_UpdateChar" not in body,
-            "OTA finish write callback must return promptly; confirmation/finalize/reset belongs to the sequencer task or confirmation event",
-            errors,
-        )
-    confirm = re.search(r"case\s+OTAS_STM_CONF_EVENT_ID:(?P<body>.*?)break;", otas_app, re.S)
-    require(confirm is not None, "local OTA app missing OTAS_STM_CONF_EVENT_ID block", errors)
-    if confirm is not None:
-        require(
-            "OTAS_APP_FinalizeUpload();" in confirm.group("body"),
-            "OTA app must finalize/reboot from the ST indication confirmation event",
-            errors,
-        )
-    require(
-        "HAL_Delay(" not in finish.group("body") if finish is not None else True,
-        "OTA finish write callback must not block the BLE event path with HAL_Delay before reset",
-        errors,
-    )
-    ble_user_evt_idx = text.find("static void BLE_UserEvtRx")
-    svc_evt_idx = text.find("SVCCTL_UserEvtRx", ble_user_evt_idx)
-    drain_idx = text.find("OTAS_APP_ProcessDeferredFinalize();", svc_evt_idx)
-    drain_return_idx = text.find("return;", drain_idx)
-    require(ble_user_evt_idx >= 0, "local OTA loader missing BLE_UserEvtRx body", errors)
-    require(
-        ble_user_evt_idx >= 0 and svc_evt_idx > ble_user_evt_idx and drain_idx > svc_evt_idx,
-        "Companion OTA deferred finalize must be drained after ST service event processing",
-        errors,
-    )
-    require(
-        drain_return_idx > drain_idx,
-        "Companion OTA deferred finalize must run before BLE_UserEvtRx returns",
-        errors,
-    )
-    for anchor in [
-        "#define COMPANION_OTA_REBOOT_CONFIRM_GRACE_MS",
-        "OTAS_STM_UpdateChar(OTAS_STM_CONF_ID",
-        "static void OTAS_APP_FinalizeUpload(void)",
-        "static void OTAS_APP_ResetCompletionState(void)",
-        "static void OTAS_APP_RequestDeferredFinalize(void)",
-        "void OTAS_APP_ProcessDeferredFinalize(void)",
-        "HAL_Delay(COMPANION_OTA_REBOOT_CONFIRM_GRACE_MS)",
-        "COMPANION_OTA_FW_APP_COOKIE_VALUE",
-        "COMPANION_OTA_FW_APP_COOKIE_MSG    (*(uint8_t*)(SRAM1_BASE+3))",
-        "COMPANION_OTA_FW_APP_COOKIE_MSG = COMPANION_OTA_FW_APP_COOKIE_VALUE;",
-    ]:
-        require(anchor in otas_app, f"local OTA app must set Companion fw-app cookie before reboot: {anchor}", errors)
-    require(
-        all(token not in otas_app for token in [
-            '#include "stm32_seq.h"',
-            "COMPANION_OTA_REBOOT_TASK_ID",
-            "COMPANION_OTA_REBOOT_TASK_BM",
-            "UTIL_SEQ_RegTask",
-            "UTIL_SEQ_SetTask",
-        ]),
-        "Companion OTA deferred finalize must not depend on a private sequencer task bit",
-        errors,
-    )
-    for anchor in [
-        '#include "companion_ota_v2.h"',
-        "void SVCCTL_InitCustomSvc(void)",
-        "Companion_Ota_V2_Init();",
-        "COMPANION_OTA_V2_SERVICE_UUID",
-        "COMPANION_OTA_V2_CONTROL_UUID",
-        "COMPANION_OTA_V2_DATA_UUID",
-        "COMPANION_OTA_V2_STATUS_UUID",
-        "CHAR_PROP_WRITE | CHAR_PROP_WRITE_WITHOUT_RESP",
-        "CHAR_PROP_READ",
-        "GATT_NOTIFY_ATTRIBUTE_WRITE",
-        "COMPANION_OTA_V2_DATA_PAYLOAD_MAX",
-        "COMPANION_OTA_V2_DEFAULT_WINDOW_CHUNKS",
-        "COMPANION_OTA_V2_ERROR_OFFSET_MISMATCH",
-        "Companion_Ota_V2_Set_Recoverable_Error(COMPANION_OTA_V2_ERROR_OFFSET_MISMATCH)",
-        "CompanionOtaV2Context.state = COMPANION_OTA_V2_STATE_RECEIVING;",
-        "FD_EraseSectors(CFG_APP_START_SECTOR_INDEX",
-        "FD_WriteData(CompanionOtaV2Context.flash_address",
-        "CFG_OTA_REBOOT_VAL_MSG = CFG_REBOOT_ON_FW_APP;",
-        "HAL_Delay(COMPANION_OTA_V2_REBOOT_GRACE_MS);",
-    ]:
-        require(anchor in companion_v2, f"Companion OTA v2 service missing anchor: {anchor}", errors)
-    require(
-        "Companion_Ota_V2_Set_Error(COMPANION_OTA_V2_ERROR_OFFSET_MISMATCH)" not in companion_v2,
-        "Companion OTA v2 offset mismatch must remain recoverable so Type can resync from device status",
+    obsolete_files = ["otas_app.c", "otas_stm.c", "companion_ota_v2.c", "companion_ota_v2.h"]
+    source_dir = REPO_ROOT / "cubeide" / "Companion_BLE_Ota_Loader" / "Src"
+    for name in obsolete_files:
+        require(not (source_dir / name).exists(), f"obsolete OTA runtime still exists: {name}", errors)
+        require(name not in makefile, f"embedded Makefile still compiles obsolete OTA runtime: {name}", errors)
+    forbid_tokens(
+        adapter + app_ble + makefile + package_tool,
+        ["companion_ota_v2", "companion_ble_ota_v2", "stm32wb_st_ble_ota", "STM32WB_ST_OTA"],
+        "Companion embedded OTA runtime",
         errors,
     )
 
 
-def check_wired_package_tooling(errors: list[str]) -> None:
-    flash = read_text(FLASH_TOOL, errors)
-    wireless_stack = read_text(WIRELESS_STACK_TOOL, errors)
-    package = read_text(PACKAGE_TOOL, errors)
-    type_package = read_text(TYPE_PACKAGE_TOOL, errors)
-    readiness = read_text(BRINGUP_READINESS_TOOL, errors)
-    manual_gate = read_text(MANUAL_GATE_TOOL, errors)
-    ble_ota = read_text(BLE_OTA_TOOL, errors)
-    wired_flash = read_text(WIRED_FLASH_TOOL, errors)
-    type_a1_a2 = read_text(TYPE_A1_A2_TOOL, errors)
-    type_visual = read_text(TYPE_VISUAL_TOOL, errors)
-    type_ui_manual = read_text(TYPE_UI_MANUAL_TOOL, errors)
-    hardware_acceptance = read_text(HARDWARE_ACCEPTANCE_TOOL, errors)
-
-    for anchor in [
-        "[switch] $FlashPackage",
-        "[string] $PackagePath",
-        "function Show-OperatorPrompt",
-        "[System.Media.SystemSounds]::Exclamation.Play()",
-        "[Console]::Beep(880, 220)",
-        "System.Windows.Forms.MessageBox",
-        "Resolve-FactoryManifest",
-        "Get-WiredFactoryArtifacts",
-        "package_type must be companion-wired-factory",
-        "ota_loader",
-        "Factory artifact hash mismatch",
-        "Invoke-ProgrammerWrite",
-        "$otaHandoffBaseAddress = \"0x20000000\"",
-        "$otaHandoffFwApp = @(\"0x00\", \"0x07\", \"0x00\", \"0xC3\")",
-        "Invoke-ProgrammerOtaFwAppHandoff",
-        "Wired factory package app handoff",
-        "@(\"-w8\", $otaHandoffBaseAddress) + $otaHandoffFwApp",
-        "@(\"-r8\", $otaHandoffBaseAddress, \"4\", \"-rst\")",
-        "factory artifact $($artifact.Role)",
-        "PASS: $targetLabel flashed.",
-        "tools\\provision_companion_wireless_stack.ps1 -CheckOnly",
-    ]:
-        require(anchor in flash, f"flash.ps1 missing wired package anchor: {anchor}", errors)
-
-    for anchor in [
-        "companion.wb55_wireless_stack.provisioning.v1",
-        "[switch] $ReadFusInfo",
-        "[switch] $InstallBleStack",
-        "[switch] $WorkflowLockHeld",
-        "function Show-OperatorPrompt",
-        "[System.Media.SystemSounds]::Exclamation.Play()",
-        "[Console]::Beep(880, 220)",
-        "[int] $PromptTimeoutSeconds = 90",
-        "WScript.Shell",
-        "$popup.Popup",
-        "stm32wb5x_BLE_Stack_full_fw.bin",
-        "0x495_FUS_Operator.bin",
-        "Find-FusOperatorForProgrammer",
-        "FUS operator binary found",
-        "BLOCKED_TOOLCHAIN",
-        "$installAddress = \"0x080D0000\"",
-        "$connectArgs = @(\"port=$Port\", \"mode=UR\", \"reset=HWrst\", \"freq=4000\")",
-        "Wireless Coprocessor Binary Table, STM32WB5xxG(1M), V1.24.0",
-        "FUS_v2 only",
-        "STM32_Programmer_CLI.exe -c $($connectArgs -join ' ') -startfus",
-        "$fusInfoAddress = \"0x20030030\"",
-        "$fusFallbackAddress = \"0x20010010\"",
-        "02020[0-9A-F]00",
-        "fus_v2_2_ready_for_wireless_stack",
-        "-fwupgrade",
-        "firstinstall=0",
-        "nSWboot0=1",
-        "Companion WB55 无线栈操作确认",
-        "$status = \"CANCELLED\"",
-        "wireless stack action cancelled before hardware access",
-        "Refusing to touch Companion WB55 hardware without workflow lock acknowledgement",
-        "This script will not auto-upgrade FUS",
-        "companion_wireless_stack_result_json=",
-        "companion-wireless-stack-summary.json",
-    ]:
-        require(anchor in wireless_stack, f"provision_companion_wireless_stack.ps1 missing anchor: {anchor}", errors)
-
-    for anchor in [
-        "-FlashPackage -PackagePath",
-        "factory\\$factoryPackageName\\manifest.json",
-        "restore both the ST BLE_Ota loader and Companion app over SWD",
-        "Use STM32CubeProgrammer or tools/flash.ps1 -FlashPackage",
-        "blocker_bitmap",
-        "charger_required",
-        "host_messages",
-    ]:
-        require(anchor in package, f"package_ota_firmware.ps1 missing wired package anchor: {anchor}", errors)
-
+def check_host_product(errors: list[str]) -> None:
+    cargo = read(TYPE_ROOT / "apps" / "windows" / "src-tauri" / "Cargo.toml", errors)
+    adapter = read(
+        TYPE_ROOT
+        / "apps"
+        / "windows"
+        / "src-tauri"
+        / "src"
+        / "backend"
+        / "firmware_ota.rs",
+        errors,
+    )
+    bridge = read(
+        TYPE_ROOT
+        / "apps"
+        / "windows"
+        / "src-tauri"
+        / "src"
+        / "backend"
+        / "ble_bridge.rs",
+        errors,
+    )
+    commands = read(
+        TYPE_ROOT / "apps" / "windows" / "src-tauri" / "src" / "commands.rs",
+        errors,
+    )
+    lib = read(TYPE_ROOT / "apps" / "windows" / "src-tauri" / "src" / "lib.rs", errors)
+    require_tokens(
+        cargo,
+        ['denzic-ota-core = { path = "../../../third_party/denzic-platform/ota/host/rust" }'],
+        "Companion-Type Cargo",
+        errors,
+    )
+    require_tokens(
+        adapter,
+        [
+            'const PACKAGE_TYPE: &str = "companion-firmware-ota";',
+            "denzic_ota_core::PROTOCOL_NAME",
+            "denzic_ota_core::PROTOCOL_VERSION",
+            "file.sha256",
+            "validate_package",
+            "8f7a8007-7b7d-4f3d-9d6f-6c2d1b7c0000",
+            "8f7a8002-7b7d-4f3d-9d6f-6c2d1b7c0000",
+            "8f7a8004-7b7d-4f3d-9d6f-6c2d1b7c0000",
+            "8f7a8005-7b7d-4f3d-9d6f-6c2d1b7c0000",
+        ],
+        "Companion-Type product adapter",
+        errors,
+    )
+    require_tokens(
+        bridge,
+        [
+            "impl denzic_ota_core::OtaV1Transport for CompanionOtaV1Transport",
+            "denzic_ota_core::transfer(",
+            "WriteType::WithoutResponse",
+            "read_status",
+            "write_finish",
+        ],
+        "Companion-Type BLE transport",
+        errors,
+    )
+    require("transfer_companion_firmware_ota" in commands, "host command is not exposed", errors)
     require(
-        "-FlashNucleoBringup -ImagePath <package>\\factory" not in package,
-        "package script must not document the old app-only wired flash command",
+        "commands::transfer_companion_firmware_ota" in lib,
+        "host command is not registered with Tauri",
+        errors,
+    )
+    require("--firmware-ota-transfer" in lib, "host OTA CLI is not exposed", errors)
+    require("firmware_ota_result_json=" in lib, "host OTA CLI lacks machine evidence", errors)
+    forbid_tokens(
+        adapter + bridge + commands + lib,
+        ["companion_ota_v2", "companion_ble_ota_v2", "stm32wb_st_ble_ota", "STM32WB_ST_OTA"],
+        "Companion-Type OTA runtime",
         errors,
     )
 
-    for anchor in [
-        "STM32WB_ST_OTA_TRANSPORT_BOUNDARY",
-        "gattConfirmUuid",
-        "stm32wb_st_manifest_requires_confirm_gatt_boundary",
-        "FirmwareOtaBleTransferTransport",
-        "request.manifest.protocolName === STM32WB_ST_OTA_TRANSPORT_BOUNDARY.protocolName",
-        "evaluateFirmwareOtaPreflight",
-        "--wired-firmware-check",
-        "companion-wired-factory",
-        "ota_loader",
-        "Invoke-TypeUiSamePackageCheck",
-        "Type Companion temporary debug page same-package check",
-        "tools\\\\verify_companion_bringup_readiness.ps1",
-        "Invoke-TypeStm32OtaConfirmCheck",
-        "selectedPackage?.path ?? null",
-        "import { FirmwareOtaPanel } from './FirmwareOtaPanel';",
-        "COMPANION_FIRMWARE_PANEL_BLE_STATUS",
-        "bleStatus={COMPANION_FIRMWARE_PANEL_BLE_STATUS}",
-        'params.get("visual") === "settings-companion"',
-        'isSettingsCompanionVisual ? `"companion`" : `"device`"',
-        "tools\\\\verify_companion_wired_flash.ps1",
-        "Companion wired factory flash validation",
-        "isStm32WbSwdTarget(selectedPayload?.target)",
-        "const activeWiredPort = stm32WbSwd ? 'SWD' : port",
-        "settings.recording.wiredFirmwareStm32Desc",
-        "settings.recording.wiredFirmwareProgressConnectingSwd",
-        "function isStm32WbSwdTarget",
-        "stm32wb55ceux",
-        "STM32WB ST OTA confirmation indication is required",
-        "Type STM32WB ST OTA stable raw write check",
-        "stm32wb_st_ota_uses_large_confirmed_chunks_and_caps_no_response",
-        "COMPANION_OTA_V2_TRANSPORT_BOUNDARY",
-        "isCompanionOtaV2Manifest",
-        "request.manifest.protocolName === COMPANION_OTA_V2_TRANSPORT_BOUNDARY.protocolName",
-        "Companion OTA v2 window/status transport",
-        "companion_ota_v2",
-        "PASS: Companion package is accepted by Type Companion OTA/wired static integration checks.",
-    ]:
-        require(anchor in type_package, f"verify_type_companion_package_static.ps1 missing anchor: {anchor}", errors)
 
-    for anchor in [
-        "[switch] $Full",
-        "verify_listener_vka1_static.py",
-        "verify_ota_contract_static.py",
-        "verify_type_companion_package_static.ps1",
-        "verify_companion_manual_gate_evidence.ps1",
-        "verify_companion_ble_ota.ps1",
-        "verify_companion_wired_flash.ps1",
-        "verify_companion_type_a1_a2.ps1",
-        "verify_companion_type_ui_manual.ps1",
-        "verify_companion_hardware_acceptance.ps1",
-        "capture_type_companion_visual.ps1",
-        "-SkipTypeRust",
-        "-IncludeTypeHarness",
-        "independent_release_gate",
-        "type_harness_included",
-        "Companion build environment check",
-        "Companion BLE probe self-test",
-        "Companion recording cache model",
-        "Companion diagnostics static",
-        "npm.cmd",
-        "PASS_STATIC_MANUAL_GATES_REMAIN",
-        "ConvertTo-ReadinessMarkdown",
-        "Companion Bring-Up Readiness Report",
-        "Manual Gates Remaining",
-        "summary.md",
-        "summary_markdown",
-        "Companion A1/A2 bench validation",
-        "real Companion BLE OTA bench validation",
-        "Companion BLE OTA validation",
-        "Companion BLE OTA dry run",
-        "Companion wired factory flash validation",
-        "Companion wired flash dry run",
-        "Companion Type UI validation",
-        "Companion Type UI manual dry run",
-        "Companion hardware acceptance dry run",
-        "Type temporary Companion visual smoke",
-        "type-companion-visual",
-        "type-companion-visual-summary.json",
-        "Type temporary Companion debug page",
-        "manual_evidence_verifier",
-        "hardware_acceptance_runner",
-        "hardware_acceptance_dry_run",
-        "Companion manual gate evidence checklist",
-        "hardware-acceptance-dry-run",
-        "type-ui-manual-dry-run",
-        "companion-type-ui-manual-summary.json",
-        "companion-hardware-acceptance-summary.json",
-        "-TypeUiEvidencePath",
-    ]:
-        require(anchor in readiness, f"verify_companion_bringup_readiness.ps1 missing anchor: {anchor}", errors)
-
-    for anchor in [
-        "companion.type_visual.v1",
-        "settings-companion",
-        "--headless=new",
-        "--screenshot=",
-        "--dump-dom",
-        "Companion Pendant bring-up",
-        "A1 smoke",
-        "A2 smoke",
-        "蓝牙 OTA",
-        "总体验收",
-        "ST-LINK / SWD",
-        "type_companion_visual_result_json=",
-        "Stop-ProcessTree -RootProcessId",
-        "--strictPort",
-        "AllowTimeoutWithArtifact",
-        "type-companion-visual-summary.json",
-    ]:
-        require(anchor in type_visual, f"capture_type_companion_visual.ps1 missing anchor: {anchor}", errors)
-
-    for anchor in [
-        "companion.manual_gate_evidence.v1",
-        "[switch] $ChecklistOnly",
-        "CHECKLIST_PENDING",
-        "firmware_ota_result_json=",
-        "companion_ble_ota_result_json=",
-        "companion_wired_flash_result_json=",
-        "companion_type_ui_manual_result_json=",
-        "type_report_json",
-        "companion-wired-factory",
-        "wired execution mode accepted for companion factory flash",
-        "verify_companion_ble_ota.ps1",
-        "verify_companion_wired_flash.ps1",
-        "wired_firmware_result_json=",
-        "extra",
-        "result",
-        "companion_ota_v2",
-        "STM32WB wired factory flash completed and verified by STM32CubeProgrammer",
-        "real Companion A1/A2 bench validation",
-        "real Companion BLE OTA bench validation",
-        "real Companion wired flash from same package",
-        "Type temporary Companion debug page",
-        "companion.type_ui_manual.validation.v1",
-        "operator_confirmed",
-        "Type UI required actions include the aggregate hardware acceptance command",
-        "总体验收 / Companion hardware acceptance",
-        "including visible BLE OTA, wired flash, and 总体验收 entries",
-        "Companion Manual Gate Evidence",
-    ]:
-        require(anchor in manual_gate, f"verify_companion_manual_gate_evidence.ps1 missing anchor: {anchor}", errors)
-
-    for anchor in [
-        "companion.type_ui_manual.validation.v1",
-        "[switch] $Execute",
-        "[switch] $WorkflowLockHeld",
-        "Show-OperatorPrompt",
-        "[System.Media.SystemSounds]::Exclamation.Play()",
-        "[Console]::Beep(880, 220)",
-        "Companion Type 页面真机验证",
-        "确认 Companion Type 页面结果",
-        "BLE 订阅是绿色 PASS",
-        "A1 短语音测试是绿色 PASS",
-        "A2 长语音测试是绿色 PASS",
-        "蓝牙升级和有线刷机入口都能看到",
-        "with-lock -Resource Companion-WB55,BLE-Companion",
-        "companion_type_ui_manual_result_json=",
-        "DRY-RUN: Companion Type UI manual validation is ready.",
-        "Refusing to run Companion Type UI manual validation without -WorkflowLockHeld.",
-        "companion-type-ui-manual-summary.json",
-        "总体验收",
-        "aggregate acceptance entry",
-    ]:
-        require(anchor in type_ui_manual, f"verify_companion_type_ui_manual.ps1 missing anchor: {anchor}", errors)
-
-    for anchor in [
-        "companion.hardware_acceptance.validation.v1",
-        "[switch] $Execute",
-        "[switch] $WorkflowLockHeld",
-        "[switch] $SkipWirelessStackProvisioning",
-        "Show-OperatorPrompt",
-        "[System.Media.SystemSounds]::Exclamation.Play()",
-        "[Console]::Beep(880, 220)",
-        "Companion 总体验收即将开始",
-        "with-lock -Resource Companion-WB55,BLE-Companion",
-        "provision_companion_wireless_stack.ps1",
-        "-InstallBleStack",
-        "verify_companion_type_a1_a2.ps1",
-        "verify_companion_ble_ota.ps1",
-        "-PrepareLoaderWithSwd",
-        "verify_companion_wired_flash.ps1",
-        "verify_companion_type_ui_manual.ps1",
-        "verify_companion_manual_gate_evidence.ps1",
-        "ensure CPU2 BLE wireless stack",
-        "real Companion wired flash from same package",
-        "-A1A2SummaryPath",
-        "-BleOtaEvidencePath",
-        "-WiredFlashEvidencePath",
-        "-TypeUiEvidencePath",
-        "- Wireless stack: ``$($Report[\"evidence\"][\"wireless_stack\"])``",
-        "manual gate evidence verifier",
-        "companion_hardware_acceptance_result_json=",
-        "DRY-RUN: Companion hardware acceptance runner is ready.",
-        "Refusing to run Companion hardware acceptance without -WorkflowLockHeld.",
-        "请确认 Companion 已接好 ST-LINK USB",
-        "flashes the same package OTA loader and unified Companion VKA1 app before A1/A2",
-        "optional legacy Type UI gate against the same unified Companion VKA1 app",
-        "transfers the same package over the Companion OTA v2 path",
-        "有线刷机、录音链路和蓝牙升级",
-    ]:
-        require(anchor in hardware_acceptance, f"verify_companion_hardware_acceptance.ps1 missing anchor: {anchor}", errors)
-    type_ui_call = 'Invoke-AcceptanceStep -Name "Type temporary Companion debug page"'
-    wireless_call = 'Invoke-AcceptanceStep -Name "ensure CPU2 BLE wireless stack"'
-    a1_a2_call = 'Invoke-AcceptanceStep -Name "real Companion A1/A2 bench validation"'
-    wired_call = 'Invoke-AcceptanceStep -Name "real Companion wired flash from same package"'
-    ble_ota_call = 'Invoke-AcceptanceStep -Name "real Companion BLE OTA bench validation"'
-    require(
-        0 <= hardware_acceptance.find(wireless_call) < hardware_acceptance.find(wired_call),
-        "hardware acceptance runner must provision/read the CPU2 BLE wireless stack before wired package flashing",
+def check_cross_product_gate(errors: list[str]) -> None:
+    gate = read(REPO_ROOT / "tools" / "verify_type_companion_package_static.ps1", errors)
+    require_tokens(
+        gate,
+        [
+            "..\\..\\Companion-Type",
+            "Assert-HostAdapter",
+            "Assert-EmbeddedAdapter",
+            "COMPANION_TYPE_OTA_TEST_MANIFEST",
+            "validates_external_package_when_requested",
+            "PASS: Companion OTA v1 package is implemented and validated on both host and embedded sides.",
+        ],
+        "cross-product OTA gate",
         errors,
     )
-    require(
-        0 <= hardware_acceptance.find(wired_call) < hardware_acceptance.find(a1_a2_call),
-        "hardware acceptance runner must flash the unified package app before A1/A2",
-        errors,
-    )
-    require(
-        0 <= hardware_acceptance.find(a1_a2_call) < hardware_acceptance.find(type_ui_call),
-        "hardware acceptance runner must execute Type UI after A1/A2 on the same unified app",
-        errors,
-    )
-    require(
-        0 <= hardware_acceptance.find(type_ui_call) < hardware_acceptance.find(ble_ota_call),
-        "hardware acceptance runner must execute Type UI before BLE OTA",
-        errors,
-    )
-
-    for anchor in [
-        "companion.type_a1_a2.validation.v1",
-        "Listener Type\\Logs\\listener-type.log",
-        "[string] $A1PlaybackTextList",
-        "$DefaultA1PlaybackTexts",
-        "--probe-embedded-audio-ble-subscription",
-        "companion_type_a1_a2_result_json=",
-        "Refusing to run Companion A1/A2 hardware validation without -WorkflowLockHeld.",
-    ]:
-        require(anchor in type_a1_a2, f"verify_companion_type_a1_a2.ps1 missing anchor: {anchor}", errors)
-
-    for anchor in [
-        "companion.ble_ota.validation.v1",
-        "[switch] $Execute",
-        "[switch] $WorkflowLockHeld",
-        "Show-OperatorPrompt",
-        "[System.Media.SystemSounds]::Exclamation.Play()",
-        "[Console]::Beep(880, 220)",
-        "Companion BLE OTA 验证即将开始",
-        "--firmware-ota-transfer",
-        "firmware_ota_result_json=",
-        "companion_ble_ota_result_json=",
-        "companion_ota_v2",
-        "versionConfirmed",
-        "DRY-RUN: Companion BLE OTA validation is ready.",
-        "Refusing to run Companion BLE OTA validation without -WorkflowLockHeld.",
-    ]:
-        require(anchor in ble_ota, f"verify_companion_ble_ota.ps1 missing anchor: {anchor}", errors)
-
-    for anchor in [
-        "companion.wired_flash.validation.v1",
-        "[switch] $Execute",
-        "[switch] $WorkflowLockHeld",
-        "Show-OperatorPrompt",
-        "[System.Media.SystemSounds]::Exclamation.Play()",
-        "[Console]::Beep(880, 220)",
-        "Companion 有线刷机验证即将开始",
-        "Invoke-CompanionFlashTool",
-        "tools\\flash.ps1",
-        "-FlashPackage",
-        "companion_wired_flash_result_json=",
-        "Companion wired factory flash validation",
-        "STM32WB wired factory flash completed and verified by STM32CubeProgrammer",
-        "DRY-RUN",
-        "Refusing to run Companion wired flash validation without -WorkflowLockHeld.",
-    ]:
-        require(anchor in wired_flash, f"verify_companion_wired_flash.ps1 missing anchor: {anchor}", errors)
 
 
 def main() -> int:
     errors: list[str] = []
-    check_ota_doc(errors)
-    check_flash_doc(errors)
-    check_ble_contract(errors)
-    check_diag_events(errors)
-    check_fixture_report(errors)
-    check_validation_entrypoints(errors)
-    check_reuse_boundary(errors)
-    check_local_ota_loader(errors)
-    check_wired_package_tooling(errors)
-
+    check_shared_core(errors)
+    check_embedded_product(errors)
+    check_host_product(errors)
+    check_cross_product_gate(errors)
     if errors:
-        print("FAIL: Companion OTA static checks failed:", file=sys.stderr)
+        print("FAIL: Companion Denzic OTA v1 contract checks failed:", file=sys.stderr)
         for error in errors:
             print(f" - {error}", file=sys.stderr)
         return 1
-    print("PASS: Companion OTA readiness contract static checks passed.")
+    print("PASS: one Denzic OTA v1 contract is wired through shared host and embedded cores.")
     return 0
 
 

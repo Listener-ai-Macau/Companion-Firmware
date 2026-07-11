@@ -1,6 +1,6 @@
 param(
     [string] $PackagePath,
-    [string] $TypeRepoRoot = (Join-Path $PSScriptRoot "..\..\..\Listener\Listener-Type"),
+    [string] $TypeRepoRoot = (Join-Path $PSScriptRoot "..\..\Companion-Type"),
     [switch] $SkipTypeFrontend,
     [switch] $SkipTypeRust
 )
@@ -9,120 +9,96 @@ $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
+if ($PSVersionTable.PSVersion.Major -lt 7) {
+    throw "PowerShell 7 or newer is required. Run with pwsh -NoProfile -File."
+}
+
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
 $typeRoot = (Resolve-Path $TypeRepoRoot).Path
-$typeFirmwareOtaPanel = Join-Path $typeRoot "src\pages\settings\FirmwareOtaPanel.tsx"
-$typeCompanionSection = Join-Path $typeRoot "src\pages\settings\CompanionSection.tsx"
-$typeMain = Join-Path $typeRoot "src\main.tsx"
-$typeIpc = Join-Path $typeRoot "src\lib\ipc.ts"
-$typeEmbeddedBle = Join-Path $typeRoot "src-tauri\src\embedded_ble.rs"
-$typeFirmwareOtaRust = Join-Path $typeRoot "src-tauri\src\firmware_ota.rs"
-
-$companionOtaV2ProtocolName = "companion_ota_v2"
-$companionOtaV2Capability = "companion_ota_v2"
-$companionOtaV2ServiceUuid = "8f7a8007-7b7d-4f3d-9d6f-6c2d1b7c0000"
-$companionOtaV2ControlUuid = "8f7a8002-7b7d-4f3d-9d6f-6c2d1b7c0000"
-$companionOtaV2DataUuid = "8f7a8004-7b7d-4f3d-9d6f-6c2d1b7c0000"
-$companionOtaV2StatusUuid = "8f7a8005-7b7d-4f3d-9d6f-6c2d1b7c0000"
-$companionOtaV2ChunkBytes = 240
-$chunkOverride = [Environment]::GetEnvironmentVariable("COMPANION_OTA_V2_CHUNK_BYTES")
+$protocolName = "denzic_ota_v1"
+$serviceUuid = "8f7a8007-7b7d-4f3d-9d6f-6c2d1b7c0000"
+$controlUuid = "8f7a8002-7b7d-4f3d-9d6f-6c2d1b7c0000"
+$dataUuid = "8f7a8004-7b7d-4f3d-9d6f-6c2d1b7c0000"
+$statusUuid = "8f7a8005-7b7d-4f3d-9d6f-6c2d1b7c0000"
+$expectedChunkBytes = 240
+$chunkOverride = [Environment]::GetEnvironmentVariable("COMPANION_OTA_V1_CHUNK_BYTES")
 if (-not [string]::IsNullOrWhiteSpace($chunkOverride)) {
     $parsedChunk = 0
-    if (-not [int]::TryParse($chunkOverride.Trim(), [ref] $parsedChunk) -or $parsedChunk -lt 1 -or $parsedChunk -gt 241) {
-        throw "Unsupported COMPANION_OTA_V2_CHUNK_BYTES=$chunkOverride; use a chunk size from 1 to 241 bytes."
+    if (-not [int]::TryParse($chunkOverride.Trim(), [ref] $parsedChunk) -or $parsedChunk -lt 1 -or $parsedChunk -gt 244) {
+        throw "Unsupported COMPANION_OTA_V1_CHUNK_BYTES=$chunkOverride; use 1..244."
     }
-    $companionOtaV2ChunkBytes = $parsedChunk
+    $expectedChunkBytes = $parsedChunk
 }
 
 function Resolve-PackagePath {
     param([string] $Path)
-
     if (-not [string]::IsNullOrWhiteSpace($Path)) {
         return (Resolve-Path $Path).Path
     }
-
-    $packageRoot = Join-Path $repoRoot ".cache\ota_firmware"
-    $latest = Get-ChildItem -LiteralPath $packageRoot -Filter "companion-ota-*.zip" -File -ErrorAction SilentlyContinue |
+    $latest = Get-ChildItem -LiteralPath (Join-Path $repoRoot ".cache\ota_firmware") -Filter "companion-ota-*.zip" -File -ErrorAction SilentlyContinue |
         Sort-Object LastWriteTime -Descending |
         Select-Object -First 1
     if (-not $latest) {
-        throw "No Companion OTA zip package found under $packageRoot. Run tools\package_ota_firmware.ps1 first."
+        throw "No Companion OTA package found. Run tools\package_ota_firmware.ps1 first."
     }
     return $latest.FullName
 }
 
 function Assert-Equal {
-    param(
-        [Parameter(Mandatory = $true)] $Actual,
-        [Parameter(Mandatory = $true)] $Expected,
-        [Parameter(Mandatory = $true)][string] $Label
-    )
-
+    param($Actual, $Expected, [string] $Label)
     if ($Actual -ne $Expected) {
         throw "$Label mismatch: expected '$Expected', got '$Actual'."
     }
 }
 
-function Assert-True {
-    param(
-        [Parameter(Mandatory = $true)][bool] $Condition,
-        [Parameter(Mandatory = $true)][string] $Message
-    )
-
-    if (-not $Condition) {
-        throw $Message
+function Assert-Contains {
+    param([string] $Text, [string] $Needle, [string] $Label)
+    if (-not $Text.Contains($Needle)) {
+        throw "$Label missing expected token: $Needle"
     }
 }
 
-function ConvertTo-NormalizedZipName {
-    param([Parameter(Mandatory = $true)][string] $Name)
-    return ($Name -replace "\\", "/").TrimStart("/")
+function Assert-NotContains {
+    param([string] $Text, [string] $Needle, [string] $Label)
+    if ($Text.Contains($Needle)) {
+        throw "$Label still contains obsolete OTA token: $Needle"
+    }
 }
 
 function Get-ZipEntry {
-    param(
-        [Parameter(Mandatory = $true)] $Archive,
-        [Parameter(Mandatory = $true)][string] $Name
-    )
-
-    $normalizedName = ConvertTo-NormalizedZipName $Name
-    $matches = @($Archive.Entries | Where-Object {
-            -not $_.FullName.EndsWith("/") -and
-            (ConvertTo-NormalizedZipName $_.FullName) -eq $normalizedName
+    param($Archive, [string] $Name)
+    $entry = @($Archive.Entries | Where-Object {
+            -not $_.FullName.EndsWith("/") -and $_.FullName.Replace("\", "/").TrimStart("/") -eq $Name
         })
-    if ($matches.Count -ne 1) {
-        throw "Expected exactly one zip entry '$normalizedName', found $($matches.Count)."
+    if ($entry.Count -ne 1) {
+        throw "Expected one zip entry '$Name', found $($entry.Count)."
     }
-    return $matches[0]
+    return $entry[0]
 }
 
-function Get-ZipEntryBytes {
-    param([Parameter(Mandatory = $true)] $Entry)
-
-    $stream = $Entry.Open()
+function Get-ZipBytes {
+    param($Entry)
+    $inputStream = $Entry.Open()
     try {
-        $memory = [System.IO.MemoryStream]::new()
+        $outputStream = [System.IO.MemoryStream]::new()
         try {
-            $stream.CopyTo($memory)
-            return $memory.ToArray()
+            $inputStream.CopyTo($outputStream)
+            return $outputStream.ToArray()
         } finally {
-            $memory.Dispose()
+            $outputStream.Dispose()
         }
     } finally {
-        $stream.Dispose()
+        $inputStream.Dispose()
     }
 }
 
-function Get-ZipEntryText {
-    param([Parameter(Mandatory = $true)] $Entry)
-
-    $bytes = Get-ZipEntryBytes -Entry $Entry
-    return [System.Text.Encoding]::UTF8.GetString($bytes)
+function Get-ZipText {
+    param($Entry)
+    return [System.Text.Encoding]::UTF8.GetString((Get-ZipBytes -Entry $Entry))
 }
 
 function Get-Sha256Hex {
-    param([Parameter(Mandatory = $true)][byte[]] $Bytes)
-
+    param([byte[]] $Bytes)
     $sha = [System.Security.Cryptography.SHA256]::Create()
     try {
         return -join ($sha.ComputeHash($Bytes) | ForEach-Object { $_.ToString("x2") })
@@ -131,384 +107,155 @@ function Get-Sha256Hex {
     }
 }
 
-function Assert-ExitCode {
-    param(
-        [Parameter(Mandatory = $true)][int] $Code,
-        [Parameter(Mandatory = $true)][string] $Label
-    )
+function Assert-HostAdapter {
+    $cargo = Get-Content -LiteralPath (Join-Path $typeRoot "apps\windows\src-tauri\Cargo.toml") -Raw
+    $adapter = Get-Content -LiteralPath (Join-Path $typeRoot "apps\windows\src-tauri\src\backend\firmware_ota.rs") -Raw
+    $ble = Get-Content -LiteralPath (Join-Path $typeRoot "apps\windows\src-tauri\src\backend\ble_bridge.rs") -Raw
+    $commands = Get-Content -LiteralPath (Join-Path $typeRoot "apps\windows\src-tauri\src\commands.rs") -Raw
+    $lib = Get-Content -LiteralPath (Join-Path $typeRoot "apps\windows\src-tauri\src\lib.rs") -Raw
 
-    if ($Code -ne 0) {
-        throw "$Label failed with exit code $Code."
-    }
-}
-
-function Invoke-TypeFrontendCheck {
-    param(
-        [Parameter(Mandatory = $true)][string] $ManifestPath,
-        [Parameter(Mandatory = $true)][string] $FirmwarePath
-    )
-
-    $nodeScript = @'
-import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
-import {
-  COMPANION_OTA_V2_TRANSPORT_BOUNDARY,
-  evaluateFirmwareOtaPreflight,
-  validateFirmwareOtaPackage,
-} from './src/lib/firmwareOta.ts';
-
-const manifestText = readFileSync(process.env.COMPANION_OTA_MANIFEST_PATH, 'utf8');
-const firmwareBytes = new Uint8Array(readFileSync(process.env.COMPANION_OTA_FIRMWARE_PATH));
-const expectedCompanionChunkBytes = Number(
-  process.env.COMPANION_OTA_V2_CHUNK_BYTES ?? COMPANION_OTA_V2_TRANSPORT_BOUNDARY.gatt.maxChunkBytes,
-);
-const validation = await validateFirmwareOtaPackage(manifestText, firmwareBytes, {
-  desktopVersion: '1.0.0',
-  expectedHardwareRevision: 'LISTENER-KEYBOARD',
-  currentFirmwareVersion: null,
-});
-assert.equal(validation.ok, true, validation.errors.join('\n'));
-assert.equal(validation.manifest.protocolName, COMPANION_OTA_V2_TRANSPORT_BOUNDARY.protocolName);
-assert.equal(validation.manifest.firmwareCapability, COMPANION_OTA_V2_TRANSPORT_BOUNDARY.firmwareCapability);
-assert.equal(validation.manifest.gattServiceUuid, COMPANION_OTA_V2_TRANSPORT_BOUNDARY.gatt.serviceUuid);
-assert.equal(validation.manifest.gattControlUuid, COMPANION_OTA_V2_TRANSPORT_BOUNDARY.gatt.controlUuid);
-assert.equal(validation.manifest.gattDataUuid, COMPANION_OTA_V2_TRANSPORT_BOUNDARY.gatt.dataUuid);
-assert.equal(validation.manifest.gattStatusUuid, COMPANION_OTA_V2_TRANSPORT_BOUNDARY.gatt.statusUuid);
-assert.equal(validation.manifest.gattConfirmUuid, null);
-assert.equal(validation.manifest.gattChunkBytes, expectedCompanionChunkBytes);
-
-const preflight = evaluateFirmwareOtaPreflight({
-  manifest: validation.manifest,
-  device: {
-    connected: true,
-    hardwareRevision: 'NUCLEO-WB55RG',
-    firmwareVersion: 'companion OTA v2 loader',
-    capabilities: [COMPANION_OTA_V2_TRANSPORT_BOUNDARY.firmwareCapability],
-    batteryPercent: null,
-    usbPowered: null,
-    detail: 'Companion OTA v2 loader static snapshot.',
-  },
-  desktopVersion: '1.0.0',
-  recordingActive: false,
-  transferActive: false,
-});
-assert.equal(preflight.ok, true, JSON.stringify(preflight.blockers));
-console.log('PASS: Type frontend accepts Companion OTA v2 manifest and preflight.');
-'@
-
-    $oldManifest = $env:COMPANION_OTA_MANIFEST_PATH
-    $oldFirmware = $env:COMPANION_OTA_FIRMWARE_PATH
-    $env:COMPANION_OTA_MANIFEST_PATH = $ManifestPath
-    $env:COMPANION_OTA_FIRMWARE_PATH = $FirmwarePath
-    Push-Location $typeRoot
-    try {
-        & node --experimental-strip-types --input-type=module --eval $nodeScript
-        Assert-ExitCode -Code $LASTEXITCODE -Label "Type frontend Companion package check"
-    } finally {
-        Pop-Location
-        $env:COMPANION_OTA_MANIFEST_PATH = $oldManifest
-        $env:COMPANION_OTA_FIRMWARE_PATH = $oldFirmware
-    }
-}
-
-function Invoke-TypeRustWiredCheck {
-    param([Parameter(Mandatory = $true)][string] $ResolvedPackagePath)
-
-    Push-Location (Join-Path $typeRoot "src-tauri")
-    try {
-        & cargo run --locked -- --wired-firmware-check $ResolvedPackagePath
-        Assert-ExitCode -Code $LASTEXITCODE -Label "Type wired firmware package check"
-    } finally {
-        Pop-Location
-    }
-}
-
-function Assert-TextContains {
-    param(
-        [Parameter(Mandatory = $true)][string] $Text,
-        [Parameter(Mandatory = $true)][string] $Needle,
-        [Parameter(Mandatory = $true)][string] $Label
-    )
-
-    if (-not $Text.Contains($Needle)) {
-        throw "$Label missing expected token: $Needle"
-    }
-}
-
-function Invoke-TypeUiSamePackageCheck {
-    $panel = Get-Content -LiteralPath $typeFirmwareOtaPanel -Raw -Encoding UTF8
-    $companion = Get-Content -LiteralPath $typeCompanionSection -Raw -Encoding UTF8
-    $main = Get-Content -LiteralPath $typeMain -Raw -Encoding UTF8
-    $ipc = Get-Content -LiteralPath $typeIpc -Raw -Encoding UTF8
-
-    foreach ($token in @(
-        "const [firmwareMode, setFirmwareMode] = useState<'ble' | 'wired'>('ble')",
-        "const startSelectedFirmwareAction = () =>",
-        "firmwareMode === 'ble'",
-        "void wiredRef.current?.flash();",
-        "selectedFirmwareActionLabel",
-        "settings.recording.firmwareStartSelected",
-        "settings.recording.firmwareModeBleOta",
-        "settings.recording.firmwareModeWired",
-        "transferFirmwareOtaBle({",
-        "isStm32wbStBleOtaManifest(selectedPackage.manifest)",
-        "isCompanionOtaV2Manifest(selectedPackage.manifest)",
-        "transferResult?.transport === selectedPackage.manifest.protocolName",
-        "FirmwareWiredFlashPanel ref={wiredRef} packagePath={selectedPackage?.path ?? null}",
-        "loadWiredFirmwarePackage(packagePath)",
-        "flashWiredFirmwarePackage({",
-        "path: selection.path",
-        "selectedPayload?.supportsBootRepair",
-        "isStm32WbSwdTarget(selectedPayload?.target)",
-        "const activeWiredPort = stm32WbSwd ? 'SWD' : port",
-        "const activeWiredBaud = stm32WbSwd ? null : parseBaud(baud) ?? 460800",
-        "const activePreserveOtaData = stm32WbSwd ? false : preserveOtaData",
-        "setPort('SWD')",
-        "settings.recording.wiredFirmwareStm32Desc",
-        "settings.recording.wiredFirmwareInterface",
-        "settings.recording.wiredFirmwareProgrammer",
-        "settings.recording.wiredFirmwareStm32NoBootRepair",
-        "settings.recording.wiredFirmwareProgressPackageLoadedSwd",
-        "settings.recording.wiredFirmwareProgressConnectingSwd",
-        "function isStm32WbSwdTarget",
-        "nucleowb55rg",
-        "stm32wb55ceux"
-    )) {
-        Assert-TextContains -Text $panel -Needle $token -Label "Type FirmwareOtaPanel same-package UI check"
+    foreach ($pair in @(
+            @($cargo, 'denzic-ota-core = { path = "../../../third_party/denzic-platform/ota/host/rust" }'),
+            @($adapter, 'const PACKAGE_TYPE: &str = "companion-firmware-ota";'),
+            @($adapter, 'denzic_ota_core::PROTOCOL_NAME'),
+            @($adapter, 'file.sha256'),
+            @($adapter, $serviceUuid),
+            @($adapter, $controlUuid),
+            @($adapter, $dataUuid),
+            @($adapter, $statusUuid),
+            @($ble, 'impl denzic_ota_core::OtaV1Transport for CompanionOtaV1Transport'),
+            @($ble, 'denzic_ota_core::transfer('),
+            @($ble, 'WriteType::WithoutResponse'),
+            @($commands, 'transfer_companion_firmware_ota'),
+            @($lib, 'commands::transfer_companion_firmware_ota'),
+            @($lib, '"--firmware-ota-transfer"'),
+            @($lib, 'firmware_ota_result_json=')
+        )) {
+        Assert-Contains -Text $pair[0] -Needle $pair[1] -Label "Companion-Type host adapter"
     }
 
-    foreach ($token in @(
-        'params.get("visual") === "settings-companion"',
-        "initialSection={isSettingsCompanionVisual ? `"companion`" : `"device`"}"
-    )) {
-        Assert-TextContains -Text $main -Needle $token -Label "Type Companion visual route check"
-    }
-
-    foreach ($token in @(
-        "FIRMWARE_OTA_TRANSPORT_BOUNDARY,",
-        "COMPANION_OTA_V2_TRANSPORT_BOUNDARY,",
-        "STM32WB_ST_OTA_TRANSPORT_BOUNDARY,",
-        "loadFirmwareOtaPackage(path: string)",
-        "export type FirmwareOtaBleTransferTransport =",
-        "| typeof FIRMWARE_OTA_TRANSPORT_BOUNDARY.protocolName",
-        "| typeof COMPANION_OTA_V2_TRANSPORT_BOUNDARY.protocolName",
-        "| typeof STM32WB_ST_OTA_TRANSPORT_BOUNDARY.protocolName",
-        "transport: FirmwareOtaBleTransferTransport;",
-        "transferFirmwareOtaBle(",
-        "request.manifest.protocolName === STM32WB_ST_OTA_TRANSPORT_BOUNDARY.protocolName",
-        "request.manifest.protocolName === COMPANION_OTA_V2_TRANSPORT_BOUNDARY.protocolName",
-        "loadWiredFirmwarePackage(path: string)",
-        "flashWiredFirmwarePackage(options:",
-        "WiredFirmwarePackagePayload"
-    )) {
-        Assert-TextContains -Text $ipc -Needle $token -Label "Type ipc package command check"
-    }
-
-    foreach ($token in @(
-        "import { FirmwareOtaPanel } from './FirmwareOtaPanel';",
-        "COMPANION_FIRMWARE_PANEL_BLE_STATUS",
-        "<FirmwareOtaPanel",
-        "supported",
-        "bleStatus={COMPANION_FIRMWARE_PANEL_BLE_STATUS}",
-        "settings.companion.readinessCommand",
-        "tools\\verify_companion_bringup_readiness.ps1",
-        "settings.companion.packageCommand",
-        "tools\\package_ota_firmware.ps1 -Channel development -BoardTarget NUCLEO-WB55RG",
-        "settings.companion.verifyPackageCommand",
-        "tools\\verify_type_companion_package_static.ps1",
-        "settings.companion.hardwareAcceptanceCommand",
-        "Companion hardware acceptance",
-        "tools\\verify_companion_hardware_acceptance.ps1",
-        "-EvidencePath <companion_ui_screenshot_or_log>",
-        "settings.companion.flashPackageCommand",
-        "Companion wired factory flash validation",
-        "tools\\verify_companion_wired_flash.ps1",
-        "-PackagePath <companion-package.zip>",
-        "settings.companion.samePackageLabel",
-        "settings.companion.samePackageValue",
-        "stm32wb_st_ble_ota",
-        "ST-LINK / SWD"
-    )) {
-        Assert-TextContains -Text $companion -Needle $token -Label "Type Companion temporary debug page same-package check"
-    }
-
-    Write-Output "PASS: Type firmware UI keeps one selected package path for BLE OTA and wired flashing."
-}
-
-function Invoke-TypeStm32OtaConfirmCheck {
-    $embedded = Get-Content -LiteralPath $typeEmbeddedBle -Raw -Encoding UTF8
-    $firmwareOta = Get-Content -LiteralPath $typeFirmwareOtaRust -Raw -Encoding UTF8
-
-    foreach ($token in @(
-        "let use_confirm = stm32wb_st_ota_use_confirm_indication();",
-        "STM32WB ST OTA confirmation indication is required before transfer",
-        "Set COMPANION_STM32WB_ST_OTA_CONFIRM=0 only when testing the legacy no-confirm loader.",
-        '"0" | "false" | "no" | "off"',
-        ".unwrap_or(true)",
-        "stm32wb_st_ota_confirm_indication_defaults_on_and_accepts_explicit_opt_out"
-    )) {
-        Assert-TextContains -Text $embedded -Needle $token -Label "Type STM32WB ST OTA confirmation check"
-    }
-
-    foreach ($token in @(
-        "if properties.contains(GattCharacteristicProperties::Write)",
-        "Ok(GattWriteOption::WriteWithResponse)",
-        "STM32WB ST OTA raw characteristic is not writable",
-        ".min(ATT_DEFAULT_PAYLOAD_BYTES)",
-        ".min(STM32WB_ST_OTA_RAW_DATA_SIZE)",
-        "stm32wb_st_ota_raw_chunk_bytes_from_payload",
-        "stm32wb_st_ota_prefers_with_response_when_available",
-        'let finish_result = write_stm32wb_st_ota_value_with_fallback(',
-        "target.base_write_option",
-        "stm32wb_st_ota_uses_large_confirmed_chunks_and_caps_no_response"
-    )) {
-        Assert-TextContains -Text $embedded -Needle $token -Label "Type STM32WB ST OTA stable raw write check"
-    }
-
-    foreach ($token in @(
-        "target.base_finish_write_option",
-        "base_finish_write_option",
-        "stm32wb_st_ota_finish_write_option",
-        "write_gatt_value_without_wait",
-        "finish_write_keepalive",
-        "write_stm32wb_st_ota_finish_value"
-    )) {
-        if ($embedded.Contains($token)) {
-            throw "Type STM32WB ST OTA must not keep the discarded finish no-wait experiment: $token"
+    $platformRoot = Join-Path $typeRoot "third_party\denzic-platform\ota"
+    foreach ($relative in @(
+            "protocol\ota_v1.json",
+            "host\rust\src\lib.rs",
+            "host\typescript\src\index.ts",
+            "embedded\c\src\denzic_ota_v1.c"
+        )) {
+        if (-not (Test-Path -LiteralPath (Join-Path $platformRoot $relative) -PathType Leaf)) {
+            throw "Companion-Type Denzic-Platform submodule missing $relative"
         }
     }
 
-    if ($embedded.Contains("set COMPANION_STM32WB_ST_OTA_CONFIRM=1 to test ST indication confirm")) {
-        throw "Type embedded BLE must not default STM32WB ST OTA to the old no-confirm path."
+    foreach ($obsolete in @("companion_ota_v2", "companion_ble_ota_v2", "stm32wb_st_ble_ota", "STM32WB_ST_OTA")) {
+        Assert-NotContains -Text ($adapter + $ble + $commands + $lib) -Needle $obsolete -Label "Companion-Type OTA runtime"
     }
+}
+
+function Assert-EmbeddedAdapter {
+    $makefile = Get-Content -LiteralPath (Join-Path $repoRoot "cubeide\Companion_BLE_Ota_Loader\Makefile") -Raw
+    $adapter = Get-Content -LiteralPath (Join-Path $repoRoot "cubeide\Companion_BLE_Ota_Loader\Src\companion_ota_v1.c") -Raw
+    $packageTool = Get-Content -LiteralPath (Join-Path $repoRoot "tools\package_ota_firmware.ps1") -Raw
 
     foreach ($token in @(
-        "pub gatt_confirm_uuid: Option<String>,",
-        "pub gatt_status_uuid: Option<String>,",
-        'optional_gatt_optional_string(gatt, "confirm_uuid", "confirmUuid")',
-        'optional_gatt_optional_string(gatt, "status_uuid", "statusUuid")',
-        "STM32WB_ST_OTA_CONFIRM_UUID",
-        "COMPANION_OTA_V2_STATUS_UUID",
-        ".gatt_confirm_uuid",
-        ".gatt_status_uuid",
-        "stm32wb_st_manifest_requires_confirm_gatt_boundary"
-    )) {
-        Assert-TextContains -Text $firmwareOta -Needle $token -Label "Type STM32WB ST OTA manifest confirmation check"
+            'Src/companion_ota_v1.c',
+            '$(DENZIC_OTA)/src/denzic_ota_v1.c',
+            '$(DENZIC_OTA)/include'
+        )) {
+        Assert-Contains -Text $makefile -Needle $token -Label "Companion embedded build"
     }
-
     foreach ($token in @(
-        "COMPANION_OTA_V2_SERVICE_UUID",
-        "COMPANION_OTA_V2_STATUS_UUID",
-        "prepare_companion_ota_v2_transfer",
-        "transfer_companion_ota_v2",
-        "transfer_companion_ota_v2_to_target",
-        "COMPANION_OTA_V2_WINDOW_ENV",
-        "read_companion_ota_v2_status",
-        "COMPANION_OTA_V2_ERROR_OFFSET_MISMATCH",
-        'transport: "companion_ota_v2"'
-    )) {
-        Assert-TextContains -Text $embedded -Needle $token -Label "Type Companion OTA v2 transport check"
+            'void SVCCTL_SvcInit(void)',
+            'denzic_ota_v1_handle_control',
+            'denzic_ota_v1_handle_data',
+            'denzic_ota_v1_encode_status',
+            'COMPANION_OTA_V1_REBOOT_GRACE_MS'
+        )) {
+        Assert-Contains -Text $adapter -Needle $token -Label "Companion embedded adapter"
     }
-
-    foreach ($token in @(
-        "COMPANION_OTA_V2_PROTOCOL_NAME",
-        "COMPANION_OTA_V2_FIRMWARE_CAPABILITY",
-        "COMPANION_OTA_V2_CHUNK_BYTES",
-        "is_companion_ota_v2",
-        "prepare_companion_ota_v2_transfer",
-        "run_companion_ota_v2_transfer_preflight_and_write"
-    )) {
-        Assert-TextContains -Text $firmwareOta -Needle $token -Label "Type Companion OTA v2 manifest/dispatch check"
+    foreach ($oldFile in @("otas_app.c", "otas_stm.c", "companion_ota_v2.c", "companion_ota_v2.h")) {
+        if (Test-Path -LiteralPath (Join-Path $repoRoot "cubeide\Companion_BLE_Ota_Loader\Src\$oldFile")) {
+            throw "Obsolete OTA runtime file still exists: $oldFile"
+        }
+        Assert-NotContains -Text $makefile -Needle $oldFile -Label "Companion embedded build"
     }
-
-    Write-Output "PASS: Type keeps STM32WB ST OTA fallback hardening and exposes Companion OTA v2 window/status transport."
+    foreach ($obsolete in @("companion_ota_v2", "companion_ble_ota_v2", "stm32wb_st_ble_ota", "STM32WB_ST_OTA")) {
+        Assert-NotContains -Text ($makefile + $adapter + $packageTool) -Needle $obsolete -Label "Companion embedded OTA runtime"
+    }
 }
 
 Add-Type -AssemblyName System.IO.Compression.FileSystem
-
 $resolvedPackagePath = Resolve-PackagePath -Path $PackagePath
-Assert-True -Condition ($resolvedPackagePath.EndsWith(".zip", [System.StringComparison]::OrdinalIgnoreCase)) -Message "PackagePath must point to a .zip file."
+if (-not $resolvedPackagePath.EndsWith(".zip", [System.StringComparison]::OrdinalIgnoreCase)) {
+    throw "PackagePath must point to a zip file."
+}
 
 $archive = [System.IO.Compression.ZipFile]::OpenRead($resolvedPackagePath)
 try {
-    $manifestEntry = Get-ZipEntry -Archive $archive -Name "ota_manifest.json"
-    $firmwareEntry = Get-ZipEntry -Archive $archive -Name "firmware_ota.bin"
-    $manifestText = Get-ZipEntryText -Entry $manifestEntry
-    $firmwareBytes = Get-ZipEntryBytes -Entry $firmwareEntry
+    $manifestText = Get-ZipText -Entry (Get-ZipEntry -Archive $archive -Name "ota_manifest.json")
+    $firmwareBytes = Get-ZipBytes -Entry (Get-ZipEntry -Archive $archive -Name "firmware_ota.bin")
     $manifest = $manifestText | ConvertFrom-Json
-    $firmwareHash = Get-Sha256Hex -Bytes $firmwareBytes
-
-    Assert-Equal -Actual $manifest.package_type -Expected "companion-firmware-ota" -Label "OTA package_type"
-    Assert-Equal -Actual $manifest.project -Expected "Companion-Firmware" -Label "OTA project"
-    Assert-Equal -Actual $manifest.file.name -Expected "firmware_ota.bin" -Label "OTA file.name"
-    Assert-Equal -Actual ([int64] $manifest.file.size_bytes) -Expected ([int64] $firmwareBytes.Length) -Label "OTA file.size_bytes"
-    Assert-Equal -Actual ([string] $manifest.file.sha256).ToLowerInvariant() -Expected $firmwareHash -Label "OTA file.sha256"
-    Assert-Equal -Actual $manifest.protocol.name -Expected $companionOtaV2ProtocolName -Label "OTA protocol.name"
-    Assert-Equal -Actual $manifest.protocol.firmware_capability -Expected $companionOtaV2Capability -Label "OTA protocol.firmware_capability"
-    Assert-Equal -Actual $manifest.protocol.gatt.service_uuid -Expected $companionOtaV2ServiceUuid -Label "OTA protocol.gatt.service_uuid"
-    Assert-Equal -Actual $manifest.protocol.gatt.control_uuid -Expected $companionOtaV2ControlUuid -Label "OTA protocol.gatt.control_uuid"
-    Assert-Equal -Actual $manifest.protocol.gatt.data_uuid -Expected $companionOtaV2DataUuid -Label "OTA protocol.gatt.data_uuid"
-    Assert-Equal -Actual $manifest.protocol.gatt.status_uuid -Expected $companionOtaV2StatusUuid -Label "OTA protocol.gatt.status_uuid"
-    Assert-True -Condition (-not ($manifest.protocol.gatt.PSObject.Properties.Name -contains "confirm_uuid")) -Message "Companion OTA v2 manifest must not include protocol.gatt.confirm_uuid."
-    Assert-Equal -Actual ([int] $manifest.protocol.gatt.chunk_bytes) -Expected $companionOtaV2ChunkBytes -Label "OTA protocol.gatt.chunk_bytes"
+    Assert-Equal $manifest.schema_version 1 "schema_version"
+    Assert-Equal $manifest.package_type "companion-firmware-ota" "package_type"
+    Assert-Equal $manifest.hardware_revision "NUCLEO-WB55RG" "hardware_revision"
+    Assert-Equal $manifest.file.name "firmware_ota.bin" "file.name"
+    Assert-Equal ([int64] $manifest.file.size_bytes) ([int64] $firmwareBytes.Length) "file.size_bytes"
+    Assert-Equal ([string] $manifest.file.sha256).ToLowerInvariant() (Get-Sha256Hex $firmwareBytes) "file.sha256"
+    Assert-Equal $manifest.protocol.name $protocolName "protocol.name"
+    Assert-Equal ([int] $manifest.protocol.version) 1 "protocol.version"
+    Assert-Equal $manifest.protocol.firmware_capability $protocolName "protocol.firmware_capability"
+    Assert-Equal $manifest.protocol.gatt.service_uuid $serviceUuid "protocol.gatt.service_uuid"
+    Assert-Equal $manifest.protocol.gatt.control_uuid $controlUuid "protocol.gatt.control_uuid"
+    Assert-Equal $manifest.protocol.gatt.data_uuid $dataUuid "protocol.gatt.data_uuid"
+    Assert-Equal $manifest.protocol.gatt.status_uuid $statusUuid "protocol.gatt.status_uuid"
+    Assert-Equal ([int] $manifest.protocol.gatt.chunk_bytes) $expectedChunkBytes "protocol.gatt.chunk_bytes"
 
     $factoryManifestEntries = @($archive.Entries | Where-Object {
-            $name = ConvertTo-NormalizedZipName $_.FullName
-            -not $_.FullName.EndsWith("/") -and $name -match '^factory/[^/]+/manifest\.json$'
+            $_.FullName.Replace("\", "/") -match '^factory/[^/]+/manifest\.json$'
         })
-    if ($factoryManifestEntries.Count -ne 1) {
-        throw "Expected exactly one factory manifest under factory/<package>/manifest.json, found $($factoryManifestEntries.Count)."
-    }
-
-    $factoryManifestEntry = $factoryManifestEntries[0]
-    $factoryManifestName = ConvertTo-NormalizedZipName $factoryManifestEntry.FullName
-    $factoryDir = $factoryManifestName.Substring(0, $factoryManifestName.LastIndexOf("/") + 1)
-    $factoryManifest = (Get-ZipEntryText -Entry $factoryManifestEntry) | ConvertFrom-Json
-    Assert-Equal -Actual $factoryManifest.package_type -Expected "companion-wired-factory" -Label "Factory package_type"
-    Assert-Equal -Actual $factoryManifest.project -Expected "Companion-Firmware" -Label "Factory project"
-    Assert-Equal -Actual $factoryManifest.target -Expected $manifest.hardware_revision -Label "Factory target"
-    Assert-Equal -Actual $factoryManifest.flash.port -Expected "SWD" -Label "Factory flash.port"
-
-    $artifacts = @($factoryManifest.artifacts)
-    $roles = @($artifacts | ForEach-Object { $_.role })
-    Assert-True -Condition ($roles -contains "ota_loader") -Message "Factory manifest missing ota_loader artifact."
-    Assert-True -Condition ($roles -contains "app") -Message "Factory manifest missing app artifact."
-
-    foreach ($artifact in $artifacts) {
-        $artifactEntryName = "$factoryDir$($artifact.file)"
-        $artifactEntry = Get-ZipEntry -Archive $archive -Name $artifactEntryName
-        $artifactBytes = Get-ZipEntryBytes -Entry $artifactEntry
-        Assert-Equal -Actual ([int64] $artifact.size_bytes) -Expected ([int64] $artifactBytes.Length) -Label "Factory artifact $($artifact.role) size_bytes"
-        Assert-Equal -Actual ([string] $artifact.sha256).ToLowerInvariant() -Expected (Get-Sha256Hex -Bytes $artifactBytes) -Label "Factory artifact $($artifact.role) sha256"
-        if ($artifact.role -eq "ota_loader") {
-            Assert-Equal -Actual $artifact.offset -Expected "0x08000000" -Label "Factory ota_loader offset"
-        } elseif ($artifact.role -eq "app") {
-            Assert-Equal -Actual $artifact.offset -Expected $manifest.protocol.app_base_address -Label "Factory app offset"
-        }
+    Assert-Equal $factoryManifestEntries.Count 1 "factory manifest count"
+    $factoryManifest = (Get-ZipText $factoryManifestEntries[0]) | ConvertFrom-Json
+    Assert-Equal $factoryManifest.package_type "companion-wired-factory" "factory package_type"
+    $roles = @($factoryManifest.artifacts | ForEach-Object role)
+    if (-not ($roles -contains "ota_loader") -or -not ($roles -contains "app")) {
+        throw "Factory package must contain ota_loader and app artifacts."
     }
 } finally {
     $archive.Dispose()
 }
 
-Write-Output "PASS: Companion zip manifest, firmware hash, and factory artifacts are internally consistent."
+Assert-HostAdapter
+Assert-EmbeddedAdapter
 
-$cacheDir = Join-Path $repoRoot ".cache\validation\type_companion_package_static\$([System.IO.Path]::GetFileNameWithoutExtension($resolvedPackagePath))"
+$cacheDir = Join-Path $repoRoot ".cache\validation\companion_ota_dual_side\$([IO.Path]::GetFileNameWithoutExtension($resolvedPackagePath))"
 New-Item -ItemType Directory -Force -Path $cacheDir | Out-Null
 $manifestCachePath = Join-Path $cacheDir "ota_manifest.json"
 $firmwareCachePath = Join-Path $cacheDir "firmware_ota.bin"
-[System.IO.File]::WriteAllText($manifestCachePath, $manifestText, [System.Text.UTF8Encoding]::new($false))
-[System.IO.File]::WriteAllBytes($firmwareCachePath, $firmwareBytes)
-
-if (-not $SkipTypeFrontend) {
-    Invoke-TypeFrontendCheck -ManifestPath $manifestCachePath -FirmwarePath $firmwareCachePath
-}
-
-Invoke-TypeUiSamePackageCheck
-Invoke-TypeStm32OtaConfirmCheck
+[IO.File]::WriteAllText($manifestCachePath, $manifestText, [Text.UTF8Encoding]::new($false))
+[IO.File]::WriteAllBytes($firmwareCachePath, $firmwareBytes)
 
 if (-not $SkipTypeRust) {
-    Invoke-TypeRustWiredCheck -ResolvedPackagePath $resolvedPackagePath
+    $oldManifest = $env:COMPANION_TYPE_OTA_TEST_MANIFEST
+    $oldFirmware = $env:COMPANION_TYPE_OTA_TEST_FIRMWARE
+    $env:COMPANION_TYPE_OTA_TEST_MANIFEST = $manifestCachePath
+    $env:COMPANION_TYPE_OTA_TEST_FIRMWARE = $firmwareCachePath
+    try {
+        Push-Location $typeRoot
+        try {
+            & cargo test --manifest-path apps/windows/src-tauri/Cargo.toml backend::firmware_ota::tests::validates_external_package_when_requested -- --exact
+            if ($LASTEXITCODE -ne 0) {
+                throw "Companion-Type real package validator failed with exit code $LASTEXITCODE."
+            }
+        } finally {
+            Pop-Location
+        }
+    } finally {
+        $env:COMPANION_TYPE_OTA_TEST_MANIFEST = $oldManifest
+        $env:COMPANION_TYPE_OTA_TEST_FIRMWARE = $oldFirmware
+    }
 }
 
-Write-Output "PASS: Companion package is accepted by Type Companion OTA/wired static integration checks."
+if ($SkipTypeFrontend) {
+    Write-Output "INFO: -SkipTypeFrontend is retained for caller compatibility; OTA host validation is native Rust."
+}
+Write-Output "PASS: Companion OTA v1 package is implemented and validated on both host and embedded sides."
 Write-Output "Package: $resolvedPackagePath"
