@@ -62,20 +62,51 @@ marker, and `transfer_after_waveform_ms=0` for every differential frame. The
 last condition protects the WB55-only removal of the redundant post-waveform
 RAM replay. A parser pass over synthetic data is not hardware proof.
 
+## Vendor Partial A/B Build
+
+The Good Display `0xFF` one-plane partial path is available only as a separate
+diagnostic image. It is not production behavior and it must not be copied into
+the WBA target. Build it with:
+
+```powershell
+pwsh -NoProfile -File .\tools\build_nucleo_bringup.ps1 -EpaperSsd1681Bringup -EpaperMenu 1 -EpaperSsd1681VendorPartialDiagnostic -Force
+```
+
+It reuses the six-request sequence but resets before each partial, writes only
+`0x24`, records `profile=good_display_vendor_partial_ab`, and activates
+`0xFF`. Its trace must be checked separately:
+
+```powershell
+python tools/verify_wb55_refresh_cadence_log.py --partial-profile vendor_sample --log <trace> --out <result.json>
+```
+
+The normal diagnostic requires `profile=default`, `0xFC`, and two data planes;
+the A/B image requires the vendor profile, `0xFF`, and exactly one data plane.
+Both require five successful partial frames, zero post-waveform transfer, the
+same sixth `0xC7` cleanup, and no delayed maintenance. Neither profile is
+visually accepted until the paired on-panel comparison is complete.
+
 ## Required Hardware Follow-up
 
 No board was flashed for this change and no human observation was requested.
 The existing WB55 runtime logs therefore do not prove this image is running.
 When the owner explicitly starts a hardware session:
 
-1. Build and flash the focused diagnostic image under the `Companion-WB55`
+1. Build and flash the normal cadence diagnostic under the `Companion-WB55`
    hardware lock only after the owner explicitly begins a hardware session.
 2. Capture a reset-bounded serial trace through
-   `refresh_cadence_diagnostic done` and save it beside the resulting JSON.
-3. Run `python tools/verify_wb55_refresh_cadence_log.py --log <trace> --out
-   <result.json>`; it must prove five `0xFC` interactions then exactly one
-   `0xC7` cleanup, no 1200 ms delayed request, and zero post-waveform transfer
-   time on each differential frame.
-4. Reflash the normal production image before ACPT-01. Run the focused visual
+   `refresh_cadence_diagnostic done`, then parse it with
+   `python tools/verify_wb55_refresh_cadence_log.py --partial-profile
+   differential --log <trace> --out <result.json>`. It must prove five `0xFC`
+   two-plane interactions, then exactly one `0xC7` cleanup, no 1200 ms delayed
+   request, and zero post-waveform transfer time on every partial frame.
+3. Build and flash the isolated vendor A/B image, capture the same bounded
+   trace, then parse it with `--partial-profile vendor_sample`. It must prove
+   five reset-bounded `0xFF` one-plane interactions and the same sixth `0xC7`
+   cleanup.
+4. Compare the two traces and their on-panel results: responsiveness, residual
+   image, and maintenance flicker. A lower serial transfer time alone is not a
+   promotion criterion.
+5. Reflash the normal production image before ACPT-01. Run the focused visual
    review for residual image, a single maintenance flicker, and perceived
    responsiveness. Machine timing does not substitute for that review.

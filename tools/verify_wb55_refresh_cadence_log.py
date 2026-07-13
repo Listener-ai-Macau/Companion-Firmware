@@ -12,6 +12,14 @@ from typing import Any
 
 SCHEMA_ID = "companion.wb55.refresh_cadence_log.v1"
 REQUEST_COUNT = 6
+PARTIAL_PROFILES = {
+    "differential": {"control": "FC", "profile": "default", "data_planes": 2},
+    "vendor_sample": {
+        "control": "FF",
+        "profile": "good_display_vendor_partial_ab",
+        "data_planes": 1,
+    },
+}
 POLICY = re.compile(
     r"\[epaper\] policy requested=3 selected=(?P<selected>\w+) "
     r"reason=(?P<reason>\d+) partial_count=(?P<count>\d+) "
@@ -21,7 +29,11 @@ DIFFERENTIAL_TIMING = re.compile(
     r"\[epaper\] timing mode=differential .*"
     r"transfer_before_waveform_ms=(?P<before>\d+) "
     r"transfer_after_waveform_ms=(?P<after>\d+) "
-    r"bytes=(?P<bytes>\d+)"
+    r"bytes=(?P<bytes>\d+) data_planes=(?P<planes>\d+)"
+)
+PARTIAL_REFRESH = re.compile(
+    r"\[epaper\] refresh mode=differential profile=(?P<profile>\S+) "
+    r"control=0x(?P<control>[0-9A-F]+)"
 )
 
 
@@ -37,7 +49,8 @@ def scoped_log(log: str) -> str:
     return log[start_index : end_index + len(end)]
 
 
-def evaluate(log: str, log_path: str) -> dict[str, Any]:
+def evaluate(log: str, log_path: str, partial_profile: str = "differential") -> dict[str, Any]:
+    expected = PARTIAL_PROFILES[partial_profile]
     scoped = scoped_log(log)
     policies = [
         {
@@ -73,8 +86,13 @@ def evaluate(log: str, log_path: str) -> dict[str, Any]:
             "before_ms": int(match.group("before")),
             "after_ms": int(match.group("after")),
             "window_bytes": int(match.group("bytes")),
+            "data_planes": int(match.group("planes")),
         }
         for match in DIFFERENTIAL_TIMING.finditer(scoped)
+    ]
+    partial_refreshes = [
+        {"profile": match.group("profile"), "control": match.group("control")}
+        for match in PARTIAL_REFRESH.finditer(scoped)
     ]
     checks = {
         "diagnostic_started": bool(scoped),
@@ -88,7 +106,17 @@ def evaluate(log: str, log_path: str) -> dict[str, Any]:
         and maintenance[0]["partial_count"] == 5
         and maintenance[0]["reason"] == 4
         and maintenance[0]["limit"] == 5,
-        "differential_waveform": scoped.count("refresh mode=differential control=0xFC") >= 5,
+        "differential_waveform": len(partial_refreshes) >= 5
+        and all(
+            refresh["control"] == expected["control"]
+            and refresh["profile"] == expected["profile"]
+            for refresh in partial_refreshes
+        ),
+        "correct_data_plane_count": len(differential_timings) >= 5
+        and all(
+            timing["data_planes"] == expected["data_planes"]
+            for timing in differential_timings
+        ),
         "no_post_waveform_transfer": len(differential_timings) >= 5
         and all(timing["after_ms"] == 0 for timing in differential_timings),
         "mode1_waveform": "refresh mode=fast control=0xC7" in scoped,
@@ -104,6 +132,7 @@ def evaluate(log: str, log_path: str) -> dict[str, Any]:
     return {
         "schema_id": SCHEMA_ID,
         "status": status,
+        "partial_profile": partial_profile,
         "claim_scope": "reset-bounded serial evidence for the diagnostic image only; no human visual or current claim",
         "log": log_path,
         "checks": checks,
@@ -112,6 +141,7 @@ def evaluate(log: str, log_path: str) -> dict[str, Any]:
             "queued_steps": queued,
             "completed_steps": completed,
             "differential_timings": differential_timings,
+            "partial_refreshes": partial_refreshes,
         },
         "next_action": (
             "Run the focused ACPT-01 visual review; this trace does not prove residual-image quality or touch feel."
@@ -121,7 +151,8 @@ def evaluate(log: str, log_path: str) -> dict[str, Any]:
     }
 
 
-def self_test() -> dict[str, Any]:
+def self_test(partial_profile: str) -> dict[str, Any]:
+    expected = PARTIAL_PROFILES[partial_profile]
     lines = [
         "[screen] refresh_cadence_diagnostic start requests=6",
         "[epaper] policy requested=3 selected=full reason=3 partial_count=0 limit=5 baseline=0",
@@ -133,10 +164,12 @@ def self_test() -> dict[str, Any]:
             [
                 f"[screen] refresh_cadence_diagnostic queue step={step} item={step - 1} refresh=interactive",
                 f"[epaper] policy requested=3 selected=differential reason=1 partial_count={step - 1} limit=5 baseline=1",
-                "[epaper] refresh mode=differential control=0xFC",
+                "[epaper] refresh mode=differential "
+                f"profile={expected['profile']} control=0x{expected['control']}",
                 "[epaper] timing mode=differential prepare_ms=0 setup_ms=0 "
                 "transfer_before_waveform_ms=53 transfer_after_waveform_ms=0 "
-                "bytes=2552 spi=software_vendor_edges",
+                f"bytes=2552 data_planes={expected['data_planes']} "
+                "spi=software_vendor_edges",
                 f"[screen] refresh_cadence_diagnostic complete step={step}",
             ]
         )
@@ -149,7 +182,7 @@ def self_test() -> dict[str, Any]:
             "[screen] refresh_cadence_diagnostic done interactive_requests=6 cleanup_expected=1",
         ]
     )
-    report = evaluate("\n".join(lines), "synthetic-self-test")
+    report = evaluate("\n".join(lines), "synthetic-self-test", partial_profile)
     report["status"] = "PASS_STATIC_PARSER" if report["status"] == "PASS" else "FAIL_STATIC_PARSER"
     report["claim_scope"] = "synthetic parser self-test; no hardware claim"
     return report
@@ -160,14 +193,19 @@ def main() -> int:
     parser.add_argument("--log", type=Path)
     parser.add_argument("--out", type=Path)
     parser.add_argument("--self-test", action="store_true")
+    parser.add_argument("--partial-profile", choices=PARTIAL_PROFILES, default="differential")
     args = parser.parse_args()
 
     if args.self_test:
-        report = self_test()
+        report = self_test(args.partial_profile)
     elif args.log is not None:
         if not args.log.is_file():
             parser.error(f"serial log not found: {args.log}")
-        report = evaluate(args.log.read_text(encoding="utf-8", errors="replace"), str(args.log))
+        report = evaluate(
+            args.log.read_text(encoding="utf-8", errors="replace"),
+            str(args.log),
+            args.partial_profile,
+        )
     else:
         parser.error("pass --log PATH or --self-test")
 

@@ -65,6 +65,9 @@
 #ifndef COMPANION_EPAPER_SSD1681_USE_SOFTWARE_SPI
 #define COMPANION_EPAPER_SSD1681_USE_SOFTWARE_SPI 1
 #endif
+#ifndef COMPANION_EPAPER_SSD1681_VENDOR_PARTIAL_DIAGNOSTIC
+#define COMPANION_EPAPER_SSD1681_VENDOR_PARTIAL_DIAGNOSTIC 0
+#endif
 #ifndef COMPANION_EPAPER_SSD1681_ROTATION_DEGREES
 #define COMPANION_EPAPER_SSD1681_ROTATION_DEGREES 0u
 #endif
@@ -79,6 +82,10 @@
 #if COMPANION_EPAPER_SSD1681_MIRROR_X != 0u && \
     COMPANION_EPAPER_SSD1681_MIRROR_X != 1u
 #error "SSD1681 horizontal mirror must be 0 or 1"
+#endif
+#if COMPANION_EPAPER_SSD1681_VENDOR_PARTIAL_DIAGNOSTIC != 0 && \
+    COMPANION_EPAPER_SSD1681_VENDOR_PARTIAL_DIAGNOSTIC != 1
+#error "SSD1681 vendor partial diagnostic must be 0 or 1"
 #endif
 
 #define SSD1681_WIDTH 200u
@@ -526,11 +533,13 @@ static uint32_t ssd1681_window_byte_count(const ssd1681_window_t *window)
            ((uint32_t)window->y_end - window->y_start + 1u);
 }
 
-static bool ssd1681_set_window(const ssd1681_window_t *window)
+static bool ssd1681_set_window(const ssd1681_window_t *window,
+                               bool vendor_sample_partial)
 {
     static const uint8_t driver_output[] = {0xC7u, 0x00u, 0x00u};
     static const uint8_t data_entry[] = {0x01u};
-    static const uint8_t border[] = {0x05u};
+    static const uint8_t normal_border[] = {0x05u};
+    static const uint8_t vendor_partial_border[] = {0x80u};
     static const uint8_t temperature[] = {0x80u};
     uint16_t controller_y_start;
     uint16_t controller_y_end;
@@ -562,7 +571,11 @@ static bool ssd1681_set_window(const ssd1681_window_t *window)
            ssd1681_command_data(0x11u, data_entry, sizeof(data_entry)) &&
            ssd1681_command_data(0x44u, ram_x, sizeof(ram_x)) &&
            ssd1681_command_data(0x45u, ram_y, sizeof(ram_y)) &&
-           ssd1681_command_data(0x3Cu, border, sizeof(border)) &&
+           ssd1681_command_data(0x3Cu,
+                                vendor_sample_partial
+                                    ? vendor_partial_border
+                                    : normal_border,
+                                sizeof(normal_border)) &&
            ssd1681_command_data(0x18u, temperature, sizeof(temperature)) &&
            ssd1681_command_data(0x4Eu, x_counter, sizeof(x_counter)) &&
            ssd1681_command_data(0x4Fu, y_counter, sizeof(y_counter));
@@ -825,11 +838,16 @@ static bool ssd1681_write_plane_region(uint8_t command,
 
 static bool ssd1681_refresh_display(comp_epaper_refresh_decision_t decision)
 {
-    uint8_t update_control = decision == COMP_EPAPER_REFRESH_DECISION_PARTIAL
-                                 ? 0xFCu
-                                 : decision == COMP_EPAPER_REFRESH_DECISION_FAST
-                                        ? 0xC7u
-                                        : 0xF7u;
+    const bool vendor_sample_partial =
+        decision == COMP_EPAPER_REFRESH_DECISION_PARTIAL &&
+        COMPANION_EPAPER_SSD1681_VENDOR_PARTIAL_DIAGNOSTIC != 0;
+    uint8_t update_control = vendor_sample_partial
+                                 ? 0xFFu
+                                 : decision == COMP_EPAPER_REFRESH_DECISION_PARTIAL
+                                       ? 0xFCu
+                                       : decision == COMP_EPAPER_REFRESH_DECISION_FAST
+                                             ? 0xC7u
+                                             : 0xF7u;
     uint32_t fallback_delay_ms = decision == COMP_EPAPER_REFRESH_DECISION_PARTIAL
                                      ? 650u
                                      : decision == COMP_EPAPER_REFRESH_DECISION_FAST
@@ -842,7 +860,9 @@ static bool ssd1681_refresh_display(comp_epaper_refresh_decision_t decision)
                                   : "full";
     const char *profile = decision == COMP_EPAPER_REFRESH_DECISION_FAST
                               ? SSD1681_VENDOR_FAST_PROFILE_NAME
-                              : "default";
+                              : vendor_sample_partial
+                                    ? "good_display_vendor_partial_ab"
+                                    : "default";
     const char *expected_visible_flicker =
         decision == COMP_EPAPER_REFRESH_DECISION_PARTIAL
             ? "none"
@@ -895,7 +915,11 @@ static comp_epaper_panel_result_t ssd1681_refresh(
         comp_epaper_refresh_policy_select(&target->refresh_policy, requested_mode);
     bool partial = selection.decision == COMP_EPAPER_REFRESH_DECISION_PARTIAL;
     bool fast = selection.decision == COMP_EPAPER_REFRESH_DECISION_FAST;
-    bool controller_initialization_required = !s_controller_initialized || fast;
+    const bool vendor_sample_partial =
+        partial && COMPANION_EPAPER_SSD1681_VENDOR_PARTIAL_DIAGNOSTIC != 0;
+    const uint8_t transfer_plane_count = vendor_sample_partial ? 1u : 2u;
+    bool controller_initialization_required = !s_controller_initialized || fast ||
+                                             vendor_sample_partial;
     ssd1681_window_t window;
     uint32_t window_bytes;
     uint32_t frame_prepare_start_ms;
@@ -949,7 +973,7 @@ static comp_epaper_panel_result_t ssd1681_refresh(
            COMPANION_EPAPER_SSD1681_USE_SOFTWARE_SPI ? "software_vendor_edges" : "hardware");
 
     bool pre_reset_ready = ssd1681_wait_ready(20u, SSD1681_READY_TIMEOUT_MS);
-    bool reset_command_sent = controller_initialization_required &&
+    bool reset_command_sent = controller_initialization_required && !vendor_sample_partial &&
                               pre_reset_ready && ssd1681_command(0x12u);
     printf("[epaper] controller_init=%u soft_reset mode=%s busy=%d pre=%u command=%u\r\n",
            (unsigned)controller_initialization_required,
@@ -958,12 +982,15 @@ static comp_epaper_panel_result_t ssd1681_refresh(
            (unsigned)pre_reset_ready,
            (unsigned)reset_command_sent);
     bool reset_ready = controller_initialization_required
-                            ? reset_command_sent &&
-                                  ssd1681_wait_ready(120u, SSD1681_READY_TIMEOUT_MS)
+                            ? vendor_sample_partial
+                                  ? pre_reset_ready
+                                  : reset_command_sent &&
+                                        ssd1681_wait_ready(120u, SSD1681_READY_TIMEOUT_MS)
                             : pre_reset_ready;
     bool fast_profile_loaded = !fast ||
                                (reset_ready && ssd1681_prepare_vendor_fast_profile());
-    bool window_set = fast_profile_loaded && reset_ready && ssd1681_set_window(&window);
+    bool window_set = fast_profile_loaded && reset_ready &&
+                      ssd1681_set_window(&window, vendor_sample_partial);
     bool border_set = window_set;
     controller_setup_elapsed_ms = HAL_GetTick() - controller_setup_start_ms;
     printf("[epaper] frame rotation=%u mirror_x=%u width=%u height=%u\r\n",
@@ -991,9 +1018,17 @@ static comp_epaper_panel_result_t ssd1681_refresh(
          * window, so sending both planes again after the waveform only delays
          * the next touch response. Good Display's matching sample likewise
          * seeds its base map separately from its partial write path. */
-        frame_written = window_set && border_set &&
-                        ssd1681_write_plane_region(0x26u, s_previous_frame, &window) &&
-                        ssd1681_write_plane_region(0x24u, s_frame, &window);
+        if (vendor_sample_partial) {
+            /* Diagnostic-only A/B: match the Good Display sample's partial
+             * path, which resets and writes the current region to 0x24 only
+             * before 0xFF. The normal product path stays 0xFC old/new. */
+            frame_written = window_set && border_set &&
+                            ssd1681_write_plane_region(0x24u, s_frame, &window);
+        } else {
+            frame_written = window_set && border_set &&
+                            ssd1681_write_plane_region(0x26u, s_previous_frame, &window) &&
+                            ssd1681_write_plane_region(0x24u, s_frame, &window);
+        }
         transfer_before_waveform_elapsed_ms =
             HAL_GetTick() - transfer_before_waveform_start_ms;
         display_refreshed = frame_written &&
@@ -1012,13 +1047,14 @@ static comp_epaper_panel_result_t ssd1681_refresh(
         display_refreshed = frame_written &&
                             ssd1681_refresh_display(selection.decision);
     }
-    printf("[epaper] timing mode=%s prepare_ms=%lu setup_ms=%lu transfer_before_waveform_ms=%lu transfer_after_waveform_ms=%lu bytes=%lu spi=%s\r\n",
+    printf("[epaper] timing mode=%s prepare_ms=%lu setup_ms=%lu transfer_before_waveform_ms=%lu transfer_after_waveform_ms=%lu bytes=%lu data_planes=%u spi=%s\r\n",
            selected_mode,
            (unsigned long)frame_prepare_elapsed_ms,
            (unsigned long)controller_setup_elapsed_ms,
            (unsigned long)transfer_before_waveform_elapsed_ms,
            (unsigned long)transfer_after_waveform_elapsed_ms,
            (unsigned long)window_bytes,
+           (unsigned)transfer_plane_count,
            COMPANION_EPAPER_SSD1681_USE_SOFTWARE_SPI ? "software_vendor_edges" : "hardware");
     bool ok = pre_reset_ready && reset_ready && fast_profile_loaded && window_set && border_set &&
                frame_written && baseline_written && display_refreshed;
@@ -1053,7 +1089,7 @@ static comp_epaper_panel_result_t ssd1681_refresh(
     if (out_report != NULL) {
         out_report->request_id = request->request_id;
         out_report->content_crc32 = request->content_crc32;
-        out_report->transferred_bytes = ok ? window_bytes * 2u : 0u;
+        out_report->transferred_bytes = ok ? window_bytes * transfer_plane_count : 0u;
         out_report->width = SSD1681_WIDTH;
         out_report->height = SSD1681_HEIGHT;
     }

@@ -982,6 +982,23 @@ Good Display Mode-1 `0xC7` profile 均不变。必须在 owner 明确“开始�
 trace 同时证明连续局刷成功、无 BUSY/transport failure、后传输为 0，且真实屏幕无新增残影；否则
 立即恢复该 target-specific optimization，不能以静态构建代替面板证据。
 
+## Revision 75: 官方单平面 partial A/B 诊断
+
+Good Display 同型号 STM32 样例在建立 base map 时写 `0x24` 与 `0x26`，但其 `EPD_Dis_Part()` 每次
+局刷会复位控制器、只写当前 dirty region 到 `0x24`，然后以 `0xFF` 激活 partial update。这与当前
+WB55 production 的 `0xFC` old/new 双平面差分策略不同，不能根据源代码或 nominal 0.3 s 宣称哪一个
+更快或残影更好。
+
+因此新增 production-off A/B build：它复用六次自动交互诊断的 baseline、内容变化和第六次 Mode-1
+cleanup，但仅把前五次 partial 临时改为 vendor-sample `reset + 0x24 one plane + 0xFF`。它必须明确记录
+`vendor_sample_partial`、每帧一个 data plane、BUSY 完成和 transfer timing；默认 production 仍是
+`0xFC` two-plane differential，WBA portable logic 与 target adapter 均不改变。
+
+晋级标准不是“串口更短”：owner 明确开始硬件验收后，使用同一屏幕收集 reset-bounded active-vs-vendor
+两条 trace，先确认两边六帧都无 timeout/transport failure，再比较前传输与 waveform 时间，最后观察
+连续局刷后的残影。任何一个 vendor A/B failure 或视觉退化都会使该 profile 保持 diagnostic-only，并
+回到当前 `0xFC` production path。
+
 ## 逐项验收顺序
 
 本项目遵循 AI Workflow 的全产品异步验收规则：未收到操作者明确的“开始验收”前，

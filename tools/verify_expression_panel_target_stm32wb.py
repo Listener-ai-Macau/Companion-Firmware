@@ -185,7 +185,7 @@ def check_ssd1681_diagnostic_driver(errors: list[str]) -> None:
         "static const uint8_t driver_output[] = {0xC7u, 0x00u, 0x00u};",
         "static const uint8_t data_entry[] = {0x01u};",
         "static ssd1681_window_t ssd1681_window_from_difference(void)",
-        "static bool ssd1681_set_window(const ssd1681_window_t *window)",
+        "static bool ssd1681_set_window(const ssd1681_window_t *window,",
         "static bool ssd1681_write_plane_region",
         "s_previous_frame",
         "ssd1681_command(0x12u)",

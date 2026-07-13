@@ -19,6 +19,9 @@ def main() -> int:
     app = (
         ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c"
     ).read_text(encoding="utf-8")
+    driver = (
+        ROOT / "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c"
+    ).read_text(encoding="utf-8")
     makefile = (
         ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile"
     ).read_text(encoding="utf-8")
@@ -65,9 +68,49 @@ def main() -> int:
         errors,
     )
     for token, label in (
+        (
+            "COMPANION_EPAPER_SSD1681_VENDOR_PARTIAL_DIAGNOSTIC 0",
+            "vendor partial production-off default",
+        ),
+        ("good_display_vendor_partial_ab", "vendor partial diagnostic profile"),
+        ("? 0xFFu", "vendor partial update control"),
+        ("Diagnostic-only A/B", "vendor partial isolation rationale"),
+        ("static const uint8_t vendor_partial_border[] = {0x80u};", "vendor partial border setting"),
+        ("ssd1681_set_window(&window, vendor_sample_partial)", "vendor partial window selection"),
+        ("ssd1681_write_plane_region(0x24u, s_frame, &window)", "vendor current-plane write"),
+    ):
+        require(driver, token, label, errors)
+    require(
+        makefile,
+        "COMPANION_EPAPER_SSD1681_VENDOR_PARTIAL_DIAGNOSTIC=1",
+        "vendor partial build definition",
+        errors,
+    )
+    require(
+        build,
+        "EpaperSsd1681VendorPartialDiagnostic",
+        "vendor partial build switch",
+        errors,
+    )
+    require(
+        build,
+        "EPAPER_SSD1681_VENDOR_PARTIAL_DIAGNOSTIC=1",
+        "vendor partial make argument",
+        errors,
+    )
+    require(
+        build,
+        "BUILD_DIR=build_vendor_partial_diagnostic",
+        "isolated vendor partial build directory",
+        errors,
+    )
+    for token, label in (
         ("five_differential_requests", "five-partial parser check"),
         ("one_sixth_request_maintenance", "sixth-cleanup parser check"),
+        ("PARTIAL_PROFILES", "profiled partial parser"),
         ("no_post_waveform_transfer", "post-wave transfer elimination parser check"),
+        ("correct_data_plane_count", "partial plane-count parser check"),
+        ("vendor_sample", "vendor partial parser profile"),
         ("no_obsolete_delayed_maintenance", "old-timer parser check"),
         ("PASS_STATIC_PARSER", "parser self-test result"),
     ):
