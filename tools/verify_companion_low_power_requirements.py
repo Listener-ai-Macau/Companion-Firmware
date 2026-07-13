@@ -98,6 +98,9 @@ def main() -> int:
     require("cancel_low_power_idle_pose_timer" in main_source, "touch does not cancel the low-power sleepy deadline", errors)
     require("Companion_Screen_EnterLowPowerIdle" in main_source, "Stop path does not request the low-power sleep pose", errors)
     require("low_power_face request=sleepy trigger=idle_timer" in main_source, "timer-triggered low-power pose diagnostic is absent", errors)
+    require("Companion_App_OnScreenRefreshComplete" in main_source, "display-complete power policy handoff is absent", errors)
+    require("Companion_App_OnScreenRefreshComplete" in app_ble_source, "display task does not report completion to power policy", errors)
+    require("low_power_face completed=1 stop=%s" in main_source, "sleepy frame Stop-return diagnostic is absent", errors)
     require("Companion_Screen_EnterLowPowerIdle" in screen_ui, "screen API lacks low-power idle entry", errors)
     for anchor in [
         "COMP_EPAPER_EXPRESSION_SLEEPY",

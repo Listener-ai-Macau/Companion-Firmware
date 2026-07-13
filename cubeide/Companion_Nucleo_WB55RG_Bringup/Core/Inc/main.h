@@ -64,6 +64,7 @@ void Companion_App_HandleBleControl(comp_audio_control_t control,
                                     const uint8_t *data,
                                     size_t length);
 void Companion_App_HandleBleLinkReadyChanged(bool ready);
+void Companion_App_OnScreenRefreshComplete(void);
 companion_ble_advertising_request_result_t Companion_Ble_RequestAdvertising(
     const char *reason);
 

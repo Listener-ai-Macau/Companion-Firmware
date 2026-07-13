@@ -913,6 +913,18 @@ Revision 66 已让 FT6336 在 SSD1681 BUSY 期间继续推进手势时基，但�
 one-shot，不重绘 idle，也不保持主循环轮询。计时参数必须留在 board policy 常量中，未来 WBA 只替换
 timer adapter；静态检查、15 s Stop/timer runtime trace 和触碰取消 trace 是 ACPT-01 重开前的机器证据。
 
+## Revision 71: 刷完静态休眠脸立即归还 Stop
+
+15 s one-shot 的第一段真机串口证明了 timer 能从 Stop 唤醒并完成一张 `sleepy` differential
+frame，但该 frame 完成后没有新的 `stop=allowed` 记录。根因不是面板继续 BUSY，而是显示任务由
+Cube sequencer 执行，主循环的下一次策略复核不应成为归还 Stop 的前提。
+
+因此显示任务在同步 SSD1681 refresh 返回后，调用 board application 的 display-complete 通知。通知只
+重新计算既有 portable power policy；当它正完成静态 `sleepy` face 时，记录
+`low_power_face completed=1 stop=allowed`。它不排队第二张帧、不增加 polling、也不改变触控或未批准的
+四项菜单视觉资源。WB55 reset-bounded trace 必须顺序证明 arm -> Stop -> sleepy -> display complete ->
+Stop；WBA 移植层仅需在各自显示任务完成点触发同一 portable policy recheck。
+
 ## 逐项验收顺序
 
 本项目遵循 AI Workflow 的全产品异步验收规则：未收到操作者明确的“开始验收”前，

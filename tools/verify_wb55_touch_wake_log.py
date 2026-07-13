@@ -13,7 +13,7 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA_ID = "companion.wb55.touch_wake_log.v1"
-SCOPES = ("stop-wake", "double-tap-recording", "full")
+SCOPES = ("idle-timer", "stop-wake", "double-tap-recording", "full")
 
 
 def health_samples(log: str) -> list[dict[str, int]]:
@@ -47,21 +47,27 @@ def marker_precedes(log: str, first: str, second: str) -> bool:
 
 
 def required_check_names(scope: str) -> tuple[str, ...]:
-    if scope == "stop-wake":
+    if scope == "idle-timer":
         return (
             "lpm_boot_ready",
             "tp_int_wired",
             "ft6336_trigger_mode",
             "low_power_idle_timer_armed",
+            "timer_stop_precedes_sleepy",
             "low_power_sleep_pose_stopped",
             "low_power_face_requested_timer",
-            "low_power_pose_precedes_stop",
+            "low_power_face_completed_stop",
+            "timer_sleep_returns_to_stop",
+            "single_boot_after_capture_start",
+        )
+    if scope == "stop-wake":
+        return (
+            *required_check_names("idle-timer"),
             "health_sample_observed",
             "irq_event_observed",
             "irq_observed",
             "irq_consumed",
             "irq_counts_ordered",
-            "single_boot_after_capture_start",
         )
     if scope == "double-tap-recording":
         return (
@@ -89,15 +95,21 @@ def evaluate(log: str, log_path: str, scope: str = "full") -> dict[str, Any]:
     low_power_sleep_pose = "[screen] low_power_idle pose=sleepy animation=stopped"
     low_power_timer_armed = "[power] low_power_idle_timer=armed delay_ms=15000"
     low_power_face_request = "[power] low_power_face request=sleepy trigger=idle_timer"
+    low_power_face_complete = "[power] low_power_face completed=1 stop=allowed"
     stop_allowed = "[power] stop=allowed"
     checks = {
         "lpm_boot_ready": "[power] policy_selftest=pass touch_irq_wake=ready lpm=enabled" in log,
         "tp_int_wired": "irq=PC6 wired=1" in log,
         "ft6336_trigger_mode": "irq_mode=trigger" in log,
         "low_power_idle_timer_armed": low_power_timer_armed in log,
+        "timer_stop_precedes_sleepy": marker_precedes(log, low_power_timer_armed, stop_allowed)
+        and marker_precedes(log, stop_allowed, low_power_sleep_pose),
         "low_power_sleep_pose_stopped": low_power_sleep_pose in log,
         "low_power_face_requested_timer": low_power_face_request in log,
-        "low_power_pose_precedes_stop": marker_precedes(log, low_power_face_request, stop_allowed),
+        "low_power_face_completed_stop": low_power_face_complete in log,
+        "timer_sleep_returns_to_stop": marker_precedes(
+            log, low_power_face_request, low_power_face_complete
+        ),
         "health_sample_observed": bool(samples),
         "irq_event_observed": bool(events),
         "irq_observed": max_irq > 0,
@@ -113,6 +125,7 @@ def evaluate(log: str, log_path: str, scope: str = "full") -> dict[str, Any]:
     required_checks = required_check_names(scope)
     status = "PASS" if all(checks[name] for name in required_checks) else "NO_GO_INCOMPLETE_TOUCH_WAKE_EVIDENCE"
     next_actions = {
+        "idle-timer": "Capture at least 20 seconds after reset and prove the 15 s idle timer permits Stop before its single sleepy transition, then the display-complete callback returns to Stop.",
         "stop-wake": "Collect one reset-bounded capture that shows the 15 s idle timer arm, static sleepy pose, Stop, then one touch so PC6 IRQ observation and consumption are logged.",
         "double-tap-recording": "Collect one bounded capture containing two daily-page double taps, recording start/stop, and a successful external Flash store.",
         "full": "Collect a post-wiring serial capture with TP_INT wired, then perform one Stop wake and two daily-page double taps.",
@@ -146,9 +159,12 @@ def self_test(scope: str = "full") -> dict[str, Any]:
             "[touch] ft6336 decoder=pass gesture=pass addr=0x38 probe=present probes=1 irq_mode=trigger irq_cfg_errors=0 tuning=applied threshold=0x16 period=12/24 tuning_errors=0 poll_ms=5/8 irq=PC6 wired=1 reset=PC10 wired=0 refresh_poll_ms=5",
             "[power] policy_selftest=pass touch_irq_wake=ready lpm=enabled",
             "[power] low_power_idle_timer=armed delay_ms=15000",
+            "[power] stop=allowed blockers=0x00000000 touch_irq=1",
             "[screen] low_power_idle pose=sleepy animation=stopped",
             "[power] low_power_face request=sleepy trigger=idle_timer",
+            "[power] stop=blocked blockers=0x00000000 touch_irq=1",
             "[power] stop=allowed blockers=0x00000000 touch_irq=1",
+            "[power] low_power_face completed=1 stop=allowed",
             "[touch-health] detected=1 irq=3 irq_consumed=3 buffered=0 dropped=0",
             "[touch-irq] observed=3 consumed=3",
             "[touch-ui] daily_double_tap_recording x=100 y=100 state=idle",

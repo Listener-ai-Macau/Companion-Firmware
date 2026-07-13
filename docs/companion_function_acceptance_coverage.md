@@ -65,7 +65,8 @@ operator observation agree.
   `[screen] low_power_idle pose=sleepy animation=stopped`,
   `[power] low_power_idle_timer=armed delay_ms=15000`, `[screen]
   low_power_idle pose=sleepy animation=stopped`, `[power]
-  low_power_face request=sleepy trigger=idle_timer`, `[power] stop=allowed`,
+  low_power_face request=sleepy trigger=idle_timer`,
+  `[power] low_power_face completed=1 stop=allowed`, `[power] stop=allowed`,
   a post-idle `irq>0` and `irq_consumed>0`, valid FT6336 identity, exactly one
   boot marker, and one `[touch-irq]` line whose consumed count catches up to
   the observed count.

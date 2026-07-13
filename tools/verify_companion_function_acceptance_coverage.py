@@ -21,6 +21,7 @@ REQUIRED_SHARED_ANCHORS = (
     "STM32WBA55/WBA65",
     "low_power_idle_timer=armed delay_ms=15000",
     "low_power_face request=sleepy trigger=idle_timer",
+    "low_power_face completed=1 stop=allowed",
     "periodic sleep-frame flicker",
 )
 

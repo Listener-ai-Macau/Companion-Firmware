@@ -34,7 +34,7 @@ CubeWBA 的低功耗管理器。
 | 手指仍接触、长按菜单计时 | 禁止 Stop，保留 5--10 ms 触控采样 |
 | 电子纸刷新 BUSY 期或交互后维护刷新 | 禁止 Stop，保留显示与触摸缓冲服务 |
 | 空闲且 `TP_INT` 就绪 | 不再执行固定 `HAL_Delay(10 ms)`；交给 `UTIL_LPM_EnterLowPower()` |
-| 日常页完成交互后 | 立刻允许 Stop，并由 RTC TimerServer 在 `15 s` 无触控后唤醒一次；到期才排队一张外部 Flash `sleepy` 休眠脸并等待该帧完成。新 contact 必须取消该 one-shot，不得在交互后立即追加休眠局刷。 |
+| 日常页完成交互后 | 立刻允许 Stop，并由 RTC TimerServer 在 `15 s` 无触控后唤醒一次；到期才排队一张外部 Flash `sleepy` 休眠脸并等待该帧完成，显示任务完成时立即复核并恢复 Stop。新 contact 必须取消该 one-shot，不得在交互后立即追加休眠局刷。 |
 | 稳定 Stop 中 | `sleepy` 第一帧保持静态，随后停止表情播放器和定时器。休眠的呼吸关键帧是可替换美术词汇，不得在 Stop 中周期性唤醒或刷新电子纸。 |
 | 触控中断配置失败 | 禁止 Stop，保留现有触摸轮询回退 |
 

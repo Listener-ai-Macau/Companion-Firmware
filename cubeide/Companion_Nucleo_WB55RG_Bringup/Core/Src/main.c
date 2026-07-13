@@ -449,6 +449,7 @@ SPI_HandleTypeDef hspi2;
 
 static comp_recording_fsm_t s_recording_fsm;
 static comp_power_policy_t s_power_policy;
+static bool s_power_policy_ready;
 static bool s_low_power_stop_allowed;
 static comp_qspi_nor_t s_flash;
 static companion_screen_assets_stm32wb_t s_screen_assets_adapter;
@@ -1116,6 +1117,7 @@ int main(void)
      * path can enter Stop and defer its periodic heartbeat. */
     print_touch_health();
     update_low_power_policy();
+    s_power_policy_ready = true;
     printf("[power] policy_selftest=%s touch_irq_wake=%s lpm=%s\r\n",
            comp_power_policy_self_test() ? "pass" : "fail",
            COMPANION_TOUCH_INT_WIRED != 0u && s_touch.interrupt_mode_valid
@@ -2210,6 +2212,26 @@ static void update_low_power_policy(void)
            stop_allowed ? "allowed" : "blocked",
            (unsigned long)s_power_policy.blockers,
            s_power_policy.touch_wake_ready ? 1u : 0u);
+}
+
+void Companion_App_OnScreenRefreshComplete(void)
+{
+    bool sleepy_stop_recheck;
+
+    if (!s_power_policy_ready) {
+        return;
+    }
+
+    /* The display task runs inside Cube's sequencer, after the synchronous
+     * SSD1681 BUSY interval. Do not wait for a later main-loop pass to give
+     * Stop back after the one static idle pose. */
+    sleepy_stop_recheck = s_low_power_idle_pose_visible &&
+                          !s_low_power_stop_allowed;
+    update_low_power_policy();
+    if (sleepy_stop_recheck) {
+        printf("[power] low_power_face completed=1 stop=%s\r\n",
+               s_low_power_stop_allowed ? "allowed" : "blocked");
+    }
 }
 
 static void process_menu_entry_transition(uint32_t now_ms)

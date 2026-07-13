@@ -1036,6 +1036,9 @@ static void Companion_Display_Task(void)
                                    render_state,
                                    status_error,
                                    request.content_crc32);
+  /* The panel transaction is synchronous. Return the power decision to the
+   * application before the sequencer can sleep again. */
+  Companion_App_OnScreenRefreshComplete();
 
   if (runtime_stats.display_queue.pending_count != 0u)
   {
