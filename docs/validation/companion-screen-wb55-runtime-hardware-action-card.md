@@ -29,7 +29,7 @@ pwsh -NoProfile -File .\tools\run_wb55_screen_runtime_recheck.ps1 -CheckOnly
 pwsh -NoProfile -File .\tools\run_wb55_screen_runtime_recheck.ps1 -SelfTestRecovery -OutRoot .\.cache\validation\rev52-runtime-recovery-selftest
 ```
 
-- self-test report: `.cache/validation/rev51-runtime-recovery-selftest/runtime-recheck-run.json`
+- self-test report: `.cache/validation/rev52-runtime-recovery-selftest/runtime-recheck-run.json`
 - expected status: `FAIL`
 - expected recovery: `flash_normal_after_failure=PASS`, `normal_firmware_restored=true`
 

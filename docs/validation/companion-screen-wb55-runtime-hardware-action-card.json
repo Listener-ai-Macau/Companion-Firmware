@@ -130,7 +130,7 @@
     "claim_scope": "stubbed_failure_recovery_no_hardware_claim",
     "command": "pwsh -NoProfile -File .\\tools\\run_wb55_screen_runtime_recheck.ps1 -SelfTestRecovery -OutRoot .\\.cache\\validation\\rev52-runtime-recovery-selftest",
     "normal_firmware_restored": true,
-    "report": ".cache/validation/rev51-runtime-recovery-selftest/runtime-recheck-run.json",
+    "report": ".cache/validation/rev52-runtime-recovery-selftest/runtime-recheck-run.json",
     "report_status": "FAIL",
     "result_ids": [
       "flash_provision",
