@@ -16,17 +16,17 @@
     "normal_firmware_build": "tools/build_nucleo_bringup.ps1 -EpaperSsd1681Bringup -EpaperMenu 1 -BootSelfTests -Force",
     "normal_firmware_flash": "tools/flash_nucleo_bringup.ps1",
     "normal_firmware_flash_preflight": "tools/flash_nucleo_bringup.ps1 -CheckOnly",
-    "normal_firmware_size_bytes": 3015392,
+    "normal_firmware_size_bytes": 3019356,
     "resource_pack_metadata": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_screen_asset_provision/generated/emote_matrix_white_200x200.cemp",
     "resource_pack_preview": "docs/validation/epaper/menu-v3-en-preview.png",
     "resource_pack_provision_build": "tools/build_nucleo_bringup.ps1 -EpaperSsd1681Bringup -EpaperMenu 1 -ScreenAssetProvision -BootSelfTests -Force",
     "resource_pack_provision_firmware": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_screen_asset_provision/Companion_Nucleo_WB55RG_ScreenAssetProvision.elf",
-    "resource_pack_provision_firmware_size_bytes": 2874424,
+    "resource_pack_provision_firmware_size_bytes": 2877824,
     "resource_pack_provision_flash": "tools/flash_nucleo_bringup.ps1 -ScreenAssetProvision",
     "resource_pack_provision_flash_preflight": "tools/flash_nucleo_bringup.ps1 -ScreenAssetProvision -CheckOnly",
     "resource_pack_review_preview": "docs/validation/epaper/menu-v3-zh-preview.png"
   },
-  "generated_at": "2026-07-13T18:12:16+08:00",
+  "generated_at": "2026-07-13T18:31:00+08:00",
   "menu_contract": {
     "default_language": "zh",
     "external_menu_frames": 14,
@@ -151,7 +151,7 @@
   "revision_53_machine_contract": {
     "menu_style": "owner-accepted menu-v3 sheet is cropped into seven complete external pages per language; no normal-menu geometry or icon is hand-drawn by the WB55 renderer",
     "menu_home": "six destinations fit one static source-layout frame per language; legacy 43-frame scrolling assets are excluded from CEMP",
-    "menu_live_cells": "Status, Phone Link, and Device source example values are blanked before the compact runtime overlay writes live flags or truthful fixed capability states; recording uses the source action button and shows a stop glyph only while the real recording FSM is active",
+    "menu_live_cells": "Status, Phone Link, and Device source example values are blanked before the compact runtime overlay writes live flags or truthful fixed capability states; the Phone Link reconnect row calls the guarded WB55 advertising request and writes ADV/LINK/ERR from the actual result; recording uses the source action button and shows a stop glyph only while the real recording FSM is active",
     "menu_import_report": "docs/validation/companion-screen-menu-v3-import.json",
     "menu_previews": [
       "docs/validation/epaper/menu-v3-en-preview.png",

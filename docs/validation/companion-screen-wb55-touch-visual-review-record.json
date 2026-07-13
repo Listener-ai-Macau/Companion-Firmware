@@ -32,6 +32,11 @@
     {
       "operator_note": "",
       "reason": "human review has not started",
+      "source_step_id": "phone_reconnect_advertising"
+    },
+    {
+      "operator_note": "",
+      "reason": "human review has not started",
       "source_step_id": "language_switch_single_language"
     },
     {
@@ -52,6 +57,7 @@
     "anywhere_hold_menu_entry",
     "menu_home_static_vertical_stroke",
     "row_press_and_back",
+    "phone_reconnect_advertising",
     "language_switch_single_language",
     "maintenance_single_quiet_flash",
     "premium_pet_feel"
@@ -114,6 +120,18 @@
       "resolution_state": "open_requires_fix",
       "source_step_id": "row_press_and_back",
       "title": "Row press shows entry feedback",
+      "triage_items": [],
+      "visual_issue_classification": "none"
+    },
+    {
+      "evidence_path": "",
+      "next_review_scope": "",
+      "operator_note": "",
+      "operator_observation": "",
+      "publishable_pass_allowed": false,
+      "resolution_state": "open_requires_fix",
+      "source_step_id": "phone_reconnect_advertising",
+      "title": "Phone reconnect requests guarded advertising",
       "triage_items": [],
       "visual_issue_classification": "none"
     },

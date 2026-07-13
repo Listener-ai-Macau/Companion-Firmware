@@ -112,6 +112,15 @@ void comp_screen_menu_set_flags(comp_screen_menu_t *menu, uint8_t flags)
     }
 }
 
+void comp_screen_menu_set_phone_reconnect_state(
+    comp_screen_menu_t *menu,
+    comp_screen_menu_phone_reconnect_state_t state)
+{
+    if (menu != NULL && menu->view == COMP_SCREEN_MENU_VIEW_PHONE) {
+        menu->home_page = (uint8_t)state;
+    }
+}
+
 uint8_t comp_screen_menu_with_ble_flag(uint8_t flags, bool connected)
 {
     flags &= (uint8_t)~COMP_SCREEN_MENU_FLAG_BLE_CONNECTED;
@@ -146,6 +155,7 @@ comp_screen_menu_result_t comp_screen_menu_tap(comp_screen_menu_t *menu,
     }
     if (menu->view != COMP_SCREEN_MENU_VIEW_HOME && y < 34u) {
         menu->view = COMP_SCREEN_MENU_VIEW_HOME;
+        menu->home_page = 0u;
         menu->revision++;
         result.changed = true;
     } else if (comp_screen_menu_home_hit_test(menu, x, y, NULL, &hit_view)) {
@@ -171,6 +181,11 @@ comp_screen_menu_result_t comp_screen_menu_tap(comp_screen_menu_t *menu,
         menu->revision++;
         result.action = COMP_SCREEN_MENU_ACTION_LANGUAGE_CHANGED;
         result.changed = true;
+    } else if (menu->view == COMP_SCREEN_MENU_VIEW_PHONE &&
+               x >= 12u && x < 188u && y >= 140u && y < 184u) {
+        menu->revision++;
+        result.action = COMP_SCREEN_MENU_ACTION_PHONE_RECONNECT;
+        result.changed = true;
     }
     menu_result_from_state(menu, &result);
     return result;
@@ -188,6 +203,7 @@ comp_screen_menu_result_t comp_screen_menu_gesture(
     if (menu->view != COMP_SCREEN_MENU_VIEW_HOME &&
         gesture->type == COMP_TOUCH_GESTURE_SWIPE_RIGHT) {
         menu->view = COMP_SCREEN_MENU_VIEW_HOME;
+        menu->home_page = 0u;
         menu->revision++;
         result.changed = true;
     }
@@ -616,7 +632,6 @@ bool comp_screen_menu_render_dynamic(comp_screen_menu_view_t view,
 {
     comp_screen_framebuffer_t framebuffer;
 
-    (void)home_page;
     if (width != MENU_WIDTH || height != MENU_HEIGHT ||
         frame_bytes < MENU_FRAME_BYTES ||
         !comp_screen_framebuffer_init(&framebuffer, frame, frame_bytes, width, height)) {
@@ -665,6 +680,15 @@ bool comp_screen_menu_render_dynamic(comp_screen_menu_view_t view,
             comp_screen_framebuffer_draw_text(&framebuffer, 166, rows[index] + 5,
                                               index == 2u && connected ? values[index] : "--",
                                               1u, true);
+        }
+        if (home_page != COMP_SCREEN_MENU_PHONE_RECONNECT_IDLE) {
+            const char *retry = home_page == COMP_SCREEN_MENU_PHONE_RECONNECT_ADVERTISING
+                                    ? "ADV"
+                                    : home_page == COMP_SCREEN_MENU_PHONE_RECONNECT_CONNECTED
+                                          ? "LINK"
+                                          : "ERR";
+            comp_screen_framebuffer_fill_rect(&framebuffer, 145, 158, 55u, 20u, false);
+            comp_screen_framebuffer_draw_text(&framebuffer, 166, 163, retry, 1u, true);
         }
     } else if (view == COMP_SCREEN_MENU_VIEW_DEVICE) {
         const bool touch_ok = (flags & COMP_SCREEN_MENU_FLAG_TOUCH_OK) != 0u;
@@ -925,6 +949,47 @@ bool comp_screen_menu_self_test(void)
         !comp_screen_menu_asset_name(result.view, result.language, result.home_page,
                                      asset_name, sizeof(asset_name)) ||
         strcmp(asset_name, "menu.home.en") != 0) {
+        return false;
+    }
+    result = comp_screen_menu_tap(&menu, 100u, 99u);
+    if (!result.changed || result.view != COMP_SCREEN_MENU_VIEW_PHONE) {
+        return false;
+    }
+    result = comp_screen_menu_tap(&menu, 100u, 160u);
+    if (!result.changed ||
+        result.action != COMP_SCREEN_MENU_ACTION_PHONE_RECONNECT) {
+        return false;
+    }
+    comp_screen_menu_set_phone_reconnect_state(
+        &menu, COMP_SCREEN_MENU_PHONE_RECONNECT_ADVERTISING);
+    if (menu.home_page != COMP_SCREEN_MENU_PHONE_RECONNECT_ADVERTISING) {
+        return false;
+    }
+    if (!comp_screen_menu_render(COMP_SCREEN_MENU_VIEW_PHONE,
+                                 COMP_SCREEN_MENU_LANGUAGE_EN,
+                                 0u,
+                                 0u,
+                                 frame,
+                                 sizeof(frame),
+                                 MENU_WIDTH,
+                                 MENU_HEIGHT)) {
+        return false;
+    }
+    fingerprint = framebuffer_fingerprint(frame, sizeof(frame));
+    if (!comp_screen_menu_render_dynamic(
+            COMP_SCREEN_MENU_VIEW_PHONE,
+            0u,
+            COMP_SCREEN_MENU_PHONE_RECONNECT_ADVERTISING,
+            frame,
+            sizeof(frame),
+            MENU_WIDTH,
+            MENU_HEIGHT) ||
+        framebuffer_fingerprint(frame, sizeof(frame)) == fingerprint) {
+        return false;
+    }
+    result = comp_screen_menu_gesture(&menu, &gesture);
+    if (!result.changed || result.view != COMP_SCREEN_MENU_VIEW_HOME ||
+        result.home_page != 0u) {
         return false;
     }
     if (!comp_screen_menu_render(COMP_SCREEN_MENU_VIEW_HOME,

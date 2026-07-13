@@ -13,7 +13,7 @@
       "status": "PASS"
     },
     "generation_release_ledger": {
-      "cemp_crc32": "0x9B6E6875",
+      "cemp_crc32": "0x2332E300",
       "cemp_revision": 53,
       "expected_first_frame_marker": "coherent_generation=1",
       "path": "docs/validation/companion-screen-generation-release-ledger.json",
@@ -31,9 +31,9 @@
     "normal_log": null,
     "pet_art_style": "genref_sheet_12_inner_faces_v5",
     "provision_log": null,
-    "resource_crc32": "0x9B6E6875",
+    "resource_crc32": "0x2332E300",
     "resource_revision": 53,
-    "resource_total_bytes": 50368,
+    "resource_total_bytes": 49901,
     "runtime_flash_preflight": {
       "path": "docs/validation/companion-screen-wb55-runtime-flash-preflight.json",
       "status": "PASS"
@@ -150,6 +150,27 @@
       "source_step_id": "row_press_and_back",
       "success_signal": "点击项先有被选中的 press-cue，再到详情页；返回手势可用。",
       "title": "Row press shows entry feedback",
+      "triage_items": [],
+      "visual_issue_classification": "none"
+    },
+    {
+      "evidence_path": "",
+      "expected_record_fields": [
+        "initial BLE state",
+        "row result ADV/LINK/ERR",
+        "advertising request log",
+        "unexpected duplicate request yes/no"
+      ],
+      "next_review_scope": "",
+      "operator_action": "进入 Phone Link；在设备未连接时轻点 Reconnect 一次，并保留串口日志。",
+      "operator_note": "",
+      "operator_observation": "",
+      "publishable_pass_allowed": false,
+      "regression_guard": "Reconnect must issue one guarded advertising request without disturbing an active link or pretending that a retry succeeded",
+      "resolution_state": "open_requires_fix",
+      "source_step_id": "phone_reconnect_advertising",
+      "success_signal": "该行显示 ADV；串口同时出现 phone_reconnect 和 advertising request 日志。若已连接则显示 LINK，命令失败才显示 ERR。",
+      "title": "Phone reconnect requests guarded advertising",
       "triage_items": [],
       "visual_issue_classification": "none"
     },

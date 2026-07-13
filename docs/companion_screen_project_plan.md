@@ -202,7 +202,7 @@ alias。这样以后频繁换 prompt、换屏幕尺寸或换外壳时，改的�
 |---|---|---|---|
 | MENU-01 | 接受或重做 `menu-v3` 视觉基线 | 用户评审候选图 | 迭代 ledger 记录 accepted/rejected 与下一轮 prompt delta |
 | MENU-02 | 从接受稿生成中英文 PBM/CEMP | MENU-01 accepted | 资源 visual review 与 menu verifier 通过，CEMP revision 递增 |
-| MENU-03 | 电话页重连动作接入 BLE 广播请求 | MENU-02 | 点击重连产生真实广播请求日志，失败也显示真实结果 |
+| MENU-03 | 电话页重连动作接入 BLE 广播请求 | MENU-02 | 代码已接入：点击重连调用受保护的广播请求，`ADV`/`LINK`/`ERR` 来自实际请求结果；待 BLE 硬件日志确认 |
 | MENU-04 | Voice 页状态与最近条目/计数接入外部 Flash 索引 | 已有录音存储 | 只显示真实条目数和真实当前录音状态，不显示示例数字或重复 Start/Stop 控件 |
 | MENU-05 | 设备电池行 | 有电池硬件与采样路径 | 无硬件前显示 planned；接入后显示校验过的电量/充电状态 |
 | MENU-06 | 关于页诊断入口 | 诊断操作缩短为有界、可取消产品流程 | 操作不阻塞交互，日志含 start/result，失败可读 |

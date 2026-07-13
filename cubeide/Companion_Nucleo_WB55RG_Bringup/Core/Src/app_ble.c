@@ -280,6 +280,7 @@ static bool s_companion_product_expression_demo_end_sent = false;
 #endif
 static uint32_t s_companion_audio_next_session_id = 1u;
 static bool s_companion_ble_connected = false;
+static bool s_companion_ble_advertising = false;
 static Companion_BleLinkMode_t s_companion_ble_link_mode = COMPANION_BLE_LINK_MODE_NONE;
 static uint32_t s_companion_gatt_card_refresh_count = 0u;
 static companion_gatt_card_status_v1_t s_companion_gatt_card_status = {
@@ -321,7 +322,7 @@ static void Ble_Hci_Gap_Gatt_Init(void);
 #if (CFG_IDENTITY_ADDRESS == GAP_PUBLIC_ADDR)
 static const uint8_t* BleGetBdAddress( void );
 #endif
-static void Adv_Request(void);
+static tBleStatus Adv_Request(void);
 
 /* USER CODE BEGIN PFP */
 static void Companion_Audio_Init(void);
@@ -761,6 +762,7 @@ SVCCTL_UserEvtFlowStatus_t SVCCTL_App_Notification( void *p_Pckt )
     case HCI_DISCONNECTION_COMPLETE_EVT_CODE:
     {
       s_companion_ble_connected = false;
+      s_companion_ble_advertising = false;
       Companion_Screen_RefreshBleStatus();
       connectionHandle = COMPANION_BLE_CONN_HANDLE_INVALID;
       s_companion_ble_link_mode = COMPANION_BLE_LINK_MODE_NONE;
@@ -786,6 +788,7 @@ SVCCTL_UserEvtFlowStatus_t SVCCTL_App_Notification( void *p_Pckt )
           p_connection_complete_event = (hci_le_connection_complete_event_rp0 *) p_meta_evt->data;
           connectionHandle = p_connection_complete_event->Connection_Handle;
           s_companion_ble_connected = true;
+          s_companion_ble_advertising = false;
           Companion_Screen_RefreshBleStatus();
           s_companion_ble_link_mode = COMPANION_BLE_LINK_MODE_NONE;
           APP_DBG_MSG("==>> Companion connected handle=0x%04X; audio high-speed link deferred until active recording\n",
@@ -3422,7 +3425,33 @@ static void Ble_Hci_Gap_Gatt_Init(void)
 
 }
 
-static void Adv_Request(void)
+companion_ble_advertising_request_result_t Companion_Ble_RequestAdvertising(
+    const char *reason)
+{
+  if (s_companion_ble_connected)
+  {
+    APP_DBG_MSG("==>> Companion advertising %s skipped: already connected\n",
+                reason != NULL ? reason : "request");
+    return COMPANION_BLE_ADVERTISING_REQUEST_ALREADY_CONNECTED;
+  }
+  if (s_companion_ble_advertising)
+  {
+    APP_DBG_MSG("==>> Companion advertising %s skipped: already active\n",
+                reason != NULL ? reason : "request");
+    return COMPANION_BLE_ADVERTISING_REQUEST_ALREADY_ACTIVE;
+  }
+  if (Adv_Request() != BLE_STATUS_SUCCESS)
+  {
+    APP_DBG_MSG("==>> Companion advertising %s failed\n",
+                reason != NULL ? reason : "request");
+    return COMPANION_BLE_ADVERTISING_REQUEST_FAILED;
+  }
+  APP_DBG_MSG("==>> Companion advertising %s started\n",
+              reason != NULL ? reason : "request");
+  return COMPANION_BLE_ADVERTISING_REQUEST_STARTED;
+}
+
+static tBleStatus Adv_Request(void)
 {
   tBleStatus ret;
 
@@ -3446,8 +3475,9 @@ static void Adv_Request(void)
   {
     APP_DBG_MSG("==>> Companion advertising start failed: aci_gap_set_discoverable result=0x%x\n",
                 ret);
-    return;
+    return ret;
   }
+  s_companion_ble_advertising = true;
   APP_DBG_MSG("==>> Companion advertising discoverable started\n");
 
   /* Send Advertising data */
@@ -3455,11 +3485,14 @@ static void Adv_Request(void)
   if (ret != BLE_STATUS_SUCCESS)
   {
     APP_DBG_MSG("==>> Companion advertising data update failed: result=0x%x\n", ret);
-    return;
+    /* The controller is already discoverable. Keep the state truthful and
+     * report the data-path warning separately through the existing log. */
+    return BLE_STATUS_SUCCESS;
   }
   APP_DBG_MSG("==>> Companion advertising data active name=%s manuf_len=%u\n",
               COMPANION_BLE_PRODUCT_NAME,
               (unsigned int)sizeof(a_ManufData));
+  return BLE_STATUS_SUCCESS;
 }
 
 #if (CFG_IDENTITY_ADDRESS == GAP_PUBLIC_ADDR)

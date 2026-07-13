@@ -89,6 +89,7 @@ This file is generated. Update it with
   - `anywhere_hold_menu_entry`
   - `menu_home_static_vertical_stroke`
   - `row_press_and_back`
+  - `phone_reconnect_advertising`
   - `language_switch_single_language`
   - `maintenance_single_quiet_flash`
   - `premium_pet_feel`

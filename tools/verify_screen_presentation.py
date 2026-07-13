@@ -78,6 +78,9 @@ def main() -> int:
         "comp_screen_menu_with_ble_flag",
         "flags &= (uint8_t)~COMP_SCREEN_MENU_FLAG_BLE_CONNECTED",
         "comp_screen_framebuffer_invert_rect",
+        "COMP_SCREEN_MENU_ACTION_PHONE_RECONNECT",
+        "COMP_SCREEN_MENU_PHONE_RECONNECT_ADVERTISING",
+        "comp_screen_menu_set_phone_reconnect_state",
     ), errors)
     require_tokens("touch_gesture", gesture_h + gesture_c, (
         "consumed_until_release",
@@ -95,6 +98,9 @@ def main() -> int:
         "Companion_Screen_RefreshBleStatus",
         "status_ble connected=%u refresh=partial",
         "Companion_Screen_RuntimeMenuFlags",
+        "Companion_Ble_RequestAdvertising",
+        "s_companion_ble_advertising",
+        "advertising %s skipped: already active",
         "COMP_SCREEN_MENU_FLAG_RECORDING",
         "comp_emote_player_play_after_tail_name",
         "COMPANION_SCREEN_PRODUCT_EXPRESSION_DEMO_SIGNAL",
@@ -156,6 +162,9 @@ def main() -> int:
         "Companion_Screen_RefreshRecordingStatus",
         "record_state active=%u refresh=partial",
         "Companion_Screen_RuntimeMenuFlags",
+        "COMP_SCREEN_MENU_ACTION_PHONE_RECONNECT",
+        "Companion_Ble_RequestAdvertising(\"touch-menu\")",
+        "phone_reconnect result=%u state=%u",
     ), errors)
     require_tokens("screen_menu.h", menu_h, (
         "three-second hold anywhere",

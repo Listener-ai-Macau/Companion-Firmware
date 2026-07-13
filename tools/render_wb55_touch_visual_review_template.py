@@ -157,8 +157,21 @@ def verify(template: dict[str, Any]) -> list[str]:
     record_ids = [item.get("source_step_id") for item in records]
     if record_ids != packet_ids:
         errors.append("review records must mirror packet operator step order")
-    if len(records) != 8:
-        errors.append("review template must contain the eight focused operator steps")
+    required_operator_steps = {
+        "daily_tap_social_response",
+        "daily_swipe_pet_response",
+        "anywhere_hold_menu_entry",
+        "menu_home_static_vertical_stroke",
+        "row_press_and_back",
+        "phone_reconnect_advertising",
+        "language_switch_single_language",
+        "maintenance_single_quiet_flash",
+        "premium_pet_feel",
+    }
+    if set(packet_ids) != required_operator_steps:
+        errors.append("review template packet must retain the complete focused interaction coverage")
+    if len(records) != len(required_operator_steps):
+        errors.append("review template step count does not match focused coverage")
     for record in records:
         if record.get("resolution_state") != "open_requires_fix":
             errors.append(f"{record.get('source_step_id')} template resolution must default open_requires_fix")

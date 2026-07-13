@@ -31,7 +31,15 @@ typedef enum {
     COMP_SCREEN_MENU_ACTION_RECORD_START = 1u,
     COMP_SCREEN_MENU_ACTION_RECORD_STOP = 2u,
     COMP_SCREEN_MENU_ACTION_LANGUAGE_CHANGED = 3u,
+    COMP_SCREEN_MENU_ACTION_PHONE_RECONNECT = 4u,
 } comp_screen_menu_action_t;
+
+typedef enum {
+    COMP_SCREEN_MENU_PHONE_RECONNECT_IDLE = 0u,
+    COMP_SCREEN_MENU_PHONE_RECONNECT_ADVERTISING = 1u,
+    COMP_SCREEN_MENU_PHONE_RECONNECT_CONNECTED = 2u,
+    COMP_SCREEN_MENU_PHONE_RECONNECT_FAILED = 3u,
+} comp_screen_menu_phone_reconnect_state_t;
 
 enum {
     COMP_SCREEN_MENU_FLAG_RECORDING = 1u << 0,
@@ -84,6 +92,9 @@ typedef struct {
 
 void comp_screen_menu_init(comp_screen_menu_t *menu);
 void comp_screen_menu_set_flags(comp_screen_menu_t *menu, uint8_t flags);
+void comp_screen_menu_set_phone_reconnect_state(
+    comp_screen_menu_t *menu,
+    comp_screen_menu_phone_reconnect_state_t state);
 uint8_t comp_screen_menu_with_ble_flag(uint8_t flags, bool connected);
 bool comp_screen_menu_is_daily_entry_gesture(
     const comp_touch_gesture_event_t *gesture);

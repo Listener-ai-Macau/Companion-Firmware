@@ -114,7 +114,28 @@ do not edit this template as the final evidence record.
 - Next review scope:
 - Publishable PASS allowed: `false`
 
-### 6. Language toggle stays single-language
+### 6. Phone reconnect requests guarded advertising
+
+- Step ID: `phone_reconnect_advertising`
+- Action: 进入 Phone Link；在设备未连接时轻点 Reconnect 一次，并保留串口日志。
+- Success signal: 该行显示 ADV；串口同时出现 phone_reconnect 和 advertising request 日志。若已连接则显示 LINK，命令失败才显示 ERR。
+- Regression guard: Reconnect must issue one guarded advertising request without disturbing an active link or pretending that a retry succeeded
+- Expected record fields:
+  - initial BLE state
+  - row result ADV/LINK/ERR
+  - advertising request log
+  - unexpected duplicate request yes/no
+- Operator observation:
+- Operator note:
+- Triage items:
+  - (pending)
+- Visual issue classification: `none`
+- Resolution state: `open_requires_fix`
+- Evidence path:
+- Next review scope:
+- Publishable PASS allowed: `false`
+
+### 7. Language toggle stays single-language
 
 - Step ID: `language_switch_single_language`
 - Action: 进入偏好页切换中文/英文，再返回主页检查。
@@ -134,7 +155,7 @@ do not edit this template as the final evidence record.
 - Next review scope:
 - Publishable PASS allowed: `false`
 
-### 7. Maintenance is one quiet cleanup
+### 8. Maintenance is one quiet cleanup
 
 - Step ID: `maintenance_single_quiet_flash`
 - Action: 完成一次点击或拖动后放手等待约 2 秒。
@@ -154,7 +175,7 @@ do not edit this template as the final evidence record.
 - Next review scope:
 - Publishable PASS allowed: `false`
 
-### 8. Pet expression feels alive enough for next art pass
+### 9. Pet expression feels alive enough for next art pass
 
 - Step ID: `premium_pet_feel`
 - Action: 在轻点、滑动、菜单进入前后观察表情整体质感。

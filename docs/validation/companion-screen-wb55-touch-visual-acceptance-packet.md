@@ -104,7 +104,19 @@ This packet is generated. Update it with
   - detail arrival visible yes/no
   - back success yes/no
 
-### 6. Language toggle stays single-language
+### 6. Phone reconnect requests guarded advertising
+
+- ID: `phone_reconnect_advertising`
+- Action: 进入 Phone Link；在设备未连接时轻点 Reconnect 一次，并保留串口日志。
+- Success signal: 该行显示 ADV；串口同时出现 phone_reconnect 和 advertising request 日志。若已连接则显示 LINK，命令失败才显示 ERR。
+- Regression guard: Reconnect must issue one guarded advertising request without disturbing an active link or pretending that a retry succeeded
+- Record:
+  - initial BLE state
+  - row result ADV/LINK/ERR
+  - advertising request log
+  - unexpected duplicate request yes/no
+
+### 7. Language toggle stays single-language
 
 - ID: `language_switch_single_language`
 - Action: 进入偏好页切换中文/英文，再返回主页检查。
@@ -115,7 +127,7 @@ This packet is generated. Update it with
   - mixed-language text yes/no
   - return path
 
-### 7. Maintenance is one quiet cleanup
+### 8. Maintenance is one quiet cleanup
 
 - ID: `maintenance_single_quiet_flash`
 - Action: 完成一次点击或拖动后放手等待约 2 秒。
@@ -126,7 +138,7 @@ This packet is generated. Update it with
   - maintenance flash count
   - residual ghosting acceptable yes/no
 
-### 8. Pet expression feels alive enough for next art pass
+### 9. Pet expression feels alive enough for next art pass
 
 - ID: `premium_pet_feel`
 - Action: 在轻点、滑动、菜单进入前后观察表情整体质感。

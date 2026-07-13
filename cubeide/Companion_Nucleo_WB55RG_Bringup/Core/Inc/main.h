@@ -26,6 +26,13 @@ typedef enum {
     COMPANION_RECORDING_FLASH_READ_QSPI_BASE = 0x1000,
 } companion_recording_flash_read_error_t;
 
+typedef enum {
+    COMPANION_BLE_ADVERTISING_REQUEST_STARTED = 0u,
+    COMPANION_BLE_ADVERTISING_REQUEST_ALREADY_ACTIVE = 1u,
+    COMPANION_BLE_ADVERTISING_REQUEST_ALREADY_CONNECTED = 2u,
+    COMPANION_BLE_ADVERTISING_REQUEST_FAILED = 3u,
+} companion_ble_advertising_request_result_t;
+
 typedef struct {
     uint32_t recording_id;
     uint32_t started_unix_s;
@@ -57,6 +64,8 @@ void Companion_App_HandleBleControl(comp_audio_control_t control,
                                     const uint8_t *data,
                                     size_t length);
 void Companion_App_HandleBleLinkReadyChanged(bool ready);
+companion_ble_advertising_request_result_t Companion_Ble_RequestAdvertising(
+    const char *reason);
 
 bool Companion_BleAudio_IsReady(void);
 bool Companion_BleAudio_IsSessionActive(void);

@@ -137,6 +137,10 @@ def build_health() -> dict[str, Any]:
             "status": packet.get("status"),
             "start_rule": packet.get("start_rule"),
             "step_count": len(packet.get("operator_steps", [])),
+            "step_ids": [
+                step.get("id") for step in packet.get("operator_steps", [])
+                if isinstance(step, dict)
+            ],
             "machine_state_matches_resource": {
                 "revision": machine_state.get("resource_revision") == resource.get("revision"),
                 "crc32": machine_state.get("resource_crc32") == resource.get("pack_crc32"),
@@ -417,8 +421,21 @@ def check_health(health: dict[str, Any], errors: list[str]) -> None:
         errors.append("operator packet must stay PENDING_HUMAN")
     if "开始验收" not in str(packet.get("start_rule", "")):
         errors.append("operator packet must keep explicit 开始验收 start rule")
-    if packet.get("step_count") != 8:
-        errors.append("operator packet must retain 8 focused steps")
+    required_operator_steps = {
+        "daily_tap_social_response",
+        "daily_swipe_pet_response",
+        "anywhere_hold_menu_entry",
+        "menu_home_static_vertical_stroke",
+        "row_press_and_back",
+        "phone_reconnect_advertising",
+        "language_switch_single_language",
+        "maintenance_single_quiet_flash",
+        "premium_pet_feel",
+    }
+    if set(packet.get("step_ids", [])) != required_operator_steps:
+        errors.append("operator packet must retain the complete focused interaction coverage")
+    if packet.get("step_count") != len(required_operator_steps):
+        errors.append("operator packet focused step count does not match coverage")
     for key, matched in packet.get("machine_state_matches_resource", {}).items():
         if matched is not True:
             errors.append(f"operator packet machine_state mismatch: {key}")

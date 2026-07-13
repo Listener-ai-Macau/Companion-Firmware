@@ -181,22 +181,33 @@
     "path": "docs/validation/companion-screen-wb55-touch-visual-acceptance-packet.json",
     "start_rule": "Do not start this packet until rev53 runtime logs PASS, promotion is applied, pre-acceptance health PASS, and the operator explicitly says 开始验收.",
     "status": "PENDING_HUMAN",
-    "step_count": 8
+    "step_count": 9,
+    "step_ids": [
+      "daily_tap_social_response",
+      "daily_swipe_pet_response",
+      "anywhere_hold_menu_entry",
+      "menu_home_static_vertical_stroke",
+      "row_press_and_back",
+      "phone_reconnect_advertising",
+      "language_switch_single_language",
+      "maintenance_single_quiet_flash",
+      "premium_pet_feel"
+    ]
   },
   "operator_review_record": {
     "claim_scope": "filled_operator_review_record_validator",
     "filled_input_path": ".cache/validation/wb55-touch-visual-review/latest-review-record.json",
-    "open_item_count": 8,
+    "open_item_count": 9,
     "path": "docs/validation/companion-screen-wb55-touch-visual-review-record.json",
     "publishable_pass_allowed": false,
-    "record_count": 8,
+    "record_count": 9,
     "source_template": "docs/validation/companion-screen-wb55-touch-visual-review-template.json",
     "status": "NO_GO_NOT_STARTED"
   },
   "operator_review_template": {
     "claim_scope": "blank_operator_review_template",
     "path": "docs/validation/companion-screen-wb55-touch-visual-review-template.json",
-    "record_count": 8,
+    "record_count": 9,
     "records_default_non_publishable": true,
     "source_packet": "docs/validation/companion-screen-wb55-touch-visual-acceptance-packet.json",
     "status": "TEMPLATE_NOT_ACCEPTANCE_RESULT"

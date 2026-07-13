@@ -205,6 +205,14 @@ def build_packet() -> dict[str, Any]:
                 "press-cue and target-arrival partial refreshes must not collapse into multi-flash full refresh",
             ),
             step(
+                "phone_reconnect_advertising",
+                "Phone reconnect requests guarded advertising",
+                "进入 Phone Link；在设备未连接时轻点 Reconnect 一次，并保留串口日志。",
+                "该行显示 ADV；串口同时出现 phone_reconnect 和 advertising request 日志。若已连接则显示 LINK，命令失败才显示 ERR。",
+                ["initial BLE state", "row result ADV/LINK/ERR", "advertising request log", "unexpected duplicate request yes/no"],
+                "Reconnect must issue one guarded advertising request without disturbing an active link or pretending that a retry succeeded",
+            ),
+            step(
                 "language_switch_single_language",
                 "Language toggle stays single-language",
                 "进入偏好页切换中文/英文，再返回主页检查。",
@@ -487,6 +495,7 @@ def check_packet(packet: dict[str, Any], errors: list[str]) -> None:
         "anywhere_hold_menu_entry",
         "menu_home_static_vertical_stroke",
         "row_press_and_back",
+        "phone_reconnect_advertising",
         "language_switch_single_language",
         "maintenance_single_quiet_flash",
         "premium_pet_feel",

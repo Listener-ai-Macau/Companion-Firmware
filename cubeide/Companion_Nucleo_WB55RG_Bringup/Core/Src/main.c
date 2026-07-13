@@ -2166,6 +2166,26 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
     } else if (menu_result.action == COMP_SCREEN_MENU_ACTION_RECORD_STOP) {
         comp_screen_menu_set_flags(&s_screen_menu, Companion_Screen_RuntimeMenuFlags());
         stop_manual_recording("touch-menu");
+    } else if (menu_result.action == COMP_SCREEN_MENU_ACTION_PHONE_RECONNECT) {
+        companion_ble_advertising_request_result_t retry =
+            Companion_Ble_RequestAdvertising("touch-menu");
+        comp_screen_menu_phone_reconnect_state_t retry_state =
+            retry == COMPANION_BLE_ADVERTISING_REQUEST_FAILED
+                ? COMP_SCREEN_MENU_PHONE_RECONNECT_FAILED
+                : retry == COMPANION_BLE_ADVERTISING_REQUEST_ALREADY_CONNECTED
+                      ? COMP_SCREEN_MENU_PHONE_RECONNECT_CONNECTED
+                      : COMP_SCREEN_MENU_PHONE_RECONNECT_ADVERTISING;
+
+        comp_screen_menu_set_phone_reconnect_state(&s_screen_menu, retry_state);
+        comp_screen_menu_set_flags(&s_screen_menu, Companion_Screen_RuntimeMenuFlags());
+        printf("[touch-ui] phone_reconnect result=%u state=%u\r\n",
+               (unsigned)retry,
+               (unsigned)retry_state);
+        Companion_Screen_MenuRequest(s_screen_menu.view,
+                                     s_screen_menu.flags,
+                                     s_screen_menu.language,
+                                     s_screen_menu.home_page);
+        schedule_touch_screen_maintenance(now_ms);
     } else {
         Companion_Screen_MenuRequest(menu_result.view,
                                      menu_result.flags,
