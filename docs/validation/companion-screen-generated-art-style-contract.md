@@ -10,6 +10,9 @@ Reference images:
   `docs/art/generated_pet_expression_sheet_v5.png`
 - Menu reference:
   `C:\Users\Billy\.codex\generated_images\019f44be-6fce-7140-acbe-cac2c63e2a4e\call_9d7DlQZ8xM9KMMfALsrQ2lte.png`
+- Accepted menu-v3 source:
+  `docs/art/generated_companion_menu_reference_v3.png`
+  (`SHA-256 D87E45A49AA623552B867C9EDAADB906CA282DF2C2C062D3A127A277920F9F81`)
 
 The generated images are art direction, not firmware payloads. WB55/WBA firmware
 must translate them into a deterministic, replaceable resource pipeline:
@@ -21,8 +24,10 @@ must translate them into a deterministic, replaceable resource pipeline:
   frames must be generated-sheet imports or generated-sheet aliases.
 - `pet_visual_style.h` constants for compact rescue/maintenance procedural
   inner-face expressions.
-- `MENU_STYLE` constants in `generate_screen_menu_assets.py` for menu PBM
-  generation.
+- `generate_screen_menu_assets.py` crops the accepted menu-v3 source into
+  complete English and Chinese menu PBMs. It may localize text and replace
+  clearly marked live-value cells, but must not redraw the source layout,
+  icons, hierarchy, or decoration in firmware.
 - External CEMP resource packs for normal expression/menu art.
 
 Generated-image baseline is the source of truth for normal product art. Older
@@ -67,7 +72,10 @@ Adjustment workflow:
    leakage, but it does not replace the REF/PBM visual review above.
 7. Update `COMP_PET_STYLE_NAME` only when the visual contract version changes.
 8. Tune `pet_visual_style.h` only for rescue/maintenance procedural anchors.
-9. Tune `MENU_STYLE` for menu chip/card/badge placement.
+9. For menu changes, accept a new source image first, pin its hash and crop
+   map in `generate_screen_menu_assets.py`, regenerate the bilingual external
+   PBMs, and inspect their preview sheets. Do not tune implementation-side
+   chip/card/badge drawings to approximate a prompt revision.
 10. Run `python .\tools\render_generated_art_style_contract.py --write` so the
    machine-readable JSON/markdown snapshot records the new style anchors.
 11. Regenerate CEMP when PBM output changes.
@@ -84,8 +92,8 @@ Adjustment workflow:
 Fast prompt-to-screen rule: when product art changes, use the same ordered path
 every time: accepted generated sheet -> importer -> REF/PBM review -> normal-pack
 contact sheet -> incremented external CEMP revision -> machine verifiers ->
-hardware flash/recheck. Do not manually redraw a generated pose in firmware to
-approximate a prompt revision.
+hardware flash/recheck. Do not manually redraw a generated pose or menu in
+firmware to approximate a prompt revision.
 
 Inner-face clipping rule: the accepted generated sheet has no screen-drawn cat
 silhouette, so normal imports must not paint a white shell guard inside the

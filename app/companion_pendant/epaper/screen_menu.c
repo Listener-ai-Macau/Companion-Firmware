@@ -68,12 +68,8 @@ bool comp_screen_menu_home_hit_test(const comp_screen_menu_t *menu,
     }
     content_y = (uint16_t)(y - MENU_HOME_CONTENT_TOP) +
                 menu->home_scroll_offset_px;
-    if (content_y < MENU_HOME_PET_PANEL_HEIGHT) {
-        return false;
-    }
-    content_y = (uint16_t)(content_y - MENU_HOME_PET_PANEL_HEIGHT);
-    /* Row separators are visual only.  Preserve a contiguous touch target
-     * instead of adding narrow strips that cannot activate either row. */
+    /* The accepted v3 source has no separate home pet panel. Row separators
+     * remain visual only, preserving a contiguous touch target. */
     hit = (uint8_t)(content_y / MENU_HOME_ITEM_STEP);
     if (hit >= COMP_SCREEN_MENU_ITEM_COUNT) {
         return false;
@@ -194,12 +190,6 @@ comp_screen_menu_result_t comp_screen_menu_gesture(
         menu->view = COMP_SCREEN_MENU_VIEW_HOME;
         menu->revision++;
         result.changed = true;
-    } else if (menu->view == COMP_SCREEN_MENU_VIEW_HOME &&
-               (gesture->type == COMP_TOUCH_GESTURE_SWIPE_UP ||
-                gesture->type == COMP_TOUCH_GESTURE_SWIPE_DOWN)) {
-        int16_t finger_delta_y = (int16_t)gesture->end_y -
-                                 (int16_t)gesture->start_y;
-        return comp_screen_menu_drag(menu, finger_delta_y);
     }
     menu_result_from_state(menu, &result);
     return result;
@@ -460,15 +450,12 @@ static void draw_home(comp_screen_framebuffer_t *framebuffer, uint8_t scroll_fra
     comp_screen_framebuffer_stroke_rect(
         framebuffer, 196, MENU_HOME_CONTENT_TOP, 3u,
         MENU_HOME_SCROLLBAR_BOTTOM - MENU_HOME_CONTENT_TOP + 1u, 1u, true);
-    comp_screen_framebuffer_fill_rect(
-        framebuffer,
-        196,
-        (int16_t)(MENU_HOME_SCROLLBAR_TOP +
-                  ((uint32_t)offset * MENU_HOME_SCROLLBAR_TRAVEL) /
-                            COMP_SCREEN_MENU_SCROLL_MAX_PX),
-        3u,
-        MENU_HOME_SCROLLBAR_THUMB_HEIGHT,
-        true);
+    comp_screen_framebuffer_fill_rect(framebuffer,
+                                      196,
+                                      MENU_HOME_SCROLLBAR_TOP,
+                                      3u,
+                                      MENU_HOME_SCROLLBAR_THUMB_HEIGHT,
+                                      true);
     draw_header(framebuffer, "COMPANION", false);
     draw_header_pet_chip(framebuffer);
     /* A fixed, white gutter makes the scrolling viewport unable to paint over
@@ -629,6 +616,7 @@ bool comp_screen_menu_render_dynamic(comp_screen_menu_view_t view,
 {
     comp_screen_framebuffer_t framebuffer;
 
+    (void)home_page;
     if (width != MENU_WIDTH || height != MENU_HEIGHT ||
         frame_bytes < MENU_FRAME_BYTES ||
         !comp_screen_framebuffer_init(&framebuffer, frame, frame_bytes, width, height)) {
@@ -638,35 +626,20 @@ bool comp_screen_menu_render_dynamic(comp_screen_menu_view_t view,
         (flags & COMP_SCREEN_MENU_FLAG_PRESS_ACTIVE) != 0u) {
         uint8_t item = (uint8_t)((flags & COMP_SCREEN_MENU_FLAG_PRESS_ITEM_MASK) >>
                                  COMP_SCREEN_MENU_FLAG_PRESS_ITEM_SHIFT);
-        int16_t row_y = (int16_t)(MENU_HOME_CONTENT_TOP + MENU_HOME_PET_PANEL_HEIGHT +
-                                  (int16_t)item * MENU_HOME_ITEM_STEP -
-                                  (int16_t)comp_screen_menu_scroll_offset_px(home_page));
-        comp_screen_framebuffer_invert_rect(&framebuffer, 9, (int16_t)(row_y + 1),
-                                            182u, 36u);
-        comp_screen_framebuffer_stroke_rect(&framebuffer, 8, row_y, 184u, 38u,
-                                            3u, true);
-    } else if (view != COMP_SCREEN_MENU_VIEW_HOME &&
-               (flags & COMP_SCREEN_MENU_FLAG_PRESS_ACTIVE) != 0u) {
-        /* One physical refresh: retain a compact arrival cue in the final page. */
-        comp_screen_framebuffer_draw_line(&framebuffer, 166, 9, 174, 15, false);
-        comp_screen_framebuffer_draw_line(&framebuffer, 174, 15, 166, 21, false);
-        comp_screen_framebuffer_draw_line(&framebuffer, 176, 9, 184, 15, false);
-        comp_screen_framebuffer_draw_line(&framebuffer, 184, 15, 176, 21, false);
+        if (item < COMP_SCREEN_MENU_ITEM_COUNT) {
+            int16_t row_y = (int16_t)(MENU_HOME_CONTENT_TOP +
+                                      (int16_t)item * MENU_HOME_ITEM_STEP);
+            comp_screen_framebuffer_invert_rect(&framebuffer, 6, row_y + 1,
+                                                188u, 24u);
+        }
     } else if (view == COMP_SCREEN_MENU_VIEW_RECORD) {
         bool recording = (flags & COMP_SCREEN_MENU_FLAG_RECORDING) != 0u;
-        comp_screen_framebuffer_fill_rect(&framebuffer, 36, 99, 128u, 42u, false);
-        comp_screen_framebuffer_stroke_rect(&framebuffer, 36, 99, 128u, 42u, 3u, true);
         if (recording) {
-            comp_screen_framebuffer_fill_rect(&framebuffer, 91, 110, 18u, 18u, true);
-        } else {
-            for (int16_t row = 0; row < 22; ++row) {
-                comp_screen_framebuffer_draw_line(&framebuffer,
-                                                  91,
-                                                  (int16_t)(109 + row),
-                                                  (int16_t)(91 + row / 2),
-                                                  (int16_t)(109 + row),
-                                                  true);
-            }
+            /* The accepted source already owns the action-button geometry.
+             * Replace its idle glyph with the universal stop glyph only while
+             * the real recorder FSM is active. */
+            comp_screen_framebuffer_fill_rect(&framebuffer, 6, 96, 188u, 28u, true);
+            comp_screen_framebuffer_fill_rect(&framebuffer, 91, 103, 18u, 14u, false);
         }
     } else if (view == COMP_SCREEN_MENU_VIEW_STATUS) {
         const bool values[] = {
@@ -675,34 +648,34 @@ bool comp_screen_menu_render_dynamic(comp_screen_menu_view_t view,
             (flags & COMP_SCREEN_MENU_FLAG_BLE_CONNECTED) != 0u,
             (flags & COMP_SCREEN_MENU_FLAG_RECORDING) != 0u,
         };
-        const int16_t rows[] = {92, 120, 148, 176};
+        static const int16_t rows[] = {41, 80, 119, 158};
+        static const char *const online[] = {"OK", "OK", "LINK", "REC"};
         for (size_t index = 0u; index < 4u; ++index) {
-            if (values[index]) {
-                comp_screen_framebuffer_draw_line(&framebuffer, 154, rows[index], 160,
-                                                  (int16_t)(rows[index] + 6), true);
-                comp_screen_framebuffer_draw_line(&framebuffer, 160,
-                                                  (int16_t)(rows[index] + 6), 174,
-                                                  (int16_t)(rows[index] - 7), true);
-            } else {
-                comp_screen_framebuffer_fill_rect(&framebuffer, 151, rows[index], 4u, 4u, true);
-                comp_screen_framebuffer_fill_rect(&framebuffer, 160, rows[index], 4u, 4u, true);
-                comp_screen_framebuffer_fill_rect(&framebuffer, 169, rows[index], 4u, 4u, true);
-            }
+            comp_screen_framebuffer_fill_rect(&framebuffer, 140, rows[index], 60u, 20u, false);
+            comp_screen_framebuffer_draw_text(&framebuffer, 164, rows[index] + 5,
+                                              values[index] ? online[index] : "--",
+                                              1u, true);
         }
     } else if (view == COMP_SCREEN_MENU_VIEW_PHONE) {
         bool connected = (flags & COMP_SCREEN_MENU_FLAG_BLE_CONNECTED) != 0u;
-        draw_centered_text(&framebuffer,
-                           140,
-                           connected ? "CONNECTED" : "WAITING",
-                           2u,
-                           true);
-        if (connected) {
-            comp_screen_framebuffer_draw_line(&framebuffer, 78, 166, 88, 176, true);
-            comp_screen_framebuffer_draw_line(&framebuffer, 88, 176, 122, 146, true);
-        } else {
-            comp_screen_framebuffer_fill_rect(&framebuffer, 88, 163, 5u, 5u, true);
-            comp_screen_framebuffer_fill_rect(&framebuffer, 98, 163, 5u, 5u, true);
-            comp_screen_framebuffer_fill_rect(&framebuffer, 108, 163, 5u, 5u, true);
+        static const int16_t rows[] = {41, 80, 119};
+        static const char *const values[] = {"--", "--", "LINK"};
+        for (size_t index = 0u; index < 3u; ++index) {
+            comp_screen_framebuffer_fill_rect(&framebuffer, 145, rows[index], 55u, 20u, false);
+            comp_screen_framebuffer_draw_text(&framebuffer, 166, rows[index] + 5,
+                                              index == 2u && connected ? values[index] : "--",
+                                              1u, true);
+        }
+    } else if (view == COMP_SCREEN_MENU_VIEW_DEVICE) {
+        const bool touch_ok = (flags & COMP_SCREEN_MENU_FLAG_TOUCH_OK) != 0u;
+        static const int16_t rows[] = {42, 80, 118, 156};
+        static const char *const values[] = {"A2", "OK", "EXT", "PLAN"};
+
+        for (size_t index = 0u; index < 4u; ++index) {
+            comp_screen_framebuffer_fill_rect(&framebuffer, 136, rows[index], 64u, 20u, false);
+            comp_screen_framebuffer_draw_text(&framebuffer, 164, rows[index] + 5,
+                                              index == 1u && !touch_ok ? "--" : values[index],
+                                              1u, true);
         }
     }
     return true;
@@ -719,7 +692,7 @@ static uint32_t framebuffer_fingerprint(const uint8_t *frame, size_t frame_bytes
     return fingerprint;
 }
 
-bool comp_screen_menu_self_test(void)
+bool comp_screen_menu_v2_self_test(void)
 {
     comp_screen_menu_t menu;
     comp_screen_menu_result_t result;
@@ -889,4 +862,134 @@ bool comp_screen_menu_self_test(void)
            framebuffer_fingerprint(frame, sizeof(frame)) != detail_idle_fingerprint &&
            memchr(frame, 0x00, sizeof(frame)) != NULL &&
            memchr(frame, 0xFF, sizeof(frame)) != NULL;
+}
+
+bool comp_screen_menu_self_test(void)
+{
+    comp_screen_menu_t menu;
+    comp_screen_menu_result_t result;
+    comp_screen_menu_view_t hit_view;
+    uint8_t hit_item;
+    comp_touch_gesture_event_t gesture = {0};
+    uint8_t frame[MENU_FRAME_BYTES];
+    char asset_name[32];
+    uint32_t fingerprint;
+
+    comp_screen_menu_init(&menu);
+    gesture = (comp_touch_gesture_event_t){
+        .type = COMP_TOUCH_GESTURE_LONG_PRESS,
+        .start_x = 4u,
+        .start_y = 180u,
+        .end_x = 8u,
+        .end_y = 177u,
+    };
+    if (!comp_screen_menu_is_daily_entry_gesture(&gesture)) {
+        return false;
+    }
+    gesture.type = COMP_TOUCH_GESTURE_TAP;
+    if (comp_screen_menu_is_daily_entry_gesture(&gesture) ||
+        !comp_screen_menu_home_hit_test(&menu, 4u, 47u, &hit_item, &hit_view) ||
+        hit_item != 0u || hit_view != COMP_SCREEN_MENU_VIEW_RECORD ||
+        !comp_screen_menu_home_hit_test(&menu, 100u, 178u, &hit_item, &hit_view) ||
+        hit_item != 5u || hit_view != COMP_SCREEN_MENU_VIEW_ABOUT ||
+        comp_screen_menu_home_hit_test(&menu, 100u, 34u, NULL, NULL)) {
+        return false;
+    }
+    result = comp_screen_menu_tap(&menu, 100u, 73u);
+    if (!result.changed || result.view != COMP_SCREEN_MENU_VIEW_STATUS) {
+        return false;
+    }
+    gesture.type = COMP_TOUCH_GESTURE_SWIPE_RIGHT;
+    result = comp_screen_menu_gesture(&menu, &gesture);
+    if (!result.changed || result.view != COMP_SCREEN_MENU_VIEW_HOME) {
+        return false;
+    }
+    result = comp_screen_menu_drag(&menu, -54);
+    if (result.changed || result.home_page != 0u ||
+        comp_screen_menu_exact_scroll_offset_px(&menu) != 0u) {
+        return false;
+    }
+    result = comp_screen_menu_tap(&menu, 100u, 151u);
+    if (!result.changed || result.view != COMP_SCREEN_MENU_VIEW_PREFERENCES) {
+        return false;
+    }
+    result = comp_screen_menu_tap(&menu, 100u, 60u);
+    if (!result.changed ||
+        result.action != COMP_SCREEN_MENU_ACTION_LANGUAGE_CHANGED ||
+        menu.language != COMP_SCREEN_MENU_LANGUAGE_EN) {
+        return false;
+    }
+    gesture.type = COMP_TOUCH_GESTURE_SWIPE_RIGHT;
+    result = comp_screen_menu_gesture(&menu, &gesture);
+    if (!result.changed || result.view != COMP_SCREEN_MENU_VIEW_HOME ||
+        !comp_screen_menu_asset_name(result.view, result.language, result.home_page,
+                                     asset_name, sizeof(asset_name)) ||
+        strcmp(asset_name, "menu.home.en") != 0) {
+        return false;
+    }
+    if (!comp_screen_menu_render(COMP_SCREEN_MENU_VIEW_HOME,
+                                 COMP_SCREEN_MENU_LANGUAGE_EN,
+                                 0u,
+                                 COMP_SCREEN_MENU_FLAG_TOUCH_OK,
+                                 frame,
+                                 sizeof(frame),
+                                 MENU_WIDTH,
+                                 MENU_HEIGHT)) {
+        return false;
+    }
+    fingerprint = framebuffer_fingerprint(frame, sizeof(frame));
+    if (!comp_screen_menu_render_dynamic(
+            COMP_SCREEN_MENU_VIEW_HOME,
+            (uint8_t)(COMP_SCREEN_MENU_FLAG_PRESS_ACTIVE |
+                      (3u << COMP_SCREEN_MENU_FLAG_PRESS_ITEM_SHIFT)),
+            0u,
+            frame,
+            sizeof(frame),
+            MENU_WIDTH,
+            MENU_HEIGHT) ||
+        framebuffer_fingerprint(frame, sizeof(frame)) == fingerprint) {
+        return false;
+    }
+    if (!comp_screen_menu_render(COMP_SCREEN_MENU_VIEW_STATUS,
+                                 COMP_SCREEN_MENU_LANGUAGE_EN,
+                                 0u,
+                                 COMP_SCREEN_MENU_FLAG_TOUCH_OK,
+                                 frame,
+                                 sizeof(frame),
+                                 MENU_WIDTH,
+                                 MENU_HEIGHT)) {
+        return false;
+    }
+    fingerprint = framebuffer_fingerprint(frame, sizeof(frame));
+    if (!comp_screen_menu_render_dynamic(
+            COMP_SCREEN_MENU_VIEW_STATUS,
+            (uint8_t)(COMP_SCREEN_MENU_FLAG_TOUCH_OK |
+                      COMP_SCREEN_MENU_FLAG_BLE_CONNECTED),
+            0u,
+            frame,
+            sizeof(frame),
+            MENU_WIDTH,
+            MENU_HEIGHT) ||
+        framebuffer_fingerprint(frame, sizeof(frame)) == fingerprint ||
+        memchr(frame, 0x00, sizeof(frame)) == NULL ||
+        memchr(frame, 0xFF, sizeof(frame)) == NULL ||
+        !comp_screen_menu_render(COMP_SCREEN_MENU_VIEW_DEVICE,
+                                 COMP_SCREEN_MENU_LANGUAGE_EN,
+                                 0u,
+                                 COMP_SCREEN_MENU_FLAG_TOUCH_OK,
+                                 frame,
+                                 sizeof(frame),
+                                 MENU_WIDTH,
+                                 MENU_HEIGHT)) {
+        return false;
+    }
+    fingerprint = framebuffer_fingerprint(frame, sizeof(frame));
+    return comp_screen_menu_render_dynamic(COMP_SCREEN_MENU_VIEW_DEVICE,
+                                           COMP_SCREEN_MENU_FLAG_TOUCH_OK,
+                                           0u,
+                                           frame,
+                                           sizeof(frame),
+                                           MENU_WIDTH,
+                                           MENU_HEIGHT) &&
+           framebuffer_fingerprint(frame, sizeof(frame)) != fingerprint;
 }

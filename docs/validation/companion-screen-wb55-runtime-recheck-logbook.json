@@ -6,14 +6,14 @@
     "raw_log_policy": "The full captured serial text is embedded in the companion Markdown logbook and remains available at the source paths."
   },
   "run": {
-    "completed_at": "2026-07-13T12:09:10.4097883+08:00",
-    "generated_at": "2026-07-13T12:09:10.3972846+08:00",
+    "completed_at": "2026-07-13T18:13:56.8925015+08:00",
+    "generated_at": "2026-07-13T18:13:56.8809207+08:00",
     "normal_firmware_restored": null,
     "resource": {
-      "pack_crc32": "0xDEFC096E",
-      "revision": 52,
-      "runtime_status": "REVISION_52_RUNTIME_RECHECK_PENDING",
-      "total_bytes": 287732
+      "pack_crc32": "0x2332E300",
+      "revision": 53,
+      "runtime_status": "REVISION_53_RUNTIME_RECHECK_PENDING",
+      "total_bytes": 49901
     },
     "status": "DRY-RUN",
     "steps": []
@@ -25,12 +25,12 @@
       "errors": [],
       "label": "normal",
       "port": null,
-      "raw_log": ".cache/validation/rev52-runtime-current/normal/nucleo-serial-raw.log",
+      "raw_log": ".cache/validation/rev53-runtime-current/normal/nucleo-serial-raw.log",
       "raw_log_bytes": 0,
       "raw_log_exists": false,
       "raw_log_sha256": null,
       "serial_bytes_read": null,
-      "summary_json": ".cache/validation/rev52-runtime-current/normal/nucleo-serial-summary.json",
+      "summary_json": ".cache/validation/rev53-runtime-current/normal/nucleo-serial-summary.json",
       "summary_json_exists": false,
       "summary_status": null
     },
@@ -39,19 +39,19 @@
       "errors": [],
       "label": "provision",
       "port": null,
-      "raw_log": ".cache/validation/rev52-runtime-current/provision/nucleo-serial-raw.log",
+      "raw_log": ".cache/validation/rev53-runtime-current/provision/nucleo-serial-raw.log",
       "raw_log_bytes": 0,
       "raw_log_exists": false,
       "raw_log_sha256": null,
       "serial_bytes_read": null,
-      "summary_json": ".cache/validation/rev52-runtime-current/provision/nucleo-serial-summary.json",
+      "summary_json": ".cache/validation/rev53-runtime-current/provision/nucleo-serial-summary.json",
       "summary_json_exists": false,
       "summary_status": null
     }
   },
   "source_log_verdict": "docs/validation/companion-screen-wb55-runtime-recheck-logs.json",
   "source_promotion": "docs/validation/companion-screen-wb55-runtime-promotion.json",
-  "source_run_report": ".cache/validation/rev52-runtime-current/runtime-recheck-run.json",
+  "source_run_report": ".cache/validation/rev53-runtime-current/runtime-recheck-run.json",
   "status": "INCOMPLETE",
   "target": "NUCLEO-WB55RG + GDEY0154D67-T03 + FT6336U"
 }

@@ -16,15 +16,15 @@
     ]
   },
   "candidate": {
-    "pack_crc32": "0xDEFC096E",
-    "revision": 52,
-    "runtime_status": "REVISION_52_RUNTIME_RECHECK_PENDING",
-    "total_bytes": 287732
+    "pack_crc32": "0x2332E300",
+    "revision": 53,
+    "runtime_status": "REVISION_53_RUNTIME_RECHECK_PENDING",
+    "total_bytes": 49901
   },
   "commands": [
     "pwsh -NoProfile -File .\\tools\\run_wb55_screen_runtime_recheck.ps1 -CheckOnly",
-    "pwsh -NoProfile -File .\\tools\\run_wb55_screen_runtime_recheck.ps1 -SelfTestRecovery -OutRoot .\\.cache\\validation\\rev52-runtime-recovery-selftest",
-    "pwsh -NoProfile -File C:\\Users\\Billy\\Desktop\\Denzic\\ai-collaboration-workflow\\scripts\\aiw.ps1 with-lock -Resource Companion-WB55 -Purpose \"Companion WB55 rev52 screen runtime recheck\" -Run pwsh -NoProfile -File .\\tools\\run_wb55_screen_runtime_recheck.ps1 -Execute -WorkflowLockHeld",
+    "pwsh -NoProfile -File .\\tools\\run_wb55_screen_runtime_recheck.ps1 -SelfTestRecovery -OutRoot .\\.cache\\validation\\rev53-runtime-recovery-selftest",
+    "pwsh -NoProfile -File C:\\Users\\Billy\\Desktop\\Denzic\\ai-collaboration-workflow\\scripts\\aiw.ps1 with-lock -Resource Companion-WB55 -Purpose \"Companion WB55 rev53 screen runtime recheck\" -Run pwsh -NoProfile -File .\\tools\\run_wb55_screen_runtime_recheck.ps1 -Execute -WorkflowLockHeld",
     "python .\\tools\\verify_wb55_screen_runtime_recheck_logs.py",
     "python .\\tools\\promote_wb55_screen_runtime_recheck.py --apply"
   ],
@@ -49,12 +49,12 @@
       ]
     },
     "run_report_exists": true,
-    "run_report_path": ".cache/validation/rev52-runtime-current/runtime-recheck-run.json",
+    "run_report_path": ".cache/validation/rev53-runtime-current/runtime-recheck-run.json",
     "run_report_resource": {
-      "pack_crc32": "0xDEFC096E",
-      "revision": 52,
-      "runtime_status": "REVISION_52_RUNTIME_RECHECK_PENDING",
-      "total_bytes": 287732
+      "pack_crc32": "0x2332E300",
+      "revision": 53,
+      "runtime_status": "REVISION_53_RUNTIME_RECHECK_PENDING",
+      "total_bytes": 49901
     },
     "run_report_results_count": 0,
     "run_report_schema": "companion.wb55_screen_runtime_recheck_run.v1",
@@ -79,13 +79,13 @@
   "promotion_gate": {
     "path": "docs/validation/companion-screen-wb55-runtime-promotion.json",
     "status": "NO_GO_LOGS_NOT_PASS",
-    "target_status": "REVISION_52_RUNTIME_PASS_HUMAN_VISUAL_PENDING"
+    "target_status": "REVISION_53_RUNTIME_PASS_HUMAN_VISUAL_PENDING"
   },
   "recovery_selftest": {
     "claim_scope": "stubbed_failure_recovery_no_hardware_claim",
     "normal_firmware_restored": true,
     "report_exists": true,
-    "report_path": ".cache/validation/rev52-runtime-recovery-selftest/runtime-recheck-run.json",
+    "report_path": ".cache/validation/rev53-runtime-recovery-selftest/runtime-recheck-run.json",
     "report_status": "FAIL",
     "result_exit_codes": {
       "capture_provision": 7,

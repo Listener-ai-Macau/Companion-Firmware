@@ -10,7 +10,8 @@
     "checked_in_expression_sheet": "docs/art/generated_pet_expression_sheet_v5.png",
     "sheet_import_report": "docs/validation/companion-screen-generated-expression-sheet-import.json",
     "normal_pack_contact_report": "docs/validation/companion-screen-generated-expression-normal-pack-contact-sheet.json",
-    "human_contract": "docs/validation/companion-screen-generated-art-style-contract.md"
+    "human_contract": "docs/validation/companion-screen-generated-art-style-contract.md",
+    "accepted_menu_reference": "docs/art/generated_companion_menu_reference_v3.png"
   },
   "reference_images": [
     "C:\\Users\\Billy\\.codex\\generated_images\\019f44be-6fce-7140-acbe-cac2c63e2a4e\\call_sxOaWkmtZjlSzsysOIcglF4D.png",
@@ -45,31 +46,22 @@
     "COMP_PET_STYLE_CHEEK_DOT_Y": 119
   },
   "menu_style": {
-    "name": "genref_sheet_12_inner_faces_v5",
-    "inner_face_only": true,
-    "header_pet_chip": [
-      8,
-      5,
-      35,
-      24,
-      6
+    "name": "menu-v3-2026-07-13",
+    "source": "docs/art/generated_companion_menu_reference_v3.png",
+    "source_sha256": "D87E45A49AA623552B867C9EDAADB906CA282DF2C2C062D3A127A277920F9F81",
+    "source_size": [
+      1640,
+      959
     ],
-    "home_card": [
-      8,
-      2,
-      188,
-      38,
-      8
-    ],
-    "home_key_spark": [
-      151,
-      14
-    ],
-    "detail_badge_x": 84
+    "external_flash_only": true,
+    "home_frame_count_per_language": 1,
+    "detail_page_count_per_language": 6
   },
   "acceptance": {
     "style_names_match": true,
     "inner_face_only": true,
+    "menu_reference_hash_pinned": true,
+    "menu_external_flash_resource_import": true,
     "shell_owns_outline": true,
     "large_assets_external": true,
     "generated_reference_is_source_of_truth": true,

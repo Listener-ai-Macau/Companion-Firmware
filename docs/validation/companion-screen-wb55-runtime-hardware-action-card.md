@@ -1,14 +1,14 @@
-# WB55 Rev52 Runtime 硬件执行卡
+# WB55 Rev53 Runtime 硬件执行卡
 
-这张卡是生成文件，只用于 rev52 机器 runtime recheck。它不代表人工触摸/视觉验收已开始。
+这张卡是生成文件，只用于 rev53 机器 runtime recheck。它不代表人工触摸/视觉验收已开始。
 
 - 状态: `NO_GO_WAITING_FOR_REAL_HARDWARE_RUN`
 - 目标: `NUCLEO-WB55RG + GDEY0154D67-T03 + FT6336U`
-- 资源: revision `52`, bytes `287732`, CRC `0xDEFC096E`
+- 资源: revision `53`, bytes `49901`, CRC `0x2332E300`
 - build matrix: `PASS`, variants `dry_run_default, screen_asset_provision, ssd1681_real_panel`
 - ScreenAssetProvision size: `{'bss': 192239, 'data': 2433, 'dec': 602988, 'hex': '9336c', 'text': 408316}`
 - SCR-17 ledger: `PENDING_RUNTIME_RECHECK`, first frame `coherent_generation=1`, stale discard model `3`
-- runtime logs gate: `NO_GO_INCOMPLETE_RUNTIME_MARKERS`
+- runtime logs gate: `NO_GO_MISSING_RUNTIME_LOGS`
 - promotion gate: `NO_GO_LOGS_NOT_PASS`
 - pre-acceptance: `NO_GO_RUNTIME_RECHECK_PENDING`
 - human review record: `NO_GO_NOT_STARTED`
@@ -26,10 +26,10 @@ pwsh -NoProfile -File .\tools\run_wb55_screen_runtime_recheck.ps1 -CheckOnly
 再跑失败恢复自测。这个命令不刷机、不开串口，只证明 provision 后失败会触发 normal 恢复：
 
 ```powershell
-pwsh -NoProfile -File .\tools\run_wb55_screen_runtime_recheck.ps1 -SelfTestRecovery -OutRoot .\.cache\validation\rev52-runtime-recovery-selftest
+pwsh -NoProfile -File .\tools\run_wb55_screen_runtime_recheck.ps1 -SelfTestRecovery -OutRoot .\.cache\validation\rev53-runtime-recovery-selftest
 ```
 
-- self-test report: `.cache/validation/rev52-runtime-recovery-selftest/runtime-recheck-run.json`
+- self-test report: `.cache/validation/rev53-runtime-recovery-selftest/runtime-recheck-run.json`
 - expected status: `FAIL`
 - expected recovery: `flash_normal_after_failure=PASS`, `normal_firmware_restored=true`
 
@@ -71,7 +71,7 @@ pwsh -NoProfile -File .\tools\capture_nucleo_serial.ps1 -SelfTestResetTimeout -O
 必须通过 workflow hardware lock 执行：
 
 ```powershell
-pwsh -NoProfile -File C:\Users\Billy\Desktop\Denzic\ai-collaboration-workflow\scripts\aiw.ps1 with-lock -Resource Companion-WB55 -Purpose "Companion WB55 rev52 screen runtime recheck" -Run pwsh -NoProfile -File .\tools\run_wb55_screen_runtime_recheck.ps1 -Execute -WorkflowLockHeld
+pwsh -NoProfile -File C:\Users\Billy\Desktop\Denzic\ai-collaboration-workflow\scripts\aiw.ps1 with-lock -Resource Companion-WB55 -Purpose "Companion WB55 rev53 screen runtime recheck" -Run pwsh -NoProfile -File .\tools\run_wb55_screen_runtime_recheck.ps1 -Execute -WorkflowLockHeld
 ```
 
 该命令内部按顺序执行：
@@ -81,31 +81,31 @@ pwsh -NoProfile -File C:\Users\Billy\Desktop\Denzic\ai-collaboration-workflow\sc
    - `pwsh -NoProfile -File .\tools\flash_nucleo_bringup.ps1 -ScreenAssetProvision -ProgrammerRoot C:\ST\STM32CubeIDE_2.1.1\STM32CubeIDE\plugins`
 2. `capture_provision`
    - 复位并抓取 provision 启动串口日志，证明资源写入/挂载链路。
-   - `pwsh -NoProfile -File .\tools\capture_nucleo_serial.ps1 -Execute -WorkflowLockHeld -Seconds 25 -ResetAfterOpen -OutDir C:\Users\Billy\Desktop\Denzic\Companion\Companion-Firmware-devboard-oai1\.cache\validation\rev52-runtime-current\provision`
+   - `pwsh -NoProfile -File .\tools\capture_nucleo_serial.ps1 -Execute -WorkflowLockHeld -Seconds 25 -ResetAfterOpen -OutDir C:\Users\Billy\Desktop\Denzic\Companion\Companion-Firmware-devboard-oai1\.cache\validation\rev53-runtime-current\provision`
 3. `flash_normal`
    - 刷回普通运行固件，避免设备停留在 provision 镜像。
    - `pwsh -NoProfile -File .\tools\flash_nucleo_bringup.ps1 -ProgrammerRoot C:\ST\STM32CubeIDE_2.1.1\STM32CubeIDE\plugins`
 4. `capture_normal`
-   - 复位并抓取 normal 启动串口日志，证明普通固件从外部 Flash 挂载 rev52。
-   - `pwsh -NoProfile -File .\tools\capture_nucleo_serial.ps1 -Execute -WorkflowLockHeld -Seconds 25 -ResetAfterOpen -OutDir C:\Users\Billy\Desktop\Denzic\Companion\Companion-Firmware-devboard-oai1\.cache\validation\rev52-runtime-current\normal`
+   - 复位并抓取 normal 启动串口日志，证明普通固件从外部 Flash 挂载 rev53。
+   - `pwsh -NoProfile -File .\tools\capture_nucleo_serial.ps1 -Execute -WorkflowLockHeld -Seconds 25 -ResetAfterOpen -OutDir C:\Users\Billy\Desktop\Denzic\Companion\Companion-Firmware-devboard-oai1\.cache\validation\rev53-runtime-current\normal`
 
 ## 串口日志必须包含
 
 - `mount=ok`
-- `revision=52`
+- `revision=53`
 - `clips=33 frames=159`
 - `expression_renderer=external_pack`
 - `source=external_flash`
 - `pet_behavior_selftest=pass failure_code=0`
 - `touch-health] detected=1 identity=1 addr=0x38`
-- `queue_generation revision=52`
+- `queue_generation revision=53`
 - `coherent_generation=1`
 - `generation_switches=`
 - `last_stale_discarded=`
 - `refresh mode=full`
 - `complete=1`
 
-这些 marker 同时用于 SCR-17 release ledger：确认 rev52 是唯一 active generation，旧队列已丢弃，首帧是当前 generation。
+这些 marker 同时用于 SCR-17 release ledger：确认 rev53 是唯一 active generation，旧队列已丢弃，首帧是当前 generation。
 
 ## 跑完硬件后
 
@@ -127,10 +127,10 @@ python .\tools\verify_companion_screen_goal_audit.py
 
 ## 不要做
 
-- 不要手工把 REVISION_52_RUNTIME_RECHECK_PENDING 改成 PASS。
+- 不要手工把 REVISION_53_RUNTIME_RECHECK_PENDING 改成 PASS。
 - 不要跳过 normal 固件恢复；provision 只用于写资源。
 - 如果 provision 后失败，runner 会尝试 flash_normal_after_failure；若 normal_firmware_restored 不是 true，不要继续验收。
 - 不要在 runtime logs PASS 和 promotion --apply 前启动触摸/视觉人工验收。
 - 不要把 DRY-RUN report 当作真实硬件日志。
 
-人工验收入口规则：只有 rev52 provision/normal runtime logs 验证 PASS、promotion gate APPLIED、pre-acceptance health PASS 后，操作者明确说“开始验收”，才进入触摸/视觉人工验收。
+人工验收入口规则：只有 rev53 provision/normal runtime logs 验证 PASS、promotion gate APPLIED、pre-acceptance health PASS 后，操作者明确说“开始验收”，才进入触摸/视觉人工验收。

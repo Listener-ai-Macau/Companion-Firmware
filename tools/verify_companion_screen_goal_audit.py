@@ -207,29 +207,29 @@ def build_audit() -> dict[str, Any]:
         {
             "id": "touch_menu_interaction_machine_contract",
             "status": "proved",
-            "requirement": "Portable touch/menu logic preserves any-position 3 s menu entry, daily tap/swipe pet reactions, anchored continuous menu drag, row press-cue, and left-edge right-swipe back/exit before subjective human feel review.",
+            "requirement": "Portable touch/menu logic preserves any-position 3 s menu entry, daily tap/swipe pet reactions, the menu-v3 static six-row home, row press-cue, and left-edge right-swipe back/exit before subjective human feel review.",
             "evidence": [
                 evidence(
                     MENU_DRAG,
                     str(menu_drag.get("status")),
-                    f"{menu_drag.get('frame_count_per_language')} two-pixel frames per language keep fixed header, white gutter, monotonic scrollbar, and bounded adjacent-frame jumps",
+                    f"{menu_drag.get('frame_count_per_language')} source-layout home frame per language keeps six visible rows and a black selected row while excluding legacy numbered scroll frames",
                 ),
                 evidence(
                     PRESENTATION,
                     "PASS_STATIC_CURRENT_CODE",
-                    "screen_presentation verifier proves any-position long_press entry, pet-only daily swipes, vertical drag coalescing, row press-cue, and left-edge swipe-right navigation",
+                    "screen_presentation verifier proves any-position long_press entry, pet-only daily swipes, static-home row handling, row press-cue, and left-edge swipe-right navigation",
                 ),
                 evidence(
                     TOUCH_FT6336,
                     "PASS_STATIC_CURRENT_CODE",
-                    f"gesture contract keeps {touch_ft6336.get('gesture_contract', {}).get('daily_enter_menu')} and {touch_ft6336.get('gesture_contract', {}).get('home_vertical_scroll')}",
+                    f"gesture contract keeps {touch_ft6336.get('gesture_contract', {}).get('daily_enter_menu')} and {touch_ft6336.get('gesture_contract', {}).get('home_vertical_stroke')}",
                 ),
             ],
         },
         {
             "id": "daily_pet_and_menu_human_feel",
             "status": "pending_human",
-            "requirement": "Human confirms daily tap/swipe pet reactions, 3 s hold menu entry, drag feel, press-cue, language switching, residual/flicker, and premium pet feel on the real panel.",
+            "requirement": "Human confirms daily tap/swipe pet reactions, 3 s hold menu entry, static menu-home vertical strokes, press-cue, language switching, residual/flicker, and premium pet feel on the real panel.",
             "evidence": [
                 evidence(TOUCH_PACKET, str(touch_packet.get("status")), "asynchronous focused packet is ready and must start only after the operator explicitly says 开始验收"),
                 evidence(
@@ -359,9 +359,11 @@ def build_audit() -> dict[str, Any]:
             "total_bytes": resource_pack.get("total_bytes"),
             "crc32": resource_pack.get("pack_crc32"),
             "runtime_status": runtime_status,
-            "normal_firmware_restored": machine_state.get("normal_firmware_restored"),
-            "normal_log": machine_state.get("normal_log"),
-            "provision_log": machine_state.get("provision_log"),
+            "normal_firmware_restored": (
+                machine_state.get("normal_firmware_restored") if not runtime_pending else False
+            ),
+            "normal_log": machine_state.get("normal_log") if not runtime_pending else None,
+            "provision_log": machine_state.get("provision_log") if not runtime_pending else None,
         },
         "resource_policy_crosscheck": {
             "candidate_revision": candidate_pack.get("revision"),
@@ -476,11 +478,15 @@ def check_audit(audit: dict[str, Any], errors: list[str]) -> None:
     expected_resource = {
         "revision": menu_pack.get("revision"),
         "clips": 33,
-        "frames": 159,
+        "frames": CANDIDATE.frames,
         "total_bytes": menu_pack.get("total_bytes"),
         "crc32": menu_pack.get("pack_crc32"),
         "runtime_status": menu_runtime.get("status"),
-        "normal_firmware_restored": True,
+        "normal_firmware_restored": (
+            False
+            if str(menu_runtime.get("status", "")).endswith("_RUNTIME_RECHECK_PENDING")
+            else True
+        ),
     }
     for key, expected in expected_resource.items():
         if resource.get(key) != expected:
@@ -761,14 +767,16 @@ def check_audit(audit: dict[str, Any], errors: list[str]) -> None:
     touch_menu_req = requirements.get("touch_menu_interaction_machine_contract", {})
     if touch_menu_req.get("status") != "proved":
         errors.append("touch/menu machine interaction contract must be proved")
-    if menu_drag.get("frame_count_per_language") != 43:
-        errors.append("menu drag contract must keep 43 home frames per language")
-    if menu_drag.get("frame_quantum_px") != 2:
-        errors.append("menu drag contract must keep 2 px frame quantum")
+    if menu_drag.get("schema_id") != "companion.screen.menu_v3_static_home_contract.v1":
+        errors.append("menu contract must use the menu-v3 static-home schema")
+    if menu_drag.get("frame_count_per_language") != 1:
+        errors.append("menu-v3 contract must keep one home frame per language")
+    if menu_drag.get("home_rows") != 6:
+        errors.append("menu-v3 contract must keep six visible home rows")
     gesture_contract = touch_ft6336.get("gesture_contract", {})
     expected_gestures = {
         "daily_enter_menu": "3000 ms any-position long_press with 46 px wobble tolerance",
-        "home_vertical_scroll": "anchored continuous finger-distance drag",
+        "home_vertical_stroke": "menu-v3 home is a static six-row page and never advances a numbered scroll frame",
         "daily_stroke": "all non-menu-entry swipes react as directional pet strokes",
     }
     for key, expected in expected_gestures.items():
@@ -886,7 +894,7 @@ def check_audit(audit: dict[str, Any], errors: list[str]) -> None:
         "verify_screen_presentation.py",
         "verify_touch_ft6336.py",
         "3000 ms any-position long_press",
-        "anchored continuous finger-distance drag",
+        "menu-v3 home is a static six-row page",
         "generated reference as source of truth",
         "old/new expression art",
         "coherent_generation",

@@ -64,8 +64,6 @@ def main() -> int:
     require_tokens("screen_menu.c", menu_c, (
         "COMP_TOUCH_GESTURE_SWIPE_LEFT",
         "COMP_TOUCH_GESTURE_SWIPE_RIGHT",
-        "COMP_TOUCH_GESTURE_SWIPE_UP",
-        "COMP_TOUCH_GESTURE_SWIPE_DOWN",
         "comp_screen_menu_drag",
         "COMP_SCREEN_MENU_SCROLL_QUANTUM_PX",
         "home_scroll_offset_px",
@@ -75,6 +73,7 @@ def main() -> int:
         "comp_screen_menu_home_hit_test",
         "comp_screen_menu_is_daily_entry_gesture",
         "menu->home_scroll_offset_px = (uint16_t)home_scroll_offset_px",
+        "The accepted v3 source has no separate home pet panel",
         "COMP_SCREEN_MENU_FLAG_PRESS_ACTIVE",
         "comp_screen_menu_with_ble_flag",
         "flags &= (uint8_t)~COMP_SCREEN_MENU_FLAG_BLE_CONNECTED",
@@ -145,11 +144,6 @@ def main() -> int:
         "Companion_Screen_DailyStrokeAt(gesture.start_x",
         "Companion_Screen_ShowDaily()",
         "gesture.start_x <= COMP_SCREEN_MENU_BACK_EDGE_MAX_X",
-        "if (gesture_ready && s_menu_vertical_drag_active)",
-        "s_menu_vertical_drag_anchor_offset_px",
-        "comp_screen_menu_drag_to",
-        "if (drag_consumed)",
-        "menu_drag_release exact_offset_px=%u",
         "menu_entry_activate",
         "TOUCH_MENU_LONG_PRESS_DURATION_MS 3000u",
         "TOUCH_MENU_ENTRY_CUE_MS 240u",
@@ -186,13 +180,11 @@ def main() -> int:
     gesture_navigation = presentation_fixture.get("contract", {}).get("gesture_navigation", {})
     bilingual_gestures = bilingual_fixture.get("menu_contract", {}).get("gesture_contract", {})
     require_tokens("current screen navigation documentation", screen_doc + project_plan, (
-        "without snapping to items",
+        "menu-v3 static home contract",
+        "one stable 200x200",
+        "does not use a numbered scroll asset",
         "press-cue partial refresh",
         "target-arrival partial refresh",
-        "连续像素滚动状态",
-        "连续像素偏移滚动，不吸附项目",
-        "2 px",
-        "43 external",
         "0xFC",
         "0xCF",
     ), errors)
@@ -201,14 +193,15 @@ def main() -> int:
         ("bilingual fixture navigation", bilingual_gestures),
     ):
         require_tokens(label, json.dumps(contract, sort_keys=True), (
+            "home_rendering",
+            "one owner-approved static",
             "home_scroll",
-            "continuous offset",
-            "does not snap",
+            "retired",
             "tap_selection",
             "press-cue partial refresh",
         ), errors)
     require_tokens("touch fixture remaining acceptance", json.dumps(touch_fixture.get("remaining_acceptance", [])), (
-        "continuously",
+        "six-row",
         "press-cue",
     ), errors)
     require_tokens("display_queue.c", display_queue_c, (

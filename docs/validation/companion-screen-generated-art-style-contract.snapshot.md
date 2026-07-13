@@ -26,11 +26,13 @@ This file is generated. Update it with
 
 | Parameter | Value |
 |---|---|
-| `header_pet_chip` | `(8, 5, 35, 24, 6)` |
-| `home_card` | `(8, 2, 188, 38, 8)` |
-| `home_key_spark` | `(151, 14)` |
-| `detail_badge_x` | `84` |
-| `inner_face_only` | `True` |
+| `name` | `menu-v3-2026-07-13` |
+| `source` | `docs/art/generated_companion_menu_reference_v3.png` |
+| `source_sha256` | `D87E45A49AA623552B867C9EDAADB906CA282DF2C2C062D3A127A277920F9F81` |
+| `source_size` | `[1640, 959]` |
+| `external_flash_only` | `True` |
+| `home_frame_count_per_language` | `1` |
+| `detail_page_count_per_language` | `6` |
 
 ## Acceptance
 
@@ -38,6 +40,8 @@ This file is generated. Update it with
 |---|---|
 | `style_names_match` | `True` |
 | `inner_face_only` | `True` |
+| `menu_reference_hash_pinned` | `True` |
+| `menu_external_flash_resource_import` | `True` |
 | `shell_owns_outline` | `True` |
 | `large_assets_external` | `True` |
 | `generated_reference_is_source_of_truth` | `True` |

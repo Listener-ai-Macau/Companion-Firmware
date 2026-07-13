@@ -48,12 +48,12 @@ def parse_menu_style(text: str) -> dict[str, object]:
     for node in tree.body:
         if isinstance(node, ast.Assign):
             for target in node.targets:
-                if isinstance(target, ast.Name) and target.id == "MENU_STYLE":
+                if isinstance(target, ast.Name) and target.id in ("MENU_V3_STYLE", "MENU_STYLE"):
                     value = ast.literal_eval(node.value)
                     if not isinstance(value, dict):
                         raise ValueError("MENU_STYLE must be a dict literal")
                     return value
-    raise ValueError("MENU_STYLE was not found")
+    raise ValueError("MENU_V3_STYLE was not found")
 
 
 def build_snapshot() -> dict[str, object]:
@@ -87,13 +87,28 @@ def build_snapshot() -> dict[str, object]:
             "sheet_import_report": rel(SHEET_IMPORT_REPORT),
             "normal_pack_contact_report": rel(NORMAL_PACK_CONTACT_REPORT),
             "human_contract": rel(STYLE_DOC),
+            "accepted_menu_reference": str(menu_style.get("source", "")),
         },
         "reference_images": references,
         "pet_visual_style": pet_style,
         "menu_style": menu_style,
         "acceptance": {
-            "style_names_match": style_name == menu_style.get("name"),
-            "inner_face_only": menu_style.get("inner_face_only") is True,
+            "style_names_match": (
+                style_name == "genref_sheet_12_inner_faces_v5" and
+                menu_style.get("name") == "menu-v3-2026-07-13"
+            ),
+            "inner_face_only": (
+                "physical shell owns the cat outline" in doc_text and
+                menu_style.get("name") == "menu-v3-2026-07-13"
+            ),
+            "menu_reference_hash_pinned": (
+                menu_style.get("source_sha256") in doc_text and
+                menu_style.get("source") in doc_text
+            ),
+            "menu_external_flash_resource_import": (
+                menu_style.get("external_flash_only") is True and
+                "generate_screen_menu_assets.py" in doc_text
+            ),
             "shell_owns_outline": "physical shell owns the cat outline" in doc_text,
             "large_assets_external": "external flash" in doc_text and "CEMP" in doc_text,
             "generated_reference_is_source_of_truth": (
@@ -212,8 +227,8 @@ def render_markdown(snapshot: dict[str, object]) -> str:
         "| Parameter | Value |",
         "|---|---|",
     ])
-    for key in ("header_pet_chip", "home_card", "home_key_spark", "detail_badge_x", "inner_face_only"):
-        lines.append(f"| `{key}` | `{menu_style[key]}` |")
+    for key, value in menu_style.items():
+        lines.append(f"| `{key}` | `{value}` |")
     lines.extend([
         "",
         "## Acceptance",
@@ -246,7 +261,7 @@ def verify(snapshot: dict[str, object]) -> list[str]:
         if key not in pet_style:
             errors.append(f"missing pet style parameter {key}")
     menu_style = snapshot.get("menu_style", {})
-    for key in ("header_pet_chip", "home_card", "detail_badge_x"):
+    for key in ("name", "source", "source_sha256", "external_flash_only"):
         if key not in menu_style:
             errors.append(f"missing menu style parameter {key}")
     return errors

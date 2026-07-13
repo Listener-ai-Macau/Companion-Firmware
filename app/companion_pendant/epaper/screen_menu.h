@@ -43,7 +43,7 @@ enum {
 };
 
 #define COMP_SCREEN_MENU_ITEM_COUNT 6u
-#define COMP_SCREEN_MENU_VISIBLE_ITEMS 4u
+#define COMP_SCREEN_MENU_VISIBLE_ITEMS 6u
 #define COMP_SCREEN_MENU_BACK_EDGE_MAX_X 48u
 /* Daily taps and strokes belong to the pet. A deliberate three-second hold anywhere
  * becomes navigation; precise taps and strokes keep driving pet expression
@@ -52,15 +52,16 @@ enum {
 #define COMP_SCREEN_MENU_ENTER_CENTER_MAX_X 160u
 #define COMP_SCREEN_MENU_ENTER_CENTER_MIN_Y 40u
 #define COMP_SCREEN_MENU_ENTER_CENTER_MAX_Y 160u
-#define COMP_SCREEN_MENU_HEADER_HEIGHT_PX 30u
-#define COMP_SCREEN_MENU_HOME_CONTENT_TOP_PX 38u
-#define COMP_SCREEN_MENU_HOME_PET_PANEL_HEIGHT_PX 48u
-#define COMP_SCREEN_MENU_HOME_ITEM_STEP_PX 34u
-#define COMP_SCREEN_MENU_SCROLL_QUANTUM_PX 2u
-#define COMP_SCREEN_MENU_SCROLL_MAX_PX 84u
-#define COMP_SCREEN_MENU_SCROLL_FRAME_COUNT \
-    (((COMP_SCREEN_MENU_SCROLL_MAX_PX + COMP_SCREEN_MENU_SCROLL_QUANTUM_PX - 1u) / \
-      COMP_SCREEN_MENU_SCROLL_QUANTUM_PX) + 1u)
+/* menu-v3 fits the owner-approved six destinations on one 200x200 sheet.
+ * Keep a one-frame interface so an old drag request cannot select a retired
+ * CEMP scroll bitmap. */
+#define COMP_SCREEN_MENU_HEADER_HEIGHT_PX 28u
+#define COMP_SCREEN_MENU_HOME_CONTENT_TOP_PX 35u
+#define COMP_SCREEN_MENU_HOME_PET_PANEL_HEIGHT_PX 0u
+#define COMP_SCREEN_MENU_HOME_ITEM_STEP_PX 26u
+#define COMP_SCREEN_MENU_SCROLL_QUANTUM_PX 1u
+#define COMP_SCREEN_MENU_SCROLL_MAX_PX 0u
+#define COMP_SCREEN_MENU_SCROLL_FRAME_COUNT 1u
 
 typedef struct {
     comp_screen_menu_view_t view;

@@ -94,7 +94,7 @@
       "ssd1681_source": "excluded"
     },
     "screen_asset_provision": {
-      "acceptance": "Links the rev52 CEMP blob into the one-time external ui_assets provision firmware.",
+      "acceptance": "Links the rev53 CEMP blob into the one-time external ui_assets provision firmware.",
       "asset_source": "build_screen_asset_provision/generated/companion_screen_asset_provision_blob.h",
       "command": "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1 -ScreenAssetProvision -Force",
       "log": ".cache/validation/wb55-build-matrix/screen-asset-provision-build.log",

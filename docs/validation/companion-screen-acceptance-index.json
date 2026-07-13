@@ -2101,12 +2101,12 @@
         "docs/validation/companion-screen-wb55-runtime-hardware-action-card.md",
         "docs/validation/companion-screen-wb55-runtime-flash-preflight.json",
         "docs/validation/companion-screen-wb55-runtime-serial-capture-preflight.json",
-        ".cache/validation/rev52-runtime-current/runtime-recheck-run.json"
+        ".cache/validation/rev53-runtime-current/runtime-recheck-run.json"
       ],
       "id": "wb55_runtime_serial_capture_preflight",
       "missing_hardware_facts": [],
       "status": "PASS",
-      "summary": "The rev52 runtime recheck serial path is statically verified before any COM port is opened: capture_nucleo_serial.ps1 requires -Execute and -WorkflowLockHeld, the locked runner captures provision and normal boots for 25 s into stable raw/summary filenames, and the log verifier consumes those exact artifacts.",
+      "summary": "The rev53 runtime recheck serial path is statically verified before any COM port is opened: capture_nucleo_serial.ps1 requires -Execute and -WorkflowLockHeld, the locked runner captures provision and normal boots for 25 s into stable raw/summary filenames, and the log verifier consumes those exact artifacts.",
       "title": "WB55 runtime serial capture preflight",
       "validation_commands": [
         "python .\\tools\\render_wb55_runtime_hardware_action_card.py",
@@ -2133,13 +2133,17 @@
         "docs/validation/companion-screen-wb55-runtime-flash-preflight.json",
         "docs/validation/companion-screen-wb55-runtime-serial-capture-preflight.json",
         "docs/validation/companion-screen-generation-release-ledger.json",
-        ".cache/validation/rev52-runtime-current/runtime-recheck-run.json"
+        ".cache/validation/rev53-runtime-current/runtime-recheck-run.json"
       ],
-      "id": "wb55_rev52_runtime_recheck",
-      "missing_hardware_facts": [],
-      "status": "PASS",
-      "summary": "The rev52 CEMP resource pack is first-hand runtime-proven on WB55: the locked hardware action card completed flash provision, capture provision logs, restore normal firmware, and capture normal logs; the SCR-17 release ledger and coherent_generation marker path are present and the promotion gate is applied.",
-      "title": "WB55 rev52 provision/normal runtime recheck",
+      "id": "wb55_rev53_runtime_recheck",
+      "missing_hardware_facts": [
+        "rev53 provision serial raw/summary logs",
+        "rev53 normal serial raw/summary logs",
+        "locked Companion-WB55 hardware run with normal_firmware_restored=true"
+      ],
+      "status": "DEFERRED_HARDWARE",
+      "summary": "The current rev53 CEMP resource pack is machine-prepared but not yet first-hand runtime-proven on WB55: the locked hardware action card must flash provision, capture provision logs, restore normal firmware, capture normal logs, verify the SCR-17 release ledger and coherent_generation marker path, then the log verifier and promotion gate may advance pre-acceptance.",
+      "title": "WB55 rev53 provision/normal runtime recheck",
       "validation_commands": [
         "python .\\tools\\verify_wb55_screen_runtime_recheck_runner.py",
         "python .\\tools\\render_wb55_runtime_hardware_action_card.py",
@@ -2188,7 +2192,7 @@
       "id": "wb55_touch_visual_acceptance",
       "missing_hardware_facts": [],
       "status": "PENDING_HUMAN",
-      "summary": "Machine checks, physical contact/release, revision 52 candidate generation hygiene, and the last runtime-proven external_flash mount are covered by the pre-acceptance health gate; the operator still needs to confirm daily tap/swipe pet reactions, anywhere 3 s menu entry with a 650 ms tease, continuous vertical drag, press-cue plus target-arrival partial refreshes, left-edge return, language switching, and that 0xCF maintenance is perceived as a single quiet flash.",
+      "summary": "Machine checks, physical contact/release, revision 53 candidate generation hygiene, and the last runtime-proven external_flash mount are covered by the pre-acceptance health gate; the operator still needs to confirm daily tap/swipe pet reactions, anywhere 3 s menu entry with a 650 ms tease, a stable six-row menu-v3 home during vertical strokes, press-cue plus target-arrival partial refreshes, left-edge return, language switching, and that 0xCF maintenance is perceived as a single quiet flash.",
       "title": "WB55 touch navigation and fast-refresh visual acceptance",
       "validation_commands": [
         "python .\\tools\\render_wb55_touch_visual_acceptance_packet.py",
@@ -2230,7 +2234,7 @@
       "id": "companion_screen_goal_audit",
       "missing_hardware_facts": [],
       "status": "PENDING_HUMAN",
-      "summary": "The full screen goal is machine-audited: WB55 wiring, refresh, rev52 resource generation hygiene, WB55 dry-run/SSD1681 build matrix, last-proven external resources, touch IC health, external Flash policy, pre-acceptance health, and WBA pre-port boundaries are tracked; rev52 provision/normal runtime recheck and screen refresh/touch machine health on the current resource pack are proved, leaving daily pet/menu human feel and future WBA real-panel parity.",
+      "summary": "The full screen goal is machine-audited: WB55 wiring, refresh, rev53 resource generation hygiene, WB55 dry-run/SSD1681 build matrix, last-proven external resources, touch IC health, external Flash policy, pre-acceptance health, and WBA pre-port boundaries are tracked; the open requirements are rev53 provision/normal runtime recheck, screen refresh/touch machine health on the current resource pack, daily pet/menu human feel, and future WBA real-panel parity.",
       "title": "Active goal completion audit",
       "validation_commands": [
         "python .\\tools\\verify_companion_screen_goal_audit.py",
@@ -2254,10 +2258,10 @@
   ],
   "schema_id": "companion.pendant.screen_acceptance_index.v1",
   "summary": {
-    "deferred_count": 0,
-    "next_hardware_gate": "wba_real_panel_parity",
+    "deferred_count": 1,
+    "next_hardware_gate": "wb55_rev53_runtime_recheck",
     "next_human_gate": "wb55_touch_visual_acceptance",
-    "pass_count": 85,
+    "pass_count": 84,
     "pending_human_count": 2,
     "total_count": 87
   }

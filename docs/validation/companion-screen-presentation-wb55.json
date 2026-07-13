@@ -1,7 +1,7 @@
 {
   "schema_id": "companion.pendant.screen_presentation_wb55.v1",
-  "status": "REVISION_39_RUNTIME_PASS_HUMAN_VISUAL_PENDING",
-  "generated_at": "2026-07-12T18:51:00+08:00",
+  "status": "REVISION_53_RUNTIME_RECHECK_PENDING",
+  "generated_at": "2026-07-13T17:45:00+08:00",
   "target": "NUCLEO-WB55RG + GDEY0154D67-T03/SSD1681 + FT6336U",
   "contract": {
     "default_surface": "daily idle expression",
@@ -15,8 +15,8 @@
       "detail_back": "left-edge swipe_right",
       "daily_menu_entry": "only an anywhere, nearly still 3000 ms hold opens settings; all daily swipes remain pet interactions",
       "home_exit": "left-edge swipe_right returns to daily",
-      "home_scroll": "vertical drag follows the finger as a 0..84 px continuous offset; it does not snap to menu items",
-      "home_rendering": "the 43 external menu frames render 2 px positions while queued updates retain only the newest current finger position",
+      "home_scroll": "retired by the owner-approved six-row menu-v3 static home reference",
+      "home_rendering": "one owner-approved static external 200x200 home frame per language; legacy numbered scroll frames are excluded from CEMP",
       "tap_selection": "tap a visible row for a press-cue partial refresh then one target-page arrival partial refresh",
       "swipe_latency": "horizontal navigation recognizes on threshold crossing and suppresses repeats until release; vertical dragging updates while contact is active"
     },
@@ -114,11 +114,18 @@
   "remaining_acceptance": [
     "Physically confirm daily tap reacts without entering the menu",
     "Physically confirm an anywhere hold teases at about 650 ms and opens the menu at 3 s while normal swipes stay pet interactions",
-    "Physically confirm vertical dragging follows the finger without item snapping or replaying stale positions",
+    "Physically confirm the six-row menu-v3 home stays stable during vertical strokes and never displays a legacy numbered scroll frame",
     "Physically confirm a visible-row tap has a press cue then enters its target page without a full refresh",
     "Physically confirm Record, Status, Phone, Device, Preferences, and About map to the product functions",
-    "Revision 17: confirm 2 px menu motion remains visually anchored to the finger and the 1600 ms low-flicker maintenance leaves no unacceptable ghosting"
+    "Confirm a vertical stroke on static home neither selects a row nor triggers a fake refresh, and the quiet maintenance leaves no unacceptable ghosting"
   ],
+  "revision_53_menu_contract": {
+    "status": "BUILD_PASS_RUNTIME_RECHECK_PENDING",
+    "source": "docs/art/generated_companion_menu_reference_v3.png",
+    "resource_import": "docs/validation/companion-screen-menu-v3-import.json",
+    "home": "six product destinations in one source-layout frame per language",
+    "runtime_limit": "normal/provision builds passed; no revision 53 resource pack flash or panel observation is recorded here"
+  },
   "revision_17_machine_contract": {
     "status": "PENDING_HARDWARE_RECHECK",
     "interaction": "0xFC changed-window differential refresh with latest menu frame coalescing",

@@ -681,9 +681,7 @@ static void frame_prepare(comp_epaper_expression_asset_source_t *expression_asse
                comp_epaper_expression_asset_source_copy_clip_frame(
                    expression_assets,
                    menu_asset_name,
-                   request->menu_view == COMP_SCREEN_MENU_VIEW_HOME
-                       ? request->menu_page
-                       : 0u,
+                   0u,
                    s_frame,
                    sizeof(s_frame)) &&
                comp_screen_menu_render_dynamic(

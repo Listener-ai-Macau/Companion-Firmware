@@ -157,11 +157,11 @@ rig, motion cues, and status marks on white. It must not redraw ears, a head
 outline, or whiskers.
 Idle is one quiet composed pose after its initial refresh, while CEMP retains
 replaceable timing and visual resources for touch reactions and product events.
-The current WB55 revision 52 candidate pack keeps the electronic-pet rig external-first
+The current WB55 revision 53 candidate pack keeps the electronic-pet rig external-first
 and uses generated-sheet-import PBM frames as the normal expression/menu art
-path: 33 clips, 159 timeline frames, a 287732-byte CEMP pack, and CRC32 `0xDEFC096E`.
-Revision 52 still needs WB55 provision/normal runtime recheck; revision 51 is
-the last machine-proven pack.
+path: 33 clips, 75 timeline frames, a 50368-byte CEMP pack, and CRC32 `0x9B6E6875`.
+Revision 53 has passed resource import and WB55 normal/provision builds; its
+first flash and visual runtime recheck remain pending.
 The `premium pet art contract` is checked by
 `python .\tools\verify_premium_pet_art_contract.py`; it guards whole-face
 motion across eyes/brows, mouth/nose, cheeks, and state ornaments so future
@@ -169,21 +169,18 @@ generated-art tuning does not regress to eye-only expression swaps.
 Identical decoded rasters share one payload record while retaining independent
 timing, dirty rectangles, and random access for every clip frame. The ordinary
 firmware mounts it from QSPI and does not retain the provision blob in MCU
-Flash. The home directory keeps a continuous 0..84 pixel logical scroll offset
-and selects one of 43 external two-pixel frames per language for the 200x200
-e-paper panel. A fixed 30px compact system header and 8px white gutter sit
-above the scroll viewport; the home viewport then keeps a 48px pet status card
-and 34px function rows, so the six product entries can never draw over
-navigation and the touch hit-test matches the generated-art layout.
-The `menu drag continuity contract` is checked by
-`python .\tools\verify_menu_drag_continuity_contract.py`; it guards the home
-menu frames against fixed-header drift, gutter overdraw, backward scrollbar
-motion, and excessive adjacent-frame jumps.
+Flash. The owner-accepted menu-v3 reference fits all six product destinations
+on one stable 200x200 external-Flash home frame per language. Vertical strokes
+on that page remain daily pet interactions; menu home never selects a retired
+numbered scroll asset. The `menu-v3 static home contract` is checked by
+`python .\tools\verify_menu_drag_continuity_contract.py`; it guards the
+single-frame bilingual home, six visible rows, and source-layout black selected
+row.
 Menu pet identity is limited to inner face marks: the physical shell owns the
 cat outline, while generated menu pages and the MCU rescue renderer avoid ears,
-head outlines, and whiskers. Vertical drag uses a finger-origin anchor rather
-than incremental integration, never snaps to an item, and display-queue
-coalescing retains only the latest render frame while a refresh is active.
+head outlines, and whiskers. Row taps operate inside the static menu, and
+display-queue coalescing retains only the latest render frame while a refresh
+is active.
 Opening a function is tap-only inside the menu: the selected row gets a short
 press-cue partial refresh, then the destination page arrives with another
 partial refresh. Daily mode opens the menu through a nearly-still 3 s hold

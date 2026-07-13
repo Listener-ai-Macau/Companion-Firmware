@@ -77,8 +77,8 @@
     "daily_enter_menu": "3000 ms any-position long_press with 46 px wobble tolerance",
     "detail_back": "left-edge swipe_right",
     "home_exit": "left-edge swipe_right",
-    "home_vertical_scroll": "anchored continuous finger-distance drag",
-    "firmware_selftest": "one-sample explicit-release tap, live hold then long-press, vertical-drag release, and expired-drag rearm"
+    "home_vertical_stroke": "menu-v3 home is a static six-row page and never advances a numbered scroll frame",
+    "firmware_selftest": "one-sample explicit-release tap, live hold then long-press, static-home row hit tests, and expired-drag rearm"
   },
   "evidence": {
     "serial_log": ".cache/validation/screen-revision13-left-swipe-live/nucleo-serial-raw.log",
@@ -104,11 +104,10 @@
   "remaining_acceptance": [
     "Confirm tap hit regions",
     "Confirm daily tap and all four daily swipes have distinct pet reactions",
-    "Confirm vertical dragging follows the finger continuously without item snapping",
+    "Confirm the six-row menu-v3 home remains stable during vertical strokes and never shows a legacy numbered scroll frame",
     "Confirm a visible menu row has a press-cue partial refresh then its target-page arrival partial refresh",
     "Visually confirm horizontal refresh content on the panel",
-    "Revision 17: confirm the latest rendered menu position remains visually attached to the finger during a drag",
-    "Revision 20: confirm the fixed header and its white gutter remain unchanged while the content viewport scrolls",
+    "Confirm a vertical stroke on the static home does not select a row or cause a fake refresh",
     "Revision 21: confirm a <=9 px touch wobble still activates the intended row, and the 1200 ms post-gesture 0xCF maintenance pass improves residual ghosting"
   ],
   "revision_17_machine_contract": {

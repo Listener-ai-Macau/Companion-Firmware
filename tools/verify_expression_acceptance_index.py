@@ -2158,7 +2158,7 @@ def build_index() -> dict[str, Any]:
             "wb55_touch_visual_acceptance",
             "WB55 touch navigation and fast-refresh visual acceptance",
             "PENDING_HUMAN",
-                f"Machine checks, physical contact/release, revision {CANDIDATE.revision} candidate generation hygiene, and the last runtime-proven external_flash mount are covered by the pre-acceptance health gate; the operator still needs to confirm daily tap/swipe pet reactions, anywhere 3 s menu entry with a 650 ms tease, continuous vertical drag, press-cue plus target-arrival partial refreshes, left-edge return, language switching, and that 0xCF maintenance is perceived as a single quiet flash.",
+                f"Machine checks, physical contact/release, revision {CANDIDATE.revision} candidate generation hygiene, and the last runtime-proven external_flash mount are covered by the pre-acceptance health gate; the operator still needs to confirm daily tap/swipe pet reactions, anywhere 3 s menu entry with a 650 ms tease, a stable six-row menu-v3 home during vertical strokes, press-cue plus target-arrival partial refreshes, left-edge return, language switching, and that 0xCF maintenance is perceived as a single quiet flash.",
             [
                 "tools/render_wb55_touch_visual_acceptance_packet.py",
                 "tools/render_wb55_runtime_hardware_action_card.py",

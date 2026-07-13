@@ -466,9 +466,6 @@ static bool s_touch_refresh_latest_contact_valid;
 static buffered_touch_sample_t s_touch_refresh_latest_contact;
 static bool s_touch_wait_buffer_selftest_pass;
 static comp_touch_gesture_state_t s_touch_gesture;
-static bool s_menu_vertical_drag_active;
-static uint16_t s_menu_vertical_drag_anchor_y;
-static uint16_t s_menu_vertical_drag_anchor_offset_px;
 static bool s_menu_entry_pending;
 static comp_screen_menu_view_t s_menu_entry_target;
 static uint32_t s_menu_entry_due_ms;
@@ -2020,7 +2017,6 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
     bool contact_now;
     bool explicit_release;
     bool gesture_ready;
-    bool drag_consumed;
     comp_touch_gesture_event_t gesture;
     comp_screen_menu_result_t menu_result;
 
@@ -2038,62 +2034,6 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
                                                logical_y,
                                                now_ms,
                                                &gesture);
-    drag_consumed = s_menu_vertical_drag_active;
-    if (contact_now && Companion_Screen_IsMenuVisible() &&
-        s_screen_menu.view == COMP_SCREEN_MENU_VIEW_HOME &&
-        comp_touch_gesture_is_vertical_drag(&s_touch_gesture)) {
-        int16_t finger_delta_y;
-        uint8_t previous_render_frame;
-
-        if (!s_menu_vertical_drag_active) {
-            s_menu_vertical_drag_active = true;
-            s_menu_vertical_drag_anchor_y = s_touch_gesture.start_y;
-            s_menu_vertical_drag_anchor_offset_px =
-                comp_screen_menu_exact_scroll_offset_px(&s_screen_menu);
-        }
-        finger_delta_y = (int16_t)logical_y -
-                         (int16_t)s_menu_vertical_drag_anchor_y;
-        previous_render_frame = s_screen_menu.home_page;
-        menu_result = comp_screen_menu_drag_to(
-            &s_screen_menu,
-            (int32_t)s_menu_vertical_drag_anchor_offset_px - finger_delta_y);
-        if (menu_result.changed && menu_result.home_page != previous_render_frame) {
-            printf("[touch-ui] menu_drag anchor_y=%u anchor_offset_px=%u delta_y=%d exact_offset_px=%u render_frame=%u render_offset_px=%u revision=%lu\r\n",
-                   (unsigned)s_menu_vertical_drag_anchor_y,
-                   (unsigned)s_menu_vertical_drag_anchor_offset_px,
-                   (int)finger_delta_y,
-                   (unsigned)comp_screen_menu_exact_scroll_offset_px(
-                       &s_screen_menu),
-                   (unsigned)menu_result.home_page,
-                   (unsigned)comp_screen_menu_scroll_offset_px(
-                       menu_result.home_page),
-                   (unsigned long)menu_result.revision);
-            comp_screen_menu_set_flags(&s_screen_menu,
-                                       Companion_Screen_RuntimeMenuFlags());
-            Companion_Screen_MenuRequest(menu_result.view,
-                                         s_screen_menu.flags,
-                                         menu_result.language,
-                                         menu_result.home_page);
-        }
-    }
-    if (gesture_ready && s_menu_vertical_drag_active) {
-        int16_t final_delta_y = (int16_t)gesture.end_y -
-                                (int16_t)s_menu_vertical_drag_anchor_y;
-        uint8_t previous_render_frame = s_screen_menu.home_page;
-        menu_result = comp_screen_menu_drag_to(
-            &s_screen_menu,
-            (int32_t)s_menu_vertical_drag_anchor_offset_px - final_delta_y);
-        if (menu_result.changed && menu_result.home_page != previous_render_frame) {
-            Companion_Screen_MenuRequest(menu_result.view,
-                                         s_screen_menu.flags,
-                                         menu_result.language,
-                                         menu_result.home_page);
-        }
-        drag_consumed = true;
-    }
-    if (!contact_now) {
-        s_menu_vertical_drag_active = false;
-    }
     if (!gesture_ready) {
         return;
     }
@@ -2104,15 +2044,6 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
            (unsigned)gesture.end_x,
            (unsigned)gesture.end_y,
            (unsigned)gesture.duration_ms);
-    if (drag_consumed) {
-        printf("[touch-ui] menu_drag_release exact_offset_px=%u render_frame=%u render_offset_px=%u\r\n",
-               (unsigned)comp_screen_menu_exact_scroll_offset_px(&s_screen_menu),
-               (unsigned)s_screen_menu.home_page,
-               (unsigned)comp_screen_menu_scroll_offset_px(
-                   s_screen_menu.home_page));
-        schedule_touch_screen_maintenance(now_ms);
-        return;
-    }
     if (!Companion_Screen_IsMenuVisible()) {
         if (gesture.type == COMP_TOUCH_GESTURE_HOLD) {
             /* The first held beat is social feedback.  Long-press navigation

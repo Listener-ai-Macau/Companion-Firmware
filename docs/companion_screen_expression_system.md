@@ -1657,13 +1657,12 @@ It is the quick status map for one-by-one acceptance:
      settings menu.
    - An anywhere, nearly still 3 s long press enters the menu after a single
      650 ms pet tease. Ordinary left/right/up/down swipes on the daily face
-     remain directional pet strokes and must never open settings. On menu home,
-     a vertical drag accumulates the exact finger-distance offset from 0
-     through 84 pixels without snapping to items. The 43 external two-pixel
-     menu frames render the nearest available position while the logical offset
-     remains continuous; pending refreshes coalesce to the newest position.
-     Tapping a visible row first shows a press-cue partial refresh, then opens
-     its target page through a target-arrival partial refresh.
+     remain directional pet strokes and must never open settings. The accepted
+     menu-v3 source fits all six destinations on one stable 200x200 external-
+     Flash home frame per language, so vertical strokes there remain daily pet
+     interactions rather than selecting a retired scroll frame. Tapping a
+     visible row first shows a press-cue partial refresh, then opens its target
+     page through a target-arrival partial refresh.
    - A swipe right that starts within the left 48 pixels returns from a detail
      page to menu home, or from menu home to the daily face. Touch coordinate
      mirroring is independent from panel rotation and mirroring.
@@ -2023,8 +2022,9 @@ It is the quick status map for one-by-one acceptance:
      `hold` tease at 650 ms; only an anywhere `long_press` at 3000 ms enters
      the menu. All normal left/right/up/down swipes remain directional pet
      strokes, while left-edge right swipe remains the exit/back gesture.
-   - Home scrolling now spans `0..84 px` through 43 external two-pixel frames
-     per language and keeps the exact finger offset without snapping. A row
+   - The owner-accepted menu-v3 source keeps all six product destinations in
+     one external 200x200 home frame per language. Its rows are tapped in
+     place; it does not use a numbered scroll asset or item snapping. A row
      tap uses a press-cue partial refresh followed by a target-page arrival
      partial refresh. Neither cue is allowed to promote itself to a full
      refresh; `0xFC` remains the interactive waveform and `0xCF` remains the
@@ -2050,36 +2050,34 @@ It is the quick status map for one-by-one acceptance:
      available only for rescue, maintenance, and small WBA-reusable behavior
      fallbacks; it must not replace the external art pack for normal product
      expressions.
-   - The product menu polish follows the same companion language. External
-     CEMP menu/expression assets are revision 52: expression key poses are
-     imported from `docs/art/generated_pet_expression_sheet_v5.png`, while
-     compact white system headers keep a
-     small inner-face identity chip, the home page adds a pet status card, and
-     the six product entries use rounded function capsules, current-row
-     inversion, distinct icons, progress marks, and small spark marks.
-     Preferences and the other product pages use only inner-face mood marks.
-     The physical shell owns the cat outline, so
-     firmware must not draw ears, head outlines, or whiskers. Large menu art
-     and future personality packs remain external `ui_assets`; portable
-     behavior and renderer code remain small and WBA-reusable.
+   - The product menu follows the owner-accepted `menu-v3-2026-07-13` sheet.
+     Its source image is cropped into seven complete Chinese and English pages
+     in external CEMP revision 53: home, Voice & Record, Status, Phone Link,
+     Device, Preferences, and About. The compact line art, black selection,
+     and page composition come from that source image, not a hand-drawn MCU
+     menu renderer. Dynamic firmware content is limited to real action and
+     datum cells. The physical shell owns the cat outline, so firmware must
+     not draw ears, head outlines, or whiskers. Large menu art and future
+     personality packs remain external `ui_assets`; portable behavior and
+     renderer code remain small and WBA-reusable.
      The premium pet art contract is guarded by
      `verify_premium_pet_art_contract.py`: tap, swipe, listening, thinking,
      recording, speaking, happy, and sleepy poses must change multiple
      inner-face zones including mouth/nose, so future tuning cannot regress to
      eye-only expression swaps.
-     The menu drag continuity contract is guarded by
+     The `menu-v3 static home contract` is guarded by
      `verify_menu_drag_continuity_contract.py`: both Chinese and English home
-     menus must keep 43 two-pixel frames, a fixed top bar, a white gutter,
-     monotonic scrollbar motion, and bounded adjacent-frame changes so the
-     directory cannot regress to item snapping or large visual jumps.
-   - Generated art now enters firmware through the named
-     `genref_sheet_12_inner_faces_v5` style contract. `card_renderer.py` owns
-     the normal PBM expression art, `pet_visual_style.h` owns compact fallback
-     anchors, and `MENU_STYLE` owns menu chip/card/badge placement in the PBM
-     generator. A new generated reference should be implemented by tuning those
-   concentrated style/render points, regenerating external assets when needed,
-   and rerunning the verifiers, not by scattering one-off coordinates through
-   render code.
+     pages must keep exactly one source-layout frame, all six visible rows,
+     and a black selected row so the normal pack cannot return to numbered
+     scroll frames or a manually redesigned layout.
+   - Generated art enters firmware through the named
+     `genref_sheet_12_inner_faces_v5` expression contract and the
+     `MENU_V3_STYLE` source-image import contract. `card_renderer.py` owns
+     normal PBM expression art, while `generate_screen_menu_assets.py` pins
+     the approved menu source hash and crop map. A new generated reference is
+   implemented by revising its versioned prompt/reference, regenerating
+   external assets, and rerunning the verifiers, not by scattering one-off
+   coordinates through runtime render code.
 
 69. Queued interaction-state art baseline
    - Before any new expression implementation, SCR-21 must retain priority:

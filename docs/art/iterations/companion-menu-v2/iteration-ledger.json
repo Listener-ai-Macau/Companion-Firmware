@@ -38,9 +38,15 @@
         "next_prompt_delta": null
       },
       "implementation": {
-        "status": "accepted_for_external_flash_resource_import",
-        "resource_revision": null,
-        "validation": []
+        "status": "external_flash_resources_generated_build_pass_hardware_pending",
+        "resource_revision": 53,
+        "validation": [
+          "docs/validation/companion-screen-menu-v3-import.json",
+          "docs/validation/epaper/menu-v3-en-preview.png",
+          "docs/validation/epaper/menu-v3-zh-preview.png",
+          "tools/build_nucleo_bringup.ps1 -EpaperSsd1681Bringup -EpaperMenu 1 -BootSelfTests",
+          "tools/build_nucleo_bringup.ps1 -EpaperSsd1681Bringup -EpaperMenu 1 -ScreenAssetProvision -BootSelfTests -Force"
+        ]
       }
     }
   ]

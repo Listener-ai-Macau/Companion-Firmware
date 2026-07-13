@@ -16,27 +16,27 @@
     "normal_firmware_build": "tools/build_nucleo_bringup.ps1 -EpaperSsd1681Bringup -EpaperMenu 1 -BootSelfTests -Force",
     "normal_firmware_flash": "tools/flash_nucleo_bringup.ps1",
     "normal_firmware_flash_preflight": "tools/flash_nucleo_bringup.ps1 -CheckOnly",
-    "normal_firmware_size_bytes": 3042364,
+    "normal_firmware_size_bytes": 3015392,
     "resource_pack_metadata": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_screen_asset_provision/generated/emote_matrix_white_200x200.cemp",
-    "resource_pack_preview": ".cache/validation/generated-expression-sheet-import-preview.png",
+    "resource_pack_preview": "docs/validation/epaper/menu-v3-en-preview.png",
     "resource_pack_provision_build": "tools/build_nucleo_bringup.ps1 -EpaperSsd1681Bringup -EpaperMenu 1 -ScreenAssetProvision -BootSelfTests -Force",
     "resource_pack_provision_firmware": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_screen_asset_provision/Companion_Nucleo_WB55RG_ScreenAssetProvision.elf",
-    "resource_pack_provision_firmware_size_bytes": 3120572,
+    "resource_pack_provision_firmware_size_bytes": 2874424,
     "resource_pack_provision_flash": "tools/flash_nucleo_bringup.ps1 -ScreenAssetProvision",
     "resource_pack_provision_flash_preflight": "tools/flash_nucleo_bringup.ps1 -ScreenAssetProvision -CheckOnly",
-    "resource_pack_review_preview": ".cache/validation/generated-expression-sheet-review.png"
+    "resource_pack_review_preview": "docs/validation/epaper/menu-v3-zh-preview.png"
   },
-  "generated_at": "2026-07-12T22:35:00+08:00",
+  "generated_at": "2026-07-13T18:12:16+08:00",
   "menu_contract": {
     "default_language": "zh",
-    "external_menu_frames": 98,
+    "external_menu_frames": 14,
     "gesture_contract": {
       "daily_enter_menu": "any-position nearly still hold enters after 3000 ms; ordinary swipes remain pet strokes",
       "daily_hold": "a nearly still hold gives a pet tease at 650 ms",
       "daily_tap": "brief whole-face reaction, then return to idle",
       "detail_back": "left-edge swipe_right",
-      "home_rendering": "43 external home frames per language render 2 px positions while queue coalescing retains only the newest frame",
-      "home_scroll": "vertical drag follows the finger as a 0..84 px continuous offset; it does not snap to menu items",
+      "home_rendering": "one owner-approved static external home frame per language",
+      "home_scroll": "retired by the six-row menu-v3 home reference",
       "menu_exit_to_daily": "left-edge swipe_right on home",
       "portable_boundary": "menu consumes HAL-free normalized gesture events",
       "recognition": "horizontal navigation fires once at the movement threshold and stays consumed until release; vertical dragging updates while contact is active",
@@ -57,12 +57,12 @@
       "en"
     ],
     "presentation": "separate single-language pages; only the language selector names both choices",
-    "visible_items": 4
+    "visible_items": 6
   },
   "remaining_acceptance": [
     "Tap and swipe the daily face and confirm each produces a whole-face response without opening the menu",
     "Hold nearly still anywhere on the screen: confirm a tease at about 650 ms and menu entry at 3 s",
-    "Drag up and down in the menu and confirm content follows the finger continuously without item snapping",
+    "Confirm the six-row menu-v3 home remains stable during vertical pet strokes and does not fall back to a legacy scroll page",
     "Enter a detail page and swipe right from the left edge to return home",
     "Swipe right from the left edge on menu home and confirm return to the daily face",
     "Tap a visible entry and confirm a press cue then a target-page arrival without a full refresh",
@@ -72,13 +72,13 @@
   ],
   "resource_pack": {
     "clips": 33,
-    "frames": 159,
+    "frames": 75,
     "name": "emote-matrix-white-200x200-v1",
-    "pack_crc32": "0xDEFC096E",
-    "payload_bytes": 283460,
-    "revision": 52,
+    "pack_crc32": "0x2332E300",
+    "payload_bytes": 47309,
+    "revision": 53,
     "storage": "external ui_assets at 0x00200000",
-    "total_bytes": 287732
+    "total_bytes": 49901
   },
   "revision_17_machine_contract": {
     "home_frame_count_per_language": 85,
@@ -148,16 +148,29 @@
     "pet_sheet_style": "Generated-sheet clipping correction: normal imported inner-face PBMs no longer receive an internal white shell mask or a fixed target-panel art margin. The current 200x200 / 1_54in output remains the default profile; alternate panel dimensions generate isolated suffixed PBMs before a matching CEMP manifest is introduced.",
     "status": "BUILD_PASS_RUNTIME_RECHECK_PENDING"
   },
+  "revision_53_machine_contract": {
+    "menu_style": "owner-accepted menu-v3 sheet is cropped into seven complete external pages per language; no normal-menu geometry or icon is hand-drawn by the WB55 renderer",
+    "menu_home": "six destinations fit one static source-layout frame per language; legacy 43-frame scrolling assets are excluded from CEMP",
+    "menu_live_cells": "Status, Phone Link, and Device source example values are blanked before the compact runtime overlay writes live flags or truthful fixed capability states; recording uses the source action button and shows a stop glyph only while the real recording FSM is active",
+    "menu_import_report": "docs/validation/companion-screen-menu-v3-import.json",
+    "menu_previews": [
+      "docs/validation/epaper/menu-v3-en-preview.png",
+      "docs/validation/epaper/menu-v3-zh-preview.png"
+    ],
+    "normal_build": "PASS",
+    "provision_build": "PASS",
+    "status": "BUILD_PASS_RUNTIME_RECHECK_PENDING"
+  },
   "runtime_evidence": {
-    "machine_observation": "Revision 52 provision and normal runtime logs passed: external ui_assets mounted, CEMP revision 52 / CRC 0xDEFC096E loaded from external_flash, pet self-test passed, touch identity was detected, and the initial full refresh completed. Human touch/visual acceptance remains pending.",
-    "normal_capture_summary": ".cache/validation/rev52-runtime-current/normal/nucleo-serial-summary.json",
-    "normal_raw_log": ".cache/validation/rev52-runtime-current/normal/nucleo-serial-raw.log",
+    "machine_observation": "Revision 53 menu-v3 import, normal WB55 firmware build, and screen-asset-provision build passed. The new external CEMP revision has not been flashed or runtime-observed yet; focused visual/touch review remains pending.",
     "operator_prompt_used": false,
     "predecessor_runtime_proven_revision": {
       "pack_crc32": "0x0E16087E",
       "revision": 48
     },
     "previous_runtime_proven_revision": {
+      "clips": 33,
+      "frames": 159,
       "normal_capture_summary": ".cache/validation/rev51-runtime-20260712-generated-art/normal/nucleo-serial-summary.json",
       "normal_raw_log": ".cache/validation/rev51-runtime-20260712-generated-art/normal/nucleo-serial-raw.log",
       "pack_crc32": "0x56B56273",
@@ -165,26 +178,14 @@
       "provision_raw_log": ".cache/validation/rev51-runtime-20260712-generated-art/provision/nucleo-serial-raw.log",
       "revision": 51
     },
-    "provision_capture_summary": ".cache/validation/rev52-runtime-current/provision/nucleo-serial-summary.json",
-    "provision_raw_log": ".cache/validation/rev52-runtime-current/provision/nucleo-serial-raw.log",
-    "required_runtime_markers": [
-      "mount=ok",
-      "revision=52",
-      "clips=33 frames=159",
-      "pet_behavior_selftest=pass failure_code=0",
-      "touch-health] detected=1 identity=1 addr=0x38",
-      "preview_started name=idle",
-      "source=external_flash",
-      "refresh mode=full",
-      "complete=1"
-    ],
-    "status": "REVISION_52_RUNTIME_PASS_HUMAN_VISUAL_PENDING",
+    "required_runtime_markers": [],
+    "status": "REVISION_53_RUNTIME_RECHECK_PENDING",
     "superseded_revision11_logs": [
       ".cache/validation/screen-cemp-revision11-provision/nucleo-serial-raw.log",
       ".cache/validation/screen-revision11-normal/nucleo-serial-raw.log"
     ]
   },
   "schema_id": "companion.pendant.screen_single_language_menu_wb55.v2",
-  "status": "REVISION_52_RUNTIME_RECHECK_PENDING",
+  "status": "REVISION_53_RUNTIME_RECHECK_PENDING",
   "target": "NUCLEO-WB55RG + GDEY0154D67-T03 + FT6336U"
 }

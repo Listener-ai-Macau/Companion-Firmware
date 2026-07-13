@@ -59,7 +59,7 @@ def main() -> int:
         "registry": str(REGISTRY.relative_to(ROOT)).replace("\\", "/"),
         "workflow_plan": "companion-screen-product-integration",
         "requirement_ids": [f"COMP-REQ-{number:03d}" for number in range(1, 16)],
-        "current_focus": "COMP-REQ-015 accepted menu-v3 external-Flash resource import",
+        "current_focus": "COMP-REQ-015 menu-v3 revision-53 runtime recheck",
         "active_parallel_track": "COMP-REQ-009 generated low-power/wake/dynamic-recording expression art",
         "errors": errors,
     }

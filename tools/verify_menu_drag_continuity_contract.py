@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify menu home frames preserve finger-like continuous drag semantics."""
+"""Guard the menu-v3 one-frame home contract after retiring legacy scrolling."""
 
 from __future__ import annotations
 
@@ -14,130 +14,70 @@ from PIL import Image
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 ASSET_DIR = ROOT / "docs" / "validation" / "epaper"
+MANIFEST = ROOT / "app" / "companion_pendant" / "epaper" / "assets" / "emote_matrix_white_200x200.json"
 DEFAULT_JSON = ROOT / "docs" / "validation" / "companion-screen-menu-drag-continuity-contract.json"
 DEFAULT_MD = ROOT / "docs" / "validation" / "companion-screen-menu-drag-continuity-contract.md"
 PROJECT_PLAN = ROOT / "docs" / "companion_screen_project_plan.md"
 SCREEN_DOC = ROOT / "docs" / "companion_screen_expression_system.md"
 README = ROOT / "app" / "companion_pendant" / "epaper" / "README.md"
 
-SCHEMA_ID = "companion.screen.menu_drag_continuity_contract.v1"
+SCHEMA_ID = "companion.screen.menu_v3_static_home_contract.v1"
 LANGUAGES = ("zh", "en")
-FRAME_COUNT = 43
-HEADER_BOTTOM = 38
-CONTENT_DIFF_MIN = 3000
-CONTENT_DIFF_MAX = 14000
-ORDINARY_DIFF_MAX = 7000
-MAX_ALLOWED_LARGE_DIFFS = 2
-MIN_SCROLLBAR_ADVANCE_PX = 45
+FRAME_COUNT = 1
+HOME_ROWS = 6
 
 
 def rel(path: pathlib.Path) -> str:
     return path.resolve().relative_to(ROOT).as_posix()
 
 
-def load_frame(language: str, frame: int) -> Image.Image:
-    suffix = "" if frame == 0 else str(frame)
-    path = ASSET_DIR / f"menu_home{suffix}_{language}_1_54in.pbm"
-    if not path.exists():
-        raise FileNotFoundError(rel(path))
+def load_home(language: str) -> Image.Image:
+    path = ASSET_DIR / f"menu_home_{language}_1_54in.pbm"
     image = Image.open(path).convert("1")
     if image.size != (200, 200):
         raise ValueError(f"{rel(path)} must stay 200x200")
     return image
 
 
-def pixels(image: Image.Image) -> list[int]:
-    return [0 if pixel == 255 else 1 for pixel in image.getdata()]
-
-
-def pixel_distance(left: Image.Image, right: Image.Image) -> int:
-    return sum(a != b for a, b in zip(pixels(left), pixels(right)))
-
-
-def crop_distance(left: Image.Image, right: Image.Image, box: tuple[int, int, int, int]) -> int:
-    return pixel_distance(left.crop(box), right.crop(box))
-
-
-def has_black(image: Image.Image, box: tuple[int, int, int, int]) -> bool:
-    return any(pixel == 0 for pixel in image.crop(box).getdata())
-
-
-def scrollbar_top(image: Image.Image) -> int:
-    rows: list[int] = []
-    for y in range(HEADER_BOTTOM, 196):
-        # x=196 and x=198 are the static scrollbar rails.  The thumb fills
-        # the center column, so x=197 is the stable movement signal.
-        if image.getpixel((197, y)) == 0:
-            rows.append(y)
-    if not rows:
-        return -1
-    runs: list[tuple[int, int]] = []
-    start = prev = rows[0]
-    for y in rows[1:]:
-        if y == prev + 1:
-            prev = y
-        else:
-            runs.append((start, prev))
-            start = prev = y
-    runs.append((start, prev))
-    start, _end = max(runs, key=lambda item: item[1] - item[0])
-    return start
+def black_pixels(image: Image.Image) -> int:
+    return sum(pixel == 0 for pixel in image.getdata())
 
 
 def analyze_language(language: str) -> dict[str, Any]:
-    frames = [load_frame(language, index) for index in range(FRAME_COUNT)]
-    header_reference = frames[0].crop((0, 0, 200, HEADER_BOTTOM)).tobytes()
-    adjacent: list[dict[str, int]] = []
-    scroll_tops: list[int] = []
-    for index, image in enumerate(frames):
-        if image.crop((0, 0, 200, HEADER_BOTTOM)).tobytes() != header_reference:
-            raise ValueError(f"{language} frame {index} fixed header drifted")
-        if has_black(image, (0, 32, 200, HEADER_BOTTOM)):
-            raise ValueError(f"{language} frame {index} overwrites the white header gutter")
-        scroll_tops.append(scrollbar_top(image))
-        if index == 0:
-            continue
-        full_diff = pixel_distance(frames[index - 1], image)
-        content_diff = crop_distance(frames[index - 1], image, (0, HEADER_BOTTOM, 196, 196))
-        adjacent.append({"frame": index, "full_diff": full_diff, "content_diff": content_diff})
-
-    large_diffs = [
-        row for row in adjacent
-        if int(row["content_diff"]) > ORDINARY_DIFF_MAX
-    ]
+    image = load_home(language)
+    selected = black_pixels(image.crop((5, 35, 195, 61)))
+    rows = [black_pixels(image.crop((5, 35 + index * 26, 195, 61 + index * 26)))
+            for index in range(HOME_ROWS)]
     return {
         "language": language,
-        "frame_count": len(frames),
-        "scrollbar_tops": scroll_tops,
-        "scrollbar_total_advance_px": scroll_tops[-1] - scroll_tops[0],
-        "adjacent_diffs": adjacent,
-        "content_diff_min": min(row["content_diff"] for row in adjacent),
-        "content_diff_max": max(row["content_diff"] for row in adjacent),
-        "large_diff_frames": [row["frame"] for row in large_diffs],
-        "large_diff_count": len(large_diffs),
+        "frame_count": FRAME_COUNT,
+        "black_pixels": black_pixels(image),
+        "selected_row_black_pixels": selected,
+        "row_black_pixels": rows,
     }
 
 
 def build_contract() -> dict[str, Any]:
-    analyses = [analyze_language(language) for language in LANGUAGES]
+    manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
+    menu_home_clips = {
+        clip["name"]: clip for clip in manifest.get("clips", [])
+        if clip.get("name") in {"menu.home.zh", "menu.home.en"}
+    }
     return {
         "schema_id": SCHEMA_ID,
         "status": "PASS",
         "purpose": (
-            "Guard the menu home PBM sequence as a finger-anchored continuous "
-            "drag surface: fixed top bar, white gutter, monotonic scrollbar, "
-            "and bounded adjacent-frame changes."
+            "Guard the owner-approved menu-v3 home as one stable 200x200 "
+            "external-Flash frame per language. The six-row source layout "
+            "replaces legacy numbered scrolling home frames."
         ),
-        "frame_quantum_px": 2,
         "frame_count_per_language": FRAME_COUNT,
-        "thresholds": {
-            "content_diff_min": CONTENT_DIFF_MIN,
-            "content_diff_max": CONTENT_DIFF_MAX,
-            "ordinary_content_diff_max": ORDINARY_DIFF_MAX,
-            "max_allowed_large_diffs": MAX_ALLOWED_LARGE_DIFFS,
-            "minimum_scrollbar_advance_px": MIN_SCROLLBAR_ADVANCE_PX,
+        "home_rows": HOME_ROWS,
+        "home_scroll_policy": "retired by the six-row menu-v3 source reference",
+        "manifest_home_frames": {
+            name: len(clip.get("frames", [])) for name, clip in menu_home_clips.items()
         },
-        "languages": analyses,
+        "languages": [analyze_language(language) for language in LANGUAGES],
         "validation_commands": [
             "python .\\tools\\verify_menu_drag_continuity_contract.py",
             "python .\\tools\\verify_screen_menu_assets.py",
@@ -150,48 +90,47 @@ def check_contract(contract: dict[str, Any], errors: list[str]) -> None:
     if contract.get("schema_id") != SCHEMA_ID:
         errors.append("unexpected schema_id")
     if contract.get("status") != "PASS":
-        errors.append("menu drag continuity contract must be PASS")
+        errors.append("menu-v3 static home contract must be PASS")
     if contract.get("frame_count_per_language") != FRAME_COUNT:
         errors.append("home frame count drifted")
+    if contract.get("home_rows") != HOME_ROWS:
+        errors.append("menu-v3 must retain all six home rows")
+    expected_clips = {"menu.home.zh": 1, "menu.home.en": 1}
+    if contract.get("manifest_home_frames") != expected_clips:
+        errors.append("normal CEMP manifest must retain exactly one home frame per language")
     for entry in contract.get("languages", []):
         language = str(entry.get("language", ""))
         if entry.get("frame_count") != FRAME_COUNT:
             errors.append(f"{language} frame count drifted")
-        tops = entry.get("scrollbar_tops", [])
-        if any(not isinstance(top, int) or top < HEADER_BOTTOM for top in tops):
-            errors.append(f"{language} scrollbar top missing or enters header")
-        if any(int(left) > int(right) for left, right in zip(tops, tops[1:])):
-            errors.append(f"{language} scrollbar moves backward")
-        if int(entry.get("scrollbar_total_advance_px", 0)) < MIN_SCROLLBAR_ADVANCE_PX:
-            errors.append(f"{language} scrollbar barely moves")
-        if int(entry.get("large_diff_count", 99)) > MAX_ALLOWED_LARGE_DIFFS:
-            errors.append(f"{language} has too many large adjacent jumps")
-        if int(entry.get("content_diff_min", 0)) < CONTENT_DIFF_MIN:
-            errors.append(f"{language} adjacent frames are too similar")
-        if int(entry.get("content_diff_max", 0)) > CONTENT_DIFF_MAX:
-            errors.append(f"{language} adjacent frames jump too far")
+        if int(entry.get("black_pixels", 0)) < 700:
+            errors.append(f"{language} home appears blank")
+        if int(entry.get("selected_row_black_pixels", 0)) < 1000:
+            errors.append(f"{language} lost the source-layout selected row")
+        rows = entry.get("row_black_pixels", [])
+        if len(rows) != HOME_ROWS or any(int(value) < 30 for value in rows):
+            errors.append(f"{language} lost a visible source-layout home row")
 
 
 def render_markdown(contract: dict[str, Any]) -> str:
     lines = [
-        "# Companion Menu Drag Continuity Contract",
+        "# Companion Menu v3 Static Home Contract",
         "",
         "This file is generated. Update it with",
         "`python .\\tools\\verify_menu_drag_continuity_contract.py --write`.",
         "",
-        f"- Frame quantum: `{contract['frame_quantum_px']}` px",
         f"- Frames per language: `{contract['frame_count_per_language']}`",
+        f"- Visible home rows: `{contract['home_rows']}`",
+        f"- Scroll policy: `{contract['home_scroll_policy']}`",
         "",
         "## Languages",
         "",
-        "| Language | Scroll Advance | Diff Min | Diff Max | Large Diffs |",
-        "|---|---:|---:|---:|---|",
+        "| Language | Black Pixels | Selected Row Pixels | Row Pixels |",
+        "|---|---:|---:|---|",
     ]
     for entry in contract["languages"]:
         lines.append(
-            f"| `{entry['language']}` | `{entry['scrollbar_total_advance_px']}` | "
-            f"`{entry['content_diff_min']}` | `{entry['content_diff_max']}` | "
-            f"`{entry['large_diff_frames']}` |"
+            f"| `{entry['language']}` | `{entry['black_pixels']}` | "
+            f"`{entry['selected_row_black_pixels']}` | `{entry['row_black_pixels']}` |"
         )
     lines.append("")
     return "\n".join(lines)
@@ -200,7 +139,7 @@ def render_markdown(contract: dict[str, Any]) -> str:
 def check_project_links(errors: list[str]) -> None:
     for path, label in ((PROJECT_PLAN, "project plan"), (SCREEN_DOC, "screen doc"), (README, "epaper README")):
         text = path.read_text(encoding="utf-8")
-        for token in ("verify_menu_drag_continuity_contract.py", "menu drag continuity contract"):
+        for token in ("verify_menu_drag_continuity_contract.py", "menu-v3 static home contract"):
             if token not in text:
                 errors.append(f"{label} missing {token}")
 
@@ -238,7 +177,7 @@ def main(argv: list[str]) -> int:
         for error in errors:
             print(f"ERROR: {error}", file=sys.stderr)
         return 1
-    print(f"PASS: menu drag continuity contract verified -> {rel(json_path)}")
+    print(f"PASS: menu-v3 static home contract verified -> {rel(json_path)}")
     return 0
 
 

@@ -10,7 +10,7 @@ rule below.
 
 | Page | Visible rows or controls | Product owner and current behavior | State |
 |---|---|---|---|
-| Settings home | Voice, Status, Phone Link, Device, Preferences, About | Six existing `screen_menu` destinations; selection uses press-cue then target arrival. | Implemented, visual redesign pending |
+| Settings home | Voice, Status, Phone Link, Device, Preferences, About | The accepted v3 sheet fits all six destinations in one 200x200 home view. Selection uses the source-layout press cue then target arrival; normal CEMP no longer selects a retired scroll-frame asset. | menu-v3 resource import complete; hardware review pending |
 | Voice & Record | Mic state, explicit recording control, recent recordings, wake-word state | Daily-page double tap remains the fast default. The generated-page recording control uses the same real recording FSM and external-Flash path, so it is not a decorative duplicate. Recent count appears only after it is backed by real metadata. Wake word remains explicitly planned until low-power acceptance. | Runtime action exists; menu-v3 resource mapping pending |
 | Status | Display, touch, BLE, voice record, low-power eligibility | Read-only live flags from panel readiness, FT6336 health, BLE link, recording FSM, and the current Stop-mode blocker summary. | Implemented data path; low-power row visual pending |
 | Phone Link | Advertising, paired/connected state, reconnect | Advertising and connection are real BLE states. The menu-v3 reconnect row remains visibly planned until it calls the BLE advertising request path and reports its result. | State implemented; retry action backlog |
@@ -28,3 +28,9 @@ is either omitted or marked planned and tracked in the project backlog.
 - 2026-07-13: the owner accepted `menu-v3-2026-07-13` as the replacement for
   the legacy menu. The former pending-review state is retained in the visual
   iteration ledger; it is superseded by this accepted implementation baseline.
+- 2026-07-13: the accepted sheet visibly fits all six destinations on one
+  200x200 home page. The normal external resource pack therefore maps home to
+  one frame per language rather than retaining the legacy 43-frame scrolling
+  renderer. Existing directional input remains available to the daily pet and
+  detail-page back gesture; home scrolling may return only with a newly
+  accepted reference and corresponding external resource sequence.

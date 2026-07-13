@@ -7,8 +7,8 @@ do not edit this template as the final evidence record.
 - Gate: `wb55_touch_visual_acceptance`
 - Target: `NUCLEO-WB55RG + GDEY0154D67-T03 + FT6336U`
 - Source packet: `docs/validation/companion-screen-wb55-touch-visual-acceptance-packet.json`
-- Start rule: Do not start this packet until rev52 runtime logs PASS, promotion is applied, pre-acceptance health PASS, and the operator explicitly says 开始验收.
-- Machine precondition: NO_GO_RUNTIME_RECHECK_PENDING: do not start human touch/visual steps until rev52 provision and normal runtime logs pass and promotion is applied.
+- Start rule: Do not start this packet until rev53 runtime logs PASS, promotion is applied, pre-acceptance health PASS, and the operator explicitly says 开始验收.
+- Machine precondition: NO_GO_RUNTIME_RECHECK_PENDING: do not start human touch/visual steps until rev53 provision and normal runtime logs pass and promotion is applied.
 
 ## Review Records
 
@@ -72,17 +72,17 @@ do not edit this template as the final evidence record.
 - Next review scope:
 - Publishable PASS allowed: `false`
 
-### 4. Menu drag follows the finger
+### 4. Static menu home ignores vertical stroke
 
-- Step ID: `menu_drag_follow_finger`
-- Action: 进入菜单后按住列表区域上下拖动，不要从顶部固定系统栏开始。
-- Success signal: 列表像电子书目录一样跟随手指，顶部系统栏和白色隔离带不被覆盖，松手后停在合理位置。
-- Regression guard: continuous 2 px menu frames and fixed 38 px header must stay intact
+- Step ID: `menu_home_static_vertical_stroke`
+- Action: 进入菜单后在六项首页上下划动，不要点击菜单项。
+- Success signal: 首页保持六项生图布局，不选中条目、不切到旧滚动页，也不出现假刷新。
+- Regression guard: one owner-approved static home frame per language must replace numbered menu scroll frames
 - Expected record fields:
-  - drag direction
-  - finger-follow feel
-  - header overlap yes/no
-  - snap/jump yes/no
+  - stroke direction
+  - legacy scroll page yes/no
+  - false selection yes/no
+  - false refresh yes/no
 - Operator observation:
 - Operator note:
 - Triage items:

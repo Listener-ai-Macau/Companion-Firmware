@@ -189,12 +189,12 @@ def build_packet() -> dict[str, Any]:
                 "menu entry remains a deliberate anywhere long press",
             ),
             step(
-                "menu_drag_follow_finger",
-                "Menu drag follows the finger",
-                "进入菜单后按住列表区域上下拖动，不要从顶部固定系统栏开始。",
-                "列表像电子书目录一样跟随手指，顶部系统栏和白色隔离带不被覆盖，松手后停在合理位置。",
-                ["drag direction", "finger-follow feel", "header overlap yes/no", "snap/jump yes/no"],
-                "continuous 2 px menu frames and fixed 38 px header must stay intact",
+                "menu_home_static_vertical_stroke",
+                "Static menu home ignores vertical stroke",
+                "进入菜单后在六项首页上下划动，不要点击菜单项。",
+                "首页保持六项生图布局，不选中条目、不切到旧滚动页，也不出现假刷新。",
+                ["stroke direction", "legacy scroll page yes/no", "false selection yes/no", "false refresh yes/no"],
+                "one owner-approved static home frame per language must replace numbered menu scroll frames",
             ),
             step(
                 "row_press_and_back",
@@ -485,7 +485,7 @@ def check_packet(packet: dict[str, Any], errors: list[str]) -> None:
         "daily_tap_social_response",
         "daily_swipe_pet_response",
         "anywhere_hold_menu_entry",
-        "menu_drag_follow_finger",
+        "menu_home_static_vertical_stroke",
         "row_press_and_back",
         "language_switch_single_language",
         "maintenance_single_quiet_flash",
@@ -536,7 +536,7 @@ def check_packet(packet: dict[str, Any], errors: list[str]) -> None:
         f'"resource_revision": {resource_pack.get("revision")}',
         str(resource_pack.get("pack_crc32")),
         str(resource_pack.get("total_bytes")),
-        "顶部固定系统栏",
+        "六项生图布局",
     ):
         if token not in serialized:
             errors.append(f"packet missing {token}")

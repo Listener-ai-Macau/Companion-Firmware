@@ -2,7 +2,7 @@
   "claim_scope": "blank_operator_review_template",
   "completion_rule": "This template is not a PASS artifact. After review, each non-empty operator_note must be split into triage_items, assigned one allowed resolution_state, and linked to evidence_path before the acceptance packet can be considered publishable PASS.",
   "gate_id": "wb55_touch_visual_acceptance",
-  "machine_precondition": "NO_GO_RUNTIME_RECHECK_PENDING: do not start human touch/visual steps until rev52 provision and normal runtime logs pass and promotion is applied.",
+  "machine_precondition": "NO_GO_RUNTIME_RECHECK_PENDING: do not start human touch/visual steps until rev53 provision and normal runtime logs pass and promotion is applied.",
   "machine_state": {
     "bilingual_menu_evidence": "docs/validation/companion-screen-bilingual-menu-wb55.json",
     "display_queue_generation_hygiene": {
@@ -13,8 +13,8 @@
       "status": "PASS"
     },
     "generation_release_ledger": {
-      "cemp_crc32": "0xDEFC096E",
-      "cemp_revision": 52,
+      "cemp_crc32": "0x9B6E6875",
+      "cemp_revision": 53,
       "expected_first_frame_marker": "coherent_generation=1",
       "path": "docs/validation/companion-screen-generation-release-ledger.json",
       "real_runtime_status": "NO_GO_MISSING_RUNTIME_LOGS",
@@ -28,12 +28,12 @@
       ]
     },
     "normal_firmware_restored": true,
-    "normal_log": "",
+    "normal_log": null,
     "pet_art_style": "genref_sheet_12_inner_faces_v5",
-    "provision_log": "",
-    "resource_crc32": "0xDEFC096E",
-    "resource_revision": 52,
-    "resource_total_bytes": 287732,
+    "provision_log": null,
+    "resource_crc32": "0x9B6E6875",
+    "resource_revision": 53,
+    "resource_total_bytes": 50368,
     "runtime_flash_preflight": {
       "path": "docs/validation/companion-screen-wb55-runtime-flash-preflight.json",
       "status": "PASS"
@@ -48,7 +48,7 @@
       "path": "docs/validation/companion-screen-wb55-runtime-serial-capture-preflight.json",
       "status": "PASS_STATIC_SERIAL_CAPTURE_PREFLIGHT"
     },
-    "runtime_status": "REVISION_52_RUNTIME_RECHECK_PENDING"
+    "runtime_status": "REVISION_53_RUNTIME_RECHECK_PENDING"
   },
   "review_records": [
     {
@@ -114,21 +114,21 @@
     {
       "evidence_path": "",
       "expected_record_fields": [
-        "drag direction",
-        "finger-follow feel",
-        "header overlap yes/no",
-        "snap/jump yes/no"
+        "stroke direction",
+        "legacy scroll page yes/no",
+        "false selection yes/no",
+        "false refresh yes/no"
       ],
       "next_review_scope": "",
-      "operator_action": "进入菜单后按住列表区域上下拖动，不要从顶部固定系统栏开始。",
+      "operator_action": "进入菜单后在六项首页上下划动，不要点击菜单项。",
       "operator_note": "",
       "operator_observation": "",
       "publishable_pass_allowed": false,
-      "regression_guard": "continuous 2 px menu frames and fixed 38 px header must stay intact",
+      "regression_guard": "one owner-approved static home frame per language must replace numbered menu scroll frames",
       "resolution_state": "open_requires_fix",
-      "source_step_id": "menu_drag_follow_finger",
-      "success_signal": "列表像电子书目录一样跟随手指，顶部系统栏和白色隔离带不被覆盖，松手后停在合理位置。",
-      "title": "Menu drag follows the finger",
+      "source_step_id": "menu_home_static_vertical_stroke",
+      "success_signal": "首页保持六项生图布局，不选中条目、不切到旧滚动页，也不出现假刷新。",
+      "title": "Static menu home ignores vertical stroke",
       "triage_items": [],
       "visual_issue_classification": "none"
     },
@@ -216,7 +216,7 @@
   ],
   "schema_id": "companion.pendant.wb55_touch_visual_review_template.v1",
   "source_packet": "docs/validation/companion-screen-wb55-touch-visual-acceptance-packet.json",
-  "start_rule": "Do not start this packet until rev52 runtime logs PASS, promotion is applied, pre-acceptance health PASS, and the operator explicitly says 开始验收.",
+  "start_rule": "Do not start this packet until rev53 runtime logs PASS, promotion is applied, pre-acceptance health PASS, and the operator explicitly says 开始验收.",
   "status": "TEMPLATE_NOT_ACCEPTANCE_RESULT",
   "target": "NUCLEO-WB55RG + GDEY0154D67-T03 + FT6336U",
   "triage_contract": {

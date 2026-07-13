@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Verify single-language menu packs remain external-first and gesture-ready."""
+"""Guard the owner-accepted menu-v3 external-Flash resource path."""
 
 from __future__ import annotations
 
+import importlib.util
 import json
 import pathlib
-import re
 import struct
 import sys
 import zlib
@@ -18,36 +18,35 @@ import build_emote_asset_pack
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "app/companion_pendant/epaper/assets/emote_matrix_white_200x200.json"
 ASSET_DIR = ROOT / "docs/validation/epaper"
-BILINGUAL_MENU_EVIDENCE = ROOT / "docs/validation/companion-screen-bilingual-menu-wb55.json"
-TOUCH_WB55_EVIDENCE = ROOT / "docs/validation/companion-screen-touch-ft6336-wb55.json"
+MENU_IMPORT = ROOT / "docs/validation/companion-screen-menu-v3-import.json"
+MENU_LEDGER = ROOT / "docs/art/iterations/companion-menu-v2/iteration-ledger.json"
+REQUIREMENTS = ROOT / "docs/companion_product_requirements.md"
 STYLE_SNAPSHOT = ROOT / "docs/validation/companion-screen-generated-art-style-contract.json"
-STYLE_SNAPSHOT_MD = ROOT / "docs/validation/companion-screen-generated-art-style-contract.snapshot.md"
-GENERATED_IMPORT_REPORT = ROOT / "docs/validation/companion-screen-generated-expression-sheet-import.json"
+EVIDENCE = ROOT / "docs/validation/companion-screen-bilingual-menu-wb55.json"
 CEMP_BUILD_ARTIFACT = (
-    ROOT /
-    "cubeide/Companion_Nucleo_WB55RG_Bringup/build_screen_asset_provision/generated/"
+    ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/build_screen_asset_provision/generated/"
     "emote_matrix_white_200x200.cemp"
 )
-HOME_PET_PANEL_HEIGHT = 48
-HOME_ITEM_STEP = 34
-DETAIL_BADGE_TOP_Y = {
-    "record": 39,
-    "status": 39,
-    "phone": 45,
-    "device": 43,
-    "preferences": 35,
-    "about": 45,
-}
+MENU_GENERATOR = ROOT / "tools/generate_screen_menu_assets.py"
+MENU_VIEWS = ("home", "record", "status", "phone", "device", "preferences", "about")
 
 
-def has_black(image: Image.Image, box: tuple[int, int, int, int]) -> bool:
-    return any(pixel == 0 for pixel in image.crop(box).getdata())
+def rel(path: pathlib.Path) -> str:
+    return str(path.relative_to(ROOT)).replace("\\", "/")
 
 
-def read_cemp_metadata(path: pathlib.Path) -> dict[str, object]:
-    data = path.read_bytes()
+def load_generator():
+    spec = importlib.util.spec_from_file_location("companion_menu_v3_import", MENU_GENERATOR)
+    if spec is None or spec.loader is None:
+        raise RuntimeError("could not load menu-v3 resource generator")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def metadata_from_bytes(data: bytes) -> dict[str, object]:
     if len(data) < 80 or data[:4] != b"CEMP":
-        raise ValueError(f"{path.relative_to(ROOT)} is not a CEMP v1 pack")
+        raise ValueError("not a CEMP v1 pack")
     total, revision, _priority, _reserved = struct.unpack_from("<IIHH", data, 8)
     _width, _height, _stride, _pixel, _encoding, clips, frames = struct.unpack_from(
         "<HHHBBHH", data, 20
@@ -66,7 +65,7 @@ def read_cemp_metadata(path: pathlib.Path) -> dict[str, object]:
     }
 
 
-def metadata_from_pack_builder() -> dict[str, object]:
+def metadata_from_builder() -> dict[str, object]:
     pack, metadata = build_emote_asset_pack.build_pack(MANIFEST)
     return {
         "revision": metadata["revision"],
@@ -79,389 +78,174 @@ def metadata_from_pack_builder() -> dict[str, object]:
     }
 
 
-def generated_import_outputs() -> set[str]:
-    report = json.loads(GENERATED_IMPORT_REPORT.read_text(encoding="utf-8"))
-    outputs: set[str] = set()
-    for item in report.get("outputs", []):
-        for path in item.get("files", []):
-            outputs.add(pathlib.Path(path).name)
-    return outputs
-
-
-def manifest_expression_sources(manifest: dict[str, object]) -> set[str]:
-    sources: set[str] = set()
-    for clip in manifest.get("clips", []):
-        for frame in clip.get("frames", []):
-            source = pathlib.Path(str(frame.get("source", ""))).name
-            if source.startswith("expression_") and source.endswith(".pbm"):
-                sources.add(source)
-    return sources
-
-
-def compare_pack_metadata(
-    errors: list[str],
-    label: str,
-    recorded_pack: dict[str, object],
-    actual_pack: dict[str, object],
-) -> None:
+def compare_metadata(errors: list[str], label: str,
+                     expected: dict[str, object], actual: dict[str, object]) -> None:
     for key in ("revision", "clips", "frames", "payload_bytes", "total_bytes", "pack_crc32"):
-        if recorded_pack.get(key) != actual_pack[key]:
-            errors.append(
-                f"resource_pack.{key}={recorded_pack.get(key)!r} does not match "
-                f"{label} {actual_pack[key]!r}"
-            )
-    if actual_pack["file_bytes"] != actual_pack["total_bytes"]:
-        errors.append(f"{label} total_bytes does not match the pack length")
+        if expected.get(key) != actual.get(key):
+            errors.append(f"{label}.{key}={actual.get(key)!r} != {expected.get(key)!r}")
+    if actual["file_bytes"] != actual["total_bytes"]:
+        errors.append(f"{label} file length differs from its CEMP total_bytes")
 
 
-def check_generated_import_covers_manifest(errors: list[str], manifest: dict[str, object]) -> None:
-    generated = generated_import_outputs()
-    used = manifest_expression_sources(manifest)
-    missing = sorted(used - generated)
-    if missing:
-        errors.append(
-            "normal CEMP expression sources must all come from generated-sheet import; "
-            f"missing from import report: {missing}"
-        )
-    if len(generated) < len(used):
-        errors.append("generated-sheet import report has fewer expression outputs than normal CEMP uses")
+def expected_menu_sources() -> set[str]:
+    return {f"menu_{view}_{language}_1_54in.pbm"
+            for language in ("en", "zh") for view in MENU_VIEWS}
 
 
-def check_runtime_evidence(errors: list[str], runtime: dict[str, object]) -> None:
-    status = runtime.get("status")
-    pending = bool(re.fullmatch(r"REVISION_[1-9][0-9]*_RUNTIME_RECHECK_PENDING", str(status)))
-    proven = bool(re.fullmatch(
-        r"REVISION_[1-9][0-9]*_(?:PROVISION_AND_NORMAL_)?RUNTIME_PASS_HUMAN_VISUAL_PENDING",
-        str(status),
-    ))
-    if not pending and not proven:
-        errors.append("runtime_evidence must record a revisioned runtime pending or human-visual-pending status")
+def check_menu_import(errors: list[str], manifest: dict[str, object]) -> None:
+    generator = load_generator()
+    report = json.loads(MENU_IMPORT.read_text(encoding="utf-8"))
+    if report.get("schema_id") != "companion.screen.menu_v3_import.v1":
+        errors.append("menu import report has the wrong schema")
+    if report.get("status") != "PASS_STATIC_IMPORT_PENDING_HARDWARE":
+        errors.append("menu import report must remain a static-import pending-hardware result")
+    if report.get("source") != "docs/art/generated_companion_menu_reference_v3.png":
+        errors.append("menu import report source drifted")
+    if report.get("source_sha256") != generator.SOURCE_SHA256:
+        errors.append("menu import report source SHA-256 drifted")
+    if report.get("crop_boxes") != {name: list(box) for name, box in generator.SCREEN_CROPS.items()}:
+        errors.append("menu import report crop map drifted")
+    if report.get("asset_revision") != manifest.get("revision"):
+        errors.append("menu import report revision does not match CEMP manifest")
+    outputs = report.get("outputs")
+    if not isinstance(outputs, list) or len(outputs) != len(expected_menu_sources()):
+        errors.append("menu import report must record exactly fourteen bilingual outputs")
+
+    try:
+        with Image.open(generator.SOURCE) as opened:
+            source = opened.convert("L")
+    except Exception as exc:
+        errors.append(f"could not open accepted menu source: {exc}")
         return
-    if pending:
-        observation = str(runtime.get("machine_observation", ""))
-        if "pending" not in observation.lower():
-            errors.append("pending runtime_evidence must explain that runtime logs are pending")
-        return
+    if source.size != generator.SOURCE_SIZE:
+        errors.append("accepted menu source dimensions drifted")
 
-    log_keys = (
-        "provision_capture_summary",
-        "provision_raw_log",
-        "normal_capture_summary",
-        "normal_raw_log",
-    )
-    texts: list[str] = []
-    for key in log_keys:
-        value = runtime.get(key)
-        if not isinstance(value, str) or not value:
-            errors.append(f"runtime_evidence.{key} missing")
-            continue
-        path = ROOT / value
-        if not path.exists():
-            errors.append(f"runtime evidence path missing: {value}")
-            continue
-        if path.suffix == ".json":
-            try:
-                summary = json.loads(path.read_text(encoding="utf-8-sig"))
-            except Exception as exc:
-                errors.append(f"runtime summary {value} is not valid JSON: {exc}")
+    output_paths = set()
+    for language in ("en", "zh"):
+        for view in MENU_VIEWS:
+            name = f"menu_{view}_{language}_1_54in.pbm"
+            path = ASSET_DIR / name
+            output_paths.add(name)
+            if not path.exists():
+                errors.append(f"missing menu-v3 resource {rel(path)}")
                 continue
-            if summary.get("status") != "PASS":
-                errors.append(f"runtime summary {value} is not PASS")
-        else:
-            texts.append(path.read_text(encoding="utf-8", errors="replace"))
+            data = path.read_bytes()
+            if not data.startswith(b"P4\n200 200\n") or len(data) != 5011:
+                errors.append(f"invalid 200x200 P4 resource {name}")
+                continue
+            try:
+                actual = Image.open(path).convert("1")
+                expected = generator.make_view(source, view, language, manifest["revision"])
+            except Exception as exc:
+                errors.append(f"could not reproduce {name}: {exc}")
+                continue
+            if actual.tobytes() != expected.tobytes():
+                errors.append(f"{name} is not the deterministic menu-v3 import output")
+    if output_paths != expected_menu_sources():
+        errors.append("internal expected menu source set is incomplete")
+    for view in MENU_VIEWS:
+        en = Image.open(ASSET_DIR / f"menu_{view}_en_1_54in.pbm").convert("1")
+        zh = Image.open(ASSET_DIR / f"menu_{view}_zh_1_54in.pbm").convert("1")
+        if en.tobytes() == zh.tobytes():
+            errors.append(f"{view} must retain separate Chinese and English resources")
 
-    combined_logs = "\n".join(texts)
-    for marker in runtime.get("required_runtime_markers", []):
-        if not isinstance(marker, str) or marker not in combined_logs:
-            errors.append(f"runtime marker missing from runtime logs: {marker}")
+    clips = {clip["name"]: clip for clip in manifest.get("clips", [])}
+    for language in ("en", "zh"):
+        for view in MENU_VIEWS:
+            name = f"menu.{view}.{language}"
+            clip = clips.get(name)
+            expected_source = "../../../../docs/validation/epaper/" + f"menu_{view}_{language}_1_54in.pbm"
+            if clip is None:
+                errors.append(f"manifest missing {name}")
+                continue
+            if clip.get("loop_start") != 0 or clip.get("loop_end") != 1 or len(clip.get("frames", [])) != 1:
+                errors.append(f"manifest {name} must be one static menu-v3 frame")
+            elif clip["frames"][0].get("source") != expected_source:
+                errors.append(f"manifest {name} points away from its menu-v3 PBM")
+    for clip in manifest.get("clips", []):
+        if str(clip.get("name", "")).startswith("menu.home") and len(clip.get("frames", [])) != 1:
+            errors.append("legacy multi-frame home scrolling remains in the normal CEMP manifest")
+        for frame in clip.get("frames", []):
+            if "menu_home" in str(frame.get("source", "")) and "menu_home_" not in str(frame.get("source", "")):
+                errors.append("legacy numbered menu home frame remains referenced")
+
+
+def check_source_contract(errors: list[str]) -> None:
+    ledger = json.loads(MENU_LEDGER.read_text(encoding="utf-8"))
+    candidate = next((item for item in ledger.get("iterations", [])
+                      if item.get("iteration_id") == "menu-v3-2026-07-13"), None)
+    if candidate is None or candidate.get("review", {}).get("outcome") != "accepted_owner_2026-07-13":
+        errors.append("menu-v3 ledger acceptance is missing")
+    elif candidate.get("implementation", {}).get("status") != "external_flash_resources_generated_build_pass_hardware_pending":
+        errors.append("menu-v3 ledger implementation status drifted")
+    requirements = REQUIREMENTS.read_text(encoding="utf-8")
+    for token in ("COMP-REQ-015", "menu-v3-2026-07-13", "D87E45A49AA623552B867C9EDAADB906CA282DF2C2C062D3A127A277920F9F81"):
+        if token not in requirements:
+            errors.append(f"requirement registry missing {token}")
+    snapshot = json.loads(STYLE_SNAPSHOT.read_text(encoding="utf-8"))
+    acceptance = snapshot.get("acceptance", {})
+    for key in ("style_names_match", "inner_face_only", "menu_reference_hash_pinned",
+                "menu_external_flash_resource_import"):
+        if acceptance.get(key) is not True:
+            errors.append(f"generated-art style snapshot {key} is not true")
+
+
+def check_runtime_contract(errors: list[str], built: dict[str, object]) -> None:
+    evidence = json.loads(EVIDENCE.read_text(encoding="utf-8"))
+    recorded = evidence.get("resource_pack", {})
+    compare_metadata(errors, "evidence.resource_pack", recorded, built)
+    revision = built["revision"]
+    runtime = evidence.get("runtime_evidence", {})
+    if runtime.get("status") != f"REVISION_{revision}_RUNTIME_RECHECK_PENDING":
+        errors.append("runtime evidence must explicitly require this menu revision's recheck")
+    if "pending" not in str(runtime.get("machine_observation", "")).lower():
+        errors.append("runtime evidence must explain that hardware review is pending")
+    menu_contract = evidence.get("menu_contract", {})
+    if menu_contract.get("external_menu_frames") != 14:
+        errors.append("menu contract must record fourteen normal external menu frames")
+    gesture = menu_contract.get("gesture_contract", {})
+    if gesture.get("home_rendering") != "one owner-approved static external home frame per language":
+        errors.append("menu contract must record the one-frame menu-v3 home policy")
+    if gesture.get("home_scroll") != "retired by the six-row menu-v3 home reference":
+        errors.append("menu contract must record that legacy home scrolling is retired")
 
 
 def main() -> int:
     errors: list[str] = []
     manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
-    evidence = json.loads(BILINGUAL_MENU_EVIDENCE.read_text(encoding="utf-8"))
-    touch_evidence = json.loads(TOUCH_WB55_EVIDENCE.read_text(encoding="utf-8"))
-    style_snapshot = json.loads(STYLE_SNAPSHOT.read_text(encoding="utf-8"))
-    resource_pack = evidence.get("resource_pack", {})
-    current_revision_text = f"revision {resource_pack.get('revision')}"
-    current_crc = str(resource_pack.get("pack_crc32"))
-    clips = {clip["name"]: clip for clip in manifest["clips"]}
-    check_generated_import_covers_manifest(errors, manifest)
-
-    for language in ("en", "zh"):
-        stale_home_frames: list[str] = []
-        pattern = re.compile(rf"menu_home(\d+)_{language}_1_54in\.pbm$")
-        for path in ASSET_DIR.glob(f"menu_home*_{language}_1_54in.pbm"):
-            match = pattern.match(path.name)
-            if match is not None and int(match.group(1)) >= 43:
-                stale_home_frames.append(path.name)
-        if stale_home_frames:
-            errors.append(
-                f"{language} home menu still has stale 85-frame artifacts: "
-                f"{', '.join(sorted(stale_home_frames)[:6])}"
-            )
-        home_name = f"menu.home.{language}"
-        if home_name not in clips or len(clips[home_name]["frames"]) != 43:
-            errors.append(f"manifest {home_name} must contain 43 two-pixel free-scroll frames")
-        header_rasters: list[bytes] = []
-        for selection in range(43):
-            suffix = "" if selection == 0 else str(selection)
-            path = ASSET_DIR / f"menu_home{suffix}_{language}_1_54in.pbm"
-            if not path.exists():
-                errors.append(f"missing {path.relative_to(ROOT)}")
-                continue
-            data = path.read_bytes()
-            if not data.startswith(b"P4\n200 200\n") or len(data) != 5011:
-                errors.append(f"invalid 200x200 P4 asset {path.name}")
-                continue
-            with Image.open(path) as image:
-                header_rasters.append(image.crop((0, 0, 200, 38)).tobytes())
-                gutter = image.crop((0, 32, 200, 38)).tobytes()
-                if any(byte != 0xFF for byte in gutter):
-                    errors.append(f"{path.name} must preserve the white fixed-header gutter")
-        if len(header_rasters) == 43 and len(set(header_rasters)) != 1:
-            errors.append(f"{language} home menu must keep its 38px fixed header across scrolling frames")
-        for view in ("record", "status", "phone", "device", "preferences", "about"):
-            name = f"menu.{view}.{language}"
-            path = ASSET_DIR / f"menu_{view}_{language}_1_54in.pbm"
-            if name not in clips:
-                errors.append(f"manifest missing {name}")
-            if not path.exists():
-                errors.append(f"missing {path.relative_to(ROOT)}")
-                continue
-            data = path.read_bytes()
-            if not data.startswith(b"P4\n200 200\n") or len(data) != 5011:
-                errors.append(f"invalid 200x200 P4 asset {path.name}")
-            raster = data[11:]
-            if not raster or all(byte == 0x00 for byte in raster) or all(byte == 0xFF for byte in raster):
-                errors.append(f"blank menu asset {path.name}")
-            with Image.open(path) as image:
-                badge_top = DETAIL_BADGE_TOP_Y[view]
-                outline_guard = (82, badge_top, 120, badge_top + 12)
-                inner_face_zone = (82, badge_top + 13, 120, badge_top + 36)
-                if has_black(image, outline_guard):
-                    errors.append(
-                        f"{path.name} draws cat-outline pixels in the shell-owned badge guard zone"
-                    )
-                if not has_black(image, inner_face_zone):
-                    errors.append(
-                        f"{path.name} lost its inner-face mood mark"
-                    )
-
-        icon_rasters: list[bytes] = []
-        for item in range(6):
-            frame = min(42, round(item * HOME_ITEM_STEP / 2))
-            offset = min(frame * 2, 84)
-            suffix = "" if frame == 0 else str(frame)
-            path = ASSET_DIR / f"menu_home{suffix}_{language}_1_54in.pbm"
-            if not path.exists():
-                continue
-            icon_y = 38 + HOME_PET_PANEL_HEIGHT + item * HOME_ITEM_STEP - offset + 5
-            with Image.open(path) as image:
-                icon_rasters.append(image.crop((17, icon_y, 48, icon_y + 31)).tobytes())
-        if len(icon_rasters) == 6 and len(set(icon_rasters)) != 6:
-            errors.append(f"{language} home menu must use six distinct icons")
-
-    menu_header = (ROOT / "app/companion_pendant/epaper/screen_menu.h").read_text(encoding="utf-8")
-    menu_source = (ROOT / "app/companion_pendant/epaper/screen_menu.c").read_text(encoding="utf-8")
-    panel = (ROOT / "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c").read_text(encoding="utf-8")
-    app = (ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c").read_text(encoding="utf-8")
-    main_source = (ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/main.c").read_text(encoding="utf-8")
-    makefile = (ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile").read_text(encoding="utf-8")
-    flash_script = (ROOT / "tools/flash_nucleo_bringup.ps1").read_text(encoding="utf-8")
-    plan = (ROOT / "docs/companion_screen_project_plan.md").read_text(encoding="utf-8")
-    readme = (ROOT / "app/companion_pendant/epaper/README.md").read_text(encoding="utf-8")
-    bringup_readme = (ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/README.md").read_text(encoding="utf-8")
-    memory_policy = (ROOT / "docs/companion_resource_memory_policy.md").read_text(encoding="utf-8")
-    expression_doc = (ROOT / "docs/companion_screen_expression_system.md").read_text(encoding="utf-8")
-    style_snapshot_md = STYLE_SNAPSHOT_MD.read_text(encoding="utf-8")
-    if manifest.get("revision", 0) < 32:
-        errors.append("manifest must be at least revision 32 for the product menu")
-    recorded_pack = evidence.get("resource_pack", {})
-    runtime_evidence = evidence.get("runtime_evidence", {})
-    if isinstance(runtime_evidence, dict):
-        check_runtime_evidence(errors, runtime_evidence)
-    else:
-        errors.append("runtime_evidence must be an object")
+    check_menu_import(errors, manifest)
+    check_source_contract(errors)
     try:
-        compare_pack_metadata(errors, "generated CEMP", recorded_pack, metadata_from_pack_builder())
+        built = metadata_from_builder()
     except Exception as exc:
-        errors.append(f"failed to build CEMP metadata from manifest: {exc}")
-    if CEMP_BUILD_ARTIFACT.exists():
-        try:
-            cemp = read_cemp_metadata(CEMP_BUILD_ARTIFACT)
-        except ValueError as exc:
-            errors.append(str(exc))
-        else:
-            compare_pack_metadata(errors, "built CEMP artifact", recorded_pack, cemp)
-    required = {
-        "menu_generator": (
-            (ROOT / "tools/generate_screen_menu_assets.py").read_text(encoding="utf-8"),
-            "MENU_STYLE",
-            "genref_sheet_12_inner_faces_v5",
-            '"inner_face_only": True',
-            '"detail_badge_x": 84',
-            "header_pet_chip",
-            'MENU_STYLE["home_card"]',
-            'MENU_STYLE["home_key_spark"]',
-            'MENU_STYLE["detail_badge_x"]',
-            "Only inner face marks are drawn",
-        ),
-        "screen_menu.h": (
-            menu_header,
-            "COMP_SCREEN_MENU_LANGUAGE_ZH",
-            "COMP_SCREEN_MENU_VIEW_ABOUT",
-            "COMP_SCREEN_MENU_VIEW_PHONE",
-            "COMP_SCREEN_MENU_VIEW_PREFERENCES",
-            "comp_screen_menu_gesture",
-            "COMP_SCREEN_MENU_SCROLL_QUANTUM_PX 2u",
-            "COMP_SCREEN_MENU_SCROLL_MAX_PX 84u",
-            "COMP_SCREEN_MENU_HOME_CONTENT_TOP_PX 38u",
-        ),
-        "screen_menu.c": (
-            menu_source,
-            '"menu.%s.%s"',
-            "COMP_SCREEN_MENU_ACTION_LANGUAGE_CHANGED",
-            "COMP_TOUCH_GESTURE_SWIPE_RIGHT",
-            "COMP_SCREEN_MENU_BACK_EDGE_MAX_X",
-            "comp_screen_menu_drag",
-            "comp_screen_menu_drag_to",
-            "COMP_SCREEN_MENU_SCROLL_QUANTUM_PX",
-            "MENU_HOME_CONTENT_TOP",
-            "COMP_SCREEN_MENU_SCROLL_FRAME_COUNT",
-            "framebuffer_fingerprint",
-            "COMP_SCREEN_MENU_FLAG_PRESS_ACTIVE",
-            "COMP_TOUCH_GESTURE_LONG_PRESS",
-            "COMP_TOUCH_GESTURE_SWIPE_UP",
-            "COMP_TOUCH_GESTURE_SWIPE_DOWN",
-            '"phone", "device",',
-            '"preferences", "about",',
-            "draw_header_pet_chip",
-            "draw_corner_spark",
-            "physical shell owns the cat outline",
-            "three-second hold anywhere",
-        ),
-        "panel": (panel, "comp_epaper_expression_asset_source_copy_clip", "source=external_flash"),
-        "app": (
-            app,
-            "COMPANION_SCREEN_ASSET_CLIP_CAPACITY 48u",
-            "COMPANION_SCREEN_ASSET_FRAME_CAPACITY 256u",
-            "COMPANION_SCREEN_ASSET_STRING_CAPACITY 1024u",
-            "Companion_Screen_ShowDaily",
-            "Companion_Screen_DailyTap",
-            "Companion_Screen_DailyTapAt",
-            "pet_attention_selftest",
-            "core_selftest menu=%s gesture=%s",
-        ),
-        "main": (
-            main_source,
-            "menu_drag anchor_y=",
-            "s_menu_vertical_drag_anchor_y",
-            "comp_screen_menu_drag_to",
-            "comp_touch_gesture_is_vertical_drag",
-            "daily_hold_tease",
-            "any_long_press",
-        ),
-        "makefile": (makefile, "menu_*_1_54in.pbm",),
-        "flash_script": (
-            flash_script,
-            "[switch]$ScreenAssetProvision",
-            "[switch]$CheckOnly",
-            "Companion_Nucleo_WB55RG_ScreenAssetProvision.hex",
-            "Use either -ScreenAssetProvision or -ImagePath, not both.",
-        ),
-        "build_evidence": (
-            json.dumps(evidence.get("build_evidence", {}), ensure_ascii=False),
-            "tools/flash_nucleo_bringup.ps1 -ScreenAssetProvision -CheckOnly",
-            "tools/flash_nucleo_bringup.ps1 -ScreenAssetProvision",
-            "tools/flash_nucleo_bringup.ps1 -CheckOnly",
-            "tools/flash_nucleo_bringup.ps1",
-        ),
-        "bringup_readme": (
-            bringup_readme,
-            "pwsh -NoProfile -File .\\tools\\flash_nucleo_bringup.ps1 -ScreenAssetProvision -CheckOnly",
-            "pwsh -NoProfile -File .\\tools\\flash_nucleo_bringup.ps1 -ScreenAssetProvision",
-            "pwsh -NoProfile -File .\\tools\\flash_nucleo_bringup.ps1 -CheckOnly",
-        ),
-        "memory_policy": (
-            memory_policy,
-            "tools/flash_nucleo_bringup.ps1 -ScreenAssetProvision",
-            "Companion_Nucleo_WB55RG_ScreenAssetProvision.hex",
-            "Companion_Nucleo_WB55RG_Bringup.hex",
-        ),
-        "project_plan": (
-            plan,
-            current_revision_text,
-            "录音、状态、手机、设备、偏好、关于",
-            "650 ms",
-            "3 s",
-            "任意位置近似静止长按",
-            "43 张 2 px",
-        ),
-        "epaper_readme": (
-            readme,
-            current_revision_text,
-            "159 timeline frames",
-            "43 external",
-            "six product",
-            "3 s hold",
-            "physical shell owns the",
-            f"CRC32 `{current_crc}`",
-        ),
-        "expression_system": (
-            expression_doc + "\n" + json.dumps(style_snapshot, ensure_ascii=False) + "\n" + style_snapshot_md,
-            current_revision_text,
-            "650 ms pet tease",
-            "3 s long press",
-            "43 external two-pixel",
-            "press-cue partial refresh",
-            "target-arrival partial refresh",
-            "genref_sheet_12_inner_faces_v5",
-            "pet_visual_style.h",
-            "MENU_STYLE",
-            "companion.screen.generated_art_style_contract.v1",
-            "style_names_match",
-            "quick_adjustment_workflow_recorded",
-        ),
-    }
-    for label, values in required.items():
-        content, *tokens = values
-        for token in tokens:
-            if token not in content:
-                errors.append(f"{label} missing {token}")
-
-    stale_rules = (
-        ("project_plan", plan, "主页目录依次为\r\n记录、状态、表情、设置、同步、存储、设备、关于"),
-        ("project_plan", plan, "只有从右侧边缘开始的左划进入目录"),
-        ("project_plan", plan, "保留“右侧边缘向左”进入菜单"),
-        ("project_plan", plan, "只有屏幕中央近似静止长按才进入目录"),
-        ("project_plan", plan, "偏离中央或明显移动不得进入菜单"),
-        ("project_plan", plan, "中央长按入口"),
-        ("project_plan", plan, "屏幕中央近似\r\n静止 3 s 长按"),
-        ("project_plan", plan, "屏幕中央近似\n静止 3 s 长按"),
-        ("touch_fixture", json.dumps(touch_evidence, ensure_ascii=False), "right-edge swipe_left enters the settings drawer"),
-        ("touch_fixture", json.dumps(touch_evidence, ensure_ascii=False), "only the completed centered long press can preempt a pet interaction"),
-        ("touch_fixture", json.dumps(touch_evidence, ensure_ascii=False), "centered_menu_long_press_ms"),
-        ("project_plan", plan, "主菜单八项分别使用"),
-        ("project_plan", plan, "每种语言 85 external"),
-        ("epaper_readme", readme, "85 external two-pixel"),
-        ("epaper_readme", readme, "eight first-level menu items"),
-        ("epaper_readme", readme, "revision 22 pack expands"),
-        ("expression_system", expression_doc, "A swipe left on the daily face enters the menu"),
-        ("expression_system", expression_doc, "from 0 through 167"),
-        ("menu_generator", required["menu_generator"][0], "small face gives each practical page"),
-        ("screen_menu.c", menu_source, "x + 8, y + 2, x + 15, y + 9"),
-        ("screen_menu.c", menu_source, "x + 31, y + 2"),
-    )
-    for label, content, token in stale_rules:
-        if token in content:
-            errors.append(f"{label} still contains stale menu rule: {token}")
-
+        errors.append(f"could not build current CEMP: {exc}")
+        built = None
+    if built is not None:
+        check_runtime_contract(errors, built)
+        if CEMP_BUILD_ARTIFACT.exists():
+            try:
+                compare_metadata(errors, "built CEMP artifact", built,
+                                 metadata_from_bytes(CEMP_BUILD_ARTIFACT.read_bytes()))
+            except Exception as exc:
+                errors.append(f"could not read built CEMP artifact: {exc}")
+    source = (ROOT / "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c").read_text(encoding="utf-8")
+    header = (ROOT / "app/companion_pendant/epaper/screen_menu.h").read_text(encoding="utf-8")
+    menu = (ROOT / "app/companion_pendant/epaper/screen_menu.c").read_text(encoding="utf-8")
+    for token in ("source=external_flash", "menu_asset_name", "0u,\n                   s_frame"):
+        if token not in source:
+            errors.append(f"panel target missing menu-v3 external resource anchor {token!r}")
+    for token in ("COMP_SCREEN_MENU_VISIBLE_ITEMS 6u", "COMP_SCREEN_MENU_SCROLL_FRAME_COUNT 1u"):
+        if token not in header:
+            errors.append(f"screen menu header missing {token}")
+    for token in ("comp_screen_menu_v2_self_test", "comp_screen_menu_self_test", "MENU_HOME_CONTENT_TOP",
+                  "COMP_SCREEN_MENU_SCROLL_MAX_PX", "COMP_SCREEN_MENU_FLAG_PRESS_ACTIVE"):
+        if token not in menu:
+            errors.append(f"screen menu source missing migration guard {token}")
     if errors:
         for error in errors:
             print(f"ERROR: {error}")
         return 1
-    print("PASS: product-focused Companion menu assets provide 43 external two-pixel positions per language.")
+    print("PASS: menu-v3 assets are deterministic owner-approved external-Flash resources.")
     return 0
 
 

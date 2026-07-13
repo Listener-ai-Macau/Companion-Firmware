@@ -86,7 +86,8 @@ def build_health() -> dict[str, Any]:
     common_markers = [
         "mount=ok",
         f"revision={proven_revision}",
-        f"clips={resource.get('clips')} frames={resource.get('frames')}",
+        f"clips={proven.get('clips', resource.get('clips'))} "
+        f"frames={proven.get('frames', resource.get('frames'))}",
         "expression_renderer=external_pack",
         "source=external_flash",
         "pet_behavior_selftest=pass failure_code=0",

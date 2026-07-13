@@ -67,7 +67,7 @@
   },
   "log_verifier_contract": {
     "expected_markers": {
-      "clips=33 frames=159": true,
+      "clips=33 frames=75": true,
       "coherent_generation=1": true,
       "complete=1": true,
       "expression_renderer=external_pack": true,
@@ -75,9 +75,9 @@
       "last_stale_discarded=": true,
       "mount=ok": true,
       "pet_behavior_selftest=pass failure_code=0": true,
-      "queue_generation revision=52": true,
+      "queue_generation revision=53": true,
       "refresh mode=full": true,
-      "revision=52": true,
+      "revision=53": true,
       "source=external_flash": true,
       "touch-health] detected=1 identity=1 addr=0x38": true
     },
@@ -118,7 +118,7 @@
     },
     "capture_steps": {
       "capture_normal": {
-        "command": "pwsh -NoProfile -File .\\tools\\capture_nucleo_serial.ps1 -Execute -WorkflowLockHeld -Seconds 25 -ResetAfterOpen -OutDir C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-devboard-oai1\\.cache\\validation\\rev52-runtime-current\\normal",
+        "command": "pwsh -NoProfile -File .\\tools\\capture_nucleo_serial.ps1 -Execute -WorkflowLockHeld -Seconds 25 -ResetAfterOpen -OutDir C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-devboard-oai1\\.cache\\validation\\rev53-runtime-current\\normal",
         "execute": true,
         "out_dir": true,
         "reset_after_open": true,
@@ -127,7 +127,7 @@
         "workflow_lock_ack": true
       },
       "capture_provision": {
-        "command": "pwsh -NoProfile -File .\\tools\\capture_nucleo_serial.ps1 -Execute -WorkflowLockHeld -Seconds 25 -ResetAfterOpen -OutDir C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-devboard-oai1\\.cache\\validation\\rev52-runtime-current\\provision",
+        "command": "pwsh -NoProfile -File .\\tools\\capture_nucleo_serial.ps1 -Execute -WorkflowLockHeld -Seconds 25 -ResetAfterOpen -OutDir C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-devboard-oai1\\.cache\\validation\\rev53-runtime-current\\provision",
         "execute": true,
         "out_dir": true,
         "reset_after_open": true,
@@ -138,16 +138,16 @@
     },
     "run_report": {
       "output": {
-        "normal_dir": ".cache/validation/rev52-runtime-current/normal",
-        "provision_dir": ".cache/validation/rev52-runtime-current/provision",
-        "root": ".cache/validation/rev52-runtime-current",
-        "run_report": ".cache/validation/rev52-runtime-current/runtime-recheck-run.json"
+        "normal_dir": ".cache/validation/rev53-runtime-current/normal",
+        "provision_dir": ".cache/validation/rev53-runtime-current/provision",
+        "root": ".cache/validation/rev53-runtime-current",
+        "run_report": ".cache/validation/rev53-runtime-current/runtime-recheck-run.json"
       },
       "resource": {
-        "pack_crc32": "0xDEFC096E",
-        "revision": 52,
-        "runtime_status": "REVISION_52_RUNTIME_RECHECK_PENDING",
-        "total_bytes": 287732
+        "pack_crc32": "0x2332E300",
+        "revision": 53,
+        "runtime_status": "REVISION_53_RUNTIME_RECHECK_PENDING",
+        "total_bytes": 49901
       },
       "results_count": 0,
       "schema": "companion.wb55_screen_runtime_recheck_run.v1",
@@ -165,11 +165,11 @@
   "source_files": {
     "capture_script": "tools/capture_nucleo_serial.ps1",
     "runtime_log_verifier": "tools/verify_wb55_screen_runtime_recheck_logs.py",
-    "runtime_run_report": ".cache/validation/rev52-runtime-current/runtime-recheck-run.json",
+    "runtime_run_report": ".cache/validation/rev53-runtime-current/runtime-recheck-run.json",
     "runtime_runner": "tools/run_wb55_screen_runtime_recheck.ps1"
   },
   "status": "PASS_STATIC_SERIAL_CAPTURE_PREFLIGHT",
-  "target": "NUCLEO-WB55RG rev52 runtime recheck serial capture",
+  "target": "NUCLEO-WB55RG rev53 runtime recheck serial capture",
   "validation_commands": [
     "python .\\tools\\verify_wb55_runtime_serial_capture_preflight.py",
     "pwsh -NoProfile -File .\\tools\\capture_nucleo_serial.ps1 -SelfTestEmptyCapture -OutDir .\\.cache\\validation\\nucleo-serial-empty-selftest",

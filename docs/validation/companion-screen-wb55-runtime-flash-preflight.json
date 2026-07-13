@@ -26,11 +26,11 @@
     "stderr": "",
     "stdout": "CHECK: mode=normal\nCHECK: image=C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-devboard-oai1\\cubeide\\Companion_Nucleo_WB55RG_Bringup\\build\\Companion_Nucleo_WB55RG_Bringup.hex\nCHECK: programmer=C:\\ST\\STM32CubeIDE_2.1.1\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltools.cubeprogrammer.win32_2.2.400.202601091506\\tools\\bin\\STM32_Programmer_CLI.exe\nCHECK: flash_timeout_seconds=120"
   },
-  "purpose": "Machine preflight for rev52 runtime recheck flashing; does not flash hardware.",
+  "purpose": "Machine preflight for rev53 runtime recheck flashing; does not flash hardware.",
   "safety_rules": [
     "CheckOnly only validates image/programmer paths.",
     "Real flashing is bounded by FlashTimeoutSeconds and writes stdout/stderr logs.",
-    "Provision image must run before normal image during rev52 runtime recheck.",
+    "Provision image must run before normal image during rev53 runtime recheck.",
     "Normal firmware must be restored after provision."
   ],
   "schema_id": "companion.screen.wb55_runtime_flash_preflight.v1",

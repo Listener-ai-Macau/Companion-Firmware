@@ -157,7 +157,7 @@ def check(errors: list[str]) -> None:
     for token in (
         "Generated Art Style Contract",
         "pet_visual_style.h",
-        "MENU_STYLE",
+        "MENU_V3_STYLE",
         "external flash",
         "physical shell owns the cat outline",
         "companion.screen.generated_art_style_contract.v1",

@@ -1,68 +1,68 @@
 {
   "candidate": {
-    "pack_crc32": "0xDEFC096E",
-    "revision": 52,
-    "runtime_status": "REVISION_52_RUNTIME_PASS_HUMAN_VISUAL_PENDING",
-    "total_bytes": 287732
+    "pack_crc32": "0x2332E300",
+    "revision": 53,
+    "runtime_status": "REVISION_53_RUNTIME_RECHECK_PENDING",
+    "total_bytes": 49901
   },
-  "next_machine_action": "Runtime evidence is already promoted; continue to pre-acceptance health.",
+  "next_machine_action": "Run tools/run_wb55_screen_runtime_recheck.ps1 under the Companion-WB55 workflow lock, then rerun this verifier.",
   "normal": {
-    "bytes_read": 3803,
+    "bytes_read": null,
     "label": "normal",
     "markers": {
-      "clips=33 frames=159": true,
-      "coherent_generation=1": true,
-      "complete=1": true,
-      "expression_renderer=external_pack": true,
-      "frame rotation=180 mirror_x=1": true,
-      "generation_switches=": true,
-      "last_stale_discarded=": true,
-      "mount=ok": true,
-      "pet_behavior_selftest=pass failure_code=0": true,
-      "preview_started name=idle": true,
-      "queue_generation revision=52": true,
-      "refresh mode=full": true,
-      "revision=52": true,
-      "source=external_flash": true,
-      "touch-health] detected=1 identity=1 addr=0x38": true
+      "clips=33 frames=75": false,
+      "coherent_generation=1": false,
+      "complete=1": false,
+      "expression_renderer=external_pack": false,
+      "frame rotation=180 mirror_x=1": false,
+      "generation_switches=": false,
+      "last_stale_discarded=": false,
+      "mount=ok": false,
+      "pet_behavior_selftest=pass failure_code=0": false,
+      "preview_started name=idle": false,
+      "queue_generation revision=53": false,
+      "refresh mode=full": false,
+      "revision=53": false,
+      "source=external_flash": false,
+      "touch-health] detected=1 identity=1 addr=0x38": false
     },
-    "raw_log": ".cache/validation/rev52-runtime-current/normal/nucleo-serial-raw.log",
-    "raw_log_exists": true,
-    "status": "PASS",
-    "summary_json": ".cache/validation/rev52-runtime-current/normal/nucleo-serial-summary.json",
-    "summary_json_exists": true,
-    "summary_status": "PASS"
+    "raw_log": ".cache/validation/rev53-runtime-current/normal/nucleo-serial-raw.log",
+    "raw_log_exists": false,
+    "status": "MISSING_OR_INCOMPLETE",
+    "summary_json": ".cache/validation/rev53-runtime-current/normal/nucleo-serial-summary.json",
+    "summary_json_exists": false,
+    "summary_status": null
   },
-  "promotion_rule": "Only after both logs pass may companion-screen-bilingual-menu-wb55.json be promoted from REVISION_52_RUNTIME_RECHECK_PENDING to a runtime-pass human-visual-pending state.",
+  "promotion_rule": "Only after both logs pass may companion-screen-bilingual-menu-wb55.json be promoted from REVISION_53_RUNTIME_RECHECK_PENDING to a runtime-pass human-visual-pending state.",
   "provision": {
-    "bytes_read": 4820,
+    "bytes_read": null,
     "label": "provision",
     "markers": {
-      "clips=33 frames=159": true,
-      "coherent_generation=1": true,
-      "complete=1": true,
-      "expression_renderer=external_pack": true,
-      "external_store=ready": true,
-      "generation_switches=": true,
-      "last_stale_discarded=": true,
-      "mount=ok": true,
-      "pet_behavior_selftest=pass failure_code=0": true,
-      "preview_started name=idle": true,
-      "queue_generation revision=52": true,
-      "refresh mode=full": true,
-      "revision=52": true,
-      "source=external_flash": true,
-      "touch-health] detected=1 identity=1 addr=0x38": true
+      "clips=33 frames=75": false,
+      "coherent_generation=1": false,
+      "complete=1": false,
+      "expression_renderer=external_pack": false,
+      "external_store=ready": false,
+      "generation_switches=": false,
+      "last_stale_discarded=": false,
+      "mount=ok": false,
+      "pet_behavior_selftest=pass failure_code=0": false,
+      "preview_started name=idle": false,
+      "queue_generation revision=53": false,
+      "refresh mode=full": false,
+      "revision=53": false,
+      "source=external_flash": false,
+      "touch-health] detected=1 identity=1 addr=0x38": false
     },
-    "raw_log": ".cache/validation/rev52-runtime-current/provision/nucleo-serial-raw.log",
-    "raw_log_exists": true,
-    "status": "PASS",
-    "summary_json": ".cache/validation/rev52-runtime-current/provision/nucleo-serial-summary.json",
-    "summary_json_exists": true,
-    "summary_status": "PASS"
+    "raw_log": ".cache/validation/rev53-runtime-current/provision/nucleo-serial-raw.log",
+    "raw_log_exists": false,
+    "status": "MISSING_OR_INCOMPLETE",
+    "summary_json": ".cache/validation/rev53-runtime-current/provision/nucleo-serial-summary.json",
+    "summary_json_exists": false,
+    "summary_status": null
   },
   "run_report": {
-    "all_results_pass": true,
+    "all_results_pass": false,
     "exists": true,
     "expected_step_ids": [
       "flash_provision",
@@ -70,29 +70,19 @@
       "flash_normal",
       "capture_normal"
     ],
-    "path": ".cache/validation/rev52-runtime-current/runtime-recheck-run.json",
+    "path": ".cache/validation/rev53-runtime-current/runtime-recheck-run.json",
     "resource": {
-      "pack_crc32": "0xDEFC096E",
-      "revision": 52,
-      "runtime_status": "REVISION_52_RUNTIME_RECHECK_PENDING",
-      "total_bytes": 287732
+      "pack_crc32": "0x2332E300",
+      "revision": 53,
+      "runtime_status": "REVISION_53_RUNTIME_RECHECK_PENDING",
+      "total_bytes": 49901
     },
-    "result_ids": [
-      "flash_provision",
-      "capture_provision",
-      "flash_normal",
-      "capture_normal"
-    ],
-    "result_statuses": {
-      "capture_normal": "PASS",
-      "capture_provision": "PASS",
-      "flash_normal": "PASS",
-      "flash_provision": "PASS"
-    },
-    "results_have_timestamps": true,
-    "results_match_expected_order": true,
+    "result_ids": [],
+    "result_statuses": {},
+    "results_have_timestamps": false,
+    "results_match_expected_order": false,
     "schema": "companion.wb55_screen_runtime_recheck_run.v1",
-    "status": "PASS",
+    "status": "DRY-RUN",
     "step_ids": [
       "flash_provision",
       "capture_provision",
@@ -101,7 +91,7 @@
     ],
     "steps_match_expected_order": true
   },
-  "run_root": ".cache/validation/rev52-runtime-current",
+  "run_root": ".cache/validation/rev53-runtime-current",
   "runner": {
     "dry_run_returncode": 0,
     "path": "tools/run_wb55_screen_runtime_recheck.ps1",
@@ -119,6 +109,6 @@
     "status": "PASS"
   },
   "schema_id": "companion.screen.wb55_runtime_recheck_logs.v1",
-  "status": "PASS",
+  "status": "NO_GO_MISSING_RUNTIME_LOGS",
   "target": "NUCLEO-WB55RG + GDEY0154D67-T03 + FT6336U"
 }
