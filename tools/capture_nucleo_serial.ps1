@@ -212,6 +212,16 @@ function Write-Summary {
     Write-Output "Summary: $summaryJson"
 }
 
+function Read-SerialAvailable {
+    param([Parameter(Mandatory = $true)][System.IO.Ports.SerialPort] $SerialPort)
+
+    $text = $SerialPort.ReadExisting()
+    if ($text.Length -le 0) { return 0 }
+    Write-Host -NoNewline $text
+    Add-Content -LiteralPath $rawLog -Value $text -NoNewline
+    return [System.Text.Encoding]::UTF8.GetByteCount($text)
+}
+
 function Invoke-ProgrammerResetWithTimeout {
     param(
         [Parameter(Mandatory = $true)][string] $Programmer,
@@ -358,21 +368,23 @@ try {
 
     if ($PromptOperator) {
         if ($ResetAfterOpen) {
-            Start-Sleep -Seconds 5
+            # Keep the first boot/Stop evidence needed by a focused wake check.
+            $bootDeadline = [DateTime]::UtcNow.AddSeconds(5)
+            while ([DateTime]::UtcNow -lt $bootDeadline) {
+                try {
+                    $bytesRead += Read-SerialAvailable -SerialPort $serial
+                } catch [TimeoutException] {
+                }
+                Start-Sleep -Milliseconds 100
+            }
         }
-        $serial.DiscardInBuffer()
         Show-OperatorPrompt -Title $PromptTitle -Message $operatorPromptText
     }
 
     $deadline = [DateTime]::UtcNow.AddSeconds($Seconds)
     while ([DateTime]::UtcNow -lt $deadline) {
         try {
-            $text = $serial.ReadExisting()
-            if ($text.Length -gt 0) {
-                $bytesRead += [System.Text.Encoding]::UTF8.GetByteCount($text)
-                Write-Host -NoNewline $text
-                Add-Content -LiteralPath $rawLog -Value $text -NoNewline
-            }
+            $bytesRead += Read-SerialAvailable -SerialPort $serial
         } catch [TimeoutException] {
         }
         Start-Sleep -Milliseconds 100

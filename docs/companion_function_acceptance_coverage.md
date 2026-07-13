@@ -38,7 +38,8 @@ operator observation agree.
   I2C recovery or poll fallback must be logged instead of claiming low power.
 - Machine evidence: a reset-bounded `--scope stop-wake` capture containing
   `[power] stop=allowed`, a post-idle `irq>0` and `irq_consumed>0`, valid
-  FT6336 identity, and exactly one boot marker.
+  FT6336 identity, exactly one boot marker, and one `[touch-irq]` line whose
+  consumed count catches up to the observed count.
 - Popup: `2/12` asks the operator to wait for the idle face, touch once, then
   confirm that the face responds without a reset or repeated full flash.
 - State: first focused hardware item in the active session.

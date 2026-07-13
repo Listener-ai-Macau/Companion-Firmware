@@ -1793,6 +1793,7 @@ static void poll_touch_debug(void)
     comp_ft6336_touch_sample_t sample;
     companion_touch_ft6336_stm32wb_result_t result;
     bool was_detected;
+    bool irq_pending;
     uint32_t irq_snapshot;
     uint16_t drained = 0u;
     uint32_t now = HAL_GetTick();
@@ -1816,11 +1817,17 @@ static void poll_touch_debug(void)
     process_touch_screen_maintenance(now);
 
     irq_snapshot = s_touch_irq_count;
-    if (irq_snapshot == s_touch_irq_consumed_count &&
+    irq_pending = irq_snapshot != s_touch_irq_consumed_count;
+    if (!irq_pending &&
         (int32_t)(now - s_touch_next_poll_ms) < 0) {
         return;
     }
     s_touch_irq_consumed_count = irq_snapshot;
+    if (irq_pending) {
+        printf("[touch-irq] observed=%lu consumed=%lu\r\n",
+               (unsigned long)irq_snapshot,
+               (unsigned long)s_touch_irq_consumed_count);
+    }
     s_touch_next_poll_ms = now +
         (s_touch_contact_active ? TOUCH_ACTIVE_POLL_MS : TOUCH_IDLE_POLL_MS);
     was_detected = s_touch.detected;

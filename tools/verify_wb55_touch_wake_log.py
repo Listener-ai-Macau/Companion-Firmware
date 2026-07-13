@@ -31,6 +31,14 @@ def health_samples(log: str) -> list[dict[str, int]]:
     return samples
 
 
+def irq_events(log: str) -> list[dict[str, int]]:
+    events: list[dict[str, int]] = []
+    pattern = re.compile(r"\[touch-irq\].*?\bobserved=(?P<irq>\d+)\b.*?\bconsumed=(?P<consumed>\d+)\b")
+    for match in pattern.finditer(log):
+        events.append({"irq": int(match.group("irq")), "irq_consumed": int(match.group("consumed"))})
+    return events
+
+
 def required_check_names(scope: str) -> tuple[str, ...]:
     if scope == "stop-wake":
         return (
@@ -38,6 +46,7 @@ def required_check_names(scope: str) -> tuple[str, ...]:
             "tp_int_wired",
             "ft6336_trigger_mode",
             "health_sample_observed",
+            "irq_event_observed",
             "irq_observed",
             "irq_consumed",
             "irq_counts_ordered",
@@ -60,15 +69,18 @@ def evaluate(log: str, log_path: str, scope: str = "full") -> dict[str, Any]:
     if scope not in SCOPES:
         raise ValueError(f"unsupported scope: {scope}")
     samples = health_samples(log)
-    max_irq = max((sample["irq"] for sample in samples), default=0)
-    max_consumed = max((sample["irq_consumed"] for sample in samples), default=0)
-    all_health_ordered = all(sample["irq_consumed"] <= sample["irq"] for sample in samples)
+    events = irq_events(log)
+    irq_observations = [*samples, *events]
+    max_irq = max((sample["irq"] for sample in irq_observations), default=0)
+    max_consumed = max((sample["irq_consumed"] for sample in irq_observations), default=0)
+    all_health_ordered = all(sample["irq_consumed"] <= sample["irq"] for sample in irq_observations)
     double_taps = log.count("[touch-ui] daily_double_tap_recording")
     checks = {
         "lpm_boot_ready": "[power] policy_selftest=pass touch_irq_wake=ready lpm=enabled" in log,
         "tp_int_wired": "irq=PC6 wired=1" in log,
         "ft6336_trigger_mode": "irq_mode=trigger" in log,
         "health_sample_observed": bool(samples),
+        "irq_event_observed": bool(events),
         "irq_observed": max_irq > 0,
         "irq_consumed": max_consumed > 0,
         "irq_counts_ordered": all_health_ordered,
@@ -96,6 +108,7 @@ def evaluate(log: str, log_path: str, scope: str = "full") -> dict[str, Any]:
         "required_checks": list(required_checks),
         "observed": {
             "health_samples": len(samples),
+            "irq_events": len(events),
             "max_irq": max_irq,
             "max_irq_consumed": max_consumed,
             "daily_double_tap_events": double_taps,
@@ -114,6 +127,7 @@ def self_test(scope: str = "full") -> dict[str, Any]:
             "[touch] ft6336 decoder=pass gesture=pass addr=0x38 probe=present probes=1 irq_mode=trigger irq_cfg_errors=0 tuning=applied threshold=0x16 period=12/24 tuning_errors=0 poll_ms=5/8 irq=PC6 wired=1 reset=PC10 wired=0 refresh_poll_ms=5",
             "[power] policy_selftest=pass touch_irq_wake=ready lpm=enabled",
             "[touch-health] detected=1 irq=3 irq_consumed=3 buffered=0 dropped=0",
+            "[touch-irq] observed=3 consumed=3",
             "[touch-ui] daily_double_tap_recording x=100 y=100 state=idle",
             "[record] touch_double_tap action=start source=4 result=0 state=recording",
             "[touch-ui] daily_double_tap_recording x=100 y=100 state=recording",
