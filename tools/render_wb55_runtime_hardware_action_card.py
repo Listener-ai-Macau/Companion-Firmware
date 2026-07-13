@@ -26,6 +26,10 @@ BUILD_MATRIX = ROOT / "docs/validation/companion-screen-wb55-build-matrix.json"
 DEFAULT_JSON = ROOT / "docs/validation/companion-screen-wb55-runtime-hardware-action-card.json"
 DEFAULT_MD = ROOT / "docs/validation/companion-screen-wb55-runtime-hardware-action-card.md"
 SCHEMA_ID = "companion.screen.wb55_runtime_hardware_action_card.v1"
+PENDING_RUNTIME_LOG_STATUSES = {
+    "NO_GO_MISSING_RUNTIME_LOGS",
+    "NO_GO_INCOMPLETE_RUNTIME_MARKERS",
+}
 
 
 def rel(path: pathlib.Path) -> str:
@@ -160,7 +164,7 @@ def build_card() -> dict[str, Any]:
         "expected_runtime_markers": run_report.get("expected_runtime_markers", []),
         "post_run_commands": [
             "python .\\tools\\verify_screen_generation_release_ledger.py",
-            "python .\\tools\\verify_wb55_screen_runtime_recheck_logs.py",
+            "python .\\tools\\verify_wb55_screen_runtime_recheck_logs.py --write",
             "python .\\tools\\promote_wb55_screen_runtime_recheck.py --apply",
             "python .\\tools\\verify_companion_screen_pre_acceptance_health.py",
             "python .\\tools\\verify_companion_screen_goal_audit.py",
@@ -340,13 +344,14 @@ def verify(card: dict[str, Any]) -> list[str]:
         errors.append("generation release ledger must require coherent_generation=1")
     if generation_ledger.get("model_last_stale_discarded") != 3:
         errors.append("generation release ledger must carry stale-discard model")
-    if generation_ledger.get("real_runtime_status") != "NO_GO_MISSING_RUNTIME_LOGS":
-        errors.append("generation release ledger must keep real runtime status NO_GO before hardware logs")
+    if generation_ledger.get("real_runtime_status") not in PENDING_RUNTIME_LOG_STATUSES:
+        errors.append("generation release ledger must keep a non-PASS runtime status before promotion")
     if generation_ledger.get("ui_assets_ota_in_scope") is not True:
         errors.append("generation release ledger must keep ui_assets OTA in scope")
     gates = card.get("current_gates", {})
+    if gates.get("runtime_logs") not in PENDING_RUNTIME_LOG_STATUSES:
+        errors.append("current gate runtime_logs must remain a non-PASS runtime status")
     expected_gates = {
-        "runtime_logs": "NO_GO_MISSING_RUNTIME_LOGS",
         "runtime_promotion": "NO_GO_LOGS_NOT_PASS",
         "pre_acceptance": "NO_GO_RUNTIME_RECHECK_PENDING",
         "human_review": "NO_GO_NOT_STARTED",

@@ -8,7 +8,7 @@
 - build matrix: `PASS`, variants `dry_run_default, screen_asset_provision, ssd1681_real_panel`
 - ScreenAssetProvision size: `{'bss': 192239, 'data': 2433, 'dec': 602988, 'hex': '9336c', 'text': 408316}`
 - SCR-17 ledger: `PENDING_RUNTIME_RECHECK`, first frame `coherent_generation=1`, stale discard model `3`
-- runtime logs gate: `NO_GO_MISSING_RUNTIME_LOGS`
+- runtime logs gate: `NO_GO_INCOMPLETE_RUNTIME_MARKERS`
 - promotion gate: `NO_GO_LOGS_NOT_PASS`
 - pre-acceptance: `NO_GO_RUNTIME_RECHECK_PENDING`
 - human review record: `NO_GO_NOT_STARTED`
@@ -113,7 +113,7 @@ pwsh -NoProfile -File C:\Users\Billy\Desktop\Denzic\ai-collaboration-workflow\sc
 python .\tools\verify_screen_generation_release_ledger.py
 ```
 ```powershell
-python .\tools\verify_wb55_screen_runtime_recheck_logs.py
+python .\tools\verify_wb55_screen_runtime_recheck_logs.py --write
 ```
 ```powershell
 python .\tools\promote_wb55_screen_runtime_recheck.py --apply

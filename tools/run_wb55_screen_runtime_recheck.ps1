@@ -203,7 +203,7 @@ $report = [ordered]@{
         "SelfTestRecovery uses stub commands only and must never be treated as hardware evidence.",
         "Provision firmware writes the external CEMP asset pack, then normal firmware must be restored.",
         "This runner does not ask for human visual acceptance; it only collects machine runtime evidence.",
-        "After Execute, run verify_wb55_screen_runtime_recheck_logs.py before promotion.",
+        "After Execute, run verify_wb55_screen_runtime_recheck_logs.py --write before promotion.",
         "Only after the log verifier reports PASS may promote_wb55_screen_runtime_recheck.py --apply update the runtime evidence.",
         "After promotion, rerun verify_companion_screen_pre_acceptance_health.py and verify_companion_screen_goal_audit.py before any human touch/visual acceptance."
         "Before hardware execution, verify_wb55_screen_build_matrix.py must prove dry_run_default, ssd1681_real_panel, and screen_asset_provision builds."

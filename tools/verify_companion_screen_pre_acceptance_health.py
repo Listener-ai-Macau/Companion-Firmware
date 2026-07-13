@@ -327,7 +327,7 @@ def check_health(health: dict[str, Any], errors: list[str]) -> None:
     if action_card.get("step_count") != 4:
         errors.append("runtime hardware action card must keep four machine steps")
     for command in (
-        "python .\\tools\\verify_wb55_screen_runtime_recheck_logs.py",
+        "python .\\tools\\verify_wb55_screen_runtime_recheck_logs.py --write",
         "python .\\tools\\promote_wb55_screen_runtime_recheck.py --apply",
         "python .\\tools\\verify_companion_screen_pre_acceptance_health.py",
         "python .\\tools\\verify_companion_screen_goal_audit.py",

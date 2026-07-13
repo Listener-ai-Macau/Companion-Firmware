@@ -28,7 +28,7 @@
   "current_gates": {
     "human_review": "NO_GO_NOT_STARTED",
     "pre_acceptance": "NO_GO_RUNTIME_RECHECK_PENDING",
-    "runtime_logs": "NO_GO_MISSING_RUNTIME_LOGS",
+    "runtime_logs": "NO_GO_INCOMPLETE_RUNTIME_MARKERS",
     "runtime_promotion": "NO_GO_LOGS_NOT_PASS"
   },
   "do_not_do": [
@@ -110,7 +110,7 @@
   "human_acceptance_start_rule": "只有 rev52 provision/normal runtime logs 验证 PASS、promotion gate APPLIED、pre-acceptance health PASS 后，操作者明确说“开始验收”，才进入触摸/视觉人工验收。",
   "post_run_commands": [
     "python .\\tools\\verify_screen_generation_release_ledger.py",
-    "python .\\tools\\verify_wb55_screen_runtime_recheck_logs.py",
+    "python .\\tools\\verify_wb55_screen_runtime_recheck_logs.py --write",
     "python .\\tools\\promote_wb55_screen_runtime_recheck.py --apply",
     "python .\\tools\\verify_companion_screen_pre_acceptance_health.py",
     "python .\\tools\\verify_companion_screen_goal_audit.py"
