@@ -27,7 +27,8 @@ operator observation agree.
   and pre-acceptance health all PASS.
 - Popup: `1/12` asks the operator to confirm one stable, correctly oriented
   generated inner-face frame with no old resource mixed in.
-- State: machine recheck must be rerun after the boot health diagnostic fix.
+- State: rev52 machine evidence is PASS; the visual observation remains an
+  independent focused item and is not inferred from the serial result.
 
 ### ACPT-02: TP_INT Stop Wake
 
@@ -35,8 +36,9 @@ operator observation agree.
   application, increments and consumes the IRQ, and produces a touch response.
 - Failure/recovery: an absent, duplicate, or unconsumed IRQ remains NO_GO;
   I2C recovery or poll fallback must be logged instead of claiming low power.
-- Machine evidence: `[power] stop=allowed`, a post-idle `irq>0` and
-  `irq_consumed>0`, valid FT6336 identity, and a bounded serial capture.
+- Machine evidence: a reset-bounded `--scope stop-wake` capture containing
+  `[power] stop=allowed`, a post-idle `irq>0` and `irq_consumed>0`, valid
+  FT6336 identity, and exactly one boot marker.
 - Popup: `2/12` asks the operator to wait for the idle face, touch once, then
   confirm that the face responds without a reset or repeated full flash.
 - State: first focused hardware item in the active session.
@@ -49,8 +51,8 @@ operator observation agree.
 - Failure/recovery: rejected starts, write failures, or an interrupted stop
   must expose their real error/recovery surface and leave the next recording
   attempt usable.
-- Machine evidence: two double-tap events, recording start/stop, and
-  `user_store result=1` in the same bounded log.
+- Machine evidence: a separate `--scope double-tap-recording` capture with
+  two double-tap events, recording start/stop, and `user_store result=1`.
 - Popup: `3/12` asks the operator to double tap twice and confirm start face,
   active face, stop/save feedback, and no accidental menu entry.
 - State: current recording art is reviewed here; dedicated generated wake,
@@ -161,4 +163,3 @@ operator observation agree.
 - Popup: `12/12` asks the operator to repeat the smallest affected WB55 check
   on the selected WBA board.
 - State: deferred until board and CubeWBA project selection.
-
