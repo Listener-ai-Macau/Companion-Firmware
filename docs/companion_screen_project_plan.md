@@ -719,13 +719,16 @@ owner 再次在运行中的 WB55 板上确认：当前仍显示已退休的六�
 `menu_right_swipe_exit`，并只执行一次 menu-to-daily 的 `0xF7` 清理边界。
 
 实现必须先让已记录的 v4 生成稿完成接受、再导入对应中英文 CEMP 主页资源；禁止为了赶进度在
-C 代码临时绘制四项菜单。随后才重构 `screen_menu` 的 page index、点击命中、页面指示器和全局
-right-swipe exit，运行 normal/provision 资源证据和 focused real-panel retry。该修复不改日常页的
+C 代码临时绘制四项菜单。page index、点击命中和页面指示器必须等视觉基线批准后才开始。全局
+right-swipe exit 是独立的非视觉修复：它已抽成 HAL-free menu action，由目标层完成一次 clean
+menu-to-daily 过渡，不等待候选图导入，但不能以此声称四项主页已完成。该修复不改日常页的
 四方向宠物互动或双击录音语义。
 
-owner 已授权在该修复有机器证据后立即启动 Listener 风格的统一中文弹窗验收。第一个 popup 只验
-四项分页和右滑退出，记录所用固件/资源 revision、串口重置边界、刷新计数和 operator result/note；
-通过后才把这条体验写成防回退契约，并推进双击录音、TP_INT Stop wake、长按入菜单等后续项目。
+owner 已授权在该修复有机器证据后立即启动 Listener 风格的统一中文弹窗验收。视觉四项分页仍为
+`PENDING_OWNER_VISUAL_REVIEW`，不可与手势通过混写；第一个 popup 改为 `1/13` 的任意菜单页
+右滑退出，记录所用固件/资源 revision、串口重置边界、刷新计数和 operator result/note。通过后才把
+这条手势体验写成防回退契约；四项分页在 owner 批准 v4 源图、PBM/CEMP 对照和真实屏幕复核后单独验收，
+再推进 TP_INT Stop wake、双击录音和长按入菜单等后续项目。
 不能因为用户已说“开始验收”就跳过当前已报告问题的 AI 修复和机器验证，也不得弹窗要求重做
 已经记录过的失败观察。
 

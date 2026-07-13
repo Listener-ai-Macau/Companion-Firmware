@@ -8,7 +8,7 @@ operator observation agree.
 ## Session Contract
 
 - Start a live session only after the owner explicitly says `开始验收`.
-- Use exactly one Chinese popup at a time. It must state `N/12`, the target,
+- Use exactly one Chinese popup at a time. It must state `N/13`, the target,
   the single action, the success signal, and what allows the next item.
 - Close and triage the current popup result before opening the next one. A
   non-empty note is an implementation input, not an informal PASS.
@@ -20,7 +20,23 @@ operator observation agree.
 
 ## Coverage Inventory
 
-### ACPT-01: Boot, Panel, And External Resource
+### ACPT-01: Anywhere Right-Swipe Menu Exit
+
+- Normal: after reaching any menu surface, a direction-locked right swipe that
+  begins away from the left edge exits directly to the daily pet screen through
+  one controlled clean boundary.
+- Failure/recovery: a left, vertical, or incomplete stroke must not exit; a
+  rejected swipe leaves the current menu surface intact and usable.
+- Machine evidence: the portable menu action self-test, WB55 build, and a
+  reset-bounded serial capture containing `menu_right_swipe_exit`, the daily
+  idle scene, and exactly one completed menu-to-daily refresh.
+- Popup: `1/13` asks the operator, while on any menu page, to swipe right once
+  from the middle of the display and confirm it returns directly to the daily
+  face without needing an edge start or an intermediate home page.
+- State: machine-ready; this is independent of the still-pending four-up menu
+  art gate.
+
+### ACPT-02: Boot, Panel, And External Resource
 
 - Normal: normal firmware mounts the current CEMP pack from external Flash and
   performs one coherent first full refresh.
@@ -28,12 +44,12 @@ operator observation agree.
   restore normal firmware before any human check.
 - Machine evidence: rev52 provision and normal serial logs, runtime promotion,
   and pre-acceptance health all PASS.
-- Popup: `1/12` asks the operator to confirm one stable, correctly oriented
+- Popup: `2/13` asks the operator to confirm one stable, correctly oriented
   generated inner-face frame with no old resource mixed in.
 - State: rev52 machine evidence is PASS; the visual observation remains an
   independent focused item and is not inferred from the serial result.
 
-### ACPT-02: TP_INT Stop Wake
+### ACPT-03: TP_INT Stop Wake
 
 - Normal: after daily idle queues one static external-Flash `sleepy` pose and
   Stop is allowed, one FT6336 touch on PC6 wakes the application, increments
@@ -47,12 +63,12 @@ operator observation agree.
   stop=allowed`, a post-idle `irq>0` and `irq_consumed>0`, valid FT6336
   identity, exactly one boot marker, and one `[touch-irq]` line whose consumed
   count catches up to the observed count.
-- Popup: `2/12` asks the operator to wait until the closed-eye low-power face
+- Popup: `3/13` asks the operator to wait until the closed-eye low-power face
   settles, touch once, then confirm it wakes into a response without a reset,
   repeated full flash, or periodic sleep-frame flicker.
-- State: first focused hardware item in the active session.
+- State: follows ACPT-01.
 
-### ACPT-03: Double-Tap Recording And Visible State
+### ACPT-04: Double-Tap Recording And Visible State
 
 - Normal: the first valid double tap starts touch-originated recording through
   a generated recording-start pose, then enters a low-frequency whole-inner-face
@@ -63,13 +79,13 @@ operator observation agree.
   attempt usable.
 - Machine evidence: a separate `--scope double-tap-recording` capture with
   two double-tap events, recording start/stop, and `user_store result=1`.
-- Popup: `3/12` asks the operator to double tap twice and confirm generated
+- Popup: `4/13` asks the operator to double tap twice and confirm generated
   start transition, an alive but e-paper-appropriate active loop, dedicated
   stop/save feedback, and no accidental menu entry.
 - State: generated low-power wake, recording start, active, saved, and failed
   poses are COMP-REQ-009 work and must be imported before this item can close.
 
-### ACPT-04: Three-Second Hold Menu Entry
+### ACPT-05: Three-Second Hold Menu Entry
 
 - Normal: a near-still any-position hold gives the short tease response then
   enters the product menu at about three seconds.
@@ -77,11 +93,11 @@ operator observation agree.
   a cancelled hold must leave the daily face usable.
 - Machine evidence: hold gesture, menu transaction, and no stale-generation
   frame in the display queue.
-- Popup: `4/12` asks the operator to hold one location for three seconds and
+- Popup: `5/13` asks the operator to hold one location for three seconds and
   confirm tease, deliberate entry, and the menu entry feedback.
-- State: follows ACPT-02 and ACPT-03.
+- State: follows ACPT-03 and ACPT-04.
 
-### ACPT-05: Daily Pet Tap And Directional Stroke
+### ACPT-06: Daily Pet Tap And Directional Stroke
 
 - Normal: tap plus four stroke directions produce whole-inner-face responses
   while the physical shell remains responsible for the cat outline.
@@ -89,11 +105,11 @@ operator observation agree.
   response is triaged against touch logs and the selected expression clip.
 - Machine evidence: portable gesture and pet-behavior self-tests plus
   directional runtime events.
-- Popup: `5/12` asks the operator to tap and swipe in four directions, then
+- Popup: `6/13` asks the operator to tap and swipe in four directions, then
   record the best and weakest visible response.
 - State: pending focused visual review.
 
-### ACPT-06: Menu Navigation, Language, And Product Surfaces
+### ACPT-07: Menu Navigation, Language, And Product Surfaces
 
 - Normal: drag follows the finger, a row gives its entry cue, back works, and
   Preferences switches the whole product between one Chinese or one English
@@ -101,11 +117,11 @@ operator observation agree.
 - Failure/recovery: mixed language, a blocked action, or a page without its
   declared data/action stays open until fixed or explicitly deferred.
 - Machine evidence: menu asset, presentation, and drag-continuity contracts.
-- Popup: `6/12` asks the operator to drag, open one row, go back, then switch
+- Popup: `7/13` asks the operator to drag, open one row, go back, then switch
   language and inspect both a home and detail page.
 - State: pending focused visual review.
 
-### ACPT-07: Refresh, Afterimage, And Generation Hygiene
+### ACPT-08: Refresh, Afterimage, And Generation Hygiene
 
 - Normal: contact uses coalesced differential updates and one quiet cleanup
   only after release; old and new art never interleave.
@@ -114,11 +130,11 @@ operator observation agree.
   a full refresh is reserved for baseline or recovery.
 - Machine evidence: refresh policy, generation ledger, and runtime coherent
   generation markers.
-- Popup: `7/12` asks the operator to finish one tap and one drag, wait two
+- Popup: `8/13` asks the operator to finish one tap and one drag, wait two
   seconds, then count cleanup flashes and note any residue.
 - State: pending focused visual review.
 
-### ACPT-08: Microphone, Recording Store, And Speaker Feedback
+### ACPT-09: Microphone, Recording Store, And Speaker Feedback
 
 - Normal: microphone capture, external-Flash recording, and the applicable
   recording/speaker response report their true state.
@@ -126,32 +142,32 @@ operator observation agree.
   disable must be observable and recover without corrupting a later capture.
 - Machine evidence: bounded microphone quality, recording FSM, and storage
   logs; physical audio only when the relevant hardware is attached.
-- Popup: `8/12` asks for one short audible input/output check when the audio
+- Popup: `9/13` asks for one short audible input/output check when the audio
   fixture is available.
 - State: hardware/fixture dependent.
 
-### ACPT-09: Phone Link And Device Status
+### ACPT-10: Phone Link And Device Status
 
 - Normal: the real BLE phone link and status pages show live connected,
   disconnected, and applicable transfer states.
 - Failure/recovery: loss, rejection, or reconnect is shown as an honest state,
   not a stale success screen.
 - Machine evidence: GATT and BLE bench logs for the selected host.
-- Popup: `9/12` asks the operator to connect and disconnect once, then inspect
+- Popup: `10/13` asks the operator to connect and disconnect once, then inspect
   the phone and status pages.
 - State: pending Companion BLE bench gate.
 
-### ACPT-10: External Resource OTA And Recovery
+### ACPT-11: External Resource OTA And Recovery
 
 - Normal: a replaceable UI resource update is atomically mounted from external
   Flash without losing firmware or user data.
 - Failure/recovery: interrupted or invalid assets remain inactive and normal
   rescue behavior stays reachable.
 - Machine evidence: Denzic platform OTA component matrix and recovery logs.
-- Popup: `10/12` asks for one post-update visual and data-retention check.
+- Popup: `11/13` asks for one post-update visual and data-retention check.
 - State: deferred until Listener OTA acceptance unfreezes COMP-REQ-007.
 
-### ACPT-11: Standby Current And Battery Product Gate
+### ACPT-12: Standby Current And Battery Product Gate
 
 - Normal: the final product board averages no more than 1 mA for at least
   60 seconds under the declared standby conditions.
@@ -159,11 +175,11 @@ operator observation agree.
   reason to suppress wake or diagnostics.
 - Machine evidence: timestamped current trace and Stop-resume trace on the
   final product board.
-- Popup: `11/12` asks the operator to confirm the declared meter setup and
+- Popup: `12/13` asks the operator to confirm the declared meter setup and
   recorded interval when the product board exists.
 - State: devboard cannot close the final battery/current claim.
 
-### ACPT-12: STM32WBA55/WBA65 Real Parity
+### ACPT-13: STM32WBA55/WBA65 Real Parity
 
 - Normal: the selected WBA board uses the portable panel, touch, resource,
   power, and LSE boundaries with a real panel and touch result.
@@ -171,6 +187,6 @@ operator observation agree.
   logs remains a pre-port status, never WB55 equivalence by inference.
 - Machine evidence: WBA build, panel, touch, BLE sleep, clock, and visual
   artifacts for the selected WBA55 or WBA65 board.
-- Popup: `12/12` asks the operator to repeat the smallest affected WB55 check
+- Popup: `13/13` asks the operator to repeat the smallest affected WB55 check
   on the selected WBA board.
 - State: deferred until board and CubeWBA project selection.

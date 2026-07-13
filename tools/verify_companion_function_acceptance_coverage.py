@@ -8,10 +8,10 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 COVERAGE = ROOT / "docs" / "companion_function_acceptance_coverage.md"
-REQUIRED_ITEMS = tuple(f"ACPT-{number:02d}" for number in range(1, 13))
+REQUIRED_ITEMS = tuple(f"ACPT-{number:02d}" for number in range(1, 14))
 REQUIRED_SHARED_ANCHORS = (
     "exactly one Chinese popup at a time",
-    "N/12",
+    "N/13",
     "normal",
     "Failure/recovery",
     "Machine evidence",
@@ -35,7 +35,7 @@ def main() -> int:
         for error in errors:
             print(f" - {error}")
         return 1
-    print("PASS: Companion function acceptance coverage contains 12 focused items.")
+    print("PASS: Companion function acceptance coverage contains 13 focused items.")
     return 0
 
 
