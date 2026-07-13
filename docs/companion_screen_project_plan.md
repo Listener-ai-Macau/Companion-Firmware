@@ -925,6 +925,11 @@ Cube sequencer 执行，主循环的下一次策略复核不应成为归还 Stop
 四项菜单视觉资源。WB55 reset-bounded trace 必须顺序证明 arm -> Stop -> sleepy -> display complete ->
 Stop；WBA 移植层仅需在各自显示任务完成点触发同一 portable policy recheck。
 
+WB55 normal production image `86a0f01` 已在 2026-07-14 的 reset-bounded capture 中完成该顺序：
+`armed -> stop=allowed -> sleepy -> stop=blocked -> 307 ms differential -> stop=allowed -> completed`。
+证据为 `docs/validation/companion-low-power-idle-stop-return-20260714.md`。这只关闭了回交 Stop
+的机器问题；触控取消、最终产品板电流和 ACPT-01 人工观感仍保持待办。
+
 ## 逐项验收顺序
 
 本项目遵循 AI Workflow 的全产品异步验收规则：未收到操作者明确的“开始验收”前，
