@@ -36,9 +36,15 @@
         "next_prompt_delta": null
       },
       "implementation": {
-        "status": "not_started",
+        "status": "candidate_pbm_staged_not_activated",
         "resource_revision": null,
-        "validation": []
+        "layout": "docs/art/iterations/companion-pet-interaction-v1/storyboard-import-v3.json",
+        "validation": [
+          "python tools/import_generated_expression_storyboard.py",
+          "docs/validation/companion-pet-interaction-v3-storyboard-import.json",
+          "docs/art/iterations/companion-pet-interaction-v1/pet-interaction-v3-pbm-review.png",
+          "source SHA-256 mismatch rejection"
+        ]
       }
     },
     {

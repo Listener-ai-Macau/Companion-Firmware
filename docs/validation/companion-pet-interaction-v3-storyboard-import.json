@@ -1,0 +1,325 @@
+{
+  "candidate_only": true,
+  "cemp_manifest_changed": false,
+  "iteration_id": "pet-interaction-v3-obvious-sleep-recording-2026-07-13",
+  "layout": "docs/art/iterations/companion-pet-interaction-v1/storyboard-import-v3.json",
+  "outputs": [
+    ".cache/validation/generated-expression-storyboard-v3/pbm/candidate_v3_low_power_sleep_1_54in.pbm",
+    ".cache/validation/generated-expression-storyboard-v3/pbm/candidate_v3_low_power_breathe_in_1_54in.pbm",
+    ".cache/validation/generated-expression-storyboard-v3/pbm/candidate_v3_low_power_breathe_out_1_54in.pbm",
+    ".cache/validation/generated-expression-storyboard-v3/pbm/candidate_v3_touch_wake_1_54in.pbm",
+    ".cache/validation/generated-expression-storyboard-v3/pbm/candidate_v3_recording_start_1_54in.pbm",
+    ".cache/validation/generated-expression-storyboard-v3/pbm/candidate_v3_recording_active_a_1_54in.pbm",
+    ".cache/validation/generated-expression-storyboard-v3/pbm/candidate_v3_recording_active_b_1_54in.pbm",
+    ".cache/validation/generated-expression-storyboard-v3/pbm/candidate_v3_recording_active_c_1_54in.pbm",
+    ".cache/validation/generated-expression-storyboard-v3/pbm/candidate_v3_recording_stop_saving_1_54in.pbm",
+    ".cache/validation/generated-expression-storyboard-v3/pbm/candidate_v3_recording_saved_1_54in.pbm",
+    ".cache/validation/generated-expression-storyboard-v3/pbm/candidate_v3_recording_failed_recovery_1_54in.pbm",
+    ".cache/validation/generated-expression-storyboard-v3/pbm/candidate_v3_quiet_idle_recovery_1_54in.pbm"
+  ],
+  "profile": {
+    "asset_suffix": "1_54in",
+    "height": 200,
+    "width": 200
+  },
+  "quality": [
+    {
+      "asset_file": "candidate_v3_low_power_sleep_1_54in.pbm",
+      "checks": {
+        "edge_clear": true,
+        "not_overfilled": true,
+        "visible_ink": true
+      },
+      "edge_ink_pixels": 0,
+      "ink_bbox": [
+        41,
+        18,
+        174,
+        145
+      ],
+      "ink_pixels": 1541,
+      "source_crop_box": [
+        22,
+        138,
+        292,
+        426
+      ],
+      "state_id": "low_power_sleep",
+      "status": "PASS"
+    },
+    {
+      "asset_file": "candidate_v3_low_power_breathe_in_1_54in.pbm",
+      "checks": {
+        "edge_clear": true,
+        "not_overfilled": true,
+        "visible_ink": true
+      },
+      "edge_ink_pixels": 0,
+      "ink_bbox": [
+        35,
+        15,
+        169,
+        147
+      ],
+      "ink_pixels": 1549,
+      "source_crop_box": [
+        335,
+        138,
+        605,
+        426
+      ],
+      "state_id": "low_power_breathe_in",
+      "status": "PASS"
+    },
+    {
+      "asset_file": "candidate_v3_low_power_breathe_out_1_54in.pbm",
+      "checks": {
+        "edge_clear": true,
+        "not_overfilled": true,
+        "visible_ink": true
+      },
+      "edge_ink_pixels": 0,
+      "ink_bbox": [
+        31,
+        15,
+        156,
+        148
+      ],
+      "ink_pixels": 1451,
+      "source_crop_box": [
+        649,
+        138,
+        919,
+        426
+      ],
+      "state_id": "low_power_breathe_out",
+      "status": "PASS"
+    },
+    {
+      "asset_file": "candidate_v3_touch_wake_1_54in.pbm",
+      "checks": {
+        "edge_clear": true,
+        "not_overfilled": true,
+        "visible_ink": true
+      },
+      "edge_ink_pixels": 0,
+      "ink_bbox": [
+        22,
+        25,
+        163,
+        148
+      ],
+      "ink_pixels": 2857,
+      "source_crop_box": [
+        962,
+        138,
+        1232,
+        426
+      ],
+      "state_id": "touch_wake",
+      "status": "PASS"
+    },
+    {
+      "asset_file": "candidate_v3_recording_start_1_54in.pbm",
+      "checks": {
+        "edge_clear": true,
+        "not_overfilled": true,
+        "visible_ink": true
+      },
+      "edge_ink_pixels": 0,
+      "ink_bbox": [
+        46,
+        36,
+        166,
+        146
+      ],
+      "ink_pixels": 2451,
+      "source_crop_box": [
+        22,
+        489,
+        292,
+        777
+      ],
+      "state_id": "recording_start",
+      "status": "PASS"
+    },
+    {
+      "asset_file": "candidate_v3_recording_active_a_1_54in.pbm",
+      "checks": {
+        "edge_clear": true,
+        "not_overfilled": true,
+        "visible_ink": true
+      },
+      "edge_ink_pixels": 0,
+      "ink_bbox": [
+        22,
+        69,
+        177,
+        145
+      ],
+      "ink_pixels": 2615,
+      "source_crop_box": [
+        335,
+        489,
+        605,
+        777
+      ],
+      "state_id": "recording_active_a",
+      "status": "PASS"
+    },
+    {
+      "asset_file": "candidate_v3_recording_active_b_1_54in.pbm",
+      "checks": {
+        "edge_clear": true,
+        "not_overfilled": true,
+        "visible_ink": true
+      },
+      "edge_ink_pixels": 0,
+      "ink_bbox": [
+        22,
+        73,
+        168,
+        147
+      ],
+      "ink_pixels": 1425,
+      "source_crop_box": [
+        649,
+        489,
+        919,
+        777
+      ],
+      "state_id": "recording_active_b",
+      "status": "PASS"
+    },
+    {
+      "asset_file": "candidate_v3_recording_active_c_1_54in.pbm",
+      "checks": {
+        "edge_clear": true,
+        "not_overfilled": true,
+        "visible_ink": true
+      },
+      "edge_ink_pixels": 0,
+      "ink_bbox": [
+        22,
+        69,
+        170,
+        149
+      ],
+      "ink_pixels": 2455,
+      "source_crop_box": [
+        962,
+        489,
+        1232,
+        777
+      ],
+      "state_id": "recording_active_c",
+      "status": "PASS"
+    },
+    {
+      "asset_file": "candidate_v3_recording_stop_saving_1_54in.pbm",
+      "checks": {
+        "edge_clear": true,
+        "not_overfilled": true,
+        "visible_ink": true
+      },
+      "edge_ink_pixels": 0,
+      "ink_bbox": [
+        41,
+        40,
+        163,
+        153
+      ],
+      "ink_pixels": 1300,
+      "source_crop_box": [
+        22,
+        840,
+        292,
+        1129
+      ],
+      "state_id": "recording_stop_saving",
+      "status": "PASS"
+    },
+    {
+      "asset_file": "candidate_v3_recording_saved_1_54in.pbm",
+      "checks": {
+        "edge_clear": true,
+        "not_overfilled": true,
+        "visible_ink": true
+      },
+      "edge_ink_pixels": 0,
+      "ink_bbox": [
+        34,
+        33,
+        172,
+        157
+      ],
+      "ink_pixels": 1656,
+      "source_crop_box": [
+        335,
+        840,
+        605,
+        1129
+      ],
+      "state_id": "recording_saved",
+      "status": "PASS"
+    },
+    {
+      "asset_file": "candidate_v3_recording_failed_recovery_1_54in.pbm",
+      "checks": {
+        "edge_clear": true,
+        "not_overfilled": true,
+        "visible_ink": true
+      },
+      "edge_ink_pixels": 0,
+      "ink_bbox": [
+        32,
+        39,
+        154,
+        157
+      ],
+      "ink_pixels": 1629,
+      "source_crop_box": [
+        649,
+        840,
+        919,
+        1129
+      ],
+      "state_id": "recording_failed_recovery",
+      "status": "PASS"
+    },
+    {
+      "asset_file": "candidate_v3_quiet_idle_recovery_1_54in.pbm",
+      "checks": {
+        "edge_clear": true,
+        "not_overfilled": true,
+        "visible_ink": true
+      },
+      "edge_ink_pixels": 0,
+      "ink_bbox": [
+        25,
+        80,
+        148,
+        150
+      ],
+      "ink_pixels": 2334,
+      "source_crop_box": [
+        962,
+        840,
+        1232,
+        1129
+      ],
+      "state_id": "quiet_idle_recovery",
+      "status": "PASS"
+    }
+  ],
+  "review_preview": "docs/art/iterations/companion-pet-interaction-v1/pet-interaction-v3-pbm-review.png",
+  "review_rule": "Compare every REF/PBM pair with the generated sheet before accepting a CEMP import; do not activate candidate art based only on this machine report.",
+  "schema": "companion.generated_expression_storyboard_import.v1",
+  "source": "docs/art/generated_pet_interaction_recording_sheet_v3.png",
+  "source_sha256": "6e7eed7a17be65bfa564ae1df797cc0e518cc216649136df172bb66496ed5f4c",
+  "source_size": {
+    "height": 1254,
+    "width": 1254
+  },
+  "status": "PASS"
+}

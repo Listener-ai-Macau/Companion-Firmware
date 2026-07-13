@@ -1,0 +1,107 @@
+{
+  "schema": "companion.expression_storyboard_import_layout.v1",
+  "iteration_id": "pet-interaction-v3-obvious-sleep-recording-2026-07-13",
+  "source": "docs/art/generated_pet_interaction_recording_sheet_v3.png",
+  "source_sha256": "6e7eed7a17be65bfa564ae1df797cc0e518cc216649136df172bb66496ed5f4c",
+  "profile": {
+    "width": 200,
+    "height": 200,
+    "asset_suffix": "1_54in",
+    "max_face_width": 174,
+    "max_face_height": 166,
+    "top_inset_px": 15
+  },
+  "grid": {
+    "columns": 4,
+    "rows": 3
+  },
+  "crop": {
+    "width_ratio": 0.215,
+    "height_ratio": 0.230,
+    "row_center_y": [
+      0.225,
+      0.505,
+      0.785
+    ]
+  },
+  "quality": {
+    "threshold": 168,
+    "min_ink_pixels": 400,
+    "max_ink_pixels": 8000,
+    "require_edge_clear": true
+  },
+  "cells": [
+    {
+      "state_id": "low_power_sleep",
+      "row": 0,
+      "column": 0,
+      "asset_file": "candidate_v3_low_power_sleep_1_54in.pbm"
+    },
+    {
+      "state_id": "low_power_breathe_in",
+      "row": 0,
+      "column": 1,
+      "asset_file": "candidate_v3_low_power_breathe_in_1_54in.pbm"
+    },
+    {
+      "state_id": "low_power_breathe_out",
+      "row": 0,
+      "column": 2,
+      "asset_file": "candidate_v3_low_power_breathe_out_1_54in.pbm"
+    },
+    {
+      "state_id": "touch_wake",
+      "row": 0,
+      "column": 3,
+      "asset_file": "candidate_v3_touch_wake_1_54in.pbm"
+    },
+    {
+      "state_id": "recording_start",
+      "row": 1,
+      "column": 0,
+      "asset_file": "candidate_v3_recording_start_1_54in.pbm"
+    },
+    {
+      "state_id": "recording_active_a",
+      "row": 1,
+      "column": 1,
+      "asset_file": "candidate_v3_recording_active_a_1_54in.pbm"
+    },
+    {
+      "state_id": "recording_active_b",
+      "row": 1,
+      "column": 2,
+      "asset_file": "candidate_v3_recording_active_b_1_54in.pbm"
+    },
+    {
+      "state_id": "recording_active_c",
+      "row": 1,
+      "column": 3,
+      "asset_file": "candidate_v3_recording_active_c_1_54in.pbm"
+    },
+    {
+      "state_id": "recording_stop_saving",
+      "row": 2,
+      "column": 0,
+      "asset_file": "candidate_v3_recording_stop_saving_1_54in.pbm"
+    },
+    {
+      "state_id": "recording_saved",
+      "row": 2,
+      "column": 1,
+      "asset_file": "candidate_v3_recording_saved_1_54in.pbm"
+    },
+    {
+      "state_id": "recording_failed_recovery",
+      "row": 2,
+      "column": 2,
+      "asset_file": "candidate_v3_recording_failed_recovery_1_54in.pbm"
+    },
+    {
+      "state_id": "quiet_idle_recovery",
+      "row": 2,
+      "column": 3,
+      "asset_file": "candidate_v3_quiet_idle_recovery_1_54in.pbm"
+    }
+  ]
+}
