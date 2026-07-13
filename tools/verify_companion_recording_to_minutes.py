@@ -11,6 +11,7 @@ import struct
 import subprocess
 import sys
 import wave
+import importlib.util
 from typing import Any
 
 
@@ -26,6 +27,15 @@ MAIN_SOURCE = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Core"
 QSPI_HEADER = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Core" / "Inc" / "comp_qspi_nor.h"
 QSPI_SOURCE = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Core" / "Src" / "comp_qspi_nor.c"
 NORMALIZED_REPO_ROOT = "<repo>"
+
+
+def load_cli_module() -> Any:
+    spec = importlib.util.spec_from_file_location("companion_recording_to_minutes_under_test", CLI)
+    if spec is None or spec.loader is None:
+        raise RuntimeError(f"cannot load {CLI}")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
 
 
 def require(condition: bool, message: str, errors: list[str]) -> None:
@@ -164,9 +174,14 @@ def check_static_contract(errors: list[str]) -> None:
         require(token in qspi_text, f"QSPI NOR driver missing block erase token {token}", errors)
 
     for token in [
+        "companion-type",
+        '"Companion-Type" / "apps" / "windows" / "src-tauri"',
         "listener-type",
         "--submit-embedded-audio-wav-stream",
+        "COMPANION_TYPE_DEBUG_TRANSCRIPT_FILE",
         "LISTENER_TYPE_DEBUG_TRANSCRIPT_FILE",
+        "TYPE_POST_EXIT_TRANSCRIPT_GRACE_S",
+        "type_empty_transcript_seen",
         "one-hour meetings need streaming, compression, or larger storage",
     ]:
         require(token in cli_text, f"recording-to-minutes CLI missing {token}", errors)
@@ -176,9 +191,179 @@ def check_static_contract(errors: list[str]) -> None:
         "1,920,000",
         "115,200,000",
         "companion_recording_to_minutes.py",
+        "--asr-provider companion-type",
+        "Companion Type",
         "Listener-Type",
     ]:
         require(token in docs, f"docs missing recording-to-minutes/capacity token {token}", errors)
+
+
+def check_transcript_parser(errors: list[str]) -> None:
+    module = load_cli_module()
+    final_text = "这次需要确认 V K A E 和 Audio data 没有被重新解释。"
+    log_text = "\n".join(
+        [
+            '[asr] server JSON: {"result":{"text":"这次","utterances":[{"definite":false,"text":"这次"}]}}',
+            "source=backend.capsule event=emit_request state=Recording message=这次",
+            '[asr] server JSON: {"result":{"text":"这次需要确认 VKA1和 Audio data 没有被重新解释","utterances":[{"definite":false,"text":"这次需要确认 VKA1和 Audio data 没有被重新解释"}]}}',
+            f'[asr] server JSON: {{"result":{{"text":"{final_text}","utterances":[{{"definite":true,"text":"{final_text}"}}]}}}}',
+            "source=backend.embedded_ble_session_actor event=asr_final transcript_empty=false",
+            "submit-embedded-audio-streaming-file done: pcm_bytes=180000 missing_packets=0",
+        ]
+    )
+    transcript = module.transcript_from_result_lines(log_text)
+    require(transcript == final_text, f"ASR parser should prefer final transcript, got {transcript!r}", errors)
+
+    final_server_json_log = "\n".join(
+        [
+            '[asr] preview server JSON: {"result":{"text":"这次","utterances":[{"definite":false,"text":"这次"}]}}',
+            f'[asr] final server JSON: {{"result":{{"text":"{final_text}","utterances":[{{"definite":true,"text":"{final_text}"}}]}}}}',
+        ]
+    )
+    transcript = module.transcript_from_result_lines(final_server_json_log)
+    require(transcript == final_text, f"ASR parser should read final server JSON, got {transcript!r}", errors)
+
+    truncated_json_log = "\n".join(
+        [
+            '[asr] server JSON: {"result":{"text":"这次需要","utterances":[{"definite":false,"text":"这次需要"}]}}',
+            '[asr] server JSON: {"result":{"text":"这次需要确认 V K A E 和 Audio data 没有被重新解释。","utterances":[{"definite":true,',
+            f"source=backend.capsule event=emit_request state=Polishing message={final_text}",
+            "submit-embedded-audio-streaming-file done: pcm_bytes=180000 missing_packets=0",
+        ]
+    )
+    transcript = module.transcript_from_result_lines(truncated_json_log)
+    require(transcript == final_text, f"ASR parser should use final message fallback, got {transcript!r}", errors)
+
+    empty_diagnostic_log = "\n".join(
+        [
+            "source=backend.capsule event=emit_request state=Done message=ASR returned empty transcript",
+            "submit-embedded-audio-streaming-file done: pcm_bytes=51520 missing_packets=0",
+        ]
+    )
+    transcript = module.transcript_from_result_lines(empty_diagnostic_log)
+    require(transcript == "", f"ASR empty diagnostic must not become transcript, got {transcript!r}", errors)
+    require(
+        module.type_empty_transcript_seen(empty_diagnostic_log),
+        "ASR empty diagnostic should end Type wait loop",
+        errors,
+    )
+
+    chinese_empty_log = "source=backend.capsule event=emit_request state=Done message=没有识别到语音"
+    transcript = module.transcript_from_result_lines(chinese_empty_log)
+    require(transcript == "", f"Chinese ASR empty diagnostic must not become transcript, got {transcript!r}", errors)
+    require(
+        module.type_empty_transcript_seen(chinese_empty_log),
+        "Chinese ASR empty diagnostic should end Type wait loop",
+        errors,
+    )
+
+    type_busy_log = "source=backend.capsule event=emit_request state=Done message=当前已有听写会话在运行，暂不能提交嵌入式音频"
+    transcript = module.transcript_from_result_lines(type_busy_log)
+    require(transcript == "", f"Type busy diagnostic must not become transcript, got {transcript!r}", errors)
+    transcript = module.prefer_transcript("", "当前已有听写会话在运行，暂不能提交嵌入式音频")
+    require(transcript == "", f"Type busy debug file must not become transcript, got {transcript!r}", errors)
+
+    type_status_log = "Listener BLE 已重连，音频通道已恢复。"
+    transcript = module.prefer_transcript("", type_status_log)
+    require(transcript == "", f"Type audio status must not become transcript, got {transcript!r}", errors)
+
+    type_pairing_status_log = "Type 已完成本机自动配对，正在恢复音频通道..."
+    transcript = module.transcript_from_result_lines(
+        f"source=backend.capsule event=emit_request state=Done message={type_pairing_status_log}"
+    )
+    require(
+        transcript == "",
+        f"Type pairing/audio restore status must not become transcript, got {transcript!r}",
+        errors,
+    )
+    transcript = module.prefer_transcript("", type_pairing_status_log)
+    require(
+        transcript == "",
+        f"Type pairing/audio restore debug file must not become transcript, got {transcript!r}",
+        errors,
+    )
+
+
+def check_type_cli_candidates_prefer_companion_type(errors: list[str]) -> None:
+    module = load_cli_module()
+    candidates = module.type_cli_candidates("companion-type")
+    companion_index = next(
+        (
+            index
+            for index, candidate in enumerate(candidates)
+            if "Companion-Type" in candidate and "apps" in candidate and "windows" in candidate
+        ),
+        -1,
+    )
+    listener_index = next((index for index, candidate in enumerate(candidates) if "Listener-Type" in candidate), -1)
+    require(companion_index >= 0, "Companion-Type apps/windows CLI candidate is missing", errors)
+    require(listener_index >= 0, "Listener-Type compatibility candidate is missing", errors)
+    if companion_index >= 0 and listener_index >= 0:
+        require(
+            companion_index < listener_index,
+            "companion-type ASR must prefer Companion-Type apps/windows before Listener-Type fallback",
+            errors,
+        )
+
+
+def check_type_asr_cli_uses_absolute_paths(errors: list[str]) -> None:
+    module = load_cli_module()
+    bundle_dir = WORKDIR / "type-asr-path-contract"
+    bundle_dir.mkdir(parents=True, exist_ok=True)
+    audio_path = pathlib.Path(".cache") / "validation" / "listener-simulated.wav"
+    captured: dict[str, Any] = {}
+
+    original_type_cli_path = module.type_cli_path
+    original_run_type_process = module.run_type_process
+
+    def fake_run_type_process(
+        command: list[str],
+        env: dict[str, str],
+        timeout_s: float,
+        stdout_path: pathlib.Path,
+        stderr_path: pathlib.Path,
+        debug_transcript: pathlib.Path,
+    ) -> tuple[str, str, dict[str, Any]]:
+        captured["command"] = command
+        captured["env"] = env
+        captured["debug_transcript"] = debug_transcript
+        return "模拟麦克风转写", "process_exited_with_transcript", {"timed_out": False}
+
+    try:
+        module.type_cli_path = lambda requested: "listener-type.exe"
+        module.run_type_process = fake_run_type_process
+        args = type(
+            "Args",
+            (),
+            {
+                "asr_provider": "listener-type",
+                "type_cli": "listener-type",
+                "type_timeout": 1.0,
+                "require_transcript": True,
+            },
+        )()
+        transcript, provider, result = module.run_type_asr(args, audio_path, bundle_dir)
+    finally:
+        module.type_cli_path = original_type_cli_path
+        module.run_type_process = original_run_type_process
+
+    require(transcript == "模拟麦克风转写", f"unexpected fake transcript: {transcript!r}", errors)
+    require(provider == "listener_type", f"unexpected provider: {provider!r}", errors)
+    require(result.get("status") == "PASS", f"unexpected fake Type ASR status: {result.get('status')}", errors)
+
+    command = captured.get("command", [])
+    require(bool(command), "Type ASR command was not captured", errors)
+    if command:
+        require(
+            pathlib.Path(command[-1]).is_absolute(),
+            f"Type ASR audio path must be absolute for single-instance desktop dispatch: {command[-1]!r}",
+            errors,
+        )
+
+    env = captured.get("env", {})
+    for key in ("LISTENER_TYPE_DEBUG_TRANSCRIPT_FILE", "COMPANION_TYPE_DEBUG_TRANSCRIPT_FILE"):
+        value = str(env.get(key, ""))
+        require(pathlib.Path(value).is_absolute(), f"{key} must be absolute, got {value!r}", errors)
 
 
 def main() -> int:
@@ -193,6 +378,9 @@ def main() -> int:
     if report:
         check_report(report, errors)
     check_static_contract(errors)
+    check_transcript_parser(errors)
+    check_type_cli_candidates_prefer_companion_type(errors)
+    check_type_asr_cli_uses_absolute_paths(errors)
 
     fixture = {
         "schema_version": 1,

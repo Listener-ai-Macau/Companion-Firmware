@@ -155,7 +155,7 @@ python .\tools\companion_recording_to_minutes.py --recording-chain .\.cache\vali
 For real hardware, run the source capture under the workflow hardware lock:
 
 ```powershell
-pwsh -NoProfile -File <ai-collaboration-workflow>\scripts\aiw.ps1 with-lock -Resource Companion-WB55,BLE-Companion -Purpose "Companion recording to minutes validation" -Run python .\tools\companion_recording_to_minutes.py --ble-auto --record-seconds 10 --asr-provider listener-type --wake-phrase "你好 companion"
+pwsh -NoProfile -File <ai-collaboration-workflow>\scripts\aiw.ps1 with-lock -Resource 'Companion-WB55,BLE-Companion' -Purpose "Companion recording to minutes validation" -Run python .\tools\companion_recording_to_minutes.py --ble-auto --record-seconds 10 --asr-provider companion-type --wake-phrase "你好 companion"
 ```
 
 `--sw3` runs the physical SW3/B3 button recording chain first, including the
@@ -171,19 +171,45 @@ Output defaults to:
 
 ## ASR Provider Bridge
 
-`tools\companion_recording_to_minutes.py --asr-provider listener-type` calls the
-existing Listener-Type CLI with the embedded-audio replay entrypoint for the
-recording format:
+`tools\companion_recording_to_minutes.py --asr-provider companion-type` calls the
+Companion Type ASR bridge with the embedded-audio replay entrypoint for the
+recording format. During the current bring-up, the bridge may reuse the
+Listener-Type executable and ASR provider as the compatibility backend; that is
+an implementation shortcut, not a Companion product-name contract.
 
-- WAV: `listener-type --submit-embedded-audio-wav-stream <wav>`
-- PCM/raw: `listener-type --submit-embedded-audio-pcm16le-stream <pcm>`
+- WAV: `companion-type --submit-embedded-audio-wav-stream <wav>`
+- PCM/raw: `companion-type --submit-embedded-audio-pcm16le-stream <pcm>`
 
-The wrapper also sets `LISTENER_TYPE_DEBUG_TRANSCRIPT_FILE` so a Type build that
-exports the debug transcript can feed Companion minutes directly. This is a
-bridge only: Companion does not modify Listener-Type, does not make Type UI a
-release dependency, and falls back to `needs_transcription` unless a transcript
-is actually produced. Use `--require-transcript` when a validation run should
-fail instead of producing a pending-transcription package.
+The wrapper passes absolute audio and debug-transcript paths because Type may
+dispatch the command to an already-running installed single-instance app whose
+working directory is not the Companion repository. It also waits for
+`asr_final` or `submit-embedded-audio-streaming-file done` evidence, so a
+streaming partial transcript cannot accidentally become the final minutes
+input.
+
+2026-07-09 simulated microphone validation through Listener-Type:
+
+- `.cache\validation\companion-type-simulated-mic-short-final` PASS through
+  the Companion Type provider spelling, currently backed by the Listener-Type
+  compatibility executable: transcript `你好，小伴录音测试。`.
+- `.cache\validation\listener-simulated-mic-long-to-minutes-final` PASS:
+  transcript `这次需要确认 V K A E 和 Audio data 没有被重新解释。`.
+- `.cache\validation\listener-simulated-mic-short-final` PASS:
+  transcript `你好，小伴录音测试。`, wake phrase `小伴` detected by postprocess.
+
+The wrapper also sets `COMPANION_TYPE_DEBUG_TRANSCRIPT_FILE` and the legacy
+`LISTENER_TYPE_DEBUG_TRANSCRIPT_FILE` so either desktop build can feed Companion
+minutes directly. This is a bridge only: Companion does not modify Listener-Type,
+does not make Listener Type UI a release dependency, and falls back to
+`needs_transcription` unless a transcript is actually produced. Use
+`--require-transcript` when a validation run should fail instead of producing a
+pending-transcription package.
+
+The compatibility spelling remains available for old benches:
+
+```powershell
+python .\tools\companion_recording_to_minutes.py --audio-path .\some.wav --asr-provider listener-type --listener-type-cli <listener-type.exe>
+```
 
 ## Validation
 

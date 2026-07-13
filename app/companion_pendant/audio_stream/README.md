@@ -38,8 +38,9 @@ The STM32WB service layer should follow the official `BLE_p2pServer` split:
    `comp_audio_stream_send_session_audio()`, and
    `comp_audio_stream_send_session_stop()` or terminal error/cancel.
 
-`audio_stream_stm32wb.c` is the STM32_WPAN adapter. It follows the official
-`BLE_p2pServer`/`BLE_Ota` service pattern and owns only the GATT glue:
+`audio_stream_stm32wb.c` is the STM32_WPAN adapter. Like the Denzic OTA product
+adapter, it owns only target GATT glue while portable state remains outside the
+STM32WB layer:
 
 - 128-bit UUID arrays in STM32_WPAN little-endian byte order.
 - `SVCCTL_RegisterSvcHandler()` and `ACI_GATT_ATTRIBUTE_MODIFIED_VSEVT_CODE`

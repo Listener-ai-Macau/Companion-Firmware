@@ -29,11 +29,16 @@ FLASH_TOOL = REPO_ROOT / "tools/flash.ps1"
 A1_A2_TOOL = REPO_ROOT / "tools/verify_companion_type_a1_a2.ps1"
 UUID_TABLE = REPO_ROOT / "docs/ble_uuid_table.json"
 BLE_CONTRACT = REPO_ROOT / "docs/ble_gatt_contract.md"
-TYPE_AUDIO = LISTENER_TYPE_ROOT / "src-tauri/src/embedded_audio.rs"
+TYPE_AUDIO_GENERATED = LISTENER_TYPE_ROOT / "third_party/denzic-platform/audio/host/rust/src/generated.rs"
+TYPE_LIB = LISTENER_TYPE_ROOT / "src-tauri/src/lib.rs"
 TYPE_BLE = LISTENER_TYPE_ROOT / "src-tauri/src/embedded_ble.rs"
-TYPE_COMPANION_SECTION = LISTENER_TYPE_ROOT / "src/pages/settings/CompanionSection.tsx"
+TYPE_IPC = LISTENER_TYPE_ROOT / "src/lib/ipc.ts"
+TYPE_COMMANDS = LISTENER_TYPE_ROOT / "src-tauri/src/commands.rs"
+TYPE_DICTATION = LISTENER_TYPE_ROOT / "src-tauri/src/coordinator/dictation.rs"
+TYPE_DEVICE_SECTION = LISTENER_TYPE_ROOT / "src/pages/settings/DeviceSection.tsx"
 TYPE_SETTINGS_PAGE = LISTENER_TYPE_ROOT / "src/pages/Settings.tsx"
 LISTENER_PROTO = LISTENER_FIRMWARE_ROOT / "protocols/listener_proto/include/listener_audio_proto.h"
+LISTENER_PLATFORM_AUDIO = LISTENER_FIRMWARE_ROOT / "third_party/denzic-platform/audio/embedded/c/include/denzic_audio_v1_generated.h"
 
 SERVICE_UUID = "710af845-6d9f-6583-0c4d-9e5b3bc3091a"
 NOTIFY_UUID = "710af845-6d9f-6583-0c4d-9e5b3bc3091b"
@@ -215,23 +220,18 @@ def check_stm32wb_adapter(header: str, source: str, errors: list[str]) -> None:
             require(actual == uuid_to_stm32_le(uuid), f"STM32WB adapter UUID array {name} is not ST little-endian {uuid}", errors)
 
 
-def check_type_contract(type_audio: str, type_ble: str, errors: list[str]) -> None:
-    require('pub const MAGIC: &[u8; 4] = b"VKA1";' in type_audio, "Type MAGIC is not VKA1", errors)
-    require("pub const HEADER_LEN: usize = 20;" in type_audio, "Type HEADER_LEN is not 20", errors)
-    require("pub const PCM_SAMPLE_RATE_HZ: u32 = 16_000;" in type_audio, "Type sample rate is not 16 kHz", errors)
-    require("pub const PCM_CHANNELS: u16 = 1;" in type_audio, "Type channel count is not mono", errors)
-    require("pub const PCM_SAMPLE_WIDTH_BITS: u16 = 16;" in type_audio, "Type PCM width is not 16 bit", errors)
+def check_type_contract(type_audio_generated: str, type_lib: str, type_ble: str, errors: list[str]) -> None:
+    require("denzic_audio_v1_core as embedded_audio" in type_lib, "Type must re-export the Denzic audio v1 core", errors)
+    require('pub const MAGIC: &[u8; 4] = b"VKA1";' in type_audio_generated, "Type MAGIC is not VKA1", errors)
+    require("pub const HEADER_LEN: usize = 20;" in type_audio_generated, "Type HEADER_LEN is not 20", errors)
+    require("pub const PCM_SAMPLE_RATE_HZ: u32 = 16000;" in type_audio_generated, "Type sample rate is not 16 kHz", errors)
+    require("pub const PCM_CHANNELS: u16 = 1;" in type_audio_generated, "Type channel count is not mono", errors)
+    require("pub const PCM_SAMPLE_WIDTH_BITS: u16 = 16;" in type_audio_generated, "Type PCM width is not 16 bit", errors)
 
     for packet_name, value in PACKET_TYPES.items():
-        rust_name = {
-            "SESSION_START": "SessionStart",
-            "AUDIO_DATA": "AudioData",
-            "SESSION_STOP": "SessionStop",
-            "SESSION_CANCEL": "SessionCancel",
-            "SESSION_ERROR": "SessionError",
-        }[packet_name]
+        rust_name = f"PACKET_TYPE_{packet_name}"
         require(
-            re.search(rf"Self::{rust_name}\s*=>\s*{value},", type_audio) is not None,
+            re.search(rf"pub const {rust_name}: u8 = {value};", type_audio_generated) is not None,
             f"Type packet {rust_name} does not map to {value}",
             errors,
         )
@@ -248,73 +248,81 @@ def check_type_contract(type_audio: str, type_ble: str, errors: list[str]) -> No
     )
 
 
-def check_type_companion_debug_page(companion_section: str, settings_page: str, errors: list[str]) -> None:
+def check_type_host_runtime_contract(
+    type_ipc: str,
+    type_commands: str,
+    type_dictation: str,
+    type_device_section: str,
+    settings_page: str,
+    errors: list[str],
+) -> None:
     for token in (
         "probeEmbeddedAudioBleSubscription",
-        "submitCompanionEmbeddedAudioBleStream",
-        "COMPANION_PROBE_TIMEOUT_MS = 30000",
-        "COMPANION_A1_TIMEOUT_MS = 45000",
-        "COMPANION_A1_ROUNDS = 6",
-        "COMPANION_A2_TIMEOUT_MS = 120000",
-        "runCompanionA1Rounds",
-        "aggregateCompanionEmbeddedAudioResults",
-        "'submit_embedded_audio_ble_stream'",
-        "{ timeoutMs }",
-        "probeEmbeddedAudioBleSubscription(COMPANION_PROBE_TIMEOUT_MS)",
-        "submitCompanionEmbeddedAudioBleStream(COMPANION_A1_TIMEOUT_MS)",
-        "submitCompanionEmbeddedAudioBleStream(COMPANION_A2_TIMEOUT_MS)",
-        "receivedPcmBytes",
-        "receivedPacketCount",
-        "expectedPacketCount",
-        "missingPacketCount",
-        "settings.companion.bleProbe",
-        "settings.companion.a1Smoke",
-        "settings.companion.a2Smoke",
-        "settings.companion.readinessCommand",
-        "tools\\\\verify_companion_bringup_readiness.ps1",
-        "settings.companion.packageCommand",
-        "tools\\\\package_ota_firmware.ps1 -Channel development -BoardTarget NUCLEO-WB55RG",
-        "settings.companion.verifyPackageCommand",
-        "tools\\\\verify_type_companion_package_static.ps1",
-        "settings.companion.flashPackageCommand",
-        "settings.companion.flashPackageCommand",
-        "tools\\\\verify_companion_wired_flash.ps1",
-        "-PackagePath <companion-package.zip>",
-        "import { FirmwareOtaPanel } from './FirmwareOtaPanel';",
-        "COMPANION_FIRMWARE_PANEL_BLE_STATUS",
-        "bleStatus={COMPANION_FIRMWARE_PANEL_BLE_STATUS}",
-        "settings.companion.samePackageLabel",
-        "settings.companion.samePackageValue",
-        "stm32wb_st_ble_ota",
-        "ST-LINK / SWD",
-        "settings.companion.a1Pending",
-        "settings.companion.a2Pending",
-        "Companion VKA1 notify",
-        "A1 {{rounds}} 轮完成",
-        "VKA1 会话完成",
+        "'probe_embedded_audio_ble_subscription'",
+        "submitEmbeddedAudioBleOnce",
+        "'submit_embedded_audio_ble_once'",
     ):
-        require(token in companion_section, f"Type Companion debug page missing {token}", errors)
+        require(token in type_ipc, f"Type IPC missing embedded BLE audio token {token}", errors)
+
+    for token in (
+        "pub async fn probe_embedded_audio_ble_subscription",
+        ".probe_embedded_audio_ble_subscription(timeout_ms)",
+        "pub async fn submit_embedded_audio_ble_stream",
+        "coord.submit_embedded_audio_ble_stream(timeout_ms).await",
+    ):
+        require(token in type_commands, f"Type command surface missing {token}", errors)
+
+    for token in (
+        "pub(super) async fn submit_embedded_audio_ble_stream",
+        "submit_embedded_audio_ble_stream_impl",
+        "capture_notification_events_until_cancelled",
+        "EmbeddedBleStreamSignal::Ready",
+        "EmbeddedBleStreamSignal::Notification",
+        "terminal_received",
+        "missing_packet_count",
+        "reconstructed_pcm_bytes",
+    ):
+        require(token in type_dictation, f"Type streaming implementation missing {token}", errors)
 
     require(
-        "submit_embedded_audio_ble_once" not in companion_section,
-        "Type Companion debug page must use the stream command, not one-shot BLE audio",
+        type_commands.find("pub async fn submit_embedded_audio_ble_stream") >
+        type_commands.find("pub async fn submit_embedded_audio_ble_once"),
+        "Type command surface should expose the stream command in addition to the legacy one-shot BLE audio command",
         errors,
     )
+
+    for token in (
+        "getEmbeddedBleRuntimeStatus",
+        "FirmwareOtaPanel",
+        "settings.device",
+        "DeviceSection",
+    ):
+        require(token in type_device_section, f"Type device settings page missing {token}", errors)
+
     require(
-        "section === 'companion' && <CompanionSection />" in settings_page,
-        "Type Settings page no longer renders CompanionSection for the companion section",
+        "section === 'device' && <DeviceSection />" in settings_page,
+        "Type Settings page no longer renders DeviceSection for the hardware section",
         errors,
     )
 
 
-def check_listener_firmware_contract(listener_proto: str, errors: list[str]) -> None:
-    require('#define LISTENER_AUDIO_PROTO_MAGIC "VKA1"' in listener_proto, "Listener firmware magic is not VKA1", errors)
-    require("#define LISTENER_AUDIO_PROTO_HEADER_BYTES 20u" in listener_proto, "Listener firmware header length is not 20", errors)
+def check_listener_firmware_contract(listener_proto: str, platform_audio: str, errors: list[str]) -> None:
+    require('#include "denzic_audio_v1_generated.h"' in listener_proto, "Listener firmware must include Denzic audio v1 generated protocol", errors)
+    require("#define LISTENER_AUDIO_PROTO_MAGIC DENZIC_AUDIO_V1_MAGIC" in listener_proto, "Listener firmware magic alias drifted", errors)
+    require("#define LISTENER_AUDIO_PROTO_HEADER_BYTES DENZIC_AUDIO_V1_HEADER_BYTES" in listener_proto, "Listener firmware header-length alias drifted", errors)
+    require('#define DENZIC_AUDIO_V1_MAGIC "VKA1"' in platform_audio, "Listener firmware magic is not VKA1", errors)
+    require("#define DENZIC_AUDIO_V1_HEADER_BYTES (20u)" in platform_audio, "Listener firmware header length is not 20", errors)
     for name, value in PACKET_TYPES.items():
         listener_name = f"LISTENER_AUDIO_PACKET_TYPE_{name}"
+        platform_name = f"DENZIC_AUDIO_V1_PACKET_TYPE_{name}"
         require(
-            re.search(rf"{listener_name}\s*=\s*{value}\b", listener_proto) is not None,
-            f"Listener firmware packet {listener_name} does not match {value}",
+            f"#define {listener_name} {platform_name}" in listener_proto,
+            f"Listener firmware packet alias {listener_name} drifted",
+            errors,
+        )
+        require(
+            re.search(rf"{platform_name}\s*=\s*{value}\b", platform_audio) is not None,
+            f"Listener firmware packet {platform_name} does not match {value}",
             errors,
         )
 
@@ -529,9 +537,16 @@ def main() -> int:
         source = read(SOURCE)
         check_companion_surface(header, source, errors)
         check_stm32wb_adapter(read(STM32WB_HEADER), read(STM32WB_SOURCE), errors)
-        check_type_contract(read(TYPE_AUDIO), read(TYPE_BLE), errors)
-        check_type_companion_debug_page(read(TYPE_COMPANION_SECTION), read(TYPE_SETTINGS_PAGE), errors)
-        check_listener_firmware_contract(read(LISTENER_PROTO), errors)
+        check_type_contract(read(TYPE_AUDIO_GENERATED), read(TYPE_LIB), read(TYPE_BLE), errors)
+        check_type_host_runtime_contract(
+            read(TYPE_IPC),
+            read(TYPE_COMMANDS),
+            read(TYPE_DICTATION),
+            read(TYPE_DEVICE_SECTION),
+            read(TYPE_SETTINGS_PAGE),
+            errors,
+        )
+        check_listener_firmware_contract(read(LISTENER_PROTO), read(LISTENER_PLATFORM_AUDIO), errors)
         check_uuid_table(errors)
         check_docs(errors)
         check_type_a1_a2_validation_tool(errors)

@@ -30,6 +30,9 @@ from app.companion_pendant.postprocess.meeting_minutes import (  # noqa: E402
 
 RAW_PCM_BYTES_PER_SECOND = 16000 * 2
 NUCLEO_RAW_FLASH_MAX_SECONDS = 60
+COMPANION_ROOT = REPO_ROOT.parent
+DENZIC_ROOT = REPO_ROOT.parents[1]
+TYPE_POST_EXIT_TRANSCRIPT_GRACE_S = 20.0
 
 
 class ChainToMinutesError(RuntimeError):
@@ -269,7 +272,70 @@ def strip_ansi(text: str) -> str:
     return re.sub(r"\x1b\[[0-9;]*[A-Za-z]", "", text)
 
 
+def json_contains_definite_transcript(value: Any) -> bool:
+    if isinstance(value, dict):
+        if value.get("definite") is True and transcript_from_json(value):
+            return True
+        return any(json_contains_definite_transcript(item) for item in value.values())
+    if isinstance(value, list):
+        return any(json_contains_definite_transcript(item) for item in value)
+    return False
+
+
+def is_diagnostic_transcript(value: str) -> bool:
+    value = value.strip().strip('"')
+    lowered = value.lower()
+    return (
+        "asr returned empty transcript" in lowered
+        or "empty transcript" == lowered
+        or "没有识别到语音" in value
+        or "当前已有听写会话" in value
+        or "暂不能提交嵌入式音频" in value
+        or "音频通道已恢复" in value
+        or "正在恢复音频通道" in value
+        or "已完成本机自动配对" in value
+        or ("ble 已重连" in value.lower())
+        or ("audio channel" in lowered and ("restored" in lowered or "recovered" in lowered))
+        or ("pair" in lowered and "audio" in lowered and ("restore" in lowered or "recover" in lowered))
+    )
+
+
+def type_empty_transcript_seen(text: str) -> bool:
+    lowered = text.lower()
+    return (
+        "submit-embedded-audio-streaming-file failed: asr returned empty transcript" in lowered
+        or "message=asr returned empty transcript" in lowered
+        or "message=没有识别到语音" in text
+        or "dictation_empty_transcript" in lowered
+    )
+
+
+def prefer_transcript(current: str, candidate: str) -> str:
+    candidate = candidate.strip()
+    current = current.strip()
+    if not candidate or is_diagnostic_transcript(candidate):
+        return current
+    if is_diagnostic_transcript(current):
+        current = ""
+    if not current:
+        return candidate
+    if len(candidate) >= len(current):
+        return candidate
+    return current
+
+
 def transcript_from_result_lines(text: str) -> str:
+    candidates: list[tuple[int, int, int, str]] = []
+    order = 0
+
+    def add_candidate(value: str, priority: int) -> None:
+        nonlocal order
+        value = value.strip().strip('"')
+        if not value or value == "-" or "失败" in value or is_diagnostic_transcript(value):
+            return
+        order += 1
+        candidates.append((priority, len(value), order, value))
+
     for line in text.splitlines():
         line = strip_ansi(line)
         if "result_json=" not in line:
@@ -279,8 +345,7 @@ def transcript_from_result_lines(text: str) -> str:
             transcript = transcript_from_json(json.loads(raw_json))
         except json.JSONDecodeError:
             continue
-        if transcript:
-            return transcript
+        add_candidate(transcript, 100)
 
     patterns = [
         r"final_text(?:=|:)\s*(?P<value>.+)$",
@@ -292,28 +357,50 @@ def transcript_from_result_lines(text: str) -> str:
             match = re.search(pattern, line, re.IGNORECASE)
             if match:
                 value = match.group("value").strip().strip('"')
-                if value:
-                    return value
+                add_candidate(value, 90)
 
-        if "[asr] server JSON:" in line:
+        asr_json_priority = 0
+        raw_json = ""
+        if "[asr] final server JSON:" in line:
+            _, raw_json = line.split("[asr] final server JSON:", 1)
+            asr_json_priority = 85
+        elif "[asr] server JSON:" in line:
             _, raw_json = line.split("[asr] server JSON:", 1)
+            asr_json_priority = 80
+        if raw_json:
             try:
-                transcript = transcript_from_json(json.loads(raw_json.strip()))
+                payload = json.loads(raw_json.strip())
+                transcript = transcript_from_json(payload)
+                priority = asr_json_priority if json_contains_definite_transcript(payload) else 50
             except json.JSONDecodeError:
-                match = re.search(r'"text"\s*:\s*"(?P<value>[^"]+)"', raw_json)
-                transcript = match.group("value").strip() if match else ""
-            if transcript:
-                return transcript
+                matches = re.findall(r'"text"\s*:\s*"(?P<value>[^"]+)"', raw_json)
+                transcript = max((match.strip() for match in matches), key=len, default="")
+                priority = 45
+            add_candidate(transcript, priority)
 
         match = re.search(r"\bmessage=(?P<value>.+)$", line)
         if match:
             value = match.group("value").strip()
-            if value and value != "-" and "失败" not in value:
-                return value
-    return ""
+            add_candidate(value, 70)
+
+    if not candidates:
+        return ""
+    return max(candidates, key=lambda item: item[:3])[3]
 
 
-def run_listener_type_process(
+def type_app_log_paths() -> list[pathlib.Path]:
+    local_app_data = os.environ.get("LOCALAPPDATA", "")
+    if not local_app_data:
+        return []
+    root = pathlib.Path(local_app_data)
+    return [
+        root / "Companion Type" / "Logs" / "companion-type.log",
+        root / "Companion Type" / "Logs" / "listener-type.log",
+        root / "Listener Type" / "Logs" / "listener-type.log",
+    ]
+
+
+def run_type_process(
     command: list[str],
     env: dict[str, str],
     timeout_s: float,
@@ -324,20 +411,29 @@ def run_listener_type_process(
     stdout_lines: list[str] = []
     stderr_lines: list[str] = []
     started = time.monotonic()
-    app_log_path = pathlib.Path(os.environ.get("LOCALAPPDATA", "")) / "Listener Type" / "Logs" / "listener-type.log"
-    app_log_start = app_log_path.stat().st_size if app_log_path.exists() else 0
-    app_log_capture_path = stdout_path.with_name("listener-type-app.log")
+    app_log_offsets = {
+        str(path): path.stat().st_size if path.exists() else 0
+        for path in type_app_log_paths()
+    }
+    app_log_capture_path = stdout_path.with_name("type-app.log")
 
     def read_app_log_delta() -> str:
-        if not app_log_path.exists():
-            return ""
-        try:
-            with app_log_path.open("r", encoding="utf-8", errors="replace") as handle:
-                if app_log_path.stat().st_size >= app_log_start:
-                    handle.seek(app_log_start)
-                return handle.read()
-        except OSError:
-            return ""
+        chunks: list[str] = []
+        for path_text, offset in list(app_log_offsets.items()):
+            path = pathlib.Path(path_text)
+            if not path.exists():
+                continue
+            try:
+                with path.open("r", encoding="utf-8", errors="replace") as handle:
+                    if path.stat().st_size >= offset:
+                        handle.seek(offset)
+                    text = handle.read()
+                    app_log_offsets[path_text] = handle.tell()
+                if text:
+                    chunks.append(f"[{path}]\n{text}")
+            except OSError:
+                continue
+        return "\n".join(chunks)
 
     process = subprocess.Popen(
         command,
@@ -369,26 +465,34 @@ def run_listener_type_process(
     completion_reason = ""
     transcript = ""
     process_exited_at: float | None = None
+    asr_final_seen_at: float | None = None
     deadline = time.monotonic() + float(timeout_s)
     while time.monotonic() < deadline:
         app_log_text = read_app_log_delta()
         combined = "".join(stdout_lines) + "\n" + "".join(stderr_lines) + "\n" + app_log_text
-        transcript = debug_transcript.read_text(encoding="utf-8").strip() if debug_transcript.exists() else ""
-        if not transcript:
-            transcript = transcript_from_result_lines(combined)
+        if debug_transcript.exists():
+            transcript = prefer_transcript(transcript, debug_transcript.read_text(encoding="utf-8").strip())
+        transcript = prefer_transcript(transcript, transcript_from_result_lines(combined))
         if transcript and "submit-embedded-audio-streaming-file done" in combined:
             completion_reason = "listener_type_cli_done"
             break
-        if transcript and "event=asr_final" in combined:
-            completion_reason = "listener_type_asr_final"
+        if not transcript and type_empty_transcript_seen(combined):
+            completion_reason = "listener_type_empty_transcript"
             break
-        if process.poll() is not None:
-            if transcript:
-                completion_reason = "process_exited_with_transcript"
+        if transcript and "event=asr_final" in combined:
+            if asr_final_seen_at is None:
+                asr_final_seen_at = time.monotonic()
+                completion_reason = "listener_type_asr_final"
+            elif time.monotonic() - asr_final_seen_at > 2:
                 break
+        if process.poll() is not None:
             if process_exited_at is None:
                 process_exited_at = time.monotonic()
-            if time.monotonic() - process_exited_at > 10:
+            post_exit_elapsed = time.monotonic() - process_exited_at
+            if transcript and post_exit_elapsed > TYPE_POST_EXIT_TRANSCRIPT_GRACE_S:
+                completion_reason = "process_exited_with_transcript_after_grace"
+                break
+            if not transcript and post_exit_elapsed > 10:
                 completion_reason = "process_exited"
                 break
         time.sleep(0.2)
@@ -415,10 +519,19 @@ def run_listener_type_process(
     stdout_path.write_text(stdout_text, encoding="utf-8", errors="replace")
     stderr_path.write_text(stderr_text, encoding="utf-8", errors="replace")
     app_log_capture_path.write_text(app_log_text, encoding="utf-8", errors="replace")
-    if not transcript:
-        transcript = debug_transcript.read_text(encoding="utf-8").strip() if debug_transcript.exists() else ""
-    if not transcript:
-        transcript = transcript_from_result_lines(stdout_text + "\n" + stderr_text + "\n" + app_log_text)
+    if debug_transcript.exists():
+        transcript = prefer_transcript(transcript, debug_transcript.read_text(encoding="utf-8").strip())
+    transcript = prefer_transcript(transcript, transcript_from_result_lines(stdout_text + "\n" + stderr_text + "\n" + app_log_text))
+    done_matches = re.findall(
+        r"submit-embedded-audio-streaming-file done: pcm_bytes=(\d+) missing_packets=(\d+)",
+        stdout_text + "\n" + stderr_text + "\n" + app_log_text,
+    )
+    coord_pcm_matches = re.findall(
+        r"embedded audio streaming submitted to dictation pipeline .*?pcm_bytes=(\d+)",
+        stdout_text + "\n" + stderr_text + "\n" + app_log_text,
+    )
+    pcm_bytes = int(done_matches[-1][0]) if done_matches else (int(coord_pcm_matches[-1]) if coord_pcm_matches else None)
+    missing_packets = int(done_matches[-1][1]) if done_matches else None
 
     return transcript, completion_reason, {
         "command": command,
@@ -429,27 +542,61 @@ def run_listener_type_process(
         "completion_reason": completion_reason,
         "terminated_after_completion": terminated_after_completion,
         "killed_after_timeout": killed_after_timeout,
+        "pcm_bytes": pcm_bytes,
+        "missing_packets": missing_packets,
         "stdout_path": str(stdout_path),
         "stderr_path": str(stderr_path),
         "app_log_path": str(app_log_capture_path),
-        "app_log_source": str(app_log_path),
+        "app_log_sources": list(app_log_offsets.keys()),
         "stdout_tail": "\n".join(stdout_text.splitlines()[-20:]),
         "stderr_tail": "\n".join(stderr_text.splitlines()[-20:]),
         "app_log_tail": "\n".join(app_log_text.splitlines()[-20:]),
     }
 
 
-def listener_type_cli_path(requested: str) -> str | None:
-    requested_path = pathlib.Path(requested)
-    if requested_path.exists():
-        return str(requested_path)
-    found = shutil.which(requested)
-    if found:
-        return found
-    if not requested.lower().endswith(".exe"):
-        found = shutil.which(requested + ".exe")
+def type_cli_candidates(requested: str) -> list[str]:
+    candidates: list[str] = []
+    companion_candidates = [
+        "companion-type",
+        str(COMPANION_ROOT / "Companion-Type" / "apps" / "windows" / "src-tauri" / "target" / "debug" / "companion-type.exe"),
+        str(COMPANION_ROOT / "Companion-Type" / "apps" / "windows" / "src-tauri" / "target" / "release" / "companion-type.exe"),
+        str(COMPANION_ROOT / "Companion-Type" / "src-tauri" / "target" / "debug" / "companion-type.exe"),
+        str(COMPANION_ROOT / "Companion-Type" / "src-tauri" / "target" / "release" / "companion-type.exe"),
+    ]
+    listener_candidates = [
+        "listener-type",
+        str(DENZIC_ROOT / "Listener" / "Listener-Type" / "src-tauri" / "target" / "debug" / "listener-type.exe"),
+        str(DENZIC_ROOT / "Listener" / "Listener-Type" / "src-tauri" / "target" / "release" / "listener-type.exe"),
+    ]
+    if requested:
+        candidates.append(requested)
+    requested_slug = requested.lower()
+    if requested_slug in {"", "companion-type"}:
+        candidates.extend(companion_candidates)
+        candidates.extend(listener_candidates)
+    elif requested_slug == "listener-type":
+        candidates.extend(listener_candidates)
+        candidates.extend(companion_candidates)
+
+    unique: list[str] = []
+    for candidate in candidates:
+        if candidate and candidate not in unique:
+            unique.append(candidate)
+    return unique
+
+
+def type_cli_path(requested: str) -> str | None:
+    for candidate in type_cli_candidates(requested):
+        requested_path = pathlib.Path(candidate)
+        if requested_path.exists():
+            return str(requested_path)
+        found = shutil.which(candidate)
         if found:
             return found
+        if not candidate.lower().endswith(".exe"):
+            found = shutil.which(candidate + ".exe")
+            if found:
+                return found
     return None
 
 
@@ -462,32 +609,39 @@ def listener_type_flag_for_audio(audio_path: pathlib.Path) -> str:
     return "--submit-embedded-audio-stream"
 
 
-def run_listener_type_asr(args: argparse.Namespace, audio_path: pathlib.Path, bundle_dir: pathlib.Path) -> tuple[str, str, dict[str, Any]]:
-    cli_path = listener_type_cli_path(args.listener_type_cli)
-    debug_transcript = bundle_dir / "listener-type-transcript.txt"
+def run_type_asr(args: argparse.Namespace, audio_path: pathlib.Path, bundle_dir: pathlib.Path) -> tuple[str, str, dict[str, Any]]:
+    provider_slug = args.asr_provider.replace("-", "_")
+    cli_path = type_cli_path(args.type_cli)
+    debug_transcript = bundle_dir / f"{args.asr_provider}-transcript.txt"
     if cli_path is None:
         result = {
-            "provider": "listener_type",
+            "provider": provider_slug,
             "status": "SKIPPED",
-            "reason": f"listener-type CLI not found: {args.listener_type_cli}",
+            "reason": f"Companion Type/Listener-Type CLI not found: {args.type_cli}",
+            "searched": type_cli_candidates(args.type_cli),
             "transcript_debug_file": str(debug_transcript),
         }
         if args.require_transcript:
             raise ChainToMinutesError(result["reason"])
         return "", "listener_type_pending", result
 
-    command = [cli_path, listener_type_flag_for_audio(audio_path), str(audio_path)]
+    audio_arg = str(audio_path.resolve())
+    debug_transcript_arg = str(debug_transcript.resolve())
+    command = [cli_path, "--suppress-capsule-window", listener_type_flag_for_audio(audio_path), audio_arg]
     env = os.environ.copy()
     env.setdefault("LISTENER_TYPE_HIDE_MAIN_ON_START", "1")
+    env.setdefault("LISTENER_TYPE_SUPPRESS_CAPSULE_WINDOW", "1")
     env.setdefault("LISTENER_TYPE_DISABLE_BACKGROUND_BLE", "1")
-    env["LISTENER_TYPE_DEBUG_TRANSCRIPT_FILE"] = str(debug_transcript)
+    env.setdefault("LISTENER_TYPE_FORCE_RAW_OUTPUT", "1")
+    env["LISTENER_TYPE_DEBUG_TRANSCRIPT_FILE"] = debug_transcript_arg
+    env["COMPANION_TYPE_DEBUG_TRANSCRIPT_FILE"] = debug_transcript_arg
 
-    stdout_path = bundle_dir / "listener-type-asr.stdout.log"
-    stderr_path = bundle_dir / "listener-type-asr.stderr.log"
-    transcript, completion_reason, process_result = run_listener_type_process(
+    stdout_path = bundle_dir / f"{args.asr_provider}-asr.stdout.log"
+    stderr_path = bundle_dir / f"{args.asr_provider}-asr.stderr.log"
+    transcript, completion_reason, process_result = run_type_process(
         command,
         env,
-        args.listener_type_timeout,
+        args.type_timeout,
         stdout_path,
         stderr_path,
         debug_transcript,
@@ -496,16 +650,17 @@ def run_listener_type_asr(args: argparse.Namespace, audio_path: pathlib.Path, bu
     if process_result["timed_out"] and not transcript:
         status = "TIMEOUT"
     result = {
-        "provider": "listener_type",
+        "provider": provider_slug,
         "status": status,
+        "cli_path": cli_path,
         "transcript_debug_file": str(debug_transcript),
         **process_result,
     }
     if args.require_transcript and not transcript:
-        raise ChainToMinutesError(f"listener-type ASR did not produce transcript; result={result}")
+        raise ChainToMinutesError(f"{args.asr_provider} ASR did not produce transcript; result={result}")
     if args.require_transcript and status == "TIMEOUT":
-        raise ChainToMinutesError(f"listener-type ASR timed out before transcript; result={result}")
-    return transcript, "listener_type" if transcript else "listener_type_pending", result
+        raise ChainToMinutesError(f"{args.asr_provider} ASR timed out before transcript; result={result}")
+    return transcript, provider_slug if transcript else f"{provider_slug}_pending", result
 
 
 def resolve_transcript(args: argparse.Namespace, audio_path: pathlib.Path, bundle_dir: pathlib.Path) -> tuple[str, str, dict[str, Any]]:
@@ -520,8 +675,8 @@ def resolve_transcript(args: argparse.Namespace, audio_path: pathlib.Path, bundl
         }
     if args.transcript_text:
         return args.transcript_text, "provided_text", {"provider": "provided_text", "status": "PASS"}
-    if args.asr_provider == "listener-type":
-        return run_listener_type_asr(args, audio_path, bundle_dir)
+    if args.asr_provider in {"companion-type", "listener-type"}:
+        return run_type_asr(args, audio_path, bundle_dir)
     return "", "pending_transcription", {
         "provider": args.asr_provider,
         "status": "SKIPPED",
@@ -575,12 +730,25 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     transcript.add_argument("--transcript-text", default="", help="Inline transcript text for simulation/fixtures")
     transcript.add_argument(
         "--asr-provider",
-        choices=("none", "listener-type"),
+        choices=("none", "companion-type", "listener-type"),
         default="none",
         help="Optional ASR provider when no transcript is supplied",
     )
-    transcript.add_argument("--listener-type-cli", default="listener-type", help="Listener-Type CLI path/name")
-    transcript.add_argument("--listener-type-timeout", type=float, default=180.0, help="Listener-Type ASR timeout")
+    transcript.add_argument(
+        "--type-cli",
+        "--listener-type-cli",
+        dest="type_cli",
+        default="companion-type",
+        help="Companion Type CLI path/name; legacy listener-type.exe is accepted",
+    )
+    transcript.add_argument(
+        "--type-timeout",
+        "--listener-type-timeout",
+        dest="type_timeout",
+        type=float,
+        default=180.0,
+        help="Companion Type/Listener-Type ASR timeout",
+    )
     transcript.add_argument("--require-transcript", action="store_true", help="Fail if ASR/provided transcript is empty")
 
     output = parser.add_argument_group("output")

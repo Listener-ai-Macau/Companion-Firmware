@@ -9,13 +9,18 @@ import binascii
 import datetime as dt
 import hashlib
 import json
+import math
 import pathlib
 import struct
 import subprocess
 import sys
+import threading
 import time
+import traceback
 import wave
 from typing import Any, Callable
+
+from companion_ble_connect_with_serial import SerialMonitor, resolve_serial_port
 
 
 sys.dont_write_bytecode = True
@@ -45,6 +50,92 @@ def write_wav(path: pathlib.Path, pcm_bytes: bytes) -> None:
         wav_file.setsampwidth(PCM_WIDTH_BYTES)
         wav_file.setframerate(PCM_SAMPLE_RATE)
         wav_file.writeframes(pcm_bytes)
+
+
+def analyze_pcm16(pcm_bytes: bytes, args: argparse.Namespace) -> dict[str, Any]:
+    if len(pcm_bytes) % PCM_WIDTH_BYTES != 0:
+        raise ChainError(f"PCM16 payload length is not even: {len(pcm_bytes)}")
+
+    sample_count = len(pcm_bytes) // PCM_WIDTH_BYTES
+    if sample_count == 0:
+        raise ChainError("PCM16 payload is empty")
+
+    samples = struct.unpack("<" + "h" * sample_count, pcm_bytes)
+    abs_samples = [abs(value) for value in samples]
+    rms = math.sqrt(sum(float(value) * float(value) for value in samples) / sample_count)
+    clipping_count = sum(1 for value in samples if abs(value) >= 32760)
+    zero_count = sum(1 for value in samples if value == 0)
+    duration_s = sample_count / float(PCM_SAMPLE_RATE)
+    clipping_ratio = clipping_count / float(sample_count)
+    zero_ratio = zero_count / float(sample_count)
+    sorted_abs = sorted(abs_samples)
+    p95 = sorted_abs[int((sample_count - 1) * 0.95)]
+    p99 = sorted_abs[int((sample_count - 1) * 0.99)]
+    warnings = []
+    if duration_s < float(args.min_duration_s):
+        warnings.append("duration_below_min")
+    if rms < float(args.min_rms):
+        warnings.append("rms_below_min")
+    if rms > float(args.max_rms):
+        warnings.append("rms_above_max")
+    if clipping_ratio > float(args.max_clipping_ratio):
+        warnings.append("clipping_above_max")
+
+    return {
+        "operation": "audio_quality",
+        "status": "WARNING" if warnings else "PASS",
+        "sample_rate_hz": PCM_SAMPLE_RATE,
+        "channels": PCM_CHANNELS,
+        "sample_width_bytes": PCM_WIDTH_BYTES,
+        "sample_count": sample_count,
+        "duration_s": round(duration_s, 4),
+        "peak": max(abs_samples),
+        "rms": round(rms, 2),
+        "p95_abs": p95,
+        "p99_abs": p99,
+        "zero_ratio": round(zero_ratio, 6),
+        "clipping_ratio": round(clipping_ratio, 6),
+        "warning_thresholds": {
+            "min_duration_s": float(args.min_duration_s),
+            "min_rms": float(args.min_rms),
+            "max_rms": float(args.max_rms),
+            "max_clipping_ratio": float(args.max_clipping_ratio),
+        },
+        "warnings": warnings,
+    }
+
+
+def start_playback_fixture(args: argparse.Namespace) -> tuple[threading.Thread | None, dict[str, Any] | None]:
+    if args.play_audio_path is None:
+        return None, None
+
+    path = args.play_audio_path
+    result: dict[str, Any] = {
+        "operation": "playback_fixture",
+        "status": "STARTED",
+        "path": str(path),
+        "delay_s": float(args.play_delay_s),
+    }
+    if not path.exists():
+        result["status"] = "FAIL"
+        result["error"] = f"playback WAV not found: {path}"
+        return None, result
+
+    def worker() -> None:
+        try:
+            time.sleep(max(0.0, float(args.play_delay_s)))
+            import winsound
+
+            winsound.PlaySound(str(path), winsound.SND_FILENAME)
+            result["status"] = "PASS"
+            result["finished_at"] = utc_now()
+        except Exception as exc:  # noqa: BLE001
+            result["status"] = "FAIL"
+            result["error"] = str(exc)
+
+    thread = threading.Thread(target=worker, name="companion-recording-playback-fixture", daemon=True)
+    thread.start()
+    return thread, result
 
 
 def git_commit() -> str:
@@ -426,113 +517,173 @@ async def run_chain(args: argparse.Namespace) -> dict[str, Any]:
     artifact_dir = resolve_artifact_dir(args.artifact_dir)
     table = load_uuid_table()
     uuids = build_uuid_index(table)
-    device, scan = await scan_for_companion(args, required_services(table))
-    operations: list[dict[str, Any]] = [scan]
+    operations: list[dict[str, Any]] = []
+    monitor: SerialMonitor | None = None
+    serial_raw_log = artifact_dir / "flash-recording-serial.log"
     pcm_path = artifact_dir / "ble-recording.pcm"
     wav_path = artifact_dir / "ble-recording-16k-mono.wav"
 
-    async with BleakClient(device, timeout=args.timeout) as client:
-        start_request_id = 501
-        start_echo = await notify_write_wait(
-            client,
-            uuids["recording_control"],
-            uuids["recording_control"],
-            control_payload(1, start_request_id, max(1, int(args.record_seconds) + 1)),
-            parse_recording_control,
-            lambda parsed: parsed["request_id"] == start_request_id,
-            args.notify_timeout,
-        )
-        if int(start_echo["privacy_flags"]) & RECORDING_ERROR_FLAG:
-            raise ChainError(f"recording start was rejected: {start_echo}")
-        operations.append({"operation": "recording_start", "status": "PASS", "echo": start_echo})
+    try:
+        if not args.no_serial_monitor:
+            try:
+                port, present_ports = resolve_serial_port(args.serial_port)
+                monitor = SerialMonitor(port, int(args.baud), serial_raw_log)
+                monitor.start()
+                operations.append(
+                    {
+                        "operation": "serial_monitor_start",
+                        "status": "PASS",
+                        "port": port,
+                        "baud": int(args.baud),
+                        "raw_log": str(serial_raw_log),
+                        "present_ports": present_ports,
+                    }
+                )
+            except Exception as exc:  # noqa: BLE001
+                operations.append(
+                    {
+                        "operation": "serial_monitor_start",
+                        "status": "WARNING",
+                        "error": str(exc),
+                        "raw_log": str(serial_raw_log),
+                    }
+                )
 
-        await asyncio.sleep(args.record_seconds)
+        device, scan = await scan_for_companion(args, required_services(table))
+        operations.append(scan)
 
-        stop_request_id = 502
-        stop_echo = await notify_write_wait(
-            client,
-            uuids["recording_control"],
-            uuids["recording_control"],
-            control_payload(2, stop_request_id, 0),
-            parse_recording_control,
-            lambda parsed: parsed["request_id"] == stop_request_id,
-            args.notify_timeout,
-        )
-        if int(stop_echo["privacy_flags"]) & RECORDING_ERROR_FLAG:
-            raise ChainError(f"recording stop/store was rejected: {stop_echo}")
-        operations.append({"operation": "recording_stop_store", "status": "PASS", "echo": stop_echo})
+        async with BleakClient(device, timeout=args.timeout) as client:
+            start_request_id = 501
+            start_echo = await notify_write_wait(
+                client,
+                uuids["recording_control"],
+                uuids["recording_control"],
+                control_payload(1, start_request_id, max(1, int(args.record_seconds) + 1)),
+                parse_recording_control,
+                lambda parsed: parsed["request_id"] == start_request_id,
+                args.notify_timeout,
+            )
+            if int(start_echo["privacy_flags"]) & RECORDING_ERROR_FLAG:
+                raise ChainError(f"recording start was rejected: {start_echo}")
+            operations.append({"operation": "recording_start", "status": "PASS", "echo": start_echo})
+            playback_thread, playback_result = start_playback_fixture(args)
+            if playback_result is not None and playback_result.get("status") == "FAIL":
+                operations.append(playback_result)
+                raise ChainError(str(playback_result.get("error", "playback fixture failed")))
 
-        recording_list = await read_recording_list(client, uuids["recording_list"])
-        if int(recording_list["count"]) != 1:
-            raise ChainError(f"expected one recording after stop, got {recording_list}")
-        entry = recording_list["entries"][0]
-        if int(entry["source_mode"]) != RECORDING_SOURCE_MIC_SAI:
-            raise ChainError(f"recording was not sourced from SAI microphone path: {entry}")
-        if int(entry["total_length"]) <= 0:
-            raise ChainError(f"recording total_length was empty: {entry}")
-        operations.append({"operation": "recording_list_after_stop", "status": "PASS", "recording_list": recording_list})
+            await asyncio.sleep(args.record_seconds)
+            if playback_thread is not None:
+                playback_thread.join(timeout=2.0)
+            if playback_result is not None:
+                if playback_result.get("status") == "STARTED":
+                    playback_result["status"] = "WARNING"
+                    playback_result["warning"] = "playback fixture was still running when recording dwell ended"
+                operations.append(playback_result)
+                if playback_result.get("status") == "FAIL":
+                    raise ChainError(str(playback_result.get("error", "playback fixture failed")))
 
-        pull, pcm_bytes = await pull_recording(client, uuids, entry, args)
-        operations.append(pull)
-        pcm_path.write_bytes(pcm_bytes)
-        write_wav(wav_path, pcm_bytes)
-        operations.append(
-            {
-                "operation": "audio_export",
-                "status": "PASS",
+            stop_request_id = 502
+            stop_echo = await notify_write_wait(
+                client,
+                uuids["recording_control"],
+                uuids["recording_control"],
+                control_payload(2, stop_request_id, 0),
+                parse_recording_control,
+                lambda parsed: parsed["request_id"] == stop_request_id,
+                args.notify_timeout,
+            )
+            if int(stop_echo["privacy_flags"]) & RECORDING_ERROR_FLAG:
+                raise ChainError(f"recording stop/store was rejected: {stop_echo}")
+            operations.append({"operation": "recording_stop_store", "status": "PASS", "echo": stop_echo})
+
+            recording_list = await read_recording_list(client, uuids["recording_list"])
+            if int(recording_list["count"]) != 1:
+                raise ChainError(f"expected one recording after stop, got {recording_list}")
+            entry = recording_list["entries"][0]
+            if int(entry["source_mode"]) != RECORDING_SOURCE_MIC_SAI:
+                raise ChainError(f"recording was not sourced from SAI microphone path: {entry}")
+            if int(entry["total_length"]) <= 0:
+                raise ChainError(f"recording total_length was empty: {entry}")
+            operations.append({"operation": "recording_list_after_stop", "status": "PASS", "recording_list": recording_list})
+
+            pull, pcm_bytes = await pull_recording(client, uuids, entry, args)
+            operations.append(pull)
+            pcm_path.write_bytes(pcm_bytes)
+            write_wav(wav_path, pcm_bytes)
+            quality = analyze_pcm16(pcm_bytes, args)
+            quality["pcm_path"] = str(pcm_path)
+            quality["wav_path"] = str(wav_path)
+            operations.append(
+                {
+                    "operation": "audio_export",
+                    "status": "PASS",
+                    "pcm_path": str(pcm_path),
+                    "wav_path": str(wav_path),
+                    "sample_rate_hz": PCM_SAMPLE_RATE,
+                    "channels": PCM_CHANNELS,
+                    "sample_width_bytes": PCM_WIDTH_BYTES,
+                    "byte_count": len(pcm_bytes),
+                }
+            )
+            operations.append(quality)
+
+            delete_request_id = 503
+            delete_payload = struct.pack(
+                "<BBHIII32s",
+                SCHEMA_VERSION,
+                1,
+                0,
+                delete_request_id,
+                int(entry["recording_id"]),
+                int(entry["total_length"]),
+                bytes.fromhex(str(pull["host_sha256"])),
+            )
+            delete_response = await notify_write_wait(
+                client,
+                uuids["delete_privacy"],
+                uuids["delete_privacy"],
+                delete_payload,
+                parse_delete_privacy,
+                lambda parsed: parsed["request_id"] == delete_request_id,
+                args.notify_timeout,
+            )
+            if int(delete_response["flags"]) & 0x0001:
+                raise ChainError(f"delete-after-sync was refused: {delete_response}")
+            operations.append({"operation": "delete_after_sync", "status": "PASS", "delete_privacy": delete_response})
+
+            list_after_delete = await read_recording_list(client, uuids["recording_list"])
+            if int(list_after_delete["count"]) != 0:
+                raise ChainError(f"recording_list not empty after delete: {list_after_delete}")
+            operations.append({"operation": "recording_list_after_delete", "status": "PASS", "recording_list": list_after_delete})
+
+        return {
+            "schema_version": 1,
+            "status": "PASS",
+            "started_at": started,
+            "finished_at": utc_now(),
+            "duration_s": round(time.monotonic() - monotonic_start, 3),
+            "git_commit": git_commit(),
+            "mode": "real_ble_recording_to_qspi_flash_chain",
+            "artifacts": {
+                "artifact_dir": str(artifact_dir),
                 "pcm_path": str(pcm_path),
                 "wav_path": str(wav_path),
-                "sample_rate_hz": PCM_SAMPLE_RATE,
-                "channels": PCM_CHANNELS,
-                "sample_width_bytes": PCM_WIDTH_BYTES,
-                "byte_count": len(pcm_bytes),
-            }
-        )
-
-        delete_request_id = 503
-        delete_payload = struct.pack(
-            "<BBHIII32s",
-            SCHEMA_VERSION,
-            1,
-            0,
-            delete_request_id,
-            int(entry["recording_id"]),
-            int(entry["total_length"]),
-            bytes.fromhex(str(pull["host_sha256"])),
-        )
-        delete_response = await notify_write_wait(
-            client,
-            uuids["delete_privacy"],
-            uuids["delete_privacy"],
-            delete_payload,
-            parse_delete_privacy,
-            lambda parsed: parsed["request_id"] == delete_request_id,
-            args.notify_timeout,
-        )
-        if int(delete_response["flags"]) & 0x0001:
-            raise ChainError(f"delete-after-sync was refused: {delete_response}")
-        operations.append({"operation": "delete_after_sync", "status": "PASS", "delete_privacy": delete_response})
-
-        list_after_delete = await read_recording_list(client, uuids["recording_list"])
-        if int(list_after_delete["count"]) != 0:
-            raise ChainError(f"recording_list not empty after delete: {list_after_delete}")
-        operations.append({"operation": "recording_list_after_delete", "status": "PASS", "recording_list": list_after_delete})
-
-    return {
-        "schema_version": 1,
-        "status": "PASS",
-        "started_at": started,
-        "finished_at": utc_now(),
-        "duration_s": round(time.monotonic() - monotonic_start, 3),
-        "git_commit": git_commit(),
-        "mode": "real_ble_recording_to_qspi_flash_chain",
-        "artifacts": {
-            "artifact_dir": str(artifact_dir),
-            "pcm_path": str(pcm_path),
-            "wav_path": str(wav_path),
-        },
-        "operations": operations,
-    }
+                "serial_log": str(serial_raw_log),
+            },
+            "operations": operations,
+        }
+    finally:
+        if monitor is not None:
+            monitor.stop()
+            operations.append(
+                {
+                    "operation": "serial_monitor_stop",
+                    "status": "PASS",
+                    "line_count": len(monitor.lines),
+                    "tail": monitor.lines[-80:],
+                    "raw_log": str(serial_raw_log),
+                }
+            )
 
 
 def resolve_artifact_dir(artifact_dir: pathlib.Path | None) -> pathlib.Path:
@@ -561,6 +712,15 @@ def build_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument("--record-seconds", type=float, default=1.0, help="User recording dwell time before stop")
     parser.add_argument("--chunk-bytes", type=int, default=160, help="Requested recording bytes per BLE pull")
     parser.add_argument("--artifact-dir", type=pathlib.Path, default=None, help="Directory for JSON evidence")
+    parser.add_argument("--play-audio-path", type=pathlib.Path, default=None, help="Optional WAV to play after recording starts")
+    parser.add_argument("--play-delay-s", type=float, default=0.6, help="Delay before optional playback fixture starts")
+    parser.add_argument("--serial-port", default="", help="Optional ST-LINK VCP serial port")
+    parser.add_argument("--baud", type=int, default=115200, help="ST-LINK VCP baud rate")
+    parser.add_argument("--no-serial-monitor", action="store_true", help="Do not capture ST-LINK VCP logs during recording")
+    parser.add_argument("--min-duration-s", type=float, default=0.5, help="Audio quality warning threshold for short captures")
+    parser.add_argument("--min-rms", type=float, default=8.0, help="Audio quality warning threshold for near-silence")
+    parser.add_argument("--max-rms", type=float, default=12000.0, help="Audio quality warning threshold for overly hot captures")
+    parser.add_argument("--max-clipping-ratio", type=float, default=0.02, help="Audio quality warning threshold for clipped samples")
     return parser
 
 
@@ -576,6 +736,8 @@ async def async_main(args: argparse.Namespace) -> int:
             "finished_at": utc_now(),
             "git_commit": git_commit(),
             "error": str(exc),
+            "error_repr": repr(exc),
+            "traceback": traceback.format_exc(),
         }
         path = write_artifact(result, args.artifact_dir)
         print(f"FAIL: Companion flash recording chain failed; artifact={path}")
