@@ -6,8 +6,8 @@ This packet is generated. Update it with
 - Status: `PENDING_HUMAN`
 - Gate: `wb55_touch_visual_acceptance`
 - Target: `NUCLEO-WB55RG + GDEY0154D67-T03 + FT6336U`
-- Start rule: Do not start this packet until rev53 runtime logs PASS, promotion is applied, pre-acceptance health PASS, and the operator explicitly says 开始验收.
-- Machine precondition: PASS: rev53 provision and normal runtime logs are promoted; human touch/visual steps may start after the operator says 开始验收.
+- Start rule: Do not start this packet until rev53 runtime logs PASS, promotion is applied, pre-acceptance health PASS, a reset-bounded normal capture proves the quiet interaction profile, and the operator explicitly says 开始验收.
+- Machine precondition: NO_GO_INTERACTION_PROFILE_RUNTIME_RECHECK_PENDING: do not start human touch/visual steps until a reset-bounded normal capture proves the quiet interaction profile.
 
 ## Preflight Commands
 
@@ -38,6 +38,8 @@ This packet is generated. Update it with
 - `bilingual_menu_evidence`: `docs/validation/companion-screen-bilingual-menu-wb55.json`
 - `provision_log`: `.cache/validation/rev53-runtime-current/provision/nucleo-serial-raw.log`
 - `normal_log`: `.cache/validation/rev53-runtime-current/normal/nucleo-serial-raw.log`
+- `interaction_profile`: `{'status': 'PENDING_HARDWARE_RUNTIME_MARKER', 'normal_log': '.cache/validation/rev53-runtime-current/normal/nucleo-serial-raw.log', 'required_marker': '[build] interaction_profile=quiet epaper_trace=0 touch_trace=0 ft6336_threshold=0x70 touch_poll_active_ms=5 touch_poll_refresh_ms=5 refresh_policy=partial_x5_then_fast_cleanup', 'marker_present': False, 'required_markers': {'[build] interaction_profile=quiet': False, 'epaper_trace=0': False, 'touch_trace=0': False, 'ft6336_threshold=0x70': False, 'touch_poll_active_ms=5': False, 'touch_poll_refresh_ms=5': False, 'refresh_policy=partial_x5_then_fast_cleanup': False}}`
+- `interaction_profile_evidence`: `docs/validation/companion-interaction-profile-runtime-gate-20260714.md`
 - `runtime_logs_evidence`: `docs/validation/companion-screen-wb55-runtime-recheck-logs.json`
 - `runtime_flash_preflight`: `{'path': 'docs/validation/companion-screen-wb55-runtime-flash-preflight.json', 'status': 'PASS'}`
 - `runtime_serial_capture_preflight`: `{'path': 'docs/validation/companion-screen-wb55-runtime-serial-capture-preflight.json', 'status': 'PASS_STATIC_SERIAL_CAPTURE_PREFLIGHT', 'claim_scope': 'static_serial_capture_contract_no_hardware_claim'}`
@@ -83,9 +85,9 @@ This packet is generated. Update it with
 ### 4. Menu boundaries clean residuals once
 
 - ID: `menu_boundary_single_clean_refresh`
-- Action: 从日常页长按约 3 秒进入菜单，再从菜单左边缘向右滑返回日常页。
-- Success signal: 进入和返回各只做一次完整净化刷新，随后画面稳定；没有第二轮闪烁或旧菜单/旧表情残留。
-- Regression guard: each explicit daily/menu boundary gets one clean full refresh after cancelling pending maintenance
+- Action: 从日常页长按约 3 秒进入菜单，再从菜单任意位置向右滑返回日常页。
+- Success signal: 进入和返回各只做一次完整净化刷新，随后画面稳定；不需要从边缘开始，也没有第二轮闪烁或旧菜单/旧表情残留。
+- Regression guard: an anywhere direction-locked right swipe exits menu, and each explicit daily/menu boundary gets one clean full refresh after cancelling pending maintenance
 - Record:
   - entry refresh count
   - exit refresh count
@@ -107,9 +109,9 @@ This packet is generated. Update it with
 ### 6. Row press shows entry feedback
 
 - ID: `row_press_and_back`
-- Action: 点击任一菜单项，进入详情页后从左边缘右滑返回。
-- Success signal: 点击项先有被选中的 press-cue，再到详情页；返回手势可用。
-- Regression guard: press-cue and target-arrival partial refreshes must not collapse into multi-flash full refresh
+- Action: 点击任一菜单项，进入详情页后从屏幕中部向右滑返回。
+- Success signal: 点击项先有被选中的 press-cue，再到详情页；任意位置的返回手势可用。
+- Regression guard: press-cue and target-arrival partial refreshes must not collapse into multi-flash full refresh, and right-swipe return must not require an edge start
 - Record:
   - row
   - press cue visible yes/no
@@ -171,7 +173,9 @@ This packet is generated. Update it with
 - SCR-17 generation release ledger docs/validation/companion-screen-generation-release-ledger.json
 - runtime flash preflight docs/validation/companion-screen-wb55-runtime-flash-preflight.json
 - runtime serial capture preflight docs/validation/companion-screen-wb55-runtime-serial-capture-preflight.json
+- interaction-profile runtime gate docs/validation/companion-interaction-profile-runtime-gate-20260714.md
 - revision 53 provision/normal serial logs are linked in machine_state
+- the reset-bounded normal serial capture contains every quiet interaction-profile marker before the first human touch step
 - serial/runtime diagnostic tail if flashed during the session
 - photo or short video only when the operator chooses to capture visual evidence
 - if old marks are visible, classify them as physical afterimage, stale queued frame, stale asset revision, rescue/procedural fallback leakage, or stale_generation_content

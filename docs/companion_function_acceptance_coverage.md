@@ -29,7 +29,10 @@ operator observation agree.
   rejected swipe leaves the current menu surface intact and usable.
 - Machine evidence: the portable menu action self-test, WB55 build, and a
   reset-bounded serial capture containing `menu_right_swipe_exit`, the daily
-  idle scene, and exactly one completed menu-to-daily refresh.
+  idle scene, exactly one completed menu-to-daily refresh, and the quiet
+  interaction build marker: `interaction_profile=quiet`, both trace values
+  `0`, FT6336 threshold `0x70`, 5 ms active/refresh polling, and
+  `refresh_policy=partial_x5_then_fast_cleanup`.
 - Popup: `1/13` asks the operator, while on any menu page, to swipe right once
   from the middle of the display and confirm it returns directly to the daily
   face without needing an edge start or an intermediate home page.
@@ -38,6 +41,9 @@ operator observation agree.
   six-item home. The complete note and serial trace are in
   `.cache/validation/companion-acceptance/acpt-01-menu-right-swipe/`; repair
   every reported issue with machine evidence before repeating this same item.
+  In particular, pre-existing rev53 resource logs do not prove the optimized
+  interaction image: its reset-bounded normal capture must contain the quiet
+  interaction build marker before the next focused popup.
 
 ### ACPT-02: Boot, Panel, And External Resource
 

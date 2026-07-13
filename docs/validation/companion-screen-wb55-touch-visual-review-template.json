@@ -2,7 +2,7 @@
   "claim_scope": "blank_operator_review_template",
   "completion_rule": "This template is not a PASS artifact. After review, each non-empty operator_note must be split into triage_items, assigned one allowed resolution_state, and linked to evidence_path before the acceptance packet can be considered publishable PASS.",
   "gate_id": "wb55_touch_visual_acceptance",
-  "machine_precondition": "PASS: rev53 provision and normal runtime logs are promoted; human touch/visual steps may start after the operator says 开始验收.",
+  "machine_precondition": "NO_GO_INTERACTION_PROFILE_RUNTIME_RECHECK_PENDING: do not start human touch/visual steps until a reset-bounded normal capture proves the quiet interaction profile.",
   "machine_state": {
     "bilingual_menu_evidence": "docs/validation/companion-screen-bilingual-menu-wb55.json",
     "display_queue_generation_hygiene": {
@@ -27,6 +27,22 @@
         "stale_generation_content"
       ]
     },
+    "interaction_profile": {
+      "marker_present": false,
+      "normal_log": ".cache/validation/rev53-runtime-current/normal/nucleo-serial-raw.log",
+      "required_marker": "[build] interaction_profile=quiet epaper_trace=0 touch_trace=0 ft6336_threshold=0x70 touch_poll_active_ms=5 touch_poll_refresh_ms=5 refresh_policy=partial_x5_then_fast_cleanup",
+      "required_markers": {
+        "[build] interaction_profile=quiet": false,
+        "epaper_trace=0": false,
+        "ft6336_threshold=0x70": false,
+        "refresh_policy=partial_x5_then_fast_cleanup": false,
+        "touch_poll_active_ms=5": false,
+        "touch_poll_refresh_ms=5": false,
+        "touch_trace=0": false
+      },
+      "status": "PENDING_HARDWARE_RUNTIME_MARKER"
+    },
+    "interaction_profile_evidence": "docs/validation/companion-interaction-profile-runtime-gate-20260714.md",
     "normal_firmware_restored": true,
     "normal_log": ".cache/validation/rev53-runtime-current/normal/nucleo-serial-raw.log",
     "pet_art_style": "genref_sheet_12_inner_faces_v5",
@@ -120,14 +136,14 @@
         "old content or residual yes/no"
       ],
       "next_review_scope": "",
-      "operator_action": "从日常页长按约 3 秒进入菜单，再从菜单左边缘向右滑返回日常页。",
+      "operator_action": "从日常页长按约 3 秒进入菜单，再从菜单任意位置向右滑返回日常页。",
       "operator_note": "",
       "operator_observation": "",
       "publishable_pass_allowed": false,
-      "regression_guard": "each explicit daily/menu boundary gets one clean full refresh after cancelling pending maintenance",
+      "regression_guard": "an anywhere direction-locked right swipe exits menu, and each explicit daily/menu boundary gets one clean full refresh after cancelling pending maintenance",
       "resolution_state": "open_requires_fix",
       "source_step_id": "menu_boundary_single_clean_refresh",
-      "success_signal": "进入和返回各只做一次完整净化刷新，随后画面稳定；没有第二轮闪烁或旧菜单/旧表情残留。",
+      "success_signal": "进入和返回各只做一次完整净化刷新，随后画面稳定；不需要从边缘开始，也没有第二轮闪烁或旧菜单/旧表情残留。",
       "title": "Menu boundaries clean residuals once",
       "triage_items": [],
       "visual_issue_classification": "none"
@@ -162,14 +178,14 @@
         "back success yes/no"
       ],
       "next_review_scope": "",
-      "operator_action": "点击任一菜单项，进入详情页后从左边缘右滑返回。",
+      "operator_action": "点击任一菜单项，进入详情页后从屏幕中部向右滑返回。",
       "operator_note": "",
       "operator_observation": "",
       "publishable_pass_allowed": false,
-      "regression_guard": "press-cue and target-arrival partial refreshes must not collapse into multi-flash full refresh",
+      "regression_guard": "press-cue and target-arrival partial refreshes must not collapse into multi-flash full refresh, and right-swipe return must not require an edge start",
       "resolution_state": "open_requires_fix",
       "source_step_id": "row_press_and_back",
-      "success_signal": "点击项先有被选中的 press-cue，再到详情页；返回手势可用。",
+      "success_signal": "点击项先有被选中的 press-cue，再到详情页；任意位置的返回手势可用。",
       "title": "Row press shows entry feedback",
       "triage_items": [],
       "visual_issue_classification": "none"
@@ -258,7 +274,7 @@
   ],
   "schema_id": "companion.pendant.wb55_touch_visual_review_template.v1",
   "source_packet": "docs/validation/companion-screen-wb55-touch-visual-acceptance-packet.json",
-  "start_rule": "Do not start this packet until rev53 runtime logs PASS, promotion is applied, pre-acceptance health PASS, and the operator explicitly says 开始验收.",
+  "start_rule": "Do not start this packet until rev53 runtime logs PASS, promotion is applied, pre-acceptance health PASS, a reset-bounded normal capture proves the quiet interaction profile, and the operator explicitly says 开始验收.",
   "status": "TEMPLATE_NOT_ACCEPTANCE_RESULT",
   "target": "NUCLEO-WB55RG + GDEY0154D67-T03 + FT6336U",
   "triage_contract": {

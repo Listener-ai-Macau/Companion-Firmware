@@ -29,9 +29,20 @@ RUNTIME_SERIAL_CAPTURE_PREFLIGHT = ROOT / "docs/validation/companion-screen-wb55
 RUNTIME_HARDWARE_ACTION_CARD = ROOT / "docs/validation/companion-screen-wb55-runtime-hardware-action-card.json"
 DISPLAY_QUEUE_GENERATION_HYGIENE = ROOT / "docs/validation/companion-screen-display-queue-generation-hygiene.json"
 GENERATION_RELEASE_LEDGER = ROOT / "docs/validation/companion-screen-generation-release-ledger.json"
+INTERACTION_PROFILE_RUNTIME_GATE = ROOT / "docs/validation/companion-interaction-profile-runtime-gate-20260714.md"
 SCHEMA_ID = "companion.pendant.wb55_touch_visual_acceptance_packet.v1"
 CANDIDATE = current_candidate()
 PASS_RUNTIME_STATUS = CANDIDATE.pass_status
+INTERACTION_PROFILE_REQUIRED_MARKERS = (
+    "[build] interaction_profile=quiet",
+    "epaper_trace=0",
+    "touch_trace=0",
+    "ft6336_threshold=0x70",
+    "touch_poll_active_ms=5",
+    "touch_poll_refresh_ms=5",
+    "refresh_policy=partial_x5_then_fast_cleanup",
+)
+INTERACTION_PROFILE_REQUIRED_LINE = " ".join(INTERACTION_PROFILE_REQUIRED_MARKERS)
 
 
 def rel(path: pathlib.Path) -> str:
@@ -50,6 +61,21 @@ def step(step_id: str, title: str, operator_action: str, success_signal: str,
     }
 
 
+def interaction_profile_runtime_state(normal_log_text: str) -> dict[str, Any]:
+    log_path = pathlib.Path(normal_log_text)
+    if not log_path.is_absolute():
+        log_path = ROOT / log_path
+    raw = log_path.read_text(encoding="utf-8", errors="replace") if log_path.is_file() else ""
+    marker_map = {marker: marker in raw for marker in INTERACTION_PROFILE_REQUIRED_MARKERS}
+    return {
+        "status": "PASS" if INTERACTION_PROFILE_REQUIRED_LINE in raw else "PENDING_HARDWARE_RUNTIME_MARKER",
+        "normal_log": rel(log_path),
+        "required_marker": INTERACTION_PROFILE_REQUIRED_LINE,
+        "marker_present": INTERACTION_PROFILE_REQUIRED_LINE in raw,
+        "required_markers": marker_map,
+    }
+
+
 def build_packet() -> dict[str, Any]:
     menu_evidence = json.loads(BILINGUAL_MENU.read_text(encoding="utf-8"))
     runtime_logs = json.loads(RUNTIME_LOGS.read_text(encoding="utf-8"))
@@ -64,8 +90,12 @@ def build_packet() -> dict[str, Any]:
     generation_scenario = generation_hygiene.get("scenario", {})
     generation_expectation = generation_scenario.get("display_result_expectation", {})
     runtime_machine_ready = runtime_status == PASS_RUNTIME_STATUS and runtime_logs.get("status") == "PASS"
+    normal_log = str(runtime.get("normal_raw_log") or "")
+    interaction_profile = interaction_profile_runtime_state(normal_log)
     machine_precondition = (
-        f"PASS: rev{CANDIDATE.revision} provision and normal runtime logs are promoted; human touch/visual steps may start after the operator says 开始验收."
+        f"PASS: rev{CANDIDATE.revision} provision and normal runtime logs are promoted, and the normal capture proves the quiet interaction profile; human touch/visual steps may start after the operator says 开始验收."
+        if runtime_machine_ready and interaction_profile["status"] == "PASS" else
+        "NO_GO_INTERACTION_PROFILE_RUNTIME_RECHECK_PENDING: do not start human touch/visual steps until a reset-bounded normal capture proves the quiet interaction profile."
         if runtime_machine_ready else
         f"NO_GO_RUNTIME_RECHECK_PENDING: do not start human touch/visual steps until rev{CANDIDATE.revision} provision and normal runtime logs pass and promotion is applied."
     )
@@ -95,6 +125,8 @@ def build_packet() -> dict[str, Any]:
             "bilingual_menu_evidence": rel(BILINGUAL_MENU),
             "provision_log": runtime.get("provision_raw_log"),
             "normal_log": runtime.get("normal_raw_log"),
+            "interaction_profile": interaction_profile,
+            "interaction_profile_evidence": rel(INTERACTION_PROFILE_RUNTIME_GATE),
             "runtime_logs_evidence": rel(RUNTIME_LOGS),
             "runtime_flash_preflight": {
                 "path": rel(RUNTIME_FLASH_PREFLIGHT),
@@ -127,7 +159,7 @@ def build_packet() -> dict[str, Any]:
             },
         },
         "start_rule": (
-            f"Do not start this packet until rev{CANDIDATE.revision} runtime logs PASS, promotion is applied, pre-acceptance health PASS, and the operator explicitly says 开始验收."
+            f"Do not start this packet until rev{CANDIDATE.revision} runtime logs PASS, promotion is applied, pre-acceptance health PASS, a reset-bounded normal capture proves the quiet interaction profile, and the operator explicitly says 开始验收."
         ),
         "machine_precondition": machine_precondition,
         "preflight_commands": [
@@ -157,7 +189,9 @@ def build_packet() -> dict[str, Any]:
             f"SCR-17 generation release ledger {rel(GENERATION_RELEASE_LEDGER)}",
             f"runtime flash preflight {rel(RUNTIME_FLASH_PREFLIGHT)}",
             f"runtime serial capture preflight {rel(RUNTIME_SERIAL_CAPTURE_PREFLIGHT)}",
+            f"interaction-profile runtime gate {rel(INTERACTION_PROFILE_RUNTIME_GATE)}",
             runtime_log_note,
+            "the reset-bounded normal serial capture contains every quiet interaction-profile marker before the first human touch step",
             "serial/runtime diagnostic tail if flashed during the session",
             "photo or short video only when the operator chooses to capture visual evidence",
             "if old marks are visible, classify them as physical afterimage, stale queued frame, stale asset revision, rescue/procedural fallback leakage, or stale_generation_content",
@@ -191,10 +225,10 @@ def build_packet() -> dict[str, Any]:
             step(
                 "menu_boundary_single_clean_refresh",
                 "Menu boundaries clean residuals once",
-                "从日常页长按约 3 秒进入菜单，再从菜单左边缘向右滑返回日常页。",
-                "进入和返回各只做一次完整净化刷新，随后画面稳定；没有第二轮闪烁或旧菜单/旧表情残留。",
+                "从日常页长按约 3 秒进入菜单，再从菜单任意位置向右滑返回日常页。",
+                "进入和返回各只做一次完整净化刷新，随后画面稳定；不需要从边缘开始，也没有第二轮闪烁或旧菜单/旧表情残留。",
                 ["entry refresh count", "exit refresh count", "follow-on flash yes/no", "old content or residual yes/no"],
-                "each explicit daily/menu boundary gets one clean full refresh after cancelling pending maintenance",
+                "an anywhere direction-locked right swipe exits menu, and each explicit daily/menu boundary gets one clean full refresh after cancelling pending maintenance",
             ),
             step(
                 "menu_home_static_vertical_stroke",
@@ -207,10 +241,10 @@ def build_packet() -> dict[str, Any]:
             step(
                 "row_press_and_back",
                 "Row press shows entry feedback",
-                "点击任一菜单项，进入详情页后从左边缘右滑返回。",
-                "点击项先有被选中的 press-cue，再到详情页；返回手势可用。",
+                "点击任一菜单项，进入详情页后从屏幕中部向右滑返回。",
+                "点击项先有被选中的 press-cue，再到详情页；任意位置的返回手势可用。",
                 ["row", "press cue visible yes/no", "detail arrival visible yes/no", "back success yes/no"],
-                "press-cue and target-arrival partial refreshes must not collapse into multi-flash full refresh",
+                "press-cue and target-arrival partial refreshes must not collapse into multi-flash full refresh, and right-swipe return must not require an edge start",
             ),
             step(
                 "phone_reconnect_advertising",
@@ -334,6 +368,8 @@ def render_markdown(packet: dict[str, Any]) -> str:
         "bilingual_menu_evidence",
         "provision_log",
         "normal_log",
+        "interaction_profile",
+        "interaction_profile_evidence",
         "runtime_logs_evidence",
     ):
         lines.append(f"- `{key}`: `{machine_state[key]}`")
@@ -473,6 +509,30 @@ def check_packet(packet: dict[str, Any], errors: list[str]) -> None:
     if generation_ledger.get("path") != rel(GENERATION_RELEASE_LEDGER):
         errors.append("packet machine_state must link generation release ledger")
     runtime_logs_pass = runtime_logs.get("status") == "PASS"
+    interaction_profile = packet.get("machine_state", {}).get("interaction_profile", {})
+    if packet.get("machine_state", {}).get("interaction_profile_evidence") != rel(INTERACTION_PROFILE_RUNTIME_GATE):
+        errors.append("packet must link the interaction-profile runtime gate")
+    if not INTERACTION_PROFILE_RUNTIME_GATE.is_file():
+        errors.append("interaction-profile runtime gate is missing")
+    expected_interaction_profile = interaction_profile_runtime_state(
+        str(packet.get("machine_state", {}).get("normal_log") or "")
+    )
+    if interaction_profile != expected_interaction_profile:
+        errors.append("interaction profile runtime state must mirror the normal capture")
+    if interaction_profile.get("required_marker") != INTERACTION_PROFILE_REQUIRED_LINE:
+        errors.append("interaction profile must require the complete boot marker line")
+    if interaction_profile.get("marker_present") != (interaction_profile.get("status") == "PASS"):
+        errors.append("interaction profile marker presence must match its runtime status")
+    runtime_machine_ready = runtime_status == PASS_RUNTIME_STATUS and runtime_logs_pass
+    expected_machine_precondition = (
+        f"PASS: rev{CANDIDATE.revision} provision and normal runtime logs are promoted, and the normal capture proves the quiet interaction profile; human touch/visual steps may start after the operator says 开始验收."
+        if runtime_machine_ready and interaction_profile.get("status") == "PASS" else
+        "NO_GO_INTERACTION_PROFILE_RUNTIME_RECHECK_PENDING: do not start human touch/visual steps until a reset-bounded normal capture proves the quiet interaction profile."
+        if runtime_machine_ready else
+        f"NO_GO_RUNTIME_RECHECK_PENDING: do not start human touch/visual steps until rev{CANDIDATE.revision} provision and normal runtime logs pass and promotion is applied."
+    )
+    if packet.get("machine_precondition") != expected_machine_precondition:
+        errors.append("packet machine precondition must reflect quiet interaction-profile runtime evidence")
     expected_ledger_status = (
         "RUNTIME_PROMOTED_HUMAN_VISUAL_PENDING"
         if runtime_status == PASS_RUNTIME_STATUS and runtime_logs_pass else
@@ -542,6 +602,17 @@ def check_packet(packet: dict[str, Any], errors: list[str]) -> None:
         rel(REVIEW_RECORD_JSON),
         "render_wb55_touch_visual_review_template.py",
         "verify_wb55_touch_visual_review_record.py",
+        "interaction_profile",
+        rel(INTERACTION_PROFILE_RUNTIME_GATE),
+        "PENDING_HARDWARE_RUNTIME_MARKER",
+        "NO_GO_INTERACTION_PROFILE_RUNTIME_RECHECK_PENDING",
+        "[build] interaction_profile=quiet",
+        "epaper_trace=0",
+        "touch_trace=0",
+        "ft6336_threshold=0x70",
+        "touch_poll_active_ms=5",
+        "touch_poll_refresh_ms=5",
+        "refresh_policy=partial_x5_then_fast_cleanup",
         "source_step_id",
         "triage_items",
         "visual_issue_classification",

@@ -9,14 +9,16 @@
     "SCR-17 generation release ledger docs/validation/companion-screen-generation-release-ledger.json",
     "runtime flash preflight docs/validation/companion-screen-wb55-runtime-flash-preflight.json",
     "runtime serial capture preflight docs/validation/companion-screen-wb55-runtime-serial-capture-preflight.json",
+    "interaction-profile runtime gate docs/validation/companion-interaction-profile-runtime-gate-20260714.md",
     "revision 53 provision/normal serial logs are linked in machine_state",
+    "the reset-bounded normal serial capture contains every quiet interaction-profile marker before the first human touch step",
     "serial/runtime diagnostic tail if flashed during the session",
     "photo or short video only when the operator chooses to capture visual evidence",
     "if old marks are visible, classify them as physical afterimage, stale queued frame, stale asset revision, rescue/procedural fallback leakage, or stale_generation_content",
     "issue triage: fixed, deferred by product decision, accepted benign, or still open"
   ],
   "gate_id": "wb55_touch_visual_acceptance",
-  "machine_precondition": "PASS: rev53 provision and normal runtime logs are promoted; human touch/visual steps may start after the operator says 开始验收.",
+  "machine_precondition": "NO_GO_INTERACTION_PROFILE_RUNTIME_RECHECK_PENDING: do not start human touch/visual steps until a reset-bounded normal capture proves the quiet interaction profile.",
   "machine_state": {
     "bilingual_menu_evidence": "docs/validation/companion-screen-bilingual-menu-wb55.json",
     "display_queue_generation_hygiene": {
@@ -41,6 +43,22 @@
         "stale_generation_content"
       ]
     },
+    "interaction_profile": {
+      "marker_present": false,
+      "normal_log": ".cache/validation/rev53-runtime-current/normal/nucleo-serial-raw.log",
+      "required_marker": "[build] interaction_profile=quiet epaper_trace=0 touch_trace=0 ft6336_threshold=0x70 touch_poll_active_ms=5 touch_poll_refresh_ms=5 refresh_policy=partial_x5_then_fast_cleanup",
+      "required_markers": {
+        "[build] interaction_profile=quiet": false,
+        "epaper_trace=0": false,
+        "ft6336_threshold=0x70": false,
+        "refresh_policy=partial_x5_then_fast_cleanup": false,
+        "touch_poll_active_ms=5": false,
+        "touch_poll_refresh_ms=5": false,
+        "touch_trace=0": false
+      },
+      "status": "PENDING_HARDWARE_RUNTIME_MARKER"
+    },
+    "interaction_profile_evidence": "docs/validation/companion-interaction-profile-runtime-gate-20260714.md",
     "normal_firmware_restored": true,
     "normal_log": ".cache/validation/rev53-runtime-current/normal/nucleo-serial-raw.log",
     "pet_art_style": "genref_sheet_12_inner_faces_v5",
@@ -103,15 +121,15 @@
     },
     {
       "id": "menu_boundary_single_clean_refresh",
-      "operator_action": "从日常页长按约 3 秒进入菜单，再从菜单左边缘向右滑返回日常页。",
+      "operator_action": "从日常页长按约 3 秒进入菜单，再从菜单任意位置向右滑返回日常页。",
       "record": [
         "entry refresh count",
         "exit refresh count",
         "follow-on flash yes/no",
         "old content or residual yes/no"
       ],
-      "regression_guard": "each explicit daily/menu boundary gets one clean full refresh after cancelling pending maintenance",
-      "success_signal": "进入和返回各只做一次完整净化刷新，随后画面稳定；没有第二轮闪烁或旧菜单/旧表情残留。",
+      "regression_guard": "an anywhere direction-locked right swipe exits menu, and each explicit daily/menu boundary gets one clean full refresh after cancelling pending maintenance",
+      "success_signal": "进入和返回各只做一次完整净化刷新，随后画面稳定；不需要从边缘开始，也没有第二轮闪烁或旧菜单/旧表情残留。",
       "title": "Menu boundaries clean residuals once"
     },
     {
@@ -129,15 +147,15 @@
     },
     {
       "id": "row_press_and_back",
-      "operator_action": "点击任一菜单项，进入详情页后从左边缘右滑返回。",
+      "operator_action": "点击任一菜单项，进入详情页后从屏幕中部向右滑返回。",
       "record": [
         "row",
         "press cue visible yes/no",
         "detail arrival visible yes/no",
         "back success yes/no"
       ],
-      "regression_guard": "press-cue and target-arrival partial refreshes must not collapse into multi-flash full refresh",
-      "success_signal": "点击项先有被选中的 press-cue，再到详情页；返回手势可用。",
+      "regression_guard": "press-cue and target-arrival partial refreshes must not collapse into multi-flash full refresh, and right-swipe return must not require an edge start",
+      "success_signal": "点击项先有被选中的 press-cue，再到详情页；任意位置的返回手势可用。",
       "title": "Row press shows entry feedback"
     },
     {
@@ -241,7 +259,7 @@
     "template_markdown": "docs/validation/companion-screen-wb55-touch-visual-review-template.md"
   },
   "schema_id": "companion.pendant.wb55_touch_visual_acceptance_packet.v1",
-  "start_rule": "Do not start this packet until rev53 runtime logs PASS, promotion is applied, pre-acceptance health PASS, and the operator explicitly says 开始验收.",
+  "start_rule": "Do not start this packet until rev53 runtime logs PASS, promotion is applied, pre-acceptance health PASS, a reset-bounded normal capture proves the quiet interaction profile, and the operator explicitly says 开始验收.",
   "status": "PENDING_HUMAN",
   "target": "NUCLEO-WB55RG + GDEY0154D67-T03 + FT6336U",
   "validation_commands": [

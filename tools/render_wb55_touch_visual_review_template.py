@@ -203,8 +203,8 @@ def verify(template: dict[str, Any]) -> list[str]:
     if packet_precondition.startswith("PASS:"):
         if "PASS: rev" not in serialized:
             errors.append("template missing promoted runtime PASS precondition")
-    elif "NO_GO_RUNTIME_RECHECK_PENDING" not in serialized:
-        errors.append("template missing runtime-recheck blocker precondition")
+    elif not packet_precondition.startswith("NO_GO_"):
+        errors.append("template missing a runtime-recheck blocker precondition")
     return errors
 
 

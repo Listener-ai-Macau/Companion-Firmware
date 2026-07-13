@@ -7,8 +7,8 @@ do not edit this template as the final evidence record.
 - Gate: `wb55_touch_visual_acceptance`
 - Target: `NUCLEO-WB55RG + GDEY0154D67-T03 + FT6336U`
 - Source packet: `docs/validation/companion-screen-wb55-touch-visual-acceptance-packet.json`
-- Start rule: Do not start this packet until rev53 runtime logs PASS, promotion is applied, pre-acceptance health PASS, and the operator explicitly says 开始验收.
-- Machine precondition: PASS: rev53 provision and normal runtime logs are promoted; human touch/visual steps may start after the operator says 开始验收.
+- Start rule: Do not start this packet until rev53 runtime logs PASS, promotion is applied, pre-acceptance health PASS, a reset-bounded normal capture proves the quiet interaction profile, and the operator explicitly says 开始验收.
+- Machine precondition: NO_GO_INTERACTION_PROFILE_RUNTIME_RECHECK_PENDING: do not start human touch/visual steps until a reset-bounded normal capture proves the quiet interaction profile.
 
 ## Review Records
 
@@ -75,9 +75,9 @@ do not edit this template as the final evidence record.
 ### 4. Menu boundaries clean residuals once
 
 - Step ID: `menu_boundary_single_clean_refresh`
-- Action: 从日常页长按约 3 秒进入菜单，再从菜单左边缘向右滑返回日常页。
-- Success signal: 进入和返回各只做一次完整净化刷新，随后画面稳定；没有第二轮闪烁或旧菜单/旧表情残留。
-- Regression guard: each explicit daily/menu boundary gets one clean full refresh after cancelling pending maintenance
+- Action: 从日常页长按约 3 秒进入菜单，再从菜单任意位置向右滑返回日常页。
+- Success signal: 进入和返回各只做一次完整净化刷新，随后画面稳定；不需要从边缘开始，也没有第二轮闪烁或旧菜单/旧表情残留。
+- Regression guard: an anywhere direction-locked right swipe exits menu, and each explicit daily/menu boundary gets one clean full refresh after cancelling pending maintenance
 - Expected record fields:
   - entry refresh count
   - exit refresh count
@@ -117,9 +117,9 @@ do not edit this template as the final evidence record.
 ### 6. Row press shows entry feedback
 
 - Step ID: `row_press_and_back`
-- Action: 点击任一菜单项，进入详情页后从左边缘右滑返回。
-- Success signal: 点击项先有被选中的 press-cue，再到详情页；返回手势可用。
-- Regression guard: press-cue and target-arrival partial refreshes must not collapse into multi-flash full refresh
+- Action: 点击任一菜单项，进入详情页后从屏幕中部向右滑返回。
+- Success signal: 点击项先有被选中的 press-cue，再到详情页；任意位置的返回手势可用。
+- Regression guard: press-cue and target-arrival partial refreshes must not collapse into multi-flash full refresh, and right-swipe return must not require an edge start
 - Expected record fields:
   - row
   - press cue visible yes/no

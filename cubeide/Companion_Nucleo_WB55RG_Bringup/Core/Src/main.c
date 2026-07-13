@@ -29,8 +29,20 @@
 #ifndef COMPANION_TOUCH_VERBOSE_TRACE
 #define COMPANION_TOUCH_VERBOSE_TRACE 0
 #endif
+#ifndef COMPANION_EPAPER_SSD1681_VERBOSE_TRACE
+#define COMPANION_EPAPER_SSD1681_VERBOSE_TRACE 0
+#endif
 #if COMPANION_TOUCH_VERBOSE_TRACE != 0 && COMPANION_TOUCH_VERBOSE_TRACE != 1
 #error "Companion touch verbose trace must be 0 or 1"
+#endif
+#if COMPANION_EPAPER_SSD1681_VERBOSE_TRACE != 0 && COMPANION_EPAPER_SSD1681_VERBOSE_TRACE != 1
+#error "Companion e-paper verbose trace must be 0 or 1"
+#endif
+
+#if COMPANION_EPAPER_SSD1681_VERBOSE_TRACE || COMPANION_TOUCH_VERBOSE_TRACE
+#define COMPANION_INTERACTION_BUILD_PROFILE "trace"
+#else
+#define COMPANION_INTERACTION_BUILD_PROFILE "quiet"
 #endif
 
 #if COMPANION_TOUCH_VERBOSE_TRACE
@@ -1067,6 +1079,15 @@ int main(void)
                               0u);
 
     printf("\r\n[boot] Companion NUCLEO-WB55RG bringup\r\n");
+    /* One boot marker ties a physical acceptance trace to the interaction
+     * profile without adding UART work to the touch or display hot paths. */
+    printf("[build] interaction_profile=%s epaper_trace=%u touch_trace=%u ft6336_threshold=0x%02X touch_poll_active_ms=%u touch_poll_refresh_ms=%u refresh_policy=partial_x5_then_fast_cleanup\r\n",
+           COMPANION_INTERACTION_BUILD_PROFILE,
+           (unsigned int)COMPANION_EPAPER_SSD1681_VERBOSE_TRACE,
+           (unsigned int)COMPANION_TOUCH_VERBOSE_TRACE,
+           (unsigned int)COMP_FT6336_COMPANION_TOUCH_THRESHOLD,
+           (unsigned int)TOUCH_ACTIVE_POLL_MS,
+           (unsigned int)TOUCH_REFRESH_POLL_MS);
     printf("[boot] uart=USART1 PB6/PB7 115200 flash=QSPI-2IO PA2/PA3/PB9/PB8 spi2=PA9/PC1/PC2 cs=PA6 hz=%lu i2c3=PC0/PB11 touch_irq=PC6 touch_reset=PC10\r\n",
            (unsigned long)BOARD_EPAPER_SPI_HZ);
     printf("[boot] mic=SAI1A PA8/PB12/PC3 speaker=SAI1B PB3/PA4/PA5 max98357_sd=PA15\r\n");
