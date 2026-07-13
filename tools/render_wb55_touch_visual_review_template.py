@@ -153,6 +153,8 @@ def verify(template: dict[str, Any]) -> list[str]:
             errors.append(f"triage contract missing visual issue class {state}")
     records = template.get("review_records", [])
     packet = load_json(PACKET)
+    if template.get("machine_precondition") != packet.get("machine_precondition"):
+        errors.append("review template machine precondition drifted from acceptance packet")
     packet_ids = [item.get("id") for item in packet.get("operator_steps", [])]
     record_ids = [item.get("source_step_id") for item in records]
     if record_ids != packet_ids:
@@ -191,12 +193,17 @@ def verify(template: dict[str, Any]) -> list[str]:
         "publishable PASS",
         "daily_tap_social_response",
         "premium_pet_feel",
-        "NO_GO_RUNTIME_RECHECK_PENDING",
         "visual_issue_classification",
         "stale_generation_content",
     ):
         if token not in serialized:
             errors.append(f"template missing token {token}")
+    packet_precondition = str(packet.get("machine_precondition", ""))
+    if packet_precondition.startswith("PASS:"):
+        if "PASS: rev" not in serialized:
+            errors.append("template missing promoted runtime PASS precondition")
+    elif "NO_GO_RUNTIME_RECHECK_PENDING" not in serialized:
+        errors.append("template missing runtime-recheck blocker precondition")
     return errors
 
 

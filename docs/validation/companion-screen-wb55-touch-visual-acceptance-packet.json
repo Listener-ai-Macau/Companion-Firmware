@@ -9,14 +9,14 @@
     "SCR-17 generation release ledger docs/validation/companion-screen-generation-release-ledger.json",
     "runtime flash preflight docs/validation/companion-screen-wb55-runtime-flash-preflight.json",
     "runtime serial capture preflight docs/validation/companion-screen-wb55-runtime-serial-capture-preflight.json",
-    "machine_state currently links the last runtime-proven revision logs; rev53 provision/normal logs are still pending in the runtime recheck report",
+    "revision 53 provision/normal serial logs are linked in machine_state",
     "serial/runtime diagnostic tail if flashed during the session",
     "photo or short video only when the operator chooses to capture visual evidence",
     "if old marks are visible, classify them as physical afterimage, stale queued frame, stale asset revision, rescue/procedural fallback leakage, or stale_generation_content",
     "issue triage: fixed, deferred by product decision, accepted benign, or still open"
   ],
   "gate_id": "wb55_touch_visual_acceptance",
-  "machine_precondition": "NO_GO_RUNTIME_RECHECK_PENDING: do not start human touch/visual steps until rev53 provision and normal runtime logs pass and promotion is applied.",
+  "machine_precondition": "PASS: rev53 provision and normal runtime logs are promoted; human touch/visual steps may start after the operator says 开始验收.",
   "machine_state": {
     "bilingual_menu_evidence": "docs/validation/companion-screen-bilingual-menu-wb55.json",
     "display_queue_generation_hygiene": {
@@ -31,8 +31,8 @@
       "cemp_revision": 53,
       "expected_first_frame_marker": "coherent_generation=1",
       "path": "docs/validation/companion-screen-generation-release-ledger.json",
-      "real_runtime_status": "NO_GO_MISSING_RUNTIME_LOGS",
-      "status": "PENDING_RUNTIME_RECHECK",
+      "real_runtime_status": "PASS",
+      "status": "RUNTIME_PROMOTED_HUMAN_VISUAL_PENDING",
       "visual_triage_classes": [
         "physical afterimage",
         "stale queued frame",
