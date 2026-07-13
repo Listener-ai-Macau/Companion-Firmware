@@ -850,6 +850,18 @@ timeline 并写一个 `visual=gesture_owned` trace。手势已分辨后，tap/st
 构建和 reset-bounded trace 必须证明该 deferred path；真实板端观感仍留在 ACPT-01，不能因日志
 通过而声称“跟手”。
 
+## Revision 66: BUSY 期间不冻结手势
+
+此前 SSD1681 `wait_service` 在每个 5 ms tick 读取 FT6336 后只保存 anchor/latest/release，直到
+当前 partial 或 maintenance waveform 结束才由主循环回放。它保证了动作不丢失，却把右滑、
+双击和长按的识别时机推到面板 BUSY 之后，仍然与 owner 所说的“相当的卡顿”相冲突。
+
+`COMP-REQ-024` 要求该服务改为在同一线程直接推进既有 gesture state machine。它只能改变
+触控/菜单的逻辑状态并向 display queue 写入可合并的后续请求；不得在 wait loop 中递归调用
+display task、启动第二次硬件刷新或额外设计视觉帧。这样电子纸保持其物理刷新限制，而用户的
+手势时间线不再被 0.3 s 局刷暂停。构建和机器 trace 只能证明 timing path；真实 touch feel
+仍由 ACPT-01 确认。
+
 ## 逐项验收顺序
 
 本项目遵循 AI Workflow 的全产品异步验收规则：未收到操作者明确的“开始验收”前，

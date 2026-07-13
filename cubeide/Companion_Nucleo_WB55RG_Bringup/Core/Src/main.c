@@ -1747,7 +1747,11 @@ static void capture_touch_during_display_wait(void *context, uint32_t now_ms)
     if (result != COMPANION_TOUCH_FT6336_STM32WB_OK) {
         return;
     }
-    buffer_touch_sample_during_panel_wait(&sample, now_ms);
+    /* This callback runs in the display task, not an interrupt. Advance the
+     * shared gesture timeline at the FT6336 capture cadence while the panel
+     * is BUSY. Any visible response is only queued for after this waveform;
+     * the callback never invokes the display task recursively. */
+    process_touch_debug_sample(&sample, now_ms);
 }
 
 static void process_touch_debug_sample(const comp_ft6336_touch_sample_t *sample,
