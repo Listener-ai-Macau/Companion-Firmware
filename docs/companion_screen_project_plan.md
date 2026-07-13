@@ -930,6 +930,25 @@ WB55 normal production image `86a0f01` 已在 2026-07-14 的 reset-bounded captu
 证据为 `docs/validation/companion-low-power-idle-stop-return-20260714.md`。这只关闭了回交 Stop
 的机器问题；触控取消、最终产品板电流和 ACPT-01 人工观感仍保持待办。
 
+## Revision 72: 合并交互后的清理刷新
+
+owner 最新的“这个产品，需要优化”对应到一项明确的软件卡顿：每次日常点按、滑动、菜单拖动和普通
+菜单切换都会在接触结束 1200 ms 后额外请求一次 `MAINTENANCE`，使一次约 0.3 s 的 `0xFC` 差分更新
+后又排入一次约 1.5 s 的 Good Display Mode-1 `0xC7` 更新。它不是手势识别所必需的工作，且会让用户
+在停止操作后仍感到界面被再次拖住。
+
+GDEY0154D67-T03 的 Good Display 指引和 Waveshare 的 e-paper partial-refresh 指引都把清残描述为
+数次局刷后的低频动作，常见阈值为五次，而不是每一次触摸。因而 portable `refresh_policy` 统一把
+`PARTIAL_INTERACTIVE` 纳入既有 five-partial 限制：成功的第 1-5 次继续 `0xFC` 差分局刷；第 6 次请求
+改为一个 vendor-profiled Mode-1 `0xC7` 清理，并重置 baseline 计数。普通触控不再拥有 1200 ms 定时
+维护任务，也不再阻止 Stop。菜单进入和右滑退出仍是用户可理解的视觉边界，保留各一次显式
+`MAINTENANCE`/`0xC7`；完整 `0xF7` 仍只用于未知 baseline 或故障恢复。
+
+该改变不会把电子纸伪装成 OLED，也不会改变生图资源、触控方向、菜单候选或外部 Flash。WB55 和
+WBA55/WBA65 共用这个 portable policy；目标层仅可在有同等面板证据时替换 `0xFC`/`0xC7` 的具体波形。
+构建、自测和 reset-bounded serial 必须证明没有普通触控后的 delayed maintenance，且第六次交互会
+选择一次 `0xC7`。真实残影和观感仍属于 ACPT-01，不能由日志替代。
+
 ## 逐项验收顺序
 
 本项目遵循 AI Workflow 的全产品异步验收规则：未收到操作者明确的“开始验收”前，

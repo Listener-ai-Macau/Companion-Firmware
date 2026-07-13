@@ -2109,3 +2109,25 @@ It is the quick status map for one-by-one acceptance:
      CEMP revision, and hardware acceptance must be recorded in
      `docs/art/iterations/companion-pet-interaction-v1/iteration-ledger.json`.
      Until an output is accepted, current external assets remain unchanged.
+
+70. Revision 72 interaction refresh cadence (supersedes earlier generic quiet
+    maintenance wording)
+   - Normal daily tap, stroke, menu drag, ordinary menu navigation, recording
+     status update, and phone reconnect use the portable
+     `PARTIAL_INTERACTIVE` intent only. They must not schedule an application
+     timer that issues a second cleanup waveform after the user's finger has
+     stopped.
+   - `refresh_policy.h/.c` counts successful differential requests after a
+     valid baseline. Requests 1-5 remain differential (`0xFC` on this WB55
+     target); request 6 selects one target fast maintenance waveform (`0xC7`
+     with the recorded Good Display Mode-1 profile) and resets the count.
+     This is the active ghost-control cadence for WB55 and future WBA targets.
+   - Explicit menu entry and right-swipe exit are readable visual boundaries,
+     so each may request one `MAINTENANCE` cleanup. Standard full refresh
+     (`0xF7`) remains initial-baseline and fault-recovery only. Earlier text
+     mentioning a 1200/1600 ms generic quiet cleanup, `0xCF` for normal
+     interaction, or a 60-update interactive safety limit is historical and
+     must not be reintroduced.
+   - This removes a software-added second wait but does not claim OLED frame
+     latency. The actual panel still needs focused residual-image and feel
+     review under ACPT-01 after a reset-bounded WB55 trace proves the cadence.

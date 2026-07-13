@@ -13,6 +13,11 @@ def require(text: str, needle: str, label: str, errors: list[str]) -> None:
         errors.append(f"missing {label}: {needle}")
 
 
+def forbid(text: str, needle: str, label: str, errors: list[str]) -> None:
+    if needle in text:
+        errors.append(f"unexpected {label}: {needle}")
+
+
 def main() -> int:
     errors: list[str] = []
     header = (ROOT / "app/companion_pendant/epaper/refresh_policy.h").read_text(
@@ -48,21 +53,19 @@ def main() -> int:
     asset_revision = asset_manifest.get("revision")
 
     require(header, "COMP_EPAPER_REFRESH_DEFAULT_PARTIAL_LIMIT 5u", "five-update limit", errors)
-    require(header, "COMP_EPAPER_REFRESH_DEFAULT_INTERACTIVE_HARD_LIMIT 60u", "interactive hard limit", errors)
     require(header, "COMP_EPAPER_REFRESH_DECISION_FAST", "fast maintenance decision", errors)
     require(header, "COMP_EPAPER_REFRESH_REASON_BASELINE_REQUIRED", "baseline guard", errors)
     require(header, "COMP_EPAPER_REFRESH_REASON_PARTIAL_LIMIT", "limit guard", errors)
-    require(header, "COMP_EPAPER_REFRESH_REASON_MAINTENANCE_DEFERRED", "deferred cleanup", errors)
-    require(header, "COMP_EPAPER_REFRESH_REASON_INTERACTIVE_HARD_LIMIT", "interactive safety guard", errors)
+    require(header, "COMP_EPAPER_REFRESH_REASON_MAINTENANCE_BOUNDARY", "boundary cleanup", errors)
     require(source, "!policy->baseline_valid", "baseline selection", errors)
     require(source, "policy->partial_count >= policy->partial_limit", "limit selection", errors)
-    require(source, "policy->partial_count >= policy->interactive_hard_limit", "interactive limit selection", errors)
-    require(source, "requested_mode == COMP_EPAPER_REFRESH_MAINTENANCE", "post-gesture cleanup selection", errors)
-    require(source, "selection.reason = COMP_EPAPER_REFRESH_REASON_MAINTENANCE_DEFERRED", "maintenance cleanup reason", errors)
+    require(source, "requested_mode == COMP_EPAPER_REFRESH_PARTIAL_INTERACTIVE", "interactive limit selection", errors)
+    require(source, "requested_mode == COMP_EPAPER_REFRESH_MAINTENANCE", "boundary cleanup selection", errors)
+    require(source, "selection.reason = COMP_EPAPER_REFRESH_REASON_MAINTENANCE_BOUNDARY", "boundary cleanup reason", errors)
     require(source, "comp_epaper_refresh_policy_self_test", "portable self-test", errors)
     require(request, "COMP_EPAPER_REFRESH_PARTIAL", "portable partial intent", errors)
     require(request, "COMP_EPAPER_REFRESH_PARTIAL_INTERACTIVE", "interactive partial intent", errors)
-    require(request, "COMP_EPAPER_REFRESH_MAINTENANCE", "deferred maintenance intent", errors)
+    require(request, "COMP_EPAPER_REFRESH_MAINTENANCE", "boundary maintenance intent", errors)
     require(request, "uint16_t dirty_width", "16-bit dirty rectangle", errors)
     require(driver, "ssd1681_window_from_difference", "frame difference window", errors)
     require(driver, "ssd1681_write_plane_region(0x24u, s_frame, &window)", "current BW RAM write", errors)
@@ -85,11 +88,10 @@ def main() -> int:
     require(driver, "0x91u", "vendor fast Mode 1 LUT-load command", errors)
     require(driver, "differential_skip identical_frame", "identical frame suppression", errors)
     require(driver, "comp_epaper_refresh_policy_commit", "result commit", errors)
-    require(main_source, "TOUCH_SCREEN_MAINTENANCE_QUIET_MS 1200u", "quiet maintenance delay", errors)
-    require(main_source, "s_touch_contact_active", "maintenance touch exclusion", errors)
-    require(main_source, "Companion_Screen_MenuMaintenance()", "deferred maintenance request", errors)
-    require(main_source, "Companion_Screen_ExpressionMaintenance()", "daily-face deferred maintenance request", errors)
-    require(main_source, "schedule_touch_screen_maintenance(now_ms)", "generic post-interaction maintenance schedule", errors)
+    forbid(main_source, "TOUCH_SCREEN_MAINTENANCE_QUIET_MS", "post-touch maintenance timer", errors)
+    forbid(main_source, "schedule_touch_screen_maintenance", "post-touch maintenance scheduler", errors)
+    forbid(main_source, "process_touch_screen_maintenance", "post-touch maintenance processor", errors)
+    forbid(main_source, "s_screen_maintenance_pending", "post-touch maintenance blocker", errors)
     require(makefile, "epaper/refresh_policy.c", "firmware linkage", errors)
 
     if evidence.get("status") != "PASS":
@@ -121,8 +123,8 @@ def main() -> int:
         "epaper refresh policy: PASS "
         f"(static contract; current resource rev{asset_revision} runtime/visual recheck pending)"
     )
-    print("  post-gesture cleanup target: one Good Display Mode 1 / 0xC7 maintenance pass")
-    print("  interactive safety limit: 60 partial updates")
+    print("  interaction cleanup target: five differential updates, then one Mode 1 / 0xC7 pass")
+    print("  normal touch has no delayed post-gesture maintenance timer")
     print("  historical strict diagnostic retained: full + 5 partial + forced full")
     print("  revision 63 controls: full=0xF7 maintenance=0xC7 differential=0xFC")
     return 0

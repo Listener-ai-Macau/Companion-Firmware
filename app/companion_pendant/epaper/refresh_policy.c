@@ -11,10 +11,6 @@ void comp_epaper_refresh_policy_init(comp_epaper_refresh_policy_t *policy,
     policy->partial_limit = partial_limit == 0u
                                 ? COMP_EPAPER_REFRESH_DEFAULT_PARTIAL_LIMIT
                                 : partial_limit;
-    policy->interactive_hard_limit =
-        policy->partial_limit > COMP_EPAPER_REFRESH_DEFAULT_INTERACTIVE_HARD_LIMIT
-            ? policy->partial_limit
-            : COMP_EPAPER_REFRESH_DEFAULT_INTERACTIVE_HARD_LIMIT;
     policy->partial_count = 0u;
     policy->baseline_valid = false;
 }
@@ -37,26 +33,16 @@ comp_epaper_refresh_selection_t comp_epaper_refresh_policy_select(
         if (policy == NULL || !policy->baseline_valid) {
             selection.reason = COMP_EPAPER_REFRESH_REASON_BASELINE_REQUIRED;
         } else if (requested_mode == COMP_EPAPER_REFRESH_MAINTENANCE) {
-            /* Post-gesture maintenance is a deliberate cleanup pass, not
-             * another differential frame.  This maps to the SSD1681 0xCF
-             * low-flicker waveform even after a short interaction. */
+            /* Explicit menu boundaries may restore contrast once. Normal
+             * touches never schedule this path after a quiet-time delay. */
             selection.decision = COMP_EPAPER_REFRESH_DECISION_FAST;
-            selection.reason = COMP_EPAPER_REFRESH_REASON_MAINTENANCE_DEFERRED;
-        } else if ((requested_mode == COMP_EPAPER_REFRESH_PARTIAL ||
-                    requested_mode == COMP_EPAPER_REFRESH_MAINTENANCE) &&
-                   policy->partial_count >= policy->partial_limit) {
+            selection.reason = COMP_EPAPER_REFRESH_REASON_MAINTENANCE_BOUNDARY;
+        } else if (policy->partial_count >= policy->partial_limit) {
             selection.decision = COMP_EPAPER_REFRESH_DECISION_FAST;
             selection.reason = COMP_EPAPER_REFRESH_REASON_PARTIAL_LIMIT;
-        } else if (requested_mode == COMP_EPAPER_REFRESH_PARTIAL_INTERACTIVE &&
-                   policy->partial_count >= policy->interactive_hard_limit) {
-            selection.decision = COMP_EPAPER_REFRESH_DECISION_FAST;
-            selection.reason = COMP_EPAPER_REFRESH_REASON_INTERACTIVE_HARD_LIMIT;
         } else {
             selection.decision = COMP_EPAPER_REFRESH_DECISION_PARTIAL;
-            selection.reason =
-                policy->partial_count >= policy->partial_limit
-                    ? COMP_EPAPER_REFRESH_REASON_MAINTENANCE_DEFERRED
-                    : COMP_EPAPER_REFRESH_REASON_REQUESTED_PARTIAL;
+            selection.reason = COMP_EPAPER_REFRESH_REASON_REQUESTED_PARTIAL;
         }
     }
     return selection;
@@ -120,15 +106,12 @@ bool comp_epaper_refresh_policy_self_test(void)
     comp_epaper_refresh_policy_commit(&policy,
                                       COMP_EPAPER_REFRESH_DECISION_FULL,
                                       true);
-    for (uint8_t index = 0u;
-         index < COMP_EPAPER_REFRESH_DEFAULT_INTERACTIVE_HARD_LIMIT;
-         ++index) {
+    for (uint8_t index = 0u; index < policy.partial_limit; ++index) {
         selection = comp_epaper_refresh_policy_select(
             &policy, COMP_EPAPER_REFRESH_PARTIAL_INTERACTIVE);
         if (selection.decision != COMP_EPAPER_REFRESH_DECISION_PARTIAL ||
-            (index >= policy.partial_limit &&
-             selection.reason !=
-                 COMP_EPAPER_REFRESH_REASON_MAINTENANCE_DEFERRED)) {
+            selection.partial_count_before != index ||
+            selection.reason != COMP_EPAPER_REFRESH_REASON_REQUESTED_PARTIAL) {
             return false;
         }
         comp_epaper_refresh_policy_commit(&policy, selection.decision, true);
@@ -136,7 +119,7 @@ bool comp_epaper_refresh_policy_self_test(void)
     selection = comp_epaper_refresh_policy_select(
         &policy, COMP_EPAPER_REFRESH_PARTIAL_INTERACTIVE);
     if (selection.decision != COMP_EPAPER_REFRESH_DECISION_FAST ||
-        selection.reason != COMP_EPAPER_REFRESH_REASON_INTERACTIVE_HARD_LIMIT) {
+        selection.reason != COMP_EPAPER_REFRESH_REASON_PARTIAL_LIMIT) {
         return false;
     }
     comp_epaper_refresh_policy_init(&policy, 5u);
@@ -146,5 +129,5 @@ bool comp_epaper_refresh_policy_self_test(void)
     selection = comp_epaper_refresh_policy_select(
         &policy, COMP_EPAPER_REFRESH_MAINTENANCE);
     return selection.decision == COMP_EPAPER_REFRESH_DECISION_FAST &&
-           selection.reason == COMP_EPAPER_REFRESH_REASON_MAINTENANCE_DEFERRED;
+           selection.reason == COMP_EPAPER_REFRESH_REASON_MAINTENANCE_BOUNDARY;
 }

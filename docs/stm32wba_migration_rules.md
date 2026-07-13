@@ -316,8 +316,9 @@ Portable today:
   adapter files.
 - Full/partial/fast selection and the residual-image guard live in the HAL-free
   `refresh_policy.h/.c`. A target establishes a valid baseline before the first
-  partial refresh. Five interactive partials mark maintenance due without
-  interrupting input; the 60-update safety limit selects target fast maintenance.
+  partial refresh. Five interactive partials are allowed; the sixth request
+  selects one target fast-maintenance waveform and resets the baseline count.
+  Ordinary touch paths must not add a delayed maintenance refresh of their own.
   Standard full refresh is reserved for an unknown baseline or controlled fault
   recovery. WBA targets reuse the policy but implement their own controller RAM,
   waveform, and update-control sequence.

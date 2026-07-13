@@ -11,6 +11,7 @@
     "display_queue_tracks_resource_generation": true,
     "full_refresh_reserved_for_baseline_or_fault": true,
     "identical_frame_suppression": true,
+    "interactive_cleanup_is_coalesced_at_five_partials": true,
     "interactive_modes_are_portable": true,
     "interactive_uses_differential_waveform": true,
     "maintenance_uses_single_low_flicker_waveform": true,
@@ -19,10 +20,9 @@
     "menu_drag_coalesces_to_latest_frame": true,
     "menu_entry_discards_all_pet_frames": true,
     "new_old_generation_interleave_rules_recorded": true,
+    "ordinary_touch_has_no_delayed_maintenance": true,
     "policy_limits_are_bounded": true,
-    "post_interaction_schedules_one_maintenance_path": true,
     "scr17_release_ledger_recorded": true,
-    "touch_active_blocks_maintenance": true,
     "vendor_ghosting_research_recorded": true,
     "wb55_sets_and_logs_resource_generation": true
   },
@@ -33,7 +33,7 @@
     "generation_triage": "Classify visible old content as physical afterimage, stale queued frame, stale asset revision, or rescue/procedural fallback leakage; only physical afterimage belongs to refresh-profile tuning.",
     "ghosting": "Partial/fast refresh can accumulate ghosting; tune refresh profile/cadence rather than blending old art.",
     "interactive": "Use differential 0xFC dirty-window refresh; coalesce queued menu drag frames to the latest request.",
-    "maintenance": "After touch settles, schedule one Good Display Mode 1 / 0xC7 maintenance cleanup; never insert it while contact is active.",
+    "maintenance": "Ordinary touch never schedules a delayed cleanup. Five completed differential interactions are allowed; the sixth selects one Good Display Mode 1 / 0xC7 cleanup. Explicit menu enter/exit boundaries each request one Mode-1 cleanup.",
     "menu_boundary": "Enter and exit request one vendor-profiled Mode 1 / 0xC7 fast waveform when the panel baseline is valid. The target logs the profile, activation count, and expected visible phase model; physical one-flicker confirmation remains a focused hardware gate.",
     "portability": "Scene/player use portable refresh intents; WB55/WBA panel targets choose waveform details."
   },

@@ -131,7 +131,6 @@ def main() -> int:
         "tap/swipe/record/menu",
         "Companion_Screen_MenuRequestClean(",
         "Companion_Screen_ShowDailyClean()",
-        "screen_maintenance cancelled=transition",
         "s_touch_gesture.consumed_until_release",
         "[record-visual] action=start expression=recording",
         "[record-visual] action=store expression=%s",
@@ -224,7 +223,7 @@ def main() -> int:
             "toggle_touch_recording();",
             "start_manual_recording();",
             "stop_manual_recording(\"touch-menu\");",
-            "process_touch_menu_phone_reconnect(HAL_GetTick());",
+            "process_touch_menu_phone_reconnect();",
         ):
             if action not in deferred_block:
                 errors.append(f"deferred touch executor missing {action}")
@@ -235,8 +234,8 @@ def main() -> int:
         errors.append("daily double-tap branch must remain explicit")
     else:
         double_tap_block = main_source.split(double_tap_marker, 1)[1].split(double_tap_tail, 1)[0]
-        if "cancel_touch_screen_maintenance();" not in double_tap_block:
-            errors.append("daily double-tap must cancel first-tap maintenance before recording art")
+        if "cancel_touch_screen_maintenance" in double_tap_block:
+            errors.append("daily double-tap must not restore the obsolete delayed maintenance path")
         if "COMP_TOUCH_RUNTIME_ACTION_TOGGLE_RECORDING" not in double_tap_block:
             errors.append("daily double-tap must defer recording while the panel is BUSY")
 

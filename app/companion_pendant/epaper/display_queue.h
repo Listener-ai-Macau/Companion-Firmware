@@ -43,7 +43,7 @@ typedef enum {
     COMP_EPAPER_REFRESH_FULL = 1,
     COMP_EPAPER_REFRESH_PARTIAL = 2,
     COMP_EPAPER_REFRESH_PARTIAL_INTERACTIVE = 3,
-    /* Deferred after the user releases touch; allowed to restore contrast. */
+    /* Explicit noninteractive visual boundary; restores contrast once. */
     COMP_EPAPER_REFRESH_MAINTENANCE = 4,
 } comp_epaper_refresh_mode_t;
 

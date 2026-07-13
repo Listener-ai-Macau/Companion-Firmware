@@ -907,13 +907,12 @@ static comp_epaper_panel_result_t ssd1681_refresh(
     uint32_t transfer_after_waveform_start_ms;
     uint32_t transfer_after_waveform_elapsed_ms;
     const char *selected_mode = partial ? "differential" : fast ? "maintenance" : "full";
-    printf("[epaper] policy requested=%u selected=%s reason=%u partial_count=%u soft=%u hard=%u baseline=%u\r\n",
+    printf("[epaper] policy requested=%u selected=%s reason=%u partial_count=%u limit=%u baseline=%u\r\n",
            (unsigned)requested_mode,
            selected_mode,
            (unsigned)selection.reason,
            (unsigned)selection.partial_count_before,
            (unsigned)target->refresh_policy.partial_limit,
-           (unsigned)target->refresh_policy.interactive_hard_limit,
            (unsigned)target->refresh_policy.baseline_valid);
 
 #if COMPANION_EPAPER_SSD1681_WIRE_PROBE != 0u

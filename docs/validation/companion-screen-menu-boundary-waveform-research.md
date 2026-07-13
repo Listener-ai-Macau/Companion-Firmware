@@ -51,3 +51,23 @@ visible flashes. The repair distinguishes the required layers:
 This is a machine and vendor-evidence decision, not a physical acceptance
 claim. ACPT-01 must still record the actual panel observation for a menu entry
 and a right-swipe exit, plus any ghosting after the single-activation path.
+
+## Revision 72 Interaction Cadence Decision
+
+The previous application-level 1200 ms post-touch maintenance timer requested
+the Mode-1 profile after every ordinary interaction. That is not a panel
+requirement and adds a visible second wait after a `0xFC` differential frame.
+
+The portable refresh policy now treats `PARTIAL_INTERACTIVE` like every other
+bounded partial request: five successful differential requests are allowed;
+the sixth selects one `0xC7` Mode-1 cleanup and resets the baseline count.
+The explicit menu enter and exit boundaries still request one `0xC7` cleanup.
+This follows the target vendor's "five consecutive" cleanup guidance and is
+also consistent with Waveshare's partial-refresh guidance to clean after
+several partial operations. The policy is a cadence contract, not an assertion
+that the physical panel has OLED-like latency; visual ghosting remains an
+ACPT-01 hardware check.
+
+Additional source checked on 2026-07-14:
+
+3. https://docs.waveshare.com/4.26inch_e-Paper_G/FAQ

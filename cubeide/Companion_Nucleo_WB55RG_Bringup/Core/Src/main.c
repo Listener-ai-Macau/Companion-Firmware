@@ -89,7 +89,6 @@ COMPANION_PLACE_IN_SECTION("TAG_OTA_START") const uint32_t MagicKeywordAddress =
 #define TOUCH_I2C_RECOVERY_CLOCKS 9u
 #define TOUCH_RESET_LOW_MS 10u
 #define TOUCH_RESET_BOOT_MS 320u
-#define TOUCH_SCREEN_MAINTENANCE_QUIET_MS 1200u
 #define LOW_POWER_IDLE_POSE_DELAY_MS 15000u
 #define LOW_POWER_IDLE_TIMER_ID_INVALID 0xFFu
 
@@ -494,8 +493,6 @@ static uint8_t s_menu_home_press_item;
 static bool s_menu_home_press_candidate;
 static uint8_t s_menu_home_press_candidate_item;
 static uint32_t s_menu_home_press_candidate_due_ms;
-static bool s_screen_maintenance_pending;
-static uint32_t s_screen_maintenance_due_ms;
 static uint8_t s_low_power_idle_timer_id = LOW_POWER_IDLE_TIMER_ID_INVALID;
 static bool s_low_power_idle_timer_created;
 static volatile bool s_low_power_idle_timer_armed;
@@ -623,14 +620,11 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
                                      uint16_t logical_x,
                                      uint16_t logical_y,
                                      uint32_t now_ms);
-static void schedule_touch_screen_maintenance(uint32_t now_ms);
-static void cancel_touch_screen_maintenance(void);
-static void process_touch_screen_maintenance(uint32_t now_ms);
 static void process_menu_entry_transition(uint32_t now_ms);
 static bool defer_touch_runtime_action(comp_touch_runtime_action_t action,
                                        uint32_t now_ms);
 static void process_deferred_touch_runtime_action(void);
-static void process_touch_menu_phone_reconnect(uint32_t now_ms);
+static void process_touch_menu_phone_reconnect(void);
 static void init_low_power_idle_timer(void);
 static void low_power_idle_timer_elapsed(void);
 static void arm_low_power_idle_pose_timer(void);
@@ -1905,10 +1899,9 @@ static void poll_touch_debug(void)
                (unsigned long)s_touch_refresh_buffer_dropped_count);
     }
 
-    /* Buffered contacts are authoritative: never maintain while a held touch
-     * has not yet reached the gesture state machine. */
+    /* Buffered contacts are authoritative: dispatch them before an already
+     * due menu-entry transition can claim the next visual request. */
     process_menu_entry_transition(now);
-    process_touch_screen_maintenance(now);
 
     irq_snapshot = s_touch_irq_count;
     irq_pending = irq_snapshot != s_touch_irq_consumed_count;
@@ -1948,54 +1941,6 @@ static void poll_touch_debug(void)
     process_touch_debug_sample(&sample, now);
 }
 
-static void schedule_touch_screen_maintenance(uint32_t now_ms)
-{
-#if COMPANION_SCREEN_MENU_ENABLED
-    if (Companion_Screen_IsReady()) {
-        s_screen_maintenance_pending = true;
-        s_screen_maintenance_due_ms = now_ms + TOUCH_SCREEN_MAINTENANCE_QUIET_MS;
-    }
-#else
-    (void)now_ms;
-#endif
-}
-
-static void cancel_touch_screen_maintenance(void)
-{
-#if COMPANION_SCREEN_MENU_ENABLED
-    if (s_screen_maintenance_pending) {
-        printf("[touch-ui] screen_maintenance cancelled=transition\r\n");
-    }
-    s_screen_maintenance_pending = false;
-#endif
-}
-
-static void process_touch_screen_maintenance(uint32_t now_ms)
-{
-#if COMPANION_SCREEN_MENU_ENABLED
-    bool maintained;
-
-    if (!s_screen_maintenance_pending || s_touch_contact_active ||
-        (int32_t)(now_ms - s_screen_maintenance_due_ms) < 0) {
-        return;
-    }
-    maintained = Companion_Screen_IsMenuVisible()
-                     ? Companion_Screen_MenuMaintenance()
-                     : Companion_Screen_ExpressionMaintenance();
-    if (maintained) {
-        s_screen_maintenance_pending = false;
-        printf("[touch-ui] screen_maintenance quiet_ms=%u surface=%s\r\n",
-               (unsigned)TOUCH_SCREEN_MAINTENANCE_QUIET_MS,
-               Companion_Screen_IsMenuVisible() ? "menu" : "pet");
-    } else {
-        /* A short pet response must settle before its contrast cleanup. */
-        s_screen_maintenance_due_ms = now_ms + 250u;
-    }
-#else
-    (void)now_ms;
-#endif
-}
-
 static const char *touch_runtime_action_name(comp_touch_runtime_action_t action)
 {
     switch (action) {
@@ -2031,7 +1976,7 @@ static bool defer_touch_runtime_action(comp_touch_runtime_action_t action,
     return true;
 }
 
-static void process_touch_menu_phone_reconnect(uint32_t now_ms)
+static void process_touch_menu_phone_reconnect(void)
 {
 #if COMPANION_SCREEN_MENU_ENABLED
     companion_ble_advertising_request_result_t retry =
@@ -2052,9 +1997,6 @@ static void process_touch_menu_phone_reconnect(uint32_t now_ms)
                                  s_screen_menu.flags,
                                  s_screen_menu.language,
                                  s_screen_menu.home_page);
-    schedule_touch_screen_maintenance(now_ms);
-#else
-    (void)now_ms;
 #endif
 }
 
@@ -2086,7 +2028,7 @@ static void process_deferred_touch_runtime_action(void)
         stop_manual_recording("touch-menu");
         break;
     case COMP_TOUCH_RUNTIME_ACTION_PHONE_RECONNECT:
-        process_touch_menu_phone_reconnect(HAL_GetTick());
+        process_touch_menu_phone_reconnect();
         break;
     case COMP_TOUCH_RUNTIME_ACTION_NONE:
     default:
@@ -2172,9 +2114,6 @@ static void update_low_power_policy(void)
                                   COMP_POWER_BLOCKER_MENU_TIMER,
                                   s_menu_entry_pending);
     comp_power_policy_set_blocker(&s_power_policy,
-                                  COMP_POWER_BLOCKER_SCREEN_MAINTENANCE,
-                                  s_screen_maintenance_pending);
-    comp_power_policy_set_blocker(&s_power_policy,
                                   COMP_POWER_BLOCKER_SCREEN_WAIT,
                                   s_touch_refresh_capture_active);
 
@@ -2255,7 +2194,6 @@ static void process_menu_entry_transition(uint32_t now_ms)
                                  entry_flags,
                                  s_screen_menu.language,
                                  s_screen_menu.home_page);
-    schedule_touch_screen_maintenance(now_ms);
 #else
     (void)now_ms;
 #endif
@@ -2412,7 +2350,6 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
                    (unsigned)gesture.duration_ms);
         } else if (comp_screen_menu_is_daily_entry_gesture(&gesture)) {
             s_menu_entry_pending = false;
-            cancel_touch_screen_maintenance();
             s_screen_menu.view = COMP_SCREEN_MENU_VIEW_HOME;
             s_screen_menu.revision++;
             comp_screen_menu_set_flags(&s_screen_menu,
@@ -2426,10 +2363,8 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
                                                      s_screen_menu.language,
                                                      s_screen_menu.home_page);
         } else if (gesture.type == COMP_TOUCH_GESTURE_DOUBLE_TAP) {
-            /* The first tap may have scheduled a quiet cleanup.  Recording
-             * owns the next visual beat, so do not let that stale task redraw
-             * over the generated recording state expression. */
-            cancel_touch_screen_maintenance();
+            /* Recording owns the next visual beat and is deferred until the
+             * active panel waveform has completed. */
             printf("[touch-ui] daily_double_tap_recording x=%u y=%u state=%s\r\n",
                    (unsigned)gesture.end_x,
                    (unsigned)gesture.end_y,
@@ -2442,9 +2377,7 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
             printf("[touch-ui] daily_reaction x=%u y=%u\r\n",
                    (unsigned)gesture.end_x,
                    (unsigned)gesture.end_y);
-            if (Companion_Screen_DailyTapAt(gesture.end_x, gesture.end_y)) {
-                schedule_touch_screen_maintenance(now_ms);
-            }
+            (void)Companion_Screen_DailyTapAt(gesture.end_x, gesture.end_y);
         } else if (gesture.type == COMP_TOUCH_GESTURE_SWIPE_LEFT ||
                    gesture.type == COMP_TOUCH_GESTURE_SWIPE_RIGHT ||
                    gesture.type == COMP_TOUCH_GESTURE_SWIPE_UP ||
@@ -2456,13 +2389,11 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
                    (unsigned)gesture.end_x,
                    (unsigned)gesture.end_y,
                    (unsigned)gesture.duration_ms);
-            if (Companion_Screen_DailyStrokeAt(gesture.start_x,
-                                               gesture.start_y,
-                                               gesture.end_x,
-                                               gesture.end_y,
-                                               gesture.duration_ms)) {
-                schedule_touch_screen_maintenance(now_ms);
-            }
+            (void)Companion_Screen_DailyStrokeAt(gesture.start_x,
+                                                 gesture.start_y,
+                                                 gesture.end_x,
+                                                 gesture.end_y,
+                                                 gesture.duration_ms);
         }
         return;
     }
@@ -2470,7 +2401,6 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
         s_menu_entry_pending = false;
         s_menu_home_press_active = false;
         s_menu_home_press_candidate = false;
-        cancel_touch_screen_maintenance();
         printf("[touch-ui] menu_right_swipe_exit view=%u page=%u start=%u,%u end=%u,%u\r\n",
                (unsigned)s_screen_menu.view,
                (unsigned)s_screen_menu.home_page,
@@ -2552,14 +2482,13 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
     } else if (menu_result.action == COMP_SCREEN_MENU_ACTION_PHONE_RECONNECT) {
         if (!defer_touch_runtime_action(
                 COMP_TOUCH_RUNTIME_ACTION_PHONE_RECONNECT, now_ms)) {
-            process_touch_menu_phone_reconnect(now_ms);
+            process_touch_menu_phone_reconnect();
         }
     } else {
         Companion_Screen_MenuRequest(menu_result.view,
                                      menu_result.flags,
                                      menu_result.language,
                                      menu_result.home_page);
-        schedule_touch_screen_maintenance(now_ms);
     }
 #else
     (void)sample;

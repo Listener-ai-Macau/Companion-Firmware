@@ -19,6 +19,8 @@ PET_BEHAVIOR_C = EPAPER / "pet_behavior.c"
 QUEUE_H = EPAPER / "display_queue.h"
 QUEUE_C = EPAPER / "display_queue.c"
 PANEL_C = EPAPER / "panel_target_stm32wb_ssd1681.c"
+REFRESH_POLICY_H = EPAPER / "refresh_policy.h"
+REFRESH_POLICY_C = EPAPER / "refresh_policy.c"
 APP_BLE = ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Core" / "Src" / "app_ble.c"
 MAIN_C = ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Core" / "Src" / "main.c"
 MAKEFILE = ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Makefile"
@@ -70,14 +72,14 @@ def build_fixture() -> dict[str, object]:
             "external": "CEMP keeps replaceable timelines, menu art, fonts, and larger product assets in ui_assets; emotion memory belongs in a separate target-owned user-data partition",
             "internal": "pet_behavior and pet_expression are compact deterministic application code and render into the existing framebuffer only",
         },
-        "refresh_policy": "interactive differential refresh during contact; one generic quiet maintenance pass after the pet or menu has settled; full refresh remains boot/recovery only",
+        "refresh_policy": "ordinary interactions use bounded differential refresh: five completed partial frames are allowed, then the sixth selects one fast cleanup; explicit menu boundaries may request one cleanup; full refresh remains boot/recovery only",
         "wba_port": "Reuse pose and renderer; replace only panel transport/profile facts in target-named adapters.",
     }
 
 
 def check(errors: list[str]) -> None:
     for path in (PET_H, PET_C, PET_STYLE_H, PET_BEHAVIOR_H, PET_BEHAVIOR_C, QUEUE_H, QUEUE_C,
-                 PANEL_C, APP_BLE, MAIN_C, MAKEFILE, SYSTEM_DOC, RESOURCE_DOC, WBA_DOC,
+                 PANEL_C, REFRESH_POLICY_H, REFRESH_POLICY_C, APP_BLE, MAIN_C, MAKEFILE, SYSTEM_DOC, RESOURCE_DOC, WBA_DOC,
                  STYLE_DOC, STYLE_SNAPSHOT, STYLE_SNAPSHOT_MD):
         require(path.is_file(), f"missing required path: {path.relative_to(ROOT)}", errors)
     if errors:
@@ -90,6 +92,8 @@ def check(errors: list[str]) -> None:
     behavior_source = read(PET_BEHAVIOR_C)
     queue = read(QUEUE_H) + "\n" + read(QUEUE_C)
     panel = read(PANEL_C)
+    refresh_policy_h = read(REFRESH_POLICY_H)
+    refresh_policy_c = read(REFRESH_POLICY_C)
     app_ble = read(APP_BLE)
     main_c = read(MAIN_C)
     makefile = read(MAKEFILE)
@@ -255,12 +259,22 @@ def check(errors: list[str]) -> None:
     ):
         require(token in app_ble, f"WB55 application bridge missing {token}", errors)
     for token in (
-        "TOUCH_SCREEN_MAINTENANCE_QUIET_MS 1200u",
-        "schedule_touch_screen_maintenance",
-        "Companion_Screen_ExpressionMaintenance()",
-        "Companion_Screen_MenuMaintenance()",
+        "COMP_EPAPER_REFRESH_DEFAULT_PARTIAL_LIMIT 5u",
+        "COMP_EPAPER_REFRESH_REASON_MAINTENANCE_BOUNDARY",
     ):
-        require(token in main_c, f"generic quiet maintenance missing {token}", errors)
+        require(token in refresh_policy_h, f"portable refresh policy missing {token}", errors)
+    for token in (
+        "requested_mode == COMP_EPAPER_REFRESH_PARTIAL_INTERACTIVE",
+        "policy->partial_count >= policy->partial_limit",
+        "COMP_EPAPER_REFRESH_REASON_PARTIAL_LIMIT",
+    ):
+        require(token in refresh_policy_c, f"interactive cleanup cadence missing {token}", errors)
+    for token in (
+        "TOUCH_SCREEN_MAINTENANCE_QUIET_MS",
+        "schedule_touch_screen_maintenance",
+        "process_touch_screen_maintenance",
+    ):
+        require(token not in main_c, f"obsolete delayed maintenance remains {token}", errors)
     require(
         "$(ROOT)/app/companion_pendant/epaper/pet_expression.c" in makefile,
         "WB55 Makefile does not compile pet_expression.c",

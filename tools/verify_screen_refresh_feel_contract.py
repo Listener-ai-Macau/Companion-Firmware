@@ -220,18 +220,23 @@ def build_contract() -> dict[str, Any]:
             "COMP_EPAPER_REFRESH_MAINTENANCE",
             "menu_exit_clean",
         ),
-        "touch_active_blocks_maintenance": has(
-            main_c,
-            "s_touch_contact_active",
-            "if (!s_screen_maintenance_pending || s_touch_contact_active",
-            "TOUCH_SCREEN_MAINTENANCE_QUIET_MS 1200u",
+        "ordinary_touch_has_no_delayed_maintenance": not any(
+            marker in main_c
+            for marker in (
+                "TOUCH_SCREEN_MAINTENANCE_QUIET_MS",
+                "schedule_touch_screen_maintenance",
+                "process_touch_screen_maintenance",
+                "s_screen_maintenance_pending",
+            )
         ),
-        "post_interaction_schedules_one_maintenance_path": has(
-            main_c,
-            "schedule_touch_screen_maintenance(now_ms)",
-            "Companion_Screen_MenuMaintenance()",
-            "Companion_Screen_ExpressionMaintenance()",
-            "s_screen_maintenance_pending = false",
+        "interactive_cleanup_is_coalesced_at_five_partials": has(
+            policy_h,
+            "COMP_EPAPER_REFRESH_DEFAULT_PARTIAL_LIMIT 5u",
+        ) and has(
+            policy_c,
+            "requested_mode == COMP_EPAPER_REFRESH_PARTIAL_INTERACTIVE",
+            "policy->partial_count >= policy->partial_limit",
+            "COMP_EPAPER_REFRESH_REASON_PARTIAL_LIMIT",
         ),
         "menu_drag_coalesces_to_latest_frame": has(
             queue_c,
@@ -257,9 +262,8 @@ def build_contract() -> dict[str, Any]:
         "policy_limits_are_bounded": has(
             policy_h,
             "COMP_EPAPER_REFRESH_DEFAULT_PARTIAL_LIMIT 5u",
-            "COMP_EPAPER_REFRESH_DEFAULT_INTERACTIVE_HARD_LIMIT 60u",
         )
-        and has(policy_c, "COMP_EPAPER_REFRESH_REASON_INTERACTIVE_HARD_LIMIT"),
+        and has(policy_c, "COMP_EPAPER_REFRESH_REASON_MAINTENANCE_BOUNDARY"),
         "art_and_refresh_axes_separate": has(
             style,
             "Art changes and refresh changes are separate axes",
@@ -307,7 +311,7 @@ def build_contract() -> dict[str, Any]:
         },
         "product_rules": {
             "interactive": "Use differential 0xFC dirty-window refresh; coalesce queued menu drag frames to the latest request.",
-            "maintenance": "After touch settles, schedule one Good Display Mode 1 / 0xC7 maintenance cleanup; never insert it while contact is active.",
+            "maintenance": "Ordinary touch never schedules a delayed cleanup. Five completed differential interactions are allowed; the sixth selects one Good Display Mode 1 / 0xC7 cleanup. Explicit menu enter/exit boundaries each request one Mode-1 cleanup.",
             "full_refresh": "Use 0xF7 only for an unknown baseline or a transport/fault recovery. A normal menu boundary requests the vendor Mode 1 / 0xC7 fast path when the baseline is valid, with full as the policy fallback only when that baseline is unknown.",
             "menu_boundary": "Enter and exit request one vendor-profiled Mode 1 / 0xC7 fast waveform when the panel baseline is valid. The target logs the profile, activation count, and expected visible phase model; physical one-flicker confirmation remains a focused hardware gate.",
             "ghosting": "Partial/fast refresh can accumulate ghosting; tune refresh profile/cadence rather than blending old art.",

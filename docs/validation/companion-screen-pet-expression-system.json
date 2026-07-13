@@ -26,7 +26,7 @@
     "target_request_kind": "COMP_EPAPER_DISPLAY_REQUEST_PET_EXPRESSION"
   },
   "purpose": "Machine-checkable architecture contract for the portable parameterized electronic-pet face.",
-  "refresh_policy": "interactive differential refresh during contact; one generic quiet maintenance pass after the pet or menu has settled; full refresh remains boot/recovery only",
+  "refresh_policy": "ordinary interactions use bounded differential refresh: five completed partial frames are allowed, then the sixth selects one fast cleanup; explicit menu boundaries may request one cleanup; full refresh remains boot/recovery only",
   "renderer": {
     "internal_full_screen_expression_arrays": 0,
     "logical_coordinate_space": "200x200 logical coordinates scaled to every framebuffer at or above 64x64",

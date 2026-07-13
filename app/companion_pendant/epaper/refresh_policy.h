@@ -11,9 +11,6 @@ extern "C" {
 #endif
 
 #define COMP_EPAPER_REFRESH_DEFAULT_PARTIAL_LIMIT 5u
-#ifndef COMP_EPAPER_REFRESH_DEFAULT_INTERACTIVE_HARD_LIMIT
-#define COMP_EPAPER_REFRESH_DEFAULT_INTERACTIVE_HARD_LIMIT 60u
-#endif
 
 typedef enum {
     COMP_EPAPER_REFRESH_DECISION_FULL = 0,
@@ -27,13 +24,11 @@ typedef enum {
     COMP_EPAPER_REFRESH_REASON_AUTO_DEFAULT_FULL = 2,
     COMP_EPAPER_REFRESH_REASON_BASELINE_REQUIRED = 3,
     COMP_EPAPER_REFRESH_REASON_PARTIAL_LIMIT = 4,
-    COMP_EPAPER_REFRESH_REASON_MAINTENANCE_DEFERRED = 5,
-    COMP_EPAPER_REFRESH_REASON_INTERACTIVE_HARD_LIMIT = 6,
+    COMP_EPAPER_REFRESH_REASON_MAINTENANCE_BOUNDARY = 5,
 } comp_epaper_refresh_reason_t;
 
 typedef struct {
     uint8_t partial_limit;
-    uint8_t interactive_hard_limit;
     uint8_t partial_count;
     bool baseline_valid;
 } comp_epaper_refresh_policy_t;

@@ -43,8 +43,6 @@ param(
     [ValidateSet('left', 'right', 'up', 'down')]
     [string]$EpaperDailyStrokeDemoDirection = 'down',
     [switch]$EpaperMaintenanceDiagnostic,
-    [ValidateRange(-1, 255)]
-    [int]$EpaperInteractiveHardLimit = -1,
     [switch]$EpaperProductExpressionDemo,
     [ValidateSet('listening', 'thinking', 'speaking', 'happy', 'sleepy', 'recording', 'sync_complete', 'low_battery', 'error')]
     [string]$EpaperProductExpressionDemoExpression = 'listening',
@@ -325,12 +323,6 @@ if ($EpaperMaintenanceDiagnostic) {
         "BUILD_DIR=build_maintenance_diagnostic",
         "TARGET=Companion_Nucleo_WB55RG_MaintenanceDiagnostic"
     )
-}
-if ($EpaperInteractiveHardLimit -ge 0) {
-    if ($EpaperInteractiveHardLimit -lt 5) {
-        throw "EpaperInteractiveHardLimit must be at least 5."
-    }
-    $makeArgs += "EPAPER_INTERACTIVE_HARD_LIMIT=$EpaperInteractiveHardLimit"
 }
 if ($EpaperProductExpressionDemo) {
     $productExpressionSignal = switch ($EpaperProductExpressionDemoExpression) {
