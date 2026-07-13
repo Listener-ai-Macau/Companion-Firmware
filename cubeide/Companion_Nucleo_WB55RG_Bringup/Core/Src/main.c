@@ -1073,6 +1073,9 @@ int main(void)
 #endif
 
     comp_power_policy_set_blocker(&s_power_policy, COMP_POWER_BLOCKER_BOOT, false);
+    /* Preserve the configured FT6336/TP_INT state before the normal idle
+     * path can enter Stop and defer its periodic heartbeat. */
+    print_touch_health();
     update_low_power_policy();
     printf("[power] policy_selftest=%s touch_irq_wake=%s lpm=%s\r\n",
            comp_power_policy_self_test() ? "pass" : "fail",

@@ -106,6 +106,15 @@ def main() -> int:
         "s_menu_entry_pending",
         "long_press_max_move_px",
     ), errors)
+    boot_health_marker = (
+        "comp_power_policy_set_blocker(&s_power_policy, COMP_POWER_BLOCKER_BOOT, false);\n"
+        "    /* Preserve the configured FT6336/TP_INT state before the normal idle\n"
+        "     * path can enter Stop and defer its periodic heartbeat. */\n"
+        "    print_touch_health();\n"
+        "    update_low_power_policy();"
+    )
+    if boot_health_marker not in main_source:
+        errors.append("WB55 normal boot must log touch health before Stop becomes eligible")
     require("SSD1681 wait service", panel_header + panel_source, (
         "companion_epaper_wait_service_fn",
         "companion_epaper_panel_stm32wb_ssd1681_set_wait_service",
