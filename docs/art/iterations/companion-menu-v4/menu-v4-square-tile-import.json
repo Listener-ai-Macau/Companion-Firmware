@@ -1,0 +1,225 @@
+{
+  "candidate_only": true,
+  "cemp_manifest_changed": false,
+  "iteration_id": "menu-v4-square-tiles-2026-07-13",
+  "layout": "docs/art/iterations/companion-menu-v4/menu-v4-square-tile-import-layout.json",
+  "outputs": [
+    "docs/art/iterations/companion-menu-v4/menu-v4-square-candidate-pbm/menu-home-page-1-en_1_54in.pbm",
+    "docs/art/iterations/companion-menu-v4/menu-v4-square-candidate-pbm/menu-home-page-2-en_1_54in.pbm",
+    "docs/art/iterations/companion-menu-v4/menu-v4-square-candidate-pbm/menu-voice-record-en_1_54in.pbm",
+    "docs/art/iterations/companion-menu-v4/menu-v4-square-candidate-pbm/menu-status-en_1_54in.pbm",
+    "docs/art/iterations/companion-menu-v4/menu-v4-square-candidate-pbm/menu-phone-link-en_1_54in.pbm",
+    "docs/art/iterations/companion-menu-v4/menu-v4-square-candidate-pbm/menu-device-en_1_54in.pbm",
+    "docs/art/iterations/companion-menu-v4/menu-v4-square-candidate-pbm/menu-preferences-en_1_54in.pbm",
+    "docs/art/iterations/companion-menu-v4/menu-v4-square-candidate-pbm/menu-about-en_1_54in.pbm"
+  ],
+  "profile": {
+    "asset_suffix": "1_54in",
+    "height": 200,
+    "width": 200
+  },
+  "quality": [
+    {
+      "asset_file": "menu-home-page-1-en_1_54in.pbm",
+      "checks": {
+        "edge_clear": true,
+        "not_overfilled": true,
+        "visible_ink": true
+      },
+      "edge_ink_pixels": 7,
+      "ink_bbox": [
+        3,
+        6,
+        199,
+        199
+      ],
+      "ink_pixels": 3839,
+      "source_crop_box": [
+        30,
+        30,
+        413,
+        413
+      ],
+      "state_id": "home_page_1",
+      "status": "PASS"
+    },
+    {
+      "asset_file": "menu-home-page-2-en_1_54in.pbm",
+      "checks": {
+        "edge_clear": true,
+        "not_overfilled": true,
+        "visible_ink": true
+      },
+      "edge_ink_pixels": 134,
+      "ink_bbox": [
+        0,
+        6,
+        199,
+        199
+      ],
+      "ink_pixels": 3015,
+      "source_crop_box": [
+        474,
+        30,
+        857,
+        413
+      ],
+      "state_id": "home_page_2",
+      "status": "PASS"
+    },
+    {
+      "asset_file": "menu-voice-record-en_1_54in.pbm",
+      "checks": {
+        "edge_clear": true,
+        "not_overfilled": true,
+        "visible_ink": true
+      },
+      "edge_ink_pixels": 18,
+      "ink_bbox": [
+        0,
+        3,
+        198,
+        170
+      ],
+      "ink_pixels": 4509,
+      "source_crop_box": [
+        917,
+        30,
+        1300,
+        413
+      ],
+      "state_id": "voice_record",
+      "status": "PASS"
+    },
+    {
+      "asset_file": "menu-status-en_1_54in.pbm",
+      "checks": {
+        "edge_clear": true,
+        "not_overfilled": true,
+        "visible_ink": true
+      },
+      "edge_ink_pixels": 12,
+      "ink_bbox": [
+        0,
+        3,
+        194,
+        199
+      ],
+      "ink_pixels": 3925,
+      "source_crop_box": [
+        1361,
+        30,
+        1744,
+        413
+      ],
+      "state_id": "status",
+      "status": "PASS"
+    },
+    {
+      "asset_file": "menu-phone-link-en_1_54in.pbm",
+      "checks": {
+        "edge_clear": true,
+        "not_overfilled": true,
+        "visible_ink": true
+      },
+      "edge_ink_pixels": 29,
+      "ink_bbox": [
+        3,
+        0,
+        199,
+        154
+      ],
+      "ink_pixels": 3577,
+      "source_crop_box": [
+        30,
+        474,
+        413,
+        857
+      ],
+      "state_id": "phone_link",
+      "status": "PASS"
+    },
+    {
+      "asset_file": "menu-device-en_1_54in.pbm",
+      "checks": {
+        "edge_clear": true,
+        "not_overfilled": true,
+        "visible_ink": true
+      },
+      "edge_ink_pixels": 155,
+      "ink_bbox": [
+        0,
+        0,
+        199,
+        183
+      ],
+      "ink_pixels": 4034,
+      "source_crop_box": [
+        474,
+        474,
+        857,
+        857
+      ],
+      "state_id": "device",
+      "status": "PASS"
+    },
+    {
+      "asset_file": "menu-preferences-en_1_54in.pbm",
+      "checks": {
+        "edge_clear": true,
+        "not_overfilled": true,
+        "visible_ink": true
+      },
+      "edge_ink_pixels": 85,
+      "ink_bbox": [
+        0,
+        0,
+        199,
+        150
+      ],
+      "ink_pixels": 3868,
+      "source_crop_box": [
+        917,
+        474,
+        1300,
+        857
+      ],
+      "state_id": "preferences",
+      "status": "PASS"
+    },
+    {
+      "asset_file": "menu-about-en_1_54in.pbm",
+      "checks": {
+        "edge_clear": true,
+        "not_overfilled": true,
+        "visible_ink": true
+      },
+      "edge_ink_pixels": 10,
+      "ink_bbox": [
+        0,
+        0,
+        196,
+        184
+      ],
+      "ink_pixels": 3825,
+      "source_crop_box": [
+        1361,
+        474,
+        1744,
+        857
+      ],
+      "state_id": "about",
+      "status": "PASS"
+    }
+  ],
+  "review_preview": "docs/art/iterations/companion-menu-v4/menu-v4-square-tile-pbm-review.png",
+  "review_rule": "Compare every REF/PBM pair with the generated sheet before accepting a CEMP import; do not activate candidate art based only on this machine report.",
+  "schema": "companion.generated_expression_storyboard_import.v1",
+  "source": "docs/art/generated_companion_menu_reference_v4_square_tiles.png",
+  "source_sha256": "36fa932d91538c514cb9ba59fa1b2ccd642b706cb5b91911dae543b8e066e692",
+  "source_size": {
+    "height": 887,
+    "width": 1774
+  },
+  "status": "PASS"
+}
