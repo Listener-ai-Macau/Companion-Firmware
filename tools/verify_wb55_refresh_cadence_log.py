@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import Any
 
 
-SCHEMA_ID = "companion.wb55.refresh_cadence_log.v1"
+SCHEMA_ID = "companion.wb55.refresh_cadence_log.v2"
 REQUEST_COUNT = 6
 PARTIAL_PROFILES = {
     "differential": {"control": "FC", "profile": "default", "data_planes": 2},
@@ -19,6 +19,10 @@ PARTIAL_PROFILES = {
         "profile": "good_display_vendor_partial_ab",
         "data_planes": 1,
     },
+}
+TRANSPORT_PROFILES = {
+    "vendor_edges": "software_vendor_edges",
+    "direct_bsrr": "software_direct_bsrr_diagnostic",
 }
 POLICY = re.compile(
     r"\[epaper\] policy requested=3 selected=(?P<selected>\w+) "
@@ -29,7 +33,8 @@ DIFFERENTIAL_TIMING = re.compile(
     r"\[epaper\] timing mode=differential .*"
     r"transfer_before_waveform_ms=(?P<before>\d+) "
     r"transfer_after_waveform_ms=(?P<after>\d+) "
-    r"bytes=(?P<bytes>\d+) data_planes=(?P<planes>\d+)"
+    r"bytes=(?P<bytes>\d+) data_planes=(?P<planes>\d+) "
+    r"spi=(?P<transport>\S+)"
 )
 PARTIAL_REFRESH = re.compile(
     r"\[epaper\] refresh mode=differential profile=(?P<profile>\S+) "
@@ -49,8 +54,14 @@ def scoped_log(log: str) -> str:
     return log[start_index : end_index + len(end)]
 
 
-def evaluate(log: str, log_path: str, partial_profile: str = "differential") -> dict[str, Any]:
+def evaluate(
+    log: str,
+    log_path: str,
+    partial_profile: str = "differential",
+    transport_profile: str = "vendor_edges",
+) -> dict[str, Any]:
     expected = PARTIAL_PROFILES[partial_profile]
+    expected_transport = TRANSPORT_PROFILES[transport_profile]
     scoped = scoped_log(log)
     policies = [
         {
@@ -87,6 +98,7 @@ def evaluate(log: str, log_path: str, partial_profile: str = "differential") -> 
             "after_ms": int(match.group("after")),
             "window_bytes": int(match.group("bytes")),
             "data_planes": int(match.group("planes")),
+            "transport": match.group("transport"),
         }
         for match in DIFFERENTIAL_TIMING.finditer(scoped)
     ]
@@ -117,6 +129,11 @@ def evaluate(log: str, log_path: str, partial_profile: str = "differential") -> 
             timing["data_planes"] == expected["data_planes"]
             for timing in differential_timings
         ),
+        "correct_transport_profile": len(differential_timings) >= 5
+        and all(
+            timing["transport"] == expected_transport
+            for timing in differential_timings
+        ),
         "no_post_waveform_transfer": len(differential_timings) >= 5
         and all(timing["after_ms"] == 0 for timing in differential_timings),
         "mode1_waveform": "refresh mode=fast control=0xC7" in scoped,
@@ -133,6 +150,7 @@ def evaluate(log: str, log_path: str, partial_profile: str = "differential") -> 
         "schema_id": SCHEMA_ID,
         "status": status,
         "partial_profile": partial_profile,
+        "transport_profile": transport_profile,
         "claim_scope": "reset-bounded serial evidence for the diagnostic image only; no human visual or current claim",
         "log": log_path,
         "checks": checks,
@@ -151,8 +169,9 @@ def evaluate(log: str, log_path: str, partial_profile: str = "differential") -> 
     }
 
 
-def self_test(partial_profile: str) -> dict[str, Any]:
+def self_test(partial_profile: str, transport_profile: str) -> dict[str, Any]:
     expected = PARTIAL_PROFILES[partial_profile]
+    expected_transport = TRANSPORT_PROFILES[transport_profile]
     lines = [
         "[screen] refresh_cadence_diagnostic start requests=6",
         "[epaper] policy requested=3 selected=full reason=3 partial_count=0 limit=5 baseline=0",
@@ -169,7 +188,7 @@ def self_test(partial_profile: str) -> dict[str, Any]:
                 "[epaper] timing mode=differential prepare_ms=0 setup_ms=0 "
                 "transfer_before_waveform_ms=53 transfer_after_waveform_ms=0 "
                 f"bytes=2552 data_planes={expected['data_planes']} "
-                "spi=software_vendor_edges",
+                f"spi={expected_transport}",
                 f"[screen] refresh_cadence_diagnostic complete step={step}",
             ]
         )
@@ -182,7 +201,12 @@ def self_test(partial_profile: str) -> dict[str, Any]:
             "[screen] refresh_cadence_diagnostic done interactive_requests=6 cleanup_expected=1",
         ]
     )
-    report = evaluate("\n".join(lines), "synthetic-self-test", partial_profile)
+    report = evaluate(
+        "\n".join(lines),
+        "synthetic-self-test",
+        partial_profile,
+        transport_profile,
+    )
     report["status"] = "PASS_STATIC_PARSER" if report["status"] == "PASS" else "FAIL_STATIC_PARSER"
     report["claim_scope"] = "synthetic parser self-test; no hardware claim"
     return report
@@ -194,10 +218,11 @@ def main() -> int:
     parser.add_argument("--out", type=Path)
     parser.add_argument("--self-test", action="store_true")
     parser.add_argument("--partial-profile", choices=PARTIAL_PROFILES, default="differential")
+    parser.add_argument("--transport-profile", choices=TRANSPORT_PROFILES, default="vendor_edges")
     args = parser.parse_args()
 
     if args.self_test:
-        report = self_test(args.partial_profile)
+        report = self_test(args.partial_profile, args.transport_profile)
     elif args.log is not None:
         if not args.log.is_file():
             parser.error(f"serial log not found: {args.log}")
@@ -205,6 +230,7 @@ def main() -> int:
             args.log.read_text(encoding="utf-8", errors="replace"),
             str(args.log),
             args.partial_profile,
+            args.transport_profile,
         )
     else:
         parser.error("pass --log PATH or --self-test")

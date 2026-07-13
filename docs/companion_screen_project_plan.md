@@ -999,6 +999,21 @@ cleanup，但仅把前五次 partial 临时改为 vendor-sample `reset + 0x24 on
 连续局刷后的残影。任何一个 vendor A/B failure 或视觉退化都会使该 profile 保持 diagnostic-only，并
 回到当前 `0xFC` production path。
 
+## Revision 76: direct-BSRR 软件 SPI 传输 A/B 诊断
+
+当前 WB55 target 的已验证软件 SPI 每个 bit 会执行 SCK low、MOSI、SCK high 三个
+`HAL_GPIO_WritePin` 调用。真实日志中 2,552-byte dirty window 的 old/new 双平面发送曾为
+53 ms，而 BUSY waveform 是约 307 ms。Good Display 同型号 STM32 样例保持相同的
+CPOL/CPHA edge order，但以直接 GPIO set/reset macro 驱动 bit-bang。这个实现差异可以单独
+测量，不能与 Revision 75 的单平面波形 A/B 混在同一个 image。
+
+因此新增另一个 production-off image：它保持 `0xFC`、两平面、当前 resource/rotation、六次
+cadence 与第六次 Mode-1 cleanup，只把软件 edge 写入临时换成 `GPIOx->BSRR`，并记录
+`spi=software_direct_bsrr_diagnostic`。生产仍为 `software_vendor_edges`，WBA adapter 和
+portable policy 均不改变。它与 vendor-partial image 互斥，硬件对比必须分成 normal-vs-direct
+和 normal-vs-vendor-partial 两组；任何 BUSY/transport failure、残影退化或 focused review
+失败都使 direct-BSRR 保持 diagnostic-only。
+
 ## 逐项验收顺序
 
 本项目遵循 AI Workflow 的全产品异步验收规则：未收到操作者明确的“开始验收”前，

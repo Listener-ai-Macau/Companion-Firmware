@@ -45,6 +45,7 @@ param(
     [switch]$EpaperMaintenanceDiagnostic,
     [switch]$EpaperRefreshCadenceDiagnostic,
     [switch]$EpaperSsd1681VendorPartialDiagnostic,
+    [switch]$EpaperSsd1681DirectGpioSpiDiagnostic,
     [switch]$EpaperProductExpressionDemo,
     [ValidateSet('listening', 'thinking', 'speaking', 'happy', 'sleepy', 'recording', 'sync_complete', 'low_battery', 'error')]
     [string]$EpaperProductExpressionDemoExpression = 'listening',
@@ -191,7 +192,10 @@ if (-not (Test-Path -LiteralPath $ProjectDir)) {
 $RepoRoot = Get-NormalizedPath -Path (Join-Path $PSScriptRoot '..')
 
 $makeArgs = @("-C", $ProjectDir)
-if ($Force -or $EpaperDailyTapDemo -or $EpaperDailyStrokeDemo -or $EpaperMaintenanceDiagnostic -or $EpaperRefreshCadenceDiagnostic -or $EpaperSsd1681VendorPartialDiagnostic -or $EpaperProductExpressionDemo) {
+if ($EpaperSsd1681VendorPartialDiagnostic -and $EpaperSsd1681DirectGpioSpiDiagnostic) {
+    throw "Choose one SSD1681 A/B diagnostic at a time: vendor partial or direct GPIO SPI."
+}
+if ($Force -or $EpaperDailyTapDemo -or $EpaperDailyStrokeDemo -or $EpaperMaintenanceDiagnostic -or $EpaperRefreshCadenceDiagnostic -or $EpaperSsd1681VendorPartialDiagnostic -or $EpaperSsd1681DirectGpioSpiDiagnostic -or $EpaperProductExpressionDemo) {
     $makeArgs += "-B"
 }
 if ($OtaApp) {
@@ -339,6 +343,14 @@ if ($EpaperSsd1681VendorPartialDiagnostic) {
         "EPAPER_SSD1681_VENDOR_PARTIAL_DIAGNOSTIC=1",
         "BUILD_DIR=build_vendor_partial_diagnostic",
         "TARGET=Companion_Nucleo_WB55RG_VendorPartialDiagnostic"
+    )
+}
+if ($EpaperSsd1681DirectGpioSpiDiagnostic) {
+    $makeArgs += @(
+        "EPAPER_REFRESH_CADENCE_DIAGNOSTIC=1",
+        "EPAPER_SSD1681_DIRECT_GPIO_SPI_DIAGNOSTIC=1",
+        "BUILD_DIR=build_direct_gpio_spi_diagnostic",
+        "TARGET=Companion_Nucleo_WB55RG_DirectGpioSpiDiagnostic"
     )
 }
 if ($EpaperProductExpressionDemo) {

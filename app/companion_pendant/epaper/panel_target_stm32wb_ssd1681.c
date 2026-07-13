@@ -68,6 +68,9 @@
 #ifndef COMPANION_EPAPER_SSD1681_VENDOR_PARTIAL_DIAGNOSTIC
 #define COMPANION_EPAPER_SSD1681_VENDOR_PARTIAL_DIAGNOSTIC 0
 #endif
+#ifndef COMPANION_EPAPER_SSD1681_DIRECT_GPIO_SPI_DIAGNOSTIC
+#define COMPANION_EPAPER_SSD1681_DIRECT_GPIO_SPI_DIAGNOSTIC 0
+#endif
 #ifndef COMPANION_EPAPER_SSD1681_ROTATION_DEGREES
 #define COMPANION_EPAPER_SSD1681_ROTATION_DEGREES 0u
 #endif
@@ -86,6 +89,10 @@
 #if COMPANION_EPAPER_SSD1681_VENDOR_PARTIAL_DIAGNOSTIC != 0 && \
     COMPANION_EPAPER_SSD1681_VENDOR_PARTIAL_DIAGNOSTIC != 1
 #error "SSD1681 vendor partial diagnostic must be 0 or 1"
+#endif
+#if COMPANION_EPAPER_SSD1681_DIRECT_GPIO_SPI_DIAGNOSTIC != 0 && \
+    COMPANION_EPAPER_SSD1681_DIRECT_GPIO_SPI_DIAGNOSTIC != 1
+#error "SSD1681 direct GPIO SPI diagnostic must be 0 or 1"
 #endif
 
 #define SSD1681_WIDTH 200u
@@ -148,12 +155,51 @@ static void ssd1681_select(bool selected)
                       selected ? GPIO_PIN_RESET : GPIO_PIN_SET);
 }
 
+static const char *ssd1681_spi_transport_name(void)
+{
+#if COMPANION_EPAPER_SSD1681_USE_SOFTWARE_SPI
+#if COMPANION_EPAPER_SSD1681_DIRECT_GPIO_SPI_DIAGNOSTIC
+    return "software_direct_bsrr_diagnostic";
+#else
+    return "software_vendor_edges";
+#endif
+#else
+    return "hardware";
+#endif
+}
+
 static bool ssd1681_spi_tx(const uint8_t *data, uint16_t length)
 {
     if (data == NULL || length == 0u) {
         return true;
     }
 #if COMPANION_EPAPER_SSD1681_USE_SOFTWARE_SPI
+#if COMPANION_EPAPER_SSD1681_DIRECT_GPIO_SPI_DIAGNOSTIC
+    const uint32_t sck_low = (uint32_t)GPIO_PIN_9 << 16u;
+    const uint32_t sck_high = GPIO_PIN_9;
+    const uint32_t mosi_low = (uint32_t)GPIO_PIN_1 << 16u;
+    const uint32_t mosi_high = GPIO_PIN_1;
+
+    /* Diagnostic-only transport A/B: keep the verified CPOL/CPHA edge order,
+     * but use the same direct BSRR writes as the vendor's bit-banged example.
+     * It can raise the edge rate, so real-panel BUSY and residual evidence are
+     * required before this implementation can replace software_vendor_edges. */
+    for (uint16_t index = 0u; index < length; ++index) {
+        uint8_t value = data[index];
+        for (uint8_t bit = 0u; bit < 8u; ++bit) {
+            GPIOA->BSRR = sck_low;
+            GPIOC->BSRR = (value & 0x80u) != 0u ? mosi_high : mosi_low;
+            __NOP();
+            __NOP();
+            GPIOA->BSRR = sck_high;
+            __NOP();
+            __NOP();
+            value <<= 1u;
+        }
+    }
+    GPIOA->BSRR = sck_low;
+    return true;
+#else
     for (uint16_t index = 0u; index < length; ++index) {
         uint8_t value = data[index];
         for (uint8_t bit = 0u; bit < 8u; ++bit) {
@@ -171,6 +217,7 @@ static bool ssd1681_spi_tx(const uint8_t *data, uint16_t length)
     }
     HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, GPIO_PIN_RESET);
     return true;
+#endif
 #else
     return HAL_SPI_Transmit(&hspi2, (uint8_t *)data, length, 1000u) == HAL_OK;
 #endif
@@ -970,7 +1017,7 @@ static comp_epaper_panel_result_t ssd1681_refresh(
         ssd1681_reset();
     }
     printf("[epaper] spi=%s sck=PA9 mosi=PC1\r\n",
-           COMPANION_EPAPER_SSD1681_USE_SOFTWARE_SPI ? "software_vendor_edges" : "hardware");
+           ssd1681_spi_transport_name());
 
     bool pre_reset_ready = ssd1681_wait_ready(20u, SSD1681_READY_TIMEOUT_MS);
     bool reset_command_sent = controller_initialization_required && !vendor_sample_partial &&
@@ -1055,7 +1102,7 @@ static comp_epaper_panel_result_t ssd1681_refresh(
            (unsigned long)transfer_after_waveform_elapsed_ms,
            (unsigned long)window_bytes,
            (unsigned)transfer_plane_count,
-           COMPANION_EPAPER_SSD1681_USE_SOFTWARE_SPI ? "software_vendor_edges" : "hardware");
+           ssd1681_spi_transport_name());
     bool ok = pre_reset_ready && reset_ready && fast_profile_loaded && window_set && border_set &&
                frame_written && baseline_written && display_refreshed;
     comp_epaper_refresh_policy_commit(&target->refresh_policy,

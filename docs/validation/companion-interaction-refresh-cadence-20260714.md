@@ -86,6 +86,29 @@ Both require five successful partial frames, zero post-waveform transfer, the
 same sixth `0xC7` cleanup, and no delayed maintenance. Neither profile is
 visually accepted until the paired on-panel comparison is complete.
 
+## Direct GPIO SPI A/B Build
+
+The direct-BSRR transport image keeps the active `0xFC` two-plane partial
+waveform and only replaces the three per-bit HAL GPIO calls with direct GPIO
+set/reset writes, matching the edge order in Good Display's bit-banged sample.
+It is a separate electrical/timing diagnostic, not production behavior and not
+a WBA target implementation. Build it with:
+
+```powershell
+pwsh -NoProfile -File .\tools\build_nucleo_bringup.ps1 -EpaperSsd1681Bringup -EpaperMenu 1 -EpaperSsd1681DirectGpioSpiDiagnostic -Force
+```
+
+Its trace must retain `profile=default`, `0xFC`, and two data planes, but report
+`spi=software_direct_bsrr_diagnostic`. Parse it with:
+
+```powershell
+python tools/verify_wb55_refresh_cadence_log.py --partial-profile differential --transport-profile direct_bsrr --log <trace> --out <result.json>
+```
+
+The direct-GPIO and vendor-partial A/B switches are deliberately mutually
+exclusive: one compares transport with a fixed waveform, while the other
+compares waveform/data planes with the known-good transport.
+
 ## Required Hardware Follow-up
 
 No board was flashed for this change and no human observation was requested.
@@ -100,13 +123,18 @@ When the owner explicitly starts a hardware session:
    differential --log <trace> --out <result.json>`. It must prove five `0xFC`
    two-plane interactions, then exactly one `0xC7` cleanup, no 1200 ms delayed
    request, and zero post-waveform transfer time on every partial frame.
-3. Build and flash the isolated vendor A/B image, capture the same bounded
-   trace, then parse it with `--partial-profile vendor_sample`. It must prove
-   five reset-bounded `0xFF` one-plane interactions and the same sixth `0xC7`
-   cleanup.
-4. Compare the two traces and their on-panel results: responsiveness, residual
-   image, and maintenance flicker. A lower serial transfer time alone is not a
-   promotion criterion.
-5. Reflash the normal production image before ACPT-01. Run the focused visual
+3. Build and flash the direct-GPIO transport image, capture the same bounded
+   trace, then parse it with `--partial-profile differential --transport-profile
+   direct_bsrr`. It must prove five `0xFC` two-plane interactions using
+   `software_direct_bsrr_diagnostic` and the same sixth `0xC7` cleanup.
+4. Build and flash the isolated vendor partial A/B image, capture the same
+   bounded trace, then parse it with `--partial-profile vendor_sample
+   --transport-profile vendor_edges`. It must prove five reset-bounded `0xFF`
+   one-plane interactions through `software_vendor_edges` and the same sixth
+   `0xC7` cleanup.
+5. Compare all three traces and their on-panel results: responsiveness, residual
+   image, BUSY/transport completion, and maintenance flicker. A lower serial
+   transfer time alone is not a promotion criterion.
+6. Reflash the normal production image before ACPT-01. Run the focused visual
    review for residual image, a single maintenance flicker, and perceived
    responsiveness. Machine timing does not substitute for that review.

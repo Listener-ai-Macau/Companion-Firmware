@@ -72,9 +72,16 @@ def main() -> int:
             "COMPANION_EPAPER_SSD1681_VENDOR_PARTIAL_DIAGNOSTIC 0",
             "vendor partial production-off default",
         ),
+        (
+            "COMPANION_EPAPER_SSD1681_DIRECT_GPIO_SPI_DIAGNOSTIC 0",
+            "direct GPIO transport production-off default",
+        ),
         ("good_display_vendor_partial_ab", "vendor partial diagnostic profile"),
         ("? 0xFFu", "vendor partial update control"),
         ("Diagnostic-only A/B", "vendor partial isolation rationale"),
+        ("software_direct_bsrr_diagnostic", "direct GPIO diagnostic transport marker"),
+        ("GPIOA->BSRR = sck_low", "direct GPIO clock low edge"),
+        ("GPIOC->BSRR = (value & 0x80u)", "direct GPIO data edge"),
         ("static const uint8_t vendor_partial_border[] = {0x80u};", "vendor partial border setting"),
         ("ssd1681_set_window(&window, vendor_sample_partial)", "vendor partial window selection"),
         ("ssd1681_write_plane_region(0x24u, s_frame, &window)", "vendor current-plane write"),
@@ -84,6 +91,30 @@ def main() -> int:
         makefile,
         "COMPANION_EPAPER_SSD1681_VENDOR_PARTIAL_DIAGNOSTIC=1",
         "vendor partial build definition",
+        errors,
+    )
+    require(
+        makefile,
+        "COMPANION_EPAPER_SSD1681_DIRECT_GPIO_SPI_DIAGNOSTIC=1",
+        "direct GPIO transport build definition",
+        errors,
+    )
+    require(
+        build,
+        "EpaperSsd1681DirectGpioSpiDiagnostic",
+        "direct GPIO transport build switch",
+        errors,
+    )
+    require(
+        build,
+        "EPAPER_SSD1681_DIRECT_GPIO_SPI_DIAGNOSTIC=1",
+        "direct GPIO transport make argument",
+        errors,
+    )
+    require(
+        build,
+        "BUILD_DIR=build_direct_gpio_spi_diagnostic",
+        "isolated direct GPIO transport build directory",
         errors,
     )
     require(
@@ -108,8 +139,11 @@ def main() -> int:
         ("five_differential_requests", "five-partial parser check"),
         ("one_sixth_request_maintenance", "sixth-cleanup parser check"),
         ("PARTIAL_PROFILES", "profiled partial parser"),
+        ("TRANSPORT_PROFILES", "profiled transport parser"),
         ("no_post_waveform_transfer", "post-wave transfer elimination parser check"),
         ("correct_data_plane_count", "partial plane-count parser check"),
+        ("correct_transport_profile", "transport identity parser check"),
+        ("direct_bsrr", "direct GPIO transport parser profile"),
         ("vendor_sample", "vendor partial parser profile"),
         ("no_obsolete_delayed_maintenance", "old-timer parser check"),
         ("PASS_STATIC_PARSER", "parser self-test result"),
