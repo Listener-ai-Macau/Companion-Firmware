@@ -91,6 +91,15 @@ def main() -> int:
         "GPIO_MODE_IT_FALLING",
         "EXTI9_5_IRQHandler",
         "capture_touch_during_display_wait",
+        "s_touch_processing_during_panel_wait",
+        "defer_touch_runtime_action",
+        "process_deferred_touch_runtime_action",
+        "COMP_TOUCH_RUNTIME_ACTION_TOGGLE_RECORDING",
+        "COMP_TOUCH_RUNTIME_ACTION_MENU_RECORD_START",
+        "COMP_TOUCH_RUNTIME_ACTION_MENU_RECORD_STOP",
+        "COMP_TOUCH_RUNTIME_ACTION_PHONE_RECONNECT",
+        "deferred_runtime_action action=%s phase=queued",
+        "deferred_runtime_action action=%s phase=execute delay_ms=%lu",
         "buffer_touch_sample_during_panel_wait",
         "touch_wait_buffer_self_test",
         "wait_buffer_selftest=%u",
@@ -191,6 +200,35 @@ def main() -> int:
     if "phase_changed" not in main_source or "TOUCH_SAMPLE_LOG_INTERVAL_MS" not in main_source:
         errors.append("changed-coordinate touch diagnostics must be rate limited")
 
+    busy_capture_marker = "static void capture_touch_during_display_wait(void *context, uint32_t now_ms)"
+    busy_capture_end = "static void process_touch_debug_sample("
+    if busy_capture_marker not in main_source or busy_capture_end not in main_source:
+        errors.append("WB55 BUSY touch callback must remain separately inspectable")
+    else:
+        busy_capture = main_source.rsplit(busy_capture_marker, 1)[1].split(busy_capture_end, 1)[0]
+        expected_busy_sequence = (
+            "s_touch_processing_during_panel_wait = true;\n"
+            "    process_touch_debug_sample(&sample, now_ms);\n"
+            "    s_touch_processing_during_panel_wait = false;"
+        )
+        if expected_busy_sequence not in busy_capture:
+            errors.append("BUSY callback must bracket gesture processing and defer runtime work")
+
+    deferred_marker = "static void process_deferred_touch_runtime_action(void)"
+    deferred_tail = "static void update_low_power_policy(void)"
+    if deferred_marker not in main_source or deferred_tail not in main_source:
+        errors.append("WB55 deferred touch runtime executor is missing")
+    else:
+        deferred_block = main_source.rsplit(deferred_marker, 1)[1].split(deferred_tail, 1)[0]
+        for action in (
+            "toggle_touch_recording();",
+            "start_manual_recording();",
+            "stop_manual_recording(\"touch-menu\");",
+            "process_touch_menu_phone_reconnect(HAL_GetTick());",
+        ):
+            if action not in deferred_block:
+                errors.append(f"deferred touch executor missing {action}")
+
     double_tap_marker = "} else if (gesture.type == COMP_TOUCH_GESTURE_DOUBLE_TAP) {"
     double_tap_tail = "} else if (gesture.type == COMP_TOUCH_GESTURE_TAP) {"
     if double_tap_marker not in main_source or double_tap_tail not in main_source:
@@ -199,6 +237,8 @@ def main() -> int:
         double_tap_block = main_source.split(double_tap_marker, 1)[1].split(double_tap_tail, 1)[0]
         if "cancel_touch_screen_maintenance();" not in double_tap_block:
             errors.append("daily double-tap must cancel first-tap maintenance before recording art")
+        if "COMP_TOUCH_RUNTIME_ACTION_TOGGLE_RECORDING" not in double_tap_block:
+            errors.append("daily double-tap must defer recording while the panel is BUSY")
 
     if errors:
         for error in errors:

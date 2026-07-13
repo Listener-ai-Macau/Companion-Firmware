@@ -421,6 +421,14 @@ typedef struct {
     comp_sha256_ctx_t sha256;
 } recording_flash_state_t;
 
+typedef enum {
+    COMP_TOUCH_RUNTIME_ACTION_NONE = 0u,
+    COMP_TOUCH_RUNTIME_ACTION_TOGGLE_RECORDING,
+    COMP_TOUCH_RUNTIME_ACTION_MENU_RECORD_START,
+    COMP_TOUCH_RUNTIME_ACTION_MENU_RECORD_STOP,
+    COMP_TOUCH_RUNTIME_ACTION_PHONE_RECONNECT,
+} comp_touch_runtime_action_t;
+
 UART_HandleTypeDef hlpuart1;
 UART_HandleTypeDef huart1;
 DMA_HandleTypeDef hdma_usart1_tx;
@@ -470,6 +478,9 @@ static bool s_touch_refresh_capture_active;
 static bool s_touch_refresh_latest_contact_valid;
 static buffered_touch_sample_t s_touch_refresh_latest_contact;
 static bool s_touch_wait_buffer_selftest_pass;
+static bool s_touch_processing_during_panel_wait;
+static comp_touch_runtime_action_t s_touch_deferred_action;
+static uint32_t s_touch_deferred_action_queued_ms;
 static comp_touch_gesture_state_t s_touch_gesture;
 static bool s_menu_entry_pending;
 static comp_screen_menu_view_t s_menu_entry_target;
@@ -608,6 +619,10 @@ static void schedule_touch_screen_maintenance(uint32_t now_ms);
 static void cancel_touch_screen_maintenance(void);
 static void process_touch_screen_maintenance(uint32_t now_ms);
 static void process_menu_entry_transition(uint32_t now_ms);
+static bool defer_touch_runtime_action(comp_touch_runtime_action_t action,
+                                       uint32_t now_ms);
+static void process_deferred_touch_runtime_action(void);
+static void process_touch_menu_phone_reconnect(uint32_t now_ms);
 static void update_low_power_policy(void);
 static void start_recording(comp_recording_source_t source, const char *reason);
 static void stop_recording(comp_recording_source_t source, const char *reason);
@@ -1101,6 +1116,9 @@ int main(void)
     s_maintenance_diagnostic_enqueued = false;
 #endif
     while (1) {
+        /* A panel wait callback only classifies touch. Run any recording or
+         * BLE side effect here, after the synchronous BUSY waveform returns. */
+        process_deferred_touch_runtime_action();
         if (s_recording_fsm.state == COMP_RECORDING_STATE_RECORDING) {
             update_low_power_policy();
             bool process_app =
@@ -1750,8 +1768,11 @@ static void capture_touch_during_display_wait(void *context, uint32_t now_ms)
     /* This callback runs in the display task, not an interrupt. Advance the
      * shared gesture timeline at the FT6336 capture cadence while the panel
      * is BUSY. Any visible response is only queued for after this waveform;
-     * the callback never invokes the display task recursively. */
+     * runtime work such as recording Flash erase or BLE reconnect is deferred
+     * to the main loop after the waveform has returned. */
+    s_touch_processing_during_panel_wait = true;
     process_touch_debug_sample(&sample, now_ms);
+    s_touch_processing_during_panel_wait = false;
 }
 
 static void process_touch_debug_sample(const comp_ft6336_touch_sample_t *sample,
@@ -1956,6 +1977,104 @@ static void process_touch_screen_maintenance(uint32_t now_ms)
 #else
     (void)now_ms;
 #endif
+}
+
+static const char *touch_runtime_action_name(comp_touch_runtime_action_t action)
+{
+    switch (action) {
+    case COMP_TOUCH_RUNTIME_ACTION_TOGGLE_RECORDING:
+        return "toggle_recording";
+    case COMP_TOUCH_RUNTIME_ACTION_MENU_RECORD_START:
+        return "menu_record_start";
+    case COMP_TOUCH_RUNTIME_ACTION_MENU_RECORD_STOP:
+        return "menu_record_stop";
+    case COMP_TOUCH_RUNTIME_ACTION_PHONE_RECONNECT:
+        return "phone_reconnect";
+    case COMP_TOUCH_RUNTIME_ACTION_NONE:
+    default:
+        return "none";
+    }
+}
+
+static bool defer_touch_runtime_action(comp_touch_runtime_action_t action,
+                                       uint32_t now_ms)
+{
+    if (!s_touch_processing_during_panel_wait) {
+        return false;
+    }
+    if (s_touch_deferred_action != COMP_TOUCH_RUNTIME_ACTION_NONE) {
+        printf("[touch-ui] deferred_runtime_action supersede old=%s new=%s\r\n",
+               touch_runtime_action_name(s_touch_deferred_action),
+               touch_runtime_action_name(action));
+    }
+    s_touch_deferred_action = action;
+    s_touch_deferred_action_queued_ms = now_ms;
+    printf("[touch-ui] deferred_runtime_action action=%s phase=queued\r\n",
+           touch_runtime_action_name(action));
+    return true;
+}
+
+static void process_touch_menu_phone_reconnect(uint32_t now_ms)
+{
+#if COMPANION_SCREEN_MENU_ENABLED
+    companion_ble_advertising_request_result_t retry =
+        Companion_Ble_RequestAdvertising("touch-menu");
+    comp_screen_menu_phone_reconnect_state_t retry_state =
+        retry == COMPANION_BLE_ADVERTISING_REQUEST_FAILED
+            ? COMP_SCREEN_MENU_PHONE_RECONNECT_FAILED
+            : retry == COMPANION_BLE_ADVERTISING_REQUEST_ALREADY_CONNECTED
+                  ? COMP_SCREEN_MENU_PHONE_RECONNECT_CONNECTED
+                  : COMP_SCREEN_MENU_PHONE_RECONNECT_ADVERTISING;
+
+    comp_screen_menu_set_phone_reconnect_state(&s_screen_menu, retry_state);
+    comp_screen_menu_set_flags(&s_screen_menu, Companion_Screen_RuntimeMenuFlags());
+    printf("[touch-ui] phone_reconnect result=%u state=%u\r\n",
+           (unsigned)retry,
+           (unsigned)retry_state);
+    Companion_Screen_MenuRequest(s_screen_menu.view,
+                                 s_screen_menu.flags,
+                                 s_screen_menu.language,
+                                 s_screen_menu.home_page);
+    schedule_touch_screen_maintenance(now_ms);
+#else
+    (void)now_ms;
+#endif
+}
+
+static void process_deferred_touch_runtime_action(void)
+{
+    comp_touch_runtime_action_t action = s_touch_deferred_action;
+    uint32_t queued_ms = s_touch_deferred_action_queued_ms;
+
+    if (action == COMP_TOUCH_RUNTIME_ACTION_NONE) {
+        return;
+    }
+    s_touch_deferred_action = COMP_TOUCH_RUNTIME_ACTION_NONE;
+    s_touch_deferred_action_queued_ms = 0u;
+    printf("[touch-ui] deferred_runtime_action action=%s phase=execute delay_ms=%lu\r\n",
+           touch_runtime_action_name(action),
+           (unsigned long)(HAL_GetTick() - queued_ms));
+
+    switch (action) {
+    case COMP_TOUCH_RUNTIME_ACTION_TOGGLE_RECORDING:
+        toggle_touch_recording();
+        break;
+    case COMP_TOUCH_RUNTIME_ACTION_MENU_RECORD_START:
+        comp_screen_menu_set_flags(&s_screen_menu, Companion_Screen_RuntimeMenuFlags());
+        MX_APPE_Process();
+        start_manual_recording();
+        break;
+    case COMP_TOUCH_RUNTIME_ACTION_MENU_RECORD_STOP:
+        comp_screen_menu_set_flags(&s_screen_menu, Companion_Screen_RuntimeMenuFlags());
+        stop_manual_recording("touch-menu");
+        break;
+    case COMP_TOUCH_RUNTIME_ACTION_PHONE_RECONNECT:
+        process_touch_menu_phone_reconnect(HAL_GetTick());
+        break;
+    case COMP_TOUCH_RUNTIME_ACTION_NONE:
+    default:
+        break;
+    }
 }
 
 static void update_low_power_policy(void)
@@ -2211,7 +2330,10 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
                    (unsigned)gesture.end_x,
                    (unsigned)gesture.end_y,
                    comp_recording_state_name(s_recording_fsm.state));
-            toggle_touch_recording();
+            if (!defer_touch_runtime_action(
+                    COMP_TOUCH_RUNTIME_ACTION_TOGGLE_RECORDING, now_ms)) {
+                toggle_touch_recording();
+            }
         } else if (gesture.type == COMP_TOUCH_GESTURE_TAP) {
             printf("[touch-ui] daily_reaction x=%u y=%u\r\n",
                    (unsigned)gesture.end_x,
@@ -2311,32 +2433,23 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
            (unsigned long)menu_result.revision);
 
     if (menu_result.action == COMP_SCREEN_MENU_ACTION_RECORD_START) {
-        comp_screen_menu_set_flags(&s_screen_menu, Companion_Screen_RuntimeMenuFlags());
-        MX_APPE_Process();
-        start_manual_recording();
+        if (!defer_touch_runtime_action(
+                COMP_TOUCH_RUNTIME_ACTION_MENU_RECORD_START, now_ms)) {
+            comp_screen_menu_set_flags(&s_screen_menu, Companion_Screen_RuntimeMenuFlags());
+            MX_APPE_Process();
+            start_manual_recording();
+        }
     } else if (menu_result.action == COMP_SCREEN_MENU_ACTION_RECORD_STOP) {
-        comp_screen_menu_set_flags(&s_screen_menu, Companion_Screen_RuntimeMenuFlags());
-        stop_manual_recording("touch-menu");
+        if (!defer_touch_runtime_action(
+                COMP_TOUCH_RUNTIME_ACTION_MENU_RECORD_STOP, now_ms)) {
+            comp_screen_menu_set_flags(&s_screen_menu, Companion_Screen_RuntimeMenuFlags());
+            stop_manual_recording("touch-menu");
+        }
     } else if (menu_result.action == COMP_SCREEN_MENU_ACTION_PHONE_RECONNECT) {
-        companion_ble_advertising_request_result_t retry =
-            Companion_Ble_RequestAdvertising("touch-menu");
-        comp_screen_menu_phone_reconnect_state_t retry_state =
-            retry == COMPANION_BLE_ADVERTISING_REQUEST_FAILED
-                ? COMP_SCREEN_MENU_PHONE_RECONNECT_FAILED
-                : retry == COMPANION_BLE_ADVERTISING_REQUEST_ALREADY_CONNECTED
-                      ? COMP_SCREEN_MENU_PHONE_RECONNECT_CONNECTED
-                      : COMP_SCREEN_MENU_PHONE_RECONNECT_ADVERTISING;
-
-        comp_screen_menu_set_phone_reconnect_state(&s_screen_menu, retry_state);
-        comp_screen_menu_set_flags(&s_screen_menu, Companion_Screen_RuntimeMenuFlags());
-        printf("[touch-ui] phone_reconnect result=%u state=%u\r\n",
-               (unsigned)retry,
-               (unsigned)retry_state);
-        Companion_Screen_MenuRequest(s_screen_menu.view,
-                                     s_screen_menu.flags,
-                                     s_screen_menu.language,
-                                     s_screen_menu.home_page);
-        schedule_touch_screen_maintenance(now_ms);
+        if (!defer_touch_runtime_action(
+                COMP_TOUCH_RUNTIME_ACTION_PHONE_RECONNECT, now_ms)) {
+            process_touch_menu_phone_reconnect(now_ms);
+        }
     } else {
         Companion_Screen_MenuRequest(menu_result.view,
                                      menu_result.flags,
