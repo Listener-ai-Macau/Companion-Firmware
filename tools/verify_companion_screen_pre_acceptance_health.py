@@ -27,6 +27,7 @@ REFRESH_FEEL = ROOT / "docs/validation/companion-screen-refresh-feel-contract.js
 RUNTIME_PROMOTION = ROOT / "docs/validation/companion-screen-wb55-runtime-promotion.json"
 BUILD_MATRIX = ROOT / "docs/validation/companion-screen-wb55-build-matrix.json"
 ACCEPTANCE_INDEX = ROOT / "docs/validation/companion-screen-acceptance-index.json"
+VISUAL_REFERENCE_EVIDENCE = ROOT / "docs/validation/companion-visual-reference-evidence.json"
 FLASH_SCRIPT = ROOT / "tools/flash_nucleo_bringup.ps1"
 SCHEMA_ID = "companion.pendant.screen_pre_acceptance_health.v1"
 CANDIDATE = current_candidate()
@@ -72,6 +73,7 @@ def build_health() -> dict[str, Any]:
     promotion = load_json(RUNTIME_PROMOTION)
     build_matrix = load_json(BUILD_MATRIX)
     acceptance_index = load_json(ACCEPTANCE_INDEX)
+    visual_reference_evidence = load_json(VISUAL_REFERENCE_EVIDENCE)
     resource = menu.get("resource_pack", {})
     runtime = menu.get("runtime_evidence", {})
     machine_state = packet.get("machine_state", {})
@@ -188,6 +190,12 @@ def build_health() -> dict[str, Any]:
             "next_hardware_gate": acceptance_index.get("summary", {}).get("next_hardware_gate"),
             "next_human_gate": acceptance_index.get("summary", {}).get("next_human_gate"),
         },
+        "visual_reference_evidence": {
+            "path": rel(VISUAL_REFERENCE_EVIDENCE),
+            "status": visual_reference_evidence.get("status"),
+            "pending_owner_visual_review": visual_reference_evidence.get("pending_owner_visual_review", []),
+            "rejected_history_preserved": visual_reference_evidence.get("rejected_history_preserved", []),
+        },
         "refresh_feel_contract": {
             "path": rel(REFRESH_FEEL),
             "status": refresh_feel.get("status"),
@@ -260,6 +268,7 @@ def build_health() -> dict[str, Any]:
             "python .\\tools\\verify_wb55_touch_visual_review_record.py",
             "python .\\tools\\verify_companion_screen_goal_audit.py",
             "python .\\tools\\verify_screen_menu_assets.py",
+            "python .\\tools\\verify_visual_reference_evidence.py",
             "python .\\tools\\verify_screen_presentation.py",
             "python .\\tools\\verify_touch_ft6336.py",
             "python .\\tools\\verify_screen_refresh_feel_contract.py",
@@ -313,6 +322,13 @@ def check_health(health: dict[str, Any], errors: list[str]) -> None:
     for key, value in refresh_feel.get("checks", {}).items():
         if value is not True:
             errors.append(f"refresh feel check {key} must be true")
+    visual_reference_evidence = health.get("visual_reference_evidence", {})
+    if visual_reference_evidence.get("status") != "PASS_LEDGER_INTEGRITY":
+        errors.append("visual reference evidence must retain a passing ledger audit")
+    if not visual_reference_evidence.get("pending_owner_visual_review"):
+        errors.append("visual reference evidence must expose pending owner visual gates")
+    if not visual_reference_evidence.get("rejected_history_preserved"):
+        errors.append("visual reference evidence must preserve rejected art history")
     promotion = health.get("runtime_promotion_gate", {})
     if promotion.get("target_status") != PASS_STATUS:
         errors.append("runtime promotion gate target status drifted")

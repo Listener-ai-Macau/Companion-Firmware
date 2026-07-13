@@ -756,6 +756,21 @@ stationary long-press 在 3000 ms 合约附近可靠触发，修复后以真实�
 `PENDING_OWNER_VISUAL_REVIEW`；不得用 C 绘制临时四项替代，也不得把此次右滑修复写成菜单密度通过。
 在这四个问题分别有机器证据前，ACPT-01 不重开、更不能推进 ACPT-02 到 ACPT-13。
 
+## Revision 60: 生图基线作为视觉通过门禁
+
+owner 明确把“先出图，再按图实现”提升为全产品的通过规则：表情、菜单、图标、状态页和后续
+屏幕 profile 的任何可见设计，都必须保存参考图、精确 prompt、源图与输出 SHA-256、被拒绝/被
+替代轮次、review 结论、下一轮 prompt delta，以及源图到 PBM/CEMP/render 的对照产物。构建、
+静态渲染、资源打包和刷机只能证明实现通路，不能替代美术通过；缺任一项时状态只能是
+`PENDING_VISUAL_BASELINE` 或 `PENDING_OWNER_VISUAL_REVIEW`。
+
+`tools/verify_visual_reference_evidence.py` 现在审计所有 `docs/art/iterations/*/iteration-ledger.json`，
+验证基线文件和哈希、候选/拒绝资源没有被激活、候选仍挂在 owner review，以及历史拒绝图仍可追溯。
+它已经并入 `verify_companion_screen_pre_acceptance_health.py`，因此没有这条证据链就不能进入任何
+屏幕视觉 `PASS`。这条产品规则对应 `COMP-REQ-023` 和工作流计划
+`companion-screen-product-integration`；它不批准当前 v4 菜单或 v3 入场/录音候选，二者仍待 owner
+视觉决定。
+
 ## 逐项验收顺序
 
 本项目遵循 AI Workflow 的全产品异步验收规则：未收到操作者明确的“开始验收”前，
