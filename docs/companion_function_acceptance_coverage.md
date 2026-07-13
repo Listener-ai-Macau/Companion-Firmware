@@ -12,6 +12,9 @@ operator observation agree.
   the single action, the success signal, and what allows the next item.
 - Close and triage the current popup result before opening the next one. A
   non-empty note is an implementation input, not an informal PASS.
+- Use the Listener canonical `aiw operator-prompt` style for every real-time
+  action. Its selection and notes must be persisted next to the matching
+  serial/visual artifact, so accepted behavior becomes a regression contract.
 - A product-visible modal, toast, confirmation, error, permission, or
   recovery surface is a separate acceptance item when that surface exists.
 

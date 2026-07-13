@@ -16,6 +16,9 @@ param(
     [int] $PromptTimeoutSeconds = 90,
     [string] $PromptTitle = "Companion NUCLEO 串口抓日志确认",
     [string] $PromptMessage,
+    [string] $PromptProgressText = "操作确认",
+    [string] $PromptScopeText = "当前仅执行这一项人工操作；结果会和本次串口日志绑定。",
+    [string] $PromptResultPath,
     [string] $OutDir
 )
 
@@ -35,6 +38,14 @@ $outputDir = if ($OutDir) {
 }
 $rawLog = Join-Path $outputDir "nucleo-serial-raw.log"
 $summaryJson = Join-Path $outputDir "nucleo-serial-summary.json"
+$operatorPromptResultPath = if ($PromptResultPath) {
+    [System.IO.Path]::GetFullPath($PromptResultPath)
+} elseif ($PromptOperator) {
+    Join-Path $outputDir "operator-prompt-observation.txt"
+} else {
+    $null
+}
+$script:operatorPromptSelection = $null
 $operatorPromptText = if ([string]::IsNullOrWhiteSpace($PromptMessage)) {
     "请确认 NUCLEO-WB55RG 已通过板载 ST-LINK USB 接好，Type/其它串口监视器已停止占用设备。请保持此窗口打开并完成本次操作；点击 OK 后会收集操作期间的设备日志$(if ($ResetAfterOpen) { '，目标板已先复位' } else { '' })。点击 Cancel 取消。"
 } else {
@@ -146,34 +157,43 @@ function Resolve-CapturePort {
     throw "Multiple ST-LINK/STM32 VCP COM ports found. Pass -Port COMx explicitly. Candidates: $candidateLines"
 }
 
+function Resolve-WorkflowAiwPath {
+    $roots = @()
+    if ($env:AI_WORKFLOW_REPO) { $roots += $env:AI_WORKFLOW_REPO }
+    $roots += "C:\Users\Billy\Desktop\Denzic\ai-collaboration-workflow"
+    foreach ($root in $roots) {
+        $candidate = Join-Path $root "scripts\aiw.ps1"
+        if (Test-Path -LiteralPath $candidate) { return (Resolve-Path -LiteralPath $candidate).Path }
+    }
+    throw "The canonical aiw operator-prompt helper was not found. Set AI_WORKFLOW_REPO or restore ai-collaboration-workflow."
+}
+
 function Show-OperatorPrompt {
     param(
         [Parameter(Mandatory = $true)][string] $Title,
         [Parameter(Mandatory = $true)][string] $Message
     )
 
-    try {
-        [System.Media.SystemSounds]::Exclamation.Play()
-        [Console]::Beep(880, 220)
-    } catch {
-        Write-Warning "Could not play operator prompt sound: $($_.Exception.Message)"
+    $aiwPath = Resolve-WorkflowAiwPath
+    $pwshPath = (Get-Command pwsh -ErrorAction Stop).Source
+    $promptOutput = & $pwshPath -NoProfile -File $aiwPath operator-prompt `
+        -Title $Title `
+        -ProgressText $PromptProgressText `
+        -ScopeText $PromptScopeText `
+        -Message $Message `
+        -Input `
+        -ReviewStyle `
+        -Buttons "开始采集,取消" `
+        -OutputPath $operatorPromptResultPath `
+        -TimeoutSeconds $PromptTimeoutSeconds `
+        -Json
+    if ($LASTEXITCODE -ne 0) {
+        throw "Canonical operator-prompt failed with exit code $LASTEXITCODE."
     }
-
-    try {
-        $popup = New-Object -ComObject WScript.Shell
-        $result = $popup.Popup($Message, $PromptTimeoutSeconds, $Title, 49)
-        if ($result -ne 1) {
-            throw "Operator cancelled Companion NUCLEO serial capture."
-        }
-    } catch {
-        if ($_.Exception.Message -eq "Operator cancelled Companion NUCLEO serial capture.") { throw }
-        Write-Warning "Could not show desktop prompt: $($_.Exception.Message)"
-        Write-Output $Title
-        Write-Output $Message
-        $answer = Read-Host "输入 OK 继续抓日志，其他内容取消"
-        if ($answer -ne "OK") {
-            throw "Operator cancelled Companion NUCLEO serial capture."
-        }
+    $promptResult = ($promptOutput -join [Environment]::NewLine) | ConvertFrom-Json
+    $script:operatorPromptSelection = [string]$promptResult.selected
+    if ($script:operatorPromptSelection -ne "开始采集") {
+        throw "Operator cancelled Companion NUCLEO serial capture."
     }
 }
 
@@ -201,6 +221,11 @@ function Write-Summary {
         prompt_operator = [bool]$PromptOperator
         prompt_title = $PromptTitle
         prompt_message = if ($PromptOperator) { $operatorPromptText } else { $null }
+        prompt_style = if ($PromptOperator) { "aiw_operator_prompt_v1" } else { $null }
+        prompt_progress_text = if ($PromptOperator) { $PromptProgressText } else { $null }
+        prompt_scope_text = if ($PromptOperator) { $PromptScopeText } else { $null }
+        prompt_result_path = $operatorPromptResultPath
+        prompt_selection = $script:operatorPromptSelection
         raw_log = $rawLog
         candidates = @($Candidates)
         available_ports = @($AvailablePorts)
@@ -320,6 +345,10 @@ try {
 }
 
 if ($CheckOnly -and -not $Execute) {
+    if ($PromptOperator) {
+        Write-Output "CHECK: Canonical operator prompt: $(Resolve-WorkflowAiwPath)"
+        Write-Output "CHECK: Prompt result path: $operatorPromptResultPath"
+    }
     Write-Output "CHECK: Selected port: $($resolved.port)"
     Write-Output "CHECK: Auto detected: $($resolved.auto_detected)"
     Write-Output "CHECK: Present ports: $($resolved.available_ports -join ', ')"
