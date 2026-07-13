@@ -26,10 +26,14 @@
   "check_only_command": "pwsh -NoProfile -File .\\tools\\run_wb55_screen_runtime_recheck.ps1 -CheckOnly",
   "claim_scope": "operator_action_card_no_hardware_claim",
   "current_gates": {
-    "human_review": "NO_GO_NOT_STARTED",
-    "pre_acceptance": "NO_GO_RUNTIME_RECHECK_PENDING",
-    "runtime_logs": "NO_GO_MISSING_RUNTIME_LOGS",
-    "runtime_promotion": "NO_GO_LOGS_NOT_PASS"
+    "human_review": "NO_GO_OPEN_REVIEW_ITEMS",
+    "pre_acceptance": "NO_GO_INTERACTION_PROFILE_RUNTIME_RECHECK_PENDING",
+    "pre_acceptance_blocking_reasons": [
+      "quiet_interaction_profile_runtime_recheck",
+      "open_operator_review_items"
+    ],
+    "runtime_logs": "NO_GO_INCOMPLETE_RUNTIME_MARKERS",
+    "runtime_promotion": "APPLIED"
   },
   "do_not_do": [
     "不要手工把 REVISION_53_RUNTIME_RECHECK_PENDING 改成 PASS。",
@@ -38,10 +42,45 @@
     "不要在 runtime logs PASS 和 promotion --apply 前启动触摸/视觉人工验收。",
     "不要把 DRY-RUN report 当作真实硬件日志。"
   ],
+  "expected_normal_runtime_markers": [
+    "mount=ok",
+    "revision=53",
+    "clips=33 frames=75",
+    "expression_renderer=external_pack",
+    "source=external_flash",
+    "pet_behavior_selftest=pass failure_code=0",
+    "touch-health] detected=1 identity=1 addr=0x38",
+    "queue_generation revision=53",
+    "coherent_generation=1",
+    "generation_switches=",
+    "last_stale_discarded=",
+    "refresh mode=full",
+    "complete=1",
+    "[build] interaction_profile=quiet epaper_trace=0 touch_trace=0 ft6336_threshold=0x70 touch_poll_active_ms=5 touch_poll_refresh_ms=5 refresh_policy=partial_x5_then_fast_cleanup",
+    "frame rotation=180 mirror_x=1",
+    "preview_started name=idle"
+  ],
+  "expected_provision_runtime_markers": [
+    "mount=ok",
+    "revision=53",
+    "clips=33 frames=75",
+    "expression_renderer=external_pack",
+    "source=external_flash",
+    "pet_behavior_selftest=pass failure_code=0",
+    "touch-health] detected=1 identity=1 addr=0x38",
+    "queue_generation revision=53",
+    "coherent_generation=1",
+    "generation_switches=",
+    "last_stale_discarded=",
+    "refresh mode=full",
+    "complete=1",
+    "external_store=ready",
+    "preview_started name=idle"
+  ],
   "expected_runtime_markers": [
     "mount=ok",
     "revision=53",
-    "clips=33 frames=159",
+    "clips=33 frames=75",
     "expression_renderer=external_pack",
     "source=external_flash",
     "pet_behavior_selftest=pass failure_code=0",
@@ -81,8 +120,8 @@
     "model_last_stale_discarded": 3,
     "path": "docs/validation/companion-screen-generation-release-ledger.json",
     "purpose": "SCR-17 release ledger for new/old generation interleaving prevention",
-    "real_runtime_status": "NO_GO_MISSING_RUNTIME_LOGS",
-    "status": "PENDING_RUNTIME_RECHECK",
+    "real_runtime_status": "PASS",
+    "status": "RUNTIME_PROMOTED_HUMAN_VISUAL_PENDING",
     "ui_assets_ota_in_scope": true
   },
   "hardware_steps": [
@@ -107,18 +146,21 @@
       "operator_meaning": "复位并抓取 normal 启动串口日志，证明普通固件从外部 Flash 挂载 rev53。"
     }
   ],
-  "human_acceptance_start_rule": "只有 rev53 provision/normal runtime logs 验证 PASS、promotion gate APPLIED、pre-acceptance health PASS 后，操作者明确说“开始验收”，才进入触摸/视觉人工验收。",
+  "human_acceptance_start_rule": "只有 rev53 provision/normal runtime logs 验证 PASS、当前 quiet interaction profile 在 normal log 中完整出现、resource promotion 已适用且 pre-acceptance health PASS 后，操作者明确说“开始验收”，才进入触摸/视觉人工验收。",
   "post_run_commands": [
     "python .\\tools\\verify_screen_generation_release_ledger.py",
     "python .\\tools\\verify_wb55_screen_runtime_recheck_logs.py --write",
-    "python .\\tools\\promote_wb55_screen_runtime_recheck.py --apply",
     "python .\\tools\\verify_companion_screen_pre_acceptance_health.py",
     "python .\\tools\\verify_companion_screen_goal_audit.py"
   ],
+  "quiet_interaction_profile_recheck_required": true,
   "resource": {
+    "clips": 33,
+    "frames": 75,
     "pack_crc32": "0x2332E300",
+    "quiet_interaction_profile_recheck_required": true,
     "revision": 53,
-    "runtime_status": "REVISION_53_RUNTIME_RECHECK_PENDING",
+    "runtime_status": "REVISION_53_RUNTIME_PASS_HUMAN_VISUAL_PENDING",
     "total_bytes": 49901
   },
   "runner_safety": {

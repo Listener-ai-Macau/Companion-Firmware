@@ -45,7 +45,7 @@ This packet is generated. Update it with
 - `runtime_serial_capture_preflight`: `{'path': 'docs/validation/companion-screen-wb55-runtime-serial-capture-preflight.json', 'status': 'PASS_STATIC_SERIAL_CAPTURE_PREFLIGHT', 'claim_scope': 'static_serial_capture_contract_no_hardware_claim'}`
 - `runtime_hardware_action_card`: `{'path': 'docs/validation/companion-screen-wb55-runtime-hardware-action-card.json', 'status': 'NO_GO_WAITING_FOR_REAL_HARDWARE_RUN'}`
 - `display_queue_generation_hygiene`: `{'path': 'docs/validation/companion-screen-display-queue-generation-hygiene.json', 'status': 'PASS', 'scenario': 'rev50_pending_frames_discarded_before_rev51_first_frame', 'coherent_generation': 1, 'last_stale_discarded': 3}`
-- `generation_release_ledger`: `{'path': 'docs/validation/companion-screen-generation-release-ledger.json', 'status': 'RUNTIME_PROMOTED_HUMAN_VISUAL_PENDING', 'cemp_revision': 53, 'cemp_crc32': '0x2332E300', 'expected_first_frame_marker': 'coherent_generation=1', 'real_runtime_status': 'PASS', 'visual_triage_classes': ['physical afterimage', 'stale queued frame', 'stale asset revision', 'rescue/procedural fallback leakage', 'stale_generation_content']}`
+- `generation_release_ledger`: `{'path': 'docs/validation/companion-screen-generation-release-ledger.json', 'status': 'RUNTIME_PROMOTED_HUMAN_VISUAL_PENDING', 'cemp_revision': 53, 'cemp_crc32': '0x2332E300', 'expected_first_frame_marker': 'coherent_generation=1', 'real_runtime_status': 'PASS', 'quiet_interaction_profile_runtime_status': 'NO_GO_INCOMPLETE_RUNTIME_MARKERS', 'quiet_interaction_profile_passed': False, 'visual_triage_classes': ['physical afterimage', 'stale queued frame', 'stale asset revision', 'rescue/procedural fallback leakage', 'stale_generation_content']}`
 
 ## Operator Steps
 
@@ -174,7 +174,7 @@ This packet is generated. Update it with
 - runtime flash preflight docs/validation/companion-screen-wb55-runtime-flash-preflight.json
 - runtime serial capture preflight docs/validation/companion-screen-wb55-runtime-serial-capture-preflight.json
 - interaction-profile runtime gate docs/validation/companion-interaction-profile-runtime-gate-20260714.md
-- revision 53 provision/normal serial logs are linked in machine_state
+- revision 53 resource runtime is already promoted, but the current quiet interaction-profile normal capture is still pending
 - the reset-bounded normal serial capture contains every quiet interaction-profile marker before the first human touch step
 - serial/runtime diagnostic tail if flashed during the session
 - photo or short video only when the operator chooses to capture visual evidence

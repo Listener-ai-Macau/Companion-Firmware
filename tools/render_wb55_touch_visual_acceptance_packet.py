@@ -89,19 +89,22 @@ def build_packet() -> dict[str, Any]:
     generation_ledger = json.loads(GENERATION_RELEASE_LEDGER.read_text(encoding="utf-8"))
     generation_scenario = generation_hygiene.get("scenario", {})
     generation_expectation = generation_scenario.get("display_result_expectation", {})
-    runtime_machine_ready = runtime_status == PASS_RUNTIME_STATUS and runtime_logs.get("status") == "PASS"
+    resource_runtime_ready = runtime_status == PASS_RUNTIME_STATUS
+    runtime_machine_ready = resource_runtime_ready and runtime_logs.get("status") == "PASS"
     normal_log = str(runtime.get("normal_raw_log") or "")
     interaction_profile = interaction_profile_runtime_state(normal_log)
     machine_precondition = (
         f"PASS: rev{CANDIDATE.revision} provision and normal runtime logs are promoted, and the normal capture proves the quiet interaction profile; human touch/visual steps may start after the operator says 开始验收."
         if runtime_machine_ready and interaction_profile["status"] == "PASS" else
         "NO_GO_INTERACTION_PROFILE_RUNTIME_RECHECK_PENDING: do not start human touch/visual steps until a reset-bounded normal capture proves the quiet interaction profile."
-        if runtime_machine_ready else
+        if resource_runtime_ready else
         f"NO_GO_RUNTIME_RECHECK_PENDING: do not start human touch/visual steps until rev{CANDIDATE.revision} provision and normal runtime logs pass and promotion is applied."
     )
     runtime_log_note = (
         f"revision {CANDIDATE.revision} provision/normal serial logs are linked in machine_state"
         if runtime_machine_ready else
+        f"revision {CANDIDATE.revision} resource runtime is already promoted, but the current quiet interaction-profile normal capture is still pending"
+        if resource_runtime_ready else
         f"machine_state currently links the last runtime-proven revision logs; rev{CANDIDATE.revision} provision/normal logs are still pending in the runtime recheck report"
     )
     return {
@@ -155,6 +158,8 @@ def build_packet() -> dict[str, Any]:
                 "cemp_crc32": generation_ledger.get("candidate", {}).get("cemp_crc32"),
                 "expected_first_frame_marker": generation_ledger.get("first_frame_evidence", {}).get("expected_marker"),
                 "real_runtime_status": generation_ledger.get("first_frame_evidence", {}).get("real_runtime_status"),
+                "quiet_interaction_profile_runtime_status": generation_ledger.get("first_frame_evidence", {}).get("quiet_interaction_profile_runtime_status"),
+                "quiet_interaction_profile_passed": generation_ledger.get("first_frame_evidence", {}).get("quiet_interaction_profile_passed"),
                 "visual_triage_classes": generation_ledger.get("refresh_classification", {}).get("visual_triage_classes", []),
             },
         },
@@ -523,19 +528,20 @@ def check_packet(packet: dict[str, Any], errors: list[str]) -> None:
         errors.append("interaction profile must require the complete boot marker line")
     if interaction_profile.get("marker_present") != (interaction_profile.get("status") == "PASS"):
         errors.append("interaction profile marker presence must match its runtime status")
-    runtime_machine_ready = runtime_status == PASS_RUNTIME_STATUS and runtime_logs_pass
+    resource_runtime_ready = runtime_status == PASS_RUNTIME_STATUS
+    runtime_machine_ready = resource_runtime_ready and runtime_logs_pass
     expected_machine_precondition = (
         f"PASS: rev{CANDIDATE.revision} provision and normal runtime logs are promoted, and the normal capture proves the quiet interaction profile; human touch/visual steps may start after the operator says 开始验收."
         if runtime_machine_ready and interaction_profile.get("status") == "PASS" else
         "NO_GO_INTERACTION_PROFILE_RUNTIME_RECHECK_PENDING: do not start human touch/visual steps until a reset-bounded normal capture proves the quiet interaction profile."
-        if runtime_machine_ready else
+        if resource_runtime_ready else
         f"NO_GO_RUNTIME_RECHECK_PENDING: do not start human touch/visual steps until rev{CANDIDATE.revision} provision and normal runtime logs pass and promotion is applied."
     )
     if packet.get("machine_precondition") != expected_machine_precondition:
         errors.append("packet machine precondition must reflect quiet interaction-profile runtime evidence")
     expected_ledger_status = (
         "RUNTIME_PROMOTED_HUMAN_VISUAL_PENDING"
-        if runtime_status == PASS_RUNTIME_STATUS and runtime_logs_pass else
+        if runtime_status == PASS_RUNTIME_STATUS else
         "RUNTIME_LOGS_PASS_PROMOTION_PENDING"
         if runtime_logs_pass else
         "PENDING_RUNTIME_RECHECK"
@@ -548,8 +554,13 @@ def check_packet(packet: dict[str, Any], errors: list[str]) -> None:
         errors.append("generation release ledger CRC must match packet resource CRC")
     if generation_ledger.get("expected_first_frame_marker") != "coherent_generation=1":
         errors.append("generation release ledger must require coherent_generation=1")
-    if generation_ledger.get("real_runtime_status") != runtime_logs.get("status"):
-        errors.append("generation release ledger runtime status must match the runtime log verifier")
+    expected_resource_runtime_status = "PASS" if runtime_status == PASS_RUNTIME_STATUS else runtime_logs.get("status")
+    if generation_ledger.get("real_runtime_status") != expected_resource_runtime_status:
+        errors.append("generation release ledger must preserve resource-runtime evidence separately from the quiet-profile gate")
+    if generation_ledger.get("quiet_interaction_profile_runtime_status") != runtime_logs.get("status"):
+        errors.append("generation release ledger quiet-profile runtime status must match the runtime log verifier")
+    if generation_ledger.get("quiet_interaction_profile_passed") is not runtime_logs_pass:
+        errors.append("generation release ledger quiet-profile pass result must match the runtime log verifier")
     visual_classes = set(generation_ledger.get("visual_triage_classes", []))
     for cls in ("physical afterimage", "stale queued frame", "stale asset revision", "rescue/procedural fallback leakage", "stale_generation_content"):
         if cls not in visual_classes:

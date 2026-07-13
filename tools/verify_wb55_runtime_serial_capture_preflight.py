@@ -250,6 +250,15 @@ def build_preflight() -> dict[str, Any]:
                 )
                 for marker in CANDIDATE.common_markers
             },
+            "normal_quiet_interaction_profile_marker": all(
+                token in verifier_text
+                for token in (
+                    "QUIET_INTERACTION_PROFILE_MARKER = (",
+                    "[build] interaction_profile=quiet epaper_trace=0 touch_trace=0 ",
+                    "NORMAL_MARKERS = COMMON_MARKERS + (",
+                    "QUIET_INTERACTION_PROFILE_MARKER,",
+                )
+            ),
         },
         "operator_rule": (
             "This preflight does not open serial ports, flash firmware, or claim runtime evidence. "

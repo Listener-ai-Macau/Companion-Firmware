@@ -7,11 +7,11 @@
 - 资源: revision `53`, bytes `49901`, CRC `0x2332E300`
 - build matrix: `PASS`, variants `dry_run_default, screen_asset_provision, ssd1681_real_panel`
 - ScreenAssetProvision size: `{'bss': 192239, 'data': 2433, 'dec': 602988, 'hex': '9336c', 'text': 408316}`
-- SCR-17 ledger: `PENDING_RUNTIME_RECHECK`, first frame `coherent_generation=1`, stale discard model `3`
-- runtime logs gate: `NO_GO_MISSING_RUNTIME_LOGS`
-- promotion gate: `NO_GO_LOGS_NOT_PASS`
-- pre-acceptance: `NO_GO_RUNTIME_RECHECK_PENDING`
-- human review record: `NO_GO_NOT_STARTED`
+- SCR-17 ledger: `RUNTIME_PROMOTED_HUMAN_VISUAL_PENDING`, first frame `coherent_generation=1`, stale discard model `3`
+- runtime logs gate: `NO_GO_INCOMPLETE_RUNTIME_MARKERS`
+- promotion gate: `APPLIED`
+- pre-acceptance: `NO_GO_INTERACTION_PROFILE_RUNTIME_RECHECK_PENDING`
+- human review record: `NO_GO_OPEN_REVIEW_ITEMS`
 - flash preflight: `PASS`
 - serial capture preflight: `PASS_STATIC_SERIAL_CAPTURE_PREFLIGHT`
 - failure recovery restores normal: `True`
@@ -89,11 +89,11 @@ pwsh -NoProfile -File C:\Users\Billy\Desktop\Denzic\ai-collaboration-workflow\sc
    - 复位并抓取 normal 启动串口日志，证明普通固件从外部 Flash 挂载 rev53。
    - `pwsh -NoProfile -File .\tools\capture_nucleo_serial.ps1 -Execute -WorkflowLockHeld -Seconds 25 -ResetAfterOpen -OutDir C:\Users\Billy\Desktop\Denzic\Companion\Companion-Firmware-devboard-oai1\.cache\validation\rev53-runtime-current\normal`
 
-## 串口日志必须包含
+## Provision 串口日志必须包含
 
 - `mount=ok`
 - `revision=53`
-- `clips=33 frames=159`
+- `clips=33 frames=75`
 - `expression_renderer=external_pack`
 - `source=external_flash`
 - `pet_behavior_selftest=pass failure_code=0`
@@ -104,6 +104,27 @@ pwsh -NoProfile -File C:\Users\Billy\Desktop\Denzic\ai-collaboration-workflow\sc
 - `last_stale_discarded=`
 - `refresh mode=full`
 - `complete=1`
+- `external_store=ready`
+- `preview_started name=idle`
+
+## Normal 串口日志必须包含
+
+- `mount=ok`
+- `revision=53`
+- `clips=33 frames=75`
+- `expression_renderer=external_pack`
+- `source=external_flash`
+- `pet_behavior_selftest=pass failure_code=0`
+- `touch-health] detected=1 identity=1 addr=0x38`
+- `queue_generation revision=53`
+- `coherent_generation=1`
+- `generation_switches=`
+- `last_stale_discarded=`
+- `refresh mode=full`
+- `complete=1`
+- `[build] interaction_profile=quiet epaper_trace=0 touch_trace=0 ft6336_threshold=0x70 touch_poll_active_ms=5 touch_poll_refresh_ms=5 refresh_policy=partial_x5_then_fast_cleanup`
+- `frame rotation=180 mirror_x=1`
+- `preview_started name=idle`
 
 这些 marker 同时用于 SCR-17 release ledger：确认 rev53 是唯一 active generation，旧队列已丢弃，首帧是当前 generation。
 
@@ -114,9 +135,6 @@ python .\tools\verify_screen_generation_release_ledger.py
 ```
 ```powershell
 python .\tools\verify_wb55_screen_runtime_recheck_logs.py --write
-```
-```powershell
-python .\tools\promote_wb55_screen_runtime_recheck.py --apply
 ```
 ```powershell
 python .\tools\verify_companion_screen_pre_acceptance_health.py
@@ -133,4 +151,4 @@ python .\tools\verify_companion_screen_goal_audit.py
 - 不要在 runtime logs PASS 和 promotion --apply 前启动触摸/视觉人工验收。
 - 不要把 DRY-RUN report 当作真实硬件日志。
 
-人工验收入口规则：只有 rev53 provision/normal runtime logs 验证 PASS、promotion gate APPLIED、pre-acceptance health PASS 后，操作者明确说“开始验收”，才进入触摸/视觉人工验收。
+人工验收入口规则：只有 rev53 provision/normal runtime logs 验证 PASS、当前 quiet interaction profile 在 normal log 中完整出现、resource promotion 已适用且 pre-acceptance health PASS 后，操作者明确说“开始验收”，才进入触摸/视觉人工验收。

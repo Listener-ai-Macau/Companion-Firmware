@@ -22,6 +22,11 @@ RUN_REPORT_NAME = "runtime-recheck-run.json"
 SCHEMA_ID = "companion.screen.wb55_runtime_recheck_logs.v1"
 PENDING_STATUS = CANDIDATE.pending_status
 PASS_STATUS = CANDIDATE.pass_status
+QUIET_INTERACTION_PROFILE_MARKER = (
+    "[build] interaction_profile=quiet epaper_trace=0 touch_trace=0 "
+    "ft6336_threshold=0x70 touch_poll_active_ms=5 touch_poll_refresh_ms=5 "
+    "refresh_policy=partial_x5_then_fast_cleanup"
+)
 
 
 COMMON_MARKERS = CANDIDATE.common_markers
@@ -32,6 +37,7 @@ PROVISION_MARKERS = COMMON_MARKERS + (
 )
 
 NORMAL_MARKERS = COMMON_MARKERS + (
+    QUIET_INTERACTION_PROFILE_MARKER,
     "frame rotation=180 mirror_x=1",
     "preview_started name=idle",
 )

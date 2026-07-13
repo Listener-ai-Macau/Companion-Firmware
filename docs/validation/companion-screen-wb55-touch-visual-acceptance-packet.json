@@ -10,7 +10,7 @@
     "runtime flash preflight docs/validation/companion-screen-wb55-runtime-flash-preflight.json",
     "runtime serial capture preflight docs/validation/companion-screen-wb55-runtime-serial-capture-preflight.json",
     "interaction-profile runtime gate docs/validation/companion-interaction-profile-runtime-gate-20260714.md",
-    "revision 53 provision/normal serial logs are linked in machine_state",
+    "revision 53 resource runtime is already promoted, but the current quiet interaction-profile normal capture is still pending",
     "the reset-bounded normal serial capture contains every quiet interaction-profile marker before the first human touch step",
     "serial/runtime diagnostic tail if flashed during the session",
     "photo or short video only when the operator chooses to capture visual evidence",
@@ -33,6 +33,8 @@
       "cemp_revision": 53,
       "expected_first_frame_marker": "coherent_generation=1",
       "path": "docs/validation/companion-screen-generation-release-ledger.json",
+      "quiet_interaction_profile_passed": false,
+      "quiet_interaction_profile_runtime_status": "NO_GO_INCOMPLETE_RUNTIME_MARKERS",
       "real_runtime_status": "PASS",
       "status": "RUNTIME_PROMOTED_HUMAN_VISUAL_PENDING",
       "visual_triage_classes": [

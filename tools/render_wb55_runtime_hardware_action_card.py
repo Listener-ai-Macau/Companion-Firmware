@@ -55,6 +55,19 @@ def build_card() -> dict[str, Any]:
     generation_ledger = load_json(GENERATION_RELEASE_LEDGER)
     build_matrix = load_json(BUILD_MATRIX)
     steps = run_report.get("steps", [])
+    quiet_profile_recheck_required = bool(
+        run_report.get("resource", {}).get("quiet_interaction_profile_recheck_required")
+    )
+    post_run_commands = [
+        "python .\\tools\\verify_screen_generation_release_ledger.py",
+        "python .\\tools\\verify_wb55_screen_runtime_recheck_logs.py --write",
+    ]
+    if promotion.get("status") != "APPLIED":
+        post_run_commands.append("python .\\tools\\promote_wb55_screen_runtime_recheck.py --apply")
+    post_run_commands.extend([
+        "python .\\tools\\verify_companion_screen_pre_acceptance_health.py",
+        "python .\\tools\\verify_companion_screen_goal_audit.py",
+    ])
     step_cards = [
         {
             "id": step.get("id"),
@@ -80,6 +93,7 @@ def build_card() -> dict[str, Any]:
         "source_build_matrix": rel(BUILD_MATRIX),
         "target": run_report.get("target"),
         "resource": run_report.get("resource", {}),
+        "quiet_interaction_profile_recheck_required": quiet_profile_recheck_required,
         "build_matrix": {
             "path": rel(BUILD_MATRIX),
             "status": build_matrix.get("status"),
@@ -107,6 +121,7 @@ def build_card() -> dict[str, Any]:
             "runtime_logs": runtime_logs.get("status"),
             "runtime_promotion": promotion.get("status"),
             "pre_acceptance": pre_acceptance.get("status"),
+            "pre_acceptance_blocking_reasons": pre_acceptance.get("blocking_reasons", []),
             "human_review": pre_acceptance.get("operator_review_record", {}).get("status"),
         },
         "flash_preflight": {
@@ -162,13 +177,9 @@ def build_card() -> dict[str, Any]:
         "check_only_command": "pwsh -NoProfile -File .\\tools\\run_wb55_screen_runtime_recheck.ps1 -CheckOnly",
         "hardware_steps": step_cards,
         "expected_runtime_markers": run_report.get("expected_runtime_markers", []),
-        "post_run_commands": [
-            "python .\\tools\\verify_screen_generation_release_ledger.py",
-            "python .\\tools\\verify_wb55_screen_runtime_recheck_logs.py --write",
-            "python .\\tools\\promote_wb55_screen_runtime_recheck.py --apply",
-            "python .\\tools\\verify_companion_screen_pre_acceptance_health.py",
-            "python .\\tools\\verify_companion_screen_goal_audit.py",
-        ],
+        "expected_provision_runtime_markers": run_report.get("expected_provision_runtime_markers", []),
+        "expected_normal_runtime_markers": run_report.get("expected_normal_runtime_markers", []),
+        "post_run_commands": post_run_commands,
         "do_not_do": [
             f"不要手工把 {CANDIDATE.pending_status} 改成 PASS。",
             "不要跳过 normal 固件恢复；provision 只用于写资源。",
@@ -177,8 +188,9 @@ def build_card() -> dict[str, Any]:
             "不要把 DRY-RUN report 当作真实硬件日志。",
         ],
         "human_acceptance_start_rule": (
-            f"只有 rev{CANDIDATE.revision} provision/normal runtime logs 验证 PASS、promotion gate APPLIED、"
-            "pre-acceptance health PASS 后，操作者明确说“开始验收”，才进入触摸/视觉人工验收。"
+            f"只有 rev{CANDIDATE.revision} provision/normal runtime logs 验证 PASS、当前 quiet interaction "
+            "profile 在 normal log 中完整出现、resource promotion 已适用且 pre-acceptance health PASS 后，"
+            "操作者明确说“开始验收”，才进入触摸/视觉人工验收。"
         ),
         "validation_commands": [
             "python .\\tools\\render_wb55_runtime_hardware_action_card.py",
@@ -286,8 +298,10 @@ def render_markdown(card: dict[str, Any]) -> str:
                 f"   - `{step['command']}`",
             ]
         )
-    lines.extend(["", "## 串口日志必须包含", ""])
-    lines.extend(f"- `{marker}`" for marker in card["expected_runtime_markers"])
+    lines.extend(["", "## Provision 串口日志必须包含", ""])
+    lines.extend(f"- `{marker}`" for marker in card["expected_provision_runtime_markers"])
+    lines.extend(["", "## Normal 串口日志必须包含", ""])
+    lines.extend(f"- `{marker}`" for marker in card["expected_normal_runtime_markers"])
     lines.extend([
         "",
         f"这些 marker 同时用于 SCR-17 release ledger：确认 rev{CANDIDATE.revision} 是唯一 active generation，旧队列已丢弃，首帧是当前 generation。",
@@ -315,6 +329,27 @@ def verify(card: dict[str, Any]) -> list[str]:
         errors.append("action card resource byte count must match the active candidate")
     if resource.get("pack_crc32") != CANDIDATE.pack_crc32:
         errors.append("action card resource CRC must match the active candidate")
+    expected_common_markers = list(CANDIDATE.common_markers)
+    expected_provision_markers = expected_common_markers + [
+        "external_store=ready",
+        "preview_started name=idle",
+    ]
+    quiet_marker = (
+        "[build] interaction_profile=quiet epaper_trace=0 touch_trace=0 "
+        "ft6336_threshold=0x70 touch_poll_active_ms=5 touch_poll_refresh_ms=5 "
+        "refresh_policy=partial_x5_then_fast_cleanup"
+    )
+    expected_normal_markers = expected_common_markers + [
+        quiet_marker,
+        "frame rotation=180 mirror_x=1",
+        "preview_started name=idle",
+    ]
+    if card.get("expected_runtime_markers") != expected_common_markers:
+        errors.append("action card common markers must follow the active CEMP manifest")
+    if card.get("expected_provision_runtime_markers") != expected_provision_markers:
+        errors.append("action card provision markers drifted")
+    if card.get("expected_normal_runtime_markers") != expected_normal_markers:
+        errors.append("action card normal markers must require the quiet interaction profile")
     build_matrix = card.get("build_matrix", {})
     if build_matrix.get("path") != rel(BUILD_MATRIX):
         errors.append("action card must link WB55 build matrix")
@@ -334,8 +369,12 @@ def verify(card: dict[str, Any]) -> list[str]:
     generation_ledger = card.get("generation_release_ledger", {})
     if generation_ledger.get("path") != rel(GENERATION_RELEASE_LEDGER):
         errors.append("action card must link SCR-17 generation release ledger")
-    if generation_ledger.get("status") != "PENDING_RUNTIME_RECHECK":
-        errors.append("generation release ledger must remain pending before runtime logs")
+    quiet_profile_recheck_required = card.get("quiet_interaction_profile_recheck_required") is True
+    if quiet_profile_recheck_required:
+        if generation_ledger.get("status") != "RUNTIME_PROMOTED_HUMAN_VISUAL_PENDING":
+            errors.append("quiet-profile recheck must retain the prior promoted generation ledger")
+    elif generation_ledger.get("status") != "PENDING_RUNTIME_RECHECK":
+        errors.append("generation release ledger must remain pending before first runtime logs")
     if generation_ledger.get("cemp_revision") != resource.get("revision"):
         errors.append("generation release ledger revision must match action-card resource")
     if generation_ledger.get("cemp_crc32") != resource.get("pack_crc32"):
@@ -344,21 +383,41 @@ def verify(card: dict[str, Any]) -> list[str]:
         errors.append("generation release ledger must require coherent_generation=1")
     if generation_ledger.get("model_last_stale_discarded") != 3:
         errors.append("generation release ledger must carry stale-discard model")
-    if generation_ledger.get("real_runtime_status") not in PENDING_RUNTIME_LOG_STATUSES:
-        errors.append("generation release ledger must keep a non-PASS runtime status before promotion")
+    if quiet_profile_recheck_required:
+        if generation_ledger.get("real_runtime_status") != "PASS":
+            errors.append("quiet-profile recheck must retain prior PASS resource runtime evidence")
+    elif generation_ledger.get("real_runtime_status") not in PENDING_RUNTIME_LOG_STATUSES:
+        errors.append("generation release ledger must keep a non-PASS runtime status before first promotion")
     if generation_ledger.get("ui_assets_ota_in_scope") is not True:
         errors.append("generation release ledger must keep ui_assets OTA in scope")
     gates = card.get("current_gates", {})
     if gates.get("runtime_logs") not in PENDING_RUNTIME_LOG_STATUSES:
         errors.append("current gate runtime_logs must remain a non-PASS runtime status")
-    expected_gates = {
-        "runtime_promotion": "NO_GO_LOGS_NOT_PASS",
-        "pre_acceptance": "NO_GO_RUNTIME_RECHECK_PENDING",
-        "human_review": "NO_GO_NOT_STARTED",
-    }
+    expected_gates = (
+        {
+            "runtime_promotion": "APPLIED",
+            "pre_acceptance": "NO_GO_INTERACTION_PROFILE_RUNTIME_RECHECK_PENDING",
+            "human_review": "NO_GO_OPEN_REVIEW_ITEMS",
+        }
+        if quiet_profile_recheck_required else {
+            "runtime_promotion": "NO_GO_LOGS_NOT_PASS",
+            "pre_acceptance": "NO_GO_RUNTIME_RECHECK_PENDING",
+            "human_review": "NO_GO_NOT_STARTED",
+        }
+    )
     for key, value in expected_gates.items():
         if gates.get(key) != value:
             errors.append(f"current gate {key} must remain {value}")
+    if quiet_profile_recheck_required:
+        for reason in ("quiet_interaction_profile_runtime_recheck", "open_operator_review_items"):
+            if reason not in gates.get("pre_acceptance_blocking_reasons", []):
+                errors.append(f"quiet-profile action card must retain pre-acceptance blocker {reason}")
+    post_run_commands = card.get("post_run_commands", [])
+    if quiet_profile_recheck_required:
+        if "python .\\tools\\promote_wb55_screen_runtime_recheck.py --apply" in post_run_commands:
+            errors.append("quiet-profile recheck must not re-promote an already accepted resource revision")
+    elif "python .\\tools\\promote_wb55_screen_runtime_recheck.py --apply" not in post_run_commands:
+        errors.append("first runtime promotion must remain in the post-run commands")
     flash = card.get("flash_preflight", {})
     if flash.get("status") != "PASS":
         errors.append("flash preflight status must be PASS")
@@ -438,7 +497,7 @@ def verify(card: dict[str, Any]) -> list[str]:
     if step_ids != ["flash_provision", "capture_provision", "flash_normal", "capture_normal"]:
         errors.append("hardware steps must keep provision/capture/normal/capture order")
     serialized = json.dumps(card, ensure_ascii=False)
-    for token in (
+    required_tokens = [
         "Companion-WB55",
         "run_wb55_screen_runtime_recheck.ps1 -Execute -WorkflowLockHeld",
         "verify_wb55_screen_runtime_recheck_logs.py",
@@ -458,7 +517,6 @@ def verify(card: dict[str, Any]) -> list[str]:
         "stubbed_reset_timeout_no_hardware_claim",
         "SelfTestResetTimeout",
         "reset timed out after 5 second",
-        "promote_wb55_screen_runtime_recheck.py --apply",
         "verify_companion_screen_pre_acceptance_health.py",
         "开始验收",
         "不要手工",
@@ -474,7 +532,11 @@ def verify(card: dict[str, Any]) -> list[str]:
         "coherent_generation=1",
         "generation_switches=",
         "last_stale_discarded=",
-    ):
+        "[build] interaction_profile=quiet epaper_trace=0 touch_trace=0",
+    ]
+    if not quiet_profile_recheck_required:
+        required_tokens.append("promote_wb55_screen_runtime_recheck.py --apply")
+    for token in required_tokens:
         if token not in serialized:
             errors.append(f"action card missing token {token}")
     return errors

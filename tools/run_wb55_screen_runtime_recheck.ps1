@@ -16,6 +16,7 @@ Set-StrictMode -Version Latest
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
 $menuEvidencePath = Join-Path $repoRoot "docs\validation\companion-screen-bilingual-menu-wb55.json"
 $buildMatrixPath = Join-Path $repoRoot "docs\validation\companion-screen-wb55-build-matrix.json"
+$runtimeLogsPath = Join-Path $repoRoot "docs\validation\companion-screen-wb55-runtime-recheck-logs.json"
 $provisionDir = $null
 $normalDir = $null
 $runReport = $null
@@ -70,26 +71,37 @@ if (-not (Test-Path -LiteralPath $menuEvidencePath)) {
 if (-not (Test-Path -LiteralPath $buildMatrixPath)) {
     throw "Missing WB55 build matrix evidence: $buildMatrixPath"
 }
+if (-not (Test-Path -LiteralPath $runtimeLogsPath)) {
+    throw "Missing WB55 runtime log evidence: $runtimeLogsPath"
+}
 
 $menuEvidence = Get-Content -LiteralPath $menuEvidencePath -Raw | ConvertFrom-Json
 $buildMatrix = Get-Content -LiteralPath $buildMatrixPath -Raw | ConvertFrom-Json
+$runtimeLogs = Get-Content -LiteralPath $runtimeLogsPath -Raw | ConvertFrom-Json
 $resource = $menuEvidence.resource_pack
 $runtime = $menuEvidence.runtime_evidence
 $runtimeStatus = [string]$runtime.status
 $revision = [int]$resource.revision
 $crc32 = [string]$resource.pack_crc32
+$clips = [int]$resource.clips
+$frames = [int]$resource.frames
+$quietInteractionProfileMarker = "[build] interaction_profile=quiet epaper_trace=0 touch_trace=0 ft6336_threshold=0x70 touch_poll_active_ms=5 touch_poll_refresh_ms=5 refresh_policy=partial_x5_then_fast_cleanup"
 $pendingStatus = "REVISION_${revision}_RUNTIME_RECHECK_PENDING"
 $passStatus = "REVISION_${revision}_RUNTIME_PASS_HUMAN_VISUAL_PENDING"
-if ($revision -le 0 -or $crc32 -notmatch '^0x[0-9A-F]{8}$' -or $runtimeStatus -notin @($pendingStatus, $passStatus)) {
-    throw "Expected a positive resource revision, uppercase CEMP CRC, and matching pending or promoted runtime status before running this recheck."
+$quietInteractionProfileRecheckRequired = (
+    $runtimeStatus -eq $passStatus -and
+    [string]$runtimeLogs.status -ne "PASS"
+)
+if ($revision -le 0 -or $clips -le 0 -or $frames -le 0 -or $crc32 -notmatch '^0x[0-9A-F]{8}$' -or $runtimeStatus -notin @($pendingStatus, $passStatus)) {
+    throw "Expected positive CEMP revision, clips, frames, uppercase CRC, and matching pending or promoted runtime status before running this recheck."
 }
 $defaultRunRoot = Join-Path $repoRoot ".cache\validation\rev$revision-runtime-current"
 $runRoot = if ($OutRoot) { $OutRoot } else { $defaultRunRoot }
 $provisionDir = Join-Path $runRoot "provision"
 $normalDir = Join-Path $runRoot "normal"
 $runReport = Join-Path $runRoot "runtime-recheck-run.json"
-if ($runtimeStatus -eq $passStatus -and $Execute) {
-    throw "Revision $revision runtime evidence is already promoted. Refusing to rerun the hardware recheck without first resetting the evidence state by an explicit maintenance task."
+if ($runtimeStatus -eq $passStatus -and $Execute -and -not $quietInteractionProfileRecheckRequired) {
+    throw "Revision $revision runtime evidence and quiet interaction profile are already promoted. Refusing to rerun the hardware recheck without first resetting evidence by an explicit maintenance task."
 }
 if ([string]$buildMatrix.status -ne "PASS") {
     throw "Expected WB55 build matrix PASS before runtime recheck."
@@ -153,6 +165,31 @@ if ($SelfTestRecovery) {
     )
 }
 
+$expectedRuntimeMarkers = @(
+    "mount=ok",
+    "revision=$revision",
+    "clips=$clips frames=$frames",
+    "expression_renderer=external_pack",
+    "source=external_flash",
+    "pet_behavior_selftest=pass failure_code=0",
+    "touch-health] detected=1 identity=1 addr=0x38",
+    "queue_generation revision=$revision",
+    "coherent_generation=1",
+    "generation_switches=",
+    "last_stale_discarded=",
+    "refresh mode=full",
+    "complete=1"
+)
+$expectedProvisionRuntimeMarkers = @($expectedRuntimeMarkers) + @(
+    "external_store=ready",
+    "preview_started name=idle"
+)
+$expectedNormalRuntimeMarkers = @($expectedRuntimeMarkers) + @(
+    $quietInteractionProfileMarker,
+    "frame rotation=180 mirror_x=1",
+    "preview_started name=idle"
+)
+
 $report = [ordered]@{
     schema = "companion.wb55_screen_runtime_recheck_run.v1"
     status = if ($CheckOnly) { "DRY-RUN" } elseif ($SelfTestRecovery) { "SELFTEST_RUNNING" } else { "RUNNING" }
@@ -162,7 +199,10 @@ $report = [ordered]@{
         revision = [int]$resource.revision
         total_bytes = [int]$resource.total_bytes
         pack_crc32 = [string]$resource.pack_crc32
+        clips = $clips
+        frames = $frames
         runtime_status = [string]$runtime.status
+        quiet_interaction_profile_recheck_required = $quietInteractionProfileRecheckRequired
     }
     build_matrix = [ordered]@{
         path = RelPath $buildMatrixPath
@@ -183,21 +223,9 @@ $report = [ordered]@{
         run_report = RelPath $runReport
     }
     steps = @($steps)
-    expected_runtime_markers = @(
-        "mount=ok",
-        "revision=$revision",
-        "clips=33 frames=159",
-        "expression_renderer=external_pack",
-        "source=external_flash",
-        "pet_behavior_selftest=pass failure_code=0",
-        "touch-health] detected=1 identity=1 addr=0x38",
-        "queue_generation revision=$revision",
-        "coherent_generation=1",
-        "generation_switches=",
-        "last_stale_discarded=",
-        "refresh mode=full",
-        "complete=1"
-    )
+    expected_runtime_markers = @($expectedRuntimeMarkers)
+    expected_provision_runtime_markers = @($expectedProvisionRuntimeMarkers)
+    expected_normal_runtime_markers = @($expectedNormalRuntimeMarkers)
     notes = @(
         "Run only while holding the Companion-WB55 workflow hardware lock.",
         "SelfTestRecovery uses stub commands only and must never be treated as hardware evidence.",
@@ -205,6 +233,7 @@ $report = [ordered]@{
         "This runner does not ask for human visual acceptance; it only collects machine runtime evidence.",
         "After Execute, run verify_wb55_screen_runtime_recheck_logs.py --write before promotion.",
         "Only after the log verifier reports PASS may promote_wb55_screen_runtime_recheck.py --apply update the runtime evidence.",
+        "A previously promoted CEMP revision may rerun this full sequence only while the current quiet interaction-profile log gate is not PASS.",
         "After promotion, rerun verify_companion_screen_pre_acceptance_health.py and verify_companion_screen_goal_audit.py before any human touch/visual acceptance."
         "Before hardware execution, verify_wb55_screen_build_matrix.py must prove dry_run_default, ssd1681_real_panel, and screen_asset_provision builds."
     )
@@ -213,7 +242,7 @@ $report = [ordered]@{
 if ($CheckOnly) {
     $report.completed_at = (Get-Date).ToString("o")
     $report.results = @()
-    if ($runtimeStatus -eq $passStatus) {
+    if ($runtimeStatus -eq $passStatus -and -not $quietInteractionProfileRecheckRequired) {
         Write-Output "CHECK: rev$revision WB55 runtime evidence is already promoted"
         Write-Output "CHECK: resource revision=$($resource.revision) bytes=$($resource.total_bytes) crc=$($resource.pack_crc32)"
         Write-Output "CHECK: runtime_status=$runtimeStatus"
@@ -222,6 +251,7 @@ if ($CheckOnly) {
         exit 0
     }
     Write-Output "CHECK: rev$revision WB55 runtime recheck sequence"
+    Write-Output "CHECK: quiet_interaction_profile_recheck_required=$quietInteractionProfileRecheckRequired runtime_logs_status=$($runtimeLogs.status)"
     Write-Output "CHECK: resource revision=$($resource.revision) bytes=$($resource.total_bytes) crc=$($resource.pack_crc32)"
     Write-Output "CHECK: build_matrix status=$($buildMatrix.status) variants=$($buildVariants -join ',')"
     Write-Output "CHECK: screen_asset_provision size=text:$($provisionBuildSize.text) data:$($provisionBuildSize.data) bss:$($provisionBuildSize.bss) dec:$($provisionBuildSize.dec) hex:$($provisionBuildSize.hex)"

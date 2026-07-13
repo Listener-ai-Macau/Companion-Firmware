@@ -64,13 +64,20 @@ def build_ledger() -> dict[str, Any]:
     candidate_revision = int(resource_pack.get("revision", 0))
     logs_pass = runtime_logs.get("status") == "PASS"
     promotion_applied = promotion.get("status") == "APPLIED"
-    if logs_pass:
+    expected_resource_runtime_status = f"REVISION_{candidate_revision}_RUNTIME_PASS_HUMAN_VISUAL_PENDING"
+    resource_runtime_promoted = (
+        promotion_applied
+        and runtime.get("status") == expected_resource_runtime_status
+    )
+    if resource_runtime_promoted:
         missing_hardware = ["human visual classification of any old marks"]
-        ledger_status = (
-            RUNTIME_PROMOTED_HUMAN_VISUAL_PENDING
-            if promotion_applied
-            else RUNTIME_LOGS_PASS_PROMOTION_PENDING
-        )
+        if not logs_pass:
+            missing_hardware.insert(0, "current quiet interaction-profile normal capture")
+        ledger_status = RUNTIME_PROMOTED_HUMAN_VISUAL_PENDING
+        external_flash_activation = f"runtime_verified_rev{candidate_revision}_external_flash"
+    elif logs_pass:
+        missing_hardware = ["human visual classification of any old marks"]
+        ledger_status = RUNTIME_LOGS_PASS_PROMOTION_PENDING
         external_flash_activation = f"runtime_verified_rev{candidate_revision}_external_flash"
     else:
         missing_hardware = [
@@ -131,8 +138,14 @@ def build_ledger() -> dict[str, Any]:
             "model_coherent_generation": queue_expectation.get("coherent_generation"),
             "model_generation_switches": queue_expectation.get("generation_switches"),
             "model_last_stale_discarded": queue_expectation.get("last_stale_discarded"),
-            "real_runtime_status": runtime_logs.get("status"),
-            "real_marker_present": runtime_logs.get("provision", {}).get("markers", {}).get("coherent_generation=1"),
+            "real_runtime_status": "PASS" if resource_runtime_promoted else runtime_logs.get("status"),
+            "real_marker_present": (
+                runtime_logs.get("provision", {}).get("markers", {}).get("coherent_generation=1")
+                if resource_runtime_promoted
+                else logs_pass
+            ),
+            "quiet_interaction_profile_runtime_status": runtime_logs.get("status"),
+            "quiet_interaction_profile_passed": logs_pass,
         },
         "refresh_classification": {
             "interactive": refresh.get("product_rules", {}).get("interactive"),
@@ -203,22 +216,26 @@ def check_ledger(ledger: dict[str, Any], errors: list[str]) -> None:
     promotion = load(RUNTIME_PROMOTION)
     logs_pass = runtime_logs.get("status") == "PASS"
     promotion_applied = promotion.get("status") == "APPLIED"
-    expected_ledger_status = (
-        RUNTIME_PROMOTED_HUMAN_VISUAL_PENDING
-        if logs_pass and promotion_applied
-        else RUNTIME_LOGS_PASS_PROMOTION_PENDING
-        if logs_pass
-        else PENDING_RUNTIME_RECHECK
-    )
-    if ledger.get("status") != expected_ledger_status:
-        errors.append(f"ledger status must be {expected_ledger_status}")
-
     candidate = ledger.get("candidate", {})
     menu = load(MENU)
     resource_pack = menu.get("resource_pack", {})
     runtime = menu.get("runtime_evidence", {})
     revision = resource_pack.get("revision")
     crc32 = resource_pack.get("pack_crc32")
+    expected_resource_runtime_status = f"REVISION_{revision}_RUNTIME_PASS_HUMAN_VISUAL_PENDING"
+    resource_runtime_promoted = (
+        promotion_applied
+        and runtime.get("status") == expected_resource_runtime_status
+    )
+    expected_ledger_status = (
+        RUNTIME_PROMOTED_HUMAN_VISUAL_PENDING
+        if resource_runtime_promoted
+        else RUNTIME_LOGS_PASS_PROMOTION_PENDING
+        if logs_pass
+        else PENDING_RUNTIME_RECHECK
+    )
+    if ledger.get("status") != expected_ledger_status:
+        errors.append(f"ledger status must be {expected_ledger_status}")
     if candidate.get("cemp_revision") != revision:
         errors.append("candidate CEMP revision must match the active menu resource")
     if candidate.get("cemp_crc32") != crc32:
@@ -226,7 +243,7 @@ def check_ledger(ledger: dict[str, Any], errors: list[str]) -> None:
     if candidate.get("storage") != "external ui_assets at 0x00200000":
         errors.append("candidate storage must remain external ui_assets")
     expected_runtime_status = (
-        f"REVISION_{revision}_RUNTIME_PASS_HUMAN_VISUAL_PENDING"
+        expected_resource_runtime_status
         if promotion_applied
         else f"REVISION_{revision}_RUNTIME_RECHECK_PENDING"
     )
@@ -256,7 +273,7 @@ def check_ledger(ledger: dict[str, Any], errors: list[str]) -> None:
     activation = ledger.get("activation_evidence", {})
     expected_activation = (
         f"runtime_verified_rev{revision}_external_flash"
-        if logs_pass
+        if resource_runtime_promoted or logs_pass
         else f"pending_rev{revision}_runtime_recheck"
     )
     if activation.get("external_flash_activation") != expected_activation:
@@ -279,10 +296,20 @@ def check_ledger(ledger: dict[str, Any], errors: list[str]) -> None:
         errors.append("model resource revision must match the simulated active revision")
     if first.get("model_coherent_generation") != 1:
         errors.append("model first frame must be coherent")
-    if first.get("real_runtime_status") != runtime_logs.get("status"):
-        errors.append("real runtime status must match the runtime log verifier")
-    if first.get("real_marker_present") is not logs_pass:
-        errors.append("real coherent marker must match whether current runtime logs pass")
+    expected_first_runtime_status = "PASS" if resource_runtime_promoted else runtime_logs.get("status")
+    if first.get("real_runtime_status") != expected_first_runtime_status:
+        errors.append("real coherent marker runtime status must preserve the resource-runtime evidence")
+    expected_real_marker = (
+        runtime_logs.get("provision", {}).get("markers", {}).get("coherent_generation=1")
+        if resource_runtime_promoted
+        else logs_pass
+    )
+    if first.get("real_marker_present") is not expected_real_marker:
+        errors.append("real coherent marker must match the resource-runtime evidence")
+    if first.get("quiet_interaction_profile_runtime_status") != runtime_logs.get("status"):
+        errors.append("quiet interaction-profile status must match the runtime log verifier")
+    if first.get("quiet_interaction_profile_passed") is not logs_pass:
+        errors.append("quiet interaction-profile pass result must match the runtime log verifier")
 
     refresh = ledger.get("refresh_classification", {})
     classes = set(refresh.get("visual_triage_classes", []))
@@ -315,7 +342,9 @@ def check_ledger(ledger: dict[str, Any], errors: list[str]) -> None:
 
     missing = set(ledger.get("missing_hardware_facts", []))
     required_missing = ["human visual classification of any old marks"]
-    if not logs_pass:
+    if resource_runtime_promoted and not logs_pass:
+        required_missing.insert(0, "current quiet interaction-profile normal capture")
+    elif not logs_pass:
         required_missing = [
             f"rev{revision} ScreenAssetProvision flash/capture",
             f"rev{revision} normal firmware restore/capture",

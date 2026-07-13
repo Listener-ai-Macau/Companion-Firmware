@@ -89,7 +89,8 @@
     },
     "expects_provision_and_normal_dirs": true,
     "expects_raw_log": true,
-    "expects_summary_json": true
+    "expects_summary_json": true,
+    "normal_quiet_interaction_profile_marker": true
   },
   "operator_rule": "This preflight does not open serial ports, flash firmware, or claim runtime evidence. The real capture still requires the Companion-WB55 workflow hardware lock and the runtime log verifier must remain NO_GO until provision/normal logs exist.",
   "reset_timeout_selftest": {
@@ -144,9 +145,12 @@
         "run_report": ".cache/validation/rev53-runtime-current/runtime-recheck-run.json"
       },
       "resource": {
+        "clips": 33,
+        "frames": 75,
         "pack_crc32": "0x2332E300",
+        "quiet_interaction_profile_recheck_required": true,
         "revision": 53,
-        "runtime_status": "REVISION_53_RUNTIME_RECHECK_PENDING",
+        "runtime_status": "REVISION_53_RUNTIME_PASS_HUMAN_VISUAL_PENDING",
         "total_bytes": 49901
       },
       "results_count": 0,

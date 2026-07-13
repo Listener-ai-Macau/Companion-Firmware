@@ -304,7 +304,16 @@ def build_contract() -> dict[str, Any]:
             )
             or (
                 is_promoted_runtime_status(menu.get("runtime_evidence", {}).get("status"))
-                and runtime.get("status") == "PASS"
+                and (
+                    runtime.get("status") == "PASS"
+                    or (
+                        runtime.get("status") in {"NO_GO_MISSING_RUNTIME_LOGS", "NO_GO_INCOMPLETE_RUNTIME_MARKERS"}
+                        and runtime.get("candidate", {}).get("revision")
+                        == menu.get("resource_pack", {}).get("revision")
+                        and runtime.get("candidate", {}).get("runtime_status")
+                        == menu.get("runtime_evidence", {}).get("status")
+                    )
+                )
             )
         ),
     }

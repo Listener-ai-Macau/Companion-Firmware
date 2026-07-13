@@ -71,6 +71,7 @@ def build_health() -> dict[str, Any]:
     audit = load_json(GOAL_AUDIT)
     refresh_feel = load_json(REFRESH_FEEL)
     promotion = load_json(RUNTIME_PROMOTION)
+    runtime_recheck_logs = load_json(RUNTIME_RECHECK_LOGS)
     build_matrix = load_json(BUILD_MATRIX)
     acceptance_index = load_json(ACCEPTANCE_INDEX)
     visual_reference_evidence = load_json(VISUAL_REFERENCE_EVIDENCE)
@@ -99,10 +100,25 @@ def build_health() -> dict[str, Any]:
     ]
     provision_log = log_has(str(proven_provision_log), common_markers)
     normal_log = log_has(str(proven_normal_log), common_markers)
+    runtime_logs_pass = runtime_recheck_logs.get("status") == "PASS"
+    review_status = str(review_record.get("status", ""))
+    blocking_reasons: list[str] = []
+    if not runtime_logs_pass:
+        blocking_reasons.append("quiet_interaction_profile_runtime_recheck")
+    if review_status == "NO_GO_OPEN_REVIEW_ITEMS":
+        blocking_reasons.append("open_operator_review_items")
+    status = (
+        "NO_GO_INTERACTION_PROFILE_RUNTIME_RECHECK_PENDING"
+        if not runtime_logs_pass
+        else "NO_GO_OPEN_OPERATOR_REVIEW_ITEMS"
+        if review_status == "NO_GO_OPEN_REVIEW_ITEMS"
+        else "PASS"
+    )
 
     return {
         "schema_id": SCHEMA_ID,
-        "status": "NO_GO_RUNTIME_RECHECK_PENDING" if runtime_pending else "PASS",
+        "status": status,
+        "blocking_reasons": blocking_reasons,
         "target": "NUCLEO-WB55RG + GDEY0154D67-T03 + FT6336U",
         "purpose": (
             "Machine-only pre-acceptance health gate for the WB55 touch/visual "
@@ -133,6 +149,11 @@ def build_health() -> dict[str, Any]:
         "runtime_logs": {
             "provision": provision_log,
             "normal": normal_log,
+        },
+        "runtime_recheck_log_gate": {
+            "path": rel(RUNTIME_RECHECK_LOGS),
+            "status": runtime_recheck_logs.get("status"),
+            "quiet_interaction_profile_passed": runtime_logs_pass,
         },
         "operator_packet": {
             "path": rel(TOUCH_PACKET),
@@ -208,7 +229,8 @@ def build_health() -> dict[str, Any]:
                     "interactive_uses_differential_waveform",
                     "maintenance_uses_single_low_flicker_waveform",
                     "full_refresh_reserved_for_baseline_or_fault",
-                    "touch_active_blocks_maintenance",
+                    "ordinary_touch_has_no_delayed_maintenance",
+                    "interactive_cleanup_is_coalesced_at_five_partials",
                     "menu_drag_coalesces_to_latest_frame",
                     "art_and_refresh_axes_separate",
                 )
@@ -235,6 +257,7 @@ def build_health() -> dict[str, Any]:
             "step_count": len(action_card.get("hardware_steps", [])),
             "post_run_commands": action_card.get("post_run_commands", []),
             "human_acceptance_start_rule": action_card.get("human_acceptance_start_rule"),
+            "quiet_interaction_profile_recheck_required": action_card.get("resource", {}).get("quiet_interaction_profile_recheck_required"),
         },
         "runtime_flash_preflight": {
             "path": rel(RUNTIME_FLASH_PREFLIGHT),
@@ -285,10 +308,26 @@ def check_health(health: dict[str, Any], errors: list[str]) -> None:
     resource = health.get("resource", {})
     runtime_status = str(resource.get("runtime_status", ""))
     runtime_pending = runtime_status == PENDING_STATUS
-    runtime_logs_pass = load_json(RUNTIME_RECHECK_LOGS).get("status") == "PASS"
-    expected_status = "NO_GO_RUNTIME_RECHECK_PENDING" if runtime_pending else "PASS"
+    runtime_log_gate = health.get("runtime_recheck_log_gate", {})
+    runtime_logs_pass = runtime_log_gate.get("status") == "PASS"
+    review_status = str(health.get("operator_review_record", {}).get("status", ""))
+    expected_status = (
+        "NO_GO_INTERACTION_PROFILE_RUNTIME_RECHECK_PENDING"
+        if not runtime_logs_pass
+        else "NO_GO_OPEN_OPERATOR_REVIEW_ITEMS"
+        if review_status == "NO_GO_OPEN_REVIEW_ITEMS"
+        else "PASS"
+    )
     if health.get("status") != expected_status:
         errors.append(f"pre-acceptance status must be {expected_status}")
+    if runtime_log_gate.get("path") != rel(RUNTIME_RECHECK_LOGS):
+        errors.append("pre-acceptance runtime recheck log gate path drifted")
+    if runtime_log_gate.get("quiet_interaction_profile_passed") is not runtime_logs_pass:
+        errors.append("pre-acceptance runtime recheck quiet-profile result drifted")
+    if not runtime_logs_pass and "quiet_interaction_profile_runtime_recheck" not in health.get("blocking_reasons", []):
+        errors.append("pre-acceptance health must retain the quiet interaction-profile blocker")
+    if review_status == "NO_GO_OPEN_REVIEW_ITEMS" and "open_operator_review_items" not in health.get("blocking_reasons", []):
+        errors.append("pre-acceptance health must retain open operator-review feedback")
     if resource.get("revision") != CANDIDATE.revision:
         errors.append(f"candidate resource revision must be {CANDIDATE.revision}, got {resource.get('revision')!r}")
     if resource.get("clips") != CANDIDATE.clips or resource.get("frames") != CANDIDATE.frames:
@@ -355,14 +394,22 @@ def check_health(health: dict[str, Any], errors: list[str]) -> None:
         errors.append("runtime hardware action card must include the Companion-WB55 lock command")
     if action_card.get("step_count") != 4:
         errors.append("runtime hardware action card must keep four machine steps")
-    for command in (
+    required_post_run_commands = (
+        "python .\\tools\\verify_screen_generation_release_ledger.py",
         "python .\\tools\\verify_wb55_screen_runtime_recheck_logs.py --write",
-        "python .\\tools\\promote_wb55_screen_runtime_recheck.py --apply",
         "python .\\tools\\verify_companion_screen_pre_acceptance_health.py",
         "python .\\tools\\verify_companion_screen_goal_audit.py",
-    ):
+    )
+    for command in required_post_run_commands:
         if command not in action_card.get("post_run_commands", []):
             errors.append(f"runtime hardware action card missing post-run command {command}")
+    quiet_profile_only_recheck = action_card.get("quiet_interaction_profile_recheck_required") is True
+    promotion_command = "python .\\tools\\promote_wb55_screen_runtime_recheck.py --apply"
+    if quiet_profile_only_recheck:
+        if promotion_command in action_card.get("post_run_commands", []):
+            errors.append("quiet-profile-only recheck must not request a duplicate resource promotion")
+    elif promotion_command not in action_card.get("post_run_commands", []):
+        errors.append(f"runtime hardware action card missing post-run command {promotion_command}")
     if "开始验收" not in str(action_card.get("human_acceptance_start_rule", "")):
         errors.append("runtime hardware action card must keep the explicit human start rule")
     flash_preflight = health.get("runtime_flash_preflight", {})
@@ -441,6 +488,7 @@ def check_health(health: dict[str, Any], errors: list[str]) -> None:
         "daily_tap_social_response",
         "daily_swipe_pet_response",
         "anywhere_hold_menu_entry",
+        "menu_boundary_single_clean_refresh",
         "menu_home_static_vertical_stroke",
         "row_press_and_back",
         "phone_reconnect_advertising",
@@ -467,16 +515,18 @@ def check_health(health: dict[str, Any], errors: list[str]) -> None:
     if review_template.get("records_default_non_publishable") is not True:
         errors.append("operator review template records must default non-publishable and open")
     review_record = health.get("operator_review_record", {})
-    if review_record.get("status") != "NO_GO_NOT_STARTED":
-        errors.append("operator review record must remain NO_GO_NOT_STARTED before human review begins")
+    if review_record.get("status") not in {"NO_GO_NOT_STARTED", "NO_GO_OPEN_REVIEW_ITEMS"}:
+        errors.append("operator review record must remain a non-publishable pre-acceptance state")
     if review_record.get("claim_scope") != "filled_operator_review_record_validator":
         errors.append("operator review record claim scope drifted")
     if review_record.get("source_template") != review_template.get("path"):
         errors.append("operator review record must point at the active review template")
     if review_record.get("record_count") != packet.get("step_count"):
         errors.append("operator review record count must match operator packet step count")
-    if review_record.get("open_item_count") != packet.get("step_count"):
+    if review_record.get("status") == "NO_GO_NOT_STARTED" and review_record.get("open_item_count") != packet.get("step_count"):
         errors.append("operator review record should list every step as open before review starts")
+    if review_record.get("status") == "NO_GO_OPEN_REVIEW_ITEMS" and review_record.get("open_item_count", 0) < 1:
+        errors.append("operator review record must retain the unresolved operator feedback")
     if review_record.get("publishable_pass_allowed") is not False:
         errors.append("operator review record must not allow publishable PASS before human review")
 
@@ -510,7 +560,7 @@ def check_health(health: dict[str, Any], errors: list[str]) -> None:
         "runtime_flash_preflight",
         "runtime_serial_capture_preflight",
         "TEMPLATE_NOT_ACCEPTANCE_RESULT",
-        "NO_GO_NOT_STARTED",
+        "NO_GO_OPEN_REVIEW_ITEMS",
         "blank_operator_review_template",
         "filled_operator_review_record_validator",
         "render_wb55_touch_visual_review_template.py",

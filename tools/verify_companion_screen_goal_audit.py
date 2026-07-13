@@ -541,6 +541,7 @@ def check_audit(audit: dict[str, Any], errors: list[str]) -> None:
     interaction_profile = touch_packet.get("machine_state", {}).get("interaction_profile", {})
     interaction_profile_status = str(interaction_profile.get("status", ""))
     runtime_action_card = load_json(RUNTIME_ACTION_CARD)
+    quiet_profile_only_recheck = runtime_action_card.get("quiet_interaction_profile_recheck_required") is True
     runtime_flash_preflight = load_json(RUNTIME_FLASH_PREFLIGHT)
     runtime_serial_capture_preflight = load_json(RUNTIME_SERIAL_CAPTURE_PREFLIGHT)
     acceptance_index = load_json(ACCEPTANCE_INDEX)
@@ -643,8 +644,10 @@ def check_audit(audit: dict[str, Any], errors: list[str]) -> None:
     else:
         if runtime_promotion.get("status") != "APPLIED":
             errors.append("runtime promotion gate must be APPLIED after active runtime evidence is promoted")
-        if runtime_recheck_logs.get("status") != "PASS":
-            errors.append("runtime recheck logs gate must be PASS after active runtime evidence is promoted")
+        if runtime_recheck_logs.get("status") != "PASS" and not quiet_profile_only_recheck:
+            errors.append("runtime recheck logs gate may remain non-PASS after resource promotion only for the explicit quiet-profile recheck")
+        if quiet_profile_only_recheck and runtime_recheck_logs.get("status") not in {"NO_GO_MISSING_RUNTIME_LOGS", "NO_GO_INCOMPLETE_RUNTIME_MARKERS"}:
+            errors.append("quiet-profile recheck must keep a pending runtime log gate until the current normal capture is replaced")
     if requirements.get("wba55_wba65_portability_boundary", {}).get("status") != "pre_port_proved_real_wba_pending":
         errors.append("WBA boundary must remain pre-port with real WBA pending")
     if wba_cube_dependency.get("status") != "PASS":
@@ -683,7 +686,15 @@ def check_audit(audit: dict[str, Any], errors: list[str]) -> None:
         errors.append(f"acceptance sequence next_hardware_gate must be {expected_next_hardware_gate}")
     if acceptance_sequence.get("next_human_gate") != "wb55_touch_visual_acceptance":
         errors.append("acceptance sequence next_human_gate must be wb55_touch_visual_acceptance")
-    expected_pre_acceptance_status = "NO_GO_RUNTIME_RECHECK_PENDING" if runtime_status.endswith("_RUNTIME_RECHECK_PENDING") else "PASS"
+    expected_pre_acceptance_status = (
+        "NO_GO_RUNTIME_RECHECK_PENDING"
+        if runtime_status.endswith("_RUNTIME_RECHECK_PENDING")
+        else "NO_GO_INTERACTION_PROFILE_RUNTIME_RECHECK_PENDING"
+        if not runtime_logs_pass
+        else "NO_GO_OPEN_OPERATOR_REVIEW_ITEMS"
+        if touch_review_record.get("status") == "NO_GO_OPEN_REVIEW_ITEMS"
+        else "PASS"
+    )
     if acceptance_sequence.get("pre_acceptance_status") != expected_pre_acceptance_status:
         errors.append(f"acceptance sequence pre-acceptance status must be {expected_pre_acceptance_status}")
     if acceptance_sequence.get("runtime_logs_status") != runtime_recheck_logs.get("status"):
