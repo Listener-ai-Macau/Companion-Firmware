@@ -49,6 +49,7 @@ function Resolve-CompanionExe {
     $candidates = @()
     if ($Requested) { $candidates += $Requested }
     $candidates += @(
+        "C:\Program Files\Companion Type\companion-type.exe",
         (Join-Path $typeRoot "apps\windows\src-tauri\target\debug\companion-type.exe"),
         (Join-Path $typeRoot "apps\windows\src-tauri\target\release\companion-type.exe"),
         (Join-Path $typeRoot "apps\windows\src-tauri\target\debug\companion-type"),
@@ -271,6 +272,9 @@ function ConvertTo-CompanionBleOtaMarkdown {
 
 $resolvedPackage = Resolve-CompanionPackage -Path $PackagePath
 $companionExePath = Resolve-CompanionExe -Requested $CompanionExe
+if ($Execute -and -not $companionExePath.StartsWith("C:\Program Files\Companion Type\", [System.StringComparison]::OrdinalIgnoreCase)) {
+    throw "Real Companion OTA acceptance must run the MSI-installed Companion Type from C:\Program Files\Companion Type. Install the current MSI before -Execute."
+}
 $payload = Expand-CompanionOtaPayload -Path $resolvedPackage -DestinationDir $outDirResolved
 $manifestText = Get-Content -LiteralPath $payload.manifest_path -Raw -Encoding UTF8
 $manifest = $manifestText | ConvertFrom-Json

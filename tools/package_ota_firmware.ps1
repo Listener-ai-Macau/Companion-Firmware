@@ -241,6 +241,7 @@ $manifest = [ordered]@{
     }
     compatibility = [ordered]@{
         platform_adapter = "stm32wb_denzic_ota_v1"
+        st_reference = "Denzic OTA v1 Companion loader on STM32WB"
         stm32cube_wb = "v1.24.0"
         gatt_contract = "denzic_ota_v1"
         min_desktop_version = $MinDesktopVersion

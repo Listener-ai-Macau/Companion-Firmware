@@ -224,6 +224,7 @@ def check_host_product(errors: list[str]) -> None:
 
 def check_cross_product_gate(errors: list[str]) -> None:
     gate = read(REPO_ROOT / "tools" / "verify_type_companion_package_static.ps1", errors)
+    hardware_gate = read(REPO_ROOT / "tools" / "verify_companion_ble_ota.ps1", errors)
     require_tokens(
         gate,
         [
@@ -235,6 +236,16 @@ def check_cross_product_gate(errors: list[str]) -> None:
             "PASS: Companion OTA v1 package is implemented and validated on both host and embedded sides.",
         ],
         "cross-product OTA gate",
+        errors,
+    )
+    require_tokens(
+        hardware_gate,
+        [
+            "C:\\Program Files\\Companion Type\\companion-type.exe",
+            "Real Companion OTA acceptance must run the MSI-installed Companion Type",
+            '"--firmware-ota-transfer"',
+        ],
+        "Companion installed-host OTA gate",
         errors,
     )
 
