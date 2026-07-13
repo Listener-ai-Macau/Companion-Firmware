@@ -1,0 +1,1032 @@
+{
+  "coverage": {
+    "demo_covers_all_faces": true,
+    "expression_count": 10,
+    "legacy_gap_faces": [
+      "happy",
+      "listening",
+      "speaking",
+      "thinking"
+    ],
+    "matrix_cell_count": 20,
+    "panel_gate_must_remain": "DEFERRED_HARDWARE",
+    "real_refresh_claimed": false,
+    "variant_count": 2,
+    "variants": [
+      "1.54in",
+      "2.13in"
+    ]
+  },
+  "distance_by_variant": [
+    {
+      "closest_face_crop_pair": {
+        "distance_ppm": 15839,
+        "left": "low_battery",
+        "right": "sleepy"
+      },
+      "closest_full_image_pair": {
+        "distance_ppm": 10650,
+        "left": "low_battery",
+        "right": "sleepy"
+      },
+      "minimum_face_crop_distance_ppm": 15839,
+      "minimum_full_image_distance_ppm": 10650,
+      "variant": "1.54in"
+    },
+    {
+      "closest_face_crop_pair": {
+        "distance_ppm": 38395,
+        "left": "happy",
+        "right": "sync_complete"
+      },
+      "closest_full_image_pair": {
+        "distance_ppm": 10197,
+        "left": "happy",
+        "right": "sync_complete"
+      },
+      "minimum_face_crop_distance_ppm": 38395,
+      "minimum_full_image_distance_ppm": 10197,
+      "variant": "2.13in"
+    }
+  ],
+  "purpose": "Per-face acceptance matrix that links ExpressionV1 visual fixtures, visual metrics, copy, source signals, policy cases, and host coverage.",
+  "rows": [
+    {
+      "auto_recover_ms": 0,
+      "body": "Soft awake face",
+      "footer": "EXPR IDLE",
+      "host_coverage": {
+        "acceptance_hint": "Covered by screen_expression_status and screen_expression_demo_status.",
+        "demo_host_examples": [
+          {
+            "content_crc32": "0x4bbb0bc4",
+            "diagnostic_arg3": "0x00000001",
+            "event": "wake_word.armed",
+            "request_id": 3758100481,
+            "signal": "WAKE_ARMED",
+            "signal_id": 1
+          },
+          {
+            "content_crc32": "0x3db8b723",
+            "diagnostic_arg3": "0x0000000e",
+            "event": "settings.display_on",
+            "request_id": 3758100490,
+            "signal": "RECOVERY",
+            "signal_id": 14
+          }
+        ],
+        "demo_host_sequence_covered": true,
+        "legacy_host_examples": [
+          {
+            "content_crc32": "0x91bdb88d",
+            "diagnostic_arg3": "0x00000000",
+            "event": "boot_idle",
+            "request_id": 3758096385,
+            "signal": "BOOT_IDLE",
+            "signal_id": null
+          }
+        ],
+        "legacy_host_sequence_covered": true
+      },
+      "id": 0,
+      "name": "idle",
+      "policy_case_ids": [
+        "event_battery_near_threshold_no_recovery",
+        "event_battery_recovered",
+        "status_idle_wake_armed"
+      ],
+      "priority": 20,
+      "signals": [
+        "BOOT_IDLE",
+        "WAKE_ARMED",
+        "RECORDING_CANCEL",
+        "RECOVERY",
+        "BATTERY_RECOVERED"
+      ],
+      "stability": "stable",
+      "title": "Idle",
+      "variants": [
+        {
+          "actual_hash_matches_visual_contract": true,
+          "actual_sha256": "86a6cb0ec7ce367d209d1fecbe000e7e0c6917e0c5c9cd5ef25eadb98327e843",
+          "density_within_contract": true,
+          "face_box": {
+            "height": 164,
+            "width": 164,
+            "x": 18,
+            "y": 18
+          },
+          "face_ink_ratio_ppm": 88935,
+          "fixture_hash_matches_visual_contract": true,
+          "fixture_id": "expression_idle",
+          "full_ink_ratio_ppm": 60850,
+          "height": 200,
+          "manifest_sha256": "86a6cb0ec7ce367d209d1fecbe000e7e0c6917e0c5c9cd5ef25eadb98327e843",
+          "path": "docs/validation/epaper/expression_idle_1_54in.pbm",
+          "sha256": "86a6cb0ec7ce367d209d1fecbe000e7e0c6917e0c5c9cd5ef25eadb98327e843",
+          "variant": "1.54in",
+          "width": 200
+        },
+        {
+          "actual_hash_matches_visual_contract": true,
+          "actual_sha256": "d23295a620ddcaff2c19de911d23f7d5c662a653d0b8de89bd51036f1db5c953",
+          "density_within_contract": true,
+          "face_box": {
+            "height": 90,
+            "width": 90,
+            "x": 80,
+            "y": 16
+          },
+          "face_ink_ratio_ppm": 172469,
+          "fixture_hash_matches_visual_contract": true,
+          "fixture_id": "expression_idle",
+          "full_ink_ratio_ppm": 45803,
+          "height": 122,
+          "manifest_sha256": "d23295a620ddcaff2c19de911d23f7d5c662a653d0b8de89bd51036f1db5c953",
+          "path": "docs/validation/epaper/expression_idle_2_13in.pbm",
+          "sha256": "d23295a620ddcaff2c19de911d23f7d5c662a653d0b8de89bd51036f1db5c953",
+          "variant": "2.13in",
+          "width": 250
+        }
+      ],
+      "visual_acceptance": {
+        "accepted_without_real_panel": true,
+        "actual_hashes_match": true,
+        "demo_host_covered": true,
+        "density_metrics_in_bounds": true,
+        "fixture_hashes_match": true,
+        "variant_count": 2
+      }
+    },
+    {
+      "auto_recover_ms": 10000,
+      "body": "Ears open for the wake path",
+      "footer": "EXPR LISTEN",
+      "host_coverage": {
+        "acceptance_hint": "Covered by screen_expression_demo_status; add to real BLE screen_expression_status when expanding the six-face bench.",
+        "demo_host_examples": [
+          {
+            "content_crc32": "0x5fffc3fe",
+            "diagnostic_arg3": "0x00010003",
+            "event": "wake_word.detected",
+            "request_id": 3758100482,
+            "signal": "WAKE_DETECTED",
+            "signal_id": 3
+          }
+        ],
+        "demo_host_sequence_covered": true,
+        "legacy_host_examples": [],
+        "legacy_host_sequence_covered": false
+      },
+      "id": 1,
+      "name": "listening",
+      "policy_case_ids": [
+        "status_wake_detected"
+      ],
+      "priority": 60,
+      "signals": [
+        "WAKE_DETECTED"
+      ],
+      "stability": "transient",
+      "title": "Listening",
+      "variants": [
+        {
+          "actual_hash_matches_visual_contract": true,
+          "actual_sha256": "f3b927a6a97b7d95a88ff10bebdae674595ab898979abbfb31d389ad7df007c5",
+          "density_within_contract": true,
+          "face_box": {
+            "height": 164,
+            "width": 164,
+            "x": 18,
+            "y": 18
+          },
+          "face_ink_ratio_ppm": 92319,
+          "fixture_hash_matches_visual_contract": true,
+          "fixture_id": "expression_listening",
+          "full_ink_ratio_ppm": 64275,
+          "height": 200,
+          "manifest_sha256": "f3b927a6a97b7d95a88ff10bebdae674595ab898979abbfb31d389ad7df007c5",
+          "path": "docs/validation/epaper/expression_listening_1_54in.pbm",
+          "sha256": "f3b927a6a97b7d95a88ff10bebdae674595ab898979abbfb31d389ad7df007c5",
+          "variant": "1.54in",
+          "width": 200
+        },
+        {
+          "actual_hash_matches_visual_contract": true,
+          "actual_sha256": "e006c87774163ff72369237f26f77a8191bbd618baf92dd2c668b8857316db1e",
+          "density_within_contract": true,
+          "face_box": {
+            "height": 90,
+            "width": 90,
+            "x": 80,
+            "y": 16
+          },
+          "face_ink_ratio_ppm": 217407,
+          "fixture_hash_matches_visual_contract": true,
+          "fixture_id": "expression_listening",
+          "full_ink_ratio_ppm": 57738,
+          "height": 122,
+          "manifest_sha256": "e006c87774163ff72369237f26f77a8191bbd618baf92dd2c668b8857316db1e",
+          "path": "docs/validation/epaper/expression_listening_2_13in.pbm",
+          "sha256": "e006c87774163ff72369237f26f77a8191bbd618baf92dd2c668b8857316db1e",
+          "variant": "2.13in",
+          "width": 250
+        }
+      ],
+      "visual_acceptance": {
+        "accepted_without_real_panel": true,
+        "actual_hashes_match": true,
+        "demo_host_covered": true,
+        "density_metrics_in_bounds": true,
+        "fixture_hashes_match": true,
+        "variant_count": 2
+      }
+    },
+    {
+      "auto_recover_ms": 12000,
+      "body": "Processing the last prompt",
+      "footer": "EXPR THINK",
+      "host_coverage": {
+        "acceptance_hint": "Covered by screen_expression_demo_status; add to real BLE screen_expression_status when expanding the six-face bench.",
+        "demo_host_examples": [
+          {
+            "content_crc32": "0xacc74275",
+            "diagnostic_arg3": "0x0002000a",
+            "event": "recording_fsm.stop_request",
+            "request_id": 3758100484,
+            "signal": "RECORDING_STOP",
+            "signal_id": 10
+          }
+        ],
+        "demo_host_sequence_covered": true,
+        "legacy_host_examples": [],
+        "legacy_host_sequence_covered": false
+      },
+      "id": 2,
+      "name": "thinking",
+      "policy_case_ids": [
+        "event_meeting_stop_processing",
+        "status_meeting_summary_pending",
+        "status_recording_fsm_stopping"
+      ],
+      "priority": 50,
+      "signals": [
+        "MEETING_STOP",
+        "RECORDING_STOP"
+      ],
+      "stability": "transient",
+      "title": "Thinking",
+      "variants": [
+        {
+          "actual_hash_matches_visual_contract": true,
+          "actual_sha256": "232eb7124e7e069842d139a192df30f1c03dfd42e8cb271324cb5663ce3f2044",
+          "density_within_contract": true,
+          "face_box": {
+            "height": 164,
+            "width": 164,
+            "x": 18,
+            "y": 18
+          },
+          "face_ink_ratio_ppm": 106559,
+          "fixture_hash_matches_visual_contract": true,
+          "fixture_id": "expression_thinking",
+          "full_ink_ratio_ppm": 71650,
+          "height": 200,
+          "manifest_sha256": "232eb7124e7e069842d139a192df30f1c03dfd42e8cb271324cb5663ce3f2044",
+          "path": "docs/validation/epaper/expression_thinking_1_54in.pbm",
+          "sha256": "232eb7124e7e069842d139a192df30f1c03dfd42e8cb271324cb5663ce3f2044",
+          "variant": "1.54in",
+          "width": 200
+        },
+        {
+          "actual_hash_matches_visual_contract": true,
+          "actual_sha256": "7169ac3cc87093dd00c7066a8b24fbcd751719104611bf6ec58362d261f29ba7",
+          "density_within_contract": true,
+          "face_box": {
+            "height": 90,
+            "width": 90,
+            "x": 80,
+            "y": 16
+          },
+          "face_ink_ratio_ppm": 188272,
+          "fixture_hash_matches_visual_contract": true,
+          "fixture_id": "expression_thinking",
+          "full_ink_ratio_ppm": 50033,
+          "height": 122,
+          "manifest_sha256": "7169ac3cc87093dd00c7066a8b24fbcd751719104611bf6ec58362d261f29ba7",
+          "path": "docs/validation/epaper/expression_thinking_2_13in.pbm",
+          "sha256": "7169ac3cc87093dd00c7066a8b24fbcd751719104611bf6ec58362d261f29ba7",
+          "variant": "2.13in",
+          "width": 250
+        }
+      ],
+      "visual_acceptance": {
+        "accepted_without_real_panel": true,
+        "actual_hashes_match": true,
+        "demo_host_covered": true,
+        "density_metrics_in_bounds": true,
+        "fixture_hashes_match": true,
+        "variant_count": 2
+      }
+    },
+    {
+      "auto_recover_ms": 10000,
+      "body": "Response audio is active",
+      "footer": "EXPR SPEAK",
+      "host_coverage": {
+        "acceptance_hint": "Covered by screen_expression_demo_status; add to real BLE screen_expression_status when expanding the six-face bench.",
+        "demo_host_examples": [
+          {
+            "content_crc32": "0x83eedeaa",
+            "diagnostic_arg3": "0x00030004",
+            "event": "speaker.prompt",
+            "request_id": 3758100486,
+            "signal": "SPEAKER_PROMPT",
+            "signal_id": 4
+          }
+        ],
+        "demo_host_sequence_covered": true,
+        "legacy_host_examples": [],
+        "legacy_host_sequence_covered": false
+      },
+      "id": 3,
+      "name": "speaking",
+      "policy_case_ids": [
+        "status_speaker_prompt"
+      ],
+      "priority": 70,
+      "signals": [
+        "SPEAKER_PROMPT"
+      ],
+      "stability": "transient",
+      "title": "Speaking",
+      "variants": [
+        {
+          "actual_hash_matches_visual_contract": true,
+          "actual_sha256": "1203e79b3851ef706dae87b33d5158bd2f44904a0a66b5c1a0266eb34eb735f4",
+          "density_within_contract": true,
+          "face_box": {
+            "height": 164,
+            "width": 164,
+            "x": 18,
+            "y": 18
+          },
+          "face_ink_ratio_ppm": 102655,
+          "fixture_hash_matches_visual_contract": true,
+          "fixture_id": "expression_speaking",
+          "full_ink_ratio_ppm": 69025,
+          "height": 200,
+          "manifest_sha256": "1203e79b3851ef706dae87b33d5158bd2f44904a0a66b5c1a0266eb34eb735f4",
+          "path": "docs/validation/epaper/expression_speaking_1_54in.pbm",
+          "sha256": "1203e79b3851ef706dae87b33d5158bd2f44904a0a66b5c1a0266eb34eb735f4",
+          "variant": "1.54in",
+          "width": 200
+        },
+        {
+          "actual_hash_matches_visual_contract": true,
+          "actual_sha256": "bd4bfbd422a5b64cbaa141b14303bdeb301d8ddab19c8c7f670309308a11e8bf",
+          "density_within_contract": true,
+          "face_box": {
+            "height": 90,
+            "width": 90,
+            "x": 80,
+            "y": 16
+          },
+          "face_ink_ratio_ppm": 178025,
+          "fixture_hash_matches_visual_contract": true,
+          "fixture_id": "expression_speaking",
+          "full_ink_ratio_ppm": 47279,
+          "height": 122,
+          "manifest_sha256": "bd4bfbd422a5b64cbaa141b14303bdeb301d8ddab19c8c7f670309308a11e8bf",
+          "path": "docs/validation/epaper/expression_speaking_2_13in.pbm",
+          "sha256": "bd4bfbd422a5b64cbaa141b14303bdeb301d8ddab19c8c7f670309308a11e8bf",
+          "variant": "2.13in",
+          "width": 250
+        }
+      ],
+      "visual_acceptance": {
+        "accepted_without_real_panel": true,
+        "actual_hashes_match": true,
+        "demo_host_covered": true,
+        "density_metrics_in_bounds": true,
+        "fixture_hashes_match": true,
+        "variant_count": 2
+      }
+    },
+    {
+      "auto_recover_ms": 6000,
+      "body": "Positive acknowledgement",
+      "footer": "EXPR HAPPY",
+      "host_coverage": {
+        "acceptance_hint": "Covered by screen_expression_demo_status; add to real BLE screen_expression_status when expanding the six-face bench.",
+        "demo_host_examples": [
+          {
+            "content_crc32": "0x75ed7ba0",
+            "diagnostic_arg3": "0x00040005",
+            "event": "speaker.result",
+            "request_id": 3758100487,
+            "signal": "SPEAKER_RESULT",
+            "signal_id": 5
+          }
+        ],
+        "demo_host_sequence_covered": true,
+        "legacy_host_examples": [],
+        "legacy_host_sequence_covered": false
+      },
+      "id": 4,
+      "name": "happy",
+      "policy_case_ids": [
+        "event_speaker_result_happy"
+      ],
+      "priority": 30,
+      "signals": [
+        "SPEAKER_RESULT"
+      ],
+      "stability": "transient",
+      "title": "Happy",
+      "variants": [
+        {
+          "actual_hash_matches_visual_contract": true,
+          "actual_sha256": "3a88cda7a54716dbb08551a06fb75d6fbd46249b83e85b0101fc830883b6852c",
+          "density_within_contract": true,
+          "face_box": {
+            "height": 164,
+            "width": 164,
+            "x": 18,
+            "y": 18
+          },
+          "face_ink_ratio_ppm": 66739,
+          "fixture_hash_matches_visual_contract": true,
+          "fixture_id": "expression_happy",
+          "full_ink_ratio_ppm": 44875,
+          "height": 200,
+          "manifest_sha256": "3a88cda7a54716dbb08551a06fb75d6fbd46249b83e85b0101fc830883b6852c",
+          "path": "docs/validation/epaper/expression_happy_1_54in.pbm",
+          "sha256": "3a88cda7a54716dbb08551a06fb75d6fbd46249b83e85b0101fc830883b6852c",
+          "variant": "1.54in",
+          "width": 200
+        },
+        {
+          "actual_hash_matches_visual_contract": true,
+          "actual_sha256": "8bf50a5387f6a48593a3de978b197703373370b094b5511b88d01f0aa3906f42",
+          "density_within_contract": true,
+          "face_box": {
+            "height": 90,
+            "width": 90,
+            "x": 80,
+            "y": 16
+          },
+          "face_ink_ratio_ppm": 145309,
+          "fixture_hash_matches_visual_contract": true,
+          "fixture_id": "expression_happy",
+          "full_ink_ratio_ppm": 38590,
+          "height": 122,
+          "manifest_sha256": "8bf50a5387f6a48593a3de978b197703373370b094b5511b88d01f0aa3906f42",
+          "path": "docs/validation/epaper/expression_happy_2_13in.pbm",
+          "sha256": "8bf50a5387f6a48593a3de978b197703373370b094b5511b88d01f0aa3906f42",
+          "variant": "2.13in",
+          "width": 250
+        }
+      ],
+      "visual_acceptance": {
+        "accepted_without_real_panel": true,
+        "actual_hashes_match": true,
+        "demo_host_covered": true,
+        "density_metrics_in_bounds": true,
+        "fixture_hashes_match": true,
+        "variant_count": 2
+      }
+    },
+    {
+      "auto_recover_ms": 0,
+      "body": "Low attention idle mode",
+      "footer": "EXPR SLEEP",
+      "host_coverage": {
+        "acceptance_hint": "Covered by screen_expression_status and screen_expression_demo_status.",
+        "demo_host_examples": [
+          {
+            "content_crc32": "0xd6afbe44",
+            "diagnostic_arg3": "0x00050010",
+            "event": "settings.display_off",
+            "request_id": 3758100489,
+            "signal": "SETTINGS_SLEEPY",
+            "signal_id": 16
+          },
+          {
+            "content_crc32": "0xd6afbe44",
+            "diagnostic_arg3": "0x00050010",
+            "event": "settings.quiet_hours",
+            "request_id": 3758100493,
+            "signal": "SETTINGS_SLEEPY",
+            "signal_id": 16
+          }
+        ],
+        "demo_host_sequence_covered": true,
+        "legacy_host_examples": [
+          {
+            "content_crc32": "0xd6afbe44",
+            "diagnostic_arg3": "0x00050010",
+            "event": "settings.display_off",
+            "request_id": 3758096386,
+            "signal": "SETTINGS_SLEEPY",
+            "signal_id": null
+          }
+        ],
+        "legacy_host_sequence_covered": true
+      },
+      "id": 5,
+      "name": "sleepy",
+      "policy_case_ids": [
+        "status_display_off_sleepy",
+        "status_quiet_hours_sleepy",
+        "status_sleepy_no_link"
+      ],
+      "priority": 10,
+      "signals": [
+        "WAKE_DISABLED",
+        "SETTINGS_SLEEPY"
+      ],
+      "stability": "stable",
+      "title": "Sleepy",
+      "variants": [
+        {
+          "actual_hash_matches_visual_contract": true,
+          "actual_sha256": "902a45f4da2e1cdb3a62d8852c0627908a57d8ef65a7af382b1b70ea7898f124",
+          "density_within_contract": true,
+          "face_box": {
+            "height": 164,
+            "width": 164,
+            "x": 18,
+            "y": 18
+          },
+          "face_ink_ratio_ppm": 51346,
+          "fixture_hash_matches_visual_contract": true,
+          "fixture_id": "expression_sleepy",
+          "full_ink_ratio_ppm": 34525,
+          "height": 200,
+          "manifest_sha256": "902a45f4da2e1cdb3a62d8852c0627908a57d8ef65a7af382b1b70ea7898f124",
+          "path": "docs/validation/epaper/expression_sleepy_1_54in.pbm",
+          "sha256": "902a45f4da2e1cdb3a62d8852c0627908a57d8ef65a7af382b1b70ea7898f124",
+          "variant": "1.54in",
+          "width": 200
+        },
+        {
+          "actual_hash_matches_visual_contract": true,
+          "actual_sha256": "29e85bce3a17228ef8a79c4c67c4a65f26a4fb9770d520f6db2fd37b0287c5d7",
+          "density_within_contract": true,
+          "face_box": {
+            "height": 90,
+            "width": 90,
+            "x": 80,
+            "y": 16
+          },
+          "face_ink_ratio_ppm": 108765,
+          "fixture_hash_matches_visual_contract": true,
+          "fixture_id": "expression_sleepy",
+          "full_ink_ratio_ppm": 28885,
+          "height": 122,
+          "manifest_sha256": "29e85bce3a17228ef8a79c4c67c4a65f26a4fb9770d520f6db2fd37b0287c5d7",
+          "path": "docs/validation/epaper/expression_sleepy_2_13in.pbm",
+          "sha256": "29e85bce3a17228ef8a79c4c67c4a65f26a4fb9770d520f6db2fd37b0287c5d7",
+          "variant": "2.13in",
+          "width": 250
+        }
+      ],
+      "visual_acceptance": {
+        "accepted_without_real_panel": true,
+        "actual_hashes_match": true,
+        "demo_host_covered": true,
+        "density_metrics_in_bounds": true,
+        "fixture_hashes_match": true,
+        "variant_count": 2
+      }
+    },
+    {
+      "auto_recover_ms": 0,
+      "body": "Capture indicator stays visible",
+      "footer": "EXPR REC",
+      "host_coverage": {
+        "acceptance_hint": "Covered by screen_expression_status and screen_expression_demo_status.",
+        "demo_host_examples": [
+          {
+            "content_crc32": "0xcafe2efd",
+            "diagnostic_arg3": "0x00060009",
+            "event": "recording_fsm.start_request",
+            "request_id": 3758100483,
+            "signal": "RECORDING_START",
+            "signal_id": 9
+          }
+        ],
+        "demo_host_sequence_covered": true,
+        "legacy_host_examples": [
+          {
+            "content_crc32": "0xcafe2efd",
+            "diagnostic_arg3": "0x00060009",
+            "event": "recording_fsm.start_request",
+            "request_id": 23,
+            "signal": "RECORDING_START",
+            "signal_id": null
+          }
+        ],
+        "legacy_host_sequence_covered": true
+      },
+      "id": 6,
+      "name": "recording",
+      "policy_case_ids": [
+        "status_meeting_recording",
+        "status_quiet_hours_recording_visible",
+        "status_recording_fsm_active"
+      ],
+      "priority": 90,
+      "signals": [
+        "MEETING_START",
+        "RECORDING_START"
+      ],
+      "stability": "stable",
+      "title": "Recording",
+      "variants": [
+        {
+          "actual_hash_matches_visual_contract": true,
+          "actual_sha256": "36c4e9d6a0e34a3a21739e2c0840df65a80504c1ff5af4781405e546abce34df",
+          "density_within_contract": true,
+          "face_box": {
+            "height": 164,
+            "width": 164,
+            "x": 18,
+            "y": 18
+          },
+          "face_ink_ratio_ppm": 95590,
+          "fixture_hash_matches_visual_contract": true,
+          "fixture_id": "expression_recording",
+          "full_ink_ratio_ppm": 64275,
+          "height": 200,
+          "manifest_sha256": "36c4e9d6a0e34a3a21739e2c0840df65a80504c1ff5af4781405e546abce34df",
+          "path": "docs/validation/epaper/expression_recording_1_54in.pbm",
+          "sha256": "36c4e9d6a0e34a3a21739e2c0840df65a80504c1ff5af4781405e546abce34df",
+          "variant": "1.54in",
+          "width": 200
+        },
+        {
+          "actual_hash_matches_visual_contract": true,
+          "actual_sha256": "73f2c27839f222ebfb49d5e716b7e67d5de0d8dd02893d4f77b1d3f0d30fa11b",
+          "density_within_contract": true,
+          "face_box": {
+            "height": 90,
+            "width": 90,
+            "x": 80,
+            "y": 16
+          },
+          "face_ink_ratio_ppm": 183827,
+          "fixture_hash_matches_visual_contract": true,
+          "fixture_id": "expression_recording",
+          "full_ink_ratio_ppm": 48820,
+          "height": 122,
+          "manifest_sha256": "73f2c27839f222ebfb49d5e716b7e67d5de0d8dd02893d4f77b1d3f0d30fa11b",
+          "path": "docs/validation/epaper/expression_recording_2_13in.pbm",
+          "sha256": "73f2c27839f222ebfb49d5e716b7e67d5de0d8dd02893d4f77b1d3f0d30fa11b",
+          "variant": "2.13in",
+          "width": 250
+        }
+      ],
+      "visual_acceptance": {
+        "accepted_without_real_panel": true,
+        "actual_hashes_match": true,
+        "demo_host_covered": true,
+        "density_metrics_in_bounds": true,
+        "fixture_hashes_match": true,
+        "variant_count": 2
+      }
+    },
+    {
+      "auto_recover_ms": 8000,
+      "body": "Transfer finished cleanly",
+      "footer": "EXPR SYNC",
+      "host_coverage": {
+        "acceptance_hint": "Covered by screen_expression_status and screen_expression_demo_status.",
+        "demo_host_examples": [
+          {
+            "content_crc32": "0x943f53fd",
+            "diagnostic_arg3": "0x0007000c",
+            "event": "recording_fsm.session_finished",
+            "request_id": 3758100485,
+            "signal": "RECORDING_FINISHED",
+            "signal_id": 12
+          },
+          {
+            "content_crc32": "0xac34ec69",
+            "diagnostic_arg3": "0x00070008",
+            "event": "meeting.finalize",
+            "request_id": 3758100507,
+            "signal": "MEETING_FINALIZE",
+            "signal_id": 8
+          }
+        ],
+        "demo_host_sequence_covered": true,
+        "legacy_host_examples": [
+          {
+            "content_crc32": "0x943f53fd",
+            "diagnostic_arg3": "0x0007000c",
+            "event": "recording_fsm.session_finished",
+            "request_id": 24,
+            "signal": "RECORDING_FINISHED",
+            "signal_id": null
+          }
+        ],
+        "legacy_host_sequence_covered": true
+      },
+      "id": 7,
+      "name": "sync_complete",
+      "policy_case_ids": [
+        "status_meeting_sync_complete",
+        "status_recording_fsm_transfer_ready"
+      ],
+      "priority": 40,
+      "signals": [
+        "MEETING_FINALIZE",
+        "RECORDING_FINISHED"
+      ],
+      "stability": "transient",
+      "title": "Synced",
+      "variants": [
+        {
+          "actual_hash_matches_visual_contract": true,
+          "actual_sha256": "66e3e5bc849ecb65997e2da5c7bba37235b742613b9faa3a1e38c293ceadf8b4",
+          "density_within_contract": true,
+          "face_box": {
+            "height": 164,
+            "width": 164,
+            "x": 18,
+            "y": 18
+          },
+          "face_ink_ratio_ppm": 66739,
+          "fixture_hash_matches_visual_contract": true,
+          "fixture_id": "expression_sync_complete",
+          "full_ink_ratio_ppm": 44875,
+          "height": 200,
+          "manifest_sha256": "66e3e5bc849ecb65997e2da5c7bba37235b742613b9faa3a1e38c293ceadf8b4",
+          "path": "docs/validation/epaper/expression_sync_complete_1_54in.pbm",
+          "sha256": "66e3e5bc849ecb65997e2da5c7bba37235b742613b9faa3a1e38c293ceadf8b4",
+          "variant": "1.54in",
+          "width": 200
+        },
+        {
+          "actual_hash_matches_visual_contract": true,
+          "actual_sha256": "57325a3e8b85cd30efb4d7533904ab417136ab861aa68cff361dd29b275bac67",
+          "density_within_contract": true,
+          "face_box": {
+            "height": 90,
+            "width": 90,
+            "x": 80,
+            "y": 16
+          },
+          "face_ink_ratio_ppm": 134568,
+          "fixture_hash_matches_visual_contract": true,
+          "fixture_id": "expression_sync_complete",
+          "full_ink_ratio_ppm": 35738,
+          "height": 122,
+          "manifest_sha256": "57325a3e8b85cd30efb4d7533904ab417136ab861aa68cff361dd29b275bac67",
+          "path": "docs/validation/epaper/expression_sync_complete_2_13in.pbm",
+          "sha256": "57325a3e8b85cd30efb4d7533904ab417136ab861aa68cff361dd29b275bac67",
+          "variant": "2.13in",
+          "width": 250
+        }
+      ],
+      "visual_acceptance": {
+        "accepted_without_real_panel": true,
+        "actual_hashes_match": true,
+        "demo_host_covered": true,
+        "density_metrics_in_bounds": true,
+        "fixture_hashes_match": true,
+        "variant_count": 2
+      }
+    },
+    {
+      "auto_recover_ms": 0,
+      "body": "Charge soon",
+      "footer": "EXPR LOW",
+      "host_coverage": {
+        "acceptance_hint": "Covered by screen_expression_status and screen_expression_demo_status.",
+        "demo_host_examples": [
+          {
+            "content_crc32": "0x720e039c",
+            "diagnostic_arg3": "0x0008000d",
+            "event": "battery_charging.sample",
+            "request_id": 3758100496,
+            "signal": "LOW_BATTERY",
+            "signal_id": 13
+          }
+        ],
+        "demo_host_sequence_covered": true,
+        "legacy_host_examples": [
+          {
+            "content_crc32": "0x720e039c",
+            "diagnostic_arg3": "0x0008000d",
+            "event": "battery_charging.sample.low",
+            "request_id": 3758096387,
+            "signal": "LOW_BATTERY",
+            "signal_id": null
+          }
+        ],
+        "legacy_host_sequence_covered": true
+      },
+      "id": 8,
+      "name": "low_battery",
+      "policy_case_ids": [
+        "status_low_battery",
+        "status_ota_low_battery_blocker"
+      ],
+      "priority": 80,
+      "signals": [
+        "LOW_BATTERY"
+      ],
+      "stability": "stable",
+      "title": "Battery",
+      "variants": [
+        {
+          "actual_hash_matches_visual_contract": true,
+          "actual_sha256": "ffe5ab933f37575eca56c1dccc56632c5670274d82d9810514747ae781aec632",
+          "density_within_contract": true,
+          "face_box": {
+            "height": 164,
+            "width": 164,
+            "x": 18,
+            "y": 18
+          },
+          "face_ink_ratio_ppm": 51346,
+          "fixture_hash_matches_visual_contract": true,
+          "fixture_id": "expression_low_battery",
+          "full_ink_ratio_ppm": 34525,
+          "height": 200,
+          "manifest_sha256": "ffe5ab933f37575eca56c1dccc56632c5670274d82d9810514747ae781aec632",
+          "path": "docs/validation/epaper/expression_low_battery_1_54in.pbm",
+          "sha256": "ffe5ab933f37575eca56c1dccc56632c5670274d82d9810514747ae781aec632",
+          "variant": "1.54in",
+          "width": 200
+        },
+        {
+          "actual_hash_matches_visual_contract": true,
+          "actual_sha256": "e97233a3b0904e2941083895f2a97ac8c50ad90e6cd9e170cd5003d92e7e1d03",
+          "density_within_contract": true,
+          "face_box": {
+            "height": 90,
+            "width": 90,
+            "x": 80,
+            "y": 16
+          },
+          "face_ink_ratio_ppm": 128395,
+          "fixture_hash_matches_visual_contract": true,
+          "fixture_id": "expression_low_battery",
+          "full_ink_ratio_ppm": 34098,
+          "height": 122,
+          "manifest_sha256": "e97233a3b0904e2941083895f2a97ac8c50ad90e6cd9e170cd5003d92e7e1d03",
+          "path": "docs/validation/epaper/expression_low_battery_2_13in.pbm",
+          "sha256": "e97233a3b0904e2941083895f2a97ac8c50ad90e6cd9e170cd5003d92e7e1d03",
+          "variant": "2.13in",
+          "width": 250
+        }
+      ],
+      "visual_acceptance": {
+        "accepted_without_real_panel": true,
+        "actual_hashes_match": true,
+        "demo_host_covered": true,
+        "density_metrics_in_bounds": true,
+        "fixture_hashes_match": true,
+        "variant_count": 2
+      }
+    },
+    {
+      "auto_recover_ms": 0,
+      "body": "Needs user or host recovery",
+      "footer": "EXPR ERROR",
+      "host_coverage": {
+        "acceptance_hint": "Covered by screen_expression_status and screen_expression_demo_status.",
+        "demo_host_examples": [
+          {
+            "content_crc32": "0xb6534533",
+            "diagnostic_arg3": "0x0009000f",
+            "event": "errors.fault",
+            "request_id": 3758100500,
+            "signal": "ERROR",
+            "signal_id": 15
+          }
+        ],
+        "demo_host_sequence_covered": true,
+        "legacy_host_examples": [
+          {
+            "content_crc32": "0xb6534533",
+            "diagnostic_arg3": "0x0009000f",
+            "event": "errors.fault",
+            "request_id": 3758096388,
+            "signal": "ERROR",
+            "signal_id": null
+          }
+        ],
+        "legacy_host_sequence_covered": true
+      },
+      "id": 9,
+      "name": "error",
+      "policy_case_ids": [
+        "status_device_fault",
+        "status_display_error",
+        "status_meeting_error",
+        "status_ota_wrong_board_blocker",
+        "status_recording_fsm_error_recovery",
+        "status_speaker_error",
+        "status_wake_error"
+      ],
+      "priority": 100,
+      "signals": [
+        "ERROR"
+      ],
+      "stability": "stable",
+      "title": "Error",
+      "variants": [
+        {
+          "actual_hash_matches_visual_contract": true,
+          "actual_sha256": "097a68b9fa14a1e1c31ba14db78af0193b0b0f5b7c96c0dc20aee85f47c2bf78",
+          "density_within_contract": true,
+          "face_box": {
+            "height": 164,
+            "width": 164,
+            "x": 18,
+            "y": 18
+          },
+          "face_ink_ratio_ppm": 105666,
+          "fixture_hash_matches_visual_contract": true,
+          "fixture_id": "expression_error",
+          "full_ink_ratio_ppm": 71050,
+          "height": 200,
+          "manifest_sha256": "097a68b9fa14a1e1c31ba14db78af0193b0b0f5b7c96c0dc20aee85f47c2bf78",
+          "path": "docs/validation/epaper/expression_error_1_54in.pbm",
+          "sha256": "097a68b9fa14a1e1c31ba14db78af0193b0b0f5b7c96c0dc20aee85f47c2bf78",
+          "variant": "1.54in",
+          "width": 200
+        },
+        {
+          "actual_hash_matches_visual_contract": true,
+          "actual_sha256": "25a88986d6d01b36ca385c7932c3fdf04fab1c74d1fe3f781b479b90ef34729d",
+          "density_within_contract": true,
+          "face_box": {
+            "height": 90,
+            "width": 90,
+            "x": 80,
+            "y": 16
+          },
+          "face_ink_ratio_ppm": 149259,
+          "fixture_hash_matches_visual_contract": true,
+          "fixture_id": "expression_error",
+          "full_ink_ratio_ppm": 39639,
+          "height": 122,
+          "manifest_sha256": "25a88986d6d01b36ca385c7932c3fdf04fab1c74d1fe3f781b479b90ef34729d",
+          "path": "docs/validation/epaper/expression_error_2_13in.pbm",
+          "sha256": "25a88986d6d01b36ca385c7932c3fdf04fab1c74d1fe3f781b479b90ef34729d",
+          "variant": "2.13in",
+          "width": 250
+        }
+      ],
+      "visual_acceptance": {
+        "accepted_without_real_panel": true,
+        "actual_hashes_match": true,
+        "demo_host_covered": true,
+        "density_metrics_in_bounds": true,
+        "fixture_hashes_match": true,
+        "variant_count": 2
+      }
+    }
+  ],
+  "schema_id": "companion.pendant.screen_expression_visual_acceptance_matrix.v1",
+  "sources": {
+    "epaper_fixtures": "docs/validation/companion-pendant-firmware-bringup-1.6-epaper-fixtures.json",
+    "host_manifest": "docs/validation/companion-screen-expression-host-manifest.json",
+    "matrix_tool": "tools/render_expression_visual_acceptance_matrix.py",
+    "preview_report": "docs/validation/companion-screen-expression-preview.json",
+    "preview_svg": "docs/validation/epaper/expression-preview.svg",
+    "storyboard_report": "docs/validation/companion-screen-expression-storyboard.json",
+    "storyboard_svg": "docs/validation/epaper/expression-storyboard.svg",
+    "visual_contract": "docs/validation/companion-screen-expression-visual-contract.json"
+  },
+  "status": "PASS",
+  "validation_commands": [
+    "python .\\tools\\render_expression_visual_acceptance_matrix.py",
+    "python .\\tools\\render_expression_visual_acceptance_matrix.py --self-test",
+    "python .\\tools\\render_epaper_fixtures.py --self-test",
+    "python .\\tools\\verify_expression_visual_contract.py",
+    "python .\\tools\\render_expression_host_manifest.py",
+    "python .\\tools\\verify_epaper_assets.py"
+  ],
+  "visual_thresholds": {
+    "face_ink_ratio_ppm_max": 235000,
+    "face_ink_ratio_ppm_min": 20000,
+    "full_ink_ratio_ppm_max": 170000,
+    "full_ink_ratio_ppm_min": 10000,
+    "minimum_face_crop_distance_ppm": 2500,
+    "minimum_full_image_distance_ppm": 1000
+  },
+  "wba_contract": {
+    "real_panel_refresh_claimed": false,
+    "same_expression_visual_matrix": true,
+    "same_fixture_hashes_before_target_transport": true,
+    "same_host_face_signal_mapping": true,
+    "target_adapter_only_replaces_panel_transport": true
+  }
+}

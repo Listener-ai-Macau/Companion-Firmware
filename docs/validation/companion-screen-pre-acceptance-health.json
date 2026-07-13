@@ -1,0 +1,333 @@
+{
+  "acceptance_index": {
+    "next_hardware_gate": "wb55_rev51_runtime_recheck",
+    "next_human_gate": "wb55_touch_visual_acceptance",
+    "path": "docs/validation/companion-screen-acceptance-index.json",
+    "schema_id": "companion.pendant.screen_acceptance_index.v1",
+    "summary": {
+      "deferred_count": 1,
+      "next_hardware_gate": "wb55_rev51_runtime_recheck",
+      "next_human_gate": "wb55_touch_visual_acceptance",
+      "pass_count": 84,
+      "pending_human_count": 2,
+      "total_count": 87
+    }
+  },
+  "build_matrix": {
+    "build_log_evidence": {
+      "dry_run_default": {
+        "exists": true,
+        "expected_size": {
+          "bss": 182183,
+          "data": 2436,
+          "dec": 307279,
+          "hex": "4b04f",
+          "text": 122660
+        },
+        "forbidden_markers_absent": {
+          "COMPANION_EPAPER_PANEL_SSD1681_BRINGUP=1": true,
+          "panel_target_stm32wb_ssd1681.c": true
+        },
+        "path": ".cache/validation/wb55-build-matrix/default-build.log",
+        "required_markers": {
+          "arm-none-eabi-size build/Companion_Nucleo_WB55RG_Bringup.elf": true,
+          "build_nucleo_bringup: acquired build lock": true,
+          "build_nucleo_bringup: released build lock": true,
+          "make: Leaving directory": true
+        },
+        "size": {
+          "bss": 182183,
+          "data": 2436,
+          "dec": 307279,
+          "hex": "4b04f",
+          "text": 122660
+        }
+      },
+      "screen_asset_provision": {
+        "exists": true,
+        "expected_size": {
+          "bss": 192239,
+          "data": 2433,
+          "dec": 602988,
+          "hex": "9336c",
+          "text": 408316
+        },
+        "forbidden_markers_absent": {},
+        "path": ".cache/validation/wb55-build-matrix/screen-asset-provision-build.log",
+        "required_markers": {
+          "-Ibuild_screen_asset_provision/generated": true,
+          "COMPANION_EPAPER_PANEL_SSD1681_BRINGUP=1": true,
+          "COMPANION_SCREEN_ASSET_PROVISION=1": true,
+          "arm-none-eabi-size build_screen_asset_provision/Companion_Nucleo_WB55RG_ScreenAssetProvision.elf": true,
+          "build_nucleo_bringup: acquired build lock": true,
+          "build_nucleo_bringup: released build lock": true,
+          "make: Leaving directory": true,
+          "panel_target_stm32wb_ssd1681.c": true
+        },
+        "size": {
+          "bss": 192239,
+          "data": 2433,
+          "dec": 602988,
+          "hex": "9336c",
+          "text": 408316
+        }
+      },
+      "ssd1681_real_panel": {
+        "exists": true,
+        "expected_size": {
+          "bss": 192263,
+          "data": 2440,
+          "dec": 332315,
+          "hex": "5121b",
+          "text": 137612
+        },
+        "forbidden_markers_absent": {},
+        "path": ".cache/validation/wb55-build-matrix/ssd1681-build.log",
+        "required_markers": {
+          "COMPANION_EPAPER_PANEL_SSD1681_BRINGUP=1": true,
+          "arm-none-eabi-size build/Companion_Nucleo_WB55RG_Bringup.elf": true,
+          "build_nucleo_bringup: acquired build lock": true,
+          "build_nucleo_bringup: released build lock": true,
+          "make: Leaving directory": true,
+          "panel_target_stm32wb_ssd1681.c": true
+        },
+        "size": {
+          "bss": 192263,
+          "data": 2440,
+          "dec": 332315,
+          "hex": "5121b",
+          "text": 137612
+        }
+      }
+    },
+    "build_variants": {
+      "dry_run_default": {
+        "acceptance": "Links without companion_epaper_panel_stm32wb_ssd1681_* symbols.",
+        "command": "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1 -Force",
+        "log": ".cache/validation/wb55-build-matrix/default-build.log",
+        "panel_transport": "comp_epaper_panel_adapter_init_dry_run",
+        "ssd1681_source": "excluded"
+      },
+      "screen_asset_provision": {
+        "acceptance": "Links the rev51 CEMP blob into the one-time external ui_assets provision firmware.",
+        "asset_source": "build_screen_asset_provision/generated/companion_screen_asset_provision_blob.h",
+        "command": "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1 -ScreenAssetProvision -Force",
+        "log": ".cache/validation/wb55-build-matrix/screen-asset-provision-build.log",
+        "panel_transport": "panel_target_stm32wb_ssd1681.c",
+        "ssd1681_source": "included_with_asset_provision_target"
+      },
+      "ssd1681_real_panel": {
+        "acceptance": "Links the real SSD1681 transport, wait service, menu, touch wait polling, and resource-generation queue diagnostics.",
+        "command": "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1 -EpaperSsd1681Bringup -Force",
+        "log": ".cache/validation/wb55-build-matrix/ssd1681-build.log",
+        "panel_transport": "panel_target_stm32wb_ssd1681.c",
+        "ssd1681_source": "included_when_EPAPER_SSD1681_BRINGUP_1"
+      }
+    },
+    "contracts": {
+      "build_logs_prove_all_variants": true,
+      "build_logs_prove_both_variants": true,
+      "build_wrapper_exposes_real_panel_switch": true,
+      "build_wrapper_serializes_shared_build_dir": true,
+      "makefile_conditional_ssd1681_source": true,
+      "pre_acceptance_status_remains_runtime_pending_until_logs": true,
+      "queue_generation_compiles_in_all_variants": true,
+      "queue_generation_compiles_in_both_variants": true,
+      "screen_asset_provision_builds_current_external_assets": true,
+      "ssd1681_wait_service_guarded": true
+    },
+    "path": "docs/validation/companion-screen-wb55-build-matrix.json",
+    "status": "PASS"
+  },
+  "flash_paths": {
+    "conflict_guard": "Use either -ScreenAssetProvision or -ImagePath, not both.",
+    "normal_hex": "Companion_Nucleo_WB55RG_Bringup.hex",
+    "normal_preflight": "pwsh -NoProfile -File .\\tools\\flash_nucleo_bringup.ps1 -CheckOnly",
+    "provision_hex": "Companion_Nucleo_WB55RG_ScreenAssetProvision.hex",
+    "provision_preflight": "pwsh -NoProfile -File .\\tools\\flash_nucleo_bringup.ps1 -ScreenAssetProvision -CheckOnly",
+    "script": "tools/flash_nucleo_bringup.ps1"
+  },
+  "goal_state": {
+    "open_requirements": [
+      "current_external_resource_runtime",
+      "screen_refresh_touch_machine_health",
+      "daily_pet_and_menu_human_feel",
+      "wba55_wba65_portability_boundary"
+    ],
+    "path": "docs/validation/companion-screen-goal-audit.json",
+    "proved_requirements": [
+      "wb55_physical_wiring_and_panel_identity",
+      "generated_pet_and_menu_art_baseline",
+      "generated_art_handoff_and_refresh_feel_regression_guard",
+      "wb55_screen_firmware_build_matrix",
+      "touch_menu_interaction_machine_contract",
+      "external_flash_and_ota_resource_policy"
+    ],
+    "status": "GOAL_ACTIVE_NOT_COMPLETE"
+  },
+  "last_runtime_proven_resource": {
+    "normal_log": ".cache/validation/rev51-runtime-20260712-generated-art/normal/nucleo-serial-raw.log",
+    "pack_crc32": "0x56B56273",
+    "provision_log": ".cache/validation/rev51-runtime-20260712-generated-art/provision/nucleo-serial-raw.log",
+    "revision": 51
+  },
+  "operator_packet": {
+    "machine_state_matches_resource": {
+      "crc32": true,
+      "normal_firmware_restored": true,
+      "revision": true,
+      "total_bytes": true
+    },
+    "path": "docs/validation/companion-screen-wb55-touch-visual-acceptance-packet.json",
+    "start_rule": "Do not start this packet until rev51 runtime logs PASS, promotion is applied, pre-acceptance health PASS, and the operator explicitly says 开始验收.",
+    "status": "PENDING_HUMAN",
+    "step_count": 8
+  },
+  "operator_review_record": {
+    "claim_scope": "filled_operator_review_record_validator",
+    "filled_input_path": ".cache/validation/wb55-touch-visual-review/latest-review-record.json",
+    "open_item_count": 8,
+    "path": "docs/validation/companion-screen-wb55-touch-visual-review-record.json",
+    "publishable_pass_allowed": false,
+    "record_count": 8,
+    "source_template": "docs/validation/companion-screen-wb55-touch-visual-review-template.json",
+    "status": "NO_GO_NOT_STARTED"
+  },
+  "operator_review_template": {
+    "claim_scope": "blank_operator_review_template",
+    "path": "docs/validation/companion-screen-wb55-touch-visual-review-template.json",
+    "record_count": 8,
+    "records_default_non_publishable": true,
+    "source_packet": "docs/validation/companion-screen-wb55-touch-visual-acceptance-packet.json",
+    "status": "TEMPLATE_NOT_ACCEPTANCE_RESULT"
+  },
+  "purpose": "Machine-only pre-acceptance health gate for the WB55 touch/visual operator packet. It does not claim human feel acceptance.",
+  "refresh_feel_contract": {
+    "candidate": {
+      "crc32": "0x56B56273",
+      "revision": 51,
+      "runtime_status": "REVISION_51_RUNTIME_PASS_HUMAN_VISUAL_PENDING"
+    },
+    "checks": {
+      "art_and_refresh_axes_separate": true,
+      "full_refresh_reserved_for_baseline_or_fault": true,
+      "interactive_uses_differential_waveform": true,
+      "maintenance_uses_single_low_flicker_waveform": true,
+      "menu_drag_coalesces_to_latest_frame": true,
+      "touch_active_blocks_maintenance": true,
+      "vendor_ghosting_research_recorded": true
+    },
+    "path": "docs/validation/companion-screen-refresh-feel-contract.json",
+    "product_rules": {
+      "full_refresh": "Use 0xF7 only for unknown baseline, explicit full request, or fault recovery.",
+      "generation_backlog": "SCR-17 remains a named product backlog/release item; recognizable old faces, menus, prompt crops, fallback renderers, or framebuffer content are stale_generation_content until proven physical afterimage only.",
+      "generation_swap": "Treat visual ghosting and old/new resource interleaving as separate failures: atomically activate one CEMP revision, drain stale queued frames, then refresh/maintain the panel baseline.",
+      "generation_triage": "Classify visible old content as physical afterimage, stale queued frame, stale asset revision, or rescue/procedural fallback leakage; only physical afterimage belongs to refresh-profile tuning.",
+      "ghosting": "Partial/fast refresh can accumulate ghosting; tune refresh profile/cadence rather than blending old art.",
+      "interactive": "Use differential 0xFC dirty-window refresh; coalesce queued menu drag frames to the latest request.",
+      "maintenance": "After touch settles, schedule one quiet 0xCF maintenance cleanup; never insert it while contact is active.",
+      "portability": "Scene/player use portable refresh intents; WB55/WBA panel targets choose waveform details."
+    },
+    "status": "PASS"
+  },
+  "resource": {
+    "clips": 33,
+    "frames": 159,
+    "pack_crc32": "0x56B56273",
+    "revision": 51,
+    "runtime_status": "REVISION_51_RUNTIME_PASS_HUMAN_VISUAL_PENDING",
+    "total_bytes": 287446
+  },
+  "runtime_flash_preflight": {
+    "normal_image_exists": true,
+    "path": "docs/validation/companion-screen-wb55-runtime-flash-preflight.json",
+    "programmer_exists": true,
+    "provision_image_exists": true,
+    "status": "PASS"
+  },
+  "runtime_hardware_action_card": {
+    "claim_scope": "operator_action_card_no_hardware_claim",
+    "human_acceptance_start_rule": "只有 rev51 provision/normal runtime logs 验证 PASS、promotion gate APPLIED、pre-acceptance health PASS 后，操作者明确说“开始验收”，才进入触摸/视觉人工验收。",
+    "path": "docs/validation/companion-screen-wb55-runtime-hardware-action-card.json",
+    "post_run_commands": [
+      "python .\\tools\\verify_screen_generation_release_ledger.py",
+      "python .\\tools\\verify_wb55_screen_runtime_recheck_logs.py",
+      "python .\\tools\\promote_wb55_screen_runtime_recheck.py --apply",
+      "python .\\tools\\verify_companion_screen_pre_acceptance_health.py",
+      "python .\\tools\\verify_companion_screen_goal_audit.py"
+    ],
+    "status": "NO_GO_WAITING_FOR_REAL_HARDWARE_RUN",
+    "step_count": 4,
+    "workflow_lock_command": "pwsh -NoProfile -File C:\\Users\\Billy\\Desktop\\Denzic\\ai-collaboration-workflow\\scripts\\aiw.ps1 with-lock -Resource Companion-WB55 -Purpose \"Companion WB55 rev51 screen runtime recheck\" -Run pwsh -NoProfile -File .\\tools\\run_wb55_screen_runtime_recheck.ps1 -Execute -WorkflowLockHeld"
+  },
+  "runtime_logs": {
+    "normal": {
+      "exists": true,
+      "markers": {
+        "clips=33 frames=159": true,
+        "complete=1": true,
+        "expression_renderer=external_pack": true,
+        "mount=ok": true,
+        "pet_behavior_selftest=pass failure_code=0": true,
+        "refresh mode=full": true,
+        "revision=51": true,
+        "source=external_flash": true,
+        "touch-health] detected=1 identity=1 addr=0x38": true
+      },
+      "path": ".cache/validation/rev51-runtime-20260712-generated-art/normal/nucleo-serial-raw.log"
+    },
+    "provision": {
+      "exists": true,
+      "markers": {
+        "clips=33 frames=159": true,
+        "complete=1": true,
+        "expression_renderer=external_pack": true,
+        "mount=ok": true,
+        "pet_behavior_selftest=pass failure_code=0": true,
+        "refresh mode=full": true,
+        "revision=51": true,
+        "source=external_flash": true,
+        "touch-health] detected=1 identity=1 addr=0x38": true
+      },
+      "path": ".cache/validation/rev51-runtime-20260712-generated-art/provision/nucleo-serial-raw.log"
+    }
+  },
+  "runtime_promotion_gate": {
+    "blockers": [],
+    "path": "docs/validation/companion-screen-wb55-runtime-promotion.json",
+    "status": "APPLIED",
+    "target_status": "REVISION_51_RUNTIME_PASS_HUMAN_VISUAL_PENDING"
+  },
+  "runtime_serial_capture_preflight": {
+    "capture_script": "tools/capture_nucleo_serial.ps1",
+    "claim_scope": "static_serial_capture_contract_no_hardware_claim",
+    "operator_rule": "This preflight does not open serial ports, flash firmware, or claim runtime evidence. The real capture still requires the Companion-WB55 workflow hardware lock and the runtime log verifier must remain NO_GO until provision/normal logs exist.",
+    "path": "docs/validation/companion-screen-wb55-runtime-serial-capture-preflight.json",
+    "raw_log_filename": "nucleo-serial-raw.log",
+    "runtime_run_report": ".cache/validation/rev51-runtime-20260712-generated-art/runtime-recheck-run.json",
+    "runtime_runner": "tools/run_wb55_screen_runtime_recheck.ps1",
+    "status": "PASS_STATIC_SERIAL_CAPTURE_PREFLIGHT",
+    "summary_json_filename": "nucleo-serial-summary.json"
+  },
+  "schema_id": "companion.pendant.screen_pre_acceptance_health.v1",
+  "status": "PASS",
+  "target": "NUCLEO-WB55RG + GDEY0154D67-T03 + FT6336U",
+  "validation_commands": [
+    "python .\\tools\\verify_companion_screen_pre_acceptance_health.py",
+    "python .\\tools\\verify_wb55_screen_runtime_recheck_runner.py",
+    "python .\\tools\\verify_wb55_runtime_flash_preflight.py",
+    "python .\\tools\\verify_wb55_runtime_serial_capture_preflight.py",
+    "python .\\tools\\render_wb55_runtime_hardware_action_card.py",
+    "python .\\tools\\render_wb55_touch_visual_acceptance_packet.py",
+    "python .\\tools\\render_wb55_touch_visual_review_template.py",
+    "python .\\tools\\verify_wb55_touch_visual_review_record.py",
+    "python .\\tools\\verify_companion_screen_goal_audit.py",
+    "python .\\tools\\verify_screen_menu_assets.py",
+    "python .\\tools\\verify_screen_presentation.py",
+    "python .\\tools\\verify_touch_ft6336.py",
+    "python .\\tools\\verify_screen_refresh_feel_contract.py",
+    "python .\\tools\\verify_wb55_screen_build_matrix.py",
+    "python .\\tools\\promote_wb55_screen_runtime_recheck.py",
+    "python .\\tools\\verify_expression_acceptance_index.py"
+  ]
+}

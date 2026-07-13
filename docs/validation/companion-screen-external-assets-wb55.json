@@ -1,0 +1,52 @@
+{
+  "schema_id": "companion.screen.external_assets_wb55.v1",
+  "status": "PASS",
+  "generated_at": "2026-07-11T20:14:52+08:00",
+  "target": {
+    "board": "NUCLEO-WB55RG",
+    "stlink_serial": "066EFF535570514867221931",
+    "voltage_v": 3.24,
+    "panel": "GDEY0154D67-T03",
+    "external_nor_jedec": "0x0B4018"
+  },
+  "pack": {
+    "name": "emote-matrix-white-200x200-v1",
+    "format": "CEMP v1 little-endian",
+    "profile": "200x200 stride=25 mono_1bpp_white_is_one_msb",
+    "revision": 11,
+    "clips": 28,
+    "frames": 70,
+    "payload_bytes": 350000,
+    "total_bytes": 352312,
+    "pack_crc32": "0xD64CCCE4",
+    "external_partition_base": "0x00200000",
+    "external_partition_bytes": 2097152
+  },
+  "builds": {
+    "provision_text_bytes": 461356,
+    "normal_after_static_removal_text_bytes": 108044,
+    "normal_load_bytes": 110480,
+    "linked_static_expression_bytes": 0,
+    "provision_blob_present_in_normal_build": false
+  },
+  "evidence": {
+    "provisioned_mount_log": ".cache/validation/screen-cemp-revision11-provision/nucleo-serial-raw.log",
+    "normal_runtime_mount_log": ".cache/validation/screen-revision11-normal/nucleo-serial-raw.log",
+    "external_expression_render_log": ".cache/validation/screen-revision11-normal/nucleo-serial-raw.log",
+    "mount_result": "PASS: prefix=43454D50 mount=ok with payload CRC verification",
+    "normal_runtime_result": "PASS: ordinary firmware mounted the provisioned QSPI pack",
+    "render_result": "PASS: idle expression frame was read from external_flash and SSD1681 refresh completed"
+  },
+  "required_runtime_markers": [
+    "[screen-assets] policy=external_first store=ready prefix=read:43454D50 mount=ok",
+    "[screen-assets] pack=emote-matrix-white-200x200-v1 revision=11 clips=28 frames=70",
+    "[screen-assets] expression_renderer=external_pack player=ready fallback=rescue_ui",
+    "[epaper] scene=expression name=idle frame_index=0 dirty=40,44,120,67 source=external_flash",
+    "[epaper] refresh mode=full control=0xF7 busy=0 update=1 activate=1 complete=1"
+  ],
+  "remaining": [
+    "Complete touch-menu physical acceptance",
+    "Complete the remaining product-expression visual acceptance",
+    "Rebuild the same pack contract for the selected WBA screen profile"
+  ]
+}

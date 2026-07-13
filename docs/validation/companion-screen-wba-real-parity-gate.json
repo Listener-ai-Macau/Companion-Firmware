@@ -1,0 +1,132 @@
+{
+  "blocked_gate": "wba_real_panel_refresh",
+  "blocked_reason": "WBA real refresh still requires a CubeWBA project, target pins, timing, refresh logs, and visual evidence; WB55 real refresh is already proven.",
+  "current_state": {
+    "cube_preflight_allows_parity": false,
+    "cube_wba_mode": "missing_upstream_reference",
+    "lse_clock_contract_status": "PASS_PRE_PORT_CLOCK_CONTRACT_RECORDED",
+    "lse_clock_hardware_claimed": false,
+    "panel_target_real_refresh_claimed": false,
+    "real_ble_contract_requires_expect_panel": true,
+    "stm32cubewba_present": false,
+    "touch_target_hardware_parity_claimed": false,
+    "wba_port_scaffold_status": "DRAFT_PRE_PORT"
+  },
+  "missing_or_deferred_evidence": [
+    {
+      "evidence": "docs/validation/companion-screen-wba-cube-dependency-preflight.json",
+      "id": "cube_wba_dependency",
+      "reason": "third_party/STM32CubeWBA is not present, so no separate CubeWBA project/build can be claimed.",
+      "status": "missing"
+    },
+    {
+      "evidence": "docs/validation/companion-screen-wba55-port-scaffold.json",
+      "id": "cube_wba_project",
+      "reason": "WBA scaffold still contains TODO_CUBEWBA_PROJECT_PATH_FOR_WBA55.",
+      "status": "todo"
+    },
+    {
+      "evidence": "docs/validation/companion-screen-wba55-port-scaffold.json",
+      "id": "wba_build_wrapper",
+      "reason": "WBA scaffold still contains TODO_WBA_BUILD_WRAPPER_FOR_WBA55.",
+      "status": "todo"
+    },
+    {
+      "evidence": "docs/validation/companion-screen-wba55-port-scaffold.json",
+      "id": "real_ble_expect_panel_artifact",
+      "reason": "No WBA --expect-real-panel bench artifact exists for screen_expression_status, card_write, and settings_sleepy_screen_status.",
+      "status": "todo"
+    },
+    {
+      "evidence": "docs/validation/companion-screen-wba55-port-scaffold.json",
+      "id": "filled_wba_panel_evidence_record",
+      "reason": "WBA panel evidence record is only a scaffold path until real controller, pins, timing, logs, and visual evidence are filled.",
+      "status": "todo"
+    },
+    {
+      "evidence": "docs/validation/companion-screen-touch-ft6336-stm32wba.json",
+      "id": "wba_touch_hardware_parity",
+      "reason": "WBA FT6336 scaffold has callback shape only; real address, identity, corners, and gestures are still required.",
+      "status": "deferred"
+    },
+    {
+      "evidence": "docs/validation/companion-screen-wba-lse-clock-contract.json",
+      "id": "wba_lse_clock_hardware_evidence",
+      "reason": "WBA LSE contract is recorded, but real LSE startup, RTC continuity, BLE sleep/connection, and timed wake-up evidence do not exist yet.",
+      "status": "deferred"
+    }
+  ],
+  "parity_claim_allowed": false,
+  "promotion_requirements": [
+    "Add or document the STM32CubeWBA upstream dependency.",
+    "Create a separate CubeWBA IOC/project for WBA55 or WBA65.",
+    "Add a scriptable WBA build wrapper; do not retarget the WB55 Cube project in place.",
+    "Wire WBA BLE/GATT through screen_gatt_stm32wba and preserve CardStatusV1 identity.",
+    "Wire WBA scheduler/time through screen_scheduler_stm32wba and preserve display drain.",
+    "Wire WBA external UI assets through screen_assets_stm32wba with a real partition readback.",
+    "Wire WBA panel transport through panel_target_stm32wba and comp_epaper_panel_refresh_fn_t.",
+    "Capture a real BLE artifact with --expect-real-panel including screen_expression_status, card_write, and settings_sleepy_screen_status.",
+    "Fill and pass a WBA panel evidence record with runtime diagnostics and before/during/after visual evidence.",
+    "Capture WBA FT6336 address, identity, corner-coordinate, and gesture evidence before touch parity is claimed.",
+    "Prove WBA LSE startup, RTC continuity across sleep, BLE advertising/connection through sleep, and timed wake-up, or record an explicit no-LSE radio-clock/power exception.",
+    "Ensure every WBA promotion artifact declares target_family=STM32WBA and exact_target=WBA55 or WBA65.",
+    "Reject WB55 runtime/build/visual/wiring evidence as WBA promotion evidence; it is baseline history only."
+  ],
+  "purpose": "Prevent a WBA55/WBA65 screen parity claim from WB55 evidence or scaffold-only WBA adapters.",
+  "schema_id": "companion.pendant.screen_wba_real_parity_gate.v1",
+  "sources": [
+    {
+      "path": "docs/validation/companion-screen-wba-port-contract.json",
+      "summary": "portable WBA pre-port contract and blocked hardware gate"
+    },
+    {
+      "path": "docs/validation/companion-screen-wba55-port-scaffold.json",
+      "summary": "target-specific WBA55 first-port artifact checklist"
+    },
+    {
+      "path": "docs/validation/companion-screen-wba-cube-dependency-preflight.json",
+      "summary": "local CubeWBA dependency state"
+    },
+    {
+      "path": "docs/validation/companion-screen-panel-target-stm32wba.json",
+      "summary": "WBA panel target scaffold real-refresh status"
+    },
+    {
+      "path": "docs/validation/companion-screen-touch-ft6336-stm32wba.json",
+      "summary": "WBA FT6336 target scaffold hardware-parity status"
+    },
+    {
+      "path": "docs/validation/companion-screen-real-ble-bench.json",
+      "summary": "real BLE screen bench --expect-real-panel contract"
+    },
+    {
+      "path": "docs/validation/companion-screen-panel-hardware-session.json",
+      "summary": "WB55/WBA55/WBA65 panel session command scaffold"
+    },
+    {
+      "path": "docs/validation/companion-screen-wba-lse-clock-contract.json",
+      "summary": "WBA LSE/RTC/BLE sleep clock contract"
+    },
+    {
+      "path": "docs/stm32wba_migration_rules.md",
+      "summary": "human-readable WBA migration rules"
+    }
+  ],
+  "status": "PASS_PRE_PORT_PARITY_BLOCKED",
+  "target_evidence_requirements": {
+    "adapter_identity": "WBA evidence must name *_stm32wba.* adapters for panel, scheduler, GATT, assets, and touch; *_stm32wb.* adapters are allowed only in the baseline comparison section.",
+    "exact_target_identity": "Every WBA promotion artifact must declare target_family=STM32WBA and exact_target=WBA55 or WBA65; target-neutral, WB55, or scaffold-only evidence is not enough.",
+    "no_wb55_substitution": "WB55 runtime logs, WB55 build logs, NUCLEO-WB55RG wiring, WB55 photos, and panel_target_stm32wb evidence may be cited only as baseline history; they must never satisfy a WBA promotion requirement.",
+    "target_named_paths": "WBA build logs, BLE captures, panel evidence records, touch logs, and visual evidence must live under target-named WBA55/WBA65 paths or carry target-named metadata generated by the WBA build/bench wrapper."
+  },
+  "validation_commands": [
+    "python .\\tools\\verify_expression_wba_real_parity_gate.py",
+    "python .\\tools\\verify_expression_wba_cube_dependency_preflight.py",
+    "python .\\tools\\init_expression_wba_port_scaffold.py",
+    "python .\\tools\\verify_expression_panel_target_stm32wba.py",
+    "python .\\tools\\verify_touch_target_stm32wba_ft6336.py",
+    "python .\\tools\\verify_expression_real_ble_screen_bench.py",
+    "python .\\tools\\verify_expression_panel_evidence_record.py --self-test",
+    "python .\\tools\\verify_expression_wba_lse_clock_contract.py"
+  ]
+}

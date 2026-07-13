@@ -1,0 +1,47 @@
+{
+  "contract": {
+    "depth": 4,
+    "dequeue_does_not_reduce_high_water": true,
+    "high_water_initial": 0,
+    "high_water_never_exceeds_depth": true,
+    "high_water_updates_after_commit": true,
+    "host_status_unchanged": "CardStatusV1 remains the host-facing latest request status; telemetry does not add a GATT surface yet.",
+    "null_queue_returns_zero": true,
+    "payload_max_bytes": 236,
+    "platform_free": true,
+    "snapshot_api": "comp_epaper_display_queue_snapshot",
+    "snapshot_null_safe": true
+  },
+  "purpose": "Portable display queue telemetry for WB55 bring-up and future WBA panel scheduler pressure checks.",
+  "schema_id": "companion.pendant.screen_display_queue_telemetry.v1",
+  "sources": {
+    "display_queue_header": "app/companion_pendant/epaper/display_queue.h",
+    "display_queue_source": "app/companion_pendant/epaper/display_queue.c",
+    "epaper_readme": "app/companion_pendant/epaper/README.md",
+    "screen_acceptance": "docs/companion_screen_expression_system.md",
+    "wb55_integration": "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c",
+    "wba_rules": "docs/stm32wba_migration_rules.md"
+  },
+  "status": "PASS",
+  "telemetry_fields": {
+    "dropped_count": "requests rejected by full queue, oversized payload, or unsupported expression",
+    "high_water_count": "largest pending count since queue init",
+    "next_sequence": "monotonic in-memory request ordering counter",
+    "payload_max_bytes": "portable CardWriteV1 payload bound mirrored into the stats snapshot",
+    "pending_count": "current queued display requests",
+    "queue_depth": "portable compile-time queue capacity mirrored into the stats snapshot"
+  },
+  "validation_commands": [
+    "python .\\tools\\verify_display_queue_telemetry.py",
+    "python .\\tools\\verify_display_queue_static.py",
+    "python .\\tools\\verify_display_queue_fault_paths.py",
+    "python .\\tools\\verify_expression_wba_portability.py",
+    "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1"
+  ],
+  "wb55_observability": {
+    "high_water_api": "comp_epaper_display_queue_high_water_count",
+    "render_request_arg2": "snapshot.pending_count",
+    "stats_snapshot_api": "comp_epaper_display_queue_snapshot",
+    "update_result_arg2": "snapshot.dropped_count"
+  }
+}

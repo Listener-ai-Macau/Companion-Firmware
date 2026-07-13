@@ -17,6 +17,7 @@ from app.companion_pendant.epaper.card_renderer import (  # noqa: E402
     CARD_STATES,
     CARD_TYPES,
     DISPLAY_VARIANTS,
+    EXPRESSION_KINDS,
     card_from_ble_write,
     default_fixture_cards,
     render_card,
@@ -86,6 +87,7 @@ def build_manifest(out_dir: pathlib.Path) -> dict[str, Any]:
             for key, variant in DISPLAY_VARIANTS.items()
         },
         "supported_card_types": sorted(CARD_TYPES),
+        "supported_expressions": sorted(EXPRESSION_KINDS),
         "supported_states": sorted(CARD_STATES),
         "state_card_coverage": sorted({card.card_type for card in state_cards}),
         "state_coverage": sorted({card.state for card in state_cards}),
@@ -98,6 +100,8 @@ def build_manifest(out_dir: pathlib.Path) -> dict[str, Any]:
         "hardware_boundary": {
             "ai_testable_now": [
                 "card model",
+                "ExpressionV1 state model",
+                "expression golden fixtures",
                 "text fallback",
                 "dithering",
                 "framebuffer dimensions",
@@ -122,13 +126,28 @@ def run_self_test(manifest_path: pathlib.Path, out_dir: pathlib.Path) -> dict[st
     if {"2.13in", "1.54in"} - set(manifest["display_variants"]):
         raise AssertionError("missing required display variants")
     required_cards = {"boot_default", "recording", "sync_complete"}
+    required_expression_cards = {f"expression_{expression}" for expression in EXPRESSION_KINDS}
     fixture_ids = {fixture["id"] for fixture in manifest["fixtures"]}
     if not required_cards <= fixture_ids:
         raise AssertionError(f"missing fixture cards: {sorted(required_cards - fixture_ids)}")
+    if not required_expression_cards <= fixture_ids:
+        raise AssertionError(f"missing expression fixture cards: {sorted(required_expression_cards - fixture_ids)}")
 
-    required_types = {"mood", "name", "event", "reminder", "recording", "sync_complete", "low_battery", "error"}
+    required_types = {
+        "expression",
+        "mood",
+        "name",
+        "event",
+        "reminder",
+        "recording",
+        "sync_complete",
+        "low_battery",
+        "error",
+    }
     if not required_types <= set(manifest["state_card_coverage"]):
         raise AssertionError("card model coverage is incomplete")
+    if not EXPRESSION_KINDS <= set(manifest["supported_expressions"]):
+        raise AssertionError("expression model coverage is incomplete")
     if manifest["ble_card_write_mapping"]["card_type"] != "event":
         raise AssertionError("BLE CardWriteV1 fixture did not map to event card")
 

@@ -1,0 +1,202 @@
+{
+  "_instructions": [
+    "This scaffold is intentionally a pre-port checklist, not parity evidence.",
+    "Keep status DRAFT_PRE_PORT until a separate CubeWBA project, WBA build wrapper, WBA BLE adapter, scheduler hook, and target-named panel adapter exist.",
+    "Use the listed invariants to review the WBA branch before claiming it matches WB55 behavior.",
+    "Generate the target panel evidence record separately and keep it failing until real controller, pin, timing, BLE, and visual evidence are filled."
+  ],
+  "bootstrap_commands": [
+    "python .\\tools\\init_expression_wba_port_scaffold.py --target WBA55 --write",
+    "python .\\tools\\init_expression_panel_evidence_record.py --target WBA55 --output docs/validation/companion-screen-panel-evidence-record-wba55-scaffold.json --write",
+    "python .\\tools\\verify_expression_wba_portability.py",
+    "python .\\tools\\verify_expression_wba_cube_dependency_preflight.py",
+    "python .\\tools\\verify_expression_display_drain.py",
+    "python .\\tools\\verify_expression_target_capabilities.py",
+    "python .\\tools\\verify_expression_visual_contract.py",
+    "python .\\tools\\verify_expression_layout_contract.py",
+    "python .\\tools\\verify_expression_priority_matrix.py",
+    "python .\\tools\\verify_expression_input_source_matrix.py",
+    "python .\\tools\\verify_expression_screen_assets_stm32wba.py",
+    "python .\\tools\\verify_touch_target_stm32wba_ft6336.py",
+    "python .\\tools\\run_expression_acceptance.py --pass-only --skip-build --output .\\.cache\\validation\\companion-screen-wba-pre-port-run.json"
+  ],
+  "carry_over_portable_files": [
+    "app/companion_pendant/epaper/__init__.py",
+    "app/companion_pendant/epaper/asset_store.c",
+    "app/companion_pendant/epaper/asset_store.h",
+    "app/companion_pendant/epaper/card_renderer.py",
+    "app/companion_pendant/epaper/display_queue.c",
+    "app/companion_pendant/epaper/display_queue.h",
+    "app/companion_pendant/epaper/emote_asset_pack.c",
+    "app/companion_pendant/epaper/emote_asset_pack.h",
+    "app/companion_pendant/epaper/emote_player.c",
+    "app/companion_pendant/epaper/emote_player.h",
+    "app/companion_pendant/epaper/expression_asset_source.c",
+    "app/companion_pendant/epaper/expression_asset_source.h",
+    "app/companion_pendant/epaper/expression_events.c",
+    "app/companion_pendant/epaper/expression_events.h",
+    "app/companion_pendant/epaper/expression_policy.py",
+    "app/companion_pendant/epaper/expression_state.c",
+    "app/companion_pendant/epaper/expression_state.h",
+    "app/companion_pendant/epaper/panel_adapter.c",
+    "app/companion_pendant/epaper/panel_adapter.h",
+    "app/companion_pendant/epaper/refresh_policy.c",
+    "app/companion_pendant/epaper/refresh_policy.h",
+    "app/companion_pendant/epaper/pet_attention.c",
+    "app/companion_pendant/epaper/pet_attention.h",
+    "app/companion_pendant/epaper/pet_behavior.c",
+    "app/companion_pendant/epaper/pet_behavior.h",
+    "app/companion_pendant/epaper/pet_expression.c",
+    "app/companion_pendant/epaper/pet_expression.h",
+    "app/companion_pendant/epaper/pet_visual_style.h",
+    "app/companion_pendant/epaper/screen_framebuffer.c",
+    "app/companion_pendant/epaper/screen_framebuffer.h",
+    "app/companion_pendant/epaper/screen_menu.c",
+    "app/companion_pendant/epaper/screen_menu.h",
+    "app/companion_pendant/epaper/screen_presentation.c",
+    "app/companion_pendant/epaper/screen_presentation.h",
+    "app/companion_pendant/epaper/screen_runtime.c",
+    "app/companion_pendant/epaper/screen_runtime.h",
+    "app/companion_pendant/touch/ft6336.c",
+    "app/companion_pendant/touch/ft6336.h",
+    "app/companion_pendant/touch/touch_gesture.c",
+    "app/companion_pendant/touch/touch_gesture.h"
+  ],
+  "forbidden_shortcuts": [
+    "Do not copy WB55 CPU2/FUS/IPCC/HSEM/STM32_WPAN mechanics into WBA portable files.",
+    "Do not rename a WB55 adapter as WBA without a separate CubeWBA build and real validation.",
+    "Do not use WBA65-only resources unless the WBA55-safe contract still passes or a capability flag gates the expansion.",
+    "Do not move panel SPI/GPIO/reset/BUSY timing into ExpressionV1, display_queue, or panel_adapter portable files.",
+    "Do not put a physical flash address, erase/write routine, or active-pack switch into the portable asset store or its WBA read adapter."
+  ],
+  "parity_exit_criteria": [
+    "WBA build wrapper passes for the selected target.",
+    "The no-hardware screen acceptance suite passes with WBA platform code added.",
+    "Display drain contract stays passing after WBA display task and panel transport are added.",
+    "Target capability profile stays WBA55-safe before any WBA65-only resource or larger shared limit is used.",
+    "Expression visual and layout contracts stay passing after WBA platform code is added.",
+    "Expression priority matrix stays passing after WBA scheduler or status-adapter code is added.",
+    "Expression input source matrix stays passing after WBA status adapters are added.",
+    "Real BLE bench carries screen_expression_status baseline and preserves accepted/final CardStatusV1 identity for card_write and settings_sleepy_screen_status.",
+    "Panel evidence record passes with a *_stm32wba.* adapter file, real panel timing, clean portability notes, and visual proof.",
+    "third_party/STM32CubeWB and third_party/STM32CubeWBA remain clean."
+  ],
+  "portable_invariants": {
+    "card_status_contract": "accepted/rendered/failed/busy render states and stable last_error values are host-facing.",
+    "display_drain_contract": "tools/verify_expression_display_drain.py guards one-request-per-pass display drain, target panel refresh, runtime diagnostics before final CardStatusV1, and pending-work reschedule behavior.",
+    "display_payload_max_bytes": 236,
+    "display_queue_depth": 4,
+    "expression_card_slot": 1,
+    "expression_copy_contract": "tools/verify_expression_copy_contract.py guards ExpressionV1 title/body/footer copy across renderer, firmware, catalog, layout, priority, and generated PBM fixtures so WBA target glue cannot fork user-visible text.",
+    "expression_input_source_matrix": "tools/verify_expression_input_source_matrix.py guards boot, diagnostic, settings, status, battery, recording, interaction, and OTA input source coverage for WB55 and WBA adapters.",
+    "expression_layout_contract": "tools/verify_expression_layout_contract.py guards ExpressionV1 title/body/footer copy against truncation and overlap on supported screen variants.",
+    "expression_priority_matrix": "tools/verify_expression_priority_matrix.py guards every current ExpressionV1 face/signal pair, including lower-priority blocking, settings sleepy, battery recovered, duplicate suppression, and transient recovery behavior.",
+    "expression_request_id_base": "0xe0000000",
+    "expression_states": [
+      "idle",
+      "listening",
+      "thinking",
+      "speaking",
+      "happy",
+      "sleepy",
+      "recording",
+      "sync_complete",
+      "low_battery",
+      "error"
+    ],
+    "expression_visual_contract": "tools/verify_expression_visual_contract.py guards every ExpressionV1 PBM against blank, overfilled, or visually duplicate faces before target transport changes.",
+    "panel_callback": "comp_epaper_panel_refresh_fn_t",
+    "real_ble_screen_operations": [
+      "screen_expression_status",
+      "card_write",
+      "settings_sleepy_screen_status"
+    ],
+    "screen_runtime_snapshot": "comp_epaper_screen_runtime_snapshot aggregates expression, display queue, and panel adapter stats snapshots without target dependencies.",
+    "settings_sleepy_signal": "COMP_EPAPER_EXPRESSION_SIGNAL_SETTINGS_SLEEPY",
+    "target_capability_profile": "tools/verify_expression_target_capabilities.py keeps WB55 as the validation target, WBA55 as the shared safe baseline, and WBA65 expansion behind explicit target capability flags without changing common screen limits.",
+    "wba_cube_dependency_preflight": "CubeWBA dependency preflight docs/validation/companion-screen-wba-cube-dependency-preflight.json records whether third_party/STM32CubeWBA exists and keeps WBA status DRAFT_PRE_PORT until a separate CubeWBA project and WBA build wrapper land.",
+    "wba_display_scheduler_scaffold": "WBA display scheduler scaffold screen_scheduler_stm32wba.h/.c provides callback-only display task wakeup, expression tick timer, and now_ms boundaries without WB55 UTIL_SEQ/HW_TS details.",
+    "wba_panel_target_scaffold": "WBA panel target adapter scaffold panel_target_stm32wba.h/.c defaults to dry-run through companion_epaper_panel_stm32wba_init and binds a WBA55/WBA65 target-owned refresh callback through companion_epaper_panel_stm32wba_bind without WB55 pin facts or WB55 build integration.",
+    "wba_screen_assets_scaffold": "WBA screen-assets scaffold screen_assets_stm32wba.h/.c binds a target-owned logical-partition read callback to comp_asset_store_t as external NOR, checks every read against partition_size, and keeps addresses, storage peripherals, pins, erase, and activation out of portable resource code.",
+    "wba_screen_gatt_scaffold": "WBA screen GATT scaffold screen_gatt_stm32wba.h/.c preserves CardWriteV1/CardStatusV1/SettingsV1, settings clear recovery, accepted and final CardStatusV1 identity, settings_sleepy_screen_status, and screen_expression_status without WB55 STM32_WPAN or companion_gatt_stm32wb details.",
+    "wba_touch_target_scaffold": "WBA FT6336 touch target scaffold touch_target_stm32wba_ft6336.h/.c binds 7-bit probe/register-read callbacks for WBA55/WBA65 and reuses comp_ft6336_decode_touch_report without CubeWBA HAL or WB55 pin facts."
+  },
+  "required_new_artifacts": [
+    {
+      "acceptance": "Separate CubeWBA project; do not retarget the WB55 Cube project in place.",
+      "id": "cube_project",
+      "path": "TODO_CUBEWBA_PROJECT_PATH_FOR_WBA55"
+    },
+    {
+      "acceptance": "Records whether third_party/STM32CubeWBA is present, keeps WBA status DRAFT_PRE_PORT while the CubeWBA dependency/build wrapper is missing, and passes verify_expression_wba_cube_dependency_preflight.py.",
+      "id": "cube_wba_dependency_preflight",
+      "path": "docs/validation/companion-screen-wba-cube-dependency-preflight.json"
+    },
+    {
+      "acceptance": "Scriptable build wrapper analogous to tools/build_nucleo_bringup.ps1.",
+      "id": "build_wrapper",
+      "path": "TODO_WBA_BUILD_WRAPPER_FOR_WBA55"
+    },
+    {
+      "acceptance": "Preserves UUIDs, payload layouts, CardStatusV1 meanings, and settings_sleepy_screen_status behavior.",
+      "id": "ble_gatt_adapter",
+      "path": "TODO_WBA_BLE_GATT_ADAPTER_*_stm32wba.*"
+    },
+    {
+      "acceptance": "Initial WBA55/WBA65 screen GATT scaffold exists, exposes companion_epaper_stm32wba_screen_gatt_accept_card_write, preserves screen_expression_status identity rules, and passes verify_expression_screen_gatt_stm32wba.py before CubeWBA service integration is added.",
+      "id": "ble_gatt_adapter_scaffold",
+      "path": "app/companion_pendant/epaper/screen_gatt_stm32wba.c"
+    },
+    {
+      "acceptance": "Wakes the WBA display task and feeds comp_epaper_expression_state_tick().",
+      "id": "scheduler_timer_hook",
+      "path": "TODO_WBA_SCHEDULER_TIMER_HOOK_*_stm32wba.*"
+    },
+    {
+      "acceptance": "Initial WBA55/WBA65 display scheduler/timer scaffold exists, exposes companion_epaper_stm32wba_schedule_expression_tick, stays callback-only, and passes verify_expression_screen_scheduler_stm32wba.py before CubeWBA scheduler integration is added.",
+      "id": "scheduler_timer_hook_scaffold",
+      "path": "app/companion_pendant/epaper/screen_scheduler_stm32wba.c"
+    },
+    {
+      "acceptance": "Initial WBA55/WBA65 target-named scaffold defaults to dry-run, binds only a target-owned refresh callback, and passes verify_expression_panel_target_stm32wba.py before real transport is added.",
+      "id": "panel_target_adapter_scaffold",
+      "path": "app/companion_pendant/epaper/panel_target_stm32wba.c"
+    },
+    {
+      "acceptance": "Wired only through comp_epaper_panel_refresh_fn_t and keeps SPI/GPIO/BUSY code out of portable files.",
+      "id": "panel_transport_adapter",
+      "path": "TODO_WBA_PANEL_TRANSPORT_*_stm32wba.*"
+    },
+    {
+      "acceptance": "Initial WBA55/WBA65 screen-assets scaffold binds a target-owned logical external-NOR partition reader, checks every read against partition_size, and passes verify_expression_screen_assets_stm32wba.py before CubeWBA storage integration is added.",
+      "id": "screen_assets_adapter_scaffold",
+      "path": "app/companion_pendant/epaper/screen_assets_stm32wba.c"
+    },
+    {
+      "acceptance": "Initial WBA55/WBA65 FT6336 scaffold uses 7-bit probe/register-read callbacks, reuses the portable decoder, and passes verify_touch_target_stm32wba_ft6336.py before CubeWBA I2C integration is added.",
+      "id": "touch_target_adapter_scaffold",
+      "path": "app/companion_pendant/touch/touch_target_stm32wba_ft6336.c"
+    },
+    {
+      "acceptance": "Includes screen_expression_status six-face baseline plus card_write and settings_sleepy_screen_status final rendered/ok evidence with --expect-real-panel.",
+      "id": "real_ble_bench_artifact",
+      "path": "TODO_REAL_BLE_BENCH_EXPECT_REAL_PANEL_WBA55.json"
+    },
+    {
+      "acceptance": "Passes verify_expression_panel_evidence_record.py --record only after real panel facts and visual evidence are filled.",
+      "id": "panel_evidence_record",
+      "path": "docs/validation/companion-screen-panel-evidence-record-wba55-scaffold.json"
+    }
+  ],
+  "schema_id": "companion.pendant.screen_wba_port_scaffold.v1",
+  "source_contract": "docs/validation/companion-screen-wba-port-contract.json",
+  "status": "DRAFT_PRE_PORT",
+  "target": "WBA55",
+  "target_assumptions": {
+    "budget_rule": "Design to WBA55-safe protocol, queue, and memory limits unless a target capability explicitly enables expansion.",
+    "target_capability_profile": "docs/validation/companion-screen-target-capabilities.json",
+    "target_mode": "baseline_constrained_target",
+    "wba55_baseline": "STM32WBA55",
+    "wba65_expanded": "STM32WBA65"
+  }
+}

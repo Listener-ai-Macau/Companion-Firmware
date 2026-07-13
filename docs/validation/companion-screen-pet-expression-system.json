@@ -1,0 +1,64 @@
+{
+  "behavior": {
+    "living_phase_contract": "product-state faces get sparse whole-face phase motion by adjusting face shift, eye width/opening, highlight, mouth scale, and cheeks without storing extra frames",
+    "memory_contract": "comp_pet_behavior_memory_t is a target-owned, CRC/wear-aware external user-data payload; portable behavior never writes Flash",
+    "premium_art_contract": "generated-art principles are translated into procedural one-bit features: rounded pet nose/mouth, hollow thought bubbles, soft listening waves, tiny record dot, and small spark marks",
+    "refresh_contract": "behavior advances at real product-event or touch boundaries; it does not schedule an idle animation loop",
+    "source": "app/companion_pendant/epaper/pet_behavior.h/.c",
+    "state": [
+      "valence",
+      "arousal",
+      "curiosity",
+      "affection",
+      "attachment",
+      "mood",
+      "engagement",
+      "focus",
+      "stroke direction",
+      "stroke energy",
+      "personality"
+    ]
+  },
+  "event_bridge": {
+    "daily_stroke": "left/right/up/down logical finger travel becomes a direction-specific full-face response and bounded emotional update while the reserved menu-edge gesture keeps priority",
+    "daily_touch": "continuous logical touch coordinates update engagement and become a three-phase attentive response pose",
+    "product_state": "all ten ExpressionV1 states advance a bounded valence/arousal/curiosity/affection/attachment mood model before composing a pose",
+    "target_request_kind": "COMP_EPAPER_DISPLAY_REQUEST_PET_EXPRESSION"
+  },
+  "purpose": "Machine-checkable architecture contract for the portable parameterized electronic-pet face.",
+  "refresh_policy": "interactive differential refresh during contact; one generic quiet maintenance pass after the pet or menu has settled; full refresh remains boot/recovery only",
+  "renderer": {
+    "internal_full_screen_expression_arrays": 0,
+    "logical_coordinate_space": "200x200 logical coordinates scaled to every framebuffer at or above 64x64",
+    "parameters": [
+      "expression",
+      "gaze_x",
+      "gaze_y",
+      "eye_open",
+      "eyelid_tilt",
+      "eye_width",
+      "eye_spacing",
+      "eye_pair_tilt",
+      "highlight_scale",
+      "face_shift_x",
+      "face_shift_y",
+      "brow",
+      "brow_lift",
+      "brow_asymmetry",
+      "mouth",
+      "mouth_scale",
+      "cheek_strength",
+      "mark",
+      "variation"
+    ],
+    "persistent_extra_framebuffers": 0,
+    "source": "app/companion_pendant/epaper/pet_expression.h/.c"
+  },
+  "resource_policy": {
+    "external": "CEMP keeps replaceable timelines, menu art, fonts, and larger product assets in ui_assets; emotion memory belongs in a separate target-owned user-data partition",
+    "internal": "pet_behavior and pet_expression are compact deterministic application code and render into the existing framebuffer only"
+  },
+  "schema_id": "companion.screen.pet_expression_system.v1",
+  "status": "PASS",
+  "wba_port": "Reuse pose and renderer; replace only panel transport/profile facts in target-named adapters."
+}

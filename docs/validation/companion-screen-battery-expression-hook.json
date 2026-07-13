@@ -1,0 +1,134 @@
+{
+  "acceptance": {
+    "battery_charge_publish_feeds_expression_bridge": true,
+    "battery_recovery_only_clears_low_battery": true,
+    "charging_voltage_maps_to_battery_recovered": true,
+    "charging_voltage_sample_does_not_force_low_battery": true,
+    "initial_state_publish_does_not_schedule_expression": true,
+    "low_percent_maps_to_low_battery": true,
+    "low_voltage_while_not_charging_maps_to_low_battery": true,
+    "recovered_percent_maps_to_battery_recovered": true,
+    "wba_safe_battery_hook": true
+  },
+  "cases": [
+    {
+      "case_id": "default_devboard_charging_maps_to_guarded_recovery",
+      "expected_expression": "idle",
+      "expected_signal": "COMP_EPAPER_EXPRESSION_SIGNAL_BATTERY_RECOVERED",
+      "payload": {
+        "charge_state": 1,
+        "charger_present": 1,
+        "millivolts": 5000,
+        "percent": 100
+      },
+      "policy_expression": "idle",
+      "policy_reason": "battery sample recovered above expression threshold"
+    },
+    {
+      "case_id": "low_percent_maps_to_low_battery",
+      "expected_expression": "low_battery",
+      "expected_signal": "COMP_EPAPER_EXPRESSION_SIGNAL_LOW_BATTERY",
+      "payload": {
+        "charge_state": 1,
+        "charger_present": 0,
+        "millivolts": 3800,
+        "percent": 12
+      },
+      "policy_expression": "low_battery",
+      "policy_reason": "battery sample crossed low threshold"
+    },
+    {
+      "case_id": "low_voltage_not_charging_maps_to_low_battery",
+      "expected_expression": "low_battery",
+      "expected_signal": "COMP_EPAPER_EXPRESSION_SIGNAL_LOW_BATTERY",
+      "payload": {
+        "charge_state": 1,
+        "charger_present": 0,
+        "millivolts": 3500,
+        "percent": 55
+      },
+      "policy_expression": "low_battery",
+      "policy_reason": "battery sample crossed low threshold"
+    },
+    {
+      "case_id": "low_voltage_charging_does_not_force_low_battery",
+      "expected_expression": "idle",
+      "expected_signal": null,
+      "payload": {
+        "charge_state": 2,
+        "charger_present": 1,
+        "millivolts": 3500,
+        "percent": 55
+      },
+      "policy_expression": "idle",
+      "policy_reason": "battery sample recovered above expression threshold"
+    },
+    {
+      "case_id": "near_threshold_does_not_recover_low_battery",
+      "expected_expression": "idle",
+      "expected_signal": null,
+      "payload": {
+        "charge_state": 1,
+        "charger_present": 0,
+        "millivolts": 3650,
+        "percent": 22
+      },
+      "policy_expression": "idle",
+      "policy_reason": "event has no expression override"
+    },
+    {
+      "case_id": "recovered_percent_maps_to_battery_recovered",
+      "expected_expression": "idle",
+      "expected_signal": "COMP_EPAPER_EXPRESSION_SIGNAL_BATTERY_RECOVERED",
+      "payload": {
+        "charge_state": 1,
+        "charger_present": 0,
+        "millivolts": 3650,
+        "percent": 27
+      },
+      "policy_expression": "idle",
+      "policy_reason": "battery sample recovered above expression threshold"
+    },
+    {
+      "case_id": "charging_voltage_maps_to_battery_recovered",
+      "expected_expression": "idle",
+      "expected_signal": "COMP_EPAPER_EXPRESSION_SIGNAL_BATTERY_RECOVERED",
+      "payload": {
+        "charge_state": 2,
+        "charger_present": 1,
+        "millivolts": 3650,
+        "percent": 22
+      },
+      "policy_expression": "idle",
+      "policy_reason": "battery sample recovered above expression threshold"
+    }
+  ],
+  "schema_id": "companion.pendant.screen_battery_expression_hook.v1",
+  "sources": {
+    "event_bridge_header": "app/companion_pendant/epaper/expression_events.h",
+    "event_bridge_source": "app/companion_pendant/epaper/expression_events.c",
+    "screen_acceptance": "docs/companion_screen_expression_system.md",
+    "wb55_integration": "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c",
+    "wba_rules": "docs/stm32wba_migration_rules.md"
+  },
+  "status": "PASS",
+  "thresholds": {
+    "battery_recovered_millivolts": 3600,
+    "battery_recovered_percent": 25,
+    "charging_suppresses_voltage_only_low_battery": true,
+    "low_battery_millivolts": 3600,
+    "low_battery_percent": 20,
+    "near_threshold_samples_do_not_recover_low_battery": true
+  },
+  "wb55_hook": {
+    "arg0": "percent",
+    "arg1": "millivolts",
+    "arg2": "charger_present",
+    "arg3": "charge_state",
+    "event_code": "COMP_DIAG_EVT_BATTERY_CHARGING_SAMPLE",
+    "initial_state_guard": "Companion_Gatt_PublishBatteryCharge(false)",
+    "notify_read_hook": "Companion_Gatt_PublishBatteryCharge(true)",
+    "publish_api": "Companion_Gatt_PublishBatteryCharge(bool apply_expression_hint)",
+    "status_source": "BatteryChargeV1"
+  }
+}

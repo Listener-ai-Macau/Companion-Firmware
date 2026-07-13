@@ -1,0 +1,42 @@
+{
+  "schema": "denzic.product_visual_iteration.v1",
+  "feature": "companion-pet-interaction-states",
+  "target_profile": "wb55-gdey0154d67-ft6336u-200x200-1bit",
+  "rule": "docs/product_visual_design_iteration.md",
+  "baseline": {
+    "accepted_source": "docs/art/generated_pet_expression_sheet_v5.png",
+    "scope": "inner-face-only; physical enclosure owns the cat silhouette"
+  },
+  "required_state_ids": [
+    "low_power_idle",
+    "touch_wake",
+    "tap_ack",
+    "directional_swipe",
+    "recording_start",
+    "recording_active",
+    "recording_saved_or_failed"
+  ],
+  "iterations": [
+    {
+      "iteration_id": "pet-interaction-v1-queued-2026-07-13",
+      "status": "queued_after_touch_interrupt_hardware_evidence",
+      "prompt": "Create a pure black-and-white 1-bit reference sheet for a premium Companion internal-face expression system on a 200x200 e-paper display. Use the accepted generated_pet_expression_sheet_v5 inner-face aesthetic as the strict baseline: rounded refined eyes, brows, lids, tiny nose and mouth, subtle cheeks, and very sparse state marks. The physical enclosure supplies the cat outline, so draw no ears, head contour, whiskers, body, device frame, text, border, gray, color, or gradient. Show seven separate, highly legible state cells: low-power sleep, touch wake, tap acknowledgement, directional swipe response, recording starts, active recording, and recording saved or failed. Each state must alter the complete face rather than only the eyes. Make low-power calm and static-looking; make recording alert but not noisy; retain large white space and stroke weights that survive 1-bit conversion to 200x200.",
+      "source_references": [
+        "docs/art/generated_pet_expression_sheet_v5.png",
+        "user-approved inner-face-only Companion visual direction"
+      ],
+      "output": null,
+      "sha256": null,
+      "review": {
+        "outcome": "not_generated",
+        "reason": "Touch interrupt and Stop-wake hardware evidence has priority.",
+        "next_prompt_delta": null
+      },
+      "implementation": {
+        "status": "not_started",
+        "resource_revision": null,
+        "validation": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,114 @@
+{
+  "schema": "companion.screen.ssd1681-partial-refresh.v1",
+  "status": "PASS",
+  "date": "2026-07-12",
+  "target": "NUCLEO-WB55RG",
+  "panel": "GDEY0154D67-T03",
+  "controller": "SSD1681",
+  "official_sources": [
+    "https://www.good-display.com/product/258.html",
+    "https://www.good-display.com/companyfile/1054.html",
+    "https://www.good-display.com/companyfile/1029.html"
+  ],
+  "vendor_reference": {
+    "archive": ".cache/vendor/good-display/S-GDEY0154D67.rar",
+    "source_file": "HARDWARE/EPD/Display_EPD_W21.c",
+    "baseline_sequence": "write current frame to 0x24 and 0x26, then full update",
+    "full_update_control": "0xF7",
+    "partial_update_control": "0xFF",
+    "fast_update_control": "0xC7",
+    "fast_initialization": "SWRESET; 0x18=0x80; 0x22=0xB1; temperature 0x1A={0x64,0x00}; 0x22=0x91"
+  },
+  "flicker_contract": {
+    "vendor_behavior": "full refresh flickers several times; fast refresh flashes once; partial refresh does not flicker",
+    "maintenance_rule": "interactive differential updates never preempt touch; after 1200 ms quiet, a requested maintenance pass always performs one low-flicker cleanup, including after fewer than five differential updates",
+    "normal_animation": "play one intro/loop/tail cycle and hold the tail instead of repeating indefinitely",
+    "menu_queue": "coalesce consecutive pending menu requests to the newest state",
+    "interactive_soft_limit": 5,
+    "interactive_hard_limit": 60,
+    "maintenance_refresh": "low-flicker maintenance control 0xCF with post-refresh 0x26 baseline sync",
+    "standard_full_refresh": "control 0xF7 reserved for unknown boot baseline"
+  },
+  "build_command": "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1 -EpaperSsd1681Bringup -EpaperMenu 0 -EpaperSsd1681DiagnosticPattern checkerboard -EpaperSsd1681DiagnosticRepeats 7 -EpaperSsd1681DiagnosticPartial -EpaperSsd1681DiagnosticIntervalMs 250 -Force",
+  "runtime_log": ".cache/validation/screen-ssd1681-partial-policy-20260711/nucleo-serial-raw.log",
+  "observed": {
+    "baseline_full_count": 1,
+    "partial_count": 5,
+    "forced_full_count": 1,
+    "partial_busy_active_ms": 225,
+    "partial_wait_ms": 500,
+    "full_busy_active_ms": 649,
+    "full_wait_ms": 2500,
+    "all_refreshes_complete": true,
+    "policy_self_test": "pass"
+  },
+  "scope": {
+    "partial_waveform": "real_hardware_pass",
+    "strict_diagnostic_five_partial_then_full": "real_hardware_pass_historical",
+    "full_frame_partial_transfer": "real_hardware_pass",
+    "dirty_rectangle_transfer": "pending_animation_integration",
+    "visual_photo": "not_captured_in_this_run"
+  },
+  "revision_11_runtime": {
+    "log": ".cache/validation/screen-revision11-normal/nucleo-serial-raw.log",
+    "initial_full_refresh_ms": 1298,
+    "partial_refresh_count": 4,
+    "partial_refresh_ms": [448, 450],
+    "refreshes_after_tail_during_20s_observation": 0,
+    "result": "PASS: no repeated full-refresh burst after the finite daily idle cycle"
+  },
+  "fast_maintenance_runtime": {
+    "log": ".cache/validation/screen-ssd1681-fast-maintenance/nucleo-serial-raw.log",
+    "validation_command": "python tools/verify_epaper_fast_maintenance_runtime.py",
+    "test_interactive_hard_limit": 5,
+    "partial_commits_before_maintenance": 5,
+    "decision": "fast",
+    "reason": "interactive_hard_limit",
+    "control": "0xC7",
+    "elapsed_ms": 1740,
+    "complete": true,
+    "policy_count_after_commit": 0,
+    "post_fast_partial_refresh": true,
+    "machine_result": "PASS",
+    "human_visual_single_flash": "pending"
+  },
+  "production_runtime": {
+    "log": ".cache/validation/screen-revision11-fast-maintenance-normal/nucleo-serial-raw.log",
+    "firmware": "cubeide/Companion_Nucleo_WB55RG_Bringup/build/Companion_Nucleo_WB55RG_Bringup.hex",
+    "flash_verified": true,
+    "daily_tap_demo": false,
+    "interactive_soft_limit": 5,
+    "interactive_hard_limit": 60,
+    "initial_full_refresh_ms": 1298,
+    "observed_partial_refresh_count": 4,
+    "observed_partial_refresh_ms": [448, 450],
+    "refresh_failures": 0,
+    "result": "PASS: production thresholds restored after the forced-maintenance bench test"
+  },
+  "revision_17_differential_strategy": {
+    "status": "MACHINE_READY",
+    "hardware_revalidation": "PENDING",
+    "interaction_waveform": "0xFC differential refresh over the changed RAM window; latest queued menu position replaces older pending positions",
+    "maintenance_waveform": "0xCF deferred low-flicker maintenance after five partial updates and 1600 ms without touch contact",
+    "full_refresh_scope": "0xF7 only for initial unknown baseline or transport recovery",
+    "physical_limit": "The panel cannot match OLED frame latency; hardware recheck must measure visible latency, residual ghosting, and maintenance flicker."
+  },
+  "revision_21_short_interaction_cleanup": {
+    "status": "HARDWARE_WAVEFORM_PASS_VISUAL_RECHECK_PENDING",
+    "runtime_log": ".cache/validation/screen-revision21-maintenance-runtime-ready-gated/nucleo-serial-raw.log",
+    "restored_production_log": ".cache/validation/screen-revision21-normal-restored/nucleo-serial-raw.log",
+    "runtime_validator": "python tools/verify_epaper_differential_maintenance_runtime.py",
+    "hardware_revalidation": "PENDING",
+    "interaction_waveform": "0xFC differential refresh over the changed RAM window while touch remains active",
+    "maintenance_waveform": "0xCF one-pass low-flicker cleanup after 1200 ms without touch contact, including after fewer than five differential updates",
+    "full_refresh_scope": "0xF7 only for initial unknown baseline or transport recovery",
+    "hardware_sequence": {
+      "initial_baseline": "0xF7 complete in 1298 ms",
+      "short_interaction": "one 0xFC differential refresh complete in 306 ms",
+      "cleanup": "one 0xCF maintenance refresh complete in 445 ms",
+      "partial_count_before_cleanup": 1,
+      "result": "PASS: requested maintenance did not fall back to another differential refresh"
+    },
+    "physical_limit": "The panel cannot match OLED frame latency; recheck visible residual ghosting and the single maintenance pass on the WB55 panel."
+  }
+}

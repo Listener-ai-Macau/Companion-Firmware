@@ -1,0 +1,53 @@
+{
+  "contract": {
+    "cube_wba_dependency_required_before_build_wrapper": true,
+    "do_not_edit_third_party_packages": true,
+    "do_not_retarget_wb55_cube_project": true,
+    "official_starting_points": [
+      "STM32CubeWBA package",
+      "STM32WBA BLE example project build flow",
+      "STM32CubeMX WBA BLE server generation flow"
+    ],
+    "wba_parity_claim_allowed": false,
+    "wba_port_status_until_dependency_lands": "DRAFT_PRE_PORT"
+  },
+  "local_state": {
+    "mode": "missing_upstream_reference",
+    "root_gitmodules_mentions_stm32cubewba": false,
+    "stm32cubewb_path": "third_party/STM32CubeWB",
+    "stm32cubewb_present": true,
+    "stm32cubewba_path": "third_party/STM32CubeWBA",
+    "stm32cubewba_present": false
+  },
+  "purpose": "Make the current STM32WBA upstream dependency state explicit before a real WBA55/WBA65 CubeWBA project or build wrapper is claimed.",
+  "required_before_wba_parity": [
+    "Local STM32CubeWBA upstream reference or documented CubeWBA package source.",
+    "Separate CubeWBA IOC/project for WBA55 or WBA65.",
+    "Scriptable WBA build wrapper.",
+    "WBA BLE/GATT adapter wired behind screen_gatt_stm32wba.",
+    "WBA scheduler/timer hook wired behind screen_scheduler_stm32wba.",
+    "Target-named WBA panel transport and filled panel evidence record."
+  ],
+  "schema_id": "companion.pendant.screen_wba_cube_dependency_preflight.v1",
+  "sources": {
+    "epaper_readme": "app/companion_pendant/epaper/README.md",
+    "root_gitmodules": ".gitmodules",
+    "screen_acceptance": "docs/companion_screen_expression_system.md",
+    "stm32cubewba": "https://www.st.com/en/embedded-software/stm32cubewba.html",
+    "stm32wba_series": "https://www.st.com/en/microcontrollers-microprocessors/stm32wba-series.html",
+    "wba55_port_scaffold": "docs/validation/companion-screen-wba55-port-scaffold.json",
+    "wba_ble_build_project": "https://wiki.st.com/stm32mcu/wiki/Connectivity%3ASTM32WBA_Build_BLE_Project",
+    "wba_ble_cubemx_server": "https://wiki.st.com/stm32mcu/wiki/Connectivity%3ASTM32WBA_BLE_STM32CubeMX",
+    "wba_port_contract": "docs/validation/companion-screen-wba-port-contract.json",
+    "wba_rules": "docs/stm32wba_migration_rules.md",
+    "workspace_submodule_policy": "docs/validation/companion-workspace-submodule-policy.json"
+  },
+  "status": "PASS",
+  "validation_commands": [
+    "python .\\tools\\verify_expression_wba_cube_dependency_preflight.py",
+    "python .\\tools\\verify_workspace_submodule_policy.py",
+    "python .\\tools\\verify_expression_wba_portability.py",
+    "python .\\tools\\init_expression_wba_port_scaffold.py --self-test",
+    "git diff --name-only -- third_party\\STM32CubeWB third_party\\STM32CubeWBA"
+  ]
+}

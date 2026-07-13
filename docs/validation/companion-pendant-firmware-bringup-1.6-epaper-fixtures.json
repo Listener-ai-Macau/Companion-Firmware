@@ -146,11 +146,413 @@
       "sha256": "427ca9d478e3d62f50730ad3d22dc00d5d3515d93dac86c88b897542a392d8c9",
       "variant": "1.54in",
       "width": 200
+    },
+    {
+      "card": {
+        "body": "Needs user or host recovery",
+        "card_id": "expression_error",
+        "card_slot": 0,
+        "card_type": "expression",
+        "display_flags": 0,
+        "footer": "EXPR ERROR",
+        "locale": "en",
+        "request_id": 0,
+        "state": "error",
+        "title": "Error"
+      },
+      "height": 122,
+      "id": "expression_error",
+      "path": "docs/validation/epaper/expression_error_2_13in.pbm",
+      "sha256": "25a88986d6d01b36ca385c7932c3fdf04fab1c74d1fe3f781b479b90ef34729d",
+      "variant": "2.13in",
+      "width": 250
+    },
+    {
+      "card": {
+        "body": "Needs user or host recovery",
+        "card_id": "expression_error",
+        "card_slot": 0,
+        "card_type": "expression",
+        "display_flags": 0,
+        "footer": "EXPR ERROR",
+        "locale": "en",
+        "request_id": 0,
+        "state": "error",
+        "title": "Error"
+      },
+      "height": 200,
+      "id": "expression_error",
+      "path": "docs/validation/epaper/expression_error_1_54in.pbm",
+      "sha256": "430b17d4a3204cfc05a48384eb19ba92743b509fcd1b130bd6cc4e5a59de9ddc",
+      "variant": "1.54in",
+      "width": 200
+    },
+    {
+      "card": {
+        "body": "Positive acknowledgement",
+        "card_id": "expression_happy",
+        "card_slot": 0,
+        "card_type": "expression",
+        "display_flags": 0,
+        "footer": "EXPR HAPPY",
+        "locale": "en",
+        "request_id": 0,
+        "state": "happy",
+        "title": "Happy"
+      },
+      "height": 122,
+      "id": "expression_happy",
+      "path": "docs/validation/epaper/expression_happy_2_13in.pbm",
+      "sha256": "8bf50a5387f6a48593a3de978b197703373370b094b5511b88d01f0aa3906f42",
+      "variant": "2.13in",
+      "width": 250
+    },
+    {
+      "card": {
+        "body": "Positive acknowledgement",
+        "card_id": "expression_happy",
+        "card_slot": 0,
+        "card_type": "expression",
+        "display_flags": 0,
+        "footer": "EXPR HAPPY",
+        "locale": "en",
+        "request_id": 0,
+        "state": "happy",
+        "title": "Happy"
+      },
+      "height": 200,
+      "id": "expression_happy",
+      "path": "docs/validation/epaper/expression_happy_1_54in.pbm",
+      "sha256": "050bd26f3967bf09f006e097efb46580978d0a870a4a0d0c798629aa9494cc3a",
+      "variant": "1.54in",
+      "width": 200
+    },
+    {
+      "card": {
+        "body": "Soft awake face",
+        "card_id": "expression_idle",
+        "card_slot": 0,
+        "card_type": "expression",
+        "display_flags": 0,
+        "footer": "EXPR IDLE",
+        "locale": "en",
+        "request_id": 0,
+        "state": "idle",
+        "title": "Idle"
+      },
+      "height": 122,
+      "id": "expression_idle",
+      "path": "docs/validation/epaper/expression_idle_2_13in.pbm",
+      "sha256": "d23295a620ddcaff2c19de911d23f7d5c662a653d0b8de89bd51036f1db5c953",
+      "variant": "2.13in",
+      "width": 250
+    },
+    {
+      "card": {
+        "body": "Soft awake face",
+        "card_id": "expression_idle",
+        "card_slot": 0,
+        "card_type": "expression",
+        "display_flags": 0,
+        "footer": "EXPR IDLE",
+        "locale": "en",
+        "request_id": 0,
+        "state": "idle",
+        "title": "Idle"
+      },
+      "height": 200,
+      "id": "expression_idle",
+      "path": "docs/validation/epaper/expression_idle_1_54in.pbm",
+      "sha256": "e62d1e9143e564931016920adc61caa5362d2ddc7961177ebe89e0bd11b42bb3",
+      "variant": "1.54in",
+      "width": 200
+    },
+    {
+      "card": {
+        "body": "Ears open for the wake path",
+        "card_id": "expression_listening",
+        "card_slot": 0,
+        "card_type": "expression",
+        "display_flags": 0,
+        "footer": "EXPR LISTEN",
+        "locale": "en",
+        "request_id": 0,
+        "state": "listening",
+        "title": "Listening"
+      },
+      "height": 122,
+      "id": "expression_listening",
+      "path": "docs/validation/epaper/expression_listening_2_13in.pbm",
+      "sha256": "e006c87774163ff72369237f26f77a8191bbd618baf92dd2c668b8857316db1e",
+      "variant": "2.13in",
+      "width": 250
+    },
+    {
+      "card": {
+        "body": "Ears open for the wake path",
+        "card_id": "expression_listening",
+        "card_slot": 0,
+        "card_type": "expression",
+        "display_flags": 0,
+        "footer": "EXPR LISTEN",
+        "locale": "en",
+        "request_id": 0,
+        "state": "listening",
+        "title": "Listening"
+      },
+      "height": 200,
+      "id": "expression_listening",
+      "path": "docs/validation/epaper/expression_listening_1_54in.pbm",
+      "sha256": "5da5d5b7b1c3a648afec5846a25898b49c326144006cc4668bc62075df576ff5",
+      "variant": "1.54in",
+      "width": 200
+    },
+    {
+      "card": {
+        "body": "Charge soon",
+        "card_id": "expression_low_battery",
+        "card_slot": 0,
+        "card_type": "expression",
+        "display_flags": 0,
+        "footer": "EXPR LOW",
+        "locale": "en",
+        "request_id": 0,
+        "state": "low_battery",
+        "title": "Battery"
+      },
+      "height": 122,
+      "id": "expression_low_battery",
+      "path": "docs/validation/epaper/expression_low_battery_2_13in.pbm",
+      "sha256": "e97233a3b0904e2941083895f2a97ac8c50ad90e6cd9e170cd5003d92e7e1d03",
+      "variant": "2.13in",
+      "width": 250
+    },
+    {
+      "card": {
+        "body": "Charge soon",
+        "card_id": "expression_low_battery",
+        "card_slot": 0,
+        "card_type": "expression",
+        "display_flags": 0,
+        "footer": "EXPR LOW",
+        "locale": "en",
+        "request_id": 0,
+        "state": "low_battery",
+        "title": "Battery"
+      },
+      "height": 200,
+      "id": "expression_low_battery",
+      "path": "docs/validation/epaper/expression_low_battery_1_54in.pbm",
+      "sha256": "7d1b61cf0d1efef93643185ab55ce06cf5f0873c0dea78ffd715dbc08af02fc5",
+      "variant": "1.54in",
+      "width": 200
+    },
+    {
+      "card": {
+        "body": "Capture indicator stays visible",
+        "card_id": "expression_recording",
+        "card_slot": 0,
+        "card_type": "expression",
+        "display_flags": 0,
+        "footer": "EXPR REC",
+        "locale": "en",
+        "request_id": 0,
+        "state": "recording",
+        "title": "Recording"
+      },
+      "height": 122,
+      "id": "expression_recording",
+      "path": "docs/validation/epaper/expression_recording_2_13in.pbm",
+      "sha256": "73f2c27839f222ebfb49d5e716b7e67d5de0d8dd02893d4f77b1d3f0d30fa11b",
+      "variant": "2.13in",
+      "width": 250
+    },
+    {
+      "card": {
+        "body": "Capture indicator stays visible",
+        "card_id": "expression_recording",
+        "card_slot": 0,
+        "card_type": "expression",
+        "display_flags": 0,
+        "footer": "EXPR REC",
+        "locale": "en",
+        "request_id": 0,
+        "state": "recording",
+        "title": "Recording"
+      },
+      "height": 200,
+      "id": "expression_recording",
+      "path": "docs/validation/epaper/expression_recording_1_54in.pbm",
+      "sha256": "546b8c6e699267cc8b056354da53cffc788a7e9f381a883c9d110fe28274b432",
+      "variant": "1.54in",
+      "width": 200
+    },
+    {
+      "card": {
+        "body": "Low attention idle mode",
+        "card_id": "expression_sleepy",
+        "card_slot": 0,
+        "card_type": "expression",
+        "display_flags": 0,
+        "footer": "EXPR SLEEP",
+        "locale": "en",
+        "request_id": 0,
+        "state": "sleepy",
+        "title": "Sleepy"
+      },
+      "height": 122,
+      "id": "expression_sleepy",
+      "path": "docs/validation/epaper/expression_sleepy_2_13in.pbm",
+      "sha256": "29e85bce3a17228ef8a79c4c67c4a65f26a4fb9770d520f6db2fd37b0287c5d7",
+      "variant": "2.13in",
+      "width": 250
+    },
+    {
+      "card": {
+        "body": "Low attention idle mode",
+        "card_id": "expression_sleepy",
+        "card_slot": 0,
+        "card_type": "expression",
+        "display_flags": 0,
+        "footer": "EXPR SLEEP",
+        "locale": "en",
+        "request_id": 0,
+        "state": "sleepy",
+        "title": "Sleepy"
+      },
+      "height": 200,
+      "id": "expression_sleepy",
+      "path": "docs/validation/epaper/expression_sleepy_1_54in.pbm",
+      "sha256": "ee9935897a68da1dc9b8f97c2b2bad0463dd8887652b1e82652f0bcdc0f9634a",
+      "variant": "1.54in",
+      "width": 200
+    },
+    {
+      "card": {
+        "body": "Response audio is active",
+        "card_id": "expression_speaking",
+        "card_slot": 0,
+        "card_type": "expression",
+        "display_flags": 0,
+        "footer": "EXPR SPEAK",
+        "locale": "en",
+        "request_id": 0,
+        "state": "speaking",
+        "title": "Speaking"
+      },
+      "height": 122,
+      "id": "expression_speaking",
+      "path": "docs/validation/epaper/expression_speaking_2_13in.pbm",
+      "sha256": "bd4bfbd422a5b64cbaa141b14303bdeb301d8ddab19c8c7f670309308a11e8bf",
+      "variant": "2.13in",
+      "width": 250
+    },
+    {
+      "card": {
+        "body": "Response audio is active",
+        "card_id": "expression_speaking",
+        "card_slot": 0,
+        "card_type": "expression",
+        "display_flags": 0,
+        "footer": "EXPR SPEAK",
+        "locale": "en",
+        "request_id": 0,
+        "state": "speaking",
+        "title": "Speaking"
+      },
+      "height": 200,
+      "id": "expression_speaking",
+      "path": "docs/validation/epaper/expression_speaking_1_54in.pbm",
+      "sha256": "ea5ab422677d1a0a067d925572055bbe2ed66b75bcf62c4e01fe09d6f895dce5",
+      "variant": "1.54in",
+      "width": 200
+    },
+    {
+      "card": {
+        "body": "Transfer finished cleanly",
+        "card_id": "expression_sync_complete",
+        "card_slot": 0,
+        "card_type": "expression",
+        "display_flags": 0,
+        "footer": "EXPR SYNC",
+        "locale": "en",
+        "request_id": 0,
+        "state": "sync_complete",
+        "title": "Synced"
+      },
+      "height": 122,
+      "id": "expression_sync_complete",
+      "path": "docs/validation/epaper/expression_sync_complete_2_13in.pbm",
+      "sha256": "57325a3e8b85cd30efb4d7533904ab417136ab861aa68cff361dd29b275bac67",
+      "variant": "2.13in",
+      "width": 250
+    },
+    {
+      "card": {
+        "body": "Transfer finished cleanly",
+        "card_id": "expression_sync_complete",
+        "card_slot": 0,
+        "card_type": "expression",
+        "display_flags": 0,
+        "footer": "EXPR SYNC",
+        "locale": "en",
+        "request_id": 0,
+        "state": "sync_complete",
+        "title": "Synced"
+      },
+      "height": 200,
+      "id": "expression_sync_complete",
+      "path": "docs/validation/epaper/expression_sync_complete_1_54in.pbm",
+      "sha256": "81a42cc28a09832f9ae6fd894483d032bb9013c3f17329ab2650a6319606868f",
+      "variant": "1.54in",
+      "width": 200
+    },
+    {
+      "card": {
+        "body": "Processing the last prompt",
+        "card_id": "expression_thinking",
+        "card_slot": 0,
+        "card_type": "expression",
+        "display_flags": 0,
+        "footer": "EXPR THINK",
+        "locale": "en",
+        "request_id": 0,
+        "state": "thinking",
+        "title": "Thinking"
+      },
+      "height": 122,
+      "id": "expression_thinking",
+      "path": "docs/validation/epaper/expression_thinking_2_13in.pbm",
+      "sha256": "7169ac3cc87093dd00c7066a8b24fbcd751719104611bf6ec58362d261f29ba7",
+      "variant": "2.13in",
+      "width": 250
+    },
+    {
+      "card": {
+        "body": "Processing the last prompt",
+        "card_id": "expression_thinking",
+        "card_slot": 0,
+        "card_type": "expression",
+        "display_flags": 0,
+        "footer": "EXPR THINK",
+        "locale": "en",
+        "request_id": 0,
+        "state": "thinking",
+        "title": "Thinking"
+      },
+      "height": 200,
+      "id": "expression_thinking",
+      "path": "docs/validation/epaper/expression_thinking_1_54in.pbm",
+      "sha256": "d0f7938e6df5f3396c55962ad213daf3939a950d2fecdd22232838b122b572d9",
+      "variant": "1.54in",
+      "width": 200
     }
   ],
   "hardware_boundary": {
     "ai_testable_now": [
       "card model",
+      "ExpressionV1 state model",
+      "expression golden fixtures",
       "text fallback",
       "dithering",
       "framebuffer dimensions",
@@ -167,6 +569,7 @@
     "boot",
     "error",
     "event",
+    "expression",
     "low_battery",
     "mood",
     "name",
@@ -177,15 +580,21 @@
   "state_coverage": [
     "default",
     "error",
+    "happy",
     "idle",
+    "listening",
     "low_battery",
     "recording",
-    "sync_complete"
+    "sleepy",
+    "speaking",
+    "sync_complete",
+    "thinking"
   ],
   "supported_card_types": [
     "boot",
     "error",
     "event",
+    "expression",
     "low_battery",
     "mood",
     "name",
@@ -193,13 +602,30 @@
     "reminder",
     "sync_complete"
   ],
+  "supported_expressions": [
+    "error",
+    "happy",
+    "idle",
+    "listening",
+    "low_battery",
+    "recording",
+    "sleepy",
+    "speaking",
+    "sync_complete",
+    "thinking"
+  ],
   "supported_states": [
     "default",
     "error",
+    "happy",
     "idle",
+    "listening",
     "low_battery",
     "recording",
-    "sync_complete"
+    "sleepy",
+    "speaking",
+    "sync_complete",
+    "thinking"
   ],
   "text_fallback": {
     "ascii_font": "built-in 5x7",

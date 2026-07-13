@@ -1,0 +1,215 @@
+{
+  "acceptance": {
+    "duplicate_control_status_notifications_are_suppressed_by_state": true,
+    "initial_state_publish_does_not_schedule_expression": true,
+    "interaction_status_publish_feeds_expression_bridge": true,
+    "meeting_status_maps_to_recording_thinking_sync_error": true,
+    "speaker_status_maps_to_speaking_error": true,
+    "wake_word_status_maps_to_idle_listening_error": true,
+    "wba_safe_interaction_status_hook": true
+  },
+  "cases": [
+    {
+      "case_id": "meeting_idle_no_expression_override",
+      "expected_expression": "idle",
+      "expected_signal": null,
+      "input": {
+        "meeting_status": {
+          "last_error": 0,
+          "state": 0,
+          "summary_state": 0,
+          "sync_state": 0
+        }
+      },
+      "policy_expression": "idle",
+      "policy_reason": "no active screen signal"
+    },
+    {
+      "case_id": "meeting_recording_maps_to_recording",
+      "expected_expression": "recording",
+      "expected_signal": "COMP_EPAPER_EXPRESSION_SIGNAL_MEETING_START",
+      "input": {
+        "meeting_status": {
+          "last_error": 0,
+          "state": 1,
+          "summary_state": 0,
+          "sync_state": 0
+        }
+      },
+      "policy_expression": "recording",
+      "policy_reason": "meeting is recording"
+    },
+    {
+      "case_id": "meeting_sync_maps_to_sync_complete",
+      "expected_expression": "sync_complete",
+      "expected_signal": "COMP_EPAPER_EXPRESSION_SIGNAL_MEETING_FINALIZE",
+      "input": {
+        "meeting_status": {
+          "last_error": 0,
+          "state": 2,
+          "summary_state": 1,
+          "sync_state": 1
+        }
+      },
+      "policy_expression": "sync_complete",
+      "policy_reason": "meeting sync is complete"
+    },
+    {
+      "case_id": "meeting_summary_pending_maps_to_thinking",
+      "expected_expression": "thinking",
+      "expected_signal": "COMP_EPAPER_EXPRESSION_SIGNAL_MEETING_STOP",
+      "input": {
+        "meeting_status": {
+          "last_error": 0,
+          "state": 0,
+          "summary_state": 1,
+          "sync_state": 0
+        }
+      },
+      "policy_expression": "thinking",
+      "policy_reason": "meeting summary is pending"
+    },
+    {
+      "case_id": "meeting_error_maps_to_error",
+      "expected_expression": "error",
+      "expected_signal": "COMP_EPAPER_EXPRESSION_SIGNAL_ERROR",
+      "input": {
+        "meeting_status": {
+          "last_error": 2,
+          "state": 1,
+          "summary_state": 0,
+          "sync_state": 0
+        }
+      },
+      "policy_expression": "error",
+      "policy_reason": "meeting status has last_error"
+    },
+    {
+      "case_id": "speaker_idle_no_expression_override",
+      "expected_expression": "idle",
+      "expected_signal": null,
+      "input": {
+        "speaker_status": {
+          "last_error": 0,
+          "state": 1
+        }
+      },
+      "policy_expression": "idle",
+      "policy_reason": "no active screen signal"
+    },
+    {
+      "case_id": "speaker_prompt_maps_to_speaking",
+      "expected_expression": "speaking",
+      "expected_signal": "COMP_EPAPER_EXPRESSION_SIGNAL_SPEAKER_PROMPT",
+      "input": {
+        "speaker_status": {
+          "last_error": 0,
+          "state": 2
+        }
+      },
+      "policy_expression": "speaking",
+      "policy_reason": "speaker prompt accepted"
+    },
+    {
+      "case_id": "speaker_error_maps_to_error",
+      "expected_expression": "error",
+      "expected_signal": "COMP_EPAPER_EXPRESSION_SIGNAL_ERROR",
+      "input": {
+        "speaker_status": {
+          "last_error": 2,
+          "state": 2
+        }
+      },
+      "policy_expression": "error",
+      "policy_reason": "speaker status has last_error"
+    },
+    {
+      "case_id": "wake_armed_maps_to_idle",
+      "expected_expression": "idle",
+      "expected_signal": "COMP_EPAPER_EXPRESSION_SIGNAL_WAKE_ARMED",
+      "input": {
+        "wake_word_status": {
+          "armed": 1,
+          "engine_state": 1,
+          "last_error": 0,
+          "last_event": 0
+        }
+      },
+      "policy_expression": "idle",
+      "policy_reason": "wake word is armed"
+    },
+    {
+      "case_id": "wake_detected_maps_to_listening",
+      "expected_expression": "listening",
+      "expected_signal": "COMP_EPAPER_EXPRESSION_SIGNAL_WAKE_DETECTED",
+      "input": {
+        "wake_word_status": {
+          "armed": 1,
+          "engine_state": 1,
+          "last_error": 0,
+          "last_event": 2
+        }
+      },
+      "policy_expression": "listening",
+      "policy_reason": "wake word detected"
+    },
+    {
+      "case_id": "wake_error_maps_to_error",
+      "expected_expression": "error",
+      "expected_signal": "COMP_EPAPER_EXPRESSION_SIGNAL_ERROR",
+      "input": {
+        "wake_word_status": {
+          "armed": 0,
+          "engine_state": 0,
+          "last_error": 2,
+          "last_event": 0
+        }
+      },
+      "policy_expression": "error",
+      "policy_reason": "wake word status has last_error"
+    }
+  ],
+  "constants": {
+    "meeting_finalized": 2,
+    "meeting_recording": 1,
+    "speaker_prompt_accepted": 2,
+    "wake_engine_armed": 1,
+    "wake_event_detected": 2
+  },
+  "schema_id": "companion.pendant.screen_interaction_status_expression_hook.v1",
+  "sources": {
+    "epaper_readme": "app/companion_pendant/epaper/README.md",
+    "event_bridge_header": "app/companion_pendant/epaper/expression_events.h",
+    "event_bridge_source": "app/companion_pendant/epaper/expression_events.c",
+    "gatt_contract": "docs/ble_gatt_contract.md",
+    "screen_acceptance": "docs/companion_screen_expression_system.md",
+    "wb55_integration": "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c",
+    "wba_rules": "docs/stm32wba_migration_rules.md"
+  },
+  "status": "PASS",
+  "wb55_hook": {
+    "initial_state_guards": [
+      "Companion_Gatt_PublishMeetingStatus(false)",
+      "Companion_Gatt_PublishSpeakerStatus(false)",
+      "Companion_Gatt_PublishWakeWordStatus(false)"
+    ],
+    "meeting_publish_api": "Companion_Gatt_PublishMeetingStatus(bool apply_expression_hint)",
+    "notify_read_hooks": [
+      "Companion_Gatt_PublishMeetingStatus(true)",
+      "Companion_Gatt_PublishSpeakerStatus(true)",
+      "Companion_Gatt_PublishWakeWordStatus(true)"
+    ],
+    "portable_mappers": [
+      "comp_epaper_expression_signal_from_meeting_status",
+      "comp_epaper_expression_signal_from_speaker_status",
+      "comp_epaper_expression_signal_from_wake_word_status"
+    ],
+    "speaker_publish_api": "Companion_Gatt_PublishSpeakerStatus(bool apply_expression_hint)",
+    "status_sources": [
+      "MeetingStatusV1",
+      "SpeakerStatusV1",
+      "WakeWordStatusV1"
+    ],
+    "wake_publish_api": "Companion_Gatt_PublishWakeWordStatus(bool apply_expression_hint)"
+  }
+}

@@ -1,0 +1,346 @@
+{
+  "pose_count": 12,
+  "poses": [
+    {
+      "changed_zone_count": 0,
+      "changed_zones": [],
+      "intent": "reference base",
+      "outer_margin_pixels": 0,
+      "path": "docs/validation/epaper/expression_idle_1_54in.pbm",
+      "pose_id": "idle_calm",
+      "zone_black_pixels": {
+        "cheeks_lower_marks": 1106,
+        "eyes_brows": 778,
+        "full_inner_face": 2626,
+        "mouth_nose": 1385,
+        "upper_marks": 0
+      },
+      "zone_distance_from_idle": {
+        "cheeks_lower_marks": 0,
+        "eyes_brows": 0,
+        "full_inner_face": 0,
+        "mouth_nose": 0,
+        "upper_marks": 0
+      }
+    },
+    {
+      "changed_zone_count": 4,
+      "changed_zones": [
+        "upper_marks",
+        "eyes_brows",
+        "mouth_nose",
+        "cheeks_lower_marks"
+      ],
+      "intent": "tap response",
+      "outer_margin_pixels": 0,
+      "path": "docs/validation/epaper/expression_happy_attention_1_54in.pbm",
+      "pose_id": "curious_tap",
+      "zone_black_pixels": {
+        "cheeks_lower_marks": 1037,
+        "eyes_brows": 1270,
+        "full_inner_face": 3055,
+        "mouth_nose": 1567,
+        "upper_marks": 235
+      },
+      "zone_distance_from_idle": {
+        "cheeks_lower_marks": 1067,
+        "eyes_brows": 1236,
+        "full_inner_face": 2901,
+        "mouth_nose": 1340,
+        "upper_marks": 235
+      }
+    },
+    {
+      "changed_zone_count": 4,
+      "changed_zones": [
+        "upper_marks",
+        "eyes_brows",
+        "mouth_nose",
+        "cheeks_lower_marks"
+      ],
+      "intent": "left stroke",
+      "outer_margin_pixels": 0,
+      "path": "docs/validation/epaper/expression_happy_attention_left_1_54in.pbm",
+      "pose_id": "left_swipe",
+      "zone_black_pixels": {
+        "cheeks_lower_marks": 1054,
+        "eyes_brows": 736,
+        "full_inner_face": 2370,
+        "mouth_nose": 1380,
+        "upper_marks": 121
+      },
+      "zone_distance_from_idle": {
+        "cheeks_lower_marks": 1858,
+        "eyes_brows": 1262,
+        "full_inner_face": 4156,
+        "mouth_nose": 1989,
+        "upper_marks": 121
+      }
+    },
+    {
+      "changed_zone_count": 4,
+      "changed_zones": [
+        "upper_marks",
+        "eyes_brows",
+        "mouth_nose",
+        "cheeks_lower_marks"
+      ],
+      "intent": "right stroke",
+      "outer_margin_pixels": 0,
+      "path": "docs/validation/epaper/expression_happy_attention_right_1_54in.pbm",
+      "pose_id": "right_swipe",
+      "zone_black_pixels": {
+        "cheeks_lower_marks": 1059,
+        "eyes_brows": 773,
+        "full_inner_face": 2371,
+        "mouth_nose": 1532,
+        "upper_marks": 169
+      },
+      "zone_distance_from_idle": {
+        "cheeks_lower_marks": 2047,
+        "eyes_brows": 1547,
+        "full_inner_face": 4799,
+        "mouth_nose": 2719,
+        "upper_marks": 169
+      }
+    },
+    {
+      "changed_zone_count": 4,
+      "changed_zones": [
+        "upper_marks",
+        "eyes_brows",
+        "mouth_nose",
+        "cheeks_lower_marks"
+      ],
+      "intent": "up stroke",
+      "outer_margin_pixels": 0,
+      "path": "docs/validation/epaper/expression_happy_attention_up_1_54in.pbm",
+      "pose_id": "up_swipe",
+      "zone_black_pixels": {
+        "cheeks_lower_marks": 1277,
+        "eyes_brows": 924,
+        "full_inner_face": 2856,
+        "mouth_nose": 1674,
+        "upper_marks": 225
+      },
+      "zone_distance_from_idle": {
+        "cheeks_lower_marks": 1199,
+        "eyes_brows": 836,
+        "full_inner_face": 2678,
+        "mouth_nose": 1105,
+        "upper_marks": 225
+      }
+    },
+    {
+      "changed_zone_count": 4,
+      "changed_zones": [
+        "upper_marks",
+        "eyes_brows",
+        "mouth_nose",
+        "cheeks_lower_marks"
+      ],
+      "intent": "down stroke",
+      "outer_margin_pixels": 0,
+      "path": "docs/validation/epaper/expression_happy_attention_down_1_54in.pbm",
+      "pose_id": "down_swipe",
+      "zone_black_pixels": {
+        "cheeks_lower_marks": 878,
+        "eyes_brows": 672,
+        "full_inner_face": 1603,
+        "mouth_nose": 748,
+        "upper_marks": 180
+      },
+      "zone_distance_from_idle": {
+        "cheeks_lower_marks": 1286,
+        "eyes_brows": 1318,
+        "full_inner_face": 3315,
+        "mouth_nose": 1489,
+        "upper_marks": 180
+      }
+    },
+    {
+      "changed_zone_count": 3,
+      "changed_zones": [
+        "eyes_brows",
+        "mouth_nose",
+        "cheeks_lower_marks"
+      ],
+      "intent": "listening wave",
+      "outer_margin_pixels": 0,
+      "path": "docs/validation/epaper/expression_listening_wave_1_54in.pbm",
+      "pose_id": "listening",
+      "zone_black_pixels": {
+        "cheeks_lower_marks": 1456,
+        "eyes_brows": 698,
+        "full_inner_face": 2746,
+        "mouth_nose": 2022,
+        "upper_marks": 0
+      },
+      "zone_distance_from_idle": {
+        "cheeks_lower_marks": 1994,
+        "eyes_brows": 1280,
+        "full_inner_face": 4108,
+        "mouth_nose": 2453,
+        "upper_marks": 0
+      }
+    },
+    {
+      "changed_zone_count": 4,
+      "changed_zones": [
+        "upper_marks",
+        "eyes_brows",
+        "mouth_nose",
+        "cheeks_lower_marks"
+      ],
+      "intent": "thinking bubble",
+      "outer_margin_pixels": 0,
+      "path": "docs/validation/epaper/expression_thinking_outward_1_54in.pbm",
+      "pose_id": "thinking",
+      "zone_black_pixels": {
+        "cheeks_lower_marks": 1238,
+        "eyes_brows": 1054,
+        "full_inner_face": 2887,
+        "mouth_nose": 1662,
+        "upper_marks": 311
+      },
+      "zone_distance_from_idle": {
+        "cheeks_lower_marks": 1996,
+        "eyes_brows": 1700,
+        "full_inner_face": 4835,
+        "mouth_nose": 2393,
+        "upper_marks": 311
+      }
+    },
+    {
+      "changed_zone_count": 4,
+      "changed_zones": [
+        "upper_marks",
+        "eyes_brows",
+        "mouth_nose",
+        "cheeks_lower_marks"
+      ],
+      "intent": "recording pulse",
+      "outer_margin_pixels": 0,
+      "path": "docs/validation/epaper/expression_recording_pulse_1_54in.pbm",
+      "pose_id": "recording",
+      "zone_black_pixels": {
+        "cheeks_lower_marks": 1538,
+        "eyes_brows": 718,
+        "full_inner_face": 2587,
+        "mouth_nose": 1553,
+        "upper_marks": 241
+      },
+      "zone_distance_from_idle": {
+        "cheeks_lower_marks": 1582,
+        "eyes_brows": 1218,
+        "full_inner_face": 3393,
+        "mouth_nose": 1648,
+        "upper_marks": 241
+      }
+    },
+    {
+      "changed_zone_count": 3,
+      "changed_zones": [
+        "eyes_brows",
+        "mouth_nose",
+        "cheeks_lower_marks"
+      ],
+      "intent": "speaking open mouth",
+      "outer_margin_pixels": 0,
+      "path": "docs/validation/epaper/expression_speaking_open_1_54in.pbm",
+      "pose_id": "speaking",
+      "zone_black_pixels": {
+        "cheeks_lower_marks": 1843,
+        "eyes_brows": 619,
+        "full_inner_face": 2785,
+        "mouth_nose": 1909,
+        "upper_marks": 0
+      },
+      "zone_distance_from_idle": {
+        "cheeks_lower_marks": 1859,
+        "eyes_brows": 991,
+        "full_inner_face": 3375,
+        "mouth_nose": 1602,
+        "upper_marks": 0
+      }
+    },
+    {
+      "changed_zone_count": 4,
+      "changed_zones": [
+        "upper_marks",
+        "eyes_brows",
+        "mouth_nose",
+        "cheeks_lower_marks"
+      ],
+      "intent": "bright happy",
+      "outer_margin_pixels": 0,
+      "path": "docs/validation/epaper/expression_happy_bright_1_54in.pbm",
+      "pose_id": "happy",
+      "zone_black_pixels": {
+        "cheeks_lower_marks": 880,
+        "eyes_brows": 443,
+        "full_inner_face": 1799,
+        "mouth_nose": 984,
+        "upper_marks": 219
+      },
+      "zone_distance_from_idle": {
+        "cheeks_lower_marks": 1792,
+        "eyes_brows": 1183,
+        "full_inner_face": 3953,
+        "mouth_nose": 1903,
+        "upper_marks": 219
+      }
+    },
+    {
+      "changed_zone_count": 4,
+      "changed_zones": [
+        "upper_marks",
+        "eyes_brows",
+        "mouth_nose",
+        "cheeks_lower_marks"
+      ],
+      "intent": "sleepy yawn",
+      "outer_margin_pixels": 0,
+      "path": "docs/validation/epaper/expression_sleepy_yawn_1_54in.pbm",
+      "pose_id": "sleepy",
+      "zone_black_pixels": {
+        "cheeks_lower_marks": 886,
+        "eyes_brows": 428,
+        "full_inner_face": 1417,
+        "mouth_nose": 584,
+        "upper_marks": 238
+      },
+      "zone_distance_from_idle": {
+        "cheeks_lower_marks": 1864,
+        "eyes_brows": 1206,
+        "full_inner_face": 3915,
+        "mouth_nose": 1841,
+        "upper_marks": 238
+      }
+    }
+  ],
+  "primary_panel": "1.54in",
+  "purpose": "Guard the premium electronic-pet art direction: white background, physical shell owns the cat outline, and interaction poses move eyes/brows, mouth/nose, cheeks, and ornaments together.",
+  "schema_id": "companion.screen.premium_pet_art_contract.v1",
+  "source_style_contract": "docs/validation/companion-screen-generated-art-style-contract.md",
+  "status": "PASS",
+  "style_name": "genref_sheet_12_inner_faces_v5",
+  "style_snapshot": "docs/validation/companion-screen-generated-art-style-contract.json",
+  "style_snapshot_name": "genref_sheet_12_inner_faces_v5",
+  "thresholds": {
+    "minimum_changed_zones_from_idle": 3,
+    "minimum_full_inner_face_distance_from_idle": 1000,
+    "outer_clear_margin_percent": 5,
+    "zone_distance_thresholds": {
+      "cheeks_lower_marks": 200,
+      "eyes_brows": 400,
+      "mouth_nose": 240,
+      "upper_marks": 120
+    }
+  },
+  "validation_commands": [
+    "python .\\tools\\verify_premium_pet_art_contract.py",
+    "python .\\tools\\verify_expression_visual_contract.py",
+    "python .\\tools\\verify_epaper_assets.py"
+  ]
+}

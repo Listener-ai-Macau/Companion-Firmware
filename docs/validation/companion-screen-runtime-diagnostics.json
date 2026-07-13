@@ -1,0 +1,45 @@
+{
+  "event_code": "COMP_DIAG_EVT_EPAPER_RUNTIME_SNAPSHOT",
+  "event_id": "0x03",
+  "host_decoding": {
+    "decode_fixture": "docs/validation/companion-screen-runtime-diagnostic-decode.json",
+    "decode_verifier": "tools/verify_expression_screen_runtime_diagnostic_decode.py",
+    "decoded_args": true
+  },
+  "payload": {
+    "arg0": "(expression.current << 16) | expression.last_signal",
+    "arg1": "(display_queue.pending_count << 16) | display_queue.high_water_count",
+    "arg2": "display_queue.dropped_count",
+    "arg3": "(panel.deferred_count << 16) | panel.error_count"
+  },
+  "purpose": "Diagnostic event contract for publishing aggregate screen runtime stats without changing CardStatusV1.",
+  "runtime_event": "e_paper.runtime_snapshot",
+  "schema_id": "companion.pendant.screen_runtime_diagnostics.v1",
+  "severity": "warn when panel.error_count != 0, otherwise info",
+  "sources": {
+    "ble_contract": "docs/ble_gatt_contract.md",
+    "diag_events": "app/companion_pendant/diag_log/diag_log_events.h",
+    "epaper_readme": "app/companion_pendant/epaper/README.md",
+    "screen_acceptance": "docs/companion_screen_expression_system.md",
+    "screen_runtime_header": "app/companion_pendant/epaper/screen_runtime.h",
+    "screen_runtime_source": "app/companion_pendant/epaper/screen_runtime.c",
+    "wb55_integration": "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c",
+    "wba_rules": "docs/stm32wba_migration_rules.md"
+  },
+  "status": "PASS",
+  "validation_commands": [
+    "python .\\tools\\verify_expression_screen_runtime_diagnostics.py",
+    "python .\\tools\\verify_expression_screen_runtime_diagnostic_decode.py",
+    "python .\\tools\\verify_expression_screen_runtime_snapshot.py",
+    "python .\\tools\\verify_expression_status_observability.py",
+    "python .\\tools\\verify_display_queue_static.py",
+    "python .\\tools\\verify_expression_wba_portability.py",
+    "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1"
+  ],
+  "wb55_recording": {
+    "record_after_update_result": true,
+    "record_function": "Companion_Display_RecordRuntimeSnapshot",
+    "source_snapshot": "comp_epaper_screen_runtime_snapshot"
+  },
+  "wba_contract": "WBA display tasks must preserve the same event name, event id, payload packing, and warning rule while replacing only target scheduler/BLE/panel glue."
+}

@@ -1,0 +1,131 @@
+{
+  "acceptance": {
+    "accepted_and_final_status_preserve_request_identity": true,
+    "card_status_read_returns_latest_status": true,
+    "diagnostic_events_pair_with_card_status": true,
+    "dry_run_no_panel_is_observable": true,
+    "expression_status_fixture_correlates_diag_payload": true,
+    "expression_status_fixture_covers_extended_faces": true,
+    "refresh_count_is_monotonic": true,
+    "runtime_snapshot_diagnostic_preserves_card_status": true
+  },
+  "card_status_v1": {
+    "fields": [
+      "schema_version",
+      "card_slot",
+      "render_state",
+      "last_error",
+      "request_id",
+      "content_crc32",
+      "refresh_count"
+    ],
+    "last_errors": {
+      "bad_argument": 3,
+      "deferred_controller_unknown": 5,
+      "deferred_no_panel": 4,
+      "ok": 0,
+      "panel_bad_argument": 6,
+      "panel_busy": 8,
+      "panel_transport_error": 7,
+      "payload_too_long": 2,
+      "queue_full": 1,
+      "unsupported_expression": 9
+    },
+    "render_states": {
+      "accepted": 1,
+      "busy": 4,
+      "failed": 3,
+      "idle": 0,
+      "rendered": 2
+    }
+  },
+  "observable_sequences": [
+    {
+      "name": "initial_status_read",
+      "steps": [
+        {
+          "card_slot": 0,
+          "last_error": "ok",
+          "meaning": "published by Companion_Gatt_PublishInitialState before any display request",
+          "render_state": "idle",
+          "request_id": 0
+        }
+      ]
+    },
+    {
+      "name": "boot_idle_dry_run",
+      "steps": [
+        {
+          "card_slot": 1,
+          "diag_event": "e_paper.render_request",
+          "last_error": "ok",
+          "render_state": "accepted",
+          "request_id_prefix": "0xE"
+        },
+        {
+          "card_slot": 1,
+          "content_crc32": "same_as_accepted",
+          "diag_event": "e_paper.update_result",
+          "last_error": "deferred_no_panel",
+          "render_state": "failed",
+          "request_id": "same_as_accepted",
+          "runtime_diag_event": "e_paper.runtime_snapshot"
+        }
+      ]
+    },
+    {
+      "name": "host_card_write_dry_run",
+      "steps": [
+        {
+          "card_slot": "CardWriteV1.card_slot",
+          "diag_event": "e_paper.render_request",
+          "last_error": "ok",
+          "render_state": "accepted",
+          "request_id": "CardWriteV1.request_id"
+        },
+        {
+          "card_slot": "same_as_write",
+          "content_crc32": "same_as_write",
+          "diag_event": "e_paper.update_result",
+          "last_error": "deferred_no_panel",
+          "render_state": "failed",
+          "request_id": "same_as_write",
+          "runtime_diag_event": "e_paper.runtime_snapshot"
+        }
+      ]
+    },
+    {
+      "name": "host_expression_status_fixture",
+      "steps": [
+        {
+          "card_slot": 1,
+          "content_crc32": "comp_epaper_expression_decision_crc32",
+          "diag_arg3": "(expression_id << 16) | signal_id",
+          "events": [
+            "boot_idle",
+            "settings.display_off",
+            "recording_fsm.start_request",
+            "battery_charging.sample.low",
+            "recording_fsm.session_finished",
+            "errors.fault"
+          ],
+          "last_error": "ok_then_deferred_no_panel",
+          "render_state": "accepted_then_failed"
+        }
+      ]
+    }
+  ],
+  "schema_id": "companion.pendant.screen_status_observability.v1",
+  "sources": {
+    "ble_contract": "docs/ble_gatt_contract.md",
+    "ble_matrix": "docs/validation/companion_ble_matrix.json",
+    "diag_events": "app/companion_pendant/diag_log/diag_log_events.h",
+    "display_queue_header": "app/companion_pendant/epaper/display_queue.h",
+    "display_queue_source": "app/companion_pendant/epaper/display_queue.c",
+    "gatt_header": "app/companion_pendant/gatt/companion_gatt_stm32wb.h",
+    "panel_adapter": "app/companion_pendant/epaper/panel_adapter.c",
+    "screen_acceptance": "docs/companion_screen_expression_system.md",
+    "wb55_integration": "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c"
+  },
+  "status": "PASS"
+}

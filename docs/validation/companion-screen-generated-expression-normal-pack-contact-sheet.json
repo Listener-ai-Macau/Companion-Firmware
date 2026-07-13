@@ -1,0 +1,408 @@
+{
+  "contact_sheet": ".cache/validation/rev51-generated-expression-normal-pack-sources.png",
+  "expression_source_count": 39,
+  "generated_coverage": {
+    "covered_by_import": 39,
+    "missing": [],
+    "used_by_manifest": 39
+  },
+  "import_report": "docs/validation/companion-screen-generated-expression-sheet-import.json",
+  "import_status": "PASS",
+  "manifest": "app/companion_pendant/epaper/assets/emote_matrix_white_200x200.json",
+  "manifest_revision": 51,
+  "schema_id": "companion.screen.generated_expression_normal_pack_contact_sheet.v1",
+  "sources": [
+    {
+      "first_clip": "error",
+      "first_frame": 0,
+      "import_path": "docs/validation/epaper/expression_error_1_54in.pbm",
+      "name": "expression_error_1_54in.pbm",
+      "pose": "up_swipe",
+      "pose_index": 5,
+      "source": "../../../../docs/validation/epaper/expression_error_1_54in.pbm",
+      "uses": 1
+    },
+    {
+      "first_clip": "happy",
+      "first_frame": 2,
+      "import_path": "docs/validation/epaper/expression_happy_1_54in.pbm",
+      "name": "expression_happy_1_54in.pbm",
+      "pose": "happy",
+      "pose_index": 11,
+      "source": "../../../../docs/validation/epaper/expression_happy_1_54in.pbm",
+      "uses": 10
+    },
+    {
+      "first_clip": "happy",
+      "first_frame": 0,
+      "import_path": "docs/validation/epaper/expression_happy_attention_1_54in.pbm",
+      "name": "expression_happy_attention_1_54in.pbm",
+      "pose": "curious_tap",
+      "pose_index": 2,
+      "source": "../../../../docs/validation/epaper/expression_happy_attention_1_54in.pbm",
+      "uses": 2
+    },
+    {
+      "first_clip": "attention.down",
+      "first_frame": 1,
+      "import_path": "docs/validation/epaper/expression_happy_attention_down_1_54in.pbm",
+      "name": "expression_happy_attention_down_1_54in.pbm",
+      "pose": "down_swipe",
+      "pose_index": 6,
+      "source": "../../../../docs/validation/epaper/expression_happy_attention_down_1_54in.pbm",
+      "uses": 1
+    },
+    {
+      "first_clip": "attention.down_left",
+      "first_frame": 1,
+      "import_path": "docs/validation/epaper/expression_happy_attention_down_left_1_54in.pbm",
+      "name": "expression_happy_attention_down_left_1_54in.pbm",
+      "pose": "down_swipe",
+      "pose_index": 6,
+      "source": "../../../../docs/validation/epaper/expression_happy_attention_down_left_1_54in.pbm",
+      "uses": 1
+    },
+    {
+      "first_clip": "attention.down_right",
+      "first_frame": 1,
+      "import_path": "docs/validation/epaper/expression_happy_attention_down_right_1_54in.pbm",
+      "name": "expression_happy_attention_down_right_1_54in.pbm",
+      "pose": "down_swipe",
+      "pose_index": 6,
+      "source": "../../../../docs/validation/epaper/expression_happy_attention_down_right_1_54in.pbm",
+      "uses": 1
+    },
+    {
+      "first_clip": "attention.left",
+      "first_frame": 1,
+      "import_path": "docs/validation/epaper/expression_happy_attention_left_1_54in.pbm",
+      "name": "expression_happy_attention_left_1_54in.pbm",
+      "pose": "left_swipe",
+      "pose_index": 3,
+      "source": "../../../../docs/validation/epaper/expression_happy_attention_left_1_54in.pbm",
+      "uses": 1
+    },
+    {
+      "first_clip": "attention.right",
+      "first_frame": 1,
+      "import_path": "docs/validation/epaper/expression_happy_attention_right_1_54in.pbm",
+      "name": "expression_happy_attention_right_1_54in.pbm",
+      "pose": "right_swipe",
+      "pose_index": 4,
+      "source": "../../../../docs/validation/epaper/expression_happy_attention_right_1_54in.pbm",
+      "uses": 1
+    },
+    {
+      "first_clip": "attention.up",
+      "first_frame": 1,
+      "import_path": "docs/validation/epaper/expression_happy_attention_up_1_54in.pbm",
+      "name": "expression_happy_attention_up_1_54in.pbm",
+      "pose": "up_swipe",
+      "pose_index": 5,
+      "source": "../../../../docs/validation/epaper/expression_happy_attention_up_1_54in.pbm",
+      "uses": 1
+    },
+    {
+      "first_clip": "attention.up_left",
+      "first_frame": 1,
+      "import_path": "docs/validation/epaper/expression_happy_attention_up_left_1_54in.pbm",
+      "name": "expression_happy_attention_up_left_1_54in.pbm",
+      "pose": "up_swipe",
+      "pose_index": 5,
+      "source": "../../../../docs/validation/epaper/expression_happy_attention_up_left_1_54in.pbm",
+      "uses": 1
+    },
+    {
+      "first_clip": "attention.up_right",
+      "first_frame": 1,
+      "import_path": "docs/validation/epaper/expression_happy_attention_up_right_1_54in.pbm",
+      "name": "expression_happy_attention_up_right_1_54in.pbm",
+      "pose": "up_swipe",
+      "pose_index": 5,
+      "source": "../../../../docs/validation/epaper/expression_happy_attention_up_right_1_54in.pbm",
+      "uses": 1
+    },
+    {
+      "first_clip": "happy",
+      "first_frame": 1,
+      "import_path": "docs/validation/epaper/expression_happy_bright_1_54in.pbm",
+      "name": "expression_happy_bright_1_54in.pbm",
+      "pose": "happy",
+      "pose_index": 11,
+      "source": "../../../../docs/validation/epaper/expression_happy_bright_1_54in.pbm",
+      "uses": 1
+    },
+    {
+      "first_clip": "idle",
+      "first_frame": 0,
+      "import_path": "docs/validation/epaper/expression_idle_1_54in.pbm",
+      "name": "expression_idle_1_54in.pbm",
+      "pose": "idle_calm",
+      "pose_index": 1,
+      "source": "../../../../docs/validation/epaper/expression_idle_1_54in.pbm",
+      "uses": 3
+    },
+    {
+      "first_clip": "idle",
+      "first_frame": 1,
+      "import_path": "docs/validation/epaper/expression_idle_glance_left_1_54in.pbm",
+      "name": "expression_idle_glance_left_1_54in.pbm",
+      "pose": "left_swipe",
+      "pose_index": 3,
+      "source": "../../../../docs/validation/epaper/expression_idle_glance_left_1_54in.pbm",
+      "uses": 1
+    },
+    {
+      "first_clip": "attention.down",
+      "first_frame": 0,
+      "import_path": "docs/validation/epaper/expression_idle_look_down_1_54in.pbm",
+      "name": "expression_idle_look_down_1_54in.pbm",
+      "pose": "down_swipe",
+      "pose_index": 6,
+      "source": "../../../../docs/validation/epaper/expression_idle_look_down_1_54in.pbm",
+      "uses": 1
+    },
+    {
+      "first_clip": "attention.down_left",
+      "first_frame": 0,
+      "import_path": "docs/validation/epaper/expression_idle_look_down_left_1_54in.pbm",
+      "name": "expression_idle_look_down_left_1_54in.pbm",
+      "pose": "down_swipe",
+      "pose_index": 6,
+      "source": "../../../../docs/validation/epaper/expression_idle_look_down_left_1_54in.pbm",
+      "uses": 1
+    },
+    {
+      "first_clip": "attention.down_right",
+      "first_frame": 0,
+      "import_path": "docs/validation/epaper/expression_idle_look_down_right_1_54in.pbm",
+      "name": "expression_idle_look_down_right_1_54in.pbm",
+      "pose": "down_swipe",
+      "pose_index": 6,
+      "source": "../../../../docs/validation/epaper/expression_idle_look_down_right_1_54in.pbm",
+      "uses": 1
+    },
+    {
+      "first_clip": "attention.left",
+      "first_frame": 0,
+      "import_path": "docs/validation/epaper/expression_idle_look_left_1_54in.pbm",
+      "name": "expression_idle_look_left_1_54in.pbm",
+      "pose": "left_swipe",
+      "pose_index": 3,
+      "source": "../../../../docs/validation/epaper/expression_idle_look_left_1_54in.pbm",
+      "uses": 1
+    },
+    {
+      "first_clip": "attention.right",
+      "first_frame": 0,
+      "import_path": "docs/validation/epaper/expression_idle_look_right_1_54in.pbm",
+      "name": "expression_idle_look_right_1_54in.pbm",
+      "pose": "right_swipe",
+      "pose_index": 4,
+      "source": "../../../../docs/validation/epaper/expression_idle_look_right_1_54in.pbm",
+      "uses": 1
+    },
+    {
+      "first_clip": "attention.up",
+      "first_frame": 0,
+      "import_path": "docs/validation/epaper/expression_idle_look_up_1_54in.pbm",
+      "name": "expression_idle_look_up_1_54in.pbm",
+      "pose": "up_swipe",
+      "pose_index": 5,
+      "source": "../../../../docs/validation/epaper/expression_idle_look_up_1_54in.pbm",
+      "uses": 1
+    },
+    {
+      "first_clip": "attention.up_left",
+      "first_frame": 0,
+      "import_path": "docs/validation/epaper/expression_idle_look_up_left_1_54in.pbm",
+      "name": "expression_idle_look_up_left_1_54in.pbm",
+      "pose": "up_swipe",
+      "pose_index": 5,
+      "source": "../../../../docs/validation/epaper/expression_idle_look_up_left_1_54in.pbm",
+      "uses": 1
+    },
+    {
+      "first_clip": "attention.up_right",
+      "first_frame": 0,
+      "import_path": "docs/validation/epaper/expression_idle_look_up_right_1_54in.pbm",
+      "name": "expression_idle_look_up_right_1_54in.pbm",
+      "pose": "up_swipe",
+      "pose_index": 5,
+      "source": "../../../../docs/validation/epaper/expression_idle_look_up_right_1_54in.pbm",
+      "uses": 1
+    },
+    {
+      "first_clip": "listening",
+      "first_frame": 0,
+      "import_path": "docs/validation/epaper/expression_listening_1_54in.pbm",
+      "name": "expression_listening_1_54in.pbm",
+      "pose": "listening",
+      "pose_index": 7,
+      "source": "../../../../docs/validation/epaper/expression_listening_1_54in.pbm",
+      "uses": 2
+    },
+    {
+      "first_clip": "listening",
+      "first_frame": 1,
+      "import_path": "docs/validation/epaper/expression_listening_focus_1_54in.pbm",
+      "name": "expression_listening_focus_1_54in.pbm",
+      "pose": "listening",
+      "pose_index": 7,
+      "source": "../../../../docs/validation/epaper/expression_listening_focus_1_54in.pbm",
+      "uses": 2
+    },
+    {
+      "first_clip": "listening",
+      "first_frame": 2,
+      "import_path": "docs/validation/epaper/expression_listening_wave_1_54in.pbm",
+      "name": "expression_listening_wave_1_54in.pbm",
+      "pose": "listening",
+      "pose_index": 7,
+      "source": "../../../../docs/validation/epaper/expression_listening_wave_1_54in.pbm",
+      "uses": 1
+    },
+    {
+      "first_clip": "low_battery",
+      "first_frame": 0,
+      "import_path": "docs/validation/epaper/expression_low_battery_1_54in.pbm",
+      "name": "expression_low_battery_1_54in.pbm",
+      "pose": "sleepy",
+      "pose_index": 12,
+      "source": "../../../../docs/validation/epaper/expression_low_battery_1_54in.pbm",
+      "uses": 1
+    },
+    {
+      "first_clip": "recording",
+      "first_frame": 0,
+      "import_path": "docs/validation/epaper/expression_recording_1_54in.pbm",
+      "name": "expression_recording_1_54in.pbm",
+      "pose": "recording",
+      "pose_index": 9,
+      "source": "../../../../docs/validation/epaper/expression_recording_1_54in.pbm",
+      "uses": 2
+    },
+    {
+      "first_clip": "recording",
+      "first_frame": 2,
+      "import_path": "docs/validation/epaper/expression_recording_pulse_1_54in.pbm",
+      "name": "expression_recording_pulse_1_54in.pbm",
+      "pose": "recording",
+      "pose_index": 9,
+      "source": "../../../../docs/validation/epaper/expression_recording_pulse_1_54in.pbm",
+      "uses": 1
+    },
+    {
+      "first_clip": "recording",
+      "first_frame": 1,
+      "import_path": "docs/validation/epaper/expression_recording_soft_1_54in.pbm",
+      "name": "expression_recording_soft_1_54in.pbm",
+      "pose": "recording",
+      "pose_index": 9,
+      "source": "../../../../docs/validation/epaper/expression_recording_soft_1_54in.pbm",
+      "uses": 2
+    },
+    {
+      "first_clip": "sleepy",
+      "first_frame": 0,
+      "import_path": "docs/validation/epaper/expression_sleepy_1_54in.pbm",
+      "name": "expression_sleepy_1_54in.pbm",
+      "pose": "sleepy",
+      "pose_index": 12,
+      "source": "../../../../docs/validation/epaper/expression_sleepy_1_54in.pbm",
+      "uses": 2
+    },
+    {
+      "first_clip": "sleepy",
+      "first_frame": 1,
+      "import_path": "docs/validation/epaper/expression_sleepy_drift_1_54in.pbm",
+      "name": "expression_sleepy_drift_1_54in.pbm",
+      "pose": "sleepy",
+      "pose_index": 12,
+      "source": "../../../../docs/validation/epaper/expression_sleepy_drift_1_54in.pbm",
+      "uses": 2
+    },
+    {
+      "first_clip": "sleepy",
+      "first_frame": 2,
+      "import_path": "docs/validation/epaper/expression_sleepy_yawn_1_54in.pbm",
+      "name": "expression_sleepy_yawn_1_54in.pbm",
+      "pose": "sleepy",
+      "pose_index": 12,
+      "source": "../../../../docs/validation/epaper/expression_sleepy_yawn_1_54in.pbm",
+      "uses": 1
+    },
+    {
+      "first_clip": "speaking",
+      "first_frame": 0,
+      "import_path": "docs/validation/epaper/expression_speaking_1_54in.pbm",
+      "name": "expression_speaking_1_54in.pbm",
+      "pose": "speaking",
+      "pose_index": 10,
+      "source": "../../../../docs/validation/epaper/expression_speaking_1_54in.pbm",
+      "uses": 2
+    },
+    {
+      "first_clip": "speaking",
+      "first_frame": 2,
+      "import_path": "docs/validation/epaper/expression_speaking_open_1_54in.pbm",
+      "name": "expression_speaking_open_1_54in.pbm",
+      "pose": "speaking",
+      "pose_index": 10,
+      "source": "../../../../docs/validation/epaper/expression_speaking_open_1_54in.pbm",
+      "uses": 1
+    },
+    {
+      "first_clip": "speaking",
+      "first_frame": 1,
+      "import_path": "docs/validation/epaper/expression_speaking_soft_1_54in.pbm",
+      "name": "expression_speaking_soft_1_54in.pbm",
+      "pose": "speaking",
+      "pose_index": 10,
+      "source": "../../../../docs/validation/epaper/expression_speaking_soft_1_54in.pbm",
+      "uses": 2
+    },
+    {
+      "first_clip": "sync_complete",
+      "first_frame": 0,
+      "import_path": "docs/validation/epaper/expression_sync_complete_1_54in.pbm",
+      "name": "expression_sync_complete_1_54in.pbm",
+      "pose": "happy",
+      "pose_index": 11,
+      "source": "../../../../docs/validation/epaper/expression_sync_complete_1_54in.pbm",
+      "uses": 1
+    },
+    {
+      "first_clip": "thinking",
+      "first_frame": 0,
+      "import_path": "docs/validation/epaper/expression_thinking_1_54in.pbm",
+      "name": "expression_thinking_1_54in.pbm",
+      "pose": "thinking",
+      "pose_index": 8,
+      "source": "../../../../docs/validation/epaper/expression_thinking_1_54in.pbm",
+      "uses": 2
+    },
+    {
+      "first_clip": "thinking",
+      "first_frame": 1,
+      "import_path": "docs/validation/epaper/expression_thinking_inward_1_54in.pbm",
+      "name": "expression_thinking_inward_1_54in.pbm",
+      "pose": "thinking",
+      "pose_index": 8,
+      "source": "../../../../docs/validation/epaper/expression_thinking_inward_1_54in.pbm",
+      "uses": 2
+    },
+    {
+      "first_clip": "thinking",
+      "first_frame": 2,
+      "import_path": "docs/validation/epaper/expression_thinking_outward_1_54in.pbm",
+      "name": "expression_thinking_outward_1_54in.pbm",
+      "pose": "thinking",
+      "pose_index": 8,
+      "source": "../../../../docs/validation/epaper/expression_thinking_outward_1_54in.pbm",
+      "uses": 1
+    }
+  ],
+  "status": "PASS",
+  "style_source_of_truth": "generated_pet_expression_sheet_v5"
+}

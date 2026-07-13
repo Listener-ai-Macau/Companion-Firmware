@@ -1,0 +1,58 @@
+{
+  "candidate": {
+    "crc32": "0xDEFC096E",
+    "revision": 52,
+    "runtime_status": "REVISION_52_RUNTIME_RECHECK_PENDING"
+  },
+  "checks": {
+    "art_and_refresh_axes_separate": true,
+    "current_candidate_runtime_state_consistent": true,
+    "display_queue_tracks_resource_generation": true,
+    "full_refresh_reserved_for_baseline_or_fault": true,
+    "identical_frame_suppression": true,
+    "interactive_modes_are_portable": true,
+    "interactive_uses_differential_waveform": true,
+    "maintenance_uses_single_low_flicker_waveform": true,
+    "mature_product_generation_triage_recorded": true,
+    "menu_drag_coalesces_to_latest_frame": true,
+    "menu_entry_discards_all_pet_frames": true,
+    "new_old_generation_interleave_rules_recorded": true,
+    "policy_limits_are_bounded": true,
+    "post_interaction_schedules_one_maintenance_path": true,
+    "scr17_release_ledger_recorded": true,
+    "touch_active_blocks_maintenance": true,
+    "vendor_ghosting_research_recorded": true,
+    "wb55_sets_and_logs_resource_generation": true
+  },
+  "product_rules": {
+    "full_refresh": "Use 0xF7 only for unknown baseline, explicit full request, or fault recovery.",
+    "generation_backlog": "SCR-17 remains a named product backlog/release item; recognizable old faces, menus, prompt crops, fallback renderers, or framebuffer content are stale_generation_content until proven physical afterimage only.",
+    "generation_swap": "Treat visual ghosting and old/new resource interleaving as separate failures: atomically activate one CEMP revision, drain stale queued frames, then refresh/maintain the panel baseline.",
+    "generation_triage": "Classify visible old content as physical afterimage, stale queued frame, stale asset revision, or rescue/procedural fallback leakage; only physical afterimage belongs to refresh-profile tuning.",
+    "ghosting": "Partial/fast refresh can accumulate ghosting; tune refresh profile/cadence rather than blending old art.",
+    "interactive": "Use differential 0xFC dirty-window refresh; coalesce queued menu drag frames to the latest request.",
+    "maintenance": "After touch settles, schedule one quiet 0xCF maintenance cleanup; never insert it while contact is active.",
+    "portability": "Scene/player use portable refresh intents; WB55/WBA panel targets choose waveform details."
+  },
+  "schema_id": "companion.screen.refresh_feel_contract.v1",
+  "scope": "SCR-16 screen feel and ghosting control; machine-static until the current candidate has real WB55 logs, then human feel remains pending",
+  "sources": {
+    "app_ble": "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c",
+    "display_queue": "app/companion_pendant/epaper/display_queue.c",
+    "driver": "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
+    "generation_swap_research": "docs/validation/companion-screen-generation-swap-research.md",
+    "main": "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/main.c",
+    "project_plan": "docs/companion_screen_project_plan.md",
+    "refresh_policy": "app/companion_pendant/epaper/refresh_policy.c",
+    "runtime_recheck": "docs/validation/companion-screen-wb55-runtime-recheck-logs.json",
+    "style_contract": "docs/validation/companion-screen-generated-art-style-contract.md"
+  },
+  "status": "PASS",
+  "validation_commands": [
+    "python .\\tools\\verify_screen_refresh_feel_contract.py",
+    "python .\\tools\\verify_display_queue_generation_hygiene.py",
+    "python .\\tools\\verify_epaper_refresh_policy.py",
+    "python .\\tools\\verify_screen_menu_assets.py",
+    "python .\\tools\\verify_wb55_screen_runtime_recheck_logs.py"
+  ]
+}

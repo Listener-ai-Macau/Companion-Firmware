@@ -1,0 +1,91 @@
+{
+  "acceptance": {
+    "shared_limits_match_portable_headers": true,
+    "third_party_cube_repos_remain_clean": true,
+    "wb55_profile_is_current_validation_target": true,
+    "wba55_is_conservative_baseline": true,
+    "wba65_is_expanded_only_with_capability_flags": true,
+    "wba_contract_reuses_target_capability_profile": true,
+    "wba_scaffold_carries_target_capability_profile": true
+  },
+  "purpose": "Target capability profile for keeping the screen expression layer WBA55-safe while allowing explicit WBA65 expansion.",
+  "schema_id": "companion.pendant.screen_target_capabilities.v1",
+  "shared_screen_limits": {
+    "display_payload_max_bytes": 236,
+    "display_queue_depth": 4,
+    "expression_card_slot": 1,
+    "expression_request_id_base": "0xe0000000",
+    "panel_callback": "comp_epaper_panel_refresh_fn_t",
+    "real_ble_operations": [
+      "screen_expression_status",
+      "card_write",
+      "settings_sleepy_screen_status"
+    ],
+    "runtime_snapshot_event": "e_paper.runtime_snapshot",
+    "stable_expression_states": [
+      "idle",
+      "listening",
+      "thinking",
+      "speaking",
+      "happy",
+      "sleepy",
+      "recording",
+      "sync_complete",
+      "low_battery",
+      "error"
+    ]
+  },
+  "sources": {
+    "display_queue_header": "app/companion_pendant/epaper/display_queue.h",
+    "epaper_readme": "app/companion_pendant/epaper/README.md",
+    "expression_state_header": "app/companion_pendant/epaper/expression_state.h",
+    "panel_adapter_header": "app/companion_pendant/epaper/panel_adapter.h",
+    "screen_acceptance": "docs/companion_screen_expression_system.md",
+    "screen_runtime_header": "app/companion_pendant/epaper/screen_runtime.h",
+    "wb55_build": "cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile",
+    "wb55_integration": "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c",
+    "wba55_port_scaffold": "docs/validation/companion-screen-wba55-port-scaffold.json",
+    "wba_port_contract": "docs/validation/companion-screen-wba-port-contract.json",
+    "wba_rules": "docs/stm32wba_migration_rules.md"
+  },
+  "status": "PASS",
+  "target_profiles": {
+    "WB55_DEVBOARD": {
+      "build_wrapper": "tools/build_nucleo_bringup.ps1",
+      "family": "STM32WB",
+      "panel_adapter": "app/companion_pendant/epaper/panel_target_stm32wb.c",
+      "platform_scope": "WB55 owns CPU2/FUS/IPCC/HSEM/STM32_WPAN glue, UTIL_SEQ/HW_TS scheduling, and the current dry-run panel target adapter.",
+      "real_panel_status": "DEFERRED_HARDWARE",
+      "role": "current_validation_target"
+    },
+    "WBA55": {
+      "expansion_policy": "No common screen protocol, queue, or payload expansion without preserving this WBA55-safe profile.",
+      "family": "STM32WBA",
+      "inherits_shared_screen_contract": true,
+      "platform_scope": "First WBA port must use a separate CubeWBA project, WBA build wrapper, WBA BLE/GATT adapter, WBA scheduler/timer hook, and *_stm32wba.* panel adapter.",
+      "role": "baseline_constrained_target"
+    },
+    "WBA65": {
+      "expansion_policy": "Expanded resources must not change shared ExpressionV1 IDs, CardStatusV1 meanings, display queue bounds, or real BLE evidence shape.",
+      "family": "STM32WBA",
+      "inherits_shared_screen_contract": true,
+      "platform_scope": "May use additional WBA65 resources only behind target capability flags and only after the WBA55-safe contract still passes.",
+      "role": "expanded_target"
+    }
+  },
+  "validation_commands": [
+    "python .\\tools\\verify_expression_target_capabilities.py",
+    "python .\\tools\\verify_expression_wba_portability.py",
+    "python .\\tools\\init_expression_wba_port_scaffold.py --self-test",
+    "python .\\tools\\verify_display_queue_static.py",
+    "python .\\tools\\verify_expression_display_drain.py",
+    "git diff --name-only -- third_party\\STM32CubeWB third_party\\STM32CubeWBA"
+  ],
+  "wba_expansion_rules": [
+    "WBA55 is the safe baseline for shared screen protocol, queue, payload, and diagnostic contracts.",
+    "WBA65 may add target-specific resources only behind explicit capability flags.",
+    "Any larger WBA65-only payload, queue, panel feature, or low-power path must keep a WBA55-safe fallback and new validation evidence.",
+    "Do not retarget the WB55 Cube project in place; create a separate CubeWBA project and build wrapper.",
+    "Do not move BLE stack, scheduler, SPI/GPIO/BUSY, reset timing, pins, or board power policy into portable screen files."
+  ]
+}

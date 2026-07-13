@@ -1,0 +1,88 @@
+{
+  "acceptance": {
+    "expression_state_rolls_back_on_enqueue_failure": true,
+    "fault_paths_emit_update_result_diagnostics": true,
+    "payload_too_long_reports_failed": true,
+    "queue_full_reports_busy": true,
+    "unsupported_expression_reports_failed": true,
+    "wba_safe_fault_contract": true
+  },
+  "fault_scenarios": [
+    {
+      "accepted_status_published": false,
+      "diagnostic_event": "e_paper.update_result",
+      "dropped_count_delta": 1,
+      "final_status_published": true,
+      "last_error": "queue_full",
+      "precondition": "pending queue count equals depth",
+      "queue_result": "queue_full",
+      "render_state": "busy",
+      "scenario": "card_write_queue_full"
+    },
+    {
+      "accepted_status_published": false,
+      "diagnostic_event": "e_paper.update_result",
+      "dropped_count_delta": 1,
+      "final_status_published": true,
+      "last_error": "payload_too_long",
+      "precondition": "CardWriteV1 content length is 237 bytes",
+      "queue_result": "payload_too_long",
+      "render_state": "failed",
+      "scenario": "card_write_payload_too_long"
+    },
+    {
+      "attempted_expression": "recording",
+      "diagnostic_event": "e_paper.update_result",
+      "last_error": "queue_full",
+      "precondition": "recording-start signal is accepted by state model but display queue is full",
+      "previous_expression": "idle",
+      "queue_result": "queue_full",
+      "render_state": "busy",
+      "scenario": "expression_queue_full_rollback",
+      "state_rollback_required": true,
+      "visible_expression_after_failure": "idle"
+    },
+    {
+      "accepted_status_published": false,
+      "api_boundary": "comp_epaper_display_queue_enqueue_expression",
+      "dropped_count_delta": 1,
+      "last_error": "unsupported_expression",
+      "precondition": "display queue receives a decision whose expression enum is unsupported",
+      "queue_result": "unsupported_expression",
+      "render_state": "failed",
+      "scenario": "expression_unsupported_rejected"
+    }
+  ],
+  "queue_contract": {
+    "card_status_last_errors": {
+      "bad_argument": 3,
+      "ok": 0,
+      "payload_too_long": 2,
+      "queue_full": 1,
+      "unsupported_expression": 9
+    },
+    "depth": 4,
+    "payload_max_bytes": 236,
+    "render_states": {
+      "accepted": 1,
+      "busy": 4,
+      "failed": 3
+    },
+    "result_codes": {
+      "bad_argument": 3,
+      "ok": 0,
+      "payload_too_long": 2,
+      "queue_full": 1,
+      "unsupported_expression": 4
+    }
+  },
+  "schema_id": "companion.pendant.screen_display_queue_faults.v1",
+  "sources": {
+    "display_queue_header": "app/companion_pendant/epaper/display_queue.h",
+    "display_queue_source": "app/companion_pendant/epaper/display_queue.c",
+    "screen_acceptance": "docs/companion_screen_expression_system.md",
+    "wb55_integration": "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c",
+    "wba_rules": "docs/stm32wba_migration_rules.md"
+  },
+  "status": "PASS"
+}

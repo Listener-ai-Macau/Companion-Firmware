@@ -1,0 +1,117 @@
+{
+  "activation_evidence": {
+    "active_revision_field": "active_resource_revision",
+    "external_flash_activation": "pending_rev51_runtime_recheck",
+    "manifest_verified_static": true,
+    "old_queue_action": "drain_or_discard",
+    "request_revision_field": "resource_revision",
+    "stale_queued_frames_discarded_in_model": 3,
+    "wba_inherits_contract": true
+  },
+  "candidate": {
+    "cemp_crc32": "0x56B56273",
+    "cemp_revision": 51,
+    "clips": 33,
+    "frames": 159,
+    "pack_bytes": 287446,
+    "product": "Companion screen",
+    "runtime_status": "REVISION_51_RUNTIME_RECHECK_PENDING",
+    "storage": "external ui_assets at 0x00200000",
+    "target_family": "STM32WB55 baseline; WBA55/WBA65 inherit generation hygiene",
+    "target_profile": "GDEY0154D67-T03 200x200 1-bit"
+  },
+  "first_frame_evidence": {
+    "expected_marker": "coherent_generation=1",
+    "model_active_revision": 51,
+    "model_coherent_generation": 1,
+    "model_generation_switches": 2,
+    "model_last_stale_discarded": 3,
+    "model_resource_revision": 51,
+    "real_marker_present": false,
+    "real_runtime_status": "NO_GO_MISSING_RUNTIME_LOGS"
+  },
+  "missing_hardware_facts": [
+    "rev51 ScreenAssetProvision flash/capture",
+    "rev51 normal firmware restore/capture",
+    "real display_result coherent_generation=1 log",
+    "human visual classification of any old marks"
+  ],
+  "normal_pack_generation": {
+    "contact_report": "docs/validation/companion-screen-generated-expression-normal-pack-contact-sheet.json",
+    "covered_by_import": 39,
+    "manifest_expression_sources": 39,
+    "old_procedural_normal_frames_allowed": false,
+    "rescue_or_maintenance_fallback_only": true
+  },
+  "ota_transaction_rule": {
+    "failure_policy": "keep previous active resource; never display a half-new/half-old generation",
+    "required_transaction_fields": [
+      "resource manifest",
+      "payload",
+      "CRC/signature",
+      "active revision",
+      "display queue generation",
+      "first coherent frame"
+    ],
+    "ui_assets_ota_in_scope": true
+  },
+  "purpose": "SCR-17 release ledger proving the current screen-art candidate has a single product generation before human visual review.",
+  "refresh_classification": {
+    "full_refresh": "Use 0xF7 only for unknown baseline, explicit full request, or fault recovery.",
+    "interactive": "Use differential 0xFC dirty-window refresh; coalesce queued menu drag frames to the latest request.",
+    "maintenance": "After touch settles, schedule one quiet 0xCF maintenance cleanup; never insert it while contact is active.",
+    "physical_afterimage_route": "panel profile, one quiet maintenance refresh, or full baseline/fault recovery",
+    "product_backlog_rule": "SCR-17 stays listed as a product backlog/release item for every candidate; recognizable old art or layout is stale_generation_content until proven physical afterimage only.",
+    "software_generation_route": "product P0: resource/queue/render path fix before human acceptance",
+    "visual_triage_classes": [
+      "physical afterimage",
+      "stale queued frame",
+      "stale asset revision",
+      "rescue/procedural fallback leakage",
+      "stale_generation_content"
+    ]
+  },
+  "schema_id": "companion.pendant.screen_generation_release_ledger.v1",
+  "source_art_identity": {
+    "expression_sheet": "docs/art/generated_pet_expression_sheet_v5.png",
+    "import_preview": ".cache/validation/generated-expression-sheet-import-preview.png",
+    "machine_review_status": "PASS",
+    "normal_pack_contact_sheet": ".cache/validation/rev51-generated-expression-normal-pack-sources.png",
+    "review_preview": ".cache/validation/generated-expression-sheet-review.png",
+    "style_name": "genref_sheet_12_inner_faces_v5",
+    "style_source_of_truth": "generated_pet_expression_sheet_v5",
+    "visual_review_required": true
+  },
+  "sources": {
+    "display_queue_generation_hygiene": "docs/validation/companion-screen-display-queue-generation-hygiene.json",
+    "generated_art_style": "docs/validation/companion-screen-generated-art-style-contract.json",
+    "generation_research": "docs/validation/companion-screen-generation-swap-research.md",
+    "menu_resource_candidate": "docs/validation/companion-screen-bilingual-menu-wb55.json",
+    "normal_pack_contact": "docs/validation/companion-screen-generated-expression-normal-pack-contact-sheet.json",
+    "project_plan": "docs/companion_screen_project_plan.md",
+    "refresh_feel_contract": "docs/validation/companion-screen-refresh-feel-contract.json",
+    "runtime_promotion": "docs/validation/companion-screen-wb55-runtime-promotion.json",
+    "runtime_recheck_logs": "docs/validation/companion-screen-wb55-runtime-recheck-logs.json",
+    "sheet_import": "docs/validation/companion-screen-generated-expression-sheet-import.json",
+    "wba_port_contract": "docs/validation/companion-screen-wba-port-contract.json",
+    "wba_real_parity_gate": "docs/validation/companion-screen-wba-real-parity-gate.json"
+  },
+  "status": "PENDING_RUNTIME_RECHECK",
+  "validation_commands": [
+    "python .\\tools\\verify_screen_generation_release_ledger.py",
+    "python .\\tools\\verify_display_queue_generation_hygiene.py",
+    "python .\\tools\\verify_screen_refresh_feel_contract.py",
+    "python .\\tools\\render_generated_art_style_contract.py",
+    "python .\\tools\\render_generated_expression_normal_pack_contact_sheet.py",
+    "python .\\tools\\verify_wb55_screen_runtime_recheck_logs.py",
+    "python .\\tools\\promote_wb55_screen_runtime_recheck.py",
+    "python .\\tools\\verify_expression_wba_portability.py",
+    "python .\\tools\\verify_expression_wba_real_parity_gate.py"
+  ],
+  "wba_portability": {
+    "front_stable_back_compose_atomic_commit_required": true,
+    "tile_compose_allowed_if_sram_limited": true,
+    "wba_port_contract": "PASS",
+    "wba_real_parity": "PASS_PRE_PORT_PARITY_BLOCKED"
+  }
+}

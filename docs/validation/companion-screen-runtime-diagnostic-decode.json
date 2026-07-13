@@ -1,0 +1,51 @@
+{
+  "expected_decoded_args": {
+    "display_queue": {
+      "dropped_count": 1,
+      "high_water_count": 4,
+      "pending_count": 2
+    },
+    "expression": {
+      "current": 5,
+      "last_signal": 3
+    },
+    "panel": {
+      "deferred_count": 7,
+      "error_count": 1
+    },
+    "payload": "screen_runtime_snapshot"
+  },
+  "expected_event": {
+    "name": "e_paper.runtime_snapshot",
+    "severity": "warn",
+    "symbol": "RUNTIME_SNAPSHOT"
+  },
+  "purpose": "Host-side decoded payload contract for e_paper.runtime_snapshot diagnostics.",
+  "raw_event": {
+    "arg0": 327683,
+    "arg1": 131076,
+    "arg2": 1,
+    "arg3": 458753,
+    "event_id": 3,
+    "sequence": 9001,
+    "severity": "warn",
+    "source": "e_paper",
+    "t_ms": 1234
+  },
+  "schema_id": "companion.pendant.screen_runtime_diagnostic_decode.v1",
+  "sources": {
+    "decode_tool": "tools/decode_diag_log.py",
+    "diag_events": "app/companion_pendant/diag_log/diag_log_events.h",
+    "epaper_readme": "app/companion_pendant/epaper/README.md",
+    "runtime_diagnostics_fixture": "docs/validation/companion-screen-runtime-diagnostics.json",
+    "screen_acceptance": "docs/companion_screen_expression_system.md",
+    "wba_rules": "docs/stm32wba_migration_rules.md"
+  },
+  "status": "PASS",
+  "validation_commands": [
+    "python .\\tools\\verify_expression_screen_runtime_diagnostic_decode.py",
+    "python .\\tools\\verify_expression_screen_runtime_diagnostics.py",
+    "python .\\tools\\decode_diag_log.py --self-test",
+    "python .\\tools\\verify_expression_wba_portability.py"
+  ]
+}

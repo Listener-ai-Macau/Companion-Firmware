@@ -1,0 +1,73 @@
+{
+  "claim_scope": "wba_clock_design_contract_no_hardware_claim",
+  "current_state": {
+    "cube_wba_present": false,
+    "hardware_claimed": false,
+    "wba_parity_claim_allowed": false,
+    "wba_port_status": "PASS"
+  },
+  "default_design": {
+    "do_not_copy_from_wb55": true,
+    "lse_crystal": "assemble 32.768 kHz LSE crystal and target-specific load capacitors by default",
+    "placement": "place crystal/capacitors next to OSC32_IN/OSC32_OUT with short symmetric traces",
+    "selection_rule": "select crystal and capacitors from the chosen WBA package datasheet and AN2867/AN5948"
+  },
+  "future_wba_evidence": [
+    "CubeWBA target enables LSE",
+    "LSE startup is logged on real WBA hardware",
+    "RTC continuity is proven across sleep",
+    "BLE advertising/connection survives sleep",
+    "timed wake-up is proven on real hardware",
+    "no-LSE variant, if chosen, records radio-clock, accuracy, and power evidence"
+  ],
+  "no_lse_exception_requires": [
+    "explicit product cost-down decision",
+    "radio-clock source selection evidence",
+    "BLE advertising and connection accuracy evidence through sleep",
+    "RTC or replacement timebase accuracy evidence",
+    "timed wake-up evidence",
+    "power budget evidence"
+  ],
+  "rule_tokens": {
+    "AN2867/AN5948": true,
+    "BLE sleep timing": true,
+    "Default the WBA55/WBA65 production board to an assembled 32.768 kHz LSE": true,
+    "OSC32_IN": true,
+    "OSC32_OUT": true,
+    "RTC": true,
+    "RTC continuity": true,
+    "accuracy": true,
+    "advertising/connection through sleep": true,
+    "cost-down variant": true,
+    "enable LSE": true,
+    "omitting LSE": true,
+    "power evidence": true,
+    "prove startup": true,
+    "radio-clock": true,
+    "timed wake-up": true,
+    "timed wake-up on real hardware": true
+  },
+  "schema_id": "companion.pendant.screen_wba_lse_clock_contract.v1",
+  "source_rules": {
+    "wba_port_contract": "docs/validation/companion-screen-wba-port-contract.json",
+    "wba_real_parity_gate": "docs/validation/companion-screen-wba-real-parity-gate.json",
+    "wba_rules": "docs/stm32wba_migration_rules.md"
+  },
+  "status": "PASS_PRE_PORT_CLOCK_CONTRACT_RECORDED",
+  "target_family": "STM32WBA",
+  "targets": [
+    "WBA55",
+    "WBA65"
+  ],
+  "validation_commands": [
+    "python .\\tools\\verify_expression_wba_lse_clock_contract.py",
+    "python .\\tools\\verify_expression_wba_portability.py",
+    "python .\\tools\\verify_expression_wba_real_parity_gate.py"
+  ],
+  "why_required": [
+    "BLE sleep timing",
+    "RTC continuity",
+    "timed wake-up",
+    "low-power Companion behavior"
+  ]
+}

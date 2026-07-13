@@ -1,0 +1,65 @@
+{
+  "schema_id": "companion.pendant.pet_attention_preview.v1",
+  "directions": [
+    "up_left",
+    "up",
+    "up_right",
+    "left",
+    "center",
+    "right",
+    "down_left",
+    "down",
+    "down_right"
+  ],
+  "grid": "3x3 directional touch response",
+  "response": "notice toward the logical touch cell, then a happy settle frame",
+  "storage": "external ui_assets CEMP pack",
+  "entries": [
+    {
+      "direction": "up_left",
+      "source": "docs/validation/epaper/expression_happy_attention_up_left_1_54in.pbm",
+      "sha256": "5734f3c485db3f9e8c1c89ebe8c2d1cb203490026d0e150daae3efc848949533"
+    },
+    {
+      "direction": "up",
+      "source": "docs/validation/epaper/expression_happy_attention_up_1_54in.pbm",
+      "sha256": "768c77b76bf62226c5b74ee53829188ec0d25ce0c709b7d87c00ee68604029e5"
+    },
+    {
+      "direction": "up_right",
+      "source": "docs/validation/epaper/expression_happy_attention_up_right_1_54in.pbm",
+      "sha256": "cb4e65627e7a92dbb84ba26d928a1f38eefca1ee78fd069a3568d926ad4aba52"
+    },
+    {
+      "direction": "left",
+      "source": "docs/validation/epaper/expression_happy_attention_left_1_54in.pbm",
+      "sha256": "3aff89c593bc0a7001617b304c728ee6c128c460420fd7a372e35307ed31e3a2"
+    },
+    {
+      "direction": "center",
+      "source": "docs/validation/epaper/expression_happy_attention_1_54in.pbm",
+      "sha256": "73c983078ccd7bba9a25754f9b08edf606f8fe4f15c21ba693d5e6743b6c3445"
+    },
+    {
+      "direction": "right",
+      "source": "docs/validation/epaper/expression_happy_attention_right_1_54in.pbm",
+      "sha256": "d568f0a217a0a99b8d0efe3a37c633e5f9d9ef5289e03473842363ba51584be4"
+    },
+    {
+      "direction": "down_left",
+      "source": "docs/validation/epaper/expression_happy_attention_down_left_1_54in.pbm",
+      "sha256": "18879eefe58138f9bf294bb4162fc10c0edaee3e2d2709b62e30d172668d96c7"
+    },
+    {
+      "direction": "down",
+      "source": "docs/validation/epaper/expression_happy_attention_down_1_54in.pbm",
+      "sha256": "ad4584bad4f781c3c73a2236f3a2172cc096c236f494c88fd5dc42023e5cb45a"
+    },
+    {
+      "direction": "down_right",
+      "source": "docs/validation/epaper/expression_happy_attention_down_right_1_54in.pbm",
+      "sha256": "3dfbdc85c7f7f81f5f11232f487d7e598f1f45823a811e613f38a10048cc1121"
+    }
+  ],
+  "preview_path": ".cache/validation/pet-attention/attention-grid.png"
+}

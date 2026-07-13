@@ -1,0 +1,207 @@
+{
+  "expressions": [
+    "idle",
+    "listening",
+    "thinking",
+    "speaking",
+    "happy",
+    "sleepy",
+    "recording",
+    "sync_complete",
+    "low_battery",
+    "error"
+  ],
+  "preview_items": [
+    {
+      "black_runs": 195,
+      "expression": "idle",
+      "fixture_path": "docs/validation/epaper/expression_idle_2_13in.pbm",
+      "fixture_sha256": "d23295a620ddcaff2c19de911d23f7d5c662a653d0b8de89bd51036f1db5c953",
+      "height": 122,
+      "variant": "2.13in",
+      "width": 250
+    },
+    {
+      "black_runs": 182,
+      "expression": "idle",
+      "fixture_path": "docs/validation/epaper/expression_idle_1_54in.pbm",
+      "fixture_sha256": "e62d1e9143e564931016920adc61caa5362d2ddc7961177ebe89e0bd11b42bb3",
+      "height": 200,
+      "variant": "1.54in",
+      "width": 200
+    },
+    {
+      "black_runs": 199,
+      "expression": "listening",
+      "fixture_path": "docs/validation/epaper/expression_listening_2_13in.pbm",
+      "fixture_sha256": "e006c87774163ff72369237f26f77a8191bbd618baf92dd2c668b8857316db1e",
+      "height": 122,
+      "variant": "2.13in",
+      "width": 250
+    },
+    {
+      "black_runs": 282,
+      "expression": "listening",
+      "fixture_path": "docs/validation/epaper/expression_listening_1_54in.pbm",
+      "fixture_sha256": "5da5d5b7b1c3a648afec5846a25898b49c326144006cc4668bc62075df576ff5",
+      "height": 200,
+      "variant": "1.54in",
+      "width": 200
+    },
+    {
+      "black_runs": 203,
+      "expression": "thinking",
+      "fixture_path": "docs/validation/epaper/expression_thinking_2_13in.pbm",
+      "fixture_sha256": "7169ac3cc87093dd00c7066a8b24fbcd751719104611bf6ec58362d261f29ba7",
+      "height": 122,
+      "variant": "2.13in",
+      "width": 250
+    },
+    {
+      "black_runs": 239,
+      "expression": "thinking",
+      "fixture_path": "docs/validation/epaper/expression_thinking_1_54in.pbm",
+      "fixture_sha256": "d0f7938e6df5f3396c55962ad213daf3939a950d2fecdd22232838b122b572d9",
+      "height": 200,
+      "variant": "1.54in",
+      "width": 200
+    },
+    {
+      "black_runs": 188,
+      "expression": "speaking",
+      "fixture_path": "docs/validation/epaper/expression_speaking_2_13in.pbm",
+      "fixture_sha256": "bd4bfbd422a5b64cbaa141b14303bdeb301d8ddab19c8c7f670309308a11e8bf",
+      "height": 122,
+      "variant": "2.13in",
+      "width": 250
+    },
+    {
+      "black_runs": 199,
+      "expression": "speaking",
+      "fixture_path": "docs/validation/epaper/expression_speaking_1_54in.pbm",
+      "fixture_sha256": "ea5ab422677d1a0a067d925572055bbe2ed66b75bcf62c4e01fe09d6f895dce5",
+      "height": 200,
+      "variant": "1.54in",
+      "width": 200
+    },
+    {
+      "black_runs": 133,
+      "expression": "happy",
+      "fixture_path": "docs/validation/epaper/expression_happy_2_13in.pbm",
+      "fixture_sha256": "8bf50a5387f6a48593a3de978b197703373370b094b5511b88d01f0aa3906f42",
+      "height": 122,
+      "variant": "2.13in",
+      "width": 250
+    },
+    {
+      "black_runs": 176,
+      "expression": "happy",
+      "fixture_path": "docs/validation/epaper/expression_happy_1_54in.pbm",
+      "fixture_sha256": "050bd26f3967bf09f006e097efb46580978d0a870a4a0d0c798629aa9494cc3a",
+      "height": 200,
+      "variant": "1.54in",
+      "width": 200
+    },
+    {
+      "black_runs": 96,
+      "expression": "sleepy",
+      "fixture_path": "docs/validation/epaper/expression_sleepy_2_13in.pbm",
+      "fixture_sha256": "29e85bce3a17228ef8a79c4c67c4a65f26a4fb9770d520f6db2fd37b0287c5d7",
+      "height": 122,
+      "variant": "2.13in",
+      "width": 250
+    },
+    {
+      "black_runs": 139,
+      "expression": "sleepy",
+      "fixture_path": "docs/validation/epaper/expression_sleepy_1_54in.pbm",
+      "fixture_sha256": "ee9935897a68da1dc9b8f97c2b2bad0463dd8887652b1e82652f0bcdc0f9634a",
+      "height": 200,
+      "variant": "1.54in",
+      "width": 200
+    },
+    {
+      "black_runs": 192,
+      "expression": "recording",
+      "fixture_path": "docs/validation/epaper/expression_recording_2_13in.pbm",
+      "fixture_sha256": "73f2c27839f222ebfb49d5e716b7e67d5de0d8dd02893d4f77b1d3f0d30fa11b",
+      "height": 122,
+      "variant": "2.13in",
+      "width": 250
+    },
+    {
+      "black_runs": 188,
+      "expression": "recording",
+      "fixture_path": "docs/validation/epaper/expression_recording_1_54in.pbm",
+      "fixture_sha256": "546b8c6e699267cc8b056354da53cffc788a7e9f381a883c9d110fe28274b432",
+      "height": 200,
+      "variant": "1.54in",
+      "width": 200
+    },
+    {
+      "black_runs": 121,
+      "expression": "sync_complete",
+      "fixture_path": "docs/validation/epaper/expression_sync_complete_2_13in.pbm",
+      "fixture_sha256": "57325a3e8b85cd30efb4d7533904ab417136ab861aa68cff361dd29b275bac67",
+      "height": 122,
+      "variant": "2.13in",
+      "width": 250
+    },
+    {
+      "black_runs": 176,
+      "expression": "sync_complete",
+      "fixture_path": "docs/validation/epaper/expression_sync_complete_1_54in.pbm",
+      "fixture_sha256": "81a42cc28a09832f9ae6fd894483d032bb9013c3f17329ab2650a6319606868f",
+      "height": 200,
+      "variant": "1.54in",
+      "width": 200
+    },
+    {
+      "black_runs": 133,
+      "expression": "low_battery",
+      "fixture_path": "docs/validation/epaper/expression_low_battery_2_13in.pbm",
+      "fixture_sha256": "e97233a3b0904e2941083895f2a97ac8c50ad90e6cd9e170cd5003d92e7e1d03",
+      "height": 122,
+      "variant": "2.13in",
+      "width": 250
+    },
+    {
+      "black_runs": 139,
+      "expression": "low_battery",
+      "fixture_path": "docs/validation/epaper/expression_low_battery_1_54in.pbm",
+      "fixture_sha256": "7d1b61cf0d1efef93643185ab55ce06cf5f0873c0dea78ffd715dbc08af02fc5",
+      "height": 200,
+      "variant": "1.54in",
+      "width": 200
+    },
+    {
+      "black_runs": 166,
+      "expression": "error",
+      "fixture_path": "docs/validation/epaper/expression_error_2_13in.pbm",
+      "fixture_sha256": "25a88986d6d01b36ca385c7932c3fdf04fab1c74d1fe3f781b479b90ef34729d",
+      "height": 122,
+      "variant": "2.13in",
+      "width": 250
+    },
+    {
+      "black_runs": 231,
+      "expression": "error",
+      "fixture_path": "docs/validation/epaper/expression_error_1_54in.pbm",
+      "fixture_sha256": "430b17d4a3204cfc05a48384eb19ba92743b509fcd1b130bd6cc4e5a59de9ddc",
+      "height": 200,
+      "variant": "1.54in",
+      "width": 200
+    }
+  ],
+  "schema_id": "companion.pendant.expression_preview.v1",
+  "source_manifest": "docs/validation/companion-pendant-firmware-bringup-1.6-epaper-fixtures.json",
+  "source_manifest_sha256": "2142eb930ad492fdfae3ced9399613fc3437a7a06aaabc7e12b570b5e3745239",
+  "source_schema_id": "companion.pendant.epaper_fixtures.v1",
+  "svg_path": "docs/validation/epaper/expression-preview.svg",
+  "svg_sha256": "c2976693ed18c8a6af3edf62d3810434c45bb8014b304fbfd24abba590003450",
+  "total_black_runs": 3577,
+  "variants": [
+    "2.13in",
+    "1.54in"
+  ]
+}

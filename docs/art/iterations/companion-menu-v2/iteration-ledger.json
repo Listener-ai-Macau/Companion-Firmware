@@ -1,0 +1,47 @@
+{
+  "schema": "denzic.product_visual_iteration.v1",
+  "feature": "companion-menu",
+  "target_profile": "wb55-gdey0154d67-ft6336u-200x200-1bit",
+  "rule": "docs/product_visual_design_iteration.md",
+  "iterations": [
+    {
+      "iteration_id": "menu-v2-2026-07-13",
+      "prompt": "Create a single clean monochrome 1-bit design specification sheet for a 200x200 e-paper companion menu. Faithfully follow the attached user reference aesthetic and composition: soft cute black line icons, spacious white background, modest rounded rectangular content panels, selected row black-filled with white glyphs, tiny inner-face mark only (no cat ears, head outline, whiskers, or device silhouette). This is not a new design exploration: preserve the reference's six concrete functional pages and their visual language exactly. Arrange six 200x200 square screens in a 2 by 3 grid, each with no text except tiny English labels: 1 RECORD: heart-shaped microphone and real record state affordance, 2 STATUS: inner face with heart and real display/touch/BLE/record indicators, 3 PHONE: BLE pairing/link state, 4 DEVICE: hardware/profile diagnostics, 5 PREFERENCES: language selector and refresh policy, 6 ABOUT: firmware/resource revision. Use pure black #000 and white #fff only, crisp thick rounded strokes designed to survive 1-bit conversion. No gray, no color, no gradients, no fake lorem ipsum, no decorative outer product frame. The image is a direct reproducible asset reference for STM32, not a marketing mockup.",
+      "source_references": [
+        "user-provided Companion expression/menu reference images from this conversation"
+      ],
+      "output": "docs/art/generated_companion_menu_reference_v2.png",
+      "sha256": "064C20682F9C23CDE442A6E82906EC78339C7F8816DE3E7E6E1198738D018731",
+      "review": {
+        "outcome": "rejected",
+        "reason": "The output introduced large rounded device frames and a generic mascot layout instead of a faithful, compact product settings system.",
+        "next_prompt_delta": "Remove product frames and large mascot treatment; show a settings home plus every real detail page and only meaningful controls."
+      },
+      "implementation": {
+        "status": "not_used",
+        "resource_revision": null,
+        "validation": []
+      }
+    },
+    {
+      "iteration_id": "menu-v3-2026-07-13",
+      "prompt": "Make a new monochrome e-paper UI reference sheet for a cute premium Companion product. The prior generated sheet is rejected: do not reuse its large rounded outer device frames, large mascot faces, or generic decorative layout. Use the attached user-provided UI reference as the strict visual language: delicate black one-bit linework on pure white, restrained small face marks only, dense but friendly rows, black selected rows with white icon/text, thin dividers, compact header, arrows, dots, and tiny spark accents. No cat ears, no cat head outline, no whiskers, no device silhouette, no gray, no color, no gradients. This sheet must explicitly show the complete menu information architecture, as seven small 200x200 screen designs in a clean grid: (A) SETTINGS HOME with exactly six rows: Voice & Record, Status, Phone Link, Device, Preferences, About. (B) VOICE & RECORD with a real microphone state, start/stop recording, recent recording count, and wake word marked planned. (C) STATUS with real display/touch/BLE/record state rows, no fake controls. (D) PHONE LINK with advertising/pairing state, connected device state, and reconnect action. (E) DEVICE with e-paper profile, touch health, external assets state, battery marked planned. (F) PREFERENCES with language Chinese/English selected control, gesture behavior, refresh cleanup policy. (G) ABOUT with firmware version, UI asset revision, OTA marked frozen, diagnostics entry. Each page must include distinct usable icons. This is an exact implementation reference for STM32: every control shown has a described firmware action or visible status, so do not add meaningless decorative controls. Labels should be short English only, correctly readable. Use 100 percent white background with black #000 lines; screen edges are not framed as product hardware.",
+      "source_references": [
+        "user-provided Companion expression/menu reference images from this conversation",
+        "docs/art/generated_companion_menu_reference_v2.png"
+      ],
+      "output": "docs/art/generated_companion_menu_reference_v3.png",
+      "sha256": "D87E45A49AA623552B867C9EDAADB906CA282DF2C2C062D3A127A277920F9F81",
+      "review": {
+        "outcome": "pending_user_review",
+        "reason": "Candidate expands the requested settings home and every detail page while removing the rejected outer device frame.",
+        "next_prompt_delta": null
+      },
+      "implementation": {
+        "status": "not_started",
+        "resource_revision": null,
+        "validation": []
+      }
+    }
+  ]
+}

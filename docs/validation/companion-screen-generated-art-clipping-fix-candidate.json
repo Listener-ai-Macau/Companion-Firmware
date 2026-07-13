@@ -1,0 +1,30 @@
+{
+  "candidate": {
+    "clips": 33,
+    "frames": 159,
+    "manifest": "app/companion_pendant/epaper/assets/emote_matrix_white_200x200.json",
+    "pack_crc32": "0xDEFC096E",
+    "revision": 52,
+    "storage": "external ui_assets",
+    "total_bytes": 287732
+  },
+  "checks": {
+    "accepted_art_baseline_is_protected": true,
+    "expected_crc32": true,
+    "expected_revision": true,
+    "forward_revision": true,
+    "generated_import_machine_review": true,
+    "internal_mask_stays_disabled": true,
+    "normal_expression_sources_come_from_generated_sheet": true,
+    "preserves_last_accepted_record": true
+  },
+  "hardware_state": "NOT_FLASHED_BY_THIS_CANDIDATE_CHECK",
+  "last_accepted_wb55_runtime": {
+    "pack_crc32": "0x56B56273",
+    "revision": 51
+  },
+  "next_machine_action": "Build ScreenAssetProvision from this manifest, then provision rev52 and collect provision/normal serial evidence under the Companion-WB55 lock.",
+  "purpose": "Forward-only external CEMP candidate for removing the old internal white shell-mask clipping while preserving the user-approved generated art.",
+  "schema_id": "companion.screen.generated_art_clipping_fix_candidate.v1",
+  "status": "READY_FOR_WB55_PROVISION_RUNTIME_RECHECK"
+}

@@ -1,0 +1,1040 @@
+{
+  "acceptance": {
+    "accepted_and_suppressed_steps_visible": true,
+    "all_expression_states_covered": true,
+    "all_journeys_rendered": true,
+    "uses_golden_expression_fixtures": true
+  },
+  "accepted_steps": 43,
+  "coverage": [
+    "error",
+    "happy",
+    "idle",
+    "listening",
+    "low_battery",
+    "recording",
+    "sleepy",
+    "speaking",
+    "sync_complete",
+    "thinking"
+  ],
+  "journey_count": 13,
+  "max_steps_per_journey": 9,
+  "schema_id": "companion.pendant.expression_storyboard.v1",
+  "source_fixture_manifest": "docs/validation/companion-pendant-firmware-bringup-1.6-epaper-fixtures.json",
+  "source_fixture_manifest_sha256": "2142eb930ad492fdfae3ced9399613fc3437a7a06aaabc7e12b570b5e3745239",
+  "source_journey_fixture": "docs/validation/companion-screen-expression-journeys.json",
+  "source_journey_schema_id": "companion.pendant.expression_journeys.v1",
+  "source_journey_sha256": "443079a10fb880c853c0eb6466639c34affb71160099fae463f5bf6252202627",
+  "step_count": 59,
+  "storyboard_items": [
+    {
+      "accepted": true,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 195,
+      "event": "wake_word.armed",
+      "expression_signal": "WAKE_ARMED",
+      "fixture_path": "docs/validation/epaper/expression_idle_2_13in.pbm",
+      "fixture_sha256": "d23295a620ddcaff2c19de911d23f7d5c662a653d0b8de89bd51036f1db5c953",
+      "journey_id": "wake_to_recording_sync",
+      "render_hashes": {
+        "1.54in": "e62d1e9143e564931016920adc61caa5362d2ddc7961177ebe89e0bd11b42bb3",
+        "2.13in": "9cc783c05d8a6c6e51c116b759abb661fe59b4adc4f5a911f90077b5d71bca98"
+      },
+      "step_index": 0,
+      "visible_expression": "idle"
+    },
+    {
+      "accepted": true,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 199,
+      "event": "wake_word.detected",
+      "expression_signal": "WAKE_DETECTED",
+      "fixture_path": "docs/validation/epaper/expression_listening_2_13in.pbm",
+      "fixture_sha256": "e006c87774163ff72369237f26f77a8191bbd618baf92dd2c668b8857316db1e",
+      "journey_id": "wake_to_recording_sync",
+      "render_hashes": {
+        "1.54in": "5da5d5b7b1c3a648afec5846a25898b49c326144006cc4668bc62075df576ff5",
+        "2.13in": "53b3712aa9bbdcab157dbf23c90b6e19fedb9be0eef190782575719cf490a06c"
+      },
+      "step_index": 1,
+      "visible_expression": "listening"
+    },
+    {
+      "accepted": true,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 192,
+      "event": "recording_fsm.start_request",
+      "expression_signal": "RECORDING_START",
+      "fixture_path": "docs/validation/epaper/expression_recording_2_13in.pbm",
+      "fixture_sha256": "73f2c27839f222ebfb49d5e716b7e67d5de0d8dd02893d4f77b1d3f0d30fa11b",
+      "journey_id": "wake_to_recording_sync",
+      "render_hashes": {
+        "1.54in": "546b8c6e699267cc8b056354da53cffc788a7e9f381a883c9d110fe28274b432",
+        "2.13in": "552947243e2c56751316c8ebf4c68a75f37e6c22d4640557d62492b8fa83322f"
+      },
+      "step_index": 2,
+      "visible_expression": "recording"
+    },
+    {
+      "accepted": true,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 203,
+      "event": "recording_fsm.stop_request",
+      "expression_signal": "RECORDING_STOP",
+      "fixture_path": "docs/validation/epaper/expression_thinking_2_13in.pbm",
+      "fixture_sha256": "7169ac3cc87093dd00c7066a8b24fbcd751719104611bf6ec58362d261f29ba7",
+      "journey_id": "wake_to_recording_sync",
+      "render_hashes": {
+        "1.54in": "d0f7938e6df5f3396c55962ad213daf3939a950d2fecdd22232838b122b572d9",
+        "2.13in": "1ff86e484797d511a5e7a0140ffa7f09827eba2ca2f62930016751c084c872dd"
+      },
+      "step_index": 3,
+      "visible_expression": "thinking"
+    },
+    {
+      "accepted": true,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 121,
+      "event": "recording_fsm.session_finished",
+      "expression_signal": "RECORDING_FINISHED",
+      "fixture_path": "docs/validation/epaper/expression_sync_complete_2_13in.pbm",
+      "fixture_sha256": "57325a3e8b85cd30efb4d7533904ab417136ab861aa68cff361dd29b275bac67",
+      "journey_id": "wake_to_recording_sync",
+      "render_hashes": {
+        "1.54in": "81a42cc28a09832f9ae6fd894483d032bb9013c3f17329ab2650a6319606868f",
+        "2.13in": "0cf7faa13583ea2b1ce18fbb82c52087f5fe4427313f07dcf6dfcb938a7a59a4"
+      },
+      "step_index": 4,
+      "visible_expression": "sync_complete"
+    },
+    {
+      "accepted": true,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 195,
+      "event": "wake_word.armed",
+      "expression_signal": "WAKE_ARMED",
+      "fixture_path": "docs/validation/epaper/expression_idle_2_13in.pbm",
+      "fixture_sha256": "d23295a620ddcaff2c19de911d23f7d5c662a653d0b8de89bd51036f1db5c953",
+      "journey_id": "duplicate_expression_suppressed",
+      "render_hashes": {
+        "1.54in": "e62d1e9143e564931016920adc61caa5362d2ddc7961177ebe89e0bd11b42bb3",
+        "2.13in": "f360a48fd0085caee2507673bfc6b43af8329788ae0b2114b7b1930c712bdc36"
+      },
+      "step_index": 0,
+      "visible_expression": "idle"
+    },
+    {
+      "accepted": false,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 195,
+      "event": "wake_word.armed",
+      "expression_signal": "WAKE_ARMED",
+      "fixture_path": "docs/validation/epaper/expression_idle_2_13in.pbm",
+      "fixture_sha256": "d23295a620ddcaff2c19de911d23f7d5c662a653d0b8de89bd51036f1db5c953",
+      "journey_id": "duplicate_expression_suppressed",
+      "render_hashes": {
+        "1.54in": "e62d1e9143e564931016920adc61caa5362d2ddc7961177ebe89e0bd11b42bb3",
+        "2.13in": "fb568ffc91ad2cfa08f2c797e1b67a411599909abc48672581c44e2f4c821583"
+      },
+      "step_index": 1,
+      "visible_expression": "idle"
+    },
+    {
+      "accepted": true,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 199,
+      "event": "wake_word.detected",
+      "expression_signal": "WAKE_DETECTED",
+      "fixture_path": "docs/validation/epaper/expression_listening_2_13in.pbm",
+      "fixture_sha256": "e006c87774163ff72369237f26f77a8191bbd618baf92dd2c668b8857316db1e",
+      "journey_id": "duplicate_expression_suppressed",
+      "render_hashes": {
+        "1.54in": "5da5d5b7b1c3a648afec5846a25898b49c326144006cc4668bc62075df576ff5",
+        "2.13in": "06d53a30c32fde91d3a27c284775a398fe51012303a90cc72d1b7428e2d87292"
+      },
+      "step_index": 2,
+      "visible_expression": "listening"
+    },
+    {
+      "accepted": false,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 199,
+      "event": "wake_word.detected",
+      "expression_signal": "WAKE_DETECTED",
+      "fixture_path": "docs/validation/epaper/expression_listening_2_13in.pbm",
+      "fixture_sha256": "e006c87774163ff72369237f26f77a8191bbd618baf92dd2c668b8857316db1e",
+      "journey_id": "duplicate_expression_suppressed",
+      "render_hashes": {
+        "1.54in": "5da5d5b7b1c3a648afec5846a25898b49c326144006cc4668bc62075df576ff5",
+        "2.13in": "d8d04632112ba357438f2c9332c7577681cfae7d96e7a22c4bc626758f3f7bfc"
+      },
+      "step_index": 3,
+      "visible_expression": "listening"
+    },
+    {
+      "accepted": true,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 192,
+      "event": "recording_fsm.start_request",
+      "expression_signal": "RECORDING_START",
+      "fixture_path": "docs/validation/epaper/expression_recording_2_13in.pbm",
+      "fixture_sha256": "73f2c27839f222ebfb49d5e716b7e67d5de0d8dd02893d4f77b1d3f0d30fa11b",
+      "journey_id": "status_notify_duplicate_suppression",
+      "render_hashes": {
+        "1.54in": "546b8c6e699267cc8b056354da53cffc788a7e9f381a883c9d110fe28274b432",
+        "2.13in": "ccde1df671c0234d244c4df1715f4f2d370567697008f9b0d1c843739f9b6036"
+      },
+      "step_index": 0,
+      "visible_expression": "recording"
+    },
+    {
+      "accepted": false,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 192,
+      "event": "status.device",
+      "expression_signal": "RECORDING_START",
+      "fixture_path": "docs/validation/epaper/expression_recording_2_13in.pbm",
+      "fixture_sha256": "73f2c27839f222ebfb49d5e716b7e67d5de0d8dd02893d4f77b1d3f0d30fa11b",
+      "journey_id": "status_notify_duplicate_suppression",
+      "render_hashes": {
+        "1.54in": "546b8c6e699267cc8b056354da53cffc788a7e9f381a883c9d110fe28274b432",
+        "2.13in": "93aff64b45dc6ce0a82b1d83826c6b65a21635f4dc5d292cacb7e697cf7e0aed"
+      },
+      "step_index": 1,
+      "visible_expression": "recording"
+    },
+    {
+      "accepted": true,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 121,
+      "event": "meeting.finalize",
+      "expression_signal": "MEETING_FINALIZE",
+      "fixture_path": "docs/validation/epaper/expression_sync_complete_2_13in.pbm",
+      "fixture_sha256": "57325a3e8b85cd30efb4d7533904ab417136ab861aa68cff361dd29b275bac67",
+      "journey_id": "status_notify_duplicate_suppression",
+      "render_hashes": {
+        "1.54in": "81a42cc28a09832f9ae6fd894483d032bb9013c3f17329ab2650a6319606868f",
+        "2.13in": "a915893badbbc3cf645d74a5af0dfc5882cd3093d573aa18a2b608596da44c5e"
+      },
+      "step_index": 2,
+      "visible_expression": "sync_complete"
+    },
+    {
+      "accepted": false,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 121,
+      "event": "status.meeting",
+      "expression_signal": "MEETING_FINALIZE",
+      "fixture_path": "docs/validation/epaper/expression_sync_complete_2_13in.pbm",
+      "fixture_sha256": "57325a3e8b85cd30efb4d7533904ab417136ab861aa68cff361dd29b275bac67",
+      "journey_id": "status_notify_duplicate_suppression",
+      "render_hashes": {
+        "1.54in": "81a42cc28a09832f9ae6fd894483d032bb9013c3f17329ab2650a6319606868f",
+        "2.13in": "ed9fca75fd26ca49af6fe110cff09cfb35435651e920a82ec93aa85df0225326"
+      },
+      "step_index": 3,
+      "visible_expression": "sync_complete"
+    },
+    {
+      "accepted": true,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 188,
+      "event": "speaker.prompt",
+      "expression_signal": "SPEAKER_PROMPT",
+      "fixture_path": "docs/validation/epaper/expression_speaking_2_13in.pbm",
+      "fixture_sha256": "bd4bfbd422a5b64cbaa141b14303bdeb301d8ddab19c8c7f670309308a11e8bf",
+      "journey_id": "status_notify_duplicate_suppression",
+      "render_hashes": {
+        "1.54in": "ea5ab422677d1a0a067d925572055bbe2ed66b75bcf62c4e01fe09d6f895dce5",
+        "2.13in": "d2e37adfc9c593230335359c7bbcd4ac1cfc92ae101d0a61e4bca415af9406e6"
+      },
+      "step_index": 4,
+      "visible_expression": "speaking"
+    },
+    {
+      "accepted": false,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 188,
+      "event": "status.speaker",
+      "expression_signal": "SPEAKER_PROMPT",
+      "fixture_path": "docs/validation/epaper/expression_speaking_2_13in.pbm",
+      "fixture_sha256": "bd4bfbd422a5b64cbaa141b14303bdeb301d8ddab19c8c7f670309308a11e8bf",
+      "journey_id": "status_notify_duplicate_suppression",
+      "render_hashes": {
+        "1.54in": "ea5ab422677d1a0a067d925572055bbe2ed66b75bcf62c4e01fe09d6f895dce5",
+        "2.13in": "9990415969c72c03948465bddca9ce76a9cf5aae543b5d34a219ec54d4d8687a"
+      },
+      "step_index": 5,
+      "visible_expression": "speaking"
+    },
+    {
+      "accepted": true,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 195,
+      "event": "warnings.recovered",
+      "expression_signal": "RECOVERY",
+      "fixture_path": "docs/validation/epaper/expression_idle_2_13in.pbm",
+      "fixture_sha256": "d23295a620ddcaff2c19de911d23f7d5c662a653d0b8de89bd51036f1db5c953",
+      "journey_id": "status_notify_duplicate_suppression",
+      "render_hashes": {
+        "1.54in": "e62d1e9143e564931016920adc61caa5362d2ddc7961177ebe89e0bd11b42bb3",
+        "2.13in": "98d730a10190d0429518d1f51eb30ee65aae78e064abdef9521d7b43a13cf4e2"
+      },
+      "step_index": 6,
+      "visible_expression": "idle"
+    },
+    {
+      "accepted": true,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 199,
+      "event": "wake_word.detected",
+      "expression_signal": "WAKE_DETECTED",
+      "fixture_path": "docs/validation/epaper/expression_listening_2_13in.pbm",
+      "fixture_sha256": "e006c87774163ff72369237f26f77a8191bbd618baf92dd2c668b8857316db1e",
+      "journey_id": "status_notify_duplicate_suppression",
+      "render_hashes": {
+        "1.54in": "5da5d5b7b1c3a648afec5846a25898b49c326144006cc4668bc62075df576ff5",
+        "2.13in": "fddfab955cca22aa2d581f7169c83b6614905b89a07afc83a50fdee68e3f1fd7"
+      },
+      "step_index": 7,
+      "visible_expression": "listening"
+    },
+    {
+      "accepted": false,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 199,
+      "event": "status.wake_word",
+      "expression_signal": "WAKE_DETECTED",
+      "fixture_path": "docs/validation/epaper/expression_listening_2_13in.pbm",
+      "fixture_sha256": "e006c87774163ff72369237f26f77a8191bbd618baf92dd2c668b8857316db1e",
+      "journey_id": "status_notify_duplicate_suppression",
+      "render_hashes": {
+        "1.54in": "5da5d5b7b1c3a648afec5846a25898b49c326144006cc4668bc62075df576ff5",
+        "2.13in": "c20e509f33abc77c60685ef7a036893c40c666f6cfcad91bed224ef73755fe0f"
+      },
+      "step_index": 8,
+      "visible_expression": "listening"
+    },
+    {
+      "accepted": true,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 192,
+      "event": "recording_fsm.start_request",
+      "expression_signal": "RECORDING_START",
+      "fixture_path": "docs/validation/epaper/expression_recording_2_13in.pbm",
+      "fixture_sha256": "73f2c27839f222ebfb49d5e716b7e67d5de0d8dd02893d4f77b1d3f0d30fa11b",
+      "journey_id": "recording_low_battery_priority",
+      "render_hashes": {
+        "1.54in": "546b8c6e699267cc8b056354da53cffc788a7e9f381a883c9d110fe28274b432",
+        "2.13in": "84613bbf8be5a9820bb49855b505b5a761296bc3372158064452ff1c882ebb11"
+      },
+      "step_index": 0,
+      "visible_expression": "recording"
+    },
+    {
+      "accepted": false,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 192,
+      "event": "battery_charging.sample",
+      "expression_signal": "LOW_BATTERY",
+      "fixture_path": "docs/validation/epaper/expression_recording_2_13in.pbm",
+      "fixture_sha256": "73f2c27839f222ebfb49d5e716b7e67d5de0d8dd02893d4f77b1d3f0d30fa11b",
+      "journey_id": "recording_low_battery_priority",
+      "render_hashes": {
+        "1.54in": "546b8c6e699267cc8b056354da53cffc788a7e9f381a883c9d110fe28274b432",
+        "2.13in": "d1759acd4d3096fd55ba5f57663ae2dda2799e907aec34192a9dd2ea20e09145"
+      },
+      "step_index": 1,
+      "visible_expression": "recording"
+    },
+    {
+      "accepted": true,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 203,
+      "event": "recording_fsm.stop_request",
+      "expression_signal": "RECORDING_STOP",
+      "fixture_path": "docs/validation/epaper/expression_thinking_2_13in.pbm",
+      "fixture_sha256": "7169ac3cc87093dd00c7066a8b24fbcd751719104611bf6ec58362d261f29ba7",
+      "journey_id": "recording_low_battery_priority",
+      "render_hashes": {
+        "1.54in": "d0f7938e6df5f3396c55962ad213daf3939a950d2fecdd22232838b122b572d9",
+        "2.13in": "9f46f884e150ac5bf99d85bab3be6d8656105ee0baa21ea1a8d981fe1da6986c"
+      },
+      "step_index": 2,
+      "visible_expression": "thinking"
+    },
+    {
+      "accepted": true,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 133,
+      "event": "battery_charging.sample",
+      "expression_signal": "LOW_BATTERY",
+      "fixture_path": "docs/validation/epaper/expression_low_battery_2_13in.pbm",
+      "fixture_sha256": "e97233a3b0904e2941083895f2a97ac8c50ad90e6cd9e170cd5003d92e7e1d03",
+      "journey_id": "recording_low_battery_priority",
+      "render_hashes": {
+        "1.54in": "7d1b61cf0d1efef93643185ab55ce06cf5f0873c0dea78ffd715dbc08af02fc5",
+        "2.13in": "82d118e55f18252ff91a8b36cdd4b7b9d434a566080a03a12473a84a21df0019"
+      },
+      "step_index": 3,
+      "visible_expression": "low_battery"
+    },
+    {
+      "accepted": true,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 133,
+      "event": "battery_charging.sample",
+      "expression_signal": "LOW_BATTERY",
+      "fixture_path": "docs/validation/epaper/expression_low_battery_2_13in.pbm",
+      "fixture_sha256": "e97233a3b0904e2941083895f2a97ac8c50ad90e6cd9e170cd5003d92e7e1d03",
+      "journey_id": "battery_recovery_only_clears_low_battery",
+      "render_hashes": {
+        "1.54in": "7d1b61cf0d1efef93643185ab55ce06cf5f0873c0dea78ffd715dbc08af02fc5",
+        "2.13in": "f3e4d20bdcad715637c4c07ac853312d1b6f95f15b32812cb0f13c9768e68b2f"
+      },
+      "step_index": 0,
+      "visible_expression": "low_battery"
+    },
+    {
+      "accepted": false,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 133,
+      "event": "battery_charging.sample",
+      "expression_signal": null,
+      "fixture_path": "docs/validation/epaper/expression_low_battery_2_13in.pbm",
+      "fixture_sha256": "e97233a3b0904e2941083895f2a97ac8c50ad90e6cd9e170cd5003d92e7e1d03",
+      "journey_id": "battery_recovery_only_clears_low_battery",
+      "render_hashes": {
+        "1.54in": "7d1b61cf0d1efef93643185ab55ce06cf5f0873c0dea78ffd715dbc08af02fc5",
+        "2.13in": "8c11880275c3aa2426ea349dbd77c595a0875f714afd44416955b7097d2d25a7"
+      },
+      "step_index": 1,
+      "visible_expression": "low_battery"
+    },
+    {
+      "accepted": true,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 195,
+      "event": "battery_charging.sample",
+      "expression_signal": "BATTERY_RECOVERED",
+      "fixture_path": "docs/validation/epaper/expression_idle_2_13in.pbm",
+      "fixture_sha256": "d23295a620ddcaff2c19de911d23f7d5c662a653d0b8de89bd51036f1db5c953",
+      "journey_id": "battery_recovery_only_clears_low_battery",
+      "render_hashes": {
+        "1.54in": "e62d1e9143e564931016920adc61caa5362d2ddc7961177ebe89e0bd11b42bb3",
+        "2.13in": "76bd53ccca3ca66751bb05d81bfc08154e061b3c1be9b146b39825184804b2c6"
+      },
+      "step_index": 2,
+      "visible_expression": "idle"
+    },
+    {
+      "accepted": true,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 192,
+      "event": "recording_fsm.start_request",
+      "expression_signal": "RECORDING_START",
+      "fixture_path": "docs/validation/epaper/expression_recording_2_13in.pbm",
+      "fixture_sha256": "73f2c27839f222ebfb49d5e716b7e67d5de0d8dd02893d4f77b1d3f0d30fa11b",
+      "journey_id": "battery_recovery_only_clears_low_battery",
+      "render_hashes": {
+        "1.54in": "546b8c6e699267cc8b056354da53cffc788a7e9f381a883c9d110fe28274b432",
+        "2.13in": "b3a5019f2e11a5b87cb7ad0f1bd7453fb2a0ec645f1c1c2889ef9fb10e3f59de"
+      },
+      "step_index": 3,
+      "visible_expression": "recording"
+    },
+    {
+      "accepted": false,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 192,
+      "event": "battery_charging.sample",
+      "expression_signal": "BATTERY_RECOVERED",
+      "fixture_path": "docs/validation/epaper/expression_recording_2_13in.pbm",
+      "fixture_sha256": "73f2c27839f222ebfb49d5e716b7e67d5de0d8dd02893d4f77b1d3f0d30fa11b",
+      "journey_id": "battery_recovery_only_clears_low_battery",
+      "render_hashes": {
+        "1.54in": "546b8c6e699267cc8b056354da53cffc788a7e9f381a883c9d110fe28274b432",
+        "2.13in": "1a615911a216de11c70fbf53f20945537ab5aceb7ec5165afce414927acf0f54"
+      },
+      "step_index": 4,
+      "visible_expression": "recording"
+    },
+    {
+      "accepted": true,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 166,
+      "event": "errors.fault",
+      "expression_signal": "ERROR",
+      "fixture_path": "docs/validation/epaper/expression_error_2_13in.pbm",
+      "fixture_sha256": "25a88986d6d01b36ca385c7932c3fdf04fab1c74d1fe3f781b479b90ef34729d",
+      "journey_id": "battery_recovery_only_clears_low_battery",
+      "render_hashes": {
+        "1.54in": "430b17d4a3204cfc05a48384eb19ba92743b509fcd1b130bd6cc4e5a59de9ddc",
+        "2.13in": "8a349b49c39d400d514ee0d43b3e070b200c0b3c4ca0c6bb549de0254005aa06"
+      },
+      "step_index": 5,
+      "visible_expression": "error"
+    },
+    {
+      "accepted": false,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 166,
+      "event": "battery_charging.sample",
+      "expression_signal": "BATTERY_RECOVERED",
+      "fixture_path": "docs/validation/epaper/expression_error_2_13in.pbm",
+      "fixture_sha256": "25a88986d6d01b36ca385c7932c3fdf04fab1c74d1fe3f781b479b90ef34729d",
+      "journey_id": "battery_recovery_only_clears_low_battery",
+      "render_hashes": {
+        "1.54in": "430b17d4a3204cfc05a48384eb19ba92743b509fcd1b130bd6cc4e5a59de9ddc",
+        "2.13in": "d67e0ab1d35ff042e2ddbe4b53ab8e20c1cdaa7289f83907ed8f51818f34114f"
+      },
+      "step_index": 6,
+      "visible_expression": "error"
+    },
+    {
+      "accepted": true,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 195,
+      "event": "warnings.recovered",
+      "expression_signal": "RECOVERY",
+      "fixture_path": "docs/validation/epaper/expression_idle_2_13in.pbm",
+      "fixture_sha256": "d23295a620ddcaff2c19de911d23f7d5c662a653d0b8de89bd51036f1db5c953",
+      "journey_id": "battery_recovery_only_clears_low_battery",
+      "render_hashes": {
+        "1.54in": "e62d1e9143e564931016920adc61caa5362d2ddc7961177ebe89e0bd11b42bb3",
+        "2.13in": "14d79ce8f83c7bd0254ecc0194e860e1f4b0ec3857d30b19d3343be310f72bb5"
+      },
+      "step_index": 7,
+      "visible_expression": "idle"
+    },
+    {
+      "accepted": true,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 188,
+      "event": "speaker.prompt",
+      "expression_signal": "SPEAKER_PROMPT",
+      "fixture_path": "docs/validation/epaper/expression_speaking_2_13in.pbm",
+      "fixture_sha256": "bd4bfbd422a5b64cbaa141b14303bdeb301d8ddab19c8c7f670309308a11e8bf",
+      "journey_id": "speaker_prompt_result",
+      "render_hashes": {
+        "1.54in": "ea5ab422677d1a0a067d925572055bbe2ed66b75bcf62c4e01fe09d6f895dce5",
+        "2.13in": "31f30357169f39e82492b9ab641c4f05e2af8b3a551d5c397fbbad5bcb446079"
+      },
+      "step_index": 0,
+      "visible_expression": "speaking"
+    },
+    {
+      "accepted": true,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 133,
+      "event": "speaker.result",
+      "expression_signal": "SPEAKER_RESULT",
+      "fixture_path": "docs/validation/epaper/expression_happy_2_13in.pbm",
+      "fixture_sha256": "8bf50a5387f6a48593a3de978b197703373370b094b5511b88d01f0aa3906f42",
+      "journey_id": "speaker_prompt_result",
+      "render_hashes": {
+        "1.54in": "050bd26f3967bf09f006e097efb46580978d0a870a4a0d0c798629aa9494cc3a",
+        "2.13in": "b1a60d50befc67dbe6ed59345e78fbbd76e433ec49d77d58a001d475fc6d8fe2"
+      },
+      "step_index": 1,
+      "visible_expression": "happy"
+    },
+    {
+      "accepted": true,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 133,
+      "event": "speaker.result",
+      "expression_signal": "SPEAKER_RESULT",
+      "fixture_path": "docs/validation/epaper/expression_happy_2_13in.pbm",
+      "fixture_sha256": "8bf50a5387f6a48593a3de978b197703373370b094b5511b88d01f0aa3906f42",
+      "journey_id": "transient_expression_auto_recovery",
+      "render_hashes": {
+        "1.54in": "050bd26f3967bf09f006e097efb46580978d0a870a4a0d0c798629aa9494cc3a",
+        "2.13in": "2df6ac6da8a6f80125f1d3c712edf7ba781ba5263128db3d7b12b72d70783792"
+      },
+      "step_index": 0,
+      "visible_expression": "happy"
+    },
+    {
+      "accepted": false,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 133,
+      "event": "time.elapsed",
+      "expression_signal": null,
+      "fixture_path": "docs/validation/epaper/expression_happy_2_13in.pbm",
+      "fixture_sha256": "8bf50a5387f6a48593a3de978b197703373370b094b5511b88d01f0aa3906f42",
+      "journey_id": "transient_expression_auto_recovery",
+      "render_hashes": {
+        "1.54in": "050bd26f3967bf09f006e097efb46580978d0a870a4a0d0c798629aa9494cc3a",
+        "2.13in": "7ba4268350224e967124ee6b3437a801545ed4ffd1a3f352422a11bf9d5744c8"
+      },
+      "step_index": 1,
+      "visible_expression": "happy"
+    },
+    {
+      "accepted": true,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 195,
+      "event": "time.elapsed",
+      "expression_signal": "RECOVERY",
+      "fixture_path": "docs/validation/epaper/expression_idle_2_13in.pbm",
+      "fixture_sha256": "d23295a620ddcaff2c19de911d23f7d5c662a653d0b8de89bd51036f1db5c953",
+      "journey_id": "transient_expression_auto_recovery",
+      "render_hashes": {
+        "1.54in": "e62d1e9143e564931016920adc61caa5362d2ddc7961177ebe89e0bd11b42bb3",
+        "2.13in": "68a2c3a6b377217f077d1bd46bf3cc6d4315047da8bf269cb3ce2fe4bd8fc036"
+      },
+      "step_index": 2,
+      "visible_expression": "idle"
+    },
+    {
+      "accepted": true,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 121,
+      "event": "meeting.finalize",
+      "expression_signal": "MEETING_FINALIZE",
+      "fixture_path": "docs/validation/epaper/expression_sync_complete_2_13in.pbm",
+      "fixture_sha256": "57325a3e8b85cd30efb4d7533904ab417136ab861aa68cff361dd29b275bac67",
+      "journey_id": "transient_expression_auto_recovery",
+      "render_hashes": {
+        "1.54in": "81a42cc28a09832f9ae6fd894483d032bb9013c3f17329ab2650a6319606868f",
+        "2.13in": "10a9595291f8ca8f4797a58ec560f68c006eec9ffa6aac832cd2f0d3ed56297f"
+      },
+      "step_index": 3,
+      "visible_expression": "sync_complete"
+    },
+    {
+      "accepted": true,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 195,
+      "event": "time.elapsed",
+      "expression_signal": "RECOVERY",
+      "fixture_path": "docs/validation/epaper/expression_idle_2_13in.pbm",
+      "fixture_sha256": "d23295a620ddcaff2c19de911d23f7d5c662a653d0b8de89bd51036f1db5c953",
+      "journey_id": "transient_expression_auto_recovery",
+      "render_hashes": {
+        "1.54in": "e62d1e9143e564931016920adc61caa5362d2ddc7961177ebe89e0bd11b42bb3",
+        "2.13in": "d1f1987b7f769919ea0ed141138e6ad2f24aba102b635174e1fec7753d604148"
+      },
+      "step_index": 4,
+      "visible_expression": "idle"
+    },
+    {
+      "accepted": true,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 192,
+      "event": "recording_fsm.start_request",
+      "expression_signal": "RECORDING_START",
+      "fixture_path": "docs/validation/epaper/expression_recording_2_13in.pbm",
+      "fixture_sha256": "73f2c27839f222ebfb49d5e716b7e67d5de0d8dd02893d4f77b1d3f0d30fa11b",
+      "journey_id": "transient_expression_auto_recovery",
+      "render_hashes": {
+        "1.54in": "546b8c6e699267cc8b056354da53cffc788a7e9f381a883c9d110fe28274b432",
+        "2.13in": "9e9106e815f988ed4dccd2d9d135d0a50afd56aa13634feadca91a0e3d419f64"
+      },
+      "step_index": 5,
+      "visible_expression": "recording"
+    },
+    {
+      "accepted": false,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 192,
+      "event": "time.elapsed",
+      "expression_signal": null,
+      "fixture_path": "docs/validation/epaper/expression_recording_2_13in.pbm",
+      "fixture_sha256": "73f2c27839f222ebfb49d5e716b7e67d5de0d8dd02893d4f77b1d3f0d30fa11b",
+      "journey_id": "transient_expression_auto_recovery",
+      "render_hashes": {
+        "1.54in": "546b8c6e699267cc8b056354da53cffc788a7e9f381a883c9d110fe28274b432",
+        "2.13in": "6c31411a7b45869bee12e84ec67ceda2b0b1af5b4f685f557b9f4dd938652fba"
+      },
+      "step_index": 6,
+      "visible_expression": "recording"
+    },
+    {
+      "accepted": true,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 166,
+      "event": "wake_word.rejected",
+      "expression_signal": "ERROR",
+      "fixture_path": "docs/validation/epaper/expression_error_2_13in.pbm",
+      "fixture_sha256": "25a88986d6d01b36ca385c7932c3fdf04fab1c74d1fe3f781b479b90ef34729d",
+      "journey_id": "wake_reject_recovery",
+      "render_hashes": {
+        "1.54in": "430b17d4a3204cfc05a48384eb19ba92743b509fcd1b130bd6cc4e5a59de9ddc",
+        "2.13in": "3141c28dd6e58453c47ed77b30239903ffe7b8e62489aa4106fde0dd128e7f3c"
+      },
+      "step_index": 0,
+      "visible_expression": "error"
+    },
+    {
+      "accepted": true,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 195,
+      "event": "warnings.recovered",
+      "expression_signal": "RECOVERY",
+      "fixture_path": "docs/validation/epaper/expression_idle_2_13in.pbm",
+      "fixture_sha256": "d23295a620ddcaff2c19de911d23f7d5c662a653d0b8de89bd51036f1db5c953",
+      "journey_id": "wake_reject_recovery",
+      "render_hashes": {
+        "1.54in": "e62d1e9143e564931016920adc61caa5362d2ddc7961177ebe89e0bd11b42bb3",
+        "2.13in": "ad71231e04fbf14c82502a50f3f0dbcaf6e8f7f334b294d17f652c87f17ebe10"
+      },
+      "step_index": 1,
+      "visible_expression": "idle"
+    },
+    {
+      "accepted": false,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 195,
+      "event": "wake_word.disabled",
+      "expression_signal": "WAKE_DISABLED",
+      "fixture_path": "docs/validation/epaper/expression_idle_2_13in.pbm",
+      "fixture_sha256": "d23295a620ddcaff2c19de911d23f7d5c662a653d0b8de89bd51036f1db5c953",
+      "journey_id": "wake_reject_recovery",
+      "render_hashes": {
+        "1.54in": "e62d1e9143e564931016920adc61caa5362d2ddc7961177ebe89e0bd11b42bb3",
+        "2.13in": "72f3cf1f3d276832a598974723f544bb21ef09d294e2211f01dae6ff5ecaad4c"
+      },
+      "step_index": 2,
+      "visible_expression": "idle"
+    },
+    {
+      "accepted": true,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 96,
+      "event": "wake_word.disabled",
+      "expression_signal": "WAKE_DISABLED",
+      "fixture_path": "docs/validation/epaper/expression_sleepy_2_13in.pbm",
+      "fixture_sha256": "29e85bce3a17228ef8a79c4c67c4a65f26a4fb9770d520f6db2fd37b0287c5d7",
+      "journey_id": "wake_disabled_sleepy",
+      "render_hashes": {
+        "1.54in": "ee9935897a68da1dc9b8f97c2b2bad0463dd8887652b1e82652f0bcdc0f9634a",
+        "2.13in": "8ae9ad45403b5b0fa5020aa4f141b0e00fda738d07c447c86817d0a6b64a8005"
+      },
+      "step_index": 0,
+      "visible_expression": "sleepy"
+    },
+    {
+      "accepted": true,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 195,
+      "event": "wake_word.armed",
+      "expression_signal": "WAKE_ARMED",
+      "fixture_path": "docs/validation/epaper/expression_idle_2_13in.pbm",
+      "fixture_sha256": "d23295a620ddcaff2c19de911d23f7d5c662a653d0b8de89bd51036f1db5c953",
+      "journey_id": "settings_sleepy_hint",
+      "render_hashes": {
+        "1.54in": "e62d1e9143e564931016920adc61caa5362d2ddc7961177ebe89e0bd11b42bb3",
+        "2.13in": "7fff9d2cc4d4c7248fdec8acc3179879a54597d92dd8b6cfeed572a203d3ea3d"
+      },
+      "step_index": 0,
+      "visible_expression": "idle"
+    },
+    {
+      "accepted": true,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 96,
+      "event": "settings.display_off",
+      "expression_signal": "SETTINGS_SLEEPY",
+      "fixture_path": "docs/validation/epaper/expression_sleepy_2_13in.pbm",
+      "fixture_sha256": "29e85bce3a17228ef8a79c4c67c4a65f26a4fb9770d520f6db2fd37b0287c5d7",
+      "journey_id": "settings_sleepy_hint",
+      "render_hashes": {
+        "1.54in": "ee9935897a68da1dc9b8f97c2b2bad0463dd8887652b1e82652f0bcdc0f9634a",
+        "2.13in": "d7c1453c0826fe1d0e04bd96ef7c43a8799ba5d8c8eefff97a87f7932f802948"
+      },
+      "step_index": 1,
+      "visible_expression": "sleepy"
+    },
+    {
+      "accepted": true,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 195,
+      "event": "settings.display_on",
+      "expression_signal": "RECOVERY",
+      "fixture_path": "docs/validation/epaper/expression_idle_2_13in.pbm",
+      "fixture_sha256": "d23295a620ddcaff2c19de911d23f7d5c662a653d0b8de89bd51036f1db5c953",
+      "journey_id": "settings_sleepy_hint",
+      "render_hashes": {
+        "1.54in": "e62d1e9143e564931016920adc61caa5362d2ddc7961177ebe89e0bd11b42bb3",
+        "2.13in": "ea6dfe9f6446712f2575fa058ee2a0a7a74001cd0b80f403ea1d6332dbc34e2b"
+      },
+      "step_index": 2,
+      "visible_expression": "idle"
+    },
+    {
+      "accepted": true,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 192,
+      "event": "recording_fsm.start_request",
+      "expression_signal": "RECORDING_START",
+      "fixture_path": "docs/validation/epaper/expression_recording_2_13in.pbm",
+      "fixture_sha256": "73f2c27839f222ebfb49d5e716b7e67d5de0d8dd02893d4f77b1d3f0d30fa11b",
+      "journey_id": "settings_sleepy_hint",
+      "render_hashes": {
+        "1.54in": "546b8c6e699267cc8b056354da53cffc788a7e9f381a883c9d110fe28274b432",
+        "2.13in": "95af5b94646da8e6618bac40d8872a488a9325ab6062257903cff3c2ebe36b6c"
+      },
+      "step_index": 3,
+      "visible_expression": "recording"
+    },
+    {
+      "accepted": false,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 192,
+      "event": "settings.display_off",
+      "expression_signal": "SETTINGS_SLEEPY",
+      "fixture_path": "docs/validation/epaper/expression_recording_2_13in.pbm",
+      "fixture_sha256": "73f2c27839f222ebfb49d5e716b7e67d5de0d8dd02893d4f77b1d3f0d30fa11b",
+      "journey_id": "settings_sleepy_hint",
+      "render_hashes": {
+        "1.54in": "546b8c6e699267cc8b056354da53cffc788a7e9f381a883c9d110fe28274b432",
+        "2.13in": "a34f8f47e7556c2fac41a08a5c528ed9507350c2fc107636d3133ce2269f53ec"
+      },
+      "step_index": 4,
+      "visible_expression": "recording"
+    },
+    {
+      "accepted": true,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 195,
+      "event": "recording_fsm.cancel_request",
+      "expression_signal": "RECORDING_CANCEL",
+      "fixture_path": "docs/validation/epaper/expression_idle_2_13in.pbm",
+      "fixture_sha256": "d23295a620ddcaff2c19de911d23f7d5c662a653d0b8de89bd51036f1db5c953",
+      "journey_id": "settings_sleepy_hint",
+      "render_hashes": {
+        "1.54in": "e62d1e9143e564931016920adc61caa5362d2ddc7961177ebe89e0bd11b42bb3",
+        "2.13in": "d9eff91d5e6ecce1c085bff91f4077ae51065d0145e8218c997bac3c58cb42a8"
+      },
+      "step_index": 5,
+      "visible_expression": "idle"
+    },
+    {
+      "accepted": true,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 96,
+      "event": "settings.quiet_hours",
+      "expression_signal": "SETTINGS_SLEEPY",
+      "fixture_path": "docs/validation/epaper/expression_sleepy_2_13in.pbm",
+      "fixture_sha256": "29e85bce3a17228ef8a79c4c67c4a65f26a4fb9770d520f6db2fd37b0287c5d7",
+      "journey_id": "settings_sleepy_hint",
+      "render_hashes": {
+        "1.54in": "ee9935897a68da1dc9b8f97c2b2bad0463dd8887652b1e82652f0bcdc0f9634a",
+        "2.13in": "ba0d4aa68dcf89c6d2dd70223aa5224c5cd0fdcc15aee9bd81476b677cc14aaf"
+      },
+      "step_index": 6,
+      "visible_expression": "sleepy"
+    },
+    {
+      "accepted": true,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 192,
+      "event": "recording_fsm.start_request",
+      "expression_signal": "RECORDING_START",
+      "fixture_path": "docs/validation/epaper/expression_recording_2_13in.pbm",
+      "fixture_sha256": "73f2c27839f222ebfb49d5e716b7e67d5de0d8dd02893d4f77b1d3f0d30fa11b",
+      "journey_id": "display_update_no_self_loop",
+      "render_hashes": {
+        "1.54in": "546b8c6e699267cc8b056354da53cffc788a7e9f381a883c9d110fe28274b432",
+        "2.13in": "6d6767907029ba99c25d341050c04e26069fb47949378dfc2c496885fd61fb9e"
+      },
+      "step_index": 0,
+      "visible_expression": "recording"
+    },
+    {
+      "accepted": false,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 192,
+      "event": "e_paper.update_result",
+      "expression_signal": null,
+      "fixture_path": "docs/validation/epaper/expression_recording_2_13in.pbm",
+      "fixture_sha256": "73f2c27839f222ebfb49d5e716b7e67d5de0d8dd02893d4f77b1d3f0d30fa11b",
+      "journey_id": "display_update_no_self_loop",
+      "render_hashes": {
+        "1.54in": "546b8c6e699267cc8b056354da53cffc788a7e9f381a883c9d110fe28274b432",
+        "2.13in": "44819b427196fbe007bd0339e5f10ded20825bbaed46ecff234be55f5139beba"
+      },
+      "step_index": 1,
+      "visible_expression": "recording"
+    },
+    {
+      "accepted": true,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 133,
+      "event": "battery_charging.sample",
+      "expression_signal": "LOW_BATTERY",
+      "fixture_path": "docs/validation/epaper/expression_low_battery_2_13in.pbm",
+      "fixture_sha256": "e97233a3b0904e2941083895f2a97ac8c50ad90e6cd9e170cd5003d92e7e1d03",
+      "journey_id": "error_overrides_and_recovers",
+      "render_hashes": {
+        "1.54in": "7d1b61cf0d1efef93643185ab55ce06cf5f0873c0dea78ffd715dbc08af02fc5",
+        "2.13in": "410b0affe41d24345f93dc7120c16719e99e733d08fca70fd42cd1b161a0dfc9"
+      },
+      "step_index": 0,
+      "visible_expression": "low_battery"
+    },
+    {
+      "accepted": true,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 166,
+      "event": "errors.fault",
+      "expression_signal": "ERROR",
+      "fixture_path": "docs/validation/epaper/expression_error_2_13in.pbm",
+      "fixture_sha256": "25a88986d6d01b36ca385c7932c3fdf04fab1c74d1fe3f781b479b90ef34729d",
+      "journey_id": "error_overrides_and_recovers",
+      "render_hashes": {
+        "1.54in": "430b17d4a3204cfc05a48384eb19ba92743b509fcd1b130bd6cc4e5a59de9ddc",
+        "2.13in": "161f0da78f111588cf1b8baf455dbf68dc362a2ae260ad6d0d827a4f5694eb93"
+      },
+      "step_index": 1,
+      "visible_expression": "error"
+    },
+    {
+      "accepted": false,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 166,
+      "event": "speaker.prompt",
+      "expression_signal": "SPEAKER_PROMPT",
+      "fixture_path": "docs/validation/epaper/expression_error_2_13in.pbm",
+      "fixture_sha256": "25a88986d6d01b36ca385c7932c3fdf04fab1c74d1fe3f781b479b90ef34729d",
+      "journey_id": "error_overrides_and_recovers",
+      "render_hashes": {
+        "1.54in": "430b17d4a3204cfc05a48384eb19ba92743b509fcd1b130bd6cc4e5a59de9ddc",
+        "2.13in": "598ceda13f6b0243d11cc1edb9c1c74a2b51090ff1f3eb0406745876e1ba7d9f"
+      },
+      "step_index": 2,
+      "visible_expression": "error"
+    },
+    {
+      "accepted": true,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 195,
+      "event": "warnings.recovered",
+      "expression_signal": "RECOVERY",
+      "fixture_path": "docs/validation/epaper/expression_idle_2_13in.pbm",
+      "fixture_sha256": "d23295a620ddcaff2c19de911d23f7d5c662a653d0b8de89bd51036f1db5c953",
+      "journey_id": "error_overrides_and_recovers",
+      "render_hashes": {
+        "1.54in": "e62d1e9143e564931016920adc61caa5362d2ddc7961177ebe89e0bd11b42bb3",
+        "2.13in": "92e8f21afe9c2f119d4c8f287de315769dd1e24fc35e8c17cc901d877fcad065"
+      },
+      "step_index": 3,
+      "visible_expression": "idle"
+    },
+    {
+      "accepted": true,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 192,
+      "event": "meeting.start",
+      "expression_signal": "MEETING_START",
+      "fixture_path": "docs/validation/epaper/expression_recording_2_13in.pbm",
+      "fixture_sha256": "73f2c27839f222ebfb49d5e716b7e67d5de0d8dd02893d4f77b1d3f0d30fa11b",
+      "journey_id": "meeting_capture_finalize",
+      "render_hashes": {
+        "1.54in": "546b8c6e699267cc8b056354da53cffc788a7e9f381a883c9d110fe28274b432",
+        "2.13in": "ee0691c588844cad002b942bc38c796c020725d6680301f6865ab63301cdc0ef"
+      },
+      "step_index": 0,
+      "visible_expression": "recording"
+    },
+    {
+      "accepted": true,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 203,
+      "event": "meeting.stop",
+      "expression_signal": "MEETING_STOP",
+      "fixture_path": "docs/validation/epaper/expression_thinking_2_13in.pbm",
+      "fixture_sha256": "7169ac3cc87093dd00c7066a8b24fbcd751719104611bf6ec58362d261f29ba7",
+      "journey_id": "meeting_capture_finalize",
+      "render_hashes": {
+        "1.54in": "d0f7938e6df5f3396c55962ad213daf3939a950d2fecdd22232838b122b572d9",
+        "2.13in": "5772bd7825db6d97c314d5cf6fb4bc5c8e28e307b20e6f0209ec484249ecaa3e"
+      },
+      "step_index": 1,
+      "visible_expression": "thinking"
+    },
+    {
+      "accepted": true,
+      "bitmap_height": 122,
+      "bitmap_width": 250,
+      "black_runs": 121,
+      "event": "meeting.finalize",
+      "expression_signal": "MEETING_FINALIZE",
+      "fixture_path": "docs/validation/epaper/expression_sync_complete_2_13in.pbm",
+      "fixture_sha256": "57325a3e8b85cd30efb4d7533904ab417136ab861aa68cff361dd29b275bac67",
+      "journey_id": "meeting_capture_finalize",
+      "render_hashes": {
+        "1.54in": "81a42cc28a09832f9ae6fd894483d032bb9013c3f17329ab2650a6319606868f",
+        "2.13in": "0df57e5221685160a1b0b874ce608188d0e4b029872ccf1004f852fb6a0ea60a"
+      },
+      "step_index": 2,
+      "visible_expression": "sync_complete"
+    }
+  ],
+  "suppressed_or_held_steps": 12,
+  "svg_path": "docs/validation/epaper/expression-storyboard.svg",
+  "svg_sha256": "425fe835e2f306357550a9e5f7b3f379304e66b966fbff972f120205709b0d81",
+  "total_black_runs": 10240,
+  "visual_variant": "2.13in"
+}

@@ -1,0 +1,20 @@
+{
+  "alternate_asset_suffix": "2_7in",
+  "alternate_profile": "264x167",
+  "asset_count": 39,
+  "checks": {
+    "all_expression_assets_emitted": true,
+    "all_expression_assets_match_requested_dimensions": true,
+    "all_expression_assets_use_requested_suffix": true,
+    "alternate_import_passes": true,
+    "machine_review_passes": true,
+    "no_fixed_art_margin": true,
+    "profile_is_reported": true,
+    "review_artifacts_emitted": true
+  },
+  "purpose": "Prove one accepted generated expression sheet can produce isolated assets for a second panel profile without rewriting the art engine or mutating WB55 1.54in output names.",
+  "schema_id": "companion.screen.generated_art_profile_portability.v1",
+  "source": "docs/art/generated_pet_expression_sheet_v5.png",
+  "status": "PASS",
+  "validation_command": "python .\\tools\\verify_generated_expression_sheet_profile_portability.py"
+}

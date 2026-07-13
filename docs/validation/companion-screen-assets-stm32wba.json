@@ -1,0 +1,31 @@
+{
+  "contract": {
+    "address_model": "logical_partition_relative_offset",
+    "bounds_policy": "adapter rejects reads outside configured partition_size",
+    "hardware_parity_claimed": false,
+    "required_callback": "read(context, partition_offset, destination, length)",
+    "storage_class": "external_nor",
+    "targets": [
+      "WBA55",
+      "WBA65"
+    ]
+  },
+  "purpose": "Callback-only external ui_assets reader for WBA55/WBA65. Target storage owns physical Flash details; the screen layer owns logical offsets.",
+  "required_future_evidence": [
+    "CubeWBA storage peripheral and pin facts for the selected board",
+    "external NOR capacity, erase geometry, and ui_assets partition layout",
+    "CEMP mount, CRC, profile check, and frame read from real WBA storage",
+    "resource OTA staging and atomic active-metadata activation"
+  ],
+  "schema_id": "companion.pendant.screen_assets_stm32wba.v1",
+  "sources": {
+    "adapter_header": "app/companion_pendant/epaper/screen_assets_stm32wba.h",
+    "adapter_source": "app/companion_pendant/epaper/screen_assets_stm32wba.c",
+    "portable_asset_store": "app/companion_pendant/epaper/asset_store.h"
+  },
+  "status": "PASS",
+  "validation_commands": [
+    "python .\\tools\\verify_expression_screen_assets_stm32wba.py",
+    "python .\\tools\\verify_expression_wba_portability.py"
+  ]
+}

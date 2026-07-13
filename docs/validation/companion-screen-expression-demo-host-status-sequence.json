@@ -1,0 +1,1334 @@
+{
+  "acceptance": {
+    "accepted_final_content_crc_is_stable": true,
+    "accepted_final_refresh_counts_are_contiguous": true,
+    "accepted_final_request_identity_is_stable": true,
+    "content_crc_matches_expression_decision_crc32": true,
+    "covers_all_demo_expression_faces": true,
+    "diagnostic_arg3_matches_expression_and_signal_ids": true,
+    "held_steps_emit_no_host_status": true,
+    "legacy_six_face_sequence_is_subset": true,
+    "wba_safe_demo_status_sequence": true
+  },
+  "accepted_status_steps": [
+    {
+      "card_status": {
+        "card_slot": 1,
+        "content_crc32": "0x4bbb0bc4",
+        "last_error": 0,
+        "last_error_name": "ok",
+        "refresh_count": 100,
+        "render_state": 1,
+        "render_state_name": "accepted",
+        "request_id": 3758100481,
+        "schema_version": 1
+      },
+      "content_crc32": "0x4bbb0bc4",
+      "demo_id": "wake_recording_sync",
+      "demo_order": 1,
+      "diagnostic_arg3": "0x00000001",
+      "diagnostic_decode": {
+        "expression_id": 0,
+        "signal_id": 1
+      },
+      "dry_run_final_status": {
+        "card_slot": 1,
+        "content_crc32": "0x4bbb0bc4",
+        "last_error": 4,
+        "last_error_name": "deferred_no_panel",
+        "refresh_count": 101,
+        "render_state": 3,
+        "render_state_name": "failed",
+        "request_id": 3758100481,
+        "schema_version": 1
+      },
+      "event": "wake_word.armed",
+      "expression": "idle",
+      "expression_id": 0,
+      "priority": 20,
+      "request_id": 3758100481,
+      "signal": "WAKE_ARMED",
+      "signal_id": 1,
+      "step_index": 0
+    },
+    {
+      "card_status": {
+        "card_slot": 1,
+        "content_crc32": "0x5fffc3fe",
+        "last_error": 0,
+        "last_error_name": "ok",
+        "refresh_count": 102,
+        "render_state": 1,
+        "render_state_name": "accepted",
+        "request_id": 3758100482,
+        "schema_version": 1
+      },
+      "content_crc32": "0x5fffc3fe",
+      "demo_id": "wake_recording_sync",
+      "demo_order": 1,
+      "diagnostic_arg3": "0x00010003",
+      "diagnostic_decode": {
+        "expression_id": 1,
+        "signal_id": 3
+      },
+      "dry_run_final_status": {
+        "card_slot": 1,
+        "content_crc32": "0x5fffc3fe",
+        "last_error": 4,
+        "last_error_name": "deferred_no_panel",
+        "refresh_count": 103,
+        "render_state": 3,
+        "render_state_name": "failed",
+        "request_id": 3758100482,
+        "schema_version": 1
+      },
+      "event": "wake_word.detected",
+      "expression": "listening",
+      "expression_id": 1,
+      "priority": 60,
+      "request_id": 3758100482,
+      "signal": "WAKE_DETECTED",
+      "signal_id": 3,
+      "step_index": 1
+    },
+    {
+      "card_status": {
+        "card_slot": 1,
+        "content_crc32": "0xcafe2efd",
+        "last_error": 0,
+        "last_error_name": "ok",
+        "refresh_count": 104,
+        "render_state": 1,
+        "render_state_name": "accepted",
+        "request_id": 3758100483,
+        "schema_version": 1
+      },
+      "content_crc32": "0xcafe2efd",
+      "demo_id": "wake_recording_sync",
+      "demo_order": 1,
+      "diagnostic_arg3": "0x00060009",
+      "diagnostic_decode": {
+        "expression_id": 6,
+        "signal_id": 9
+      },
+      "dry_run_final_status": {
+        "card_slot": 1,
+        "content_crc32": "0xcafe2efd",
+        "last_error": 4,
+        "last_error_name": "deferred_no_panel",
+        "refresh_count": 105,
+        "render_state": 3,
+        "render_state_name": "failed",
+        "request_id": 3758100483,
+        "schema_version": 1
+      },
+      "event": "recording_fsm.start_request",
+      "expression": "recording",
+      "expression_id": 6,
+      "priority": 90,
+      "request_id": 3758100483,
+      "signal": "RECORDING_START",
+      "signal_id": 9,
+      "step_index": 2
+    },
+    {
+      "card_status": {
+        "card_slot": 1,
+        "content_crc32": "0xacc74275",
+        "last_error": 0,
+        "last_error_name": "ok",
+        "refresh_count": 106,
+        "render_state": 1,
+        "render_state_name": "accepted",
+        "request_id": 3758100484,
+        "schema_version": 1
+      },
+      "content_crc32": "0xacc74275",
+      "demo_id": "wake_recording_sync",
+      "demo_order": 1,
+      "diagnostic_arg3": "0x0002000a",
+      "diagnostic_decode": {
+        "expression_id": 2,
+        "signal_id": 10
+      },
+      "dry_run_final_status": {
+        "card_slot": 1,
+        "content_crc32": "0xacc74275",
+        "last_error": 4,
+        "last_error_name": "deferred_no_panel",
+        "refresh_count": 107,
+        "render_state": 3,
+        "render_state_name": "failed",
+        "request_id": 3758100484,
+        "schema_version": 1
+      },
+      "event": "recording_fsm.stop_request",
+      "expression": "thinking",
+      "expression_id": 2,
+      "priority": 50,
+      "request_id": 3758100484,
+      "signal": "RECORDING_STOP",
+      "signal_id": 10,
+      "step_index": 3
+    },
+    {
+      "card_status": {
+        "card_slot": 1,
+        "content_crc32": "0x943f53fd",
+        "last_error": 0,
+        "last_error_name": "ok",
+        "refresh_count": 108,
+        "render_state": 1,
+        "render_state_name": "accepted",
+        "request_id": 3758100485,
+        "schema_version": 1
+      },
+      "content_crc32": "0x943f53fd",
+      "demo_id": "wake_recording_sync",
+      "demo_order": 1,
+      "diagnostic_arg3": "0x0007000c",
+      "diagnostic_decode": {
+        "expression_id": 7,
+        "signal_id": 12
+      },
+      "dry_run_final_status": {
+        "card_slot": 1,
+        "content_crc32": "0x943f53fd",
+        "last_error": 4,
+        "last_error_name": "deferred_no_panel",
+        "refresh_count": 109,
+        "render_state": 3,
+        "render_state_name": "failed",
+        "request_id": 3758100485,
+        "schema_version": 1
+      },
+      "event": "recording_fsm.session_finished",
+      "expression": "sync_complete",
+      "expression_id": 7,
+      "priority": 40,
+      "request_id": 3758100485,
+      "signal": "RECORDING_FINISHED",
+      "signal_id": 12,
+      "step_index": 4
+    },
+    {
+      "card_status": {
+        "card_slot": 1,
+        "content_crc32": "0x83eedeaa",
+        "last_error": 0,
+        "last_error_name": "ok",
+        "refresh_count": 110,
+        "render_state": 1,
+        "render_state_name": "accepted",
+        "request_id": 3758100486,
+        "schema_version": 1
+      },
+      "content_crc32": "0x83eedeaa",
+      "demo_id": "speaker_prompt_result",
+      "demo_order": 2,
+      "diagnostic_arg3": "0x00030004",
+      "diagnostic_decode": {
+        "expression_id": 3,
+        "signal_id": 4
+      },
+      "dry_run_final_status": {
+        "card_slot": 1,
+        "content_crc32": "0x83eedeaa",
+        "last_error": 4,
+        "last_error_name": "deferred_no_panel",
+        "refresh_count": 111,
+        "render_state": 3,
+        "render_state_name": "failed",
+        "request_id": 3758100486,
+        "schema_version": 1
+      },
+      "event": "speaker.prompt",
+      "expression": "speaking",
+      "expression_id": 3,
+      "priority": 70,
+      "request_id": 3758100486,
+      "signal": "SPEAKER_PROMPT",
+      "signal_id": 4,
+      "step_index": 0
+    },
+    {
+      "card_status": {
+        "card_slot": 1,
+        "content_crc32": "0x75ed7ba0",
+        "last_error": 0,
+        "last_error_name": "ok",
+        "refresh_count": 112,
+        "render_state": 1,
+        "render_state_name": "accepted",
+        "request_id": 3758100487,
+        "schema_version": 1
+      },
+      "content_crc32": "0x75ed7ba0",
+      "demo_id": "speaker_prompt_result",
+      "demo_order": 2,
+      "diagnostic_arg3": "0x00040005",
+      "diagnostic_decode": {
+        "expression_id": 4,
+        "signal_id": 5
+      },
+      "dry_run_final_status": {
+        "card_slot": 1,
+        "content_crc32": "0x75ed7ba0",
+        "last_error": 4,
+        "last_error_name": "deferred_no_panel",
+        "refresh_count": 113,
+        "render_state": 3,
+        "render_state_name": "failed",
+        "request_id": 3758100487,
+        "schema_version": 1
+      },
+      "event": "speaker.result",
+      "expression": "happy",
+      "expression_id": 4,
+      "priority": 30,
+      "request_id": 3758100487,
+      "signal": "SPEAKER_RESULT",
+      "signal_id": 5,
+      "step_index": 1
+    },
+    {
+      "card_status": {
+        "card_slot": 1,
+        "content_crc32": "0x4bbb0bc4",
+        "last_error": 0,
+        "last_error_name": "ok",
+        "refresh_count": 114,
+        "render_state": 1,
+        "render_state_name": "accepted",
+        "request_id": 3758100488,
+        "schema_version": 1
+      },
+      "content_crc32": "0x4bbb0bc4",
+      "demo_id": "settings_sleepy_hint",
+      "demo_order": 3,
+      "diagnostic_arg3": "0x00000001",
+      "diagnostic_decode": {
+        "expression_id": 0,
+        "signal_id": 1
+      },
+      "dry_run_final_status": {
+        "card_slot": 1,
+        "content_crc32": "0x4bbb0bc4",
+        "last_error": 4,
+        "last_error_name": "deferred_no_panel",
+        "refresh_count": 115,
+        "render_state": 3,
+        "render_state_name": "failed",
+        "request_id": 3758100488,
+        "schema_version": 1
+      },
+      "event": "wake_word.armed",
+      "expression": "idle",
+      "expression_id": 0,
+      "priority": 20,
+      "request_id": 3758100488,
+      "signal": "WAKE_ARMED",
+      "signal_id": 1,
+      "step_index": 0
+    },
+    {
+      "card_status": {
+        "card_slot": 1,
+        "content_crc32": "0xd6afbe44",
+        "last_error": 0,
+        "last_error_name": "ok",
+        "refresh_count": 116,
+        "render_state": 1,
+        "render_state_name": "accepted",
+        "request_id": 3758100489,
+        "schema_version": 1
+      },
+      "content_crc32": "0xd6afbe44",
+      "demo_id": "settings_sleepy_hint",
+      "demo_order": 3,
+      "diagnostic_arg3": "0x00050010",
+      "diagnostic_decode": {
+        "expression_id": 5,
+        "signal_id": 16
+      },
+      "dry_run_final_status": {
+        "card_slot": 1,
+        "content_crc32": "0xd6afbe44",
+        "last_error": 4,
+        "last_error_name": "deferred_no_panel",
+        "refresh_count": 117,
+        "render_state": 3,
+        "render_state_name": "failed",
+        "request_id": 3758100489,
+        "schema_version": 1
+      },
+      "event": "settings.display_off",
+      "expression": "sleepy",
+      "expression_id": 5,
+      "priority": 10,
+      "request_id": 3758100489,
+      "signal": "SETTINGS_SLEEPY",
+      "signal_id": 16,
+      "step_index": 1
+    },
+    {
+      "card_status": {
+        "card_slot": 1,
+        "content_crc32": "0x3db8b723",
+        "last_error": 0,
+        "last_error_name": "ok",
+        "refresh_count": 118,
+        "render_state": 1,
+        "render_state_name": "accepted",
+        "request_id": 3758100490,
+        "schema_version": 1
+      },
+      "content_crc32": "0x3db8b723",
+      "demo_id": "settings_sleepy_hint",
+      "demo_order": 3,
+      "diagnostic_arg3": "0x0000000e",
+      "diagnostic_decode": {
+        "expression_id": 0,
+        "signal_id": 14
+      },
+      "dry_run_final_status": {
+        "card_slot": 1,
+        "content_crc32": "0x3db8b723",
+        "last_error": 4,
+        "last_error_name": "deferred_no_panel",
+        "refresh_count": 119,
+        "render_state": 3,
+        "render_state_name": "failed",
+        "request_id": 3758100490,
+        "schema_version": 1
+      },
+      "event": "settings.display_on",
+      "expression": "idle",
+      "expression_id": 0,
+      "priority": 20,
+      "request_id": 3758100490,
+      "signal": "RECOVERY",
+      "signal_id": 14,
+      "step_index": 2
+    },
+    {
+      "card_status": {
+        "card_slot": 1,
+        "content_crc32": "0xcafe2efd",
+        "last_error": 0,
+        "last_error_name": "ok",
+        "refresh_count": 120,
+        "render_state": 1,
+        "render_state_name": "accepted",
+        "request_id": 3758100491,
+        "schema_version": 1
+      },
+      "content_crc32": "0xcafe2efd",
+      "demo_id": "settings_sleepy_hint",
+      "demo_order": 3,
+      "diagnostic_arg3": "0x00060009",
+      "diagnostic_decode": {
+        "expression_id": 6,
+        "signal_id": 9
+      },
+      "dry_run_final_status": {
+        "card_slot": 1,
+        "content_crc32": "0xcafe2efd",
+        "last_error": 4,
+        "last_error_name": "deferred_no_panel",
+        "refresh_count": 121,
+        "render_state": 3,
+        "render_state_name": "failed",
+        "request_id": 3758100491,
+        "schema_version": 1
+      },
+      "event": "recording_fsm.start_request",
+      "expression": "recording",
+      "expression_id": 6,
+      "priority": 90,
+      "request_id": 3758100491,
+      "signal": "RECORDING_START",
+      "signal_id": 9,
+      "step_index": 3
+    },
+    {
+      "card_status": {
+        "card_slot": 1,
+        "content_crc32": "0x7fac5316",
+        "last_error": 0,
+        "last_error_name": "ok",
+        "refresh_count": 122,
+        "render_state": 1,
+        "render_state_name": "accepted",
+        "request_id": 3758100492,
+        "schema_version": 1
+      },
+      "content_crc32": "0x7fac5316",
+      "demo_id": "settings_sleepy_hint",
+      "demo_order": 3,
+      "diagnostic_arg3": "0x0000000b",
+      "diagnostic_decode": {
+        "expression_id": 0,
+        "signal_id": 11
+      },
+      "dry_run_final_status": {
+        "card_slot": 1,
+        "content_crc32": "0x7fac5316",
+        "last_error": 4,
+        "last_error_name": "deferred_no_panel",
+        "refresh_count": 123,
+        "render_state": 3,
+        "render_state_name": "failed",
+        "request_id": 3758100492,
+        "schema_version": 1
+      },
+      "event": "recording_fsm.cancel_request",
+      "expression": "idle",
+      "expression_id": 0,
+      "priority": 20,
+      "request_id": 3758100492,
+      "signal": "RECORDING_CANCEL",
+      "signal_id": 11,
+      "step_index": 5
+    },
+    {
+      "card_status": {
+        "card_slot": 1,
+        "content_crc32": "0xd6afbe44",
+        "last_error": 0,
+        "last_error_name": "ok",
+        "refresh_count": 124,
+        "render_state": 1,
+        "render_state_name": "accepted",
+        "request_id": 3758100493,
+        "schema_version": 1
+      },
+      "content_crc32": "0xd6afbe44",
+      "demo_id": "settings_sleepy_hint",
+      "demo_order": 3,
+      "diagnostic_arg3": "0x00050010",
+      "diagnostic_decode": {
+        "expression_id": 5,
+        "signal_id": 16
+      },
+      "dry_run_final_status": {
+        "card_slot": 1,
+        "content_crc32": "0xd6afbe44",
+        "last_error": 4,
+        "last_error_name": "deferred_no_panel",
+        "refresh_count": 125,
+        "render_state": 3,
+        "render_state_name": "failed",
+        "request_id": 3758100493,
+        "schema_version": 1
+      },
+      "event": "settings.quiet_hours",
+      "expression": "sleepy",
+      "expression_id": 5,
+      "priority": 10,
+      "request_id": 3758100493,
+      "signal": "SETTINGS_SLEEPY",
+      "signal_id": 16,
+      "step_index": 6
+    },
+    {
+      "card_status": {
+        "card_slot": 1,
+        "content_crc32": "0xcafe2efd",
+        "last_error": 0,
+        "last_error_name": "ok",
+        "refresh_count": 126,
+        "render_state": 1,
+        "render_state_name": "accepted",
+        "request_id": 3758100494,
+        "schema_version": 1
+      },
+      "content_crc32": "0xcafe2efd",
+      "demo_id": "recording_low_battery_priority",
+      "demo_order": 4,
+      "diagnostic_arg3": "0x00060009",
+      "diagnostic_decode": {
+        "expression_id": 6,
+        "signal_id": 9
+      },
+      "dry_run_final_status": {
+        "card_slot": 1,
+        "content_crc32": "0xcafe2efd",
+        "last_error": 4,
+        "last_error_name": "deferred_no_panel",
+        "refresh_count": 127,
+        "render_state": 3,
+        "render_state_name": "failed",
+        "request_id": 3758100494,
+        "schema_version": 1
+      },
+      "event": "recording_fsm.start_request",
+      "expression": "recording",
+      "expression_id": 6,
+      "priority": 90,
+      "request_id": 3758100494,
+      "signal": "RECORDING_START",
+      "signal_id": 9,
+      "step_index": 0
+    },
+    {
+      "card_status": {
+        "card_slot": 1,
+        "content_crc32": "0xacc74275",
+        "last_error": 0,
+        "last_error_name": "ok",
+        "refresh_count": 128,
+        "render_state": 1,
+        "render_state_name": "accepted",
+        "request_id": 3758100495,
+        "schema_version": 1
+      },
+      "content_crc32": "0xacc74275",
+      "demo_id": "recording_low_battery_priority",
+      "demo_order": 4,
+      "diagnostic_arg3": "0x0002000a",
+      "diagnostic_decode": {
+        "expression_id": 2,
+        "signal_id": 10
+      },
+      "dry_run_final_status": {
+        "card_slot": 1,
+        "content_crc32": "0xacc74275",
+        "last_error": 4,
+        "last_error_name": "deferred_no_panel",
+        "refresh_count": 129,
+        "render_state": 3,
+        "render_state_name": "failed",
+        "request_id": 3758100495,
+        "schema_version": 1
+      },
+      "event": "recording_fsm.stop_request",
+      "expression": "thinking",
+      "expression_id": 2,
+      "priority": 50,
+      "request_id": 3758100495,
+      "signal": "RECORDING_STOP",
+      "signal_id": 10,
+      "step_index": 2
+    },
+    {
+      "card_status": {
+        "card_slot": 1,
+        "content_crc32": "0x720e039c",
+        "last_error": 0,
+        "last_error_name": "ok",
+        "refresh_count": 130,
+        "render_state": 1,
+        "render_state_name": "accepted",
+        "request_id": 3758100496,
+        "schema_version": 1
+      },
+      "content_crc32": "0x720e039c",
+      "demo_id": "recording_low_battery_priority",
+      "demo_order": 4,
+      "diagnostic_arg3": "0x0008000d",
+      "diagnostic_decode": {
+        "expression_id": 8,
+        "signal_id": 13
+      },
+      "dry_run_final_status": {
+        "card_slot": 1,
+        "content_crc32": "0x720e039c",
+        "last_error": 4,
+        "last_error_name": "deferred_no_panel",
+        "refresh_count": 131,
+        "render_state": 3,
+        "render_state_name": "failed",
+        "request_id": 3758100496,
+        "schema_version": 1
+      },
+      "event": "battery_charging.sample",
+      "expression": "low_battery",
+      "expression_id": 8,
+      "priority": 80,
+      "request_id": 3758100496,
+      "signal": "LOW_BATTERY",
+      "signal_id": 13,
+      "step_index": 3
+    },
+    {
+      "card_status": {
+        "card_slot": 1,
+        "content_crc32": "0x720e039c",
+        "last_error": 0,
+        "last_error_name": "ok",
+        "refresh_count": 132,
+        "render_state": 1,
+        "render_state_name": "accepted",
+        "request_id": 3758100497,
+        "schema_version": 1
+      },
+      "content_crc32": "0x720e039c",
+      "demo_id": "battery_recovery_guard",
+      "demo_order": 5,
+      "diagnostic_arg3": "0x0008000d",
+      "diagnostic_decode": {
+        "expression_id": 8,
+        "signal_id": 13
+      },
+      "dry_run_final_status": {
+        "card_slot": 1,
+        "content_crc32": "0x720e039c",
+        "last_error": 4,
+        "last_error_name": "deferred_no_panel",
+        "refresh_count": 133,
+        "render_state": 3,
+        "render_state_name": "failed",
+        "request_id": 3758100497,
+        "schema_version": 1
+      },
+      "event": "battery_charging.sample",
+      "expression": "low_battery",
+      "expression_id": 8,
+      "priority": 80,
+      "request_id": 3758100497,
+      "signal": "LOW_BATTERY",
+      "signal_id": 13,
+      "step_index": 0
+    },
+    {
+      "card_status": {
+        "card_slot": 1,
+        "content_crc32": "0xcbe2e4b4",
+        "last_error": 0,
+        "last_error_name": "ok",
+        "refresh_count": 134,
+        "render_state": 1,
+        "render_state_name": "accepted",
+        "request_id": 3758100498,
+        "schema_version": 1
+      },
+      "content_crc32": "0xcbe2e4b4",
+      "demo_id": "battery_recovery_guard",
+      "demo_order": 5,
+      "diagnostic_arg3": "0x00000011",
+      "diagnostic_decode": {
+        "expression_id": 0,
+        "signal_id": 17
+      },
+      "dry_run_final_status": {
+        "card_slot": 1,
+        "content_crc32": "0xcbe2e4b4",
+        "last_error": 4,
+        "last_error_name": "deferred_no_panel",
+        "refresh_count": 135,
+        "render_state": 3,
+        "render_state_name": "failed",
+        "request_id": 3758100498,
+        "schema_version": 1
+      },
+      "event": "battery_charging.sample",
+      "expression": "idle",
+      "expression_id": 0,
+      "priority": 20,
+      "request_id": 3758100498,
+      "signal": "BATTERY_RECOVERED",
+      "signal_id": 17,
+      "step_index": 2
+    },
+    {
+      "card_status": {
+        "card_slot": 1,
+        "content_crc32": "0xcafe2efd",
+        "last_error": 0,
+        "last_error_name": "ok",
+        "refresh_count": 136,
+        "render_state": 1,
+        "render_state_name": "accepted",
+        "request_id": 3758100499,
+        "schema_version": 1
+      },
+      "content_crc32": "0xcafe2efd",
+      "demo_id": "battery_recovery_guard",
+      "demo_order": 5,
+      "diagnostic_arg3": "0x00060009",
+      "diagnostic_decode": {
+        "expression_id": 6,
+        "signal_id": 9
+      },
+      "dry_run_final_status": {
+        "card_slot": 1,
+        "content_crc32": "0xcafe2efd",
+        "last_error": 4,
+        "last_error_name": "deferred_no_panel",
+        "refresh_count": 137,
+        "render_state": 3,
+        "render_state_name": "failed",
+        "request_id": 3758100499,
+        "schema_version": 1
+      },
+      "event": "recording_fsm.start_request",
+      "expression": "recording",
+      "expression_id": 6,
+      "priority": 90,
+      "request_id": 3758100499,
+      "signal": "RECORDING_START",
+      "signal_id": 9,
+      "step_index": 3
+    },
+    {
+      "card_status": {
+        "card_slot": 1,
+        "content_crc32": "0xb6534533",
+        "last_error": 0,
+        "last_error_name": "ok",
+        "refresh_count": 138,
+        "render_state": 1,
+        "render_state_name": "accepted",
+        "request_id": 3758100500,
+        "schema_version": 1
+      },
+      "content_crc32": "0xb6534533",
+      "demo_id": "battery_recovery_guard",
+      "demo_order": 5,
+      "diagnostic_arg3": "0x0009000f",
+      "diagnostic_decode": {
+        "expression_id": 9,
+        "signal_id": 15
+      },
+      "dry_run_final_status": {
+        "card_slot": 1,
+        "content_crc32": "0xb6534533",
+        "last_error": 4,
+        "last_error_name": "deferred_no_panel",
+        "refresh_count": 139,
+        "render_state": 3,
+        "render_state_name": "failed",
+        "request_id": 3758100500,
+        "schema_version": 1
+      },
+      "event": "errors.fault",
+      "expression": "error",
+      "expression_id": 9,
+      "priority": 100,
+      "request_id": 3758100500,
+      "signal": "ERROR",
+      "signal_id": 15,
+      "step_index": 5
+    },
+    {
+      "card_status": {
+        "card_slot": 1,
+        "content_crc32": "0x3db8b723",
+        "last_error": 0,
+        "last_error_name": "ok",
+        "refresh_count": 140,
+        "render_state": 1,
+        "render_state_name": "accepted",
+        "request_id": 3758100501,
+        "schema_version": 1
+      },
+      "content_crc32": "0x3db8b723",
+      "demo_id": "battery_recovery_guard",
+      "demo_order": 5,
+      "diagnostic_arg3": "0x0000000e",
+      "diagnostic_decode": {
+        "expression_id": 0,
+        "signal_id": 14
+      },
+      "dry_run_final_status": {
+        "card_slot": 1,
+        "content_crc32": "0x3db8b723",
+        "last_error": 4,
+        "last_error_name": "deferred_no_panel",
+        "refresh_count": 141,
+        "render_state": 3,
+        "render_state_name": "failed",
+        "request_id": 3758100501,
+        "schema_version": 1
+      },
+      "event": "warnings.recovered",
+      "expression": "idle",
+      "expression_id": 0,
+      "priority": 20,
+      "request_id": 3758100501,
+      "signal": "RECOVERY",
+      "signal_id": 14,
+      "step_index": 7
+    },
+    {
+      "card_status": {
+        "card_slot": 1,
+        "content_crc32": "0x720e039c",
+        "last_error": 0,
+        "last_error_name": "ok",
+        "refresh_count": 142,
+        "render_state": 1,
+        "render_state_name": "accepted",
+        "request_id": 3758100502,
+        "schema_version": 1
+      },
+      "content_crc32": "0x720e039c",
+      "demo_id": "error_override_recovery",
+      "demo_order": 6,
+      "diagnostic_arg3": "0x0008000d",
+      "diagnostic_decode": {
+        "expression_id": 8,
+        "signal_id": 13
+      },
+      "dry_run_final_status": {
+        "card_slot": 1,
+        "content_crc32": "0x720e039c",
+        "last_error": 4,
+        "last_error_name": "deferred_no_panel",
+        "refresh_count": 143,
+        "render_state": 3,
+        "render_state_name": "failed",
+        "request_id": 3758100502,
+        "schema_version": 1
+      },
+      "event": "battery_charging.sample",
+      "expression": "low_battery",
+      "expression_id": 8,
+      "priority": 80,
+      "request_id": 3758100502,
+      "signal": "LOW_BATTERY",
+      "signal_id": 13,
+      "step_index": 0
+    },
+    {
+      "card_status": {
+        "card_slot": 1,
+        "content_crc32": "0xb6534533",
+        "last_error": 0,
+        "last_error_name": "ok",
+        "refresh_count": 144,
+        "render_state": 1,
+        "render_state_name": "accepted",
+        "request_id": 3758100503,
+        "schema_version": 1
+      },
+      "content_crc32": "0xb6534533",
+      "demo_id": "error_override_recovery",
+      "demo_order": 6,
+      "diagnostic_arg3": "0x0009000f",
+      "diagnostic_decode": {
+        "expression_id": 9,
+        "signal_id": 15
+      },
+      "dry_run_final_status": {
+        "card_slot": 1,
+        "content_crc32": "0xb6534533",
+        "last_error": 4,
+        "last_error_name": "deferred_no_panel",
+        "refresh_count": 145,
+        "render_state": 3,
+        "render_state_name": "failed",
+        "request_id": 3758100503,
+        "schema_version": 1
+      },
+      "event": "errors.fault",
+      "expression": "error",
+      "expression_id": 9,
+      "priority": 100,
+      "request_id": 3758100503,
+      "signal": "ERROR",
+      "signal_id": 15,
+      "step_index": 1
+    },
+    {
+      "card_status": {
+        "card_slot": 1,
+        "content_crc32": "0x3db8b723",
+        "last_error": 0,
+        "last_error_name": "ok",
+        "refresh_count": 146,
+        "render_state": 1,
+        "render_state_name": "accepted",
+        "request_id": 3758100504,
+        "schema_version": 1
+      },
+      "content_crc32": "0x3db8b723",
+      "demo_id": "error_override_recovery",
+      "demo_order": 6,
+      "diagnostic_arg3": "0x0000000e",
+      "diagnostic_decode": {
+        "expression_id": 0,
+        "signal_id": 14
+      },
+      "dry_run_final_status": {
+        "card_slot": 1,
+        "content_crc32": "0x3db8b723",
+        "last_error": 4,
+        "last_error_name": "deferred_no_panel",
+        "refresh_count": 147,
+        "render_state": 3,
+        "render_state_name": "failed",
+        "request_id": 3758100504,
+        "schema_version": 1
+      },
+      "event": "warnings.recovered",
+      "expression": "idle",
+      "expression_id": 0,
+      "priority": 20,
+      "request_id": 3758100504,
+      "signal": "RECOVERY",
+      "signal_id": 14,
+      "step_index": 3
+    },
+    {
+      "card_status": {
+        "card_slot": 1,
+        "content_crc32": "0x75ed7ba0",
+        "last_error": 0,
+        "last_error_name": "ok",
+        "refresh_count": 148,
+        "render_state": 1,
+        "render_state_name": "accepted",
+        "request_id": 3758100505,
+        "schema_version": 1
+      },
+      "content_crc32": "0x75ed7ba0",
+      "demo_id": "transient_auto_recovery",
+      "demo_order": 7,
+      "diagnostic_arg3": "0x00040005",
+      "diagnostic_decode": {
+        "expression_id": 4,
+        "signal_id": 5
+      },
+      "dry_run_final_status": {
+        "card_slot": 1,
+        "content_crc32": "0x75ed7ba0",
+        "last_error": 4,
+        "last_error_name": "deferred_no_panel",
+        "refresh_count": 149,
+        "render_state": 3,
+        "render_state_name": "failed",
+        "request_id": 3758100505,
+        "schema_version": 1
+      },
+      "event": "speaker.result",
+      "expression": "happy",
+      "expression_id": 4,
+      "priority": 30,
+      "request_id": 3758100505,
+      "signal": "SPEAKER_RESULT",
+      "signal_id": 5,
+      "step_index": 0
+    },
+    {
+      "card_status": {
+        "card_slot": 1,
+        "content_crc32": "0x3db8b723",
+        "last_error": 0,
+        "last_error_name": "ok",
+        "refresh_count": 150,
+        "render_state": 1,
+        "render_state_name": "accepted",
+        "request_id": 3758100506,
+        "schema_version": 1
+      },
+      "content_crc32": "0x3db8b723",
+      "demo_id": "transient_auto_recovery",
+      "demo_order": 7,
+      "diagnostic_arg3": "0x0000000e",
+      "diagnostic_decode": {
+        "expression_id": 0,
+        "signal_id": 14
+      },
+      "dry_run_final_status": {
+        "card_slot": 1,
+        "content_crc32": "0x3db8b723",
+        "last_error": 4,
+        "last_error_name": "deferred_no_panel",
+        "refresh_count": 151,
+        "render_state": 3,
+        "render_state_name": "failed",
+        "request_id": 3758100506,
+        "schema_version": 1
+      },
+      "event": "time.elapsed",
+      "expression": "idle",
+      "expression_id": 0,
+      "priority": 20,
+      "request_id": 3758100506,
+      "signal": "RECOVERY",
+      "signal_id": 14,
+      "step_index": 2
+    },
+    {
+      "card_status": {
+        "card_slot": 1,
+        "content_crc32": "0xac34ec69",
+        "last_error": 0,
+        "last_error_name": "ok",
+        "refresh_count": 152,
+        "render_state": 1,
+        "render_state_name": "accepted",
+        "request_id": 3758100507,
+        "schema_version": 1
+      },
+      "content_crc32": "0xac34ec69",
+      "demo_id": "transient_auto_recovery",
+      "demo_order": 7,
+      "diagnostic_arg3": "0x00070008",
+      "diagnostic_decode": {
+        "expression_id": 7,
+        "signal_id": 8
+      },
+      "dry_run_final_status": {
+        "card_slot": 1,
+        "content_crc32": "0xac34ec69",
+        "last_error": 4,
+        "last_error_name": "deferred_no_panel",
+        "refresh_count": 153,
+        "render_state": 3,
+        "render_state_name": "failed",
+        "request_id": 3758100507,
+        "schema_version": 1
+      },
+      "event": "meeting.finalize",
+      "expression": "sync_complete",
+      "expression_id": 7,
+      "priority": 40,
+      "request_id": 3758100507,
+      "signal": "MEETING_FINALIZE",
+      "signal_id": 8,
+      "step_index": 3
+    },
+    {
+      "card_status": {
+        "card_slot": 1,
+        "content_crc32": "0x3db8b723",
+        "last_error": 0,
+        "last_error_name": "ok",
+        "refresh_count": 154,
+        "render_state": 1,
+        "render_state_name": "accepted",
+        "request_id": 3758100508,
+        "schema_version": 1
+      },
+      "content_crc32": "0x3db8b723",
+      "demo_id": "transient_auto_recovery",
+      "demo_order": 7,
+      "diagnostic_arg3": "0x0000000e",
+      "diagnostic_decode": {
+        "expression_id": 0,
+        "signal_id": 14
+      },
+      "dry_run_final_status": {
+        "card_slot": 1,
+        "content_crc32": "0x3db8b723",
+        "last_error": 4,
+        "last_error_name": "deferred_no_panel",
+        "refresh_count": 155,
+        "render_state": 3,
+        "render_state_name": "failed",
+        "request_id": 3758100508,
+        "schema_version": 1
+      },
+      "event": "time.elapsed",
+      "expression": "idle",
+      "expression_id": 0,
+      "priority": 20,
+      "request_id": 3758100508,
+      "signal": "RECOVERY",
+      "signal_id": 14,
+      "step_index": 4
+    },
+    {
+      "card_status": {
+        "card_slot": 1,
+        "content_crc32": "0xcafe2efd",
+        "last_error": 0,
+        "last_error_name": "ok",
+        "refresh_count": 156,
+        "render_state": 1,
+        "render_state_name": "accepted",
+        "request_id": 3758100509,
+        "schema_version": 1
+      },
+      "content_crc32": "0xcafe2efd",
+      "demo_id": "transient_auto_recovery",
+      "demo_order": 7,
+      "diagnostic_arg3": "0x00060009",
+      "diagnostic_decode": {
+        "expression_id": 6,
+        "signal_id": 9
+      },
+      "dry_run_final_status": {
+        "card_slot": 1,
+        "content_crc32": "0xcafe2efd",
+        "last_error": 4,
+        "last_error_name": "deferred_no_panel",
+        "refresh_count": 157,
+        "render_state": 3,
+        "render_state_name": "failed",
+        "request_id": 3758100509,
+        "schema_version": 1
+      },
+      "event": "recording_fsm.start_request",
+      "expression": "recording",
+      "expression_id": 6,
+      "priority": 90,
+      "request_id": 3758100509,
+      "signal": "RECORDING_START",
+      "signal_id": 9,
+      "step_index": 5
+    }
+  ],
+  "content_crc32_model": "comp_epaper_expression_decision_crc32",
+  "contract_only": true,
+  "diagnostic_arg3_model": "(expression_id << 16) | signal_id",
+  "hardware_collected": false,
+  "held_no_status_steps": [
+    {
+      "demo_id": "settings_sleepy_hint",
+      "demo_order": 3,
+      "event": "settings.display_off",
+      "expected_result": "hold",
+      "expression_signal": "SETTINGS_SLEEPY",
+      "host_status_emitted": false,
+      "reason": "ignored lower-priority sleepy while recording is visible",
+      "step_index": 4,
+      "visible_expression": "recording"
+    },
+    {
+      "demo_id": "recording_low_battery_priority",
+      "demo_order": 4,
+      "event": "battery_charging.sample",
+      "expected_result": "hold",
+      "expression_signal": "LOW_BATTERY",
+      "host_status_emitted": false,
+      "reason": "ignored lower-priority low_battery while recording is visible",
+      "step_index": 1,
+      "visible_expression": "recording"
+    },
+    {
+      "demo_id": "battery_recovery_guard",
+      "demo_order": 5,
+      "event": "battery_charging.sample",
+      "expected_result": "hold",
+      "expression_signal": null,
+      "host_status_emitted": false,
+      "reason": "event has no expression signal",
+      "step_index": 1,
+      "visible_expression": "low_battery"
+    },
+    {
+      "demo_id": "battery_recovery_guard",
+      "demo_order": 5,
+      "event": "battery_charging.sample",
+      "expected_result": "hold",
+      "expression_signal": "BATTERY_RECOVERED",
+      "host_status_emitted": false,
+      "reason": "battery recovery ignored because low_battery is not visible",
+      "step_index": 4,
+      "visible_expression": "recording"
+    },
+    {
+      "demo_id": "battery_recovery_guard",
+      "demo_order": 5,
+      "event": "battery_charging.sample",
+      "expected_result": "hold",
+      "expression_signal": "BATTERY_RECOVERED",
+      "host_status_emitted": false,
+      "reason": "battery recovery ignored because low_battery is not visible",
+      "step_index": 6,
+      "visible_expression": "error"
+    },
+    {
+      "demo_id": "error_override_recovery",
+      "demo_order": 6,
+      "event": "speaker.prompt",
+      "expected_result": "hold",
+      "expression_signal": "SPEAKER_PROMPT",
+      "host_status_emitted": false,
+      "reason": "ignored lower-priority speaking while error is visible",
+      "step_index": 2,
+      "visible_expression": "error"
+    },
+    {
+      "demo_id": "transient_auto_recovery",
+      "demo_order": 7,
+      "event": "time.elapsed",
+      "expected_result": "hold",
+      "expression_signal": null,
+      "host_status_emitted": false,
+      "reason": "elapsed 5000 ms while happy is visible",
+      "step_index": 1,
+      "visible_expression": "happy"
+    },
+    {
+      "demo_id": "transient_auto_recovery",
+      "demo_order": 7,
+      "event": "time.elapsed",
+      "expected_result": "hold",
+      "expression_signal": null,
+      "host_status_emitted": false,
+      "reason": "elapsed 60000 ms while recording is visible",
+      "step_index": 6,
+      "visible_expression": "recording"
+    }
+  ],
+  "operation": "screen_expression_demo_status",
+  "purpose": "Contract-only host CardStatusV1 sequence for the full screen demo order. Accepted demo steps emit accepted/final pairs; held demo steps emit no new host status.",
+  "request_id_model": "0xE0001000 + accepted_demo_sequence_index",
+  "schema_id": "companion.pendant.screen_expression_demo_host_status_sequence.v1",
+  "sources": {
+    "ble_contract": "docs/ble_gatt_contract.md",
+    "demo_sequence": "docs/validation/companion-screen-expression-demo-sequence.json",
+    "epaper_readme": "app/companion_pendant/epaper/README.md",
+    "expression_catalog": "docs/validation/companion-screen-expression-catalog.json",
+    "legacy_host_status_sequence": "docs/validation/companion-screen-expression-host-status-sequence.json",
+    "real_ble_bench": "docs/validation/companion-screen-real-ble-bench.json",
+    "screen_acceptance": "docs/companion_screen_expression_system.md",
+    "wba_rules": "docs/stm32wba_migration_rules.md"
+  },
+  "status": "PASS",
+  "summary": {
+    "accepted_expression_coverage": [
+      "error",
+      "happy",
+      "idle",
+      "listening",
+      "low_battery",
+      "recording",
+      "sleepy",
+      "speaking",
+      "sync_complete",
+      "thinking"
+    ],
+    "accepted_status_pair_count": 29,
+    "demo_expression_coverage": [
+      "error",
+      "happy",
+      "idle",
+      "listening",
+      "low_battery",
+      "recording",
+      "sleepy",
+      "speaking",
+      "sync_complete",
+      "thinking"
+    ],
+    "demo_step_count": 37,
+    "extends_legacy_faces": [
+      "happy",
+      "listening",
+      "speaking",
+      "thinking"
+    ],
+    "held_no_status_count": 8,
+    "legacy_six_face_coverage": [
+      "error",
+      "idle",
+      "low_battery",
+      "recording",
+      "sleepy",
+      "sync_complete"
+    ]
+  },
+  "validation_commands": [
+    "python .\\tools\\verify_expression_demo_host_status_sequence.py",
+    "python .\\tools\\verify_expression_demo_sequence.py",
+    "python .\\tools\\verify_expression_host_status_sequence.py",
+    "python .\\tools\\verify_expression_catalog_contract.py",
+    "python .\\tools\\verify_expression_wba_portability.py"
+  ]
+}

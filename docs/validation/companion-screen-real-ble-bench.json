@@ -1,0 +1,182 @@
+{
+  "acceptance": {
+    "accepted_final_identity_is_checked": true,
+    "default_bench_allows_no_panel_deferred_status": true,
+    "demo_sequence_baseline_covers_all_faces": true,
+    "demo_sequence_held_steps_emit_no_status": true,
+    "expect_real_panel_requires_rendered_ok": true,
+    "expression_request_identity_is_checked": true,
+    "failed_bench_preserves_partial_operations": true,
+    "hardware_gate_can_reference_real_ble_artifact": true,
+    "real_bench_carries_demo_expression_status_sequence": true,
+    "real_bench_carries_host_expression_status_sequence": true,
+    "real_bench_collects_expression_final_status": true,
+    "real_bench_waits_for_final_card_status": true,
+    "settings_sleepy_trigger_has_final_card_status": true,
+    "six_face_sequence_baseline_is_linked": true,
+    "wba_real_ble_bench_can_reuse_contract": true,
+    "wba_real_ble_bench_requires_screen_expression_status": true
+  },
+  "artifact_contract": {
+    "demo_host_expression_status_sequence": "artifact carries screen_expression_demo_status baseline from companion-screen-expression-demo-host-status-sequence.json so WBA/WB55 benches keep all demo faces host-observable",
+    "evidence_for_hardware_gate": [
+      "card_status",
+      "final_card_status",
+      "status_sequence",
+      "screen_expression_status",
+      "screen_expression_demo_status",
+      "real_panel_refresh_claimed",
+      "screen_panel_result",
+      "partial_operation_count"
+    ],
+    "expression_request_identity": "settings_sleepy_screen_status must use expression card_slot=1 and 0xe0000000 request_id base",
+    "host_expression_status_sequence": "artifact carries screen_expression_status baseline from companion-screen-expression-host-status-sequence.json so WBA/WB55 real bench parity compares the same six-face host contract",
+    "partial_failure_evidence": "failed live artifacts must keep operations and partial_operation_count so hardware loss is distinguishable from screen contract drift",
+    "real_panel_refresh_claimed": "true only when final_card_status is rendered/ok",
+    "request_identity": "accepted and final CardStatusV1 request_id/content_crc32 must match",
+    "screen_panel_result": [
+      "rendered_ok",
+      "deferred_no_panel_or_controller_unknown"
+    ]
+  },
+  "bench_operation": {
+    "accepted_status_field": "card_status",
+    "default_no_panel_ok": true,
+    "final_status_field": "final_card_status",
+    "final_timeout_flag": "--screen-final-timeout",
+    "no_panel_allowed_final": {
+      "last_error_values": [
+        4,
+        5
+      ],
+      "last_errors": [
+        "deferred_no_panel",
+        "deferred_controller_unknown"
+      ],
+      "render_state": "failed"
+    },
+    "operation": "card_write",
+    "real_panel_flag": "--expect-real-panel",
+    "real_panel_required_final": {
+      "last_error": "ok",
+      "last_error_value": 0,
+      "render_state": "rendered",
+      "render_state_value": 2
+    },
+    "status_sequence_field": "status_sequence"
+  },
+  "expression_bench_operation": {
+    "accepted_status_field": "card_status",
+    "default_no_panel_ok": true,
+    "expression_card_slot": 1,
+    "expression_request_id_base": "0xe0000000",
+    "final_status_field": "final_card_status",
+    "final_timeout_flag": "--screen-final-timeout",
+    "no_panel_allowed_final": {
+      "last_error_values": [
+        4,
+        5
+      ],
+      "last_errors": [
+        "deferred_no_panel",
+        "deferred_controller_unknown"
+      ],
+      "render_state": "failed"
+    },
+    "operation": "settings_sleepy_screen_status",
+    "real_panel_flag": "--expect-real-panel",
+    "real_panel_required_final": {
+      "last_error": "ok",
+      "last_error_value": 0,
+      "render_state": "rendered",
+      "render_state_value": 2
+    },
+    "restore_operation": "settings_restore_after_sleepy",
+    "status_sequence_field": "status_sequence",
+    "trigger": "SettingsV1 display_brightness=0"
+  },
+  "expression_demo_status_sequence_operation": {
+    "accepted_status_pair_count": 29,
+    "content_crc32_model": "comp_epaper_expression_decision_crc32",
+    "contract_only": true,
+    "diagnostic_arg3_model": "(expression_id << 16) | signal_id",
+    "hardware_collected": false,
+    "held_no_status_count": 8,
+    "held_steps_contract": "held_steps_emit_no_host_status",
+    "host_sequence_fixture": "docs/validation/companion-screen-expression-demo-host-status-sequence.json",
+    "operation": "screen_expression_demo_status",
+    "real_panel_parity_dependency": "card_write and settings_sleepy_screen_status still provide the hardware-collected rendered/ok evidence.",
+    "required_faces": [
+      "error",
+      "happy",
+      "idle",
+      "listening",
+      "low_battery",
+      "recording",
+      "sleepy",
+      "speaking",
+      "sync_complete",
+      "thinking"
+    ],
+    "required_fields": [
+      "request_id",
+      "content_crc32",
+      "diagnostic_arg3",
+      "card_status",
+      "dry_run_final_status"
+    ]
+  },
+  "expression_status_sequence_operation": {
+    "content_crc32_model": "comp_epaper_expression_decision_crc32",
+    "contract_only": true,
+    "diagnostic_arg3_model": "(expression_id << 16) | signal_id",
+    "expected_events": [
+      "boot_idle",
+      "settings.display_off",
+      "recording_fsm.start_request",
+      "battery_charging.sample.low",
+      "recording_fsm.session_finished",
+      "errors.fault"
+    ],
+    "hardware_collected": false,
+    "host_sequence_fixture": "docs/validation/companion-screen-expression-host-status-sequence.json",
+    "operation": "screen_expression_status",
+    "real_panel_parity_dependency": "card_write and settings_sleepy_screen_status must still pass with --expect-real-panel before rendered/ok parity is claimed.",
+    "required_faces": [
+      "idle",
+      "sleepy",
+      "recording",
+      "low_battery",
+      "sync_complete",
+      "error"
+    ],
+    "required_fields": [
+      "request_id",
+      "content_crc32",
+      "diagnostic_arg3",
+      "accepted_refresh_count",
+      "final_refresh_count"
+    ]
+  },
+  "schema_id": "companion.pendant.screen_real_ble_bench.v1",
+  "sources": {
+    "ble_contract": "docs/ble_gatt_contract.md",
+    "bringup_steps": "docs/bringup_steps.md",
+    "demo_host_expression_status_sequence": "docs/validation/companion-screen-expression-demo-host-status-sequence.json",
+    "host_expression_status_sequence": "docs/validation/companion-screen-expression-host-status-sequence.json",
+    "panel_evidence_template": "docs/validation/companion-screen-panel-evidence-template.json",
+    "panel_gate": "docs/validation/companion-screen-panel-hardware-gate.json",
+    "real_ble_bench": "tools/companion_ble_real_bench.py",
+    "screen_acceptance": "docs/companion_screen_expression_system.md"
+  },
+  "status": "PASS",
+  "validation_commands": [
+    "python .\\tools\\verify_expression_real_ble_screen_bench.py",
+    "python -m py_compile .\\tools\\companion_ble_real_bench.py",
+    "python .\\tools\\verify_expression_host_status_sequence.py",
+    "python .\\tools\\verify_expression_demo_host_status_sequence.py",
+    "python .\\tools\\verify_expression_panel_gate.py",
+    "python .\\tools\\verify_expression_status_observability.py",
+    "python .\\tools\\verify_expression_wba_portability.py"
+  ]
+}

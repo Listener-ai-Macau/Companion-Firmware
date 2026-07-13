@@ -1,0 +1,158 @@
+{
+  "guards": {
+    "append_only_signal_catalog_guard": true,
+    "apply_signal_rejects_unknown_signal_before_state_mutation": true,
+    "decide_rejects_unknown_signal": true,
+    "preflight_api": "comp_epaper_expression_signal_is_supported"
+  },
+  "purpose": "Unsupported ExpressionV1 signals are rejected before visible state or display queue work changes.",
+  "schema_id": "companion.pendant.expression_signal_guard.v1",
+  "sources": {
+    "catalog_fixture": "docs/validation/companion-screen-expression-catalog.json",
+    "firmware_header": "app/companion_pendant/epaper/expression_state.h",
+    "firmware_source": "app/companion_pendant/epaper/expression_state.c",
+    "firmware_state_fixture": "docs/validation/companion-screen-firmware-expression-state.json",
+    "screen_acceptance": "docs/companion_screen_expression_system.md",
+    "wba_rules": "docs/stm32wba_migration_rules.md"
+  },
+  "status": "PASS",
+  "supported_signal_count": 18,
+  "supported_signals": [
+    {
+      "expression": "idle",
+      "id": 0,
+      "may_lower_priority": true,
+      "reason": "boot/default screen",
+      "signal": "BOOT_IDLE"
+    },
+    {
+      "expression": "idle",
+      "id": 1,
+      "may_lower_priority": false,
+      "reason": "wake word armed",
+      "signal": "WAKE_ARMED"
+    },
+    {
+      "expression": "sleepy",
+      "id": 2,
+      "may_lower_priority": false,
+      "reason": "wake word disabled",
+      "signal": "WAKE_DISABLED"
+    },
+    {
+      "expression": "listening",
+      "id": 3,
+      "may_lower_priority": false,
+      "reason": "wake word detected",
+      "signal": "WAKE_DETECTED"
+    },
+    {
+      "expression": "speaking",
+      "id": 4,
+      "may_lower_priority": false,
+      "reason": "speaker prompt accepted",
+      "signal": "SPEAKER_PROMPT"
+    },
+    {
+      "expression": "happy",
+      "id": 5,
+      "may_lower_priority": true,
+      "reason": "speaker prompt completed",
+      "signal": "SPEAKER_RESULT"
+    },
+    {
+      "expression": "recording",
+      "id": 6,
+      "may_lower_priority": false,
+      "reason": "meeting capture started",
+      "signal": "MEETING_START"
+    },
+    {
+      "expression": "thinking",
+      "id": 7,
+      "may_lower_priority": true,
+      "reason": "meeting capture stopped",
+      "signal": "MEETING_STOP"
+    },
+    {
+      "expression": "sync_complete",
+      "id": 8,
+      "may_lower_priority": true,
+      "reason": "meeting artifact finalized",
+      "signal": "MEETING_FINALIZE"
+    },
+    {
+      "expression": "recording",
+      "id": 9,
+      "may_lower_priority": false,
+      "reason": "recording start accepted",
+      "signal": "RECORDING_START"
+    },
+    {
+      "expression": "thinking",
+      "id": 10,
+      "may_lower_priority": true,
+      "reason": "recording stop accepted",
+      "signal": "RECORDING_STOP"
+    },
+    {
+      "expression": "idle",
+      "id": 11,
+      "may_lower_priority": true,
+      "reason": "recording cancelled",
+      "signal": "RECORDING_CANCEL"
+    },
+    {
+      "expression": "sync_complete",
+      "id": 12,
+      "may_lower_priority": true,
+      "reason": "recording stored for sync",
+      "signal": "RECORDING_FINISHED"
+    },
+    {
+      "expression": "low_battery",
+      "id": 13,
+      "may_lower_priority": false,
+      "reason": "battery is below threshold",
+      "signal": "LOW_BATTERY"
+    },
+    {
+      "expression": "idle",
+      "id": 14,
+      "may_lower_priority": true,
+      "reason": "recovered to idle",
+      "signal": "RECOVERY"
+    },
+    {
+      "expression": "error",
+      "id": 15,
+      "may_lower_priority": false,
+      "reason": "error or rejection",
+      "signal": "ERROR"
+    },
+    {
+      "expression": "sleepy",
+      "id": 16,
+      "may_lower_priority": false,
+      "reason": "quiet hours or display-off screen setting",
+      "signal": "SETTINGS_SLEEPY"
+    },
+    {
+      "expression": "idle",
+      "id": 17,
+      "may_lower_priority": false,
+      "reason": "battery recovered above expression threshold",
+      "signal": "BATTERY_RECOVERED"
+    }
+  ],
+  "unsupported_signal_examples": [
+    "COMP_EPAPER_EXPRESSION_SIGNAL_COUNT",
+    "(comp_epaper_expression_signal_t)255u"
+  ],
+  "validation_commands": [
+    "python .\\tools\\verify_expression_signal_guard.py",
+    "python .\\tools\\verify_expression_catalog_contract.py",
+    "python .\\tools\\verify_expression_firmware_state.py",
+    "python .\\tools\\verify_expression_wba_portability.py"
+  ]
+}

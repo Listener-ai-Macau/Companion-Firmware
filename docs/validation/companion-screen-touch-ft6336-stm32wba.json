@@ -1,0 +1,38 @@
+{
+  "contract": {
+    "address_format": "7_bit",
+    "default_address": "0x38",
+    "hardware_parity_claimed": false,
+    "identity_register": "COMP_FT6336_IDENTITY_REGISTER",
+    "interrupt_mode": "trigger_with_poll_fallback",
+    "interrupt_mode_register": "COMP_FT6336_G_MODE_REGISTER",
+    "not_in_wb55_build": true,
+    "portable_decoder": "comp_ft6336_decode_touch_report",
+    "reconnect_after_read_error": true,
+    "runtime_tuning": "shared_threshold_and_active_monitor_periods",
+    "targets": [
+      "WBA55",
+      "WBA65"
+    ],
+    "transport": "probe_and_register_read_write_callbacks"
+  },
+  "purpose": "Callback-only FT6336 target adapter prepared for WBA55/WBA65. CubeWBA owns I2C and pins; the portable layer owns register and report contracts.",
+  "required_future_evidence": [
+    "CubeWBA IOC I2C instance and SDA/SCL pin facts",
+    "detected 7-bit address and FT6336 identity bytes",
+    "four-corner coordinate orientation capture",
+    "tap and left/right/up/down gesture acceptance"
+  ],
+  "schema_id": "companion.pendant.screen_touch_ft6336_stm32wba.v1",
+  "sources": {
+    "portable_decoder_header": "app/companion_pendant/touch/ft6336.h",
+    "portable_decoder_source": "app/companion_pendant/touch/ft6336.c",
+    "target_header": "app/companion_pendant/touch/touch_target_stm32wba_ft6336.h",
+    "target_source": "app/companion_pendant/touch/touch_target_stm32wba_ft6336.c"
+  },
+  "status": "PASS",
+  "validation_commands": [
+    "python .\\tools\\verify_touch_target_stm32wba_ft6336.py",
+    "python .\\tools\\verify_expression_wba_portability.py"
+  ]
+}

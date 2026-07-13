@@ -1,0 +1,102 @@
+{
+  "acceptance": {
+    "accepted_final_content_crc_is_stable": true,
+    "accepted_final_refresh_counts_are_contiguous": true,
+    "accepted_final_request_identity_is_stable": true,
+    "content_crc_matches_expression_decision_crc32": true,
+    "diagnostic_arg3_matches_expression_and_signal_ids": true,
+    "diagnostic_decode_matches_arg3": true,
+    "refresh_counts_are_globally_monotonic": true,
+    "wba_safe_host_status_sequence": true
+  },
+  "expected_events": [
+    "boot_idle",
+    "settings.display_off",
+    "recording_fsm.start_request",
+    "battery_charging.sample.low",
+    "recording_fsm.session_finished",
+    "errors.fault"
+  ],
+  "operation": "screen_expression_status",
+  "purpose": "Host-visible ExpressionV1 status steps keep contiguous CardStatusV1 refresh counts, stable request/content identity, deterministic expression CRCs, and diagnostic arg3 decode.",
+  "schema_id": "companion.pendant.screen_expression_host_status_sequence.v1",
+  "sources": {
+    "ble_contract": "docs/ble_gatt_contract.md",
+    "ble_matrix": "docs/validation/companion_ble_matrix.json",
+    "ble_matrix_verifier": "tools/verify_companion_ble_matrix.py",
+    "ble_tool": "tools/companion_ble_tool.py",
+    "screen_acceptance": "docs/companion_screen_expression_system.md",
+    "status_observability_verifier": "tools/verify_expression_status_observability.py",
+    "wba_rules": "docs/stm32wba_migration_rules.md"
+  },
+  "status": "PASS",
+  "steps": [
+    {
+      "accepted_refresh_count": 4,
+      "content_crc32": "0x91bdb88d",
+      "diagnostic_arg3": "0x00000000",
+      "event": "boot_idle",
+      "expression": "idle",
+      "final_refresh_count": 5,
+      "request_id": 3758096385,
+      "signal": "BOOT_IDLE"
+    },
+    {
+      "accepted_refresh_count": 6,
+      "content_crc32": "0xd6afbe44",
+      "diagnostic_arg3": "0x00050010",
+      "event": "settings.display_off",
+      "expression": "sleepy",
+      "final_refresh_count": 7,
+      "request_id": 3758096386,
+      "signal": "SETTINGS_SLEEPY"
+    },
+    {
+      "accepted_refresh_count": 8,
+      "content_crc32": "0xcafe2efd",
+      "diagnostic_arg3": "0x00060009",
+      "event": "recording_fsm.start_request",
+      "expression": "recording",
+      "final_refresh_count": 9,
+      "request_id": 23,
+      "signal": "RECORDING_START"
+    },
+    {
+      "accepted_refresh_count": 10,
+      "content_crc32": "0x720e039c",
+      "diagnostic_arg3": "0x0008000d",
+      "event": "battery_charging.sample.low",
+      "expression": "low_battery",
+      "final_refresh_count": 11,
+      "request_id": 3758096387,
+      "signal": "LOW_BATTERY"
+    },
+    {
+      "accepted_refresh_count": 12,
+      "content_crc32": "0x943f53fd",
+      "diagnostic_arg3": "0x0007000c",
+      "event": "recording_fsm.session_finished",
+      "expression": "sync_complete",
+      "final_refresh_count": 13,
+      "request_id": 24,
+      "signal": "RECORDING_FINISHED"
+    },
+    {
+      "accepted_refresh_count": 14,
+      "content_crc32": "0xb6534533",
+      "diagnostic_arg3": "0x0009000f",
+      "event": "errors.fault",
+      "expression": "error",
+      "final_refresh_count": 15,
+      "request_id": 3758096388,
+      "signal": "ERROR"
+    }
+  ],
+  "validation_commands": [
+    "python .\\tools\\verify_expression_host_status_sequence.py",
+    "python .\\tools\\companion_ble_tool.py --self-test",
+    "python .\\tools\\verify_companion_ble_matrix.py",
+    "python .\\tools\\verify_expression_status_observability.py",
+    "python .\\tools\\verify_expression_wba_portability.py"
+  ]
+}

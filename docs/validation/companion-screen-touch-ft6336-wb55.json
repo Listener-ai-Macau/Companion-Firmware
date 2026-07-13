@@ -1,0 +1,183 @@
+{
+  "schema_id": "companion.pendant.screen_touch_ft6336_wb55.v1",
+  "status": "REVISION_32_BUILD_PENDING_HARDWARE_RECHECK",
+  "generated_at": "2026-07-12T13:25:21+08:00",
+  "target": "NUCLEO-WB55RG + GDEY0154D67-T03 FT6336U",
+  "wiring": {
+    "scl": "P10 A4 -> CN7-28 PC0/I2C3_SCL",
+    "sda": "P10 A5 -> CN7-1 PB11/I2C3_SDA",
+    "power": "shared 3.3V and GND through ESP32-FTS02",
+    "address_7bit": "0x38"
+  },
+  "controller_identity": {
+    "cipher": "0x64",
+    "firmware_id": "0x01",
+    "chip_id": "0x11",
+    "probe_count": 1,
+    "identity_read_count": 1
+  },
+  "runtime_result": {
+    "sample_count_at_10s": 192,
+    "sample_count_at_20s": 647,
+    "i2c_errors": 0,
+    "poll_period_ms": 20,
+    "gesture_selftest": "PASS",
+    "menu_selftest": "PASS",
+    "live_horizontal_capture": {
+      "gesture_swipe_left_events": 11,
+      "gesture_swipe_right_events": 8,
+      "completed_daily_to_menu_cycles": 3,
+      "completed_menu_to_daily_cycles": 4,
+      "partial_refresh_complete": 7,
+      "partial_refresh_failed": 0,
+      "i2c_errors": 0
+    },
+    "revision_21_register_readback": {
+      "serial_log": ".cache/validation/screen-revision21-touch-and-cleanup-runtime/nucleo-serial-raw.log",
+      "controller_detected": true,
+      "interrupt_mode": true,
+      "threshold": "0x90",
+      "active_period": "0x04",
+      "monitor_period": "0x04",
+      "tuning_config_count": 1,
+      "tuning_errors": 0,
+      "i2c_errors": 0,
+      "result": "PASS: WB55 read back the shared FT6336 runtime tuning contract"
+    },
+    "revision_21_menu_effect_selftest": {
+      "serial_log": ".cache/validation/screen-revision21-menu-effect-selftest/nucleo-serial-raw.log",
+      "menu_selftest": "PASS",
+      "render_contract": "home press state and detail-page arrival cue each have a distinct framebuffer fingerprint",
+      "result": "PASS: normal product firmware ran the menu visual-effect self-test"
+    },
+    "revision_30_wait_coalescing": {
+      "serial_log": ".cache/validation/screen-revision31-normal-daily-four-stroke-final/nucleo-serial-raw.log",
+      "boot_refresh_ms": 1297,
+      "ft6336_samples_at_5s": 301,
+      "idle_samples_buffered_during_refresh": 0,
+      "dropped_samples_during_refresh": 0,
+      "lifecycle_selftest": "PASS: idle ignored; down/latest-contact/up order retained; latest contact wins",
+      "result": "PASS: panel wait retains only a contact lifecycle (anchor/latest/release), so idle polling cannot evict useful touch samples"
+    }
+  },
+  "gesture_contract": {
+    "tap": "release-confirmed",
+    "swipe_threshold_px": 30,
+    "axis_lock_px": 10,
+    "axis_slop_px": 5,
+    "axis_dominance_percent": 120,
+    "minimum_contact_samples": 1,
+    "long_press_max_move_px": 46,
+    "recognition": "fires once while contact is active, then stays consumed until release",
+    "touch_coordinate_mirror_x": false,
+    "touch_coordinate_mirror_y": false,
+    "daily_tap": "reaction only",
+    "daily_stroke": "all non-menu-entry swipes react as directional pet strokes",
+    "daily_hold": "650 ms nearly still hold emits one pet tease without consuming contact",
+    "daily_enter_menu": "3000 ms any-position long_press with 46 px wobble tolerance",
+    "detail_back": "left-edge swipe_right",
+    "home_exit": "left-edge swipe_right",
+    "home_vertical_scroll": "anchored continuous finger-distance drag",
+    "firmware_selftest": "one-sample explicit-release tap, live hold then long-press, vertical-drag release, and expired-drag rearm"
+  },
+  "evidence": {
+    "serial_log": ".cache/validation/screen-revision13-left-swipe-live/nucleo-serial-raw.log",
+    "required_markers": [
+      "touch-health] detected=1 identity=1 addr=0x38",
+      "cipher=0x64 fw=0x01 chip=0x11",
+      "probes=1 identity_reads=1",
+      "errors=0",
+      "gesture=swipe_left",
+      "daily_to_menu gesture=swipe_left",
+      "scene=menu asset=menu.home.zh",
+      "gesture=swipe_right",
+      "menu_to_daily",
+      "scene=expression name=idle"
+    ]
+  },
+  "portable_boundary": {
+    "protocol": "ft6336.h/.c contains no HAL or board facts",
+    "gesture": "touch_gesture.h/.c contains no HAL, I2C, GPIO, or STM32 facts",
+    "wb55_target": "touch_target_stm32wb_ft6336.h/.c owns HAL I2C",
+    "future_wba_target": "touch_target_stm32wba_ft6336.* must use the selected CubeWBA IOC"
+  },
+  "remaining_acceptance": [
+    "Confirm tap hit regions",
+    "Confirm daily tap and all four daily swipes have distinct pet reactions",
+    "Confirm vertical dragging follows the finger continuously without item snapping",
+    "Confirm a visible menu row has a press-cue partial refresh then its target-page arrival partial refresh",
+    "Visually confirm horizontal refresh content on the panel",
+    "Revision 17: confirm the latest rendered menu position remains visually attached to the finger during a drag",
+    "Revision 20: confirm the fixed header and its white gutter remain unchanged while the content viewport scrolls",
+    "Revision 21: confirm a <=9 px touch wobble still activates the intended row, and the 1200 ms post-gesture 0xCF maintenance pass improves residual ghosting"
+  ],
+  "revision_17_machine_contract": {
+    "status": "PENDING_HARDWARE_RECHECK",
+    "quiet_maintenance_ms": 1600,
+    "maintenance_must_not_run_while_contact_active": true
+  },
+  "revision_20_machine_contract": {
+    "status": "PENDING_HARDWARE_RECHECK",
+    "active_touch_poll_ms": 5,
+    "refresh_wait_touch_poll_ms": 5,
+    "header_height_px": 32,
+    "header_gutter_px": 6,
+    "home_scroll": "absolute finger-anchor without item snapping"
+  },
+  "revision_21_machine_contract": {
+    "status": "RUNTIME_REGISTER_AND_WAVEFORM_PASS_VISUAL_RECHECK_PENDING",
+    "runtime_log": ".cache/validation/screen-revision21-touch-and-cleanup-runtime/nucleo-serial-raw.log",
+    "idle_touch_poll_ms": 8,
+    "tap_max_duration_ms": 1100,
+    "tap_max_move_px": 24,
+    "axis_lock_px": 10,
+    "axis_slop_px": 5,
+    "axis_dominance_percent": 120,
+    "release_debounce_samples": 1,
+    "ft6336_threshold": "0x90",
+    "ft6336_active_period": "0x04",
+    "ft6336_monitor_period": "0x04",
+    "post_gesture_maintenance_ms": 1200,
+    "maintenance_waveform": "0xCF",
+    "runtime_readback": "PASS: tuning=1 threshold=0x90 active_period=4 monitor_period=4 tuning_cfg=1 tuning_errors=0",
+    "short_interaction_waveform": "PASS: .cache/validation/screen-revision21-maintenance-runtime-ready-gated/nucleo-serial-raw.log records 0xFC in 306 ms then one 0xCF cleanup in 445 ms after a single differential update",
+    "visual_recheck": "PENDING: tap feel, continuous drag feel, residual ghosting, and the single maintenance-pass flicker"
+  },
+  "revision_30_machine_contract": {
+    "status": "RUNTIME_PASS_VISUAL_RECHECK_PENDING",
+    "wait_capture": "contact anchor + latest coalesced coordinate + release; idle samples dropped before queueing",
+    "runtime_log": ".cache/validation/screen-revision31-normal-daily-four-stroke-final/nucleo-serial-raw.log",
+    "runtime_result": "PASS: buffered=0 dropped=0 and wait_buffer_selftest=1 after the 1297 ms boot refresh while no touch is present",
+    "visual_recheck": "PENDING: real held-finger drag through a busy display interval"
+  },
+  "revision_31_machine_contract": {
+    "status": "WB55_RUNTIME_PROBE_PASS_HUMAN_RECHECK_PENDING",
+    "daily_face": "tap is eye-contact; all ordinary left/right/up/down swipes are directional pet strokes",
+    "menu_priority": "retired right-edge swipe_left no longer enters the menu; only the completed anywhere 3 s long press can preempt a pet interaction",
+    "portable_api": "comp_pet_behavior_note_stroke and comp_pet_behavior_compose_stroke_pose",
+    "runtime_logs": [
+      ".cache/validation/screen-revision31-directional-stroke-left/nucleo-serial-raw.log",
+      ".cache/validation/screen-revision31-directional-stroke-right/nucleo-serial-raw.log",
+      ".cache/validation/screen-revision31-directional-stroke-up/nucleo-serial-raw.log",
+      ".cache/validation/screen-revision31-directional-stroke-down/nucleo-serial-raw.log"
+    ],
+    "runtime_result": "PASS: four isolated WB55 directional probes completed their distinct full-face poses and three 0xFC interaction refreshes each with zero FT6336 I2C errors",
+    "visual_recheck": "PENDING: confirm side/playful, up/curious, and down/warm responses on the physical panel"
+  },
+  "revision_32_machine_contract": {
+    "status": "BUILD_PENDING_HARDWARE_RECHECK",
+    "hold_feedback_ms": 650,
+    "anywhere_menu_long_press_ms": 3000,
+    "daily_face": "tap and all left/right/up/down swipes remain pet interactions",
+    "menu_priority": "only the completed anywhere near-still long press can preempt a pet interaction",
+    "visual_recheck": "PENDING: tease timing, three-second entry feel, and press-cue detail-page transition"
+  },
+  "anti_regression": [
+    "python tools/verify_touch_ft6336.py",
+    "python tools/verify_screen_presentation.py",
+    "python tools/verify_screen_menu_assets.py",
+    "python tools/verify_epaper_differential_maintenance_runtime.py",
+    "python tools/verify_screen_horizontal_gesture_runtime.py --log .cache/validation/screen-revision13-left-swipe-live/nucleo-serial-raw.log --min-enter 3 --min-exit 3",
+    "python tools/verify_expression_wba_portability.py"
+  ]
+}

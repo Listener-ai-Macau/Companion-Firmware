@@ -1,0 +1,65 @@
+{
+  "acceptance": {
+    "dequeue_happens_once_before_panel_refresh": true,
+    "display_result_marks_coherent_generation": true,
+    "empty_queue_returns_without_panel_refresh": true,
+    "fifo_sequence_identity_preserved": true,
+    "generation_change_discards_stale_pending_work": true,
+    "panel_result_maps_to_final_card_status": true,
+    "pending_work_reschedules_display_task": true,
+    "request_carries_resource_revision": true,
+    "runtime_snapshot_recorded_before_final_card_status": true,
+    "wba_display_task_can_reuse_contract": true
+  },
+  "display_task_contract": {
+    "dequeue_api": "comp_epaper_display_queue_dequeue",
+    "final_status_api": "Companion_Gatt_PublishCardStatus",
+    "last_error_map": "comp_epaper_panel_adapter_status_error",
+    "pre_drain_tick": "Companion_Display_ProcessExpressionTick",
+    "render_state_map": "comp_epaper_panel_adapter_render_state",
+    "reschedule_condition": "runtime_stats.display_queue.pending_count != 0u",
+    "runtime_snapshot_api": "comp_epaper_screen_runtime_snapshot",
+    "runtime_snapshot_event": "COMP_DIAG_EVT_EPAPER_RUNTIME_SNAPSHOT",
+    "target_refresh_api": "comp_epaper_panel_adapter_refresh_card",
+    "task": "Companion_Display_Task",
+    "update_result_event": "COMP_DIAG_EVT_EPAPER_UPDATE_RESULT"
+  },
+  "purpose": "Display task drain/reschedule contract for WB55 and future WBA panel adapters.",
+  "queue_contract": {
+    "depth": 4,
+    "drop_counter": "dropped_count",
+    "fifo_indices": [
+      "read_index",
+      "write_index",
+      "count"
+    ],
+    "generation_switch_counter": "generation_switch_count",
+    "high_water_counter": "high_water_count",
+    "last_generation_discard_counter": "last_stale_generation_discarded",
+    "payload_max_bytes": 236,
+    "resource_generation": "active_resource_revision",
+    "sequence_starts_at": 1,
+    "stale_generation_counter": "stale_generation_discard_count"
+  },
+  "schema_id": "companion.pendant.screen_display_drain_contract.v1",
+  "sources": {
+    "display_queue_header": "app/companion_pendant/epaper/display_queue.h",
+    "display_queue_source": "app/companion_pendant/epaper/display_queue.c",
+    "epaper_readme": "app/companion_pendant/epaper/README.md",
+    "panel_adapter_header": "app/companion_pendant/epaper/panel_adapter.h",
+    "screen_acceptance": "docs/companion_screen_expression_system.md",
+    "screen_runtime_header": "app/companion_pendant/epaper/screen_runtime.h",
+    "wb55_integration": "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c",
+    "wba_rules": "docs/stm32wba_migration_rules.md"
+  },
+  "status": "PASS",
+  "validation_commands": [
+    "python .\\tools\\verify_expression_display_drain.py",
+    "python .\\tools\\verify_display_queue_static.py",
+    "python .\\tools\\verify_display_queue_telemetry.py",
+    "python .\\tools\\verify_expression_screen_runtime_snapshot.py",
+    "python .\\tools\\verify_expression_screen_runtime_diagnostics.py",
+    "python .\\tools\\verify_expression_wba_portability.py",
+    "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1"
+  ]
+}

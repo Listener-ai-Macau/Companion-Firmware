@@ -1,0 +1,307 @@
+{
+  "capabilities": [
+    {
+      "acceptance_item_ids": [
+        "no_hardware_expression_renderer",
+        "expression_visual_contract",
+        "expression_visual_acceptance_matrix",
+        "generated_art_style_contract",
+        "screen_generation_swap_guard",
+        "expression_layout_contract",
+        "expression_catalog_contract",
+        "expression_copy_contract",
+        "expression_priority_matrix",
+        "expression_transient_auto_recovery"
+      ],
+      "acceptance_statuses": {
+        "expression_catalog_contract": "PASS",
+        "expression_copy_contract": "PASS",
+        "expression_layout_contract": "PASS",
+        "expression_priority_matrix": "PASS",
+        "expression_transient_auto_recovery": "PASS",
+        "expression_visual_acceptance_matrix": "PASS",
+        "expression_visual_contract": "PASS",
+        "generated_art_style_contract": "PASS",
+        "no_hardware_expression_renderer": "PASS",
+        "screen_generation_swap_guard": "PASS"
+      },
+      "id": "expression_artwork_and_copy",
+      "next_acceptance": "Keep visual/layout/copy contracts green when adding a new face or changing copy.",
+      "status": "PASS",
+      "title": "Expression artwork and copy",
+      "user_value": "Every face has deterministic artwork and copy that fits both supported e-paper sizes."
+    },
+    {
+      "acceptance_item_ids": [
+        "screen_generation_swap_guard",
+        "screen_refresh_feel_contract",
+        "screen_display_drain_contract",
+        "display_queue_telemetry"
+      ],
+      "acceptance_statuses": {
+        "display_queue_telemetry": "PASS",
+        "screen_display_drain_contract": "PASS",
+        "screen_generation_swap_guard": "PASS",
+        "screen_refresh_feel_contract": "PASS"
+      },
+      "id": "screen_generation_hygiene",
+      "next_acceptance": "Every new prompt/art/menu/profile/ui_assets revision must prove atomic activation, stale-frame draining, current-generation-only rendering, and post-interaction panel maintenance before visual review.",
+      "status": "PASS",
+      "title": "Screen generation hygiene",
+      "user_value": "Every generated-art prompt, menu, screen-profile, or ui_assets swap activates as one coherent product generation instead of showing mixed old and new styles."
+    },
+    {
+      "acceptance_item_ids": [
+        "firmware_expression_state",
+        "expression_state_telemetry_snapshot",
+        "expression_unknown_signal_guard",
+        "expression_duplicate_refresh_suppression",
+        "expression_host_manifest",
+        "expression_input_source_matrix",
+        "user_journey_expression_acceptance"
+      ],
+      "acceptance_statuses": {
+        "expression_duplicate_refresh_suppression": "PASS",
+        "expression_host_manifest": "PASS",
+        "expression_input_source_matrix": "PASS",
+        "expression_state_telemetry_snapshot": "PASS",
+        "expression_unknown_signal_guard": "PASS",
+        "firmware_expression_state": "PASS",
+        "user_journey_expression_acceptance": "PASS"
+      },
+      "id": "portable_expression_model",
+      "next_acceptance": "Append new signals only through the catalog, copy, priority, and journey fixtures.",
+      "status": "PASS",
+      "title": "Portable expression model",
+      "user_value": "Expression priority, duplicate suppression, telemetry, and unsupported-signal guards stay HAL-free."
+    },
+    {
+      "acceptance_item_ids": [
+        "screen_feature_checklist",
+        "screen_expression_demo_sequence",
+        "screen_expression_demo_host_status_sequence",
+        "screen_expression_demo_panel_handoff"
+      ],
+      "acceptance_statuses": {
+        "screen_expression_demo_host_status_sequence": "PASS",
+        "screen_expression_demo_panel_handoff": "PASS",
+        "screen_expression_demo_sequence": "PASS",
+        "screen_feature_checklist": "PASS"
+      },
+      "id": "screen_demo_acceptance_flow",
+      "next_acceptance": "Use the same demo order for WB55 real-panel photos and later extend the real BLE bench until no manual visual gaps remain.",
+      "status": "PASS",
+      "title": "Screen demo acceptance flow",
+      "user_value": "The current screen behavior can be reviewed one feature at a time from a deterministic demo checklist and mapped to real-panel evidence."
+    },
+    {
+      "acceptance_item_ids": [
+        "ble_to_expression_policy",
+        "screen_settings_expression_policy",
+        "wb55_settings_expression_hint",
+        "wb55_device_status_expression_hint",
+        "wb55_interaction_status_expression_hint",
+        "wb55_battery_expression_hint",
+        "battery_recovery_expression_guard",
+        "recording_state_expression_hook",
+        "wb55_ota_readiness_expression_hint",
+        "diagnostic_event_expression_bridge"
+      ],
+      "acceptance_statuses": {
+        "battery_recovery_expression_guard": "PASS",
+        "ble_to_expression_policy": "PASS",
+        "diagnostic_event_expression_bridge": "PASS",
+        "recording_state_expression_hook": "PASS",
+        "screen_settings_expression_policy": "PASS",
+        "wb55_battery_expression_hint": "PASS",
+        "wb55_device_status_expression_hint": "PASS",
+        "wb55_interaction_status_expression_hint": "PASS",
+        "wb55_ota_readiness_expression_hint": "PASS",
+        "wb55_settings_expression_hint": "PASS"
+      },
+      "id": "product_status_hooks",
+      "next_acceptance": "Add each new product signal with a focused hook verifier and update the input source matrix.",
+      "status": "PASS",
+      "title": "Product status expression hooks",
+      "user_value": "Recording, settings, device, battery, OTA, interaction, and diagnostics can request visible faces."
+    },
+    {
+      "acceptance_item_ids": [
+        "wb55_display_queue_boundary",
+        "display_queue_fault_paths",
+        "display_queue_telemetry",
+        "screen_display_drain_contract",
+        "wb55_boot_idle_expression",
+        "screen_status_observability",
+        "host_ble_expression_status_fixture",
+        "host_ble_expression_extended_status_fixture",
+        "host_ble_expression_status_sequence",
+        "wb55_expression_tick_scheduler"
+      ],
+      "acceptance_statuses": {
+        "display_queue_fault_paths": "PASS",
+        "display_queue_telemetry": "PASS",
+        "host_ble_expression_extended_status_fixture": "PASS",
+        "host_ble_expression_status_fixture": "PASS",
+        "host_ble_expression_status_sequence": "PASS",
+        "screen_display_drain_contract": "PASS",
+        "screen_status_observability": "PASS",
+        "wb55_boot_idle_expression": "PASS",
+        "wb55_display_queue_boundary": "PASS",
+        "wb55_expression_tick_scheduler": "PASS"
+      },
+      "id": "wb55_queue_and_host_status",
+      "next_acceptance": "Use the same queue/status path for real-panel refresh and WBA scheduler parity.",
+      "status": "PASS",
+      "title": "WB55 queue and host status",
+      "user_value": "WB55 queues screen work outside BLE callbacks and exposes accepted/final status to the host."
+    },
+    {
+      "acceptance_item_ids": [
+        "wb55_runtime_serial_capture_preflight",
+        "wb55_rev51_runtime_recheck",
+        "screen_runtime_snapshot",
+        "screen_runtime_diagnostics",
+        "screen_runtime_diagnostic_decode",
+        "screen_runtime_diagnostics_bundle",
+        "real_ble_screen_final_status_bench",
+        "real_ble_expression_status_sequence_contract",
+        "panel_evidence_runtime_diagnostics",
+        "panel_evidence_diagnostics_bundle_validator",
+        "panel_evidence_real_ble_sequence_validator",
+        "screen_acceptance_runner"
+      ],
+      "acceptance_statuses": {
+        "panel_evidence_diagnostics_bundle_validator": "PASS",
+        "panel_evidence_real_ble_sequence_validator": "PASS",
+        "panel_evidence_runtime_diagnostics": "PASS",
+        "real_ble_expression_status_sequence_contract": "PASS",
+        "real_ble_screen_final_status_bench": "PASS",
+        "screen_acceptance_runner": "PASS",
+        "screen_runtime_diagnostic_decode": "PASS",
+        "screen_runtime_diagnostics": "PASS",
+        "screen_runtime_diagnostics_bundle": "PASS",
+        "screen_runtime_snapshot": "PASS",
+        "wb55_rev51_runtime_recheck": "DEFERRED_HARDWARE",
+        "wb55_runtime_serial_capture_preflight": "PASS"
+      },
+      "id": "runtime_diagnostics_and_evidence",
+      "next_acceptance": "Attach runtime snapshot and diagnostics bundle evidence to the first real-panel session.",
+      "status": "DEFERRED_HARDWARE",
+      "title": "Runtime diagnostics and evidence",
+      "user_value": "Screen runtime health can be decoded from diagnostics, BLE artifacts, and evidence records."
+    },
+    {
+      "acceptance_item_ids": [
+        "panel_target_ops_boundary",
+        "wb55_panel_target_adapter_scaffold",
+        "panel_adapter_behavior_matrix",
+        "panel_adapter_telemetry_snapshot",
+        "panel_hardware_evidence_template",
+        "panel_evidence_record_validator",
+        "panel_hardware_acceptance_plan",
+        "devboard_ioc_screen_preflight",
+        "wb55_screen_build_matrix",
+        "panel_wiring_preflight",
+        "panel_evidence_scaffold_wiring_prefill",
+        "panel_hardware_session_scaffold",
+        "panel_session_directory_preflight",
+        "panel_hardware_facts_intake",
+        "panel_hardware_facts_worksheet",
+        "panel_bringup_operator_packet",
+        "panel_driver_readiness_report",
+        "panel_hardware_facts_bridge",
+        "screen_refresh_feel_contract",
+        "wb55_real_panel_refresh",
+        "wb55_touch_visual_acceptance",
+        "companion_screen_goal_audit"
+      ],
+      "acceptance_statuses": {
+        "companion_screen_goal_audit": "PENDING_HUMAN",
+        "devboard_ioc_screen_preflight": "PASS",
+        "panel_adapter_behavior_matrix": "PASS",
+        "panel_adapter_telemetry_snapshot": "PASS",
+        "panel_bringup_operator_packet": "PASS",
+        "panel_driver_readiness_report": "PASS",
+        "panel_evidence_record_validator": "PASS",
+        "panel_evidence_scaffold_wiring_prefill": "PASS",
+        "panel_hardware_acceptance_plan": "PASS",
+        "panel_hardware_evidence_template": "PASS",
+        "panel_hardware_facts_bridge": "PASS",
+        "panel_hardware_facts_intake": "PASS",
+        "panel_hardware_facts_worksheet": "PASS",
+        "panel_hardware_session_scaffold": "PASS",
+        "panel_session_directory_preflight": "PASS",
+        "panel_target_ops_boundary": "PASS",
+        "panel_wiring_preflight": "PASS",
+        "screen_refresh_feel_contract": "PASS",
+        "wb55_panel_target_adapter_scaffold": "PASS",
+        "wb55_real_panel_refresh": "PASS",
+        "wb55_screen_build_matrix": "PASS",
+        "wb55_touch_visual_acceptance": "PENDING_HUMAN"
+      },
+      "id": "panel_driver_readiness",
+      "next_acceptance": "Operator confirms daily pet gestures, anywhere 3 s menu entry, press-cue/arrival partial refreshes, language switching, and that 0xCF maintenance is perceived as a single quiet flash.",
+      "status": "PENDING_HUMAN",
+      "title": "Panel driver readiness",
+      "user_value": "The panel driver boundary, evidence templates, and WB55 hardware gate are explicit."
+    },
+    {
+      "acceptance_item_ids": [
+        "wba_pre_port_gate",
+        "wba_cube_dependency_preflight",
+        "wba_port_scaffold",
+        "wba_panel_target_adapter_scaffold",
+        "wba_refresh_intent_contract",
+        "wba_display_scheduler_scaffold",
+        "wba_screen_gatt_scaffold",
+        "wba_screen_assets_scaffold",
+        "wba_pet_behavior_user_data_scaffold",
+        "target_capability_profile",
+        "wba_lse_clock_contract"
+      ],
+      "acceptance_statuses": {
+        "target_capability_profile": "PASS",
+        "wba_cube_dependency_preflight": "PASS",
+        "wba_display_scheduler_scaffold": "PASS",
+        "wba_lse_clock_contract": "PASS",
+        "wba_panel_target_adapter_scaffold": "PASS",
+        "wba_pet_behavior_user_data_scaffold": "PASS",
+        "wba_port_scaffold": "PASS",
+        "wba_pre_port_gate": "PASS",
+        "wba_refresh_intent_contract": "PASS",
+        "wba_screen_assets_scaffold": "PASS",
+        "wba_screen_gatt_scaffold": "PASS"
+      },
+      "id": "wba_migration_readiness",
+      "next_acceptance": "Add a separate CubeWBA IOC/project and build wrapper before claiming WBA parity.",
+      "status": "PASS",
+      "title": "WBA migration readiness",
+      "user_value": "WBA55/WBA65 work has target-named scaffolds and a CubeWBA dependency gate."
+    }
+  ],
+  "coverage": {
+    "acceptance_item_count": 86,
+    "grouped_acceptance_item_count": 86,
+    "roadmap_item_excluded_from_coverage": "screen_feature_roadmap",
+    "ungrouped_acceptance_item_ids": []
+  },
+  "current_next_gate": "wb55_rev51_runtime_recheck",
+  "purpose": "Product-facing roadmap that groups the detailed screen acceptance items into small Companion screen capabilities.",
+  "schema_id": "companion.pendant.screen_feature_roadmap.v1",
+  "source_acceptance_index": "docs/validation/companion-screen-acceptance-index.json",
+  "status": "PENDING_HUMAN",
+  "summary": {
+    "capability_count": 9,
+    "deferred_hardware_capability_count": 1,
+    "needs_attention_capability_count": 0,
+    "next_acceptance": "Complete the WB55 rev51 runtime recheck logs before focused touch/menu/language and 0xCF single-flash visual review.",
+    "pass_capability_count": 7,
+    "pending_human_capability_count": 1
+  },
+  "validation_commands": [
+    "python .\\tools\\verify_expression_feature_roadmap.py",
+    "python .\\tools\\verify_expression_acceptance_index.py",
+    "python .\\tools\\run_expression_acceptance.py --dry-run --skip-build"
+  ]
+}

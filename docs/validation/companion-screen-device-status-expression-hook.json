@@ -1,0 +1,82 @@
+{
+  "acceptance": {
+    "active_audio_maps_to_recording": true,
+    "device_status_publish_feeds_expression_bridge": true,
+    "disconnected_maps_to_low_priority_sleepy": true,
+    "fault_bitmap_maps_to_error": true,
+    "fault_bitmap_takes_precedence": true,
+    "initial_state_publish_does_not_schedule_expression": true,
+    "wba_safe_device_status_hook": true
+  },
+  "active_modes": {
+    "active_audio": 1,
+    "disconnected": 0,
+    "idle_link": 2
+  },
+  "cases": [
+    {
+      "case_id": "idle_link_no_expression_override",
+      "expected_expression": "idle",
+      "expected_signal": null,
+      "payload": {
+        "active_mode": 2,
+        "fault_bitmap": 0
+      },
+      "policy_expression": "idle",
+      "policy_reason": "no active screen signal"
+    },
+    {
+      "case_id": "disconnected_maps_to_sleepy",
+      "expected_expression": "sleepy",
+      "expected_signal": "COMP_EPAPER_EXPRESSION_SIGNAL_SETTINGS_SLEEPY",
+      "payload": {
+        "active_mode": 0,
+        "fault_bitmap": 0
+      },
+      "policy_expression": "sleepy",
+      "policy_reason": "device has no active link"
+    },
+    {
+      "case_id": "active_audio_maps_to_recording",
+      "expected_expression": "recording",
+      "expected_signal": "COMP_EPAPER_EXPRESSION_SIGNAL_RECORDING_START",
+      "payload": {
+        "active_mode": 1,
+        "fault_bitmap": 0
+      },
+      "policy_expression": "recording",
+      "policy_reason": "audio stream mode is active"
+    },
+    {
+      "case_id": "fault_bitmap_maps_to_error",
+      "expected_expression": "error",
+      "expected_signal": "COMP_EPAPER_EXPRESSION_SIGNAL_ERROR",
+      "payload": {
+        "active_mode": 1,
+        "fault_bitmap": 1
+      },
+      "policy_expression": "error",
+      "policy_reason": "fault_bitmap=0x1"
+    }
+  ],
+  "schema_id": "companion.pendant.screen_device_status_expression_hook.v1",
+  "sources": {
+    "epaper_readme": "app/companion_pendant/epaper/README.md",
+    "event_bridge_header": "app/companion_pendant/epaper/expression_events.h",
+    "event_bridge_source": "app/companion_pendant/epaper/expression_events.c",
+    "gatt_contract": "docs/ble_gatt_contract.md",
+    "screen_acceptance": "docs/companion_screen_expression_system.md",
+    "wb55_integration": "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c",
+    "wba_rules": "docs/stm32wba_migration_rules.md"
+  },
+  "status": "PASS",
+  "wb55_hook": {
+    "active_mode_source": "status->active_mode",
+    "fault_bitmap_source": "status->fault_bitmap",
+    "initial_state_guard": "Companion_Gatt_PublishDeviceStatus(false)",
+    "notify_read_hook": "Companion_Gatt_PublishDeviceStatus(true)",
+    "portable_mapper": "comp_epaper_expression_signal_from_device_status",
+    "publish_api": "Companion_Gatt_PublishDeviceStatus(bool apply_expression_hint)",
+    "status_source": "DeviceStatusV1"
+  }
+}

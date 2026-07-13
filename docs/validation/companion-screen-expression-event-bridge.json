@@ -1,0 +1,171 @@
+{
+  "event_mappings": [
+    {
+      "event_code": "COMP_DIAG_EVT_ERRORS_ASSERT",
+      "event_name": "errors.assert",
+      "expression": "error",
+      "expression_signal": "ERROR"
+    },
+    {
+      "event_code": "COMP_DIAG_EVT_ERRORS_FAULT",
+      "event_name": "errors.fault",
+      "expression": "error",
+      "expression_signal": "ERROR"
+    },
+    {
+      "event_code": "COMP_DIAG_EVT_MEETING_FINALIZE",
+      "event_name": "meeting.finalize",
+      "expression": "sync_complete",
+      "expression_signal": "MEETING_FINALIZE"
+    },
+    {
+      "event_code": "COMP_DIAG_EVT_MEETING_REJECTED",
+      "event_name": "meeting.rejected",
+      "expression": "error",
+      "expression_signal": "ERROR"
+    },
+    {
+      "event_code": "COMP_DIAG_EVT_MEETING_START",
+      "event_name": "meeting.start",
+      "expression": "recording",
+      "expression_signal": "MEETING_START"
+    },
+    {
+      "event_code": "COMP_DIAG_EVT_MEETING_STOP",
+      "event_name": "meeting.stop",
+      "expression": "thinking",
+      "expression_signal": "MEETING_STOP"
+    },
+    {
+      "event_code": "COMP_DIAG_EVT_RECORDING_FSM_CANCEL_REQUEST",
+      "event_name": "recording_fsm.cancel_request",
+      "expression": "idle",
+      "expression_signal": "RECORDING_CANCEL"
+    },
+    {
+      "event_code": "COMP_DIAG_EVT_RECORDING_FSM_ERROR",
+      "event_name": "recording_fsm.error",
+      "expression": "error",
+      "expression_signal": "ERROR"
+    },
+    {
+      "event_code": "COMP_DIAG_EVT_RECORDING_FSM_RECOVERY",
+      "event_name": "recording_fsm.recovery",
+      "expression": "idle",
+      "expression_signal": "RECOVERY"
+    },
+    {
+      "event_code": "COMP_DIAG_EVT_RECORDING_FSM_REJECTED",
+      "event_name": "recording_fsm.rejected",
+      "expression": "error",
+      "expression_signal": "ERROR"
+    },
+    {
+      "event_code": "COMP_DIAG_EVT_RECORDING_FSM_SESSION_FINISHED",
+      "event_name": "recording_fsm.session_finished",
+      "expression": "sync_complete",
+      "expression_signal": "RECORDING_FINISHED"
+    },
+    {
+      "event_code": "COMP_DIAG_EVT_RECORDING_FSM_START_REQUEST",
+      "event_name": "recording_fsm.start_request",
+      "expression": "recording",
+      "expression_signal": "RECORDING_START"
+    },
+    {
+      "event_code": "COMP_DIAG_EVT_RECORDING_FSM_STOP_REQUEST",
+      "event_name": "recording_fsm.stop_request",
+      "expression": "thinking",
+      "expression_signal": "RECORDING_STOP"
+    },
+    {
+      "event_code": "COMP_DIAG_EVT_SPEAKER_PROMPT",
+      "event_name": "speaker.prompt",
+      "expression": "speaking",
+      "expression_signal": "SPEAKER_PROMPT"
+    },
+    {
+      "event_code": "COMP_DIAG_EVT_SPEAKER_REJECTED",
+      "event_name": "speaker.rejected",
+      "expression": "error",
+      "expression_signal": "ERROR"
+    },
+    {
+      "event_code": "COMP_DIAG_EVT_SPEAKER_RESULT",
+      "event_name": "speaker.result",
+      "expression": "happy",
+      "expression_signal": "SPEAKER_RESULT"
+    },
+    {
+      "event_code": "COMP_DIAG_EVT_WAKE_WORD_ARMED",
+      "event_name": "wake_word.armed",
+      "expression": "idle",
+      "expression_signal": "WAKE_ARMED"
+    },
+    {
+      "event_code": "COMP_DIAG_EVT_WAKE_WORD_DETECTED",
+      "event_name": "wake_word.detected",
+      "expression": "listening",
+      "expression_signal": "WAKE_DETECTED"
+    },
+    {
+      "event_code": "COMP_DIAG_EVT_WAKE_WORD_DISABLED",
+      "event_name": "wake_word.disabled",
+      "expression": "sleepy",
+      "expression_signal": "WAKE_DISABLED"
+    },
+    {
+      "event_code": "COMP_DIAG_EVT_WAKE_WORD_REJECTED",
+      "event_name": "wake_word.rejected",
+      "expression": "error",
+      "expression_signal": "ERROR"
+    },
+    {
+      "event_code": "COMP_DIAG_EVT_WARNINGS_RECOVERED",
+      "event_name": "warnings.recovered",
+      "expression": "idle",
+      "expression_signal": "RECOVERY"
+    }
+  ],
+  "schema_id": "companion.pendant.expression_event_bridge.v1",
+  "sources": {
+    "event_bridge_header": "app/companion_pendant/epaper/expression_events.h",
+    "event_bridge_source": "app/companion_pendant/epaper/expression_events.c",
+    "screen_acceptance": "docs/companion_screen_expression_system.md",
+    "wb55_integration": "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c"
+  },
+  "special_cases": {
+    "battery_charging.sample": {
+      "condition": "percent <= 20 or millivolts < 3600 while not charging maps low; percent >= 25 or charging at >= 3600 mV maps recovered",
+      "expression": "low_battery_or_battery_recovered"
+    },
+    "device_status.active_mode_fault_bitmap": {
+      "condition": "faults map to error, active audio maps to recording, disconnected maps to low-priority sleepy",
+      "expression": "sleepy_or_recording_or_error"
+    },
+    "e_paper.*": {
+      "condition": "ignored by firmware bridge to prevent display-update self loops",
+      "expression": null
+    },
+    "interaction_status.meeting_speaker_wake": {
+      "condition": "MeetingStatusV1, SpeakerStatusV1, and WakeWordStatusV1 mirror control diagnostic semantics",
+      "expression": "recording_thinking_sync_speaking_listening_idle_or_error"
+    },
+    "ota_readiness.blocker_bitmap": {
+      "condition": "low-battery blocker maps to low_battery; other nonzero blockers map to error",
+      "expression": "low_battery_or_error"
+    },
+    "recording_fsm.state": {
+      "condition": "recording FSM state snapshots map through comp_epaper_expression_signal_from_recording_state without platform dependencies",
+      "expression": "recording_thinking_sync_complete_idle_or_error"
+    },
+    "severity_error_fallback": {
+      "condition": "non-e-paper events with severity >= error",
+      "expression": "error"
+    },
+    "wb55_batterychargev1_hook": {
+      "condition": "post-startup BatteryChargeV1 publishes feed battery_charging.sample",
+      "expression": "low_battery"
+    }
+  }
+}

@@ -1,0 +1,114 @@
+{
+  "schema_id": "companion.pendant.screen_pet_expression_wb55.v1",
+  "status": "PASS_RUNTIME_VISUAL_ACCEPTANCE_PENDING",
+  "generated_at": "2026-07-12T13:25:21+08:00",
+  "target": "NUCLEO-WB55RG + GDEY0154D67-T03/SSD1681 + FT6336U",
+  "scope": "Machine evidence for the parameterized electronic-pet renderer; this record does not claim human visual acceptance.",
+  "firmware": {
+    "normal_image_bytes": 135900,
+    "screen_asset_pack": {
+      "name": "emote-matrix-white-200x200-v1",
+      "revision": 22,
+      "clips": 37,
+      "frame_records": 247,
+      "storage": "external ui_assets"
+    }
+  },
+  "observed": {
+    "pet_expression_selftest": "pass",
+    "pet_behavior_selftest": "pass (six mood classifications, full-face pose composition, left/right/up/down stroke semantics, and memory export/import)",
+    "pet_attention_selftest": "pass",
+    "rendered_profile_distinctness": "pass (10/10 procedural profiles have unique 64x64 framebuffer signatures)",
+    "soft_cute_silhouette": "Revision 28 procedural crescent/relaxed eye geometry and rounded mouth endpoints compiled and passed board self-test; human aesthetic review remains pending",
+    "renderer_source": "procedural",
+    "emotion_composition": {
+      "moods": ["calm", "curious", "affectionate", "delighted", "restful", "worried"],
+      "visual_rig": "verified on target: brow, eye opening/spacing, mouth, and cheek parameters vary by mood",
+      "boot_mode": "EPAPER_EMOTE_DEMO preview preserves the quiet idle baseline; normal daily/touch product paths apply the behavior composer"
+    },
+    "happy_product_event_probe": {
+      "signal": "speaker_result",
+      "result": "PASS: one real product signal reached pet behavior, the external player, queue, and SSD1681",
+      "pose": "eye_open=56 eye_width=115 spacing=87 highlight=133 brow=3 lift=7 mouth=1 mouth_scale=120 cheek=3",
+      "refresh": "one 0xF7 baseline then two 0xFC differential updates at 307 ms before menu restoration"
+    },
+    "touch_wait_coalescing": {
+      "result": "PASS: a 1297 ms boot refresh performed about 300 FT6336 polls with buffered=0 dropped=0 while no finger was present",
+      "contract": "preserve contact anchor, coalesce newest held coordinate, then preserve release; discard idle samples during panel wait"
+    },
+    "directional_stroke_probe": {
+      "result": "PASS: four real WB55 strokes traveled through pet behavior, external attention timelines, the procedural full-face renderer, display queue, and SSD1681",
+      "contract": "one isolated firmware image and serial capture per direction; every probe had one 0xF7 baseline, three 0xFC interaction refreshes at about 306-307 ms, and zero FT6336 I2C errors",
+      "probes": {
+        "left": "start=180,100 end=20,100; playful left glance gaze=-32,0 face_shift=-16,0 brow_asym=-9 pout",
+        "right": "start=20,100 end=180,100; playful right glance gaze=32,0 face_shift=16,0 brow_asym=9 pout",
+        "up": "start=100,180 end=100,20; curious up glance gaze=0,-32 raised brow lift=20, wider eyes, spark",
+        "down": "start=100,20 end=100,180; warm down glance gaze=0,30 face_shift=0,14 warm brow, smile, cheek=3"
+      }
+    },
+    "first_idle_pose": {
+      "state": "idle",
+      "gaze": [0, 0],
+      "eye_open": 84,
+      "eyelid_tilt": 0,
+      "eye_width": 102,
+      "eye_spacing": 98,
+      "eye_pair_tilt": 0,
+      "highlight_scale": 102,
+      "face_shift": [0, 0],
+      "brow": "none",
+      "brow_lift": 0,
+      "brow_asymmetry": 0,
+      "mouth": "soft",
+      "mouth_scale": 84,
+      "cheek_strength": 0,
+      "mark": "none"
+    },
+    "boot_refresh": {
+      "mode": "full",
+      "control": "0xF7",
+      "count": 1,
+      "elapsed_ms": 1297
+    },
+    "suppressed_legacy_idle_timeline_frames": [1, 2],
+    "partial_refreshes_during_12_second_idle_capture": 0,
+    "touch_controller": {
+      "detected": true,
+      "identity": true,
+      "address": "0x38",
+      "tuning": "threshold=0x90 active_period=4 monitor_period=4"
+    }
+  },
+  "evidence": {
+    "serial_log": ".cache/validation/screen-revision31-normal-daily-four-stroke-final/nucleo-serial-raw.log",
+    "serial_summary": ".cache/validation/screen-revision31-normal-daily-four-stroke-final/nucleo-serial-summary.json",
+    "product_event_serial_log": ".cache/validation/screen-revision29-happy-product-emotion-probe/nucleo-serial-raw.log",
+    "directional_stroke_serial_logs": {
+      "left": ".cache/validation/screen-revision31-directional-stroke-left/nucleo-serial-raw.log",
+      "right": ".cache/validation/screen-revision31-directional-stroke-right/nucleo-serial-raw.log",
+      "up": ".cache/validation/screen-revision31-directional-stroke-up/nucleo-serial-raw.log",
+      "down": ".cache/validation/screen-revision31-directional-stroke-down/nucleo-serial-raw.log"
+    },
+    "runtime_verifier": "python tools/verify_pet_expression_runtime.py --log .cache/validation/screen-revision31-normal-daily-four-stroke-final/nucleo-serial-raw.log",
+    "directional_stroke_verifier": "python tools/verify_pet_stroke_runtime.py --log .cache/validation/screen-revision31-directional-stroke-<direction>/nucleo-serial-raw.log --direction <left|right|up|down>",
+    "architecture_verifier": "python tools/verify_pet_expression_system.py"
+  },
+  "remaining_acceptance": [
+    "Not started: visually assess exact touch-point full-face response, soft-cute proportional character, three-phase reaction, and physical character design only after the operator explicitly starts acceptance.",
+    "Not started: physically confirm only an anywhere, nearly-still 3 s long press opens the menu after the 650 ms pet tease.",
+    "Not started: physically confirm ordinary left/right/up/down swipes produce distinct playful, curious, and warm pet responses and do not open the menu.",
+    "Not started: assess residual/contrast quality after real touch and menu interactions on the panel.",
+    "Not started: verify soft-cute full-face product-state personality on the real panel, including listening, thinking, speaking, recording, happy, sleepy, sync, low-battery, and error."
+  ],
+  "anti_regression": [
+    "python tools/verify_pet_expression_system.py",
+    "python tools/verify_pet_expression_runtime.py --log .cache/validation/screen-revision31-normal-daily-four-stroke-final/nucleo-serial-raw.log",
+    "python tools/verify_pet_stroke_runtime.py --log .cache/validation/screen-revision31-directional-stroke-left/nucleo-serial-raw.log --direction left",
+    "python tools/verify_pet_stroke_runtime.py --log .cache/validation/screen-revision31-directional-stroke-right/nucleo-serial-raw.log --direction right",
+    "python tools/verify_pet_stroke_runtime.py --log .cache/validation/screen-revision31-directional-stroke-up/nucleo-serial-raw.log --direction up",
+    "python tools/verify_pet_stroke_runtime.py --log .cache/validation/screen-revision31-directional-stroke-down/nucleo-serial-raw.log --direction down",
+    "python tools/verify_epaper_refresh_policy.py",
+    "python tools/verify_expression_wba_portability.py",
+    "pwsh -NoProfile -File tools/build_nucleo_bringup.ps1 -EpaperSsd1681Bringup -Force"
+  ]
+}

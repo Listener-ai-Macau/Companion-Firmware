@@ -1,0 +1,291 @@
+{
+  "expressions": [
+    {
+      "auto_recover_ms": 0,
+      "body": "Soft awake face",
+      "footer": "EXPR IDLE",
+      "id": 0,
+      "name": "idle",
+      "priority": 20,
+      "stability": "stable",
+      "symbol": "IDLE",
+      "title": "Idle"
+    },
+    {
+      "auto_recover_ms": 10000,
+      "body": "Ears open for the wake path",
+      "footer": "EXPR LISTEN",
+      "id": 1,
+      "name": "listening",
+      "priority": 60,
+      "stability": "transient",
+      "symbol": "LISTENING",
+      "title": "Listening"
+    },
+    {
+      "auto_recover_ms": 12000,
+      "body": "Processing the last prompt",
+      "footer": "EXPR THINK",
+      "id": 2,
+      "name": "thinking",
+      "priority": 50,
+      "stability": "transient",
+      "symbol": "THINKING",
+      "title": "Thinking"
+    },
+    {
+      "auto_recover_ms": 10000,
+      "body": "Response audio is active",
+      "footer": "EXPR SPEAK",
+      "id": 3,
+      "name": "speaking",
+      "priority": 70,
+      "stability": "transient",
+      "symbol": "SPEAKING",
+      "title": "Speaking"
+    },
+    {
+      "auto_recover_ms": 6000,
+      "body": "Positive acknowledgement",
+      "footer": "EXPR HAPPY",
+      "id": 4,
+      "name": "happy",
+      "priority": 30,
+      "stability": "transient",
+      "symbol": "HAPPY",
+      "title": "Happy"
+    },
+    {
+      "auto_recover_ms": 0,
+      "body": "Low attention idle mode",
+      "footer": "EXPR SLEEP",
+      "id": 5,
+      "name": "sleepy",
+      "priority": 10,
+      "stability": "stable",
+      "symbol": "SLEEPY",
+      "title": "Sleepy"
+    },
+    {
+      "auto_recover_ms": 0,
+      "body": "Capture indicator stays visible",
+      "footer": "EXPR REC",
+      "id": 6,
+      "name": "recording",
+      "priority": 90,
+      "stability": "stable",
+      "symbol": "RECORDING",
+      "title": "Recording"
+    },
+    {
+      "auto_recover_ms": 8000,
+      "body": "Transfer finished cleanly",
+      "footer": "EXPR SYNC",
+      "id": 7,
+      "name": "sync_complete",
+      "priority": 40,
+      "stability": "transient",
+      "symbol": "SYNC_COMPLETE",
+      "title": "Synced"
+    },
+    {
+      "auto_recover_ms": 0,
+      "body": "Charge soon",
+      "footer": "EXPR LOW",
+      "id": 8,
+      "name": "low_battery",
+      "priority": 80,
+      "stability": "stable",
+      "symbol": "LOW_BATTERY",
+      "title": "Battery"
+    },
+    {
+      "auto_recover_ms": 0,
+      "body": "Needs user or host recovery",
+      "footer": "EXPR ERROR",
+      "id": 9,
+      "name": "error",
+      "priority": 100,
+      "stability": "stable",
+      "symbol": "ERROR",
+      "title": "Error"
+    }
+  ],
+  "public_invariants": {
+    "copy_locale": "en",
+    "diagnostic_arg3_model": "(expression_id << 16) | signal_id",
+    "expression_card_slot": 1,
+    "expression_count": 10,
+    "expression_request_id_base": "0xe0000000",
+    "signal_count": 18,
+    "stable_id_policy": "Do not renumber existing ExpressionV1 or signal IDs; append new IDs before COUNT only."
+  },
+  "purpose": "Host-visible ExpressionV1 catalog tying stable numeric IDs to copy, priority, recovery, and BLE diagnostic payloads.",
+  "schema_id": "companion.pendant.screen_expression_catalog.v1",
+  "signals": [
+    {
+      "expression": "idle",
+      "expression_id": 0,
+      "id": 0,
+      "may_lower_priority": true,
+      "reason": "boot/default screen",
+      "signal": "BOOT_IDLE"
+    },
+    {
+      "expression": "idle",
+      "expression_id": 0,
+      "id": 1,
+      "may_lower_priority": false,
+      "reason": "wake word armed",
+      "signal": "WAKE_ARMED"
+    },
+    {
+      "expression": "sleepy",
+      "expression_id": 5,
+      "id": 2,
+      "may_lower_priority": false,
+      "reason": "wake word disabled",
+      "signal": "WAKE_DISABLED"
+    },
+    {
+      "expression": "listening",
+      "expression_id": 1,
+      "id": 3,
+      "may_lower_priority": false,
+      "reason": "wake word detected",
+      "signal": "WAKE_DETECTED"
+    },
+    {
+      "expression": "speaking",
+      "expression_id": 3,
+      "id": 4,
+      "may_lower_priority": false,
+      "reason": "speaker prompt accepted",
+      "signal": "SPEAKER_PROMPT"
+    },
+    {
+      "expression": "happy",
+      "expression_id": 4,
+      "id": 5,
+      "may_lower_priority": true,
+      "reason": "speaker prompt completed",
+      "signal": "SPEAKER_RESULT"
+    },
+    {
+      "expression": "recording",
+      "expression_id": 6,
+      "id": 6,
+      "may_lower_priority": false,
+      "reason": "meeting capture started",
+      "signal": "MEETING_START"
+    },
+    {
+      "expression": "thinking",
+      "expression_id": 2,
+      "id": 7,
+      "may_lower_priority": true,
+      "reason": "meeting capture stopped",
+      "signal": "MEETING_STOP"
+    },
+    {
+      "expression": "sync_complete",
+      "expression_id": 7,
+      "id": 8,
+      "may_lower_priority": true,
+      "reason": "meeting artifact finalized",
+      "signal": "MEETING_FINALIZE"
+    },
+    {
+      "expression": "recording",
+      "expression_id": 6,
+      "id": 9,
+      "may_lower_priority": false,
+      "reason": "recording start accepted",
+      "signal": "RECORDING_START"
+    },
+    {
+      "expression": "thinking",
+      "expression_id": 2,
+      "id": 10,
+      "may_lower_priority": true,
+      "reason": "recording stop accepted",
+      "signal": "RECORDING_STOP"
+    },
+    {
+      "expression": "idle",
+      "expression_id": 0,
+      "id": 11,
+      "may_lower_priority": true,
+      "reason": "recording cancelled",
+      "signal": "RECORDING_CANCEL"
+    },
+    {
+      "expression": "sync_complete",
+      "expression_id": 7,
+      "id": 12,
+      "may_lower_priority": true,
+      "reason": "recording stored for sync",
+      "signal": "RECORDING_FINISHED"
+    },
+    {
+      "expression": "low_battery",
+      "expression_id": 8,
+      "id": 13,
+      "may_lower_priority": false,
+      "reason": "battery is below threshold",
+      "signal": "LOW_BATTERY"
+    },
+    {
+      "expression": "idle",
+      "expression_id": 0,
+      "id": 14,
+      "may_lower_priority": true,
+      "reason": "recovered to idle",
+      "signal": "RECOVERY"
+    },
+    {
+      "expression": "error",
+      "expression_id": 9,
+      "id": 15,
+      "may_lower_priority": false,
+      "reason": "error or rejection",
+      "signal": "ERROR"
+    },
+    {
+      "expression": "sleepy",
+      "expression_id": 5,
+      "id": 16,
+      "may_lower_priority": false,
+      "reason": "quiet hours or display-off screen setting",
+      "signal": "SETTINGS_SLEEPY"
+    },
+    {
+      "expression": "idle",
+      "expression_id": 0,
+      "id": 17,
+      "may_lower_priority": false,
+      "reason": "battery recovered above expression threshold",
+      "signal": "BATTERY_RECOVERED"
+    }
+  ],
+  "sources": {
+    "ble_contract": "docs/ble_gatt_contract.md",
+    "ble_matrix": "docs/validation/companion_ble_matrix.json",
+    "firmware_header": "app/companion_pendant/epaper/expression_state.h",
+    "firmware_source": "app/companion_pendant/epaper/expression_state.c",
+    "firmware_state_fixture": "docs/validation/companion-screen-firmware-expression-state.json",
+    "policy": "app/companion_pendant/epaper/expression_policy.py",
+    "renderer": "app/companion_pendant/epaper/card_renderer.py",
+    "screen_acceptance": "docs/companion_screen_expression_system.md",
+    "wb55_integration": "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c",
+    "wba_rules": "docs/stm32wba_migration_rules.md"
+  },
+  "status": "PASS",
+  "validation_commands": [
+    "python .\\tools\\verify_expression_catalog_contract.py",
+    "python .\\tools\\verify_expression_firmware_state.py",
+    "python .\\tools\\verify_epaper_assets.py",
+    "python .\\tools\\verify_expression_status_observability.py",
+    "python .\\tools\\verify_expression_wba_portability.py"
+  ]
+}

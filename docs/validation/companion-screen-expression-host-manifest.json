@@ -1,0 +1,586 @@
+{
+  "coverage": {
+    "demo_covers_all_faces": true,
+    "demo_host_sequence_faces": [
+      "error",
+      "happy",
+      "idle",
+      "listening",
+      "low_battery",
+      "recording",
+      "sleepy",
+      "speaking",
+      "sync_complete",
+      "thinking"
+    ],
+    "expression_count": 10,
+    "legacy_gap_faces": [
+      "happy",
+      "listening",
+      "speaking",
+      "thinking"
+    ],
+    "legacy_host_sequence_faces": [
+      "error",
+      "idle",
+      "low_battery",
+      "recording",
+      "sleepy",
+      "sync_complete"
+    ],
+    "policy_expression_coverage": [
+      "error",
+      "happy",
+      "idle",
+      "listening",
+      "low_battery",
+      "recording",
+      "sleepy",
+      "speaking",
+      "sync_complete",
+      "thinking"
+    ],
+    "signal_count": 18
+  },
+  "faces": [
+    {
+      "auto_recover_ms": 0,
+      "body": "Soft awake face",
+      "demo_host_examples": [
+        {
+          "content_crc32": "0x4bbb0bc4",
+          "diagnostic_arg3": "0x00000001",
+          "event": "wake_word.armed",
+          "request_id": 3758100481,
+          "signal": "WAKE_ARMED",
+          "signal_id": 1
+        },
+        {
+          "content_crc32": "0x3db8b723",
+          "diagnostic_arg3": "0x0000000e",
+          "event": "settings.display_on",
+          "request_id": 3758100490,
+          "signal": "RECOVERY",
+          "signal_id": 14
+        }
+      ],
+      "demo_host_sequence_covered": true,
+      "footer": "EXPR IDLE",
+      "host_acceptance_hint": "Covered by screen_expression_status and screen_expression_demo_status.",
+      "id": 0,
+      "legacy_host_examples": [
+        {
+          "content_crc32": "0x91bdb88d",
+          "diagnostic_arg3": "0x00000000",
+          "event": "boot_idle",
+          "request_id": 3758096385,
+          "signal": "BOOT_IDLE",
+          "signal_id": null
+        }
+      ],
+      "legacy_host_sequence_covered": true,
+      "name": "idle",
+      "policy_case_ids": [
+        "event_battery_near_threshold_no_recovery",
+        "event_battery_recovered",
+        "status_idle_wake_armed"
+      ],
+      "priority": 20,
+      "signals": [
+        {
+          "id": 0,
+          "may_lower_priority": true,
+          "reason": "boot/default screen",
+          "signal": "BOOT_IDLE"
+        },
+        {
+          "id": 1,
+          "may_lower_priority": false,
+          "reason": "wake word armed",
+          "signal": "WAKE_ARMED"
+        },
+        {
+          "id": 11,
+          "may_lower_priority": true,
+          "reason": "recording cancelled",
+          "signal": "RECORDING_CANCEL"
+        },
+        {
+          "id": 14,
+          "may_lower_priority": true,
+          "reason": "recovered to idle",
+          "signal": "RECOVERY"
+        },
+        {
+          "id": 17,
+          "may_lower_priority": false,
+          "reason": "battery recovered above expression threshold",
+          "signal": "BATTERY_RECOVERED"
+        }
+      ],
+      "stability": "stable",
+      "title": "Idle"
+    },
+    {
+      "auto_recover_ms": 10000,
+      "body": "Ears open for the wake path",
+      "demo_host_examples": [
+        {
+          "content_crc32": "0x5fffc3fe",
+          "diagnostic_arg3": "0x00010003",
+          "event": "wake_word.detected",
+          "request_id": 3758100482,
+          "signal": "WAKE_DETECTED",
+          "signal_id": 3
+        }
+      ],
+      "demo_host_sequence_covered": true,
+      "footer": "EXPR LISTEN",
+      "host_acceptance_hint": "Covered by screen_expression_demo_status; add to real BLE screen_expression_status when expanding the six-face bench.",
+      "id": 1,
+      "legacy_host_examples": [],
+      "legacy_host_sequence_covered": false,
+      "name": "listening",
+      "policy_case_ids": [
+        "status_wake_detected"
+      ],
+      "priority": 60,
+      "signals": [
+        {
+          "id": 3,
+          "may_lower_priority": false,
+          "reason": "wake word detected",
+          "signal": "WAKE_DETECTED"
+        }
+      ],
+      "stability": "transient",
+      "title": "Listening"
+    },
+    {
+      "auto_recover_ms": 12000,
+      "body": "Processing the last prompt",
+      "demo_host_examples": [
+        {
+          "content_crc32": "0xacc74275",
+          "diagnostic_arg3": "0x0002000a",
+          "event": "recording_fsm.stop_request",
+          "request_id": 3758100484,
+          "signal": "RECORDING_STOP",
+          "signal_id": 10
+        }
+      ],
+      "demo_host_sequence_covered": true,
+      "footer": "EXPR THINK",
+      "host_acceptance_hint": "Covered by screen_expression_demo_status; add to real BLE screen_expression_status when expanding the six-face bench.",
+      "id": 2,
+      "legacy_host_examples": [],
+      "legacy_host_sequence_covered": false,
+      "name": "thinking",
+      "policy_case_ids": [
+        "event_meeting_stop_processing",
+        "status_meeting_summary_pending",
+        "status_recording_fsm_stopping"
+      ],
+      "priority": 50,
+      "signals": [
+        {
+          "id": 7,
+          "may_lower_priority": true,
+          "reason": "meeting capture stopped",
+          "signal": "MEETING_STOP"
+        },
+        {
+          "id": 10,
+          "may_lower_priority": true,
+          "reason": "recording stop accepted",
+          "signal": "RECORDING_STOP"
+        }
+      ],
+      "stability": "transient",
+      "title": "Thinking"
+    },
+    {
+      "auto_recover_ms": 10000,
+      "body": "Response audio is active",
+      "demo_host_examples": [
+        {
+          "content_crc32": "0x83eedeaa",
+          "diagnostic_arg3": "0x00030004",
+          "event": "speaker.prompt",
+          "request_id": 3758100486,
+          "signal": "SPEAKER_PROMPT",
+          "signal_id": 4
+        }
+      ],
+      "demo_host_sequence_covered": true,
+      "footer": "EXPR SPEAK",
+      "host_acceptance_hint": "Covered by screen_expression_demo_status; add to real BLE screen_expression_status when expanding the six-face bench.",
+      "id": 3,
+      "legacy_host_examples": [],
+      "legacy_host_sequence_covered": false,
+      "name": "speaking",
+      "policy_case_ids": [
+        "status_speaker_prompt"
+      ],
+      "priority": 70,
+      "signals": [
+        {
+          "id": 4,
+          "may_lower_priority": false,
+          "reason": "speaker prompt accepted",
+          "signal": "SPEAKER_PROMPT"
+        }
+      ],
+      "stability": "transient",
+      "title": "Speaking"
+    },
+    {
+      "auto_recover_ms": 6000,
+      "body": "Positive acknowledgement",
+      "demo_host_examples": [
+        {
+          "content_crc32": "0x75ed7ba0",
+          "diagnostic_arg3": "0x00040005",
+          "event": "speaker.result",
+          "request_id": 3758100487,
+          "signal": "SPEAKER_RESULT",
+          "signal_id": 5
+        }
+      ],
+      "demo_host_sequence_covered": true,
+      "footer": "EXPR HAPPY",
+      "host_acceptance_hint": "Covered by screen_expression_demo_status; add to real BLE screen_expression_status when expanding the six-face bench.",
+      "id": 4,
+      "legacy_host_examples": [],
+      "legacy_host_sequence_covered": false,
+      "name": "happy",
+      "policy_case_ids": [
+        "event_speaker_result_happy"
+      ],
+      "priority": 30,
+      "signals": [
+        {
+          "id": 5,
+          "may_lower_priority": true,
+          "reason": "speaker prompt completed",
+          "signal": "SPEAKER_RESULT"
+        }
+      ],
+      "stability": "transient",
+      "title": "Happy"
+    },
+    {
+      "auto_recover_ms": 0,
+      "body": "Low attention idle mode",
+      "demo_host_examples": [
+        {
+          "content_crc32": "0xd6afbe44",
+          "diagnostic_arg3": "0x00050010",
+          "event": "settings.display_off",
+          "request_id": 3758100489,
+          "signal": "SETTINGS_SLEEPY",
+          "signal_id": 16
+        },
+        {
+          "content_crc32": "0xd6afbe44",
+          "diagnostic_arg3": "0x00050010",
+          "event": "settings.quiet_hours",
+          "request_id": 3758100493,
+          "signal": "SETTINGS_SLEEPY",
+          "signal_id": 16
+        }
+      ],
+      "demo_host_sequence_covered": true,
+      "footer": "EXPR SLEEP",
+      "host_acceptance_hint": "Covered by screen_expression_status and screen_expression_demo_status.",
+      "id": 5,
+      "legacy_host_examples": [
+        {
+          "content_crc32": "0xd6afbe44",
+          "diagnostic_arg3": "0x00050010",
+          "event": "settings.display_off",
+          "request_id": 3758096386,
+          "signal": "SETTINGS_SLEEPY",
+          "signal_id": null
+        }
+      ],
+      "legacy_host_sequence_covered": true,
+      "name": "sleepy",
+      "policy_case_ids": [
+        "status_display_off_sleepy",
+        "status_quiet_hours_sleepy",
+        "status_sleepy_no_link"
+      ],
+      "priority": 10,
+      "signals": [
+        {
+          "id": 2,
+          "may_lower_priority": false,
+          "reason": "wake word disabled",
+          "signal": "WAKE_DISABLED"
+        },
+        {
+          "id": 16,
+          "may_lower_priority": false,
+          "reason": "quiet hours or display-off screen setting",
+          "signal": "SETTINGS_SLEEPY"
+        }
+      ],
+      "stability": "stable",
+      "title": "Sleepy"
+    },
+    {
+      "auto_recover_ms": 0,
+      "body": "Capture indicator stays visible",
+      "demo_host_examples": [
+        {
+          "content_crc32": "0xcafe2efd",
+          "diagnostic_arg3": "0x00060009",
+          "event": "recording_fsm.start_request",
+          "request_id": 3758100483,
+          "signal": "RECORDING_START",
+          "signal_id": 9
+        }
+      ],
+      "demo_host_sequence_covered": true,
+      "footer": "EXPR REC",
+      "host_acceptance_hint": "Covered by screen_expression_status and screen_expression_demo_status.",
+      "id": 6,
+      "legacy_host_examples": [
+        {
+          "content_crc32": "0xcafe2efd",
+          "diagnostic_arg3": "0x00060009",
+          "event": "recording_fsm.start_request",
+          "request_id": 23,
+          "signal": "RECORDING_START",
+          "signal_id": null
+        }
+      ],
+      "legacy_host_sequence_covered": true,
+      "name": "recording",
+      "policy_case_ids": [
+        "status_meeting_recording",
+        "status_quiet_hours_recording_visible",
+        "status_recording_fsm_active"
+      ],
+      "priority": 90,
+      "signals": [
+        {
+          "id": 6,
+          "may_lower_priority": false,
+          "reason": "meeting capture started",
+          "signal": "MEETING_START"
+        },
+        {
+          "id": 9,
+          "may_lower_priority": false,
+          "reason": "recording start accepted",
+          "signal": "RECORDING_START"
+        }
+      ],
+      "stability": "stable",
+      "title": "Recording"
+    },
+    {
+      "auto_recover_ms": 8000,
+      "body": "Transfer finished cleanly",
+      "demo_host_examples": [
+        {
+          "content_crc32": "0x943f53fd",
+          "diagnostic_arg3": "0x0007000c",
+          "event": "recording_fsm.session_finished",
+          "request_id": 3758100485,
+          "signal": "RECORDING_FINISHED",
+          "signal_id": 12
+        },
+        {
+          "content_crc32": "0xac34ec69",
+          "diagnostic_arg3": "0x00070008",
+          "event": "meeting.finalize",
+          "request_id": 3758100507,
+          "signal": "MEETING_FINALIZE",
+          "signal_id": 8
+        }
+      ],
+      "demo_host_sequence_covered": true,
+      "footer": "EXPR SYNC",
+      "host_acceptance_hint": "Covered by screen_expression_status and screen_expression_demo_status.",
+      "id": 7,
+      "legacy_host_examples": [
+        {
+          "content_crc32": "0x943f53fd",
+          "diagnostic_arg3": "0x0007000c",
+          "event": "recording_fsm.session_finished",
+          "request_id": 24,
+          "signal": "RECORDING_FINISHED",
+          "signal_id": null
+        }
+      ],
+      "legacy_host_sequence_covered": true,
+      "name": "sync_complete",
+      "policy_case_ids": [
+        "status_meeting_sync_complete",
+        "status_recording_fsm_transfer_ready"
+      ],
+      "priority": 40,
+      "signals": [
+        {
+          "id": 8,
+          "may_lower_priority": true,
+          "reason": "meeting artifact finalized",
+          "signal": "MEETING_FINALIZE"
+        },
+        {
+          "id": 12,
+          "may_lower_priority": true,
+          "reason": "recording stored for sync",
+          "signal": "RECORDING_FINISHED"
+        }
+      ],
+      "stability": "transient",
+      "title": "Synced"
+    },
+    {
+      "auto_recover_ms": 0,
+      "body": "Charge soon",
+      "demo_host_examples": [
+        {
+          "content_crc32": "0x720e039c",
+          "diagnostic_arg3": "0x0008000d",
+          "event": "battery_charging.sample",
+          "request_id": 3758100496,
+          "signal": "LOW_BATTERY",
+          "signal_id": 13
+        }
+      ],
+      "demo_host_sequence_covered": true,
+      "footer": "EXPR LOW",
+      "host_acceptance_hint": "Covered by screen_expression_status and screen_expression_demo_status.",
+      "id": 8,
+      "legacy_host_examples": [
+        {
+          "content_crc32": "0x720e039c",
+          "diagnostic_arg3": "0x0008000d",
+          "event": "battery_charging.sample.low",
+          "request_id": 3758096387,
+          "signal": "LOW_BATTERY",
+          "signal_id": null
+        }
+      ],
+      "legacy_host_sequence_covered": true,
+      "name": "low_battery",
+      "policy_case_ids": [
+        "status_low_battery",
+        "status_ota_low_battery_blocker"
+      ],
+      "priority": 80,
+      "signals": [
+        {
+          "id": 13,
+          "may_lower_priority": false,
+          "reason": "battery is below threshold",
+          "signal": "LOW_BATTERY"
+        }
+      ],
+      "stability": "stable",
+      "title": "Battery"
+    },
+    {
+      "auto_recover_ms": 0,
+      "body": "Needs user or host recovery",
+      "demo_host_examples": [
+        {
+          "content_crc32": "0xb6534533",
+          "diagnostic_arg3": "0x0009000f",
+          "event": "errors.fault",
+          "request_id": 3758100500,
+          "signal": "ERROR",
+          "signal_id": 15
+        }
+      ],
+      "demo_host_sequence_covered": true,
+      "footer": "EXPR ERROR",
+      "host_acceptance_hint": "Covered by screen_expression_status and screen_expression_demo_status.",
+      "id": 9,
+      "legacy_host_examples": [
+        {
+          "content_crc32": "0xb6534533",
+          "diagnostic_arg3": "0x0009000f",
+          "event": "errors.fault",
+          "request_id": 3758096388,
+          "signal": "ERROR",
+          "signal_id": null
+        }
+      ],
+      "legacy_host_sequence_covered": true,
+      "name": "error",
+      "policy_case_ids": [
+        "status_device_fault",
+        "status_display_error",
+        "status_meeting_error",
+        "status_ota_wrong_board_blocker",
+        "status_recording_fsm_error_recovery",
+        "status_speaker_error",
+        "status_wake_error"
+      ],
+      "priority": 100,
+      "signals": [
+        {
+          "id": 15,
+          "may_lower_priority": false,
+          "reason": "error or rejection",
+          "signal": "ERROR"
+        }
+      ],
+      "stability": "stable",
+      "title": "Error"
+    }
+  ],
+  "host_observability": {
+    "card_status": "CardStatusV1 accepted/final pairs on expression card slot 1",
+    "diagnostic_arg3_model": "(expression_id << 16) | signal_id",
+    "expression_request_id_base": "0xe0000000",
+    "telemetry_fields": [
+      "auto_recover_ms",
+      "current",
+      "initialized",
+      "last_signal",
+      "priority",
+      "revision",
+      "suppressed_duplicate_count",
+      "visible_age_ms"
+    ],
+    "telemetry_snapshot": "comp_epaper_expression_state_snapshot"
+  },
+  "purpose": "Host-facing manifest that explains how every ExpressionV1 face is identified, triggered, observed, and accepted.",
+  "schema_id": "companion.pendant.screen_expression_host_manifest.v1",
+  "sources": {
+    "ble_contract": "docs/ble_gatt_contract.md",
+    "catalog": "docs/validation/companion-screen-expression-catalog.json",
+    "demo_host_status_sequence": "docs/validation/companion-screen-expression-demo-host-status-sequence.json",
+    "epaper_readme": "app/companion_pendant/epaper/README.md",
+    "host_status_sequence": "docs/validation/companion-screen-expression-host-status-sequence.json",
+    "manifest_tool": "tools/render_expression_host_manifest.py",
+    "policy": "docs/validation/companion-screen-expression-policy.json",
+    "screen_doc": "docs/companion_screen_expression_system.md",
+    "state_telemetry": "docs/validation/companion-screen-expression-state-telemetry.json",
+    "wba_rules": "docs/stm32wba_migration_rules.md"
+  },
+  "status": "PASS",
+  "validation_commands": [
+    "python .\\tools\\render_expression_host_manifest.py",
+    "python .\\tools\\render_expression_host_manifest.py --self-test",
+    "python .\\tools\\verify_expression_catalog_contract.py",
+    "python .\\tools\\verify_expression_policy.py",
+    "python .\\tools\\verify_expression_host_status_sequence.py",
+    "python .\\tools\\verify_expression_demo_host_status_sequence.py",
+    "python .\\tools\\verify_expression_state_telemetry.py"
+  ],
+  "wba_contract": {
+    "same_card_status_semantics": true,
+    "same_diagnostic_arg3_model": true,
+    "same_face_ids": true,
+    "same_signal_ids": true,
+    "target_adapter_only_replaces_transport": true
+  }
+}

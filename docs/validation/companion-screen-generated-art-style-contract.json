@@ -1,0 +1,89 @@
+{
+  "schema_id": "companion.screen.generated_art_style_contract.v1",
+  "status": "PASS",
+  "style_name": "genref_sheet_12_inner_faces_v5",
+  "style_sources": {
+    "pet_style_header": "app/companion_pendant/epaper/pet_visual_style.h",
+    "menu_generator": "tools/generate_screen_menu_assets.py",
+    "sheet_importer": "tools/import_generated_expression_sheet.py",
+    "normal_pack_contact_sheet_tool": "tools/render_generated_expression_normal_pack_contact_sheet.py",
+    "checked_in_expression_sheet": "docs/art/generated_pet_expression_sheet_v5.png",
+    "sheet_import_report": "docs/validation/companion-screen-generated-expression-sheet-import.json",
+    "normal_pack_contact_report": "docs/validation/companion-screen-generated-expression-normal-pack-contact-sheet.json",
+    "human_contract": "docs/validation/companion-screen-generated-art-style-contract.md"
+  },
+  "reference_images": [
+    "C:\\Users\\Billy\\.codex\\generated_images\\019f44be-6fce-7140-acbe-cac2c63e2a4e\\call_sxOaWkmtZjlSzsysOIcglF4D.png",
+    "C:\\Users\\Billy\\.codex\\generated_images\\019f44be-6fce-7140-acbe-cac2c63e2a4e\\call_9d7DlQZ8xM9KMMfALsrQ2lte.png"
+  ],
+  "pet_visual_style": {
+    "COMP_PET_STYLE_NAME": "genref_sheet_12_inner_faces_v5",
+    "COMP_PET_STYLE_CANVAS_CENTER_X": 100,
+    "COMP_PET_STYLE_EYE_CENTER_Y": 83,
+    "COMP_PET_STYLE_EYE_HALF_SPACING": 29,
+    "COMP_PET_STYLE_EYE_BASE_RX": 10,
+    "COMP_PET_STYLE_EYE_OPEN_RX_GAIN": 4,
+    "COMP_PET_STYLE_EYE_BASE_RY": 8,
+    "COMP_PET_STYLE_EYE_OPEN_RY_GAIN": 18,
+    "COMP_PET_STYLE_EYE_ARC_SMILE_RY": 10,
+    "COMP_PET_STYLE_EYE_ARC_SLEEPY_RY": 8,
+    "COMP_PET_STYLE_HIGHLIGHT_RX": 3,
+    "COMP_PET_STYLE_HIGHLIGHT_RY": 5,
+    "COMP_PET_STYLE_NOSE_Y": 111,
+    "COMP_PET_STYLE_MOUTH_CENTER_Y": 123,
+    "COMP_PET_STYLE_MOUTH_BASE_WIDTH": 16,
+    "COMP_PET_STYLE_MOUTH_BASE_INNER": 7,
+    "COMP_PET_STYLE_MOUTH_BASE_HEIGHT": 7,
+    "COMP_PET_STYLE_CHEEK_LEFT_X0": 37,
+    "COMP_PET_STYLE_CHEEK_LEFT_X1": 47,
+    "COMP_PET_STYLE_CHEEK_RIGHT_X0": 163,
+    "COMP_PET_STYLE_CHEEK_RIGHT_X1": 153,
+    "COMP_PET_STYLE_CHEEK_Y0": 120,
+    "COMP_PET_STYLE_CHEEK_Y1": 126,
+    "COMP_PET_STYLE_CHEEK_DOT_LEFT_X": 39,
+    "COMP_PET_STYLE_CHEEK_DOT_RIGHT_X": 161,
+    "COMP_PET_STYLE_CHEEK_DOT_Y": 119
+  },
+  "menu_style": {
+    "name": "genref_sheet_12_inner_faces_v5",
+    "inner_face_only": true,
+    "header_pet_chip": [
+      8,
+      5,
+      35,
+      24,
+      6
+    ],
+    "home_card": [
+      8,
+      2,
+      188,
+      38,
+      8
+    ],
+    "home_key_spark": [
+      151,
+      14
+    ],
+    "detail_badge_x": 84
+  },
+  "acceptance": {
+    "style_names_match": true,
+    "inner_face_only": true,
+    "shell_owns_outline": true,
+    "large_assets_external": true,
+    "generated_reference_is_source_of_truth": true,
+    "human_accepted_generated_baseline_protected": true,
+    "legacy_procedural_not_normal_product": true,
+    "normal_pack_no_old_new_handoff": true,
+    "screen_feel_policy_recorded": true,
+    "quick_adjustment_workflow_recorded": true,
+    "fast_prompt_to_screen_workflow_recorded": true,
+    "profile_portability_workflow_recorded": true,
+    "generated_sheet_importer_recorded": true,
+    "generated_sheet_visual_review_recorded": true,
+    "normal_pack_contact_sheet_recorded": true,
+    "generated_sheet_machine_review_pass": true,
+    "inner_face_clipping_prohibited": true
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "contract": {
+    "accepted_status_render_state": "COMPANION_EPAPER_STM32WBA_RENDER_STATE_ACCEPTED",
+    "busy_status_render_state": "COMPANION_EPAPER_STM32WBA_RENDER_STATE_BUSY",
+    "card_status_payload": "companion_epaper_stm32wba_card_status_v1_t",
+    "card_write_payload": "companion_epaper_stm32wba_card_write_v1_t",
+    "expression_card_slot": 1,
+    "expression_request_id_base": "0xe0000000",
+    "failed_status_render_state": "COMPANION_EPAPER_STM32WBA_RENDER_STATE_FAILED",
+    "max_payload_bytes": 248,
+    "not_in_wb55_build": true,
+    "real_ble_operations": [
+      "card_write",
+      "settings_sleepy_screen_status",
+      "screen_expression_status"
+    ],
+    "rendered_status_render_state": "COMPANION_EPAPER_STM32WBA_RENDER_STATE_RENDERED",
+    "settings_clear_recovery": "every valid SettingsV1 write reaches the expression-hint callback and schedules display work, including brightness and quiet-hours clears",
+    "settings_payload": "companion_epaper_stm32wba_settings_v1_t",
+    "settings_sleepy_trigger": "display_brightness=0 or quiet-hours flag bit 0"
+  },
+  "forbidden_before_wba_ble_project": [
+    "companion_gatt_stm32wb",
+    "STM32_WPAN",
+    "aci_gatt",
+    "SVCCTL",
+    "GATT_NOTIFY_ATTRIBUTE_WRITE",
+    "UTIL_SEQ",
+    "CPU2",
+    "FUS",
+    "IPCC",
+    "HSEM"
+  ],
+  "purpose": "Target-named STM32WBA screen GATT scaffold that preserves the CardWriteV1/CardStatusV1/SettingsV1 screen contract without using the WB55 STM32_WPAN GATT implementation.",
+  "required_future_evidence": [
+    "CubeWBA BLE service registration chosen",
+    "WBA CardWriteV1 parser preserves request_id/card_slot/display_flags/content_crc32",
+    "WBA CardStatusV1 notify preserves accepted/final refresh_count sequence",
+    "WBA SettingsV1 write with display_brightness=0 triggers settings_sleepy_screen_status",
+    "WBA SettingsV1 clear write restores the policy-selected non-sleepy expression",
+    "WBA real BLE artifact carries screen_expression_status six-face baseline"
+  ],
+  "schema_id": "companion.pendant.screen_gatt_stm32wba.v1",
+  "sources": {
+    "ble_gatt_contract": "docs/ble_gatt_contract.md",
+    "epaper_readme": "app/companion_pendant/epaper/README.md",
+    "host_status_sequence": "docs/validation/companion-screen-expression-host-status-sequence.json",
+    "real_ble_screen_bench": "docs/validation/companion-screen-real-ble-bench.json",
+    "screen_acceptance": "docs/companion_screen_expression_system.md",
+    "wba55_port_scaffold": "docs/validation/companion-screen-wba55-port-scaffold.json",
+    "wba_port_contract": "docs/validation/companion-screen-wba-port-contract.json",
+    "wba_rules": "docs/stm32wba_migration_rules.md",
+    "wba_screen_gatt_header": "app/companion_pendant/epaper/screen_gatt_stm32wba.h",
+    "wba_screen_gatt_source": "app/companion_pendant/epaper/screen_gatt_stm32wba.c"
+  },
+  "status": "PASS",
+  "validation_commands": [
+    "python .\\tools\\verify_expression_screen_gatt_stm32wba.py",
+    "python .\\tools\\verify_companion_gatt_static.py",
+    "python .\\tools\\verify_expression_real_ble_screen_bench.py",
+    "python .\\tools\\verify_expression_host_status_sequence.py",
+    "python .\\tools\\verify_expression_wba_portability.py",
+    "python .\\tools\\init_expression_wba_port_scaffold.py --self-test",
+    "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1"
+  ]
+}

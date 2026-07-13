@@ -1,0 +1,264 @@
+{
+  "acceptance": {
+    "battery_recovery_only_clears_low_battery": true,
+    "duplicate_expression_suppressed": true,
+    "expression_state_snapshot": true,
+    "matches_policy_priority": true,
+    "matches_renderer_copy": true,
+    "portable_c_state": true,
+    "stable_expressions_do_not_auto_recover": true,
+    "transient_auto_recovery_to_idle": true,
+    "unknown_signal_guard": true,
+    "wb55_boot_idle_enqueued": true,
+    "wb55_event_path_enqueues_expression": true,
+    "wb55_expression_tick_scheduler": true,
+    "wb55_settings_expression_hint": true,
+    "wba_safe_adapter_boundary": true
+  },
+  "expressions": [
+    {
+      "body": "Needs user or host recovery",
+      "footer": "EXPR ERROR",
+      "name": "error",
+      "priority": 100,
+      "symbol": "ERROR",
+      "title": "Error"
+    },
+    {
+      "body": "Positive acknowledgement",
+      "footer": "EXPR HAPPY",
+      "name": "happy",
+      "priority": 30,
+      "symbol": "HAPPY",
+      "title": "Happy"
+    },
+    {
+      "body": "Soft awake face",
+      "footer": "EXPR IDLE",
+      "name": "idle",
+      "priority": 20,
+      "symbol": "IDLE",
+      "title": "Idle"
+    },
+    {
+      "body": "Ears open for the wake path",
+      "footer": "EXPR LISTEN",
+      "name": "listening",
+      "priority": 60,
+      "symbol": "LISTENING",
+      "title": "Listening"
+    },
+    {
+      "body": "Charge soon",
+      "footer": "EXPR LOW",
+      "name": "low_battery",
+      "priority": 80,
+      "symbol": "LOW_BATTERY",
+      "title": "Battery"
+    },
+    {
+      "body": "Capture indicator stays visible",
+      "footer": "EXPR REC",
+      "name": "recording",
+      "priority": 90,
+      "symbol": "RECORDING",
+      "title": "Recording"
+    },
+    {
+      "body": "Low attention idle mode",
+      "footer": "EXPR SLEEP",
+      "name": "sleepy",
+      "priority": 10,
+      "symbol": "SLEEPY",
+      "title": "Sleepy"
+    },
+    {
+      "body": "Response audio is active",
+      "footer": "EXPR SPEAK",
+      "name": "speaking",
+      "priority": 70,
+      "symbol": "SPEAKING",
+      "title": "Speaking"
+    },
+    {
+      "body": "Transfer finished cleanly",
+      "footer": "EXPR SYNC",
+      "name": "sync_complete",
+      "priority": 40,
+      "symbol": "SYNC_COMPLETE",
+      "title": "Synced"
+    },
+    {
+      "body": "Processing the last prompt",
+      "footer": "EXPR THINK",
+      "name": "thinking",
+      "priority": 50,
+      "symbol": "THINKING",
+      "title": "Thinking"
+    }
+  ],
+  "schema_id": "companion.pendant.firmware_expression_state.v1",
+  "signals": [
+    {
+      "expression": "idle",
+      "may_lower_priority": false,
+      "reason": "battery recovered above expression threshold",
+      "signal": "BATTERY_RECOVERED"
+    },
+    {
+      "expression": "idle",
+      "may_lower_priority": true,
+      "reason": "boot/default screen",
+      "signal": "BOOT_IDLE"
+    },
+    {
+      "expression": "error",
+      "may_lower_priority": false,
+      "reason": "error or rejection",
+      "signal": "ERROR"
+    },
+    {
+      "expression": "low_battery",
+      "may_lower_priority": false,
+      "reason": "battery is below threshold",
+      "signal": "LOW_BATTERY"
+    },
+    {
+      "expression": "sync_complete",
+      "may_lower_priority": true,
+      "reason": "meeting artifact finalized",
+      "signal": "MEETING_FINALIZE"
+    },
+    {
+      "expression": "recording",
+      "may_lower_priority": false,
+      "reason": "meeting capture started",
+      "signal": "MEETING_START"
+    },
+    {
+      "expression": "thinking",
+      "may_lower_priority": true,
+      "reason": "meeting capture stopped",
+      "signal": "MEETING_STOP"
+    },
+    {
+      "expression": "idle",
+      "may_lower_priority": true,
+      "reason": "recording cancelled",
+      "signal": "RECORDING_CANCEL"
+    },
+    {
+      "expression": "sync_complete",
+      "may_lower_priority": true,
+      "reason": "recording stored for sync",
+      "signal": "RECORDING_FINISHED"
+    },
+    {
+      "expression": "recording",
+      "may_lower_priority": false,
+      "reason": "recording start accepted",
+      "signal": "RECORDING_START"
+    },
+    {
+      "expression": "thinking",
+      "may_lower_priority": true,
+      "reason": "recording stop accepted",
+      "signal": "RECORDING_STOP"
+    },
+    {
+      "expression": "idle",
+      "may_lower_priority": true,
+      "reason": "recovered to idle",
+      "signal": "RECOVERY"
+    },
+    {
+      "expression": "sleepy",
+      "may_lower_priority": false,
+      "reason": "quiet hours or display-off screen setting",
+      "signal": "SETTINGS_SLEEPY"
+    },
+    {
+      "expression": "speaking",
+      "may_lower_priority": false,
+      "reason": "speaker prompt accepted",
+      "signal": "SPEAKER_PROMPT"
+    },
+    {
+      "expression": "happy",
+      "may_lower_priority": true,
+      "reason": "speaker prompt completed",
+      "signal": "SPEAKER_RESULT"
+    },
+    {
+      "expression": "idle",
+      "may_lower_priority": false,
+      "reason": "wake word armed",
+      "signal": "WAKE_ARMED"
+    },
+    {
+      "expression": "listening",
+      "may_lower_priority": false,
+      "reason": "wake word detected",
+      "signal": "WAKE_DETECTED"
+    },
+    {
+      "expression": "sleepy",
+      "may_lower_priority": false,
+      "reason": "wake word disabled",
+      "signal": "WAKE_DISABLED"
+    }
+  ],
+  "sources": {
+    "display_queue": "app/companion_pendant/epaper/display_queue.c",
+    "firmware_event_bridge": "app/companion_pendant/epaper/expression_events.c",
+    "firmware_header": "app/companion_pendant/epaper/expression_state.h",
+    "firmware_source": "app/companion_pendant/epaper/expression_state.c",
+    "policy": "app/companion_pendant/epaper/expression_policy.py",
+    "renderer": "app/companion_pendant/epaper/card_renderer.py",
+    "wb55_integration": "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c"
+  },
+  "state_machine": {
+    "auto_recovery_api": "comp_epaper_expression_state_tick",
+    "auto_recovery_ms": {
+      "happy": 6000,
+      "listening": 10000,
+      "speaking": 10000,
+      "sync_complete": 8000,
+      "thinking": 12000
+    },
+    "auto_recovery_signal": "COMP_EPAPER_EXPRESSION_SIGNAL_RECOVERY",
+    "battery_recovery_guard": "only low_battery can be lowered to idle by a recovered battery sample",
+    "battery_recovery_signal": "COMP_EPAPER_EXPRESSION_SIGNAL_BATTERY_RECOVERED",
+    "duplicate_suppression_counter": "suppressed_duplicate_count",
+    "duplicate_visible_expression_suppressed": true,
+    "first_boot_idle_enqueues": true,
+    "last_signal_tracked": true,
+    "signal_preflight_api": "comp_epaper_expression_signal_is_supported",
+    "stable_expressions": [
+      "error",
+      "idle",
+      "low_battery",
+      "recording",
+      "sleepy"
+    ],
+    "state_snapshot_api": "comp_epaper_expression_state_snapshot",
+    "visible_age_counter": "visible_age_ms"
+  },
+  "wb55_settings_hook": {
+    "display_off_field": "display_brightness",
+    "quiet_hours_flag": "COMPANION_SETTINGS_FLAG_QUIET_HOURS_ACTIVE",
+    "settings_recovery_guard": "last_signal == COMP_EPAPER_EXPRESSION_SIGNAL_SETTINGS_SLEEPY",
+    "settings_source": "SettingsV1",
+    "sleepy_signal": "COMP_EPAPER_EXPRESSION_SIGNAL_SETTINGS_SLEEPY",
+    "stable_state_guard": "portable expression priority/state gate"
+  },
+  "wb55_tick_hook": {
+    "elapsed_time_source": "HAL_GetTick",
+    "recovery_enqueue_path": "Companion_Display_EnqueueExpressionDecision",
+    "task": "Companion_Display_Task",
+    "tick_api": "comp_epaper_expression_state_tick",
+    "timer_callback": "Companion_Display_TickTimerElapsed",
+    "timer_mode": "hw_ts_SingleShot",
+    "timer_server": "HW_TS"
+  }
+}

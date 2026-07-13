@@ -1,0 +1,587 @@
+{
+  "import_window_notes": "2026-07-12 review widened the crop and moved row 2 upward so UP SWIPE exclamation marks and THINKING bubble ornaments are not cut. The PBM threshold was tuned to 168 after comparing threshold candidate previews; it keeps thin ornaments while reducing chunky nose/mouth artifacts from the generated antialiased source.",
+  "inner_face_clipping_policy": "The accepted generated sheet already excludes the physical-shell outline. Normal imports must not apply a white shell guard inside the visible 200x200 canvas. The final physical visible area is not frozen, so do not impose a fixed art margin until product geometry defines it; reject a new source that needs destructive internal masking.",
+  "machine_review": {
+    "pose_metrics": [
+      {
+        "checks": {
+          "crop_margin_present": true,
+          "has_visible_ink": true,
+          "label_guard_band_clear": true,
+          "no_canvas_edge_touch": true,
+          "not_overfilled": true
+        },
+        "edge_ink_pixels": 0,
+        "index": 1,
+        "ink_bbox": [
+          44,
+          57,
+          186,
+          137
+        ],
+        "ink_margins": {
+          "bottom": 62,
+          "left": 44,
+          "right": 13,
+          "top": 57
+        },
+        "ink_pixels": 2626,
+        "label_guard_band_ink_pixels": 0,
+        "label_guard_band_y": 200,
+        "max_ink_pixels": 5200,
+        "min_ink_pixels": 1200,
+        "pose": "idle_calm",
+        "source_crop_box": [
+          22,
+          132,
+          292,
+          345
+        ],
+        "status": "PASS"
+      },
+      {
+        "checks": {
+          "crop_margin_present": true,
+          "has_visible_ink": true,
+          "label_guard_band_clear": true,
+          "no_canvas_edge_touch": true,
+          "not_overfilled": true
+        },
+        "edge_ink_pixels": 0,
+        "index": 2,
+        "ink_bbox": [
+          38,
+          21,
+          179,
+          149
+        ],
+        "ink_margins": {
+          "bottom": 50,
+          "left": 38,
+          "right": 20,
+          "top": 21
+        },
+        "ink_pixels": 3055,
+        "label_guard_band_ink_pixels": 0,
+        "label_guard_band_y": 200,
+        "max_ink_pixels": 5200,
+        "min_ink_pixels": 1200,
+        "pose": "curious_tap",
+        "source_crop_box": [
+          335,
+          132,
+          605,
+          345
+        ],
+        "status": "PASS"
+      },
+      {
+        "checks": {
+          "crop_margin_present": true,
+          "has_visible_ink": true,
+          "label_guard_band_clear": true,
+          "no_canvas_edge_touch": true,
+          "not_overfilled": true
+        },
+        "edge_ink_pixels": 0,
+        "index": 3,
+        "ink_bbox": [
+          27,
+          28,
+          160,
+          151
+        ],
+        "ink_margins": {
+          "bottom": 48,
+          "left": 27,
+          "right": 39,
+          "top": 28
+        },
+        "ink_pixels": 2370,
+        "label_guard_band_ink_pixels": 0,
+        "label_guard_band_y": 200,
+        "max_ink_pixels": 5200,
+        "min_ink_pixels": 1200,
+        "pose": "left_swipe",
+        "source_crop_box": [
+          649,
+          132,
+          919,
+          345
+        ],
+        "status": "PASS"
+      },
+      {
+        "checks": {
+          "crop_margin_present": true,
+          "has_visible_ink": true,
+          "label_guard_band_clear": true,
+          "no_canvas_edge_touch": true,
+          "not_overfilled": true
+        },
+        "edge_ink_pixels": 0,
+        "index": 4,
+        "ink_bbox": [
+          20,
+          30,
+          161,
+          151
+        ],
+        "ink_margins": {
+          "bottom": 48,
+          "left": 20,
+          "right": 38,
+          "top": 30
+        },
+        "ink_pixels": 2371,
+        "label_guard_band_ink_pixels": 0,
+        "label_guard_band_y": 200,
+        "max_ink_pixels": 5200,
+        "min_ink_pixels": 1200,
+        "pose": "right_swipe",
+        "source_crop_box": [
+          962,
+          132,
+          1232,
+          345
+        ],
+        "status": "PASS"
+      },
+      {
+        "checks": {
+          "crop_margin_present": true,
+          "has_visible_ink": true,
+          "label_guard_band_clear": true,
+          "no_canvas_edge_touch": true,
+          "not_overfilled": true
+        },
+        "edge_ink_pixels": 0,
+        "index": 5,
+        "ink_bbox": [
+          45,
+          25,
+          175,
+          154
+        ],
+        "ink_margins": {
+          "bottom": 45,
+          "left": 45,
+          "right": 24,
+          "top": 25
+        },
+        "ink_pixels": 2856,
+        "label_guard_band_ink_pixels": 0,
+        "label_guard_band_y": 200,
+        "max_ink_pixels": 5200,
+        "min_ink_pixels": 1200,
+        "pose": "up_swipe",
+        "source_crop_box": [
+          22,
+          483,
+          292,
+          734
+        ],
+        "status": "PASS"
+      },
+      {
+        "checks": {
+          "crop_margin_present": true,
+          "has_visible_ink": true,
+          "label_guard_band_clear": true,
+          "no_canvas_edge_touch": true,
+          "not_overfilled": true
+        },
+        "edge_ink_pixels": 0,
+        "index": 6,
+        "ink_bbox": [
+          40,
+          45,
+          173,
+          143
+        ],
+        "ink_margins": {
+          "bottom": 56,
+          "left": 40,
+          "right": 26,
+          "top": 45
+        },
+        "ink_pixels": 1603,
+        "label_guard_band_ink_pixels": 0,
+        "label_guard_band_y": 200,
+        "max_ink_pixels": 5200,
+        "min_ink_pixels": 1200,
+        "pose": "down_swipe",
+        "source_crop_box": [
+          335,
+          483,
+          605,
+          734
+        ],
+        "status": "PASS"
+      },
+      {
+        "checks": {
+          "crop_margin_present": true,
+          "has_visible_ink": true,
+          "label_guard_band_clear": true,
+          "no_canvas_edge_touch": true,
+          "not_overfilled": true
+        },
+        "edge_ink_pixels": 0,
+        "index": 7,
+        "ink_bbox": [
+          13,
+          67,
+          178,
+          143
+        ],
+        "ink_margins": {
+          "bottom": 56,
+          "left": 13,
+          "right": 21,
+          "top": 67
+        },
+        "ink_pixels": 2746,
+        "label_guard_band_ink_pixels": 0,
+        "label_guard_band_y": 200,
+        "max_ink_pixels": 5200,
+        "min_ink_pixels": 1200,
+        "pose": "listening",
+        "source_crop_box": [
+          649,
+          483,
+          919,
+          734
+        ],
+        "status": "PASS"
+      },
+      {
+        "checks": {
+          "crop_margin_present": true,
+          "has_visible_ink": true,
+          "label_guard_band_clear": true,
+          "no_canvas_edge_touch": true,
+          "not_overfilled": true
+        },
+        "edge_ink_pixels": 0,
+        "index": 8,
+        "ink_bbox": [
+          25,
+          24,
+          158,
+          148
+        ],
+        "ink_margins": {
+          "bottom": 51,
+          "left": 25,
+          "right": 41,
+          "top": 24
+        },
+        "ink_pixels": 2887,
+        "label_guard_band_ink_pixels": 0,
+        "label_guard_band_y": 200,
+        "max_ink_pixels": 5200,
+        "min_ink_pixels": 1200,
+        "pose": "thinking",
+        "source_crop_box": [
+          962,
+          483,
+          1232,
+          734
+        ],
+        "status": "PASS"
+      },
+      {
+        "checks": {
+          "crop_margin_present": true,
+          "has_visible_ink": true,
+          "label_guard_band_clear": true,
+          "no_canvas_edge_touch": true,
+          "not_overfilled": true
+        },
+        "edge_ink_pixels": 0,
+        "index": 9,
+        "ink_bbox": [
+          45,
+          40,
+          176,
+          151
+        ],
+        "ink_margins": {
+          "bottom": 48,
+          "left": 45,
+          "right": 23,
+          "top": 40
+        },
+        "ink_pixels": 2587,
+        "label_guard_band_ink_pixels": 0,
+        "label_guard_band_y": 200,
+        "max_ink_pixels": 5200,
+        "min_ink_pixels": 1200,
+        "pose": "recording",
+        "source_crop_box": [
+          22,
+          828,
+          292,
+          1041
+        ],
+        "status": "PASS"
+      },
+      {
+        "checks": {
+          "crop_margin_present": true,
+          "has_visible_ink": true,
+          "label_guard_band_clear": true,
+          "no_canvas_edge_touch": true,
+          "not_overfilled": true
+        },
+        "edge_ink_pixels": 0,
+        "index": 10,
+        "ink_bbox": [
+          22,
+          66,
+          170,
+          151
+        ],
+        "ink_margins": {
+          "bottom": 48,
+          "left": 22,
+          "right": 29,
+          "top": 66
+        },
+        "ink_pixels": 2785,
+        "label_guard_band_ink_pixels": 0,
+        "label_guard_band_y": 200,
+        "max_ink_pixels": 5200,
+        "min_ink_pixels": 1200,
+        "pose": "speaking",
+        "source_crop_box": [
+          335,
+          828,
+          605,
+          1041
+        ],
+        "status": "PASS"
+      },
+      {
+        "checks": {
+          "crop_margin_present": true,
+          "has_visible_ink": true,
+          "label_guard_band_clear": true,
+          "no_canvas_edge_touch": true,
+          "not_overfilled": true
+        },
+        "edge_ink_pixels": 0,
+        "index": 11,
+        "ink_bbox": [
+          31,
+          24,
+          161,
+          151
+        ],
+        "ink_margins": {
+          "bottom": 48,
+          "left": 31,
+          "right": 38,
+          "top": 24
+        },
+        "ink_pixels": 1799,
+        "label_guard_band_ink_pixels": 0,
+        "label_guard_band_y": 200,
+        "max_ink_pixels": 5200,
+        "min_ink_pixels": 1200,
+        "pose": "happy",
+        "source_crop_box": [
+          649,
+          828,
+          919,
+          1041
+        ],
+        "status": "PASS"
+      },
+      {
+        "checks": {
+          "crop_margin_present": true,
+          "has_visible_ink": true,
+          "label_guard_band_clear": true,
+          "no_canvas_edge_touch": true,
+          "not_overfilled": true
+        },
+        "edge_ink_pixels": 0,
+        "index": 12,
+        "ink_bbox": [
+          21,
+          36,
+          150,
+          151
+        ],
+        "ink_margins": {
+          "bottom": 48,
+          "left": 21,
+          "right": 49,
+          "top": 36
+        },
+        "ink_pixels": 1417,
+        "label_guard_band_ink_pixels": 0,
+        "label_guard_band_y": 200,
+        "max_ink_pixels": 5200,
+        "min_ink_pixels": 1200,
+        "pose": "sleepy",
+        "source_crop_box": [
+          962,
+          828,
+          1232,
+          1041
+        ],
+        "status": "PASS"
+      }
+    ],
+    "status": "PASS"
+  },
+  "machine_review_required": true,
+  "machine_review_rule": "Each imported pose must keep visible ink inside the 200x200 canvas, and stay within ink-count bounds. Labels are excluded by the source crop rather than a target-panel guard band. These checks catch common generated-sheet import mistakes, but they do not replace the required REF/PBM visual review.",
+  "machine_review_thresholds": {
+    "fixed_art_margin_px": 0,
+    "internal_shell_mask_disabled": true,
+    "label_guard_band_y": 200,
+    "max_ink_pixels": 5200,
+    "min_edge_margin": 0,
+    "min_ink_pixels": 1200
+  },
+  "outputs": [
+    {
+      "files": [
+        "docs/validation/epaper/expression_idle_1_54in.pbm"
+      ],
+      "index": 1,
+      "pose": "idle_calm"
+    },
+    {
+      "files": [
+        "docs/validation/epaper/expression_happy_attention_1_54in.pbm"
+      ],
+      "index": 2,
+      "pose": "curious_tap"
+    },
+    {
+      "files": [
+        "docs/validation/epaper/expression_happy_attention_left_1_54in.pbm",
+        "docs/validation/epaper/expression_idle_look_left_1_54in.pbm",
+        "docs/validation/epaper/expression_idle_glance_left_1_54in.pbm"
+      ],
+      "index": 3,
+      "pose": "left_swipe"
+    },
+    {
+      "files": [
+        "docs/validation/epaper/expression_happy_attention_right_1_54in.pbm",
+        "docs/validation/epaper/expression_idle_look_right_1_54in.pbm"
+      ],
+      "index": 4,
+      "pose": "right_swipe"
+    },
+    {
+      "files": [
+        "docs/validation/epaper/expression_happy_attention_up_1_54in.pbm",
+        "docs/validation/epaper/expression_idle_look_up_1_54in.pbm",
+        "docs/validation/epaper/expression_idle_look_up_left_1_54in.pbm",
+        "docs/validation/epaper/expression_idle_look_up_right_1_54in.pbm",
+        "docs/validation/epaper/expression_happy_attention_up_left_1_54in.pbm",
+        "docs/validation/epaper/expression_happy_attention_up_right_1_54in.pbm",
+        "docs/validation/epaper/expression_error_1_54in.pbm"
+      ],
+      "index": 5,
+      "pose": "up_swipe"
+    },
+    {
+      "files": [
+        "docs/validation/epaper/expression_happy_attention_down_1_54in.pbm",
+        "docs/validation/epaper/expression_idle_look_down_1_54in.pbm",
+        "docs/validation/epaper/expression_idle_look_down_left_1_54in.pbm",
+        "docs/validation/epaper/expression_idle_look_down_right_1_54in.pbm",
+        "docs/validation/epaper/expression_happy_attention_down_left_1_54in.pbm",
+        "docs/validation/epaper/expression_happy_attention_down_right_1_54in.pbm"
+      ],
+      "index": 6,
+      "pose": "down_swipe"
+    },
+    {
+      "files": [
+        "docs/validation/epaper/expression_listening_1_54in.pbm",
+        "docs/validation/epaper/expression_listening_focus_1_54in.pbm",
+        "docs/validation/epaper/expression_listening_wave_1_54in.pbm"
+      ],
+      "index": 7,
+      "pose": "listening"
+    },
+    {
+      "files": [
+        "docs/validation/epaper/expression_thinking_1_54in.pbm",
+        "docs/validation/epaper/expression_thinking_inward_1_54in.pbm",
+        "docs/validation/epaper/expression_thinking_outward_1_54in.pbm"
+      ],
+      "index": 8,
+      "pose": "thinking"
+    },
+    {
+      "files": [
+        "docs/validation/epaper/expression_recording_1_54in.pbm",
+        "docs/validation/epaper/expression_recording_soft_1_54in.pbm",
+        "docs/validation/epaper/expression_recording_pulse_1_54in.pbm"
+      ],
+      "index": 9,
+      "pose": "recording"
+    },
+    {
+      "files": [
+        "docs/validation/epaper/expression_speaking_1_54in.pbm",
+        "docs/validation/epaper/expression_speaking_soft_1_54in.pbm",
+        "docs/validation/epaper/expression_speaking_open_1_54in.pbm"
+      ],
+      "index": 10,
+      "pose": "speaking"
+    },
+    {
+      "files": [
+        "docs/validation/epaper/expression_happy_1_54in.pbm",
+        "docs/validation/epaper/expression_happy_bright_1_54in.pbm",
+        "docs/validation/epaper/expression_sync_complete_1_54in.pbm"
+      ],
+      "index": 11,
+      "pose": "happy"
+    },
+    {
+      "files": [
+        "docs/validation/epaper/expression_sleepy_1_54in.pbm",
+        "docs/validation/epaper/expression_sleepy_drift_1_54in.pbm",
+        "docs/validation/epaper/expression_sleepy_yawn_1_54in.pbm",
+        "docs/validation/epaper/expression_low_battery_1_54in.pbm"
+      ],
+      "index": 12,
+      "pose": "sleepy"
+    }
+  ],
+  "preview": ".cache/validation/generated-expression-sheet-import-preview.png",
+  "product_rule": "generated image sheet is the art baseline; importer removes labels and writes only inner-face PBM assets",
+  "profile": {
+    "asset_suffix": "1_54in",
+    "height": 200,
+    "label_guard_band_y": 200,
+    "max_face_height": 166,
+    "max_face_width": 174,
+    "top_inset": 15,
+    "width": 200
+  },
+  "review_preview": ".cache/validation/generated-expression-sheet-review.png",
+  "schema": "companion.generated_expression_sheet_import.v1",
+  "source": "docs/art/generated_pet_expression_sheet_v5.png",
+  "source_size": {
+    "height": 1254,
+    "width": 1254
+  },
+  "status": "PASS",
+  "style_source_of_truth": "generated_pet_expression_sheet_v5",
+  "threshold": 168,
+  "visual_review_required": true,
+  "visual_review_rule": "Before flashing a new art revision, compare the generated sheet, this import preview, and the PBM/CEMP preview. Do not accept a script-only PASS when ornaments, brows, mouths, or labels differ visibly from the generated source."
+}

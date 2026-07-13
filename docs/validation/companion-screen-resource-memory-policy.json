@@ -1,0 +1,107 @@
+{
+  "budgets": {
+    "normal_build_linked_static_expression_bytes": 0,
+    "production_internal_rescue_ui_max_bytes": 16384,
+    "retired_devboard_static_expression_baseline_bytes": 50000
+  },
+  "candidate_pack": {
+    "build_artifact": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_screen_asset_provision/generated/emote_matrix_white_200x200.cemp",
+    "clips": 33,
+    "frames": 159,
+    "import_report": "docs/validation/companion-screen-generated-expression-sheet-import.json",
+    "pack": "emote-matrix-white-200x200-v1",
+    "pack_bytes": 287732,
+    "pack_crc32": "0xDEFC096E",
+    "revision": 52,
+    "status": "runtime_recheck_pending"
+  },
+  "migration": {
+    "baseline": "STM32WBA55",
+    "expanded": "STM32WBA65",
+    "rule": "replace only target storage adapter and partition layout; do not move normal assets into WBA65 internal flash"
+  },
+  "placement": {
+    "external_flash": [
+      "ui_assets",
+      "full_fonts",
+      "audio_prompts",
+      "offline_models",
+      "recording_cache",
+      "ota_staging",
+      "diagnostic_mirror"
+    ],
+    "internal_flash": [
+      "bootloader",
+      "application_code",
+      "wireless_stack",
+      "drivers",
+      "portable_state_machines",
+      "rescue_ui"
+    ],
+    "logical_ui_partition": "ui_assets"
+  },
+  "portable_contract": {
+    "binary_pack_byte_order": "little_endian",
+    "binary_pack_header_bytes": 80,
+    "binary_pack_magic": "CEMP",
+    "builder": "tools/build_emote_asset_pack.py",
+    "dirty_rect_coordinate_bits": 16,
+    "dynamic_allocation": false,
+    "expression_source": "app/companion_pendant/epaper/expression_asset_source.h",
+    "pack": "app/companion_pendant/epaper/emote_asset_pack.h",
+    "payload_crc32_required": true,
+    "player": "app/companion_pendant/epaper/emote_player.h",
+    "screen_profile_fields": [
+      "width",
+      "height",
+      "stride_bytes",
+      "pixel_format"
+    ],
+    "store": "app/companion_pendant/epaper/asset_store.h",
+    "target_independent_read": "bounded read(offset, destination, length)",
+    "wb55_reader": "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/companion_screen_assets_stm32wb.c"
+  },
+  "principle": "external_flash_first_internal_flash_rescue_only",
+  "retired_transition": {
+    "bytes_per_frame": 5000,
+    "frame_count": 10,
+    "removal_condition": "met: verified external ui_assets mount and external frame render on WB55",
+    "source": "app/companion_pendant/epaper/expression_assets_200x200.c",
+    "status": "not_linked"
+  },
+  "schema_id": "companion.screen.resource_memory_policy.v1",
+  "status": "PASS",
+  "wb55_devboard_partition": {
+    "access": "read_only_asset_store_mount",
+    "base": "0x00200000",
+    "mount_workspace": {
+      "clips": 16,
+      "frames": 128,
+      "scratch_bytes": 256,
+      "strings_bytes": 512
+    },
+    "size_bytes": 2097152
+  },
+  "wb55_real_evidence": {
+    "clips": 33,
+    "external_render_log": ".cache/validation/rev51-runtime-20260712-generated-art/normal/nucleo-serial-raw.log",
+    "frames": 159,
+    "normal_runtime_log": ".cache/validation/rev51-runtime-20260712-generated-art/normal/nucleo-serial-raw.log",
+    "pack": "emote-matrix-white-200x200-v1",
+    "pack_bytes": 287446,
+    "pack_crc32": "0x56B56273",
+    "provision_runtime_log": ".cache/validation/rev51-runtime-20260712-generated-art/provision/nucleo-serial-raw.log",
+    "required_markers": [
+      "mount=ok",
+      "revision=51",
+      "clips=33 frames=159",
+      "pet_behavior_selftest=pass failure_code=0",
+      "touch-health] detected=1 identity=1 addr=0x38",
+      "preview_started name=idle",
+      "source=external_flash",
+      "refresh mode=full",
+      "complete=1"
+    ],
+    "revision": 51
+  }
+}

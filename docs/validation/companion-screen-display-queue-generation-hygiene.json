@@ -1,0 +1,67 @@
+{
+  "contract": {
+    "active_revision_field": "active_resource_revision",
+    "generation_switch_counter": "generation_switch_count",
+    "last_stale_discard_counter": "last_stale_generation_discarded",
+    "request_revision_field": "resource_revision",
+    "revision_switch_api": "comp_epaper_display_queue_set_resource_revision",
+    "stale_discard_counter": "stale_generation_discard_count",
+    "wb55_log_markers": [
+      "queue_generation revision=",
+      "coherent_generation=1",
+      "generation_switches=",
+      "last_stale_discarded="
+    ],
+    "wba_inherits_contract": true
+  },
+  "purpose": "Behavior-level guard that resource-pack generation switches discard stale display requests before the next visible frame.",
+  "scenario": {
+    "after_switch": {
+      "active_revision": 51,
+      "dropped": 3,
+      "generation_switches": 2,
+      "last_stale_discarded": 3,
+      "pending": 0,
+      "stale_discarded": 3
+    },
+    "before_switch": {
+      "pending": 3,
+      "request_revisions": [
+        50,
+        50,
+        50
+      ]
+    },
+    "display_result_expectation": {
+      "active_revision": 51,
+      "coherent_generation": 1,
+      "generation_switches": 2,
+      "last_stale_discarded": 3,
+      "resource_revision": 51
+    },
+    "first_current_request": {
+      "kind": "menu",
+      "request_id": 20737,
+      "resource_revision": 51,
+      "sequence": 4
+    },
+    "name": "rev50_pending_frames_discarded_before_rev51_first_frame"
+  },
+  "schema_id": "companion.pendant.screen_display_queue_generation_hygiene.v1",
+  "sources": {
+    "display_queue_header": "app/companion_pendant/epaper/display_queue.h",
+    "display_queue_source": "app/companion_pendant/epaper/display_queue.c",
+    "generation_research": "docs/validation/companion-screen-generation-swap-research.md",
+    "project_plan": "docs/companion_screen_project_plan.md",
+    "wb55_integration": "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c",
+    "wba_rules": "docs/stm32wba_migration_rules.md"
+  },
+  "status": "PASS",
+  "validation_commands": [
+    "python .\\tools\\verify_display_queue_generation_hygiene.py",
+    "python .\\tools\\verify_display_queue_static.py",
+    "python .\\tools\\verify_expression_display_drain.py",
+    "python .\\tools\\verify_screen_refresh_feel_contract.py",
+    "python .\\tools\\verify_expression_wba_portability.py"
+  ]
+}

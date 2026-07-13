@@ -1,0 +1,59 @@
+{
+  "contract": {
+    "address_model": "target_owned_logical_slots_no_physical_address",
+    "erase_policy": "explicit_factory_or_privacy_erase_callback",
+    "hardware_parity_claimed": false,
+    "integrity": "CRC32 over magic, record_version, payload_size, sequence, and payload",
+    "normal_ota_policy": "preserve_user_data_across_mcu_app_and_ui_assets_updates",
+    "payload": "comp_pet_behavior_memory_t",
+    "slot_model": "two_or_more_logical_slots_with_sequence",
+    "targets": [
+      "WBA55",
+      "WBA65"
+    ],
+    "write_policy": "low_frequency_or_forced_commit"
+  },
+  "machine_checks": {
+    "arm_cortex_m33_object_compile": true,
+    "arm_cortex_m33_syntax_compile": true,
+    "compile_flags": [
+      "-std=c11",
+      "-mcpu=cortex-m33",
+      "-mthumb",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-Wconversion",
+      "-c"
+    ],
+    "slot_model_scenarios": [
+      "empty_slots_load_false",
+      "newest_valid_sequence_wins",
+      "corrupt_newer_record_is_ignored",
+      "unforced_commit_waits_for_interval",
+      "forced_commit_rotates_to_next_slot",
+      "privacy_erase_clears_all_slots"
+    ]
+  },
+  "purpose": "Callback-only STM32WBA pet-behavior user-data scaffold. It preserves comp_pet_behavior_memory_t outside ui_assets/CEMP, OTA staging, recording cache, and MCU Flash constants.",
+  "required_future_evidence": [
+    "Chosen WBA package storage peripheral and user-data partition layout.",
+    "Power-fail test proving one valid record survives interrupted slot write.",
+    "Privacy/factory erase log proving both behavior slots are cleared.",
+    "Normal MCU app OTA and ui_assets OTA logs proving pet memory is preserved.",
+    "Wear budget review for the selected external NOR or target user-data store."
+  ],
+  "schema_id": "companion.pendant.pet_behavior_user_data_stm32wba.v1",
+  "sources": {
+    "adapter_header": "app/companion_pendant/epaper/pet_behavior_user_data_stm32wba.h",
+    "adapter_source": "app/companion_pendant/epaper/pet_behavior_user_data_stm32wba.c",
+    "portable_pet_behavior": "app/companion_pendant/epaper/pet_behavior.h",
+    "resource_policy": "docs/companion_resource_memory_policy.md",
+    "wba_rules": "docs/stm32wba_migration_rules.md"
+  },
+  "status": "PASS",
+  "validation_commands": [
+    "python .\\tools\\verify_pet_behavior_user_data_stm32wba.py",
+    "python .\\tools\\verify_expression_wba_portability.py"
+  ]
+}

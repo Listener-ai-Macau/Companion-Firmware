@@ -1,0 +1,140 @@
+{
+  "schema_id": "companion.pendant.screen_presentation_wb55.v1",
+  "status": "REVISION_39_RUNTIME_PASS_HUMAN_VISUAL_PENDING",
+  "generated_at": "2026-07-12T18:51:00+08:00",
+  "target": "NUCLEO-WB55RG + GDEY0154D67-T03/SSD1681 + FT6336U",
+  "contract": {
+    "default_surface": "daily idle expression",
+    "daily_tap": "speaker_result produces a brief whole-face reaction and returns to daily idle",
+    "daily_enter_menu": "an anywhere, nearly still 3000 ms long press opens the menu; a 650 ms hold teases the pet first",
+    "product_event": "non-idle expression temporarily replaces the current surface",
+    "recovery": "idle restores the source surface: daily returns to daily idle; menu returns to remembered view, language, selection, and flags",
+    "handoff": "a new expression enters through emote_player graceful tail handoff",
+    "restore_order": "product state advances before the player tick; restore_menu cannot enqueue a stale expression frame",
+    "gesture_navigation": {
+      "detail_back": "left-edge swipe_right",
+      "daily_menu_entry": "only an anywhere, nearly still 3000 ms hold opens settings; all daily swipes remain pet interactions",
+      "home_exit": "left-edge swipe_right returns to daily",
+      "home_scroll": "vertical drag follows the finger as a 0..84 px continuous offset; it does not snap to menu items",
+      "home_rendering": "the 43 external menu frames render 2 px positions while queued updates retain only the newest current finger position",
+      "tap_selection": "tap a visible row for a press-cue partial refresh then one target-page arrival partial refresh",
+      "swipe_latency": "horizontal navigation recognizes on threshold crossing and suppresses repeats until release; vertical dragging updates while contact is active"
+    },
+    "portable_files": [
+      "app/companion_pendant/epaper/screen_presentation.h",
+      "app/companion_pendant/epaper/screen_presentation.c",
+      "app/companion_pendant/epaper/screen_menu.h",
+      "app/companion_pendant/epaper/screen_menu.c",
+      "app/companion_pendant/touch/touch_gesture.h",
+      "app/companion_pendant/touch/touch_gesture.c"
+    ]
+  },
+  "hardware_result": {
+    "simulated_product_signals": ["wake_detected", "speaker_prompt", "speaker_result", "recording_start", "recording_stop"],
+    "expressions": ["listening", "speaking", "happy", "recording", "thinking"],
+    "selectable_demo_expression": true,
+    "expression_frames_observed_by_revision": {
+      "revision_5_listening": [5, 6, 7, 8],
+      "revision_6_speaking": [11, 12, 13, 14],
+      "revision_7_thinking": [10, 11, 12, 13],
+      "revision_8_recording": [22, 23, 24, 25, 26],
+      "revision_9_happy": [20, 21, 22, 23]
+    },
+    "expression_full_refresh_ms": 1298,
+    "expression_partial_refresh_ms": [448, 450],
+    "historical_strict_diagnostic_forced_full_after_partial_count": 5,
+    "production_interactive_maintenance": {
+      "soft_due_after_partial_count": 5,
+      "hard_limit": 60,
+      "decision": "fast",
+      "control": "0xC7",
+      "machine_verified_elapsed_ms": 1740,
+      "standard_full_reserved_for_unknown_baseline": true
+    },
+    "auto_recovery_ms": {"listening": 10000, "speaking": 10000, "happy": 6000, "recording": 0, "thinking": 12000},
+    "recording_semantic_handoff": "recording_stop -> recording tail -> thinking intro -> menu",
+    "restored_menu": "menu.home.zh",
+    "menu_partial_refresh_ms": 450,
+    "ordinary_firmware_restored": true,
+    "revision_11_idle_cycle": {
+      "initial_full_refresh_ms": 1298,
+      "partial_refresh_count": 4,
+      "partial_refresh_ms": [448, 450],
+      "repeated_refreshes_after_tail_during_20s_observation": 0
+    },
+    "stale_expression_frames_during_restore": 0,
+    "revision_13_real_horizontal_gestures": {
+      "gesture_swipe_left_events": 11,
+      "gesture_swipe_right_events": 8,
+      "completed_daily_to_menu_cycles": 3,
+      "completed_menu_to_daily_cycles": 4,
+      "partial_refresh_complete": 7,
+      "partial_refresh_failed": 0,
+      "partial_refresh_ms": [448, 450],
+      "touch_i2c_errors": 0
+    },
+    "ordinary_firmware_load_bytes": 136360
+  },
+  "evidence": {
+    "listening_product_event_log": ".cache/validation/nucleo-serial-20260711-190815/nucleo-serial-raw.log",
+    "speaking_product_event_log": ".cache/validation/nucleo-serial-20260711-192121/nucleo-serial-raw.log",
+    "thinking_product_event_log": ".cache/validation/nucleo-serial-20260711-192816/nucleo-serial-raw.log",
+    "recording_transition_log": ".cache/validation/nucleo-serial-20260711-193817/nucleo-serial-raw.log",
+    "happy_product_event_log": ".cache/validation/nucleo-serial-20260711-194504/nucleo-serial-raw.log",
+    "ordinary_firmware_log": ".cache/validation/screen-revision11-normal/nucleo-serial-raw.log",
+    "fast_maintenance_log": ".cache/validation/screen-ssd1681-fast-maintenance/nucleo-serial-raw.log",
+    "production_hard60_log": ".cache/validation/screen-revision11-fast-maintenance-normal/nucleo-serial-raw.log",
+    "revision_11_provision_log": ".cache/validation/screen-cemp-revision11-provision/nucleo-serial-raw.log",
+    "revision_13_horizontal_gesture_log": ".cache/validation/screen-revision13-left-swipe-live/nucleo-serial-raw.log",
+    "revision_37_provision_log": ".cache/validation/nucleo-serial-20260712-184908/nucleo-serial-raw.log",
+    "revision_37_normal_log": ".cache/validation/nucleo-serial-20260712-185021/nucleo-serial-raw.log",
+    "required_markers": [
+      "presentation=pass",
+      "revision=39 clips=33 frames=159",
+      "preview_started name=idle",
+      "source=external_flash",
+      "clip=listening frame=5",
+      "scene=expression name=listening frame_index=5",
+      "clip=listening frame=8 in_clip=3 phase=2",
+      "clip=speaking frame=11 in_clip=0 phase=1",
+      "scene=expression name=speaking frame_index=11",
+      "clip=thinking frame=10 in_clip=0 phase=1",
+      "scene=expression name=thinking frame_index=10",
+      "clip=recording frame=22 in_clip=0 phase=1",
+      "product_demo_end signal=10",
+      "handoff_pending name=thinking",
+      "clip=recording frame=26 in_clip=4 phase=3",
+      "clip=happy frame=20 in_clip=0 phase=1",
+      "scene=expression name=happy frame_index=20",
+      "presentation=restore_menu view=0 page=0 language=1",
+      "scene=menu asset=menu.home.zh source=external_flash",
+      "refresh mode=partial control=0xFF"
+    ]
+  },
+  "remaining_acceptance": [
+    "Physically confirm daily tap reacts without entering the menu",
+    "Physically confirm an anywhere hold teases at about 650 ms and opens the menu at 3 s while normal swipes stay pet interactions",
+    "Physically confirm vertical dragging follows the finger without item snapping or replaying stale positions",
+    "Physically confirm a visible-row tap has a press cue then enters its target page without a full refresh",
+    "Physically confirm Record, Status, Phone, Device, Preferences, and About map to the product functions",
+    "Revision 17: confirm 2 px menu motion remains visually anchored to the finger and the 1600 ms low-flicker maintenance leaves no unacceptable ghosting"
+  ],
+  "revision_17_machine_contract": {
+    "status": "PENDING_HARDWARE_RECHECK",
+    "interaction": "0xFC changed-window differential refresh with latest menu frame coalescing",
+    "maintenance": "0xCF after five partial commits and 1600 ms without touch contact",
+    "full_refresh": "0xF7 only for unknown baseline or transport recovery"
+  },
+  "anti_regression": [
+    "python tools/verify_screen_presentation.py",
+    "python tools/verify_screen_horizontal_gesture_runtime.py --log .cache/validation/screen-revision13-left-swipe-live/nucleo-serial-raw.log --min-enter 3 --min-exit 3",
+    "python tools/verify_epaper_fast_maintenance_runtime.py",
+    "python tools/verify_expression_animation_runtime.py --log .cache/validation/nucleo-serial-20260711-192121/nucleo-serial-raw.log --revision 6 --pack-frames 42 --expression speaking --frame-indices 11 12 13 14 --dirty 56 96 141 85",
+    "python tools/verify_expression_animation_runtime.py --log .cache/validation/nucleo-serial-20260711-192816/nucleo-serial-raw.log --revision 7 --pack-frames 46 --expression thinking --frame-indices 10 11 12 13 --dirty 35 15 160 92",
+    "python tools/verify_expression_animation_runtime.py --log .cache/validation/nucleo-serial-20260711-193817/nucleo-serial-raw.log --revision 8 --pack-frames 50 --expression recording --frame-indices 22 23 24 25 --dirty 120 18 65 90 --require-marker 'product_demo_end signal=10' --require-marker 'handoff_pending name=thinking' --require-marker 'clip=recording frame=26 in_clip=4 phase=3' --require-marker 'clip=thinking frame=10 in_clip=0 phase=1'",
+    "python tools/verify_expression_animation_runtime.py --log .cache/validation/nucleo-serial-20260711-194504/nucleo-serial-raw.log --revision 9 --pack-frames 54 --expression happy --frame-indices 20 21 22 23 --dirty 35 95 130 75",
+    "python tools/verify_screen_menu_assets.py",
+    "python tools/verify_emote_animation_assets.py",
+    "pwsh -NoProfile -File tools/build_nucleo_bringup.ps1 -EpaperSsd1681Bringup -EpaperMenu 1"
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "acceptance": {
+    "initial_state_publish_does_not_schedule_expression": true,
+    "low_battery_blocker_maps_to_low_battery": true,
+    "low_battery_blocker_takes_precedence": true,
+    "nonzero_ota_blocker_maps_to_error": true,
+    "ota_readiness_publish_feeds_expression_bridge": true,
+    "wba_safe_ota_hook": true
+  },
+  "blocker_bits": {
+    "low_battery": 3,
+    "wrong_board_target": 4
+  },
+  "cases": [
+    {
+      "case_id": "ready_no_blockers_no_expression",
+      "expected_expression": "idle",
+      "expected_signal": null,
+      "payload": {
+        "blocker_bitmap": 0
+      },
+      "policy_expression": "idle",
+      "policy_reason": "no active screen signal"
+    },
+    {
+      "case_id": "low_battery_blocker_maps_to_low_battery",
+      "expected_expression": "low_battery",
+      "expected_signal": "COMP_EPAPER_EXPRESSION_SIGNAL_LOW_BATTERY",
+      "payload": {
+        "blocker_bitmap": 8
+      },
+      "policy_expression": "low_battery",
+      "policy_reason": "OTA low-battery blocker is active"
+    },
+    {
+      "case_id": "wrong_board_blocker_maps_to_error",
+      "expected_expression": "error",
+      "expected_signal": "COMP_EPAPER_EXPRESSION_SIGNAL_ERROR",
+      "payload": {
+        "blocker_bitmap": 16
+      },
+      "policy_expression": "error",
+      "policy_reason": "OTA blockers active: 0x10"
+    },
+    {
+      "case_id": "low_battery_takes_precedence_over_other_blockers",
+      "expected_expression": "low_battery",
+      "expected_signal": "COMP_EPAPER_EXPRESSION_SIGNAL_LOW_BATTERY",
+      "payload": {
+        "blocker_bitmap": 24
+      },
+      "policy_expression": "low_battery",
+      "policy_reason": "OTA low-battery blocker is active"
+    }
+  ],
+  "schema_id": "companion.pendant.screen_ota_expression_hook.v1",
+  "sources": {
+    "epaper_readme": "app/companion_pendant/epaper/README.md",
+    "event_bridge_header": "app/companion_pendant/epaper/expression_events.h",
+    "event_bridge_source": "app/companion_pendant/epaper/expression_events.c",
+    "gatt_contract": "docs/ble_gatt_contract.md",
+    "screen_acceptance": "docs/companion_screen_expression_system.md",
+    "wb55_integration": "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c",
+    "wba_rules": "docs/stm32wba_migration_rules.md"
+  },
+  "status": "PASS",
+  "wb55_hook": {
+    "blocker_bitmap_source": "readiness->blocker_bitmap",
+    "initial_state_guard": "Companion_Gatt_PublishOtaReadiness(false)",
+    "notify_read_hook": "Companion_Gatt_PublishOtaReadiness(true)",
+    "portable_mapper": "comp_epaper_expression_signal_from_ota_readiness",
+    "publish_api": "Companion_Gatt_PublishOtaReadiness(bool apply_expression_hint)",
+    "status_source": "OtaReadinessV1"
+  }
+}

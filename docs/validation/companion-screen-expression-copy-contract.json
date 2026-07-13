@@ -1,0 +1,422 @@
+{
+  "copy_contract": {
+    "copy_locale": "en",
+    "expression_count": 10,
+    "fields": [
+      "title",
+      "body",
+      "footer"
+    ],
+    "generated_fixtures_must_match_renderer": true,
+    "renderer_and_firmware_must_match": true,
+    "wba_reuses_same_copy": true
+  },
+  "copy_sha256": "8d57f9c95ca3b9b5152a75e79c24b02bbf2b4419222366ce9ef89877a3e94a51",
+  "expressions": [
+    {
+      "catalog": {
+        "body": "Soft awake face",
+        "footer": "EXPR IDLE",
+        "title": "Idle"
+      },
+      "epaper_manifest": {
+        "body": "Soft awake face",
+        "footer": "EXPR IDLE",
+        "title": "Idle"
+      },
+      "expression": "idle",
+      "firmware": {
+        "body": "Soft awake face",
+        "footer": "EXPR IDLE",
+        "title": "Idle"
+      },
+      "firmware_fixture": {
+        "body": "Soft awake face",
+        "footer": "EXPR IDLE",
+        "title": "Idle"
+      },
+      "layout_fixture": {
+        "body": "Soft awake face",
+        "footer": "EXPR IDLE",
+        "title": "Idle"
+      },
+      "priority_matrix": {
+        "body": "Soft awake face",
+        "footer": "EXPR IDLE",
+        "title": "Idle"
+      },
+      "renderer": {
+        "body": "Soft awake face",
+        "footer": "EXPR IDLE",
+        "title": "Idle"
+      }
+    },
+    {
+      "catalog": {
+        "body": "Ears open for the wake path",
+        "footer": "EXPR LISTEN",
+        "title": "Listening"
+      },
+      "epaper_manifest": {
+        "body": "Ears open for the wake path",
+        "footer": "EXPR LISTEN",
+        "title": "Listening"
+      },
+      "expression": "listening",
+      "firmware": {
+        "body": "Ears open for the wake path",
+        "footer": "EXPR LISTEN",
+        "title": "Listening"
+      },
+      "firmware_fixture": {
+        "body": "Ears open for the wake path",
+        "footer": "EXPR LISTEN",
+        "title": "Listening"
+      },
+      "layout_fixture": {
+        "body": "Ears open for the wake path",
+        "footer": "EXPR LISTEN",
+        "title": "Listening"
+      },
+      "priority_matrix": {
+        "body": "Ears open for the wake path",
+        "footer": "EXPR LISTEN",
+        "title": "Listening"
+      },
+      "renderer": {
+        "body": "Ears open for the wake path",
+        "footer": "EXPR LISTEN",
+        "title": "Listening"
+      }
+    },
+    {
+      "catalog": {
+        "body": "Processing the last prompt",
+        "footer": "EXPR THINK",
+        "title": "Thinking"
+      },
+      "epaper_manifest": {
+        "body": "Processing the last prompt",
+        "footer": "EXPR THINK",
+        "title": "Thinking"
+      },
+      "expression": "thinking",
+      "firmware": {
+        "body": "Processing the last prompt",
+        "footer": "EXPR THINK",
+        "title": "Thinking"
+      },
+      "firmware_fixture": {
+        "body": "Processing the last prompt",
+        "footer": "EXPR THINK",
+        "title": "Thinking"
+      },
+      "layout_fixture": {
+        "body": "Processing the last prompt",
+        "footer": "EXPR THINK",
+        "title": "Thinking"
+      },
+      "priority_matrix": {
+        "body": "Processing the last prompt",
+        "footer": "EXPR THINK",
+        "title": "Thinking"
+      },
+      "renderer": {
+        "body": "Processing the last prompt",
+        "footer": "EXPR THINK",
+        "title": "Thinking"
+      }
+    },
+    {
+      "catalog": {
+        "body": "Response audio is active",
+        "footer": "EXPR SPEAK",
+        "title": "Speaking"
+      },
+      "epaper_manifest": {
+        "body": "Response audio is active",
+        "footer": "EXPR SPEAK",
+        "title": "Speaking"
+      },
+      "expression": "speaking",
+      "firmware": {
+        "body": "Response audio is active",
+        "footer": "EXPR SPEAK",
+        "title": "Speaking"
+      },
+      "firmware_fixture": {
+        "body": "Response audio is active",
+        "footer": "EXPR SPEAK",
+        "title": "Speaking"
+      },
+      "layout_fixture": {
+        "body": "Response audio is active",
+        "footer": "EXPR SPEAK",
+        "title": "Speaking"
+      },
+      "priority_matrix": {
+        "body": "Response audio is active",
+        "footer": "EXPR SPEAK",
+        "title": "Speaking"
+      },
+      "renderer": {
+        "body": "Response audio is active",
+        "footer": "EXPR SPEAK",
+        "title": "Speaking"
+      }
+    },
+    {
+      "catalog": {
+        "body": "Positive acknowledgement",
+        "footer": "EXPR HAPPY",
+        "title": "Happy"
+      },
+      "epaper_manifest": {
+        "body": "Positive acknowledgement",
+        "footer": "EXPR HAPPY",
+        "title": "Happy"
+      },
+      "expression": "happy",
+      "firmware": {
+        "body": "Positive acknowledgement",
+        "footer": "EXPR HAPPY",
+        "title": "Happy"
+      },
+      "firmware_fixture": {
+        "body": "Positive acknowledgement",
+        "footer": "EXPR HAPPY",
+        "title": "Happy"
+      },
+      "layout_fixture": {
+        "body": "Positive acknowledgement",
+        "footer": "EXPR HAPPY",
+        "title": "Happy"
+      },
+      "priority_matrix": {
+        "body": "Positive acknowledgement",
+        "footer": "EXPR HAPPY",
+        "title": "Happy"
+      },
+      "renderer": {
+        "body": "Positive acknowledgement",
+        "footer": "EXPR HAPPY",
+        "title": "Happy"
+      }
+    },
+    {
+      "catalog": {
+        "body": "Low attention idle mode",
+        "footer": "EXPR SLEEP",
+        "title": "Sleepy"
+      },
+      "epaper_manifest": {
+        "body": "Low attention idle mode",
+        "footer": "EXPR SLEEP",
+        "title": "Sleepy"
+      },
+      "expression": "sleepy",
+      "firmware": {
+        "body": "Low attention idle mode",
+        "footer": "EXPR SLEEP",
+        "title": "Sleepy"
+      },
+      "firmware_fixture": {
+        "body": "Low attention idle mode",
+        "footer": "EXPR SLEEP",
+        "title": "Sleepy"
+      },
+      "layout_fixture": {
+        "body": "Low attention idle mode",
+        "footer": "EXPR SLEEP",
+        "title": "Sleepy"
+      },
+      "priority_matrix": {
+        "body": "Low attention idle mode",
+        "footer": "EXPR SLEEP",
+        "title": "Sleepy"
+      },
+      "renderer": {
+        "body": "Low attention idle mode",
+        "footer": "EXPR SLEEP",
+        "title": "Sleepy"
+      }
+    },
+    {
+      "catalog": {
+        "body": "Capture indicator stays visible",
+        "footer": "EXPR REC",
+        "title": "Recording"
+      },
+      "epaper_manifest": {
+        "body": "Capture indicator stays visible",
+        "footer": "EXPR REC",
+        "title": "Recording"
+      },
+      "expression": "recording",
+      "firmware": {
+        "body": "Capture indicator stays visible",
+        "footer": "EXPR REC",
+        "title": "Recording"
+      },
+      "firmware_fixture": {
+        "body": "Capture indicator stays visible",
+        "footer": "EXPR REC",
+        "title": "Recording"
+      },
+      "layout_fixture": {
+        "body": "Capture indicator stays visible",
+        "footer": "EXPR REC",
+        "title": "Recording"
+      },
+      "priority_matrix": {
+        "body": "Capture indicator stays visible",
+        "footer": "EXPR REC",
+        "title": "Recording"
+      },
+      "renderer": {
+        "body": "Capture indicator stays visible",
+        "footer": "EXPR REC",
+        "title": "Recording"
+      }
+    },
+    {
+      "catalog": {
+        "body": "Transfer finished cleanly",
+        "footer": "EXPR SYNC",
+        "title": "Synced"
+      },
+      "epaper_manifest": {
+        "body": "Transfer finished cleanly",
+        "footer": "EXPR SYNC",
+        "title": "Synced"
+      },
+      "expression": "sync_complete",
+      "firmware": {
+        "body": "Transfer finished cleanly",
+        "footer": "EXPR SYNC",
+        "title": "Synced"
+      },
+      "firmware_fixture": {
+        "body": "Transfer finished cleanly",
+        "footer": "EXPR SYNC",
+        "title": "Synced"
+      },
+      "layout_fixture": {
+        "body": "Transfer finished cleanly",
+        "footer": "EXPR SYNC",
+        "title": "Synced"
+      },
+      "priority_matrix": {
+        "body": "Transfer finished cleanly",
+        "footer": "EXPR SYNC",
+        "title": "Synced"
+      },
+      "renderer": {
+        "body": "Transfer finished cleanly",
+        "footer": "EXPR SYNC",
+        "title": "Synced"
+      }
+    },
+    {
+      "catalog": {
+        "body": "Charge soon",
+        "footer": "EXPR LOW",
+        "title": "Battery"
+      },
+      "epaper_manifest": {
+        "body": "Charge soon",
+        "footer": "EXPR LOW",
+        "title": "Battery"
+      },
+      "expression": "low_battery",
+      "firmware": {
+        "body": "Charge soon",
+        "footer": "EXPR LOW",
+        "title": "Battery"
+      },
+      "firmware_fixture": {
+        "body": "Charge soon",
+        "footer": "EXPR LOW",
+        "title": "Battery"
+      },
+      "layout_fixture": {
+        "body": "Charge soon",
+        "footer": "EXPR LOW",
+        "title": "Battery"
+      },
+      "priority_matrix": {
+        "body": "Charge soon",
+        "footer": "EXPR LOW",
+        "title": "Battery"
+      },
+      "renderer": {
+        "body": "Charge soon",
+        "footer": "EXPR LOW",
+        "title": "Battery"
+      }
+    },
+    {
+      "catalog": {
+        "body": "Needs user or host recovery",
+        "footer": "EXPR ERROR",
+        "title": "Error"
+      },
+      "epaper_manifest": {
+        "body": "Needs user or host recovery",
+        "footer": "EXPR ERROR",
+        "title": "Error"
+      },
+      "expression": "error",
+      "firmware": {
+        "body": "Needs user or host recovery",
+        "footer": "EXPR ERROR",
+        "title": "Error"
+      },
+      "firmware_fixture": {
+        "body": "Needs user or host recovery",
+        "footer": "EXPR ERROR",
+        "title": "Error"
+      },
+      "layout_fixture": {
+        "body": "Needs user or host recovery",
+        "footer": "EXPR ERROR",
+        "title": "Error"
+      },
+      "priority_matrix": {
+        "body": "Needs user or host recovery",
+        "footer": "EXPR ERROR",
+        "title": "Error"
+      },
+      "renderer": {
+        "body": "Needs user or host recovery",
+        "footer": "EXPR ERROR",
+        "title": "Error"
+      }
+    }
+  ],
+  "purpose": "Keep ExpressionV1 user-visible title/body/footer copy synchronized across renderer, firmware, generated fixtures, and WBA adapter contracts.",
+  "schema_id": "companion.pendant.screen_expression_copy_contract.v1",
+  "sources": {
+    "catalog_fixture": "docs/validation/companion-screen-expression-catalog.json",
+    "epaper_manifest": "docs/validation/companion-pendant-firmware-bringup-1.6-epaper-fixtures.json",
+    "epaper_readme": "app/companion_pendant/epaper/README.md",
+    "firmware_header": "app/companion_pendant/epaper/expression_state.h",
+    "firmware_source": "app/companion_pendant/epaper/expression_state.c",
+    "firmware_state_fixture": "docs/validation/companion-screen-firmware-expression-state.json",
+    "layout_fixture": "docs/validation/companion-screen-expression-layout-contract.json",
+    "policy": "app/companion_pendant/epaper/expression_policy.py",
+    "priority_matrix": "docs/validation/companion-screen-expression-priority-matrix.json",
+    "renderer": "app/companion_pendant/epaper/card_renderer.py",
+    "screen_acceptance": "docs/companion_screen_expression_system.md",
+    "wba_rules": "docs/stm32wba_migration_rules.md"
+  },
+  "status": "PASS",
+  "validation_commands": [
+    "python .\\tools\\verify_expression_copy_contract.py",
+    "python .\\tools\\verify_expression_catalog_contract.py",
+    "python .\\tools\\verify_expression_firmware_state.py",
+    "python .\\tools\\verify_expression_layout_contract.py",
+    "python .\\tools\\verify_expression_priority_matrix.py",
+    "python .\\tools\\verify_epaper_assets.py"
+  ]
+}

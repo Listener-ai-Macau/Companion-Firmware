@@ -1,0 +1,282 @@
+{
+  "acceptance": {
+    "display_off_maps_to_sleepy": true,
+    "error_overrides_sleepy": true,
+    "low_battery_overrides_sleepy": true,
+    "quiet_hours_maps_to_sleepy": true,
+    "recording_overrides_sleepy": true,
+    "wba_safe_policy_only": true
+  },
+  "cases": [
+    {
+      "case_id": "quiet_hours_explicit_sleepy",
+      "decision": {
+        "body": "Low attention idle mode",
+        "card_slot": 0,
+        "display_flags": 0,
+        "expression": "sleepy",
+        "footer": "EXPR SLEEP",
+        "priority": 10,
+        "reason": "quiet hours or display-off screen setting is active",
+        "request_id": 0,
+        "source": "settings",
+        "title": "Sleepy"
+      },
+      "expected_expression": "sleepy",
+      "input": {
+        "device_status": {
+          "active_mode": 2
+        },
+        "settings": {
+          "quiet_hours_active": true
+        }
+      },
+      "quiet_hours_active": true,
+      "render_hashes": {
+        "1.54in": "902a45f4da2e1cdb3a62d8852c0627908a57d8ef65a7af382b1b70ea7898f124",
+        "2.13in": "d63f49c6e8ea38014b4eb574a538850f005960bf8b80deb69cd1fb631fd66331"
+      },
+      "screen_settings_wants_sleepy": true
+    },
+    {
+      "case_id": "quiet_hours_wraps_midnight_sleepy",
+      "decision": {
+        "body": "Low attention idle mode",
+        "card_slot": 0,
+        "display_flags": 0,
+        "expression": "sleepy",
+        "footer": "EXPR SLEEP",
+        "priority": 10,
+        "reason": "quiet hours or display-off screen setting is active",
+        "request_id": 0,
+        "source": "settings",
+        "title": "Sleepy"
+      },
+      "expected_expression": "sleepy",
+      "input": {
+        "device_status": {
+          "active_mode": 2
+        },
+        "settings": {
+          "local_minute": 30,
+          "quiet_hours_end_min": 420,
+          "quiet_hours_start_min": 1320
+        }
+      },
+      "quiet_hours_active": true,
+      "render_hashes": {
+        "1.54in": "902a45f4da2e1cdb3a62d8852c0627908a57d8ef65a7af382b1b70ea7898f124",
+        "2.13in": "4f69f1b396c331e3062bcb918f7e575be447954ddcdeddf574fb5cf4e3ae7ab6"
+      },
+      "screen_settings_wants_sleepy": true
+    },
+    {
+      "case_id": "quiet_hours_daytime_idle",
+      "decision": {
+        "body": "Soft awake face",
+        "card_slot": 0,
+        "display_flags": 0,
+        "expression": "idle",
+        "footer": "EXPR IDLE",
+        "priority": 20,
+        "reason": "no active screen signal",
+        "request_id": 0,
+        "source": "default",
+        "title": "Idle"
+      },
+      "expected_expression": "idle",
+      "input": {
+        "device_status": {
+          "active_mode": 2
+        },
+        "settings": {
+          "local_minute": 720,
+          "quiet_hours_end_min": 420,
+          "quiet_hours_start_min": 1320
+        }
+      },
+      "quiet_hours_active": false,
+      "render_hashes": {
+        "1.54in": "86a6cb0ec7ce367d209d1fecbe000e7e0c6917e0c5c9cd5ef25eadb98327e843",
+        "2.13in": "bbbdc348d4547087efdadb14587c2fcc1eb0d34f168052538a4eeb19f45d95dd"
+      },
+      "screen_settings_wants_sleepy": false
+    },
+    {
+      "case_id": "display_off_sleepy",
+      "decision": {
+        "body": "Low attention idle mode",
+        "card_slot": 0,
+        "display_flags": 0,
+        "expression": "sleepy",
+        "footer": "EXPR SLEEP",
+        "priority": 10,
+        "reason": "quiet hours or display-off screen setting is active",
+        "request_id": 0,
+        "source": "settings",
+        "title": "Sleepy"
+      },
+      "expected_expression": "sleepy",
+      "input": {
+        "device_status": {
+          "active_mode": 2
+        },
+        "settings": {
+          "display_brightness": 0
+        }
+      },
+      "quiet_hours_active": false,
+      "render_hashes": {
+        "1.54in": "902a45f4da2e1cdb3a62d8852c0627908a57d8ef65a7af382b1b70ea7898f124",
+        "2.13in": "875560f07d99aa6dc5811eff88b329c9a7f5a7bdba1841d1b221d6ea95539fe7"
+      },
+      "screen_settings_wants_sleepy": true
+    },
+    {
+      "case_id": "settings_flag_sleepy",
+      "decision": {
+        "body": "Low attention idle mode",
+        "card_slot": 0,
+        "display_flags": 0,
+        "expression": "sleepy",
+        "footer": "EXPR SLEEP",
+        "priority": 10,
+        "reason": "quiet hours or display-off screen setting is active",
+        "request_id": 0,
+        "source": "settings",
+        "title": "Sleepy"
+      },
+      "expected_expression": "sleepy",
+      "input": {
+        "device_status": {
+          "active_mode": 2
+        },
+        "settings": {
+          "flags": 1
+        }
+      },
+      "quiet_hours_active": true,
+      "render_hashes": {
+        "1.54in": "902a45f4da2e1cdb3a62d8852c0627908a57d8ef65a7af382b1b70ea7898f124",
+        "2.13in": "a0340f6d52d0c6ac13afa0ba09e6a03e9cd4b608e496991899c4d1399705e3b2"
+      },
+      "screen_settings_wants_sleepy": true
+    },
+    {
+      "case_id": "quiet_hours_recording_visible",
+      "decision": {
+        "body": "Capture indicator stays visible",
+        "card_slot": 0,
+        "display_flags": 0,
+        "expression": "recording",
+        "footer": "EXPR REC",
+        "priority": 90,
+        "reason": "recording start accepted",
+        "request_id": 0,
+        "source": "recording_control",
+        "title": "Recording"
+      },
+      "expected_expression": "recording",
+      "input": {
+        "device_status": {
+          "active_mode": 2
+        },
+        "recording_control": {
+          "command": 1,
+          "privacy_flags": 0
+        },
+        "settings": {
+          "display_brightness": 0,
+          "quiet_hours_active": true
+        }
+      },
+      "quiet_hours_active": true,
+      "render_hashes": {
+        "1.54in": "36c4e9d6a0e34a3a21739e2c0840df65a80504c1ff5af4781405e546abce34df",
+        "2.13in": "dbd186a7e008d6604ae131916a64adf2ca153157682466a5d0c22ef19c7d2b61"
+      },
+      "screen_settings_wants_sleepy": true
+    },
+    {
+      "case_id": "quiet_hours_low_battery_visible",
+      "decision": {
+        "body": "Charge soon",
+        "card_slot": 0,
+        "display_flags": 0,
+        "expression": "low_battery",
+        "footer": "EXPR LOW",
+        "priority": 80,
+        "reason": "battery is below expression threshold",
+        "request_id": 0,
+        "source": "battery_charge",
+        "title": "Battery"
+      },
+      "expected_expression": "low_battery",
+      "input": {
+        "battery_charge": {
+          "charger_present": 0,
+          "millivolts": 3500,
+          "percent": 9
+        },
+        "device_status": {
+          "active_mode": 2
+        },
+        "settings": {
+          "quiet_hours_active": true
+        }
+      },
+      "quiet_hours_active": true,
+      "render_hashes": {
+        "1.54in": "ffe5ab933f37575eca56c1dccc56632c5670274d82d9810514747ae781aec632",
+        "2.13in": "9da07fe366327ff6cdb56103b35fedd79b18647b3323cedd3261b32d889d6f1b"
+      },
+      "screen_settings_wants_sleepy": true
+    },
+    {
+      "case_id": "quiet_hours_error_visible",
+      "decision": {
+        "body": "Needs user or host recovery",
+        "card_slot": 0,
+        "display_flags": 0,
+        "expression": "error",
+        "footer": "EXPR ERROR",
+        "priority": 100,
+        "reason": "fault_bitmap=0x1",
+        "request_id": 0,
+        "source": "device_status",
+        "title": "Error"
+      },
+      "expected_expression": "error",
+      "input": {
+        "device_status": {
+          "active_mode": 2,
+          "fault_bitmap": 1
+        },
+        "settings": {
+          "quiet_hours_active": true
+        }
+      },
+      "quiet_hours_active": true,
+      "render_hashes": {
+        "1.54in": "097a68b9fa14a1e1c31ba14db78af0193b0b0f5b7c96c0dc20aee85f47c2bf78",
+        "2.13in": "4a1962a7a067813e1e02ee14cf13ac3579059a725118d1e1c7f74c3636968237"
+      },
+      "screen_settings_wants_sleepy": true
+    }
+  ],
+  "schema_id": "companion.pendant.screen_settings_policy.v1",
+  "settings_contract": {
+    "display_brightness_zero_maps_to_sleepy": true,
+    "quiet_hours_flag": 1,
+    "supports_explicit_quiet_hours_active": true,
+    "supports_wrapping_midnight_windows": true
+  },
+  "sources": {
+    "ble_contract": "docs/ble_gatt_contract.md",
+    "gatt_header": "app/companion_pendant/gatt/companion_gatt_stm32wb.h",
+    "policy": "app/companion_pendant/epaper/expression_policy.py",
+    "screen_acceptance": "docs/companion_screen_expression_system.md",
+    "wba_rules": "docs/stm32wba_migration_rules.md"
+  },
+  "status": "PASS"
+}

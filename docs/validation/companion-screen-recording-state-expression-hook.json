@@ -1,0 +1,100 @@
+{
+  "acceptance": {
+    "recording_fsm_enum_values_locked": true,
+    "recording_state_active_maps_to_recording": true,
+    "recording_state_error_recovery_maps_to_error": true,
+    "recording_state_idle_has_no_expression_override": true,
+    "recording_state_stopping_maps_to_thinking": true,
+    "recording_state_transfer_maps_to_sync_complete": true,
+    "unknown_recording_state_is_ignored": true,
+    "wba_safe_recording_state_mapper": true
+  },
+  "cases": [
+    {
+      "expected_expression": "idle",
+      "expected_signal": null,
+      "policy_expression": "idle",
+      "policy_reason": "no active screen signal",
+      "state": "idle",
+      "state_value": 0
+    },
+    {
+      "expected_expression": "recording",
+      "expected_signal": "COMP_EPAPER_EXPRESSION_SIGNAL_RECORDING_START",
+      "policy_expression": "recording",
+      "policy_reason": "recording state is active",
+      "state": "pending_start",
+      "state_value": 1
+    },
+    {
+      "expected_expression": "recording",
+      "expected_signal": "COMP_EPAPER_EXPRESSION_SIGNAL_RECORDING_START",
+      "policy_expression": "recording",
+      "policy_reason": "recording state is active",
+      "state": "recording",
+      "state_value": 2
+    },
+    {
+      "expected_expression": "thinking",
+      "expected_signal": "COMP_EPAPER_EXPRESSION_SIGNAL_RECORDING_STOP",
+      "policy_expression": "thinking",
+      "policy_reason": "recording is stopping",
+      "state": "stopping",
+      "state_value": 3
+    },
+    {
+      "expected_expression": "idle",
+      "expected_signal": "COMP_EPAPER_EXPRESSION_SIGNAL_RECORDING_CANCEL",
+      "policy_expression": "idle",
+      "policy_reason": "recording was canceled",
+      "state": "canceled",
+      "state_value": 4
+    },
+    {
+      "expected_expression": "sync_complete",
+      "expected_signal": "COMP_EPAPER_EXPRESSION_SIGNAL_RECORDING_FINISHED",
+      "policy_expression": "sync_complete",
+      "policy_reason": "recording is stored or syncing",
+      "state": "transfer_ready",
+      "state_value": 5
+    },
+    {
+      "expected_expression": "sync_complete",
+      "expected_signal": "COMP_EPAPER_EXPRESSION_SIGNAL_RECORDING_FINISHED",
+      "policy_expression": "sync_complete",
+      "policy_reason": "recording is stored or syncing",
+      "state": "transfer_active",
+      "state_value": 6
+    },
+    {
+      "expected_expression": "sync_complete",
+      "expected_signal": "COMP_EPAPER_EXPRESSION_SIGNAL_RECORDING_FINISHED",
+      "policy_expression": "sync_complete",
+      "policy_reason": "recording is stored or syncing",
+      "state": "transferred",
+      "state_value": 7
+    },
+    {
+      "expected_expression": "error",
+      "expected_signal": "COMP_EPAPER_EXPRESSION_SIGNAL_ERROR",
+      "policy_expression": "error",
+      "policy_reason": "recording path is recovering from an error",
+      "state": "error_recovery",
+      "state_value": 8
+    }
+  ],
+  "portable_mapper": "comp_epaper_expression_signal_from_recording_state",
+  "purpose": "Recording FSM state snapshots can feed ExpressionV1 without depending on WB55 or WBA platform glue.",
+  "schema_id": "companion.pendant.screen_recording_state_expression_hook.v1",
+  "sources": {
+    "epaper_readme": "app/companion_pendant/epaper/README.md",
+    "event_bridge_header": "app/companion_pendant/epaper/expression_events.h",
+    "event_bridge_source": "app/companion_pendant/epaper/expression_events.c",
+    "gatt_contract": "docs/ble_gatt_contract.md",
+    "policy": "app/companion_pendant/epaper/expression_policy.py",
+    "recording_fsm": "app/companion_pendant/recording/recording_fsm.h",
+    "screen_acceptance": "docs/companion_screen_expression_system.md",
+    "wba_rules": "docs/stm32wba_migration_rules.md"
+  },
+  "status": "PASS"
+}

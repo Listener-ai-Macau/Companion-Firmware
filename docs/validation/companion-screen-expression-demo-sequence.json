@@ -1,0 +1,673 @@
+{
+  "acceptance": {
+    "all_required_demo_journeys_present": true,
+    "all_steps_have_dual_variant_hashes": true,
+    "all_steps_have_visual_fixtures": true,
+    "covers_all_expression_states": true,
+    "has_accepted_and_held_steps": true
+  },
+  "demos": [
+    {
+      "acceptance_focus": [
+        "listening",
+        "recording",
+        "thinking",
+        "sync_complete"
+      ],
+      "demo_id": "wake_recording_sync",
+      "final_expression": "sync_complete",
+      "journey_id": "wake_to_recording_sync",
+      "order": 1,
+      "product_check": "Wake, listen, record, think, and show sync complete in order.",
+      "steps": [
+        {
+          "event": "wake_word.armed",
+          "expected_result": "accept",
+          "expression_signal": "WAKE_ARMED",
+          "fixture_path": "docs/validation/epaper/expression_idle_2_13in.pbm",
+          "fixture_sha256": "d23295a620ddcaff2c19de911d23f7d5c662a653d0b8de89bd51036f1db5c953",
+          "index": 0,
+          "reason": "wake word armed",
+          "render_hashes": {
+            "1.54in": "86a6cb0ec7ce367d209d1fecbe000e7e0c6917e0c5c9cd5ef25eadb98327e843",
+            "2.13in": "9cc783c05d8a6c6e51c116b759abb661fe59b4adc4f5a911f90077b5d71bca98"
+          },
+          "visible_expression": "idle"
+        },
+        {
+          "event": "wake_word.detected",
+          "expected_result": "accept",
+          "expression_signal": "WAKE_DETECTED",
+          "fixture_path": "docs/validation/epaper/expression_listening_2_13in.pbm",
+          "fixture_sha256": "e006c87774163ff72369237f26f77a8191bbd618baf92dd2c668b8857316db1e",
+          "index": 1,
+          "reason": "wake word detected",
+          "render_hashes": {
+            "1.54in": "f3b927a6a97b7d95a88ff10bebdae674595ab898979abbfb31d389ad7df007c5",
+            "2.13in": "53b3712aa9bbdcab157dbf23c90b6e19fedb9be0eef190782575719cf490a06c"
+          },
+          "visible_expression": "listening"
+        },
+        {
+          "event": "recording_fsm.start_request",
+          "expected_result": "accept",
+          "expression_signal": "RECORDING_START",
+          "fixture_path": "docs/validation/epaper/expression_recording_2_13in.pbm",
+          "fixture_sha256": "73f2c27839f222ebfb49d5e716b7e67d5de0d8dd02893d4f77b1d3f0d30fa11b",
+          "index": 2,
+          "reason": "recording start accepted",
+          "render_hashes": {
+            "1.54in": "36c4e9d6a0e34a3a21739e2c0840df65a80504c1ff5af4781405e546abce34df",
+            "2.13in": "552947243e2c56751316c8ebf4c68a75f37e6c22d4640557d62492b8fa83322f"
+          },
+          "visible_expression": "recording"
+        },
+        {
+          "event": "recording_fsm.stop_request",
+          "expected_result": "accept",
+          "expression_signal": "RECORDING_STOP",
+          "fixture_path": "docs/validation/epaper/expression_thinking_2_13in.pbm",
+          "fixture_sha256": "7169ac3cc87093dd00c7066a8b24fbcd751719104611bf6ec58362d261f29ba7",
+          "index": 3,
+          "reason": "recording stop accepted",
+          "render_hashes": {
+            "1.54in": "232eb7124e7e069842d139a192df30f1c03dfd42e8cb271324cb5663ce3f2044",
+            "2.13in": "1ff86e484797d511a5e7a0140ffa7f09827eba2ca2f62930016751c084c872dd"
+          },
+          "visible_expression": "thinking"
+        },
+        {
+          "event": "recording_fsm.session_finished",
+          "expected_result": "accept",
+          "expression_signal": "RECORDING_FINISHED",
+          "fixture_path": "docs/validation/epaper/expression_sync_complete_2_13in.pbm",
+          "fixture_sha256": "57325a3e8b85cd30efb4d7533904ab417136ab861aa68cff361dd29b275bac67",
+          "index": 4,
+          "reason": "recording stored for sync",
+          "render_hashes": {
+            "1.54in": "66e3e5bc849ecb65997e2da5c7bba37235b742613b9faa3a1e38c293ceadf8b4",
+            "2.13in": "0cf7faa13583ea2b1ce18fbb82c52087f5fe4427313f07dcf6dfcb938a7a59a4"
+          },
+          "visible_expression": "sync_complete"
+        }
+      ]
+    },
+    {
+      "acceptance_focus": [
+        "speaking",
+        "happy"
+      ],
+      "demo_id": "speaker_prompt_result",
+      "final_expression": "happy",
+      "journey_id": "speaker_prompt_result",
+      "order": 2,
+      "product_check": "Speaker prompt shows speaking, then happy after the result.",
+      "steps": [
+        {
+          "event": "speaker.prompt",
+          "expected_result": "accept",
+          "expression_signal": "SPEAKER_PROMPT",
+          "fixture_path": "docs/validation/epaper/expression_speaking_2_13in.pbm",
+          "fixture_sha256": "bd4bfbd422a5b64cbaa141b14303bdeb301d8ddab19c8c7f670309308a11e8bf",
+          "index": 0,
+          "reason": "speaker prompt accepted",
+          "render_hashes": {
+            "1.54in": "1203e79b3851ef706dae87b33d5158bd2f44904a0a66b5c1a0266eb34eb735f4",
+            "2.13in": "31f30357169f39e82492b9ab641c4f05e2af8b3a551d5c397fbbad5bcb446079"
+          },
+          "visible_expression": "speaking"
+        },
+        {
+          "event": "speaker.result",
+          "expected_result": "accept",
+          "expression_signal": "SPEAKER_RESULT",
+          "fixture_path": "docs/validation/epaper/expression_happy_2_13in.pbm",
+          "fixture_sha256": "8bf50a5387f6a48593a3de978b197703373370b094b5511b88d01f0aa3906f42",
+          "index": 1,
+          "reason": "speaker prompt completed",
+          "render_hashes": {
+            "1.54in": "3a88cda7a54716dbb08551a06fb75d6fbd46249b83e85b0101fc830883b6852c",
+            "2.13in": "b1a60d50befc67dbe6ed59345e78fbbd76e433ec49d77d58a001d475fc6d8fe2"
+          },
+          "visible_expression": "happy"
+        }
+      ]
+    },
+    {
+      "acceptance_focus": [
+        "sleepy",
+        "recording"
+      ],
+      "demo_id": "settings_sleepy_hint",
+      "final_expression": "sleepy",
+      "journey_id": "settings_sleepy_hint",
+      "order": 3,
+      "product_check": "Display-off and quiet-hours hints show sleepy without hiding recording.",
+      "steps": [
+        {
+          "event": "wake_word.armed",
+          "expected_result": "accept",
+          "expression_signal": "WAKE_ARMED",
+          "fixture_path": "docs/validation/epaper/expression_idle_2_13in.pbm",
+          "fixture_sha256": "d23295a620ddcaff2c19de911d23f7d5c662a653d0b8de89bd51036f1db5c953",
+          "index": 0,
+          "reason": "wake word armed",
+          "render_hashes": {
+            "1.54in": "86a6cb0ec7ce367d209d1fecbe000e7e0c6917e0c5c9cd5ef25eadb98327e843",
+            "2.13in": "7fff9d2cc4d4c7248fdec8acc3179879a54597d92dd8b6cfeed572a203d3ea3d"
+          },
+          "visible_expression": "idle"
+        },
+        {
+          "event": "settings.display_off",
+          "expected_result": "accept",
+          "expression_signal": "SETTINGS_SLEEPY",
+          "fixture_path": "docs/validation/epaper/expression_sleepy_2_13in.pbm",
+          "fixture_sha256": "29e85bce3a17228ef8a79c4c67c4a65f26a4fb9770d520f6db2fd37b0287c5d7",
+          "index": 1,
+          "reason": "quiet hours or display-off screen setting",
+          "render_hashes": {
+            "1.54in": "902a45f4da2e1cdb3a62d8852c0627908a57d8ef65a7af382b1b70ea7898f124",
+            "2.13in": "d7c1453c0826fe1d0e04bd96ef7c43a8799ba5d8c8eefff97a87f7932f802948"
+          },
+          "visible_expression": "sleepy"
+        },
+        {
+          "event": "settings.display_on",
+          "expected_result": "accept",
+          "expression_signal": "RECOVERY",
+          "fixture_path": "docs/validation/epaper/expression_idle_2_13in.pbm",
+          "fixture_sha256": "d23295a620ddcaff2c19de911d23f7d5c662a653d0b8de89bd51036f1db5c953",
+          "index": 2,
+          "reason": "recovered to idle",
+          "render_hashes": {
+            "1.54in": "86a6cb0ec7ce367d209d1fecbe000e7e0c6917e0c5c9cd5ef25eadb98327e843",
+            "2.13in": "ea6dfe9f6446712f2575fa058ee2a0a7a74001cd0b80f403ea1d6332dbc34e2b"
+          },
+          "visible_expression": "idle"
+        },
+        {
+          "event": "recording_fsm.start_request",
+          "expected_result": "accept",
+          "expression_signal": "RECORDING_START",
+          "fixture_path": "docs/validation/epaper/expression_recording_2_13in.pbm",
+          "fixture_sha256": "73f2c27839f222ebfb49d5e716b7e67d5de0d8dd02893d4f77b1d3f0d30fa11b",
+          "index": 3,
+          "reason": "recording start accepted",
+          "render_hashes": {
+            "1.54in": "36c4e9d6a0e34a3a21739e2c0840df65a80504c1ff5af4781405e546abce34df",
+            "2.13in": "95af5b94646da8e6618bac40d8872a488a9325ab6062257903cff3c2ebe36b6c"
+          },
+          "visible_expression": "recording"
+        },
+        {
+          "event": "settings.display_off",
+          "expected_result": "hold",
+          "expression_signal": "SETTINGS_SLEEPY",
+          "fixture_path": "docs/validation/epaper/expression_recording_2_13in.pbm",
+          "fixture_sha256": "73f2c27839f222ebfb49d5e716b7e67d5de0d8dd02893d4f77b1d3f0d30fa11b",
+          "index": 4,
+          "reason": "ignored lower-priority sleepy while recording is visible",
+          "render_hashes": {
+            "1.54in": "36c4e9d6a0e34a3a21739e2c0840df65a80504c1ff5af4781405e546abce34df",
+            "2.13in": "a34f8f47e7556c2fac41a08a5c528ed9507350c2fc107636d3133ce2269f53ec"
+          },
+          "visible_expression": "recording"
+        },
+        {
+          "event": "recording_fsm.cancel_request",
+          "expected_result": "accept",
+          "expression_signal": "RECORDING_CANCEL",
+          "fixture_path": "docs/validation/epaper/expression_idle_2_13in.pbm",
+          "fixture_sha256": "d23295a620ddcaff2c19de911d23f7d5c662a653d0b8de89bd51036f1db5c953",
+          "index": 5,
+          "reason": "recording cancelled",
+          "render_hashes": {
+            "1.54in": "86a6cb0ec7ce367d209d1fecbe000e7e0c6917e0c5c9cd5ef25eadb98327e843",
+            "2.13in": "d9eff91d5e6ecce1c085bff91f4077ae51065d0145e8218c997bac3c58cb42a8"
+          },
+          "visible_expression": "idle"
+        },
+        {
+          "event": "settings.quiet_hours",
+          "expected_result": "accept",
+          "expression_signal": "SETTINGS_SLEEPY",
+          "fixture_path": "docs/validation/epaper/expression_sleepy_2_13in.pbm",
+          "fixture_sha256": "29e85bce3a17228ef8a79c4c67c4a65f26a4fb9770d520f6db2fd37b0287c5d7",
+          "index": 6,
+          "reason": "quiet hours or display-off screen setting",
+          "render_hashes": {
+            "1.54in": "902a45f4da2e1cdb3a62d8852c0627908a57d8ef65a7af382b1b70ea7898f124",
+            "2.13in": "ba0d4aa68dcf89c6d2dd70223aa5224c5cd0fdcc15aee9bd81476b677cc14aaf"
+          },
+          "visible_expression": "sleepy"
+        }
+      ]
+    },
+    {
+      "acceptance_focus": [
+        "recording",
+        "low_battery"
+      ],
+      "demo_id": "recording_low_battery_priority",
+      "final_expression": "low_battery",
+      "journey_id": "recording_low_battery_priority",
+      "order": 4,
+      "product_check": "Low battery does not interrupt active recording, then appears after recording stops.",
+      "steps": [
+        {
+          "event": "recording_fsm.start_request",
+          "expected_result": "accept",
+          "expression_signal": "RECORDING_START",
+          "fixture_path": "docs/validation/epaper/expression_recording_2_13in.pbm",
+          "fixture_sha256": "73f2c27839f222ebfb49d5e716b7e67d5de0d8dd02893d4f77b1d3f0d30fa11b",
+          "index": 0,
+          "reason": "recording start accepted",
+          "render_hashes": {
+            "1.54in": "36c4e9d6a0e34a3a21739e2c0840df65a80504c1ff5af4781405e546abce34df",
+            "2.13in": "84613bbf8be5a9820bb49855b505b5a761296bc3372158064452ff1c882ebb11"
+          },
+          "visible_expression": "recording"
+        },
+        {
+          "event": "battery_charging.sample",
+          "expected_result": "hold",
+          "expression_signal": "LOW_BATTERY",
+          "fixture_path": "docs/validation/epaper/expression_recording_2_13in.pbm",
+          "fixture_sha256": "73f2c27839f222ebfb49d5e716b7e67d5de0d8dd02893d4f77b1d3f0d30fa11b",
+          "index": 1,
+          "reason": "ignored lower-priority low_battery while recording is visible",
+          "render_hashes": {
+            "1.54in": "36c4e9d6a0e34a3a21739e2c0840df65a80504c1ff5af4781405e546abce34df",
+            "2.13in": "d1759acd4d3096fd55ba5f57663ae2dda2799e907aec34192a9dd2ea20e09145"
+          },
+          "visible_expression": "recording"
+        },
+        {
+          "event": "recording_fsm.stop_request",
+          "expected_result": "accept",
+          "expression_signal": "RECORDING_STOP",
+          "fixture_path": "docs/validation/epaper/expression_thinking_2_13in.pbm",
+          "fixture_sha256": "7169ac3cc87093dd00c7066a8b24fbcd751719104611bf6ec58362d261f29ba7",
+          "index": 2,
+          "reason": "recording stop accepted",
+          "render_hashes": {
+            "1.54in": "232eb7124e7e069842d139a192df30f1c03dfd42e8cb271324cb5663ce3f2044",
+            "2.13in": "9f46f884e150ac5bf99d85bab3be6d8656105ee0baa21ea1a8d981fe1da6986c"
+          },
+          "visible_expression": "thinking"
+        },
+        {
+          "event": "battery_charging.sample",
+          "expected_result": "accept",
+          "expression_signal": "LOW_BATTERY",
+          "fixture_path": "docs/validation/epaper/expression_low_battery_2_13in.pbm",
+          "fixture_sha256": "e97233a3b0904e2941083895f2a97ac8c50ad90e6cd9e170cd5003d92e7e1d03",
+          "index": 3,
+          "reason": "battery is below threshold",
+          "render_hashes": {
+            "1.54in": "ffe5ab933f37575eca56c1dccc56632c5670274d82d9810514747ae781aec632",
+            "2.13in": "82d118e55f18252ff91a8b36cdd4b7b9d434a566080a03a12473a84a21df0019"
+          },
+          "visible_expression": "low_battery"
+        }
+      ]
+    },
+    {
+      "acceptance_focus": [
+        "low_battery",
+        "idle",
+        "error"
+      ],
+      "demo_id": "battery_recovery_guard",
+      "final_expression": "idle",
+      "journey_id": "battery_recovery_only_clears_low_battery",
+      "order": 5,
+      "product_check": "Battery recovery only clears a visible low-battery face.",
+      "steps": [
+        {
+          "event": "battery_charging.sample",
+          "expected_result": "accept",
+          "expression_signal": "LOW_BATTERY",
+          "fixture_path": "docs/validation/epaper/expression_low_battery_2_13in.pbm",
+          "fixture_sha256": "e97233a3b0904e2941083895f2a97ac8c50ad90e6cd9e170cd5003d92e7e1d03",
+          "index": 0,
+          "reason": "battery is below threshold",
+          "render_hashes": {
+            "1.54in": "ffe5ab933f37575eca56c1dccc56632c5670274d82d9810514747ae781aec632",
+            "2.13in": "f3e4d20bdcad715637c4c07ac853312d1b6f95f15b32812cb0f13c9768e68b2f"
+          },
+          "visible_expression": "low_battery"
+        },
+        {
+          "event": "battery_charging.sample",
+          "expected_result": "hold",
+          "expression_signal": null,
+          "fixture_path": "docs/validation/epaper/expression_low_battery_2_13in.pbm",
+          "fixture_sha256": "e97233a3b0904e2941083895f2a97ac8c50ad90e6cd9e170cd5003d92e7e1d03",
+          "index": 1,
+          "reason": "event has no expression signal",
+          "render_hashes": {
+            "1.54in": "ffe5ab933f37575eca56c1dccc56632c5670274d82d9810514747ae781aec632",
+            "2.13in": "8c11880275c3aa2426ea349dbd77c595a0875f714afd44416955b7097d2d25a7"
+          },
+          "visible_expression": "low_battery"
+        },
+        {
+          "event": "battery_charging.sample",
+          "expected_result": "accept",
+          "expression_signal": "BATTERY_RECOVERED",
+          "fixture_path": "docs/validation/epaper/expression_idle_2_13in.pbm",
+          "fixture_sha256": "d23295a620ddcaff2c19de911d23f7d5c662a653d0b8de89bd51036f1db5c953",
+          "index": 2,
+          "reason": "battery recovered above expression threshold",
+          "render_hashes": {
+            "1.54in": "86a6cb0ec7ce367d209d1fecbe000e7e0c6917e0c5c9cd5ef25eadb98327e843",
+            "2.13in": "76bd53ccca3ca66751bb05d81bfc08154e061b3c1be9b146b39825184804b2c6"
+          },
+          "visible_expression": "idle"
+        },
+        {
+          "event": "recording_fsm.start_request",
+          "expected_result": "accept",
+          "expression_signal": "RECORDING_START",
+          "fixture_path": "docs/validation/epaper/expression_recording_2_13in.pbm",
+          "fixture_sha256": "73f2c27839f222ebfb49d5e716b7e67d5de0d8dd02893d4f77b1d3f0d30fa11b",
+          "index": 3,
+          "reason": "recording start accepted",
+          "render_hashes": {
+            "1.54in": "36c4e9d6a0e34a3a21739e2c0840df65a80504c1ff5af4781405e546abce34df",
+            "2.13in": "b3a5019f2e11a5b87cb7ad0f1bd7453fb2a0ec645f1c1c2889ef9fb10e3f59de"
+          },
+          "visible_expression": "recording"
+        },
+        {
+          "event": "battery_charging.sample",
+          "expected_result": "hold",
+          "expression_signal": "BATTERY_RECOVERED",
+          "fixture_path": "docs/validation/epaper/expression_recording_2_13in.pbm",
+          "fixture_sha256": "73f2c27839f222ebfb49d5e716b7e67d5de0d8dd02893d4f77b1d3f0d30fa11b",
+          "index": 4,
+          "reason": "battery recovery ignored because low_battery is not visible",
+          "render_hashes": {
+            "1.54in": "36c4e9d6a0e34a3a21739e2c0840df65a80504c1ff5af4781405e546abce34df",
+            "2.13in": "1a615911a216de11c70fbf53f20945537ab5aceb7ec5165afce414927acf0f54"
+          },
+          "visible_expression": "recording"
+        },
+        {
+          "event": "errors.fault",
+          "expected_result": "accept",
+          "expression_signal": "ERROR",
+          "fixture_path": "docs/validation/epaper/expression_error_2_13in.pbm",
+          "fixture_sha256": "25a88986d6d01b36ca385c7932c3fdf04fab1c74d1fe3f781b479b90ef34729d",
+          "index": 5,
+          "reason": "error or rejection",
+          "render_hashes": {
+            "1.54in": "097a68b9fa14a1e1c31ba14db78af0193b0b0f5b7c96c0dc20aee85f47c2bf78",
+            "2.13in": "8a349b49c39d400d514ee0d43b3e070b200c0b3c4ca0c6bb549de0254005aa06"
+          },
+          "visible_expression": "error"
+        },
+        {
+          "event": "battery_charging.sample",
+          "expected_result": "hold",
+          "expression_signal": "BATTERY_RECOVERED",
+          "fixture_path": "docs/validation/epaper/expression_error_2_13in.pbm",
+          "fixture_sha256": "25a88986d6d01b36ca385c7932c3fdf04fab1c74d1fe3f781b479b90ef34729d",
+          "index": 6,
+          "reason": "battery recovery ignored because low_battery is not visible",
+          "render_hashes": {
+            "1.54in": "097a68b9fa14a1e1c31ba14db78af0193b0b0f5b7c96c0dc20aee85f47c2bf78",
+            "2.13in": "d67e0ab1d35ff042e2ddbe4b53ab8e20c1cdaa7289f83907ed8f51818f34114f"
+          },
+          "visible_expression": "error"
+        },
+        {
+          "event": "warnings.recovered",
+          "expected_result": "accept",
+          "expression_signal": "RECOVERY",
+          "fixture_path": "docs/validation/epaper/expression_idle_2_13in.pbm",
+          "fixture_sha256": "d23295a620ddcaff2c19de911d23f7d5c662a653d0b8de89bd51036f1db5c953",
+          "index": 7,
+          "reason": "recovered to idle",
+          "render_hashes": {
+            "1.54in": "86a6cb0ec7ce367d209d1fecbe000e7e0c6917e0c5c9cd5ef25eadb98327e843",
+            "2.13in": "14d79ce8f83c7bd0254ecc0194e860e1f4b0ec3857d30b19d3343be310f72bb5"
+          },
+          "visible_expression": "idle"
+        }
+      ]
+    },
+    {
+      "acceptance_focus": [
+        "error",
+        "idle"
+      ],
+      "demo_id": "error_override_recovery",
+      "final_expression": "idle",
+      "journey_id": "error_overrides_and_recovers",
+      "order": 6,
+      "product_check": "Error overrides lower-priority faces and returns to idle after recovery.",
+      "steps": [
+        {
+          "event": "battery_charging.sample",
+          "expected_result": "accept",
+          "expression_signal": "LOW_BATTERY",
+          "fixture_path": "docs/validation/epaper/expression_low_battery_2_13in.pbm",
+          "fixture_sha256": "e97233a3b0904e2941083895f2a97ac8c50ad90e6cd9e170cd5003d92e7e1d03",
+          "index": 0,
+          "reason": "battery is below threshold",
+          "render_hashes": {
+            "1.54in": "ffe5ab933f37575eca56c1dccc56632c5670274d82d9810514747ae781aec632",
+            "2.13in": "410b0affe41d24345f93dc7120c16719e99e733d08fca70fd42cd1b161a0dfc9"
+          },
+          "visible_expression": "low_battery"
+        },
+        {
+          "event": "errors.fault",
+          "expected_result": "accept",
+          "expression_signal": "ERROR",
+          "fixture_path": "docs/validation/epaper/expression_error_2_13in.pbm",
+          "fixture_sha256": "25a88986d6d01b36ca385c7932c3fdf04fab1c74d1fe3f781b479b90ef34729d",
+          "index": 1,
+          "reason": "error or rejection",
+          "render_hashes": {
+            "1.54in": "097a68b9fa14a1e1c31ba14db78af0193b0b0f5b7c96c0dc20aee85f47c2bf78",
+            "2.13in": "161f0da78f111588cf1b8baf455dbf68dc362a2ae260ad6d0d827a4f5694eb93"
+          },
+          "visible_expression": "error"
+        },
+        {
+          "event": "speaker.prompt",
+          "expected_result": "hold",
+          "expression_signal": "SPEAKER_PROMPT",
+          "fixture_path": "docs/validation/epaper/expression_error_2_13in.pbm",
+          "fixture_sha256": "25a88986d6d01b36ca385c7932c3fdf04fab1c74d1fe3f781b479b90ef34729d",
+          "index": 2,
+          "reason": "ignored lower-priority speaking while error is visible",
+          "render_hashes": {
+            "1.54in": "097a68b9fa14a1e1c31ba14db78af0193b0b0f5b7c96c0dc20aee85f47c2bf78",
+            "2.13in": "598ceda13f6b0243d11cc1edb9c1c74a2b51090ff1f3eb0406745876e1ba7d9f"
+          },
+          "visible_expression": "error"
+        },
+        {
+          "event": "warnings.recovered",
+          "expected_result": "accept",
+          "expression_signal": "RECOVERY",
+          "fixture_path": "docs/validation/epaper/expression_idle_2_13in.pbm",
+          "fixture_sha256": "d23295a620ddcaff2c19de911d23f7d5c662a653d0b8de89bd51036f1db5c953",
+          "index": 3,
+          "reason": "recovered to idle",
+          "render_hashes": {
+            "1.54in": "86a6cb0ec7ce367d209d1fecbe000e7e0c6917e0c5c9cd5ef25eadb98327e843",
+            "2.13in": "92e8f21afe9c2f119d4c8f287de315769dd1e24fc35e8c17cc901d877fcad065"
+          },
+          "visible_expression": "idle"
+        }
+      ]
+    },
+    {
+      "acceptance_focus": [
+        "happy",
+        "sync_complete",
+        "idle",
+        "recording"
+      ],
+      "demo_id": "transient_auto_recovery",
+      "final_expression": "recording",
+      "journey_id": "transient_expression_auto_recovery",
+      "order": 7,
+      "product_check": "Transient faces recover to idle while recording remains stable.",
+      "steps": [
+        {
+          "event": "speaker.result",
+          "expected_result": "accept",
+          "expression_signal": "SPEAKER_RESULT",
+          "fixture_path": "docs/validation/epaper/expression_happy_2_13in.pbm",
+          "fixture_sha256": "8bf50a5387f6a48593a3de978b197703373370b094b5511b88d01f0aa3906f42",
+          "index": 0,
+          "reason": "speaker prompt completed",
+          "render_hashes": {
+            "1.54in": "3a88cda7a54716dbb08551a06fb75d6fbd46249b83e85b0101fc830883b6852c",
+            "2.13in": "2df6ac6da8a6f80125f1d3c712edf7ba781ba5263128db3d7b12b72d70783792"
+          },
+          "visible_expression": "happy"
+        },
+        {
+          "event": "time.elapsed",
+          "expected_result": "hold",
+          "expression_signal": null,
+          "fixture_path": "docs/validation/epaper/expression_happy_2_13in.pbm",
+          "fixture_sha256": "8bf50a5387f6a48593a3de978b197703373370b094b5511b88d01f0aa3906f42",
+          "index": 1,
+          "reason": "elapsed 5000 ms while happy is visible",
+          "render_hashes": {
+            "1.54in": "3a88cda7a54716dbb08551a06fb75d6fbd46249b83e85b0101fc830883b6852c",
+            "2.13in": "7ba4268350224e967124ee6b3437a801545ed4ffd1a3f352422a11bf9d5744c8"
+          },
+          "visible_expression": "happy"
+        },
+        {
+          "event": "time.elapsed",
+          "expected_result": "accept",
+          "expression_signal": "RECOVERY",
+          "fixture_path": "docs/validation/epaper/expression_idle_2_13in.pbm",
+          "fixture_sha256": "d23295a620ddcaff2c19de911d23f7d5c662a653d0b8de89bd51036f1db5c953",
+          "index": 2,
+          "reason": "auto-recovered happy to idle after 1000 ms",
+          "render_hashes": {
+            "1.54in": "86a6cb0ec7ce367d209d1fecbe000e7e0c6917e0c5c9cd5ef25eadb98327e843",
+            "2.13in": "68a2c3a6b377217f077d1bd46bf3cc6d4315047da8bf269cb3ce2fe4bd8fc036"
+          },
+          "visible_expression": "idle"
+        },
+        {
+          "event": "meeting.finalize",
+          "expected_result": "accept",
+          "expression_signal": "MEETING_FINALIZE",
+          "fixture_path": "docs/validation/epaper/expression_sync_complete_2_13in.pbm",
+          "fixture_sha256": "57325a3e8b85cd30efb4d7533904ab417136ab861aa68cff361dd29b275bac67",
+          "index": 3,
+          "reason": "meeting artifact finalized",
+          "render_hashes": {
+            "1.54in": "66e3e5bc849ecb65997e2da5c7bba37235b742613b9faa3a1e38c293ceadf8b4",
+            "2.13in": "10a9595291f8ca8f4797a58ec560f68c006eec9ffa6aac832cd2f0d3ed56297f"
+          },
+          "visible_expression": "sync_complete"
+        },
+        {
+          "event": "time.elapsed",
+          "expected_result": "accept",
+          "expression_signal": "RECOVERY",
+          "fixture_path": "docs/validation/epaper/expression_idle_2_13in.pbm",
+          "fixture_sha256": "d23295a620ddcaff2c19de911d23f7d5c662a653d0b8de89bd51036f1db5c953",
+          "index": 4,
+          "reason": "auto-recovered sync_complete to idle after 8000 ms",
+          "render_hashes": {
+            "1.54in": "86a6cb0ec7ce367d209d1fecbe000e7e0c6917e0c5c9cd5ef25eadb98327e843",
+            "2.13in": "d1f1987b7f769919ea0ed141138e6ad2f24aba102b635174e1fec7753d604148"
+          },
+          "visible_expression": "idle"
+        },
+        {
+          "event": "recording_fsm.start_request",
+          "expected_result": "accept",
+          "expression_signal": "RECORDING_START",
+          "fixture_path": "docs/validation/epaper/expression_recording_2_13in.pbm",
+          "fixture_sha256": "73f2c27839f222ebfb49d5e716b7e67d5de0d8dd02893d4f77b1d3f0d30fa11b",
+          "index": 5,
+          "reason": "recording start accepted",
+          "render_hashes": {
+            "1.54in": "36c4e9d6a0e34a3a21739e2c0840df65a80504c1ff5af4781405e546abce34df",
+            "2.13in": "9e9106e815f988ed4dccd2d9d135d0a50afd56aa13634feadca91a0e3d419f64"
+          },
+          "visible_expression": "recording"
+        },
+        {
+          "event": "time.elapsed",
+          "expected_result": "hold",
+          "expression_signal": null,
+          "fixture_path": "docs/validation/epaper/expression_recording_2_13in.pbm",
+          "fixture_sha256": "73f2c27839f222ebfb49d5e716b7e67d5de0d8dd02893d4f77b1d3f0d30fa11b",
+          "index": 6,
+          "reason": "elapsed 60000 ms while recording is visible",
+          "render_hashes": {
+            "1.54in": "36c4e9d6a0e34a3a21739e2c0840df65a80504c1ff5af4781405e546abce34df",
+            "2.13in": "6c31411a7b45869bee12e84ec67ceda2b0b1af5b4f685f557b9f4dd938652fba"
+          },
+          "visible_expression": "recording"
+        }
+      ]
+    }
+  ],
+  "schema_id": "companion.pendant.expression_demo_sequence.v1",
+  "sources": {
+    "epaper_readme": "app/companion_pendant/epaper/README.md",
+    "journey_fixture": "docs/validation/companion-screen-expression-journeys.json",
+    "journey_fixture_sha256": "bd4d71c8a74d40e634cb1aaa8818cbfba1bad45d11b9d788cb4b231ce3aeef27",
+    "screen_acceptance": "docs/companion_screen_expression_system.md",
+    "storyboard_report": "docs/validation/companion-screen-expression-storyboard.json",
+    "storyboard_report_sha256": "9afd1b70fdd9a140568f9acc6840f2effad873b47acb8e5d24a47f042df105e5",
+    "storyboard_svg": "docs/validation/epaper/expression-storyboard.svg",
+    "storyboard_svg_sha256": "425fe835e2f306357550a9e5f7b3f379304e66b966fbff972f120205709b0d81"
+  },
+  "status": "PASS",
+  "summary": {
+    "accepted_step_count": 29,
+    "demo_count": 7,
+    "expression_coverage": [
+      "error",
+      "happy",
+      "idle",
+      "listening",
+      "low_battery",
+      "recording",
+      "sleepy",
+      "speaking",
+      "sync_complete",
+      "thinking"
+    ],
+    "held_step_count": 8,
+    "markdown_checklist": "docs/validation/companion-screen-expression-demo-sequence.md",
+    "source_expression_coverage": [
+      "error",
+      "happy",
+      "idle",
+      "listening",
+      "low_battery",
+      "recording",
+      "sleepy",
+      "speaking",
+      "sync_complete",
+      "thinking"
+    ],
+    "step_count": 37
+  },
+  "validation_commands": [
+    "python .\\tools\\verify_expression_demo_sequence.py",
+    "python .\\tools\\verify_expression_journeys.py",
+    "python .\\tools\\render_expression_storyboard.py"
+  ]
+}

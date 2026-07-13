@@ -1,0 +1,48 @@
+{
+  "contract": {
+    "auto_recover_derived_from_current": true,
+    "duplicate_suppression_observable": true,
+    "host_status_unchanged": "CardStatusV1 and expression diagnostic payloads stay unchanged.",
+    "platform_free": true,
+    "snapshot_api": "comp_epaper_expression_state_snapshot",
+    "snapshot_null_safe": true,
+    "wb55_scheduler_uses_snapshot": true
+  },
+  "purpose": "Portable ExpressionV1 state telemetry for WB55 transient scheduling and future WBA scheduler hooks.",
+  "schema_id": "companion.pendant.screen_expression_state_telemetry.v1",
+  "sources": {
+    "epaper_readme": "app/companion_pendant/epaper/README.md",
+    "expression_header": "app/companion_pendant/epaper/expression_state.h",
+    "expression_source": "app/companion_pendant/epaper/expression_state.c",
+    "screen_acceptance": "docs/companion_screen_expression_system.md",
+    "wb55_integration": "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c",
+    "wba_rules": "docs/stm32wba_migration_rules.md"
+  },
+  "status": "PASS",
+  "telemetry_fields": {
+    "auto_recover_ms": "portable recovery dwell time for transient faces",
+    "current": "current ExpressionV1 face enum",
+    "initialized": "whether a visible expression has been accepted",
+    "last_signal": "last ExpressionV1 signal applied or suppressed",
+    "priority": "priority of the current face",
+    "revision": "visible-expression change counter",
+    "suppressed_duplicate_count": "same-face signal suppressions that avoided e-paper refresh",
+    "visible_age_ms": "elapsed time since the current visible face was accepted"
+  },
+  "validation_commands": [
+    "python .\\tools\\verify_expression_state_telemetry.py",
+    "python .\\tools\\verify_expression_firmware_state.py",
+    "python .\\tools\\verify_expression_journeys.py",
+    "python .\\tools\\verify_display_queue_static.py",
+    "python .\\tools\\verify_expression_wba_portability.py",
+    "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1"
+  ],
+  "wb55_observability": {
+    "diagnostic_arg3_model": "(expression_id << 16) | signal_id",
+    "scheduler_reads": [
+      "snapshot.initialized",
+      "snapshot.auto_recover_ms",
+      "snapshot.visible_age_ms"
+    ]
+  }
+}

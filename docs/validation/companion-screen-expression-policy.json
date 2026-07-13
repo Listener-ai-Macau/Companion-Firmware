@@ -1,0 +1,834 @@
+{
+  "cases": [
+    {
+      "case_id": "status_idle_wake_armed",
+      "decision": {
+        "body": "Soft awake face",
+        "card_slot": 0,
+        "display_flags": 0,
+        "expression": "idle",
+        "footer": "EXPR IDLE",
+        "priority": 20,
+        "reason": "wake word is armed",
+        "request_id": 0,
+        "source": "wake_word_status",
+        "title": "Idle"
+      },
+      "event_name": null,
+      "expected_expression": "idle",
+      "input": {
+        "device_status": {
+          "active_mode": 2
+        },
+        "wake_word_status": {
+          "armed": 1,
+          "engine_state": 1
+        }
+      },
+      "input_type": "status",
+      "render_hashes": {
+        "1.54in": "86a6cb0ec7ce367d209d1fecbe000e7e0c6917e0c5c9cd5ef25eadb98327e843",
+        "2.13in": "61e3db8c41211492c74cb73e3d10f47b2fdcdb07a966bfdfc4f3a83006694c80"
+      }
+    },
+    {
+      "case_id": "status_sleepy_no_link",
+      "decision": {
+        "body": "Low attention idle mode",
+        "card_slot": 0,
+        "display_flags": 0,
+        "expression": "sleepy",
+        "footer": "EXPR SLEEP",
+        "priority": 10,
+        "reason": "device has no active link",
+        "request_id": 0,
+        "source": "device_status",
+        "title": "Sleepy"
+      },
+      "event_name": null,
+      "expected_expression": "sleepy",
+      "input": {
+        "device_status": {
+          "active_mode": 0
+        }
+      },
+      "input_type": "status",
+      "render_hashes": {
+        "1.54in": "902a45f4da2e1cdb3a62d8852c0627908a57d8ef65a7af382b1b70ea7898f124",
+        "2.13in": "933a7cb078da3671c6985f94aa95b8b91151999c59feb99efc0726e9c2d6b4b8"
+      }
+    },
+    {
+      "case_id": "status_device_fault",
+      "decision": {
+        "body": "Needs user or host recovery",
+        "card_slot": 0,
+        "display_flags": 0,
+        "expression": "error",
+        "footer": "EXPR ERROR",
+        "priority": 100,
+        "reason": "fault_bitmap=0x1",
+        "request_id": 0,
+        "source": "device_status",
+        "title": "Error"
+      },
+      "event_name": null,
+      "expected_expression": "error",
+      "input": {
+        "device_status": {
+          "active_mode": 1,
+          "fault_bitmap": 1
+        }
+      },
+      "input_type": "status",
+      "render_hashes": {
+        "1.54in": "097a68b9fa14a1e1c31ba14db78af0193b0b0f5b7c96c0dc20aee85f47c2bf78",
+        "2.13in": "117e39d6560fabae87d16c73dd98de8d4f6117551e869c3b747c39a160302abc"
+      }
+    },
+    {
+      "case_id": "status_quiet_hours_sleepy",
+      "decision": {
+        "body": "Low attention idle mode",
+        "card_slot": 0,
+        "display_flags": 0,
+        "expression": "sleepy",
+        "footer": "EXPR SLEEP",
+        "priority": 10,
+        "reason": "quiet hours or display-off screen setting is active",
+        "request_id": 0,
+        "source": "settings",
+        "title": "Sleepy"
+      },
+      "event_name": null,
+      "expected_expression": "sleepy",
+      "input": {
+        "device_status": {
+          "active_mode": 2
+        },
+        "settings": {
+          "local_minute": 30,
+          "quiet_hours_end_min": 420,
+          "quiet_hours_start_min": 1320
+        }
+      },
+      "input_type": "status",
+      "render_hashes": {
+        "1.54in": "902a45f4da2e1cdb3a62d8852c0627908a57d8ef65a7af382b1b70ea7898f124",
+        "2.13in": "7471fdd2ea59c500cce660fea81c53c7e7c2c2d5b4344119b08e30b74d4cc77f"
+      }
+    },
+    {
+      "case_id": "status_display_off_sleepy",
+      "decision": {
+        "body": "Low attention idle mode",
+        "card_slot": 0,
+        "display_flags": 0,
+        "expression": "sleepy",
+        "footer": "EXPR SLEEP",
+        "priority": 10,
+        "reason": "quiet hours or display-off screen setting is active",
+        "request_id": 0,
+        "source": "settings",
+        "title": "Sleepy"
+      },
+      "event_name": null,
+      "expected_expression": "sleepy",
+      "input": {
+        "device_status": {
+          "active_mode": 2
+        },
+        "settings": {
+          "display_brightness": 0
+        }
+      },
+      "input_type": "status",
+      "render_hashes": {
+        "1.54in": "902a45f4da2e1cdb3a62d8852c0627908a57d8ef65a7af382b1b70ea7898f124",
+        "2.13in": "dd6e6f07ba81b0181a81ffa516d1c8937b4c33f00a49b7c955180d348a8fccbd"
+      }
+    },
+    {
+      "case_id": "status_quiet_hours_recording_visible",
+      "decision": {
+        "body": "Capture indicator stays visible",
+        "card_slot": 0,
+        "display_flags": 0,
+        "expression": "recording",
+        "footer": "EXPR REC",
+        "priority": 90,
+        "reason": "recording start accepted",
+        "request_id": 0,
+        "source": "recording_control",
+        "title": "Recording"
+      },
+      "event_name": null,
+      "expected_expression": "recording",
+      "input": {
+        "device_status": {
+          "active_mode": 2
+        },
+        "recording_control": {
+          "command": 1,
+          "privacy_flags": 0
+        },
+        "settings": {
+          "display_brightness": 0,
+          "quiet_hours_active": true
+        }
+      },
+      "input_type": "status",
+      "render_hashes": {
+        "1.54in": "36c4e9d6a0e34a3a21739e2c0840df65a80504c1ff5af4781405e546abce34df",
+        "2.13in": "19e0c225016f27806d3b43b18e6d842614038fcb52d83da9ffaa7b261cbfdd81"
+      }
+    },
+    {
+      "case_id": "status_wake_detected",
+      "decision": {
+        "body": "Ears open for the wake path",
+        "card_slot": 0,
+        "display_flags": 0,
+        "expression": "listening",
+        "footer": "EXPR LISTEN",
+        "priority": 60,
+        "reason": "wake word detected",
+        "request_id": 0,
+        "source": "wake_word_status",
+        "title": "Listening"
+      },
+      "event_name": null,
+      "expected_expression": "listening",
+      "input": {
+        "device_status": {
+          "active_mode": 2
+        },
+        "wake_word_status": {
+          "armed": 1,
+          "last_event": 2
+        }
+      },
+      "input_type": "status",
+      "render_hashes": {
+        "1.54in": "f3b927a6a97b7d95a88ff10bebdae674595ab898979abbfb31d389ad7df007c5",
+        "2.13in": "7ce24cef1f8a58955ce8bea77769fced0915b8fdb938fdfeb7cdeb23b53b9ea4"
+      }
+    },
+    {
+      "case_id": "status_speaker_prompt",
+      "decision": {
+        "body": "Response audio is active",
+        "card_slot": 0,
+        "display_flags": 0,
+        "expression": "speaking",
+        "footer": "EXPR SPEAK",
+        "priority": 70,
+        "reason": "speaker prompt accepted",
+        "request_id": 0,
+        "source": "speaker_status",
+        "title": "Speaking"
+      },
+      "event_name": null,
+      "expected_expression": "speaking",
+      "input": {
+        "device_status": {
+          "active_mode": 2
+        },
+        "speaker_status": {
+          "last_error": 0,
+          "state": 2
+        }
+      },
+      "input_type": "status",
+      "render_hashes": {
+        "1.54in": "1203e79b3851ef706dae87b33d5158bd2f44904a0a66b5c1a0266eb34eb735f4",
+        "2.13in": "4fe5e85bb523e2b1f6c0a5abc2be1026e18907c3ea880c6f4d7d33001d5f0107"
+      }
+    },
+    {
+      "case_id": "status_meeting_recording",
+      "decision": {
+        "body": "Capture indicator stays visible",
+        "card_slot": 0,
+        "display_flags": 0,
+        "expression": "recording",
+        "footer": "EXPR REC",
+        "priority": 90,
+        "reason": "meeting is recording",
+        "request_id": 0,
+        "source": "meeting_status",
+        "title": "Recording"
+      },
+      "event_name": null,
+      "expected_expression": "recording",
+      "input": {
+        "device_status": {
+          "active_mode": 2
+        },
+        "meeting_status": {
+          "last_error": 0,
+          "state": 1
+        }
+      },
+      "input_type": "status",
+      "render_hashes": {
+        "1.54in": "36c4e9d6a0e34a3a21739e2c0840df65a80504c1ff5af4781405e546abce34df",
+        "2.13in": "3f2e04c84c8ee3bcd71ebc9f9053fcab58be5c129a994aced0f15b0b02bb33b0"
+      }
+    },
+    {
+      "case_id": "status_recording_fsm_active",
+      "decision": {
+        "body": "Capture indicator stays visible",
+        "card_slot": 0,
+        "display_flags": 0,
+        "expression": "recording",
+        "footer": "EXPR REC",
+        "priority": 90,
+        "reason": "recording state is active",
+        "request_id": 0,
+        "source": "recording_status",
+        "title": "Recording"
+      },
+      "event_name": null,
+      "expected_expression": "recording",
+      "input": {
+        "device_status": {
+          "active_mode": 2
+        },
+        "recording_status": {
+          "state": 2
+        }
+      },
+      "input_type": "status",
+      "render_hashes": {
+        "1.54in": "36c4e9d6a0e34a3a21739e2c0840df65a80504c1ff5af4781405e546abce34df",
+        "2.13in": "609e7d7762e49b60573861ac3b38aa0af515593e97ae4bf8fc51654a39291be9"
+      }
+    },
+    {
+      "case_id": "status_recording_fsm_stopping",
+      "decision": {
+        "body": "Processing the last prompt",
+        "card_slot": 0,
+        "display_flags": 0,
+        "expression": "thinking",
+        "footer": "EXPR THINK",
+        "priority": 50,
+        "reason": "recording is stopping",
+        "request_id": 0,
+        "source": "recording_status",
+        "title": "Thinking"
+      },
+      "event_name": null,
+      "expected_expression": "thinking",
+      "input": {
+        "device_status": {
+          "active_mode": 2
+        },
+        "recording_status": {
+          "state": 3
+        }
+      },
+      "input_type": "status",
+      "render_hashes": {
+        "1.54in": "232eb7124e7e069842d139a192df30f1c03dfd42e8cb271324cb5663ce3f2044",
+        "2.13in": "b6fca60a7ad5737c59e692132c6a830527ebd811085df7d0830588cc23d6463c"
+      }
+    },
+    {
+      "case_id": "status_recording_fsm_transfer_ready",
+      "decision": {
+        "body": "Transfer finished cleanly",
+        "card_slot": 0,
+        "display_flags": 0,
+        "expression": "sync_complete",
+        "footer": "EXPR SYNC",
+        "priority": 40,
+        "reason": "recording is stored or syncing",
+        "request_id": 0,
+        "source": "recording_status",
+        "title": "Synced"
+      },
+      "event_name": null,
+      "expected_expression": "sync_complete",
+      "input": {
+        "device_status": {
+          "active_mode": 2
+        },
+        "recording_status": {
+          "state": 5
+        }
+      },
+      "input_type": "status",
+      "render_hashes": {
+        "1.54in": "66e3e5bc849ecb65997e2da5c7bba37235b742613b9faa3a1e38c293ceadf8b4",
+        "2.13in": "fa46c291b94393b3a70b408929caaecf65541d22b01ccf67ba2fee3cbb1ff1e3"
+      }
+    },
+    {
+      "case_id": "status_recording_fsm_error_recovery",
+      "decision": {
+        "body": "Needs user or host recovery",
+        "card_slot": 0,
+        "display_flags": 0,
+        "expression": "error",
+        "footer": "EXPR ERROR",
+        "priority": 100,
+        "reason": "recording path is recovering from an error",
+        "request_id": 0,
+        "source": "recording_status",
+        "title": "Error"
+      },
+      "event_name": null,
+      "expected_expression": "error",
+      "input": {
+        "device_status": {
+          "active_mode": 2
+        },
+        "recording_status": {
+          "state": 8
+        }
+      },
+      "input_type": "status",
+      "render_hashes": {
+        "1.54in": "097a68b9fa14a1e1c31ba14db78af0193b0b0f5b7c96c0dc20aee85f47c2bf78",
+        "2.13in": "6d6ba50bbd41887fe78b6a8006119306f6cdb2b13b72ccc3fee7be2141a762e5"
+      }
+    },
+    {
+      "case_id": "status_meeting_sync_complete",
+      "decision": {
+        "body": "Transfer finished cleanly",
+        "card_slot": 0,
+        "display_flags": 0,
+        "expression": "sync_complete",
+        "footer": "EXPR SYNC",
+        "priority": 40,
+        "reason": "meeting sync is complete",
+        "request_id": 0,
+        "source": "meeting_status",
+        "title": "Synced"
+      },
+      "event_name": null,
+      "expected_expression": "sync_complete",
+      "input": {
+        "device_status": {
+          "active_mode": 2
+        },
+        "meeting_status": {
+          "state": 2,
+          "sync_state": 1
+        }
+      },
+      "input_type": "status",
+      "render_hashes": {
+        "1.54in": "66e3e5bc849ecb65997e2da5c7bba37235b742613b9faa3a1e38c293ceadf8b4",
+        "2.13in": "520cebe90f1e360b0b1804cb7103791a16be7fba58e8efa21cb5bcb92da44357"
+      }
+    },
+    {
+      "case_id": "status_meeting_summary_pending",
+      "decision": {
+        "body": "Processing the last prompt",
+        "card_slot": 0,
+        "display_flags": 0,
+        "expression": "thinking",
+        "footer": "EXPR THINK",
+        "priority": 50,
+        "reason": "meeting summary is pending",
+        "request_id": 0,
+        "source": "meeting_status",
+        "title": "Thinking"
+      },
+      "event_name": null,
+      "expected_expression": "thinking",
+      "input": {
+        "device_status": {
+          "active_mode": 2
+        },
+        "meeting_status": {
+          "state": 0,
+          "summary_state": 1,
+          "sync_state": 0
+        }
+      },
+      "input_type": "status",
+      "render_hashes": {
+        "1.54in": "232eb7124e7e069842d139a192df30f1c03dfd42e8cb271324cb5663ce3f2044",
+        "2.13in": "f1aef2ecd9121724a1d83375396f8ae9c1939159a73c523059d23902ee89f742"
+      }
+    },
+    {
+      "case_id": "status_meeting_error",
+      "decision": {
+        "body": "Needs user or host recovery",
+        "card_slot": 0,
+        "display_flags": 0,
+        "expression": "error",
+        "footer": "EXPR ERROR",
+        "priority": 100,
+        "reason": "meeting status has last_error",
+        "request_id": 0,
+        "source": "meeting_status",
+        "title": "Error"
+      },
+      "event_name": null,
+      "expected_expression": "error",
+      "input": {
+        "device_status": {
+          "active_mode": 2
+        },
+        "meeting_status": {
+          "last_error": 2,
+          "state": 1
+        }
+      },
+      "input_type": "status",
+      "render_hashes": {
+        "1.54in": "097a68b9fa14a1e1c31ba14db78af0193b0b0f5b7c96c0dc20aee85f47c2bf78",
+        "2.13in": "c52d91f1221023df06c026288bb3c674282e2b0c5a195a715f3c81af68a4a3ef"
+      }
+    },
+    {
+      "case_id": "status_low_battery",
+      "decision": {
+        "body": "Charge soon",
+        "card_slot": 0,
+        "display_flags": 0,
+        "expression": "low_battery",
+        "footer": "EXPR LOW",
+        "priority": 80,
+        "reason": "battery is below expression threshold",
+        "request_id": 0,
+        "source": "battery_charge",
+        "title": "Battery"
+      },
+      "event_name": null,
+      "expected_expression": "low_battery",
+      "input": {
+        "battery_charge": {
+          "charger_present": 0,
+          "millivolts": 3520,
+          "percent": 12
+        },
+        "device_status": {
+          "active_mode": 2
+        }
+      },
+      "input_type": "status",
+      "render_hashes": {
+        "1.54in": "ffe5ab933f37575eca56c1dccc56632c5670274d82d9810514747ae781aec632",
+        "2.13in": "91c50153a51e8799da3f458968c097ebde7f2f81ebbc29bcaa525ace81961f82"
+      }
+    },
+    {
+      "case_id": "event_battery_recovered",
+      "decision": {
+        "body": "Soft awake face",
+        "card_slot": 0,
+        "display_flags": 0,
+        "expression": "idle",
+        "footer": "EXPR IDLE",
+        "priority": 20,
+        "reason": "battery sample recovered above expression threshold",
+        "request_id": 0,
+        "source": "battery_charging.sample",
+        "title": "Idle"
+      },
+      "event_name": "battery_charging.sample",
+      "expected_expression": "idle",
+      "input": {
+        "charger_present": 0,
+        "millivolts": 3650,
+        "percent": 27
+      },
+      "input_type": "event",
+      "render_hashes": {
+        "1.54in": "86a6cb0ec7ce367d209d1fecbe000e7e0c6917e0c5c9cd5ef25eadb98327e843",
+        "2.13in": "cf631c29b28f50590ff8c465eb01f8713368263fddcebf6e979e428841ec4152"
+      }
+    },
+    {
+      "case_id": "event_battery_near_threshold_no_recovery",
+      "decision": {
+        "body": "Soft awake face",
+        "card_slot": 0,
+        "display_flags": 0,
+        "expression": "idle",
+        "footer": "EXPR IDLE",
+        "priority": 20,
+        "reason": "event has no expression override",
+        "request_id": 0,
+        "source": "battery_charging.sample",
+        "title": "Idle"
+      },
+      "event_name": "battery_charging.sample",
+      "expected_expression": "idle",
+      "input": {
+        "charger_present": 0,
+        "millivolts": 3650,
+        "percent": 22
+      },
+      "input_type": "event",
+      "render_hashes": {
+        "1.54in": "86a6cb0ec7ce367d209d1fecbe000e7e0c6917e0c5c9cd5ef25eadb98327e843",
+        "2.13in": "8e885654fea143ea57360ad98330d57ec930f46910851bd2ee48975210bc92db"
+      }
+    },
+    {
+      "case_id": "status_ota_low_battery_blocker",
+      "decision": {
+        "body": "Charge soon",
+        "card_slot": 0,
+        "display_flags": 0,
+        "expression": "low_battery",
+        "footer": "EXPR LOW",
+        "priority": 80,
+        "reason": "OTA low-battery blocker is active",
+        "request_id": 0,
+        "source": "ota_readiness",
+        "title": "Battery"
+      },
+      "event_name": null,
+      "expected_expression": "low_battery",
+      "input": {
+        "device_status": {
+          "active_mode": 2
+        },
+        "ota_readiness": {
+          "blocker_bitmap": 8
+        }
+      },
+      "input_type": "status",
+      "render_hashes": {
+        "1.54in": "ffe5ab933f37575eca56c1dccc56632c5670274d82d9810514747ae781aec632",
+        "2.13in": "aca47eada277cb5c99f4eb75d2911e2d8256e655a620a1ee901d70c1246bc1f9"
+      }
+    },
+    {
+      "case_id": "status_ota_wrong_board_blocker",
+      "decision": {
+        "body": "Needs user or host recovery",
+        "card_slot": 0,
+        "display_flags": 0,
+        "expression": "error",
+        "footer": "EXPR ERROR",
+        "priority": 100,
+        "reason": "OTA blockers active: 0x10",
+        "request_id": 0,
+        "source": "ota_readiness",
+        "title": "Error"
+      },
+      "event_name": null,
+      "expected_expression": "error",
+      "input": {
+        "device_status": {
+          "active_mode": 2
+        },
+        "ota_readiness": {
+          "blocker_bitmap": 16
+        }
+      },
+      "input_type": "status",
+      "render_hashes": {
+        "1.54in": "097a68b9fa14a1e1c31ba14db78af0193b0b0f5b7c96c0dc20aee85f47c2bf78",
+        "2.13in": "fc6465b5756d4a549ba94e2d434295c708fbb113c77f56ee5d3a9b21cadb688c"
+      }
+    },
+    {
+      "case_id": "status_display_error",
+      "decision": {
+        "body": "Needs user or host recovery",
+        "card_slot": 0,
+        "display_flags": 0,
+        "expression": "error",
+        "footer": "EXPR ERROR",
+        "priority": 100,
+        "reason": "display render failed",
+        "request_id": 0,
+        "source": "e_paper_card_status",
+        "title": "Error"
+      },
+      "event_name": null,
+      "expected_expression": "error",
+      "input": {
+        "device_status": {
+          "active_mode": 2
+        },
+        "e_paper_card_status": {
+          "last_error": 2,
+          "render_state": 3
+        }
+      },
+      "input_type": "status",
+      "render_hashes": {
+        "1.54in": "097a68b9fa14a1e1c31ba14db78af0193b0b0f5b7c96c0dc20aee85f47c2bf78",
+        "2.13in": "c773f3d4b85c2c456bb6d5f464e59bbb482d0cb9df33bac23715749156664b28"
+      }
+    },
+    {
+      "case_id": "status_speaker_error",
+      "decision": {
+        "body": "Needs user or host recovery",
+        "card_slot": 0,
+        "display_flags": 0,
+        "expression": "error",
+        "footer": "EXPR ERROR",
+        "priority": 100,
+        "reason": "speaker status has last_error",
+        "request_id": 0,
+        "source": "speaker_status",
+        "title": "Error"
+      },
+      "event_name": null,
+      "expected_expression": "error",
+      "input": {
+        "device_status": {
+          "active_mode": 2
+        },
+        "speaker_status": {
+          "last_error": 2,
+          "state": 2
+        }
+      },
+      "input_type": "status",
+      "render_hashes": {
+        "1.54in": "097a68b9fa14a1e1c31ba14db78af0193b0b0f5b7c96c0dc20aee85f47c2bf78",
+        "2.13in": "7e8e56ceab881765358efd96d891c1b98c06a22a93dfd1712710f15ad4a86e8b"
+      }
+    },
+    {
+      "case_id": "status_wake_error",
+      "decision": {
+        "body": "Needs user or host recovery",
+        "card_slot": 0,
+        "display_flags": 0,
+        "expression": "error",
+        "footer": "EXPR ERROR",
+        "priority": 100,
+        "reason": "wake word status has last_error",
+        "request_id": 0,
+        "source": "wake_word_status",
+        "title": "Error"
+      },
+      "event_name": null,
+      "expected_expression": "error",
+      "input": {
+        "device_status": {
+          "active_mode": 2
+        },
+        "wake_word_status": {
+          "last_error": 2
+        }
+      },
+      "input_type": "status",
+      "render_hashes": {
+        "1.54in": "097a68b9fa14a1e1c31ba14db78af0193b0b0f5b7c96c0dc20aee85f47c2bf78",
+        "2.13in": "5f3b80f53e1185442772829bdb96c57edff7b96bacbba3eb9d16a896e788087a"
+      }
+    },
+    {
+      "case_id": "event_meeting_stop_processing",
+      "decision": {
+        "body": "Processing the last prompt",
+        "card_slot": 0,
+        "display_flags": 0,
+        "expression": "thinking",
+        "footer": "EXPR THINK",
+        "priority": 50,
+        "reason": "meeting capture stopped; processing",
+        "request_id": 0,
+        "source": "meeting.stop",
+        "title": "Thinking"
+      },
+      "event_name": "meeting.stop",
+      "expected_expression": "thinking",
+      "input": {
+        "arg0": 1
+      },
+      "input_type": "event",
+      "render_hashes": {
+        "1.54in": "232eb7124e7e069842d139a192df30f1c03dfd42e8cb271324cb5663ce3f2044",
+        "2.13in": "2adcedfe4878c03b9a90c97539b83f8ac0240f596b57410f69a6cdae12bb7de9"
+      }
+    },
+    {
+      "case_id": "event_speaker_result_happy",
+      "decision": {
+        "body": "Positive acknowledgement",
+        "card_slot": 0,
+        "display_flags": 0,
+        "expression": "happy",
+        "footer": "EXPR HAPPY",
+        "priority": 30,
+        "reason": "speaker prompt completed",
+        "request_id": 0,
+        "source": "speaker.result",
+        "title": "Happy"
+      },
+      "event_name": "speaker.result",
+      "expected_expression": "happy",
+      "input": {
+        "arg0": 1
+      },
+      "input_type": "event",
+      "render_hashes": {
+        "1.54in": "3a88cda7a54716dbb08551a06fb75d6fbd46249b83e85b0101fc830883b6852c",
+        "2.13in": "ce4f8754f1627beb039fab6bee09d979343a7c2e4018c8abc71669fba50e243b"
+      }
+    }
+  ],
+  "display_variants": {
+    "1.54in": {
+      "height": 200,
+      "label": "1.54 inch square",
+      "width": 200
+    },
+    "2.13in": {
+      "height": 122,
+      "label": "2.13 inch landscape",
+      "width": 250
+    }
+  },
+  "fixture_source": "app/companion_pendant/epaper/expression_policy.py",
+  "hardware_boundary": {
+    "ai_testable_now": [
+      "status snapshot mapping",
+      "diagnostic event mapping",
+      "ExpressionV1 card conversion",
+      "deterministic render hashes"
+    ],
+    "deferred_to_hardware_gates": [
+      "real BLE notification ordering",
+      "display task queue timing",
+      "panel refresh confirmation"
+    ]
+  },
+  "policy": "ExpressionV1 status/event mapping",
+  "policy_coverage": [
+    "error",
+    "happy",
+    "idle",
+    "listening",
+    "low_battery",
+    "recording",
+    "sleepy",
+    "speaking",
+    "sync_complete",
+    "thinking"
+  ],
+  "schema_id": "companion.pendant.expression_policy.v1",
+  "supported_expressions": [
+    "error",
+    "happy",
+    "idle",
+    "listening",
+    "low_battery",
+    "recording",
+    "sleepy",
+    "speaking",
+    "sync_complete",
+    "thinking"
+  ]
+}

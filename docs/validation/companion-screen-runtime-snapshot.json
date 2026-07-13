@@ -1,0 +1,44 @@
+{
+  "contract": {
+    "null_output_is_noop": true,
+    "platform_free": true,
+    "snapshot_api": "comp_epaper_screen_runtime_snapshot",
+    "subsnapshots": [
+      "comp_epaper_expression_state_snapshot",
+      "comp_epaper_display_queue_snapshot",
+      "comp_epaper_panel_adapter_snapshot"
+    ],
+    "zeros_output_before_subsnapshots": true
+  },
+  "purpose": "Portable aggregate runtime snapshot for screen expression state, display queue pressure, and panel adapter telemetry.",
+  "schema_id": "companion.pendant.screen_runtime_snapshot.v1",
+  "snapshot_fields": {
+    "display_queue": "comp_epaper_display_queue_snapshot_t",
+    "expression": "comp_epaper_expression_state_snapshot_t",
+    "panel": "comp_epaper_panel_adapter_snapshot_t"
+  },
+  "sources": {
+    "epaper_readme": "app/companion_pendant/epaper/README.md",
+    "screen_acceptance": "docs/companion_screen_expression_system.md",
+    "screen_runtime_header": "app/companion_pendant/epaper/screen_runtime.h",
+    "screen_runtime_source": "app/companion_pendant/epaper/screen_runtime.c",
+    "wb55_build": "cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile",
+    "wb55_integration": "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c",
+    "wba_rules": "docs/stm32wba_migration_rules.md"
+  },
+  "status": "PASS",
+  "validation_commands": [
+    "python .\\tools\\verify_expression_screen_runtime_snapshot.py",
+    "python .\\tools\\verify_expression_state_telemetry.py",
+    "python .\\tools\\verify_display_queue_telemetry.py",
+    "python .\\tools\\verify_expression_panel_adapter_telemetry.py",
+    "python .\\tools\\verify_display_queue_static.py",
+    "python .\\tools\\verify_expression_wba_portability.py",
+    "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1"
+  ],
+  "wb55_observability": {
+    "display_task_snapshot": "comp_epaper_screen_runtime_snapshot",
+    "reschedule_condition": "runtime_stats.display_queue.pending_count != 0u",
+    "update_result_arg3": "runtime_stats.panel.attempted_count"
+  }
+}

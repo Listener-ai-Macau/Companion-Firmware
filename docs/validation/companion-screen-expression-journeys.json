@@ -1,0 +1,1115 @@
+{
+  "acceptance": {
+    "all_expression_states_covered": true,
+    "battery_recovery_only_clears_low_battery": true,
+    "display_update_no_self_loop": true,
+    "duplicate_same_expression_suppressed": true,
+    "error_overrides_lower_priority": true,
+    "recording_not_hidden_by_low_battery": true,
+    "settings_sleepy_hint_does_not_hide_recording": true,
+    "stable_recording_does_not_timeout": true,
+    "status_notify_duplicate_suppression": true,
+    "transient_auto_recovery_to_idle": true
+  },
+  "coverage": [
+    "error",
+    "happy",
+    "idle",
+    "listening",
+    "low_battery",
+    "recording",
+    "sleepy",
+    "speaking",
+    "sync_complete",
+    "thinking"
+  ],
+  "journeys": [
+    {
+      "final_expression": "sync_complete",
+      "journey_id": "wake_to_recording_sync",
+      "steps": [
+        {
+          "accepted": true,
+          "event": "wake_word.armed",
+          "expression_signal": "WAKE_ARMED",
+          "index": 0,
+          "payload": {},
+          "priority": 20,
+          "reason": "wake word armed",
+          "render_hashes": {
+            "1.54in": "e62d1e9143e564931016920adc61caa5362d2ddc7961177ebe89e0bd11b42bb3",
+            "2.13in": "9cc783c05d8a6c6e51c116b759abb661fe59b4adc4f5a911f90077b5d71bca98"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "idle"
+        },
+        {
+          "accepted": true,
+          "event": "wake_word.detected",
+          "expression_signal": "WAKE_DETECTED",
+          "index": 1,
+          "payload": {},
+          "priority": 60,
+          "reason": "wake word detected",
+          "render_hashes": {
+            "1.54in": "5da5d5b7b1c3a648afec5846a25898b49c326144006cc4668bc62075df576ff5",
+            "2.13in": "53b3712aa9bbdcab157dbf23c90b6e19fedb9be0eef190782575719cf490a06c"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "listening"
+        },
+        {
+          "accepted": true,
+          "event": "recording_fsm.start_request",
+          "expression_signal": "RECORDING_START",
+          "index": 2,
+          "payload": {},
+          "priority": 90,
+          "reason": "recording start accepted",
+          "render_hashes": {
+            "1.54in": "546b8c6e699267cc8b056354da53cffc788a7e9f381a883c9d110fe28274b432",
+            "2.13in": "552947243e2c56751316c8ebf4c68a75f37e6c22d4640557d62492b8fa83322f"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "recording"
+        },
+        {
+          "accepted": true,
+          "event": "recording_fsm.stop_request",
+          "expression_signal": "RECORDING_STOP",
+          "index": 3,
+          "payload": {},
+          "priority": 50,
+          "reason": "recording stop accepted",
+          "render_hashes": {
+            "1.54in": "d0f7938e6df5f3396c55962ad213daf3939a950d2fecdd22232838b122b572d9",
+            "2.13in": "1ff86e484797d511a5e7a0140ffa7f09827eba2ca2f62930016751c084c872dd"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "thinking"
+        },
+        {
+          "accepted": true,
+          "event": "recording_fsm.session_finished",
+          "expression_signal": "RECORDING_FINISHED",
+          "index": 4,
+          "payload": {},
+          "priority": 40,
+          "reason": "recording stored for sync",
+          "render_hashes": {
+            "1.54in": "81a42cc28a09832f9ae6fd894483d032bb9013c3f17329ab2650a6319606868f",
+            "2.13in": "0cf7faa13583ea2b1ce18fbb82c52087f5fe4427313f07dcf6dfcb938a7a59a4"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "sync_complete"
+        }
+      ]
+    },
+    {
+      "final_expression": "listening",
+      "journey_id": "duplicate_expression_suppressed",
+      "steps": [
+        {
+          "accepted": true,
+          "event": "wake_word.armed",
+          "expression_signal": "WAKE_ARMED",
+          "index": 0,
+          "payload": {},
+          "priority": 20,
+          "reason": "wake word armed",
+          "render_hashes": {
+            "1.54in": "e62d1e9143e564931016920adc61caa5362d2ddc7961177ebe89e0bd11b42bb3",
+            "2.13in": "f360a48fd0085caee2507673bfc6b43af8329788ae0b2114b7b1930c712bdc36"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "idle"
+        },
+        {
+          "accepted": false,
+          "event": "wake_word.armed",
+          "expression_signal": "WAKE_ARMED",
+          "index": 1,
+          "payload": {},
+          "priority": 20,
+          "reason": "duplicate visible expression idle suppressed",
+          "render_hashes": {
+            "1.54in": "e62d1e9143e564931016920adc61caa5362d2ddc7961177ebe89e0bd11b42bb3",
+            "2.13in": "fb568ffc91ad2cfa08f2c797e1b67a411599909abc48672581c44e2f4c821583"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "idle"
+        },
+        {
+          "accepted": true,
+          "event": "wake_word.detected",
+          "expression_signal": "WAKE_DETECTED",
+          "index": 2,
+          "payload": {},
+          "priority": 60,
+          "reason": "wake word detected",
+          "render_hashes": {
+            "1.54in": "5da5d5b7b1c3a648afec5846a25898b49c326144006cc4668bc62075df576ff5",
+            "2.13in": "06d53a30c32fde91d3a27c284775a398fe51012303a90cc72d1b7428e2d87292"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "listening"
+        },
+        {
+          "accepted": false,
+          "event": "wake_word.detected",
+          "expression_signal": "WAKE_DETECTED",
+          "index": 3,
+          "payload": {},
+          "priority": 60,
+          "reason": "duplicate visible expression listening suppressed",
+          "render_hashes": {
+            "1.54in": "5da5d5b7b1c3a648afec5846a25898b49c326144006cc4668bc62075df576ff5",
+            "2.13in": "d8d04632112ba357438f2c9332c7577681cfae7d96e7a22c4bc626758f3f7bfc"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "listening"
+        }
+      ]
+    },
+    {
+      "final_expression": "listening",
+      "journey_id": "status_notify_duplicate_suppression",
+      "steps": [
+        {
+          "accepted": true,
+          "event": "recording_fsm.start_request",
+          "expression_signal": "RECORDING_START",
+          "index": 0,
+          "payload": {},
+          "priority": 90,
+          "reason": "recording start accepted",
+          "render_hashes": {
+            "1.54in": "546b8c6e699267cc8b056354da53cffc788a7e9f381a883c9d110fe28274b432",
+            "2.13in": "ccde1df671c0234d244c4df1715f4f2d370567697008f9b0d1c843739f9b6036"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "recording"
+        },
+        {
+          "accepted": false,
+          "event": "status.device",
+          "expression_signal": "RECORDING_START",
+          "index": 1,
+          "payload": {
+            "active_mode": 1,
+            "fault_bitmap": 0
+          },
+          "priority": 90,
+          "reason": "duplicate visible expression recording suppressed",
+          "render_hashes": {
+            "1.54in": "546b8c6e699267cc8b056354da53cffc788a7e9f381a883c9d110fe28274b432",
+            "2.13in": "93aff64b45dc6ce0a82b1d83826c6b65a21635f4dc5d292cacb7e697cf7e0aed"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "recording"
+        },
+        {
+          "accepted": true,
+          "event": "meeting.finalize",
+          "expression_signal": "MEETING_FINALIZE",
+          "index": 2,
+          "payload": {},
+          "priority": 40,
+          "reason": "meeting artifact finalized",
+          "render_hashes": {
+            "1.54in": "81a42cc28a09832f9ae6fd894483d032bb9013c3f17329ab2650a6319606868f",
+            "2.13in": "a915893badbbc3cf645d74a5af0dfc5882cd3093d573aa18a2b608596da44c5e"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "sync_complete"
+        },
+        {
+          "accepted": false,
+          "event": "status.meeting",
+          "expression_signal": "MEETING_FINALIZE",
+          "index": 3,
+          "payload": {
+            "last_error": 0,
+            "state": 2,
+            "summary_state": 1,
+            "sync_state": 1
+          },
+          "priority": 40,
+          "reason": "duplicate visible expression sync_complete suppressed",
+          "render_hashes": {
+            "1.54in": "81a42cc28a09832f9ae6fd894483d032bb9013c3f17329ab2650a6319606868f",
+            "2.13in": "ed9fca75fd26ca49af6fe110cff09cfb35435651e920a82ec93aa85df0225326"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "sync_complete"
+        },
+        {
+          "accepted": true,
+          "event": "speaker.prompt",
+          "expression_signal": "SPEAKER_PROMPT",
+          "index": 4,
+          "payload": {},
+          "priority": 70,
+          "reason": "speaker prompt accepted",
+          "render_hashes": {
+            "1.54in": "ea5ab422677d1a0a067d925572055bbe2ed66b75bcf62c4e01fe09d6f895dce5",
+            "2.13in": "d2e37adfc9c593230335359c7bbcd4ac1cfc92ae101d0a61e4bca415af9406e6"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "speaking"
+        },
+        {
+          "accepted": false,
+          "event": "status.speaker",
+          "expression_signal": "SPEAKER_PROMPT",
+          "index": 5,
+          "payload": {
+            "last_error": 0,
+            "state": 2
+          },
+          "priority": 70,
+          "reason": "duplicate visible expression speaking suppressed",
+          "render_hashes": {
+            "1.54in": "ea5ab422677d1a0a067d925572055bbe2ed66b75bcf62c4e01fe09d6f895dce5",
+            "2.13in": "9990415969c72c03948465bddca9ce76a9cf5aae543b5d34a219ec54d4d8687a"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "speaking"
+        },
+        {
+          "accepted": true,
+          "event": "warnings.recovered",
+          "expression_signal": "RECOVERY",
+          "index": 6,
+          "payload": {},
+          "priority": 20,
+          "reason": "recovered to idle",
+          "render_hashes": {
+            "1.54in": "e62d1e9143e564931016920adc61caa5362d2ddc7961177ebe89e0bd11b42bb3",
+            "2.13in": "98d730a10190d0429518d1f51eb30ee65aae78e064abdef9521d7b43a13cf4e2"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "idle"
+        },
+        {
+          "accepted": true,
+          "event": "wake_word.detected",
+          "expression_signal": "WAKE_DETECTED",
+          "index": 7,
+          "payload": {},
+          "priority": 60,
+          "reason": "wake word detected",
+          "render_hashes": {
+            "1.54in": "5da5d5b7b1c3a648afec5846a25898b49c326144006cc4668bc62075df576ff5",
+            "2.13in": "fddfab955cca22aa2d581f7169c83b6614905b89a07afc83a50fdee68e3f1fd7"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "listening"
+        },
+        {
+          "accepted": false,
+          "event": "status.wake_word",
+          "expression_signal": "WAKE_DETECTED",
+          "index": 8,
+          "payload": {
+            "armed": 1,
+            "engine_state": 1,
+            "last_error": 0,
+            "last_event": 2
+          },
+          "priority": 60,
+          "reason": "duplicate visible expression listening suppressed",
+          "render_hashes": {
+            "1.54in": "5da5d5b7b1c3a648afec5846a25898b49c326144006cc4668bc62075df576ff5",
+            "2.13in": "c20e509f33abc77c60685ef7a036893c40c666f6cfcad91bed224ef73755fe0f"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "listening"
+        }
+      ]
+    },
+    {
+      "final_expression": "low_battery",
+      "journey_id": "recording_low_battery_priority",
+      "steps": [
+        {
+          "accepted": true,
+          "event": "recording_fsm.start_request",
+          "expression_signal": "RECORDING_START",
+          "index": 0,
+          "payload": {},
+          "priority": 90,
+          "reason": "recording start accepted",
+          "render_hashes": {
+            "1.54in": "546b8c6e699267cc8b056354da53cffc788a7e9f381a883c9d110fe28274b432",
+            "2.13in": "84613bbf8be5a9820bb49855b505b5a761296bc3372158064452ff1c882ebb11"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "recording"
+        },
+        {
+          "accepted": false,
+          "event": "battery_charging.sample",
+          "expression_signal": "LOW_BATTERY",
+          "index": 1,
+          "payload": {
+            "charger_present": 0,
+            "millivolts": 3520,
+            "percent": 12
+          },
+          "priority": 90,
+          "reason": "ignored lower-priority low_battery while recording is visible",
+          "render_hashes": {
+            "1.54in": "546b8c6e699267cc8b056354da53cffc788a7e9f381a883c9d110fe28274b432",
+            "2.13in": "d1759acd4d3096fd55ba5f57663ae2dda2799e907aec34192a9dd2ea20e09145"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "recording"
+        },
+        {
+          "accepted": true,
+          "event": "recording_fsm.stop_request",
+          "expression_signal": "RECORDING_STOP",
+          "index": 2,
+          "payload": {},
+          "priority": 50,
+          "reason": "recording stop accepted",
+          "render_hashes": {
+            "1.54in": "d0f7938e6df5f3396c55962ad213daf3939a950d2fecdd22232838b122b572d9",
+            "2.13in": "9f46f884e150ac5bf99d85bab3be6d8656105ee0baa21ea1a8d981fe1da6986c"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "thinking"
+        },
+        {
+          "accepted": true,
+          "event": "battery_charging.sample",
+          "expression_signal": "LOW_BATTERY",
+          "index": 3,
+          "payload": {
+            "charger_present": 0,
+            "millivolts": 3520,
+            "percent": 12
+          },
+          "priority": 80,
+          "reason": "battery is below threshold",
+          "render_hashes": {
+            "1.54in": "7d1b61cf0d1efef93643185ab55ce06cf5f0873c0dea78ffd715dbc08af02fc5",
+            "2.13in": "82d118e55f18252ff91a8b36cdd4b7b9d434a566080a03a12473a84a21df0019"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "low_battery"
+        }
+      ]
+    },
+    {
+      "final_expression": "idle",
+      "journey_id": "battery_recovery_only_clears_low_battery",
+      "steps": [
+        {
+          "accepted": true,
+          "event": "battery_charging.sample",
+          "expression_signal": "LOW_BATTERY",
+          "index": 0,
+          "payload": {
+            "charger_present": 0,
+            "millivolts": 3450,
+            "percent": 8
+          },
+          "priority": 80,
+          "reason": "battery is below threshold",
+          "render_hashes": {
+            "1.54in": "7d1b61cf0d1efef93643185ab55ce06cf5f0873c0dea78ffd715dbc08af02fc5",
+            "2.13in": "f3e4d20bdcad715637c4c07ac853312d1b6f95f15b32812cb0f13c9768e68b2f"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "low_battery"
+        },
+        {
+          "accepted": false,
+          "event": "battery_charging.sample",
+          "expression_signal": null,
+          "index": 1,
+          "payload": {
+            "charger_present": 0,
+            "millivolts": 3650,
+            "percent": 22
+          },
+          "priority": 80,
+          "reason": "event has no expression signal",
+          "render_hashes": {
+            "1.54in": "7d1b61cf0d1efef93643185ab55ce06cf5f0873c0dea78ffd715dbc08af02fc5",
+            "2.13in": "8c11880275c3aa2426ea349dbd77c595a0875f714afd44416955b7097d2d25a7"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "low_battery"
+        },
+        {
+          "accepted": true,
+          "event": "battery_charging.sample",
+          "expression_signal": "BATTERY_RECOVERED",
+          "index": 2,
+          "payload": {
+            "charger_present": 0,
+            "millivolts": 3650,
+            "percent": 27
+          },
+          "priority": 20,
+          "reason": "battery recovered above expression threshold",
+          "render_hashes": {
+            "1.54in": "e62d1e9143e564931016920adc61caa5362d2ddc7961177ebe89e0bd11b42bb3",
+            "2.13in": "76bd53ccca3ca66751bb05d81bfc08154e061b3c1be9b146b39825184804b2c6"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "idle"
+        },
+        {
+          "accepted": true,
+          "event": "recording_fsm.start_request",
+          "expression_signal": "RECORDING_START",
+          "index": 3,
+          "payload": {},
+          "priority": 90,
+          "reason": "recording start accepted",
+          "render_hashes": {
+            "1.54in": "546b8c6e699267cc8b056354da53cffc788a7e9f381a883c9d110fe28274b432",
+            "2.13in": "b3a5019f2e11a5b87cb7ad0f1bd7453fb2a0ec645f1c1c2889ef9fb10e3f59de"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "recording"
+        },
+        {
+          "accepted": false,
+          "event": "battery_charging.sample",
+          "expression_signal": "BATTERY_RECOVERED",
+          "index": 4,
+          "payload": {
+            "charger_present": 1,
+            "millivolts": 5000,
+            "percent": 100
+          },
+          "priority": 90,
+          "reason": "battery recovery ignored because low_battery is not visible",
+          "render_hashes": {
+            "1.54in": "546b8c6e699267cc8b056354da53cffc788a7e9f381a883c9d110fe28274b432",
+            "2.13in": "1a615911a216de11c70fbf53f20945537ab5aceb7ec5165afce414927acf0f54"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "recording"
+        },
+        {
+          "accepted": true,
+          "event": "errors.fault",
+          "expression_signal": "ERROR",
+          "index": 5,
+          "payload": {},
+          "priority": 100,
+          "reason": "error or rejection",
+          "render_hashes": {
+            "1.54in": "430b17d4a3204cfc05a48384eb19ba92743b509fcd1b130bd6cc4e5a59de9ddc",
+            "2.13in": "8a349b49c39d400d514ee0d43b3e070b200c0b3c4ca0c6bb549de0254005aa06"
+          },
+          "severity": "error",
+          "visible_age_ms": 0,
+          "visible_expression": "error"
+        },
+        {
+          "accepted": false,
+          "event": "battery_charging.sample",
+          "expression_signal": "BATTERY_RECOVERED",
+          "index": 6,
+          "payload": {
+            "charger_present": 1,
+            "millivolts": 5000,
+            "percent": 100
+          },
+          "priority": 100,
+          "reason": "battery recovery ignored because low_battery is not visible",
+          "render_hashes": {
+            "1.54in": "430b17d4a3204cfc05a48384eb19ba92743b509fcd1b130bd6cc4e5a59de9ddc",
+            "2.13in": "d67e0ab1d35ff042e2ddbe4b53ab8e20c1cdaa7289f83907ed8f51818f34114f"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "error"
+        },
+        {
+          "accepted": true,
+          "event": "warnings.recovered",
+          "expression_signal": "RECOVERY",
+          "index": 7,
+          "payload": {},
+          "priority": 20,
+          "reason": "recovered to idle",
+          "render_hashes": {
+            "1.54in": "e62d1e9143e564931016920adc61caa5362d2ddc7961177ebe89e0bd11b42bb3",
+            "2.13in": "14d79ce8f83c7bd0254ecc0194e860e1f4b0ec3857d30b19d3343be310f72bb5"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "idle"
+        }
+      ]
+    },
+    {
+      "final_expression": "happy",
+      "journey_id": "speaker_prompt_result",
+      "steps": [
+        {
+          "accepted": true,
+          "event": "speaker.prompt",
+          "expression_signal": "SPEAKER_PROMPT",
+          "index": 0,
+          "payload": {},
+          "priority": 70,
+          "reason": "speaker prompt accepted",
+          "render_hashes": {
+            "1.54in": "ea5ab422677d1a0a067d925572055bbe2ed66b75bcf62c4e01fe09d6f895dce5",
+            "2.13in": "31f30357169f39e82492b9ab641c4f05e2af8b3a551d5c397fbbad5bcb446079"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "speaking"
+        },
+        {
+          "accepted": true,
+          "event": "speaker.result",
+          "expression_signal": "SPEAKER_RESULT",
+          "index": 1,
+          "payload": {},
+          "priority": 30,
+          "reason": "speaker prompt completed",
+          "render_hashes": {
+            "1.54in": "050bd26f3967bf09f006e097efb46580978d0a870a4a0d0c798629aa9494cc3a",
+            "2.13in": "b1a60d50befc67dbe6ed59345e78fbbd76e433ec49d77d58a001d475fc6d8fe2"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "happy"
+        }
+      ]
+    },
+    {
+      "final_expression": "recording",
+      "journey_id": "transient_expression_auto_recovery",
+      "steps": [
+        {
+          "accepted": true,
+          "event": "speaker.result",
+          "expression_signal": "SPEAKER_RESULT",
+          "index": 0,
+          "payload": {},
+          "priority": 30,
+          "reason": "speaker prompt completed",
+          "render_hashes": {
+            "1.54in": "050bd26f3967bf09f006e097efb46580978d0a870a4a0d0c798629aa9494cc3a",
+            "2.13in": "2df6ac6da8a6f80125f1d3c712edf7ba781ba5263128db3d7b12b72d70783792"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "happy"
+        },
+        {
+          "accepted": false,
+          "event": "time.elapsed",
+          "expression_signal": null,
+          "index": 1,
+          "payload": {
+            "elapsed_ms": 5000
+          },
+          "priority": 30,
+          "reason": "elapsed 5000 ms while happy is visible",
+          "render_hashes": {
+            "1.54in": "050bd26f3967bf09f006e097efb46580978d0a870a4a0d0c798629aa9494cc3a",
+            "2.13in": "7ba4268350224e967124ee6b3437a801545ed4ffd1a3f352422a11bf9d5744c8"
+          },
+          "severity": "info",
+          "visible_age_ms": 5000,
+          "visible_expression": "happy"
+        },
+        {
+          "accepted": true,
+          "event": "time.elapsed",
+          "expression_signal": "RECOVERY",
+          "index": 2,
+          "payload": {
+            "elapsed_ms": 1000
+          },
+          "priority": 20,
+          "reason": "auto-recovered happy to idle after 1000 ms",
+          "render_hashes": {
+            "1.54in": "e62d1e9143e564931016920adc61caa5362d2ddc7961177ebe89e0bd11b42bb3",
+            "2.13in": "68a2c3a6b377217f077d1bd46bf3cc6d4315047da8bf269cb3ce2fe4bd8fc036"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "idle"
+        },
+        {
+          "accepted": true,
+          "event": "meeting.finalize",
+          "expression_signal": "MEETING_FINALIZE",
+          "index": 3,
+          "payload": {},
+          "priority": 40,
+          "reason": "meeting artifact finalized",
+          "render_hashes": {
+            "1.54in": "81a42cc28a09832f9ae6fd894483d032bb9013c3f17329ab2650a6319606868f",
+            "2.13in": "10a9595291f8ca8f4797a58ec560f68c006eec9ffa6aac832cd2f0d3ed56297f"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "sync_complete"
+        },
+        {
+          "accepted": true,
+          "event": "time.elapsed",
+          "expression_signal": "RECOVERY",
+          "index": 4,
+          "payload": {
+            "elapsed_ms": 8000
+          },
+          "priority": 20,
+          "reason": "auto-recovered sync_complete to idle after 8000 ms",
+          "render_hashes": {
+            "1.54in": "e62d1e9143e564931016920adc61caa5362d2ddc7961177ebe89e0bd11b42bb3",
+            "2.13in": "d1f1987b7f769919ea0ed141138e6ad2f24aba102b635174e1fec7753d604148"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "idle"
+        },
+        {
+          "accepted": true,
+          "event": "recording_fsm.start_request",
+          "expression_signal": "RECORDING_START",
+          "index": 5,
+          "payload": {},
+          "priority": 90,
+          "reason": "recording start accepted",
+          "render_hashes": {
+            "1.54in": "546b8c6e699267cc8b056354da53cffc788a7e9f381a883c9d110fe28274b432",
+            "2.13in": "9e9106e815f988ed4dccd2d9d135d0a50afd56aa13634feadca91a0e3d419f64"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "recording"
+        },
+        {
+          "accepted": false,
+          "event": "time.elapsed",
+          "expression_signal": null,
+          "index": 6,
+          "payload": {
+            "elapsed_ms": 60000
+          },
+          "priority": 90,
+          "reason": "elapsed 60000 ms while recording is visible",
+          "render_hashes": {
+            "1.54in": "546b8c6e699267cc8b056354da53cffc788a7e9f381a883c9d110fe28274b432",
+            "2.13in": "6c31411a7b45869bee12e84ec67ceda2b0b1af5b4f685f557b9f4dd938652fba"
+          },
+          "severity": "info",
+          "visible_age_ms": 60000,
+          "visible_expression": "recording"
+        }
+      ]
+    },
+    {
+      "final_expression": "idle",
+      "journey_id": "wake_reject_recovery",
+      "steps": [
+        {
+          "accepted": true,
+          "event": "wake_word.rejected",
+          "expression_signal": "ERROR",
+          "index": 0,
+          "payload": {},
+          "priority": 100,
+          "reason": "error or rejection",
+          "render_hashes": {
+            "1.54in": "430b17d4a3204cfc05a48384eb19ba92743b509fcd1b130bd6cc4e5a59de9ddc",
+            "2.13in": "3141c28dd6e58453c47ed77b30239903ffe7b8e62489aa4106fde0dd128e7f3c"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "error"
+        },
+        {
+          "accepted": true,
+          "event": "warnings.recovered",
+          "expression_signal": "RECOVERY",
+          "index": 1,
+          "payload": {},
+          "priority": 20,
+          "reason": "recovered to idle",
+          "render_hashes": {
+            "1.54in": "e62d1e9143e564931016920adc61caa5362d2ddc7961177ebe89e0bd11b42bb3",
+            "2.13in": "ad71231e04fbf14c82502a50f3f0dbcaf6e8f7f334b294d17f652c87f17ebe10"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "idle"
+        },
+        {
+          "accepted": false,
+          "event": "wake_word.disabled",
+          "expression_signal": "WAKE_DISABLED",
+          "index": 2,
+          "payload": {},
+          "priority": 20,
+          "reason": "ignored lower-priority sleepy while idle is visible",
+          "render_hashes": {
+            "1.54in": "e62d1e9143e564931016920adc61caa5362d2ddc7961177ebe89e0bd11b42bb3",
+            "2.13in": "72f3cf1f3d276832a598974723f544bb21ef09d294e2211f01dae6ff5ecaad4c"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "idle"
+        }
+      ]
+    },
+    {
+      "final_expression": "sleepy",
+      "journey_id": "wake_disabled_sleepy",
+      "steps": [
+        {
+          "accepted": true,
+          "event": "wake_word.disabled",
+          "expression_signal": "WAKE_DISABLED",
+          "index": 0,
+          "payload": {},
+          "priority": 10,
+          "reason": "wake word disabled",
+          "render_hashes": {
+            "1.54in": "ee9935897a68da1dc9b8f97c2b2bad0463dd8887652b1e82652f0bcdc0f9634a",
+            "2.13in": "8ae9ad45403b5b0fa5020aa4f141b0e00fda738d07c447c86817d0a6b64a8005"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "sleepy"
+        }
+      ]
+    },
+    {
+      "final_expression": "sleepy",
+      "journey_id": "settings_sleepy_hint",
+      "steps": [
+        {
+          "accepted": true,
+          "event": "wake_word.armed",
+          "expression_signal": "WAKE_ARMED",
+          "index": 0,
+          "payload": {},
+          "priority": 20,
+          "reason": "wake word armed",
+          "render_hashes": {
+            "1.54in": "e62d1e9143e564931016920adc61caa5362d2ddc7961177ebe89e0bd11b42bb3",
+            "2.13in": "7fff9d2cc4d4c7248fdec8acc3179879a54597d92dd8b6cfeed572a203d3ea3d"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "idle"
+        },
+        {
+          "accepted": true,
+          "event": "settings.display_off",
+          "expression_signal": "SETTINGS_SLEEPY",
+          "index": 1,
+          "payload": {},
+          "priority": 10,
+          "reason": "quiet hours or display-off screen setting",
+          "render_hashes": {
+            "1.54in": "ee9935897a68da1dc9b8f97c2b2bad0463dd8887652b1e82652f0bcdc0f9634a",
+            "2.13in": "d7c1453c0826fe1d0e04bd96ef7c43a8799ba5d8c8eefff97a87f7932f802948"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "sleepy"
+        },
+        {
+          "accepted": true,
+          "event": "settings.display_on",
+          "expression_signal": "RECOVERY",
+          "index": 2,
+          "payload": {},
+          "priority": 20,
+          "reason": "recovered to idle",
+          "render_hashes": {
+            "1.54in": "e62d1e9143e564931016920adc61caa5362d2ddc7961177ebe89e0bd11b42bb3",
+            "2.13in": "ea6dfe9f6446712f2575fa058ee2a0a7a74001cd0b80f403ea1d6332dbc34e2b"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "idle"
+        },
+        {
+          "accepted": true,
+          "event": "recording_fsm.start_request",
+          "expression_signal": "RECORDING_START",
+          "index": 3,
+          "payload": {},
+          "priority": 90,
+          "reason": "recording start accepted",
+          "render_hashes": {
+            "1.54in": "546b8c6e699267cc8b056354da53cffc788a7e9f381a883c9d110fe28274b432",
+            "2.13in": "95af5b94646da8e6618bac40d8872a488a9325ab6062257903cff3c2ebe36b6c"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "recording"
+        },
+        {
+          "accepted": false,
+          "event": "settings.display_off",
+          "expression_signal": "SETTINGS_SLEEPY",
+          "index": 4,
+          "payload": {},
+          "priority": 90,
+          "reason": "ignored lower-priority sleepy while recording is visible",
+          "render_hashes": {
+            "1.54in": "546b8c6e699267cc8b056354da53cffc788a7e9f381a883c9d110fe28274b432",
+            "2.13in": "a34f8f47e7556c2fac41a08a5c528ed9507350c2fc107636d3133ce2269f53ec"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "recording"
+        },
+        {
+          "accepted": true,
+          "event": "recording_fsm.cancel_request",
+          "expression_signal": "RECORDING_CANCEL",
+          "index": 5,
+          "payload": {},
+          "priority": 20,
+          "reason": "recording cancelled",
+          "render_hashes": {
+            "1.54in": "e62d1e9143e564931016920adc61caa5362d2ddc7961177ebe89e0bd11b42bb3",
+            "2.13in": "d9eff91d5e6ecce1c085bff91f4077ae51065d0145e8218c997bac3c58cb42a8"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "idle"
+        },
+        {
+          "accepted": true,
+          "event": "settings.quiet_hours",
+          "expression_signal": "SETTINGS_SLEEPY",
+          "index": 6,
+          "payload": {},
+          "priority": 10,
+          "reason": "quiet hours or display-off screen setting",
+          "render_hashes": {
+            "1.54in": "ee9935897a68da1dc9b8f97c2b2bad0463dd8887652b1e82652f0bcdc0f9634a",
+            "2.13in": "ba0d4aa68dcf89c6d2dd70223aa5224c5cd0fdcc15aee9bd81476b677cc14aaf"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "sleepy"
+        }
+      ]
+    },
+    {
+      "final_expression": "recording",
+      "journey_id": "display_update_no_self_loop",
+      "steps": [
+        {
+          "accepted": true,
+          "event": "recording_fsm.start_request",
+          "expression_signal": "RECORDING_START",
+          "index": 0,
+          "payload": {},
+          "priority": 90,
+          "reason": "recording start accepted",
+          "render_hashes": {
+            "1.54in": "546b8c6e699267cc8b056354da53cffc788a7e9f381a883c9d110fe28274b432",
+            "2.13in": "6d6767907029ba99c25d341050c04e26069fb47949378dfc2c496885fd61fb9e"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "recording"
+        },
+        {
+          "accepted": false,
+          "event": "e_paper.update_result",
+          "expression_signal": null,
+          "index": 1,
+          "payload": {
+            "last_error": 4
+          },
+          "priority": 90,
+          "reason": "event has no expression signal",
+          "render_hashes": {
+            "1.54in": "546b8c6e699267cc8b056354da53cffc788a7e9f381a883c9d110fe28274b432",
+            "2.13in": "44819b427196fbe007bd0339e5f10ded20825bbaed46ecff234be55f5139beba"
+          },
+          "severity": "warn",
+          "visible_age_ms": 0,
+          "visible_expression": "recording"
+        }
+      ]
+    },
+    {
+      "final_expression": "idle",
+      "journey_id": "error_overrides_and_recovers",
+      "steps": [
+        {
+          "accepted": true,
+          "event": "battery_charging.sample",
+          "expression_signal": "LOW_BATTERY",
+          "index": 0,
+          "payload": {
+            "charger_present": 0,
+            "millivolts": 3450,
+            "percent": 8
+          },
+          "priority": 80,
+          "reason": "battery is below threshold",
+          "render_hashes": {
+            "1.54in": "7d1b61cf0d1efef93643185ab55ce06cf5f0873c0dea78ffd715dbc08af02fc5",
+            "2.13in": "410b0affe41d24345f93dc7120c16719e99e733d08fca70fd42cd1b161a0dfc9"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "low_battery"
+        },
+        {
+          "accepted": true,
+          "event": "errors.fault",
+          "expression_signal": "ERROR",
+          "index": 1,
+          "payload": {},
+          "priority": 100,
+          "reason": "error or rejection",
+          "render_hashes": {
+            "1.54in": "430b17d4a3204cfc05a48384eb19ba92743b509fcd1b130bd6cc4e5a59de9ddc",
+            "2.13in": "161f0da78f111588cf1b8baf455dbf68dc362a2ae260ad6d0d827a4f5694eb93"
+          },
+          "severity": "error",
+          "visible_age_ms": 0,
+          "visible_expression": "error"
+        },
+        {
+          "accepted": false,
+          "event": "speaker.prompt",
+          "expression_signal": "SPEAKER_PROMPT",
+          "index": 2,
+          "payload": {},
+          "priority": 100,
+          "reason": "ignored lower-priority speaking while error is visible",
+          "render_hashes": {
+            "1.54in": "430b17d4a3204cfc05a48384eb19ba92743b509fcd1b130bd6cc4e5a59de9ddc",
+            "2.13in": "598ceda13f6b0243d11cc1edb9c1c74a2b51090ff1f3eb0406745876e1ba7d9f"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "error"
+        },
+        {
+          "accepted": true,
+          "event": "warnings.recovered",
+          "expression_signal": "RECOVERY",
+          "index": 3,
+          "payload": {},
+          "priority": 20,
+          "reason": "recovered to idle",
+          "render_hashes": {
+            "1.54in": "e62d1e9143e564931016920adc61caa5362d2ddc7961177ebe89e0bd11b42bb3",
+            "2.13in": "92e8f21afe9c2f119d4c8f287de315769dd1e24fc35e8c17cc901d877fcad065"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "idle"
+        }
+      ]
+    },
+    {
+      "final_expression": "sync_complete",
+      "journey_id": "meeting_capture_finalize",
+      "steps": [
+        {
+          "accepted": true,
+          "event": "meeting.start",
+          "expression_signal": "MEETING_START",
+          "index": 0,
+          "payload": {},
+          "priority": 90,
+          "reason": "meeting capture started",
+          "render_hashes": {
+            "1.54in": "546b8c6e699267cc8b056354da53cffc788a7e9f381a883c9d110fe28274b432",
+            "2.13in": "ee0691c588844cad002b942bc38c796c020725d6680301f6865ab63301cdc0ef"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "recording"
+        },
+        {
+          "accepted": true,
+          "event": "meeting.stop",
+          "expression_signal": "MEETING_STOP",
+          "index": 1,
+          "payload": {},
+          "priority": 50,
+          "reason": "meeting capture stopped",
+          "render_hashes": {
+            "1.54in": "d0f7938e6df5f3396c55962ad213daf3939a950d2fecdd22232838b122b572d9",
+            "2.13in": "5772bd7825db6d97c314d5cf6fb4bc5c8e28e307b20e6f0209ec484249ecaa3e"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "thinking"
+        },
+        {
+          "accepted": true,
+          "event": "meeting.finalize",
+          "expression_signal": "MEETING_FINALIZE",
+          "index": 2,
+          "payload": {},
+          "priority": 40,
+          "reason": "meeting artifact finalized",
+          "render_hashes": {
+            "1.54in": "81a42cc28a09832f9ae6fd894483d032bb9013c3f17329ab2650a6319606868f",
+            "2.13in": "0df57e5221685160a1b0b874ce608188d0e4b029872ccf1004f852fb6a0ea60a"
+          },
+          "severity": "info",
+          "visible_age_ms": 0,
+          "visible_expression": "sync_complete"
+        }
+      ]
+    }
+  ],
+  "schema_id": "companion.pendant.expression_journeys.v1",
+  "sources": {
+    "expression_events": "app/companion_pendant/epaper/expression_events.c",
+    "expression_state": "app/companion_pendant/epaper/expression_state.c",
+    "renderer": "app/companion_pendant/epaper/card_renderer.py",
+    "screen_acceptance": "docs/companion_screen_expression_system.md"
+  }
+}

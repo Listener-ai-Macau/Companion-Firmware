@@ -1,0 +1,312 @@
+{
+  "acceptance": {
+    "battery_charge_v1_covered": true,
+    "boot_default_idle_covered": true,
+    "device_status_v1_covered": true,
+    "diagnostic_event_bridge_covered": true,
+    "focused_fixtures_linked": true,
+    "meeting_status_v1_covered": true,
+    "ota_readiness_v1_covered": true,
+    "recording_fsm_state_covered": true,
+    "settings_v1_covered": true,
+    "speaker_status_v1_covered": true,
+    "wake_word_status_v1_covered": true,
+    "wba_adapter_checklist_complete": true
+  },
+  "input_source_count": 10,
+  "input_sources": [
+    {
+      "category": "startup",
+      "focused_fixture": "docs/validation/companion-screen-firmware-expression-state.json",
+      "focused_verifier": "tools/verify_expression_firmware_state.py",
+      "id": "boot_default_idle",
+      "portable_path": "direct ExpressionV1 signal",
+      "signals": [
+        {
+          "id": 0,
+          "symbol": "BOOT_IDLE"
+        }
+      ],
+      "title": "Boot/default idle",
+      "wba_adapter_rule": "WBA startup enqueues BOOT_IDLE through its display scheduler after the display task exists."
+    },
+    {
+      "category": "diagnostics",
+      "focused_fixture": "docs/validation/companion-screen-expression-event-bridge.json",
+      "focused_verifier": "tools/verify_expression_event_bridge.py",
+      "id": "diagnostic_events",
+      "portable_path": "comp_epaper_expression_signal_from_diag_event",
+      "signals": [
+        {
+          "id": 1,
+          "symbol": "WAKE_ARMED"
+        },
+        {
+          "id": 2,
+          "symbol": "WAKE_DISABLED"
+        },
+        {
+          "id": 3,
+          "symbol": "WAKE_DETECTED"
+        },
+        {
+          "id": 4,
+          "symbol": "SPEAKER_PROMPT"
+        },
+        {
+          "id": 5,
+          "symbol": "SPEAKER_RESULT"
+        },
+        {
+          "id": 6,
+          "symbol": "MEETING_START"
+        },
+        {
+          "id": 7,
+          "symbol": "MEETING_STOP"
+        },
+        {
+          "id": 8,
+          "symbol": "MEETING_FINALIZE"
+        },
+        {
+          "id": 9,
+          "symbol": "RECORDING_START"
+        },
+        {
+          "id": 10,
+          "symbol": "RECORDING_STOP"
+        },
+        {
+          "id": 11,
+          "symbol": "RECORDING_CANCEL"
+        },
+        {
+          "id": 12,
+          "symbol": "RECORDING_FINISHED"
+        },
+        {
+          "id": 13,
+          "symbol": "LOW_BATTERY"
+        },
+        {
+          "id": 17,
+          "symbol": "BATTERY_RECOVERED"
+        },
+        {
+          "id": 14,
+          "symbol": "RECOVERY"
+        },
+        {
+          "id": 15,
+          "symbol": "ERROR"
+        }
+      ],
+      "title": "Diagnostic event bridge",
+      "wba_adapter_rule": "WBA diagnostic logging can feed the same event bridge and must keep e_paper self-loop rejection."
+    },
+    {
+      "category": "gatt_status",
+      "focused_fixture": "docs/validation/companion-screen-settings-policy.json",
+      "focused_verifier": "tools/verify_expression_settings_policy.py",
+      "id": "settings_v1",
+      "portable_path": "direct settings sleepy/recovery signals",
+      "signals": [
+        {
+          "id": 16,
+          "symbol": "SETTINGS_SLEEPY"
+        },
+        {
+          "id": 14,
+          "symbol": "RECOVERY"
+        }
+      ],
+      "title": "SettingsV1 screen hints",
+      "wba_adapter_rule": "WBA SettingsV1 adapter preserves quiet-hours/display-off as low-priority sleepy hints."
+    },
+    {
+      "category": "gatt_status",
+      "focused_fixture": "docs/validation/companion-screen-device-status-expression-hook.json",
+      "focused_verifier": "tools/verify_expression_device_status_hook.py",
+      "id": "device_status_v1",
+      "portable_path": "comp_epaper_expression_signal_from_device_status",
+      "signals": [
+        {
+          "id": 16,
+          "symbol": "SETTINGS_SLEEPY"
+        },
+        {
+          "id": 9,
+          "symbol": "RECORDING_START"
+        },
+        {
+          "id": 15,
+          "symbol": "ERROR"
+        }
+      ],
+      "title": "DeviceStatusV1",
+      "wba_adapter_rule": "WBA DeviceStatusV1 adapter calls the same mapper after startup publication is scheduler-safe."
+    },
+    {
+      "category": "gatt_status",
+      "focused_fixture": "docs/validation/companion-screen-battery-expression-hook.json",
+      "focused_verifier": "tools/verify_expression_battery_hook.py",
+      "id": "battery_charge_v1",
+      "portable_path": "battery_charging.sample diagnostic bridge",
+      "signals": [
+        {
+          "id": 13,
+          "symbol": "LOW_BATTERY"
+        },
+        {
+          "id": 17,
+          "symbol": "BATTERY_RECOVERED"
+        }
+      ],
+      "title": "BatteryChargeV1",
+      "wba_adapter_rule": "WBA BatteryChargeV1 adapter preserves low/recovered thresholds and recovery guard."
+    },
+    {
+      "category": "portable_state",
+      "focused_fixture": "docs/validation/companion-screen-recording-state-expression-hook.json",
+      "focused_verifier": "tools/verify_expression_recording_state_hook.py",
+      "id": "recording_fsm_state",
+      "portable_path": "comp_epaper_expression_signal_from_recording_state",
+      "signals": [
+        {
+          "id": 9,
+          "symbol": "RECORDING_START"
+        },
+        {
+          "id": 10,
+          "symbol": "RECORDING_STOP"
+        },
+        {
+          "id": 11,
+          "symbol": "RECORDING_CANCEL"
+        },
+        {
+          "id": 12,
+          "symbol": "RECORDING_FINISHED"
+        },
+        {
+          "id": 15,
+          "symbol": "ERROR"
+        }
+      ],
+      "title": "Recording FSM state",
+      "wba_adapter_rule": "WBA recording adapter reuses numeric Recording FSM state mapping before adding platform glue."
+    },
+    {
+      "category": "gatt_status",
+      "focused_fixture": "docs/validation/companion-screen-interaction-status-expression-hook.json",
+      "focused_verifier": "tools/verify_expression_interaction_status_hook.py",
+      "id": "meeting_status_v1",
+      "portable_path": "comp_epaper_expression_signal_from_meeting_status",
+      "signals": [
+        {
+          "id": 6,
+          "symbol": "MEETING_START"
+        },
+        {
+          "id": 7,
+          "symbol": "MEETING_STOP"
+        },
+        {
+          "id": 8,
+          "symbol": "MEETING_FINALIZE"
+        },
+        {
+          "id": 15,
+          "symbol": "ERROR"
+        }
+      ],
+      "title": "MeetingStatusV1",
+      "wba_adapter_rule": "WBA MeetingStatusV1 adapter preserves recording/thinking/sync/error expression mapping."
+    },
+    {
+      "category": "gatt_status",
+      "focused_fixture": "docs/validation/companion-screen-interaction-status-expression-hook.json",
+      "focused_verifier": "tools/verify_expression_interaction_status_hook.py",
+      "id": "speaker_status_v1",
+      "portable_path": "comp_epaper_expression_signal_from_speaker_status",
+      "signals": [
+        {
+          "id": 4,
+          "symbol": "SPEAKER_PROMPT"
+        },
+        {
+          "id": 15,
+          "symbol": "ERROR"
+        }
+      ],
+      "title": "SpeakerStatusV1",
+      "wba_adapter_rule": "WBA SpeakerStatusV1 adapter preserves speaking/error expression mapping."
+    },
+    {
+      "category": "gatt_status",
+      "focused_fixture": "docs/validation/companion-screen-interaction-status-expression-hook.json",
+      "focused_verifier": "tools/verify_expression_interaction_status_hook.py",
+      "id": "wake_word_status_v1",
+      "portable_path": "comp_epaper_expression_signal_from_wake_word_status",
+      "signals": [
+        {
+          "id": 1,
+          "symbol": "WAKE_ARMED"
+        },
+        {
+          "id": 3,
+          "symbol": "WAKE_DETECTED"
+        },
+        {
+          "id": 15,
+          "symbol": "ERROR"
+        }
+      ],
+      "title": "WakeWordStatusV1",
+      "wba_adapter_rule": "WBA WakeWordStatusV1 adapter preserves armed/listening/error expression mapping."
+    },
+    {
+      "category": "gatt_status",
+      "focused_fixture": "docs/validation/companion-screen-ota-expression-hook.json",
+      "focused_verifier": "tools/verify_expression_ota_hook.py",
+      "id": "ota_readiness_v1",
+      "portable_path": "comp_epaper_expression_signal_from_ota_readiness",
+      "signals": [
+        {
+          "id": 13,
+          "symbol": "LOW_BATTERY"
+        },
+        {
+          "id": 15,
+          "symbol": "ERROR"
+        }
+      ],
+      "title": "OtaReadinessV1",
+      "wba_adapter_rule": "WBA OtaReadinessV1 adapter preserves low-battery blocker precedence over generic OTA errors."
+    }
+  ],
+  "purpose": "WB55/WBA ExpressionV1 input-source coverage matrix.",
+  "schema_id": "companion.pendant.expression_input_source_matrix.v1",
+  "sources": {
+    "epaper_readme": "app/companion_pendant/epaper/README.md",
+    "event_bridge_header": "app/companion_pendant/epaper/expression_events.h",
+    "event_bridge_source": "app/companion_pendant/epaper/expression_events.c",
+    "firmware_header": "app/companion_pendant/epaper/expression_state.h",
+    "screen_acceptance": "docs/companion_screen_expression_system.md",
+    "wb55_integration": "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c",
+    "wba_rules": "docs/stm32wba_migration_rules.md"
+  },
+  "status": "PASS",
+  "validation_commands": [
+    "python .\\tools\\verify_expression_input_source_matrix.py",
+    "python .\\tools\\verify_expression_event_bridge.py",
+    "python .\\tools\\verify_expression_settings_policy.py",
+    "python .\\tools\\verify_expression_device_status_hook.py",
+    "python .\\tools\\verify_expression_battery_hook.py",
+    "python .\\tools\\verify_expression_recording_state_hook.py",
+    "python .\\tools\\verify_expression_interaction_status_hook.py",
+    "python .\\tools\\verify_expression_ota_hook.py",
+    "python .\\tools\\verify_expression_wba_portability.py"
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "contract": {
+    "not_in_wb55_build": true,
+    "now_ms_callback": "companion_epaper_stm32wba_now_ms_fn_t",
+    "preserves_display_drain_contract": true,
+    "preserves_expression_tick_contract": true,
+    "ready_api": "companion_epaper_stm32wba_scheduler_ready",
+    "schedule_display_api": "companion_epaper_stm32wba_schedule_display_task",
+    "schedule_display_callback": "companion_epaper_stm32wba_schedule_fn_t",
+    "schedule_tick_api": "companion_epaper_stm32wba_schedule_expression_tick",
+    "scheduler_type": "companion_epaper_stm32wba_scheduler_t",
+    "start_tick_timer_callback": "companion_epaper_stm32wba_timer_fn_t",
+    "stop_tick_timer_callback": "companion_epaper_stm32wba_schedule_fn_t"
+  },
+  "forbidden_before_wba_project": [
+    "UTIL_SEQ",
+    "HW_TS",
+    "CFG_TASK_COMPANION_DISPLAY_ID",
+    "CFG_SCH_PRIO_0",
+    "HAL_GetTick",
+    "HAL_TIM",
+    "STM32_WPAN",
+    "CPU2",
+    "FUS",
+    "IPCC",
+    "HSEM"
+  ],
+  "purpose": "Target-named STM32WBA display scheduler/timer scaffold that keeps display-task wakeups and ExpressionV1 tick timing behind callbacks until the CubeWBA scheduler is selected.",
+  "required_future_evidence": [
+    "CubeWBA scheduler API chosen",
+    "WBA display task registration calls the same one-request-per-pass display drain path",
+    "WBA tick timer wakes display work for comp_epaper_expression_state_tick",
+    "WBA now_ms source is monotonic for transient expression recovery",
+    "WBA build wrapper compiles the scheduler hook for the selected target"
+  ],
+  "schema_id": "companion.pendant.screen_scheduler_stm32wba.v1",
+  "sources": {
+    "display_drain_contract": "docs/validation/companion-screen-display-drain-contract.json",
+    "epaper_readme": "app/companion_pendant/epaper/README.md",
+    "expression_state_header": "app/companion_pendant/epaper/expression_state.h",
+    "screen_acceptance": "docs/companion_screen_expression_system.md",
+    "wba55_port_scaffold": "docs/validation/companion-screen-wba55-port-scaffold.json",
+    "wba_port_contract": "docs/validation/companion-screen-wba-port-contract.json",
+    "wba_rules": "docs/stm32wba_migration_rules.md",
+    "wba_scheduler_header": "app/companion_pendant/epaper/screen_scheduler_stm32wba.h",
+    "wba_scheduler_source": "app/companion_pendant/epaper/screen_scheduler_stm32wba.c"
+  },
+  "status": "PASS",
+  "validation_commands": [
+    "python .\\tools\\verify_expression_screen_scheduler_stm32wba.py",
+    "python .\\tools\\verify_expression_display_drain.py",
+    "python .\\tools\\verify_expression_wba_portability.py",
+    "python .\\tools\\init_expression_wba_port_scaffold.py --self-test",
+    "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1"
+  ]
+}
