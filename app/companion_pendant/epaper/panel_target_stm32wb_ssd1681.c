@@ -904,7 +904,6 @@ static comp_epaper_panel_result_t ssd1681_refresh(
     uint32_t controller_setup_elapsed_ms;
     uint32_t transfer_before_waveform_start_ms;
     uint32_t transfer_before_waveform_elapsed_ms;
-    uint32_t transfer_after_waveform_start_ms;
     uint32_t transfer_after_waveform_elapsed_ms;
     const char *selected_mode = partial ? "differential" : fast ? "maintenance" : "full";
     printf("[epaper] policy requested=%u selected=%s reason=%u partial_count=%u limit=%u baseline=%u\r\n",
@@ -987,9 +986,11 @@ static comp_epaper_panel_result_t ssd1681_refresh(
 
     if (partial) {
         /* Differential mode needs the old and new pixels: seed 0x26 from the
-         * previous framebuffer and 0x24 from the current framebuffer before
-         * 0xFC, then synchronize both planes to the new image for the next
-         * drag frame. */
+         * CPU's last successful framebuffer and 0x24 from the current frame
+         * before 0xFC. The next request repeats that pair for its own dirty
+         * window, so sending both planes again after the waveform only delays
+         * the next touch response. Good Display's matching sample likewise
+         * seeds its base map separately from its partial write path. */
         frame_written = window_set && border_set &&
                         ssd1681_write_plane_region(0x26u, s_previous_frame, &window) &&
                         ssd1681_write_plane_region(0x24u, s_frame, &window);
@@ -997,12 +998,9 @@ static comp_epaper_panel_result_t ssd1681_refresh(
             HAL_GetTick() - transfer_before_waveform_start_ms;
         display_refreshed = frame_written &&
                             ssd1681_refresh_display(selection.decision);
-        transfer_after_waveform_start_ms = HAL_GetTick();
-        baseline_written = display_refreshed &&
-                           ssd1681_write_plane_region(0x26u, s_frame, &window) &&
-                           ssd1681_write_plane_region(0x24u, s_frame, &window);
-        transfer_after_waveform_elapsed_ms =
-            HAL_GetTick() - transfer_after_waveform_start_ms;
+        /* The CPU copy below becomes the new baseline only after this
+         * transaction is known-good. No post-waveform RAM replay is needed. */
+        baseline_written = display_refreshed;
     } else {
         /* Full and maintenance paths seed both planes before their waveform. */
         baseline_written = window_set && border_set &&

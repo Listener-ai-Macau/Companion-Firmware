@@ -67,6 +67,7 @@ def main() -> int:
     for token, label in (
         ("five_differential_requests", "five-partial parser check"),
         ("one_sixth_request_maintenance", "sixth-cleanup parser check"),
+        ("no_post_waveform_transfer", "post-wave transfer elimination parser check"),
         ("no_obsolete_delayed_maintenance", "old-timer parser check"),
         ("PASS_STATIC_PARSER", "parser self-test result"),
     ):

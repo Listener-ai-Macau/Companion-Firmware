@@ -962,6 +962,26 @@ WBA55/WBA65 共用这个 portable policy；目标层仅可在有同等面板证�
 仍必须在 owner 明确“开始验收”后以 ACPT-01 观察确认。此诊断仍复用 portable `refresh_policy`，所以
 WBA55/WBA65 后续只需替换有面板证据的目标波形适配器，不得复制 WB55 的演示逻辑。
 
+## Revision 74: 回收差分波形后的重复 RAM 传输
+
+Revision 67 的真机分段日志已经量出一个普通 2,552-byte dirty window 在 `0xFC` waveform 前发送
+`53 ms`，waveform 完成后又发送 `53 ms`。前一段是差分所需的 `0x26=上一成功 CPU frame` 和
+`0x24=当前 frame`；后一段只是把同一窗口再写一次新帧。下一次差分本来就会根据 CPU 的
+`s_previous_frame` 与新 frame 再写完整 old/new pair，full 和 Mode-1 路径也会在自己的 waveform
+前写双平面，因此这次回写不参与下一次正确性。
+
+本地保留并已核对 SHA-256 的 Good Display `S-GDEY0154D67-FP-Touch` STM32 参考中，
+`EPD_SetRAMValue_BaseMap()` 仅在建立 base map 时写 `0x24` 与 `0x26`；`EPD_Dis_Part()` 只写其
+当前局部 `0x24` 数据再触发 partial update。Companion 不改变已验证的 `0xFC` waveform，也不照搬
+该样例的旧 `0xFF` 控制值，只在 WB55 SSD1681 target 删除 waveform 后的重复双平面发送。预期典型
+局刷会从约 `53 + 307 + 53 ms` 缩短到约 `53 + 307 ms`；这是时间预算，不是硬件成功或观感声明。
+
+新机器契约要求 partial branch 不得在 `0xFC` 后重发 `0x26=s_frame`，日志中的
+`transfer_after_waveform_ms` 应为 `0`。WBA portable logic、`refresh_policy`、资源格式、触控和
+Good Display Mode-1 `0xC7` profile 均不变。必须在 owner 明确“开始验收”后，用 reset-bounded
+trace 同时证明连续局刷成功、无 BUSY/transport failure、后传输为 0，且真实屏幕无新增残影；否则
+立即恢复该 target-specific optimization，不能以静态构建代替面板证据。
+
 ## 逐项验收顺序
 
 本项目遵循 AI Workflow 的全产品异步验收规则：未收到操作者明确的“开始验收”前，

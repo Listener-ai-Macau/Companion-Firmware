@@ -76,7 +76,20 @@ def main() -> int:
         "previous-frame differential plane",
         errors,
     )
-    require(driver, "ssd1681_write_plane_region(0x26u, s_frame, &window)", "post-wave previous plane sync", errors)
+    require(driver, "No post-waveform RAM replay is needed.", "post-wave transfer elimination rationale", errors)
+    require(driver, "baseline_written = display_refreshed;", "CPU baseline after successful differential refresh", errors)
+    partial_start = driver.find("    if (partial) {\n        /* Differential mode needs")
+    partial_end = driver.find("    } else {", partial_start)
+    if partial_start < 0 or partial_end < 0:
+        errors.append("could not isolate the differential write branch")
+    else:
+        partial_branch = driver[partial_start:partial_end]
+        forbid(
+            partial_branch,
+            "ssd1681_write_plane_region(0x26u, s_frame, &window)",
+            "post-wave 0x26 replay in differential branch",
+            errors,
+        )
     require(driver, "s_controller_initialized", "controller reset guard", errors)
     require(driver, "if (controller_initialization_required)", "no reset during repeated partial updates", errors)
     require(driver, "? 0xFCu", "differential update control", errors)

@@ -17,6 +17,14 @@ POLICY = re.compile(
     r"reason=(?P<reason>\d+) partial_count=(?P<count>\d+) "
     r"limit=(?P<limit>\d+) baseline=(?P<baseline>\d+)"
 )
+DIFFERENTIAL_TIMING = re.compile(
+    r"\[epaper\] timing mode=differential .*"
+    r"transfer_before_waveform_ms=(?P<before>\d+) "
+    r"transfer_after_waveform_ms=(?P<after>\d+) "
+    r"bytes=(?P<bytes>\d+)"
+)
+
+
 def scoped_log(log: str) -> str:
     start = "[screen] refresh_cadence_diagnostic start requests=6"
     end = "[screen] refresh_cadence_diagnostic done interactive_requests=6 cleanup_expected=1"
@@ -60,6 +68,14 @@ def evaluate(log: str, log_path: str) -> dict[str, Any]:
         for policy in interactive
         if policy["selected"] == "maintenance"
     ]
+    differential_timings = [
+        {
+            "before_ms": int(match.group("before")),
+            "after_ms": int(match.group("after")),
+            "window_bytes": int(match.group("bytes")),
+        }
+        for match in DIFFERENTIAL_TIMING.finditer(scoped)
+    ]
     checks = {
         "diagnostic_started": bool(scoped),
         "baseline_full": bool(policies)
@@ -73,6 +89,8 @@ def evaluate(log: str, log_path: str) -> dict[str, Any]:
         and maintenance[0]["reason"] == 4
         and maintenance[0]["limit"] == 5,
         "differential_waveform": scoped.count("refresh mode=differential control=0xFC") >= 5,
+        "no_post_waveform_transfer": len(differential_timings) >= 5
+        and all(timing["after_ms"] == 0 for timing in differential_timings),
         "mode1_waveform": "refresh mode=fast control=0xC7" in scoped,
         "diagnostic_completed": (
             "[screen] refresh_cadence_diagnostic done "
@@ -93,6 +111,7 @@ def evaluate(log: str, log_path: str) -> dict[str, Any]:
             "policy_records": policies,
             "queued_steps": queued,
             "completed_steps": completed,
+            "differential_timings": differential_timings,
         },
         "next_action": (
             "Run the focused ACPT-01 visual review; this trace does not prove residual-image quality or touch feel."
@@ -115,6 +134,9 @@ def self_test() -> dict[str, Any]:
                 f"[screen] refresh_cadence_diagnostic queue step={step} item={step - 1} refresh=interactive",
                 f"[epaper] policy requested=3 selected=differential reason=1 partial_count={step - 1} limit=5 baseline=1",
                 "[epaper] refresh mode=differential control=0xFC",
+                "[epaper] timing mode=differential prepare_ms=0 setup_ms=0 "
+                "transfer_before_waveform_ms=53 transfer_after_waveform_ms=0 "
+                "bytes=2552 spi=software_vendor_edges",
                 f"[screen] refresh_cadence_diagnostic complete step={step}",
             ]
         )

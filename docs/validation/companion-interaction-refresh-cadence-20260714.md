@@ -57,8 +57,10 @@ and synthetic parser self-test passed:
 
 The parser is intentionally strict: it requires one full baseline, five
 `differential/0xFC` refreshes, one sixth `maintenance/0xC7` refresh, all six
-queue/completion markers, no diagnostic abort, and no obsolete delayed
-maintenance marker. A parser pass over synthetic data is not hardware proof.
+queue/completion markers, no diagnostic abort, no obsolete delayed maintenance
+marker, and `transfer_after_waveform_ms=0` for every differential frame. The
+last condition protects the WB55-only removal of the redundant post-waveform
+RAM replay. A parser pass over synthetic data is not hardware proof.
 
 ## Required Hardware Follow-up
 
@@ -72,7 +74,8 @@ When the owner explicitly starts a hardware session:
    `refresh_cadence_diagnostic done` and save it beside the resulting JSON.
 3. Run `python tools/verify_wb55_refresh_cadence_log.py --log <trace> --out
    <result.json>`; it must prove five `0xFC` interactions then exactly one
-   `0xC7` cleanup with no 1200 ms delayed request.
+   `0xC7` cleanup, no 1200 ms delayed request, and zero post-waveform transfer
+   time on each differential frame.
 4. Reflash the normal production image before ACPT-01. Run the focused visual
    review for residual image, a single maintenance flicker, and perceived
    responsiveness. Machine timing does not substitute for that review.
