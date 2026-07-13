@@ -1,7 +1,7 @@
 {
   "schema_id": "companion.pendant.screen_touch_ft6336_wb55.v1",
-  "status": "REVISION_32_BUILD_PENDING_HARDWARE_RECHECK",
-  "generated_at": "2026-07-12T13:25:21+08:00",
+  "status": "REVISION_54_BUILD_PENDING_HARDWARE_RECHECK",
+  "generated_at": "2026-07-13T19:45:00+08:00",
   "target": "NUCLEO-WB55RG + GDEY0154D67-T03 FT6336U",
   "wiring": {
     "scl": "P10 A4 -> CN7-28 PC0/I2C3_SCL",
@@ -75,10 +75,11 @@
     "daily_stroke": "all non-menu-entry swipes react as directional pet strokes",
     "daily_hold": "650 ms nearly still hold emits one pet tease without consuming contact",
     "daily_enter_menu": "3000 ms any-position long_press with 46 px wobble tolerance",
+    "daily_double_tap": "650 ms and 40 px candidate window starts/stops only touch-origin recording",
     "detail_back": "left-edge swipe_right",
     "home_exit": "left-edge swipe_right",
-    "home_vertical_stroke": "menu-v3 home is a static six-row page and never advances a numbered scroll frame",
-    "firmware_selftest": "one-sample explicit-release tap, live hold then long-press, static-home row hit tests, and expired-drag rearm"
+    "home_vertical_stroke": "menu-v3 home tracks the current pressed row but never synthesizes legacy scroll frames",
+    "firmware_selftest": "one-sample explicit-release tap, live hold then long-press, static-home row hit tests, expired-drag rearm, and current-row press tracking"
   },
   "evidence": {
     "serial_log": ".cache/validation/screen-revision13-left-swipe-live/nucleo-serial-raw.log",
@@ -104,11 +105,13 @@
   "remaining_acceptance": [
     "Confirm tap hit regions",
     "Confirm daily tap and all four daily swipes have distinct pet reactions",
-    "Confirm the six-row menu-v3 home remains stable during vertical strokes and never shows a legacy numbered scroll frame",
+    "Confirm the six-row menu-v3 press cue follows the current touched row during a vertical stroke and never shows a legacy numbered scroll frame",
     "Confirm a visible menu row has a press-cue partial refresh then its target-page arrival partial refresh",
     "Visually confirm horizontal refresh content on the panel",
     "Confirm a vertical stroke on the static home does not select a row or cause a fake refresh",
-    "Revision 21: confirm a <=9 px touch wobble still activates the intended row, and the 1200 ms post-gesture 0xCF maintenance pass improves residual ghosting"
+    "Confirm 650 ms / 40 px double-tap starts recording, then a second double tap stops and stores it with visible state art",
+    "Confirm down, move, and up serial samples report bounded sample_age_ms while the panel is busy",
+    "Revision 54: confirm exactly one full-clean transition on menu enter and exit, with no follow-on maintenance flash"
   ],
   "revision_17_machine_contract": {
     "status": "PENDING_HARDWARE_RECHECK",
@@ -170,6 +173,17 @@
     "daily_face": "tap and all left/right/up/down swipes remain pet interactions",
     "menu_priority": "only the completed anywhere near-still long press can preempt a pet interaction",
     "visual_recheck": "PENDING: tease timing, three-second entry feel, and press-cue detail-page transition"
+  },
+  "revision_54_machine_contract": {
+    "status": "BUILD_PENDING_HARDWARE_RECHECK",
+    "double_tap_max_gap_ms": 650,
+    "double_tap_max_move_px": 40,
+    "menu_press_cue_ms": 360,
+    "menu_home": "static six-row v3 with coalesced current-row press tracking",
+    "transition_cleanup": "one full refresh at daily-to-menu and menu-to-daily boundaries; pending quiet maintenance is cancelled first",
+    "recording_visuals": "touch start requests recording, successful store requests sync_complete, and capture/store failure requests error",
+    "latency_trace": "every changed down/move/up sample logs sample_age_ms before gesture dispatch",
+    "visual_recheck": "PENDING: current menu art, touch follow, double-tap recording, state faces, and transition cleanliness"
   },
   "anti_regression": [
     "python tools/verify_touch_ft6336.py",

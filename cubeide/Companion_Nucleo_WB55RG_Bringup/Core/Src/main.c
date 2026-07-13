@@ -70,8 +70,10 @@ COMPANION_PLACE_IN_SECTION("TAG_OTA_START") const uint32_t MagicKeywordAddress =
 #define TOUCH_HOLD_FEEDBACK_MIN_DURATION_MS 650u
 #define TOUCH_MENU_LONG_PRESS_DURATION_MS 3000u
 #define TOUCH_LONG_PRESS_MAX_MOVE_PX 46u
-#define TOUCH_MENU_ENTRY_CUE_MS 240u
+#define TOUCH_MENU_ENTRY_CUE_MS 360u
 #define TOUCH_TAP_MAX_MOVE_PX 24u
+#define TOUCH_DOUBLE_TAP_MAX_GAP_MS 650u
+#define TOUCH_DOUBLE_TAP_MAX_MOVE_PX 40u
 #define TOUCH_SWIPE_MIN_MOVE_PX 30u
 #define TOUCH_AXIS_LOCK_MIN_MOVE_PX 10u
 #define TOUCH_AXIS_SLOP_PX 5u
@@ -469,6 +471,8 @@ static comp_touch_gesture_state_t s_touch_gesture;
 static bool s_menu_entry_pending;
 static comp_screen_menu_view_t s_menu_entry_target;
 static uint32_t s_menu_entry_due_ms;
+static bool s_menu_home_press_active;
+static uint8_t s_menu_home_press_item;
 static bool s_screen_maintenance_pending;
 static uint32_t s_screen_maintenance_due_ms;
 static bool s_low_power_idle_pose_attempted;
@@ -593,6 +597,7 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
                                      uint16_t logical_y,
                                      uint32_t now_ms);
 static void schedule_touch_screen_maintenance(uint32_t now_ms);
+static void cancel_touch_screen_maintenance(void);
 static void process_touch_screen_maintenance(uint32_t now_ms);
 static void process_menu_entry_transition(uint32_t now_ms);
 static void update_low_power_policy(void);
@@ -1421,6 +1426,8 @@ static void init_touch_debug(void)
         .swipe_max_duration_ms = TOUCH_SWIPE_MAX_DURATION_MS,
         .hold_feedback_min_duration_ms = TOUCH_HOLD_FEEDBACK_MIN_DURATION_MS,
         .long_press_min_duration_ms = TOUCH_MENU_LONG_PRESS_DURATION_MS,
+        .double_tap_max_gap_ms = TOUCH_DOUBLE_TAP_MAX_GAP_MS,
+        .double_tap_max_move_px = TOUCH_DOUBLE_TAP_MAX_MOVE_PX,
         .axis_dominance_percent = TOUCH_AXIS_DOMINANCE_PERCENT,
         .min_contact_samples = TOUCH_MIN_CONTACT_SAMPLES,
         .release_debounce_samples = TOUCH_RELEASE_DEBOUNCE_SAMPLES,
@@ -1740,10 +1747,12 @@ static void process_touch_debug_sample(const comp_ft6336_touch_sample_t *sample,
 {
     uint16_t logical_x;
     uint16_t logical_y;
+    uint32_t sample_age_ms;
 
     if (sample == NULL) {
         return;
     }
+    sample_age_ms = HAL_GetTick() - now_ms;
 
     s_touch_contact_active = sample->touch_count > 0u &&
                              sample->event != COMP_FT6336_TOUCH_EVENT_UP;
@@ -1770,7 +1779,7 @@ static void process_touch_debug_sample(const comp_ft6336_touch_sample_t *sample,
         memcmp(sample, &s_touch_last_sample, sizeof(*sample)) != 0) {
         s_touch_last_sample = *sample;
         s_touch_last_sample_valid = true;
-        printf("[touch] contacts=%u event=%s id=%u raw_x=%u raw_y=%u x=%u y=%u mirror_x=%u mirror_y=%u reads=%lu\r\n",
+        printf("[touch] contacts=%u event=%s id=%u raw_x=%u raw_y=%u x=%u y=%u mirror_x=%u mirror_y=%u sample_age_ms=%lu reads=%lu\r\n",
                (unsigned)sample->touch_count,
                comp_ft6336_touch_event_name(sample->event),
                (unsigned)sample->touch_id,
@@ -1780,6 +1789,7 @@ static void process_touch_debug_sample(const comp_ft6336_touch_sample_t *sample,
                (unsigned)logical_y,
                (unsigned)COMPANION_TOUCH_MIRROR_X,
                (unsigned)COMPANION_TOUCH_MIRROR_Y,
+               (unsigned long)sample_age_ms,
                (unsigned long)s_touch.read_count);
     }
     handle_touch_menu_sample(sample, logical_x, logical_y, now_ms);
@@ -1866,6 +1876,16 @@ static void schedule_touch_screen_maintenance(uint32_t now_ms)
     }
 #else
     (void)now_ms;
+#endif
+}
+
+static void cancel_touch_screen_maintenance(void)
+{
+#if COMPANION_SCREEN_MENU_ENABLED
+    if (s_screen_maintenance_pending) {
+        printf("[touch-ui] screen_maintenance cancelled=transition\r\n");
+    }
+    s_screen_maintenance_pending = false;
 #endif
 }
 
@@ -2017,6 +2037,8 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
     bool contact_now;
     bool explicit_release;
     bool gesture_ready;
+    bool home_press_was_active = false;
+    uint8_t home_press_item = 0u;
     comp_touch_gesture_event_t gesture;
     comp_screen_menu_result_t menu_result;
 
@@ -2027,6 +2049,41 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
                   sample->event != COMP_FT6336_TOUCH_EVENT_UP;
     explicit_release = sample->touch_count > 0u &&
                        sample->event == COMP_FT6336_TOUCH_EVENT_UP;
+
+    /* An e-paper menu cannot redraw at LCD drag rates.  It can still follow
+     * the finger: only the current row's press state is enqueued, and the
+     * display queue coalesces intermediate positions to the newest one. */
+    if (Companion_Screen_IsMenuVisible() &&
+        s_screen_menu.view == COMP_SCREEN_MENU_VIEW_HOME && contact_now &&
+        !s_menu_entry_pending) {
+        uint8_t item;
+        comp_screen_menu_view_t target_view;
+
+        if (comp_screen_menu_home_hit_test(&s_screen_menu,
+                                           logical_x,
+                                           logical_y,
+                                           &item,
+                                           &target_view) &&
+            (!s_menu_home_press_active || s_menu_home_press_item != item)) {
+            uint8_t entry_flags;
+
+            comp_screen_menu_set_flags(&s_screen_menu,
+                                       Companion_Screen_RuntimeMenuFlags());
+            entry_flags = (uint8_t)(s_screen_menu.flags |
+                                    COMP_SCREEN_MENU_FLAG_PRESS_ACTIVE |
+                                    (item << COMP_SCREEN_MENU_FLAG_PRESS_ITEM_SHIFT));
+            s_menu_home_press_active = true;
+            s_menu_home_press_item = item;
+            printf("[touch-ui] menu_press item=%u target_view=%u sample_age_ms=%lu\r\n",
+                   (unsigned)item,
+                   (unsigned)target_view,
+                   (unsigned long)(HAL_GetTick() - now_ms));
+            Companion_Screen_MenuRequest(COMP_SCREEN_MENU_VIEW_HOME,
+                                         entry_flags,
+                                         s_screen_menu.language,
+                                         s_screen_menu.home_page);
+        }
+    }
     gesture_ready = comp_touch_gesture_process(&s_touch_gesture,
                                                contact_now,
                                                explicit_release,
@@ -2037,24 +2094,32 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
     if (!gesture_ready) {
         return;
     }
-    printf("[touch-ui] gesture=%s start=%u,%u end=%u,%u duration_ms=%u\r\n",
+    if (!contact_now) {
+        home_press_was_active = s_menu_home_press_active;
+        home_press_item = s_menu_home_press_item;
+        s_menu_home_press_active = false;
+    }
+    printf("[touch-ui] gesture=%s start=%u,%u end=%u,%u duration_ms=%u sample_age_ms=%lu\r\n",
            comp_touch_gesture_name(gesture.type),
            (unsigned)gesture.start_x,
            (unsigned)gesture.start_y,
            (unsigned)gesture.end_x,
            (unsigned)gesture.end_y,
-           (unsigned)gesture.duration_ms);
+           (unsigned)gesture.duration_ms,
+           (unsigned long)(HAL_GetTick() - now_ms));
     if (!Companion_Screen_IsMenuVisible()) {
         if (gesture.type == COMP_TOUCH_GESTURE_HOLD) {
-            /* The first held beat is social feedback.  Long-press navigation
-             * remains reserved for the near-still three-second completion. */
-            printf("[touch-ui] daily_hold_tease x=%u y=%u duration_ms=%u\r\n",
+            /* The first held beat deliberately advertises menu entry before
+             * the three-second hold performs the clean screen transition. */
+            printf("[touch-ui] daily_hold_menu_prepare x=%u y=%u duration_ms=%u\r\n",
                    (unsigned)gesture.end_x,
                    (unsigned)gesture.end_y,
                    (unsigned)gesture.duration_ms);
-            (void)Companion_Screen_DailyTapAt(gesture.end_x, gesture.end_y);
+            (void)Companion_Screen_DailyExpression(
+                COMP_EPAPER_EXPRESSION_THINKING, "menu_hold_prepare");
         } else if (comp_screen_menu_is_daily_entry_gesture(&gesture)) {
             s_menu_entry_pending = false;
+            cancel_touch_screen_maintenance();
             s_screen_menu.view = COMP_SCREEN_MENU_VIEW_HOME;
             s_screen_menu.revision++;
             comp_screen_menu_set_flags(&s_screen_menu,
@@ -2063,18 +2128,20 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
                    (unsigned)gesture.duration_ms,
                    (unsigned)s_screen_menu.home_page,
                    (unsigned long)s_screen_menu.revision);
-            Companion_Screen_MenuRequest(s_screen_menu.view,
-                                         s_screen_menu.flags,
-                                         s_screen_menu.language,
-                                         s_screen_menu.home_page);
-            schedule_touch_screen_maintenance(now_ms);
+            (void)Companion_Screen_MenuRequestClean(s_screen_menu.view,
+                                                     s_screen_menu.flags,
+                                                     s_screen_menu.language,
+                                                     s_screen_menu.home_page);
         } else if (gesture.type == COMP_TOUCH_GESTURE_DOUBLE_TAP) {
+            /* The first tap may have scheduled a quiet cleanup.  Recording
+             * owns the next visual beat, so do not let that stale task redraw
+             * over the generated recording state expression. */
+            cancel_touch_screen_maintenance();
             printf("[touch-ui] daily_double_tap_recording x=%u y=%u state=%s\r\n",
                    (unsigned)gesture.end_x,
                    (unsigned)gesture.end_y,
                    comp_recording_state_name(s_recording_fsm.state));
             toggle_touch_recording();
-            schedule_touch_screen_maintenance(now_ms);
         } else if (gesture.type == COMP_TOUCH_GESTURE_TAP) {
             printf("[touch-ui] daily_reaction x=%u y=%u\r\n",
                    (unsigned)gesture.end_x,
@@ -2107,10 +2174,10 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
         gesture.type == COMP_TOUCH_GESTURE_SWIPE_RIGHT &&
         gesture.start_x <= COMP_SCREEN_MENU_BACK_EDGE_MAX_X) {
         s_menu_entry_pending = false;
+        cancel_touch_screen_maintenance();
         printf("[touch-ui] menu_to_daily selection=%u\r\n",
                (unsigned)s_screen_menu.home_page);
-        (void)Companion_Screen_ShowDaily();
-        schedule_touch_screen_maintenance(now_ms);
+        (void)Companion_Screen_ShowDailyClean();
         return;
     }
     if (s_screen_menu.view == COMP_SCREEN_MENU_VIEW_HOME &&
@@ -2136,12 +2203,21 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
             s_menu_entry_target = target_view;
             s_menu_entry_due_ms = now_ms + TOUCH_MENU_ENTRY_CUE_MS;
             s_menu_entry_pending = true;
-            Companion_Screen_MenuRequest(COMP_SCREEN_MENU_VIEW_HOME,
-                                         entry_flags,
-                                         s_screen_menu.language,
-                                         s_screen_menu.home_page);
+            if (!home_press_was_active || home_press_item != item) {
+                Companion_Screen_MenuRequest(COMP_SCREEN_MENU_VIEW_HOME,
+                                             entry_flags,
+                                             s_screen_menu.language,
+                                             s_screen_menu.home_page);
+            }
         }
         return;
+    }
+    if (home_press_was_active &&
+        s_screen_menu.view == COMP_SCREEN_MENU_VIEW_HOME) {
+        Companion_Screen_MenuRequest(COMP_SCREEN_MENU_VIEW_HOME,
+                                     s_screen_menu.flags,
+                                     s_screen_menu.language,
+                                     s_screen_menu.home_page);
     }
     comp_screen_menu_set_flags(&s_screen_menu, Companion_Screen_RuntimeMenuFlags());
     menu_result = gesture.type == COMP_TOUCH_GESTURE_TAP
@@ -2336,6 +2412,14 @@ static void start_recording(comp_recording_source_t source, const char *reason)
            (unsigned long)result,
            comp_recording_state_name(s_recording_fsm.state));
     Companion_Screen_RefreshRecordingStatus();
+    if (source == COMP_RECORDING_SOURCE_USER_TOUCH &&
+        s_recording_fsm.state == COMP_RECORDING_STATE_RECORDING) {
+        bool shown = Companion_Screen_DailyExpressionSignal(
+            COMP_EPAPER_EXPRESSION_SIGNAL_RECORDING_START,
+            "touch_recording_started");
+        printf("[record-visual] action=start expression=recording result=%u\r\n",
+               shown ? 1u : 0u);
+    }
 }
 
 static void stop_recording(comp_recording_source_t source, const char *reason)
@@ -2414,6 +2498,13 @@ static void start_user_recording(comp_recording_source_t source, const char *rea
         printf("[record] %s action=start rejected=flash_capture_begin_failed state=%s\r\n",
                reason,
                comp_recording_state_name(s_recording_fsm.state));
+        if (source == COMP_RECORDING_SOURCE_USER_TOUCH) {
+            bool shown = Companion_Screen_DailyExpressionSignal(
+                COMP_EPAPER_EXPRESSION_SIGNAL_ERROR,
+                "touch_recording_capture_prepare_failed");
+            printf("[record-visual] action=start_failed expression=error result=%u\r\n",
+                   shown ? 1u : 0u);
+        }
         return;
     }
     start_recording(source, reason);
@@ -2422,6 +2513,13 @@ static void start_user_recording(comp_recording_source_t source, const char *rea
         printf("[record] %s action=start rejected=recording_fsm_state state=%s\r\n",
                reason,
                comp_recording_state_name(s_recording_fsm.state));
+        if (source == COMP_RECORDING_SOURCE_USER_TOUCH) {
+            bool shown = Companion_Screen_DailyExpressionSignal(
+                COMP_EPAPER_EXPRESSION_SIGNAL_ERROR,
+                "touch_recording_start_rejected");
+            printf("[record-visual] action=start_failed expression=error result=%u\r\n",
+                   shown ? 1u : 0u);
+        }
     }
 }
 
@@ -2433,6 +2531,15 @@ static void stop_user_recording(comp_recording_source_t source, const char *reas
            reason,
            stored ? 1u : 0u,
            comp_recording_state_name(s_recording_fsm.state));
+    if (source == COMP_RECORDING_SOURCE_USER_TOUCH) {
+        bool shown = Companion_Screen_DailyExpressionSignal(
+            stored ? COMP_EPAPER_EXPRESSION_SIGNAL_RECORDING_FINISHED
+                   : COMP_EPAPER_EXPRESSION_SIGNAL_ERROR,
+            stored ? "touch_recording_saved" : "touch_recording_store_failed");
+        printf("[record-visual] action=store expression=%s result=%u\r\n",
+               stored ? "sync_complete" : "error",
+               shown ? 1u : 0u);
+    }
     Companion_Gatt_PublishRecordingList();
 }
 

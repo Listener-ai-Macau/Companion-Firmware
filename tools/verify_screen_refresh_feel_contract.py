@@ -184,7 +184,15 @@ def build_contract() -> dict[str, Any]:
             "COMP_EPAPER_REFRESH_REASON_REQUESTED_FULL",
             "policy->baseline_valid = false",
         )
-        and has(driver, ": 0xF7u", '"full"'),
+        and has(driver, ": 0xF7u", '"full"')
+        and has(
+            app_ble,
+            "Companion_Screen_MenuRequestClean",
+            "Companion_Screen_ShowDailyClean",
+            "menu_boundary=enter",
+            "menu_boundary=exit",
+            "COMP_EPAPER_REFRESH_FULL",
+        ),
         "touch_active_blocks_maintenance": has(
             main_c,
             "s_touch_contact_active",
@@ -272,7 +280,7 @@ def build_contract() -> dict[str, Any]:
         "product_rules": {
             "interactive": "Use differential 0xFC dirty-window refresh; coalesce queued menu drag frames to the latest request.",
             "maintenance": "After touch settles, schedule one quiet 0xCF maintenance cleanup; never insert it while contact is active.",
-            "full_refresh": "Use 0xF7 only for unknown baseline, explicit full request, or fault recovery.",
+            "full_refresh": "Use 0xF7 for unknown baseline, fault recovery, or one explicit menu-enter/menu-exit cleanliness boundary; never append a second maintenance refresh to that boundary.",
             "ghosting": "Partial/fast refresh can accumulate ghosting; tune refresh profile/cadence rather than blending old art.",
             "generation_swap": "Treat visual ghosting and old/new resource interleaving as separate failures: atomically activate one CEMP revision, drain stale queued frames, then refresh/maintain the panel baseline.",
             "generation_triage": "Classify visible old content as physical afterimage, stale queued frame, stale asset revision, or rescue/procedural fallback leakage; only physical afterimage belongs to refresh-profile tuning.",

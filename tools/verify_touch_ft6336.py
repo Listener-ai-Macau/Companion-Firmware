@@ -65,6 +65,8 @@ def main() -> int:
         "print_touch_health();",
         "TOUCH_TAP_MAX_DURATION_MS 1100u",
         "TOUCH_TAP_MAX_MOVE_PX 24u",
+        "TOUCH_DOUBLE_TAP_MAX_GAP_MS 650u",
+        "TOUCH_DOUBLE_TAP_MAX_MOVE_PX 40u",
         "TOUCH_SWIPE_MIN_MOVE_PX 30u",
         "TOUCH_AXIS_LOCK_MIN_MOVE_PX 10u",
         "TOUCH_AXIS_SLOP_PX 5u",
@@ -101,10 +103,22 @@ def main() -> int:
         "TOUCH_HOLD_FEEDBACK_MIN_DURATION_MS 650u",
         "TOUCH_MENU_LONG_PRESS_DURATION_MS 3000u",
         "TOUCH_LONG_PRESS_MAX_MOVE_PX 46u",
-        "TOUCH_MENU_ENTRY_CUE_MS 240u",
+        "TOUCH_MENU_ENTRY_CUE_MS 360u",
+        ".double_tap_max_gap_ms = TOUCH_DOUBLE_TAP_MAX_GAP_MS",
+        ".double_tap_max_move_px = TOUCH_DOUBLE_TAP_MAX_MOVE_PX",
         "process_menu_entry_transition",
         "s_menu_entry_pending",
         "long_press_max_move_px",
+        "sample_age_ms=%lu",
+        "[touch-ui] menu_press",
+        "daily_hold_menu_prepare",
+        "Companion_Screen_DailyExpression(",
+        "Companion_Screen_DailyExpressionSignal(",
+        "Companion_Screen_MenuRequestClean(",
+        "Companion_Screen_ShowDailyClean()",
+        "screen_maintenance cancelled=transition",
+        "[record-visual] action=start expression=recording",
+        "[record-visual] action=store expression=%s",
     ), errors)
     boot_health_marker = (
         "comp_power_policy_set_blocker(&s_power_policy, COMP_POWER_BLOCKER_BOOT, false);\n"
@@ -145,10 +159,10 @@ def main() -> int:
     gesture_contract = touch_fixture.get("gesture_contract", {})
     if gesture_contract.get("minimum_contact_samples") != 1:
         errors.append("touch fixture must preserve the one-sample tap candidate configuration")
-    if "continuously" not in " ".join(touch_fixture.get("remaining_acceptance", [])):
-        errors.append("touch fixture must retain continuous vertical-drag acceptance")
-    if touch_fixture.get("gesture_contract", {}).get("home_vertical_scroll") != "anchored continuous finger-distance drag":
-        errors.append("touch fixture must preserve anchored continuous home vertical scrolling")
+    if "press cue follows the current touched row" not in " ".join(touch_fixture.get("remaining_acceptance", [])):
+        errors.append("touch fixture must retain current-row press tracking acceptance")
+    if touch_fixture.get("gesture_contract", {}).get("home_vertical_stroke") != "menu-v3 home tracks the current pressed row but never synthesizes legacy scroll frames":
+        errors.append("touch fixture must preserve the static menu-v3 press-tracking contract")
     require("daily stroke bridge", main_source, (
         "Companion_Screen_DailyStrokeAt",
         "[touch-ui] daily_stroke",
@@ -162,6 +176,15 @@ def main() -> int:
         errors.append("touch fixture must retain the directional daily-stroke contract")
     if touch_fixture.get("gesture_contract", {}).get("daily_enter_menu") != "3000 ms any-position long_press with 46 px wobble tolerance":
         errors.append("touch fixture must require any-position 3 s long-press menu entry")
+
+    double_tap_marker = "} else if (gesture.type == COMP_TOUCH_GESTURE_DOUBLE_TAP) {"
+    double_tap_tail = "} else if (gesture.type == COMP_TOUCH_GESTURE_TAP) {"
+    if double_tap_marker not in main_source or double_tap_tail not in main_source:
+        errors.append("daily double-tap branch must remain explicit")
+    else:
+        double_tap_block = main_source.split(double_tap_marker, 1)[1].split(double_tap_tail, 1)[0]
+        if "cancel_touch_screen_maintenance();" not in double_tap_block:
+            errors.append("daily double-tap must cancel first-tap maintenance before recording art")
 
     if errors:
         for error in errors:

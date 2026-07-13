@@ -178,7 +178,7 @@ alias。这样以后频繁换 prompt、换屏幕尺寸或换外壳时，改的�
 | SCR-03 | 单色 framebuffer、图元与字体 | 代码与编译通过 | HAL-free，自测通过，WB55/WBA 共用 |
 | SCR-04 | scene/player 与资源包 | idle、listening、speaking、thinking、recording 与 happy 的 intro/loop/tail 已实机播放；产品事件交接已通过 | 名称寻址、逐帧时长、intro/loop/tail、now/tail-handoff、profile 选择和 CRC 均可测试 |
 | SCR-05 | SSD1681 局刷与动画调度 | revision 20 已改为控制器保留旧图层的差分窗口、触摸空闲维护与菜单请求合并；残影与低闪维护待实机复测 | 差分窗口、BUSY、同类请求合并、5 次软清理点、触摸空闲维护、残影恢复有实机证据；日常动画播完一轮即保持 |
-| SCR-06 | FT6336 触控事件层 | PC6 EXTI 中断、PC10 硬复位、活动期 5 ms/空闲 12 ms 轮询、刷新 BUSY 期 5 ms 时间戳缓冲和 I2C 自动恢复已编译；日常双击在 350 ms/32 px 窗口内启动录音，再次双击停止同一触控来源录音；非菜单滑动映射为日常宠物方向互动，菜单真人体验仍待验收 | 单次点击只产生一个动作；双击只控制触控来源录音且不抢占其他来源；右划、上划、下划有起终点、时长和分类日志并在日常页进入宠物回应；刷新期间点击不丢失；轴锁定、去抖、硬复位与 I2C 总线恢复且不重复触发 |
+| SCR-06 | FT6336 触控事件层 | PC6 EXTI 中断、PC10 硬复位、活动期 5 ms/空闲 8 ms 轮询、刷新 BUSY 期 5 ms 时间戳缓冲和 I2C 自动恢复已编译；日常双击在 650 ms/40 px 窗口内启动录音，再次双击停止同一触控来源录音；每个变化的 down/move/up 样本记录 `sample_age_ms`，非菜单滑动映射为日常宠物方向互动，菜单真人体验仍待验收 | 单次点击只产生一个动作；双击只控制触控来源录音且不抢占其他来源；右划、上划、下划有起终点、时长和分类日志并在日常页进入宠物回应；刷新期间点击不丢失；轴锁定、去抖、硬复位与 I2C 总线恢复且不重复触发 |
 | SCR-07 | 日常页、主菜单与页面导航 | owner-accepted `menu-v3-2026-07-13` 已导入 CEMP revision 53：中文/英文各有主页、Voice & Record、Status、Phone Link、Device、Preferences、About 七页外部资源。六个入口全部位于一张 200x200 首页，不再把旧 43 帧滚动目录作为正常资源；日常页仍任意位置近似静止长按 3 s 进入菜单、全部方向滑动均是宠物反馈。Voice 页显示真实录音状态/外部 Flash 历史，状态和手机页只覆盖真实动态数据格；`menu-v3 static home contract` / `verify_menu_drag_continuity_contract.py` 防止回退为旧编号滚动帧或手绘新布局。rev53 已通过资源导入与 normal/provision build，真机刷入和视觉/触控复验待 owner 明确开始验收。 | 日常轻点和所有左/右/上/下滑动触发表情反馈；双击是默认录音入口；任意位置近似静止长按 3 s 进入菜单，普通滑动不进菜单；首页六项稳定可见且不会跟旧滚动资源混用；语音、状态、手机、设备、偏好、关于六个入口图标语义各不相同；功能页先有 press-cue partial refresh 再有到达页局刷；刷新中间请求只保留最新帧；左边缘右滑返回；偏好页切换整套中英文资源；每个可见控件必须调用真实动作、显示真实数据，或明确标注为冻结/计划。 |
 | SCR-08 | 页面功能接入 | 录音状态由日常双击触控的真实录音状态机归一；Voice 页只显示真实麦克风状态和外部 Flash 记录历史，不能出现重复 Start/Stop 控件；BLE 连/断仅在状态页可见时局刷，录音变更仅在 Voice 或状态页可见时局刷，待实机操作 | 双击可启停现有录音链路并在外部 Flash 完结记录；Voice 和状态页只显示真实触摸/屏幕/BLE/录音状态 |
 | SCR-09 | 白底黑色表情资源 | revision 52 保持主表情路径为外部 CEMP PBM 帧，并把产品关键帧改为从 `docs/art/generated_pet_expression_sheet_v5.png` 导入；表情按 genref v5 12 格 spec 保持贴纸式内脸构图：更大的高光眼、加粗眉眼嘴鼻、脸颊、气泡、波纹、爱心、闪光和录音点随状态变化；`generated-expression-sheet-review.png` 必须先由 AI 自己对照生图预览，导入机器审查不再用内部白色遮罩或未冻结屏幕尺寸的保护带，PBM threshold 调到 168 以减少硬块感，`premium pet art contract` / `verify_premium_pet_art_contract.py` 防止退回只动眼睛；procedural 保留为救援、维护和少量补帧路径；肉眼高级感仍待逐个验收 | 按效价/唤醒度矩阵分类；动画过程逐帧可见；逐个实机确认；正常产品美术不得回退到内部静态位图或仅程序化脸 |
@@ -188,7 +188,7 @@ alias。这样以后频繁换 prompt、换屏幕尺寸或换外壳时，改的�
 | SCR-13 | 外部 Flash 优先与资源预算 | WB55 实机通过，50 KB 内部静态帧已移除 | 正常 UI 资源位于 `ui_assets`；内部只留 <=16 KiB 救援 UI；普通固件不携带 provision blob |
 | SCR-14 | Denzic-Platform 与资源 OTA | Companion WB55 Loader、Type、打包与静态检查已接入 `denzic_ota_v1`；当前跨产品矩阵为 `NO_GO_COMMIT_DRIFT`：Companion 固件/Type 固定在 Denzic `1e727f2`，Listener 固件/Type 固定在 `6ce017f`，协议 JSON SHA 一致但共享平台提交未统一；按 OTA 前置冻结，等待 Listener OTA 验收或明确共享提交对齐后再推进真实 BLE 传输和资源 installer | `denzic_ota_v1` 只负责通用传输；`mcu_app` 与 `ui_assets` 可独立更新；候选资源经签名、SHA-256、版本和兼容性验证后原子激活；错误目标在擦写前拒绝；失败保留旧资源；录音与设置不被擦除；WB55/WBA/ESP 安装器互不复制；跨产品发布前 `verify_denzic_ota_product_matrix.py` 必须从 `NO_GO_COMMIT_DRIFT` 回到 PASS |
 | SCR-15 | 美术换图流水线与旧风格清理 | revision 51 已把正常 CEMP 使用的 39 个 `expression_*.pbm` 全部收敛到生图导入输出/alias；`render_generated_expression_normal_pack_contact_sheet.py` 固化正常包 contact sheet；旧 procedural 正常帧不再进入产品包；硬件 runtime pending | 每次换图都从 `docs/art/` 生图基线开始；REF/PBM review 和正常包 contact sheet 先由 AI 自查；manifest 中所有正常表情 PBM 必须被 `companion-screen-generated-expression-sheet-import.json` 覆盖且 contact report 保持 39/39；旧工程味资源只能作为救援/维护/预览，不得与新美术混用 |
-| SCR-16 | 屏幕观感与残影控制 | Good Display/EPD 资料已纳入产品规则；`verify_screen_refresh_feel_contract.py` 已固化机器检查；当前策略为交互 `0xFC`、交互后一次 `0xCF`、未知基线/故障才 `0xF7`；rev51 真屏观感待复验 | 手指接触期间不得插入多闪全刷；菜单拖动只保留最新帧；同帧不刷新；局刷计数和清残到期可诊断；清残必须是交互结束后的单次低闪维护；若残影仍不可接受，下一步优先调整波形/profile/清残节奏而不是混入旧图 |
+| SCR-16 | 屏幕观感与残影控制 | Good Display/EPD 资料已纳入产品规则；`verify_screen_refresh_feel_contract.py` 已固化机器检查；当前策略为交互 `0xFC`、交互后一次 `0xCF`、未知基线/故障和明确 daily/menu 边界各一次 `0xF7`；边界前取消待执行维护，避免一次导航出现两轮清理；rev53 真屏观感待复验 | 手指接触期间不得插入多闪全刷；菜单当前按下行只保留最新帧；同帧不刷新；局刷计数和清残到期可诊断；普通交互清残必须是交互结束后的单次低闪维护；进入和退出菜单只各做一次完整净化刷新；若残影仍不可接受，下一步优先调整波形/profile/清残节奏而不是混入旧图 |
 | SCR-17 | 新旧画面交织防回退 | 外部调研已把“残影”和“资源代际混播”拆成两个问题，并补入缓存失效/完整帧提交原则；用户已把反复新旧交织列为产品观感问题，所以它是每个候选 release 都要复验的长期产品 backlog/release item：每次换 prompt、美术、菜单、屏幕 profile、外部 `ui_assets` 或 OTA 资源激活都要先过 generation hygiene；规则已并入 `verify_screen_refresh_feel_contract.py`；每个候选版本必须填写 release ledger，记录 source art、CEMP revision、CRC、兼容 profile、manifest/外部 Flash 激活、active generation、旧队列丢弃计数、首帧 coherent marker、刷新模式和视觉分类；rev51 真屏仍待复验 | 新 CEMP revision 原子激活；旧 revision 待刷帧在切换时 drain 或丢弃；所有显示请求携带 active generation；renderer 只提交完整当前 generation 帧；正常产品路径只显示当前 revision；旧 procedural/旧菜单/旧 sheet 只能用于救援或维护，不得作为过渡混播；首帧必须是 coherent current-generation frame；看到旧影时先分类为 physical afterimage、stale queued frame、stale asset revision、rescue/procedural fallback leakage 或 `stale_generation_content`，只有 physical afterimage 走维护刷新/全刷恢复/profile 调整，其余按产品 P0 修；未来 `ui_assets` OTA 也必须把资源 manifest、payload、CRC/签名、active revision、显示队列和首帧提交作为一个产品事务验收；WBA55/WBA65 即使用 tile compose 或单 framebuffer，也必须保留前台稳定、后台合成、原子提交语义 |
 | SCR-18 | 本地唤醒词与语音唤醒交接 | 用户已为低功耗目标明确 deferred；当前 `wake_word_control/status` 仍只是 arm/disarm/simulate 状态面，真实 KWS 未实现、更未做真机声学/功耗验收，不能进入默认产品流程 | 唤醒词恢复排在 SCR-21 的待机功耗验收之后：固定 `PCM16` 单声道 `16 kHz` 的 HAL-free 音频契约；PDM/DMA -> VAD -> 可替换 KWS -> 去抖/冷却 -> RAM pre-roll -> recording/ASR；短语模型与前端参数位于外部 `model_assets`，推理代码留内部 Flash；privacy/mute/disarm 必须停采样并清 RAM 音频；WB55 与 WBA 用不同 target audio adapter 复验；对真实/非短语、多人、口音、距离、噪声和背景人声记录 FAR、FRR、延迟、CPU、SRAM 与电流；模型原子激活/回退遵循 `model_assets` 契约，但 Listener OTA 验收前不推进 OTA 实作或刷写。详见 `docs/companion_wakeword_requirements.md` |
 | SCR-19 | 无板载 ST-LINK 的产品 USB 开发与恢复 | 需求已建立，尚未选定 WBA55/WBA65 产品板与完成原理图/真机验收；当前 NUCLEO 屏幕路径仍为 ST-LINK VCP + SWD | WBA55 使用 USB-UART VCP、ROM USART downloader 和 SWD/NRST/BOOT rescue pads，禁止误配原生 USB DFU；WBA65 使用原生 USB CDC、ROM USB DFU、HSE32/VDDUSB 条件和同样的 SWD pads；Host 的日志/诊断协议跨 `stlink_vcp`、`usb_uart_vcp`、`native_usb_cdc` 保持一致；USB recovery、factory flash、Denzic OTA 权限分层。详见 `docs/companion_usb_development_requirements.md` |
@@ -643,6 +643,29 @@ frames、287732 bytes、CRC32 `0xDEFC096E`；rev52 待 provision/normal 运行�
 `pet_visual_style.h`；菜单 chip、卡片、详情页内脸锚点集中在 `MENU_STYLE`。以后重新生图或
 调整高级可爱风时，先调这些 style/render layer，再重新生成 PBM/CEMP 和运行验证；不得为了
 贴图方便把大位图塞回内部 Flash，也不得让固件重新绘制实体外壳负责的猫脸轮廓。
+
+## Revision 54: 运行时交互回归修复
+
+2026-07-13 的 owner 反馈把“旧菜单仍在屏上、触控不跟手、双击录音无可见结果、长按没有
+过渡表情、录音没有状态表情、菜单边界残影过多”列为同一条运行时链路的 P0 回归，而不是
+静态构建通过后的可接受差异。机器验证必须分别记录当前 CEMP revision、down/move/up
+`sample_age_ms`、手势分类、录音状态机和表情播放器的 request/result 标记；未出现这条
+reset-bounded trace 前，不能以 source/build PASS 声称开发板正在运行 revision 53。
+
+本轮调研记录：Good Display 的 GDEY0154D67-T03 产品页列出 200x200 SSD1681、局刷约
+0.3 s、完整刷新约 2 s，并明确该触摸版使用 FT6336U；其公开规格还列出触控工作/待机电流。
+FT6336U datasheet 说明 I2C 主机接口、最高 100 Hz report rate、Active/Monitor/Sleep 三种
+模式和上电后由 INT 开始上报。来源分别为
+`https://www.good-display.com/product/258.html`（2026-07-13 读取）和
+`https://files.waveshare.com/wiki/common/FT6336U_Datasheet.pdf`（2026-07-13 读取）。
+
+因此不会假装电子纸可以成为 OLED：主界面继续用 `0xFC` 差分局刷，菜单主页以队列合并的
+当前行 press-cue 跟随手指；当前 owner-accepted v3 是一张六项同屏首页，竖向接触不得再
+伪造历史编号滚动帧。进入菜单和从菜单返回日常页是唯一的视觉边界，各先取消延迟维护再做
+一次 `0xF7` 净化刷新，确保不会接着再触发一轮 `0xCF`。3 s 长按在 650 ms 先播放外部 CEMP
+`thinking` 过渡表情；日常双击使用 650 ms/40 px 候选窗口，触控录音开始请求 `recording`，
+存储成功请求 `sync_complete`，失败请求 `error`。这三类状态仍由 CEMP 名称和外部资源决定，
+后续换生图只改资源/manifest，不要重新发明 UI 或程序化美术。
 
 ## 逐项验收顺序
 

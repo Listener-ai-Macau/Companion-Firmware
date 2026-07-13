@@ -34,6 +34,7 @@ REQUIRED_ANCHORS = (
     "COMP-REQ-015",
     "COMP-REQ-016",
     "COMP-REQ-017",
+    "COMP-REQ-018",
     "PC6/EXTI",
     "<=1 mA",
     "external-Flash first",
@@ -66,7 +67,7 @@ def main() -> int:
         "registry": str(REGISTRY.relative_to(ROOT)).replace("\\", "/"),
         "workflow_plan": "companion-screen-product-integration",
         "requirement_ids": [f"COMP-REQ-{number}" for number in requirement_ids],
-        "current_focus": "COMP-REQ-016/017 runtime screen, touch, recording, and refresh rework",
+        "current_focus": "COMP-REQ-016/017/018 runtime screen, touch, recording, refresh, and menu-v3 rework",
         "active_parallel_track": "COMP-REQ-009 generated low-power/wake/dynamic-recording expression art",
         "errors": errors,
     }

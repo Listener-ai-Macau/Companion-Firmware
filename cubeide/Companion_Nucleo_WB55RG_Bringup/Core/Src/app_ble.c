@@ -1584,6 +1584,21 @@ void Companion_Screen_MenuRequest(comp_screen_menu_view_t view,
       COMP_EPAPER_REFRESH_PARTIAL_INTERACTIVE);
 }
 
+bool Companion_Screen_MenuRequestClean(comp_screen_menu_view_t view,
+                                       uint8_t flags,
+                                       comp_screen_menu_language_t language,
+                                       uint8_t home_page)
+{
+  printf("[screen] menu_boundary=enter view=%u page=%u refresh=full\r\n",
+         (unsigned)view,
+         (unsigned)home_page);
+  return Companion_Screen_MenuRequestMode(view,
+                                          flags,
+                                          language,
+                                          home_page,
+                                          COMP_EPAPER_REFRESH_FULL);
+}
+
 bool Companion_Screen_MenuMaintenance(void)
 {
   if (s_companion_screen_presentation.mode != COMP_SCREEN_PRESENTATION_MENU)
@@ -1757,6 +1772,65 @@ bool Companion_Screen_ShowDaily(void)
                                           false,
                                           true,
                                           "daily_navigation");
+}
+
+bool Companion_Screen_ShowDailyClean(void)
+{
+  printf("[screen] menu_boundary=exit expression=idle refresh=full\r\n");
+  return Companion_Screen_StartExpression(COMP_EPAPER_EXPRESSION_IDLE,
+                                          true,
+                                          true,
+                                          "menu_exit_clean");
+}
+
+bool Companion_Screen_DailyExpression(comp_epaper_expression_t expression,
+                                      const char *reason)
+{
+  if (s_companion_screen_presentation.mode !=
+      COMP_SCREEN_PRESENTATION_EXPRESSION)
+  {
+    printf("[screen-expression] daily_expression=%s result=rejected surface=menu\r\n",
+           comp_epaper_expression_name(expression));
+    return false;
+  }
+  return Companion_Screen_StartExpression(expression,
+                                          false,
+                                          true,
+                                          reason == NULL ? "daily_expression" : reason);
+}
+
+bool Companion_Screen_DailyExpressionSignal(
+    comp_epaper_expression_signal_t signal,
+    const char *reason)
+{
+  comp_epaper_expression_decision_t decision;
+  comp_epaper_expression_state_t previous_state;
+
+  if (s_companion_screen_presentation.mode !=
+      COMP_SCREEN_PRESENTATION_EXPRESSION)
+  {
+    printf("[screen-expression] daily_signal=%u result=rejected surface=menu\r\n",
+           (unsigned)signal);
+    return false;
+  }
+  previous_state = s_companion_expression_state;
+  if (!comp_epaper_expression_state_apply_signal(
+          &s_companion_expression_state, signal, &decision))
+  {
+    printf("[screen-expression] daily_signal=%u result=suppressed current=%s\r\n",
+           (unsigned)signal,
+           comp_epaper_expression_name(s_companion_expression_state.current));
+    return false;
+  }
+  decision.reason = reason == NULL ? decision.reason : reason;
+  s_companion_expression_transition_immediate = true;
+  Companion_Display_EnqueueExpressionDecision(&decision, &previous_state, 0u);
+  s_companion_expression_transition_immediate = false;
+  printf("[screen-expression] daily_signal=%u expression=%s result=requested reason=%s\r\n",
+         (unsigned)signal,
+         decision.name,
+         decision.reason);
+  return true;
 }
 
 bool Companion_Screen_DailyTap(void)

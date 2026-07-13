@@ -15,11 +15,21 @@ void Companion_Screen_MenuRequest(comp_screen_menu_view_t view,
                                   uint8_t flags,
                                   comp_screen_menu_language_t language,
                                   uint8_t home_page);
+bool Companion_Screen_MenuRequestClean(comp_screen_menu_view_t view,
+                                       uint8_t flags,
+                                       comp_screen_menu_language_t language,
+                                       uint8_t home_page);
 bool Companion_Screen_MenuMaintenance(void);
 bool Companion_Screen_ExpressionMaintenance(void);
 bool Companion_Screen_ExpressionPreview(comp_epaper_expression_t expression);
 bool Companion_Screen_EnterLowPowerIdle(void);
 bool Companion_Screen_ShowDaily(void);
+bool Companion_Screen_ShowDailyClean(void);
+bool Companion_Screen_DailyExpression(comp_epaper_expression_t expression,
+                                      const char *reason);
+bool Companion_Screen_DailyExpressionSignal(
+    comp_epaper_expression_signal_t signal,
+    const char *reason);
 bool Companion_Screen_DailyTap(void);
 bool Companion_Screen_DailyTapAt(uint16_t x, uint16_t y);
 bool Companion_Screen_DailyStrokeAt(uint16_t start_x,
