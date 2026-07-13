@@ -75,7 +75,7 @@ This file is generated. Update it with
 - Evidence:
   - `docs/validation/companion-screen-wb55-touch-visual-acceptance-packet.json`: `PENDING_HUMAN` - asynchronous focused packet is ready and must start only after the operator explicitly says 开始验收
   - `docs/validation/companion-screen-wb55-touch-visual-review-template.json`: `TEMPLATE_NOT_ACCEPTANCE_RESULT` - blank structured review template mirrors all focused operator steps and defaults every record to non-publishable until triaged with evidence
-  - `docs/validation/companion-screen-wb55-touch-visual-review-record.json`: `NO_GO_NOT_STARTED` - filled review record validator is present and stays non-publishable until all operator notes are triaged, closed, and linked to evidence
+  - `docs/validation/companion-screen-wb55-touch-visual-review-record.json`: `NO_GO_OPEN_REVIEW_ITEMS` - filled review record validator is present and stays non-publishable until all operator notes are triaged, closed, and linked to evidence
   - `docs/validation/companion-screen-pre-acceptance-health.json`: `PASS` - machine-only pre-acceptance health gate blocks acceptance until rev53 runtime recheck, while retaining last-proven log, touch identity, refresh marker, flash preflight, and packet/resource consistency evidence
   - `docs/validation/companion-screen-wb55-runtime-recheck-runner.json`: `PASS` - rev53 provision flash, provision capture, normal restore, and normal capture sequence is dry-run verified and requires the Companion-WB55 workflow hardware lock before execution
   - `docs/validation/companion-screen-wb55-runtime-hardware-action-card.json`: `NO_GO_WAITING_FOR_REAL_HARDWARE_RUN` - Chinese hardware action card renders the locked rev53 runtime recheck steps, expected markers, promotion sequence, and human acceptance start rule
@@ -87,6 +87,7 @@ This file is generated. Update it with
   - `daily_tap_social_response`
   - `daily_swipe_pet_response`
   - `anywhere_hold_menu_entry`
+  - `menu_boundary_single_clean_refresh`
   - `menu_home_static_vertical_stroke`
   - `row_press_and_back`
   - `phone_reconnect_advertising`

@@ -546,8 +546,13 @@ def check_audit(audit: dict[str, Any], errors: list[str]) -> None:
         errors.append("touch review template claim scope drifted")
     if len(touch_review_template.get("review_records", [])) != len(requirements.get("daily_pet_and_menu_human_feel", {}).get("pending_steps", [])):
         errors.append("touch review template records must mirror pending human steps")
-    if touch_review_record.get("status") != "NO_GO_NOT_STARTED":
-        errors.append("touch review record must remain NO_GO_NOT_STARTED before human review starts")
+    allowed_review_record_statuses = {
+        "NO_GO_NOT_STARTED",
+        "NO_GO_OPEN_REVIEW_ITEMS",
+        "PASS_READY_FOR_PUBLISHABLE_REVIEW",
+    }
+    if touch_review_record.get("status") not in allowed_review_record_statuses:
+        errors.append("touch review record must remain a known non-publishable or publishable review state")
     if touch_review_record.get("publishable_pass_allowed") is not False:
         errors.append("touch review record must not allow publishable PASS before human review")
     if len(touch_review_record.get("review_records", [])) != len(requirements.get("daily_pet_and_menu_human_feel", {}).get("pending_steps", [])):
@@ -867,7 +872,7 @@ def check_audit(audit: dict[str, Any], errors: list[str]) -> None:
         "PASS_STATIC_SERIAL_CAPTURE_PREFLIGHT",
         "static_serial_capture_contract_no_hardware_claim",
         "TEMPLATE_NOT_ACCEPTANCE_RESULT",
-        "NO_GO_NOT_STARTED",
+        str(touch_review_record.get("status")),
         "NO_GO_WAITING_FOR_REAL_HARDWARE_RUN",
         "blank structured review template",
         "filled review record validator",
