@@ -348,7 +348,8 @@ def main() -> int:
         require(wb55_evidence.get("pack_crc32") == menu_pack.get("pack_crc32"),
                 "WB55 real evidence CRC drifted from menu evidence", errors)
     require(wb55_evidence.get("clips") == 33, "WB55 real evidence clip count drifted", errors)
-    require(wb55_evidence.get("frames") == 159, "WB55 real evidence frame count drifted", errors)
+    require(wb55_evidence.get("frames") == menu_pack.get("frames"),
+            "WB55 real evidence frame count drifted from current menu evidence", errors)
     for key in ("provision_runtime_log", "normal_runtime_log", "external_render_log"):
         value = wb55_evidence.get(key)
         require(isinstance(value, str) and (ROOT / value).is_file(), f"WB55 real evidence missing {key}", errors)
