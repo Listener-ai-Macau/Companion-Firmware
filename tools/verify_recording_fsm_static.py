@@ -202,13 +202,17 @@ def check_static_surface(errors: list[str]) -> None:
                 errors.append(f"{name} contains forbidden {label}: {pattern}")
 
     for token in [
-        "COMP_MIC_SOURCE_PDM_MEMS_SPH0645_COMPATIBLE",
+        "COMPANION_MIC_BACKEND_SPH0645_I2S",
+        "COMPANION_MIC_BACKEND_SPH0655_PDM",
+        "COMP_MIC_SOURCE_SPH0645_I2S_COMPATIBLE",
+        "COMP_MIC_SOURCE_SPH0655_PDM_COMPATIBLE",
+        "COMP_MIC_STM32_INGRESS_SAI_I2S_PCM",
         "COMP_MIC_STM32_INGRESS_SAI_PDM",
         "COMP_MIC_STM32_INGRESS_I2S_PDM",
         "COMP_MIC_STM32_INGRESS_DFSDM_PDM",
         "COMP_MIC_STM32_INGRESS_SOFTWARE_FIXTURE",
-        "HAL/LL SAI/I2S/PDM",
-        "SPH0645-compatible PDM MEMS",
+        "SPH0645-compatible I2S source",
+        "SPH0655-compatible PDM source",
     ]:
         require(token in joined, f"microphone abstraction missing {token}", errors)
 
@@ -295,8 +299,8 @@ def write_fixture(errors: list[str]) -> None:
         "duration_ms": 5000,
         "sample_format": {
             "codec": "pcm16",
-            "source_family": "SPH0645-compatible PDM MEMS",
-            "stm32_ingress": "software_fixture_for_HAL_LL_SAI_I2S_PDM_boundary",
+            "source_family": "SPH0655-compatible PDM digital MEMS",
+            "stm32_ingress": "software_fixture_for_HAL_LL_SAI_PDM_to_PCM_boundary",
             "sample_rate_hz": sample_rate_hz,
             "bits_per_sample": 16,
             "channels": 1,

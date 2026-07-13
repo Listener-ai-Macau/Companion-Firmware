@@ -52,6 +52,8 @@ def check_static_surface(errors: list[str]) -> None:
         "FileBackedRecordingCache",
         "backend_kind = \"file_backed_simulator\"",
         "later_backend_kind = \"external_spi_nor\"",
+        "SPH0655-compatible PDM digital MEMS",
+        "software_fixture_for_HAL_LL_SAI_PDM_to_PCM_boundary",
         "RecordingMetadata",
         "created_unix_s",
         "created_tick_ms",
@@ -283,6 +285,13 @@ def check_fixture(fixture: dict[str, Any], errors: list[str]) -> None:
     require(fixture["chunk_pull"]["final_sha256_verified"], "final SHA-256 was not verified", errors)
     require(fixture["delete_after_sync"]["accepted_after_length_and_sha256"]["status"] == "deleted", "delete-after-sync did not delete", errors)
     require(fixture["backend"]["real_spi_nor_driver_timing_power"] == "deferred_to_hardware_gate", "hardware gate deferral missing", errors)
+    sample_format = fixture["synthetic_audio"]["sample_format"]
+    require(sample_format["source_family"] == "SPH0655-compatible PDM digital MEMS", "fixture source family drifted from WB55 PDM default", errors)
+    require(
+        sample_format["stm32_ingress"] == "software_fixture_for_HAL_LL_SAI_PDM_to_PCM_boundary",
+        "fixture ingress drifted from PDM-to-PCM boundary",
+        errors,
+    )
     diag_names = {event["diag_name"] for event in fixture["diag_events"]}
     for name in [
         "spi_flash_cache.write",

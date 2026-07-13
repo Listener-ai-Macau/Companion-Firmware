@@ -517,8 +517,8 @@
           "codec": "pcm16",
           "frame_samples": 160,
           "sample_rate_hz": 16000,
-          "source_family": "SPH0645-compatible PDM MEMS",
-          "stm32_ingress": "software_fixture_for_HAL_LL_SAI_I2S_PDM_boundary"
+          "source_family": "SPH0655-compatible PDM digital MEMS",
+          "stm32_ingress": "software_fixture_for_HAL_LL_SAI_PDM_to_PCM_boundary"
         },
         "sha256": "91c8695e95f80bfeb2b62d4948eb7e9f62d2a835e532fe83155240c875055f53",
         "sha256_prefix": "91c8695e95f80bfe",
@@ -680,8 +680,8 @@
           "codec": "pcm16",
           "frame_samples": 160,
           "sample_rate_hz": 16000,
-          "source_family": "SPH0645-compatible PDM MEMS",
-          "stm32_ingress": "software_fixture_for_HAL_LL_SAI_I2S_PDM_boundary"
+          "source_family": "SPH0655-compatible PDM digital MEMS",
+          "stm32_ingress": "software_fixture_for_HAL_LL_SAI_PDM_to_PCM_boundary"
         },
         "sha256": "285324821f6039ad57fc0a0dedd4f337bb3e70763b493920f55a400303947122",
         "sha256_prefix": "285324821f6039ad",
@@ -728,8 +728,8 @@
       "codec": "pcm16",
       "frame_samples": 160,
       "sample_rate_hz": 16000,
-      "source_family": "SPH0645-compatible PDM MEMS",
-      "stm32_ingress": "software_fixture_for_HAL_LL_SAI_I2S_PDM_boundary"
+      "source_family": "SPH0655-compatible PDM digital MEMS",
+      "stm32_ingress": "software_fixture_for_HAL_LL_SAI_PDM_to_PCM_boundary"
     },
     "sha256": "91c8695e95f80bfeb2b62d4948eb7e9f62d2a835e532fe83155240c875055f53",
     "sha256_prefix": "91c8695e95f80bfe",
@@ -779,8 +779,8 @@
       "codec": "pcm16",
       "frame_samples": 160,
       "sample_rate_hz": 16000,
-      "source_family": "SPH0645-compatible PDM MEMS",
-      "stm32_ingress": "software_fixture_for_HAL_LL_SAI_I2S_PDM_boundary"
+      "source_family": "SPH0655-compatible PDM digital MEMS",
+      "stm32_ingress": "software_fixture_for_HAL_LL_SAI_PDM_to_PCM_boundary"
     },
     "sha256": "91c8695e95f80bfeb2b62d4948eb7e9f62d2a835e532fe83155240c875055f53"
   }

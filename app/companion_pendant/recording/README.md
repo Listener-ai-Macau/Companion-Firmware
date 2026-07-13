@@ -26,10 +26,16 @@ validation checks the transition artifact table instead of relying on hardware.
 
 ## Microphone Boundary
 
-`microphone.h` describes a SPH0645-compatible PDM MEMS microphone family when
-that part is available. The STM32 ingress choices are documented as HAL/LL
-SAI/PDM, HAL/LL I2S/PDM, DFSDM/PDM where available, or the software fixture
-used by validation. The code does not call Listener ESP audio drivers.
+`microphone.h` keeps the microphone family separate from the STM32 ingress. The
+WB55 devboard default is now the Listener-style SPH0655-compatible PDM source on
+the IOC's three-signal SAI path (SCK/FS/SD), converted by the WB55 platform
+adapter into 16 kHz PCM16 mono frames. The older SPH0645-compatible I2S source
+remains a selectable family for comparison. The software fixture is only for
+validation, and portable recording code does not call Listener ESP audio
+drivers or depend on WB55 SAI/DMA details.
+The accepted WB55 PC-speaker/TTS baseline is recorded in
+`docs/validation/companion-mic-wb55-pdm-baseline.json` and checked by
+`tools/verify_companion_mic_wb55_pdm_baseline.py`.
 
 ## BLE Metadata Boundary
 

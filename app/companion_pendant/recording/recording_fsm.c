@@ -484,6 +484,8 @@ static uint8_t comp_recording_diag_source(comp_recording_source_t source)
     switch (source) {
     case COMP_RECORDING_SOURCE_USER_BUTTON:
         return 1u;
+    case COMP_RECORDING_SOURCE_USER_TOUCH:
+        return 4u;
     case COMP_RECORDING_SOURCE_HOST_BLE_CONTROL:
         return 2u;
     case COMP_RECORDING_SOURCE_SYNTHETIC_FIXTURE:

@@ -1,14 +1,17 @@
 #include "microphone.h"
 
-/*
- * Companion targets the same SPH0645-compatible PDM MEMS microphone family used
- * by Listener when that part is available. The STM32WB path is expressed as a
- * HAL/LL SAI/I2S/PDM ingress choice or a documented WB55-compatible fallback.
- */
+#ifndef COMPANION_MIC_BACKEND
+#define COMPANION_MIC_BACKEND COMPANION_MIC_BACKEND_SPH0655_PDM
+#endif
 
 static const comp_microphone_format_t k_default_format = {
-    .source_family = COMP_MIC_SOURCE_PDM_MEMS_SPH0645_COMPATIBLE,
+#if COMPANION_MIC_BACKEND == COMPANION_MIC_BACKEND_SPH0655_PDM
+    .source_family = COMP_MIC_SOURCE_SPH0655_PDM_COMPATIBLE,
     .stm32_ingress = COMP_MIC_STM32_INGRESS_SAI_PDM,
+#else
+    .source_family = COMP_MIC_SOURCE_SPH0645_I2S_COMPATIBLE,
+    .stm32_ingress = COMP_MIC_STM32_INGRESS_SAI_I2S_PCM,
+#endif
     .encoding = COMP_MIC_ENCODING_PCM16_MONO,
     .sample_rate_hz = 16000u,
     .bits_per_sample = 16u,

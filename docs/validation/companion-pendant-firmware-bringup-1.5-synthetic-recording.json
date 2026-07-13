@@ -63,8 +63,8 @@
     "codec": "pcm16",
     "frame_samples": 160,
     "sample_rate_hz": 16000,
-    "source_family": "SPH0645-compatible PDM MEMS",
-    "stm32_ingress": "software_fixture_for_HAL_LL_SAI_I2S_PDM_boundary"
+    "source_family": "SPH0655-compatible PDM digital MEMS",
+    "stm32_ingress": "software_fixture_for_HAL_LL_SAI_PDM_to_PCM_boundary"
   },
   "schema_version": 1
 }

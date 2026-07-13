@@ -35,8 +35,8 @@ class SampleFormat:
     bits_per_sample: int = 16
     channels: int = 1
     frame_samples: int = 160
-    source_family: str = "SPH0645-compatible PDM MEMS"
-    stm32_ingress: str = "software_fixture_for_HAL_LL_SAI_I2S_PDM_boundary"
+    source_family: str = "SPH0655-compatible PDM digital MEMS"
+    stm32_ingress: str = "software_fixture_for_HAL_LL_SAI_PDM_to_PCM_boundary"
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
