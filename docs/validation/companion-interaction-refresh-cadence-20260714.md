@@ -109,6 +109,32 @@ The direct-GPIO and vendor-partial A/B switches are deliberately mutually
 exclusive: one compares transport with a fixed waveform, while the other
 compares waveform/data planes with the known-good transport.
 
+## Quiet Production Trace Policy
+
+Normal WB55 SSD1681 interaction builds set
+`COMPANION_EPAPER_SSD1681_VERBOSE_TRACE=0`. This removes synchronous UART
+serialization of successful scene, policy, window, and timing messages from
+the visual path while retaining failure output. The low-power `_write` route is
+bounded but synchronous, so this preserves CPU time for the five-millisecond
+touch service without changing the waveform or resource selection.
+
+For a normal image that deliberately needs serial evidence, add:
+
+```powershell
+pwsh -NoProfile -File .\tools\build_nucleo_bringup.ps1 -EpaperSsd1681Bringup -EpaperMenu 1 -EpaperSsd1681VerboseTrace -Force
+```
+
+The cadence, vendor-partial, and direct-GPIO diagnostic commands enable this
+trace automatically. Do not use a quiet production serial capture to prove
+refresh timing: use the matching trace-enabled diagnostic image instead.
+
+Machine build evidence on 2026-07-14: quiet production, manual verbose,
+vendor-partial, and direct-BSRR images all compiled. The quiet SSD1681 object
+contains two remaining failure-path `printf` relocations versus 29 in the
+verbose object; linked text is 132324 bytes quiet versus 135020 bytes verbose.
+This proves that successful-refresh UART serialization is removed from the
+quiet image, not that panel BUSY or human-perceived responsiveness has passed.
+
 ## Required Hardware Follow-up
 
 No board was flashed for this change and no human observation was requested.

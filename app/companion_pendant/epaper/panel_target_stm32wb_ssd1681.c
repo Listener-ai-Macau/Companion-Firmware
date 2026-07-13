@@ -71,6 +71,9 @@
 #ifndef COMPANION_EPAPER_SSD1681_DIRECT_GPIO_SPI_DIAGNOSTIC
 #define COMPANION_EPAPER_SSD1681_DIRECT_GPIO_SPI_DIAGNOSTIC 0
 #endif
+#ifndef COMPANION_EPAPER_SSD1681_VERBOSE_TRACE
+#define COMPANION_EPAPER_SSD1681_VERBOSE_TRACE 0
+#endif
 #ifndef COMPANION_EPAPER_SSD1681_ROTATION_DEGREES
 #define COMPANION_EPAPER_SSD1681_ROTATION_DEGREES 0u
 #endif
@@ -93,6 +96,18 @@
 #if COMPANION_EPAPER_SSD1681_DIRECT_GPIO_SPI_DIAGNOSTIC != 0 && \
     COMPANION_EPAPER_SSD1681_DIRECT_GPIO_SPI_DIAGNOSTIC != 1
 #error "SSD1681 direct GPIO SPI diagnostic must be 0 or 1"
+#endif
+#if COMPANION_EPAPER_SSD1681_VERBOSE_TRACE != 0 && \
+    COMPANION_EPAPER_SSD1681_VERBOSE_TRACE != 1
+#error "SSD1681 verbose trace must be 0 or 1"
+#endif
+
+#if COMPANION_EPAPER_SSD1681_VERBOSE_TRACE
+#define SSD1681_VERBOSE_TRACE(...) printf(__VA_ARGS__)
+#else
+/* Keep format arguments visible to the compiler, but remove the synchronous
+ * UART call and its format strings from optimized production images. */
+#define SSD1681_VERBOSE_TRACE(...) do { if (0) { printf(__VA_ARGS__); } } while (0)
 #endif
 
 #define SSD1681_WIDTH 200u
@@ -273,7 +288,7 @@ static bool ssd1681_wait_ready(uint32_t fallback_delay_ms, uint32_t timeout_ms)
         ssd1681_service_wait();
         HAL_Delay(1u);
     }
-    printf("[epaper] ready_wait initial=%d final=%d elapsed_ms=%lu ready=1\r\n",
+    SSD1681_VERBOSE_TRACE("[epaper] ready_wait initial=%d final=%d elapsed_ms=%lu ready=1\r\n",
            initial_level,
            ssd1681_busy_level(),
            (unsigned long)(HAL_GetTick() - start));
@@ -342,7 +357,7 @@ static void ssd1681_observe_refresh_busy(uint32_t duration_ms)
         HAL_Delay(1u);
     }
 
-    printf("[epaper] busy_observe start=%d end=%d transitions=%lu busy_active_ms=%lu\r\n",
+    SSD1681_VERBOSE_TRACE("[epaper] busy_observe start=%d end=%d transitions=%lu busy_active_ms=%lu\r\n",
            first,
            ssd1681_busy_level(),
            (unsigned long)transitions,
@@ -475,7 +490,7 @@ static void ssd1681_reset(void)
                       COMPANION_EPAPER_SSD1681_RST_PIN,
                       GPIO_PIN_SET);
     HAL_Delay(10u);
-    printf("[epaper] reset busy=%d\r\n", ssd1681_busy_level());
+    SSD1681_VERBOSE_TRACE("[epaper] reset busy=%d\r\n", ssd1681_busy_level());
 }
 
 static bool ssd1681_prepare_vendor_fast_profile(void)
@@ -512,7 +527,7 @@ static bool ssd1681_prepare_vendor_fast_profile(void)
                                        sizeof(load_lut_mode1)) &&
                  ssd1681_command(0x20u) &&
                  ssd1681_wait_ready(120u, SSD1681_READY_TIMEOUT_MS);
-    printf("[epaper] fast_profile=%s temp_sensor=%u temp_load=%u temp_reg=0x%02X%02X lut_mode1=%u\r\n",
+    SSD1681_VERBOSE_TRACE("[epaper] fast_profile=%s temp_sensor=%u temp_load=%u temp_reg=0x%02X%02X lut_mode1=%u\r\n",
            SSD1681_VENDOR_FAST_PROFILE_NAME,
            (unsigned)temperature_sensor_set,
            (unsigned)temperature_loaded,
@@ -724,7 +739,7 @@ static void frame_prepare(comp_epaper_expression_asset_source_t *expression_asse
                                             SSD1681_WIDTH,
                                             SSD1681_HEIGHT) &&
                comp_pet_expression_render(&request->pet_pose, &framebuffer)) {
-        printf("[epaper] scene=pet state=%s gaze=%d,%d eye_open=%u lid_tilt=%d eye_width=%u spacing=%u pair_tilt=%d highlight=%u face_shift=%d,%d brow=%u lift=%u asym=%d mouth=%u mouth_scale=%u cheek=%u mark=%u dirty=%u,%u,%u,%u source=procedural\r\n",
+        SSD1681_VERBOSE_TRACE("[epaper] scene=pet state=%s gaze=%d,%d eye_open=%u lid_tilt=%d eye_width=%u spacing=%u pair_tilt=%d highlight=%u face_shift=%d,%d brow=%u lift=%u asym=%d mouth=%u mouth_scale=%u cheek=%u mark=%u dirty=%u,%u,%u,%u source=procedural\r\n",
                comp_epaper_expression_name(
                    (comp_epaper_expression_t)request->expression),
                (int)request->pet_pose.gaze_x,
@@ -757,7 +772,7 @@ static void frame_prepare(comp_epaper_expression_asset_source_t *expression_asse
                    request->asset_frame_index,
                    s_frame,
                    sizeof(s_frame))) {
-        printf("[epaper] scene=expression name=%s frame_index=%u dirty=%u,%u,%u,%u source=external_flash\r\n",
+        SSD1681_VERBOSE_TRACE("[epaper] scene=expression name=%s frame_index=%u dirty=%u,%u,%u,%u source=external_flash\r\n",
                comp_epaper_expression_name(
                    (comp_epaper_expression_t)request->expression),
                (unsigned)request->asset_frame_index,
@@ -773,7 +788,7 @@ static void frame_prepare(comp_epaper_expression_asset_source_t *expression_asse
                    (comp_epaper_expression_t)request->expression,
                    s_frame,
                    sizeof(s_frame))) {
-        printf("[epaper] scene=expression name=%s source=external_flash\r\n",
+        SSD1681_VERBOSE_TRACE("[epaper] scene=expression name=%s source=external_flash\r\n",
                comp_epaper_expression_name(
                    (comp_epaper_expression_t)request->expression));
         return;
@@ -799,7 +814,7 @@ static void frame_prepare(comp_epaper_expression_asset_source_t *expression_asse
                    sizeof(s_frame),
                    SSD1681_WIDTH,
                    SSD1681_HEIGHT)) {
-        printf("[epaper] scene=menu asset=%s source=external_flash flags=0x%02X\r\n",
+        SSD1681_VERBOSE_TRACE("[epaper] scene=menu asset=%s source=external_flash flags=0x%02X\r\n",
                menu_asset_name,
                (unsigned)request->menu_flags);
         return;
@@ -813,7 +828,7 @@ static void frame_prepare(comp_epaper_expression_asset_source_t *expression_asse
                                        sizeof(s_frame),
                                        SSD1681_WIDTH,
                                        SSD1681_HEIGHT)) {
-        printf("[epaper] scene=menu view=%u language=%u source=rescue_ui flags=0x%02X\r\n",
+        SSD1681_VERBOSE_TRACE("[epaper] scene=menu view=%u language=%u source=rescue_ui flags=0x%02X\r\n",
                (unsigned)request->menu_view,
                (unsigned)request->menu_language,
                (unsigned)request->menu_flags);
@@ -926,7 +941,7 @@ static bool ssd1681_refresh_display(comp_epaper_refresh_decision_t decision)
     uint32_t wait_start = HAL_GetTick();
     bool refresh_complete = master_activation_sent &&
                             ssd1681_wait_refresh_complete(fallback_delay_ms, 5000u);
-    printf("[epaper] refresh mode=%s profile=%s control=0x%02X expected_visible_flicker=%s activation_count=%lu busy=%d update=%u activate=%u complete=%u elapsed_ms=%lu\r\n",
+    SSD1681_VERBOSE_TRACE("[epaper] refresh mode=%s profile=%s control=0x%02X expected_visible_flicker=%s activation_count=%lu busy=%d update=%u activate=%u complete=%u elapsed_ms=%lu\r\n",
            mode,
            profile,
            (unsigned)update_control,
@@ -977,7 +992,7 @@ static comp_epaper_panel_result_t ssd1681_refresh(
     uint32_t transfer_before_waveform_elapsed_ms;
     uint32_t transfer_after_waveform_elapsed_ms;
     const char *selected_mode = partial ? "differential" : fast ? "maintenance" : "full";
-    printf("[epaper] policy requested=%u selected=%s reason=%u partial_count=%u limit=%u baseline=%u\r\n",
+    SSD1681_VERBOSE_TRACE("[epaper] policy requested=%u selected=%s reason=%u partial_count=%u limit=%u baseline=%u\r\n",
            (unsigned)requested_mode,
            selected_mode,
            (unsigned)selection.reason,
@@ -1000,7 +1015,7 @@ static comp_epaper_panel_result_t ssd1681_refresh(
     window = partial ? ssd1681_window_from_difference() : ssd1681_window_full();
     window_bytes = ssd1681_window_byte_count(&window);
     if (partial && !window.changed) {
-        printf("[epaper] differential_skip identical_frame\r\n");
+        SSD1681_VERBOSE_TRACE("[epaper] differential_skip identical_frame\r\n");
         if (out_report != NULL) {
             out_report->request_id = request->request_id;
             out_report->content_crc32 = request->content_crc32;
@@ -1016,13 +1031,13 @@ static comp_epaper_panel_result_t ssd1681_refresh(
     if (controller_initialization_required) {
         ssd1681_reset();
     }
-    printf("[epaper] spi=%s sck=PA9 mosi=PC1\r\n",
+    SSD1681_VERBOSE_TRACE("[epaper] spi=%s sck=PA9 mosi=PC1\r\n",
            ssd1681_spi_transport_name());
 
     bool pre_reset_ready = ssd1681_wait_ready(20u, SSD1681_READY_TIMEOUT_MS);
     bool reset_command_sent = controller_initialization_required && !vendor_sample_partial &&
                               pre_reset_ready && ssd1681_command(0x12u);
-    printf("[epaper] controller_init=%u soft_reset mode=%s busy=%d pre=%u command=%u\r\n",
+    SSD1681_VERBOSE_TRACE("[epaper] controller_init=%u soft_reset mode=%s busy=%d pre=%u command=%u\r\n",
            (unsigned)controller_initialization_required,
            partial ? "differential" : fast ? "maintenance" : "full",
            ssd1681_busy_level(),
@@ -1040,12 +1055,12 @@ static comp_epaper_panel_result_t ssd1681_refresh(
                       ssd1681_set_window(&window, vendor_sample_partial);
     bool border_set = window_set;
     controller_setup_elapsed_ms = HAL_GetTick() - controller_setup_start_ms;
-    printf("[epaper] frame rotation=%u mirror_x=%u width=%u height=%u\r\n",
+    SSD1681_VERBOSE_TRACE("[epaper] frame rotation=%u mirror_x=%u width=%u height=%u\r\n",
            (unsigned)COMPANION_EPAPER_SSD1681_ROTATION_DEGREES,
            (unsigned)COMPANION_EPAPER_SSD1681_MIRROR_X,
            (unsigned)SSD1681_WIDTH,
            (unsigned)SSD1681_HEIGHT);
-    printf("[epaper] window x_byte=%u..%u y=%u..%u bytes=%lu changed=%u\r\n",
+    SSD1681_VERBOSE_TRACE("[epaper] window x_byte=%u..%u y=%u..%u bytes=%lu changed=%u\r\n",
            (unsigned)window.x_start_byte,
            (unsigned)window.x_end_byte,
            (unsigned)window.y_start,
@@ -1094,7 +1109,7 @@ static comp_epaper_panel_result_t ssd1681_refresh(
         display_refreshed = frame_written &&
                             ssd1681_refresh_display(selection.decision);
     }
-    printf("[epaper] timing mode=%s prepare_ms=%lu setup_ms=%lu transfer_before_waveform_ms=%lu transfer_after_waveform_ms=%lu bytes=%lu data_planes=%u spi=%s\r\n",
+    SSD1681_VERBOSE_TRACE("[epaper] timing mode=%s prepare_ms=%lu setup_ms=%lu transfer_before_waveform_ms=%lu transfer_after_waveform_ms=%lu bytes=%lu data_planes=%u spi=%s\r\n",
            selected_mode,
            (unsigned long)frame_prepare_elapsed_ms,
            (unsigned long)controller_setup_elapsed_ms,
@@ -1108,7 +1123,7 @@ static comp_epaper_panel_result_t ssd1681_refresh(
     comp_epaper_refresh_policy_commit(&target->refresh_policy,
                                       selection.decision,
                                       ok);
-    printf("[epaper] policy_commit mode=%s ok=%u partial_count=%u baseline=%u\r\n",
+    SSD1681_VERBOSE_TRACE("[epaper] policy_commit mode=%s ok=%u partial_count=%u baseline=%u\r\n",
            selected_mode,
            (unsigned)ok,
            (unsigned)target->refresh_policy.partial_count,
@@ -1182,7 +1197,7 @@ void companion_epaper_panel_stm32wb_ssd1681_init(
             comp_epaper_panel_result_t result =
                 comp_epaper_panel_adapter_refresh_card(adapter, &request, &report);
 
-            printf("[epaper] boot_diag cycle=%u result=%u bytes=%lu busy=%d\r\n",
+            SSD1681_VERBOSE_TRACE("[epaper] boot_diag cycle=%u result=%u bytes=%lu busy=%d\r\n",
                    (unsigned)cycle,
                    (unsigned)result,
                    (unsigned long)report.transferred_bytes,

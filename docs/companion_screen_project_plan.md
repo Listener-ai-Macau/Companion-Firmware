@@ -1014,6 +1014,19 @@ portable policy 均不改变。它与 vendor-partial image 互斥，硬件对比
 和 normal-vs-vendor-partial 两组；任何 BUSY/transport failure、残影退化或 focused review
 失败都使 direct-BSRR 保持 diagnostic-only。
 
+## Revision 77: 默认交互关闭详细 UART Trace
+
+用户继续反馈产品整体卡顿。低功耗 WB55 的 `printf` 经 USART1 同步发送，而 SSD1681 的每次
+交互刷新都会输出 scene、policy、window、timing 和成功结果。这些内容是诊断证据，不是完成
+画面所需的控制步骤，因此正常交互 build 默认使用
+`COMPANION_EPAPER_SSD1681_VERBOSE_TRACE=0`，只保留错误输出；显式 trace switch 与 cadence、
+vendor-partial、direct-BSRR 三种诊断 build 自动保留同一组完整 marker。
+
+这只是减少 CPU/UART 竞争：不改变已批准资源、控制器波形、BUSY 时序、vendor-edge production
+transport、portable refresh policy 或 WBA adapter 边界。普通和 trace-enabled machine build 已通过：
+quiet image 的 SSD1681 object 仅剩 2 个错误路径 `printf` call，verbose image 保留 29 个 call，
+整机 text 分别为 132324 与 135020 bytes。它仍必须经过实板对照，才能声称改善了真实体感。
+
 ## 逐项验收顺序
 
 本项目遵循 AI Workflow 的全产品异步验收规则：未收到操作者明确的“开始验收”前，

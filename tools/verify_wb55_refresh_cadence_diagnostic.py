@@ -76,6 +76,12 @@ def main() -> int:
             "COMPANION_EPAPER_SSD1681_DIRECT_GPIO_SPI_DIAGNOSTIC 0",
             "direct GPIO transport production-off default",
         ),
+        (
+            "COMPANION_EPAPER_SSD1681_VERBOSE_TRACE 0",
+            "verbose UART trace production-off default",
+        ),
+        ("#define SSD1681_VERBOSE_TRACE(...) printf(__VA_ARGS__)", "verbose trace enable macro"),
+        ("#define SSD1681_VERBOSE_TRACE(...) do { if (0) { printf(__VA_ARGS__); } } while (0)", "quiet production trace macro"),
         ("good_display_vendor_partial_ab", "vendor partial diagnostic profile"),
         ("? 0xFFu", "vendor partial update control"),
         ("Diagnostic-only A/B", "vendor partial isolation rationale"),
@@ -97,6 +103,30 @@ def main() -> int:
         makefile,
         "COMPANION_EPAPER_SSD1681_DIRECT_GPIO_SPI_DIAGNOSTIC=1",
         "direct GPIO transport build definition",
+        errors,
+    )
+    require(
+        makefile,
+        "COMPANION_EPAPER_SSD1681_VERBOSE_TRACE=1",
+        "verbose trace build definition",
+        errors,
+    )
+    require(
+        build,
+        "EpaperSsd1681VerboseTrace",
+        "manual verbose trace build switch",
+        errors,
+    )
+    require(
+        build,
+        '"EPAPER_SSD1681_VERBOSE_TRACE=1"',
+        "cadence diagnostics retain verbose trace evidence",
+        errors,
+    )
+    require(
+        build,
+        "BUILD_DIR=build_verbose_trace",
+        "isolated manual verbose trace build directory",
         errors,
     )
     require(
