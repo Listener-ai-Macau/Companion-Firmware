@@ -15,7 +15,7 @@
     "frames": 159,
     "pack_bytes": 287732,
     "product": "Companion screen",
-    "runtime_status": "REVISION_52_RUNTIME_RECHECK_PENDING",
+    "runtime_status": "REVISION_52_RUNTIME_PASS_HUMAN_VISUAL_PENDING",
     "storage": "external ui_assets at 0x00200000",
     "target_family": "STM32WB55 baseline; WBA55/WBA65 inherit generation hygiene",
     "target_profile": "GDEY0154D67-T03 200x200 1-bit"
@@ -93,7 +93,7 @@
     "wba_port_contract": "docs/validation/companion-screen-wba-port-contract.json",
     "wba_real_parity_gate": "docs/validation/companion-screen-wba-real-parity-gate.json"
   },
-  "status": "RUNTIME_LOGS_PASS_PROMOTION_PENDING",
+  "status": "RUNTIME_PROMOTED_HUMAN_VISUAL_PENDING",
   "validation_commands": [
     "python .\\tools\\verify_screen_generation_release_ledger.py",
     "python .\\tools\\verify_display_queue_generation_hygiene.py",

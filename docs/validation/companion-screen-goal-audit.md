@@ -18,11 +18,11 @@ This file is generated. Update it with
 
 ### current_external_resource_runtime
 
-- Status: `pending_hardware_recheck`
+- Status: `proved`
 - Requirement: The normal WB55 firmware uses external ui_assets for the current expression/menu art pack.
 - Evidence:
-  - `docs/validation/companion-screen-bilingual-menu-wb55.json`: `REVISION_52_RUNTIME_RECHECK_PENDING` - revision 52 CEMP pack metadata is current; runtime_status=REVISION_52_RUNTIME_RECHECK_PENDING
-  - `.`: `LAST_PROVEN_PREVIOUS_REVISION` - last proven normal boot remains revision=51; current revision=52 awaits provision/normal runtime recheck
+  - `docs/validation/companion-screen-bilingual-menu-wb55.json`: `REVISION_52_RUNTIME_RECHECK_PENDING` - revision 52 CEMP pack metadata is current; runtime_status=REVISION_52_RUNTIME_PASS_HUMAN_VISUAL_PENDING
+  - `.cache/validation/rev52-runtime-current/normal/nucleo-serial-raw.log`: `PASS` - normal boot log contains mount=ok, revision=52, source=external_flash, and full refresh completion
 
 ### generated_pet_and_menu_art_baseline
 
@@ -40,14 +40,14 @@ This file is generated. Update it with
   - `docs/validation/companion-screen-generated-art-style-contract.json`: `PASS` - normal pack contact sheet proves every normal expression source is generated-sheet-derived; old procedural art is not allowed in the normal product pack
   - `docs/validation/companion-screen-refresh-feel-contract.json`: `PASS` - SCR-16 contract keeps 0xFC differential interaction, latest-frame menu coalescing, one 0xCF quiet maintenance pass after touch settles, and 0xF7 only for baseline/fault recovery
   - `docs/validation/companion-screen-display-queue-generation-hygiene.json`: `PASS` - SCR-17 separates physical e-paper afterimage from stale queued frames by atomically switching active_resource_revision, draining stale requests, and requiring coherent_generation on the first visible result
-  - `docs/validation/companion-screen-generation-release-ledger.json`: `RUNTIME_LOGS_PASS_PROMOTION_PENDING` - SCR-17 release ledger records source art, CEMP revision/CRC, external Flash activation status, stale-discard model, first-frame coherent marker, refresh classification, OTA transaction rule, and pending rev52 runtime facts
+  - `docs/validation/companion-screen-generation-release-ledger.json`: `RUNTIME_PROMOTED_HUMAN_VISUAL_PENDING` - SCR-17 release ledger records source art, CEMP revision/CRC, external Flash activation status, stale-discard model, first-frame coherent marker, refresh classification, OTA transaction rule, and pending rev52 runtime facts
 
 ### screen_refresh_touch_machine_health
 
-- Status: `pending_hardware_recheck`
+- Status: `proved`
 - Requirement: WB55 machine logs prove refresh path and FT6336 identity/health before human visual acceptance.
 - Evidence:
-  - `.`: `LAST_PROVEN_PREVIOUS_REVISION` - rev52 refresh/touch runtime evidence is pending; rev51 remains last proven
+  - `.cache/validation/rev52-runtime-current/normal/nucleo-serial-raw.log`: `PASS` - normal boot log includes refresh complete and touch-health identity addr=0x38 cipher=0x64 fw=0x01 chip=0x11
   - `docs/validation/companion-screen-wb55-runtime-recheck-logs.json`: `PASS` - current rev52 machine health depends on provision and normal runtime logs; pending status keeps this requirement in hardware recheck instead of relying on earlier history
   - `docs/validation/companion-screen-wb55-touch-visual-acceptance-packet.json`: `PENDING_HUMAN` - operator packet links the current resource state; it does not claim human visual acceptance
   - `docs/validation/companion-screen-refresh-feel-contract.json`: `PASS` - static refresh-feel contract is PASS; real rev52 touch/flicker/ghosting feel remains a pending hardware recheck
@@ -76,13 +76,13 @@ This file is generated. Update it with
   - `docs/validation/companion-screen-wb55-touch-visual-acceptance-packet.json`: `PENDING_HUMAN` - asynchronous focused packet is ready and must start only after the operator explicitly says 开始验收
   - `docs/validation/companion-screen-wb55-touch-visual-review-template.json`: `TEMPLATE_NOT_ACCEPTANCE_RESULT` - blank structured review template mirrors all focused operator steps and defaults every record to non-publishable until triaged with evidence
   - `docs/validation/companion-screen-wb55-touch-visual-review-record.json`: `NO_GO_NOT_STARTED` - filled review record validator is present and stays non-publishable until all operator notes are triaged, closed, and linked to evidence
-  - `docs/validation/companion-screen-pre-acceptance-health.json`: `NO_GO_RUNTIME_RECHECK_PENDING` - machine-only pre-acceptance health gate blocks acceptance until rev52 runtime recheck, while retaining last-proven log, touch identity, refresh marker, flash preflight, and packet/resource consistency evidence
+  - `docs/validation/companion-screen-pre-acceptance-health.json`: `PASS` - machine-only pre-acceptance health gate blocks acceptance until rev52 runtime recheck, while retaining last-proven log, touch identity, refresh marker, flash preflight, and packet/resource consistency evidence
   - `docs/validation/companion-screen-wb55-runtime-recheck-runner.json`: `PASS` - rev52 provision flash, provision capture, normal restore, and normal capture sequence is dry-run verified and requires the Companion-WB55 workflow hardware lock before execution
   - `docs/validation/companion-screen-wb55-runtime-hardware-action-card.json`: `NO_GO_WAITING_FOR_REAL_HARDWARE_RUN` - Chinese hardware action card renders the locked rev52 runtime recheck steps, expected markers, promotion sequence, and human acceptance start rule
   - `docs/validation/companion-screen-wb55-runtime-flash-preflight.json`: `PASS` - normal/provision flash CheckOnly preflight proves both hex paths and STM32_Programmer_CLI are available before the locked hardware run
   - `docs/validation/companion-screen-wb55-runtime-serial-capture-preflight.json`: `PASS_STATIC_SERIAL_CAPTURE_PREFLIGHT` - static serial-capture preflight proves capture_nucleo_serial.ps1, locked runner calls, raw/summary output names, and log-verifier expectations before opening any COM port; claim_scope=static_serial_capture_contract_no_hardware_claim
   - `docs/validation/companion-screen-wb55-runtime-recheck-logs.json`: `PASS` - rev52 provision/normal runtime logs are the first-hand machine gate; pending status means human touch/visual acceptance must not start
-  - `docs/validation/companion-screen-wb55-runtime-promotion.json`: `READY_TO_APPLY` - promotion gate refuses to update runtime evidence until both rev52 provision and normal serial logs verify PASS
+  - `docs/validation/companion-screen-wb55-runtime-promotion.json`: `APPLIED` - promotion gate has applied rev52 runtime evidence; human visual/touch acceptance is still pending
 - Pending steps:
   - `daily_tap_social_response`
   - `daily_swipe_pet_response`
@@ -114,8 +114,6 @@ This file is generated. Update it with
 
 ## Open Requirements
 
-- `current_external_resource_runtime`
-- `screen_refresh_touch_machine_health`
 - `daily_pet_and_menu_human_feel`
 - `wba55_wba65_portability_boundary`
 

@@ -1,14 +1,14 @@
 {
   "acceptance_index": {
-    "next_hardware_gate": "wb55_rev52_runtime_recheck",
+    "next_hardware_gate": "wba_real_panel_parity",
     "next_human_gate": "wb55_touch_visual_acceptance",
     "path": "docs/validation/companion-screen-acceptance-index.json",
     "schema_id": "companion.pendant.screen_acceptance_index.v1",
     "summary": {
-      "deferred_count": 1,
-      "next_hardware_gate": "wb55_rev52_runtime_recheck",
+      "deferred_count": 0,
+      "next_hardware_gate": "wba_real_panel_parity",
       "next_human_gate": "wb55_touch_visual_acceptance",
-      "pass_count": 84,
+      "pass_count": 85,
       "pending_human_count": 2,
       "total_count": 87
     }
@@ -149,16 +149,16 @@
   },
   "goal_state": {
     "open_requirements": [
-      "current_external_resource_runtime",
-      "screen_refresh_touch_machine_health",
       "daily_pet_and_menu_human_feel",
       "wba55_wba65_portability_boundary"
     ],
     "path": "docs/validation/companion-screen-goal-audit.json",
     "proved_requirements": [
       "wb55_physical_wiring_and_panel_identity",
+      "current_external_resource_runtime",
       "generated_pet_and_menu_art_baseline",
       "generated_art_handoff_and_refresh_feel_regression_guard",
+      "screen_refresh_touch_machine_health",
       "wb55_screen_firmware_build_matrix",
       "touch_menu_interaction_machine_contract",
       "external_flash_and_ota_resource_policy"
@@ -166,10 +166,10 @@
     "status": "GOAL_ACTIVE_NOT_COMPLETE"
   },
   "last_runtime_proven_resource": {
-    "normal_log": ".cache/validation/rev51-runtime-20260712-generated-art/normal/nucleo-serial-raw.log",
-    "pack_crc32": "0x56B56273",
-    "provision_log": ".cache/validation/rev51-runtime-20260712-generated-art/provision/nucleo-serial-raw.log",
-    "revision": 51
+    "normal_log": ".cache/validation/rev52-runtime-current/normal/nucleo-serial-raw.log",
+    "pack_crc32": "0xDEFC096E",
+    "provision_log": ".cache/validation/rev52-runtime-current/provision/nucleo-serial-raw.log",
+    "revision": 52
   },
   "operator_packet": {
     "machine_state_matches_resource": {
@@ -206,7 +206,7 @@
     "candidate": {
       "crc32": "0xDEFC096E",
       "revision": 52,
-      "runtime_status": "REVISION_52_RUNTIME_RECHECK_PENDING"
+      "runtime_status": "REVISION_52_RUNTIME_PASS_HUMAN_VISUAL_PENDING"
     },
     "checks": {
       "art_and_refresh_axes_separate": true,
@@ -235,7 +235,7 @@
     "frames": 159,
     "pack_crc32": "0xDEFC096E",
     "revision": 52,
-    "runtime_status": "REVISION_52_RUNTIME_RECHECK_PENDING",
+    "runtime_status": "REVISION_52_RUNTIME_PASS_HUMAN_VISUAL_PENDING",
     "total_bytes": 287732
   },
   "runtime_flash_preflight": {
@@ -270,11 +270,11 @@
         "mount=ok": true,
         "pet_behavior_selftest=pass failure_code=0": true,
         "refresh mode=full": true,
-        "revision=51": true,
+        "revision=52": true,
         "source=external_flash": true,
         "touch-health] detected=1 identity=1 addr=0x38": true
       },
-      "path": ".cache/validation/rev51-runtime-20260712-generated-art/normal/nucleo-serial-raw.log"
+      "path": ".cache/validation/rev52-runtime-current/normal/nucleo-serial-raw.log"
     },
     "provision": {
       "exists": true,
@@ -285,17 +285,17 @@
         "mount=ok": true,
         "pet_behavior_selftest=pass failure_code=0": true,
         "refresh mode=full": true,
-        "revision=51": true,
+        "revision=52": true,
         "source=external_flash": true,
         "touch-health] detected=1 identity=1 addr=0x38": true
       },
-      "path": ".cache/validation/rev51-runtime-20260712-generated-art/provision/nucleo-serial-raw.log"
+      "path": ".cache/validation/rev52-runtime-current/provision/nucleo-serial-raw.log"
     }
   },
   "runtime_promotion_gate": {
     "blockers": [],
     "path": "docs/validation/companion-screen-wb55-runtime-promotion.json",
-    "status": "READY_TO_APPLY",
+    "status": "APPLIED",
     "target_status": "REVISION_52_RUNTIME_PASS_HUMAN_VISUAL_PENDING"
   },
   "runtime_serial_capture_preflight": {
@@ -310,7 +310,7 @@
     "summary_json_filename": "nucleo-serial-summary.json"
   },
   "schema_id": "companion.pendant.screen_pre_acceptance_health.v1",
-  "status": "NO_GO_RUNTIME_RECHECK_PENDING",
+  "status": "PASS",
   "target": "NUCLEO-WB55RG + GDEY0154D67-T03 + FT6336U",
   "validation_commands": [
     "python .\\tools\\verify_companion_screen_pre_acceptance_health.py",

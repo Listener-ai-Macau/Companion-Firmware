@@ -13,7 +13,7 @@
     "pack_bytes": 287732,
     "pack_crc32": "0xDEFC096E",
     "revision": 52,
-    "status": "runtime_recheck_pending"
+    "status": "runtime_pass_human_visual_pending"
   },
   "migration": {
     "baseline": "STM32WBA55",
@@ -84,16 +84,16 @@
   },
   "wb55_real_evidence": {
     "clips": 33,
-    "external_render_log": ".cache/validation/rev51-runtime-20260712-generated-art/normal/nucleo-serial-raw.log",
+    "external_render_log": ".cache/validation/rev52-runtime-current/normal/nucleo-serial-raw.log",
     "frames": 159,
-    "normal_runtime_log": ".cache/validation/rev51-runtime-20260712-generated-art/normal/nucleo-serial-raw.log",
+    "normal_runtime_log": ".cache/validation/rev52-runtime-current/normal/nucleo-serial-raw.log",
     "pack": "emote-matrix-white-200x200-v1",
-    "pack_bytes": 287446,
-    "pack_crc32": "0x56B56273",
-    "provision_runtime_log": ".cache/validation/rev51-runtime-20260712-generated-art/provision/nucleo-serial-raw.log",
+    "pack_bytes": 287732,
+    "pack_crc32": "0xDEFC096E",
+    "provision_runtime_log": ".cache/validation/rev52-runtime-current/provision/nucleo-serial-raw.log",
     "required_markers": [
       "mount=ok",
-      "revision=51",
+      "revision=52",
       "clips=33 frames=159",
       "pet_behavior_selftest=pass failure_code=0",
       "touch-health] detected=1 identity=1 addr=0x38",
@@ -102,6 +102,6 @@
       "refresh mode=full",
       "complete=1"
     ],
-    "revision": 51
+    "revision": 52
   }
 }

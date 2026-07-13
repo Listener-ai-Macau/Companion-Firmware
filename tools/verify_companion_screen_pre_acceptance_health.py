@@ -457,13 +457,15 @@ def check_health(health: dict[str, Any], errors: list[str]) -> None:
     acceptance_index = health.get("acceptance_index", {})
     if acceptance_index.get("schema_id") != "companion.pendant.screen_acceptance_index.v1":
         errors.append("acceptance index schema drifted")
-    if acceptance_index.get("next_hardware_gate") != RUNTIME_GATE_ID:
-        errors.append(f"pre-acceptance health must point next_hardware_gate at {RUNTIME_GATE_ID}")
+    expected_next_hardware_gate = "wba_real_panel_parity" if runtime_status == PASS_STATUS else RUNTIME_GATE_ID
+    if acceptance_index.get("next_hardware_gate") != expected_next_hardware_gate:
+        errors.append(f"pre-acceptance health must point next_hardware_gate at {expected_next_hardware_gate}")
     if acceptance_index.get("next_human_gate") != "wb55_touch_visual_acceptance":
         errors.append("pre-acceptance health must point next_human_gate at wb55_touch_visual_acceptance")
     summary = acceptance_index.get("summary", {})
-    if summary.get("deferred_count") != 1:
-        errors.append("acceptance index must keep exactly one deferred hardware gate before human review")
+    expected_deferred_count = 0 if runtime_status == PASS_STATUS else 1
+    if summary.get("deferred_count") != expected_deferred_count:
+        errors.append(f"acceptance index deferred_count must be {expected_deferred_count}")
     if summary.get("pending_human_count") != 2:
         errors.append("acceptance index pending human count drifted")
     serialized = json.dumps(health, ensure_ascii=False)
@@ -483,7 +485,7 @@ def check_health(health: dict[str, Any], errors: list[str]) -> None:
         "verify_wb55_runtime_flash_preflight.py",
         "verify_wb55_runtime_serial_capture_preflight.py",
         "companion-screen-acceptance-index.json",
-        RUNTIME_GATE_ID,
+        expected_next_hardware_gate,
         "wb55_touch_visual_acceptance",
         "NO_GO_WAITING_FOR_REAL_HARDWARE_RUN",
         "PASS_STATIC_SERIAL_CAPTURE_PREFLIGHT",

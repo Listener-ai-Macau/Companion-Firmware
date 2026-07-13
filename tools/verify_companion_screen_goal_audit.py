@@ -643,8 +643,9 @@ def check_audit(audit: dict[str, Any], errors: list[str]) -> None:
         errors.append("acceptance sequence next hardware gate drifted from acceptance index")
     if acceptance_index.get("summary", {}).get("next_human_gate") != acceptance_sequence.get("next_human_gate"):
         errors.append("acceptance sequence next human gate drifted from acceptance index")
-    if acceptance_sequence.get("summary", {}).get("deferred_count") != 1:
-        errors.append("acceptance sequence must keep one deferred hardware gate")
+    expected_deferred_count = 0 if runtime_status == CANDIDATE.pass_status else 1
+    if acceptance_sequence.get("summary", {}).get("deferred_count") != expected_deferred_count:
+        errors.append(f"acceptance sequence deferred_count must be {expected_deferred_count}")
     wba_evidence_paths = {
         ev.get("path")
         for ev in requirements.get("wba55_wba65_portability_boundary", {}).get("evidence", [])
@@ -878,7 +879,7 @@ def check_audit(audit: dict[str, Any], errors: list[str]) -> None:
         "verify_expression_acceptance_index.py",
         "companion-screen-acceptance-index.json",
         "acceptance_sequence",
-        RUNTIME_GATE_ID,
+        expected_next_hardware_gate,
         "wb55_touch_visual_acceptance",
         "render_generated_art_style_contract.py",
         "verify_menu_drag_continuity_contract.py",

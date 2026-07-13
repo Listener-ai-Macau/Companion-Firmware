@@ -7,7 +7,7 @@ This packet is generated. Update it with
 - Gate: `wb55_touch_visual_acceptance`
 - Target: `NUCLEO-WB55RG + GDEY0154D67-T03 + FT6336U`
 - Start rule: Do not start this packet until rev52 runtime logs PASS, promotion is applied, pre-acceptance health PASS, and the operator explicitly says 开始验收.
-- Machine precondition: NO_GO_RUNTIME_RECHECK_PENDING: do not start human touch/visual steps until rev52 provision and normal runtime logs pass and promotion is applied.
+- Machine precondition: PASS: rev52 provision and normal runtime logs are promoted; human touch/visual steps may start after the operator says 开始验收.
 
 ## Preflight Commands
 
@@ -33,17 +33,17 @@ This packet is generated. Update it with
 - `resource_revision`: `52`
 - `resource_crc32`: `0xDEFC096E`
 - `resource_total_bytes`: `287732`
-- `runtime_status`: `REVISION_52_RUNTIME_RECHECK_PENDING`
+- `runtime_status`: `REVISION_52_RUNTIME_PASS_HUMAN_VISUAL_PENDING`
 - `normal_firmware_restored`: `True`
 - `bilingual_menu_evidence`: `docs/validation/companion-screen-bilingual-menu-wb55.json`
-- `provision_log`: ``
-- `normal_log`: ``
+- `provision_log`: `.cache/validation/rev52-runtime-current/provision/nucleo-serial-raw.log`
+- `normal_log`: `.cache/validation/rev52-runtime-current/normal/nucleo-serial-raw.log`
 - `runtime_logs_evidence`: `docs/validation/companion-screen-wb55-runtime-recheck-logs.json`
 - `runtime_flash_preflight`: `{'path': 'docs/validation/companion-screen-wb55-runtime-flash-preflight.json', 'status': 'PASS'}`
 - `runtime_serial_capture_preflight`: `{'path': 'docs/validation/companion-screen-wb55-runtime-serial-capture-preflight.json', 'status': 'PASS_STATIC_SERIAL_CAPTURE_PREFLIGHT', 'claim_scope': 'static_serial_capture_contract_no_hardware_claim'}`
 - `runtime_hardware_action_card`: `{'path': 'docs/validation/companion-screen-wb55-runtime-hardware-action-card.json', 'status': 'NO_GO_WAITING_FOR_REAL_HARDWARE_RUN'}`
 - `display_queue_generation_hygiene`: `{'path': 'docs/validation/companion-screen-display-queue-generation-hygiene.json', 'status': 'PASS', 'scenario': 'rev50_pending_frames_discarded_before_rev51_first_frame', 'coherent_generation': 1, 'last_stale_discarded': 3}`
-- `generation_release_ledger`: `{'path': 'docs/validation/companion-screen-generation-release-ledger.json', 'status': 'RUNTIME_LOGS_PASS_PROMOTION_PENDING', 'cemp_revision': 52, 'cemp_crc32': '0xDEFC096E', 'expected_first_frame_marker': 'coherent_generation=1', 'real_runtime_status': 'PASS', 'visual_triage_classes': ['physical afterimage', 'stale queued frame', 'stale asset revision', 'rescue/procedural fallback leakage', 'stale_generation_content']}`
+- `generation_release_ledger`: `{'path': 'docs/validation/companion-screen-generation-release-ledger.json', 'status': 'RUNTIME_PROMOTED_HUMAN_VISUAL_PENDING', 'cemp_revision': 52, 'cemp_crc32': '0xDEFC096E', 'expected_first_frame_marker': 'coherent_generation=1', 'real_runtime_status': 'PASS', 'visual_triage_classes': ['physical afterimage', 'stale queued frame', 'stale asset revision', 'rescue/procedural fallback leakage', 'stale_generation_content']}`
 
 ## Operator Steps
 
@@ -147,7 +147,7 @@ This packet is generated. Update it with
 - SCR-17 generation release ledger docs/validation/companion-screen-generation-release-ledger.json
 - runtime flash preflight docs/validation/companion-screen-wb55-runtime-flash-preflight.json
 - runtime serial capture preflight docs/validation/companion-screen-wb55-runtime-serial-capture-preflight.json
-- machine_state currently links the last runtime-proven revision logs; rev52 provision/normal logs are still pending in the runtime recheck report
+- revision 52 provision/normal serial logs are linked in machine_state
 - serial/runtime diagnostic tail if flashed during the session
 - photo or short video only when the operator chooses to capture visual evidence
 - if old marks are visible, classify them as physical afterimage, stale queued frame, stale asset revision, rescue/procedural fallback leakage, or stale_generation_content

@@ -2498,9 +2498,11 @@ def check_index(data: dict[str, Any], errors: list[str]) -> None:
         require(command in serial_capture.get("validation_commands", []), f"wb55_runtime_serial_capture_preflight missing command: {command}", errors)
 
     runtime_recheck = by_id.get(RUNTIME_GATE_ID, {})
+    wb55_runtime_proven = is_wb55_runtime_recheck_proven()
+    expected_runtime_recheck_status = "PASS" if wb55_runtime_proven else "DEFERRED_HARDWARE"
     require(
-        runtime_recheck.get("status") == "DEFERRED_HARDWARE",
-        f"{RUNTIME_GATE_ID} must stay DEFERRED_HARDWARE until real active-candidate logs pass",
+        runtime_recheck.get("status") == expected_runtime_recheck_status,
+        f"{RUNTIME_GATE_ID} must be {expected_runtime_recheck_status} for the current runtime evidence state",
         errors,
     )
     runtime_summary = str(runtime_recheck.get("summary", ""))
@@ -2526,12 +2528,13 @@ def check_index(data: dict[str, Any], errors: list[str]) -> None:
         "docs/validation/companion-screen-generation-release-ledger.json",
     ]:
         require(path in runtime_recheck.get("evidence_paths", []), f"{RUNTIME_GATE_ID} missing evidence path: {path}", errors)
-    for missing in [
-        f"rev{CANDIDATE.revision} provision serial raw/summary logs",
-        f"rev{CANDIDATE.revision} normal serial raw/summary logs",
-        "locked Companion-WB55 hardware run with normal_firmware_restored=true",
-    ]:
-        require(missing in runtime_recheck.get("missing_hardware_facts", []), f"{RUNTIME_GATE_ID} missing hardware fact: {missing}", errors)
+    if not wb55_runtime_proven:
+        for missing in [
+            f"rev{CANDIDATE.revision} provision serial raw/summary logs",
+            f"rev{CANDIDATE.revision} normal serial raw/summary logs",
+            "locked Companion-WB55 hardware run with normal_firmware_restored=true",
+        ]:
+            require(missing in runtime_recheck.get("missing_hardware_facts", []), f"{RUNTIME_GATE_ID} missing hardware fact: {missing}", errors)
     for command in [
         "python .\\tools\\verify_wb55_screen_runtime_recheck_runner.py",
         "python .\\tools\\render_wb55_runtime_hardware_action_card.py",

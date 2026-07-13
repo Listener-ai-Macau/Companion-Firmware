@@ -143,16 +143,20 @@
     "status": "BUILD_PASS_RUNTIME_RECHECK_PENDING"
   },
   "revision_52_machine_contract": {
-    "import_report": "docs/validation/companion-screen-generated-expression-sheet-import.json",
     "candidate_record": "docs/validation/companion-screen-generated-art-clipping-fix-candidate.json",
+    "import_report": "docs/validation/companion-screen-generated-expression-sheet-import.json",
     "pet_sheet_style": "Generated-sheet clipping correction: normal imported inner-face PBMs no longer receive an internal white shell mask or a fixed target-panel art margin. The current 200x200 / 1_54in output remains the default profile; alternate panel dimensions generate isolated suffixed PBMs before a matching CEMP manifest is introduced.",
     "status": "BUILD_PASS_RUNTIME_RECHECK_PENDING"
   },
   "runtime_evidence": {
-    "machine_observation": "Revision 52 is a pending, unflashed external ui_assets candidate for the generated-art internal-clipping correction. Revision 51 provision and normal runtime logs remain the last machine-proven WB55 resource; rev52 must complete the same locked provision/normal serial recheck before any visual claim.",
-    "normal_capture_summary": "",
-    "normal_raw_log": "",
+    "machine_observation": "Revision 52 provision and normal runtime logs passed: external ui_assets mounted, CEMP revision 52 / CRC 0xDEFC096E loaded from external_flash, pet self-test passed, touch identity was detected, and the initial full refresh completed. Human touch/visual acceptance remains pending.",
+    "normal_capture_summary": ".cache/validation/rev52-runtime-current/normal/nucleo-serial-summary.json",
+    "normal_raw_log": ".cache/validation/rev52-runtime-current/normal/nucleo-serial-raw.log",
     "operator_prompt_used": false,
+    "predecessor_runtime_proven_revision": {
+      "pack_crc32": "0x0E16087E",
+      "revision": 48
+    },
     "previous_runtime_proven_revision": {
       "normal_capture_summary": ".cache/validation/rev51-runtime-20260712-generated-art/normal/nucleo-serial-summary.json",
       "normal_raw_log": ".cache/validation/rev51-runtime-20260712-generated-art/normal/nucleo-serial-raw.log",
@@ -161,12 +165,8 @@
       "provision_raw_log": ".cache/validation/rev51-runtime-20260712-generated-art/provision/nucleo-serial-raw.log",
       "revision": 51
     },
-    "predecessor_runtime_proven_revision": {
-      "pack_crc32": "0x0E16087E",
-      "revision": 48
-    },
-    "provision_capture_summary": "",
-    "provision_raw_log": "",
+    "provision_capture_summary": ".cache/validation/rev52-runtime-current/provision/nucleo-serial-summary.json",
+    "provision_raw_log": ".cache/validation/rev52-runtime-current/provision/nucleo-serial-raw.log",
     "required_runtime_markers": [
       "mount=ok",
       "revision=52",
@@ -178,7 +178,7 @@
       "refresh mode=full",
       "complete=1"
     ],
-    "status": "REVISION_52_RUNTIME_RECHECK_PENDING",
+    "status": "REVISION_52_RUNTIME_PASS_HUMAN_VISUAL_PENDING",
     "superseded_revision11_logs": [
       ".cache/validation/screen-cemp-revision11-provision/nucleo-serial-raw.log",
       ".cache/validation/screen-revision11-normal/nucleo-serial-raw.log"

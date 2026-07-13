@@ -2,10 +2,10 @@
   "candidate": {
     "pack_crc32": "0xDEFC096E",
     "revision": 52,
-    "runtime_status": "REVISION_52_RUNTIME_RECHECK_PENDING",
+    "runtime_status": "REVISION_52_RUNTIME_PASS_HUMAN_VISUAL_PENDING",
     "total_bytes": 287732
   },
-  "next_machine_action": "Run tools/promote_wb55_screen_runtime_recheck.py --apply, then rerun pre-acceptance health.",
+  "next_machine_action": "Runtime evidence is already promoted; continue to pre-acceptance health.",
   "normal": {
     "bytes_read": 3803,
     "label": "normal",
