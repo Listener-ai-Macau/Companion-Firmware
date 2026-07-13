@@ -665,3 +665,9 @@ frames、287732 bytes、CRC32 `0xDEFC096E`；rev52 待 provision/normal 运行�
 是 `docs/validation/companion-screen-wb55-touch-visual-acceptance-packet.json` 和
 `docs/validation/companion-screen-wb55-touch-visual-acceptance-packet.md`；未收到“开始验收”
 前它只作为待执行清单，不宣称硬件完成。
+
+当前会话和后续产品功能的完整覆盖以
+`docs/companion_function_acceptance_coverage.md` 为准。它把低功耗触控唤醒、双击录音、
+长按菜单、日常宠物交互、菜单、刷新、音频、手机链路、资源/OTA 和 WBA 实板分别列为
+独立项目；每一项必须先满足机器前提，再显示一个带总进度的中文单项验收弹窗。任何
+应用内弹窗、确认、错误、权限或恢复提示也不得被“页面看起来正常”这一类泛化结论覆盖。
