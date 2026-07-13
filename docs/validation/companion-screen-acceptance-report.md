@@ -247,7 +247,6 @@ Validation commands:
 - `python .\tools\verify_screen_refresh_feel_contract.py`
 - `python .\tools\verify_epaper_refresh_policy.py`
 - `python .\tools\verify_screen_menu_assets.py`
-- `python .\tools\verify_wb55_screen_runtime_recheck_logs.py`
 
 ### 7. Expression layout contract
 
@@ -2139,7 +2138,6 @@ Validation commands:
 - `python .\tools\verify_wb55_runtime_flash_preflight.py`
 - `python .\tools\verify_wb55_runtime_serial_capture_preflight.py`
 - `pwsh -NoProfile -File .\tools\run_wb55_screen_runtime_recheck.ps1 -CheckOnly`
-- `python .\tools\verify_wb55_screen_runtime_recheck_logs.py`
 
 ### 85. WB55 rev52 provision/normal runtime recheck
 

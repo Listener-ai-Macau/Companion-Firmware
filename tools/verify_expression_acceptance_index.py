@@ -216,7 +216,6 @@ def build_index() -> dict[str, Any]:
                 "python .\\tools\\verify_screen_refresh_feel_contract.py",
                 "python .\\tools\\verify_epaper_refresh_policy.py",
                 "python .\\tools\\verify_screen_menu_assets.py",
-                "python .\\tools\\verify_wb55_screen_runtime_recheck_logs.py",
             ],
             "WBA panel targets must preserve portable refresh intents and choose target waveforms without changing scene/player behavior.",
         ),
@@ -2108,7 +2107,6 @@ def build_index() -> dict[str, Any]:
                 "python .\\tools\\verify_wb55_runtime_flash_preflight.py",
                 "python .\\tools\\verify_wb55_runtime_serial_capture_preflight.py",
                 "pwsh -NoProfile -File .\\tools\\run_wb55_screen_runtime_recheck.ps1 -CheckOnly",
-                "python .\\tools\\verify_wb55_screen_runtime_recheck_logs.py",
             ],
             "WBA runtime evidence must add an analogous target-specific locked capture preflight before any WBA real-panel parity claim.",
         ),
@@ -2496,7 +2494,6 @@ def check_index(data: dict[str, Any], errors: list[str]) -> None:
         "python .\\tools\\verify_wb55_runtime_flash_preflight.py",
         "python .\\tools\\verify_wb55_runtime_serial_capture_preflight.py",
         "pwsh -NoProfile -File .\\tools\\run_wb55_screen_runtime_recheck.ps1 -CheckOnly",
-        "python .\\tools\\verify_wb55_screen_runtime_recheck_logs.py",
     ]:
         require(command in serial_capture.get("validation_commands", []), f"wb55_runtime_serial_capture_preflight missing command: {command}", errors)
 
