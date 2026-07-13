@@ -10,6 +10,6 @@
 - Recording cache entries: 1
 - OTA readiness: ready
 - Battery: 84 percent / 4012 mV
-- Diag tail: 8 of 12 events, cursor 112
+- Diag tail: 8 of 19 events, cursor 119
 - Summary JSON: docs/validation/companion-diagnostics-fixture/summary.json
 - Decoded tail: docs/validation/companion-diagnostics-fixture/diag_tail_decoded.json

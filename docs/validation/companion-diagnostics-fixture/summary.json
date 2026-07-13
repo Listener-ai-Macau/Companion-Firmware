@@ -24,7 +24,7 @@
     "build_id": "diagnostics-fixture",
     "active_mode": "idle",
     "fault_bitmap": 0,
-    "uptime_ms": 340
+    "uptime_ms": 540
   },
   "ble": {
     "backend": "fixture-no-hardware",
@@ -71,12 +71,55 @@
     "requested_length": 0,
     "final_sha256_verified": false
   },
+  "meeting": {
+    "state": "finalized",
+    "meeting_id": 1,
+    "duration_ms": 2400,
+    "segment_count": 1,
+    "summary_state": "pending_host_summary",
+    "sync_state": "ready_for_host_sync"
+  },
+  "imu": {
+    "sensor_state": "not_populated_on_current_dev_board",
+    "motion_flags": [],
+    "sample_rate_hz": 0,
+    "calibration_state": "pending_hardware"
+  },
+  "speaker": {
+    "state": "prompt_contract_ready_pending_hardware",
+    "prompt_id": 7,
+    "volume_percent": 50,
+    "played_count": 1
+  },
+  "voice_wake": {
+    "armed": true,
+    "engine_state": "armed_fixture",
+    "sensitivity": 50,
+    "detection_count": 0,
+    "rejected_count": 0
+  },
+  "ble_name_config": {
+    "active_name": "companion",
+    "staged_name": "companion-v1",
+    "max_len": 29,
+    "policy": "printable_ascii_1_29_no_quotes_semicolon_equals_backslash",
+    "apply": "restart_ble_or_reboot_required"
+  },
   "epaper": {
     "last_card_slot": 0,
     "last_card_type": "status",
     "render_state": "rendered",
     "content_crc32": "0x00000011",
-    "refresh_count": 1
+    "refresh_count": 1,
+    "runtime_snapshot_decoded": {
+      "expression_current": 5,
+      "expression_last_signal": 3,
+      "display_queue_pending_count": 2,
+      "display_queue_high_water_count": 4,
+      "display_queue_dropped_count": 1,
+      "panel_deferred_count": 7,
+      "panel_error_count": 1
+    }
   },
   "ota": {
     "manifest": {
@@ -110,285 +153,12 @@
       "source": "all",
       "severity_mask": "info|warn|error"
     },
-    "total_available": 12,
+    "total_available": 19,
     "returned_count": 8,
-    "next_cursor": 112,
+    "next_cursor": 119,
     "decoded_path": "docs/validation/companion-diagnostics-fixture/diag_tail_decoded.json",
     "raw_path": "docs/validation/companion-diagnostics-fixture/diag_tail_raw.jsonl",
     "events": [
-      {
-        "index": 4,
-        "sequence": 105,
-        "t_ms": 160,
-        "source": {
-          "raw": "spi_flash_cache",
-          "id": 7,
-          "name": "spi_flash_cache",
-          "symbol": "SPI_FLASH_CACHE"
-        },
-        "event": {
-          "raw": 1,
-          "name": "spi_flash_cache.write",
-          "symbol": "WRITE",
-          "severity_default": "info"
-        },
-        "severity": {
-          "raw": "info",
-          "level": 0,
-          "name": "info"
-        },
-        "args": {
-          "arg0": 32768,
-          "arg1": 2400,
-          "arg2": 0,
-          "arg3": 0
-        },
-        "raw_event": {
-          "sequence": 105,
-          "t_ms": 160,
-          "source": "spi_flash_cache",
-          "event_id": 1,
-          "severity": "info",
-          "arg0": 32768,
-          "arg1": 2400,
-          "arg2": 0,
-          "arg3": 0
-        }
-      },
-      {
-        "index": 5,
-        "sequence": 106,
-        "t_ms": 190,
-        "source": {
-          "raw": "e_paper",
-          "id": 4,
-          "name": "e_paper",
-          "symbol": "EPAPER"
-        },
-        "event": {
-          "raw": 2,
-          "name": "e_paper.update_result",
-          "symbol": "UPDATE_RESULT",
-          "severity_default": "info"
-        },
-        "severity": {
-          "raw": "info",
-          "level": 0,
-          "name": "info"
-        },
-        "args": {
-          "arg0": 17,
-          "arg1": 0,
-          "arg2": 0,
-          "arg3": 0
-        },
-        "raw_event": {
-          "sequence": 106,
-          "t_ms": 190,
-          "source": "e_paper",
-          "event_id": 2,
-          "severity": "info",
-          "arg0": 17,
-          "arg1": 0,
-          "arg2": 0,
-          "arg3": 0
-        }
-      },
-      {
-        "index": 6,
-        "sequence": 107,
-        "t_ms": 220,
-        "source": {
-          "raw": "ota",
-          "id": 8,
-          "name": "ota",
-          "symbol": "OTA"
-        },
-        "event": {
-          "raw": 1,
-          "name": "ota.manifest",
-          "symbol": "MANIFEST",
-          "severity_default": "info"
-        },
-        "severity": {
-          "raw": "info",
-          "level": 0,
-          "name": "info"
-        },
-        "args": {
-          "arg0": 1,
-          "arg1": 94032,
-          "arg2": 0,
-          "arg3": 0
-        },
-        "raw_event": {
-          "sequence": 107,
-          "t_ms": 220,
-          "source": "ota",
-          "event_id": 1,
-          "severity": "info",
-          "arg0": 1,
-          "arg1": 94032,
-          "arg2": 0,
-          "arg3": 0
-        }
-      },
-      {
-        "index": 7,
-        "sequence": 108,
-        "t_ms": 240,
-        "source": {
-          "raw": "ota",
-          "id": 8,
-          "name": "ota",
-          "symbol": "OTA"
-        },
-        "event": {
-          "raw": 3,
-          "name": "ota.readiness",
-          "symbol": "READINESS",
-          "severity_default": "info"
-        },
-        "severity": {
-          "raw": "info",
-          "level": 0,
-          "name": "info"
-        },
-        "args": {
-          "arg0": 1,
-          "arg1": 0,
-          "arg2": 0,
-          "arg3": 0
-        },
-        "raw_event": {
-          "sequence": 108,
-          "t_ms": 240,
-          "source": "ota",
-          "event_id": 3,
-          "severity": "info",
-          "arg0": 1,
-          "arg1": 0,
-          "arg2": 0,
-          "arg3": 0
-        }
-      },
-      {
-        "index": 8,
-        "sequence": 109,
-        "t_ms": 260,
-        "source": {
-          "raw": "battery_charging",
-          "id": 9,
-          "name": "battery_charging",
-          "symbol": "BATTERY_CHARGING"
-        },
-        "event": {
-          "raw": 1,
-          "name": "battery_charging.sample",
-          "symbol": "SAMPLE",
-          "severity_default": "info"
-        },
-        "severity": {
-          "raw": "info",
-          "level": 0,
-          "name": "info"
-        },
-        "args": {
-          "arg0": 84,
-          "arg1": 4012,
-          "arg2": 0,
-          "arg3": 0
-        },
-        "raw_event": {
-          "sequence": 109,
-          "t_ms": 260,
-          "source": "battery_charging",
-          "event_id": 1,
-          "severity": "info",
-          "arg0": 84,
-          "arg1": 4012,
-          "arg2": 0,
-          "arg3": 0
-        }
-      },
-      {
-        "index": 9,
-        "sequence": 110,
-        "t_ms": 290,
-        "source": {
-          "raw": "power_lpm",
-          "id": 10,
-          "name": "power_lpm",
-          "symbol": "POWER_LPM"
-        },
-        "event": {
-          "raw": 2,
-          "name": "power_lpm.blocker",
-          "symbol": "BLOCKER",
-          "severity_default": "warn"
-        },
-        "severity": {
-          "raw": "warn",
-          "level": 1,
-          "name": "warn"
-        },
-        "args": {
-          "arg0": 2,
-          "arg1": 1,
-          "arg2": 0,
-          "arg3": 0
-        },
-        "raw_event": {
-          "sequence": 110,
-          "t_ms": 290,
-          "source": "power_lpm",
-          "event_id": 2,
-          "severity": "warn",
-          "arg0": 2,
-          "arg1": 1,
-          "arg2": 0,
-          "arg3": 0
-        }
-      },
-      {
-        "index": 10,
-        "sequence": 111,
-        "t_ms": 310,
-        "source": {
-          "raw": "warnings",
-          "id": 11,
-          "name": "warnings",
-          "symbol": "WARNINGS"
-        },
-        "event": {
-          "raw": 2,
-          "name": "warnings.recovered",
-          "symbol": "RECOVERED",
-          "severity_default": "info"
-        },
-        "severity": {
-          "raw": "info",
-          "level": 0,
-          "name": "info"
-        },
-        "args": {
-          "arg0": 1,
-          "arg1": 0,
-          "arg2": 0,
-          "arg3": 0
-        },
-        "raw_event": {
-          "sequence": 111,
-          "t_ms": 310,
-          "source": "warnings",
-          "event_id": 2,
-          "severity": "info",
-          "arg0": 1,
-          "arg1": 0,
-          "arg2": 0,
-          "arg3": 0
-        }
-      },
       {
         "index": 11,
         "sequence": 112,
@@ -426,6 +196,295 @@
           "arg1": 0,
           "arg2": 0,
           "arg3": 0
+        }
+      },
+      {
+        "index": 12,
+        "sequence": 113,
+        "t_ms": 360,
+        "source": {
+          "raw": "meeting",
+          "id": 13,
+          "name": "meeting",
+          "symbol": "MEETING"
+        },
+        "event": {
+          "raw": 1,
+          "name": "meeting.start",
+          "symbol": "START",
+          "severity_default": "info"
+        },
+        "severity": {
+          "raw": "info",
+          "level": 0,
+          "name": "info"
+        },
+        "args": {
+          "arg0": 1,
+          "arg1": 0,
+          "arg2": 0,
+          "arg3": 0
+        },
+        "raw_event": {
+          "sequence": 113,
+          "t_ms": 360,
+          "source": "meeting",
+          "event_id": 1,
+          "severity": "info",
+          "arg0": 1,
+          "arg1": 0,
+          "arg2": 0,
+          "arg3": 0
+        }
+      },
+      {
+        "index": 13,
+        "sequence": 114,
+        "t_ms": 390,
+        "source": {
+          "raw": "meeting",
+          "id": 13,
+          "name": "meeting",
+          "symbol": "MEETING"
+        },
+        "event": {
+          "raw": 3,
+          "name": "meeting.finalize",
+          "symbol": "FINALIZE",
+          "severity_default": "info"
+        },
+        "severity": {
+          "raw": "info",
+          "level": 0,
+          "name": "info"
+        },
+        "args": {
+          "arg0": 1,
+          "arg1": 2400,
+          "arg2": 0,
+          "arg3": 0
+        },
+        "raw_event": {
+          "sequence": 114,
+          "t_ms": 390,
+          "source": "meeting",
+          "event_id": 3,
+          "severity": "info",
+          "arg0": 1,
+          "arg1": 2400,
+          "arg2": 0,
+          "arg3": 0
+        }
+      },
+      {
+        "index": 14,
+        "sequence": 115,
+        "t_ms": 420,
+        "source": {
+          "raw": "imu",
+          "id": 14,
+          "name": "imu",
+          "symbol": "IMU"
+        },
+        "event": {
+          "raw": 3,
+          "name": "imu.unavailable",
+          "symbol": "UNAVAILABLE",
+          "severity_default": "warn"
+        },
+        "severity": {
+          "raw": "warn",
+          "level": 1,
+          "name": "warn"
+        },
+        "args": {
+          "arg0": 1,
+          "arg1": 0,
+          "arg2": 0,
+          "arg3": 0
+        },
+        "raw_event": {
+          "sequence": 115,
+          "t_ms": 420,
+          "source": "imu",
+          "event_id": 3,
+          "severity": "warn",
+          "arg0": 1,
+          "arg1": 0,
+          "arg2": 0,
+          "arg3": 0
+        }
+      },
+      {
+        "index": 15,
+        "sequence": 116,
+        "t_ms": 450,
+        "source": {
+          "raw": "speaker",
+          "id": 15,
+          "name": "speaker",
+          "symbol": "SPEAKER"
+        },
+        "event": {
+          "raw": 1,
+          "name": "speaker.prompt",
+          "symbol": "PROMPT",
+          "severity_default": "info"
+        },
+        "severity": {
+          "raw": "info",
+          "level": 0,
+          "name": "info"
+        },
+        "args": {
+          "arg0": 7,
+          "arg1": 0,
+          "arg2": 0,
+          "arg3": 0
+        },
+        "raw_event": {
+          "sequence": 116,
+          "t_ms": 450,
+          "source": "speaker",
+          "event_id": 1,
+          "severity": "info",
+          "arg0": 7,
+          "arg1": 0,
+          "arg2": 0,
+          "arg3": 0
+        }
+      },
+      {
+        "index": 16,
+        "sequence": 117,
+        "t_ms": 480,
+        "source": {
+          "raw": "wake_word",
+          "id": 16,
+          "name": "wake_word",
+          "symbol": "WAKE_WORD"
+        },
+        "event": {
+          "raw": 1,
+          "name": "wake_word.armed",
+          "symbol": "ARMED",
+          "severity_default": "info"
+        },
+        "severity": {
+          "raw": "info",
+          "level": 0,
+          "name": "info"
+        },
+        "args": {
+          "arg0": 50,
+          "arg1": 0,
+          "arg2": 0,
+          "arg3": 0
+        },
+        "raw_event": {
+          "sequence": 117,
+          "t_ms": 480,
+          "source": "wake_word",
+          "event_id": 1,
+          "severity": "info",
+          "arg0": 50,
+          "arg1": 0,
+          "arg2": 0,
+          "arg3": 0
+        }
+      },
+      {
+        "index": 17,
+        "sequence": 118,
+        "t_ms": 510,
+        "source": {
+          "raw": "device_settings",
+          "id": 17,
+          "name": "device_settings",
+          "symbol": "DEVICE_SETTINGS"
+        },
+        "event": {
+          "raw": 1,
+          "name": "device_settings.ble_name.accepted",
+          "symbol": "BLE_NAME_ACCEPTED",
+          "severity_default": "info"
+        },
+        "severity": {
+          "raw": "info",
+          "level": 0,
+          "name": "info"
+        },
+        "args": {
+          "arg0": 12,
+          "arg1": 0,
+          "arg2": 0,
+          "arg3": 0
+        },
+        "raw_event": {
+          "sequence": 118,
+          "t_ms": 510,
+          "source": "device_settings",
+          "event_id": 1,
+          "severity": "info",
+          "arg0": 12,
+          "arg1": 0,
+          "arg2": 0,
+          "arg3": 0
+        }
+      },
+      {
+        "index": 18,
+        "sequence": 119,
+        "t_ms": 540,
+        "source": {
+          "raw": "e_paper",
+          "id": 4,
+          "name": "e_paper",
+          "symbol": "EPAPER"
+        },
+        "event": {
+          "raw": 3,
+          "name": "e_paper.runtime_snapshot",
+          "symbol": "RUNTIME_SNAPSHOT",
+          "severity_default": "info"
+        },
+        "severity": {
+          "raw": "warn",
+          "level": 1,
+          "name": "warn"
+        },
+        "args": {
+          "arg0": 327683,
+          "arg1": 131076,
+          "arg2": 1,
+          "arg3": 458753
+        },
+        "raw_event": {
+          "sequence": 119,
+          "t_ms": 540,
+          "source": "e_paper",
+          "event_id": 3,
+          "severity": "warn",
+          "arg0": 327683,
+          "arg1": 131076,
+          "arg2": 1,
+          "arg3": 458753
+        },
+        "decoded_args": {
+          "payload": "screen_runtime_snapshot",
+          "expression": {
+            "current": 5,
+            "last_signal": 3
+          },
+          "display_queue": {
+            "pending_count": 2,
+            "high_water_count": 4,
+            "dropped_count": 1
+          },
+          "panel": {
+            "deferred_count": 7,
+            "error_count": 1
+          }
         }
       }
     ]

@@ -54,6 +54,26 @@
       "errors": {
         "id": 12,
         "symbol": "ERRORS"
+      },
+      "meeting": {
+        "id": 13,
+        "symbol": "MEETING"
+      },
+      "imu": {
+        "id": 14,
+        "symbol": "IMU"
+      },
+      "speaker": {
+        "id": 15,
+        "symbol": "SPEAKER"
+      },
+      "wake_word": {
+        "id": 16,
+        "symbol": "WAKE_WORD"
+      },
+      "device_settings": {
+        "id": 17,
+        "symbol": "DEVICE_SETTINGS"
       }
     },
     "events": {
@@ -103,6 +123,12 @@
         "source": "e_paper",
         "event_id": 2,
         "symbol": "UPDATE_RESULT",
+        "default_severity": "info"
+      },
+      "e_paper.runtime_snapshot": {
+        "source": "e_paper",
+        "event_id": 3,
+        "symbol": "RUNTIME_SNAPSHOT",
         "default_severity": "info"
       },
       "recording_fsm.transition": {
@@ -290,13 +316,116 @@
         "event_id": 2,
         "symbol": "FAULT",
         "default_severity": "error"
+      },
+      "meeting.start": {
+        "source": "meeting",
+        "event_id": 1,
+        "symbol": "START",
+        "default_severity": "info"
+      },
+      "meeting.stop": {
+        "source": "meeting",
+        "event_id": 2,
+        "symbol": "STOP",
+        "default_severity": "info"
+      },
+      "meeting.finalize": {
+        "source": "meeting",
+        "event_id": 3,
+        "symbol": "FINALIZE",
+        "default_severity": "info"
+      },
+      "meeting.rejected": {
+        "source": "meeting",
+        "event_id": 4,
+        "symbol": "REJECTED",
+        "default_severity": "warn"
+      },
+      "imu.sample": {
+        "source": "imu",
+        "event_id": 1,
+        "symbol": "SAMPLE",
+        "default_severity": "info"
+      },
+      "imu.motion": {
+        "source": "imu",
+        "event_id": 2,
+        "symbol": "MOTION",
+        "default_severity": "info"
+      },
+      "imu.unavailable": {
+        "source": "imu",
+        "event_id": 3,
+        "symbol": "UNAVAILABLE",
+        "default_severity": "warn"
+      },
+      "speaker.prompt": {
+        "source": "speaker",
+        "event_id": 1,
+        "symbol": "PROMPT",
+        "default_severity": "info"
+      },
+      "speaker.result": {
+        "source": "speaker",
+        "event_id": 2,
+        "symbol": "RESULT",
+        "default_severity": "info"
+      },
+      "speaker.rejected": {
+        "source": "speaker",
+        "event_id": 3,
+        "symbol": "REJECTED",
+        "default_severity": "warn"
+      },
+      "wake_word.armed": {
+        "source": "wake_word",
+        "event_id": 1,
+        "symbol": "ARMED",
+        "default_severity": "info"
+      },
+      "wake_word.detected": {
+        "source": "wake_word",
+        "event_id": 2,
+        "symbol": "DETECTED",
+        "default_severity": "info"
+      },
+      "wake_word.disabled": {
+        "source": "wake_word",
+        "event_id": 3,
+        "symbol": "DISABLED",
+        "default_severity": "info"
+      },
+      "wake_word.rejected": {
+        "source": "wake_word",
+        "event_id": 4,
+        "symbol": "REJECTED",
+        "default_severity": "warn"
+      },
+      "device_settings.ble_name.accepted": {
+        "source": "device_settings",
+        "event_id": 1,
+        "symbol": "BLE_NAME_ACCEPTED",
+        "default_severity": "info"
+      },
+      "device_settings.ble_name.rejected": {
+        "source": "device_settings",
+        "event_id": 2,
+        "symbol": "BLE_NAME_REJECTED",
+        "default_severity": "warn"
+      },
+      "device_settings.ble_name.applied": {
+        "source": "device_settings",
+        "event_id": 3,
+        "symbol": "BLE_NAME_APPLIED",
+        "default_severity": "info"
       }
     }
   },
   "summary": {
-    "event_count": 4,
+    "event_count": 5,
     "sources_seen": [
       "boot",
+      "e_paper",
       "errors",
       "gatt",
       "spi_flash_cache"
@@ -306,6 +435,61 @@
         "index": 3,
         "sequence": 4,
         "t_ms": 40,
+        "source": {
+          "raw": "e_paper",
+          "id": 4,
+          "name": "e_paper",
+          "symbol": "EPAPER"
+        },
+        "event": {
+          "raw": 3,
+          "name": "e_paper.runtime_snapshot",
+          "symbol": "RUNTIME_SNAPSHOT",
+          "severity_default": "info"
+        },
+        "severity": {
+          "raw": "warn",
+          "level": 1,
+          "name": "warn"
+        },
+        "args": {
+          "arg0": 327683,
+          "arg1": 131076,
+          "arg2": 1,
+          "arg3": 458753
+        },
+        "raw_event": {
+          "sequence": 4,
+          "t_ms": 40,
+          "source": "e_paper",
+          "event_id": 3,
+          "severity": "warn",
+          "arg0": 327683,
+          "arg1": 131076,
+          "arg2": 1,
+          "arg3": 458753
+        },
+        "decoded_args": {
+          "payload": "screen_runtime_snapshot",
+          "expression": {
+            "current": 5,
+            "last_signal": 3
+          },
+          "display_queue": {
+            "pending_count": 2,
+            "high_water_count": 4,
+            "dropped_count": 1
+          },
+          "panel": {
+            "deferred_count": 7,
+            "error_count": 1
+          }
+        }
+      },
+      {
+        "index": 4,
+        "sequence": 5,
+        "t_ms": 50,
         "source": {
           "raw": "errors",
           "id": 12,
@@ -330,8 +514,8 @@
           "arg3": 0
         },
         "raw_event": {
-          "sequence": 4,
-          "t_ms": 40,
+          "sequence": 5,
+          "t_ms": 50,
           "source": "errors",
           "event_id": 1,
           "severity": "error",
@@ -466,6 +650,61 @@
       "sequence": 4,
       "t_ms": 40,
       "source": {
+        "raw": "e_paper",
+        "id": 4,
+        "name": "e_paper",
+        "symbol": "EPAPER"
+      },
+      "event": {
+        "raw": 3,
+        "name": "e_paper.runtime_snapshot",
+        "symbol": "RUNTIME_SNAPSHOT",
+        "severity_default": "info"
+      },
+      "severity": {
+        "raw": "warn",
+        "level": 1,
+        "name": "warn"
+      },
+      "args": {
+        "arg0": 327683,
+        "arg1": 131076,
+        "arg2": 1,
+        "arg3": 458753
+      },
+      "raw_event": {
+        "sequence": 4,
+        "t_ms": 40,
+        "source": "e_paper",
+        "event_id": 3,
+        "severity": "warn",
+        "arg0": 327683,
+        "arg1": 131076,
+        "arg2": 1,
+        "arg3": 458753
+      },
+      "decoded_args": {
+        "payload": "screen_runtime_snapshot",
+        "expression": {
+          "current": 5,
+          "last_signal": 3
+        },
+        "display_queue": {
+          "pending_count": 2,
+          "high_water_count": 4,
+          "dropped_count": 1
+        },
+        "panel": {
+          "deferred_count": 7,
+          "error_count": 1
+        }
+      }
+    },
+    {
+      "index": 4,
+      "sequence": 5,
+      "t_ms": 50,
+      "source": {
         "raw": "errors",
         "id": 12,
         "name": "errors",
@@ -489,8 +728,8 @@
         "arg3": 0
       },
       "raw_event": {
-        "sequence": 4,
-        "t_ms": 40,
+        "sequence": 5,
+        "t_ms": 50,
         "source": "errors",
         "event_id": 1,
         "severity": "error",

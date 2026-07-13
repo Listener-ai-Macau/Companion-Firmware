@@ -25,6 +25,7 @@ REQUIRED_COLLECTOR_ANCHORS = (
     "recording_cache",
     "last_transfer_result",
     "epaper",
+    "runtime_snapshot_decoded",
     "ota",
     "battery",
     "diag_tail",
@@ -49,6 +50,7 @@ REQUIRED_EVENT_NAMES = (
     "recording_fsm.transition",
     "spi_flash_cache.write",
     "e_paper.update_result",
+    "e_paper.runtime_snapshot",
     "ota.manifest",
     "ota.readiness",
     "battery_charging.sample",
@@ -102,6 +104,28 @@ def check_summary(errors: list[str]) -> None:
     require(int(request.get("max_events", 0)) <= 64, "diag_tail max_events not bounded", errors)
     require(int(request.get("max_bytes", 0)) <= 4096, "diag_tail max_bytes not bounded", errors)
     require("cursor/source/severity" in str(diag_tail.get("contract", "")), "diag_tail missing cursor/source/severity model", errors)
+    epaper = summary.get("epaper", {})
+    runtime = epaper.get("runtime_snapshot_decoded", {})
+    require(runtime.get("display_queue_pending_count") == 2, "epaper runtime snapshot missing queue pending count", errors)
+    require(runtime.get("display_queue_high_water_count") == 4, "epaper runtime snapshot missing queue high-water count", errors)
+    require(runtime.get("panel_error_count") == 1, "epaper runtime snapshot missing panel error count", errors)
+    tail_runtime = [
+        event for event in diag_tail.get("events", [])
+        if event.get("event", {}).get("name") == "e_paper.runtime_snapshot"
+    ]
+    require(tail_runtime, "diag_tail must include e_paper.runtime_snapshot in bounded fixture tail", errors)
+    if tail_runtime:
+        decoded_args = tail_runtime[0].get("decoded_args", {})
+        require(
+            decoded_args.get("display_queue", {}).get("pending_count") == 2,
+            "diag_tail runtime snapshot missing decoded queue pending count",
+            errors,
+        )
+        require(
+            decoded_args.get("panel", {}).get("error_count") == 1,
+            "diag_tail runtime snapshot missing decoded panel error count",
+            errors,
+        )
 
 
 def check_decoded_tail(errors: list[str]) -> None:
@@ -114,6 +138,28 @@ def check_decoded_tail(errors: list[str]) -> None:
     }
     for name in REQUIRED_EVENT_NAMES:
         require(name in names, f"decoded diag tail missing event: {name}", errors)
+    runtime_events = [
+        event for event in decoded.get("events", [])
+        if event.get("event", {}).get("name") == "e_paper.runtime_snapshot"
+    ]
+    require(runtime_events, "decoded diag tail missing e_paper.runtime_snapshot decoded args", errors)
+    if runtime_events:
+        decoded_args = runtime_events[0].get("decoded_args", {})
+        require(
+            decoded_args.get("expression", {}).get("current") == 5,
+            "decoded runtime snapshot missing expression current",
+            errors,
+        )
+        require(
+            decoded_args.get("display_queue", {}).get("high_water_count") == 4,
+            "decoded runtime snapshot missing queue high-water count",
+            errors,
+        )
+        require(
+            decoded_args.get("panel", {}).get("deferred_count") == 7,
+            "decoded runtime snapshot missing panel deferred count",
+            errors,
+        )
 
 
 def main() -> int:

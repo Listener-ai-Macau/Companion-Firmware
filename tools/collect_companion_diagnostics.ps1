@@ -105,6 +105,7 @@ $rawEvents += New-DiagEvent -Sequence 115 -TimeMs 420 -Source "imu" -EventId 3 -
 $rawEvents += New-DiagEvent -Sequence 116 -TimeMs 450 -Source "speaker" -EventId 1 -Severity "info" -Arg0 7
 $rawEvents += New-DiagEvent -Sequence 117 -TimeMs 480 -Source "wake_word" -EventId 1 -Severity "info" -Arg0 50
 $rawEvents += New-DiagEvent -Sequence 118 -TimeMs 510 -Source "device_settings" -EventId 1 -Severity "info" -Arg0 12
+$rawEvents += New-DiagEvent -Sequence 119 -TimeMs 540 -Source "e_paper" -EventId 3 -Severity "warn" -Arg0 327683 -Arg1 131076 -Arg2 1 -Arg3 458753
 
 $rawEvents |
     ForEach-Object { $_ | ConvertTo-Json -Compress -Depth 8 } |
@@ -151,7 +152,7 @@ $summary = [ordered]@{
         build_id = "diagnostics-fixture"
         active_mode = "idle"
         fault_bitmap = 0
-        uptime_ms = 510
+        uptime_ms = 540
     }
     ble = [ordered]@{
         backend = "fixture-no-hardware"
@@ -238,6 +239,15 @@ $summary = [ordered]@{
         render_state = "rendered"
         content_crc32 = "0x00000011"
         refresh_count = 1
+        runtime_snapshot_decoded = [ordered]@{
+            expression_current = 5
+            expression_last_signal = 3
+            display_queue_pending_count = 2
+            display_queue_high_water_count = 4
+            display_queue_dropped_count = 1
+            panel_deferred_count = 7
+            panel_error_count = 1
+        }
     }
     ota = [ordered]@{
         manifest = [ordered]@{

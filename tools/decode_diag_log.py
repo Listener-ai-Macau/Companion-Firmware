@@ -127,6 +127,43 @@ def normalize_severity(raw: Any, schema: DiagSchema) -> tuple[int | None, str]:
     return None, "unknown"
 
 
+def uint32(value: Any) -> int:
+    if isinstance(value, str):
+        return parse_int(value) & 0xFFFFFFFF
+    if isinstance(value, int):
+        return value & 0xFFFFFFFF
+    return 0
+
+
+def u16_high(value: Any) -> int:
+    return (uint32(value) >> 16) & 0xFFFF
+
+
+def u16_low(value: Any) -> int:
+    return uint32(value) & 0xFFFF
+
+
+def decode_event_args(event_name: str | None, args: dict[str, Any]) -> dict[str, Any] | None:
+    if event_name == "e_paper.runtime_snapshot":
+        return {
+            "payload": "screen_runtime_snapshot",
+            "expression": {
+                "current": u16_high(args["arg0"]),
+                "last_signal": u16_low(args["arg0"]),
+            },
+            "display_queue": {
+                "pending_count": u16_high(args["arg1"]),
+                "high_water_count": u16_low(args["arg1"]),
+                "dropped_count": uint32(args["arg2"]),
+            },
+            "panel": {
+                "deferred_count": u16_high(args["arg3"]),
+                "error_count": u16_low(args["arg3"]),
+            },
+        }
+    return None
+
+
 def decode_raw_event(raw: dict[str, Any], index: int, schema: DiagSchema) -> dict[str, Any]:
     source = normalize_source(raw.get("source"), schema)
     source_value = source.value if source else raw.get("source")
@@ -139,8 +176,14 @@ def decode_raw_event(raw: dict[str, Any], index: int, schema: DiagSchema) -> dic
         else None
     )
     sev_value, sev_name = normalize_severity(raw.get("severity"), schema)
+    args = {
+        "arg0": raw.get("arg0", 0),
+        "arg1": raw.get("arg1", 0),
+        "arg2": raw.get("arg2", 0),
+        "arg3": raw.get("arg3", 0),
+    }
 
-    return {
+    decoded = {
         "index": index,
         "sequence": raw.get("sequence"),
         "t_ms": raw.get("t_ms"),
@@ -161,14 +204,13 @@ def decode_raw_event(raw: dict[str, Any], index: int, schema: DiagSchema) -> dic
             ),
         },
         "severity": {"raw": raw.get("severity"), "level": sev_value, "name": sev_name},
-        "args": {
-            "arg0": raw.get("arg0", 0),
-            "arg1": raw.get("arg1", 0),
-            "arg2": raw.get("arg2", 0),
-            "arg3": raw.get("arg3", 0),
-        },
+        "args": args,
         "raw_event": raw,
     }
+    decoded_args = decode_event_args(event_def.name if event_def else None, args)
+    if decoded_args is not None:
+        decoded["decoded_args"] = decoded_args
+    return decoded
 
 
 def read_jsonl(path: pathlib.Path) -> list[dict[str, Any]]:
@@ -271,6 +313,17 @@ def run_self_test(header: pathlib.Path) -> None:
         {
             "sequence": 4,
             "t_ms": 40,
+            "source": "e_paper",
+            "event_id": 3,
+            "severity": "warn",
+            "arg0": (5 << 16) | 3,
+            "arg1": (2 << 16) | 4,
+            "arg2": 1,
+            "arg3": (7 << 16) | 1,
+        },
+        {
+            "sequence": 5,
+            "t_ms": 50,
             "source": "errors",
             "event_id": 1,
             "severity": "error",
@@ -283,10 +336,23 @@ def run_self_test(header: pathlib.Path) -> None:
     schema = load_schema(header)
     decoded = decode_events(raw_events, schema)
     event_names = {event["event"]["name"] for event in decoded["events"]}
-    required = {"boot.start", "gatt.log_export_request", "spi_flash_cache.write", "errors.assert"}
+    required = {
+        "boot.start",
+        "gatt.log_export_request",
+        "spi_flash_cache.write",
+        "e_paper.runtime_snapshot",
+        "errors.assert",
+    }
     missing = required - event_names
     if missing:
         raise AssertionError(f"self-test decoder missing events: {sorted(missing)}")
+    runtime_event = next(
+        event for event in decoded["events"] if event["event"]["name"] == "e_paper.runtime_snapshot"
+    )
+    if runtime_event.get("decoded_args", {}).get("panel", {}).get("error_count") != 1:
+        raise AssertionError("self-test decoder did not unpack runtime panel error_count")
+    if runtime_event.get("decoded_args", {}).get("display_queue", {}).get("pending_count") != 2:
+        raise AssertionError("self-test decoder did not unpack runtime queue pending_count")
 
     write_jsonl(DEFAULT_FIXTURE_RAW, raw_events)
     write_json(DEFAULT_FIXTURE_DECODED, decoded)
