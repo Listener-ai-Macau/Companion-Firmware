@@ -39,6 +39,13 @@ def main() -> int:
             / "docs/validation/companion-screen-ssd1681-partial-refresh-wb55.json"
         ).read_text(encoding="utf-8")
     )
+    asset_manifest = json.loads(
+        (
+            ROOT
+            / "app/companion_pendant/epaper/assets/emote_matrix_white_200x200.json"
+        ).read_text(encoding="utf-8")
+    )
+    asset_revision = asset_manifest.get("revision")
 
     require(header, "COMP_EPAPER_REFRESH_DEFAULT_PARTIAL_LIMIT 5u", "five-update limit", errors)
     require(header, "COMP_EPAPER_REFRESH_DEFAULT_INTERACTIVE_HARD_LIMIT 60u", "interactive hard limit", errors)
@@ -97,6 +104,8 @@ def main() -> int:
     strategy = evidence.get("revision_17_differential_strategy", {})
     if strategy.get("hardware_revalidation") != "PENDING":
         errors.append("revision 17 strategy must remain pending hardware revalidation")
+    if not isinstance(asset_revision, int) or asset_revision < 1:
+        errors.append(f"current expression asset revision must be a positive integer, got {asset_revision!r}")
 
     if errors:
         print("epaper refresh policy: FAIL")
@@ -104,7 +113,10 @@ def main() -> int:
             print(f"  - {error}")
         return 1
 
-    print("epaper refresh policy: PASS (static contract; revision 21 visual revalidation pending)")
+    print(
+        "epaper refresh policy: PASS "
+        f"(static contract; current resource rev{asset_revision} runtime/visual recheck pending)"
+    )
     print("  post-gesture cleanup target: one 0xCF maintenance pass")
     print("  interactive safety limit: 60 partial updates")
     print("  historical strict diagnostic retained: full + 5 partial + forced full")
