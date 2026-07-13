@@ -1,0 +1,15 @@
+{
+  "schema_id": "companion.wakeword.requirements.v1",
+  "status": "PASS",
+  "implementation_status": "planned_real_kws; current_gatt_control_and_simulation_only",
+  "audio_contract": "PCM16 mono 16 kHz fixed timestamped frames",
+  "runtime_architecture": "PDM/DMA adapter -> normalize -> VAD -> portable KWS -> debounce/cooldown -> RAM pre-roll -> recording/ASR",
+  "storage": {
+    "engine_code": "internal_flash",
+    "replaceable_models": "external_nor model_assets",
+    "persistent_audio": "external_nor recording_cache only after approved recording flow"
+  },
+  "ota_status": "requirements_only; implementation frozen pending Listener/Denzic platform gate",
+  "portability": "WB55/WBA target audio adapters share HAL-free PCM/KWS core",
+  "errors": []
+}
