@@ -1,0 +1,99 @@
+{
+  "check_only": {
+    "profiles": [
+      {
+        "expected_control": "0xFC",
+        "expected_planes": 2,
+        "id": "differential",
+        "image": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_refresh_cadence_diagnostic/Companion_Nucleo_WB55RG_RefreshCadenceDiagnostic.hex",
+        "label": "verified two-plane differential",
+        "partial_profile": "differential",
+        "transport_profile": "vendor_edges"
+      },
+      {
+        "expected_control": "0xFC",
+        "expected_planes": 2,
+        "id": "direct_bsrr",
+        "image": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_direct_gpio_spi_diagnostic/Companion_Nucleo_WB55RG_DirectGpioSpiDiagnostic.hex",
+        "label": "direct-GPIO edge timing diagnostic",
+        "partial_profile": "differential",
+        "transport_profile": "direct_bsrr"
+      },
+      {
+        "expected_control": "0xFF",
+        "expected_planes": 1,
+        "id": "vendor_partial",
+        "image": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_vendor_partial_diagnostic/Companion_Nucleo_WB55RG_VendorPartialDiagnostic.hex",
+        "label": "Good Display one-plane partial diagnostic",
+        "partial_profile": "vendor_sample",
+        "transport_profile": "vendor_edges"
+      }
+    ],
+    "report_claim_scope": "preflight_only_no_hardware_claim",
+    "report_exists": true,
+    "report_path": ".cache/validation/companion-performance/refresh-ab-checkonly/refresh-ab-run.json",
+    "report_schema": "companion.wb55.refresh_ab_run.v1",
+    "report_status": "DRY-RUN",
+    "result_count": 0,
+    "returncode": 0,
+    "sequence_banner": true,
+    "step_ids": [
+      "flash_differential",
+      "capture_differential",
+      "parse_differential",
+      "flash_direct_bsrr",
+      "capture_direct_bsrr",
+      "parse_direct_bsrr",
+      "flash_vendor_partial",
+      "capture_vendor_partial",
+      "parse_vendor_partial",
+      "flash_normal_restore"
+    ]
+  },
+  "commands": [
+    "pwsh -NoProfile -File .\\tools\\run_wb55_refresh_ab.ps1 -CheckOnly",
+    "pwsh -NoProfile -File .\\tools\\run_wb55_refresh_ab.ps1 -SelfTestRecovery",
+    "pwsh -NoProfile -File C:\\Users\\Billy\\Desktop\\Denzic\\ai-collaboration-workflow\\scripts\\aiw.ps1 with-lock -Resource Companion-WB55 -Purpose \"Companion WB55 refresh A/B\" -Run pwsh -NoProfile -File .\\tools\\run_wb55_refresh_ab.ps1 -Execute -WorkflowLockHeld"
+  ],
+  "execute_without_lock_negative": {
+    "claim_scope": "negative_execute_lock_guard_no_hardware_claim",
+    "refused_before_hardware": true,
+    "returncode": 1
+  },
+  "recovery_selftest": {
+    "claim_scope": "stubbed_failure_recovery_no_hardware_claim",
+    "normal_firmware_restored": true,
+    "report_exists": true,
+    "report_path": ".cache/validation/companion-performance/refresh-ab-recovery-selftest/refresh-ab-run.json",
+    "report_status": "FAIL",
+    "result_exit_codes": {
+      "capture_differential": 7,
+      "flash_differential": 0,
+      "flash_normal_restore_after_failure": 0
+    },
+    "result_ids": [
+      "flash_differential",
+      "capture_differential",
+      "flash_normal_restore_after_failure"
+    ],
+    "result_statuses": {
+      "capture_differential": "FAIL",
+      "flash_differential": "PASS",
+      "flash_normal_restore_after_failure": "PASS"
+    },
+    "returncode": 1,
+    "stdout_has_recovery": true
+  },
+  "runner": "tools/run_wb55_refresh_ab.ps1",
+  "safety_contract": {
+    "all_three_profiles_are_explicit": true,
+    "check_only_is_non_hardware": true,
+    "each_capture_is_reset_bounded": true,
+    "each_trace_uses_strict_parser": true,
+    "execute_requires_workflow_lock": true,
+    "restores_normal_firmware_after_failure": true,
+    "selftest_recovery_is_no_hardware": true
+  },
+  "schema_id": "companion.wb55.refresh_ab_runner_validation.v1",
+  "status": "PASS"
+}

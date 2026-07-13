@@ -135,6 +135,38 @@ verbose object; linked text is 132324 bytes quiet versus 135020 bytes verbose.
 This proves that successful-refresh UART serialization is removed from the
 quiet image, not that panel BUSY or human-perceived responsiveness has passed.
 
+## Lock-Guarded Three-Way A/B Runner
+
+`tools/run_wb55_refresh_ab.ps1` packages the already-built differential,
+direct-BSRR, and Good Display one-plane images into one short, locked hardware
+window. Its default is non-hardware `-CheckOnly`; it refuses `-Execute` unless
+the caller acknowledges a `Companion-WB55` workflow lock. Every diagnostic
+capture is reset-bounded and parsed before the next image runs. If a flash,
+capture, or parser stage fails after any diagnostic image is installed, the
+runner attempts to restore the normal quiet production image before releasing
+the lock.
+
+Machine-only runner validation:
+
+```powershell
+python .\tools\verify_wb55_refresh_ab_runner.py --write
+python .\tools\verify_wb55_refresh_ab_runner.py
+```
+
+The runner's `-SelfTestRecovery` uses stub commands only. It deliberately
+fails the first capture and proves the normal-image recovery path; it is not
+hardware evidence. Only after the owner explicitly says `开始验收` may the
+locked execute command below be used:
+
+```powershell
+pwsh -NoProfile -File C:\Users\Billy\Desktop\Denzic\ai-collaboration-workflow\scripts\aiw.ps1 with-lock -Resource Companion-WB55 -Purpose "Companion WB55 refresh A/B" -Run pwsh -NoProfile -File .\tools\run_wb55_refresh_ab.ps1 -Execute -WorkflowLockHeld
+```
+
+This run collects strict waveform and timing evidence, then restores the
+normal image. It still does not promote either diagnostic: promotion requires
+the paired real-panel residual/flicker comparison and the focused ACPT-01
+touch/visual review.
+
 ## Required Hardware Follow-up
 
 No board was flashed for this change and no human observation was requested.
