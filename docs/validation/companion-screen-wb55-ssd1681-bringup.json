@@ -1,0 +1,75 @@
+{
+  "schema_id": "companion.pendant.wb55_ssd1681_bringup.v1",
+  "status": "PASS_TRANSPORT_TOUCH_IDLE_ORIENTATION",
+  "generated_at": "2026-07-11T15:39:00+08:00",
+  "target": {
+    "board": "NUCLEO-WB55RG",
+    "stlink_serial": "066EFF535570514867221931",
+    "measured_target_voltage_v": 3.24,
+    "panel": "GDEY0154D67-T03",
+    "controller": "SSD1681",
+    "resolution_px": [
+      200,
+      200
+    ],
+    "adapter": "Good Display ESP32-FTS02 v3.0-20250819"
+  },
+  "transport": {
+    "implementation": "software_vendor_edges",
+    "sck": "PA9",
+    "mosi": "PC1",
+    "cs": "PA6",
+    "dc": "PB0",
+    "rst": "PB1",
+    "busy": "PC5",
+    "busy_semantics": "high=busy, low=ready",
+    "full_frame_bytes": 5000,
+    "soft_reset_busy_high_to_low_ms": 4,
+    "full_refresh_elapsed_ms": 1298
+  },
+  "display_evidence": {
+    "diagnostic_log": ".cache/validation/nucleo-serial-20260711-153103/nucleo-serial-raw.log",
+    "idle_log": ".cache/validation/nucleo-serial-20260711-153532/nucleo-serial-raw.log",
+    "black_pattern_operator_observation": "PASS: operator reported that the screen changed to black",
+    "idle_expression_transport": "PASS: boot idle request completed one SSD1681 refresh",
+    "idle_expression_visual": "SUPERSEDED_BY_MENU_ORIENTATION_ACCEPTANCE",
+    "human_view_orientation": "PASS: operator confirmed rotation=180 and mirror_x=1 is upright and not mirrored",
+    "orientation_log": ".cache/validation/screen-human-view-mirror-fix-20260711/nucleo-serial-raw.log"
+  },
+  "touch_evidence": {
+    "controller": "FT6336U",
+    "i2c_address_7bit": "0x38",
+    "scl": "PC0",
+    "sda": "PB11",
+    "log": ".cache/validation/nucleo-serial-20260711-153810/nucleo-serial-raw.log",
+    "contact_sample": {
+      "touch_count": 1,
+      "event": "contact",
+      "x": 117,
+      "y": 41
+    },
+    "release_sample": {
+      "touch_count": 0,
+      "event": "none"
+    },
+    "result": "PASS"
+  },
+  "anti_regression": {
+    "driver_verifier": "python .\\tools\\verify_expression_panel_target_stm32wb.py",
+    "wiring_verifier": "python .\\tools\\verify_expression_panel_wiring_preflight.py",
+    "wba_portability_verifier": "python .\\tools\\verify_expression_wba_portability.py",
+    "build_wrapper": "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1 -Force -EpaperSsd1681Bringup",
+    "required_runtime_markers": [
+      "spi=software_vendor_edges",
+      "soft_reset busy=1",
+      "ready_wait initial=1 final=0",
+      "refresh busy=0 update=1 activate=1 complete=1",
+      "contacts=0 event=none"
+    ]
+  },
+  "remaining_acceptance": [
+    "Tap the real menu to confirm touch coordinates match the accepted display orientation",
+    "Run the real BLE multi-expression status sequence",
+    "Fill and validate the final panel evidence record"
+  ]
+}

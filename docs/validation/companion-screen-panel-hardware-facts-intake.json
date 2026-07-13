@@ -1,0 +1,81 @@
+{
+  "accepted_fact_statuses": [
+    "DRAFT_UNFILLED",
+    "READY_FOR_DRIVER_FACTS"
+  ],
+  "draft_filename": "panel-hardware-facts.todo.json",
+  "facts_schema_id": "companion.pendant.screen_panel_hardware_facts.v1",
+  "purpose": "Defines the hardware-fact intake file that can be filled before a real WB55/WBA panel driver is implemented, without claiming a real refresh.",
+  "ready_for_driver_required_sections": {
+    "driver_timing": [
+      "reset_low_ms",
+      "reset_high_ms",
+      "busy_timeout_ms",
+      "full_refresh_sequence",
+      "partial_refresh_policy",
+      "sleep_or_powerdown_sequence"
+    ],
+    "panel_identity": [
+      "controller_model",
+      "panel_module_or_label",
+      "panel_variant",
+      "resolution_px",
+      "datasheet_revision",
+      "waveform_lut_source"
+    ],
+    "target_pin_map": [
+      "target_family",
+      "spi_instance_or_bus",
+      "sck_pin",
+      "mosi_pin",
+      "cs_pin",
+      "dc_pin",
+      "rst_pin",
+      "busy_pin",
+      "power_enable_pin",
+      "logic_voltage"
+    ]
+  },
+  "real_refresh_guard": {
+    "does_not_claim_real_refresh": true,
+    "panel_gate_must_remain": "DEFERRED_HARDWARE",
+    "still_requires_ble_diagnostics_visual_evidence": true
+  },
+  "schema_id": "companion.pendant.screen_panel_hardware_facts_intake.v1",
+  "self_test_cases": [
+    "draft_wb55_facts_pass_intake",
+    "ready_wb55_facts_pass_intake",
+    "ready_facts_with_placeholder_fail",
+    "wba_facts_must_not_copy_wb55_pins",
+    "invalid_pin_fails"
+  ],
+  "sources": {
+    "bringup_doc": "docs/bringup_steps.md",
+    "epaper_readme": "app/companion_pendant/epaper/README.md",
+    "facts_tool": "tools/verify_expression_panel_hardware_facts.py",
+    "panel_evidence_template": "docs/validation/companion-screen-panel-evidence-template.json",
+    "panel_hardware_gate": "docs/validation/companion-screen-panel-hardware-gate.json",
+    "panel_session_directory_preflight": "docs/validation/companion-screen-panel-session-directory-preflight.json",
+    "screen_doc": "docs/companion_screen_expression_system.md",
+    "session_init_tool": "tools/init_expression_panel_evidence_record.py"
+  },
+  "status": "PASS",
+  "target_coverage": [
+    "WB55",
+    "WBA55",
+    "WBA65"
+  ],
+  "validation_commands": [
+    "python .\\tools\\verify_expression_panel_hardware_facts.py",
+    "python .\\tools\\verify_expression_panel_hardware_facts.py --self-test",
+    "python .\\tools\\verify_expression_panel_gate.py"
+  ],
+  "wb55_prefilled_transport": {
+    "cs_label": "SPI2_CS",
+    "cs_pin": "PA6",
+    "miso_pin": "PC2",
+    "mosi_pin": "PC1",
+    "sck_pin": "PA9",
+    "spi_instance_or_bus": "SPI2"
+  }
+}

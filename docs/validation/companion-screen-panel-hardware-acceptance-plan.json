@@ -1,0 +1,156 @@
+{
+  "current_gate_status": "PASS",
+  "evidence_paths": [
+    "docs/validation/companion-screen-panel-hardware-acceptance-plan.json",
+    "docs/validation/companion-screen-panel-hardware-gate.json",
+    "docs/validation/companion-screen-panel-evidence-template.json",
+    "docs/validation/companion-screen-panel-evidence-record-validator.json",
+    "docs/validation/companion-screen-panel-hardware-session.json",
+    "docs/validation/companion-screen-panel-wiring-preflight.json",
+    "docs/validation/companion-screen-real-ble-bench.json",
+    "docs/validation/companion-screen-expression-demo-host-status-sequence.json",
+    "docs/validation/companion-screen-runtime-diagnostics.json",
+    "docs/validation/companion-screen-runtime-diagnostic-decode.json",
+    "docs/validation/companion-diagnostics-fixture/summary.json",
+    "docs/validation/companion-screen-panel-adapter-boundary.json",
+    "docs/validation/companion-screen-panel-adapter-behavior.json",
+    "docs/validation/companion-screen-panel-target-stm32wb.json",
+    "docs/validation/companion-screen-wba-port-contract.json",
+    "docs/validation/companion-screen-wba55-port-scaffold.json",
+    "docs/companion_screen_expression_system.md",
+    "docs/bringup_steps.md",
+    "docs/stm32wba_migration_rules.md",
+    "tools/verify_expression_panel_hardware_acceptance_plan.py",
+    "tools/verify_expression_panel_hardware_session.py"
+  ],
+  "forbidden_shortcuts": [
+    "Do not change wb55_real_panel_refresh to PASS from photos or logs alone.",
+    "Do not accept final_card_status=failed/deferred_no_panel or failed/deferred_controller_unknown as real refresh evidence.",
+    "Do not put SPI/GPIO/BUSY/reset code into ExpressionV1, display_queue, or panel_adapter portable files.",
+    "Do not claim WBA parity from a WB55 adapter rename; WBA needs a CubeWBA project, build wrapper, scheduler hook, BLE adapter, and target evidence record."
+  ],
+  "gate_id": "wb55_real_panel_refresh",
+  "hardware_exit_criteria": [
+    "selected controller model and datasheet revision recorded",
+    "target SPI/DC/RST/BUSY/power pins recorded",
+    "reset timing, BUSY timeout, full refresh sequence, partial refresh policy, and sleep sequence recorded",
+    "real BLE bench run with --expect-real-panel and real_panel_refresh_claimed=true",
+    "failed real BLE bench artifacts preserve operations and partial_operation_count",
+    "real BLE bench artifact includes screen_expression_status six-face host sequence baseline",
+    "real BLE bench artifact includes screen_expression_demo_status full demo host sequence baseline",
+    "card_write and settings_sleepy_screen_status final_card_status are rendered/ok",
+    "accepted and final CardStatusV1 request_id/content_crc32 identity is preserved",
+    "e_paper.runtime_snapshot decoded_args show zero panel errors, zero pending display work, and zero dropped display work",
+    "diagnostics_bundle_artifact summary.json includes epaper.runtime_snapshot_decoded with zero panel errors, zero pending display work, and zero dropped display work",
+    "before/during/after visual evidence paths exist and after-photo sha256 matches",
+    "target_adapter_file matches *_stm32wb.* for WB55 or *_stm32wba.* for WBA55/WBA65",
+    "third_party/STM32CubeWB and third_party/STM32CubeWBA remain clean",
+    "verify_expression_panel_evidence_record.py --record passes for the target record"
+  ],
+  "purpose": "Records the accepted WB55 real-panel refresh evidence and keeps a target-specific acceptance handoff ready for WBA55/WBA65 hardware sessions.",
+  "real_refresh_claimed_before_hardware": false,
+  "schema_id": "companion.pendant.screen_panel_hardware_acceptance_plan.v1",
+  "static_preflight_commands": [
+    "python .\\tools\\verify_expression_panel_hardware_acceptance_plan.py",
+    "python .\\tools\\verify_expression_panel_hardware_session.py",
+    "python .\\tools\\verify_expression_panel_gate.py",
+    "python .\\tools\\verify_expression_panel_adapter_behavior.py",
+    "python .\\tools\\verify_expression_panel_adapter_boundary.py",
+    "python .\\tools\\verify_expression_panel_target_stm32wb.py",
+    "python .\\tools\\verify_expression_panel_evidence_template.py",
+    "python .\\tools\\verify_expression_panel_evidence_record.py --self-test",
+    "python .\\tools\\verify_expression_panel_wiring_preflight.py",
+    "python .\\tools\\verify_expression_real_ble_screen_bench.py",
+    "python .\\tools\\verify_expression_screen_runtime_diagnostics.py",
+    "python .\\tools\\verify_expression_screen_runtime_diagnostic_decode.py",
+    "python .\\tools\\verify_companion_diagnostics_static.py",
+    "python .\\tools\\verify_screen_presentation.py",
+    "python .\\tools\\verify_touch_ft6336.py",
+    "python .\\tools\\verify_epaper_refresh_policy.py",
+    "python .\\tools\\verify_epaper_fast_maintenance_runtime.py",
+    "python .\\tools\\verify_screen_resource_architecture.py",
+    "python .\\tools\\verify_expression_wba_portability.py",
+    "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1"
+  ],
+  "status": "PASS",
+  "target_plans": [
+    {
+      "adapter_file_pattern": "*_stm32wb.*",
+      "evidence_record": "docs/validation/companion-screen-panel-evidence-record-wb55.json",
+      "hardware_lock_resource_arg": "'Companion-WB55,BLE-Companion'",
+      "hardware_lock_resources": "Companion-WB55,BLE-Companion",
+      "init_record_command": "python .\\tools\\init_expression_panel_evidence_record.py --target WB55 --output docs/validation/companion-screen-panel-evidence-record-wb55.json --write",
+      "portability_command": "python .\\tools\\verify_expression_panel_gate.py",
+      "real_ble_expect_panel_command": "pwsh -NoProfile -File <ai-collaboration-workflow>\\scripts\\aiw.ps1 with-lock -Resource 'Companion-WB55,BLE-Companion' -Purpose \"Companion WB55 real e-paper panel BLE evidence\" -Run python .\\tools\\companion_ble_real_bench.py --name companion --timeout 20 --notify-timeout 10 --screen-final-timeout 30 --expect-real-panel --output .\\.cache\\validation\\companion-real-panel-wb55-<timestamp>\\companion-ble-real-bench.json --json",
+      "real_ble_failure_evidence": {
+        "failed_runs_preserve_operations": true,
+        "required_fields": [
+          "operations",
+          "partial_operation_count"
+        ]
+      },
+      "record_validator_command": "python .\\tools\\verify_expression_panel_evidence_record.py --record docs/validation/companion-screen-panel-evidence-record-wb55.json",
+      "session_scaffold": {
+        "fixture": "docs/validation/companion-screen-panel-hardware-session.json",
+        "session_root_pattern": ".cache/validation/companion-real-panel-wb55-<timestamp>",
+        "verifier": "python .\\tools\\verify_expression_panel_hardware_session.py"
+      },
+      "target": "WB55"
+    },
+    {
+      "adapter_file_pattern": "*_stm32wba.*",
+      "evidence_record": "docs/validation/companion-screen-panel-evidence-record-wba55.json",
+      "hardware_lock_resource_arg": "'Companion-WBA55,BLE-Companion'",
+      "hardware_lock_resources": "Companion-WBA55,BLE-Companion",
+      "init_record_command": "python .\\tools\\init_expression_panel_evidence_record.py --target WBA55 --output docs/validation/companion-screen-panel-evidence-record-wba55.json --write",
+      "portability_command": "python .\\tools\\verify_expression_wba_portability.py",
+      "real_ble_expect_panel_command": "pwsh -NoProfile -File <ai-collaboration-workflow>\\scripts\\aiw.ps1 with-lock -Resource 'Companion-WBA55,BLE-Companion' -Purpose \"Companion WBA55 real e-paper panel BLE evidence\" -Run python .\\tools\\companion_ble_real_bench.py --name companion --timeout 20 --notify-timeout 10 --screen-final-timeout 30 --expect-real-panel --output .\\.cache\\validation\\companion-real-panel-wba55-<timestamp>\\companion-ble-real-bench.json --json",
+      "real_ble_failure_evidence": {
+        "failed_runs_preserve_operations": true,
+        "required_fields": [
+          "operations",
+          "partial_operation_count"
+        ]
+      },
+      "record_validator_command": "python .\\tools\\verify_expression_panel_evidence_record.py --record docs/validation/companion-screen-panel-evidence-record-wba55.json",
+      "session_scaffold": {
+        "fixture": "docs/validation/companion-screen-panel-hardware-session.json",
+        "session_root_pattern": ".cache/validation/companion-real-panel-wba55-<timestamp>",
+        "verifier": "python .\\tools\\verify_expression_panel_hardware_session.py"
+      },
+      "target": "WBA55"
+    },
+    {
+      "adapter_file_pattern": "*_stm32wba.*",
+      "evidence_record": "docs/validation/companion-screen-panel-evidence-record-wba65.json",
+      "hardware_lock_resource_arg": "'Companion-WBA65,BLE-Companion'",
+      "hardware_lock_resources": "Companion-WBA65,BLE-Companion",
+      "init_record_command": "python .\\tools\\init_expression_panel_evidence_record.py --target WBA65 --output docs/validation/companion-screen-panel-evidence-record-wba65.json --write",
+      "portability_command": "python .\\tools\\verify_expression_wba_portability.py",
+      "real_ble_expect_panel_command": "pwsh -NoProfile -File <ai-collaboration-workflow>\\scripts\\aiw.ps1 with-lock -Resource 'Companion-WBA65,BLE-Companion' -Purpose \"Companion WBA65 real e-paper panel BLE evidence\" -Run python .\\tools\\companion_ble_real_bench.py --name companion --timeout 20 --notify-timeout 10 --screen-final-timeout 30 --expect-real-panel --output .\\.cache\\validation\\companion-real-panel-wba65-<timestamp>\\companion-ble-real-bench.json --json",
+      "real_ble_failure_evidence": {
+        "failed_runs_preserve_operations": true,
+        "required_fields": [
+          "operations",
+          "partial_operation_count"
+        ]
+      },
+      "record_validator_command": "python .\\tools\\verify_expression_panel_evidence_record.py --record docs/validation/companion-screen-panel-evidence-record-wba65.json",
+      "session_scaffold": {
+        "fixture": "docs/validation/companion-screen-panel-hardware-session.json",
+        "session_root_pattern": ".cache/validation/companion-real-panel-wba65-<timestamp>",
+        "verifier": "python .\\tools\\verify_expression_panel_hardware_session.py"
+      },
+      "target": "WBA65"
+    }
+  ],
+  "validation_commands": [
+    "python .\\tools\\verify_expression_panel_hardware_acceptance_plan.py",
+    "python .\\tools\\verify_expression_panel_hardware_session.py",
+    "python .\\tools\\verify_expression_acceptance_index.py",
+    "python .\\tools\\render_expression_acceptance_report.py",
+    "python .\\tools\\verify_screen_presentation.py",
+    "python .\\tools\\verify_touch_ft6336.py",
+    "python .\\tools\\verify_epaper_fast_maintenance_runtime.py"
+  ]
+}

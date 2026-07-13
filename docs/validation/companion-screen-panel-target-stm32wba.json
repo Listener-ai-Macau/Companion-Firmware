@@ -1,0 +1,80 @@
+{
+  "contract": {
+    "bind_api": "companion_epaper_panel_stm32wba_bind",
+    "bind_config": "companion_epaper_panel_stm32wba_config_t",
+    "current_transport": "callback_bindable_dry_run_default",
+    "dirty_rect_source": "comp_epaper_display_request_t.dirty_x/dirty_y/dirty_width/dirty_height",
+    "dry_run_delegate": "comp_epaper_panel_adapter_init_dry_run",
+    "initializer": "companion_epaper_panel_stm32wba_init",
+    "interactive_refresh_intents": [
+      "COMP_EPAPER_REFRESH_PARTIAL_INTERACTIVE",
+      "COMP_EPAPER_REFRESH_MAINTENANCE",
+      "COMP_EPAPER_REFRESH_FULL"
+    ],
+    "not_in_wb55_build": true,
+    "portable_bind_delegate": "comp_epaper_panel_adapter_init",
+    "real_refresh_claimed": false,
+    "refresh_intent_source": "comp_epaper_display_request_t.refresh_mode",
+    "target_enum": [
+      "COMPANION_EPAPER_PANEL_STM32WBA_TARGET_WBA55",
+      "COMPANION_EPAPER_PANEL_STM32WBA_TARGET_WBA65"
+    ],
+    "target_file_pattern": "panel_target_stm32wba.*",
+    "target_name_api": "companion_epaper_panel_stm32wba_target_name",
+    "targets": [
+      "WBA55",
+      "WBA65"
+    ],
+    "wba55_is_baseline": true,
+    "wba65_requires_capability_flags": true,
+    "wba_waveform_mapping_owner": "panel_target_stm32wba.*"
+  },
+  "forbidden_before_wba_hardware_evidence": [
+    "HAL_SPI",
+    "HAL_QSPI",
+    "HAL_GPIO",
+    "GPIO_PIN_",
+    "SPI2",
+    "PA9",
+    "PC1",
+    "PC2",
+    "PA6",
+    "SPI2_CS",
+    "STM32_WPAN",
+    "CPU2",
+    "FUS",
+    "IPCC",
+    "HSEM",
+    "COMP_EPAPER_PANEL_RESULT_OK"
+  ],
+  "purpose": "Target-named STM32WBA panel adapter scaffold for WBA55/WBA65 ports. It defaults to dry-run but can bind a target refresh callback without leaking CubeWBA HAL or pin facts into the portable panel adapter.",
+  "required_future_evidence": [
+    "separate CubeWBA project and build wrapper",
+    "target SPI/DC/RST/BUSY/power pins",
+    "panel controller model and datasheet revision",
+    "reset timing, BUSY timeout, full refresh sequence, partial refresh policy",
+    "real BLE artifact with --expect-real-panel and screen_expression_status",
+    "filled WBA panel evidence record passing verify_expression_panel_evidence_record.py --record"
+  ],
+  "schema_id": "companion.pendant.screen_panel_target_stm32wba.v1",
+  "sources": {
+    "epaper_readme": "app/companion_pendant/epaper/README.md",
+    "panel_gate": "docs/validation/companion-screen-panel-hardware-gate.json",
+    "portable_panel_header": "app/companion_pendant/epaper/panel_adapter.h",
+    "portable_panel_source": "app/companion_pendant/epaper/panel_adapter.c",
+    "screen_acceptance": "docs/companion_screen_expression_system.md",
+    "wba55_port_scaffold": "docs/validation/companion-screen-wba55-port-scaffold.json",
+    "wba_port_contract": "docs/validation/companion-screen-wba-port-contract.json",
+    "wba_rules": "docs/stm32wba_migration_rules.md",
+    "wba_target_header": "app/companion_pendant/epaper/panel_target_stm32wba.h",
+    "wba_target_source": "app/companion_pendant/epaper/panel_target_stm32wba.c"
+  },
+  "status": "PASS",
+  "validation_commands": [
+    "python .\\tools\\verify_expression_panel_target_stm32wba.py",
+    "python .\\tools\\verify_expression_wba_portability.py",
+    "python .\\tools\\init_expression_wba_port_scaffold.py --self-test",
+    "python .\\tools\\verify_expression_panel_gate.py",
+    "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1"
+  ]
+}

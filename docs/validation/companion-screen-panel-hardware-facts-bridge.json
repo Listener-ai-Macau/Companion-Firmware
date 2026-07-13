@@ -1,0 +1,48 @@
+{
+  "accepted_input_status": "READY_FOR_DRIVER_FACTS",
+  "imported_sections": [
+    "panel_identity",
+    "target_pin_map",
+    "driver_timing"
+  ],
+  "input_schema": "companion.pendant.screen_panel_hardware_facts.v1",
+  "left_unfilled_until_real_bench": [
+    "host_observability",
+    "visual_evidence",
+    "portability_notes"
+  ],
+  "output_schema": "companion.pendant.screen_panel_evidence_record.v1",
+  "output_status_after_apply": "DRAFT_UNFILLED",
+  "purpose": "Bridges READY_FOR_DRIVER_FACTS into a draft panel evidence record so controller/pin/timing facts are synchronized before implementing the target driver, without claiming real refresh.",
+  "real_refresh_guard": {
+    "does_not_claim_real_refresh": true,
+    "final_validator_must_still_fail": true,
+    "panel_gate_must_remain": "DEFERRED_HARDWARE"
+  },
+  "schema_id": "companion.pendant.screen_panel_hardware_facts_bridge.v1",
+  "self_test_cases": [
+    "ready_facts_apply_to_draft_record",
+    "draft_facts_are_rejected",
+    "target_mismatch_is_rejected",
+    "applied_record_still_fails_final_validator",
+    "imported_sections_have_no_placeholders"
+  ],
+  "sources": {
+    "bridge_tool": "tools/apply_expression_panel_hardware_facts.py",
+    "bringup_doc": "docs/bringup_steps.md",
+    "epaper_readme": "app/companion_pendant/epaper/README.md",
+    "evidence_validator": "tools/verify_expression_panel_evidence_record.py",
+    "evidence_validator_fixture": "docs/validation/companion-screen-panel-evidence-record-validator.json",
+    "facts_intake_fixture": "docs/validation/companion-screen-panel-hardware-facts-intake.json",
+    "facts_intake_tool": "tools/verify_expression_panel_hardware_facts.py",
+    "panel_hardware_gate": "docs/validation/companion-screen-panel-hardware-gate.json",
+    "screen_doc": "docs/companion_screen_expression_system.md"
+  },
+  "status": "PASS",
+  "validation_commands": [
+    "python .\\tools\\apply_expression_panel_hardware_facts.py --self-test",
+    "python .\\tools\\verify_expression_panel_hardware_facts.py --self-test",
+    "python .\\tools\\verify_expression_panel_evidence_record.py --self-test",
+    "python .\\tools\\verify_expression_panel_gate.py"
+  ]
+}

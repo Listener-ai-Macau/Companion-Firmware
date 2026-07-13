@@ -1,0 +1,183 @@
+{
+  "evidence_paths": [
+    "docs/validation/companion-screen-wb55-ssd1681-bringup.json",
+    "docs/validation/companion-screen-ssd1681-partial-refresh-wb55.json",
+    "docs/validation/companion-screen-touch-ft6336-wb55.json",
+    "docs/validation/companion-screen-panel-wiring-preflight.json",
+    "docs/validation/companion-screen-real-ble-bench.json",
+    "docs/validation/companion-screen-panel-evidence-template.json",
+    "docs/validation/companion-screen-panel-evidence-record-validator.json",
+    "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
+    ".cache/validation/screen-revision11-fast-maintenance-normal/nucleo-serial-raw.log",
+    ".cache/validation/screen-ssd1681-fast-maintenance/nucleo-serial-raw.log",
+    ".cache/validation/screen-human-view-mirror-fix-20260711/nucleo-serial-raw.log",
+    ".cache/validation/nucleo-serial-20260711-153810/nucleo-serial-raw.log"
+  ],
+  "gate_id": "wb55_real_panel_refresh",
+  "hardware_action_required": false,
+  "real_refresh_claimed": true,
+  "remaining_human_acceptance": [
+    "Confirm current revision 39 0xCF maintenance is perceived as one quiet flash",
+    "Confirm daily tap and four-way swipes stay as pet reactions",
+    "Confirm anywhere 3 s hold enters the menu after the 650 ms pet tease",
+    "Confirm continuous vertical drag, press-cue plus target-arrival partial refreshes, language switching, and left-edge swipe-right return"
+  ],
+  "required_hardware_facts": [
+    {
+      "evidence_paths": [
+        "docs/validation/companion-screen-wb55-ssd1681-bringup.json"
+      ],
+      "id": "controller_model",
+      "label": "e-paper controller model",
+      "status": "verified",
+      "value": "SSD1681"
+    },
+    {
+      "evidence_paths": [
+        "docs/validation/companion-screen-wb55-ssd1681-bringup.json"
+      ],
+      "id": "panel_model",
+      "label": "panel module",
+      "status": "verified",
+      "value": "GDEY0154D67-T03"
+    },
+    {
+      "evidence_paths": [
+        "docs/validation/companion-screen-wb55-ssd1681-bringup.json"
+      ],
+      "id": "logic_voltage",
+      "label": "measured target voltage",
+      "status": "verified",
+      "value": "3.24 V"
+    },
+    {
+      "evidence_paths": [
+        "docs/validation/companion-screen-wb55-ssd1681-bringup.json"
+      ],
+      "id": "dc_pin",
+      "label": "DC pin",
+      "status": "verified",
+      "value": "PB0"
+    },
+    {
+      "evidence_paths": [
+        "docs/validation/companion-screen-wb55-ssd1681-bringup.json"
+      ],
+      "id": "rst_pin",
+      "label": "RST pin",
+      "status": "verified",
+      "value": "PB1"
+    },
+    {
+      "evidence_paths": [
+        "docs/validation/companion-screen-wb55-ssd1681-bringup.json"
+      ],
+      "id": "busy_pin",
+      "label": "BUSY pin",
+      "status": "verified",
+      "value": "PC5"
+    },
+    {
+      "evidence_paths": [
+        "docs/validation/companion-screen-ssd1681-partial-refresh-wb55.json",
+        ".cache/validation/screen-revision11-fast-maintenance-normal/nucleo-serial-raw.log"
+      ],
+      "id": "full_refresh",
+      "label": "full refresh sequence",
+      "status": "verified",
+      "value": "0x24 + 0x26 + 0xF7"
+    },
+    {
+      "evidence_paths": [
+        "docs/validation/companion-screen-ssd1681-partial-refresh-wb55.json",
+        ".cache/validation/screen-revision11-fast-maintenance-normal/nucleo-serial-raw.log"
+      ],
+      "id": "partial_refresh",
+      "label": "partial refresh sequence",
+      "status": "verified",
+      "value": "0x24 + 0xFF"
+    },
+    {
+      "evidence_paths": [
+        "docs/validation/companion-screen-ssd1681-partial-refresh-wb55.json",
+        ".cache/validation/screen-ssd1681-fast-maintenance/nucleo-serial-raw.log"
+      ],
+      "id": "fast_maintenance",
+      "label": "historical single-flash fast sequence",
+      "status": "verified",
+      "value": "vendor fast init + 0xC7 + 0x26 baseline sync"
+    },
+    {
+      "evidence_paths": [
+        "docs/validation/companion-screen-ssd1681-partial-refresh-wb55.json"
+      ],
+      "id": "current_maintenance",
+      "label": "current low-flicker maintenance sequence",
+      "status": "verified",
+      "value": "0xCF maintenance + 0x26 baseline sync"
+    },
+    {
+      "evidence_paths": [
+        "docs/validation/companion-screen-wb55-ssd1681-bringup.json"
+      ],
+      "id": "operator_visual",
+      "label": "operator visual evidence",
+      "status": "verified",
+      "value": "PASS: operator reported that the screen changed to black"
+    },
+    {
+      "evidence_paths": [
+        "docs/validation/companion-screen-wb55-ssd1681-bringup.json",
+        ".cache/validation/screen-human-view-mirror-fix-20260711/nucleo-serial-raw.log"
+      ],
+      "id": "orientation",
+      "label": "operator orientation evidence",
+      "status": "verified",
+      "value": "PASS: operator confirmed rotation=180 and mirror_x=1 is upright and not mirrored"
+    },
+    {
+      "evidence_paths": [
+        "docs/validation/companion-screen-wb55-ssd1681-bringup.json",
+        ".cache/validation/nucleo-serial-20260711-153810/nucleo-serial-raw.log"
+      ],
+      "id": "touch_contact",
+      "label": "physical touch contact/release",
+      "status": "verified",
+      "value": "PASS"
+    }
+  ],
+  "result": "WB55 drove the physical GDEY0154D67-T03 through SSD1681 full, partial, and fast refresh paths; the operator confirmed a visible black update and upright non-mirrored orientation.",
+  "runtime": {
+    "fast_refresh_elapsed_ms": 1740,
+    "full_refresh_elapsed_ms": 1298,
+    "partial_refresh_elapsed_ms": [
+      448,
+      450
+    ],
+    "post_fast_partial_refresh": true,
+    "production_interactive_hard_limit": 60,
+    "refresh_failures": 0
+  },
+  "schema_id": "companion.pendant.screen_panel_hardware_gate.v1",
+  "status": "PASS",
+  "target_backend": {
+    "controller": "SSD1681",
+    "dispatcher": "app/companion_pendant/epaper/panel_target_stm32wb.c",
+    "driver": "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
+    "dry_run_role": "fallback_only",
+    "initializer": "companion_epaper_panel_stm32wb_init"
+  },
+  "validation_commands": [
+    "python .\\tools\\verify_expression_panel_gate.py",
+    "python .\\tools\\verify_screen_menu_assets.py",
+    "python .\\tools\\verify_epaper_refresh_policy.py",
+    "python .\\tools\\verify_epaper_fast_maintenance_runtime.py",
+    "python .\\tools\\verify_touch_ft6336.py",
+    "python .\\tools\\verify_expression_panel_wiring_preflight.py",
+    "python .\\tools\\verify_expression_real_ble_screen_bench.py",
+    "python .\\tools\\verify_expression_panel_evidence_template.py",
+    "python .\\tools\\verify_expression_panel_evidence_record.py --self-test",
+    "python .\\tools\\verify_expression_panel_target_stm32wb.py"
+  ],
+  "wba_impact": "WBA55/WBA65 reuse the portable framebuffer, display queue, refresh policy, asset store, and presentation state; only target panel, touch, storage, and timer backends may change."
+}

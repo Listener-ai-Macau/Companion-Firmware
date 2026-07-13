@@ -1,0 +1,322 @@
+{
+  "claim_scope": "operator_packet_no_hardware_claim",
+  "command_groups": {
+    "driver_and_static_checks": [
+      "edit app/companion_pendant/epaper/panel_target_stm32wb.c",
+      "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1",
+      "python .\\tools\\verify_expression_panel_adapter_behavior.py",
+      "python .\\tools\\verify_expression_panel_adapter_telemetry.py"
+    ],
+    "evidence_record_bridge": [
+      "python .\\tools\\apply_expression_panel_hardware_facts.py --facts .cache/validation/companion-real-panel-wb55-<timestamp>/panel-hardware-facts.todo.json --record .cache/validation/companion-real-panel-wb55-<timestamp>/panel-evidence-record.json --write"
+    ],
+    "facts_worksheet": [
+      "python .\\tools\\render_expression_panel_facts_worksheet.py --session-root .cache/validation/companion-real-panel-wb55-<timestamp> --write --json .cache/validation/companion-real-panel-wb55-<timestamp>/panel-facts-worksheet.json --markdown .cache/validation/companion-real-panel-wb55-<timestamp>/panel-facts-worksheet.md",
+      "python .\\tools\\verify_expression_panel_driver_readiness.py --session-root .cache/validation/companion-real-panel-wb55-<timestamp> --output .cache/validation/companion-real-panel-wb55-<timestamp>/panel-driver-readiness.json"
+    ],
+    "pre_driver_gate": [
+      "python .\\tools\\verify_expression_panel_driver_readiness.py --session-root .cache/validation/companion-real-panel-wb55-<timestamp> --require-ready"
+    ],
+    "real_panel_evidence": [
+      "pwsh -NoProfile -File <ai-collaboration-workflow>\\scripts\\aiw.ps1 with-lock -Resource 'Companion-WB55,BLE-Companion' -Purpose \"Companion WB55 real e-paper panel operator packet\" -Run python .\\tools\\companion_ble_real_bench.py --name companion --timeout 20 --notify-timeout 10 --screen-final-timeout 30 --expect-real-panel --output .cache/validation/companion-real-panel-wb55-<timestamp>/companion-ble-real-bench.json --json",
+      "pwsh -NoProfile -File .\\tools\\collect_companion_diagnostics.ps1 -OutputDir .cache/validation/companion-real-panel-wb55-<timestamp>/diagnostics",
+      "python .\\tools\\verify_expression_panel_evidence_record.py --record .cache/validation/companion-real-panel-wb55-<timestamp>/panel-evidence-record.json",
+      "git diff --name-only -- third_party\\STM32CubeWB third_party\\STM32CubeWBA"
+    ],
+    "session_setup": [
+      "python .\\tools\\init_expression_panel_evidence_record.py --target WB55 --session-root .cache/validation/companion-real-panel-wb55-<timestamp> --write-session",
+      "python .\\tools\\verify_expression_panel_session_directory.py --session-root .cache/validation/companion-real-panel-wb55-<timestamp> --target WB55",
+      "python .\\tools\\verify_expression_panel_hardware_facts.py --facts .cache/validation/companion-real-panel-wb55-<timestamp>/panel-hardware-facts.todo.json"
+    ]
+  },
+  "current_gate_status": "DEFERRED_HARDWARE",
+  "facts_status": "DRAFT_UNFILLED",
+  "gate_id": "wb55_real_panel_refresh",
+  "known_transport": {
+    "cs_label": "SPI2_CS",
+    "cs_pin": "PA6",
+    "miso_pin": "PC2",
+    "mosi_pin": "PC1",
+    "sck_pin": "PA9",
+    "spi_instance_or_bus": "SPI2",
+    "target_family": "WB55"
+  },
+  "missing_ready_field_count": 15,
+  "missing_ready_fields": [
+    {
+      "accepted_values": "Non-placeholder string, for example UC8151D.",
+      "current_value": "TODO_CONTROLLER_MODEL",
+      "field": "panel_identity.controller_model",
+      "prompt": "Controller model from module docs or silkscreen."
+    },
+    {
+      "accepted_values": "Non-placeholder string.",
+      "current_value": "TODO_PANEL_MODULE_OR_LABEL",
+      "field": "panel_identity.panel_module_or_label",
+      "prompt": "Panel module name or label used for bench traceability."
+    },
+    {
+      "accepted_values": "Non-placeholder string.",
+      "current_value": "TODO_DATASHEET_REVISION",
+      "field": "panel_identity.datasheet_revision",
+      "prompt": "Datasheet revision used for timing/command sequence."
+    },
+    {
+      "accepted_values": "Non-placeholder string, for example controller OTP.",
+      "current_value": "TODO_WAVEFORM_LUT_SOURCE",
+      "field": "panel_identity.waveform_lut_source",
+      "prompt": "Waveform LUT source."
+    },
+    {
+      "accepted_values": "STM32 pin like PB0.",
+      "current_value": "TODO_DC_PIN",
+      "field": "target_pin_map.dc_pin",
+      "prompt": "STM32 GPIO wired to panel DC."
+    },
+    {
+      "accepted_values": "STM32 pin like PB1.",
+      "current_value": "TODO_RST_PIN",
+      "field": "target_pin_map.rst_pin",
+      "prompt": "STM32 GPIO wired to panel RST."
+    },
+    {
+      "accepted_values": "STM32 pin like PB2.",
+      "current_value": "TODO_BUSY_PIN",
+      "field": "target_pin_map.busy_pin",
+      "prompt": "STM32 GPIO wired to panel BUSY."
+    },
+    {
+      "accepted_values": "STM32 pin or not_present.",
+      "current_value": "TODO_POWER_ENABLE_PIN_OR_NOT_PRESENT",
+      "field": "target_pin_map.power_enable_pin",
+      "prompt": "Optional panel power-enable GPIO."
+    },
+    {
+      "accepted_values": "1.8V, 3.0V, or 3.3V.",
+      "current_value": "TODO_LOGIC_VOLTAGE",
+      "field": "target_pin_map.logic_voltage",
+      "prompt": "Panel logic voltage."
+    },
+    {
+      "accepted_values": "Positive integer milliseconds.",
+      "current_value": "TODO_RESET_LOW_MS_INTEGER",
+      "field": "driver_timing.reset_low_ms",
+      "prompt": "Reset low pulse duration from datasheet."
+    },
+    {
+      "accepted_values": "Positive integer milliseconds.",
+      "current_value": "TODO_RESET_HIGH_MS_INTEGER",
+      "field": "driver_timing.reset_high_ms",
+      "prompt": "Delay after reset release from datasheet."
+    },
+    {
+      "accepted_values": "Positive integer milliseconds.",
+      "current_value": "TODO_BUSY_TIMEOUT_MS_INTEGER",
+      "field": "driver_timing.busy_timeout_ms",
+      "prompt": "Maximum BUSY wait for full refresh."
+    },
+    {
+      "accepted_values": "Non-empty list of named steps.",
+      "current_value": [
+        "TODO_FULL_REFRESH_STEP_1"
+      ],
+      "field": "driver_timing.full_refresh_sequence",
+      "prompt": "Full refresh command sequence to implement."
+    },
+    {
+      "accepted_values": "Non-placeholder string; disabled is allowed until validated.",
+      "current_value": "TODO_PARTIAL_REFRESH_POLICY",
+      "field": "driver_timing.partial_refresh_policy",
+      "prompt": "Initial partial-refresh policy."
+    },
+    {
+      "accepted_values": "Non-empty list of named steps.",
+      "current_value": [
+        "TODO_SLEEP_OR_POWERDOWN_STEP_1"
+      ],
+      "field": "driver_timing.sleep_or_powerdown_sequence",
+      "prompt": "Sleep or powerdown command sequence after refresh."
+    }
+  ],
+  "operator_steps": [
+    {
+      "commands": [
+        "python .\\tools\\init_expression_panel_evidence_record.py --target WB55 --session-root .cache/validation/companion-real-panel-wb55-<timestamp> --write-session",
+        "python .\\tools\\verify_expression_panel_session_directory.py --session-root .cache/validation/companion-real-panel-wb55-<timestamp> --target WB55",
+        "python .\\tools\\verify_expression_panel_hardware_facts.py --facts .cache/validation/companion-real-panel-wb55-<timestamp>/panel-hardware-facts.todo.json"
+      ],
+      "completion_check": "Session contains panel-evidence-record.json, panel-hardware-facts.todo.json, visual/, diagnostics/, and operator-notes.md.",
+      "id": "create_session",
+      "title": "Create the target session directory"
+    },
+    {
+      "completion_check": "Controller, module label, datasheet revision, and LUT source are non-placeholder values.",
+      "fields": [
+        "panel_identity.controller_model",
+        "panel_identity.panel_module_or_label",
+        "panel_identity.datasheet_revision",
+        "panel_identity.waveform_lut_source"
+      ],
+      "id": "fill_panel_identity",
+      "title": "Fill panel identity facts"
+    },
+    {
+      "completion_check": "DC/RST/BUSY/power-enable/logic-voltage facts are target-specific and do not copy another board.",
+      "fields": [
+        "target_pin_map.dc_pin",
+        "target_pin_map.rst_pin",
+        "target_pin_map.busy_pin",
+        "target_pin_map.power_enable_pin",
+        "target_pin_map.logic_voltage"
+      ],
+      "id": "fill_wiring_and_power",
+      "title": "Fill wiring, power, and voltage facts"
+    },
+    {
+      "completion_check": "Timing and command sequence facts are traceable to the controller datasheet or module vendor notes.",
+      "fields": [
+        "driver_timing.reset_low_ms",
+        "driver_timing.reset_high_ms",
+        "driver_timing.busy_timeout_ms",
+        "driver_timing.full_refresh_sequence",
+        "driver_timing.partial_refresh_policy",
+        "driver_timing.sleep_or_powerdown_sequence"
+      ],
+      "id": "fill_driver_timing",
+      "title": "Fill reset, BUSY, refresh, partial-refresh, and sleep timing facts"
+    },
+    {
+      "commands": [
+        "python .\\tools\\render_expression_panel_facts_worksheet.py --session-root .cache/validation/companion-real-panel-wb55-<timestamp> --write --json .cache/validation/companion-real-panel-wb55-<timestamp>/panel-facts-worksheet.json --markdown .cache/validation/companion-real-panel-wb55-<timestamp>/panel-facts-worksheet.md",
+        "python .\\tools\\verify_expression_panel_driver_readiness.py --session-root .cache/validation/companion-real-panel-wb55-<timestamp> --output .cache/validation/companion-real-panel-wb55-<timestamp>/panel-driver-readiness.json",
+        "python .\\tools\\verify_expression_panel_driver_readiness.py --session-root .cache/validation/companion-real-panel-wb55-<timestamp> --require-ready"
+      ],
+      "completion_check": "Readiness reports READY_FOR_DRIVER_IMPLEMENTATION for this session only.",
+      "id": "prove_driver_readiness",
+      "title": "Run the concrete pre-driver readiness gate"
+    },
+    {
+      "commands": [
+        "python .\\tools\\apply_expression_panel_hardware_facts.py --facts .cache/validation/companion-real-panel-wb55-<timestamp>/panel-hardware-facts.todo.json --record .cache/validation/companion-real-panel-wb55-<timestamp>/panel-evidence-record.json --write"
+      ],
+      "completion_check": "panel-evidence-record.json remains DRAFT_UNFILLED and still does not claim real refresh.",
+      "id": "bridge_facts_into_evidence_record",
+      "title": "Copy ready facts into the session evidence record"
+    },
+    {
+      "commands": [
+        "edit app/companion_pendant/epaper/panel_target_stm32wb.c",
+        "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1",
+        "python .\\tools\\verify_expression_panel_adapter_behavior.py",
+        "python .\\tools\\verify_expression_panel_adapter_telemetry.py"
+      ],
+      "completion_check": "Target driver builds and portable expression/display queue files remain free of SPI/GPIO/BUSY code.",
+      "id": "implement_target_driver",
+      "title": "Implement the target-owned panel driver entrypoint"
+    },
+    {
+      "commands": [
+        "pwsh -NoProfile -File <ai-collaboration-workflow>\\scripts\\aiw.ps1 with-lock -Resource 'Companion-WB55,BLE-Companion' -Purpose \"Companion WB55 real e-paper panel operator packet\" -Run python .\\tools\\companion_ble_real_bench.py --name companion --timeout 20 --notify-timeout 10 --screen-final-timeout 30 --expect-real-panel --output .cache/validation/companion-real-panel-wb55-<timestamp>/companion-ble-real-bench.json --json",
+        "pwsh -NoProfile -File .\\tools\\collect_companion_diagnostics.ps1 -OutputDir .cache/validation/companion-real-panel-wb55-<timestamp>/diagnostics",
+        "python .\\tools\\verify_expression_panel_evidence_record.py --record .cache/validation/companion-real-panel-wb55-<timestamp>/panel-evidence-record.json",
+        "git diff --name-only -- third_party\\STM32CubeWB third_party\\STM32CubeWBA"
+      ],
+      "completion_check": "Final record passes verify_expression_panel_evidence_record.py with rendered/ok, zero runtime errors, and before/during/after visual evidence.",
+      "id": "collect_real_panel_evidence",
+      "title": "Collect BLE, diagnostics, visual evidence, and final record validation"
+    }
+  ],
+  "promotion_rule": "This packet can only move work to driver implementation after --require-ready passes for the concrete session; it cannot move wb55_real_panel_refresh to PASS.",
+  "purpose": "Operator packet for the next real e-paper panel bring-up step without claiming real refresh.",
+  "readiness_status": "BLOCKED_ON_HARDWARE_FACTS",
+  "real_ble_failure_evidence": {
+    "failed_runs_preserve_operations": true,
+    "reason": "Distinguish BLE or board reachability loss from screen contract drift while keeping partial CardStatusV1 evidence.",
+    "required_fields": [
+      "operations",
+      "partial_operation_count"
+    ]
+  },
+  "real_refresh_claimed": false,
+  "schema_id": "companion.pendant.screen_panel_bringup_operator_packet.v1",
+  "session_artifacts": [
+    {
+      "id": "panel_evidence_record",
+      "path": ".cache/validation/companion-real-panel-wb55-<timestamp>/panel-evidence-record.json",
+      "purpose": "Final real-panel evidence record; starts DRAFT_UNFILLED and must remain draft until all evidence is present."
+    },
+    {
+      "id": "hardware_facts",
+      "path": ".cache/validation/companion-real-panel-wb55-<timestamp>/panel-hardware-facts.todo.json",
+      "purpose": "Fill controller, wiring, power, voltage, and timing facts before target driver implementation."
+    },
+    {
+      "id": "facts_worksheet",
+      "path": ".cache/validation/companion-real-panel-wb55-<timestamp>/panel-facts-worksheet.md",
+      "purpose": "Operator-facing table of missing driver-readiness fields."
+    },
+    {
+      "id": "driver_readiness",
+      "path": ".cache/validation/companion-real-panel-wb55-<timestamp>/panel-driver-readiness.json",
+      "purpose": "Machine-readable BLOCKED_ON_HARDWARE_FACTS or READY_FOR_DRIVER_IMPLEMENTATION report."
+    },
+    {
+      "id": "operator_notes",
+      "path": ".cache/validation/companion-real-panel-wb55-<timestamp>/operator-notes.md",
+      "purpose": "Record operator action, panel labels, observed refresh result, and deviations."
+    },
+    {
+      "id": "visual_before",
+      "path": ".cache/validation/companion-real-panel-wb55-<timestamp>/visual/before_photo.jpg",
+      "purpose": "Photo before the refresh attempt."
+    },
+    {
+      "id": "visual_during",
+      "path": ".cache/validation/companion-real-panel-wb55-<timestamp>/visual/during_refresh_photo_or_video",
+      "purpose": "Photo or video during the refresh attempt."
+    },
+    {
+      "id": "visual_after",
+      "path": ".cache/validation/companion-real-panel-wb55-<timestamp>/visual/after_photo.jpg",
+      "purpose": "Photo after the refresh attempt; hash goes into panel-evidence-record.json."
+    },
+    {
+      "id": "real_ble_bench",
+      "path": ".cache/validation/companion-real-panel-wb55-<timestamp>/companion-ble-real-bench.json",
+      "purpose": "BLE artifact created with --expect-real-panel and final rendered/ok status; failed runs must preserve operations and partial_operation_count."
+    },
+    {
+      "id": "diagnostics_summary",
+      "path": ".cache/validation/companion-real-panel-wb55-<timestamp>/diagnostics/summary.json",
+      "purpose": "Diagnostics bundle summary with epaper.runtime_snapshot_decoded health, panel_error_count=0, pending display work=0, and dropped display work=0."
+    }
+  ],
+  "session_root": ".cache/validation/companion-real-panel-wb55-<timestamp>",
+  "sources": {
+    "bringup_doc": "docs/bringup_steps.md",
+    "demo_panel_handoff": "docs/validation/companion-screen-expression-demo-panel-handoff.json",
+    "driver_readiness": "docs/validation/companion-screen-panel-driver-readiness.json",
+    "epaper_readme": "app/companion_pendant/epaper/README.md",
+    "facts_worksheet": "docs/validation/companion-screen-panel-facts-worksheet.json",
+    "hardware_acceptance_plan": "docs/validation/companion-screen-panel-hardware-acceptance-plan.json",
+    "hardware_session": "docs/validation/companion-screen-panel-hardware-session.json",
+    "packet_tool": "tools/render_expression_panel_bringup_packet.py",
+    "panel_evidence_template": "docs/validation/companion-screen-panel-evidence-template.json",
+    "screen_doc": "docs/companion_screen_expression_system.md",
+    "wba_rules": "docs/stm32wba_migration_rules.md"
+  },
+  "status": "PASS",
+  "target": "WB55",
+  "validation_commands": [
+    "python .\\tools\\render_expression_panel_bringup_packet.py",
+    "python .\\tools\\render_expression_panel_bringup_packet.py --self-test",
+    "python .\\tools\\render_expression_panel_facts_worksheet.py --self-test",
+    "python .\\tools\\verify_expression_panel_driver_readiness.py --self-test",
+    "python .\\tools\\verify_expression_panel_hardware_session.py"
+  ],
+  "wba_migration_guard": {
+    "do_not_reuse_wb55_pin_map_as_wba_evidence": true,
+    "portable_files_remain_hal_free": true,
+    "wba55_wba65_need_separate_packets": true
+  }
+}

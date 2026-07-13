@@ -1,0 +1,162 @@
+{
+  "facts_path": null,
+  "facts_status": "DRAFT_UNFILLED",
+  "known_transport": {
+    "cs_label": "SPI2_CS",
+    "cs_pin": "PA6",
+    "miso_pin": "PC2",
+    "mosi_pin": "PC1",
+    "sck_pin": "PA9",
+    "spi_instance_or_bus": "SPI2",
+    "target_family": "WB55"
+  },
+  "missing_ready_field_count": 15,
+  "operator_next_step": "Fill each missing row in a session panel-hardware-facts.todo.json, then rerun python .\\tools\\verify_expression_panel_driver_readiness.py --facts <panel-hardware-facts.todo.json> --require-ready.",
+  "panel_gate_must_remain": "DEFERRED_HARDWARE",
+  "purpose": "Operator-facing worksheet for filling real-panel hardware facts before target driver work starts.",
+  "readiness_status": "BLOCKED_ON_HARDWARE_FACTS",
+  "real_refresh_claimed": false,
+  "schema_id": "companion.pendant.screen_panel_facts_worksheet.v1",
+  "sources": {
+    "bringup_doc": "docs/bringup_steps.md",
+    "driver_readiness": "docs/validation/companion-screen-panel-driver-readiness.json",
+    "epaper_readme": "app/companion_pendant/epaper/README.md",
+    "facts_intake": "docs/validation/companion-screen-panel-hardware-facts-intake.json",
+    "screen_doc": "docs/companion_screen_expression_system.md",
+    "worksheet_tool": "tools/render_expression_panel_facts_worksheet.py"
+  },
+  "status": "PASS",
+  "target": "WB55",
+  "validation_commands": [
+    "python .\\tools\\render_expression_panel_facts_worksheet.py",
+    "python .\\tools\\render_expression_panel_facts_worksheet.py --self-test",
+    "python .\\tools\\verify_expression_panel_driver_readiness.py",
+    "python .\\tools\\verify_expression_panel_hardware_facts.py --self-test"
+  ],
+  "worksheet_rows": [
+    {
+      "accepted_values": "Non-placeholder string, for example UC8151D.",
+      "current_value": "TODO_CONTROLLER_MODEL",
+      "field": "panel_identity.controller_model",
+      "prompt": "Controller model from module docs or silkscreen.",
+      "required_for_ready": true,
+      "status": "missing"
+    },
+    {
+      "accepted_values": "Non-placeholder string.",
+      "current_value": "TODO_PANEL_MODULE_OR_LABEL",
+      "field": "panel_identity.panel_module_or_label",
+      "prompt": "Panel module name or label used for bench traceability.",
+      "required_for_ready": true,
+      "status": "missing"
+    },
+    {
+      "accepted_values": "Non-placeholder string.",
+      "current_value": "TODO_DATASHEET_REVISION",
+      "field": "panel_identity.datasheet_revision",
+      "prompt": "Datasheet revision used for timing/command sequence.",
+      "required_for_ready": true,
+      "status": "missing"
+    },
+    {
+      "accepted_values": "Non-placeholder string, for example controller OTP.",
+      "current_value": "TODO_WAVEFORM_LUT_SOURCE",
+      "field": "panel_identity.waveform_lut_source",
+      "prompt": "Waveform LUT source.",
+      "required_for_ready": true,
+      "status": "missing"
+    },
+    {
+      "accepted_values": "STM32 pin like PB0.",
+      "current_value": "TODO_DC_PIN",
+      "field": "target_pin_map.dc_pin",
+      "prompt": "STM32 GPIO wired to panel DC.",
+      "required_for_ready": true,
+      "status": "missing"
+    },
+    {
+      "accepted_values": "STM32 pin like PB1.",
+      "current_value": "TODO_RST_PIN",
+      "field": "target_pin_map.rst_pin",
+      "prompt": "STM32 GPIO wired to panel RST.",
+      "required_for_ready": true,
+      "status": "missing"
+    },
+    {
+      "accepted_values": "STM32 pin like PB2.",
+      "current_value": "TODO_BUSY_PIN",
+      "field": "target_pin_map.busy_pin",
+      "prompt": "STM32 GPIO wired to panel BUSY.",
+      "required_for_ready": true,
+      "status": "missing"
+    },
+    {
+      "accepted_values": "STM32 pin or not_present.",
+      "current_value": "TODO_POWER_ENABLE_PIN_OR_NOT_PRESENT",
+      "field": "target_pin_map.power_enable_pin",
+      "prompt": "Optional panel power-enable GPIO.",
+      "required_for_ready": true,
+      "status": "missing"
+    },
+    {
+      "accepted_values": "1.8V, 3.0V, or 3.3V.",
+      "current_value": "TODO_LOGIC_VOLTAGE",
+      "field": "target_pin_map.logic_voltage",
+      "prompt": "Panel logic voltage.",
+      "required_for_ready": true,
+      "status": "missing"
+    },
+    {
+      "accepted_values": "Positive integer milliseconds.",
+      "current_value": "TODO_RESET_LOW_MS_INTEGER",
+      "field": "driver_timing.reset_low_ms",
+      "prompt": "Reset low pulse duration from datasheet.",
+      "required_for_ready": true,
+      "status": "missing"
+    },
+    {
+      "accepted_values": "Positive integer milliseconds.",
+      "current_value": "TODO_RESET_HIGH_MS_INTEGER",
+      "field": "driver_timing.reset_high_ms",
+      "prompt": "Delay after reset release from datasheet.",
+      "required_for_ready": true,
+      "status": "missing"
+    },
+    {
+      "accepted_values": "Positive integer milliseconds.",
+      "current_value": "TODO_BUSY_TIMEOUT_MS_INTEGER",
+      "field": "driver_timing.busy_timeout_ms",
+      "prompt": "Maximum BUSY wait for full refresh.",
+      "required_for_ready": true,
+      "status": "missing"
+    },
+    {
+      "accepted_values": "Non-empty list of named steps.",
+      "current_value": [
+        "TODO_FULL_REFRESH_STEP_1"
+      ],
+      "field": "driver_timing.full_refresh_sequence",
+      "prompt": "Full refresh command sequence to implement.",
+      "required_for_ready": true,
+      "status": "missing"
+    },
+    {
+      "accepted_values": "Non-placeholder string; disabled is allowed until validated.",
+      "current_value": "TODO_PARTIAL_REFRESH_POLICY",
+      "field": "driver_timing.partial_refresh_policy",
+      "prompt": "Initial partial-refresh policy.",
+      "required_for_ready": true,
+      "status": "missing"
+    },
+    {
+      "accepted_values": "Non-empty list of named steps.",
+      "current_value": [
+        "TODO_SLEEP_OR_POWERDOWN_STEP_1"
+      ],
+      "field": "driver_timing.sleep_or_powerdown_sequence",
+      "prompt": "Sleep or powerdown command sequence after refresh.",
+      "required_for_ready": true,
+      "status": "missing"
+    }
+  ]
+}

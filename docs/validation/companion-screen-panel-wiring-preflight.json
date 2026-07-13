@@ -1,0 +1,78 @@
+{
+  "acceptance": {
+    "chip_select_candidate_named_in_ioc": true,
+    "controller_and_control_pins_are_owned_by_hardware_gate": true,
+    "real_refresh_claim_is_owned_by_panel_gate": true,
+    "spi2_transport_pins_preserved_from_ioc": true,
+    "wba_must_not_copy_wb55_pin_facts_into_portable_code": true
+  },
+  "hardware_gate": {
+    "control_facts_expected_verified": [
+      "busy_pin",
+      "controller_model",
+      "dc_pin",
+      "rst_pin"
+    ],
+    "gate_id": "wb55_real_panel_refresh",
+    "real_refresh_claimed": true,
+    "status": "PASS"
+  },
+  "purpose": "WB55 panel wiring preflight that records the imported SPI2 transport pins and verifies the real-panel gate now owns controller/DC/RST/BUSY facts.",
+  "schema_id": "companion.pendant.screen_panel_wiring_preflight.v1",
+  "sources": {
+    "bringup_readme": "cubeide/Companion_Nucleo_WB55RG_Bringup/README.md",
+    "devboard_ioc": "cubeide/Companion_Nucleo_WB55RG/Companion_Nucleo_WB55RG.ioc",
+    "devboard_ioc_import": "docs/validation/companion-devboard-ioc-import.json",
+    "epaper_readme": "app/companion_pendant/epaper/README.md",
+    "panel_hardware_acceptance_plan": "docs/validation/companion-screen-panel-hardware-acceptance-plan.json",
+    "panel_hardware_gate": "docs/validation/companion-screen-panel-hardware-gate.json",
+    "screen_acceptance": "docs/companion_screen_expression_system.md",
+    "verifier": "tools/verify_expression_panel_wiring_preflight.py",
+    "wba_rules": "docs/stm32wba_migration_rules.md"
+  },
+  "status": "PASS",
+  "validation_commands": [
+    "python .\\tools\\verify_expression_panel_wiring_preflight.py",
+    "python .\\tools\\verify_devboard_ioc_import.py",
+    "python .\\tools\\verify_expression_panel_gate.py",
+    "python .\\tools\\verify_expression_panel_hardware_acceptance_plan.py",
+    "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1"
+  ],
+  "verified_real_panel_facts": [
+    "e-paper controller model",
+    "DC pin",
+    "RST pin",
+    "BUSY pin",
+    "reset timing",
+    "full refresh sequence",
+    "partial refresh policy",
+    "visual before/during/after evidence"
+  ],
+  "wb55_devboard_transport": {
+    "baudrate": "16.0 MBits/s",
+    "chip_select_candidate": {
+      "label": "SPI2_CS",
+      "pin": "PA6",
+      "signal": "GPIO_Output"
+    },
+    "direction": "SPI_DIRECTION_2LINES",
+    "miso": {
+      "mode": "Full_Duplex_Master",
+      "pin": "PC2",
+      "signal": "SPI2_MISO"
+    },
+    "mode": "SPI_MODE_MASTER",
+    "mosi": {
+      "mode": "Full_Duplex_Master",
+      "pin": "PC1",
+      "signal": "SPI2_MOSI"
+    },
+    "sck": {
+      "mode": "Full_Duplex_Master",
+      "pin": "PA9",
+      "signal": "SPI2_SCK"
+    },
+    "spi_instance": "SPI2"
+  },
+  "wba_impact": "WBA55/WBA65 must create their own CubeWBA IOC/project and *_stm32wba.* panel adapter; WB55 SPI2 pins are devboard facts, not portable screen constants."
+}

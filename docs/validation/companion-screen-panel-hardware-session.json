@@ -1,0 +1,304 @@
+{
+  "current_gate_status": "DEFERRED_HARDWARE",
+  "gate_id": "wb55_real_panel_refresh",
+  "no_hardware_action_required_to_verify_scaffold": true,
+  "purpose": "Defines one hardware-session directory and command scaffold per target so WB55 real-panel evidence and later WBA55/WBA65 evidence are collected with the same contract.",
+  "schema_id": "companion.pendant.screen_panel_hardware_session.v1",
+  "session_contract": {
+    "failed_live_ble_runs_preserve_partial_operations": true,
+    "hardware_facts_draft_required": true,
+    "operator_notes_required": true,
+    "real_ble_and_diagnostics_artifacts_are_distinct": true,
+    "session_record_starts_from_scaffold": true,
+    "target_adapter_pattern_required": true,
+    "third_party_cube_dirs_must_remain_clean": true,
+    "uses_workflow_hardware_lock": true,
+    "visual_before_during_after_required": true,
+    "wba_targets_do_not_inherit_wb55_pin_map": true
+  },
+  "sources": {
+    "bringup_doc": "docs/bringup_steps.md",
+    "epaper_readme": "app/companion_pendant/epaper/README.md",
+    "hardware_acceptance_plan": "docs/validation/companion-screen-panel-hardware-acceptance-plan.json",
+    "panel_evidence_record_scaffold": "docs/validation/companion-screen-panel-evidence-record-scaffold.json",
+    "panel_evidence_record_validator": "docs/validation/companion-screen-panel-evidence-record-validator.json",
+    "panel_hardware_gate": "docs/validation/companion-screen-panel-hardware-gate.json",
+    "panel_wiring_preflight": "docs/validation/companion-screen-panel-wiring-preflight.json",
+    "screen_doc": "docs/companion_screen_expression_system.md",
+    "session_verifier": "tools/verify_expression_panel_hardware_session.py",
+    "wba55_port_scaffold": "docs/validation/companion-screen-wba55-port-scaffold.json",
+    "wba_port_contract": "docs/validation/companion-screen-wba-port-contract.json",
+    "wba_rules": "docs/stm32wba_migration_rules.md"
+  },
+  "status": "PASS",
+  "target_sessions": [
+    {
+      "adapter_file_pattern": "*_stm32wb.*",
+      "bootstrap_commands": [
+        "python .\\tools\\verify_expression_panel_hardware_session.py",
+        "python .\\tools\\verify_expression_panel_hardware_acceptance_plan.py",
+        "python .\\tools\\verify_expression_panel_evidence_record.py --self-test",
+        "python .\\tools\\verify_expression_panel_wiring_preflight.py",
+        "python .\\tools\\verify_expression_panel_target_stm32wb.py",
+        "python .\\tools\\init_expression_panel_evidence_record.py --target WB55 --session-root .cache/validation/companion-real-panel-wb55-<timestamp> --write-session",
+        "python .\\tools\\verify_expression_panel_hardware_facts.py --facts .cache/validation/companion-real-panel-wb55-<timestamp>/panel-hardware-facts.todo.json",
+        "pwsh -NoProfile -File <ai-collaboration-workflow>\\scripts\\aiw.ps1 with-lock -Resource 'Companion-WB55,BLE-Companion' -Purpose \"Companion WB55 real e-paper panel session\" -Run python .\\tools\\companion_ble_real_bench.py --name companion --timeout 20 --notify-timeout 10 --screen-final-timeout 30 --expect-real-panel --output .cache/validation/companion-real-panel-wb55-<timestamp>/companion-ble-real-bench.json --json",
+        "pwsh -NoProfile -File .\\tools\\collect_companion_diagnostics.ps1 -OutputDir .cache/validation/companion-real-panel-wb55-<timestamp>\\diagnostics",
+        "python .\\tools\\verify_expression_panel_evidence_record.py --record .cache/validation/companion-real-panel-wb55-<timestamp>/panel-evidence-record.json",
+        "git diff --name-only -- third_party\\STM32CubeWB third_party\\STM32CubeWBA"
+      ],
+      "hardware_lock_resources": "Companion-WB55,BLE-Companion",
+      "promotion_rule": "Only a filled record that passes verify_expression_panel_evidence_record.py can move wb55_real_panel_refresh out of DEFERRED_HARDWARE.",
+      "required_artifacts": [
+        {
+          "created_by": "python .\\tools\\init_expression_panel_evidence_record.py --target WB55 --session-root .cache/validation/companion-real-panel-wb55-<timestamp> --write-session",
+          "id": "panel_evidence_record",
+          "path": ".cache/validation/companion-real-panel-wb55-<timestamp>/panel-evidence-record.json",
+          "validated_by": "python .\\tools\\verify_expression_panel_evidence_record.py --record .cache/validation/companion-real-panel-wb55-<timestamp>/panel-evidence-record.json"
+        },
+        {
+          "created_by": "python .\\tools\\init_expression_panel_evidence_record.py --target WB55 --session-root .cache/validation/companion-real-panel-wb55-<timestamp> --write-session",
+          "id": "hardware_facts_draft",
+          "must_start_as": "DRAFT_UNFILLED",
+          "path": ".cache/validation/companion-real-panel-wb55-<timestamp>/panel-hardware-facts.todo.json",
+          "validated_by": "python .\\tools\\verify_expression_panel_hardware_facts.py --facts .cache/validation/companion-real-panel-wb55-<timestamp>/panel-hardware-facts.todo.json"
+        },
+        {
+          "failure_must_preserve": [
+            "operations",
+            "partial_operation_count"
+          ],
+          "id": "real_ble_bench_artifact",
+          "must_include": [
+            "--expect-real-panel",
+            "real_panel_refresh_claimed=true",
+            "screen_expression_status",
+            "card_write",
+            "settings_sleepy_screen_status",
+            "final_card_status=rendered/ok"
+          ],
+          "path": ".cache/validation/companion-real-panel-wb55-<timestamp>/companion-ble-real-bench.json"
+        },
+        {
+          "id": "diagnostics_bundle_summary",
+          "must_include": [
+            "epaper.runtime_snapshot_decoded",
+            "panel_error_count=0",
+            "display_queue.pending_count=0",
+            "display_queue.dropped_count=0"
+          ],
+          "path": ".cache/validation/companion-real-panel-wb55-<timestamp>/diagnostics/summary.json"
+        },
+        {
+          "id": "visual_before",
+          "path": ".cache/validation/companion-real-panel-wb55-<timestamp>/visual/before_photo.jpg",
+          "record_field": "visual_evidence.before_photo"
+        },
+        {
+          "id": "visual_during",
+          "path": ".cache/validation/companion-real-panel-wb55-<timestamp>/visual/during_refresh_photo_or_video",
+          "record_field": "visual_evidence.during_refresh_photo_or_video"
+        },
+        {
+          "id": "visual_after",
+          "path": ".cache/validation/companion-real-panel-wb55-<timestamp>/visual/after_photo.jpg",
+          "record_field": "visual_evidence.after_photo",
+          "record_hash_field": "visual_evidence.evidence_sha256"
+        },
+        {
+          "id": "operator_notes",
+          "must_record": [
+            "operator action",
+            "observed refresh result",
+            "panel/controller labels",
+            "deviations from scaffold"
+          ],
+          "path": ".cache/validation/companion-real-panel-wb55-<timestamp>/operator-notes.md"
+        }
+      ],
+      "session_root_pattern": ".cache/validation/companion-real-panel-wb55-<timestamp>",
+      "target": "WB55"
+    },
+    {
+      "adapter_file_pattern": "*_stm32wba.*",
+      "bootstrap_commands": [
+        "python .\\tools\\verify_expression_panel_hardware_session.py",
+        "python .\\tools\\verify_expression_panel_hardware_acceptance_plan.py",
+        "python .\\tools\\verify_expression_panel_evidence_record.py --self-test",
+        "python .\\tools\\verify_expression_wba_portability.py",
+        "python .\\tools\\init_expression_wba_port_scaffold.py --self-test",
+        "python .\\tools\\init_expression_panel_evidence_record.py --target WBA55 --session-root .cache/validation/companion-real-panel-wba55-<timestamp> --write-session",
+        "python .\\tools\\verify_expression_panel_hardware_facts.py --facts .cache/validation/companion-real-panel-wba55-<timestamp>/panel-hardware-facts.todo.json",
+        "pwsh -NoProfile -File <ai-collaboration-workflow>\\scripts\\aiw.ps1 with-lock -Resource 'Companion-WBA55,BLE-Companion' -Purpose \"Companion WBA55 real e-paper panel session\" -Run python .\\tools\\companion_ble_real_bench.py --name companion --timeout 20 --notify-timeout 10 --screen-final-timeout 30 --expect-real-panel --output .cache/validation/companion-real-panel-wba55-<timestamp>/companion-ble-real-bench.json --json",
+        "pwsh -NoProfile -File .\\tools\\collect_companion_diagnostics.ps1 -OutputDir .cache/validation/companion-real-panel-wba55-<timestamp>\\diagnostics",
+        "python .\\tools\\verify_expression_panel_evidence_record.py --record .cache/validation/companion-real-panel-wba55-<timestamp>/panel-evidence-record.json",
+        "git diff --name-only -- third_party\\STM32CubeWB third_party\\STM32CubeWBA"
+      ],
+      "hardware_lock_resources": "Companion-WBA55,BLE-Companion",
+      "promotion_rule": "Only a filled record that passes verify_expression_panel_evidence_record.py can move wb55_real_panel_refresh out of DEFERRED_HARDWARE.",
+      "required_artifacts": [
+        {
+          "created_by": "python .\\tools\\init_expression_panel_evidence_record.py --target WBA55 --session-root .cache/validation/companion-real-panel-wba55-<timestamp> --write-session",
+          "id": "panel_evidence_record",
+          "path": ".cache/validation/companion-real-panel-wba55-<timestamp>/panel-evidence-record.json",
+          "validated_by": "python .\\tools\\verify_expression_panel_evidence_record.py --record .cache/validation/companion-real-panel-wba55-<timestamp>/panel-evidence-record.json"
+        },
+        {
+          "created_by": "python .\\tools\\init_expression_panel_evidence_record.py --target WBA55 --session-root .cache/validation/companion-real-panel-wba55-<timestamp> --write-session",
+          "id": "hardware_facts_draft",
+          "must_start_as": "DRAFT_UNFILLED",
+          "path": ".cache/validation/companion-real-panel-wba55-<timestamp>/panel-hardware-facts.todo.json",
+          "validated_by": "python .\\tools\\verify_expression_panel_hardware_facts.py --facts .cache/validation/companion-real-panel-wba55-<timestamp>/panel-hardware-facts.todo.json"
+        },
+        {
+          "failure_must_preserve": [
+            "operations",
+            "partial_operation_count"
+          ],
+          "id": "real_ble_bench_artifact",
+          "must_include": [
+            "--expect-real-panel",
+            "real_panel_refresh_claimed=true",
+            "screen_expression_status",
+            "card_write",
+            "settings_sleepy_screen_status",
+            "final_card_status=rendered/ok"
+          ],
+          "path": ".cache/validation/companion-real-panel-wba55-<timestamp>/companion-ble-real-bench.json"
+        },
+        {
+          "id": "diagnostics_bundle_summary",
+          "must_include": [
+            "epaper.runtime_snapshot_decoded",
+            "panel_error_count=0",
+            "display_queue.pending_count=0",
+            "display_queue.dropped_count=0"
+          ],
+          "path": ".cache/validation/companion-real-panel-wba55-<timestamp>/diagnostics/summary.json"
+        },
+        {
+          "id": "visual_before",
+          "path": ".cache/validation/companion-real-panel-wba55-<timestamp>/visual/before_photo.jpg",
+          "record_field": "visual_evidence.before_photo"
+        },
+        {
+          "id": "visual_during",
+          "path": ".cache/validation/companion-real-panel-wba55-<timestamp>/visual/during_refresh_photo_or_video",
+          "record_field": "visual_evidence.during_refresh_photo_or_video"
+        },
+        {
+          "id": "visual_after",
+          "path": ".cache/validation/companion-real-panel-wba55-<timestamp>/visual/after_photo.jpg",
+          "record_field": "visual_evidence.after_photo",
+          "record_hash_field": "visual_evidence.evidence_sha256"
+        },
+        {
+          "id": "operator_notes",
+          "must_record": [
+            "operator action",
+            "observed refresh result",
+            "panel/controller labels",
+            "deviations from scaffold"
+          ],
+          "path": ".cache/validation/companion-real-panel-wba55-<timestamp>/operator-notes.md"
+        }
+      ],
+      "session_root_pattern": ".cache/validation/companion-real-panel-wba55-<timestamp>",
+      "target": "WBA55"
+    },
+    {
+      "adapter_file_pattern": "*_stm32wba.*",
+      "bootstrap_commands": [
+        "python .\\tools\\verify_expression_panel_hardware_session.py",
+        "python .\\tools\\verify_expression_panel_hardware_acceptance_plan.py",
+        "python .\\tools\\verify_expression_panel_evidence_record.py --self-test",
+        "python .\\tools\\verify_expression_wba_portability.py",
+        "python .\\tools\\init_expression_wba_port_scaffold.py --self-test",
+        "python .\\tools\\init_expression_panel_evidence_record.py --target WBA65 --session-root .cache/validation/companion-real-panel-wba65-<timestamp> --write-session",
+        "python .\\tools\\verify_expression_panel_hardware_facts.py --facts .cache/validation/companion-real-panel-wba65-<timestamp>/panel-hardware-facts.todo.json",
+        "pwsh -NoProfile -File <ai-collaboration-workflow>\\scripts\\aiw.ps1 with-lock -Resource 'Companion-WBA65,BLE-Companion' -Purpose \"Companion WBA65 real e-paper panel session\" -Run python .\\tools\\companion_ble_real_bench.py --name companion --timeout 20 --notify-timeout 10 --screen-final-timeout 30 --expect-real-panel --output .cache/validation/companion-real-panel-wba65-<timestamp>/companion-ble-real-bench.json --json",
+        "pwsh -NoProfile -File .\\tools\\collect_companion_diagnostics.ps1 -OutputDir .cache/validation/companion-real-panel-wba65-<timestamp>\\diagnostics",
+        "python .\\tools\\verify_expression_panel_evidence_record.py --record .cache/validation/companion-real-panel-wba65-<timestamp>/panel-evidence-record.json",
+        "git diff --name-only -- third_party\\STM32CubeWB third_party\\STM32CubeWBA"
+      ],
+      "hardware_lock_resources": "Companion-WBA65,BLE-Companion",
+      "promotion_rule": "Only a filled record that passes verify_expression_panel_evidence_record.py can move wb55_real_panel_refresh out of DEFERRED_HARDWARE.",
+      "required_artifacts": [
+        {
+          "created_by": "python .\\tools\\init_expression_panel_evidence_record.py --target WBA65 --session-root .cache/validation/companion-real-panel-wba65-<timestamp> --write-session",
+          "id": "panel_evidence_record",
+          "path": ".cache/validation/companion-real-panel-wba65-<timestamp>/panel-evidence-record.json",
+          "validated_by": "python .\\tools\\verify_expression_panel_evidence_record.py --record .cache/validation/companion-real-panel-wba65-<timestamp>/panel-evidence-record.json"
+        },
+        {
+          "created_by": "python .\\tools\\init_expression_panel_evidence_record.py --target WBA65 --session-root .cache/validation/companion-real-panel-wba65-<timestamp> --write-session",
+          "id": "hardware_facts_draft",
+          "must_start_as": "DRAFT_UNFILLED",
+          "path": ".cache/validation/companion-real-panel-wba65-<timestamp>/panel-hardware-facts.todo.json",
+          "validated_by": "python .\\tools\\verify_expression_panel_hardware_facts.py --facts .cache/validation/companion-real-panel-wba65-<timestamp>/panel-hardware-facts.todo.json"
+        },
+        {
+          "failure_must_preserve": [
+            "operations",
+            "partial_operation_count"
+          ],
+          "id": "real_ble_bench_artifact",
+          "must_include": [
+            "--expect-real-panel",
+            "real_panel_refresh_claimed=true",
+            "screen_expression_status",
+            "card_write",
+            "settings_sleepy_screen_status",
+            "final_card_status=rendered/ok"
+          ],
+          "path": ".cache/validation/companion-real-panel-wba65-<timestamp>/companion-ble-real-bench.json"
+        },
+        {
+          "id": "diagnostics_bundle_summary",
+          "must_include": [
+            "epaper.runtime_snapshot_decoded",
+            "panel_error_count=0",
+            "display_queue.pending_count=0",
+            "display_queue.dropped_count=0"
+          ],
+          "path": ".cache/validation/companion-real-panel-wba65-<timestamp>/diagnostics/summary.json"
+        },
+        {
+          "id": "visual_before",
+          "path": ".cache/validation/companion-real-panel-wba65-<timestamp>/visual/before_photo.jpg",
+          "record_field": "visual_evidence.before_photo"
+        },
+        {
+          "id": "visual_during",
+          "path": ".cache/validation/companion-real-panel-wba65-<timestamp>/visual/during_refresh_photo_or_video",
+          "record_field": "visual_evidence.during_refresh_photo_or_video"
+        },
+        {
+          "id": "visual_after",
+          "path": ".cache/validation/companion-real-panel-wba65-<timestamp>/visual/after_photo.jpg",
+          "record_field": "visual_evidence.after_photo",
+          "record_hash_field": "visual_evidence.evidence_sha256"
+        },
+        {
+          "id": "operator_notes",
+          "must_record": [
+            "operator action",
+            "observed refresh result",
+            "panel/controller labels",
+            "deviations from scaffold"
+          ],
+          "path": ".cache/validation/companion-real-panel-wba65-<timestamp>/operator-notes.md"
+        }
+      ],
+      "session_root_pattern": ".cache/validation/companion-real-panel-wba65-<timestamp>",
+      "target": "WBA65"
+    }
+  ],
+  "validation_commands": [
+    "python .\\tools\\verify_expression_panel_hardware_session.py",
+    "python .\\tools\\verify_expression_panel_hardware_acceptance_plan.py",
+    "python .\\tools\\verify_expression_panel_hardware_facts.py --self-test",
+    "python .\\tools\\verify_expression_panel_evidence_record.py --self-test",
+    "python .\\tools\\verify_expression_wba_portability.py"
+  ]
+}

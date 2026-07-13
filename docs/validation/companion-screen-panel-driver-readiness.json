@@ -1,0 +1,160 @@
+{
+  "current_wb55_draft_readiness": {
+    "driver_entrypoint": "app/companion_pendant/epaper/panel_target_stm32wb.c",
+    "facts_path": null,
+    "facts_status": "DRAFT_UNFILLED",
+    "known_transport": {
+      "cs_label": "SPI2_CS",
+      "cs_pin": "PA6",
+      "miso_pin": "PC2",
+      "mosi_pin": "PC1",
+      "sck_pin": "PA9",
+      "spi_instance_or_bus": "SPI2",
+      "target_family": "WB55"
+    },
+    "missing_ready_field_count": 15,
+    "missing_ready_fields": [
+      {
+        "field": "controller_model",
+        "reason": "placeholder",
+        "section": "panel_identity"
+      },
+      {
+        "field": "panel_module_or_label",
+        "reason": "placeholder",
+        "section": "panel_identity"
+      },
+      {
+        "field": "datasheet_revision",
+        "reason": "placeholder",
+        "section": "panel_identity"
+      },
+      {
+        "field": "waveform_lut_source",
+        "reason": "placeholder",
+        "section": "panel_identity"
+      },
+      {
+        "field": "dc_pin",
+        "reason": "placeholder",
+        "section": "target_pin_map"
+      },
+      {
+        "field": "rst_pin",
+        "reason": "placeholder",
+        "section": "target_pin_map"
+      },
+      {
+        "field": "busy_pin",
+        "reason": "placeholder",
+        "section": "target_pin_map"
+      },
+      {
+        "field": "power_enable_pin",
+        "reason": "placeholder",
+        "section": "target_pin_map"
+      },
+      {
+        "field": "logic_voltage",
+        "reason": "placeholder",
+        "section": "target_pin_map"
+      },
+      {
+        "field": "reset_low_ms",
+        "reason": "placeholder",
+        "section": "driver_timing"
+      },
+      {
+        "field": "reset_high_ms",
+        "reason": "placeholder",
+        "section": "driver_timing"
+      },
+      {
+        "field": "busy_timeout_ms",
+        "reason": "placeholder",
+        "section": "driver_timing"
+      },
+      {
+        "field": "full_refresh_sequence",
+        "reason": "placeholder",
+        "section": "driver_timing"
+      },
+      {
+        "field": "partial_refresh_policy",
+        "reason": "placeholder",
+        "section": "driver_timing"
+      },
+      {
+        "field": "sleep_or_powerdown_sequence",
+        "reason": "placeholder",
+        "section": "driver_timing"
+      }
+    ],
+    "next_action": "Fill panel controller, DC/RST/BUSY, power, voltage, reset/BUSY timing, and refresh sequence facts.",
+    "panel_gate_must_remain": "DEFERRED_HARDWARE",
+    "readiness_status": "BLOCKED_ON_HARDWARE_FACTS",
+    "real_refresh_claimed": false,
+    "target": "WB55",
+    "validation_errors": []
+  },
+  "purpose": "Reports whether a target panel facts file is ready for driver implementation without claiming a real e-paper refresh.",
+  "ready_self_test_readiness": {
+    "driver_entrypoint": "app/companion_pendant/epaper/panel_target_stm32wb.c",
+    "facts_path": null,
+    "facts_status": "READY_FOR_DRIVER_FACTS",
+    "known_transport": {
+      "cs_label": "SPI2_CS",
+      "cs_pin": "PA6",
+      "miso_pin": "PC2",
+      "mosi_pin": "PC1",
+      "sck_pin": "PA9",
+      "spi_instance_or_bus": "SPI2",
+      "target_family": "WB55"
+    },
+    "missing_ready_field_count": 0,
+    "missing_ready_fields": [],
+    "next_action": "Implement target panel refresh callback and collect real BLE, diagnostics, and visual evidence.",
+    "panel_gate_must_remain": "DEFERRED_HARDWARE",
+    "readiness_status": "READY_FOR_DRIVER_IMPLEMENTATION",
+    "real_refresh_claimed": false,
+    "target": "WB55",
+    "validation_errors": []
+  },
+  "real_refresh_guard": {
+    "does_not_claim_real_refresh": true,
+    "panel_gate_must_remain": "DEFERRED_HARDWARE",
+    "requires_final_panel_evidence_record": true
+  },
+  "schema_id": "companion.pendant.screen_panel_driver_readiness.v1",
+  "self_test_cases": [
+    "draft_facts_report_blocked_with_missing_fields",
+    "ready_facts_report_ready_without_missing_fields",
+    "invalid_ready_facts_report_invalid",
+    "session_facts_path_report_supported",
+    "require_ready_requires_target_facts_source",
+    "require_ready_fails_for_draft"
+  ],
+  "sources": {
+    "bringup_doc": "docs/bringup_steps.md",
+    "epaper_readme": "app/companion_pendant/epaper/README.md",
+    "facts_intake_fixture": "docs/validation/companion-screen-panel-hardware-facts-intake.json",
+    "facts_intake_tool": "tools/verify_expression_panel_hardware_facts.py",
+    "panel_hardware_gate": "docs/validation/companion-screen-panel-hardware-gate.json",
+    "panel_session_directory_preflight": "docs/validation/companion-screen-panel-session-directory-preflight.json",
+    "readiness_tool": "tools/verify_expression_panel_driver_readiness.py",
+    "screen_doc": "docs/companion_screen_expression_system.md",
+    "wba_rules": "docs/stm32wba_migration_rules.md"
+  },
+  "status": "PASS",
+  "target_coverage": [
+    "WB55",
+    "WBA55",
+    "WBA65"
+  ],
+  "validation_commands": [
+    "python .\\tools\\verify_expression_panel_driver_readiness.py",
+    "python .\\tools\\verify_expression_panel_driver_readiness.py --self-test",
+    "python .\\tools\\verify_expression_panel_hardware_facts.py --self-test",
+    "python .\\tools\\verify_expression_panel_gate.py"
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "draft_record_guard": {
+    "final_validator": "python .\\tools\\verify_expression_panel_evidence_record.py --record <session>/panel-evidence-record.json",
+    "must_fail_final_validator": true,
+    "required_status_before_hardware": "DRAFT_UNFILLED"
+  },
+  "hardware_facts_draft": {
+    "filename": "panel-hardware-facts.todo.json",
+    "required_status_before_driver": "DRAFT_UNFILLED",
+    "validated_by": "python .\\tools\\verify_expression_panel_hardware_facts.py --facts <session>\\panel-hardware-facts.todo.json"
+  },
+  "optional_operator_packet_guard": {
+    "json": "panel-bringup-operator-packet.json",
+    "markdown": "panel-bringup-operator-packet.md",
+    "must_match_current_renderer": true,
+    "requires_partial_failure_evidence": [
+      "operations",
+      "partial_operation_count"
+    ],
+    "requires_quoted_hardware_lock_resource": true
+  },
+  "purpose": "No-hardware preflight for concrete real-panel session directories: the generated directory is ready for operator evidence, but its draft record is still rejected by the final hardware validator.",
+  "schema_id": "companion.pendant.screen_panel_session_directory_preflight.v1",
+  "self_test_cases": [
+    "generated_wb55_session_passes_preflight",
+    "missing_operator_notes_fails",
+    "pass_status_before_hardware_fails",
+    "missing_visual_directory_fails",
+    "draft_record_is_rejected_by_final_validator",
+    "current_operator_packet_passes",
+    "stale_operator_packet_fails"
+  ],
+  "session_relative_artifact_paths": {
+    "host_observability.diagnostics_bundle_artifact": "diagnostics/summary.json",
+    "host_observability.real_ble_bench_artifact": "companion-ble-real-bench.json",
+    "visual_evidence.after_photo": "visual/after_photo.jpg",
+    "visual_evidence.before_photo": "visual/before_photo.jpg",
+    "visual_evidence.during_refresh_photo_or_video": "visual/during_refresh_photo_or_video"
+  },
+  "sources": {
+    "bringup_doc": "docs/bringup_steps.md",
+    "epaper_readme": "app/companion_pendant/epaper/README.md",
+    "final_record_validator": "tools/verify_expression_panel_evidence_record.py",
+    "operator_packet_tool": "tools/render_expression_panel_bringup_packet.py",
+    "panel_hardware_gate": "docs/validation/companion-screen-panel-hardware-gate.json",
+    "panel_hardware_session": "docs/validation/companion-screen-panel-hardware-session.json",
+    "screen_doc": "docs/companion_screen_expression_system.md",
+    "session_directory_preflight": "tools/verify_expression_panel_session_directory.py",
+    "session_init_tool": "tools/init_expression_panel_evidence_record.py"
+  },
+  "status": "PASS",
+  "target_coverage": [
+    "WB55",
+    "WBA55",
+    "WBA65"
+  ],
+  "validated_session_layout": [
+    "panel-evidence-record.json",
+    "panel-hardware-facts.todo.json",
+    "operator-notes.md",
+    "visual/",
+    "diagnostics/"
+  ],
+  "validation_commands": [
+    "python .\\tools\\verify_expression_panel_session_directory.py --self-test",
+    "python .\\tools\\init_expression_panel_evidence_record.py --target WB55 --session-root .\\.cache\\validation\\companion-real-panel-wb55-<timestamp> --write-session",
+    "python .\\tools\\verify_expression_panel_session_directory.py --session-root .\\.cache\\validation\\companion-real-panel-wb55-<timestamp> --target WB55",
+    "python .\\tools\\verify_expression_panel_hardware_facts.py --facts .\\.cache\\validation\\companion-real-panel-wb55-<timestamp>\\panel-hardware-facts.todo.json",
+    "python .\\tools\\render_expression_panel_bringup_packet.py --session-root .\\.cache\\validation\\companion-real-panel-wb55-<timestamp> --write --json .\\.cache\\validation\\companion-real-panel-wb55-<timestamp>\\panel-bringup-operator-packet.json --markdown .\\.cache\\validation\\companion-real-panel-wb55-<timestamp>\\panel-bringup-operator-packet.md",
+    "python .\\tools\\verify_expression_panel_evidence_record.py --record .\\.cache\\validation\\companion-real-panel-wb55-<timestamp>\\panel-evidence-record.json"
+  ],
+  "wb55_prefilled_transport": {
+    "cs_label": "SPI2_CS",
+    "cs_pin": "PA6",
+    "miso_pin": "PC2",
+    "mosi_pin": "PC1",
+    "sck_pin": "PA9",
+    "spi_instance_or_bus": "SPI2"
+  }
+}

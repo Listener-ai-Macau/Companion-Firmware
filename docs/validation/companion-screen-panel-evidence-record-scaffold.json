@@ -1,0 +1,111 @@
+{
+  "_instructions": [
+    "This scaffold is intentionally invalid until every TODO is replaced.",
+    "Run python .\\tools\\verify_expression_panel_evidence_record.py --record <this-file> before moving wb55_real_panel_refresh out of DEFERRED_HARDWARE.",
+    "Run tools\\companion_ble_real_bench.py with --expect-real-panel and put that JSON path in host_observability.real_ble_bench_artifact.",
+    "The real BLE artifact must include the screen_expression_status contract operation linked to companion-screen-expression-host-status-sequence.json.",
+    "The real BLE artifact must also include screen_expression_demo_status linked to companion-screen-expression-demo-host-status-sequence.json.",
+    "Run tools\\collect_companion_diagnostics.ps1 and put summary.json in host_observability.diagnostics_bundle_artifact.",
+    "Set evidence_sha256 to the SHA-256 of visual_evidence.after_photo."
+  ],
+  "claim_scope": "real_panel_refresh",
+  "driver_timing": {
+    "busy_timeout_ms": "TODO_BUSY_TIMEOUT_MS_INTEGER",
+    "full_refresh_sequence": [
+      "TODO_FULL_REFRESH_STEP_1"
+    ],
+    "partial_refresh_policy": "TODO_PARTIAL_REFRESH_POLICY",
+    "reset_high_ms": "TODO_RESET_HIGH_MS_INTEGER",
+    "reset_low_ms": "TODO_RESET_LOW_MS_INTEGER",
+    "sleep_or_powerdown_sequence": [
+      "TODO_SLEEP_OR_POWERDOWN_STEP_1"
+    ]
+  },
+  "host_observability": {
+    "CardStatusV1_accepted": {
+      "content_crc32": "TODO_CONTENT_CRC32_HEX",
+      "last_error": "ok",
+      "render_state": "accepted",
+      "request_id": "TODO_REQUEST_ID_INTEGER"
+    },
+    "CardStatusV1_rendered": {
+      "content_crc32": "TODO_CONTENT_CRC32_HEX",
+      "last_error": "ok",
+      "render_state": "rendered",
+      "request_id": "TODO_REQUEST_ID_INTEGER"
+    },
+    "content_crc32": "TODO_CONTENT_CRC32_HEX",
+    "diagnostics_bundle_artifact": "TODO_PATH_TO_COLLECT_COMPANION_DIAGNOSTICS_SUMMARY_JSON",
+    "e_paper.render_request": {
+      "content_crc32": "TODO_CONTENT_CRC32_HEX",
+      "request_id": "TODO_REQUEST_ID_INTEGER"
+    },
+    "e_paper.runtime_snapshot": {
+      "decoded_args": {
+        "display_queue": {
+          "dropped_count": 0,
+          "high_water_count": "TODO_QUEUE_HIGH_WATER_INTEGER",
+          "pending_count": 0
+        },
+        "expression": {
+          "current": "TODO_EXPRESSION_ID_INTEGER",
+          "last_signal": "TODO_SIGNAL_ID_INTEGER"
+        },
+        "panel": {
+          "deferred_count": "TODO_PANEL_DEFERRED_COUNT_INTEGER",
+          "error_count": 0
+        },
+        "payload": "screen_runtime_snapshot"
+      },
+      "severity": "info"
+    },
+    "e_paper.update_result": {
+      "content_crc32": "TODO_CONTENT_CRC32_HEX",
+      "panel_result": "ok",
+      "request_id": "TODO_REQUEST_ID_INTEGER"
+    },
+    "real_ble_bench_artifact": "TODO_PATH_TO_EXPECT_REAL_PANEL_REAL_BLE_BENCH_JSON",
+    "request_id": "TODO_REQUEST_ID_INTEGER"
+  },
+  "panel_identity": {
+    "controller_model": "TODO_CONTROLLER_MODEL",
+    "datasheet_revision": "TODO_DATASHEET_REVISION",
+    "panel_variant": "2.13in",
+    "resolution_px": [
+      250,
+      122
+    ],
+    "waveform_lut_source": "TODO_WAVEFORM_LUT_SOURCE"
+  },
+  "portability_notes": {
+    "portable_files_unchanged": "TODO_TRUE_AFTER_PORTABILITY_VERIFIER",
+    "target_adapter_file": "TODO_TARGET_ADAPTER_FILE_*_stm32wb.*",
+    "third_party_clean": "TODO_TRUE_AFTER_THIRD_PARTY_DIFF",
+    "wba_equivalent_plan": "TODO_WBA_EQUIVALENT_PLAN"
+  },
+  "schema_id": "companion.pendant.screen_panel_evidence_record.v1",
+  "status": "DRAFT_UNFILLED",
+  "target_pin_map": {
+    "busy_pin": "TODO_BUSY_PIN",
+    "cs_label": "SPI2_CS",
+    "cs_pin": "PA6",
+    "dc_pin": "TODO_DC_PIN",
+    "logic_voltage": "TODO_LOGIC_VOLTAGE",
+    "miso_pin": "PC2",
+    "mosi_pin": "PC1",
+    "power_enable_pin": "TODO_POWER_ENABLE_PIN_OR_NOT_PRESENT",
+    "rst_pin": "TODO_RST_PIN",
+    "sck_pin": "PA9",
+    "spi_instance_or_bus": "SPI2",
+    "target_family": "WB55",
+    "wiring_preflight": "docs/validation/companion-screen-panel-wiring-preflight.json"
+  },
+  "visual_evidence": {
+    "after_photo": "TODO_PATH_TO_AFTER_PHOTO",
+    "before_photo": "TODO_PATH_TO_BEFORE_PHOTO",
+    "during_refresh_photo_or_video": "TODO_PATH_TO_DURING_REFRESH_PHOTO_OR_VIDEO",
+    "evidence_sha256": "TODO_AFTER_PHOTO_SHA256",
+    "expected_expression": "idle",
+    "expected_fixture_sha256": "d23295a620ddcaff2c19de911d23f7d5c662a653d0b8de89bd51036f1db5c953"
+  }
+}

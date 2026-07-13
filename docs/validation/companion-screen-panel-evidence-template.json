@@ -1,0 +1,190 @@
+{
+  "adapter_rules": [
+    {
+      "adapter_file_pattern": "*_stm32wb.*",
+      "rule": "Keep dry-run active until controller, pins, timing, logs, and visual evidence are recorded.",
+      "target": "WB55"
+    },
+    {
+      "adapter_file_pattern": "*_stm32wba.*",
+      "rule": "Add a WBA-specific transport without changing ExpressionV1, display_queue, or CardStatusV1 contracts.",
+      "target": "WBA55"
+    },
+    {
+      "adapter_file_pattern": "*_stm32wba.*",
+      "rule": "Treat WBA65 as an expanded WBA target; keep WBA55-safe protocol and queue limits unless a capability flag exists.",
+      "target": "WBA65"
+    }
+  ],
+  "applies_to": [
+    "WB55",
+    "WBA55",
+    "WBA65"
+  ],
+  "claim_scope": "template_only_no_real_refresh",
+  "evidence_sources": [
+    "app/companion_pendant/epaper/panel_adapter.h",
+    "app/companion_pendant/epaper/panel_adapter.c",
+    "docs/companion_screen_expression_system.md",
+    "docs/stm32wba_migration_rules.md",
+    "docs/validation/companion-screen-real-ble-bench.json",
+    "docs/validation/companion-screen-expression-host-status-sequence.json",
+    "docs/validation/companion-screen-expression-demo-host-status-sequence.json",
+    "docs/validation/companion-screen-runtime-diagnostics.json",
+    "docs/validation/companion-screen-runtime-diagnostic-decode.json",
+    "docs/validation/companion-diagnostics-fixture/summary.json",
+    "docs/validation/companion-screen-panel-adapter-behavior.json",
+    "docs/validation/companion-screen-panel-adapter-boundary.json",
+    "docs/validation/companion-screen-panel-hardware-gate.json"
+  ],
+  "host_observable_pass_criteria": {
+    "accepted_status": {
+      "content_crc32": "matches_render_request",
+      "last_error": "ok",
+      "render_state": "accepted",
+      "request_id": "matches_render_request"
+    },
+    "diagnostic_events": [
+      "e_paper.render_request",
+      "e_paper.update_result",
+      "e_paper.runtime_snapshot"
+    ],
+    "diagnostics_bundle_artifact": {
+      "display_queue_dropped_count": 0,
+      "display_queue_pending_count": 0,
+      "panel_error_count": 0,
+      "required_summary_field": "epaper.runtime_snapshot_decoded",
+      "summary_schema": "companion.pendant.diagnostics_bundle.v1",
+      "tool": "tools/collect_companion_diagnostics.ps1"
+    },
+    "final_status": {
+      "content_crc32": "same_as_accepted_status",
+      "last_error": "ok",
+      "render_state": "rendered",
+      "request_id": "same_as_accepted_status"
+    },
+    "real_ble_bench_artifact": {
+      "demo_host_sequence_fixture": "docs/validation/companion-screen-expression-demo-host-status-sequence.json",
+      "host_sequence_fixture": "docs/validation/companion-screen-expression-host-status-sequence.json",
+      "required_fields": [
+        "host_sequence_fixture",
+        "card_status",
+        "final_card_status",
+        "status_sequence",
+        "real_panel_refresh_claimed"
+      ],
+      "required_operations": [
+        "screen_expression_status",
+        "screen_expression_demo_status",
+        "card_write",
+        "settings_sleepy_screen_status"
+      ],
+      "screen_expression_demo_status_contract_only": true,
+      "screen_expression_status_contract_only": true,
+      "tool": "tools/companion_ble_real_bench.py --expect-real-panel"
+    },
+    "runtime_snapshot": {
+      "decoded_args_required": true,
+      "display_queue_dropped_count": 0,
+      "display_queue_pending_count": 0,
+      "panel_error_count": 0
+    }
+  },
+  "minimum_evidence": {
+    "driver_timing": {
+      "required_fields": [
+        "reset_low_ms",
+        "reset_high_ms",
+        "busy_timeout_ms",
+        "full_refresh_sequence",
+        "partial_refresh_policy",
+        "sleep_or_powerdown_sequence"
+      ],
+      "status_before_hardware": "required_but_unfilled"
+    },
+    "host_observability": {
+      "required_fields": [
+        "request_id",
+        "content_crc32",
+        "CardStatusV1_accepted",
+        "CardStatusV1_rendered",
+        "e_paper.render_request",
+        "e_paper.update_result",
+        "e_paper.runtime_snapshot",
+        "diagnostics_bundle_artifact",
+        "real_ble_bench_artifact"
+      ],
+      "status_before_hardware": "required_but_unfilled"
+    },
+    "panel_identity": {
+      "required_fields": [
+        "controller_model",
+        "panel_variant",
+        "resolution_px",
+        "datasheet_revision",
+        "waveform_lut_source"
+      ],
+      "status_before_hardware": "required_but_unfilled"
+    },
+    "portability_notes": {
+      "required_fields": [
+        "target_adapter_file",
+        "portable_files_unchanged",
+        "third_party_clean",
+        "wba_equivalent_plan"
+      ],
+      "status_before_hardware": "required_but_unfilled"
+    },
+    "target_pin_map": {
+      "required_fields": [
+        "target_family",
+        "spi_instance_or_bus",
+        "sck_pin",
+        "mosi_pin",
+        "cs_pin",
+        "dc_pin",
+        "rst_pin",
+        "busy_pin",
+        "power_enable_pin",
+        "logic_voltage"
+      ],
+      "status_before_hardware": "required_but_unfilled"
+    },
+    "visual_evidence": {
+      "required_fields": [
+        "before_photo",
+        "during_refresh_photo_or_video",
+        "after_photo",
+        "expected_expression",
+        "expected_fixture_sha256",
+        "evidence_sha256"
+      ],
+      "status_before_hardware": "required_but_unfilled"
+    }
+  },
+  "purpose": "Define the minimum hardware evidence required before WB55 or WBA code may replace the dry-run panel adapter with a real e-paper refresh claim.",
+  "rejection_rules": [
+    "A dry-run deferred_no_panel or deferred_controller_unknown result cannot satisfy real refresh evidence.",
+    "A photo without matching request_id, content_crc32, and update_result logs cannot satisfy visual evidence.",
+    "A runtime snapshot with panel.error_count, pending display work, or dropped display work cannot satisfy real refresh evidence.",
+    "A WB55-specific SPI/GPIO implementation cannot be placed in portable epaper files.",
+    "A WBA port cannot claim parity until it has its own target adapter, build wrapper, and matching evidence record."
+  ],
+  "schema_id": "companion.pendant.screen_panel_evidence_template.v1",
+  "status": "PASS",
+  "template_id": "screen_panel_hardware_acceptance_v1",
+  "unblocks_gate": "wb55_real_panel_refresh",
+  "validation_commands": [
+    "python .\\tools\\verify_expression_real_ble_screen_bench.py",
+    "python .\\tools\\verify_expression_panel_adapter_behavior.py",
+    "python .\\tools\\verify_expression_panel_adapter_boundary.py",
+    "python .\\tools\\verify_expression_panel_evidence_template.py",
+    "python .\\tools\\verify_expression_panel_gate.py",
+    "python .\\tools\\verify_expression_screen_runtime_diagnostics.py",
+    "python .\\tools\\verify_expression_screen_runtime_diagnostic_decode.py",
+    "python .\\tools\\verify_companion_diagnostics_static.py",
+    "python .\\tools\\verify_expression_status_observability.py",
+    "python .\\tools\\verify_expression_wba_portability.py",
+    "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1"
+  ]
+}

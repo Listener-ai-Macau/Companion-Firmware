@@ -1,0 +1,115 @@
+{
+  "record_required_sections": {
+    "driver_timing": [
+      "reset_low_ms",
+      "reset_high_ms",
+      "busy_timeout_ms",
+      "full_refresh_sequence",
+      "partial_refresh_policy",
+      "sleep_or_powerdown_sequence"
+    ],
+    "host_observability": [
+      "request_id",
+      "content_crc32",
+      "CardStatusV1_accepted",
+      "CardStatusV1_rendered",
+      "e_paper.render_request",
+      "e_paper.update_result",
+      "e_paper.runtime_snapshot",
+      "diagnostics_bundle_artifact",
+      "real_ble_bench_artifact"
+    ],
+    "panel_identity": [
+      "controller_model",
+      "panel_variant",
+      "resolution_px",
+      "datasheet_revision",
+      "waveform_lut_source"
+    ],
+    "portability_notes": [
+      "target_adapter_file",
+      "portable_files_unchanged",
+      "third_party_clean",
+      "wba_equivalent_plan"
+    ],
+    "target_pin_map": [
+      "target_family",
+      "spi_instance_or_bus",
+      "sck_pin",
+      "mosi_pin",
+      "cs_pin",
+      "dc_pin",
+      "rst_pin",
+      "busy_pin",
+      "power_enable_pin",
+      "logic_voltage"
+    ],
+    "visual_evidence": [
+      "before_photo",
+      "during_refresh_photo_or_video",
+      "after_photo",
+      "expected_expression",
+      "expected_fixture_sha256",
+      "evidence_sha256"
+    ]
+  },
+  "record_schema_id": "companion.pendant.screen_panel_evidence_record.v1",
+  "schema_id": "companion.pendant.screen_panel_evidence_record_validator.v1",
+  "self_test_cases": [
+    "valid_wb55_record_passes",
+    "draft_record_fails",
+    "placeholder_token_fails",
+    "missing_required_field_fails",
+    "deferred_no_panel_final_status_fails",
+    "identity_drift_fails",
+    "runtime_panel_error_fails",
+    "runtime_pending_queue_fails",
+    "diagnostics_bundle_panel_error_fails",
+    "missing_visual_artifact_fails",
+    "missing_screen_expression_status_fails",
+    "missing_screen_expression_demo_status_fails"
+  ],
+  "semantic_checks": [
+    "all template fields are present and non-placeholder",
+    "placeholder tokens such as TODO_CONTROLLER_MODEL are rejected recursively",
+    "CardStatusV1 accepted/rendered statuses match request_id and content_crc32",
+    "e_paper.runtime_snapshot decoded_args show zero panel errors, zero pending display work, and zero dropped display work",
+    "diagnostics bundle summary carries epaper.runtime_snapshot_decoded with zero panel errors, zero pending display work, and zero dropped display work",
+    "real BLE artifact contains card_write and settings_sleepy_screen_status rendered/ok final statuses",
+    "real BLE artifact contains screen_expression_status six-face host sequence baseline",
+    "real BLE artifact contains screen_expression_demo_status full demo host sequence baseline",
+    "visual evidence files exist and after_photo SHA-256 matches evidence_sha256",
+    "expected_fixture_sha256 matches a golden ExpressionV1 fixture",
+    "target adapter file exists and is target-named *_stm32wb.* or *_stm32wba.*",
+    "WB55 scaffold pre-fills SPI2 PA9/PC1/PC2/PA6 from the panel wiring preflight while leaving controller/DC/RST/BUSY as TODOs",
+    "portable_files_unchanged and third_party_clean are true",
+    "scaffold records stay DRAFT_UNFILLED and cannot satisfy the real refresh gate"
+  ],
+  "sources": {
+    "acceptance_index": "docs/validation/companion-screen-acceptance-index.json",
+    "bringup_steps": "docs/bringup_steps.md",
+    "demo_host_expression_status_sequence": "docs/validation/companion-screen-expression-demo-host-status-sequence.json",
+    "epaper_readme": "app/companion_pendant/epaper/README.md",
+    "host_expression_status_sequence": "docs/validation/companion-screen-expression-host-status-sequence.json",
+    "panel_gate": "docs/validation/companion-screen-panel-hardware-gate.json",
+    "panel_wiring_preflight": "docs/validation/companion-screen-panel-wiring-preflight.json",
+    "scaffold_record": "docs/validation/companion-screen-panel-evidence-record-scaffold.json",
+    "scaffold_tool": "tools/init_expression_panel_evidence_record.py",
+    "screen_acceptance": "docs/companion_screen_expression_system.md",
+    "template": "docs/validation/companion-screen-panel-evidence-template.json",
+    "wba_rules": "docs/stm32wba_migration_rules.md"
+  },
+  "status": "PASS",
+  "template_id": "screen_panel_hardware_acceptance_v1",
+  "unblocks_gate": "wb55_real_panel_refresh",
+  "validation_commands": [
+    "python .\\tools\\init_expression_panel_evidence_record.py",
+    "python .\\tools\\verify_expression_panel_evidence_record.py --self-test",
+    "python .\\tools\\verify_expression_panel_evidence_template.py",
+    "python .\\tools\\verify_expression_panel_gate.py",
+    "python .\\tools\\verify_expression_panel_wiring_preflight.py",
+    "python .\\tools\\verify_expression_real_ble_screen_bench.py",
+    "python .\\tools\\verify_expression_host_status_sequence.py",
+    "python .\\tools\\verify_companion_diagnostics_static.py"
+  ]
+}
