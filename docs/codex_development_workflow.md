@@ -8,6 +8,11 @@ progress without depending on CubeIDE GUI state for every edit.
 1. Keep `cubeide/Companion_Nucleo_WB55RG_Bringup` as the hardware bring-up
    project for the current NUCLEO-WB55RG bench board.
    - Codex can build it with `tools/build_nucleo_bringup.ps1`.
+   - The repo-owned development-board IOC is
+     `cubeide/Companion_Nucleo_WB55RG/Companion_Nucleo_WB55RG.ioc`; it tracks
+     the user-provided `C:\Users\Billy\Desktop\STM32.ioc` hardware settings
+     while keeping CubeIDE project metadata local. Validate that import with
+     `python .\tools\verify_devboard_ioc_import.py`.
    - It owns temporary board-button input: SW1 starts/stops recording, SW2
      cancels and recovers to idle, SW3 runs flash/OTA/diag probes.
    - Use this project for microphone, external flash, serial logs, and quick
@@ -18,15 +23,28 @@ progress without depending on CubeIDE GUI state for every edit.
    - Open the existing `.ioc` in STM32CubeIDE and generate the product project
      from that file.
    - Generated `Core/`, `.project`, and `.cproject` are product-project output;
-     application logic should stay in repo-owned modules such as
-     `app/companion_pendant/` whenever possible.
+   application logic should stay in repo-owned modules such as
+   `app/companion_pendant/` whenever possible.
 
-3. Keep generated code and handwritten product code separated.
+3. Keep WBA migration rules active during WB55 work.
+   - Follow [stm32wba_migration_rules.md](stm32wba_migration_rules.md) for
+     every BLE, audio, flash, OTA, low-power, security, or board-layer change.
+   - Assume WB55 validation comes first, then a platform port to WBA55 or
+     WBA65. New code must keep portable Companion logic separate from WB55
+     CPU2/FUS/IPCC/HSEM/STM32_WPAN mechanics.
+
+4. Keep generated code and handwritten product code separated.
    - CubeMX owns peripheral init and files it generates.
    - Codex owns portable modules, validation scripts, build/flash/capture
      wrappers, and code inside explicit USER CODE regions when generated files
      must be extended.
    - Do not edit `third_party/STM32CubeWB/**`; it remains an official reference.
+   - VS Code uses `.vscode/settings.json` with `git.detectSubmodulesLimit`
+     above the 13 nested STM32CubeWB submodules, so the Git extension does not
+     show the default "will not be opened automatically" warning. This is a
+     workspace convenience only; nested ST submodules still stay read-only.
+   - Validate this workspace policy with
+     `python .\tools\verify_workspace_submodule_policy.py`.
 
 ## Day-to-Day Loop
 

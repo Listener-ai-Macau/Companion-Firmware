@@ -1,0 +1,39 @@
+{
+  "purpose": "Static contract for the no-package Companion bring-up readiness mode that now gates workspace, IOC, and screen-expression software checks before hardware.",
+  "required_static_steps": [
+    "Companion build environment check",
+    "Companion workspace submodule policy",
+    "Companion devboard IOC import",
+    "verify Companion OTA static contract",
+    "Companion BLE probe self-test",
+    "Companion recording cache model",
+    "Companion recording FSM static",
+    "Companion diagnostics static",
+    "Companion screen software acceptance",
+    "Companion git diff check"
+  ],
+  "schema_id": "companion.bringup_readiness_static_contract.v1",
+  "screen_acceptance_output": ".cache/validation/companion-bringup-readiness-<timestamp>/companion-screen-acceptance-run.json",
+  "sources": {
+    "bringup_steps": "docs/bringup_steps.md",
+    "devboard_ioc_import": "tools/verify_devboard_ioc_import.py",
+    "readiness_script": "tools/verify_companion_bringup_readiness.ps1",
+    "screen_acceptance_runner": "tools/run_expression_acceptance.py",
+    "verifier": "tools/verify_companion_bringup_readiness_static.py",
+    "workspace_policy": "tools/verify_workspace_submodule_policy.py"
+  },
+  "static_only_contract": {
+    "emits_no_manual_gates": true,
+    "mode": "static-only",
+    "package_path": "<static-only-no-package>",
+    "rejects_full_mode_combo": true,
+    "rejects_package_path_combo": true,
+    "rejects_type_harness_combo": true,
+    "skips_package_and_hardware_dry_runs": true
+  },
+  "status": "PASS",
+  "validation_commands": [
+    "python .\\tools\\verify_companion_bringup_readiness_static.py",
+    "pwsh -NoProfile -File .\\tools\\verify_companion_bringup_readiness.ps1 -StaticOnly"
+  ]
+}

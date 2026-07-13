@@ -1,0 +1,47 @@
+{
+  "policy": [
+    "Raise git.detectSubmodulesLimit above STM32CubeWB's nested submodule count so VS Code can open them without the default warning.",
+    "Treat third_party/STM32CubeWB and third_party/STM32CubeWBA as read-only upstream references.",
+    "Treat third_party/denzic-platform as the pinned shared Denzic platform/OTA contract submodule, not as an ST Cube package.",
+    "Make Companion changes in local wrappers, board adapters, tools, docs, or generated CubeMX output instead of editing upstream packages."
+  ],
+  "purpose": "Keep VS Code from warning that STM32CubeWB's nested submodules will not open automatically, while preserving third_party as read-only reference code.",
+  "root_submodules": [
+    "third_party/STM32CubeWB",
+    "third_party/denzic-platform"
+  ],
+  "schema_id": "companion.workspace.submodule_policy.v1",
+  "sources": {
+    "bringup_steps": "docs/bringup_steps.md",
+    "root_gitmodules": ".gitmodules",
+    "stm32cubewb_gitmodules": "third_party/STM32CubeWB/.gitmodules",
+    "verifier": "tools/verify_workspace_submodule_policy.py",
+    "workflow_doc": "docs/codex_development_workflow.md",
+    "workspace_settings": ".vscode/settings.json"
+  },
+  "status": "PASS",
+  "stm32cubewb_nested_submodule_count": 13,
+  "stm32cubewb_nested_submodule_paths": [
+    "Drivers/STM32WBxx_HAL_Driver",
+    "Drivers/CMSIS/Device/ST/STM32WBxx",
+    "Drivers/BSP/NUCLEO-WB15CC",
+    "Drivers/BSP/P-NUCLEO-WB55.Nucleo",
+    "Drivers/BSP/P-NUCLEO-WB55.USBDongle",
+    "Drivers/BSP/STM32WB5MM-DK",
+    "Drivers/BSP/B-WB1M-WPAN1",
+    "Drivers/BSP/Components/Common",
+    "Drivers/BSP/Components/ism330dhcx",
+    "Drivers/BSP/Components/s25fl128s",
+    "Drivers/BSP/Components/ssd1315",
+    "Drivers/BSP/Components/stm32wb_at",
+    "Drivers/BSP/Components/stts22h"
+  ],
+  "validation_commands": [
+    "python .\\tools\\verify_workspace_submodule_policy.py",
+    "git diff --name-only -- third_party\\STM32CubeWB third_party\\STM32CubeWBA"
+  ],
+  "vscode_settings": {
+    "git.detectSubmodules": true,
+    "git.detectSubmodulesLimit": 20
+  }
+}
