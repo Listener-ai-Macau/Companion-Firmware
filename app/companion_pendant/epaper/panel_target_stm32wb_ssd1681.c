@@ -898,6 +898,14 @@ static comp_epaper_panel_result_t ssd1681_refresh(
     bool controller_initialization_required = !s_controller_initialized || fast;
     ssd1681_window_t window;
     uint32_t window_bytes;
+    uint32_t frame_prepare_start_ms;
+    uint32_t frame_prepare_elapsed_ms;
+    uint32_t controller_setup_start_ms;
+    uint32_t controller_setup_elapsed_ms;
+    uint32_t transfer_before_waveform_start_ms;
+    uint32_t transfer_before_waveform_elapsed_ms;
+    uint32_t transfer_after_waveform_start_ms;
+    uint32_t transfer_after_waveform_elapsed_ms;
     const char *selected_mode = partial ? "differential" : fast ? "maintenance" : "full";
     printf("[epaper] policy requested=%u selected=%s reason=%u partial_count=%u soft=%u hard=%u baseline=%u\r\n",
            (unsigned)requested_mode,
@@ -915,9 +923,11 @@ static comp_epaper_panel_result_t ssd1681_refresh(
     return COMP_EPAPER_PANEL_RESULT_DEFERRED_CONTROLLER_UNKNOWN;
 #endif
 
+    frame_prepare_start_ms = HAL_GetTick();
     frame_prepare(target->expression_assets, request);
     frame_apply_target_rotation();
     frame_apply_horizontal_mirror();
+    frame_prepare_elapsed_ms = HAL_GetTick() - frame_prepare_start_ms;
     window = partial ? ssd1681_window_from_difference() : ssd1681_window_full();
     window_bytes = ssd1681_window_byte_count(&window);
     if (partial && !window.changed) {
@@ -932,6 +942,7 @@ static comp_epaper_panel_result_t ssd1681_refresh(
         return COMP_EPAPER_PANEL_RESULT_OK;
     }
 
+    controller_setup_start_ms = HAL_GetTick();
     ssd1681_gpio_init();
     if (controller_initialization_required) {
         ssd1681_reset();
@@ -956,6 +967,7 @@ static comp_epaper_panel_result_t ssd1681_refresh(
                                (reset_ready && ssd1681_prepare_vendor_fast_profile());
     bool window_set = fast_profile_loaded && reset_ready && ssd1681_set_window(&window);
     bool border_set = window_set;
+    controller_setup_elapsed_ms = HAL_GetTick() - controller_setup_start_ms;
     printf("[epaper] frame rotation=%u mirror_x=%u width=%u height=%u\r\n",
            (unsigned)COMPANION_EPAPER_SSD1681_ROTATION_DEGREES,
            (unsigned)COMPANION_EPAPER_SSD1681_MIRROR_X,
@@ -971,6 +983,8 @@ static comp_epaper_panel_result_t ssd1681_refresh(
     bool frame_written = false;
     bool baseline_written = false;
     bool display_refreshed = false;
+    transfer_before_waveform_start_ms = HAL_GetTick();
+    transfer_after_waveform_elapsed_ms = 0u;
 
     if (partial) {
         /* Differential mode needs the old and new pixels: seed 0x26 from the
@@ -980,20 +994,35 @@ static comp_epaper_panel_result_t ssd1681_refresh(
         frame_written = window_set && border_set &&
                         ssd1681_write_plane_region(0x26u, s_previous_frame, &window) &&
                         ssd1681_write_plane_region(0x24u, s_frame, &window);
+        transfer_before_waveform_elapsed_ms =
+            HAL_GetTick() - transfer_before_waveform_start_ms;
         display_refreshed = frame_written &&
                             ssd1681_refresh_display(selection.decision);
+        transfer_after_waveform_start_ms = HAL_GetTick();
         baseline_written = display_refreshed &&
                            ssd1681_write_plane_region(0x26u, s_frame, &window) &&
                            ssd1681_write_plane_region(0x24u, s_frame, &window);
+        transfer_after_waveform_elapsed_ms =
+            HAL_GetTick() - transfer_after_waveform_start_ms;
     } else {
         /* Full and maintenance paths seed both planes before their waveform. */
         baseline_written = window_set && border_set &&
                            ssd1681_write_plane_region(0x26u, s_frame, &window);
         frame_written = baseline_written &&
                         ssd1681_write_plane_region(0x24u, s_frame, &window);
+        transfer_before_waveform_elapsed_ms =
+            HAL_GetTick() - transfer_before_waveform_start_ms;
         display_refreshed = frame_written &&
                             ssd1681_refresh_display(selection.decision);
     }
+    printf("[epaper] timing mode=%s prepare_ms=%lu setup_ms=%lu transfer_before_waveform_ms=%lu transfer_after_waveform_ms=%lu bytes=%lu spi=%s\r\n",
+           selected_mode,
+           (unsigned long)frame_prepare_elapsed_ms,
+           (unsigned long)controller_setup_elapsed_ms,
+           (unsigned long)transfer_before_waveform_elapsed_ms,
+           (unsigned long)transfer_after_waveform_elapsed_ms,
+           (unsigned long)window_bytes,
+           COMPANION_EPAPER_SSD1681_USE_SOFTWARE_SPI ? "software_vendor_edges" : "hardware");
     bool ok = pre_reset_ready && reset_ready && fast_profile_loaded && window_set && border_set &&
                frame_written && baseline_written && display_refreshed;
     comp_epaper_refresh_policy_commit(&target->refresh_policy,
