@@ -21,6 +21,7 @@ TOUCH_REVIEW_RECORD = ROOT / "docs/validation/companion-screen-wb55-touch-visual
 RUNTIME_ACTION_CARD = ROOT / "docs/validation/companion-screen-wb55-runtime-hardware-action-card.json"
 RUNTIME_FLASH_PREFLIGHT = ROOT / "docs/validation/companion-screen-wb55-runtime-flash-preflight.json"
 RUNTIME_SERIAL_CAPTURE_PREFLIGHT = ROOT / "docs/validation/companion-screen-wb55-runtime-serial-capture-preflight.json"
+RUNTIME_RECHECK_LOGS = ROOT / "docs/validation/companion-screen-wb55-runtime-recheck-logs.json"
 GOAL_AUDIT = ROOT / "docs/validation/companion-screen-goal-audit.json"
 REFRESH_FEEL = ROOT / "docs/validation/companion-screen-refresh-feel-contract.json"
 RUNTIME_PROMOTION = ROOT / "docs/validation/companion-screen-wb55-runtime-promotion.json"
@@ -270,6 +271,7 @@ def check_health(health: dict[str, Any], errors: list[str]) -> None:
     resource = health.get("resource", {})
     runtime_status = str(resource.get("runtime_status", ""))
     runtime_pending = runtime_status == PENDING_STATUS
+    runtime_logs_pass = load_json(RUNTIME_RECHECK_LOGS).get("status") == "PASS"
     expected_status = "NO_GO_RUNTIME_RECHECK_PENDING" if runtime_pending else "PASS"
     if health.get("status") != expected_status:
         errors.append(f"pre-acceptance status must be {expected_status}")
@@ -310,10 +312,16 @@ def check_health(health: dict[str, Any], errors: list[str]) -> None:
     if promotion.get("target_status") != PASS_STATUS:
         errors.append("runtime promotion gate target status drifted")
     if runtime_pending:
-        if promotion.get("status") != "NO_GO_LOGS_NOT_PASS":
-            errors.append("runtime promotion must stay NO_GO while active runtime logs are pending")
-        if not promotion.get("blockers"):
-            errors.append("runtime promotion gate must list blockers while active runtime logs are pending")
+        if runtime_logs_pass:
+            if promotion.get("status") != "READY_TO_APPLY":
+                errors.append("runtime promotion must be READY_TO_APPLY after active runtime logs pass")
+            if promotion.get("blockers"):
+                errors.append("READY_TO_APPLY runtime promotion must not keep blockers")
+        else:
+            if promotion.get("status") != "NO_GO_LOGS_NOT_PASS":
+                errors.append("runtime promotion must stay NO_GO while active runtime logs are pending")
+            if not promotion.get("blockers"):
+                errors.append("runtime promotion gate must list blockers while active runtime logs are pending")
     else:
         if promotion.get("status") != "APPLIED":
             errors.append("runtime promotion gate must be APPLIED after active runtime logs are promoted")

@@ -4,8 +4,8 @@
     "next_hardware_gate": "wb55_rev52_runtime_recheck",
     "next_human_gate": "wb55_touch_visual_acceptance",
     "pre_acceptance_status": "NO_GO_RUNTIME_RECHECK_PENDING",
-    "runtime_logs_status": "NO_GO_INCOMPLETE_RUNTIME_MARKERS",
-    "runtime_promotion_status": "NO_GO_LOGS_NOT_PASS",
+    "runtime_logs_status": "PASS",
+    "runtime_promotion_status": "READY_TO_APPLY",
     "schema_id": "companion.pendant.screen_acceptance_index.v1",
     "summary": {
       "deferred_count": 1,
@@ -130,7 +130,7 @@
         },
         {
           "path": "docs/validation/companion-screen-generation-release-ledger.json",
-          "status": "PENDING_RUNTIME_RECHECK",
+          "status": "RUNTIME_LOGS_PASS_PROMOTION_PENDING",
           "summary": "SCR-17 release ledger records source art, CEMP revision/CRC, external Flash activation status, stale-discard model, first-frame coherent marker, refresh classification, OTA transaction rule, and pending rev52 runtime facts"
         }
       ],
@@ -147,7 +147,7 @@
         },
         {
           "path": "docs/validation/companion-screen-wb55-runtime-recheck-logs.json",
-          "status": "NO_GO_INCOMPLETE_RUNTIME_MARKERS",
+          "status": "PASS",
           "summary": "current rev52 machine health depends on provision and normal runtime logs; pending status keeps this requirement in hardware recheck instead of relying on earlier history"
         },
         {
@@ -243,12 +243,12 @@
         },
         {
           "path": "docs/validation/companion-screen-wb55-runtime-recheck-logs.json",
-          "status": "NO_GO_INCOMPLETE_RUNTIME_MARKERS",
+          "status": "PASS",
           "summary": "rev52 provision/normal runtime logs are the first-hand machine gate; pending status means human touch/visual acceptance must not start"
         },
         {
           "path": "docs/validation/companion-screen-wb55-runtime-promotion.json",
-          "status": "NO_GO_LOGS_NOT_PASS",
+          "status": "READY_TO_APPLY",
           "summary": "promotion gate refuses to update runtime evidence until both rev52 provision and normal serial logs verify PASS"
         }
       ],

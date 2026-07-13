@@ -487,6 +487,7 @@ def check_audit(audit: dict[str, Any], errors: list[str]) -> None:
             errors.append(f"current_resource.{key} drifted: {resource.get(key)!r}")
     crosscheck = audit.get("resource_policy_crosscheck", {})
     runtime_status = str(menu_runtime.get("status", ""))
+    runtime_logs_pass = load_json(RUNTIME_RECHECK_LOGS).get("status") == "PASS"
     if runtime_status.endswith("_RUNTIME_RECHECK_PENDING"):
         if crosscheck.get("candidate_revision") != menu_pack.get("revision"):
             errors.append("resource policy candidate revision drifted")
@@ -576,12 +577,18 @@ def check_audit(audit: dict[str, Any], errors: list[str]) -> None:
     if generated_from.get("generation_release_ledger") != rel(GENERATION_RELEASE_LEDGER):
         errors.append("generated_from must include generation_release_ledger")
     if runtime_status.endswith("_RUNTIME_RECHECK_PENDING"):
-        if runtime_promotion.get("status") != "NO_GO_LOGS_NOT_PASS":
-            errors.append("runtime promotion gate must remain NO_GO while active runtime is pending")
-        if not runtime_promotion.get("blockers"):
-            errors.append("runtime promotion gate must list blockers while active runtime is pending")
-        if runtime_recheck_logs.get("status") not in {"NO_GO_MISSING_RUNTIME_LOGS", "NO_GO_INCOMPLETE_RUNTIME_MARKERS"}:
-            errors.append("runtime recheck logs gate must remain NO_GO while active runtime is pending")
+        if runtime_logs_pass:
+            if runtime_promotion.get("status") != "READY_TO_APPLY":
+                errors.append("runtime promotion gate must be READY_TO_APPLY after logs pass while runtime is pending")
+            if runtime_promotion.get("blockers"):
+                errors.append("READY_TO_APPLY runtime promotion must not keep blockers")
+        else:
+            if runtime_promotion.get("status") != "NO_GO_LOGS_NOT_PASS":
+                errors.append("runtime promotion gate must remain NO_GO while active runtime is pending")
+            if not runtime_promotion.get("blockers"):
+                errors.append("runtime promotion gate must list blockers while active runtime is pending")
+            if runtime_recheck_logs.get("status") not in {"NO_GO_MISSING_RUNTIME_LOGS", "NO_GO_INCOMPLETE_RUNTIME_MARKERS"}:
+                errors.append("runtime recheck logs gate must remain NO_GO while active runtime is pending")
     else:
         if runtime_promotion.get("status") != "APPLIED":
             errors.append("runtime promotion gate must be APPLIED after active runtime evidence is promoted")
@@ -620,12 +627,14 @@ def check_audit(audit: dict[str, Any], errors: list[str]) -> None:
         errors.append("acceptance sequence schema drifted")
     if acceptance_sequence.get("acceptance_index") != rel(ACCEPTANCE_INDEX):
         errors.append("acceptance sequence must point at companion-screen-acceptance-index.json")
-    if acceptance_sequence.get("next_hardware_gate") != RUNTIME_GATE_ID:
-        errors.append(f"acceptance sequence next_hardware_gate must be {RUNTIME_GATE_ID}")
+    expected_next_hardware_gate = "wba_real_panel_parity" if runtime_status == CANDIDATE.pass_status else RUNTIME_GATE_ID
+    if acceptance_sequence.get("next_hardware_gate") != expected_next_hardware_gate:
+        errors.append(f"acceptance sequence next_hardware_gate must be {expected_next_hardware_gate}")
     if acceptance_sequence.get("next_human_gate") != "wb55_touch_visual_acceptance":
         errors.append("acceptance sequence next_human_gate must be wb55_touch_visual_acceptance")
-    if acceptance_sequence.get("pre_acceptance_status") != "NO_GO_RUNTIME_RECHECK_PENDING":
-        errors.append("acceptance sequence must preserve pre-acceptance NO_GO runtime pending state")
+    expected_pre_acceptance_status = "NO_GO_RUNTIME_RECHECK_PENDING" if runtime_status.endswith("_RUNTIME_RECHECK_PENDING") else "PASS"
+    if acceptance_sequence.get("pre_acceptance_status") != expected_pre_acceptance_status:
+        errors.append(f"acceptance sequence pre-acceptance status must be {expected_pre_acceptance_status}")
     if acceptance_sequence.get("runtime_logs_status") != runtime_recheck_logs.get("status"):
         errors.append("acceptance sequence runtime log status drifted from runtime log gate")
     if acceptance_sequence.get("runtime_promotion_status") != runtime_promotion.get("status"):
@@ -707,8 +716,15 @@ def check_audit(audit: dict[str, Any], errors: list[str]) -> None:
         errors.append("refresh feel contract must be PASS")
     if generation_hygiene.get("status") != "PASS":
         errors.append("display queue generation hygiene must be PASS")
-    if generation_ledger.get("status") != "PENDING_RUNTIME_RECHECK":
-        errors.append("generation release ledger must stay pending runtime recheck until active logs pass")
+    expected_ledger_status = (
+        "RUNTIME_PROMOTED_HUMAN_VISUAL_PENDING"
+        if runtime_promotion.get("status") == "APPLIED" else
+        "RUNTIME_LOGS_PASS_PROMOTION_PENDING"
+        if runtime_logs_pass else
+        "PENDING_RUNTIME_RECHECK"
+    )
+    if generation_ledger.get("status") != expected_ledger_status:
+        errors.append(f"generation release ledger must be {expected_ledger_status}")
     if generation_ledger.get("candidate", {}).get("cemp_revision") != menu_pack.get("revision"):
         errors.append("generation release ledger candidate revision drifted from menu resource pack")
     if generation_ledger.get("candidate", {}).get("cemp_crc32") != menu_pack.get("pack_crc32"):
@@ -830,7 +846,7 @@ def check_audit(audit: dict[str, Any], errors: list[str]) -> None:
         "verify_display_queue_generation_hygiene.py",
         "verify_screen_generation_release_ledger.py",
         "companion-screen-generation-release-ledger.json",
-        "PENDING_RUNTIME_RECHECK",
+        expected_ledger_status,
         "first-frame coherent marker",
         "OTA transaction",
         "verify_wb55_screen_runtime_recheck_logs.py",

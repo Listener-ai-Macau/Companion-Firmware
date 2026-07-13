@@ -1,8 +1,5 @@
 {
-  "blockers": [
-    "runtime log verifier status is 'NO_GO_INCOMPLETE_RUNTIME_MARKERS', not PASS",
-    "normal log status is 'MISSING_OR_INCOMPLETE'"
-  ],
+  "blockers": [],
   "current_state": {
     "menu_runtime_status": "REVISION_52_RUNTIME_RECHECK_PENDING",
     "resource_policy_wb55_revision": 51,
@@ -46,7 +43,7 @@
   ],
   "purpose": "Machine-only promotion plan after rev52 provision and normal runtime logs pass.",
   "schema_id": "companion.screen.wb55_runtime_promotion.v1",
-  "status": "NO_GO_LOGS_NOT_PASS",
+  "status": "READY_TO_APPLY",
   "target_state": {
     "normal_capture_summary": ".cache/validation/rev52-runtime-current/normal/nucleo-serial-summary.json",
     "normal_raw_log": ".cache/validation/rev52-runtime-current/normal/nucleo-serial-raw.log",

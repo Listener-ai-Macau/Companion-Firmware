@@ -13,6 +13,9 @@ from typing import Any
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 DEFAULT_JSON = ROOT / "docs/validation/companion-screen-generation-release-ledger.json"
 SCHEMA_ID = "companion.pendant.screen_generation_release_ledger.v1"
+PENDING_RUNTIME_RECHECK = "PENDING_RUNTIME_RECHECK"
+RUNTIME_LOGS_PASS_PROMOTION_PENDING = "RUNTIME_LOGS_PASS_PROMOTION_PENDING"
+RUNTIME_PROMOTED_HUMAN_VISUAL_PENDING = "RUNTIME_PROMOTED_HUMAN_VISUAL_PENDING"
 
 PLAN = ROOT / "docs/companion_screen_project_plan.md"
 RESEARCH = ROOT / "docs/validation/companion-screen-generation-swap-research.md"
@@ -59,17 +62,29 @@ def build_ledger() -> dict[str, Any]:
     contact_coverage = contact.get("generated_coverage", {})
 
     candidate_revision = int(resource_pack.get("revision", 0))
-    candidate_crc32 = str(resource_pack.get("pack_crc32", ""))
-    missing_hardware = [
-        f"rev{candidate_revision} ScreenAssetProvision flash/capture",
-        f"rev{candidate_revision} normal firmware restore/capture",
-        "real display_result coherent_generation=1 log",
-        "human visual classification of any old marks",
-    ]
+    logs_pass = runtime_logs.get("status") == "PASS"
+    promotion_applied = promotion.get("status") == "APPLIED"
+    if logs_pass:
+        missing_hardware = ["human visual classification of any old marks"]
+        ledger_status = (
+            RUNTIME_PROMOTED_HUMAN_VISUAL_PENDING
+            if promotion_applied
+            else RUNTIME_LOGS_PASS_PROMOTION_PENDING
+        )
+        external_flash_activation = f"runtime_verified_rev{candidate_revision}_external_flash"
+    else:
+        missing_hardware = [
+            f"rev{candidate_revision} ScreenAssetProvision flash/capture",
+            f"rev{candidate_revision} normal firmware restore/capture",
+            "real display_result coherent_generation=1 log",
+            "human visual classification of any old marks",
+        ]
+        ledger_status = PENDING_RUNTIME_RECHECK
+        external_flash_activation = f"pending_rev{candidate_revision}_runtime_recheck"
 
     return {
         "schema_id": SCHEMA_ID,
-        "status": "PENDING_RUNTIME_RECHECK",
+        "status": ledger_status,
         "purpose": "SCR-17 release ledger proving the current screen-art candidate has a single product generation before human visual review.",
         "candidate": {
             "product": "Companion screen",
@@ -102,7 +117,7 @@ def build_ledger() -> dict[str, Any]:
         },
         "activation_evidence": {
             "manifest_verified_static": True,
-            "external_flash_activation": f"pending_rev{candidate_revision}_runtime_recheck",
+            "external_flash_activation": external_flash_activation,
             "active_revision_field": queue.get("contract", {}).get("active_revision_field"),
             "request_revision_field": queue.get("contract", {}).get("request_revision_field"),
             "old_queue_action": "drain_or_discard",
@@ -184,8 +199,19 @@ def build_ledger() -> dict[str, Any]:
 def check_ledger(ledger: dict[str, Any], errors: list[str]) -> None:
     if ledger.get("schema_id") != SCHEMA_ID:
         errors.append("unexpected schema_id")
-    if ledger.get("status") != "PENDING_RUNTIME_RECHECK":
-        errors.append("ledger must stay PENDING_RUNTIME_RECHECK until current runtime logs pass")
+    runtime_logs = load(RUNTIME_LOGS)
+    promotion = load(RUNTIME_PROMOTION)
+    logs_pass = runtime_logs.get("status") == "PASS"
+    promotion_applied = promotion.get("status") == "APPLIED"
+    expected_ledger_status = (
+        RUNTIME_PROMOTED_HUMAN_VISUAL_PENDING
+        if logs_pass and promotion_applied
+        else RUNTIME_LOGS_PASS_PROMOTION_PENDING
+        if logs_pass
+        else PENDING_RUNTIME_RECHECK
+    )
+    if ledger.get("status") != expected_ledger_status:
+        errors.append(f"ledger status must be {expected_ledger_status}")
 
     candidate = ledger.get("candidate", {})
     menu = load(MENU)
@@ -199,9 +225,13 @@ def check_ledger(ledger: dict[str, Any], errors: list[str]) -> None:
         errors.append("candidate CEMP CRC must match the active menu resource")
     if candidate.get("storage") != "external ui_assets at 0x00200000":
         errors.append("candidate storage must remain external ui_assets")
-    expected_pending = f"REVISION_{revision}_RUNTIME_RECHECK_PENDING"
-    if candidate.get("runtime_status") != expected_pending:
-        errors.append("candidate runtime status must remain pending before logs pass")
+    expected_runtime_status = (
+        f"REVISION_{revision}_RUNTIME_PASS_HUMAN_VISUAL_PENDING"
+        if promotion_applied
+        else f"REVISION_{revision}_RUNTIME_RECHECK_PENDING"
+    )
+    if candidate.get("runtime_status") != expected_runtime_status:
+        errors.append(f"candidate runtime status must be {expected_runtime_status}")
 
     source_art = ledger.get("source_art_identity", {})
     if source_art.get("style_name") != "genref_sheet_12_inner_faces_v5":
@@ -224,8 +254,13 @@ def check_ledger(ledger: dict[str, Any], errors: list[str]) -> None:
         errors.append("fallback must be rescue/maintenance only")
 
     activation = ledger.get("activation_evidence", {})
-    if activation.get("external_flash_activation") != f"pending_rev{revision}_runtime_recheck":
-        errors.append("candidate external flash activation must remain pending until runtime logs pass")
+    expected_activation = (
+        f"runtime_verified_rev{revision}_external_flash"
+        if logs_pass
+        else f"pending_rev{revision}_runtime_recheck"
+    )
+    if activation.get("external_flash_activation") != expected_activation:
+        errors.append(f"candidate external flash activation must be {expected_activation}")
     if activation.get("old_queue_action") != "drain_or_discard":
         errors.append("old queue action must be drain_or_discard")
     if activation.get("stale_queued_frames_discarded_in_model") != 3:
@@ -244,10 +279,10 @@ def check_ledger(ledger: dict[str, Any], errors: list[str]) -> None:
         errors.append("model resource revision must match the simulated active revision")
     if first.get("model_coherent_generation") != 1:
         errors.append("model first frame must be coherent")
-    if first.get("real_runtime_status") != "NO_GO_MISSING_RUNTIME_LOGS":
-        errors.append("real runtime status must remain NO_GO_MISSING_RUNTIME_LOGS before hardware logs")
-    if first.get("real_marker_present") is not False:
-        errors.append("real coherent marker must not be claimed before hardware logs")
+    if first.get("real_runtime_status") != runtime_logs.get("status"):
+        errors.append("real runtime status must match the runtime log verifier")
+    if first.get("real_marker_present") is not logs_pass:
+        errors.append("real coherent marker must match whether current runtime logs pass")
 
     refresh = ledger.get("refresh_classification", {})
     classes = set(refresh.get("visual_triage_classes", []))
@@ -279,12 +314,15 @@ def check_ledger(ledger: dict[str, Any], errors: list[str]) -> None:
         errors.append("WBA portability must allow tile composition under SRAM limits")
 
     missing = set(ledger.get("missing_hardware_facts", []))
-    for item in (
-        f"rev{revision} ScreenAssetProvision flash/capture",
-        f"rev{revision} normal firmware restore/capture",
-        "real display_result coherent_generation=1 log",
-        "human visual classification of any old marks",
-    ):
+    required_missing = ["human visual classification of any old marks"]
+    if not logs_pass:
+        required_missing = [
+            f"rev{revision} ScreenAssetProvision flash/capture",
+            f"rev{revision} normal firmware restore/capture",
+            "real display_result coherent_generation=1 log",
+            *required_missing,
+        ]
+    for item in required_missing:
         if item not in missing:
             errors.append(f"missing hardware fact not tracked: {item}")
 

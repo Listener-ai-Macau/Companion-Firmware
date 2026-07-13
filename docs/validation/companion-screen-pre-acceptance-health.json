@@ -293,12 +293,9 @@
     }
   },
   "runtime_promotion_gate": {
-    "blockers": [
-      "runtime log verifier status is 'NO_GO_INCOMPLETE_RUNTIME_MARKERS', not PASS",
-      "normal log status is 'MISSING_OR_INCOMPLETE'"
-    ],
+    "blockers": [],
     "path": "docs/validation/companion-screen-wb55-runtime-promotion.json",
-    "status": "NO_GO_LOGS_NOT_PASS",
+    "status": "READY_TO_APPLY",
     "target_status": "REVISION_52_RUNTIME_PASS_HUMAN_VISUAL_PENDING"
   },
   "runtime_serial_capture_preflight": {

@@ -369,6 +369,9 @@ def render_markdown(packet: dict[str, Any]) -> str:
 
 
 def check_packet(packet: dict[str, Any], errors: list[str]) -> None:
+    runtime_logs = json.loads(RUNTIME_LOGS.read_text(encoding="utf-8"))
+    menu_evidence = json.loads(BILINGUAL_MENU.read_text(encoding="utf-8"))
+    runtime_status = str(menu_evidence.get("runtime_evidence", {}).get("status", ""))
     if packet.get("schema_id") != SCHEMA_ID:
         errors.append("unexpected schema_id")
     if packet.get("status") != "PENDING_HUMAN":
@@ -453,22 +456,29 @@ def check_packet(packet: dict[str, Any], errors: list[str]) -> None:
     generation_ledger = packet.get("machine_state", {}).get("generation_release_ledger", {})
     if generation_ledger.get("path") != rel(GENERATION_RELEASE_LEDGER):
         errors.append("packet machine_state must link generation release ledger")
-    if generation_ledger.get("status") != "PENDING_RUNTIME_RECHECK":
-        errors.append("generation release ledger must remain pending before active runtime logs")
+    runtime_logs_pass = runtime_logs.get("status") == "PASS"
+    expected_ledger_status = (
+        "RUNTIME_PROMOTED_HUMAN_VISUAL_PENDING"
+        if runtime_status == PASS_RUNTIME_STATUS and runtime_logs_pass else
+        "RUNTIME_LOGS_PASS_PROMOTION_PENDING"
+        if runtime_logs_pass else
+        "PENDING_RUNTIME_RECHECK"
+    )
+    if generation_ledger.get("status") != expected_ledger_status:
+        errors.append(f"generation release ledger must be {expected_ledger_status}")
     if generation_ledger.get("cemp_revision") != packet.get("machine_state", {}).get("resource_revision"):
         errors.append("generation release ledger revision must match packet resource revision")
     if generation_ledger.get("cemp_crc32") != packet.get("machine_state", {}).get("resource_crc32"):
         errors.append("generation release ledger CRC must match packet resource CRC")
     if generation_ledger.get("expected_first_frame_marker") != "coherent_generation=1":
         errors.append("generation release ledger must require coherent_generation=1")
-    if generation_ledger.get("real_runtime_status") != "NO_GO_MISSING_RUNTIME_LOGS":
-        errors.append("generation release ledger must keep runtime NO_GO before logs pass")
+    if generation_ledger.get("real_runtime_status") != runtime_logs.get("status"):
+        errors.append("generation release ledger runtime status must match the runtime log verifier")
     visual_classes = set(generation_ledger.get("visual_triage_classes", []))
     for cls in ("physical afterimage", "stale queued frame", "stale asset revision", "rescue/procedural fallback leakage", "stale_generation_content"):
         if cls not in visual_classes:
             errors.append(f"generation release ledger missing visual triage class {cls}")
     serialized = json.dumps(packet, ensure_ascii=False)
-    menu_evidence = json.loads(BILINGUAL_MENU.read_text(encoding="utf-8"))
     resource_pack = menu_evidence.get("resource_pack", {})
     runtime = menu_evidence.get("runtime_evidence", {})
     for token in (
@@ -507,7 +517,7 @@ def check_packet(packet: dict[str, Any], errors: list[str]) -> None:
         "last_stale_discarded",
         "verify_wb55_screen_runtime_recheck_logs.py",
         "promote_wb55_screen_runtime_recheck.py",
-        "NO_GO_RUNTIME_RECHECK_PENDING",
+        str(packet.get("machine_precondition")),
         "review_note_triage_contract",
         rel(REVIEW_TEMPLATE_JSON),
         rel(REVIEW_TEMPLATE_MD),

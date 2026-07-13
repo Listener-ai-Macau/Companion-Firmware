@@ -2929,9 +2929,10 @@ def check_index(data: dict[str, Any], errors: list[str]) -> None:
         "pending_human_count mismatch",
         errors,
     )
+    expected_next_hardware_gate = "wba_real_panel_parity" if is_wb55_runtime_recheck_proven() else RUNTIME_GATE_ID
     require(
-        summary.get("next_hardware_gate") == RUNTIME_GATE_ID,
-        f"next_hardware_gate must point at {RUNTIME_GATE_ID}",
+        summary.get("next_hardware_gate") == expected_next_hardware_gate,
+        f"next_hardware_gate must point at {expected_next_hardware_gate}",
         errors,
     )
     require(

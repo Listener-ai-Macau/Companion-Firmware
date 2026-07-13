@@ -1,7 +1,7 @@
 {
   "activation_evidence": {
     "active_revision_field": "active_resource_revision",
-    "external_flash_activation": "pending_rev52_runtime_recheck",
+    "external_flash_activation": "runtime_verified_rev52_external_flash",
     "manifest_verified_static": true,
     "old_queue_action": "drain_or_discard",
     "request_revision_field": "resource_revision",
@@ -27,13 +27,10 @@
     "model_generation_switches": 2,
     "model_last_stale_discarded": 3,
     "model_resource_revision": 51,
-    "real_marker_present": false,
-    "real_runtime_status": "NO_GO_MISSING_RUNTIME_LOGS"
+    "real_marker_present": true,
+    "real_runtime_status": "PASS"
   },
   "missing_hardware_facts": [
-    "rev52 ScreenAssetProvision flash/capture",
-    "rev52 normal firmware restore/capture",
-    "real display_result coherent_generation=1 log",
     "human visual classification of any old marks"
   ],
   "normal_pack_generation": {
@@ -96,7 +93,7 @@
     "wba_port_contract": "docs/validation/companion-screen-wba-port-contract.json",
     "wba_real_parity_gate": "docs/validation/companion-screen-wba-real-parity-gate.json"
   },
-  "status": "PENDING_RUNTIME_RECHECK",
+  "status": "RUNTIME_LOGS_PASS_PROMOTION_PENDING",
   "validation_commands": [
     "python .\\tools\\verify_screen_generation_release_ledger.py",
     "python .\\tools\\verify_display_queue_generation_hygiene.py",
