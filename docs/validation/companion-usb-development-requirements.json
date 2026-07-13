@@ -1,0 +1,9 @@
+{
+  "schema_id": "companion.usb_development.requirements.v1",
+  "status": "PASS",
+  "current_devboard": "ST-LINK VCP + SWD only",
+  "wba55": "external USB-UART VCP + ROM USART bootloader + SWD pads",
+  "wba65": "native USB CDC + ROM USB DFU + SWD pads",
+  "shared_rule": "USB development transport does not replace ROM recovery, SWD rescue, or signed Denzic OTA",
+  "errors": []
+}
