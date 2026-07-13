@@ -19,6 +19,8 @@ REQUIRED_SHARED_ANCHORS = (
     "COMP-REQ-009",
     "COMP-REQ-007",
     "STM32WBA55/WBA65",
+    "low_power_face request=sleepy animation=static",
+    "periodic sleep-frame flicker",
 )
 
 
