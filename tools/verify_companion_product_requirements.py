@@ -56,8 +56,8 @@ def main() -> int:
         "registry": str(REGISTRY.relative_to(ROOT)).replace("\\", "/"),
         "workflow_plan": "companion-screen-product-integration",
         "requirement_ids": [f"COMP-REQ-{number:03d}" for number in range(1, 15)],
-        "current_focus": "COMP-REQ-005 touch interrupt and Stop-wake hardware evidence",
-        "queued_after_focus": "COMP-REQ-009 generated low-power/wake/recording expression art",
+        "current_focus": "COMP-REQ-005 final low-power human/current gate plus COMP-REQ-009 generated dynamic recording art",
+        "active_parallel_track": "COMP-REQ-009 generated low-power/wake/dynamic-recording expression art",
         "errors": errors,
     }
     if args.write_fixture:
