@@ -1,0 +1,68 @@
+# Companion Product Requirement Registry
+
+This is the canonical Companion product-decision and handoff registry. It is
+not a second execution-status system: workflow execution state remains in
+`ai-collaboration-workflow/docs/plans/*_status.json`.
+
+## Read Order
+
+1. Run `aiw status -Plan companion-screen-product-integration` from the
+   workflow repository.
+2. Read this registry before changing Companion behavior, hardware, visual
+   assets, or acceptance scope.
+3. Open the linked source document and validation artifact for the selected
+   requirement. Do not infer completion from a `static` status.
+
+## Steering Intake Rule
+
+Every product-owner steer that makes a decision, rejects a direction, changes
+priority, adds a constraint, or changes acceptance must be added or updated
+here before implementation. A question without a decision stays in chat until
+clarified. Replaced requirements remain as `superseded` with a replacement ID;
+they are never deleted. Each active item must link to a workflow step in
+`companion-screen-product-integration` and its authoritative product artifact.
+
+## Current Requirements
+
+| ID | Product decision | State | Workflow link | Authority and required evidence |
+|---|---|---|---|---|
+| COMP-REQ-001 | First real screen target is NUCLEO-WB55RG plus GDEY0154D67-T03 through ESP32-FTS02, 200x200 monochrome. The visible screen, its refresh behavior, touch, and expressions must be proven on this target before a product-board claim. | active, hardware evidence pending | 2.2 | `docs/companion_devboard_physical_checklist.md`; screen logs, real panel observation, and touch evidence must agree. |
+| COMP-REQ-002 | Portable product logic must remain suitable for STM32WBA55 and STM32WBA65. WB55-only HAL, CPU2, IPCC, FUS, STM32_WPAN, and NUCLEO wiring stay in target adapters. | active, static boundary implemented | 4.1 | `docs/stm32wba_migration_rules.md`; portable module checks plus future CubeWBA hardware parity. |
+| COMP-REQ-003 | E-paper interaction must prefer coalesced partial refresh and quiet maintenance; no old/new UI or expression mixing is acceptable. Physical afterimage and stale-generation content are separate defects. | active, real visual recheck pending | 2.3 | `docs/companion_screen_project_plan.md` SCR-05, SCR-16, SCR-17; refresh/generation validation plus real panel observation. |
+| COMP-REQ-004 | FT6336 touch supports tap, four directional pet interactions, continuous menu drag, edge-right return, and 3 s stationary hold menu entry. Normal swipes must not accidentally enter settings. | active, real usability evidence pending | 2.2 | `docs/companion_screen_project_plan.md` SCR-06 and SCR-07; gesture self-test, serial log, and focused human usability acceptance. |
+| COMP-REQ-005 | Touch-first low power is a product priority. `TP_INT` is wired as `P10 A0 -> CN10-33 -> PC6/EXTI`; `TP_RST` on A3/PC10 is optional and currently unconnected. Stop is allowed only with no touch, recording, menu, or screen blockers. The final product-board standby target is average <=1 mA over >=60 s. | active, static implementation complete; hardware and current evidence pending | 2.1 | `docs/companion_low_power_requirements.md`; PC6 IRQ, Stop-resume log, and final-board current trace. |
+| COMP-REQ-006 | Daily double tap is the default manual recording interaction: first valid double tap starts and the next stops the same touch-originated recording. Wake-word capture is deferred until low-power acceptance; it must not be silently substituted for the double-tap path. | active, static implementation complete | 2.1 | `docs/companion_low_power_requirements.md`; recording FSM checks and real double-tap recording/store log. |
+| COMP-REQ-007 | Replaceable UI, expression, menu, and future model assets are external-Flash first. Internal Flash retains firmware, drivers, parsers, and small rescue UI only. Resource changes are an OTA component but OTA execution stays frozen until Listener OTA acceptance. | active; OTA externally frozen | 4.2 | `docs/companion_resource_memory_policy.md` and `docs/companion_ota_component_contract.md`; resource pack mount/CRC and Denzic OTA matrix when unfrozen. |
+| COMP-REQ-008 | Normal visual design is reference-first. The accepted generated inner-face sheet is the baseline; firmware draws no cat outline, ears, whiskers, or device frame. New visual work records prompt, sources, output hash, review, and prompt delta before CEMP import. | active; current art needs continuing visual acceptance | 3.1 | `docs/art/generated_pet_expression_sheet_v5.png`, `docs/art/`, and `docs/companion_screen_project_plan.md` SCR-09 and SCR-15. |
+| COMP-REQ-009 | The next expression-art scope adds low-power sleep, touch wake, tap/swipe acknowledgement, recording start, recording active, and recording saved/failed. Each pose changes the whole inner face. It waits for COMP-REQ-005 real interrupt evidence and a generated-art review. | pending by priority | 3.1 | `docs/art/iterations/companion-pet-interaction-v1/iteration-ledger.json`; accepted generation, PBM/CEMP review, and real-panel evidence. |
+| COMP-REQ-010 | Settings are complete product information architecture, not a decorative shell: Voice, Status, Phone Link, Device, Preferences, and About show only real actions/data or explicit planned state. Chinese and English are separate full-language resources selected in Preferences. | active; visual baseline pending owner review | 3.2 | `docs/companion_menu_information_architecture.md` and `docs/art/iterations/companion-menu-v2/iteration-ledger.json`; accepted menu art plus per-page real data/action evidence. |
+| COMP-REQ-011 | Product USB development/recovery must not depend on a NUCLEO ST-LINK. WBA55 and WBA65 have distinct USB/ROM recovery contracts, while SWD/NRST/BOOT rescue remains mandatory. | deferred until WBA board decision | 4.3 | `docs/companion_usb_development_requirements.md`; selected WBA board schematic and recovery validation. |
+| COMP-REQ-012 | Hardware acceptance is asynchronous. Do not flash, open a live prompt, or request an observation merely because the board is connected. A live physical session starts only when the owner explicitly says to begin acceptance. | active workflow constraint | 2.2 | `docs/codex_development_workflow.md` and the workflow protocol; hardware lock, serial artifact, and focused acceptance record. |
+| COMP-REQ-013 | Every future product steer must be durable across agents: record it here, map it to the active workflow plan, preserve superseded history, and state unfinished gates in handoff. | active process constraint | 1.1 | `ai-collaboration-workflow/docs/ai_collaboration_protocol.md` Product Steering and Requirement Traceability; `tools/verify_companion_product_requirements.py`. |
+
+## Latest Machine Evidence
+
+The following evidence was rerun on 2026-07-13. It proves source and build
+continuity only; none of it is a flash, visual, touch-feel, Stop-resume, or
+current measurement acceptance result.
+
+| Scope | Command or verifier | Result and limit |
+|---|---|---|
+| WB55 e-paper/menu firmware | `tools/build_nucleo_bringup.ps1 -EpaperSsd1681Bringup -EpaperMenu 1 -Force` | PASS; compiled `Companion_Nucleo_WB55RG_Bringup.elf` with SSD1681 and menu enabled. |
+| PC6 touch wake parser | `python tools/verify_wb55_touch_wake_log.py --self-test` | `PASS_STATIC_PARSER`; synthetic input only, not a board interrupt trace. |
+| FT6336 and refresh policy | `python tools/verify_touch_ft6336.py`; `python tools/verify_epaper_refresh_policy.py` | PASS static controller/gesture and partial-refresh policy contracts. |
+| WBA portable boundary | `verify_expression_wba_portability.py`, `verify_touch_target_stm32wba_ft6336.py`, `verify_expression_panel_target_stm32wba.py`, `verify_expression_wba_lse_clock_contract.py` | PASS pre-port adapters and WBA LSE contract; no CubeWBA project, WBA hardware, or parity claim. |
+
+## Current Handoff
+
+The present engineering focus is COMP-REQ-005: PC6 touch interrupt and Stop
+wake have static code/build evidence, while real IRQ, Stop-resume, and current
+measurement evidence remain open. COMP-REQ-009 is deliberately queued behind
+that gate. The next agent must not flash or begin a physical acceptance session
+without an explicit owner instruction to do so.
+
+The previous broad workflow plan `companion-pendant-firmware-bringup` remains
+historical evidence for earlier bench work. Current Companion screen work is
+tracked by `companion-screen-product-integration`; this registry maps the
+current product decisions to that plan so its handoff does not depend on chat
+history.
