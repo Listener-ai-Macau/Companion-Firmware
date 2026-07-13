@@ -39,12 +39,22 @@ def irq_events(log: str) -> list[dict[str, int]]:
     return events
 
 
+def marker_precedes(log: str, first: str, second: str) -> bool:
+    first_index = log.find(first)
+    if first_index < 0:
+        return False
+    return log.find(second, first_index + len(first)) >= 0
+
+
 def required_check_names(scope: str) -> tuple[str, ...]:
     if scope == "stop-wake":
         return (
             "lpm_boot_ready",
             "tp_int_wired",
             "ft6336_trigger_mode",
+            "low_power_sleep_pose_stopped",
+            "low_power_face_requested_static",
+            "low_power_pose_precedes_stop",
             "health_sample_observed",
             "irq_event_observed",
             "irq_observed",
@@ -75,10 +85,16 @@ def evaluate(log: str, log_path: str, scope: str = "full") -> dict[str, Any]:
     max_consumed = max((sample["irq_consumed"] for sample in irq_observations), default=0)
     all_health_ordered = all(sample["irq_consumed"] <= sample["irq"] for sample in irq_observations)
     double_taps = log.count("[touch-ui] daily_double_tap_recording")
+    low_power_sleep_pose = "[screen] low_power_idle pose=sleepy animation=stopped"
+    low_power_face_request = "[power] low_power_face request=sleepy animation=static"
+    stop_allowed = "[power] stop=allowed"
     checks = {
         "lpm_boot_ready": "[power] policy_selftest=pass touch_irq_wake=ready lpm=enabled" in log,
         "tp_int_wired": "irq=PC6 wired=1" in log,
         "ft6336_trigger_mode": "irq_mode=trigger" in log,
+        "low_power_sleep_pose_stopped": low_power_sleep_pose in log,
+        "low_power_face_requested_static": low_power_face_request in log,
+        "low_power_pose_precedes_stop": marker_precedes(log, low_power_face_request, stop_allowed),
         "health_sample_observed": bool(samples),
         "irq_event_observed": bool(events),
         "irq_observed": max_irq > 0,
@@ -94,7 +110,7 @@ def evaluate(log: str, log_path: str, scope: str = "full") -> dict[str, Any]:
     required_checks = required_check_names(scope)
     status = "PASS" if all(checks[name] for name in required_checks) else "NO_GO_INCOMPLETE_TOUCH_WAKE_EVIDENCE"
     next_actions = {
-        "stop-wake": "Collect one reset-bounded capture, wait for Stop, then touch once so PC6 IRQ observation and consumption are logged.",
+        "stop-wake": "Collect one reset-bounded capture that shows the static sleepy pose before Stop, then touch once so PC6 IRQ observation and consumption are logged.",
         "double-tap-recording": "Collect one bounded capture containing two daily-page double taps, recording start/stop, and a successful external Flash store.",
         "full": "Collect a post-wiring serial capture with TP_INT wired, then perform one Stop wake and two daily-page double taps.",
     }
@@ -126,6 +142,9 @@ def self_test(scope: str = "full") -> dict[str, Any]:
         [
             "[touch] ft6336 decoder=pass gesture=pass addr=0x38 probe=present probes=1 irq_mode=trigger irq_cfg_errors=0 tuning=applied threshold=0x16 period=12/24 tuning_errors=0 poll_ms=5/8 irq=PC6 wired=1 reset=PC10 wired=0 refresh_poll_ms=5",
             "[power] policy_selftest=pass touch_irq_wake=ready lpm=enabled",
+            "[screen] low_power_idle pose=sleepy animation=stopped",
+            "[power] low_power_face request=sleepy animation=static",
+            "[power] stop=allowed blockers=0x00000000 touch_irq=1",
             "[touch-health] detected=1 irq=3 irq_consumed=3 buffered=0 dropped=0",
             "[touch-irq] observed=3 consumed=3",
             "[touch-ui] daily_double_tap_recording x=100 y=100 state=idle",
