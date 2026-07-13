@@ -5,9 +5,9 @@
     "runtime_status": "REVISION_52_RUNTIME_RECHECK_PENDING",
     "total_bytes": 287732
   },
-  "next_machine_action": "Run tools/run_wb55_screen_runtime_recheck.ps1 under the Companion-WB55 workflow lock, then rerun this verifier.",
+  "next_machine_action": "Run tools/promote_wb55_screen_runtime_recheck.py --apply, then rerun pre-acceptance health.",
   "normal": {
-    "bytes_read": 3459,
+    "bytes_read": 3803,
     "label": "normal",
     "markers": {
       "clips=33 frames=159": true,
@@ -24,18 +24,18 @@
       "refresh mode=full": true,
       "revision=52": true,
       "source=external_flash": true,
-      "touch-health] detected=1 identity=1 addr=0x38": false
+      "touch-health] detected=1 identity=1 addr=0x38": true
     },
     "raw_log": ".cache/validation/rev52-runtime-current/normal/nucleo-serial-raw.log",
     "raw_log_exists": true,
-    "status": "MISSING_OR_INCOMPLETE",
+    "status": "PASS",
     "summary_json": ".cache/validation/rev52-runtime-current/normal/nucleo-serial-summary.json",
     "summary_json_exists": true,
     "summary_status": "PASS"
   },
   "promotion_rule": "Only after both logs pass may companion-screen-bilingual-menu-wb55.json be promoted from REVISION_52_RUNTIME_RECHECK_PENDING to a runtime-pass human-visual-pending state.",
   "provision": {
-    "bytes_read": 9238,
+    "bytes_read": 4820,
     "label": "provision",
     "markers": {
       "clips=33 frames=159": true,
@@ -119,6 +119,6 @@
     "status": "PASS"
   },
   "schema_id": "companion.screen.wb55_runtime_recheck_logs.v1",
-  "status": "NO_GO_INCOMPLETE_RUNTIME_MARKERS",
+  "status": "PASS",
   "target": "NUCLEO-WB55RG + GDEY0154D67-T03 + FT6336U"
 }
