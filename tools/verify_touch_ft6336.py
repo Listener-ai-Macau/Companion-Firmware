@@ -25,6 +25,7 @@ def main() -> int:
     target_c = (touch_root / "touch_target_stm32wb_ft6336.c").read_text(encoding="utf-8")
     gesture = (touch_root / "touch_gesture.c").read_text(encoding="utf-8")
     main_source = (ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/main.c").read_text(encoding="utf-8")
+    app_ble_source = (ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c").read_text(encoding="utf-8")
     makefile = (ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile").read_text(encoding="utf-8")
     build = (ROOT / "tools/build_nucleo_bringup.ps1").read_text(encoding="utf-8")
     panel_header = (ROOT / "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.h").read_text(encoding="utf-8")
@@ -154,6 +155,21 @@ def main() -> int:
         "TOUCH_VERBOSE_TRACE=1",
         "Ft6336TouchThreshold",
         "FT6336_TOUCH_THRESHOLD=0x{0:X2}u",
+    ), errors)
+    require("screen interaction trace gate", app_ble_source, (
+        "COMPANION_TOUCH_VERBOSE_TRACE 0",
+        "#define SCREEN_INTERACTION_TRACE(...) printf(__VA_ARGS__)",
+        "#define SCREEN_INTERACTION_TRACE(...) do { if (0) { printf(__VA_ARGS__); } } while (0)",
+        "SCREEN_INTERACTION_TRACE(\"[screen] menu enqueue",
+        "SCREEN_INTERACTION_TRACE(\"[screen] display_result",
+        "SCREEN_INTERACTION_TRACE(\"[pet-renderer]",
+        "SCREEN_INTERACTION_TRACE(\"[pet-attention]",
+        "SCREEN_INTERACTION_TRACE(\"[pet-stroke]",
+        "SCREEN_INTERACTION_TRACE(\"[pet-emotion]",
+        "static bool s_companion_screen_coherent_generation_marker_logged = false;",
+        "if (!s_companion_screen_coherent_generation_marker_logged &&",
+        "printf(\"[screen] coherent_generation=1 resource_revision=",
+        "printf(\"[screen] menu enqueue_failed",
     ), errors)
     boot_health_marker = (
         "comp_power_policy_set_blocker(&s_power_policy, COMP_POWER_BLOCKER_BOOT, false);\n"

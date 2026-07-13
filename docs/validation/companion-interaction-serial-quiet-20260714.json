@@ -1,0 +1,46 @@
+{
+  "schema_id": "companion.wb55.interaction_serial_quiet.v1",
+  "status": "PASS_MACHINE_BUILD",
+  "claim_scope": "linked-image string and size comparison only; no hardware timing or human feel claim",
+  "target": "NUCLEO-WB55RG + GDEY0154D67-T03 + FT6336U",
+  "builds": {
+    "quiet": {
+      "elf": "cubeide/Companion_Nucleo_WB55RG_Bringup/build/Companion_Nucleo_WB55RG_Bringup.elf",
+      "hex_sha256": "A55DAA6F1F2481E1E1AB827164DE212E2559395680FE1D8DFAC68B09C6397FB1",
+      "size": {
+        "text": 128332,
+        "data": 2436,
+        "bss": 188151,
+        "dec": 318919
+      }
+    },
+    "trace": {
+      "elf": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_verbose_trace/Companion_Nucleo_WB55RG_VerboseTrace.elf",
+      "hex_sha256": "E4C33A0310A325D5B1FA1F9842B7907F5497D0BFA757CCD96F2E879C486CD627",
+      "size": {
+        "text": 135396,
+        "data": 2436,
+        "bss": 188151,
+        "dec": 325983
+      }
+    },
+    "text_delta_trace_minus_quiet": 7064
+  },
+  "marker_counts": {
+    "[screen] coherent_generation=1": { "quiet": 1, "trace": 1 },
+    "[screen] menu enqueue id=": { "quiet": 0, "trace": 1 },
+    "[screen] display_result id=": { "quiet": 0, "trace": 1 },
+    "[pet-renderer] clip=": { "quiet": 0, "trace": 1 },
+    "[pet-attention] x=": { "quiet": 0, "trace": 1 },
+    "[pet-stroke] direction=": { "quiet": 0, "trace": 1 },
+    "[pet-emotion] expression=": { "quiet": 0, "trace": 1 },
+    "[screen] menu enqueue_failed": { "quiet": 1, "trace": 1 }
+  },
+  "commands": [
+    "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1 -EpaperSsd1681Bringup -EpaperMenu 1 -Force",
+    "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1 -EpaperSsd1681Bringup -EpaperMenu 1 -EpaperSsd1681VerboseTrace -Force",
+    "arm-none-eabi-size quiet.elf trace.elf",
+    "arm-none-eabi-strings quiet.elf and trace.elf marker comparison"
+  ],
+  "conclusion": "Successful screen and pet interaction UART formatting is compiled out of the quiet image and retained by the trace image; retained failure output and one reset-bounded coherent-generation marker preserve normal runtime diagnosis."
+}

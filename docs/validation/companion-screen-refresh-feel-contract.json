@@ -7,6 +7,7 @@
   "checks": {
     "art_and_refresh_axes_separate": true,
     "boundary_waveform_research_recorded": true,
+    "coherent_generation_runtime_marker_is_one_shot": true,
     "current_candidate_runtime_state_consistent": true,
     "display_queue_tracks_resource_generation": true,
     "full_refresh_reserved_for_baseline_or_fault": true,
@@ -23,6 +24,7 @@
     "ordinary_touch_has_no_delayed_maintenance": true,
     "policy_limits_are_bounded": true,
     "scr17_release_ledger_recorded": true,
+    "screen_interaction_success_logs_are_trace_gated": true,
     "vendor_ghosting_research_recorded": true,
     "wb55_sets_and_logs_resource_generation": true
   },
@@ -32,6 +34,7 @@
     "generation_swap": "Treat visual ghosting and old/new resource interleaving as separate failures: atomically activate one CEMP revision, drain stale queued frames, then refresh/maintain the panel baseline.",
     "generation_triage": "Classify visible old content as physical afterimage, stale queued frame, stale asset revision, or rescue/procedural fallback leakage; only physical afterimage belongs to refresh-profile tuning.",
     "ghosting": "Partial/fast refresh can accumulate ghosting; tune refresh profile/cadence rather than blending old art.",
+    "interaction_serial": "Production reuses the touch trace switch to remove successful screen enqueue, frame, pet-attention, and stroke UART serialization; failures and one reset-bounded coherent-generation marker remain visible for runtime evidence.",
     "interactive": "Use differential 0xFC dirty-window refresh; coalesce queued menu drag frames to the latest request.",
     "maintenance": "Ordinary touch never schedules a delayed cleanup. Five completed differential interactions are allowed; the sixth selects one Good Display Mode 1 / 0xC7 cleanup. Explicit menu enter/exit boundaries each request one Mode-1 cleanup.",
     "menu_boundary": "Enter and exit request one vendor-profiled Mode 1 / 0xC7 fast waveform when the panel baseline is valid. The target logs the profile, activation count, and expected visible phase model; physical one-flicker confirmation remains a focused hardware gate.",

@@ -119,6 +119,20 @@
 
 /* USER CODE END Includes */
 
+/* Successful interaction logs can be emitted by a touch callback while the
+ * SSD1681 is BUSY. Keep them in the existing trace image, not production. */
+#ifndef COMPANION_TOUCH_VERBOSE_TRACE
+#define COMPANION_TOUCH_VERBOSE_TRACE 0
+#endif
+#if COMPANION_TOUCH_VERBOSE_TRACE != 0 && COMPANION_TOUCH_VERBOSE_TRACE != 1
+#error "Companion touch verbose trace must be 0 or 1"
+#endif
+#if COMPANION_TOUCH_VERBOSE_TRACE
+#define SCREEN_INTERACTION_TRACE(...) printf(__VA_ARGS__)
+#else
+#define SCREEN_INTERACTION_TRACE(...) do { if (0) { printf(__VA_ARGS__); } } while (0)
+#endif
+
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
 typedef enum
@@ -256,6 +270,9 @@ static comp_emote_player_t s_companion_emote_player;
 static comp_epaper_expression_decision_t s_companion_emote_player_decision;
 static comp_screen_presentation_t s_companion_screen_presentation;
 static bool s_companion_screen_ui_ready = false;
+/* The normal runtime recheck needs one CEMP coherence proof, but emitting the
+ * old per-frame status line here can stall a touch-triggered panel update. */
+static bool s_companion_screen_coherent_generation_marker_logged = false;
 static bool s_companion_emote_player_ready = false;
 static bool s_companion_emote_player_decision_valid = false;
 static bool s_companion_expression_transition_immediate = false;
@@ -544,6 +561,7 @@ void APP_BLE_Init( void )
   SVCCTL_Init();
   Companion_Audio_Init();
   comp_epaper_display_queue_init(&s_companion_display_queue);
+  s_companion_screen_coherent_generation_marker_logged = false;
   comp_epaper_expression_state_init(&s_companion_expression_state);
   comp_pet_behavior_init(&s_companion_pet_behavior, 0xC0A55EEDu);
   s_companion_pet_behavior_last_advanced_ms = HAL_GetTick();
@@ -1120,7 +1138,18 @@ static void Companion_Display_Task(void)
                             request.content_crc32,
                             runtime_stats.panel.attempted_count,
                             (uint32_t)panel_result);
-  printf("[screen] display_result id=%lu kind=%u resource_revision=%lu active_revision=%lu coherent_generation=%u generation_switches=%lu last_stale_discarded=%lu pending=%lu stale_generation_discarded=%lu panel_result=%u\r\n",
+  if (!s_companion_screen_coherent_generation_marker_logged &&
+      panel_result == COMP_EPAPER_PANEL_RESULT_OK &&
+      request.resource_revision == runtime_stats.display_queue.active_resource_revision)
+  {
+    /* Keep the serial evidence contract without putting a print in every
+     * interaction frame. This is reset only when the screen queue is rebuilt. */
+    s_companion_screen_coherent_generation_marker_logged = true;
+    printf("[screen] coherent_generation=1 resource_revision=%lu active_revision=%lu\r\n",
+           (unsigned long)request.resource_revision,
+           (unsigned long)runtime_stats.display_queue.active_resource_revision);
+  }
+  SCREEN_INTERACTION_TRACE("[screen] display_result id=%lu kind=%u resource_revision=%lu active_revision=%lu coherent_generation=%u generation_switches=%lu last_stale_discarded=%lu pending=%lu stale_generation_discarded=%lu panel_result=%u\r\n",
          (unsigned long)request.request_id,
          (unsigned)request.request_kind,
          (unsigned long)request.resource_revision,
@@ -1236,7 +1265,7 @@ static bool Companion_Display_EmitEmoteFrameMode(
       player_frame.frame_in_clip != 0u)
   {
     /* Idle keeps a quiet first pose; only an actual interaction earns a refresh. */
-    printf("[pet-renderer] idle_frame_suppressed frame=%u in_clip=%u\r\n",
+    SCREEN_INTERACTION_TRACE("[pet-renderer] idle_frame_suppressed frame=%u in_clip=%u\r\n",
            (unsigned)player_frame.frame_index,
            (unsigned)player_frame.frame_in_clip);
     return true;
@@ -1272,7 +1301,7 @@ static bool Companion_Display_EmitEmoteFrameMode(
       0u,
       content_crc32);
   UTIL_SEQ_SetTask(1 << CFG_TASK_COMPANION_DISPLAY_ID, CFG_SCH_PRIO_0);
-  printf("[pet-renderer] clip=%s frame=%u in_clip=%u phase=%u touch=%u refresh=%u duration_ms=%u source=external_flash\r\n",
+  SCREEN_INTERACTION_TRACE("[pet-renderer] clip=%s frame=%u in_clip=%u phase=%u touch=%u refresh=%u duration_ms=%u source=external_flash\r\n",
          player_frame.clip_name,
          (unsigned)player_frame.frame_index,
          (unsigned)player_frame.frame_in_clip,
@@ -1486,7 +1515,7 @@ static void Companion_Display_EnqueueExpressionDecision(
   }
   if (presentation_action == COMP_SCREEN_PRESENTATION_ACTION_RESTORE_MENU)
   {
-    printf("[screen] presentation=restore_menu view=%u page=%u language=%u\r\n",
+    SCREEN_INTERACTION_TRACE("[screen] presentation=restore_menu view=%u page=%u language=%u\r\n",
            (unsigned)s_companion_screen_presentation.menu_view,
            (unsigned)s_companion_screen_presentation.menu_page,
            (unsigned)s_companion_screen_presentation.menu_language);
@@ -1502,7 +1531,7 @@ static void Companion_Display_EnqueueExpressionDecision(
   Companion_PetBehavior_Advance();
   comp_pet_behavior_apply_expression(&s_companion_pet_behavior,
                                      decision->expression);
-  printf("[pet-emotion] expression=%s mood=%s valence=%d arousal=%u curiosity=%u affection=%u attachment=%u quiet_ms=%lu engagement=%u interactions=%lu\r\n",
+  SCREEN_INTERACTION_TRACE("[pet-emotion] expression=%s mood=%s valence=%d arousal=%u curiosity=%u affection=%u attachment=%u quiet_ms=%lu engagement=%u interactions=%lu\r\n",
          comp_epaper_expression_name(decision->expression),
          comp_pet_behavior_mood_name(comp_pet_behavior_mood(&s_companion_pet_behavior)),
          (int)s_companion_pet_behavior.valence,
@@ -1530,13 +1559,13 @@ static void Companion_Display_EnqueueExpressionDecision(
     {
       if (s_companion_expression_transition_immediate)
       {
-        printf("[emote-player] transition=immediate name=%s\r\n",
+        SCREEN_INTERACTION_TRACE("[emote-player] transition=immediate name=%s\r\n",
                decision->name);
       }
       comp_emote_player_snapshot(&s_companion_emote_player, &player_snapshot);
       if (player_snapshot.handoff_pending)
       {
-        printf("[emote-player] handoff_pending name=%s\r\n", decision->name);
+        SCREEN_INTERACTION_TRACE("[emote-player] handoff_pending name=%s\r\n", decision->name);
         Companion_Display_ScheduleExpressionTick(HAL_GetTick());
         return;
       }
@@ -1664,7 +1693,7 @@ static bool Companion_Screen_MenuRequestMode(
                              COMP_SCREEN_MENU_FLAG_PRESS_ITEM_MASK)),
         language,
         home_page);
-    printf("[screen] menu enqueue id=%lu view=%u page=%u language=%u flags=0x%02X refresh=%u discarded_expression_frames=%u discarded_pet_expression_frames=%u\r\n",
+    SCREEN_INTERACTION_TRACE("[screen] menu enqueue id=%lu view=%u page=%u language=%u flags=0x%02X refresh=%u discarded_expression_frames=%u discarded_pet_expression_frames=%u\r\n",
            (unsigned long)request_id,
            (unsigned)view,
            (unsigned)home_page,
@@ -1703,7 +1732,7 @@ bool Companion_Screen_MenuRequestClean(comp_screen_menu_view_t view,
                                        comp_screen_menu_language_t language,
                                        uint8_t home_page)
 {
-  printf("[screen] menu_boundary=enter view=%u page=%u refresh=fast_if_baseline\r\n",
+  SCREEN_INTERACTION_TRACE("[screen] menu_boundary=enter view=%u page=%u refresh=fast_if_baseline\r\n",
          (unsigned)view,
          (unsigned)home_page);
   return Companion_Screen_MenuRequestMode(view,
@@ -1783,7 +1812,7 @@ static void Companion_Screen_RefreshBleStatus(void)
   {
     return;
   }
-  printf("[screen] status_ble connected=%u refresh=partial\r\n",
+  SCREEN_INTERACTION_TRACE("[screen] status_ble connected=%u refresh=partial\r\n",
          s_companion_ble_connected ? 1u : 0u);
   Companion_Screen_MenuRequest(s_companion_screen_presentation.menu_view,
                                refreshed_flags,
@@ -1904,7 +1933,7 @@ bool Companion_Screen_ShowDaily(void)
 
 bool Companion_Screen_ShowDailyClean(void)
 {
-  printf("[screen] menu_boundary=exit expression=idle refresh=fast_if_baseline\r\n");
+  SCREEN_INTERACTION_TRACE("[screen] menu_boundary=exit expression=idle refresh=fast_if_baseline\r\n");
   return Companion_Screen_StartExpressionMode(
       COMP_EPAPER_EXPRESSION_IDLE,
       COMP_EPAPER_REFRESH_MAINTENANCE,
@@ -1955,7 +1984,7 @@ bool Companion_Screen_DailyExpressionSignal(
   s_companion_expression_transition_immediate = true;
   Companion_Display_EnqueueExpressionDecision(&decision, &previous_state, 0u);
   s_companion_expression_transition_immediate = false;
-  printf("[screen-expression] daily_signal=%u expression=%s result=requested reason=%s\r\n",
+  SCREEN_INTERACTION_TRACE("[screen-expression] daily_signal=%u expression=%s result=requested reason=%s\r\n",
          (unsigned)signal,
          decision.name,
          decision.reason);
@@ -2009,7 +2038,7 @@ bool Companion_Screen_DailyTapAt(uint16_t x, uint16_t y)
         0u);
   }
   s_companion_expression_transition_immediate = false;
-  printf("[pet-attention] x=%u y=%u direction=%u clip=%s mood=%s valence=%d arousal=%u curiosity=%u affection=%u attachment=%u engagement=%u\r\n",
+  SCREEN_INTERACTION_TRACE("[pet-attention] x=%u y=%u direction=%u clip=%s mood=%s valence=%d arousal=%u curiosity=%u affection=%u attachment=%u engagement=%u\r\n",
          (unsigned)x,
          (unsigned)y,
          (unsigned)direction,
@@ -2084,7 +2113,7 @@ bool Companion_Screen_DailyStrokeAt(uint16_t start_x,
         0u);
   }
   s_companion_expression_transition_immediate = false;
-  printf("[pet-stroke] direction=%s start=%u,%u end=%u,%u duration_ms=%lu clip=%s mood=%s valence=%d arousal=%u curiosity=%u affection=%u attachment=%u engagement=%u\r\n",
+  SCREEN_INTERACTION_TRACE("[pet-stroke] direction=%s start=%u,%u end=%u,%u duration_ms=%lu clip=%s mood=%s valence=%d arousal=%u curiosity=%u affection=%u attachment=%u engagement=%u\r\n",
          comp_pet_behavior_stroke_name(stroke),
          (unsigned)start_x,
          (unsigned)start_y,

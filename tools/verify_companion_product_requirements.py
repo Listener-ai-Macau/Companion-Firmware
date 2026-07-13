@@ -62,6 +62,7 @@ REQUIRED_ANCHORS = (
     "no CubeWBA project, WBA hardware, or parity claim",
     "tools/run_wb55_refresh_ab.ps1",
     "docs/validation/companion-wb55-refresh-ab-runner.json",
+    "docs/validation/companion-interaction-serial-quiet-20260714.json",
 )
 
 

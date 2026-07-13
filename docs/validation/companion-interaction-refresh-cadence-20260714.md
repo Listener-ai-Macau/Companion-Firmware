@@ -112,11 +112,16 @@ compares waveform/data planes with the known-good transport.
 ## Quiet Production Trace Policy
 
 Normal WB55 SSD1681 interaction builds set
-`COMPANION_EPAPER_SSD1681_VERBOSE_TRACE=0`. This removes synchronous UART
-serialization of successful scene, policy, window, and timing messages from
-the visual path while retaining failure output. The low-power `_write` route is
-bounded but synchronous, so this preserves CPU time for the five-millisecond
-touch service without changing the waveform or resource selection.
+`COMPANION_EPAPER_SSD1681_VERBOSE_TRACE=0` and
+`COMPANION_TOUCH_VERBOSE_TRACE=0`. This removes synchronous UART
+serialization of successful scene, policy, window, timing, screen enqueue,
+rendered-frame, pet-attention, and pet-stroke messages from the visual path
+while retaining failure output and one reset-bounded coherent-generation marker
+for normal runtime evidence. `app_ble.c` uses the existing touch trace switch
+for the success-path screen logs, so the bounded but synchronous low-power
+`_write` route preserves CPU time for the five-millisecond touch service
+without changing the waveform, resource selection, or diagnostic image
+behavior.
 
 For a normal image that deliberately needs serial evidence, add:
 
@@ -129,11 +134,14 @@ trace automatically. Do not use a quiet production serial capture to prove
 refresh timing: use the matching trace-enabled diagnostic image instead.
 
 Machine build evidence on 2026-07-14: quiet production, manual verbose,
-vendor-partial, and direct-BSRR images all compiled. The quiet SSD1681 object
-contains two remaining failure-path `printf` relocations versus 29 in the
-verbose object; linked text is 132324 bytes quiet versus 135020 bytes verbose.
-This proves that successful-refresh UART serialization is removed from the
-quiet image, not that panel BUSY or human-perceived responsiveness has passed.
+vendor-partial, and direct-BSRR images all compiled. The fresh quiet image is
+`128332` text bytes versus `135396` in the trace image. The linked-image
+comparison in `docs/validation/companion-interaction-serial-quiet-20260714.json`
+shows none of the six successful screen/pet interaction strings in production,
+exactly one of each in trace, and one concise coherent-generation plus failure
+string in both. This proves that successful-refresh and screen/pet UART
+serialization is removed from the quiet image, not that panel BUSY or
+human-perceived responsiveness has passed.
 
 ## Lock-Guarded Three-Way A/B Runner
 
