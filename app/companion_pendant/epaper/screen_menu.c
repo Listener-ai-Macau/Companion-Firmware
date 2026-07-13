@@ -139,6 +139,15 @@ bool comp_screen_menu_is_daily_entry_gesture(
            gesture->type == COMP_TOUCH_GESTURE_LONG_PRESS;
 }
 
+bool comp_screen_menu_is_exit_gesture(
+    const comp_touch_gesture_event_t *gesture)
+{
+    /* The gesture layer already direction-locks and debounces this event.
+     * Do not turn exit into a hidden edge affordance in a board target. */
+    return gesture != NULL &&
+           gesture->type == COMP_TOUCH_GESTURE_SWIPE_RIGHT;
+}
+
 comp_screen_menu_result_t comp_screen_menu_tap(comp_screen_menu_t *menu,
                                                uint16_t x,
                                                uint16_t y)
@@ -200,11 +209,10 @@ comp_screen_menu_result_t comp_screen_menu_gesture(
     if (menu == NULL || gesture == NULL) {
         return result;
     }
-    if (menu->view != COMP_SCREEN_MENU_VIEW_HOME &&
-        gesture->type == COMP_TOUCH_GESTURE_SWIPE_RIGHT) {
-        menu->view = COMP_SCREEN_MENU_VIEW_HOME;
-        menu->home_page = 0u;
-        menu->revision++;
+    if (comp_screen_menu_is_exit_gesture(gesture)) {
+        /* This layer has no daily-surface state. The target consumes the
+         * explicit action and performs its single clean transition there. */
+        result.action = COMP_SCREEN_MENU_ACTION_EXIT_DAILY;
         result.changed = true;
     }
     menu_result_from_state(menu, &result);
@@ -772,13 +780,16 @@ bool comp_screen_menu_v2_self_test(void)
     }
     gesture = (comp_touch_gesture_event_t){
         .type = COMP_TOUCH_GESTURE_SWIPE_RIGHT,
-        .start_x = COMP_SCREEN_MENU_BACK_EDGE_MAX_X,
+        .start_x = 112u,
         .end_x = 130u,
     };
     result = comp_screen_menu_gesture(&menu, &gesture);
-    if (!result.changed || result.view != COMP_SCREEN_MENU_VIEW_HOME) {
+    if (!comp_screen_menu_is_exit_gesture(&gesture) || !result.changed ||
+        result.action != COMP_SCREEN_MENU_ACTION_EXIT_DAILY ||
+        result.view != COMP_SCREEN_MENU_VIEW_PHONE) {
         return false;
     }
+    comp_screen_menu_init(&menu);
     result = comp_screen_menu_drag(&menu, -53);
     if (!result.changed || result.home_page != 27u ||
         comp_screen_menu_scroll_offset_px(result.home_page) != 54u ||
@@ -809,11 +820,16 @@ bool comp_screen_menu_v2_self_test(void)
         menu.language != COMP_SCREEN_MENU_LANGUAGE_EN) {
         return false;
     }
-    gesture.start_x = (uint16_t)(COMP_SCREEN_MENU_BACK_EDGE_MAX_X + 1u);
+    gesture.start_x = 154u;
     result = comp_screen_menu_gesture(&menu, &gesture);
-    if (!result.changed || result.view != COMP_SCREEN_MENU_VIEW_HOME) {
+    if (!result.changed ||
+        result.action != COMP_SCREEN_MENU_ACTION_EXIT_DAILY ||
+        result.view != COMP_SCREEN_MENU_VIEW_PREFERENCES) {
         return false;
     }
+    menu.view = COMP_SCREEN_MENU_VIEW_HOME;
+    menu.home_page = 42u;
+    menu.home_scroll_offset_px = COMP_SCREEN_MENU_SCROLL_MAX_PX;
     result = comp_screen_menu_drag(&menu, -75);
     if (result.changed || result.home_page != 42u ||
         comp_screen_menu_exact_scroll_offset_px(&menu) !=
@@ -833,13 +849,16 @@ bool comp_screen_menu_v2_self_test(void)
     }
     gesture.type = COMP_TOUCH_GESTURE_SWIPE_LEFT;
     result = comp_screen_menu_gesture(&menu, &gesture);
-    if (result.changed || result.view != COMP_SCREEN_MENU_VIEW_HOME) {
+    if (comp_screen_menu_is_exit_gesture(&gesture) || result.changed ||
+        result.view != COMP_SCREEN_MENU_VIEW_HOME) {
         return false;
     }
     gesture.type = COMP_TOUCH_GESTURE_SWIPE_RIGHT;
-    gesture.start_x = 0u;
+    gesture.start_x = 180u;
     result = comp_screen_menu_gesture(&menu, &gesture);
-    if (result.changed || result.view != COMP_SCREEN_MENU_VIEW_HOME ||
+    if (!comp_screen_menu_is_exit_gesture(&gesture) || !result.changed ||
+        result.action != COMP_SCREEN_MENU_ACTION_EXIT_DAILY ||
+        result.view != COMP_SCREEN_MENU_VIEW_HOME ||
         result.home_page != 20u ||
         comp_screen_menu_exact_scroll_offset_px(&menu) != 39u ||
         !comp_screen_framebuffer_self_test() ||
@@ -896,7 +915,6 @@ bool comp_screen_menu_self_test(void)
     uint8_t hit_item;
     comp_touch_gesture_event_t gesture = {0};
     uint8_t frame[MENU_FRAME_BYTES];
-    char asset_name[32];
     uint32_t fingerprint;
 
     comp_screen_menu_init(&menu);
@@ -923,11 +941,18 @@ bool comp_screen_menu_self_test(void)
     if (!result.changed || result.view != COMP_SCREEN_MENU_VIEW_STATUS) {
         return false;
     }
-    gesture.type = COMP_TOUCH_GESTURE_SWIPE_RIGHT;
+    gesture = (comp_touch_gesture_event_t){
+        .type = COMP_TOUCH_GESTURE_SWIPE_RIGHT,
+        .start_x = 144u,
+        .end_x = 188u,
+    };
     result = comp_screen_menu_gesture(&menu, &gesture);
-    if (!result.changed || result.view != COMP_SCREEN_MENU_VIEW_HOME) {
+    if (!comp_screen_menu_is_exit_gesture(&gesture) || !result.changed ||
+        result.action != COMP_SCREEN_MENU_ACTION_EXIT_DAILY ||
+        result.view != COMP_SCREEN_MENU_VIEW_STATUS) {
         return false;
     }
+    comp_screen_menu_init(&menu);
     result = comp_screen_menu_drag(&menu, -54);
     if (result.changed || result.home_page != 0u ||
         comp_screen_menu_exact_scroll_offset_px(&menu) != 0u) {
@@ -943,14 +968,16 @@ bool comp_screen_menu_self_test(void)
         menu.language != COMP_SCREEN_MENU_LANGUAGE_EN) {
         return false;
     }
-    gesture.type = COMP_TOUCH_GESTURE_SWIPE_RIGHT;
+    gesture.start_x = 160u;
+    gesture.end_x = 194u;
     result = comp_screen_menu_gesture(&menu, &gesture);
-    if (!result.changed || result.view != COMP_SCREEN_MENU_VIEW_HOME ||
-        !comp_screen_menu_asset_name(result.view, result.language, result.home_page,
-                                     asset_name, sizeof(asset_name)) ||
-        strcmp(asset_name, "menu.home.en") != 0) {
+    if (!comp_screen_menu_is_exit_gesture(&gesture) || !result.changed ||
+        result.action != COMP_SCREEN_MENU_ACTION_EXIT_DAILY ||
+        result.view != COMP_SCREEN_MENU_VIEW_PREFERENCES) {
         return false;
     }
+    comp_screen_menu_init(&menu);
+    menu.language = COMP_SCREEN_MENU_LANGUAGE_EN;
     result = comp_screen_menu_tap(&menu, 100u, 99u);
     if (!result.changed || result.view != COMP_SCREEN_MENU_VIEW_PHONE) {
         return false;
@@ -988,8 +1015,10 @@ bool comp_screen_menu_self_test(void)
         return false;
     }
     result = comp_screen_menu_gesture(&menu, &gesture);
-    if (!result.changed || result.view != COMP_SCREEN_MENU_VIEW_HOME ||
-        result.home_page != 0u) {
+    if (!result.changed ||
+        result.action != COMP_SCREEN_MENU_ACTION_EXIT_DAILY ||
+        result.view != COMP_SCREEN_MENU_VIEW_PHONE ||
+        result.home_page != COMP_SCREEN_MENU_PHONE_RECONNECT_ADVERTISING) {
         return false;
     }
     if (!comp_screen_menu_render(COMP_SCREEN_MENU_VIEW_HOME,

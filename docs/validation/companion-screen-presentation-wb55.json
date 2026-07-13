@@ -12,9 +12,9 @@
     "handoff": "a new expression enters through emote_player graceful tail handoff",
     "restore_order": "product state advances before the player tick; restore_menu cannot enqueue a stale expression frame",
     "gesture_navigation": {
-      "detail_back": "left-edge swipe_right",
+      "detail_back": "anywhere direction-locked swipe_right exits directly to daily pet screen",
       "daily_menu_entry": "only an anywhere, nearly still 3000 ms hold opens settings; all daily swipes remain pet interactions",
-      "home_exit": "left-edge swipe_right returns to daily",
+      "home_exit": "anywhere direction-locked swipe_right returns to daily",
       "home_scroll": "retired by the owner-approved six-row menu-v3 static home reference",
       "home_rendering": "one owner-approved static external 200x200 home frame per language; legacy numbered scroll frames are excluded from CEMP",
       "tap_selection": "tap a visible row for a press-cue partial refresh then one target-page arrival partial refresh",

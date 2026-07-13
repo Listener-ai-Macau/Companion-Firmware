@@ -141,18 +141,18 @@ def main() -> int:
         "comp_touch_gesture_init(&s_touch_gesture, &gesture_config)",
         "gesture.type == COMP_TOUCH_GESTURE_TAP",
         "daily_reaction",
-        "daily_hold_tease",
+        "daily_hold_menu_prepare",
         "daily_to_menu gesture=any_long_press",
         "daily_stroke gesture=%s",
         "comp_screen_menu_is_daily_entry_gesture(&gesture)",
-        "menu_to_daily",
+        "comp_screen_menu_is_exit_gesture(&gesture)",
+        "menu_right_swipe_exit",
         "Companion_Screen_DailyTapAt(gesture.end_x, gesture.end_y)",
         "Companion_Screen_DailyStrokeAt(gesture.start_x",
-        "Companion_Screen_ShowDaily()",
-        "gesture.start_x <= COMP_SCREEN_MENU_BACK_EDGE_MAX_X",
+        "Companion_Screen_ShowDailyClean()",
         "menu_entry_activate",
         "TOUCH_MENU_LONG_PRESS_DURATION_MS 3000u",
-        "TOUCH_MENU_ENTRY_CUE_MS 240u",
+        "TOUCH_MENU_ENTRY_CUE_MS 360u",
         "process_menu_entry_transition",
         "s_menu_entry_pending",
         "TOUCH_SCREEN_MAINTENANCE_QUIET_MS 1200u",
@@ -169,6 +169,8 @@ def main() -> int:
     require_tokens("screen_menu.h", menu_h, (
         "three-second hold anywhere",
         "comp_screen_menu_is_daily_entry_gesture",
+        "comp_screen_menu_is_exit_gesture",
+        "COMP_SCREEN_MENU_ACTION_EXIT_DAILY",
     ), errors)
     if "central_long_press" in main_source or "centered nearly still hold enters" in json.dumps(bilingual_fixture, sort_keys=True):
         errors.append("daily menu entry must remain any-position 3 s long press, not centered-only")

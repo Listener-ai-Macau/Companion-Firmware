@@ -32,6 +32,9 @@ typedef enum {
     COMP_SCREEN_MENU_ACTION_RECORD_STOP = 2u,
     COMP_SCREEN_MENU_ACTION_LANGUAGE_CHANGED = 3u,
     COMP_SCREEN_MENU_ACTION_PHONE_RECONNECT = 4u,
+    /* The target application owns the daily surface and performs the clean
+     * menu-to-daily transition after this portable menu action. */
+    COMP_SCREEN_MENU_ACTION_EXIT_DAILY = 5u,
 } comp_screen_menu_action_t;
 
 typedef enum {
@@ -52,7 +55,6 @@ enum {
 
 #define COMP_SCREEN_MENU_ITEM_COUNT 6u
 #define COMP_SCREEN_MENU_VISIBLE_ITEMS 6u
-#define COMP_SCREEN_MENU_BACK_EDGE_MAX_X 48u
 /* Daily taps and strokes belong to the pet. A deliberate three-second hold anywhere
  * becomes navigation; precise taps and strokes keep driving pet expression
  * reactions without teaching the user a narrow hit target. */
@@ -97,6 +99,8 @@ void comp_screen_menu_set_phone_reconnect_state(
     comp_screen_menu_phone_reconnect_state_t state);
 uint8_t comp_screen_menu_with_ble_flag(uint8_t flags, bool connected);
 bool comp_screen_menu_is_daily_entry_gesture(
+    const comp_touch_gesture_event_t *gesture);
+bool comp_screen_menu_is_exit_gesture(
     const comp_touch_gesture_event_t *gesture);
 comp_screen_menu_result_t comp_screen_menu_tap(comp_screen_menu_t *menu,
                                                uint16_t x,

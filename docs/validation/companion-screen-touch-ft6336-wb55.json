@@ -76,14 +76,14 @@
     "daily_hold": "650 ms nearly still hold emits one pet tease without consuming contact",
     "daily_enter_menu": "3000 ms any-position long_press with 46 px wobble tolerance",
     "daily_double_tap": "650 ms and 40 px candidate window starts/stops only touch-origin recording",
-    "detail_back": "left-edge swipe_right",
-    "home_exit": "left-edge swipe_right",
+    "detail_back": "anywhere direction-locked swipe_right exits menu directly to daily pet screen",
+    "home_exit": "anywhere direction-locked swipe_right exits menu directly to daily pet screen",
     "home_vertical_stroke": "menu-v3 home tracks the current pressed row but never synthesizes legacy scroll frames",
     "firmware_selftest": "one-sample explicit-release tap, live hold then long-press, static-home row hit tests, expired-drag rearm, and current-row press tracking"
   },
   "evidence": {
-    "serial_log": ".cache/validation/screen-revision13-left-swipe-live/nucleo-serial-raw.log",
-    "required_markers": [
+    "historical_serial_log": ".cache/validation/screen-revision13-left-swipe-live/nucleo-serial-raw.log",
+    "historical_required_markers": [
       "touch-health] detected=1 identity=1 addr=0x38",
       "cipher=0x64 fw=0x01 chip=0x11",
       "probes=1 identity_reads=1",
@@ -93,6 +93,11 @@
       "scene=menu asset=menu.home.zh",
       "gesture=swipe_right",
       "menu_to_daily",
+      "scene=expression name=idle"
+    ],
+    "next_repair_required_markers": [
+      "gesture=swipe_right",
+      "menu_right_swipe_exit",
       "scene=expression name=idle"
     ]
   },

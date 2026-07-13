@@ -45,7 +45,7 @@ def main(argv: list[str]) -> int:
         "[epaper] refresh mode=partial control=0xFF busy=0 update=1 activate=1 complete=1",
     ))
     exit_count = count_ordered(lines, (
-        "[touch-ui] menu_to_daily",
+        "[touch-ui] menu_right_swipe_exit",
         "[epaper] scene=expression name=idle",
         "[epaper] refresh mode=partial control=0xFF busy=0 update=1 activate=1 complete=1",
     ))

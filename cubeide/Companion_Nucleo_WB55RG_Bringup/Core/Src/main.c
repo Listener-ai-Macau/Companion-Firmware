@@ -2170,13 +2170,16 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
         }
         return;
     }
-    if (s_screen_menu.view == COMP_SCREEN_MENU_VIEW_HOME &&
-        gesture.type == COMP_TOUCH_GESTURE_SWIPE_RIGHT &&
-        gesture.start_x <= COMP_SCREEN_MENU_BACK_EDGE_MAX_X) {
+    if (comp_screen_menu_is_exit_gesture(&gesture)) {
         s_menu_entry_pending = false;
         cancel_touch_screen_maintenance();
-        printf("[touch-ui] menu_to_daily selection=%u\r\n",
-               (unsigned)s_screen_menu.home_page);
+        printf("[touch-ui] menu_right_swipe_exit view=%u page=%u start=%u,%u end=%u,%u\r\n",
+               (unsigned)s_screen_menu.view,
+               (unsigned)s_screen_menu.home_page,
+               (unsigned)gesture.start_x,
+               (unsigned)gesture.start_y,
+               (unsigned)gesture.end_x,
+               (unsigned)gesture.end_y);
         (void)Companion_Screen_ShowDailyClean();
         return;
     }
