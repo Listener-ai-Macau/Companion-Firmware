@@ -34,6 +34,7 @@ CubeWBA 的低功耗管理器。
 | 手指仍接触、长按菜单计时 | 禁止 Stop，保留 5--10 ms 触控采样 |
 | 电子纸刷新 BUSY 期或交互后维护刷新 | 禁止 Stop，保留显示与触摸缓冲服务 |
 | 空闲且 `TP_INT` 就绪 | 不再执行固定 `HAL_Delay(10 ms)`；交给 `UTIL_LPM_EnterLowPower()` |
+| 日常页准备进入稳定 Stop | 只排队一次外部 Flash `sleepy` 休眠脸并等待该帧完成；随后停止表情播放器和定时器。休眠的呼吸关键帧是可替换美术词汇，不得在 Stop 中周期性唤醒或刷新电子纸。 |
 | 触控中断配置失败 | 禁止 Stop，保留现有触摸轮询回退 |
 
 当前 NUCLEO 已接 `TP_SCL/TP_SDA` 和 `P10 A0 -> CN10-33/PC6 (TP_INT)`；`TP_RST` 未接。

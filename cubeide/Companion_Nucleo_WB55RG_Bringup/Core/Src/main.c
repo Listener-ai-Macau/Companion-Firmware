@@ -474,6 +474,7 @@ static comp_screen_menu_view_t s_menu_entry_target;
 static uint32_t s_menu_entry_due_ms;
 static bool s_screen_maintenance_pending;
 static uint32_t s_screen_maintenance_due_ms;
+static bool s_low_power_idle_pose_attempted;
 #if COMPANION_SCREEN_MAINTENANCE_DIAGNOSTIC
 static uint32_t s_maintenance_diagnostic_started_ms;
 static bool s_maintenance_diagnostic_enqueued;
@@ -1923,6 +1924,21 @@ static void update_low_power_policy(void)
                                   s_touch_refresh_capture_active);
 
     stop_allowed = comp_power_policy_stop_allowed(&s_power_policy);
+    if (!stop_allowed) {
+        s_low_power_idle_pose_attempted = false;
+    } else if (!s_low_power_idle_pose_attempted && Companion_Screen_IsReady() &&
+               !Companion_Screen_IsMenuVisible()) {
+        s_low_power_idle_pose_attempted = true;
+        if (Companion_Screen_EnterLowPowerIdle()) {
+            /* The queued partial frame must run before LPM can put the core
+             * back into Stop. The next normal loop processes it, then this
+             * one-shot guard permits Stop without a periodic art timer. */
+            stop_allowed = false;
+            printf("[power] low_power_face request=sleepy animation=static\r\n");
+        } else {
+            printf("[power] low_power_face request=sleepy result=unavailable\r\n");
+        }
+    }
     if (stop_allowed == s_low_power_stop_allowed) {
         return;
     }

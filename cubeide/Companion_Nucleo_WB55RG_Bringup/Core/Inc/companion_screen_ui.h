@@ -18,6 +18,7 @@ void Companion_Screen_MenuRequest(comp_screen_menu_view_t view,
 bool Companion_Screen_MenuMaintenance(void);
 bool Companion_Screen_ExpressionMaintenance(void);
 bool Companion_Screen_ExpressionPreview(comp_epaper_expression_t expression);
+bool Companion_Screen_EnterLowPowerIdle(void);
 bool Companion_Screen_ShowDaily(void);
 bool Companion_Screen_DailyTap(void);
 bool Companion_Screen_DailyTapAt(uint16_t x, uint16_t y);

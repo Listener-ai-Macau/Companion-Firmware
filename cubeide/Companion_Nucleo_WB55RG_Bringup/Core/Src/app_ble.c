@@ -1724,6 +1724,30 @@ bool Companion_Screen_ExpressionPreview(comp_epaper_expression_t expression)
   return Companion_Screen_StartExpression(expression, false, false, "touch_menu");
 }
 
+bool Companion_Screen_EnterLowPowerIdle(void)
+{
+  if (s_companion_screen_presentation.mode !=
+      COMP_SCREEN_PRESENTATION_EXPRESSION ||
+      !Companion_Screen_StartExpression(COMP_EPAPER_EXPRESSION_SLEEPY,
+                                        false,
+                                        true,
+                                        "low_power_idle"))
+  {
+    return false;
+  }
+
+  /* Stop keeps the first external-Flash sleep frame visible. It must not run
+   * a timer or issue periodic e-paper refreshes merely to animate breathing. */
+  comp_emote_player_stop(&s_companion_emote_player);
+  s_companion_emote_player_decision_valid = false;
+  if (s_companion_expression_tick_timer_created)
+  {
+    HW_TS_Stop(s_companion_expression_tick_timer_id);
+  }
+  printf("[screen] low_power_idle pose=sleepy animation=stopped\r\n");
+  return true;
+}
+
 bool Companion_Screen_ShowDaily(void)
 {
   return Companion_Screen_StartExpression(COMP_EPAPER_EXPRESSION_IDLE,

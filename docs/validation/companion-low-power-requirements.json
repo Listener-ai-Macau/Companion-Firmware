@@ -3,6 +3,7 @@
   "status": "PASS",
   "implementation_status": "static_policy_compiled; hardware_stop_wake_and_current_pending",
   "product_interaction": "daily double tap starts/stops touch-originated recording; wake word deferred",
+  "low_power_visual": "one static external-Flash sleepy frame precedes Stop; no periodic e-paper breathing refresh in Stop",
   "idle_gate": "touch EXTI ready and no boot/mic/touch/menu/screen blockers",
   "target": "final product-board LP-01 standby average <= 1 mA over >= 60 s",
   "measurement_status": "hardware_current_pending",

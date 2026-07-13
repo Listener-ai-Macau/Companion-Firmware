@@ -12,6 +12,8 @@ ROOT = Path(__file__).resolve().parents[1]
 REQUIREMENTS = ROOT / "docs" / "companion_low_power_requirements.md"
 PLAN = ROOT / "docs" / "companion_screen_project_plan.md"
 MAIN = ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Core" / "Src" / "main.c"
+APP_BLE = ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Core" / "Src" / "app_ble.c"
+SCREEN_UI = ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Core" / "Inc" / "companion_screen_ui.h"
 APP_CONF = ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Core" / "Inc" / "app_conf.h"
 POLICY_H = ROOT / "app" / "companion_pendant" / "power" / "power_policy.h"
 POLICY_C = ROOT / "app" / "companion_pendant" / "power" / "power_policy.c"
@@ -34,6 +36,8 @@ def main() -> int:
     requirements = REQUIREMENTS.read_text(encoding="utf-8")
     plan = PLAN.read_text(encoding="utf-8")
     main_source = MAIN.read_text(encoding="utf-8")
+    app_ble_source = APP_BLE.read_text(encoding="utf-8")
+    screen_ui = SCREEN_UI.read_text(encoding="utf-8")
     app_conf = APP_CONF.read_text(encoding="utf-8")
     policy_h = POLICY_H.read_text(encoding="utf-8")
     policy_c = POLICY_C.read_text(encoding="utf-8")
@@ -55,6 +59,8 @@ def main() -> int:
         "TP_INT)`；`TP_RST` 未接",
         "WAKE_N",
         "地址匹配 I2C Stop 唤醒",
+        "只排队一次外部 Flash `sleepy` 休眠脸",
+        "不得在 Stop 中周期性唤醒或刷新电子纸",
     ]:
         require(anchor in requirements, f"low-power requirement missing: {anchor}", errors)
 
@@ -83,6 +89,18 @@ def main() -> int:
     require("HAL_UART_Transmit" in main_source, "low-power serial writer does not use USART", errors)
     require("COMP_TOUCH_GESTURE_DOUBLE_TAP" in main_source, "daily double-tap recording path is absent", errors)
     require("if (!s_low_power_stop_allowed)" in main_source, "idle loop still forces fixed polling", errors)
+    require("s_low_power_idle_pose_attempted" in main_source, "low-power sleep pose is not one-shot gated", errors)
+    require("Companion_Screen_EnterLowPowerIdle" in main_source, "Stop path does not request the low-power sleep pose", errors)
+    require("low_power_face request=sleepy animation=static" in main_source, "low-power pose diagnostic is absent", errors)
+    require("Companion_Screen_EnterLowPowerIdle" in screen_ui, "screen API lacks low-power idle entry", errors)
+    for anchor in [
+        "COMP_EPAPER_EXPRESSION_SLEEPY",
+        "low_power_idle",
+        "comp_emote_player_stop",
+        "HW_TS_Stop",
+        "low_power_idle pose=sleepy animation=stopped",
+    ]:
+        require(anchor in app_ble_source, f"low-power screen implementation missing: {anchor}", errors)
     require("configure_touch_wake" in wba_target_h, "WBA target lacks touch-wake callback", errors)
     require("set_stop_allowed" in wba_target_h, "WBA target lacks Stop callback", errors)
     require("comp_power_policy_stop_allowed" in wba_target_c, "WBA target bypasses portable policy", errors)
@@ -102,6 +120,7 @@ def main() -> int:
         "status": "PASS" if not errors else "FAIL",
         "implementation_status": "static_policy_compiled; hardware_stop_wake_and_current_pending",
         "product_interaction": "daily double tap starts/stops touch-originated recording; wake word deferred",
+        "low_power_visual": "one static external-Flash sleepy frame precedes Stop; no periodic e-paper breathing refresh in Stop",
         "idle_gate": "touch EXTI ready and no boot/mic/touch/menu/screen blockers",
         "target": "final product-board LP-01 standby average <= 1 mA over >= 60 s",
         "measurement_status": "hardware_current_pending",
