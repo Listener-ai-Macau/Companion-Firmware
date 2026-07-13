@@ -179,7 +179,7 @@ alias。这样以后频繁换 prompt、换屏幕尺寸或换外壳时，改的�
 | SCR-04 | scene/player 与资源包 | idle、listening、speaking、thinking、recording 与 happy 的 intro/loop/tail 已实机播放；产品事件交接已通过 | 名称寻址、逐帧时长、intro/loop/tail、now/tail-handoff、profile 选择和 CRC 均可测试 |
 | SCR-05 | SSD1681 局刷与动画调度 | revision 20 已改为控制器保留旧图层的差分窗口、触摸空闲维护与菜单请求合并；残影与低闪维护待实机复测 | 差分窗口、BUSY、同类请求合并、5 次软清理点、触摸空闲维护、残影恢复有实机证据；日常动画播完一轮即保持 |
 | SCR-06 | FT6336 触控事件层 | PC6 EXTI 中断、PC10 硬复位、活动期 5 ms/空闲 8 ms 轮询、刷新 BUSY 期 5 ms 时间戳缓冲和 I2C 自动恢复已编译；日常双击在 650 ms/40 px 窗口内启动录音，再次双击停止同一触控来源录音；每个变化的 down/move/up 样本记录 `sample_age_ms`，非菜单滑动映射为日常宠物方向互动，菜单真人体验仍待验收 | 单次点击只产生一个动作；双击只控制触控来源录音且不抢占其他来源；右划、上划、下划有起终点、时长和分类日志并在日常页进入宠物回应；刷新期间点击不丢失；轴锁定、去抖、硬复位与 I2C 总线恢复且不重复触发 |
-| SCR-07 | 日常页、主菜单与页面导航 | owner-accepted `menu-v3-2026-07-13` 已导入 CEMP revision 53：中文/英文各有主页、Voice & Record、Status、Phone Link、Device、Preferences、About 七页外部资源。六个入口全部位于一张 200x200 首页，不再把旧 43 帧滚动目录作为正常资源；日常页仍任意位置近似静止长按 3 s 进入菜单、全部方向滑动均是宠物反馈。Voice 页显示真实录音状态/外部 Flash 历史，状态和手机页只覆盖真实动态数据格；`menu-v3 static home contract` / `verify_menu_drag_continuity_contract.py` 防止回退为旧编号滚动帧或手绘新布局。rev53 已通过资源导入与 normal/provision build，真机刷入和视觉/触控复验待 owner 明确开始验收。 | 日常轻点和所有左/右/上/下滑动触发表情反馈；双击是默认录音入口；任意位置近似静止长按 3 s 进入菜单，普通滑动不进菜单；首页六项稳定可见且不会跟旧滚动资源混用；语音、状态、手机、设备、偏好、关于六个入口图标语义各不相同；功能页先有 press-cue partial refresh 再有到达页局刷；刷新中间请求只保留最新帧；左边缘右滑返回；偏好页切换整套中英文资源；每个可见控件必须调用真实动作、显示真实数据，或明确标注为冻结/计划。 |
+| SCR-07 | 日常页、主菜单与页面导航 | CEMP revision 53 的 v3 六项同屏菜单已完成 provision/normal runtime 机器证据，但 owner 在 `menu_boundary_single_clean_refresh` focused review 中以“菜单太小了, 换成四项一页吧”失败该候选。`menu-v4-2026-07-13` 必须先按新生图基线设计四项一页、两页六项入口和明确页面导航，再替换中文/英文外部资源；日常 3 s 长按进入、四方向宠物滑动、Voice/Status/Phone 等真实功能保持。 | 日常轻点和所有左/右/上/下滑动触发表情反馈；双击是默认录音入口；任意位置近似静止长按 3 s 进入菜单，普通滑动不进菜单；每张 200x200 菜单主页至多四个大而易触的真实入口，两页合计覆盖 Voice & Record、Status、Phone Link、Device、Preferences、About；新的生图必须定义可读页码/页面导航和按下 cue；功能页、语言切换、返回和刷新队列行为不回退。 |
 | SCR-08 | 页面功能接入 | 录音状态由日常双击触控的真实录音状态机归一；Voice 页只显示真实麦克风状态和外部 Flash 记录历史，不能出现重复 Start/Stop 控件；BLE 连/断仅在状态页可见时局刷，录音变更仅在 Voice 或状态页可见时局刷，待实机操作 | 双击可启停现有录音链路并在外部 Flash 完结记录；Voice 和状态页只显示真实触摸/屏幕/BLE/录音状态 |
 | SCR-09 | 白底黑色表情资源 | revision 52 保持主表情路径为外部 CEMP PBM 帧，并把产品关键帧改为从 `docs/art/generated_pet_expression_sheet_v5.png` 导入；表情按 genref v5 12 格 spec 保持贴纸式内脸构图：更大的高光眼、加粗眉眼嘴鼻、脸颊、气泡、波纹、爱心、闪光和录音点随状态变化；`generated-expression-sheet-review.png` 必须先由 AI 自己对照生图预览，导入机器审查不再用内部白色遮罩或未冻结屏幕尺寸的保护带，PBM threshold 调到 168 以减少硬块感，`premium pet art contract` / `verify_premium_pet_art_contract.py` 防止退回只动眼睛；procedural 保留为救援、维护和少量补帧路径；肉眼高级感仍待逐个验收 | 按效价/唤醒度矩阵分类；动画过程逐帧可见；逐个实机确认；正常产品美术不得回退到内部静态位图或仅程序化脸 |
 | SCR-10 | WB55 屏幕闭环 | 待验收 | 串口日志、屏幕照片和触摸操作三类证据一致 |
@@ -666,6 +666,20 @@ FT6336U datasheet 说明 I2C 主机接口、最高 100 Hz report rate、Active/M
 `thinking` 过渡表情；日常双击使用 650 ms/40 px 候选窗口，触控录音开始请求 `recording`，
 存储成功请求 `sync_complete`，失败请求 `error`。这三类状态仍由 CEMP 名称和外部资源决定，
 后续换生图只改资源/manifest，不要重新发明 UI 或程序化美术。
+
+## Revision 55: 四项一页菜单与活体入场表情
+
+在 owner 明确开始验收后的第一个 focused review 中，
+`menu_boundary_single_clean_refresh` 的结果为失败，原始备注是“菜单太小了, 换成四项一页吧”。
+这不是通过调字体或触控阈值回避的问题：`menu-v3` 的六项同屏密度被产品决策替换。先在
+`docs/art/iterations/companion-menu-v4/iteration-ledger.json` 固化 prompt 和 source，再生成新的
+200x200 单色 UI reference；在 owner 接受 v4 reference 前，不得在 C 代码里自由拼凑四项菜单。
+
+同一轮 owner 还指出长按进菜单的 `thinking` 表情像在播放贴图。新的美术目标固定为
+`anticipation -> decision -> settle` 三拍的整张内脸表演：眉、瞳、高光、嘴鼻、腮线和少量
+装饰符号必须共同变化，且每拍有可读差异与停留时间。对应 prompt 和 keyframe baseline 先写入
+`docs/art/iterations/companion-pet-menu-entry-v1/iteration-ledger.json`，之后才可转 PBM/CEMP；
+禁止用程序化眼睛抖动、静态贴图循环或猫头轮廓冒充这条入场表情。
 
 ## 逐项验收顺序
 

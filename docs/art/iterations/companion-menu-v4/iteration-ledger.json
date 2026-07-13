@@ -1,0 +1,35 @@
+{
+  "schema": "denzic.product_visual_iteration.v1",
+  "feature": "companion-menu",
+  "target_profile": "wb55-gdey0154d67-ft6336u-200x200-1bit",
+  "rule": "docs/product_visual_design_iteration.md",
+  "iterations": [
+    {
+      "iteration_id": "menu-v4-2026-07-13",
+      "authoring_request": "Focused WB55 acceptance failed because the six top-level menu items are too small. Replace the menu home with four items per 200x200 page without reducing the real product information architecture.",
+      "prompt": "Create a monochrome 1-bit design specification sheet for the Companion e-paper settings menu, target 200x200 pixels. Preserve the approved menu-v3 visual language exactly: pure white background, pure black delicate but crisp linework, compact friendly header, tiny inner-face marks only, black selected state with white glyph, thin dividers, small sparkle accents, no device frame, no cat head outline, no ears, no whiskers, no gray, no color, no gradients. This new v4 layout must fix the owner feedback that the menu is too small: show two SETTINGS HOME screens, each with exactly four large, easy-touch rows maximum. Page 1 contains Voice & Record, Status, Phone Link, Device. Page 2 contains Preferences and About plus two deliberately blank non-controls; show clear page dots and a large right/left page navigation affordance, not a continuous scroll list. Also show the six existing functional detail pages: Voice & Record, Status, Phone Link, Device, Preferences, About. Preserve only real controls and live status affordances: Voice record state/history and wake word planned; Status display/touch/BLE/record rows; Phone pairing/link/reconnect; Device e-paper profile/touch/assets/battery planned; Preferences Chinese/English, gesture and refresh policy; About firmware/UI asset revision, OTA frozen, diagnostics. Labels are short readable English only. This is a direct implementation reference for replaceable STM32 external-Flash resources, not a marketing board.",
+      "source_references": [
+        "owner acceptance result: .cache/validation/wb55-touch-visual-review/01-menu-boundary-retry-result.json",
+        "docs/art/generated_companion_menu_reference_v3.png sha256 D87E45A49AA623552B867C9EDAADB906CA282DF2C2C062D3A127A277920F9F81",
+        "user-provided Companion menu reference images from this conversation"
+      ],
+      "output": "docs/art/generated_companion_menu_reference_v4.png",
+      "sha256": null,
+      "review": {
+        "outcome": "pending_generated_reference_review",
+        "reason": "Owner rejected the v3 six-up home as too small and requested four items per page.",
+        "next_prompt_delta": null
+      },
+      "implementation": {
+        "status": "not_started_reference_first",
+        "resource_revision": null,
+        "validation": [
+          "generate and hash docs/art/generated_companion_menu_reference_v4.png",
+          "compare generated v4 reference against imported PBM/CEMP pages",
+          "normal/provision WB55 runtime recheck",
+          "focused menu density and transition review"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "schema": "denzic.product_visual_iteration.v1",
+  "feature": "companion-pet-menu-entry",
+  "target_profile": "wb55-gdey0154d67-ft6336u-200x200-1bit",
+  "rule": "docs/product_visual_design_iteration.md",
+  "iterations": [
+    {
+      "iteration_id": "menu-entry-v1-2026-07-13",
+      "authoring_request": "The menu-entry reaction looks like a played sticker. Define a living, whole-inner-face three-beat performance for the 650 ms long-press feedback before the 3 s menu transition.",
+      "prompt": "Create a clean monochrome 1-bit keyframe specification sheet for a premium cute electronic-pet inner-face reaction on a 200x200 e-paper screen. Show exactly three large sequential keyframes, no device outline and no cat head silhouette, ears, whiskers, or face border: 1 ANTICIPATION at 0.65 seconds, pupils and gaze subtly pull toward the held finger, eyebrows lift asymmetrically with curiosity, mouth pauses into a tiny attentive shape, cheeks compress slightly; 2 DECISION around 1.4 seconds, pupils brighten and rise, eyebrows open, mouth becomes a small delighted open curve, cheeks lift, one sparse sparkle or tiny heart appears; 3 SETTLE at 2.4 seconds, the whole inner face softens into a confident warm smile ready for the menu, with the accent fading. Across all three frames the eyes, lids/brows, pupils/highlights, mouth/nose, cheeks, and one sparse accent must each visibly change; do not make this an eye-only blink, a static sticker loop, or a cartoon mascot head. Pure white #fff and black #000 only, thick smooth one-bit-friendly curves, high contrast, no gray, no gradients, no text labels inside the actual frames. The sheet is a direct external-Flash PBM/CEMP keyframe reference, not a marketing illustration.",
+      "source_references": [
+        "owner acceptance feedback from this conversation: menu-entry expression is not lively enough and looks like played stickers",
+        "docs/art/generated_pet_expression_sheet_v5.png",
+        "docs/art/iterations/companion-pet-interaction-v1/iteration-ledger.json"
+      ],
+      "output": "docs/art/generated_companion_menu_entry_expression_v1.png",
+      "sha256": null,
+      "review": {
+        "outcome": "pending_generated_reference_review",
+        "reason": "Current long-press thinking clip lacks whole-face anticipation, decision, and settle timing.",
+        "next_prompt_delta": null
+      },
+      "implementation": {
+        "status": "not_started_reference_first",
+        "resource_revision": null,
+        "validation": [
+          "generate and hash docs/art/generated_companion_menu_entry_expression_v1.png",
+          "compare source and PBM keyframes for all whole-face anchors",
+          "prove CEMP anticipation/decision/settle timing in normal runtime trace",
+          "focused real-panel long-press review"
+        ]
+      }
+    }
+  ]
+}
