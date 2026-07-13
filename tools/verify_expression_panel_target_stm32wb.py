@@ -192,7 +192,7 @@ def check_ssd1681_diagnostic_driver(errors: list[str]) -> None:
         "ssd1681_write_plane_region(0x24u, s_frame, &window)",
         "ssd1681_write_plane_region(0x26u, s_previous_frame, &window)",
         "? 0xFCu",
-        "? 0xCFu",
+        "? 0xC7u",
         ": 0xF7u",
         "ssd1681_command(0x20u)",
         "GDEY0154D67 reference's descending Y address",

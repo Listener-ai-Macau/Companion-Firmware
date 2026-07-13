@@ -862,6 +862,35 @@ display task、启动第二次硬件刷新或额外设计视觉帧。这样电�
 手势时间线不再被 0.3 s 局刷暂停。构建和机器 trace 只能证明 timing path；真实 touch feel
 仍由 ACPT-01 确认。
 
+## Revision 67: 用真实计时决定传输优化
+
+为避免把电子纸固有波形时间误判为软件卡顿，WB55 在保留 vendor-edge software SPI 的情况下增加了
+分段计时。`ssd1681-latency-breakdown-20260714` 的 reset-bounded 记录显示：5,000-byte full
+frame 的双平面发送为 `103 ms`，之后 `0xF7` waveform 为 `1298 ms`；2,552-byte differential
+window 在 `0xFC` 前和同步基线后各发送 `53 ms`，waveform 为 `307 ms`。这说明手势卡顿先由
+Revision 65/66 处理，物理刷新上限仍主要来自面板，但 transport 仍有值得回收的几十毫秒。
+
+Good Display 对此型号公开给出的契约是 SPI 接口、fast 约 1.5 s、partial 约 0.3 s；其 STM32
+示例使用同相位的软件时钟，但没有给出可直接套用的更快 LUT 或更高时钟保证。因此下一步只允许在
+现有 STM32WB SPI2 的 `CPOL=low`/`first edge`、相同 2 MHz 下作 hardware-SPI A/B：不得修改
+Mode-1 `0xB1`/`0x1A`/`0x91` profile、`0xC7` 单 activation、外部 Flash 资源、方向或触控代码。
+硬件 SPI 必须用 reset-bounded serial 同时证明正确 frame transfer、无 timeout、全/局刷完成和实际
+时间改善；任何异常立即刷回已验证的 vendor-edge 软件传输。即使时长改善，也不能声称 ACPT-01
+通过，仍要等待同一 focused 人工项的真实观感。
+
+## Revision 68: 硬件 SPI A/B 已拒绝并恢复
+
+在相同 2 MHz、Mode 0 下，hardware-SPI A/B 的 full-frame double-plane transport 从 `103 ms` 降至
+`56 ms`，但这不是可保留的优化：两次 reset-bounded 刷新都在约 `101-102 ms` 结束，SSD1681 BUSY
+从未有效拉起，`complete=0`，面板结果为 transport failure。该结果保存在
+`.cache/validation/companion-performance/ssd1681-hardware-spi-2mhz-20260714/`，因此不猜测为“屏幕
+更快”或进入人工复验。
+
+默认 transport 已立即恢复为 Good Display STM32 sample 同相位的 software vendor edges。任何重试
+必须先取得逻辑分析/转接板原理图层面的电气解释，并独立证明全刷与局刷都能正确进入 BUSY 和完成；
+否则当前可靠路径优先于几十毫秒理论传输收益。保留分段计时，以便后续在不伤害面板稳定性的前提下
+调查波形和温度对 1.5 s nominal fast update 的影响。
+
 ## 逐项验收顺序
 
 本项目遵循 AI Workflow 的全产品异步验收规则：未收到操作者明确的“开始验收”前，
