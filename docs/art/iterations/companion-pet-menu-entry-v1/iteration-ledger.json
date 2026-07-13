@@ -53,11 +53,24 @@
         "next_prompt_delta": null
       },
       "implementation": {
-        "status": "not_started_reference_first",
+        "status": "candidate_pbm_staged_not_activated",
         "resource_revision": null,
+        "layout": "docs/art/iterations/companion-pet-menu-entry-v1/menu-entry-v2-import-layout.json",
+        "candidate_import": {
+          "status": "PASS",
+          "report": "docs/art/iterations/companion-pet-menu-entry-v1/menu-entry-v2-pbm-import.json",
+          "review_preview": "docs/art/iterations/companion-pet-menu-entry-v1/menu-entry-v2-pbm-review.png",
+          "outputs": [
+            "docs/art/iterations/companion-pet-menu-entry-v1/menu-entry-v2-candidate-pbm/menu-entry-anticipation_1_54in.pbm",
+            "docs/art/iterations/companion-pet-menu-entry-v1/menu-entry-v2-candidate-pbm/menu-entry-decision_1_54in.pbm",
+            "docs/art/iterations/companion-pet-menu-entry-v1/menu-entry-v2-candidate-pbm/menu-entry-settle_1_54in.pbm"
+          ],
+          "cemp_manifest_changed": false,
+          "activation_gate": "Owner visual approval plus source-to-PBM review is required before a CEMP manifest, resource revision, firmware image, or device flash can change."
+        },
         "validation": [
-          "generate and hash docs/art/generated_companion_menu_entry_expression_v2.png",
-          "compare each keyframe against v5 primitive/proportion anchors before PBM conversion",
+          "python tools/import_generated_expression_storyboard.py --layout docs/art/iterations/companion-pet-menu-entry-v1/menu-entry-v2-import-layout.json --out-dir docs/art/iterations/companion-pet-menu-entry-v1/menu-entry-v2-candidate-pbm --report docs/art/iterations/companion-pet-menu-entry-v1/menu-entry-v2-pbm-import.json --preview docs/art/iterations/companion-pet-menu-entry-v1/menu-entry-v2-pbm-review.png",
+          "compare each REF/PBM pair against v5 primitive/proportion anchors before CEMP conversion",
           "prove CEMP anticipation/decision/settle timing in normal runtime trace",
           "focused real-panel long-press review"
         ],
