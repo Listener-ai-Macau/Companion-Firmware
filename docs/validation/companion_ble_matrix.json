@@ -260,10 +260,37 @@
     },
     "card_write": {
       "card_slot": 0,
+      "card_status": {
+        "card_slot": 0,
+        "content_crc32": "0x09c1d21f",
+        "last_error": 0,
+        "last_error_name": "ok",
+        "refresh_count": 2,
+        "render_state": 1,
+        "render_state_name": "accepted",
+        "request_id": 17,
+        "schema_version": 1
+      },
       "content_crc32": "0x09c1d21f",
+      "diagnostic_events": [
+        "e_paper.render_request",
+        "e_paper.update_result"
+      ],
+      "dry_run_final_status": {
+        "card_slot": 0,
+        "content_crc32": "0x09c1d21f",
+        "last_error": 4,
+        "last_error_name": "deferred_no_panel",
+        "refresh_count": 3,
+        "render_state": 3,
+        "render_state_name": "failed",
+        "request_id": 17,
+        "schema_version": 1
+      },
       "operation": "card_write",
       "render_state": "accepted",
       "request_id": 17,
+      "screen_status_contract": "docs/validation/companion-screen-status-observability.json",
       "status": "PASS",
       "utf8_body_len": 56,
       "utf8_title_len": 13
@@ -442,6 +469,265 @@
       "selected_name": "Companion Pendant Dev",
       "status": "PASS"
     },
+    "screen_expression_status": {
+      "card_slot": 1,
+      "content_crc32_model": "comp_epaper_expression_decision_crc32",
+      "diagnostic_arg3_model": "(expression_id << 16) | signal_id",
+      "firmware_state_contract": "docs/validation/companion-screen-firmware-expression-state.json",
+      "no_hardware": true,
+      "operation": "screen_expression_status",
+      "request_id_model": "0xE0000000 auto ids or product request_id hints",
+      "screen_status_contract": "docs/validation/companion-screen-status-observability.json",
+      "status": "PASS",
+      "steps": [
+        {
+          "card_status": {
+            "card_slot": 1,
+            "content_crc32": "0x91bdb88d",
+            "last_error": 0,
+            "last_error_name": "ok",
+            "refresh_count": 4,
+            "render_state": 1,
+            "render_state_name": "accepted",
+            "request_id": 3758096385,
+            "schema_version": 1
+          },
+          "content_crc32": "0x91bdb88d",
+          "diagnostic_arg3": "0x00000000",
+          "diagnostic_decode": {
+            "expression_id": 0,
+            "signal_id": 0
+          },
+          "diagnostic_events": [
+            "e_paper.render_request",
+            "e_paper.update_result"
+          ],
+          "dry_run_final_status": {
+            "card_slot": 1,
+            "content_crc32": "0x91bdb88d",
+            "last_error": 4,
+            "last_error_name": "deferred_no_panel",
+            "refresh_count": 5,
+            "render_state": 3,
+            "render_state_name": "failed",
+            "request_id": 3758096385,
+            "schema_version": 1
+          },
+          "event": "boot_idle",
+          "expression": "idle",
+          "expression_id": 0,
+          "priority": 20,
+          "request_id": 3758096385,
+          "signal": "BOOT_IDLE",
+          "signal_id": 0
+        },
+        {
+          "card_status": {
+            "card_slot": 1,
+            "content_crc32": "0xd6afbe44",
+            "last_error": 0,
+            "last_error_name": "ok",
+            "refresh_count": 6,
+            "render_state": 1,
+            "render_state_name": "accepted",
+            "request_id": 3758096386,
+            "schema_version": 1
+          },
+          "content_crc32": "0xd6afbe44",
+          "diagnostic_arg3": "0x00050010",
+          "diagnostic_decode": {
+            "expression_id": 5,
+            "signal_id": 16
+          },
+          "diagnostic_events": [
+            "e_paper.render_request",
+            "e_paper.update_result"
+          ],
+          "dry_run_final_status": {
+            "card_slot": 1,
+            "content_crc32": "0xd6afbe44",
+            "last_error": 4,
+            "last_error_name": "deferred_no_panel",
+            "refresh_count": 7,
+            "render_state": 3,
+            "render_state_name": "failed",
+            "request_id": 3758096386,
+            "schema_version": 1
+          },
+          "event": "settings.display_off",
+          "expression": "sleepy",
+          "expression_id": 5,
+          "priority": 10,
+          "request_id": 3758096386,
+          "signal": "SETTINGS_SLEEPY",
+          "signal_id": 16
+        },
+        {
+          "card_status": {
+            "card_slot": 1,
+            "content_crc32": "0xcafe2efd",
+            "last_error": 0,
+            "last_error_name": "ok",
+            "refresh_count": 8,
+            "render_state": 1,
+            "render_state_name": "accepted",
+            "request_id": 23,
+            "schema_version": 1
+          },
+          "content_crc32": "0xcafe2efd",
+          "diagnostic_arg3": "0x00060009",
+          "diagnostic_decode": {
+            "expression_id": 6,
+            "signal_id": 9
+          },
+          "diagnostic_events": [
+            "e_paper.render_request",
+            "e_paper.update_result"
+          ],
+          "dry_run_final_status": {
+            "card_slot": 1,
+            "content_crc32": "0xcafe2efd",
+            "last_error": 4,
+            "last_error_name": "deferred_no_panel",
+            "refresh_count": 9,
+            "render_state": 3,
+            "render_state_name": "failed",
+            "request_id": 23,
+            "schema_version": 1
+          },
+          "event": "recording_fsm.start_request",
+          "expression": "recording",
+          "expression_id": 6,
+          "priority": 90,
+          "request_id": 23,
+          "signal": "RECORDING_START",
+          "signal_id": 9
+        },
+        {
+          "card_status": {
+            "card_slot": 1,
+            "content_crc32": "0x720e039c",
+            "last_error": 0,
+            "last_error_name": "ok",
+            "refresh_count": 10,
+            "render_state": 1,
+            "render_state_name": "accepted",
+            "request_id": 3758096387,
+            "schema_version": 1
+          },
+          "content_crc32": "0x720e039c",
+          "diagnostic_arg3": "0x0008000d",
+          "diagnostic_decode": {
+            "expression_id": 8,
+            "signal_id": 13
+          },
+          "diagnostic_events": [
+            "e_paper.render_request",
+            "e_paper.update_result"
+          ],
+          "dry_run_final_status": {
+            "card_slot": 1,
+            "content_crc32": "0x720e039c",
+            "last_error": 4,
+            "last_error_name": "deferred_no_panel",
+            "refresh_count": 11,
+            "render_state": 3,
+            "render_state_name": "failed",
+            "request_id": 3758096387,
+            "schema_version": 1
+          },
+          "event": "battery_charging.sample.low",
+          "expression": "low_battery",
+          "expression_id": 8,
+          "priority": 80,
+          "request_id": 3758096387,
+          "signal": "LOW_BATTERY",
+          "signal_id": 13
+        },
+        {
+          "card_status": {
+            "card_slot": 1,
+            "content_crc32": "0x943f53fd",
+            "last_error": 0,
+            "last_error_name": "ok",
+            "refresh_count": 12,
+            "render_state": 1,
+            "render_state_name": "accepted",
+            "request_id": 24,
+            "schema_version": 1
+          },
+          "content_crc32": "0x943f53fd",
+          "diagnostic_arg3": "0x0007000c",
+          "diagnostic_decode": {
+            "expression_id": 7,
+            "signal_id": 12
+          },
+          "diagnostic_events": [
+            "e_paper.render_request",
+            "e_paper.update_result"
+          ],
+          "dry_run_final_status": {
+            "card_slot": 1,
+            "content_crc32": "0x943f53fd",
+            "last_error": 4,
+            "last_error_name": "deferred_no_panel",
+            "refresh_count": 13,
+            "render_state": 3,
+            "render_state_name": "failed",
+            "request_id": 24,
+            "schema_version": 1
+          },
+          "event": "recording_fsm.session_finished",
+          "expression": "sync_complete",
+          "expression_id": 7,
+          "priority": 40,
+          "request_id": 24,
+          "signal": "RECORDING_FINISHED",
+          "signal_id": 12
+        },
+        {
+          "card_status": {
+            "card_slot": 1,
+            "content_crc32": "0xb6534533",
+            "last_error": 0,
+            "last_error_name": "ok",
+            "refresh_count": 14,
+            "render_state": 1,
+            "render_state_name": "accepted",
+            "request_id": 3758096388,
+            "schema_version": 1
+          },
+          "content_crc32": "0xb6534533",
+          "diagnostic_arg3": "0x0009000f",
+          "diagnostic_decode": {
+            "expression_id": 9,
+            "signal_id": 15
+          },
+          "diagnostic_events": [
+            "e_paper.render_request",
+            "e_paper.update_result"
+          ],
+          "dry_run_final_status": {
+            "card_slot": 1,
+            "content_crc32": "0xb6534533",
+            "last_error": 4,
+            "last_error_name": "deferred_no_panel",
+            "refresh_count": 15,
+            "render_state": 3,
+            "render_state_name": "failed",
+            "request_id": 3758096388,
+            "schema_version": 1
+          },
+          "event": "errors.fault",
+          "expression": "error",
+          "expression_id": 9,
+          "priority": 100,
+          "request_id": 3758096388,
+          "signal": "ERROR",
+          "signal_id": 15
+        }
+      ]
+    },
     "status_read": {
       "battery_charge": {
         "charge_state": "discharging",
@@ -471,12 +757,13 @@
       ],
       "case_id": "C1",
       "category": "normal_use",
-      "expected_host_behavior": "Host reaches a coherent idle Companion state and can exercise every first GATT surface without hardware.",
+      "expected_host_behavior": "Host reaches a coherent idle Companion state and can exercise every first GATT surface plus screen expression status without hardware.",
       "failure_classification": "contract_or_fixture_drift",
       "fixture_operations": [
         "scan_result_parsing",
         "status_read",
         "card_write",
+        "screen_expression_status",
         "recording_list",
         "recording_pull",
         "byte_offset_resume",
@@ -485,7 +772,7 @@
         "ota_status"
       ],
       "result": "PASS",
-      "scenario": "Scan, read status, write a card, list recordings, pull one recording, pull logs, and read OTA status in one fixture session."
+      "scenario": "Scan, read status, write a card, observe ExpressionV1 status, list recordings, pull one recording, pull logs, and read OTA status in one fixture session."
     },
     {
       "artifact_requirements": [
@@ -642,9 +929,24 @@
     },
     {
       "artifact_requirements": [
-        "docs/validation/companion-pendant-firmware-bringup-1.8-ota-manifest-fixtures.json"
+        "docs/validation/companion_ble_matrix.json",
+        "docs/validation/companion-screen-status-observability.json"
       ],
       "case_id": "C12",
+      "category": "screen_expression",
+      "expected_host_behavior": "Host can correlate accepted/final CardStatusV1 with expression diagnostics without a real panel.",
+      "failure_classification": "screen_expression_status_drift",
+      "fixture_operations": [
+        "screen_expression_status"
+      ],
+      "result": "PASS",
+      "scenario": "Host observes boot idle, settings sleepy, and recording ExpressionV1 requests through CardStatusV1 plus diagnostic payload decoding."
+    },
+    {
+      "artifact_requirements": [
+        "docs/validation/companion-pendant-firmware-bringup-1.8-ota-manifest-fixtures.json"
+      ],
+      "case_id": "C13",
       "category": "ota_blocked",
       "expected_host_behavior": "Host shows blocker names and does not offer OTA transfer writes.",
       "failure_classification": "ota_blocker_not_actionable",
@@ -713,12 +1015,14 @@
       "long_recording_metadata",
       "idle_resume",
       "log_export",
+      "screen_expression",
       "ota_blocked"
     ],
     "required_operations": [
       "scan_result_parsing",
       "status_read",
       "card_write",
+      "screen_expression_status",
       "recording_list",
       "recording_pull",
       "byte_offset_resume",

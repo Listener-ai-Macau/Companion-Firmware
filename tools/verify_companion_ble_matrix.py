@@ -18,6 +18,7 @@ REQUIRED_OPERATIONS = {
     "scan_result_parsing",
     "status_read",
     "card_write",
+    "screen_expression_status",
     "recording_list",
     "recording_pull",
     "byte_offset_resume",
@@ -37,6 +38,7 @@ REQUIRED_MATRIX_CATEGORIES = {
     "long_recording_metadata",
     "idle_resume",
     "log_export",
+    "screen_expression",
     "ota_blocked",
 }
 REQUIRED_FAILURES = {
@@ -101,6 +103,85 @@ def verify_operation_coverage(matrix: dict[str, Any], errors: list[str]) -> None
     )
     delete = operations.get("delete", {}).get("delete_after_sync", {})
     require(delete.get("accepted_after_length_and_sha256") == "deleted", "delete-after-sync success evidence missing", errors)
+    card_write = operations.get("card_write", {})
+    card_status = card_write.get("card_status", {})
+    dry_run_final = card_write.get("dry_run_final_status", {})
+    require(card_status.get("render_state_name") == "accepted", "card_write must expose accepted CardStatusV1", errors)
+    require(card_status.get("last_error_name") == "ok", "accepted CardStatusV1 must have last_error ok", errors)
+    require(
+        dry_run_final.get("render_state_name") == "failed",
+        "card_write must expose final dry-run failed CardStatusV1",
+        errors,
+    )
+    require(
+        dry_run_final.get("last_error_name") == "deferred_no_panel",
+        "dry-run final CardStatusV1 must report deferred_no_panel",
+        errors,
+    )
+    require(
+        card_status.get("request_id") == dry_run_final.get("request_id")
+        and card_status.get("content_crc32") == dry_run_final.get("content_crc32"),
+        "accepted and final CardStatusV1 must preserve request identity and content CRC",
+        errors,
+    )
+    expression_status = operations.get("screen_expression_status", {})
+    require(expression_status.get("status") == "PASS", "screen_expression_status did not PASS", errors)
+    require(
+        expression_status.get("content_crc32_model") == "comp_epaper_expression_decision_crc32",
+        "screen expression fixture must use firmware expression CRC model",
+        errors,
+    )
+    require(
+        expression_status.get("diagnostic_arg3_model") == "(expression_id << 16) | signal_id",
+        "screen expression fixture must document diagnostic arg3 packing",
+        errors,
+    )
+    steps = expression_status.get("steps", [])
+    require(isinstance(steps, list) and len(steps) >= 6, "screen expression fixture must include at least six steps", errors)
+    step_events = {str(step.get("event")) for step in steps if isinstance(step, dict)}
+    require(
+        {
+            "boot_idle",
+            "settings.display_off",
+            "recording_fsm.start_request",
+            "battery_charging.sample.low",
+            "recording_fsm.session_finished",
+            "errors.fault",
+        } <= step_events,
+        "screen expression fixture missing boot/settings/recording/low-battery/sync/error coverage",
+        errors,
+    )
+    step_expressions = {str(step.get("expression")) for step in steps if isinstance(step, dict)}
+    require(
+        {"idle", "sleepy", "recording", "low_battery", "sync_complete", "error"} <= step_expressions,
+        "screen expression fixture missing extended ExpressionV1 coverage",
+        errors,
+    )
+    expression_steps = steps if isinstance(steps, list) else []
+    for step in expression_steps:
+        if not isinstance(step, dict):
+            errors.append("screen expression step is not an object")
+            continue
+        event = str(step.get("event", "<missing>"))
+        accepted = step.get("card_status", {})
+        final = step.get("dry_run_final_status", {})
+        decode = step.get("diagnostic_decode", {})
+        require(accepted.get("render_state_name") == "accepted", f"{event} accepted status missing", errors)
+        require(accepted.get("last_error_name") == "ok", f"{event} accepted status must be ok", errors)
+        require(final.get("render_state_name") == "failed", f"{event} dry-run final status missing", errors)
+        require(final.get("last_error_name") == "deferred_no_panel", f"{event} final status must report deferred_no_panel", errors)
+        require(
+            accepted.get("request_id") == final.get("request_id")
+            and accepted.get("content_crc32") == final.get("content_crc32"),
+            f"{event} accepted/final identity drifted",
+            errors,
+        )
+        require(
+            decode.get("expression_id") == step.get("expression_id")
+            and decode.get("signal_id") == step.get("signal_id"),
+            f"{event} diagnostic decode does not match expression/signal ids",
+            errors,
+        )
     ota = operations.get("ota_status", {})
     require(ota.get("ota_data_path_enabled") is False, "OTA status fixture must not enable an OTA data path", errors)
 

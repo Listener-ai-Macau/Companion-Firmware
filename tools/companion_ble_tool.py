@@ -29,6 +29,7 @@ REQUIRED_OPERATIONS = (
     "scan_result_parsing",
     "status_read",
     "card_write",
+    "screen_expression_status",
     "recording_list",
     "recording_pull",
     "byte_offset_resume",
@@ -48,6 +49,7 @@ REQUIRED_MATRIX_CATEGORIES = (
     "long_recording_metadata",
     "idle_resume",
     "log_export",
+    "screen_expression",
     "ota_blocked",
 )
 REQUIRED_FAILURES = (
@@ -82,6 +84,20 @@ def crc32_hex(data: bytes) -> str:
 
 def sha256_hex(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
+
+
+def expression_decision_crc32(name: str, expression_id: int, signal_id: int, priority: int) -> str:
+    """Mirror comp_epaper_expression_decision_crc32 for host fixtures."""
+    value = 2166136261
+    for byte in name.encode("ascii"):
+        value ^= byte
+        value = (value * 16777619) & 0xFFFFFFFF
+    for byte in (expression_id, signal_id, priority):
+        value ^= byte & 0xFF
+        value = (value * 16777619) & 0xFFFFFFFF
+    if value == 0:
+        value = 1
+    return f"0x{value:08x}"
 
 
 def uuid_index(uuid_table: dict[str, Any]) -> dict[str, str]:
@@ -175,6 +191,7 @@ class CompanionFixtureAdapter:
         title = "Bring-up card".encode("utf-8")
         body = "Fixture card write proves UTF-8 length and CRC handling.".encode("utf-8")
         content = title + b"\0" + body
+        content_crc32 = crc32_hex(content)
         return {
             "operation": "card_write",
             "status": "PASS",
@@ -182,8 +199,160 @@ class CompanionFixtureAdapter:
             "card_slot": 0,
             "utf8_title_len": len(title),
             "utf8_body_len": len(body),
-            "content_crc32": crc32_hex(content),
+            "content_crc32": content_crc32,
             "render_state": "accepted",
+            "card_status": {
+                "schema_version": 1,
+                "card_slot": 0,
+                "request_id": 17,
+                "render_state": 1,
+                "render_state_name": "accepted",
+                "last_error": 0,
+                "last_error_name": "ok",
+                "content_crc32": content_crc32,
+                "refresh_count": 2,
+            },
+            "dry_run_final_status": {
+                "schema_version": 1,
+                "card_slot": 0,
+                "request_id": 17,
+                "render_state": 3,
+                "render_state_name": "failed",
+                "last_error": 4,
+                "last_error_name": "deferred_no_panel",
+                "content_crc32": content_crc32,
+                "refresh_count": 3,
+            },
+            "diagnostic_events": [
+                "e_paper.render_request",
+                "e_paper.update_result",
+            ],
+            "screen_status_contract": "docs/validation/companion-screen-status-observability.json",
+        }
+
+    def expression_status_flow(self) -> dict[str, Any]:
+        expression_card_slot = 1
+        cases = (
+            {
+                "event": "boot_idle",
+                "expression": "idle",
+                "expression_id": 0,
+                "signal": "BOOT_IDLE",
+                "signal_id": 0,
+                "priority": 20,
+                "request_id": 0xE0000001,
+            },
+            {
+                "event": "settings.display_off",
+                "expression": "sleepy",
+                "expression_id": 5,
+                "signal": "SETTINGS_SLEEPY",
+                "signal_id": 16,
+                "priority": 10,
+                "request_id": 0xE0000002,
+            },
+            {
+                "event": "recording_fsm.start_request",
+                "expression": "recording",
+                "expression_id": 6,
+                "signal": "RECORDING_START",
+                "signal_id": 9,
+                "priority": 90,
+                "request_id": 23,
+            },
+            {
+                "event": "battery_charging.sample.low",
+                "expression": "low_battery",
+                "expression_id": 8,
+                "signal": "LOW_BATTERY",
+                "signal_id": 13,
+                "priority": 80,
+                "request_id": 0xE0000003,
+            },
+            {
+                "event": "recording_fsm.session_finished",
+                "expression": "sync_complete",
+                "expression_id": 7,
+                "signal": "RECORDING_FINISHED",
+                "signal_id": 12,
+                "priority": 40,
+                "request_id": 24,
+            },
+            {
+                "event": "errors.fault",
+                "expression": "error",
+                "expression_id": 9,
+                "signal": "ERROR",
+                "signal_id": 15,
+                "priority": 100,
+                "request_id": 0xE0000004,
+            },
+        )
+        steps: list[dict[str, Any]] = []
+        refresh_count = 4
+        for case in cases:
+            content_crc32 = expression_decision_crc32(
+                str(case["expression"]),
+                int(case["expression_id"]),
+                int(case["signal_id"]),
+                int(case["priority"]),
+            )
+            diagnostic_arg3 = (int(case["expression_id"]) << 16) | int(case["signal_id"])
+            steps.append(
+                {
+                    "event": case["event"],
+                    "expression": case["expression"],
+                    "expression_id": case["expression_id"],
+                    "signal": case["signal"],
+                    "signal_id": case["signal_id"],
+                    "priority": case["priority"],
+                    "request_id": case["request_id"],
+                    "content_crc32": content_crc32,
+                    "diagnostic_arg3": f"0x{diagnostic_arg3:08x}",
+                    "diagnostic_decode": {
+                        "expression_id": int(case["expression_id"]),
+                        "signal_id": int(case["signal_id"]),
+                    },
+                    "card_status": {
+                        "schema_version": 1,
+                        "card_slot": expression_card_slot,
+                        "request_id": case["request_id"],
+                        "render_state": 1,
+                        "render_state_name": "accepted",
+                        "last_error": 0,
+                        "last_error_name": "ok",
+                        "content_crc32": content_crc32,
+                        "refresh_count": refresh_count,
+                    },
+                    "dry_run_final_status": {
+                        "schema_version": 1,
+                        "card_slot": expression_card_slot,
+                        "request_id": case["request_id"],
+                        "render_state": 3,
+                        "render_state_name": "failed",
+                        "last_error": 4,
+                        "last_error_name": "deferred_no_panel",
+                        "content_crc32": content_crc32,
+                        "refresh_count": refresh_count + 1,
+                    },
+                    "diagnostic_events": [
+                        "e_paper.render_request",
+                        "e_paper.update_result",
+                    ],
+                }
+            )
+            refresh_count += 2
+        return {
+            "operation": "screen_expression_status",
+            "status": "PASS",
+            "no_hardware": True,
+            "card_slot": expression_card_slot,
+            "request_id_model": "0xE0000000 auto ids or product request_id hints",
+            "content_crc32_model": "comp_epaper_expression_decision_crc32",
+            "diagnostic_arg3_model": "(expression_id << 16) | signal_id",
+            "steps": steps,
+            "screen_status_contract": "docs/validation/companion-screen-status-observability.json",
+            "firmware_state_contract": "docs/validation/companion-screen-firmware-expression-state.json",
         }
 
     def list_recordings(self) -> dict[str, Any]:
@@ -329,6 +498,7 @@ class CompanionFixtureAdapter:
             self.scan(),
             self.read_status(),
             self.write_card(),
+            self.expression_status_flow(),
             self.list_recordings(),
             self.pull_recording(),
             self.resume_after_disconnect(),
@@ -345,10 +515,10 @@ def product_matrix(operations: dict[str, dict[str, Any]]) -> list[dict[str, Any]
         {
             "case_id": "C1",
             "category": "normal_use",
-            "scenario": "Scan, read status, write a card, list recordings, pull one recording, pull logs, and read OTA status in one fixture session.",
+            "scenario": "Scan, read status, write a card, observe ExpressionV1 status, list recordings, pull one recording, pull logs, and read OTA status in one fixture session.",
             "result": "PASS",
             "fixture_operations": list(REQUIRED_OPERATIONS),
-            "expected_host_behavior": "Host reaches a coherent idle Companion state and can exercise every first GATT surface without hardware.",
+            "expected_host_behavior": "Host reaches a coherent idle Companion state and can exercise every first GATT surface plus screen expression status without hardware.",
             "failure_classification": "contract_or_fixture_drift",
             "artifact_requirements": ["docs/validation/companion_ble_matrix.json"],
         },
@@ -454,6 +624,19 @@ def product_matrix(operations: dict[str, dict[str, Any]]) -> list[dict[str, Any]
         },
         {
             "case_id": "C12",
+            "category": "screen_expression",
+            "scenario": "Host observes boot idle, settings sleepy, and recording ExpressionV1 requests through CardStatusV1 plus diagnostic payload decoding.",
+            "result": "PASS",
+            "fixture_operations": ["screen_expression_status"],
+            "expected_host_behavior": "Host can correlate accepted/final CardStatusV1 with expression diagnostics without a real panel.",
+            "failure_classification": "screen_expression_status_drift",
+            "artifact_requirements": [
+                "docs/validation/companion_ble_matrix.json",
+                "docs/validation/companion-screen-status-observability.json",
+            ],
+        },
+        {
+            "case_id": "C13",
             "category": "ota_blocked",
             "scenario": "OTA readiness is not ready while low battery, transfer, diag export, wrong-board, invalid-hash, or interrupted-transfer blockers are present.",
             "result": "PASS",

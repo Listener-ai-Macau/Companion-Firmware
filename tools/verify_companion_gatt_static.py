@@ -19,6 +19,7 @@ APP_CONF = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Core" / 
 BLE_CONF = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Core" / "Inc" / "ble_conf.h"
 MAIN_SOURCE = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Core" / "Src" / "main.c"
 MAKEFILE = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Makefile"
+REAL_BENCH = REPO_ROOT / "tools" / "companion_ble_real_bench.py"
 
 
 def read(path: pathlib.Path) -> str:
@@ -237,6 +238,23 @@ def check_build_integration(errors: list[str]) -> None:
         require(token in app_ble, f"app_ble.c missing {token}", errors)
 
 
+def check_real_bench_screen_status(errors: list[str]) -> None:
+    bench = read(REAL_BENCH)
+    for token in [
+        "write_card_and_collect_status",
+        "write_settings_and_collect_expression_status",
+        "settings_sleepy_screen_status",
+        "settings_restore_after_sleepy",
+        "EXPRESSION_REQUEST_ID_BASE = 0xE0000000",
+        "final_card_status",
+        "status_sequence",
+        "real_panel_refresh_claimed",
+        "--expect-real-panel",
+        "--screen-final-timeout",
+    ]:
+        require(token in bench, f"real BLE bench missing screen status anchor {token}", errors)
+
+
 def check_forbidden_apis(errors: list[str]) -> None:
     text = "\n".join(read(path) for path in [GATT_HEADER, GATT_SOURCE, APP_BLE, MAKEFILE])
     for token in ["NimBLE", "BLEDevice", "idf.py"]:
@@ -255,6 +273,7 @@ def main() -> int:
     check_nucleo_ble_capacity(errors)
     check_nucleo_boot_path(errors)
     check_build_integration(errors)
+    check_real_bench_screen_status(errors)
     check_forbidden_apis(errors)
 
     contract = read(CONTRACT)

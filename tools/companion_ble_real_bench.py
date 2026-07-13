@@ -20,17 +20,74 @@ from typing import Any, Callable
 sys.dont_write_bytecode = True
 REPO_ROOT = pathlib.Path(__file__).resolve().parents[1]
 UUID_TABLE_PATH = REPO_ROOT / "docs" / "ble_uuid_table.json"
+HOST_STATUS_SEQUENCE_PATH = REPO_ROOT / "docs" / "validation" / "companion-screen-expression-host-status-sequence.json"
+DEMO_HOST_STATUS_SEQUENCE_PATH = (
+    REPO_ROOT / "docs" / "validation" / "companion-screen-expression-demo-host-status-sequence.json"
+)
 SCHEMA_VERSION = 1
 RECORDING_ERROR_FLAG = 0x80
 RECORDING_FINAL_FLAG = 0x01
+CARD_RENDER_STATE_ACCEPTED = 1
+CARD_RENDER_STATE_RENDERED = 2
+CARD_RENDER_STATE_FAILED = 3
+CARD_RENDER_STATE_BUSY = 4
+CARD_LAST_ERROR_OK = 0
+CARD_LAST_ERROR_DEFERRED_NO_PANEL = 4
+CARD_LAST_ERROR_DEFERRED_CONTROLLER_UNKNOWN = 5
+EXPRESSION_CARD_SLOT = 1
+EXPRESSION_REQUEST_ID_BASE = 0xE0000000
+EXPRESSION_REQUEST_ID_MASK = 0xF0000000
+EXPRESSION_STATUS_REQUIRED_EVENTS = (
+    "boot_idle",
+    "settings.display_off",
+    "recording_fsm.start_request",
+    "battery_charging.sample.low",
+    "recording_fsm.session_finished",
+    "errors.fault",
+)
+EXPRESSION_STATUS_REQUIRED_FACES = (
+    "idle",
+    "sleepy",
+    "recording",
+    "low_battery",
+    "sync_complete",
+    "error",
+)
+EXPRESSION_DEMO_STATUS_REQUIRED_FACES = (
+    "error",
+    "happy",
+    "idle",
+    "listening",
+    "low_battery",
+    "recording",
+    "sleepy",
+    "speaking",
+    "sync_complete",
+    "thinking",
+)
 
 
 class BenchError(RuntimeError):
     """A compact validation failure that should be reported in the artifact."""
 
 
+class BenchPartialError(BenchError):
+    """Bench failure that still carries the operations collected so far."""
+
+    def __init__(self, message: str, result: dict[str, Any]) -> None:
+        super().__init__(message)
+        self.result = result
+
+
 def utc_now() -> str:
     return dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat()
+
+
+def repo_rel(path: pathlib.Path) -> str:
+    try:
+        return path.resolve().relative_to(REPO_ROOT).as_posix()
+    except ValueError:
+        return path.as_posix()
 
 
 def load_uuid_table() -> dict[str, Any]:
@@ -583,6 +640,314 @@ async def notify_write_wait(
         await client.stop_notify(notify_uuid)
 
 
+async def write_card_and_collect_status(
+    client: Any,
+    uuids: dict[str, str],
+    payload: bytes,
+    request_id: int,
+    args: argparse.Namespace,
+) -> dict[str, Any]:
+    queue: asyncio.Queue[bytes] = asyncio.Queue()
+
+    def callback(_sender: Any, data: bytearray) -> None:
+        queue.put_nowait(bytes(data))
+
+    await client.start_notify(uuids["e_paper_card_status"], callback)
+    statuses: list[dict[str, Any]] = []
+    accepted: dict[str, Any] | None = None
+    final: dict[str, Any] | None = None
+    try:
+        await asyncio.sleep(0.15)
+        await client.write_gatt_char(uuids["e_paper_card_write"], payload, response=True)
+        deadline = time.monotonic() + float(args.screen_final_timeout)
+        while time.monotonic() < deadline:
+            try:
+                raw = await asyncio.wait_for(queue.get(), timeout=max(0.1, deadline - time.monotonic()))
+            except asyncio.TimeoutError as exc:
+                raise BenchError(
+                    f"card status final timeout for request_id={request_id}; "
+                    f"accepted={accepted} final={final} statuses={statuses}"
+                ) from exc
+            parsed = parse_card_status(raw)
+            if int(parsed["request_id"]) != request_id:
+                continue
+            statuses.append(parsed)
+            if int(parsed["render_state"]) == CARD_RENDER_STATE_ACCEPTED and accepted is None:
+                accepted = parsed
+            elif int(parsed["render_state"]) in {
+                CARD_RENDER_STATE_RENDERED,
+                CARD_RENDER_STATE_FAILED,
+                CARD_RENDER_STATE_BUSY,
+            }:
+                final = parsed
+            if accepted is not None and final is not None:
+                break
+    finally:
+        await client.stop_notify(uuids["e_paper_card_status"])
+
+    if accepted is None:
+        raise BenchError(f"card write did not publish accepted status; statuses={statuses}")
+    if final is None:
+        raise BenchError(f"card write did not publish final status; statuses={statuses}")
+    if int(accepted["render_state"]) != CARD_RENDER_STATE_ACCEPTED or int(accepted["last_error"]) != CARD_LAST_ERROR_OK:
+        raise BenchError(f"card write accepted status was not accepted/ok: {accepted}")
+    identity_ok = (
+        int(accepted["request_id"]) == int(final["request_id"])
+        and int(accepted["content_crc32"]) == int(final["content_crc32"])
+    )
+    if not identity_ok:
+        raise BenchError(f"card write accepted/final identity drifted: accepted={accepted} final={final}")
+
+    rendered_ok = (
+        int(final["render_state"]) == CARD_RENDER_STATE_RENDERED
+        and int(final["last_error"]) == CARD_LAST_ERROR_OK
+    )
+    deferred_no_panel = (
+        int(final["render_state"]) == CARD_RENDER_STATE_FAILED
+        and int(final["last_error"]) in {
+            CARD_LAST_ERROR_DEFERRED_NO_PANEL,
+            CARD_LAST_ERROR_DEFERRED_CONTROLLER_UNKNOWN,
+        }
+    )
+    if args.expect_real_panel and not rendered_ok:
+        raise BenchError(f"--expect-real-panel requires final rendered/ok status; final={final}")
+    if not args.expect_real_panel and not (rendered_ok or deferred_no_panel):
+        raise BenchError(f"card write final status is neither rendered/ok nor deferred no-panel/controller: {final}")
+
+    return {
+        "operation": "card_write",
+        "status": "PASS",
+        "real_panel_required": bool(args.expect_real_panel),
+        "real_panel_refresh_claimed": rendered_ok,
+        "screen_final_timeout_s": float(args.screen_final_timeout),
+        "card_status": accepted,
+        "final_card_status": final,
+        "status_sequence": statuses,
+        "screen_panel_result": "rendered_ok" if rendered_ok else "deferred_no_panel_or_controller_unknown",
+    }
+
+
+def is_expression_card_status(parsed: dict[str, Any]) -> bool:
+    return (
+        int(parsed["card_slot"]) == EXPRESSION_CARD_SLOT
+        and (int(parsed["request_id"]) & EXPRESSION_REQUEST_ID_MASK) == EXPRESSION_REQUEST_ID_BASE
+    )
+
+
+async def write_settings_and_collect_expression_status(
+    client: Any,
+    uuids: dict[str, str],
+    payload: bytes,
+    expected_brightness: int,
+    args: argparse.Namespace,
+) -> dict[str, Any]:
+    queue: asyncio.Queue[bytes] = asyncio.Queue()
+
+    def callback(_sender: Any, data: bytearray) -> None:
+        queue.put_nowait(bytes(data))
+
+    await client.start_notify(uuids["e_paper_card_status"], callback)
+    statuses: list[dict[str, Any]] = []
+    accepted: dict[str, Any] | None = None
+    final: dict[str, Any] | None = None
+    try:
+        await asyncio.sleep(0.15)
+        while not queue.empty():
+            queue.get_nowait()
+        await client.write_gatt_char(uuids["settings"], payload, response=True)
+        deadline = time.monotonic() + float(args.screen_final_timeout)
+        while time.monotonic() < deadline:
+            try:
+                raw = await asyncio.wait_for(queue.get(), timeout=max(0.1, deadline - time.monotonic()))
+            except asyncio.TimeoutError as exc:
+                raise BenchError(
+                    "settings sleepy expression final timeout; "
+                    f"accepted={accepted} final={final} statuses={statuses}"
+                ) from exc
+            parsed = parse_card_status(raw)
+            if not is_expression_card_status(parsed):
+                continue
+            if accepted is None:
+                if int(parsed["render_state"]) != CARD_RENDER_STATE_ACCEPTED:
+                    continue
+                accepted = parsed
+                statuses.append(parsed)
+                continue
+            if int(parsed["request_id"]) != int(accepted["request_id"]):
+                continue
+            statuses.append(parsed)
+            if int(parsed["render_state"]) in {
+                CARD_RENDER_STATE_RENDERED,
+                CARD_RENDER_STATE_FAILED,
+                CARD_RENDER_STATE_BUSY,
+            }:
+                final = parsed
+            if final is not None:
+                break
+    finally:
+        await client.stop_notify(uuids["e_paper_card_status"])
+
+    if accepted is None:
+        raise BenchError(f"settings sleepy did not publish expression accepted status; statuses={statuses}")
+    if final is None:
+        raise BenchError(f"settings sleepy did not publish expression final status; statuses={statuses}")
+    if int(accepted["render_state"]) != CARD_RENDER_STATE_ACCEPTED or int(accepted["last_error"]) != CARD_LAST_ERROR_OK:
+        raise BenchError(f"settings sleepy accepted status was not accepted/ok: {accepted}")
+    identity_ok = (
+        int(accepted["request_id"]) == int(final["request_id"])
+        and int(accepted["content_crc32"]) == int(final["content_crc32"])
+    )
+    if not identity_ok:
+        raise BenchError(f"settings sleepy accepted/final identity drifted: accepted={accepted} final={final}")
+
+    rendered_ok = (
+        int(final["render_state"]) == CARD_RENDER_STATE_RENDERED
+        and int(final["last_error"]) == CARD_LAST_ERROR_OK
+    )
+    deferred_no_panel = (
+        int(final["render_state"]) == CARD_RENDER_STATE_FAILED
+        and int(final["last_error"]) in {
+            CARD_LAST_ERROR_DEFERRED_NO_PANEL,
+            CARD_LAST_ERROR_DEFERRED_CONTROLLER_UNKNOWN,
+        }
+    )
+    if args.expect_real_panel and not rendered_ok:
+        raise BenchError(f"--expect-real-panel requires settings sleepy rendered/ok status; final={final}")
+    if not args.expect_real_panel and not (rendered_ok or deferred_no_panel):
+        raise BenchError(
+            f"settings sleepy final status is neither rendered/ok nor deferred no-panel/controller: {final}"
+        )
+
+    settings = await read_and_parse(client, uuids["settings"], parse_settings)
+    assert_true(
+        int(settings["display_brightness"]) == int(expected_brightness),
+        "settings sleepy write did not persist expected display_brightness",
+    )
+
+    return {
+        "operation": "settings_sleepy_screen_status",
+        "status": "PASS",
+        "trigger": "SettingsV1 display_brightness=0",
+        "real_panel_required": bool(args.expect_real_panel),
+        "real_panel_refresh_claimed": rendered_ok,
+        "screen_final_timeout_s": float(args.screen_final_timeout),
+        "expression_request_id_base": f"0x{EXPRESSION_REQUEST_ID_BASE:08x}",
+        "card_status": accepted,
+        "final_card_status": final,
+        "status_sequence": statuses,
+        "settings": settings,
+        "screen_panel_result": "rendered_ok" if rendered_ok else "deferred_no_panel_or_controller_unknown",
+    }
+
+
+def expression_status_sequence_contract() -> dict[str, Any]:
+    fixture = json.loads(HOST_STATUS_SEQUENCE_PATH.read_text(encoding="utf-8"))
+    steps = fixture.get("steps", [])
+    if not isinstance(steps, list):
+        raise BenchError("host screen_expression_status fixture does not contain steps")
+
+    events = [str(step.get("event")) for step in steps if isinstance(step, dict)]
+    faces = [str(step.get("expression")) for step in steps if isinstance(step, dict)]
+    if events != list(EXPRESSION_STATUS_REQUIRED_EVENTS):
+        raise BenchError(f"host screen_expression_status event order drifted: {events}")
+    if faces != list(EXPRESSION_STATUS_REQUIRED_FACES):
+        raise BenchError(f"host screen_expression_status face order drifted: {faces}")
+
+    for step in steps:
+        if not isinstance(step, dict):
+            raise BenchError("host screen_expression_status step is not an object")
+        for field in ["request_id", "content_crc32", "diagnostic_arg3", "accepted_refresh_count", "final_refresh_count"]:
+            if field not in step:
+                raise BenchError(f"host screen_expression_status step missing {field}: {step}")
+        if int(step["final_refresh_count"]) != int(step["accepted_refresh_count"]) + 1:
+            raise BenchError(f"host screen_expression_status refresh_count gap: {step}")
+
+    return {
+        "operation": "screen_expression_status",
+        "status": "PASS",
+        "contract_only": True,
+        "hardware_collected": False,
+        "host_sequence_fixture": repo_rel(HOST_STATUS_SEQUENCE_PATH),
+        "expected_events": events,
+        "required_faces": faces,
+        "required_fields": [
+            "request_id",
+            "content_crc32",
+            "diagnostic_arg3",
+            "accepted_refresh_count",
+            "final_refresh_count",
+        ],
+        "content_crc32_model": "comp_epaper_expression_decision_crc32",
+        "diagnostic_arg3_model": "(expression_id << 16) | signal_id",
+        "real_panel_parity_dependency": "card_write and settings_sleepy_screen_status must still pass with --expect-real-panel before rendered/ok parity is claimed.",
+    }
+
+
+def expression_demo_status_sequence_contract() -> dict[str, Any]:
+    fixture = json.loads(DEMO_HOST_STATUS_SEQUENCE_PATH.read_text(encoding="utf-8"))
+    if fixture.get("operation") != "screen_expression_demo_status":
+        raise BenchError("demo host status fixture operation drifted")
+    if fixture.get("contract_only") is not True or fixture.get("hardware_collected") is not False:
+        raise BenchError("demo host status fixture must remain contract-only")
+
+    summary = fixture.get("summary", {})
+    faces = [str(face) for face in summary.get("accepted_expression_coverage", [])]
+    if faces != list(EXPRESSION_DEMO_STATUS_REQUIRED_FACES):
+        raise BenchError(f"demo host status face coverage drifted: {faces}")
+    accepted_steps = fixture.get("accepted_status_steps", [])
+    held_steps = fixture.get("held_no_status_steps", [])
+    if not isinstance(accepted_steps, list) or not isinstance(held_steps, list):
+        raise BenchError("demo host status fixture steps are not lists")
+    if int(summary.get("accepted_status_pair_count", -1)) != len(accepted_steps):
+        raise BenchError("demo host status accepted step count drifted")
+    if int(summary.get("held_no_status_count", -1)) != len(held_steps):
+        raise BenchError("demo host status held step count drifted")
+
+    for step in accepted_steps:
+        if not isinstance(step, dict):
+            raise BenchError("demo host status accepted step is not an object")
+        for field in ["request_id", "content_crc32", "diagnostic_arg3", "card_status", "dry_run_final_status"]:
+            if field not in step:
+                raise BenchError(f"demo host status accepted step missing {field}: {step}")
+        accepted = step["card_status"]
+        final = step["dry_run_final_status"]
+        if int(final["refresh_count"]) != int(accepted["refresh_count"]) + 1:
+            raise BenchError(f"demo host status refresh_count gap: {step}")
+        if accepted["request_id"] != final["request_id"] or accepted["content_crc32"] != final["content_crc32"]:
+            raise BenchError(f"demo host status identity drift: {step}")
+
+    for step in held_steps:
+        if not isinstance(step, dict):
+            raise BenchError("demo host status held step is not an object")
+        if step.get("host_status_emitted") is not False:
+            raise BenchError(f"demo host status held step emitted status: {step}")
+
+    return {
+        "operation": "screen_expression_demo_status",
+        "status": "PASS",
+        "contract_only": True,
+        "hardware_collected": False,
+        "host_sequence_fixture": repo_rel(DEMO_HOST_STATUS_SEQUENCE_PATH),
+        "required_faces": faces,
+        "accepted_status_pair_count": len(accepted_steps),
+        "held_no_status_count": len(held_steps),
+        "required_fields": [
+            "request_id",
+            "content_crc32",
+            "diagnostic_arg3",
+            "card_status",
+            "dry_run_final_status",
+        ],
+        "content_crc32_model": "comp_epaper_expression_decision_crc32",
+        "diagnostic_arg3_model": "(expression_id << 16) | signal_id",
+        "held_steps_contract": "held_steps_emit_no_host_status",
+        "real_panel_parity_dependency": (
+            "card_write and settings_sleepy_screen_status still provide the "
+            "hardware-collected rendered/ok evidence."
+        ),
+    }
+
+
 async def pull_existing_recording_no_delete(
     client: Any,
     uuids: dict[str, str],
@@ -691,9 +1056,12 @@ async def pull_existing_recording_no_delete(
     }
 
 
-async def run_connected_bench(client: Any, uuids: dict[str, str], args: argparse.Namespace) -> list[dict[str, Any]]:
-    operations: list[dict[str, Any]] = []
-
+async def run_connected_bench(
+    client: Any,
+    uuids: dict[str, str],
+    args: argparse.Namespace,
+    operations: list[dict[str, Any]],
+) -> None:
     device_status = await read_and_parse(client, uuids["device_status"], parse_device_status)
     battery_charge = await read_and_parse(client, uuids["battery_charge"], parse_battery_charge)
     assert_true(0 <= int(battery_charge["percent"]) <= 100, "battery percent out of range")
@@ -705,23 +1073,48 @@ async def run_connected_bench(client: Any, uuids: dict[str, str], args: argparse
             "battery_charge": battery_charge,
         }
     )
+    operations.append(expression_status_sequence_contract())
+    operations.append(expression_demo_status_sequence_contract())
 
     title = "Bench card".encode("utf-8")
     body = "Companion native BLE card write bench".encode("utf-8")
     card_request_id = 17
     card_payload = struct.pack("<BBHIHH", SCHEMA_VERSION, 0, 0, card_request_id, len(title), len(body))
     card_payload += title + body
-    card_status = await notify_write_wait(
+    operations.append(await write_card_and_collect_status(client, uuids, card_payload, card_request_id, args))
+
+    settings_payload = struct.pack("<BBHhBBBB", SCHEMA_VERSION, 0, 0, 480, 0, 0, 81, 1)
+    settings = await notify_write_wait(
         client,
-        uuids["e_paper_card_status"],
-        uuids["e_paper_card_write"],
-        card_payload,
-        parse_card_status,
-        lambda parsed: parsed["request_id"] == card_request_id,
+        uuids["settings"],
+        uuids["settings"],
+        settings_payload,
+        parse_settings,
+        lambda parsed: parsed["display_brightness"] == 81,
         args.notify_timeout,
     )
-    assert_true(card_status["render_state"] == 1, "card write was not accepted by bench status")
-    operations.append({"operation": "card_write", "status": "PASS", "card_status": card_status})
+    operations.append({"operation": "settings_write", "status": "PASS", "settings": settings})
+
+    sleepy_settings_payload = struct.pack("<BBHhBBBB", SCHEMA_VERSION, 0, 0, 480, 0, 0, 0, 1)
+    operations.append(
+        await write_settings_and_collect_expression_status(
+            client,
+            uuids,
+            sleepy_settings_payload,
+            0,
+            args,
+        )
+    )
+    settings_restore = await notify_write_wait(
+        client,
+        uuids["settings"],
+        uuids["settings"],
+        settings_payload,
+        parse_settings,
+        lambda parsed: parsed["display_brightness"] == 81,
+        args.notify_timeout,
+    )
+    operations.append({"operation": "settings_restore_after_sleepy", "status": "PASS", "settings": settings_restore})
 
     recording_request_id = 23
     recording_payload = struct.pack("<BBBBIH", SCHEMA_VERSION, 2, 1, 0, recording_request_id, 5)
@@ -770,18 +1163,6 @@ async def run_connected_bench(client: Any, uuids: dict[str, str], args: argparse
             "recording_chunk_pull": chunk_response,
         }
     )
-
-    settings_payload = struct.pack("<BBHhBBBB", SCHEMA_VERSION, 0, 0, 480, 0, 0, 81, 1)
-    settings = await notify_write_wait(
-        client,
-        uuids["settings"],
-        uuids["settings"],
-        settings_payload,
-        parse_settings,
-        lambda parsed: parsed["display_brightness"] == 81,
-        args.notify_timeout,
-    )
-    operations.append({"operation": "settings_write", "status": "PASS", "settings": settings})
 
     ble_name_initial = await read_and_parse(client, uuids["ble_name_config"], parse_ble_name_config)
     assert_true(ble_name_initial["max_len"] == 29, "BLE name config max_len mismatch")
@@ -1019,8 +1400,6 @@ async def run_connected_bench(client: Any, uuids: dict[str, str], args: argparse
     assert_true(ota["battery_percent"] <= 100, "OTA battery percent out of range")
     operations.append({"operation": "ota_readiness", "status": "PASS", "ota_readiness": ota})
 
-    return operations
-
 
 async def run_bench(args: argparse.Namespace) -> dict[str, Any]:
     try:
@@ -1035,28 +1414,52 @@ async def run_bench(args: argparse.Namespace) -> dict[str, Any]:
     needed_services = required_services(table)
     needed_chars = required_characteristics(table)
 
-    device, scan_operation = await scan_for_companion(args, needed_services)
-    operations: list[dict[str, Any]] = [scan_operation]
+    operations: list[dict[str, Any]] = []
+    try:
+        device, scan_operation = await scan_for_companion(args, needed_services)
+        operations.append(scan_operation)
 
-    async with BleakClient(device, timeout=args.timeout) as client:
-        services = await get_services(client)
-        found_services = service_uuid_set(services)
-        found_chars = characteristic_uuid_set(services)
-        missing_services = sorted(needed_services - found_services)
-        missing_chars = sorted(needed_chars - found_chars)
-        assert_true(not missing_services, f"missing services after connect: {missing_services}")
-        assert_true(not missing_chars, f"missing characteristics after connect: {missing_chars}")
-        operations.append(
+        async with BleakClient(device, timeout=args.timeout) as client:
+            services = await get_services(client)
+            found_services = service_uuid_set(services)
+            found_chars = characteristic_uuid_set(services)
+            missing_services = sorted(needed_services - found_services)
+            missing_chars = sorted(needed_chars - found_chars)
+            assert_true(not missing_services, f"missing services after connect: {missing_services}")
+            assert_true(not missing_chars, f"missing characteristics after connect: {missing_chars}")
+            operations.append(
+                {
+                    "operation": "service_discovery",
+                    "status": "PASS",
+                    "service_count": len(found_services),
+                    "characteristic_count": len(found_chars),
+                    "required_services": sorted(needed_services),
+                    "required_characteristics": sorted(needed_chars),
+                }
+            )
+            await run_connected_bench(client, uuids, args, operations)
+    except Exception as exc:
+        ended = utc_now()
+        raise BenchPartialError(
+            str(exc),
             {
-                "operation": "service_discovery",
-                "status": "PASS",
-                "service_count": len(found_services),
-                "characteristic_count": len(found_chars),
-                "required_services": sorted(needed_services),
-                "required_characteristics": sorted(needed_chars),
-            }
-        )
-        operations.extend(await run_connected_bench(client, uuids, args))
+                "schema_version": 1,
+                "tool": "tools/companion_ble_real_bench.py",
+                "backend": "python-bleak",
+                "status": "FAIL",
+                "started_at": started,
+                "ended_at": ended,
+                "duration_s": round(time.monotonic() - monotonic_start, 3),
+                "firmware_commit": git_commit(),
+                "target": {
+                    "name_filter": args.name,
+                    "address_filter": args.address,
+                },
+                "error": str(exc),
+                "partial_operation_count": len(operations),
+                "operations": operations,
+            },
+        ) from exc
 
     ended = utc_now()
     return {
@@ -1083,6 +1486,17 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--timeout", type=float, default=12.0, help="Scan/connect timeout seconds")
     parser.add_argument("--notify-timeout", type=float, default=6.0, help="Notify wait timeout seconds")
     parser.add_argument(
+        "--screen-final-timeout",
+        type=float,
+        default=10.0,
+        help="Seconds to wait for final CardStatusV1 after a screen-triggering write",
+    )
+    parser.add_argument(
+        "--expect-real-panel",
+        action="store_true",
+        help="Require screen final statuses to be rendered/ok instead of deferred no-panel",
+    )
+    parser.add_argument(
         "--pull-existing-recording",
         action="store_true",
         help="Pull and validate the first recording_list entry without deleting it",
@@ -1093,6 +1507,8 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     args = parser.parse_args(argv)
     if args.chunk_bytes < 1 or args.chunk_bytes > 0xFFFF:
         parser.error("--chunk-bytes must be between 1 and 65535")
+    if args.screen_final_timeout <= 0:
+        parser.error("--screen-final-timeout must be positive")
     return args
 
 
@@ -1107,19 +1523,22 @@ def main(argv: list[str]) -> int:
     try:
         result = asyncio.run(run_bench(args))
     except Exception as exc:  # noqa: BLE001 - CLI should emit compact failure evidence.
-        result = {
-            "schema_version": 1,
-            "tool": "tools/companion_ble_real_bench.py",
-            "backend": "python-bleak",
-            "status": "FAIL",
-            "firmware_commit": git_commit(),
-            "error": str(exc),
-            "ended_at": utc_now(),
-            "target": {
-                "name_filter": args.name,
-                "address_filter": args.address,
-            },
-        }
+        if isinstance(exc, BenchPartialError):
+            result = exc.result
+        else:
+            result = {
+                "schema_version": 1,
+                "tool": "tools/companion_ble_real_bench.py",
+                "backend": "python-bleak",
+                "status": "FAIL",
+                "firmware_commit": git_commit(),
+                "error": str(exc),
+                "ended_at": utc_now(),
+                "target": {
+                    "name_filter": args.name,
+                    "address_filter": args.address,
+                },
+            }
         if args.output is not None:
             write_output(args.output, result)
         if args.json:
