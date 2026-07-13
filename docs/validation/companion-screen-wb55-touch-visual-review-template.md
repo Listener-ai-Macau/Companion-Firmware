@@ -72,7 +72,28 @@ do not edit this template as the final evidence record.
 - Next review scope:
 - Publishable PASS allowed: `false`
 
-### 4. Static menu home ignores vertical stroke
+### 4. Menu boundaries clean residuals once
+
+- Step ID: `menu_boundary_single_clean_refresh`
+- Action: 从日常页长按约 3 秒进入菜单，再从菜单左边缘向右滑返回日常页。
+- Success signal: 进入和返回各只做一次完整净化刷新，随后画面稳定；没有第二轮闪烁或旧菜单/旧表情残留。
+- Regression guard: each explicit daily/menu boundary gets one clean full refresh after cancelling pending maintenance
+- Expected record fields:
+  - entry refresh count
+  - exit refresh count
+  - follow-on flash yes/no
+  - old content or residual yes/no
+- Operator observation:
+- Operator note:
+- Triage items:
+  - (pending)
+- Visual issue classification: `none`
+- Resolution state: `open_requires_fix`
+- Evidence path:
+- Next review scope:
+- Publishable PASS allowed: `false`
+
+### 5. Static menu home ignores vertical stroke
 
 - Step ID: `menu_home_static_vertical_stroke`
 - Action: 进入菜单后在六项首页上下划动，不要点击菜单项。
@@ -93,7 +114,7 @@ do not edit this template as the final evidence record.
 - Next review scope:
 - Publishable PASS allowed: `false`
 
-### 5. Row press shows entry feedback
+### 6. Row press shows entry feedback
 
 - Step ID: `row_press_and_back`
 - Action: 点击任一菜单项，进入详情页后从左边缘右滑返回。
@@ -114,7 +135,7 @@ do not edit this template as the final evidence record.
 - Next review scope:
 - Publishable PASS allowed: `false`
 
-### 6. Phone reconnect requests guarded advertising
+### 7. Phone reconnect requests guarded advertising
 
 - Step ID: `phone_reconnect_advertising`
 - Action: 进入 Phone Link；在设备未连接时轻点 Reconnect 一次，并保留串口日志。
@@ -135,7 +156,7 @@ do not edit this template as the final evidence record.
 - Next review scope:
 - Publishable PASS allowed: `false`
 
-### 7. Language toggle stays single-language
+### 8. Language toggle stays single-language
 
 - Step ID: `language_switch_single_language`
 - Action: 进入偏好页切换中文/英文，再返回主页检查。
@@ -155,7 +176,7 @@ do not edit this template as the final evidence record.
 - Next review scope:
 - Publishable PASS allowed: `false`
 
-### 8. Maintenance is one quiet cleanup
+### 9. Maintenance is one quiet cleanup
 
 - Step ID: `maintenance_single_quiet_flash`
 - Action: 完成一次点击或拖动后放手等待约 2 秒。
@@ -175,7 +196,7 @@ do not edit this template as the final evidence record.
 - Next review scope:
 - Publishable PASS allowed: `false`
 
-### 9. Pet expression feels alive enough for next art pass
+### 10. Pet expression feels alive enough for next art pass
 
 - Step ID: `premium_pet_feel`
 - Action: 在轻点、滑动、菜单进入前后观察表情整体质感。

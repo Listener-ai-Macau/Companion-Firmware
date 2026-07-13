@@ -163,6 +163,7 @@ def verify(template: dict[str, Any]) -> list[str]:
         "daily_tap_social_response",
         "daily_swipe_pet_response",
         "anywhere_hold_menu_entry",
+        "menu_boundary_single_clean_refresh",
         "menu_home_static_vertical_stroke",
         "row_press_and_back",
         "phone_reconnect_advertising",

@@ -189,6 +189,14 @@ def build_packet() -> dict[str, Any]:
                 "menu entry remains a deliberate anywhere long press",
             ),
             step(
+                "menu_boundary_single_clean_refresh",
+                "Menu boundaries clean residuals once",
+                "从日常页长按约 3 秒进入菜单，再从菜单左边缘向右滑返回日常页。",
+                "进入和返回各只做一次完整净化刷新，随后画面稳定；没有第二轮闪烁或旧菜单/旧表情残留。",
+                ["entry refresh count", "exit refresh count", "follow-on flash yes/no", "old content or residual yes/no"],
+                "each explicit daily/menu boundary gets one clean full refresh after cancelling pending maintenance",
+            ),
+            step(
                 "menu_home_static_vertical_stroke",
                 "Static menu home ignores vertical stroke",
                 "进入菜单后在六项首页上下划动，不要点击菜单项。",
@@ -493,6 +501,7 @@ def check_packet(packet: dict[str, Any], errors: list[str]) -> None:
         "daily_tap_social_response",
         "daily_swipe_pet_response",
         "anywhere_hold_menu_entry",
+        "menu_boundary_single_clean_refresh",
         "menu_home_static_vertical_stroke",
         "row_press_and_back",
         "phone_reconnect_advertising",

@@ -22,6 +22,11 @@
     {
       "operator_note": "",
       "reason": "human review has not started",
+      "source_step_id": "menu_boundary_single_clean_refresh"
+    },
+    {
+      "operator_note": "",
+      "reason": "human review has not started",
       "source_step_id": "menu_home_static_vertical_stroke"
     },
     {
@@ -55,6 +60,7 @@
     "daily_tap_social_response",
     "daily_swipe_pet_response",
     "anywhere_hold_menu_entry",
+    "menu_boundary_single_clean_refresh",
     "menu_home_static_vertical_stroke",
     "row_press_and_back",
     "phone_reconnect_advertising",
@@ -96,6 +102,18 @@
       "resolution_state": "open_requires_fix",
       "source_step_id": "anywhere_hold_menu_entry",
       "title": "Anywhere hold enters menu deliberately",
+      "triage_items": [],
+      "visual_issue_classification": "none"
+    },
+    {
+      "evidence_path": "",
+      "next_review_scope": "",
+      "operator_note": "",
+      "operator_observation": "",
+      "publishable_pass_allowed": false,
+      "resolution_state": "open_requires_fix",
+      "source_step_id": "menu_boundary_single_clean_refresh",
+      "title": "Menu boundaries clean residuals once",
       "triage_items": [],
       "visual_issue_classification": "none"
     },

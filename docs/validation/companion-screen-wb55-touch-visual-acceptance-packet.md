@@ -80,7 +80,19 @@ This packet is generated. Update it with
   - menu entry time feel
   - accidental entry before 3 s yes/no
 
-### 4. Static menu home ignores vertical stroke
+### 4. Menu boundaries clean residuals once
+
+- ID: `menu_boundary_single_clean_refresh`
+- Action: 从日常页长按约 3 秒进入菜单，再从菜单左边缘向右滑返回日常页。
+- Success signal: 进入和返回各只做一次完整净化刷新，随后画面稳定；没有第二轮闪烁或旧菜单/旧表情残留。
+- Regression guard: each explicit daily/menu boundary gets one clean full refresh after cancelling pending maintenance
+- Record:
+  - entry refresh count
+  - exit refresh count
+  - follow-on flash yes/no
+  - old content or residual yes/no
+
+### 5. Static menu home ignores vertical stroke
 
 - ID: `menu_home_static_vertical_stroke`
 - Action: 进入菜单后在六项首页上下划动，不要点击菜单项。
@@ -92,7 +104,7 @@ This packet is generated. Update it with
   - false selection yes/no
   - false refresh yes/no
 
-### 5. Row press shows entry feedback
+### 6. Row press shows entry feedback
 
 - ID: `row_press_and_back`
 - Action: 点击任一菜单项，进入详情页后从左边缘右滑返回。
@@ -104,7 +116,7 @@ This packet is generated. Update it with
   - detail arrival visible yes/no
   - back success yes/no
 
-### 6. Phone reconnect requests guarded advertising
+### 7. Phone reconnect requests guarded advertising
 
 - ID: `phone_reconnect_advertising`
 - Action: 进入 Phone Link；在设备未连接时轻点 Reconnect 一次，并保留串口日志。
@@ -116,7 +128,7 @@ This packet is generated. Update it with
   - advertising request log
   - unexpected duplicate request yes/no
 
-### 7. Language toggle stays single-language
+### 8. Language toggle stays single-language
 
 - ID: `language_switch_single_language`
 - Action: 进入偏好页切换中文/英文，再返回主页检查。
@@ -127,7 +139,7 @@ This packet is generated. Update it with
   - mixed-language text yes/no
   - return path
 
-### 8. Maintenance is one quiet cleanup
+### 9. Maintenance is one quiet cleanup
 
 - ID: `maintenance_single_quiet_flash`
 - Action: 完成一次点击或拖动后放手等待约 2 秒。
@@ -138,7 +150,7 @@ This packet is generated. Update it with
   - maintenance flash count
   - residual ghosting acceptable yes/no
 
-### 9. Pet expression feels alive enough for next art pass
+### 10. Pet expression feels alive enough for next art pass
 
 - ID: `premium_pet_feel`
 - Action: 在轻点、滑动、菜单进入前后观察表情整体质感。

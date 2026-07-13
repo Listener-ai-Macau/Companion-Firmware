@@ -114,6 +114,27 @@
     {
       "evidence_path": "",
       "expected_record_fields": [
+        "entry refresh count",
+        "exit refresh count",
+        "follow-on flash yes/no",
+        "old content or residual yes/no"
+      ],
+      "next_review_scope": "",
+      "operator_action": "从日常页长按约 3 秒进入菜单，再从菜单左边缘向右滑返回日常页。",
+      "operator_note": "",
+      "operator_observation": "",
+      "publishable_pass_allowed": false,
+      "regression_guard": "each explicit daily/menu boundary gets one clean full refresh after cancelling pending maintenance",
+      "resolution_state": "open_requires_fix",
+      "source_step_id": "menu_boundary_single_clean_refresh",
+      "success_signal": "进入和返回各只做一次完整净化刷新，随后画面稳定；没有第二轮闪烁或旧菜单/旧表情残留。",
+      "title": "Menu boundaries clean residuals once",
+      "triage_items": [],
+      "visual_issue_classification": "none"
+    },
+    {
+      "evidence_path": "",
+      "expected_record_fields": [
         "stroke direction",
         "legacy scroll page yes/no",
         "false selection yes/no",

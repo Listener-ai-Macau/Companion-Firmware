@@ -102,6 +102,19 @@
       "title": "Anywhere hold enters menu deliberately"
     },
     {
+      "id": "menu_boundary_single_clean_refresh",
+      "operator_action": "从日常页长按约 3 秒进入菜单，再从菜单左边缘向右滑返回日常页。",
+      "record": [
+        "entry refresh count",
+        "exit refresh count",
+        "follow-on flash yes/no",
+        "old content or residual yes/no"
+      ],
+      "regression_guard": "each explicit daily/menu boundary gets one clean full refresh after cancelling pending maintenance",
+      "success_signal": "进入和返回各只做一次完整净化刷新，随后画面稳定；没有第二轮闪烁或旧菜单/旧表情残留。",
+      "title": "Menu boundaries clean residuals once"
+    },
+    {
       "id": "menu_home_static_vertical_stroke",
       "operator_action": "进入菜单后在六项首页上下划动，不要点击菜单项。",
       "record": [
