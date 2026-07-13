@@ -49,18 +49,20 @@ operator observation agree.
 
 ### ACPT-03: Double-Tap Recording And Visible State
 
-- Normal: the first valid double tap starts touch-originated recording and
-  shows the current recording expression; the next valid double tap stops and
-  stores it in external Flash.
+- Normal: the first valid double tap starts touch-originated recording through
+  a generated recording-start pose, then enters a low-frequency whole-inner-face
+  recording loop. While recording, the next valid double tap exclusively stops,
+  stores it in external Flash, and gives generated saving/saved feedback.
 - Failure/recovery: rejected starts, write failures, or an interrupted stop
   must expose their real error/recovery surface and leave the next recording
   attempt usable.
 - Machine evidence: a separate `--scope double-tap-recording` capture with
   two double-tap events, recording start/stop, and `user_store result=1`.
-- Popup: `3/12` asks the operator to double tap twice and confirm start face,
-  active face, stop/save feedback, and no accidental menu entry.
-- State: current recording art is reviewed here; dedicated generated wake,
-  start, active, saved, and failed poses remain COMP-REQ-009 work.
+- Popup: `3/12` asks the operator to double tap twice and confirm generated
+  start transition, an alive but e-paper-appropriate active loop, dedicated
+  stop/save feedback, and no accidental menu entry.
+- State: generated low-power wake, recording start, active, saved, and failed
+  poses are COMP-REQ-009 work and must be imported before this item can close.
 
 ### ACPT-04: Three-Second Hold Menu Entry
 

@@ -14,12 +14,15 @@
     "directional_swipe",
     "recording_start",
     "recording_active",
-    "recording_saved_or_failed"
+    "recording_stop_saving",
+    "recording_saved",
+    "recording_failed_recovery"
   ],
   "iterations": [
     {
       "iteration_id": "pet-interaction-v1-queued-2026-07-13",
-      "status": "queued_after_touch_interrupt_hardware_evidence",
+      "status": "superseded",
+      "superseded_by": "pet-interaction-v2-dynamic-recording-2026-07-13",
       "prompt": "Create a pure black-and-white 1-bit reference sheet for a premium Companion internal-face expression system on a 200x200 e-paper display. Use the accepted generated_pet_expression_sheet_v5 inner-face aesthetic as the strict baseline: rounded refined eyes, brows, lids, tiny nose and mouth, subtle cheeks, and very sparse state marks. The physical enclosure supplies the cat outline, so draw no ears, head contour, whiskers, body, device frame, text, border, gray, color, or gradient. Show seven separate, highly legible state cells: low-power sleep, touch wake, tap acknowledgement, directional swipe response, recording starts, active recording, and recording saved or failed. Each state must alter the complete face rather than only the eyes. Make low-power calm and static-looking; make recording alert but not noisy; retain large white space and stroke weights that survive 1-bit conversion to 200x200.",
       "source_references": [
         "docs/art/generated_pet_expression_sheet_v5.png",
@@ -31,6 +34,28 @@
         "outcome": "not_generated",
         "reason": "Touch interrupt and Stop-wake hardware evidence has priority.",
         "next_prompt_delta": null
+      },
+      "implementation": {
+        "status": "not_started",
+        "resource_revision": null,
+        "validation": []
+      }
+    },
+    {
+      "iteration_id": "pet-interaction-v2-dynamic-recording-2026-07-13",
+      "status": "prompt_ready",
+      "prompt": "Create a pure black-and-white 1-bit storyboard reference sheet for a premium Companion internal-face expression system on a 200x200 e-paper display. Use the accepted generated_pet_expression_sheet_v5 inner-face aesthetic as the strict baseline: cute, refined rounded eyes, brows, lids, a tiny nose and mouth, soft cheek shapes, and very sparse state marks. The physical enclosure supplies the cat outline, so draw no ears, head contour, whiskers, body, device frame, text, border, gray, color, or gradient. Show separate, highly legible key states for: 1 low-power sleep, 2 a tiny slow-breath variant of sleep, 3 touch wake, 4 recording starts, 5 recording active keyframe A, 6 recording active keyframe B, 7 recording active keyframe C, 8 second-double-tap stop/saving, 9 saved/relieved, and 10 failed/retry. Each state must alter the complete inner face rather than only the eyes. Recording should feel alive through low-frequency changes in eyelids, brows, mouth, cheeks, and sparse sound marks, while remaining calm enough for e-paper. Preserve large white space and bold, clean strokes that survive 1-bit conversion to 200x200.",
+      "source_references": [
+        "docs/art/generated_pet_expression_sheet_v5.png",
+        "COMP-REQ-006 double-tap recording interaction contract",
+        "COMP-REQ-009 generated low-power and dynamic recording art"
+      ],
+      "output": null,
+      "sha256": null,
+      "review": {
+        "outcome": "awaiting_generated_sheet",
+        "reason": "Owner elevated low-power and dynamic recording expression art to active priority.",
+        "next_prompt_delta": "After review, preserve the chosen facial proportions and tune only individual state readability."
       },
       "implementation": {
         "status": "not_started",
