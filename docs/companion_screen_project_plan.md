@@ -1044,6 +1044,27 @@ WBA callback 边界或手势语义。
 晋级必须在 owner 明确“开始验收”后读取回写寄存器，并检查没有误触、点击/拖动不丢失、右滑退出、
 3 s 长按和双击录音均保持正确。静态/构建证据只能证明代码和 trace 配置，不能代替真实手感。
 
+## Revision 79: 应用层交互日志也不能进入量产热路径
+
+Revision 77 关闭 SSD1681 target 的成功 trace，Revision 78 关闭 FT6336 的成功 trace 后，审计发现
+`app_ble.c` 仍会在成功的菜单入队、显示结果、外部 Flash 表情帧、pet attention/stroke/emotion 等路径
+执行格式化 UART 输出。它们可由 display wait service 中的触摸识别间接触发，仍会和 5 ms 手势推进及
+SSD1681 BUSY 共用低功耗 WB55 的同步 USART1 `_write`。因此 `COMP-REQ-028` 将这六类成功日志统一绑定到
+既有 `COMPANION_TOUCH_VERBOSE_TRACE`：quiet production image 完全移除字符串与格式化工作，verbose/cadence/
+A/B diagnostic image 保留完整日志。
+
+为了不让 normal reset-bounded runtime capture 丢失 CEMP 资源代际的最小可证明性，`app_ble.c` 在 screen
+queue 初始化后只对第一个 `panel_result=OK` 且 `resource_revision==active_revision` 的帧打印一次短
+`coherent_generation=1` 标记；失败输出同样保持。该标记不是每次触摸、菜单或表情帧的输出，不能成为新的
+串口热点。链接产物证据记录在
+`docs/validation/companion-interaction-serial-quiet-20260714.json`：quiet/trace 的 `.text` 分别为
+`128332`/`135396` bytes，六个成功标记为 `0/1`，一致性与失败标记均为 `1/1`。
+
+这项工作不改资源、生成美术、刷新选择、SSD1681 waveform、FT6336 callback 或 portable presentation/
+refresh policy。WBA55/WBA65 迁移只可复用“量产成功日志不占交互热路径、诊断镜像保留证据”的 portable
+原则；其 UART/RTT 具体实现仍属于各自 target adapter。它仍需在 owner 明确“开始验收”后的 reset-bounded
+quiet image capture 与 ACPT-01 中确认，不得把 linked-image 字符串对比写成真实触感已通过。
+
 ## 逐项验收顺序
 
 本项目遵循 AI Workflow 的全产品异步验收规则：未收到操作者明确的“开始验收”前，
