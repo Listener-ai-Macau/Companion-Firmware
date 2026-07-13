@@ -147,6 +147,12 @@ bool comp_touch_gesture_is_vertical_drag(const comp_touch_gesture_state_t *state
            state->locked_axis == TOUCH_AXIS_VERTICAL;
 }
 
+bool comp_touch_gesture_is_horizontal_drag(const comp_touch_gesture_state_t *state)
+{
+    return state != NULL && state->active &&
+           state->locked_axis == TOUCH_AXIS_HORIZONTAL;
+}
+
 static void fill_event(const comp_touch_gesture_state_t *state,
                        comp_touch_gesture_type_t type,
                        uint32_t duration_ms,
@@ -377,6 +383,20 @@ static bool self_test_responsive_diagonal_swipe(void)
     return !state.consumed_until_release;
 }
 
+static bool self_test_horizontal_drag_detector(void)
+{
+    comp_touch_gesture_state_t state;
+    comp_touch_gesture_event_t event;
+
+    comp_touch_gesture_init(&state, NULL);
+    return !comp_touch_gesture_process(&state, true, false,
+                                       120u, 100u, 0u, &event) &&
+           !comp_touch_gesture_process(&state, true, false,
+                                       100u, 102u, 20u, &event) &&
+           comp_touch_gesture_is_horizontal_drag(&state) &&
+           !comp_touch_gesture_is_vertical_drag(&state);
+}
+
 static bool self_test_one_sample_explicit_release(void)
 {
     const comp_touch_gesture_config_t config = {
@@ -588,6 +608,7 @@ bool comp_touch_gesture_self_test(void)
            self_test_swipe(80u, 100u, 150u, 100u,
                            COMP_TOUCH_GESTURE_SWIPE_RIGHT) &&
            self_test_responsive_diagonal_swipe() &&
+           self_test_horizontal_drag_detector() &&
            self_test_one_sample_explicit_release() &&
            self_test_hold_then_long_press_is_live_and_consumed() &&
            self_test_vertical_drag_release() &&

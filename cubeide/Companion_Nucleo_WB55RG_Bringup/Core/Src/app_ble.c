@@ -349,6 +349,8 @@ static void Companion_Display_ScheduleExpressionTick(uint32_t now_ms);
 static void Companion_Display_ProcessExpressionTick(void);
 static void Companion_PetBehavior_Advance(void);
 static bool Companion_Display_EmitEmoteFrame(bool force_full);
+static bool Companion_Display_EmitEmoteFrameMode(
+    comp_epaper_refresh_mode_t refresh_mode);
 static bool Companion_Display_EnqueuePetPose(
     const comp_epaper_expression_decision_t *decision,
     const comp_pet_expression_pose_t *pose,
@@ -1098,12 +1100,12 @@ static void Companion_PetBehavior_Advance(void)
   comp_pet_behavior_advance(&s_companion_pet_behavior, elapsed_ms);
 }
 
-static bool Companion_Display_EmitEmoteFrame(bool force_full)
+static bool Companion_Display_EmitEmoteFrameMode(
+    comp_epaper_refresh_mode_t refresh_mode)
 {
   comp_emote_player_frame_t player_frame;
   comp_epaper_expression_decision_t frame_decision;
   comp_epaper_display_queue_result_t queue_result;
-  comp_epaper_refresh_mode_t refresh_mode;
   uint32_t request_id;
   uint32_t content_crc32;
   bool touch_pose;
@@ -1132,8 +1134,6 @@ static bool Companion_Display_EmitEmoteFrame(bool force_full)
            (unsigned)player_frame.frame_in_clip);
     return true;
   }
-  refresh_mode = force_full ? COMP_EPAPER_REFRESH_FULL
-                            : COMP_EPAPER_REFRESH_PARTIAL_INTERACTIVE;
   request_id = Companion_Display_NextExpressionRequestId(0u);
   content_crc32 = comp_epaper_expression_decision_crc32(&frame_decision) ^
                   ((uint32_t)player_frame.frame_index << 8) ^
@@ -1174,6 +1174,13 @@ static bool Companion_Display_EmitEmoteFrame(bool force_full)
          (unsigned)refresh_mode,
          (unsigned)player_frame.frame.duration_ms);
   return true;
+}
+
+static bool Companion_Display_EmitEmoteFrame(bool force_full)
+{
+  return Companion_Display_EmitEmoteFrameMode(
+      force_full ? COMP_EPAPER_REFRESH_FULL
+                 : COMP_EPAPER_REFRESH_PARTIAL_INTERACTIVE);
 }
 
 static bool Companion_Display_EnqueuePetPose(
@@ -1589,14 +1596,14 @@ bool Companion_Screen_MenuRequestClean(comp_screen_menu_view_t view,
                                        comp_screen_menu_language_t language,
                                        uint8_t home_page)
 {
-  printf("[screen] menu_boundary=enter view=%u page=%u refresh=full\r\n",
+  printf("[screen] menu_boundary=enter view=%u page=%u refresh=fast_if_baseline\r\n",
          (unsigned)view,
          (unsigned)home_page);
   return Companion_Screen_MenuRequestMode(view,
                                           flags,
                                           language,
                                           home_page,
-                                          COMP_EPAPER_REFRESH_FULL);
+                                          COMP_EPAPER_REFRESH_MAINTENANCE);
 }
 
 bool Companion_Screen_MenuMaintenance(void)
@@ -1678,10 +1685,11 @@ static void Companion_Screen_RefreshBleStatus(void)
 #endif
 }
 
-static bool Companion_Screen_StartExpression(comp_epaper_expression_t expression,
-                                             bool force_full,
-                                             bool daily,
-                                             const char *reason)
+static bool Companion_Screen_StartExpressionMode(
+    comp_epaper_expression_t expression,
+    comp_epaper_refresh_mode_t refresh_mode,
+    bool daily,
+    const char *reason)
 {
   comp_epaper_expression_decision_t decision;
   const char *clip_name;
@@ -1719,7 +1727,7 @@ static bool Companion_Screen_StartExpression(comp_epaper_expression_t expression
   if (!comp_emote_player_play_now_name(&s_companion_emote_player,
                                        clip_name,
                                        false) ||
-      !Companion_Display_EmitEmoteFrame(force_full))
+      !Companion_Display_EmitEmoteFrameMode(refresh_mode))
   {
     comp_emote_player_stop(&s_companion_emote_player);
     s_companion_emote_player_decision_valid = false;
@@ -1735,6 +1743,19 @@ static bool Companion_Screen_StartExpression(comp_epaper_expression_t expression
   printf("[emote-player] preview_started name=%s\r\n", clip_name);
   Companion_Display_ScheduleExpressionTick(HAL_GetTick());
   return true;
+}
+
+static bool Companion_Screen_StartExpression(comp_epaper_expression_t expression,
+                                             bool force_full,
+                                             bool daily,
+                                             const char *reason)
+{
+  return Companion_Screen_StartExpressionMode(
+      expression,
+      force_full ? COMP_EPAPER_REFRESH_FULL
+                 : COMP_EPAPER_REFRESH_PARTIAL_INTERACTIVE,
+      daily,
+      reason);
 }
 
 bool Companion_Screen_ExpressionPreview(comp_epaper_expression_t expression)
@@ -1776,11 +1797,12 @@ bool Companion_Screen_ShowDaily(void)
 
 bool Companion_Screen_ShowDailyClean(void)
 {
-  printf("[screen] menu_boundary=exit expression=idle refresh=full\r\n");
-  return Companion_Screen_StartExpression(COMP_EPAPER_EXPRESSION_IDLE,
-                                          true,
-                                          true,
-                                          "menu_exit_clean");
+  printf("[screen] menu_boundary=exit expression=idle refresh=fast_if_baseline\r\n");
+  return Companion_Screen_StartExpressionMode(
+      COMP_EPAPER_EXPRESSION_IDLE,
+      COMP_EPAPER_REFRESH_MAINTENANCE,
+      true,
+      "menu_exit_clean");
 }
 
 bool Companion_Screen_DailyExpression(comp_epaper_expression_t expression,

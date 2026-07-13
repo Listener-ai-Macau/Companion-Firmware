@@ -71,6 +71,7 @@ COMPANION_PLACE_IN_SECTION("TAG_OTA_START") const uint32_t MagicKeywordAddress =
 #define TOUCH_MENU_LONG_PRESS_DURATION_MS 3000u
 #define TOUCH_LONG_PRESS_MAX_MOVE_PX 46u
 #define TOUCH_MENU_ENTRY_CUE_MS 360u
+#define TOUCH_MENU_PRESS_CUE_DELAY_MS 160u
 #define TOUCH_TAP_MAX_MOVE_PX 24u
 #define TOUCH_DOUBLE_TAP_MAX_GAP_MS 650u
 #define TOUCH_DOUBLE_TAP_MAX_MOVE_PX 40u
@@ -473,6 +474,9 @@ static comp_screen_menu_view_t s_menu_entry_target;
 static uint32_t s_menu_entry_due_ms;
 static bool s_menu_home_press_active;
 static uint8_t s_menu_home_press_item;
+static bool s_menu_home_press_candidate;
+static uint8_t s_menu_home_press_candidate_item;
+static uint32_t s_menu_home_press_candidate_due_ms;
 static bool s_screen_maintenance_pending;
 static uint32_t s_screen_maintenance_due_ms;
 static bool s_low_power_idle_pose_attempted;
@@ -2050,40 +2054,6 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
     explicit_release = sample->touch_count > 0u &&
                        sample->event == COMP_FT6336_TOUCH_EVENT_UP;
 
-    /* An e-paper menu cannot redraw at LCD drag rates.  It can still follow
-     * the finger: only the current row's press state is enqueued, and the
-     * display queue coalesces intermediate positions to the newest one. */
-    if (Companion_Screen_IsMenuVisible() &&
-        s_screen_menu.view == COMP_SCREEN_MENU_VIEW_HOME && contact_now &&
-        !s_menu_entry_pending) {
-        uint8_t item;
-        comp_screen_menu_view_t target_view;
-
-        if (comp_screen_menu_home_hit_test(&s_screen_menu,
-                                           logical_x,
-                                           logical_y,
-                                           &item,
-                                           &target_view) &&
-            (!s_menu_home_press_active || s_menu_home_press_item != item)) {
-            uint8_t entry_flags;
-
-            comp_screen_menu_set_flags(&s_screen_menu,
-                                       Companion_Screen_RuntimeMenuFlags());
-            entry_flags = (uint8_t)(s_screen_menu.flags |
-                                    COMP_SCREEN_MENU_FLAG_PRESS_ACTIVE |
-                                    (item << COMP_SCREEN_MENU_FLAG_PRESS_ITEM_SHIFT));
-            s_menu_home_press_active = true;
-            s_menu_home_press_item = item;
-            printf("[touch-ui] menu_press item=%u target_view=%u sample_age_ms=%lu\r\n",
-                   (unsigned)item,
-                   (unsigned)target_view,
-                   (unsigned long)(HAL_GetTick() - now_ms));
-            Companion_Screen_MenuRequest(COMP_SCREEN_MENU_VIEW_HOME,
-                                         entry_flags,
-                                         s_screen_menu.language,
-                                         s_screen_menu.home_page);
-        }
-    }
     gesture_ready = comp_touch_gesture_process(&s_touch_gesture,
                                                contact_now,
                                                explicit_release,
@@ -2092,12 +2062,68 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
                                                now_ms,
                                                &gesture);
     if (!gesture_ready) {
+        /* Delay the visual press cue until a horizontal exit has had time to
+         * lock its axis.  Starting an e-paper update on touch-down makes the
+         * right swipe wait behind BUSY and feels like a missed gesture. */
+        if (!contact_now) {
+            s_menu_home_press_candidate = false;
+        } else if (Companion_Screen_IsMenuVisible() &&
+                   s_screen_menu.view == COMP_SCREEN_MENU_VIEW_HOME &&
+                   !s_menu_entry_pending) {
+            uint8_t item;
+            comp_screen_menu_view_t target_view;
+
+            if (comp_touch_gesture_is_horizontal_drag(&s_touch_gesture) ||
+                !comp_screen_menu_home_hit_test(&s_screen_menu,
+                                                logical_x,
+                                                logical_y,
+                                                &item,
+                                                &target_view)) {
+                s_menu_home_press_candidate = false;
+            } else if (s_menu_home_press_active &&
+                       s_menu_home_press_item == item) {
+                s_menu_home_press_candidate = false;
+            } else {
+                if (!s_menu_home_press_candidate ||
+                    s_menu_home_press_candidate_item != item) {
+                    s_menu_home_press_candidate = true;
+                    s_menu_home_press_candidate_item = item;
+                    s_menu_home_press_candidate_due_ms =
+                        now_ms + TOUCH_MENU_PRESS_CUE_DELAY_MS;
+                    printf("[touch-ui] menu_press_deferred item=%u target_view=%u cue_ms=%u\r\n",
+                           (unsigned)item,
+                           (unsigned)target_view,
+                           (unsigned)TOUCH_MENU_PRESS_CUE_DELAY_MS);
+                }
+                if ((int32_t)(now_ms - s_menu_home_press_candidate_due_ms) >= 0) {
+                    uint8_t entry_flags;
+
+                    comp_screen_menu_set_flags(&s_screen_menu,
+                                               Companion_Screen_RuntimeMenuFlags());
+                    entry_flags = (uint8_t)(s_screen_menu.flags |
+                                            COMP_SCREEN_MENU_FLAG_PRESS_ACTIVE |
+                                            (item << COMP_SCREEN_MENU_FLAG_PRESS_ITEM_SHIFT));
+                    s_menu_home_press_active = true;
+                    s_menu_home_press_item = item;
+                    s_menu_home_press_candidate = false;
+                    printf("[touch-ui] menu_press item=%u target_view=%u sample_age_ms=%lu\r\n",
+                           (unsigned)item,
+                           (unsigned)target_view,
+                           (unsigned long)(HAL_GetTick() - now_ms));
+                    Companion_Screen_MenuRequest(COMP_SCREEN_MENU_VIEW_HOME,
+                                                 entry_flags,
+                                                 s_screen_menu.language,
+                                                 s_screen_menu.home_page);
+                }
+            }
+        }
         return;
     }
     if (!contact_now) {
         home_press_was_active = s_menu_home_press_active;
         home_press_item = s_menu_home_press_item;
         s_menu_home_press_active = false;
+        s_menu_home_press_candidate = false;
     }
     printf("[touch-ui] gesture=%s start=%u,%u end=%u,%u duration_ms=%u sample_age_ms=%lu\r\n",
            comp_touch_gesture_name(gesture.type),
@@ -2109,14 +2135,12 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
            (unsigned long)(HAL_GetTick() - now_ms));
     if (!Companion_Screen_IsMenuVisible()) {
         if (gesture.type == COMP_TOUCH_GESTURE_HOLD) {
-            /* The first held beat deliberately advertises menu entry before
-             * the three-second hold performs the clean screen transition. */
-            printf("[touch-ui] daily_hold_menu_prepare x=%u y=%u duration_ms=%u\r\n",
+            /* Keep the 650 ms acknowledgement non-blocking.  An e-paper
+             * refresh here used to delay the real 3 s decision while BUSY. */
+            printf("[touch-ui] daily_hold_menu_prepare x=%u y=%u duration_ms=%u visual=deferred_until_menu\r\n",
                    (unsigned)gesture.end_x,
                    (unsigned)gesture.end_y,
                    (unsigned)gesture.duration_ms);
-            (void)Companion_Screen_DailyExpression(
-                COMP_EPAPER_EXPRESSION_THINKING, "menu_hold_prepare");
         } else if (comp_screen_menu_is_daily_entry_gesture(&gesture)) {
             s_menu_entry_pending = false;
             cancel_touch_screen_maintenance();
@@ -2172,6 +2196,8 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
     }
     if (comp_screen_menu_is_exit_gesture(&gesture)) {
         s_menu_entry_pending = false;
+        s_menu_home_press_active = false;
+        s_menu_home_press_candidate = false;
         cancel_touch_screen_maintenance();
         printf("[touch-ui] menu_right_swipe_exit view=%u page=%u start=%u,%u end=%u,%u\r\n",
                (unsigned)s_screen_menu.view,

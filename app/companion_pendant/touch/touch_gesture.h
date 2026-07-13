@@ -78,6 +78,7 @@ bool comp_touch_gesture_process(comp_touch_gesture_state_t *state,
                                 uint32_t now_ms,
                                 comp_touch_gesture_event_t *out_event);
 bool comp_touch_gesture_is_vertical_drag(const comp_touch_gesture_state_t *state);
+bool comp_touch_gesture_is_horizontal_drag(const comp_touch_gesture_state_t *state);
 const char *comp_touch_gesture_name(comp_touch_gesture_type_t type);
 bool comp_touch_gesture_self_test(void);
 

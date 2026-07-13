@@ -104,16 +104,18 @@ def main() -> int:
         "TOUCH_MENU_LONG_PRESS_DURATION_MS 3000u",
         "TOUCH_LONG_PRESS_MAX_MOVE_PX 46u",
         "TOUCH_MENU_ENTRY_CUE_MS 360u",
+        "TOUCH_MENU_PRESS_CUE_DELAY_MS 160u",
         ".double_tap_max_gap_ms = TOUCH_DOUBLE_TAP_MAX_GAP_MS",
         ".double_tap_max_move_px = TOUCH_DOUBLE_TAP_MAX_MOVE_PX",
         "process_menu_entry_transition",
         "s_menu_entry_pending",
         "long_press_max_move_px",
         "sample_age_ms=%lu",
+        "menu_press_deferred",
         "[touch-ui] menu_press",
         "daily_hold_menu_prepare",
-        "Companion_Screen_DailyExpression(",
-        "Companion_Screen_DailyExpressionSignal(",
+        "visual=deferred_until_menu",
+        "comp_touch_gesture_is_horizontal_drag",
         "Companion_Screen_MenuRequestClean(",
         "Companion_Screen_ShowDailyClean()",
         "screen_maintenance cancelled=transition",
@@ -140,6 +142,7 @@ def main() -> int:
         "long_press_max_move_px",
         "update_axis_lock",
         "is_horizontal_swipe",
+        "comp_touch_gesture_is_horizontal_drag",
         "vertical axis lock for live scrolling",
         "axis_dominance_percent",
         "min_contact_samples",
@@ -176,6 +179,8 @@ def main() -> int:
         errors.append("touch fixture must retain the directional daily-stroke contract")
     if touch_fixture.get("gesture_contract", {}).get("daily_enter_menu") != "3000 ms any-position long_press with 46 px wobble tolerance":
         errors.append("touch fixture must require any-position 3 s long-press menu entry")
+    if "Companion_Screen_DailyExpression(\n                COMP_EPAPER_EXPRESSION_THINKING" in main_source:
+        errors.append("650 ms hold acknowledgement must not start an e-paper refresh before the 3 s decision")
 
     double_tap_marker = "} else if (gesture.type == COMP_TOUCH_GESTURE_DOUBLE_TAP) {"
     double_tap_tail = "} else if (gesture.type == COMP_TOUCH_GESTURE_TAP) {"

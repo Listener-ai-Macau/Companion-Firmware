@@ -188,7 +188,7 @@ alias。这样以后频繁换 prompt、换屏幕尺寸或换外壳时，改的�
 | SCR-13 | 外部 Flash 优先与资源预算 | WB55 实机通过，50 KB 内部静态帧已移除 | 正常 UI 资源位于 `ui_assets`；内部只留 <=16 KiB 救援 UI；普通固件不携带 provision blob |
 | SCR-14 | Denzic-Platform 与资源 OTA | Companion WB55 Loader、Type、打包与静态检查已接入 `denzic_ota_v1`；当前跨产品矩阵为 `NO_GO_COMMIT_DRIFT`：Companion 固件/Type 固定在 Denzic `1e727f2`，Listener 固件/Type 固定在 `6ce017f`，协议 JSON SHA 一致但共享平台提交未统一；按 OTA 前置冻结，等待 Listener OTA 验收或明确共享提交对齐后再推进真实 BLE 传输和资源 installer | `denzic_ota_v1` 只负责通用传输；`mcu_app` 与 `ui_assets` 可独立更新；候选资源经签名、SHA-256、版本和兼容性验证后原子激活；错误目标在擦写前拒绝；失败保留旧资源；录音与设置不被擦除；WB55/WBA/ESP 安装器互不复制；跨产品发布前 `verify_denzic_ota_product_matrix.py` 必须从 `NO_GO_COMMIT_DRIFT` 回到 PASS |
 | SCR-15 | 美术换图流水线与旧风格清理 | revision 51 已把正常 CEMP 使用的 39 个 `expression_*.pbm` 全部收敛到生图导入输出/alias；`render_generated_expression_normal_pack_contact_sheet.py` 固化正常包 contact sheet；旧 procedural 正常帧不再进入产品包；硬件 runtime pending | 每次换图都从 `docs/art/` 生图基线开始；REF/PBM review 和正常包 contact sheet 先由 AI 自查；manifest 中所有正常表情 PBM 必须被 `companion-screen-generated-expression-sheet-import.json` 覆盖且 contact report 保持 39/39；旧工程味资源只能作为救援/维护/预览，不得与新美术混用 |
-| SCR-16 | 屏幕观感与残影控制 | Good Display/EPD 资料已纳入产品规则；`verify_screen_refresh_feel_contract.py` 已固化机器检查；当前策略为交互 `0xFC`、交互后一次 `0xCF`、未知基线/故障和明确 daily/menu 边界各一次 `0xF7`；边界前取消待执行维护，避免一次导航出现两轮清理；rev53 真屏观感待复验 | 手指接触期间不得插入多闪全刷；菜单当前按下行只保留最新帧；同帧不刷新；局刷计数和清残到期可诊断；普通交互清残必须是交互结束后的单次低闪维护；进入和退出菜单只各做一次完整净化刷新；若残影仍不可接受，下一步优先调整波形/profile/清残节奏而不是混入旧图 |
+| SCR-16 | 屏幕观感与残影控制 | Good Display/EPD 资料已纳入产品规则；`verify_screen_refresh_feel_contract.py` 已固化机器检查；当前策略为交互 `0xFC`、交互后一次 `0xCF`、基线有效时明确 daily/menu 边界各一次 `0xCF`，仅未知基线/故障使用 `0xF7`；边界前取消待执行维护，避免一次导航出现两轮清理；rev53 真屏观感待复验 | 手指接触期间不得插入多闪全刷；菜单当前按下行只保留最新帧；同帧不刷新；局刷计数和清残到期可诊断；普通交互清残必须是交互结束后的单次低闪维护；进入和退出菜单各请求一次单闪快刷，只有未知基线/故障允许全刷；若残影仍不可接受，下一步优先调整波形/profile/清残节奏而不是混入旧图 |
 | SCR-17 | 新旧画面交织防回退 | 外部调研已把“残影”和“资源代际混播”拆成两个问题，并补入缓存失效/完整帧提交原则；用户已把反复新旧交织列为产品观感问题，所以它是每个候选 release 都要复验的长期产品 backlog/release item：每次换 prompt、美术、菜单、屏幕 profile、外部 `ui_assets` 或 OTA 资源激活都要先过 generation hygiene；规则已并入 `verify_screen_refresh_feel_contract.py`；每个候选版本必须填写 release ledger，记录 source art、CEMP revision、CRC、兼容 profile、manifest/外部 Flash 激活、active generation、旧队列丢弃计数、首帧 coherent marker、刷新模式和视觉分类；rev51 真屏仍待复验 | 新 CEMP revision 原子激活；旧 revision 待刷帧在切换时 drain 或丢弃；所有显示请求携带 active generation；renderer 只提交完整当前 generation 帧；正常产品路径只显示当前 revision；旧 procedural/旧菜单/旧 sheet 只能用于救援或维护，不得作为过渡混播；首帧必须是 coherent current-generation frame；看到旧影时先分类为 physical afterimage、stale queued frame、stale asset revision、rescue/procedural fallback leakage 或 `stale_generation_content`，只有 physical afterimage 走维护刷新/全刷恢复/profile 调整，其余按产品 P0 修；未来 `ui_assets` OTA 也必须把资源 manifest、payload、CRC/签名、active revision、显示队列和首帧提交作为一个产品事务验收；WBA55/WBA65 即使用 tile compose 或单 framebuffer，也必须保留前台稳定、后台合成、原子提交语义 |
 | SCR-18 | 本地唤醒词与语音唤醒交接 | 用户已为低功耗目标明确 deferred；当前 `wake_word_control/status` 仍只是 arm/disarm/simulate 状态面，真实 KWS 未实现、更未做真机声学/功耗验收，不能进入默认产品流程 | 唤醒词恢复排在 SCR-21 的待机功耗验收之后：固定 `PCM16` 单声道 `16 kHz` 的 HAL-free 音频契约；PDM/DMA -> VAD -> 可替换 KWS -> 去抖/冷却 -> RAM pre-roll -> recording/ASR；短语模型与前端参数位于外部 `model_assets`，推理代码留内部 Flash；privacy/mute/disarm 必须停采样并清 RAM 音频；WB55 与 WBA 用不同 target audio adapter 复验；对真实/非短语、多人、口音、距离、噪声和背景人声记录 FAR、FRR、延迟、CPU、SRAM 与电流；模型原子激活/回退遵循 `model_assets` 契约，但 Listener OTA 验收前不推进 OTA 实作或刷写。详见 `docs/companion_wakeword_requirements.md` |
 | SCR-19 | 无板载 ST-LINK 的产品 USB 开发与恢复 | 需求已建立，尚未选定 WBA55/WBA65 产品板与完成原理图/真机验收；当前 NUCLEO 屏幕路径仍为 ST-LINK VCP + SWD | WBA55 使用 USB-UART VCP、ROM USART downloader 和 SWD/NRST/BOOT rescue pads，禁止误配原生 USB DFU；WBA65 使用原生 USB CDC、ROM USB DFU、HSE32/VDDUSB 条件和同样的 SWD pads；Host 的日志/诊断协议跨 `stlink_vcp`、`usb_uart_vcp`、`native_usb_cdc` 保持一致；USB recovery、factory flash、Denzic OTA 权限分层。详见 `docs/companion_usb_development_requirements.md` |
@@ -716,7 +716,7 @@ owner 再次在运行中的 WB55 板上确认：当前仍显示已退休的六�
 板端完成。新的运行时基线由 `COMP-REQ-021` 固定：主页一页最多四项，六个真实入口经明确的
 两页切换呈现；从任意菜单页的合格右滑直接回到日常 pet 页面，不能要求从左边缘起滑或依赖
 不可见的命中区。手势须使用既有方向锁、去抖和抬起解锁路径，日志记录
-`menu_right_swipe_exit`，并只执行一次 menu-to-daily 的 `0xF7` 清理边界。
+`menu_right_swipe_exit`，并在基线有效时只执行一次 menu-to-daily 的 `0xCF` 单闪清理边界。
 
 实现必须先让已记录的 v4 生成稿完成接受、再导入对应中英文 CEMP 主页资源；禁止为了赶进度在
 C 代码临时绘制四项菜单。page index、点击命中和页面指示器必须等视觉基线批准后才开始。全局
@@ -755,6 +755,21 @@ stationary long-press 在 3000 ms 合约附近可靠触发，修复后以真实�
 六项首页仍被 operator 判定为太小，这再次确认 `COMP-REQ-019`。它保持
 `PENDING_OWNER_VISUAL_REVIEW`；不得用 C 绘制临时四项替代，也不得把此次右滑修复写成菜单密度通过。
 在这四个问题分别有机器证据前，ACPT-01 不重开、更不能推进 ACPT-02 到 ACPT-13。
+
+## Revision 61: ACPT-01 触控时基与单闪边界修复
+
+根因分析确认：主页在第一个接触样本立刻排队 `menu_press`，使本应约 190 ms 的右滑被
+面板 BUSY 后的触控缓冲延迟处理；650 ms hold cue 又启动一张电子纸表情，令 3 s 长按直到
+3309 ms 的合并样本才触发。修复改为先运行可移植 gesture 状态机，主页 press cue 延迟
+160 ms，横向轴一经锁定就取消该候选，因而右滑不会先刷行按下状态。650 ms 时只记录
+non-blocking hold acknowledgement，真实 3000 ms 手势在正常 5 ms 触控轮询里触发菜单。
+
+Good Display 的同族资料明确指出全刷可多次闪、fast 刷一次、partial 不闪；研究和链接
+保存在 `docs/validation/companion-screen-menu-boundary-waveform-research.md`。因此日常/菜单
+边界不再主动请求 `0xF7`：portable 层请求 `MAINTENANCE`，WB55 SSD1681 基线有效时映射到
+`0xCF`，驱动日志写入 `expected_visible_flicker=single`。未知基线和传输/故障恢复仍允许
+`0xF7`，日志模型为 `multiple`。这不是对真实观感的替代；ACPT-01 重开前仍必须完成
+静态、构建和 reset-bounded 串口验证，随后用同一个 `1/13` popup 只复验这三项问题。
 
 ## Revision 60: 生图基线作为视觉通过门禁
 

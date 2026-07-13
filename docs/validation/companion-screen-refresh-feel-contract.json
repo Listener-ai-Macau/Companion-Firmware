@@ -6,6 +6,7 @@
   },
   "checks": {
     "art_and_refresh_axes_separate": true,
+    "boundary_waveform_research_recorded": true,
     "current_candidate_runtime_state_consistent": true,
     "display_queue_tracks_resource_generation": true,
     "full_refresh_reserved_for_baseline_or_fault": true,
@@ -14,6 +15,7 @@
     "interactive_uses_differential_waveform": true,
     "maintenance_uses_single_low_flicker_waveform": true,
     "mature_product_generation_triage_recorded": true,
+    "menu_boundaries_request_single_flicker_fast_path": true,
     "menu_drag_coalesces_to_latest_frame": true,
     "menu_entry_discards_all_pet_frames": true,
     "new_old_generation_interleave_rules_recorded": true,
@@ -25,19 +27,21 @@
     "wb55_sets_and_logs_resource_generation": true
   },
   "product_rules": {
-    "full_refresh": "Use 0xF7 for unknown baseline, fault recovery, or one explicit menu-enter/menu-exit cleanliness boundary; never append a second maintenance refresh to that boundary.",
+    "full_refresh": "Use 0xF7 only for an unknown baseline or a transport/fault recovery. A normal menu boundary requests the 0xCF fast path when the baseline is valid, with full as the policy fallback only when that baseline is unknown.",
     "generation_backlog": "SCR-17 remains a named product backlog/release item; recognizable old faces, menus, prompt crops, fallback renderers, or framebuffer content are stale_generation_content until proven physical afterimage only.",
     "generation_swap": "Treat visual ghosting and old/new resource interleaving as separate failures: atomically activate one CEMP revision, drain stale queued frames, then refresh/maintain the panel baseline.",
     "generation_triage": "Classify visible old content as physical afterimage, stale queued frame, stale asset revision, or rescue/procedural fallback leakage; only physical afterimage belongs to refresh-profile tuning.",
     "ghosting": "Partial/fast refresh can accumulate ghosting; tune refresh profile/cadence rather than blending old art.",
     "interactive": "Use differential 0xFC dirty-window refresh; coalesce queued menu drag frames to the latest request.",
     "maintenance": "After touch settles, schedule one quiet 0xCF maintenance cleanup; never insert it while contact is active.",
+    "menu_boundary": "Enter and exit request one 0xCF fast waveform when the panel baseline is valid. The target logs the expected visible phase model; physical one-flicker confirmation remains a focused hardware gate.",
     "portability": "Scene/player use portable refresh intents; WB55/WBA panel targets choose waveform details."
   },
   "schema_id": "companion.screen.refresh_feel_contract.v1",
   "scope": "SCR-16 screen feel and ghosting control; machine-static until the current candidate has real WB55 logs, then human feel remains pending",
   "sources": {
     "app_ble": "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c",
+    "boundary_waveform_research": "docs/validation/companion-screen-menu-boundary-waveform-research.md",
     "display_queue": "app/companion_pendant/epaper/display_queue.c",
     "driver": "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
     "generation_swap_research": "docs/validation/companion-screen-generation-swap-research.md",

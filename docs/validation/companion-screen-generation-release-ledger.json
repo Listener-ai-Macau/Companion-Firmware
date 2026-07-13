@@ -54,7 +54,7 @@
   },
   "purpose": "SCR-17 release ledger proving the current screen-art candidate has a single product generation before human visual review.",
   "refresh_classification": {
-    "full_refresh": "Use 0xF7 for unknown baseline, fault recovery, or one explicit menu-enter/menu-exit cleanliness boundary; never append a second maintenance refresh to that boundary.",
+    "full_refresh": "Use 0xF7 only for an unknown baseline or a transport/fault recovery. A normal menu boundary requests the 0xCF fast path when the baseline is valid, with full as the policy fallback only when that baseline is unknown.",
     "interactive": "Use differential 0xFC dirty-window refresh; coalesce queued menu drag frames to the latest request.",
     "maintenance": "After touch settles, schedule one quiet 0xCF maintenance cleanup; never insert it while contact is active.",
     "physical_afterimage_route": "panel profile, one quiet maintenance refresh, or full baseline/fault recovery",

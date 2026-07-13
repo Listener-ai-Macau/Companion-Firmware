@@ -793,15 +793,22 @@ static bool ssd1681_refresh_display(comp_epaper_refresh_decision_t decision)
                            : decision == COMP_EPAPER_REFRESH_DECISION_FAST
                                  ? "maintenance"
                                  : "full";
+    const char *expected_visible_flicker =
+        decision == COMP_EPAPER_REFRESH_DECISION_PARTIAL
+            ? "none"
+            : decision == COMP_EPAPER_REFRESH_DECISION_FAST
+                  ? "single"
+                  : "multiple";
     bool update_control_sent =
         ssd1681_command_data(0x22u, &update_control, sizeof(update_control));
     bool master_activation_sent = update_control_sent && ssd1681_command(0x20u);
     uint32_t wait_start = HAL_GetTick();
     bool refresh_complete = master_activation_sent &&
                             ssd1681_wait_refresh_complete(fallback_delay_ms, 5000u);
-    printf("[epaper] refresh mode=%s control=0x%02X busy=%d update=%u activate=%u complete=%u elapsed_ms=%lu\r\n",
+    printf("[epaper] refresh mode=%s control=0x%02X expected_visible_flicker=%s busy=%d update=%u activate=%u complete=%u elapsed_ms=%lu\r\n",
            mode,
            (unsigned)update_control,
+           expected_visible_flicker,
            ssd1681_busy_level(),
            (unsigned)update_control_sent,
            (unsigned)master_activation_sent,

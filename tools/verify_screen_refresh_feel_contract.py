@@ -26,6 +26,7 @@ MAIN_C = ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/main.c"
 APP_BLE = ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c"
 MENU_EVIDENCE = ROOT / "docs/validation/companion-screen-bilingual-menu-wb55.json"
 RUNTIME_RECHECK = ROOT / "docs/validation/companion-screen-wb55-runtime-recheck-logs.json"
+BOUNDARY_WAVEFORM_RESEARCH = ROOT / "docs/validation/companion-screen-menu-boundary-waveform-research.md"
 def rel(path: pathlib.Path) -> str:
     return path.resolve().relative_to(ROOT).as_posix()
 
@@ -62,6 +63,7 @@ def build_contract() -> dict[str, Any]:
     app_ble = read(APP_BLE)
     menu = json.loads(MENU_EVIDENCE.read_text(encoding="utf-8"))
     runtime = json.loads(RUNTIME_RECHECK.read_text(encoding="utf-8"))
+    boundary_research = read(BOUNDARY_WAVEFORM_RESEARCH)
 
     checks = {
         "vendor_ghosting_research_recorded": has(
@@ -177,6 +179,18 @@ def build_contract() -> dict[str, Any]:
             "? 0xCFu",
             '"maintenance"',
             "COMP_EPAPER_REFRESH_DECISION_FAST",
+            "expected_visible_flicker",
+            '"single"',
+        ),
+        "boundary_waveform_research_recorded": has(
+            boundary_research,
+            "GDEY0154D67-T03",
+            "SSD1681",
+            "multiple times",
+            "once",
+            "five consecutive",
+            "operations",
+            "Implementation Decision",
         ),
         "full_refresh_reserved_for_baseline_or_fault": has(
             policy_c,
@@ -191,7 +205,16 @@ def build_contract() -> dict[str, Any]:
             "Companion_Screen_ShowDailyClean",
             "menu_boundary=enter",
             "menu_boundary=exit",
-            "COMP_EPAPER_REFRESH_FULL",
+            "refresh=fast_if_baseline",
+            "COMP_EPAPER_REFRESH_MAINTENANCE",
+        ),
+        "menu_boundaries_request_single_flicker_fast_path": has(
+            app_ble,
+            "Companion_Screen_MenuRequestClean",
+            "Companion_Screen_ShowDailyClean",
+            "Companion_Screen_StartExpressionMode",
+            "COMP_EPAPER_REFRESH_MAINTENANCE",
+            "menu_exit_clean",
         ),
         "touch_active_blocks_maintenance": has(
             main_c,
@@ -276,11 +299,13 @@ def build_contract() -> dict[str, Any]:
             "main": rel(MAIN_C),
             "app_ble": rel(APP_BLE),
             "runtime_recheck": rel(RUNTIME_RECHECK),
+            "boundary_waveform_research": rel(BOUNDARY_WAVEFORM_RESEARCH),
         },
         "product_rules": {
             "interactive": "Use differential 0xFC dirty-window refresh; coalesce queued menu drag frames to the latest request.",
             "maintenance": "After touch settles, schedule one quiet 0xCF maintenance cleanup; never insert it while contact is active.",
-            "full_refresh": "Use 0xF7 for unknown baseline, fault recovery, or one explicit menu-enter/menu-exit cleanliness boundary; never append a second maintenance refresh to that boundary.",
+            "full_refresh": "Use 0xF7 only for an unknown baseline or a transport/fault recovery. A normal menu boundary requests the 0xCF fast path when the baseline is valid, with full as the policy fallback only when that baseline is unknown.",
+            "menu_boundary": "Enter and exit request one 0xCF fast waveform when the panel baseline is valid. The target logs the expected visible phase model; physical one-flicker confirmation remains a focused hardware gate.",
             "ghosting": "Partial/fast refresh can accumulate ghosting; tune refresh profile/cadence rather than blending old art.",
             "generation_swap": "Treat visual ghosting and old/new resource interleaving as separate failures: atomically activate one CEMP revision, drain stale queued frames, then refresh/maintain the panel baseline.",
             "generation_triage": "Classify visible old content as physical afterimage, stale queued frame, stale asset revision, or rescue/procedural fallback leakage; only physical afterimage belongs to refresh-profile tuning.",
