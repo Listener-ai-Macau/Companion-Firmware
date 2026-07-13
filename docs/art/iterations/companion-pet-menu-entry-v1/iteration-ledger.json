@@ -3,9 +3,15 @@
   "feature": "companion-pet-menu-entry",
   "target_profile": "wb55-gdey0154d67-ft6336u-200x200-1bit",
   "rule": "docs/product_visual_design_iteration.md",
+  "baseline": {
+    "accepted_source": "docs/art/generated_pet_expression_sheet_v5.png",
+    "sha256": "B8643279C191BBAB610B4910110DF38E656290A64E4BC842174E284CB3689C6B",
+    "style_lock": "Keep the compact v5 oval high-light eyes, short rounded brows, tiny nose/W-mouth, cheek dots, sparse marks, and white space. The enclosure owns the cat silhouette."
+  },
   "iterations": [
     {
       "iteration_id": "menu-entry-v1-2026-07-13",
+      "status": "rejected",
       "authoring_request": "The menu-entry reaction looks like a played sticker. Define a living, whole-inner-face three-beat performance for the 650 ms long-press feedback before the 3 s menu transition.",
       "prompt": "Create a clean monochrome 1-bit keyframe specification sheet for a premium cute electronic-pet inner-face reaction on a 200x200 e-paper screen. Show exactly three large sequential keyframes, no device outline and no cat head silhouette, ears, whiskers, or face border: 1 ANTICIPATION at 0.65 seconds, pupils and gaze subtly pull toward the held finger, eyebrows lift asymmetrically with curiosity, mouth pauses into a tiny attentive shape, cheeks compress slightly; 2 DECISION around 1.4 seconds, pupils brighten and rise, eyebrows open, mouth becomes a small delighted open curve, cheeks lift, one sparse sparkle or tiny heart appears; 3 SETTLE at 2.4 seconds, the whole inner face softens into a confident warm smile ready for the menu, with the accent fading. Across all three frames the eyes, lids/brows, pupils/highlights, mouth/nose, cheeks, and one sparse accent must each visibly change; do not make this an eye-only blink, a static sticker loop, or a cartoon mascot head. Pure white #fff and black #000 only, thick smooth one-bit-friendly curves, high contrast, no gray, no gradients, no text labels inside the actual frames. The sheet is a direct external-Flash PBM/CEMP keyframe reference, not a marketing illustration.",
       "source_references": [
@@ -13,22 +19,49 @@
         "docs/art/generated_pet_expression_sheet_v5.png",
         "docs/art/iterations/companion-pet-interaction-v1/iteration-ledger.json"
       ],
-      "output": "docs/art/generated_companion_menu_entry_expression_v1.png",
-      "sha256": null,
+      "output": "docs/art/rejected/generated_companion_menu_entry_expression_v1-rejected.png",
+      "sha256": "848A6FB1D61B209034DC36190D9820EA612AB7DC89C3209FDA7469D394FF5D78",
       "review": {
-        "outcome": "pending_generated_reference_review",
-        "reason": "Current long-press thinking clip lacks whole-face anticipation, decision, and settle timing.",
+        "outcome": "rejected_for_v5_style_discontinuity",
+        "reason": "Owner feedback: this new expression is ugly and completely different from the established style. The candidate introduced heavy eyelash/eyelid contours, shaded cheek hatching, oversized facial geometry, and a different mascot language.",
+        "next_prompt_delta": "Strictly reproduce the accepted v5 facial primitives and proportions. Animate only their coordinated pose, direction, and timing; do not reinterpret the character style."
+      },
+      "implementation": {
+        "status": "rejected_do_not_import",
+        "resource_revision": null,
+        "validation": [
+          "preserve rejected output and immutable hash",
+          "do not import this output into PBM/CEMP or flash it"
+        ]
+      }
+    },
+    {
+      "iteration_id": "menu-entry-v2-v5-continuity-2026-07-13",
+      "status": "candidate_generated_pending_owner_review",
+      "authoring_request": "Replace the rejected, stylistically unrelated menu-entry candidate with a living three-beat inner-face performance that is visibly the same Companion character as the accepted v5 expression sheet.",
+      "prompt": "Create a clean monochrome 1-bit storyboard for one premium Companion menu-entry reaction on a 200x200 e-paper screen. Treat the supplied accepted generated_pet_expression_sheet_v5.png as an exact visual style lock, not loose inspiration: preserve its compact black oval eyes with one small white top highlight, short rounded eyebrow dashes, tiny black button nose and W-shaped mouth, single oval cheek dots, thin friendly black curves, very large white space, and only one sparse black accent at most. Do not introduce eyelash wings, thick upper eyelid outlines, cheek hatching, manga eyes, shaded shapes, giant mouths, extra facial parts, a device frame, a cat head outline, ears, whiskers, borders, labels, gray, color, or gradients. Show exactly three large left-to-right sequential keyframes of the same face at the same anchored positions so it reads as one continuous little reaction, not three stickers. Keyframe A, ANTICIPATION at 0.65 seconds: the familiar v5 calm face notices a long press, with a slight upward attentive pupil/gaze shift, one short brow softly lifted, tiny mouth gently paused, cheek dots a touch inward. Keyframe B, DECISION at 1.4 seconds: the same eyes brighten through a small coordinated lift of pupils/highlights and brows, the v5 mouth becomes a tiny delighted open W-curve, cheeks lift subtly, and one small v5-like sparkle appears. Keyframe C, SETTLE at 2.4 seconds: the same face relaxes into the accepted v5 happy warmth with soft crescent lids or a gentle small smile, the accent fades away, and the layout remains calm and ready for the menu. Every change must be modest, readable after 1-bit conversion, and continuous from the previous frame. This is an external-Flash PBM/CEMP keyframe reference, not a mascot redesign or marketing illustration.",
+      "source_references": [
+        "docs/art/generated_pet_expression_sheet_v5.png sha256 B8643279C191BBAB610B4910110DF38E656290A64E4BC842174E284CB3689C6B",
+        "rejected menu-entry-v1-2026-07-13 sha256 848A6FB1D61B209034DC36190D9820EA612AB7DC89C3209FDA7469D394FF5D78",
+        "owner feedback from this conversation: new expression is ugly and completely different from the prior style"
+      ],
+      "output": "docs/art/generated_companion_menu_entry_expression_v2.png",
+      "sha256": "CB3424B597AE2C34340C3E44382C3ABC01D63ADFACEBE3E5F7A76B219ABEC39A",
+      "review": {
+        "outcome": "candidate_generated_pending_owner_review",
+        "reason": "The generated candidate returns to the v5 primitive set: compact oval eyes with one highlight, short brow dashes, tiny nose/W-mouth, cheek dots, white space, and only one sparkle. The three faces remain anchored as one left-to-right sequence; owner approval remains required before PBM/CEMP import.",
         "next_prompt_delta": null
       },
       "implementation": {
         "status": "not_started_reference_first",
         "resource_revision": null,
         "validation": [
-          "generate and hash docs/art/generated_companion_menu_entry_expression_v1.png",
-          "compare source and PBM keyframes for all whole-face anchors",
+          "generate and hash docs/art/generated_companion_menu_entry_expression_v2.png",
+          "compare each keyframe against v5 primitive/proportion anchors before PBM conversion",
           "prove CEMP anticipation/decision/settle timing in normal runtime trace",
           "focused real-panel long-press review"
-        ]
+        ],
+        "activation_gate": "Owner visual approval is required before replacing any active CEMP clip or incrementing the resource revision."
       }
     }
   ]
