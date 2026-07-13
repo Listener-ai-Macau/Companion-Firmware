@@ -756,6 +756,21 @@ stationary long-press 在 3000 ms 合约附近可靠触发，修复后以真实�
 `PENDING_OWNER_VISUAL_REVIEW`；不得用 C 绘制临时四项替代，也不得把此次右滑修复写成菜单密度通过。
 在这四个问题分别有机器证据前，ACPT-01 不重开、更不能推进 ACPT-02 到 ACPT-13。
 
+## Revision 62: ACPT-01 低功耗唤醒与交互卡顿 triage
+
+同一个 `1/13` canonical popup 的第二次结果仍为失败，operator 原文为“直接无反应了，没有首页唤醒”，
+随后补充“而且现在用着相当的卡顿, 这个产品, 需要优化”。本轮串口证明 PC6/FT6336 的触控中断与
+首个 decoded contact 都到达，Stop 也正确被 touch blocker 解除；650 ms hold marker 已记录，但既没有
+`daily_to_menu` 的 3000 ms 决定，也没有把静态 sleepy face 唤回日常 face 的显示请求。触控期间还以约
+5 ms cadence 输出 `[touch-irq]`，几秒操作形成上千条同步 UART 文本，这不是产品路径可以保留的开销。
+
+`COMP-REQ-022` 因此增加两项必须先修的同一交互契约：当已批准的静态 low-power face 正在显示时，第一个
+已解码 contact 只允许请求一次现有外部 Flash `idle` 日常脸的 differential wake（无全刷、无未批准新美术、
+无定时动画）；正常运行时不得为每个 IRQ/采样打印串口，保留状态改变、gesture 和限频健康计数即可。显示
+请求的等待期间仍要用采样时间驱动手势，因此唤醒不能把 stationary 3 s long press 再次推迟。修复后先以
+reset-bounded log 同时证明 `low_power_touch_wake`、`gesture=long_press` 的时长、无 per-IRQ flood 与
+单个 `0xCF` 菜单边界，再重开同一个 `1/13` popup；禁止推进 ACPT-02。
+
 ## Revision 61: ACPT-01 触控时基与单闪边界修复
 
 根因分析确认：主页在第一个接触样本立刻排队 `menu_press`，使本应约 190 ms 的右滑被

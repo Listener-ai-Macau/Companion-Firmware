@@ -105,6 +105,7 @@ def main() -> int:
         "TOUCH_LONG_PRESS_MAX_MOVE_PX 46u",
         "TOUCH_MENU_ENTRY_CUE_MS 360u",
         "TOUCH_MENU_PRESS_CUE_DELAY_MS 160u",
+        "TOUCH_SAMPLE_LOG_INTERVAL_MS 250u",
         ".double_tap_max_gap_ms = TOUCH_DOUBLE_TAP_MAX_GAP_MS",
         ".double_tap_max_move_px = TOUCH_DOUBLE_TAP_MAX_MOVE_PX",
         "process_menu_entry_transition",
@@ -116,6 +117,9 @@ def main() -> int:
         "daily_hold_menu_prepare",
         "visual=deferred_until_menu",
         "comp_touch_gesture_is_horizontal_drag",
+        "s_low_power_touch_wake_requested",
+        "low_power_touch_wake expression=idle refresh=partial",
+        "Companion_Screen_ShowDaily()",
         "Companion_Screen_MenuRequestClean(",
         "Companion_Screen_ShowDailyClean()",
         "screen_maintenance cancelled=transition",
@@ -181,6 +185,10 @@ def main() -> int:
         errors.append("touch fixture must require any-position 3 s long-press menu entry")
     if "Companion_Screen_DailyExpression(\n                COMP_EPAPER_EXPRESSION_THINKING" in main_source:
         errors.append("650 ms hold acknowledgement must not start an e-paper refresh before the 3 s decision")
+    if 'printf("[touch-irq] observed=' in main_source:
+        errors.append("normal touch path must not synchronously print every touch IRQ")
+    if "phase_changed" not in main_source or "TOUCH_SAMPLE_LOG_INTERVAL_MS" not in main_source:
+        errors.append("changed-coordinate touch diagnostics must be rate limited")
 
     double_tap_marker = "} else if (gesture.type == COMP_TOUCH_GESTURE_DOUBLE_TAP) {"
     double_tap_tail = "} else if (gesture.type == COMP_TOUCH_GESTURE_TAP) {"

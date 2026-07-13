@@ -72,6 +72,7 @@ COMPANION_PLACE_IN_SECTION("TAG_OTA_START") const uint32_t MagicKeywordAddress =
 #define TOUCH_LONG_PRESS_MAX_MOVE_PX 46u
 #define TOUCH_MENU_ENTRY_CUE_MS 360u
 #define TOUCH_MENU_PRESS_CUE_DELAY_MS 160u
+#define TOUCH_SAMPLE_LOG_INTERVAL_MS 250u
 #define TOUCH_TAP_MAX_MOVE_PX 24u
 #define TOUCH_DOUBLE_TAP_MAX_GAP_MS 650u
 #define TOUCH_DOUBLE_TAP_MAX_MOVE_PX 40u
@@ -456,6 +457,7 @@ static uint16_t s_touch_consecutive_failures;
 static volatile uint32_t s_touch_irq_count;
 static uint32_t s_touch_irq_consumed_count;
 static bool s_touch_contact_active;
+static uint32_t s_touch_last_sample_log_ms;
 static buffered_touch_sample_t
     s_touch_refresh_buffer[TOUCH_REFRESH_BUFFER_CAPACITY];
 static uint16_t s_touch_refresh_buffer_read;
@@ -480,6 +482,7 @@ static uint32_t s_menu_home_press_candidate_due_ms;
 static bool s_screen_maintenance_pending;
 static uint32_t s_screen_maintenance_due_ms;
 static bool s_low_power_idle_pose_attempted;
+static bool s_low_power_touch_wake_requested;
 #if COMPANION_SCREEN_MAINTENANCE_DIAGNOSTIC
 static uint32_t s_maintenance_diagnostic_started_ms;
 static bool s_maintenance_diagnostic_enqueued;
@@ -582,6 +585,7 @@ static void handle_button_press(size_t index);
 static void init_touch_debug(void);
 static void poll_touch_debug(void);
 static void print_touch_health(void);
+static void request_low_power_touch_wake(void);
 static bool recover_touch_i2c3_bus(void);
 static void reset_touch_controller(void);
 static void capture_touch_during_display_wait(void *context, uint32_t now_ms);
@@ -1752,6 +1756,9 @@ static void process_touch_debug_sample(const comp_ft6336_touch_sample_t *sample,
     uint16_t logical_x;
     uint16_t logical_y;
     uint32_t sample_age_ms;
+    bool sample_changed;
+    bool phase_changed;
+    bool log_sample;
 
     if (sample == NULL) {
         return;
@@ -1765,6 +1772,7 @@ static void process_touch_debug_sample(const comp_ft6336_touch_sample_t *sample,
          * buffered contact lifecycle before the next gesture begins. */
         s_touch_refresh_capture_active = false;
         s_touch_refresh_latest_contact_valid = false;
+        s_low_power_touch_wake_requested = false;
     }
     logical_x = sample->x < 200u ? sample->x : 199u;
     logical_y = sample->y < 200u ? sample->y : 199u;
@@ -1779,10 +1787,22 @@ static void process_touch_debug_sample(const comp_ft6336_touch_sample_t *sample,
     }
 #endif
 
-    if (!s_touch_last_sample_valid ||
-        memcmp(sample, &s_touch_last_sample, sizeof(*sample)) != 0) {
+    sample_changed = !s_touch_last_sample_valid ||
+                     memcmp(sample, &s_touch_last_sample, sizeof(*sample)) != 0;
+    phase_changed = !s_touch_last_sample_valid ||
+                    sample->touch_count != s_touch_last_sample.touch_count ||
+                    sample->event != s_touch_last_sample.event ||
+                    sample->touch_id != s_touch_last_sample.touch_id;
+    log_sample = phase_changed ||
+                 (sample_changed &&
+                  (uint32_t)(now_ms - s_touch_last_sample_log_ms) >=
+                      TOUCH_SAMPLE_LOG_INTERVAL_MS);
+    if (sample_changed) {
         s_touch_last_sample = *sample;
         s_touch_last_sample_valid = true;
+    }
+    if (log_sample) {
+        s_touch_last_sample_log_ms = now_ms;
         printf("[touch] contacts=%u event=%s id=%u raw_x=%u raw_y=%u x=%u y=%u mirror_x=%u mirror_y=%u sample_age_ms=%lu reads=%lu\r\n",
                (unsigned)sample->touch_count,
                comp_ft6336_touch_event_name(sample->event),
@@ -1796,7 +1816,27 @@ static void process_touch_debug_sample(const comp_ft6336_touch_sample_t *sample,
                (unsigned long)sample_age_ms,
                (unsigned long)s_touch.read_count);
     }
+    if (s_touch_contact_active) {
+        request_low_power_touch_wake();
+    }
     handle_touch_menu_sample(sample, logical_x, logical_y, now_ms);
+}
+
+static void request_low_power_touch_wake(void)
+{
+    bool requested;
+
+    if (s_low_power_touch_wake_requested ||
+        !s_low_power_idle_pose_attempted ||
+        !Companion_Screen_IsReady() ||
+        Companion_Screen_IsMenuVisible()) {
+        return;
+    }
+
+    s_low_power_touch_wake_requested = true;
+    requested = Companion_Screen_ShowDaily();
+    printf("[touch-ui] low_power_touch_wake expression=idle refresh=partial result=%s\r\n",
+           requested ? "requested" : "unavailable");
 }
 
 static void poll_touch_debug(void)
@@ -1835,11 +1875,6 @@ static void poll_touch_debug(void)
         return;
     }
     s_touch_irq_consumed_count = irq_snapshot;
-    if (irq_pending) {
-        printf("[touch-irq] observed=%lu consumed=%lu\r\n",
-               (unsigned long)irq_snapshot,
-               (unsigned long)s_touch_irq_consumed_count);
-    }
     s_touch_next_poll_ms = now +
         (s_touch_contact_active ? TOUCH_ACTIVE_POLL_MS : TOUCH_IDLE_POLL_MS);
     was_detected = s_touch.detected;
