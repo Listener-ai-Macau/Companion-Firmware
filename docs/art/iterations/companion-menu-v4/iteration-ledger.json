@@ -6,6 +6,7 @@
   "iterations": [
     {
       "iteration_id": "menu-v4-2026-07-13",
+      "status": "candidate_generated_pending_owner_review",
       "authoring_request": "Focused WB55 acceptance failed because the six top-level menu items are too small. Replace the menu home with four items per 200x200 page without reducing the real product information architecture.",
       "prompt": "Create a monochrome 1-bit design specification sheet for the Companion e-paper settings menu, target 200x200 pixels. Preserve the approved menu-v3 visual language exactly: pure white background, pure black delicate but crisp linework, compact friendly header, tiny inner-face marks only, black selected state with white glyph, thin dividers, small sparkle accents, no device frame, no cat head outline, no ears, no whiskers, no gray, no color, no gradients. This new v4 layout must fix the owner feedback that the menu is too small: show two SETTINGS HOME screens, each with exactly four large, easy-touch rows maximum. Page 1 contains Voice & Record, Status, Phone Link, Device. Page 2 contains Preferences and About plus two deliberately blank non-controls; show clear page dots and a large right/left page navigation affordance, not a continuous scroll list. Also show the six existing functional detail pages: Voice & Record, Status, Phone Link, Device, Preferences, About. Preserve only real controls and live status affordances: Voice record state/history and wake word planned; Status display/touch/BLE/record rows; Phone pairing/link/reconnect; Device e-paper profile/touch/assets/battery planned; Preferences Chinese/English, gesture and refresh policy; About firmware/UI asset revision, OTA frozen, diagnostics. Labels are short readable English only. This is a direct implementation reference for replaceable STM32 external-Flash resources, not a marketing board.",
       "source_references": [
@@ -14,10 +15,10 @@
         "user-provided Companion menu reference images from this conversation"
       ],
       "output": "docs/art/generated_companion_menu_reference_v4.png",
-      "sha256": null,
+      "sha256": "1C44E7913B88975D57ED72A16A3629BD984673DB54C2150D766192521878BCA8",
       "review": {
-        "outcome": "pending_generated_reference_review",
-        "reason": "Owner rejected the v3 six-up home as too small and requested four items per page.",
+        "outcome": "candidate_generated_pending_owner_review",
+        "reason": "The generated candidate presents four large home rows on page 1, two real remaining destinations plus two deliberately blank non-controls on page 2, page dots, page navigation affordances, and the six required functional detail-page references. It is not a CEMP source until owner visual approval.",
         "next_prompt_delta": null
       },
       "implementation": {
