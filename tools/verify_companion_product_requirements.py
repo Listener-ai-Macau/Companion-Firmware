@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from pathlib import Path
 
 
@@ -31,6 +32,8 @@ REQUIRED_ANCHORS = (
     "COMP-REQ-013",
     "COMP-REQ-014",
     "COMP-REQ-015",
+    "COMP-REQ-016",
+    "COMP-REQ-017",
     "PC6/EXTI",
     "<=1 mA",
     "external-Flash first",
@@ -53,13 +56,17 @@ def main() -> int:
 
     text = REGISTRY.read_text(encoding="utf-8") if REGISTRY.exists() else ""
     errors = [f"missing requirement registry anchor: {anchor}" for anchor in REQUIRED_ANCHORS if anchor not in text]
+    requirement_ids = sorted(
+        set(re.findall(r"COMP-REQ-(\d{3})", text)),
+        key=int,
+    )
     result = {
         "schema_id": "companion.product.requirements.v1",
         "status": "PASS" if not errors else "FAIL",
         "registry": str(REGISTRY.relative_to(ROOT)).replace("\\", "/"),
         "workflow_plan": "companion-screen-product-integration",
-        "requirement_ids": [f"COMP-REQ-{number:03d}" for number in range(1, 16)],
-        "current_focus": "COMP-REQ-015 menu-v3 revision-53 runtime recheck",
+        "requirement_ids": [f"COMP-REQ-{number}" for number in requirement_ids],
+        "current_focus": "COMP-REQ-016/017 runtime screen, touch, recording, and refresh rework",
         "active_parallel_track": "COMP-REQ-009 generated low-power/wake/dynamic-recording expression art",
         "errors": errors,
     }
