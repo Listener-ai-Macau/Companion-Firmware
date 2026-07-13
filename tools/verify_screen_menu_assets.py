@@ -196,10 +196,47 @@ def check_runtime_contract(errors: list[str], built: dict[str, object]) -> None:
     compare_metadata(errors, "evidence.resource_pack", recorded, built)
     revision = built["revision"]
     runtime = evidence.get("runtime_evidence", {})
-    if runtime.get("status") != f"REVISION_{revision}_RUNTIME_RECHECK_PENDING":
-        errors.append("runtime evidence must explicitly require this menu revision's recheck")
-    if "pending" not in str(runtime.get("machine_observation", "")).lower():
-        errors.append("runtime evidence must explain that hardware review is pending")
+    pending_status = f"REVISION_{revision}_RUNTIME_RECHECK_PENDING"
+    promoted_status = f"REVISION_{revision}_RUNTIME_PASS_HUMAN_VISUAL_PENDING"
+    status = runtime.get("status")
+    observation = str(runtime.get("machine_observation", "")).lower()
+    if status == pending_status:
+        if "pending" not in observation:
+            errors.append("pending runtime evidence must explain that the runtime recheck is pending")
+    elif status == promoted_status:
+        if "passed" not in observation or "pending" not in observation:
+            errors.append("promoted runtime evidence must distinguish machine pass from pending human review")
+
+        # A promoted revision remains valid only when both captured boots still
+        # prove the exact markers required by the active CEMP manifest.
+        captured_logs: list[str] = []
+        for key in ("provision_capture_summary", "normal_capture_summary",
+                    "provision_raw_log", "normal_raw_log"):
+            value = runtime.get(key)
+            if not isinstance(value, str) or not value:
+                errors.append(f"promoted runtime evidence is missing {key}")
+                continue
+            path = ROOT / value
+            if not path.is_file():
+                errors.append(f"promoted runtime evidence path is missing: {value}")
+                continue
+            if path.suffix == ".json":
+                try:
+                    if json.loads(path.read_text(encoding="utf-8-sig")).get("status") != "PASS":
+                        errors.append(f"promoted runtime summary is not PASS: {value}")
+                except Exception as exc:
+                    errors.append(f"could not read promoted runtime summary {value}: {exc}")
+            else:
+                captured_logs.append(path.read_text(encoding="utf-8", errors="replace"))
+        combined_logs = "\n".join(captured_logs)
+        for marker in runtime.get("required_runtime_markers", []):
+            if not isinstance(marker, str) or marker not in combined_logs:
+                errors.append(f"promoted runtime logs are missing marker: {marker}")
+    else:
+        errors.append(
+            "runtime evidence must be this revision's recheck-pending or "
+            "machine-pass/human-visual-pending status"
+        )
     menu_contract = evidence.get("menu_contract", {})
     if menu_contract.get("external_menu_frames") != 14:
         errors.append("menu contract must record fourteen normal external menu frames")
