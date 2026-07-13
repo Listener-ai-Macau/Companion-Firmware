@@ -28,7 +28,8 @@ $features = [ordered]@{
         tag = "v1.24.0"
         commit = "7c5aa7dcd2c0abe787f922bb06a6213c724d08e4"
         starter = "Projects/P-NUCLEO-WB55.Nucleo/Applications/BLE/BLE_p2pServer"
-        ota_reference = "BLE_p2pServer_ota or BLE_Ota"
+        ota_core = "third_party/denzic-platform denzic_ota_v1"
+        ota_adapter = "Companion_BLE_Ota_Loader STM32WB platform adapter"
         throughput_reference = "BLE_DataThroughput"
     }
     responsibilities = @(

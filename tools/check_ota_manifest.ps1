@@ -342,7 +342,7 @@ function Test-Manifest {
     $imageFile = Require-String -Manifest $manifest -Path "image.file" -Errors $errors
     $imageSize = Require-Int -Manifest $manifest -Path "image.size_bytes" -Errors $errors
     $imageSha = Require-String -Manifest $manifest -Path "image.sha256" -Errors $errors
-    Require-String -Manifest $manifest -Path "compatibility.st_reference" -Errors $errors | Out-Null
+    Require-String -Manifest $manifest -Path "compatibility.platform_adapter" -Errors $errors | Out-Null
     Require-String -Manifest $manifest -Path "compatibility.gatt_contract" -Errors $errors | Out-Null
     Require-String -Manifest $manifest -Path "bootloader.kind" -Errors $errors | Out-Null
     Require-String -Manifest $manifest -Path "bootloader.recovery" -Errors $errors | Out-Null
@@ -367,7 +367,7 @@ function Test-Manifest {
     }
 
     $bootloaderKind = [string] (Get-JsonValue -Object $manifest -Path "bootloader.kind").Value
-    if ($bootloaderKind -and $bootloaderKind -notmatch "resident|st_reference|stm32wb") {
+    if ($bootloaderKind -and $bootloaderKind -notmatch "resident|denzic|stm32wb") {
         Add-Error -Errors $errors -Message "bootloader.kind must name the STM32WB resident bootloader policy"
     }
     $externalKind = [string] (Get-JsonValue -Object $manifest -Path "external_flash.kind").Value
@@ -473,9 +473,9 @@ function New-FixtureFiles {
             sha256 = $sha
         }
         compatibility = [ordered]@{
-            st_reference = "BLE_Ota or BLE_p2pServer_ota"
+            platform_adapter = "stm32wb_denzic_ota_v1"
             stm32cube_wb = "v1.24.0"
-            gatt_contract = "companion_ble_gatt_v1"
+            gatt_contract = "denzic_ota_v1"
         }
         bootloader = [ordered]@{
             kind = "stm32wb_resident_bootloader"

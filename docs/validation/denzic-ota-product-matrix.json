@@ -1,0 +1,80 @@
+{
+  "schema": "denzic.validation.ota-product-matrix.v1",
+  "result": "NO_GO_COMMIT_DRIFT",
+  "shared_core_commit": null,
+  "checkout_commit_groups": {
+    "1e727f2eb98a6f7f9a8272d31f27130c4b97f77b": [
+      "companion_firmware",
+      "companion_type"
+    ],
+    "6ce017f5e792d175f822d9cf071c100429758016": [
+      "listener_firmware",
+      "listener_type"
+    ]
+  },
+  "shared_protocol": "denzic_ota_v1",
+  "shared_protocol_version": 1,
+  "shared_protocol_sha256": "93d1460ab6f88221830ecdf47d04a1f309b824f68708109cbc50af2c245fdafb",
+  "products": [
+    {
+      "product_repo": "companion_firmware",
+      "submodule_path": "third_party/denzic-platform",
+      "checkout_commit": "1e727f2eb98a6f7f9a8272d31f27130c4b97f77b",
+      "index_gitlink_commit": "1e727f2eb98a6f7f9a8272d31f27130c4b97f77b",
+      "index_matches_checkout": true,
+      "protocol_sha256": "93d1460ab6f88221830ecdf47d04a1f309b824f68708109cbc50af2c245fdafb",
+      "adapter_files": [
+        "cubeide/Companion_BLE_Ota_Loader/Makefile",
+        "cubeide/Companion_BLE_Ota_Loader/Src/companion_ota_v1.c"
+      ]
+    },
+    {
+      "product_repo": "companion_type",
+      "submodule_path": "third_party/denzic-platform",
+      "checkout_commit": "1e727f2eb98a6f7f9a8272d31f27130c4b97f77b",
+      "index_gitlink_commit": "1e727f2eb98a6f7f9a8272d31f27130c4b97f77b",
+      "index_matches_checkout": true,
+      "protocol_sha256": "93d1460ab6f88221830ecdf47d04a1f309b824f68708109cbc50af2c245fdafb",
+      "adapter_files": [
+        "apps/windows/src-tauri/src/backend/ble_bridge.rs",
+        "apps/windows/src-tauri/src/backend/firmware_ota.rs"
+      ]
+    },
+    {
+      "product_repo": "listener_firmware",
+      "submodule_path": "third_party/denzic-platform",
+      "checkout_commit": "6ce017f5e792d175f822d9cf071c100429758016",
+      "index_gitlink_commit": "6ce017f5e792d175f822d9cf071c100429758016",
+      "index_matches_checkout": true,
+      "protocol_sha256": "93d1460ab6f88221830ecdf47d04a1f309b824f68708109cbc50af2c245fdafb",
+      "adapter_files": [
+        "ports/esp32/ble_firmware_ota/CMakeLists.txt",
+        "ports/esp32/ble_firmware_ota/ble_firmware_ota_esp32.c"
+      ]
+    },
+    {
+      "product_repo": "listener_type",
+      "submodule_path": "third_party/denzic-platform",
+      "checkout_commit": "6ce017f5e792d175f822d9cf071c100429758016",
+      "index_gitlink_commit": "6ce017f5e792d175f822d9cf071c100429758016",
+      "index_matches_checkout": true,
+      "protocol_sha256": "93d1460ab6f88221830ecdf47d04a1f309b824f68708109cbc50af2c245fdafb",
+      "adapter_files": [
+        "src-tauri/src/firmware_ota.rs",
+        "src/lib/firmwareOta.ts"
+      ]
+    }
+  ],
+  "boundary": {
+    "shared": "protocol, GATT identity, resume state machine, host and embedded cores",
+    "per_target": "package compatibility, Flash installer, boot confirmation, rollback and resources",
+    "wrong_target_policy": "reject before erase or activation"
+  },
+  "checks": [
+    "Companion and Listener firmware/Type trees report their checked-out Denzic commits; commit drift is NO_GO until the shared platform is deliberately aligned",
+    "all four trees expose byte-identical denzic_ota_v1 protocol JSON",
+    "each product endpoint references a Denzic shared core instead of a parallel OTA protocol",
+    "target installers remain separate from the shared transport core"
+  ],
+  "no_go_reason": "Product repositories are not pinned to the same Denzic platform checkout; hold Companion OTA/resource installer work until the Listener OTA validation branch is accepted or the shared commit alignment is deliberately updated."
+}

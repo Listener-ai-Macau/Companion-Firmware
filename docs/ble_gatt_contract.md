@@ -91,6 +91,148 @@ diagnostics, and `delete/privacy` characteristics below.
 | privacy | delete/privacy | host -> device write; device -> host notify | `DeletePrivacyV1`: request_id, operation delete_recording/delete_all_recordings/factory_privacy_wipe, recording_id, validated_total_length, validated_sha256 | Device deletes only after the request matches stored metadata or after a full privacy wipe confirmation. |
 | OTA | OTA readiness | device -> host read/notify | `OtaReadinessV1`: ready_state, boot_slot, battery_percent, charger_present, minimum_required_mv, blocker_bitmap, manifest_version, board_target, mcu, image_size, image_sha256_prefix, interrupted_transfer_resume_token | This only reports OTA readiness and blockers; the later OTA data path must reuse an ST OTA reference rather than inventing a custom large-write path here. |
 
+## CardStatusV1 Observability
+
+DeviceStatusV1 is also a screen-expression input. After startup, WB55 device
+status publishes map `fault_bitmap != 0` to the error face, active audio mode
+to recording, and disconnected mode to the low-priority sleepy hint. Initial
+service-state publication is publish-only so it cannot schedule screen work
+before the display task exists.
+
+BatteryChargeV1 is also a screen-expression input. After startup, WB55 battery
+status publishes feed `battery_charging.sample` into the portable expression
+bridge, so low percent or low voltage while not charging can request the
+low-battery face. Initial service-state publication is publish-only so it
+cannot schedule screen work before the display task exists.
+
+OtaReadinessV1 is also a screen-expression input. After startup, WB55 readiness
+publishes map the low-battery blocker to the low-battery face and map other
+nonzero blocker values to the error face. Initial service-state publication is
+publish-only so it cannot schedule screen work before the display task exists.
+
+MeetingStatusV1, SpeakerStatusV1, and WakeWordStatusV1 are also screen-expression inputs.
+After startup, WB55 interaction status publishes map
+meeting recording/summary/sync/error, speaker prompt/error, and wake
+armed/detected/error state into the same ExpressionV1 faces used by control
+diagnostic events. Initial service-state publication is publish-only so it
+cannot schedule screen work before the display task exists.
+
+RecordingControlV1 and the internal recording FSM share a portable
+screen-expression mapper for state readback. `idle` has no override,
+`pending_start`/`recording` map to recording, `stopping` maps to thinking,
+`canceled` maps to idle, transfer-ready/active/transferred map to
+sync-complete, and error-recovery maps to error. This does not add a new GATT
+surface; it keeps future WB55/WBA status readback aligned with the existing
+control/event faces.
+
+`e_paper_card_status` is the host-visible screen status surface. Hosts should
+treat it as the status of the latest display request, not as proof that a real
+panel is present. The fields are:
+
+```text
+uint8 schema_version
+uint8 card_slot
+uint8 render_state
+uint8 last_error
+uint32 request_id
+uint32 content_crc32
+uint32 refresh_count
+```
+
+`render_state` values are stable: `0=idle`, `1=accepted`, `2=rendered`,
+`3=failed`, and `4=busy`. `last_error` values are stable: `0=ok`,
+`1=queue_full`, `2=payload_too_long`, `3=bad_argument`,
+`4=deferred_no_panel`, `5=deferred_controller_unknown`,
+`6=panel_bad_argument`, `7=panel_transport_error`, `8=panel_busy`, and
+`9=unsupported_expression`.
+
+Queue fault behavior is host-visible. A full display queue reports
+`render_state=busy,last_error=queue_full`. Oversized CardWriteV1 content reports
+`render_state=failed,last_error=payload_too_long`. Unsupported ExpressionV1
+requests report `render_state=failed,last_error=unsupported_expression`, and
+firmware expression state must roll back if enqueue fails.
+
+The current WB55 build has a dry-run panel adapter. A successful CardWriteV1 or
+ExpressionV1 enqueue first notifies `render_state=accepted,last_error=ok`; the
+display task then reports the dry-run final result as
+`render_state=failed,last_error=deferred_no_panel` with the same `request_id`
+and `content_crc32`. The paired diagnostic events are
+`e_paper.render_request` and `e_paper.update_result`. This makes "no real panel
+connected" observable without turning it into an expression self-loop or a fake
+rendered PASS.
+
+The display task also records `e_paper.runtime_snapshot` for diagnostics/log
+pull consumers. That event does not change `CardStatusV1`; it exposes aggregate
+runtime pressure for bring-up: expression current/last signal, queue
+`display_queue.pending_count`, high-water and dropped counters, plus panel
+deferred/error counts including `panel.error_count`. WB55 and future WBA
+adapters should keep the same payload model while changing only platform BLE,
+scheduler, and panel transport glue.
+
+The native real-device bench must collect both the accepted CardStatusV1 and
+the final CardStatusV1 for the same `request_id`. Its `card_write` artifact
+uses `card_status` for the accepted record, `final_card_status` for the terminal
+record, `status_sequence` for every matching notification, and
+`real_panel_refresh_claimed` only when the final record is
+`render_state=rendered,last_error=ok`. The default bench accepts either
+`rendered/ok` or the current no-panel deferred final status. The real e-paper
+hardware gate must run `tools/companion_ble_real_bench.py` with
+`--expect-real-panel`; that mode requires `final_card_status` to be
+`rendered/ok` before the artifact can support a real refresh claim. Use
+`--screen-final-timeout` to tune the final-status wait for slow e-paper panels.
+The same artifact also includes `settings_sleepy_screen_status`, which writes
+SettingsV1 with `display_brightness=0`, waits for the ExpressionV1
+CardStatusV1 accepted/final pair on card slot 1 with the `0xe0000000` request
+ID base, and then restores brightness through `settings_restore_after_sleepy`.
+The bench runs this settings sleepy check before recording-control mutations so
+a low-priority sleepy hint is measured against the idle/card-write baseline
+instead of being correctly suppressed by an active recording or thinking face.
+It must also carry a `screen_expression_status` contract operation linked to
+`docs/validation/companion-screen-expression-host-status-sequence.json`. That
+operation is a six-face host baseline, not a hardware render claim; it keeps
+idle, sleepy, recording, low-battery, sync-complete, and error status sequence
+semantics attached to the real BLE artifact while `card_write` and
+`settings_sleepy_screen_status` remain the hardware-collected accepted/final
+CardStatusV1 evidence.
+If a live bench fails after collecting any operation, the JSON artifact must
+preserve the `operations` array and `partial_operation_count`; panel bring-up
+uses that partial evidence to distinguish board reachability or BLE loss from
+screen contract drift.
+The artifact may also carry the contract-only `screen_expression_demo_status`
+operation from
+`docs/validation/companion-screen-expression-demo-host-status-sequence.json`.
+That `screen_expression_demo_host_status_sequence` fixture extends the host
+baseline to every demo face and records `held_steps_emit_no_host_status` for
+suppressed demo steps; it is verified by
+`tools/verify_expression_demo_host_status_sequence.py`.
+
+For ExpressionV1 requests, the `content_crc32` is derived from the expression
+decision and the `e_paper.render_request` diagnostic payload carries
+`(expression_id << 16) | signal_id`. The no-hardware BLE matrix uses that pair
+through its `screen_expression_status` fixture to correlate boot idle, settings
+sleepy, recording, low-battery, sync-complete, and error expressions with
+their accepted/final CardStatusV1 records before real panel evidence exists.
+
+## Screen Settings Expression Policy
+
+The expression policy treats SettingsV1 as a low-priority screen hint. A status
+snapshot may provide `quiet_hours_active=true`, a `flags` value with bit 0 set,
+or a `local_minute` inside `quiet_hours_start_min` / `quiet_hours_end_min`.
+Those inputs map the visible ExpressionV1 face to `sleepy`. Wrapping quiet
+hours across midnight are valid. `display_brightness=0` also maps to `sleepy`
+for no-hardware policy and host preview.
+
+This settings hint must not hide higher-priority product states. Recording,
+low-battery, and error states remain visible even during quiet hours or while
+the display brightness setting is zero. A future WBA adapter must preserve this
+host-facing policy while changing only the platform scheduler and panel driver.
+
+The current WB55 firmware write path applies the immediate screen hint when a
+SettingsV1 write has `display_brightness=0` or flags bit 0 set for active quiet
+hours. Clearing those fields recovers only a settings-caused sleepy face back to
+idle. Local-minute quiet-hours range evaluation remains host/policy-level until
+the product platform selects a trusted local time source.
+
 ## Diagnostics Log Pull
 
 `diagnostics/log pull` is a bounded log export command, not a full dump surface.
@@ -270,6 +412,10 @@ start/stop plus unsupported-command rejection, IMU status read, speaker prompt
 plus unsupported-command rejection, and wake-word reject/arm/detect/disarm. The
 current NUCLEO bench may report IMU/speaker/wake hardware as not populated or
 pending, but the GATT state flow must still be host-visible and validated.
+For screen evidence, the bench also waits for e-paper `final_card_status`.
+When validating a real panel rather than the current no-panel dev board, pass
+`--expect-real-panel` and archive the JSON artifact with the photos/logs used
+by the panel hardware gate.
 
 ## Errors
 
@@ -307,10 +453,11 @@ GATT server surfaces:
 - Do not use ESP NimBLE APIs such as `NimBLEServer`, `NimBLECharacteristic`, or
   `BLEDevice`; Listener ESP32 code is source-reference material only.
 
-OTA readiness is only a readiness/status contract in this step. The actual OTA
-transport must be selected later from ST's STM32WB OTA examples, such as
-`BLE_p2pServer_ota` or `BLE_Ota`, after the basic Companion GATT server is
-working.
+OTA readiness stays in the normal Companion application GATT service, while
+the dedicated update loader/adapter owns the data path. The portable transfer
+contract is the pinned `third_party/denzic-platform` `denzic_ota_v1` protocol;
+STM32WB, STM32WBA, and ESP adapters map its fixed control/data/status GATT
+profile to their local BLE stack and storage implementation.
 
 ## OTA Readiness
 
@@ -318,6 +465,14 @@ working.
 it may offer an update package before any firmware swap path exists. It exposes
 only status, blocker, and manifest summary fields. The firmware must not accept
 OTA data writes in this step.
+
+The shared transport carries an opaque byte stream. It does not decide whether
+the payload is an MCU image or an external resource pack. The signed Companion
+bundle manifest selects a component kind such as `mcu_app` or `ui_assets`, and
+the target installer writes only to the matching staging/candidate partition.
+CRC32 in `denzic_ota_v1` identifies an interrupted transfer for resume; the
+bundle signature and per-component SHA-256 remain the authenticity and
+integrity boundary. See `docs/companion_ota_component_contract.md`.
 
 The `blocker_bitmap` names are stable host-facing values:
 

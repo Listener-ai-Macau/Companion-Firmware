@@ -18,6 +18,14 @@ Set-StrictMode -Version Latest
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
+$denzicProtocolPath = Join-Path $repoRoot "third_party\denzic-platform\ota\protocol\ota_v1.json"
+if (-not (Test-Path -LiteralPath $denzicProtocolPath -PathType Leaf)) {
+    throw "Denzic Platform OTA submodule is not initialized: $denzicProtocolPath"
+}
+$denzicProtocol = Get-Content -LiteralPath $denzicProtocolPath -Raw -Encoding UTF8 | ConvertFrom-Json
+if ($denzicProtocol.name -ne "denzic_ota_v1" -or [int]$denzicProtocol.version -ne 1) {
+    throw "Unsupported Denzic OTA protocol identity in $denzicProtocolPath"
+}
 $buildPath = (Resolve-Path $BuildDir).Path
 $otaBuildPath = (Resolve-Path $OtaBuildDir).Path
 $loaderBuildPath = (Resolve-Path $LoaderBuildDir).Path
@@ -156,14 +164,14 @@ $otaBinDest = Join-Path $packageDir $otaBinName
 Copy-Item -LiteralPath $otaBinSource -Destination $otaBinDest -Force
 $otaHash = (Get-FileHash -LiteralPath $otaBinDest -Algorithm SHA256).Hash.ToLowerInvariant()
 $otaSize = (Get-Item -LiteralPath $otaBinDest).Length
-$companionOtaV2ChunkBytes = 240
-$chunkOverride = [Environment]::GetEnvironmentVariable("COMPANION_OTA_V2_CHUNK_BYTES")
+$companionOtaV1ChunkBytes = 240
+$chunkOverride = [Environment]::GetEnvironmentVariable("COMPANION_OTA_V1_CHUNK_BYTES")
 if (-not [string]::IsNullOrWhiteSpace($chunkOverride)) {
     $parsedChunk = 0
-    if (-not [int]::TryParse($chunkOverride.Trim(), [ref] $parsedChunk) -or $parsedChunk -lt 1 -or $parsedChunk -gt 241) {
-        throw "Unsupported COMPANION_OTA_V2_CHUNK_BYTES=$chunkOverride; use a chunk size from 1 to 241 bytes."
+    if (-not [int]::TryParse($chunkOverride.Trim(), [ref] $parsedChunk) -or $parsedChunk -lt 1 -or $parsedChunk -gt 244) {
+        throw "Unsupported COMPANION_OTA_V1_CHUNK_BYTES=$chunkOverride; use a chunk size from 1 to 244 bytes."
     }
-    $companionOtaV2ChunkBytes = $parsedChunk
+    $companionOtaV1ChunkBytes = $parsedChunk
 }
 
 $mcu = if ($BoardTarget -eq "NUCLEO-WB55RG") { "STM32WB55" } else { "STM32WB55CEUx" }
@@ -186,18 +194,34 @@ $manifest = [ordered]@{
         size_bytes = $otaSize
         sha256 = $otaHash
     }
+    components = @(
+        [ordered]@{
+            kind = "mcu_app"
+            component_version = $packageVersion
+            format_version = 1
+            target_family = "stm32wb"
+            board_target = $BoardTarget
+            file = $otaBinName
+            size_bytes = $otaSize
+            sha256 = $otaHash
+            compatibility = [ordered]@{
+                mcu = $mcu
+                app_base_address = $otaAppBaseAddress
+            }
+        }
+    )
     protocol = [ordered]@{
-        name = "companion_ota_v2"
-        version = 1
-        firmware_capability = "companion_ota_v2"
+        name = [string]$denzicProtocol.name
+        version = [int]$denzicProtocol.version
+        firmware_capability = [string]$denzicProtocol.name
         app_base_address = $otaAppBaseAddress
         app_start_sector = $otaAppStartSector
         gatt = [ordered]@{
-            service_uuid = "8f7a8007-7b7d-4f3d-9d6f-6c2d1b7c0000"
-            control_uuid = "8f7a8002-7b7d-4f3d-9d6f-6c2d1b7c0000"
-            data_uuid = "8f7a8004-7b7d-4f3d-9d6f-6c2d1b7c0000"
-            status_uuid = "8f7a8005-7b7d-4f3d-9d6f-6c2d1b7c0000"
-            chunk_bytes = $companionOtaV2ChunkBytes
+            service_uuid = [string]$denzicProtocol.gatt.service_uuid
+            control_uuid = [string]$denzicProtocol.gatt.control_uuid
+            data_uuid = [string]$denzicProtocol.gatt.data_uuid
+            status_uuid = [string]$denzicProtocol.gatt.status_uuid
+            chunk_bytes = $companionOtaV1ChunkBytes
         }
     }
     firmware = [ordered]@{
@@ -216,13 +240,13 @@ $manifest = [ordered]@{
         sha256 = $otaHash
     }
     compatibility = [ordered]@{
-        st_reference = "BLE_Ota loader with Companion OTA v2 custom service"
+        platform_adapter = "stm32wb_denzic_ota_v1"
         stm32cube_wb = "v1.24.0"
-        gatt_contract = "companion_ble_ota_v2"
+        gatt_contract = "denzic_ota_v1"
         min_desktop_version = $MinDesktopVersion
     }
     bootloader = [ordered]@{
-        kind = "stm32wb_ble_ota_reference_loader"
+        kind = "denzic_ota_v1_stm32wb_loader"
         recovery = "ROM DFU or SWD via STM32CubeProgrammer"
         internal_flash_policy = "single_runnable_app_no_dual_internal_slots"
         vector_table_policy = "app_base_linker_offset_with_bootloader_jump"
@@ -230,7 +254,7 @@ $manifest = [ordered]@{
     external_flash = [ordered]@{
         kind = "external_qspi_nor"
         ota_staging = "single_ota_staging_partition"
-        partition_policy = "boot_meta_a_b + ota_staging + recording_cache + diag_log_mirror"
+        partition_policy = "boot_meta_a_b + ota_staging + ui_assets_active_candidate + recording_cache + diag_log_mirror"
         dual_ota_partitions = $false
     }
     guards = [ordered]@{
@@ -245,16 +269,16 @@ $manifest = [ordered]@{
         strategy = "stm32wb_reference_ota_pending_verify"
         notes = "Resident bootloader verifies external QSPI ota_staging before installing the single runnable CPU1 app."
         instructions = @(
-            "If the Companion OTA v2 transfer is interrupted before reboot, retry from the companion loader.",
-            "If the app does not boot, use the wired factory path in the same package to restore BLE_Ota plus the app."
+            "If the Denzic OTA v1 transfer is interrupted before reboot, retry from the Companion loader.",
+            "If the app does not boot, use the wired factory path in the same package to restore the Denzic OTA v1 loader plus the app."
         )
     }
     recovery = [ordered]@{
         factory_reflash = "Use STM32CubeProgrammer or tools/flash.ps1 -FlashPackage with the package factory manifest."
         interrupted_transfer = "Report interrupted_transfer and require host recovery before accepting new OTA data."
         instructions = @(
-            "Use the package factory directory or Type wired flashing to restore both the ST BLE_Ota loader and Companion app over SWD.",
-            "If Windows cannot see companion advertising the Companion OTA v2 service, reset the board into the wired factory image first."
+            "Use the package factory directory or Type wired flashing to restore both the Denzic OTA v1 loader and Companion app over SWD.",
+            "If Windows cannot see Companion advertising the Denzic OTA v1 service, reset the board into the wired factory image first."
         )
     }
     post_update_self_checks = $requiredSelfChecks

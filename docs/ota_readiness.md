@@ -1,141 +1,81 @@
-# Companion OTA Readiness
+# Companion Denzic OTA Readiness
 
-This document defines the Companion pendant OTA readiness contract. The current
-firmware surface is still not a firmware swap implementation: real image
-transfer, flash-bank selection, refresh timing, reboot, and post-update
-confirmation remain gated by the bootloader and hardware validation steps.
+## Scope
 
-## ST Baseline
+The normal Companion application exposes OTA readiness and blockers. The
+dedicated loader carries update bytes through the single shared
+`denzic_ota_v1` contract. Readiness, transfer, install, and activation are
+separate states; a device being ready does not imply a candidate is trusted or
+installed.
 
-The Companion firmware starts from STM32CubeWB on `NUCLEO-WB55RG` for bench
-bring-up, then moves to the product target `COMPANION-PENDANT-CE` /
-`STM32WB55CEUx`. The OTA data path must be selected from ST examples such as
-`BLE_Ota` or `BLE_p2pServer_ota` after the basic Companion GATT server is
-proven. This contract records the readiness/status surface that a host can probe
-before using an ST OTA transport.
+The machine component contract is
+`docs/companion_ota_component_contract.json`. External UI, prompt, and model
+packs are OTA-managed components alongside `mcu_app`; recordings, diagnostics,
+settings, and other mutable user data are not update payloads.
 
-## Bootloader And Flash Layout
-
-The product boot and flash contract lives in
-`docs/bootloader_flash_layout.md`. The stable decision for the first CE OTA path
-is:
-
-- internal flash contains one resident bootloader plus one runnable Companion app
-  image; it does not contain two complete app slots.
-- external QSPI NOR contains one `ota_staging` partition for a full pending
-  image, plus separate `recording_cache`, `diag_log_mirror`, and redundant boot
-  metadata areas.
-- factory recovery remains STM32WB ROM DFU / SWD through STM32CubeProgrammer.
-- an external `golden_image` partition is optional later; dual external OTA
-  partitions are not required for the first implementation.
-
-## Host Contract
+## Readiness Contract
 
 The BLE `OTA readiness` characteristic reports:
 
-- `ready_state`: `ready`, `blocked`, `interrupted_transfer`, or
-  `post_update_check_pending`.
-- `boot_slot`: placeholder text until the STM32WB OTA example defines the true
-  image bank or boot path.
-- `battery_percent`, `charger_present`, and `minimum_required_mv`.
-- `blocker_bitmap` with stable blocker bits listed in
-  `docs/ble_gatt_contract.md`.
-- Manifest summary fields: `manifest_version`, `board_target`, `mcu`,
-  `image_size`, `image_sha256_prefix`, and bootloader/layout policy.
-- `interrupted_transfer_resume_token` when a later OTA data path needs recovery
-  instead of starting from byte zero.
+- state: ready, blocked, interrupted transfer, or post-update-check pending;
+- battery percent, charger state, and minimum required voltage;
+- stable blocker bitmap from `docs/ble_gatt_contract.md`;
+- manifest version, board target, MCU, component size/hash prefix, and layout;
+- interrupted-transfer token when the current candidate can resume.
 
-The host may read and subscribe to this characteristic. The firmware must not
-perform a real firmware swap, set boot state, erase image banks, or accept OTA
-data writes in this step.
+Required blockers are active recording, another large transfer, diagnostics
+export, low battery, wrong board target, invalid hash, and interrupted transfer
+that must be resumed or discarded. The host must clear every blocker before it
+starts Denzic transfer.
 
-## Manifest Discipline
+## One Core, Product Adapters
 
-The Companion manifest is validated before the host offers an update. It covers:
+All Denzic products use the same protocol and host/embedded state machines.
+Packages remain target-specific:
 
-- version and schema version
-- board target and MCU compatibility
-- image size and SHA-256 hash
-- compatibility with the STM32CubeWB baseline and Companion GATT contract
-- low-battery guard, `minimum_required_mv`, and whether the package requires a
-  connected charger before transfer
-- the stable `blocker_bitmap` mapping used by the OTA readiness characteristic
-- user-actionable host messages for wrong board, invalid hash, low battery,
-  active recording, active transfer, diagnostics export, and interrupted
-  transfer blockers
-- rollback notes
-- recovery notes
-- required post-update self-checks
+- the manifest names product, MCU family, board target, component kind, format,
+  version, size, SHA-256, compatibility, and anti-rollback data;
+- the host rejects a package for the wrong product instead of trying to make
+  one binary run on unrelated hardware;
+- WB55, WBA55/WBA65, and ESP provide independent BLE/storage/install/reboot
+  adapters without changing the shared transfer protocol.
 
-The low-battery guard is a policy gate, not a user-facing prompt in this step.
-The host should treat a low-battery blocker as retryable after charge.
-The host must not offer a transfer while any required blocker bit is set or
-while the manifest image size/SHA-256 check fails.
+The Denzic image CRC enables same-image resume. It is not authentication. A
+production bundle uses a signed manifest and per-component SHA-256 before
+install or activation.
 
-Required blockers:
+## Package Paths
 
-- `recording_active`
-- `transfer_active`
-- `diag_export_active`
-- `low_battery`
-- `wrong_board_target`
-- `invalid_hash`
-- `interrupted_transfer`
-
-The fixture manifest report covers valid CE and NUCLEO packages plus negative
-cases for wrong board, missing blockers, invalid hash, low battery, interrupted
-transfer, and active recording. Each negative case carries the host action that
-Type or another host surface can show before enabling any OTA data path.
-
-## Shared Wireless And Wired Package
-
-`tools/package_ota_firmware.ps1` emits one Companion package that supports both
+`tools/package_ota_firmware.ps1` emits one Companion archive for both service
 paths:
 
-- wireless OTA uses the package root `ota_manifest.json` plus
-  `firmware_ota.bin`.
-- wired factory recovery uses `factory/<package>/manifest.json` and must flash
-  both artifacts listed there: `Companion_BLE_Ota_Loader.hex` first, then the
-  Companion app hex.
+- BLE uses root `ota_manifest.json` plus `firmware_ota.bin` through Companion
+  Type and the shared Rust host core;
+- wired factory/recovery uses `factory/<package>/manifest.json` through
+  STM32CubeProgrammer under the workflow hardware lock.
 
-The repository wired path is `tools/flash.ps1 -FlashPackage -PackagePath
-<package-or-factory-manifest>` inside the workflow hardware lock. Real flashing
-shows a Chinese desktop confirmation prompt and plays a sound before touching
-the board, so the operator can confirm ST-LINK USB, Type, and serial monitors
-are in the expected state.
+The manifest protocol/GATT fields are read from
+`third_party/denzic-platform/ota/protocol/ota_v1.json`; product scripts must not
+copy UUID literals.
 
-## Diagnostics
+## Component Activation
 
-Readiness and manifest decisions are mirrored into the diagnostic log. The
-minimum events for this step are:
+1. Stage every included component without changing active bytes.
+2. Verify manifest signature, component SHA-256, target, version, and
+   compatibility.
+3. Install `mcu_app` through the target boot adapter when present.
+4. The new app revalidates external resource candidates.
+5. Atomically switch redundant active metadata and confirm the bundle.
 
-- `ota.manifest`
-- `ota.readiness`
-- `ota.blocker`
-- `ota.interrupted_transfer`
-- `ota.post_update_self_check`
+A resource-only update does not rewrite the MCU app. A firmware-only update
+preserves active external resources. Any failure keeps the old resource or
+uses the internal rescue UI, and all ordinary updates preserve user data.
 
-These are bounded status events that can later be exported through
-`diagnostics/log pull`; they are not full OTA packet dumps.
+## Diagnostics And Evidence
 
-## Listener Reuse Boundary
-
-Listener OTA work is reusable as policy and validation discipline:
-
-- manifest schema and checker shape
-- blocker taxonomy for recording, transfer, diagnostics, and low-battery
-- diagnostic event summaries for host-visible failures
-- rollback and recovery documentation style
-- post-update self-check gating before a host marks an update complete
-
-Listener implementation details must not be copied into Companion:
-
-- ESP-IDF OTA slot APIs
-- ESP partition-table or NVS assumptions
-- NimBLE service registration and mbuf handling
-- ESP bootloader rollback method names or partition labels
-- Listener keyboard-specific BLE UUIDs, battery thresholds, or GPIO policy
-
-Companion must map the policy to STM32_WPAN, STM32CubeProgrammer recovery, the
-CE bootloader/QSPI staging layout, and the ST `BLE_Ota` / `BLE_p2pServer_ota`
-reference selected in a later step.
+Readiness and install decisions emit bounded `ota.manifest`, `ota.readiness`,
+`ota.blocker`, `ota.interrupted_transfer`, and `ota.post_update_self_check`
+events. Machine acceptance requires shared-core tests, Loader/Type builds,
+manifest/static gates, and a real locked BLE transfer with reboot/version
+confirmation. Resource-only OTA additionally requires interrupted-write and
+unchanged-app/unchanged-recording evidence.

@@ -2,6 +2,7 @@ TARGET := Companion_BLE_Ota_Loader
 BUILD_DIR := build
 ROOT := ../..
 CUBE := $(ROOT)/third_party/STM32CubeWB
+DENZIC_OTA := $(ROOT)/third_party/denzic-platform/ota/embedded/c
 OTA := $(CUBE)/Projects/P-NUCLEO-WB55.Nucleo/Applications/BLE/BLE_Ota
 
 TOOLCHAIN ?= C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin
@@ -32,7 +33,8 @@ INC_DIRS := \
 	$(CUBE)/Middlewares/ST/STM32_WPAN/ble/svc/Src \
 	$(CUBE)/Middlewares/ST/STM32_WPAN/utilities \
 	$(CUBE)/Middlewares/ST/STM32_WPAN/ble \
-	$(CUBE)/Drivers/CMSIS/Include
+	$(CUBE)/Drivers/CMSIS/Include \
+	$(DENZIC_OTA)/include
 
 INCLUDES := $(addprefix -I,$(INC_DIRS))
 
@@ -47,8 +49,8 @@ C_SOURCES := \
 	$(OTA)/Core/Src/stm32_lpm_if.c \
 	$(OTA)/Core/Src/stm32wbxx_it.c \
 	Src/system_stm32wbxx.c \
-	Src/otas_app.c \
-	Src/companion_ota_v2.c \
+	Src/companion_ota_v1.c \
+	$(DENZIC_OTA)/src/denzic_ota_v1.c \
 	$(OTA)/STM32_WPAN/Target/hw_ipcc.c \
 	$(OTA)/STM32CubeIDE/Application/Core/syscalls.c \
 	$(OTA)/STM32CubeIDE/Application/Core/sysmem.c \
@@ -77,7 +79,6 @@ C_SOURCES := \
 	$(CUBE)/Middlewares/ST/STM32_WPAN/utilities/otp.c \
 	$(CUBE)/Middlewares/ST/STM32_WPAN/utilities/stm_list.c \
 	$(CUBE)/Middlewares/ST/STM32_WPAN/utilities/stm_queue.c \
-	Src/otas_stm.c \
 	$(CUBE)/Middlewares/ST/STM32_WPAN/ble/svc/Src/svc_ctl.c \
 	$(CUBE)/Middlewares/ST/STM32_WPAN/ble/core/auto/ble_gap_aci.c \
 	$(CUBE)/Middlewares/ST/STM32_WPAN/ble/core/auto/ble_gatt_aci.c \
@@ -113,12 +114,6 @@ $(BUILD_DIR):
 	@if not exist "$(BUILD_DIR)" mkdir "$(BUILD_DIR)"
 
 $(BUILD_DIR)/app_ble.o: Src/app_ble.c | $(BUILD_DIR)
-	$(CC) $(CFLAGS) -c "$<" -o "$@"
-
-$(BUILD_DIR)/otas_app.o: Src/otas_app.c | $(BUILD_DIR)
-	$(CC) $(CFLAGS) -c "$<" -o "$@"
-
-$(BUILD_DIR)/otas_stm.o: Src/otas_stm.c | $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c "$<" -o "$@"
 
 $(BUILD_DIR)/system_stm32wbxx.o: Src/system_stm32wbxx.c | $(BUILD_DIR)

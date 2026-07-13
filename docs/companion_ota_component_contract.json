@@ -1,0 +1,99 @@
+{
+  "schema": "companion.ota.component-contract.v1",
+  "shared_transport": {
+    "submodule": "third_party/denzic-platform",
+    "protocol": "denzic_ota_v1",
+    "role": "reliable_opaque_byte_stream",
+    "image_identity": "crc32_ieee",
+    "security_boundary": "crc32_is_resume_identity_not_authentication"
+  },
+  "bundle": {
+    "schema": "companion.update-bundle.v1",
+    "manifest_authentication": "signed_manifest",
+    "component_digest": "sha256",
+    "anti_rollback": "monotonic_version_per_component",
+    "required_component_fields": [
+      "kind",
+      "component_version",
+      "format_version",
+      "target_family",
+      "board_target",
+      "size_bytes",
+      "sha256",
+      "compatibility"
+    ]
+  },
+  "components": [
+    {
+      "kind": "mcu_app",
+      "ota_managed": true,
+      "storage": "internal_flash",
+      "download_target": "ota_staging",
+      "installer": "platform_boot_installer",
+      "activation": "boot_install_then_post_boot_confirm",
+      "failure_policy": "platform_recovery_or_previous_slot_when_supported",
+      "preserve_when_absent": true
+    },
+    {
+      "kind": "ui_assets",
+      "ota_managed": true,
+      "storage": "external_nor",
+      "download_target": "inactive_asset_slot_or_ota_staging",
+      "installer": "application_asset_installer",
+      "activation": "atomic_boot_meta_a_b_after_full_verification",
+      "failure_policy": "keep_previous_active_pack_or_internal_rescue_ui",
+      "preserve_when_absent": true,
+      "compatibility_fields": [
+        "min_app_version",
+        "max_app_version",
+        "screen_profile",
+        "asset_format"
+      ]
+    },
+    {
+      "kind": "prompt_assets",
+      "ota_managed": true,
+      "storage": "external_nor",
+      "download_target": "inactive_asset_slot_or_ota_staging",
+      "installer": "application_asset_installer",
+      "activation": "atomic_boot_meta_a_b_after_full_verification",
+      "failure_policy": "keep_previous_active_pack",
+      "preserve_when_absent": true
+    },
+    {
+      "kind": "model_assets",
+      "ota_managed": true,
+      "storage": "external_nor",
+      "download_target": "inactive_asset_slot_or_ota_staging",
+      "installer": "application_asset_installer",
+      "activation": "atomic_boot_meta_a_b_after_full_verification",
+      "failure_policy": "keep_previous_active_pack_or_disable_optional_feature",
+      "preserve_when_absent": true
+    }
+  ],
+  "transactions": {
+    "bundle_install_order": [
+      "stage_every_component",
+      "verify_manifest_signature",
+      "verify_all_component_sha256",
+      "verify_target_version_and_compatibility",
+      "install_mcu_app_if_present",
+      "new_app_revalidates_external_candidates",
+      "atomically_activate_compatible_external_components",
+      "confirm_bundle"
+    ],
+    "resource_only_update": "must_not_rewrite_mcu_app_and_should_not_reboot_unless_target_requires_it",
+    "firmware_only_update": "must_preserve_active_external_resources_and_mutable_user_data",
+    "power_loss": "candidate_never_replaces_active_component_before_atomic_commit"
+  },
+  "excluded_mutable_data": [
+    "recording_cache",
+    "diag_log_mirror",
+    "settings_user_data"
+  ],
+  "target_adapters": {
+    "stm32wb": "resident_bootloader_plus_external_qspi_staging",
+    "stm32wba": "cube_wba_install_manager_or_secure_boot_adapter_selected_per_product",
+    "esp": "separate_platform_adapter_not_a_partition_template_for_stm32"
+  }
+}

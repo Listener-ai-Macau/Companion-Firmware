@@ -1,0 +1,29 @@
+{
+  "schema": "companion.validation.ota-component-contract.v1",
+  "result": "PASS",
+  "contract": "docs/companion_ota_component_contract.json",
+  "shared_submodule_commit": "1e727f2eb98a6f7f9a8272d31f27130c4b97f77b",
+  "shared_protocol": "denzic_ota_v1",
+  "shared_protocol_version": 1,
+  "component_kinds": [
+    "mcu_app",
+    "model_assets",
+    "prompt_assets",
+    "ui_assets"
+  ],
+  "external_resource_ota_managed": true,
+  "mutable_user_data_preserved": [
+    "diag_log_mirror",
+    "recording_cache",
+    "settings_user_data"
+  ],
+  "checks": [
+    "shared transport submodule is initialized and exposes all protocol/host/embedded layers",
+    "Denzic CRC32 remains resume identity rather than product authentication",
+    "MCU app and external UI assets are separate OTA components",
+    "resource activation is verified and atomic with previous-pack fallback",
+    "resource-only and firmware-only updates preserve unrelated components",
+    "recordings, diagnostics, and settings are outside normal OTA erase scope",
+    "WB55/WBA/ESP installation mechanics remain target adapters"
+  ]
+}

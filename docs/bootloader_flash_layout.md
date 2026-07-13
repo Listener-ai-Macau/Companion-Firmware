@@ -14,9 +14,10 @@ Companion has three separate boot/update layers:
 2. Wireless firmware service: ST FUS and the STM32WB CPU2 wireless stack. This
    is provisioned with STM32CubeProgrammer and is not part of normal Companion
    app OTA.
-3. Product app updater: a small resident CPU1 bootloader in internal flash. It
-   validates one external-QSPI `ota_staging` image, copies it into the internal
-   app region, verifies it, and jumps to the app.
+3. Product component updater: a small resident CPU1 bootloader installs the
+   `mcu_app` component from external-QSPI `ota_staging`. The application owns
+   external resource installation and atomic resource activation. Both consume
+   the same signed Companion bundle manifest.
 
 Listener ESP32 bootloader slots, partition tables, NVS state, and ESP rollback
 APIs must not be copied into this layout.
@@ -41,20 +42,35 @@ slots.
 
 ## External QSPI Flash Policy
 
-External QSPI NOR is shared by OTA staging, recording cache, and bounded
-diagnostics. The first production layout uses one OTA staging area, not dual
-external OTA partitions.
+External QSPI NOR is shared by OTA staging, UI/resource packs, recording cache,
+and bounded diagnostics. The first production layout uses one OTA staging area,
+not dual external OTA partitions.
 
 | partition | role | minimum behavior |
 |---|---|---|
 | `boot_meta_a` / `boot_meta_b` | redundant boot metadata | Bootloader state, layout version, package version, hash/signature summary, interrupted-transfer state. |
-| `ota_staging` | single full-image staging area | Holds exactly one pending Companion firmware package until bootloader verifies and installs it. |
+| `ota_staging` | bundle/component staging area | Holds one pending component or update bundle until the responsible installer verifies it; it is never the active resource partition. |
+| `ui_assets_active` | active screen/resource pack | Holds the last committed expression/menu/font CEMP pack; internal flash keeps only the rescue UI. |
+| `ui_assets_candidate` | inactive resource candidate | Receives resource OTA data directly or from `ota_staging`; it becomes active only through redundant atomic metadata after full verification. A capacity-constrained board may reuse staging as the candidate, but must not overwrite active bytes in place. |
 | `recording_cache` | retained recording storage | Byte-offset pull metadata and audio payloads; must never overlap OTA staging. |
 | `diag_log_mirror` | bounded diagnostics | Optional retained tail for boot/update failures and host export. |
 
 An optional `golden_image` partition can be added later, but it is not required
 for the first CE OTA path. Adding it is a separate product reliability decision,
 not a prerequisite for microphone, BLE, or basic OTA bring-up.
+
+## OTA Component Model
+
+The shared `third_party/denzic-platform` submodule owns the portable
+`denzic_ota_v1` byte-transfer state machine. Its CRC32 image identity supports
+resume; it is not a signature. Companion adds the signed bundle manifest,
+SHA-256 per component, target/version compatibility, anti-rollback policy, and
+installer selection described by `docs/companion_ota_component_contract.md`.
+
+`mcu_app`, `ui_assets`, prompt packs, and future model packs are OTA-managed
+components. They are independently optional, versioned, verified, installed,
+and activated. `recording_cache`, `diag_log_mirror`, and user settings are
+mutable data rather than update components and must survive normal OTA.
 
 ## OTA Install Flow
 
@@ -63,15 +79,20 @@ not a prerequisite for microphone, BLE, or basic OTA bring-up.
 2. The Companion app rejects OTA when recording, recording transfer, diagnostic
    export, low battery, wrong target, invalid hash, or interrupted transfer
    blockers are active.
-3. Type writes the package into external QSPI `ota_staging` through the selected
-   ST BLE OTA transport.
-4. The app writes redundant boot metadata and reboots.
-5. The resident bootloader validates the staged image, copies it into the
-   internal app region, verifies the installed bytes, and jumps to the app.
-6. The app reports post-update self-checks through BLE readiness and diagnostic
-   events before Type marks the update complete.
-7. If install is interrupted, the bootloader either retries from a valid
-   `ota_staging` image or stays in recovery state for ROM DFU / SWD service.
+3. Type transfers the opaque signed bundle or selected component through
+   `denzic_ota_v1`; the target storage adapter writes only to staging or an
+   inactive candidate.
+4. The receiver verifies the manifest signature, component SHA-256, target,
+   component version, app compatibility, resource format, and screen profile.
+5. If `mcu_app` is present, the app writes redundant pending metadata and
+   reboots. The resident bootloader installs and verifies the app, then jumps
+   to it.
+6. The new app revalidates any external candidate and atomically changes
+   `boot_meta_a/b` only after the resource is compatible. A resource-only
+   update skips the bootloader and must not rewrite the MCU app.
+7. The app reports post-update self-checks before Type confirms the bundle. A
+   failure preserves the previous active resource or uses the internal rescue
+   UI; an app failure follows the target boot/recovery policy.
 
 ## Validation Gates
 
@@ -79,7 +100,13 @@ not a prerequisite for microphone, BLE, or basic OTA bring-up.
   the CE product target.
 - Linker validation must prove the bootloader, app, and STM32WB wireless-stack
   reserved ranges do not overlap.
-- QSPI validation must prove `ota_staging`, `recording_cache`, and
-  `diag_log_mirror` do not overlap and survive reset as intended.
+- QSPI validation must prove `ota_staging`, `ui_assets_active`,
+  `ui_assets_candidate`, `recording_cache`, and `diag_log_mirror` do not
+  overlap and survive reset as intended.
+- Resource validation must reject an out-of-range, wrong-profile, unsupported
+  format, digest-failed, signature-failed, rollback, or incompatible
+  `ui_assets` candidate without replacing the active pack.
+- Resource-only OTA must prove that MCU app bytes and mutable user data are
+  unchanged; firmware-only OTA must prove that active resources are preserved.
 - Hardware validation must use a workflow lock for ST-LINK flashing, serial
   capture, BLE OTA transfer, and power-loss/interrupted-transfer tests.
