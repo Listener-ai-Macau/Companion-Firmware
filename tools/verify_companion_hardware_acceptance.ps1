@@ -2,6 +2,8 @@ param(
     [string] $PackagePath,
     [string] $TypeRepoRoot = (Join-Path $PSScriptRoot "..\..\..\Listener\Listener-Type"),
     [string] $ListenerExe,
+    [string] $CompanionTypeRepoRoot = (Join-Path $PSScriptRoot "..\..\Companion-Type"),
+    [string] $CompanionExe,
     [string] $EvidencePath,
     [string] $OutDir,
     [string] $ProgrammerPath,
@@ -15,9 +17,7 @@ param(
     [int] $A2TimeoutMs = 120000,
     [int] $MaxMissingPackets = 0,
     [switch] $SkipWirelessStackProvisioning,
-    [switch] $IncludeTypeHarness,
     [switch] $IncludeTypeUiGate,
-    [switch] $PromptOperator,
     [switch] $Execute,
     [switch] $WorkflowLockHeld
 )
@@ -27,10 +27,8 @@ Set-StrictMode -Version Latest
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
-$typeRoot = $null
-if ($IncludeTypeHarness -or $IncludeTypeUiGate) {
-    $typeRoot = (Resolve-Path $TypeRepoRoot).Path
-}
+$typeRoot = (Resolve-Path $TypeRepoRoot).Path
+$companionTypeRoot = (Resolve-Path $CompanionTypeRepoRoot).Path
 $stamp = Get-Date -Format "yyyyMMdd-HHmmss"
 if ([string]::IsNullOrWhiteSpace($OutDir)) {
     $OutDir = Join-Path $repoRoot ".cache\validation\companion-hardware-acceptance-$stamp"
@@ -199,8 +197,7 @@ function ConvertTo-HardwareAcceptanceMarkdown {
         "",
         "## Evidence",
         "",
-        "- Native BLE GATT: ``$($Report["evidence"]["native_ble_gatt"])``",
-        "- Post-OTA native BLE GATT: ``$($Report["evidence"]["post_ota_native_ble_gatt"])``",
+        "- A1/A2: ``$($Report["evidence"]["a1_a2"])``",
         "- Wired flash: ``$($Report["evidence"]["wired_flash"])``",
         "- BLE OTA: ``$($Report["evidence"]["ble_ota"])``",
         "- Wireless stack: ``$($Report["evidence"]["wireless_stack"])``",
@@ -208,11 +205,6 @@ function ConvertTo-HardwareAcceptanceMarkdown {
         "",
         "## Steps"
     )
-    if ($Report["evidence"]["a1_a2"]) {
-        $lines = $lines[0..7] + "- Legacy Type A1/A2: ``$($Report["evidence"]["a1_a2"])``" + $lines[8..($lines.Count - 1)]
-    } else {
-        $lines = $lines[0..7] + "- Legacy Type A1/A2: skipped (independent Companion release gate)" + $lines[8..($lines.Count - 1)]
-    }
     if ($Report["evidence"]["type_ui"]) {
         $lines = $lines[0..8] + "- Type UI: ``$($Report["evidence"]["type_ui"])``" + $lines[9..($lines.Count - 1)]
     } else {
@@ -238,16 +230,12 @@ $summaryMd = Join-Path $outDirResolved "companion-hardware-acceptance-summary.md
 $a1Dir = Join-Path $outDirResolved "a1-a2"
 $bleDir = Join-Path $outDirResolved "ble-ota"
 $wiredDir = Join-Path $outDirResolved "wired-flash"
-$nativeBleDir = Join-Path $outDirResolved "native-ble-gatt"
-$postOtaNativeBleDir = Join-Path $outDirResolved "post-ota-native-ble-gatt"
 $typeUiDir = Join-Path $outDirResolved "type-ui-manual"
 $manualDir = Join-Path $outDirResolved "manual-gate-evidence"
 $wirelessDir = Join-Path $outDirResolved "wireless-stack"
 $a1Summary = Join-Path $a1Dir "companion-type-a1-a2-summary.json"
 $bleSummary = Join-Path $bleDir "companion-ble-ota-summary.json"
 $wiredSummary = Join-Path $wiredDir "companion-wired-flash-summary.json"
-$nativeBleSummary = Join-Path $nativeBleDir "companion-ble-real-bench.json"
-$postOtaNativeBleSummary = Join-Path $postOtaNativeBleDir "companion-ble-real-bench.json"
 $typeUiSummary = Join-Path $typeUiDir "companion-type-ui-manual-summary.json"
 $manualSummary = Join-Path $manualDir "companion-manual-gate-evidence-summary.json"
 $wirelessSummary = Join-Path $wirelessDir "companion-wireless-stack-summary.json"
@@ -258,9 +246,6 @@ $aiw = "C:\Users\Billy\Desktop\Denzic\ai-collaboration-workflow\scripts\aiw.ps1"
 $lockCommand = "pwsh -NoProfile -File $aiw with-lock -Resource Companion-WB55,BLE-Companion -Purpose `"Companion hardware acceptance`" -Run pwsh -NoProfile -File .\tools\verify_companion_hardware_acceptance.ps1 -Execute -WorkflowLockHeld -PackagePath `"$resolvedPackage`""
 if ($IncludeTypeUiGate) {
     $lockCommand += " -IncludeTypeUiGate -EvidencePath <type-ui-screenshot-or-log>"
-}
-if ($IncludeTypeHarness) {
-    $lockCommand += " -IncludeTypeHarness"
 }
 
 $steps = [System.Collections.Generic.List[object]]::new()
@@ -302,30 +287,16 @@ $bleArgs = @(
     "-Execute", "-WorkflowLockHeld",
     "-PrepareLoaderWithSwd",
     "-PackagePath", $resolvedPackage,
+    "-TypeRepoRoot", $companionTypeRoot,
     "-OutDir", $bleDir
 )
 $wiredArgs = @(
     "-NoProfile", "-File", ".\tools\verify_companion_wired_flash.ps1",
     "-Execute", "-WorkflowLockHeld",
     "-PackagePath", $resolvedPackage,
+    "-TypeRepoRoot", $typeRoot,
     "-OutDir", $wiredDir,
     "-Port", $Port
-)
-$nativeBleArgs = @(
-    ".\tools\companion_ble_real_bench.py",
-    "--name", "companion",
-    "--timeout", "20",
-    "--notify-timeout", "10",
-    "--output", $nativeBleSummary,
-    "--json"
-)
-$postOtaNativeBleArgs = @(
-    ".\tools\companion_ble_real_bench.py",
-    "--name", "companion",
-    "--timeout", "20",
-    "--notify-timeout", "10",
-    "--output", $postOtaNativeBleSummary,
-    "--json"
 )
 $postFlashResetScript = @"
 & '$programmerForCommand' -c port=$Port mode=UR reset=HWrst freq=4000 -w8 0x20000000 0x00 0x07 0x00 0xC3 -r8 0x20000000 4 -rst
@@ -342,13 +313,13 @@ $typeUiArgs = @(
 )
 if (-not [string]::IsNullOrWhiteSpace($ListenerExe)) {
     $a1Args += @("-ListenerExe", $ListenerExe)
+    $wiredArgs += @("-ListenerExe", $ListenerExe)
+}
+if (-not [string]::IsNullOrWhiteSpace($CompanionExe)) {
+    $bleArgs += @("-CompanionExe", $CompanionExe)
 }
 if ($Baud -gt 0) {
     $wiredArgs += @("-Baud", [string]$Baud)
-}
-if (-not [string]::IsNullOrWhiteSpace($ProgrammerPath)) {
-    $bleArgs += @("-ProgrammerPath", $ProgrammerPath)
-    $wiredArgs += @("-ProgrammerPath", $ProgrammerPath)
 }
 if (-not [string]::IsNullOrWhiteSpace($EvidencePath)) {
     $typeUiArgs += @("-EvidencePath", $EvidencePath)
@@ -357,14 +328,11 @@ if (-not [string]::IsNullOrWhiteSpace($EvidencePath)) {
 $manualArgs = @(
     "-NoProfile", "-File", ".\tools\verify_companion_manual_gate_evidence.ps1",
     "-PackagePath", $resolvedPackage,
-    "-NativeBleBenchPath", $postOtaNativeBleSummary,
+    "-A1A2SummaryPath", $a1Summary,
     "-BleOtaEvidencePath", $bleSummary,
     "-WiredFlashEvidencePath", $wiredSummary,
     "-OutDir", $manualDir
 )
-if ($IncludeTypeHarness) {
-    $manualArgs += @("-A1A2SummaryPath", $a1Summary, "-IncludeTypeHarness")
-}
 if ($IncludeTypeUiGate) {
     $manualArgs += @("-TypeUiEvidencePath", $typeUiSummary, "-IncludeTypeUiGate")
 }
@@ -374,16 +342,12 @@ if (-not $Execute) {
         [ordered]@{ name = "ensure CPU2 BLE wireless stack"; status = $(if ($SkipWirelessStackProvisioning) { "SKIPPED" } else { "DRY_RUN" }); message = $(if ($SkipWirelessStackProvisioning) { "skipped by -SkipWirelessStackProvisioning; only use after a PASS provisioning summary exists" } else { "not executed; reads FUS and installs STM32CubeWB BLE full stack before CPU1 BLE apps" }); command = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $wirelessArgs; evidence = $wirelessSummary },
         [ordered]@{ name = "real Companion wired flash from same package"; status = "DRY_RUN"; message = "not executed; flashes the same package OTA loader and unified Companion VKA1 app before A1/A2"; command = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $wiredArgs; evidence = $wiredSummary },
         [ordered]@{ name = "post-flash Companion app handoff reset"; status = "DRY_RUN"; message = "not executed; rewrites OTA app handoff, hard-resets the board, then waits $PostFlashAppSettleSeconds seconds before BLE capture"; command = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $postFlashResetArgs; evidence = $null },
-        [ordered]@{ name = "real Companion-native BLE GATT bench validation"; status = "DRY_RUN"; message = "not executed; exercises the Companion-native GATT contract without Listener-Type"; command = ConvertTo-CommandLine -FilePath "python" -Arguments $nativeBleArgs; evidence = $nativeBleSummary },
-        [ordered]@{ name = "real Companion BLE OTA bench validation"; status = "DRY_RUN"; message = "not executed; transfers the same package over the Companion OTA v2 path"; command = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $bleArgs; evidence = $bleSummary }
+        [ordered]@{ name = "real Companion A1/A2 bench validation"; status = "DRY_RUN"; message = "not executed; requires workflow hardware lock"; command = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $a1Args; evidence = $a1Summary },
+        [ordered]@{ name = "real Companion BLE OTA bench validation"; status = "DRY_RUN"; message = "not executed; transfers the same package over the Denzic OTA v1 path"; command = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $bleArgs; evidence = $bleSummary }
     )
-    if ($IncludeTypeHarness) {
-        $dryRunSteps += [ordered]@{ name = "legacy Type A1/A2 bench validation"; status = "DRY_RUN"; message = "not executed; optional compatibility evidence only"; command = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $a1Args; evidence = $a1Summary }
-    }
     if ($IncludeTypeUiGate) {
         $dryRunSteps += [ordered]@{ name = "Type temporary Companion debug page"; status = "DRY_RUN"; message = "not executed; optional legacy Type UI gate against the same unified Companion VKA1 app"; command = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $typeUiArgs; evidence = $typeUiSummary }
     }
-    $dryRunSteps += [ordered]@{ name = "post-OTA Companion-native BLE GATT bench validation"; status = "DRY_RUN"; message = "not executed; verifies the app boots and exposes native GATT after BLE OTA"; command = ConvertTo-CommandLine -FilePath "python" -Arguments $postOtaNativeBleArgs; evidence = $postOtaNativeBleSummary }
     $dryRunSteps += [ordered]@{ name = "manual gate evidence verifier"; status = "DRY_RUN"; message = "not executed until all required gate summaries exist"; command = ConvertTo-CommandLine -FilePath "pwsh" -Arguments $manualArgs; evidence = $manualSummary }
     $report = [ordered]@{
         schema = "companion.hardware_acceptance.validation.v1"
@@ -396,9 +360,7 @@ if (-not $Execute) {
         output_dir = $outDirResolved
         lock_command = $lockCommand
         evidence = [ordered]@{
-            native_ble_gatt = $nativeBleSummary
-            post_ota_native_ble_gatt = $postOtaNativeBleSummary
-            a1_a2 = if ($IncludeTypeHarness) { $a1Summary } else { $null }
+            a1_a2 = $a1Summary
             ble_ota = $bleSummary
             wired_flash = $wiredSummary
             type_ui = if ($IncludeTypeUiGate) { $typeUiSummary } else { $null }
@@ -425,11 +387,9 @@ if (-not $WorkflowLockHeld) {
 }
 
 $startedAt = (Get-Date).ToUniversalTime().ToString("o")
-if ($PromptOperator) {
-    Show-OperatorPrompt `
-        -Title "Companion 总体验收即将开始" `
-        -Message "请确认 Companion 已接好 ST-LINK USB，电脑蓝牙可用，Companion-native host 工具可运行。点击 OK 后会依次做有线刷机、原生 BLE GATT 和蓝牙升级；过程中按后续弹窗操作，刷机或升级时不要拔线、不要断电。"
-}
+Show-OperatorPrompt `
+    -Title "Companion 总体验收即将开始" `
+    -Message "请确认 Companion 已接好 ST-LINK USB，电脑蓝牙可用，bench host harness 可运行。点击 OK 后会依次做有线刷机、录音链路和蓝牙升级；过程中按后续弹窗操作，刷机或升级时不要拔线、不要断电。"
 
 try {
     if ($SkipWirelessStackProvisioning) {
@@ -453,15 +413,11 @@ try {
     }
     Invoke-AcceptanceStep -Name "real Companion wired flash from same package" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments $wiredArgs
     Invoke-AcceptanceStep -Name "post-flash Companion app handoff reset" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments $postFlashResetArgs
-    Invoke-AcceptanceStep -Name "real Companion-native BLE GATT bench validation" -WorkingDirectory $repoRoot -FilePath "python" -Arguments $nativeBleArgs
-    if ($IncludeTypeHarness) {
-        Invoke-AcceptanceStep -Name "legacy Type A1/A2 bench validation" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments $a1Args
-    }
+    Invoke-AcceptanceStep -Name "real Companion A1/A2 bench validation" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments $a1Args
     if ($IncludeTypeUiGate) {
         Invoke-AcceptanceStep -Name "Type temporary Companion debug page" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments $typeUiArgs
     }
     Invoke-AcceptanceStep -Name "real Companion BLE OTA bench validation" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments $bleArgs
-    Invoke-AcceptanceStep -Name "post-OTA Companion-native BLE GATT bench validation" -WorkingDirectory $repoRoot -FilePath "python" -Arguments $postOtaNativeBleArgs
     Invoke-AcceptanceStep -Name "manual gate evidence verifier" -WorkingDirectory $repoRoot -FilePath "pwsh" -Arguments $manualArgs
 } catch {
     $errors.Add($_.Exception.Message) | Out-Null
@@ -481,9 +437,7 @@ $report = [ordered]@{
     output_dir = $outDirResolved
     lock_command = $lockCommand
     evidence = [ordered]@{
-        native_ble_gatt = $nativeBleSummary
-        post_ota_native_ble_gatt = $postOtaNativeBleSummary
-        a1_a2 = if ($IncludeTypeHarness) { $a1Summary } else { $null }
+        a1_a2 = $a1Summary
         ble_ota = $bleSummary
         wired_flash = $wiredSummary
         type_ui = if ($IncludeTypeUiGate) { $typeUiSummary } else { $null }
