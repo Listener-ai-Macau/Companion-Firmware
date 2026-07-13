@@ -87,9 +87,16 @@
         "next_prompt_delta": "After review, preserve the accepted v3 sleep and recording silhouettes and tune only individual stroke weights or state details."
       },
       "implementation": {
-        "status": "not_started",
+        "status": "candidate_pbm_staged_not_activated",
         "resource_revision": null,
-        "validation": []
+        "layout": "docs/art/iterations/companion-pet-interaction-v1/storyboard-import-v3.json",
+        "validation": [
+          "python tools/import_generated_expression_storyboard.py",
+          "docs/validation/companion-pet-interaction-v3-storyboard-import.json",
+          "docs/art/iterations/companion-pet-interaction-v1/pet-interaction-v3-pbm-review.png",
+          "source SHA-256 mismatch rejection"
+        ],
+        "activation_gate": "Owner visual approval is required before replacing any active CEMP clip or incrementing the resource revision."
       }
     }
   ]
