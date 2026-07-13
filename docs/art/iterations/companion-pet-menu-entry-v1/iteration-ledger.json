@@ -76,6 +76,47 @@
         ],
         "activation_gate": "Owner visual approval is required before replacing any active CEMP clip or incrementing the resource revision."
       }
+    },
+    {
+      "iteration_id": "menu-entry-v3-exact-v5-proportion-2026-07-13",
+      "status": "candidate_generated_pending_owner_review",
+      "authoring_request": "Owner says the new expression is completely different from the prior style. Preserve the accepted v5 character exactly and add only a three-beat long-press performance.",
+      "prompt": "Using the supplied accepted generated_pet_expression_sheet_v5.png as a direct character model, create one pure black-and-white 1-bit production storyboard containing exactly three large left-to-right menu-entry keyframes for the same Companion inner face. This is not a request to invent a similar cute style or redraw a mascot: copy the v5 facial primitives and proportions as literally as possible. Reuse the same compact vertical black oval eye silhouettes with one small white upper-left highlight, the same short rounded eyebrow dashes, the same tiny black button nose and thin W-shaped mouth, the same small horizontal oval cheek dots, the same wide white space, and the same relative eye/brow/mouth/cheek anchors. No face border, head outline, ears, whiskers, device frame, text, labels, gray, color, gradients, eyelashes, thick eyelids, hatching, shading, giant mouths, or new facial parts. Show only one continuous three-beat pose sequence of that exact v5 character: A ANTICIPATION at 0.65 s keeps the calm v5 face, shifting only both highlights/gaze slightly upward toward the held finger and lifting one existing brow dash by a few pixels; B DECISION at 1.4 s keeps the identical eyes and anchors, raises the two brow dashes very slightly, opens the same tiny W mouth by only a small notch, nudges the same cheek dots upward, and adds one tiny v5-like sparkle; C SETTLE at 2.4 s returns the same face to a gentle small v5 smile or soft crescent lids, with the sparkle gone. The three panels must read as the same drawing gently moving, never as three independently redesigned stickers. Keep all strokes rounded, sparse, and readable after PBM conversion for a 200x200 e-paper panel.",
+      "source_references": [
+        "docs/art/generated_pet_expression_sheet_v5.png sha256 B8643279C191BBAB610B4910110DF38E656290A64E4BC842174E284CB3689C6B",
+        "menu-entry-v1-2026-07-13 rejected for v5 style discontinuity sha256 848A6FB1D61B209034DC36190D9820EA612AB7DC89C3209FDA7469D394FF5D78",
+        "menu-entry-v2-v5-continuity-2026-07-13 remains unaccepted sha256 CB3424B597AE2C34340C3E44382C3ABC01D63ADFACEBE3E5F7A76B219ABEC39A",
+        "owner feedback from this conversation: 和以前的风格完全不同"
+      ],
+      "output": "docs/art/generated_companion_menu_entry_expression_v3.png",
+      "sha256": "B81A6C592A8E8C228CD2566C07B32533EA73C3022854430BEE3DE05066EC1921",
+      "review": {
+        "outcome": "candidate_generated_pending_owner_review",
+        "reason": "The v3 source and candidate PBMs preserve the v5-sized oval eyes with a single upper-left highlight, short brow dashes, tiny W mouth, cheek dots, white space, and the same three-pose left-to-right grammar. The only intended changes are a slight attentive gaze/brow pose, a tiny open-mouth decision with one sparkle, and the final soft-lid settle. Owner visual approval remains required.",
+        "next_prompt_delta": null
+      },
+      "implementation": {
+        "status": "candidate_pbm_staged_not_activated",
+        "resource_revision": null,
+        "layout": "docs/art/iterations/companion-pet-menu-entry-v1/menu-entry-v3-import-layout.json",
+        "candidate_import": {
+          "status": "PASS",
+          "report": "docs/art/iterations/companion-pet-menu-entry-v1/menu-entry-v3-pbm-import.json",
+          "review_preview": "docs/art/iterations/companion-pet-menu-entry-v1/menu-entry-v3-pbm-review.png",
+          "outputs": [
+            "docs/art/iterations/companion-pet-menu-entry-v1/menu-entry-v3-candidate-pbm/menu-entry-anticipation_1_54in.pbm",
+            "docs/art/iterations/companion-pet-menu-entry-v1/menu-entry-v3-candidate-pbm/menu-entry-decision_1_54in.pbm",
+            "docs/art/iterations/companion-pet-menu-entry-v1/menu-entry-v3-candidate-pbm/menu-entry-settle_1_54in.pbm"
+          ],
+          "cemp_manifest_changed": false,
+          "activation_gate": "Owner visual approval plus source-to-PBM review is required before a CEMP manifest, resource revision, firmware image, or device flash can change."
+        },
+        "validation": [
+          "compare every v3 keyframe against v5 eye, brow, mouth, cheek, and whitespace anchors before PBM conversion",
+          "compare the three v3 poses for continuous pose-only changes",
+          "owner visual approval plus source-to-PBM review is required before a CEMP manifest, resource revision, firmware image, or device flash can change"
+        ]
+      }
     }
   ]
 }
