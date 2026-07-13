@@ -40,6 +40,12 @@ REQUIRED_ANCHORS = (
     "COMP-REQ-021",
     "COMP-REQ-022",
     "COMP-REQ-023",
+    "COMP-REQ-024",
+    "COMP-REQ-025",
+    "COMP-REQ-026",
+    "COMP-REQ-027",
+    "COMP-REQ-028",
+    "COMP-REQ-029",
     "PC6/EXTI",
     "<=1 mA",
     "external-Flash first",
@@ -54,6 +60,8 @@ REQUIRED_ANCHORS = (
     "Latest Machine Evidence",
     "PASS_STATIC_PARSER",
     "no CubeWBA project, WBA hardware, or parity claim",
+    "tools/run_wb55_refresh_ab.ps1",
+    "docs/validation/companion-wb55-refresh-ab-runner.json",
 )
 
 
@@ -74,7 +82,7 @@ def main() -> int:
         "registry": str(REGISTRY.relative_to(ROOT)).replace("\\", "/"),
         "workflow_plan": "companion-screen-product-integration",
         "requirement_ids": [f"COMP-REQ-{number}" for number in requirement_ids],
-        "current_focus": "COMP-REQ-019 four-up menu and COMP-REQ-020 lively menu-entry art iteration",
+        "current_focus": "COMP-REQ-024 through COMP-REQ-029 interaction-latency hardware comparison, with COMP-REQ-019/020 visual candidates pending owner review",
         "active_parallel_track": "COMP-REQ-009 generated low-power/wake/dynamic-recording expression art",
         "errors": errors,
     }
