@@ -1,14 +1,14 @@
 {
   "acceptance_index": {
-    "next_hardware_gate": "wb55_rev53_runtime_recheck",
+    "next_hardware_gate": "wba_real_panel_parity",
     "next_human_gate": "wb55_touch_visual_acceptance",
     "path": "docs/validation/companion-screen-acceptance-index.json",
     "schema_id": "companion.pendant.screen_acceptance_index.v1",
     "summary": {
-      "deferred_count": 1,
-      "next_hardware_gate": "wb55_rev53_runtime_recheck",
+      "deferred_count": 0,
+      "next_hardware_gate": "wba_real_panel_parity",
       "next_human_gate": "wb55_touch_visual_acceptance",
-      "pass_count": 84,
+      "pass_count": 85,
       "pending_human_count": 2,
       "total_count": 87
     }
@@ -149,16 +149,16 @@
   },
   "goal_state": {
     "open_requirements": [
-      "current_external_resource_runtime",
-      "screen_refresh_touch_machine_health",
       "daily_pet_and_menu_human_feel",
       "wba55_wba65_portability_boundary"
     ],
     "path": "docs/validation/companion-screen-goal-audit.json",
     "proved_requirements": [
       "wb55_physical_wiring_and_panel_identity",
+      "current_external_resource_runtime",
       "generated_pet_and_menu_art_baseline",
       "generated_art_handoff_and_refresh_feel_regression_guard",
+      "screen_refresh_touch_machine_health",
       "wb55_screen_firmware_build_matrix",
       "touch_menu_interaction_machine_contract",
       "external_flash_and_ota_resource_policy"
@@ -166,10 +166,10 @@
     "status": "GOAL_ACTIVE_NOT_COMPLETE"
   },
   "last_runtime_proven_resource": {
-    "normal_log": ".cache/validation/rev51-runtime-20260712-generated-art/normal/nucleo-serial-raw.log",
-    "pack_crc32": "0x56B56273",
-    "provision_log": ".cache/validation/rev51-runtime-20260712-generated-art/provision/nucleo-serial-raw.log",
-    "revision": 51
+    "normal_log": ".cache/validation/rev53-runtime-current/normal/nucleo-serial-raw.log",
+    "pack_crc32": "0x2332E300",
+    "provision_log": ".cache/validation/rev53-runtime-current/provision/nucleo-serial-raw.log",
+    "revision": 53
   },
   "operator_packet": {
     "machine_state_matches_resource": {
@@ -217,7 +217,7 @@
     "candidate": {
       "crc32": "0x2332E300",
       "revision": 53,
-      "runtime_status": "REVISION_53_RUNTIME_RECHECK_PENDING"
+      "runtime_status": "REVISION_53_RUNTIME_PASS_HUMAN_VISUAL_PENDING"
     },
     "checks": {
       "art_and_refresh_axes_separate": true,
@@ -230,7 +230,7 @@
     },
     "path": "docs/validation/companion-screen-refresh-feel-contract.json",
     "product_rules": {
-      "full_refresh": "Use 0xF7 only for unknown baseline, explicit full request, or fault recovery.",
+      "full_refresh": "Use 0xF7 for unknown baseline, fault recovery, or one explicit menu-enter/menu-exit cleanliness boundary; never append a second maintenance refresh to that boundary.",
       "generation_backlog": "SCR-17 remains a named product backlog/release item; recognizable old faces, menus, prompt crops, fallback renderers, or framebuffer content are stale_generation_content until proven physical afterimage only.",
       "generation_swap": "Treat visual ghosting and old/new resource interleaving as separate failures: atomically activate one CEMP revision, drain stale queued frames, then refresh/maintain the panel baseline.",
       "generation_triage": "Classify visible old content as physical afterimage, stale queued frame, stale asset revision, or rescue/procedural fallback leakage; only physical afterimage belongs to refresh-profile tuning.",
@@ -246,7 +246,7 @@
     "frames": 75,
     "pack_crc32": "0x2332E300",
     "revision": 53,
-    "runtime_status": "REVISION_53_RUNTIME_RECHECK_PENDING",
+    "runtime_status": "REVISION_53_RUNTIME_PASS_HUMAN_VISUAL_PENDING",
     "total_bytes": 49901
   },
   "runtime_flash_preflight": {
@@ -275,42 +275,38 @@
     "normal": {
       "exists": true,
       "markers": {
-        "clips=33 frames=159": true,
+        "clips=33 frames=75": true,
         "complete=1": true,
         "expression_renderer=external_pack": true,
         "mount=ok": true,
         "pet_behavior_selftest=pass failure_code=0": true,
         "refresh mode=full": true,
-        "revision=51": true,
+        "revision=53": true,
         "source=external_flash": true,
         "touch-health] detected=1 identity=1 addr=0x38": true
       },
-      "path": ".cache/validation/rev51-runtime-20260712-generated-art/normal/nucleo-serial-raw.log"
+      "path": ".cache/validation/rev53-runtime-current/normal/nucleo-serial-raw.log"
     },
     "provision": {
       "exists": true,
       "markers": {
-        "clips=33 frames=159": true,
+        "clips=33 frames=75": true,
         "complete=1": true,
         "expression_renderer=external_pack": true,
         "mount=ok": true,
         "pet_behavior_selftest=pass failure_code=0": true,
         "refresh mode=full": true,
-        "revision=51": true,
+        "revision=53": true,
         "source=external_flash": true,
         "touch-health] detected=1 identity=1 addr=0x38": true
       },
-      "path": ".cache/validation/rev51-runtime-20260712-generated-art/provision/nucleo-serial-raw.log"
+      "path": ".cache/validation/rev53-runtime-current/provision/nucleo-serial-raw.log"
     }
   },
   "runtime_promotion_gate": {
-    "blockers": [
-      "runtime log verifier status is 'NO_GO_MISSING_RUNTIME_LOGS', not PASS",
-      "provision log status is 'MISSING_OR_INCOMPLETE'",
-      "normal log status is 'MISSING_OR_INCOMPLETE'"
-    ],
+    "blockers": [],
     "path": "docs/validation/companion-screen-wb55-runtime-promotion.json",
-    "status": "NO_GO_LOGS_NOT_PASS",
+    "status": "APPLIED",
     "target_status": "REVISION_53_RUNTIME_PASS_HUMAN_VISUAL_PENDING"
   },
   "runtime_serial_capture_preflight": {
@@ -325,7 +321,7 @@
     "summary_json_filename": "nucleo-serial-summary.json"
   },
   "schema_id": "companion.pendant.screen_pre_acceptance_health.v1",
-  "status": "NO_GO_RUNTIME_RECHECK_PENDING",
+  "status": "PASS",
   "target": "NUCLEO-WB55RG + GDEY0154D67-T03 + FT6336U",
   "validation_commands": [
     "python .\\tools\\verify_companion_screen_pre_acceptance_health.py",

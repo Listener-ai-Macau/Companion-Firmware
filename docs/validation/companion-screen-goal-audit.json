@@ -1,17 +1,17 @@
 {
   "acceptance_sequence": {
     "acceptance_index": "docs/validation/companion-screen-acceptance-index.json",
-    "next_hardware_gate": "wb55_rev53_runtime_recheck",
+    "next_hardware_gate": "wba_real_panel_parity",
     "next_human_gate": "wb55_touch_visual_acceptance",
-    "pre_acceptance_status": "NO_GO_RUNTIME_RECHECK_PENDING",
-    "runtime_logs_status": "NO_GO_MISSING_RUNTIME_LOGS",
-    "runtime_promotion_status": "NO_GO_LOGS_NOT_PASS",
+    "pre_acceptance_status": "PASS",
+    "runtime_logs_status": "PASS",
+    "runtime_promotion_status": "APPLIED",
     "schema_id": "companion.pendant.screen_acceptance_index.v1",
     "summary": {
-      "deferred_count": 1,
-      "next_hardware_gate": "wb55_rev53_runtime_recheck",
+      "deferred_count": 0,
+      "next_hardware_gate": "wba_real_panel_parity",
       "next_human_gate": "wb55_touch_visual_acceptance",
-      "pass_count": 84,
+      "pass_count": 85,
       "pending_human_count": 2,
       "total_count": 87
     }
@@ -21,11 +21,11 @@
     "clips": 33,
     "crc32": "0x2332E300",
     "frames": 75,
-    "normal_firmware_restored": false,
-    "normal_log": null,
-    "provision_log": null,
+    "normal_firmware_restored": true,
+    "normal_log": ".cache/validation/rev53-runtime-current/normal/nucleo-serial-raw.log",
+    "provision_log": ".cache/validation/rev53-runtime-current/provision/nucleo-serial-raw.log",
     "revision": 53,
-    "runtime_status": "REVISION_53_RUNTIME_RECHECK_PENDING",
+    "runtime_status": "REVISION_53_RUNTIME_PASS_HUMAN_VISUAL_PENDING",
     "total_bytes": 49901
   },
   "generated_from": {
@@ -59,8 +59,6 @@
     "wba_real_parity_gate": "docs/validation/companion-screen-wba-real-parity-gate.json"
   },
   "open_requirements": [
-    "current_external_resource_runtime",
-    "screen_refresh_touch_machine_health",
     "daily_pet_and_menu_human_feel",
     "wba55_wba65_portability_boundary"
   ],
@@ -82,17 +80,17 @@
         {
           "path": "docs/validation/companion-screen-bilingual-menu-wb55.json",
           "status": "REVISION_53_RUNTIME_RECHECK_PENDING",
-          "summary": "revision 53 CEMP pack metadata is current; runtime_status=REVISION_53_RUNTIME_RECHECK_PENDING"
+          "summary": "revision 53 CEMP pack metadata is current; runtime_status=REVISION_53_RUNTIME_PASS_HUMAN_VISUAL_PENDING"
         },
         {
-          "path": "None",
-          "status": "LAST_PROVEN_PREVIOUS_REVISION",
-          "summary": "last proven normal boot remains revision=52; current revision=53 awaits provision/normal runtime recheck"
+          "path": ".cache/validation/rev53-runtime-current/normal/nucleo-serial-raw.log",
+          "status": "PASS",
+          "summary": "normal boot log contains mount=ok, revision=53, source=external_flash, and full refresh completion"
         }
       ],
       "id": "current_external_resource_runtime",
       "requirement": "The normal WB55 firmware uses external ui_assets for the current expression/menu art pack.",
-      "status": "pending_hardware_recheck"
+      "status": "proved"
     },
     {
       "evidence": [
@@ -130,7 +128,7 @@
         },
         {
           "path": "docs/validation/companion-screen-generation-release-ledger.json",
-          "status": "PENDING_RUNTIME_RECHECK",
+          "status": "RUNTIME_PROMOTED_HUMAN_VISUAL_PENDING",
           "summary": "SCR-17 release ledger records source art, CEMP revision/CRC, external Flash activation status, stale-discard model, first-frame coherent marker, refresh classification, OTA transaction rule, and pending rev53 runtime facts"
         }
       ],
@@ -141,13 +139,13 @@
     {
       "evidence": [
         {
-          "path": "None",
-          "status": "LAST_PROVEN_PREVIOUS_REVISION",
-          "summary": "rev53 refresh/touch runtime evidence is pending; rev52 remains last proven"
+          "path": ".cache/validation/rev53-runtime-current/normal/nucleo-serial-raw.log",
+          "status": "PASS",
+          "summary": "normal boot log includes refresh complete and touch-health identity addr=0x38 cipher=0x64 fw=0x01 chip=0x11"
         },
         {
           "path": "docs/validation/companion-screen-wb55-runtime-recheck-logs.json",
-          "status": "NO_GO_MISSING_RUNTIME_LOGS",
+          "status": "PASS",
           "summary": "current rev53 machine health depends on provision and normal runtime logs; pending status keeps this requirement in hardware recheck instead of relying on earlier history"
         },
         {
@@ -163,7 +161,7 @@
       ],
       "id": "screen_refresh_touch_machine_health",
       "requirement": "WB55 machine logs prove refresh path and FT6336 identity/health before human visual acceptance.",
-      "status": "pending_hardware_recheck"
+      "status": "proved"
     },
     {
       "evidence": [
@@ -192,7 +190,7 @@
         {
           "path": "docs/validation/companion-screen-touch-ft6336-wb55.json",
           "status": "PASS_STATIC_CURRENT_CODE",
-          "summary": "gesture contract keeps 3000 ms any-position long_press with 46 px wobble tolerance and menu-v3 home is a static six-row page and never advances a numbered scroll frame"
+          "summary": "gesture contract keeps 3000 ms any-position long_press with 46 px wobble tolerance and menu-v3 home tracks the current pressed row but never synthesizes legacy scroll frames"
         }
       ],
       "id": "touch_menu_interaction_machine_contract",
@@ -218,7 +216,7 @@
         },
         {
           "path": "docs/validation/companion-screen-pre-acceptance-health.json",
-          "status": "NO_GO_RUNTIME_RECHECK_PENDING",
+          "status": "PASS",
           "summary": "machine-only pre-acceptance health gate blocks acceptance until rev53 runtime recheck, while retaining last-proven log, touch identity, refresh marker, flash preflight, and packet/resource consistency evidence"
         },
         {
@@ -243,13 +241,13 @@
         },
         {
           "path": "docs/validation/companion-screen-wb55-runtime-recheck-logs.json",
-          "status": "NO_GO_MISSING_RUNTIME_LOGS",
+          "status": "PASS",
           "summary": "rev53 provision/normal runtime logs are the first-hand machine gate; pending status means human touch/visual acceptance must not start"
         },
         {
           "path": "docs/validation/companion-screen-wb55-runtime-promotion.json",
-          "status": "NO_GO_LOGS_NOT_PASS",
-          "summary": "promotion gate refuses to update runtime evidence until both rev53 provision and normal serial logs verify PASS"
+          "status": "APPLIED",
+          "summary": "promotion gate has applied rev53 runtime evidence; human visual/touch acceptance is still pending"
         }
       ],
       "id": "daily_pet_and_menu_human_feel",
@@ -321,9 +319,9 @@
     "candidate_pack_bytes": 49901,
     "candidate_revision": 53,
     "last_runtime_proven_marker": "source=external_flash",
-    "wb55_real_crc32": "0xDEFC096E",
-    "wb55_real_pack_bytes": 287732,
-    "wb55_real_revision": 52
+    "wb55_real_crc32": "0x2332E300",
+    "wb55_real_pack_bytes": 49901,
+    "wb55_real_revision": 53
   },
   "schema_id": "companion.pendant.screen_goal_audit.v1",
   "status": "GOAL_ACTIVE_NOT_COMPLETE",

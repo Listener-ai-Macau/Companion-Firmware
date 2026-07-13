@@ -149,20 +149,22 @@
     "status": "BUILD_PASS_RUNTIME_RECHECK_PENDING"
   },
   "revision_53_machine_contract": {
-    "menu_style": "owner-accepted menu-v3 sheet is cropped into seven complete external pages per language; no normal-menu geometry or icon is hand-drawn by the WB55 renderer",
     "menu_home": "six destinations fit one static source-layout frame per language; legacy 43-frame scrolling assets are excluded from CEMP",
-    "menu_live_cells": "Status, Phone Link, and Device source example values are blanked before the compact runtime overlay writes live flags or truthful fixed capability states; the Phone Link reconnect row calls the guarded WB55 advertising request and writes ADV/LINK/ERR from the actual result; recording uses the source action button and shows a stop glyph only while the real recording FSM is active",
     "menu_import_report": "docs/validation/companion-screen-menu-v3-import.json",
+    "menu_live_cells": "Status, Phone Link, and Device source example values are blanked before the compact runtime overlay writes live flags or truthful fixed capability states; the Phone Link reconnect row calls the guarded WB55 advertising request and writes ADV/LINK/ERR from the actual result; recording uses the source action button and shows a stop glyph only while the real recording FSM is active",
     "menu_previews": [
       "docs/validation/epaper/menu-v3-en-preview.png",
       "docs/validation/epaper/menu-v3-zh-preview.png"
     ],
+    "menu_style": "owner-accepted menu-v3 sheet is cropped into seven complete external pages per language; no normal-menu geometry or icon is hand-drawn by the WB55 renderer",
     "normal_build": "PASS",
     "provision_build": "PASS",
     "status": "BUILD_PASS_RUNTIME_RECHECK_PENDING"
   },
   "runtime_evidence": {
-    "machine_observation": "Revision 53 menu-v3 import, normal WB55 firmware build, and screen-asset-provision build passed. The new external CEMP revision has not been flashed or runtime-observed yet; focused visual/touch review remains pending.",
+    "machine_observation": "Revision 53 provision and normal runtime logs passed: external ui_assets mounted, CEMP revision 53 / CRC 0x2332E300 loaded from external_flash, pet self-test passed, touch identity was detected, and the initial full refresh completed. Human touch/visual acceptance remains pending.",
+    "normal_capture_summary": ".cache/validation/rev53-runtime-current/normal/nucleo-serial-summary.json",
+    "normal_raw_log": ".cache/validation/rev53-runtime-current/normal/nucleo-serial-raw.log",
     "operator_prompt_used": false,
     "predecessor_runtime_proven_revision": {
       "pack_crc32": "0x0E16087E",
@@ -178,8 +180,20 @@
       "provision_raw_log": ".cache/validation/rev51-runtime-20260712-generated-art/provision/nucleo-serial-raw.log",
       "revision": 51
     },
-    "required_runtime_markers": [],
-    "status": "REVISION_53_RUNTIME_RECHECK_PENDING",
+    "provision_capture_summary": ".cache/validation/rev53-runtime-current/provision/nucleo-serial-summary.json",
+    "provision_raw_log": ".cache/validation/rev53-runtime-current/provision/nucleo-serial-raw.log",
+    "required_runtime_markers": [
+      "mount=ok",
+      "revision=53",
+      "clips=33 frames=75",
+      "pet_behavior_selftest=pass failure_code=0",
+      "touch-health] detected=1 identity=1 addr=0x38",
+      "preview_started name=idle",
+      "source=external_flash",
+      "refresh mode=full",
+      "complete=1"
+    ],
+    "status": "REVISION_53_RUNTIME_PASS_HUMAN_VISUAL_PENDING",
     "superseded_revision11_logs": [
       ".cache/validation/screen-cemp-revision11-provision/nucleo-serial-raw.log",
       ".cache/validation/screen-revision11-normal/nucleo-serial-raw.log"

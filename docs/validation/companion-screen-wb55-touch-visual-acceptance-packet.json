@@ -42,9 +42,9 @@
       ]
     },
     "normal_firmware_restored": true,
-    "normal_log": null,
+    "normal_log": ".cache/validation/rev53-runtime-current/normal/nucleo-serial-raw.log",
     "pet_art_style": "genref_sheet_12_inner_faces_v5",
-    "provision_log": null,
+    "provision_log": ".cache/validation/rev53-runtime-current/provision/nucleo-serial-raw.log",
     "resource_crc32": "0x2332E300",
     "resource_revision": 53,
     "resource_total_bytes": 49901,
@@ -62,7 +62,7 @@
       "path": "docs/validation/companion-screen-wb55-runtime-serial-capture-preflight.json",
       "status": "PASS_STATIC_SERIAL_CAPTURE_PREFLIGHT"
     },
-    "runtime_status": "REVISION_53_RUNTIME_RECHECK_PENDING"
+    "runtime_status": "REVISION_53_RUNTIME_PASS_HUMAN_VISUAL_PENDING"
   },
   "operator_steps": [
     {

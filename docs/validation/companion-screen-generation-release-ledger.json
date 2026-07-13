@@ -1,7 +1,7 @@
 {
   "activation_evidence": {
     "active_revision_field": "active_resource_revision",
-    "external_flash_activation": "pending_rev53_runtime_recheck",
+    "external_flash_activation": "runtime_verified_rev53_external_flash",
     "manifest_verified_static": true,
     "old_queue_action": "drain_or_discard",
     "request_revision_field": "resource_revision",
@@ -15,7 +15,7 @@
     "frames": 75,
     "pack_bytes": 49901,
     "product": "Companion screen",
-    "runtime_status": "REVISION_53_RUNTIME_RECHECK_PENDING",
+    "runtime_status": "REVISION_53_RUNTIME_PASS_HUMAN_VISUAL_PENDING",
     "storage": "external ui_assets at 0x00200000",
     "target_family": "STM32WB55 baseline; WBA55/WBA65 inherit generation hygiene",
     "target_profile": "GDEY0154D67-T03 200x200 1-bit"
@@ -27,13 +27,10 @@
     "model_generation_switches": 2,
     "model_last_stale_discarded": 3,
     "model_resource_revision": 51,
-    "real_marker_present": false,
-    "real_runtime_status": "NO_GO_MISSING_RUNTIME_LOGS"
+    "real_marker_present": true,
+    "real_runtime_status": "PASS"
   },
   "missing_hardware_facts": [
-    "rev53 ScreenAssetProvision flash/capture",
-    "rev53 normal firmware restore/capture",
-    "real display_result coherent_generation=1 log",
     "human visual classification of any old marks"
   ],
   "normal_pack_generation": {
@@ -57,7 +54,7 @@
   },
   "purpose": "SCR-17 release ledger proving the current screen-art candidate has a single product generation before human visual review.",
   "refresh_classification": {
-    "full_refresh": "Use 0xF7 only for unknown baseline, explicit full request, or fault recovery.",
+    "full_refresh": "Use 0xF7 for unknown baseline, fault recovery, or one explicit menu-enter/menu-exit cleanliness boundary; never append a second maintenance refresh to that boundary.",
     "interactive": "Use differential 0xFC dirty-window refresh; coalesce queued menu drag frames to the latest request.",
     "maintenance": "After touch settles, schedule one quiet 0xCF maintenance cleanup; never insert it while contact is active.",
     "physical_afterimage_route": "panel profile, one quiet maintenance refresh, or full baseline/fault recovery",
@@ -96,7 +93,7 @@
     "wba_port_contract": "docs/validation/companion-screen-wba-port-contract.json",
     "wba_real_parity_gate": "docs/validation/companion-screen-wba-real-parity-gate.json"
   },
-  "status": "PENDING_RUNTIME_RECHECK",
+  "status": "RUNTIME_PROMOTED_HUMAN_VISUAL_PENDING",
   "validation_commands": [
     "python .\\tools\\verify_screen_generation_release_ledger.py",
     "python .\\tools\\verify_display_queue_generation_hygiene.py",

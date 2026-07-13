@@ -776,7 +776,7 @@ def check_audit(audit: dict[str, Any], errors: list[str]) -> None:
     gesture_contract = touch_ft6336.get("gesture_contract", {})
     expected_gestures = {
         "daily_enter_menu": "3000 ms any-position long_press with 46 px wobble tolerance",
-        "home_vertical_stroke": "menu-v3 home is a static six-row page and never advances a numbered scroll frame",
+        "home_vertical_stroke": "menu-v3 home tracks the current pressed row but never synthesizes legacy scroll frames",
         "daily_stroke": "all non-menu-entry swipes react as directional pet strokes",
     }
     for key, expected in expected_gestures.items():
@@ -894,7 +894,7 @@ def check_audit(audit: dict[str, Any], errors: list[str]) -> None:
         "verify_screen_presentation.py",
         "verify_touch_ft6336.py",
         "3000 ms any-position long_press",
-        "menu-v3 home is a static six-row page",
+        "menu-v3 home tracks the current pressed row",
         "generated reference as source of truth",
         "old/new expression art",
         "coherent_generation",
