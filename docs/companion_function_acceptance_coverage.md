@@ -54,21 +54,24 @@ operator observation agree.
 
 ### ACPT-03: TP_INT Stop Wake
 
-- Normal: after daily idle queues one static external-Flash `sleepy` pose and
-  Stop is allowed, one FT6336 touch on PC6 wakes the application, increments
-  and consumes the IRQ, and produces a touch response. The Stop pose must not
-  advance through periodic breathing refreshes.
+- Normal: after 15 s with no daily-page touch, the RTC one-shot queues one
+  static external-Flash `sleepy` pose and Stop is allowed. One FT6336 touch on
+  PC6 wakes the application, increments and consumes the IRQ, cancels any
+  pending sleepy deadline, and produces a touch response. The Stop pose must
+  not advance through periodic breathing refreshes.
 - Failure/recovery: an absent, duplicate, or unconsumed IRQ remains NO_GO;
   I2C recovery or poll fallback must be logged instead of claiming low power.
 - Machine evidence: a reset-bounded `--scope stop-wake` capture containing
   `[screen] low_power_idle pose=sleepy animation=stopped`,
-  `[power] low_power_face request=sleepy animation=static`, `[power]
-  stop=allowed`, a post-idle `irq>0` and `irq_consumed>0`, valid FT6336
-  identity, exactly one boot marker, and one `[touch-irq]` line whose consumed
-  count catches up to the observed count.
-- Popup: `3/13` asks the operator to wait until the closed-eye low-power face
-  settles, touch once, then confirm it wakes into a response without a reset,
-  repeated full flash, or periodic sleep-frame flicker.
+  `[power] low_power_idle_timer=armed delay_ms=15000`, `[screen]
+  low_power_idle pose=sleepy animation=stopped`, `[power]
+  low_power_face request=sleepy trigger=idle_timer`, `[power] stop=allowed`,
+  a post-idle `irq>0` and `irq_consumed>0`, valid FT6336 identity, exactly one
+  boot marker, and one `[touch-irq]` line whose consumed count catches up to
+  the observed count.
+- Popup: `3/13` asks the operator to wait for the 15 s closed-eye low-power
+  face to settle, touch once, then confirm it wakes into a response without a
+  reset, repeated full flash, or periodic sleep-frame flicker.
 - State: follows ACPT-01.
 
 ### ACPT-04: Double-Tap Recording And Visible State

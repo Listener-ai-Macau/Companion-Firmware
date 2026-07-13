@@ -902,6 +902,17 @@ Revision 66 已让 FT6336 在 SSD1681 BUSY 期间继续推进手势时基，但�
 不会丢掉手势，不会递归显示，也不靠删除录音、外部 Flash 或蓝牙功能来换取速度。机器检查必须证明
 四种耗时动作均经过 deferred path；WB55 真实 trace 和 ACPT-01 的实际触控观感仍是后续门禁。
 
+## Revision 70: 静置定时后才显示低功耗表情
+
+当前 Stop policy 的 blocker 一清空便立即调用 `Companion_Screen_EnterLowPowerIdle()`，也就是一次
+日常点击、滑动或录音结束后会马上再排一张 `sleepy` differential frame。这与 owner 对“长时间不触摸
+才进入低功耗”的理解不一致，而且会让刚结束的交互在约一张 0.3 s 局刷后显得滞后。
+
+改为复用 CubeWB 已在使用的 RTC TimerServer：日常表情安静后仅 arm 一个 15 s one-shot，MCU 此时
+仍可进入 Stop；超时回调只置位，由主循环请求一张静态 `sleepy` 差分帧。触控 contact 立即取消
+one-shot，不重绘 idle，也不保持主循环轮询。计时参数必须留在 board policy 常量中，未来 WBA 只替换
+timer adapter；静态检查、15 s Stop/timer runtime trace 和触碰取消 trace 是 ACPT-01 重开前的机器证据。
+
 ## 逐项验收顺序
 
 本项目遵循 AI Workflow 的全产品异步验收规则：未收到操作者明确的“开始验收”前，

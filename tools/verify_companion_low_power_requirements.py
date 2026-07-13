@@ -59,7 +59,9 @@ def main() -> int:
         "TP_INT)`；`TP_RST` 未接",
         "WAKE_N",
         "地址匹配 I2C Stop 唤醒",
-        "只排队一次外部 Flash `sleepy` 休眠脸",
+        "RTC TimerServer",
+        "15 s",
+        "一张外部 Flash `sleepy` 休眠脸",
         "不得在 Stop 中周期性唤醒或刷新电子纸",
     ]:
         require(anchor in requirements, f"low-power requirement missing: {anchor}", errors)
@@ -89,9 +91,13 @@ def main() -> int:
     require("HAL_UART_Transmit" in main_source, "low-power serial writer does not use USART", errors)
     require("COMP_TOUCH_GESTURE_DOUBLE_TAP" in main_source, "daily double-tap recording path is absent", errors)
     require("if (!s_low_power_stop_allowed)" in main_source, "idle loop still forces fixed polling", errors)
-    require("s_low_power_idle_pose_attempted" in main_source, "low-power sleep pose is not one-shot gated", errors)
+    require("LOW_POWER_IDLE_POSE_DELAY_MS 15000u" in main_source, "low-power sleepy delay is not the documented 15 s", errors)
+    require("HW_TS_Create" in main_source, "low-power idle timer is not created through TimerServer", errors)
+    require("HW_TS_Start" in main_source, "low-power idle timer is not armed through TimerServer", errors)
+    require("low_power_idle_timer_elapsed" in main_source, "low-power timer deadline callback is absent", errors)
+    require("cancel_low_power_idle_pose_timer" in main_source, "touch does not cancel the low-power sleepy deadline", errors)
     require("Companion_Screen_EnterLowPowerIdle" in main_source, "Stop path does not request the low-power sleep pose", errors)
-    require("low_power_face request=sleepy animation=static" in main_source, "low-power pose diagnostic is absent", errors)
+    require("low_power_face request=sleepy trigger=idle_timer" in main_source, "timer-triggered low-power pose diagnostic is absent", errors)
     require("Companion_Screen_EnterLowPowerIdle" in screen_ui, "screen API lacks low-power idle entry", errors)
     for anchor in [
         "COMP_EPAPER_EXPRESSION_SLEEPY",
@@ -120,8 +126,8 @@ def main() -> int:
         "status": "PASS" if not errors else "FAIL",
         "implementation_status": "static_policy_compiled; hardware_stop_wake_and_current_pending",
         "product_interaction": "daily double tap starts/stops touch-originated recording; wake word deferred",
-        "low_power_visual": "one static external-Flash sleepy frame precedes Stop; no periodic e-paper breathing refresh in Stop",
-        "idle_gate": "touch EXTI ready and no boot/mic/touch/menu/screen blockers",
+        "low_power_visual": "one static external-Flash sleepy frame follows a 15 s RTC idle deadline; no periodic e-paper breathing refresh in Stop",
+        "idle_gate": "touch EXTI ready and no boot/mic/touch/menu/screen blockers; timer remains armed while Stop is allowed",
         "target": "final product-board LP-01 standby average <= 1 mA over >= 60 s",
         "measurement_status": "hardware_current_pending",
         "portability": "HAL-free policy with WBA55/WBA65 callback-only LPM/EXTI glue",

@@ -13,6 +13,7 @@
 #include "screen_menu.h"
 #include "stm32_lpm.h"
 #include "touch_target_stm32wb_ft6336.h"
+#include "hw_if.h"
 
 #include <limits.h>
 #include <stdbool.h>
@@ -89,6 +90,8 @@ COMPANION_PLACE_IN_SECTION("TAG_OTA_START") const uint32_t MagicKeywordAddress =
 #define TOUCH_RESET_LOW_MS 10u
 #define TOUCH_RESET_BOOT_MS 320u
 #define TOUCH_SCREEN_MAINTENANCE_QUIET_MS 1200u
+#define LOW_POWER_IDLE_POSE_DELAY_MS 15000u
+#define LOW_POWER_IDLE_TIMER_ID_INVALID 0xFFu
 
 #define BOARD_TOUCH_INT_GPIO_PORT GPIOC
 #define BOARD_TOUCH_INT_PIN GPIO_PIN_6
@@ -492,7 +495,11 @@ static uint8_t s_menu_home_press_candidate_item;
 static uint32_t s_menu_home_press_candidate_due_ms;
 static bool s_screen_maintenance_pending;
 static uint32_t s_screen_maintenance_due_ms;
-static bool s_low_power_idle_pose_attempted;
+static uint8_t s_low_power_idle_timer_id = LOW_POWER_IDLE_TIMER_ID_INVALID;
+static bool s_low_power_idle_timer_created;
+static volatile bool s_low_power_idle_timer_armed;
+static volatile bool s_low_power_idle_pose_due;
+static bool s_low_power_idle_pose_visible;
 static bool s_low_power_touch_wake_requested;
 #if COMPANION_SCREEN_MAINTENANCE_DIAGNOSTIC
 static uint32_t s_maintenance_diagnostic_started_ms;
@@ -623,6 +630,11 @@ static bool defer_touch_runtime_action(comp_touch_runtime_action_t action,
                                        uint32_t now_ms);
 static void process_deferred_touch_runtime_action(void);
 static void process_touch_menu_phone_reconnect(uint32_t now_ms);
+static void init_low_power_idle_timer(void);
+static void low_power_idle_timer_elapsed(void);
+static void arm_low_power_idle_pose_timer(void);
+static void cancel_low_power_idle_pose_timer(void);
+static uint32_t low_power_idle_ms_to_timer_ticks(uint32_t timeout_ms);
 static void update_low_power_policy(void);
 static void start_recording(comp_recording_source_t source, const char *reason);
 static void stop_recording(comp_recording_source_t source, const char *reason);
@@ -1098,6 +1110,7 @@ int main(void)
     MX_APPE_Process();
 #endif
 
+    init_low_power_idle_timer();
     comp_power_policy_set_blocker(&s_power_policy, COMP_POWER_BLOCKER_BOOT, false);
     /* Preserve the configured FT6336/TP_INT state before the normal idle
      * path can enter Stop and defer its periodic heartbeat. */
@@ -1842,6 +1855,7 @@ static void process_touch_debug_sample(const comp_ft6336_touch_sample_t *sample,
                (unsigned long)s_touch.read_count);
     }
     if (s_touch_contact_active) {
+        cancel_low_power_idle_pose_timer();
         request_low_power_touch_wake();
     }
     handle_touch_menu_sample(sample, logical_x, logical_y, now_ms);
@@ -1850,13 +1864,14 @@ static void process_touch_debug_sample(const comp_ft6336_touch_sample_t *sample,
 static void request_low_power_touch_wake(void)
 {
     if (s_low_power_touch_wake_requested ||
-        !s_low_power_idle_pose_attempted ||
+        !s_low_power_idle_pose_visible ||
         !Companion_Screen_IsReady() ||
         Companion_Screen_IsMenuVisible()) {
         return;
     }
 
     s_low_power_touch_wake_requested = true;
+    s_low_power_idle_pose_visible = false;
     /* A differential idle redraw holds this panel for roughly one partial
      * waveform before the user's first gesture can own the screen. Wake the
      * MCU and preserve the 5 ms touch timeline now; tap/swipe/record/menu
@@ -2077,6 +2092,65 @@ static void process_deferred_touch_runtime_action(void)
     }
 }
 
+static uint32_t low_power_idle_ms_to_timer_ticks(uint32_t timeout_ms)
+{
+    uint64_t timeout_us = (uint64_t)timeout_ms * 1000u;
+    uint32_t ticks = (uint32_t)(
+        (timeout_us + (uint64_t)CFG_TS_TICK_VAL - 1u) /
+        (uint64_t)CFG_TS_TICK_VAL);
+
+    return ticks == 0u ? 1u : ticks;
+}
+
+static void low_power_idle_timer_elapsed(void)
+{
+    /* TimerServer runs this in the RTC path. The main loop owns the e-paper
+     * queue, so the callback only records the deadline and wakes normally. */
+    s_low_power_idle_timer_armed = false;
+    s_low_power_idle_pose_due = true;
+}
+
+static void init_low_power_idle_timer(void)
+{
+    if (s_low_power_idle_timer_created) {
+        return;
+    }
+    if (HW_TS_Create(CFG_TIM_PROC_ID_ISR,
+                     &s_low_power_idle_timer_id,
+                     hw_ts_SingleShot,
+                     low_power_idle_timer_elapsed) == hw_ts_Successful) {
+        s_low_power_idle_timer_created = true;
+        printf("[power] low_power_idle_timer=ready delay_ms=%u\r\n",
+               (unsigned)LOW_POWER_IDLE_POSE_DELAY_MS);
+    } else {
+        printf("[power] low_power_idle_timer=unavailable\r\n");
+    }
+}
+
+static void arm_low_power_idle_pose_timer(void)
+{
+    if (!s_low_power_idle_timer_created || s_low_power_idle_timer_armed ||
+        s_low_power_idle_pose_due || s_low_power_idle_pose_visible) {
+        return;
+    }
+    HW_TS_Stop(s_low_power_idle_timer_id);
+    HW_TS_Start(s_low_power_idle_timer_id,
+                low_power_idle_ms_to_timer_ticks(LOW_POWER_IDLE_POSE_DELAY_MS));
+    s_low_power_idle_timer_armed = true;
+    printf("[power] low_power_idle_timer=armed delay_ms=%u\r\n",
+           (unsigned)LOW_POWER_IDLE_POSE_DELAY_MS);
+}
+
+static void cancel_low_power_idle_pose_timer(void)
+{
+    if (s_low_power_idle_timer_created && s_low_power_idle_timer_armed) {
+        HW_TS_Stop(s_low_power_idle_timer_id);
+        s_low_power_idle_timer_armed = false;
+        printf("[power] low_power_idle_timer=cancelled reason=touch\r\n");
+    }
+    s_low_power_idle_pose_due = false;
+}
+
 static void update_low_power_policy(void)
 {
     bool stop_allowed;
@@ -2104,19 +2178,27 @@ static void update_low_power_policy(void)
 
     stop_allowed = comp_power_policy_stop_allowed(&s_power_policy);
     if (!stop_allowed) {
-        s_low_power_idle_pose_attempted = false;
-    } else if (!s_low_power_idle_pose_attempted && Companion_Screen_IsReady() &&
-               !Companion_Screen_IsMenuVisible()) {
-        s_low_power_idle_pose_attempted = true;
-        if (Companion_Screen_EnterLowPowerIdle()) {
-            /* The queued partial frame must run before LPM can put the core
-             * back into Stop. The next normal loop processes it, then this
-             * one-shot guard permits Stop without a periodic art timer. */
-            stop_allowed = false;
-            printf("[power] low_power_face request=sleepy animation=static\r\n");
-        } else {
-            printf("[power] low_power_face request=sleepy result=unavailable\r\n");
+        /* A deadline that expires while recording, dragging, or a display
+         * transition is active must be re-armed after that activity settles;
+         * never append a stale sleepy redraw to the interaction. */
+        s_low_power_idle_pose_due = false;
+    } else if (s_low_power_idle_pose_due) {
+        s_low_power_idle_pose_due = false;
+        if (Companion_Screen_IsReady() && !Companion_Screen_IsMenuVisible() &&
+            !s_low_power_idle_pose_visible) {
+            if (Companion_Screen_EnterLowPowerIdle()) {
+                /* The queued partial frame must run before LPM can put the
+                 * core back into Stop. It is one static end-of-idle pose,
+                 * never a repeating e-paper animation. */
+                s_low_power_idle_pose_visible = true;
+                stop_allowed = false;
+                printf("[power] low_power_face request=sleepy trigger=idle_timer\r\n");
+            } else {
+                printf("[power] low_power_face request=sleepy result=unavailable\r\n");
+            }
         }
+    } else if (Companion_Screen_IsReady() && !Companion_Screen_IsMenuVisible()) {
+        arm_low_power_idle_pose_timer();
     }
     if (stop_allowed == s_low_power_stop_allowed) {
         return;
