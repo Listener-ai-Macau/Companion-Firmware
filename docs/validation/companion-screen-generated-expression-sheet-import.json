@@ -439,7 +439,7 @@
     "status": "PASS"
   },
   "machine_review_required": true,
-  "machine_review_rule": "Each imported pose must keep visible ink inside the 200x200 canvas, and stay within ink-count bounds. Labels are excluded by the source crop rather than a target-panel guard band. These checks catch common generated-sheet import mistakes, but they do not replace the required REF/PBM visual review.",
+  "machine_review_rule": "Each imported pose must keep visible ink inside the requested canvas, and stay within ink-count bounds. Labels are excluded by the source crop rather than a target-panel guard band. These checks catch common generated-sheet import mistakes, but they do not replace the required REF/PBM visual review.",
   "machine_review_thresholds": {
     "fixed_art_margin_px": 0,
     "internal_shell_mask_disabled": true,

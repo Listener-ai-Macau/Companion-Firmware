@@ -34,7 +34,8 @@ FACE_INK_RATIO_PPM_MAX = 235_000
 MIN_FULL_DISTANCE_PPM = 1_000
 MIN_FACE_DISTANCE_PPM = 2_500
 
-OUTER_CLEAR_MARGIN_PERCENT = 5
+DISPLAY_EDGE_CLEAR_MARGIN_PERCENT = 5
+MAX_INNER_FACE_EDGE_ACCENT_PIXELS = 200
 
 
 def rel(path: pathlib.Path) -> str:
@@ -123,10 +124,10 @@ def distance_ppm(left: list[int], right: list[int]) -> int:
     return ratio_ppm(sum(1 for a, b in zip(left, right) if a != b), len(left))
 
 
-def outer_shell_pixels(pixels: list[int], width: int,
-                       box: dict[str, int]) -> int:
-    margin_x = max(1, box["width"] * OUTER_CLEAR_MARGIN_PERCENT // 100)
-    margin_y = max(1, box["height"] * OUTER_CLEAR_MARGIN_PERCENT // 100)
+def inner_face_edge_accent_pixels(pixels: list[int], width: int,
+                                  box: dict[str, int]) -> int:
+    margin_x = max(1, box["width"] * DISPLAY_EDGE_CLEAR_MARGIN_PERCENT // 100)
+    margin_y = max(1, box["height"] * DISPLAY_EDGE_CLEAR_MARGIN_PERCENT // 100)
     count = 0
     for y in range(box["y"], box["y"] + box["height"]):
         for x in range(box["x"], box["x"] + box["width"]):
@@ -136,6 +137,17 @@ def outer_shell_pixels(pixels: list[int], width: int,
                     local_y < margin_y or local_y >= box["height"] - margin_y):
                 count += pixels[y * width + x]
     return count
+
+
+def outer_display_margin_pixels(pixels: list[int], width: int, height: int) -> int:
+    margin_x = max(1, width * DISPLAY_EDGE_CLEAR_MARGIN_PERCENT // 100)
+    margin_y = max(1, height * DISPLAY_EDGE_CLEAR_MARGIN_PERCENT // 100)
+    return sum(
+        pixels[y * width + x]
+        for y in range(height)
+        for x in range(width)
+        if x < margin_x or x >= width - margin_x or y < margin_y or y >= height - margin_y
+    )
 
 
 def expression_fixture_rows(manifest: dict[str, Any], errors: list[str]) -> list[dict[str, Any]]:
@@ -171,8 +183,9 @@ def expression_fixture_rows(manifest: dict[str, Any], errors: list[str]) -> list
                 "face_box": box,
                 "face_black_pixels": face_black,
                 "face_ink_ratio_ppm": ratio_ppm(face_black, len(face)),
-                "outer_shell_pixels": outer_shell_pixels(pixels, width, box),
-                "outer_clear_margin_percent": OUTER_CLEAR_MARGIN_PERCENT,
+                "inner_face_edge_accent_pixels": inner_face_edge_accent_pixels(pixels, width, box),
+                "outer_display_margin_pixels": outer_display_margin_pixels(pixels, width, height),
+                "display_edge_clear_margin_percent": DISPLAY_EDGE_CLEAR_MARGIN_PERCENT,
                 "_pixels": pixels,
                 "_face_pixels": face,
             }
@@ -226,7 +239,11 @@ def build_contract() -> dict[str, Any]:
     return {
         "schema_id": SCHEMA_ID,
         "status": "PASS",
-        "purpose": "Guard enclosure-aware internal face features against blank, overfilled, duplicate, or digitally redrawn shell artwork.",
+        "purpose": (
+            "Guard the generated inner-face baseline against blank, overfilled, duplicate, "
+            "or display-edge shell artwork while allowing small reference-derived accents at "
+            "the inner-face boundary."
+        ),
         "source_manifest": rel(MANIFEST),
         "source_catalog": rel(CATALOG),
         "expression_count": len(EXPRESSION_KINDS),
@@ -239,6 +256,8 @@ def build_contract() -> dict[str, Any]:
             "face_ink_ratio_ppm_max": FACE_INK_RATIO_PPM_MAX,
             "minimum_full_image_distance_ppm": MIN_FULL_DISTANCE_PPM,
             "minimum_face_crop_distance_ppm": MIN_FACE_DISTANCE_PPM,
+            "display_edge_clear_margin_percent": DISPLAY_EDGE_CLEAR_MARGIN_PERCENT,
+            "maximum_inner_face_edge_accent_pixels": MAX_INNER_FACE_EDGE_ACCENT_PIXELS,
         },
         "metrics": metrics,
         "distance_by_variant": distance_by_variant,
@@ -282,8 +301,13 @@ def check_contract(data: dict[str, Any], errors: list[str]) -> None:
             errors,
         )
         require(
-            int(metric.get("outer_shell_pixels", -1)) == 0,
-            f"{metric.get('variant')}/{metric.get('expression')} redraws the enclosure shell",
+            int(metric.get("outer_display_margin_pixels", -1)) == 0,
+            f"{metric.get('variant')}/{metric.get('expression')} draws pixels in the shell-owned display margin",
+            errors,
+        )
+        require(
+            int(metric.get("inner_face_edge_accent_pixels", -1)) <= MAX_INNER_FACE_EDGE_ACCENT_PIXELS,
+            f"{metric.get('variant')}/{metric.get('expression')} exceeds the generated inner-face accent boundary",
             errors,
         )
         box = metric.get("face_box", {})
