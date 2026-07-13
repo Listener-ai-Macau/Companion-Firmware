@@ -814,6 +814,28 @@ owner 明确把“先出图，再按图实现”提升为全产品的通过规�
 `companion-screen-product-integration`；它不批准当前 v4 菜单或 v3 入场/录音候选，二者仍待 owner
 视觉决定。
 
+## Revision 64: 先锁定四项菜单美术，再压缩快刷时长
+
+同一 `1/13` 的 vendor-Mode-1 复验仍由 operator 选择失败，完整备注为“这次还行, 就是这种感觉,
+刷新时间再短一点就会, 另外菜单是四项的, 六项实在太小, 先生图一下四项的吧”。这表示原先多次黑闪
+问题已有可见改善，但不是通过：串口中的一次 `0xC7` activation 和 `1740 ms` Busy 时间只构成机器
+证据，尚未达到 owner 的观感要求。旧的六项首页继续是已拒绝资源，不能为了先缩短波形而延后
+四项菜单的视觉修复。
+
+执行顺序固定如下：
+
+1. 把已经保留的 `menu-v4-square-tiles-2026-07-13` 四项/两页候选作为本轮唯一视觉来源展示给
+   owner，等待明确视觉决定；未通过则把完整差异写回 ledger 后重生图，不在 C/PBM 中自由设计。
+2. owner 通过后，按冻结方格几何完成中英文资源、source-to-PBM/CEMP comparison、外部 Flash
+   resource revision 和 WB55 刷机；再用 focused popup 同时确认“每页最多四项”和菜单进入的一次
+   快刷观感。
+3. 在不触碰已修复的一次 activation、wake、long-press、right-swipe 合约前，只按 Good Display
+   公开 fast-profile 和面板温度条件调查 `1740 ms` 到厂家约 `1.5 s` nominal 的差距。记录真实
+   BUSY 时间和温度；禁止凭猜测改 LUT、用额外刷新掩盖残影，或把未验证时长称为通过。
+
+因此 ACPT-01 仍是当前唯一人工项，ACPT-02 至 ACPT-13 保持关闭。四项来源批准、资源对照和真实
+面板观感是不同证据层，任何一层缺失均不得用另一层替代。
+
 ## 逐项验收顺序
 
 本项目遵循 AI Workflow 的全产品异步验收规则：未收到操作者明确的“开始验收”前，

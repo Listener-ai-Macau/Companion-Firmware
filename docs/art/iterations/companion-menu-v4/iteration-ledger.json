@@ -102,8 +102,8 @@
       "sha256": "36FA932D91538C514CB9BA59FA1B2CCD642B706CB5B91911DAE543B8E066E692",
       "review": {
         "outcome": "candidate_generated_pending_owner_review",
-        "reason": "The candidate now presents eight equal square screen tiles in the required 4x2 order. Each tile keeps the v4 line language and direct 200x200 information hierarchy; owner approval remains required before PBM staging, Chinese localization, CEMP import, or device flash.",
-        "next_prompt_delta": null
+        "reason": "The candidate now presents eight equal square screen tiles in the required 4x2 order. Each tile keeps the v4 line language and direct 200x200 information hierarchy. The owner later reiterated that the active board's six-item home is too small and explicitly requested a four-up generated reference first; this candidate was surfaced for that review, but no owner visual acceptance has been recorded. Approval remains required before PBM staging, Chinese localization, CEMP import, or device flash.",
+        "next_prompt_delta": "Await owner review of the visible four-up square-tile candidate. If rejected, record the complete visual delta and regenerate; do not compensate with implementation-side redesign."
       },
       "implementation": {
         "status": "candidate_english_pbm_staged_not_activated",
