@@ -1027,6 +1027,23 @@ transport、portable refresh policy 或 WBA adapter 边界。普通和 trace-ena
 quiet image 的 SSD1681 object 仅剩 2 个错误路径 `printf` call，verbose image 保留 29 个 call，
 整机 text 分别为 132324 与 135020 bytes。它仍必须经过实板对照，才能声称改善了真实体感。
 
+## Revision 78: 触控成功路径静默与 FT6336 校准候选
+
+用户的“产品卡顿”不能只看电子纸。即使 SSD1681 的成功日志已静默，FT6336 每个成功样本、
+手势、菜单 press cue 和 deferred action 的同步 UART 文本也会与 5 ms 采样节奏竞争。正常 WB55
+build 因此默认关闭这些成功路径 trace，只保留触控 I2C 失败和恢复日志；`verbose trace`、cadence、
+vendor-partial 和 direct-BSRR 诊断 build 自动保留完整 touch marker，仍可测量 `sample_age_ms`、
+gesture、菜单和 recording dispatch。
+
+FT6x36 的 `TH_GROUP` (`0x80`) 与 active/monitor report period (`0x88`/`0x89`) 是可读写的控制器
+寄存器。共享 portable baseline 先从 `0x90` 降到 `0x70`，active/monitor 保持 `0x04/0x04`；WB55
+五字节报告读取单独限时 5 ms，初始化/探测/恢复仍为 20 ms。这是一个可回退的灵敏度候选，而不是
+“已经更灵敏”的硬件结论：构建脚本支持 `-Ft6336TouchThreshold 1..255` 仅为受控 A/B，不改变
+WBA callback 边界或手势语义。
+
+晋级必须在 owner 明确“开始验收”后读取回写寄存器，并检查没有误触、点击/拖动不丢失、右滑退出、
+3 s 长按和双击录音均保持正确。静态/构建证据只能证明代码和 trace 配置，不能代替真实手感。
+
 ## 逐项验收顺序
 
 本项目遵循 AI Workflow 的全产品异步验收规则：未收到操作者明确的“开始验收”前，

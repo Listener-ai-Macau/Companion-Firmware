@@ -26,6 +26,21 @@
 #ifndef COMPANION_EPAPER_PANEL_SSD1681_BRINGUP
 #define COMPANION_EPAPER_PANEL_SSD1681_BRINGUP 0
 #endif
+#ifndef COMPANION_TOUCH_VERBOSE_TRACE
+#define COMPANION_TOUCH_VERBOSE_TRACE 0
+#endif
+#if COMPANION_TOUCH_VERBOSE_TRACE != 0 && COMPANION_TOUCH_VERBOSE_TRACE != 1
+#error "Companion touch verbose trace must be 0 or 1"
+#endif
+
+#if COMPANION_TOUCH_VERBOSE_TRACE
+#define TOUCH_VERBOSE_TRACE(...) printf(__VA_ARGS__)
+#else
+/* Keep diagnostic arguments type-checked while removing the synchronous UART
+ * write and format strings from the production interaction path. */
+#define TOUCH_VERBOSE_TRACE(...) do { if (0) { printf(__VA_ARGS__); } } while (0)
+#endif
+
 #if COMPANION_SCREEN_ASSET_PROVISION
 #include "companion_screen_asset_provision_blob.h"
 #endif
@@ -1837,7 +1852,7 @@ static void process_touch_debug_sample(const comp_ft6336_touch_sample_t *sample,
     }
     if (log_sample) {
         s_touch_last_sample_log_ms = now_ms;
-        printf("[touch] contacts=%u event=%s id=%u raw_x=%u raw_y=%u x=%u y=%u mirror_x=%u mirror_y=%u sample_age_ms=%lu reads=%lu\r\n",
+        TOUCH_VERBOSE_TRACE("[touch] contacts=%u event=%s id=%u raw_x=%u raw_y=%u x=%u y=%u mirror_x=%u mirror_y=%u sample_age_ms=%lu reads=%lu\r\n",
                (unsigned)sample->touch_count,
                comp_ft6336_touch_event_name(sample->event),
                (unsigned)sample->touch_id,
@@ -1872,7 +1887,7 @@ static void request_low_power_touch_wake(void)
      * waveform before the user's first gesture can own the screen. Wake the
      * MCU and preserve the 5 ms touch timeline now; tap/swipe/record/menu
      * will enqueue the first visible response after classification. */
-    printf("[touch-ui] low_power_touch_wake state=active visual=gesture_owned result=deferred\r\n");
+    TOUCH_VERBOSE_TRACE("[touch-ui] low_power_touch_wake state=active visual=gesture_owned result=deferred\r\n");
 }
 
 static void poll_touch_debug(void)
@@ -1892,7 +1907,7 @@ static void poll_touch_debug(void)
         drained++;
     }
     if (drained > 0u) {
-        printf("[touch-buffer] drained=%u total=%lu coalesced=%lu dropped=%lu\r\n",
+        TOUCH_VERBOSE_TRACE("[touch-buffer] drained=%u total=%lu coalesced=%lu dropped=%lu\r\n",
                (unsigned)drained,
                (unsigned long)s_touch_refresh_buffered_count,
                (unsigned long)s_touch_refresh_buffer_coalesced_count,
@@ -1965,13 +1980,13 @@ static bool defer_touch_runtime_action(comp_touch_runtime_action_t action,
         return false;
     }
     if (s_touch_deferred_action != COMP_TOUCH_RUNTIME_ACTION_NONE) {
-        printf("[touch-ui] deferred_runtime_action supersede old=%s new=%s\r\n",
+        TOUCH_VERBOSE_TRACE("[touch-ui] deferred_runtime_action supersede old=%s new=%s\r\n",
                touch_runtime_action_name(s_touch_deferred_action),
                touch_runtime_action_name(action));
     }
     s_touch_deferred_action = action;
     s_touch_deferred_action_queued_ms = now_ms;
-    printf("[touch-ui] deferred_runtime_action action=%s phase=queued\r\n",
+    TOUCH_VERBOSE_TRACE("[touch-ui] deferred_runtime_action action=%s phase=queued\r\n",
            touch_runtime_action_name(action));
     return true;
 }
@@ -1990,7 +2005,7 @@ static void process_touch_menu_phone_reconnect(void)
 
     comp_screen_menu_set_phone_reconnect_state(&s_screen_menu, retry_state);
     comp_screen_menu_set_flags(&s_screen_menu, Companion_Screen_RuntimeMenuFlags());
-    printf("[touch-ui] phone_reconnect result=%u state=%u\r\n",
+    TOUCH_VERBOSE_TRACE("[touch-ui] phone_reconnect result=%u state=%u\r\n",
            (unsigned)retry,
            (unsigned)retry_state);
     Companion_Screen_MenuRequest(s_screen_menu.view,
@@ -2010,7 +2025,7 @@ static void process_deferred_touch_runtime_action(void)
     }
     s_touch_deferred_action = COMP_TOUCH_RUNTIME_ACTION_NONE;
     s_touch_deferred_action_queued_ms = 0u;
-    printf("[touch-ui] deferred_runtime_action action=%s phase=execute delay_ms=%lu\r\n",
+    TOUCH_VERBOSE_TRACE("[touch-ui] deferred_runtime_action action=%s phase=execute delay_ms=%lu\r\n",
            touch_runtime_action_name(action),
            (unsigned long)(HAL_GetTick() - queued_ms));
 
@@ -2187,7 +2202,7 @@ static void process_menu_entry_transition(uint32_t now_ms)
     comp_screen_menu_set_flags(&s_screen_menu, Companion_Screen_RuntimeMenuFlags());
     entry_flags = (uint8_t)(s_screen_menu.flags |
                             COMP_SCREEN_MENU_FLAG_PRESS_ACTIVE);
-    printf("[touch-ui] menu_entry_arrive target_view=%u revision=%lu\r\n",
+    TOUCH_VERBOSE_TRACE("[touch-ui] menu_entry_arrive target_view=%u revision=%lu\r\n",
            (unsigned)s_screen_menu.view,
            (unsigned long)s_screen_menu.revision);
     Companion_Screen_MenuRequest(s_screen_menu.view,
@@ -2297,7 +2312,7 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
                     s_menu_home_press_candidate_item = item;
                     s_menu_home_press_candidate_due_ms =
                         now_ms + TOUCH_MENU_PRESS_CUE_DELAY_MS;
-                    printf("[touch-ui] menu_press_deferred item=%u target_view=%u cue_ms=%u\r\n",
+                    TOUCH_VERBOSE_TRACE("[touch-ui] menu_press_deferred item=%u target_view=%u cue_ms=%u\r\n",
                            (unsigned)item,
                            (unsigned)target_view,
                            (unsigned)TOUCH_MENU_PRESS_CUE_DELAY_MS);
@@ -2313,7 +2328,7 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
                     s_menu_home_press_active = true;
                     s_menu_home_press_item = item;
                     s_menu_home_press_candidate = false;
-                    printf("[touch-ui] menu_press item=%u target_view=%u sample_age_ms=%lu\r\n",
+                    TOUCH_VERBOSE_TRACE("[touch-ui] menu_press item=%u target_view=%u sample_age_ms=%lu\r\n",
                            (unsigned)item,
                            (unsigned)target_view,
                            (unsigned long)(HAL_GetTick() - now_ms));
@@ -2332,7 +2347,7 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
         s_menu_home_press_active = false;
         s_menu_home_press_candidate = false;
     }
-    printf("[touch-ui] gesture=%s start=%u,%u end=%u,%u duration_ms=%u sample_age_ms=%lu\r\n",
+    TOUCH_VERBOSE_TRACE("[touch-ui] gesture=%s start=%u,%u end=%u,%u duration_ms=%u sample_age_ms=%lu\r\n",
            comp_touch_gesture_name(gesture.type),
            (unsigned)gesture.start_x,
            (unsigned)gesture.start_y,
@@ -2344,7 +2359,7 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
         if (gesture.type == COMP_TOUCH_GESTURE_HOLD) {
             /* Keep the 650 ms acknowledgement non-blocking.  An e-paper
              * refresh here used to delay the real 3 s decision while BUSY. */
-            printf("[touch-ui] daily_hold_menu_prepare x=%u y=%u duration_ms=%u visual=deferred_until_menu\r\n",
+            TOUCH_VERBOSE_TRACE("[touch-ui] daily_hold_menu_prepare x=%u y=%u duration_ms=%u visual=deferred_until_menu\r\n",
                    (unsigned)gesture.end_x,
                    (unsigned)gesture.end_y,
                    (unsigned)gesture.duration_ms);
@@ -2354,7 +2369,7 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
             s_screen_menu.revision++;
             comp_screen_menu_set_flags(&s_screen_menu,
                                        Companion_Screen_RuntimeMenuFlags());
-            printf("[touch-ui] daily_to_menu gesture=any_long_press duration_ms=%u selection=%u revision=%lu\r\n",
+            TOUCH_VERBOSE_TRACE("[touch-ui] daily_to_menu gesture=any_long_press duration_ms=%u selection=%u revision=%lu\r\n",
                    (unsigned)gesture.duration_ms,
                    (unsigned)s_screen_menu.home_page,
                    (unsigned long)s_screen_menu.revision);
@@ -2365,7 +2380,7 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
         } else if (gesture.type == COMP_TOUCH_GESTURE_DOUBLE_TAP) {
             /* Recording owns the next visual beat and is deferred until the
              * active panel waveform has completed. */
-            printf("[touch-ui] daily_double_tap_recording x=%u y=%u state=%s\r\n",
+            TOUCH_VERBOSE_TRACE("[touch-ui] daily_double_tap_recording x=%u y=%u state=%s\r\n",
                    (unsigned)gesture.end_x,
                    (unsigned)gesture.end_y,
                    comp_recording_state_name(s_recording_fsm.state));
@@ -2374,7 +2389,7 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
                 toggle_touch_recording();
             }
         } else if (gesture.type == COMP_TOUCH_GESTURE_TAP) {
-            printf("[touch-ui] daily_reaction x=%u y=%u\r\n",
+            TOUCH_VERBOSE_TRACE("[touch-ui] daily_reaction x=%u y=%u\r\n",
                    (unsigned)gesture.end_x,
                    (unsigned)gesture.end_y);
             (void)Companion_Screen_DailyTapAt(gesture.end_x, gesture.end_y);
@@ -2382,7 +2397,7 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
                    gesture.type == COMP_TOUCH_GESTURE_SWIPE_RIGHT ||
                    gesture.type == COMP_TOUCH_GESTURE_SWIPE_UP ||
                    gesture.type == COMP_TOUCH_GESTURE_SWIPE_DOWN) {
-            printf("[touch-ui] daily_stroke gesture=%s start=%u,%u end=%u,%u duration_ms=%u\r\n",
+            TOUCH_VERBOSE_TRACE("[touch-ui] daily_stroke gesture=%s start=%u,%u end=%u,%u duration_ms=%u\r\n",
                    comp_touch_gesture_name(gesture.type),
                    (unsigned)gesture.start_x,
                    (unsigned)gesture.start_y,
@@ -2401,7 +2416,7 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
         s_menu_entry_pending = false;
         s_menu_home_press_active = false;
         s_menu_home_press_candidate = false;
-        printf("[touch-ui] menu_right_swipe_exit view=%u page=%u start=%u,%u end=%u,%u\r\n",
+        TOUCH_VERBOSE_TRACE("[touch-ui] menu_right_swipe_exit view=%u page=%u start=%u,%u end=%u,%u\r\n",
                (unsigned)s_screen_menu.view,
                (unsigned)s_screen_menu.home_page,
                (unsigned)gesture.start_x,
@@ -2424,7 +2439,7 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
                                            &target_view)) {
             comp_screen_menu_set_flags(&s_screen_menu,
                                        Companion_Screen_RuntimeMenuFlags());
-            printf("[touch-ui] menu_entry_activate item=%u target_view=%u revision=%lu\r\n",
+            TOUCH_VERBOSE_TRACE("[touch-ui] menu_entry_activate item=%u target_view=%u revision=%lu\r\n",
                    (unsigned)item,
                    (unsigned)target_view,
                    (unsigned long)s_screen_menu.revision);
@@ -2459,7 +2474,7 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
     if (!menu_result.changed) {
         return;
     }
-    printf("[touch-ui] navigate view=%u page=%u language=%u action=%u revision=%lu\r\n",
+    TOUCH_VERBOSE_TRACE("[touch-ui] navigate view=%u page=%u language=%u action=%u revision=%lu\r\n",
            (unsigned)menu_result.view,
            (unsigned)menu_result.home_page,
            (unsigned)menu_result.language,

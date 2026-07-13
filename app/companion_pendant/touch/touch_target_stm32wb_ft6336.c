@@ -1,7 +1,10 @@
 #include "touch_target_stm32wb_ft6336.h"
 
 #define COMPANION_TOUCH_FT6336_I2C_TRIALS 2u
-#define COMPANION_TOUCH_FT6336_I2C_TIMEOUT_MS 20u
+#define COMPANION_TOUCH_FT6336_I2C_SETUP_TIMEOUT_MS 20u
+/* A five-byte report at 400 kHz is far below this budget.  Bound an
+ * intermittent I2C failure so it cannot consume several 5 ms touch slots. */
+#define COMPANION_TOUCH_FT6336_I2C_POLL_TIMEOUT_MS 5u
 
 void companion_touch_ft6336_stm32wb_init(companion_touch_ft6336_stm32wb_t *touch,
                                          I2C_HandleTypeDef *i2c)
@@ -30,7 +33,7 @@ bool companion_touch_ft6336_stm32wb_probe(companion_touch_ft6336_stm32wb_t *touc
     touch->detected = HAL_I2C_IsDeviceReady(touch->i2c,
                                             touch->address_8bit,
                                             COMPANION_TOUCH_FT6336_I2C_TRIALS,
-                                            COMPANION_TOUCH_FT6336_I2C_TIMEOUT_MS) == HAL_OK;
+                                            COMPANION_TOUCH_FT6336_I2C_SETUP_TIMEOUT_MS) == HAL_OK;
     return touch->detected;
 }
 
@@ -50,7 +53,7 @@ bool companion_touch_ft6336_stm32wb_read_identity(
                          I2C_MEMADD_SIZE_8BIT,
                          registers,
                          sizeof(registers),
-                         COMPANION_TOUCH_FT6336_I2C_TIMEOUT_MS) != HAL_OK) {
+                         COMPANION_TOUCH_FT6336_I2C_SETUP_TIMEOUT_MS) != HAL_OK) {
         touch->error_count++;
         touch->identity_valid = false;
         return false;
@@ -81,14 +84,14 @@ bool companion_touch_ft6336_stm32wb_configure_interrupt(
                           I2C_MEMADD_SIZE_8BIT,
                           &requested,
                           sizeof(requested),
-                          COMPANION_TOUCH_FT6336_I2C_TIMEOUT_MS) != HAL_OK ||
+                          COMPANION_TOUCH_FT6336_I2C_SETUP_TIMEOUT_MS) != HAL_OK ||
         HAL_I2C_Mem_Read(touch->i2c,
                          touch->address_8bit,
                          COMP_FT6336_G_MODE_REGISTER,
                          I2C_MEMADD_SIZE_8BIT,
                          &actual,
                          sizeof(actual),
-                         COMPANION_TOUCH_FT6336_I2C_TIMEOUT_MS) != HAL_OK) {
+                         COMPANION_TOUCH_FT6336_I2C_SETUP_TIMEOUT_MS) != HAL_OK) {
         touch->interrupt_config_error_count++;
         touch->interrupt_mode_valid = false;
         return false;
@@ -128,14 +131,14 @@ bool companion_touch_ft6336_stm32wb_configure_runtime_tuning(
                               I2C_MEMADD_SIZE_8BIT,
                               &requested[index],
                               1u,
-                              COMPANION_TOUCH_FT6336_I2C_TIMEOUT_MS) != HAL_OK ||
+                              COMPANION_TOUCH_FT6336_I2C_SETUP_TIMEOUT_MS) != HAL_OK ||
             HAL_I2C_Mem_Read(touch->i2c,
                              touch->address_8bit,
                              registers[index],
                              I2C_MEMADD_SIZE_8BIT,
                              &actual[index],
                              1u,
-                             COMPANION_TOUCH_FT6336_I2C_TIMEOUT_MS) != HAL_OK) {
+                             COMPANION_TOUCH_FT6336_I2C_SETUP_TIMEOUT_MS) != HAL_OK) {
             touch->runtime_tuning_error_count++;
             touch->runtime_tuning_valid = false;
             return false;
@@ -181,7 +184,7 @@ companion_touch_ft6336_stm32wb_result_t companion_touch_ft6336_stm32wb_poll(
                          I2C_MEMADD_SIZE_8BIT,
                          report,
                          sizeof(report),
-                         COMPANION_TOUCH_FT6336_I2C_TIMEOUT_MS) != HAL_OK) {
+                         COMPANION_TOUCH_FT6336_I2C_POLL_TIMEOUT_MS) != HAL_OK) {
         touch->error_count++;
         touch->detected = false;
         touch->identity_attempted = false;

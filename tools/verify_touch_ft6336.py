@@ -25,6 +25,8 @@ def main() -> int:
     target_c = (touch_root / "touch_target_stm32wb_ft6336.c").read_text(encoding="utf-8")
     gesture = (touch_root / "touch_gesture.c").read_text(encoding="utf-8")
     main_source = (ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/main.c").read_text(encoding="utf-8")
+    makefile = (ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile").read_text(encoding="utf-8")
+    build = (ROOT / "tools/build_nucleo_bringup.ps1").read_text(encoding="utf-8")
     panel_header = (ROOT / "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.h").read_text(encoding="utf-8")
     panel_source = (ROOT / "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c").read_text(encoding="utf-8")
     touch_fixture = json.loads(
@@ -40,7 +42,8 @@ def main() -> int:
         "COMP_FT6336_TOUCH_THRESHOLD_REGISTER 0x80u",
         "COMP_FT6336_PERIOD_ACTIVE_REGISTER 0x88u",
         "COMP_FT6336_PERIOD_MONITOR_REGISTER 0x89u",
-        "COMP_FT6336_COMPANION_TOUCH_THRESHOLD 0x90u",
+        "#ifndef COMP_FT6336_COMPANION_TOUCH_THRESHOLD",
+        "COMP_FT6336_COMPANION_TOUCH_THRESHOLD 0x70u",
         "COMP_FT6336_COMPANION_ACTIVE_PERIOD 0x04u",
         "COMP_FT6336_COMPANION_MONITOR_PERIOD 0x04u",
         "comp_ft6336_identity_t",
@@ -58,6 +61,8 @@ def main() -> int:
         "companion_touch_ft6336_stm32wb_configure_runtime_tuning",
         "interrupt_mode_valid",
         "runtime_tuning_valid",
+        "COMPANION_TOUCH_FT6336_I2C_SETUP_TIMEOUT_MS 20u",
+        "COMPANION_TOUCH_FT6336_I2C_POLL_TIMEOUT_MS 5u",
     ), errors)
     require("WB55 touch diagnostics", main_source, (
         "[touch-health] detected=%u identity=%u",
@@ -115,6 +120,11 @@ def main() -> int:
         "TOUCH_MENU_ENTRY_CUE_MS 360u",
         "TOUCH_MENU_PRESS_CUE_DELAY_MS 160u",
         "TOUCH_SAMPLE_LOG_INTERVAL_MS 250u",
+        "COMPANION_TOUCH_VERBOSE_TRACE 0",
+        "#define TOUCH_VERBOSE_TRACE(...) printf(__VA_ARGS__)",
+        "#define TOUCH_VERBOSE_TRACE(...) do { if (0) { printf(__VA_ARGS__); } } while (0)",
+        "TOUCH_VERBOSE_TRACE(\"[touch] contacts=",
+        "TOUCH_VERBOSE_TRACE(\"[touch-ui] gesture=",
         ".double_tap_max_gap_ms = TOUCH_DOUBLE_TAP_MAX_GAP_MS",
         ".double_tap_max_move_px = TOUCH_DOUBLE_TAP_MAX_MOVE_PX",
         "process_menu_entry_transition",
@@ -134,6 +144,12 @@ def main() -> int:
         "s_touch_gesture.consumed_until_release",
         "[record-visual] action=start expression=recording",
         "[record-visual] action=store expression=%s",
+    ), errors)
+    require("touch diagnostic build", makefile + build, (
+        "COMPANION_TOUCH_VERBOSE_TRACE=1",
+        "TOUCH_VERBOSE_TRACE=1",
+        "Ft6336TouchThreshold",
+        "FT6336_TOUCH_THRESHOLD=0x{0:X2}u",
     ), errors)
     boot_health_marker = (
         "comp_power_policy_set_blocker(&s_power_policy, COMP_POWER_BLOCKER_BOOT, false);\n"

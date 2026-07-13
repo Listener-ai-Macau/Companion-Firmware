@@ -23,7 +23,12 @@ extern "C" {
 #define COMP_FT6336_TOUCH_THRESHOLD_REGISTER 0x80u
 #define COMP_FT6336_PERIOD_ACTIVE_REGISTER 0x88u
 #define COMP_FT6336_PERIOD_MONITOR_REGISTER 0x89u
-#define COMP_FT6336_COMPANION_TOUCH_THRESHOLD 0x90u
+/* TH_GROUP is a board-calibration value, not a gesture policy.  Keep it
+ * overridable for a verified panel-specific tuning build while WB55 and WBA
+ * share the same portable baseline. */
+#ifndef COMP_FT6336_COMPANION_TOUCH_THRESHOLD
+#define COMP_FT6336_COMPANION_TOUCH_THRESHOLD 0x70u
+#endif
 #define COMP_FT6336_COMPANION_ACTIVE_PERIOD 0x04u
 #define COMP_FT6336_COMPANION_MONITOR_PERIOD 0x04u
 

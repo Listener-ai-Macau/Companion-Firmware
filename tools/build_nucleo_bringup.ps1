@@ -47,6 +47,8 @@ param(
     [switch]$EpaperSsd1681VendorPartialDiagnostic,
     [switch]$EpaperSsd1681DirectGpioSpiDiagnostic,
     [switch]$EpaperSsd1681VerboseTrace,
+    [ValidateScript({ $_ -eq -1 -or ($_ -ge 1 -and $_ -le 255) })]
+    [int]$Ft6336TouchThreshold = -1,
     [switch]$EpaperProductExpressionDemo,
     [ValidateSet('listening', 'thinking', 'speaking', 'happy', 'sleepy', 'recording', 'sync_complete', 'low_battery', 'error')]
     [string]$EpaperProductExpressionDemoExpression = 'listening',
@@ -196,7 +198,7 @@ $makeArgs = @("-C", $ProjectDir)
 if ($EpaperSsd1681VendorPartialDiagnostic -and $EpaperSsd1681DirectGpioSpiDiagnostic) {
     throw "Choose one SSD1681 A/B diagnostic at a time: vendor partial or direct GPIO SPI."
 }
-if ($Force -or $EpaperDailyTapDemo -or $EpaperDailyStrokeDemo -or $EpaperMaintenanceDiagnostic -or $EpaperRefreshCadenceDiagnostic -or $EpaperSsd1681VendorPartialDiagnostic -or $EpaperSsd1681DirectGpioSpiDiagnostic -or $EpaperSsd1681VerboseTrace -or $EpaperProductExpressionDemo) {
+if ($Force -or $EpaperDailyTapDemo -or $EpaperDailyStrokeDemo -or $EpaperMaintenanceDiagnostic -or $EpaperRefreshCadenceDiagnostic -or $EpaperSsd1681VendorPartialDiagnostic -or $EpaperSsd1681DirectGpioSpiDiagnostic -or $EpaperSsd1681VerboseTrace -or $Ft6336TouchThreshold -ge 0 -or $EpaperProductExpressionDemo) {
     $makeArgs += "-B"
 }
 if ($OtaApp) {
@@ -299,9 +301,13 @@ if ($EpaperSsd1681Bringup) {
 if ($EpaperSsd1681VerboseTrace) {
     $makeArgs += @(
         "EPAPER_SSD1681_VERBOSE_TRACE=1",
+        "TOUCH_VERBOSE_TRACE=1",
         "BUILD_DIR=build_verbose_trace",
         "TARGET=Companion_Nucleo_WB55RG_VerboseTrace"
     )
+}
+if ($Ft6336TouchThreshold -ge 0) {
+    $makeArgs += "FT6336_TOUCH_THRESHOLD=0x{0:X2}u" -f $Ft6336TouchThreshold
 }
 if ($EpaperEmoteDemo) {
     $makeArgs += @(
@@ -342,6 +348,7 @@ if ($EpaperRefreshCadenceDiagnostic) {
     $makeArgs += @(
         "EPAPER_REFRESH_CADENCE_DIAGNOSTIC=1",
         "EPAPER_SSD1681_VERBOSE_TRACE=1",
+        "TOUCH_VERBOSE_TRACE=1",
         "BUILD_DIR=build_refresh_cadence_diagnostic",
         "TARGET=Companion_Nucleo_WB55RG_RefreshCadenceDiagnostic"
     )
@@ -351,6 +358,7 @@ if ($EpaperSsd1681VendorPartialDiagnostic) {
         "EPAPER_REFRESH_CADENCE_DIAGNOSTIC=1",
         "EPAPER_SSD1681_VENDOR_PARTIAL_DIAGNOSTIC=1",
         "EPAPER_SSD1681_VERBOSE_TRACE=1",
+        "TOUCH_VERBOSE_TRACE=1",
         "BUILD_DIR=build_vendor_partial_diagnostic",
         "TARGET=Companion_Nucleo_WB55RG_VendorPartialDiagnostic"
     )
@@ -360,6 +368,7 @@ if ($EpaperSsd1681DirectGpioSpiDiagnostic) {
         "EPAPER_REFRESH_CADENCE_DIAGNOSTIC=1",
         "EPAPER_SSD1681_DIRECT_GPIO_SPI_DIAGNOSTIC=1",
         "EPAPER_SSD1681_VERBOSE_TRACE=1",
+        "TOUCH_VERBOSE_TRACE=1",
         "BUILD_DIR=build_direct_gpio_spi_diagnostic",
         "TARGET=Companion_Nucleo_WB55RG_DirectGpioSpiDiagnostic"
     )
