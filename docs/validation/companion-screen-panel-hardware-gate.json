@@ -17,10 +17,10 @@
   "hardware_action_required": false,
   "real_refresh_claimed": true,
   "remaining_human_acceptance": [
-    "Confirm current revision 39 0xCF maintenance is perceived as one quiet flash",
+    "Confirm current vendor Mode-1 0xC7 maintenance is perceived as one quiet flash",
     "Confirm daily tap and four-way swipes stay as pet reactions",
     "Confirm anywhere 3 s hold enters the menu after the 650 ms pet tease",
-    "Confirm continuous vertical drag, press-cue plus target-arrival partial refreshes, language switching, and left-edge swipe-right return"
+    "Confirm continuous vertical drag, press-cue plus target-arrival partial refreshes, language switching, and anywhere-right-swipe return"
   ],
   "required_hardware_facts": [
     {
@@ -103,7 +103,7 @@
         ".cache/validation/screen-ssd1681-fast-maintenance/nucleo-serial-raw.log"
       ],
       "id": "fast_maintenance",
-      "label": "historical single-flash fast sequence",
+      "label": "verified Mode-1 single-flash sequence",
       "status": "verified",
       "value": "vendor fast init + 0xC7 + 0x26 baseline sync"
     },
@@ -111,8 +111,8 @@
       "evidence_paths": [
         "docs/validation/companion-screen-ssd1681-partial-refresh-wb55.json"
       ],
-      "id": "current_maintenance",
-      "label": "current low-flicker maintenance sequence",
+      "id": "legacy_maintenance",
+      "label": "retired historical maintenance sequence",
       "status": "verified",
       "value": "0xCF maintenance + 0x26 baseline sync"
     },
@@ -150,12 +150,12 @@
   "runtime": {
     "fast_refresh_elapsed_ms": 1740,
     "full_refresh_elapsed_ms": 1298,
+    "historical_production_interactive_hard_limit": 60,
     "partial_refresh_elapsed_ms": [
       448,
       450
     ],
     "post_fast_partial_refresh": true,
-    "production_interactive_hard_limit": 60,
     "refresh_failures": 0
   },
   "schema_id": "companion.pendant.screen_panel_hardware_gate.v1",

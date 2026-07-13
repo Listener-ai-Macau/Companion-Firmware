@@ -91,8 +91,8 @@ def build_gate() -> dict[str, Any]:
             fact("busy_pin", "BUSY pin", transport["busy"], [bringup_path]),
             fact("full_refresh", "full refresh sequence", "0x24 + 0x26 + 0xF7", [refresh_path, production["log"]]),
             fact("partial_refresh", "partial refresh sequence", "0x24 + 0xFF", [refresh_path, production["log"]]),
-            fact("fast_maintenance", "historical single-flash fast sequence", "vendor fast init + 0xC7 + 0x26 baseline sync", [refresh_path, fast["log"]]),
-            fact("current_maintenance", "current low-flicker maintenance sequence", "0xCF maintenance + 0x26 baseline sync", [refresh_path]),
+            fact("fast_maintenance", "verified Mode-1 single-flash sequence", "vendor fast init + 0xC7 + 0x26 baseline sync", [refresh_path, fast["log"]]),
+            fact("legacy_maintenance", "retired historical maintenance sequence", "0xCF maintenance + 0x26 baseline sync", [refresh_path]),
             fact("operator_visual", "operator visual evidence", display["black_pattern_operator_observation"], [bringup_path]),
             fact("orientation", "operator orientation evidence", display["human_view_orientation"], [bringup_path, display["orientation_log"]]),
             fact("touch_contact", "physical touch contact/release", touch["result"], [bringup_path, touch["log"]]),
@@ -102,14 +102,14 @@ def build_gate() -> dict[str, Any]:
             "partial_refresh_elapsed_ms": production["observed_partial_refresh_ms"],
             "fast_refresh_elapsed_ms": fast["elapsed_ms"],
             "refresh_failures": production["refresh_failures"],
-            "production_interactive_hard_limit": production["interactive_hard_limit"],
+            "historical_production_interactive_hard_limit": production["interactive_hard_limit"],
             "post_fast_partial_refresh": fast["post_fast_partial_refresh"],
         },
         "remaining_human_acceptance": [
-            "Confirm current revision 39 0xCF maintenance is perceived as one quiet flash",
+            "Confirm current vendor Mode-1 0xC7 maintenance is perceived as one quiet flash",
             "Confirm daily tap and four-way swipes stay as pet reactions",
             "Confirm anywhere 3 s hold enters the menu after the 650 ms pet tease",
-            "Confirm continuous vertical drag, press-cue plus target-arrival partial refreshes, language switching, and left-edge swipe-right return",
+            "Confirm continuous vertical drag, press-cue plus target-arrival partial refreshes, language switching, and anywhere-right-swipe return",
         ],
         "evidence_paths": [
             bringup_path,
@@ -167,18 +167,19 @@ def validate(data: dict[str, Any], errors: list[str]) -> None:
 
     pending = "\n".join(str(item) for item in data.get("remaining_human_acceptance", []))
     for token in [
-        "revision 39 0xCF maintenance",
+        "vendor Mode-1 0xC7 maintenance",
         "daily tap and four-way swipes",
         "anywhere 3 s hold",
         "650 ms pet tease",
         "press-cue plus target-arrival partial refreshes",
         "language switching",
     ]:
-        require(token in pending, f"remaining human acceptance missing current revision 39 token: {token}", errors)
+        require(token in pending, f"remaining human acceptance missing current interaction token: {token}", errors)
     for stale in [
         "swipe-left menu entry",
         "direct visible-row entry with one refresh",
-        "0xC7 maintenance",
+        "revision 39 0xCF maintenance",
+        "left-edge swipe-right return",
     ]:
         require(stale not in pending, f"remaining human acceptance contains stale rule: {stale}", errors)
 
@@ -193,14 +194,16 @@ def validate(data: dict[str, Any], errors: list[str]) -> None:
     require(refresh.get("status") == "PASS", "refresh evidence is not PASS", errors)
     require(refresh.get("fast_maintenance_runtime", {}).get("machine_result") == "PASS", "fast maintenance evidence is not PASS", errors)
     require(refresh.get("fast_maintenance_runtime", {}).get("control") == "0xC7", "fast control drifted", errors)
-    require(refresh.get("production_runtime", {}).get("interactive_hard_limit") == 60, "production hard limit drifted", errors)
+    require(refresh.get("production_runtime", {}).get("interactive_hard_limit") == 60, "historical production hard limit drifted", errors)
     require(refresh.get("production_runtime", {}).get("flash_verified") is True, "production firmware flash is not verified", errors)
 
     driver = DRIVER.read_text(encoding="utf-8")
     for marker in [
         "0xF7u",
         "0xFCu",
-        "0xCFu",
+        "0xC7u",
+        "SSD1681_VENDOR_FAST_PROFILE_NAME",
+        "ssd1681_prepare_vendor_fast_profile",
         "ssd1681_write_plane_region(0x26u, s_frame, &window)",
         "ssd1681_write_plane_region(0x24u, s_frame, &window)",
     ]:
