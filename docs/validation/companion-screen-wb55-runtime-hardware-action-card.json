@@ -1,0 +1,215 @@
+{
+  "build_matrix": {
+    "path": "docs/validation/companion-screen-wb55-build-matrix.json",
+    "screen_asset_provision_log": ".cache/validation/wb55-build-matrix/screen-asset-provision-build.log",
+    "screen_asset_provision_size": {
+      "bss": 192239,
+      "data": 2433,
+      "dec": 602988,
+      "hex": "9336c",
+      "text": 408316
+    },
+    "status": "PASS",
+    "validation_commands": [
+      "python .\\tools\\verify_wb55_screen_build_matrix.py",
+      "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1 -Force",
+      "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1 -EpaperSsd1681Bringup -Force",
+      "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1 -ScreenAssetProvision -Force",
+      "python .\\tools\\verify_companion_screen_pre_acceptance_health.py"
+    ],
+    "variants": [
+      "dry_run_default",
+      "screen_asset_provision",
+      "ssd1681_real_panel"
+    ]
+  },
+  "check_only_command": "pwsh -NoProfile -File .\\tools\\run_wb55_screen_runtime_recheck.ps1 -CheckOnly",
+  "claim_scope": "operator_action_card_no_hardware_claim",
+  "current_gates": {
+    "human_review": "NO_GO_NOT_STARTED",
+    "pre_acceptance": "NO_GO_RUNTIME_RECHECK_PENDING",
+    "runtime_logs": "NO_GO_MISSING_RUNTIME_LOGS",
+    "runtime_promotion": "NO_GO_LOGS_NOT_PASS"
+  },
+  "do_not_do": [
+    "不要手工把 REVISION_52_RUNTIME_RECHECK_PENDING 改成 PASS。",
+    "不要跳过 normal 固件恢复；provision 只用于写资源。",
+    "如果 provision 后失败，runner 会尝试 flash_normal_after_failure；若 normal_firmware_restored 不是 true，不要继续验收。",
+    "不要在 runtime logs PASS 和 promotion --apply 前启动触摸/视觉人工验收。",
+    "不要把 DRY-RUN report 当作真实硬件日志。"
+  ],
+  "expected_runtime_markers": [
+    "mount=ok",
+    "revision=52",
+    "clips=33 frames=159",
+    "expression_renderer=external_pack",
+    "source=external_flash",
+    "pet_behavior_selftest=pass failure_code=0",
+    "touch-health] detected=1 identity=1 addr=0x38",
+    "queue_generation revision=52",
+    "coherent_generation=1",
+    "generation_switches=",
+    "last_stale_discarded=",
+    "refresh mode=full",
+    "complete=1"
+  ],
+  "flash_preflight": {
+    "normal_flash_timeout_seconds": 120,
+    "normal_image": "cubeide/Companion_Nucleo_WB55RG_Bringup/build/Companion_Nucleo_WB55RG_Bringup.hex",
+    "normal_image_exists": true,
+    "programmer_exists": true,
+    "provision_flash_timeout_seconds": 120,
+    "provision_image": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_screen_asset_provision/Companion_Nucleo_WB55RG_ScreenAssetProvision.hex",
+    "provision_image_exists": true,
+    "status": "PASS",
+    "timeout_contract": {
+      "bounded_range": true,
+      "captures_stderr": true,
+      "captures_stdout": true,
+      "hidden_window": true,
+      "kills_on_timeout": true,
+      "start_process": true,
+      "timeout_error": true,
+      "timeout_parameter": true,
+      "wait_for_exit": true
+    }
+  },
+  "generation_release_ledger": {
+    "cemp_crc32": "0xDEFC096E",
+    "cemp_revision": 52,
+    "expected_first_frame_marker": "coherent_generation=1",
+    "model_last_stale_discarded": 3,
+    "path": "docs/validation/companion-screen-generation-release-ledger.json",
+    "purpose": "SCR-17 release ledger for new/old generation interleaving prevention",
+    "real_runtime_status": "NO_GO_MISSING_RUNTIME_LOGS",
+    "status": "PENDING_RUNTIME_RECHECK",
+    "ui_assets_ota_in_scope": true
+  },
+  "hardware_steps": [
+    {
+      "command": "pwsh -NoProfile -File .\\tools\\flash_nucleo_bringup.ps1 -ScreenAssetProvision -ProgrammerRoot C:\\ST\\STM32CubeIDE_2.1.1\\STM32CubeIDE\\plugins",
+      "id": "flash_provision",
+      "operator_meaning": "刷入带外部 CEMP 资源写入逻辑的 provision 固件。"
+    },
+    {
+      "command": "pwsh -NoProfile -File .\\tools\\capture_nucleo_serial.ps1 -Execute -WorkflowLockHeld -Seconds 25 -ResetAfterOpen -OutDir C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-devboard-oai1\\.cache\\validation\\rev52-runtime-current\\provision",
+      "id": "capture_provision",
+      "operator_meaning": "复位并抓取 provision 启动串口日志，证明资源写入/挂载链路。"
+    },
+    {
+      "command": "pwsh -NoProfile -File .\\tools\\flash_nucleo_bringup.ps1 -ProgrammerRoot C:\\ST\\STM32CubeIDE_2.1.1\\STM32CubeIDE\\plugins",
+      "id": "flash_normal",
+      "operator_meaning": "刷回普通运行固件，避免设备停留在 provision 镜像。"
+    },
+    {
+      "command": "pwsh -NoProfile -File .\\tools\\capture_nucleo_serial.ps1 -Execute -WorkflowLockHeld -Seconds 25 -ResetAfterOpen -OutDir C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-devboard-oai1\\.cache\\validation\\rev52-runtime-current\\normal",
+      "id": "capture_normal",
+      "operator_meaning": "复位并抓取 normal 启动串口日志，证明普通固件从外部 Flash 挂载 rev52。"
+    }
+  ],
+  "human_acceptance_start_rule": "只有 rev52 provision/normal runtime logs 验证 PASS、promotion gate APPLIED、pre-acceptance health PASS 后，操作者明确说“开始验收”，才进入触摸/视觉人工验收。",
+  "post_run_commands": [
+    "python .\\tools\\verify_screen_generation_release_ledger.py",
+    "python .\\tools\\verify_wb55_screen_runtime_recheck_logs.py",
+    "python .\\tools\\promote_wb55_screen_runtime_recheck.py --apply",
+    "python .\\tools\\verify_companion_screen_pre_acceptance_health.py",
+    "python .\\tools\\verify_companion_screen_goal_audit.py"
+  ],
+  "resource": {
+    "pack_crc32": "0xDEFC096E",
+    "revision": 52,
+    "runtime_status": "REVISION_52_RUNTIME_RECHECK_PENDING",
+    "total_bytes": 287732
+  },
+  "runner_safety": {
+    "restores_normal_firmware_after_failure": true,
+    "run_report_records_normal_firmware_restored": true
+  },
+  "schema_id": "companion.screen.wb55_runtime_hardware_action_card.v1",
+  "selftest_recovery": {
+    "claim_scope": "stubbed_failure_recovery_no_hardware_claim",
+    "command": "pwsh -NoProfile -File .\\tools\\run_wb55_screen_runtime_recheck.ps1 -SelfTestRecovery -OutRoot .\\.cache\\validation\\rev52-runtime-recovery-selftest",
+    "normal_firmware_restored": true,
+    "report": ".cache/validation/rev51-runtime-recovery-selftest/runtime-recheck-run.json",
+    "report_status": "FAIL",
+    "result_ids": [
+      "flash_provision",
+      "capture_provision",
+      "flash_normal_after_failure"
+    ],
+    "result_statuses": {
+      "capture_provision": "FAIL",
+      "flash_normal_after_failure": "PASS",
+      "flash_provision": "PASS"
+    }
+  },
+  "serial_capture_preflight": {
+    "capture_script": "tools/capture_nucleo_serial.ps1",
+    "claim_scope": "static_serial_capture_contract_no_hardware_claim",
+    "empty_capture_fails": true,
+    "empty_capture_selftest": {
+      "bytes_read": 0,
+      "claim_scope": "stubbed_empty_capture_no_hardware_claim",
+      "command": "pwsh -NoProfile -File .\\tools\\capture_nucleo_serial.ps1 -SelfTestEmptyCapture -OutDir .\\.cache\\validation\\nucleo-serial-empty-selftest",
+      "errors": [
+        "No serial bytes captured during 15 second(s); refusing empty runtime evidence."
+      ],
+      "raw_log_exists": true,
+      "raw_log_path": ".cache/validation/nucleo-serial-empty-selftest/nucleo-serial-raw.log",
+      "reset_timeout_seconds": 15,
+      "returncode": 1,
+      "stdout_has_expected_failure": true,
+      "summary_exists": true,
+      "summary_mode": "selftest-empty-capture",
+      "summary_path": ".cache/validation/nucleo-serial-empty-selftest/nucleo-serial-summary.json",
+      "summary_port": "SELFTEST",
+      "summary_status": "FAIL"
+    },
+    "no_hardware_claim": true,
+    "raw_log_filename": "nucleo-serial-raw.log",
+    "reset_timeout_seconds": 15,
+    "reset_timeout_selftest": {
+      "bytes_read": 0,
+      "claim_scope": "stubbed_reset_timeout_no_hardware_claim",
+      "command": "pwsh -NoProfile -File .\\tools\\capture_nucleo_serial.ps1 -SelfTestResetTimeout -OutDir .\\.cache\\validation\\nucleo-serial-reset-timeout-selftest",
+      "errors": [
+        "reset timed out after 5 second(s). stdout=C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-devboard-oai1\\.cache\\validation\\nucleo-serial-reset-timeout-selftest\\stm32-reset-stdout.log stderr=C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-devboard-oai1\\.cache\\validation\\nucleo-serial-reset-timeout-selftest\\stm32-reset-stderr.log"
+      ],
+      "reset_stderr_exists": true,
+      "reset_stdout_exists": true,
+      "reset_timeout_seconds": 15,
+      "returncode": 1,
+      "stdout_has_expected_failure": true,
+      "summary_exists": true,
+      "summary_mode": "selftest-reset-timeout",
+      "summary_path": ".cache/validation/nucleo-serial-reset-timeout-selftest/nucleo-serial-summary.json",
+      "summary_port": "SELFTEST",
+      "summary_status": "FAIL"
+    },
+    "runtime_run_report": ".cache/validation/rev52-runtime-current/runtime-recheck-run.json",
+    "runtime_runner": "tools/run_wb55_screen_runtime_recheck.ps1",
+    "status": "PASS_STATIC_SERIAL_CAPTURE_PREFLIGHT",
+    "summary_json_filename": "nucleo-serial-summary.json",
+    "summary_records_bytes_read": true
+  },
+  "source_build_matrix": "docs/validation/companion-screen-wb55-build-matrix.json",
+  "source_flash_preflight": "docs/validation/companion-screen-wb55-runtime-flash-preflight.json",
+  "source_generation_release_ledger": "docs/validation/companion-screen-generation-release-ledger.json",
+  "source_run_report": ".cache/validation/rev52-runtime-current/runtime-recheck-run.json",
+  "source_runner_fixture": "docs/validation/companion-screen-wb55-runtime-recheck-runner.json",
+  "source_serial_capture_preflight": "docs/validation/companion-screen-wb55-runtime-serial-capture-preflight.json",
+  "status": "NO_GO_WAITING_FOR_REAL_HARDWARE_RUN",
+  "target": "NUCLEO-WB55RG + GDEY0154D67-T03 + FT6336U",
+  "validation_commands": [
+    "python .\\tools\\render_wb55_runtime_hardware_action_card.py",
+    "python .\\tools\\verify_wb55_runtime_flash_preflight.py",
+    "python .\\tools\\verify_wb55_runtime_serial_capture_preflight.py",
+    "pwsh -NoProfile -File .\\tools\\run_wb55_screen_runtime_recheck.ps1 -CheckOnly",
+    "pwsh -NoProfile -File .\\tools\\run_wb55_screen_runtime_recheck.ps1 -SelfTestRecovery -OutRoot .\\.cache\\validation\\rev52-runtime-recovery-selftest",
+    "python .\\tools\\verify_wb55_screen_runtime_recheck_runner.py",
+    "python .\\tools\\verify_screen_generation_release_ledger.py",
+    "python .\\tools\\verify_wb55_screen_runtime_recheck_logs.py",
+    "python .\\tools\\promote_wb55_screen_runtime_recheck.py"
+  ],
+  "workflow_lock_command": "pwsh -NoProfile -File C:\\Users\\Billy\\Desktop\\Denzic\\ai-collaboration-workflow\\scripts\\aiw.ps1 with-lock -Resource Companion-WB55 -Purpose \"Companion WB55 rev52 screen runtime recheck\" -Run pwsh -NoProfile -File .\\tools\\run_wb55_screen_runtime_recheck.ps1 -Execute -WorkflowLockHeld"
+}

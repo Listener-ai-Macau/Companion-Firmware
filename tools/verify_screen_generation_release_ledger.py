@@ -58,9 +58,11 @@ def build_ledger() -> dict[str, Any]:
     after_switch = queue.get("scenario", {}).get("after_switch", {})
     contact_coverage = contact.get("generated_coverage", {})
 
+    candidate_revision = int(resource_pack.get("revision", 0))
+    candidate_crc32 = str(resource_pack.get("pack_crc32", ""))
     missing_hardware = [
-        "rev51 ScreenAssetProvision flash/capture",
-        "rev51 normal firmware restore/capture",
+        f"rev{candidate_revision} ScreenAssetProvision flash/capture",
+        f"rev{candidate_revision} normal firmware restore/capture",
         "real display_result coherent_generation=1 log",
         "human visual classification of any old marks",
     ]
@@ -87,7 +89,7 @@ def build_ledger() -> dict[str, Any]:
             "style_source_of_truth": import_report.get("style_source_of_truth"),
             "import_preview": import_report.get("preview"),
             "review_preview": import_report.get("review_preview"),
-            "normal_pack_contact_sheet": menu.get("revision_51_machine_contract", {}).get("normal_pack_contact_sheet"),
+            "normal_pack_contact_sheet": contact.get("contact_sheet"),
             "visual_review_required": import_report.get("visual_review_required"),
             "machine_review_status": import_report.get("machine_review", {}).get("status"),
         },
@@ -100,7 +102,7 @@ def build_ledger() -> dict[str, Any]:
         },
         "activation_evidence": {
             "manifest_verified_static": True,
-            "external_flash_activation": "pending_rev51_runtime_recheck",
+            "external_flash_activation": f"pending_rev{candidate_revision}_runtime_recheck",
             "active_revision_field": queue.get("contract", {}).get("active_revision_field"),
             "request_revision_field": queue.get("contract", {}).get("request_revision_field"),
             "old_queue_action": "drain_or_discard",
@@ -183,17 +185,23 @@ def check_ledger(ledger: dict[str, Any], errors: list[str]) -> None:
     if ledger.get("schema_id") != SCHEMA_ID:
         errors.append("unexpected schema_id")
     if ledger.get("status") != "PENDING_RUNTIME_RECHECK":
-        errors.append("ledger must stay PENDING_RUNTIME_RECHECK until rev51 runtime logs pass")
+        errors.append("ledger must stay PENDING_RUNTIME_RECHECK until current runtime logs pass")
 
     candidate = ledger.get("candidate", {})
-    if candidate.get("cemp_revision") != 51:
-        errors.append("candidate CEMP revision must be 51")
-    if candidate.get("cemp_crc32") != "0x56B56273":
-        errors.append("candidate CEMP CRC must be 0x56B56273")
+    menu = load(MENU)
+    resource_pack = menu.get("resource_pack", {})
+    runtime = menu.get("runtime_evidence", {})
+    revision = resource_pack.get("revision")
+    crc32 = resource_pack.get("pack_crc32")
+    if candidate.get("cemp_revision") != revision:
+        errors.append("candidate CEMP revision must match the active menu resource")
+    if candidate.get("cemp_crc32") != crc32:
+        errors.append("candidate CEMP CRC must match the active menu resource")
     if candidate.get("storage") != "external ui_assets at 0x00200000":
         errors.append("candidate storage must remain external ui_assets")
-    if candidate.get("runtime_status") != "REVISION_51_RUNTIME_RECHECK_PENDING":
-        errors.append("candidate runtime status must remain revision 51 pending before logs pass")
+    expected_pending = f"REVISION_{revision}_RUNTIME_RECHECK_PENDING"
+    if candidate.get("runtime_status") != expected_pending:
+        errors.append("candidate runtime status must remain pending before logs pass")
 
     source_art = ledger.get("source_art_identity", {})
     if source_art.get("style_name") != "genref_sheet_12_inner_faces_v5":
@@ -216,8 +224,8 @@ def check_ledger(ledger: dict[str, Any], errors: list[str]) -> None:
         errors.append("fallback must be rescue/maintenance only")
 
     activation = ledger.get("activation_evidence", {})
-    if activation.get("external_flash_activation") != "pending_rev51_runtime_recheck":
-        errors.append("rev51 external flash activation must remain pending until runtime logs pass")
+    if activation.get("external_flash_activation") != f"pending_rev{revision}_runtime_recheck":
+        errors.append("candidate external flash activation must remain pending until runtime logs pass")
     if activation.get("old_queue_action") != "drain_or_discard":
         errors.append("old queue action must be drain_or_discard")
     if activation.get("stale_queued_frames_discarded_in_model") != 3:
@@ -228,10 +236,12 @@ def check_ledger(ledger: dict[str, Any], errors: list[str]) -> None:
     first = ledger.get("first_frame_evidence", {})
     if first.get("expected_marker") != "coherent_generation=1":
         errors.append("first-frame marker must be coherent_generation=1")
-    if first.get("model_active_revision") != 51:
-        errors.append("model active revision must be 51")
-    if first.get("model_resource_revision") != 51:
-        errors.append("model resource revision must be 51")
+    model_active_revision = first.get("model_active_revision")
+    model_resource_revision = first.get("model_resource_revision")
+    if not isinstance(model_active_revision, int) or model_active_revision <= 0:
+        errors.append("model active revision must be positive")
+    if model_resource_revision != model_active_revision:
+        errors.append("model resource revision must match the simulated active revision")
     if first.get("model_coherent_generation") != 1:
         errors.append("model first frame must be coherent")
     if first.get("real_runtime_status") != "NO_GO_MISSING_RUNTIME_LOGS":
@@ -270,8 +280,8 @@ def check_ledger(ledger: dict[str, Any], errors: list[str]) -> None:
 
     missing = set(ledger.get("missing_hardware_facts", []))
     for item in (
-        "rev51 ScreenAssetProvision flash/capture",
-        "rev51 normal firmware restore/capture",
+        f"rev{revision} ScreenAssetProvision flash/capture",
+        f"rev{revision} normal firmware restore/capture",
         "real display_result coherent_generation=1 log",
         "human visual classification of any old marks",
     ):

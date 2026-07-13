@@ -10,6 +10,8 @@ import subprocess
 import sys
 from typing import Any
 
+from screen_runtime_candidate import current_candidate
+
 
 REPO_ROOT = pathlib.Path(__file__).resolve().parents[1]
 DEFAULT_FIXTURE = pathlib.Path("docs/validation/companion-screen-acceptance-runner.json")
@@ -26,6 +28,8 @@ RUNTIME_PROMOTION = REPO_ROOT / "docs" / "validation" / "companion-screen-wb55-r
 DRY_RUN_REPORT = REPO_ROOT / ".cache" / "validation" / "companion-screen-acceptance-dry-run.json"
 SCREEN_DOC = REPO_ROOT / "docs" / "companion_screen_expression_system.md"
 BRINGUP_STEPS = REPO_ROOT / "docs" / "bringup_steps.md"
+CANDIDATE = current_candidate()
+RUNTIME_GATE_ID = f"wb55_rev{CANDIDATE.revision}_runtime_recheck"
 
 
 def rel(path: pathlib.Path) -> str:
@@ -200,7 +204,7 @@ def build_fixture() -> dict[str, Any]:
             "unique_command_count": dry_run.get("unique_command_count"),
             "executed_command_count": dry_run.get("executed_command_count"),
             "skip_count": dry_run.get("skip_count"),
-            "rev51_runtime_recheck_status": dry_run.get("command_status_by_item", {}).get("wb55_rev51_runtime_recheck"),
+            "runtime_recheck_status": dry_run.get("command_status_by_item", {}).get(RUNTIME_GATE_ID),
             "touch_visual_acceptance_status": dry_run.get("command_status_by_item", {}).get("wb55_touch_visual_acceptance"),
             "runtime_recheck_commands": [
                 {
@@ -209,7 +213,7 @@ def build_fixture() -> dict[str, Any]:
                     "item_ids": command.get("item_ids", []),
                 }
                 for command in dry_run.get("commands", [])
-                if "wb55_rev51_runtime_recheck" in command.get("item_ids", [])
+                if RUNTIME_GATE_ID in command.get("item_ids", [])
             ],
         },
         "touch_visual_gate_snapshot": {
@@ -220,7 +224,9 @@ def build_fixture() -> dict[str, Any]:
             "review_record_open_item_count": len(review_record.get("open_items", [])),
             "runtime_recheck_status": runtime_logs.get("status"),
             "runtime_promotion_status": promotion.get("status"),
-            "human_review_start_rule": "operator must explicitly say 开始验收 after rev51 machine preflight passes",
+            "human_review_start_rule": (
+                f"operator must explicitly say 开始验收 after rev{CANDIDATE.revision} machine preflight passes"
+            ),
         },
         "acceptance_report_check": {
             "command": "python .\\tools\\render_expression_acceptance_report.py",
@@ -281,8 +287,8 @@ def check_fixture_data(data: dict[str, Any], errors: list[str]) -> None:
     snapshot = data.get("acceptance_index_snapshot", {})
     require(snapshot.get("item_count", 0) >= 25, "runner fixture item snapshot unexpectedly small", errors)
     require(
-        snapshot.get("deferred_gate") == "wb55_rev51_runtime_recheck",
-        "runner fixture must expose the current rev51 runtime hardware gate",
+        snapshot.get("deferred_gate") == RUNTIME_GATE_ID,
+        "runner fixture must expose the current runtime hardware gate",
         errors,
     )
     require(snapshot.get("human_gate") == "wb55_touch_visual_acceptance", "runner fixture missing focused human gate", errors)
@@ -296,7 +302,7 @@ def check_fixture_data(data: dict[str, Any], errors: list[str]) -> None:
     )
     require(
         snapshot.get("has_runtime_recheck_log_verifier") is True,
-        "runner fixture must see the rev51 runtime recheck log verifier",
+        "runner fixture must see the active runtime recheck log verifier",
         errors,
     )
     dry_run = data.get("dry_run_snapshot", {})
@@ -311,12 +317,12 @@ def check_fixture_data(data: dict[str, Any], errors: list[str]) -> None:
     require(dry_run.get("status") == "DRY_RUN", "dry-run snapshot must remain DRY_RUN", errors)
     require(dry_run.get("dry_run") is True, "dry-run snapshot must record dry_run=true", errors)
     require(dry_run.get("skip_build") is True, "dry-run snapshot must record skip_build=true", errors)
-    require(dry_run.get("rev51_runtime_recheck_status") == "SKIPPED_DRY_RUN", "rev51 runtime recheck must be skipped in dry-run", errors)
+    require(dry_run.get("runtime_recheck_status") == "SKIPPED_DRY_RUN", "active runtime recheck must be skipped in dry-run", errors)
     require(dry_run.get("touch_visual_acceptance_status") == "SKIPPED_DRY_RUN", "touch visual acceptance must be skipped in dry-run", errors)
     require(dry_run.get("unique_command_count") == dry_run.get("executed_command_count"), "dry-run must enumerate every selected command", errors)
     require(dry_run.get("skip_count") == dry_run.get("executed_command_count"), "dry-run must skip every selected command", errors)
     runtime_commands = dry_run.get("runtime_recheck_commands", [])
-    require(len(runtime_commands) >= 5, "dry-run must list rev51 runtime recheck commands", errors)
+    require(len(runtime_commands) >= 5, "dry-run must list active runtime recheck commands", errors)
     for command in runtime_commands:
         require(command.get("status") == "SKIPPED_DRY_RUN", f"dry-run executed runtime command {command.get('command')}", errors)
     for token in [
@@ -341,7 +347,7 @@ def check_fixture_data(data: dict[str, Any], errors: list[str]) -> None:
     )
     require(
         touch_gate.get("pre_acceptance_status") == "NO_GO_RUNTIME_RECHECK_PENDING",
-        "runner fixture must preserve rev51 runtime pending pre-acceptance state",
+        "runner fixture must preserve active runtime pending pre-acceptance state",
         errors,
     )
     require(
@@ -361,7 +367,7 @@ def check_fixture_data(data: dict[str, Any], errors: list[str]) -> None:
     )
     require(
         touch_gate.get("runtime_recheck_status") == "NO_GO_MISSING_RUNTIME_LOGS",
-        "runner fixture must preserve missing rev51 runtime logs state",
+        "runner fixture must preserve missing active runtime logs state",
         errors,
     )
     require(

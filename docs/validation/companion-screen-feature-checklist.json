@@ -293,9 +293,9 @@
           "title": "WB55 runtime serial capture preflight"
         },
         {
-          "id": "wb55_rev51_runtime_recheck",
+          "id": "wb55_rev52_runtime_recheck",
           "status": "DEFERRED_HARDWARE",
-          "title": "WB55 rev51 provision/normal runtime recheck"
+          "title": "WB55 rev52 provision/normal runtime recheck"
         },
         {
           "id": "screen_runtime_snapshot",
@@ -544,7 +544,7 @@
   "current_focus": {
     "capability_id": "runtime_diagnostics_and_evidence",
     "capability_status": "DEFERRED_HARDWARE",
-    "gate_id": "wb55_rev51_runtime_recheck",
+    "gate_id": "wb55_rev52_runtime_recheck",
     "gate_status": "DEFERRED_HARDWARE",
     "missing_ready_field_count": 0,
     "next_acceptance": "Attach runtime snapshot and diagnostics bundle evidence to the first real-panel session.",
@@ -553,7 +553,7 @@
     "pre_acceptance_health": "docs/validation/companion-screen-pre-acceptance-health.json"
   },
   "current_missing_panel_facts": [],
-  "current_next_gate": "wb55_rev51_runtime_recheck",
+  "current_next_gate": "wb55_rev52_runtime_recheck",
   "overall_status": "PENDING_HUMAN",
   "purpose": "A compact one-by-one acceptance checklist derived from the screen feature roadmap.",
   "schema_id": "companion.pendant.screen_feature_checklist.v1",

@@ -1,0 +1,189 @@
+{
+  "build_matrix": {
+    "path": "docs/validation/companion-screen-wb55-build-matrix.json",
+    "screen_asset_provision_size": {
+      "bss": 192239,
+      "data": 2433,
+      "dec": 602988,
+      "hex": "9336c",
+      "text": 408316
+    },
+    "status": "PASS",
+    "variants": [
+      "dry_run_default",
+      "screen_asset_provision",
+      "ssd1681_real_panel"
+    ]
+  },
+  "candidate": {
+    "pack_crc32": "0x56B56273",
+    "revision": 51,
+    "runtime_status": "REVISION_51_RUNTIME_RECHECK_PENDING",
+    "total_bytes": 287446
+  },
+  "commands": [
+    "pwsh -NoProfile -File .\\tools\\run_wb55_screen_runtime_recheck.ps1 -CheckOnly",
+    "pwsh -NoProfile -File .\\tools\\run_wb55_screen_runtime_recheck.ps1 -Execute",
+    "pwsh -NoProfile -File .\\tools\\run_wb55_screen_runtime_recheck.ps1 -SelfTestRecovery -OutRoot .\\.cache\\validation\\rev51-runtime-recovery-selftest",
+    "python .\\tools\\verify_wb55_runtime_serial_capture_preflight.py",
+    "python .\\tools\\verify_wb55_screen_build_matrix.py",
+    "pwsh -NoProfile -File C:\\Users\\Billy\\Desktop\\Denzic\\ai-collaboration-workflow\\scripts\\aiw.ps1 with-lock -Resource Companion-WB55 -Purpose \"Companion WB55 rev51 screen runtime recheck\" -Run pwsh -NoProfile -File .\\tools\\run_wb55_screen_runtime_recheck.ps1 -Execute -WorkflowLockHeld",
+    "python .\\tools\\verify_wb55_screen_runtime_recheck_logs.py",
+    "python .\\tools\\promote_wb55_screen_runtime_recheck.py --apply",
+    "python .\\tools\\verify_companion_screen_pre_acceptance_health.py",
+    "python .\\tools\\verify_companion_screen_goal_audit.py"
+  ],
+  "dry_run": {
+    "promoted_tokens": {
+      "\"pack_crc32\": \"0x56B56273\"": true,
+      "\"revision\": 51": true,
+      "CHECK: rev51 WB55 runtime evidence is already promoted": false,
+      "runtime_status=REVISION_51_RUNTIME_PASS_HUMAN_VISUAL_PENDING": false
+    },
+    "returncode": 0,
+    "run_report_build_matrix": {
+      "path": "docs/validation/companion-screen-wb55-build-matrix.json",
+      "screen_asset_provision_size": {
+        "bss": 192239,
+        "data": 2433,
+        "dec": 602988,
+        "hex": "9336c",
+        "text": 408316
+      },
+      "status": "PASS",
+      "variants": [
+        "dry_run_default",
+        "screen_asset_provision",
+        "ssd1681_real_panel"
+      ]
+    },
+    "run_report_crc32": "0x56B56273",
+    "run_report_exists": true,
+    "run_report_notes": [
+      "Run only while holding the Companion-WB55 workflow hardware lock.",
+      "SelfTestRecovery uses stub commands only and must never be treated as hardware evidence.",
+      "Provision firmware writes the external CEMP asset pack, then normal firmware must be restored.",
+      "This runner does not ask for human visual acceptance; it only collects machine runtime evidence.",
+      "After Execute, run verify_wb55_screen_runtime_recheck_logs.py before promotion.",
+      "Only after the log verifier reports PASS may promote_wb55_screen_runtime_recheck.py --apply update the runtime evidence.",
+      "After promotion, rerun verify_companion_screen_pre_acceptance_health.py and verify_companion_screen_goal_audit.py before any human touch/visual acceptance.",
+      "Before hardware execution, verify_wb55_screen_build_matrix.py must prove dry_run_default, ssd1681_real_panel, and screen_asset_provision builds."
+    ],
+    "run_report_path": ".cache/validation/rev51-runtime-20260712-generated-art/runtime-recheck-run.json",
+    "run_report_results_count": 0,
+    "run_report_revision": 51,
+    "run_report_schema": "companion.wb55_screen_runtime_recheck_run.v1",
+    "run_report_status": "DRY-RUN",
+    "tokens": {
+      "\"pack_crc32\": \"0x56B56273\"": true,
+      "\"revision\": 51": true,
+      "CHECK: build_matrix status=PASS variants=": true,
+      "CHECK: rev51 WB55 runtime recheck sequence": true,
+      "CHECK: screen_asset_provision size=text:408316 data:2433 bss:192239 dec:602988 hex:9336c": true,
+      "capture_normal": true,
+      "capture_provision": true,
+      "execute with workflow lock": true,
+      "flash_normal": true,
+      "flash_provision": true
+    }
+  },
+  "execute_without_lock_negative": {
+    "claim_scope": "negative_execute_lock_guard_no_hardware_claim",
+    "refused_before_hardware": true,
+    "returncode": 1
+  },
+  "last_runtime_proven_revision": 48,
+  "operator_action_card": {
+    "claim_scope": "operator_action_card_no_hardware_claim",
+    "exists": true,
+    "gate_summary": {
+      "human_review": "NO_GO_NOT_STARTED",
+      "pre_acceptance": "NO_GO_RUNTIME_RECHECK_PENDING",
+      "runtime_logs": "NO_GO_MISSING_RUNTIME_LOGS",
+      "runtime_promotion": "NO_GO_LOGS_NOT_PASS"
+    },
+    "path": "docs/validation/companion-screen-wb55-runtime-hardware-action-card.json",
+    "status": "NO_GO_WAITING_FOR_REAL_HARDWARE_RUN"
+  },
+  "promotion_gate": {
+    "blocker_count": 3,
+    "path": "docs/validation/companion-screen-wb55-runtime-promotion.json",
+    "status": "NO_GO_LOGS_NOT_PASS",
+    "target_status": "REVISION_51_RUNTIME_PASS_HUMAN_VISUAL_PENDING"
+  },
+  "recovery_selftest": {
+    "claim_scope": "stubbed_failure_recovery_no_hardware_claim",
+    "normal_firmware_restored": true,
+    "report_exists": true,
+    "report_path": ".cache/validation/rev51-runtime-recovery-selftest/runtime-recheck-run.json",
+    "report_status": "FAIL",
+    "result_exit_codes": {
+      "capture_provision": 7,
+      "flash_normal_after_failure": 0,
+      "flash_provision": 0
+    },
+    "result_ids": [
+      "flash_provision",
+      "capture_provision",
+      "flash_normal_after_failure"
+    ],
+    "result_statuses": {
+      "capture_provision": "FAIL",
+      "flash_normal_after_failure": "PASS",
+      "flash_provision": "PASS"
+    },
+    "returncode": 1,
+    "stdout_has_recovery": true
+  },
+  "runner": "tools/run_wb55_screen_runtime_recheck.ps1",
+  "safety_contract": {
+    "captures_both_boots": true,
+    "check_only_is_non_hardware": true,
+    "check_only_writes_dry_run_report": true,
+    "execute_requires_workflow_lock": true,
+    "expected_rev51_markers_recorded": true,
+    "post_run_validation_chain_recorded": true,
+    "provision_before_normal": true,
+    "records_per_step_timestamps": true,
+    "requires_wb55_build_matrix_pass": true,
+    "restores_normal_firmware": true,
+    "restores_normal_firmware_after_failure": true,
+    "run_report_records_normal_firmware_restored": true,
+    "selftest_recovery_is_no_hardware": true,
+    "writes_runtime_run_report": true
+  },
+  "schema_id": "companion.screen.wb55_runtime_recheck_runner.v1",
+  "serial_capture_preflight": {
+    "capture_script": "tools/capture_nucleo_serial.ps1",
+    "claim_scope": "static_serial_capture_contract_no_hardware_claim",
+    "exists": true,
+    "path": "docs/validation/companion-screen-wb55-runtime-serial-capture-preflight.json",
+    "raw_log_filename": "nucleo-serial-raw.log",
+    "status": "PASS_STATIC_SERIAL_CAPTURE_PREFLIGHT",
+    "summary_json_filename": "nucleo-serial-summary.json"
+  },
+  "static_tokens": {
+    "-CheckOnly": true,
+    "-Execute": true,
+    "-SelfTestRecovery": true,
+    "-WorkflowLockHeld": true,
+    "0x56B56273": true,
+    "Companion-WB55": true,
+    "REVISION_51_RUNTIME_PASS_HUMAN_VISUAL_PENDING": true,
+    "REVISION_51_RUNTIME_RECHECK_PENDING": true,
+    "ScreenAssetProvision": true,
+    "build_logs_prove_all_variants": true,
+    "capture_normal": true,
+    "capture_nucleo_serial.ps1": true,
+    "capture_provision": true,
+    "companion-screen-wb55-build-matrix.json": true,
+    "flash_normal": true,
+    "flash_provision": true,
+    "queue_generation_compiles_in_all_variants": true,
+    "rev51-runtime-20260712-generated-art": true,
+    "revision=51": true,
+    "screen_asset_provision": true,
+    "screen_asset_provision_builds_current_external_assets": true
+  },
+  "status": "PASS"
+}

@@ -1,12 +1,12 @@
 {
   "acceptance_index": {
-    "next_hardware_gate": "wb55_rev51_runtime_recheck",
+    "next_hardware_gate": "wb55_rev52_runtime_recheck",
     "next_human_gate": "wb55_touch_visual_acceptance",
     "path": "docs/validation/companion-screen-acceptance-index.json",
     "schema_id": "companion.pendant.screen_acceptance_index.v1",
     "summary": {
       "deferred_count": 1,
-      "next_hardware_gate": "wb55_rev51_runtime_recheck",
+      "next_hardware_gate": "wb55_rev52_runtime_recheck",
       "next_human_gate": "wb55_touch_visual_acceptance",
       "pass_count": 84,
       "pending_human_count": 2,
@@ -109,7 +109,7 @@
         "ssd1681_source": "excluded"
       },
       "screen_asset_provision": {
-        "acceptance": "Links the rev51 CEMP blob into the one-time external ui_assets provision firmware.",
+        "acceptance": "Links the rev52 CEMP blob into the one-time external ui_assets provision firmware.",
         "asset_source": "build_screen_asset_provision/generated/companion_screen_asset_provision_blob.h",
         "command": "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1 -ScreenAssetProvision -Force",
         "log": ".cache/validation/wb55-build-matrix/screen-asset-provision-build.log",
@@ -179,7 +179,7 @@
       "total_bytes": true
     },
     "path": "docs/validation/companion-screen-wb55-touch-visual-acceptance-packet.json",
-    "start_rule": "Do not start this packet until rev51 runtime logs PASS, promotion is applied, pre-acceptance health PASS, and the operator explicitly says 开始验收.",
+    "start_rule": "Do not start this packet until rev52 runtime logs PASS, promotion is applied, pre-acceptance health PASS, and the operator explicitly says 开始验收.",
     "status": "PENDING_HUMAN",
     "step_count": 8
   },
@@ -204,9 +204,9 @@
   "purpose": "Machine-only pre-acceptance health gate for the WB55 touch/visual operator packet. It does not claim human feel acceptance.",
   "refresh_feel_contract": {
     "candidate": {
-      "crc32": "0x56B56273",
-      "revision": 51,
-      "runtime_status": "REVISION_51_RUNTIME_PASS_HUMAN_VISUAL_PENDING"
+      "crc32": "0xDEFC096E",
+      "revision": 52,
+      "runtime_status": "REVISION_52_RUNTIME_RECHECK_PENDING"
     },
     "checks": {
       "art_and_refresh_axes_separate": true,
@@ -233,10 +233,10 @@
   "resource": {
     "clips": 33,
     "frames": 159,
-    "pack_crc32": "0x56B56273",
-    "revision": 51,
-    "runtime_status": "REVISION_51_RUNTIME_PASS_HUMAN_VISUAL_PENDING",
-    "total_bytes": 287446
+    "pack_crc32": "0xDEFC096E",
+    "revision": 52,
+    "runtime_status": "REVISION_52_RUNTIME_RECHECK_PENDING",
+    "total_bytes": 287732
   },
   "runtime_flash_preflight": {
     "normal_image_exists": true,
@@ -247,7 +247,7 @@
   },
   "runtime_hardware_action_card": {
     "claim_scope": "operator_action_card_no_hardware_claim",
-    "human_acceptance_start_rule": "只有 rev51 provision/normal runtime logs 验证 PASS、promotion gate APPLIED、pre-acceptance health PASS 后，操作者明确说“开始验收”，才进入触摸/视觉人工验收。",
+    "human_acceptance_start_rule": "只有 rev52 provision/normal runtime logs 验证 PASS、promotion gate APPLIED、pre-acceptance health PASS 后，操作者明确说“开始验收”，才进入触摸/视觉人工验收。",
     "path": "docs/validation/companion-screen-wb55-runtime-hardware-action-card.json",
     "post_run_commands": [
       "python .\\tools\\verify_screen_generation_release_ledger.py",
@@ -258,7 +258,7 @@
     ],
     "status": "NO_GO_WAITING_FOR_REAL_HARDWARE_RUN",
     "step_count": 4,
-    "workflow_lock_command": "pwsh -NoProfile -File C:\\Users\\Billy\\Desktop\\Denzic\\ai-collaboration-workflow\\scripts\\aiw.ps1 with-lock -Resource Companion-WB55 -Purpose \"Companion WB55 rev51 screen runtime recheck\" -Run pwsh -NoProfile -File .\\tools\\run_wb55_screen_runtime_recheck.ps1 -Execute -WorkflowLockHeld"
+    "workflow_lock_command": "pwsh -NoProfile -File C:\\Users\\Billy\\Desktop\\Denzic\\ai-collaboration-workflow\\scripts\\aiw.ps1 with-lock -Resource Companion-WB55 -Purpose \"Companion WB55 rev52 screen runtime recheck\" -Run pwsh -NoProfile -File .\\tools\\run_wb55_screen_runtime_recheck.ps1 -Execute -WorkflowLockHeld"
   },
   "runtime_logs": {
     "normal": {
@@ -293,10 +293,14 @@
     }
   },
   "runtime_promotion_gate": {
-    "blockers": [],
+    "blockers": [
+      "runtime log verifier status is 'NO_GO_MISSING_RUNTIME_LOGS', not PASS",
+      "provision log status is 'MISSING_OR_INCOMPLETE'",
+      "normal log status is 'MISSING_OR_INCOMPLETE'"
+    ],
     "path": "docs/validation/companion-screen-wb55-runtime-promotion.json",
-    "status": "APPLIED",
-    "target_status": "REVISION_51_RUNTIME_PASS_HUMAN_VISUAL_PENDING"
+    "status": "NO_GO_LOGS_NOT_PASS",
+    "target_status": "REVISION_52_RUNTIME_PASS_HUMAN_VISUAL_PENDING"
   },
   "runtime_serial_capture_preflight": {
     "capture_script": "tools/capture_nucleo_serial.ps1",
@@ -304,13 +308,13 @@
     "operator_rule": "This preflight does not open serial ports, flash firmware, or claim runtime evidence. The real capture still requires the Companion-WB55 workflow hardware lock and the runtime log verifier must remain NO_GO until provision/normal logs exist.",
     "path": "docs/validation/companion-screen-wb55-runtime-serial-capture-preflight.json",
     "raw_log_filename": "nucleo-serial-raw.log",
-    "runtime_run_report": ".cache/validation/rev51-runtime-20260712-generated-art/runtime-recheck-run.json",
+    "runtime_run_report": ".cache/validation/rev52-runtime-current/runtime-recheck-run.json",
     "runtime_runner": "tools/run_wb55_screen_runtime_recheck.ps1",
     "status": "PASS_STATIC_SERIAL_CAPTURE_PREFLIGHT",
     "summary_json_filename": "nucleo-serial-summary.json"
   },
   "schema_id": "companion.pendant.screen_pre_acceptance_health.v1",
-  "status": "PASS",
+  "status": "NO_GO_RUNTIME_RECHECK_PENDING",
   "target": "NUCLEO-WB55RG + GDEY0154D67-T03 + FT6336U",
   "validation_commands": [
     "python .\\tools\\verify_companion_screen_pre_acceptance_health.py",

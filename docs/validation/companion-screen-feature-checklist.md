@@ -5,9 +5,9 @@ This checklist is generated. Update it with `python .\tools\render_expression_fe
 ## Current Focus
 
 - Overall status: `PENDING_HUMAN`
-- Next gate: `wb55_rev51_runtime_recheck`
+- Next gate: `wb55_rev52_runtime_recheck`
 - Capability: `runtime_diagnostics_and_evidence`
-- Focused gate: `wb55_rev51_runtime_recheck` (`DEFERRED_HARDWARE`)
+- Focused gate: `wb55_rev52_runtime_recheck` (`DEFERRED_HARDWARE`)
 - Touch visual acceptance packet: `docs/validation/companion-screen-wb55-touch-visual-acceptance-packet.json`
 - Pre-acceptance health: `docs/validation/companion-screen-pre-acceptance-health.json`
 - Missing panel facts: `0`

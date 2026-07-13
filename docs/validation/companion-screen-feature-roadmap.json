@@ -159,7 +159,7 @@
     {
       "acceptance_item_ids": [
         "wb55_runtime_serial_capture_preflight",
-        "wb55_rev51_runtime_recheck",
+        "wb55_rev52_runtime_recheck",
         "screen_runtime_snapshot",
         "screen_runtime_diagnostics",
         "screen_runtime_diagnostic_decode",
@@ -182,7 +182,7 @@
         "screen_runtime_diagnostics": "PASS",
         "screen_runtime_diagnostics_bundle": "PASS",
         "screen_runtime_snapshot": "PASS",
-        "wb55_rev51_runtime_recheck": "DEFERRED_HARDWARE",
+        "wb55_rev52_runtime_recheck": "DEFERRED_HARDWARE",
         "wb55_runtime_serial_capture_preflight": "PASS"
       },
       "id": "runtime_diagnostics_and_evidence",
@@ -286,7 +286,7 @@
     "roadmap_item_excluded_from_coverage": "screen_feature_roadmap",
     "ungrouped_acceptance_item_ids": []
   },
-  "current_next_gate": "wb55_rev51_runtime_recheck",
+  "current_next_gate": "wb55_rev52_runtime_recheck",
   "purpose": "Product-facing roadmap that groups the detailed screen acceptance items into small Companion screen capabilities.",
   "schema_id": "companion.pendant.screen_feature_roadmap.v1",
   "source_acceptance_index": "docs/validation/companion-screen-acceptance-index.json",
@@ -295,7 +295,7 @@
     "capability_count": 9,
     "deferred_hardware_capability_count": 1,
     "needs_attention_capability_count": 0,
-    "next_acceptance": "Complete the WB55 rev51 runtime recheck logs before focused touch/menu/language and 0xCF single-flash visual review.",
+    "next_acceptance": "Complete the WB55 rev52 runtime recheck logs before focused touch/menu/language and 0xCF single-flash visual review.",
     "pass_capability_count": 7,
     "pending_human_capability_count": 1
   },

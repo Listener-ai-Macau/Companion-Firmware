@@ -1,0 +1,194 @@
+{
+  "claim_scope": "filled_operator_review_record_validator",
+  "filled_input_path": ".cache/validation/wb55-touch-visual-review/latest-review-record.json",
+  "gate_id": "wb55_touch_visual_acceptance",
+  "next_action": "等待操作者明确说开始验收，然后把填好的结构化 review record 写入 filled_input_path。",
+  "open_items": [
+    {
+      "operator_note": "",
+      "reason": "human review has not started",
+      "source_step_id": "daily_tap_social_response"
+    },
+    {
+      "operator_note": "",
+      "reason": "human review has not started",
+      "source_step_id": "daily_swipe_pet_response"
+    },
+    {
+      "operator_note": "",
+      "reason": "human review has not started",
+      "source_step_id": "anywhere_hold_menu_entry"
+    },
+    {
+      "operator_note": "",
+      "reason": "human review has not started",
+      "source_step_id": "menu_drag_follow_finger"
+    },
+    {
+      "operator_note": "",
+      "reason": "human review has not started",
+      "source_step_id": "row_press_and_back"
+    },
+    {
+      "operator_note": "",
+      "reason": "human review has not started",
+      "source_step_id": "language_switch_single_language"
+    },
+    {
+      "operator_note": "",
+      "reason": "human review has not started",
+      "source_step_id": "maintenance_single_quiet_flash"
+    },
+    {
+      "operator_note": "",
+      "reason": "human review has not started",
+      "source_step_id": "premium_pet_feel"
+    }
+  ],
+  "publishable_pass_allowed": false,
+  "required_step_ids": [
+    "daily_tap_social_response",
+    "daily_swipe_pet_response",
+    "anywhere_hold_menu_entry",
+    "menu_drag_follow_finger",
+    "row_press_and_back",
+    "language_switch_single_language",
+    "maintenance_single_quiet_flash",
+    "premium_pet_feel"
+  ],
+  "review_records": [
+    {
+      "evidence_path": "",
+      "next_review_scope": "",
+      "operator_note": "",
+      "operator_observation": "",
+      "publishable_pass_allowed": false,
+      "resolution_state": "open_requires_fix",
+      "source_step_id": "daily_tap_social_response",
+      "title": "Daily face tap keeps social mode",
+      "triage_items": [],
+      "visual_issue_classification": "none"
+    },
+    {
+      "evidence_path": "",
+      "next_review_scope": "",
+      "operator_note": "",
+      "operator_observation": "",
+      "publishable_pass_allowed": false,
+      "resolution_state": "open_requires_fix",
+      "source_step_id": "daily_swipe_pet_response",
+      "title": "Daily swipes become pet reactions",
+      "triage_items": [],
+      "visual_issue_classification": "none"
+    },
+    {
+      "evidence_path": "",
+      "next_review_scope": "",
+      "operator_note": "",
+      "operator_observation": "",
+      "publishable_pass_allowed": false,
+      "resolution_state": "open_requires_fix",
+      "source_step_id": "anywhere_hold_menu_entry",
+      "title": "Anywhere hold enters menu deliberately",
+      "triage_items": [],
+      "visual_issue_classification": "none"
+    },
+    {
+      "evidence_path": "",
+      "next_review_scope": "",
+      "operator_note": "",
+      "operator_observation": "",
+      "publishable_pass_allowed": false,
+      "resolution_state": "open_requires_fix",
+      "source_step_id": "menu_drag_follow_finger",
+      "title": "Menu drag follows the finger",
+      "triage_items": [],
+      "visual_issue_classification": "none"
+    },
+    {
+      "evidence_path": "",
+      "next_review_scope": "",
+      "operator_note": "",
+      "operator_observation": "",
+      "publishable_pass_allowed": false,
+      "resolution_state": "open_requires_fix",
+      "source_step_id": "row_press_and_back",
+      "title": "Row press shows entry feedback",
+      "triage_items": [],
+      "visual_issue_classification": "none"
+    },
+    {
+      "evidence_path": "",
+      "next_review_scope": "",
+      "operator_note": "",
+      "operator_observation": "",
+      "publishable_pass_allowed": false,
+      "resolution_state": "open_requires_fix",
+      "source_step_id": "language_switch_single_language",
+      "title": "Language toggle stays single-language",
+      "triage_items": [],
+      "visual_issue_classification": "none"
+    },
+    {
+      "evidence_path": "",
+      "next_review_scope": "",
+      "operator_note": "",
+      "operator_observation": "",
+      "publishable_pass_allowed": false,
+      "resolution_state": "open_requires_fix",
+      "source_step_id": "maintenance_single_quiet_flash",
+      "title": "Maintenance is one quiet cleanup",
+      "triage_items": [],
+      "visual_issue_classification": "none"
+    },
+    {
+      "evidence_path": "",
+      "next_review_scope": "",
+      "operator_note": "",
+      "operator_observation": "",
+      "publishable_pass_allowed": false,
+      "resolution_state": "open_requires_fix",
+      "source_step_id": "premium_pet_feel",
+      "title": "Pet expression feels alive enough for next art pass",
+      "triage_items": [],
+      "visual_issue_classification": "none"
+    }
+  ],
+  "schema_id": "companion.pendant.wb55_touch_visual_review_record.v1",
+  "source_status": "MISSING_FILLED_INPUT",
+  "source_template": "docs/validation/companion-screen-wb55-touch-visual-review-template.json",
+  "status": "NO_GO_NOT_STARTED",
+  "target": "NUCLEO-WB55RG + GDEY0154D67-T03 + FT6336U",
+  "triage_contract": {
+    "allowed_resolution_states": [
+      "fixed_with_machine_evidence",
+      "deferred_by_product_decision",
+      "accepted_benign_with_evidence",
+      "open_requires_fix"
+    ],
+    "allowed_visual_issue_classifications": [
+      "none",
+      "physical afterimage",
+      "stale queued frame",
+      "stale asset revision",
+      "rescue/procedural fallback leakage",
+      "stale_generation_content"
+    ],
+    "publishable_pass_rule": "The acceptance packet cannot be treated as publishable PASS while any triage item remains open_requires_fix, lacks an evidence_path, or accepts recognizable stale_generation_content as benign.",
+    "required_fields": [
+      "source_step_id",
+      "operator_note",
+      "triage_items",
+      "resolution_state",
+      "evidence_path",
+      "next_review_scope",
+      "visual_issue_classification"
+    ]
+  },
+  "validation_commands": [
+    "python .\\tools\\verify_wb55_touch_visual_review_record.py",
+    "python .\\tools\\render_wb55_touch_visual_review_template.py",
+    "python .\\tools\\render_wb55_touch_visual_acceptance_packet.py"
+  ],
+  "validation_errors": []
+}

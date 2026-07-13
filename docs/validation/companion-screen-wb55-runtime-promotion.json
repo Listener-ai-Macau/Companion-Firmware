@@ -1,0 +1,61 @@
+{
+  "blockers": [
+    "runtime log verifier status is 'NO_GO_MISSING_RUNTIME_LOGS', not PASS",
+    "provision log status is 'MISSING_OR_INCOMPLETE'",
+    "normal log status is 'MISSING_OR_INCOMPLETE'"
+  ],
+  "current_state": {
+    "menu_runtime_status": "REVISION_52_RUNTIME_RECHECK_PENDING",
+    "resource_policy_wb55_revision": 51,
+    "touch_packet_runtime_status": "REVISION_52_RUNTIME_RECHECK_PENDING"
+  },
+  "inputs": {
+    "bilingual_menu": "docs/validation/companion-screen-bilingual-menu-wb55.json",
+    "logs_report": "docs/validation/companion-screen-wb55-runtime-recheck-logs.json",
+    "resource_policy": "docs/validation/companion-screen-resource-memory-policy.json",
+    "touch_packet": "docs/validation/companion-screen-wb55-touch-visual-acceptance-packet.json"
+  },
+  "planned_updates": [
+    {
+      "changes": [
+        "runtime_evidence.status -> REVISION_52_RUNTIME_PASS_HUMAN_VISUAL_PENDING",
+        "runtime_evidence provision/normal log paths -> rev52 log verifier paths",
+        "runtime_evidence.required_runtime_markers -> revision=52 external_flash marker set"
+      ],
+      "path": "docs/validation/companion-screen-bilingual-menu-wb55.json"
+    },
+    {
+      "changes": [
+        "wb55_real_evidence -> rev52 candidate pack and runtime logs",
+        "candidate_pack.status -> runtime_pass_human_visual_pending"
+      ],
+      "path": "docs/validation/companion-screen-resource-memory-policy.json"
+    },
+    {
+      "changes": [
+        "machine_state.runtime_status -> REVISION_52_RUNTIME_PASS_HUMAN_VISUAL_PENDING",
+        "machine_state provision/normal logs -> rev52 runtime logs"
+      ],
+      "path": "docs/validation/companion-screen-wb55-touch-visual-acceptance-packet.json"
+    }
+  ],
+  "post_apply_commands": [
+    "python .\\tools\\verify_wb55_screen_runtime_recheck_logs.py",
+    "python .\\tools\\promote_wb55_screen_runtime_recheck.py",
+    "python .\\tools\\verify_companion_screen_pre_acceptance_health.py --write-fixture",
+    "python .\\tools\\verify_companion_screen_goal_audit.py --write"
+  ],
+  "purpose": "Machine-only promotion plan after rev52 provision and normal runtime logs pass.",
+  "schema_id": "companion.screen.wb55_runtime_promotion.v1",
+  "status": "NO_GO_LOGS_NOT_PASS",
+  "target_state": {
+    "normal_capture_summary": ".cache/validation/rev52-runtime-current/normal/nucleo-serial-summary.json",
+    "normal_raw_log": ".cache/validation/rev52-runtime-current/normal/nucleo-serial-raw.log",
+    "pack_crc32": "0xDEFC096E",
+    "provision_capture_summary": ".cache/validation/rev52-runtime-current/provision/nucleo-serial-summary.json",
+    "provision_raw_log": ".cache/validation/rev52-runtime-current/provision/nucleo-serial-raw.log",
+    "revision": 52,
+    "status": "REVISION_52_RUNTIME_PASS_HUMAN_VISUAL_PENDING",
+    "total_bytes": 287732
+  }
+}

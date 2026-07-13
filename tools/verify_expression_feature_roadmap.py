@@ -10,6 +10,8 @@ import sys
 from collections import Counter
 from typing import Any
 
+from screen_runtime_candidate import current_candidate
+
 
 REPO_ROOT = pathlib.Path(__file__).resolve().parents[1]
 DEFAULT_FIXTURE = pathlib.Path("docs/validation/companion-screen-feature-roadmap.json")
@@ -19,6 +21,8 @@ EPAPER_README = REPO_ROOT / "app/companion_pendant/epaper/README.md"
 SCHEMA_ID = "companion.pendant.screen_feature_roadmap.v1"
 
 ROADMAP_ITEM_ID = "screen_feature_roadmap"
+CANDIDATE = current_candidate()
+RUNTIME_GATE_ID = f"wb55_rev{CANDIDATE.revision}_runtime_recheck"
 
 CAPABILITIES = [
     {
@@ -120,7 +124,7 @@ CAPABILITIES = [
         "user_value": "Screen runtime health can be decoded from diagnostics, BLE artifacts, and evidence records.",
         "acceptance_item_ids": [
             "wb55_runtime_serial_capture_preflight",
-            "wb55_rev51_runtime_recheck",
+            RUNTIME_GATE_ID,
             "screen_runtime_snapshot",
             "screen_runtime_diagnostics",
             "screen_runtime_diagnostic_decode",
@@ -247,7 +251,7 @@ def build_roadmap() -> dict[str, Any]:
         "status": aggregate_status([capability["status"] for capability in capabilities]),
         "purpose": "Product-facing roadmap that groups the detailed screen acceptance items into small Companion screen capabilities.",
         "source_acceptance_index": rel(ACCEPTANCE_INDEX),
-        "current_next_gate": "wb55_rev51_runtime_recheck",
+        "current_next_gate": index.get("summary", {}).get("next_hardware_gate"),
         "capabilities": capabilities,
         "coverage": {
             "acceptance_item_count": len(coverage_scope),
@@ -261,7 +265,10 @@ def build_roadmap() -> dict[str, Any]:
             "deferred_hardware_capability_count": int(status_counts.get("DEFERRED_HARDWARE", 0)),
             "pending_human_capability_count": int(status_counts.get("PENDING_HUMAN", 0)),
             "needs_attention_capability_count": int(status_counts.get("NEEDS_ATTENTION", 0)),
-            "next_acceptance": "Complete the WB55 rev51 runtime recheck logs before focused touch/menu/language and 0xCF single-flash visual review.",
+            "next_acceptance": (
+                f"Complete the WB55 rev{CANDIDATE.revision} runtime recheck logs before focused "
+                "touch/menu/language and 0xCF single-flash visual review."
+            ),
         },
         "validation_commands": [
             "python .\\tools\\verify_expression_feature_roadmap.py",
@@ -273,7 +280,7 @@ def build_roadmap() -> dict[str, Any]:
 
 def validate_roadmap(data: dict[str, Any], errors: list[str]) -> None:
     require(data.get("schema_id") == SCHEMA_ID, f"roadmap schema_id must be {SCHEMA_ID}", errors)
-    require(data.get("current_next_gate") == "wb55_rev51_runtime_recheck", "roadmap must point at the focused runtime recheck gate", errors)
+    require(data.get("current_next_gate") == RUNTIME_GATE_ID, "roadmap must point at the focused runtime recheck gate", errors)
     capabilities = data.get("capabilities", [])
     require(isinstance(capabilities, list) and capabilities, "roadmap must contain capabilities", errors)
     ids = [capability.get("id") for capability in capabilities if isinstance(capability, dict)]

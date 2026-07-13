@@ -19,7 +19,6 @@ from PIL import Image, ImageDraw
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "app/companion_pendant/epaper/assets/emote_matrix_white_200x200.json"
 IMPORT_REPORT = ROOT / "docs/validation/companion-screen-generated-expression-sheet-import.json"
-DEFAULT_IMAGE = ROOT / ".cache/validation/rev51-generated-expression-normal-pack-sources.png"
 DEFAULT_REPORT = ROOT / "docs/validation/companion-screen-generated-expression-normal-pack-contact-sheet.json"
 
 CELL_W = 238
@@ -92,11 +91,12 @@ def wrap_label(text: str, max_chars: int = 25) -> list[str]:
     return parts[:3]
 
 
-def render_contact_sheet(rows: list[dict[str, Any]], output: pathlib.Path) -> None:
+def render_contact_sheet(rows: list[dict[str, Any]], output: pathlib.Path,
+                         revision: int) -> None:
     row_count = (len(rows) + COLS - 1) // COLS
     image = Image.new("RGB", (COLS * CELL_W, row_count * CELL_H + 48), "white")
     draw = ImageDraw.Draw(image)
-    draw.text((16, 14), "Companion rev51 normal CEMP expression sources", fill="black")
+    draw.text((16, 14), f"Companion rev{revision} normal CEMP expression sources", fill="black")
     draw.text((16, 30), "All normal expression PBMs must come from generated-sheet import outputs/aliases.", fill="black")
 
     for index, row in enumerate(rows):
@@ -159,7 +159,7 @@ def build_report(image_path: pathlib.Path) -> tuple[dict[str, Any], list[str]]:
 
 
 def write_outputs(image_path: pathlib.Path, report_path: pathlib.Path, report: dict[str, Any]) -> None:
-    render_contact_sheet(report["sources"], image_path)
+    render_contact_sheet(report["sources"], image_path, int(report["manifest_revision"]))
     report_path.parent.mkdir(parents=True, exist_ok=True)
     report_path.write_text(json.dumps(report, indent=2, ensure_ascii=False, sort_keys=True) + "\n", encoding="utf-8")
 
@@ -168,8 +168,9 @@ def verify_outputs(image_path: pathlib.Path, report_path: pathlib.Path, report: 
                    errors: list[str]) -> None:
     if report.get("status") != "PASS":
         errors.append("normal pack contact sheet report is not PASS")
-    if report.get("manifest_revision") != 51:
-        errors.append("normal pack contact sheet must describe revision 51")
+    manifest = load_json(MANIFEST)
+    if report.get("manifest_revision") != manifest.get("revision"):
+        errors.append("normal pack contact sheet must describe the active manifest revision")
     coverage = report.get("generated_coverage", {})
     if coverage.get("used_by_manifest") != 39 or coverage.get("covered_by_import") != 39:
         errors.append("normal pack generated coverage must remain 39/39")
@@ -185,7 +186,7 @@ def verify_outputs(image_path: pathlib.Path, report_path: pathlib.Path, report: 
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--image", type=pathlib.Path, default=DEFAULT_IMAGE)
+    parser.add_argument("--image", type=pathlib.Path)
     parser.add_argument("--report", type=pathlib.Path, default=DEFAULT_REPORT)
     parser.add_argument("--write", action="store_true")
     return parser.parse_args(argv)
@@ -193,7 +194,10 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
 
 def main(argv: list[str]) -> int:
     args = parse_args(argv)
-    image_path = args.image if args.image.is_absolute() else ROOT / args.image
+    manifest_revision = int(load_json(MANIFEST).get("revision", 0))
+    default_image = ROOT / ".cache" / "validation" / f"rev{manifest_revision}-generated-expression-normal-pack-sources.png"
+    requested_image = args.image if args.image is not None else default_image
+    image_path = requested_image if requested_image.is_absolute() else ROOT / requested_image
     report_path = args.report if args.report.is_absolute() else ROOT / args.report
     report, errors = build_report(image_path)
     if args.write and not errors:

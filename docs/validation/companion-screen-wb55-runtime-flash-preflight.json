@@ -1,0 +1,56 @@
+{
+  "expected_sequence": [
+    "screen_asset_provision",
+    "normal"
+  ],
+  "flash_timeout_contract": {
+    "bounded_range": true,
+    "captures_stderr": true,
+    "captures_stdout": true,
+    "hidden_window": true,
+    "kills_on_timeout": true,
+    "start_process": true,
+    "timeout_error": true,
+    "timeout_parameter": true,
+    "wait_for_exit": true
+  },
+  "normal": {
+    "command": "pwsh -NoProfile -File .\\tools\\flash_nucleo_bringup.ps1 -CheckOnly",
+    "flash_timeout_seconds": 120,
+    "image": "cubeide/Companion_Nucleo_WB55RG_Bringup/build/Companion_Nucleo_WB55RG_Bringup.hex",
+    "image_exists": true,
+    "mode": "normal",
+    "programmer": "C:\\ST\\STM32CubeIDE_2.1.1\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltools.cubeprogrammer.win32_2.2.400.202601091506\\tools\\bin\\STM32_Programmer_CLI.exe",
+    "programmer_exists": true,
+    "returncode": 0,
+    "stderr": "",
+    "stdout": "CHECK: mode=normal\nCHECK: image=C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-devboard-oai1\\cubeide\\Companion_Nucleo_WB55RG_Bringup\\build\\Companion_Nucleo_WB55RG_Bringup.hex\nCHECK: programmer=C:\\ST\\STM32CubeIDE_2.1.1\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltools.cubeprogrammer.win32_2.2.400.202601091506\\tools\\bin\\STM32_Programmer_CLI.exe\nCHECK: flash_timeout_seconds=120"
+  },
+  "purpose": "Machine preflight for rev52 runtime recheck flashing; does not flash hardware.",
+  "safety_rules": [
+    "CheckOnly only validates image/programmer paths.",
+    "Real flashing is bounded by FlashTimeoutSeconds and writes stdout/stderr logs.",
+    "Provision image must run before normal image during rev52 runtime recheck.",
+    "Normal firmware must be restored after provision."
+  ],
+  "schema_id": "companion.screen.wb55_runtime_flash_preflight.v1",
+  "screen_asset_provision": {
+    "command": "pwsh -NoProfile -File .\\tools\\flash_nucleo_bringup.ps1 -ScreenAssetProvision -CheckOnly",
+    "flash_timeout_seconds": 120,
+    "image": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_screen_asset_provision/Companion_Nucleo_WB55RG_ScreenAssetProvision.hex",
+    "image_exists": true,
+    "mode": "screen_asset_provision",
+    "programmer": "C:\\ST\\STM32CubeIDE_2.1.1\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltools.cubeprogrammer.win32_2.2.400.202601091506\\tools\\bin\\STM32_Programmer_CLI.exe",
+    "programmer_exists": true,
+    "returncode": 0,
+    "stderr": "",
+    "stdout": "CHECK: mode=screen_asset_provision\nCHECK: image=C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-devboard-oai1\\cubeide\\Companion_Nucleo_WB55RG_Bringup\\build_screen_asset_provision\\Companion_Nucleo_WB55RG_ScreenAssetProvision.hex\nCHECK: programmer=C:\\ST\\STM32CubeIDE_2.1.1\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltools.cubeprogrammer.win32_2.2.400.202601091506\\tools\\bin\\STM32_Programmer_CLI.exe\nCHECK: flash_timeout_seconds=120"
+  },
+  "script": "tools/flash_nucleo_bringup.ps1",
+  "status": "PASS",
+  "validation_commands": [
+    "python .\\tools\\verify_wb55_runtime_flash_preflight.py",
+    "pwsh -NoProfile -File .\\tools\\flash_nucleo_bringup.ps1 -CheckOnly",
+    "pwsh -NoProfile -File .\\tools\\flash_nucleo_bringup.ps1 -ScreenAssetProvision -CheckOnly"
+  ]
+}

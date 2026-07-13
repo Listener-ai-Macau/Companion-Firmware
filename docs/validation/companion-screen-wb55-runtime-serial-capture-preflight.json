@@ -1,0 +1,180 @@
+{
+  "capture_script_contract": {
+    "check_only_note": "capture_nucleo_serial.ps1 -CheckOnly may enumerate the current COM port; this preflight is intentionally static so it can run when the WB55 is disconnected.",
+    "outputs": {
+      "empty_capture_failure_token": true,
+      "raw_log_filename": "nucleo-serial-raw.log",
+      "raw_log_token": true,
+      "selftest_empty_capture_token": true,
+      "selftest_reset_timeout_token": true,
+      "summary_bytes_read_token": true,
+      "summary_json_filename": "nucleo-serial-summary.json",
+      "summary_json_token": true,
+      "summary_reset_timeout_token": true,
+      "summary_schema_token": true,
+      "summary_status_pass_token": true
+    },
+    "parameters": {
+      "[ValidateRange(5, 60)]": true,
+      "[int] $ResetTimeoutSeconds = 15": true,
+      "[int] $Seconds": true,
+      "[string] $OutDir": true,
+      "[string] $Port": true,
+      "[switch] $CheckOnly": true,
+      "[switch] $Execute": true,
+      "[switch] $ResetAfterOpen": true,
+      "[switch] $SelfTestEmptyCapture": true,
+      "[switch] $SelfTestResetTimeout": true,
+      "[switch] $WorkflowLockHeld": true
+    },
+    "safety": {
+      "$process.WaitForExit($TimeoutSeconds * 1000)": true,
+      "$serial.ReadTimeout = 250": true,
+      "Add-Content -LiteralPath $rawLog": true,
+      "Get-StLinkSerialCandidates": true,
+      "Invoke-ProgrammerResetWithTimeout": true,
+      "No serial bytes captured during $Seconds second(s); refusing empty runtime evidence.": true,
+      "Refusing to open Companion NUCLEO serial port without -Execute": true,
+      "Refusing to open Companion NUCLEO serial port without workflow lock acknowledgement": true,
+      "Resolve-CapturePort": true,
+      "Run through aiw with-lock -Resource Companion-WB55": true,
+      "STM32_Programmer_CLI": true,
+      "Start-Process": true,
+      "Stop-Process -Id $process.Id -Force": true,
+      "reset timed out after $TimeoutSeconds second(s)": true,
+      "stm32-reset-stderr.log": true,
+      "stm32-reset-stdout.log": true
+    }
+  },
+  "claim_scope": "static_serial_capture_contract_no_hardware_claim",
+  "empty_capture_selftest": {
+    "bytes_read": 0,
+    "claim_scope": "stubbed_empty_capture_no_hardware_claim",
+    "command": "pwsh -NoProfile -File .\\tools\\capture_nucleo_serial.ps1 -SelfTestEmptyCapture -OutDir .\\.cache\\validation\\nucleo-serial-empty-selftest",
+    "errors": [
+      "No serial bytes captured during 15 second(s); refusing empty runtime evidence."
+    ],
+    "raw_log_exists": true,
+    "raw_log_path": ".cache/validation/nucleo-serial-empty-selftest/nucleo-serial-raw.log",
+    "reset_timeout_seconds": 15,
+    "returncode": 1,
+    "stdout_has_expected_failure": true,
+    "summary_exists": true,
+    "summary_mode": "selftest-empty-capture",
+    "summary_path": ".cache/validation/nucleo-serial-empty-selftest/nucleo-serial-summary.json",
+    "summary_port": "SELFTEST",
+    "summary_status": "FAIL"
+  },
+  "log_verifier_contract": {
+    "expected_markers": {
+      "clips=33 frames=159": true,
+      "coherent_generation=1": true,
+      "complete=1": true,
+      "expression_renderer=external_pack": true,
+      "generation_switches=": true,
+      "last_stale_discarded=": true,
+      "mount=ok": true,
+      "pet_behavior_selftest=pass failure_code=0": true,
+      "queue_generation revision=52": true,
+      "refresh mode=full": true,
+      "revision=52": true,
+      "source=external_flash": true,
+      "touch-health] detected=1 identity=1 addr=0x38": true
+    },
+    "expected_step_order": {
+      "capture_normal": true,
+      "capture_provision": true,
+      "flash_normal": true,
+      "flash_provision": true
+    },
+    "expects_provision_and_normal_dirs": true,
+    "expects_raw_log": true,
+    "expects_summary_json": true
+  },
+  "operator_rule": "This preflight does not open serial ports, flash firmware, or claim runtime evidence. The real capture still requires the Companion-WB55 workflow hardware lock and the runtime log verifier must remain NO_GO until provision/normal logs exist.",
+  "reset_timeout_selftest": {
+    "bytes_read": 0,
+    "claim_scope": "stubbed_reset_timeout_no_hardware_claim",
+    "command": "pwsh -NoProfile -File .\\tools\\capture_nucleo_serial.ps1 -SelfTestResetTimeout -OutDir .\\.cache\\validation\\nucleo-serial-reset-timeout-selftest",
+    "errors": [
+      "reset timed out after 5 second(s). stdout=C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-devboard-oai1\\.cache\\validation\\nucleo-serial-reset-timeout-selftest\\stm32-reset-stdout.log stderr=C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-devboard-oai1\\.cache\\validation\\nucleo-serial-reset-timeout-selftest\\stm32-reset-stderr.log"
+    ],
+    "reset_stderr_exists": true,
+    "reset_stdout_exists": true,
+    "reset_timeout_seconds": 15,
+    "returncode": 1,
+    "stdout_has_expected_failure": true,
+    "summary_exists": true,
+    "summary_mode": "selftest-reset-timeout",
+    "summary_path": ".cache/validation/nucleo-serial-reset-timeout-selftest/nucleo-serial-summary.json",
+    "summary_port": "SELFTEST",
+    "summary_status": "FAIL"
+  },
+  "runner_contract": {
+    "capture_seconds_bounds": {
+      "$CaptureSeconds -lt 5 -or $CaptureSeconds -gt 120": true,
+      "CaptureSeconds must be between 5 and 120.": true,
+      "[int] $CaptureSeconds = 25": true
+    },
+    "capture_steps": {
+      "capture_normal": {
+        "command": "pwsh -NoProfile -File .\\tools\\capture_nucleo_serial.ps1 -Execute -WorkflowLockHeld -Seconds 25 -ResetAfterOpen -OutDir C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-devboard-oai1\\.cache\\validation\\rev52-runtime-current\\normal",
+        "execute": true,
+        "out_dir": true,
+        "reset_after_open": true,
+        "seconds_25": true,
+        "uses_capture_script": true,
+        "workflow_lock_ack": true
+      },
+      "capture_provision": {
+        "command": "pwsh -NoProfile -File .\\tools\\capture_nucleo_serial.ps1 -Execute -WorkflowLockHeld -Seconds 25 -ResetAfterOpen -OutDir C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-devboard-oai1\\.cache\\validation\\rev52-runtime-current\\provision",
+        "execute": true,
+        "out_dir": true,
+        "reset_after_open": true,
+        "seconds_25": true,
+        "uses_capture_script": true,
+        "workflow_lock_ack": true
+      }
+    },
+    "run_report": {
+      "output": {
+        "normal_dir": ".cache/validation/rev52-runtime-current/normal",
+        "provision_dir": ".cache/validation/rev52-runtime-current/provision",
+        "root": ".cache/validation/rev52-runtime-current",
+        "run_report": ".cache/validation/rev52-runtime-current/runtime-recheck-run.json"
+      },
+      "resource": {
+        "pack_crc32": "0xDEFC096E",
+        "revision": 52,
+        "runtime_status": "REVISION_52_RUNTIME_RECHECK_PENDING",
+        "total_bytes": 287732
+      },
+      "results_count": 0,
+      "schema": "companion.wb55_screen_runtime_recheck_run.v1",
+      "status": "DRY-RUN"
+    },
+    "step_order": [
+      "flash_provision",
+      "capture_provision",
+      "flash_normal",
+      "capture_normal"
+    ],
+    "workflow_lock_required_for_execute": true
+  },
+  "schema_id": "companion.screen.wb55_runtime_serial_capture_preflight.v1",
+  "source_files": {
+    "capture_script": "tools/capture_nucleo_serial.ps1",
+    "runtime_log_verifier": "tools/verify_wb55_screen_runtime_recheck_logs.py",
+    "runtime_run_report": ".cache/validation/rev52-runtime-current/runtime-recheck-run.json",
+    "runtime_runner": "tools/run_wb55_screen_runtime_recheck.ps1"
+  },
+  "status": "PASS_STATIC_SERIAL_CAPTURE_PREFLIGHT",
+  "target": "NUCLEO-WB55RG rev52 runtime recheck serial capture",
+  "validation_commands": [
+    "python .\\tools\\verify_wb55_runtime_serial_capture_preflight.py",
+    "pwsh -NoProfile -File .\\tools\\capture_nucleo_serial.ps1 -SelfTestEmptyCapture -OutDir .\\.cache\\validation\\nucleo-serial-empty-selftest",
+    "pwsh -NoProfile -File .\\tools\\capture_nucleo_serial.ps1 -SelfTestResetTimeout -OutDir .\\.cache\\validation\\nucleo-serial-reset-timeout-selftest",
+    "pwsh -NoProfile -File .\\tools\\run_wb55_screen_runtime_recheck.ps1 -CheckOnly",
+    "python .\\tools\\verify_wb55_screen_runtime_recheck_logs.py"
+  ]
+}

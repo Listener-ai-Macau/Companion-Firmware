@@ -9,6 +9,8 @@ import pathlib
 import sys
 from typing import Any
 
+from screen_runtime_candidate import current_candidate
+
 
 REPO_ROOT = pathlib.Path(__file__).resolve().parents[1]
 DEFAULT_JSON = pathlib.Path("docs/validation/companion-screen-feature-checklist.json")
@@ -23,6 +25,8 @@ TOUCH_VISUAL_PACKET_MD = REPO_ROOT / "docs/validation/companion-screen-wb55-touc
 PRE_ACCEPTANCE_HEALTH = REPO_ROOT / "docs/validation/companion-screen-pre-acceptance-health.json"
 SCREEN_DOC = REPO_ROOT / "docs/companion_screen_expression_system.md"
 EPAPER_README = REPO_ROOT / "app/companion_pendant/epaper/README.md"
+CANDIDATE = current_candidate()
+RUNTIME_GATE_ID = f"wb55_rev{CANDIDATE.revision}_runtime_recheck"
 
 
 def rel(path: pathlib.Path) -> str:
@@ -164,7 +168,7 @@ def validate_checklist(data: dict[str, Any], errors: list[str]) -> None:
     require(data.get("schema_id") == SCHEMA_ID, f"checklist schema_id must be {SCHEMA_ID}", errors)
     require(data.get("status") == "PASS", "feature checklist fixture must be PASS", errors)
     require(data.get("overall_status") == "PENDING_HUMAN", "overall checklist should reflect the focused human gate", errors)
-    require(data.get("current_next_gate") == "wb55_rev51_runtime_recheck", "checklist next gate must be wb55_rev51_runtime_recheck", errors)
+    require(data.get("current_next_gate") == RUNTIME_GATE_ID, f"checklist next gate must be {RUNTIME_GATE_ID}", errors)
     focus = data.get("current_focus", {})
     require(focus.get("capability_id") == "runtime_diagnostics_and_evidence", "current focus must be runtime_diagnostics_and_evidence", errors)
     require(
@@ -172,7 +176,7 @@ def validate_checklist(data: dict[str, Any], errors: list[str]) -> None:
         "current focus should show the WB55 runtime recheck hardware gate",
         errors,
     )
-    require(focus.get("gate_id") == "wb55_rev51_runtime_recheck", "focused gate id drifted", errors)
+    require(focus.get("gate_id") == RUNTIME_GATE_ID, "focused gate id drifted", errors)
     require(
         focus.get("operator_packet") == rel(TOUCH_VISUAL_PACKET),
         "focused gate must link the touch visual acceptance packet",

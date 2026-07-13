@@ -1,0 +1,144 @@
+{
+  "build_log_evidence": {
+    "dry_run_default": {
+      "exists": true,
+      "expected_size": {
+        "bss": 182183,
+        "data": 2436,
+        "dec": 307279,
+        "hex": "4b04f",
+        "text": 122660
+      },
+      "forbidden_markers_absent": {
+        "COMPANION_EPAPER_PANEL_SSD1681_BRINGUP=1": true,
+        "panel_target_stm32wb_ssd1681.c": true
+      },
+      "path": ".cache/validation/wb55-build-matrix/default-build.log",
+      "required_markers": {
+        "arm-none-eabi-size build/Companion_Nucleo_WB55RG_Bringup.elf": true,
+        "build_nucleo_bringup: acquired build lock": true,
+        "build_nucleo_bringup: released build lock": true,
+        "make: Leaving directory": true
+      },
+      "size": {
+        "bss": 182183,
+        "data": 2436,
+        "dec": 307279,
+        "hex": "4b04f",
+        "text": 122660
+      }
+    },
+    "screen_asset_provision": {
+      "exists": true,
+      "expected_size": {
+        "bss": 192239,
+        "data": 2433,
+        "dec": 602988,
+        "hex": "9336c",
+        "text": 408316
+      },
+      "forbidden_markers_absent": {},
+      "path": ".cache/validation/wb55-build-matrix/screen-asset-provision-build.log",
+      "required_markers": {
+        "-Ibuild_screen_asset_provision/generated": true,
+        "COMPANION_EPAPER_PANEL_SSD1681_BRINGUP=1": true,
+        "COMPANION_SCREEN_ASSET_PROVISION=1": true,
+        "arm-none-eabi-size build_screen_asset_provision/Companion_Nucleo_WB55RG_ScreenAssetProvision.elf": true,
+        "build_nucleo_bringup: acquired build lock": true,
+        "build_nucleo_bringup: released build lock": true,
+        "make: Leaving directory": true,
+        "panel_target_stm32wb_ssd1681.c": true
+      },
+      "size": {
+        "bss": 192239,
+        "data": 2433,
+        "dec": 602988,
+        "hex": "9336c",
+        "text": 408316
+      }
+    },
+    "ssd1681_real_panel": {
+      "exists": true,
+      "expected_size": {
+        "bss": 192263,
+        "data": 2440,
+        "dec": 332315,
+        "hex": "5121b",
+        "text": 137612
+      },
+      "forbidden_markers_absent": {},
+      "path": ".cache/validation/wb55-build-matrix/ssd1681-build.log",
+      "required_markers": {
+        "COMPANION_EPAPER_PANEL_SSD1681_BRINGUP=1": true,
+        "arm-none-eabi-size build/Companion_Nucleo_WB55RG_Bringup.elf": true,
+        "build_nucleo_bringup: acquired build lock": true,
+        "build_nucleo_bringup: released build lock": true,
+        "make: Leaving directory": true,
+        "panel_target_stm32wb_ssd1681.c": true
+      },
+      "size": {
+        "bss": 192263,
+        "data": 2440,
+        "dec": 332315,
+        "hex": "5121b",
+        "text": 137612
+      }
+    }
+  },
+  "build_variants": {
+    "dry_run_default": {
+      "acceptance": "Links without companion_epaper_panel_stm32wb_ssd1681_* symbols.",
+      "command": "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1 -Force",
+      "log": ".cache/validation/wb55-build-matrix/default-build.log",
+      "panel_transport": "comp_epaper_panel_adapter_init_dry_run",
+      "ssd1681_source": "excluded"
+    },
+    "screen_asset_provision": {
+      "acceptance": "Links the rev52 CEMP blob into the one-time external ui_assets provision firmware.",
+      "asset_source": "build_screen_asset_provision/generated/companion_screen_asset_provision_blob.h",
+      "command": "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1 -ScreenAssetProvision -Force",
+      "log": ".cache/validation/wb55-build-matrix/screen-asset-provision-build.log",
+      "panel_transport": "panel_target_stm32wb_ssd1681.c",
+      "ssd1681_source": "included_with_asset_provision_target"
+    },
+    "ssd1681_real_panel": {
+      "acceptance": "Links the real SSD1681 transport, wait service, menu, touch wait polling, and resource-generation queue diagnostics.",
+      "command": "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1 -EpaperSsd1681Bringup -Force",
+      "log": ".cache/validation/wb55-build-matrix/ssd1681-build.log",
+      "panel_transport": "panel_target_stm32wb_ssd1681.c",
+      "ssd1681_source": "included_when_EPAPER_SSD1681_BRINGUP_1"
+    }
+  },
+  "contracts": {
+    "build_logs_prove_all_variants": true,
+    "build_logs_prove_both_variants": true,
+    "build_wrapper_exposes_real_panel_switch": true,
+    "build_wrapper_serializes_shared_build_dir": true,
+    "makefile_conditional_ssd1681_source": true,
+    "pre_acceptance_status_remains_runtime_pending_until_logs": true,
+    "queue_generation_compiles_in_all_variants": true,
+    "queue_generation_compiles_in_both_variants": true,
+    "screen_asset_provision_builds_current_external_assets": true,
+    "ssd1681_wait_service_guarded": true
+  },
+  "purpose": "Machine-only contract that the WB55 screen firmware keeps the default dry-run panel build, the real SSD1681 bring-up build, and the external ui_assets ScreenAssetProvision build compilable before hardware acceptance is requested.",
+  "schema_id": "companion.pendant.screen_wb55_build_matrix.v1",
+  "sources": {
+    "app_ble": "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c",
+    "build_script": "tools/build_nucleo_bringup.ps1",
+    "display_queue_header": "app/companion_pendant/epaper/display_queue.h",
+    "display_queue_source": "app/companion_pendant/epaper/display_queue.c",
+    "main": "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/main.c",
+    "makefile": "cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile",
+    "ssd1681_panel_target": "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
+    "wb55_panel_target": "app/companion_pendant/epaper/panel_target_stm32wb.c"
+  },
+  "status": "PASS",
+  "validation_commands": [
+    "python .\\tools\\verify_wb55_screen_build_matrix.py",
+    "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1 -Force",
+    "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1 -EpaperSsd1681Bringup -Force",
+    "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1 -ScreenAssetProvision -Force",
+    "python .\\tools\\verify_companion_screen_pre_acceptance_health.py"
+  ]
+}

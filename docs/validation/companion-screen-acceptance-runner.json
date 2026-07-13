@@ -1,6 +1,6 @@
 {
   "acceptance_index_snapshot": {
-    "deferred_gate": "wb55_rev51_runtime_recheck",
+    "deferred_gate": "wb55_rev52_runtime_recheck",
     "has_build_command": true,
     "has_runtime_recheck_log_verifier": true,
     "has_third_party_guard": true,
@@ -9,7 +9,7 @@
     "item_count": 87,
     "summary": {
       "deferred_count": 1,
-      "next_hardware_gate": "wb55_rev51_runtime_recheck",
+      "next_hardware_gate": "wb55_rev52_runtime_recheck",
       "next_human_gate": "wb55_touch_visual_acceptance",
       "pass_count": 84,
       "pending_human_count": 2,
@@ -35,7 +35,7 @@
     ],
     "index_summary": {
       "deferred_count": 1,
-      "next_hardware_gate": "wb55_rev51_runtime_recheck",
+      "next_hardware_gate": "wb55_rev52_runtime_recheck",
       "next_human_gate": "wb55_touch_visual_acceptance",
       "pass_count": 84,
       "pending_human_count": 2,
@@ -43,13 +43,12 @@
     },
     "path": ".cache/validation/companion-screen-acceptance-dry-run.json",
     "returncode": 0,
-    "rev51_runtime_recheck_status": "SKIPPED_DRY_RUN",
     "runtime_recheck_commands": [
       {
         "command": "python .\\tools\\verify_screen_generation_release_ledger.py",
         "item_ids": [
           "screen_generation_swap_guard",
-          "wb55_rev51_runtime_recheck",
+          "wb55_rev52_runtime_recheck",
           "wb55_touch_visual_acceptance",
           "companion_screen_goal_audit"
         ],
@@ -60,7 +59,7 @@
         "item_ids": [
           "screen_refresh_feel_contract",
           "wb55_runtime_serial_capture_preflight",
-          "wb55_rev51_runtime_recheck"
+          "wb55_rev52_runtime_recheck"
         ],
         "status": "SKIPPED_DRY_RUN"
       },
@@ -68,7 +67,7 @@
         "command": "python .\\tools\\render_wb55_runtime_hardware_action_card.py",
         "item_ids": [
           "wb55_runtime_serial_capture_preflight",
-          "wb55_rev51_runtime_recheck",
+          "wb55_rev52_runtime_recheck",
           "wb55_touch_visual_acceptance",
           "companion_screen_goal_audit"
         ],
@@ -78,7 +77,7 @@
         "command": "python .\\tools\\verify_wb55_runtime_flash_preflight.py",
         "item_ids": [
           "wb55_runtime_serial_capture_preflight",
-          "wb55_rev51_runtime_recheck",
+          "wb55_rev52_runtime_recheck",
           "wb55_touch_visual_acceptance",
           "companion_screen_goal_audit"
         ],
@@ -88,7 +87,7 @@
         "command": "python .\\tools\\verify_wb55_runtime_serial_capture_preflight.py",
         "item_ids": [
           "wb55_runtime_serial_capture_preflight",
-          "wb55_rev51_runtime_recheck",
+          "wb55_rev52_runtime_recheck",
           "wb55_touch_visual_acceptance",
           "companion_screen_goal_audit"
         ],
@@ -98,25 +97,26 @@
         "command": "pwsh -NoProfile -File .\\tools\\run_wb55_screen_runtime_recheck.ps1 -CheckOnly",
         "item_ids": [
           "wb55_runtime_serial_capture_preflight",
-          "wb55_rev51_runtime_recheck"
+          "wb55_rev52_runtime_recheck"
         ],
         "status": "SKIPPED_DRY_RUN"
       },
       {
         "command": "python .\\tools\\verify_wb55_screen_runtime_recheck_runner.py",
         "item_ids": [
-          "wb55_rev51_runtime_recheck"
+          "wb55_rev52_runtime_recheck"
         ],
         "status": "SKIPPED_DRY_RUN"
       },
       {
         "command": "python .\\tools\\promote_wb55_screen_runtime_recheck.py",
         "item_ids": [
-          "wb55_rev51_runtime_recheck"
+          "wb55_rev52_runtime_recheck"
         ],
         "status": "SKIPPED_DRY_RUN"
       }
     ],
+    "runtime_recheck_status": "SKIPPED_DRY_RUN",
     "schema_id": "companion.pendant.screen_acceptance_run.v1",
     "skip_build": true,
     "skip_count": 114,
@@ -177,7 +177,7 @@
   "status": "PASS",
   "touch_visual_gate_snapshot": {
     "gate_id": "wb55_touch_visual_acceptance",
-    "human_review_start_rule": "operator must explicitly say \u5f00\u59cb\u9a8c\u6536 after rev51 machine preflight passes",
+    "human_review_start_rule": "operator must explicitly say \u5f00\u59cb\u9a8c\u6536 after rev52 machine preflight passes",
     "pre_acceptance_status": "NO_GO_RUNTIME_RECHECK_PENDING",
     "review_record_open_item_count": 8,
     "review_record_publishable_pass_allowed": false,

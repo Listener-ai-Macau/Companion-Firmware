@@ -9,6 +9,8 @@ import pathlib
 import sys
 from typing import Any
 
+from screen_runtime_candidate import current_candidate
+
 
 REPO_ROOT = pathlib.Path(__file__).resolve().parents[1]
 DEFAULT_FIXTURE = pathlib.Path("docs/validation/companion-screen-acceptance-index.json")
@@ -18,7 +20,10 @@ SCHEMA_ID = "companion.pendant.screen_acceptance_index.v1"
 WB55_MENU = REPO_ROOT / "docs/validation/companion-screen-bilingual-menu-wb55.json"
 WB55_RUNTIME_LOGS = REPO_ROOT / "docs/validation/companion-screen-wb55-runtime-recheck-logs.json"
 WB55_RUNTIME_PROMOTION = REPO_ROOT / "docs/validation/companion-screen-wb55-runtime-promotion.json"
-WB55_RUNTIME_PASS_STATUS = "REVISION_51_RUNTIME_PASS_HUMAN_VISUAL_PENDING"
+CANDIDATE = current_candidate()
+RUNTIME_GATE_ID = f"wb55_rev{CANDIDATE.revision}_runtime_recheck"
+RUNTIME_RUN_REPORT = (CANDIDATE.run_root / "runtime-recheck-run.json").relative_to(REPO_ROOT).as_posix()
+WB55_RUNTIME_PASS_STATUS = CANDIDATE.pass_status
 
 
 def rel(path: pathlib.Path) -> str:
@@ -34,7 +39,7 @@ def require(condition: bool, message: str, errors: list[str]) -> None:
 
 
 def is_wb55_runtime_recheck_proven() -> bool:
-    """Return true only when first-hand rev51 logs have been promoted."""
+    """Return true only when first-hand active-candidate logs have been promoted."""
     try:
         menu = json.loads(WB55_MENU.read_text(encoding="utf-8"))
         logs = json.loads(WB55_RUNTIME_LOGS.read_text(encoding="utf-8"))
@@ -2084,7 +2089,7 @@ def build_index() -> dict[str, Any]:
             "wb55_runtime_serial_capture_preflight",
             "WB55 runtime serial capture preflight",
             "PASS",
-            "The rev51 runtime recheck serial path is statically verified before any COM port is opened: capture_nucleo_serial.ps1 requires -Execute and -WorkflowLockHeld, the locked runner captures provision and normal boots for 25 s into stable raw/summary filenames, and the log verifier consumes those exact artifacts.",
+            f"The rev{CANDIDATE.revision} runtime recheck serial path is statically verified before any COM port is opened: capture_nucleo_serial.ps1 requires -Execute and -WorkflowLockHeld, the locked runner captures provision and normal boots for 25 s into stable raw/summary filenames, and the log verifier consumes those exact artifacts.",
             [
                 "tools/render_wb55_runtime_hardware_action_card.py",
                 "tools/verify_wb55_runtime_flash_preflight.py",
@@ -2096,7 +2101,7 @@ def build_index() -> dict[str, Any]:
                 "docs/validation/companion-screen-wb55-runtime-hardware-action-card.md",
                 "docs/validation/companion-screen-wb55-runtime-flash-preflight.json",
                 "docs/validation/companion-screen-wb55-runtime-serial-capture-preflight.json",
-                ".cache/validation/rev51-runtime-20260712-generated-art/runtime-recheck-run.json",
+                RUNTIME_RUN_REPORT,
             ],
             [
                 "python .\\tools\\render_wb55_runtime_hardware_action_card.py",
@@ -2108,13 +2113,13 @@ def build_index() -> dict[str, Any]:
             "WBA runtime evidence must add an analogous target-specific locked capture preflight before any WBA real-panel parity claim.",
         ),
         item(
-            "wb55_rev51_runtime_recheck",
-            "WB55 rev51 provision/normal runtime recheck",
+            RUNTIME_GATE_ID,
+            f"WB55 rev{CANDIDATE.revision} provision/normal runtime recheck",
             "PASS" if wb55_runtime_proven else "DEFERRED_HARDWARE",
             (
-                "The rev51 CEMP resource pack is first-hand runtime-proven on WB55: the locked hardware action card completed flash provision, capture provision logs, restore normal firmware, and capture normal logs; the SCR-17 release ledger and coherent_generation marker path are present and the promotion gate is applied."
+                f"The rev{CANDIDATE.revision} CEMP resource pack is first-hand runtime-proven on WB55: the locked hardware action card completed flash provision, capture provision logs, restore normal firmware, and capture normal logs; the SCR-17 release ledger and coherent_generation marker path are present and the promotion gate is applied."
                 if wb55_runtime_proven else
-                "The current rev51 CEMP resource pack is machine-prepared but not yet first-hand runtime-proven on WB55: the locked hardware action card must flash provision, capture provision logs, restore normal firmware, capture normal logs, verify the SCR-17 release ledger and coherent_generation marker path, then the log verifier and promotion gate may advance pre-acceptance."
+                f"The current rev{CANDIDATE.revision} CEMP resource pack is machine-prepared but not yet first-hand runtime-proven on WB55: the locked hardware action card must flash provision, capture provision logs, restore normal firmware, capture normal logs, verify the SCR-17 release ledger and coherent_generation marker path, then the log verifier and promotion gate may advance pre-acceptance."
             ),
             [
                 "tools/run_wb55_screen_runtime_recheck.ps1",
@@ -2132,7 +2137,7 @@ def build_index() -> dict[str, Any]:
                 "docs/validation/companion-screen-wb55-runtime-flash-preflight.json",
                 "docs/validation/companion-screen-wb55-runtime-serial-capture-preflight.json",
                 "docs/validation/companion-screen-generation-release-ledger.json",
-                ".cache/validation/rev51-runtime-20260712-generated-art/runtime-recheck-run.json",
+                RUNTIME_RUN_REPORT,
             ],
             [
                 "python .\\tools\\verify_wb55_screen_runtime_recheck_runner.py",
@@ -2146,8 +2151,8 @@ def build_index() -> dict[str, Any]:
             ],
             "WBA ports must add the same target-specific provision/normal runtime recheck gate before WBA real-panel parity can move from scaffold to hardware evidence.",
             [] if wb55_runtime_proven else [
-                "rev51 provision serial raw/summary logs",
-                "rev51 normal serial raw/summary logs",
+                f"rev{CANDIDATE.revision} provision serial raw/summary logs",
+                f"rev{CANDIDATE.revision} normal serial raw/summary logs",
                 "locked Companion-WB55 hardware run with normal_firmware_restored=true",
             ],
         ),
@@ -2155,7 +2160,7 @@ def build_index() -> dict[str, Any]:
             "wb55_touch_visual_acceptance",
             "WB55 touch navigation and fast-refresh visual acceptance",
             "PENDING_HUMAN",
-                "Machine checks, physical contact/release, revision 51 candidate generation hygiene, and the last proven revision 48 external_flash runtime mount pass are covered by the pre-acceptance health gate; the operator still needs to confirm daily tap/swipe pet reactions, anywhere 3 s menu entry with a 650 ms tease, continuous vertical drag, press-cue plus target-arrival partial refreshes, left-edge return, language switching, and that 0xCF maintenance is perceived as a single quiet flash.",
+                f"Machine checks, physical contact/release, revision {CANDIDATE.revision} candidate generation hygiene, and the last runtime-proven external_flash mount are covered by the pre-acceptance health gate; the operator still needs to confirm daily tap/swipe pet reactions, anywhere 3 s menu entry with a 650 ms tease, continuous vertical drag, press-cue plus target-arrival partial refreshes, left-edge return, language switching, and that 0xCF maintenance is perceived as a single quiet flash.",
             [
                 "tools/render_wb55_touch_visual_acceptance_packet.py",
                 "tools/render_wb55_runtime_hardware_action_card.py",
@@ -2210,9 +2215,9 @@ def build_index() -> dict[str, Any]:
             "Active goal completion audit",
             "PENDING_HUMAN",
             (
-                "The full screen goal is machine-audited: WB55 wiring, refresh, rev51 resource generation hygiene, WB55 dry-run/SSD1681 build matrix, rev48 last-proven external resources, touch IC health, external Flash policy, pre-acceptance health, and WBA pre-port boundaries are tracked; rev51 provision/normal runtime recheck and screen refresh/touch machine health on the current resource pack are proved, leaving daily pet/menu human feel and future WBA real-panel parity."
+                f"The full screen goal is machine-audited: WB55 wiring, refresh, rev{CANDIDATE.revision} resource generation hygiene, WB55 dry-run/SSD1681 build matrix, last-proven external resources, touch IC health, external Flash policy, pre-acceptance health, and WBA pre-port boundaries are tracked; rev{CANDIDATE.revision} provision/normal runtime recheck and screen refresh/touch machine health on the current resource pack are proved, leaving daily pet/menu human feel and future WBA real-panel parity."
                 if wb55_runtime_proven else
-                "The full screen goal is machine-audited: WB55 wiring, refresh, rev51 resource generation hygiene, WB55 dry-run/SSD1681 build matrix, rev48 last-proven external resources, touch IC health, external Flash policy, pre-acceptance health, and WBA pre-port boundaries are tracked; the open requirements are rev51 provision/normal runtime recheck, screen refresh/touch machine health on the current resource pack, daily pet/menu human feel, and future WBA real-panel parity."
+                f"The full screen goal is machine-audited: WB55 wiring, refresh, rev{CANDIDATE.revision} resource generation hygiene, WB55 dry-run/SSD1681 build matrix, last-proven external resources, touch IC health, external Flash policy, pre-acceptance health, and WBA pre-port boundaries are tracked; the open requirements are rev{CANDIDATE.revision} provision/normal runtime recheck, screen refresh/touch machine health on the current resource pack, daily pet/menu human feel, and future WBA real-panel parity."
             ),
             [
                 "tools/verify_companion_screen_goal_audit.py",
@@ -2263,7 +2268,7 @@ def build_index() -> dict[str, Any]:
             "deferred_count": deferred_count,
             "pending_human_count": pending_human_count,
             "total_count": len(items),
-            "next_hardware_gate": "wba_real_panel_parity" if wb55_runtime_proven else "wb55_rev51_runtime_recheck",
+            "next_hardware_gate": "wba_real_panel_parity" if wb55_runtime_proven else RUNTIME_GATE_ID,
             "next_human_gate": "wb55_touch_visual_acceptance",
         },
         "items": items,
@@ -2285,7 +2290,7 @@ def check_index(data: dict[str, Any], errors: list[str]) -> None:
     ids = {entry.get("id") for entry in items if isinstance(entry, dict)}
     require("wb55_real_panel_refresh" in ids, "acceptance index missing real panel hardware gate", errors)
     require("wb55_runtime_serial_capture_preflight" in ids, "acceptance index missing WB55 runtime serial capture preflight", errors)
-    require("wb55_rev51_runtime_recheck" in ids, "acceptance index missing WB55 rev51 runtime recheck hardware gate", errors)
+    require(RUNTIME_GATE_ID in ids, f"acceptance index missing {RUNTIME_GATE_ID} hardware gate", errors)
     require("wb55_touch_visual_acceptance" in ids, "acceptance index missing WB55 human interaction gate", errors)
     require("companion_screen_goal_audit" in ids, "acceptance index missing active goal completion audit", errors)
     require("wba_pre_port_gate" in ids, "acceptance index missing WBA pre-port gate", errors)
@@ -2478,7 +2483,7 @@ def check_index(data: dict[str, Any], errors: list[str]) -> None:
         "docs/validation/companion-screen-wb55-runtime-hardware-action-card.md",
         "docs/validation/companion-screen-wb55-runtime-flash-preflight.json",
         "docs/validation/companion-screen-wb55-runtime-serial-capture-preflight.json",
-        ".cache/validation/rev51-runtime-20260712-generated-art/runtime-recheck-run.json",
+        RUNTIME_RUN_REPORT,
         "tools/render_wb55_runtime_hardware_action_card.py",
         "tools/verify_wb55_runtime_flash_preflight.py",
         "tools/capture_nucleo_serial.ps1",
@@ -2495,15 +2500,15 @@ def check_index(data: dict[str, Any], errors: list[str]) -> None:
     ]:
         require(command in serial_capture.get("validation_commands", []), f"wb55_runtime_serial_capture_preflight missing command: {command}", errors)
 
-    runtime_recheck = by_id.get("wb55_rev51_runtime_recheck", {})
+    runtime_recheck = by_id.get(RUNTIME_GATE_ID, {})
     require(
         runtime_recheck.get("status") == "DEFERRED_HARDWARE",
-        "wb55_rev51_runtime_recheck must stay DEFERRED_HARDWARE until real rev51 logs pass",
+        f"{RUNTIME_GATE_ID} must stay DEFERRED_HARDWARE until real active-candidate logs pass",
         errors,
     )
     runtime_summary = str(runtime_recheck.get("summary", ""))
     for token in [
-        "rev51 CEMP resource pack",
+        f"rev{CANDIDATE.revision} CEMP resource pack",
         "locked hardware action card",
         "flash provision",
         "capture provision logs",
@@ -2513,7 +2518,7 @@ def check_index(data: dict[str, Any], errors: list[str]) -> None:
         "coherent_generation marker",
         "promotion gate",
     ]:
-        require(token in runtime_summary, f"wb55_rev51_runtime_recheck summary missing token: {token}", errors)
+        require(token in runtime_summary, f"{RUNTIME_GATE_ID} summary missing token: {token}", errors)
     for path in [
         "docs/validation/companion-screen-wb55-runtime-recheck-runner.json",
         "docs/validation/companion-screen-wb55-runtime-recheck-logs.json",
@@ -2523,13 +2528,13 @@ def check_index(data: dict[str, Any], errors: list[str]) -> None:
         "docs/validation/companion-screen-wb55-runtime-serial-capture-preflight.json",
         "docs/validation/companion-screen-generation-release-ledger.json",
     ]:
-        require(path in runtime_recheck.get("evidence_paths", []), f"wb55_rev51_runtime_recheck missing evidence path: {path}", errors)
+        require(path in runtime_recheck.get("evidence_paths", []), f"{RUNTIME_GATE_ID} missing evidence path: {path}", errors)
     for missing in [
-        "rev51 provision serial raw/summary logs",
-        "rev51 normal serial raw/summary logs",
+        f"rev{CANDIDATE.revision} provision serial raw/summary logs",
+        f"rev{CANDIDATE.revision} normal serial raw/summary logs",
         "locked Companion-WB55 hardware run with normal_firmware_restored=true",
     ]:
-        require(missing in runtime_recheck.get("missing_hardware_facts", []), f"wb55_rev51_runtime_recheck missing hardware fact: {missing}", errors)
+        require(missing in runtime_recheck.get("missing_hardware_facts", []), f"{RUNTIME_GATE_ID} missing hardware fact: {missing}", errors)
     for command in [
         "python .\\tools\\verify_wb55_screen_runtime_recheck_runner.py",
         "python .\\tools\\render_wb55_runtime_hardware_action_card.py",
@@ -2540,7 +2545,7 @@ def check_index(data: dict[str, Any], errors: list[str]) -> None:
         "python .\\tools\\verify_wb55_screen_runtime_recheck_logs.py",
         "python .\\tools\\promote_wb55_screen_runtime_recheck.py",
     ]:
-        require(command in runtime_recheck.get("validation_commands", []), f"wb55_rev51_runtime_recheck missing command: {command}", errors)
+        require(command in runtime_recheck.get("validation_commands", []), f"{RUNTIME_GATE_ID} missing command: {command}", errors)
 
     generation_swap = by_id.get("screen_generation_swap_guard", {})
     generation_summary = str(generation_swap.get("summary", ""))
@@ -2680,8 +2685,8 @@ def check_index(data: dict[str, Any], errors: list[str]) -> None:
         "press-cue plus target-arrival partial refreshes",
         "language switching",
         "0xCF maintenance",
-        "revision 51 candidate generation hygiene",
-        "last proven revision 48 external_flash runtime mount pass",
+        f"revision {CANDIDATE.revision} candidate generation hygiene",
+        "last runtime-proven external_flash mount",
         "pre-acceptance health gate",
     ]:
         require(token in touch_summary, f"wb55_touch_visual_acceptance summary missing current generation token: {token}", errors)
@@ -2809,7 +2814,7 @@ def check_index(data: dict[str, Any], errors: list[str]) -> None:
         "goal audit must keep the active goal open until human and WBA gates close",
         errors,
     )
-    for token in ("rev51 provision/normal runtime recheck", "screen refresh/touch machine health", "daily pet/menu human feel", "future WBA real-panel parity", "rev51 resource generation hygiene", "WB55 dry-run/SSD1681 build matrix", "rev48 last-proven external resources", "pre-acceptance health"):
+    for token in (f"rev{CANDIDATE.revision} provision/normal runtime recheck", "screen refresh/touch machine health", "daily pet/menu human feel", "future WBA real-panel parity", f"rev{CANDIDATE.revision} resource generation hygiene", "WB55 dry-run/SSD1681 build matrix", "last-proven external resources", "pre-acceptance health"):
         require(token in str(goal_audit.get("summary", "")), f"goal audit summary missing {token}", errors)
     for path in (
         "docs/validation/companion-screen-goal-audit.json",
@@ -2928,8 +2933,8 @@ def check_index(data: dict[str, Any], errors: list[str]) -> None:
         errors,
     )
     require(
-        summary.get("next_hardware_gate") == "wb55_rev51_runtime_recheck",
-        "next_hardware_gate must point at rev51 runtime recheck",
+        summary.get("next_hardware_gate") == RUNTIME_GATE_ID,
+        f"next_hardware_gate must point at {RUNTIME_GATE_ID}",
         errors,
     )
     require(

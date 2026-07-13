@@ -10,7 +10,7 @@ This report is generated. Update it with `python .\tools\render_expression_accep
 - DEFERRED_HARDWARE: 1
 - PENDING_HUMAN: 2
 - TOTAL: 87
-- Next hardware gate: `wb55_rev51_runtime_recheck`
+- Next hardware gate: `wb55_rev52_runtime_recheck`
 - Next human gate: `wb55_touch_visual_acceptance`
 
 ## Item Status
@@ -101,7 +101,7 @@ This report is generated. Update it with `python .\tools\render_expression_accep
 | 82 | PASS | `wb55_screen_build_matrix` | WB55 screen build matrix |
 | 83 | PASS | `wb55_real_panel_refresh` | WB55 real e-paper panel refresh |
 | 84 | PASS | `wb55_runtime_serial_capture_preflight` | WB55 runtime serial capture preflight |
-| 85 | DEFERRED_HARDWARE | `wb55_rev51_runtime_recheck` | WB55 rev51 provision/normal runtime recheck |
+| 85 | DEFERRED_HARDWARE | `wb55_rev52_runtime_recheck` | WB55 rev52 provision/normal runtime recheck |
 | 86 | PENDING_HUMAN | `wb55_touch_visual_acceptance` | WB55 touch navigation and fast-refresh visual acceptance |
 | 87 | PENDING_HUMAN | `companion_screen_goal_audit` | Active goal completion audit |
 
@@ -2118,7 +2118,7 @@ Validation commands:
 
 - ID: `wb55_runtime_serial_capture_preflight`
 - Status: `PASS`
-- Summary: The rev51 runtime recheck serial path is statically verified before any COM port is opened: capture_nucleo_serial.ps1 requires -Execute and -WorkflowLockHeld, the locked runner captures provision and normal boots for 25 s into stable raw/summary filenames, and the log verifier consumes those exact artifacts.
+- Summary: The rev52 runtime recheck serial path is statically verified before any COM port is opened: capture_nucleo_serial.ps1 requires -Execute and -WorkflowLockHeld, the locked runner captures provision and normal boots for 25 s into stable raw/summary filenames, and the log verifier consumes those exact artifacts.
 - WBA impact: WBA runtime evidence must add an analogous target-specific locked capture preflight before any WBA real-panel parity claim.
 
 Evidence:
@@ -2132,7 +2132,7 @@ Evidence:
 - `docs/validation/companion-screen-wb55-runtime-hardware-action-card.md`
 - `docs/validation/companion-screen-wb55-runtime-flash-preflight.json`
 - `docs/validation/companion-screen-wb55-runtime-serial-capture-preflight.json`
-- `.cache/validation/rev51-runtime-20260712-generated-art/runtime-recheck-run.json`
+- `.cache/validation/rev52-runtime-current/runtime-recheck-run.json`
 
 Validation commands:
 - `python .\tools\render_wb55_runtime_hardware_action_card.py`
@@ -2141,11 +2141,11 @@ Validation commands:
 - `pwsh -NoProfile -File .\tools\run_wb55_screen_runtime_recheck.ps1 -CheckOnly`
 - `python .\tools\verify_wb55_screen_runtime_recheck_logs.py`
 
-### 85. WB55 rev51 provision/normal runtime recheck
+### 85. WB55 rev52 provision/normal runtime recheck
 
-- ID: `wb55_rev51_runtime_recheck`
+- ID: `wb55_rev52_runtime_recheck`
 - Status: `DEFERRED_HARDWARE`
-- Summary: The current rev51 CEMP resource pack is machine-prepared but not yet first-hand runtime-proven on WB55: the locked hardware action card must flash provision, capture provision logs, restore normal firmware, capture normal logs, verify the SCR-17 release ledger and coherent_generation marker path, then the log verifier and promotion gate may advance pre-acceptance.
+- Summary: The current rev52 CEMP resource pack is machine-prepared but not yet first-hand runtime-proven on WB55: the locked hardware action card must flash provision, capture provision logs, restore normal firmware, capture normal logs, verify the SCR-17 release ledger and coherent_generation marker path, then the log verifier and promotion gate may advance pre-acceptance.
 - WBA impact: WBA ports must add the same target-specific provision/normal runtime recheck gate before WBA real-panel parity can move from scaffold to hardware evidence.
 
 Evidence:
@@ -2164,7 +2164,7 @@ Evidence:
 - `docs/validation/companion-screen-wb55-runtime-flash-preflight.json`
 - `docs/validation/companion-screen-wb55-runtime-serial-capture-preflight.json`
 - `docs/validation/companion-screen-generation-release-ledger.json`
-- `.cache/validation/rev51-runtime-20260712-generated-art/runtime-recheck-run.json`
+- `.cache/validation/rev52-runtime-current/runtime-recheck-run.json`
 
 Validation commands:
 - `python .\tools\verify_wb55_screen_runtime_recheck_runner.py`
@@ -2177,15 +2177,15 @@ Validation commands:
 - `python .\tools\promote_wb55_screen_runtime_recheck.py`
 
 Missing hardware facts:
-- rev51 provision serial raw/summary logs
-- rev51 normal serial raw/summary logs
+- rev52 provision serial raw/summary logs
+- rev52 normal serial raw/summary logs
 - locked Companion-WB55 hardware run with normal_firmware_restored=true
 
 ### 86. WB55 touch navigation and fast-refresh visual acceptance
 
 - ID: `wb55_touch_visual_acceptance`
 - Status: `PENDING_HUMAN`
-- Summary: Machine checks, physical contact/release, revision 51 candidate generation hygiene, and the last proven revision 48 external_flash runtime mount pass are covered by the pre-acceptance health gate; the operator still needs to confirm daily tap/swipe pet reactions, anywhere 3 s menu entry with a 650 ms tease, continuous vertical drag, press-cue plus target-arrival partial refreshes, left-edge return, language switching, and that 0xCF maintenance is perceived as a single quiet flash.
+- Summary: Machine checks, physical contact/release, revision 52 candidate generation hygiene, and the last runtime-proven external_flash mount are covered by the pre-acceptance health gate; the operator still needs to confirm daily tap/swipe pet reactions, anywhere 3 s menu entry with a 650 ms tease, continuous vertical drag, press-cue plus target-arrival partial refreshes, left-edge return, language switching, and that 0xCF maintenance is perceived as a single quiet flash.
 - WBA impact: Repeat the same focused touch and visual acceptance after the WBA backend is available; portable gesture semantics must not change.
 
 Evidence:
@@ -2239,7 +2239,7 @@ Validation commands:
 
 - ID: `companion_screen_goal_audit`
 - Status: `PENDING_HUMAN`
-- Summary: The full screen goal is machine-audited: WB55 wiring, refresh, rev51 resource generation hygiene, WB55 dry-run/SSD1681 build matrix, rev48 last-proven external resources, touch IC health, external Flash policy, pre-acceptance health, and WBA pre-port boundaries are tracked; the open requirements are rev51 provision/normal runtime recheck, screen refresh/touch machine health on the current resource pack, daily pet/menu human feel, and future WBA real-panel parity.
+- Summary: The full screen goal is machine-audited: WB55 wiring, refresh, rev52 resource generation hygiene, WB55 dry-run/SSD1681 build matrix, last-proven external resources, touch IC health, external Flash policy, pre-acceptance health, and WBA pre-port boundaries are tracked; the open requirements are rev52 provision/normal runtime recheck, screen refresh/touch machine health on the current resource pack, daily pet/menu human feel, and future WBA real-panel parity.
 - WBA impact: WBA real-panel parity remains a future hardware/project gate; the audit prevents closing the shared goal on WB55-only evidence.
 
 Evidence:
