@@ -204,7 +204,7 @@ def main() -> int:
         "press-cue partial refresh",
         "target-arrival partial refresh",
         "0xFC",
-        "0xCF",
+        "0xC7",
     ), errors)
     for label, contract in (
         ("presentation fixture navigation", gesture_navigation),

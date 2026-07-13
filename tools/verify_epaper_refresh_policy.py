@@ -78,7 +78,11 @@ def main() -> int:
     require(driver, "if (controller_initialization_required)", "no reset during repeated partial updates", errors)
     require(driver, "? 0xFCu", "differential update control", errors)
     require(driver, ": 0xF7u", "full update control", errors)
-    require(driver, "? 0xCFu", "low-flicker maintenance control", errors)
+    require(driver, "? 0xC7u", "Good Display fast maintenance control", errors)
+    require(driver, "SSD1681_VENDOR_FAST_PROFILE_NAME", "vendor fast profile name", errors)
+    require(driver, "ssd1681_prepare_vendor_fast_profile", "vendor fast profile loader", errors)
+    require(driver, "0xB1u", "vendor fast temperature-load command", errors)
+    require(driver, "0x91u", "vendor fast Mode 1 LUT-load command", errors)
     require(driver, "differential_skip identical_frame", "identical frame suppression", errors)
     require(driver, "comp_epaper_refresh_policy_commit", "result commit", errors)
     require(main_source, "TOUCH_SCREEN_MAINTENANCE_QUIET_MS 1200u", "quiet maintenance delay", errors)
@@ -117,10 +121,10 @@ def main() -> int:
         "epaper refresh policy: PASS "
         f"(static contract; current resource rev{asset_revision} runtime/visual recheck pending)"
     )
-    print("  post-gesture cleanup target: one 0xCF maintenance pass")
+    print("  post-gesture cleanup target: one Good Display Mode 1 / 0xC7 maintenance pass")
     print("  interactive safety limit: 60 partial updates")
     print("  historical strict diagnostic retained: full + 5 partial + forced full")
-    print("  revision 20 controls: full=0xF7 maintenance=0xCF differential=0xFC")
+    print("  revision 63 controls: full=0xF7 maintenance=0xC7 differential=0xFC")
     return 0
 
 

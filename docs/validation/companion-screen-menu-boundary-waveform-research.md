@@ -17,18 +17,37 @@ Sources checked on 2026-07-13:
 1. https://www.good-display.com/product/258.html
 2. https://www.good-display.com/blank7.html?productId=388
 
+## Vendor Sample Cross-check
+
+The official Good Display `GDEY0154D67-T03 STM32 Sample Code` download is
+`S-GDEY0154D67-FP-Touch`, retained for this investigation with SHA-256
+`202ADAB27515FDBA790565F643C3C83C52C11FF36844E8C387F66676C3D82CD4`.
+Its `Display_EPD_W21.c` specifies a distinct fast profile:
+
+1. reset and software reset (`0x12`);
+2. internal temperature sensor (`0x18`, `0x80`);
+3. load temperature with Display Mode 1 (`0x22`, `0xB1`, then `0x20`);
+4. set `0x0064` temperature register (`0x1A`);
+5. load the Mode 1 LUT (`0x22`, `0x91`, then `0x20`);
+6. activate fast display with `0x22`, `0xC7`, then `0x20`.
+
+The SSD1681 datasheet defines `0xC7` as the Mode 1 display sequence and
+`0xCF` as Mode 2. The earlier target sent `0xCF` without the Good Display Mode
+1 setup, so its `expected_visible_flicker=single` log was not physical proof.
+
 ## Implementation Decision
 
-The failed ACPT-01 observation of five visible flashes is consistent with the
-old menu-boundary `0xF7` full waveform, even though the serial log contained
-only one logical refresh request. The repair distinguishes these layers:
+The owner failed ACPT-01 again after the earlier `0xCF` change, reporting five
+visible flashes. The repair distinguishes the required layers:
 
 - portable menu boundary intent: `COMP_EPAPER_REFRESH_MAINTENANCE`;
-- valid WB55 SSD1681 baseline: `COMP_EPAPER_REFRESH_DECISION_FAST` -> `0xCF`;
-- expected visible phase model for `0xCF`: `single`;
+- valid WB55 SSD1681 baseline: the exact Good Display Mode 1 profile above,
+  then one `0xC7` activation;
+- residual samples from the long-press contact must not enqueue a menu press
+  refresh after the menu arrives;
 - `0xF7` remains only for unknown baseline or transport/fault recovery, where
   the expected visible phase model is `multiple`.
 
 This is a machine and vendor-evidence decision, not a physical acceptance
 claim. ACPT-01 must still record the actual panel observation for a menu entry
-and a right-swipe exit, plus any ghosting after the single-flicker path.
+and a right-swipe exit, plus any ghosting after the single-activation path.

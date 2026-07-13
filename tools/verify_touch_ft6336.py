@@ -123,6 +123,7 @@ def main() -> int:
         "Companion_Screen_MenuRequestClean(",
         "Companion_Screen_ShowDailyClean()",
         "screen_maintenance cancelled=transition",
+        "s_touch_gesture.consumed_until_release",
         "[record-visual] action=start expression=recording",
         "[record-visual] action=store expression=%s",
     ), errors)

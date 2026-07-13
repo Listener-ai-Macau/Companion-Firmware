@@ -2096,6 +2096,13 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
                                                logical_y,
                                                now_ms,
                                                &gesture);
+    /* A long press has already consumed this contact to enter the menu.  The
+     * panel wait loop may replay held samples after the new menu arrives;
+     * never turn those residual samples into a second menu press refresh. */
+    if (s_touch_gesture.consumed_until_release && Companion_Screen_IsMenuVisible()) {
+        s_menu_home_press_candidate = false;
+        return;
+    }
     if (!gesture_ready) {
         /* Delay the visual press cue until a horizontal exit has had time to
          * lock its axis.  Starting an e-paper update on touch-down makes the

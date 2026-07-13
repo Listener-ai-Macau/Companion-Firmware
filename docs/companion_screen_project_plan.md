@@ -771,6 +771,19 @@ stationary long-press 在 3000 ms 合约附近可靠触发，修复后以真实�
 reset-bounded log 同时证明 `low_power_touch_wake`、`gesture=long_press` 的时长、无 per-IRQ flood 与
 单个 `0xCF` 菜单边界，再重开同一个 `1/13` popup；禁止推进 ACPT-02。
 
+## Revision 63: ACPT-01 菜单边界真实单刷新波形
+
+同一 `1/13` 复验的最新 operator 原文为“进入菜单的刷新不行, 你就不能只全刷一次吗, 一定要5次? 看看手册”。
+这不是把已记录的“闪烁一次”缩写成同义句：新日志显示 `daily_to_menu` 在 3006 ms 正确发生，菜单边界也只发送了一次
+`0xCF`，但使用方仍看见多次黑闪。SSD1681 手册把 `0xCF` 定义为以 Display Mode 2 激活；随后取得的 Good Display 样例
+实际用 `0xB1`、`0x1A 0x64 0x00`、`0x91` 装入 Mode 1 温度/LUT profile，再用 `0xC7` 更新。当前目标两者都没做，
+所以 `expected_visible_flicker=single` 是实现侧假设，不是实际物理证据。
+
+已取得并审查 Good Display `GDEY0154D67-T03 STM32 Sample Code`（`S-GDEY0154D67-FP-Touch`，SHA-256
+`202ADAB27515FDBA790565F643C3C83C52C11FF36844E8C387F66676C3D82CD4`）的完整快刷序列；将 portable
+`MAINTENANCE` 意图映射到该明确 Mode 1 profile。菜单进入与右滑退出各只能请求和执行一次真实面板刷新；运行日志必须
+记录 profile、控制字、激活次数和结果。完成静态、编译、刷写、串口与同一 `1/13` 物理复验前，不得推进 ACPT-02。
+
 ## Revision 61: ACPT-01 触控时基与单闪边界修复
 
 根因分析确认：主页在第一个接触样本立刻排队 `menu_press`，使本应约 190 ms 的右滑被

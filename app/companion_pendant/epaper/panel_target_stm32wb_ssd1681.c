@@ -89,6 +89,8 @@
 #define SSD1681_BUSY_READY_LEVEL GPIO_PIN_RESET
 #define SSD1681_REFRESH_START_TIMEOUT_MS 100u
 #define SSD1681_READY_TIMEOUT_MS 5000u
+#define SSD1681_VENDOR_FAST_PROFILE_NAME "good_display_mode1"
+#define SSD1681_VENDOR_FAST_TEMPERATURE_LSB 0x64u
 
 extern SPI_HandleTypeDef hspi2;
 
@@ -96,6 +98,7 @@ static uint8_t s_frame[SSD1681_FRAME_BYTES];
 static uint8_t s_previous_frame[SSD1681_FRAME_BYTES];
 static bool s_previous_frame_valid;
 static bool s_controller_initialized;
+static uint32_t s_refresh_activation_count;
 
 typedef struct {
     uint8_t x_start_byte;
@@ -419,6 +422,50 @@ static void ssd1681_reset(void)
                       GPIO_PIN_SET);
     HAL_Delay(10u);
     printf("[epaper] reset busy=%d\r\n", ssd1681_busy_level());
+}
+
+static bool ssd1681_prepare_vendor_fast_profile(void)
+{
+    static const uint8_t temperature_sensor[] = {0x80u};
+    static const uint8_t load_temperature_mode1[] = {0xB1u};
+    static const uint8_t temperature_register[] = {
+        SSD1681_VENDOR_FAST_TEMPERATURE_LSB, 0x00u};
+    static const uint8_t load_lut_mode1[] = {0x91u};
+    bool temperature_sensor_set;
+    bool temperature_loaded;
+    bool temperature_register_set;
+    bool lut_loaded;
+
+    /* Good Display's GDEY0154D67-T03 STM32 sample defines its fast path as
+     * the SSD1681 built-in Mode 1 temperature/LUT sequence followed by 0xC7.
+     * Sending an update-control byte alone does not select that profile. */
+    temperature_sensor_set = ssd1681_command_data(0x18u,
+                                                   temperature_sensor,
+                                                   sizeof(temperature_sensor));
+    temperature_loaded = temperature_sensor_set &&
+                         ssd1681_command_data(0x22u,
+                                               load_temperature_mode1,
+                                               sizeof(load_temperature_mode1)) &&
+                         ssd1681_command(0x20u) &&
+                         ssd1681_wait_ready(120u, SSD1681_READY_TIMEOUT_MS);
+    temperature_register_set = temperature_loaded &&
+                               ssd1681_command_data(0x1Au,
+                                                     temperature_register,
+                                                     sizeof(temperature_register));
+    lut_loaded = temperature_register_set &&
+                 ssd1681_command_data(0x22u,
+                                       load_lut_mode1,
+                                       sizeof(load_lut_mode1)) &&
+                 ssd1681_command(0x20u) &&
+                 ssd1681_wait_ready(120u, SSD1681_READY_TIMEOUT_MS);
+    printf("[epaper] fast_profile=%s temp_sensor=%u temp_load=%u temp_reg=0x%02X%02X lut_mode1=%u\r\n",
+           SSD1681_VENDOR_FAST_PROFILE_NAME,
+           (unsigned)temperature_sensor_set,
+           (unsigned)temperature_loaded,
+           (unsigned)temperature_register[1],
+           (unsigned)temperature_register[0],
+           (unsigned)lut_loaded);
+    return lut_loaded;
 }
 
 static ssd1681_window_t ssd1681_window_full(void)
@@ -781,18 +828,21 @@ static bool ssd1681_refresh_display(comp_epaper_refresh_decision_t decision)
     uint8_t update_control = decision == COMP_EPAPER_REFRESH_DECISION_PARTIAL
                                  ? 0xFCu
                                  : decision == COMP_EPAPER_REFRESH_DECISION_FAST
-                                       ? 0xCFu
-                                       : 0xF7u;
+                                        ? 0xC7u
+                                        : 0xF7u;
     uint32_t fallback_delay_ms = decision == COMP_EPAPER_REFRESH_DECISION_PARTIAL
                                      ? 650u
                                      : decision == COMP_EPAPER_REFRESH_DECISION_FAST
                                            ? 2400u
                                            : 2500u;
     const char *mode = decision == COMP_EPAPER_REFRESH_DECISION_PARTIAL
-                           ? "differential"
-                           : decision == COMP_EPAPER_REFRESH_DECISION_FAST
-                                 ? "maintenance"
-                                 : "full";
+                            ? "differential"
+                            : decision == COMP_EPAPER_REFRESH_DECISION_FAST
+                                  ? "maintenance"
+                                  : "full";
+    const char *profile = decision == COMP_EPAPER_REFRESH_DECISION_FAST
+                              ? SSD1681_VENDOR_FAST_PROFILE_NAME
+                              : "default";
     const char *expected_visible_flicker =
         decision == COMP_EPAPER_REFRESH_DECISION_PARTIAL
             ? "none"
@@ -802,13 +852,19 @@ static bool ssd1681_refresh_display(comp_epaper_refresh_decision_t decision)
     bool update_control_sent =
         ssd1681_command_data(0x22u, &update_control, sizeof(update_control));
     bool master_activation_sent = update_control_sent && ssd1681_command(0x20u);
+    uint32_t activation_count = s_refresh_activation_count;
+    if (master_activation_sent) {
+        activation_count = ++s_refresh_activation_count;
+    }
     uint32_t wait_start = HAL_GetTick();
     bool refresh_complete = master_activation_sent &&
                             ssd1681_wait_refresh_complete(fallback_delay_ms, 5000u);
-    printf("[epaper] refresh mode=%s control=0x%02X expected_visible_flicker=%s busy=%d update=%u activate=%u complete=%u elapsed_ms=%lu\r\n",
+    printf("[epaper] refresh mode=%s profile=%s control=0x%02X expected_visible_flicker=%s activation_count=%lu busy=%d update=%u activate=%u complete=%u elapsed_ms=%lu\r\n",
            mode,
+           profile,
            (unsigned)update_control,
            expected_visible_flicker,
+           (unsigned long)activation_count,
            ssd1681_busy_level(),
            (unsigned)update_control_sent,
            (unsigned)master_activation_sent,
@@ -839,7 +895,7 @@ static comp_epaper_panel_result_t ssd1681_refresh(
         comp_epaper_refresh_policy_select(&target->refresh_policy, requested_mode);
     bool partial = selection.decision == COMP_EPAPER_REFRESH_DECISION_PARTIAL;
     bool fast = selection.decision == COMP_EPAPER_REFRESH_DECISION_FAST;
-    bool controller_initialization_required = !s_controller_initialized;
+    bool controller_initialization_required = !s_controller_initialized || fast;
     ssd1681_window_t window;
     uint32_t window_bytes;
     const char *selected_mode = partial ? "differential" : fast ? "maintenance" : "full";
@@ -893,10 +949,12 @@ static comp_epaper_panel_result_t ssd1681_refresh(
            (unsigned)pre_reset_ready,
            (unsigned)reset_command_sent);
     bool reset_ready = controller_initialization_required
-                           ? reset_command_sent &&
-                                 ssd1681_wait_ready(120u, SSD1681_READY_TIMEOUT_MS)
-                           : pre_reset_ready;
-    bool window_set = reset_ready && ssd1681_set_window(&window);
+                            ? reset_command_sent &&
+                                  ssd1681_wait_ready(120u, SSD1681_READY_TIMEOUT_MS)
+                            : pre_reset_ready;
+    bool fast_profile_loaded = !fast ||
+                               (reset_ready && ssd1681_prepare_vendor_fast_profile());
+    bool window_set = fast_profile_loaded && reset_ready && ssd1681_set_window(&window);
     bool border_set = window_set;
     printf("[epaper] frame rotation=%u mirror_x=%u width=%u height=%u\r\n",
            (unsigned)COMPANION_EPAPER_SSD1681_ROTATION_DEGREES,
@@ -936,8 +994,8 @@ static comp_epaper_panel_result_t ssd1681_refresh(
         display_refreshed = frame_written &&
                             ssd1681_refresh_display(selection.decision);
     }
-    bool ok = pre_reset_ready && reset_ready && window_set && border_set &&
-              frame_written && baseline_written && display_refreshed;
+    bool ok = pre_reset_ready && reset_ready && fast_profile_loaded && window_set && border_set &&
+               frame_written && baseline_written && display_refreshed;
     comp_epaper_refresh_policy_commit(&target->refresh_policy,
                                       selection.decision,
                                       ok);
