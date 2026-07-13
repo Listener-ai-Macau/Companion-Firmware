@@ -33,8 +33,11 @@ operator observation agree.
 - Popup: `1/13` asks the operator, while on any menu page, to swipe right once
   from the middle of the display and confirm it returns directly to the daily
   face without needing an edge start or an intermediate home page.
-- State: machine-ready; this is independent of the still-pending four-up menu
-  art gate.
+- State: failed on 2026-07-13. The operator reported insensitive exit, a
+  visibly five-phase full refresh, late long-press entry, and the still-small
+  six-item home. The complete note and serial trace are in
+  `.cache/validation/companion-acceptance/acpt-01-menu-right-swipe/`; repair
+  every reported issue with machine evidence before repeating this same item.
 
 ### ACPT-02: Boot, Panel, And External Resource
 

@@ -732,6 +732,30 @@ owner 已授权在该修复有机器证据后立即启动 Listener 风格的统�
 不能因为用户已说“开始验收”就跳过当前已报告问题的 AI 修复和机器验证，也不得弹窗要求重做
 已经记录过的失败观察。
 
+## Revision 59: ACPT-01 失败 triage
+
+ACPT-01 使用 firmware commit `d8f3da9` 对 `NUCLEO-WB55RG` / `COM13` 进行了正常刷入和
+reset-bounded serial capture；operator 选择 `失败`，完整备注保存在
+`.cache/validation/companion-acceptance/acpt-01-menu-right-swipe/operator-prompt-observation.txt`。
+这不是“机器日志成功、人工感受另说”：备注中的每一句都是 P0 修复输入。
+
+串口显示新的 `menu_right_swipe_exit` 已从 `start=48,122` 到 `end=101,122` 分类，随后请求一条
+`menu_boundary=exit ... refresh=full`，但在此前还出现同一首页上的 `menu_press` 排队；这解释了
+为何仅凭 marker 不能声称退出跟手。修复须让已方向锁定或即将横向退出的接触不会先产生行按下反馈，
+并用真实起止样本、识别时延和一次退出帧证明。
+
+日志只有一次逻辑 `0xF7` 请求，肉眼却报告五次闪烁；因此“单个 full request”不等于“一次可见闪烁”。
+在改动前必须研究 SSD1681/GDEY0154D67 的局刷/清残波形和控制字，记录波形选择的技术依据，再以
+物理可见相位和残影作为判定，禁止用重复全刷掩盖问题。
+
+同一次长按的 `long_press` 在 `3309 ms` 才分派，晚于 3000 ms 合约。触摸事件在屏幕忙时被合并/延后
+处理的路径必须使用采样时间或等价的准确时基，且不能以移除长按逗弄/菜单过渡来缩短时间。目标是
+stationary long-press 在 3000 ms 合约附近可靠触发，修复后以真实时间戳日志复核。
+
+六项首页仍被 operator 判定为太小，这再次确认 `COMP-REQ-019`。它保持
+`PENDING_OWNER_VISUAL_REVIEW`；不得用 C 绘制临时四项替代，也不得把此次右滑修复写成菜单密度通过。
+在这四个问题分别有机器证据前，ACPT-01 不重开、更不能推进 ACPT-02 到 ACPT-13。
+
 ## 逐项验收顺序
 
 本项目遵循 AI Workflow 的全产品异步验收规则：未收到操作者明确的“开始验收”前，
