@@ -16,8 +16,10 @@ param(
     [int] $PromptTimeoutSeconds = 90,
     [string] $PromptTitle = "Companion NUCLEO 串口抓日志确认",
     [string] $PromptMessage,
+    [string] $PromptExpectedText,
     [string] $PromptProgressText = "操作确认",
     [string] $PromptScopeText = "当前仅执行这一项人工操作；结果会和本次串口日志绑定。",
+    [string] $PromptButtons = "通过,失败,跳过,中止",
     [string] $PromptResultPath,
     [string] $OutDir
 )
@@ -47,9 +49,14 @@ $operatorPromptResultPath = if ($PromptResultPath) {
 }
 $script:operatorPromptSelection = $null
 $operatorPromptText = if ([string]::IsNullOrWhiteSpace($PromptMessage)) {
-    "请确认 NUCLEO-WB55RG 已通过板载 ST-LINK USB 接好，Type/其它串口监视器已停止占用设备。请保持此窗口打开并完成本次操作；点击 OK 后会收集操作期间的设备日志$(if ($ResetAfterOpen) { '，目标板已先复位' } else { '' })。点击 Cancel 取消。"
+    "等待屏幕回到日常待机表情后，完成本项操作。确认观察结果后，直接在此窗口选择通过、失败、跳过或中止；备注中的每一项都会进入后续 triage。"
 } else {
     $PromptMessage
+}
+$operatorPromptExpectedText = if ([string]::IsNullOrWhiteSpace($PromptExpectedText)) {
+    "本项的串口机器证据和你的真实观察必须一致；不确定或异常时选失败并写备注。"
+} else {
+    $PromptExpectedText
 }
 $lockCommand = "pwsh -NoProfile -File C:\Users\Billy\Desktop\Denzic\ai-collaboration-workflow\scripts\aiw.ps1 with-lock -Resource Companion-WB55 -Purpose `"Companion NUCLEO serial capture`" -Run pwsh -NoProfile -File .\tools\capture_nucleo_serial.ps1 -Execute -WorkflowLockHeld -Seconds $Seconds -ResetAfterOpen"
 
@@ -181,9 +188,10 @@ function Show-OperatorPrompt {
         -ProgressText $PromptProgressText `
         -ScopeText $PromptScopeText `
         -Message $Message `
+        -ExpectedText $operatorPromptExpectedText `
         -Input `
         -ReviewStyle `
-        -Buttons "开始采集,取消" `
+        -Buttons $PromptButtons `
         -OutputPath $operatorPromptResultPath `
         -TimeoutSeconds $PromptTimeoutSeconds `
         -Json
@@ -192,9 +200,6 @@ function Show-OperatorPrompt {
     }
     $promptResult = ($promptOutput -join [Environment]::NewLine) | ConvertFrom-Json
     $script:operatorPromptSelection = [string]$promptResult.selected
-    if ($script:operatorPromptSelection -ne "开始采集") {
-        throw "Operator cancelled Companion NUCLEO serial capture."
-    }
 }
 
 function Write-Summary {
@@ -221,9 +226,11 @@ function Write-Summary {
         prompt_operator = [bool]$PromptOperator
         prompt_title = $PromptTitle
         prompt_message = if ($PromptOperator) { $operatorPromptText } else { $null }
+        prompt_expected_text = if ($PromptOperator) { $operatorPromptExpectedText } else { $null }
         prompt_style = if ($PromptOperator) { "aiw_operator_prompt_v1" } else { $null }
         prompt_progress_text = if ($PromptOperator) { $PromptProgressText } else { $null }
         prompt_scope_text = if ($PromptOperator) { $PromptScopeText } else { $null }
+        prompt_buttons = if ($PromptOperator) { $PromptButtons } else { $null }
         prompt_result_path = $operatorPromptResultPath
         prompt_selection = $script:operatorPromptSelection
         raw_log = $rawLog
@@ -353,6 +360,9 @@ if ($CheckOnly -and -not $Execute) {
     Write-Output "CHECK: Auto detected: $($resolved.auto_detected)"
     Write-Output "CHECK: Present ports: $($resolved.available_ports -join ', ')"
     Write-Output "CHECK: Blocking operator prompt: $([bool]$PromptOperator)"
+    if ($PromptOperator) {
+        Write-Output "CHECK: Final review buttons: $PromptButtons"
+    }
     Write-Output "CHECK: Reset timeout seconds: $ResetTimeoutSeconds"
     foreach ($candidate in @($resolved.candidates)) {
         Write-Output "CHECK: ST-LINK candidate $($candidate.port): $($candidate.name)"
@@ -410,6 +420,9 @@ try {
         Show-OperatorPrompt -Title $PromptTitle -Message $operatorPromptText
     }
 
+    # The final review window stays open while the operator performs the action.
+    # Its closed serial buffer contains the focused touch/result burst, then the
+    # bounded drain below records the response without opening a second popup.
     $deadline = [DateTime]::UtcNow.AddSeconds($Seconds)
     while ([DateTime]::UtcNow -lt $deadline) {
         try {
