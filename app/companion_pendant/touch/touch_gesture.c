@@ -392,7 +392,7 @@ static bool self_test_horizontal_drag_detector(void)
     return !comp_touch_gesture_process(&state, true, false,
                                        120u, 100u, 0u, &event) &&
            !comp_touch_gesture_process(&state, true, false,
-                                       100u, 102u, 20u, &event) &&
+                                       90u, 102u, 20u, &event) &&
            comp_touch_gesture_is_horizontal_drag(&state) &&
            !comp_touch_gesture_is_vertical_drag(&state);
 }
