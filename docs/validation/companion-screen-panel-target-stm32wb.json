@@ -1,0 +1,48 @@
+{
+  "contract": {
+    "current_transport": "ssd1681_real_when_bringup_enabled",
+    "dry_run_delegate": "comp_epaper_panel_adapter_init_dry_run_fallback",
+    "future_wba_pattern": "*_stm32wba.*",
+    "real_refresh_claimed": true,
+    "ssd1681_diagnostic_driver": {
+      "build_flag": "COMPANION_EPAPER_PANEL_SSD1681_BRINGUP",
+      "controller": "SSD1681",
+      "full_refresh_sequence": "GDEY0154D67_vendor_reference",
+      "real_refresh_claimed": true
+    },
+    "target_file_pattern": "panel_target_stm32wb.*",
+    "wb55_initializer": "companion_epaper_panel_stm32wb_init"
+  },
+  "forbidden_until_hardware_evidence": [
+    "HAL_SPI",
+    "HAL_QSPI",
+    "GPIO_PIN_",
+    "BSP_",
+    "EPD_",
+    "COMP_EPAPER_PANEL_RESULT_OK"
+  ],
+  "purpose": "WB55 target-named adapter with a proven SSD1681 production backend and a dry-run fallback, preserving the WBA target-adapter split.",
+  "schema_id": "companion.pendant.screen_panel_target_stm32wb.v1",
+  "sources": {
+    "epaper_readme": "app/companion_pendant/epaper/README.md",
+    "panel_gate": "docs/validation/companion-screen-panel-hardware-gate.json",
+    "portable_panel_header": "app/companion_pendant/epaper/panel_adapter.h",
+    "portable_panel_source": "app/companion_pendant/epaper/panel_adapter.c",
+    "screen_acceptance": "docs/companion_screen_expression_system.md",
+    "wb55_build": "cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile",
+    "wb55_integration": "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c",
+    "wb55_ssd1681_diagnostic_driver": "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
+    "wb55_target_header": "app/companion_pendant/epaper/panel_target_stm32wb.h",
+    "wb55_target_source": "app/companion_pendant/epaper/panel_target_stm32wb.c",
+    "wba_rules": "docs/stm32wba_migration_rules.md"
+  },
+  "status": "PASS",
+  "validation_commands": [
+    "python .\\tools\\verify_expression_panel_target_stm32wb.py",
+    "python .\\tools\\verify_expression_panel_gate.py",
+    "python .\\tools\\verify_expression_panel_adapter_boundary.py",
+    "python .\\tools\\verify_display_queue_static.py",
+    "python .\\tools\\verify_expression_wba_portability.py",
+    "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1"
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "asr_evidence": {
+    "expected_phrase": "\u4f60\u597d\uff0c\u5c0f\u4f34\u5f55\u97f3\u6d4b\u8bd5\u3002",
+    "known_confusion": null,
+    "missing_packets": 0,
+    "pcm_bytes": 122880,
+    "provider": "companion_type",
+    "status": "PASS",
+    "transcript": "\u4f60\u597d\uff0c\u5c0f\u4f34\u5f55\u97f3\u6d4b\u8bd5\u3002"
+  },
+  "microphone_path": {
+    "decode": {
+      "bit_order": "MSB",
+      "build_optimization": "O2",
+      "decimation": 96,
+      "filter": "CIC3",
+      "mckdiv": 31,
+      "preamp_shift": 3,
+      "stage_blocks": 450
+    },
+    "listener_reference": "Listener active N16R8 build uses CONFIG_AUDIO_CAPTURE_MIC_SPH0655_PDM and ESP-IDF I2S PDM2PCM.",
+    "portable_output": "PCM16 mono 16 kHz, 160 samples per frame",
+    "source_family": "SPH0655-compatible PDM digital MEMS",
+    "wb55_ingress": "SAI1 Block A raw-PDM DMA",
+    "wba_rule": "Do not copy WB55 raw-SAI timing into WBA; keep the PCM16/16k mono contract and add a target-native CubeWBA mic adapter."
+  },
+  "recording_evidence": {
+    "audio_quality": {
+      "clipping_ratio": 0.002572,
+      "peak_abs": 32768,
+      "rms": 1669.28,
+      "status": "PASS",
+      "zero_ratio": 0.230957
+    },
+    "device_final_sha256": "b60092244cc55257a557f527b1ffb044d23da7f1a0419ef07e8a7361ae7fc839",
+    "duration_ms": 3840,
+    "host_sha256": "b60092244cc55257a557f527b1ffb044d23da7f1a0419ef07e8a7361ae7fc839",
+    "missing_packets": 0,
+    "pcm_path": ".cache\\validation\\mic-fast2-20260710-060913\\ble-recording.pcm",
+    "recording_id": 2,
+    "source_mode": 1,
+    "status": "PASS",
+    "total_length": 122880,
+    "wav_path": ".cache\\validation\\mic-fast2-20260710-060913\\ble-recording-16k-mono.wav"
+  },
+  "schema_id": "companion.mic.wb55_pdm_baseline.v1",
+  "sound_source": "pc_speaker_tts",
+  "source_artifacts": {
+    "asr_chain": ".cache/validation/mic-fast2-20260710-060913-asr/companion-recording-to-minutes.json",
+    "legacy_i2s_tuning_redirect": "docs/validation/companion-mic-wb55-sai-i2s-tuning.json",
+    "recording_chain": ".cache/validation/mic-fast2-20260710-060913/companion-flash-recording-chain.json"
+  },
+  "status": "PASS",
+  "target": "NUCLEO-WB55RG",
+  "validation_commands": [
+    "python .\\tools\\verify_companion_mic_wb55_pdm_baseline.py",
+    "python .\\tools\\verify_recording_fsm_static.py",
+    "python .\\tools\\verify_recording_cache_model.py"
+  ]
+}

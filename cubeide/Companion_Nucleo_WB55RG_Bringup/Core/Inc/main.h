@@ -2,6 +2,7 @@
 #define COMPANION_NUCLEO_BRINGUP_MAIN_H
 
 #include "audio_stream.h"
+#include "asset_store.h"
 #include "stm32wbxx_hal.h"
 
 #include <stdbool.h>
@@ -72,6 +73,7 @@ comp_audio_stream_status_t Companion_BleAudio_SendSessionError(comp_audio_sessio
 void Companion_BleAudio_RequestActiveLink(const char *reason);
 void Companion_BleAudio_RequestIdleLink(const char *reason);
 void Companion_Gatt_PublishRecordingList(void);
+uint8_t Companion_Screen_RuntimeMenuFlags(void);
 
 bool Companion_RecordingFlash_HandleControl(uint8_t command,
                                             uint16_t max_seconds);
@@ -86,5 +88,7 @@ bool Companion_RecordingFlash_Delete(uint8_t operation,
                                      uint32_t recording_id,
                                      uint32_t validated_total_length,
                                      const uint8_t validated_sha256[COMPANION_RECORDING_FLASH_SHA256_BYTES]);
+
+bool Companion_ScreenAssets_OpenExternalStore(comp_asset_store_t *store);
 
 #endif /* COMPANION_NUCLEO_BRINGUP_MAIN_H */

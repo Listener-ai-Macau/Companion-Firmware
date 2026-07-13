@@ -136,7 +136,7 @@ mind.
    DMA adapter, then decoded with a CIC3 software filter. Its MCKDIV, SAI pin
    alternate functions, DMA channel, bit order, gain, staging buffer size, and
    timing diagnostics are WB55 bring-up facts only. A WBA55/WBA65 port must add
-   a separate CubeWBA-based microphone adapter, preferably using the WBA HAL
+   a separate CubeWBA microphone adapter, preferably using the WBA HAL
    SAI/PDM, MDF/ADF, PDM2PCM, or DMA path that matches the chosen package and
    board. Portable recording FSM, Companion Type postprocess tools, cache
    metadata, and GATT payloads must not depend on the board-specific microphone

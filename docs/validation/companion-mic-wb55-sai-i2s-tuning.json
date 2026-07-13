@@ -1,0 +1,11 @@
+{
+  "current_baseline": "docs/validation/companion-mic-wb55-pdm-baseline.json",
+  "retired_reason": "The WB55 devboard microphone was re-identified and accepted as a Listener-style SPH0655-compatible PDM source, not the older SPH0645-compatible I2S path.",
+  "schema": "companion.mic.wb55_sai_i2s_tuning.retired.v1",
+  "status": "RETIRED",
+  "superseded_by": {
+    "decode": "SAI1 Block A raw-PDM DMA, MSB+CIC3, decimation 96, MCKDIV 31, preamp shift 3, 450-block stage buffer",
+    "source_family": "SPH0655-compatible PDM digital MEMS",
+    "validation_command": "python .\\tools\\verify_companion_mic_wb55_pdm_baseline.py"
+  }
+}

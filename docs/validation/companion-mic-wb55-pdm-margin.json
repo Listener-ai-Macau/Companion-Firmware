@@ -1,0 +1,157 @@
+{
+  "baseline": "docs/validation/companion-mic-wb55-pdm-baseline.json",
+  "candidate_optimization": {
+    "boot_filter_text": "cic3",
+    "build_validation": [
+      "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1 -Force -Optimization O2 -PdmCic3ChunkAccumulate 0 -PdmUseCic3Filter 1 -PdmBitOrderLsb 0",
+      "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1 -Force -PdmCic3ChunkAccumulate 0"
+    ],
+    "code_symbols": [
+      "pdm_cic3_decode_sample",
+      "pdm_cic3_accumulate_word",
+      "pdm_cic3_accumulate_byte",
+      "MIC_PDM_FILTER_TEXT",
+      "MANUAL_RECORDING_DIAGNOSTIC_EVERY_BLOCKS"
+    ],
+    "hardware_validation_needed": [
+      "run a longer PC-speaker or speech soak with the same O2/CIC3 firmware",
+      "keep max_dma_rx_overruns=0 across the soak",
+      "keep diag=0 steady capture_ms at or below the 10 ms frame period"
+    ],
+    "meaning": "Keep the accepted CIC3/decim96/MSB audio path, build with -O2, and collect full raw diagnostics sparsely. The short PC-speaker run kept the \u5c0f\u4f34 ASR transcript, reduced DMA overruns from 97/11 to zero, and measured 10 ms on steady diag=0 capture blocks.",
+    "name": "cic3_byte_o2_fastdiag",
+    "static_equivalence": "verify_companion_mic_wb55_pdm_margin.py compares deterministic bit-by-bit and chunk CIC3 vectors for MSB and LSB bit order.",
+    "status": "BEST_CANDIDATE_READY_FOR_LONGER_SOAK",
+    "tested_alternatives": [
+      {
+        "asr_chain": ".cache/validation/companion-real-mic-pc-speaker-tts-pdm-rawsai-dma-gain3-cic3chunk-msb-decim96-mckdiv31-stage450-short-20260710-052857-asr/companion-recording-to-minutes.json",
+        "name": "cic3_chunk_og",
+        "recording_chain": ".cache/validation/companion-real-mic-pc-speaker-tts-pdm-rawsai-dma-gain3-cic3chunk-msb-decim96-mckdiv31-stage450-short-20260710-052857/companion-flash-recording-chain.json",
+        "result": "Rejected: recording chain PASS, but max_dma_rx_overruns=115 and Companion Type returned NO_TRANSCRIPT."
+      },
+      {
+        "asr_chain": ".cache/validation/companion-real-mic-pc-speaker-tts-pdm-rawsai-dma-gain3-boxcar-msb-decim96-mckdiv31-stage450-short-20260710-053356-asr/companion-recording-to-minutes.json",
+        "name": "boxcar_msb_og",
+        "recording_chain": ".cache/validation/companion-real-mic-pc-speaker-tts-pdm-rawsai-dma-gain3-boxcar-msb-decim96-mckdiv31-stage450-short-20260710-053356/companion-flash-recording-chain.json",
+        "result": "Rejected: max_dma_rx_overruns=0 but steady capture_ms=11 and Companion Type returned NO_TRANSCRIPT."
+      }
+    ]
+  },
+  "current_margin": {
+    "asr_transcript": "\u4f60\u597d\uff0c\u5c0f\u4f34\u5f55\u97f3\u6d4b\u8bd5\u3002",
+    "audio_quality": {
+      "clipping_ratio": 0.002572,
+      "rms": 1669.28,
+      "warnings": [],
+      "zero_ratio": 0.230957
+    },
+    "blockers": [],
+    "expected_phrase": "\u4f60\u597d\uff0c\u5c0f\u4f34\u5f55\u97f3\u6d4b\u8bd5\u3002",
+    "observed": {
+      "active_manual_blocks": 2,
+      "capture_ms_by_block": [
+        {
+          "app_pump": 1,
+          "ble_stream": 0,
+          "block": 0,
+          "capture_ms": 21,
+          "diag": 1
+        },
+        {
+          "app_pump": 0,
+          "ble_stream": 0,
+          "block": 50,
+          "capture_ms": 10,
+          "diag": 0
+        },
+        {
+          "app_pump": 0,
+          "ble_stream": 0,
+          "block": 100,
+          "capture_ms": 10,
+          "diag": 0
+        },
+        {
+          "app_pump": 0,
+          "ble_stream": 0,
+          "block": 150,
+          "capture_ms": 10,
+          "diag": 0
+        },
+        {
+          "app_pump": 1,
+          "ble_stream": 0,
+          "block": 200,
+          "capture_ms": 15,
+          "diag": 1
+        },
+        {
+          "app_pump": 0,
+          "ble_stream": 0,
+          "block": 250,
+          "capture_ms": 10,
+          "diag": 0
+        },
+        {
+          "app_pump": 0,
+          "ble_stream": 0,
+          "block": 300,
+          "capture_ms": 10,
+          "diag": 0
+        },
+        {
+          "app_pump": 0,
+          "ble_stream": 0,
+          "block": 350,
+          "capture_ms": 10,
+          "diag": 0
+        }
+      ],
+      "clipped_blocks": [
+        0
+      ],
+      "diagnostic_loop_observation_count": 2,
+      "diagnostic_max_capture_ms": 21,
+      "fast_loop_observation_count": 6,
+      "fast_path_max_capture_ms": 10,
+      "loop_observation_count": 8,
+      "manual_observation_count": 2,
+      "max_capture_ms": 21,
+      "max_dma_rx_overruns": 0,
+      "max_pcm_clip": 158,
+      "max_preclip": 158,
+      "reported_overrun_counts": [],
+      "steady_state_max_capture_ms": 10
+    },
+    "status": "READY_FOR_LONGER_SOAK"
+  },
+  "optimization_exit_criteria": [
+    "new PC-speaker run records max_dma_rx_overruns=0 during active recording",
+    "steady-state capture_ms stays at or below the 10 ms PCM frame period",
+    "audio_quality.status remains PASS with no warnings",
+    "Companion Type ASR transcript contains \u5c0f\u4f34 for the short test phrase",
+    "recording_pull missing_packets remains 0 and host/device SHA-256 still matches"
+  ],
+  "path_acceptance": {
+    "audio_quality_status": "PASS",
+    "meaning": "PC-speaker audio reached WB55 PDM capture, flash storage, BLE pull, WAV export, and Companion Type ASR.",
+    "missing_packets": 0,
+    "pcm_bytes": 122880,
+    "recording_status": "PASS",
+    "sha256_match": true,
+    "status": "PASS"
+  },
+  "schema_id": "companion.mic.wb55_pdm_margin.v1",
+  "source_artifacts": {
+    "baseline_verifier": "tools/verify_companion_mic_wb55_pdm_baseline.py",
+    "recording_chain": ".cache/validation/mic-fast2-20260710-060913/companion-flash-recording-chain.json",
+    "serial_log": ".cache/validation/mic-fast2-20260710-060913/flash-recording-serial.log"
+  },
+  "status": "PASS",
+  "target": "NUCLEO-WB55RG",
+  "validation_commands": [
+    "python .\\tools\\verify_companion_mic_wb55_pdm_margin.py",
+    "python .\\tools\\verify_companion_mic_wb55_pdm_baseline.py"
+  ],
+  "wba_portability_rule": "WBA55/WBA65 must keep this margin gate but replace WB55 raw-SAI DMA/CIC3 details with a target-native CubeWBA microphone adapter."
+}

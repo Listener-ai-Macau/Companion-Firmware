@@ -1,0 +1,75 @@
+#include "power_policy.h"
+
+#include <string.h>
+
+void comp_power_policy_init(comp_power_policy_t *policy)
+{
+    if (policy == NULL) {
+        return;
+    }
+    memset(policy, 0, sizeof(*policy));
+    policy->blockers = COMP_POWER_BLOCKER_BOOT;
+}
+
+void comp_power_policy_set_touch_wake_ready(comp_power_policy_t *policy,
+                                            bool ready)
+{
+    if (policy != NULL) {
+        policy->touch_wake_ready = ready;
+    }
+}
+
+void comp_power_policy_set_blocker(comp_power_policy_t *policy,
+                                   comp_power_blocker_t blocker,
+                                   bool active)
+{
+    if (policy == NULL || blocker == COMP_POWER_BLOCKER_NONE) {
+        return;
+    }
+    if (active) {
+        policy->blockers |= (uint32_t)blocker;
+    } else {
+        policy->blockers &= ~(uint32_t)blocker;
+    }
+}
+
+bool comp_power_policy_stop_allowed(const comp_power_policy_t *policy)
+{
+    return policy != NULL && policy->touch_wake_ready &&
+           policy->blockers == COMP_POWER_BLOCKER_NONE;
+}
+
+bool comp_power_policy_self_test(void)
+{
+    comp_power_policy_t policy;
+    const comp_power_blocker_t blockers[] = {
+        COMP_POWER_BLOCKER_MIC_CAPTURE,
+        COMP_POWER_BLOCKER_TOUCH_CONTACT,
+        COMP_POWER_BLOCKER_MENU_TIMER,
+        COMP_POWER_BLOCKER_SCREEN_MAINTENANCE,
+        COMP_POWER_BLOCKER_SCREEN_WAIT,
+    };
+
+    comp_power_policy_init(&policy);
+    if (comp_power_policy_stop_allowed(&policy)) {
+        return false;
+    }
+    comp_power_policy_set_touch_wake_ready(&policy, true);
+    comp_power_policy_set_blocker(&policy, COMP_POWER_BLOCKER_BOOT, false);
+    if (!comp_power_policy_stop_allowed(&policy)) {
+        return false;
+    }
+
+    for (uint32_t index = 0u; index < sizeof(blockers) / sizeof(blockers[0]); ++index) {
+        comp_power_policy_set_blocker(&policy, blockers[index], true);
+        if (comp_power_policy_stop_allowed(&policy)) {
+            return false;
+        }
+        comp_power_policy_set_blocker(&policy, blockers[index], false);
+        if (!comp_power_policy_stop_allowed(&policy)) {
+            return false;
+        }
+    }
+
+    return comp_power_policy_stop_allowed(&policy);
+}

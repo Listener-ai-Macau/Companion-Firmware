@@ -30,6 +30,7 @@
 #include "stm32_seq.h"
 #include "shci.h"
 #include "stm32_lpm.h"
+#include "hw_if.h"
 #include "otp.h"
 
 #ifdef OTA_SBSFU
@@ -38,10 +39,75 @@
 
 #include "audio_stream_stm32wb.h"
 #include "companion_gatt_stm32wb.h"
+#include "companion_screen_ui.h"
 #include "companion_v1_features.h"
+#include "diag_log.h"
+#include "display_queue.h"
+#include "asset_store.h"
+#include "emote_asset_pack.h"
+#include "emote_player.h"
+#include "expression_asset_source.h"
+#include "expression_events.h"
+#include "expression_state.h"
+#include "panel_adapter.h"
+#include "panel_target_stm32wb.h"
+#include "pet_attention.h"
+#include "pet_behavior.h"
+#include "pet_expression.h"
+#include "refresh_policy.h"
+#include "screen_presentation.h"
+#include "screen_runtime.h"
+
+#ifndef COMPANION_SCREEN_MENU_ENABLED
+#define COMPANION_SCREEN_MENU_ENABLED 0
+#endif
+
+#ifndef COMPANION_SCREEN_EMOTE_DEMO
+#define COMPANION_SCREEN_EMOTE_DEMO 0
+#endif
+
+#ifndef COMPANION_SCREEN_DAILY_TAP_DEMO
+#define COMPANION_SCREEN_DAILY_TAP_DEMO 0
+#endif
+
+#ifndef COMPANION_SCREEN_DAILY_STROKE_DEMO
+#define COMPANION_SCREEN_DAILY_STROKE_DEMO 0
+#endif
+
+#ifndef COMPANION_SCREEN_DAILY_STROKE_DEMO_DIRECTION
+#define COMPANION_SCREEN_DAILY_STROKE_DEMO_DIRECTION 4u
+#endif
+
+#ifndef COMPANION_SCREEN_PRODUCT_EXPRESSION_DEMO
+#define COMPANION_SCREEN_PRODUCT_EXPRESSION_DEMO 0
+#endif
+
+#ifndef COMPANION_SCREEN_PRODUCT_EXPRESSION_DEMO_SIGNAL
+#define COMPANION_SCREEN_PRODUCT_EXPRESSION_DEMO_SIGNAL \
+  COMP_EPAPER_EXPRESSION_SIGNAL_WAKE_DETECTED
+#endif
+
+#ifndef COMPANION_SCREEN_PRODUCT_EXPRESSION_DEMO_END_SIGNAL
+#define COMPANION_SCREEN_PRODUCT_EXPRESSION_DEMO_END_SIGNAL \
+  COMP_EPAPER_EXPRESSION_SIGNAL_COUNT
+#endif
+
+#ifndef COMPANION_SCREEN_PRODUCT_EXPRESSION_DEMO_END_AFTER_MS
+#define COMPANION_SCREEN_PRODUCT_EXPRESSION_DEMO_END_AFTER_MS 10000u
+#endif
+
+#define COMPANION_SCREEN_ASSET_CLIP_CAPACITY 48u
+#define COMPANION_SCREEN_ASSET_FRAME_CAPACITY 256u
+#define COMPANION_SCREEN_ASSET_STRING_CAPACITY 1024u
+#define COMPANION_SCREEN_ASSET_SCRATCH_BYTES 256u
+#define COMPANION_PET_FEATURE_DIRTY_X 8u
+#define COMPANION_PET_FEATURE_DIRTY_Y 18u
+#define COMPANION_PET_FEATURE_DIRTY_WIDTH 184u
+#define COMPANION_PET_FEATURE_DIRTY_HEIGHT 166u
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -110,6 +176,10 @@ typedef struct
 #define COMPANION_GATT_RECORDING_FLAG_ERROR 0x80u
 #define COMPANION_GATT_RECORDING_CHUNK_PAYLOAD_MAX \
   (COMPANION_GATT_MAX_PAYLOAD_BYTES - sizeof(Companion_Gatt_RecordingChunkHeaderV1_t))
+#define COMPANION_EPAPER_EXPRESSION_CARD_SLOT 1u
+#define COMPANION_EPAPER_EXPRESSION_REQUEST_BASE 0xE0000000u
+#define COMPANION_EPAPER_EXPRESSION_TIMER_ID_INVALID CFG_HW_TS_MAX_NBR_CONCURRENT_TIMER
+#define COMPANION_SETTINGS_FLAG_QUIET_HOURS_ACTIVE 0x0001u
 
 #define BD_ADDR_SIZE_LOCAL    6
 
@@ -169,6 +239,45 @@ uint8_t a_ManufData[14] = {
 
 /* USER CODE BEGIN PV */
 static comp_audio_stream_t s_companion_audio_stream;
+static comp_epaper_display_queue_t s_companion_display_queue;
+static comp_epaper_expression_state_t s_companion_expression_state;
+static comp_pet_behavior_t s_companion_pet_behavior;
+static comp_epaper_panel_adapter_t s_companion_panel_adapter;
+static comp_asset_store_t s_companion_screen_asset_store;
+static comp_emote_asset_mount_t s_companion_screen_asset_mount;
+static comp_epaper_expression_asset_source_t s_companion_expression_asset_source;
+static comp_emote_player_t s_companion_emote_player;
+static comp_epaper_expression_decision_t s_companion_emote_player_decision;
+static comp_screen_presentation_t s_companion_screen_presentation;
+static bool s_companion_screen_ui_ready = false;
+static bool s_companion_emote_player_ready = false;
+static bool s_companion_emote_player_decision_valid = false;
+static bool s_companion_expression_transition_immediate = false;
+static const char *s_companion_touch_attention_clip = NULL;
+static const char *s_companion_dynamic_touch_clip = NULL;
+static uint16_t s_companion_dynamic_touch_x = 100u;
+static uint16_t s_companion_dynamic_touch_y = 100u;
+static bool s_companion_dynamic_touch_is_stroke = false;
+static uint32_t s_companion_pet_behavior_last_advanced_ms = 0u;
+static comp_pet_expression_pose_t s_companion_last_pet_pose;
+static bool s_companion_last_pet_pose_valid = false;
+static comp_emote_clip_t
+    s_companion_screen_asset_clips[COMPANION_SCREEN_ASSET_CLIP_CAPACITY];
+static comp_emote_frame_t
+    s_companion_screen_asset_frames[COMPANION_SCREEN_ASSET_FRAME_CAPACITY];
+static char s_companion_screen_asset_strings[COMPANION_SCREEN_ASSET_STRING_CAPACITY];
+static uint8_t s_companion_screen_asset_scratch[COMPANION_SCREEN_ASSET_SCRATCH_BYTES];
+static uint32_t s_companion_expression_next_request_id =
+    COMPANION_EPAPER_EXPRESSION_REQUEST_BASE | 1u;
+static uint32_t s_companion_menu_next_request_id = 0xE2000001u;
+static uint8_t s_companion_expression_tick_timer_id =
+    COMPANION_EPAPER_EXPRESSION_TIMER_ID_INVALID;
+static bool s_companion_expression_tick_timer_created = false;
+static uint32_t s_companion_expression_tick_started_ms = 0u;
+#if COMPANION_SCREEN_PRODUCT_EXPRESSION_DEMO
+static uint32_t s_companion_product_expression_demo_started_ms = 0u;
+static bool s_companion_product_expression_demo_end_sent = false;
+#endif
 static uint32_t s_companion_audio_next_session_id = 1u;
 static bool s_companion_ble_connected = false;
 static Companion_BleLinkMode_t s_companion_ble_link_mode = COMPANION_BLE_LINK_MODE_NONE;
@@ -218,16 +327,61 @@ static void Adv_Request(void);
 static void Companion_Audio_Init(void);
 static void Companion_Gatt_Init(void);
 static void Companion_Gatt_Task(void);
+static void Companion_Display_Task(void);
 static void Companion_Gatt_HandleEvent(const companion_gatt_event_t *event,
                                        void *context);
 static void Companion_Gatt_PublishInitialState(void);
 static void Companion_Gatt_PublishCurrent(companion_gatt_char_id_t char_id);
-static void Companion_Gatt_PublishDeviceStatus(void);
-static void Companion_Gatt_PublishBatteryCharge(void);
-static void Companion_Gatt_PublishCardStatus(uint32_t request_id,
+static void Companion_Gatt_PublishDeviceStatus(bool apply_expression_hint);
+static void Companion_Display_ApplyDeviceStatusExpressionHint(
+    const companion_gatt_device_status_v1_t *status);
+static void Companion_Gatt_PublishBatteryCharge(bool apply_expression_hint);
+static void Companion_Gatt_PublishCardStatus(uint8_t card_slot,
+                                             uint32_t request_id,
                                              uint8_t render_state,
                                              uint8_t last_error,
                                              uint32_t content_crc32);
+static void Companion_Display_CreateExpressionTickTimer(void);
+static void Companion_Display_TickTimerElapsed(void);
+static uint32_t Companion_Display_MsToTimerTicks(uint32_t timeout_ms);
+static void Companion_Display_ScheduleExpressionTick(uint32_t now_ms);
+static void Companion_Display_ProcessExpressionTick(void);
+static void Companion_PetBehavior_Advance(void);
+static bool Companion_Display_EmitEmoteFrame(bool force_full);
+static bool Companion_Display_EnqueuePetPose(
+    const comp_epaper_expression_decision_t *decision,
+    const comp_pet_expression_pose_t *pose,
+    comp_epaper_refresh_mode_t refresh_mode,
+    uint32_t request_id_hint);
+static void Companion_Display_EnqueueExpressionDecision(
+    const comp_epaper_expression_decision_t *decision,
+    const comp_epaper_expression_state_t *previous_state,
+    uint32_t request_id_hint);
+static void Companion_Display_EnqueueExpressionSignal(
+    comp_epaper_expression_signal_t signal,
+    uint32_t request_id_hint);
+static void Companion_Display_EnqueueExpressionEvent(uint16_t event_code,
+                                                     uint8_t severity,
+                                                     uint32_t request_id_hint,
+                                                     uint32_t arg0,
+                                                     uint32_t arg1,
+                                                     uint32_t arg2,
+                                                     uint32_t arg3);
+static void Companion_Display_ApplyBatteryExpressionHint(
+    const companion_gatt_battery_charge_v1_t *status);
+static void Companion_Display_ApplyOtaExpressionHint(
+    const companion_gatt_ota_readiness_v1_t *readiness);
+static bool Companion_Settings_WantsSleepy(
+    const companion_gatt_settings_v1_t *settings);
+static void Companion_Display_ApplySettingsExpressionHint(
+    const companion_gatt_settings_v1_t *settings);
+static void Companion_Diag_RecordAndEnqueueExpression(uint16_t event_code,
+                                                      uint8_t severity,
+                                                      uint32_t request_id_hint,
+                                                      uint32_t arg0,
+                                                      uint32_t arg1,
+                                                      uint32_t arg2,
+                                                      uint32_t arg3);
 static void Companion_Gatt_PublishRecordingControlEcho(
     const companion_gatt_recording_control_v1_t *request,
     bool accepted);
@@ -235,16 +389,22 @@ static void Companion_Gatt_PublishRecordingChunk(
     const companion_gatt_recording_chunk_pull_v1_t *request);
 static void Companion_Gatt_PublishSettings(void);
 static void Companion_Gatt_PublishBleNameConfig(void);
-static void Companion_Gatt_PublishMeetingStatus(void);
+static void Companion_Gatt_PublishMeetingStatus(bool apply_expression_hint);
 static void Companion_Gatt_PublishImuStatus(void);
-static void Companion_Gatt_PublishSpeakerStatus(void);
-static void Companion_Gatt_PublishWakeWordStatus(void);
+static void Companion_Gatt_PublishSpeakerStatus(bool apply_expression_hint);
+static void Companion_Gatt_PublishWakeWordStatus(bool apply_expression_hint);
+static void Companion_Display_ApplyMeetingStatusExpressionHint(
+    const companion_gatt_meeting_status_v1_t *status);
+static void Companion_Display_ApplySpeakerStatusExpressionHint(
+    const companion_gatt_speaker_status_v1_t *status);
+static void Companion_Display_ApplyWakeWordStatusExpressionHint(
+    const companion_gatt_wake_word_status_v1_t *status);
 static void Companion_Gatt_PublishDiagLogResponse(
     const companion_gatt_diag_log_pull_v1_t *request);
 static void Companion_Gatt_PublishDeletePrivacyStatus(
     const companion_gatt_delete_privacy_v1_t *request,
     bool accepted);
-static void Companion_Gatt_PublishOtaReadiness(void);
+static void Companion_Gatt_PublishOtaReadiness(bool apply_expression_hint);
 static uint32_t Companion_Gatt_Fnv1a(const uint8_t *data, uint16_t length);
 static void Companion_Audio_Control(void *context,
                                     comp_audio_control_t control,
@@ -262,6 +422,7 @@ static tBleStatus Companion_Ble_RequestConnectionParams(const char *reason,
                                                         uint16_t timeout,
                                                         Companion_BleLinkMode_t mode);
 static tBleStatus Companion_Ble_RequestPreferred2MPhy(const char *reason);
+static void Companion_Screen_RefreshBleStatus(void);
 
 /* USER CODE END PFP */
 
@@ -356,6 +517,119 @@ void APP_BLE_Init( void )
    */
   SVCCTL_Init();
   Companion_Audio_Init();
+  comp_epaper_display_queue_init(&s_companion_display_queue);
+  comp_epaper_expression_state_init(&s_companion_expression_state);
+  comp_pet_behavior_init(&s_companion_pet_behavior, 0xC0A55EEDu);
+  s_companion_pet_behavior_last_advanced_ms = HAL_GetTick();
+  comp_screen_presentation_init(&s_companion_screen_presentation);
+  bool external_assets_ready =
+      Companion_ScreenAssets_OpenExternalStore(&s_companion_screen_asset_store);
+  uint8_t external_prefix[4] = {0u};
+  bool external_prefix_read =
+      external_assets_ready &&
+      comp_asset_store_read(&s_companion_screen_asset_store,
+                            0u,
+                            external_prefix,
+                            sizeof(external_prefix));
+  const comp_screen_asset_profile_t screen_profile = {
+      .width = 200u,
+      .height = 200u,
+      .stride_bytes = 25u,
+      .pixel_format = COMP_SCREEN_PIXEL_FORMAT_MONO_1BPP_WHITE_IS_ONE_MSB,
+  };
+  comp_emote_asset_mount_result_t mount_result =
+      external_assets_ready
+          ? comp_emote_asset_pack_mount(
+                &s_companion_screen_asset_mount,
+                &s_companion_screen_asset_store,
+                &screen_profile,
+                s_companion_screen_asset_clips,
+                COMPANION_SCREEN_ASSET_CLIP_CAPACITY,
+                s_companion_screen_asset_frames,
+                COMPANION_SCREEN_ASSET_FRAME_CAPACITY,
+                s_companion_screen_asset_strings,
+                sizeof(s_companion_screen_asset_strings),
+                s_companion_screen_asset_scratch,
+                sizeof(s_companion_screen_asset_scratch))
+          : COMP_EMOTE_ASSET_MOUNT_IO_ERROR;
+  bool expression_assets_ready =
+      mount_result == COMP_EMOTE_ASSET_MOUNT_OK &&
+      comp_epaper_expression_asset_source_init(
+          &s_companion_expression_asset_source,
+          &s_companion_screen_asset_mount.pack);
+  comp_epaper_display_queue_set_resource_revision(
+      &s_companion_display_queue,
+      expression_assets_ready ? s_companion_screen_asset_mount.pack.revision : 0u);
+  s_companion_emote_player_ready =
+      expression_assets_ready &&
+      comp_emote_player_init(&s_companion_emote_player,
+                             &s_companion_screen_asset_mount.catalog);
+  companion_epaper_panel_stm32wb_init(
+      &s_companion_panel_adapter,
+      expression_assets_ready ? &s_companion_expression_asset_source : NULL);
+  printf("[screen-assets] policy=external_first store=%s prefix=%s:%02X%02X%02X%02X mount=%s\r\n",
+         external_assets_ready ? "ready" : "fallback_internal",
+         external_prefix_read ? "read" : "none",
+         external_prefix[0],
+         external_prefix[1],
+         external_prefix[2],
+         external_prefix[3],
+         comp_emote_asset_mount_result_name(mount_result));
+  if (mount_result == COMP_EMOTE_ASSET_MOUNT_OK)
+  {
+    printf("[screen-assets] pack=%s revision=%lu clips=%u frames=%u profile=%ux%u stride=%u encoding=%u\r\n",
+           s_companion_screen_asset_mount.pack.name,
+           (unsigned long)s_companion_screen_asset_mount.pack.revision,
+           (unsigned)s_companion_screen_asset_mount.catalog.clip_count,
+           (unsigned)s_companion_screen_asset_mount.catalog.frame_count,
+           (unsigned)s_companion_screen_asset_mount.pack.profile.width,
+           (unsigned)s_companion_screen_asset_mount.pack.profile.height,
+           (unsigned)s_companion_screen_asset_mount.pack.profile.stride_bytes,
+           (unsigned)s_companion_screen_asset_mount.pack.frame_encoding);
+  }
+  printf("[screen-assets] expression_renderer=%s player=%s fallback=%s\r\n",
+         expression_assets_ready ? "external_pack" : "unavailable",
+         s_companion_emote_player_ready ? "ready" : "unavailable",
+         expression_assets_ready ? "none" : "rescue_ui");
+  printf("[screen-assets] queue_generation revision=%lu switches=%lu last_stale_discarded=%lu stale_discarded=%lu\r\n",
+         (unsigned long)comp_epaper_display_queue_active_resource_revision(
+             &s_companion_display_queue),
+         (unsigned long)comp_epaper_display_queue_generation_switch_count(
+             &s_companion_display_queue),
+         (unsigned long)comp_epaper_display_queue_last_stale_generation_discarded(
+             &s_companion_display_queue),
+         (unsigned long)comp_epaper_display_queue_stale_generation_discard_count(
+             &s_companion_display_queue));
+  printf("[screen] core_selftest menu=%s gesture=%s presentation=%s emote_player=%s asset_store=%s asset_pack=%s expression_source=%s refresh_policy=%s\r\n",
+         comp_screen_menu_self_test() ? "pass" : "fail",
+         comp_touch_gesture_self_test() ? "pass" : "fail",
+         comp_screen_presentation_self_test() ? "pass" : "fail",
+         comp_emote_player_self_test() ? "pass" : "fail",
+         comp_asset_store_self_test() ? "pass" : "fail",
+         comp_emote_asset_pack_self_test() ? "pass" : "fail",
+         comp_epaper_expression_asset_source_self_test() ? "pass" : "fail",
+         comp_epaper_refresh_policy_self_test() ? "pass" : "fail");
+  printf("[screen] pet_attention_selftest=%s\r\n",
+         comp_pet_attention_self_test() ? "pass" : "fail");
+  printf("[screen] pet_expression_selftest=%s\r\n",
+         comp_pet_expression_self_test() ? "pass" : "fail");
+  bool pet_behavior_selftest = comp_pet_behavior_self_test();
+  printf("[screen] pet_behavior_selftest=%s failure_code=%lu\r\n",
+         pet_behavior_selftest ? "pass" : "fail",
+         (unsigned long)comp_pet_behavior_self_test_failure_code());
+  printf("[pet-emotion] selftest=%s failure_code=%lu moods=calm,curious,affectionate,delighted,restful,worried memory=pass strokes=pass\r\n",
+         pet_behavior_selftest ? "pass" : "fail",
+         (unsigned long)comp_pet_behavior_self_test_failure_code());
+  printf("[pet-emotion] boot mood=%s valence=%d arousal=%u curiosity=%u affection=%u attachment=%u traits=%u,%u,%u\r\n",
+         comp_pet_behavior_mood_name(comp_pet_behavior_mood(&s_companion_pet_behavior)),
+         (int)s_companion_pet_behavior.valence,
+         (unsigned)s_companion_pet_behavior.arousal,
+         (unsigned)s_companion_pet_behavior.curiosity,
+         (unsigned)s_companion_pet_behavior.affection,
+         (unsigned)s_companion_pet_behavior.attachment,
+         (unsigned)s_companion_pet_behavior.sociability,
+         (unsigned)s_companion_pet_behavior.sensitivity,
+         (unsigned)s_companion_pet_behavior.playfulness);
   Companion_Gatt_Init();
   UTIL_SEQ_RegTask(1 << CFG_TASK_SW1_BUTTON_PUSHED_ID,
                    UTIL_SEQ_RFU,
@@ -369,6 +643,52 @@ void APP_BLE_Init( void )
   UTIL_SEQ_RegTask(1 << CFG_TASK_COMPANION_GATT_ID,
                    UTIL_SEQ_RFU,
                    Companion_Gatt_Task);
+  UTIL_SEQ_RegTask(1 << CFG_TASK_COMPANION_DISPLAY_ID,
+                   UTIL_SEQ_RFU,
+                   Companion_Display_Task);
+  Companion_Display_CreateExpressionTickTimer();
+#if COMPANION_SCREEN_MENU_ENABLED
+#if COMPANION_SCREEN_DAILY_TAP_DEMO
+  if (Companion_Screen_ShowDaily())
+  {
+    printf("[screen] daily_tap_demo start\r\n");
+    (void)Companion_Screen_DailyTap();
+  }
+#elif COMPANION_SCREEN_DAILY_STROKE_DEMO
+  if (Companion_Screen_ShowDaily())
+  {
+#if COMPANION_SCREEN_DAILY_STROKE_DEMO_DIRECTION == 1u
+    printf("[screen] daily_stroke_demo direction=left start=180,100 end=20,100 duration_ms=600\r\n");
+    (void)Companion_Screen_DailyStrokeAt(180u, 100u, 20u, 100u, 600u);
+#elif COMPANION_SCREEN_DAILY_STROKE_DEMO_DIRECTION == 2u
+    printf("[screen] daily_stroke_demo direction=right start=20,100 end=180,100 duration_ms=600\r\n");
+    (void)Companion_Screen_DailyStrokeAt(20u, 100u, 180u, 100u, 600u);
+#elif COMPANION_SCREEN_DAILY_STROKE_DEMO_DIRECTION == 3u
+    printf("[screen] daily_stroke_demo direction=up start=100,180 end=100,20 duration_ms=600\r\n");
+    (void)Companion_Screen_DailyStrokeAt(100u, 180u, 100u, 20u, 600u);
+#elif COMPANION_SCREEN_DAILY_STROKE_DEMO_DIRECTION == 4u
+    printf("[screen] daily_stroke_demo direction=down start=100,20 end=100,180 duration_ms=600\r\n");
+    (void)Companion_Screen_DailyStrokeAt(100u, 20u, 100u, 180u, 600u);
+#else
+#error "COMPANION_SCREEN_DAILY_STROKE_DEMO_DIRECTION must be 1..4"
+#endif
+  }
+#elif COMPANION_SCREEN_PRODUCT_EXPRESSION_DEMO
+  s_companion_product_expression_demo_started_ms = HAL_GetTick();
+  s_companion_product_expression_demo_end_sent = false;
+  Companion_Display_EnqueueExpressionSignal(
+      COMPANION_SCREEN_PRODUCT_EXPRESSION_DEMO_SIGNAL,
+      0u);
+#elif COMPANION_SCREEN_EMOTE_DEMO
+  (void)Companion_Screen_ExpressionPreview(COMP_EPAPER_EXPRESSION_IDLE);
+#else
+  (void)Companion_Screen_ShowDaily();
+#endif
+#else
+  Companion_Display_EnqueueExpressionSignal(COMP_EPAPER_EXPRESSION_SIGNAL_BOOT_IDLE,
+                                             0u);
+#endif
+  s_companion_screen_ui_ready = true;
 
   /**
    * From here, all initialization are BLE application specific
@@ -441,6 +761,7 @@ SVCCTL_UserEvtFlowStatus_t SVCCTL_App_Notification( void *p_Pckt )
     case HCI_DISCONNECTION_COMPLETE_EVT_CODE:
     {
       s_companion_ble_connected = false;
+      Companion_Screen_RefreshBleStatus();
       connectionHandle = COMPANION_BLE_CONN_HANDLE_INVALID;
       s_companion_ble_link_mode = COMPANION_BLE_LINK_MODE_NONE;
       comp_audio_stream_set_notify_enabled(&s_companion_audio_stream, false);
@@ -465,6 +786,7 @@ SVCCTL_UserEvtFlowStatus_t SVCCTL_App_Notification( void *p_Pckt )
           p_connection_complete_event = (hci_le_connection_complete_event_rp0 *) p_meta_evt->data;
           connectionHandle = p_connection_complete_event->Connection_Handle;
           s_companion_ble_connected = true;
+          Companion_Screen_RefreshBleStatus();
           s_companion_ble_link_mode = COMPANION_BLE_LINK_MODE_NONE;
           APP_DBG_MSG("==>> Companion connected handle=0x%04X; audio high-speed link deferred until active recording\n",
                       connectionHandle);
@@ -630,6 +952,1158 @@ static void Companion_Gatt_Task(void)
   (void)companion_gatt_stm32wb_drain(Companion_Gatt_HandleEvent, NULL);
 }
 
+static uint32_t Companion_Display_PackRuntimePair(uint32_t high, uint32_t low)
+{
+  return ((high & 0xFFFFu) << 16) | (low & 0xFFFFu);
+}
+
+static void Companion_Display_RecordRuntimeSnapshot(
+    const comp_epaper_screen_runtime_snapshot_t *runtime_stats)
+{
+  if (runtime_stats == NULL)
+  {
+    return;
+  }
+
+  comp_diag_log_record_code(
+      COMP_DIAG_EVT_EPAPER_RUNTIME_SNAPSHOT,
+      runtime_stats->panel.error_count != 0u ? COMP_DIAG_SEV_WARN
+                                             : COMP_DIAG_SEV_INFO,
+      Companion_Display_PackRuntimePair(
+          (uint32_t)runtime_stats->expression.current,
+          (uint32_t)runtime_stats->expression.last_signal),
+      Companion_Display_PackRuntimePair(
+          (uint32_t)runtime_stats->display_queue.pending_count,
+          (uint32_t)runtime_stats->display_queue.high_water_count),
+      runtime_stats->display_queue.dropped_count,
+      Companion_Display_PackRuntimePair(runtime_stats->panel.deferred_count,
+                                        runtime_stats->panel.error_count));
+}
+
+static void Companion_Display_Task(void)
+{
+  comp_epaper_display_request_t request;
+  comp_epaper_screen_runtime_snapshot_t runtime_stats;
+  comp_epaper_panel_report_t report;
+  comp_epaper_panel_result_t panel_result;
+  uint8_t render_state;
+  uint8_t status_error;
+
+  Companion_Display_ProcessExpressionTick();
+
+  if (!comp_epaper_display_queue_dequeue(&s_companion_display_queue, &request))
+  {
+    return;
+  }
+
+  panel_result = comp_epaper_panel_adapter_refresh_card(&s_companion_panel_adapter,
+                                                        &request,
+                                                        &report);
+  render_state = comp_epaper_panel_adapter_render_state(panel_result);
+  status_error = comp_epaper_panel_adapter_status_error(panel_result);
+  comp_epaper_screen_runtime_snapshot(&s_companion_expression_state,
+                                      &s_companion_display_queue,
+                                      &s_companion_panel_adapter,
+                                      &runtime_stats);
+
+  comp_diag_log_record_code(COMP_DIAG_EVT_EPAPER_UPDATE_RESULT,
+                            panel_result == COMP_EPAPER_PANEL_RESULT_OK
+                                ? COMP_DIAG_SEV_INFO
+                                : COMP_DIAG_SEV_WARN,
+                            request.request_id,
+                            request.content_crc32,
+                            runtime_stats.panel.attempted_count,
+                            (uint32_t)panel_result);
+  printf("[screen] display_result id=%lu kind=%u resource_revision=%lu active_revision=%lu coherent_generation=%u generation_switches=%lu last_stale_discarded=%lu pending=%lu stale_generation_discarded=%lu panel_result=%u\r\n",
+         (unsigned long)request.request_id,
+         (unsigned)request.request_kind,
+         (unsigned long)request.resource_revision,
+         (unsigned long)runtime_stats.display_queue.active_resource_revision,
+         request.resource_revision == runtime_stats.display_queue.active_resource_revision ? 1u : 0u,
+         (unsigned long)runtime_stats.display_queue.generation_switch_count,
+         (unsigned long)runtime_stats.display_queue.last_stale_generation_discarded,
+         (unsigned long)runtime_stats.display_queue.pending_count,
+         (unsigned long)runtime_stats.display_queue.stale_generation_discard_count,
+         (unsigned)panel_result);
+  Companion_Display_RecordRuntimeSnapshot(&runtime_stats);
+  Companion_Gatt_PublishCardStatus(request.card_slot,
+                                   request.request_id,
+                                   render_state,
+                                   status_error,
+                                   request.content_crc32);
+
+  if (runtime_stats.display_queue.pending_count != 0u)
+  {
+    UTIL_SEQ_SetTask(1 << CFG_TASK_COMPANION_DISPLAY_ID, CFG_SCH_PRIO_0);
+  }
+}
+
+static uint32_t Companion_Display_NextExpressionRequestId(uint32_t request_id_hint)
+{
+  uint32_t request_id;
+
+  if (request_id_hint != 0u)
+  {
+    return request_id_hint;
+  }
+
+  request_id = s_companion_expression_next_request_id++;
+  if ((s_companion_expression_next_request_id & 0xF0000000u) !=
+      COMPANION_EPAPER_EXPRESSION_REQUEST_BASE)
+  {
+    s_companion_expression_next_request_id =
+        COMPANION_EPAPER_EXPRESSION_REQUEST_BASE | 1u;
+  }
+  return request_id;
+}
+
+static void Companion_Display_CreateExpressionTickTimer(void)
+{
+  if (s_companion_expression_tick_timer_created)
+  {
+    return;
+  }
+  if (HW_TS_Create(CFG_TIM_PROC_ID_ISR,
+                   &s_companion_expression_tick_timer_id,
+                   hw_ts_SingleShot,
+                   Companion_Display_TickTimerElapsed) == hw_ts_Successful)
+  {
+    s_companion_expression_tick_timer_created = true;
+  }
+}
+
+static void Companion_Display_TickTimerElapsed(void)
+{
+  UTIL_SEQ_SetTask(1 << CFG_TASK_COMPANION_DISPLAY_ID, CFG_SCH_PRIO_0);
+}
+
+static uint32_t Companion_Display_MsToTimerTicks(uint32_t timeout_ms)
+{
+  uint64_t timeout_us = (uint64_t)timeout_ms * 1000u;
+  uint32_t ticks =
+      (uint32_t)((timeout_us + (uint64_t)CFG_TS_TICK_VAL - 1u) /
+                 (uint64_t)CFG_TS_TICK_VAL);
+  return ticks == 0u ? 1u : ticks;
+}
+
+static void Companion_PetBehavior_Advance(void)
+{
+  uint32_t now_ms = HAL_GetTick();
+  uint32_t elapsed_ms = now_ms - s_companion_pet_behavior_last_advanced_ms;
+
+  s_companion_pet_behavior_last_advanced_ms = now_ms;
+  comp_pet_behavior_advance(&s_companion_pet_behavior, elapsed_ms);
+}
+
+static bool Companion_Display_EmitEmoteFrame(bool force_full)
+{
+  comp_emote_player_frame_t player_frame;
+  comp_epaper_expression_decision_t frame_decision;
+  comp_epaper_display_queue_result_t queue_result;
+  comp_epaper_refresh_mode_t refresh_mode;
+  uint32_t request_id;
+  uint32_t content_crc32;
+  bool touch_pose;
+
+  if (!s_companion_emote_player_ready ||
+      !s_companion_emote_player_decision_valid ||
+      !comp_emote_player_take_frame(&s_companion_emote_player, &player_frame))
+  {
+    return false;
+  }
+
+  /* CEMP supplies the approved generated-art bitmap timeline. Pet behavior
+   * still selects the clip; the displayed pixels come from external Flash so
+   * prompt/style swaps do not require internal firmware bitmap growth. */
+  frame_decision = s_companion_emote_player_decision;
+  frame_decision.name = player_frame.clip_name;
+  touch_pose = s_companion_dynamic_touch_clip != NULL &&
+               strcmp(player_frame.clip_name, s_companion_dynamic_touch_clip) == 0;
+  if (!touch_pose &&
+      frame_decision.expression == COMP_EPAPER_EXPRESSION_IDLE &&
+      player_frame.frame_in_clip != 0u)
+  {
+    /* Idle keeps a quiet first pose; only an actual interaction earns a refresh. */
+    printf("[pet-renderer] idle_frame_suppressed frame=%u in_clip=%u\r\n",
+           (unsigned)player_frame.frame_index,
+           (unsigned)player_frame.frame_in_clip);
+    return true;
+  }
+  refresh_mode = force_full ? COMP_EPAPER_REFRESH_FULL
+                            : COMP_EPAPER_REFRESH_PARTIAL_INTERACTIVE;
+  request_id = Companion_Display_NextExpressionRequestId(0u);
+  content_crc32 = comp_epaper_expression_decision_crc32(&frame_decision) ^
+                  ((uint32_t)player_frame.frame_index << 8) ^
+                  ((uint32_t)player_frame.frame_in_clip << 20) ^
+                  ((uint32_t)player_frame.frame.dirty_x << 1) ^
+                  ((uint32_t)player_frame.frame.dirty_y << 9);
+  queue_result = comp_epaper_display_queue_enqueue_expression_frame(
+      &s_companion_display_queue,
+      COMPANION_EPAPER_EXPRESSION_CARD_SLOT,
+      0u,
+      request_id,
+      &frame_decision,
+      player_frame.frame_index,
+      refresh_mode,
+      player_frame.frame.dirty_x,
+      player_frame.frame.dirty_y,
+      player_frame.frame.dirty_width,
+      player_frame.frame.dirty_height,
+      content_crc32);
+  if (queue_result != COMP_EPAPER_DISPLAY_QUEUE_OK)
+  {
+    return false;
+  }
+  s_companion_last_pet_pose_valid = false;
+  Companion_Gatt_PublishCardStatus(
+      COMPANION_EPAPER_EXPRESSION_CARD_SLOT,
+      request_id,
+      (uint8_t)COMP_EPAPER_RENDER_STATE_ACCEPTED,
+      0u,
+      content_crc32);
+  UTIL_SEQ_SetTask(1 << CFG_TASK_COMPANION_DISPLAY_ID, CFG_SCH_PRIO_0);
+  printf("[pet-renderer] clip=%s frame=%u in_clip=%u phase=%u touch=%u refresh=%u duration_ms=%u source=external_flash\r\n",
+         player_frame.clip_name,
+         (unsigned)player_frame.frame_index,
+         (unsigned)player_frame.frame_in_clip,
+         (unsigned)player_frame.phase,
+         touch_pose ? 1u : 0u,
+         (unsigned)refresh_mode,
+         (unsigned)player_frame.frame.duration_ms);
+  return true;
+}
+
+static bool Companion_Display_EnqueuePetPose(
+    const comp_epaper_expression_decision_t *decision,
+    const comp_pet_expression_pose_t *pose,
+    comp_epaper_refresh_mode_t refresh_mode,
+    uint32_t request_id_hint)
+{
+  comp_epaper_display_queue_result_t queue_result;
+  uint32_t request_id;
+  uint32_t content_crc32;
+
+  if (decision == NULL || !comp_pet_expression_pose_is_valid(pose))
+  {
+    return false;
+  }
+  request_id = Companion_Display_NextExpressionRequestId(request_id_hint);
+  content_crc32 = comp_epaper_expression_decision_crc32(decision) ^
+                  ((uint32_t)(uint8_t)pose->gaze_x << 24) ^
+                  ((uint32_t)(uint8_t)pose->gaze_y << 16) ^
+                  ((uint32_t)pose->eye_open << 8) ^
+                  ((uint32_t)(uint8_t)pose->eyelid_tilt << 4) ^
+                  ((uint32_t)pose->eye_width << 1) ^
+                  ((uint32_t)pose->eye_spacing << 18) ^
+                  ((uint32_t)(uint8_t)pose->eye_pair_tilt << 7) ^
+                  ((uint32_t)pose->highlight_scale << 9) ^
+                  ((uint32_t)(uint8_t)pose->face_shift_x << 20) ^
+                  ((uint32_t)(uint8_t)pose->face_shift_y << 12) ^
+                  ((uint32_t)pose->brow_lift << 6) ^
+                  ((uint32_t)(uint8_t)pose->brow_asymmetry << 2) ^
+                  ((uint32_t)pose->mouth_scale << 14) ^
+                  ((uint32_t)pose->brow << 10) ^
+                  ((uint32_t)pose->mouth << 5) ^
+                  ((uint32_t)pose->cheek_strength << 3) ^
+                  (uint32_t)pose->mark;
+  queue_result = comp_epaper_display_queue_enqueue_pet_expression(
+      &s_companion_display_queue,
+      COMPANION_EPAPER_EXPRESSION_CARD_SLOT,
+      0u,
+      request_id,
+      decision,
+      pose,
+      refresh_mode,
+      COMPANION_PET_FEATURE_DIRTY_X,
+      COMPANION_PET_FEATURE_DIRTY_Y,
+      COMPANION_PET_FEATURE_DIRTY_WIDTH,
+      COMPANION_PET_FEATURE_DIRTY_HEIGHT,
+      content_crc32);
+  if (queue_result == COMP_EPAPER_DISPLAY_QUEUE_OK)
+  {
+    s_companion_last_pet_pose = *pose;
+    s_companion_last_pet_pose_valid = true;
+    Companion_Gatt_PublishCardStatus(
+        COMPANION_EPAPER_EXPRESSION_CARD_SLOT,
+        request_id,
+        (uint8_t)COMP_EPAPER_RENDER_STATE_ACCEPTED,
+        0u,
+        content_crc32);
+    UTIL_SEQ_SetTask(1 << CFG_TASK_COMPANION_DISPLAY_ID, CFG_SCH_PRIO_0);
+    return true;
+  }
+  return false;
+}
+
+static void Companion_Display_ScheduleExpressionTick(uint32_t now_ms)
+{
+  comp_epaper_expression_state_snapshot_t expression_stats;
+  uint32_t recover_ms;
+  uint32_t remaining_ms = 0u;
+  uint32_t player_remaining_ms;
+
+  if (!s_companion_expression_tick_timer_created)
+  {
+    return;
+  }
+
+  comp_epaper_expression_state_snapshot(&s_companion_expression_state,
+                                        &expression_stats);
+  recover_ms = expression_stats.auto_recover_ms;
+  HW_TS_Stop(s_companion_expression_tick_timer_id);
+
+  if (expression_stats.initialized &&
+      recover_ms != COMP_EPAPER_EXPRESSION_AUTO_RECOVER_DISABLED_MS)
+  {
+    remaining_ms =
+        expression_stats.visible_age_ms >= recover_ms
+            ? 1u
+            : recover_ms - expression_stats.visible_age_ms;
+  }
+  player_remaining_ms = s_companion_emote_player_ready
+                            ? comp_emote_player_next_frame_in_ms(
+                                  &s_companion_emote_player)
+                            : 0u;
+  if (player_remaining_ms != 0u &&
+      (remaining_ms == 0u || player_remaining_ms < remaining_ms))
+  {
+    remaining_ms = player_remaining_ms;
+  }
+  if (remaining_ms == 0u)
+  {
+    return;
+  }
+  s_companion_expression_tick_started_ms = now_ms;
+  HW_TS_Start(s_companion_expression_tick_timer_id,
+              Companion_Display_MsToTimerTicks(remaining_ms));
+}
+
+static void Companion_Display_ProcessExpressionTick(void)
+{
+  comp_epaper_expression_decision_t decision;
+  comp_epaper_expression_state_t previous_state = s_companion_expression_state;
+  uint32_t now_ms;
+  uint32_t elapsed_ms;
+  bool expression_changed = false;
+
+  if (!s_companion_expression_tick_timer_created)
+  {
+    return;
+  }
+
+  now_ms = HAL_GetTick();
+#if COMPANION_SCREEN_PRODUCT_EXPRESSION_DEMO
+  if (!s_companion_product_expression_demo_end_sent &&
+      COMPANION_SCREEN_PRODUCT_EXPRESSION_DEMO_END_SIGNAL <
+          COMP_EPAPER_EXPRESSION_SIGNAL_COUNT &&
+      now_ms - s_companion_product_expression_demo_started_ms >=
+          COMPANION_SCREEN_PRODUCT_EXPRESSION_DEMO_END_AFTER_MS)
+  {
+    s_companion_product_expression_demo_end_sent = true;
+    printf("[screen] product_demo_end signal=%u elapsed_ms=%lu\r\n",
+           (unsigned)COMPANION_SCREEN_PRODUCT_EXPRESSION_DEMO_END_SIGNAL,
+           (unsigned long)(now_ms - s_companion_product_expression_demo_started_ms));
+    Companion_Display_EnqueueExpressionSignal(
+        COMPANION_SCREEN_PRODUCT_EXPRESSION_DEMO_END_SIGNAL,
+        0u);
+    Companion_Display_ScheduleExpressionTick(now_ms);
+    return;
+  }
+#endif
+  elapsed_ms = now_ms - s_companion_expression_tick_started_ms;
+  if (elapsed_ms == 0u)
+  {
+    Companion_Display_ScheduleExpressionTick(now_ms);
+    return;
+  }
+
+  if (s_companion_expression_state.initialized &&
+      comp_epaper_expression_state_tick(&s_companion_expression_state,
+                                        elapsed_ms,
+                                        &decision))
+  {
+    expression_changed = true;
+    Companion_Display_EnqueueExpressionDecision(&decision, &previous_state, 0u);
+  }
+  if (!expression_changed &&
+      s_companion_emote_player_ready &&
+      comp_emote_player_tick(&s_companion_emote_player, elapsed_ms))
+  {
+    Companion_Display_EmitEmoteFrame(false);
+  }
+  Companion_Display_ScheduleExpressionTick(now_ms);
+}
+
+static void Companion_Display_EnqueueExpressionDecision(
+    const comp_epaper_expression_decision_t *decision,
+    const comp_epaper_expression_state_t *previous_state,
+    uint32_t request_id_hint)
+{
+  uint32_t request_id;
+  uint32_t content_crc32;
+  comp_epaper_display_queue_snapshot_t queue_stats;
+  comp_epaper_display_queue_result_t queue_result;
+  comp_emote_player_snapshot_t player_snapshot;
+  bool player_started;
+
+  if (decision == NULL)
+  {
+    return;
+  }
+  if (s_companion_dynamic_touch_clip != NULL &&
+      (decision->name == NULL ||
+       strcmp(decision->name, s_companion_dynamic_touch_clip) != 0))
+  {
+    s_companion_dynamic_touch_clip = NULL;
+    s_companion_dynamic_touch_is_stroke = false;
+  }
+
+#if COMPANION_SCREEN_MENU_ENABLED
+  comp_screen_presentation_action_t presentation_action =
+      comp_screen_presentation_apply_product_expression(
+          &s_companion_screen_presentation,
+          decision->expression);
+  if (presentation_action == COMP_SCREEN_PRESENTATION_ACTION_IGNORE)
+  {
+    return;
+  }
+  if (presentation_action == COMP_SCREEN_PRESENTATION_ACTION_RESTORE_MENU)
+  {
+    printf("[screen] presentation=restore_menu view=%u page=%u language=%u\r\n",
+           (unsigned)s_companion_screen_presentation.menu_view,
+           (unsigned)s_companion_screen_presentation.menu_page,
+           (unsigned)s_companion_screen_presentation.menu_language);
+    Companion_Screen_MenuRequest(
+        s_companion_screen_presentation.menu_view,
+        s_companion_screen_presentation.menu_flags,
+        s_companion_screen_presentation.menu_language,
+        s_companion_screen_presentation.menu_page);
+    return;
+  }
+#endif
+
+  Companion_PetBehavior_Advance();
+  comp_pet_behavior_apply_expression(&s_companion_pet_behavior,
+                                     decision->expression);
+  printf("[pet-emotion] expression=%s mood=%s valence=%d arousal=%u curiosity=%u affection=%u attachment=%u quiet_ms=%lu engagement=%u interactions=%lu\r\n",
+         comp_epaper_expression_name(decision->expression),
+         comp_pet_behavior_mood_name(comp_pet_behavior_mood(&s_companion_pet_behavior)),
+         (int)s_companion_pet_behavior.valence,
+         (unsigned)s_companion_pet_behavior.arousal,
+         (unsigned)s_companion_pet_behavior.curiosity,
+         (unsigned)s_companion_pet_behavior.affection,
+         (unsigned)s_companion_pet_behavior.attachment,
+         (unsigned long)s_companion_pet_behavior.quiet_elapsed_ms,
+         (unsigned)s_companion_pet_behavior.engagement,
+         (unsigned long)s_companion_pet_behavior.interaction_count);
+  if (s_companion_emote_player_ready)
+  {
+    s_companion_emote_player_decision = *decision;
+    s_companion_emote_player_decision_valid = true;
+    player_started = s_companion_expression_transition_immediate
+                         ? comp_emote_player_play_now_name(
+                               &s_companion_emote_player,
+                               decision->name,
+                               false)
+                         : comp_emote_player_play_after_tail_name(
+                               &s_companion_emote_player,
+                               decision->name,
+                               false);
+    if (player_started)
+    {
+      if (s_companion_expression_transition_immediate)
+      {
+        printf("[emote-player] transition=immediate name=%s\r\n",
+               decision->name);
+      }
+      comp_emote_player_snapshot(&s_companion_emote_player, &player_snapshot);
+      if (player_snapshot.handoff_pending)
+      {
+        printf("[emote-player] handoff_pending name=%s\r\n", decision->name);
+        Companion_Display_ScheduleExpressionTick(HAL_GetTick());
+        return;
+      }
+      if (Companion_Display_EmitEmoteFrame(false))
+      {
+        Companion_Display_ScheduleExpressionTick(HAL_GetTick());
+        return;
+      }
+      comp_emote_player_stop(&s_companion_emote_player);
+      s_companion_emote_player_decision_valid = false;
+    }
+  }
+
+  request_id = Companion_Display_NextExpressionRequestId(request_id_hint);
+  content_crc32 = comp_epaper_expression_decision_crc32(decision);
+  queue_result = comp_epaper_display_queue_enqueue_expression(
+      &s_companion_display_queue,
+      COMPANION_EPAPER_EXPRESSION_CARD_SLOT,
+      0u,
+      request_id,
+      decision,
+      content_crc32);
+  comp_epaper_display_queue_snapshot(&s_companion_display_queue, &queue_stats);
+
+  if (queue_result == COMP_EPAPER_DISPLAY_QUEUE_OK)
+  {
+    comp_diag_log_record_code(COMP_DIAG_EVT_EPAPER_RENDER_REQUEST,
+                              COMP_DIAG_SEV_INFO,
+                              request_id,
+                              content_crc32,
+                              (uint32_t)queue_stats.pending_count,
+                              ((uint32_t)decision->expression << 16) |
+                                  (uint32_t)decision->signal);
+    Companion_Gatt_PublishCardStatus(
+        COMPANION_EPAPER_EXPRESSION_CARD_SLOT,
+        request_id,
+        (uint8_t)COMP_EPAPER_RENDER_STATE_ACCEPTED,
+        0u,
+        content_crc32);
+    Companion_Display_ScheduleExpressionTick(HAL_GetTick());
+    UTIL_SEQ_SetTask(1 << CFG_TASK_COMPANION_DISPLAY_ID, CFG_SCH_PRIO_0);
+  }
+  else
+  {
+    uint8_t status_error = comp_epaper_display_queue_status_error(queue_result);
+    uint8_t render_state =
+        queue_result == COMP_EPAPER_DISPLAY_QUEUE_FULL
+            ? (uint8_t)COMP_EPAPER_RENDER_STATE_BUSY
+            : (uint8_t)COMP_EPAPER_RENDER_STATE_FAILED;
+    if (previous_state != NULL)
+    {
+      s_companion_expression_state = *previous_state;
+    }
+    comp_diag_log_record_code(COMP_DIAG_EVT_EPAPER_UPDATE_RESULT,
+                              queue_result == COMP_EPAPER_DISPLAY_QUEUE_FULL
+                                  ? COMP_DIAG_SEV_WARN
+                                  : COMP_DIAG_SEV_ERROR,
+                              request_id,
+                              content_crc32,
+                              queue_stats.dropped_count,
+                              status_error);
+    Companion_Gatt_PublishCardStatus(COMPANION_EPAPER_EXPRESSION_CARD_SLOT,
+                                     request_id,
+                                     render_state,
+                                     status_error,
+                                     content_crc32);
+    Companion_Display_ScheduleExpressionTick(HAL_GetTick());
+  }
+}
+
+static bool Companion_Screen_MenuRequestMode(
+    comp_screen_menu_view_t view,
+    uint8_t flags,
+    comp_screen_menu_language_t language,
+    uint8_t home_page,
+    comp_epaper_refresh_mode_t refresh_mode)
+{
+  comp_epaper_display_queue_result_t queue_result;
+  uint32_t request_id;
+  uint32_t content_crc32;
+  size_t discarded_expression_frames;
+  size_t discarded_pet_expression_frames;
+
+  flags &= (uint8_t)~(COMP_SCREEN_MENU_FLAG_RECORDING |
+                      COMP_SCREEN_MENU_FLAG_TOUCH_OK);
+  flags |= Companion_Screen_RuntimeMenuFlags() &
+           (COMP_SCREEN_MENU_FLAG_RECORDING | COMP_SCREEN_MENU_FLAG_TOUCH_OK);
+  flags = comp_screen_menu_with_ble_flag(flags, s_companion_ble_connected);
+  if (s_companion_emote_player_ready)
+  {
+    comp_emote_player_stop(&s_companion_emote_player);
+    s_companion_emote_player_decision_valid = false;
+    Companion_Display_ScheduleExpressionTick(HAL_GetTick());
+  }
+  discarded_expression_frames = comp_epaper_display_queue_discard_kind(
+      &s_companion_display_queue,
+      COMP_EPAPER_DISPLAY_REQUEST_EXPRESSION);
+  discarded_pet_expression_frames = comp_epaper_display_queue_discard_kind(
+      &s_companion_display_queue,
+      COMP_EPAPER_DISPLAY_REQUEST_PET_EXPRESSION);
+  request_id = s_companion_menu_next_request_id++;
+  content_crc32 = 0x811C9DC5u;
+  content_crc32 = (content_crc32 ^ (uint8_t)view) * 0x01000193u;
+  content_crc32 = (content_crc32 ^ flags) * 0x01000193u;
+  content_crc32 = (content_crc32 ^ (uint8_t)language) * 0x01000193u;
+  content_crc32 = (content_crc32 ^ home_page) * 0x01000193u;
+  content_crc32 = (content_crc32 ^ (uint8_t)refresh_mode) * 0x01000193u;
+  queue_result = comp_epaper_display_queue_enqueue_menu(
+      &s_companion_display_queue,
+      0xFEu,
+      request_id,
+      (uint8_t)view,
+      flags,
+      (uint8_t)language,
+      home_page,
+      refresh_mode,
+      content_crc32);
+  if (queue_result == COMP_EPAPER_DISPLAY_QUEUE_OK)
+  {
+    comp_screen_presentation_show_menu(
+        &s_companion_screen_presentation,
+        view,
+        (uint8_t)(flags &
+                  (uint8_t)~(COMP_SCREEN_MENU_FLAG_PRESS_ACTIVE |
+                             COMP_SCREEN_MENU_FLAG_PRESS_ITEM_MASK)),
+        language,
+        home_page);
+    printf("[screen] menu enqueue id=%lu view=%u page=%u language=%u flags=0x%02X refresh=%u discarded_expression_frames=%u discarded_pet_expression_frames=%u\r\n",
+           (unsigned long)request_id,
+           (unsigned)view,
+           (unsigned)home_page,
+           (unsigned)language,
+           (unsigned)flags,
+           (unsigned)refresh_mode,
+           (unsigned)discarded_expression_frames,
+           (unsigned)discarded_pet_expression_frames);
+    UTIL_SEQ_SetTask(1 << CFG_TASK_COMPANION_DISPLAY_ID, CFG_SCH_PRIO_0);
+    return true;
+  }
+  else
+  {
+    printf("[screen] menu enqueue_failed result=%u view=%u\r\n",
+           (unsigned)queue_result,
+           (unsigned)view);
+    return false;
+  }
+}
+
+void Companion_Screen_MenuRequest(comp_screen_menu_view_t view,
+                                  uint8_t flags,
+                                  comp_screen_menu_language_t language,
+                                  uint8_t home_page)
+{
+  (void)Companion_Screen_MenuRequestMode(
+      view,
+      flags,
+      language,
+      home_page,
+      COMP_EPAPER_REFRESH_PARTIAL_INTERACTIVE);
+}
+
+bool Companion_Screen_MenuMaintenance(void)
+{
+  if (s_companion_screen_presentation.mode != COMP_SCREEN_PRESENTATION_MENU)
+  {
+    return false;
+  }
+  return Companion_Screen_MenuRequestMode(
+      s_companion_screen_presentation.menu_view,
+      s_companion_screen_presentation.menu_flags,
+      s_companion_screen_presentation.menu_language,
+      s_companion_screen_presentation.menu_page,
+      COMP_EPAPER_REFRESH_MAINTENANCE);
+}
+
+bool Companion_Screen_ExpressionMaintenance(void)
+{
+  comp_epaper_expression_decision_t decision;
+  comp_emote_player_snapshot_t player_snapshot;
+
+  if (s_companion_screen_presentation.mode !=
+          COMP_SCREEN_PRESENTATION_EXPRESSION ||
+      !s_companion_last_pet_pose_valid)
+  {
+    return false;
+  }
+  if (s_companion_emote_player_ready)
+  {
+    comp_emote_player_snapshot(&s_companion_emote_player, &player_snapshot);
+    if (player_snapshot.playing || player_snapshot.handoff_pending ||
+        player_snapshot.frame_ready)
+    {
+      return false;
+    }
+  }
+  decision = (comp_epaper_expression_decision_t){
+      .expression = s_companion_last_pet_pose.expression,
+      .signal = s_companion_expression_state.initialized
+                    ? s_companion_expression_state.last_signal
+                    : COMP_EPAPER_EXPRESSION_SIGNAL_BOOT_IDLE,
+      .priority = comp_epaper_expression_priority(
+          s_companion_last_pet_pose.expression),
+      .name = comp_epaper_expression_name(s_companion_last_pet_pose.expression),
+      .title = "Pet maintenance",
+      .body = "Contrast cleanup",
+      .footer = "EXPR MAINT",
+      .reason = "quiet touch cleanup",
+  };
+  return Companion_Display_EnqueuePetPose(&decision,
+                                           &s_companion_last_pet_pose,
+                                           COMP_EPAPER_REFRESH_MAINTENANCE,
+                                           0u);
+}
+
+static void Companion_Screen_RefreshBleStatus(void)
+{
+#if COMPANION_SCREEN_MENU_ENABLED
+  uint8_t refreshed_flags;
+
+  if (s_companion_screen_presentation.mode != COMP_SCREEN_PRESENTATION_MENU ||
+      (s_companion_screen_presentation.menu_view != COMP_SCREEN_MENU_VIEW_STATUS &&
+       s_companion_screen_presentation.menu_view != COMP_SCREEN_MENU_VIEW_PHONE))
+  {
+    return;
+  }
+  refreshed_flags = comp_screen_menu_with_ble_flag(
+      s_companion_screen_presentation.menu_flags, s_companion_ble_connected);
+  if (refreshed_flags == s_companion_screen_presentation.menu_flags)
+  {
+    return;
+  }
+  printf("[screen] status_ble connected=%u refresh=partial\r\n",
+         s_companion_ble_connected ? 1u : 0u);
+  Companion_Screen_MenuRequest(s_companion_screen_presentation.menu_view,
+                               refreshed_flags,
+                               s_companion_screen_presentation.menu_language,
+                               s_companion_screen_presentation.menu_page);
+#endif
+}
+
+static bool Companion_Screen_StartExpression(comp_epaper_expression_t expression,
+                                             bool force_full,
+                                             bool daily,
+                                             const char *reason)
+{
+  comp_epaper_expression_decision_t decision;
+  const char *clip_name;
+
+  if (!s_companion_emote_player_ready ||
+      !comp_epaper_expression_is_supported(expression))
+  {
+    return false;
+  }
+  clip_name = comp_epaper_expression_name(expression);
+  decision = (comp_epaper_expression_decision_t){
+      .expression = expression,
+      .signal = COMP_EPAPER_EXPRESSION_SIGNAL_BOOT_IDLE,
+      .priority = comp_epaper_expression_priority(expression),
+      .name = clip_name,
+      .title = clip_name,
+      .body = "preview",
+      .footer = "external_flash",
+      .reason = reason,
+  };
+  s_companion_emote_player_decision = decision;
+  s_companion_emote_player_decision_valid = true;
+  if (daily)
+  {
+    Companion_PetBehavior_Advance();
+    comp_pet_behavior_apply_expression(&s_companion_pet_behavior, expression);
+    comp_screen_presentation_show_daily(&s_companion_screen_presentation);
+  }
+  else
+  {
+    comp_screen_presentation_show_expression(&s_companion_screen_presentation,
+                                             expression);
+  }
+  Companion_Display_CreateExpressionTickTimer();
+  if (!comp_emote_player_play_now_name(&s_companion_emote_player,
+                                       clip_name,
+                                       false) ||
+      !Companion_Display_EmitEmoteFrame(force_full))
+  {
+    comp_emote_player_stop(&s_companion_emote_player);
+    s_companion_emote_player_decision_valid = false;
+    comp_screen_presentation_show_menu(
+        &s_companion_screen_presentation,
+        s_companion_screen_presentation.menu_view,
+        s_companion_screen_presentation.menu_flags,
+        s_companion_screen_presentation.menu_language,
+        s_companion_screen_presentation.menu_page);
+    printf("[emote-player] preview_failed name=%s\r\n", clip_name);
+    return false;
+  }
+  printf("[emote-player] preview_started name=%s\r\n", clip_name);
+  Companion_Display_ScheduleExpressionTick(HAL_GetTick());
+  return true;
+}
+
+bool Companion_Screen_ExpressionPreview(comp_epaper_expression_t expression)
+{
+  return Companion_Screen_StartExpression(expression, false, false, "touch_menu");
+}
+
+bool Companion_Screen_ShowDaily(void)
+{
+  return Companion_Screen_StartExpression(COMP_EPAPER_EXPRESSION_IDLE,
+                                          false,
+                                          true,
+                                          "daily_navigation");
+}
+
+bool Companion_Screen_DailyTap(void)
+{
+  return Companion_Screen_DailyTapAt(100u, 100u);
+}
+
+bool Companion_Screen_DailyTapAt(uint16_t x, uint16_t y)
+{
+  comp_epaper_expression_decision_t decision;
+  comp_epaper_expression_state_t previous_state;
+  comp_pet_attention_direction_t direction;
+
+  if (s_companion_screen_presentation.mode !=
+      COMP_SCREEN_PRESENTATION_EXPRESSION)
+  {
+    return false;
+  }
+  direction = comp_pet_attention_from_touch(x, y, 200u, 200u);
+  Companion_PetBehavior_Advance();
+  comp_pet_behavior_note_touch(&s_companion_pet_behavior, x, y, 200u, 200u);
+  s_companion_touch_attention_clip = comp_pet_attention_clip_name(direction);
+  s_companion_dynamic_touch_clip = s_companion_touch_attention_clip;
+  s_companion_dynamic_touch_x = x;
+  s_companion_dynamic_touch_y = y;
+  s_companion_dynamic_touch_is_stroke = false;
+  s_companion_expression_transition_immediate = true;
+  previous_state = s_companion_expression_state;
+  if (s_companion_expression_state.initialized &&
+      s_companion_expression_state.current == COMP_EPAPER_EXPRESSION_HAPPY &&
+      comp_epaper_expression_decide(COMP_EPAPER_EXPRESSION_SIGNAL_SPEAKER_RESULT,
+                                    &decision))
+  {
+    /* A second touch is an intentional new eye-contact cue, not a duplicate. */
+    decision.name = s_companion_touch_attention_clip;
+    decision.title = "Touch response";
+    decision.body = "Directional eye contact";
+    decision.footer = "EXPR ATTENTION";
+    decision.reason = "daily touch direction";
+    s_companion_expression_state.visible_age_ms = 0u;
+    Companion_Display_EnqueueExpressionDecision(&decision, &previous_state, 0u);
+  }
+  else
+  {
+    Companion_Display_EnqueueExpressionSignal(
+        COMP_EPAPER_EXPRESSION_SIGNAL_SPEAKER_RESULT,
+        0u);
+  }
+  s_companion_expression_transition_immediate = false;
+  printf("[pet-attention] x=%u y=%u direction=%u clip=%s mood=%s valence=%d arousal=%u curiosity=%u affection=%u attachment=%u engagement=%u\r\n",
+         (unsigned)x,
+         (unsigned)y,
+         (unsigned)direction,
+         s_companion_touch_attention_clip,
+         comp_pet_behavior_mood_name(comp_pet_behavior_mood(&s_companion_pet_behavior)),
+         (int)s_companion_pet_behavior.valence,
+         (unsigned)s_companion_pet_behavior.arousal,
+         (unsigned)s_companion_pet_behavior.curiosity,
+         (unsigned)s_companion_pet_behavior.affection,
+         (unsigned)s_companion_pet_behavior.attachment,
+         (unsigned)s_companion_pet_behavior.engagement);
+  s_companion_touch_attention_clip = NULL;
+  Companion_Display_ScheduleExpressionTick(HAL_GetTick());
+  return true;
+}
+
+bool Companion_Screen_DailyStrokeAt(uint16_t start_x,
+                                    uint16_t start_y,
+                                    uint16_t end_x,
+                                    uint16_t end_y,
+                                    uint32_t duration_ms)
+{
+  comp_epaper_expression_decision_t decision;
+  comp_epaper_expression_state_t previous_state;
+  comp_pet_attention_direction_t attention;
+  comp_pet_stroke_direction_t stroke;
+
+  if (s_companion_screen_presentation.mode !=
+      COMP_SCREEN_PRESENTATION_EXPRESSION)
+  {
+    return false;
+  }
+  stroke = comp_pet_behavior_stroke_direction(start_x, start_y, end_x, end_y);
+  if (stroke == COMP_PET_STROKE_NONE)
+  {
+    return Companion_Screen_DailyTapAt(end_x, end_y);
+  }
+  attention = comp_pet_attention_from_touch(end_x, end_y, 200u, 200u);
+  Companion_PetBehavior_Advance();
+  comp_pet_behavior_note_stroke(&s_companion_pet_behavior,
+                                 start_x,
+                                 start_y,
+                                 end_x,
+                                 end_y,
+                                 200u,
+                                 200u,
+                                 duration_ms);
+  s_companion_touch_attention_clip = comp_pet_attention_clip_name(attention);
+  s_companion_dynamic_touch_clip = s_companion_touch_attention_clip;
+  s_companion_dynamic_touch_x = end_x;
+  s_companion_dynamic_touch_y = end_y;
+  s_companion_dynamic_touch_is_stroke = true;
+  s_companion_expression_transition_immediate = true;
+  previous_state = s_companion_expression_state;
+  if (s_companion_expression_state.initialized &&
+      s_companion_expression_state.current == COMP_EPAPER_EXPRESSION_HAPPY &&
+      comp_epaper_expression_decide(COMP_EPAPER_EXPRESSION_SIGNAL_SPEAKER_RESULT,
+                                    &decision))
+  {
+    decision.name = s_companion_touch_attention_clip;
+    decision.title = "Stroke response";
+    decision.body = comp_pet_behavior_stroke_name(stroke);
+    decision.footer = "EXPR STROKE";
+    decision.reason = "daily stroke direction";
+    s_companion_expression_state.visible_age_ms = 0u;
+    Companion_Display_EnqueueExpressionDecision(&decision, &previous_state, 0u);
+  }
+  else
+  {
+    Companion_Display_EnqueueExpressionSignal(
+        COMP_EPAPER_EXPRESSION_SIGNAL_SPEAKER_RESULT,
+        0u);
+  }
+  s_companion_expression_transition_immediate = false;
+  printf("[pet-stroke] direction=%s start=%u,%u end=%u,%u duration_ms=%lu clip=%s mood=%s valence=%d arousal=%u curiosity=%u affection=%u attachment=%u engagement=%u\r\n",
+         comp_pet_behavior_stroke_name(stroke),
+         (unsigned)start_x,
+         (unsigned)start_y,
+         (unsigned)end_x,
+         (unsigned)end_y,
+         (unsigned long)duration_ms,
+         s_companion_touch_attention_clip,
+         comp_pet_behavior_mood_name(comp_pet_behavior_mood(&s_companion_pet_behavior)),
+         (int)s_companion_pet_behavior.valence,
+         (unsigned)s_companion_pet_behavior.arousal,
+         (unsigned)s_companion_pet_behavior.curiosity,
+         (unsigned)s_companion_pet_behavior.affection,
+         (unsigned)s_companion_pet_behavior.attachment,
+         (unsigned)s_companion_pet_behavior.engagement);
+  s_companion_touch_attention_clip = NULL;
+  Companion_Display_ScheduleExpressionTick(HAL_GetTick());
+  return true;
+}
+
+bool Companion_Screen_IsReady(void)
+{
+  return s_companion_screen_ui_ready;
+}
+
+bool Companion_Screen_IsMenuVisible(void)
+{
+  return s_companion_screen_presentation.mode == COMP_SCREEN_PRESENTATION_MENU;
+}
+
+static void Companion_Display_EnqueueExpressionSignal(
+    comp_epaper_expression_signal_t signal,
+    uint32_t request_id_hint)
+{
+  comp_epaper_expression_decision_t decision;
+  comp_epaper_expression_state_t previous_state = s_companion_expression_state;
+
+  if (!comp_epaper_expression_state_apply_signal(&s_companion_expression_state,
+                                                 signal,
+                                                 &decision))
+  {
+    if (s_companion_expression_state.suppressed_duplicate_count !=
+        previous_state.suppressed_duplicate_count)
+    {
+      Companion_Display_ScheduleExpressionTick(HAL_GetTick());
+    }
+    return;
+  }
+
+  if (signal == COMP_EPAPER_EXPRESSION_SIGNAL_SPEAKER_RESULT &&
+      s_companion_touch_attention_clip != NULL)
+  {
+    decision.name = s_companion_touch_attention_clip;
+    decision.title = s_companion_dynamic_touch_is_stroke ? "Stroke response" :
+                                                         "Touch response";
+    decision.body = s_companion_dynamic_touch_is_stroke ? "Directional stroke" :
+                                                        "Directional eye contact";
+    decision.footer = s_companion_dynamic_touch_is_stroke ? "EXPR STROKE" :
+                                                          "EXPR ATTENTION";
+    decision.reason = s_companion_dynamic_touch_is_stroke ? "daily stroke direction" :
+                                                          "daily touch direction";
+  }
+  else if (s_companion_dynamic_touch_clip != NULL &&
+           (decision.name == NULL ||
+            strcmp(decision.name, s_companion_dynamic_touch_clip) != 0))
+  {
+    s_companion_dynamic_touch_clip = NULL;
+  }
+
+  Companion_Display_EnqueueExpressionDecision(&decision,
+                                              &previous_state,
+                                              request_id_hint);
+}
+
+static void Companion_Display_EnqueueExpressionEvent(uint16_t event_code,
+                                                     uint8_t severity,
+                                                     uint32_t request_id_hint,
+                                                     uint32_t arg0,
+                                                     uint32_t arg1,
+                                                     uint32_t arg2,
+                                                     uint32_t arg3)
+{
+  comp_epaper_expression_signal_t signal;
+  if (comp_epaper_expression_signal_from_diag_event(event_code,
+                                                   severity,
+                                                   arg0,
+                                                   arg1,
+                                                   arg2,
+                                                   arg3,
+                                                   &signal))
+  {
+    Companion_Display_EnqueueExpressionSignal(signal, request_id_hint);
+  }
+}
+
+static void Companion_Display_ApplyDeviceStatusExpressionHint(
+    const companion_gatt_device_status_v1_t *status)
+{
+  comp_epaper_expression_signal_t signal;
+  if (status == NULL)
+  {
+    return;
+  }
+
+  if (comp_epaper_expression_signal_from_device_status(status->active_mode,
+                                                       status->fault_bitmap,
+                                                       &signal))
+  {
+    Companion_Display_EnqueueExpressionSignal(signal, 0u);
+  }
+}
+
+static void Companion_Display_ApplyBatteryExpressionHint(
+    const companion_gatt_battery_charge_v1_t *status)
+{
+  if (status == NULL)
+  {
+    return;
+  }
+
+  Companion_Display_EnqueueExpressionEvent(
+      COMP_DIAG_EVT_BATTERY_CHARGING_SAMPLE,
+      COMP_DIAG_SEV_INFO,
+      0u,
+      (uint32_t)status->percent,
+      (uint32_t)status->millivolts,
+      (uint32_t)status->charger_present,
+      (uint32_t)status->charge_state);
+}
+
+static void Companion_Display_ApplyOtaExpressionHint(
+    const companion_gatt_ota_readiness_v1_t *readiness)
+{
+  comp_epaper_expression_signal_t signal;
+  if (readiness == NULL)
+  {
+    return;
+  }
+
+  if (comp_epaper_expression_signal_from_ota_readiness(
+          readiness->blocker_bitmap,
+          &signal))
+  {
+    Companion_Display_EnqueueExpressionSignal(signal, 0u);
+  }
+}
+
+static void Companion_Display_ApplyMeetingStatusExpressionHint(
+    const companion_gatt_meeting_status_v1_t *status)
+{
+  comp_epaper_expression_signal_t signal;
+  if (status == NULL)
+  {
+    return;
+  }
+
+  if (comp_epaper_expression_signal_from_meeting_status(status->state,
+                                                        status->summary_state,
+                                                        status->sync_state,
+                                                        status->last_error,
+                                                        &signal))
+  {
+    Companion_Display_EnqueueExpressionSignal(signal, 0u);
+  }
+}
+
+static void Companion_Display_ApplySpeakerStatusExpressionHint(
+    const companion_gatt_speaker_status_v1_t *status)
+{
+  comp_epaper_expression_signal_t signal;
+  if (status == NULL)
+  {
+    return;
+  }
+
+  if (comp_epaper_expression_signal_from_speaker_status(status->state,
+                                                        status->last_error,
+                                                        &signal))
+  {
+    Companion_Display_EnqueueExpressionSignal(signal, 0u);
+  }
+}
+
+static void Companion_Display_ApplyWakeWordStatusExpressionHint(
+    const companion_gatt_wake_word_status_v1_t *status)
+{
+  comp_epaper_expression_signal_t signal;
+  if (status == NULL)
+  {
+    return;
+  }
+
+  if (comp_epaper_expression_signal_from_wake_word_status(status->armed,
+                                                          status->engine_state,
+                                                          status->last_event,
+                                                          status->last_error,
+                                                          &signal))
+  {
+    Companion_Display_EnqueueExpressionSignal(signal, 0u);
+  }
+}
+
+static bool Companion_Settings_WantsSleepy(
+    const companion_gatt_settings_v1_t *settings)
+{
+  if (settings == NULL)
+  {
+    return false;
+  }
+  return settings->display_brightness == 0u ||
+         ((settings->flags & COMPANION_SETTINGS_FLAG_QUIET_HOURS_ACTIVE) != 0u);
+}
+
+static void Companion_Display_ApplySettingsExpressionHint(
+    const companion_gatt_settings_v1_t *settings)
+{
+  if (Companion_Settings_WantsSleepy(settings))
+  {
+    Companion_Display_EnqueueExpressionSignal(
+        COMP_EPAPER_EXPRESSION_SIGNAL_SETTINGS_SLEEPY,
+        0u);
+  }
+  else if (s_companion_expression_state.current == COMP_EPAPER_EXPRESSION_SLEEPY &&
+           s_companion_expression_state.last_signal ==
+               COMP_EPAPER_EXPRESSION_SIGNAL_SETTINGS_SLEEPY)
+  {
+    Companion_Display_EnqueueExpressionSignal(
+        COMP_EPAPER_EXPRESSION_SIGNAL_RECOVERY,
+        0u);
+  }
+}
+
+static void Companion_Diag_RecordAndEnqueueExpression(uint16_t event_code,
+                                                      uint8_t severity,
+                                                      uint32_t request_id_hint,
+                                                      uint32_t arg0,
+                                                      uint32_t arg1,
+                                                      uint32_t arg2,
+                                                      uint32_t arg3)
+{
+  comp_diag_log_record_code(event_code, severity, arg0, arg1, arg2, arg3);
+  Companion_Display_EnqueueExpressionEvent(event_code,
+                                           severity,
+                                           request_id_hint,
+                                           arg0,
+                                           arg1,
+                                           arg2,
+                                           arg3);
+}
+
 static void Companion_Gatt_HandleEvent(const companion_gatt_event_t *event,
                                        void *context)
 {
@@ -669,15 +2143,69 @@ static void Companion_Gatt_HandleEvent(const companion_gatt_event_t *event,
       {
         uint16_t header_len = (uint16_t)sizeof(request);
         uint16_t content_len = (uint16_t)(event->payload_len - header_len);
-        Companion_Gatt_PublishCardStatus(
+        uint32_t content_crc32 =
+            Companion_Gatt_Fnv1a(&event->payload[header_len], content_len);
+        comp_epaper_display_queue_snapshot_t queue_stats;
+        comp_epaper_display_queue_result_t queue_result =
+            comp_epaper_display_queue_enqueue_card_write(
+                &s_companion_display_queue,
+                request.card_slot,
+                request.display_flags,
+                request.request_id,
+                request.utf8_title_len,
+                request.utf8_body_len,
+                &event->payload[header_len],
+                content_len,
+                content_crc32);
+        comp_epaper_display_queue_snapshot(&s_companion_display_queue,
+                                           &queue_stats);
+
+        if (queue_result == COMP_EPAPER_DISPLAY_QUEUE_OK)
+        {
+          comp_diag_log_record_code(COMP_DIAG_EVT_EPAPER_RENDER_REQUEST,
+                                    COMP_DIAG_SEV_INFO,
+                                    request.request_id,
+                                    content_crc32,
+                                    (uint32_t)queue_stats.pending_count,
+                                    (uint32_t)request.display_flags);
+          Companion_Gatt_PublishCardStatus(
+            request.card_slot,
             request.request_id,
-            1u,
+            (uint8_t)COMP_EPAPER_RENDER_STATE_ACCEPTED,
             0u,
-            Companion_Gatt_Fnv1a(&event->payload[header_len], content_len));
+            content_crc32);
+          UTIL_SEQ_SetTask(1 << CFG_TASK_COMPANION_DISPLAY_ID, CFG_SCH_PRIO_0);
+        }
+        else
+        {
+          uint8_t status_error =
+              comp_epaper_display_queue_status_error(queue_result);
+          uint8_t render_state =
+              queue_result == COMP_EPAPER_DISPLAY_QUEUE_FULL
+                  ? (uint8_t)COMP_EPAPER_RENDER_STATE_BUSY
+                  : (uint8_t)COMP_EPAPER_RENDER_STATE_FAILED;
+          comp_diag_log_record_code(COMP_DIAG_EVT_EPAPER_UPDATE_RESULT,
+                                    queue_result == COMP_EPAPER_DISPLAY_QUEUE_FULL
+                                        ? COMP_DIAG_SEV_WARN
+                                        : COMP_DIAG_SEV_ERROR,
+                                    request.request_id,
+                                    content_crc32,
+                                    queue_stats.dropped_count,
+                                    status_error);
+          Companion_Gatt_PublishCardStatus(request.card_slot,
+                                           request.request_id,
+                                           render_state,
+                                           status_error,
+                                           content_crc32);
+        }
       }
       else
       {
-        Companion_Gatt_PublishCardStatus(0u, 3u, (uint8_t)parse_result, 0u);
+        Companion_Gatt_PublishCardStatus(0u,
+                                         0u,
+                                         (uint8_t)COMP_EPAPER_RENDER_STATE_FAILED,
+                                         (uint8_t)parse_result,
+                                         0u);
       }
       break;
     }
@@ -693,6 +2221,50 @@ static void Companion_Gatt_HandleEvent(const companion_gatt_event_t *event,
         bool accepted = Companion_RecordingFlash_HandleControl(request.command,
                                                                request.max_seconds);
         Companion_Gatt_PublishRecordingControlEcho(&request, accepted);
+        if (!accepted)
+        {
+          Companion_Display_EnqueueExpressionEvent(
+              COMP_DIAG_EVT_RECORDING_FSM_REJECTED,
+              COMP_DIAG_SEV_WARN,
+              request.request_id,
+              request.command,
+              request.max_seconds,
+              0u,
+              0u);
+        }
+        else if (request.command == 1u)
+        {
+          Companion_Display_EnqueueExpressionEvent(
+              COMP_DIAG_EVT_RECORDING_FSM_START_REQUEST,
+              COMP_DIAG_SEV_INFO,
+              request.request_id,
+              request.command,
+              request.max_seconds,
+              0u,
+              0u);
+        }
+        else if (request.command == 2u)
+        {
+          Companion_Display_EnqueueExpressionEvent(
+              COMP_DIAG_EVT_RECORDING_FSM_STOP_REQUEST,
+              COMP_DIAG_SEV_INFO,
+              request.request_id,
+              request.command,
+              request.max_seconds,
+              0u,
+              0u);
+        }
+        else if (request.command == 3u)
+        {
+          Companion_Display_EnqueueExpressionEvent(
+              COMP_DIAG_EVT_RECORDING_FSM_CANCEL_REQUEST,
+              COMP_DIAG_SEV_INFO,
+              request.request_id,
+              request.command,
+              request.max_seconds,
+              0u,
+              0u);
+        }
       }
       Companion_Gatt_PublishRecordingList();
       break;
@@ -721,6 +2293,7 @@ static void Companion_Gatt_HandleEvent(const companion_gatt_event_t *event,
       {
         s_companion_gatt_settings = request;
         Companion_Gatt_PublishSettings();
+        Companion_Display_ApplySettingsExpressionHint(&s_companion_gatt_settings);
       }
       break;
     }
@@ -748,11 +2321,48 @@ static void Companion_Gatt_HandleEvent(const companion_gatt_event_t *event,
                                                   &request) ==
           COMPANION_GATT_PARSE_OK)
       {
-        (void)companion_v1_apply_meeting_control(&s_companion_v1_features,
-                                                 &request,
-                                                 HAL_GetTick());
+        companion_v1_result_t result =
+            companion_v1_apply_meeting_control(&s_companion_v1_features,
+                                               &request,
+                                               HAL_GetTick());
+        if (result != COMPANION_V1_RESULT_OK)
+        {
+          Companion_Diag_RecordAndEnqueueExpression(COMP_DIAG_EVT_MEETING_REJECTED,
+                                                    COMP_DIAG_SEV_WARN,
+                                                    request.request_id,
+                                                    request.command,
+                                                    request.max_seconds,
+                                                    (uint32_t)result,
+                                                    0u);
+        }
+        else if (request.command == 1u)
+        {
+          Companion_Diag_RecordAndEnqueueExpression(COMP_DIAG_EVT_MEETING_START,
+                                                    COMP_DIAG_SEV_INFO,
+                                                    request.request_id,
+                                                    request.request_id,
+                                                    request.max_seconds,
+                                                    request.flags,
+                                                    0u);
+        }
+        else if (request.command == 2u)
+        {
+          Companion_Diag_RecordAndEnqueueExpression(COMP_DIAG_EVT_MEETING_FINALIZE,
+                                                    COMP_DIAG_SEV_INFO,
+                                                    request.request_id,
+                                                    request.request_id,
+                                                    request.max_seconds,
+                                                    request.flags,
+                                                    0u);
+        }
+        else if (request.command == 3u)
+        {
+          Companion_Display_EnqueueExpressionSignal(
+              COMP_EPAPER_EXPRESSION_SIGNAL_RECOVERY,
+              request.request_id);
+        }
       }
-      Companion_Gatt_PublishMeetingStatus();
+      Companion_Gatt_PublishMeetingStatus(true);
       break;
     }
 
@@ -764,11 +2374,24 @@ static void Companion_Gatt_HandleEvent(const companion_gatt_event_t *event,
                                                   &request) ==
           COMPANION_GATT_PARSE_OK)
       {
-        (void)companion_v1_apply_speaker_control(&s_companion_v1_features,
-                                                 &request,
-                                                 HAL_GetTick());
+        companion_v1_result_t result =
+            companion_v1_apply_speaker_control(&s_companion_v1_features,
+                                               &request,
+                                               HAL_GetTick());
+        Companion_Diag_RecordAndEnqueueExpression(
+            result == COMPANION_V1_RESULT_OK
+                ? COMP_DIAG_EVT_SPEAKER_PROMPT
+                : COMP_DIAG_EVT_SPEAKER_REJECTED,
+            result == COMPANION_V1_RESULT_OK
+                ? COMP_DIAG_SEV_INFO
+                : COMP_DIAG_SEV_WARN,
+            request.request_id,
+            request.prompt_id,
+            request.volume_percent,
+            (uint32_t)result,
+            0u);
       }
-      Companion_Gatt_PublishSpeakerStatus();
+      Companion_Gatt_PublishSpeakerStatus(true);
       break;
     }
 
@@ -780,11 +2403,52 @@ static void Companion_Gatt_HandleEvent(const companion_gatt_event_t *event,
                                                     &request) ==
           COMPANION_GATT_PARSE_OK)
       {
-        (void)companion_v1_apply_wake_word_control(&s_companion_v1_features,
-                                                   &request,
-                                                   HAL_GetTick());
+        companion_v1_result_t result =
+            companion_v1_apply_wake_word_control(&s_companion_v1_features,
+                                                 &request,
+                                                 HAL_GetTick());
+        if (result != COMPANION_V1_RESULT_OK)
+        {
+          Companion_Diag_RecordAndEnqueueExpression(COMP_DIAG_EVT_WAKE_WORD_REJECTED,
+                                                    COMP_DIAG_SEV_WARN,
+                                                    request.request_id,
+                                                    request.command,
+                                                    request.sensitivity,
+                                                    (uint32_t)result,
+                                                    0u);
+        }
+        else if (request.command == 1u)
+        {
+          Companion_Diag_RecordAndEnqueueExpression(COMP_DIAG_EVT_WAKE_WORD_ARMED,
+                                                    COMP_DIAG_SEV_INFO,
+                                                    request.request_id,
+                                                    request.sensitivity,
+                                                    request.model_id,
+                                                    request.flags,
+                                                    0u);
+        }
+        else if (request.command == 2u)
+        {
+          Companion_Diag_RecordAndEnqueueExpression(COMP_DIAG_EVT_WAKE_WORD_DISABLED,
+                                                    COMP_DIAG_SEV_INFO,
+                                                    request.request_id,
+                                                    request.sensitivity,
+                                                    request.model_id,
+                                                    request.flags,
+                                                    0u);
+        }
+        else if (request.command == 3u)
+        {
+          Companion_Diag_RecordAndEnqueueExpression(COMP_DIAG_EVT_WAKE_WORD_DETECTED,
+                                                    COMP_DIAG_SEV_INFO,
+                                                    request.request_id,
+                                                    request.sensitivity,
+                                                    request.model_id,
+                                                    request.flags,
+                                                    0u);
+        }
       }
-      Companion_Gatt_PublishWakeWordStatus();
+      Companion_Gatt_PublishWakeWordStatus(true);
       break;
     }
 
@@ -826,17 +2490,17 @@ static void Companion_Gatt_HandleEvent(const companion_gatt_event_t *event,
 
 static void Companion_Gatt_PublishInitialState(void)
 {
-  Companion_Gatt_PublishDeviceStatus();
-  Companion_Gatt_PublishBatteryCharge();
-  Companion_Gatt_PublishCardStatus(0u, 0u, 0u, 0u);
+  Companion_Gatt_PublishDeviceStatus(false);
+  Companion_Gatt_PublishBatteryCharge(false);
+  Companion_Gatt_PublishCardStatus(0u, 0u, 0u, 0u, 0u);
   Companion_Gatt_PublishRecordingList();
   Companion_Gatt_PublishSettings();
   Companion_Gatt_PublishBleNameConfig();
-  Companion_Gatt_PublishMeetingStatus();
+  Companion_Gatt_PublishMeetingStatus(false);
   Companion_Gatt_PublishImuStatus();
-  Companion_Gatt_PublishSpeakerStatus();
-  Companion_Gatt_PublishWakeWordStatus();
-  Companion_Gatt_PublishOtaReadiness();
+  Companion_Gatt_PublishSpeakerStatus(false);
+  Companion_Gatt_PublishWakeWordStatus(false);
+  Companion_Gatt_PublishOtaReadiness(false);
 }
 
 static void Companion_Gatt_PublishCurrent(companion_gatt_char_id_t char_id)
@@ -844,11 +2508,11 @@ static void Companion_Gatt_PublishCurrent(companion_gatt_char_id_t char_id)
   switch (char_id)
   {
     case COMPANION_GATT_CHAR_DEVICE_STATUS:
-      Companion_Gatt_PublishDeviceStatus();
+      Companion_Gatt_PublishDeviceStatus(true);
       break;
 
     case COMPANION_GATT_CHAR_BATTERY_CHARGE:
-      Companion_Gatt_PublishBatteryCharge();
+      Companion_Gatt_PublishBatteryCharge(true);
       break;
 
     case COMPANION_GATT_CHAR_E_PAPER_CARD_STATUS:
@@ -871,7 +2535,7 @@ static void Companion_Gatt_PublishCurrent(companion_gatt_char_id_t char_id)
       break;
 
     case COMPANION_GATT_CHAR_MEETING_STATUS:
-      Companion_Gatt_PublishMeetingStatus();
+      Companion_Gatt_PublishMeetingStatus(true);
       break;
 
     case COMPANION_GATT_CHAR_IMU_STATUS:
@@ -879,15 +2543,15 @@ static void Companion_Gatt_PublishCurrent(companion_gatt_char_id_t char_id)
       break;
 
     case COMPANION_GATT_CHAR_SPEAKER_STATUS:
-      Companion_Gatt_PublishSpeakerStatus();
+      Companion_Gatt_PublishSpeakerStatus(true);
       break;
 
     case COMPANION_GATT_CHAR_WAKE_WORD_STATUS:
-      Companion_Gatt_PublishWakeWordStatus();
+      Companion_Gatt_PublishWakeWordStatus(true);
       break;
 
     case COMPANION_GATT_CHAR_OTA_READINESS:
-      Companion_Gatt_PublishOtaReadiness();
+      Companion_Gatt_PublishOtaReadiness(true);
       break;
 
     default:
@@ -895,7 +2559,7 @@ static void Companion_Gatt_PublishCurrent(companion_gatt_char_id_t char_id)
   }
 }
 
-static void Companion_Gatt_PublishDeviceStatus(void)
+static void Companion_Gatt_PublishDeviceStatus(bool apply_expression_hint)
 {
   companion_gatt_device_status_v1_t status = {
       .schema_version = 1u,
@@ -911,9 +2575,13 @@ static void Companion_Gatt_PublishDeviceStatus(void)
   (void)companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_DEVICE_STATUS,
                                        (const uint8_t *)&status,
                                        (uint16_t)sizeof(status));
+  if (apply_expression_hint)
+  {
+    Companion_Display_ApplyDeviceStatusExpressionHint(&status);
+  }
 }
 
-static void Companion_Gatt_PublishBatteryCharge(void)
+static void Companion_Gatt_PublishBatteryCharge(bool apply_expression_hint)
 {
   companion_gatt_battery_charge_v1_t status = {
       .schema_version = 1u,
@@ -927,15 +2595,20 @@ static void Companion_Gatt_PublishBatteryCharge(void)
   (void)companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_BATTERY_CHARGE,
                                        (const uint8_t *)&status,
                                        (uint16_t)sizeof(status));
+  if (apply_expression_hint)
+  {
+    Companion_Display_ApplyBatteryExpressionHint(&status);
+  }
 }
 
-static void Companion_Gatt_PublishCardStatus(uint32_t request_id,
+static void Companion_Gatt_PublishCardStatus(uint8_t card_slot,
+                                             uint32_t request_id,
                                              uint8_t render_state,
                                              uint8_t last_error,
                                              uint32_t content_crc32)
 {
   s_companion_gatt_card_status.schema_version = 1u;
-  s_companion_gatt_card_status.card_slot = 0u;
+  s_companion_gatt_card_status.card_slot = card_slot;
   s_companion_gatt_card_status.render_state = render_state;
   s_companion_gatt_card_status.last_error = last_error;
   s_companion_gatt_card_status.request_id = request_id;
@@ -1076,13 +2749,17 @@ static void Companion_Gatt_PublishBleNameConfig(void)
                                        (uint16_t)sizeof(status));
 }
 
-static void Companion_Gatt_PublishMeetingStatus(void)
+static void Companion_Gatt_PublishMeetingStatus(bool apply_expression_hint)
 {
   companion_gatt_meeting_status_v1_t status;
   companion_v1_get_meeting_status(&s_companion_v1_features, &status);
   (void)companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_MEETING_STATUS,
                                        (const uint8_t *)&status,
                                        (uint16_t)sizeof(status));
+  if (apply_expression_hint)
+  {
+    Companion_Display_ApplyMeetingStatusExpressionHint(&status);
+  }
 }
 
 static void Companion_Gatt_PublishImuStatus(void)
@@ -1095,22 +2772,30 @@ static void Companion_Gatt_PublishImuStatus(void)
                                        (uint16_t)sizeof(status));
 }
 
-static void Companion_Gatt_PublishSpeakerStatus(void)
+static void Companion_Gatt_PublishSpeakerStatus(bool apply_expression_hint)
 {
   companion_gatt_speaker_status_v1_t status;
   companion_v1_get_speaker_status(&s_companion_v1_features, &status);
   (void)companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_SPEAKER_STATUS,
                                        (const uint8_t *)&status,
                                        (uint16_t)sizeof(status));
+  if (apply_expression_hint)
+  {
+    Companion_Display_ApplySpeakerStatusExpressionHint(&status);
+  }
 }
 
-static void Companion_Gatt_PublishWakeWordStatus(void)
+static void Companion_Gatt_PublishWakeWordStatus(bool apply_expression_hint)
 {
   companion_gatt_wake_word_status_v1_t status;
   companion_v1_get_wake_word_status(&s_companion_v1_features, &status);
   (void)companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_WAKE_WORD_STATUS,
                                        (const uint8_t *)&status,
                                        (uint16_t)sizeof(status));
+  if (apply_expression_hint)
+  {
+    Companion_Display_ApplyWakeWordStatusExpressionHint(&status);
+  }
 }
 
 static void Companion_Gatt_PublishDiagLogResponse(
@@ -1159,7 +2844,7 @@ static void Companion_Gatt_PublishDeletePrivacyStatus(
                                        (uint16_t)sizeof(response));
 }
 
-static void Companion_Gatt_PublishOtaReadiness(void)
+static void Companion_Gatt_PublishOtaReadiness(bool apply_expression_hint)
 {
   static const uint8_t sha_prefix[8] = {
       0xBEu, 0xFAu, 0xEBu, 0x26u, 0x11u, 0x66u, 0x0Du, 0x9Eu,
@@ -1179,6 +2864,10 @@ static void Companion_Gatt_PublishOtaReadiness(void)
   (void)companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_OTA_READINESS,
                                        (const uint8_t *)&readiness,
                                        (uint16_t)sizeof(readiness));
+  if (apply_expression_hint)
+  {
+    Companion_Display_ApplyOtaExpressionHint(&readiness);
+  }
 }
 
 static uint32_t Companion_Gatt_Fnv1a(const uint8_t *data, uint16_t length)

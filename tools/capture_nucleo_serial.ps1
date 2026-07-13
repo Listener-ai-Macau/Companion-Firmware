@@ -1,15 +1,21 @@
 param(
     [switch] $CheckOnly,
     [switch] $Execute,
+    [switch] $SelfTestEmptyCapture,
+    [switch] $SelfTestResetTimeout,
     [switch] $WorkflowLockHeld,
     [string] $Port,
     [int] $BaudRate = 115200,
     [int] $Seconds = 15,
     [switch] $ResetAfterOpen,
+    [ValidateRange(5, 60)]
+    [int] $ResetTimeoutSeconds = 15,
     [string] $ProgrammerPath,
     [string] $ProgrammerRoot = "C:\ST\STM32CubeIDE_2.1.1\STM32CubeIDE\plugins",
     [switch] $PromptOperator,
     [int] $PromptTimeoutSeconds = 90,
+    [string] $PromptTitle = "Companion NUCLEO 串口抓日志确认",
+    [string] $PromptMessage,
     [string] $OutDir
 )
 
@@ -29,6 +35,11 @@ $outputDir = if ($OutDir) {
 }
 $rawLog = Join-Path $outputDir "nucleo-serial-raw.log"
 $summaryJson = Join-Path $outputDir "nucleo-serial-summary.json"
+$operatorPromptText = if ([string]::IsNullOrWhiteSpace($PromptMessage)) {
+    "请确认 NUCLEO-WB55RG 已通过板载 ST-LINK USB 接好，Type/其它串口监视器已停止占用设备。请保持此窗口打开并完成本次操作；点击 OK 后会收集操作期间的设备日志$(if ($ResetAfterOpen) { '，目标板已先复位' } else { '' })。点击 Cancel 取消。"
+} else {
+    $PromptMessage
+}
 $lockCommand = "pwsh -NoProfile -File C:\Users\Billy\Desktop\Denzic\ai-collaboration-workflow\scripts\aiw.ps1 with-lock -Resource Companion-WB55 -Purpose `"Companion NUCLEO serial capture`" -Run pwsh -NoProfile -File .\tools\capture_nucleo_serial.ps1 -Execute -WorkflowLockHeld -Seconds $Seconds -ResetAfterOpen"
 
 function Find-CubeProgrammerCli {
@@ -186,7 +197,10 @@ function Write-Summary {
         baud_rate = $BaudRate
         seconds = $Seconds
         reset_after_open = [bool]$ResetAfterOpen
+        reset_timeout_seconds = $ResetTimeoutSeconds
         prompt_operator = [bool]$PromptOperator
+        prompt_title = $PromptTitle
+        prompt_message = if ($PromptOperator) { $operatorPromptText } else { $null }
         raw_log = $rawLog
         candidates = @($Candidates)
         available_ports = @($AvailablePorts)
@@ -198,10 +212,93 @@ function Write-Summary {
     Write-Output "Summary: $summaryJson"
 }
 
+function Invoke-ProgrammerResetWithTimeout {
+    param(
+        [Parameter(Mandatory = $true)][string] $Programmer,
+        [Parameter(Mandatory = $true)][string[]] $Arguments,
+        [Parameter(Mandatory = $true)][int] $TimeoutSeconds
+    )
+
+    $resetStdout = Join-Path $outputDir "stm32-reset-stdout.log"
+    $resetStderr = Join-Path $outputDir "stm32-reset-stderr.log"
+    $resetLine = "RUN: $Programmer $($Arguments -join ' ')"
+    # The caller captures this function's only success-stream value as the
+    # programmer exit code, so keep diagnostics on the information stream.
+    Write-Host $resetLine
+    Write-Host "RUN: reset_timeout_seconds=$TimeoutSeconds"
+    Add-Content -LiteralPath $rawLog -Value $resetLine
+    Add-Content -LiteralPath $rawLog -Value "RUN: reset_timeout_seconds=$TimeoutSeconds"
+    $process = Start-Process `
+        -FilePath $Programmer `
+        -ArgumentList $Arguments `
+        -RedirectStandardOutput $resetStdout `
+        -RedirectStandardError $resetStderr `
+        -WindowStyle Hidden `
+        -PassThru
+    $completed = $process.WaitForExit($TimeoutSeconds * 1000)
+    if (-not $completed) {
+        Stop-Process -Id $process.Id -Force -ErrorAction SilentlyContinue
+        if (Test-Path -LiteralPath $resetStdout) {
+            Get-Content -LiteralPath $resetStdout | ForEach-Object {
+                Write-Host $_
+                Add-Content -LiteralPath $rawLog -Value ([string]$_)
+            }
+        }
+        if (Test-Path -LiteralPath $resetStderr) {
+            Get-Content -LiteralPath $resetStderr | ForEach-Object {
+                Write-Host $_
+                Add-Content -LiteralPath $rawLog -Value ([string]$_)
+            }
+        }
+        throw "reset timed out after $TimeoutSeconds second(s). stdout=$resetStdout stderr=$resetStderr"
+    }
+    $process.WaitForExit()
+    if (Test-Path -LiteralPath $resetStdout) {
+        Get-Content -LiteralPath $resetStdout | ForEach-Object {
+            Write-Host $_
+            Add-Content -LiteralPath $rawLog -Value ([string]$_)
+        }
+    }
+    if (Test-Path -LiteralPath $resetStderr) {
+        Get-Content -LiteralPath $resetStderr | ForEach-Object {
+            Write-Host $_
+            Add-Content -LiteralPath $rawLog -Value ([string]$_)
+        }
+    }
+    Write-Host "RUN: reset_stdout=$resetStdout"
+    Write-Host "RUN: reset_stderr=$resetStderr"
+    return [int]$process.ExitCode
+}
+
 $resolved = $null
 $programmer = Find-CubeProgrammerCli -RequestedPath $ProgrammerPath
 $errors = [System.Collections.Generic.List[string]]::new()
 $bytesRead = 0
+
+if ($SelfTestEmptyCapture) {
+    if ($CheckOnly -or $Execute -or $SelfTestResetTimeout) {
+        throw "Use only one of -CheckOnly, -Execute, -SelfTestEmptyCapture, or -SelfTestResetTimeout."
+    }
+    "" | Set-Content -LiteralPath $rawLog -Encoding UTF8
+    $errors.Add("No serial bytes captured during $Seconds second(s); refusing empty runtime evidence.") | Out-Null
+    Write-Summary -Status "FAIL" -PortName "SELFTEST" -Candidates @() -AvailablePorts @() -BytesRead 0 -Errors @($errors) -Mode "selftest-empty-capture"
+    throw "Companion NUCLEO serial capture empty-log self-test failed as expected. See $summaryJson"
+}
+
+if ($SelfTestResetTimeout) {
+    if ($CheckOnly -or $Execute -or $SelfTestEmptyCapture) {
+        throw "Use only one of -CheckOnly, -Execute, -SelfTestEmptyCapture, or -SelfTestResetTimeout."
+    }
+    "" | Set-Content -LiteralPath $rawLog -Encoding UTF8
+    try {
+        $stubArgs = @("-NoProfile", "-Command", "Start-Sleep -Seconds 30")
+        Invoke-ProgrammerResetWithTimeout -Programmer "pwsh" -Arguments $stubArgs -TimeoutSeconds 5 | Out-Null
+    } catch {
+        $errors.Add($_.Exception.Message) | Out-Null
+    }
+    Write-Summary -Status "FAIL" -PortName "SELFTEST" -Candidates @() -AvailablePorts @() -BytesRead 0 -Errors @($errors) -Mode "selftest-reset-timeout"
+    throw "Companion NUCLEO serial reset-timeout self-test failed as expected. See $summaryJson"
+}
 
 try {
     $resolved = Resolve-CapturePort -RequestedPort $Port
@@ -217,6 +314,7 @@ if ($CheckOnly -and -not $Execute) {
     Write-Output "CHECK: Auto detected: $($resolved.auto_detected)"
     Write-Output "CHECK: Present ports: $($resolved.available_ports -join ', ')"
     Write-Output "CHECK: Blocking operator prompt: $([bool]$PromptOperator)"
+    Write-Output "CHECK: Reset timeout seconds: $ResetTimeoutSeconds"
     foreach ($candidate in @($resolved.candidates)) {
         Write-Output "CHECK: ST-LINK candidate $($candidate.port): $($candidate.name)"
     }
@@ -241,10 +339,6 @@ if ($ResetAfterOpen -and -not $programmer) {
     throw "STM32CubeProgrammer CLI not found. Pass -ProgrammerPath, set STM32CUBEPROGRAMMER_CLI, or omit -ResetAfterOpen."
 }
 
-if ($PromptOperator) {
-    Show-OperatorPrompt -Title "Companion NUCLEO 串口抓日志确认" -Message "请确认 NUCLEO-WB55RG 已通过板载 ST-LINK USB 接好，Type/其它串口监视器已停止占用设备。点击 OK 后会抓取一小段设备日志$(if ($ResetAfterOpen) { '，并复位一次目标板' } else { '' })；过程中不要拔线。点击 Cancel 取消。"
-}
-
 $serial = [System.IO.Ports.SerialPort]::new($resolved.port, $BaudRate, [System.IO.Ports.Parity]::None, 8, [System.IO.Ports.StopBits]::One)
 $serial.ReadTimeout = 250
 $serial.NewLine = "`n"
@@ -256,17 +350,18 @@ try {
     $serial.DiscardOutBuffer()
     if ($ResetAfterOpen) {
         $resetArgs = @("-c", "port=SWD", "mode=UR", "reset=HWrst", "freq=4000", "-rst")
-        $resetLine = "RUN: $programmer $($resetArgs -join ' ')"
-        Write-Output $resetLine
-        Add-Content -LiteralPath $rawLog -Value $resetLine
-        $resetOutput = & $programmer @resetArgs 2>&1
-        $resetOutput | ForEach-Object {
-            Write-Output $_
-            Add-Content -LiteralPath $rawLog -Value ([string]$_)
+        $resetExitCode = Invoke-ProgrammerResetWithTimeout -Programmer $programmer -Arguments $resetArgs -TimeoutSeconds $ResetTimeoutSeconds
+        if ($resetExitCode -ne 0) {
+            throw "reset failed with exit code $resetExitCode"
         }
-        if ($LASTEXITCODE -ne 0) {
-            throw "reset failed with exit code $LASTEXITCODE"
+    }
+
+    if ($PromptOperator) {
+        if ($ResetAfterOpen) {
+            Start-Sleep -Seconds 5
         }
+        $serial.DiscardInBuffer()
+        Show-OperatorPrompt -Title $PromptTitle -Message $operatorPromptText
     }
 
     $deadline = [DateTime]::UtcNow.AddSeconds($Seconds)
@@ -289,6 +384,10 @@ try {
         $serial.Close()
     }
     $serial.Dispose()
+}
+
+if ($errors.Count -eq 0 -and $bytesRead -le 0) {
+    $errors.Add("No serial bytes captured during $Seconds second(s); refusing empty runtime evidence.") | Out-Null
 }
 
 $status = if ($errors.Count -eq 0) { "PASS" } else { "FAIL" }

@@ -1,0 +1,60 @@
+{
+  "acceptance": {
+    "dry_run_still_deferred_no_panel": true,
+    "known_panel_without_target_callback_is_transport_error": true,
+    "portable_adapter_has_no_board_dependencies": true,
+    "real_refresh_ok_can_only_come_from_target_callback": true,
+    "wba_safe_target_ops_boundary": true
+  },
+  "adapter_contract": {
+    "controller_unknown_result": "COMP_EPAPER_PANEL_RESULT_DEFERRED_CONTROLLER_UNKNOWN",
+    "dry_run_initializer": "comp_epaper_panel_adapter_init_dry_run",
+    "dry_run_result": "COMP_EPAPER_PANEL_RESULT_DEFERRED_NO_PANEL",
+    "missing_callback_result": "COMP_EPAPER_PANEL_RESULT_TRANSPORT_ERROR",
+    "portable_dispatcher": "comp_epaper_panel_adapter_refresh_card",
+    "real_ok_source": "target_refresh_callback_only",
+    "target_callback_field": "refresh",
+    "target_context_field": "context",
+    "target_refresh_callback_type": "comp_epaper_panel_refresh_fn_t"
+  },
+  "guard_order": [
+    "hardware_present",
+    "controller_known_width_height",
+    "refresh_callback_present",
+    "target_refresh_callback"
+  ],
+  "schema_id": "companion.pendant.screen_panel_adapter_boundary.v1",
+  "sources": {
+    "panel_behavior_fixture": "docs/validation/companion-screen-panel-adapter-behavior.json",
+    "panel_evidence_template": "docs/validation/companion-screen-panel-evidence-template.json",
+    "panel_header": "app/companion_pendant/epaper/panel_adapter.h",
+    "panel_source": "app/companion_pendant/epaper/panel_adapter.c",
+    "screen_doc": "docs/companion_screen_expression_system.md",
+    "wb55_target_header": "app/companion_pendant/epaper/panel_target_stm32wb.h",
+    "wb55_target_source": "app/companion_pendant/epaper/panel_target_stm32wb.c",
+    "wba_rules": "docs/stm32wba_migration_rules.md"
+  },
+  "status": "PASS",
+  "target_adapter_expectations": {
+    "portable_files_unchanged": [
+      "app/companion_pendant/epaper/expression_state.h",
+      "app/companion_pendant/epaper/expression_state.c",
+      "app/companion_pendant/epaper/display_queue.h",
+      "app/companion_pendant/epaper/display_queue.c",
+      "app/companion_pendant/epaper/panel_adapter.h",
+      "app/companion_pendant/epaper/panel_adapter.c"
+    ],
+    "wb55_current_file": "app/companion_pendant/epaper/panel_target_stm32wb.c",
+    "wb55_current_initializer": "companion_epaper_panel_stm32wb_init",
+    "wb55_file_pattern": "*_stm32wb.*",
+    "wba_file_pattern": "*_stm32wba.*"
+  },
+  "validation_commands": [
+    "python .\\tools\\verify_expression_panel_adapter_behavior.py",
+    "python .\\tools\\verify_expression_panel_adapter_boundary.py",
+    "python .\\tools\\verify_expression_panel_target_stm32wb.py",
+    "python .\\tools\\verify_expression_panel_gate.py",
+    "python .\\tools\\verify_expression_wba_portability.py",
+    "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1"
+  ]
+}

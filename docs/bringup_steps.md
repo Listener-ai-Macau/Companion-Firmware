@@ -17,6 +17,17 @@ The official upstream is pinned as a git submodule:
 - Tag: `v1.24.0`
 - Commit: `7c5aa7dcd2c0abe787f922bb06a6213c724d08e4`
 
+The STM32CubeWB package itself contains 13 nested ST submodules. This workspace
+keeps `.vscode/settings.json` at `git.detectSubmodulesLimit >= 13` so VS Code
+can open them without the default "will not be opened automatically" warning.
+They are still read-only upstream references; Companion changes must stay in
+local wrappers, adapters, tools, docs, or generated CubeMX output. Validate the
+policy with:
+
+```powershell
+python .\tools\verify_workspace_submodule_policy.py
+```
+
 The selected official example is:
 
 ```text
@@ -26,6 +37,31 @@ third_party/STM32CubeWB/Projects/P-NUCLEO-WB55.Nucleo/Applications/BLE/BLE_p2pSe
 Reason: it is an ST GATT server point-to-point BLE example for STM32WB55 and is
 closer to the planned custom pendant service than a fixed standard profile such
 as Heart Rate.
+
+The repo-owned development-board IOC is:
+
+```text
+cubeide/Companion_Nucleo_WB55RG/Companion_Nucleo_WB55RG.ioc
+```
+
+It imports the hardware-relevant settings from the user-provided
+`C:\Users\Billy\Desktop\STM32.ioc`, while keeping local CubeIDE project
+metadata such as project name and toolchain. Validate that relationship with:
+
+```powershell
+python .\tools\verify_devboard_ioc_import.py
+```
+
+For screen hardware bring-up, also verify the panel wiring preflight:
+
+```powershell
+python .\tools\verify_expression_panel_wiring_preflight.py
+```
+
+The preflight fixture is
+`docs/validation/companion-screen-panel-wiring-preflight.json`. It records the
+imported WB55 SPI2 transport candidate while keeping controller and DC/RST/BUSY
+facts under the real-panel hardware gate.
 
 ## Step 0 - Prepare Tools
 
@@ -147,6 +183,46 @@ Acceptance:
 - Record sample rate, bit depth, buffer size, and whether clipping/noise is
   visible in the captured artifact.
 
+## Current WB55 Microphone Evidence
+
+The WB55 devboard microphone is being treated as the Listener-style
+SPH0655-compatible PDM microphone. The currently validated development path is:
+
+- PC speaker plays the test phrase as the sound source.
+- WB55 captures raw PDM on SAI1 Block A with raw-SAI DMA.
+- Firmware decodes MSB-ordered PDM with CIC3, decimation 96, MCKDIV 31,
+  preamp shift 3, and a 450-block flash-recording stage buffer.
+- The resulting 16 kHz PCM16 mono flash recording is pulled over Companion BLE
+  and sent to Companion Type ASR.
+
+Latest passing artifacts:
+
+- Baseline summary:
+  `docs/validation/companion-mic-wb55-pdm-baseline.json`, verified by
+  `python .\tools\verify_companion_mic_wb55_pdm_baseline.py`
+- Margin gate:
+  `docs/validation/companion-mic-wb55-pdm-margin.json`, verified by
+  `python .\tools\verify_companion_mic_wb55_pdm_margin.py`
+- Recording chain:
+  `.cache\validation\mic-fast2-20260710-060913\companion-flash-recording-chain.json`
+- ASR/minutes:
+  `.cache\validation\mic-fast2-20260710-060913-asr\companion-recording-to-minutes.json`
+
+The current O2/CIC3 Type transcript is `你好，小伴录音测试。`, so the
+end-to-end real-mic path and recognition phrase are proven. The current margin
+gate records `max_dma_rx_overruns=0`, `diag=0` steady-state `capture_ms=10`,
+`missing_packets=0`, matching SHA-256, and `audio_quality.status=PASS` as
+`READY_FOR_LONGER_SOAK`. Full raw diagnostics are now sparse; diagnostic blocks
+can still take longer because they compute raw CRC and quality stats.
+The current best firmware candidate keeps CIC3 semantics and the default
+bring-up build uses O2. Reproduce it with
+`pwsh -NoProfile -File .\tools\build_nucleo_bringup.ps1 -Force`, or pass
+`-Optimization O2 -PdmCic3ChunkAccumulate 0 -PdmUseCic3Filter 1 -PdmBitOrderLsb 0`
+for an explicit A/B run.
+Rejected A/B branches are recorded in the margin fixture: `cic3_chunk` worsened
+overruns and returned empty ASR; `boxcar_msb` cleared overruns but also returned
+empty ASR.
+
 ## Current Independent Companion Hardware Gate
 
 The NUCLEO Companion app now carries the Companion-native BLE advertising,
@@ -173,7 +249,7 @@ The default hardware proof path is now Companion-owned and does not require
 `Listener-Type`:
 
 ```powershell
-pwsh -NoProfile -File <ai-collaboration-workflow>\scripts\aiw.ps1 with-lock -Resource Companion-WB55,BLE-Companion -Purpose "Companion native BLE GATT bench validation" -Run python .\tools\companion_ble_real_bench.py --name companion --timeout 20 --notify-timeout 10 --output .\.cache\validation\companion-real-ble-gatt-<timestamp>\companion-ble-real-bench.json --json
+pwsh -NoProfile -File <ai-collaboration-workflow>\scripts\aiw.ps1 with-lock -Resource 'Companion-WB55,BLE-Companion' -Purpose "Companion native BLE GATT bench validation" -Run python .\tools\companion_ble_real_bench.py --name companion --timeout 20 --notify-timeout 10 --output .\.cache\validation\companion-real-ble-gatt-<timestamp>\companion-ble-real-bench.json --json
 ```
 
 It scans for `companion`, connects with Bleak, verifies every required native
@@ -182,6 +258,87 @@ recording control/list/chunk-refusal path, settings, V1 BLE name staging/reset,
 meeting start/stop/reject state, IMU not-populated reporting, speaker prompt
 state, wake-word arm/detect/disarm/reject state, diagnostics, privacy refusal,
 and OTA readiness.
+
+For the current no-panel WB55 bench, the `card_write` operation must still
+include both `card_status=accepted/ok` and `final_card_status` with
+`deferred_no_panel` or `deferred_controller_unknown`. The same artifact must
+also include `settings_sleepy_screen_status`: the bench writes SettingsV1 with
+`display_brightness=0`, waits for the ExpressionV1 `final_card_status`, and
+then runs `settings_restore_after_sleepy`. It must also include the
+contract-only `screen_expression_status` operation pointing at
+`docs/validation/companion-screen-expression-host-status-sequence.json`, so the
+real BLE artifact carries the same idle/sleepy/recording/low-battery/
+sync-complete/error sequence baseline used for WBA comparison. It must also
+include the contract-only `screen_expression_demo_status` operation pointing at
+`docs/validation/companion-screen-expression-demo-host-status-sequence.json`,
+so the artifact carries the full demo host baseline and
+`held_steps_emit_no_host_status` for suppressed demo steps.
+`settings_sleepy_screen_status` must run before recording-control/list checks,
+and failed live JSON artifacts must keep `operations` plus
+`partial_operation_count` so partial screen evidence survives BLE or hardware
+loss. After a real e-paper panel is connected, rerun the same bench with `--expect-real-panel` and archive the JSON
+artifact; that mode requires `final_card_status=rendered/ok` and sets
+`real_panel_refresh_claimed=true`:
+
+```powershell
+pwsh -NoProfile -File <ai-collaboration-workflow>\scripts\aiw.ps1 with-lock -Resource 'Companion-WB55,BLE-Companion' -Purpose "Companion real e-paper panel BLE evidence" -Run python .\tools\companion_ble_real_bench.py --name companion --timeout 20 --notify-timeout 10 --screen-final-timeout 30 --expect-real-panel --output .\.cache\validation\companion-real-panel-wb55-<timestamp>\companion-ble-real-bench.json --json
+```
+
+The current diagnostics collector has a fixture mode for the bundle format.
+Real panel evidence must use a hardware-collected `summary.json` with the same
+schema once that path exists, then place it at `diagnostics_bundle_artifact` in
+the panel evidence record:
+
+```powershell
+pwsh -NoProfile -File .\tools\collect_companion_diagnostics.ps1 -Fixture -OutputDir .\.cache\validation\companion-real-panel-wb55-<timestamp>\diagnostics
+```
+
+Before executing the real-panel run, verify the fixed hardware acceptance
+handoff:
+
+```powershell
+python .\tools\verify_expression_panel_wiring_preflight.py
+python .\tools\verify_expression_panel_hardware_session.py
+python .\tools\verify_expression_panel_hardware_acceptance_plan.py
+```
+
+The historical plan fixture is
+`docs/validation/companion-screen-panel-hardware-acceptance-plan.json`. The
+current `wb55_real_panel_refresh` gate is PASS from real SSD1681 logs and explicit
+operator observations; `wb55_touch_visual_acceptance` remains `PENDING_HUMAN`.
+Future target sessions can still use `--expect-real-panel` and the generic filled
+evidence-record validator.
+The session scaffold fixture,
+`docs/validation/companion-screen-panel-hardware-session.json`, is verified by
+`tools/verify_expression_panel_hardware_session.py` and keeps
+`panel_hardware_session_scaffold` as the target-specific session contract. For
+WB55, use `.cache/validation/companion-real-panel-wb55-<timestamp>` with
+`panel-evidence-record.json`, `panel-hardware-facts.todo.json`,
+`companion-ble-real-bench.json`, `diagnostics/summary.json`,
+`visual/before_photo.jpg`,
+`visual/after_photo.jpg`, and `operator-notes.md`.
+Create a concrete session root with:
+
+```powershell
+python .\tools\init_expression_panel_evidence_record.py --target WB55 --session-root .\.cache\validation\companion-real-panel-wb55-<timestamp> --write-session
+python .\tools\verify_expression_panel_session_directory.py --session-root .\.cache\validation\companion-real-panel-wb55-<timestamp> --target WB55
+python .\tools\verify_expression_panel_hardware_facts.py --facts .\.cache\validation\companion-real-panel-wb55-<timestamp>\panel-hardware-facts.todo.json
+python .\tools\render_expression_panel_facts_worksheet.py --session-root .\.cache\validation\companion-real-panel-wb55-<timestamp> --write --json .\.cache\validation\companion-real-panel-wb55-<timestamp>\panel-facts-worksheet.json --markdown .\.cache\validation\companion-real-panel-wb55-<timestamp>\panel-facts-worksheet.md
+python .\tools\verify_expression_panel_driver_readiness.py --session-root .\.cache\validation\companion-real-panel-wb55-<timestamp>
+python .\tools\apply_expression_panel_hardware_facts.py --facts .\.cache\validation\companion-real-panel-wb55-<timestamp>\panel-hardware-facts.todo.json --record .\.cache\validation\companion-real-panel-wb55-<timestamp>\panel-evidence-record.json --write
+```
+
+That evidence record must include decoded `e_paper.runtime_snapshot` health:
+`panel.error_count=0`, no pending display queue work, and no dropped display
+work. It must also include `diagnostics_bundle_artifact`, pointing at a
+`summary.json` produced by `tools\collect_companion_diagnostics.ps1`, with
+`epaper.runtime_snapshot_decoded` showing the same zero panel errors, zero
+pending display queue work, and zero dropped display work. WBA55/WBA65 must
+follow the same path with `*_stm32wba.*` target adapter files.
+
+The screen acceptance fixture for this command is
+`docs/validation/companion-screen-real-ble-bench.json`; it is verified by
+`python .\tools\verify_expression_real_ble_screen_bench.py`.
 
 Legacy A1/A2 reuse the Listener acceptance meaning and are compatibility
 evidence only:
@@ -204,7 +361,7 @@ listener-type --submit-embedded-audio-ble-stream 120000
 The repeatable legacy compatibility wrapper is:
 
 ```powershell
-pwsh -NoProfile -File <ai-collaboration-workflow>\scripts\aiw.ps1 with-lock -Resource Companion-WB55,BLE-Companion -Purpose "Companion A1/A2 bench validation" -Run pwsh -NoProfile -File .\tools\verify_companion_type_a1_a2.ps1 -Execute -WorkflowLockHeld
+pwsh -NoProfile -File <ai-collaboration-workflow>\scripts\aiw.ps1 with-lock -Resource 'Companion-WB55,BLE-Companion' -Purpose "Companion A1/A2 bench validation" -Run pwsh -NoProfile -File .\tools\verify_companion_type_a1_a2.ps1 -Execute -WorkflowLockHeld
 ```
 
 The wrapper is dry-run by default. With `-Execute`, it must already be inside
@@ -226,24 +383,23 @@ explicitly requested.
 The repeatable Companion BLE OTA wrapper is:
 
 ```powershell
-pwsh -NoProfile -File <ai-collaboration-workflow>\scripts\aiw.ps1 with-lock -Resource Companion-WB55,BLE-Companion -Purpose "Companion BLE OTA validation" -Run pwsh -NoProfile -File .\tools\verify_companion_ble_ota.ps1 -Execute -WorkflowLockHeld -PackagePath <companion-package.zip>
+pwsh -NoProfile -File <ai-collaboration-workflow>\scripts\aiw.ps1 with-lock -Resource 'Companion-WB55,BLE-Companion' -Purpose "Companion BLE OTA validation" -Run pwsh -NoProfile -File .\tools\verify_companion_ble_ota.ps1 -Execute -WorkflowLockHeld -PackagePath <companion-package.zip>
 ```
 
 The wrapper is dry-run by default. With `-Execute`, it must already be inside
 the workflow hardware lock, shows a Chinese desktop prompt with an audible
 notification when requested, extracts `ota_manifest.json` and
-`firmware_ota.bin` from the same Companion package, then runs the
-Companion-owned BLE OTA v2 host tool:
+`firmware_ota.bin` from the same Companion package, then invokes Companion Type,
+which uses the shared Denzic Rust host core:
 
 ```powershell
-python .\tools\companion_ble_ota_v2.py --manifest ota_manifest.json --firmware firmware_ota.bin --name companion
+companion-type.exe --firmware-ota-transfer ota_manifest.json firmware_ota.bin
 ```
 
 It records the raw transfer output plus a `firmware_ota_result.json` transfer
 evidence file under `.cache/validation/companion-ble-ota-*`. The BLE OTA gate
-passes only when the Companion-owned tool reports `status=PASS`,
-`transport=companion_ota_v2`, and the Companion OTA v2 completion/reboot handoff
-is confirmed.
+passes only when Type reports `status=PASS`, `protocol=denzic_ota_v1`, positive
+data/status evidence, active-link confirmation, and completion/reboot handoff.
 
 The matching wired-flash wrapper is:
 
@@ -312,10 +468,20 @@ Before taking hardware, run the fast no-hardware readiness preflight:
 .\tools\verify_companion_bringup_readiness.ps1
 ```
 
+When there is no current OTA/wired package yet, run the static-only form. It
+skips package, OTA dry-run, wired flash dry-run, and manual-gate emission, but
+still checks the workspace submodule policy, devboard IOC import, static
+Companion rules, screen-expression software acceptance, and git diff hygiene:
+
+```powershell
+.\tools\verify_companion_bringup_readiness.ps1 -StaticOnly
+```
+
 The fast preflight reuses the latest Companion package, checks the Companion
-build environment, OTA/static contract, BLE probe fixture, recording cache
-model, recording FSM, diagnostics static rules, manual-gate checklist, and git
-diff hygiene. It writes a JSON report under
+build environment, workspace submodule policy, devboard IOC import, OTA/static
+contract, BLE probe fixture, recording cache model, recording FSM, diagnostics
+static rules, screen-expression software acceptance, manual-gate checklist, and
+git diff hygiene. It writes a JSON report under
 `.cache/validation/companion-bringup-readiness-*` and `summary.md` beside
 `summary.json`; the Markdown report is the human handoff checklist for the
 remaining real-device gates, with the exact command/action and expected
@@ -342,10 +508,25 @@ Chinese audible operator prompts owned by their wrapper tools. Add
 `-IncludeTypeHarness` only when the legacy Listener-Type bench harness should
 also be checked.
 
+For screen-expression software acceptance, use the aggregate runner before
+taking the hardware lock:
+
+```powershell
+python .\tools\run_expression_acceptance.py --dry-run --skip-build --output .\.cache\validation\companion-screen-acceptance-dry-run.json
+python .\tools\run_expression_acceptance.py --output .\.cache\validation\companion-screen-acceptance-run.json
+```
+
+The dry-run writes the planned command list to
+`companion-screen-acceptance-dry-run.json`; the full run reads
+`docs/validation/companion-screen-acceptance-index.json`, deduplicates
+validation commands, keeps the `wb55_real_panel_refresh` hardware gate
+as PASS, leaves `wb55_touch_visual_acceptance` pending for the operator, and
+records per-item command status.
+
 When hardware is ready, the preferred path is the aggregate acceptance runner:
 
 ```powershell
-pwsh -NoProfile -File <ai-collaboration-workflow>\scripts\aiw.ps1 with-lock -Resource Companion-WB55,BLE-Companion -Purpose "Companion hardware acceptance" -Run pwsh -NoProfile -File .\tools\verify_companion_hardware_acceptance.ps1 -Execute -WorkflowLockHeld -PackagePath <companion-package.zip> -EvidencePath <companion_ui_screenshot_or_log>
+pwsh -NoProfile -File <ai-collaboration-workflow>\scripts\aiw.ps1 with-lock -Resource 'Companion-WB55,BLE-Companion' -Purpose "Companion hardware acceptance" -Run pwsh -NoProfile -File .\tools\verify_companion_hardware_acceptance.ps1 -Execute -WorkflowLockHeld -PackagePath <companion-package.zip> -EvidencePath <companion_ui_screenshot_or_log>
 ```
 
 The runner first ensures the CPU2 BLE stack, then flashes the same Companion
@@ -416,12 +597,93 @@ record button is the NUCLEO-WB55RG `SW3/B3` user button on `PD1`. If no real
 e-paper panel is connected, record `N/A` rather than treating PBM fallback
 renders as panel evidence. Use `-NoEpaperPanel` with
 `tools\verify_companion_physical_signoff.ps1` for the current no-panel bench.
+When a panel is present, the BLE evidence must include `final_card_status` and
+`real_panel_refresh_claimed=true` from the `--expect-real-panel` run before the
+row can move out of `N/A`. The same artifact must include
+`screen_expression_status` so the real-panel record keeps the six-face
+ExpressionV1 sequence baseline. Start from the panel evidence scaffold, fill
+every `TODO`, including `real_ble_bench_artifact`,
+`diagnostics_bundle_artifact`, target pins, timing, visual before/during/after
+files, hashes, decoded `e_paper.runtime_snapshot` health, and the target
+adapter file, then validate it:
+The real BLE artifact should also include `screen_expression_demo_status` so
+the panel record can compare all demo faces against
+`docs/validation/companion-screen-expression-demo-host-status-sequence.json`,
+while visual evidence still proves the real panel image.
+
+On WB55 the scaffold already carries the SPI2 transport facts from
+`docs/validation/companion-screen-panel-wiring-preflight.json`: SPI2, PA9 SCK,
+PC1 MOSI, PC2 MISO, and PA6 `SPI2_CS`. The remaining controller, DC/RST/BUSY,
+power, timing, visual, BLE, diagnostics, and adapter fields must still be
+filled from hardware evidence.
+
+Use the hardware session scaffold before the real-panel session so the evidence
+files land in a target-specific directory. The WB55 root is
+`.cache/validation/companion-real-panel-wb55-<timestamp>` and should contain
+`panel-evidence-record.json`, `panel-hardware-facts.todo.json`,
+`companion-ble-real-bench.json`, `diagnostics/summary.json`,
+`visual/before_photo.jpg`,
+`visual/after_photo.jpg`, and `operator-notes.md`. Validate that contract with
+`python .\tools\verify_expression_panel_hardware_session.py`, then validate the
+concrete generated directory with
+`python .\tools\verify_expression_panel_session_directory.py --session-root <session-root> --target WB55`.
+That `panel_session_directory_preflight` keeps the record at `DRAFT_UNFILLED`
+validates the hardware facts draft, and proves the draft still fails the final
+real-panel validator until hardware facts are filled. If the session already
+contains `panel-bringup-operator-packet.json` or
+`panel-bringup-operator-packet.md`, the same preflight also checks that the
+packet matches the current renderer, keeps the quoted
+`with-lock -Resource 'Companion-WB55,BLE-Companion'` command, and preserves
+`partial_operation_count` evidence for failed live BLE runs. Use
+`panel_hardware_facts_intake` to fill the generated controller, DC/RST/BUSY,
+power, voltage, and reset/BUSY/full-refresh timing facts in
+`panel-hardware-facts.todo.json`; changing that file to
+`READY_FOR_DRIVER_FACTS` only says the target driver has enough input facts and
+does not claim real refresh. The `panel_driver_readiness_report`
+(`docs/validation/companion-screen-panel-driver-readiness.json`, verified by
+`python .\tools\verify_expression_panel_driver_readiness.py`) reports
+`BLOCKED_ON_HARDWARE_FACTS` for the DRAFT file and
+`READY_FOR_DRIVER_IMPLEMENTATION` only after the facts are complete. The
+`panel_hardware_facts_worksheet`
+(`docs/validation/companion-screen-panel-facts-worksheet.json` and
+`docs/validation/companion-screen-panel-facts-worksheet.md`, rendered by
+`python .\tools\render_expression_panel_facts_worksheet.py`) turns those same
+missing fields into a fillable operator worksheet. The
+`panel_bringup_operator_packet`
+(`docs/validation/companion-screen-panel-bringup-operator-packet.json` and
+`docs/validation/companion-screen-panel-bringup-operator-packet.md`, rendered by
+`python .\tools\render_expression_panel_bringup_packet.py`) combines the
+session commands, worksheet, readiness gate, target driver/evidence commands,
+and visual artifact paths for the operator without claiming real refresh. After
+that, use
+`python .\tools\verify_expression_panel_driver_readiness.py --session-root <session-root> --require-ready`
+as the final pre-driver check, then use
+`panel_hardware_facts_bridge` to
+copy those facts into `panel-evidence-record.json` while keeping the evidence
+record `DRAFT_UNFILLED`; this bridge still does not claim real refresh. WBA55/WBA65 use the same
+`panel_hardware_session_scaffold`
+structure with their own
+`companion-real-panel-wba55-<timestamp>` or
+`companion-real-panel-wba65-<timestamp>` roots, `*_stm32wba.*` adapters,
+`--expect-real-panel`, `tools\collect_companion_diagnostics.ps1`, and
+`python .\tools\verify_expression_panel_evidence_record.py --record`.
+
+```powershell
+python .\tools\init_expression_panel_evidence_record.py --target WB55 --session-root .\.cache\validation\companion-real-panel-wb55-<timestamp> --write-session
+python .\tools\verify_expression_panel_session_directory.py --session-root .\.cache\validation\companion-real-panel-wb55-<timestamp> --target WB55
+python .\tools\verify_expression_panel_hardware_facts.py --facts .\.cache\validation\companion-real-panel-wb55-<timestamp>\panel-hardware-facts.todo.json
+python .\tools\render_expression_panel_facts_worksheet.py --session-root .\.cache\validation\companion-real-panel-wb55-<timestamp> --write --json .\.cache\validation\companion-real-panel-wb55-<timestamp>\panel-facts-worksheet.json --markdown .\.cache\validation\companion-real-panel-wb55-<timestamp>\panel-facts-worksheet.md
+python .\tools\render_expression_panel_bringup_packet.py --session-root .\.cache\validation\companion-real-panel-wb55-<timestamp> --write --json .\.cache\validation\companion-real-panel-wb55-<timestamp>\panel-bringup-operator-packet.json --markdown .\.cache\validation\companion-real-panel-wb55-<timestamp>\panel-bringup-operator-packet.md
+python .\tools\verify_expression_panel_driver_readiness.py --session-root .\.cache\validation\companion-real-panel-wb55-<timestamp>
+python .\tools\apply_expression_panel_hardware_facts.py --facts .\.cache\validation\companion-real-panel-wb55-<timestamp>\panel-hardware-facts.todo.json --record .\.cache\validation\companion-real-panel-wb55-<timestamp>\panel-evidence-record.json --write
+python .\tools\verify_expression_panel_evidence_record.py --record <panel-evidence-record.json>
+```
 
 The Type temporary Companion page real-device gate is optional legacy bench
 evidence. Enable it explicitly with `-IncludeTypeUiGate`:
 
 ```powershell
-pwsh -NoProfile -File <ai-collaboration-workflow>\scripts\aiw.ps1 with-lock -Resource Companion-WB55,BLE-Companion -Purpose "Companion Type UI validation" -Run pwsh -NoProfile -File .\tools\verify_companion_type_ui_manual.ps1 -Execute -WorkflowLockHeld -PackagePath <companion-package.zip> -EvidencePath <companion_ui_screenshot_or_log>
+pwsh -NoProfile -File <ai-collaboration-workflow>\scripts\aiw.ps1 with-lock -Resource 'Companion-WB55,BLE-Companion' -Purpose "Companion Type UI validation" -Run pwsh -NoProfile -File .\tools\verify_companion_type_ui_manual.ps1 -Execute -WorkflowLockHeld -PackagePath <companion-package.zip> -EvidencePath <companion_ui_screenshot_or_log>
 ```
 
 It shows a Chinese audible prompt, waits while the operator runs BLE
@@ -438,7 +700,7 @@ After the real-device runs, close the gate with the evidence verifier:
 Run it with `-ChecklistOnly` before hardware to generate a pending checklist
 without failing. Without `-ChecklistOnly`, the independent gate requires
 Companion-native BLE GATT JSON status `PASS`, BLE OTA
-`transport=companion_ota_v2`, and wired ST-LINK/SWD factory flash completion.
+`protocol=denzic_ota_v1`, and wired ST-LINK/SWD factory flash completion.
 Add `-A1A2SummaryPath <companion-type-a1-a2-summary.json> -IncludeTypeHarness`
 only when collecting optional legacy Type A1/A2 evidence. Add
 `-TypeUiEvidencePath <companion-type-ui-manual-summary.json> -IncludeTypeUiGate`
@@ -506,6 +768,47 @@ The current firmware should be rebuilt/flashed before new hardware evidence is
 recorded so `FLASH_RECORDING_DEV_MAX_SECONDS=60` and the BLE chain WAV export
 are both present in the artifact.
 
+2026-07-09 WB55 microphone status:
+
+- The host recording/ASR route is Companion Type first. `Listener-Type` may be
+  used only as the current compatibility CLI behind
+  `tools\companion_recording_to_minutes.py --asr-provider companion-type`.
+- Simulated file input through the Companion Type/Listener-Type bridge now
+  PASSes with real Type ASR output. The bridge passes absolute WAV/debug paths
+  to survive installed-app single-instance dispatch, filters Type diagnostic
+  status text out of transcript parsing, and waits for `asr_final` or
+  `submit-embedded-audio-streaming-file done` instead of stopping on the first
+  partial transcript. Evidence:
+  `.cache\validation\companion-type-simulated-mic-short-final` produced
+  provider `companion_type` transcript `你好，小伴录音测试。`;
+  `.cache\validation\listener-simulated-mic-long-to-minutes-final` produced
+  `这次需要确认 V K A E 和 Audio data 没有被重新解释。`; and
+  `.cache\validation\listener-simulated-mic-short-final` produced
+  `你好，小伴录音测试。` with wake-word postprocess detection of `小伴`.
+- Historical I2S-style WB55 artifacts under
+  `.cache\validation\companion-real-mic-silence-48kto16k-falling-serial`,
+  `.cache\validation\companion-real-mic-short-tts-48kto16k`, and the
+  `20260709` PC-speaker runs remain useful as evidence that the BLE, QSPI
+  recording, chunk pull, WAV export, and delete-after-sync chain worked before
+  the microphone was correctly identified. They are no longer the accepted
+  microphone signal-quality baseline.
+- The accepted WB55 devboard microphone baseline is now SPH0655-compatible PDM
+  through raw-SAI DMA, MSB+CIC3, MCKDIV 31, decimation 96, preamp shift 3, and
+  a 450-block stage buffer with the firmware built using `-Optimization O2`.
+  The PC-speaker TTS run produced `122880` bytes / `3.84s`,
+  `audio_quality.status=PASS`, `rms=1669.28`,
+  `missing_packets=0`, and Companion Type ASR returned
+  `你好，小伴录音测试。`.
+  Evidence:
+  `.cache\validation\mic-fast2-20260710-060913`
+  and
+  `.cache\validation\mic-fast2-20260710-060913-asr`.
+- True acoustic capture is accepted for the firmware-to-Type path. The short
+  margin run now shows zero raw-DMA overruns and `diag=0` steady capture at
+  `10 ms`; the remaining microphone work is a longer soak and then, for WBA,
+  a target-native HAL PDM/PDM2PCM/MDF/ADF path while preserving the same
+  16 kHz PCM16 Companion contract.
+
 ## Step 6A - Recording Postprocess And Meeting Minutes
 
 After a recording has been pulled and verified, process it on the host. The
@@ -558,7 +861,7 @@ For a live BLE capture plus optional Type ASR bridge, run under the workflow
 hardware lock:
 
 ```powershell
-pwsh -NoProfile -File <ai-collaboration-workflow>\scripts\aiw.ps1 with-lock -Resource Companion-WB55,BLE-Companion -Purpose "Companion recording to minutes validation" -Run python .\tools\companion_recording_to_minutes.py --ble-auto --record-seconds 10 --asr-provider listener-type --wake-phrase "你好 companion"
+pwsh -NoProfile -File <ai-collaboration-workflow>\scripts\aiw.ps1 with-lock -Resource 'Companion-WB55,BLE-Companion' -Purpose "Companion recording to minutes validation" -Run python .\tools\companion_recording_to_minutes.py --ble-auto --record-seconds 10 --asr-provider companion-type --wake-phrase "你好 companion"
 ```
 
 ## Step 7 - Desktop Pull

@@ -35,6 +35,7 @@
     X(GATT, LOG_EXPORT_REQUEST, 0x02u, COMP_DIAG_SEV_INFO, "gatt.log_export_request") \
     X(EPAPER, RENDER_REQUEST, 0x01u, COMP_DIAG_SEV_INFO, "e_paper.render_request") \
     X(EPAPER, UPDATE_RESULT, 0x02u, COMP_DIAG_SEV_INFO, "e_paper.update_result") \
+    X(EPAPER, RUNTIME_SNAPSHOT, 0x03u, COMP_DIAG_SEV_INFO, "e_paper.runtime_snapshot") \
     X(RECORDING_FSM, TRANSITION, 0x01u, COMP_DIAG_SEV_INFO, "recording_fsm.transition") \
     X(RECORDING_FSM, REJECTED, 0x02u, COMP_DIAG_SEV_WARN, "recording_fsm.rejected") \
     X(RECORDING_FSM, START_REQUEST, 0x03u, COMP_DIAG_SEV_INFO, "recording_fsm.start_request") \

@@ -1,0 +1,309 @@
+#!/usr/bin/env python3
+"""Verify the accepted WB55 SPH0655/PDM microphone baseline evidence."""
+
+from __future__ import annotations
+
+import argparse
+import json
+import pathlib
+import sys
+from typing import Any
+
+
+REPO_ROOT = pathlib.Path(__file__).resolve().parents[1]
+DEFAULT_FIXTURE = pathlib.Path("docs/validation/companion-mic-wb55-pdm-baseline.json")
+SCHEMA_ID = "companion.mic.wb55_pdm_baseline.v1"
+
+MAIN_C = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Core" / "Src" / "main.c"
+MAKEFILE = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Makefile"
+BRINGUP_README = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "README.md"
+MICROPHONE_C = REPO_ROOT / "app" / "companion_pendant" / "recording" / "microphone.c"
+MICROPHONE_H = REPO_ROOT / "app" / "companion_pendant" / "recording" / "microphone.h"
+RECORDING_README = REPO_ROOT / "app" / "companion_pendant" / "recording" / "README.md"
+BRINGUP_STEPS = REPO_ROOT / "docs" / "bringup_steps.md"
+WBA_RULES = REPO_ROOT / "docs" / "stm32wba_migration_rules.md"
+RECOVERY_NOTES = REPO_ROOT / "docs" / "wb55_ble_recovery_notes.md"
+IOC_DOC = REPO_ROOT / "docs" / "companion_pendant_ioc.md"
+LEGACY_I2S_TUNING = REPO_ROOT / "docs" / "validation" / "companion-mic-wb55-sai-i2s-tuning.json"
+RECORDING_FSM_VERIFIER = REPO_ROOT / "tools" / "verify_recording_fsm_static.py"
+RECORDING_CACHE_VERIFIER = REPO_ROOT / "tools" / "verify_recording_cache_model.py"
+
+RECORDING_CHAIN = (
+    REPO_ROOT
+    / ".cache"
+    / "validation"
+    / "mic-fast2-20260710-060913"
+    / "companion-flash-recording-chain.json"
+)
+ASR_CHAIN = (
+    REPO_ROOT
+    / ".cache"
+    / "validation"
+    / "mic-fast2-20260710-060913-asr"
+    / "companion-recording-to-minutes.json"
+)
+
+
+def rel(path: pathlib.Path) -> str:
+    try:
+        return path.resolve().relative_to(REPO_ROOT).as_posix()
+    except ValueError:
+        return path.as_posix()
+
+
+def require(condition: bool, message: str, errors: list[str]) -> None:
+    if not condition:
+        errors.append(message)
+
+
+def read(path: pathlib.Path, errors: list[str]) -> str:
+    require(path.exists(), f"missing required path {rel(path)}", errors)
+    if not path.exists():
+        return ""
+    return path.read_text(encoding="utf-8")
+
+
+def read_json(path: pathlib.Path, errors: list[str]) -> dict[str, Any]:
+    text = read(path, errors)
+    if not text:
+        return {}
+    return json.loads(text)
+
+
+def operation_by_name(artifact: dict[str, Any], name: str) -> dict[str, Any]:
+    for operation in artifact.get("operations", []):
+        if isinstance(operation, dict) and operation.get("operation") == name:
+            return operation
+    return {}
+
+
+def build_fixture(errors: list[str]) -> dict[str, Any]:
+    recording = read_json(RECORDING_CHAIN, errors)
+    asr = read_json(ASR_CHAIN, errors)
+    recording_list = operation_by_name(recording, "recording_list_after_stop").get("recording_list", {})
+    entries = recording_list.get("entries", []) if isinstance(recording_list, dict) else []
+    entry = entries[0] if entries else {}
+    pull = operation_by_name(recording, "recording_pull")
+    quality = operation_by_name(recording, "audio_quality")
+    asr_result = asr.get("asr", {})
+    minutes = asr.get("minutes", {})
+    transcript = minutes.get("transcript", {}) if isinstance(minutes, dict) else {}
+    return {
+        "schema_id": SCHEMA_ID,
+        "status": "PASS",
+        "target": "NUCLEO-WB55RG",
+        "sound_source": "pc_speaker_tts",
+        "microphone_path": {
+            "source_family": "SPH0655-compatible PDM digital MEMS",
+            "listener_reference": "Listener active N16R8 build uses CONFIG_AUDIO_CAPTURE_MIC_SPH0655_PDM and ESP-IDF I2S PDM2PCM.",
+            "wb55_ingress": "SAI1 Block A raw-PDM DMA",
+            "portable_output": "PCM16 mono 16 kHz, 160 samples per frame",
+            "decode": {
+                "bit_order": "MSB",
+                "filter": "CIC3",
+                "decimation": 96,
+                "mckdiv": 31,
+                "preamp_shift": 3,
+                "stage_blocks": 450,
+                "build_optimization": "O2",
+            },
+            "wba_rule": "Do not copy WB55 raw-SAI timing into WBA; keep the PCM16/16k mono contract and add a target-native CubeWBA mic adapter.",
+        },
+        "source_artifacts": {
+            "recording_chain": rel(RECORDING_CHAIN),
+            "asr_chain": rel(ASR_CHAIN),
+            "legacy_i2s_tuning_redirect": rel(LEGACY_I2S_TUNING),
+        },
+        "recording_evidence": {
+            "status": recording.get("status"),
+            "recording_id": entry.get("recording_id"),
+            "source_mode": entry.get("source_mode"),
+            "total_length": entry.get("total_length"),
+            "duration_ms": entry.get("duration_ms"),
+            "host_sha256": pull.get("host_sha256"),
+            "device_final_sha256": pull.get("device_final_sha256"),
+            "missing_packets": pull.get("missing_packets", 0),
+            "wav_path": recording.get("artifacts", {}).get("wav_path"),
+            "pcm_path": recording.get("artifacts", {}).get("pcm_path"),
+            "audio_quality": {
+                "status": quality.get("status"),
+                "rms": quality.get("rms"),
+                "peak_abs": quality.get("peak"),
+                "clipping_ratio": quality.get("clipping_ratio"),
+                "zero_ratio": quality.get("zero_ratio"),
+            },
+        },
+        "asr_evidence": {
+            "status": asr.get("status"),
+            "provider": asr_result.get("provider"),
+            "pcm_bytes": asr_result.get("pcm_bytes"),
+            "missing_packets": asr_result.get("missing_packets"),
+            "transcript": transcript.get("text"),
+            "expected_phrase": "你好，小伴录音测试。",
+            "known_confusion": None,
+        },
+        "validation_commands": [
+            "python .\\tools\\verify_companion_mic_wb55_pdm_baseline.py",
+            "python .\\tools\\verify_recording_fsm_static.py",
+            "python .\\tools\\verify_recording_cache_model.py",
+        ],
+    }
+
+
+def check_code_contract(errors: list[str]) -> None:
+    main = read(MAIN_C, errors)
+    makefile = read(MAKEFILE, errors)
+    mic_c = read(MICROPHONE_C, errors)
+    mic_h = read(MICROPHONE_H, errors)
+    joined = "\n".join([main, makefile, mic_c, mic_h])
+    for token in [
+        "COMPANION_MIC_BACKEND COMPANION_MIC_BACKEND_SPH0655_PDM",
+        "#define COMPANION_PDM_DECIMATION_FACTOR 96u",
+        "#define COMPANION_PDM_RAW_SAI_MCKDIV 31u",
+        "#define COMPANION_PDM_USE_CIC3_FILTER 1",
+        "#define COMPANION_PDM_BIT_ORDER_LSB 0",
+        "#define COMPANION_MIC_PREAMP_SHIFT 3u",
+        "#define FLASH_RECORDING_STAGE_BLOCKS 450u",
+        "C_OPT ?= -O2",
+        "#define COMPANION_PDM_RAW_SAI_USE_DMA (!COMPANION_PDM_USE_HARDWARE_INTERFACE)",
+        "HAL_SAI_Receive_DMA",
+        "pdm_cic3_decode_sample",
+        "COMP_MIC_SOURCE_SPH0655_PDM_COMPATIBLE",
+        "COMP_MIC_STM32_INGRESS_SAI_PDM",
+        "COMP_MIC_ENCODING_PCM16_MONO",
+    ]:
+        require(token in joined, f"WB55 PDM code contract missing {token}", errors)
+    for token in [
+        "PDM_RAW_SAI_MCKDIV",
+        "PDM_USE_CIC3_FILTER",
+        "FLASH_RECORDING_STAGE_BLOCKS",
+        "C_OPT",
+    ]:
+        require(token in makefile, f"WB55 bring-up Makefile missing override {token}", errors)
+
+
+def check_docs(errors: list[str]) -> None:
+    texts = {
+        "bringup_readme": read(BRINGUP_README, errors),
+        "recording_readme": read(RECORDING_README, errors),
+        "bringup_steps": read(BRINGUP_STEPS, errors),
+        "wba_rules": read(WBA_RULES, errors),
+        "recovery_notes": read(RECOVERY_NOTES, errors),
+        "ioc_doc": read(IOC_DOC, errors),
+    }
+    joined = "\n".join(texts.values())
+    for token in [
+        "SPH0655-compatible PDM",
+        "raw-SAI DMA",
+        "MSB+CIC3",
+        "MCKDIV 31",
+        "decimation 96",
+        "preamp shift 3",
+        "450-block",
+        "O2",
+        "PC speaker",
+        "Companion Type ASR",
+        "CubeWBA microphone adapter",
+        "16 kHz PCM16",
+        "companion-mic-wb55-pdm-baseline.json",
+        "verify_companion_mic_wb55_pdm_baseline.py",
+    ]:
+        require(token in joined, f"microphone docs missing {token}", errors)
+    legacy = read_json(LEGACY_I2S_TUNING, errors)
+    require(legacy.get("status") == "RETIRED", "legacy WB55 I2S tuning artifact must be retired", errors)
+    require(
+        legacy.get("current_baseline") == rel(DEFAULT_FIXTURE),
+        "legacy WB55 I2S tuning artifact must point to the PDM baseline",
+        errors,
+    )
+
+
+def check_fixture_data(data: dict[str, Any], errors: list[str]) -> None:
+    require(data.get("schema_id") == SCHEMA_ID, "unexpected WB55 PDM baseline schema", errors)
+    require(data.get("status") == "PASS", "WB55 PDM baseline must be PASS", errors)
+    path = data.get("microphone_path", {})
+    require(path.get("source_family") == "SPH0655-compatible PDM digital MEMS", "baseline source family drifted", errors)
+    require(path.get("wb55_ingress") == "SAI1 Block A raw-PDM DMA", "baseline ingress drifted", errors)
+    decode = path.get("decode", {})
+    require(decode.get("bit_order") == "MSB", "baseline PDM bit order drifted", errors)
+    require(decode.get("filter") == "CIC3", "baseline PDM filter drifted", errors)
+    require(decode.get("decimation") == 96, "baseline PDM decimation drifted", errors)
+    require(decode.get("mckdiv") == 31, "baseline PDM MCKDIV drifted", errors)
+    require(decode.get("preamp_shift") == 3, "baseline PDM gain drifted", errors)
+    require(decode.get("stage_blocks") == 450, "baseline PDM stage buffer drifted", errors)
+    require(decode.get("build_optimization") == "O2", "baseline build optimization drifted", errors)
+    recording = data.get("recording_evidence", {})
+    require(recording.get("status") == "PASS", "recording chain evidence must be PASS", errors)
+    require(recording.get("source_mode") == 1, "recording source mode must be SAI microphone", errors)
+    require(recording.get("total_length") == 122880, "recording byte count drifted", errors)
+    require(recording.get("duration_ms") == 3840, "recording duration drifted", errors)
+    require(recording.get("host_sha256") == recording.get("device_final_sha256"), "recording SHA mismatch", errors)
+    require(recording.get("missing_packets") in (0, None), "recording pull must not miss packets", errors)
+    require(recording.get("audio_quality", {}).get("status") == "PASS", "audio quality must be PASS", errors)
+    asr = data.get("asr_evidence", {})
+    require(asr.get("status") == "PASS", "ASR chain evidence must be PASS", errors)
+    require(asr.get("provider") == "companion_type", "ASR provider must be Companion Type", errors)
+    require(asr.get("pcm_bytes") == 122880, "ASR PCM byte count drifted", errors)
+    require(asr.get("missing_packets") == 0, "ASR evidence must not miss packets", errors)
+    require("小伴录音测试" in str(asr.get("transcript", "")), "ASR transcript drifted from recorded evidence", errors)
+    for command in data.get("validation_commands", []):
+        if "\\tools\\" in str(command):
+            tool = str(command).split("\\tools\\", 1)[1].split()[0]
+            require((REPO_ROOT / "tools" / tool).exists(), f"validation command references missing tool {tool}", errors)
+
+
+def check_fixture_file(path: pathlib.Path, expected: dict[str, Any], errors: list[str]) -> None:
+    require(path.exists(), f"missing WB55 PDM baseline fixture: {rel(path)}", errors)
+    if not path.exists():
+        return
+    actual = json.loads(path.read_text(encoding="utf-8"))
+    require(actual == expected, f"{rel(path)} is stale; rerun with --write-fixture", errors)
+    check_fixture_data(actual, errors)
+
+
+def parse_args(argv: list[str]) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--fixture", type=pathlib.Path, default=DEFAULT_FIXTURE)
+    parser.add_argument("--write-fixture", action="store_true", help="Update the deterministic WB55 PDM baseline fixture.")
+    return parser.parse_args(argv)
+
+
+def main(argv: list[str]) -> int:
+    args = parse_args(argv)
+    fixture_path = args.fixture if args.fixture.is_absolute() else REPO_ROOT / args.fixture
+    errors: list[str] = []
+    required = [
+        MAIN_C,
+        MAKEFILE,
+        MICROPHONE_C,
+        MICROPHONE_H,
+        RECORDING_CHAIN,
+        ASR_CHAIN,
+        LEGACY_I2S_TUNING,
+        RECORDING_FSM_VERIFIER,
+        RECORDING_CACHE_VERIFIER,
+    ]
+    for path in required:
+        require(path.exists(), f"missing required path {rel(path)}", errors)
+    expected = build_fixture(errors) if not errors else {}
+    if expected:
+        check_fixture_data(expected, errors)
+    check_code_contract(errors)
+    check_docs(errors)
+    if args.write_fixture and expected and not errors:
+        fixture_path.parent.mkdir(parents=True, exist_ok=True)
+        fixture_path.write_text(json.dumps(expected, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    if not args.write_fixture and expected:
+        check_fixture_file(fixture_path, expected, errors)
+
+    if errors:
+        print("FAIL: Companion WB55 PDM microphone baseline checks failed:", file=sys.stderr)
+        for error in errors:
+            print(f" - {error}", file=sys.stderr)
+        return 1
+    print(f"PASS: Companion WB55 PDM microphone baseline verified -> {rel(fixture_path)}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main(sys.argv[1:]))

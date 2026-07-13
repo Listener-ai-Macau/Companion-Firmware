@@ -1,0 +1,48 @@
+{
+  "contract": {
+    "bad_argument_records_last_result_when_adapter_exists": true,
+    "busy_does_not_increment_error_count": true,
+    "dry_run_remains_deferred_no_panel": true,
+    "host_status_unchanged": "CardStatusV1 and existing e_paper.update_result argument meanings are preserved.",
+    "platform_free": true,
+    "snapshot_api": "comp_epaper_panel_adapter_snapshot",
+    "snapshot_null_safe": true
+  },
+  "purpose": "Portable panel adapter telemetry for WB55 dry-run status and future WBA real-panel driver pressure checks.",
+  "schema_id": "companion.pendant.screen_panel_adapter_telemetry.v1",
+  "sources": {
+    "epaper_readme": "app/companion_pendant/epaper/README.md",
+    "panel_header": "app/companion_pendant/epaper/panel_adapter.h",
+    "panel_source": "app/companion_pendant/epaper/panel_adapter.c",
+    "screen_acceptance": "docs/companion_screen_expression_system.md",
+    "wb55_integration": "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c",
+    "wba_rules": "docs/stm32wba_migration_rules.md"
+  },
+  "status": "PASS",
+  "telemetry_fields": {
+    "attempted_count": "display requests accepted by the adapter dispatcher",
+    "controller_known": "current target configuration has controller identity and dimensions",
+    "deferred_count": "dry-run/no-panel/controller-unknown deferrals",
+    "error_count": "bad transport or target callback failures except BUSY",
+    "hardware_present": "current target configuration says panel hardware is present",
+    "last_result": "last comp_epaper_panel_result_t value observed by the dispatcher",
+    "last_result_valid": "at least one adapter result has been observed",
+    "refresh_configured": "target refresh callback is configured",
+    "rendered_count": "target callbacks that returned OK",
+    "width_height": "panel dimensions from target configuration"
+  },
+  "validation_commands": [
+    "python .\\tools\\verify_expression_panel_adapter_telemetry.py",
+    "python .\\tools\\verify_expression_panel_adapter_behavior.py",
+    "python .\\tools\\verify_expression_panel_adapter_boundary.py",
+    "python .\\tools\\verify_expression_status_observability.py",
+    "python .\\tools\\verify_expression_wba_portability.py",
+    "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1"
+  ],
+  "wb55_observability": {
+    "panel_snapshot_source": "comp_epaper_panel_adapter_snapshot",
+    "stats_snapshot_api": "comp_epaper_screen_runtime_snapshot",
+    "update_result_arg3": "runtime_stats.panel.attempted_count",
+    "update_result_arg4": "panel_result"
+  }
+}

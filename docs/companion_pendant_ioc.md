@@ -55,6 +55,6 @@ Companion Pendant 的 CubeMX 配置 `.ioc` 在仓库根 `Companion_Pendant.ioc`(
 
 ## 待确认(会影响 .ioc 后续微调)
 
-- **mic 型号 = INMP441**(已确认)。INMP441 是 **I2S 数字麦克风**(内置 PDM→PCM,输出 I2S PCM,不是 PDM 位流),所以 SAI1 **保持 I2S 模式 RX**(本 .ioc 默认即此,无需改 PDM)。接线:SAI1_CK→SCK,SAI1_FS→WS,SAI1_SD_B(RX)←SD;L/R 选脚接地用左声道。若日后换 PDM mic(如 MP34DT05),再把 SAI1 切 PDM 模式。
+- **devboard 麦克风已按 Listener 同款 SPH0655-compatible PDM 跑通**。`Companion_Nucleo_WB55RG_Bringup` 当前默认走 SAI1A raw-PDM DMA,MSB+CIC3,MCKDIV31,preamp shift 3,输出 16 kHz PCM16 mono 给录音 FSM/flash/BLE/Type ASR。当前 O2/CIC3 基线记录在 `docs/validation/companion-mic-wb55-pdm-baseline.json`,用 `python .\tools\verify_companion_mic_wb55_pdm_baseline.py` 校验,Type ASR 已识别 `你好，小伴录音测试。`。短句 PC-speaker 余量已到 `max_dma_rx_overruns=0`,普通 `diag=0` 块稳态 `capture_ms=10`;状态是进入更长 soak,不是继续调 raw-SAI 常量。这个结论只绑定当前 WB55 开发板 IOC 与接线;量产 WB55CE 或后续 WBA55/WBA65 必须保留同一个 portable recording contract,但重新做目标板 SAI/PDM/DMA/引脚适配层,不要把 WB55 devboard 的 MCKDIV、DMA channel、AF 或 stage buffer 直接搬过去。
 - **QSPI flash 型号**:影响 `FlashSize`/Dummy cycle(现按通用 16MB NOR)。
 - **e-paper 是否带 I2C 加速芯片**:若有,需在保留 USART1 调试与硬件 I2C 之间重新取舍,或做软件 I2C;若纯 SPI,I2C 可继续后移。

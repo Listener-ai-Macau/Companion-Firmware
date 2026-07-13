@@ -1,0 +1,11 @@
+{
+  "schema_id": "companion.low_power.requirements.v1",
+  "status": "PASS",
+  "implementation_status": "static_policy_compiled; hardware_stop_wake_and_current_pending",
+  "product_interaction": "daily double tap starts/stops touch-originated recording; wake word deferred",
+  "idle_gate": "touch EXTI ready and no boot/mic/touch/menu/screen blockers",
+  "target": "final product-board LP-01 standby average <= 1 mA over >= 60 s",
+  "measurement_status": "hardware_current_pending",
+  "portability": "HAL-free policy with WBA55/WBA65 callback-only LPM/EXTI glue",
+  "errors": []
+}

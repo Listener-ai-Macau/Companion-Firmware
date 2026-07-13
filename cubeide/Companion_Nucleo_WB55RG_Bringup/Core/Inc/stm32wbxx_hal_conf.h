@@ -8,6 +8,7 @@
 #define HAL_FLASH_MODULE_ENABLED
 #define HAL_GPIO_MODULE_ENABLED
 #define HAL_HSEM_MODULE_ENABLED
+#define HAL_I2C_MODULE_ENABLED
 #define HAL_IPCC_MODULE_ENABLED
 #define HAL_PWR_MODULE_ENABLED
 #define HAL_QSPI_MODULE_ENABLED
@@ -48,6 +49,9 @@
 #endif
 #ifdef HAL_DMA_MODULE_ENABLED
 #include "stm32wbxx_hal_dma.h"
+#endif
+#ifdef HAL_I2C_MODULE_ENABLED
+#include "stm32wbxx_hal_i2c.h"
 #endif
 #ifdef HAL_EXTI_MODULE_ENABLED
 #include "stm32wbxx_hal_exti.h"
