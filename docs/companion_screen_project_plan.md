@@ -836,6 +836,20 @@ owner 明确把“先出图，再按图实现”提升为全产品的通过规�
 因此 ACPT-01 仍是当前唯一人工项，ACPT-02 至 ACPT-13 保持关闭。四项来源批准、资源对照和真实
 面板观感是不同证据层，任何一层缺失均不得用另一层替代。
 
+## Revision 65: 先识别触控，再选择第一帧
+
+owner 继续报告产品“相当的卡顿”后，检查最新 runtime trace 发现低功耗静态 `sleepy` 页的首个
+contact 会立即排队 `idle` differential，实际占用面板 BUSY `307 ms`。驱动在 BUSY 期间保存了
+anchor/latest/release，因而不会丢失手势，但用户先等待一张不表达其动作的 idle 帧，再看见真正的
+点击、滑动、录音或菜单效果，观感自然像是没有跟手。
+
+此次性能修复不修改已锁定的宠物美术：首个 contact 只退出 Stop、开始 FT6336 5 ms gesture
+timeline 并写一个 `visual=gesture_owned` trace。手势已分辨后，tap/stroke/double-tap/long-press
+各自成为第一张可见帧；不会先同步刷新 idle，也不会为此新增程序化美术或增加任何额外的电子纸
+刷新。这样保留低功耗触控唤醒和状态可观察性，同时移除前置约 307 ms 的人为阻塞。静态检查、
+构建和 reset-bounded trace 必须证明该 deferred path；真实板端观感仍留在 ACPT-01，不能因日志
+通过而声称“跟手”。
+
 ## 逐项验收顺序
 
 本项目遵循 AI Workflow 的全产品异步验收规则：未收到操作者明确的“开始验收”前，

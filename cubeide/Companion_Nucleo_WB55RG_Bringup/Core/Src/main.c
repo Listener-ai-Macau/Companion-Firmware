@@ -1824,8 +1824,6 @@ static void process_touch_debug_sample(const comp_ft6336_touch_sample_t *sample,
 
 static void request_low_power_touch_wake(void)
 {
-    bool requested;
-
     if (s_low_power_touch_wake_requested ||
         !s_low_power_idle_pose_attempted ||
         !Companion_Screen_IsReady() ||
@@ -1834,9 +1832,11 @@ static void request_low_power_touch_wake(void)
     }
 
     s_low_power_touch_wake_requested = true;
-    requested = Companion_Screen_ShowDaily();
-    printf("[touch-ui] low_power_touch_wake expression=idle refresh=partial result=%s\r\n",
-           requested ? "requested" : "unavailable");
+    /* A differential idle redraw holds this panel for roughly one partial
+     * waveform before the user's first gesture can own the screen. Wake the
+     * MCU and preserve the 5 ms touch timeline now; tap/swipe/record/menu
+     * will enqueue the first visible response after classification. */
+    printf("[touch-ui] low_power_touch_wake state=active visual=gesture_owned result=deferred\r\n");
 }
 
 static void poll_touch_debug(void)
