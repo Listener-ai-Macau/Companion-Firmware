@@ -1,6 +1,8 @@
 {
   "acceptance_sequence": {
     "acceptance_index": "docs/validation/companion-screen-acceptance-index.json",
+    "interaction_profile_marker_present": false,
+    "interaction_profile_status": "PENDING_HARDWARE_RUNTIME_MARKER",
     "next_hardware_gate": "wba_real_panel_parity",
     "next_human_gate": "wb55_touch_visual_acceptance",
     "pre_acceptance_status": "PASS",
@@ -21,6 +23,7 @@
     "clips": 33,
     "crc32": "0x2332E300",
     "frames": 75,
+    "interaction_profile_status": "PENDING_HARDWARE_RUNTIME_MARKER",
     "normal_firmware_restored": true,
     "normal_log": ".cache/validation/rev53-runtime-current/normal/nucleo-serial-raw.log",
     "provision_log": ".cache/validation/rev53-runtime-current/provision/nucleo-serial-raw.log",
@@ -34,6 +37,7 @@
     "display_queue_generation_hygiene": "docs/validation/companion-screen-display-queue-generation-hygiene.json",
     "generated_art_style_contract": "docs/validation/companion-screen-generated-art-style-contract.json",
     "generation_release_ledger": "docs/validation/companion-screen-generation-release-ledger.json",
+    "interaction_profile_runtime_gate": "docs/validation/companion-interaction-profile-runtime-gate-20260714.md",
     "menu_drag_continuity_contract": "docs/validation/companion-screen-menu-drag-continuity-contract.json",
     "panel_gate": "docs/validation/companion-screen-panel-hardware-gate.json",
     "pre_acceptance_health": "docs/validation/companion-screen-pre-acceptance-health.json",
@@ -59,6 +63,7 @@
     "wba_real_parity_gate": "docs/validation/companion-screen-wba-real-parity-gate.json"
   },
   "open_requirements": [
+    "screen_refresh_touch_machine_health",
     "daily_pet_and_menu_human_feel",
     "wba55_wba65_portability_boundary"
   ],
@@ -149,6 +154,11 @@
           "summary": "current rev53 machine health depends on provision and normal runtime logs; pending status keeps this requirement in hardware recheck instead of relying on earlier history"
         },
         {
+          "path": "docs/validation/companion-interaction-profile-runtime-gate-20260714.md",
+          "status": "PENDING_HARDWARE_RUNTIME_MARKER",
+          "summary": "the reset-bounded normal capture must contain the complete quiet interaction boot marker; older resource-only logs do not prove the latency candidate"
+        },
+        {
           "path": "docs/validation/companion-screen-wb55-touch-visual-acceptance-packet.json",
           "status": "PENDING_HUMAN",
           "summary": "operator packet links the current resource state; it does not claim human visual acceptance"
@@ -160,8 +170,8 @@
         }
       ],
       "id": "screen_refresh_touch_machine_health",
-      "requirement": "WB55 machine logs prove refresh path and FT6336 identity/health before human visual acceptance.",
-      "status": "proved"
+      "requirement": "WB55 machine logs prove refresh path, FT6336 identity/health, and the quiet interaction profile before human visual acceptance.",
+      "status": "pending_hardware_recheck"
     },
     {
       "evidence": [
@@ -202,7 +212,12 @@
         {
           "path": "docs/validation/companion-screen-wb55-touch-visual-acceptance-packet.json",
           "status": "PENDING_HUMAN",
-          "summary": "asynchronous focused packet is ready and must start only after the operator explicitly says 开始验收"
+          "summary": "asynchronous focused packet must start only after the operator explicitly says 开始验收; machine_precondition=NO_GO_INTERACTION_PROFILE_RUNTIME_RECHECK_PENDING: do not start human touch/visual steps until a reset-bounded normal capture proves the quiet interaction profile."
+        },
+        {
+          "path": "docs/validation/companion-interaction-profile-runtime-gate-20260714.md",
+          "status": "PENDING_HARDWARE_RUNTIME_MARKER",
+          "summary": "the same focused packet remains NO_GO until the reset-bounded normal capture proves the complete quiet interaction marker"
         },
         {
           "path": "docs/validation/companion-screen-wb55-touch-visual-review-template.json",

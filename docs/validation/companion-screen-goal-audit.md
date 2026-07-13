@@ -44,11 +44,12 @@ This file is generated. Update it with
 
 ### screen_refresh_touch_machine_health
 
-- Status: `proved`
-- Requirement: WB55 machine logs prove refresh path and FT6336 identity/health before human visual acceptance.
+- Status: `pending_hardware_recheck`
+- Requirement: WB55 machine logs prove refresh path, FT6336 identity/health, and the quiet interaction profile before human visual acceptance.
 - Evidence:
   - `.cache/validation/rev53-runtime-current/normal/nucleo-serial-raw.log`: `PASS` - normal boot log includes refresh complete and touch-health identity addr=0x38 cipher=0x64 fw=0x01 chip=0x11
   - `docs/validation/companion-screen-wb55-runtime-recheck-logs.json`: `PASS` - current rev53 machine health depends on provision and normal runtime logs; pending status keeps this requirement in hardware recheck instead of relying on earlier history
+  - `docs/validation/companion-interaction-profile-runtime-gate-20260714.md`: `PENDING_HARDWARE_RUNTIME_MARKER` - the reset-bounded normal capture must contain the complete quiet interaction boot marker; older resource-only logs do not prove the latency candidate
   - `docs/validation/companion-screen-wb55-touch-visual-acceptance-packet.json`: `PENDING_HUMAN` - operator packet links the current resource state; it does not claim human visual acceptance
   - `docs/validation/companion-screen-refresh-feel-contract.json`: `PASS` - static refresh-feel contract is PASS; real rev53 touch/flicker/ghosting feel remains a pending hardware recheck
 
@@ -73,7 +74,8 @@ This file is generated. Update it with
 - Status: `pending_human`
 - Requirement: Human confirms daily tap/swipe pet reactions, 3 s hold menu entry, static menu-home vertical strokes, press-cue, language switching, residual/flicker, and premium pet feel on the real panel.
 - Evidence:
-  - `docs/validation/companion-screen-wb55-touch-visual-acceptance-packet.json`: `PENDING_HUMAN` - asynchronous focused packet is ready and must start only after the operator explicitly says 开始验收
+  - `docs/validation/companion-screen-wb55-touch-visual-acceptance-packet.json`: `PENDING_HUMAN` - asynchronous focused packet must start only after the operator explicitly says 开始验收; machine_precondition=NO_GO_INTERACTION_PROFILE_RUNTIME_RECHECK_PENDING: do not start human touch/visual steps until a reset-bounded normal capture proves the quiet interaction profile.
+  - `docs/validation/companion-interaction-profile-runtime-gate-20260714.md`: `PENDING_HARDWARE_RUNTIME_MARKER` - the same focused packet remains NO_GO until the reset-bounded normal capture proves the complete quiet interaction marker
   - `docs/validation/companion-screen-wb55-touch-visual-review-template.json`: `TEMPLATE_NOT_ACCEPTANCE_RESULT` - blank structured review template mirrors all focused operator steps and defaults every record to non-publishable until triaged with evidence
   - `docs/validation/companion-screen-wb55-touch-visual-review-record.json`: `NO_GO_OPEN_REVIEW_ITEMS` - filled review record validator is present and stays non-publishable until all operator notes are triaged, closed, and linked to evidence
   - `docs/validation/companion-screen-pre-acceptance-health.json`: `PASS` - machine-only pre-acceptance health gate blocks acceptance until rev53 runtime recheck, while retaining last-proven log, touch identity, refresh marker, flash preflight, and packet/resource consistency evidence
@@ -116,6 +118,7 @@ This file is generated. Update it with
 
 ## Open Requirements
 
+- `screen_refresh_touch_machine_health`
 - `daily_pet_and_menu_human_feel`
 - `wba55_wba65_portability_boundary`
 

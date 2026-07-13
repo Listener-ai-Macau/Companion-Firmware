@@ -43,6 +43,7 @@ GENERATION_RELEASE_LEDGER = ROOT / "docs/validation/companion-screen-generation-
 MENU_DRAG = ROOT / "docs/validation/companion-screen-menu-drag-continuity-contract.json"
 PRESENTATION = ROOT / "docs/validation/companion-screen-presentation-wb55.json"
 TOUCH_FT6336 = ROOT / "docs/validation/companion-screen-touch-ft6336-wb55.json"
+INTERACTION_PROFILE_RUNTIME_GATE = ROOT / "docs/validation/companion-interaction-profile-runtime-gate-20260714.md"
 SCHEMA_ID = "companion.pendant.screen_goal_audit.v1"
 CANDIDATE = current_candidate()
 RUNTIME_GATE_ID = f"wb55_rev{CANDIDATE.revision}_runtime_recheck"
@@ -96,6 +97,8 @@ def build_audit() -> dict[str, Any]:
 
     runtime = menu.get("runtime_evidence", {})
     machine_state = touch_packet.get("machine_state", {})
+    interaction_profile = machine_state.get("interaction_profile", {})
+    interaction_profile_status = str(interaction_profile.get("status", ""))
     resource_pack = menu.get("resource_pack", {})
     wb55_real = resource_policy.get("wb55_real_evidence", {})
     candidate_pack = resource_policy.get("candidate_pack", {})
@@ -175,8 +178,8 @@ def build_audit() -> dict[str, Any]:
         },
         {
             "id": "screen_refresh_touch_machine_health",
-            "status": "proved" if not runtime_pending else "pending_hardware_recheck",
-            "requirement": "WB55 machine logs prove refresh path and FT6336 identity/health before human visual acceptance.",
+            "status": "proved" if not runtime_pending and interaction_profile_status == "PASS" else "pending_hardware_recheck",
+            "requirement": "WB55 machine logs prove refresh path, FT6336 identity/health, and the quiet interaction profile before human visual acceptance.",
             "evidence": [
                 evidence(
                     ROOT / str(runtime.get("normal_raw_log")),
@@ -187,6 +190,11 @@ def build_audit() -> dict[str, Any]:
                     RUNTIME_RECHECK_LOGS,
                     str(runtime_recheck_logs.get("status")),
                     f"current rev{CANDIDATE.revision} machine health depends on provision and normal runtime logs; pending status keeps this requirement in hardware recheck instead of relying on earlier history",
+                ),
+                evidence(
+                    INTERACTION_PROFILE_RUNTIME_GATE,
+                    interaction_profile_status,
+                    "the reset-bounded normal capture must contain the complete quiet interaction boot marker; older resource-only logs do not prove the latency candidate",
                 ),
                 evidence(TOUCH_PACKET, str(touch_packet.get("status")), "operator packet links the current resource state; it does not claim human visual acceptance"),
                 evidence(REFRESH_FEEL, str(refresh_feel.get("status")), f"static refresh-feel contract is PASS; real rev{CANDIDATE.revision} touch/flicker/ghosting feel remains a pending hardware recheck"),
@@ -231,7 +239,16 @@ def build_audit() -> dict[str, Any]:
             "status": "pending_human",
             "requirement": "Human confirms daily tap/swipe pet reactions, 3 s hold menu entry, static menu-home vertical strokes, press-cue, language switching, residual/flicker, and premium pet feel on the real panel.",
             "evidence": [
-                evidence(TOUCH_PACKET, str(touch_packet.get("status")), "asynchronous focused packet is ready and must start only after the operator explicitly says 开始验收"),
+                evidence(
+                    TOUCH_PACKET,
+                    str(touch_packet.get("status")),
+                    f"asynchronous focused packet must start only after the operator explicitly says 开始验收; machine_precondition={touch_packet.get('machine_precondition')}",
+                ),
+                evidence(
+                    INTERACTION_PROFILE_RUNTIME_GATE,
+                    interaction_profile_status,
+                    "the same focused packet remains NO_GO until the reset-bounded normal capture proves the complete quiet interaction marker",
+                ),
                 evidence(
                     TOUCH_REVIEW_TEMPLATE,
                     str(touch_review_template.get("status")),
@@ -351,6 +368,7 @@ def build_audit() -> dict[str, Any]:
             "menu_drag_continuity_contract": rel(MENU_DRAG),
             "screen_presentation_contract": rel(PRESENTATION),
             "touch_ft6336_contract": rel(TOUCH_FT6336),
+            "interaction_profile_runtime_gate": rel(INTERACTION_PROFILE_RUNTIME_GATE),
         },
         "current_resource": {
             "revision": resource_pack.get("revision"),
@@ -359,6 +377,7 @@ def build_audit() -> dict[str, Any]:
             "total_bytes": resource_pack.get("total_bytes"),
             "crc32": resource_pack.get("pack_crc32"),
             "runtime_status": runtime_status,
+            "interaction_profile_status": interaction_profile_status,
             "normal_firmware_restored": (
                 machine_state.get("normal_firmware_restored") if not runtime_pending else False
             ),
@@ -383,6 +402,8 @@ def build_audit() -> dict[str, Any]:
             "pre_acceptance_status": pre_acceptance.get("status"),
             "runtime_logs_status": runtime_recheck_logs.get("status"),
             "runtime_promotion_status": runtime_promotion.get("status"),
+            "interaction_profile_status": interaction_profile_status,
+            "interaction_profile_marker_present": interaction_profile.get("marker_present"),
         },
         "requirements": requirements,
         "open_requirements": open_requirements,
@@ -482,6 +503,7 @@ def check_audit(audit: dict[str, Any], errors: list[str]) -> None:
         "total_bytes": menu_pack.get("total_bytes"),
         "crc32": menu_pack.get("pack_crc32"),
         "runtime_status": menu_runtime.get("status"),
+        "interaction_profile_status": load_json(TOUCH_PACKET).get("machine_state", {}).get("interaction_profile", {}).get("status"),
         "normal_firmware_restored": (
             False
             if str(menu_runtime.get("status", "")).endswith("_RUNTIME_RECHECK_PENDING")
@@ -515,6 +537,9 @@ def check_audit(audit: dict[str, Any], errors: list[str]) -> None:
     runtime_recheck_logs = load_json(RUNTIME_RECHECK_LOGS)
     touch_review_template = load_json(TOUCH_REVIEW_TEMPLATE)
     touch_review_record = load_json(TOUCH_REVIEW_RECORD)
+    touch_packet = load_json(TOUCH_PACKET)
+    interaction_profile = touch_packet.get("machine_state", {}).get("interaction_profile", {})
+    interaction_profile_status = str(interaction_profile.get("status", ""))
     runtime_action_card = load_json(RUNTIME_ACTION_CARD)
     runtime_flash_preflight = load_json(RUNTIME_FLASH_PREFLIGHT)
     runtime_serial_capture_preflight = load_json(RUNTIME_SERIAL_CAPTURE_PREFLIGHT)
@@ -540,6 +565,19 @@ def check_audit(audit: dict[str, Any], errors: list[str]) -> None:
         errors.append(f"missing requirements: {sorted(missing)}")
     if requirements.get("daily_pet_and_menu_human_feel", {}).get("status") != "pending_human":
         errors.append("human touch/visual gate must remain pending_human")
+    expected_machine_health_status = (
+        "proved"
+        if not runtime_status.endswith("_RUNTIME_RECHECK_PENDING") and interaction_profile_status == "PASS"
+        else "pending_hardware_recheck"
+    )
+    if requirements.get("screen_refresh_touch_machine_health", {}).get("status") != expected_machine_health_status:
+        errors.append(f"screen refresh/touch machine health must be {expected_machine_health_status}")
+    if interaction_profile.get("required_marker") != "[build] interaction_profile=quiet epaper_trace=0 touch_trace=0 ft6336_threshold=0x70 touch_poll_active_ms=5 touch_poll_refresh_ms=5 refresh_policy=partial_x5_then_fast_cleanup":
+        errors.append("interaction profile must require the complete quiet boot marker")
+    if interaction_profile.get("marker_present") != (interaction_profile_status == "PASS"):
+        errors.append("interaction profile marker presence must match its status")
+    if touch_packet.get("machine_state", {}).get("interaction_profile_evidence") != rel(INTERACTION_PROFILE_RUNTIME_GATE):
+        errors.append("touch packet must link interaction-profile runtime gate")
     if touch_review_template.get("status") != "TEMPLATE_NOT_ACCEPTANCE_RESULT":
         errors.append("touch review template must remain a template, not an acceptance result")
     if touch_review_template.get("claim_scope") != "blank_operator_review_template":
@@ -587,6 +625,8 @@ def check_audit(audit: dict[str, Any], errors: list[str]) -> None:
         errors.append("generated_from must include display_queue_generation_hygiene")
     if generated_from.get("generation_release_ledger") != rel(GENERATION_RELEASE_LEDGER):
         errors.append("generated_from must include generation_release_ledger")
+    if generated_from.get("interaction_profile_runtime_gate") != rel(INTERACTION_PROFILE_RUNTIME_GATE):
+        errors.append("generated_from must include interaction_profile_runtime_gate")
     if runtime_status.endswith("_RUNTIME_RECHECK_PENDING"):
         if runtime_logs_pass:
             if runtime_promotion.get("status") != "READY_TO_APPLY":
@@ -650,6 +690,10 @@ def check_audit(audit: dict[str, Any], errors: list[str]) -> None:
         errors.append("acceptance sequence runtime log status drifted from runtime log gate")
     if acceptance_sequence.get("runtime_promotion_status") != runtime_promotion.get("status"):
         errors.append("acceptance sequence runtime promotion status drifted from promotion gate")
+    if acceptance_sequence.get("interaction_profile_status") != interaction_profile_status:
+        errors.append("acceptance sequence interaction profile status drifted from touch packet")
+    if acceptance_sequence.get("interaction_profile_marker_present") != interaction_profile.get("marker_present"):
+        errors.append("acceptance sequence interaction profile marker drifted from touch packet")
     if acceptance_index.get("summary", {}).get("next_hardware_gate") != acceptance_sequence.get("next_hardware_gate"):
         errors.append("acceptance sequence next hardware gate drifted from acceptance index")
     if acceptance_index.get("summary", {}).get("next_human_gate") != acceptance_sequence.get("next_human_gate"):
@@ -810,6 +854,10 @@ def check_audit(audit: dict[str, Any], errors: list[str]) -> None:
         errors.append("daily human gate evidence must include touch review record")
     if rel(RUNTIME_RECHECK_LOGS) not in machine_health_evidence_paths:
         errors.append("screen refresh/touch machine health evidence must include runtime recheck logs")
+    if rel(INTERACTION_PROFILE_RUNTIME_GATE) not in daily_evidence_paths:
+        errors.append("daily human gate evidence must include interaction-profile runtime gate")
+    if rel(INTERACTION_PROFILE_RUNTIME_GATE) not in machine_health_evidence_paths:
+        errors.append("screen refresh/touch machine health evidence must include interaction-profile runtime gate")
     validation_commands = set(audit.get("validation_commands", []))
     if "python .\\tools\\verify_wb55_screen_runtime_recheck_logs.py" not in validation_commands:
         errors.append("validation_commands must include runtime recheck logs verifier")
@@ -842,10 +890,12 @@ def check_audit(audit: dict[str, Any], errors: list[str]) -> None:
     for required_open in ("daily_pet_and_menu_human_feel", "wba55_wba65_portability_boundary"):
         if required_open not in open_requirements:
             errors.append(f"open_requirements missing {required_open}")
-    if runtime_status.endswith("_RUNTIME_RECHECK_PENDING"):
+    if runtime_status.endswith("_RUNTIME_RECHECK_PENDING") or interaction_profile_status != "PASS":
         for required_open in ("current_external_resource_runtime", "screen_refresh_touch_machine_health"):
+            if required_open == "current_external_resource_runtime" and not runtime_status.endswith("_RUNTIME_RECHECK_PENDING"):
+                continue
             if required_open not in open_requirements:
-                errors.append(f"open_requirements missing runtime recheck item {required_open}")
+                errors.append(f"open_requirements missing runtime/profile recheck item {required_open}")
 
     serialized = json.dumps(audit, ensure_ascii=False)
     for token in (
@@ -891,6 +941,10 @@ def check_audit(audit: dict[str, Any], errors: list[str]) -> None:
         "verify_companion_screen_pre_acceptance_health.py",
         "verify_expression_acceptance_index.py",
         "companion-screen-acceptance-index.json",
+        "companion-interaction-profile-runtime-gate-20260714.md",
+        "PENDING_HARDWARE_RUNTIME_MARKER",
+        "NO_GO_INTERACTION_PROFILE_RUNTIME_RECHECK_PENDING",
+        "complete quiet interaction boot marker",
         "acceptance_sequence",
         expected_next_hardware_gate,
         "wb55_touch_visual_acceptance",
