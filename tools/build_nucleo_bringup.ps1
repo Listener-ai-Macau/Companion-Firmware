@@ -43,6 +43,7 @@ param(
     [ValidateSet('left', 'right', 'up', 'down')]
     [string]$EpaperDailyStrokeDemoDirection = 'down',
     [switch]$EpaperMaintenanceDiagnostic,
+    [switch]$EpaperRefreshCadenceDiagnostic,
     [switch]$EpaperProductExpressionDemo,
     [ValidateSet('listening', 'thinking', 'speaking', 'happy', 'sleepy', 'recording', 'sync_complete', 'low_battery', 'error')]
     [string]$EpaperProductExpressionDemoExpression = 'listening',
@@ -189,7 +190,7 @@ if (-not (Test-Path -LiteralPath $ProjectDir)) {
 $RepoRoot = Get-NormalizedPath -Path (Join-Path $PSScriptRoot '..')
 
 $makeArgs = @("-C", $ProjectDir)
-if ($Force -or $EpaperDailyTapDemo -or $EpaperDailyStrokeDemo -or $EpaperMaintenanceDiagnostic -or $EpaperProductExpressionDemo) {
+if ($Force -or $EpaperDailyTapDemo -or $EpaperDailyStrokeDemo -or $EpaperMaintenanceDiagnostic -or $EpaperRefreshCadenceDiagnostic -or $EpaperProductExpressionDemo) {
     $makeArgs += "-B"
 }
 if ($OtaApp) {
@@ -322,6 +323,13 @@ if ($EpaperMaintenanceDiagnostic) {
         "EPAPER_MAINTENANCE_DIAGNOSTIC=1",
         "BUILD_DIR=build_maintenance_diagnostic",
         "TARGET=Companion_Nucleo_WB55RG_MaintenanceDiagnostic"
+    )
+}
+if ($EpaperRefreshCadenceDiagnostic) {
+    $makeArgs += @(
+        "EPAPER_REFRESH_CADENCE_DIAGNOSTIC=1",
+        "BUILD_DIR=build_refresh_cadence_diagnostic",
+        "TARGET=Companion_Nucleo_WB55RG_RefreshCadenceDiagnostic"
     )
 }
 if ($EpaperProductExpressionDemo) {

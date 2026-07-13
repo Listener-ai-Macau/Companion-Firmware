@@ -1,6 +1,6 @@
 # Companion Interaction Refresh Cadence - 2026-07-14
 
-Status: `MACHINE_BUILD_READY_HARDWARE_TRACE_PENDING`
+Status: `DIAGNOSTIC_BUILD_READY_HARDWARE_TRACE_PENDING`
 
 ## Change
 
@@ -39,18 +39,40 @@ Commit `e458dae` also corrected the real-panel gate so it identifies the
 verified Good Display Mode-1 `0xC7` path as current and labels the old `0xCF`
 record as retired historical evidence.
 
+## Focused Diagnostic Build
+
+The dedicated cadence diagnostic is production-off by default and exists only
+to make the remaining hardware trace deterministic. Build it with:
+
+```powershell
+pwsh -NoProfile -File .\tools\build_nucleo_bringup.ps1 -EpaperSsd1681Bringup -EpaperMenu 1 -EpaperRefreshCadenceDiagnostic -Force
+```
+
+It issues one baseline menu frame, then queues six distinct interactive menu
+frames only after the prior panel transaction succeeded. The static contract
+and synthetic parser self-test passed:
+
+- `python tools/verify_wb55_refresh_cadence_diagnostic.py`
+- `python tools/verify_wb55_refresh_cadence_log.py --self-test`
+
+The parser is intentionally strict: it requires one full baseline, five
+`differential/0xFC` refreshes, one sixth `maintenance/0xC7` refresh, all six
+queue/completion markers, no diagnostic abort, and no obsolete delayed
+maintenance marker. A parser pass over synthetic data is not hardware proof.
+
 ## Required Hardware Follow-up
 
 No board was flashed for this change and no human observation was requested.
 The existing WB55 runtime logs therefore do not prove this image is running.
 When the owner explicitly starts a hardware session:
 
-1. Flash the `1a52ea9` (or descendant) WB55 production image under the
-   `Companion-WB55` hardware lock.
-2. Capture a reset-bounded serial trace covering at least six completed normal
-   interaction refresh requests.
-3. Confirm requests 1-5 select differential `0xFC`, request 6 selects one
-   vendor-profiled `0xC7`, and there is no `screen_maintenance`/1200 ms
-   delayed request after an ordinary interaction.
-4. Run the focused ACPT-01 visual review for residual image and perceived
+1. Build and flash the focused diagnostic image under the `Companion-WB55`
+   hardware lock only after the owner explicitly begins a hardware session.
+2. Capture a reset-bounded serial trace through
+   `refresh_cadence_diagnostic done` and save it beside the resulting JSON.
+3. Run `python tools/verify_wb55_refresh_cadence_log.py --log <trace> --out
+   <result.json>`; it must prove five `0xFC` interactions then exactly one
+   `0xC7` cleanup with no 1200 ms delayed request.
+4. Reflash the normal production image before ACPT-01. Run the focused visual
+   review for residual image, a single maintenance flicker, and perceived
    responsiveness. Machine timing does not substitute for that review.

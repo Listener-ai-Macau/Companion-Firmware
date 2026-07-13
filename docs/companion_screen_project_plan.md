@@ -949,6 +949,19 @@ WBA55/WBA65 共用这个 portable policy；目标层仅可在有同等面板证�
 构建、自测和 reset-bounded serial 必须证明没有普通触控后的 delayed maintenance，且第六次交互会
 选择一次 `0xC7`。真实残影和观感仍属于 ACPT-01，不能由日志替代。
 
+## Revision 73: 自动刷新节奏诊断证据
+
+为把“仍然卡顿”的现场判断拆成可复现的机器证据，WB55 bring-up 增加一个只用于验收会话的
+`EPAPER_REFRESH_CADENCE_DIAGNOSTIC` 构建目标。它在启动时先完成一次未知 baseline 的菜单全刷，
+然后只在前一帧成功返回后依次提交六个内容不同的 `PARTIAL_INTERACTIVE` 菜单按压帧。这样不依赖
+操作者手动连续点击，也不会与手势、BLE 或普通菜单路径竞争。
+
+该开关默认关闭，生产构建的行为和资源不变。诊断日志解析器必须证明 baseline 为一次 full、后续前五帧
+是 `differential/0xFC`、第六帧为 `maintenance/0xC7`，并且没有 `screen_maintenance` 或
+`quiet_ms=1200` 的旧定时补刷。它只能证明选择、排队和日志顺序；真实屏幕的残影、单次闪烁和主观响应
+仍必须在 owner 明确“开始验收”后以 ACPT-01 观察确认。此诊断仍复用 portable `refresh_policy`，所以
+WBA55/WBA65 后续只需替换有面板证据的目标波形适配器，不得复制 WB55 的演示逻辑。
+
 ## 逐项验收顺序
 
 本项目遵循 AI Workflow 的全产品异步验收规则：未收到操作者明确的“开始验收”前，

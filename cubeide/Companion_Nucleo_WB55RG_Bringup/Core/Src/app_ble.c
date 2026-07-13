@@ -78,6 +78,12 @@
 #define COMPANION_SCREEN_DAILY_STROKE_DEMO_DIRECTION 4u
 #endif
 
+#ifndef COMPANION_SCREEN_REFRESH_CADENCE_DIAGNOSTIC
+#define COMPANION_SCREEN_REFRESH_CADENCE_DIAGNOSTIC 0
+#endif
+
+#define COMPANION_SCREEN_REFRESH_CADENCE_DIAGNOSTIC_REQUESTS 6u
+
 #ifndef COMPANION_SCREEN_PRODUCT_EXPRESSION_DEMO
 #define COMPANION_SCREEN_PRODUCT_EXPRESSION_DEMO 0
 #endif
@@ -278,6 +284,12 @@ static uint32_t s_companion_expression_tick_started_ms = 0u;
 static uint32_t s_companion_product_expression_demo_started_ms = 0u;
 static bool s_companion_product_expression_demo_end_sent = false;
 #endif
+#if COMPANION_SCREEN_REFRESH_CADENCE_DIAGNOSTIC
+static bool s_companion_refresh_cadence_diagnostic_active = false;
+static bool s_companion_refresh_cadence_diagnostic_baseline_complete = false;
+static uint8_t s_companion_refresh_cadence_diagnostic_queued = 0u;
+static uint8_t s_companion_refresh_cadence_diagnostic_completed = 0u;
+#endif
 static uint32_t s_companion_audio_next_session_id = 1u;
 static bool s_companion_ble_connected = false;
 static bool s_companion_ble_advertising = false;
@@ -426,6 +438,17 @@ static tBleStatus Companion_Ble_RequestConnectionParams(const char *reason,
                                                         Companion_BleLinkMode_t mode);
 static tBleStatus Companion_Ble_RequestPreferred2MPhy(const char *reason);
 static void Companion_Screen_RefreshBleStatus(void);
+static bool Companion_Screen_MenuRequestMode(
+    comp_screen_menu_view_t view,
+    uint8_t flags,
+    comp_screen_menu_language_t language,
+    uint8_t home_page,
+    comp_epaper_refresh_mode_t refresh_mode);
+#if COMPANION_SCREEN_REFRESH_CADENCE_DIAGNOSTIC
+static void Companion_Display_AdvanceRefreshCadenceDiagnostic(
+    const comp_epaper_display_request_t *request,
+    comp_epaper_panel_result_t panel_result);
+#endif
 
 /* USER CODE END PFP */
 
@@ -651,7 +674,18 @@ void APP_BLE_Init( void )
                    Companion_Display_Task);
   Companion_Display_CreateExpressionTickTimer();
 #if COMPANION_SCREEN_MENU_ENABLED
-#if COMPANION_SCREEN_DAILY_TAP_DEMO
+#if COMPANION_SCREEN_REFRESH_CADENCE_DIAGNOSTIC
+  s_companion_refresh_cadence_diagnostic_active = true;
+  s_companion_refresh_cadence_diagnostic_baseline_complete = false;
+  s_companion_refresh_cadence_diagnostic_queued = 0u;
+  s_companion_refresh_cadence_diagnostic_completed = 0u;
+  printf("[screen] refresh_cadence_diagnostic start requests=%u\r\n",
+         (unsigned)COMPANION_SCREEN_REFRESH_CADENCE_DIAGNOSTIC_REQUESTS);
+  Companion_Screen_MenuRequest(COMP_SCREEN_MENU_VIEW_HOME,
+                               0u,
+                               COMP_SCREEN_MENU_LANGUAGE_ZH,
+                               0u);
+#elif COMPANION_SCREEN_DAILY_TAP_DEMO
   if (Companion_Screen_ShowDaily())
   {
     printf("[screen] daily_tap_demo start\r\n");
@@ -985,6 +1019,73 @@ static void Companion_Display_RecordRuntimeSnapshot(
                                         runtime_stats->panel.error_count));
 }
 
+#if COMPANION_SCREEN_REFRESH_CADENCE_DIAGNOSTIC
+static void Companion_Display_AdvanceRefreshCadenceDiagnostic(
+    const comp_epaper_display_request_t *request,
+    comp_epaper_panel_result_t panel_result)
+{
+  uint8_t item;
+  uint8_t flags;
+
+  if (!s_companion_refresh_cadence_diagnostic_active ||
+      request == NULL ||
+      request->request_kind != COMP_EPAPER_DISPLAY_REQUEST_MENU)
+  {
+    return;
+  }
+  if (panel_result != COMP_EPAPER_PANEL_RESULT_OK)
+  {
+    s_companion_refresh_cadence_diagnostic_active = false;
+    printf("[screen] refresh_cadence_diagnostic abort panel_result=%u\r\n",
+           (unsigned)panel_result);
+    return;
+  }
+  if (!s_companion_refresh_cadence_diagnostic_baseline_complete)
+  {
+    s_companion_refresh_cadence_diagnostic_baseline_complete = true;
+    printf("[screen] refresh_cadence_diagnostic baseline_complete=1\r\n");
+  }
+  else if (s_companion_refresh_cadence_diagnostic_completed <
+           s_companion_refresh_cadence_diagnostic_queued)
+  {
+    s_companion_refresh_cadence_diagnostic_completed++;
+    printf("[screen] refresh_cadence_diagnostic complete step=%u\r\n",
+           (unsigned)s_companion_refresh_cadence_diagnostic_completed);
+  }
+
+  if (s_companion_refresh_cadence_diagnostic_completed >=
+      COMPANION_SCREEN_REFRESH_CADENCE_DIAGNOSTIC_REQUESTS)
+  {
+    s_companion_refresh_cadence_diagnostic_active = false;
+    printf("[screen] refresh_cadence_diagnostic done interactive_requests=%u cleanup_expected=1\r\n",
+           (unsigned)s_companion_refresh_cadence_diagnostic_completed);
+    return;
+  }
+
+  item = (uint8_t)(s_companion_refresh_cadence_diagnostic_queued %
+                   COMP_SCREEN_MENU_ITEM_COUNT);
+  flags = (uint8_t)(COMP_SCREEN_MENU_FLAG_PRESS_ACTIVE |
+                    (item << COMP_SCREEN_MENU_FLAG_PRESS_ITEM_SHIFT));
+  if (Companion_Screen_MenuRequestMode(
+          COMP_SCREEN_MENU_VIEW_HOME,
+          flags,
+          COMP_SCREEN_MENU_LANGUAGE_ZH,
+          0u,
+          COMP_EPAPER_REFRESH_PARTIAL_INTERACTIVE))
+  {
+    s_companion_refresh_cadence_diagnostic_queued++;
+    printf("[screen] refresh_cadence_diagnostic queue step=%u item=%u refresh=interactive\r\n",
+           (unsigned)s_companion_refresh_cadence_diagnostic_queued,
+           (unsigned)item);
+  }
+  else
+  {
+    s_companion_refresh_cadence_diagnostic_active = false;
+    printf("[screen] refresh_cadence_diagnostic abort queue=failed\r\n");
+  }
+}
+#endif
+
 static void Companion_Display_Task(void)
 {
   comp_epaper_display_request_t request;
@@ -1036,6 +1137,9 @@ static void Companion_Display_Task(void)
                                    render_state,
                                    status_error,
                                    request.content_crc32);
+#if COMPANION_SCREEN_REFRESH_CADENCE_DIAGNOSTIC
+  Companion_Display_AdvanceRefreshCadenceDiagnostic(&request, panel_result);
+#endif
   /* The panel transaction is synchronous. Return the power decision to the
    * application before the sequencer can sleep again. */
   Companion_App_OnScreenRefreshComplete();
