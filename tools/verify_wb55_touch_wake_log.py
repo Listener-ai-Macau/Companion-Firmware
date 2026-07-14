@@ -39,6 +39,26 @@ def irq_events(log: str) -> list[dict[str, int]]:
     return events
 
 
+def microphone_blocks(log: str) -> list[dict[str, int | str]]:
+    blocks: list[dict[str, int | str]] = []
+    pattern = re.compile(
+        r"\[mic-manual\]\s+block=(?P<block>\d+)\s+status=(?P<status>[a-z_]+).*?"
+        r"\bpcm_min=(?P<pcm_min>-?\d+)\s+pcm_max=(?P<pcm_max>-?\d+).*?"
+        r"\bpcm_crc=0x(?P<pcm_crc>[0-9A-Fa-f]+)\b"
+    )
+    for match in pattern.finditer(log):
+        blocks.append(
+            {
+                "block": int(match.group("block")),
+                "status": match.group("status"),
+                "pcm_min": int(match.group("pcm_min")),
+                "pcm_max": int(match.group("pcm_max")),
+                "pcm_crc": int(match.group("pcm_crc"), 16),
+            }
+        )
+    return blocks
+
+
 def marker_precedes(log: str, first: str, second: str) -> bool:
     first_index = log.find(first)
     if first_index < 0:
@@ -97,6 +117,12 @@ def required_check_names(scope: str) -> tuple[str, ...]:
         return (
             "two_double_taps",
             "touch_record_started",
+            "microphone_clock_restored",
+            "microphone_dma_started",
+            "sustained_pcm_blocks",
+            "pcm_crc_varies",
+            "pcm_has_signal_span",
+            "no_microphone_timeout",
             "touch_record_stopped",
             "external_flash_store_finished",
         )
@@ -111,6 +137,9 @@ def evaluate(log: str, log_path: str, scope: str = "full") -> dict[str, Any]:
         raise ValueError(f"unsupported scope: {scope}")
     samples = health_samples(log)
     events = irq_events(log)
+    mic_blocks = microphone_blocks(log)
+    valid_mic_blocks = [block for block in mic_blocks if block["status"] == "ok"]
+    pcm_crcs = {int(block["pcm_crc"]) for block in valid_mic_blocks}
     irq_observations = [*samples, *events]
     max_irq = max((sample["irq"] for sample in irq_observations), default=0)
     max_consumed = max((sample["irq_consumed"] for sample in irq_observations), default=0)
@@ -176,6 +205,23 @@ def evaluate(log: str, log_path: str, scope: str = "full") -> dict[str, Any]:
         "two_double_taps": double_taps >= 2,
         "touch_record_started": "[record] touch_double_tap action=start" in log
         and "state=recording" in log,
+        "microphone_clock_restored": bool(
+            re.search(
+                r"\[mic-clock\]\s+action=restore\b.*?\bstatus=ok\b.*?\bnow_ready=1\b.*?\bsai1_enabled=1\b",
+                log,
+            )
+        ),
+        "microphone_dma_started": bool(
+            re.search(r"\[mic-dma\]\s+action=start\s+status=ok\b", log)
+        ),
+        "sustained_pcm_blocks": len(valid_mic_blocks) >= 2,
+        "pcm_crc_varies": len(pcm_crcs) >= 2,
+        "pcm_has_signal_span": any(
+            int(block["pcm_min"]) < int(block["pcm_max"]) for block in valid_mic_blocks
+        ),
+        "no_microphone_timeout": not bool(
+            re.search(r"\[mic-manual\].*?\bstatus=timeout\b", log)
+        ),
         "touch_record_stopped": "[record] touch_double_tap action=stop" in log,
         "external_flash_store_finished": "[record] touch_double_tap action=user_store result=1" in log,
     }
@@ -190,7 +236,7 @@ def evaluate(log: str, log_path: str, scope: str = "full") -> dict[str, Any]:
         "idle-timer": "Capture at least 20 seconds after reset and prove the 15 s idle timer permits Stop before its single sleepy transition, then the display-complete callback returns to Stop.",
         "stop-wake": "Collect one reset-bounded capture that shows the 15 s idle timer arm, static sleepy pose, Stop, then one touch so PC6 IRQ observation and consumption are logged.",
         "short-tap": "After the sleepy face reaches Stop, touch and lift in under 500 ms. The first post-wake gesture must be tap, followed by daily_reaction and one visible expression frame; a 3 s long press is a different menu contract and cannot pass this check.",
-        "double-tap-recording": "Collect one bounded capture containing two daily-page double taps, recording start/stop, and a successful external Flash store.",
+        "double-tap-recording": "Collect one bounded capture containing two daily-page double taps, restored SAI clock, successful DMA start, at least two changing PCM blocks without timeout, recording stop, and a successful external Flash store.",
         "full": "Collect a post-wiring serial capture with TP_INT wired, then perform one Stop wake and two daily-page double taps.",
     }
     return {
@@ -207,6 +253,8 @@ def evaluate(log: str, log_path: str, scope: str = "full") -> dict[str, Any]:
             "max_irq": max_irq,
             "max_irq_consumed": max_consumed,
             "daily_double_tap_events": double_taps,
+            "valid_microphone_blocks": len(valid_mic_blocks),
+            "distinct_pcm_crcs": len(pcm_crcs),
             "first_wake_gesture": first_wake_gesture,
             "wake_contact_after_sleepy": wake_contact_index >= 0,
             "low_power_touch_wake_requested": touch_wake_index >= 0,
@@ -241,7 +289,11 @@ def self_test(scope: str = "full") -> dict[str, Any]:
             "[epaper] scene=expression name=curious frame_index=2 dirty=8,18,184,166 source=external_flash",
             "[screen] display_result id=2 kind=1 resource_revision=53 active_revision=53 coherent_generation=1 generation_switches=1 last_stale_discarded=0 pending=0 stale_generation_discarded=0 panel_result=0",
             "[touch-ui] daily_double_tap_recording x=100 y=100 state=idle",
+            "[mic-clock] action=restore was_ready=0 status=ok now_ready=1 sai1_enabled=1",
             "[record] touch_double_tap action=start source=4 result=0 state=recording",
+            "[mic-dma] action=start status=ok sai_state=34 dma_state=2 cndtr=960 cr1=0x01FB20E1",
+            "[mic-manual] block=0 status=ok quality=voice raw_min=0x10000000 raw_max=0xE0000000 raw_zero=0 raw_same=0 raw_crc=0x11111111 slot=0 slot0_mean=100 slot0_peak=900 slot1_mean=0 slot1_peak=0 gain=8x preclip=0 pcm_min=-1200 pcm_max=1800 pcm_mean=42 pcm_zero=0 pcm_clip=0 pcm_crc=0x12345678 feed=0",
+            "[mic-manual] block=200 status=ok quality=voice raw_min=0x11000000 raw_max=0xE1000000 raw_zero=0 raw_same=0 raw_crc=0x22222222 slot=0 slot0_mean=120 slot0_peak=920 slot1_mean=0 slot1_peak=0 gain=8x preclip=0 pcm_min=-1400 pcm_max=2100 pcm_mean=38 pcm_zero=0 pcm_clip=0 pcm_crc=0x87654321 feed=0",
             "[touch-ui] daily_double_tap_recording x=100 y=100 state=recording",
             "[record] touch_double_tap action=stop source=4 stop_result=0 finish_result=0 state=transfer_ready",
             "[record] touch_double_tap action=user_store result=1 state=idle",
