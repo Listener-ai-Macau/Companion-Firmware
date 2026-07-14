@@ -41,6 +41,7 @@ $normalImage = if ([string]::IsNullOrWhiteSpace($NormalImagePath)) {
 } else {
     [System.IO.Path]::GetFullPath((Join-Path $repoRoot $NormalImagePath))
 }
+$traceElf = [System.IO.Path]::ChangeExtension($traceImage, ".elf")
 $flashScript = Join-Path $repoRoot "tools\flash_nucleo_bringup.ps1"
 $captureScript = Join-Path $repoRoot "tools\capture_nucleo_serial.ps1"
 $verifier = Join-Path $repoRoot "tools\verify_wb55_touch_wake_log.py"
@@ -71,7 +72,7 @@ if (-not $PreflightOnly) {
         throw "Refusing recording acceptance without workflow lock acknowledgement."
     }
 }
-foreach ($required in @($aiw, $traceImage, $normalImage, $flashScript, $captureScript, $verifier)) {
+foreach ($required in @($aiw, $traceImage, $traceElf, $normalImage, $flashScript, $captureScript, $verifier)) {
     if (-not (Test-Path -LiteralPath $required)) {
         throw "Missing recording acceptance dependency: $required"
     }
@@ -83,7 +84,21 @@ if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($firmwareCommit)) {
 }
 $firmwareCommit = $firmwareCommit.Trim()
 $traceImageSha256 = (Get-FileHash -LiteralPath $traceImage -Algorithm SHA256).Hash
+$traceElfSha256 = (Get-FileHash -LiteralPath $traceElf -Algorithm SHA256).Hash
 $normalImageSha256 = (Get-FileHash -LiteralPath $normalImage -Algorithm SHA256).Hash
+$requiredTraceElfTokens = @(
+    "companion_epaper_panel_stm32wb_ssd1681_init",
+    "recording_gesture gesture=%s action=provisional_or_ignored display_request=0",
+    "[mic-dma] action=stop"
+)
+$traceElfText = [System.Text.Encoding]::ASCII.GetString(
+    [System.IO.File]::ReadAllBytes($traceElf)
+)
+foreach ($requiredToken in $requiredTraceElfTokens) {
+    if (-not $traceElfText.Contains($requiredToken)) {
+        throw "Trace ELF is not production-equivalent: missing token '$requiredToken' in $traceElf."
+    }
+}
 
 if ($PreflightOnly) {
     & pwsh -NoProfile -File $flashScript -ImagePath $traceImage -CheckOnly | Out-Host
@@ -104,6 +119,9 @@ if ($PreflightOnly) {
         firmware_commit = $firmwareCommit
         trace_image = $traceImage
         trace_image_sha256 = $traceImageSha256
+        trace_elf = $traceElf
+        trace_elf_sha256 = $traceElfSha256
+        required_trace_elf_tokens = $requiredTraceElfTokens
         normal_image = $normalImage
         normal_image_sha256 = $normalImageSha256
         capture_seconds = $CaptureSeconds
@@ -126,6 +144,9 @@ $report = [ordered]@{
     firmware_commit = $firmwareCommit
     trace_image = [System.IO.Path]::GetRelativePath($repoRoot, $traceImage).Replace("\", "/")
     trace_image_sha256 = $traceImageSha256
+    trace_elf = [System.IO.Path]::GetRelativePath($repoRoot, $traceElf).Replace("\", "/")
+    trace_elf_sha256 = $traceElfSha256
+    required_trace_elf_tokens = $requiredTraceElfTokens
     normal_image = [System.IO.Path]::GetRelativePath($repoRoot, $normalImage).Replace("\", "/")
     normal_image_sha256 = $normalImageSha256
     capture_seconds = $CaptureSeconds

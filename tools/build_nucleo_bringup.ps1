@@ -250,7 +250,7 @@ if ($FlashRecordingStageBlocks -ge 0) {
 if ($BleAudioStreamFlashRecordings) {
     $makeArgs += "BLE_AUDIO_STREAM_FLASH_RECORDINGS=1"
 }
-if ($EpaperSsd1681Bringup) {
+if ($EpaperSsd1681Bringup -or $EpaperSsd1681VerboseTrace) {
     $makeArgs += "EPAPER_SSD1681_BRINGUP=1"
 }
 if ($ScreenAssetProvision) {
@@ -294,7 +294,7 @@ if ($EpaperSsd1681BusyPort -ne '') {
 if ($EpaperSsd1681BusyPin -ne '') {
     $makeArgs += "EPAPER_SSD1681_BUSY_PIN=$EpaperSsd1681BusyPin"
 }
-if ($EpaperSsd1681Bringup) {
+if ($EpaperSsd1681Bringup -or $EpaperSsd1681VerboseTrace) {
     $makeArgs += "EPAPER_SSD1681_ROTATION=$EpaperSsd1681Rotation"
     $makeArgs += "EPAPER_SSD1681_MIRROR_X=$EpaperSsd1681MirrorX"
     $makeArgs += "EPAPER_MENU=$EpaperMenu"

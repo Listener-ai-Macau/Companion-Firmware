@@ -1336,6 +1336,25 @@ parser 自测以及 WB55 normal/verbose 构建已通过，但这些只是下一�
 证据，不是物理验收结论。下次仍必须在单一 reset-bounded trace 中同时证明时钟恢复、
 DMA start、变化 PCM、无 timeout、两次 double tap、stop 和外部 Flash 存储。
 
+## Revision 95: `无响应` 来自非产品 trace 配置
+
+操作者明确开始修复后的 `4/13` 验收，弹窗选择“失败”并备注“无响应”；110 秒
+reset-bounded 串口抓取中没有任何 touch event。这不是 Revision 94 手势修复的真机结论。
+审计发现 `build_verbose_trace` 只开启 `COMPANION_EPAPER_SSD1681_VERBOSE_TRACE` 和
+`COMPANION_TOUCH_VERBOSE_TRACE`，未继承 normal 镜像的 SSD1681 bringup、menu、180° rotation 和
+mirror 产品定义，因此刷入的不是“normal + trace”。
+
+下一张 trace 镜像必须与 normal 产品配置同源，只额外增加详细日志。验收 preflight 在不触碰
+硬件时检查 trace/normal 镜像哈希、抓取时间预算、串口 parser 正反例，并从 trace ELF
+确认 SSD1681 target 和录音 trace 标记实际存在；任一缺失都不得弹窗。修复、重建和 preflight
+通过后才可重做同一个 `4/13` 窗口。
+
+修正后的 verbose trace 已按 normal 产品配置完整重建，代码区为 138568 字节，HEX
+SHA-256 为 `518E3141C6C2FBAEC22132249404D7BA237378421883CAC2957D887926BCE0A1`。
+preflight 已确认 SSD1681 target、录音仲裁 trace、DMA stop trace、镜像格式和 parser
+正反例；旧 trace 会在刷机前被拒绝，65 秒的不完整抓取窗口也会在硬件前被拒绝。
+当前状态是同一个 `4/13` 真机复验待执行，而不是把“无响应”改记为通过。
+
 ## 逐项验收顺序
 
 本项目遵循 AI Workflow 的全产品异步验收规则：未收到操作者明确的“开始验收”前，
