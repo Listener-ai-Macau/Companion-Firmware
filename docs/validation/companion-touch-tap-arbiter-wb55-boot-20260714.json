@@ -1,0 +1,47 @@
+{
+  "schema_id": "companion.touch_tap_arbiter.wb55_boot.v1",
+  "status": "PASS",
+  "generated_at": "2026-07-14T11:52:46+08:00",
+  "claim_scope": "Normal-firmware flash and reset-bounded WB55 startup self-test only; no touch gesture, recording, ASR, display, or human acceptance claim.",
+  "source_commit": "7b51064f89ed94f3d251bde749a3d2e84337160b",
+  "target": {
+    "board": "NUCLEO-WB55RG",
+    "stlink_serial": "066EFF535570514867221931",
+    "serial_port": "COM13",
+    "voltage_v": 3.24
+  },
+  "firmware": {
+    "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build/Companion_Nucleo_WB55RG_Bringup.hex",
+    "sha256": "A528A3065A685D849BDDD36A45B08FA924B9303DB4A0927E0A27725CFF63AAD3",
+    "programmed_bytes": 132792,
+    "programmer_verify": "PASS"
+  },
+  "capture": {
+    "raw_log": ".cache/validation/shared-recording-machine-boot-20260714/nucleo-serial-raw.log",
+    "raw_log_sha256": "6A6CAC8CCB396D0FC359665730F6EA1CD017DF94540B8FB28FD062386C97E235",
+    "duration_seconds": 12,
+    "reset_after_open": true,
+    "status": "PASS"
+  },
+  "checks": {
+    "tap_arbiter_embedded_self_test": true,
+    "confirmed_single_before_display_contract": true,
+    "ft6336_detected": true,
+    "ft6336_identity_valid": true,
+    "ft6336_trigger_mode": true,
+    "touch_wait_buffer_self_test": true,
+    "external_resource_pack_revision_53_mounted": true,
+    "recording_external_flash_ready": true,
+    "sai1_clock_48mhz": true,
+    "low_power_policy_ready": true
+  },
+  "required_markers": [
+    "[touch] tap_arbiter=pass contract=confirmed_single_before_display",
+    "[touch] ft6336 decoder=pass gesture=pass addr=0x38 probe=present",
+    "[stage] qspi ok",
+    "[stage] sai1 ok clk=48000000",
+    "[rec-flash] ready=1",
+    "[power] policy_selftest=pass touch_irq_wake=ready lpm=enabled"
+  ],
+  "next_gate": "Run one focused two-double-tap recording acceptance only after explicit owner start; require machine PASS and operator pass together."
+}
