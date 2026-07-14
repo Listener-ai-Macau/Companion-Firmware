@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 import pathlib
+import re
 import sys
 from typing import Any
 
@@ -68,6 +69,28 @@ def read_json(path: pathlib.Path, errors: list[str]) -> dict[str, Any]:
     if not text:
         return {}
     return json.loads(text)
+
+
+def extract_function(source: str, signature: str) -> str:
+    search_from = 0
+    while True:
+        start = source.find(signature, search_from)
+        if start < 0:
+            return ""
+        brace = source.find("{", start)
+        semicolon = source.find(";", start)
+        if brace >= 0 and (semicolon < 0 or brace < semicolon):
+            break
+        search_from = start + len(signature)
+    depth = 0
+    for index in range(brace, len(source)):
+        if source[index] == "{":
+            depth += 1
+        elif source[index] == "}":
+            depth -= 1
+            if depth == 0:
+                return source[start : index + 1]
+    return ""
 
 
 def operation_by_name(artifact: dict[str, Any], name: str) -> dict[str, Any]:
@@ -167,6 +190,9 @@ def check_code_contract(errors: list[str]) -> None:
         "C_OPT ?= -O2",
         "#define COMPANION_PDM_RAW_SAI_USE_DMA (!COMPANION_PDM_USE_HARDWARE_INTERFACE)",
         "HAL_SAI_Receive_DMA",
+        "pdm_raw_dma_prepare_session",
+        "MIC_CAPTURE_RESULT_PENDING",
+        "[mic-session] action=prepare reused_dma=%u",
         "pdm_cic3_decode_sample",
         "COMP_MIC_SOURCE_SPH0655_PDM_COMPATIBLE",
         "COMP_MIC_STM32_INGRESS_SAI_PDM",
@@ -180,6 +206,51 @@ def check_code_contract(errors: list[str]) -> None:
         "C_OPT",
     ]:
         require(token in makefile, f"WB55 bring-up Makefile missing override {token}", errors)
+
+    prepare = extract_function(main, "static void pdm_raw_dma_prepare_session(void)")
+    require(bool(prepare), "WB55 PDM session-prepare function is missing", errors)
+    for forbidden in ["HAL_SAI_DMAStop", "__HAL_SAI_DISABLE", "SAI_xCR2_FFLUSH"]:
+        require(
+            forbidden not in prepare,
+            f"WB55 PDM session prepare must reuse active DMA; found {forbidden}",
+            errors,
+        )
+    require(
+        "s_pdm_raw_dma_ready_mask = 0u" in prepare,
+        "WB55 PDM session prepare must clear stale completed-half state",
+        errors,
+    )
+
+    capture = extract_function(main, "static mic_capture_result_t capture_microphone_block(")
+    require(bool(capture), "WB55 microphone capture function is missing", errors)
+    require(
+        "pdm_raw_dma_read_block(raw_words, timeout_ms" in capture,
+        "WB55 PDM capture must forward the caller timeout",
+        errors,
+    )
+    require(
+        "timeout_ms == 0u" in capture and "return MIC_CAPTURE_RESULT_PENDING" in capture,
+        "WB55 zero-timeout capture must report pending without a recording failure",
+        errors,
+    )
+    require(
+        re.search(
+            r'capture_microphone_block\(block_index,\s*collect_diagnostics,\s*"mic-manual",\s*0u\)',
+            main,
+        )
+        is not None,
+        "manual recording must poll microphone DMA without blocking touch processing",
+        errors,
+    )
+    require(
+        re.search(
+            r"capture_result == MIC_CAPTURE_RESULT_PENDING\)\s*\{\s*HAL_Delay\(1u\);\s*continue;",
+            main,
+        )
+        is not None,
+        "manual recording must keep servicing the main loop while the next DMA frame is pending",
+        errors,
+    )
 
 
 def check_docs(errors: list[str]) -> None:

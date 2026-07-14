@@ -392,6 +392,12 @@ typedef struct {
     uint32_t preamp_clip_count;
 } mic_decode_stats_t;
 
+typedef enum {
+    MIC_CAPTURE_RESULT_PENDING = 0,
+    MIC_CAPTURE_RESULT_FRAME,
+    MIC_CAPTURE_RESULT_ERROR,
+} mic_capture_result_t;
+
 typedef struct {
     const char *name;
     uint32_t prescaler;
@@ -678,7 +684,7 @@ static void end_ble_session_if_active(bool cancel, const char *reason);
 #if COMPANION_MIC_BACKEND == COMPANION_MIC_BACKEND_SPH0655_PDM
 static void pdm_decoder_reset(void);
 #if COMPANION_PDM_RAW_SAI_USE_DMA
-static void pdm_raw_dma_reset_stream(void);
+static void pdm_raw_dma_prepare_session(void);
 static HAL_StatusTypeDef pdm_raw_dma_read_block(uint32_t *raw_words,
                                                 uint32_t timeout_ms,
                                                 uint32_t *overruns);
@@ -708,7 +714,10 @@ static void configure_flash_pins_for_bitbang(bool swap_io0_io1);
 static void run_ota_readiness_probe(void);
 static void run_microphone_probe(void);
 static void print_diag_tail(void);
-static bool capture_microphone_block(uint32_t block_index, bool verbose, const char *tag);
+static mic_capture_result_t capture_microphone_block(uint32_t block_index,
+                                                     bool verbose,
+                                                     const char *tag,
+                                                     uint32_t timeout_ms);
 static void print_recording_summary(const char *tag);
 static bool recording_flash_ensure_ready(void);
 static bool recording_flash_begin_capture(uint16_t max_seconds);
@@ -1192,14 +1201,22 @@ int main(void)
             bool collect_diagnostics =
                 (block_index % MANUAL_RECORDING_DIAGNOSTIC_EVERY_BLOCKS) == 0u;
             uint32_t capture_start_ms = HAL_GetTick();
-            bool captured = capture_microphone_block(block_index,
-                                                     collect_diagnostics,
-                                                     "mic-manual");
+            mic_capture_result_t capture_result =
+                capture_microphone_block(block_index,
+                                         collect_diagnostics,
+                                         "mic-manual",
+                                         0u);
             uint32_t capture_elapsed_ms = HAL_GetTick() - capture_start_ms;
+            if (capture_result == MIC_CAPTURE_RESULT_PENDING) {
+                HAL_Delay(1u);
+                continue;
+            }
+            bool captured = capture_result == MIC_CAPTURE_RESULT_FRAME;
             if (log_timing) {
-                printf("[mic-loop] block=%lu capture_ms=%lu diag=%u app_pump=%u ble_stream=%u\r\n",
+                printf("[mic-loop] block=%lu capture_ms=%lu result=%s diag=%u app_pump=%u ble_stream=%u\r\n",
                        (unsigned long)block_index,
                        (unsigned long)capture_elapsed_ms,
+                       captured ? "frame" : "error",
                        collect_diagnostics ? 1u : 0u,
                        process_app ? 1u : 0u,
                        ble_audio_stream_enabled_for_recording() ? 1u : 0u);
@@ -2703,7 +2720,7 @@ static void start_recording(comp_recording_source_t source, const char *reason)
 #if COMPANION_MIC_BACKEND == COMPANION_MIC_BACKEND_SPH0655_PDM
     pdm_decoder_reset();
 #if COMPANION_PDM_RAW_SAI_USE_DMA
-    pdm_raw_dma_reset_stream();
+    pdm_raw_dma_prepare_session();
 #endif
 #endif
     s_manual_recording_block_count = 0u;
@@ -4124,22 +4141,23 @@ static void pdm_decoder_reset(void)
 }
 
 #if COMPANION_PDM_RAW_SAI_USE_DMA
-static void pdm_raw_dma_reset_stream(void)
+static void pdm_raw_dma_prepare_session(void)
 {
-    if (s_pdm_raw_dma_started) {
-        (void)HAL_SAI_DMAStop(&hsai_BlockA1);
-        s_pdm_raw_dma_started = false;
-    }
+    const bool reused = s_pdm_raw_dma_started;
 
     __disable_irq();
     s_pdm_raw_dma_ready_mask = 0u;
     s_pdm_raw_dma_last_completed_half = 0u;
     s_pdm_raw_dma_overrun_count = 0u;
     __enable_irq();
-    memset(s_pdm_raw_dma_words, 0, sizeof(s_pdm_raw_dma_words));
-
-    __HAL_SAI_DISABLE(&hsai_BlockA1);
-    SET_BIT(hsai_BlockA1.Instance->CR2, SAI_xCR2_FFLUSH);
+    if (!reused) {
+        memset(s_pdm_raw_dma_words, 0, sizeof(s_pdm_raw_dma_words));
+    }
+    printf("[mic-session] action=prepare reused_dma=%u sai_state=%lu dma_state=%lu cr1=0x%08lX\r\n",
+           reused ? 1u : 0u,
+           (unsigned long)HAL_SAI_GetState(&hsai_BlockA1),
+           (unsigned long)hdma_sai1_a_rx.State,
+           (unsigned long)hsai_BlockA1.Instance->CR1);
 }
 
 static HAL_StatusTypeDef pdm_raw_dma_start_if_needed(void)
@@ -4709,6 +4727,12 @@ static void feed_drop_to_recording_fsm(void)
 
 static void run_microphone_probe(void)
 {
+#if COMPANION_MIC_BACKEND == COMPANION_MIC_BACKEND_SPH0655_PDM
+    pdm_decoder_reset();
+#if COMPANION_PDM_RAW_SAI_USE_DMA
+    pdm_raw_dma_prepare_session();
+#endif
+#endif
     comp_recording_result_t result = comp_recording_fsm_dispatch(
         &s_recording_fsm,
         COMP_RECORDING_EVENT_START_REQUEST,
@@ -4719,7 +4743,7 @@ static void run_microphone_probe(void)
            comp_recording_state_name(s_recording_fsm.state));
 
     for (uint32_t block = 0u; block < MIC_CAPTURE_BLOCKS; ++block) {
-        capture_microphone_block(block, true, "mic");
+        (void)capture_microphone_block(block, true, "mic", 1000u);
     }
 
     (void)comp_recording_fsm_dispatch(&s_recording_fsm,
@@ -4742,7 +4766,10 @@ static void run_microphone_probe(void)
                                       COMP_RECORDING_SOURCE_SYNTHETIC_FIXTURE);
 }
 
-static bool capture_microphone_block(uint32_t block_index, bool verbose, const char *tag)
+static mic_capture_result_t capture_microphone_block(uint32_t block_index,
+                                                     bool verbose,
+                                                     const char *tag,
+                                                     uint32_t timeout_ms)
 {
     static uint32_t raw_words[MIC_RAW_WORDS];
     static int16_t pcm_samples[MIC_PCM_SAMPLES_PER_BATCH];
@@ -4751,12 +4778,12 @@ static bool capture_microphone_block(uint32_t block_index, bool verbose, const c
 
 #if (COMPANION_MIC_BACKEND == COMPANION_MIC_BACKEND_SPH0655_PDM) && COMPANION_PDM_RAW_SAI_USE_DMA
     HAL_StatusTypeDef status =
-        pdm_raw_dma_read_block(raw_words, 1000u, &dma_overruns);
+        pdm_raw_dma_read_block(raw_words, timeout_ms, &dma_overruns);
 #else
     HAL_StatusTypeDef status = HAL_SAI_Receive(&hsai_BlockA1,
                                                (uint8_t *)raw_words,
                                                MIC_RAW_WORDS,
-                                               1000u);
+                                               timeout_ms);
 #if (COMPANION_MIC_BACKEND == COMPANION_MIC_BACKEND_SPH0655_PDM) && COMPANION_PDM_RESTART_EACH_BLOCK
     if (status == HAL_OK) {
         __HAL_SAI_DISABLE(&hsai_BlockA1);
@@ -4765,6 +4792,9 @@ static bool capture_microphone_block(uint32_t block_index, bool verbose, const c
 #endif
 #endif
     if (status != HAL_OK) {
+        if (timeout_ms == 0u && (status == HAL_TIMEOUT || status == HAL_BUSY)) {
+            return MIC_CAPTURE_RESULT_PENDING;
+        }
         printf("[%s] block=%lu status=%s sai_error=0x%08lX\r\n",
                tag,
                (unsigned long)block_index,
@@ -4776,7 +4806,7 @@ static bool capture_microphone_block(uint32_t block_index, bool verbose, const c
             s_ble_session_active = false;
             Companion_BleAudio_RequestIdleLink("mic_capture_failed");
         }
-        return false;
+        return MIC_CAPTURE_RESULT_ERROR;
     }
 
     raw_stats_t raw_stats = { 0 };
@@ -4899,7 +4929,7 @@ static bool capture_microphone_block(uint32_t block_index, bool verbose, const c
         }
 #endif
     }
-    return true;
+    return MIC_CAPTURE_RESULT_FRAME;
 }
 
 static void print_recording_summary(const char *tag)
