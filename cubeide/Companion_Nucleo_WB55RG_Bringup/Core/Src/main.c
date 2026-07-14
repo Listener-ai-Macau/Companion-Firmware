@@ -684,6 +684,7 @@ static void end_ble_session_if_active(bool cancel, const char *reason);
 #if COMPANION_MIC_BACKEND == COMPANION_MIC_BACKEND_SPH0655_PDM
 static void pdm_decoder_reset(void);
 #if COMPANION_PDM_RAW_SAI_USE_DMA
+static HAL_StatusTypeDef pdm_raw_dma_restore_kernel_clock(void);
 static void pdm_raw_dma_prepare_session(void);
 static HAL_StatusTypeDef pdm_raw_dma_read_block(uint32_t *raw_words,
                                                 uint32_t timeout_ms,
@@ -4141,9 +4142,36 @@ static void pdm_decoder_reset(void)
 }
 
 #if COMPANION_PDM_RAW_SAI_USE_DMA
+static HAL_StatusTypeDef pdm_raw_dma_restore_kernel_clock(void)
+{
+    const bool was_ready = __HAL_RCC_GET_FLAG(RCC_FLAG_PLLSAI1RDY) != 0u;
+    HAL_StatusTypeDef status = HAL_OK;
+
+    if (!was_ready) {
+        RCC_PeriphCLKInitTypeDef periph_clock = {0};
+        periph_clock.PeriphClockSelection = RCC_PERIPHCLK_SAI1;
+        periph_clock.PLLSAI1.PLLN = 24u;
+        periph_clock.PLLSAI1.PLLP = RCC_PLLP_DIV2;
+        periph_clock.PLLSAI1.PLLSAI1ClockOut = RCC_PLLSAI1_SAI1CLK;
+        periph_clock.Sai1ClockSelection = RCC_SAI1CLKSOURCE_PLLSAI1;
+        status = HAL_RCCEx_PeriphCLKConfig(&periph_clock);
+    }
+    if (status == HAL_OK) {
+        __HAL_RCC_SAI1_CLK_ENABLE();
+    }
+
+    printf("[mic-clock] action=restore was_ready=%u status=%s now_ready=%u sai1_enabled=%u\r\n",
+           was_ready ? 1u : 0u,
+           hal_status_name(status),
+           __HAL_RCC_GET_FLAG(RCC_FLAG_PLLSAI1RDY) != 0u ? 1u : 0u,
+           __HAL_RCC_SAI1_IS_CLK_ENABLED() ? 1u : 0u);
+    return status;
+}
+
 static void pdm_raw_dma_prepare_session(void)
 {
     const bool reused = s_pdm_raw_dma_started;
+    HAL_StatusTypeDef clock_status = pdm_raw_dma_restore_kernel_clock();
 
     __disable_irq();
     s_pdm_raw_dma_ready_mask = 0u;
@@ -4153,8 +4181,9 @@ static void pdm_raw_dma_prepare_session(void)
     if (!reused) {
         memset(s_pdm_raw_dma_words, 0, sizeof(s_pdm_raw_dma_words));
     }
-    printf("[mic-session] action=prepare reused_dma=%u sai_state=%lu dma_state=%lu cr1=0x%08lX\r\n",
+    printf("[mic-session] action=prepare reused_dma=%u clock=%s sai_state=%lu dma_state=%lu cr1=0x%08lX\r\n",
            reused ? 1u : 0u,
+           hal_status_name(clock_status),
            (unsigned long)HAL_SAI_GetState(&hsai_BlockA1),
            (unsigned long)hdma_sai1_a_rx.State,
            (unsigned long)hsai_BlockA1.Instance->CR1);
@@ -4164,6 +4193,10 @@ static HAL_StatusTypeDef pdm_raw_dma_start_if_needed(void)
 {
     if (s_pdm_raw_dma_started) {
         return HAL_OK;
+    }
+    HAL_StatusTypeDef clock_status = pdm_raw_dma_restore_kernel_clock();
+    if (clock_status != HAL_OK) {
+        return clock_status;
     }
 
     __disable_irq();
@@ -4178,6 +4211,12 @@ static HAL_StatusTypeDef pdm_raw_dma_start_if_needed(void)
     if (status == HAL_OK) {
         s_pdm_raw_dma_started = true;
     }
+    printf("[mic-dma] action=start status=%s sai_state=%lu dma_state=%lu cndtr=%lu cr1=0x%08lX\r\n",
+           hal_status_name(status),
+           (unsigned long)HAL_SAI_GetState(&hsai_BlockA1),
+           (unsigned long)hdma_sai1_a_rx.State,
+           (unsigned long)hdma_sai1_a_rx.Instance->CNDTR,
+           (unsigned long)hsai_BlockA1.Instance->CR1);
     return status;
 }
 

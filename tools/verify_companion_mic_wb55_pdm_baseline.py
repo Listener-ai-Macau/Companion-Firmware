@@ -190,9 +190,12 @@ def check_code_contract(errors: list[str]) -> None:
         "C_OPT ?= -O2",
         "#define COMPANION_PDM_RAW_SAI_USE_DMA (!COMPANION_PDM_USE_HARDWARE_INTERFACE)",
         "HAL_SAI_Receive_DMA",
+        "pdm_raw_dma_restore_kernel_clock",
         "pdm_raw_dma_prepare_session",
         "MIC_CAPTURE_RESULT_PENDING",
         "[mic-session] action=prepare reused_dma=%u",
+        "RCC_FLAG_PLLSAI1RDY",
+        "RCC_SAI1CLKSOURCE_PLLSAI1",
         "pdm_cic3_decode_sample",
         "COMP_MIC_SOURCE_SPH0655_PDM_COMPATIBLE",
         "COMP_MIC_STM32_INGRESS_SAI_PDM",
@@ -218,6 +221,23 @@ def check_code_contract(errors: list[str]) -> None:
     require(
         "s_pdm_raw_dma_ready_mask = 0u" in prepare,
         "WB55 PDM session prepare must clear stale completed-half state",
+        errors,
+    )
+
+    restore_clock = extract_function(main, "static HAL_StatusTypeDef pdm_raw_dma_restore_kernel_clock(void)")
+    require(bool(restore_clock), "WB55 PDM kernel-clock restore function is missing", errors)
+    for token in [
+        "RCC_FLAG_PLLSAI1RDY",
+        "HAL_RCCEx_PeriphCLKConfig",
+        "RCC_SAI1CLKSOURCE_PLLSAI1",
+        "__HAL_RCC_SAI1_CLK_ENABLE",
+    ]:
+        require(token in restore_clock, f"WB55 PDM clock restore missing {token}", errors)
+
+    start_dma = extract_function(main, "static HAL_StatusTypeDef pdm_raw_dma_start_if_needed(void)")
+    require(
+        "pdm_raw_dma_restore_kernel_clock()" in start_dma,
+        "WB55 PDM DMA start must restore PLLSAI1 after Stop wake",
         errors,
     )
 
