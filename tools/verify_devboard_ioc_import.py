@@ -18,6 +18,8 @@ PRODUCT_IOC = REPO_ROOT / "Companion_Pendant.ioc"
 BRINGUP_README = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "README.md"
 WORKFLOW_DOC = REPO_ROOT / "docs" / "codex_development_workflow.md"
 BRINGUP_STEPS = REPO_ROOT / "docs" / "bringup_steps.md"
+PHYSICAL_CHECKLIST = REPO_ROOT / "docs" / "companion_devboard_physical_checklist.md"
+EXPORT_SCRIPT = REPO_ROOT / "tools" / "export_devboard_ioc.ps1"
 SCHEMA_ID = "companion.devboard_ioc_import.v1"
 
 CAPTURED_EXTERNAL_IOC = {
@@ -51,6 +53,24 @@ ALLOWED_REPO_ENRICHMENTS = {
     "PC6.GPIO_PuPd": "GPIO_PULLUP",
     "PC6.Locked": "true",
     "PC6.Signal": "GPXTI6",
+}
+
+# These labels came from the imported board template, but no longer describe
+# the FTS02 wiring used by the Companion devboard. Normalize them back to their
+# captured values only for the source-import hash comparison.
+ALLOWED_REPO_OVERRIDES = {
+    "PA6.GPIO_Label": {
+        "captured": "SPI2_CS",
+        "repo": "EPAPER_CS",
+    },
+    "PB0.GPIO_Label": {
+        "captured": "LD2 [Green Led]",
+        "repo": "EPAPER_DC",
+    },
+    "PB1.GPIO_Label": {
+        "captured": "LD3 [Red Led]",
+        "repo": "EPAPER_RESET",
+    },
 }
 
 # CubeMX derives this count from Mcu.Pin* entries. It differs only because the
@@ -150,6 +170,8 @@ def compatible_items(values: dict[str, str], drop_repo_enrichments: bool) -> lis
             continue
         if drop_repo_enrichments and key in ALLOWED_REPO_ENRICHMENTS:
             continue
+        if drop_repo_enrichments and key in ALLOWED_REPO_OVERRIDES:
+            value = ALLOWED_REPO_OVERRIDES[key]["captured"]
         items.append(f"{key}={value}")
     return sorted(items)
 
@@ -175,6 +197,8 @@ def check_devboard_ioc(values: dict[str, str], errors: list[str]) -> None:
     check_required_values(values, DEVBOARD_REQUIRED_PIN_SIGNALS, "devboard IOC", errors)
     for key, expected in ALLOWED_REPO_ENRICHMENTS.items():
         require(values.get(key) == expected, f"devboard IOC allowed enrichment {key} drifted", errors)
+    for key, expected in ALLOWED_REPO_OVERRIDES.items():
+        require(values.get(key) == expected["repo"], f"devboard IOC allowed override {key} drifted", errors)
     require("PC10.Signal" not in values, "devboard IOC must keep optional TP_RST pin PC10 free", errors)
     require("Mcu.Pin38" not in values, "devboard IOC must not reserve an unconnected PC10 pin", errors)
 
@@ -190,6 +214,11 @@ def check_product_ioc(values: dict[str, str], errors: list[str]) -> None:
 def check_external_subset(external: dict[str, str], repo_values: dict[str, str], errors: list[str]) -> None:
     for key, value in external.items():
         if key in IGNORED_PROJECT_METADATA or key in LOCAL_RESERVATION_COUNTER_KEYS:
+            continue
+        if key in ALLOWED_REPO_OVERRIDES:
+            expected = ALLOWED_REPO_OVERRIDES[key]
+            require(value == expected["captured"], f"captured STM32.ioc override source {key} drifted", errors)
+            require(repo_values.get(key) == expected["repo"], f"devboard IOC override {key} drifted", errors)
             continue
         require(repo_values.get(key) == value, f"devboard IOC does not preserve external STM32.ioc {key}={value}", errors)
     extra = sorted(set(repo_values) - set(external) - IGNORED_PROJECT_METADATA)
@@ -213,11 +242,10 @@ def check_live_external(path: pathlib.Path, repo_values: dict[str, str], errors:
         "live external STM32.ioc compatible hash no longer matches captured source",
         errors,
     )
-    require(
-        compatible_sha256(external_values, drop_repo_enrichments=False) == CAPTURED_EXTERNAL_IOC["repo_comparison_sha256"],
-        "live external STM32.ioc normalized comparison hash no longer matches captured source",
-        errors,
-    )
+    # The captured source and the enriched repo IOC intentionally have
+    # different normalized hashes. The source hash is checked above; the repo
+    # comparison hash is checked independently in main after normalizing the
+    # allowed enrichments and label overrides.
     check_external_subset(external_values, repo_values, errors)
     return live
 
@@ -229,6 +257,7 @@ def build_summary(values: dict[str, str]) -> dict[str, Any]:
         "ip_set": sorted(ip_set(values)),
         "pins": {key: values.get(key) for key in sorted(DEVBOARD_REQUIRED_PIN_SIGNALS)},
         "allowed_repo_enrichments": ALLOWED_REPO_ENRICHMENTS,
+        "allowed_repo_overrides": ALLOWED_REPO_OVERRIDES,
         "local_reservation_counter_keys": sorted(LOCAL_RESERVATION_COUNTER_KEYS),
     }
 
@@ -247,6 +276,8 @@ def build_fixture() -> dict[str, Any]:
             "bringup_readme": rel(BRINGUP_README),
             "workflow_doc": rel(WORKFLOW_DOC),
             "bringup_steps": rel(BRINGUP_STEPS),
+            "physical_checklist": rel(PHYSICAL_CHECKLIST),
+            "desktop_exporter": rel(EXPORT_SCRIPT),
             "verifier": "tools/verify_devboard_ioc_import.py",
         },
         "captured_external_ioc": CAPTURED_EXTERNAL_IOC,
@@ -254,6 +285,11 @@ def build_fixture() -> dict[str, Any]:
             "sha256": canonical_text_sha256(DEVBOARD_IOC),
             "compatible_sha256": compatible_sha256(devboard_values, drop_repo_enrichments=True),
             "hardware_summary": build_summary(devboard_values),
+        },
+        "desktop_export": {
+            "default_filename": "Companion_NUCLEO_WB55RG_Current.ioc",
+            "sha256": sha256_file(DEVBOARD_IOC),
+            "byte_identical_to_devboard_ioc": True,
         },
         "product_ioc_guard": {
             "sha256": canonical_text_sha256(PRODUCT_IOC),
@@ -264,6 +300,7 @@ def build_fixture() -> dict[str, Any]:
         "allowed_differences_from_external_ioc": {
             "ignored_project_metadata": sorted(IGNORED_PROJECT_METADATA),
             "repo_enrichments": ALLOWED_REPO_ENRICHMENTS,
+            "repo_overrides": ALLOWED_REPO_OVERRIDES,
             "local_reservation_counter_keys": sorted(LOCAL_RESERVATION_COUNTER_KEYS),
         },
         "acceptance": {
@@ -274,6 +311,7 @@ def build_fixture() -> dict[str, Any]:
         },
         "validation_commands": [
             "python .\\tools\\verify_devboard_ioc_import.py",
+            "pwsh -NoProfile -File .\\tools\\export_devboard_ioc.ps1 -CheckOnly",
             "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1",
         ],
     }
@@ -283,6 +321,7 @@ def check_docs(errors: list[str]) -> None:
     bringup_readme = read(BRINGUP_README, errors)
     workflow = read(WORKFLOW_DOC, errors)
     bringup_steps = read(BRINGUP_STEPS, errors)
+    physical_checklist = read(PHYSICAL_CHECKLIST, errors)
     for token in [
         "new development-board `.ioc`",
         "SAI1 Block B, SPI2, I2C3",
@@ -296,6 +335,13 @@ def check_docs(errors: list[str]) -> None:
     ]:
         require(token in workflow, f"workflow doc missing devboard IOC anchor {token}", errors)
         require(token in bringup_steps, f"bringup steps missing devboard IOC anchor {token}", errors)
+    for token in [
+        "P8 3.3V` | `CN7-12` | `3V3 / IOREF",
+        "P8 GND` | `CN7-19` | `GND",
+        "P10 A0` | `CN10-33` | `PC6",
+        "P10 A3`（可选，不接） | `CN10-29` | `PC10",
+    ]:
+        require(token in physical_checklist, f"physical checklist missing current wiring anchor {token}", errors)
 
 
 def check_fixture_data(data: dict[str, Any], errors: list[str]) -> None:
@@ -310,6 +356,10 @@ def check_fixture_data(data: dict[str, Any], errors: list[str]) -> None:
     require(guard.get("mcu") == "STM32WB55CEUx", "product IOC guard must stay on STM32WB55CEUx", errors)
     require(guard.get("package") == "UFQFPN48", "product IOC guard must stay on UFQFPN48", errors)
     require(guard.get("must_not_be_overwritten_by_devboard_ioc") is True, "product IOC guard missing overwrite protection", errors)
+    desktop_export = data.get("desktop_export", {})
+    require(desktop_export.get("default_filename") == "Companion_NUCLEO_WB55RG_Current.ioc", "desktop IOC export filename drifted", errors)
+    require(desktop_export.get("sha256") == sha256_file(DEVBOARD_IOC), "desktop IOC export byte hash drifted", errors)
+    require(desktop_export.get("byte_identical_to_devboard_ioc") is True, "desktop IOC export must stay byte-identical", errors)
     acceptance = data.get("acceptance", {})
     for token in [
         "external_hardware_keys_preserved",
@@ -348,7 +398,7 @@ def main(argv: list[str]) -> int:
     fixture_path = args.fixture if args.fixture.is_absolute() else REPO_ROOT / args.fixture
     external_path = args.external
     errors: list[str] = []
-    for path in [DEVBOARD_IOC, PRODUCT_IOC, BRINGUP_README, WORKFLOW_DOC, BRINGUP_STEPS]:
+    for path in [DEVBOARD_IOC, PRODUCT_IOC, BRINGUP_README, WORKFLOW_DOC, BRINGUP_STEPS, PHYSICAL_CHECKLIST, EXPORT_SCRIPT]:
         require(path.exists(), f"missing required path {rel(path)}", errors)
     if args.require_external:
         require(external_path.exists(), f"missing required external IOC {external_path}", errors)

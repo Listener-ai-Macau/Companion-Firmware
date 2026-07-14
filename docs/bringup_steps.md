@@ -52,6 +52,17 @@ metadata such as project name and toolchain. Validate that relationship with:
 python .\tools\verify_devboard_ioc_import.py
 ```
 
+Export the verified current devboard IOC to the Windows desktop with a stable
+filename:
+
+```powershell
+pwsh -NoProfile -File .\tools\export_devboard_ioc.ps1
+```
+
+The exporter validates the canonical repo file first, copies it to
+`Companion_NUCLEO_WB55RG_Current.ioc`, and rejects a SHA-256 mismatch. Use
+`-CheckOnly` to inspect the source, destination, and hash without writing.
+
 For screen hardware bring-up, also verify the panel wiring preflight:
 
 ```powershell
@@ -615,9 +626,10 @@ while visual evidence still proves the real panel image.
 
 On WB55 the scaffold already carries the SPI2 transport facts from
 `docs/validation/companion-screen-panel-wiring-preflight.json`: SPI2, PA9 SCK,
-PC1 MOSI, PC2 MISO, and PA6 `SPI2_CS`. The remaining controller, DC/RST/BUSY,
-power, timing, visual, BLE, diagnostics, and adapter fields must still be
-filled from hardware evidence.
+PC1 MOSI, PC2 MISO, and PA6 `EPAPER_CS`. The preflight also locks the current
+WB55 FTS02 DC/RST/BUSY, touch, and connector map. Controller voltage, timing,
+visual, BLE, diagnostics, and adapter evidence must still be filled from the
+real hardware session.
 
 Use the hardware session scaffold before the real-panel session so the evidence
 files land in a target-specific directory. The WB55 root is
