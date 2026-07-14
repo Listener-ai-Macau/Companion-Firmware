@@ -20,10 +20,13 @@ $aiw = Join-Path $workflowRoot "scripts\aiw.ps1"
 $traceImage = Join-Path $repoRoot "cubeide\Companion_Nucleo_WB55RG_Bringup\build_verbose_trace\Companion_Nucleo_WB55RG_VerboseTrace.hex"
 $flashScript = Join-Path $repoRoot "tools\flash_nucleo_bringup.ps1"
 $captureScript = Join-Path $repoRoot "tools\capture_nucleo_serial.ps1"
+$shortTapVerifier = Join-Path $repoRoot "tools\verify_wb55_touch_wake_log.py"
 $resolvedOutDir = if ([System.IO.Path]::IsPathRooted($OutDir)) { $OutDir } else { Join-Path $repoRoot $OutDir }
 $operatorResultPath = Join-Path $resolvedOutDir "operator-result.txt"
 $reportPath = Join-Path $resolvedOutDir "short-touch-wake-trace-report.json"
 $summaryPath = Join-Path $resolvedOutDir "nucleo-serial-summary.json"
+$rawLogPath = Join-Path $resolvedOutDir "nucleo-serial-raw.log"
+$shortTapParserPath = Join-Path $resolvedOutDir "short-tap-parser.json"
 
 if (-not $Execute) {
     throw "Refusing short-touch trace without -Execute. Run through aiw with-lock -Resource Companion-WB55."
@@ -33,6 +36,9 @@ if (-not $WorkflowLockHeld) {
 }
 if (-not (Test-Path -LiteralPath $traceImage)) {
     throw "Missing verbose trace image: $traceImage. Build it with -EpaperSsd1681VerboseTrace first."
+}
+if (-not (Test-Path -LiteralPath $shortTapVerifier)) {
+    throw "Missing short-tap verifier: $shortTapVerifier."
 }
 if ($CaptureSeconds -lt ($SleepySettleSeconds + $OperatorTimeoutSeconds + 3)) {
     throw "CaptureSeconds must leave room for sleepy settle and operator action. Need at least $($SleepySettleSeconds + $OperatorTimeoutSeconds + 3), got $CaptureSeconds."
@@ -53,6 +59,8 @@ $report = [ordered]@{
     operator_result = [System.IO.Path]::GetRelativePath($repoRoot, $operatorResultPath).Replace("\", "/")
     normal_firmware_restored = $false
     capture_summary_status = $null
+    short_tap_parser_report = [System.IO.Path]::GetRelativePath($repoRoot, $shortTapParserPath).Replace("\", "/")
+    short_tap_parser_status = $null
     operator_prompt_exit_code = $null
     operator_result_selected = $null
     operator_note = ""
@@ -84,8 +92,8 @@ try {
         -Title "Companion 低功耗唤醒验收" `
         -ProgressText "1/1" `
         -ScopeText "本轮聚焦 1 项：已等待休眠稳定；trace 串口正在捕获，结束后自动恢复 normal 镜像。" `
-        -Message "现在短按屏幕中央一次并松开；不要滑动、不要长按。" `
-        -ExpectedText "短按后应显示一次当前 tap 的日常表情反馈；不能先闪 idle、不能全刷，也不能需要第二次按压。" `
+        -Message "现在轻触屏幕中央后立刻抬手，整个触点少于 0.5 秒；不要按住等屏幕变化、不要滑动、不要长按。" `
+        -ExpectedText "抬手后应判为 tap 并显示一次日常表情反馈；不能先闪 idle、不能全刷，也不能需要第二次按压。" `
         -ReviewStyle -Input -Buttons "通过,失败,跳过,中止" `
         -OutputPath $operatorResultPath -TimeoutSeconds $OperatorTimeoutSeconds -Json
     $report.operator_prompt_exit_code = $LASTEXITCODE
@@ -113,6 +121,19 @@ try {
     if ($report.capture_summary_status -ne "PASS") {
         throw "Serial capture summary status is $($report.capture_summary_status)."
     }
+    if (-not (Test-Path -LiteralPath $rawLogPath)) {
+        throw "Serial capture did not write $rawLogPath."
+    }
+    & python $shortTapVerifier --log $rawLogPath --scope short-tap --out $shortTapParserPath | Out-Host
+    $parserExit = $LASTEXITCODE
+    if (-not (Test-Path -LiteralPath $shortTapParserPath)) {
+        throw "Short-tap verifier did not write $shortTapParserPath."
+    }
+    $shortTapReport = Get-Content -LiteralPath $shortTapParserPath -Raw | ConvertFrom-Json
+    $report.short_tap_parser_status = [string]$shortTapReport.status
+    if ($parserExit -ne 0 -or $report.short_tap_parser_status -ne "PASS") {
+        throw "Short-tap trace verification failed: status=$($report.short_tap_parser_status) exit=$parserExit."
+    }
 } catch {
     $report.error = $_.Exception.Message
 } finally {
@@ -125,7 +146,17 @@ try {
     if (-not $report.normal_firmware_restored -and -not $report.error) {
         $report.error = "Normal firmware restore failed with exit code $normalRestoreExit."
     }
-    $report.status = if ($report.error) { "FAIL" } elseif ($report.normal_firmware_restored) { "PASS" } else { "FAIL" }
+    $report.status = if ($report.error) {
+        "FAIL"
+    } elseif ($report.operator_result_selected -eq "失败") {
+        "OPERATOR_FAILED_MACHINE_EVIDENCE_CAPTURED"
+    } elseif ($report.operator_result_selected -in @("跳过", "中止")) {
+        "OPERATOR_INCOMPLETE"
+    } elseif ($report.normal_firmware_restored) {
+        "PASS"
+    } else {
+        "FAIL"
+    }
     $report.completed_at = (Get-Date).ToString("o")
     $report | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $reportPath -Encoding UTF8
 }
