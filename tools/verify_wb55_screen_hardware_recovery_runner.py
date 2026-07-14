@@ -19,6 +19,8 @@ PANEL_TARGET = ROOT / "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681
 DEFAULT_FIXTURE = ROOT / "docs/validation/companion-screen-wb55-hardware-recovery-runner.json"
 CHECK_ROOT = ROOT / ".cache/validation/wb55-fts02-recovery-preflight"
 RECOVERY_ROOT = ROOT / ".cache/validation/wb55-fts02-recovery-selftest"
+OPERATOR_REJECT_ROOT = ROOT / ".cache/validation/wb55-fts02-operator-reject-selftest"
+OPERATOR_PASS_ROOT = ROOT / ".cache/validation/wb55-fts02-operator-pass-selftest"
 STUB_IMAGE_ROOT = CHECK_ROOT / "images"
 SCHEMA_ID = "companion.screen.wb55_hardware_recovery_runner.v1"
 PREPARATION_COMMANDS = (
@@ -57,6 +59,7 @@ def load_report(root: pathlib.Path, stage: str) -> dict[str, Any]:
 
 
 def build_snapshot() -> dict[str, Any]:
+    runner_text = RUNNER.read_text(encoding="utf-8-sig")
     build_wrapper_text = BUILD_WRAPPER.read_text(encoding="utf-8-sig")
     official_start = build_wrapper_text.find("if ($EpaperSsd1681OfficialFullDiagnostic)")
     official_end = (
@@ -105,6 +108,7 @@ def build_snapshot() -> dict[str, Any]:
             "result_count": len(report.get("results", [])),
             "image": report.get("image"),
             "safety": report.get("safety", {}),
+            "operator_review": report.get("operator_review", {}),
         }
 
     negative = run("-Execute", "-Stage", "White", timeout=30)
@@ -115,6 +119,29 @@ def build_snapshot() -> dict[str, Any]:
     statuses = {
         str(result.get("id")): str(result.get("status"))
         for result in recovery_report.get("results", [])
+    }
+    operator_reject = run(
+        "-SelfTestRecovery",
+        "-SelfTestOperatorSelection", "失败",
+        "-OutRoot", str(OPERATOR_REJECT_ROOT),
+        timeout=30,
+    )
+    operator_reject_text = operator_reject["stdout"] + operator_reject["stderr"]
+    operator_reject_report = load_report(OPERATOR_REJECT_ROOT, "selftest")
+    operator_reject_statuses = {
+        str(result.get("id")): str(result.get("status"))
+        for result in operator_reject_report.get("results", [])
+    }
+    operator_pass = run(
+        "-SelfTestRecovery",
+        "-SelfTestOperatorSelection", "通过",
+        "-OutRoot", str(OPERATOR_PASS_ROOT),
+        timeout=30,
+    )
+    operator_pass_report = load_report(OPERATOR_PASS_ROOT, "selftest")
+    operator_pass_statuses = {
+        str(result.get("id")): str(result.get("status"))
+        for result in operator_pass_report.get("results", [])
     }
     return {
         "schema_id": SCHEMA_ID,
@@ -133,6 +160,17 @@ def build_snapshot() -> dict[str, Any]:
                 '"[epaper] boot_diag pattern=%u official=%u cycle=%u result=%u bytes=%lu busy=%d\\r\\n"'
                 in panel_target_text
             ),
+        },
+        "operator_prompt_contract": {
+            "canonical_aiw_command_present": "operator-prompt" in runner_text,
+            "review_style_present": "-ReviewStyle -Input" in runner_text,
+            "durable_output_path_present": "operator-prompt-observation.txt" in runner_text,
+            "four_result_buttons_present": '"通过,失败,跳过,中止"' in runner_text,
+            "prompt_after_machine_steps": (
+                runner_text.find("foreach ($step in $steps)")
+                < runner_text.find("Invoke-OperatorReview -ReviewStage")
+            ),
+            "normal_restore_after_review_present": "flash_normal_restore_after_review" in runner_text,
         },
         "parser_selftest": {
             "returncode": parser.returncode,
@@ -155,6 +193,27 @@ def build_snapshot() -> dict[str, Any]:
             "normal_firmware_restored": recovery_report.get("normal_firmware_restored"),
             "result_ids": list(statuses),
             "result_statuses": statuses,
+        },
+        "operator_rejection_selftest": {
+            "returncode": operator_reject["returncode"],
+            "stdout_has_recovery": "RECOVERY: flash_normal_restore_after_failure" in operator_reject_text,
+            "report_status": operator_reject_report.get("status"),
+            "normal_firmware_restored": operator_reject_report.get("normal_firmware_restored"),
+            "diagnostic_left_installed": operator_reject_report.get("diagnostic_left_installed"),
+            "operator_review": operator_reject_report.get("operator_review", {}),
+            "operator_result_exists": (OPERATOR_REJECT_ROOT / "selftest" / "operator-prompt-observation.txt").is_file(),
+            "result_ids": list(operator_reject_statuses),
+            "result_statuses": operator_reject_statuses,
+        },
+        "operator_pass_selftest": {
+            "returncode": operator_pass["returncode"],
+            "report_status": operator_pass_report.get("status"),
+            "normal_firmware_restored": operator_pass_report.get("normal_firmware_restored"),
+            "diagnostic_left_installed": operator_pass_report.get("diagnostic_left_installed"),
+            "operator_review": operator_pass_report.get("operator_review", {}),
+            "operator_result_exists": (OPERATOR_PASS_ROOT / "selftest" / "operator-prompt-observation.txt").is_file(),
+            "result_ids": list(operator_pass_statuses),
+            "result_statuses": operator_pass_statuses,
         },
         "preparation_commands": list(PREPARATION_COMMANDS),
         "operator_sequence": [
@@ -191,6 +250,17 @@ def verify(snapshot: dict[str, Any]) -> list[str]:
     ):
         if image_contract.get(key) is not True:
             errors.append(f"diagnostic image contract failed: {key}")
+    prompt_contract = snapshot.get("operator_prompt_contract", {})
+    for key in (
+        "canonical_aiw_command_present",
+        "review_style_present",
+        "durable_output_path_present",
+        "four_result_buttons_present",
+        "prompt_after_machine_steps",
+        "normal_restore_after_review_present",
+    ):
+        if prompt_contract.get(key) is not True:
+            errors.append(f"operator prompt contract failed: {key}")
     if snapshot.get("parser_selftest", {}).get("passed") is not True:
         errors.append("official diagnostic parser self-test must pass")
     if snapshot.get("preparation_commands") != list(PREPARATION_COMMANDS):
@@ -205,6 +275,29 @@ def verify(snapshot: dict[str, Any]) -> list[str]:
         "black": ".cache/validation/wb55-fts02-recovery-preflight/images/black.hex",
         "restorenormal": ".cache/validation/wb55-fts02-recovery-preflight/images/normal.hex",
     }
+    expected_operator_reviews = {
+        "white": {
+            "required": True,
+            "invoked": False,
+            "style": "aiw_operator_prompt_v1",
+            "progress_text": "1/2（本次 1/1）",
+            "output_path": ".cache/validation/wb55-fts02-recovery-preflight/white/operator-prompt-observation.txt",
+        },
+        "black": {
+            "required": True,
+            "invoked": False,
+            "style": "aiw_operator_prompt_v1",
+            "progress_text": "2/2（本次 1/1）",
+            "output_path": ".cache/validation/wb55-fts02-recovery-preflight/black/operator-prompt-observation.txt",
+        },
+        "restorenormal": {
+            "required": False,
+            "invoked": False,
+            "style": None,
+            "progress_text": None,
+            "output_path": None,
+        },
+    }
     for stage, step_ids in expected_steps.items():
         result = snapshot.get("stages", {}).get(stage, {})
         if result.get("returncode") != 0 or result.get("report_status") != "DRY-RUN":
@@ -217,6 +310,16 @@ def verify(snapshot: dict[str, Any]) -> list[str]:
             errors.append(f"{stage} CheckOnly did not use its isolated stub image")
         if not all(result.get("safety", {}).values()):
             errors.append(f"{stage} safety contract is incomplete")
+        review = result.get("operator_review", {})
+        for key, expected in expected_operator_reviews[stage].items():
+            if review.get(key) != expected:
+                errors.append(f"{stage} operator review {key} drifted")
+        if stage in ("white", "black"):
+            if not all(
+                isinstance(review.get(key), str) and review.get(key)
+                for key in ("title", "scope_text", "message", "expected_text")
+            ):
+                errors.append(f"{stage} operator review text is incomplete")
     negative = snapshot.get("execute_without_lock_negative", {})
     if negative.get("returncode") == 0 or negative.get("refused_before_hardware") is not True:
         errors.append("Execute must refuse before hardware without Companion-WB55 lock acknowledgement")
@@ -235,6 +338,50 @@ def verify(snapshot: dict[str, Any]) -> list[str]:
         "flash_normal_restore_after_failure": "PASS",
     }:
         errors.append("recovery self-test result matrix drifted")
+    rejected = snapshot.get("operator_rejection_selftest", {})
+    rejected_review = rejected.get("operator_review", {})
+    if rejected.get("returncode") == 0 or rejected.get("stdout_has_recovery") is not True:
+        errors.append("operator rejection self-test must fail and invoke normal restore")
+    if rejected.get("report_status") != "FAIL" or rejected.get("normal_firmware_restored") is not True:
+        errors.append("operator rejection must leave a FAIL report with normal firmware restored")
+    if rejected.get("diagnostic_left_installed") is not False or rejected.get("operator_result_exists") is not True:
+        errors.append("operator rejection must persist its result and leave no diagnostic installed")
+    if rejected_review.get("invoked") is not True or rejected_review.get("selected") != "失败":
+        errors.append("operator rejection report did not retain the selected button")
+    if rejected.get("result_ids") != [
+        "flash_white", "capture_white", "parse_white", "flash_normal_restore_after_failure"
+    ]:
+        errors.append("operator rejection self-test step order drifted")
+    if rejected.get("result_statuses") != {
+        "flash_white": "PASS",
+        "capture_white": "PASS",
+        "parse_white": "PASS",
+        "flash_normal_restore_after_failure": "PASS",
+    }:
+        errors.append("operator rejection self-test result matrix drifted")
+    passed = snapshot.get("operator_pass_selftest", {})
+    passed_review = passed.get("operator_review", {})
+    if passed.get("returncode") != 0:
+        errors.append("operator PASS self-test must complete successfully")
+    if passed.get("report_status") != "PASS_MACHINE_AND_VISIBLE_FRAME_NORMAL_RESTORED_PENDING_VOLTAGE_RAILS":
+        errors.append("operator PASS status must retain the voltage-rail limitation")
+    if passed.get("normal_firmware_restored") is not True or passed.get("diagnostic_left_installed") is not False:
+        errors.append("operator PASS must restore normal firmware and leave no diagnostic installed")
+    if passed.get("operator_result_exists") is not True:
+        errors.append("operator PASS must persist the result beside its stage report")
+    if passed_review.get("invoked") is not True or passed_review.get("selected") != "通过":
+        errors.append("operator PASS report did not retain the selected button")
+    if passed.get("result_ids") != [
+        "flash_white", "capture_white", "parse_white", "flash_normal_restore_after_review"
+    ]:
+        errors.append("operator PASS self-test step order drifted")
+    if passed.get("result_statuses") != {
+        "flash_white": "PASS",
+        "capture_white": "PASS",
+        "parse_white": "PASS",
+        "flash_normal_restore_after_review": "PASS",
+    }:
+        errors.append("operator PASS self-test result matrix drifted")
     return errors
 
 
