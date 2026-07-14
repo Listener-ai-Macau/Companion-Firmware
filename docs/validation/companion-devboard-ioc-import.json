@@ -56,12 +56,12 @@
   },
   "desktop_export": {
     "byte_identical_to_devboard_ioc": true,
-    "canonical_text_sha256": "8c561b5374d71edc09096373a4d43c2b926a6f14520ec55f4214a37ed6df0f33",
+    "canonical_text_sha256": "d705e9fd8ec9d90cde62999964ea9462b3f368fad14b3a0fee659b6bde8e5111",
     "default_filename": "Companion_NUCLEO_WB55RG_Current.ioc",
     "hash_mode": "canonical_text_lf"
   },
   "devboard_ioc": {
-    "compatible_sha256": "5d91cbf604f2a23e3250bf3cc7d2b5f8bf4cbda4ec461e5b39896227b62a61de",
+    "current_configuration_sha256": "015c495a081ee480aa96739f03d5a56ed60334d546163feb63fd352c239f656f",
     "hardware_summary": {
       "allowed_repo_enrichments": {
         "Mcu.Pin36": "PC5",
@@ -98,9 +98,9 @@
         "I2C3",
         "MEMORYMAP",
         "NVIC",
-        "QUADSPI",
         "RCC",
         "SAI1",
+        "SPI1",
         "SPI2",
         "SYS",
         "USART1",
@@ -112,31 +112,31 @@
       "mcu": "STM32WB55RGV6",
       "package": "VFQFPN68",
       "pins": {
+        "PA1.Signal": "SPI1_SCK",
         "PA11.Signal": "USB_DM",
         "PA12.Signal": "USB_DP",
-        "PA2.Signal": "QUADSPI_BK1_NCS",
-        "PA3.Signal": "QUADSPI_CLK",
+        "PA2.Signal": "GPIO_Output",
         "PA4.Signal": "SAI1_FS_B",
         "PA5.Signal": "SAI1_SD_B",
         "PA6.Signal": "GPIO_Output",
+        "PA7.Signal": "SPI1_MOSI",
         "PA8.Signal": "SAI1_SCK_A",
         "PA9.Signal": "SPI2_SCK",
         "PB12.Signal": "SAI1_FS_A",
         "PB3.Signal": "SAI1_SCK_B",
+        "PB4.Signal": "SPI1_MISO",
         "PB6.Signal": "USART1_TX",
         "PB7.Signal": "USART1_RX",
-        "PB8.Signal": "QUADSPI_BK1_IO1",
-        "PB9.Signal": "QUADSPI_BK1_IO0",
         "PC1.Signal": "SPI2_MOSI",
         "PC2.Signal": "SPI2_MISO",
         "PC3.Signal": "SAI1_SD_A",
         "PC6.Signal": "GPXTI6"
       }
     },
-    "sha256": "8c561b5374d71edc09096373a4d43c2b926a6f14520ec55f4214a37ed6df0f33"
+    "sha256": "d705e9fd8ec9d90cde62999964ea9462b3f368fad14b3a0fee659b6bde8e5111"
   },
-  "external_flash_qspi2io_wiring": {
-    "current_bench_evidence": {
+  "external_flash_spi1_wiring": {
+    "historical_qspi_connected_evidence": {
       "artifact": "docs/validation/companion-external-flash-connected-20260714.json",
       "asset_bytes": 2097152,
       "captured_at": "2026-07-14T21:31:54+08:00",
@@ -148,13 +148,26 @@
       "recording_capacity": 1920000,
       "status": "PASS"
     },
+    "historical_qspi_pre_wiring_evidence": {
+      "artifact": "docs/validation/companion-external-flash-pre-wiring-20260714.json",
+      "captured_at": "2026-07-14T21:13:41+08:00",
+      "status": "NO_GO_NOT_DETECTED",
+      "tokens": [
+        "external_store=unavailable",
+        "fallback_internal",
+        "expression_renderer=unavailable",
+        "[rec-flash] probe=error"
+      ]
+    },
+    "instance": "SPI1",
     "io2_io3_not_wired_on_current_devboard": true,
     "logic_voltage": "3.3V",
-    "mode": "QSPI-2IO",
+    "mode": "SPI-1-1-1",
     "pa6_reserved_for_epaper_cs": true,
     "physical_pass_tokens": [
-      "[screen-assets] external_store=ready",
-      "[rec-flash] ready=1 jedec=0x"
+      "[flash-spi1] source=screen_assets probe=ok raw_jedec=0x0B4018",
+      "[screen-assets] external_store=ready kind=spi1_nor",
+      "[rec-flash] ready=1 jedec=0x0B4018"
     ],
     "pins": [
       {
@@ -173,32 +186,22 @@
         "signal": "CS / NSS / SS"
       },
       {
-        "connector": "CN10-37",
-        "gpio": "PA3",
+        "connector": "CN7-32",
+        "gpio": "PA1",
         "signal": "CLK / SCK"
       },
       {
-        "connector": "CN10-5",
-        "gpio": "PB9",
+        "connector": "CN10-15",
+        "gpio": "PA7",
         "signal": "DI / MOSI / IO0"
       },
       {
-        "connector": "CN10-3",
-        "gpio": "PB8",
+        "connector": "CN10-4",
+        "gpio": "PB4",
         "signal": "DO / MISO / IO1"
       }
     ],
-    "pre_wiring_bench_evidence": {
-      "artifact": "docs/validation/companion-external-flash-pre-wiring-20260714.json",
-      "captured_at": "2026-07-14T21:13:41+08:00",
-      "status": "NO_GO_NOT_DETECTED",
-      "tokens": [
-        "external_store=unavailable",
-        "fallback_internal",
-        "expression_renderer=unavailable",
-        "[rec-flash] probe=error"
-      ]
-    }
+    "runtime_gate": "tools/verify_wb55_spi1_external_flash.py"
   },
   "product_ioc_guard": {
     "mcu": "STM32WB55CEUx",
@@ -207,7 +210,7 @@
     "sha256": "930e3dbbef2590e7dc1ad21ee5f3e38aba31a3fdcd57679263ef3fa6076619fc"
   },
   "purpose": "Capture that the user-provided C:/Users/Billy/Desktop/STM32.ioc devboard pin/peripheral configuration is imported into the repo-owned NUCLEO IOC without overwriting the separate product IOC.",
-  "schema_id": "companion.devboard_ioc_import.v1",
+  "schema_id": "companion.devboard_ioc_import.v2",
   "sources": {
     "bringup_main": "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/main.c",
     "bringup_readme": "cubeide/Companion_Nucleo_WB55RG_Bringup/README.md",

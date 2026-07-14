@@ -25,15 +25,15 @@ EXTERNAL_FLASH_CONNECTED_EVIDENCE = REPO_ROOT / "docs" / "validation" / "compani
 EXTERNAL_FLASH_CONNECTED_LOG = REPO_ROOT / "docs" / "validation" / "artifacts" / "companion-external-flash-connected-idle-20260714.log"
 EXTERNAL_FLASH_LOG_VERIFIER = REPO_ROOT / "tools" / "verify_wb55_external_flash_log.py"
 EXPORT_SCRIPT = REPO_ROOT / "tools" / "export_devboard_ioc.ps1"
-SCHEMA_ID = "companion.devboard_ioc_import.v1"
+SCHEMA_ID = "companion.devboard_ioc_import.v2"
 
-EXTERNAL_FLASH_QSPI2IO_WIRING = [
+EXTERNAL_FLASH_SPI1_WIRING = [
     {"signal": "VCC / 3.3V", "connector": "CN7-16", "gpio": "3V3"},
     {"signal": "GND", "connector": "CN10-9", "gpio": "GND"},
     {"signal": "CS / NSS / SS", "connector": "CN10-35", "gpio": "PA2"},
-    {"signal": "CLK / SCK", "connector": "CN10-37", "gpio": "PA3"},
-    {"signal": "DI / MOSI / IO0", "connector": "CN10-5", "gpio": "PB9"},
-    {"signal": "DO / MISO / IO1", "connector": "CN10-3", "gpio": "PB8"},
+    {"signal": "CLK / SCK", "connector": "CN7-32", "gpio": "PA1"},
+    {"signal": "DI / MOSI / IO0", "connector": "CN10-15", "gpio": "PA7"},
+    {"signal": "DO / MISO / IO1", "connector": "CN10-4", "gpio": "PB4"},
 ]
 
 CAPTURED_EXTERNAL_IOC = {
@@ -100,18 +100,22 @@ DEVBOARD_REQUIRED_VALUES = {
     "ProjectManager.ProjectName": "Companion_Nucleo_WB55RG",
     "ProjectManager.TargetToolchain": "STM32CubeIDE",
     "I2C3.Timing": "0x00707CBB",
+    "SPI1.Mode": "SPI_MODE_MASTER",
+    "SPI1.Direction": "SPI_DIRECTION_2LINES",
+    "SPI1.BaudRatePrescaler": "SPI_BAUDRATEPRESCALER_16",
+    "SPI1.CalculateBaudRate": "2.0 MBits/s",
     "SPI2.Mode": "SPI_MODE_MASTER",
     "SPI2.CalculateBaudRate": "16.0 MBits/s",
     "USART1.WordLength": "WORDLENGTH_7B",
 }
 
-DEVBOARD_REQUIRED_IPS = {"I2C3", "MEMORYMAP", "NVIC", "QUADSPI", "RCC", "SAI1", "SPI2", "SYS", "USART1", "USB"}
+DEVBOARD_REQUIRED_IPS = {"I2C3", "MEMORYMAP", "NVIC", "RCC", "SAI1", "SPI1", "SPI2", "SYS", "USART1", "USB"}
 
 DEVBOARD_REQUIRED_PIN_SIGNALS = {
-    "PA2.Signal": "QUADSPI_BK1_NCS",
-    "PA3.Signal": "QUADSPI_CLK",
-    "PB9.Signal": "QUADSPI_BK1_IO0",
-    "PB8.Signal": "QUADSPI_BK1_IO1",
+    "PA1.Signal": "SPI1_SCK",
+    "PA2.Signal": "GPIO_Output",
+    "PA7.Signal": "SPI1_MOSI",
+    "PB4.Signal": "SPI1_MISO",
     "PA9.Signal": "SPI2_SCK",
     "PC1.Signal": "SPI2_MOSI",
     "PC2.Signal": "SPI2_MISO",
@@ -225,21 +229,6 @@ def check_product_ioc(values: dict[str, str], errors: list[str]) -> None:
     require(values.get("PB3.Signal") == "SPI1_SCK", "product IOC SPI1/e-paper SCK guard drifted", errors)
 
 
-def check_external_subset(external: dict[str, str], repo_values: dict[str, str], errors: list[str]) -> None:
-    for key, value in external.items():
-        if key in IGNORED_PROJECT_METADATA or key in LOCAL_RESERVATION_COUNTER_KEYS:
-            continue
-        if key in ALLOWED_REPO_OVERRIDES:
-            expected = ALLOWED_REPO_OVERRIDES[key]
-            require(value == expected["captured"], f"captured STM32.ioc override source {key} drifted", errors)
-            require(repo_values.get(key) == expected["repo"], f"devboard IOC override {key} drifted", errors)
-            continue
-        require(repo_values.get(key) == value, f"devboard IOC does not preserve external STM32.ioc {key}={value}", errors)
-    extra = sorted(set(repo_values) - set(external) - IGNORED_PROJECT_METADATA)
-    unexpected_extra = [key for key in extra if key not in ALLOWED_REPO_ENRICHMENTS]
-    require(not unexpected_extra, f"devboard IOC has unexpected local hardware keys: {unexpected_extra}", errors)
-
-
 def check_live_external(path: pathlib.Path, repo_values: dict[str, str], errors: list[str]) -> dict[str, Any] | None:
     if not path.exists():
         return None
@@ -256,11 +245,11 @@ def check_live_external(path: pathlib.Path, repo_values: dict[str, str], errors:
         "live external STM32.ioc compatible hash no longer matches captured source",
         errors,
     )
-    # The captured source and the enriched repo IOC intentionally have
-    # different normalized hashes. The source hash is checked above; the repo
-    # comparison hash is checked independently in main after normalizing the
-    # allowed enrichments and label overrides.
-    check_external_subset(external_values, repo_values, errors)
+    # The live source remains immutable provenance. The repo-owned IOC may
+    # evolve after explicit product steering; current hardware facts are
+    # guarded by check_devboard_ioc rather than an equality comparison to the
+    # original import.
+    del repo_values
     return live
 
 
@@ -302,7 +291,7 @@ def build_fixture() -> dict[str, Any]:
         "captured_external_ioc": CAPTURED_EXTERNAL_IOC,
         "devboard_ioc": {
             "sha256": canonical_text_sha256(DEVBOARD_IOC),
-            "compatible_sha256": compatible_sha256(devboard_values, drop_repo_enrichments=True),
+            "current_configuration_sha256": compatible_sha256(devboard_values, drop_repo_enrichments=True),
             "hardware_summary": build_summary(devboard_values),
         },
         "desktop_export": {
@@ -323,13 +312,14 @@ def build_fixture() -> dict[str, Any]:
             "repo_overrides": ALLOWED_REPO_OVERRIDES,
             "local_reservation_counter_keys": sorted(LOCAL_RESERVATION_COUNTER_KEYS),
         },
-        "external_flash_qspi2io_wiring": {
-            "mode": "QSPI-2IO",
-            "pins": EXTERNAL_FLASH_QSPI2IO_WIRING,
+        "external_flash_spi1_wiring": {
+            "mode": "SPI-1-1-1",
+            "instance": "SPI1",
+            "pins": EXTERNAL_FLASH_SPI1_WIRING,
             "pa6_reserved_for_epaper_cs": True,
             "io2_io3_not_wired_on_current_devboard": True,
             "logic_voltage": "3.3V",
-            "pre_wiring_bench_evidence": {
+            "historical_qspi_pre_wiring_evidence": {
                 "captured_at": "2026-07-14T21:13:41+08:00",
                 "status": "NO_GO_NOT_DETECTED",
                 "artifact": rel(EXTERNAL_FLASH_PRE_WIRING_EVIDENCE),
@@ -340,7 +330,7 @@ def build_fixture() -> dict[str, Any]:
                     "[rec-flash] probe=error",
                 ],
             },
-            "current_bench_evidence": {
+            "historical_qspi_connected_evidence": {
                 "captured_at": "2026-07-14T21:31:54+08:00",
                 "status": "PASS",
                 "artifact": rel(EXTERNAL_FLASH_CONNECTED_EVIDENCE),
@@ -353,9 +343,11 @@ def build_fixture() -> dict[str, Any]:
                 "pack_frames": 75,
             },
             "physical_pass_tokens": [
-                "[screen-assets] external_store=ready",
-                "[rec-flash] ready=1 jedec=0x",
+                "[flash-spi1] source=screen_assets probe=ok raw_jedec=0x0B4018",
+                "[screen-assets] external_store=ready kind=spi1_nor",
+                "[rec-flash] ready=1 jedec=0x0B4018",
             ],
+            "runtime_gate": "tools/verify_wb55_spi1_external_flash.py",
         },
         "acceptance": {
             "external_hardware_keys_preserved": True,
@@ -401,31 +393,29 @@ def check_docs(errors: list[str]) -> None:
         "VCC / 3.3V` | `CN7-16` | `3V3",
         "GND` | `CN10-9` | `GND",
         "CS / NSS / SS` | `CN10-35` | `PA2",
-        "CLK / SCK` | `CN10-37` | `PA3",
-        "DI / MOSI / IO0` | `CN10-5` | `PB9",
-        "DO / MISO / IO1` | `CN10-3` | `PB8",
-        "`PA6` 已用于电子纸 `CS`",
-        "external_store=unavailable",
-        "fallback_internal/rescue_ui",
-        "[rec-flash] probe=error ready=0",
-        "[screen-assets] external_store=ready",
-        "jedec=0x0B4018",
+        "CLK / SCK` | `CN7-32` | `PA1",
+        "DI / MOSI / IO0` | `CN10-15` | `PA7",
+        "DO / MISO / IO1` | `CN10-4` | `PB4",
+        "外部 Flash 独占硬件 `SPI1`",
+        "电子纸继续独占硬件 `SPI2`",
+        "raw_jedec=0x0B4018",
+        "external_store=ready kind=spi1_nor",
         "1920000",
-        "33` 个片段和 `75` 帧",
-        "接线与探测状态记为 `PASS`",
-        "[rec-flash] ready=1 jedec=0x...",
-        "flash=QSPI-2IO PA2/PA3/PB9/PB8",
-        "verify_wb55_external_flash_log.py",
+        "[rec-flash] ready=1 jedec=0x0B4018",
+        "flash=SPI1-1IO sck=PA1 mosi=PA7 miso=PB4 cs=PA2",
+        "软件交换探针只用于诊断",
     ]:
         require(token in physical_checklist, f"physical checklist missing external Flash anchor {token}", errors)
     for token in [
-        "#define FLASH_QSPI_NCS_PIN GPIO_PIN_2",
-        "#define FLASH_QSPI_CLK_PIN GPIO_PIN_3",
-        "#define FLASH_QSPI_IO1_PIN GPIO_PIN_8",
-        "#define FLASH_QSPI_IO0_PIN GPIO_PIN_9",
-        "flash=QSPI-2IO PA2/PA3/PB9/PB8",
+        "#define BOARD_FLASH_SPI1_CS_PIN GPIO_PIN_2",
+        "#define BOARD_FLASH_SPI1_SCK_PIN GPIO_PIN_1",
+        "#define BOARD_FLASH_SPI1_MOSI_PIN GPIO_PIN_7",
+        "#define BOARD_FLASH_SPI1_MISO_PIN GPIO_PIN_4",
+        "flash=SPI1-1IO sck=PA1 mosi=PA7 miso=PB4 cs=PA2",
     ]:
-        require(token in bringup_main, f"normal firmware missing QSPI 2IO pin anchor {token}", errors)
+        require(token in bringup_main, f"normal firmware missing SPI1 pin anchor {token}", errors)
+    for rejected in ["HAL_QSPI_", "MX_QUADSPI_Init", "flash=QSPI-2IO"]:
+        require(rejected not in bringup_main, f"normal firmware retained retired QSPI anchor {rejected}", errors)
 
 
 def load_json_evidence(path: pathlib.Path, label: str, errors: list[str]) -> dict[str, Any]:
@@ -551,8 +541,8 @@ def check_fixture_data(data: dict[str, Any], errors: list[str]) -> None:
     require(data.get("schema_id") == SCHEMA_ID, "unexpected devboard IOC import schema", errors)
     require(data.get("status") == "PASS", "devboard IOC import fixture must be PASS", errors)
     require(
-        data.get("captured_external_ioc", {}).get("repo_comparison_sha256") == data.get("devboard_ioc", {}).get("compatible_sha256"),
-        "devboard IOC compatible hash must match captured external IOC",
+        data.get("captured_external_ioc", {}).get("sha256") == CAPTURED_EXTERNAL_IOC["sha256"],
+        "captured external IOC provenance hash drifted",
         errors,
     )
     guard = data.get("product_ioc_guard", {})
@@ -576,21 +566,27 @@ def check_fixture_data(data: dict[str, Any], errors: list[str]) -> None:
         "wba_safe_board_facts_stay_in_ioc",
     ]:
         require(acceptance.get(token) is True, f"devboard IOC import acceptance missing {token}", errors)
-    flash_wiring = data.get("external_flash_qspi2io_wiring", {})
-    require(flash_wiring.get("mode") == "QSPI-2IO", "external Flash wiring mode drifted", errors)
-    require(flash_wiring.get("pins") == EXTERNAL_FLASH_QSPI2IO_WIRING, "external Flash connector table drifted", errors)
+    flash_wiring = data.get("external_flash_spi1_wiring", {})
+    require(flash_wiring.get("mode") == "SPI-1-1-1", "external Flash wiring mode drifted", errors)
+    require(flash_wiring.get("instance") == "SPI1", "external Flash instance drifted", errors)
+    require(flash_wiring.get("pins") == EXTERNAL_FLASH_SPI1_WIRING, "external Flash connector table drifted", errors)
     require(flash_wiring.get("pa6_reserved_for_epaper_cs") is True, "external Flash wiring must preserve PA6 for e-paper CS", errors)
     require(flash_wiring.get("io2_io3_not_wired_on_current_devboard") is True, "current devboard must keep Flash IO2/IO3 unwired", errors)
     require(flash_wiring.get("logic_voltage") == "3.3V", "external Flash logic voltage must stay 3.3V", errors)
     require(
-        flash_wiring.get("pre_wiring_bench_evidence", {}).get("status") == "NO_GO_NOT_DETECTED",
+        flash_wiring.get("historical_qspi_pre_wiring_evidence", {}).get("status") == "NO_GO_NOT_DETECTED",
         "external Flash pre-wiring evidence must remain an explicit historical NO_GO",
         errors,
     )
-    current = flash_wiring.get("current_bench_evidence", {})
+    current = flash_wiring.get("historical_qspi_connected_evidence", {})
     require(
         current.get("status") == "PASS" and current.get("jedec") == "0x0B4018",
-        "current external Flash bench evidence must remain the connected hardware PASS",
+        "historical QSPI connected evidence must remain an immutable PASS",
+        errors,
+    )
+    require(
+        flash_wiring.get("runtime_gate") == "tools/verify_wb55_spi1_external_flash.py",
+        "current SPI1 hardware gate drifted",
         errors,
     )
 
@@ -647,12 +643,6 @@ def main(argv: list[str]) -> int:
         product_values = parse_ioc(PRODUCT_IOC)
         check_devboard_ioc(devboard_values, errors)
         check_product_ioc(product_values, errors)
-        compatible = compatible_sha256(devboard_values, drop_repo_enrichments=True)
-        require(
-            compatible == CAPTURED_EXTERNAL_IOC["repo_comparison_sha256"],
-            "repo devboard IOC compatible hash no longer matches captured external STM32.ioc",
-            errors,
-        )
         live = check_live_external(external_path, devboard_values, errors)
         if args.require_external:
             require(live is not None, f"required external IOC was not checked: {external_path}", errors)

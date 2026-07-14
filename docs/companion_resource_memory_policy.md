@@ -174,11 +174,12 @@ Aibo/Loona 这类屏幕表情产品和 Moflin 这类情绪陪伴产品后，Comp
 ## WB55 与 WBA 边界
 
 - 当前 WB55 已通过 `companion_screen_assets_stm32wb.*` 将
-  `comp_qspi_nor_read()` 接成 `asset_store` reader。开发板 `ui_assets`
+  `comp_spi_nor_read()` 接成 `asset_store` reader。开发板 `ui_assets`
   只读窗口为 `0x00200000 + 2 MiB`；这是 WB55 bring-up 布局，不是 WBA
   默认地址。
-- WBA55/WBA65 必须根据最终芯片、封装和引脚选择 QSPI、普通 SPI 或其它外存
-  外设，并实现独立的 `*_stm32wba.*` storage adapter。当前
+- WB55/WBA55/WBA65 的已选公共协议是普通 `1-1-1 SPI NOR`。WB55 通过独立
+  `SPI1` 验证命令核心，WBA55/WBA65 根据最终芯片、封装和引脚实现独立的
+  `*_stm32wba.*` target binding。当前
   `screen_assets_stm32wba.h/.c` 已提供 callback-only 的 `ui_assets` reader
   边界：它只接收逻辑分区大小和相对读取 callback，不包含物理地址、外设或引脚。
 - 可移植代码只看 `comp_asset_store_t` 和逻辑分区长度，禁止写目标寄存器、HAL

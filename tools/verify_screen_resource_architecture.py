@@ -195,7 +195,7 @@ def main() -> int:
         "WB55 Makefile does not compile target asset-store adapter",
         errors,
     )
-    for token in ("comp_qspi_nor_read", "COMP_ASSET_STORAGE_EXTERNAL_NOR"):
+    for token in ("comp_spi_nor_read", "COMP_ASSET_STORAGE_EXTERNAL_NOR"):
         require(token in wb_store, f"WB55 target asset adapter missing {token}", errors)
     for token in (
         "FLASH_UI_ASSETS_BASE 0x00200000u",
