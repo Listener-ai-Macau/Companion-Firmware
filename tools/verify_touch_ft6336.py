@@ -149,6 +149,13 @@ def main() -> int:
         "s_touch_gesture.consumed_until_release",
         "comp_touch_gesture_restart_contact",
         "recontact_boundary",
+        "schedule_daily_tap_reaction",
+        "cancel_daily_tap_reaction",
+        "process_daily_tap_reaction",
+        "daily_reaction phase=deferred",
+        "daily_reaction phase=cancelled",
+        "daily_reaction phase=execute",
+        "now_ms + TOUCH_DOUBLE_TAP_MAX_GAP_MS + 1u",
         "[record-visual] action=start expression=recording",
         "[record-visual] action=store expression=%s",
     ), errors)
@@ -278,6 +285,19 @@ def main() -> int:
             errors.append("daily double-tap must not restore the obsolete delayed maintenance path")
         if "COMP_TOUCH_RUNTIME_ACTION_TOGGLE_RECORDING" not in double_tap_block:
             errors.append("daily double-tap must defer recording while the panel is BUSY")
+
+    daily_tap_tail = "} else if (gesture.type == COMP_TOUCH_GESTURE_SWIPE_LEFT ||"
+    if double_tap_tail not in main_source or daily_tap_tail not in main_source:
+        errors.append("daily tap branch must remain separately inspectable")
+    else:
+        daily_tap_block = main_source.split(double_tap_tail, 1)[1].split(daily_tap_tail, 1)[0]
+        if "schedule_daily_tap_reaction" not in daily_tap_block:
+            errors.append("daily tap must wait for the double-tap decision window")
+        if "Companion_Screen_DailyTapAt" in daily_tap_block:
+            errors.append("daily first tap must not start an e-paper refresh before double-tap classification")
+
+    if "poll_touch_debug();\n        process_daily_tap_reaction(HAL_GetTick());" not in main_source:
+        errors.append("idle loop must execute a deferred single-tap reaction after touch classification")
 
     if errors:
         for error in errors:

@@ -518,6 +518,10 @@ static bool s_touch_processing_during_panel_wait;
 static comp_touch_runtime_action_t s_touch_deferred_action;
 static uint32_t s_touch_deferred_action_queued_ms;
 static comp_touch_gesture_state_t s_touch_gesture;
+static bool s_daily_tap_reaction_pending;
+static uint16_t s_daily_tap_reaction_x;
+static uint16_t s_daily_tap_reaction_y;
+static uint32_t s_daily_tap_reaction_due_ms;
 static bool s_menu_entry_pending;
 static comp_screen_menu_view_t s_menu_entry_target;
 static uint32_t s_menu_entry_due_ms;
@@ -654,6 +658,11 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
                                      uint16_t logical_y,
                                      uint32_t now_ms);
 static void process_menu_entry_transition(uint32_t now_ms);
+static void schedule_daily_tap_reaction(uint16_t x,
+                                        uint16_t y,
+                                        uint32_t now_ms);
+static void cancel_daily_tap_reaction(const char *reason);
+static void process_daily_tap_reaction(uint32_t now_ms);
 static bool defer_touch_runtime_action(comp_touch_runtime_action_t action,
                                        uint32_t now_ms);
 static void process_deferred_touch_runtime_action(void);
@@ -1248,6 +1257,7 @@ int main(void)
         MX_APPE_Process();
         poll_board_buttons();
         poll_touch_debug();
+        process_daily_tap_reaction(HAL_GetTick());
 
         uint32_t now = HAL_GetTick();
 #if COMPANION_SCREEN_MAINTENANCE_DIAGNOSTIC
@@ -1934,6 +1944,59 @@ static void request_low_power_touch_wake(void)
     TOUCH_VERBOSE_TRACE("[touch-ui] low_power_touch_wake state=active visual=gesture_owned result=deferred\r\n");
 }
 
+static void schedule_daily_tap_reaction(uint16_t x,
+                                        uint16_t y,
+                                        uint32_t now_ms)
+{
+    s_daily_tap_reaction_pending = true;
+    s_daily_tap_reaction_x = x;
+    s_daily_tap_reaction_y = y;
+    s_daily_tap_reaction_due_ms =
+        now_ms + TOUCH_DOUBLE_TAP_MAX_GAP_MS + 1u;
+    TOUCH_VERBOSE_TRACE("[touch-ui] daily_reaction phase=deferred x=%u y=%u due_ms=%lu\r\n",
+           (unsigned)x,
+           (unsigned)y,
+           (unsigned long)s_daily_tap_reaction_due_ms);
+}
+
+static void cancel_daily_tap_reaction(const char *reason)
+{
+    if (!s_daily_tap_reaction_pending) {
+        return;
+    }
+    s_daily_tap_reaction_pending = false;
+    TOUCH_VERBOSE_TRACE("[touch-ui] daily_reaction phase=cancelled reason=%s\r\n",
+           reason == NULL ? "unknown" : reason);
+}
+
+static void process_daily_tap_reaction(uint32_t now_ms)
+{
+    if (!s_daily_tap_reaction_pending ||
+        (int32_t)(now_ms - s_daily_tap_reaction_due_ms) < 0 ||
+        s_touch_gesture.active ||
+        s_touch_gesture.tap_pending) {
+        return;
+    }
+
+    uint16_t x = s_daily_tap_reaction_x;
+    uint16_t y = s_daily_tap_reaction_y;
+    s_daily_tap_reaction_pending = false;
+    if (Companion_Screen_IsMenuVisible() ||
+        s_recording_fsm.state == COMP_RECORDING_STATE_RECORDING) {
+        TOUCH_VERBOSE_TRACE("[touch-ui] daily_reaction phase=dropped menu=%u recording=%u\r\n",
+               Companion_Screen_IsMenuVisible() ? 1u : 0u,
+               s_recording_fsm.state == COMP_RECORDING_STATE_RECORDING ? 1u : 0u);
+        return;
+    }
+
+    TOUCH_VERBOSE_TRACE("[touch-ui] daily_reaction phase=execute x=%u y=%u delay_ms=%lu\r\n",
+           (unsigned)x,
+           (unsigned)y,
+           (unsigned long)(now_ms - (s_daily_tap_reaction_due_ms -
+                                     TOUCH_DOUBLE_TAP_MAX_GAP_MS - 1u)));
+    (void)Companion_Screen_DailyTapAt(x, y);
+}
+
 static void poll_touch_debug(void)
 {
     buffered_touch_sample_t entry;
@@ -2430,6 +2493,9 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
            (unsigned)gesture.end_y,
            (unsigned)gesture.duration_ms,
            (unsigned long)(HAL_GetTick() - now_ms));
+    if (gesture.type != COMP_TOUCH_GESTURE_TAP) {
+        cancel_daily_tap_reaction(comp_touch_gesture_name(gesture.type));
+    }
     if (!Companion_Screen_IsMenuVisible()) {
         if (gesture.type == COMP_TOUCH_GESTURE_HOLD) {
             /* Keep the 650 ms acknowledgement non-blocking.  An e-paper
@@ -2476,10 +2542,9 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
                 TOUCH_VERBOSE_TRACE("[record-visual] action=tap_retained expression=recording result=%u\r\n",
                        retained ? 1u : 0u);
             } else {
-                TOUCH_VERBOSE_TRACE("[touch-ui] daily_reaction x=%u y=%u\r\n",
-                       (unsigned)gesture.end_x,
-                       (unsigned)gesture.end_y);
-                (void)Companion_Screen_DailyTapAt(gesture.end_x, gesture.end_y);
+                schedule_daily_tap_reaction(gesture.end_x,
+                                            gesture.end_y,
+                                            now_ms);
             }
         } else if (gesture.type == COMP_TOUCH_GESTURE_SWIPE_LEFT ||
                    gesture.type == COMP_TOUCH_GESTURE_SWIPE_RIGHT ||
@@ -2706,6 +2771,7 @@ static void end_ble_session_if_active(bool cancel, const char *reason)
 
 static void start_recording(comp_recording_source_t source, const char *reason)
 {
+    cancel_daily_tap_reaction("record_start");
     if (s_recording_fsm.state == COMP_RECORDING_STATE_ERROR_RECOVERY ||
         s_recording_fsm.state == COMP_RECORDING_STATE_CANCELED ||
         s_recording_fsm.state == COMP_RECORDING_STATE_TRANSFERRED) {
