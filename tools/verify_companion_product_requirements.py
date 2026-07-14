@@ -52,6 +52,7 @@ REQUIRED_ANCHORS = (
     "COMP-REQ-033",
     "COMP-REQ-034",
     "COMP-REQ-035",
+    "COMP-REQ-036",
     "PC6/EXTI",
     "<=1 mA",
     "external-Flash first",
@@ -72,6 +73,8 @@ REQUIRED_ANCHORS = (
     "Denzic Platform shared product core",
     "A second Companion-owned recording state machine or protocol fork is prohibited",
     "two double taps, valid non-timeout PCM, stop, and external-Flash store",
+    "machine-first four-layer contract",
+    "Human `通过` is necessary for physical acceptance but cannot override missing machine evidence",
 )
 
 
@@ -92,7 +95,7 @@ def main() -> int:
         "registry": str(REGISTRY.relative_to(ROOT)).replace("\\", "/"),
         "workflow_plan": "companion-screen-product-integration",
         "requirement_ids": [f"COMP-REQ-{number}" for number in requirement_ids],
-        "current_focus": "COMP-REQ-035 and COMP-REQ-006 Denzic Platform shared recording core plus WB55 two-double-tap recording acceptance",
+        "current_focus": "COMP-REQ-035, COMP-REQ-036, and COMP-REQ-006 shared recording core plus machine-first WB55 two-double-tap acceptance",
         "active_parallel_track": "COMP-REQ-034 FTS02 analog display recovery remains documented but does not block serial recording acceptance",
         "errors": errors,
     }

@@ -1299,6 +1299,26 @@ SAI/PDM 会话重启并将采集改为短时、可轮询服务，使触控在录
 后才刷机，重复同一个 `4/13` 窗口，必须同时出现两次 `double_tap`、非 timeout PCM、stop 和
 `user_store result=1`。FTS02 升压故障继续由 Revision 90/COMP-REQ-034 跟踪，不计入本项串口验收。
 
+## Revision 93: 先做手势裁决架构，再做一次硬件复验
+
+第三次共享录音链路窗口持续抓取了完整串口，人工选择“通过”并备注“测了”，但机器报告仍为
+`NO_GO_INCOMPLETE_TOUCH_WAKE_EVIDENCE`，因此结果继续是 FAIL，不能登记为验收通过。该日志证明
+FT6336 确实读到了落指与释放；真正的时序问题是第一下 tap 立即触发 `daily_reaction` 和电子纸刷新，
+第二下 tap 到达时已经超过双击窗口。继续改阈值或反复让 owner 点击不能解决这一结构性问题。
+
+依据 AOSP/AndroidX 的成熟手势裁决方式，第一下 tap 必须是 provisional：双击窗口结束且没有活动
+contact/gesture pending 后，才提交为 confirmed single tap。新增 portable `touch_tap_arbiter`，把真实
+`0,159 -> 129,81 -> 121,83 -> 109,88` re-contact 序列固化成嵌入式自测；double tap 先取消单击候选，
+再进入共享录音动作。FT6336 acquisition、portable gesture、action arbitration 和 SSD1681/recording
+execution 成为四个独立层，WBA55/WBA65 继续复用中间两层。
+
+同时收紧 `4/13` 机器门禁：两次 double tap 之外，必须出现 PLLSAI1/SAI 恢复、DMA start OK、至少
+两块 CRC 不同且有振幅的 PCM、没有 microphone timeout、stop 和外部 Flash `user_store result=1`。
+人工按钮不能覆盖任一机器缺项。先完成静态回归、normal/verbose 构建和启动自测；全部通过后只打开
+一次最终人工窗口。详细来源与失败重放见
+`docs/validation/companion-touch-recording-arbitration-research-20260714.md`，产品合同登记为
+`COMP-REQ-036`。
+
 ## 逐项验收顺序
 
 本项目遵循 AI Workflow 的全产品异步验收规则：未收到操作者明确的“开始验收”前，
