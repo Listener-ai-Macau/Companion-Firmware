@@ -1428,6 +1428,13 @@ trace WB55 构建及 preflight 均通过。normal 为 `text=131204, data=2436, b
 `8111896ACFE4457402A60C979608597D6DAB0815089553F6CA325A416B7C86C6`。这些仍只证明诊断镜像就绪，
 不声明第二次双击已经通过真机。
 
+机器解析器同步加入录音期根因分类。`double-tap-recording` 现在把
+`recording_touch_health_observed` 作为必需门禁，缺少新字段的旧日志只会得到
+`NO_RECORDING_TOUCH_HEALTH`，不会被误判为具体硬件故障；连续样本才允许进一步输出 scheduler stall、
+I2C read failure、poll stall、IRQ not consumed、PC6 stuck low、FT6336 no-touch detection、IRQ without
+contact report 或 gesture lifecycle failure。正向完整链路、缺 DMA stop、缺健康行、控制器未检测和 I2C
+增长五组 parser self-test 均通过。
+
 ## 逐项验收顺序
 
 本项目遵循 AI Workflow 的全产品异步验收规则：未收到操作者明确的“开始验收”前，

@@ -55,6 +55,7 @@ def main() -> int:
     makefile = (ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile").read_text(encoding="utf-8")
     build = (ROOT / "tools/build_nucleo_bringup.ps1").read_text(encoding="utf-8")
     recording_acceptance = (ROOT / "tools/run_wb55_recording_chain_acceptance.ps1").read_text(encoding="utf-8")
+    touch_wake_parser = (ROOT / "tools/verify_wb55_touch_wake_log.py").read_text(encoding="utf-8")
     panel_header = (ROOT / "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.h").read_text(encoding="utf-8")
     panel_source = (ROOT / "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c").read_text(encoding="utf-8")
     touch_fixture = json.loads(
@@ -366,6 +367,22 @@ def main() -> int:
             errors.append("recording touch health must stay out of quiet-build direct printf")
         require("recording acceptance trace preflight", recording_acceptance, (
             '"[record-touch]"',
+        ), errors)
+        require("recording touch root-cause classifier", touch_wake_parser, (
+            "def recording_touch_samples(",
+            "def summarize_recording_touch_health(",
+            '"recording_touch_health_observed"',
+            '"RECORDING_TOUCH_SCHEDULER_STALLED"',
+            '"FT6336_I2C_READ_FAILURE"',
+            '"FT6336_POLL_STALLED"',
+            '"FT6336_IRQ_NOT_CONSUMED"',
+            '"FT6336_PC6_STUCK_LOW"',
+            '"FT6336_NO_TOUCH_DETECTION"',
+            '"FT6336_IRQ_WITHOUT_CONTACT_REPORT"',
+            '"TOUCH_CONTACT_WITHOUT_GESTURE"',
+            '"TOUCH_GESTURE_NOT_COMPLETED"',
+            '"no_second_touch_classified"',
+            '"i2c_failure_classified"',
         ), errors)
         require("one-shot touch recording display service", recording_app_service, (
             "s_recording_fsm.active_source == COMP_RECORDING_SOURCE_USER_TOUCH",

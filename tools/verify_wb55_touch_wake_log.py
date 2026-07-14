@@ -14,6 +14,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA_ID = "companion.wb55.touch_wake_log.v1"
 SCOPES = ("idle-timer", "stop-wake", "short-tap", "double-tap-recording", "full")
+RECORDING_TOUCH_HEALTH_MAX_GAP_MS = 750
 
 
 def health_samples(log: str) -> list[dict[str, int]]:
@@ -37,6 +38,160 @@ def irq_events(log: str) -> list[dict[str, int]]:
     for match in pattern.finditer(log):
         events.append({"irq": int(match.group("irq")), "irq_consumed": int(match.group("consumed"))})
     return events
+
+
+def recording_touch_samples(log: str) -> list[dict[str, int | str]]:
+    samples: list[dict[str, int | str]] = []
+    pattern = re.compile(
+        r"\[record-touch\]\s+t=(?P<tick>\d+)\s+service=(?P<service>\d+)\s+"
+        r"ft_read=(?P<ft_read>\d+)\s+delta=(?P<read_delta>\d+)\s+"
+        r"ft_error=(?P<ft_error>\d+)\s+irq_produced=(?P<irq_produced>\d+)\s+"
+        r"irq_consumed=(?P<irq_consumed>\d+)\s+pc6=(?P<pc6>[01])\s+"
+        r"next_poll_ms=(?P<next_poll_ms>-?\d+)\s+contact=(?P<contact>[01])\s+"
+        r"gesture_active=(?P<gesture_active>[01])\s+consumed=(?P<consumed>[01])\s+"
+        r"tap_pending=(?P<tap_pending>[01])\s+buffered=(?P<buffered>\d+)\s+"
+        r"deferred=(?P<deferred>[a-z_]+)"
+    )
+    integer_fields = (
+        "tick",
+        "service",
+        "ft_read",
+        "read_delta",
+        "ft_error",
+        "irq_produced",
+        "irq_consumed",
+        "pc6",
+        "next_poll_ms",
+        "contact",
+        "gesture_active",
+        "consumed",
+        "tap_pending",
+        "buffered",
+    )
+    for match in pattern.finditer(log):
+        sample: dict[str, int | str] = {
+            field: int(match.group(field)) for field in integer_fields
+        }
+        sample["deferred"] = match.group("deferred")
+        samples.append(sample)
+    return samples
+
+
+def summarize_recording_touch_health(
+    samples: list[dict[str, int | str]],
+    post_start_contacts: int,
+    post_start_gestures: int,
+    recording_started: bool,
+    recording_stopped: bool,
+) -> dict[str, Any]:
+    if not recording_started:
+        return {
+            "diagnosis": "NOT_APPLICABLE_NO_RECORDING_START",
+            "sample_count": 0,
+            "next_action": "First prove that the initial double tap starts recording.",
+        }
+    if not samples:
+        return {
+            "diagnosis": "NO_RECORDING_TOUCH_HEALTH",
+            "sample_count": 0,
+            "next_action": "Reject this trace image or inspect recording-loop scheduling; no [record-touch] sample followed recording start.",
+        }
+
+    services = [int(sample["service"]) for sample in samples]
+    read_counts = [int(sample["ft_read"]) for sample in samples]
+    read_deltas = [int(sample["read_delta"]) for sample in samples]
+    error_counts = [int(sample["ft_error"]) for sample in samples]
+    irq_produced = [int(sample["irq_produced"]) for sample in samples]
+    irq_consumed = [int(sample["irq_consumed"]) for sample in samples]
+    ticks = [int(sample["tick"]) for sample in samples]
+    tick_gaps = [
+        (current - previous) & 0xFFFFFFFF
+        for previous, current in zip(ticks, ticks[1:])
+    ]
+    service_progress = all(
+        current > previous for previous, current in zip(services, services[1:])
+    )
+    read_progress = sum(read_deltas) > 0 or read_counts[-1] > read_counts[0]
+    error_delta = max(error_counts) - min(error_counts)
+    irq_produced_delta = irq_produced[-1] - irq_produced[0]
+    irq_consumed_delta = irq_consumed[-1] - irq_consumed[0]
+    max_gap_ms = max(tick_gaps, default=0)
+    pc6_levels = sorted({int(sample["pc6"]) for sample in samples})
+    contact_seen = post_start_contacts > 0 or any(
+        int(sample["contact"]) != 0 for sample in samples
+    )
+    gesture_state_seen = post_start_gestures > 0 or any(
+        int(sample["gesture_active"]) != 0
+        or int(sample["consumed"]) != 0
+        or int(sample["tap_pending"]) != 0
+        for sample in samples
+    )
+
+    if recording_stopped:
+        diagnosis = "COMPLETE"
+        next_action = "Recording touch control completed; continue the remaining recording/store gates."
+    elif len(samples) < 2:
+        diagnosis = "INSUFFICIENT_RECORDING_TOUCH_HEALTH"
+        next_action = "Capture at least one more 250 ms recording-touch health interval."
+    elif not service_progress or max_gap_ms > RECORDING_TOUCH_HEALTH_MAX_GAP_MS:
+        diagnosis = "RECORDING_TOUCH_SCHEDULER_STALLED"
+        next_action = "Inspect the recording loop around the largest health gap before changing FT6336 tuning."
+    elif error_delta > 0:
+        diagnosis = "FT6336_I2C_READ_FAILURE"
+        next_action = "Inspect I2C bus recovery, pull-ups and controller power; FT6336 errors increased during recording."
+    elif not read_progress:
+        diagnosis = "FT6336_POLL_STALLED"
+        next_action = "Inspect next-poll scheduling; touch service ran but FT6336 read_count did not advance."
+    elif irq_produced[-1] > irq_consumed[-1]:
+        diagnosis = "FT6336_IRQ_NOT_CONSUMED"
+        next_action = "Inspect EXTI consumption and pending sample draining before changing touch thresholds."
+    elif pc6_levels == [0] and irq_produced_delta == 0:
+        diagnosis = "FT6336_PC6_STUCK_LOW"
+        next_action = "Inspect the active-low TP_INT line and EXTI edge state; PC6 remained low without a new IRQ."
+    elif irq_produced_delta == 0 and not contact_seen:
+        diagnosis = "FT6336_NO_TOUCH_DETECTION"
+        next_action = "The scheduler and I2C polling are healthy, but FT6336 neither asserted a new IRQ nor reported contact; inspect touch-controller detection or wiring."
+    elif irq_produced_delta > 0 and not contact_seen:
+        diagnosis = "FT6336_IRQ_WITHOUT_CONTACT_REPORT"
+        next_action = "A touch IRQ arrived but no contact report followed; inspect report reads and release timing."
+    elif contact_seen and not gesture_state_seen:
+        diagnosis = "TOUCH_CONTACT_WITHOUT_GESTURE"
+        next_action = "FT6336 contact reached firmware; inspect gesture lifecycle boundaries and release samples."
+    else:
+        diagnosis = "TOUCH_GESTURE_NOT_COMPLETED"
+        next_action = "Touch acquisition progressed; inspect the captured gesture states that prevented the second double tap."
+
+    return {
+        "diagnosis": diagnosis,
+        "sample_count": len(samples),
+        "first_tick_ms": ticks[0],
+        "last_tick_ms": ticks[-1],
+        "max_gap_ms": max_gap_ms,
+        "service_first": services[0],
+        "service_last": services[-1],
+        "service_progress": service_progress,
+        "ft_read_first": read_counts[0],
+        "ft_read_last": read_counts[-1],
+        "ft_read_delta_sum": sum(read_deltas),
+        "ft_read_progress": read_progress,
+        "ft_error_first": error_counts[0],
+        "ft_error_last": error_counts[-1],
+        "ft_error_delta": error_delta,
+        "irq_produced_first": irq_produced[0],
+        "irq_produced_last": irq_produced[-1],
+        "irq_produced_delta": irq_produced_delta,
+        "irq_consumed_first": irq_consumed[0],
+        "irq_consumed_last": irq_consumed[-1],
+        "irq_consumed_delta": irq_consumed_delta,
+        "pc6_levels": pc6_levels,
+        "contact_seen": contact_seen,
+        "post_start_contacts": post_start_contacts,
+        "gesture_state_seen": gesture_state_seen,
+        "post_start_gestures": post_start_gestures,
+        "max_buffered_samples": max(int(sample["buffered"]) for sample in samples),
+        "deferred_actions": sorted({str(sample["deferred"]) for sample in samples}),
+        "next_action": next_action,
+    }
 
 
 def microphone_blocks(log: str) -> list[dict[str, int | str]]:
@@ -117,6 +272,7 @@ def required_check_names(scope: str) -> tuple[str, ...]:
         return (
             "two_double_taps",
             "touch_record_started",
+            "recording_touch_health_observed",
             "microphone_clock_restored",
             "microphone_dma_started",
             "sustained_pcm_blocks",
@@ -146,6 +302,28 @@ def evaluate(log: str, log_path: str, scope: str = "full") -> dict[str, Any]:
     max_consumed = max((sample["irq_consumed"] for sample in irq_observations), default=0)
     all_health_ordered = all(sample["irq_consumed"] <= sample["irq"] for sample in irq_observations)
     double_taps = log.count("[touch-ui] daily_double_tap_recording")
+    recording_start_marker = "[record] touch_double_tap action=start"
+    recording_start_index = log.find(recording_start_marker)
+    recording_started = recording_start_index >= 0 and bool(
+        re.search(
+            r"\[record\]\s+touch_double_tap\s+action=start\b.*?\bstate=recording\b",
+            log[recording_start_index:],
+        )
+    )
+    recording_slice = log[recording_start_index:] if recording_start_index >= 0 else ""
+    record_touch_samples = recording_touch_samples(recording_slice)
+    post_start_contacts = recording_slice.count("[touch] contacts=1")
+    post_start_gestures = len(
+        re.findall(r"\[touch-ui\]\s+gesture=[a-z_]+\b", recording_slice)
+    )
+    recording_stopped = "[record] touch_double_tap action=stop" in recording_slice
+    record_touch_health = summarize_recording_touch_health(
+        record_touch_samples,
+        post_start_contacts,
+        post_start_gestures,
+        recording_started,
+        recording_stopped,
+    )
     low_power_sleep_pose = "[screen] low_power_idle pose=sleepy animation=stopped"
     low_power_timer_armed = "[power] low_power_idle_timer=armed delay_ms=15000"
     low_power_face_request = "[power] low_power_face request=sleepy trigger=idle_timer"
@@ -210,8 +388,8 @@ def evaluate(log: str, log_path: str, scope: str = "full") -> dict[str, Any]:
         (daily_reaction_index >= 0 and idle_request_after_contact > daily_reaction_index),
         "single_boot_after_capture_start": log.count("[power] policy_selftest=pass touch_irq_wake=ready lpm=enabled") == 1,
         "two_double_taps": double_taps >= 2,
-        "touch_record_started": "[record] touch_double_tap action=start" in log
-        and "state=recording" in log,
+        "touch_record_started": recording_started,
+        "recording_touch_health_observed": bool(record_touch_samples),
         "microphone_clock_restored": bool(
             re.search(
                 r"\[mic-clock\]\s+action=restore\b.*?\bstatus=ok\b.*?\bnow_ready=1\b.*?\bsai1_enabled=1\b",
@@ -229,7 +407,7 @@ def evaluate(log: str, log_path: str, scope: str = "full") -> dict[str, Any]:
         "no_microphone_timeout": not bool(
             re.search(r"\[mic-manual\].*?\bstatus=timeout\b", log)
         ),
-        "touch_record_stopped": "[record] touch_double_tap action=stop" in log,
+        "touch_record_stopped": recording_stopped,
         "microphone_dma_stopped": dma_stop_index > dma_start_index >= 0,
         "external_flash_store_finished": "[record] touch_double_tap action=user_store result=1" in log,
     }
@@ -261,6 +439,7 @@ def evaluate(log: str, log_path: str, scope: str = "full") -> dict[str, Any]:
             "max_irq": max_irq,
             "max_irq_consumed": max_consumed,
             "daily_double_tap_events": double_taps,
+            "recording_touch_health": record_touch_health,
             "valid_microphone_blocks": len(valid_mic_blocks),
             "distinct_pcm_crcs": len(pcm_crcs),
             "first_wake_gesture": first_wake_gesture,
@@ -268,9 +447,11 @@ def evaluate(log: str, log_path: str, scope: str = "full") -> dict[str, Any]:
             "low_power_touch_wake_requested": touch_wake_index >= 0,
         },
         "next_action": (
-            next_actions[scope]
-            if status != "PASS"
-            else "Use the next focused acceptance item; this serial log does not prove the final <= 1 mA product-board current target."
+            "Use the next focused acceptance item; this serial log does not prove the final <= 1 mA product-board current target."
+            if status == "PASS"
+            else record_touch_health["next_action"]
+            if scope in {"double-tap-recording", "full"} and recording_started
+            else next_actions[scope]
         ),
     }
 
@@ -300,8 +481,10 @@ def self_test(scope: str = "full") -> dict[str, Any]:
             "[mic-clock] action=restore was_ready=0 status=ok now_ready=1 sai1_enabled=1",
             "[record] touch_double_tap action=start source=4 result=0 state=recording",
             "[mic-dma] action=start status=ok sai_state=34 dma_state=2 cndtr=960 cr1=0x01FB20E1",
+            "[record-touch] t=20000 service=1 ft_read=20 delta=0 ft_error=0 irq_produced=3 irq_consumed=3 pc6=1 next_poll_ms=4 contact=0 gesture_active=0 consumed=0 tap_pending=0 buffered=0 deferred=none",
             "[mic-manual] block=0 status=ok quality=voice raw_min=0x10000000 raw_max=0xE0000000 raw_zero=0 raw_same=0 raw_crc=0x11111111 slot=0 slot0_mean=100 slot0_peak=900 slot1_mean=0 slot1_peak=0 gain=8x preclip=0 pcm_min=-1200 pcm_max=1800 pcm_mean=42 pcm_zero=0 pcm_clip=0 pcm_crc=0x12345678 feed=0",
             "[mic-manual] block=200 status=ok quality=voice raw_min=0x11000000 raw_max=0xE1000000 raw_zero=0 raw_same=0 raw_crc=0x22222222 slot=0 slot0_mean=120 slot0_peak=920 slot1_mean=0 slot1_peak=0 gain=8x preclip=0 pcm_min=-1400 pcm_max=2100 pcm_mean=38 pcm_zero=0 pcm_clip=0 pcm_crc=0x87654321 feed=0",
+            "[record-touch] t=20250 service=301 ft_read=70 delta=50 ft_error=0 irq_produced=3 irq_consumed=3 pc6=1 next_poll_ms=3 contact=0 gesture_active=0 consumed=0 tap_pending=0 buffered=0 deferred=none",
             "[touch-ui] daily_double_tap_recording x=100 y=100 state=recording",
             "[mic-dma] action=stop status=ok sai_state=1 dma_state=1 cr1=0x01F820E1",
             "[record] touch_double_tap action=stop source=4 stop_result=0 finish_result=0 state=transfer_ready",
@@ -311,6 +494,9 @@ def self_test(scope: str = "full") -> dict[str, Any]:
     report = evaluate(synthetic, "synthetic-self-test", scope)
     positive_passed = report["status"] == "PASS"
     missing_dma_stop_rejected = True
+    missing_health_rejected = True
+    no_touch_classified = True
+    i2c_failure_classified = True
     if scope in {"double-tap-recording", "full"}:
         missing_dma_stop = synthetic.replace(
             "[mic-dma] action=stop status=ok sai_state=1 dma_state=1 cr1=0x01F820E1\n",
@@ -320,13 +506,51 @@ def self_test(scope: str = "full") -> dict[str, Any]:
             evaluate(missing_dma_stop, "synthetic-missing-dma-stop", scope)["status"]
             != "PASS"
         )
+        missing_health = re.sub(r"^\[record-touch\].*?\n?", "", synthetic, flags=re.M)
+        missing_health_report = evaluate(
+            missing_health,
+            "synthetic-missing-recording-touch-health",
+            scope,
+        )
+        missing_health_rejected = (
+            missing_health_report["status"] != "PASS"
+            and missing_health_report["observed"]["recording_touch_health"]["diagnosis"]
+            == "NO_RECORDING_TOUCH_HEALTH"
+        )
+        second_double_tap = "[touch-ui] daily_double_tap_recording x=100 y=100 state=recording"
+        no_touch = synthetic.split(second_double_tap, 1)[0]
+        no_touch_report = evaluate(no_touch, "synthetic-no-second-touch", scope)
+        no_touch_classified = (
+            no_touch_report["observed"]["recording_touch_health"]["diagnosis"]
+            == "FT6336_NO_TOUCH_DETECTION"
+        )
+        i2c_failure = no_touch.replace(
+            "t=20250 service=301 ft_read=70 delta=50 ft_error=0",
+            "t=20250 service=301 ft_read=20 delta=0 ft_error=1",
+        )
+        i2c_failure_report = evaluate(
+            i2c_failure,
+            "synthetic-recording-touch-i2c-failure",
+            scope,
+        )
+        i2c_failure_classified = (
+            i2c_failure_report["observed"]["recording_touch_health"]["diagnosis"]
+            == "FT6336_I2C_READ_FAILURE"
+        )
     report["self_test_checks"] = {
         "positive_fixture_passed": positive_passed,
         "missing_dma_stop_rejected": missing_dma_stop_rejected,
+        "missing_recording_touch_health_rejected": missing_health_rejected,
+        "no_second_touch_classified": no_touch_classified,
+        "i2c_failure_classified": i2c_failure_classified,
     }
     report["status"] = (
         "PASS_STATIC_PARSER"
-        if positive_passed and missing_dma_stop_rejected
+        if positive_passed
+        and missing_dma_stop_rejected
+        and missing_health_rejected
+        and no_touch_classified
+        and i2c_failure_classified
         else "FAIL_STATIC_PARSER"
     )
     report["claim_scope"] = "synthetic parser self-test; no hardware claim"
