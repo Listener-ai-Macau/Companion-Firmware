@@ -302,12 +302,14 @@ python .\tools\verify_expression_panel_hardware_session.py
 python .\tools\verify_expression_panel_hardware_acceptance_plan.py
 ```
 
-The historical plan fixture is
-`docs/validation/companion-screen-panel-hardware-acceptance-plan.json`. The
-current `wb55_real_panel_refresh` gate is PASS from real SSD1681 logs and explicit
-operator observations; `wb55_touch_visual_acceptance` remains `PENDING_HUMAN`.
-Future target sessions can still use `--expect-real-panel` and the generic filled
-evidence-record validator.
+The hardware handoff fixture is
+`docs/validation/companion-screen-panel-hardware-acceptance-plan.json`.
+Historical SSD1681 logs and operator observations remain retained, but the
+current `wb55_real_panel_refresh` gate is `DEFERRED_HARDWARE` by
+`docs/validation/companion-screen-wb55-hardware-recovery-gate.json`: replace or
+cross-swap FTS02, prove solid white/black plus valid PREVGH/PREVGL rails, then
+resume `wb55_touch_visual_acceptance`. Future target sessions can still use
+`--expect-real-panel` and the generic filled evidence-record validator.
 The session scaffold fixture,
 `docs/validation/companion-screen-panel-hardware-session.json`, is verified by
 `tools/verify_expression_panel_hardware_session.py` and keeps

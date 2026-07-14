@@ -20,6 +20,9 @@ SCHEMA_ID = "companion.pendant.screen_acceptance_index.v1"
 WB55_MENU = REPO_ROOT / "docs/validation/companion-screen-bilingual-menu-wb55.json"
 WB55_RUNTIME_LOGS = REPO_ROOT / "docs/validation/companion-screen-wb55-runtime-recheck-logs.json"
 WB55_RUNTIME_PROMOTION = REPO_ROOT / "docs/validation/companion-screen-wb55-runtime-promotion.json"
+WB55_HARDWARE_RECOVERY_GATE = (
+    REPO_ROOT / "docs/validation/companion-screen-wb55-hardware-recovery-gate.json"
+)
 CANDIDATE = current_candidate()
 RUNTIME_GATE_ID = f"wb55_rev{CANDIDATE.revision}_runtime_recheck"
 WB55_RUNTIME_PASS_STATUS = CANDIDATE.pass_status
@@ -2061,28 +2064,42 @@ def build_index() -> dict[str, Any]:
         item(
             "wb55_real_panel_refresh",
             "WB55 real e-paper panel refresh",
-            "PASS",
-            "The physical GDEY0154D67-T03 completed SSD1681 full, partial, and fast refreshes on WB55; operator observations confirm a visible black update and upright non-mirrored orientation.",
+            "DEFERRED_HARDWARE",
+            "Historical GDEY0154D67-T03 refresh observations are retained as context, but the current panel is not accepted: official one-plane white and black transfers now complete with BUSY while both physical frames fail, PREVGH1 remains near 3.3 V, PREVGL1 remains near 4.2 mV, and the panel stays black-white grain. Replace or cross-swap FTS02, re-prove both refresh rails and deterministic solid frames, then reaccept the normal expression, partial transition, touch response, and maintenance boundary.",
             [
+                "tools/verify_wb55_screen_hardware_recovery_gate.py",
                 "app/companion_pendant/epaper/panel_adapter.h",
                 "app/companion_pendant/epaper/panel_adapter.c",
                 "app/companion_pendant/epaper/panel_target_stm32wb.h",
                 "app/companion_pendant/epaper/panel_target_stm32wb.c",
                 "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
                 "docs/companion_screen_expression_system.md",
+                "docs/companion_product_requirements.md",
                 "docs/validation/companion-screen-panel-hardware-gate.json",
                 "docs/validation/companion-screen-wb55-ssd1681-bringup.json",
                 "docs/validation/companion-screen-ssd1681-partial-refresh-wb55.json",
                 "docs/validation/companion-screen-touch-ft6336-wb55.json",
+                "docs/validation/companion-screen-ssd1681-official-full-recovery-20260714.json",
+                "docs/validation/companion-screen-ssd1681-voltage-probe-image-20260714.json",
+                "docs/validation/companion-screen-ssd1681-voltage-rails-operator-20260714.json",
+                "docs/validation/companion-screen-normal-restore-after-black-20260714.json",
+                "docs/validation/companion-screen-wb55-hardware-recovery-gate.json",
             ],
             [
+                "python .\\tools\\verify_wb55_screen_hardware_recovery_gate.py",
                 "python .\\tools\\verify_expression_panel_gate.py",
                 "python .\\tools\\verify_expression_panel_target_stm32wb.py",
                 "python .\\tools\\verify_epaper_refresh_policy.py",
                 "python .\\tools\\verify_epaper_fast_maintenance_runtime.py",
                 "python .\\tools\\verify_touch_ft6336.py",
             ],
-            "WBA panel work must preserve the proven portable queue, policy, presentation, and asset contracts while replacing only target backends.",
+            "WBA panel work must preserve the portable queue, policy, presentation, and asset contracts while implementing target-local panel power/rail and transport backends; neither historical WB55 refresh nor the current FTS02 fault is WBA hardware evidence.",
+            [
+                "Replacement or cross-swapped FTS02 board identity and wiring check.",
+                "Deterministic solid-white and solid-black official one-plane frames with BUSY evidence after replacement.",
+                "Established positive PREVGH1 and negative PREVGL1 refresh rails, or equivalent vendor-specified rail evidence.",
+                "Visible current normal expression, partial expression transition, touch response, and maintenance boundary on the recovered panel.",
+            ],
         ),
         item(
             "wb55_runtime_serial_capture_preflight",
@@ -2260,7 +2277,7 @@ def build_index() -> dict[str, Any]:
             "deferred_count": deferred_count,
             "pending_human_count": pending_human_count,
             "total_count": len(items),
-            "next_hardware_gate": "wba_real_panel_parity" if wb55_runtime_proven else RUNTIME_GATE_ID,
+            "next_hardware_gate": "wb55_real_panel_refresh",
             "next_human_gate": "wb55_touch_visual_acceptance",
         },
         "items": items,
@@ -2431,6 +2448,53 @@ def check_index(data: dict[str, Any], errors: list[str]) -> None:
     )
 
     by_id = {str(entry.get("id")): entry for entry in items if isinstance(entry, dict)}
+    real_panel = by_id.get("wb55_real_panel_refresh", {})
+    recovery_gate = json.loads(WB55_HARDWARE_RECOVERY_GATE.read_text(encoding="utf-8"))
+    require(
+        recovery_gate.get("status") == "DEFERRED_HARDWARE_FTS02_BOOST",
+        "WB55 hardware recovery source must remain FTS02-deferred",
+        errors,
+    )
+    require(
+        real_panel.get("status") == "DEFERRED_HARDWARE",
+        "wb55_real_panel_refresh must reflect the current FTS02 hardware fault",
+        errors,
+    )
+    real_panel_text = " ".join(
+        [
+            str(real_panel.get("summary", "")),
+            " ".join(str(path) for path in real_panel.get("evidence_paths", [])),
+            " ".join(str(value) for value in real_panel.get("missing_hardware_facts", [])),
+        ]
+    )
+    for token in [
+        "official one-plane white and black",
+        "PREVGH1 remains near 3.3 V",
+        "PREVGL1 remains near 4.2 mV",
+        "Replace or cross-swap FTS02",
+        "companion-screen-wb55-hardware-recovery-gate.json",
+        "Deterministic solid-white and solid-black",
+        "normal expression",
+        "maintenance boundary",
+    ]:
+        require(token in real_panel_text, f"wb55_real_panel_refresh missing recovery token: {token}", errors)
+    require(
+        "python .\\tools\\verify_wb55_screen_hardware_recovery_gate.py"
+        in real_panel.get("validation_commands", []),
+        "wb55_real_panel_refresh must run the current hardware recovery gate",
+        errors,
+    )
+    require(
+        len(real_panel.get("missing_hardware_facts", [])) == 4,
+        "wb55_real_panel_refresh must list four current hardware facts",
+        errors,
+    )
+    require(
+        real_panel.get("missing_hardware_facts")
+        == recovery_gate.get("missing_hardware_facts"),
+        "wb55_real_panel_refresh hardware facts drifted from the recovery gate",
+        errors,
+    )
     build_matrix = by_id.get("wb55_screen_build_matrix", {})
     build_summary = str(build_matrix.get("summary", ""))
     for token in [
@@ -2940,7 +3004,7 @@ def check_index(data: dict[str, Any], errors: list[str]) -> None:
         "pending_human_count mismatch",
         errors,
     )
-    expected_next_hardware_gate = "wba_real_panel_parity" if is_wb55_runtime_recheck_proven() else RUNTIME_GATE_ID
+    expected_next_hardware_gate = "wb55_real_panel_refresh"
     require(
         summary.get("next_hardware_gate") == expected_next_hardware_gate,
         f"next_hardware_gate must point at {expected_next_hardware_gate}",

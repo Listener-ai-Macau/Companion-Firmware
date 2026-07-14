@@ -1,7 +1,7 @@
 # Companion Screen Expression Demo Panel Handoff
 
 Status: PASS
-Gate snapshot: `wb55_real_panel_refresh` is `PASS`
+Gate snapshot: `wb55_real_panel_refresh` is `DEFERRED_HARDWARE_FTS02_BOOST`
 Demo source: `docs/validation/companion-screen-expression-demo-sequence.json`
 Real BLE bench source: `docs/validation/companion-screen-real-ble-bench.json`
 

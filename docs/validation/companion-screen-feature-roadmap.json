@@ -159,7 +159,7 @@
     {
       "acceptance_item_ids": [
         "wb55_runtime_serial_capture_preflight",
-        "wb55_rev52_runtime_recheck",
+        "wb55_rev53_runtime_recheck",
         "screen_runtime_snapshot",
         "screen_runtime_diagnostics",
         "screen_runtime_diagnostic_decode",
@@ -182,12 +182,12 @@
         "screen_runtime_diagnostics": "PASS",
         "screen_runtime_diagnostics_bundle": "PASS",
         "screen_runtime_snapshot": "PASS",
-        "wb55_rev52_runtime_recheck": "DEFERRED_HARDWARE",
+        "wb55_rev53_runtime_recheck": "PASS",
         "wb55_runtime_serial_capture_preflight": "PASS"
       },
       "id": "runtime_diagnostics_and_evidence",
       "next_acceptance": "Attach runtime snapshot and diagnostics bundle evidence to the first real-panel session.",
-      "status": "DEFERRED_HARDWARE",
+      "status": "PASS",
       "title": "Runtime diagnostics and evidence",
       "user_value": "Screen runtime health can be decoded from diagnostics, BLE artifacts, and evidence records."
     },
@@ -236,13 +236,13 @@
         "panel_wiring_preflight": "PASS",
         "screen_refresh_feel_contract": "PASS",
         "wb55_panel_target_adapter_scaffold": "PASS",
-        "wb55_real_panel_refresh": "PASS",
+        "wb55_real_panel_refresh": "DEFERRED_HARDWARE",
         "wb55_screen_build_matrix": "PASS",
         "wb55_touch_visual_acceptance": "PENDING_HUMAN"
       },
       "id": "panel_driver_readiness",
-      "next_acceptance": "Operator confirms daily pet gestures, anywhere 3 s menu entry, press-cue/arrival partial refreshes, language switching, and that 0xCF maintenance is perceived as a single quiet flash.",
-      "status": "PENDING_HUMAN",
+      "next_acceptance": "Replace or cross-swap FTS02, prove solid white/black and valid PREVGH/PREVGL rails, then resume touch, gesture, language, and maintenance visual review.",
+      "status": "DEFERRED_HARDWARE",
       "title": "Panel driver readiness",
       "user_value": "The panel driver boundary, evidence templates, and WB55 hardware gate are explicit."
     },
@@ -286,18 +286,18 @@
     "roadmap_item_excluded_from_coverage": "screen_feature_roadmap",
     "ungrouped_acceptance_item_ids": []
   },
-  "current_next_gate": "wb55_rev52_runtime_recheck",
+  "current_next_gate": "wb55_real_panel_refresh",
   "purpose": "Product-facing roadmap that groups the detailed screen acceptance items into small Companion screen capabilities.",
   "schema_id": "companion.pendant.screen_feature_roadmap.v1",
   "source_acceptance_index": "docs/validation/companion-screen-acceptance-index.json",
-  "status": "PENDING_HUMAN",
+  "status": "DEFERRED_HARDWARE",
   "summary": {
     "capability_count": 9,
     "deferred_hardware_capability_count": 1,
     "needs_attention_capability_count": 0,
-    "next_acceptance": "Complete the WB55 rev52 runtime recheck logs before focused touch/menu/language and 0xCF single-flash visual review.",
-    "pass_capability_count": 7,
-    "pending_human_capability_count": 1
+    "next_acceptance": "Replace or cross-swap FTS02, prove deterministic solid white/black frames and valid positive/negative refresh rails, then resume focused visual review.",
+    "pass_capability_count": 8,
+    "pending_human_capability_count": 0
   },
   "validation_commands": [
     "python .\\tools\\verify_expression_feature_roadmap.py",

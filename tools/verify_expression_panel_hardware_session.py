@@ -23,6 +23,7 @@ README = REPO_ROOT / "app" / "companion_pendant" / "epaper" / "README.md"
 ACCEPTANCE_INDEX = REPO_ROOT / "docs" / "validation" / "companion-screen-acceptance-index.json"
 HARDWARE_PLAN = REPO_ROOT / "docs" / "validation" / "companion-screen-panel-hardware-acceptance-plan.json"
 PANEL_GATE = REPO_ROOT / "docs" / "validation" / "companion-screen-panel-hardware-gate.json"
+PANEL_RECOVERY_GATE = REPO_ROOT / "docs" / "validation" / "companion-screen-wb55-hardware-recovery-gate.json"
 PANEL_EVIDENCE_SCAFFOLD = REPO_ROOT / "docs" / "validation" / "companion-screen-panel-evidence-record-scaffold.json"
 PANEL_EVIDENCE_VALIDATOR = REPO_ROOT / "docs" / "validation" / "companion-screen-panel-evidence-record-validator.json"
 PANEL_WIRING_PREFLIGHT = REPO_ROOT / "docs" / "validation" / "companion-screen-panel-wiring-preflight.json"
@@ -231,6 +232,7 @@ def build_fixture() -> dict[str, Any]:
         "sources": {
             "hardware_acceptance_plan": rel(HARDWARE_PLAN),
             "panel_hardware_gate": rel(PANEL_GATE),
+            "panel_hardware_recovery_gate": rel(PANEL_RECOVERY_GATE),
             "panel_evidence_record_scaffold": rel(PANEL_EVIDENCE_SCAFFOLD),
             "panel_evidence_record_validator": rel(PANEL_EVIDENCE_VALIDATOR),
             "panel_wiring_preflight": rel(PANEL_WIRING_PREFLIGHT),
@@ -363,12 +365,18 @@ def check_project_links(errors: list[str], allow_stale_index: bool = False) -> N
     readme = read_text(README, errors)
     plan = read_json(HARDWARE_PLAN, errors)
     gate = read_json(PANEL_GATE, errors)
-    gate_is_deferred = gate.get("status") == "DEFERRED_HARDWARE"
-    gate_is_verified = (gate.get("status") == "PASS" and
-                        gate.get("real_refresh_claimed") is True)
+    recovery = read_json(PANEL_RECOVERY_GATE, errors)
     require(
-        gate_is_deferred or gate_is_verified,
-        "WB55 panel gate must be deferred or carry verified real-refresh evidence",
+        gate.get("status") == "PASS"
+        and gate.get("evidence_scope") == "historical_refresh_evidence_integrity"
+        and gate.get("current_real_refresh_claimed") is False,
+        "WB55 historical panel gate must not claim current acceptance",
+        errors,
+    )
+    require(
+        recovery.get("status") == "DEFERRED_HARDWARE_FTS02_BOOST"
+        and recovery.get("claim_scope") == "current_hardware_recovery_gate_no_panel_acceptance",
+        "WB55 current panel recovery gate must remain hardware-deferred",
         errors,
     )
 

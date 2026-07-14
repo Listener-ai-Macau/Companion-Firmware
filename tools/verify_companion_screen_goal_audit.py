@@ -28,6 +28,7 @@ RUNTIME_RECHECK_RUNNER = ROOT / "docs/validation/companion-screen-wb55-runtime-r
 RUNTIME_RECHECK_LOGS = ROOT / "docs/validation/companion-screen-wb55-runtime-recheck-logs.json"
 RUNTIME_PROMOTION = ROOT / "docs/validation/companion-screen-wb55-runtime-promotion.json"
 PANEL_GATE = ROOT / "docs/validation/companion-screen-panel-hardware-gate.json"
+WB55_HARDWARE_RECOVERY_GATE = ROOT / "docs/validation/companion-screen-wb55-hardware-recovery-gate.json"
 WB55_BUILD_MATRIX = ROOT / "docs/validation/companion-screen-wb55-build-matrix.json"
 WBA_PORT = ROOT / "docs/validation/companion-screen-wba-port-contract.json"
 WBA_CUBE_DEPENDENCY = ROOT / "docs/validation/companion-screen-wba-cube-dependency-preflight.json"
@@ -79,6 +80,7 @@ def build_audit() -> dict[str, Any]:
     runtime_recheck_logs = load_json(RUNTIME_RECHECK_LOGS)
     runtime_promotion = load_json(RUNTIME_PROMOTION)
     panel_gate = load_json(PANEL_GATE)
+    hardware_recovery = load_json(WB55_HARDWARE_RECOVERY_GATE)
     wb55_build_matrix = load_json(WB55_BUILD_MATRIX)
     wba_port = load_json(WBA_PORT)
     wba_cube_dependency = load_json(WBA_CUBE_DEPENDENCY)
@@ -109,10 +111,11 @@ def build_audit() -> dict[str, Any]:
     requirements = [
         {
             "id": "wb55_physical_wiring_and_panel_identity",
-            "status": "proved",
-            "requirement": "NUCLEO-WB55RG drives the physical GDEY0154D67-T03 panel with verified SSD1681 wiring.",
+            "status": "blocked_hardware_recovery",
+            "requirement": "NUCLEO-WB55RG reaches the GDEY0154D67-T03 SSD1681 digital command path, but the current FTS02 must establish positive/negative refresh rails and deterministic visible frames before physical panel health is proved.",
             "evidence": [
-                evidence(PANEL_GATE, str(panel_gate.get("status")), "controller, panel, voltage, DC/RST/BUSY, full/partial/maintenance refresh, orientation, and contact evidence are recorded"),
+                evidence(PANEL_GATE, "HISTORICAL_PASS_NOT_CURRENT_ACCEPTANCE", "older controller, wiring, refresh, orientation, and contact evidence is retained as history but is superseded for current panel health by the later grain/rail failure"),
+                evidence(WB55_HARDWARE_RECOVERY_GATE, str(hardware_recovery.get("status")), "official one-plane white/black transfers assert BUSY, but PREVGH/PREVGL and visible output keep the current FTS02/panel gate hardware-deferred"),
             ],
         },
         {
@@ -178,8 +181,8 @@ def build_audit() -> dict[str, Any]:
         },
         {
             "id": "screen_refresh_touch_machine_health",
-            "status": "proved" if not runtime_pending and interaction_profile_status == "PASS" else "pending_hardware_recheck",
-            "requirement": "WB55 machine logs prove refresh path, FT6336 identity/health, and the quiet interaction profile before human visual acceptance.",
+            "status": "blocked_hardware_recovery",
+            "requirement": "WB55 logs retain FT6336 identity, CEMP, BUSY, and quiet-profile facts, but visible refresh health requires FTS02 recovery before human visual acceptance.",
             "evidence": [
                 evidence(
                     ROOT / str(runtime.get("normal_raw_log")),
@@ -198,6 +201,7 @@ def build_audit() -> dict[str, Any]:
                 ),
                 evidence(TOUCH_PACKET, str(touch_packet.get("status")), "operator packet links the current resource state; it does not claim human visual acceptance"),
                 evidence(REFRESH_FEEL, str(refresh_feel.get("status")), f"static refresh-feel contract is PASS; real rev{CANDIDATE.revision} touch/flicker/ghosting feel remains a pending hardware recheck"),
+                evidence(WB55_HARDWARE_RECOVERY_GATE, str(hardware_recovery.get("status")), "current visible refresh is blocked by absent FTS02 positive/negative rails despite a responding SSD1681 command/BUSY path"),
             ],
         },
         {
@@ -288,6 +292,7 @@ def build_audit() -> dict[str, Any]:
                     if promotion_status == "APPLIED" else
                     f"promotion gate refuses to update runtime evidence until both rev{CANDIDATE.revision} provision and normal serial logs verify PASS",
                 ),
+                evidence(WB55_HARDWARE_RECOVERY_GATE, str(hardware_recovery.get("status")), "do not open the focused touch/visual review until FTS02 replacement or cross-swap passes solid white, solid black, and normal-expression recovery"),
             ],
             "pending_steps": [item.get("id") for item in touch_packet.get("operator_steps", [])],
         },
@@ -326,7 +331,10 @@ def build_audit() -> dict[str, Any]:
                     "WBA55/WBA65 comp_pet_behavior_memory_t stays outside ui_assets/CEMP, OTA staging, recording cache, and MCU Flash constants through callback-only logical slots, CRC records, low-frequency commits, explicit privacy erase, and Cortex-M33 ARM GCC object compilation; real WBA storage evidence remains pending",
                 ),
             ],
-            "blocked_until_hardware": wba_port.get("blocked_until_hardware", {}),
+            "blocked_until_hardware": {
+                "gate": "wba_real_panel_refresh",
+                "reason": "WBA real refresh still requires CubeWBA target projects and hardware evidence; the WB55 portable baseline remains useful, but current WB55 visible panel health must also be re-proved after FTS02 recovery.",
+            },
         },
     ]
 
@@ -353,6 +361,7 @@ def build_audit() -> dict[str, Any]:
             "runtime_recheck_logs": rel(RUNTIME_RECHECK_LOGS),
             "runtime_promotion_gate": rel(RUNTIME_PROMOTION),
             "panel_gate": rel(PANEL_GATE),
+            "wb55_hardware_recovery_gate": rel(WB55_HARDWARE_RECOVERY_GATE),
             "wb55_build_matrix": rel(WB55_BUILD_MATRIX),
             "wba_port_contract": rel(WBA_PORT),
             "wba_cube_dependency_preflight": rel(WBA_CUBE_DEPENDENCY),
@@ -400,6 +409,7 @@ def build_audit() -> dict[str, Any]:
             "next_human_gate": acceptance_index.get("summary", {}).get("next_human_gate"),
             "summary": acceptance_index.get("summary", {}),
             "pre_acceptance_status": pre_acceptance.get("status"),
+            "panel_recovery_status": hardware_recovery.get("status"),
             "runtime_logs_status": runtime_recheck_logs.get("status"),
             "runtime_promotion_status": runtime_promotion.get("status"),
             "interaction_profile_status": interaction_profile_status,
@@ -409,11 +419,13 @@ def build_audit() -> dict[str, Any]:
         "open_requirements": open_requirements,
         "completion_rule": (
             "Do not mark the active goal complete until every requirement is proved; "
+            "blocked_hardware_recovery requires FTS02 replacement/cross-swap evidence, "
             "pending_human requires operator acceptance evidence, and WBA real parity "
             "requires a later WBA hardware/project gate."
         ),
         "validation_commands": [
             "python .\\tools\\verify_companion_screen_goal_audit.py",
+            "python .\\tools\\verify_wb55_screen_hardware_recovery_gate.py",
             "python .\\tools\\render_wb55_touch_visual_acceptance_packet.py",
             "python .\\tools\\render_wb55_runtime_hardware_action_card.py",
             "python .\\tools\\verify_wb55_runtime_flash_preflight.py",
@@ -545,6 +557,7 @@ def check_audit(audit: dict[str, Any], errors: list[str]) -> None:
     runtime_flash_preflight = load_json(RUNTIME_FLASH_PREFLIGHT)
     runtime_serial_capture_preflight = load_json(RUNTIME_SERIAL_CAPTURE_PREFLIGHT)
     acceptance_index = load_json(ACCEPTANCE_INDEX)
+    hardware_recovery = load_json(WB55_HARDWARE_RECOVERY_GATE)
     wb55_build_matrix = load_json(WB55_BUILD_MATRIX)
     wba_cube_dependency = load_json(WBA_CUBE_DEPENDENCY)
     wba_real_parity = load_json(WBA_REAL_PARITY)
@@ -566,11 +579,9 @@ def check_audit(audit: dict[str, Any], errors: list[str]) -> None:
         errors.append(f"missing requirements: {sorted(missing)}")
     if requirements.get("daily_pet_and_menu_human_feel", {}).get("status") != "pending_human":
         errors.append("human touch/visual gate must remain pending_human")
-    expected_machine_health_status = (
-        "proved"
-        if not runtime_status.endswith("_RUNTIME_RECHECK_PENDING") and interaction_profile_status == "PASS"
-        else "pending_hardware_recheck"
-    )
+    if requirements.get("wb55_physical_wiring_and_panel_identity", {}).get("status") != "blocked_hardware_recovery":
+        errors.append("WB55 physical panel health must remain blocked on FTS02 recovery")
+    expected_machine_health_status = "blocked_hardware_recovery"
     if requirements.get("screen_refresh_touch_machine_health", {}).get("status") != expected_machine_health_status:
         errors.append(f"screen refresh/touch machine health must be {expected_machine_health_status}")
     if interaction_profile.get("required_marker") != "[build] interaction_profile=quiet epaper_trace=0 touch_trace=0 ft6336_threshold=0x70 touch_poll_active_ms=5 touch_poll_refresh_ms=5 refresh_policy=partial_x5_then_fast_cleanup":
@@ -612,6 +623,8 @@ def check_audit(audit: dict[str, Any], errors: list[str]) -> None:
         errors.append("generated_from must include runtime_serial_capture_preflight")
     if generated_from.get("acceptance_index") != rel(ACCEPTANCE_INDEX):
         errors.append("generated_from must include acceptance_index")
+    if generated_from.get("wb55_hardware_recovery_gate") != rel(WB55_HARDWARE_RECOVERY_GATE):
+        errors.append("generated_from must include the WB55 hardware recovery gate")
     if generated_from.get("wb55_build_matrix") != rel(WB55_BUILD_MATRIX):
         errors.append("generated_from must include wb55_build_matrix")
     if generated_from.get("wba_real_parity_gate") != rel(WBA_REAL_PARITY):
@@ -668,6 +681,10 @@ def check_audit(audit: dict[str, Any], errors: list[str]) -> None:
         errors.append("WBA LSE clock contract must not claim hardware completion")
     if wba_lse_clock.get("current_state", {}).get("hardware_claimed") is not False:
         errors.append("WBA LSE clock contract must keep hardware_claimed false")
+    if hardware_recovery.get("status") != "DEFERRED_HARDWARE_FTS02_BOOST":
+        errors.append("WB55 hardware recovery gate must remain FTS02-deferred")
+    if hardware_recovery.get("claim_scope") != "current_hardware_recovery_gate_no_panel_acceptance":
+        errors.append("WB55 hardware recovery gate must not claim panel acceptance")
     expected_action_card_status = (
         "PASS_MACHINE_RUNTIME_RECHECK_COMPLETE"
         if runtime_logs_pass else "NO_GO_WAITING_FOR_REAL_HARDWARE_RUN"
@@ -687,7 +704,7 @@ def check_audit(audit: dict[str, Any], errors: list[str]) -> None:
         errors.append("acceptance sequence schema drifted")
     if acceptance_sequence.get("acceptance_index") != rel(ACCEPTANCE_INDEX):
         errors.append("acceptance sequence must point at companion-screen-acceptance-index.json")
-    expected_next_hardware_gate = "wba_real_panel_parity" if runtime_status == CANDIDATE.pass_status else RUNTIME_GATE_ID
+    expected_next_hardware_gate = "wb55_real_panel_refresh"
     if acceptance_sequence.get("next_hardware_gate") != expected_next_hardware_gate:
         errors.append(f"acceptance sequence next_hardware_gate must be {expected_next_hardware_gate}")
     if acceptance_sequence.get("next_human_gate") != "wb55_touch_visual_acceptance":
@@ -711,11 +728,13 @@ def check_audit(audit: dict[str, Any], errors: list[str]) -> None:
         errors.append("acceptance sequence interaction profile status drifted from touch packet")
     if acceptance_sequence.get("interaction_profile_marker_present") != interaction_profile.get("marker_present"):
         errors.append("acceptance sequence interaction profile marker drifted from touch packet")
+    if acceptance_sequence.get("panel_recovery_status") != hardware_recovery.get("status"):
+        errors.append("acceptance sequence panel recovery status drifted from recovery gate")
     if acceptance_index.get("summary", {}).get("next_hardware_gate") != acceptance_sequence.get("next_hardware_gate"):
         errors.append("acceptance sequence next hardware gate drifted from acceptance index")
     if acceptance_index.get("summary", {}).get("next_human_gate") != acceptance_sequence.get("next_human_gate"):
         errors.append("acceptance sequence next human gate drifted from acceptance index")
-    expected_deferred_count = 0 if runtime_status == CANDIDATE.pass_status else 1
+    expected_deferred_count = 1
     if acceptance_sequence.get("summary", {}).get("deferred_count") != expected_deferred_count:
         errors.append(f"acceptance sequence deferred_count must be {expected_deferred_count}")
     wba_evidence_paths = {
@@ -857,6 +876,10 @@ def check_audit(audit: dict[str, Any], errors: list[str]) -> None:
         ev.get("path")
         for ev in requirements.get("screen_refresh_touch_machine_health", {}).get("evidence", [])
     }
+    physical_panel_evidence_paths = {
+        ev.get("path")
+        for ev in requirements.get("wb55_physical_wiring_and_panel_identity", {}).get("evidence", [])
+    }
     if rel(RUNTIME_RECHECK_LOGS) not in daily_evidence_paths:
         errors.append("daily human gate evidence must include runtime recheck logs")
     if rel(RUNTIME_ACTION_CARD) not in daily_evidence_paths:
@@ -875,6 +898,14 @@ def check_audit(audit: dict[str, Any], errors: list[str]) -> None:
         errors.append("daily human gate evidence must include interaction-profile runtime gate")
     if rel(INTERACTION_PROFILE_RUNTIME_GATE) not in machine_health_evidence_paths:
         errors.append("screen refresh/touch machine health evidence must include interaction-profile runtime gate")
+    if rel(WB55_HARDWARE_RECOVERY_GATE) not in daily_evidence_paths:
+        errors.append("daily human gate evidence must include the WB55 hardware recovery gate")
+    if rel(WB55_HARDWARE_RECOVERY_GATE) not in machine_health_evidence_paths:
+        errors.append("screen refresh/touch machine health evidence must include the WB55 hardware recovery gate")
+    if rel(WB55_HARDWARE_RECOVERY_GATE) not in physical_panel_evidence_paths:
+        errors.append("physical panel requirement must include the current WB55 hardware recovery gate")
+    if rel(PANEL_GATE) not in physical_panel_evidence_paths:
+        errors.append("physical panel requirement must retain the historical panel gate")
     validation_commands = set(audit.get("validation_commands", []))
     if "python .\\tools\\verify_wb55_screen_runtime_recheck_logs.py" not in validation_commands:
         errors.append("validation_commands must include runtime recheck logs verifier")
@@ -904,7 +935,14 @@ def check_audit(audit: dict[str, Any], errors: list[str]) -> None:
         errors.append("validation_commands must include WBA pet behavior user-data verifier")
     if "python .\\tools\\verify_wb55_screen_build_matrix.py" not in validation_commands:
         errors.append("validation_commands must include WB55 screen build matrix verifier")
-    for required_open in ("daily_pet_and_menu_human_feel", "wba55_wba65_portability_boundary"):
+    if "python .\\tools\\verify_wb55_screen_hardware_recovery_gate.py" not in validation_commands:
+        errors.append("validation_commands must include WB55 hardware recovery verifier")
+    for required_open in (
+        "wb55_physical_wiring_and_panel_identity",
+        "screen_refresh_touch_machine_health",
+        "daily_pet_and_menu_human_feel",
+        "wba55_wba65_portability_boundary",
+    ):
         if required_open not in open_requirements:
             errors.append(f"open_requirements missing {required_open}")
     if runtime_status.endswith("_RUNTIME_RECHECK_PENDING") or interaction_profile_status != "PASS":
@@ -948,6 +986,12 @@ def check_audit(audit: dict[str, Any], errors: list[str]) -> None:
         "verify_expression_wba_cube_dependency_preflight.py",
         "verify_wb55_screen_build_matrix.py",
         "companion-screen-wb55-build-matrix.json",
+        "companion-screen-wb55-hardware-recovery-gate.json",
+        "DEFERRED_HARDWARE_FTS02_BOOST",
+        "blocked_hardware_recovery",
+        "PREVGH/PREVGL",
+        "FTS02 replacement/cross-swap",
+        "verify_wb55_screen_hardware_recovery_gate.py",
         "default dry-run",
         "real-panel build",
         "resource-generation queue diagnostics",

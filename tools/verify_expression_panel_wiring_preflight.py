@@ -17,6 +17,7 @@ SCHEMA_ID = "companion.pendant.screen_panel_wiring_preflight.v1"
 DEVBOARD_IOC = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG" / "Companion_Nucleo_WB55RG.ioc"
 DEVBOARD_IOC_IMPORT = REPO_ROOT / "docs" / "validation" / "companion-devboard-ioc-import.json"
 PANEL_GATE = REPO_ROOT / "docs" / "validation" / "companion-screen-panel-hardware-gate.json"
+PANEL_RECOVERY_GATE = REPO_ROOT / "docs" / "validation" / "companion-screen-wb55-hardware-recovery-gate.json"
 PANEL_ACCEPTANCE_PLAN = REPO_ROOT / "docs" / "validation" / "companion-screen-panel-hardware-acceptance-plan.json"
 BRINGUP_README = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "README.md"
 SCREEN_DOC = REPO_ROOT / "docs" / "companion_screen_expression_system.md"
@@ -95,11 +96,12 @@ def build_fixture() -> dict[str, Any]:
     return {
         "schema_id": SCHEMA_ID,
         "status": "PASS",
-        "purpose": "WB55 panel wiring preflight that records the imported SPI2 transport pins and verifies the real-panel gate now owns controller/DC/RST/BUSY facts.",
+        "purpose": "WB55 panel wiring preflight that records imported SPI2 transport pins, historical control facts, and the current FTS02 recovery blocker.",
         "sources": {
             "devboard_ioc": rel(DEVBOARD_IOC),
             "devboard_ioc_import": rel(DEVBOARD_IOC_IMPORT),
             "panel_hardware_gate": rel(PANEL_GATE),
+            "panel_hardware_recovery_gate": rel(PANEL_RECOVERY_GATE),
             "panel_hardware_acceptance_plan": rel(PANEL_ACCEPTANCE_PLAN),
             "bringup_readme": rel(BRINGUP_README),
             "screen_acceptance": rel(SCREEN_DOC),
@@ -133,7 +135,7 @@ def build_fixture() -> dict[str, Any]:
             "direction": values.get("SPI2.Direction"),
             "baudrate": values.get("SPI2.CalculateBaudRate"),
         },
-        "verified_real_panel_facts": [
+        "historical_verified_panel_facts": [
             "e-paper controller model",
             "DC pin",
             "RST pin",
@@ -145,8 +147,10 @@ def build_fixture() -> dict[str, Any]:
         ],
         "hardware_gate": {
             "gate_id": "wb55_real_panel_refresh",
-            "status": "PASS",
-            "real_refresh_claimed": True,
+            "current_status": "DEFERRED_HARDWARE_FTS02_BOOST",
+            "current_real_refresh_claimed": False,
+            "historical_evidence_status": "PASS",
+            "historical_real_refresh_claimed": True,
             "control_facts_expected_verified": sorted(VERIFIED_GATE_FACTS),
         },
         "wba_impact": "WBA55/WBA65 must create their own CubeWBA IOC/project and *_stm32wba.* panel adapter; WB55 SPI2 pins are devboard facts, not portable screen constants.",
@@ -154,7 +158,8 @@ def build_fixture() -> dict[str, Any]:
             "spi2_transport_pins_preserved_from_ioc": True,
             "chip_select_candidate_named_in_ioc": True,
             "controller_and_control_pins_are_owned_by_hardware_gate": True,
-            "real_refresh_claim_is_owned_by_panel_gate": True,
+            "current_real_refresh_deferred_to_recovery_gate": True,
+            "historical_refresh_evidence_remains_traceable": True,
             "wba_must_not_copy_wb55_pin_facts_into_portable_code": True,
         },
         "validation_commands": [
@@ -199,13 +204,18 @@ def check_devboard_import(errors: list[str]) -> None:
 def check_panel_gate(errors: list[str]) -> None:
     gate = read_json(PANEL_GATE, errors)
     require(gate.get("gate_id") == "wb55_real_panel_refresh", "panel gate id drifted", errors)
-    require(gate.get("status") == "PASS", "panel gate must retain completed WB55 evidence", errors)
-    require(gate.get("real_refresh_claimed") is True, "panel gate must own the real refresh claim", errors)
+    require(gate.get("status") == "PASS", "historical panel evidence integrity must remain PASS", errors)
+    require(gate.get("evidence_scope") == "historical_refresh_evidence_integrity", "panel gate must identify historical scope", errors)
+    require(gate.get("historical_real_refresh_claimed") is True, "historical panel evidence must retain its original claim", errors)
+    require(gate.get("current_real_refresh_claimed") is False, "historical panel evidence must not claim current acceptance", errors)
     for fact_id in VERIFIED_GATE_FACTS:
         require(gate_fact_status(gate, fact_id) == "verified", f"panel gate fact {fact_id} must remain verified", errors)
     serialized = json.dumps(gate, sort_keys=True)
     require("companion-screen-panel-wiring-preflight.json" in serialized, "panel gate must link panel wiring preflight", errors)
     require("verify_expression_panel_wiring_preflight.py" in serialized, "panel gate must run panel wiring preflight verifier", errors)
+    recovery = read_json(PANEL_RECOVERY_GATE, errors)
+    require(recovery.get("status") == "DEFERRED_HARDWARE_FTS02_BOOST", "current panel recovery must remain deferred", errors)
+    require(recovery.get("claim_scope") == "current_hardware_recovery_gate_no_panel_acceptance", "current panel recovery must not claim acceptance", errors)
 
 
 def check_acceptance_plan(errors: list[str]) -> None:
@@ -261,15 +271,18 @@ def check_fixture_data(data: dict[str, Any], errors: list[str]) -> None:
     require(transport.get("chip_select_candidate", {}).get("pin") == "PA6", "wiring preflight fixture CS pin drifted", errors)
     require(transport.get("chip_select_candidate", {}).get("label") == "SPI2_CS", "wiring preflight fixture CS label drifted", errors)
     gate = data.get("hardware_gate", {})
-    require(gate.get("status") == "PASS", "wiring preflight fixture must preserve completed WB55 gate", errors)
-    require(gate.get("real_refresh_claimed") is True, "wiring preflight fixture must show the panel gate owns real refresh", errors)
+    require(gate.get("current_status") == "DEFERRED_HARDWARE_FTS02_BOOST", "wiring preflight fixture must show the current FTS02 blocker", errors)
+    require(gate.get("current_real_refresh_claimed") is False, "wiring preflight fixture must not claim current refresh", errors)
+    require(gate.get("historical_evidence_status") == "PASS", "wiring preflight fixture must retain historical evidence", errors)
+    require(gate.get("historical_real_refresh_claimed") is True, "wiring preflight fixture must preserve historical refresh evidence", errors)
     require(set(gate.get("control_facts_expected_verified", [])) == VERIFIED_GATE_FACTS, "wiring preflight fixture missing verified control fact guard", errors)
     acceptance = data.get("acceptance", {})
     for token in [
         "spi2_transport_pins_preserved_from_ioc",
         "chip_select_candidate_named_in_ioc",
         "controller_and_control_pins_are_owned_by_hardware_gate",
-        "real_refresh_claim_is_owned_by_panel_gate",
+        "current_real_refresh_deferred_to_recovery_gate",
+        "historical_refresh_evidence_remains_traceable",
         "wba_must_not_copy_wb55_pin_facts_into_portable_code",
     ]:
         require(acceptance.get(token) is True, f"wiring preflight acceptance missing {token}", errors)

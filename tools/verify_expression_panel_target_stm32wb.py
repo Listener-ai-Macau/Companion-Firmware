@@ -26,6 +26,7 @@ WBA_RULES = REPO_ROOT / "docs" / "stm32wba_migration_rules.md"
 README = REPO_ROOT / "app" / "companion_pendant" / "epaper" / "README.md"
 ACCEPTANCE_INDEX = REPO_ROOT / "docs" / "validation" / "companion-screen-acceptance-index.json"
 PANEL_GATE = REPO_ROOT / "docs" / "validation" / "companion-screen-panel-hardware-gate.json"
+PANEL_RECOVERY_GATE = REPO_ROOT / "docs" / "validation" / "companion-screen-wb55-hardware-recovery-gate.json"
 
 
 def rel(path: pathlib.Path) -> str:
@@ -51,7 +52,7 @@ def build_fixture() -> dict[str, Any]:
     return {
         "schema_id": SCHEMA_ID,
         "status": "PASS",
-        "purpose": "WB55 target-named adapter with a proven SSD1681 production backend and a dry-run fallback, preserving the WBA target-adapter split.",
+        "purpose": "WB55 target-named adapter with an SSD1681 production backend, historical refresh evidence, a current FTS02 blocker, and a WBA-ready target split.",
         "sources": {
             "wb55_target_header": rel(PANEL_TARGET_HEADER),
             "wb55_target_source": rel(PANEL_TARGET_SOURCE),
@@ -64,19 +65,23 @@ def build_fixture() -> dict[str, Any]:
             "wba_rules": rel(WBA_RULES),
             "epaper_readme": rel(README),
             "panel_gate": rel(PANEL_GATE),
+            "panel_recovery_gate": rel(PANEL_RECOVERY_GATE),
         },
         "contract": {
             "wb55_initializer": "companion_epaper_panel_stm32wb_init",
             "current_transport": "ssd1681_real_when_bringup_enabled",
             "dry_run_delegate": "comp_epaper_panel_adapter_init_dry_run_fallback",
-            "real_refresh_claimed": True,
+            "current_real_refresh_claimed": False,
+            "current_acceptance_status": "DEFERRED_HARDWARE_FTS02_BOOST",
+            "historical_real_refresh_claimed": True,
             "target_file_pattern": "panel_target_stm32wb.*",
             "future_wba_pattern": "*_stm32wba.*",
             "ssd1681_diagnostic_driver": {
                 "build_flag": "COMPANION_EPAPER_PANEL_SSD1681_BRINGUP",
                 "controller": "SSD1681",
                 "full_refresh_sequence": "GDEY0154D67_vendor_reference",
-                "real_refresh_claimed": True,
+                "production_backend_present": True,
+                "historical_real_refresh_claimed": True,
             },
         },
         "forbidden_until_hardware_evidence": [
@@ -105,7 +110,9 @@ def check_fixture_data(data: dict[str, Any], errors: list[str]) -> None:
     require(contract.get("wb55_initializer") == "companion_epaper_panel_stm32wb_init", "fixture missing WB55 initializer", errors)
     require(contract.get("current_transport") == "ssd1681_real_when_bringup_enabled", "fixture must record the real SSD1681 transport", errors)
     require(contract.get("dry_run_delegate") == "comp_epaper_panel_adapter_init_dry_run_fallback", "fixture missing dry-run fallback", errors)
-    require(contract.get("real_refresh_claimed") is True, "fixture must record the real refresh evidence", errors)
+    require(contract.get("current_real_refresh_claimed") is False, "fixture must not claim current real refresh", errors)
+    require(contract.get("current_acceptance_status") == "DEFERRED_HARDWARE_FTS02_BOOST", "fixture must record the current FTS02 blocker", errors)
+    require(contract.get("historical_real_refresh_claimed") is True, "fixture must retain historical refresh evidence", errors)
     require(contract.get("future_wba_pattern") == "*_stm32wba.*", "fixture missing future WBA adapter pattern", errors)
     diagnostic_driver = contract.get("ssd1681_diagnostic_driver", {})
     require(
@@ -119,7 +126,8 @@ def check_fixture_data(data: dict[str, Any], errors: list[str]) -> None:
         "fixture missing GDEY0154D67 vendor refresh sequence",
         errors,
     )
-    require(diagnostic_driver.get("real_refresh_claimed") is True, "fixture must claim the proven SSD1681 panel refresh", errors)
+    require(diagnostic_driver.get("production_backend_present") is True, "fixture must record the SSD1681 production backend", errors)
+    require(diagnostic_driver.get("historical_real_refresh_claimed") is True, "fixture must retain historical SSD1681 refresh evidence", errors)
 
 
 def check_target_code(errors: list[str]) -> None:
@@ -262,6 +270,7 @@ def check_docs_and_index(errors: list[str]) -> None:
     wba_rules = read(WBA_RULES, errors)
     readme = read(README, errors)
     gate = read(PANEL_GATE, errors)
+    recovery_gate = read(PANEL_RECOVERY_GATE, errors)
     index_text = read(ACCEPTANCE_INDEX, errors)
     for token in [
         "wb55_panel_target_adapter_scaffold",
@@ -278,6 +287,8 @@ def check_docs_and_index(errors: list[str]) -> None:
         require(token in readme, f"e-paper README missing WB55 panel target anchor {token}", errors)
     for token in ["panel_target_stm32wb", "companion_epaper_panel_stm32wb_init", '"status": "PASS"', "0xC7"]:
         require(token in gate, f"panel hardware gate missing WB55 panel target anchor {token}", errors)
+    for token in ["DEFERRED_HARDWARE_FTS02_BOOST", "current_hardware_recovery_gate_no_panel_acceptance", "wb55_real_panel_refresh"]:
+        require(token in recovery_gate, f"current panel recovery gate missing {token}", errors)
     if index_text:
         index = json.loads(index_text)
         matches = [item for item in index.get("items", []) if isinstance(item, dict) and item.get("id") == "wb55_panel_target_adapter_scaffold"]

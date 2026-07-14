@@ -1,14 +1,17 @@
 {
   "contract": {
+    "current_acceptance_status": "DEFERRED_HARDWARE_FTS02_BOOST",
+    "current_real_refresh_claimed": false,
     "current_transport": "ssd1681_real_when_bringup_enabled",
     "dry_run_delegate": "comp_epaper_panel_adapter_init_dry_run_fallback",
     "future_wba_pattern": "*_stm32wba.*",
-    "real_refresh_claimed": true,
+    "historical_real_refresh_claimed": true,
     "ssd1681_diagnostic_driver": {
       "build_flag": "COMPANION_EPAPER_PANEL_SSD1681_BRINGUP",
       "controller": "SSD1681",
       "full_refresh_sequence": "GDEY0154D67_vendor_reference",
-      "real_refresh_claimed": true
+      "historical_real_refresh_claimed": true,
+      "production_backend_present": true
     },
     "target_file_pattern": "panel_target_stm32wb.*",
     "wb55_initializer": "companion_epaper_panel_stm32wb_init"
@@ -21,11 +24,12 @@
     "EPD_",
     "COMP_EPAPER_PANEL_RESULT_OK"
   ],
-  "purpose": "WB55 target-named adapter with a proven SSD1681 production backend and a dry-run fallback, preserving the WBA target-adapter split.",
+  "purpose": "WB55 target-named adapter with an SSD1681 production backend, historical refresh evidence, a current FTS02 blocker, and a WBA-ready target split.",
   "schema_id": "companion.pendant.screen_panel_target_stm32wb.v1",
   "sources": {
     "epaper_readme": "app/companion_pendant/epaper/README.md",
     "panel_gate": "docs/validation/companion-screen-panel-hardware-gate.json",
+    "panel_recovery_gate": "docs/validation/companion-screen-wb55-hardware-recovery-gate.json",
     "portable_panel_header": "app/companion_pendant/epaper/panel_adapter.h",
     "portable_panel_source": "app/companion_pendant/epaper/panel_adapter.c",
     "screen_acceptance": "docs/companion_screen_expression_system.md",

@@ -215,9 +215,12 @@ which selects `panel_target_stm32wb_ssd1681.c` for the production bring-up
 configuration. Controller, pin, timing, full/partial/fast refresh, operator
 orientation, and physical contact evidence are recorded. Future WBA work adds
 a separate `*_stm32wba.*` target adapter without changing portable panel files.
-`tools/verify_expression_panel_gate.py` verifies the completed WB55 real-panel
-gate while retaining the remaining human touch/visual acceptance and records it in
-`docs/validation/companion-screen-panel-hardware-gate.json`.
+`tools/verify_expression_panel_gate.py` verifies retained historical WB55
+refresh evidence in
+`docs/validation/companion-screen-panel-hardware-gate.json`. Current physical
+acceptance is separate: `tools/verify_wb55_screen_hardware_recovery_gate.py`
+records the FTS02/PREVGH/PREVGL blocker in
+`docs/validation/companion-screen-wb55-hardware-recovery-gate.json`.
 `tools/verify_expression_panel_adapter_boundary.py` records the callback
 boundary in
 `docs/validation/companion-screen-panel-adapter-boundary.json`.
@@ -428,8 +431,9 @@ Hardware boundary:
   `verify_expression_feature_roadmap.py` records
   `docs/validation/companion-screen-feature-roadmap.json`, grouping the
   `screen_feature_roadmap` acceptance item into product-facing capabilities
-  including `screen_demo_acceptance_flow`; real WB55 panel refresh is PASS and
-  `wb55_touch_visual_acceptance` is the focused `PENDING_HUMAN` gate.
+  including `screen_demo_acceptance_flow`; current WB55 panel refresh is
+  `DEFERRED_HARDWARE` on the FTS02 boost path, and
+  `wb55_touch_visual_acceptance` remains queued after recovery.
 - Screen feature checklist is AI-testable now:
   `render_expression_feature_checklist.py` records
   `docs/validation/companion-screen-feature-checklist.json` and

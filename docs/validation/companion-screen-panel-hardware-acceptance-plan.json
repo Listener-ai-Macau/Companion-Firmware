@@ -1,8 +1,9 @@
 {
-  "current_gate_status": "PASS",
+  "current_gate_status": "DEFERRED_HARDWARE_FTS02_BOOST",
   "evidence_paths": [
     "docs/validation/companion-screen-panel-hardware-acceptance-plan.json",
     "docs/validation/companion-screen-panel-hardware-gate.json",
+    "docs/validation/companion-screen-wb55-hardware-recovery-gate.json",
     "docs/validation/companion-screen-panel-evidence-template.json",
     "docs/validation/companion-screen-panel-evidence-record-validator.json",
     "docs/validation/companion-screen-panel-hardware-session.json",
@@ -47,7 +48,9 @@
     "third_party/STM32CubeWB and third_party/STM32CubeWBA remain clean",
     "verify_expression_panel_evidence_record.py --record passes for the target record"
   ],
-  "purpose": "Records the accepted WB55 real-panel refresh evidence and keeps a target-specific acceptance handoff ready for WBA55/WBA65 hardware sessions.",
+  "historical_wb55_real_refresh_claimed": true,
+  "historical_wb55_refresh_evidence_status": "PASS",
+  "purpose": "Keeps historical WB55 refresh evidence traceable while recording the current FTS02 recovery blocker and target-specific WBA55/WBA65 hardware handoffs.",
   "real_refresh_claimed_before_hardware": false,
   "schema_id": "companion.pendant.screen_panel_hardware_acceptance_plan.v1",
   "static_preflight_commands": [

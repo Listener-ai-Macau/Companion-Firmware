@@ -11,10 +11,11 @@ This file is generated. Update it with
 
 ### wb55_physical_wiring_and_panel_identity
 
-- Status: `proved`
-- Requirement: NUCLEO-WB55RG drives the physical GDEY0154D67-T03 panel with verified SSD1681 wiring.
+- Status: `blocked_hardware_recovery`
+- Requirement: NUCLEO-WB55RG reaches the GDEY0154D67-T03 SSD1681 digital command path, but the current FTS02 must establish positive/negative refresh rails and deterministic visible frames before physical panel health is proved.
 - Evidence:
-  - `docs/validation/companion-screen-panel-hardware-gate.json`: `PASS` - controller, panel, voltage, DC/RST/BUSY, full/partial/maintenance refresh, orientation, and contact evidence are recorded
+  - `docs/validation/companion-screen-panel-hardware-gate.json`: `HISTORICAL_PASS_NOT_CURRENT_ACCEPTANCE` - older controller, wiring, refresh, orientation, and contact evidence is retained as history but is superseded for current panel health by the later grain/rail failure
+  - `docs/validation/companion-screen-wb55-hardware-recovery-gate.json`: `DEFERRED_HARDWARE_FTS02_BOOST` - official one-plane white/black transfers assert BUSY, but PREVGH/PREVGL and visible output keep the current FTS02/panel gate hardware-deferred
 
 ### current_external_resource_runtime
 
@@ -44,14 +45,15 @@ This file is generated. Update it with
 
 ### screen_refresh_touch_machine_health
 
-- Status: `proved`
-- Requirement: WB55 machine logs prove refresh path, FT6336 identity/health, and the quiet interaction profile before human visual acceptance.
+- Status: `blocked_hardware_recovery`
+- Requirement: WB55 logs retain FT6336 identity, CEMP, BUSY, and quiet-profile facts, but visible refresh health requires FTS02 recovery before human visual acceptance.
 - Evidence:
   - `.cache/validation/rev53-runtime-current/normal/nucleo-serial-raw.log`: `PASS` - normal boot log includes refresh complete and touch-health identity addr=0x38 cipher=0x64 fw=0x01 chip=0x11
   - `docs/validation/companion-screen-wb55-runtime-recheck-logs.json`: `PASS` - current rev53 machine health depends on provision and normal runtime logs; pending status keeps this requirement in hardware recheck instead of relying on earlier history
   - `docs/validation/companion-interaction-profile-runtime-gate-20260714.md`: `PASS` - the reset-bounded normal capture must contain the complete quiet interaction boot marker; older resource-only logs do not prove the latency candidate
   - `docs/validation/companion-screen-wb55-touch-visual-acceptance-packet.json`: `PENDING_HUMAN` - operator packet links the current resource state; it does not claim human visual acceptance
   - `docs/validation/companion-screen-refresh-feel-contract.json`: `PASS` - static refresh-feel contract is PASS; real rev53 touch/flicker/ghosting feel remains a pending hardware recheck
+  - `docs/validation/companion-screen-wb55-hardware-recovery-gate.json`: `DEFERRED_HARDWARE_FTS02_BOOST` - current visible refresh is blocked by absent FTS02 positive/negative rails despite a responding SSD1681 command/BUSY path
 
 ### wb55_screen_firmware_build_matrix
 
@@ -85,6 +87,7 @@ This file is generated. Update it with
   - `docs/validation/companion-screen-wb55-runtime-serial-capture-preflight.json`: `PASS_STATIC_SERIAL_CAPTURE_PREFLIGHT` - static serial-capture preflight proves capture_nucleo_serial.ps1, locked runner calls, raw/summary output names, and log-verifier expectations before opening any COM port; claim_scope=static_serial_capture_contract_no_hardware_claim
   - `docs/validation/companion-screen-wb55-runtime-recheck-logs.json`: `PASS` - rev53 provision/normal runtime logs are the first-hand machine gate; pending status means human touch/visual acceptance must not start
   - `docs/validation/companion-screen-wb55-runtime-promotion.json`: `APPLIED` - promotion gate has applied rev53 runtime evidence; human visual/touch acceptance is still pending
+  - `docs/validation/companion-screen-wb55-hardware-recovery-gate.json`: `DEFERRED_HARDWARE_FTS02_BOOST` - do not open the focused touch/visual review until FTS02 replacement or cross-swap passes solid white, solid black, and normal-expression recovery
 - Pending steps:
   - `daily_tap_social_response`
   - `daily_swipe_pet_response`
@@ -114,11 +117,13 @@ This file is generated. Update it with
   - `docs/validation/companion-screen-wba-real-parity-gate.json`: `PASS_PRE_PORT_PARITY_BLOCKED` - WBA promotion is blocked until target_family=STM32WBA, exact WBA55/WBA65 evidence, WBA-named paths, and real panel/touch/BLE artifacts exist; WB55 evidence is baseline only
   - `docs/validation/companion-screen-wba-lse-clock-contract.json`: `PASS_PRE_PORT_CLOCK_CONTRACT_RECORDED` - WBA55/WBA65 pre-port clock contract requires assembled 32.768 kHz LSE by default and keeps real LSE startup, RTC continuity, BLE sleep, timed wake-up, or no-LSE exception evidence pending; claim_scope=wba_clock_design_contract_no_hardware_claim
   - `docs/validation/companion-screen-pet-behavior-user-data-stm32wba.json`: `PASS` - WBA55/WBA65 comp_pet_behavior_memory_t stays outside ui_assets/CEMP, OTA staging, recording cache, and MCU Flash constants through callback-only logical slots, CRC records, low-frequency commits, explicit privacy erase, and Cortex-M33 ARM GCC object compilation; real WBA storage evidence remains pending
-- Future gate: `wba_real_panel_refresh` - WBA real refresh still requires a CubeWBA project, target pins, timing, refresh logs, and visual evidence; WB55 real refresh is already proven.
+- Future gate: `wba_real_panel_refresh` - WBA real refresh still requires CubeWBA target projects and hardware evidence; the WB55 portable baseline remains useful, but current WB55 visible panel health must also be re-proved after FTS02 recovery.
 
 ## Open Requirements
 
+- `wb55_physical_wiring_and_panel_identity`
+- `screen_refresh_touch_machine_health`
 - `daily_pet_and_menu_human_feel`
 - `wba55_wba65_portability_boundary`
 
-Completion rule: Do not mark the active goal complete until every requirement is proved; pending_human requires operator acceptance evidence, and WBA real parity requires a later WBA hardware/project gate.
+Completion rule: Do not mark the active goal complete until every requirement is proved; blocked_hardware_recovery requires FTS02 replacement/cross-swap evidence, pending_human requires operator acceptance evidence, and WBA real parity requires a later WBA hardware/project gate.

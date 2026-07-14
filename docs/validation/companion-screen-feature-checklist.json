@@ -293,9 +293,9 @@
           "title": "WB55 runtime serial capture preflight"
         },
         {
-          "id": "wb55_rev52_runtime_recheck",
-          "status": "DEFERRED_HARDWARE",
-          "title": "WB55 rev52 provision/normal runtime recheck"
+          "id": "wb55_rev53_runtime_recheck",
+          "status": "PASS",
+          "title": "WB55 rev53 provision/normal runtime recheck"
         },
         {
           "id": "screen_runtime_snapshot",
@@ -351,7 +351,7 @@
       "id": "runtime_diagnostics_and_evidence",
       "next_acceptance": "Attach runtime snapshot and diagnostics bundle evidence to the first real-panel session.",
       "order": 7,
-      "status": "DEFERRED_HARDWARE",
+      "status": "PASS",
       "title": "Runtime diagnostics and evidence",
       "user_value": "Screen runtime health can be decoded from diagnostics, BLE artifacts, and evidence records."
     },
@@ -454,7 +454,7 @@
         },
         {
           "id": "wb55_real_panel_refresh",
-          "status": "PASS",
+          "status": "DEFERRED_HARDWARE",
           "title": "WB55 real e-paper panel refresh"
         },
         {
@@ -469,9 +469,9 @@
         }
       ],
       "id": "panel_driver_readiness",
-      "next_acceptance": "Operator confirms daily pet gestures, anywhere 3 s menu entry, press-cue/arrival partial refreshes, language switching, and that 0xCF maintenance is perceived as a single quiet flash.",
+      "next_acceptance": "Replace or cross-swap FTS02, prove solid white/black and valid PREVGH/PREVGL rails, then resume touch, gesture, language, and maintenance visual review.",
       "order": 8,
-      "status": "PENDING_HUMAN",
+      "status": "DEFERRED_HARDWARE",
       "title": "Panel driver readiness",
       "user_value": "The panel driver boundary, evidence templates, and WB55 hardware gate are explicit."
     },
@@ -542,19 +542,25 @@
     }
   ],
   "current_focus": {
-    "capability_id": "runtime_diagnostics_and_evidence",
+    "capability_id": "panel_driver_readiness",
     "capability_status": "DEFERRED_HARDWARE",
-    "gate_id": "wb55_rev52_runtime_recheck",
+    "gate_id": "wb55_real_panel_refresh",
     "gate_status": "DEFERRED_HARDWARE",
-    "missing_ready_field_count": 0,
-    "next_acceptance": "Attach runtime snapshot and diagnostics bundle evidence to the first real-panel session.",
+    "missing_ready_field_count": 4,
+    "next_acceptance": "Replace or cross-swap FTS02, prove solid white/black and valid PREVGH/PREVGL rails, then resume touch, gesture, language, and maintenance visual review.",
     "operator_packet": "docs/validation/companion-screen-wb55-touch-visual-acceptance-packet.json",
     "operator_packet_label": "touch visual acceptance packet",
+    "panel_recovery_gate": "docs/validation/companion-screen-wb55-hardware-recovery-gate.json",
     "pre_acceptance_health": "docs/validation/companion-screen-pre-acceptance-health.json"
   },
-  "current_missing_panel_facts": [],
-  "current_next_gate": "wb55_rev52_runtime_recheck",
-  "overall_status": "PENDING_HUMAN",
+  "current_missing_panel_facts": [
+    "Replacement or cross-swapped FTS02 board identity and wiring check.",
+    "Deterministic solid-white and solid-black official one-plane frames with BUSY evidence after replacement.",
+    "Established positive PREVGH1 and negative PREVGL1 refresh rails, or equivalent vendor-specified rail evidence.",
+    "Visible current normal expression, partial expression transition, touch response, and maintenance boundary on the recovered panel."
+  ],
+  "current_next_gate": "wb55_real_panel_refresh",
+  "overall_status": "DEFERRED_HARDWARE",
   "purpose": "A compact one-by-one acceptance checklist derived from the screen feature roadmap.",
   "schema_id": "companion.pendant.screen_feature_checklist.v1",
   "sources": {

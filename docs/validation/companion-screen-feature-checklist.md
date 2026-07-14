@@ -4,14 +4,15 @@ This checklist is generated. Update it with `python .\tools\render_expression_fe
 
 ## Current Focus
 
-- Overall status: `PENDING_HUMAN`
-- Next gate: `wb55_rev52_runtime_recheck`
-- Capability: `runtime_diagnostics_and_evidence`
-- Focused gate: `wb55_rev52_runtime_recheck` (`DEFERRED_HARDWARE`)
+- Overall status: `DEFERRED_HARDWARE`
+- Next gate: `wb55_real_panel_refresh`
+- Capability: `panel_driver_readiness`
+- Focused gate: `wb55_real_panel_refresh` (`DEFERRED_HARDWARE`)
 - Touch visual acceptance packet: `docs/validation/companion-screen-wb55-touch-visual-acceptance-packet.json`
 - Pre-acceptance health: `docs/validation/companion-screen-pre-acceptance-health.json`
-- Missing panel facts: `0`
-- Next acceptance: Attach runtime snapshot and diagnostics bundle evidence to the first real-panel session.
+- Current recovery evidence: `docs/validation/companion-screen-wb55-hardware-recovery-gate.json`
+- Missing panel facts: `4`
+- Next acceptance: Replace or cross-swap FTS02, prove solid white/black and valid PREVGH/PREVGL rails, then resume touch, gesture, language, and maintenance visual review.
 
 ## Capability Checklist
 
@@ -23,10 +24,13 @@ This checklist is generated. Update it with `python .\tools\render_expression_fe
 | 4 | `PASS` | `screen_demo_acceptance_flow` | Use the same demo order for WB55 real-panel photos and later extend the real BLE bench until no manual visual gaps remain. |
 | 5 | `PASS` | `product_status_hooks` | Add each new product signal with a focused hook verifier and update the input source matrix. |
 | 6 | `PASS` | `wb55_queue_and_host_status` | Use the same queue/status path for real-panel refresh and WBA scheduler parity. |
-| 7 | `DEFERRED_HARDWARE` | `runtime_diagnostics_and_evidence` | Attach runtime snapshot and diagnostics bundle evidence to the first real-panel session. |
-| 8 | `PENDING_HUMAN` | `panel_driver_readiness` | Operator confirms daily pet gestures, anywhere 3 s menu entry, press-cue/arrival partial refreshes, language switching, and that 0xCF maintenance is perceived as a single quiet flash. |
+| 7 | `PASS` | `runtime_diagnostics_and_evidence` | Attach runtime snapshot and diagnostics bundle evidence to the first real-panel session. |
+| 8 | `DEFERRED_HARDWARE` | `panel_driver_readiness` | Replace or cross-swap FTS02, prove solid white/black and valid PREVGH/PREVGL rails, then resume touch, gesture, language, and maintenance visual review. |
 | 9 | `PASS` | `wba_migration_readiness` | Add a separate CubeWBA IOC/project and build wrapper before claiming WBA parity. |
 
 ## Current Missing Panel Facts
 
-- None
+- Replacement or cross-swapped FTS02 board identity and wiring check.
+- Deterministic solid-white and solid-black official one-plane frames with BUSY evidence after replacement.
+- Established positive PREVGH1 and negative PREVGL1 refresh rails, or equivalent vendor-specified rail evidence.
+- Visible current normal expression, partial expression transition, touch response, and maintenance boundary on the recovered panel.

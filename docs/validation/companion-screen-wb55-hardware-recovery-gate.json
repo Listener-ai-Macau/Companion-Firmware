@@ -1,0 +1,63 @@
+{
+  "acceptance_criteria": {
+    "busy_assert_and_return": true,
+    "normal_current_expression_visible": false,
+    "official_black_solid_and_deterministic": false,
+    "official_white_solid_and_deterministic": false,
+    "partial_expression_transition_visible": false,
+    "positive_and_negative_refresh_rails_established": false,
+    "touch_and_maintenance_visual_recheck_passed": false
+  },
+  "claim_scope": "current_hardware_recovery_gate_no_panel_acceptance",
+  "current_fault": {
+    "classification": "REFRESH_VOLTAGE_NOT_ESTABLISHED",
+    "digital_command_path": "PASS_OFFICIAL_0X24_BUSY_ASSERT_RETURN",
+    "negative_rail_min_v": 0.0042,
+    "normal_expression_visible": false,
+    "operator_result": "FAIL",
+    "positive_rail_max_v": 3.3,
+    "visible_result": "black-white grain/noise, not a valid framebuffer"
+  },
+  "gate_id": "wb55_real_panel_refresh",
+  "historical_evidence_policy": {
+    "previous_visible_refresh_is_current_acceptance": false,
+    "previous_visible_refresh_records_retained": true,
+    "reason": "Later official white/black diagnostics and measured PREVGH/PREVGL contradict current panel health, so historical refresh evidence is context only until the analog path is restored and reaccepted."
+  },
+  "missing_hardware_facts": [
+    "Replacement or cross-swapped FTS02 board identity and wiring check.",
+    "Deterministic solid-white and solid-black official one-plane frames with BUSY evidence after replacement.",
+    "Established positive PREVGH1 and negative PREVGL1 refresh rails, or equivalent vendor-specified rail evidence.",
+    "Visible current normal expression, partial expression transition, touch response, and maintenance boundary on the recovered panel."
+  ],
+  "prohibited_shortcuts": [
+    "Do not change expression, menu, recording, CEMP, or normal refresh policy to compensate for the analog fault.",
+    "Do not use TP_INT/PC6 or optional TP_RST/PC10 as e-paper recovery wiring.",
+    "Do not promote historical visible-refresh evidence as current acceptance.",
+    "Do not replace the panel module before FTS02 replacement/cross-swap unless new rail evidence contradicts the current diagnosis."
+  ],
+  "recovery_order": [
+    "Replace or cross-swap ESP32-FTS02 before replacing the panel module.",
+    "Keep P3 at 2.2, fully latch the 24-pin e-paper FPC in P5, and verify 3.3 V logic power and common ground.",
+    "Under the Companion-WB55 workflow lock, rerun the official one-plane white diagnostic and then the black diagnostic while capturing BUSY.",
+    "If either frame fails, measure PREVGH1 and PREVGL1 during the verified refresh window and stop before expression/menu changes.",
+    "After solid white and black pass, restore normal firmware and prove the current expression, one partial transition, touch, and one maintenance boundary."
+  ],
+  "schema_id": "companion.screen.wb55_hardware_recovery_gate.v1",
+  "sources": {
+    "grain_recovery_research": "docs/validation/companion-screen-ssd1681-grain-recovery-research-20260714.md",
+    "normal_restore": "docs/validation/companion-screen-normal-restore-after-black-20260714.json",
+    "official_white_black_recovery": "docs/validation/companion-screen-ssd1681-official-full-recovery-20260714.json",
+    "product_requirements": "docs/companion_product_requirements.md",
+    "voltage_operator_review": "docs/validation/companion-screen-ssd1681-voltage-rails-operator-20260714.json",
+    "voltage_probe": "docs/validation/companion-screen-ssd1681-voltage-probe-image-20260714.json"
+  },
+  "status": "DEFERRED_HARDWARE_FTS02_BOOST",
+  "target": "NUCLEO-WB55RG + ESP32-FTS02 + GDEY0154D67-T03",
+  "validation_commands": [
+    "python .\\tools\\verify_wb55_screen_hardware_recovery_gate.py",
+    "python .\\tools\\verify_expression_acceptance_index.py",
+    "python .\\tools\\verify_companion_screen_goal_audit.py"
+  ],
+  "wba_impact": "Keep this failure target-local. WBA55/WBA65 reuse portable screen, expression, touch, and refresh-intent contracts but require their own panel power/rail implementation and real hardware evidence."
+}

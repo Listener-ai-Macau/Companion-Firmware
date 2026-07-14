@@ -1,6 +1,6 @@
 {
   "claim_scope": "no_hardware_handoff_plan",
-  "current_gate_status": "PASS",
+  "current_gate_status": "DEFERRED_HARDWARE_FTS02_BOOST",
   "demo_steps": [
     {
       "capture_mode": "real_ble_sequence_baseline_plus_visual",
@@ -456,12 +456,16 @@
     "reuses_real_ble_screen_bench": true,
     "wba55_wba65_reuse_same_demo_order": true
   },
-  "real_refresh_claimed": true,
+  "historical_wb55_real_refresh_claimed": true,
+  "historical_wb55_refresh_evidence_status": "PASS",
+  "real_refresh_claimed": false,
   "schema_id": "companion.pendant.expression_demo_panel_handoff.v1",
   "source_gate_snapshot": {
-    "panel_gate_real_refresh_claimed": true,
-    "panel_gate_status": "PASS",
-    "panel_plan_gate_status": "PASS",
+    "current_panel_real_refresh_claimed": false,
+    "current_panel_recovery_status": "DEFERRED_HARDWARE_FTS02_BOOST",
+    "historical_panel_gate_real_refresh_claimed": true,
+    "historical_panel_gate_status": "PASS",
+    "panel_plan_gate_status": "DEFERRED_HARDWARE_FTS02_BOOST",
     "panel_session_gate_status": "DEFERRED_HARDWARE",
     "real_ble_contract_only_sequence": true,
     "real_ble_expect_panel_flag": "--expect-real-panel"
@@ -473,6 +477,7 @@
     "panel_evidence_template": "docs/validation/companion-screen-panel-evidence-template.json",
     "panel_hardware_acceptance_plan": "docs/validation/companion-screen-panel-hardware-acceptance-plan.json",
     "panel_hardware_gate": "docs/validation/companion-screen-panel-hardware-gate.json",
+    "panel_hardware_recovery_gate": "docs/validation/companion-screen-wb55-hardware-recovery-gate.json",
     "panel_hardware_session": "docs/validation/companion-screen-panel-hardware-session.json",
     "real_ble_bench": "docs/validation/companion-screen-real-ble-bench.json",
     "real_ble_bench_sha256": "bcc88329a10080b662a791727d75e0298455e4eebec5b55cf2ff73773b294706",

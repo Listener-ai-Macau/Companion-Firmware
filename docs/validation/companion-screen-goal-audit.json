@@ -3,22 +3,23 @@
     "acceptance_index": "docs/validation/companion-screen-acceptance-index.json",
     "interaction_profile_marker_present": true,
     "interaction_profile_status": "PASS",
-    "next_hardware_gate": "wba_real_panel_parity",
+    "next_hardware_gate": "wb55_real_panel_refresh",
     "next_human_gate": "wb55_touch_visual_acceptance",
+    "panel_recovery_status": "DEFERRED_HARDWARE_FTS02_BOOST",
     "pre_acceptance_status": "NO_GO_OPEN_OPERATOR_REVIEW_ITEMS",
     "runtime_logs_status": "PASS",
     "runtime_promotion_status": "APPLIED",
     "schema_id": "companion.pendant.screen_acceptance_index.v1",
     "summary": {
-      "deferred_count": 0,
-      "next_hardware_gate": "wba_real_panel_parity",
+      "deferred_count": 1,
+      "next_hardware_gate": "wb55_real_panel_refresh",
       "next_human_gate": "wb55_touch_visual_acceptance",
-      "pass_count": 85,
+      "pass_count": 84,
       "pending_human_count": 2,
       "total_count": 87
     }
   },
-  "completion_rule": "Do not mark the active goal complete until every requirement is proved; pending_human requires operator acceptance evidence, and WBA real parity requires a later WBA hardware/project gate.",
+  "completion_rule": "Do not mark the active goal complete until every requirement is proved; blocked_hardware_recovery requires FTS02 replacement/cross-swap evidence, pending_human requires operator acceptance evidence, and WBA real parity requires a later WBA hardware/project gate.",
   "current_resource": {
     "clips": 33,
     "crc32": "0x2332E300",
@@ -56,6 +57,7 @@
     "touch_visual_review_record": "docs/validation/companion-screen-wb55-touch-visual-review-record.json",
     "touch_visual_review_template": "docs/validation/companion-screen-wb55-touch-visual-review-template.json",
     "wb55_build_matrix": "docs/validation/companion-screen-wb55-build-matrix.json",
+    "wb55_hardware_recovery_gate": "docs/validation/companion-screen-wb55-hardware-recovery-gate.json",
     "wba_cube_dependency_preflight": "docs/validation/companion-screen-wba-cube-dependency-preflight.json",
     "wba_lse_clock_contract": "docs/validation/companion-screen-wba-lse-clock-contract.json",
     "wba_pet_behavior_user_data": "docs/validation/companion-screen-pet-behavior-user-data-stm32wba.json",
@@ -63,6 +65,8 @@
     "wba_real_parity_gate": "docs/validation/companion-screen-wba-real-parity-gate.json"
   },
   "open_requirements": [
+    "wb55_physical_wiring_and_panel_identity",
+    "screen_refresh_touch_machine_health",
     "daily_pet_and_menu_human_feel",
     "wba55_wba65_portability_boundary"
   ],
@@ -71,13 +75,18 @@
       "evidence": [
         {
           "path": "docs/validation/companion-screen-panel-hardware-gate.json",
-          "status": "PASS",
-          "summary": "controller, panel, voltage, DC/RST/BUSY, full/partial/maintenance refresh, orientation, and contact evidence are recorded"
+          "status": "HISTORICAL_PASS_NOT_CURRENT_ACCEPTANCE",
+          "summary": "older controller, wiring, refresh, orientation, and contact evidence is retained as history but is superseded for current panel health by the later grain/rail failure"
+        },
+        {
+          "path": "docs/validation/companion-screen-wb55-hardware-recovery-gate.json",
+          "status": "DEFERRED_HARDWARE_FTS02_BOOST",
+          "summary": "official one-plane white/black transfers assert BUSY, but PREVGH/PREVGL and visible output keep the current FTS02/panel gate hardware-deferred"
         }
       ],
       "id": "wb55_physical_wiring_and_panel_identity",
-      "requirement": "NUCLEO-WB55RG drives the physical GDEY0154D67-T03 panel with verified SSD1681 wiring.",
-      "status": "proved"
+      "requirement": "NUCLEO-WB55RG reaches the GDEY0154D67-T03 SSD1681 digital command path, but the current FTS02 must establish positive/negative refresh rails and deterministic visible frames before physical panel health is proved.",
+      "status": "blocked_hardware_recovery"
     },
     {
       "evidence": [
@@ -166,11 +175,16 @@
           "path": "docs/validation/companion-screen-refresh-feel-contract.json",
           "status": "PASS",
           "summary": "static refresh-feel contract is PASS; real rev53 touch/flicker/ghosting feel remains a pending hardware recheck"
+        },
+        {
+          "path": "docs/validation/companion-screen-wb55-hardware-recovery-gate.json",
+          "status": "DEFERRED_HARDWARE_FTS02_BOOST",
+          "summary": "current visible refresh is blocked by absent FTS02 positive/negative rails despite a responding SSD1681 command/BUSY path"
         }
       ],
       "id": "screen_refresh_touch_machine_health",
-      "requirement": "WB55 machine logs prove refresh path, FT6336 identity/health, and the quiet interaction profile before human visual acceptance.",
-      "status": "proved"
+      "requirement": "WB55 logs retain FT6336 identity, CEMP, BUSY, and quiet-profile facts, but visible refresh health requires FTS02 recovery before human visual acceptance.",
+      "status": "blocked_hardware_recovery"
     },
     {
       "evidence": [
@@ -262,6 +276,11 @@
           "path": "docs/validation/companion-screen-wb55-runtime-promotion.json",
           "status": "APPLIED",
           "summary": "promotion gate has applied rev53 runtime evidence; human visual/touch acceptance is still pending"
+        },
+        {
+          "path": "docs/validation/companion-screen-wb55-hardware-recovery-gate.json",
+          "status": "DEFERRED_HARDWARE_FTS02_BOOST",
+          "summary": "do not open the focused touch/visual review until FTS02 replacement or cross-swap passes solid white, solid black, and normal-expression recovery"
         }
       ],
       "id": "daily_pet_and_menu_human_feel",
@@ -295,7 +314,7 @@
     {
       "blocked_until_hardware": {
         "gate": "wba_real_panel_refresh",
-        "reason": "WBA real refresh still requires a CubeWBA project, target pins, timing, refresh logs, and visual evidence; WB55 real refresh is already proven."
+        "reason": "WBA real refresh still requires CubeWBA target projects and hardware evidence; the WB55 portable baseline remains useful, but current WB55 visible panel health must also be re-proved after FTS02 recovery."
       },
       "evidence": [
         {
@@ -343,6 +362,7 @@
   "target": "NUCLEO-WB55RG + GDEY0154D67-T03 + FT6336U; future STM32WBA55/WBA65",
   "validation_commands": [
     "python .\\tools\\verify_companion_screen_goal_audit.py",
+    "python .\\tools\\verify_wb55_screen_hardware_recovery_gate.py",
     "python .\\tools\\render_wb55_touch_visual_acceptance_packet.py",
     "python .\\tools\\render_wb55_runtime_hardware_action_card.py",
     "python .\\tools\\verify_wb55_runtime_flash_preflight.py",

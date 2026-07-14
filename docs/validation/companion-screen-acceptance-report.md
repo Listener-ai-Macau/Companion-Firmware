@@ -6,11 +6,11 @@ This report is generated. Update it with `python .\tools\render_expression_accep
 
 ## Summary
 
-- PASS: 85
-- DEFERRED_HARDWARE: 0
+- PASS: 84
+- DEFERRED_HARDWARE: 1
 - PENDING_HUMAN: 2
 - TOTAL: 87
-- Next hardware gate: `wba_real_panel_parity`
+- Next hardware gate: `wb55_real_panel_refresh`
 - Next human gate: `wb55_touch_visual_acceptance`
 
 ## Item Status
@@ -99,7 +99,7 @@ This report is generated. Update it with `python .\tools\render_expression_accep
 | 80 | PASS | `panel_evidence_real_ble_sequence_validator` | Panel evidence real BLE sequence validator |
 | 81 | PASS | `panel_hardware_acceptance_plan` | Panel hardware acceptance plan |
 | 82 | PASS | `wb55_screen_build_matrix` | WB55 screen build matrix |
-| 83 | PASS | `wb55_real_panel_refresh` | WB55 real e-paper panel refresh |
+| 83 | DEFERRED_HARDWARE | `wb55_real_panel_refresh` | WB55 real e-paper panel refresh |
 | 84 | PASS | `wb55_runtime_serial_capture_preflight` | WB55 runtime serial capture preflight |
 | 85 | PASS | `wb55_rev53_runtime_recheck` | WB55 rev53 provision/normal runtime recheck |
 | 86 | PENDING_HUMAN | `wb55_touch_visual_acceptance` | WB55 touch navigation and fast-refresh visual acceptance |
@@ -2091,28 +2091,42 @@ Validation commands:
 ### 83. WB55 real e-paper panel refresh
 
 - ID: `wb55_real_panel_refresh`
-- Status: `PASS`
-- Summary: The physical GDEY0154D67-T03 completed SSD1681 full, partial, and fast refreshes on WB55; operator observations confirm a visible black update and upright non-mirrored orientation.
-- WBA impact: WBA panel work must preserve the proven portable queue, policy, presentation, and asset contracts while replacing only target backends.
+- Status: `DEFERRED_HARDWARE`
+- Summary: Historical GDEY0154D67-T03 refresh observations are retained as context, but the current panel is not accepted: official one-plane white and black transfers now complete with BUSY while both physical frames fail, PREVGH1 remains near 3.3 V, PREVGL1 remains near 4.2 mV, and the panel stays black-white grain. Replace or cross-swap FTS02, re-prove both refresh rails and deterministic solid frames, then reaccept the normal expression, partial transition, touch response, and maintenance boundary.
+- WBA impact: WBA panel work must preserve the portable queue, policy, presentation, and asset contracts while implementing target-local panel power/rail and transport backends; neither historical WB55 refresh nor the current FTS02 fault is WBA hardware evidence.
 
 Evidence:
+- `tools/verify_wb55_screen_hardware_recovery_gate.py`
 - `app/companion_pendant/epaper/panel_adapter.h`
 - `app/companion_pendant/epaper/panel_adapter.c`
 - `app/companion_pendant/epaper/panel_target_stm32wb.h`
 - `app/companion_pendant/epaper/panel_target_stm32wb.c`
 - `app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c`
 - `docs/companion_screen_expression_system.md`
+- `docs/companion_product_requirements.md`
 - `docs/validation/companion-screen-panel-hardware-gate.json`
 - `docs/validation/companion-screen-wb55-ssd1681-bringup.json`
 - `docs/validation/companion-screen-ssd1681-partial-refresh-wb55.json`
 - `docs/validation/companion-screen-touch-ft6336-wb55.json`
+- `docs/validation/companion-screen-ssd1681-official-full-recovery-20260714.json`
+- `docs/validation/companion-screen-ssd1681-voltage-probe-image-20260714.json`
+- `docs/validation/companion-screen-ssd1681-voltage-rails-operator-20260714.json`
+- `docs/validation/companion-screen-normal-restore-after-black-20260714.json`
+- `docs/validation/companion-screen-wb55-hardware-recovery-gate.json`
 
 Validation commands:
+- `python .\tools\verify_wb55_screen_hardware_recovery_gate.py`
 - `python .\tools\verify_expression_panel_gate.py`
 - `python .\tools\verify_expression_panel_target_stm32wb.py`
 - `python .\tools\verify_epaper_refresh_policy.py`
 - `python .\tools\verify_epaper_fast_maintenance_runtime.py`
 - `python .\tools\verify_touch_ft6336.py`
+
+Missing hardware facts:
+- Replacement or cross-swapped FTS02 board identity and wiring check.
+- Deterministic solid-white and solid-black official one-plane frames with BUSY evidence after replacement.
+- Established positive PREVGH1 and negative PREVGL1 refresh rails, or equivalent vendor-specified rail evidence.
+- Visible current normal expression, partial expression transition, touch response, and maintenance boundary on the recovered panel.
 
 ### 84. WB55 runtime serial capture preflight
 

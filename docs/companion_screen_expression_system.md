@@ -109,9 +109,11 @@ Its contract lives at
 `python .\tools\verify_expression_acceptance_runner.py`. Use
 `--dry-run --skip-build` to emit a command plan without rebuilding or executing
 the screen checks.
-The real-panel hardware gate template lives at
+Historical WB55 refresh evidence lives at
 `docs/validation/companion-screen-panel-hardware-gate.json` and is verified by
-`python .\tools\verify_expression_panel_gate.py`.
+`python .\tools\verify_expression_panel_gate.py`. Current physical acceptance
+is owned by `docs/validation/companion-screen-wb55-hardware-recovery-gate.json`
+and `python .\tools\verify_wb55_screen_hardware_recovery_gate.py`.
 The real-panel evidence template lives at
 `docs/validation/companion-screen-panel-evidence-template.json` and is verified
 by `python .\tools\verify_expression_panel_evidence_template.py`.
@@ -254,8 +256,9 @@ It is the quick status map for one-by-one acceptance:
   move to PASS.
 - PENDING_HUMAN items have completed machine evidence but still require focused
   operator observation.
-- `wb55_real_panel_refresh` is PASS; the current gate is
-  `wb55_touch_visual_acceptance`.
+- `wb55_real_panel_refresh` is `DEFERRED_HARDWARE` on the current FTS02 boost
+  path. Historical visible-refresh evidence remains traceable but is not
+  current acceptance; `wb55_touch_visual_acceptance` resumes after recovery.
 
 ## Acceptance Sequence
 
@@ -915,9 +918,10 @@ It is the quick status map for one-by-one acceptance:
      model, `screen_demo_acceptance_flow`, product status hooks, WB55
      queue/status, runtime diagnostics/evidence, Panel driver readiness, and
      WBA migration readiness.
-   - The roadmap records `wb55_real_panel_refresh` as PASS from physical WB55
-     evidence and keeps `wb55_touch_visual_acceptance` as the next
-     `PENDING_HUMAN` gate.
+   - The roadmap records `wb55_real_panel_refresh` as `DEFERRED_HARDWARE` from
+     the current FTS02/PREVGH/PREVGL evidence. Historical physical WB55 records
+     remain linked, and `wb55_touch_visual_acceptance` stays queued behind the
+     recovery gate.
    - Current fixture:
      `docs/validation/companion-screen-feature-roadmap.json`.
    - Validation: `python .\tools\verify_expression_feature_roadmap.py`,
@@ -930,8 +934,8 @@ It is the quick status map for one-by-one acceptance:
      `docs/validation/companion-screen-feature-checklist.md` from the roadmap,
      acceptance index, and panel driver readiness report.
    - The checklist keeps the current one-by-one focus explicit:
-     `panel_driver_readiness`, `wb55_touch_visual_acceptance`,
-     `PENDING_HUMAN`, and zero unresolved WB55 panel facts.
+     `panel_driver_readiness`, `wb55_real_panel_refresh`,
+     `DEFERRED_HARDWARE`, and the four concrete FTS02 recovery facts.
    - Validation: `python .\tools\render_expression_feature_checklist.py`,
      `python .\tools\verify_expression_feature_roadmap.py`, and
      `python .\tools\verify_expression_acceptance_index.py`.
@@ -1244,10 +1248,10 @@ It is the quick status map for one-by-one acceptance:
 
 42. Panel hardware acceptance plan
    - Acceptance id: `panel_hardware_acceptance_plan`.
-   - WB55 is accepted at the real-panel gate: the physical SSD1681 path has
-     recorded controller and pin facts, full/partial/fast refresh evidence,
-     runtime logs, and operator confirmation. The remaining WB55 touch/visual
-     ergonomics check is separately tracked as `PENDING_HUMAN`.
+   - The plan itself is machine-verified, but the current WB55 real-panel gate
+     is deferred on the FTS02 boost path. Historical controller, pin, and
+     refresh records remain traceable; they do not override the later grain,
+     PREVGH1, PREVGL1, and normal-expression failure evidence.
    - WBA55/WBA65 reuse the target-specific handoff: WB55 uses
      `*_stm32wb.*`, WBA uses `*_stm32wba.*`, and every new target starts from
      a deferred evidence record. Before a WBA target can claim parity, its
@@ -1265,16 +1269,18 @@ It is the quick status map for one-by-one acceptance:
 43. WB55 real panel refresh
    - The current WB55 build initializes the SSD1681 target through
      `panel_target_stm32wb.h/.c`; dry-run remains fallback-only.
-   - The physical GDEY0154D67-T03 has verified controller, DC/RST/BUSY,
-     voltage, full/partial/fast refresh, orientation, and touch contact facts.
+   - Historical GDEY0154D67-T03 records retain controller, DC/RST/BUSY, prior
+     refresh, orientation, and touch contact evidence.
    - Current gate:
-     `docs/validation/companion-screen-panel-hardware-gate.json` is `PASS` with
-     `real_refresh_claimed=true`. It does not close the separate
-     `wb55_touch_visual_acceptance` human gate.
+     `docs/validation/companion-screen-wb55-hardware-recovery-gate.json` is
+     `DEFERRED_HARDWARE_FTS02_BOOST`; current white/black output, refresh rails,
+     normal expression, touch, and maintenance acceptance remain false until
+     FTS02 replacement or cross-swap evidence passes.
    - Validation now: `python .\tools\verify_expression_real_ble_screen_bench.py`,
      `python .\tools\verify_expression_panel_adapter_behavior.py`,
      `python .\tools\verify_expression_panel_adapter_boundary.py`,
      `python .\tools\verify_expression_panel_gate.py`,
+     `python .\tools\verify_wb55_screen_hardware_recovery_gate.py`,
      `python .\tools\verify_expression_panel_evidence_record.py --self-test`,
      `python .\tools\verify_expression_panel_evidence_template.py`,
      `python .\tools\verify_display_queue_static.py`, and WB55 build. Final

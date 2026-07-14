@@ -20,6 +20,7 @@ BRINGUP_DOC = REPO_ROOT / "docs" / "bringup_steps.md"
 WBA_RULES = REPO_ROOT / "docs" / "stm32wba_migration_rules.md"
 ACCEPTANCE_INDEX = REPO_ROOT / "docs" / "validation" / "companion-screen-acceptance-index.json"
 PANEL_GATE = REPO_ROOT / "docs" / "validation" / "companion-screen-panel-hardware-gate.json"
+PANEL_RECOVERY_GATE = REPO_ROOT / "docs" / "validation" / "companion-screen-wb55-hardware-recovery-gate.json"
 PANEL_TEMPLATE = REPO_ROOT / "docs" / "validation" / "companion-screen-panel-evidence-template.json"
 PANEL_RECORD_VALIDATOR = REPO_ROOT / "docs" / "validation" / "companion-screen-panel-evidence-record-validator.json"
 PANEL_HARDWARE_SESSION = REPO_ROOT / "docs" / "validation" / "companion-screen-panel-hardware-session.json"
@@ -111,15 +112,18 @@ def build_plan() -> dict[str, Any]:
         "schema_id": SCHEMA_ID,
         "status": "PASS",
         "purpose": (
-            "Records the accepted WB55 real-panel refresh evidence and keeps a "
-            "target-specific acceptance handoff ready for WBA55/WBA65 hardware sessions."
+            "Keeps historical WB55 refresh evidence traceable while recording the current "
+            "FTS02 recovery blocker and target-specific WBA55/WBA65 hardware handoffs."
         ),
         "gate_id": GATE_ID,
-        "current_gate_status": "PASS",
+        "current_gate_status": "DEFERRED_HARDWARE_FTS02_BOOST",
+        "historical_wb55_refresh_evidence_status": "PASS",
+        "historical_wb55_real_refresh_claimed": True,
         "real_refresh_claimed_before_hardware": False,
         "evidence_paths": [
             "docs/validation/companion-screen-panel-hardware-acceptance-plan.json",
             "docs/validation/companion-screen-panel-hardware-gate.json",
+            "docs/validation/companion-screen-wb55-hardware-recovery-gate.json",
             "docs/validation/companion-screen-panel-evidence-template.json",
             "docs/validation/companion-screen-panel-evidence-record-validator.json",
             "docs/validation/companion-screen-panel-hardware-session.json",
@@ -207,8 +211,18 @@ def check_plan(data: dict[str, Any], errors: list[str], allow_missing_own_fixtur
     require(data.get("status") == "PASS", "panel hardware acceptance plan must be PASS", errors)
     require(data.get("gate_id") == GATE_ID, "panel hardware acceptance plan points at the wrong gate", errors)
     require(
-        data.get("current_gate_status") == "PASS",
-        "panel hardware acceptance plan must record the accepted WB55 hardware gate",
+        data.get("current_gate_status") == "DEFERRED_HARDWARE_FTS02_BOOST",
+        "panel hardware acceptance plan must record the current FTS02 blocker",
+        errors,
+    )
+    require(
+        data.get("historical_wb55_refresh_evidence_status") == "PASS",
+        "panel hardware acceptance plan must retain historical WB55 evidence",
+        errors,
+    )
+    require(
+        data.get("historical_wb55_real_refresh_claimed") is True,
+        "panel hardware acceptance plan must preserve the historical refresh claim",
         errors,
     )
     require(
@@ -298,8 +312,15 @@ def check_plan(data: dict[str, Any], errors: list[str], allow_missing_own_fixtur
 def check_existing_contracts(errors: list[str]) -> None:
     gate = read_json(PANEL_GATE, errors)
     require(gate.get("gate_id") == GATE_ID, "panel gate fixture uses unexpected gate id", errors)
-    require(gate.get("status") == "PASS", "panel gate fixture must record accepted real refresh", errors)
-    require(gate.get("real_refresh_claimed") is True, "panel gate fixture must claim verified real refresh", errors)
+    require(gate.get("status") == "PASS", "historical panel evidence integrity must remain PASS", errors)
+    require(gate.get("evidence_scope") == "historical_refresh_evidence_integrity", "panel gate must identify historical scope", errors)
+    require(gate.get("historical_real_refresh_claimed") is True, "historical panel evidence must retain its original claim", errors)
+    require(gate.get("current_real_refresh_claimed") is False, "historical panel evidence must not claim current acceptance", errors)
+
+    recovery = read_json(PANEL_RECOVERY_GATE, errors)
+    require(recovery.get("gate_id") == GATE_ID, "panel recovery fixture uses unexpected gate id", errors)
+    require(recovery.get("status") == "DEFERRED_HARDWARE_FTS02_BOOST", "current panel recovery must remain deferred", errors)
+    require(recovery.get("claim_scope") == "current_hardware_recovery_gate_no_panel_acceptance", "current panel recovery must not claim acceptance", errors)
 
     real_ble = read_json(REAL_BLE_BENCH, errors)
     serialized_real_ble = json.dumps(real_ble, sort_keys=True)

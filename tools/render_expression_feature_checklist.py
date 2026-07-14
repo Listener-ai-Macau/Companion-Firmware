@@ -9,9 +9,6 @@ import pathlib
 import sys
 from typing import Any
 
-from screen_runtime_candidate import current_candidate
-
-
 REPO_ROOT = pathlib.Path(__file__).resolve().parents[1]
 DEFAULT_JSON = pathlib.Path("docs/validation/companion-screen-feature-checklist.json")
 DEFAULT_MARKDOWN = pathlib.Path("docs/validation/companion-screen-feature-checklist.md")
@@ -23,12 +20,9 @@ DRIVER_READINESS = REPO_ROOT / "docs/validation/companion-screen-panel-driver-re
 TOUCH_VISUAL_PACKET = REPO_ROOT / "docs/validation/companion-screen-wb55-touch-visual-acceptance-packet.json"
 TOUCH_VISUAL_PACKET_MD = REPO_ROOT / "docs/validation/companion-screen-wb55-touch-visual-acceptance-packet.md"
 PRE_ACCEPTANCE_HEALTH = REPO_ROOT / "docs/validation/companion-screen-pre-acceptance-health.json"
+PANEL_RECOVERY_GATE = REPO_ROOT / "docs/validation/companion-screen-wb55-hardware-recovery-gate.json"
 SCREEN_DOC = REPO_ROOT / "docs/companion_screen_expression_system.md"
 EPAPER_README = REPO_ROOT / "app/companion_pendant/epaper/README.md"
-CANDIDATE = current_candidate()
-RUNTIME_GATE_ID = f"wb55_rev{CANDIDATE.revision}_runtime_recheck"
-
-
 def rel(path: pathlib.Path) -> str:
     try:
         return path.resolve().relative_to(REPO_ROOT).as_posix()
@@ -59,7 +53,7 @@ def build_checklist() -> dict[str, Any]:
     current_focus = next((item for item in capabilities if item.get("status") != "PASS"), capabilities[-1])
     gate_id = str(roadmap.get("current_next_gate", ""))
     gate = acceptance_by_id.get(gate_id, {})
-    missing_fields: list[dict[str, Any]] = []
+    missing_fields = [str(fact) for fact in gate.get("missing_hardware_facts", [])]
 
     checklist: list[dict[str, Any]] = []
     for order, capability in enumerate(capabilities, start=1):
@@ -107,10 +101,11 @@ def build_checklist() -> dict[str, Any]:
             "next_acceptance": current_focus.get("next_acceptance"),
             "gate_id": gate_id,
             "gate_status": gate.get("status"),
-            "missing_ready_field_count": 0,
+            "missing_ready_field_count": len(missing_fields),
             "operator_packet_label": "touch visual acceptance packet",
             "operator_packet": rel(TOUCH_VISUAL_PACKET),
             "pre_acceptance_health": rel(PRE_ACCEPTANCE_HEALTH),
+            "panel_recovery_gate": rel(PANEL_RECOVERY_GATE),
         },
         "checklist": checklist,
         "current_missing_panel_facts": missing_fields,
@@ -138,6 +133,7 @@ def build_markdown(data: dict[str, Any]) -> str:
         f"- Focused gate: `{clean_md(focus.get('gate_id'))}` (`{clean_md(focus.get('gate_status'))}`)",
         f"- Touch visual acceptance packet: `{clean_md(focus.get('operator_packet'))}`",
         f"- Pre-acceptance health: `{clean_md(focus.get('pre_acceptance_health'))}`",
+        f"- Current recovery evidence: `{clean_md(focus.get('panel_recovery_gate'))}`",
         f"- Missing panel facts: `{clean_md(focus.get('missing_ready_field_count'))}`",
         f"- Next acceptance: {clean_md(focus.get('next_acceptance'))}",
         "",
@@ -159,7 +155,7 @@ def build_markdown(data: dict[str, Any]) -> str:
         lines.append("- None")
     else:
         for item in missing:
-            lines.append(f"- `{clean_md(item.get('section'))}.{clean_md(item.get('field'))}`: {clean_md(item.get('reason'))}")
+            lines.append(f"- {clean_md(item)}")
     lines.append("")
     return "\n".join(lines)
 
@@ -167,16 +163,17 @@ def build_markdown(data: dict[str, Any]) -> str:
 def validate_checklist(data: dict[str, Any], errors: list[str]) -> None:
     require(data.get("schema_id") == SCHEMA_ID, f"checklist schema_id must be {SCHEMA_ID}", errors)
     require(data.get("status") == "PASS", "feature checklist fixture must be PASS", errors)
-    require(data.get("overall_status") == "PENDING_HUMAN", "overall checklist should reflect the focused human gate", errors)
-    require(data.get("current_next_gate") == RUNTIME_GATE_ID, f"checklist next gate must be {RUNTIME_GATE_ID}", errors)
+    require(data.get("overall_status") == "DEFERRED_HARDWARE", "overall checklist should reflect the current hardware recovery gate", errors)
+    require(data.get("current_next_gate") == "wb55_real_panel_refresh", "checklist next gate must be wb55_real_panel_refresh", errors)
     focus = data.get("current_focus", {})
-    require(focus.get("capability_id") == "runtime_diagnostics_and_evidence", "current focus must be runtime_diagnostics_and_evidence", errors)
+    require(focus.get("capability_id") == "panel_driver_readiness", "current focus must be panel_driver_readiness", errors)
     require(
         focus.get("gate_status") == "DEFERRED_HARDWARE",
-        "current focus should show the WB55 runtime recheck hardware gate",
+        "current focus should show the WB55 panel recovery hardware gate",
         errors,
     )
-    require(focus.get("gate_id") == RUNTIME_GATE_ID, "focused gate id drifted", errors)
+    require(focus.get("gate_id") == "wb55_real_panel_refresh", "focused gate id drifted", errors)
+    require(focus.get("panel_recovery_gate") == rel(PANEL_RECOVERY_GATE), "focused gate must link current recovery evidence", errors)
     require(
         focus.get("operator_packet") == rel(TOUCH_VISUAL_PACKET),
         "focused gate must link the touch visual acceptance packet",
@@ -188,7 +185,7 @@ def validate_checklist(data: dict[str, Any], errors: list[str]) -> None:
         errors,
     )
     require(PRE_ACCEPTANCE_HEALTH.exists(), "missing pre-acceptance health fixture", errors)
-    require(int(focus.get("missing_ready_field_count", -1)) == 0, "completed panel facts must not be listed as missing", errors)
+    require(int(focus.get("missing_ready_field_count", -1)) == 4, "current panel recovery must list four missing facts", errors)
     checklist = data.get("checklist", [])
     require(isinstance(checklist, list) and len(checklist) >= 8, "checklist must cover the roadmap capabilities", errors)
     ids = [item.get("id") for item in checklist if isinstance(item, dict)]
@@ -204,7 +201,7 @@ def validate_checklist(data: dict[str, Any], errors: list[str]) -> None:
     ]:
         require(required in ids, f"checklist missing capability {required}", errors)
     missing_fields = data.get("current_missing_panel_facts", [])
-    require(missing_fields == [], "checklist must not expose resolved panel facts as missing", errors)
+    require(len(missing_fields) == 4, "checklist must expose the four current hardware recovery facts", errors)
 
 
 def check_project_links(errors: list[str]) -> None:

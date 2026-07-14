@@ -45,6 +45,7 @@ REAL_BLE_SCREEN_BENCH = REPO_ROOT / "docs/validation/companion-screen-real-ble-b
 PANEL_ADAPTER_BEHAVIOR = REPO_ROOT / "docs/validation/companion-screen-panel-adapter-behavior.json"
 PANEL_ADAPTER_BOUNDARY = REPO_ROOT / "docs/validation/companion-screen-panel-adapter-boundary.json"
 PANEL_GATE = REPO_ROOT / "docs/validation/companion-screen-panel-hardware-gate.json"
+PANEL_RECOVERY_GATE = REPO_ROOT / "docs/validation/companion-screen-wb55-hardware-recovery-gate.json"
 PANEL_EVIDENCE_TEMPLATE = REPO_ROOT / "docs/validation/companion-screen-panel-evidence-template.json"
 PANEL_EVIDENCE_RECORD_VALIDATOR = REPO_ROOT / "docs/validation/companion-screen-panel-evidence-record-validator.json"
 PANEL_EVIDENCE_RECORD_SCAFFOLD = REPO_ROOT / "docs/validation/companion-screen-panel-evidence-record-scaffold.json"
@@ -77,6 +78,11 @@ SCAN_ROOT = REPO_ROOT / "app/companion_pendant/epaper"
 def require(condition: bool, message: str, errors: list[str]) -> None:
     if not condition:
         errors.append(message)
+
+
+def normalized_text_sha256(path: pathlib.Path) -> str:
+    text = path.read_text(encoding="utf-8").replace("\r\n", "\n").replace("\r", "\n")
+    return sha256_hex(text.encode("utf-8"))
 
 
 def parse_pbm_header(data: bytes, label: str) -> tuple[int, int, int]:
@@ -502,8 +508,8 @@ def check_acceptance_index(errors: list[str]) -> None:
         status = str(item.get("status", ""))
         require(status in {"PASS", "DEFERRED_HARDWARE", "PENDING_HUMAN"}, f"acceptance item {item.get('id')} has invalid status {status}", errors)
         if item.get("id") == "wb55_real_panel_refresh":
-            require(status == "PASS", "real panel refresh must retain completed WB55 evidence", errors)
-            require(not item.get("missing_hardware_facts"), "real panel refresh must not retain resolved hardware facts", errors)
+            require(status == "DEFERRED_HARDWARE", "real panel refresh must reflect the current FTS02 fault", errors)
+            require(len(item.get("missing_hardware_facts", [])) == 4, "real panel refresh must list current recovery facts", errors)
             require(
                 "docs/validation/companion-screen-panel-hardware-gate.json" in item.get("evidence_paths", []),
                 "real panel refresh must link the panel hardware gate fixture",
@@ -522,6 +528,11 @@ def check_acceptance_index(errors: list[str]) -> None:
             require(
                 "docs/validation/companion-screen-touch-ft6336-wb55.json" in item.get("evidence_paths", []),
                 "real panel refresh must link the physical touch fixture",
+                errors,
+            )
+            require(
+                "docs/validation/companion-screen-wb55-hardware-recovery-gate.json" in item.get("evidence_paths", []),
+                "real panel refresh must link the current hardware recovery gate",
                 errors,
             )
         for evidence in item.get("evidence_paths", []):
@@ -877,9 +888,12 @@ def check_panel_gate(errors: list[str]) -> None:
     data = json.loads(PANEL_GATE.read_text(encoding="utf-8"))
     require(data.get("schema_id") == "companion.pendant.screen_panel_hardware_gate.v1", "unexpected panel gate schema", errors)
     require(data.get("gate_id") == "wb55_real_panel_refresh", "unexpected panel gate id", errors)
-    require(data.get("status") == "PASS", "panel gate must retain completed WB55 evidence", errors)
-    require(data.get("hardware_action_required") is False, "completed panel gate must not require repeated hardware action", errors)
-    require(data.get("real_refresh_claimed") is True, "completed panel gate must retain the real refresh claim", errors)
+    require(data.get("status") == "PASS", "historical panel evidence integrity must remain PASS", errors)
+    require(data.get("evidence_scope") == "historical_refresh_evidence_integrity", "panel gate must identify historical scope", errors)
+    require(data.get("historical_real_refresh_claimed") is True, "historical panel evidence must retain its original refresh claim", errors)
+    require(data.get("real_refresh_claim_is_historical") is True, "historical refresh scope must be explicit", errors)
+    require(data.get("current_real_refresh_claimed") is False, "historical evidence must not claim current panel acceptance", errors)
+    require(data.get("current_acceptance_status") == "DEFERRED_HARDWARE_FTS02_BOOST", "panel gate must link the current FTS02 blocker", errors)
     require(
         "docs/validation/companion-screen-wb55-ssd1681-bringup.json" in
         data.get("evidence_paths", []),
@@ -907,6 +921,11 @@ def check_panel_gate(errors: list[str]) -> None:
         if isinstance(fact, dict):
             require(fact.get("status") == "verified", f"panel gate fact {fact.get('label')} must stay verified", errors)
             require(fact.get("evidence_paths"), f"panel gate fact {fact.get('label')} lost evidence", errors)
+    require(PANEL_RECOVERY_GATE.exists(), "missing current panel recovery gate", errors)
+    if PANEL_RECOVERY_GATE.exists():
+        recovery = json.loads(PANEL_RECOVERY_GATE.read_text(encoding="utf-8"))
+        require(recovery.get("status") == "DEFERRED_HARDWARE_FTS02_BOOST", "current panel recovery must remain deferred", errors)
+        require(recovery.get("claim_scope") == "current_hardware_recovery_gate_no_panel_acceptance", "current recovery gate must not claim acceptance", errors)
 
 
 def check_panel_adapter_boundary(errors: list[str]) -> None:
@@ -1444,7 +1463,7 @@ def check_expression_preview(data: dict[str, Any], errors: list[str]) -> None:
     require(report.get("schema_id") == "companion.pendant.expression_preview.v1", "unexpected expression preview schema", errors)
     require(report.get("source_schema_id") == data.get("schema_id"), "expression preview source schema mismatch", errors)
     require(report.get("source_manifest_sha256") == sha256_hex(MANIFEST.read_bytes()), "expression preview source manifest hash is stale", errors)
-    require(report.get("svg_sha256") == sha256_hex(PREVIEW_SVG.read_bytes()), "expression preview SVG hash mismatch", errors)
+    require(report.get("svg_sha256") == normalized_text_sha256(PREVIEW_SVG), "expression preview SVG hash mismatch", errors)
     require(set(report.get("expressions", [])) == EXPRESSION_KINDS, "expression preview coverage mismatch", errors)
     require({"2.13in", "1.54in"} <= set(report.get("variants", [])), "expression preview variant coverage mismatch", errors)
     expected_items = len(EXPRESSION_KINDS) * len(DISPLAY_VARIANTS)
@@ -1467,7 +1486,7 @@ def check_expression_storyboard(errors: list[str]) -> None:
     require(report.get("source_journey_schema_id") == journey.get("schema_id"), "expression storyboard source schema mismatch", errors)
     require(report.get("source_journey_sha256") == sha256_hex(JOURNEY_FIXTURE.read_bytes()), "expression storyboard source journey hash is stale", errors)
     require(report.get("source_fixture_manifest_sha256") == sha256_hex(MANIFEST.read_bytes()), "expression storyboard fixture manifest hash is stale", errors)
-    require(report.get("svg_sha256") == sha256_hex(STORYBOARD_SVG.read_bytes()), "expression storyboard SVG hash mismatch", errors)
+    require(report.get("svg_sha256") == normalized_text_sha256(STORYBOARD_SVG), "expression storyboard SVG hash mismatch", errors)
     require(report.get("visual_variant") == "2.13in", "expression storyboard visual variant drifted", errors)
     require(report.get("journey_count") == len(journey.get("journeys", [])), "expression storyboard journey count mismatch", errors)
     expected_steps = sum(len(item.get("steps", [])) for item in journey.get("journeys", []))

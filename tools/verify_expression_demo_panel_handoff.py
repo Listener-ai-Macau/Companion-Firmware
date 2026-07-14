@@ -19,6 +19,7 @@ REAL_BLE_BENCH = REPO_ROOT / "docs/validation/companion-screen-real-ble-bench.js
 PANEL_SESSION = REPO_ROOT / "docs/validation/companion-screen-panel-hardware-session.json"
 PANEL_PLAN = REPO_ROOT / "docs/validation/companion-screen-panel-hardware-acceptance-plan.json"
 PANEL_GATE = REPO_ROOT / "docs/validation/companion-screen-panel-hardware-gate.json"
+PANEL_RECOVERY_GATE = REPO_ROOT / "docs/validation/companion-screen-wb55-hardware-recovery-gate.json"
 PANEL_TEMPLATE = REPO_ROOT / "docs/validation/companion-screen-panel-evidence-template.json"
 SCREEN_DOC = REPO_ROOT / "docs/companion_screen_expression_system.md"
 EPAPER_README = REPO_ROOT / "app/companion_pendant/epaper/README.md"
@@ -156,6 +157,7 @@ def build_report(errors: list[str]) -> dict[str, Any]:
     panel_session = load_json(PANEL_SESSION, errors)
     panel_plan = load_json(PANEL_PLAN, errors)
     panel_gate = load_json(PANEL_GATE, errors)
+    panel_recovery = load_json(PANEL_RECOVERY_GATE, errors)
     load_json(PANEL_TEMPLATE, errors)
     if errors:
         return {"schema_id": SCHEMA_ID, "status": "FAIL", "errors": errors}
@@ -175,8 +177,10 @@ def build_report(errors: list[str]) -> dict[str, Any]:
         "status": "PASS",
         "claim_scope": "no_hardware_handoff_plan",
         "gate_id": "wb55_real_panel_refresh",
-        "current_gate_status": panel_gate.get("status"),
-        "real_refresh_claimed": panel_gate.get("real_refresh_claimed"),
+        "current_gate_status": panel_recovery.get("status"),
+        "real_refresh_claimed": False,
+        "historical_wb55_refresh_evidence_status": panel_gate.get("status"),
+        "historical_wb55_real_refresh_claimed": panel_gate.get("historical_real_refresh_claimed"),
         "sources": {
             "demo_sequence": rel(DEMO_SEQUENCE),
             "demo_sequence_sha256": sha256_hex(DEMO_SEQUENCE.read_bytes()),
@@ -185,6 +189,7 @@ def build_report(errors: list[str]) -> dict[str, Any]:
             "panel_hardware_session": rel(PANEL_SESSION),
             "panel_hardware_acceptance_plan": rel(PANEL_PLAN),
             "panel_hardware_gate": rel(PANEL_GATE),
+            "panel_hardware_recovery_gate": rel(PANEL_RECOVERY_GATE),
             "panel_evidence_template": rel(PANEL_TEMPLATE),
             "screen_doc": rel(SCREEN_DOC),
             "epaper_readme": rel(EPAPER_README),
@@ -214,8 +219,10 @@ def build_report(errors: list[str]) -> dict[str, Any]:
         "source_gate_snapshot": {
             "panel_session_gate_status": panel_session.get("current_gate_status"),
             "panel_plan_gate_status": panel_plan.get("current_gate_status"),
-            "panel_gate_status": panel_gate.get("status"),
-            "panel_gate_real_refresh_claimed": panel_gate.get("real_refresh_claimed"),
+            "current_panel_recovery_status": panel_recovery.get("status"),
+            "current_panel_real_refresh_claimed": False,
+            "historical_panel_gate_status": panel_gate.get("status"),
+            "historical_panel_gate_real_refresh_claimed": panel_gate.get("historical_real_refresh_claimed"),
             "real_ble_expect_panel_flag": real_ble.get("bench_operation", {}).get("real_panel_flag"),
             "real_ble_contract_only_sequence": real_ble.get("expression_status_sequence_operation", {}).get("contract_only"),
         },
@@ -283,8 +290,10 @@ def validate_report(report: dict[str, Any], errors: list[str]) -> None:
     require(report.get("schema_id") == SCHEMA_ID, "unexpected demo panel handoff schema", errors)
     require(report.get("status") == "PASS", "demo panel handoff must be PASS", errors)
     require(report.get("claim_scope") == "no_hardware_handoff_plan", "demo panel handoff must be a no-hardware plan", errors)
-    require(report.get("current_gate_status") == "PASS", "demo panel handoff must record the accepted WB55 hardware gate", errors)
-    require(report.get("real_refresh_claimed") is True, "demo panel handoff must record verified WB55 refresh evidence", errors)
+    require(report.get("current_gate_status") == "DEFERRED_HARDWARE_FTS02_BOOST", "demo panel handoff must record the current FTS02 blocker", errors)
+    require(report.get("real_refresh_claimed") is False, "demo panel handoff must not claim current WB55 refresh", errors)
+    require(report.get("historical_wb55_refresh_evidence_status") == "PASS", "demo panel handoff must retain historical WB55 evidence", errors)
+    require(report.get("historical_wb55_real_refresh_claimed") is True, "demo panel handoff must preserve the historical refresh claim", errors)
     summary = report.get("summary", {})
     require(summary.get("demo_step_count") == len(report.get("demo_steps", [])), "demo panel handoff step count mismatch", errors)
     require(summary.get("target_count") == len(TARGETS), "demo panel handoff target count mismatch", errors)

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify the completed WB55 real-panel refresh gate and its evidence."""
+"""Verify retained historical WB55 panel evidence and the current recovery gate."""
 
 from __future__ import annotations
 
@@ -20,6 +20,7 @@ REAL_BLE_BENCH = ROOT / "docs/validation/companion-screen-real-ble-bench.json"
 EVIDENCE_RECORD_VALIDATOR = ROOT / "docs/validation/companion-screen-panel-evidence-record-validator.json"
 EVIDENCE_TEMPLATE = ROOT / "docs/validation/companion-screen-panel-evidence-template.json"
 DRIVER = ROOT / "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c"
+CURRENT_RECOVERY_GATE = ROOT / "docs/validation/companion-screen-wb55-hardware-recovery-gate.json"
 GATE_ID = "wb55_real_panel_refresh"
 SCHEMA_ID = "companion.pendant.screen_panel_hardware_gate.v1"
 
@@ -54,6 +55,7 @@ def build_gate() -> dict[str, Any]:
     touch = bringup["touch_evidence"]
     fast = refresh["fast_maintenance_runtime"]
     production = refresh["production_runtime"]
+    recovery = load(CURRENT_RECOVERY_GATE)
 
     fact = lambda fact_id, label, value, paths: {
         "id": fact_id,
@@ -68,8 +70,13 @@ def build_gate() -> dict[str, Any]:
         "schema_id": SCHEMA_ID,
         "gate_id": GATE_ID,
         "status": "PASS",
+        "evidence_scope": "historical_refresh_evidence_integrity",
+        "current_acceptance_status": recovery.get("status"),
+        "current_real_refresh_claimed": False,
+        "superseded_for_current_acceptance_by": rel(CURRENT_RECOVERY_GATE),
         "hardware_action_required": False,
-        "real_refresh_claimed": True,
+        "historical_real_refresh_claimed": True,
+        "real_refresh_claim_is_historical": True,
         "result": (
             "WB55 drove the physical GDEY0154D67-T03 through SSD1681 full, "
             "partial, and fast refresh paths; the operator confirmed a visible "
@@ -89,13 +96,13 @@ def build_gate() -> dict[str, Any]:
             fact("dc_pin", "DC pin", transport["dc"], [bringup_path]),
             fact("rst_pin", "RST pin", transport["rst"], [bringup_path]),
             fact("busy_pin", "BUSY pin", transport["busy"], [bringup_path]),
-            fact("full_refresh", "full refresh sequence", "0x24 + 0x26 + 0xF7", [refresh_path, production["log"]]),
-            fact("partial_refresh", "partial refresh sequence", "0x24 + 0xFF", [refresh_path, production["log"]]),
-            fact("fast_maintenance", "verified Mode-1 single-flash sequence", "vendor fast init + 0xC7 + 0x26 baseline sync", [refresh_path, fast["log"]]),
+            fact("full_refresh", "full refresh sequence", "0x24 + 0x26 + 0xF7", [refresh_path]),
+            fact("partial_refresh", "partial refresh sequence", "0x24 + 0xFF", [refresh_path]),
+            fact("fast_maintenance", "verified Mode-1 single-flash sequence", "vendor fast init + 0xC7 + 0x26 baseline sync", [refresh_path]),
             fact("legacy_maintenance", "retired historical maintenance sequence", "0xCF maintenance + 0x26 baseline sync", [refresh_path]),
             fact("operator_visual", "operator visual evidence", display["black_pattern_operator_observation"], [bringup_path]),
-            fact("orientation", "operator orientation evidence", display["human_view_orientation"], [bringup_path, display["orientation_log"]]),
-            fact("touch_contact", "physical touch contact/release", touch["result"], [bringup_path, touch["log"]]),
+            fact("orientation", "operator orientation evidence", display["human_view_orientation"], [bringup_path]),
+            fact("touch_contact", "physical touch contact/release", touch["result"], [bringup_path, rel(TOUCH)]),
         ],
         "runtime": {
             "full_refresh_elapsed_ms": transport["full_refresh_elapsed_ms"],
@@ -120,13 +127,11 @@ def build_gate() -> dict[str, Any]:
             rel(EVIDENCE_TEMPLATE),
             rel(EVIDENCE_RECORD_VALIDATOR),
             rel(DRIVER),
-            production["log"],
-            fast["log"],
-            display["orientation_log"],
-            touch["log"],
+            rel(CURRENT_RECOVERY_GATE),
         ],
         "validation_commands": [
             "python .\\tools\\verify_expression_panel_gate.py",
+            "python .\\tools\\verify_wb55_screen_hardware_recovery_gate.py",
             "python .\\tools\\verify_screen_menu_assets.py",
             "python .\\tools\\verify_epaper_refresh_policy.py",
             "python .\\tools\\verify_epaper_fast_maintenance_runtime.py",
@@ -149,7 +154,27 @@ def validate(data: dict[str, Any], errors: list[str]) -> None:
     require(data.get("schema_id") == SCHEMA_ID, "unexpected gate schema", errors)
     require(data.get("gate_id") == GATE_ID, "unexpected gate id", errors)
     require(data.get("status") == "PASS", "real-panel refresh gate is not PASS", errors)
-    require(data.get("real_refresh_claimed") is True, "real refresh is not claimed", errors)
+    require(
+        data.get("evidence_scope") == "historical_refresh_evidence_integrity",
+        "panel gate must identify its historical evidence scope",
+        errors,
+    )
+    require(
+        data.get("current_acceptance_status") == "DEFERRED_HARDWARE_FTS02_BOOST",
+        "panel gate must link the current FTS02-deferred status",
+        errors,
+    )
+    require(
+        data.get("current_real_refresh_claimed") is False,
+        "historical panel gate must not claim current refresh acceptance",
+        errors,
+    )
+    require(
+        data.get("real_refresh_claim_is_historical") is True,
+        "historical refresh claim must be explicit",
+        errors,
+    )
+    require(data.get("historical_real_refresh_claimed") is True, "historical real refresh evidence is not retained", errors)
     require(data.get("hardware_action_required") is False, "gate still asks for hardware facts", errors)
 
     facts = data.get("required_hardware_facts", [])
@@ -191,11 +216,25 @@ def validate(data: dict[str, Any], errors: list[str]) -> None:
     require(bringup.get("touch_evidence", {}).get("result") == "PASS", "physical touch contact evidence missing", errors)
 
     refresh = load(REFRESH)
+    fast = refresh.get("fast_maintenance_runtime", {})
+    production = refresh.get("production_runtime", {})
     require(refresh.get("status") == "PASS", "refresh evidence is not PASS", errors)
     require(refresh.get("fast_maintenance_runtime", {}).get("machine_result") == "PASS", "fast maintenance evidence is not PASS", errors)
     require(refresh.get("fast_maintenance_runtime", {}).get("control") == "0xC7", "fast control drifted", errors)
     require(refresh.get("production_runtime", {}).get("interactive_hard_limit") == 60, "historical production hard limit drifted", errors)
     require(refresh.get("production_runtime", {}).get("flash_verified") is True, "production firmware flash is not verified", errors)
+
+    recovery = load(CURRENT_RECOVERY_GATE)
+    require(
+        recovery.get("status") == "DEFERRED_HARDWARE_FTS02_BOOST",
+        "current recovery gate must remain FTS02-deferred",
+        errors,
+    )
+    require(
+        recovery.get("acceptance_criteria", {}).get("normal_current_expression_visible") is False,
+        "current normal expression must remain unaccepted",
+        errors,
+    )
 
     driver = DRIVER.read_text(encoding="utf-8")
     for marker in [
@@ -209,13 +248,12 @@ def validate(data: dict[str, Any], errors: list[str]) -> None:
     ]:
         require(marker in driver, f"driver missing {marker}", errors)
 
-    production_log = evidence_path(refresh["production_runtime"]["log"]).read_text(encoding="utf-8", errors="replace")
-    for marker in ["soft=5 hard=60 baseline=0", "refresh mode=full control=0xF7", "refresh mode=partial control=0xFF"]:
-        require(marker in production_log, f"production log missing {marker}", errors)
-
-    fast_log = evidence_path(refresh["fast_maintenance_runtime"]["log"]).read_text(encoding="utf-8", errors="replace")
-    for marker in ["selected=fast reason=6", "fast_init temperature=0x0064", "refresh mode=fast control=0xC7", "policy_commit mode=fast ok=1 partial_count=0"]:
-        require(marker in fast_log, f"fast log missing {marker}", errors)
+    require(production.get("interactive_soft_limit") == 5, "historical soft limit drifted", errors)
+    require(production.get("interactive_hard_limit") == 60, "historical hard limit drifted", errors)
+    require(production.get("observed_partial_refresh_count") == 4, "historical partial count drifted", errors)
+    require(fast.get("decision") == "fast", "historical fast decision drifted", errors)
+    require(fast.get("reason") == "interactive_hard_limit", "historical fast reason drifted", errors)
+    require(fast.get("complete") is True, "historical fast completion drifted", errors)
 
 
 def main(argv: list[str]) -> int:
@@ -239,7 +277,7 @@ def main(argv: list[str]) -> int:
         for error in errors:
             print(f" - {error}", file=sys.stderr)
         return 1
-    print(f"PASS: WB55 real-panel refresh evidence verified -> {rel(fixture)}")
+    print(f"PASS: historical WB55 panel evidence verified; current recovery remains deferred -> {rel(fixture)}")
     return 0
 
 

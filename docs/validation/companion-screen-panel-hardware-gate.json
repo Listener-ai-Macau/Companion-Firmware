@@ -1,4 +1,6 @@
 {
+  "current_acceptance_status": "DEFERRED_HARDWARE_FTS02_BOOST",
+  "current_real_refresh_claimed": false,
   "evidence_paths": [
     "docs/validation/companion-screen-wb55-ssd1681-bringup.json",
     "docs/validation/companion-screen-ssd1681-partial-refresh-wb55.json",
@@ -8,14 +10,13 @@
     "docs/validation/companion-screen-panel-evidence-template.json",
     "docs/validation/companion-screen-panel-evidence-record-validator.json",
     "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
-    ".cache/validation/screen-revision11-fast-maintenance-normal/nucleo-serial-raw.log",
-    ".cache/validation/screen-ssd1681-fast-maintenance/nucleo-serial-raw.log",
-    ".cache/validation/screen-human-view-mirror-fix-20260711/nucleo-serial-raw.log",
-    ".cache/validation/nucleo-serial-20260711-153810/nucleo-serial-raw.log"
+    "docs/validation/companion-screen-wb55-hardware-recovery-gate.json"
   ],
+  "evidence_scope": "historical_refresh_evidence_integrity",
   "gate_id": "wb55_real_panel_refresh",
   "hardware_action_required": false,
-  "real_refresh_claimed": true,
+  "historical_real_refresh_claimed": true,
+  "real_refresh_claim_is_historical": true,
   "remaining_human_acceptance": [
     "Confirm current vendor Mode-1 0xC7 maintenance is perceived as one quiet flash",
     "Confirm daily tap and four-way swipes stay as pet reactions",
@@ -79,8 +80,7 @@
     },
     {
       "evidence_paths": [
-        "docs/validation/companion-screen-ssd1681-partial-refresh-wb55.json",
-        ".cache/validation/screen-revision11-fast-maintenance-normal/nucleo-serial-raw.log"
+        "docs/validation/companion-screen-ssd1681-partial-refresh-wb55.json"
       ],
       "id": "full_refresh",
       "label": "full refresh sequence",
@@ -89,8 +89,7 @@
     },
     {
       "evidence_paths": [
-        "docs/validation/companion-screen-ssd1681-partial-refresh-wb55.json",
-        ".cache/validation/screen-revision11-fast-maintenance-normal/nucleo-serial-raw.log"
+        "docs/validation/companion-screen-ssd1681-partial-refresh-wb55.json"
       ],
       "id": "partial_refresh",
       "label": "partial refresh sequence",
@@ -99,8 +98,7 @@
     },
     {
       "evidence_paths": [
-        "docs/validation/companion-screen-ssd1681-partial-refresh-wb55.json",
-        ".cache/validation/screen-ssd1681-fast-maintenance/nucleo-serial-raw.log"
+        "docs/validation/companion-screen-ssd1681-partial-refresh-wb55.json"
       ],
       "id": "fast_maintenance",
       "label": "verified Mode-1 single-flash sequence",
@@ -127,8 +125,7 @@
     },
     {
       "evidence_paths": [
-        "docs/validation/companion-screen-wb55-ssd1681-bringup.json",
-        ".cache/validation/screen-human-view-mirror-fix-20260711/nucleo-serial-raw.log"
+        "docs/validation/companion-screen-wb55-ssd1681-bringup.json"
       ],
       "id": "orientation",
       "label": "operator orientation evidence",
@@ -138,7 +135,7 @@
     {
       "evidence_paths": [
         "docs/validation/companion-screen-wb55-ssd1681-bringup.json",
-        ".cache/validation/nucleo-serial-20260711-153810/nucleo-serial-raw.log"
+        "docs/validation/companion-screen-touch-ft6336-wb55.json"
       ],
       "id": "touch_contact",
       "label": "physical touch contact/release",
@@ -160,6 +157,7 @@
   },
   "schema_id": "companion.pendant.screen_panel_hardware_gate.v1",
   "status": "PASS",
+  "superseded_for_current_acceptance_by": "docs/validation/companion-screen-wb55-hardware-recovery-gate.json",
   "target_backend": {
     "controller": "SSD1681",
     "dispatcher": "app/companion_pendant/epaper/panel_target_stm32wb.c",
@@ -169,6 +167,7 @@
   },
   "validation_commands": [
     "python .\\tools\\verify_expression_panel_gate.py",
+    "python .\\tools\\verify_wb55_screen_hardware_recovery_gate.py",
     "python .\\tools\\verify_screen_menu_assets.py",
     "python .\\tools\\verify_epaper_refresh_policy.py",
     "python .\\tools\\verify_epaper_fast_maintenance_runtime.py",

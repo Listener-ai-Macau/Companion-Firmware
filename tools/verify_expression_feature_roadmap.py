@@ -166,7 +166,7 @@ CAPABILITIES = [
             "wb55_touch_visual_acceptance",
             "companion_screen_goal_audit",
         ],
-        "next_acceptance": "Operator confirms daily pet gestures, anywhere 3 s menu entry, press-cue/arrival partial refreshes, language switching, and that 0xCF maintenance is perceived as a single quiet flash.",
+        "next_acceptance": "Replace or cross-swap FTS02, prove solid white/black and valid PREVGH/PREVGL rails, then resume touch, gesture, language, and maintenance visual review.",
     },
     {
         "id": "wba_migration_readiness",
@@ -209,10 +209,10 @@ def load_json(path: pathlib.Path) -> dict[str, Any]:
 def aggregate_status(statuses: list[str]) -> str:
     if any(status not in {"PASS", "DEFERRED_HARDWARE", "PENDING_HUMAN"} for status in statuses):
         return "NEEDS_ATTENTION"
-    if any(status == "PENDING_HUMAN" for status in statuses):
-        return "PENDING_HUMAN"
     if any(status == "DEFERRED_HARDWARE" for status in statuses):
         return "DEFERRED_HARDWARE"
+    if any(status == "PENDING_HUMAN" for status in statuses):
+        return "PENDING_HUMAN"
     return "PASS"
 
 
@@ -266,8 +266,8 @@ def build_roadmap() -> dict[str, Any]:
             "pending_human_capability_count": int(status_counts.get("PENDING_HUMAN", 0)),
             "needs_attention_capability_count": int(status_counts.get("NEEDS_ATTENTION", 0)),
             "next_acceptance": (
-                f"Complete the WB55 rev{CANDIDATE.revision} runtime recheck logs before focused "
-                "touch/menu/language and 0xCF single-flash visual review."
+                "Replace or cross-swap FTS02, prove deterministic solid white/black frames "
+                "and valid positive/negative refresh rails, then resume focused visual review."
             ),
         },
         "validation_commands": [
@@ -280,7 +280,7 @@ def build_roadmap() -> dict[str, Any]:
 
 def validate_roadmap(data: dict[str, Any], errors: list[str]) -> None:
     require(data.get("schema_id") == SCHEMA_ID, f"roadmap schema_id must be {SCHEMA_ID}", errors)
-    require(data.get("current_next_gate") == RUNTIME_GATE_ID, "roadmap must point at the focused runtime recheck gate", errors)
+    require(data.get("current_next_gate") == "wb55_real_panel_refresh", "roadmap must point at the current panel recovery gate", errors)
     capabilities = data.get("capabilities", [])
     require(isinstance(capabilities, list) and capabilities, "roadmap must contain capabilities", errors)
     ids = [capability.get("id") for capability in capabilities if isinstance(capability, dict)]
@@ -300,7 +300,7 @@ def validate_roadmap(data: dict[str, Any], errors: list[str]) -> None:
 
     coverage = data.get("coverage", {})
     require(coverage.get("ungrouped_acceptance_item_ids") == [], "roadmap has ungrouped acceptance items", errors)
-    require(data.get("status") == "PENDING_HUMAN", "roadmap should reflect the focused human acceptance gate", errors)
+    require(data.get("status") == "DEFERRED_HARDWARE", "roadmap should reflect the current hardware recovery gate", errors)
 
     by_id = {capability.get("id"): capability for capability in capabilities if isinstance(capability, dict)}
     generation = by_id.get("screen_generation_hygiene", {})
@@ -328,7 +328,7 @@ def validate_roadmap(data: dict[str, Any], errors: list[str]) -> None:
     )
 
     panel = by_id.get("panel_driver_readiness", {})
-    require(panel.get("status") == "PENDING_HUMAN", "panel_driver_readiness must reflect the human gate", errors)
+    require(panel.get("status") == "DEFERRED_HARDWARE", "panel_driver_readiness must reflect the current hardware blocker", errors)
     require(
         "wb55_real_panel_refresh" in panel.get("acceptance_item_ids", []),
         "panel_driver_readiness must include wb55_real_panel_refresh",
@@ -345,8 +345,8 @@ def validate_roadmap(data: dict[str, Any], errors: list[str]) -> None:
         errors,
     )
     require(
-        "0xCF maintenance" in str(panel.get("next_acceptance", "")),
-        "panel_driver_readiness next_acceptance must name the 0xCF maintenance review",
+        "FTS02" in str(panel.get("next_acceptance", "")) and "PREVGH/PREVGL" in str(panel.get("next_acceptance", "")),
+        "panel_driver_readiness next_acceptance must name FTS02 and refresh-rail recovery",
         errors,
     )
 
