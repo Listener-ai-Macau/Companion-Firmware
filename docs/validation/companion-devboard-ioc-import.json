@@ -137,6 +137,7 @@
   },
   "external_flash_qspi2io_wiring": {
     "current_bench_evidence": {
+      "artifact": "docs/validation/companion-external-flash-current-bench-20260714.json",
       "captured_at": "2026-07-14T21:13:41+08:00",
       "status": "NO_GO_NOT_DETECTED",
       "tokens": [
@@ -202,6 +203,7 @@
     "captured_external_ioc": "C:/Users/Billy/Desktop/STM32.ioc",
     "desktop_exporter": "tools/export_devboard_ioc.ps1",
     "devboard_ioc": "cubeide/Companion_Nucleo_WB55RG/Companion_Nucleo_WB55RG.ioc",
+    "external_flash_bench_evidence": "docs/validation/companion-external-flash-current-bench-20260714.json",
     "physical_checklist": "docs/companion_devboard_physical_checklist.md",
     "product_ioc": "Companion_Pendant.ioc",
     "verifier": "tools/verify_devboard_ioc_import.py",

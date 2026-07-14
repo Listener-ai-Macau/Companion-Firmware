@@ -20,6 +20,7 @@ BRINGUP_MAIN = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Core
 WORKFLOW_DOC = REPO_ROOT / "docs" / "codex_development_workflow.md"
 BRINGUP_STEPS = REPO_ROOT / "docs" / "bringup_steps.md"
 PHYSICAL_CHECKLIST = REPO_ROOT / "docs" / "companion_devboard_physical_checklist.md"
+EXTERNAL_FLASH_BENCH_EVIDENCE = REPO_ROOT / "docs" / "validation" / "companion-external-flash-current-bench-20260714.json"
 EXPORT_SCRIPT = REPO_ROOT / "tools" / "export_devboard_ioc.ps1"
 SCHEMA_ID = "companion.devboard_ioc_import.v1"
 
@@ -288,6 +289,7 @@ def build_fixture() -> dict[str, Any]:
             "workflow_doc": rel(WORKFLOW_DOC),
             "bringup_steps": rel(BRINGUP_STEPS),
             "physical_checklist": rel(PHYSICAL_CHECKLIST),
+            "external_flash_bench_evidence": rel(EXTERNAL_FLASH_BENCH_EVIDENCE),
             "desktop_exporter": rel(EXPORT_SCRIPT),
             "verifier": "tools/verify_devboard_ioc_import.py",
         },
@@ -324,6 +326,7 @@ def build_fixture() -> dict[str, Any]:
             "current_bench_evidence": {
                 "captured_at": "2026-07-14T21:13:41+08:00",
                 "status": "NO_GO_NOT_DETECTED",
+                "artifact": rel(EXTERNAL_FLASH_BENCH_EVIDENCE),
                 "tokens": [
                     "external_store=unavailable",
                     "fallback_internal",
@@ -402,6 +405,44 @@ def check_docs(errors: list[str]) -> None:
         require(token in bringup_main, f"normal firmware missing QSPI 2IO pin anchor {token}", errors)
 
 
+def check_external_flash_bench_evidence(errors: list[str]) -> None:
+    text = read(EXTERNAL_FLASH_BENCH_EVIDENCE, errors)
+    if not text:
+        return
+    try:
+        evidence = json.loads(text)
+    except json.JSONDecodeError as exc:
+        errors.append(f"external Flash bench evidence is invalid JSON: {exc}")
+        return
+    require(evidence.get("schema_id") == "companion.external_flash.current_bench.v1", "external Flash bench evidence schema drifted", errors)
+    require(evidence.get("status") == "NO_GO_NOT_DETECTED", "external Flash current bench must remain NO_GO_NOT_DETECTED", errors)
+    capture = evidence.get("capture", {})
+    require(capture.get("reset_after_open") is True, "external Flash bench evidence must be reset-bounded", errors)
+    require(capture.get("operator_prompt") is False, "external Flash machine preflight must not claim an operator review", errors)
+    artifact_hashes = {item.get("path"): item.get("sha256") for item in capture.get("artifacts", [])}
+    require(
+        artifact_hashes.get("nucleo-serial-raw.log") == "b33002c263d4c473bf89cbefc6d6baa7b1d46e9883117e4fae6478948aafaf43",
+        "external Flash raw serial evidence hash drifted",
+        errors,
+    )
+    observations = evidence.get("machine_observations", [])
+    for token in [
+        "[stage] qspi ok",
+        "flash=QSPI-2IO PA2/PA3/PB9/PB8",
+        "external_store=unavailable probe=error",
+        "fallback=rescue_ui",
+        "[rec-flash] probe=error",
+    ]:
+        require(any(token in line for line in observations), f"external Flash bench evidence missing observation {token}", errors)
+    pass_contract = evidence.get("physical_pass_contract", {})
+    require(pass_contract.get("static_checks_are_not_hardware_acceptance") is True, "external Flash evidence must reject static-only hardware acceptance", errors)
+    require(
+        pass_contract.get("required_tokens") == ["[screen-assets] external_store=ready", "[rec-flash] ready=1 jedec=0x"],
+        "external Flash physical PASS tokens drifted",
+        errors,
+    )
+
+
 def check_fixture_data(data: dict[str, Any], errors: list[str]) -> None:
     require(data.get("schema_id") == SCHEMA_ID, "unexpected devboard IOC import schema", errors)
     require(data.get("status") == "PASS", "devboard IOC import fixture must be PASS", errors)
@@ -472,7 +513,7 @@ def main(argv: list[str]) -> int:
     fixture_path = args.fixture if args.fixture.is_absolute() else REPO_ROOT / args.fixture
     external_path = args.external
     errors: list[str] = []
-    for path in [DEVBOARD_IOC, PRODUCT_IOC, BRINGUP_README, BRINGUP_MAIN, WORKFLOW_DOC, BRINGUP_STEPS, PHYSICAL_CHECKLIST, EXPORT_SCRIPT]:
+    for path in [DEVBOARD_IOC, PRODUCT_IOC, BRINGUP_README, BRINGUP_MAIN, WORKFLOW_DOC, BRINGUP_STEPS, PHYSICAL_CHECKLIST, EXTERNAL_FLASH_BENCH_EVIDENCE, EXPORT_SCRIPT]:
         require(path.exists(), f"missing required path {rel(path)}", errors)
     if args.require_external:
         require(external_path.exists(), f"missing required external IOC {external_path}", errors)
@@ -493,6 +534,7 @@ def main(argv: list[str]) -> int:
         if args.require_external:
             require(live is not None, f"required external IOC was not checked: {external_path}", errors)
         check_docs(errors)
+        check_external_flash_bench_evidence(errors)
         expected = build_fixture() if not errors else {}
         if expected:
             check_fixture_data(expected, errors)
