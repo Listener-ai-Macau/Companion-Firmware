@@ -69,6 +69,60 @@ static bool replay_wb55_double_tap_boundary(void)
     return true;
 }
 
+static bool replay_two_recording_double_taps(void)
+{
+    const comp_touch_gesture_config_t config = {
+        .tap_max_move_px = 24u,
+        .long_press_max_move_px = 46u,
+        .swipe_min_move_px = 30u,
+        .axis_lock_min_move_px = 10u,
+        .axis_slop_px = 5u,
+        .tap_max_duration_ms = 1100u,
+        .swipe_max_duration_ms = 1400u,
+        .hold_feedback_min_duration_ms = 650u,
+        .long_press_min_duration_ms = 3000u,
+        .double_tap_max_gap_ms = 650u,
+        .double_tap_max_move_px = 40u,
+        .axis_dominance_percent = 120u,
+        .min_contact_samples = 1u,
+        .release_debounce_samples = 1u,
+    };
+    const uint32_t cycle_start_ms[] = { 100u, 1200u };
+    comp_touch_gesture_state_t state;
+    comp_touch_gesture_event_t event;
+    unsigned double_taps = 0u;
+
+    comp_touch_gesture_init(&state, &config);
+    for (size_t cycle = 0u;
+         cycle < sizeof(cycle_start_ms) / sizeof(cycle_start_ms[0]);
+         ++cycle) {
+        uint32_t start = cycle_start_ms[cycle];
+
+        CHECK(!comp_touch_gesture_process(&state, true, false,
+                                          96u, 104u, start, &event),
+              "recording double tap first DOWN must stay active");
+        CHECK(comp_touch_gesture_process(&state, false, false,
+                                         96u, 104u, start + 80u, &event),
+              "recording double tap first release must emit tap");
+        CHECK(event.type == COMP_TOUCH_GESTURE_TAP && state.tap_pending,
+              "recording first tap must remain provisional");
+        CHECK(!comp_touch_gesture_process(&state, true, false,
+                                          101u, 108u, start + 230u, &event),
+              "recording double tap second DOWN must stay active");
+        CHECK(comp_touch_gesture_process(&state, false, false,
+                                         101u, 108u, start + 310u, &event),
+              "recording double tap second release must complete gesture");
+        CHECK(event.type == COMP_TOUCH_GESTURE_DOUBLE_TAP,
+              "both start and stop cycles must emit double tap");
+        CHECK(!state.active && !state.tap_pending,
+              "completed recording double tap must re-arm the next cycle");
+        double_taps++;
+    }
+    CHECK(double_taps == 2u,
+          "recording replay must preserve start and stop double taps");
+    return true;
+}
+
 int main(void)
 {
     if (!comp_touch_gesture_self_test()) {
@@ -78,6 +132,9 @@ int main(void)
     if (!replay_wb55_double_tap_boundary()) {
         return 1;
     }
-    puts("PASS: WB55 double-tap boundary replay produced one double tap and no phantom long press.");
+    if (!replay_two_recording_double_taps()) {
+        return 1;
+    }
+    puts("PASS: WB55 replay produced recording start/stop double taps with no phantom long press.");
     return 0;
 }

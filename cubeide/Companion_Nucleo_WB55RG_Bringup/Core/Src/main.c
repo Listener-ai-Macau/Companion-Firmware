@@ -685,6 +685,8 @@ static void request_ble_type_ready_autostream(const char *reason,
                                               uint16_t pcm_bytes);
 static void clear_ble_type_ready_autostream(void);
 static bool ble_audio_stream_enabled_for_recording(void);
+static bool recording_touch_work_pending(void);
+static bool service_recording_touch(void);
 static bool recording_loop_should_process_app(uint32_t block_index);
 static void start_ble_session_if_ready(const char *reason);
 static void end_ble_session_if_active(bool cancel, const char *reason);
@@ -1185,18 +1187,20 @@ int main(void)
         process_deferred_touch_runtime_action();
         if (s_recording_fsm.state == COMP_RECORDING_STATE_RECORDING) {
             update_low_power_policy();
+            if (!service_recording_touch()) {
+                continue;
+            }
+            bool preserve_touch_window =
+                s_recording_fsm.active_source == COMP_RECORDING_SOURCE_USER_TOUCH &&
+                recording_touch_work_pending();
             bool process_app =
-                recording_loop_should_process_app(s_manual_recording_block_count);
+                recording_loop_should_process_app(s_manual_recording_block_count) &&
+                !preserve_touch_window;
             if (process_app) {
                 MX_APPE_Process();
-                if (s_recording_fsm.state != COMP_RECORDING_STATE_RECORDING) {
+                if (!service_recording_touch()) {
                     continue;
                 }
-            }
-            poll_board_buttons();
-            poll_touch_debug();
-            if (s_recording_fsm.state != COMP_RECORDING_STATE_RECORDING) {
-                continue;
             }
 
             if (!s_ble_session_active &&
@@ -1217,6 +1221,9 @@ int main(void)
                                          "mic-manual",
                                          0u);
             uint32_t capture_elapsed_ms = HAL_GetTick() - capture_start_ms;
+            if (!service_recording_touch()) {
+                continue;
+            }
             if (capture_result == MIC_CAPTURE_RESULT_PENDING) {
                 HAL_Delay(1u);
                 continue;
@@ -1249,6 +1256,9 @@ int main(void)
             }
             if (ble_audio_stream_enabled_for_recording()) {
                 MX_APPE_Process();
+                if (!service_recording_touch()) {
+                    continue;
+                }
             }
             continue;
         }
@@ -2669,6 +2679,29 @@ static bool ble_audio_stream_enabled_for_recording(void)
 #else
     return s_ble_type_ready_autostream_active;
 #endif
+}
+
+static bool recording_touch_work_pending(void)
+{
+    return s_touch_contact_active ||
+           s_touch_gesture.active ||
+           s_touch_gesture.consumed_until_release ||
+           s_touch_gesture.tap_pending ||
+           s_touch_irq_count != s_touch_irq_consumed_count ||
+           s_touch_refresh_buffer_count != 0u ||
+           s_touch_deferred_action != COMP_TOUCH_RUNTIME_ACTION_NONE;
+}
+
+static bool service_recording_touch(void)
+{
+    /* Recording expressions are synchronous e-paper work. Keep acquisition,
+     * gesture classification, and the stop action ahead of every display or
+     * microphone service boundary so a complete double tap cannot disappear
+     * inside one partial-refresh interval. */
+    poll_board_buttons();
+    poll_touch_debug();
+    process_deferred_touch_runtime_action();
+    return s_recording_fsm.state == COMP_RECORDING_STATE_RECORDING;
 }
 
 static bool recording_loop_should_process_app(uint32_t block_index)

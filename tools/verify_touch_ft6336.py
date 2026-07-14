@@ -19,7 +19,12 @@ def require(label: str, content: str, tokens: tuple[str, ...], errors: list[str]
 
 
 def extract_function(content: str, name: str) -> str:
-    match = re.search(rf"\b{re.escape(name)}\s*\([^;{{}}]*\)\s*\{{", content, re.S)
+    match = re.search(
+        rf"^[ \t]*(?:[A-Za-z_]\w*[ \t]+)+\**{re.escape(name)}"
+        rf"\s*\([^;{{}}]*\)\s*\{{",
+        content,
+        re.M | re.S,
+    )
     if match is None:
         raise ValueError(f"missing function body: {name}")
     brace = content.find("{", match.start())
@@ -240,6 +245,8 @@ def main() -> int:
     ), errors)
     require("native WB55 gesture replay", host_test + host_runner, (
         "replay_wb55_double_tap_boundary",
+        "replay_two_recording_double_taps",
+        "recording replay must preserve start and stop double taps",
         "95u, 128u, 100u",
         "109u, 129u, 232u",
         "0u, 0u, 4535u",
@@ -273,6 +280,9 @@ def main() -> int:
         microphone_probe = extract_function(main_source, "run_microphone_probe")
         dma_stop = extract_function(main_source, "pdm_raw_dma_stop_if_started")
         touch_dispatch = extract_function(main_source, "handle_touch_menu_sample")
+        main_loop = extract_function(main_source, "main")
+        recording_pending = extract_function(main_source, "recording_touch_work_pending")
+        recording_touch_service = extract_function(main_source, "service_recording_touch")
     except ValueError as exc:
         errors.append(str(exc))
     else:
@@ -310,6 +320,47 @@ def main() -> int:
         ), errors)
         if "touch_recording_tap_retained" in touch_dispatch:
             errors.append("provisional recording tap still requests an e-paper expression")
+        require("recording touch priority guard", recording_pending, (
+            "s_touch_contact_active",
+            "s_touch_gesture.active",
+            "s_touch_gesture.consumed_until_release",
+            "s_touch_gesture.tap_pending",
+            "s_touch_irq_count != s_touch_irq_consumed_count",
+            "s_touch_refresh_buffer_count != 0u",
+            "s_touch_deferred_action != COMP_TOUCH_RUNTIME_ACTION_NONE",
+        ), errors)
+        require("recording touch service", recording_touch_service, (
+            "poll_board_buttons();",
+            "poll_touch_debug();",
+            "process_deferred_touch_runtime_action();",
+        ), errors)
+        recording_branch_start = main_loop.find(
+            "if (s_recording_fsm.state == COMP_RECORDING_STATE_RECORDING) {"
+        )
+        recording_branch_end = main_loop.find(
+            "\n        update_low_power_policy();\n        MX_APPE_Process();",
+            recording_branch_start + 1,
+        )
+        if recording_branch_start < 0 or recording_branch_end < 0:
+            errors.append("recording main-loop branch is not inspectable")
+        else:
+            recording_branch = main_loop[recording_branch_start:recording_branch_end]
+            first_touch_service = recording_branch.find("service_recording_touch()")
+            first_app = recording_branch.find("MX_APPE_Process()")
+            capture = recording_branch.find("capture_microphone_block(")
+            touch_services = [
+                match.start()
+                for match in re.finditer("service_recording_touch\\(\\)", recording_branch)
+            ]
+            if not (0 <= first_touch_service < first_app < capture):
+                errors.append("recording loop must service touch before app/display and microphone capture")
+            if len(touch_services) < 3 or not any(
+                first_app < position < capture for position in touch_services
+            ) or not any(position > capture for position in touch_services):
+                errors.append("recording loop must re-service touch after app/display and microphone capture")
+            if "recording_touch_work_pending()" not in recording_branch or \
+                    "!preserve_touch_window" not in recording_branch:
+                errors.append("touch-originated recording must suppress app/display work during gesture arbitration")
 
     gesture_contract = touch_fixture.get("gesture_contract", {})
     if gesture_contract.get("minimum_contact_samples") != 1:

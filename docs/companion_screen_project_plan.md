@@ -1355,6 +1355,30 @@ preflight 已确认 SSD1681 target、录音仲裁 trace、DMA stop trace、镜�
 正反例；旧 trace 会在刷机前被拒绝，65 秒的不完整抓取窗口也会在硬件前被拒绝。
 当前状态是同一个 `4/13` 真机复验待执行，而不是把“无响应”改记为通过。
 
+## Revision 96: 第二次双击被录音期显示调度饿死
+
+最新 production-equivalent `4/13` 验收不是操作者漏做动作。owner 明确完成两次双击并说话，随后因
+屏幕没有任何回应选择 `失败`。机器日志只识别到第一次 `double_tap`，随后成功恢复 SAI 时钟、启动
+DMA，并持续得到有振幅且 CRC 变化的 PCM；第二次双击没有进入手势层，所以没有 stop、DMA stop 或
+外部 Flash `user_store`。完整失败证据保存在
+`.cache/validation/shared-recording-chain-acceptance-failures/failed-second-double-tap-no-visible-response-20260714-142920/`。
+
+根因候选位于录音主循环调度：当前代码先运行 `MX_APPE_Process()`，之后才轮询 FT6336，录音表情的
+同步电子纸任务可能占用第二次双击的 650 ms 裁决窗口。下一候选必须把触摸放在录音循环首位，并在
+每次应用服务和麦克风服务后再次处理触摸与 deferred action；有 active contact、provisional tap、
+pending IRQ/buffer 或 deferred recording action 时禁止周期表情刷新抢先执行。先增加两轮连续双击的
+portable host replay 和静态调度门禁，再构建 normal/trace 并运行 preflight。以上全部通过前不再打开
+人工窗口；串口 PCM 正常也不能覆盖 owner 报告的可见反馈失败。
+
+机器修复已经完成：录音循环现在在应用、显示和麦克风工作之前服务 FT6336，并在应用服务和每个
+麦克风 block 后再次处理触摸；只要存在 contact、手势状态、provisional first tap、pending IRQ/
+buffer 或 deferred action，就暂缓周期电子纸表情工作。native host replay 已证明连续两轮双击都能
+独立产出 `double_tap` 并重新武装，静态调度门禁、normal/trace WB55 构建和 acceptance preflight
+全部通过。normal HEX SHA256 为
+`94C9800928BB5022FE3282C755E28694F378AF9FBCF4A0DD4424C93DE0585B4E`，trace HEX SHA256 为
+`74F2EA593AF280A7EFC9DD8489CEC1D848DAEFBBA4B98DB23687E37E3B298448`。这些检查没有触碰硬件，
+因此只证明下一轮串口验收已具备机器条件；FTS02 模拟显示故障仍由 COMP-REQ-034 独立阻塞可见反馈。
+
 ## 逐项验收顺序
 
 本项目遵循 AI Workflow 的全产品异步验收规则：未收到操作者明确的“开始验收”前，
