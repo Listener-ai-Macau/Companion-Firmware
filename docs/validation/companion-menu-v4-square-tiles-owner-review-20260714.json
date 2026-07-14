@@ -1,0 +1,40 @@
+{
+  "schema_id": "companion.menu_v4_square_tiles_owner_review.v1",
+  "status": "FAILED_WAKE_BEFORE_VISUAL_REVIEW",
+  "claim_scope": "operator_result_for_generated_menu_reference",
+  "generated_at": "2026-07-14T08:20:00+08:00",
+  "target": "NUCLEO-WB55RG + GDEY0154D67-T03 + FT6336U",
+  "reference": {
+    "iteration_id": "menu-v4-square-tiles-2026-07-13",
+    "source": "docs/art/generated_companion_menu_reference_v4_square_tiles.png",
+    "sha256": "36FA932D91538C514CB9BA59FA1B2CCD642B706CB5B91911DAE543B8E066E692"
+  },
+  "operator_prompt": {
+    "title": "Companion 菜单美术验收",
+    "progress": "1/1",
+    "scope": "四项一页菜单源图；结果决定是否允许替换外部 Flash 菜单资源。",
+    "action": "查看 v4 方形菜单源图并确认两张主页的四项布局、分页和导航。",
+    "expected": "四个入口在 200x200 上足够大且易读，第二页空位不可误解为功能。"
+  },
+  "operator_result": {
+    "selected": "失败",
+    "note": "短按屏幕无法唤醒"
+  },
+  "triage": {
+    "classification": "low_power_touch_wake",
+    "state": "open_requires_fix",
+    "interpretation": "操作者未能进入可观察菜单的设备状态；这不是菜单源图的美术否决。先修复静态 low-power face 下的一次短按触控唤醒和首个 tap 可见反馈，再重新打开同一张源图的 focused review。",
+    "regression_guards": [
+      "首个 contact 不得插入 idle 预刷新或重新引入触控热路径串口 flood。",
+      "已判定的 tap/swipe/double-tap/3 s stationary hold 手势仍必须由同一 5 ms 时间线处理。",
+      "触控唤醒不得使用全刷新或周期性电子纸动画。"
+    ],
+    "next_action": "用 reset-bounded trace 和真实短按确认 PC6/FT6336 contact 解除 Stop、tap 被分类、首个可见 response 入队且屏幕恢复可交互。"
+  },
+  "machine_context": {
+    "runtime_recheck": "docs/validation/companion-screen-wb55-runtime-recheck-logs.json",
+    "runtime_status": "PASS",
+    "normal_firmware_restored": true,
+    "active_resource_revision": 53
+  }
+}

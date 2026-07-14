@@ -1065,6 +1065,19 @@ refresh policy。WBA55/WBA65 迁移只可复用“量产成功日志不占交互
 原则；其 UART/RTT 具体实现仍属于各自 target adapter。它仍需在 owner 明确“开始验收”后的 reset-bounded
 quiet image capture 与 ACPT-01 中确认，不得把 linked-image 字符串对比写成真实触感已通过。
 
+## Revision 80: 短按触控唤醒先于四项菜单美术复验
+
+2026-07-14 的 canonical `Companion 菜单美术验收 1/1` 选择了失败，完整备注是“短按屏幕无法唤醒”。
+操作者因此没有进入可观察四项菜单源图的设备状态；该结果不能被记作对
+`menu-v4-square-tiles-2026-07-13` 美术的否决。结果和 prompt 已保存在
+`docs/validation/companion-menu-v4-square-tiles-owner-review-20260714.json`。
+
+`COMP-REQ-030` 固化下一步：静态 sleepy face 已显示且 CPU 处于 Stop 时，一个短的有效
+FT6336 contact 必须解除 Stop、取消 idle deadline、进入既有 5 ms 手势时间线，并在 tap 分类后以
+该 tap 的日常宠物反馈作为第一张可见帧。禁止为“唤醒”先排 idle、全刷或周期性动画；滑动、双击录音和
+3 s 静止长按不得回退。先提供 reset-bounded PC6/contact/tap/visible-response 机器证据和实板短按结果，
+再重新打开同一张 v4 菜单源图的 focused review；在此之前不得导入或刷入四项菜单 CEMP。
+
 ## 逐项验收顺序
 
 本项目遵循 AI Workflow 的全产品异步验收规则：未收到操作者明确的“开始验收”前，
