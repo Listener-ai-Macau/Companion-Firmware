@@ -1,0 +1,57 @@
+{
+  "schema_id": "companion.wb55.low_power_short_touch_wake_review.v1",
+  "status": "NO_GO_FIRST_WAKE_GESTURE_LONG_PRESS",
+  "generated_at": "2026-07-14T08:46:20+08:00",
+  "target": "NUCLEO-WB55RG + GDEY0154D67-T03 + FT6336U",
+  "operator_review": {
+    "title": "Companion 低功耗唤醒验收",
+    "progress": "1/1",
+    "selected": "失败",
+    "note": ""
+  },
+  "machine_artifacts": {
+    "raw_log": "docs/validation/companion-low-power-short-touch-wake-20260714.raw.log",
+    "raw_log_sha256": "5513C71EA95751F96990590A70E5B676664E685921EA3F584EA2F034BB6C895B",
+    "short_tap_parser_report": "docs/validation/companion-low-power-short-touch-wake-20260714-parser.json",
+    "runner_report": ".cache/validation/short-touch-wake-trace-20260714-valid-2/short-touch-wake-trace-report.json",
+    "capture_summary": ".cache/validation/short-touch-wake-trace-20260714-valid-2/nucleo-serial-summary.json",
+    "normal_firmware_restored": true,
+    "normal_restore_voltage_v": 3.24
+  },
+  "observed_chain": {
+    "idle_timer_armed": true,
+    "sleepy_face_completed_and_stop_allowed": true,
+    "ft6336_identity": "addr=0x38 chip=0x11",
+    "pc6_irq_counts": {
+      "observed": 1558,
+      "consumed": 1557
+    },
+    "first_contact": {
+      "event": "down",
+      "x": 123,
+      "y": 114,
+      "sample_age_ms": 1
+    },
+    "wake_marker": "low_power_touch_wake state=active visual=gesture_owned result=deferred",
+    "first_gesture": {
+      "type": "long_press",
+      "duration_ms": 3006,
+      "result": "entered daily menu"
+    },
+    "absent_for_this_sample": [
+      "gesture=tap",
+      "daily_reaction",
+      "post-tap expression display_result"
+    ]
+  },
+  "triage": {
+    "classification": "invalid_short_tap_sample_long_press_observed",
+    "interpretation": "The physical TP_INT/FT6336/Stop wake path did operate. The held contact reached the existing three-second menu threshold before release, so the trace cannot accept or reject the short-tap response contract. The operator failure remains open because there is no valid short-tap first-frame observation.",
+    "next_action": "Run one focused reset-bounded review after sleepy Stop. Touch the center and lift in under 500 ms; require PC6/contact/tap/daily_reaction/expression display sequence and record the actual panel observation."
+  },
+  "regression_guards": [
+    "No idle pre-refresh, full refresh, or periodic animation before a resolved daily gesture owns the first visible response.",
+    "A stationary contact at or beyond 3000 ms remains the distinct menu-entry gesture.",
+    "Swipe, double-tap recording, right-swipe menu exit, and external-Flash expression rendering remain separate contracts."
+  ]
+}

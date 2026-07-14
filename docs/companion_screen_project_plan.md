@@ -1078,6 +1078,25 @@ FT6336 contact 必须解除 Stop、取消 idle deadline、进入既有 5 ms 手�
 3 s 静止长按不得回退。先提供 reset-bounded PC6/contact/tap/visible-response 机器证据和实板短按结果，
 再重新打开同一张 v4 菜单源图的 focused review；在此之前不得导入或刷入四项菜单 CEMP。
 
+## Revision 81: 卡顿必须按面板能力变成可验收指标
+
+owner 在 2026-07-14 明确反馈“给人一种非常卡顿的感觉”，因此新增 `COMP-REQ-031`。性能目标
+不允许用“电子纸本来就慢”收口：官方 GDEY0154D67-T03 规格给出 partial `0.3 s`、fast `1.5 s`、full
+`2 s`，而成熟 E Ink 的 REAGL 方向也是避免无必要的全刷。完整目标、来源、当前 WB55 基线和 WBA
+边界记入 `docs/companion_interaction_performance_goal.md`。
+
+这次首个有效 locked trace 的原始日志已固化为
+`docs/validation/companion-low-power-short-touch-wake-20260714.raw.log`。它证明 low-power face 后
+FT6336 contact 的 `sample_age_ms=1`、PC6 IRQ 计数上升及 `low_power_touch_wake`；但首个触点持续
+`3006 ms`，因此正确分类为 menu `long_press`，没有 `tap -> daily_reaction -> expression`。操作者仍选择
+失败，故 `docs/validation/companion-low-power-short-touch-wake-20260714.json` 为 `NO_GO`，不是短按性能
+通过。
+
+下一轮只验一个 `<500 ms` 轻触：必须由专用 parser 和 trace 同时证明
+`PC6/contact -> tap -> daily_reaction -> visible expression`，且不得在此之前插入 idle、full 或周期刷新。
+之后才按 `COMP-REQ-031` 分别压测菜单边界、连续局刷清理和触控手感；任何速度优化都不得越过
+WB55/WBA target adapter 边界。
+
 ## 逐项验收顺序
 
 本项目遵循 AI Workflow 的全产品异步验收规则：未收到操作者明确的“开始验收”前，

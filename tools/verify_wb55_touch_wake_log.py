@@ -13,7 +13,7 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA_ID = "companion.wb55.touch_wake_log.v1"
-SCOPES = ("idle-timer", "stop-wake", "double-tap-recording", "full")
+SCOPES = ("idle-timer", "stop-wake", "short-tap", "double-tap-recording", "full")
 
 
 def health_samples(log: str) -> list[dict[str, int]]:
@@ -46,6 +46,20 @@ def marker_precedes(log: str, first: str, second: str) -> bool:
     return log.find(second, first_index + len(first)) >= 0
 
 
+def marker_after(log: str, marker: str, start: int) -> int:
+    return log.find(marker, start)
+
+
+def first_terminal_gesture_after(log: str, start: int) -> str | None:
+    for match in re.finditer(r"\[touch-ui\] gesture=(?P<gesture>[a-z_]+)\b", log[start:]):
+        gesture = match.group("gesture")
+        # `hold` is a non-consuming 650 ms acknowledgement. The following
+        # release/tap, swipe, double-tap, or 3 s long press decides the action.
+        if gesture != "hold":
+            return gesture
+    return None
+
+
 def required_check_names(scope: str) -> tuple[str, ...]:
     if scope == "idle-timer":
         return (
@@ -64,10 +78,20 @@ def required_check_names(scope: str) -> tuple[str, ...]:
         return (
             *required_check_names("idle-timer"),
             "health_sample_observed",
-            "irq_event_observed",
+            "irq_evidence_observed",
             "irq_observed",
             "irq_consumed",
             "irq_counts_ordered",
+        )
+    if scope == "short-tap":
+        return (
+            *required_check_names("stop-wake"),
+            "wake_contact_after_sleepy",
+            "low_power_touch_wake_requested",
+            "first_wake_gesture_is_tap",
+            "daily_reaction_after_tap",
+            "visible_expression_after_tap",
+            "no_idle_prerefresh_before_response",
         )
     if scope == "double-tap-recording":
         return (
@@ -97,6 +121,31 @@ def evaluate(log: str, log_path: str, scope: str = "full") -> dict[str, Any]:
     low_power_face_request = "[power] low_power_face request=sleepy trigger=idle_timer"
     low_power_face_complete = "[power] low_power_face completed=1 stop=allowed"
     stop_allowed = "[power] stop=allowed"
+    sleepy_complete_index = log.find(low_power_face_complete)
+    wake_contact_index = marker_after(
+        log,
+        "[touch] contacts=1 event=down",
+        sleepy_complete_index + len(low_power_face_complete),
+    ) if sleepy_complete_index >= 0 else -1
+    touch_wake_index = marker_after(
+        log,
+        "[touch-ui] low_power_touch_wake state=active visual=gesture_owned result=deferred",
+        wake_contact_index + 1,
+    ) if wake_contact_index >= 0 else -1
+    first_wake_gesture = (
+        first_terminal_gesture_after(log, touch_wake_index + 1)
+        if touch_wake_index >= 0
+        else None
+    )
+    tap_index = marker_after(log, "[touch-ui] gesture=tap", touch_wake_index + 1) if touch_wake_index >= 0 else -1
+    daily_reaction_index = marker_after(log, "[touch-ui] daily_reaction", tap_index + 1) if tap_index >= 0 else -1
+    expression_index = marker_after(log, "[epaper] scene=expression", daily_reaction_index + 1) if daily_reaction_index >= 0 else -1
+    response_index = marker_after(log, "[screen] display_result", expression_index + 1) if expression_index >= 0 else -1
+    idle_request_after_contact = marker_after(
+        log,
+        "[power] low_power_face request=sleepy trigger=idle_timer",
+        wake_contact_index + 1,
+    ) if wake_contact_index >= 0 else -1
     checks = {
         "lpm_boot_ready": "[power] policy_selftest=pass touch_irq_wake=ready lpm=enabled" in log,
         "tp_int_wired": "irq=PC6 wired=1" in log,
@@ -112,9 +161,17 @@ def evaluate(log: str, log_path: str, scope: str = "full") -> dict[str, Any]:
         ),
         "health_sample_observed": bool(samples),
         "irq_event_observed": bool(events),
+        "irq_evidence_observed": bool(events) or (max_irq > 0 and max_consumed > 0),
         "irq_observed": max_irq > 0,
         "irq_consumed": max_consumed > 0,
         "irq_counts_ordered": all_health_ordered,
+        "wake_contact_after_sleepy": wake_contact_index >= 0,
+        "low_power_touch_wake_requested": touch_wake_index >= 0,
+        "first_wake_gesture_is_tap": first_wake_gesture == "tap",
+        "daily_reaction_after_tap": daily_reaction_index >= 0,
+        "visible_expression_after_tap": expression_index >= 0 and response_index >= 0,
+        "no_idle_prerefresh_before_response": idle_request_after_contact < 0 or
+        (daily_reaction_index >= 0 and idle_request_after_contact > daily_reaction_index),
         "single_boot_after_capture_start": log.count("[power] policy_selftest=pass touch_irq_wake=ready lpm=enabled") == 1,
         "two_double_taps": double_taps >= 2,
         "touch_record_started": "[record] touch_double_tap action=start" in log
@@ -123,10 +180,16 @@ def evaluate(log: str, log_path: str, scope: str = "full") -> dict[str, Any]:
         "external_flash_store_finished": "[record] touch_double_tap action=user_store result=1" in log,
     }
     required_checks = required_check_names(scope)
-    status = "PASS" if all(checks[name] for name in required_checks) else "NO_GO_INCOMPLETE_TOUCH_WAKE_EVIDENCE"
+    if all(checks[name] for name in required_checks):
+        status = "PASS"
+    elif scope == "short-tap" and first_wake_gesture == "long_press":
+        status = "NO_GO_FIRST_WAKE_GESTURE_LONG_PRESS"
+    else:
+        status = "NO_GO_INCOMPLETE_TOUCH_WAKE_EVIDENCE"
     next_actions = {
         "idle-timer": "Capture at least 20 seconds after reset and prove the 15 s idle timer permits Stop before its single sleepy transition, then the display-complete callback returns to Stop.",
         "stop-wake": "Collect one reset-bounded capture that shows the 15 s idle timer arm, static sleepy pose, Stop, then one touch so PC6 IRQ observation and consumption are logged.",
+        "short-tap": "After the sleepy face reaches Stop, touch and lift in under 500 ms. The first post-wake gesture must be tap, followed by daily_reaction and one visible expression frame; a 3 s long press is a different menu contract and cannot pass this check.",
         "double-tap-recording": "Collect one bounded capture containing two daily-page double taps, recording start/stop, and a successful external Flash store.",
         "full": "Collect a post-wiring serial capture with TP_INT wired, then perform one Stop wake and two daily-page double taps.",
     }
@@ -144,6 +207,9 @@ def evaluate(log: str, log_path: str, scope: str = "full") -> dict[str, Any]:
             "max_irq": max_irq,
             "max_irq_consumed": max_consumed,
             "daily_double_tap_events": double_taps,
+            "first_wake_gesture": first_wake_gesture,
+            "wake_contact_after_sleepy": wake_contact_index >= 0,
+            "low_power_touch_wake_requested": touch_wake_index >= 0,
         },
         "next_action": (
             next_actions[scope]
@@ -167,6 +233,13 @@ def self_test(scope: str = "full") -> dict[str, Any]:
             "[power] low_power_face completed=1 stop=allowed",
             "[touch-health] detected=1 irq=3 irq_consumed=3 buffered=0 dropped=0",
             "[touch-irq] observed=3 consumed=3",
+            "[touch] contacts=1 event=down id=0 raw_x=100 raw_y=100 x=100 y=100 mirror_x=0 mirror_y=0 sample_age_ms=1 reads=10",
+            "[touch-ui] low_power_touch_wake state=active visual=gesture_owned result=deferred",
+            "[touch] contacts=0 event=none id=0 raw_x=0 raw_y=0 x=0 y=0 mirror_x=0 mirror_y=0 sample_age_ms=1 reads=12",
+            "[touch-ui] gesture=tap start=100,100 end=100,100 duration_ms=120 sample_age_ms=1",
+            "[touch-ui] daily_reaction x=100 y=100",
+            "[epaper] scene=expression name=curious frame_index=2 dirty=8,18,184,166 source=external_flash",
+            "[screen] display_result id=2 kind=1 resource_revision=53 active_revision=53 coherent_generation=1 generation_switches=1 last_stale_discarded=0 pending=0 stale_generation_discarded=0 panel_result=0",
             "[touch-ui] daily_double_tap_recording x=100 y=100 state=idle",
             "[record] touch_double_tap action=start source=4 result=0 state=recording",
             "[touch-ui] daily_double_tap_recording x=100 y=100 state=recording",

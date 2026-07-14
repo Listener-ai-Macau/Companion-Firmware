@@ -1,0 +1,166 @@
+
+RUN: C:\ST\STM32CubeProgrammer\bin\STM32_Programmer_CLI.exe -c port=SWD mode=UR reset=HWrst freq=4000 -rst
+RUN: reset_timeout_seconds=15
+      -------------------------------------------------------------------
+                       STM32CubeProgrammer v2.23.0                  
+      -------------------------------------------------------------------
+
+ST-LINK SN  : 066EFF535570514867221931
+ST-LINK FW  : V2J39M27
+Board       : NUCLEO-WB55RG
+Voltage     : 3.24V
+SWD freq    : 4000 KHz
+Connect mode: Under Reset
+Reset mode  : Hardware reset
+Device ID   : 0x495
+Revision ID : Rev X
+Device name : STM32WB5x/35xx
+NVM size    : 1 MBytes
+Device type : MCU
+Device CPU  : Cortex-M4
+BL Version  : 0xD5
+Debug in Low Power mode enabled
+
+
+MCU Reset
+
+Software reset is performed
+[touch] contacts=0 event=none id=0 raw_x=0 raw_y=0 x=0 y=0 mirror_x=0 mirror_y=0 sample_age_ms=1 reads=1
+
+[stage] uart ok
+[touch] ft6336 decoder=pass gesture=pass addr=0x38 probe=present probes=1 irq_mode=trigger irq_cfg_errors=0 tuning=applied threshold=0x70 period=4/4 tuning_errors=0 poll_ms=5/8 irq=PC6 wired=1 reset=PC10 wired=0 refresh_poll_ms=5
+[stage] qspi ok
+[stage] sai1 ok clk=48000000 a_cr1=0x01F820E1 a_frcr=0x00051F3F a_slotr=0x00030180 b_cr1=0x00B02280
+
+[boot] Companion NUCLEO-WB55RG bringup
+[build] interaction_profile=trace epaper_trace=1 touch_trace=1 ft6336_threshold=0x70 touch_poll_active_ms=5 touch_poll_refresh_ms=5 refresh_policy=partial_x5_then_fast_cleanup
+[boot] uart=USART1 PB6/PB7 115200 flash=QSPI-2IO PA2/PA3/PB9/PB8 spi2=PA9/PC1/PC2 cs=PA6 hz=2000000 i2c3=PC0/PB11 touch_irq=PC6 touch_reset=PC10
+[boot] mic=SAI1A PA8/PB12/PC3 speaker=SAI1B PB3/PA4/PA5 max98357_sd=PA15
+[boot] mic=sph0655_pdm1536k_to_pcm16000_soft_decim96_scale128 raw_fs=24000 mckdiv=31 filter=cic3 clock=0x00000200 slot_active=0x00000002 data_af=0x0D preamp8 listener_reuse=pdm_backend
+[boot] buttons: SW1=PC4 flash+ota+mic+diag probe, SW2=PD0 cancel/recover, SW3=PD1 start/stop recording
+[stage] ble app init requested name=companion service=VKA1
+[button] gpio_poll_ready raw=SW1:1 SW2:1 SW3:1
+[boot] boot_selftests=skipped reason=production_ble_path
+[screen-assets] external_store=ready kind=qspi_nor base=0x00200000 bytes=2097152
+[screen-assets] policy=external_first store=ready prefix=read:43454D50 mount=ok
+[screen-assets] pack=emote-matrix-white-200x200-v1 revision=53 clips=33 frames=75 profile=200x200 stride=25 encoding=2
+[screen-assets] expression_renderer=external_pack player=ready fallback=none
+[screen-assets] queue_generation revision=53 switches=1 last_stale_discarded=0 stale_discarded=0
+[screen] core_selftest menu=pass gesture=pass presentation=pass emote_player=pass asset_store=pass asset_pack=pass expression_source=pass refresh_policy=pass
+[screen] pet_attention_selftest=pass
+[screen] pet_expression_selftest=pass
+[screen] pet_behavior_selftest=pass failure_code=0
+[pet-emotion] selftest=pass failure_code=0 moods=calm,curious,affectionate,delighted,restful,worried memory=pass strokes=pass
+[pet-emotion] boot mood=curious valence=0 arousal=45 curiosity=60 affection=67 attachment=30 traits=56,61,56
+[rec-flash] ready=1 jedec=0x0B4018 base=0x00010000 data=0x00010044 capacity=1920000
+[pet-renderer] clip=idle frame=0 in_clip=0 phase=1 touch=0 refresh=3 duration_ms=1800 source=external_flash
+[emote-player] preview_started name=idle
+[epaper] policy requested=3 selected=full reason=3 partial_count=0 limit=5 baseline=0
+[epaper] scene=expression name=idle frame_index=0 dirty=8,18,184,166 source=external_flash
+[epaper] reset busy=0
+[epaper] spi=software_vendor_edges sck=PA9 mosi=PC1
+[epaper] ready_wait initial=0 final=0 elapsed_ms=0 ready=1
+[epaper] controller_init=1 soft_reset mode=full busy=1 pre=1 command=1
+[epaper] ready_wait initial=0 final=0 elapsed_ms=0 ready=1
+[epaper] frame rotation=180 mirror_x=1 width=200 height=200
+[epaper] window x_byte=0..24 y=0..199 bytes=5000 changed=1
+[touch] contacts=0 event=none id=0 raw_x=0 raw_y=0 x=0 y=0 mirror_x=0 mirror_y=0 sample_age_ms=1 reads=1
+[epaper] refresh mode=full profile=default control=0xF7 expected_visible_flicker=multiple activation_count=1 busy=0 update=1 activate=1 complete=1 elapsed_ms=1298
+[epaper] timing mode=full prepare_ms=22 setup_ms=47 transfer_before_waveform_ms=103 transfer_after_waveform_ms=0 bytes=5000 data_planes=2 spi=software_vendor_edges
+[epaper] policy_commit mode=full ok=1 partial_count=0 baseline=1
+[screen] coherent_generation=1 resource_revision=53 active_revision=53
+[screen] display_result id=3758096385 kind=1 resource_revision=53 active_revision=53 coherent_generation=1 generation_switches=1 last_stale_discarded=0 pending=0 stale_generation_discarded=0 panel_result=0
+[power] low_power_idle_timer=ready delay_ms=15000
+[touch-health] detected=1 identity=1 addr=0x38 cipher=0x64 fw=0x01 chip=0x11 probes=1 identity_reads=1 irq_mode=1 irq_cfg=1 irq_cfg_errors=0 tuning=1 threshold=0x70 active_period=4 monitor_period=4 tuning_cfg=1 tuning_errors=0 samples=216 errors=0 recoveries=0 failure_streak=0 irq=0 irq_consumed=0 buffered=0 dropped=0 wait_buffer_selftest=1
+[power] low_power_idle_timer=armed delay_ms=15000
+[power] stop=allowed blockers=0x00000000 touch_irq=1
+[power] policy_selftest=pass touch_irq_wake=ready lpm=enabled
+[pet-renderer] clip=sleepy frame=48 in_clip=0 phase=1 touch=0 refresh=3 duration_ms=1500 source=external_flash
+[emote-player] preview_started name=sleepy
+[screen] low_power_idle pose=sleepy animation=stopped
+[power] low_power_face request=sleepy trigger=idle_timer
+[power] stop=blocked blockers=0x00000000 touch_irq=1
+[epaper] policy requested=3 selected=differential reason=1 partial_count=0 limit=5 baseline=1
+[epaper] scene=expression name=sleepy frame_index=48 dirty=8,18,184,166 source=external_flash
+[epaper] spi=software_vendor_edges sck=PA9 mosi=PC1
+[epaper] ready_wait initial=0 final=0 elapsed_ms=0 ready=1
+[epaper] controller_init=0 soft_reset mode=differential busy=0 pre=1 command=0
+[epaper] frame rotation=180 mirror_x=1 width=200 height=200
+[epaper] window x_byte=2..23 y=46..161 bytes=2552 changed=1
+[epaper] refresh mode=differential profile=default control=0xFC expected_visible_flicker=none activation_count=2 busy=0 update=1 activate=1 complete=1 elapsed_ms=306
+[epaper] timing mode=differential prepare_ms=21 setup_ms=18 transfer_before_waveform_ms=53 transfer_after_waveform_ms=0 bytes=2552 data_planes=2 spi=software_vendor_edges
+[epaper] policy_commit mode=differential ok=1 partial_count=1 baseline=1
+[screen] display_result id=3758096386 kind=1 resource_revision=53 active_revision=53 coherent_generation=1 generation_switches=1 last_stale_discarded=0 pending=0 stale_generation_discarded=0 panel_result=0
+[power] stop=allowed blockers=0x00000000 touch_irq=1
+[power] low_power_face completed=1 stop=allowed
+[touch] contacts=1 event=down id=0 raw_x=123 raw_y=114 x=123 y=114 mirror_x=0 mirror_y=0 sample_age_ms=1 reads=271
+[touch-ui] low_power_touch_wake state=active visual=gesture_owned result=deferred
+[power] stop=blocked blockers=0x00000004 touch_irq=1
+[touch] contacts=1 event=contact id=0 raw_x=123 raw_y=114 x=123 y=114 mirror_x=0 mirror_y=0 sample_age_ms=1 reads=272
+[touch] contacts=1 event=contact id=0 raw_x=113 raw_y=114 x=113 y=114 mirror_x=0 mirror_y=0 sample_age_ms=1 reads=315
+[touch-ui] gesture=hold start=123,114 end=111,114 duration_ms=658 sample_age_ms=1
+[touch-ui] daily_hold_menu_prepare x=111 y=114 duration_ms=658 visual=deferred_until_menu
+[touch-ui] gesture=long_press start=123,114 end=111,114 duration_ms=3006 sample_age_ms=1
+[touch-ui] daily_to_menu gesture=any_long_press duration_ms=3006 selection=0 revision=3
+[screen] menu_boundary=enter view=0 page=0 refresh=fast_if_baseline
+[screen] menu enqueue id=3791650817 view=0 page=0 language=1 flags=0x02 refresh=4 discarded_expression_frames=0 discarded_pet_expression_frames=0
+[epaper] policy requested=4 selected=maintenance reason=5 partial_count=1 limit=5 baseline=1
+[epaper] scene=menu asset=menu.home.zh source=external_flash flags=0x02
+[epaper] reset busy=0
+[epaper] spi=software_vendor_edges sck=PA9 mosi=PC1
+[epaper] ready_wait initial=0 final=0 elapsed_ms=0 ready=1
+[epaper] controller_init=1 soft_reset mode=maintenance busy=1 pre=1 command=1
+[epaper] ready_wait initial=0 final=0 elapsed_ms=0 ready=1
+[epaper] ready_wait initial=1 final=0 elapsed_ms=7 ready=1
+[epaper] ready_wait initial=1 final=0 elapsed_ms=3 ready=1
+[epaper] fast_profile=good_display_mode1 temp_sensor=1 temp_load=1 temp_reg=0x0064 lut_mode1=1
+[epaper] frame rotation=180 mirror_x=1 width=200 height=200
+[epaper] window x_byte=0..24 y=0..199 bytes=5000 changed=1
+[epaper] refresh mode=maintenance profile=good_display_mode1 control=0xC7 expected_visible_flicker=single activation_count=3 busy=0 update=1 activate=1 complete=1 elapsed_ms=1740
+[epaper] timing mode=maintenance prepare_ms=23 setup_ms=76 transfer_before_waveform_ms=104 transfer_after_waveform_ms=0 bytes=5000 data_planes=2 spi=software_vendor_edges
+[epaper] policy_commit mode=maintenance ok=1 partial_count=0 baseline=1
+[screen] display_result id=3791650817 kind=2 resource_revision=53 active_revision=53 coherent_generation=1 generation_switches=1 last_stale_discarded=0 pending=0 stale_generation_discarded=0 panel_result=0
+
+[tick] t_ms=8368 state=idle buttons=ready raw=SW1:1 SW2:1 SW3:1
+[touch-health] detected=1 identity=1 addr=0x38 cipher=0x64 fw=0x01 chip=0x11 probes=1 identity_reads=1 irq_mode=1 irq_cfg=1 irq_cfg_errors=0 tuning=1 threshold=0x70 active_period=4 monitor_period=4 tuning_cfg=1 tuning_errors=0 samples=814 errors=0 recoveries=0 failure_streak=0 irq=1558 irq_consumed=1557 buffered=0 dropped=0 wait_buffer_selftest=1
+[touch] contacts=1 event=down id=0 raw_x=120 raw_y=124 x=120 y=124 mirror_x=0 mirror_y=0 sample_age_ms=1 reads=844
+[touch] contacts=1 event=contact id=0 raw_x=120 raw_y=124 x=120 y=124 mirror_x=0 mirror_y=0 sample_age_ms=1 reads=845
+[touch] contacts=1 event=down id=0 raw_x=95 raw_y=143 x=95 y=143 mirror_x=0 mirror_y=0 sample_age_ms=0 reads=914
+[touch] contacts=1 event=contact id=0 raw_x=95 raw_y=143 x=95 y=143 mirror_x=0 mirror_y=0 sample_age_ms=1 reads=915
+[touch] contacts=1 event=down id=0 raw_x=82 raw_y=127 x=82 y=127 mirror_x=0 mirror_y=0 sample_age_ms=1 reads=931
+[touch] contacts=1 event=contact id=0 raw_x=82 raw_y=127 x=82 y=127 mirror_x=0 mirror_y=0 sample_age_ms=1 reads=932
+[touch] contacts=1 event=down id=0 raw_x=69 raw_y=119 x=69 y=119 mirror_x=0 mirror_y=0 sample_age_ms=1 reads=939
+[touch] contacts=1 event=contact id=0 raw_x=69 raw_y=119 x=69 y=119 mirror_x=0 mirror_y=0 sample_age_ms=1 reads=940
+[touch] contacts=0 event=none id=0 raw_x=0 raw_y=0 x=0 y=0 mirror_x=0 mirror_y=0 sample_age_ms=1 reads=946
+[power] stop=allowed blockers=0x00000000 touch_irq=1
+[touch] contacts=1 event=contact id=0 raw_x=73 raw_y=112 x=73 y=112 mirror_x=0 mirror_y=0 sample_age_ms=1 reads=947
+[touch-ui] menu_press_deferred item=2 target_view=3 cue_ms=160
+[power] stop=blocked blockers=0x00000004 touch_irq=1
+[touch-ui] menu_press item=2 target_view=3 sample_age_ms=1
+[screen] menu enqueue id=3791650818 view=0 page=0 language=1 flags=0x2A refresh=3 discarded_expression_frames=0 discarded_pet_expression_frames=0
+[epaper] policy requested=3 selected=differential reason=1 partial_count=0 limit=5 baseline=1
+[epaper] scene=menu asset=menu.home.zh source=external_flash flags=0x2A
+[epaper] spi=software_vendor_edges sck=PA9 mosi=PC1
+[epaper] ready_wait initial=0 final=0 elapsed_ms=0 ready=1
+[epaper] controller_init=0 soft_reset mode=differential busy=0 pre=1 command=0
+[epaper] frame rotation=180 mirror_x=1 width=200 height=200
+[epaper] window x_byte=0..24 y=88..111 bytes=600 changed=1
+[epaper] refresh mode=differential profile=default control=0xFC expected_visible_flicker=none activation_count=4 busy=0 update=1 activate=1 complete=1 elapsed_ms=307
+[epaper] timing mode=differential prepare_ms=27 setup_ms=17 transfer_before_waveform_ms=13 transfer_after_waveform_ms=0 bytes=600 data_planes=2 spi=software_vendor_edges
+[epaper] policy_commit mode=differential ok=1 partial_count=1 baseline=1
+[screen] display_result id=3791650818 kind=2 resource_revision=53 active_revision=53 coherent_generation=1 generation_switches=1 last_stale_discarded=0 pending=0 stale_generation_discarded=0 panel_result=0
+[touch-ui] gesture=hold start=73,112 end=73,112 duration_ms=659 sample_age_ms=1
+[touch] contacts=1 event=down id=0 raw_x=126 raw_y=114 x=126 y=114 mirror_x=0 mirror_y=0 sample_age_ms=0 reads=1220
+[touch] contacts=1 event=contact id=0 raw_x=126 raw_y=114 x=126 y=114 mirror_x=0 mirror_y=0 sample_age_ms=1 reads=1221
+
+[tick] t_ms=13377 state=idle buttons=ready raw=SW1:1 SW2:1 SW3:1
+[touch-health] detected=1 identity=1 addr=0x38 cipher=0x64 fw=0x01 chip=0x11 probes=1 identity_reads=1 irq_mode=1 irq_cfg=1 irq_cfg_errors=0 tuning=1 threshold=0x70 active_period=4 monitor_period=4 tuning_cfg=1 tuning_errors=0 samples=1236 errors=0 recoveries=0 failure_streak=0 irq=3201 irq_consumed=3200 buffered=0 dropped=0 wait_buffer_selftest=1
+[touch] contacts=1 event=down id=0 raw_x=131 raw_y=107 x=131 y=107 mirror_x=0 mirror_y=0 sample_age_ms=1 reads=1322
+[touch] contacts=1 event=contact id=0 raw_x=131 raw_y=107 x=131 y=107 mirror_x=0 mirror_y=0 sample_age_ms=1 reads=1323
+[touch] contacts=1 event=down id=0 raw_x=82 raw_y=84 x=82 y=84 mirror_x=0 mirror_y=0 sample_age_ms=0 reads=1357
+[touch] contacts=1 event=contact id=0 raw_x=82 raw_y=84 x=82 y=84 mirror_x=0 mirror_y=0 sample_age_ms=1 reads=1358
+[touch] contacts=1 event=contact id=0 raw_x=73 raw_y=91 x=73 y=91 mirror_x=0 mirror_y=0 sample_age_ms=0 reads=1382
+[touch] contacts=1 event=contact id=0 raw_x=43 raw_y=95 x=43 y=95 mirror_x=0 mirror_y=0 sample_age_ms=1 reads=1405
+[touch] contacts=1 event=contact id=0 raw_x=74 raw_y=100 x=74 y=100 mirror_x=0 mirror_y=0 sample_age_ms=1 reads=1426
+[touch] contacts=1 event=contact id=0 raw_x=126 raw_y=110 x=126 y=110 mirror_x=0 mirror_y=0 sample_age_ms=0 reads=1447
+[touch] contacts=1 event=down id=0 raw_x=23 raw_y=131 x=23 y=131 mirror_x=0 mirror_y=0 sample_age_ms=1 reads=1457
