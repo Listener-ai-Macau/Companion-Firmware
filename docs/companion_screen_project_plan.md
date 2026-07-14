@@ -1279,6 +1279,26 @@ touch verbose trace 镜像；FT6336 `0x38` 探测、身份、trigger 中断模�
 double-tap pending 状态。先加合成防回退，再刷 WB55 重做同一个 `4/13` 窗口；屏幕升压故障仍不计入
 这项触摸/录音串口验收。
 
+## Revision 92: 录音目标改为 Denzic Platform 单一共享核心
+
+owner 将当前最高优先级从电子纸/表情修复改为“先修好录音”，并明确要求像 OTA 一样复用
+Listener 当前链路：Denzic Platform 是录音控制、会话语义、PCM 批次、VKA1 边界和诊断规则的
+唯一实现；Listener 与 Companion 只保留平台适配器，禁止继续发展两套录音状态机。该规则登记为
+`COMP-REQ-035`，同时保留 WBA55/WBA65 只替换 SAI/PDM、BLE、存储和调度适配器的边界。
+
+第二次 `4/13` 复验验证了 Revision 91 的 implicit re-contact 修复：日志出现
+`recontact_boundary`、`tap`、`double_tap`、`touch_double_tap action=start` 和 QSPI
+`capture_begin`。同一份 reset-bounded 日志也证明开机 PDM 探针连续四块 `status=ok`、PCM/raw CRC
+变化，因此麦克风本体和接线不是当前故障。人工窗口选择“通过”并备注“说了”，但机器合同仍为
+`NO_GO_INCOMPLETE_TOUCH_WAKE_EVIDENCE`：用户会话每块都 `status=timeout`，第二次双击未被处理，
+没有 stop，也没有 `user_store result=1`。人工选择不能覆盖机器缺项，完整备注已作为产品输入处理。
+
+当前修复顺序为：先把 Listener 的纯录音决策语义提取到 `Denzic-Platform/audio/embedded` 并以纯 C
+测试锁定；再让 Companion 通过兼容头或直接调用共享核心，删除私有实现重复；最后修复 WB55
+SAI/PDM 会话重启并将采集改为短时、可轮询服务，使触控在录音中持续得到处理。完成构建和静态检查
+后才刷机，重复同一个 `4/13` 窗口，必须同时出现两次 `double_tap`、非 timeout PCM、stop 和
+`user_store result=1`。FTS02 升压故障继续由 Revision 90/COMP-REQ-034 跟踪，不计入本项串口验收。
+
 ## 逐项验收顺序
 
 本项目遵循 AI Workflow 的全产品异步验收规则：未收到操作者明确的“开始验收”前，

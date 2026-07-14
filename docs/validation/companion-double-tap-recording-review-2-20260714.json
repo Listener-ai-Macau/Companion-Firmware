@@ -1,0 +1,43 @@
+{
+  "schema_id": "companion.focused_operator_review.v1",
+  "generated_at": "2026-07-14T10:35:30+08:00",
+  "scope": "4/13 double-tap recording re-review after implicit re-contact repair",
+  "board": "NUCLEO-WB55RG",
+  "port": "COM13",
+  "firmware": {
+    "source_commit": "b297d2b",
+    "image_sha256": "9838E65C782D4A367119145C8919498AD70E88941E1269F4F3BAB2ED133B2E2F"
+  },
+  "operator": {
+    "selection": "PASS",
+    "note": "说了",
+    "note_triage": "The operator completed the spoken-audio action. The non-empty note is acknowledged as confirmation of that action, but it does not override missing machine events."
+  },
+  "machine_result": "NO_GO_INCOMPLETE_TOUCH_WAKE_EVIDENCE",
+  "proven": [
+    "FT6336 rapid re-contact is finalized as an implicit contact boundary",
+    "the first daily double tap is classified",
+    "the first double tap starts touch-originated recording and QSPI capture",
+    "the boot microphone probe returns four valid blocks with changing raw and PCM CRC values"
+  ],
+  "failed": [
+    "every user-session microphone block times out after the boot probe",
+    "a second double tap is not serviced while the blocking capture loop runs",
+    "touch-originated recording does not stop",
+    "external Flash does not report user_store result=1"
+  ],
+  "diagnosis": "The microphone hardware and PDM wiring are functional. The active blocker is reusable STM32WB SAI/PDM capture-session lifecycle plus one-second blocking reads after the boot probe.",
+  "product_decision": "Move recording state/session semantics to the single Denzic Platform audio core shared with Listener; Companion keeps only STM32WB/WBA hardware and product adapters.",
+  "required_next_evidence": [
+    "shared Denzic Platform recording-core unit tests",
+    "Companion build using the shared core without a private recording implementation",
+    "reset-bounded WB55 log containing two double_tap events",
+    "non-timeout PCM blocks during the user session",
+    "recording stop and user_store result=1"
+  ],
+  "artifacts": {
+    "raw_log": "docs/validation/companion-double-tap-recording-review-2-20260714.raw.log",
+    "machine_verification": "docs/validation/companion-double-tap-recording-review-2-verification-20260714.json",
+    "operator_note": "docs/validation/companion-double-tap-recording-review-2-operator-20260714.txt"
+  }
+}

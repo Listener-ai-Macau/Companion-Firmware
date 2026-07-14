@@ -46,6 +46,12 @@ REQUIRED_ANCHORS = (
     "COMP-REQ-027",
     "COMP-REQ-028",
     "COMP-REQ-029",
+    "COMP-REQ-030",
+    "COMP-REQ-031",
+    "COMP-REQ-032",
+    "COMP-REQ-033",
+    "COMP-REQ-034",
+    "COMP-REQ-035",
     "PC6/EXTI",
     "<=1 mA",
     "external-Flash first",
@@ -63,6 +69,9 @@ REQUIRED_ANCHORS = (
     "tools/run_wb55_refresh_ab.ps1",
     "docs/validation/companion-wb55-refresh-ab-runner.json",
     "docs/validation/companion-interaction-serial-quiet-20260714.json",
+    "Denzic Platform shared product core",
+    "A second Companion-owned recording state machine or protocol fork is prohibited",
+    "two double taps, valid non-timeout PCM, stop, and external-Flash store",
 )
 
 
@@ -83,8 +92,8 @@ def main() -> int:
         "registry": str(REGISTRY.relative_to(ROOT)).replace("\\", "/"),
         "workflow_plan": "companion-screen-product-integration",
         "requirement_ids": [f"COMP-REQ-{number}" for number in requirement_ids],
-        "current_focus": "COMP-REQ-024 through COMP-REQ-029 interaction-latency hardware comparison, with COMP-REQ-019/020 visual candidates pending owner review",
-        "active_parallel_track": "COMP-REQ-009 generated low-power/wake/dynamic-recording expression art",
+        "current_focus": "COMP-REQ-035 and COMP-REQ-006 Denzic Platform shared recording core plus WB55 two-double-tap recording acceptance",
+        "active_parallel_track": "COMP-REQ-034 FTS02 analog display recovery remains documented but does not block serial recording acceptance",
         "errors": errors,
     }
     if args.write_fixture:
