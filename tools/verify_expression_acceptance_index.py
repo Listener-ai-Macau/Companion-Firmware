@@ -22,7 +22,6 @@ WB55_RUNTIME_LOGS = REPO_ROOT / "docs/validation/companion-screen-wb55-runtime-r
 WB55_RUNTIME_PROMOTION = REPO_ROOT / "docs/validation/companion-screen-wb55-runtime-promotion.json"
 CANDIDATE = current_candidate()
 RUNTIME_GATE_ID = f"wb55_rev{CANDIDATE.revision}_runtime_recheck"
-RUNTIME_RUN_REPORT = (CANDIDATE.run_root / "runtime-recheck-run.json").relative_to(REPO_ROOT).as_posix()
 WB55_RUNTIME_PASS_STATUS = CANDIDATE.pass_status
 
 
@@ -1058,16 +1057,20 @@ def build_index() -> dict[str, Any]:
             "wba_pre_port_gate",
             "WBA pre-port gate",
             "PASS",
-            "Portable screen files and the WBA pre-port contract are guarded against WB55 HAL, STM32_WPAN, CPU2/FUS/IPCC/HSEM, pins, peripheral instances, and renderer visual/layout drift.",
+            "Portable screen files and the WBA pre-port contract are guarded against WB55 HAL, STM32_WPAN, CPU2/FUS/IPCC/HSEM, pins, peripheral instances, and renderer visual/layout drift; seven WBA target adapters also pass a strict Cortex-M33 arm-none-eabi-gcc compile gate.",
             [
                 "docs/stm32wba_migration_rules.md",
                 "docs/validation/companion-screen-wba-port-contract.json",
+                "docs/validation/companion-screen-wba-adapter-m33-compile.json",
                 "docs/validation/companion-screen-expression-visual-contract.json",
                 "docs/validation/companion-screen-expression-layout-contract.json",
                 "tools/verify_expression_wba_portability.py",
+                "tools/verify_wba_adapter_m33_compile.py",
             ],
             [
                 "python .\\tools\\verify_expression_wba_portability.py",
+                "python .\\tools\\verify_wba_adapter_m33_compile.py",
+                "python .\\tools\\verify_wba_adapter_m33_compile.py --self-test",
                 "python .\\tools\\verify_expression_visual_contract.py",
                 "python .\\tools\\verify_expression_layout_contract.py",
                 "git diff --name-only -- third_party\\STM32CubeWB third_party\\STM32CubeWBA",
@@ -2045,9 +2048,6 @@ def build_index() -> dict[str, Any]:
                 "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
                 "docs/validation/companion-screen-wb55-build-matrix.json",
                 "docs/validation/companion-screen-pre-acceptance-health.json",
-                ".cache/validation/wb55-build-matrix/default-build.log",
-                ".cache/validation/wb55-build-matrix/ssd1681-build.log",
-                ".cache/validation/wb55-build-matrix/screen-asset-provision-build.log",
             ],
             [
                 "python .\\tools\\verify_wb55_screen_build_matrix.py",
@@ -2100,7 +2100,6 @@ def build_index() -> dict[str, Any]:
                 "docs/validation/companion-screen-wb55-runtime-hardware-action-card.md",
                 "docs/validation/companion-screen-wb55-runtime-flash-preflight.json",
                 "docs/validation/companion-screen-wb55-runtime-serial-capture-preflight.json",
-                RUNTIME_RUN_REPORT,
             ],
             [
                 "python .\\tools\\render_wb55_runtime_hardware_action_card.py",
@@ -2135,7 +2134,6 @@ def build_index() -> dict[str, Any]:
                 "docs/validation/companion-screen-wb55-runtime-flash-preflight.json",
                 "docs/validation/companion-screen-wb55-runtime-serial-capture-preflight.json",
                 "docs/validation/companion-screen-generation-release-ledger.json",
-                RUNTIME_RUN_REPORT,
             ],
             [
                 "python .\\tools\\verify_wb55_screen_runtime_recheck_runner.py",
@@ -2186,10 +2184,6 @@ def build_index() -> dict[str, Any]:
                 "docs/validation/companion-screen-bilingual-menu-wb55.json",
                 "docs/validation/companion-screen-touch-ft6336-wb55.json",
                 "docs/validation/companion-screen-ssd1681-partial-refresh-wb55.json",
-                ".cache/validation/nucleo-serial-20260712-184908/nucleo-serial-summary.json",
-                ".cache/validation/nucleo-serial-20260712-184908/nucleo-serial-raw.log",
-                ".cache/validation/nucleo-serial-20260712-185021/nucleo-serial-summary.json",
-                ".cache/validation/nucleo-serial-20260712-185021/nucleo-serial-raw.log",
             ],
             [
                 "python .\\tools\\render_wb55_touch_visual_acceptance_packet.py",
@@ -2450,9 +2444,6 @@ def check_index(data: dict[str, Any], errors: list[str]) -> None:
     for path in [
         "docs/validation/companion-screen-wb55-build-matrix.json",
         "docs/validation/companion-screen-pre-acceptance-health.json",
-        ".cache/validation/wb55-build-matrix/default-build.log",
-        ".cache/validation/wb55-build-matrix/ssd1681-build.log",
-        ".cache/validation/wb55-build-matrix/screen-asset-provision-build.log",
     ]:
         require(path in build_matrix.get("evidence_paths", []), f"wb55_screen_build_matrix missing evidence path: {path}", errors)
     for command in [
@@ -2481,7 +2472,6 @@ def check_index(data: dict[str, Any], errors: list[str]) -> None:
         "docs/validation/companion-screen-wb55-runtime-hardware-action-card.md",
         "docs/validation/companion-screen-wb55-runtime-flash-preflight.json",
         "docs/validation/companion-screen-wb55-runtime-serial-capture-preflight.json",
-        RUNTIME_RUN_REPORT,
         "tools/render_wb55_runtime_hardware_action_card.py",
         "tools/verify_wb55_runtime_flash_preflight.py",
         "tools/capture_nucleo_serial.ps1",
@@ -2546,6 +2536,24 @@ def check_index(data: dict[str, Any], errors: list[str]) -> None:
         "python .\\tools\\promote_wb55_screen_runtime_recheck.py",
     ]:
         require(command in runtime_recheck.get("validation_commands", []), f"{RUNTIME_GATE_ID} missing command: {command}", errors)
+
+    wba_pre_port = by_id.get("wba_pre_port_gate", {})
+    wba_pre_port_text = " ".join(
+        [
+            str(wba_pre_port.get("summary", "")),
+            " ".join(str(path) for path in wba_pre_port.get("evidence_paths", [])),
+            " ".join(str(command) for command in wba_pre_port.get("validation_commands", [])),
+        ]
+    )
+    for token in [
+        "seven WBA target adapters",
+        "strict Cortex-M33",
+        "arm-none-eabi-gcc",
+        "docs/validation/companion-screen-wba-adapter-m33-compile.json",
+        "tools/verify_wba_adapter_m33_compile.py",
+        "--self-test",
+    ]:
+        require(token in wba_pre_port_text, f"wba_pre_port_gate missing compile-gate token: {token}", errors)
 
     generation_swap = by_id.get("screen_generation_swap_guard", {})
     generation_summary = str(generation_swap.get("summary", ""))

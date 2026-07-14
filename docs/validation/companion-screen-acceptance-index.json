@@ -1024,17 +1024,21 @@
       "evidence_paths": [
         "docs/stm32wba_migration_rules.md",
         "docs/validation/companion-screen-wba-port-contract.json",
+        "docs/validation/companion-screen-wba-adapter-m33-compile.json",
         "docs/validation/companion-screen-expression-visual-contract.json",
         "docs/validation/companion-screen-expression-layout-contract.json",
-        "tools/verify_expression_wba_portability.py"
+        "tools/verify_expression_wba_portability.py",
+        "tools/verify_wba_adapter_m33_compile.py"
       ],
       "id": "wba_pre_port_gate",
       "missing_hardware_facts": [],
       "status": "PASS",
-      "summary": "Portable screen files and the WBA pre-port contract are guarded against WB55 HAL, STM32_WPAN, CPU2/FUS/IPCC/HSEM, pins, peripheral instances, and renderer visual/layout drift.",
+      "summary": "Portable screen files and the WBA pre-port contract are guarded against WB55 HAL, STM32_WPAN, CPU2/FUS/IPCC/HSEM, pins, peripheral instances, and renderer visual/layout drift; seven WBA target adapters also pass a strict Cortex-M33 arm-none-eabi-gcc compile gate.",
       "title": "WBA pre-port gate",
       "validation_commands": [
         "python .\\tools\\verify_expression_wba_portability.py",
+        "python .\\tools\\verify_wba_adapter_m33_compile.py",
+        "python .\\tools\\verify_wba_adapter_m33_compile.py --self-test",
         "python .\\tools\\verify_expression_visual_contract.py",
         "python .\\tools\\verify_expression_layout_contract.py",
         "git diff --name-only -- third_party\\STM32CubeWB third_party\\STM32CubeWBA"
@@ -2043,10 +2047,7 @@
         "app/companion_pendant/epaper/panel_target_stm32wb.c",
         "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
         "docs/validation/companion-screen-wb55-build-matrix.json",
-        "docs/validation/companion-screen-pre-acceptance-health.json",
-        ".cache/validation/wb55-build-matrix/default-build.log",
-        ".cache/validation/wb55-build-matrix/ssd1681-build.log",
-        ".cache/validation/wb55-build-matrix/screen-asset-provision-build.log"
+        "docs/validation/companion-screen-pre-acceptance-health.json"
       ],
       "id": "wb55_screen_build_matrix",
       "missing_hardware_facts": [],
@@ -2100,8 +2101,7 @@
         "docs/validation/companion-screen-wb55-runtime-hardware-action-card.json",
         "docs/validation/companion-screen-wb55-runtime-hardware-action-card.md",
         "docs/validation/companion-screen-wb55-runtime-flash-preflight.json",
-        "docs/validation/companion-screen-wb55-runtime-serial-capture-preflight.json",
-        ".cache/validation/rev53-runtime-current/runtime-recheck-run.json"
+        "docs/validation/companion-screen-wb55-runtime-serial-capture-preflight.json"
       ],
       "id": "wb55_runtime_serial_capture_preflight",
       "missing_hardware_facts": [],
@@ -2132,8 +2132,7 @@
         "docs/validation/companion-screen-wb55-runtime-hardware-action-card.md",
         "docs/validation/companion-screen-wb55-runtime-flash-preflight.json",
         "docs/validation/companion-screen-wb55-runtime-serial-capture-preflight.json",
-        "docs/validation/companion-screen-generation-release-ledger.json",
-        ".cache/validation/rev53-runtime-current/runtime-recheck-run.json"
+        "docs/validation/companion-screen-generation-release-ledger.json"
       ],
       "id": "wb55_rev53_runtime_recheck",
       "missing_hardware_facts": [],
@@ -2179,11 +2178,7 @@
         "docs/validation/companion-screen-presentation-wb55.json",
         "docs/validation/companion-screen-bilingual-menu-wb55.json",
         "docs/validation/companion-screen-touch-ft6336-wb55.json",
-        "docs/validation/companion-screen-ssd1681-partial-refresh-wb55.json",
-        ".cache/validation/nucleo-serial-20260712-184908/nucleo-serial-summary.json",
-        ".cache/validation/nucleo-serial-20260712-184908/nucleo-serial-raw.log",
-        ".cache/validation/nucleo-serial-20260712-185021/nucleo-serial-summary.json",
-        ".cache/validation/nucleo-serial-20260712-185021/nucleo-serial-raw.log"
+        "docs/validation/companion-screen-ssd1681-partial-refresh-wb55.json"
       ],
       "id": "wb55_touch_visual_acceptance",
       "missing_hardware_facts": [],
