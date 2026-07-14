@@ -6,6 +6,8 @@
 #define NOR_CMD_READ_STATUS1 0x05u
 #define NOR_CMD_READ_JEDEC_ID 0x9Fu
 #define NOR_CMD_RELEASE_POWERDOWN 0xABu
+#define NOR_CMD_ENABLE_RESET 0x66u
+#define NOR_CMD_RESET_DEVICE 0x99u
 #define NOR_CMD_READ_DATA 0x03u
 #define NOR_CMD_PAGE_PROGRAM 0x02u
 #define NOR_CMD_SECTOR_ERASE_4K 0x20u
@@ -13,6 +15,9 @@
 
 #define NOR_SR1_WIP 0x01u
 #define NOR_SR1_WEL 0x02u
+
+#define NOR_MANUFACTURER_XTX 0x0Bu
+#define NOR_XTX_RESET_DELAY_MS 1u
 
 #define NOR_DEFAULT_TRANSFER_TIMEOUT_MS 200u
 #define NOR_DEFAULT_PROGRAM_TIMEOUT_MS 5000u
@@ -163,6 +168,44 @@ static companion_spi_nor_stm32wba_status_t read_status1(
     return read_command(nor, NOR_CMD_READ_STATUS1, status1, 1u);
 }
 
+static companion_spi_nor_stm32wba_status_t read_jedec_id(
+    companion_spi_nor_stm32wba_t *nor,
+    uint8_t id[3])
+{
+    companion_spi_nor_stm32wba_status_t status =
+        read_command(nor, NOR_CMD_READ_JEDEC_ID, id, 3u);
+    if (status != COMPANION_SPI_NOR_STM32WBA_OK) {
+        return status;
+    }
+    nor->last_probe_id_transfer_completed = true;
+    nor->last_probe_jedec_id = ((uint32_t)id[0] << 16) |
+                               ((uint32_t)id[1] << 8) |
+                               (uint32_t)id[2];
+    return COMPANION_SPI_NOR_STM32WBA_OK;
+}
+
+static companion_spi_nor_stm32wba_status_t normalize_xtx_after_mcu_reset(
+    companion_spi_nor_stm32wba_t *nor)
+{
+    companion_spi_nor_stm32wba_status_t status =
+        companion_spi_nor_stm32wba_wait_ready(
+            nor,
+            nor->config.page_program_timeout_ms);
+    if (status != COMPANION_SPI_NOR_STM32WBA_OK) {
+        return status;
+    }
+    status = send_command(nor, NOR_CMD_ENABLE_RESET);
+    if (status != COMPANION_SPI_NOR_STM32WBA_OK) {
+        return status;
+    }
+    status = send_command(nor, NOR_CMD_RESET_DEVICE);
+    if (status != COMPANION_SPI_NOR_STM32WBA_OK) {
+        return status;
+    }
+    nor->config.delay_ms(nor->config.context, NOR_XTX_RESET_DELAY_MS);
+    return COMPANION_SPI_NOR_STM32WBA_OK;
+}
+
 static companion_spi_nor_stm32wba_status_t write_enable(
     companion_spi_nor_stm32wba_t *nor)
 {
@@ -266,15 +309,11 @@ companion_spi_nor_stm32wba_status_t companion_spi_nor_stm32wba_probe(
     nor->config.delay_ms(nor->config.context, 1u);
 
     uint8_t id[3] = {0u, 0u, 0u};
-    status = read_command(nor, NOR_CMD_READ_JEDEC_ID, id, sizeof(id));
+    status = read_jedec_id(nor, id);
     if (status != COMPANION_SPI_NOR_STM32WBA_OK) {
         return status;
     }
-    uint32_t jedec_id = ((uint32_t)id[0] << 16) |
-                        ((uint32_t)id[1] << 8) |
-                        (uint32_t)id[2];
-    nor->last_probe_id_transfer_completed = true;
-    nor->last_probe_jedec_id = jedec_id;
+    uint32_t jedec_id = nor->last_probe_jedec_id;
     if (jedec_id == 0u || jedec_id == 0x00FFFFFFu) {
         return COMPANION_SPI_NOR_STM32WBA_ERROR;
     }
@@ -287,6 +326,28 @@ companion_spi_nor_stm32wba_status_t companion_spi_nor_stm32wba_probe(
     status = read_status1(nor, &status1);
     if (status != COMPANION_SPI_NOR_STM32WBA_OK) {
         return status;
+    }
+
+    if (id[0] == NOR_MANUFACTURER_XTX) {
+        status = normalize_xtx_after_mcu_reset(nor);
+        if (status != COMPANION_SPI_NOR_STM32WBA_OK) {
+            return status;
+        }
+        memset(id, 0, sizeof(id));
+        status = read_jedec_id(nor, id);
+        if (status != COMPANION_SPI_NOR_STM32WBA_OK) {
+            return status;
+        }
+        jedec_id = nor->last_probe_jedec_id;
+        if (jedec_id == 0u || jedec_id == 0x00FFFFFFu ||
+            id[0] != NOR_MANUFACTURER_XTX ||
+            size_from_capacity_code(id[2]) != size_bytes) {
+            return COMPANION_SPI_NOR_STM32WBA_ERROR;
+        }
+        status = read_status1(nor, &status1);
+        if (status != COMPANION_SPI_NOR_STM32WBA_OK) {
+            return status;
+        }
     }
 
     nor->info.jedec_id = jedec_id;

@@ -62,6 +62,8 @@ def build_fixture() -> dict[str, Any]:
         },
         "command_contract": {
             "release_powerdown": "0xAB",
+            "enable_reset": "0x66",
+            "reset_device": "0x99",
             "read_jedec_id": "0x9F",
             "read_status1": "0x05",
             "write_enable": "0x06",
@@ -77,6 +79,7 @@ def build_fixture() -> dict[str, Any]:
             "valid_jedec_probe": True,
             "invalid_jedec_rejected": True,
             "failed_probe_diagnostics_preserved": True,
+            "xtx_reset_normalization": True,
             "cross_page_program_splits": True,
             "readback_matches": True,
             "range_checks": True,
@@ -138,6 +141,8 @@ def check_code(errors: list[str]) -> None:
         "NOR_CMD_READ_STATUS1 0x05u",
         "NOR_CMD_READ_JEDEC_ID 0x9Fu",
         "NOR_CMD_RELEASE_POWERDOWN 0xABu",
+        "NOR_CMD_ENABLE_RESET 0x66u",
+        "NOR_CMD_RESET_DEVICE 0x99u",
         "NOR_CMD_READ_DATA 0x03u",
         "NOR_CMD_PAGE_PROGRAM 0x02u",
         "NOR_CMD_SECTOR_ERASE_4K 0x20u",
@@ -264,6 +269,7 @@ def check_native_behavior(self_test: bool, errors: list[str]) -> None:
         for token in (
             "PASS probe jedec=0xEF4014 size=1048576",
             "PASS probe_diagnostics raw_jedec=0xFFFFFF transfer=1",
+            "PASS xtx_reset normalization=1",
             "PASS page_program splits=3",
             "PASS bounds_and_erase",
             "PASS erase_64k blocks=1",

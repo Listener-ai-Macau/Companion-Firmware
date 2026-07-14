@@ -65,15 +65,6 @@ COMPANION_PLACE_IN_SECTION("TAG_OTA_START") const uint32_t MagicKeywordAddress =
     (uint32_t)&MagicKeywordValue;
 #endif
 
-#define FLASH_SPI1_NCS_GPIO_PORT GPIOA
-#define FLASH_SPI1_NCS_PIN GPIO_PIN_2
-#define FLASH_SPI1_CLK_GPIO_PORT GPIOA
-#define FLASH_SPI1_CLK_PIN GPIO_PIN_1
-#define FLASH_SPI1_IO1_GPIO_PORT GPIOB
-#define FLASH_SPI1_IO1_PIN GPIO_PIN_4
-#define FLASH_SPI1_IO0_GPIO_PORT GPIOA
-#define FLASH_SPI1_IO0_PIN GPIO_PIN_7
-
 #define BOARD_FLASH_SPI1_CS_GPIO_PORT GPIOA
 #define BOARD_FLASH_SPI1_CS_PIN GPIO_PIN_2
 #define BOARD_FLASH_SPI1_SCK_GPIO_PORT GPIOA
@@ -89,6 +80,8 @@ COMPANION_PLACE_IN_SECTION("TAG_OTA_START") const uint32_t MagicKeywordAddress =
 #define BOARD_SPI2_CS_PIN GPIO_PIN_6
 #define BOARD_EPAPER_SPI_BAUDRATE_PRESCALER SPI_BAUDRATEPRESCALER_16
 #define BOARD_EPAPER_SPI_HZ 2000000u
+#define BOARD_MAX98357_SAI_GPIO_PORT GPIOB
+#define BOARD_MAX98357_SAI_PIN GPIO_PIN_3
 #define BOARD_MAX98357_SD_GPIO_PORT GPIOA
 #define BOARD_MAX98357_SD_PIN GPIO_PIN_15
 
@@ -493,7 +486,6 @@ static comp_power_policy_t s_power_policy;
 static bool s_power_policy_ready;
 static bool s_low_power_stop_allowed;
 static comp_spi_nor_t s_flash;
-static bool s_spi1_bitbang_probe_done;
 static companion_screen_assets_stm32wb_t s_screen_assets_adapter;
 static companion_touch_ft6336_stm32wb_t s_touch;
 typedef struct {
@@ -642,6 +634,7 @@ static void MX_SPI2_Init(void);
 #error "Companion screen rotation must be 0 or 180 degrees"
 #endif
 
+static void restore_companion_gpio_after_wpan_debug_init(void);
 static void init_board_buttons(void);
 static void disable_board_button_exti_irqs(void);
 static void poll_board_buttons(void);
@@ -722,14 +715,7 @@ static void run_flash_probe(void);
 static void run_flash_write_read_smoke(uint32_t jedec);
 static void log_spi1_flash_probe(const char *source,
                                  comp_spi_nor_status_t status);
-static void run_flash_bitbang_probe(void);
-static void run_flash_bitbang_variant(const char *name, bool swap_io0_io1);
-static uint8_t bitbang_spi_transfer(GPIO_TypeDef *mosi_port,
-                                    uint16_t mosi_pin,
-                                    GPIO_TypeDef *miso_port,
-                                    uint16_t miso_pin,
-                                    uint8_t tx);
-static void configure_flash_pins_for_bitbang(bool swap_io0_io1);
+static void log_spi1_hw_state(const char *source);
 static void run_ota_readiness_probe(void);
 static void run_microphone_probe(void);
 static void print_diag_tail(void);
@@ -1155,6 +1141,7 @@ int main(void)
 
     s_error_stage = "MX_APPE_Init";
     MX_APPE_Init();
+    restore_companion_gpio_after_wpan_debug_init();
     printf("[stage] ble app init requested name=companion service=VKA1\r\n");
     comp_power_policy_init(&s_power_policy);
     comp_power_policy_set_touch_wake_ready(
@@ -1339,6 +1326,42 @@ int main(void)
 static bool button_is_pressed(const board_button_t *button)
 {
     return HAL_GPIO_ReadPin(button->port, button->pin) == GPIO_PIN_RESET;
+}
+
+static void restore_companion_gpio_after_wpan_debug_init(void)
+{
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+
+    /* CubeWB's production APPD_Init parks PA15/PB3/PB4 in analog mode because
+     * they are unused on the reference p2pServer. Companion owns those pins. */
+    __HAL_RCC_GPIOA_CLK_ENABLE();
+    __HAL_RCC_GPIOB_CLK_ENABLE();
+
+    GPIO_InitStruct.Pin = BOARD_FLASH_SPI1_MISO_PIN;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+    GPIO_InitStruct.Alternate = GPIO_AF5_SPI1;
+    HAL_GPIO_Init(BOARD_FLASH_SPI1_MISO_GPIO_PORT, &GPIO_InitStruct);
+
+    GPIO_InitStruct.Pin = BOARD_MAX98357_SAI_PIN;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+    GPIO_InitStruct.Alternate = GPIO_AF13_SAI1;
+    HAL_GPIO_Init(BOARD_MAX98357_SAI_GPIO_PORT, &GPIO_InitStruct);
+
+    HAL_GPIO_WritePin(BOARD_MAX98357_SD_GPIO_PORT,
+                      BOARD_MAX98357_SD_PIN,
+                      GPIO_PIN_RESET);
+    GPIO_InitStruct.Pin = BOARD_MAX98357_SD_PIN;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    GPIO_InitStruct.Alternate = 0u;
+    HAL_GPIO_Init(BOARD_MAX98357_SD_GPIO_PORT, &GPIO_InitStruct);
+
+    printf("[gpio-ownership] after=wpan_debug flash_miso=PB4:AF5 speaker_data=PB3:AF13 speaker_sd=PA15:output\r\n");
 }
 
 static void init_board_buttons(void)
@@ -3130,16 +3153,6 @@ static void run_flash_probe(void)
     comp_spi_nor_info_t driver_info;
     comp_spi_nor_status_t driver_status = comp_spi_nor_probe(&s_flash, &driver_info);
     log_spi1_flash_probe("manual", driver_status);
-    if (driver_status != COMP_SPI_NOR_OK && !s_spi1_bitbang_probe_done) {
-        s_spi1_bitbang_probe_done = true;
-        run_flash_bitbang_probe();
-        (void)comp_spi_nor_init(&s_flash,
-                                &hspi1,
-                                BOARD_FLASH_SPI1_CS_GPIO_PORT,
-                                BOARD_FLASH_SPI1_CS_PIN);
-        driver_status = comp_spi_nor_probe(&s_flash, &driver_info);
-        log_spi1_flash_probe("manual_after_bitbang", driver_status);
-    }
     printf("[flash-driver] transport=spi1 probe=%s jedec=0x%06lX size=%lu sector=%lu page=%lu sr1=0x%02X\r\n",
            comp_spi_nor_status_name(driver_status),
            (unsigned long)(driver_status == COMP_SPI_NOR_OK ? driver_info.jedec_id : 0xFFFFFFFFu),
@@ -3322,6 +3335,21 @@ static void log_spi1_flash_probe(const char *source,
            (unsigned long)BOARD_FLASH_SPI1_HZ);
 }
 
+static void log_spi1_hw_state(const char *source)
+{
+    printf("[flash-spi1-hw] source=%s state=%u cr1=0x%08lX cr2=0x%08lX sr=0x%08lX apb2enr=0x%08lX gpioa_moder=0x%08lX gpioa_afrl=0x%08lX gpiob_moder=0x%08lX gpiob_afrl=0x%08lX\r\n",
+           source != NULL ? source : "unknown",
+           (unsigned int)hspi1.State,
+           (unsigned long)SPI1->CR1,
+           (unsigned long)SPI1->CR2,
+           (unsigned long)SPI1->SR,
+           (unsigned long)RCC->APB2ENR,
+           (unsigned long)GPIOA->MODER,
+           (unsigned long)GPIOA->AFR[0],
+           (unsigned long)GPIOB->MODER,
+           (unsigned long)GPIOB->AFR[0]);
+}
+
 static bool recording_flash_load_header(void)
 {
     recording_flash_header_t header;
@@ -3417,22 +3445,13 @@ bool Companion_ScreenAssets_OpenExternalStore(comp_asset_store_t *store)
     if (store == NULL) {
         return false;
     }
+    log_spi1_hw_state("screen_assets_before_probe");
     (void)comp_spi_nor_init(&s_flash,
                             &hspi1,
                             BOARD_FLASH_SPI1_CS_GPIO_PORT,
                             BOARD_FLASH_SPI1_CS_PIN);
     status = comp_spi_nor_probe(&s_flash, &info);
     log_spi1_flash_probe("screen_assets", status);
-    if (status != COMP_SPI_NOR_OK && !s_spi1_bitbang_probe_done) {
-        s_spi1_bitbang_probe_done = true;
-        run_flash_bitbang_probe();
-        (void)comp_spi_nor_init(&s_flash,
-                                &hspi1,
-                                BOARD_FLASH_SPI1_CS_GPIO_PORT,
-                                BOARD_FLASH_SPI1_CS_PIN);
-        status = comp_spi_nor_probe(&s_flash, &info);
-        log_spi1_flash_probe("screen_assets_after_bitbang", status);
-    }
     if (status != COMP_SPI_NOR_OK ||
         FLASH_UI_ASSETS_BASE > info.size_bytes ||
         FLASH_UI_ASSETS_SIZE > info.size_bytes - FLASH_UI_ASSETS_BASE) {
@@ -3935,122 +3954,6 @@ bool Companion_RecordingFlash_Delete(uint8_t operation,
                               delete_all ? 1u : 0u,
                               erased ? 0u : 1u);
     return erased;
-}
-
-static void run_flash_bitbang_probe(void)
-{
-    HAL_StatusTypeDef deinit_status = HAL_SPI_DeInit(&hspi1);
-    printf("[flash-bb] begin spi1_deinit=%s note=manual_gpio_spi_on_spi1_pins\r\n",
-           hal_status_name(deinit_status));
-    run_flash_bitbang_variant("normal_io0_mosi_io1_miso", false);
-    run_flash_bitbang_variant("swapped_io1_mosi_io0_miso", true);
-    MX_SPI1_Init();
-}
-
-static void run_flash_bitbang_variant(const char *name, bool swap_io0_io1)
-{
-    GPIO_TypeDef *mosi_port = swap_io0_io1 ? FLASH_SPI1_IO1_GPIO_PORT : FLASH_SPI1_IO0_GPIO_PORT;
-    uint16_t mosi_pin = swap_io0_io1 ? FLASH_SPI1_IO1_PIN : FLASH_SPI1_IO0_PIN;
-    GPIO_TypeDef *miso_port = swap_io0_io1 ? FLASH_SPI1_IO0_GPIO_PORT : FLASH_SPI1_IO1_GPIO_PORT;
-    uint16_t miso_pin = swap_io0_io1 ? FLASH_SPI1_IO0_PIN : FLASH_SPI1_IO1_PIN;
-    uint8_t jedec_id[3] = {0};
-    uint8_t status1 = 0u;
-
-    configure_flash_pins_for_bitbang(swap_io0_io1);
-
-    HAL_GPIO_WritePin(FLASH_SPI1_NCS_GPIO_PORT, FLASH_SPI1_NCS_PIN, GPIO_PIN_RESET);
-    (void)bitbang_spi_transfer(mosi_port, mosi_pin, miso_port, miso_pin, 0xABu);
-    HAL_GPIO_WritePin(FLASH_SPI1_NCS_GPIO_PORT, FLASH_SPI1_NCS_PIN, GPIO_PIN_SET);
-    HAL_Delay(1u);
-
-    HAL_GPIO_WritePin(FLASH_SPI1_NCS_GPIO_PORT, FLASH_SPI1_NCS_PIN, GPIO_PIN_RESET);
-    (void)bitbang_spi_transfer(mosi_port, mosi_pin, miso_port, miso_pin, 0x9Fu);
-    jedec_id[0] = bitbang_spi_transfer(mosi_port, mosi_pin, miso_port, miso_pin, 0xFFu);
-    jedec_id[1] = bitbang_spi_transfer(mosi_port, mosi_pin, miso_port, miso_pin, 0xFFu);
-    jedec_id[2] = bitbang_spi_transfer(mosi_port, mosi_pin, miso_port, miso_pin, 0xFFu);
-    HAL_GPIO_WritePin(FLASH_SPI1_NCS_GPIO_PORT, FLASH_SPI1_NCS_PIN, GPIO_PIN_SET);
-
-    HAL_GPIO_WritePin(FLASH_SPI1_NCS_GPIO_PORT, FLASH_SPI1_NCS_PIN, GPIO_PIN_RESET);
-    (void)bitbang_spi_transfer(mosi_port, mosi_pin, miso_port, miso_pin, 0x05u);
-    status1 = bitbang_spi_transfer(mosi_port, mosi_pin, miso_port, miso_pin, 0xFFu);
-    HAL_GPIO_WritePin(FLASH_SPI1_NCS_GPIO_PORT, FLASH_SPI1_NCS_PIN, GPIO_PIN_SET);
-
-    uint32_t jedec = ((uint32_t)jedec_id[0] << 16) |
-                     ((uint32_t)jedec_id[1] << 8) |
-                     (uint32_t)jedec_id[2];
-    bool valid = jedec != 0x000000u && jedec != 0xFFFFFFu;
-
-    GPIO_PinState io0_level = HAL_GPIO_ReadPin(FLASH_SPI1_IO0_GPIO_PORT, FLASH_SPI1_IO0_PIN);
-    GPIO_PinState io1_level = HAL_GPIO_ReadPin(FLASH_SPI1_IO1_GPIO_PORT, FLASH_SPI1_IO1_PIN);
-
-    printf("[flash-bb] cfg=%s jedec=%02X-%02X-%02X sr1=0x%02X valid=%u idle_io0=%u idle_io1=%u\r\n",
-           name,
-           jedec_id[0],
-           jedec_id[1],
-           jedec_id[2],
-           status1,
-           valid ? 1u : 0u,
-           io0_level == GPIO_PIN_SET ? 1u : 0u,
-           io1_level == GPIO_PIN_SET ? 1u : 0u);
-}
-
-static uint8_t bitbang_spi_transfer(GPIO_TypeDef *mosi_port,
-                                    uint16_t mosi_pin,
-                                    GPIO_TypeDef *miso_port,
-                                    uint16_t miso_pin,
-                                    uint8_t tx)
-{
-    uint8_t rx = 0u;
-
-    for (int bit = 7; bit >= 0; --bit) {
-        HAL_GPIO_WritePin(mosi_port,
-                          mosi_pin,
-                          ((tx >> bit) & 1u) ? GPIO_PIN_SET : GPIO_PIN_RESET);
-        for (volatile uint32_t delay = 0u; delay < 80u; ++delay) {
-        }
-        HAL_GPIO_WritePin(FLASH_SPI1_CLK_GPIO_PORT, FLASH_SPI1_CLK_PIN, GPIO_PIN_SET);
-        for (volatile uint32_t delay = 0u; delay < 80u; ++delay) {
-        }
-        rx <<= 1;
-        if (HAL_GPIO_ReadPin(miso_port, miso_pin) == GPIO_PIN_SET) {
-            rx |= 1u;
-        }
-        HAL_GPIO_WritePin(FLASH_SPI1_CLK_GPIO_PORT, FLASH_SPI1_CLK_PIN, GPIO_PIN_RESET);
-        for (volatile uint32_t delay = 0u; delay < 80u; ++delay) {
-        }
-    }
-
-    return rx;
-}
-
-static void configure_flash_pins_for_bitbang(bool swap_io0_io1)
-{
-    GPIO_InitTypeDef GPIO_InitStruct = {0};
-    GPIO_TypeDef *mosi_port = swap_io0_io1 ? FLASH_SPI1_IO1_GPIO_PORT : FLASH_SPI1_IO0_GPIO_PORT;
-    uint16_t mosi_pin = swap_io0_io1 ? FLASH_SPI1_IO1_PIN : FLASH_SPI1_IO0_PIN;
-    GPIO_TypeDef *miso_port = swap_io0_io1 ? FLASH_SPI1_IO0_GPIO_PORT : FLASH_SPI1_IO1_GPIO_PORT;
-    uint16_t miso_pin = swap_io0_io1 ? FLASH_SPI1_IO0_PIN : FLASH_SPI1_IO1_PIN;
-
-    HAL_GPIO_WritePin(FLASH_SPI1_NCS_GPIO_PORT, FLASH_SPI1_NCS_PIN, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(FLASH_SPI1_CLK_GPIO_PORT, FLASH_SPI1_CLK_PIN, GPIO_PIN_RESET);
-
-    GPIO_InitStruct.Pin = FLASH_SPI1_NCS_PIN | FLASH_SPI1_CLK_PIN;
-    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-    GPIO_InitStruct.Pull = GPIO_PULLUP;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-    GPIO_InitStruct.Pin = mosi_pin;
-    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-    HAL_GPIO_Init(mosi_port, &GPIO_InitStruct);
-
-    GPIO_InitStruct.Pin = miso_pin;
-    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-    GPIO_InitStruct.Pull = GPIO_PULLUP;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-    HAL_GPIO_Init(miso_port, &GPIO_InitStruct);
 }
 
 static uint32_t ota_blockers(bool recording_active,

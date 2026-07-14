@@ -15,6 +15,7 @@
   },
   "command_contract": {
     "block_erase_size": 65536,
+    "enable_reset": "0x66",
     "erase_4k": "0x20",
     "erase_64k": "0xD8",
     "erase_size": 4096,
@@ -24,6 +25,7 @@
     "read_jedec_id": "0x9F",
     "read_status1": "0x05",
     "release_powerdown": "0xAB",
+    "reset_device": "0x99",
     "write_enable": "0x06"
   },
   "native_behavior": {
@@ -39,7 +41,8 @@
     "range_checks": true,
     "readback_matches": true,
     "unaligned_64k_erase_rejected": true,
-    "valid_jedec_probe": true
+    "valid_jedec_probe": true,
+    "xtx_reset_normalization": true
   },
   "purpose": "Use one ordinary 1-1-1 SPI NOR core across WB55, WBA55 and WBA65, with WB55 SPI1 as the development-board proving path.",
   "required_future_evidence": [

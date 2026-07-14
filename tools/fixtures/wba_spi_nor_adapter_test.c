@@ -15,6 +15,8 @@
 #define CMD_READ_STATUS1 0x05u
 #define CMD_READ_JEDEC_ID 0x9Fu
 #define CMD_RELEASE_POWERDOWN 0xABu
+#define CMD_ENABLE_RESET 0x66u
+#define CMD_RESET_DEVICE 0x99u
 #define CMD_READ_DATA 0x03u
 #define CMD_PAGE_PROGRAM 0x02u
 #define CMD_SECTOR_ERASE_4K 0x20u
@@ -34,8 +36,10 @@ typedef struct {
     uint32_t page_programs;
     uint32_t sector_erases;
     uint32_t block_erases;
+    uint32_t software_resets;
     bool selected;
     bool force_busy;
+    bool reset_enabled;
 } fake_nor_t;
 
 static fake_nor_t s_fake;
@@ -89,11 +93,22 @@ static bool fake_command_header(fake_nor_t *fake,
     if (length == 1u) {
         if (fake->command == CMD_WRITE_ENABLE) {
             fake->status1 |= SR1_WEL;
+        } else if (fake->command == CMD_ENABLE_RESET) {
+            fake->reset_enabled = true;
+        } else if (fake->command == CMD_RESET_DEVICE) {
+            if (!fake->reset_enabled) {
+                return false;
+            }
+            fake->reset_enabled = false;
+            fake->status1 = 0u;
+            fake->software_resets++;
         }
         return fake->command == CMD_WRITE_ENABLE ||
                fake->command == CMD_READ_STATUS1 ||
                fake->command == CMD_READ_JEDEC_ID ||
-               fake->command == CMD_RELEASE_POWERDOWN;
+               fake->command == CMD_RELEASE_POWERDOWN ||
+               fake->command == CMD_ENABLE_RESET ||
+               fake->command == CMD_RESET_DEVICE;
     }
 
     fake->address = decode_address(transmit);
@@ -267,6 +282,17 @@ static bool test_probe(void)
     (void)printf("PASS probe jedec=0x%06lX size=%lu\n",
                  (unsigned long)nor.info.jedec_id,
                  (unsigned long)nor.info.size_bytes);
+
+    fake_reset(0x0Bu, 0x40u, 0x14u);
+    if (!check(init_and_probe(&nor), "XTX normalized JEDEC probe") ||
+        !check(s_fake.software_resets == 1u,
+               "XTX probe must issue one 66h/99h reset sequence") ||
+        !check(nor.info.jedec_id == 0x000B4014u,
+               "XTX JEDEC must survive normalization")) {
+        return false;
+    }
+    (void)printf("PASS xtx_reset normalization=%lu\n",
+                 (unsigned long)s_fake.software_resets);
     return true;
 }
 

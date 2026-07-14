@@ -860,6 +860,30 @@ through target glue on dedicated hardware `SPI1` (`PA1/PA7/PB4`, software
 replace only the target callback binding and selected pins/peripheral; portable
 storage clients must not branch on WB55 versus WBA.
 
+External Flash data and clock transfers must always use a hardware SPI
+peripheral on WB55, WBA55 and WBA65. GPIO bit-banged/software SPI is prohibited
+as a production path, fallback and diagnostic image. A failed hardware probe
+must remain a visible error or use a bounded hardware-peripheral reset/retry;
+it may not silently switch transports.
+
+Generated middleware pin parking is part of the target-adapter audit. CubeWB's
+production `APPD_Init` treats reference-board-unused `PA15/PB3/PB4` as analog;
+the WB55 Companion target reclaims those pins immediately after
+`MX_APPE_Init` for MAX98357 shutdown/data and SPI1 MISO. A CubeWBA target must
+likewise compare every middleware low-power/debug GPIO mask against the selected
+board pin-ownership table. The first external-Flash probe must succeed with the
+pin still in its hardware-SPI alternate function; delayed probes, peripheral
+reinitialization and software SPI are not acceptance paths.
+
+The current WB55 NOR reports XTX manufacturer `0x0B`. MCU-only reset does not
+power-cycle that device, so the shared core applies the XT25F128F reset
+contract after the first valid manufacturer read: wait until status BUSY is
+clear, send `66h` then `99h` over the selected hardware SPI, wait the bounded
+reset delay, and confirm JEDEC again. This is a manufacturer-scoped state
+normalization, not a transport fallback. A future WBA board with another NOR
+must select its own documented reset policy rather than inheriting XTX commands
+by assumption.
+
 - The acceptance id is `wba_screen_assets_scaffold`; its current fixture is
   `docs/validation/companion-screen-assets-stm32wba.json`. Keep it in the
   shared `companion-screen-wba-port-contract.json` portability gate rather
