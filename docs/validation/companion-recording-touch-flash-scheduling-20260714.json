@@ -1,0 +1,78 @@
+{
+  "schema_id": "companion.recording_touch_flash_scheduling.v1",
+  "status": "READY_FOR_FOCUSED_HARDWARE_RERUN",
+  "claim_scope": "Machine repair and build readiness only; the candidate has not yet passed WB55 hardware acceptance.",
+  "source_failure": {
+    "firmware_commit": "75c2a313b01b33a595164ac4d2451551b50a037c",
+    "artifact": ".cache/validation/shared-recording-chain-record-touch-health-75c2a31",
+    "machine_status": "NO_GO_INCOMPLETE_TOUCH_WAKE_EVIDENCE",
+    "record_touch_samples": 78,
+    "ft6336_read_delta": 1850,
+    "ft6336_error_delta": 0,
+    "post_start_irq_delta": 0,
+    "post_start_contacts": 0,
+    "pc6_levels": [
+      1
+    ],
+    "scheduler_gap_count": 4,
+    "max_scheduler_gap_ms": 1567,
+    "reclassified_findings": [
+      "RECORDING_TOUCH_SCHEDULER_STALLED",
+      "FT6336_NO_TOUCH_DETECTION"
+    ]
+  },
+  "repair": {
+    "firmware_commit": "7b4d24f3210d9c28486777069f16c803a4e74dcd",
+    "shared_recording_core_changed": false,
+    "wb55_target_adapter": {
+      "stage_capacity_blocks": 450,
+      "stage_capacity_bytes": 144000,
+      "normal_drain_page_budget": 1,
+      "catchup_high_water_bytes": 1280,
+      "touch_service_between_page_programs": true,
+      "runtime_actions_deferred_until_write_slice_returns": true,
+      "dma_overrun_logged_at_stop": true
+    },
+    "portable_boundary": "Denzic Platform continues to own recording state and accounting. WB55 owns QSPI scheduling; WBA55/WBA65 must supply their own bounded storage adapter without changing the shared core."
+  },
+  "validation": {
+    "host_touch_replay": "PASS",
+    "ft6336_static_contract": "PASS",
+    "recording_touch_parser_self_test": "PASS_STATIC_PARSER",
+    "pdm_baseline": "PASS",
+    "product_requirements": "PASS",
+    "normal_wb55_build": {
+      "status": "PASS",
+      "text": 131388,
+      "data": 2436,
+      "bss": 188191,
+      "bin_sha256": "509D2CD35EB7DFDB64D41C527E34F302131431514402FDE9230C855332963497",
+      "elf_sha256": "2C3002A7E65C9A27673E889CF34B39CBAF8676819615DC74427AFC363B5C103A"
+    },
+    "trace_wb55_build": {
+      "status": "PASS",
+      "text": 139568,
+      "data": 2436,
+      "bss": 188199,
+      "bin_sha256": "A312FF9E7FB522A0457BFB609D6EED6AB7674C7DD4B71CA8C9B5A5E0101C7371",
+      "elf_sha256": "69A46535A2EEF2F3ADA71D6D355C7CA9368AD7C1BE03AB079B56F52B49FCDDD9"
+    },
+    "acceptance_preflight": {
+      "status": "PASS",
+      "capture_seconds": 94,
+      "hardware_touched": false,
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File tools/run_wb55_recording_chain_acceptance.ps1 -PreflightOnly -CaptureSeconds 94 -TraceImagePath cubeide/Companion_Nucleo_WB55RG_Bringup/build_verbose_trace/Companion_Nucleo_WB55RG_VerboseTrace.bin -NormalImagePath cubeide/Companion_Nucleo_WB55RG_Bringup/build/Companion_Nucleo_WB55RG_Bringup.bin"
+    }
+  },
+  "hardware_acceptance_required": [
+    "two daily-page double taps are recognized",
+    "recording starts and stops from the touch source",
+    "maximum recording-touch health gap is at most 750 ms",
+    "PDM DMA stop reports overruns=0",
+    "at least two valid PCM blocks have changing CRC and nonzero span",
+    "no microphone timeout occurs",
+    "DMA stops successfully",
+    "external Flash store completes successfully"
+  ],
+  "remaining_branch": "If scheduler gaps are gone but FT6336 still emits no new IRQ/contact, investigate controller detection, TP_INT wiring, and physical touch independently; do not infer a threshold change."
+}
