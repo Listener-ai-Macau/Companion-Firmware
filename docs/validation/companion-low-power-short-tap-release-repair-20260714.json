@@ -1,0 +1,27 @@
+{
+  "schema": "companion.wb55.short_tap_release_recheck.v1",
+  "status": "NO_GO_INCOMPLETE_SHORT_TAP_SAMPLE",
+  "captured_at": "2026-07-14T09:09:55.1531701+08:00",
+  "target": "NUCLEO-WB55RG + GDEY0154D67-T03 + FT6336U",
+  "operator_result": {
+    "selection": "失败",
+    "note": ""
+  },
+  "machine_observation": {
+    "sleepy_face_completed": true,
+    "stop_was_allowed_before_contact": true,
+    "wake_contact_observed": true,
+    "low_power_touch_wake_logged": true,
+    "terminal_release_observed": false,
+    "contact_sequence": "contacts=1 persisted with changing coordinates through capture end",
+    "reason_not_a_repair_verdict": "No touch_count=0 or explicit UP reached the terminal gesture classifier."
+  },
+  "result": "The bounded release transaction compiled and ran, but the physical sample did not contain a light-tap release. Keep the previous real release-to-tap failure open and add release-outcome trace evidence before the next focused review.",
+  "evidence": {
+    "raw_log": "docs/validation/companion-low-power-short-tap-release-repair-20260714.raw.log",
+    "raw_log_sha256": "3841DB26ED81D27C0D9ECC23F53BC3DB88BEFC01934F1251B3EEC7362EFFD1BF",
+    "runner_report": ".cache/validation/short-touch-wake-trace-20260714-release-repair/short-touch-wake-trace-report.json",
+    "parser_report": ".cache/validation/short-touch-wake-trace-20260714-release-repair/short-tap-parser.json",
+    "normal_firmware_restored": true
+  }
+}

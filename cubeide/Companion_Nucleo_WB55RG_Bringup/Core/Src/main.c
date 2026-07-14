@@ -1842,7 +1842,6 @@ static void process_touch_debug_sample(const comp_ft6336_touch_sample_t *sample,
          * buffered contact lifecycle before the next gesture begins. */
         s_touch_refresh_capture_active = false;
         s_touch_refresh_latest_contact_valid = false;
-        s_low_power_touch_wake_requested = false;
     }
     logical_x = sample->x < 200u ? sample->x : 199u;
     logical_y = sample->y < 200u ? sample->y : 199u;
@@ -1891,6 +1890,12 @@ static void process_touch_debug_sample(const comp_ft6336_touch_sample_t *sample,
         request_low_power_touch_wake();
     }
     handle_touch_menu_sample(sample, logical_x, logical_y, now_ms);
+    if (!s_touch_contact_active) {
+        /* Keep the wake transaction visible to the release classifier. A
+         * touch_count=0 report is the normal FT6336 release path, not a
+         * reason to enter Stop before its terminal gesture dispatches. */
+        s_low_power_touch_wake_requested = false;
+    }
 }
 
 static void request_low_power_touch_wake(void)
@@ -2145,7 +2150,9 @@ static void update_low_power_policy(void)
             s_recording_flash.capture_active);
     comp_power_policy_set_blocker(&s_power_policy,
                                   COMP_POWER_BLOCKER_TOUCH_CONTACT,
-                                  s_touch_contact_active);
+                                  s_touch_contact_active ||
+                                      s_touch_gesture.active ||
+                                      s_touch_gesture.consumed_until_release);
     comp_power_policy_set_blocker(&s_power_policy,
                                   COMP_POWER_BLOCKER_MENU_TIMER,
                                   s_menu_entry_pending);
@@ -2297,6 +2304,21 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
                                                logical_y,
                                                now_ms,
                                                &gesture);
+    if (!contact_now && s_low_power_touch_wake_requested) {
+        /* Trace every low-power release outcome. The normal image compiles
+         * this out; the diagnostic must distinguish a pending debounce from
+         * a classified none/tap without relying on screen observation. */
+        TOUCH_VERBOSE_TRACE("[touch-ui] release_classify ready=%u gesture=%s duration_ms=%u active=%u consumed=%u contacts=%u release_samples=%u debounce=%u tap_pending=%u\\r\\n",
+               gesture_ready ? 1u : 0u,
+               comp_touch_gesture_name(gesture.type),
+               (unsigned)gesture.duration_ms,
+               s_touch_gesture.active ? 1u : 0u,
+               s_touch_gesture.consumed_until_release ? 1u : 0u,
+               (unsigned)s_touch_gesture.contact_samples,
+               (unsigned)s_touch_gesture.release_samples,
+               (unsigned)s_touch_gesture.config.release_debounce_samples,
+               s_touch_gesture.tap_pending ? 1u : 0u);
+    }
     /* A long press has already consumed this contact to enter the menu.  The
      * panel wait loop may replay held samples after the new menu arrives;
      * never turn those residual samples into a second menu press refresh. */
@@ -2410,10 +2432,23 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
                 toggle_touch_recording();
             }
         } else if (gesture.type == COMP_TOUCH_GESTURE_TAP) {
-            TOUCH_VERBOSE_TRACE("[touch-ui] daily_reaction x=%u y=%u\r\n",
-                   (unsigned)gesture.end_x,
-                   (unsigned)gesture.end_y);
-            (void)Companion_Screen_DailyTapAt(gesture.end_x, gesture.end_y);
+            if (s_recording_fsm.state == COMP_RECORDING_STATE_RECORDING) {
+                /* Recording owns the visible state. A first tap is also the
+                 * lead-in to the double-tap stop gesture, so do not replace
+                 * its indicator with a pet reaction or spend the next
+                 * interactive frame on maintenance. */
+                bool retained = Companion_Screen_DailyExpressionSignal(
+                    COMP_EPAPER_EXPRESSION_SIGNAL_RECORDING_START,
+                    "touch_recording_tap_retained");
+
+                TOUCH_VERBOSE_TRACE("[record-visual] action=tap_retained expression=recording result=%u\r\n",
+                       retained ? 1u : 0u);
+            } else {
+                TOUCH_VERBOSE_TRACE("[touch-ui] daily_reaction x=%u y=%u\r\n",
+                       (unsigned)gesture.end_x,
+                       (unsigned)gesture.end_y);
+                (void)Companion_Screen_DailyTapAt(gesture.end_x, gesture.end_y);
+            }
         } else if (gesture.type == COMP_TOUCH_GESTURE_SWIPE_LEFT ||
                    gesture.type == COMP_TOUCH_GESTURE_SWIPE_RIGHT ||
                    gesture.type == COMP_TOUCH_GESTURE_SWIPE_UP ||

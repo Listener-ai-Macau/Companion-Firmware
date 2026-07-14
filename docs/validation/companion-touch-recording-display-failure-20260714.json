@@ -1,0 +1,30 @@
+{
+  "schema": "companion.wb55.touch_recording_display_failure.v1",
+  "status": "NO_GO_VISIBLE_RECORDING_STATE",
+  "captured_at": "2026-07-14T09:17:07.2748450+08:00",
+  "target": "NUCLEO-WB55RG + GDEY0154D67-T03 + FT6336U",
+  "operator_result": {
+    "selection": "失败",
+    "note": "按了没反应, 你看看你先重置一下屏幕? 屏幕没有显示了"
+  },
+  "machine_observation": {
+    "recording_started_by_touch_double_tap": true,
+    "subsequent_tap_classified": true,
+    "daily_reaction_dispatched": true,
+    "maintenance_refresh_selected_after_partial_limit": true,
+    "panel_api_reported_complete": true,
+    "operator_visible_result": "blank/no response"
+  },
+  "recovery": {
+    "action": "lock-guarded normal firmware reflash and MCU hardware reset",
+    "result": "programmer verification passed",
+    "acceptance_interpretation": "recovery action completed; normal visible state still requires focused confirmation"
+  },
+  "required_fix": "Prioritize an explicit recording indicator and suppress ordinary daily-reaction replacement/maintenance on the active recording feedback path.",
+  "evidence": {
+    "raw_log": "docs/validation/companion-touch-recording-display-failure-20260714.raw.log",
+    "raw_log_sha256": "79EF1625F18F4829B891D3C0D18A153EA2436DC263519B4EC87D8FDEF96673BF",
+    "trace_runner_report": ".cache/validation/short-touch-wake-trace-20260714-release-outcome/short-touch-wake-trace-report.json",
+    "normal_reflash_log": ".cache/validation/flash-nucleo/stm32-programmer-20260714-091802-25264.stdout.log"
+  }
+}

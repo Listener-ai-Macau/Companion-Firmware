@@ -1097,6 +1097,44 @@ FT6336 contact 的 `sample_age_ms=1`、PC6 IRQ 计数上升及 `low_power_touch_
 之后才按 `COMP-REQ-031` 分别压测菜单边界、连续局刷清理和触控手感；任何速度优化都不得越过
 WB55/WBA target adapter 边界。
 
+## Revision 82: 真实短按 release-to-tap 失败，先修有限收尾
+
+2026-07-14 的第二次 locked short-tap capture 不再是长按样本：在 sleepy face 完成、Stop 已允许后，
+日志连续记录 `contacts=1 event=down`、`contacts=1 event=contact` 和 `contacts=0 event=none`，均处于
+同一真实轻触的 5 ms FT6336 服务路径。然而没有随后出现 `gesture=tap`、`daily_reaction` 或表情请求，
+而是重新 arm 了 15 s idle timer。owner 随后明确报告“没变化, 我按了”。完整原始日志固定在
+`docs/validation/companion-low-power-short-tap-release-20260714.raw.log`，其 SHA-256 为
+`FFDC174F546127B52E8B8F2F99AACA7A72667DBB979991F413C0D8D2D8EB2803`；该记录是失败证据，绝不可
+误记为 popup 的“通过”。
+
+下一次修复只可在 `main.c` 的 WB55 target glue 中完成：释放样本必须保留到既有 portable gesture
+classifier 完成或诊断出拒绝原因；在这段有界的 contact/release transaction 内暂时禁止 Stop，随后
+立即恢复原本 5 ms/8 ms cadence 与低功耗策略。不得增加 idle polling、周期重绘、预唤醒刷新或改动
+portable gesture core；必须保留 swipe、3 s long press 和 double-tap recording。先以 trace image 证明
+release 的 classifier state 和 `tap -> daily_reaction -> visible expression`，才重新发起一个 focused 人工
+短按验收。
+
+第一次带该 bounded repair 的 recheck 已回刷正常镜像并保存为
+`docs/validation/companion-low-power-short-tap-release-repair-20260714.json`。它不是有效的短按反例：
+sleepy face 后 contact 一直为 1 且坐标持续变化，捕获结束前从未出现 release，因此无法调用 terminal
+classifier。该 `NO_GO_INCOMPLETE_SHORT_TAP_SAMPLE` 只要求下一次 trace 增加 release outcome 记录，不能
+据此回退 bounded release transaction，也不能误报 owner 已验证修复。
+
+## Revision 83: 录音中触控的可见状态不能消失
+
+2026-07-14 focused trace 的 operator note 是“按了没反应, 你看看你先重置一下屏幕? 屏幕没有显示了”。
+日志证明 touch 端实际分类为 `tap` 并发出 `daily_reaction`，但同一会话已启动 touch double-tap recording，
+且该 daily reaction 随后碰到第 5 次 partial 后的 Mode-1 maintenance。driver 回报了 panel success，却不能
+代替操作者看见了 recording/happy state。完整日志固定为
+`docs/validation/companion-touch-recording-display-failure-20260714.raw.log`，SHA-256 为
+`79EF1625F18F4829B891D3C0D18A153EA2436DC263519B4EC87D8FDEF96673BF`；正常镜像已通过 lock-guarded
+full reflash + MCU reset 恢复，但 recovery 不关闭该问题。
+
+`COMP-REQ-032` 规定下一步：先定位 recording FSM、display queue 与 maintenance 的优先级交互；录音状态
+必须优先保留一个确定的可见 indicator，普通 tap 不能把该 indicator 替换为日常反应或在关键反馈路径触发
+maintenance。先用 trace 证明 schedule，再做 focused 正常路径和 recovery 路径人工 review；不可把
+`panel_result=0`、编译成功或重刷成功当成正常状态验收。
+
 ## 逐项验收顺序
 
 本项目遵循 AI Workflow 的全产品异步验收规则：未收到操作者明确的“开始验收”前，

@@ -1,0 +1,35 @@
+{
+  "schema": "companion.wb55.short_tap_release_failure.v1",
+  "status": "NO_GO_RELEASE_TO_TAP_DISPATCH",
+  "captured_at": "2026-07-14T08:59:36.1324900+08:00",
+  "target": "NUCLEO-WB55RG + GDEY0154D67-T03 + FT6336U",
+  "operator_context": {
+    "canonical_prompt_selection": "通过",
+    "canonical_note": "",
+    "follow_up_owner_report": "没变化, 我按了",
+    "interpretation": "The selected popup result does not override the serial evidence or the immediate owner report."
+  },
+  "machine_observation": {
+    "sleepy_face_completed": true,
+    "stop_was_allowed": true,
+    "post_sleepy_sequence": [
+      "contacts=1 event=down reads=272",
+      "contacts=1 event=contact reads=273",
+      "contacts=0 event=none reads=275"
+    ],
+    "low_power_touch_wake_requested": true,
+    "terminal_gesture": null,
+    "daily_reaction": false,
+    "visible_expression_after_tap": false,
+    "idle_timer_rearmed_instead": true
+  },
+  "root_cause_status": "under_instrumented; release reaches the target glue but terminal gesture dispatch is absent",
+  "required_repair_contract": "Keep the MCU awake only through the bounded active gesture/release transaction, log the release classifier outcome in the trace image, and preserve all existing swipe, double-tap, long-press, refresh, and low-power policy contracts.",
+  "evidence": {
+    "raw_log": "docs/validation/companion-low-power-short-tap-release-20260714.raw.log",
+    "raw_log_sha256": "FFDC174F546127B52E8B8F2F99AACA7A72667DBB979991F413C0D8D2D8EB2803",
+    "parser_report": ".cache/validation/short-touch-wake-trace-20260714-light-tap/short-tap-parser.json",
+    "parser_report_sha256": "B0868B1D6B1C509596CC9417156DC22A2009D82A5EE0161A175685940E87ACA0",
+    "runner_report": ".cache/validation/short-touch-wake-trace-20260714-light-tap/short-touch-wake-trace-report.json"
+  }
+}
