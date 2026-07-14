@@ -6,8 +6,8 @@ for this step.
 
 | source path | reuse class | stm32 target | first step | risk |
 |---|---|---|---|---|
-| `Listener-Firmware/ports/esp32/audio_capture/` | adaptation | STM32 HAL/LL PDM or SAI/DFSDM-style capture path, DMA buffers, and low-power mic gating | Step 1.5 microphone capture and recording FSM port | Keep microphone behavior and validation ideas, but do not copy ESP-IDF I2S/PDM drivers, ESP task wiring, or ESP GPIO/power policy. |
-| `Listener-Firmware/components/voice_recording_control/` | adaptation | Companion recording FSM independent from ESP FreeRTOS assumptions, using STM32 scheduler/timer hooks and Companion BLE state | Step 1.5 microphone capture and recording FSM port | Reuse state-machine lessons such as pending start, cancel, recovery, host cleanup, and transfer boundaries; do not copy ESP-specific control effects. |
+| `Listener-Firmware/ports/esp32/audio_capture/` | shared contract plus target adapter | `Denzic-Platform/audio/embedded` owns session and PCM contracts; STM32 HAL/LL PDM or SAI/DFSDM owns DMA buffers, short polling, and low-power mic gating | Step 1.5 shared recording core plus WB/WBA capture adapter | Listener ESP32 and Companion STM32 use the same Platform contract; ESP-IDF I2S/PDM drivers, ESP task wiring, and GPIO/power policy remain Listener-only. |
+| `Listener-Firmware/components/voice_recording_control/` | single shared core | `Denzic-Platform/audio/embedded/c/src/denzic_audio_recording_v1.c`; Companion retains only diagnostic/input/storage/transport glue | Step 1.5 shared recording core | Pending start, toggle, stop, cancel, recovery, session finish, transfer, and PCM accounting must not be reimplemented in Companion. Listener integration follows after its active recording acceptance work. |
 | `Listener-Firmware/ports/esp32/ble_audio_stream/` and `protocols/listener_proto/include/listener_audio_proto.h` | adaptation for compatibility surface; reference only for native Companion services | Portable `app/companion_pendant/audio_stream` VKA1 encoder plus later STM32_WPAN GATT notify/control service for Type A1/A2; native Companion recording-list and chunk-pull characteristics remain Companion-owned | Step 1.5 STM32 GATT service skeleton and payload queue boundary | Reuse UUIDs and VKA1 wire semantics only for the explicitly named Listener-compatible live audio service. Do not copy NimBLE code, ESP event-loop assumptions, or use Listener UUIDs for Companion-native services. |
 | `Listener-Firmware/components/firmware_ota/` | reference only | STM32CubeWB BLE OTA readiness notes, manifest discipline, low-battery blockers, interrupted-transfer behavior, CE bootloader policy, external QSPI single staging, and recovery path | Step 1.8 BLE OTA readiness contract and manifest discipline | ESP-IDF OTA slots, ESP partition assumptions, rollback APIs, and bootloader layout are no reuse. |
 | `Listener-Firmware/ports/esp32/ble_firmware_ota/` | reference only | STM32_WPAN OTA control/data GATT shape after official ST OTA reference is understood | Step 1.8 BLE OTA readiness contract and manifest discipline | Reuse preflight and host-transfer concepts, not NimBLE service code. |
@@ -48,6 +48,6 @@ Do not copy:
 1. Document the official ST BLE starter and keep the submodule read-only.
 2. Define the Companion GATT contract before firmware services are customized.
 3. Build the STM32 diagnostic log foundation before microphone, flash cache, or OTA claims.
-4. Port the microphone/recording FSM as behavior, not ESP code.
+4. Pin and call the Denzic Platform recording core; implement only the target capture adapter.
 5. Reuse Listener validation style: runnable checks first, hardware locks only for flash, serial, BLE capture, or real-device validation.
 

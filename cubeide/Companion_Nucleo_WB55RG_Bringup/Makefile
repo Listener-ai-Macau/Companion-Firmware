@@ -228,6 +228,7 @@ INC_DIRS := \
 	$(ROOT)/app/companion_pendant/gatt \
 	$(ROOT)/app/companion_pendant/power \
 	$(ROOT)/app/companion_pendant/recording \
+	$(ROOT)/third_party/denzic-platform/audio/embedded/c/include \
 	$(ROOT)/app/companion_pendant/touch \
 	$(ROOT)/app/companion_pendant/v1_features
 
@@ -317,6 +318,7 @@ C_SOURCES := \
 	$(ROOT)/app/companion_pendant/power/power_policy.c \
 	$(ROOT)/app/companion_pendant/recording/microphone.c \
 	$(ROOT)/app/companion_pendant/recording/recording_fsm.c \
+	$(ROOT)/third_party/denzic-platform/audio/embedded/c/src/denzic_audio_recording_v1.c \
 	$(ROOT)/app/companion_pendant/touch/ft6336.c \
 	$(ROOT)/app/companion_pendant/touch/touch_gesture.c \
 	$(ROOT)/app/companion_pendant/touch/touch_target_stm32wb_ft6336.c \

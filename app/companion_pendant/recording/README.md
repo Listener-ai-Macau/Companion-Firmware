@@ -1,13 +1,13 @@
-# Companion Recording FSM And Microphone Contract
+# Shared Recording Core And Companion Adapter
 
-This directory is the product-owned recording-control surface for the Companion
-pendant. It adapts Listener's `voice_recording_control` state-machine shape,
-but keeps the STM32 implementation independent of Listener's ESP platform
-drivers.
+This directory is the Companion adapter for the single recording core in
+`third_party/denzic-platform/audio/embedded/c`. Listener's recording semantics
+are the shared baseline; STM32 SAI/PDM, QSPI, BLE, touch, and Companion
+diagnostics remain product adapters.
 
 ## FSM Scope
 
-The portable FSM in `recording_fsm.c` covers these explicit states:
+The Denzic Platform core covers these explicit states:
 
 - idle
 - pending start
@@ -19,10 +19,11 @@ The portable FSM in `recording_fsm.c` covers these explicit states:
 - transferred
 - error/recovery
 
-Transition decisions are side-effect free in
-`comp_recording_fsm_decide_transition()`. Runtime entry points apply the
-decision, update metadata, and emit Companion diagnostic log events. Static
-validation checks the transition artifact table instead of relying on hardware.
+Transition decisions, metadata, and the transition artifact live only in
+`denzic_audio_recording_v1.[ch]`. Local `recording_fsm.c` contains no private
+state machine; it translates shared transitions into existing Companion
+diagnostic events and converts the STM32 microphone format/batch structs.
+Static validation rejects a new Companion-owned transition table.
 
 ## Microphone Boundary
 
@@ -52,5 +53,6 @@ The FSM updates metadata required by `docs/ble_gatt_contract.md`:
 - `sync_state`
 - sample format fields: sample rate, bits per sample, channels, frame samples
 
-This step does not claim real microphone audio quality. Real capture, signal
-quality, clipping/noise, and board wiring remain in the later hardware gate.
+The shared core does not claim microphone quality. Real capture, session reuse,
+signal quality, clipping/noise, board wiring, and bounded polling are WB/WBA or
+ESP hardware-adapter responsibilities and require their hardware gates.

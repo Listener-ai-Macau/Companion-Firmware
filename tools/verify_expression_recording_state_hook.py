@@ -24,12 +24,22 @@ EVENTS_HEADER = REPO_ROOT / "app" / "companion_pendant" / "epaper" / "expression
 EVENTS_SOURCE = REPO_ROOT / "app" / "companion_pendant" / "epaper" / "expression_events.c"
 POLICY = REPO_ROOT / "app" / "companion_pendant" / "epaper" / "expression_policy.py"
 RECORDING_FSM = REPO_ROOT / "app" / "companion_pendant" / "recording" / "recording_fsm.h"
+SHARED_RECORDING_CORE = (
+    REPO_ROOT
+    / "third_party"
+    / "denzic-platform"
+    / "audio"
+    / "embedded"
+    / "c"
+    / "include"
+    / "denzic_audio_recording_v1.h"
+)
 PLAN_DOC = REPO_ROOT / "docs" / "companion_screen_expression_system.md"
 README = REPO_ROOT / "app" / "companion_pendant" / "epaper" / "README.md"
 WBA_RULES = REPO_ROOT / "docs" / "stm32wba_migration_rules.md"
 GATT_CONTRACT = REPO_ROOT / "docs" / "ble_gatt_contract.md"
 
-FSM_ENUM_RE = re.compile(r"COMP_RECORDING_STATE_([A-Z_]+)(?:\s*=\s*(\d+))?,")
+FSM_ENUM_RE = re.compile(r"DENZIC_AUDIO_RECORDING_STATE_([A-Z_]+)(?:\s*=\s*(\d+))?,")
 EVENT_CONST_RE = re.compile(r"#define COMP_EPAPER_EXPRESSION_RECORDING_STATE_([A-Z_]+)\s+(\d+)u")
 
 EXPECTED_STATES = [
@@ -106,6 +116,7 @@ def build_fixture() -> dict[str, Any]:
             "event_bridge_source": rel(EVENTS_SOURCE),
             "policy": rel(POLICY),
             "recording_fsm": rel(RECORDING_FSM),
+            "shared_recording_core": rel(SHARED_RECORDING_CORE),
             "screen_acceptance": rel(PLAN_DOC),
             "epaper_readme": rel(README),
             "wba_rules": rel(WBA_RULES),
@@ -127,12 +138,12 @@ def build_fixture() -> dict[str, Any]:
 
 
 def check_state_values(errors: list[str]) -> None:
-    fsm_states = parse_recording_fsm_states(read(RECORDING_FSM, errors))
+    fsm_states = parse_recording_fsm_states(read(SHARED_RECORDING_CORE, errors))
     event_states = parse_event_state_constants(read(EVENTS_HEADER, errors))
     for symbol, value, _signal, _expression in EXPECTED_STATES:
         require(
             fsm_states.get(symbol) == value,
-            f"recording_fsm.h state {symbol} value drifted from {value}",
+            f"Denzic Platform recording state {symbol} value drifted from {value}",
             errors,
         )
         require(

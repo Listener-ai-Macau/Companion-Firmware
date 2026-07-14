@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Static and fixture checks for the Companion recording FSM."""
+"""Static and fixture checks for the shared Denzic recording core adapter."""
 
 from __future__ import annotations
 
@@ -18,6 +18,11 @@ FSM_SOURCE = RECORDING_DIR / "recording_fsm.c"
 MIC_HEADER = RECORDING_DIR / "microphone.h"
 MIC_SOURCE = RECORDING_DIR / "microphone.c"
 README = RECORDING_DIR / "README.md"
+PLATFORM_DIR = REPO_ROOT / "third_party/denzic-platform/audio/embedded/c"
+PLATFORM_HEADER = PLATFORM_DIR / "include/denzic_audio_recording_v1.h"
+PLATFORM_SOURCE = PLATFORM_DIR / "src/denzic_audio_recording_v1.c"
+PLATFORM_TEST = PLATFORM_DIR / "tests/test_denzic_audio_recording_v1.c"
+WB55_MAKEFILE = REPO_ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile"
 DIAG_EVENTS = REPO_ROOT / "app/companion_pendant/diag_log/diag_log_events.h"
 BLE_CONTRACT = REPO_ROOT / "docs/ble_gatt_contract.md"
 FIXTURE = REPO_ROOT / "docs/validation/companion-pendant-firmware-bringup-1.5-synthetic-recording.json"
@@ -47,72 +52,45 @@ REQUIRED_EVENTS = [
 ]
 
 EXPECTED_CASES = {
-    "start_idle_to_recording": [
-        "COMP_RECORDING_STATE_IDLE",
-        "COMP_RECORDING_EVENT_START_REQUEST",
-        "COMP_RECORDING_EFFECT_START_CAPTURE",
-        "COMP_RECORDING_STATE_RECORDING",
+    "start_idle": [
+        "DENZIC_AUDIO_RECORDING_STATE_IDLE",
+        "DENZIC_AUDIO_RECORDING_EVENT_START_REQUEST",
+        "DENZIC_AUDIO_RECORDING_EFFECT_START_CAPTURE",
+        "DENZIC_AUDIO_RECORDING_STATE_RECORDING",
     ],
-    "start_idle_to_pending_start": [
-        "COMP_RECORDING_STATE_IDLE",
-        "COMP_RECORDING_EVENT_START_REQUEST",
-        "COMP_RECORDING_EFFECT_ENTER_PENDING_START",
-        "pending_start_mic_not_ready",
+    "pending_capture": [
+        "DENZIC_AUDIO_RECORDING_STATE_IDLE",
+        "DENZIC_AUDIO_RECORDING_EVENT_START_REQUEST",
+        "DENZIC_AUDIO_RECORDING_EFFECT_ENTER_PENDING_START",
+        "pending_start_capture_not_ready",
     ],
-    "mic_ready_pending_start": [
-        "COMP_RECORDING_STATE_PENDING_START",
-        "COMP_RECORDING_EVENT_MIC_READY",
-        "COMP_RECORDING_EFFECT_START_CAPTURE",
+    "capture_ready": [
+        "DENZIC_AUDIO_RECORDING_STATE_PENDING_START",
+        "DENZIC_AUDIO_RECORDING_EVENT_CAPTURE_READY",
+        "DENZIC_AUDIO_RECORDING_EFFECT_START_CAPTURE",
     ],
-    "reject_start_while_recording": [
-        "COMP_RECORDING_STATE_RECORDING",
-        "COMP_RECORDING_EFFECT_REJECT",
-        "start_rejected_recording_active",
+    "toggle_start": [
+        "DENZIC_AUDIO_RECORDING_EVENT_TOGGLE_REQUEST",
+        "DENZIC_AUDIO_RECORDING_EFFECT_START_CAPTURE",
     ],
-    "reject_start_while_stopping": [
-        "COMP_RECORDING_STATE_STOPPING",
-        "COMP_RECORDING_EFFECT_REJECT",
-        "start_rejected_stop_in_progress",
+    "toggle_stop": [
+        "DENZIC_AUDIO_RECORDING_STATE_RECORDING",
+        "DENZIC_AUDIO_RECORDING_EFFECT_STOP_CAPTURE",
     ],
-    "stop_recording_to_stopping": [
-        "COMP_RECORDING_EVENT_STOP_REQUEST",
-        "COMP_RECORDING_EFFECT_STOP_CAPTURE",
-        "COMP_RECORDING_STATE_STOPPING",
+    "session_finished": [
+        "DENZIC_AUDIO_RECORDING_EVENT_SESSION_FINISHED",
+        "DENZIC_AUDIO_RECORDING_EFFECT_MARK_TRANSFER_READY",
+        "DENZIC_AUDIO_RECORDING_STATE_TRANSFER_READY",
     ],
-    "session_finished_after_stop": [
-        "COMP_RECORDING_EVENT_SESSION_FINISHED",
-        "COMP_RECORDING_EFFECT_MARK_TRANSFER_READY",
-        "COMP_RECORDING_STATE_TRANSFER_READY",
+    "cancel_pending": [
+        "DENZIC_AUDIO_RECORDING_STATE_PENDING_START",
+        "DENZIC_AUDIO_RECORDING_EVENT_CANCEL_REQUEST",
+        "DENZIC_AUDIO_RECORDING_STATE_CANCELED",
     ],
-    "cancel_pending_start": [
-        "COMP_RECORDING_STATE_PENDING_START",
-        "COMP_RECORDING_EVENT_CANCEL_REQUEST",
-        "COMP_RECORDING_STATE_CANCELED",
-    ],
-    "cancel_recording": [
-        "COMP_RECORDING_STATE_RECORDING",
-        "COMP_RECORDING_EVENT_CANCEL_REQUEST",
-        "recording_canceled",
-    ],
-    "transfer_ready_to_active": [
-        "COMP_RECORDING_STATE_TRANSFER_READY",
-        "COMP_RECORDING_EVENT_TRANSFER_BEGIN",
-        "COMP_RECORDING_STATE_TRANSFER_ACTIVE",
-    ],
-    "transfer_active_to_transferred": [
-        "COMP_RECORDING_STATE_TRANSFER_ACTIVE",
-        "COMP_RECORDING_EVENT_TRANSFER_FINISHED",
-        "COMP_RECORDING_STATE_TRANSFERRED",
-    ],
-    "error_during_recording": [
-        "COMP_RECORDING_EVENT_ERROR_DETECTED",
-        "COMP_RECORDING_EFFECT_ENTER_ERROR_RECOVERY",
-        "COMP_RECORDING_STATE_ERROR_RECOVERY",
-    ],
-    "recovery_complete_to_idle": [
-        "COMP_RECORDING_EVENT_RECOVERY_COMPLETE",
-        "COMP_RECORDING_EFFECT_RECOVER_TO_IDLE",
-        "COMP_RECORDING_STATE_IDLE",
+    "abort_without_stop": [
+        "DENZIC_AUDIO_RECORDING_STATE_RECORDING",
+        "DENZIC_AUDIO_RECORDING_EFFECT_ENTER_ERROR_RECOVERY",
+        "session_finished_without_stop",
     ],
 }
 
@@ -171,14 +149,14 @@ def extract_function(source: str, name: str) -> str:
 
 def extract_transition_cases(source: str) -> dict[str, str]:
     match = re.search(
-        r"COMP_RECORDING_FSM_ARTIFACT\[\]\s*=\s*\{(?P<body>.*?)\n\};",
+        r"DENZIC_AUDIO_RECORDING_TRANSITIONS\[\]\s*=\s*\{(?P<body>.*?)\n\};",
         source,
         re.S,
     )
     if not match:
-        fail("missing COMP_RECORDING_FSM_ARTIFACT table")
+        fail("missing Denzic Platform recording transition table")
     cases: dict[str, str] = {}
-    for entry in re.finditer(r"\{\s*\"(?P<id>[^\"]+)\"(?P<body>.*?)\n\s*\},", match.group("body"), re.S):
+    for entry in re.finditer(r"\{\s*\"(?P<id>[^\"]+)\"(?P<body>.*?)\},", match.group("body"), re.S):
         cases[entry.group("id")] = entry.group(0)
     return cases
 
@@ -190,6 +168,10 @@ def check_static_surface(errors: list[str]) -> None:
         "microphone.h": read(MIC_HEADER),
         "microphone.c": read(MIC_SOURCE),
         "README.md": read(README),
+        "denzic_audio_recording_v1.h": read(PLATFORM_HEADER),
+        "denzic_audio_recording_v1.c": read(PLATFORM_SOURCE),
+        "test_denzic_audio_recording_v1.c": read(PLATFORM_TEST),
+        "WB55 Makefile": read(WB55_MAKEFILE),
     }
     joined = "\n".join(texts.values())
 
@@ -247,7 +229,9 @@ def check_static_surface(errors: list[str]) -> None:
 
 
 def check_fsm_artifact(errors: list[str]) -> None:
-    source = read(FSM_SOURCE)
+    source = read(PLATFORM_SOURCE)
+    adapter = read(FSM_SOURCE)
+    makefile = read(WB55_MAKEFILE)
     cases = extract_transition_cases(source)
     missing = sorted(set(EXPECTED_CASES) - set(cases))
     require(not missing, f"transition artifact missing cases: {missing}", errors)
@@ -256,20 +240,30 @@ def check_fsm_artifact(errors: list[str]) -> None:
         for token in tokens:
             require(token in body, f"{case_id} missing {token}", errors)
 
-    decision_body = extract_function(source, "comp_recording_fsm_decide_transition")
+    decision_body = extract_function(source, "denzic_audio_recording_decide_v1")
     for token in DECISION_EFFECT_TOKENS:
         require(token not in decision_body, f"decision function contains effect token {token}", errors)
 
+    require(
+        "DENZIC_AUDIO_RECORDING_TRANSITIONS" not in adapter,
+        "Companion adapter still owns a private transition table",
+        errors,
+    )
     for token in [
-        "comp_recording_apply_decision",
-        "comp_recording_fsm_feed_microphone_frames",
+        "denzic_audio_recording_dispatch_v1",
+        "denzic_audio_recording_feed_v1",
         "comp_diag_log_record_code",
         "COMP_DIAG_EVT_RECORDING_FSM_REJECTED",
         "COMP_DIAG_EVT_RECORDING_FSM_SESSION_FINISHED",
         "COMP_DIAG_EVT_RECORDING_FSM_ERROR",
         "COMP_DIAG_EVT_MICROPHONE_CAPTURE_DROP",
     ]:
-        require(token in source, f"runtime path missing {token}", errors)
+        require(token in adapter, f"Companion adapter missing {token}", errors)
+    for token in [
+        "third_party/denzic-platform/audio/embedded/c/include",
+        "third_party/denzic-platform/audio/embedded/c/src/denzic_audio_recording_v1.c",
+    ]:
+        require(token in makefile, f"WB55 build missing shared core path {token}", errors)
 
 
 def synthetic_pcm_bytes(duration_ms: int = 5000, sample_rate_hz: int = 16000) -> tuple[bytes, dict[str, int]]:
