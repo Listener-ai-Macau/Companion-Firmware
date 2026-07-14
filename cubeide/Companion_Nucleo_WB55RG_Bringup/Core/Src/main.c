@@ -2297,18 +2297,32 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
     explicit_release = sample->touch_count > 0u &&
                        sample->event == COMP_FT6336_TOUCH_EVENT_UP;
 
-    gesture_ready = comp_touch_gesture_process(&s_touch_gesture,
-                                               contact_now,
-                                               explicit_release,
-                                               logical_x,
-                                               logical_y,
-                                               now_ms,
-                                               &gesture);
+    if (contact_now && sample->event == COMP_FT6336_TOUCH_EVENT_DOWN &&
+        (s_touch_gesture.active || s_touch_gesture.consumed_until_release)) {
+        gesture_ready = comp_touch_gesture_restart_contact(&s_touch_gesture,
+                                                           logical_x,
+                                                           logical_y,
+                                                           now_ms,
+                                                           &gesture);
+        TOUCH_VERBOSE_TRACE("[touch-ui] recontact_boundary previous=%s ready=%u next=%u,%u\r\n",
+               comp_touch_gesture_name(gesture.type),
+               gesture_ready ? 1u : 0u,
+               (unsigned)logical_x,
+               (unsigned)logical_y);
+    } else {
+        gesture_ready = comp_touch_gesture_process(&s_touch_gesture,
+                                                   contact_now,
+                                                   explicit_release,
+                                                   logical_x,
+                                                   logical_y,
+                                                   now_ms,
+                                                   &gesture);
+    }
     if (!contact_now && s_low_power_touch_wake_requested) {
         /* Trace every low-power release outcome. The normal image compiles
          * this out; the diagnostic must distinguish a pending debounce from
          * a classified none/tap without relying on screen observation. */
-        TOUCH_VERBOSE_TRACE("[touch-ui] release_classify ready=%u gesture=%s duration_ms=%u active=%u consumed=%u contacts=%u release_samples=%u debounce=%u tap_pending=%u\\r\\n",
+        TOUCH_VERBOSE_TRACE("[touch-ui] release_classify ready=%u gesture=%s duration_ms=%u active=%u consumed=%u contacts=%u release_samples=%u debounce=%u tap_pending=%u\r\n",
                gesture_ready ? 1u : 0u,
                comp_touch_gesture_name(gesture.type),
                (unsigned)gesture.duration_ms,

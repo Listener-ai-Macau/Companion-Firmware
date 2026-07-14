@@ -287,6 +287,44 @@ bool comp_touch_gesture_process(comp_touch_gesture_state_t *state,
     return out_event->type != COMP_TOUCH_GESTURE_NONE;
 }
 
+bool comp_touch_gesture_restart_contact(comp_touch_gesture_state_t *state,
+                                        uint16_t x,
+                                        uint16_t y,
+                                        uint32_t now_ms,
+                                        comp_touch_gesture_event_t *out_event)
+{
+    comp_touch_gesture_event_t ignored;
+    bool previous_ready = false;
+
+    if (state == NULL || out_event == NULL) {
+        return false;
+    }
+    memset(out_event, 0, sizeof(*out_event));
+
+    /* FT6x36 can report the next DOWN without an intervening zero-contact
+     * sample during a fast double tap. Treat that DOWN as proof that the old
+     * lifecycle ended, while preserving its pending tap for double matching. */
+    if (state->active) {
+        previous_ready = comp_touch_gesture_process(state,
+                                                    false,
+                                                    true,
+                                                    state->latest_x,
+                                                    state->latest_y,
+                                                    now_ms,
+                                                    out_event);
+    }
+    state->consumed_until_release = false;
+    state->release_samples = 0u;
+    (void)comp_touch_gesture_process(state,
+                                     true,
+                                     false,
+                                     x,
+                                     y,
+                                     now_ms,
+                                     &ignored);
+    return previous_ready;
+}
+
 const char *comp_touch_gesture_name(comp_touch_gesture_type_t type)
 {
     switch (type) {
@@ -585,6 +623,28 @@ static bool self_test_double_tap(void)
            event.duration_ms == 50u && !state.tap_pending;
 }
 
+static bool self_test_double_tap_without_idle_sample(void)
+{
+    comp_touch_gesture_state_t state;
+    comp_touch_gesture_event_t event;
+
+    comp_touch_gesture_init(&state, NULL);
+    if (comp_touch_gesture_process(&state, true, false,
+                                   100u, 80u, 0u, &event) ||
+        comp_touch_gesture_process(&state, true, false,
+                                   102u, 81u, 10u, &event) ||
+        !comp_touch_gesture_restart_contact(&state,
+                                            103u, 82u, 90u, &event) ||
+        event.type != COMP_TOUCH_GESTURE_TAP ||
+        comp_touch_gesture_process(&state, true, false,
+                                   104u, 82u, 100u, &event) ||
+        !comp_touch_gesture_process(&state, false, true,
+                                    104u, 82u, 130u, &event)) {
+        return false;
+    }
+    return event.type == COMP_TOUCH_GESTURE_DOUBLE_TAP;
+}
+
 bool comp_touch_gesture_self_test(void)
 {
     comp_touch_gesture_state_t state;
@@ -613,5 +673,6 @@ bool comp_touch_gesture_self_test(void)
            self_test_hold_then_long_press_is_live_and_consumed() &&
            self_test_vertical_drag_release() &&
            self_test_expired_drag_rearms_tap() &&
-           self_test_double_tap();
+           self_test_double_tap() &&
+           self_test_double_tap_without_idle_sample();
 }

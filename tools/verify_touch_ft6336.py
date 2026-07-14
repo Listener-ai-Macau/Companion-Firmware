@@ -147,6 +147,8 @@ def main() -> int:
         "Companion_Screen_MenuRequestClean(",
         "Companion_Screen_ShowDailyClean()",
         "s_touch_gesture.consumed_until_release",
+        "comp_touch_gesture_restart_contact",
+        "recontact_boundary",
         "[record-visual] action=start expression=recording",
         "[record-visual] action=store expression=%s",
     ), errors)
@@ -201,6 +203,8 @@ def main() -> int:
         "self_test_tap_slop_precedes_drag",
         "self_test_vertical_drag_release",
         "self_test_expired_drag_rearms_tap",
+        "self_test_double_tap_without_idle_sample",
+        "comp_touch_gesture_restart_contact",
         "comp_touch_gesture_self_test",
     ), errors)
 
