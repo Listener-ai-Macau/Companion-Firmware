@@ -321,6 +321,7 @@ C_SOURCES := \
 	$(ROOT)/third_party/denzic-platform/audio/embedded/c/src/denzic_audio_recording_v1.c \
 	$(ROOT)/app/companion_pendant/touch/ft6336.c \
 	$(ROOT)/app/companion_pendant/touch/touch_gesture.c \
+	$(ROOT)/app/companion_pendant/touch/touch_tap_arbiter.c \
 	$(ROOT)/app/companion_pendant/touch/touch_target_stm32wb_ft6336.c \
 	$(ROOT)/app/companion_pendant/v1_features/companion_v1_features.c
 

@@ -24,6 +24,8 @@ def main() -> int:
     target_h = (touch_root / "touch_target_stm32wb_ft6336.h").read_text(encoding="utf-8")
     target_c = (touch_root / "touch_target_stm32wb_ft6336.c").read_text(encoding="utf-8")
     gesture = (touch_root / "touch_gesture.c").read_text(encoding="utf-8")
+    tap_arbiter = (touch_root / "touch_tap_arbiter.c").read_text(encoding="utf-8")
+    tap_arbiter_h = (touch_root / "touch_tap_arbiter.h").read_text(encoding="utf-8")
     main_source = (ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/main.c").read_text(encoding="utf-8")
     app_ble_source = (ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c").read_text(encoding="utf-8")
     makefile = (ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile").read_text(encoding="utf-8")
@@ -155,7 +157,8 @@ def main() -> int:
         "daily_reaction phase=deferred",
         "daily_reaction phase=cancelled",
         "daily_reaction phase=execute",
-        "now_ms + TOUCH_DOUBLE_TAP_MAX_GAP_MS + 1u",
+        "tap_arbiter=%s contract=confirmed_single_before_display",
+        "comp_touch_tap_arbiter_self_test",
         "[record-visual] action=start expression=recording",
         "[record-visual] action=store expression=%s",
     ), errors)
@@ -164,6 +167,7 @@ def main() -> int:
         "TOUCH_VERBOSE_TRACE=1",
         "Ft6336TouchThreshold",
         "FT6336_TOUCH_THRESHOLD=0x{0:X2}u",
+        "touch_tap_arbiter.c",
     ), errors)
     require("screen interaction trace gate", app_ble_source, (
         "COMPANION_TOUCH_VERBOSE_TRACE 0",
@@ -214,10 +218,22 @@ def main() -> int:
         "comp_touch_gesture_restart_contact",
         "comp_touch_gesture_self_test",
     ), errors)
+    require("portable tap arbiter", tap_arbiter + tap_arbiter_h, (
+        "comp_touch_tap_arbiter_defer",
+        "comp_touch_tap_arbiter_cancel",
+        "comp_touch_tap_arbiter_poll",
+        "now_ms + arbiter->confirmation_window_ms + 1u",
+        "contact_active || detector_tap_pending",
+        "self_test_confirmed_single_tap",
+        "self_test_captured_recontact_double_tap",
+        "0u, 159u, 100u",
+        "COMP_TOUCH_GESTURE_DOUBLE_TAP",
+        "comp_touch_tap_arbiter_self_test",
+    ), errors)
 
     for forbidden in ("HAL_", "stm32", "GPIO", "I2C_HandleTypeDef"):
-        if forbidden.lower() in gesture.lower():
-            errors.append(f"portable gesture contains platform token {forbidden}")
+        if forbidden.lower() in (gesture + tap_arbiter).lower():
+            errors.append(f"portable touch logic contains platform token {forbidden}")
 
     gesture_contract = touch_fixture.get("gesture_contract", {})
     if gesture_contract.get("minimum_contact_samples") != 1:

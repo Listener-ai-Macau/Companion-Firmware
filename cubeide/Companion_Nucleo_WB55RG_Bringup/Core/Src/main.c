@@ -13,6 +13,7 @@
 #include "screen_menu.h"
 #include "stm32_lpm.h"
 #include "touch_target_stm32wb_ft6336.h"
+#include "touch_tap_arbiter.h"
 #include "hw_if.h"
 
 #include <limits.h>
@@ -518,10 +519,7 @@ static bool s_touch_processing_during_panel_wait;
 static comp_touch_runtime_action_t s_touch_deferred_action;
 static uint32_t s_touch_deferred_action_queued_ms;
 static comp_touch_gesture_state_t s_touch_gesture;
-static bool s_daily_tap_reaction_pending;
-static uint16_t s_daily_tap_reaction_x;
-static uint16_t s_daily_tap_reaction_y;
-static uint32_t s_daily_tap_reaction_due_ms;
+static comp_touch_tap_arbiter_t s_daily_tap_arbiter;
 static bool s_menu_entry_pending;
 static comp_screen_menu_view_t s_menu_entry_target;
 static uint32_t s_menu_entry_due_ms;
@@ -1534,6 +1532,8 @@ static void init_touch_debug(void)
 
     reset_touch_controller();
     comp_touch_gesture_init(&s_touch_gesture, &gesture_config);
+    comp_touch_tap_arbiter_init(&s_daily_tap_arbiter,
+                                TOUCH_DOUBLE_TAP_MAX_GAP_MS);
     companion_touch_ft6336_stm32wb_init(&s_touch, &hi2c3);
     s_touch_wait_buffer_selftest_pass = touch_wait_buffer_self_test();
 #if COMPANION_EPAPER_PANEL_SSD1681_BRINGUP
@@ -1560,6 +1560,8 @@ static void init_touch_debug(void)
            (unsigned)COMPANION_TOUCH_INT_WIRED,
            (unsigned)COMPANION_TOUCH_RST_WIRED,
            (unsigned)TOUCH_REFRESH_POLL_MS);
+    printf("[touch] tap_arbiter=%s contract=confirmed_single_before_display\r\n",
+           comp_touch_tap_arbiter_self_test() ? "pass" : "fail");
 }
 
 static void reset_touch_controller(void)
@@ -1948,39 +1950,35 @@ static void schedule_daily_tap_reaction(uint16_t x,
                                         uint16_t y,
                                         uint32_t now_ms)
 {
-    s_daily_tap_reaction_pending = true;
-    s_daily_tap_reaction_x = x;
-    s_daily_tap_reaction_y = y;
-    s_daily_tap_reaction_due_ms =
-        now_ms + TOUCH_DOUBLE_TAP_MAX_GAP_MS + 1u;
+    comp_touch_tap_arbiter_defer(&s_daily_tap_arbiter, x, y, now_ms);
     TOUCH_VERBOSE_TRACE("[touch-ui] daily_reaction phase=deferred x=%u y=%u due_ms=%lu\r\n",
            (unsigned)x,
            (unsigned)y,
-           (unsigned long)s_daily_tap_reaction_due_ms);
+           (unsigned long)s_daily_tap_arbiter.due_ms);
 }
 
 static void cancel_daily_tap_reaction(const char *reason)
 {
-    if (!s_daily_tap_reaction_pending) {
+    if (!s_daily_tap_arbiter.pending) {
         return;
     }
-    s_daily_tap_reaction_pending = false;
+    comp_touch_tap_arbiter_cancel(&s_daily_tap_arbiter);
     TOUCH_VERBOSE_TRACE("[touch-ui] daily_reaction phase=cancelled reason=%s\r\n",
            reason == NULL ? "unknown" : reason);
 }
 
 static void process_daily_tap_reaction(uint32_t now_ms)
 {
-    if (!s_daily_tap_reaction_pending ||
-        (int32_t)(now_ms - s_daily_tap_reaction_due_ms) < 0 ||
-        s_touch_gesture.active ||
-        s_touch_gesture.tap_pending) {
+    comp_touch_tap_arbiter_event_t event;
+    uint32_t due_ms = s_daily_tap_arbiter.due_ms;
+    if (!comp_touch_tap_arbiter_poll(&s_daily_tap_arbiter,
+                                     now_ms,
+                                     s_touch_gesture.active,
+                                     s_touch_gesture.tap_pending,
+                                     &event)) {
         return;
     }
 
-    uint16_t x = s_daily_tap_reaction_x;
-    uint16_t y = s_daily_tap_reaction_y;
-    s_daily_tap_reaction_pending = false;
     if (Companion_Screen_IsMenuVisible() ||
         s_recording_fsm.state == COMP_RECORDING_STATE_RECORDING) {
         TOUCH_VERBOSE_TRACE("[touch-ui] daily_reaction phase=dropped menu=%u recording=%u\r\n",
@@ -1990,11 +1988,11 @@ static void process_daily_tap_reaction(uint32_t now_ms)
     }
 
     TOUCH_VERBOSE_TRACE("[touch-ui] daily_reaction phase=execute x=%u y=%u delay_ms=%lu\r\n",
-           (unsigned)x,
-           (unsigned)y,
-           (unsigned long)(now_ms - (s_daily_tap_reaction_due_ms -
+           (unsigned)event.x,
+           (unsigned)event.y,
+           (unsigned long)(now_ms - (due_ms -
                                      TOUCH_DOUBLE_TAP_MAX_GAP_MS - 1u)));
-    (void)Companion_Screen_DailyTapAt(x, y);
+    (void)Companion_Screen_DailyTapAt(event.x, event.y);
 }
 
 static void poll_touch_debug(void)
