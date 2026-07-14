@@ -20,7 +20,10 @@ BRINGUP_MAIN = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Core
 WORKFLOW_DOC = REPO_ROOT / "docs" / "codex_development_workflow.md"
 BRINGUP_STEPS = REPO_ROOT / "docs" / "bringup_steps.md"
 PHYSICAL_CHECKLIST = REPO_ROOT / "docs" / "companion_devboard_physical_checklist.md"
-EXTERNAL_FLASH_BENCH_EVIDENCE = REPO_ROOT / "docs" / "validation" / "companion-external-flash-current-bench-20260714.json"
+EXTERNAL_FLASH_PRE_WIRING_EVIDENCE = REPO_ROOT / "docs" / "validation" / "companion-external-flash-pre-wiring-20260714.json"
+EXTERNAL_FLASH_CONNECTED_EVIDENCE = REPO_ROOT / "docs" / "validation" / "companion-external-flash-connected-20260714.json"
+EXTERNAL_FLASH_CONNECTED_LOG = REPO_ROOT / "docs" / "validation" / "artifacts" / "companion-external-flash-connected-idle-20260714.log"
+EXTERNAL_FLASH_LOG_VERIFIER = REPO_ROOT / "tools" / "verify_wb55_external_flash_log.py"
 EXPORT_SCRIPT = REPO_ROOT / "tools" / "export_devboard_ioc.ps1"
 SCHEMA_ID = "companion.devboard_ioc_import.v1"
 
@@ -289,7 +292,10 @@ def build_fixture() -> dict[str, Any]:
             "workflow_doc": rel(WORKFLOW_DOC),
             "bringup_steps": rel(BRINGUP_STEPS),
             "physical_checklist": rel(PHYSICAL_CHECKLIST),
-            "external_flash_bench_evidence": rel(EXTERNAL_FLASH_BENCH_EVIDENCE),
+            "external_flash_pre_wiring_evidence": rel(EXTERNAL_FLASH_PRE_WIRING_EVIDENCE),
+            "external_flash_connected_evidence": rel(EXTERNAL_FLASH_CONNECTED_EVIDENCE),
+            "external_flash_connected_log": rel(EXTERNAL_FLASH_CONNECTED_LOG),
+            "external_flash_log_verifier": rel(EXTERNAL_FLASH_LOG_VERIFIER),
             "desktop_exporter": rel(EXPORT_SCRIPT),
             "verifier": "tools/verify_devboard_ioc_import.py",
         },
@@ -323,10 +329,10 @@ def build_fixture() -> dict[str, Any]:
             "pa6_reserved_for_epaper_cs": True,
             "io2_io3_not_wired_on_current_devboard": True,
             "logic_voltage": "3.3V",
-            "current_bench_evidence": {
+            "pre_wiring_bench_evidence": {
                 "captured_at": "2026-07-14T21:13:41+08:00",
                 "status": "NO_GO_NOT_DETECTED",
-                "artifact": rel(EXTERNAL_FLASH_BENCH_EVIDENCE),
+                "artifact": rel(EXTERNAL_FLASH_PRE_WIRING_EVIDENCE),
                 "tokens": [
                     "external_store=unavailable",
                     "fallback_internal",
@@ -334,7 +340,19 @@ def build_fixture() -> dict[str, Any]:
                     "[rec-flash] probe=error",
                 ],
             },
-            "later_physical_pass_tokens": [
+            "current_bench_evidence": {
+                "captured_at": "2026-07-14T21:31:54+08:00",
+                "status": "PASS",
+                "artifact": rel(EXTERNAL_FLASH_CONNECTED_EVIDENCE),
+                "raw_log": rel(EXTERNAL_FLASH_CONNECTED_LOG),
+                "jedec": "0x0B4018",
+                "asset_bytes": 2097152,
+                "recording_capacity": 1920000,
+                "pack_revision": 53,
+                "pack_clips": 33,
+                "pack_frames": 75,
+            },
+            "physical_pass_tokens": [
                 "[screen-assets] external_store=ready",
                 "[rec-flash] ready=1 jedec=0x",
             ],
@@ -391,8 +409,13 @@ def check_docs(errors: list[str]) -> None:
         "fallback_internal/rescue_ui",
         "[rec-flash] probe=error ready=0",
         "[screen-assets] external_store=ready",
+        "jedec=0x0B4018",
+        "1920000",
+        "33` 个片段和 `75` 帧",
+        "接线与探测状态记为 `PASS`",
         "[rec-flash] ready=1 jedec=0x...",
         "flash=QSPI-2IO PA2/PA3/PB9/PB8",
+        "verify_wb55_external_flash_log.py",
     ]:
         require(token in physical_checklist, f"physical checklist missing external Flash anchor {token}", errors)
     for token in [
@@ -405,27 +428,52 @@ def check_docs(errors: list[str]) -> None:
         require(token in bringup_main, f"normal firmware missing QSPI 2IO pin anchor {token}", errors)
 
 
-def check_external_flash_bench_evidence(errors: list[str]) -> None:
-    text = read(EXTERNAL_FLASH_BENCH_EVIDENCE, errors)
+def load_json_evidence(path: pathlib.Path, label: str, errors: list[str]) -> dict[str, Any]:
+    text = read(path, errors)
     if not text:
-        return
+        return {}
     try:
-        evidence = json.loads(text)
+        return json.loads(text)
     except json.JSONDecodeError as exc:
-        errors.append(f"external Flash bench evidence is invalid JSON: {exc}")
-        return
-    require(evidence.get("schema_id") == "companion.external_flash.current_bench.v1", "external Flash bench evidence schema drifted", errors)
-    require(evidence.get("status") == "NO_GO_NOT_DETECTED", "external Flash current bench must remain NO_GO_NOT_DETECTED", errors)
-    capture = evidence.get("capture", {})
-    require(capture.get("reset_after_open") is True, "external Flash bench evidence must be reset-bounded", errors)
-    require(capture.get("operator_prompt") is False, "external Flash machine preflight must not claim an operator review", errors)
-    artifact_hashes = {item.get("path"): item.get("sha256") for item in capture.get("artifacts", [])}
-    require(
-        artifact_hashes.get("nucleo-serial-raw.log") == "b33002c263d4c473bf89cbefc6d6baa7b1d46e9883117e4fae6478948aafaf43",
-        "external Flash raw serial evidence hash drifted",
+        errors.append(f"{label} is invalid JSON: {exc}")
+        return {}
+
+
+def check_external_flash_bench_evidence(errors: list[str]) -> None:
+    pre_wiring = load_json_evidence(
+        EXTERNAL_FLASH_PRE_WIRING_EVIDENCE,
+        "external Flash pre-wiring evidence",
         errors,
     )
-    observations = evidence.get("machine_observations", [])
+    connected = load_json_evidence(
+        EXTERNAL_FLASH_CONNECTED_EVIDENCE,
+        "external Flash connected evidence",
+        errors,
+    )
+    log_text = read(EXTERNAL_FLASH_CONNECTED_LOG, errors)
+    if not pre_wiring or not connected or not log_text:
+        return
+
+    require(
+        pre_wiring.get("schema_id") == "companion.external_flash.pre_wiring_bench.v1",
+        "external Flash pre-wiring schema drifted",
+        errors,
+    )
+    require(
+        pre_wiring.get("status") == "NO_GO_NOT_DETECTED",
+        "external Flash pre-wiring evidence must remain historical NO_GO",
+        errors,
+    )
+    pre_capture = pre_wiring.get("capture", {})
+    require(pre_capture.get("reset_after_open") is True, "external Flash pre-wiring evidence must be reset-bounded", errors)
+    require(pre_capture.get("operator_prompt") is False, "external Flash pre-wiring evidence must remain machine-only", errors)
+    artifact_hashes = {item.get("path"): item.get("sha256") for item in pre_capture.get("artifacts", [])}
+    require(
+        artifact_hashes.get("nucleo-serial-raw.log") == "b33002c263d4c473bf89cbefc6d6baa7b1d46e9883117e4fae6478948aafaf43",
+        "external Flash pre-wiring raw serial evidence hash drifted",
+        errors,
+    )
+    pre_observations = pre_wiring.get("machine_observations", [])
     for token in [
         "[stage] qspi ok",
         "flash=QSPI-2IO PA2/PA3/PB9/PB8",
@@ -433,14 +481,70 @@ def check_external_flash_bench_evidence(errors: list[str]) -> None:
         "fallback=rescue_ui",
         "[rec-flash] probe=error",
     ]:
-        require(any(token in line for line in observations), f"external Flash bench evidence missing observation {token}", errors)
-    pass_contract = evidence.get("physical_pass_contract", {})
-    require(pass_contract.get("static_checks_are_not_hardware_acceptance") is True, "external Flash evidence must reject static-only hardware acceptance", errors)
+        require(
+            any(token in line for line in pre_observations),
+            f"external Flash pre-wiring evidence missing observation {token}",
+            errors,
+        )
+
     require(
-        pass_contract.get("required_tokens") == ["[screen-assets] external_store=ready", "[rec-flash] ready=1 jedec=0x"],
-        "external Flash physical PASS tokens drifted",
+        connected.get("schema_id") == "companion.external_flash.connected_bench.v1",
+        "external Flash connected schema drifted",
         errors,
     )
+    require(connected.get("status") == "PASS", "external Flash current connected evidence must remain PASS", errors)
+    connected_capture = connected.get("capture", {})
+    require(connected_capture.get("reset_after_open") is True, "external Flash connected evidence must be reset-bounded", errors)
+    require(connected_capture.get("operator_prompt") is False, "external Flash connected evidence must remain machine-only", errors)
+    require(
+        connected_capture.get("tracked_log") == rel(EXTERNAL_FLASH_CONNECTED_LOG),
+        "external Flash connected log path drifted",
+        errors,
+    )
+    tracked_hash = hashlib.sha256(log_text.replace("\r\n", "\n").encode("utf-8")).hexdigest()
+    require(
+        tracked_hash
+        == connected_capture.get("tracked_log_canonical_lf_sha256")
+        == "ebc143331cb91afa257f6cb3d81c986b09654673c35bf5afcc136bce4891187a",
+        "external Flash tracked connected log canonical hash drifted",
+        errors,
+    )
+    device = connected.get("device", {})
+    require(device.get("jedec") == "0x0B4018", "external Flash connected JEDEC drifted", errors)
+    require(device.get("asset_bytes") == 2097152, "external Flash asset capacity drifted", errors)
+    require(device.get("recording_capacity") == 1920000, "external Flash recording capacity drifted", errors)
+    pack = connected.get("resource_pack", {})
+    require(
+        pack.get("revision") == 53 and pack.get("clips") == 33 and pack.get("frames") == 75,
+        "external Flash resource-pack metadata drifted",
+        errors,
+    )
+    for token in [
+        "[stage] qspi ok",
+        "flash=QSPI-2IO PA2/PA3/PB9/PB8",
+        "external_store=ready kind=qspi_nor base=0x00200000 bytes=2097152",
+        "prefix=read:43454D50 mount=ok",
+        "expression_renderer=external_pack player=ready fallback=none",
+        "[rec-flash] ready=1 jedec=0x0B4018",
+        "[power] stop=allowed blockers=0x00000000 touch_irq=1",
+    ]:
+        require(token in log_text, f"external Flash connected log missing observation {token}", errors)
+    for token in [
+        "external_store=unavailable",
+        "store=fallback_internal",
+        "fallback=rescue_ui",
+        "[rec-flash] probe=error",
+    ]:
+        require(token not in log_text, f"external Flash connected log contains rejected token {token}", errors)
+    acceptance = connected.get("acceptance", {})
+    for key in [
+        "peripheral_init_alone_is_insufficient",
+        "valid_jedec_required",
+        "external_asset_mount_required",
+        "external_recording_store_required",
+        "two_reset_bounded_connected_captures_passed",
+    ]:
+        require(acceptance.get(key) is True, f"external Flash connected acceptance missing {key}", errors)
 
 
 def check_fixture_data(data: dict[str, Any], errors: list[str]) -> None:
@@ -479,8 +583,14 @@ def check_fixture_data(data: dict[str, Any], errors: list[str]) -> None:
     require(flash_wiring.get("io2_io3_not_wired_on_current_devboard") is True, "current devboard must keep Flash IO2/IO3 unwired", errors)
     require(flash_wiring.get("logic_voltage") == "3.3V", "external Flash logic voltage must stay 3.3V", errors)
     require(
-        flash_wiring.get("current_bench_evidence", {}).get("status") == "NO_GO_NOT_DETECTED",
-        "current external Flash bench evidence must remain an explicit NO_GO until replaced by physical evidence",
+        flash_wiring.get("pre_wiring_bench_evidence", {}).get("status") == "NO_GO_NOT_DETECTED",
+        "external Flash pre-wiring evidence must remain an explicit historical NO_GO",
+        errors,
+    )
+    current = flash_wiring.get("current_bench_evidence", {})
+    require(
+        current.get("status") == "PASS" and current.get("jedec") == "0x0B4018",
+        "current external Flash bench evidence must remain the connected hardware PASS",
         errors,
     )
 
@@ -513,7 +623,20 @@ def main(argv: list[str]) -> int:
     fixture_path = args.fixture if args.fixture.is_absolute() else REPO_ROOT / args.fixture
     external_path = args.external
     errors: list[str] = []
-    for path in [DEVBOARD_IOC, PRODUCT_IOC, BRINGUP_README, BRINGUP_MAIN, WORKFLOW_DOC, BRINGUP_STEPS, PHYSICAL_CHECKLIST, EXTERNAL_FLASH_BENCH_EVIDENCE, EXPORT_SCRIPT]:
+    for path in [
+        DEVBOARD_IOC,
+        PRODUCT_IOC,
+        BRINGUP_README,
+        BRINGUP_MAIN,
+        WORKFLOW_DOC,
+        BRINGUP_STEPS,
+        PHYSICAL_CHECKLIST,
+        EXTERNAL_FLASH_PRE_WIRING_EVIDENCE,
+        EXTERNAL_FLASH_CONNECTED_EVIDENCE,
+        EXTERNAL_FLASH_CONNECTED_LOG,
+        EXTERNAL_FLASH_LOG_VERIFIER,
+        EXPORT_SCRIPT,
+    ]:
         require(path.exists(), f"missing required path {rel(path)}", errors)
     if args.require_external:
         require(external_path.exists(), f"missing required external IOC {external_path}", errors)

@@ -1,5 +1,5 @@
 {
-  "schema_id": "companion.external_flash.current_bench.v1",
+  "schema_id": "companion.external_flash.pre_wiring_bench.v1",
   "status": "NO_GO_NOT_DETECTED",
   "captured_at": "2026-07-14T21:13:41.4989898+08:00",
   "target": "NUCLEO-WB55RG ST-LINK 066EFF535570514867221931 on COM13",
@@ -38,25 +38,13 @@
   "interpretation": {
     "proved": [
       "The MCU reset completed and the QUADSPI peripheral initialized.",
-      "The running firmware declares the expected QSPI-2IO PA2/PA3/PB9/PB8 mapping.",
-      "No valid external NOR response was available to the asset or recording stores in this capture."
+      "The running firmware declared the expected QSPI-2IO PA2/PA3/PB9/PB8 mapping.",
+      "No valid external NOR response was available before the module was connected."
     ],
     "not_proved": [
-      "This log alone cannot distinguish an absent, unpowered, miswired, or failed external Flash module.",
       "A successful QUADSPI peripheral init is not a successful external Flash probe.",
-      "The external resource pack and external recording store are not accepted by this capture."
+      "This historical capture must not override later connected hardware evidence."
     ],
-    "next_physical_gate": "Connect the documented six-wire QSPI-2IO table, then collect one reset-bounded log under the Companion-WB55 lock."
-  },
-  "physical_pass_contract": {
-    "required_tokens": [
-      "[screen-assets] external_store=ready",
-      "[rec-flash] ready=1 jedec=0x"
-    ],
-    "invalid_jedec_values": [
-      "0x000000",
-      "0xFFFFFF"
-    ],
-    "static_checks_are_not_hardware_acceptance": true
+    "resolution": "The documented six-wire connection produced two later reset-bounded PASS captures."
   }
 }

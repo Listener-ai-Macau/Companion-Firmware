@@ -134,11 +134,18 @@ FPC 插入 `P6`。开发板从转接板背面的树莓派兼容 `P1` 40 针接�
 - 2026-07-14 的 COM13 复位边界日志已确认 MCU、触摸和 QSPI 外设初始化完成，
   但物理 Flash 尚未被探测到：`external_store=unavailable`、
   `fallback_internal/rescue_ui`、`[rec-flash] probe=error ready=0`。这条记录是
-  接线前的 `NO_GO_NOT_DETECTED`，不是固件或外部 Flash 验收通过。
+  接线前的历史 `NO_GO_NOT_DETECTED`，不是当前状态，也不是固件或外部 Flash
+  验收通过。
+- 按上表接回六根线后，2026-07-14 的两次独立复位边界日志均通过。当前真机结果为
+  `external_store=ready`、`jedec=0x0B4018`、资源区 `2097152` 字节、录音区
+  `1920000` 字节；CEMP 表情包 revision 53 的 `33` 个片段和 `75` 帧从外部
+  Flash 挂载，渲染器 `fallback=none`。第二次复位后还确认系统回到空闲并允许
+  低功耗，接线与探测状态记为 `PASS`。
 - 接线后的物理通过标准是同一次复位日志同时出现
   `[screen-assets] external_store=ready` 和
   `[rec-flash] ready=1 jedec=0x...`，其中 JEDEC 不能是 `0x000000` 或
-  `0xFFFFFF`。只看到 `[stage] qspi ok` 仍不算探测成功。
+  `0xFFFFFF`。只看到 `[stage] qspi ok` 仍不算探测成功；使用
+  `python tools/verify_wb55_external_flash_log.py --log <复位日志>` 执行同一门禁。
 
 上述 CN7/CN10 编号来自 ST 的 NUCLEO-WB55RG/MB1355 接口表；固件启动日志必须
 继续声明 `flash=QSPI-2IO PA2/PA3/PB9/PB8`。未来 WBA55/WBA65 替换目标适配器
