@@ -1135,6 +1135,84 @@ full reflash + MCU reset 恢复，但 recovery 不关闭该问题。
 maintenance。先用 trace 证明 schedule，再做 focused 正常路径和 recovery 路径人工 review；不可把
 `panel_result=0`、编译成功或重刷成功当成正常状态验收。
 
+## Revision 84: 空白屏先隔离面板链路
+
+正常镜像完整重刷和硬件复位后，owner 再次确认屏幕没有任何画面。随后 trace 镜像的纯启动记录证明
+外部 CEMP revision 53 已挂载、idle 帧已生成、全屏 5000 bytes 双平面已传输，SSD1681 初始化和
+`0xF7` 激活均返回成功，但 `BUSY` 始终读为低且真实屏幕仍为空白。该记录固定为
+`docs/validation/companion-screen-reset-owner-review-20260714.json` 和
+`docs/validation/companion-screen-blank-boot-trace-20260714.raw.log`；它是 NO_GO，不得以
+`panel_result=0` 解释为显示成功。
+
+下一步先刷 production-off 的纯黑全屏诊断，连续重复刷新并绕过外部 Flash、表情播放器和菜单渲染。
+若纯黑可见，继续定位资源/显示状态交接；若纯黑仍不可见，则把范围收敛到 FTS02 的 SSD1681 档位、
+P5 屏线、面板升压和 `CS/DC/RES/SCK/MOSI/BUSY` 实际电气路径。诊断镜像只用于短时实板隔离，完成后
+恢复当前正常产品镜像；WB55 的物理结论不能自动外推为 WBA55/WBA65 适配结论。
+
+该诊断已刷入：20 s 串口捕获记录 8 次完整纯黑全刷，每次双平面 10000 bytes、一次 `0xF7` 激活，
+但 `BUSY` 始终为低，owner 确认“这个就是没反应了”。结果固定为
+`docs/validation/companion-screen-blank-diagnostic-black-20260714.json`，状态为
+`NO_GO_BLACK_FRAME_NOT_VISIBLE`。下一步只测一次 `GND1 -> PREVGH1` 升压；触摸 `TP_RST/PC10` 与该
+空白屏故障无关，不要求增加恢复线。
+
+在要求 owner 测量前，先完成一个 production-off 软件 A/B：原纯黑诊断的 full path 与当前产品路径一样，
+在激活前把 `0x26` 和 `0x24` 都写成当前帧；新的 forced-transition 诊断明确写
+`0x26=0xFF` 全白旧平面、`0x24=0x00` 全黑新平面，再执行同一个 `0xF7`。该 A/B 只用于排除
+“同图双平面没有产生像素转换”的可能，不改变量产 full/maintenance/partial 策略。若它仍无画面且
+`BUSY` 不拉高，再执行 `PREVGH1` 测量。
+
+forced-transition A/B 尚未构建或刷入时，owner 按下 NUCLEO 实体 `RESET`，同一个已刷入的原纯黑诊断
+随后变为可见全黑。该结果撤销“面板链路完全不工作”的判断，也取消 forced-transition 源码候选；它证明
+当前屏、P5/FPC、SPI/控制和刷新电源链路能够产生真实画面。`PREVGH1` 的 3.3 V 读数不再单独用于判定
+升压故障。下一步从这个已知黑色 baseline 恢复正常产品镜像，要求正常表情实际替换黑屏，并继续定位为何
+先前软件/ST-LINK reset 没有恢复可见画面。
+
+## Revision 85: 正常首帧必须从黑色基线产生真实转换
+
+恢复正常 quiet image 后，外部 CEMP revision 53、idle player 和 `coherent_generation=1` 均有机器记录，
+但 owner 明确报告“没表情”：正常首帧没有替换已经实证可见的纯黑画面。该结果固定为
+`docs/validation/companion-screen-normal-restore-after-black-20260714.json`，并新增 `COMP-REQ-033`。
+
+根因候选位于 WB55 SSD1681 target：现有 full/maintenance 分支在激活前把同一个当前帧同时写入旧 RAM
+`0x26` 和新 RAM `0x24`。修复按同型号 Good Display 样例的 full-display 语义，只把当前帧写到
+`0x24` 后执行既有 `0xF7` 或 vendor Mode-1 `0xC7`；成功后由 CPU `s_previous_frame` 保留 portable
+baseline，下一次 differential partial 仍明确写 `0x26=previous`、`0x24=current`。不得改变已验证的
+software vendor edges、资源 revision、五次局刷后清理策略或 WBA target adapter 边界。
+
+机器构建和 trace 必须先证明 full/maintenance 只有一个数据平面、激活命令成功并实际观察到 BUSY；随后
+从纯黑基线确认正常表情可见，再确认一次局刷表情和一次维护边界。任何一步失败都保持 P0 NO_GO，不能用
+`coherent_generation=1` 或 driver `result=0` 替代真屏结果。
+
+## Revision 86: 粒子画面撤销“全黑通过”与首帧代码归因
+
+owner 随后澄清“也不算纯黑吧, 现在是黑白相间的粒子感”。因此 Revision 84/85 中把实体 RESET 后的
+画面暂记为可见全黑的结论无效：粒子/噪声不是确定性 framebuffer，也不能证明 P5、升压和 waveform
+完整工作。`COMP-REQ-033` 的单平面 full 候选尚未实施，现明确由 `COMP-REQ-034` supersede。
+
+当前证据组合为：MCU、QSPI、CEMP、触摸和显示任务继续运行；纯黑诊断重复发送数据；`BUSY` 在捕获中
+从未拉高；owner 测得 `PREVGH1` 约 3.3 V；真实屏幕只有黑白粒子。这先指向 P5/FPC 接触、SSD1681
+复位/控制或刷新电压未正确建立。下一步先断电重插 P5 并确认 P3=2.2，再用官方复位时序跑确定性纯黑、
+纯白和 BUSY；只有这三项成立后才恢复正常表情并评估 full/maintenance 数据平面策略。触摸
+`TP_INT/PC6` 与可选 `TP_RST/PC10` 不参与电子纸恢复，不要求增加所谓恢复线。
+
+## Revision 87: P5 重插无效后复刻官方单平面全刷
+
+owner 已完成完整物理还原：NUCLEO USB 断电 20 秒、`P3` 保持 `2.2`、打开并重新插到底后锁紧
+`P5` 的 24 针电子纸 FPC、保持 `P6` 不动、重新接 USB 并按实体 `RESET`。真实屏幕仍没有恢复，
+因此“单纯 P5 松动”不再是主解释，但 FTS02 控制/升压和面板本体仍未通过。
+
+同型号 Good Display 官方包 `S-GDEY0154D67-FP-Touch.rar` 的 SHA-256 为
+`202ADAB27515FDBA790565F643C3C83C52C11FF36844E8C387F66676C3D82CD4`。其参考代码确认当前驱动的
+软件 SPI 边沿、10 ms 低/10 ms 高复位、`0x12` 软复位以及 `0x01/0x11/0x44/0x45/0x3C/0x18/0x4E/0x4F`
+全屏初始化值均一致；官方 BUSY GPIO 没有软件反相，等待逻辑为高忙、低就绪。当前最明确的软件差异是
+官方普通全刷只写 `0x24` 的 5000 bytes 后执行 `0xF7`，而产品 full path 会先把同帧写入 `0x26` 和
+`0x24`。
+
+下一步增加 production-off 的 official-full 诊断开关，不改默认产品行为。分别构建纯白和纯黑镜像，
+每次都执行完整硬复位/官方初始化，只写 `0x24` 后 `0xF7`，同时记录 BUSY。若仍为粒子态且 BUSY
+不拉高，软件 framebuffer、CEMP、菜单和表情渲染可排除，故障转入 `RES/CS/DC/SCK/MOSI/BUSY`
+实线、FTS02 升压或面板本体；若白黑恢复，则再决定是否把单平面语义引入 normal full/maintenance。
+
 ## 逐项验收顺序
 
 本项目遵循 AI Workflow 的全产品异步验收规则：未收到操作者明确的“开始验收”前，

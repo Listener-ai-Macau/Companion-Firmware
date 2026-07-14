@@ -1,0 +1,41 @@
+{
+  "schema": "companion.wb55.screen_black_diagnostic.v1",
+  "status": "NO_GO_GRAINY_PANEL_OUTPUT",
+  "captured_at": "2026-07-14T09:33:16+08:00",
+  "target": "NUCLEO-WB55RG + ESP32-FTS02 + GDEY0154D67-T03",
+  "diagnostic_image": {
+    "pattern": "full_black",
+    "external_asset_dependency": false,
+    "refresh_mode": "full",
+    "configured_repeats": 120,
+    "configured_interval_ms": 1000,
+    "hex_sha256": "04ACE442A528AEA6CDF95628C841EB3865FD97F2A23AA8C512789EF44787FF38"
+  },
+  "machine_observation": {
+    "captured_cycles": 8,
+    "bytes_per_cycle": 10000,
+    "data_planes_per_cycle": 2,
+    "update_control": "0xF7",
+    "activation_reported_each_cycle": true,
+    "busy_asserted_in_capture": false,
+    "driver_result_each_cycle": 0
+  },
+  "operator_result": {
+    "initial_selection": "failure",
+    "initial_note": "这个就是没反应了",
+    "recovery_action": "pressed the physical NUCLEO RESET button",
+    "recovery_note": "按了reset了, 一直都是3.3v, 然后现在屏幕像是全黑",
+    "clarification_note": "也不算纯黑吧, 现在是黑白相间的粒子感",
+    "visible_result": "black-white grain/noise, not a valid solid-black frame",
+    "physical_recovery_attempt": "NUCLEO USB removed for 20 seconds; P3 kept at 2.2; P5 opened, 24-pin e-paper FPC fully reseated and latched; P6 left untouched; USB restored; physical RESET pressed",
+    "physical_recovery_result": "no visible recovery; grain/noise remained"
+  },
+  "interpretation": "The operator's later clarification supersedes the provisional full-black interpretation. Grain/noise does not prove a valid framebuffer refresh. A complete power-down/P5 reseat/P3/reset recovery did not change the panel, so a simple loose-FPC explanation is now less likely. BUSY never asserting and PREVGH1 being observed near 3.3 V keep controller command acceptance, reset/control wiring, and refresh-voltage generation open.",
+  "next_isolation": "Run a production-off diagnostic that matches the official Good Display full-refresh path: hardware reset, official initialization values, write only 0x24, then 0xF7. Test deterministic full white and full black separately while capturing BUSY and the physical result.",
+  "evidence": {
+    "raw_log": "docs/validation/companion-screen-blank-diagnostic-black-20260714.raw.log",
+    "raw_log_sha256": "A693B82102ED184DC8D5A39E2C70FCCEB9CBD84A7146541580BB035AFD96A594",
+    "capture_summary": ".cache/validation/screen-black-diagnostic-20260714/nucleo-serial-summary.json",
+    "flash_log": ".cache/validation/flash-nucleo/stm32-programmer-20260714-093239-19132.stdout.log"
+  }
+}

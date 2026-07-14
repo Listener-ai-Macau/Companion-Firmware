@@ -1,0 +1,31 @@
+{
+  "schema": "companion.wb55.screen_reset_owner_review.v1",
+  "status": "NO_GO_SCREEN_BLANK_AFTER_RESET",
+  "captured_at": "2026-07-14T09:26:00+08:00",
+  "target": "NUCLEO-WB55RG + ESP32-FTS02 + GDEY0154D67-T03",
+  "operator_result": {
+    "selection": "failure",
+    "note": "这个屏幕还是啥都没有? 你看看怎么回事"
+  },
+  "recovery_attempt": {
+    "action": "lock-guarded normal-image full reflash and MCU hardware reset",
+    "programmer_verification": "passed",
+    "operator_visible_result": "no image"
+  },
+  "boot_trace": {
+    "external_asset_pack_mounted": true,
+    "frame_bytes_transferred": 5000,
+    "controller_init_reported": true,
+    "full_refresh_activation_reported": true,
+    "panel_api_result": 0,
+    "busy_level_observed": 0,
+    "operator_visible_result": "no image",
+    "interpretation": "Software completion is not physical display acceptance; isolate the panel path with a deterministic full-black frame."
+  },
+  "next_action": "Flash a repeated full-black SSD1681 diagnostic that bypasses external assets and product rendering, then capture its exact boot trace.",
+  "evidence": {
+    "raw_log": "docs/validation/companion-screen-blank-boot-trace-20260714.raw.log",
+    "raw_log_sha256": "4FF9118545B42F950469E6233404EA949BFB29F93CED510A1105C5DD6B2128BC",
+    "capture_summary": ".cache/validation/screen-blank-boot-trace-20260714/nucleo-serial-summary.json"
+  }
+}

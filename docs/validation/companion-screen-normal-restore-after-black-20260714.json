@@ -1,0 +1,34 @@
+{
+  "schema": "companion.wb55.screen_normal_restore_after_black.v1",
+  "status": "NO_GO_NORMAL_EXPRESSION_NOT_VISIBLE",
+  "captured_at": "2026-07-14T09:39:53+08:00",
+  "target": "NUCLEO-WB55RG + ESP32-FTS02 + GDEY0154D67-T03",
+  "precondition": "The repeated full-black diagnostic produced black-white grain after physical RESET; it did not establish a valid solid-black panel baseline.",
+  "normal_image": {
+    "hex_sha256": "28A92EA84E385E156C6956AC094046AFAE0D422F4E76F7C53B46FB62AB120E2B",
+    "programmer_verification": "passed",
+    "interaction_profile": "quiet"
+  },
+  "machine_observation": {
+    "external_pack_revision": 53,
+    "external_pack_mounted": true,
+    "expression_player_started": "idle",
+    "coherent_generation_reported": true,
+    "touch_detected": true,
+    "touch_irq_wired": true
+  },
+  "operator_result": {
+    "selection": "failure",
+    "note": "没表情帮我录音怎么退",
+    "clarification_note": "也不算纯黑吧, 现在是黑白相间的粒子感",
+    "visible_result": "no valid expression; panel remained grainy/noisy"
+  },
+  "interpretation": "The resource and display task report success, but the panel never established a valid black baseline and remained grainy. Do not modify the product full-plane policy from this observation alone; first restore P5/FPC, controller reset, BUSY, and refresh-voltage evidence.",
+  "required_recheck": "After the physical/control path produces a deterministic solid black and solid white frame with BUSY evidence, the normal image must visibly render the current expression, then preserve one partial expression transition and one maintenance boundary.",
+  "evidence": {
+    "raw_log": "docs/validation/companion-screen-normal-restore-after-black-20260714.raw.log",
+    "raw_log_sha256": "3AE5B0DD29CA1A6785C5D986C0D91C9C80EDA9916A279B8EAF064B34486BF405",
+    "capture_summary": ".cache/validation/screen-normal-restore-after-black-20260714/nucleo-serial-summary.json",
+    "flash_log": ".cache/validation/flash-nucleo/stm32-programmer-20260714-093919-24240.stdout.log"
+  }
+}

@@ -1,0 +1,130 @@
+
+RUN: C:\ST\STM32CubeProgrammer\bin\STM32_Programmer_CLI.exe -c port=SWD mode=UR reset=HWrst freq=4000 -rst
+RUN: reset_timeout_seconds=15
+      -------------------------------------------------------------------
+                       STM32CubeProgrammer v2.23.0                  
+      -------------------------------------------------------------------
+
+ST-LINK SN  : 066EFF535570514867221931
+ST-LINK FW  : V2J39M27
+Board       : NUCLEO-WB55RG
+Voltage     : 3.24V
+SWD freq    : 4000 KHz
+Connect mode: Under Reset
+Reset mode  : Hardware reset
+Device ID   : 0x495
+Revision ID : Rev X
+Device name : STM32WB5x/35xx
+NVM size    : 1 MBytes
+Device type : MCU
+Device CPU  : Cortex-M4
+BL Version  : 0xD5
+Debug in Low Power mode enabled
+
+
+MCU Reset
+
+Software reset is performed
+[epaper] refresh mode=full profile=default control=0xF7 expected_visible_flicker=multiple activation_count=4 busy=0 update=1 activate=1 complete=1 elapsed_ms=1296
+[epaper] timing mode=full prepare_ms=7 setup_ms=17 transfer_before_waveform_ms=107 transfer_after_waveform_ms=0 bytes=5000 data_planes=2 spi=software_vendor_edges
+[epaper] policy_commit mode=full ok=1 partial_count=0 baseline=1
+[epaper] boot_diag cycle=4 result=0 bytes=10000 busy=0
+
+[stage] uart ok
+[touch] ft6336 decoder=pass gesture=pass addr=0x38 probe=present probes=1 irq_mode=trigger irq_cfg_errors=0 tuning=applied threshold=0x70 period=4/4 tuning_errors=0 poll_ms=5/8 irq=PC6 wired=1 reset=PC10 wired=0 refresh_poll_ms=5
+[stage] qspi ok
+[stage] sai1 ok clk=48000000 a_cr1=0x01F820E1 a_frcr=0x00051F3F a_slotr=0x00030180 b_cr1=0x00B02280
+
+[boot] Companion NUCLEO-WB55RG bringup
+[build] interaction_profile=trace epaper_trace=1 touch_trace=1 ft6336_threshold=0x70 touch_poll_active_ms=5 touch_poll_refresh_ms=5 refresh_policy=partial_x5_then_fast_cleanup
+[boot] uart=USART1 PB6/PB7 115200 flash=QSPI-2IO PA2/PA3/PB9/PB8 spi2=PA9/PC1/PC2 cs=PA6 hz=2000000 i2c3=PC0/PB11 touch_irq=PC6 touch_reset=PC10
+[boot] mic=SAI1A PA8/PB12/PC3 speaker=SAI1B PB3/PA4/PA5 max98357_sd=PA15
+[boot] mic=sph0655_pdm1536k_to_pcm16000_soft_decim96_scale128 raw_fs=24000 mckdiv=31 filter=cic3 clock=0x00000200 slot_active=0x00000002 data_af=0x0D preamp8 listener_reuse=pdm_backend
+[boot] buttons: SW1=PC4 flash+ota+mic+diag probe, SW2=PD0 cancel/recover, SW3=PD1 start/stop recording
+[stage] ble app init requested name=companion service=VKA1
+[button] gpio_poll_ready raw=SW1:1 SW2:1 SW3:1
+[boot] boot_selftests=skipped reason=production_ble_path
+[screen-assets] external_store=ready kind=qspi_nor base=0x00200000 bytes=2097152
+[epaper] policy requested=1 selected=full reason=0 partial_count=0 limit=5 baseline=0
+[epaper] reset busy=0
+[epaper] spi=software_vendor_edges sck=PA9 mosi=PC1
+[epaper] ready_wait initial=0 final=0 elapsed_ms=0 ready=1
+[epaper] controller_init=1 soft_reset mode=full busy=1 pre=1 command=1
+[epaper] ready_wait initial=0 final=0 elapsed_ms=0 ready=1
+[epaper] frame rotation=180 mirror_x=1 width=200 height=200
+[epaper] window x_byte=0..24 y=0..199 bytes=5000 changed=1
+[touch] contacts=0 event=none id=0 raw_x=0 raw_y=0 x=0 y=0 mirror_x=0 mirror_y=0 sample_age_ms=0 reads=1
+[epaper] refresh mode=full profile=default control=0xF7 expected_visible_flicker=multiple activation_count=1 busy=0 update=1 activate=1 complete=1 elapsed_ms=1298
+[epaper] timing mode=full prepare_ms=7 setup_ms=46 transfer_before_waveform_ms=108 transfer_after_waveform_ms=0 bytes=5000 data_planes=2 spi=software_vendor_edges
+[epaper] policy_commit mode=full ok=1 partial_count=0 baseline=1
+[epaper] boot_diag cycle=1 result=0 bytes=10000 busy=0
+[epaper] policy requested=1 selected=full reason=0 partial_count=0 limit=5 baseline=1
+[epaper] spi=software_vendor_edges sck=PA9 mosi=PC1
+[epaper] ready_wait initial=0 final=0 elapsed_ms=0 ready=1
+[epaper] controller_init=0 soft_reset mode=full busy=0 pre=1 command=0
+[epaper] frame rotation=180 mirror_x=1 width=200 height=200
+[epaper] window x_byte=0..24 y=0..199 bytes=5000 changed=1
+[epaper] refresh mode=full profile=default control=0xF7 expected_visible_flicker=multiple activation_count=2 busy=0 update=1 activate=1 complete=1 elapsed_ms=1296
+[epaper] timing mode=full prepare_ms=7 setup_ms=17 transfer_before_waveform_ms=107 transfer_after_waveform_ms=0 bytes=5000 data_planes=2 spi=software_vendor_edges
+[epaper] policy_commit mode=full ok=1 partial_count=0 baseline=1
+[epaper] boot_diag cycle=2 result=0 bytes=10000 busy=0
+[epaper] policy requested=1 selected=full reason=0 partial_count=0 limit=5 baseline=1
+[epaper] spi=software_vendor_edges sck=PA9 mosi=PC1
+[epaper] ready_wait initial=0 final=0 elapsed_ms=0 ready=1
+[epaper] controller_init=0 soft_reset mode=full busy=0 pre=1 command=0
+[epaper] frame rotation=180 mirror_x=1 width=200 height=200
+[epaper] window x_byte=0..24 y=0..199 bytes=5000 changed=1
+[epaper] refresh mode=full profile=default control=0xF7 expected_visible_flicker=multiple activation_count=3 busy=0 update=1 activate=1 complete=1 elapsed_ms=1298
+[epaper] timing mode=full prepare_ms=7 setup_ms=17 transfer_before_waveform_ms=107 transfer_after_waveform_ms=0 bytes=5000 data_planes=2 spi=software_vendor_edges
+[epaper] policy_commit mode=full ok=1 partial_count=0 baseline=1
+[epaper] boot_diag cycle=3 result=0 bytes=10000 busy=0
+[epaper] policy requested=1 selected=full reason=0 partial_count=0 limit=5 baseline=1
+[epaper] spi=software_vendor_edges sck=PA9 mosi=PC1
+[epaper] ready_wait initial=0 final=0 elapsed_ms=0 ready=1
+[epaper] controller_init=0 soft_reset mode=full busy=0 pre=1 command=0
+[epaper] frame rotation=180 mirror_x=1 width=200 height=200
+[epaper] window x_byte=0..24 y=0..199 bytes=5000 changed=1
+[epaper] refresh mode=full profile=default control=0xF7 expected_visible_flicker=multiple activation_count=4 busy=0 update=1 activate=1 complete=1 elapsed_ms=1298
+[epaper] timing mode=full prepare_ms=7 setup_ms=17 transfer_before_waveform_ms=107 transfer_after_waveform_ms=0 bytes=5000 data_planes=2 spi=software_vendor_edges
+[epaper] policy_commit mode=full ok=1 partial_count=0 baseline=1
+[epaper] boot_diag cycle=4 result=0 bytes=10000 busy=0
+[epaper] policy requested=1 selected=full reason=0 partial_count=0 limit=5 baseline=1
+[epaper] spi=software_vendor_edges sck=PA9 mosi=PC1
+[epaper] ready_wait initial=0 final=0 elapsed_ms=0 ready=1
+[epaper] controller_init=0 soft_reset mode=full busy=0 pre=1 command=0
+[epaper] frame rotation=180 mirror_x=1 width=200 height=200
+[epaper] window x_byte=0..24 y=0..199 bytes=5000 changed=1
+[epaper] refresh mode=full profile=default control=0xF7 expected_visible_flicker=multiple activation_count=5 busy=0 update=1 activate=1 complete=1 elapsed_ms=1298
+[epaper] timing mode=full prepare_ms=7 setup_ms=17 transfer_before_waveform_ms=107 transfer_after_waveform_ms=0 bytes=5000 data_planes=2 spi=software_vendor_edges
+[epaper] policy_commit mode=full ok=1 partial_count=0 baseline=1
+[epaper] boot_diag cycle=5 result=0 bytes=10000 busy=0
+[epaper] policy requested=1 selected=full reason=0 partial_count=0 limit=5 baseline=1
+[epaper] spi=software_vendor_edges sck=PA9 mosi=PC1
+[epaper] ready_wait initial=0 final=0 elapsed_ms=0 ready=1
+[epaper] controller_init=0 soft_reset mode=full busy=0 pre=1 command=0
+[epaper] frame rotation=180 mirror_x=1 width=200 height=200
+[epaper] window x_byte=0..24 y=0..199 bytes=5000 changed=1
+[epaper] refresh mode=full profile=default control=0xF7 expected_visible_flicker=multiple activation_count=6 busy=0 update=1 activate=1 complete=1 elapsed_ms=1298
+[epaper] timing mode=full prepare_ms=7 setup_ms=17 transfer_before_waveform_ms=107 transfer_after_waveform_ms=0 bytes=5000 data_planes=2 spi=software_vendor_edges
+[epaper] policy_commit mode=full ok=1 partial_count=0 baseline=1
+[epaper] boot_diag cycle=6 result=0 bytes=10000 busy=0
+[epaper] policy requested=1 selected=full reason=0 partial_count=0 limit=5 baseline=1
+[epaper] spi=software_vendor_edges sck=PA9 mosi=PC1
+[epaper] ready_wait initial=0 final=0 elapsed_ms=0 ready=1
+[epaper] controller_init=0 soft_reset mode=full busy=0 pre=1 command=0
+[epaper] frame rotation=180 mirror_x=1 width=200 height=200
+[epaper] window x_byte=0..24 y=0..199 bytes=5000 changed=1
+[epaper] refresh mode=full profile=default control=0xF7 expected_visible_flicker=multiple activation_count=7 busy=0 update=1 activate=1 complete=1 elapsed_ms=1298
+[epaper] timing mode=full prepare_ms=7 setup_ms=17 transfer_before_waveform_ms=107 transfer_after_waveform_ms=0 bytes=5000 data_planes=2 spi=software_vendor_edges
+[epaper] policy_commit mode=full ok=1 partial_count=0 baseline=1
+[epaper] boot_diag cycle=7 result=0 bytes=10000 busy=0
+[epaper] policy requested=1 selected=full reason=0 partial_count=0 limit=5 baseline=1
+[epaper] spi=software_vendor_edges sck=PA9 mosi=PC1
+[epaper] ready_wait initial=0 final=0 elapsed_ms=0 ready=1
+[epaper] controller_init=0 soft_reset mode=full busy=0 pre=1 command=0
+[epaper] frame rotation=180 mirror_x=1 width=200 height=200
+[epaper] window x_byte=0..24 y=0..199 bytes=5000 changed=1
+[epaper] refresh mode=full profile=default control=0xF7 expected_visible_flicker=multiple activation_count=8 busy=0 update=1 activate=1 complete=1 elapsed_ms=1298
+[epaper] timing mode=full prepare_ms=7 setup_ms=17 transfer_before_waveform_ms=107 transfer_after_waveform_ms=0 bytes=5000 data_planes=2 spi=software_vendor_edges
+[epaper] policy_commit mode=full ok=1 partial_count=0 baseline=1
+[epaper] boot_diag cycle=8 result=0 bytes=10000 busy=0
