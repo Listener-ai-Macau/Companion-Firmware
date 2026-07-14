@@ -35,25 +35,25 @@ SCREEN_ASSET_PROVISION_BUILD_LOG = BUILD_LOG_DIR / "screen-asset-provision-build
 
 EXPECTED_BUILD_SIZES = {
     "dry_run_default": {
-        "text": 121584,
+        "text": 122364,
         "data": 2432,
         "bss": 178143,
-        "dec": 302159,
-        "hex": "49c4f",
+        "dec": 302939,
+        "hex": "49f5b",
     },
     "ssd1681_real_panel": {
-        "text": 131388,
+        "text": 132168,
         "data": 2436,
         "bss": 188191,
-        "dec": 322015,
-        "hex": "4e9df",
+        "dec": 322795,
+        "hex": "4eceb",
     },
     "screen_asset_provision": {
-        "text": 165548,
+        "text": 166220,
         "data": 2433,
         "bss": 188183,
-        "dec": 356164,
-        "hex": "56f44",
+        "dec": 356836,
+        "hex": "571e4",
     },
 }
 

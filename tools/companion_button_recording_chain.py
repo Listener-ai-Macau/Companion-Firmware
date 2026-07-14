@@ -453,38 +453,86 @@ async def verify_bad_offset(
 
 
 def parse_diag_log_pull(payload: bytes) -> dict[str, Any]:
-    return parse_struct(
-        "<BBHIHH",
+    header_format = "<BBHIIHHI"
+    event_format = "<IIBBBBIIII"
+    header_bytes = struct.calcsize(header_format)
+    event_bytes = struct.calcsize(event_format)
+    parsed = parse_struct(
+        header_format,
         (
             "schema_version",
-            "source_mask",
-            "severity_mask",
-            "cursor",
-            "max_events",
-            "max_bytes",
+            "flags",
+            "event_count",
+            "request_cursor",
+            "next_cursor",
+            "total_available",
+            "payload_bytes",
+            "payload_crc32",
         ),
         payload,
     )
+    expected_payload_bytes = int(parsed["event_count"]) * event_bytes
+    if int(parsed["payload_bytes"]) != expected_payload_bytes:
+        raise ChainError(
+            "diagnostics payload/event count mismatch: "
+            f"payload_bytes={parsed['payload_bytes']} event_count={parsed['event_count']}"
+        )
+    packet_bytes = header_bytes + expected_payload_bytes
+    if len(payload) < packet_bytes:
+        raise ChainError(f"diagnostics packet truncated: got {len(payload)}, need {packet_bytes}")
+    event_payload = payload[header_bytes:packet_bytes]
+    crc32 = binascii.crc32(event_payload) & 0xFFFFFFFF
+    if int(parsed["payload_crc32"]) != crc32:
+        raise ChainError(
+            f"diagnostics CRC mismatch: got 0x{int(parsed['payload_crc32']):08x}, "
+            f"expected 0x{crc32:08x}"
+        )
+    events = []
+    event_names = (
+        "sequence",
+        "t_ms",
+        "source",
+        "event_id",
+        "severity",
+        "event_flags",
+        "arg0",
+        "arg1",
+        "arg2",
+        "arg3",
+    )
+    for offset in range(0, expected_payload_bytes, event_bytes):
+        values = struct.unpack(event_format, event_payload[offset : offset + event_bytes])
+        events.append(dict(zip(event_names, values, strict=True)))
+    parsed["events"] = events
+    parsed["packet_bytes"] = packet_bytes
+    parsed["crc_valid"] = True
+    return parsed
 
 
 async def pull_bounded_diagnostics(client: Any, uuids: dict[str, str], args: argparse.Namespace) -> dict[str, Any]:
-    payload = struct.pack("<BBHIHH", SCHEMA_VERSION, 1, 0xFFFF, 0, 4, 64)
+    payload = struct.pack("<BBHIHH", SCHEMA_VERSION, 0, 0xFFFF, 0, 4, 64)
     response = await notify_write_wait(
         client,
         uuids["diagnostics_log_pull"],
         uuids["diagnostics_log_pull"],
         payload,
         parse_diag_log_pull,
-        lambda parsed: int(parsed["cursor"]) == 1,
+        lambda parsed: int(parsed["request_cursor"]) == 0,
         args.notify_timeout,
     )
-    if int(response["max_bytes"]) > 64:
+    if int(response["packet_bytes"]) > 64:
         raise ChainError(f"diagnostics response exceeded requested bound: {response}")
+    if not (1 <= int(response["event_count"]) <= 4):
+        raise ChainError(f"diagnostics response event count is invalid: {response}")
+    if int(response["total_available"]) < int(response["event_count"]):
+        raise ChainError(f"diagnostics available count is inconsistent: {response}")
+    if not response["crc_valid"]:
+        raise ChainError(f"diagnostics response CRC was not verified: {response}")
     return {
         "operation": "bounded_diagnostics_log_pull",
         "status": "PASS",
         "diagnostics": response,
-        "bound": {"max_events": 4, "max_bytes": 64, "source_mask": 1, "severity_mask": "0xffff"},
+        "bound": {"max_events": 4, "max_bytes": 64, "source_mask": 0, "severity_mask": "0xffff"},
     }
 
 

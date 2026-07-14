@@ -51,6 +51,16 @@ size_t comp_diag_log_read_tail_by_source(uint8_t source,
                                          comp_diag_event_t *out_events,
                                          size_t max_events);
 
+/* Cursor zero returns the newest bounded tail. A nonzero cursor returns the
+ * oldest matching events with a sequence newer than the cursor. A zero mask
+ * selects every value; source bits 0..7 select source IDs 1..8. */
+size_t comp_diag_log_read_page(uint32_t cursor,
+                               uint8_t source_mask,
+                               uint16_t severity_mask,
+                               comp_diag_event_t *out_events,
+                               size_t max_events,
+                               size_t *out_total_available);
+
 const char *comp_diag_source_name(uint8_t source);
 const char *comp_diag_severity_name(uint8_t severity);
 

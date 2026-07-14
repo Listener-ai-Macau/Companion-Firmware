@@ -42,6 +42,7 @@
 #include "companion_screen_ui.h"
 #include "companion_v1_features.h"
 #include "diag_log.h"
+#include "diag_log_export.h"
 #include "display_queue.h"
 #include "asset_store.h"
 #include "emote_asset_pack.h"
@@ -3060,23 +3061,39 @@ static void Companion_Gatt_PublishWakeWordStatus(bool apply_expression_hint)
 static void Companion_Gatt_PublishDiagLogResponse(
     const companion_gatt_diag_log_pull_v1_t *request)
 {
+  comp_diag_log_export_request_t export_request;
+  comp_diag_log_export_packet_t response;
+  size_t response_bytes = 0u;
+
   if (request == NULL)
   {
     return;
   }
 
-  companion_gatt_diag_log_pull_v1_t response = *request;
-  response.schema_version = 1u;
-  response.cursor = request->cursor + 1u;
-  response.max_events = request->max_events == 0u ? 0u : 1u;
-  if (response.max_bytes > 64u)
+  comp_diag_log_record_code(COMP_DIAG_EVT_GATT_LOG_EXPORT_REQUEST,
+                            COMP_DIAG_SEV_INFO,
+                            request->cursor,
+                            request->max_events,
+                            request->max_bytes,
+                            ((uint32_t)request->severity_mask << 8u) |
+                                request->source_mask);
+
+  export_request.cursor = request->cursor;
+  export_request.source_mask = request->source_mask;
+  export_request.severity_mask = request->severity_mask;
+  export_request.max_events = request->max_events;
+  export_request.max_bytes = request->max_bytes;
+  if (!comp_diag_log_export_build(&export_request,
+                                  &response,
+                                  &response_bytes) ||
+      response_bytes > COMPANION_GATT_MAX_PAYLOAD_BYTES)
   {
-    response.max_bytes = 64u;
+    return;
   }
 
   (void)companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_DIAGNOSTICS_LOG_PULL,
                                        (const uint8_t *)&response,
-                                       (uint16_t)sizeof(response));
+                                       (uint16_t)response_bytes);
 }
 
 static void Companion_Gatt_PublishDeletePrivacyStatus(

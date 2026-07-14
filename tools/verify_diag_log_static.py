@@ -17,6 +17,8 @@ HEADER = REPO_ROOT / "app/companion_pendant/diag_log/diag_log_events.h"
 CORE_FILES = [
     REPO_ROOT / "app/companion_pendant/diag_log/diag_log.h",
     REPO_ROOT / "app/companion_pendant/diag_log/diag_log.c",
+    REPO_ROOT / "app/companion_pendant/diag_log/diag_log_export.h",
+    REPO_ROOT / "app/companion_pendant/diag_log/diag_log_export.c",
     HEADER,
 ]
 BLE_CONTRACT = REPO_ROOT / "docs/ble_gatt_contract.md"
@@ -124,6 +126,19 @@ def check_core_is_stm32_safe(errors: list[str]) -> None:
         text = readme.read_text(encoding="utf-8")
         require("SPI flash ring" in text, "README missing future SPI flash retained ring", errors)
         require("must not copy Listener ESP partition table assumptions" in text, "README missing ESP partition warning", errors)
+
+    export_header = (REPO_ROOT / "app/companion_pendant/diag_log/diag_log_export.h").read_text(encoding="utf-8")
+    export_source = (REPO_ROOT / "app/companion_pendant/diag_log/diag_log_export.c").read_text(encoding="utf-8")
+    ring_source = (REPO_ROOT / "app/companion_pendant/diag_log/diag_log.c").read_text(encoding="utf-8")
+    for needle in [
+        "comp_diag_log_export_packet_t",
+        "COMP_DIAG_LOG_EXPORT_HEADER_BYTES 20u",
+        "COMP_DIAG_LOG_EXPORT_MAX_EVENTS 8u",
+    ]:
+        require(needle in export_header, f"diagnostics exporter missing {needle}", errors)
+    for needle in ["comp_diag_log_export_build", "comp_diag_log_export_crc32", "_Static_assert"]:
+        require(needle in export_source, f"diagnostics exporter source missing {needle}", errors)
+    require("comp_diag_log_read_page" in ring_source, "diagnostic ring missing cursor paging", errors)
 
 
 def check_ble_contract(errors: list[str]) -> None:

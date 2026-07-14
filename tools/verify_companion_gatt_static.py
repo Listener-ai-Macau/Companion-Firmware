@@ -152,8 +152,23 @@ def check_stm32_surface(source: str, app_ble: str, errors: list[str]) -> None:
         "Companion_Gatt_PublishOtaReadiness",
         "companion_gatt_parse_card_write_v1",
         "companion_gatt_parse_delete_privacy_v1",
+        "comp_diag_log_export_build",
+        "COMP_DIAG_EVT_GATT_LOG_EXPORT_REQUEST",
     ]:
         require(anchor in app_ble, f"app_ble.c missing real GATT bench response anchor {anchor}", errors)
+
+    require('#include "diag_log_export.h"' in app_ble, "GATT adapter missing portable diagnostics exporter", errors)
+    diag_start = app_ble.rfind("static void Companion_Gatt_PublishDiagLogResponse")
+    diag_end = app_ble.find("\nstatic void ", diag_start + 1)
+    diag_body = app_ble[diag_start:diag_end]
+    require(diag_start >= 0 and diag_end > diag_start, "cannot isolate diagnostics/log pull response", errors)
+    require("response = *request" not in diag_body, "diagnostics/log pull still echoes its request", errors)
+    require("request->cursor + 1u" not in diag_body, "diagnostics/log pull still synthesizes cursor progress", errors)
+    real_bench = read(REAL_BENCH)
+    button_chain = read(REPO_ROOT / "tools" / "companion_button_recording_chain.py")
+    for label, host_source in (("real bench", real_bench), ("button chain", button_chain)):
+        require('header_format = "<BBHIIHHI"' in host_source, f"{label} missing DiagLogPacketV1 parser", errors)
+        require("payload_crc32" in host_source and "crc_valid" in host_source, f"{label} does not verify diagnostics CRC", errors)
 
     for anchor in [
         "Companion_Gatt_RecordingListEntryV1_t",

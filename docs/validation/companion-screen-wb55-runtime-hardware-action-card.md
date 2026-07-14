@@ -6,7 +6,7 @@
 - 目标: `NUCLEO-WB55RG + GDEY0154D67-T03 + FT6336U`
 - 资源: revision `53`, bytes `49901`, CRC `0x2332E300`
 - build matrix: `PASS`, variants `dry_run_default, screen_asset_provision, ssd1681_real_panel`
-- ScreenAssetProvision size: `{'bss': 188183, 'data': 2433, 'dec': 356164, 'hex': '56f44', 'text': 165548}`
+- ScreenAssetProvision size: `{'bss': 188183, 'data': 2433, 'dec': 356836, 'hex': '571e4', 'text': 166220}`
 - SCR-17 ledger: `PENDING_RUNTIME_RECHECK`, first frame `coherent_generation=1`, stale discard model `3`
 - runtime logs gate: `NO_GO_MISSING_RUNTIME_LOGS`
 - promotion gate: `NO_GO_LOGS_NOT_PASS`

@@ -195,6 +195,101 @@ size_t comp_diag_log_read_tail_by_source(uint8_t source,
     return written;
 }
 
+static bool comp_diag_log_source_matches(uint8_t source, uint8_t source_mask)
+{
+    if (source_mask == 0u) {
+        return true;
+    }
+    if (source == 0u || source > 8u) {
+        return false;
+    }
+    return (source_mask & (uint8_t)(1u << (source - 1u))) != 0u;
+}
+
+static bool comp_diag_log_severity_matches(uint8_t severity,
+                                           uint16_t severity_mask)
+{
+    if (severity_mask == 0u) {
+        return true;
+    }
+    if (severity >= 16u) {
+        return false;
+    }
+    return (severity_mask & (uint16_t)(1u << severity)) != 0u;
+}
+
+static bool comp_diag_log_sequence_after(uint32_t sequence, uint32_t cursor)
+{
+    return (int32_t)(sequence - cursor) > 0;
+}
+
+static bool comp_diag_log_page_matches(const comp_diag_event_t *event,
+                                       uint32_t cursor,
+                                       uint8_t source_mask,
+                                       uint16_t severity_mask)
+{
+    return (cursor == 0u || comp_diag_log_sequence_after(event->sequence, cursor)) &&
+           comp_diag_log_source_matches(event->source, source_mask) &&
+           comp_diag_log_severity_matches(event->severity, severity_mask);
+}
+
+size_t comp_diag_log_read_page(uint32_t cursor,
+                               uint8_t source_mask,
+                               uint16_t severity_mask,
+                               comp_diag_event_t *out_events,
+                               size_t max_events,
+                               size_t *out_total_available)
+{
+    size_t available = 0u;
+    size_t written = 0u;
+    size_t index;
+    size_t skip;
+
+    if (out_total_available != 0) {
+        *out_total_available = 0u;
+    }
+    if (out_events == 0 || max_events == 0u) {
+        return 0u;
+    }
+
+    comp_diag_log_lock();
+    index = comp_diag_oldest_index_locked();
+    for (size_t i = 0u; i < s_count; ++i) {
+        if (comp_diag_log_page_matches(&s_ring[index],
+                                       cursor,
+                                       source_mask,
+                                       severity_mask)) {
+            available++;
+        }
+        index = comp_diag_advance(index);
+    }
+
+    /* Cursor zero is the support-package/default-tail request. Nonzero cursor
+     * paging starts at the oldest new event so polling never skips records. */
+    skip = cursor == 0u && available > max_events ? available - max_events : 0u;
+    index = comp_diag_oldest_index_locked();
+    for (size_t i = 0u; i < s_count && written < max_events; ++i) {
+        const comp_diag_event_t *event = &s_ring[index];
+        if (comp_diag_log_page_matches(event,
+                                       cursor,
+                                       source_mask,
+                                       severity_mask)) {
+            if (skip != 0u) {
+                skip--;
+            } else {
+                out_events[written++] = *event;
+            }
+        }
+        index = comp_diag_advance(index);
+    }
+    comp_diag_log_unlock();
+
+    if (out_total_available != 0) {
+        *out_total_available = available;
+    }
+    return written;
+}
+
 const char *comp_diag_source_name(uint8_t source)
 {
     for (size_t i = 0; i < sizeof(k_sources) / sizeof(k_sources[0]); ++i) {

@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 import pathlib
+import subprocess
 import sys
 from typing import Any
 
@@ -13,6 +14,7 @@ REPO_ROOT = pathlib.Path(__file__).resolve().parents[1]
 COLLECTOR = REPO_ROOT / "tools/collect_companion_diagnostics.ps1"
 SUMMARY = REPO_ROOT / "docs/validation/companion-diagnostics-fixture/summary.json"
 DECODED = REPO_ROOT / "docs/validation/companion-diagnostics-fixture/diag_tail_decoded.json"
+EXPORT_VERIFIER = REPO_ROOT / "tools/verify_diag_log_export.py"
 
 REQUIRED_COLLECTOR_ANCHORS = (
     "Only fixture/no-hardware Companion diagnostics are implemented",
@@ -162,11 +164,33 @@ def check_decoded_tail(errors: list[str]) -> None:
         )
 
 
+def check_bounded_firmware_export(errors: list[str]) -> None:
+    require(EXPORT_VERIFIER.exists(), "missing tools/verify_diag_log_export.py", errors)
+    if not EXPORT_VERIFIER.exists():
+        return
+    completed = subprocess.run(
+        [sys.executable, str(EXPORT_VERIFIER)],
+        cwd=REPO_ROOT,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+    require(
+        completed.returncode == 0 and
+        "PASS: bounded diagnostics export C/GATT/host contract checks passed." in completed.stdout,
+        "bounded firmware diagnostics export gate failed: "
+        + (completed.stderr.strip() or completed.stdout.strip()),
+        errors,
+    )
+
+
 def main() -> int:
     errors: list[str] = []
     check_collector(errors)
     check_summary(errors)
     check_decoded_tail(errors)
+    check_bounded_firmware_export(errors)
     if errors:
         print("FAIL: Companion diagnostics static checks failed:", file=sys.stderr)
         for error in errors:

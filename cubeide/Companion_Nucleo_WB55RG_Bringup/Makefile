@@ -297,6 +297,7 @@ C_SOURCES := \
 	$(ROOT)/app/companion_pendant/audio_stream/audio_stream.c \
 	$(ROOT)/app/companion_pendant/audio_stream/audio_stream_stm32wb.c \
 	$(ROOT)/app/companion_pendant/diag_log/diag_log.c \
+	$(ROOT)/app/companion_pendant/diag_log/diag_log_export.c \
 	$(ROOT)/app/companion_pendant/epaper/asset_store.c \
 	$(ROOT)/app/companion_pendant/epaper/display_queue.c \
 	$(ROOT)/app/companion_pendant/epaper/emote_asset_pack.c \

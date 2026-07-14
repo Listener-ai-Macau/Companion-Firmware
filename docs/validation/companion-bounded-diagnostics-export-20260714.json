@@ -1,0 +1,131 @@
+{
+  "schema_id": "companion.bounded_diagnostics_export.validation.v1",
+  "generated_at": "2026-07-14T19:36:11+08:00",
+  "status": "PASS",
+  "requirement_ids": [
+    "COMP-REQ-010"
+  ],
+  "source": {
+    "base_commit": "8d5ccc5275e6636a0a0f65f3785be852c4343360",
+    "branch": "adhoc/codex/companion-bounded-diagnostics-export",
+    "stm32cubewb_commit": "7c5aa7dcd2c0abe787f922bb06a6213c724d08e4",
+    "denzic_platform_commit": "924c750d8a7cc00684fa6f451fb17293ebe02576"
+  },
+  "contract": {
+    "name": "DiagLogPacketV1",
+    "byte_order": "little_endian",
+    "header_bytes": 20,
+    "event_bytes": 28,
+    "max_events": 8,
+    "max_packet_bytes": 244,
+    "integrity": "standard_crc32_over_event_payload",
+    "cursor_zero": "newest_filtered_tail",
+    "nonzero_cursor": "oldest_filtered_events_newer_than_cursor",
+    "zero_source_mask": "all_sources",
+    "zero_severity_mask": "all_severities"
+  },
+  "proved": [
+    "The WB55 GATT adapter publishes real ring events instead of echoing the request or synthesizing cursor progress.",
+    "Event count and complete packet bytes are bounded before publication.",
+    "Native C replay covers tail, cursor paging, source and severity filters, byte caps, empty results, invalid bounds, and the standard CRC32 vector.",
+    "Both host consumers reject bad CRC and truncated packets.",
+    "The portable C core compiles for Cortex-M33 without STM32WB BLE dependencies.",
+    "Default, SSD1681, and ScreenAssetProvision WB55 firmware variants link successfully with unchanged RAM usage."
+  ],
+  "validation": [
+    {
+      "command": "pwsh -NoProfile -File .\\tools\\test_diag_log_export_host.ps1",
+      "status": "PASS",
+      "result": "portable bounded diagnostics export host replay passed"
+    },
+    {
+      "command": "python .\\tools\\verify_diag_log_export.py",
+      "status": "PASS",
+      "result": "C/GATT/host contract, Cortex-M33 compile, native replay, bad-CRC and truncation rejection passed"
+    },
+    {
+      "command": "python .\\tools\\verify_companion_diagnostics_static.py",
+      "status": "PASS"
+    },
+    {
+      "command": "python .\\tools\\verify_diag_log_static.py",
+      "status": "PASS"
+    },
+    {
+      "command": "python .\\tools\\verify_companion_gatt_static.py",
+      "status": "PASS"
+    },
+    {
+      "command": "python .\\tools\\verify_companion_product_requirements.py",
+      "status": "PASS"
+    },
+    {
+      "command": "python .\\tools\\verify_expression_wba_portability.py",
+      "status": "PASS"
+    },
+    {
+      "command": "python .\\tools\\companion_ble_tool.py --self-test --json",
+      "status": "PASS"
+    },
+    {
+      "command": "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1 -Force",
+      "status": "PASS"
+    },
+    {
+      "command": "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1 -EpaperSsd1681Bringup -Force",
+      "status": "PASS"
+    },
+    {
+      "command": "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1 -ScreenAssetProvision -Force",
+      "status": "PASS"
+    },
+    {
+      "command": "python .\\tools\\run_expression_acceptance.py --pass-only --skip-build --output .\\.cache\\validation\\companion-bounded-diagnostics-export-screen-regression.json",
+      "status": "PASS",
+      "pass_count": 107,
+      "fail_count": 0,
+      "skip_count": 0
+    }
+  ],
+  "wb55_build_sizes": {
+    "dry_run_default": {
+      "text": 122364,
+      "data": 2432,
+      "bss": 178143,
+      "dec": 302939,
+      "hex": "49f5b"
+    },
+    "ssd1681_real_panel": {
+      "text": 132168,
+      "data": 2436,
+      "bss": 188191,
+      "dec": 322795,
+      "hex": "4eceb"
+    },
+    "screen_asset_provision": {
+      "text": 166220,
+      "data": 2433,
+      "bss": 188183,
+      "dec": 356836,
+      "hex": "571e4"
+    }
+  },
+  "resource_delta": {
+    "dry_run_text_bytes": 780,
+    "ssd1681_text_bytes": 780,
+    "screen_asset_provision_text_bytes": 672,
+    "ram_bytes": 0
+  },
+  "hardware_scope": {
+    "hardware_used": false,
+    "firmware_flashed": false,
+    "serial_port_opened": false,
+    "operator_prompt_opened": false,
+    "status": "NOT_RUN_BY_OWNER_DIRECTION"
+  },
+  "remaining_gates": [
+    "Rerun the real BLE bench with firmware containing DiagLogPacketV1 when Companion hardware work resumes.",
+    "Keep the visible About diagnostics action inactive until its generated-reference UI and result feedback flow are accepted.",
+    "Do not claim screen, touch, microphone, or BLE hardware acceptance from this software-only evidence."
+  ]
+}

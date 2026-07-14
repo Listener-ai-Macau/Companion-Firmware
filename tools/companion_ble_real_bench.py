@@ -423,18 +423,60 @@ def parse_wake_word_status(payload: bytes) -> dict[str, Any]:
 
 
 def parse_diag_log_pull(payload: bytes) -> dict[str, Any]:
-    return parse_struct(
-        "<BBHIHH",
+    header_format = "<BBHIIHHI"
+    event_format = "<IIBBBBIIII"
+    header_bytes = struct.calcsize(header_format)
+    event_bytes = struct.calcsize(event_format)
+    parsed = parse_struct(
+        header_format,
         (
             "schema_version",
-            "source_mask",
-            "severity_mask",
-            "cursor",
-            "max_events",
-            "max_bytes",
+            "flags",
+            "event_count",
+            "request_cursor",
+            "next_cursor",
+            "total_available",
+            "payload_bytes",
+            "payload_crc32",
         ),
         payload,
     )
+    expected_payload_bytes = int(parsed["event_count"]) * event_bytes
+    if int(parsed["payload_bytes"]) != expected_payload_bytes:
+        raise BenchError(
+            "diagnostics payload/event count mismatch: "
+            f"payload_bytes={parsed['payload_bytes']} event_count={parsed['event_count']}"
+        )
+    packet_bytes = header_bytes + expected_payload_bytes
+    if len(payload) < packet_bytes:
+        raise BenchError(f"diagnostics packet truncated: got {len(payload)}, need {packet_bytes}")
+    event_payload = payload[header_bytes:packet_bytes]
+    crc32 = binascii.crc32(event_payload) & 0xFFFFFFFF
+    if int(parsed["payload_crc32"]) != crc32:
+        raise BenchError(
+            f"diagnostics CRC mismatch: got 0x{int(parsed['payload_crc32']):08x}, "
+            f"expected 0x{crc32:08x}"
+        )
+    events = []
+    event_names = (
+        "sequence",
+        "t_ms",
+        "source",
+        "event_id",
+        "severity",
+        "event_flags",
+        "arg0",
+        "arg1",
+        "arg2",
+        "arg3",
+    )
+    for offset in range(0, expected_payload_bytes, event_bytes):
+        values = struct.unpack(event_format, event_payload[offset : offset + event_bytes])
+        events.append(dict(zip(event_names, values, strict=True)))
+    parsed["events"] = events
+    parsed["packet_bytes"] = packet_bytes
+    parsed["crc_valid"] = True
+    return parsed
 
 
 def parse_delete_privacy(payload: bytes) -> dict[str, Any]:
@@ -1369,17 +1411,21 @@ async def run_connected_bench(
         }
     )
 
-    diag_payload = struct.pack("<BBHIHH", SCHEMA_VERSION, 1, 0xFFFF, 0, 4, 64)
+    diag_payload = struct.pack("<BBHIHH", SCHEMA_VERSION, 0, 0xFFFF, 0, 4, 64)
     diag = await notify_write_wait(
         client,
         uuids["diagnostics_log_pull"],
         uuids["diagnostics_log_pull"],
         diag_payload,
         parse_diag_log_pull,
-        lambda parsed: parsed["cursor"] == 1,
+        lambda parsed: parsed["request_cursor"] == 0,
         args.notify_timeout,
     )
-    assert_true(diag["max_bytes"] <= 64, "diagnostics response exceeded requested byte bound")
+    assert_true(diag["packet_bytes"] <= 64, "diagnostics response exceeded requested byte bound")
+    assert_true(diag["event_count"] >= 1, "diagnostics response did not contain the export request event")
+    assert_true(diag["event_count"] <= 4, "diagnostics response exceeded requested event bound")
+    assert_true(diag["total_available"] >= diag["event_count"], "diagnostics available count is inconsistent")
+    assert_true(diag["crc_valid"], "diagnostics response CRC was not verified")
     operations.append({"operation": "diagnostics_log_pull", "status": "PASS", "diagnostics": diag})
 
     delete_request_id = 77

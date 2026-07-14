@@ -241,18 +241,56 @@ The default request asks for a small tail window:
 ```json
 {
   "cursor": 0,
-  "max_events": 16,
-  "max_bytes": 1024,
-  "source": "gatt",
+  "max_events": 4,
+  "max_bytes": 244,
+  "source_mask": 0,
   "severity_mask": "warn|error",
   "format": "companion_diag_v1"
 }
 ```
 
-The firmware may return fewer than `max_events` or `max_bytes`. The host
-advances by `next_cursor` and returned sequence numbers. A later retained SPI
-flash ring keeps the same bounded cursor/source contract so the protocol is
-not unbounded full dumps or whole-device dumps.
+`cursor=0` returns the newest bounded tail. A nonzero cursor returns the oldest
+matching events with sequence numbers newer than that cursor, so polling does
+not skip new records. `source_mask=0` selects all sources. In schema v1, bits
+0..7 select source IDs 1..8; sources added above ID 8 remain available through
+the all-source request and require a later schema revision for individual bit
+selection. `severity_mask=0` selects all severities; otherwise bit N selects
+severity N.
+
+The response is `DiagLogPacketV1`. Its fixed 20-byte little-endian header is
+followed by zero to eight 28-byte event records:
+
+```text
+uint8  schema_version
+uint8  flags              bit0=initial tail, bit1=truncated, bit2=empty, bit7=bad request bound
+uint16 event_count
+uint32 request_cursor
+uint32 next_cursor
+uint16 total_available    matching records before this packet's event/byte cap
+uint16 payload_bytes      event_count * 28
+uint32 payload_crc32      standard CRC32 over event records only
+
+repeat event_count times:
+  uint32 sequence
+  uint32 t_ms
+  uint8  source
+  uint8  event_id
+  uint8  severity
+  uint8  flags
+  uint32 arg0
+  uint32 arg1
+  uint32 arg2
+  uint32 arg3
+```
+
+`max_bytes` bounds the complete response packet, including the header. Zero
+selects the 244-byte protocol maximum; a nonzero value below the 20-byte header
+returns an error/empty header. The firmware may return fewer than `max_events`
+or `max_bytes`. The host validates `payload_bytes`, CRC, monotonic event
+sequences, and advances by `next_cursor`. A later retained SPI flash ring keeps
+the same bounded cursor/source contract; it must not turn this into an
+unbounded full dump or whole-device dump. The retained compatibility rule is:
+not unbounded full dumps.
 
 ## Recording Transfer
 
@@ -332,7 +370,7 @@ the tail or unsupported cases, so the 60-second dev cap does not require
 hundreds of small erases on the normal path. The SW3 path also runs basic
 audio-quality checks, hard-resets the target, proves the same recording is
 still listed and byte-identical after reset, verifies bad offset and bad-SHA
-delete refusals, pulls a bounded diagnostics/log response, and only then
+delete refusals, requests a bounded diagnostics/log response, and only then
 deletes with matching `validated_total_length` and SHA-256.
 
 Current real hardware evidence for this path is:
@@ -347,12 +385,17 @@ SAI microphone PCM to QSPI flash through the
 local PD1 button path, pulled 32768 bytes as a 16 kHz mono WAV, passed the
 basic audio-quality checks (`duration_s=1.024`, `rms=359.91`, `peak=1840`),
 proved reset persistence, rejected bad offset and bad-SHA delete requests,
-pulled bounded diagnostics, then deleted the object with matching
+received the former 12-byte bounded diagnostics placeholder, then deleted the object with matching
 `validated_total_length` and `validated_sha256`. The automatic BLE-triggered
 run separately proved the same storage format with a 23360-byte object,
 130 transfer packets, matching CRC/SHA, and an empty `recording_list` after
 delete. New BLE-triggered runs also export `ble-recording-16k-mono.wav` and
 `.pcm` artifacts for host postprocess.
+
+That historical diagnostics response only echoed request fields with a
+synthetic `cursor + 1`; it is not evidence that event records or CRC were
+exported. Real `DiagLogPacketV1` event export has native/software evidence and
+still needs one later BLE hardware rerun after the active board work resumes.
 
 This explicitly avoids reintroducing Listener's old chunk/fragment ambiguity.
 There are no independent `chunk_index`, `fragment_index`, or `fragment_count`
