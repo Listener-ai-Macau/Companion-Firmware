@@ -1,0 +1,53 @@
+{
+  "schema": "companion.wb55.ssd1681_official_full_recovery.v1",
+  "status": "NO_GO_DIGITAL_CONTROL_PASS_ANALOG_PANEL_FAIL",
+  "captured_at": "2026-07-14T09:57:25+08:00",
+  "target": "NUCLEO-WB55RG + ESP32-FTS02 + GDEY0154D67-T03",
+  "reference": {
+    "package": "S-GDEY0154D67-FP-Touch.rar",
+    "package_sha256": "202ADAB27515FDBA790565F643C3C83C52C11FF36844E8C387F66676C3D82CD4",
+    "full_sequence": "hardware reset; official full init; 0x24 current plane only; 0x22 0xF7; 0x20; BUSY"
+  },
+  "implementation": {
+    "production_default_changed": false,
+    "diagnostic_switch": "EpaperSsd1681OfficialFullDiagnostic",
+    "default_build_passed": true,
+    "default_hex_sha256": "28A92EA84E385E156C6956AC094046AFAE0D422F4E76F7C53B46FB62AB120E2B",
+    "white_hex_sha256": "6570F70B24755FDA5AF0B405699B7B716699F7F48D78F88C88CE623398CB869B",
+    "black_hex_sha256": "F007ECB859A859C9300BE0C8464A85EA46C970FC4E4F216FD860CA76E63E5694"
+  },
+  "white_result": {
+    "bytes": 5000,
+    "data_planes": 1,
+    "soft_reset_busy_asserted": true,
+    "refresh_complete": true,
+    "refresh_elapsed_ms": 1297,
+    "operator_selection": "失败",
+    "operator_note": "失败",
+    "physical_result": "not a deterministic solid-white frame"
+  },
+  "black_result": {
+    "bytes": 5000,
+    "data_planes": 1,
+    "soft_reset_busy_asserted": true,
+    "refresh_complete": true,
+    "refresh_elapsed_ms": 1298,
+    "operator_selection": "失败",
+    "operator_note": "黑白例子",
+    "physical_result": "black-white grain/noise, not a deterministic solid-black frame"
+  },
+  "interpretation": "The official single-plane A/B restored real BUSY transitions and proves that the digital reset/command path responds. Both physical frames still failed, so CEMP, expression rendering, menus, recording state, and the normal two-plane write are not the leading cause of the current grain. Refresh-voltage generation, the FTS02 analog network/P5 contacts, or the panel remains P0.",
+  "next_isolation": "With the black diagnostic still installed, connect the meter black lead to GND1 and red lead to PREVGL1, press physical RESET, and observe whether PREVGL becomes negative during the approximately 1.30 second full-refresh interval. Interpret it together with the prior PREVGH1 near-3.3-V observation; do not invent an exact target voltage absent a cited board value.",
+  "evidence": {
+    "white_raw_log": "docs/validation/companion-screen-ssd1681-official-full-white-20260714.raw.log",
+    "white_raw_log_sha256": "FA726B2D31656F97ACAAE491B3B869B351CB3DF0C93F7FBC4BB6B15CE8C62D39",
+    "white_operator": "docs/validation/companion-screen-ssd1681-official-full-white-operator-20260714.txt",
+    "white_operator_sha256": "476C7CC23E0E7DA8DEC75839DC9515C5CCBCFC073496E75694262917754F0C96",
+    "black_raw_log": "docs/validation/companion-screen-ssd1681-official-full-black-20260714.raw.log",
+    "black_raw_log_sha256": "316B330CD7F661CB84BBB3897ED4AD7BBBA6A6992F9ABBB1DA1B9286837BCFAF",
+    "black_operator": "docs/validation/companion-screen-ssd1681-official-full-black-operator-20260714.txt",
+    "black_operator_sha256": "EE906D8F49AC51D51EF8428CF7359AA66D937A17D4A90AB2E3A689A0017C843E",
+    "white_capture_summary": ".cache/validation/ssd1681-official-full-recovery-20260714/white/nucleo-serial-summary.json",
+    "black_capture_summary": ".cache/validation/ssd1681-official-full-recovery-20260714/black/nucleo-serial-summary.json"
+  }
+}

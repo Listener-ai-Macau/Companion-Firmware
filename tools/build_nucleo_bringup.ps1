@@ -46,6 +46,7 @@ param(
     [switch]$EpaperRefreshCadenceDiagnostic,
     [switch]$EpaperSsd1681VendorPartialDiagnostic,
     [switch]$EpaperSsd1681DirectGpioSpiDiagnostic,
+    [switch]$EpaperSsd1681OfficialFullDiagnostic,
     [switch]$EpaperSsd1681VerboseTrace,
     [ValidateScript({ $_ -eq -1 -or ($_ -ge 1 -and $_ -le 255) })]
     [int]$Ft6336TouchThreshold = -1,
@@ -198,7 +199,7 @@ $makeArgs = @("-C", $ProjectDir)
 if ($EpaperSsd1681VendorPartialDiagnostic -and $EpaperSsd1681DirectGpioSpiDiagnostic) {
     throw "Choose one SSD1681 A/B diagnostic at a time: vendor partial or direct GPIO SPI."
 }
-if ($Force -or $EpaperDailyTapDemo -or $EpaperDailyStrokeDemo -or $EpaperMaintenanceDiagnostic -or $EpaperRefreshCadenceDiagnostic -or $EpaperSsd1681VendorPartialDiagnostic -or $EpaperSsd1681DirectGpioSpiDiagnostic -or $EpaperSsd1681VerboseTrace -or $Ft6336TouchThreshold -ge 0 -or $EpaperProductExpressionDemo) {
+if ($Force -or $EpaperDailyTapDemo -or $EpaperDailyStrokeDemo -or $EpaperMaintenanceDiagnostic -or $EpaperRefreshCadenceDiagnostic -or $EpaperSsd1681VendorPartialDiagnostic -or $EpaperSsd1681DirectGpioSpiDiagnostic -or $EpaperSsd1681OfficialFullDiagnostic -or $EpaperSsd1681VerboseTrace -or $Ft6336TouchThreshold -ge 0 -or $EpaperProductExpressionDemo) {
     $makeArgs += "-B"
 }
 if ($OtaApp) {
@@ -371,6 +372,18 @@ if ($EpaperSsd1681DirectGpioSpiDiagnostic) {
         "TOUCH_VERBOSE_TRACE=1",
         "BUILD_DIR=build_direct_gpio_spi_diagnostic",
         "TARGET=Companion_Nucleo_WB55RG_DirectGpioSpiDiagnostic"
+    )
+}
+if ($EpaperSsd1681OfficialFullDiagnostic) {
+    if ($EpaperSsd1681DiagnosticPattern -notin @('white', 'black')) {
+        throw "Official SSD1681 full diagnostic requires -EpaperSsd1681DiagnosticPattern white or black."
+    }
+    $makeArgs += @(
+        "EPAPER_SSD1681_OFFICIAL_FULL_DIAGNOSTIC=1",
+        "EPAPER_SSD1681_VERBOSE_TRACE=1",
+        "TOUCH_VERBOSE_TRACE=1",
+        "BUILD_DIR=build_official_full_diagnostic_$EpaperSsd1681DiagnosticPattern",
+        "TARGET=Companion_Nucleo_WB55RG_OfficialFullDiagnostic_$EpaperSsd1681DiagnosticPattern"
     )
 }
 if ($EpaperProductExpressionDemo) {

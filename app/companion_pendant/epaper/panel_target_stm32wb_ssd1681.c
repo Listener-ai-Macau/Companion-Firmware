@@ -71,6 +71,9 @@
 #ifndef COMPANION_EPAPER_SSD1681_DIRECT_GPIO_SPI_DIAGNOSTIC
 #define COMPANION_EPAPER_SSD1681_DIRECT_GPIO_SPI_DIAGNOSTIC 0
 #endif
+#ifndef COMPANION_EPAPER_SSD1681_OFFICIAL_FULL_DIAGNOSTIC
+#define COMPANION_EPAPER_SSD1681_OFFICIAL_FULL_DIAGNOSTIC 0
+#endif
 #ifndef COMPANION_EPAPER_SSD1681_VERBOSE_TRACE
 #define COMPANION_EPAPER_SSD1681_VERBOSE_TRACE 0
 #endif
@@ -96,6 +99,15 @@
 #if COMPANION_EPAPER_SSD1681_DIRECT_GPIO_SPI_DIAGNOSTIC != 0 && \
     COMPANION_EPAPER_SSD1681_DIRECT_GPIO_SPI_DIAGNOSTIC != 1
 #error "SSD1681 direct GPIO SPI diagnostic must be 0 or 1"
+#endif
+#if COMPANION_EPAPER_SSD1681_OFFICIAL_FULL_DIAGNOSTIC != 0 && \
+    COMPANION_EPAPER_SSD1681_OFFICIAL_FULL_DIAGNOSTIC != 1
+#error "SSD1681 official full diagnostic must be 0 or 1"
+#endif
+#if COMPANION_EPAPER_SSD1681_OFFICIAL_FULL_DIAGNOSTIC != 0 && \
+    COMPANION_EPAPER_SSD1681_DIAGNOSTIC_PATTERN != 1u && \
+    COMPANION_EPAPER_SSD1681_DIAGNOSTIC_PATTERN != 2u
+#error "SSD1681 official full diagnostic requires a white or black pattern"
 #endif
 #if COMPANION_EPAPER_SSD1681_VERBOSE_TRACE != 0 && \
     COMPANION_EPAPER_SSD1681_VERBOSE_TRACE != 1
@@ -979,7 +991,10 @@ static comp_epaper_panel_result_t ssd1681_refresh(
     bool fast = selection.decision == COMP_EPAPER_REFRESH_DECISION_FAST;
     const bool vendor_sample_partial =
         partial && COMPANION_EPAPER_SSD1681_VENDOR_PARTIAL_DIAGNOSTIC != 0;
-    const uint8_t transfer_plane_count = vendor_sample_partial ? 1u : 2u;
+    const bool official_full_diagnostic =
+        !partial && COMPANION_EPAPER_SSD1681_OFFICIAL_FULL_DIAGNOSTIC != 0;
+    const uint8_t transfer_plane_count =
+        vendor_sample_partial || official_full_diagnostic ? 1u : 2u;
     bool controller_initialization_required = !s_controller_initialized || fast ||
                                              vendor_sample_partial;
     ssd1681_window_t window;
@@ -1099,11 +1114,21 @@ static comp_epaper_panel_result_t ssd1681_refresh(
          * transaction is known-good. No post-waveform RAM replay is needed. */
         baseline_written = display_refreshed;
     } else {
-        /* Full and maintenance paths seed both planes before their waveform. */
-        baseline_written = window_set && border_set &&
-                           ssd1681_write_plane_region(0x26u, s_frame, &window);
-        frame_written = baseline_written &&
-                        ssd1681_write_plane_region(0x24u, s_frame, &window);
+        if (official_full_diagnostic) {
+            /* Production-off recovery A/B: exactly match Good Display's
+             * normal full path, which writes 0x24 only before 0xF7. */
+            frame_written = window_set && border_set &&
+                            ssd1681_write_plane_region(0x24u, s_frame, &window);
+            baseline_written = frame_written;
+            SSD1681_VERBOSE_TRACE("[epaper] full_write_profile=good_display_official_0x24_only\r\n");
+        } else {
+            /* Product full and maintenance paths keep their accepted
+             * two-plane baseline behavior outside the recovery A/B. */
+            baseline_written = window_set && border_set &&
+                               ssd1681_write_plane_region(0x26u, s_frame, &window);
+            frame_written = baseline_written &&
+                            ssd1681_write_plane_region(0x24u, s_frame, &window);
+        }
         transfer_before_waveform_elapsed_ms =
             HAL_GetTick() - transfer_before_waveform_start_ms;
         display_refreshed = frame_written &&
