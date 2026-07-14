@@ -29,22 +29,6 @@ LEGACY_I2S_TUNING = REPO_ROOT / "docs" / "validation" / "companion-mic-wb55-sai-
 RECORDING_FSM_VERIFIER = REPO_ROOT / "tools" / "verify_recording_fsm_static.py"
 RECORDING_CACHE_VERIFIER = REPO_ROOT / "tools" / "verify_recording_cache_model.py"
 
-RECORDING_CHAIN = (
-    REPO_ROOT
-    / ".cache"
-    / "validation"
-    / "mic-fast2-20260710-060913"
-    / "companion-flash-recording-chain.json"
-)
-ASR_CHAIN = (
-    REPO_ROOT
-    / ".cache"
-    / "validation"
-    / "mic-fast2-20260710-060913-asr"
-    / "companion-recording-to-minutes.json"
-)
-
-
 def rel(path: pathlib.Path) -> str:
     try:
         return path.resolve().relative_to(REPO_ROOT).as_posix()
@@ -93,84 +77,8 @@ def extract_function(source: str, signature: str) -> str:
     return ""
 
 
-def operation_by_name(artifact: dict[str, Any], name: str) -> dict[str, Any]:
-    for operation in artifact.get("operations", []):
-        if isinstance(operation, dict) and operation.get("operation") == name:
-            return operation
-    return {}
-
-
 def build_fixture(errors: list[str]) -> dict[str, Any]:
-    recording = read_json(RECORDING_CHAIN, errors)
-    asr = read_json(ASR_CHAIN, errors)
-    recording_list = operation_by_name(recording, "recording_list_after_stop").get("recording_list", {})
-    entries = recording_list.get("entries", []) if isinstance(recording_list, dict) else []
-    entry = entries[0] if entries else {}
-    pull = operation_by_name(recording, "recording_pull")
-    quality = operation_by_name(recording, "audio_quality")
-    asr_result = asr.get("asr", {})
-    minutes = asr.get("minutes", {})
-    transcript = minutes.get("transcript", {}) if isinstance(minutes, dict) else {}
-    return {
-        "schema_id": SCHEMA_ID,
-        "status": "PASS",
-        "target": "NUCLEO-WB55RG",
-        "sound_source": "pc_speaker_tts",
-        "microphone_path": {
-            "source_family": "SPH0655-compatible PDM digital MEMS",
-            "listener_reference": "Listener active N16R8 build uses CONFIG_AUDIO_CAPTURE_MIC_SPH0655_PDM and ESP-IDF I2S PDM2PCM.",
-            "wb55_ingress": "SAI1 Block A raw-PDM DMA",
-            "portable_output": "PCM16 mono 16 kHz, 160 samples per frame",
-            "decode": {
-                "bit_order": "MSB",
-                "filter": "CIC3",
-                "decimation": 96,
-                "mckdiv": 31,
-                "preamp_shift": 3,
-                "stage_blocks": 450,
-                "build_optimization": "O2",
-            },
-            "wba_rule": "Do not copy WB55 raw-SAI timing into WBA; keep the PCM16/16k mono contract and add a target-native CubeWBA mic adapter.",
-        },
-        "source_artifacts": {
-            "recording_chain": rel(RECORDING_CHAIN),
-            "asr_chain": rel(ASR_CHAIN),
-            "legacy_i2s_tuning_redirect": rel(LEGACY_I2S_TUNING),
-        },
-        "recording_evidence": {
-            "status": recording.get("status"),
-            "recording_id": entry.get("recording_id"),
-            "source_mode": entry.get("source_mode"),
-            "total_length": entry.get("total_length"),
-            "duration_ms": entry.get("duration_ms"),
-            "host_sha256": pull.get("host_sha256"),
-            "device_final_sha256": pull.get("device_final_sha256"),
-            "missing_packets": pull.get("missing_packets", 0),
-            "wav_path": recording.get("artifacts", {}).get("wav_path"),
-            "pcm_path": recording.get("artifacts", {}).get("pcm_path"),
-            "audio_quality": {
-                "status": quality.get("status"),
-                "rms": quality.get("rms"),
-                "peak_abs": quality.get("peak"),
-                "clipping_ratio": quality.get("clipping_ratio"),
-                "zero_ratio": quality.get("zero_ratio"),
-            },
-        },
-        "asr_evidence": {
-            "status": asr.get("status"),
-            "provider": asr_result.get("provider"),
-            "pcm_bytes": asr_result.get("pcm_bytes"),
-            "missing_packets": asr_result.get("missing_packets"),
-            "transcript": transcript.get("text"),
-            "expected_phrase": "你好，小伴录音测试。",
-            "known_confusion": None,
-        },
-        "validation_commands": [
-            "python .\\tools\\verify_companion_mic_wb55_pdm_baseline.py",
-            "python .\\tools\\verify_recording_fsm_static.py",
-            "python .\\tools\\verify_recording_cache_model.py",
-        ],
-    }
+    return read_json(REPO_ROOT / DEFAULT_FIXTURE, errors)
 
 
 def check_code_contract(errors: list[str]) -> None:
@@ -337,6 +245,25 @@ def check_fixture_data(data: dict[str, Any], errors: list[str]) -> None:
     require(asr.get("pcm_bytes") == 122880, "ASR PCM byte count drifted", errors)
     require(asr.get("missing_packets") == 0, "ASR evidence must not miss packets", errors)
     require("小伴录音测试" in str(asr.get("transcript", "")), "ASR transcript drifted from recorded evidence", errors)
+    retention = data.get("evidence_retention", {})
+    require(retention.get("status") == "DURABLE_SUMMARY", "baseline evidence retention status drifted", errors)
+    require(retention.get("raw_cache_required") is False, "baseline verifier must not require worktree-local cache", errors)
+    sources = data.get("source_artifacts", {})
+    require(
+        sources.get("verification_source") == DEFAULT_FIXTURE.as_posix(),
+        "baseline verification source must be the tracked durable snapshot",
+        errors,
+    )
+    require(
+        str(sources.get("historical_recording_chain", "")).startswith(".cache/validation/"),
+        "historical recording provenance path is missing",
+        errors,
+    )
+    require(
+        str(sources.get("historical_asr_chain", "")).startswith(".cache/validation/"),
+        "historical ASR provenance path is missing",
+        errors,
+    )
     for command in data.get("validation_commands", []):
         if "\\tools\\" in str(command):
             tool = str(command).split("\\tools\\", 1)[1].split()[0]
@@ -355,7 +282,7 @@ def check_fixture_file(path: pathlib.Path, expected: dict[str, Any], errors: lis
 def parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--fixture", type=pathlib.Path, default=DEFAULT_FIXTURE)
-    parser.add_argument("--write-fixture", action="store_true", help="Update the deterministic WB55 PDM baseline fixture.")
+    parser.add_argument("--write-fixture", action="store_true", help="Copy the durable WB55 PDM baseline to a custom fixture path.")
     return parser.parse_args(argv)
 
 
@@ -368,8 +295,7 @@ def main(argv: list[str]) -> int:
         MAKEFILE,
         MICROPHONE_C,
         MICROPHONE_H,
-        RECORDING_CHAIN,
-        ASR_CHAIN,
+        REPO_ROOT / DEFAULT_FIXTURE,
         LEGACY_I2S_TUNING,
         RECORDING_FSM_VERIFIER,
         RECORDING_CACHE_VERIFIER,

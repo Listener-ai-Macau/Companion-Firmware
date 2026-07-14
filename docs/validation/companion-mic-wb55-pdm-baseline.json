@@ -8,6 +8,11 @@
     "status": "PASS",
     "transcript": "\u4f60\u597d\uff0c\u5c0f\u4f34\u5f55\u97f3\u6d4b\u8bd5\u3002"
   },
+  "evidence_retention": {
+    "status": "DURABLE_SUMMARY",
+    "raw_cache_required": false,
+    "note": "Accepted measurements, PCM hash equality, packet count, audio quality, and ASR transcript are retained in this tracked snapshot. Historical .cache paths document provenance but are not verifier dependencies."
+  },
   "microphone_path": {
     "decode": {
       "bit_order": "MSB",
@@ -46,9 +51,10 @@
   "schema_id": "companion.mic.wb55_pdm_baseline.v1",
   "sound_source": "pc_speaker_tts",
   "source_artifacts": {
-    "asr_chain": ".cache/validation/mic-fast2-20260710-060913-asr/companion-recording-to-minutes.json",
+    "historical_asr_chain": ".cache/validation/mic-fast2-20260710-060913-asr/companion-recording-to-minutes.json",
+    "historical_recording_chain": ".cache/validation/mic-fast2-20260710-060913/companion-flash-recording-chain.json",
     "legacy_i2s_tuning_redirect": "docs/validation/companion-mic-wb55-sai-i2s-tuning.json",
-    "recording_chain": ".cache/validation/mic-fast2-20260710-060913/companion-flash-recording-chain.json"
+    "verification_source": "docs/validation/companion-mic-wb55-pdm-baseline.json"
   },
   "status": "PASS",
   "target": "NUCLEO-WB55RG",
