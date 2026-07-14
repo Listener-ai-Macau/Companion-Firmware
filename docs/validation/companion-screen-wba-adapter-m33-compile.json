@@ -1,0 +1,65 @@
+{
+  "adapter_sources": [
+    "app/companion_pendant/epaper/panel_target_stm32wba.c",
+    "app/companion_pendant/epaper/screen_scheduler_stm32wba.c",
+    "app/companion_pendant/epaper/screen_gatt_stm32wba.c",
+    "app/companion_pendant/epaper/screen_assets_stm32wba.c",
+    "app/companion_pendant/touch/touch_target_stm32wba_ft6336.c",
+    "app/companion_pendant/power/power_target_stm32wba.c",
+    "app/companion_pendant/epaper/pet_behavior_user_data_stm32wba.c"
+  ],
+  "claims": {
+    "all_adapter_objects_must_compile": true,
+    "cube_wba_project_claimed": false,
+    "real_panel_refresh_claimed": false,
+    "wba_hardware_parity_claimed": false
+  },
+  "compiler_contract": {
+    "compile_only": true,
+    "dumpmachine": "arm-none-eabi",
+    "executable": "arm-none-eabi-gcc",
+    "flags": [
+      "-std=c11",
+      "-mcpu=cortex-m33",
+      "-mthumb",
+      "-mfloat-abi=soft",
+      "-ffreestanding",
+      "-fno-common",
+      "-ffunction-sections",
+      "-fdata-sections",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-Wconversion",
+      "-Wshadow",
+      "-Wdouble-promotion",
+      "-Wformat=2",
+      "-pedantic"
+    ],
+    "warnings_are_errors": true
+  },
+  "include_boundaries": [
+    "app/companion_pendant/epaper",
+    "app/companion_pendant/touch",
+    "app/companion_pendant/power"
+  ],
+  "purpose": "Require every callback-only WBA screen, touch, power, asset, and pet-memory adapter to compile as strict freestanding Cortex-M33 C before a CubeWBA project exists.",
+  "required_future_evidence": [
+    "A separate selected-target CubeWBA IOC/project and build wrapper.",
+    "WBA55 or WBA65 target pin, clock, DMA, BLE, storage, and scheduler glue.",
+    "Real panel, FT6336, LSE/RTC, BLE sleep, current, and visual evidence."
+  ],
+  "schema_id": "companion.pendant.wba_adapter_m33_compile.v1",
+  "status": "PASS_STATIC_M33_COMPILE_CONTRACT",
+  "targets": {
+    "architecture": "Arm Cortex-M33",
+    "expanded_target": "WBA65",
+    "floating_point_abi": "soft shared baseline",
+    "shared_baseline": "WBA55"
+  },
+  "validation_commands": [
+    "python .\\tools\\verify_wba_adapter_m33_compile.py",
+    "python .\\tools\\verify_wba_adapter_m33_compile.py --self-test",
+    "python .\\tools\\verify_expression_wba_portability.py"
+  ]
+}

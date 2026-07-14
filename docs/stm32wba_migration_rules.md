@@ -665,6 +665,13 @@ WB55-specific today:
   `tools/init_expression_wba_port_scaffold.py`, stays `DRAFT_PRE_PORT`, and
   lists the first target artifacts a WBA branch must create before parity can
   be claimed.
+- The WBA adapter M33 compile gate is
+  `tools/verify_wba_adapter_m33_compile.py`. It uses `arm-none-eabi-gcc` with a
+  strict freestanding Cortex-M33/WBA55-safe baseline and compiles the panel,
+  scheduler, GATT, external-assets, FT6336, power, and pet-memory callback
+  adapters as real objects. This closes the gap between source-token checks
+  and a target compiler, but it is still pre-port evidence: it does not claim
+  a CubeWBA project, selected pins/peripherals, or WBA55/WBA65 hardware parity.
 
 Future WBA work:
 
@@ -677,6 +684,10 @@ Future WBA work:
 - Keep `python .\tools\verify_expression_wba_portability.py` passing against
   `docs/validation/companion-screen-wba-port-contract.json` while adding the
   WBA project.
+- Keep `python .\tools\verify_wba_adapter_m33_compile.py` and its fail-closed
+  `--self-test` passing whenever a WBA callback API, shared header, compiler
+  option, or adapter source changes. A source-token PASS cannot replace this
+  Cortex-M33 object compile.
 - Keep `python .\tools\verify_expression_target_capabilities.py` passing before
   using any WBA65-only resource or changing a shared queue, payload, BLE,
   diagnostic, or panel evidence limit.
