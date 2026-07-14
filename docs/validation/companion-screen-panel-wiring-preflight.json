@@ -40,6 +40,7 @@
     "panel_hardware_acceptance_plan": "docs/validation/companion-screen-panel-hardware-acceptance-plan.json",
     "panel_hardware_gate": "docs/validation/companion-screen-panel-hardware-gate.json",
     "panel_hardware_recovery_gate": "docs/validation/companion-screen-wb55-hardware-recovery-gate.json",
+    "physical_checklist": "docs/companion_devboard_physical_checklist.md",
     "screen_acceptance": "docs/companion_screen_expression_system.md",
     "verifier": "tools/verify_expression_panel_wiring_preflight.py",
     "wba_rules": "docs/stm32wba_migration_rules.md"
@@ -52,10 +53,79 @@
     "python .\\tools\\verify_expression_panel_hardware_acceptance_plan.py",
     "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1"
   ],
+  "wb55_current_bench_power": {
+    "ground": {
+      "connector": "CN7-19",
+      "fts02": "P8 GND",
+      "rail": "GND"
+    },
+    "logic_3v3": {
+      "connector": "CN7-12",
+      "fts02": "P8 3.3V",
+      "rail": "3V3 / IOREF"
+    }
+  },
+  "wb55_devboard_controls": {
+    "busy": {
+      "connector": "CN7-3",
+      "fts02": "P9 T4",
+      "label": "EPAPER_BUSY",
+      "pin": "PC5",
+      "signal": "GPIO_Input"
+    },
+    "cs": {
+      "connector": "CN10-13",
+      "fts02": "P9 T7",
+      "label": "EPAPER_CS",
+      "pin": "PA6",
+      "signal": "GPIO_Output"
+    },
+    "dc": {
+      "connector": "CN10-22",
+      "fts02": "P9 T6",
+      "label": "EPAPER_DC",
+      "pin": "PB0",
+      "signal": "GPIO_Output"
+    },
+    "reset": {
+      "connector": "CN10-24",
+      "fts02": "P9 T5",
+      "label": "EPAPER_RESET",
+      "pin": "PB1",
+      "signal": "GPIO_Output"
+    }
+  },
+  "wb55_devboard_touch": {
+    "interrupt": {
+      "connector": "CN10-33",
+      "fts02": "P10 A0",
+      "label": "TOUCH_INT",
+      "pin": "PC6",
+      "signal": "GPXTI6"
+    },
+    "optional_reset": {
+      "connected": false,
+      "connector": "CN10-29",
+      "fts02": "P10 A3",
+      "pin": "PC10"
+    },
+    "scl": {
+      "connector": "CN7-28",
+      "fts02": "P10 A4",
+      "pin": "PC0",
+      "signal": "I2C3_SCL"
+    },
+    "sda": {
+      "connector": "CN7-1",
+      "fts02": "P10 A5",
+      "pin": "PB11",
+      "signal": "I2C3_SDA"
+    }
+  },
   "wb55_devboard_transport": {
     "baudrate": "16.0 MBits/s",
     "chip_select_candidate": {
-      "label": "SPI2_CS",
+      "label": "EPAPER_CS",
       "pin": "PA6",
       "signal": "GPIO_Output"
     },

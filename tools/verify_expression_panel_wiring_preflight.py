@@ -23,6 +23,7 @@ BRINGUP_README = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "RE
 SCREEN_DOC = REPO_ROOT / "docs" / "companion_screen_expression_system.md"
 WBA_RULES = REPO_ROOT / "docs" / "stm32wba_migration_rules.md"
 EPAPER_README = REPO_ROOT / "app" / "companion_pendant" / "epaper" / "README.md"
+PHYSICAL_CHECKLIST = REPO_ROOT / "docs" / "companion_devboard_physical_checklist.md"
 
 SPI2_EXPECTED = {
     "instance": "SPI2",
@@ -34,10 +35,29 @@ SPI2_EXPECTED = {
     "miso_signal": "SPI2_MISO",
     "cs_pin": "PA6",
     "cs_signal": "GPIO_Output",
-    "cs_label": "SPI2_CS",
+    "cs_label": "EPAPER_CS",
     "mode": "SPI_MODE_MASTER",
     "direction": "SPI_DIRECTION_2LINES",
     "baudrate": "16.0 MBits/s",
+}
+
+PANEL_CONTROL_EXPECTED = {
+    "cs": {"fts02": "P9 T7", "connector": "CN10-13", "pin": "PA6", "signal": "GPIO_Output", "label": "EPAPER_CS"},
+    "dc": {"fts02": "P9 T6", "connector": "CN10-22", "pin": "PB0", "signal": "GPIO_Output", "label": "EPAPER_DC"},
+    "reset": {"fts02": "P9 T5", "connector": "CN10-24", "pin": "PB1", "signal": "GPIO_Output", "label": "EPAPER_RESET"},
+    "busy": {"fts02": "P9 T4", "connector": "CN7-3", "pin": "PC5", "signal": "GPIO_Input", "label": "EPAPER_BUSY"},
+}
+
+TOUCH_EXPECTED = {
+    "scl": {"fts02": "P10 A4", "connector": "CN7-28", "pin": "PC0", "signal": "I2C3_SCL"},
+    "sda": {"fts02": "P10 A5", "connector": "CN7-1", "pin": "PB11", "signal": "I2C3_SDA"},
+    "interrupt": {"fts02": "P10 A0", "connector": "CN10-33", "pin": "PC6", "signal": "GPXTI6", "label": "TOUCH_INT"},
+    "optional_reset": {"fts02": "P10 A3", "connector": "CN10-29", "pin": "PC10", "connected": False},
+}
+
+CURRENT_BENCH_POWER = {
+    "logic_3v3": {"fts02": "P8 3.3V", "connector": "CN7-12", "rail": "3V3 / IOREF"},
+    "ground": {"fts02": "P8 GND", "connector": "CN7-19", "rail": "GND"},
 }
 
 VERIFIED_GATE_FACTS = {
@@ -107,6 +127,7 @@ def build_fixture() -> dict[str, Any]:
             "screen_acceptance": rel(SCREEN_DOC),
             "wba_rules": rel(WBA_RULES),
             "epaper_readme": rel(EPAPER_README),
+            "physical_checklist": rel(PHYSICAL_CHECKLIST),
             "verifier": "tools/verify_expression_panel_wiring_preflight.py",
         },
         "wb55_devboard_transport": {
@@ -135,6 +156,9 @@ def build_fixture() -> dict[str, Any]:
             "direction": values.get("SPI2.Direction"),
             "baudrate": values.get("SPI2.CalculateBaudRate"),
         },
+        "wb55_devboard_controls": PANEL_CONTROL_EXPECTED,
+        "wb55_devboard_touch": TOUCH_EXPECTED,
+        "wb55_current_bench_power": CURRENT_BENCH_POWER,
         "historical_verified_panel_facts": [
             "e-paper controller model",
             "DC pin",
@@ -185,7 +209,18 @@ def check_ioc(errors: list[str]) -> None:
         require(values.get(f"{pin}.Mode") == "Full_Duplex_Master", f"devboard IOC {pin} must stay SPI2 full-duplex master", errors)
     cs_pin = SPI2_EXPECTED["cs_pin"]
     require(values.get(f"{cs_pin}.Signal") == SPI2_EXPECTED["cs_signal"], "devboard IOC PA6 must stay GPIO output for SPI2 CS", errors)
-    require(values.get(f"{cs_pin}.GPIO_Label") == SPI2_EXPECTED["cs_label"], "devboard IOC PA6 must keep SPI2_CS label", errors)
+    require(values.get(f"{cs_pin}.GPIO_Label") == SPI2_EXPECTED["cs_label"], "devboard IOC PA6 must keep EPAPER_CS label", errors)
+    for role, expected in PANEL_CONTROL_EXPECTED.items():
+        pin = expected["pin"]
+        require(values.get(f"{pin}.Signal") == expected["signal"], f"devboard IOC {role} pin {pin} signal drifted", errors)
+        require(values.get(f"{pin}.GPIO_Label") == expected["label"], f"devboard IOC {role} pin {pin} label drifted", errors)
+    for role in ["scl", "sda", "interrupt"]:
+        expected = TOUCH_EXPECTED[role]
+        pin = expected["pin"]
+        require(values.get(f"{pin}.Signal") == expected["signal"], f"devboard IOC touch {role} pin {pin} drifted", errors)
+        if "label" in expected:
+            require(values.get(f"{pin}.GPIO_Label") == expected["label"], f"devboard IOC touch {role} label drifted", errors)
+    require("PC10.Signal" not in values, "optional touch reset PC10 must remain unconnected in current IOC", errors)
 
 
 def check_devboard_import(errors: list[str]) -> None:
@@ -199,6 +234,13 @@ def check_devboard_import(errors: list[str]) -> None:
     require(pins.get("PC1.Signal") == "SPI2_MOSI", "devboard IOC import fixture missing SPI2 MOSI", errors)
     require(pins.get("PC2.Signal") == "SPI2_MISO", "devboard IOC import fixture missing SPI2 MISO", errors)
     require(pins.get("PA6.Signal") == "GPIO_Output", "devboard IOC import fixture missing PA6 GPIO CS candidate", errors)
+    overrides = data.get("devboard_ioc", {}).get("hardware_summary", {}).get("allowed_repo_overrides", {})
+    for key, expected in {
+        "PA6.GPIO_Label": "EPAPER_CS",
+        "PB0.GPIO_Label": "EPAPER_DC",
+        "PB1.GPIO_Label": "EPAPER_RESET",
+    }.items():
+        require(overrides.get(key, {}).get("repo") == expected, f"devboard IOC import fixture missing {expected} override", errors)
 
 
 def check_panel_gate(errors: list[str]) -> None:
@@ -231,6 +273,7 @@ def check_docs(errors: list[str]) -> None:
     wba_rules = " ".join(read_text(WBA_RULES, errors).split()).lower()
     readme = " ".join(read_text(EPAPER_README, errors).split()).lower()
     bringup_readme = " ".join(read_text(BRINGUP_README, errors).split()).lower()
+    physical_checklist = " ".join(read_text(PHYSICAL_CHECKLIST, errors).split()).lower()
     for token in [
         "panel wiring preflight",
         "companion-screen-panel-wiring-preflight.json",
@@ -258,6 +301,13 @@ def check_docs(errors: list[str]) -> None:
         "verify_devboard_ioc_import.py",
     ]:
         require(token in bringup_readme, f"bringup README missing panel wiring source anchor {token}", errors)
+    for token in [
+        "`p8 3.3v` | `cn7-12` | `3v3 / ioref`",
+        "`p9 t4` | `cn7-3` | `pc5`",
+        "`p10 a0` | `cn10-33` | `pc6`",
+        "`p10 a3`（可选，不接） | `cn10-29` | `pc10`",
+    ]:
+        require(token in physical_checklist, f"physical checklist missing current wiring anchor {token}", errors)
 
 
 def check_fixture_data(data: dict[str, Any], errors: list[str]) -> None:
@@ -269,7 +319,10 @@ def check_fixture_data(data: dict[str, Any], errors: list[str]) -> None:
     require(transport.get("mosi", {}).get("pin") == "PC1", "wiring preflight fixture MOSI pin drifted", errors)
     require(transport.get("miso", {}).get("pin") == "PC2", "wiring preflight fixture MISO pin drifted", errors)
     require(transport.get("chip_select_candidate", {}).get("pin") == "PA6", "wiring preflight fixture CS pin drifted", errors)
-    require(transport.get("chip_select_candidate", {}).get("label") == "SPI2_CS", "wiring preflight fixture CS label drifted", errors)
+    require(transport.get("chip_select_candidate", {}).get("label") == "EPAPER_CS", "wiring preflight fixture CS label drifted", errors)
+    require(data.get("wb55_devboard_controls") == PANEL_CONTROL_EXPECTED, "wiring preflight control map drifted", errors)
+    require(data.get("wb55_devboard_touch") == TOUCH_EXPECTED, "wiring preflight touch map drifted", errors)
+    require(data.get("wb55_current_bench_power") == CURRENT_BENCH_POWER, "wiring preflight current bench power map drifted", errors)
     gate = data.get("hardware_gate", {})
     require(gate.get("current_status") == "DEFERRED_HARDWARE_FTS02_BOOST", "wiring preflight fixture must show the current FTS02 blocker", errors)
     require(gate.get("current_real_refresh_claimed") is False, "wiring preflight fixture must not claim current refresh", errors)

@@ -31,6 +31,20 @@
       "PC6.GPIO_PuPd": "GPIO_PULLUP",
       "PC6.Locked": "true",
       "PC6.Signal": "GPXTI6"
+    },
+    "repo_overrides": {
+      "PA6.GPIO_Label": {
+        "captured": "SPI2_CS",
+        "repo": "EPAPER_CS"
+      },
+      "PB0.GPIO_Label": {
+        "captured": "LD2 [Green Led]",
+        "repo": "EPAPER_DC"
+      },
+      "PB1.GPIO_Label": {
+        "captured": "LD3 [Red Led]",
+        "repo": "EPAPER_RESET"
+      }
     }
   },
   "captured_external_ioc": {
@@ -39,6 +53,12 @@
     "path": "C:/Users/Billy/Desktop/STM32.ioc",
     "repo_comparison_sha256": "5d91cbf604f2a23e3250bf3cc7d2b5f8bf4cbda4ec461e5b39896227b62a61de",
     "sha256": "a2b8eb37321661d4c8e85c36c4c6b717fa58ca93391e0071b5e37e32fc265c53"
+  },
+  "desktop_export": {
+    "byte_identical_to_devboard_ioc": true,
+    "canonical_text_sha256": "8c561b5374d71edc09096373a4d43c2b926a6f14520ec55f4214a37ed6df0f33",
+    "default_filename": "Companion_NUCLEO_WB55RG_Current.ioc",
+    "hash_mode": "canonical_text_lf"
   },
   "devboard_ioc": {
     "compatible_sha256": "5d91cbf604f2a23e3250bf3cc7d2b5f8bf4cbda4ec461e5b39896227b62a61de",
@@ -59,6 +79,20 @@
         "PC6.GPIO_PuPd": "GPIO_PULLUP",
         "PC6.Locked": "true",
         "PC6.Signal": "GPXTI6"
+      },
+      "allowed_repo_overrides": {
+        "PA6.GPIO_Label": {
+          "captured": "SPI2_CS",
+          "repo": "EPAPER_CS"
+        },
+        "PB0.GPIO_Label": {
+          "captured": "LD2 [Green Led]",
+          "repo": "EPAPER_DC"
+        },
+        "PB1.GPIO_Label": {
+          "captured": "LD3 [Red Led]",
+          "repo": "EPAPER_RESET"
+        }
       },
       "ip_set": [
         "I2C3",
@@ -99,7 +133,7 @@
         "PC6.Signal": "GPXTI6"
       }
     },
-    "sha256": "c2241f997da0bd48f86892c01952d6f138529e6993911384fa04e8893aba8b05"
+    "sha256": "8c561b5374d71edc09096373a4d43c2b926a6f14520ec55f4214a37ed6df0f33"
   },
   "product_ioc_guard": {
     "mcu": "STM32WB55CEUx",
@@ -113,7 +147,9 @@
     "bringup_readme": "cubeide/Companion_Nucleo_WB55RG_Bringup/README.md",
     "bringup_steps": "docs/bringup_steps.md",
     "captured_external_ioc": "C:/Users/Billy/Desktop/STM32.ioc",
+    "desktop_exporter": "tools/export_devboard_ioc.ps1",
     "devboard_ioc": "cubeide/Companion_Nucleo_WB55RG/Companion_Nucleo_WB55RG.ioc",
+    "physical_checklist": "docs/companion_devboard_physical_checklist.md",
     "product_ioc": "Companion_Pendant.ioc",
     "verifier": "tools/verify_devboard_ioc_import.py",
     "workflow_doc": "docs/codex_development_workflow.md"
@@ -121,6 +157,7 @@
   "status": "PASS",
   "validation_commands": [
     "python .\\tools\\verify_devboard_ioc_import.py",
+    "pwsh -NoProfile -File .\\tools\\export_devboard_ioc.ps1 -CheckOnly",
     "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1"
   ]
 }
