@@ -35,6 +35,10 @@ NORMAL_RESTORE = (
     ROOT
     / "docs/validation/companion-screen-normal-restore-after-black-20260714.json"
 )
+RECOVERY_RUNNER = (
+    ROOT
+    / "docs/validation/companion-screen-wb55-hardware-recovery-runner.json"
+)
 SCHEMA_ID = "companion.screen.wb55_hardware_recovery_gate.v1"
 
 
@@ -59,6 +63,7 @@ def validate_sources(errors: list[str]) -> dict[str, dict[str, Any]]:
         VOLTAGE_PROBE,
         VOLTAGE_OPERATOR,
         NORMAL_RESTORE,
+        RECOVERY_RUNNER,
     ):
         require(path.exists(), f"missing source {rel(path)}", errors)
     if errors:
@@ -70,6 +75,7 @@ def validate_sources(errors: list[str]) -> dict[str, dict[str, Any]]:
     voltage = load_json(VOLTAGE_PROBE)
     operator = load_json(VOLTAGE_OPERATOR)
     normal = load_json(NORMAL_RESTORE)
+    recovery_runner = load_json(RECOVERY_RUNNER)
 
     for token in (
         "COMP-REQ-034",
@@ -140,11 +146,23 @@ def validate_sources(errors: list[str]) -> dict[str, dict[str, Any]]:
         "normal expression recovery must remain NO_GO",
         errors,
     )
+    require(
+        recovery_runner.get("status") == "PASS_MACHINE_PREFLIGHT",
+        "staged FTS02 recovery runner preflight must pass",
+        errors,
+    )
+    require(
+        recovery_runner.get("claim_scope")
+        == "static_and_stubbed_recovery_no_hardware_claim",
+        "staged recovery runner must not claim current hardware recovery",
+        errors,
+    )
     return {
         "official": official,
         "voltage": voltage,
         "operator": operator,
         "normal": normal,
+        "recovery_runner": recovery_runner,
     }
 
 
@@ -153,6 +171,7 @@ def build_contract(sources: dict[str, dict[str, Any]]) -> dict[str, Any]:
     voltage = sources.get("voltage", {})
     measurement = voltage.get("measurement_result", {})
     normal = sources.get("normal", {})
+    recovery_runner = sources.get("recovery_runner", {})
     return {
         "schema_id": SCHEMA_ID,
         "gate_id": "wb55_real_panel_refresh",
@@ -181,10 +200,19 @@ def build_contract(sources: dict[str, dict[str, Any]]) -> dict[str, Any]:
         "recovery_order": [
             "Replace or cross-swap ESP32-FTS02 before replacing the panel module.",
             "Keep P3 at 2.2, fully latch the 24-pin e-paper FPC in P5, and verify 3.3 V logic power and common ground.",
-            "Under the Companion-WB55 workflow lock, rerun the official one-plane white diagnostic and then the black diagnostic while capturing BUSY.",
+            "Under the Companion-WB55 workflow lock, run the staged White diagnostic, record one focused visible result, then repeat for Black.",
             "If either frame fails, measure PREVGH1 and PREVGL1 during the verified refresh window and stop before expression/menu changes.",
-            "After solid white and black pass, restore normal firmware and prove the current expression, one partial transition, touch, and one maintenance boundary.",
+            "After solid white and black pass, run RestoreNormal, then prove the current expression, one partial transition, touch, and one maintenance boundary.",
         ],
+        "recovery_runner": {
+            "status": recovery_runner.get("status"),
+            "claim_scope": recovery_runner.get("claim_scope"),
+            "runner": recovery_runner.get("runner"),
+            "parser": recovery_runner.get("parser"),
+            "stage_order": ["white", "black", "restorenormal"],
+            "operator_sequence": recovery_runner.get("operator_sequence", []),
+            "machine_pass_is_panel_acceptance": False,
+        },
         "acceptance_criteria": {
             "official_white_solid_and_deterministic": False,
             "official_black_solid_and_deterministic": False,
@@ -216,6 +244,7 @@ def build_contract(sources: dict[str, dict[str, Any]]) -> dict[str, Any]:
             "voltage_probe": rel(VOLTAGE_PROBE),
             "voltage_operator_review": rel(VOLTAGE_OPERATOR),
             "normal_restore": rel(NORMAL_RESTORE),
+            "staged_recovery_runner": rel(RECOVERY_RUNNER),
         },
         "wba_impact": (
             "Keep this failure target-local. WBA55/WBA65 reuse portable screen, "
@@ -224,6 +253,7 @@ def build_contract(sources: dict[str, dict[str, Any]]) -> dict[str, Any]:
         ),
         "validation_commands": [
             "python .\\tools\\verify_wb55_screen_hardware_recovery_gate.py",
+            "python .\\tools\\verify_wb55_screen_hardware_recovery_runner.py",
             "python .\\tools\\verify_expression_acceptance_index.py",
             "python .\\tools\\verify_companion_screen_goal_audit.py",
         ],
@@ -262,6 +292,22 @@ def check_contract(contract: dict[str, Any], errors: list[str]) -> None:
     require(
         len(contract.get("missing_hardware_facts", [])) == 4,
         "hardware gate must list four concrete missing facts",
+        errors,
+    )
+    runner = contract.get("recovery_runner", {})
+    require(
+        runner.get("status") == "PASS_MACHINE_PREFLIGHT",
+        "hardware gate must link the staged recovery runner",
+        errors,
+    )
+    require(
+        runner.get("stage_order") == ["white", "black", "restorenormal"],
+        "hardware recovery stage order drifted",
+        errors,
+    )
+    require(
+        runner.get("machine_pass_is_panel_acceptance") is False,
+        "machine recovery preflight must not claim panel acceptance",
         errors,
     )
 

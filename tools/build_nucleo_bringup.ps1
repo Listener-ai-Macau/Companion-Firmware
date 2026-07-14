@@ -379,6 +379,7 @@ if ($EpaperSsd1681OfficialFullDiagnostic) {
         throw "Official SSD1681 full diagnostic requires -EpaperSsd1681DiagnosticPattern white or black."
     }
     $makeArgs += @(
+        "EPAPER_SSD1681_BRINGUP=1",
         "EPAPER_SSD1681_OFFICIAL_FULL_DIAGNOSTIC=1",
         "EPAPER_SSD1681_VERBOSE_TRACE=1",
         "TOUCH_VERBOSE_TRACE=1",

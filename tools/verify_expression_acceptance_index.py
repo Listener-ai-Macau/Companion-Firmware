@@ -2087,6 +2087,9 @@ def build_index() -> dict[str, Any]:
             "Historical GDEY0154D67-T03 refresh observations are retained as context, but the current panel is not accepted: official one-plane white and black transfers now complete with BUSY while both physical frames fail, PREVGH1 remains near 3.3 V, PREVGL1 remains near 4.2 mV, and the panel stays black-white grain. Replace or cross-swap FTS02, re-prove both refresh rails and deterministic solid frames, then reaccept the normal expression, partial transition, touch response, and maintenance boundary.",
             [
                 "tools/verify_wb55_screen_hardware_recovery_gate.py",
+                "tools/verify_wb55_screen_hardware_recovery_runner.py",
+                "tools/verify_wb55_official_full_diagnostic_log.py",
+                "tools/run_wb55_screen_hardware_recovery.ps1",
                 "app/companion_pendant/epaper/panel_adapter.h",
                 "app/companion_pendant/epaper/panel_adapter.c",
                 "app/companion_pendant/epaper/panel_target_stm32wb.h",
@@ -2103,8 +2106,10 @@ def build_index() -> dict[str, Any]:
                 "docs/validation/companion-screen-ssd1681-voltage-rails-operator-20260714.json",
                 "docs/validation/companion-screen-normal-restore-after-black-20260714.json",
                 "docs/validation/companion-screen-wb55-hardware-recovery-gate.json",
+                "docs/validation/companion-screen-wb55-hardware-recovery-runner.json",
             ],
             [
+                "python .\\tools\\verify_wb55_screen_hardware_recovery_runner.py",
                 "python .\\tools\\verify_wb55_screen_hardware_recovery_gate.py",
                 "python .\\tools\\verify_expression_panel_gate.py",
                 "python .\\tools\\verify_expression_panel_target_stm32wb.py",

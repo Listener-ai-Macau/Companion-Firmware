@@ -1,0 +1,112 @@
+{
+  "claim_scope": "static_and_stubbed_recovery_no_hardware_claim",
+  "diagnostic_image_contract": {
+    "build_wrapper": "tools/build_nucleo_bringup.ps1",
+    "official_mode_enables_single_plane_path": true,
+    "official_mode_enables_ssd1681_driver": true,
+    "panel_target": "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
+    "runtime_marker_records_pattern_and_official_path": true
+  },
+  "execute_without_lock_negative": {
+    "refused_before_hardware": true,
+    "returncode": 1
+  },
+  "operator_sequence": [
+    "Run White under Companion-WB55 lock, then record one focused visible-frame decision.",
+    "Only after White PASS, run Black and record one focused visible-frame decision.",
+    "Run RestoreNormal before any product interaction or runtime-resource acceptance.",
+    "If either visible frame fails, measure PREVGH1/PREVGL1 during that verified refresh and stop software changes."
+  ],
+  "parser": "tools/verify_wb55_official_full_diagnostic_log.py",
+  "parser_selftest": {
+    "passed": true,
+    "returncode": 0
+  },
+  "preparation_commands": [
+    "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1 -EpaperSsd1681Bringup -Force",
+    "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1 -EpaperSsd1681OfficialFullDiagnostic -EpaperSsd1681DiagnosticPattern white -Force",
+    "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1 -EpaperSsd1681OfficialFullDiagnostic -EpaperSsd1681DiagnosticPattern black -Force"
+  ],
+  "recovery_selftest": {
+    "claim_scope": "stubbed_failure_recovery_no_hardware_claim",
+    "normal_firmware_restored": true,
+    "report_status": "FAIL",
+    "result_ids": [
+      "flash_white",
+      "capture_white",
+      "flash_normal_restore_after_failure"
+    ],
+    "result_statuses": {
+      "capture_white": "FAIL",
+      "flash_normal_restore_after_failure": "PASS",
+      "flash_white": "PASS"
+    },
+    "returncode": 1,
+    "stdout_has_recovery": true
+  },
+  "runner": "tools/run_wb55_screen_hardware_recovery.ps1",
+  "schema_id": "companion.screen.wb55_hardware_recovery_runner.v1",
+  "stages": {
+    "black": {
+      "claim_scope": "preflight_only_no_hardware_claim",
+      "image": ".cache/validation/wb55-fts02-recovery-preflight/images/black.hex",
+      "report_status": "DRY-RUN",
+      "result_count": 0,
+      "returncode": 0,
+      "safety": {
+        "diagnostic_failure_restores_normal": true,
+        "execute_requires_companion_wb55_lock": true,
+        "machine_pass_is_not_visual_or_voltage_acceptance": true,
+        "successful_diagnostic_waits_for_focused_operator_visual_result": true
+      },
+      "step_ids": [
+        "flash_black",
+        "capture_black",
+        "parse_black"
+      ]
+    },
+    "restorenormal": {
+      "claim_scope": "preflight_only_no_hardware_claim",
+      "image": ".cache/validation/wb55-fts02-recovery-preflight/images/normal.hex",
+      "report_status": "DRY-RUN",
+      "result_count": 0,
+      "returncode": 0,
+      "safety": {
+        "diagnostic_failure_restores_normal": true,
+        "execute_requires_companion_wb55_lock": true,
+        "machine_pass_is_not_visual_or_voltage_acceptance": true,
+        "successful_diagnostic_waits_for_focused_operator_visual_result": true
+      },
+      "step_ids": [
+        "flash_normal_restore"
+      ]
+    },
+    "white": {
+      "claim_scope": "preflight_only_no_hardware_claim",
+      "image": ".cache/validation/wb55-fts02-recovery-preflight/images/white.hex",
+      "report_status": "DRY-RUN",
+      "result_count": 0,
+      "returncode": 0,
+      "safety": {
+        "diagnostic_failure_restores_normal": true,
+        "execute_requires_companion_wb55_lock": true,
+        "machine_pass_is_not_visual_or_voltage_acceptance": true,
+        "successful_diagnostic_waits_for_focused_operator_visual_result": true
+      },
+      "step_ids": [
+        "flash_white",
+        "capture_white",
+        "parse_white"
+      ]
+    }
+  },
+  "status": "PASS_MACHINE_PREFLIGHT",
+  "validation_commands": [
+    "python .\\tools\\verify_wb55_official_full_diagnostic_log.py --self-test",
+    "python .\\tools\\verify_wb55_screen_hardware_recovery_runner.py",
+    "pwsh -NoProfile -File .\\tools\\run_wb55_screen_hardware_recovery.ps1 -CheckOnly -Stage White",
+    "pwsh -NoProfile -File .\\tools\\run_wb55_screen_hardware_recovery.ps1 -CheckOnly -Stage Black",
+    "pwsh -NoProfile -File .\\tools\\run_wb55_screen_hardware_recovery.ps1 -CheckOnly -Stage RestoreNormal"
+  ],
+  "wba_boundary": "WBA55/WBA65 reuse the staged machine/operator evidence shape but must provide target-local flash, serial, panel-power, rail, and normal-restore commands."
+}

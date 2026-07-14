@@ -39,16 +39,35 @@
   "recovery_order": [
     "Replace or cross-swap ESP32-FTS02 before replacing the panel module.",
     "Keep P3 at 2.2, fully latch the 24-pin e-paper FPC in P5, and verify 3.3 V logic power and common ground.",
-    "Under the Companion-WB55 workflow lock, rerun the official one-plane white diagnostic and then the black diagnostic while capturing BUSY.",
+    "Under the Companion-WB55 workflow lock, run the staged White diagnostic, record one focused visible result, then repeat for Black.",
     "If either frame fails, measure PREVGH1 and PREVGL1 during the verified refresh window and stop before expression/menu changes.",
-    "After solid white and black pass, restore normal firmware and prove the current expression, one partial transition, touch, and one maintenance boundary."
+    "After solid white and black pass, run RestoreNormal, then prove the current expression, one partial transition, touch, and one maintenance boundary."
   ],
+  "recovery_runner": {
+    "claim_scope": "static_and_stubbed_recovery_no_hardware_claim",
+    "machine_pass_is_panel_acceptance": false,
+    "operator_sequence": [
+      "Run White under Companion-WB55 lock, then record one focused visible-frame decision.",
+      "Only after White PASS, run Black and record one focused visible-frame decision.",
+      "Run RestoreNormal before any product interaction or runtime-resource acceptance.",
+      "If either visible frame fails, measure PREVGH1/PREVGL1 during that verified refresh and stop software changes."
+    ],
+    "parser": "tools/verify_wb55_official_full_diagnostic_log.py",
+    "runner": "tools/run_wb55_screen_hardware_recovery.ps1",
+    "stage_order": [
+      "white",
+      "black",
+      "restorenormal"
+    ],
+    "status": "PASS_MACHINE_PREFLIGHT"
+  },
   "schema_id": "companion.screen.wb55_hardware_recovery_gate.v1",
   "sources": {
     "grain_recovery_research": "docs/validation/companion-screen-ssd1681-grain-recovery-research-20260714.md",
     "normal_restore": "docs/validation/companion-screen-normal-restore-after-black-20260714.json",
     "official_white_black_recovery": "docs/validation/companion-screen-ssd1681-official-full-recovery-20260714.json",
     "product_requirements": "docs/companion_product_requirements.md",
+    "staged_recovery_runner": "docs/validation/companion-screen-wb55-hardware-recovery-runner.json",
     "voltage_operator_review": "docs/validation/companion-screen-ssd1681-voltage-rails-operator-20260714.json",
     "voltage_probe": "docs/validation/companion-screen-ssd1681-voltage-probe-image-20260714.json"
   },
@@ -56,6 +75,7 @@
   "target": "NUCLEO-WB55RG + ESP32-FTS02 + GDEY0154D67-T03",
   "validation_commands": [
     "python .\\tools\\verify_wb55_screen_hardware_recovery_gate.py",
+    "python .\\tools\\verify_wb55_screen_hardware_recovery_runner.py",
     "python .\\tools\\verify_expression_acceptance_index.py",
     "python .\\tools\\verify_companion_screen_goal_audit.py"
   ],

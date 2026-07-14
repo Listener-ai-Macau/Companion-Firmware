@@ -1222,7 +1222,9 @@ void companion_epaper_panel_stm32wb_ssd1681_init(
             comp_epaper_panel_result_t result =
                 comp_epaper_panel_adapter_refresh_card(adapter, &request, &report);
 
-            SSD1681_VERBOSE_TRACE("[epaper] boot_diag cycle=%u result=%u bytes=%lu busy=%d\r\n",
+            SSD1681_VERBOSE_TRACE("[epaper] boot_diag pattern=%u official=%u cycle=%u result=%u bytes=%lu busy=%d\r\n",
+                   (unsigned)COMPANION_EPAPER_SSD1681_DIAGNOSTIC_PATTERN,
+                   (unsigned)COMPANION_EPAPER_SSD1681_OFFICIAL_FULL_DIAGNOSTIC,
                    (unsigned)cycle,
                    (unsigned)result,
                    (unsigned long)report.transferred_bytes,

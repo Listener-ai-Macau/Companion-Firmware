@@ -2115,6 +2115,9 @@ Validation commands:
 
 Evidence:
 - `tools/verify_wb55_screen_hardware_recovery_gate.py`
+- `tools/verify_wb55_screen_hardware_recovery_runner.py`
+- `tools/verify_wb55_official_full_diagnostic_log.py`
+- `tools/run_wb55_screen_hardware_recovery.ps1`
 - `app/companion_pendant/epaper/panel_adapter.h`
 - `app/companion_pendant/epaper/panel_adapter.c`
 - `app/companion_pendant/epaper/panel_target_stm32wb.h`
@@ -2131,8 +2134,10 @@ Evidence:
 - `docs/validation/companion-screen-ssd1681-voltage-rails-operator-20260714.json`
 - `docs/validation/companion-screen-normal-restore-after-black-20260714.json`
 - `docs/validation/companion-screen-wb55-hardware-recovery-gate.json`
+- `docs/validation/companion-screen-wb55-hardware-recovery-runner.json`
 
 Validation commands:
+- `python .\tools\verify_wb55_screen_hardware_recovery_runner.py`
 - `python .\tools\verify_wb55_screen_hardware_recovery_gate.py`
 - `python .\tools\verify_expression_panel_gate.py`
 - `python .\tools\verify_expression_panel_target_stm32wb.py`
