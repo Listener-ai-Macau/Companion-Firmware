@@ -135,6 +135,71 @@
     },
     "sha256": "8c561b5374d71edc09096373a4d43c2b926a6f14520ec55f4214a37ed6df0f33"
   },
+  "external_flash_qspi2io_wiring": {
+    "current_bench_evidence": {
+      "artifact": "docs/validation/companion-external-flash-connected-20260714.json",
+      "asset_bytes": 2097152,
+      "captured_at": "2026-07-14T21:31:54+08:00",
+      "jedec": "0x0B4018",
+      "pack_clips": 33,
+      "pack_frames": 75,
+      "pack_revision": 53,
+      "raw_log": "docs/validation/artifacts/companion-external-flash-connected-idle-20260714.log",
+      "recording_capacity": 1920000,
+      "status": "PASS"
+    },
+    "io2_io3_not_wired_on_current_devboard": true,
+    "logic_voltage": "3.3V",
+    "mode": "QSPI-2IO",
+    "pa6_reserved_for_epaper_cs": true,
+    "physical_pass_tokens": [
+      "[screen-assets] external_store=ready",
+      "[rec-flash] ready=1 jedec=0x"
+    ],
+    "pins": [
+      {
+        "connector": "CN7-16",
+        "gpio": "3V3",
+        "signal": "VCC / 3.3V"
+      },
+      {
+        "connector": "CN10-9",
+        "gpio": "GND",
+        "signal": "GND"
+      },
+      {
+        "connector": "CN10-35",
+        "gpio": "PA2",
+        "signal": "CS / NSS / SS"
+      },
+      {
+        "connector": "CN10-37",
+        "gpio": "PA3",
+        "signal": "CLK / SCK"
+      },
+      {
+        "connector": "CN10-5",
+        "gpio": "PB9",
+        "signal": "DI / MOSI / IO0"
+      },
+      {
+        "connector": "CN10-3",
+        "gpio": "PB8",
+        "signal": "DO / MISO / IO1"
+      }
+    ],
+    "pre_wiring_bench_evidence": {
+      "artifact": "docs/validation/companion-external-flash-pre-wiring-20260714.json",
+      "captured_at": "2026-07-14T21:13:41+08:00",
+      "status": "NO_GO_NOT_DETECTED",
+      "tokens": [
+        "external_store=unavailable",
+        "fallback_internal",
+        "expression_renderer=unavailable",
+        "[rec-flash] probe=error"
+      ]
+    }
+  },
   "product_ioc_guard": {
     "mcu": "STM32WB55CEUx",
     "must_not_be_overwritten_by_devboard_ioc": true,
@@ -144,11 +209,16 @@
   "purpose": "Capture that the user-provided C:/Users/Billy/Desktop/STM32.ioc devboard pin/peripheral configuration is imported into the repo-owned NUCLEO IOC without overwriting the separate product IOC.",
   "schema_id": "companion.devboard_ioc_import.v1",
   "sources": {
+    "bringup_main": "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/main.c",
     "bringup_readme": "cubeide/Companion_Nucleo_WB55RG_Bringup/README.md",
     "bringup_steps": "docs/bringup_steps.md",
     "captured_external_ioc": "C:/Users/Billy/Desktop/STM32.ioc",
     "desktop_exporter": "tools/export_devboard_ioc.ps1",
     "devboard_ioc": "cubeide/Companion_Nucleo_WB55RG/Companion_Nucleo_WB55RG.ioc",
+    "external_flash_connected_evidence": "docs/validation/companion-external-flash-connected-20260714.json",
+    "external_flash_connected_log": "docs/validation/artifacts/companion-external-flash-connected-idle-20260714.log",
+    "external_flash_log_verifier": "tools/verify_wb55_external_flash_log.py",
+    "external_flash_pre_wiring_evidence": "docs/validation/companion-external-flash-pre-wiring-20260714.json",
     "physical_checklist": "docs/companion_devboard_physical_checklist.md",
     "product_ioc": "Companion_Pendant.ioc",
     "verifier": "tools/verify_devboard_ioc_import.py",

@@ -108,6 +108,49 @@ FPC 插入 `P6`。开发板从转接板背面的树莓派兼容 `P1` 40 针接�
 分别标为 `EPAPER_CS`、`EPAPER_DC`、`EPAPER_RESET`、`EPAPER_BUSY`，并把
 `PC6` 标为 `TOUCH_INT`，以免 CubeMX 重新生成配置时误读或丢失这些线。
 
+### 外部 Flash 接线（QSPI 2IO）
+
+当前 NUCLEO 固件使用 `QUADSPI` 的 **2IO 模式**，用于外部资源包和录音缓存。
+这一组线与上面的电子纸/触摸线不冲突，但必须保持 `PA6` 给电子纸 `CS` 使用，
+不能照搬产品板预留的 4IO 接法。
+
+先断开 NUCLEO USB，再按下表接线。Flash 只能使用 `3.3V`；不要接 `5V`。
+
+| 外部 Flash 丝印 | NUCLEO 接口-编号 | GPIO | 功能 |
+|---|---|---|---|
+| `VCC / 3.3V` | `CN7-16` | `3V3` | 模块供电 |
+| `GND` | `CN10-9` | `GND` | 共地 |
+| `CS / NSS / SS` | `CN10-35` | `PA2` | QSPI 片选 |
+| `CLK / SCK` | `CN10-37` | `PA3` | QSPI 时钟 |
+| `DI / MOSI / IO0` | `CN10-5` | `PB9` | QSPI IO0 |
+| `DO / MISO / IO1` | `CN10-3` | `PB8` | QSPI IO1 |
+
+- 常见 SPI/QSPI 模块已经处理 `IO2 / WP`、`IO3 / HOLD`，当前 2IO 接法不再
+  把它们接到 NUCLEO。若使用裸 Flash 芯片，两脚分别用约 `10 kOhm` 上拉到
+  `3.3V`，不要悬空。
+- 不要把外部 Flash 的 `IO3` 接到 `PA6`；`PA6` 已用于电子纸 `CS`。
+- 当前屏幕使用 `CN7-12` 供电，外部 Flash 使用独立的 `CN7-16` 取同一条
+  `3V3` 电源轨即可；两块模块必须共地。
+- 2026-07-14 的 COM13 复位边界日志已确认 MCU、触摸和 QSPI 外设初始化完成，
+  但物理 Flash 尚未被探测到：`external_store=unavailable`、
+  `fallback_internal/rescue_ui`、`[rec-flash] probe=error ready=0`。这条记录是
+  接线前的历史 `NO_GO_NOT_DETECTED`，不是当前状态，也不是固件或外部 Flash
+  验收通过。
+- 按上表接回六根线后，2026-07-14 的两次独立复位边界日志均通过。当前真机结果为
+  `external_store=ready`、`jedec=0x0B4018`、资源区 `2097152` 字节、录音区
+  `1920000` 字节；CEMP 表情包 revision 53 的 `33` 个片段和 `75` 帧从外部
+  Flash 挂载，渲染器 `fallback=none`。第二次复位后还确认系统回到空闲并允许
+  低功耗，接线与探测状态记为 `PASS`。
+- 接线后的物理通过标准是同一次复位日志同时出现
+  `[screen-assets] external_store=ready` 和
+  `[rec-flash] ready=1 jedec=0x...`，其中 JEDEC 不能是 `0x000000` 或
+  `0xFFFFFF`。只看到 `[stage] qspi ok` 仍不算探测成功；使用
+  `python tools/verify_wb55_external_flash_log.py --log <复位日志>` 执行同一门禁。
+
+上述 CN7/CN10 编号来自 ST 的 NUCLEO-WB55RG/MB1355 接口表；固件启动日志必须
+继续声明 `flash=QSPI-2IO PA2/PA3/PB9/PB8`。未来 WBA55/WBA65 替换目标适配器
+和实际引脚，不改变外部资源/录音存储接口及上述“真实设备探测后才通过”的规则。
+
 接线前确认 FTS02 `P3` 已拨到 `2.2`。`PD0` 是开发板的 `SW2` 按键，不能接
 电子纸 `BUSY`。
 

@@ -1,0 +1,50 @@
+{
+  "schema_id": "companion.external_flash.pre_wiring_bench.v1",
+  "status": "NO_GO_NOT_DETECTED",
+  "captured_at": "2026-07-14T21:13:41.4989898+08:00",
+  "target": "NUCLEO-WB55RG ST-LINK 066EFF535570514867221931 on COM13",
+  "capture": {
+    "baud_rate": 115200,
+    "seconds": 20,
+    "reset_after_open": true,
+    "operator_prompt": false,
+    "cache_root": ".cache/validation/companion-online-reset-preflight-20260714-211316",
+    "artifacts": [
+      {
+        "path": "nucleo-serial-raw.log",
+        "bytes": 3079,
+        "sha256": "b33002c263d4c473bf89cbefc6d6baa7b1d46e9883117e4fae6478948aafaf43"
+      },
+      {
+        "path": "nucleo-serial-summary.json",
+        "bytes": 1159,
+        "sha256": "f62dfee0eb3637f06c992e7d2bd940778d265cf4975665160d3ea07fa1221b10"
+      },
+      {
+        "path": "stm32-reset-stdout.log",
+        "bytes": 656,
+        "sha256": "89d31ec118295e7c028145df7f221f91dc9dd7852bc5691b8cc088d63b1a990b"
+      }
+    ]
+  },
+  "machine_observations": [
+    "[stage] qspi ok",
+    "[boot] uart=USART1 PB6/PB7 115200 flash=QSPI-2IO PA2/PA3/PB9/PB8",
+    "[screen-assets] external_store=unavailable probe=error size=0 required_end=0x00400000",
+    "[screen-assets] policy=external_first store=fallback_internal prefix=none:00000000 mount=io_error",
+    "[screen-assets] expression_renderer=unavailable player=unavailable fallback=rescue_ui",
+    "[rec-flash] probe=error size=0 required=1920068 ready=0"
+  ],
+  "interpretation": {
+    "proved": [
+      "The MCU reset completed and the QUADSPI peripheral initialized.",
+      "The running firmware declared the expected QSPI-2IO PA2/PA3/PB9/PB8 mapping.",
+      "No valid external NOR response was available before the module was connected."
+    ],
+    "not_proved": [
+      "A successful QUADSPI peripheral init is not a successful external Flash probe.",
+      "This historical capture must not override later connected hardware evidence."
+    ],
+    "resolution": "The documented six-wire connection produced two later reset-bounded PASS captures."
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "schema_id": "companion.external_flash.connected_bench.v1",
+  "status": "PASS",
+  "captured_at": "2026-07-14T21:31:54.2461184+08:00",
+  "target": "NUCLEO-WB55RG ST-LINK 066EFF535570514867221931 on COM13",
+  "wiring_mode": "QSPI-2IO PA2/PA3/PB9/PB8",
+  "capture": {
+    "baud_rate": 115200,
+    "seconds": 10,
+    "reset_after_open": true,
+    "operator_prompt": false,
+    "cache_root": ".cache/validation/companion-post-flash-probe-idle-reset-20260714-213140",
+    "tracked_log": "docs/validation/artifacts/companion-external-flash-connected-idle-20260714.log",
+    "tracked_log_canonical_lf_sha256": "ebc143331cb91afa257f6cb3d81c986b09654673c35bf5afcc136bce4891187a",
+    "source_artifacts": [
+      {
+        "path": "nucleo-serial-raw.log",
+        "bytes": 3873,
+        "sha256": "3fc88ba04fc2c04c4d48225e2951696199f81af4867afc5adaaee2ed8b9a0edd"
+      },
+      {
+        "path": "nucleo-serial-summary.json",
+        "bytes": 1164,
+        "sha256": "e3f81a6887e1ced3e3a146f8ae3c0d0d96015c0ca52233c6ca1a80d10d3b56a8"
+      },
+      {
+        "path": "stm32-reset-stdout.log",
+        "bytes": 656,
+        "sha256": "89d31ec118295e7c028145df7f221f91dc9dd7852bc5691b8cc088d63b1a990b"
+      }
+    ]
+  },
+  "device": {
+    "jedec": "0x0B4018",
+    "asset_base": "0x00200000",
+    "asset_bytes": 2097152,
+    "recording_base": "0x00010000",
+    "recording_data": "0x00010044",
+    "recording_capacity": 1920000
+  },
+  "resource_pack": {
+    "name": "emote-matrix-white-200x200-v1",
+    "revision": 53,
+    "clips": 33,
+    "frames": 75,
+    "profile": "200x200",
+    "mount_prefix": "43454D50",
+    "renderer": "external_pack",
+    "fallback": "none"
+  },
+  "machine_observations": [
+    "[stage] qspi ok",
+    "[boot] flash=QSPI-2IO PA2/PA3/PB9/PB8",
+    "[screen-assets] external_store=ready kind=qspi_nor base=0x00200000 bytes=2097152",
+    "[screen-assets] policy=external_first store=ready prefix=read:43454D50 mount=ok",
+    "[screen-assets] expression_renderer=external_pack player=ready fallback=none",
+    "[rec-flash] ready=1 jedec=0x0B4018 base=0x00010000 data=0x00010044 capacity=1920000",
+    "[power] stop=allowed blockers=0x00000000 touch_irq=1"
+  ],
+  "repeatability": {
+    "first_connected_capture": {
+      "cache_root": ".cache/validation/companion-external-flash-recheck-20260714-213049",
+      "raw_sha256": "c6102a653a9bb22d02ec4c950fc03ffc812fbd5ad51fdb1240d5b046624f7c58",
+      "result": "PASS; a real double-tap also started recording"
+    },
+    "second_connected_capture": {
+      "cache_root": ".cache/validation/companion-post-flash-probe-idle-reset-20260714-213140",
+      "raw_sha256": "3fc88ba04fc2c04c4d48225e2951696199f81af4867afc5adaaee2ed8b9a0edd",
+      "result": "PASS; reset returned firmware to idle and low-power allowed"
+    }
+  },
+  "acceptance": {
+    "peripheral_init_alone_is_insufficient": true,
+    "valid_jedec_required": true,
+    "external_asset_mount_required": true,
+    "external_recording_store_required": true,
+    "two_reset_bounded_connected_captures_passed": true
+  }
+}
