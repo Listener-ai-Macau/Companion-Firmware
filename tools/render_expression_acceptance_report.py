@@ -105,7 +105,7 @@ def write_report(path: pathlib.Path, markdown: str) -> None:
 def verify_report(path: pathlib.Path, markdown: str) -> list[str]:
     if not path.exists():
         return [f"missing acceptance report: {rel(path)}"]
-    if path.read_bytes() != markdown.encode("utf-8"):
+    if path.read_text(encoding="utf-8") != markdown:
         return [f"stale acceptance report: {rel(path)}"]
     return []
 
