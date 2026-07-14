@@ -16,11 +16,21 @@ DEFAULT_FIXTURE = pathlib.Path("docs/validation/companion-devboard-ioc-import.js
 DEVBOARD_IOC = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG" / "Companion_Nucleo_WB55RG.ioc"
 PRODUCT_IOC = REPO_ROOT / "Companion_Pendant.ioc"
 BRINGUP_README = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "README.md"
+BRINGUP_MAIN = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Core" / "Src" / "main.c"
 WORKFLOW_DOC = REPO_ROOT / "docs" / "codex_development_workflow.md"
 BRINGUP_STEPS = REPO_ROOT / "docs" / "bringup_steps.md"
 PHYSICAL_CHECKLIST = REPO_ROOT / "docs" / "companion_devboard_physical_checklist.md"
 EXPORT_SCRIPT = REPO_ROOT / "tools" / "export_devboard_ioc.ps1"
 SCHEMA_ID = "companion.devboard_ioc_import.v1"
+
+EXTERNAL_FLASH_QSPI2IO_WIRING = [
+    {"signal": "VCC / 3.3V", "connector": "CN7-16", "gpio": "3V3"},
+    {"signal": "GND", "connector": "CN10-9", "gpio": "GND"},
+    {"signal": "CS / NSS / SS", "connector": "CN10-35", "gpio": "PA2"},
+    {"signal": "CLK / SCK", "connector": "CN10-37", "gpio": "PA3"},
+    {"signal": "DI / MOSI / IO0", "connector": "CN10-5", "gpio": "PB9"},
+    {"signal": "DO / MISO / IO1", "connector": "CN10-3", "gpio": "PB8"},
+]
 
 CAPTURED_EXTERNAL_IOC = {
     "path": "C:/Users/Billy/Desktop/STM32.ioc",
@@ -274,6 +284,7 @@ def build_fixture() -> dict[str, Any]:
             "devboard_ioc": rel(DEVBOARD_IOC),
             "product_ioc": rel(PRODUCT_IOC),
             "bringup_readme": rel(BRINGUP_README),
+            "bringup_main": rel(BRINGUP_MAIN),
             "workflow_doc": rel(WORKFLOW_DOC),
             "bringup_steps": rel(BRINGUP_STEPS),
             "physical_checklist": rel(PHYSICAL_CHECKLIST),
@@ -304,6 +315,27 @@ def build_fixture() -> dict[str, Any]:
             "repo_overrides": ALLOWED_REPO_OVERRIDES,
             "local_reservation_counter_keys": sorted(LOCAL_RESERVATION_COUNTER_KEYS),
         },
+        "external_flash_qspi2io_wiring": {
+            "mode": "QSPI-2IO",
+            "pins": EXTERNAL_FLASH_QSPI2IO_WIRING,
+            "pa6_reserved_for_epaper_cs": True,
+            "io2_io3_not_wired_on_current_devboard": True,
+            "logic_voltage": "3.3V",
+            "current_bench_evidence": {
+                "captured_at": "2026-07-14T21:13:41+08:00",
+                "status": "NO_GO_NOT_DETECTED",
+                "tokens": [
+                    "external_store=unavailable",
+                    "fallback_internal",
+                    "expression_renderer=unavailable",
+                    "[rec-flash] probe=error",
+                ],
+            },
+            "later_physical_pass_tokens": [
+                "[screen-assets] external_store=ready",
+                "[rec-flash] ready=1 jedec=0x",
+            ],
+        },
         "acceptance": {
             "external_hardware_keys_preserved": True,
             "repo_metadata_is_cubeide_owned": True,
@@ -320,6 +352,7 @@ def build_fixture() -> dict[str, Any]:
 
 def check_docs(errors: list[str]) -> None:
     bringup_readme = read(BRINGUP_README, errors)
+    bringup_main = read(BRINGUP_MAIN, errors)
     workflow = read(WORKFLOW_DOC, errors)
     bringup_steps = read(BRINGUP_STEPS, errors)
     physical_checklist = read(PHYSICAL_CHECKLIST, errors)
@@ -343,6 +376,30 @@ def check_docs(errors: list[str]) -> None:
         "P10 A3`（可选，不接） | `CN10-29` | `PC10",
     ]:
         require(token in physical_checklist, f"physical checklist missing current wiring anchor {token}", errors)
+    for token in [
+        "VCC / 3.3V` | `CN7-16` | `3V3",
+        "GND` | `CN10-9` | `GND",
+        "CS / NSS / SS` | `CN10-35` | `PA2",
+        "CLK / SCK` | `CN10-37` | `PA3",
+        "DI / MOSI / IO0` | `CN10-5` | `PB9",
+        "DO / MISO / IO1` | `CN10-3` | `PB8",
+        "`PA6` 已用于电子纸 `CS`",
+        "external_store=unavailable",
+        "fallback_internal/rescue_ui",
+        "[rec-flash] probe=error ready=0",
+        "[screen-assets] external_store=ready",
+        "[rec-flash] ready=1 jedec=0x...",
+        "flash=QSPI-2IO PA2/PA3/PB9/PB8",
+    ]:
+        require(token in physical_checklist, f"physical checklist missing external Flash anchor {token}", errors)
+    for token in [
+        "#define FLASH_QSPI_NCS_PIN GPIO_PIN_2",
+        "#define FLASH_QSPI_CLK_PIN GPIO_PIN_3",
+        "#define FLASH_QSPI_IO1_PIN GPIO_PIN_8",
+        "#define FLASH_QSPI_IO0_PIN GPIO_PIN_9",
+        "flash=QSPI-2IO PA2/PA3/PB9/PB8",
+    ]:
+        require(token in bringup_main, f"normal firmware missing QSPI 2IO pin anchor {token}", errors)
 
 
 def check_fixture_data(data: dict[str, Any], errors: list[str]) -> None:
@@ -374,6 +431,17 @@ def check_fixture_data(data: dict[str, Any], errors: list[str]) -> None:
         "wba_safe_board_facts_stay_in_ioc",
     ]:
         require(acceptance.get(token) is True, f"devboard IOC import acceptance missing {token}", errors)
+    flash_wiring = data.get("external_flash_qspi2io_wiring", {})
+    require(flash_wiring.get("mode") == "QSPI-2IO", "external Flash wiring mode drifted", errors)
+    require(flash_wiring.get("pins") == EXTERNAL_FLASH_QSPI2IO_WIRING, "external Flash connector table drifted", errors)
+    require(flash_wiring.get("pa6_reserved_for_epaper_cs") is True, "external Flash wiring must preserve PA6 for e-paper CS", errors)
+    require(flash_wiring.get("io2_io3_not_wired_on_current_devboard") is True, "current devboard must keep Flash IO2/IO3 unwired", errors)
+    require(flash_wiring.get("logic_voltage") == "3.3V", "external Flash logic voltage must stay 3.3V", errors)
+    require(
+        flash_wiring.get("current_bench_evidence", {}).get("status") == "NO_GO_NOT_DETECTED",
+        "current external Flash bench evidence must remain an explicit NO_GO until replaced by physical evidence",
+        errors,
+    )
 
 
 def check_fixture_file(path: pathlib.Path, expected: dict[str, Any], errors: list[str]) -> None:
@@ -404,7 +472,7 @@ def main(argv: list[str]) -> int:
     fixture_path = args.fixture if args.fixture.is_absolute() else REPO_ROOT / args.fixture
     external_path = args.external
     errors: list[str] = []
-    for path in [DEVBOARD_IOC, PRODUCT_IOC, BRINGUP_README, WORKFLOW_DOC, BRINGUP_STEPS, PHYSICAL_CHECKLIST, EXPORT_SCRIPT]:
+    for path in [DEVBOARD_IOC, PRODUCT_IOC, BRINGUP_README, BRINGUP_MAIN, WORKFLOW_DOC, BRINGUP_STEPS, PHYSICAL_CHECKLIST, EXPORT_SCRIPT]:
         require(path.exists(), f"missing required path {rel(path)}", errors)
     if args.require_external:
         require(external_path.exists(), f"missing required external IOC {external_path}", errors)
