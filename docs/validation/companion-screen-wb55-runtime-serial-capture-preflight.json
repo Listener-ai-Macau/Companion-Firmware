@@ -85,7 +85,7 @@
     "claim_scope": "stubbed_reset_timeout_no_hardware_claim",
     "command": "pwsh -NoProfile -File .\\tools\\capture_nucleo_serial.ps1 -SelfTestResetTimeout -OutDir .\\.cache\\validation\\nucleo-serial-reset-timeout-selftest",
     "errors": [
-      "reset timed out after 5 second(s). stdout=C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-wt-adhoc-codex-screen-evidence-durability\\.cache\\validation\\nucleo-serial-reset-timeout-selftest\\stm32-reset-stdout.log stderr=C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-wt-adhoc-codex-screen-evidence-durability\\.cache\\validation\\nucleo-serial-reset-timeout-selftest\\stm32-reset-stderr.log"
+      "reset timed out after 5 second(s). stdout=.\\.cache\\validation\\nucleo-serial-reset-timeout-selftest\\stm32-reset-stdout.log stderr=.\\.cache\\validation\\nucleo-serial-reset-timeout-selftest\\stm32-reset-stderr.log"
     ],
     "reset_stderr_exists": true,
     "reset_stdout_exists": true,

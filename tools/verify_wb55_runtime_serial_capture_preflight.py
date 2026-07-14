@@ -38,6 +38,13 @@ def rel(path: pathlib.Path) -> str:
     return path.resolve().relative_to(ROOT).as_posix()
 
 
+def normalize_evidence_text(value: object) -> str:
+    text = str(value)
+    for root in (str(ROOT), ROOT.as_posix()):
+        text = text.replace(root, ".")
+    return text
+
+
 def load_json(path: pathlib.Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
@@ -82,7 +89,7 @@ def run_empty_capture_selftest() -> dict[str, Any]:
         "summary_port": summary.get("port"),
         "bytes_read": summary.get("bytes_read"),
         "reset_timeout_seconds": summary.get("reset_timeout_seconds"),
-        "errors": summary.get("errors", []),
+        "errors": [normalize_evidence_text(error) for error in summary.get("errors", [])],
         "claim_scope": "stubbed_empty_capture_no_hardware_claim",
     }
 
@@ -119,7 +126,7 @@ def run_reset_timeout_selftest() -> dict[str, Any]:
         "reset_timeout_seconds": summary.get("reset_timeout_seconds"),
         "reset_stdout_exists": RESET_TIMEOUT_STDOUT.exists(),
         "reset_stderr_exists": RESET_TIMEOUT_STDERR.exists(),
-        "errors": summary.get("errors", []),
+        "errors": [normalize_evidence_text(error) for error in summary.get("errors", [])],
         "claim_scope": "stubbed_reset_timeout_no_hardware_claim",
     }
 

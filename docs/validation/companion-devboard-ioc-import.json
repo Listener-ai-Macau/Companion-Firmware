@@ -99,13 +99,13 @@
         "PC6.Signal": "GPXTI6"
       }
     },
-    "sha256": "118b5c1c7318f2c762b6bc334df49575261bc39d7d90e62008a959e3087e8da1"
+    "sha256": "c2241f997da0bd48f86892c01952d6f138529e6993911384fa04e8893aba8b05"
   },
   "product_ioc_guard": {
     "mcu": "STM32WB55CEUx",
     "must_not_be_overwritten_by_devboard_ioc": true,
     "package": "UFQFPN48",
-    "sha256": "89d84e2c0be29f75a2d3e97eda9922af5354535f057281a21850981d2e61b24b"
+    "sha256": "930e3dbbef2590e7dc1ad21ee5f3e38aba31a3fdcd57679263ef3fa6076619fc"
   },
   "purpose": "Capture that the user-provided C:/Users/Billy/Desktop/STM32.ioc devboard pin/peripheral configuration is imported into the repo-owned NUCLEO IOC without overwriting the separate product IOC.",
   "schema_id": "companion.devboard_ioc_import.v1",

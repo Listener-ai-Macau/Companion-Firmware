@@ -136,6 +136,11 @@ def sha256_file(path: pathlib.Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def canonical_text_sha256(path: pathlib.Path) -> str:
+    text = path.read_text(encoding="utf-8").replace("\r\n", "\n").replace("\r", "\n")
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
 def compatible_items(values: dict[str, str], drop_repo_enrichments: bool) -> list[str]:
     items: list[str] = []
     for key, value in values.items():
@@ -246,12 +251,12 @@ def build_fixture() -> dict[str, Any]:
         },
         "captured_external_ioc": CAPTURED_EXTERNAL_IOC,
         "devboard_ioc": {
-            "sha256": sha256_file(DEVBOARD_IOC),
+            "sha256": canonical_text_sha256(DEVBOARD_IOC),
             "compatible_sha256": compatible_sha256(devboard_values, drop_repo_enrichments=True),
             "hardware_summary": build_summary(devboard_values),
         },
         "product_ioc_guard": {
-            "sha256": sha256_file(PRODUCT_IOC),
+            "sha256": canonical_text_sha256(PRODUCT_IOC),
             "mcu": product_values.get("Mcu.CPN"),
             "package": product_values.get("Mcu.Package"),
             "must_not_be_overwritten_by_devboard_ioc": True,

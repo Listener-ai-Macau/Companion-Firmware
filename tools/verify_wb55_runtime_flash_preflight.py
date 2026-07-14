@@ -45,10 +45,18 @@ def run_preflight(args: list[str]) -> dict[str, Any]:
         parsed[key.strip()] = value.strip()
     image = pathlib.Path(parsed.get("image", ""))
     programmer = pathlib.Path(parsed.get("programmer", ""))
+    normalized_stdout = "\n".join(
+        [
+            f"CHECK: mode={parsed.get('mode', '')}",
+            f"CHECK: image={rel(image) if image.is_absolute() else parsed.get('image', '')}",
+            f"CHECK: programmer={programmer}",
+            f"CHECK: flash_timeout_seconds={parsed.get('flash_timeout_seconds', '')}",
+        ]
+    )
     return {
         "command": " ".join(["pwsh", "-NoProfile", "-File", ".\\tools\\flash_nucleo_bringup.ps1", *args, "-CheckOnly"]),
         "returncode": completed.returncode,
-        "stdout": completed.stdout.strip(),
+        "stdout": normalized_stdout,
         "stderr": completed.stderr.strip(),
         "mode": parsed.get("mode"),
         "image": rel(image) if image.is_absolute() else parsed.get("image", ""),

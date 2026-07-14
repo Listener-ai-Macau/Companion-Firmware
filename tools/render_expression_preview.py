@@ -223,7 +223,7 @@ def verify_outputs(svg_path: pathlib.Path, report_path: pathlib.Path, svg: str, 
     errors: list[str] = []
     if not svg_path.exists():
         errors.append(f"missing preview SVG: {rel(svg_path)}")
-    elif svg_path.read_bytes() != svg.encode("utf-8"):
+    elif svg_path.read_text(encoding="utf-8") != svg:
         errors.append(f"stale preview SVG: {rel(svg_path)}")
 
     if not report_path.exists():
