@@ -187,8 +187,8 @@ try {
     $promptOutput = & pwsh -NoProfile -File $aiw operator-prompt `
         -Title "Companion 共享录音链路验收 4/13" `
         -ProgressText "4/13（本次 1/1）" `
-        -ScopeText "设备已进入低功耗；串口正在连续抓取。本项只验双击录音，电子纸不参与判定。" `
-        -Message "现在在触摸屏任意位置快速双击一次，连续说『你好，小伴录音测试』约 3 秒，再快速双击一次结束。完成后点击通过；任一步无响应请点击失败并备注。" `
+        -ScopeText "设备已进入低功耗；串口正在连续抓取。本项只采集双击录音动作。电子纸当前故障，本窗口不验屏幕反馈，屏幕不变不要点失败。" `
+        -Message "现在在触摸屏任意位置快速双击一次，连续说『你好，小伴录音测试』约 3 秒，再快速双击一次结束。三步动作完成后点击通过，表示动作已完成；是否识别由串口自动判定。只有无法完成双击或说话动作才点击失败并备注。" `
         -ExpectedText "机器证据必须同时包含 STOP 后麦克风时钟恢复、两个 double_tap、持续 PCM 帧、录音停止、DMA stop status=ok 和外部 Flash 保存成功。" `
         -ReviewStyle -Input -Buttons "通过,失败,跳过,中止" `
         -OutputPath $operatorResultPath -TimeoutSeconds $OperatorTimeoutSeconds -Json
