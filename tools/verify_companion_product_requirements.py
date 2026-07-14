@@ -54,6 +54,7 @@ REQUIRED_ANCHORS = (
     "COMP-REQ-035",
     "COMP-REQ-036",
     "COMP-REQ-037",
+    "COMP-REQ-038",
     "PC6/EXTI",
     "<=1 mA",
     "external-Flash first",
@@ -96,7 +97,7 @@ def main() -> int:
         "registry": str(REGISTRY.relative_to(ROOT)).replace("\\", "/"),
         "workflow_plan": "companion-screen-product-integration",
         "requirement_ids": [f"COMP-REQ-{number}" for number in requirement_ids],
-        "current_focus": "COMP-REQ-035, COMP-REQ-036, COMP-REQ-037, and COMP-REQ-006 shared recording core plus machine-first WB55 two-double-tap acceptance",
+        "current_focus": "COMP-REQ-035 through COMP-REQ-038 and COMP-REQ-006 shared recording core plus machine-first WB55 two-double-tap acceptance",
         "active_parallel_track": "COMP-REQ-034 FTS02 analog display recovery remains documented but does not block serial recording acceptance",
         "errors": errors,
     }

@@ -549,6 +549,7 @@ static board_button_t s_buttons[] = {
     {"SW3", BOARD_SW3_GPIO_PORT, BOARD_SW3_PIN, false, false, 0u},
 };
 static uint32_t s_manual_recording_block_count;
+static bool s_touch_recording_initial_app_serviced;
 static bool s_ble_link_ready;
 static bool s_ble_session_active;
 static bool s_ble_type_ready_autostream_active;
@@ -1198,6 +1199,12 @@ int main(void)
                 !preserve_touch_window;
             if (process_app) {
                 MX_APPE_Process();
+                if (s_recording_fsm.active_source ==
+                    COMP_RECORDING_SOURCE_USER_TOUCH) {
+                    s_touch_recording_initial_app_serviced = true;
+                    TOUCH_VERBOSE_TRACE("[record-visual] action=initial_service source=touch block=%lu periodic=disabled\r\n",
+                           (unsigned long)s_manual_recording_block_count);
+                }
                 if (!service_recording_touch()) {
                     continue;
                 }
@@ -2706,6 +2713,9 @@ static bool service_recording_touch(void)
 
 static bool recording_loop_should_process_app(uint32_t block_index)
 {
+    if (s_recording_fsm.active_source == COMP_RECORDING_SOURCE_USER_TOUCH) {
+        return !s_touch_recording_initial_app_serviced;
+    }
     if (ble_audio_stream_enabled_for_recording()) {
         return true;
     }
@@ -2801,6 +2811,7 @@ static void end_ble_session_if_active(bool cancel, const char *reason)
 static void start_recording(comp_recording_source_t source, const char *reason)
 {
     cancel_daily_tap_reaction("record_start");
+    s_touch_recording_initial_app_serviced = false;
     if (s_recording_fsm.state == COMP_RECORDING_STATE_ERROR_RECOVERY ||
         s_recording_fsm.state == COMP_RECORDING_STATE_CANCELED ||
         s_recording_fsm.state == COMP_RECORDING_STATE_TRANSFERRED) {

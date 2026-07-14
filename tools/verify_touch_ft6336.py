@@ -283,6 +283,8 @@ def main() -> int:
         main_loop = extract_function(main_source, "main")
         recording_pending = extract_function(main_source, "recording_touch_work_pending")
         recording_touch_service = extract_function(main_source, "service_recording_touch")
+        recording_app_service = extract_function(main_source, "recording_loop_should_process_app")
+        recording_start = extract_function(main_source, "start_recording")
     except ValueError as exc:
         errors.append(str(exc))
     else:
@@ -334,6 +336,14 @@ def main() -> int:
             "poll_touch_debug();",
             "process_deferred_touch_runtime_action();",
         ), errors)
+        require("one-shot touch recording display service", recording_app_service, (
+            "s_recording_fsm.active_source == COMP_RECORDING_SOURCE_USER_TOUCH",
+            "return !s_touch_recording_initial_app_serviced;",
+            "ble_audio_stream_enabled_for_recording()",
+        ), errors)
+        require("touch recording display service reset", recording_start, (
+            "s_touch_recording_initial_app_serviced = false;",
+        ), errors)
         recording_branch_start = main_loop.find(
             "if (s_recording_fsm.state == COMP_RECORDING_STATE_RECORDING) {"
         )
@@ -361,6 +371,13 @@ def main() -> int:
             if "recording_touch_work_pending()" not in recording_branch or \
                     "!preserve_touch_window" not in recording_branch:
                 errors.append("touch-originated recording must suppress app/display work during gesture arbitration")
+            app_service = recording_branch.find("MX_APPE_Process()")
+            app_latched = recording_branch.find(
+                "s_touch_recording_initial_app_serviced = true;",
+                app_service,
+            )
+            if app_service < 0 or app_latched < app_service:
+                errors.append("touch-originated recording must latch its one allowed display service")
 
     gesture_contract = touch_fixture.get("gesture_contract", {})
     if gesture_contract.get("minimum_contact_samples") != 1:

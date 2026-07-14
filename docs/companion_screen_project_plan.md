@@ -1383,6 +1383,27 @@ owner 随后澄清，上轮点击 `失败` 只是因为看不到回应，并不�
 现明确把 `通过` 定义为“动作序列已完成”，识别结果由日志门禁判断；窗口同时说明电子纸当前故障、
 屏幕不变不作为本项失败。这样不会抹掉可见反馈失败，也不会要求操作者从坏屏推测串口是否识别。
 
+## Revision 97: 触控录音冻结周期电子纸动画
+
+`b9424eb` 聚焦真机复验中，owner 完成两次双击和说话并按动作完成选择 `通过`，但机器仍为
+`NO_GO_INCOMPLETE_TOUCH_WAKE_EVIDENCE`。第一次双击、SAI clock restore、DMA start 和 24 个变化 PCM
+block 成功；第二次双击、stop、DMA stop 和外部 Flash store 全部缺失。失败证据位于
+`.cache/validation/shared-recording-chain-acceptance-rerun-b9424eb/`，normal 固件已在 finally 中恢复。
+
+日志证明“触摸优先于每个工作边界”仍不足以保护不可预知的下一次触摸：录音期间继续播放 frame 53
+到 57，多次 differential 刷新约 306 ms，并触发一次 1741 ms maintenance；下一次双击可能完整落在
+已经启动的同步电子纸事务内。当前 WB55 同步适配器下，触控录音只允许 DMA 启动后服务一次初始录音
+状态帧，之后在 stop/cancel 前禁止周期 `MX_APPE_Process()`/电子纸动画。BLE/host 录音继续按协议泵送
+应用。未来只有异步显示适配器提供实测触摸服务上界后，才允许恢复录音动态关键帧。
+
+该 one-shot 修复已经通过 native gesture replay、静态调度门禁、normal/trace WB55 构建和 acceptance
+preflight。normal HEX SHA256 为
+`04C3C543043C3794C63CB08F8F9FE3DB9E870851A5AED271C0E1290E36EBAB20`，trace HEX SHA256 为
+`7B7EA146F58A5FA6DF050D9672A5643F7A903C5B4F60DA0825505C5F72DA7E9C`，trace ELF SHA256 为
+`8C87D49AB371909798FB4280B7B222E420DC8787B716A2D18147A2B27B268BCC`。这些仍是机器就绪证据；下一次
+真机日志必须只出现一次 `initial_service ... periodic=disabled`，且录音停止前不能再出现后续录音帧或
+maintenance transaction，同时完整出现第二次 double tap、stop、DMA stop 和外部 Flash store。
+
 ## 逐项验收顺序
 
 本项目遵循 AI Workflow 的全产品异步验收规则：未收到操作者明确的“开始验收”前，
