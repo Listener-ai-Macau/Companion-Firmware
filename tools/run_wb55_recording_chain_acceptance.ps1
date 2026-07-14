@@ -89,6 +89,7 @@ $normalImageSha256 = (Get-FileHash -LiteralPath $normalImage -Algorithm SHA256).
 $requiredTraceElfTokens = @(
     "companion_epaper_panel_stm32wb_ssd1681_init",
     "recording_gesture gesture=%s action=provisional_or_ignored display_request=0",
+    "[record-touch]",
     "[mic-dma] action=stop"
 )
 $traceElfText = [System.Text.Encoding]::ASCII.GetString(

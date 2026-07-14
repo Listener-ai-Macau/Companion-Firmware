@@ -54,6 +54,7 @@ def main() -> int:
     app_ble_source = (ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c").read_text(encoding="utf-8")
     makefile = (ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile").read_text(encoding="utf-8")
     build = (ROOT / "tools/build_nucleo_bringup.ps1").read_text(encoding="utf-8")
+    recording_acceptance = (ROOT / "tools/run_wb55_recording_chain_acceptance.ps1").read_text(encoding="utf-8")
     panel_header = (ROOT / "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.h").read_text(encoding="utf-8")
     panel_source = (ROOT / "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c").read_text(encoding="utf-8")
     touch_fixture = json.loads(
@@ -335,6 +336,36 @@ def main() -> int:
             "poll_board_buttons();",
             "poll_touch_debug();",
             "process_deferred_touch_runtime_action();",
+        ), errors)
+        require("recording touch health cadence", main_source, (
+            "#define RECORDING_TOUCH_HEALTH_TRACE_MS 250u",
+        ), errors)
+        require("recording touch health reset", recording_start, (
+            "s_recording_touch_service_count = 0u;",
+            "s_recording_touch_last_read_count = s_touch.read_count;",
+            "s_recording_touch_next_health_ms = HAL_GetTick();",
+        ), errors)
+        require("recording touch health trace", recording_touch_service, (
+            "s_recording_touch_service_count++;",
+            "s_touch.read_count",
+            "s_touch.error_count",
+            "s_touch_irq_count",
+            "s_touch_irq_consumed_count",
+            "HAL_GPIO_ReadPin(BOARD_TOUCH_INT_GPIO_PORT, BOARD_TOUCH_INT_PIN)",
+            "s_touch_next_poll_ms - now_ms",
+            "s_touch_contact_active",
+            "s_touch_gesture.active",
+            "s_touch_gesture.consumed_until_release",
+            "s_touch_gesture.tap_pending",
+            "s_touch_refresh_buffer_count",
+            "touch_runtime_action_name(s_touch_deferred_action)",
+            "TOUCH_VERBOSE_TRACE(",
+            "[record-touch]",
+        ), errors)
+        if 'printf("[record-touch]' in recording_touch_service:
+            errors.append("recording touch health must stay out of quiet-build direct printf")
+        require("recording acceptance trace preflight", recording_acceptance, (
+            '"[record-touch]"',
         ), errors)
         require("one-shot touch recording display service", recording_app_service, (
             "s_recording_fsm.active_source == COMP_RECORDING_SOURCE_USER_TOUCH",

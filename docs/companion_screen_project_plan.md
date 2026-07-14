@@ -1404,6 +1404,30 @@ preflight。normal HEX SHA256 为
 真机日志必须只出现一次 `initial_service ... periodic=disabled`，且录音停止前不能再出现后续录音帧或
 maintenance transaction，同时完整出现第二次 double tap、stop、DMA stop 和外部 Flash store。
 
+## Revision 98: 录音期 FT6336 独立健康证据
+
+`fb0da29` 真机复验确认 one-shot 规则实际生效：只渲染 frame 53，`initial_service ...
+periodic=disabled` 只出现一次，之后所有麦克风行均为 `app_pump=0`。然而 owner 完成第二次双击后仍无
+新触摸样本，机器在 27 个变化 PCM block 后保持 recording。随后只用于 A/B 的
+`TH_GROUP=0x40` trace 同样只识别第一次双击并得到 26 个变化 PCM block；该阈值没有晋升，finally
+已恢复正式 `0x70` normal 镜像。证据分别位于
+`.cache/validation/shared-recording-chain-acceptance-rerun-fb0da29/` 和
+`.cache/validation/shared-recording-chain-th40-ab-fb0da29/`。
+
+下一步不再让操作者重复动作。trace 必须脱离 `MX_APPE_Process()`，每 250 ms 输出一次录音期触摸健康：
+服务次数、FT6336 read/error、IRQ produced/consumed、PC6 实际电平、next-poll delta、contact/gesture/tap、
+buffer 与 deferred action。先用这组数据区分主循环漏调度、I2C 失败、INT 电平卡住或控制器没有检测到
+第二次触摸；正常构建保持安静，不把诊断日志带入产品路径。
+
+该独立健康行已经实现为 trace-only `[record-touch]`，并由 acceptance preflight 强制检查，旧 trace 不能
+再进入人工窗口。native 双击回放、FT6336 静态门禁、需求注册、WBA55/WBA65 触控/显示边界、normal 与
+trace WB55 构建及 preflight 均通过。normal 为 `text=131204, data=2436, bss=188191`，HEX SHA256 为
+`685B13D48106D60B8B5E891D71CB484A76D459C8C3D9EED988A67247950E39F0`；trace 为
+`text=139408, data=2436, bss=188199`，HEX SHA256 为
+`3421DF860931BBCD19D55814CC169B06EFBDACE5054D7CD3276A0F6C208BB37C`，ELF SHA256 为
+`8111896ACFE4457402A60C979608597D6DAB0815089553F6CA325A416B7C86C6`。这些仍只证明诊断镜像就绪，
+不声明第二次双击已经通过真机。
+
 ## 逐项验收顺序
 
 本项目遵循 AI Workflow 的全产品异步验收规则：未收到操作者明确的“开始验收”前，

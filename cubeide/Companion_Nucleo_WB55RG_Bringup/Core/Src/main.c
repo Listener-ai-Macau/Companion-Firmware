@@ -102,6 +102,7 @@ COMPANION_PLACE_IN_SECTION("TAG_OTA_START") const uint32_t MagicKeywordAddress =
 #define TOUCH_MENU_ENTRY_CUE_MS 360u
 #define TOUCH_MENU_PRESS_CUE_DELAY_MS 160u
 #define TOUCH_SAMPLE_LOG_INTERVAL_MS 250u
+#define RECORDING_TOUCH_HEALTH_TRACE_MS 250u
 #define TOUCH_TAP_MAX_MOVE_PX 24u
 #define TOUCH_DOUBLE_TAP_MAX_GAP_MS 650u
 #define TOUCH_DOUBLE_TAP_MAX_MOVE_PX 40u
@@ -550,6 +551,9 @@ static board_button_t s_buttons[] = {
 };
 static uint32_t s_manual_recording_block_count;
 static bool s_touch_recording_initial_app_serviced;
+static uint32_t s_recording_touch_service_count;
+static uint32_t s_recording_touch_last_read_count;
+static uint32_t s_recording_touch_next_health_ms;
 static bool s_ble_link_ready;
 static bool s_ble_session_active;
 static bool s_ble_type_ready_autostream_active;
@@ -2701,6 +2705,8 @@ static bool recording_touch_work_pending(void)
 
 static bool service_recording_touch(void)
 {
+    uint32_t now_ms;
+
     /* Recording expressions are synchronous e-paper work. Keep acquisition,
      * gesture classification, and the stop action ahead of every display or
      * microphone service boundary so a complete double tap cannot disappear
@@ -2708,6 +2714,40 @@ static bool service_recording_touch(void)
     poll_board_buttons();
     poll_touch_debug();
     process_deferred_touch_runtime_action();
+    s_recording_touch_service_count++;
+    now_ms = HAL_GetTick();
+    if ((int32_t)(now_ms - s_recording_touch_next_health_ms) >= 0) {
+        uint32_t read_count = s_touch.read_count;
+        uint32_t read_delta = read_count - s_recording_touch_last_read_count;
+        uint32_t irq_produced = s_touch_irq_count;
+        uint8_t pc6_level =
+            HAL_GPIO_ReadPin(BOARD_TOUCH_INT_GPIO_PORT, BOARD_TOUCH_INT_PIN) ==
+                    GPIO_PIN_SET
+                ? 1u
+                : 0u;
+        int32_t next_poll_delta_ms = (int32_t)(s_touch_next_poll_ms - now_ms);
+
+        TOUCH_VERBOSE_TRACE(
+            "[record-touch] t=%lu service=%lu ft_read=%lu delta=%lu ft_error=%lu irq_produced=%lu irq_consumed=%lu pc6=%u next_poll_ms=%ld contact=%u gesture_active=%u consumed=%u tap_pending=%u buffered=%u deferred=%s\r\n",
+            (unsigned long)now_ms,
+            (unsigned long)s_recording_touch_service_count,
+            (unsigned long)read_count,
+            (unsigned long)read_delta,
+            (unsigned long)s_touch.error_count,
+            (unsigned long)irq_produced,
+            (unsigned long)s_touch_irq_consumed_count,
+            (unsigned)pc6_level,
+            (long)next_poll_delta_ms,
+            s_touch_contact_active ? 1u : 0u,
+            s_touch_gesture.active ? 1u : 0u,
+            s_touch_gesture.consumed_until_release ? 1u : 0u,
+            s_touch_gesture.tap_pending ? 1u : 0u,
+            (unsigned)s_touch_refresh_buffer_count,
+            touch_runtime_action_name(s_touch_deferred_action));
+        s_recording_touch_last_read_count = read_count;
+        s_recording_touch_next_health_ms =
+            now_ms + RECORDING_TOUCH_HEALTH_TRACE_MS;
+    }
     return s_recording_fsm.state == COMP_RECORDING_STATE_RECORDING;
 }
 
@@ -2812,6 +2852,9 @@ static void start_recording(comp_recording_source_t source, const char *reason)
 {
     cancel_daily_tap_reaction("record_start");
     s_touch_recording_initial_app_serviced = false;
+    s_recording_touch_service_count = 0u;
+    s_recording_touch_last_read_count = s_touch.read_count;
+    s_recording_touch_next_health_ms = HAL_GetTick();
     if (s_recording_fsm.state == COMP_RECORDING_STATE_ERROR_RECOVERY ||
         s_recording_fsm.state == COMP_RECORDING_STATE_CANCELED ||
         s_recording_fsm.state == COMP_RECORDING_STATE_TRANSFERRED) {
