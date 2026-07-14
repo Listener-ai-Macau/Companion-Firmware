@@ -17,8 +17,9 @@ It verifies three early production paths:
   validation window; `VREC:TOGGLE`, `VREC:STOP`, and
   `VREC:CANCEL` drive the same recording FSM path as the temporary board
   buttons.
-- External flash is probed non-destructively through the development-board
-  QSPI 2IO wiring with `0x9F` JEDEC ID and status reads.
+- External flash is probed through dedicated hardware SPI1 in ordinary
+  `1-1-1` mode with `0x9F` JEDEC ID and status reads. The command core is
+  HAL-free and shared with the planned WBA55/WBA65 target binding.
 - Listener-style SPH0655-compatible PDM microphone input is the default WB55
   devboard backend. It captures raw PDM with SAI1 Block A master RX on the
   IOC SCK/FS/SD route, uses raw-SAI DMA, MSB bit order, MCKDIV 31, CIC3
@@ -43,8 +44,8 @@ NUCLEO wiring used by this image:
 | Function | STM32WB55RG pin |
 |---|---|
 | ST-LINK VCP TX/RX | PB6 / PB7 USART1 |
-| Flash QSPI NCS/CLK | PA2 / PA3 |
-| Flash QSPI IO0/IO1 | PB9 / PB8 |
+| Flash SPI1 CS/SCK | PA2 / PA1 |
+| Flash SPI1 MOSI/MISO | PA7 / PB4 |
 | I2C3 SCL/SDA | PC0 / PB11 |
 | SPI2 SCK/MOSI/MISO/CS | PA9 / PC1 / PC2 / PA6 |
 | Mic SAI1 SCK/FS/SD | PA8 / PB12 / PC3 |
@@ -78,7 +79,7 @@ Current hardware evidence:
 - OTA readiness bring-up passes: ready plus all required blocker bits are logged
   through `ota.readiness`, `ota.block_result`, `ota.blocker`, and
   `ota.interrupted_transfer`.
-- QSPI flash bus code runs the current non-destructive probe. Treat the actual
+- SPI1 flash bus code runs the current non-destructive probe. Treat the actual
   JEDEC ID result as hardware evidence from the latest locked bench run, not as
   a static claim in this README.
 

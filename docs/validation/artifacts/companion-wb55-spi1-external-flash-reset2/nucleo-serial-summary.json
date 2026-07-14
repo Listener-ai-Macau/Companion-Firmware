@@ -1,0 +1,37 @@
+{
+  "schema": "companion.nucleo_serial.capture.v1",
+  "status": "PASS",
+  "mode": "capture",
+  "generated_at": "2026-07-15T00:05:43.0136392+08:00",
+  "port": "COM13",
+  "baud_rate": 115200,
+  "seconds": 15,
+  "reset_after_open": true,
+  "reset_timeout_seconds": 15,
+  "prompt_operator": false,
+  "prompt_title": "Companion NUCLEO 串口抓日志确认",
+  "prompt_message": null,
+  "prompt_expected_text": null,
+  "prompt_style": null,
+  "prompt_progress_text": null,
+  "prompt_scope_text": null,
+  "prompt_buttons": null,
+  "prompt_result_path": null,
+  "prompt_selection": null,
+  "raw_log": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-wt-codex-companion-wba55-spi-nor-adapter-1.1\\.cache\\validation\\wb55-spi1-xtx-reset2\\nucleo-serial-raw.log",
+  "candidates": [
+    {
+      "port": "COM13",
+      "name": "STMicroelectronics STLink Virtual COM Port (COM13)",
+      "manufacturer": "STMicroelectronics",
+      "pnp_device_id": "USB\\VID_0483&PID_374B&MI_02\\7&ECAD0C&0&0002",
+      "source": "Win32_PnPEntity"
+    }
+  ],
+  "available_ports": [
+    "COM13",
+    "COM3"
+  ],
+  "bytes_read": 3769,
+  "errors": []
+}

@@ -24,8 +24,8 @@ DOC = REPO_ROOT / "docs" / "companion_recording_postprocess.md"
 BRINGUP_DOC = REPO_ROOT / "docs" / "bringup_steps.md"
 GATT_DOC = REPO_ROOT / "docs" / "ble_gatt_contract.md"
 MAIN_SOURCE = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Core" / "Src" / "main.c"
-QSPI_HEADER = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Core" / "Inc" / "comp_qspi_nor.h"
-QSPI_SOURCE = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Core" / "Src" / "comp_qspi_nor.c"
+SPI_NOR_HEADER = REPO_ROOT / "app" / "companion_pendant" / "storage" / "spi_nor_stm32wba.h"
+SPI_NOR_SOURCE = REPO_ROOT / "app" / "companion_pendant" / "storage" / "spi_nor_stm32wba.c"
 NORMALIZED_REPO_ROOT = "<repo>"
 
 
@@ -152,7 +152,7 @@ def check_report(report: dict[str, Any], errors: list[str]) -> None:
 def check_static_contract(errors: list[str]) -> None:
     cli_text = CLI.read_text(encoding="utf-8")
     main_source = MAIN_SOURCE.read_text(encoding="utf-8")
-    qspi_text = QSPI_HEADER.read_text(encoding="utf-8") + "\n" + QSPI_SOURCE.read_text(encoding="utf-8")
+    spi_nor_text = SPI_NOR_HEADER.read_text(encoding="utf-8") + "\n" + SPI_NOR_SOURCE.read_text(encoding="utf-8")
     docs = "\n".join(path.read_text(encoding="utf-8") for path in (DOC, BRINGUP_DOC, GATT_DOC))
 
     for token in [
@@ -161,17 +161,17 @@ def check_static_contract(errors: list[str]) -> None:
         "recording_flash_begin_capture(uint16_t max_seconds)",
         "recording_flash_limit_bytes_for_seconds",
         "uint64_t duration_ms",
-        "comp_qspi_nor_erase_64k",
+        "comp_spi_nor_erase_64k",
         "fallback=4k",
     ]:
         require(token in main_source, f"main.c missing long-recording token {token}", errors)
 
     for token in [
         "NOR_CMD_BLOCK_ERASE_64K",
-        "NOR_BLOCK_ERASE_TIMEOUT_MS",
-        "comp_qspi_nor_erase_64k",
+        "NOR_DEFAULT_ERASE_TIMEOUT_MS",
+        "companion_spi_nor_stm32wba_erase_64k",
     ]:
-        require(token in qspi_text, f"QSPI NOR driver missing block erase token {token}", errors)
+        require(token in spi_nor_text, f"shared SPI NOR core missing block erase token {token}", errors)
 
     for token in [
         "companion-type",

@@ -4,6 +4,8 @@
     "bounds_policy": "adapter rejects reads outside configured partition_size",
     "hardware_parity_claimed": false,
     "required_callback": "read(context, partition_offset, destination, length)",
+    "selected_partition_callback": "companion_spi_nor_stm32wba_partition_read",
+    "selected_pre_port_transport": "spi_nor_1_1_1",
     "storage_class": "external_nor",
     "targets": [
       "WBA55",
@@ -21,11 +23,14 @@
   "sources": {
     "adapter_header": "app/companion_pendant/epaper/screen_assets_stm32wba.h",
     "adapter_source": "app/companion_pendant/epaper/screen_assets_stm32wba.c",
-    "portable_asset_store": "app/companion_pendant/epaper/asset_store.h"
+    "portable_asset_store": "app/companion_pendant/epaper/asset_store.h",
+    "selected_wba_storage_adapter": "app/companion_pendant/storage/spi_nor_stm32wba.c",
+    "selected_wba_storage_contract": "docs/validation/companion-wba-spi-nor-adapter.json"
   },
   "status": "PASS",
   "validation_commands": [
     "python .\\tools\\verify_expression_screen_assets_stm32wba.py",
+    "python .\\tools\\verify_wba_spi_nor_adapter.py --self-test",
     "python .\\tools\\verify_expression_wba_portability.py"
   ]
 }

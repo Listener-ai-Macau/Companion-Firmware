@@ -3,7 +3,7 @@
 #include "app_conf.h"
 #include "app_entry.h"
 #include "audio_stream_stm32wb.h"
-#include "comp_qspi_nor.h"
+#include "comp_spi_nor_stm32wb_spi1.h"
 #include "companion_screen_assets_stm32wb.h"
 #include "companion_screen_ui.h"
 #include "diag_log.h"
@@ -65,19 +65,23 @@ COMPANION_PLACE_IN_SECTION("TAG_OTA_START") const uint32_t MagicKeywordAddress =
     (uint32_t)&MagicKeywordValue;
 #endif
 
-#define FLASH_QSPI_NCS_GPIO_PORT GPIOA
-#define FLASH_QSPI_NCS_PIN GPIO_PIN_2
-#define FLASH_QSPI_CLK_GPIO_PORT GPIOA
-#define FLASH_QSPI_CLK_PIN GPIO_PIN_3
-#define FLASH_QSPI_IO1_GPIO_PORT GPIOB
-#define FLASH_QSPI_IO1_PIN GPIO_PIN_8
-#define FLASH_QSPI_IO0_GPIO_PORT GPIOB
-#define FLASH_QSPI_IO0_PIN GPIO_PIN_9
+#define BOARD_FLASH_SPI1_CS_GPIO_PORT GPIOA
+#define BOARD_FLASH_SPI1_CS_PIN GPIO_PIN_2
+#define BOARD_FLASH_SPI1_SCK_GPIO_PORT GPIOA
+#define BOARD_FLASH_SPI1_SCK_PIN GPIO_PIN_1
+#define BOARD_FLASH_SPI1_MOSI_GPIO_PORT GPIOA
+#define BOARD_FLASH_SPI1_MOSI_PIN GPIO_PIN_7
+#define BOARD_FLASH_SPI1_MISO_GPIO_PORT GPIOB
+#define BOARD_FLASH_SPI1_MISO_PIN GPIO_PIN_4
+#define BOARD_FLASH_SPI1_BAUDRATE_PRESCALER SPI_BAUDRATEPRESCALER_16
+#define BOARD_FLASH_SPI1_HZ 2000000u
 
 #define BOARD_SPI2_CS_GPIO_PORT GPIOA
 #define BOARD_SPI2_CS_PIN GPIO_PIN_6
 #define BOARD_EPAPER_SPI_BAUDRATE_PRESCALER SPI_BAUDRATEPRESCALER_16
 #define BOARD_EPAPER_SPI_HZ 2000000u
+#define BOARD_MAX98357_SAI_GPIO_PORT GPIOB
+#define BOARD_MAX98357_SAI_PIN GPIO_PIN_3
 #define BOARD_MAX98357_SD_GPIO_PORT GPIOA
 #define BOARD_MAX98357_SD_PIN GPIO_PIN_15
 
@@ -404,12 +408,6 @@ typedef enum {
 
 typedef struct {
     const char *name;
-    uint32_t prescaler;
-    uint32_t sample_shifting;
-} flash_qspi_probe_config_t;
-
-typedef struct {
-    const char *name;
     GPIO_TypeDef *port;
     uint16_t pin;
     bool last_raw_pressed;
@@ -476,18 +474,18 @@ DMA_HandleTypeDef hdma_sai1_a_rx;
 #endif
 I2C_HandleTypeDef hi2c3;
 IPCC_HandleTypeDef hipcc;
-QSPI_HandleTypeDef hqspi;
 RNG_HandleTypeDef hrng;
 RTC_HandleTypeDef hrtc;
 SAI_HandleTypeDef hsai_BlockA1;
 SAI_HandleTypeDef hsai_BlockB1;
+SPI_HandleTypeDef hspi1;
 SPI_HandleTypeDef hspi2;
 
 static comp_recording_fsm_t s_recording_fsm;
 static comp_power_policy_t s_power_policy;
 static bool s_power_policy_ready;
 static bool s_low_power_stop_allowed;
-static comp_qspi_nor_t s_flash;
+static comp_spi_nor_t s_flash;
 static companion_screen_assets_stm32wb_t s_screen_assets_adapter;
 static companion_touch_ft6336_stm32wb_t s_touch;
 typedef struct {
@@ -623,8 +621,8 @@ static void MX_RTC_Init(void);
 static void MX_RF_Init(void);
 void MX_USART1_UART_Init(void);
 static void MX_I2C3_Init(void);
-static void MX_QUADSPI_Init(void);
 static void MX_SAI1_Init(void);
+static void MX_SPI1_Init(void);
 static void MX_SPI2_Init(void);
 
 #ifndef COMPANION_SCREEN_ROTATION_DEGREES
@@ -636,6 +634,7 @@ static void MX_SPI2_Init(void);
 #error "Companion screen rotation must be 0 or 180 degrees"
 #endif
 
+static void restore_companion_gpio_after_wpan_debug_init(void);
 static void init_board_buttons(void);
 static void disable_board_button_exti_irqs(void);
 static void poll_board_buttons(void);
@@ -713,25 +712,10 @@ static HAL_StatusTypeDef pdm_raw_dma_read_block(uint32_t *raw_words,
 #endif
 static void run_manual_probe_request(void);
 static void run_flash_probe(void);
-static HAL_StatusTypeDef apply_flash_qspi_probe_config(const flash_qspi_probe_config_t *config);
-static void flash_release_powerdown(void);
-static HAL_StatusTypeDef qspi_read_command(uint8_t instruction,
-                                           uint32_t address_mode,
-                                           uint32_t address,
-                                           uint32_t data_mode,
-                                           uint32_t dummy_cycles,
-                                           uint8_t *data,
-                                           uint32_t length);
-static HAL_StatusTypeDef qspi_no_data_command(uint8_t instruction);
 static void run_flash_write_read_smoke(uint32_t jedec);
-static void run_flash_bitbang_probe(void);
-static void run_flash_bitbang_variant(const char *name, bool swap_io0_io1);
-static uint8_t bitbang_spi_transfer(GPIO_TypeDef *mosi_port,
-                                    uint16_t mosi_pin,
-                                    GPIO_TypeDef *miso_port,
-                                    uint16_t miso_pin,
-                                    uint8_t tx);
-static void configure_flash_pins_for_bitbang(bool swap_io0_io1);
+static void log_spi1_flash_probe(const char *source,
+                                 comp_spi_nor_status_t status);
+static void log_spi1_hw_state(const char *source);
 static void run_ota_readiness_probe(void);
 static void run_microphone_probe(void);
 static void print_diag_tail(void);
@@ -754,7 +738,7 @@ static bool recording_flash_erase_region(void);
 static uint32_t recording_flash_sector_count(uint32_t bytes);
 static uint32_t recording_flash_total_region_bytes(void);
 static uint32_t recording_flash_limit_bytes_for_seconds(uint16_t max_seconds);
-static uint32_t recording_flash_compute_base(const comp_qspi_nor_info_t *info);
+static uint32_t recording_flash_compute_base(const comp_spi_nor_info_t *info);
 static void sha256_init(comp_sha256_ctx_t *ctx);
 static void sha256_update(comp_sha256_ctx_t *ctx, const uint8_t *data, uint32_t length);
 static void sha256_final(comp_sha256_ctx_t *ctx,
@@ -804,8 +788,8 @@ static bool screen_asset_flash_crc(uint32_t address,
         if (chunk > sizeof(buffer)) {
             chunk = sizeof(buffer);
         }
-        if (comp_qspi_nor_read(&s_flash, address + offset, buffer, chunk) !=
-            COMP_QSPI_NOR_OK) {
+        if (comp_spi_nor_read(&s_flash, address + offset, buffer, chunk) !=
+            COMP_SPI_NOR_OK) {
             return false;
         }
         crc = crc32_update(crc, buffer, chunk);
@@ -817,24 +801,24 @@ static bool screen_asset_flash_crc(uint32_t address,
 
 static void screen_asset_provision(void)
 {
-    comp_qspi_nor_info_t info;
+    comp_spi_nor_info_t info;
     uint32_t current_crc = 0u;
     uint32_t verify_crc = 0u;
     uint32_t erase_bytes;
-    comp_qspi_nor_status_t status;
+    comp_spi_nor_status_t status;
 
     _Static_assert(sizeof(companion_screen_asset_provision_blob) ==
                        COMPANION_SCREEN_ASSET_PROVISION_BLOB_SIZE,
                    "generated screen asset size mismatch");
-    status = comp_qspi_nor_probe(&s_flash, &info);
-    if (status != COMP_QSPI_NOR_OK || info.sector_size != 4096u ||
+    status = comp_spi_nor_probe(&s_flash, &info);
+    if (status != COMP_SPI_NOR_OK || info.sector_size != 4096u ||
         COMPANION_SCREEN_ASSET_PROVISION_BLOB_SIZE > FLASH_UI_ASSETS_SIZE ||
         FLASH_UI_ASSETS_BASE > info.size_bytes ||
         FLASH_UI_ASSETS_SIZE > info.size_bytes - FLASH_UI_ASSETS_BASE) {
         printf("[screen-assets-provision] result=blocked probe=%s flash_bytes=%lu sector=%lu blob_bytes=%lu\r\n",
-               comp_qspi_nor_status_name(status),
-               (unsigned long)(status == COMP_QSPI_NOR_OK ? info.size_bytes : 0u),
-               (unsigned long)(status == COMP_QSPI_NOR_OK ? info.sector_size : 0u),
+               comp_spi_nor_status_name(status),
+               (unsigned long)(status == COMP_SPI_NOR_OK ? info.size_bytes : 0u),
+               (unsigned long)(status == COMP_SPI_NOR_OK ? info.sector_size : 0u),
                (unsigned long)COMPANION_SCREEN_ASSET_PROVISION_BLOB_SIZE);
         return;
     }
@@ -858,21 +842,21 @@ static void screen_asset_provision(void)
     erase_bytes = (COMPANION_SCREEN_ASSET_PROVISION_BLOB_SIZE + info.sector_size - 1u) /
                   info.sector_size * info.sector_size;
     for (uint32_t offset = 0u; offset < erase_bytes; offset += info.sector_size) {
-        status = comp_qspi_nor_erase_4k(&s_flash, FLASH_UI_ASSETS_BASE + offset);
-        if (status != COMP_QSPI_NOR_OK) {
+        status = comp_spi_nor_erase_4k(&s_flash, FLASH_UI_ASSETS_BASE + offset);
+        if (status != COMP_SPI_NOR_OK) {
             printf("[screen-assets-provision] result=fail stage=erase address=0x%08lX status=%s\r\n",
                    (unsigned long)(FLASH_UI_ASSETS_BASE + offset),
-                   comp_qspi_nor_status_name(status));
+                   comp_spi_nor_status_name(status));
             return;
         }
     }
-    status = comp_qspi_nor_write(&s_flash,
+    status = comp_spi_nor_write(&s_flash,
                                  FLASH_UI_ASSETS_BASE,
                                  companion_screen_asset_provision_blob,
                                  COMPANION_SCREEN_ASSET_PROVISION_BLOB_SIZE);
-    if (status != COMP_QSPI_NOR_OK) {
+    if (status != COMP_SPI_NOR_OK) {
         printf("[screen-assets-provision] result=fail stage=write status=%s\r\n",
-               comp_qspi_nor_status_name(status));
+               comp_spi_nor_status_name(status));
         return;
     }
     bool verify_read = screen_asset_flash_crc(
@@ -1073,6 +1057,16 @@ int main(void)
     MX_RNG_Init();
     s_error_stage = "MX_RF_Init";
     MX_RF_Init();
+    s_error_stage = "MX_SPI1_Init";
+    MX_SPI1_Init();
+    if (!comp_spi_nor_init(&s_flash,
+                           &hspi1,
+                           BOARD_FLASH_SPI1_CS_GPIO_PORT,
+                           BOARD_FLASH_SPI1_CS_PIN)) {
+        Error_Handler();
+    }
+    printf("[stage] spi1 flash ok sck=PA1 mosi=PA7 miso=PB4 cs=PA2 hz=%lu\r\n",
+           (unsigned long)BOARD_FLASH_SPI1_HZ);
     s_error_stage = "MX_SPI2_Init";
     MX_SPI2_Init();
     printf("[stage] spi2 ok sck=PA9 mosi=PC1 miso=PC2 cs=PA6\r\n");
@@ -1082,10 +1076,6 @@ int main(void)
     printf("\r\n[stage] uart ok\r\n");
     init_touch_debug();
     comp_screen_menu_init(&s_screen_menu);
-    s_error_stage = "MX_QUADSPI_Init";
-    MX_QUADSPI_Init();
-    comp_qspi_nor_init(&s_flash, &hqspi);
-    printf("[stage] qspi ok\r\n");
 #if COMPANION_SCREEN_ASSET_PROVISION
     screen_asset_provision();
 #endif
@@ -1120,7 +1110,8 @@ int main(void)
            (unsigned int)COMP_FT6336_COMPANION_TOUCH_THRESHOLD,
            (unsigned int)TOUCH_ACTIVE_POLL_MS,
            (unsigned int)TOUCH_REFRESH_POLL_MS);
-    printf("[boot] uart=USART1 PB6/PB7 115200 flash=QSPI-2IO PA2/PA3/PB9/PB8 spi2=PA9/PC1/PC2 cs=PA6 hz=%lu i2c3=PC0/PB11 touch_irq=PC6 touch_reset=PC10\r\n",
+    printf("[boot] uart=USART1 PB6/PB7 115200 flash=SPI1-1IO sck=PA1 mosi=PA7 miso=PB4 cs=PA2 hz=%lu epaper=SPI2 PA9/PC1/PC2 cs=PA6 hz=%lu i2c3=PC0/PB11 touch_irq=PC6 touch_reset=PC10\r\n",
+           (unsigned long)BOARD_FLASH_SPI1_HZ,
            (unsigned long)BOARD_EPAPER_SPI_HZ);
     printf("[boot] mic=SAI1A PA8/PB12/PC3 speaker=SAI1B PB3/PA4/PA5 max98357_sd=PA15\r\n");
 #if COMPANION_MIC_BACKEND == COMPANION_MIC_BACKEND_SPH0655_PDM
@@ -1150,6 +1141,7 @@ int main(void)
 
     s_error_stage = "MX_APPE_Init";
     MX_APPE_Init();
+    restore_companion_gpio_after_wpan_debug_init();
     printf("[stage] ble app init requested name=companion service=VKA1\r\n");
     comp_power_policy_init(&s_power_policy);
     comp_power_policy_set_touch_wake_ready(
@@ -1334,6 +1326,42 @@ int main(void)
 static bool button_is_pressed(const board_button_t *button)
 {
     return HAL_GPIO_ReadPin(button->port, button->pin) == GPIO_PIN_RESET;
+}
+
+static void restore_companion_gpio_after_wpan_debug_init(void)
+{
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+
+    /* CubeWB's production APPD_Init parks PA15/PB3/PB4 in analog mode because
+     * they are unused on the reference p2pServer. Companion owns those pins. */
+    __HAL_RCC_GPIOA_CLK_ENABLE();
+    __HAL_RCC_GPIOB_CLK_ENABLE();
+
+    GPIO_InitStruct.Pin = BOARD_FLASH_SPI1_MISO_PIN;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+    GPIO_InitStruct.Alternate = GPIO_AF5_SPI1;
+    HAL_GPIO_Init(BOARD_FLASH_SPI1_MISO_GPIO_PORT, &GPIO_InitStruct);
+
+    GPIO_InitStruct.Pin = BOARD_MAX98357_SAI_PIN;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+    GPIO_InitStruct.Alternate = GPIO_AF13_SAI1;
+    HAL_GPIO_Init(BOARD_MAX98357_SAI_GPIO_PORT, &GPIO_InitStruct);
+
+    HAL_GPIO_WritePin(BOARD_MAX98357_SD_GPIO_PORT,
+                      BOARD_MAX98357_SD_PIN,
+                      GPIO_PIN_RESET);
+    GPIO_InitStruct.Pin = BOARD_MAX98357_SD_PIN;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    GPIO_InitStruct.Alternate = 0u;
+    HAL_GPIO_Init(BOARD_MAX98357_SD_GPIO_PORT, &GPIO_InitStruct);
+
+    printf("[gpio-ownership] after=wpan_debug flash_miso=PB4:AF5 speaker_data=PB3:AF13 speaker_sd=PA15:output\r\n");
 }
 
 static void init_board_buttons(void)
@@ -3118,162 +3146,33 @@ static void run_manual_probe_request(void)
 
 static void run_flash_probe(void)
 {
-    static const flash_qspi_probe_config_t configs[] = {
-        {"qspi_mode0_500khz", 63u, QSPI_SAMPLE_SHIFTING_NONE},
-        {"qspi_mode0_2mhz", 15u, QSPI_SAMPLE_SHIFTING_NONE},
-        {"qspi_mode0_4mhz_half", 7u, QSPI_SAMPLE_SHIFTING_HALFCYCLE},
-    };
-
-    uint32_t best_jedec = 0xFFFFFFFFu;
-    uint8_t best_status1 = 0xFFu;
-    uint8_t best_status2 = 0xFFu;
-    bool any_valid = false;
-    HAL_StatusTypeDef best_id_status = HAL_ERROR;
-    HAL_StatusTypeDef best_sr1_status = HAL_ERROR;
-    HAL_StatusTypeDef best_sr2_status = HAL_ERROR;
-
-    for (size_t index = 0u; index < (sizeof(configs) / sizeof(configs[0])); ++index) {
-        const flash_qspi_probe_config_t *config = &configs[index];
-        HAL_StatusTypeDef cfg_status = apply_flash_qspi_probe_config(config);
-        uint8_t jedec_id[3] = {0};
-        uint8_t status1 = 0u;
-        uint8_t status2 = 0u;
-        uint8_t read_1_1_1[8] = {0};
-        uint8_t read_1_1_2[8] = {0};
-        HAL_StatusTypeDef read_111_status = HAL_ERROR;
-        HAL_StatusTypeDef read_112_status = HAL_ERROR;
-
-        if (cfg_status == HAL_OK) {
-            flash_release_powerdown();
-            best_id_status = qspi_read_command(0x9Fu,
-                                               QSPI_ADDRESS_NONE,
-                                               0u,
-                                               QSPI_DATA_1_LINE,
-                                               0u,
-                                               jedec_id,
-                                               sizeof(jedec_id));
-            best_sr1_status = qspi_read_command(0x05u,
-                                                QSPI_ADDRESS_NONE,
-                                                0u,
-                                                QSPI_DATA_1_LINE,
-                                                0u,
-                                                &status1,
-                                                1u);
-            best_sr2_status = qspi_read_command(0x35u,
-                                                QSPI_ADDRESS_NONE,
-                                                0u,
-                                                QSPI_DATA_1_LINE,
-                                                0u,
-                                                &status2,
-                                                1u);
-        } else {
-            best_id_status = cfg_status;
-            best_sr1_status = cfg_status;
-            best_sr2_status = cfg_status;
-        }
-
-        uint32_t jedec = ((uint32_t)jedec_id[0] << 16) |
-                         ((uint32_t)jedec_id[1] << 8) |
-                         (uint32_t)jedec_id[2];
-        bool valid = cfg_status == HAL_OK &&
-                     best_id_status == HAL_OK &&
-                     jedec != 0x000000u &&
-                     jedec != 0xFFFFFFu;
-
-        if (valid) {
-            read_111_status = qspi_read_command(0x03u,
-                                                QSPI_ADDRESS_1_LINE,
-                                                0u,
-                                                QSPI_DATA_1_LINE,
-                                                0u,
-                                                read_1_1_1,
-                                                sizeof(read_1_1_1));
-            read_112_status = qspi_read_command(0x3Bu,
-                                                QSPI_ADDRESS_1_LINE,
-                                                0u,
-                                                QSPI_DATA_2_LINES,
-                                                8u,
-                                                read_1_1_2,
-                                                sizeof(read_1_1_2));
-        }
-
-        if (valid && !any_valid) {
-            best_jedec = jedec;
-            best_status1 = status1;
-            best_status2 = status2;
-            any_valid = true;
-        } else if (!any_valid) {
-            best_jedec = jedec;
-            best_status1 = status1;
-            best_status2 = status2;
-        }
-
-        printf("[flash] cfg=%s cfg_status=%s id_status=%s sr1_status=%s sr2_status=%s jedec=%02X-%02X-%02X sr1=0x%02X sr2=0x%02X valid=%u\r\n",
-               config->name,
-               hal_status_name(cfg_status),
-               hal_status_name(best_id_status),
-               hal_status_name(best_sr1_status),
-               hal_status_name(best_sr2_status),
-               jedec_id[0],
-               jedec_id[1],
-               jedec_id[2],
-               status1,
-               status2,
-               valid ? 1u : 0u);
-        if (valid) {
-            printf("[flash] read addr0 1-1-1=%s %02X %02X %02X %02X %02X %02X %02X %02X 1-1-2=%s %02X %02X %02X %02X %02X %02X %02X %02X\r\n",
-                   hal_status_name(read_111_status),
-                   read_1_1_1[0],
-                   read_1_1_1[1],
-                   read_1_1_1[2],
-                   read_1_1_1[3],
-                   read_1_1_1[4],
-                   read_1_1_1[5],
-                   read_1_1_1[6],
-                   read_1_1_1[7],
-                   hal_status_name(read_112_status),
-                   read_1_1_2[0],
-                   read_1_1_2[1],
-                   read_1_1_2[2],
-                   read_1_1_2[3],
-                   read_1_1_2[4],
-                   read_1_1_2[5],
-                   read_1_1_2[6],
-                   read_1_1_2[7]);
-        }
-    }
-
-    printf("[flash] summary valid=%u best_jedec=0x%06lX best_sr1=0x%02X best_sr2=0x%02X note=%s\r\n",
-           any_valid ? 1u : 0u,
-           (unsigned long)best_jedec,
-           best_status1,
-           best_status2,
-           any_valid ? "qspi_flash_detected" : "no_qspi_flash_response");
-    run_flash_bitbang_probe();
-    comp_qspi_nor_init(&s_flash, &hqspi);
-    comp_qspi_nor_info_t driver_info;
-    comp_qspi_nor_status_t driver_status = comp_qspi_nor_probe(&s_flash, &driver_info);
-    printf("[flash-driver] probe=%s jedec=0x%06lX size=%lu sector=%lu page=%lu quad=%u sfdp=%u sr1=0x%02X sr2=0x%02X\r\n",
-           comp_qspi_nor_status_name(driver_status),
-           (unsigned long)(driver_status == COMP_QSPI_NOR_OK ? driver_info.jedec_id : 0xFFFFFFFFu),
-           (unsigned long)(driver_status == COMP_QSPI_NOR_OK ? driver_info.size_bytes : 0u),
-           (unsigned long)(driver_status == COMP_QSPI_NOR_OK ? driver_info.sector_size : 0u),
-           (unsigned long)(driver_status == COMP_QSPI_NOR_OK ? driver_info.page_size : 0u),
-           driver_status == COMP_QSPI_NOR_OK && driver_info.quad_enabled ? 1u : 0u,
-           driver_status == COMP_QSPI_NOR_OK && driver_info.sfdp_present ? 1u : 0u,
-           driver_status == COMP_QSPI_NOR_OK ? driver_info.status1 : 0xFFu,
-           driver_status == COMP_QSPI_NOR_OK ? driver_info.status2 : 0xFFu);
-    if (driver_status == COMP_QSPI_NOR_OK) {
+    (void)comp_spi_nor_init(&s_flash,
+                            &hspi1,
+                            BOARD_FLASH_SPI1_CS_GPIO_PORT,
+                            BOARD_FLASH_SPI1_CS_PIN);
+    comp_spi_nor_info_t driver_info;
+    comp_spi_nor_status_t driver_status = comp_spi_nor_probe(&s_flash, &driver_info);
+    log_spi1_flash_probe("manual", driver_status);
+    printf("[flash-driver] transport=spi1 probe=%s jedec=0x%06lX size=%lu sector=%lu page=%lu sr1=0x%02X\r\n",
+           comp_spi_nor_status_name(driver_status),
+           (unsigned long)(driver_status == COMP_SPI_NOR_OK ? driver_info.jedec_id : 0xFFFFFFFFu),
+           (unsigned long)(driver_status == COMP_SPI_NOR_OK ? driver_info.size_bytes : 0u),
+           (unsigned long)(driver_status == COMP_SPI_NOR_OK ? driver_info.sector_size : 0u),
+           (unsigned long)(driver_status == COMP_SPI_NOR_OK ? driver_info.page_size : 0u),
+           driver_status == COMP_SPI_NOR_OK ? driver_info.status1 : 0xFFu);
+    if (driver_status == COMP_SPI_NOR_OK) {
         run_flash_write_read_smoke(driver_info.jedec_id);
     }
 
     comp_diag_log_record_code(COMP_DIAG_EVT_SPI_FLASH_CACHE_READ,
-                              driver_status == COMP_QSPI_NOR_OK ? COMP_DIAG_SEV_INFO : COMP_DIAG_SEV_WARN,
-                              driver_status == COMP_QSPI_NOR_OK ? driver_info.jedec_id : best_jedec,
-                              driver_status == COMP_QSPI_NOR_OK
-                                  ? (((uint32_t)driver_info.status1 << 8) | driver_info.status2)
-                                  : (((uint32_t)best_status1 << 8) | best_status2),
-                              (uint32_t)best_id_status,
+                              driver_status == COMP_SPI_NOR_OK ? COMP_DIAG_SEV_INFO : COMP_DIAG_SEV_WARN,
+                              driver_status == COMP_SPI_NOR_OK
+                                  ? driver_info.jedec_id
+                                  : comp_spi_nor_last_probe_jedec_id(&s_flash),
+                              driver_status == COMP_SPI_NOR_OK
+                                  ? (uint32_t)driver_info.status1
+                                  : s_flash.last_hal_error,
+                              s_flash.transaction_count,
                               (uint32_t)driver_status);
 }
 
@@ -3302,12 +3201,12 @@ static void run_flash_write_read_smoke(uint32_t jedec)
            (unsigned long)jedec,
            (unsigned long)pattern_crc);
 
-    comp_qspi_nor_status_t erase_status = comp_qspi_nor_erase_4k(&s_flash, test_address);
-    comp_qspi_nor_status_t erased_read_status = COMP_QSPI_NOR_ERROR;
+    comp_spi_nor_status_t erase_status = comp_spi_nor_erase_4k(&s_flash, test_address);
+    comp_spi_nor_status_t erased_read_status = COMP_SPI_NOR_ERROR;
     bool erased_ok = false;
-    if (erase_status == COMP_QSPI_NOR_OK) {
-        erased_read_status = comp_qspi_nor_read(&s_flash, test_address, erased_prefix, sizeof(erased_prefix));
-        erased_ok = erased_read_status == COMP_QSPI_NOR_OK;
+    if (erase_status == COMP_SPI_NOR_OK) {
+        erased_read_status = comp_spi_nor_read(&s_flash, test_address, erased_prefix, sizeof(erased_prefix));
+        erased_ok = erased_read_status == COMP_SPI_NOR_OK;
         for (size_t i = 0u; i < sizeof(erased_prefix); ++i) {
             if (erased_prefix[i] != 0xFFu) {
                 erased_ok = false;
@@ -3317,8 +3216,8 @@ static void run_flash_write_read_smoke(uint32_t jedec)
     }
 
     printf("[flash-write] erase=%s erased_read=%s erased_prefix=%02X %02X %02X %02X %02X %02X %02X %02X erased_ok=%u\r\n",
-           comp_qspi_nor_status_name(erase_status),
-           comp_qspi_nor_status_name(erased_read_status),
+           comp_spi_nor_status_name(erase_status),
+           comp_spi_nor_status_name(erased_read_status),
            erased_prefix[0],
            erased_prefix[1],
            erased_prefix[2],
@@ -3329,17 +3228,17 @@ static void run_flash_write_read_smoke(uint32_t jedec)
            erased_prefix[7],
            erased_ok ? 1u : 0u);
 
-    comp_qspi_nor_status_t write_status = COMP_QSPI_NOR_ERROR;
-    comp_qspi_nor_status_t read_status = COMP_QSPI_NOR_ERROR;
+    comp_spi_nor_status_t write_status = COMP_SPI_NOR_ERROR;
+    comp_spi_nor_status_t read_status = COMP_SPI_NOR_ERROR;
     uint32_t read_crc = 0u;
     uint32_t mismatch_count = 0u;
     uint32_t first_mismatch = UINT_MAX;
 
     if (erased_ok) {
-        write_status = comp_qspi_nor_write(&s_flash, test_address, pattern, sizeof(pattern));
-        if (write_status == COMP_QSPI_NOR_OK) {
-            read_status = comp_qspi_nor_read(&s_flash, test_address, readback, sizeof(readback));
-            if (read_status == COMP_QSPI_NOR_OK) {
+        write_status = comp_spi_nor_write(&s_flash, test_address, pattern, sizeof(pattern));
+        if (write_status == COMP_SPI_NOR_OK) {
+            read_status = comp_spi_nor_read(&s_flash, test_address, readback, sizeof(readback));
+            if (read_status == COMP_SPI_NOR_OK) {
                 read_crc = crc32_update(0u, readback, sizeof(readback));
                 for (uint32_t i = 0u; i < FLASH_TEST_SIZE; ++i) {
                     if (readback[i] != pattern[i]) {
@@ -3354,13 +3253,13 @@ static void run_flash_write_read_smoke(uint32_t jedec)
     }
 
     bool pass = erased_ok &&
-                write_status == COMP_QSPI_NOR_OK &&
-                read_status == COMP_QSPI_NOR_OK &&
+                write_status == COMP_SPI_NOR_OK &&
+                read_status == COMP_SPI_NOR_OK &&
                 read_crc == pattern_crc &&
                 mismatch_count == 0u;
     printf("[flash-write] verify write=%s read=%s read_crc=0x%08lX mismatches=%lu first_mismatch=%ld pass=%u\r\n",
-           comp_qspi_nor_status_name(write_status),
-           comp_qspi_nor_status_name(read_status),
+           comp_spi_nor_status_name(write_status),
+           comp_spi_nor_status_name(read_status),
            (unsigned long)read_crc,
            (unsigned long)mismatch_count,
            first_mismatch == UINT_MAX ? -1L : (long)first_mismatch,
@@ -3398,7 +3297,7 @@ static uint32_t recording_flash_sector_count(uint32_t bytes)
     return (bytes + sector_size - 1u) / sector_size;
 }
 
-static uint32_t recording_flash_compute_base(const comp_qspi_nor_info_t *info)
+static uint32_t recording_flash_compute_base(const comp_spi_nor_info_t *info)
 {
     uint32_t sector_size = info->sector_size != 0u ? info->sector_size : 4096u;
     uint32_t region_sectors = recording_flash_sector_count(recording_flash_total_region_bytes());
@@ -3413,15 +3312,53 @@ static uint32_t recording_flash_compute_base(const comp_qspi_nor_info_t *info)
     return 0u;
 }
 
+static void log_spi1_flash_probe(const char *source,
+                                 comp_spi_nor_status_t status)
+{
+    printf("[flash-spi1] source=%s probe=%s raw_jedec=0x%06lX id_transfer=%u transactions=%lu bytes=%lu hal=%u hal_error=0x%08lX idle_cs=%u idle_sck=%u idle_mosi=%u idle_miso=%u hz=%lu\r\n",
+           source != NULL ? source : "unknown",
+           comp_spi_nor_status_name(status),
+           (unsigned long)comp_spi_nor_last_probe_jedec_id(&s_flash),
+           comp_spi_nor_last_probe_id_transfer_completed(&s_flash) ? 1u : 0u,
+           (unsigned long)s_flash.transaction_count,
+           (unsigned long)s_flash.transferred_bytes,
+           (unsigned int)s_flash.last_hal_status,
+           (unsigned long)s_flash.last_hal_error,
+           (unsigned int)HAL_GPIO_ReadPin(BOARD_FLASH_SPI1_CS_GPIO_PORT,
+                                          BOARD_FLASH_SPI1_CS_PIN),
+           (unsigned int)HAL_GPIO_ReadPin(BOARD_FLASH_SPI1_SCK_GPIO_PORT,
+                                          BOARD_FLASH_SPI1_SCK_PIN),
+           (unsigned int)HAL_GPIO_ReadPin(BOARD_FLASH_SPI1_MOSI_GPIO_PORT,
+                                          BOARD_FLASH_SPI1_MOSI_PIN),
+           (unsigned int)HAL_GPIO_ReadPin(BOARD_FLASH_SPI1_MISO_GPIO_PORT,
+                                          BOARD_FLASH_SPI1_MISO_PIN),
+           (unsigned long)BOARD_FLASH_SPI1_HZ);
+}
+
+static void log_spi1_hw_state(const char *source)
+{
+    printf("[flash-spi1-hw] source=%s state=%u cr1=0x%08lX cr2=0x%08lX sr=0x%08lX apb2enr=0x%08lX gpioa_moder=0x%08lX gpioa_afrl=0x%08lX gpiob_moder=0x%08lX gpiob_afrl=0x%08lX\r\n",
+           source != NULL ? source : "unknown",
+           (unsigned int)hspi1.State,
+           (unsigned long)SPI1->CR1,
+           (unsigned long)SPI1->CR2,
+           (unsigned long)SPI1->SR,
+           (unsigned long)RCC->APB2ENR,
+           (unsigned long)GPIOA->MODER,
+           (unsigned long)GPIOA->AFR[0],
+           (unsigned long)GPIOB->MODER,
+           (unsigned long)GPIOB->AFR[0]);
+}
+
 static bool recording_flash_load_header(void)
 {
     recording_flash_header_t header;
     memset(&header, 0, sizeof(header));
-    comp_qspi_nor_status_t status = comp_qspi_nor_read(&s_flash,
+    comp_spi_nor_status_t status = comp_spi_nor_read(&s_flash,
                                                        s_recording_flash.base_address,
                                                        (uint8_t *)&header,
                                                        sizeof(header));
-    if (status != COMP_QSPI_NOR_OK ||
+    if (status != COMP_SPI_NOR_OK ||
         header.magic != FLASH_RECORDING_MAGIC ||
         header.version != FLASH_RECORDING_VERSION ||
         header.total_length == 0u ||
@@ -3448,18 +3385,22 @@ static bool recording_flash_ensure_ready(void)
         return true;
     }
 
-    comp_qspi_nor_init(&s_flash, &hqspi);
-    comp_qspi_nor_info_t info;
-    comp_qspi_nor_status_t status = comp_qspi_nor_probe(&s_flash, &info);
-    if (status != COMP_QSPI_NOR_OK ||
+    (void)comp_spi_nor_init(&s_flash,
+                            &hspi1,
+                            BOARD_FLASH_SPI1_CS_GPIO_PORT,
+                            BOARD_FLASH_SPI1_CS_PIN);
+    comp_spi_nor_info_t info;
+    comp_spi_nor_status_t status = comp_spi_nor_probe(&s_flash, &info);
+    log_spi1_flash_probe("recording", status);
+    if (status != COMP_SPI_NOR_OK ||
         info.size_bytes < recording_flash_total_region_bytes()) {
         printf("[rec-flash] probe=%s size=%lu required=%lu ready=0\r\n",
-               comp_qspi_nor_status_name(status),
-               (unsigned long)(status == COMP_QSPI_NOR_OK ? info.size_bytes : 0u),
+               comp_spi_nor_status_name(status),
+               (unsigned long)(status == COMP_SPI_NOR_OK ? info.size_bytes : 0u),
                (unsigned long)recording_flash_total_region_bytes());
         comp_diag_log_record_code(COMP_DIAG_EVT_SPI_FLASH_CACHE_LOW_STORAGE,
                                   COMP_DIAG_SEV_WARN,
-                                  status == COMP_QSPI_NOR_OK ? info.size_bytes : 0u,
+                                  status == COMP_SPI_NOR_OK ? info.size_bytes : 0u,
                                   recording_flash_total_region_bytes(),
                                   (uint32_t)status,
                                   0u);
@@ -3498,20 +3439,25 @@ static void recording_flash_clear_state(void)
 
 bool Companion_ScreenAssets_OpenExternalStore(comp_asset_store_t *store)
 {
-    comp_qspi_nor_info_t info;
-    comp_qspi_nor_status_t status;
+    comp_spi_nor_info_t info;
+    comp_spi_nor_status_t status;
 
     if (store == NULL) {
         return false;
     }
-    comp_qspi_nor_init(&s_flash, &hqspi);
-    status = comp_qspi_nor_probe(&s_flash, &info);
-    if (status != COMP_QSPI_NOR_OK ||
+    log_spi1_hw_state("screen_assets_before_probe");
+    (void)comp_spi_nor_init(&s_flash,
+                            &hspi1,
+                            BOARD_FLASH_SPI1_CS_GPIO_PORT,
+                            BOARD_FLASH_SPI1_CS_PIN);
+    status = comp_spi_nor_probe(&s_flash, &info);
+    log_spi1_flash_probe("screen_assets", status);
+    if (status != COMP_SPI_NOR_OK ||
         FLASH_UI_ASSETS_BASE > info.size_bytes ||
         FLASH_UI_ASSETS_SIZE > info.size_bytes - FLASH_UI_ASSETS_BASE) {
         printf("[screen-assets] external_store=unavailable probe=%s size=%lu required_end=0x%08lX\r\n",
-               comp_qspi_nor_status_name(status),
-               (unsigned long)(status == COMP_QSPI_NOR_OK ? info.size_bytes : 0u),
+               comp_spi_nor_status_name(status),
+               (unsigned long)(status == COMP_SPI_NOR_OK ? info.size_bytes : 0u),
                (unsigned long)(FLASH_UI_ASSETS_BASE + FLASH_UI_ASSETS_SIZE));
         return false;
     }
@@ -3522,7 +3468,7 @@ bool Companion_ScreenAssets_OpenExternalStore(comp_asset_store_t *store)
                                               FLASH_UI_ASSETS_SIZE)) {
         return false;
     }
-    printf("[screen-assets] external_store=ready kind=qspi_nor base=0x%08lX bytes=%lu\r\n",
+    printf("[screen-assets] external_store=ready kind=spi1_nor base=0x%08lX bytes=%lu\r\n",
            (unsigned long)FLASH_UI_ASSETS_BASE,
            (unsigned long)FLASH_UI_ASSETS_SIZE);
     return true;
@@ -3538,22 +3484,22 @@ static bool recording_flash_erase_region(void)
 
     while (remaining > 0u) {
         if (remaining >= block_size && (address % block_size) == 0u) {
-            comp_qspi_nor_status_t block_status = comp_qspi_nor_erase_64k(&s_flash, address);
-            if (block_status == COMP_QSPI_NOR_OK) {
+            comp_spi_nor_status_t block_status = comp_spi_nor_erase_64k(&s_flash, address);
+            if (block_status == COMP_SPI_NOR_OK) {
                 address += block_size;
                 remaining -= block_size;
                 continue;
             }
             printf("[rec-flash] erase64 address=0x%08lX status=%s fallback=4k\r\n",
                    (unsigned long)address,
-                   comp_qspi_nor_status_name(block_status));
+                   comp_spi_nor_status_name(block_status));
         }
 
-        comp_qspi_nor_status_t status = comp_qspi_nor_erase_4k(&s_flash, address);
-        if (status != COMP_QSPI_NOR_OK) {
+        comp_spi_nor_status_t status = comp_spi_nor_erase_4k(&s_flash, address);
+        if (status != COMP_SPI_NOR_OK) {
             printf("[rec-flash] erase address=0x%08lX status=%s\r\n",
                    (unsigned long)address,
-                   comp_qspi_nor_status_name(status));
+                   comp_spi_nor_status_name(status));
             return false;
         }
         address += sector_size;
@@ -3646,14 +3592,14 @@ static bool recording_flash_write_bytes(const uint8_t *data, uint32_t length)
     }
 
     uint32_t address = s_recording_flash.data_address + s_recording_flash.bytes_written;
-    comp_qspi_nor_status_t status = comp_qspi_nor_write(&s_flash, address, data, length);
-    if (status != COMP_QSPI_NOR_OK) {
+    comp_spi_nor_status_t status = comp_spi_nor_write(&s_flash, address, data, length);
+    if (status != COMP_SPI_NOR_OK) {
         s_recording_flash.write_failed = true;
         printf("[rec-flash] append_failed id=%lu offset=%lu length=%lu status=%s\r\n",
                (unsigned long)s_recording_flash.recording_id,
                (unsigned long)s_recording_flash.bytes_written,
                (unsigned long)length,
-               comp_qspi_nor_status_name(status));
+               comp_spi_nor_status_name(status));
         comp_diag_log_record_code(COMP_DIAG_EVT_SPI_FLASH_CACHE_INTERRUPTED_WRITE,
                                   COMP_DIAG_SEV_WARN,
                                   s_recording_flash.recording_id,
@@ -3752,14 +3698,14 @@ static bool recording_flash_finalize_capture(void)
     header.source_mode = FLASH_RECORDING_SOURCE_MIC_SAI_VALUE;
     sha256_final(&s_recording_flash.sha256, header.sha256);
 
-    comp_qspi_nor_status_t status = comp_qspi_nor_write(&s_flash,
+    comp_spi_nor_status_t status = comp_spi_nor_write(&s_flash,
                                                         s_recording_flash.base_address,
                                                         (const uint8_t *)&header,
                                                         sizeof(header));
-    if (status != COMP_QSPI_NOR_OK) {
+    if (status != COMP_SPI_NOR_OK) {
         printf("[rec-flash] header_write_failed id=%lu status=%s\r\n",
                (unsigned long)header.recording_id,
-               comp_qspi_nor_status_name(status));
+               comp_spi_nor_status_name(status));
         return false;
     }
 
@@ -3902,19 +3848,19 @@ bool Companion_RecordingFlash_ReadChunk(uint32_t recording_id,
         length = available;
     }
 
-    comp_qspi_nor_status_t status = comp_qspi_nor_read(&s_flash,
+    comp_spi_nor_status_t status = comp_spi_nor_read(&s_flash,
                                                        s_recording_flash.data_address + byte_offset,
                                                        payload,
                                                        length);
-    if (status != COMP_QSPI_NOR_OK) {
-        out->error_code = COMPANION_RECORDING_FLASH_READ_QSPI_BASE |
+    if (status != COMP_SPI_NOR_OK) {
+        out->error_code = COMPANION_RECORDING_FLASH_READ_STORAGE_BASE |
                           (((uint32_t)(-(int32_t)status)) & 0xFFu);
         out->payload_length = (uint16_t)length;
         printf("[rec-flash] read_error id=%lu offset=%lu length=%lu status=%s code=0x%08lX total=%lu\r\n",
                (unsigned long)recording_id,
                (unsigned long)byte_offset,
                (unsigned long)length,
-               comp_qspi_nor_status_name(status),
+               comp_spi_nor_status_name(status),
                (unsigned long)out->error_code,
                (unsigned long)s_recording_flash.header.total_length);
         comp_diag_log_record_code(COMP_DIAG_EVT_SPI_FLASH_CACHE_INTERRUPTED_READ,
@@ -4008,195 +3954,6 @@ bool Companion_RecordingFlash_Delete(uint8_t operation,
                               delete_all ? 1u : 0u,
                               erased ? 0u : 1u);
     return erased;
-}
-
-static HAL_StatusTypeDef apply_flash_qspi_probe_config(const flash_qspi_probe_config_t *config)
-{
-    if (HAL_QSPI_DeInit(&hqspi) != HAL_OK) {
-        return HAL_ERROR;
-    }
-
-    hqspi.Instance = QUADSPI;
-    hqspi.Init.ClockPrescaler = config->prescaler;
-    hqspi.Init.FifoThreshold = 4u;
-    hqspi.Init.SampleShifting = config->sample_shifting;
-    hqspi.Init.FlashSize = 23u;
-    hqspi.Init.ChipSelectHighTime = QSPI_CS_HIGH_TIME_8_CYCLE;
-    hqspi.Init.ClockMode = QSPI_CLOCK_MODE_0;
-
-    return HAL_QSPI_Init(&hqspi);
-}
-
-static void flash_release_powerdown(void)
-{
-    (void)qspi_no_data_command(0xABu);
-    HAL_Delay(1u);
-}
-
-static HAL_StatusTypeDef qspi_read_command(uint8_t instruction,
-                                           uint32_t address_mode,
-                                           uint32_t address,
-                                           uint32_t data_mode,
-                                           uint32_t dummy_cycles,
-                                           uint8_t *data,
-                                           uint32_t length)
-{
-    QSPI_CommandTypeDef command = {0};
-
-    command.Instruction = instruction;
-    command.Address = address;
-    command.AlternateBytes = 0u;
-    command.AddressSize = QSPI_ADDRESS_24_BITS;
-    command.AlternateBytesSize = QSPI_ALTERNATE_BYTES_8_BITS;
-    command.DummyCycles = dummy_cycles;
-    command.InstructionMode = QSPI_INSTRUCTION_1_LINE;
-    command.AddressMode = address_mode;
-    command.AlternateByteMode = QSPI_ALTERNATE_BYTES_NONE;
-    command.DataMode = data_mode;
-    command.NbData = length;
-    command.DdrMode = QSPI_DDR_MODE_DISABLE;
-    command.SIOOMode = QSPI_SIOO_INST_EVERY_CMD;
-
-    HAL_StatusTypeDef status = HAL_QSPI_Command(&hqspi, &command, 200u);
-    if (status != HAL_OK) {
-        return status;
-    }
-    return HAL_QSPI_Receive(&hqspi, data, 200u);
-}
-
-static HAL_StatusTypeDef qspi_no_data_command(uint8_t instruction)
-{
-    QSPI_CommandTypeDef command = {0};
-
-    command.Instruction = instruction;
-    command.Address = 0u;
-    command.AlternateBytes = 0u;
-    command.AddressSize = QSPI_ADDRESS_24_BITS;
-    command.AlternateBytesSize = QSPI_ALTERNATE_BYTES_8_BITS;
-    command.DummyCycles = 0u;
-    command.InstructionMode = QSPI_INSTRUCTION_1_LINE;
-    command.AddressMode = QSPI_ADDRESS_NONE;
-    command.AlternateByteMode = QSPI_ALTERNATE_BYTES_NONE;
-    command.DataMode = QSPI_DATA_NONE;
-    command.NbData = 0u;
-    command.DdrMode = QSPI_DDR_MODE_DISABLE;
-    command.SIOOMode = QSPI_SIOO_INST_EVERY_CMD;
-
-    return HAL_QSPI_Command(&hqspi, &command, 200u);
-}
-
-static void run_flash_bitbang_probe(void)
-{
-    HAL_StatusTypeDef deinit_status = HAL_QSPI_DeInit(&hqspi);
-    printf("[flash-bb] begin qspi_deinit=%s note=manual_gpio_spi_on_qspi_pins\r\n",
-           hal_status_name(deinit_status));
-    run_flash_bitbang_variant("normal_io0_mosi_io1_miso", false);
-    run_flash_bitbang_variant("swapped_io1_mosi_io0_miso", true);
-    MX_QUADSPI_Init();
-}
-
-static void run_flash_bitbang_variant(const char *name, bool swap_io0_io1)
-{
-    GPIO_TypeDef *mosi_port = swap_io0_io1 ? FLASH_QSPI_IO1_GPIO_PORT : FLASH_QSPI_IO0_GPIO_PORT;
-    uint16_t mosi_pin = swap_io0_io1 ? FLASH_QSPI_IO1_PIN : FLASH_QSPI_IO0_PIN;
-    GPIO_TypeDef *miso_port = swap_io0_io1 ? FLASH_QSPI_IO0_GPIO_PORT : FLASH_QSPI_IO1_GPIO_PORT;
-    uint16_t miso_pin = swap_io0_io1 ? FLASH_QSPI_IO0_PIN : FLASH_QSPI_IO1_PIN;
-    uint8_t jedec_id[3] = {0};
-    uint8_t status1 = 0u;
-
-    configure_flash_pins_for_bitbang(swap_io0_io1);
-
-    HAL_GPIO_WritePin(FLASH_QSPI_NCS_GPIO_PORT, FLASH_QSPI_NCS_PIN, GPIO_PIN_RESET);
-    (void)bitbang_spi_transfer(mosi_port, mosi_pin, miso_port, miso_pin, 0xABu);
-    HAL_GPIO_WritePin(FLASH_QSPI_NCS_GPIO_PORT, FLASH_QSPI_NCS_PIN, GPIO_PIN_SET);
-    HAL_Delay(1u);
-
-    HAL_GPIO_WritePin(FLASH_QSPI_NCS_GPIO_PORT, FLASH_QSPI_NCS_PIN, GPIO_PIN_RESET);
-    (void)bitbang_spi_transfer(mosi_port, mosi_pin, miso_port, miso_pin, 0x9Fu);
-    jedec_id[0] = bitbang_spi_transfer(mosi_port, mosi_pin, miso_port, miso_pin, 0xFFu);
-    jedec_id[1] = bitbang_spi_transfer(mosi_port, mosi_pin, miso_port, miso_pin, 0xFFu);
-    jedec_id[2] = bitbang_spi_transfer(mosi_port, mosi_pin, miso_port, miso_pin, 0xFFu);
-    HAL_GPIO_WritePin(FLASH_QSPI_NCS_GPIO_PORT, FLASH_QSPI_NCS_PIN, GPIO_PIN_SET);
-
-    HAL_GPIO_WritePin(FLASH_QSPI_NCS_GPIO_PORT, FLASH_QSPI_NCS_PIN, GPIO_PIN_RESET);
-    (void)bitbang_spi_transfer(mosi_port, mosi_pin, miso_port, miso_pin, 0x05u);
-    status1 = bitbang_spi_transfer(mosi_port, mosi_pin, miso_port, miso_pin, 0xFFu);
-    HAL_GPIO_WritePin(FLASH_QSPI_NCS_GPIO_PORT, FLASH_QSPI_NCS_PIN, GPIO_PIN_SET);
-
-    uint32_t jedec = ((uint32_t)jedec_id[0] << 16) |
-                     ((uint32_t)jedec_id[1] << 8) |
-                     (uint32_t)jedec_id[2];
-    bool valid = jedec != 0x000000u && jedec != 0xFFFFFFu;
-
-    GPIO_PinState io0_level = HAL_GPIO_ReadPin(FLASH_QSPI_IO0_GPIO_PORT, FLASH_QSPI_IO0_PIN);
-    GPIO_PinState io1_level = HAL_GPIO_ReadPin(FLASH_QSPI_IO1_GPIO_PORT, FLASH_QSPI_IO1_PIN);
-
-    printf("[flash-bb] cfg=%s jedec=%02X-%02X-%02X sr1=0x%02X valid=%u idle_io0=%u idle_io1=%u\r\n",
-           name,
-           jedec_id[0],
-           jedec_id[1],
-           jedec_id[2],
-           status1,
-           valid ? 1u : 0u,
-           io0_level == GPIO_PIN_SET ? 1u : 0u,
-           io1_level == GPIO_PIN_SET ? 1u : 0u);
-}
-
-static uint8_t bitbang_spi_transfer(GPIO_TypeDef *mosi_port,
-                                    uint16_t mosi_pin,
-                                    GPIO_TypeDef *miso_port,
-                                    uint16_t miso_pin,
-                                    uint8_t tx)
-{
-    uint8_t rx = 0u;
-
-    for (int bit = 7; bit >= 0; --bit) {
-        HAL_GPIO_WritePin(mosi_port,
-                          mosi_pin,
-                          ((tx >> bit) & 1u) ? GPIO_PIN_SET : GPIO_PIN_RESET);
-        for (volatile uint32_t delay = 0u; delay < 80u; ++delay) {
-        }
-        HAL_GPIO_WritePin(FLASH_QSPI_CLK_GPIO_PORT, FLASH_QSPI_CLK_PIN, GPIO_PIN_SET);
-        for (volatile uint32_t delay = 0u; delay < 80u; ++delay) {
-        }
-        rx <<= 1;
-        if (HAL_GPIO_ReadPin(miso_port, miso_pin) == GPIO_PIN_SET) {
-            rx |= 1u;
-        }
-        HAL_GPIO_WritePin(FLASH_QSPI_CLK_GPIO_PORT, FLASH_QSPI_CLK_PIN, GPIO_PIN_RESET);
-        for (volatile uint32_t delay = 0u; delay < 80u; ++delay) {
-        }
-    }
-
-    return rx;
-}
-
-static void configure_flash_pins_for_bitbang(bool swap_io0_io1)
-{
-    GPIO_InitTypeDef GPIO_InitStruct = {0};
-    uint16_t mosi_pin = swap_io0_io1 ? FLASH_QSPI_IO1_PIN : FLASH_QSPI_IO0_PIN;
-    uint16_t miso_pin = swap_io0_io1 ? FLASH_QSPI_IO0_PIN : FLASH_QSPI_IO1_PIN;
-
-    HAL_GPIO_WritePin(FLASH_QSPI_NCS_GPIO_PORT, FLASH_QSPI_NCS_PIN, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(FLASH_QSPI_CLK_GPIO_PORT, FLASH_QSPI_CLK_PIN, GPIO_PIN_RESET);
-
-    GPIO_InitStruct.Pin = FLASH_QSPI_NCS_PIN | FLASH_QSPI_CLK_PIN;
-    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-    GPIO_InitStruct.Pull = GPIO_PULLUP;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-    GPIO_InitStruct.Pin = mosi_pin;
-    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-
-    GPIO_InitStruct.Pin = miso_pin;
-    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-    GPIO_InitStruct.Pull = GPIO_PULLUP;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 }
 
 static uint32_t ota_blockers(bool recording_active,
@@ -5381,6 +5138,9 @@ static void MX_GPIO_Init(void)
     __HAL_RCC_GPIOC_CLK_ENABLE();
     __HAL_RCC_GPIOD_CLK_ENABLE();
 
+    HAL_GPIO_WritePin(BOARD_FLASH_SPI1_CS_GPIO_PORT,
+                      BOARD_FLASH_SPI1_CS_PIN,
+                      GPIO_PIN_SET);
     HAL_GPIO_WritePin(BOARD_SPI2_CS_GPIO_PORT, BOARD_SPI2_CS_PIN, GPIO_PIN_SET);
     HAL_GPIO_WritePin(BOARD_MAX98357_SD_GPIO_PORT, BOARD_MAX98357_SD_PIN, GPIO_PIN_RESET);
 #if COMPANION_TOUCH_RST_WIRED
@@ -5389,7 +5149,9 @@ static void MX_GPIO_Init(void)
                       GPIO_PIN_SET);
 #endif
 
-    GPIO_InitStruct.Pin = BOARD_SPI2_CS_PIN | BOARD_MAX98357_SD_PIN;
+    GPIO_InitStruct.Pin = BOARD_FLASH_SPI1_CS_PIN |
+                          BOARD_SPI2_CS_PIN |
+                          BOARD_MAX98357_SD_PIN;
     GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -5500,17 +5262,24 @@ static void MX_SPI2_Init(void)
     }
 }
 
-static void MX_QUADSPI_Init(void)
+static void MX_SPI1_Init(void)
 {
-    hqspi.Instance = QUADSPI;
-    hqspi.Init.ClockPrescaler = 15u;
-    hqspi.Init.FifoThreshold = 4u;
-    hqspi.Init.SampleShifting = QSPI_SAMPLE_SHIFTING_NONE;
-    hqspi.Init.FlashSize = 23u;
-    hqspi.Init.ChipSelectHighTime = QSPI_CS_HIGH_TIME_8_CYCLE;
-    hqspi.Init.ClockMode = QSPI_CLOCK_MODE_0;
+    hspi1.Instance = SPI1;
+    hspi1.Init.Mode = SPI_MODE_MASTER;
+    hspi1.Init.Direction = SPI_DIRECTION_2LINES;
+    hspi1.Init.DataSize = SPI_DATASIZE_8BIT;
+    hspi1.Init.CLKPolarity = SPI_POLARITY_LOW;
+    hspi1.Init.CLKPhase = SPI_PHASE_1EDGE;
+    hspi1.Init.NSS = SPI_NSS_SOFT;
+    hspi1.Init.BaudRatePrescaler = BOARD_FLASH_SPI1_BAUDRATE_PRESCALER;
+    hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
+    hspi1.Init.TIMode = SPI_TIMODE_DISABLE;
+    hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
+    hspi1.Init.CRCPolynomial = 7u;
+    hspi1.Init.CRCLength = SPI_CRC_LENGTH_DATASIZE;
+    hspi1.Init.NSSPMode = SPI_NSS_PULSE_DISABLE;
 
-    if (HAL_QSPI_Init(&hqspi) != HAL_OK) {
+    if (HAL_SPI_Init(&hspi1) != HAL_OK) {
         Error_Handler();
     }
 }
@@ -5825,7 +5594,22 @@ void HAL_SPI_MspInit(SPI_HandleTypeDef *spiHandle)
 {
     GPIO_InitTypeDef GPIO_InitStruct = {0};
 
-    if (spiHandle->Instance == SPI2) {
+    if (spiHandle->Instance == SPI1) {
+        __HAL_RCC_SPI1_CLK_ENABLE();
+        __HAL_RCC_GPIOA_CLK_ENABLE();
+        __HAL_RCC_GPIOB_CLK_ENABLE();
+
+        GPIO_InitStruct.Pin = GPIO_PIN_1 | GPIO_PIN_7;
+        GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+        GPIO_InitStruct.Pull = GPIO_NOPULL;
+        GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+        GPIO_InitStruct.Alternate = GPIO_AF5_SPI1;
+        HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+        GPIO_InitStruct.Pin = GPIO_PIN_4;
+        GPIO_InitStruct.Pull = GPIO_PULLUP;
+        HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+    } else if (spiHandle->Instance == SPI2) {
         __HAL_RCC_SPI2_CLK_ENABLE();
         __HAL_RCC_GPIOA_CLK_ENABLE();
         __HAL_RCC_GPIOC_CLK_ENABLE();
@@ -5848,51 +5632,14 @@ void HAL_SPI_MspInit(SPI_HandleTypeDef *spiHandle)
 
 void HAL_SPI_MspDeInit(SPI_HandleTypeDef *spiHandle)
 {
-    if (spiHandle->Instance == SPI2) {
+    if (spiHandle->Instance == SPI1) {
+        HAL_GPIO_DeInit(GPIOA, GPIO_PIN_1 | GPIO_PIN_7);
+        HAL_GPIO_DeInit(GPIOB, GPIO_PIN_4);
+        __HAL_RCC_SPI1_CLK_DISABLE();
+    } else if (spiHandle->Instance == SPI2) {
         HAL_GPIO_DeInit(GPIOA, GPIO_PIN_9);
         HAL_GPIO_DeInit(GPIOC, GPIO_PIN_1 | GPIO_PIN_2);
         __HAL_RCC_SPI2_CLK_DISABLE();
-    }
-}
-
-void HAL_QSPI_MspInit(QSPI_HandleTypeDef *qspiHandle)
-{
-    GPIO_InitTypeDef GPIO_InitStruct = {0};
-
-    if (qspiHandle->Instance == QUADSPI) {
-        __HAL_RCC_QUADSPI_CLK_ENABLE();
-        __HAL_RCC_GPIOA_CLK_ENABLE();
-        __HAL_RCC_GPIOB_CLK_ENABLE();
-
-        GPIO_InitStruct.Pin = GPIO_PIN_2;
-        GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-        GPIO_InitStruct.Pull = GPIO_PULLUP;
-        GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-        GPIO_InitStruct.Alternate = GPIO_AF10_QUADSPI;
-        HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-        GPIO_InitStruct.Pin = GPIO_PIN_3;
-        GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-        GPIO_InitStruct.Pull = GPIO_NOPULL;
-        GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-        GPIO_InitStruct.Alternate = GPIO_AF10_QUADSPI;
-        HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-        GPIO_InitStruct.Pin = GPIO_PIN_8 | GPIO_PIN_9;
-        GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-        GPIO_InitStruct.Pull = GPIO_NOPULL;
-        GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-        GPIO_InitStruct.Alternate = GPIO_AF10_QUADSPI;
-        HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-    }
-}
-
-void HAL_QSPI_MspDeInit(QSPI_HandleTypeDef *qspiHandle)
-{
-    if (qspiHandle->Instance == QUADSPI) {
-        HAL_GPIO_DeInit(GPIOA, GPIO_PIN_2 | GPIO_PIN_3);
-        HAL_GPIO_DeInit(GPIOB, GPIO_PIN_8 | GPIO_PIN_9);
-        __HAL_RCC_QUADSPI_CLK_DISABLE();
     }
 }
 

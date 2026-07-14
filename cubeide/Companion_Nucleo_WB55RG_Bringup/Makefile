@@ -228,6 +228,7 @@ INC_DIRS := \
 	$(ROOT)/app/companion_pendant/gatt \
 	$(ROOT)/app/companion_pendant/power \
 	$(ROOT)/app/companion_pendant/recording \
+	$(ROOT)/app/companion_pendant/storage \
 	$(ROOT)/third_party/denzic-platform/audio/embedded/c/include \
 	$(ROOT)/app/companion_pendant/touch \
 	$(ROOT)/app/companion_pendant/v1_features
@@ -239,9 +240,10 @@ endif
 
 C_SOURCES := \
 	Core/Src/app_ble.c \
-	Core/Src/comp_qspi_nor.c \
+	Core/Src/comp_spi_nor_stm32wb_spi1.c \
 	Core/Src/companion_screen_assets_stm32wb.c \
 	Core/Src/main.c \
+	$(ROOT)/app/companion_pendant/storage/spi_nor_stm32wba.c \
 	$(P2P)/Core/Src/app_debug.c \
 	$(P2P)/Core/Src/app_entry.c \
 	$(P2P)/Core/Src/hw_timerserver.c \
@@ -260,7 +262,6 @@ C_SOURCES := \
 	$(CUBE)/Drivers/STM32WBxx_HAL_Driver/Src/stm32wbxx_hal_ipcc.c \
 	$(CUBE)/Drivers/STM32WBxx_HAL_Driver/Src/stm32wbxx_hal_pwr.c \
 	$(CUBE)/Drivers/STM32WBxx_HAL_Driver/Src/stm32wbxx_hal_pwr_ex.c \
-	$(CUBE)/Drivers/STM32WBxx_HAL_Driver/Src/stm32wbxx_hal_qspi.c \
 	$(CUBE)/Drivers/STM32WBxx_HAL_Driver/Src/stm32wbxx_hal_rcc.c \
 	$(CUBE)/Drivers/STM32WBxx_HAL_Driver/Src/stm32wbxx_hal_rcc_ex.c \
 	$(CUBE)/Drivers/STM32WBxx_HAL_Driver/Src/stm32wbxx_hal_rng.c \

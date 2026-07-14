@@ -17,6 +17,7 @@ REPO_ROOT = pathlib.Path(__file__).resolve().parents[1]
 EPAPER_ROOT = REPO_ROOT / "app" / "companion_pendant" / "epaper"
 TOUCH_ROOT = REPO_ROOT / "app" / "companion_pendant" / "touch"
 POWER_ROOT = REPO_ROOT / "app" / "companion_pendant" / "power"
+STORAGE_ROOT = REPO_ROOT / "app" / "companion_pendant" / "storage"
 DEFAULT_FIXTURE = pathlib.Path(
     "docs/validation/companion-screen-wba-adapter-m33-compile.json"
 )
@@ -29,9 +30,10 @@ ADAPTER_SOURCES = (
     EPAPER_ROOT / "screen_assets_stm32wba.c",
     TOUCH_ROOT / "touch_target_stm32wba_ft6336.c",
     POWER_ROOT / "power_target_stm32wba.c",
+    STORAGE_ROOT / "spi_nor_stm32wba.c",
     EPAPER_ROOT / "pet_behavior_user_data_stm32wba.c",
 )
-INCLUDE_DIRS = (EPAPER_ROOT, TOUCH_ROOT, POWER_ROOT)
+INCLUDE_DIRS = (EPAPER_ROOT, TOUCH_ROOT, POWER_ROOT, STORAGE_ROOT)
 COMPILE_FLAGS = (
     "-std=c11",
     "-mcpu=cortex-m33",
@@ -66,8 +68,8 @@ def build_fixture() -> dict[str, Any]:
         "schema_id": SCHEMA_ID,
         "status": "PASS_STATIC_M33_COMPILE_CONTRACT",
         "purpose": (
-            "Require every callback-only WBA screen, touch, power, asset, and "
-            "pet-memory adapter to compile as strict freestanding Cortex-M33 C "
+            "Require the callback-only WBA screen, touch, power, asset, SPI-NOR, "
+            "and pet-memory adapters to compile as strict freestanding Cortex-M33 C "
             "before a CubeWBA project exists."
         ),
         "targets": {

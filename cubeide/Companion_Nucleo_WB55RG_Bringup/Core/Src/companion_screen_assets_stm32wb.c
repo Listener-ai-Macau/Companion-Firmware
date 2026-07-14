@@ -14,16 +14,16 @@ static bool read_partition(void *context,
         offset > adapter->partition_size || length > adapter->partition_size - offset) {
         return false;
     }
-    return comp_qspi_nor_read(adapter->nor,
-                              adapter->partition_offset + offset,
-                              destination,
-                              length) == COMP_QSPI_NOR_OK;
+    return comp_spi_nor_read(adapter->nor,
+                             adapter->partition_offset + offset,
+                             destination,
+                             length) == COMP_SPI_NOR_OK;
 }
 
 bool companion_screen_assets_stm32wb_init(
     companion_screen_assets_stm32wb_t *adapter,
     comp_asset_store_t *store,
-    comp_qspi_nor_t *nor,
+    comp_spi_nor_t *nor,
     uint32_t partition_offset,
     uint32_t partition_size)
 {

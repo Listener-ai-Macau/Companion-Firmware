@@ -846,6 +846,44 @@ partition-relative offset and a declared partition size, then exposes the
 portable `comp_asset_store_t` reader. It must reject out-of-range reads before
 calling the target callback.
 
+The selected WBA55 baseline transport is ordinary `1-1-1 SPI NOR`, implemented
+by the HAL-free `storage/spi_nor_stm32wba.h/.c` adapter. WBA65 keeps this same
+baseline unless a separately evidenced board revision explicitly selects a
+different transport. The adapter owns release-from-power-down, JEDEC probe,
+status polling, bounded 24-bit reads, 256-byte page splitting, 4 KiB/64 KiB
+erase and operation timeouts. CubeWBA glue supplies only chip select, full-duplex SPI
+transfer, monotonic time and delay callbacks. It also owns the selected SPI
+instance, mode, clock, pins, DMA and Flash power control; none of those board
+facts may enter the adapter. The WB55 devboard validates the same command core
+through target glue on dedicated hardware `SPI1` (`PA1/PA7/PB4`, software
+`PA2` chip select), while its e-paper remains on dedicated `SPI2`. WBA55/WBA65
+replace only the target callback binding and selected pins/peripheral; portable
+storage clients must not branch on WB55 versus WBA.
+
+External Flash data and clock transfers must always use a hardware SPI
+peripheral on WB55, WBA55 and WBA65. GPIO bit-banged/software SPI is prohibited
+as a production path, fallback and diagnostic image. A failed hardware probe
+must remain a visible error or use a bounded hardware-peripheral reset/retry;
+it may not silently switch transports.
+
+Generated middleware pin parking is part of the target-adapter audit. CubeWB's
+production `APPD_Init` treats reference-board-unused `PA15/PB3/PB4` as analog;
+the WB55 Companion target reclaims those pins immediately after
+`MX_APPE_Init` for MAX98357 shutdown/data and SPI1 MISO. A CubeWBA target must
+likewise compare every middleware low-power/debug GPIO mask against the selected
+board pin-ownership table. The first external-Flash probe must succeed with the
+pin still in its hardware-SPI alternate function; delayed probes, peripheral
+reinitialization and software SPI are not acceptance paths.
+
+The current WB55 NOR reports XTX manufacturer `0x0B`. MCU-only reset does not
+power-cycle that device, so the shared core applies the XT25F128F reset
+contract after the first valid manufacturer read: wait until status BUSY is
+clear, send `66h` then `99h` over the selected hardware SPI, wait the bounded
+reset delay, and confirm JEDEC again. This is a manufacturer-scoped state
+normalization, not a transport fallback. A future WBA board with another NOR
+must select its own documented reset policy rather than inheriting XTX commands
+by assumption.
+
 - The acceptance id is `wba_screen_assets_scaffold`; its current fixture is
   `docs/validation/companion-screen-assets-stm32wba.json`. Keep it in the
   shared `companion-screen-wba-port-contract.json` portability gate rather
@@ -854,6 +892,11 @@ calling the target callback.
 - CubeWBA glue chooses the actual external NOR, serial peripheral, pins,
   physical partition address, erase geometry, cache policy, and power control.
   None of those facts enter the callback adapter or CEMP/player code.
+- `ui_assets`, recording, OTA staging and persistent product data bind through
+  separate logical partitions. They may share one physical SPI NOR only when
+  the selected-target partition table proves non-overlap and each writer keeps
+  erase and activation ownership within its own partition. Screen code consumes
+  `companion_spi_nor_stm32wba_partition_read` and never issues SPI commands.
 - CEMP frame encoding is portable. Current WB55 resources use frame-local
   PackBits to keep the development provision image within MCU Flash; a WBA
   target must retain the same bounded `comp_emote_asset_pack_read_frame()`
@@ -881,9 +924,12 @@ calling the target callback.
   privacy erase callback for WBA55/WBA65. Real WBA parity still requires target
   storage selection, wear budget, power-fail evidence, normal OTA preservation
   evidence, and privacy/factory erase logs.
-- `tools/verify_expression_screen_assets_stm32wba.py` proves the callback,
-  bounds, target split, and WB55 build isolation. It is pre-port structure,
-  not real WBA storage parity.
+- `tools/verify_wba_spi_nor_adapter.py` runs the actual C adapter against a
+  deterministic fake NOR, including invalid JEDEC, cross-page write/readback,
+  bounds, erase, timeout and screen-partition binding. The strict M33 compile
+  gate also compiles the adapter. `tools/verify_expression_screen_assets_stm32wba.py`
+  proves the transport-neutral screen callback and WB55 build isolation. These
+  are pre-port evidence, not real WBA storage parity.
 - Before claiming WBA touch parity, capture the detected I2C address and
   identity registers plus idle,
   down, contact, and up reports at both panel corners, and verify that the

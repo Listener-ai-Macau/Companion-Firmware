@@ -1,0 +1,61 @@
+{
+  "acceptance": {
+    "external_cemp_mounted": true,
+    "gpio_ownership_restored": true,
+    "hardware_spi_only": true,
+    "jedec": "0x0B4018",
+    "recording_store_ready": true,
+    "touch_and_sai_preserved": true,
+    "two_independent_resets": true
+  },
+  "captures": [
+    {
+      "bytes": 4501,
+      "errors": [],
+      "hardware_probes": 2,
+      "jedec": "0x0B4018",
+      "label": "reset1",
+      "path": "docs/validation/artifacts/companion-wb55-spi1-external-flash-reset1/nucleo-serial-raw.log",
+      "reset_evidence": {
+        "errors": [],
+        "generated_at": "2026-07-15T00:05:16.1845481+08:00",
+        "reset_transcript_path": "docs/validation/artifacts/companion-wb55-spi1-external-flash-reset1/stm32-reset-stdout.log",
+        "status": "PASS",
+        "summary_path": "docs/validation/artifacts/companion-wb55-spi1-external-flash-reset1/nucleo-serial-summary.json"
+      },
+      "sha256_lf": "1fa7f51ae4935b43b3e68e03b97d1b3cd83189853b1f61ebb4a3644e75e1c975",
+      "status": "PASS"
+    },
+    {
+      "bytes": 4501,
+      "errors": [],
+      "hardware_probes": 2,
+      "jedec": "0x0B4018",
+      "label": "reset2",
+      "path": "docs/validation/artifacts/companion-wb55-spi1-external-flash-reset2/nucleo-serial-raw.log",
+      "reset_evidence": {
+        "errors": [],
+        "generated_at": "2026-07-15T00:05:43.0136392+08:00",
+        "reset_transcript_path": "docs/validation/artifacts/companion-wb55-spi1-external-flash-reset2/stm32-reset-stdout.log",
+        "status": "PASS",
+        "summary_path": "docs/validation/artifacts/companion-wb55-spi1-external-flash-reset2/nucleo-serial-summary.json"
+      },
+      "sha256_lf": "1fa7f51ae4935b43b3e68e03b97d1b3cd83189853b1f61ebb4a3644e75e1c975",
+      "status": "PASS"
+    }
+  ],
+  "errors": [],
+  "schema_id": "companion.wb55_spi1_external_flash.v1",
+  "status": "PASS",
+  "transport": {
+    "cs": "PA2/CN10-35",
+    "epaper_instance": "SPI2",
+    "hz": 2000000,
+    "instance": "SPI1",
+    "miso": "PB4/CN10-4",
+    "mode": 0,
+    "mosi": "PA7/CN10-15",
+    "protocol": "SPI-1-1-1",
+    "sck": "PA1/CN7-32"
+  }
+}
