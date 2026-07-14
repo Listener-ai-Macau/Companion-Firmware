@@ -287,8 +287,8 @@ def check_fixture_data(data: dict[str, Any], errors: list[str]) -> None:
     snapshot = data.get("acceptance_index_snapshot", {})
     require(snapshot.get("item_count", 0) >= 25, "runner fixture item snapshot unexpectedly small", errors)
     require(
-        snapshot.get("deferred_gate") == RUNTIME_GATE_ID,
-        "runner fixture must expose the current runtime hardware gate",
+        snapshot.get("deferred_gate") == "wb55_real_panel_refresh",
+        "runner fixture must expose the current FTS02/panel recovery gate",
         errors,
     )
     require(snapshot.get("human_gate") == "wb55_touch_visual_acceptance", "runner fixture missing focused human gate", errors)
@@ -361,8 +361,8 @@ def check_fixture_data(data: dict[str, Any], errors: list[str]) -> None:
         errors,
     )
     require(
-        touch_gate.get("review_record_open_item_count") == 8,
-        "runner fixture must keep all eight touch/visual steps open before review",
+        touch_gate.get("review_record_open_item_count") == 10,
+        "runner fixture must keep all ten touch/visual steps open before review",
         errors,
     )
     require(

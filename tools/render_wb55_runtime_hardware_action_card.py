@@ -67,13 +67,38 @@ def load_json(path: pathlib.Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def pending_run_report(runner: dict[str, Any]) -> dict[str, Any]:
+    dry_run = runner.get("dry_run", {})
+    return {
+        "schema": dry_run.get("run_report_schema", "companion.wb55_screen_runtime_recheck_run.v1"),
+        "status": "NO_GO_NOT_RUN",
+        "target": "NUCLEO-WB55RG + GDEY0154D67-T03 + FT6336U",
+        "resource": {
+            "revision": CANDIDATE.revision,
+            "clips": CANDIDATE.clips,
+            "frames": CANDIDATE.frames,
+            "total_bytes": CANDIDATE.total_bytes,
+            "pack_crc32": CANDIDATE.pack_crc32,
+            "runtime_status": CANDIDATE.runtime_status,
+            "quiet_interaction_profile_recheck_required": False,
+        },
+        "steps": [
+            {"id": step_id, "command": "see locked runtime recheck runner", "arguments": []}
+            for step_id in dry_run.get("run_report_steps", [])
+        ],
+        "results": [],
+        "normal_firmware_restored": False,
+    }
+
+
 def command_line(step: dict[str, Any]) -> str:
     return " ".join([str(step.get("command", "")), *[str(arg) for arg in step.get("arguments", [])]])
 
 
 def build_card() -> dict[str, Any]:
-    run_report = load_json(RUN_REPORT)
     runner = load_json(RUNNER_FIXTURE)
+    run_report_exists = RUN_REPORT.is_file()
+    run_report = load_json(RUN_REPORT) if run_report_exists else pending_run_report(runner)
     runtime_logs = load_json(RUNTIME_LOGS)
     promotion = load_json(PROMOTION)
     pre_acceptance = load_json(PRE_ACCEPTANCE)
@@ -100,6 +125,21 @@ def build_card() -> dict[str, Any]:
             "flash_provision", "capture_provision", "flash_normal", "capture_normal"
         ))
     )
+    if machine_runtime_complete:
+        pre_acceptance_status = pre_acceptance.get("status")
+        pre_acceptance_blockers = pre_acceptance.get("blocking_reasons", [])
+        human_review_status = pre_acceptance.get("operator_review_record", {}).get("status")
+    elif quiet_profile_recheck_required:
+        pre_acceptance_status = "NO_GO_INTERACTION_PROFILE_RUNTIME_RECHECK_PENDING"
+        pre_acceptance_blockers = [
+            "quiet_interaction_profile_runtime_recheck",
+            "open_operator_review_items",
+        ]
+        human_review_status = "NO_GO_OPEN_REVIEW_ITEMS"
+    else:
+        pre_acceptance_status = "NO_GO_RUNTIME_RECHECK_PENDING"
+        pre_acceptance_blockers = ["active_resource_runtime_recheck"]
+        human_review_status = "NO_GO_NOT_STARTED"
     post_run_commands = [
         "python .\\tools\\verify_screen_generation_release_ledger.py",
         "python .\\tools\\verify_wb55_screen_runtime_recheck_logs.py --write",
@@ -131,6 +171,7 @@ def build_card() -> dict[str, Any]:
         ),
         "claim_scope": "operator_action_card_no_hardware_claim",
         "source_run_report": rel(RUN_REPORT),
+        "source_run_report_exists": run_report_exists,
         "source_runner_fixture": rel(RUNNER_FIXTURE),
         "source_flash_preflight": rel(FLASH_PREFLIGHT),
         "source_serial_capture_preflight": rel(SERIAL_CAPTURE_PREFLIGHT),
@@ -165,9 +206,9 @@ def build_card() -> dict[str, Any]:
         "current_gates": {
             "runtime_logs": runtime_logs.get("status"),
             "runtime_promotion": promotion.get("status"),
-            "pre_acceptance": pre_acceptance.get("status"),
-            "pre_acceptance_blocking_reasons": pre_acceptance.get("blocking_reasons", []),
-            "human_review": pre_acceptance.get("operator_review_record", {}).get("status"),
+            "pre_acceptance": pre_acceptance_status,
+            "pre_acceptance_blocking_reasons": pre_acceptance_blockers,
+            "human_review": human_review_status,
         },
         "flash_preflight": {
             "status": flash_preflight.get("status"),

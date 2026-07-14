@@ -162,7 +162,7 @@
     "status": "BUILD_PASS_RUNTIME_RECHECK_PENDING"
   },
   "runtime_evidence": {
-    "machine_observation": "Revision 53 provision and normal runtime logs passed: external ui_assets mounted, CEMP revision 53 / CRC 0x2332E300 loaded from external_flash, pet self-test passed, touch identity was detected, and the initial full refresh completed. Human touch/visual acceptance remains pending.",
+    "machine_observation": "Revision 53 promotion metadata was retained, but its provision/normal raw logs, capture summaries, and locked run report are no longer present. Runtime evidence is pending a new durable hardware capture; no visual or driver claim is changed.",
     "normal_capture_summary": ".cache/validation/rev53-runtime-current/normal/nucleo-serial-summary.json",
     "normal_raw_log": ".cache/validation/rev53-runtime-current/normal/nucleo-serial-raw.log",
     "operator_prompt_used": false,
@@ -193,7 +193,7 @@
       "refresh mode=full",
       "complete=1"
     ],
-    "status": "REVISION_53_RUNTIME_PASS_HUMAN_VISUAL_PENDING",
+    "status": "REVISION_53_RUNTIME_RECHECK_PENDING",
     "superseded_revision11_logs": [
       ".cache/validation/screen-cemp-revision11-provision/nucleo-serial-raw.log",
       ".cache/validation/screen-revision11-normal/nucleo-serial-raw.log"

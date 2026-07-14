@@ -1,0 +1,46 @@
+{
+  "claim_scope": "static_evidence_integrity_guard_no_hardware_claim",
+  "current_evidence": {
+    "candidate_crc32": "0x2332E300",
+    "candidate_revision": 53,
+    "checked_paths": {
+      "normal_capture_summary": ".cache/validation/rev53-runtime-current/normal/nucleo-serial-summary.json",
+      "normal_raw_log": ".cache/validation/rev53-runtime-current/normal/nucleo-serial-raw.log",
+      "provision_capture_summary": ".cache/validation/rev53-runtime-current/provision/nucleo-serial-summary.json",
+      "provision_raw_log": ".cache/validation/rev53-runtime-current/provision/nucleo-serial-raw.log",
+      "run_report": ".cache/validation/rev53-runtime-current/runtime-recheck-run.json"
+    },
+    "durable": false,
+    "failures": [
+      "runtime_status_not_promoted:REVISION_53_RUNTIME_RECHECK_PENDING",
+      "missing_file:provision_capture_summary",
+      "missing_file:normal_capture_summary",
+      "missing_file:provision_raw_log",
+      "missing_file:normal_raw_log",
+      "missing_marker:mount=ok",
+      "missing_marker:revision=53",
+      "missing_marker:clips=33 frames=75",
+      "missing_marker:pet_behavior_selftest=pass failure_code=0",
+      "missing_marker:touch-health] detected=1 identity=1 addr=0x38",
+      "missing_marker:preview_started name=idle",
+      "missing_marker:source=external_flash",
+      "missing_marker:refresh mode=full",
+      "missing_marker:complete=1",
+      "missing_file:run_report"
+    ],
+    "runtime_status": "REVISION_53_RUNTIME_RECHECK_PENDING",
+    "schema_id": "companion.screen.runtime_evidence_durability.v1",
+    "status": "NO_GO_MISSING_DURABLE_RUNTIME_EVIDENCE"
+  },
+  "policy": {
+    "ignored_cache_is_not_durable_acceptance_storage": true,
+    "missing_artifact_forces_hardware_pending": true,
+    "promoted_summary_requires_raw_artifacts": true
+  },
+  "schema_id": "companion.screen.runtime_evidence_durability_guard.v1",
+  "self_test": {
+    "complete_artifacts_pass": true,
+    "missing_raw_log_rejected": true
+  },
+  "status": "PASS"
+}

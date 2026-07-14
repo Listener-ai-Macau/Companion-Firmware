@@ -2037,6 +2037,24 @@
     },
     {
       "evidence_paths": [
+        "tools/screen_runtime_candidate.py",
+        "tools/verify_screen_runtime_evidence_durability.py",
+        "docs/validation/companion-screen-runtime-evidence-durability.json",
+        "docs/validation/companion-screen-wb55-runtime-recheck-logs.json",
+        "docs/validation/companion-screen-wb55-runtime-promotion.json"
+      ],
+      "id": "screen_runtime_evidence_durability",
+      "missing_hardware_facts": [],
+      "status": "PASS",
+      "summary": "A promoted WB55 runtime summary is trusted only while both raw serial logs, both PASS summaries, the completed locked run report, normal-firmware restoration, and every required marker still exist; missing artifacts automatically return the candidate to a hardware-pending gate.",
+      "title": "Screen runtime evidence durability",
+      "validation_commands": [
+        "python .\\tools\\verify_screen_runtime_evidence_durability.py"
+      ],
+      "wba_impact": "WBA runtime promotion must keep the same summary-to-raw-artifact integrity rule while replacing only the target capture and adapter paths."
+    },
+    {
+      "evidence_paths": [
         "tools/verify_wb55_screen_build_matrix.py",
         "tools/build_nucleo_bringup.ps1",
         "cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile",
@@ -2148,9 +2166,14 @@
         "docs/validation/companion-screen-generation-release-ledger.json"
       ],
       "id": "wb55_rev53_runtime_recheck",
-      "missing_hardware_facts": [],
-      "status": "PASS",
-      "summary": "The rev53 CEMP resource pack is first-hand runtime-proven on WB55: the locked hardware action card completed flash provision, capture provision logs, restore normal firmware, and capture normal logs; the SCR-17 release ledger and coherent_generation marker path are present and the promotion gate is applied.",
+      "missing_hardware_facts": [
+        "rev53 provision serial raw/summary logs",
+        "rev53 normal serial raw/summary logs",
+        "locked Companion-WB55 hardware run with normal_firmware_restored=true",
+        "durable raw artifacts behind every promoted runtime summary"
+      ],
+      "status": "DEFERRED_HARDWARE",
+      "summary": "The current rev53 CEMP resource pack is machine-prepared but not yet first-hand runtime-proven on WB55: the locked hardware action card must flash provision, capture provision logs, restore normal firmware, capture normal logs, verify the SCR-17 release ledger and coherent_generation marker path, then the log verifier and promotion gate may advance pre-acceptance.",
       "title": "WB55 rev53 provision/normal runtime recheck",
       "validation_commands": [
         "python .\\tools\\verify_wb55_screen_runtime_recheck_runner.py",
@@ -2238,7 +2261,7 @@
       "id": "companion_screen_goal_audit",
       "missing_hardware_facts": [],
       "status": "PENDING_HUMAN",
-      "summary": "The full screen goal is machine-audited: WB55 wiring, refresh, rev53 resource generation hygiene, WB55 dry-run/SSD1681 build matrix, last-proven external resources, touch IC health, external Flash policy, pre-acceptance health, and WBA pre-port boundaries are tracked; rev53 provision/normal runtime recheck and screen refresh/touch machine health on the current resource pack are proved, leaving daily pet/menu human feel and future WBA real-panel parity.",
+      "summary": "The full screen goal is machine-audited: WB55 wiring, refresh, rev53 resource generation hygiene, WB55 dry-run/SSD1681 build matrix, last-proven external resources, touch IC health, external Flash policy, pre-acceptance health, and WBA pre-port boundaries are tracked; the open requirements are rev53 provision/normal runtime recheck, screen refresh/touch machine health on the current resource pack, daily pet/menu human feel, and future WBA real-panel parity.",
       "title": "Active goal completion audit",
       "validation_commands": [
         "python .\\tools\\verify_companion_screen_goal_audit.py",
@@ -2262,11 +2285,11 @@
   ],
   "schema_id": "companion.pendant.screen_acceptance_index.v1",
   "summary": {
-    "deferred_count": 1,
+    "deferred_count": 2,
     "next_hardware_gate": "wb55_real_panel_refresh",
     "next_human_gate": "wb55_touch_visual_acceptance",
     "pass_count": 84,
     "pending_human_count": 2,
-    "total_count": 87
+    "total_count": 88
   }
 }

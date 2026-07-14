@@ -24,7 +24,7 @@
     "programmer_exists": true,
     "returncode": 0,
     "stderr": "",
-    "stdout": "CHECK: mode=normal\nCHECK: image=C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-devboard-oai1\\cubeide\\Companion_Nucleo_WB55RG_Bringup\\build\\Companion_Nucleo_WB55RG_Bringup.hex\nCHECK: programmer=C:\\ST\\STM32CubeIDE_2.1.1\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltools.cubeprogrammer.win32_2.2.400.202601091506\\tools\\bin\\STM32_Programmer_CLI.exe\nCHECK: flash_timeout_seconds=120"
+    "stdout": "CHECK: mode=normal\nCHECK: image=C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-wt-adhoc-codex-screen-evidence-durability\\cubeide\\Companion_Nucleo_WB55RG_Bringup\\build\\Companion_Nucleo_WB55RG_Bringup.hex\nCHECK: programmer=C:\\ST\\STM32CubeIDE_2.1.1\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltools.cubeprogrammer.win32_2.2.400.202601091506\\tools\\bin\\STM32_Programmer_CLI.exe\nCHECK: flash_timeout_seconds=120"
   },
   "purpose": "Machine preflight for rev53 runtime recheck flashing; does not flash hardware.",
   "safety_rules": [
@@ -44,7 +44,7 @@
     "programmer_exists": true,
     "returncode": 0,
     "stderr": "",
-    "stdout": "CHECK: mode=screen_asset_provision\nCHECK: image=C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-devboard-oai1\\cubeide\\Companion_Nucleo_WB55RG_Bringup\\build_screen_asset_provision\\Companion_Nucleo_WB55RG_ScreenAssetProvision.hex\nCHECK: programmer=C:\\ST\\STM32CubeIDE_2.1.1\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltools.cubeprogrammer.win32_2.2.400.202601091506\\tools\\bin\\STM32_Programmer_CLI.exe\nCHECK: flash_timeout_seconds=120"
+    "stdout": "CHECK: mode=screen_asset_provision\nCHECK: image=C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-wt-adhoc-codex-screen-evidence-durability\\cubeide\\Companion_Nucleo_WB55RG_Bringup\\build_screen_asset_provision\\Companion_Nucleo_WB55RG_ScreenAssetProvision.hex\nCHECK: programmer=C:\\ST\\STM32CubeIDE_2.1.1\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltools.cubeprogrammer.win32_2.2.400.202601091506\\tools\\bin\\STM32_Programmer_CLI.exe\nCHECK: flash_timeout_seconds=120"
   },
   "script": "tools/flash_nucleo_bringup.ps1",
   "status": "PASS",

@@ -13,7 +13,7 @@
     "pack_bytes": 49901,
     "pack_crc32": "0x2332E300",
     "revision": 53,
-    "status": "runtime_pass_human_visual_pending"
+    "status": "runtime_recheck_pending"
   },
   "migration": {
     "baseline": "STM32WBA55",
@@ -102,6 +102,7 @@
       "refresh mode=full",
       "complete=1"
     ],
-    "revision": 53
+    "revision": 53,
+    "status": "evidence_unavailable_runtime_recheck_pending"
   }
 }

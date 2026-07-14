@@ -3,11 +3,11 @@
     "path": "docs/validation/companion-screen-wb55-build-matrix.json",
     "screen_asset_provision_log": ".cache/validation/wb55-build-matrix/screen-asset-provision-build.log",
     "screen_asset_provision_size": {
-      "bss": 192239,
+      "bss": 188183,
       "data": 2433,
-      "dec": 602988,
-      "hex": "9336c",
-      "text": 408316
+      "dec": 356164,
+      "hex": "56f44",
+      "text": 165548
     },
     "status": "PASS",
     "validation_commands": [
@@ -26,13 +26,13 @@
   "check_only_command": "pwsh -NoProfile -File .\\tools\\run_wb55_screen_runtime_recheck.ps1 -CheckOnly",
   "claim_scope": "operator_action_card_no_hardware_claim",
   "current_gates": {
-    "human_review": "NO_GO_OPEN_REVIEW_ITEMS",
-    "pre_acceptance": "NO_GO_OPEN_OPERATOR_REVIEW_ITEMS",
+    "human_review": "NO_GO_NOT_STARTED",
+    "pre_acceptance": "NO_GO_RUNTIME_RECHECK_PENDING",
     "pre_acceptance_blocking_reasons": [
-      "open_operator_review_items"
+      "active_resource_runtime_recheck"
     ],
-    "runtime_logs": "PASS",
-    "runtime_promotion": "APPLIED"
+    "runtime_logs": "NO_GO_MISSING_RUNTIME_LOGS",
+    "runtime_promotion": "NO_GO_LOGS_NOT_PASS"
   },
   "do_not_do": [
     "不要手工把 REVISION_53_RUNTIME_RECHECK_PENDING 改成 PASS。",
@@ -117,28 +117,28 @@
     "model_last_stale_discarded": 3,
     "path": "docs/validation/companion-screen-generation-release-ledger.json",
     "purpose": "SCR-17 release ledger for new/old generation interleaving prevention",
-    "real_runtime_status": "PASS",
-    "status": "RUNTIME_PROMOTED_HUMAN_VISUAL_PENDING",
+    "real_runtime_status": "NO_GO_MISSING_RUNTIME_LOGS",
+    "status": "PENDING_RUNTIME_RECHECK",
     "ui_assets_ota_in_scope": true
   },
   "hardware_steps": [
     {
-      "command": "pwsh -NoProfile -File .\\tools\\flash_nucleo_bringup.ps1 -ScreenAssetProvision -ProgrammerRoot C:\\ST\\STM32CubeIDE_2.1.1\\STM32CubeIDE\\plugins",
+      "command": "see locked runtime recheck runner",
       "id": "flash_provision",
       "operator_meaning": "刷入带外部 CEMP 资源写入逻辑的 provision 固件。"
     },
     {
-      "command": "pwsh -NoProfile -File .\\tools\\capture_nucleo_serial.ps1 -Execute -WorkflowLockHeld -Seconds 25 -ResetAfterOpen -OutDir C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-devboard-oai1\\.cache\\validation\\rev53-runtime-current\\provision",
+      "command": "see locked runtime recheck runner",
       "id": "capture_provision",
       "operator_meaning": "复位并抓取 provision 启动串口日志，证明资源写入/挂载链路。"
     },
     {
-      "command": "pwsh -NoProfile -File .\\tools\\flash_nucleo_bringup.ps1 -ProgrammerRoot C:\\ST\\STM32CubeIDE_2.1.1\\STM32CubeIDE\\plugins",
+      "command": "see locked runtime recheck runner",
       "id": "flash_normal",
       "operator_meaning": "刷回普通运行固件，避免设备停留在 provision 镜像。"
     },
     {
-      "command": "pwsh -NoProfile -File .\\tools\\capture_nucleo_serial.ps1 -Execute -WorkflowLockHeld -Seconds 25 -ResetAfterOpen -OutDir C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-devboard-oai1\\.cache\\validation\\rev53-runtime-current\\normal",
+      "command": "see locked runtime recheck runner",
       "id": "capture_normal",
       "operator_meaning": "复位并抓取 normal 启动串口日志，证明普通固件从外部 Flash 挂载 rev53。"
     }
@@ -147,18 +147,19 @@
   "post_run_commands": [
     "python .\\tools\\verify_screen_generation_release_ledger.py",
     "python .\\tools\\verify_wb55_screen_runtime_recheck_logs.py --write",
+    "python .\\tools\\promote_wb55_screen_runtime_recheck.py --apply",
     "python .\\tools\\verify_companion_screen_pre_acceptance_health.py",
     "python .\\tools\\verify_companion_screen_goal_audit.py"
   ],
-  "quiet_interaction_profile_recheck_required": true,
-  "recorded_machine_runtime_complete": true,
+  "quiet_interaction_profile_recheck_required": false,
+  "recorded_machine_runtime_complete": false,
   "resource": {
     "clips": 33,
     "frames": 75,
     "pack_crc32": "0x2332E300",
-    "quiet_interaction_profile_recheck_required": true,
+    "quiet_interaction_profile_recheck_required": false,
     "revision": 53,
-    "runtime_status": "REVISION_53_RUNTIME_PASS_HUMAN_VISUAL_PENDING",
+    "runtime_status": "REVISION_53_RUNTIME_RECHECK_PENDING",
     "total_bytes": 49901
   },
   "runner_safety": {
@@ -213,7 +214,7 @@
       "claim_scope": "stubbed_reset_timeout_no_hardware_claim",
       "command": "pwsh -NoProfile -File .\\tools\\capture_nucleo_serial.ps1 -SelfTestResetTimeout -OutDir .\\.cache\\validation\\nucleo-serial-reset-timeout-selftest",
       "errors": [
-        "reset timed out after 5 second(s). stdout=C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-devboard-oai1\\.cache\\validation\\nucleo-serial-reset-timeout-selftest\\stm32-reset-stdout.log stderr=C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-devboard-oai1\\.cache\\validation\\nucleo-serial-reset-timeout-selftest\\stm32-reset-stderr.log"
+        "reset timed out after 5 second(s). stdout=C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-wt-adhoc-codex-screen-evidence-durability\\.cache\\validation\\nucleo-serial-reset-timeout-selftest\\stm32-reset-stdout.log stderr=C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-wt-adhoc-codex-screen-evidence-durability\\.cache\\validation\\nucleo-serial-reset-timeout-selftest\\stm32-reset-stderr.log"
       ],
       "reset_stderr_exists": true,
       "reset_stdout_exists": true,
@@ -236,9 +237,10 @@
   "source_flash_preflight": "docs/validation/companion-screen-wb55-runtime-flash-preflight.json",
   "source_generation_release_ledger": "docs/validation/companion-screen-generation-release-ledger.json",
   "source_run_report": ".cache/validation/rev53-runtime-current/runtime-recheck-run.json",
+  "source_run_report_exists": false,
   "source_runner_fixture": "docs/validation/companion-screen-wb55-runtime-recheck-runner.json",
   "source_serial_capture_preflight": "docs/validation/companion-screen-wb55-runtime-serial-capture-preflight.json",
-  "status": "PASS_MACHINE_RUNTIME_RECHECK_COMPLETE",
+  "status": "NO_GO_WAITING_FOR_REAL_HARDWARE_RUN",
   "target": "NUCLEO-WB55RG + GDEY0154D67-T03 + FT6336U",
   "validation_commands": [
     "python .\\tools\\render_wb55_runtime_hardware_action_card.py",

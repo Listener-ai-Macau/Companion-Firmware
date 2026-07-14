@@ -1,7 +1,7 @@
 {
   "activation_evidence": {
     "active_revision_field": "active_resource_revision",
-    "external_flash_activation": "runtime_verified_rev53_external_flash",
+    "external_flash_activation": "pending_rev53_runtime_recheck",
     "manifest_verified_static": true,
     "old_queue_action": "drain_or_discard",
     "request_revision_field": "resource_revision",
@@ -15,7 +15,7 @@
     "frames": 75,
     "pack_bytes": 49901,
     "product": "Companion screen",
-    "runtime_status": "REVISION_53_RUNTIME_PASS_HUMAN_VISUAL_PENDING",
+    "runtime_status": "REVISION_53_RUNTIME_RECHECK_PENDING",
     "storage": "external ui_assets at 0x00200000",
     "target_family": "STM32WB55 baseline; WBA55/WBA65 inherit generation hygiene",
     "target_profile": "GDEY0154D67-T03 200x200 1-bit"
@@ -27,12 +27,15 @@
     "model_generation_switches": 2,
     "model_last_stale_discarded": 3,
     "model_resource_revision": 51,
-    "quiet_interaction_profile_passed": true,
-    "quiet_interaction_profile_runtime_status": "PASS",
-    "real_marker_present": true,
-    "real_runtime_status": "PASS"
+    "quiet_interaction_profile_passed": false,
+    "quiet_interaction_profile_runtime_status": "NO_GO_MISSING_RUNTIME_LOGS",
+    "real_marker_present": false,
+    "real_runtime_status": "NO_GO_MISSING_RUNTIME_LOGS"
   },
   "missing_hardware_facts": [
+    "rev53 ScreenAssetProvision flash/capture",
+    "rev53 normal firmware restore/capture",
+    "real display_result coherent_generation=1 log",
     "human visual classification of any old marks"
   ],
   "normal_pack_generation": {
@@ -75,7 +78,7 @@
     "expression_sheet": "docs/art/generated_pet_expression_sheet_v5.png",
     "import_preview": ".cache/validation/generated-expression-sheet-import-preview.png",
     "machine_review_status": "PASS",
-    "normal_pack_contact_sheet": ".cache/validation/rev52-generated-expression-normal-pack-sources.png",
+    "normal_pack_contact_sheet": ".cache/validation/rev53-generated-expression-normal-pack-sources.png",
     "review_preview": ".cache/validation/generated-expression-sheet-review.png",
     "style_name": "genref_sheet_12_inner_faces_v5",
     "style_source_of_truth": "generated_pet_expression_sheet_v5",
@@ -95,7 +98,7 @@
     "wba_port_contract": "docs/validation/companion-screen-wba-port-contract.json",
     "wba_real_parity_gate": "docs/validation/companion-screen-wba-real-parity-gate.json"
   },
-  "status": "RUNTIME_PROMOTED_HUMAN_VISUAL_PENDING",
+  "status": "PENDING_RUNTIME_RECHECK",
   "validation_commands": [
     "python .\\tools\\verify_screen_generation_release_ledger.py",
     "python .\\tools\\verify_display_queue_generation_hygiene.py",

@@ -1,31 +1,31 @@
 {
   "acceptance_index": {
-    "next_hardware_gate": "wba_real_panel_parity",
+    "next_hardware_gate": "wb55_real_panel_refresh",
     "next_human_gate": "wb55_touch_visual_acceptance",
     "path": "docs/validation/companion-screen-acceptance-index.json",
     "schema_id": "companion.pendant.screen_acceptance_index.v1",
     "summary": {
-      "deferred_count": 0,
-      "next_hardware_gate": "wba_real_panel_parity",
+      "deferred_count": 2,
+      "next_hardware_gate": "wb55_real_panel_refresh",
       "next_human_gate": "wb55_touch_visual_acceptance",
-      "pass_count": 85,
+      "pass_count": 84,
       "pending_human_count": 2,
-      "total_count": 87
+      "total_count": 88
     }
   },
   "blocking_reasons": [
-    "open_operator_review_items"
+    "active_resource_runtime_recheck"
   ],
   "build_matrix": {
     "build_log_evidence": {
       "dry_run_default": {
         "exists": true,
         "expected_size": {
-          "bss": 182183,
-          "data": 2436,
-          "dec": 307279,
-          "hex": "4b04f",
-          "text": 122660
+          "bss": 178143,
+          "data": 2432,
+          "dec": 302159,
+          "hex": "49c4f",
+          "text": 121584
         },
         "forbidden_markers_absent": {
           "COMPANION_EPAPER_PANEL_SSD1681_BRINGUP=1": true,
@@ -39,21 +39,21 @@
           "make: Leaving directory": true
         },
         "size": {
-          "bss": 182183,
-          "data": 2436,
-          "dec": 307279,
-          "hex": "4b04f",
-          "text": 122660
+          "bss": 178143,
+          "data": 2432,
+          "dec": 302159,
+          "hex": "49c4f",
+          "text": 121584
         }
       },
       "screen_asset_provision": {
         "exists": true,
         "expected_size": {
-          "bss": 192239,
+          "bss": 188183,
           "data": 2433,
-          "dec": 602988,
-          "hex": "9336c",
-          "text": 408316
+          "dec": 356164,
+          "hex": "56f44",
+          "text": 165548
         },
         "forbidden_markers_absent": {},
         "path": ".cache/validation/wb55-build-matrix/screen-asset-provision-build.log",
@@ -68,21 +68,21 @@
           "panel_target_stm32wb_ssd1681.c": true
         },
         "size": {
-          "bss": 192239,
+          "bss": 188183,
           "data": 2433,
-          "dec": 602988,
-          "hex": "9336c",
-          "text": 408316
+          "dec": 356164,
+          "hex": "56f44",
+          "text": 165548
         }
       },
       "ssd1681_real_panel": {
         "exists": true,
         "expected_size": {
-          "bss": 192263,
-          "data": 2440,
-          "dec": 332315,
-          "hex": "5121b",
-          "text": 137612
+          "bss": 188191,
+          "data": 2436,
+          "dec": 322015,
+          "hex": "4e9df",
+          "text": 131388
         },
         "forbidden_markers_absent": {},
         "path": ".cache/validation/wb55-build-matrix/ssd1681-build.log",
@@ -95,11 +95,11 @@
           "panel_target_stm32wb_ssd1681.c": true
         },
         "size": {
-          "bss": 192263,
-          "data": 2440,
-          "dec": 332315,
-          "hex": "5121b",
-          "text": 137612
+          "bss": 188191,
+          "data": 2436,
+          "dec": 322015,
+          "hex": "4e9df",
+          "text": 131388
         }
       }
     },
@@ -152,16 +152,16 @@
   },
   "goal_state": {
     "open_requirements": [
+      "wb55_physical_wiring_and_panel_identity",
+      "current_external_resource_runtime",
+      "screen_refresh_touch_machine_health",
       "daily_pet_and_menu_human_feel",
       "wba55_wba65_portability_boundary"
     ],
     "path": "docs/validation/companion-screen-goal-audit.json",
     "proved_requirements": [
-      "wb55_physical_wiring_and_panel_identity",
-      "current_external_resource_runtime",
       "generated_pet_and_menu_art_baseline",
       "generated_art_handoff_and_refresh_feel_regression_guard",
-      "screen_refresh_touch_machine_health",
       "wb55_screen_firmware_build_matrix",
       "touch_menu_interaction_machine_contract",
       "external_flash_and_ota_resource_policy"
@@ -169,10 +169,10 @@
     "status": "GOAL_ACTIVE_NOT_COMPLETE"
   },
   "last_runtime_proven_resource": {
-    "normal_log": ".cache/validation/rev53-runtime-current/normal/nucleo-serial-raw.log",
-    "pack_crc32": "0x2332E300",
-    "provision_log": ".cache/validation/rev53-runtime-current/provision/nucleo-serial-raw.log",
-    "revision": 53
+    "normal_log": ".cache/validation/rev51-runtime-20260712-generated-art/normal/nucleo-serial-raw.log",
+    "pack_crc32": "0x56B56273",
+    "provision_log": ".cache/validation/rev51-runtime-20260712-generated-art/provision/nucleo-serial-raw.log",
+    "revision": 51
   },
   "operator_packet": {
     "machine_state_matches_resource": {
@@ -206,7 +206,7 @@
     "publishable_pass_allowed": false,
     "record_count": 10,
     "source_template": "docs/validation/companion-screen-wb55-touch-visual-review-template.json",
-    "status": "NO_GO_OPEN_REVIEW_ITEMS"
+    "status": "NO_GO_NOT_STARTED"
   },
   "operator_review_template": {
     "claim_scope": "blank_operator_review_template",
@@ -221,7 +221,7 @@
     "candidate": {
       "crc32": "0x2332E300",
       "revision": 53,
-      "runtime_status": "REVISION_53_RUNTIME_PASS_HUMAN_VISUAL_PENDING"
+      "runtime_status": "REVISION_53_RUNTIME_RECHECK_PENDING"
     },
     "checks": {
       "art_and_refresh_axes_separate": true,
@@ -253,7 +253,7 @@
     "frames": 75,
     "pack_crc32": "0x2332E300",
     "revision": 53,
-    "runtime_status": "REVISION_53_RUNTIME_PASS_HUMAN_VISUAL_PENDING",
+    "runtime_status": "REVISION_53_RUNTIME_RECHECK_PENDING",
     "total_bytes": 49901
   },
   "runtime_flash_preflight": {
@@ -270,59 +270,64 @@
     "post_run_commands": [
       "python .\\tools\\verify_screen_generation_release_ledger.py",
       "python .\\tools\\verify_wb55_screen_runtime_recheck_logs.py --write",
+      "python .\\tools\\promote_wb55_screen_runtime_recheck.py --apply",
       "python .\\tools\\verify_companion_screen_pre_acceptance_health.py",
       "python .\\tools\\verify_companion_screen_goal_audit.py"
     ],
-    "quiet_interaction_profile_recheck_required": true,
-    "status": "PASS_MACHINE_RUNTIME_RECHECK_COMPLETE",
+    "quiet_interaction_profile_recheck_required": false,
+    "status": "NO_GO_WAITING_FOR_REAL_HARDWARE_RUN",
     "step_count": 4,
     "workflow_lock_command": "pwsh -NoProfile -File C:\\Users\\Billy\\Desktop\\Denzic\\ai-collaboration-workflow\\scripts\\aiw.ps1 with-lock -Resource Companion-WB55 -Purpose \"Companion WB55 rev53 screen runtime recheck\" -Run pwsh -NoProfile -File .\\tools\\run_wb55_screen_runtime_recheck.ps1 -Execute -WorkflowLockHeld"
   },
   "runtime_logs": {
     "normal": {
-      "exists": true,
+      "exists": false,
       "markers": {
-        "[build] interaction_profile=quiet epaper_trace=0 touch_trace=0 ": true,
-        "clips=33 frames=75": true,
-        "coherent_generation=1": true,
-        "expression_renderer=external_pack": true,
-        "last_stale_discarded=": true,
-        "low_power_face completed=1 stop=allowed": true,
-        "mount=ok": true,
-        "pet_behavior_selftest=pass failure_code=0": true,
-        "preview_started name=idle": true,
-        "queue_generation revision=53": true,
-        "revision=53": true,
-        "touch-health] detected=1 identity=1 addr=0x38": true
+        "[build] interaction_profile=quiet epaper_trace=0 touch_trace=0 ": false,
+        "clips=33 frames=159": false,
+        "coherent_generation=1": false,
+        "expression_renderer=external_pack": false,
+        "last_stale_discarded=": false,
+        "low_power_face completed=1 stop=allowed": false,
+        "mount=ok": false,
+        "pet_behavior_selftest=pass failure_code=0": false,
+        "preview_started name=idle": false,
+        "queue_generation revision=51": false,
+        "revision=51": false,
+        "touch-health] detected=1 identity=1 addr=0x38": false
       },
-      "path": ".cache/validation/rev53-runtime-current/normal/nucleo-serial-raw.log"
+      "path": ".cache/validation/rev51-runtime-20260712-generated-art/normal/nucleo-serial-raw.log"
     },
     "provision": {
-      "exists": true,
+      "exists": false,
       "markers": {
-        "clips=33 frames=75": true,
-        "complete=1": true,
-        "expression_renderer=external_pack": true,
-        "mount=ok": true,
-        "pet_behavior_selftest=pass failure_code=0": true,
-        "refresh mode=full": true,
-        "revision=53": true,
-        "source=external_flash": true,
-        "touch-health] detected=1 identity=1 addr=0x38": true
+        "clips=33 frames=159": false,
+        "complete=1": false,
+        "expression_renderer=external_pack": false,
+        "mount=ok": false,
+        "pet_behavior_selftest=pass failure_code=0": false,
+        "refresh mode=full": false,
+        "revision=51": false,
+        "source=external_flash": false,
+        "touch-health] detected=1 identity=1 addr=0x38": false
       },
-      "path": ".cache/validation/rev53-runtime-current/provision/nucleo-serial-raw.log"
+      "path": ".cache/validation/rev51-runtime-20260712-generated-art/provision/nucleo-serial-raw.log"
     }
   },
   "runtime_promotion_gate": {
-    "blockers": [],
+    "blockers": [
+      "runtime log verifier status is 'NO_GO_MISSING_RUNTIME_LOGS', not PASS",
+      "provision log status is 'MISSING_OR_INCOMPLETE'",
+      "normal log status is 'MISSING_OR_INCOMPLETE'"
+    ],
     "path": "docs/validation/companion-screen-wb55-runtime-promotion.json",
-    "status": "APPLIED",
+    "status": "NO_GO_LOGS_NOT_PASS",
     "target_status": "REVISION_53_RUNTIME_PASS_HUMAN_VISUAL_PENDING"
   },
   "runtime_recheck_log_gate": {
     "path": "docs/validation/companion-screen-wb55-runtime-recheck-logs.json",
-    "quiet_interaction_profile_passed": true,
-    "status": "PASS"
+    "quiet_interaction_profile_passed": false,
+    "status": "NO_GO_MISSING_RUNTIME_LOGS"
   },
   "runtime_serial_capture_preflight": {
     "capture_script": "tools/capture_nucleo_serial.ps1",
@@ -336,7 +341,7 @@
     "summary_json_filename": "nucleo-serial-summary.json"
   },
   "schema_id": "companion.pendant.screen_pre_acceptance_health.v1",
-  "status": "NO_GO_OPEN_OPERATOR_REVIEW_ITEMS",
+  "status": "NO_GO_RUNTIME_RECHECK_PENDING",
   "target": "NUCLEO-WB55RG + GDEY0154D67-T03 + FT6336U",
   "validation_commands": [
     "python .\\tools\\verify_companion_screen_pre_acceptance_health.py",

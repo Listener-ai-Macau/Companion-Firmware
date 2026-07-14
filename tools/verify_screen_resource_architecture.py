@@ -350,14 +350,22 @@ def main() -> int:
     require(wb55_evidence.get("clips") == 33, "WB55 real evidence clip count drifted", errors)
     require(wb55_evidence.get("frames") == menu_pack.get("frames"),
             "WB55 real evidence frame count drifted from current menu evidence", errors)
-    for key in ("provision_runtime_log", "normal_runtime_log", "external_render_log"):
-        value = wb55_evidence.get(key)
-        require(isinstance(value, str) and (ROOT / value).is_file(), f"WB55 real evidence missing {key}", errors)
-    if isinstance(wb55_evidence.get("normal_runtime_log"), str):
-        normal_log = read(ROOT / str(wb55_evidence["normal_runtime_log"]))
-        for marker in wb55_evidence.get("required_markers", []):
-            require(isinstance(marker, str) and marker in normal_log,
-                    f"WB55 normal runtime log missing marker: {marker}", errors)
+    if runtime_status.endswith("_RUNTIME_RECHECK_PENDING"):
+        require(
+            wb55_evidence.get("status") == "evidence_unavailable_runtime_recheck_pending",
+            "pending WB55 real evidence must state that durable artifacts are unavailable",
+            errors,
+        )
+    else:
+        for key in ("provision_runtime_log", "normal_runtime_log", "external_render_log"):
+            value = wb55_evidence.get(key)
+            require(isinstance(value, str) and (ROOT / value).is_file(), f"WB55 real evidence missing {key}", errors)
+        normal_value = wb55_evidence.get("normal_runtime_log")
+        if isinstance(normal_value, str) and (ROOT / normal_value).is_file():
+            normal_log = read(ROOT / normal_value)
+            for marker in wb55_evidence.get("required_markers", []):
+                require(isinstance(marker, str) and marker in normal_log,
+                        f"WB55 normal runtime log missing marker: {marker}", errors)
     portable_contract = contract.get("portable_contract", {})
     require(portable_contract.get("binary_pack_magic") == "CEMP", "binary pack magic drifted", errors)
     require(portable_contract.get("binary_pack_header_bytes") == 80, "binary pack header size drifted", errors)

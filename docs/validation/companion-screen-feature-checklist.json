@@ -293,8 +293,13 @@
           "title": "WB55 runtime serial capture preflight"
         },
         {
-          "id": "wb55_rev53_runtime_recheck",
+          "id": "screen_runtime_evidence_durability",
           "status": "PASS",
+          "title": "Screen runtime evidence durability"
+        },
+        {
+          "id": "wb55_rev53_runtime_recheck",
+          "status": "DEFERRED_HARDWARE",
           "title": "WB55 rev53 provision/normal runtime recheck"
         },
         {
@@ -351,7 +356,7 @@
       "id": "runtime_diagnostics_and_evidence",
       "next_acceptance": "Attach runtime snapshot and diagnostics bundle evidence to the first real-panel session.",
       "order": 7,
-      "status": "PASS",
+      "status": "DEFERRED_HARDWARE",
       "title": "Runtime diagnostics and evidence",
       "user_value": "Screen runtime health can be decoded from diagnostics, BLE artifacts, and evidence records."
     },

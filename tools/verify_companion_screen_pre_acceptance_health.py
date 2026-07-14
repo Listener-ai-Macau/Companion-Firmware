@@ -116,13 +116,22 @@ def build_health() -> dict[str, Any]:
     provision_log = log_has(str(proven_provision_log), provision_markers)
     normal_log = log_has(str(proven_normal_log), normal_markers)
     runtime_logs_pass = runtime_recheck_logs.get("status") == "PASS"
-    review_status = str(review_record.get("status", ""))
+    review_status = (
+        "NO_GO_NOT_STARTED"
+        if runtime_pending
+        else str(review_record.get("status", ""))
+    )
     blocking_reasons: list[str] = []
-    if not runtime_logs_pass:
+    if runtime_pending:
+        blocking_reasons.append("active_resource_runtime_recheck")
+    elif not runtime_logs_pass:
         blocking_reasons.append("quiet_interaction_profile_runtime_recheck")
-    if review_status == "NO_GO_OPEN_REVIEW_ITEMS":
+    if not runtime_pending and review_status == "NO_GO_OPEN_REVIEW_ITEMS":
         blocking_reasons.append("open_operator_review_items")
     status = (
+        "NO_GO_RUNTIME_RECHECK_PENDING"
+        if runtime_pending
+        else
         "NO_GO_INTERACTION_PROFILE_RUNTIME_RECHECK_PENDING"
         if not runtime_logs_pass
         else "NO_GO_OPEN_OPERATOR_REVIEW_ITEMS"
@@ -183,7 +192,10 @@ def build_health() -> dict[str, Any]:
                 "revision": machine_state.get("resource_revision") == resource.get("revision"),
                 "crc32": machine_state.get("resource_crc32") == resource.get("pack_crc32"),
                 "total_bytes": machine_state.get("resource_total_bytes") == resource.get("total_bytes"),
-                "normal_firmware_restored": machine_state.get("normal_firmware_restored") is True,
+                "normal_firmware_restored": (
+                    machine_state.get("normal_firmware_restored")
+                    is (not runtime_pending and runtime_logs_pass)
+                ),
             },
         },
         "operator_review_template": {
@@ -201,13 +213,21 @@ def build_health() -> dict[str, Any]:
         },
         "operator_review_record": {
             "path": rel(TOUCH_REVIEW_RECORD),
-            "status": review_record.get("status"),
+            "status": review_status,
             "claim_scope": review_record.get("claim_scope"),
             "source_template": review_record.get("source_template"),
             "filled_input_path": review_record.get("filled_input_path"),
-            "publishable_pass_allowed": review_record.get("publishable_pass_allowed"),
+            "publishable_pass_allowed": (
+                False
+                if runtime_pending
+                else review_record.get("publishable_pass_allowed")
+            ),
             "record_count": len(review_record.get("review_records", [])),
-            "open_item_count": len(review_record.get("open_items", [])),
+            "open_item_count": (
+                len(packet.get("operator_steps", []))
+                if runtime_pending
+                else len(review_record.get("open_items", []))
+            ),
         },
         "goal_state": {
             "path": rel(GOAL_AUDIT),
@@ -327,6 +347,9 @@ def check_health(health: dict[str, Any], errors: list[str]) -> None:
     runtime_logs_pass = runtime_log_gate.get("status") == "PASS"
     review_status = str(health.get("operator_review_record", {}).get("status", ""))
     expected_status = (
+        "NO_GO_RUNTIME_RECHECK_PENDING"
+        if runtime_pending
+        else
         "NO_GO_INTERACTION_PROFILE_RUNTIME_RECHECK_PENDING"
         if not runtime_logs_pass
         else "NO_GO_OPEN_OPERATOR_REVIEW_ITEMS"
@@ -339,7 +362,9 @@ def check_health(health: dict[str, Any], errors: list[str]) -> None:
         errors.append("pre-acceptance runtime recheck log gate path drifted")
     if runtime_log_gate.get("quiet_interaction_profile_passed") is not runtime_logs_pass:
         errors.append("pre-acceptance runtime recheck quiet-profile result drifted")
-    if not runtime_logs_pass and "quiet_interaction_profile_runtime_recheck" not in health.get("blocking_reasons", []):
+    if runtime_pending and "active_resource_runtime_recheck" not in health.get("blocking_reasons", []):
+        errors.append("pre-acceptance health must retain the active-resource runtime blocker")
+    if not runtime_pending and not runtime_logs_pass and "quiet_interaction_profile_runtime_recheck" not in health.get("blocking_reasons", []):
         errors.append("pre-acceptance health must retain the quiet interaction-profile blocker")
     if review_status == "NO_GO_OPEN_REVIEW_ITEMS" and "open_operator_review_items" not in health.get("blocking_reasons", []):
         errors.append("pre-acceptance health must retain open operator-review feedback")
@@ -491,13 +516,14 @@ def check_health(health: dict[str, Any], errors: list[str]) -> None:
         if token not in flash_text:
             errors.append(f"flash script missing {token}")
 
-    for label, log in health.get("runtime_logs", {}).items():
-        if not log.get("exists"):
-            errors.append(f"{label} runtime log missing")
-            continue
-        missing = [marker for marker, present in log.get("markers", {}).items() if not present]
-        if missing:
-            errors.append(f"{label} runtime log missing markers: {missing}")
+    if not runtime_pending:
+        for label, log in health.get("runtime_logs", {}).items():
+            if not log.get("exists"):
+                errors.append(f"{label} runtime log missing")
+                continue
+            missing = [marker for marker, present in log.get("markers", {}).items() if not present]
+            if missing:
+                errors.append(f"{label} runtime log missing markers: {missing}")
 
     packet = health.get("operator_packet", {})
     if packet.get("status") != "PENDING_HUMAN":
@@ -561,13 +587,13 @@ def check_health(health: dict[str, Any], errors: list[str]) -> None:
     acceptance_index = health.get("acceptance_index", {})
     if acceptance_index.get("schema_id") != "companion.pendant.screen_acceptance_index.v1":
         errors.append("acceptance index schema drifted")
-    expected_next_hardware_gate = "wba_real_panel_parity" if runtime_status == PASS_STATUS else RUNTIME_GATE_ID
+    expected_next_hardware_gate = "wb55_real_panel_refresh"
     if acceptance_index.get("next_hardware_gate") != expected_next_hardware_gate:
         errors.append(f"pre-acceptance health must point next_hardware_gate at {expected_next_hardware_gate}")
     if acceptance_index.get("next_human_gate") != "wb55_touch_visual_acceptance":
         errors.append("pre-acceptance health must point next_human_gate at wb55_touch_visual_acceptance")
     summary = acceptance_index.get("summary", {})
-    expected_deferred_count = 0 if runtime_status == PASS_STATUS else 1
+    expected_deferred_count = 1 if runtime_status == PASS_STATUS else 2
     if summary.get("deferred_count") != expected_deferred_count:
         errors.append(f"acceptance index deferred_count must be {expected_deferred_count}")
     if summary.get("pending_human_count") != 2:
@@ -580,7 +606,7 @@ def check_health(health: dict[str, Any], errors: list[str]) -> None:
         "runtime_flash_preflight",
         "runtime_serial_capture_preflight",
         "TEMPLATE_NOT_ACCEPTANCE_RESULT",
-        "NO_GO_OPEN_REVIEW_ITEMS",
+        review_status,
         "blank_operator_review_template",
         "filled_operator_review_record_validator",
         "render_wb55_touch_visual_review_template.py",

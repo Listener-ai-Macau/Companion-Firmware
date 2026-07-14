@@ -734,7 +734,9 @@ def check_audit(audit: dict[str, Any], errors: list[str]) -> None:
         errors.append("acceptance sequence next hardware gate drifted from acceptance index")
     if acceptance_index.get("summary", {}).get("next_human_gate") != acceptance_sequence.get("next_human_gate"):
         errors.append("acceptance sequence next human gate drifted from acceptance index")
-    expected_deferred_count = 1
+    expected_deferred_count = (
+        2 if runtime_status.endswith("_RUNTIME_RECHECK_PENDING") else 1
+    )
     if acceptance_sequence.get("summary", {}).get("deferred_count") != expected_deferred_count:
         errors.append(f"acceptance sequence deferred_count must be {expected_deferred_count}")
     wba_evidence_paths = {
@@ -1030,7 +1032,11 @@ def check_audit(audit: dict[str, Any], errors: list[str]) -> None:
     if interaction_profile_status != "PASS":
         required_tokens.extend((
             "PENDING_HARDWARE_RUNTIME_MARKER",
-            "NO_GO_INTERACTION_PROFILE_RUNTIME_RECHECK_PENDING",
+            (
+                "NO_GO_RUNTIME_RECHECK_PENDING"
+                if runtime_status.endswith("_RUNTIME_RECHECK_PENDING")
+                else "NO_GO_INTERACTION_PROFILE_RUNTIME_RECHECK_PENDING"
+            ),
         ))
     for token in required_tokens:
         if token not in serialized:

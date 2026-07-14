@@ -9,7 +9,7 @@ import pathlib
 import sys
 from typing import Any
 
-from screen_runtime_candidate import current_candidate
+from screen_runtime_candidate import current_candidate, current_runtime_evidence_durability
 
 
 REPO_ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -48,10 +48,12 @@ def is_wb55_runtime_recheck_proven() -> bool:
         promotion = json.loads(WB55_RUNTIME_PROMOTION.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError):
         return False
+    durability = current_runtime_evidence_durability()
     return (
         menu.get("runtime_evidence", {}).get("status") == WB55_RUNTIME_PASS_STATUS
         and logs.get("status") == "PASS"
         and promotion.get("status") == "APPLIED"
+        and durability.get("durable") is True
     )
 
 
@@ -2035,6 +2037,23 @@ def build_index() -> dict[str, Any]:
             "WBA55/WBA65 must use the same plan with *_stm32wba.* adapters, WBA portability checks, and target evidence records before claiming real-panel parity.",
         ),
         item(
+            "screen_runtime_evidence_durability",
+            "Screen runtime evidence durability",
+            "PASS",
+            "A promoted WB55 runtime summary is trusted only while both raw serial logs, both PASS summaries, the completed locked run report, normal-firmware restoration, and every required marker still exist; missing artifacts automatically return the candidate to a hardware-pending gate.",
+            [
+                "tools/screen_runtime_candidate.py",
+                "tools/verify_screen_runtime_evidence_durability.py",
+                "docs/validation/companion-screen-runtime-evidence-durability.json",
+                "docs/validation/companion-screen-wb55-runtime-recheck-logs.json",
+                "docs/validation/companion-screen-wb55-runtime-promotion.json",
+            ],
+            [
+                "python .\\tools\\verify_screen_runtime_evidence_durability.py",
+            ],
+            "WBA runtime promotion must keep the same summary-to-raw-artifact integrity rule while replacing only the target capture and adapter paths.",
+        ),
+        item(
             "wb55_screen_build_matrix",
             "WB55 screen build matrix",
             "PASS",
@@ -2167,6 +2186,7 @@ def build_index() -> dict[str, Any]:
                 f"rev{CANDIDATE.revision} provision serial raw/summary logs",
                 f"rev{CANDIDATE.revision} normal serial raw/summary logs",
                 "locked Companion-WB55 hardware run with normal_firmware_restored=true",
+                "durable raw artifacts behind every promoted runtime summary",
             ],
         ),
         item(
@@ -2298,6 +2318,7 @@ def check_index(data: dict[str, Any], errors: list[str]) -> None:
     require(isinstance(items, list) and items, "acceptance index has no items", errors)
     ids = {entry.get("id") for entry in items if isinstance(entry, dict)}
     require("wb55_real_panel_refresh" in ids, "acceptance index missing real panel hardware gate", errors)
+    require("screen_runtime_evidence_durability" in ids, "acceptance index missing runtime evidence durability guard", errors)
     require("wb55_runtime_serial_capture_preflight" in ids, "acceptance index missing WB55 runtime serial capture preflight", errors)
     require(RUNTIME_GATE_ID in ids, f"acceptance index missing {RUNTIME_GATE_ID} hardware gate", errors)
     require("wb55_touch_visual_acceptance" in ids, "acceptance index missing WB55 human interaction gate", errors)

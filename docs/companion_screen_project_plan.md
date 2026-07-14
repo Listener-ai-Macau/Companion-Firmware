@@ -1435,6 +1435,21 @@ I2C read failure、poll stall、IRQ not consumed、PC6 stuck low、FT6336 no-tou
 contact report 或 gesture lifecycle failure。正向完整链路、缺 DMA stop、缺健康行、控制器未检测和 I2C
 增长五组 parser self-test 均通过。
 
+## Revision 99: 汇总 PASS 必须保有底层硬件证据
+
+完整机器套件复查发现 rev53 的 promotion、runtime summary 和 acceptance index 仍为 PASS，
+但它们引用的 provision/normal 原始串口日志、两份 capture summary 和 locked run report 已随临时
+工作树消失。该状态不能继续作为硬件通过证据。`screen_runtime_candidate.py` 现在逐项检查这些底层
+artifact、summary PASS、normal 固件恢复、四个 runner step 和 manifest marker；任一缺失都会把
+runtime gate 降回 `DEFERRED_HARDWARE`，并由
+`verify_screen_runtime_evidence_durability.py` 固化正向与缺日志的回归样例。
+
+资源/菜单静态合同在 runtime pending 时继续可重复验证，但不得读取不存在的日志或抛 Python
+traceback；硬件行动卡在尚未执行时必须生成 `NO_GO_WAITING_FOR_REAL_HARDWARE_RUN`。当前 rev53
+资源内容和历史观察不被删除，但新的 promotion 必须把原始 machine artifact 存入可持久保留的
+验收目录，不能只把路径留在被清理的 `.cache` 中。FTS02 升压故障仍由 Revision 90/
+COMP-REQ-034 独立阻塞真屏，不允许借这次证据修复改动显示策略或美术。
+
 ## 逐项验收顺序
 
 本项目遵循 AI Workflow 的全产品异步验收规则：未收到操作者明确的“开始验收”前，

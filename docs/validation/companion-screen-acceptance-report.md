@@ -7,9 +7,9 @@ This report is generated. Update it with `python .\tools\render_expression_accep
 ## Summary
 
 - PASS: 84
-- DEFERRED_HARDWARE: 1
+- DEFERRED_HARDWARE: 2
 - PENDING_HUMAN: 2
-- TOTAL: 87
+- TOTAL: 88
 - Next hardware gate: `wb55_real_panel_refresh`
 - Next human gate: `wb55_touch_visual_acceptance`
 
@@ -98,12 +98,13 @@ This report is generated. Update it with `python .\tools\render_expression_accep
 | 79 | PASS | `panel_evidence_record_validator` | Panel evidence record validator |
 | 80 | PASS | `panel_evidence_real_ble_sequence_validator` | Panel evidence real BLE sequence validator |
 | 81 | PASS | `panel_hardware_acceptance_plan` | Panel hardware acceptance plan |
-| 82 | PASS | `wb55_screen_build_matrix` | WB55 screen build matrix |
-| 83 | DEFERRED_HARDWARE | `wb55_real_panel_refresh` | WB55 real e-paper panel refresh |
-| 84 | PASS | `wb55_runtime_serial_capture_preflight` | WB55 runtime serial capture preflight |
-| 85 | PASS | `wb55_rev53_runtime_recheck` | WB55 rev53 provision/normal runtime recheck |
-| 86 | PENDING_HUMAN | `wb55_touch_visual_acceptance` | WB55 touch navigation and fast-refresh visual acceptance |
-| 87 | PENDING_HUMAN | `companion_screen_goal_audit` | Active goal completion audit |
+| 82 | PASS | `screen_runtime_evidence_durability` | Screen runtime evidence durability |
+| 83 | PASS | `wb55_screen_build_matrix` | WB55 screen build matrix |
+| 84 | DEFERRED_HARDWARE | `wb55_real_panel_refresh` | WB55 real e-paper panel refresh |
+| 85 | PASS | `wb55_runtime_serial_capture_preflight` | WB55 runtime serial capture preflight |
+| 86 | DEFERRED_HARDWARE | `wb55_rev53_runtime_recheck` | WB55 rev53 provision/normal runtime recheck |
+| 87 | PENDING_HUMAN | `wb55_touch_visual_acceptance` | WB55 touch navigation and fast-refresh visual acceptance |
+| 88 | PENDING_HUMAN | `companion_screen_goal_audit` | Active goal completion audit |
 
 ## Item Details
 
@@ -2061,7 +2062,24 @@ Validation commands:
 - `python .\tools\verify_expression_screen_runtime_diagnostic_decode.py`
 - `python .\tools\verify_expression_wba_portability.py`
 
-### 82. WB55 screen build matrix
+### 82. Screen runtime evidence durability
+
+- ID: `screen_runtime_evidence_durability`
+- Status: `PASS`
+- Summary: A promoted WB55 runtime summary is trusted only while both raw serial logs, both PASS summaries, the completed locked run report, normal-firmware restoration, and every required marker still exist; missing artifacts automatically return the candidate to a hardware-pending gate.
+- WBA impact: WBA runtime promotion must keep the same summary-to-raw-artifact integrity rule while replacing only the target capture and adapter paths.
+
+Evidence:
+- `tools/screen_runtime_candidate.py`
+- `tools/verify_screen_runtime_evidence_durability.py`
+- `docs/validation/companion-screen-runtime-evidence-durability.json`
+- `docs/validation/companion-screen-wb55-runtime-recheck-logs.json`
+- `docs/validation/companion-screen-wb55-runtime-promotion.json`
+
+Validation commands:
+- `python .\tools\verify_screen_runtime_evidence_durability.py`
+
+### 83. WB55 screen build matrix
 
 - ID: `wb55_screen_build_matrix`
 - Status: `PASS`
@@ -2088,7 +2106,7 @@ Validation commands:
 - `pwsh -NoProfile -File .\tools\build_nucleo_bringup.ps1 -ScreenAssetProvision -Force`
 - `python .\tools\verify_companion_screen_pre_acceptance_health.py`
 
-### 83. WB55 real e-paper panel refresh
+### 84. WB55 real e-paper panel refresh
 
 - ID: `wb55_real_panel_refresh`
 - Status: `DEFERRED_HARDWARE`
@@ -2128,7 +2146,7 @@ Missing hardware facts:
 - Established positive PREVGH1 and negative PREVGL1 refresh rails, or equivalent vendor-specified rail evidence.
 - Visible current normal expression, partial expression transition, touch response, and maintenance boundary on the recovered panel.
 
-### 84. WB55 runtime serial capture preflight
+### 85. WB55 runtime serial capture preflight
 
 - ID: `wb55_runtime_serial_capture_preflight`
 - Status: `PASS`
@@ -2153,11 +2171,11 @@ Validation commands:
 - `python .\tools\verify_wb55_runtime_serial_capture_preflight.py`
 - `pwsh -NoProfile -File .\tools\run_wb55_screen_runtime_recheck.ps1 -CheckOnly`
 
-### 85. WB55 rev53 provision/normal runtime recheck
+### 86. WB55 rev53 provision/normal runtime recheck
 
 - ID: `wb55_rev53_runtime_recheck`
-- Status: `PASS`
-- Summary: The rev53 CEMP resource pack is first-hand runtime-proven on WB55: the locked hardware action card completed flash provision, capture provision logs, restore normal firmware, and capture normal logs; the SCR-17 release ledger and coherent_generation marker path are present and the promotion gate is applied.
+- Status: `DEFERRED_HARDWARE`
+- Summary: The current rev53 CEMP resource pack is machine-prepared but not yet first-hand runtime-proven on WB55: the locked hardware action card must flash provision, capture provision logs, restore normal firmware, capture normal logs, verify the SCR-17 release ledger and coherent_generation marker path, then the log verifier and promotion gate may advance pre-acceptance.
 - WBA impact: WBA ports must add the same target-specific provision/normal runtime recheck gate before WBA real-panel parity can move from scaffold to hardware evidence.
 
 Evidence:
@@ -2187,7 +2205,13 @@ Validation commands:
 - `python .\tools\verify_wb55_screen_runtime_recheck_logs.py`
 - `python .\tools\promote_wb55_screen_runtime_recheck.py`
 
-### 86. WB55 touch navigation and fast-refresh visual acceptance
+Missing hardware facts:
+- rev53 provision serial raw/summary logs
+- rev53 normal serial raw/summary logs
+- locked Companion-WB55 hardware run with normal_firmware_restored=true
+- durable raw artifacts behind every promoted runtime summary
+
+### 87. WB55 touch navigation and fast-refresh visual acceptance
 
 - ID: `wb55_touch_visual_acceptance`
 - Status: `PENDING_HUMAN`
@@ -2237,11 +2261,11 @@ Validation commands:
 - `python .\tools\verify_touch_ft6336.py`
 - `python .\tools\verify_epaper_fast_maintenance_runtime.py`
 
-### 87. Active goal completion audit
+### 88. Active goal completion audit
 
 - ID: `companion_screen_goal_audit`
 - Status: `PENDING_HUMAN`
-- Summary: The full screen goal is machine-audited: WB55 wiring, refresh, rev53 resource generation hygiene, WB55 dry-run/SSD1681 build matrix, last-proven external resources, touch IC health, external Flash policy, pre-acceptance health, and WBA pre-port boundaries are tracked; rev53 provision/normal runtime recheck and screen refresh/touch machine health on the current resource pack are proved, leaving daily pet/menu human feel and future WBA real-panel parity.
+- Summary: The full screen goal is machine-audited: WB55 wiring, refresh, rev53 resource generation hygiene, WB55 dry-run/SSD1681 build matrix, last-proven external resources, touch IC health, external Flash policy, pre-acceptance health, and WBA pre-port boundaries are tracked; the open requirements are rev53 provision/normal runtime recheck, screen refresh/touch machine health on the current resource pack, daily pet/menu human feel, and future WBA real-panel parity.
 - WBA impact: WBA real-panel parity remains a future hardware/project gate; the audit prevents closing the shared goal on WB55-only evidence.
 
 Evidence:

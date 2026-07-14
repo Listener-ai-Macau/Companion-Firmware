@@ -24,7 +24,7 @@ This checklist is generated. Update it with `python .\tools\render_expression_fe
 | 4 | `PASS` | `screen_demo_acceptance_flow` | Use the same demo order for WB55 real-panel photos and later extend the real BLE bench until no manual visual gaps remain. |
 | 5 | `PASS` | `product_status_hooks` | Add each new product signal with a focused hook verifier and update the input source matrix. |
 | 6 | `PASS` | `wb55_queue_and_host_status` | Use the same queue/status path for real-panel refresh and WBA scheduler parity. |
-| 7 | `PASS` | `runtime_diagnostics_and_evidence` | Attach runtime snapshot and diagnostics bundle evidence to the first real-panel session. |
+| 7 | `DEFERRED_HARDWARE` | `runtime_diagnostics_and_evidence` | Attach runtime snapshot and diagnostics bundle evidence to the first real-panel session. |
 | 8 | `DEFERRED_HARDWARE` | `panel_driver_readiness` | Replace or cross-swap FTS02, prove solid white/black and valid PREVGH/PREVGL rails, then resume touch, gesture, language, and maintenance visual review. |
 | 9 | `PASS` | `wba_migration_readiness` | Add a separate CubeWBA IOC/project and build wrapper before claiming WBA parity. |
 

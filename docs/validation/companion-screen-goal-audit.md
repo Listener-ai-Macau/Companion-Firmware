@@ -19,11 +19,11 @@ This file is generated. Update it with
 
 ### current_external_resource_runtime
 
-- Status: `proved`
+- Status: `pending_hardware_recheck`
 - Requirement: The normal WB55 firmware uses external ui_assets for the current expression/menu art pack.
 - Evidence:
-  - `docs/validation/companion-screen-bilingual-menu-wb55.json`: `REVISION_53_RUNTIME_RECHECK_PENDING` - revision 53 CEMP pack metadata is current; runtime_status=REVISION_53_RUNTIME_PASS_HUMAN_VISUAL_PENDING
-  - `.cache/validation/rev53-runtime-current/normal/nucleo-serial-raw.log`: `PASS` - normal boot log contains mount=ok, revision=53, source=external_flash, and full refresh completion
+  - `docs/validation/companion-screen-bilingual-menu-wb55.json`: `REVISION_53_RUNTIME_RECHECK_PENDING` - revision 53 CEMP pack metadata is current; runtime_status=REVISION_53_RUNTIME_RECHECK_PENDING
+  - `.cache/validation/rev53-runtime-current/normal/nucleo-serial-raw.log`: `LAST_PROVEN_PREVIOUS_REVISION` - last proven normal boot remains revision=53; current revision=53 awaits provision/normal runtime recheck
 
 ### generated_pet_and_menu_art_baseline
 
@@ -41,16 +41,16 @@ This file is generated. Update it with
   - `docs/validation/companion-screen-generated-art-style-contract.json`: `PASS` - normal pack contact sheet proves every normal expression source is generated-sheet-derived; old procedural art is not allowed in the normal product pack
   - `docs/validation/companion-screen-refresh-feel-contract.json`: `PASS` - SCR-16 contract keeps 0xFC differential interaction, latest-frame menu coalescing, one 0xCF quiet maintenance pass after touch settles, and 0xF7 only for baseline/fault recovery
   - `docs/validation/companion-screen-display-queue-generation-hygiene.json`: `PASS` - SCR-17 separates physical e-paper afterimage from stale queued frames by atomically switching active_resource_revision, draining stale requests, and requiring coherent_generation on the first visible result
-  - `docs/validation/companion-screen-generation-release-ledger.json`: `RUNTIME_PROMOTED_HUMAN_VISUAL_PENDING` - SCR-17 release ledger records source art, CEMP revision/CRC, external Flash activation status, stale-discard model, first-frame coherent marker, refresh classification, OTA transaction rule, and pending rev53 runtime facts
+  - `docs/validation/companion-screen-generation-release-ledger.json`: `PENDING_RUNTIME_RECHECK` - SCR-17 release ledger records source art, CEMP revision/CRC, external Flash activation status, stale-discard model, first-frame coherent marker, refresh classification, OTA transaction rule, and pending rev53 runtime facts
 
 ### screen_refresh_touch_machine_health
 
 - Status: `blocked_hardware_recovery`
 - Requirement: WB55 logs retain FT6336 identity, CEMP, BUSY, and quiet-profile facts, but visible refresh health requires FTS02 recovery before human visual acceptance.
 - Evidence:
-  - `.cache/validation/rev53-runtime-current/normal/nucleo-serial-raw.log`: `PASS` - normal boot log includes refresh complete and touch-health identity addr=0x38 cipher=0x64 fw=0x01 chip=0x11
-  - `docs/validation/companion-screen-wb55-runtime-recheck-logs.json`: `PASS` - current rev53 machine health depends on provision and normal runtime logs; pending status keeps this requirement in hardware recheck instead of relying on earlier history
-  - `docs/validation/companion-interaction-profile-runtime-gate-20260714.md`: `PASS` - the reset-bounded normal capture must contain the complete quiet interaction boot marker; older resource-only logs do not prove the latency candidate
+  - `.cache/validation/rev53-runtime-current/normal/nucleo-serial-raw.log`: `LAST_PROVEN_PREVIOUS_REVISION` - rev53 refresh/touch runtime evidence is pending; rev53 remains last proven
+  - `docs/validation/companion-screen-wb55-runtime-recheck-logs.json`: `NO_GO_MISSING_RUNTIME_LOGS` - current rev53 machine health depends on provision and normal runtime logs; pending status keeps this requirement in hardware recheck instead of relying on earlier history
+  - `docs/validation/companion-interaction-profile-runtime-gate-20260714.md`: `PENDING_HARDWARE_RUNTIME_MARKER` - the reset-bounded normal capture must contain the complete quiet interaction boot marker; older resource-only logs do not prove the latency candidate
   - `docs/validation/companion-screen-wb55-touch-visual-acceptance-packet.json`: `PENDING_HUMAN` - operator packet links the current resource state; it does not claim human visual acceptance
   - `docs/validation/companion-screen-refresh-feel-contract.json`: `PASS` - static refresh-feel contract is PASS; real rev53 touch/flicker/ghosting feel remains a pending hardware recheck
   - `docs/validation/companion-screen-wb55-hardware-recovery-gate.json`: `DEFERRED_HARDWARE_FTS02_BOOST` - current visible refresh is blocked by absent FTS02 positive/negative rails despite a responding SSD1681 command/BUSY path
@@ -76,17 +76,17 @@ This file is generated. Update it with
 - Status: `pending_human`
 - Requirement: Human confirms daily tap/swipe pet reactions, 3 s hold menu entry, static menu-home vertical strokes, press-cue, language switching, residual/flicker, and premium pet feel on the real panel.
 - Evidence:
-  - `docs/validation/companion-screen-wb55-touch-visual-acceptance-packet.json`: `PENDING_HUMAN` - asynchronous focused packet must start only after the operator explicitly says 开始验收; machine_precondition=NO_GO_OPEN_OPERATOR_REVIEW_ITEMS: do not start a new touch/visual review until the prior focused menu-density feedback is fixed and re-reviewed with evidence.
-  - `docs/validation/companion-interaction-profile-runtime-gate-20260714.md`: `PASS` - the same focused packet remains NO_GO until the reset-bounded normal capture proves the complete quiet interaction marker
+  - `docs/validation/companion-screen-wb55-touch-visual-acceptance-packet.json`: `PENDING_HUMAN` - asynchronous focused packet must start only after the operator explicitly says 开始验收; machine_precondition=NO_GO_RUNTIME_RECHECK_PENDING: do not start human touch/visual steps until rev53 provision and normal runtime logs pass and promotion is applied.
+  - `docs/validation/companion-interaction-profile-runtime-gate-20260714.md`: `PENDING_HARDWARE_RUNTIME_MARKER` - the same focused packet remains NO_GO until the reset-bounded normal capture proves the complete quiet interaction marker
   - `docs/validation/companion-screen-wb55-touch-visual-review-template.json`: `TEMPLATE_NOT_ACCEPTANCE_RESULT` - blank structured review template mirrors all focused operator steps and defaults every record to non-publishable until triaged with evidence
-  - `docs/validation/companion-screen-wb55-touch-visual-review-record.json`: `NO_GO_OPEN_REVIEW_ITEMS` - filled review record validator is present and stays non-publishable until all operator notes are triaged, closed, and linked to evidence
-  - `docs/validation/companion-screen-pre-acceptance-health.json`: `NO_GO_OPEN_OPERATOR_REVIEW_ITEMS` - machine-only pre-acceptance health gate blocks acceptance until rev53 runtime recheck, while retaining last-proven log, touch identity, refresh marker, flash preflight, and packet/resource consistency evidence
+  - `docs/validation/companion-screen-wb55-touch-visual-review-record.json`: `NO_GO_NOT_STARTED` - filled review record validator is present and stays non-publishable until all operator notes are triaged, closed, and linked to evidence
+  - `docs/validation/companion-screen-pre-acceptance-health.json`: `NO_GO_RUNTIME_RECHECK_PENDING` - machine-only pre-acceptance health gate blocks acceptance until rev53 runtime recheck, while retaining last-proven log, touch identity, refresh marker, flash preflight, and packet/resource consistency evidence
   - `docs/validation/companion-screen-wb55-runtime-recheck-runner.json`: `PASS` - rev53 provision flash, provision capture, normal restore, and normal capture sequence is dry-run verified and requires the Companion-WB55 workflow hardware lock before execution
-  - `docs/validation/companion-screen-wb55-runtime-hardware-action-card.json`: `PASS_MACHINE_RUNTIME_RECHECK_COMPLETE` - Chinese hardware action card renders the locked rev53 runtime recheck steps, expected markers, promotion sequence, and human acceptance start rule
+  - `docs/validation/companion-screen-wb55-runtime-hardware-action-card.json`: `NO_GO_WAITING_FOR_REAL_HARDWARE_RUN` - Chinese hardware action card renders the locked rev53 runtime recheck steps, expected markers, promotion sequence, and human acceptance start rule
   - `docs/validation/companion-screen-wb55-runtime-flash-preflight.json`: `PASS` - normal/provision flash CheckOnly preflight proves both hex paths and STM32_Programmer_CLI are available before the locked hardware run
   - `docs/validation/companion-screen-wb55-runtime-serial-capture-preflight.json`: `PASS_STATIC_SERIAL_CAPTURE_PREFLIGHT` - static serial-capture preflight proves capture_nucleo_serial.ps1, locked runner calls, raw/summary output names, and log-verifier expectations before opening any COM port; claim_scope=static_serial_capture_contract_no_hardware_claim
-  - `docs/validation/companion-screen-wb55-runtime-recheck-logs.json`: `PASS` - rev53 provision/normal runtime logs are the first-hand machine gate; pending status means human touch/visual acceptance must not start
-  - `docs/validation/companion-screen-wb55-runtime-promotion.json`: `APPLIED` - promotion gate has applied rev53 runtime evidence; human visual/touch acceptance is still pending
+  - `docs/validation/companion-screen-wb55-runtime-recheck-logs.json`: `NO_GO_MISSING_RUNTIME_LOGS` - rev53 provision/normal runtime logs are the first-hand machine gate; pending status means human touch/visual acceptance must not start
+  - `docs/validation/companion-screen-wb55-runtime-promotion.json`: `NO_GO_LOGS_NOT_PASS` - promotion gate refuses to update runtime evidence until both rev53 provision and normal serial logs verify PASS
   - `docs/validation/companion-screen-wb55-hardware-recovery-gate.json`: `DEFERRED_HARDWARE_FTS02_BOOST` - do not open the focused touch/visual review until FTS02 replacement or cross-swap passes solid white, solid black, and normal-expression recovery
 - Pending steps:
   - `daily_tap_social_response`
@@ -122,6 +122,7 @@ This file is generated. Update it with
 ## Open Requirements
 
 - `wb55_physical_wiring_and_panel_identity`
+- `current_external_resource_runtime`
 - `screen_refresh_touch_machine_health`
 - `daily_pet_and_menu_human_feel`
 - `wba55_wba65_portability_boundary`

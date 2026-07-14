@@ -3,11 +3,11 @@
     "dry_run_default": {
       "exists": true,
       "expected_size": {
-        "bss": 182183,
-        "data": 2436,
-        "dec": 307279,
-        "hex": "4b04f",
-        "text": 122660
+        "bss": 178143,
+        "data": 2432,
+        "dec": 302159,
+        "hex": "49c4f",
+        "text": 121584
       },
       "forbidden_markers_absent": {
         "COMPANION_EPAPER_PANEL_SSD1681_BRINGUP=1": true,
@@ -21,21 +21,21 @@
         "make: Leaving directory": true
       },
       "size": {
-        "bss": 182183,
-        "data": 2436,
-        "dec": 307279,
-        "hex": "4b04f",
-        "text": 122660
+        "bss": 178143,
+        "data": 2432,
+        "dec": 302159,
+        "hex": "49c4f",
+        "text": 121584
       }
     },
     "screen_asset_provision": {
       "exists": true,
       "expected_size": {
-        "bss": 192239,
+        "bss": 188183,
         "data": 2433,
-        "dec": 602988,
-        "hex": "9336c",
-        "text": 408316
+        "dec": 356164,
+        "hex": "56f44",
+        "text": 165548
       },
       "forbidden_markers_absent": {},
       "path": ".cache/validation/wb55-build-matrix/screen-asset-provision-build.log",
@@ -50,21 +50,21 @@
         "panel_target_stm32wb_ssd1681.c": true
       },
       "size": {
-        "bss": 192239,
+        "bss": 188183,
         "data": 2433,
-        "dec": 602988,
-        "hex": "9336c",
-        "text": 408316
+        "dec": 356164,
+        "hex": "56f44",
+        "text": 165548
       }
     },
     "ssd1681_real_panel": {
       "exists": true,
       "expected_size": {
-        "bss": 192263,
-        "data": 2440,
-        "dec": 332315,
-        "hex": "5121b",
-        "text": 137612
+        "bss": 188191,
+        "data": 2436,
+        "dec": 322015,
+        "hex": "4e9df",
+        "text": 131388
       },
       "forbidden_markers_absent": {},
       "path": ".cache/validation/wb55-build-matrix/ssd1681-build.log",
@@ -77,11 +77,11 @@
         "panel_target_stm32wb_ssd1681.c": true
       },
       "size": {
-        "bss": 192263,
-        "data": 2440,
-        "dec": 332315,
-        "hex": "5121b",
-        "text": 137612
+        "bss": 188191,
+        "data": 2436,
+        "dec": 322015,
+        "hex": "4e9df",
+        "text": 131388
       }
     }
   },

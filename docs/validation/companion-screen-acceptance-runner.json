@@ -1,21 +1,21 @@
 {
   "acceptance_index_snapshot": {
-    "deferred_gate": "wb55_rev52_runtime_recheck",
+    "deferred_gate": "wb55_real_panel_refresh",
     "has_build_command": true,
     "has_runtime_recheck_log_verifier": true,
     "has_third_party_guard": true,
     "has_touch_review_record_verifier": true,
     "human_gate": "wb55_touch_visual_acceptance",
-    "item_count": 87,
+    "item_count": 88,
     "summary": {
-      "deferred_count": 1,
-      "next_hardware_gate": "wb55_rev52_runtime_recheck",
+      "deferred_count": 2,
+      "next_hardware_gate": "wb55_real_panel_refresh",
       "next_human_gate": "wb55_touch_visual_acceptance",
       "pass_count": 84,
       "pending_human_count": 2,
-      "total_count": 87
+      "total_count": 88
     },
-    "unique_validation_command_count": 118
+    "unique_validation_command_count": 122
   },
   "acceptance_report_check": {
     "command": "python .\\tools\\render_expression_acceptance_report.py",
@@ -27,19 +27,19 @@
   "dry_run_snapshot": {
     "command": "python .\\tools\\run_expression_acceptance.py --dry-run --skip-build --output .\\.cache\\validation\\companion-screen-acceptance-dry-run.json",
     "dry_run": true,
-    "executed_command_count": 114,
+    "executed_command_count": 118,
     "included_statuses": [
       "DEFERRED_HARDWARE",
       "PASS",
       "PENDING_HUMAN"
     ],
     "index_summary": {
-      "deferred_count": 1,
-      "next_hardware_gate": "wb55_rev52_runtime_recheck",
+      "deferred_count": 2,
+      "next_hardware_gate": "wb55_real_panel_refresh",
       "next_human_gate": "wb55_touch_visual_acceptance",
       "pass_count": 84,
       "pending_human_count": 2,
-      "total_count": 87
+      "total_count": 88
     },
     "path": ".cache/validation/companion-screen-acceptance-dry-run.json",
     "returncode": 0,
@@ -48,7 +48,7 @@
         "command": "python .\\tools\\verify_screen_generation_release_ledger.py",
         "item_ids": [
           "screen_generation_swap_guard",
-          "wb55_rev52_runtime_recheck",
+          "wb55_rev53_runtime_recheck",
           "wb55_touch_visual_acceptance",
           "companion_screen_goal_audit"
         ],
@@ -58,7 +58,7 @@
         "command": "python .\\tools\\render_wb55_runtime_hardware_action_card.py",
         "item_ids": [
           "wb55_runtime_serial_capture_preflight",
-          "wb55_rev52_runtime_recheck",
+          "wb55_rev53_runtime_recheck",
           "wb55_touch_visual_acceptance",
           "companion_screen_goal_audit"
         ],
@@ -68,7 +68,7 @@
         "command": "python .\\tools\\verify_wb55_runtime_flash_preflight.py",
         "item_ids": [
           "wb55_runtime_serial_capture_preflight",
-          "wb55_rev52_runtime_recheck",
+          "wb55_rev53_runtime_recheck",
           "wb55_touch_visual_acceptance",
           "companion_screen_goal_audit"
         ],
@@ -78,7 +78,7 @@
         "command": "python .\\tools\\verify_wb55_runtime_serial_capture_preflight.py",
         "item_ids": [
           "wb55_runtime_serial_capture_preflight",
-          "wb55_rev52_runtime_recheck",
+          "wb55_rev53_runtime_recheck",
           "wb55_touch_visual_acceptance",
           "companion_screen_goal_audit"
         ],
@@ -88,28 +88,28 @@
         "command": "pwsh -NoProfile -File .\\tools\\run_wb55_screen_runtime_recheck.ps1 -CheckOnly",
         "item_ids": [
           "wb55_runtime_serial_capture_preflight",
-          "wb55_rev52_runtime_recheck"
+          "wb55_rev53_runtime_recheck"
         ],
         "status": "SKIPPED_DRY_RUN"
       },
       {
         "command": "python .\\tools\\verify_wb55_screen_runtime_recheck_runner.py",
         "item_ids": [
-          "wb55_rev52_runtime_recheck"
+          "wb55_rev53_runtime_recheck"
         ],
         "status": "SKIPPED_DRY_RUN"
       },
       {
         "command": "python .\\tools\\verify_wb55_screen_runtime_recheck_logs.py",
         "item_ids": [
-          "wb55_rev52_runtime_recheck"
+          "wb55_rev53_runtime_recheck"
         ],
         "status": "SKIPPED_DRY_RUN"
       },
       {
         "command": "python .\\tools\\promote_wb55_screen_runtime_recheck.py",
         "item_ids": [
-          "wb55_rev52_runtime_recheck"
+          "wb55_rev53_runtime_recheck"
         ],
         "status": "SKIPPED_DRY_RUN"
       }
@@ -117,12 +117,12 @@
     "runtime_recheck_status": "SKIPPED_DRY_RUN",
     "schema_id": "companion.pendant.screen_acceptance_run.v1",
     "skip_build": true,
-    "skip_count": 114,
+    "skip_count": 118,
     "status": "DRY_RUN",
     "stderr_tail": "",
-    "stdout_tail": "hon .\\tools\\verify_expression_wba_real_parity_gate.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_expression_wba_cube_dependency_preflight.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_workspace_submodule_policy.py\nSKIPPED_DRY_RUN: python .\\tools\\init_expression_wba_port_scaffold.py --self-test\nSKIPPED_DRY_RUN: python .\\tools\\init_expression_wba_port_scaffold.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_expression_panel_target_stm32wba.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_expression_screen_scheduler_stm32wba.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_expression_screen_gatt_stm32wba.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_expression_screen_assets_stm32wba.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_expression_panel_gate.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_screen_resource_architecture.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_pet_behavior_user_data_stm32wba.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_expression_target_capabilities.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_devboard_ioc_import.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_expression_panel_wiring_preflight.py\nSKIPPED_DRY_RUN: python .\\tools\\init_expression_panel_evidence_record.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_expression_panel_evidence_record.py --self-test\nSKIPPED_DRY_RUN: python .\\tools\\verify_expression_panel_hardware_facts.py --self-test\nSKIPPED_DRY_RUN: python .\\tools\\verify_expression_panel_session_directory.py --self-test\nSKIPPED_DRY_RUN: python .\\tools\\render_expression_panel_bringup_packet.py --self-test\nSKIPPED_DRY_RUN: python .\\tools\\verify_expression_panel_hardware_facts.py\nSKIPPED_DRY_RUN: python .\\tools\\render_expression_panel_facts_worksheet.py\nSKIPPED_DRY_RUN: python .\\tools\\render_expression_panel_facts_worksheet.py --self-test\nSKIPPED_DRY_RUN: python .\\tools\\render_expression_panel_bringup_packet.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_expression_panel_driver_readiness.py --self-test\nSKIPPED_DRY_RUN: python .\\tools\\apply_expression_panel_hardware_facts.py --self-test\nSKIPPED_DRY_RUN: python .\\tools\\verify_expression_panel_adapter_boundary.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_expression_panel_target_stm32wb.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_expression_panel_adapter_behavior.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_expression_panel_adapter_telemetry.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_expression_screen_runtime_diagnostic_decode.py\nSKIPPED_DRY_RUN: python .\\tools\\decode_diag_log.py --self-test\nSKIPPED_DRY_RUN: pwsh -NoProfile -File .\\tools\\collect_companion_diagnostics.ps1 -Fixture\nSKIPPED_DRY_RUN: python .\\tools\\verify_companion_diagnostics_static.py\nSKIPPED_DRY_RUN: python -m py_compile .\\tools\\companion_ble_real_bench.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_expression_panel_evidence_template.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_wb55_screen_build_matrix.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_companion_screen_pre_acceptance_health.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_epaper_fast_maintenance_runtime.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_touch_ft6336.py\nSKIPPED_DRY_RUN: python .\\tools\\render_wb55_runtime_hardware_action_card.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_wb55_runtime_flash_preflight.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_wb55_runtime_serial_capture_preflight.py\nSKIPPED_DRY_RUN: pwsh -NoProfile -File .\\tools\\run_wb55_screen_runtime_recheck.ps1 -CheckOnly\nSKIPPED_DRY_RUN: python .\\tools\\verify_wb55_screen_runtime_recheck_runner.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_wb55_screen_runtime_recheck_logs.py\nSKIPPED_DRY_RUN: python .\\tools\\promote_wb55_screen_runtime_recheck.py\nSKIPPED_DRY_RUN: python .\\tools\\render_wb55_touch_visual_acceptance_packet.py\nSKIPPED_DRY_RUN: python .\\tools\\render_wb55_touch_visual_review_template.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_wb55_touch_visual_review_record.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_screen_presentation.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_companion_screen_goal_audit.py\nsummary: status=DRY_RUN unique=114 executed=114 pass=0 fail=0 skip=114\n",
+    "stdout_tail": "python .\\tools\\verify_workspace_submodule_policy.py\nSKIPPED_DRY_RUN: python .\\tools\\init_expression_wba_port_scaffold.py --self-test\nSKIPPED_DRY_RUN: python .\\tools\\init_expression_wba_port_scaffold.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_expression_panel_target_stm32wba.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_expression_screen_scheduler_stm32wba.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_expression_screen_gatt_stm32wba.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_expression_screen_assets_stm32wba.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_expression_panel_gate.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_screen_resource_architecture.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_pet_behavior_user_data_stm32wba.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_expression_target_capabilities.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_devboard_ioc_import.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_expression_panel_wiring_preflight.py\nSKIPPED_DRY_RUN: python .\\tools\\init_expression_panel_evidence_record.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_expression_panel_evidence_record.py --self-test\nSKIPPED_DRY_RUN: python .\\tools\\verify_expression_panel_hardware_facts.py --self-test\nSKIPPED_DRY_RUN: python .\\tools\\verify_expression_panel_session_directory.py --self-test\nSKIPPED_DRY_RUN: python .\\tools\\render_expression_panel_bringup_packet.py --self-test\nSKIPPED_DRY_RUN: python .\\tools\\verify_expression_panel_hardware_facts.py\nSKIPPED_DRY_RUN: python .\\tools\\render_expression_panel_facts_worksheet.py\nSKIPPED_DRY_RUN: python .\\tools\\render_expression_panel_facts_worksheet.py --self-test\nSKIPPED_DRY_RUN: python .\\tools\\render_expression_panel_bringup_packet.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_expression_panel_driver_readiness.py --self-test\nSKIPPED_DRY_RUN: python .\\tools\\apply_expression_panel_hardware_facts.py --self-test\nSKIPPED_DRY_RUN: python .\\tools\\verify_expression_panel_adapter_boundary.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_expression_panel_target_stm32wb.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_expression_panel_adapter_behavior.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_expression_panel_adapter_telemetry.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_expression_screen_runtime_diagnostic_decode.py\nSKIPPED_DRY_RUN: python .\\tools\\decode_diag_log.py --self-test\nSKIPPED_DRY_RUN: pwsh -NoProfile -File .\\tools\\collect_companion_diagnostics.ps1 -Fixture\nSKIPPED_DRY_RUN: python .\\tools\\verify_companion_diagnostics_static.py\nSKIPPED_DRY_RUN: python -m py_compile .\\tools\\companion_ble_real_bench.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_expression_panel_evidence_template.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_screen_runtime_evidence_durability.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_wb55_screen_build_matrix.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_companion_screen_pre_acceptance_health.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_wb55_screen_hardware_recovery_gate.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_epaper_fast_maintenance_runtime.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_touch_ft6336.py\nSKIPPED_DRY_RUN: python .\\tools\\render_wb55_runtime_hardware_action_card.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_wb55_runtime_flash_preflight.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_wb55_runtime_serial_capture_preflight.py\nSKIPPED_DRY_RUN: pwsh -NoProfile -File .\\tools\\run_wb55_screen_runtime_recheck.ps1 -CheckOnly\nSKIPPED_DRY_RUN: python .\\tools\\verify_wb55_screen_runtime_recheck_runner.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_wb55_screen_runtime_recheck_logs.py\nSKIPPED_DRY_RUN: python .\\tools\\promote_wb55_screen_runtime_recheck.py\nSKIPPED_DRY_RUN: python .\\tools\\render_wb55_touch_visual_acceptance_packet.py\nSKIPPED_DRY_RUN: python .\\tools\\render_wb55_touch_visual_review_template.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_wb55_touch_visual_review_record.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_screen_presentation.py\nSKIPPED_DRY_RUN: python .\\tools\\verify_companion_screen_goal_audit.py\nsummary: status=DRY_RUN unique=118 executed=118 pass=0 fail=0 skip=118\n",
     "touch_visual_acceptance_status": "SKIPPED_DRY_RUN",
-    "unique_command_count": 114
+    "unique_command_count": 118
   },
   "report_schema": {
     "required_fields": [
@@ -175,9 +175,9 @@
   "status": "PASS",
   "touch_visual_gate_snapshot": {
     "gate_id": "wb55_touch_visual_acceptance",
-    "human_review_start_rule": "operator must explicitly say \u5f00\u59cb\u9a8c\u6536 after rev52 machine preflight passes",
+    "human_review_start_rule": "operator must explicitly say \u5f00\u59cb\u9a8c\u6536 after rev53 machine preflight passes",
     "pre_acceptance_status": "NO_GO_RUNTIME_RECHECK_PENDING",
-    "review_record_open_item_count": 8,
+    "review_record_open_item_count": 10,
     "review_record_publishable_pass_allowed": false,
     "review_record_status": "NO_GO_NOT_STARTED",
     "runtime_promotion_status": "NO_GO_LOGS_NOT_PASS",

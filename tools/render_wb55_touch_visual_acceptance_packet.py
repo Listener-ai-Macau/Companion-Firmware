@@ -128,7 +128,7 @@ def build_packet() -> dict[str, Any]:
             "resource_total_bytes": resource_pack.get("total_bytes"),
             "runtime_status": runtime.get("status"),
             "pet_art_style": "genref_sheet_12_inner_faces_v5",
-            "normal_firmware_restored": True,
+            "normal_firmware_restored": runtime_machine_ready,
             "bilingual_menu_evidence": rel(BILINGUAL_MENU),
             "provision_log": runtime.get("provision_raw_log"),
             "normal_log": runtime.get("normal_raw_log"),
@@ -644,12 +644,16 @@ def check_packet(packet: dict[str, Any], errors: list[str]) -> None:
         str(resource_pack.get("total_bytes")),
         "六项生图布局",
     ]
-    if not runtime_machine_ready or interaction_profile.get("status") != "PASS":
+    if resource_runtime_ready and (
+        not runtime_machine_ready or interaction_profile.get("status") != "PASS"
+    ):
         required_tokens.extend((
             "PENDING_HARDWARE_RUNTIME_MARKER",
             "NO_GO_INTERACTION_PROFILE_RUNTIME_RECHECK_PENDING",
         ))
-    if review_open:
+    if not resource_runtime_ready:
+        required_tokens.append("NO_GO_RUNTIME_RECHECK_PENDING")
+    if review_open and runtime_machine_ready and interaction_profile.get("status") == "PASS":
         required_tokens.append("NO_GO_OPEN_OPERATOR_REVIEW_ITEMS")
     for token in required_tokens:
         if token not in serialized:

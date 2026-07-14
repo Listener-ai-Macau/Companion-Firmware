@@ -2,56 +2,56 @@
   "claim_scope": "filled_operator_review_record_validator",
   "filled_input_path": ".cache/validation/wb55-touch-visual-review/latest-review-record.json",
   "gate_id": "wb55_touch_visual_acceptance",
-  "next_action": "关闭 open review items 并补齐 evidence_path 后重新运行本校验器。",
+  "next_action": "等待操作者明确说开始验收，然后把填好的结构化 review record 写入 filled_input_path。",
   "open_items": [
     {
       "operator_note": "",
-      "reason": "resolution_state is open_requires_fix",
+      "reason": "human review has not started",
       "source_step_id": "daily_tap_social_response"
     },
     {
       "operator_note": "",
-      "reason": "resolution_state is open_requires_fix",
+      "reason": "human review has not started",
       "source_step_id": "daily_swipe_pet_response"
     },
     {
       "operator_note": "",
-      "reason": "resolution_state is open_requires_fix",
+      "reason": "human review has not started",
       "source_step_id": "anywhere_hold_menu_entry"
     },
     {
-      "operator_note": "菜单太小了, 换成四项一页吧",
-      "reason": "resolution_state is open_requires_fix",
+      "operator_note": "",
+      "reason": "human review has not started",
       "source_step_id": "menu_boundary_single_clean_refresh"
     },
     {
       "operator_note": "",
-      "reason": "resolution_state is open_requires_fix",
+      "reason": "human review has not started",
       "source_step_id": "menu_home_static_vertical_stroke"
     },
     {
       "operator_note": "",
-      "reason": "resolution_state is open_requires_fix",
+      "reason": "human review has not started",
       "source_step_id": "row_press_and_back"
     },
     {
       "operator_note": "",
-      "reason": "resolution_state is open_requires_fix",
+      "reason": "human review has not started",
       "source_step_id": "phone_reconnect_advertising"
     },
     {
       "operator_note": "",
-      "reason": "resolution_state is open_requires_fix",
+      "reason": "human review has not started",
       "source_step_id": "language_switch_single_language"
     },
     {
       "operator_note": "",
-      "reason": "resolution_state is open_requires_fix",
+      "reason": "human review has not started",
       "source_step_id": "maintenance_single_quiet_flash"
     },
     {
       "operator_note": "",
-      "reason": "resolution_state is open_requires_fix",
+      "reason": "human review has not started",
       "source_step_id": "premium_pet_feel"
     }
   ],
@@ -71,127 +71,129 @@
   "review_records": [
     {
       "evidence_path": "",
-      "next_review_scope": "Deferred until the active menu-density fix is re-reviewed.",
+      "next_review_scope": "",
       "operator_note": "",
-      "operator_observation": "未执行：菜单边界项失败后按验收规则暂停本轮。",
+      "operator_observation": "",
       "publishable_pass_allowed": false,
       "resolution_state": "open_requires_fix",
       "source_step_id": "daily_tap_social_response",
+      "title": "Daily face tap keeps social mode",
       "triage_items": [],
       "visual_issue_classification": "none"
     },
     {
       "evidence_path": "",
-      "next_review_scope": "Deferred until the active menu-density fix is re-reviewed.",
+      "next_review_scope": "",
       "operator_note": "",
-      "operator_observation": "未执行：菜单边界项失败后按验收规则暂停本轮。",
+      "operator_observation": "",
       "publishable_pass_allowed": false,
       "resolution_state": "open_requires_fix",
       "source_step_id": "daily_swipe_pet_response",
+      "title": "Daily swipes become pet reactions",
       "triage_items": [],
       "visual_issue_classification": "none"
     },
     {
       "evidence_path": "",
-      "next_review_scope": "Deferred until the active menu-density fix is re-reviewed.",
+      "next_review_scope": "",
       "operator_note": "",
-      "operator_observation": "未执行：菜单边界项失败后按验收规则暂停本轮。",
+      "operator_observation": "",
       "publishable_pass_allowed": false,
       "resolution_state": "open_requires_fix",
       "source_step_id": "anywhere_hold_menu_entry",
+      "title": "Anywhere hold enters menu deliberately",
       "triage_items": [],
       "visual_issue_classification": "none"
     },
     {
-      "evidence_path": ".cache/validation/wb55-touch-visual-review/01-menu-boundary-retry-result.json",
-      "next_review_scope": "Re-review only menu v4 density, touch targets, page navigation, and menu boundary cleanliness after machine evidence.",
-      "operator_note": "菜单太小了, 换成四项一页吧",
-      "operator_observation": "操作员选择：失败。菜单主页密度不可接受。",
+      "evidence_path": "",
+      "next_review_scope": "",
+      "operator_note": "",
+      "operator_observation": "",
       "publishable_pass_allowed": false,
       "resolution_state": "open_requires_fix",
       "source_step_id": "menu_boundary_single_clean_refresh",
-      "triage_items": [
-        {
-          "issue": "menu v3 six-up home is too small",
-          "next_action": "Generate and review a four-items-per-page menu v4 reference before CEMP implementation.",
-          "owner_note": "菜单太小了, 换成四项一页吧",
-          "requirement_id": "COMP-REQ-019",
-          "resolution_state": "open_requires_fix"
-        }
-      ],
+      "title": "Menu boundaries clean residuals once",
+      "triage_items": [],
       "visual_issue_classification": "none"
     },
     {
       "evidence_path": "",
-      "next_review_scope": "Deferred until the active menu-density fix is re-reviewed.",
+      "next_review_scope": "",
       "operator_note": "",
-      "operator_observation": "未执行：菜单边界项失败后按验收规则暂停本轮。",
+      "operator_observation": "",
       "publishable_pass_allowed": false,
       "resolution_state": "open_requires_fix",
       "source_step_id": "menu_home_static_vertical_stroke",
+      "title": "Static menu home ignores vertical stroke",
       "triage_items": [],
       "visual_issue_classification": "none"
     },
     {
       "evidence_path": "",
-      "next_review_scope": "Deferred until the active menu-density fix is re-reviewed.",
+      "next_review_scope": "",
       "operator_note": "",
-      "operator_observation": "未执行：菜单边界项失败后按验收规则暂停本轮。",
+      "operator_observation": "",
       "publishable_pass_allowed": false,
       "resolution_state": "open_requires_fix",
       "source_step_id": "row_press_and_back",
+      "title": "Row press shows entry feedback",
       "triage_items": [],
       "visual_issue_classification": "none"
     },
     {
       "evidence_path": "",
-      "next_review_scope": "Deferred until the active menu-density fix is re-reviewed.",
+      "next_review_scope": "",
       "operator_note": "",
-      "operator_observation": "未执行：菜单边界项失败后按验收规则暂停本轮。",
+      "operator_observation": "",
       "publishable_pass_allowed": false,
       "resolution_state": "open_requires_fix",
       "source_step_id": "phone_reconnect_advertising",
+      "title": "Phone reconnect requests guarded advertising",
       "triage_items": [],
       "visual_issue_classification": "none"
     },
     {
       "evidence_path": "",
-      "next_review_scope": "Deferred until the active menu-density fix is re-reviewed.",
+      "next_review_scope": "",
       "operator_note": "",
-      "operator_observation": "未执行：菜单边界项失败后按验收规则暂停本轮。",
+      "operator_observation": "",
       "publishable_pass_allowed": false,
       "resolution_state": "open_requires_fix",
       "source_step_id": "language_switch_single_language",
+      "title": "Language toggle stays single-language",
       "triage_items": [],
       "visual_issue_classification": "none"
     },
     {
       "evidence_path": "",
-      "next_review_scope": "Deferred until the active menu-density fix is re-reviewed.",
+      "next_review_scope": "",
       "operator_note": "",
-      "operator_observation": "未执行：菜单边界项失败后按验收规则暂停本轮。",
+      "operator_observation": "",
       "publishable_pass_allowed": false,
       "resolution_state": "open_requires_fix",
       "source_step_id": "maintenance_single_quiet_flash",
+      "title": "Maintenance is one quiet cleanup",
       "triage_items": [],
       "visual_issue_classification": "none"
     },
     {
       "evidence_path": "",
-      "next_review_scope": "Deferred until the active menu-density fix is re-reviewed.",
+      "next_review_scope": "",
       "operator_note": "",
-      "operator_observation": "未执行：菜单边界项失败后按验收规则暂停本轮。",
+      "operator_observation": "",
       "publishable_pass_allowed": false,
       "resolution_state": "open_requires_fix",
       "source_step_id": "premium_pet_feel",
+      "title": "Pet expression feels alive enough for next art pass",
       "triage_items": [],
       "visual_issue_classification": "none"
     }
   ],
   "schema_id": "companion.pendant.wb55_touch_visual_review_record.v1",
-  "source_status": "IN_PROGRESS_FOCUSED_REVIEW",
+  "source_status": "MISSING_FILLED_INPUT",
   "source_template": "docs/validation/companion-screen-wb55-touch-visual-review-template.json",
-  "status": "NO_GO_OPEN_REVIEW_ITEMS",
+  "status": "NO_GO_NOT_STARTED",
   "target": "NUCLEO-WB55RG + GDEY0154D67-T03 + FT6336U",
   "triage_contract": {
     "allowed_resolution_states": [

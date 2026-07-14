@@ -2,16 +2,16 @@
 
 这张卡是生成文件，只用于 rev53 机器 runtime recheck。它不代表人工触摸/视觉验收已开始。
 
-- 状态: `PASS_MACHINE_RUNTIME_RECHECK_COMPLETE`
+- 状态: `NO_GO_WAITING_FOR_REAL_HARDWARE_RUN`
 - 目标: `NUCLEO-WB55RG + GDEY0154D67-T03 + FT6336U`
 - 资源: revision `53`, bytes `49901`, CRC `0x2332E300`
 - build matrix: `PASS`, variants `dry_run_default, screen_asset_provision, ssd1681_real_panel`
-- ScreenAssetProvision size: `{'bss': 192239, 'data': 2433, 'dec': 602988, 'hex': '9336c', 'text': 408316}`
-- SCR-17 ledger: `RUNTIME_PROMOTED_HUMAN_VISUAL_PENDING`, first frame `coherent_generation=1`, stale discard model `3`
-- runtime logs gate: `PASS`
-- promotion gate: `APPLIED`
-- pre-acceptance: `NO_GO_OPEN_OPERATOR_REVIEW_ITEMS`
-- human review record: `NO_GO_OPEN_REVIEW_ITEMS`
+- ScreenAssetProvision size: `{'bss': 188183, 'data': 2433, 'dec': 356164, 'hex': '56f44', 'text': 165548}`
+- SCR-17 ledger: `PENDING_RUNTIME_RECHECK`, first frame `coherent_generation=1`, stale discard model `3`
+- runtime logs gate: `NO_GO_MISSING_RUNTIME_LOGS`
+- promotion gate: `NO_GO_LOGS_NOT_PASS`
+- pre-acceptance: `NO_GO_RUNTIME_RECHECK_PENDING`
+- human review record: `NO_GO_NOT_STARTED`
 - flash preflight: `PASS`
 - serial capture preflight: `PASS_STATIC_SERIAL_CAPTURE_PREFLIGHT`
 - failure recovery restores normal: `True`
@@ -78,16 +78,16 @@ pwsh -NoProfile -File C:\Users\Billy\Desktop\Denzic\ai-collaboration-workflow\sc
 
 1. `flash_provision`
    - 刷入带外部 CEMP 资源写入逻辑的 provision 固件。
-   - `pwsh -NoProfile -File .\tools\flash_nucleo_bringup.ps1 -ScreenAssetProvision -ProgrammerRoot C:\ST\STM32CubeIDE_2.1.1\STM32CubeIDE\plugins`
+   - `see locked runtime recheck runner`
 2. `capture_provision`
    - 复位并抓取 provision 启动串口日志，证明资源写入/挂载链路。
-   - `pwsh -NoProfile -File .\tools\capture_nucleo_serial.ps1 -Execute -WorkflowLockHeld -Seconds 25 -ResetAfterOpen -OutDir C:\Users\Billy\Desktop\Denzic\Companion\Companion-Firmware-devboard-oai1\.cache\validation\rev53-runtime-current\provision`
+   - `see locked runtime recheck runner`
 3. `flash_normal`
    - 刷回普通运行固件，避免设备停留在 provision 镜像。
-   - `pwsh -NoProfile -File .\tools\flash_nucleo_bringup.ps1 -ProgrammerRoot C:\ST\STM32CubeIDE_2.1.1\STM32CubeIDE\plugins`
+   - `see locked runtime recheck runner`
 4. `capture_normal`
    - 复位并抓取 normal 启动串口日志，证明普通固件从外部 Flash 挂载 rev53。
-   - `pwsh -NoProfile -File .\tools\capture_nucleo_serial.ps1 -Execute -WorkflowLockHeld -Seconds 25 -ResetAfterOpen -OutDir C:\Users\Billy\Desktop\Denzic\Companion\Companion-Firmware-devboard-oai1\.cache\validation\rev53-runtime-current\normal`
+   - `see locked runtime recheck runner`
 
 ## Provision 串口日志必须包含
 
@@ -131,6 +131,9 @@ python .\tools\verify_screen_generation_release_ledger.py
 ```
 ```powershell
 python .\tools\verify_wb55_screen_runtime_recheck_logs.py --write
+```
+```powershell
+python .\tools\promote_wb55_screen_runtime_recheck.py --apply
 ```
 ```powershell
 python .\tools\verify_companion_screen_pre_acceptance_health.py

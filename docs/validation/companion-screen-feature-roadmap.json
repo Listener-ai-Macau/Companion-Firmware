@@ -159,6 +159,7 @@
     {
       "acceptance_item_ids": [
         "wb55_runtime_serial_capture_preflight",
+        "screen_runtime_evidence_durability",
         "wb55_rev53_runtime_recheck",
         "screen_runtime_snapshot",
         "screen_runtime_diagnostics",
@@ -181,13 +182,14 @@
         "screen_runtime_diagnostic_decode": "PASS",
         "screen_runtime_diagnostics": "PASS",
         "screen_runtime_diagnostics_bundle": "PASS",
+        "screen_runtime_evidence_durability": "PASS",
         "screen_runtime_snapshot": "PASS",
-        "wb55_rev53_runtime_recheck": "PASS",
+        "wb55_rev53_runtime_recheck": "DEFERRED_HARDWARE",
         "wb55_runtime_serial_capture_preflight": "PASS"
       },
       "id": "runtime_diagnostics_and_evidence",
       "next_acceptance": "Attach runtime snapshot and diagnostics bundle evidence to the first real-panel session.",
-      "status": "PASS",
+      "status": "DEFERRED_HARDWARE",
       "title": "Runtime diagnostics and evidence",
       "user_value": "Screen runtime health can be decoded from diagnostics, BLE artifacts, and evidence records."
     },
@@ -281,8 +283,8 @@
     }
   ],
   "coverage": {
-    "acceptance_item_count": 86,
-    "grouped_acceptance_item_count": 86,
+    "acceptance_item_count": 87,
+    "grouped_acceptance_item_count": 87,
     "roadmap_item_excluded_from_coverage": "screen_feature_roadmap",
     "ungrouped_acceptance_item_ids": []
   },
@@ -293,10 +295,10 @@
   "status": "DEFERRED_HARDWARE",
   "summary": {
     "capability_count": 9,
-    "deferred_hardware_capability_count": 1,
+    "deferred_hardware_capability_count": 2,
     "needs_attention_capability_count": 0,
     "next_acceptance": "Replace or cross-swap FTS02, prove deterministic solid white/black frames and valid positive/negative refresh rails, then resume focused visual review.",
-    "pass_capability_count": 8,
+    "pass_capability_count": 7,
     "pending_human_capability_count": 0
   },
   "validation_commands": [

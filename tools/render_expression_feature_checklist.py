@@ -50,8 +50,15 @@ def build_checklist() -> dict[str, Any]:
         str(item.get("id")): item for item in index.get("items", []) if isinstance(item, dict)
     }
     capabilities = [item for item in roadmap.get("capabilities", []) if isinstance(item, dict)]
-    current_focus = next((item for item in capabilities if item.get("status") != "PASS"), capabilities[-1])
     gate_id = str(roadmap.get("current_next_gate", ""))
+    current_focus = next(
+        (
+            item
+            for item in capabilities
+            if gate_id in item.get("acceptance_item_ids", [])
+        ),
+        next((item for item in capabilities if item.get("status") != "PASS"), capabilities[-1]),
+    )
     gate = acceptance_by_id.get(gate_id, {})
     missing_fields = [str(fact) for fact in gate.get("missing_hardware_facts", [])]
 

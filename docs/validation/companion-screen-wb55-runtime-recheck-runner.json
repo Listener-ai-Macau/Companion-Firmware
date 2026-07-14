@@ -2,11 +2,11 @@
   "build_matrix": {
     "path": "docs/validation/companion-screen-wb55-build-matrix.json",
     "screen_asset_provision_size": {
-      "bss": 192239,
+      "bss": 188183,
       "data": 2433,
-      "dec": 602988,
-      "hex": "9336c",
-      "text": 408316
+      "dec": 356164,
+      "hex": "56f44",
+      "text": 165548
     },
     "status": "PASS",
     "variants": [
@@ -21,7 +21,7 @@
     "pack_crc32": "0x2332E300",
     "quiet_interaction_profile_recheck_required": false,
     "revision": 53,
-    "runtime_status": "REVISION_53_RUNTIME_PASS_HUMAN_VISUAL_PENDING",
+    "runtime_status": "REVISION_53_RUNTIME_RECHECK_PENDING",
     "total_bytes": 49901
   },
   "commands": [
@@ -32,18 +32,18 @@
     "python .\\tools\\promote_wb55_screen_runtime_recheck.py --apply"
   ],
   "dry_run": {
-    "already_promoted_banner": true,
+    "already_promoted_banner": false,
     "current_resource_banner": true,
-    "current_sequence_banner": false,
+    "current_sequence_banner": true,
     "returncode": 0,
     "run_report_build_matrix": {
       "path": "docs/validation/companion-screen-wb55-build-matrix.json",
       "screen_asset_provision_size": {
-        "bss": 192239,
+        "bss": 188183,
         "data": 2433,
-        "dec": 602988,
-        "hex": "9336c",
-        "text": 408316
+        "dec": 356164,
+        "hex": "56f44",
+        "text": 165548
       },
       "status": "PASS",
       "variants": [
@@ -108,7 +108,7 @@
       "pack_crc32": "0x2332E300",
       "quiet_interaction_profile_recheck_required": false,
       "revision": 53,
-      "runtime_status": "REVISION_53_RUNTIME_PASS_HUMAN_VISUAL_PENDING",
+      "runtime_status": "REVISION_53_RUNTIME_RECHECK_PENDING",
       "total_bytes": 49901
     },
     "run_report_results_count": 0,
@@ -129,11 +129,11 @@
   "operator_action_card": {
     "exists": true,
     "path": "docs/validation/companion-screen-wb55-runtime-hardware-action-card.json",
-    "status": "PASS_MACHINE_RUNTIME_RECHECK_COMPLETE"
+    "status": "NO_GO_WAITING_FOR_REAL_HARDWARE_RUN"
   },
   "promotion_gate": {
     "path": "docs/validation/companion-screen-wb55-runtime-promotion.json",
-    "status": "APPLIED",
+    "status": "NO_GO_LOGS_NOT_PASS",
     "target_status": "REVISION_53_RUNTIME_PASS_HUMAN_VISUAL_PENDING"
   },
   "recovery_selftest": {
@@ -164,7 +164,7 @@
   "runtime_log_gate": {
     "path": "docs/validation/companion-screen-wb55-runtime-recheck-logs.json",
     "quiet_profile_recheck_required": false,
-    "status": "PASS"
+    "status": "NO_GO_MISSING_RUNTIME_LOGS"
   },
   "safety_contract": {
     "captures_both_boots": true,

@@ -85,7 +85,7 @@
     "claim_scope": "stubbed_reset_timeout_no_hardware_claim",
     "command": "pwsh -NoProfile -File .\\tools\\capture_nucleo_serial.ps1 -SelfTestResetTimeout -OutDir .\\.cache\\validation\\nucleo-serial-reset-timeout-selftest",
     "errors": [
-      "reset timed out after 5 second(s). stdout=C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-devboard-oai1\\.cache\\validation\\nucleo-serial-reset-timeout-selftest\\stm32-reset-stdout.log stderr=C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-devboard-oai1\\.cache\\validation\\nucleo-serial-reset-timeout-selftest\\stm32-reset-stderr.log"
+      "reset timed out after 5 second(s). stdout=C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-wt-adhoc-codex-screen-evidence-durability\\.cache\\validation\\nucleo-serial-reset-timeout-selftest\\stm32-reset-stdout.log stderr=C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-wt-adhoc-codex-screen-evidence-durability\\.cache\\validation\\nucleo-serial-reset-timeout-selftest\\stm32-reset-stderr.log"
     ],
     "reset_stderr_exists": true,
     "reset_stdout_exists": true,
@@ -106,7 +106,7 @@
     },
     "capture_steps": {
       "capture_normal": {
-        "command": "pwsh -NoProfile -File .\\tools\\capture_nucleo_serial.ps1 -Execute -WorkflowLockHeld -Seconds 25 -ResetAfterOpen -OutDir C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-devboard-oai1\\.cache\\validation\\rev53-runtime-runner-checkonly\\normal",
+        "command": "pwsh -NoProfile -File .\\tools\\capture_nucleo_serial.ps1 -Execute -WorkflowLockHeld -Seconds 25 -ResetAfterOpen -OutDir C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-wt-adhoc-codex-screen-evidence-durability\\.cache\\validation\\rev53-runtime-runner-checkonly\\normal",
         "execute": true,
         "out_dir": true,
         "reset_after_open": true,
@@ -115,7 +115,7 @@
         "workflow_lock_ack": true
       },
       "capture_provision": {
-        "command": "pwsh -NoProfile -File .\\tools\\capture_nucleo_serial.ps1 -Execute -WorkflowLockHeld -Seconds 25 -ResetAfterOpen -OutDir C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-devboard-oai1\\.cache\\validation\\rev53-runtime-runner-checkonly\\provision",
+        "command": "pwsh -NoProfile -File .\\tools\\capture_nucleo_serial.ps1 -Execute -WorkflowLockHeld -Seconds 25 -ResetAfterOpen -OutDir C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-wt-adhoc-codex-screen-evidence-durability\\.cache\\validation\\rev53-runtime-runner-checkonly\\provision",
         "execute": true,
         "out_dir": true,
         "reset_after_open": true,
@@ -142,7 +142,7 @@
         "pack_crc32": "0x2332E300",
         "quiet_interaction_profile_recheck_required": false,
         "revision": 53,
-        "runtime_status": "REVISION_53_RUNTIME_PASS_HUMAN_VISUAL_PENDING",
+        "runtime_status": "REVISION_53_RUNTIME_RECHECK_PENDING",
         "total_bytes": 49901
       },
       "results_count": 0,

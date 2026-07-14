@@ -124,6 +124,7 @@ CAPABILITIES = [
         "user_value": "Screen runtime health can be decoded from diagnostics, BLE artifacts, and evidence records.",
         "acceptance_item_ids": [
             "wb55_runtime_serial_capture_preflight",
+            "screen_runtime_evidence_durability",
             RUNTIME_GATE_ID,
             "screen_runtime_snapshot",
             "screen_runtime_diagnostics",
