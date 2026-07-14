@@ -1,12 +1,12 @@
 param(
     [switch] $Execute,
     [switch] $WorkflowLockHeld,
-    [ValidateRange(45, 90)]
-    [int] $CaptureSeconds = 60,
+    [ValidateRange(45, 150)]
+    [int] $CaptureSeconds = 120,
     [ValidateRange(18, 30)]
     [int] $SleepySettleSeconds = 22,
-    [ValidateRange(20, 40)]
-    [int] $OperatorTimeoutSeconds = 35,
+    [ValidateRange(20, 90)]
+    [int] $OperatorTimeoutSeconds = 75,
     [string] $OutDir = ".cache\validation\short-touch-wake-trace"
 )
 
