@@ -288,7 +288,8 @@ def build_fixture() -> dict[str, Any]:
         },
         "desktop_export": {
             "default_filename": "Companion_NUCLEO_WB55RG_Current.ioc",
-            "sha256": sha256_file(DEVBOARD_IOC),
+            "hash_mode": "canonical_text_lf",
+            "canonical_text_sha256": canonical_text_sha256(DEVBOARD_IOC),
             "byte_identical_to_devboard_ioc": True,
         },
         "product_ioc_guard": {
@@ -358,7 +359,12 @@ def check_fixture_data(data: dict[str, Any], errors: list[str]) -> None:
     require(guard.get("must_not_be_overwritten_by_devboard_ioc") is True, "product IOC guard missing overwrite protection", errors)
     desktop_export = data.get("desktop_export", {})
     require(desktop_export.get("default_filename") == "Companion_NUCLEO_WB55RG_Current.ioc", "desktop IOC export filename drifted", errors)
-    require(desktop_export.get("sha256") == sha256_file(DEVBOARD_IOC), "desktop IOC export byte hash drifted", errors)
+    require(desktop_export.get("hash_mode") == "canonical_text_lf", "desktop IOC export hash mode drifted", errors)
+    require(
+        desktop_export.get("canonical_text_sha256") == canonical_text_sha256(DEVBOARD_IOC),
+        "desktop IOC export canonical text hash drifted",
+        errors,
+    )
     require(desktop_export.get("byte_identical_to_devboard_ioc") is True, "desktop IOC export must stay byte-identical", errors)
     acceptance = data.get("acceptance", {})
     for token in [
