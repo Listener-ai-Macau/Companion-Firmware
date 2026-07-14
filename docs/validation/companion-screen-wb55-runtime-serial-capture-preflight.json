@@ -106,7 +106,7 @@
     },
     "capture_steps": {
       "capture_normal": {
-        "command": "pwsh -NoProfile -File .\\tools\\capture_nucleo_serial.ps1 -Execute -WorkflowLockHeld -Seconds 25 -ResetAfterOpen -OutDir C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-wt-adhoc-codex-screen-evidence-durability\\.cache\\validation\\rev53-runtime-runner-checkonly\\normal",
+        "command": "pwsh -NoProfile -File .\\tools\\capture_nucleo_serial.ps1 -Execute -WorkflowLockHeld -Seconds 25 -ResetAfterOpen -OutDir .\\.cache\\validation\\rev53-runtime-runner-checkonly\\normal",
         "execute": true,
         "out_dir": true,
         "reset_after_open": true,
@@ -115,7 +115,7 @@
         "workflow_lock_ack": true
       },
       "capture_provision": {
-        "command": "pwsh -NoProfile -File .\\tools\\capture_nucleo_serial.ps1 -Execute -WorkflowLockHeld -Seconds 25 -ResetAfterOpen -OutDir C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-wt-adhoc-codex-screen-evidence-durability\\.cache\\validation\\rev53-runtime-runner-checkonly\\provision",
+        "command": "pwsh -NoProfile -File .\\tools\\capture_nucleo_serial.ps1 -Execute -WorkflowLockHeld -Seconds 25 -ResetAfterOpen -OutDir .\\.cache\\validation\\rev53-runtime-runner-checkonly\\provision",
         "execute": true,
         "out_dir": true,
         "reset_after_open": true,

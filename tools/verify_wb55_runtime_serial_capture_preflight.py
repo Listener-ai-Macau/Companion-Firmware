@@ -54,7 +54,8 @@ def has_all(text: str, tokens: list[str]) -> dict[str, bool]:
 
 
 def command_line(step: dict[str, Any]) -> str:
-    return " ".join([str(step.get("command", "")), *[str(arg) for arg in step.get("arguments", [])]])
+    command = " ".join([str(step.get("command", "")), *[str(arg) for arg in step.get("arguments", [])]])
+    return normalize_evidence_text(command)
 
 
 def run_empty_capture_selftest() -> dict[str, Any]:
@@ -399,6 +400,9 @@ def check_preflight(data: dict[str, Any], errors: list[str]) -> None:
         errors.append("reset timeout self-test errors must name timeout")
 
     runner = data.get("runner_contract", {})
+    serialized_runner = json.dumps(runner, ensure_ascii=False)
+    if str(ROOT) in serialized_runner or ROOT.as_posix() in serialized_runner:
+        errors.append("runner evidence must not embed the current repository root")
     if runner.get("workflow_lock_required_for_execute") is not True:
         errors.append("runner must require workflow lock for Execute")
     if runner.get("step_order") != EXPECTED_STEPS:
