@@ -125,7 +125,7 @@ def main() -> int:
         "GPIO_MODE_IT_FALLING",
         "EXTI9_5_IRQHandler",
         "capture_touch_during_display_wait",
-        "s_touch_processing_during_panel_wait",
+        "s_touch_runtime_actions_deferred",
         "defer_touch_runtime_action",
         "process_deferred_touch_runtime_action",
         "COMP_TOUCH_RUNTIME_ACTION_TOGGLE_RECORDING",
@@ -284,8 +284,12 @@ def main() -> int:
         touch_dispatch = extract_function(main_source, "handle_touch_menu_sample")
         main_loop = extract_function(main_source, "main")
         recording_pending = extract_function(main_source, "recording_touch_work_pending")
+        recording_touch_account = extract_function(main_source, "account_recording_touch_service")
+        recording_touch_flash = extract_function(main_source, "capture_recording_touch_during_flash_write")
         recording_touch_service = extract_function(main_source, "service_recording_touch")
         recording_app_service = extract_function(main_source, "recording_loop_should_process_app")
+        recording_flash_append = extract_function(main_source, "recording_flash_append_pcm")
+        recording_flash_drain = extract_function(main_source, "recording_flash_drain_stage")
         recording_start = extract_function(main_source, "start_recording")
     except ValueError as exc:
         errors.append(str(exc))
@@ -346,7 +350,7 @@ def main() -> int:
             "s_recording_touch_last_read_count = s_touch.read_count;",
             "s_recording_touch_next_health_ms = HAL_GetTick();",
         ), errors)
-        require("recording touch health trace", recording_touch_service, (
+        require("recording touch health trace", recording_touch_account, (
             "s_recording_touch_service_count++;",
             "s_touch.read_count",
             "s_touch.error_count",
@@ -363,8 +367,26 @@ def main() -> int:
             "TOUCH_VERBOSE_TRACE(",
             "[record-touch]",
         ), errors)
-        if 'printf("[record-touch]' in recording_touch_service:
+        if 'printf("[record-touch]' in recording_touch_account:
             errors.append("recording touch health must stay out of quiet-build direct printf")
+        require("recording Flash touch service", recording_touch_flash, (
+            "s_touch_runtime_actions_deferred = true;",
+            "poll_touch_debug();",
+            "account_recording_touch_service();",
+            "s_touch_runtime_actions_deferred = actions_were_deferred;",
+        ), errors)
+        require("bounded recording Flash drain", recording_flash_drain, (
+            "pages_written < page_budget",
+            "page_size - (address % page_size)",
+            "recording_flash_write_bytes(s_recording_flash_stage, chunk)",
+            "capture_recording_touch_during_flash_write();",
+        ), errors)
+        require("incremental recording Flash schedule", recording_flash_append, (
+            "recording_flash_drain_stage(1u, false)",
+            "FLASH_RECORDING_DRAIN_HIGH_WATER_BYTES",
+        ), errors)
+        if "recording_flash_flush_stage()" in recording_flash_append:
+            errors.append("recording append must not flush the full stage synchronously")
         require("recording acceptance trace preflight", recording_acceptance, (
             '"[record-touch]"',
         ), errors)
@@ -372,6 +394,7 @@ def main() -> int:
             "def recording_touch_samples(",
             "def summarize_recording_touch_health(",
             '"recording_touch_health_observed"',
+            '"no_microphone_dma_overrun"',
             '"RECORDING_TOUCH_SCHEDULER_STALLED"',
             '"FT6336_I2C_READ_FAILURE"',
             '"FT6336_POLL_STALLED"',
@@ -381,7 +404,11 @@ def main() -> int:
             '"FT6336_IRQ_WITHOUT_CONTACT_REPORT"',
             '"TOUCH_CONTACT_WITHOUT_GESTURE"',
             '"TOUCH_GESTURE_NOT_COMPLETED"',
+            '"findings": findings',
+            '"scheduler_gap_count": scheduler_gap_count',
             '"no_second_touch_classified"',
+            '"scheduler_and_no_touch_classified"',
+            '"dma_overrun_rejected"',
             '"i2c_failure_classified"',
         ), errors)
         require("one-shot touch recording display service", recording_app_service, (
@@ -461,9 +488,10 @@ def main() -> int:
     else:
         busy_capture = main_source.rsplit(busy_capture_marker, 1)[1].split(busy_capture_end, 1)[0]
         expected_busy_sequence = (
-            "s_touch_processing_during_panel_wait = true;\n"
+            "bool actions_were_deferred = s_touch_runtime_actions_deferred;\n"
+            "    s_touch_runtime_actions_deferred = true;\n"
             "    process_touch_debug_sample(&sample, now_ms);\n"
-            "    s_touch_processing_during_panel_wait = false;"
+            "    s_touch_runtime_actions_deferred = actions_were_deferred;"
         )
         if expected_busy_sequence not in busy_capture:
             errors.append("BUSY callback must bracket gesture processing and defer runtime work")

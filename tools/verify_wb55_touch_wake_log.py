@@ -87,13 +87,19 @@ def summarize_recording_touch_health(
     if not recording_started:
         return {
             "diagnosis": "NOT_APPLICABLE_NO_RECORDING_START",
+            "findings": [],
             "sample_count": 0,
+            "scheduler_gap_count": 0,
+            "scheduler_stalled": False,
             "next_action": "First prove that the initial double tap starts recording.",
         }
     if not samples:
         return {
             "diagnosis": "NO_RECORDING_TOUCH_HEALTH",
+            "findings": ["NO_RECORDING_TOUCH_HEALTH"],
             "sample_count": 0,
+            "scheduler_gap_count": 0,
+            "scheduler_stalled": True,
             "next_action": "Reject this trace image or inspect recording-loop scheduling; no [record-touch] sample followed recording start.",
         }
 
@@ -108,6 +114,9 @@ def summarize_recording_touch_health(
         (current - previous) & 0xFFFFFFFF
         for previous, current in zip(ticks, ticks[1:])
     ]
+    scheduler_gap_count = sum(
+        gap > RECORDING_TOUCH_HEALTH_MAX_GAP_MS for gap in tick_gaps
+    )
     service_progress = all(
         current > previous for previous, current in zip(services, services[1:])
     )
@@ -126,6 +135,10 @@ def summarize_recording_touch_health(
         or int(sample["tap_pending"]) != 0
         for sample in samples
     )
+    scheduler_stalled = not service_progress or scheduler_gap_count > 0
+    findings: list[str] = []
+    if scheduler_stalled:
+        findings.append("RECORDING_TOUCH_SCHEDULER_STALLED")
 
     if recording_stopped:
         diagnosis = "COMPLETE"
@@ -133,9 +146,6 @@ def summarize_recording_touch_health(
     elif len(samples) < 2:
         diagnosis = "INSUFFICIENT_RECORDING_TOUCH_HEALTH"
         next_action = "Capture at least one more 250 ms recording-touch health interval."
-    elif not service_progress or max_gap_ms > RECORDING_TOUCH_HEALTH_MAX_GAP_MS:
-        diagnosis = "RECORDING_TOUCH_SCHEDULER_STALLED"
-        next_action = "Inspect the recording loop around the largest health gap before changing FT6336 tuning."
     elif error_delta > 0:
         diagnosis = "FT6336_I2C_READ_FAILURE"
         next_action = "Inspect I2C bus recovery, pull-ups and controller power; FT6336 errors increased during recording."
@@ -161,12 +171,23 @@ def summarize_recording_touch_health(
         diagnosis = "TOUCH_GESTURE_NOT_COMPLETED"
         next_action = "Touch acquisition progressed; inspect the captured gesture states that prevented the second double tap."
 
+    if diagnosis != "COMPLETE":
+        findings.append(diagnosis)
+    if scheduler_stalled and diagnosis != "COMPLETE":
+        next_action = (
+            f"Remove the {scheduler_gap_count} recording-touch service gap(s), then follow the "
+            f"independent {diagnosis} acquisition finding if it remains."
+        )
+
     return {
         "diagnosis": diagnosis,
+        "findings": findings,
         "sample_count": len(samples),
         "first_tick_ms": ticks[0],
         "last_tick_ms": ticks[-1],
         "max_gap_ms": max_gap_ms,
+        "scheduler_gap_count": scheduler_gap_count,
+        "scheduler_stalled": scheduler_stalled,
         "service_first": services[0],
         "service_last": services[-1],
         "service_progress": service_progress,
@@ -279,6 +300,7 @@ def required_check_names(scope: str) -> tuple[str, ...]:
             "pcm_crc_varies",
             "pcm_has_signal_span",
             "no_microphone_timeout",
+            "no_microphone_dma_overrun",
             "touch_record_stopped",
             "microphone_dma_stopped",
             "external_flash_store_finished",
@@ -355,6 +377,13 @@ def evaluate(log: str, log_path: str, scope: str = "full") -> dict[str, Any]:
         "[mic-dma] action=stop status=ok",
         dma_start_index + 1,
     ) if dma_start_index >= 0 else -1
+    dma_stop_match = re.search(
+        r"\[mic-dma\]\s+action=stop\s+status=ok\b.*?\boverruns=(?P<overruns>\d+)\b",
+        log,
+    )
+    dma_overruns = (
+        int(dma_stop_match.group("overruns")) if dma_stop_match is not None else None
+    )
     idle_request_after_contact = marker_after(
         log,
         "[power] low_power_face request=sleepy trigger=idle_timer",
@@ -407,6 +436,9 @@ def evaluate(log: str, log_path: str, scope: str = "full") -> dict[str, Any]:
         "no_microphone_timeout": not bool(
             re.search(r"\[mic-manual\].*?\bstatus=timeout\b", log)
         ),
+        "no_microphone_dma_overrun": dma_overruns == 0 and not bool(
+            re.search(r"\[mic-manual\].*?\bdma_rx_overruns=[1-9]\d*\b", log)
+        ),
         "touch_record_stopped": recording_stopped,
         "microphone_dma_stopped": dma_stop_index > dma_start_index >= 0,
         "external_flash_store_finished": "[record] touch_double_tap action=user_store result=1" in log,
@@ -442,6 +474,7 @@ def evaluate(log: str, log_path: str, scope: str = "full") -> dict[str, Any]:
             "recording_touch_health": record_touch_health,
             "valid_microphone_blocks": len(valid_mic_blocks),
             "distinct_pcm_crcs": len(pcm_crcs),
+            "microphone_dma_overruns": dma_overruns,
             "first_wake_gesture": first_wake_gesture,
             "wake_contact_after_sleepy": wake_contact_index >= 0,
             "low_power_touch_wake_requested": touch_wake_index >= 0,
@@ -486,7 +519,7 @@ def self_test(scope: str = "full") -> dict[str, Any]:
             "[mic-manual] block=200 status=ok quality=voice raw_min=0x11000000 raw_max=0xE1000000 raw_zero=0 raw_same=0 raw_crc=0x22222222 slot=0 slot0_mean=120 slot0_peak=920 slot1_mean=0 slot1_peak=0 gain=8x preclip=0 pcm_min=-1400 pcm_max=2100 pcm_mean=38 pcm_zero=0 pcm_clip=0 pcm_crc=0x87654321 feed=0",
             "[record-touch] t=20250 service=301 ft_read=70 delta=50 ft_error=0 irq_produced=3 irq_consumed=3 pc6=1 next_poll_ms=3 contact=0 gesture_active=0 consumed=0 tap_pending=0 buffered=0 deferred=none",
             "[touch-ui] daily_double_tap_recording x=100 y=100 state=recording",
-            "[mic-dma] action=stop status=ok sai_state=1 dma_state=1 cr1=0x01F820E1",
+            "[mic-dma] action=stop status=ok sai_state=1 dma_state=1 overruns=0 cr1=0x01F820E1",
             "[record] touch_double_tap action=stop source=4 stop_result=0 finish_result=0 state=transfer_ready",
             "[record] touch_double_tap action=user_store result=1 state=idle",
         ]
@@ -494,17 +527,30 @@ def self_test(scope: str = "full") -> dict[str, Any]:
     report = evaluate(synthetic, "synthetic-self-test", scope)
     positive_passed = report["status"] == "PASS"
     missing_dma_stop_rejected = True
+    dma_overrun_rejected = True
     missing_health_rejected = True
     no_touch_classified = True
+    scheduler_and_no_touch_classified = True
     i2c_failure_classified = True
     if scope in {"double-tap-recording", "full"}:
         missing_dma_stop = synthetic.replace(
-            "[mic-dma] action=stop status=ok sai_state=1 dma_state=1 cr1=0x01F820E1\n",
+            "[mic-dma] action=stop status=ok sai_state=1 dma_state=1 overruns=0 cr1=0x01F820E1\n",
             "",
         )
         missing_dma_stop_rejected = (
             evaluate(missing_dma_stop, "synthetic-missing-dma-stop", scope)["status"]
             != "PASS"
+        )
+        dma_overrun = synthetic.replace("overruns=0", "overruns=3")
+        dma_overrun_report = evaluate(
+            dma_overrun,
+            "synthetic-recording-dma-overrun",
+            scope,
+        )
+        dma_overrun_rejected = (
+            dma_overrun_report["status"] != "PASS"
+            and not dma_overrun_report["checks"]["no_microphone_dma_overrun"]
+            and dma_overrun_report["observed"]["microphone_dma_overruns"] == 3
         )
         missing_health = re.sub(r"^\[record-touch\].*?\n?", "", synthetic, flags=re.M)
         missing_health_report = evaluate(
@@ -524,6 +570,22 @@ def self_test(scope: str = "full") -> dict[str, Any]:
             no_touch_report["observed"]["recording_touch_health"]["diagnosis"]
             == "FT6336_NO_TOUCH_DETECTION"
         )
+        scheduler_and_no_touch = no_touch.replace("t=20250", "t=21500")
+        scheduler_and_no_touch_report = evaluate(
+            scheduler_and_no_touch,
+            "synthetic-recording-touch-scheduler-and-no-touch",
+            scope,
+        )
+        scheduler_and_no_touch_health = scheduler_and_no_touch_report["observed"][
+            "recording_touch_health"
+        ]
+        scheduler_and_no_touch_classified = (
+            scheduler_and_no_touch_health["diagnosis"]
+            == "FT6336_NO_TOUCH_DETECTION"
+            and "RECORDING_TOUCH_SCHEDULER_STALLED"
+            in scheduler_and_no_touch_health["findings"]
+            and scheduler_and_no_touch_health["scheduler_gap_count"] == 1
+        )
         i2c_failure = no_touch.replace(
             "t=20250 service=301 ft_read=70 delta=50 ft_error=0",
             "t=20250 service=301 ft_read=20 delta=0 ft_error=1",
@@ -540,16 +602,20 @@ def self_test(scope: str = "full") -> dict[str, Any]:
     report["self_test_checks"] = {
         "positive_fixture_passed": positive_passed,
         "missing_dma_stop_rejected": missing_dma_stop_rejected,
+        "dma_overrun_rejected": dma_overrun_rejected,
         "missing_recording_touch_health_rejected": missing_health_rejected,
         "no_second_touch_classified": no_touch_classified,
+        "scheduler_and_no_touch_classified": scheduler_and_no_touch_classified,
         "i2c_failure_classified": i2c_failure_classified,
     }
     report["status"] = (
         "PASS_STATIC_PARSER"
         if positive_passed
         and missing_dma_stop_rejected
+        and dma_overrun_rejected
         and missing_health_rejected
         and no_touch_classified
+        and scheduler_and_no_touch_classified
         and i2c_failure_classified
         else "FAIL_STATIC_PARSER"
     )

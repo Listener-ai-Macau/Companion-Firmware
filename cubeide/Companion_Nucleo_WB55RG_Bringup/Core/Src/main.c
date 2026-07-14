@@ -336,6 +336,8 @@ COMPANION_PLACE_IN_SECTION("TAG_OTA_START") const uint32_t MagicKeywordAddress =
 #endif
 #define FLASH_RECORDING_STAGE_BYTES \
     (MIC_PCM_SAMPLES_PER_BATCH * sizeof(int16_t) * FLASH_RECORDING_STAGE_BLOCKS)
+#define FLASH_RECORDING_DRAIN_HIGH_WATER_BYTES \
+    (MIC_PCM_SAMPLES_PER_BATCH * sizeof(int16_t) * 4u)
 #define FLASH_RECORDING_CODEC_PCM16 1u
 #define FLASH_RECORDING_SYNC_UNSYNCED 0u
 #define FLASH_RECORDING_SYNC_TRANSFER_ACTIVE 1u
@@ -516,7 +518,7 @@ static bool s_touch_refresh_capture_active;
 static bool s_touch_refresh_latest_contact_valid;
 static buffered_touch_sample_t s_touch_refresh_latest_contact;
 static bool s_touch_wait_buffer_selftest_pass;
-static bool s_touch_processing_during_panel_wait;
+static bool s_touch_runtime_actions_deferred;
 static comp_touch_runtime_action_t s_touch_deferred_action;
 static uint32_t s_touch_deferred_action_queued_ms;
 static comp_touch_gesture_state_t s_touch_gesture;
@@ -691,6 +693,8 @@ static void request_ble_type_ready_autostream(const char *reason,
 static void clear_ble_type_ready_autostream(void);
 static bool ble_audio_stream_enabled_for_recording(void);
 static bool recording_touch_work_pending(void);
+static void account_recording_touch_service(void);
+static void capture_recording_touch_during_flash_write(void);
 static bool service_recording_touch(void);
 static bool recording_loop_should_process_app(uint32_t block_index);
 static void start_ble_session_if_ready(const char *reason);
@@ -740,6 +744,8 @@ static bool recording_flash_ensure_ready(void);
 static bool recording_flash_begin_capture(uint16_t max_seconds);
 static void recording_flash_append_pcm(const uint8_t *pcm, uint32_t length);
 static bool recording_flash_write_bytes(const uint8_t *data, uint32_t length);
+static bool recording_flash_drain_stage(uint32_t page_budget,
+                                        bool allow_partial_page);
 static bool recording_flash_flush_stage(void);
 static bool recording_flash_finalize_capture(void);
 static bool recording_flash_load_header(void);
@@ -1868,9 +1874,10 @@ static void capture_touch_during_display_wait(void *context, uint32_t now_ms)
      * is BUSY. Any visible response is only queued for after this waveform;
      * runtime work such as recording Flash erase or BLE reconnect is deferred
      * to the main loop after the waveform has returned. */
-    s_touch_processing_during_panel_wait = true;
+    bool actions_were_deferred = s_touch_runtime_actions_deferred;
+    s_touch_runtime_actions_deferred = true;
     process_touch_debug_sample(&sample, now_ms);
-    s_touch_processing_during_panel_wait = false;
+    s_touch_runtime_actions_deferred = actions_were_deferred;
 }
 
 static void process_touch_debug_sample(const comp_ft6336_touch_sample_t *sample,
@@ -2104,7 +2111,7 @@ static const char *touch_runtime_action_name(comp_touch_runtime_action_t action)
 static bool defer_touch_runtime_action(comp_touch_runtime_action_t action,
                                        uint32_t now_ms)
 {
-    if (!s_touch_processing_during_panel_wait) {
+    if (!s_touch_runtime_actions_deferred) {
         return false;
     }
     if (s_touch_deferred_action != COMP_TOUCH_RUNTIME_ACTION_NONE) {
@@ -2703,17 +2710,10 @@ static bool recording_touch_work_pending(void)
            s_touch_deferred_action != COMP_TOUCH_RUNTIME_ACTION_NONE;
 }
 
-static bool service_recording_touch(void)
+static void account_recording_touch_service(void)
 {
     uint32_t now_ms;
 
-    /* Recording expressions are synchronous e-paper work. Keep acquisition,
-     * gesture classification, and the stop action ahead of every display or
-     * microphone service boundary so a complete double tap cannot disappear
-     * inside one partial-refresh interval. */
-    poll_board_buttons();
-    poll_touch_debug();
-    process_deferred_touch_runtime_action();
     s_recording_touch_service_count++;
     now_ms = HAL_GetTick();
     if ((int32_t)(now_ms - s_recording_touch_next_health_ms) >= 0) {
@@ -2748,6 +2748,31 @@ static bool service_recording_touch(void)
         s_recording_touch_next_health_ms =
             now_ms + RECORDING_TOUCH_HEALTH_TRACE_MS;
     }
+}
+
+static void capture_recording_touch_during_flash_write(void)
+{
+    bool actions_were_deferred = s_touch_runtime_actions_deferred;
+
+    /* A stop action can finalize the same recording buffer. Classify touch
+     * between page programs, then execute the action after this write slice
+     * has returned to the main recording loop. */
+    s_touch_runtime_actions_deferred = true;
+    poll_touch_debug();
+    account_recording_touch_service();
+    s_touch_runtime_actions_deferred = actions_were_deferred;
+}
+
+static bool service_recording_touch(void)
+{
+    /* Recording expressions are synchronous e-paper work. Keep acquisition,
+     * gesture classification, and the stop action ahead of every display or
+     * microphone service boundary so a complete double tap cannot disappear
+     * inside one partial-refresh interval. */
+    poll_board_buttons();
+    poll_touch_debug();
+    process_deferred_touch_runtime_action();
+    account_recording_touch_service();
     return s_recording_fsm.state == COMP_RECORDING_STATE_RECORDING;
 }
 
@@ -3592,20 +3617,25 @@ static void recording_flash_append_pcm(const uint8_t *pcm, uint32_t length)
         return;
     }
 
-    if (chunk > (FLASH_RECORDING_STAGE_BYTES - s_recording_flash_stage_len) &&
-        !recording_flash_flush_stage()) {
-        return;
-    }
-
-    if (chunk > FLASH_RECORDING_STAGE_BYTES) {
-        (void)recording_flash_write_bytes(pcm, chunk);
-        return;
+    while (chunk > (FLASH_RECORDING_STAGE_BYTES - s_recording_flash_stage_len)) {
+        uint32_t previous_length = s_recording_flash_stage_len;
+        if (!recording_flash_drain_stage(1u, true) ||
+            s_recording_flash_stage_len >= previous_length) {
+            return;
+        }
     }
 
     memcpy(&s_recording_flash_stage[s_recording_flash_stage_len], pcm, chunk);
     s_recording_flash_stage_len += chunk;
-    if (s_recording_flash_stage_len >= FLASH_RECORDING_STAGE_BYTES) {
-        (void)recording_flash_flush_stage();
+
+    /* Keep each main-loop interruption to one NOR page program. The average
+     * PCM ingress is 320 bytes per 10 ms, so an occasional second page drains
+     * the 64-byte/page surplus without recreating the old 144 KB burst. */
+    if (!recording_flash_drain_stage(1u, false)) {
+        return;
+    }
+    if (s_recording_flash_stage_len >= FLASH_RECORDING_DRAIN_HIGH_WATER_BYTES) {
+        (void)recording_flash_drain_stage(1u, false);
     }
 }
 
@@ -3640,18 +3670,46 @@ static bool recording_flash_write_bytes(const uint8_t *data, uint32_t length)
     return true;
 }
 
-static bool recording_flash_flush_stage(void)
+static bool recording_flash_drain_stage(uint32_t page_budget,
+                                        bool allow_partial_page)
 {
-    if (s_recording_flash_stage_len == 0u) {
-        return true;
+    uint32_t pages_written = 0u;
+    uint32_t page_size = s_flash.info.page_size != 0u
+                             ? s_flash.info.page_size
+                             : 256u;
+
+    while (s_recording_flash_stage_len > 0u && pages_written < page_budget) {
+        uint32_t address =
+            s_recording_flash.data_address + s_recording_flash.bytes_written;
+        uint32_t page_remaining = page_size - (address % page_size);
+        if (!allow_partial_page &&
+            s_recording_flash_stage_len < page_remaining) {
+            break;
+        }
+
+        uint32_t chunk = s_recording_flash_stage_len < page_remaining
+                             ? s_recording_flash_stage_len
+                             : page_remaining;
+        if (!recording_flash_write_bytes(s_recording_flash_stage, chunk)) {
+            return false;
+        }
+
+        s_recording_flash_stage_len -= chunk;
+        if (s_recording_flash_stage_len > 0u) {
+            memmove(s_recording_flash_stage,
+                    &s_recording_flash_stage[chunk],
+                    s_recording_flash_stage_len);
+        }
+        pages_written++;
+        capture_recording_touch_during_flash_write();
     }
 
-    uint32_t length = s_recording_flash_stage_len;
-    if (!recording_flash_write_bytes(s_recording_flash_stage, length)) {
-        return false;
-    }
-    s_recording_flash_stage_len = 0u;
-    return true;
+    return !s_recording_flash.write_failed;
+}
+
+static bool recording_flash_flush_stage(void)
+{
+    return recording_flash_drain_stage(0xFFFFFFFFu, true);
 }
 
 static bool recording_flash_finalize_capture(void)
@@ -4395,13 +4453,15 @@ static HAL_StatusTypeDef pdm_raw_dma_stop_if_started(void)
     HAL_StatusTypeDef status = HAL_SAI_DMAStop(&hsai_BlockA1);
     s_pdm_raw_dma_started = false;
     __disable_irq();
+    uint32_t overrun_count = s_pdm_raw_dma_overrun_count;
     s_pdm_raw_dma_ready_mask = 0u;
     s_pdm_raw_dma_last_completed_half = 0u;
     __enable_irq();
-    printf("[mic-dma] action=stop status=%s sai_state=%lu dma_state=%lu cr1=0x%08lX\r\n",
+    printf("[mic-dma] action=stop status=%s sai_state=%lu dma_state=%lu overruns=%lu cr1=0x%08lX\r\n",
            hal_status_name(status),
            (unsigned long)HAL_SAI_GetState(&hsai_BlockA1),
            (unsigned long)hdma_sai1_a_rx.State,
+           (unsigned long)overrun_count,
            (unsigned long)hsai_BlockA1.Instance->CR1);
     return status;
 }
