@@ -124,6 +124,7 @@ def required_check_names(scope: str) -> tuple[str, ...]:
             "pcm_has_signal_span",
             "no_microphone_timeout",
             "touch_record_stopped",
+            "microphone_dma_stopped",
             "external_flash_store_finished",
         )
     return (
@@ -170,6 +171,12 @@ def evaluate(log: str, log_path: str, scope: str = "full") -> dict[str, Any]:
     daily_reaction_index = marker_after(log, "[touch-ui] daily_reaction", tap_index + 1) if tap_index >= 0 else -1
     expression_index = marker_after(log, "[epaper] scene=expression", daily_reaction_index + 1) if daily_reaction_index >= 0 else -1
     response_index = marker_after(log, "[screen] display_result", expression_index + 1) if expression_index >= 0 else -1
+    dma_start_index = log.find("[mic-dma] action=start status=ok")
+    dma_stop_index = marker_after(
+        log,
+        "[mic-dma] action=stop status=ok",
+        dma_start_index + 1,
+    ) if dma_start_index >= 0 else -1
     idle_request_after_contact = marker_after(
         log,
         "[power] low_power_face request=sleepy trigger=idle_timer",
@@ -223,6 +230,7 @@ def evaluate(log: str, log_path: str, scope: str = "full") -> dict[str, Any]:
             re.search(r"\[mic-manual\].*?\bstatus=timeout\b", log)
         ),
         "touch_record_stopped": "[record] touch_double_tap action=stop" in log,
+        "microphone_dma_stopped": dma_stop_index > dma_start_index >= 0,
         "external_flash_store_finished": "[record] touch_double_tap action=user_store result=1" in log,
     }
     required_checks = required_check_names(scope)
@@ -236,7 +244,7 @@ def evaluate(log: str, log_path: str, scope: str = "full") -> dict[str, Any]:
         "idle-timer": "Capture at least 20 seconds after reset and prove the 15 s idle timer permits Stop before its single sleepy transition, then the display-complete callback returns to Stop.",
         "stop-wake": "Collect one reset-bounded capture that shows the 15 s idle timer arm, static sleepy pose, Stop, then one touch so PC6 IRQ observation and consumption are logged.",
         "short-tap": "After the sleepy face reaches Stop, touch and lift in under 500 ms. The first post-wake gesture must be tap, followed by daily_reaction and one visible expression frame; a 3 s long press is a different menu contract and cannot pass this check.",
-        "double-tap-recording": "Collect one bounded capture containing two daily-page double taps, restored SAI clock, successful DMA start, at least two changing PCM blocks without timeout, recording stop, and a successful external Flash store.",
+        "double-tap-recording": "Collect one bounded capture containing two daily-page double taps, restored SAI clock, successful DMA start, at least two changing PCM blocks without timeout, recording stop, successful DMA shutdown, and a successful external Flash store.",
         "full": "Collect a post-wiring serial capture with TP_INT wired, then perform one Stop wake and two daily-page double taps.",
     }
     return {
@@ -295,12 +303,32 @@ def self_test(scope: str = "full") -> dict[str, Any]:
             "[mic-manual] block=0 status=ok quality=voice raw_min=0x10000000 raw_max=0xE0000000 raw_zero=0 raw_same=0 raw_crc=0x11111111 slot=0 slot0_mean=100 slot0_peak=900 slot1_mean=0 slot1_peak=0 gain=8x preclip=0 pcm_min=-1200 pcm_max=1800 pcm_mean=42 pcm_zero=0 pcm_clip=0 pcm_crc=0x12345678 feed=0",
             "[mic-manual] block=200 status=ok quality=voice raw_min=0x11000000 raw_max=0xE1000000 raw_zero=0 raw_same=0 raw_crc=0x22222222 slot=0 slot0_mean=120 slot0_peak=920 slot1_mean=0 slot1_peak=0 gain=8x preclip=0 pcm_min=-1400 pcm_max=2100 pcm_mean=38 pcm_zero=0 pcm_clip=0 pcm_crc=0x87654321 feed=0",
             "[touch-ui] daily_double_tap_recording x=100 y=100 state=recording",
+            "[mic-dma] action=stop status=ok sai_state=1 dma_state=1 cr1=0x01F820E1",
             "[record] touch_double_tap action=stop source=4 stop_result=0 finish_result=0 state=transfer_ready",
             "[record] touch_double_tap action=user_store result=1 state=idle",
         ]
     )
     report = evaluate(synthetic, "synthetic-self-test", scope)
-    report["status"] = "PASS_STATIC_PARSER" if report["status"] == "PASS" else "FAIL_STATIC_PARSER"
+    positive_passed = report["status"] == "PASS"
+    missing_dma_stop_rejected = True
+    if scope in {"double-tap-recording", "full"}:
+        missing_dma_stop = synthetic.replace(
+            "[mic-dma] action=stop status=ok sai_state=1 dma_state=1 cr1=0x01F820E1\n",
+            "",
+        )
+        missing_dma_stop_rejected = (
+            evaluate(missing_dma_stop, "synthetic-missing-dma-stop", scope)["status"]
+            != "PASS"
+        )
+    report["self_test_checks"] = {
+        "positive_fixture_passed": positive_passed,
+        "missing_dma_stop_rejected": missing_dma_stop_rejected,
+    }
+    report["status"] = (
+        "PASS_STATIC_PARSER"
+        if positive_passed and missing_dma_stop_rejected
+        else "FAIL_STATIC_PARSER"
+    )
     report["claim_scope"] = "synthetic parser self-test; no hardware claim"
     return report
 

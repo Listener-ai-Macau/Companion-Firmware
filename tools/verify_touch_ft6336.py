@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 import pathlib
+import re
 import sys
 
 
@@ -17,6 +18,22 @@ def require(label: str, content: str, tokens: tuple[str, ...], errors: list[str]
             errors.append(f"{label} missing {token}")
 
 
+def extract_function(content: str, name: str) -> str:
+    match = re.search(rf"\b{re.escape(name)}\s*\([^;{{}}]*\)\s*\{{", content, re.S)
+    if match is None:
+        raise ValueError(f"missing function body: {name}")
+    brace = content.find("{", match.start())
+    depth = 0
+    for index in range(brace, len(content)):
+        if content[index] == "{":
+            depth += 1
+        elif content[index] == "}":
+            depth -= 1
+            if depth == 0:
+                return content[brace : index + 1]
+    raise ValueError(f"unterminated function body: {name}")
+
+
 def main() -> int:
     errors: list[str] = []
     touch_root = ROOT / "app/companion_pendant/touch"
@@ -26,6 +43,8 @@ def main() -> int:
     gesture = (touch_root / "touch_gesture.c").read_text(encoding="utf-8")
     tap_arbiter = (touch_root / "touch_tap_arbiter.c").read_text(encoding="utf-8")
     tap_arbiter_h = (touch_root / "touch_tap_arbiter.h").read_text(encoding="utf-8")
+    host_test = (touch_root / "tests/test_touch_gesture.c").read_text(encoding="utf-8")
+    host_runner = (ROOT / "tools/test_touch_gesture_host.ps1").read_text(encoding="utf-8")
     main_source = (ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/main.c").read_text(encoding="utf-8")
     app_ble_source = (ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c").read_text(encoding="utf-8")
     makefile = (ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile").read_text(encoding="utf-8")
@@ -215,8 +234,19 @@ def main() -> int:
         "self_test_vertical_drag_release",
         "self_test_expired_drag_rearms_tap",
         "self_test_double_tap_without_idle_sample",
+        "self_test_implicit_double_tap_consumes_boundary_down",
         "comp_touch_gesture_restart_contact",
         "comp_touch_gesture_self_test",
+    ), errors)
+    require("native WB55 gesture replay", host_test + host_runner, (
+        "replay_wb55_double_tap_boundary",
+        "95u, 128u, 100u",
+        "109u, 129u, 232u",
+        "0u, 0u, 4535u",
+        "COMP_TOUCH_GESTURE_DOUBLE_TAP",
+        "state.consumed_until_release",
+        "test_touch_gesture.exe",
+        "cl.exe /nologo /W4 /WX /std:c11",
     ), errors)
     require("portable tap arbiter", tap_arbiter + tap_arbiter_h, (
         "comp_touch_tap_arbiter_defer",
@@ -234,6 +264,52 @@ def main() -> int:
     for forbidden in ("HAL_", "stm32", "GPIO", "I2C_HandleTypeDef"):
         if forbidden.lower() in (gesture + tap_arbiter).lower():
             errors.append(f"portable touch logic contains platform token {forbidden}")
+
+    try:
+        restart_body = extract_function(gesture, "comp_touch_gesture_restart_contact")
+        recording_start = extract_function(main_source, "start_recording")
+        recording_stop = extract_function(main_source, "stop_recording")
+        recording_cancel = extract_function(main_source, "cancel_recording")
+        microphone_probe = extract_function(main_source, "run_microphone_probe")
+        dma_stop = extract_function(main_source, "pdm_raw_dma_stop_if_started")
+        touch_dispatch = extract_function(main_source, "handle_touch_menu_sample")
+    except ValueError as exc:
+        errors.append(str(exc))
+    else:
+        require("implicit double-tap boundary consumption", restart_body, (
+            "previous_ready && out_event->type == COMP_TOUCH_GESTURE_DOUBLE_TAP",
+            "state->consumed_until_release = true",
+            "return true",
+        ), errors)
+        dma_start = recording_start.find("pdm_raw_dma_start_if_needed()")
+        recording_status = recording_start.find("Companion_Screen_RefreshRecordingStatus()")
+        recording_visual = recording_start.find("Companion_Screen_DailyExpressionSignal(")
+        if not (0 <= dma_start < recording_status and dma_start < recording_visual):
+            errors.append("recording DMA must start before any recording screen request")
+        require("recording DMA lifecycle", recording_stop + recording_cancel + microphone_probe + dma_stop, (
+            "HAL_SAI_DMAStop(&hsai_BlockA1)",
+            "s_pdm_raw_dma_started = false",
+            "[mic-dma] action=stop",
+        ), errors)
+        for operation, body in (
+            ("recording stop", recording_stop),
+            ("recording cancel", recording_cancel),
+            ("microphone probe", microphone_probe),
+        ):
+            if "pdm_raw_dma_stop_if_started()" not in body:
+                errors.append(f"{operation} must stop PDM DMA before low-power idle")
+        recording_guard = touch_dispatch.find(
+            "s_recording_fsm.state == COMP_RECORDING_STATE_RECORDING &&"
+        )
+        menu_entry = touch_dispatch.find("comp_screen_menu_is_daily_entry_gesture")
+        if not (0 <= recording_guard < menu_entry):
+            errors.append("recording gesture guard must precede daily menu entry")
+        require("recording provisional gesture isolation", touch_dispatch, (
+            "gesture.type != COMP_TOUCH_GESTURE_DOUBLE_TAP",
+            "recording_gesture gesture=%s action=provisional_or_ignored display_request=0",
+        ), errors)
+        if "touch_recording_tap_retained" in touch_dispatch:
+            errors.append("provisional recording tap still requests an e-paper expression")
 
     gesture_contract = touch_fixture.get("gesture_contract", {})
     if gesture_contract.get("minimum_contact_samples") != 1:

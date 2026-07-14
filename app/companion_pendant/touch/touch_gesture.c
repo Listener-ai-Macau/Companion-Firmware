@@ -313,6 +313,17 @@ bool comp_touch_gesture_restart_contact(comp_touch_gesture_state_t *state,
                                                     now_ms,
                                                     out_event);
     }
+
+    /* The DOWN sample that closes an implicit-boundary double tap still
+     * belongs to that second tap. Do not arm it again as a phantom third
+     * contact; repeated FT6x36 DOWN reports would otherwise age into a
+     * long-press while another subsystem (for example e-paper) is busy. */
+    if (previous_ready && out_event->type == COMP_TOUCH_GESTURE_DOUBLE_TAP) {
+        state->active = false;
+        state->consumed_until_release = true;
+        state->release_samples = 0u;
+        return true;
+    }
     state->consumed_until_release = false;
     state->release_samples = 0u;
     (void)comp_touch_gesture_process(state,
@@ -645,6 +656,57 @@ static bool self_test_double_tap_without_idle_sample(void)
     return event.type == COMP_TOUCH_GESTURE_DOUBLE_TAP;
 }
 
+static bool self_test_implicit_double_tap_consumes_boundary_down(void)
+{
+    const comp_touch_gesture_config_t config = {
+        .tap_max_move_px = 24u,
+        .long_press_max_move_px = 46u,
+        .swipe_min_move_px = 30u,
+        .axis_lock_min_move_px = 10u,
+        .axis_slop_px = 5u,
+        .tap_max_duration_ms = 1100u,
+        .swipe_max_duration_ms = 1400u,
+        .hold_feedback_min_duration_ms = 650u,
+        .long_press_min_duration_ms = 3000u,
+        .double_tap_max_gap_ms = 650u,
+        .double_tap_max_move_px = 40u,
+        .axis_dominance_percent = 120u,
+        .min_contact_samples = 1u,
+        .release_debounce_samples = 1u,
+    };
+    comp_touch_gesture_state_t state;
+    comp_touch_gesture_event_t event;
+
+    comp_touch_gesture_init(&state, &config);
+    if (comp_touch_gesture_process(&state, true, false,
+                                   95u, 128u, 100u, &event) ||
+        comp_touch_gesture_process(&state, true, false,
+                                   105u, 122u, 120u, &event) ||
+        !comp_touch_gesture_restart_contact(&state,
+                                            110u, 127u, 168u, &event) ||
+        event.type != COMP_TOUCH_GESTURE_TAP ||
+        comp_touch_gesture_process(&state, true, false,
+                                   110u, 127u, 180u, &event) ||
+        !comp_touch_gesture_restart_contact(&state,
+                                            109u, 129u, 232u, &event) ||
+        event.type != COMP_TOUCH_GESTURE_DOUBLE_TAP || state.active ||
+        !state.consumed_until_release || state.tap_pending) {
+        return false;
+    }
+
+    /* A repeated contact sample cannot become a 3 s menu hold. The next
+     * release only clears the consumed lifecycle. */
+    if (comp_touch_gesture_process(&state, true, false,
+                                   109u, 129u, 260u, &event) ||
+        !state.consumed_until_release ||
+        comp_touch_gesture_process(&state, false, false,
+                                   0u, 0u, 4535u, &event)) {
+        return false;
+    }
+    return !state.active && !state.consumed_until_release &&
+           event.type == COMP_TOUCH_GESTURE_NONE;
+}
+
 bool comp_touch_gesture_self_test(void)
 {
     comp_touch_gesture_state_t state;
@@ -674,5 +736,6 @@ bool comp_touch_gesture_self_test(void)
            self_test_vertical_drag_release() &&
            self_test_expired_drag_rearms_tap() &&
            self_test_double_tap() &&
-           self_test_double_tap_without_idle_sample();
+           self_test_double_tap_without_idle_sample() &&
+           self_test_implicit_double_tap_consumes_boundary_down();
 }

@@ -1319,6 +1319,23 @@ execution 成为四个独立层，WBA55/WBA65 继续复用中间两层。
 `docs/validation/companion-touch-recording-arbitration-research-20260714.md`，产品合同登记为
 `COMP-REQ-036`。
 
+## Revision 94: 先完成可重放修复，再请人工复验
+
+第四次 `4/13` 窗口仍是人工选择“通过”、机器报告
+`NO_GO_INCOMPLETE_TOUCH_WAKE_EVIDENCE`：整段只有一次 `double_tap` 和录音开始，没有 DMA start、
+有效 PCM、第二次双击、stop 或 `user_store result=1`。原始 trace 进一步证明：implicit
+re-contact 边界完成 double tap 后，同一个 `DOWN` 又被启动为第三次 contact；4,303 ms
+后它被误分类为 long press，并在录音进入 DMA 前触发菜单和电子纸维护刷新。
+
+本轮先按 owner 要求完成机器可验证的修复，不先刷机或再开验收窗：portable C 手势
+核心回放同一组 WB55 坐标与时序，要求只产生一次 double tap 且不再出现幻影 long
+press；录音开始先启动 PDM DMA，再申请录音表情；录音中除 double tap 停止外，其他
+tap、swipe 和 long press 都不得入队显示、菜单或宠物动作；stop、cancel 与启动探针
+结束都显式停止 DMA，使下一次会话重新启动硬件且空闲能返回低功耗。宿主 C 回放、静态门禁、日志
+parser 自测以及 WB55 normal/verbose 构建已通过，但这些只是下一次真机复验的准入
+证据，不是物理验收结论。下次仍必须在单一 reset-bounded trace 中同时证明时钟恢复、
+DMA start、变化 PCM、无 timeout、两次 double tap、stop 和外部 Flash 存储。
+
 ## 逐项验收顺序
 
 本项目遵循 AI Workflow 的全产品异步验收规则：未收到操作者明确的“开始验收”前，

@@ -693,6 +693,8 @@ static void pdm_decoder_reset(void);
 #if COMPANION_PDM_RAW_SAI_USE_DMA
 static HAL_StatusTypeDef pdm_raw_dma_restore_kernel_clock(void);
 static void pdm_raw_dma_prepare_session(void);
+static HAL_StatusTypeDef pdm_raw_dma_start_if_needed(void);
+static HAL_StatusTypeDef pdm_raw_dma_stop_if_started(void);
 static HAL_StatusTypeDef pdm_raw_dma_read_block(uint32_t *raw_words,
                                                 uint32_t timeout_ms,
                                                 uint32_t *overruns);
@@ -2495,6 +2497,15 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
         cancel_daily_tap_reaction(comp_touch_gesture_name(gesture.type));
     }
     if (!Companion_Screen_IsMenuVisible()) {
+        if (s_recording_fsm.state == COMP_RECORDING_STATE_RECORDING &&
+            gesture.type != COMP_TOUCH_GESTURE_DOUBLE_TAP) {
+            /* The first tap remains provisional for the stop double tap.
+             * Recording owns all other daily gestures, so none may enqueue
+             * display work, pet reactions, strokes, or menu entry. */
+            TOUCH_VERBOSE_TRACE("[touch-ui] recording_gesture gesture=%s action=provisional_or_ignored display_request=0\r\n",
+                   comp_touch_gesture_name(gesture.type));
+            return;
+        }
         if (gesture.type == COMP_TOUCH_GESTURE_HOLD) {
             /* Keep the 650 ms acknowledgement non-blocking.  An e-paper
              * refresh here used to delay the real 3 s decision while BUSY. */
@@ -2528,22 +2539,9 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
                 toggle_touch_recording();
             }
         } else if (gesture.type == COMP_TOUCH_GESTURE_TAP) {
-            if (s_recording_fsm.state == COMP_RECORDING_STATE_RECORDING) {
-                /* Recording owns the visible state. A first tap is also the
-                 * lead-in to the double-tap stop gesture, so do not replace
-                 * its indicator with a pet reaction or spend the next
-                 * interactive frame on maintenance. */
-                bool retained = Companion_Screen_DailyExpressionSignal(
-                    COMP_EPAPER_EXPRESSION_SIGNAL_RECORDING_START,
-                    "touch_recording_tap_retained");
-
-                TOUCH_VERBOSE_TRACE("[record-visual] action=tap_retained expression=recording result=%u\r\n",
-                       retained ? 1u : 0u);
-            } else {
-                schedule_daily_tap_reaction(gesture.end_x,
-                                            gesture.end_y,
-                                            now_ms);
-            }
+            schedule_daily_tap_reaction(gesture.end_x,
+                                        gesture.end_y,
+                                        now_ms);
         } else if (gesture.type == COMP_TOUCH_GESTURE_SWIPE_LEFT ||
                    gesture.type == COMP_TOUCH_GESTURE_SWIPE_RIGHT ||
                    gesture.type == COMP_TOUCH_GESTURE_SWIPE_UP ||
@@ -2783,12 +2781,23 @@ static void start_recording(comp_recording_source_t source, const char *reason)
         COMP_RECORDING_EVENT_START_REQUEST,
         source);
 #if COMPANION_MIC_BACKEND == COMPANION_MIC_BACKEND_SPH0655_PDM
-    pdm_decoder_reset();
+    if (result == COMP_RECORDING_RESULT_OK &&
+        s_recording_fsm.state == COMP_RECORDING_STATE_RECORDING) {
+        pdm_decoder_reset();
 #if COMPANION_PDM_RAW_SAI_USE_DMA
-    pdm_raw_dma_prepare_session();
+        pdm_raw_dma_prepare_session();
 #endif
+    }
 #endif
     s_manual_recording_block_count = 0u;
+#if (COMPANION_MIC_BACKEND == COMPANION_MIC_BACKEND_SPH0655_PDM) && COMPANION_PDM_RAW_SAI_USE_DMA
+    if (s_recording_fsm.state == COMP_RECORDING_STATE_RECORDING) {
+        /* Start capture before any recording status or expression can run an
+         * e-paper waveform. DMA continues collecting while the visual task
+         * is busy, keeping audio start independent from display latency. */
+        (void)pdm_raw_dma_start_if_needed();
+    }
+#endif
     if (s_recording_fsm.state == COMP_RECORDING_STATE_RECORDING &&
         ble_audio_stream_enabled_for_recording()) {
         Companion_BleAudio_RequestActiveLink(reason);
@@ -2816,6 +2825,9 @@ static void stop_recording(comp_recording_source_t source, const char *reason)
         &s_recording_fsm,
         COMP_RECORDING_EVENT_STOP_REQUEST,
         source);
+#if (COMPANION_MIC_BACKEND == COMPANION_MIC_BACKEND_SPH0655_PDM) && COMPANION_PDM_RAW_SAI_USE_DMA
+    (void)pdm_raw_dma_stop_if_started();
+#endif
     comp_recording_result_t finish_result = comp_recording_fsm_dispatch(
         &s_recording_fsm,
         COMP_RECORDING_EVENT_SESSION_FINISHED,
@@ -2853,6 +2865,9 @@ static void cancel_recording(comp_recording_source_t source, const char *reason)
         &s_recording_fsm,
         COMP_RECORDING_EVENT_CANCEL_REQUEST,
         source);
+#if (COMPANION_MIC_BACKEND == COMPANION_MIC_BACKEND_SPH0655_PDM) && COMPANION_PDM_RAW_SAI_USE_DMA
+    (void)pdm_raw_dma_stop_if_started();
+#endif
     end_ble_session_if_active(true, reason);
     clear_ble_type_ready_autostream();
     Companion_BleAudio_RequestIdleLink(reason);
@@ -4284,6 +4299,26 @@ static HAL_StatusTypeDef pdm_raw_dma_start_if_needed(void)
     return status;
 }
 
+static HAL_StatusTypeDef pdm_raw_dma_stop_if_started(void)
+{
+    if (!s_pdm_raw_dma_started) {
+        return HAL_OK;
+    }
+
+    HAL_StatusTypeDef status = HAL_SAI_DMAStop(&hsai_BlockA1);
+    s_pdm_raw_dma_started = false;
+    __disable_irq();
+    s_pdm_raw_dma_ready_mask = 0u;
+    s_pdm_raw_dma_last_completed_half = 0u;
+    __enable_irq();
+    printf("[mic-dma] action=stop status=%s sai_state=%lu dma_state=%lu cr1=0x%08lX\r\n",
+           hal_status_name(status),
+           (unsigned long)HAL_SAI_GetState(&hsai_BlockA1),
+           (unsigned long)hdma_sai1_a_rx.State,
+           (unsigned long)hsai_BlockA1.Instance->CR1);
+    return status;
+}
+
 static HAL_StatusTypeDef pdm_raw_dma_read_block(uint32_t *raw_words,
                                                 uint32_t timeout_ms,
                                                 uint32_t *overruns)
@@ -4852,6 +4887,9 @@ static void run_microphone_probe(void)
     (void)comp_recording_fsm_dispatch(&s_recording_fsm,
                                       COMP_RECORDING_EVENT_STOP_REQUEST,
                                       COMP_RECORDING_SOURCE_SYNTHETIC_FIXTURE);
+#if (COMPANION_MIC_BACKEND == COMPANION_MIC_BACKEND_SPH0655_PDM) && COMPANION_PDM_RAW_SAI_USE_DMA
+    (void)pdm_raw_dma_stop_if_started();
+#endif
     (void)comp_recording_fsm_dispatch(&s_recording_fsm,
                                       COMP_RECORDING_EVENT_SESSION_FINISHED,
                                       COMP_RECORDING_SOURCE_SYNTHETIC_FIXTURE);
