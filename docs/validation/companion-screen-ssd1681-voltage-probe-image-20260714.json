@@ -1,0 +1,55 @@
+{
+  "schema": "companion.wb55.ssd1681_voltage_probe_image.v1",
+  "status": "READY_FOR_PREVGL_MEASUREMENT",
+  "captured_at": "2026-07-14T10:06:43+08:00",
+  "target": "NUCLEO-WB55RG + ESP32-FTS02 + GDEY0154D67-T03",
+  "image": {
+    "profile": "production-off official black full refresh voltage probe",
+    "hex_sha256": "DC84A750518DEF4AAB491F82508C7844EE12634B061475AE54C5BAD4280D7F31",
+    "pattern": "black",
+    "data_command": "0x24 only",
+    "update_control": "0xF7",
+    "configured_repeats": 30,
+    "configured_interval_ms": 5000,
+    "estimated_total_window_ms": 183910,
+    "reset_restarts_window": true,
+    "unbounded_loop": false
+  },
+  "flash": {
+    "verified": true,
+    "stlink_serial": "066EFF535570514867221931",
+    "board_voltage_v": 3.24,
+    "programmer_log": ".cache/validation/flash-nucleo/stm32-programmer-20260714-100603-18988.stdout.log"
+  },
+  "machine_observation": {
+    "capture_seconds": 22,
+    "captured_cycles": 4,
+    "completed_cycles": 4,
+    "bytes_per_cycle": 5000,
+    "data_planes_per_cycle": 1,
+    "refresh_elapsed_ms_min": 1297,
+    "refresh_elapsed_ms_max": 1298,
+    "busy_assert_and_return_observed": true,
+    "runtime_status": "PASS"
+  },
+  "measurement_action": {
+    "meter_mode": "DC voltage",
+    "black_probe": "GND1",
+    "red_probe": "PREVGL1",
+    "action": "press NUCLEO physical RESET and observe the most negative reading during the repeating refresh window",
+    "decision": "No negative PREVGL together with PREVGH near 3.3 V points to the FTS02 boost network; normal positive/negative boost with grain points to P5/FPC or the panel module."
+  },
+  "repair_map": {
+    "inductor": "L2 47uH 500mA",
+    "mosfet": "Q1 Si1308EDL; vendor manual identifies MOS as the most common failing boost component",
+    "diodes": "D2/D3/D4 MBR0530",
+    "capacitors": "C6/C7/C8/C9 and adjacent panel pump capacitors",
+    "feedback_switch": "P3 at 2.2 selects the SSD-series 2.2-ohm RESE path"
+  },
+  "evidence": {
+    "raw_log": "docs/validation/companion-screen-ssd1681-voltage-probe-20260714.raw.log",
+    "raw_log_sha256": "9C0BF5B6285213D80ED19CD8E7F0B720BEFBF32DDB48D223541E20633C13BB6D",
+    "capture_summary": ".cache/validation/ssd1681-voltage-probe-20260714/runtime/nucleo-serial-summary.json",
+    "build_log": ".cache/validation/ssd1681-voltage-probe-20260714/build.log"
+  }
+}

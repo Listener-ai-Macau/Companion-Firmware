@@ -31,6 +31,25 @@ The GDEY0154D67-T03 PDF contains contradictory prose around BUSY, but the matchi
 official source reads the raw GPIO without inversion and explicitly loops while it
 is high. The executable reference behavior therefore supports high-busy/low-ready.
 
+## FTS02 analog repair map
+
+The FTS02 schematic and its page 9 troubleshooting instructions identify the
+panel's external boost network as:
+
+- `L2`: 47 uH, 500 mA inductor for SSD-series controllers.
+- `Q1`: Si1308EDL MOSFET; the manual says the MOSFET is the most common failing
+  component and permits a suitable AO3400 substitute.
+- `D2`, `D3`, `D4`: MBR0530 Schottky diodes.
+- `C6`, `C7`, `C8`, `C9`: the nearby input/pump/output capacitors; the manual
+  specifically warns that inadequate voltage rating can destroy boost capacitors.
+- `P3=2.2`: selects the 2.2 ohm `RESE` current-feedback resistor required by the
+  SSD controller family.
+
+The vendor troubleshooting order is: measure PREVGH/PREVGL; if boost fails,
+inspect component choice, capacitor rating, soldering and especially Q1; if boost
+passes, inspect the FPC connector/contact; inspect software last. This matches the
+current evidence because the digital command/BUSY path already passes.
+
 ## Recovery decision
 
 Add a production-off diagnostic switch which leaves the normal product path
