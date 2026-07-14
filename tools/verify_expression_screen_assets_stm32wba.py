@@ -12,9 +12,14 @@ from typing import Any
 
 REPO_ROOT = pathlib.Path(__file__).resolve().parents[1]
 EPAPER_ROOT = REPO_ROOT / "app" / "companion_pendant" / "epaper"
+STORAGE_ROOT = REPO_ROOT / "app" / "companion_pendant" / "storage"
 HEADER = EPAPER_ROOT / "screen_assets_stm32wba.h"
 SOURCE = EPAPER_ROOT / "screen_assets_stm32wba.c"
 ASSET_STORE_HEADER = EPAPER_ROOT / "asset_store.h"
+SPI_NOR_HEADER = STORAGE_ROOT / "spi_nor_stm32wba.h"
+SPI_NOR_SOURCE = STORAGE_ROOT / "spi_nor_stm32wba.c"
+SPI_NOR_VERIFIER = REPO_ROOT / "tools" / "verify_wba_spi_nor_adapter.py"
+SPI_NOR_FIXTURE = REPO_ROOT / "docs" / "validation" / "companion-wba-spi-nor-adapter.json"
 WB55_APP = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Core" / "Src" / "app_ble.c"
 WB55_MAKEFILE = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Makefile"
 DEFAULT_FIXTURE = pathlib.Path(
@@ -44,12 +49,16 @@ def build_fixture() -> dict[str, Any]:
             "adapter_header": rel(HEADER),
             "adapter_source": rel(SOURCE),
             "portable_asset_store": rel(ASSET_STORE_HEADER),
+            "selected_wba_storage_adapter": rel(SPI_NOR_SOURCE),
+            "selected_wba_storage_contract": rel(SPI_NOR_FIXTURE),
         },
         "contract": {
             "targets": ["WBA55", "WBA65"],
             "storage_class": "external_nor",
+            "selected_pre_port_transport": "spi_nor_1_1_1",
             "address_model": "logical_partition_relative_offset",
             "required_callback": "read(context, partition_offset, destination, length)",
+            "selected_partition_callback": "companion_spi_nor_stm32wba_partition_read",
             "bounds_policy": "adapter rejects reads outside configured partition_size",
             "hardware_parity_claimed": False,
         },
@@ -61,19 +70,33 @@ def build_fixture() -> dict[str, Any]:
         ],
         "validation_commands": [
             "python .\\tools\\verify_expression_screen_assets_stm32wba.py",
+            "python .\\tools\\verify_wba_spi_nor_adapter.py --self-test",
             "python .\\tools\\verify_expression_wba_portability.py",
         ],
     }
 
 
 def check_code(errors: list[str]) -> None:
-    for path in (HEADER, SOURCE, ASSET_STORE_HEADER):
+    for path in (
+        HEADER,
+        SOURCE,
+        ASSET_STORE_HEADER,
+        SPI_NOR_HEADER,
+        SPI_NOR_SOURCE,
+        SPI_NOR_VERIFIER,
+        SPI_NOR_FIXTURE,
+    ):
         require(path.exists(), f"missing required path {rel(path)}", errors)
     if errors:
         return
     header = HEADER.read_text(encoding="utf-8")
     source = SOURCE.read_text(encoding="utf-8")
     combined = header + "\n" + source
+    spi_nor = (
+        SPI_NOR_HEADER.read_text(encoding="utf-8")
+        + "\n"
+        + SPI_NOR_SOURCE.read_text(encoding="utf-8")
+    )
 
     for token in (
         '#include "asset_store.h"',
@@ -109,6 +132,13 @@ def check_code(errors: list[str]) -> None:
         "PB11",
     ):
         require(token not in combined, f"WBA assets adapter leaked target fact {token}", errors)
+
+    for token in (
+        "companion_spi_nor_stm32wba_partition_read",
+        "companion_spi_nor_stm32wba_partition_init",
+        "NOR_CMD_READ_DATA 0x03u",
+    ):
+        require(token in spi_nor, f"selected WBA SPI NOR adapter missing {token}", errors)
 
     wb55 = WB55_APP.read_text(encoding="utf-8") + "\n" + WB55_MAKEFILE.read_text(encoding="utf-8")
     require("screen_assets_stm32wba" not in wb55,

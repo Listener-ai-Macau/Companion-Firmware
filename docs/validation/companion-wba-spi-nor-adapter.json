@@ -1,0 +1,75 @@
+{
+  "boundary": {
+    "callbacks": [
+      "chip_select",
+      "transfer",
+      "now_ms",
+      "delay_ms"
+    ],
+    "hal_free": true,
+    "pin_free": true,
+    "screen_layer_transport_agnostic": true,
+    "wb55_epaper_transport": "SPI2",
+    "wb55_flash_transport": "SPI1",
+    "wb55_qspi_backend_replaced": true
+  },
+  "command_contract": {
+    "block_erase_size": 65536,
+    "erase_4k": "0x20",
+    "erase_64k": "0xD8",
+    "erase_size": 4096,
+    "page_program": "0x02",
+    "page_size": 256,
+    "read_data": "0x03",
+    "read_jedec_id": "0x9F",
+    "read_status1": "0x05",
+    "release_powerdown": "0xAB",
+    "write_enable": "0x06"
+  },
+  "native_behavior": {
+    "aligned_64k_erase": true,
+    "aligned_erase": true,
+    "busy_timeout": true,
+    "cross_page_program_splits": true,
+    "fail_closed_self_test": true,
+    "failed_probe_diagnostics_preserved": true,
+    "invalid_jedec_rejected": true,
+    "logical_screen_assets_partition_binding": true,
+    "out_of_range_64k_erase_rejected": true,
+    "range_checks": true,
+    "readback_matches": true,
+    "unaligned_64k_erase_rejected": true,
+    "valid_jedec_probe": true
+  },
+  "purpose": "Use one ordinary 1-1-1 SPI NOR core across WB55, WBA55 and WBA65, with WB55 SPI1 as the development-board proving path.",
+  "required_future_evidence": [
+    "Selected STM32WBA55/WBA65 package, CubeWBA project, SPI instance and pins.",
+    "Real WBA JEDEC, read/program/erase and reset-cycle logs.",
+    "Final external-Flash partition map for ui_assets, recording and OTA staging.",
+    "Resource-pack mount/CRC/frame read plus current and low-power evidence."
+  ],
+  "schema_id": "companion.pendant.wba_spi_nor_adapter.v1",
+  "sources": {
+    "adapter_header": "app/companion_pendant/storage/spi_nor_stm32wba.h",
+    "adapter_source": "app/companion_pendant/storage/spi_nor_stm32wba.c",
+    "native_harness": "tools/fixtures/wba_spi_nor_adapter_test.c",
+    "screen_assets_adapter": "app/companion_pendant/epaper/screen_assets_stm32wba.c"
+  },
+  "status": "PASS_NATIVE_BEHAVIOR_AND_PORTABLE_CONTRACT",
+  "targets": {
+    "address_width_bits": 24,
+    "compatible_target": "WBA65",
+    "cube_wba_binding_present": false,
+    "development_proving_target": "WB55_SPI1",
+    "hardware_parity_claimed": false,
+    "max_supported_capacity_bytes": 16777216,
+    "selected_baseline": "WBA55",
+    "transport": "spi_nor_1_1_1"
+  },
+  "validation_commands": [
+    "python .\\tools\\verify_wba_spi_nor_adapter.py",
+    "python .\\tools\\verify_wba_spi_nor_adapter.py --self-test",
+    "python .\\tools\\verify_wba_adapter_m33_compile.py --self-test",
+    "python .\\tools\\verify_expression_wba_portability.py"
+  ]
+}
