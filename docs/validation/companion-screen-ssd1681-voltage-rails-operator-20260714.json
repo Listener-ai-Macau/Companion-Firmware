@@ -1,0 +1,26 @@
+{
+  "schema": "companion.operator_review.v1",
+  "captured_at": "2026-07-14T10:31:00+08:00",
+  "target": "NUCLEO-WB55RG + ESP32-FTS02 + GDEY0154D67-T03",
+  "item": "SSD1681 positive and negative refresh-voltage measurement",
+  "progress": "1/1",
+  "selected": "FAIL",
+  "operator_note": "PREVGL1 minimum: 4.2 mV; PREVGH1 maximum: remained at 3.3 V; screen: no change.",
+  "measurement": {
+    "meter_mode": "DC voltage",
+    "black_probe": "GND1",
+    "prevgl1_min_v": 0.0042,
+    "prevgh1_max_v": 3.3,
+    "screen_observation": "no change"
+  },
+  "diagnostic_image": {
+    "hex_sha256": "DC84A750518DEF4AAB491F82508C7844EE12634B061475AE54C5BAD4280D7F31",
+    "refresh_profile": "official 0x24-only black full refresh, 30 repeats, 5 s interval",
+    "machine_runtime": "PASS; BUSY asserted and returned low; 5000 bytes per cycle"
+  },
+  "decision": {
+    "result": "NO_GO_REFRESH_VOLTAGE_NOT_ESTABLISHED",
+    "reason": "PREVGL1 did not become negative and PREVGH1 did not rise above the 3.3 V logic rail while the bounded refresh diagnostic was running.",
+    "next_action": "Replace or cross-swap the ESP32-FTS02 first. If component-level repair is chosen, inspect Q1 and the L2/D2-D4/C6-C9 boost network with power removed before considering the panel module."
+  }
+}

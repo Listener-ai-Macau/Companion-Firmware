@@ -39,6 +39,14 @@
     "action": "press NUCLEO physical RESET and observe the most negative reading during the repeating refresh window",
     "decision": "No negative PREVGL together with PREVGH near 3.3 V points to the FTS02 boost network; normal positive/negative boost with grain points to P5/FPC or the panel module."
   },
+  "measurement_result": {
+    "operator_selected": "FAIL",
+    "prevgl1_min_v": 0.0042,
+    "prevgh1_max_v": 3.3,
+    "screen_observation": "no change",
+    "decision": "NO_GO_REFRESH_VOLTAGE_NOT_ESTABLISHED",
+    "next_action": "Replace or cross-swap ESP32-FTS02 before replacing the panel module."
+  },
   "repair_map": {
     "inductor": "L2 47uH 500mA",
     "mosfet": "Q1 Si1308EDL; vendor manual identifies MOS as the most common failing boost component",
@@ -49,6 +57,7 @@
   "evidence": {
     "raw_log": "docs/validation/companion-screen-ssd1681-voltage-probe-20260714.raw.log",
     "raw_log_sha256": "9C0BF5B6285213D80ED19CD8E7F0B720BEFBF32DDB48D223541E20633C13BB6D",
+    "operator_review": "docs/validation/companion-screen-ssd1681-voltage-rails-operator-20260714.json",
     "capture_summary": ".cache/validation/ssd1681-voltage-probe-20260714/runtime/nucleo-serial-summary.json",
     "build_log": ".cache/validation/ssd1681-voltage-probe-20260714/build.log"
   }
