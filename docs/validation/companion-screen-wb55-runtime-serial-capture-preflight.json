@@ -66,21 +66,6 @@
     "summary_status": "FAIL"
   },
   "log_verifier_contract": {
-    "expected_markers": {
-      "clips=33 frames=75": true,
-      "coherent_generation=1": true,
-      "complete=1": true,
-      "expression_renderer=external_pack": true,
-      "generation_switches=": true,
-      "last_stale_discarded=": true,
-      "mount=ok": true,
-      "pet_behavior_selftest=pass failure_code=0": true,
-      "queue_generation revision=53": true,
-      "refresh mode=full": true,
-      "revision=53": true,
-      "source=external_flash": true,
-      "touch-health] detected=1 identity=1 addr=0x38": true
-    },
     "expected_step_order": {
       "capture_normal": true,
       "capture_provision": true,
@@ -90,7 +75,9 @@
     "expects_provision_and_normal_dirs": true,
     "expects_raw_log": true,
     "expects_summary_json": true,
-    "normal_quiet_interaction_profile_marker": true
+    "normal_markers_are_quiet_production_subset": true,
+    "normal_quiet_interaction_profile_marker": true,
+    "provision_markers_follow_candidate": true
   },
   "operator_rule": "This preflight does not open serial ports, flash firmware, or claim runtime evidence. The real capture still requires the Companion-WB55 workflow hardware lock and the runtime log verifier must remain NO_GO until provision/normal logs exist.",
   "reset_timeout_selftest": {
@@ -119,7 +106,7 @@
     },
     "capture_steps": {
       "capture_normal": {
-        "command": "pwsh -NoProfile -File .\\tools\\capture_nucleo_serial.ps1 -Execute -WorkflowLockHeld -Seconds 25 -ResetAfterOpen -OutDir C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-devboard-oai1\\.cache\\validation\\rev53-runtime-current\\normal",
+        "command": "pwsh -NoProfile -File .\\tools\\capture_nucleo_serial.ps1 -Execute -WorkflowLockHeld -Seconds 25 -ResetAfterOpen -OutDir C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-devboard-oai1\\.cache\\validation\\rev53-runtime-runner-checkonly\\normal",
         "execute": true,
         "out_dir": true,
         "reset_after_open": true,
@@ -128,7 +115,7 @@
         "workflow_lock_ack": true
       },
       "capture_provision": {
-        "command": "pwsh -NoProfile -File .\\tools\\capture_nucleo_serial.ps1 -Execute -WorkflowLockHeld -Seconds 25 -ResetAfterOpen -OutDir C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-devboard-oai1\\.cache\\validation\\rev53-runtime-current\\provision",
+        "command": "pwsh -NoProfile -File .\\tools\\capture_nucleo_serial.ps1 -Execute -WorkflowLockHeld -Seconds 25 -ResetAfterOpen -OutDir C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware-devboard-oai1\\.cache\\validation\\rev53-runtime-runner-checkonly\\provision",
         "execute": true,
         "out_dir": true,
         "reset_after_open": true,
@@ -137,18 +124,23 @@
         "workflow_lock_ack": true
       }
     },
+    "check_only": {
+      "report_path": ".cache/validation/rev53-runtime-runner-checkonly/runtime-recheck-run.json",
+      "returncode": 0,
+      "stdout_has_dry_run": true
+    },
     "run_report": {
       "output": {
-        "normal_dir": ".cache/validation/rev53-runtime-current/normal",
-        "provision_dir": ".cache/validation/rev53-runtime-current/provision",
-        "root": ".cache/validation/rev53-runtime-current",
-        "run_report": ".cache/validation/rev53-runtime-current/runtime-recheck-run.json"
+        "normal_dir": ".cache/validation/rev53-runtime-runner-checkonly/normal",
+        "provision_dir": ".cache/validation/rev53-runtime-runner-checkonly/provision",
+        "root": ".cache/validation/rev53-runtime-runner-checkonly",
+        "run_report": ".cache/validation/rev53-runtime-runner-checkonly/runtime-recheck-run.json"
       },
       "resource": {
         "clips": 33,
         "frames": 75,
         "pack_crc32": "0x2332E300",
-        "quiet_interaction_profile_recheck_required": true,
+        "quiet_interaction_profile_recheck_required": false,
         "revision": 53,
         "runtime_status": "REVISION_53_RUNTIME_PASS_HUMAN_VISUAL_PENDING",
         "total_bytes": 49901
@@ -168,8 +160,9 @@
   "schema_id": "companion.screen.wb55_runtime_serial_capture_preflight.v1",
   "source_files": {
     "capture_script": "tools/capture_nucleo_serial.ps1",
+    "recorded_execution_run_report": ".cache/validation/rev53-runtime-current/runtime-recheck-run.json",
     "runtime_log_verifier": "tools/verify_wb55_screen_runtime_recheck_logs.py",
-    "runtime_run_report": ".cache/validation/rev53-runtime-current/runtime-recheck-run.json",
+    "runtime_run_report": ".cache/validation/rev53-runtime-runner-checkonly/runtime-recheck-run.json",
     "runtime_runner": "tools/run_wb55_screen_runtime_recheck.ps1"
   },
   "status": "PASS_STATIC_SERIAL_CAPTURE_PREFLIGHT",

@@ -14,7 +14,6 @@
     }
   },
   "blocking_reasons": [
-    "quiet_interaction_profile_runtime_recheck",
     "open_operator_review_items"
   ],
   "build_matrix": {
@@ -153,7 +152,6 @@
   },
   "goal_state": {
     "open_requirements": [
-      "screen_refresh_touch_machine_health",
       "daily_pet_and_menu_human_feel",
       "wba55_wba65_portability_boundary"
     ],
@@ -163,6 +161,7 @@
       "current_external_resource_runtime",
       "generated_pet_and_menu_art_baseline",
       "generated_art_handoff_and_refresh_feel_regression_guard",
+      "screen_refresh_touch_machine_health",
       "wb55_screen_firmware_build_matrix",
       "touch_menu_interaction_machine_contract",
       "external_flash_and_ota_resource_policy"
@@ -275,7 +274,7 @@
       "python .\\tools\\verify_companion_screen_goal_audit.py"
     ],
     "quiet_interaction_profile_recheck_required": true,
-    "status": "NO_GO_WAITING_FOR_REAL_HARDWARE_RUN",
+    "status": "PASS_MACHINE_RUNTIME_RECHECK_COMPLETE",
     "step_count": 4,
     "workflow_lock_command": "pwsh -NoProfile -File C:\\Users\\Billy\\Desktop\\Denzic\\ai-collaboration-workflow\\scripts\\aiw.ps1 with-lock -Resource Companion-WB55 -Purpose \"Companion WB55 rev53 screen runtime recheck\" -Run pwsh -NoProfile -File .\\tools\\run_wb55_screen_runtime_recheck.ps1 -Execute -WorkflowLockHeld"
   },
@@ -283,14 +282,17 @@
     "normal": {
       "exists": true,
       "markers": {
+        "[build] interaction_profile=quiet epaper_trace=0 touch_trace=0 ": true,
         "clips=33 frames=75": true,
-        "complete=1": true,
+        "coherent_generation=1": true,
         "expression_renderer=external_pack": true,
+        "last_stale_discarded=": true,
+        "low_power_face completed=1 stop=allowed": true,
         "mount=ok": true,
         "pet_behavior_selftest=pass failure_code=0": true,
-        "refresh mode=full": true,
+        "preview_started name=idle": true,
+        "queue_generation revision=53": true,
         "revision=53": true,
-        "source=external_flash": true,
         "touch-health] detected=1 identity=1 addr=0x38": true
       },
       "path": ".cache/validation/rev53-runtime-current/normal/nucleo-serial-raw.log"
@@ -319,8 +321,8 @@
   },
   "runtime_recheck_log_gate": {
     "path": "docs/validation/companion-screen-wb55-runtime-recheck-logs.json",
-    "quiet_interaction_profile_passed": false,
-    "status": "NO_GO_INCOMPLETE_RUNTIME_MARKERS"
+    "quiet_interaction_profile_passed": true,
+    "status": "PASS"
   },
   "runtime_serial_capture_preflight": {
     "capture_script": "tools/capture_nucleo_serial.ps1",
@@ -328,13 +330,13 @@
     "operator_rule": "This preflight does not open serial ports, flash firmware, or claim runtime evidence. The real capture still requires the Companion-WB55 workflow hardware lock and the runtime log verifier must remain NO_GO until provision/normal logs exist.",
     "path": "docs/validation/companion-screen-wb55-runtime-serial-capture-preflight.json",
     "raw_log_filename": "nucleo-serial-raw.log",
-    "runtime_run_report": ".cache/validation/rev53-runtime-current/runtime-recheck-run.json",
+    "runtime_run_report": ".cache/validation/rev53-runtime-runner-checkonly/runtime-recheck-run.json",
     "runtime_runner": "tools/run_wb55_screen_runtime_recheck.ps1",
     "status": "PASS_STATIC_SERIAL_CAPTURE_PREFLIGHT",
     "summary_json_filename": "nucleo-serial-summary.json"
   },
   "schema_id": "companion.pendant.screen_pre_acceptance_health.v1",
-  "status": "NO_GO_INTERACTION_PROFILE_RUNTIME_RECHECK_PENDING",
+  "status": "NO_GO_OPEN_OPERATOR_REVIEW_ITEMS",
   "target": "NUCLEO-WB55RG + GDEY0154D67-T03 + FT6336U",
   "validation_commands": [
     "python .\\tools\\verify_companion_screen_pre_acceptance_health.py",

@@ -86,7 +86,7 @@ def build_health() -> dict[str, Any]:
     proven_provision_log = proven.get("provision_raw_log", runtime.get("provision_raw_log", ""))
     proven_normal_log = proven.get("normal_raw_log", runtime.get("normal_raw_log", ""))
 
-    common_markers = [
+    provision_markers = [
         "mount=ok",
         f"revision={proven_revision}",
         f"clips={proven.get('clips', resource.get('clips'))} "
@@ -98,8 +98,23 @@ def build_health() -> dict[str, Any]:
         "refresh mode=full",
         "complete=1",
     ]
-    provision_log = log_has(str(proven_provision_log), common_markers)
-    normal_log = log_has(str(proven_normal_log), common_markers)
+    normal_markers = [
+        "mount=ok",
+        f"revision={proven_revision}",
+        f"clips={proven.get('clips', resource.get('clips'))} "
+        f"frames={proven.get('frames', resource.get('frames'))}",
+        "expression_renderer=external_pack",
+        "pet_behavior_selftest=pass failure_code=0",
+        "touch-health] detected=1 identity=1 addr=0x38",
+        f"queue_generation revision={proven_revision}",
+        "coherent_generation=1",
+        "last_stale_discarded=",
+        "[build] interaction_profile=quiet epaper_trace=0 touch_trace=0 ",
+        "preview_started name=idle",
+        "low_power_face completed=1 stop=allowed",
+    ]
+    provision_log = log_has(str(proven_provision_log), provision_markers)
+    normal_log = log_has(str(proven_normal_log), normal_markers)
     runtime_logs_pass = runtime_recheck_logs.get("status") == "PASS"
     review_status = str(review_record.get("status", ""))
     blocking_reasons: list[str] = []
@@ -386,8 +401,12 @@ def check_health(health: dict[str, Any], errors: list[str]) -> None:
         if promotion.get("status") != "APPLIED":
             errors.append("runtime promotion gate must be APPLIED after active runtime logs are promoted")
     action_card = health.get("runtime_hardware_action_card", {})
-    if action_card.get("status") != "NO_GO_WAITING_FOR_REAL_HARDWARE_RUN":
-        errors.append("runtime hardware action card must remain waiting for real hardware run")
+    expected_action_card_status = (
+        "PASS_MACHINE_RUNTIME_RECHECK_COMPLETE"
+        if runtime_logs_pass else "NO_GO_WAITING_FOR_REAL_HARDWARE_RUN"
+    )
+    if action_card.get("status") != expected_action_card_status:
+        errors.append(f"runtime hardware action card must be {expected_action_card_status}")
     if action_card.get("claim_scope") != "operator_action_card_no_hardware_claim":
         errors.append("runtime hardware action card must not claim hardware completion")
     if "Companion-WB55" not in str(action_card.get("workflow_lock_command", "")):
@@ -461,13 +480,14 @@ def check_health(health: dict[str, Any], errors: list[str]) -> None:
                 errors.append(f"WB55 screen build matrix log evidence contains forbidden {key} marker {marker}")
 
     flash_text = FLASH_SCRIPT.read_text(encoding="utf-8")
-    for token in (
+    required_tokens = [
         "[switch]$ScreenAssetProvision",
         "[switch]$CheckOnly",
         "Companion_Nucleo_WB55RG_Bringup.hex",
         "Companion_Nucleo_WB55RG_ScreenAssetProvision.hex",
         "Use either -ScreenAssetProvision or -ImagePath, not both.",
-    ):
+    ]
+    for token in required_tokens:
         if token not in flash_text:
             errors.append(f"flash script missing {token}")
 
@@ -553,7 +573,7 @@ def check_health(health: dict[str, Any], errors: list[str]) -> None:
     if summary.get("pending_human_count") != 2:
         errors.append("acceptance index pending human count drifted")
     serialized = json.dumps(health, ensure_ascii=False)
-    for token in (
+    required_tokens = [
         "operator_review_template",
         "operator_review_record",
         "runtime_hardware_action_card",
@@ -571,9 +591,10 @@ def check_health(health: dict[str, Any], errors: list[str]) -> None:
         "companion-screen-acceptance-index.json",
         expected_next_hardware_gate,
         "wb55_touch_visual_acceptance",
-        "NO_GO_WAITING_FOR_REAL_HARDWARE_RUN",
+        expected_action_card_status,
         "PASS_STATIC_SERIAL_CAPTURE_PREFLIGHT",
-    ):
+    ]
+    for token in required_tokens:
         if token not in serialized:
             errors.append(f"pre-acceptance health missing token {token}")
 

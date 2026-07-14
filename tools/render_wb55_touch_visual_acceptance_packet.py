@@ -87,13 +87,17 @@ def build_packet() -> dict[str, Any]:
     action_card = json.loads(RUNTIME_HARDWARE_ACTION_CARD.read_text(encoding="utf-8"))
     generation_hygiene = json.loads(DISPLAY_QUEUE_GENERATION_HYGIENE.read_text(encoding="utf-8"))
     generation_ledger = json.loads(GENERATION_RELEASE_LEDGER.read_text(encoding="utf-8"))
+    review_record = json.loads(REVIEW_RECORD_JSON.read_text(encoding="utf-8"))
     generation_scenario = generation_hygiene.get("scenario", {})
     generation_expectation = generation_scenario.get("display_result_expectation", {})
     resource_runtime_ready = runtime_status == PASS_RUNTIME_STATUS
     runtime_machine_ready = resource_runtime_ready and runtime_logs.get("status") == "PASS"
     normal_log = str(runtime.get("normal_raw_log") or "")
     interaction_profile = interaction_profile_runtime_state(normal_log)
+    review_open = review_record.get("status") == "NO_GO_OPEN_REVIEW_ITEMS"
     machine_precondition = (
+        "NO_GO_OPEN_OPERATOR_REVIEW_ITEMS: do not start a new touch/visual review until the prior focused menu-density feedback is fixed and re-reviewed with evidence."
+        if runtime_machine_ready and interaction_profile["status"] == "PASS" and review_open else
         f"PASS: rev{CANDIDATE.revision} provision and normal runtime logs are promoted, and the normal capture proves the quiet interaction profile; human touch/visual steps may start after the operator says 开始验收."
         if runtime_machine_ready and interaction_profile["status"] == "PASS" else
         "NO_GO_INTERACTION_PROFILE_RUNTIME_RECHECK_PENDING: do not start human touch/visual steps until a reset-bounded normal capture proves the quiet interaction profile."
@@ -514,6 +518,7 @@ def check_packet(packet: dict[str, Any], errors: list[str]) -> None:
     if generation_ledger.get("path") != rel(GENERATION_RELEASE_LEDGER):
         errors.append("packet machine_state must link generation release ledger")
     runtime_logs_pass = runtime_logs.get("status") == "PASS"
+    review_record = json.loads(REVIEW_RECORD_JSON.read_text(encoding="utf-8"))
     interaction_profile = packet.get("machine_state", {}).get("interaction_profile", {})
     if packet.get("machine_state", {}).get("interaction_profile_evidence") != rel(INTERACTION_PROFILE_RUNTIME_GATE):
         errors.append("packet must link the interaction-profile runtime gate")
@@ -530,7 +535,10 @@ def check_packet(packet: dict[str, Any], errors: list[str]) -> None:
         errors.append("interaction profile marker presence must match its runtime status")
     resource_runtime_ready = runtime_status == PASS_RUNTIME_STATUS
     runtime_machine_ready = resource_runtime_ready and runtime_logs_pass
+    review_open = review_record.get("status") == "NO_GO_OPEN_REVIEW_ITEMS"
     expected_machine_precondition = (
+        "NO_GO_OPEN_OPERATOR_REVIEW_ITEMS: do not start a new touch/visual review until the prior focused menu-density feedback is fixed and re-reviewed with evidence."
+        if runtime_machine_ready and interaction_profile.get("status") == "PASS" and review_open else
         f"PASS: rev{CANDIDATE.revision} provision and normal runtime logs are promoted, and the normal capture proves the quiet interaction profile; human touch/visual steps may start after the operator says 开始验收."
         if runtime_machine_ready and interaction_profile.get("status") == "PASS" else
         "NO_GO_INTERACTION_PROFILE_RUNTIME_RECHECK_PENDING: do not start human touch/visual steps until a reset-bounded normal capture proves the quiet interaction profile."
@@ -568,7 +576,7 @@ def check_packet(packet: dict[str, Any], errors: list[str]) -> None:
     serialized = json.dumps(packet, ensure_ascii=False)
     resource_pack = menu_evidence.get("resource_pack", {})
     runtime = menu_evidence.get("runtime_evidence", {})
-    for token in (
+    required_tokens = [
         "daily_tap_social_response",
         "daily_swipe_pet_response",
         "anywhere_hold_menu_entry",
@@ -615,8 +623,6 @@ def check_packet(packet: dict[str, Any], errors: list[str]) -> None:
         "verify_wb55_touch_visual_review_record.py",
         "interaction_profile",
         rel(INTERACTION_PROFILE_RUNTIME_GATE),
-        "PENDING_HARDWARE_RUNTIME_MARKER",
-        "NO_GO_INTERACTION_PROFILE_RUNTIME_RECHECK_PENDING",
         "[build] interaction_profile=quiet",
         "epaper_trace=0",
         "touch_trace=0",
@@ -637,7 +643,15 @@ def check_packet(packet: dict[str, Any], errors: list[str]) -> None:
         str(resource_pack.get("pack_crc32")),
         str(resource_pack.get("total_bytes")),
         "六项生图布局",
-    ):
+    ]
+    if not runtime_machine_ready or interaction_profile.get("status") != "PASS":
+        required_tokens.extend((
+            "PENDING_HARDWARE_RUNTIME_MARKER",
+            "NO_GO_INTERACTION_PROFILE_RUNTIME_RECHECK_PENDING",
+        ))
+    if review_open:
+        required_tokens.append("NO_GO_OPEN_OPERATOR_REVIEW_ITEMS")
+    for token in required_tokens:
         if token not in serialized:
             errors.append(f"packet missing {token}")
 

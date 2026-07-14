@@ -646,8 +646,10 @@ def check_audit(audit: dict[str, Any], errors: list[str]) -> None:
             errors.append("runtime promotion gate must be APPLIED after active runtime evidence is promoted")
         if runtime_recheck_logs.get("status") != "PASS" and not quiet_profile_only_recheck:
             errors.append("runtime recheck logs gate may remain non-PASS after resource promotion only for the explicit quiet-profile recheck")
-        if quiet_profile_only_recheck and runtime_recheck_logs.get("status") not in {"NO_GO_MISSING_RUNTIME_LOGS", "NO_GO_INCOMPLETE_RUNTIME_MARKERS"}:
-            errors.append("quiet-profile recheck must keep a pending runtime log gate until the current normal capture is replaced")
+        if quiet_profile_only_recheck and runtime_recheck_logs.get("status") not in {
+            "PASS", "NO_GO_MISSING_RUNTIME_LOGS", "NO_GO_INCOMPLETE_RUNTIME_MARKERS"
+        }:
+            errors.append("quiet-profile recheck must keep a recognized runtime log gate")
     if requirements.get("wba55_wba65_portability_boundary", {}).get("status") != "pre_port_proved_real_wba_pending":
         errors.append("WBA boundary must remain pre-port with real WBA pending")
     if wba_cube_dependency.get("status") != "PASS":
@@ -666,8 +668,12 @@ def check_audit(audit: dict[str, Any], errors: list[str]) -> None:
         errors.append("WBA LSE clock contract must not claim hardware completion")
     if wba_lse_clock.get("current_state", {}).get("hardware_claimed") is not False:
         errors.append("WBA LSE clock contract must keep hardware_claimed false")
-    if runtime_action_card.get("status") != "NO_GO_WAITING_FOR_REAL_HARDWARE_RUN":
-        errors.append("runtime hardware action card must remain waiting for real hardware run")
+    expected_action_card_status = (
+        "PASS_MACHINE_RUNTIME_RECHECK_COMPLETE"
+        if runtime_logs_pass else "NO_GO_WAITING_FOR_REAL_HARDWARE_RUN"
+    )
+    if runtime_action_card.get("status") != expected_action_card_status:
+        errors.append(f"runtime hardware action card must be {expected_action_card_status}")
     if runtime_action_card.get("claim_scope") != "operator_action_card_no_hardware_claim":
         errors.append("runtime hardware action card must not claim hardware completion")
     if runtime_flash_preflight.get("status") != "PASS":
@@ -909,7 +915,7 @@ def check_audit(audit: dict[str, Any], errors: list[str]) -> None:
                 errors.append(f"open_requirements missing runtime/profile recheck item {required_open}")
 
     serialized = json.dumps(audit, ensure_ascii=False)
-    for token in (
+    required_tokens = [
         str(menu_runtime.get("status")),
         "开 始验收".replace(" ", ""),
         str(menu_pack.get("pack_crc32")),
@@ -934,7 +940,7 @@ def check_audit(audit: dict[str, Any], errors: list[str]) -> None:
         "static_serial_capture_contract_no_hardware_claim",
         "TEMPLATE_NOT_ACCEPTANCE_RESULT",
         str(touch_review_record.get("status")),
-        "NO_GO_WAITING_FOR_REAL_HARDWARE_RUN",
+        expected_action_card_status,
         "blank structured review template",
         "filled review record validator",
         "verify_expression_wba_real_parity_gate.py",
@@ -953,8 +959,6 @@ def check_audit(audit: dict[str, Any], errors: list[str]) -> None:
         "verify_expression_acceptance_index.py",
         "companion-screen-acceptance-index.json",
         "companion-interaction-profile-runtime-gate-20260714.md",
-        "PENDING_HARDWARE_RUNTIME_MARKER",
-        "NO_GO_INTERACTION_PROFILE_RUNTIME_RECHECK_PENDING",
         "complete quiet interaction boot marker",
         "acceptance_sequence",
         expected_next_hardware_gate,
@@ -978,7 +982,13 @@ def check_audit(audit: dict[str, Any], errors: list[str]) -> None:
         "verify_pet_behavior_user_data_stm32wba.py",
         "privacy erase",
         "comp_pet_behavior_memory_t",
-    ):
+    ]
+    if interaction_profile_status != "PASS":
+        required_tokens.extend((
+            "PENDING_HARDWARE_RUNTIME_MARKER",
+            "NO_GO_INTERACTION_PROFILE_RUNTIME_RECHECK_PENDING",
+        ))
+    for token in required_tokens:
         if token not in serialized:
             errors.append(f"audit missing token: {token}")
 

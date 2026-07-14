@@ -10,7 +10,7 @@
     "runtime flash preflight docs/validation/companion-screen-wb55-runtime-flash-preflight.json",
     "runtime serial capture preflight docs/validation/companion-screen-wb55-runtime-serial-capture-preflight.json",
     "interaction-profile runtime gate docs/validation/companion-interaction-profile-runtime-gate-20260714.md",
-    "revision 53 resource runtime is already promoted, but the current quiet interaction-profile normal capture is still pending",
+    "revision 53 provision/normal serial logs are linked in machine_state",
     "the reset-bounded normal serial capture contains every quiet interaction-profile marker before the first human touch step",
     "serial/runtime diagnostic tail if flashed during the session",
     "photo or short video only when the operator chooses to capture visual evidence",
@@ -18,7 +18,7 @@
     "issue triage: fixed, deferred by product decision, accepted benign, or still open"
   ],
   "gate_id": "wb55_touch_visual_acceptance",
-  "machine_precondition": "NO_GO_INTERACTION_PROFILE_RUNTIME_RECHECK_PENDING: do not start human touch/visual steps until a reset-bounded normal capture proves the quiet interaction profile.",
+  "machine_precondition": "NO_GO_OPEN_OPERATOR_REVIEW_ITEMS: do not start a new touch/visual review until the prior focused menu-density feedback is fixed and re-reviewed with evidence.",
   "machine_state": {
     "bilingual_menu_evidence": "docs/validation/companion-screen-bilingual-menu-wb55.json",
     "display_queue_generation_hygiene": {
@@ -33,8 +33,8 @@
       "cemp_revision": 53,
       "expected_first_frame_marker": "coherent_generation=1",
       "path": "docs/validation/companion-screen-generation-release-ledger.json",
-      "quiet_interaction_profile_passed": false,
-      "quiet_interaction_profile_runtime_status": "NO_GO_INCOMPLETE_RUNTIME_MARKERS",
+      "quiet_interaction_profile_passed": true,
+      "quiet_interaction_profile_runtime_status": "PASS",
       "real_runtime_status": "PASS",
       "status": "RUNTIME_PROMOTED_HUMAN_VISUAL_PENDING",
       "visual_triage_classes": [
@@ -46,19 +46,19 @@
       ]
     },
     "interaction_profile": {
-      "marker_present": false,
+      "marker_present": true,
       "normal_log": ".cache/validation/rev53-runtime-current/normal/nucleo-serial-raw.log",
       "required_marker": "[build] interaction_profile=quiet epaper_trace=0 touch_trace=0 ft6336_threshold=0x70 touch_poll_active_ms=5 touch_poll_refresh_ms=5 refresh_policy=partial_x5_then_fast_cleanup",
       "required_markers": {
-        "[build] interaction_profile=quiet": false,
-        "epaper_trace=0": false,
-        "ft6336_threshold=0x70": false,
-        "refresh_policy=partial_x5_then_fast_cleanup": false,
-        "touch_poll_active_ms=5": false,
-        "touch_poll_refresh_ms=5": false,
-        "touch_trace=0": false
+        "[build] interaction_profile=quiet": true,
+        "epaper_trace=0": true,
+        "ft6336_threshold=0x70": true,
+        "refresh_policy=partial_x5_then_fast_cleanup": true,
+        "touch_poll_active_ms=5": true,
+        "touch_poll_refresh_ms=5": true,
+        "touch_trace=0": true
       },
-      "status": "PENDING_HARDWARE_RUNTIME_MARKER"
+      "status": "PASS"
     },
     "interaction_profile_evidence": "docs/validation/companion-interaction-profile-runtime-gate-20260714.md",
     "normal_firmware_restored": true,
@@ -74,7 +74,7 @@
     },
     "runtime_hardware_action_card": {
       "path": "docs/validation/companion-screen-wb55-runtime-hardware-action-card.json",
-      "status": "NO_GO_WAITING_FOR_REAL_HARDWARE_RUN"
+      "status": "PASS_MACHINE_RUNTIME_RECHECK_COMPLETE"
     },
     "runtime_logs_evidence": "docs/validation/companion-screen-wb55-runtime-recheck-logs.json",
     "runtime_serial_capture_preflight": {

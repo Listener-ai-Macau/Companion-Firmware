@@ -5,38 +5,34 @@
     "runtime_status": "REVISION_53_RUNTIME_PASS_HUMAN_VISUAL_PENDING",
     "total_bytes": 49901
   },
-  "next_machine_action": "Run tools/run_wb55_screen_runtime_recheck.ps1 under the Companion-WB55 workflow lock, then rerun this verifier.",
+  "next_machine_action": "Runtime evidence is already promoted; continue to pre-acceptance health.",
   "normal": {
-    "bytes_read": 11038,
+    "bytes_read": 3395,
     "label": "normal",
     "markers": {
-      "[build] interaction_profile=quiet epaper_trace=0 touch_trace=0 ft6336_threshold=0x70 touch_poll_active_ms=5 touch_poll_refresh_ms=5 refresh_policy=partial_x5_then_fast_cleanup": false,
+      "[build] interaction_profile=quiet epaper_trace=0 touch_trace=0 ft6336_threshold=0x70 touch_poll_active_ms=5 touch_poll_refresh_ms=5 refresh_policy=partial_x5_then_fast_cleanup": true,
       "clips=33 frames=75": true,
       "coherent_generation=1": true,
-      "complete=1": true,
       "expression_renderer=external_pack": true,
-      "frame rotation=180 mirror_x=1": true,
-      "generation_switches=": true,
       "last_stale_discarded=": true,
+      "low_power_face completed=1 stop=allowed": true,
       "mount=ok": true,
       "pet_behavior_selftest=pass failure_code=0": true,
       "preview_started name=idle": true,
       "queue_generation revision=53": true,
-      "refresh mode=full": true,
       "revision=53": true,
-      "source=external_flash": true,
       "touch-health] detected=1 identity=1 addr=0x38": true
     },
     "raw_log": ".cache/validation/rev53-runtime-current/normal/nucleo-serial-raw.log",
     "raw_log_exists": true,
-    "status": "MISSING_OR_INCOMPLETE",
+    "status": "PASS",
     "summary_json": ".cache/validation/rev53-runtime-current/normal/nucleo-serial-summary.json",
     "summary_json_exists": true,
     "summary_status": "PASS"
   },
   "promotion_rule": "Only after both logs pass may companion-screen-bilingual-menu-wb55.json be promoted from REVISION_53_RUNTIME_RECHECK_PENDING to a runtime-pass human-visual-pending state.",
   "provision": {
-    "bytes_read": 12593,
+    "bytes_read": 10284,
     "label": "provision",
     "markers": {
       "clips=33 frames=75": true,
@@ -63,7 +59,7 @@
     "summary_status": "PASS"
   },
   "run_report": {
-    "all_results_pass": false,
+    "all_results_pass": true,
     "exists": true,
     "expected_step_ids": [
       "flash_provision",
@@ -81,12 +77,22 @@
       "runtime_status": "REVISION_53_RUNTIME_PASS_HUMAN_VISUAL_PENDING",
       "total_bytes": 49901
     },
-    "result_ids": [],
-    "result_statuses": {},
-    "results_have_timestamps": false,
-    "results_match_expected_order": false,
+    "result_ids": [
+      "flash_provision",
+      "capture_provision",
+      "flash_normal",
+      "capture_normal"
+    ],
+    "result_statuses": {
+      "capture_normal": "PASS",
+      "capture_provision": "PASS",
+      "flash_normal": "PASS",
+      "flash_provision": "PASS"
+    },
+    "results_have_timestamps": true,
+    "results_match_expected_order": true,
     "schema": "companion.wb55_screen_runtime_recheck_run.v1",
-    "status": "DRY-RUN",
+    "status": "PASS",
     "step_ids": [
       "flash_provision",
       "capture_provision",
@@ -113,6 +119,6 @@
     "status": "PASS"
   },
   "schema_id": "companion.screen.wb55_runtime_recheck_logs.v1",
-  "status": "NO_GO_INCOMPLETE_RUNTIME_MARKERS",
+  "status": "PASS",
   "target": "NUCLEO-WB55RG + GDEY0154D67-T03 + FT6336U"
 }

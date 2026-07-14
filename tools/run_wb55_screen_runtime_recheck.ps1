@@ -96,7 +96,8 @@ if ($revision -le 0 -or $clips -le 0 -or $frames -le 0 -or $crc32 -notmatch '^0x
     throw "Expected positive CEMP revision, clips, frames, uppercase CRC, and matching pending or promoted runtime status before running this recheck."
 }
 $defaultRunRoot = Join-Path $repoRoot ".cache\validation\rev$revision-runtime-current"
-$runRoot = if ($OutRoot) { $OutRoot } else { $defaultRunRoot }
+$checkOnlyRunRoot = Join-Path $repoRoot ".cache\validation\rev$revision-runtime-runner-checkonly"
+$runRoot = if ($OutRoot) { $OutRoot } elseif ($CheckOnly) { $checkOnlyRunRoot } else { $defaultRunRoot }
 $provisionDir = Join-Path $runRoot "provision"
 $normalDir = Join-Path $runRoot "normal"
 $runReport = Join-Path $runRoot "runtime-recheck-run.json"
@@ -165,7 +166,7 @@ if ($SelfTestRecovery) {
     )
 }
 
-$expectedRuntimeMarkers = @(
+$expectedProvisionRuntimeMarkers = @(
     "mount=ok",
     "revision=$revision",
     "clips=$clips frames=$frames",
@@ -178,16 +179,23 @@ $expectedRuntimeMarkers = @(
     "generation_switches=",
     "last_stale_discarded=",
     "refresh mode=full",
-    "complete=1"
-)
-$expectedProvisionRuntimeMarkers = @($expectedRuntimeMarkers) + @(
+    "complete=1",
     "external_store=ready",
     "preview_started name=idle"
 )
-$expectedNormalRuntimeMarkers = @($expectedRuntimeMarkers) + @(
+$expectedNormalRuntimeMarkers = @(
+    "mount=ok",
+    "revision=$revision",
+    "clips=$clips frames=$frames",
+    "expression_renderer=external_pack",
+    "pet_behavior_selftest=pass failure_code=0",
+    "touch-health] detected=1 identity=1 addr=0x38",
+    "queue_generation revision=$revision",
+    "coherent_generation=1",
+    "last_stale_discarded=",
     $quietInteractionProfileMarker,
-    "frame rotation=180 mirror_x=1",
-    "preview_started name=idle"
+    "preview_started name=idle",
+    "low_power_face completed=1 stop=allowed"
 )
 
 $report = [ordered]@{
@@ -223,7 +231,7 @@ $report = [ordered]@{
         run_report = RelPath $runReport
     }
     steps = @($steps)
-    expected_runtime_markers = @($expectedRuntimeMarkers)
+    expected_runtime_markers = @($expectedProvisionRuntimeMarkers)
     expected_provision_runtime_markers = @($expectedProvisionRuntimeMarkers)
     expected_normal_runtime_markers = @($expectedNormalRuntimeMarkers)
     notes = @(

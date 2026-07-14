@@ -17,7 +17,9 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 CANDIDATE = current_candidate()
 CAPTURE_SCRIPT = ROOT / "tools/capture_nucleo_serial.ps1"
 RUNNER_SCRIPT = ROOT / "tools/run_wb55_screen_runtime_recheck.ps1"
-RUN_REPORT = CANDIDATE.run_root / "runtime-recheck-run.json"
+EXECUTED_RUN_REPORT = CANDIDATE.run_root / "runtime-recheck-run.json"
+CHECK_ONLY_RUN_ROOT = ROOT / ".cache" / "validation" / f"rev{CANDIDATE.revision}-runtime-runner-checkonly"
+CHECK_ONLY_RUN_REPORT = CHECK_ONLY_RUN_ROOT / "runtime-recheck-run.json"
 LOG_VERIFIER = ROOT / "tools/verify_wb55_screen_runtime_recheck_logs.py"
 DEFAULT_JSON = ROOT / "docs/validation/companion-screen-wb55-runtime-serial-capture-preflight.json"
 EMPTY_SELFTEST_DIR = ROOT / ".cache/validation/nucleo-serial-empty-selftest"
@@ -122,11 +124,37 @@ def run_reset_timeout_selftest() -> dict[str, Any]:
     }
 
 
+def run_checkonly_runner() -> dict[str, Any]:
+    completed = subprocess.run(
+        [
+            "pwsh",
+            "-NoProfile",
+            "-File",
+            str(RUNNER_SCRIPT),
+            "-CheckOnly",
+            "-OutRoot",
+            str(CHECK_ONLY_RUN_ROOT),
+        ],
+        cwd=ROOT,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        timeout=30,
+        check=False,
+    )
+    return {
+        "returncode": completed.returncode,
+        "report_path": rel(CHECK_ONLY_RUN_REPORT),
+        "stdout_has_dry_run": "DRY-RUN" in (completed.stdout + completed.stderr),
+    }
+
+
 def build_preflight() -> dict[str, Any]:
     capture_text = CAPTURE_SCRIPT.read_text(encoding="utf-8")
     runner_text = RUNNER_SCRIPT.read_text(encoding="utf-8")
     verifier_text = LOG_VERIFIER.read_text(encoding="utf-8")
-    run_report = load_json(RUN_REPORT)
+    check_only_runner = run_checkonly_runner()
+    run_report = load_json(CHECK_ONLY_RUN_REPORT) if CHECK_ONLY_RUN_REPORT.exists() else {}
     empty_selftest = run_empty_capture_selftest()
     reset_timeout_selftest = run_reset_timeout_selftest()
     steps = run_report.get("steps", [])
@@ -151,7 +179,8 @@ def build_preflight() -> dict[str, Any]:
         "source_files": {
             "capture_script": rel(CAPTURE_SCRIPT),
             "runtime_runner": rel(RUNNER_SCRIPT),
-            "runtime_run_report": rel(RUN_REPORT),
+            "runtime_run_report": rel(CHECK_ONLY_RUN_REPORT),
+            "recorded_execution_run_report": rel(EXECUTED_RUN_REPORT),
             "runtime_log_verifier": rel(LOG_VERIFIER),
         },
         "capture_script_contract": {
@@ -222,6 +251,7 @@ def build_preflight() -> dict[str, Any]:
             "workflow_lock_required_for_execute": "Refusing WB55 runtime recheck without workflow lock acknowledgement" in runner_text,
             "step_order": [str(step.get("id")) for step in steps if isinstance(step, dict)],
             "capture_steps": capture_steps,
+            "check_only": check_only_runner,
             "run_report": {
                 "schema": run_report.get("schema"),
                 "status": run_report.get("status"),
@@ -237,25 +267,29 @@ def build_preflight() -> dict[str, Any]:
             "expects_summary_json": '"nucleo-serial-summary.json"' in verifier_text,
             "expects_provision_and_normal_dirs": all(token in verifier_text for token in ['log_result("provision"', 'log_result("normal"']),
             "expected_step_order": has_all(verifier_text, EXPECTED_STEPS),
-            "expected_markers": {
-                marker: all(
-                    token in verifier_text
-                    for token in (
-                        "from screen_runtime_candidate import current_candidate",
-                        "CANDIDATE = current_candidate()",
-                        "COMMON_MARKERS = CANDIDATE.common_markers",
-                        "PROVISION_MARKERS = COMMON_MARKERS +",
-                        "NORMAL_MARKERS = COMMON_MARKERS +",
-                    )
+            "provision_markers_follow_candidate": all(
+                token in verifier_text
+                for token in (
+                    "from screen_runtime_candidate import current_candidate",
+                    "CANDIDATE = current_candidate()",
+                    "PROVISION_COMMON_MARKERS = CANDIDATE.common_markers",
+                    "PROVISION_MARKERS = PROVISION_COMMON_MARKERS +",
                 )
-                for marker in CANDIDATE.common_markers
-            },
+            ),
+            "normal_markers_are_quiet_production_subset": all(
+                token in verifier_text
+                for token in (
+                    "QUIET_NORMAL_MARKERS = (",
+                    "f\"revision={CANDIDATE.revision}\"",
+                    "expression_renderer=external_pack",
+                    "low_power_face completed=1 stop=allowed",
+                )
+            ),
             "normal_quiet_interaction_profile_marker": all(
                 token in verifier_text
                 for token in (
                     "QUIET_INTERACTION_PROFILE_MARKER = (",
                     "[build] interaction_profile=quiet epaper_trace=0 touch_trace=0 ",
-                    "NORMAL_MARKERS = COMMON_MARKERS + (",
                     "QUIET_INTERACTION_PROFILE_MARKER,",
                 )
             ),
@@ -368,6 +402,11 @@ def check_preflight(data: dict[str, Any], errors: list[str]) -> None:
                 errors.append(f"{step_id} capture command missing {key}")
 
     run_report = runner.get("run_report", {})
+    check_only = runner.get("check_only", {})
+    if check_only.get("returncode") != 0 or check_only.get("stdout_has_dry_run") is not True:
+        errors.append("preflight must run the isolated CheckOnly runner successfully")
+    if check_only.get("report_path") != rel(CHECK_ONLY_RUN_REPORT):
+        errors.append("preflight CheckOnly report path drifted")
     resource = run_report.get("resource", {})
     if run_report.get("schema") != "companion.wb55_screen_runtime_recheck_run.v1":
         errors.append("run report schema drifted")

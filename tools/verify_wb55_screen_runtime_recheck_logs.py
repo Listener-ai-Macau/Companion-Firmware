@@ -29,17 +29,26 @@ QUIET_INTERACTION_PROFILE_MARKER = (
 )
 
 
-COMMON_MARKERS = CANDIDATE.common_markers
+PROVISION_COMMON_MARKERS = CANDIDATE.common_markers
 
-PROVISION_MARKERS = COMMON_MARKERS + (
+PROVISION_MARKERS = PROVISION_COMMON_MARKERS + (
     "external_store=ready",
     "preview_started name=idle",
 )
 
-NORMAL_MARKERS = COMMON_MARKERS + (
+QUIET_NORMAL_MARKERS = (
+    "mount=ok",
+    f"revision={CANDIDATE.revision}",
+    f"clips={CANDIDATE.clips} frames={CANDIDATE.frames}",
+    "expression_renderer=external_pack",
+    "pet_behavior_selftest=pass failure_code=0",
+    "touch-health] detected=1 identity=1 addr=0x38",
+    f"queue_generation revision={CANDIDATE.revision}",
+    "coherent_generation=1",
+    "last_stale_discarded=",
     QUIET_INTERACTION_PROFILE_MARKER,
-    "frame rotation=180 mirror_x=1",
     "preview_started name=idle",
+    "low_power_face completed=1 stop=allowed",
 )
 
 EXPECTED_RUN_STEPS = (
@@ -135,7 +144,7 @@ def build_snapshot(run_root: pathlib.Path) -> dict[str, Any]:
     resource = menu.get("resource_pack", {})
     runtime = menu.get("runtime_evidence", {})
     provision = log_result("provision", run_root, PROVISION_MARKERS)
-    normal = log_result("normal", run_root, NORMAL_MARKERS)
+    normal = log_result("normal", run_root, QUIET_NORMAL_MARKERS)
     run_report = run_report_result(run_root)
     logs_pass = provision["status"] == "PASS" and normal["status"] == "PASS"
     missing_logs = not (

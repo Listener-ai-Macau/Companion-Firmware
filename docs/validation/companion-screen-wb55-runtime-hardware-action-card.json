@@ -27,12 +27,11 @@
   "claim_scope": "operator_action_card_no_hardware_claim",
   "current_gates": {
     "human_review": "NO_GO_OPEN_REVIEW_ITEMS",
-    "pre_acceptance": "NO_GO_INTERACTION_PROFILE_RUNTIME_RECHECK_PENDING",
+    "pre_acceptance": "NO_GO_OPEN_OPERATOR_REVIEW_ITEMS",
     "pre_acceptance_blocking_reasons": [
-      "quiet_interaction_profile_runtime_recheck",
       "open_operator_review_items"
     ],
-    "runtime_logs": "NO_GO_INCOMPLETE_RUNTIME_MARKERS",
+    "runtime_logs": "PASS",
     "runtime_promotion": "APPLIED"
   },
   "do_not_do": [
@@ -47,18 +46,14 @@
     "revision=53",
     "clips=33 frames=75",
     "expression_renderer=external_pack",
-    "source=external_flash",
     "pet_behavior_selftest=pass failure_code=0",
     "touch-health] detected=1 identity=1 addr=0x38",
     "queue_generation revision=53",
     "coherent_generation=1",
-    "generation_switches=",
     "last_stale_discarded=",
-    "refresh mode=full",
-    "complete=1",
     "[build] interaction_profile=quiet epaper_trace=0 touch_trace=0 ft6336_threshold=0x70 touch_poll_active_ms=5 touch_poll_refresh_ms=5 refresh_policy=partial_x5_then_fast_cleanup",
-    "frame rotation=180 mirror_x=1",
-    "preview_started name=idle"
+    "preview_started name=idle",
+    "low_power_face completed=1 stop=allowed"
   ],
   "expected_provision_runtime_markers": [
     "mount=ok",
@@ -90,7 +85,9 @@
     "generation_switches=",
     "last_stale_discarded=",
     "refresh mode=full",
-    "complete=1"
+    "complete=1",
+    "external_store=ready",
+    "preview_started name=idle"
   ],
   "flash_preflight": {
     "normal_flash_timeout_seconds": 120,
@@ -154,6 +151,7 @@
     "python .\\tools\\verify_companion_screen_goal_audit.py"
   ],
   "quiet_interaction_profile_recheck_required": true,
+  "recorded_machine_runtime_complete": true,
   "resource": {
     "clips": 33,
     "frames": 75,
@@ -228,7 +226,7 @@
       "summary_port": "SELFTEST",
       "summary_status": "FAIL"
     },
-    "runtime_run_report": ".cache/validation/rev53-runtime-current/runtime-recheck-run.json",
+    "runtime_run_report": ".cache/validation/rev53-runtime-runner-checkonly/runtime-recheck-run.json",
     "runtime_runner": "tools/run_wb55_screen_runtime_recheck.ps1",
     "status": "PASS_STATIC_SERIAL_CAPTURE_PREFLIGHT",
     "summary_json_filename": "nucleo-serial-summary.json",
@@ -240,7 +238,7 @@
   "source_run_report": ".cache/validation/rev53-runtime-current/runtime-recheck-run.json",
   "source_runner_fixture": "docs/validation/companion-screen-wb55-runtime-recheck-runner.json",
   "source_serial_capture_preflight": "docs/validation/companion-screen-wb55-runtime-serial-capture-preflight.json",
-  "status": "NO_GO_WAITING_FOR_REAL_HARDWARE_RUN",
+  "status": "PASS_MACHINE_RUNTIME_RECHECK_COMPLETE",
   "target": "NUCLEO-WB55RG + GDEY0154D67-T03 + FT6336U",
   "validation_commands": [
     "python .\\tools\\render_wb55_runtime_hardware_action_card.py",

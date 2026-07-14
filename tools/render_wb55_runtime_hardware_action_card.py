@@ -32,6 +32,33 @@ PENDING_RUNTIME_LOG_STATUSES = {
 }
 
 
+def marker_contract() -> tuple[list[str], list[str]]:
+    provision_markers = list(CANDIDATE.common_markers) + [
+        "external_store=ready",
+        "preview_started name=idle",
+    ]
+    quiet_marker = (
+        "[build] interaction_profile=quiet epaper_trace=0 touch_trace=0 "
+        "ft6336_threshold=0x70 touch_poll_active_ms=5 touch_poll_refresh_ms=5 "
+        "refresh_policy=partial_x5_then_fast_cleanup"
+    )
+    normal_markers = [
+        "mount=ok",
+        f"revision={CANDIDATE.revision}",
+        f"clips={CANDIDATE.clips} frames={CANDIDATE.frames}",
+        "expression_renderer=external_pack",
+        "pet_behavior_selftest=pass failure_code=0",
+        "touch-health] detected=1 identity=1 addr=0x38",
+        f"queue_generation revision={CANDIDATE.revision}",
+        "coherent_generation=1",
+        "last_stale_discarded=",
+        quiet_marker,
+        "preview_started name=idle",
+        "low_power_face completed=1 stop=allowed",
+    ]
+    return provision_markers, normal_markers
+
+
 def rel(path: pathlib.Path) -> str:
     return path.resolve().relative_to(ROOT).as_posix()
 
@@ -58,6 +85,21 @@ def build_card() -> dict[str, Any]:
     quiet_profile_recheck_required = bool(
         run_report.get("resource", {}).get("quiet_interaction_profile_recheck_required")
     )
+    provision_markers, normal_markers = marker_contract()
+    run_results = {
+        str(item.get("id")): str(item.get("status"))
+        for item in run_report.get("results", [])
+        if isinstance(item, dict)
+    }
+    machine_runtime_complete = (
+        runtime_logs.get("status") == "PASS"
+        and promotion.get("status") == "APPLIED"
+        and run_report.get("status") == "PASS"
+        and run_report.get("normal_firmware_restored") is True
+        and all(run_results.get(step) == "PASS" for step in (
+            "flash_provision", "capture_provision", "flash_normal", "capture_normal"
+        ))
+    )
     post_run_commands = [
         "python .\\tools\\verify_screen_generation_release_ledger.py",
         "python .\\tools\\verify_wb55_screen_runtime_recheck_logs.py --write",
@@ -83,7 +125,10 @@ def build_card() -> dict[str, Any]:
     ]
     return {
         "schema_id": SCHEMA_ID,
-        "status": "NO_GO_WAITING_FOR_REAL_HARDWARE_RUN",
+        "status": (
+            "PASS_MACHINE_RUNTIME_RECHECK_COMPLETE"
+            if machine_runtime_complete else "NO_GO_WAITING_FOR_REAL_HARDWARE_RUN"
+        ),
         "claim_scope": "operator_action_card_no_hardware_claim",
         "source_run_report": rel(RUN_REPORT),
         "source_runner_fixture": rel(RUNNER_FIXTURE),
@@ -176,9 +221,10 @@ def build_card() -> dict[str, Any]:
         ),
         "check_only_command": "pwsh -NoProfile -File .\\tools\\run_wb55_screen_runtime_recheck.ps1 -CheckOnly",
         "hardware_steps": step_cards,
-        "expected_runtime_markers": run_report.get("expected_runtime_markers", []),
-        "expected_provision_runtime_markers": run_report.get("expected_provision_runtime_markers", []),
-        "expected_normal_runtime_markers": run_report.get("expected_normal_runtime_markers", []),
+        "expected_runtime_markers": provision_markers,
+        "expected_provision_runtime_markers": provision_markers,
+        "expected_normal_runtime_markers": normal_markers,
+        "recorded_machine_runtime_complete": machine_runtime_complete,
         "post_run_commands": post_run_commands,
         "do_not_do": [
             f"不要手工把 {CANDIDATE.pending_status} 改成 PASS。",
@@ -318,8 +364,13 @@ def verify(card: dict[str, Any]) -> list[str]:
     errors: list[str] = []
     if card.get("schema_id") != SCHEMA_ID:
         errors.append("unexpected schema_id")
-    if card.get("status") != "NO_GO_WAITING_FOR_REAL_HARDWARE_RUN":
-        errors.append("action card must not claim hardware completion")
+    runtime_logs_pass = card.get("current_gates", {}).get("runtime_logs") == "PASS"
+    expected_card_status = (
+        "PASS_MACHINE_RUNTIME_RECHECK_COMPLETE"
+        if runtime_logs_pass else "NO_GO_WAITING_FOR_REAL_HARDWARE_RUN"
+    )
+    if card.get("status") != expected_card_status:
+        errors.append(f"action card status must be {expected_card_status}")
     if card.get("claim_scope") != "operator_action_card_no_hardware_claim":
         errors.append("action card claim scope drifted")
     resource = card.get("resource", {})
@@ -329,27 +380,13 @@ def verify(card: dict[str, Any]) -> list[str]:
         errors.append("action card resource byte count must match the active candidate")
     if resource.get("pack_crc32") != CANDIDATE.pack_crc32:
         errors.append("action card resource CRC must match the active candidate")
-    expected_common_markers = list(CANDIDATE.common_markers)
-    expected_provision_markers = expected_common_markers + [
-        "external_store=ready",
-        "preview_started name=idle",
-    ]
-    quiet_marker = (
-        "[build] interaction_profile=quiet epaper_trace=0 touch_trace=0 "
-        "ft6336_threshold=0x70 touch_poll_active_ms=5 touch_poll_refresh_ms=5 "
-        "refresh_policy=partial_x5_then_fast_cleanup"
-    )
-    expected_normal_markers = expected_common_markers + [
-        quiet_marker,
-        "frame rotation=180 mirror_x=1",
-        "preview_started name=idle",
-    ]
-    if card.get("expected_runtime_markers") != expected_common_markers:
-        errors.append("action card common markers must follow the active CEMP manifest")
+    expected_provision_markers, expected_normal_markers = marker_contract()
+    if card.get("expected_runtime_markers") != expected_provision_markers:
+        errors.append("action card provision marker alias must follow the active CEMP manifest")
     if card.get("expected_provision_runtime_markers") != expected_provision_markers:
         errors.append("action card provision markers drifted")
     if card.get("expected_normal_runtime_markers") != expected_normal_markers:
-        errors.append("action card normal markers must require the quiet interaction profile")
+        errors.append("action card normal markers must require only quiet production evidence")
     build_matrix = card.get("build_matrix", {})
     if build_matrix.get("path") != rel(BUILD_MATRIX):
         errors.append("action card must link WB55 build matrix")
@@ -391,9 +428,17 @@ def verify(card: dict[str, Any]) -> list[str]:
     if generation_ledger.get("ui_assets_ota_in_scope") is not True:
         errors.append("generation release ledger must keep ui_assets OTA in scope")
     gates = card.get("current_gates", {})
-    if gates.get("runtime_logs") not in PENDING_RUNTIME_LOG_STATUSES:
-        errors.append("current gate runtime_logs must remain a non-PASS runtime status")
+    if runtime_logs_pass:
+        if card.get("recorded_machine_runtime_complete") is not True:
+            errors.append("runtime PASS action card must link the completed locked machine sequence")
+    elif gates.get("runtime_logs") not in PENDING_RUNTIME_LOG_STATUSES:
+        errors.append("current gate runtime_logs must remain a recognized runtime status")
     expected_gates = (
+        {
+            "runtime_promotion": "APPLIED",
+            "human_review": "NO_GO_OPEN_REVIEW_ITEMS",
+        }
+        if runtime_logs_pass else
         {
             "runtime_promotion": "APPLIED",
             "pre_acceptance": "NO_GO_INTERACTION_PROFILE_RUNTIME_RECHECK_PENDING",
@@ -408,7 +453,12 @@ def verify(card: dict[str, Any]) -> list[str]:
     for key, value in expected_gates.items():
         if gates.get(key) != value:
             errors.append(f"current gate {key} must remain {value}")
-    if quiet_profile_recheck_required:
+    if runtime_logs_pass and gates.get("pre_acceptance") not in {
+        "NO_GO_INTERACTION_PROFILE_RUNTIME_RECHECK_PENDING",
+        "NO_GO_OPEN_OPERATOR_REVIEW_ITEMS",
+    }:
+        errors.append("runtime PASS action card must retain a valid pre-acceptance blocker state")
+    if quiet_profile_recheck_required and not runtime_logs_pass:
         for reason in ("quiet_interaction_profile_runtime_recheck", "open_operator_review_items"):
             if reason not in gates.get("pre_acceptance_blocking_reasons", []):
                 errors.append(f"quiet-profile action card must retain pre-acceptance blocker {reason}")

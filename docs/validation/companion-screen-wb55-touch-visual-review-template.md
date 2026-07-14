@@ -8,7 +8,7 @@ do not edit this template as the final evidence record.
 - Target: `NUCLEO-WB55RG + GDEY0154D67-T03 + FT6336U`
 - Source packet: `docs/validation/companion-screen-wb55-touch-visual-acceptance-packet.json`
 - Start rule: Do not start this packet until rev53 runtime logs PASS, promotion is applied, pre-acceptance health PASS, a reset-bounded normal capture proves the quiet interaction profile, and the operator explicitly says 开始验收.
-- Machine precondition: NO_GO_INTERACTION_PROFILE_RUNTIME_RECHECK_PENDING: do not start human touch/visual steps until a reset-bounded normal capture proves the quiet interaction profile.
+- Machine precondition: NO_GO_OPEN_OPERATOR_REVIEW_ITEMS: do not start a new touch/visual review until the prior focused menu-density feedback is fixed and re-reviewed with evidence.
 
 ## Review Records
 

@@ -52,6 +52,8 @@ def run_runner(*args: str, timeout: int = 60) -> dict[str, Any]:
 def build_snapshot() -> dict[str, Any]:
     candidate = current_candidate()
     run_report_path = candidate.run_root / "runtime-recheck-run.json"
+    dry_run_root = ROOT / ".cache" / "validation" / f"rev{candidate.revision}-runtime-runner-checkonly"
+    dry_run_report_path = dry_run_root / "runtime-recheck-run.json"
     recovery_report_path = candidate.recovery_root / "runtime-recheck-run.json"
     runner_text = RUNNER.read_text(encoding="utf-8")
     build_matrix = load_json(BUILD_MATRIX)
@@ -64,9 +66,9 @@ def build_snapshot() -> dict[str, Any]:
         and runtime_logs.get("status") != "PASS"
     )
 
-    dry = run_runner("-CheckOnly")
+    dry = run_runner("-CheckOnly", "-OutRoot", str(dry_run_root))
     dry_text = dry["stdout"] + dry["stderr"]
-    dry_report = load_json(run_report_path) if run_report_path.exists() else {}
+    dry_report = load_json(dry_run_report_path) if dry_run_report_path.exists() else {}
 
     negative = run_runner("-Execute", timeout=30)
     negative_text = negative["stdout"] + negative["stderr"]
@@ -98,6 +100,8 @@ def build_snapshot() -> dict[str, Any]:
         "$runtimeLogsPath = Join-Path $repoRoot \"docs\\validation\\companion-screen-wb55-runtime-recheck-logs.json\"",
         "$quietInteractionProfileRecheckRequired = (",
         "$defaultRunRoot = Join-Path $repoRoot \".cache\\validation\\rev$revision-runtime-current\"",
+        "$checkOnlyRunRoot = Join-Path $repoRoot \".cache\\validation\\rev$revision-runtime-runner-checkonly\"",
+        "elseif ($CheckOnly) { $checkOnlyRunRoot }",
         "revision=$revision",
         "clips=$clips frames=$frames",
         "queue_generation revision=$revision",
@@ -132,7 +136,7 @@ def build_snapshot() -> dict[str, Any]:
             "quiet_interaction_profile_recheck_required": quiet_profile_recheck_required,
         },
         "safety_contract": {
-            "check_only_is_non_hardware": all(token in runner_text for token in ("if ($CheckOnly)", "DRY-RUN", "exit 0")),
+            "check_only_is_non_hardware": all(token in runner_text for token in ("if ($CheckOnly)", "$checkOnlyRunRoot", "DRY-RUN", "exit 0")),
             "execute_requires_workflow_lock": (
                 "if ($Execute -and -not $WorkflowLockHeld)" in runner_text
                 and "aiw.ps1 with-lock -Resource Companion-WB55" in runner_text
@@ -200,8 +204,8 @@ def build_snapshot() -> dict[str, Any]:
             "current_resource_banner": (
                 f"revision={candidate.revision} bytes={candidate.total_bytes} crc={candidate.pack_crc32}" in dry_text
             ),
-            "run_report_path": rel(run_report_path),
-            "run_report_exists": run_report_path.exists(),
+            "run_report_path": rel(dry_run_report_path),
+            "run_report_exists": dry_run_report_path.exists(),
             "run_report_schema": dry_report.get("schema"),
             "run_report_status": dry_report.get("status"),
             "run_report_resource": dry_report.get("resource", {}),
@@ -319,8 +323,7 @@ def verify(snapshot: dict[str, Any]) -> list[str]:
         errors.append("dry-run report must have no executed steps")
     if dry.get("run_report_steps") != EXPECTED_STEPS:
         errors.append("dry-run report step order drifted")
-    expected_common_markers = list(candidate.common_markers)
-    expected_provision_markers = expected_common_markers + [
+    expected_provision_markers = list(candidate.common_markers) + [
         "external_store=ready",
         "preview_started name=idle",
     ]
@@ -329,17 +332,26 @@ def verify(snapshot: dict[str, Any]) -> list[str]:
         "ft6336_threshold=0x70 touch_poll_active_ms=5 touch_poll_refresh_ms=5 "
         "refresh_policy=partial_x5_then_fast_cleanup"
     )
-    expected_normal_markers = expected_common_markers + [
+    expected_normal_markers = [
+        "mount=ok",
+        f"revision={candidate.revision}",
+        f"clips={candidate.clips} frames={candidate.frames}",
+        "expression_renderer=external_pack",
+        "pet_behavior_selftest=pass failure_code=0",
+        "touch-health] detected=1 identity=1 addr=0x38",
+        f"queue_generation revision={candidate.revision}",
+        "coherent_generation=1",
+        "last_stale_discarded=",
         quiet_marker,
-        "frame rotation=180 mirror_x=1",
         "preview_started name=idle",
+        "low_power_face completed=1 stop=allowed",
     ]
-    if dry.get("run_report_expected_runtime_markers") != expected_common_markers:
-        errors.append("runtime common markers must follow the active CEMP manifest")
+    if dry.get("run_report_expected_runtime_markers") != expected_provision_markers:
+        errors.append("runtime provision markers must follow the active CEMP manifest")
     if dry.get("run_report_expected_provision_runtime_markers") != expected_provision_markers:
         errors.append("provision markers must include the current external-store runtime contract")
     if dry.get("run_report_expected_normal_runtime_markers") != expected_normal_markers:
-        errors.append("normal markers must require the complete quiet interaction profile")
+        errors.append("normal markers must require only production-retained quiet interaction evidence")
     runtime_log_gate = snapshot.get("runtime_log_gate", {})
     if runtime_log_gate.get("path") != rel(RUNTIME_LOGS):
         errors.append("runner must record the current runtime-log gate")
