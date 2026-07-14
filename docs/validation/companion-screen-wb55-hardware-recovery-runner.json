@@ -11,6 +11,79 @@
     "refused_before_hardware": true,
     "returncode": 1
   },
+  "operator_pass_selftest": {
+    "diagnostic_left_installed": false,
+    "normal_firmware_restored": true,
+    "operator_result_exists": true,
+    "operator_review": {
+      "expected_text": "通过标准：全屏纯白、无黑白颗粒、无明显旧图残留，并且确实发生过本次刷新。任何异常请选择失败并完整备注。",
+      "invoked": true,
+      "message": "请观察 GDEY0154D67-T03：整个有效显示区域应稳定、均匀地呈纯白色。不要把黑白颗粒、局部脏块、旧图残留或没有变化判为通过。",
+      "note": "SELFTEST operator selection: 通过",
+      "output_path": ".cache/validation/wb55-fts02-operator-pass-selftest/selftest/operator-prompt-observation.txt",
+      "progress_text": "1/2（本次 1/1）",
+      "required": true,
+      "scope_text": "FTS02 基础恢复共 2 项；当前只验纯白画面。机器已确认官方单平面路径和 BUSY 完成。",
+      "selected": "通过",
+      "style": "aiw_operator_prompt_v1",
+      "title": "Companion FTS02 纯白恢复验收"
+    },
+    "report_status": "PASS_MACHINE_AND_VISIBLE_FRAME_NORMAL_RESTORED_PENDING_VOLTAGE_RAILS",
+    "result_ids": [
+      "flash_white",
+      "capture_white",
+      "parse_white",
+      "flash_normal_restore_after_review"
+    ],
+    "result_statuses": {
+      "capture_white": "PASS",
+      "flash_normal_restore_after_review": "PASS",
+      "flash_white": "PASS",
+      "parse_white": "PASS"
+    },
+    "returncode": 0
+  },
+  "operator_prompt_contract": {
+    "canonical_aiw_command_present": true,
+    "durable_output_path_present": true,
+    "four_result_buttons_present": true,
+    "normal_restore_after_review_present": true,
+    "prompt_after_machine_steps": true,
+    "review_style_present": true
+  },
+  "operator_rejection_selftest": {
+    "diagnostic_left_installed": false,
+    "normal_firmware_restored": true,
+    "operator_result_exists": true,
+    "operator_review": {
+      "expected_text": "通过标准：全屏纯白、无黑白颗粒、无明显旧图残留，并且确实发生过本次刷新。任何异常请选择失败并完整备注。",
+      "invoked": true,
+      "message": "请观察 GDEY0154D67-T03：整个有效显示区域应稳定、均匀地呈纯白色。不要把黑白颗粒、局部脏块、旧图残留或没有变化判为通过。",
+      "note": "SELFTEST operator selection: 失败",
+      "output_path": ".cache/validation/wb55-fts02-operator-reject-selftest/selftest/operator-prompt-observation.txt",
+      "progress_text": "1/2（本次 1/1）",
+      "required": true,
+      "scope_text": "FTS02 基础恢复共 2 项；当前只验纯白画面。机器已确认官方单平面路径和 BUSY 完成。",
+      "selected": "失败",
+      "style": "aiw_operator_prompt_v1",
+      "title": "Companion FTS02 纯白恢复验收"
+    },
+    "report_status": "FAIL",
+    "result_ids": [
+      "flash_white",
+      "capture_white",
+      "parse_white",
+      "flash_normal_restore_after_failure"
+    ],
+    "result_statuses": {
+      "capture_white": "PASS",
+      "flash_normal_restore_after_failure": "PASS",
+      "flash_white": "PASS",
+      "parse_white": "PASS"
+    },
+    "returncode": 1,
+    "stdout_has_recovery": true
+  },
   "operator_sequence": [
     "Run White under Companion-WB55 lock, then record one focused visible-frame decision.",
     "Only after White PASS, run Black and record one focused visible-frame decision.",
@@ -50,6 +123,19 @@
     "black": {
       "claim_scope": "preflight_only_no_hardware_claim",
       "image": ".cache/validation/wb55-fts02-recovery-preflight/images/black.hex",
+      "operator_review": {
+        "expected_text": "通过标准：全屏纯黑、无黑白颗粒、无明显旧图残留，并且确实发生过本次刷新。任何异常请选择失败并完整备注。",
+        "invoked": false,
+        "message": "请观察 GDEY0154D67-T03：整个有效显示区域应稳定、均匀地呈纯黑色。不要把黑白颗粒、局部灰白、旧图残留或没有变化判为通过。",
+        "note": null,
+        "output_path": ".cache/validation/wb55-fts02-recovery-preflight/black/operator-prompt-observation.txt",
+        "progress_text": "2/2（本次 1/1）",
+        "required": true,
+        "scope_text": "FTS02 基础恢复共 2 项；当前只验纯黑画面。机器已确认官方单平面路径和 BUSY 完成。",
+        "selected": null,
+        "style": "aiw_operator_prompt_v1",
+        "title": "Companion FTS02 纯黑恢复验收"
+      },
       "report_status": "DRY-RUN",
       "result_count": 0,
       "returncode": 0,
@@ -57,7 +143,8 @@
         "diagnostic_failure_restores_normal": true,
         "execute_requires_companion_wb55_lock": true,
         "machine_pass_is_not_visual_or_voltage_acceptance": true,
-        "successful_diagnostic_waits_for_focused_operator_visual_result": true
+        "successful_diagnostic_waits_for_focused_operator_visual_result": true,
+        "successful_review_restores_normal_firmware": true
       },
       "step_ids": [
         "flash_black",
@@ -68,6 +155,19 @@
     "restorenormal": {
       "claim_scope": "preflight_only_no_hardware_claim",
       "image": ".cache/validation/wb55-fts02-recovery-preflight/images/normal.hex",
+      "operator_review": {
+        "expected_text": null,
+        "invoked": false,
+        "message": null,
+        "note": null,
+        "output_path": null,
+        "progress_text": null,
+        "required": false,
+        "scope_text": null,
+        "selected": null,
+        "style": null,
+        "title": null
+      },
       "report_status": "DRY-RUN",
       "result_count": 0,
       "returncode": 0,
@@ -75,7 +175,8 @@
         "diagnostic_failure_restores_normal": true,
         "execute_requires_companion_wb55_lock": true,
         "machine_pass_is_not_visual_or_voltage_acceptance": true,
-        "successful_diagnostic_waits_for_focused_operator_visual_result": true
+        "successful_diagnostic_waits_for_focused_operator_visual_result": true,
+        "successful_review_restores_normal_firmware": true
       },
       "step_ids": [
         "flash_normal_restore"
@@ -84,6 +185,19 @@
     "white": {
       "claim_scope": "preflight_only_no_hardware_claim",
       "image": ".cache/validation/wb55-fts02-recovery-preflight/images/white.hex",
+      "operator_review": {
+        "expected_text": "通过标准：全屏纯白、无黑白颗粒、无明显旧图残留，并且确实发生过本次刷新。任何异常请选择失败并完整备注。",
+        "invoked": false,
+        "message": "请观察 GDEY0154D67-T03：整个有效显示区域应稳定、均匀地呈纯白色。不要把黑白颗粒、局部脏块、旧图残留或没有变化判为通过。",
+        "note": null,
+        "output_path": ".cache/validation/wb55-fts02-recovery-preflight/white/operator-prompt-observation.txt",
+        "progress_text": "1/2（本次 1/1）",
+        "required": true,
+        "scope_text": "FTS02 基础恢复共 2 项；当前只验纯白画面。机器已确认官方单平面路径和 BUSY 完成。",
+        "selected": null,
+        "style": "aiw_operator_prompt_v1",
+        "title": "Companion FTS02 纯白恢复验收"
+      },
       "report_status": "DRY-RUN",
       "result_count": 0,
       "returncode": 0,
@@ -91,7 +205,8 @@
         "diagnostic_failure_restores_normal": true,
         "execute_requires_companion_wb55_lock": true,
         "machine_pass_is_not_visual_or_voltage_acceptance": true,
-        "successful_diagnostic_waits_for_focused_operator_visual_result": true
+        "successful_diagnostic_waits_for_focused_operator_visual_result": true,
+        "successful_review_restores_normal_firmware": true
       },
       "step_ids": [
         "flash_white",
