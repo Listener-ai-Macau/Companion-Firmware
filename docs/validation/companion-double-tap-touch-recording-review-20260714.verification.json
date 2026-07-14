@@ -1,0 +1,52 @@
+{
+  "schema_id": "companion.wb55.touch_wake_log.v1",
+  "status": "NO_GO_INCOMPLETE_TOUCH_WAKE_EVIDENCE",
+  "scope": "double-tap-recording",
+  "claim_scope": "serial-log evidence only for the selected touch acceptance scope; no current measurement claim",
+  "log": ".cache\\validation\\companion-double-tap-recording-20260714\\focused-review-1\\nucleo-serial-raw.log",
+  "checks": {
+    "lpm_boot_ready": true,
+    "tp_int_wired": true,
+    "ft6336_trigger_mode": true,
+    "low_power_idle_timer_armed": true,
+    "timer_stop_precedes_sleepy": true,
+    "low_power_sleep_pose_stopped": true,
+    "low_power_face_requested_timer": true,
+    "low_power_face_completed_stop": true,
+    "timer_sleep_returns_to_stop": true,
+    "health_sample_observed": true,
+    "irq_event_observed": false,
+    "irq_evidence_observed": false,
+    "irq_observed": false,
+    "irq_consumed": false,
+    "irq_counts_ordered": true,
+    "wake_contact_after_sleepy": true,
+    "low_power_touch_wake_requested": true,
+    "first_wake_gesture_is_tap": false,
+    "daily_reaction_after_tap": false,
+    "visible_expression_after_tap": false,
+    "no_idle_prerefresh_before_response": false,
+    "single_boot_after_capture_start": true,
+    "two_double_taps": false,
+    "touch_record_started": false,
+    "touch_record_stopped": false,
+    "external_flash_store_finished": false
+  },
+  "required_checks": [
+    "two_double_taps",
+    "touch_record_started",
+    "touch_record_stopped",
+    "external_flash_store_finished"
+  ],
+  "observed": {
+    "health_samples": 1,
+    "irq_events": 0,
+    "max_irq": 0,
+    "max_irq_consumed": 0,
+    "daily_double_tap_events": 0,
+    "first_wake_gesture": null,
+    "wake_contact_after_sleepy": true,
+    "low_power_touch_wake_requested": true
+  },
+  "next_action": "Collect one bounded capture containing two daily-page double taps, recording start/stop, and a successful external Flash store."
+}

@@ -1264,6 +1264,21 @@ owner 在统一验收窗口中完成 bounded 测压镜像的两路实测并选�
 `C6-C9`、`D2-D4`、`L2` 的顺序检查；未恢复前不把屏幕总成本体判死。换板或维修后重新执行确定性
 纯白、纯黑和 BUSY 验证；两幅实色都成立后才恢复正常 Companion 镜像并继续触摸/表情验收。
 
+## Revision 91: 双击录音验收暴露快速重新落指边界
+
+owner 明确开始 `4/13` 双击触摸录音验收。板上已从测压镜像切换到真实 PDM、QSPI 录音链路和
+touch verbose trace 镜像；FT6336 `0x38` 探测、身份、trigger 中断模式、`TH_GROUP=0x70` 和触摸采样
+均成立。owner 完成两轮快速双击并说话后选择失败，备注“说了”。机器判定同样为
+`NO_GO_DOUBLE_TAP_NOT_CLASSIFIED`：日志没有 `double_tap`、录音开始/停止或 `user_store`，却出现
+`swipe_right` 和多段坐标跳变。
+
+原始序列中，快速再次落指产生新的 FT6336 `DOWN` 时，portable gesture state 仍保留上一接触；现有
+逻辑把该 `DOWN` 继续累加为旧轨迹，因此漏掉的短暂 `touch_count=0` 会把双击合并成滑动或 none。
+下一候选在 portable gesture core 中增加 implicit re-contact boundary：active/consumed 期间遇到新
+`DOWN`，先以旧末点结束上一 lifecycle，再用同一个新样本开始下一 lifecycle，并保留首个 tap 的
+double-tap pending 状态。先加合成防回退，再刷 WB55 重做同一个 `4/13` 窗口；屏幕升压故障仍不计入
+这项触摸/录音串口验收。
+
 ## 逐项验收顺序
 
 本项目遵循 AI Workflow 的全产品异步验收规则：未收到操作者明确的“开始验收”前，

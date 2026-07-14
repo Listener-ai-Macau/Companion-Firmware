@@ -1,0 +1,41 @@
+{
+  "schema": "companion.double_tap_touch_recording_review.v1",
+  "captured_at": "2026-07-14T10:28:18+08:00",
+  "target": "NUCLEO-WB55RG + FT6336 touch + PDM microphone + QSPI recording cache",
+  "progress": "4/13",
+  "operator_review": {
+    "selected": "FAIL",
+    "note": "说了",
+    "action": "Two rapid taps, a spoken phrase after about 3 s, then two rapid taps to stop."
+  },
+  "firmware": {
+    "profile": "verbose touch and e-paper trace with production PDM recording chain",
+    "hex_sha256": "010A7308191C08C0E77ACF70F941AB5DFF71FE48972E8806F318D95F676DFAF6",
+    "stlink_serial": "066EFF535570514867221931",
+    "board_voltage_v": 3.24
+  },
+  "machine_observation": {
+    "ft6336_detected": true,
+    "ft6336_identity_valid": true,
+    "interrupt_mode": "trigger",
+    "touch_threshold": "0x70",
+    "touch_period": "4/4",
+    "touch_samples_observed": true,
+    "double_tap_events": 0,
+    "recording_started": false,
+    "recording_stopped": false,
+    "external_flash_store_finished": false,
+    "unexpected_gesture": "swipe_right"
+  },
+  "failure_analysis": {
+    "result": "NO_GO_DOUBLE_TAP_NOT_CLASSIFIED",
+    "observation": "A new FT6336 DOWN arrived while the portable gesture state still owned the preceding contact. The runtime merged the new contact into the old trajectory, including large coordinate discontinuities, and emitted swipe_right or none instead of two tap lifecycles.",
+    "repair": "Treat a new DOWN while a contact is active or consumed as an implicit contact boundary, finalize the previous gesture, start the new contact on the same sample, and preserve the pending first tap for double-tap matching."
+  },
+  "evidence": {
+    "raw_log": "docs/validation/companion-double-tap-touch-recording-review-20260714.raw.log",
+    "raw_log_sha256": "78DFC8A29BD7078688BDA05D2D523A055F2AAC21D41893772E5669C440FB3E19",
+    "verification": "docs/validation/companion-double-tap-touch-recording-review-20260714.verification.json",
+    "cached_capture_summary": ".cache/validation/companion-double-tap-recording-20260714/focused-review-1/nucleo-serial-summary.json"
+  }
+}
