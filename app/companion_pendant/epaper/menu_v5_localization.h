@@ -19,6 +19,7 @@ typedef enum {
 
 const char *comp_menu_v5_text(comp_menu_v5_language_t language,
                               comp_menu_v5_text_key_t key);
+bool comp_menu_v5_language_is_valid(comp_menu_v5_language_t language);
 const char *comp_menu_v5_language_display_name(comp_menu_v5_language_t language);
 const char *comp_menu_v5_action_label(comp_menu_v5_language_t language,
                                       comp_menu_v5_action_t action);

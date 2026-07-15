@@ -18,7 +18,7 @@ static const char *const k_chinese[COMP_MENU_V5_TEXT_KEY_COUNT] = {
     "刷新频率", "诊断", "关于",
 };
 
-static bool language_is_valid(comp_menu_v5_language_t language)
+bool comp_menu_v5_language_is_valid(comp_menu_v5_language_t language)
 {
     return language < COMP_MENU_V5_LANGUAGE_COUNT;
 }
@@ -31,7 +31,7 @@ static bool text_key_is_valid(comp_menu_v5_text_key_t key)
 const char *comp_menu_v5_text(comp_menu_v5_language_t language,
                               comp_menu_v5_text_key_t key)
 {
-    if (!language_is_valid(language) || !text_key_is_valid(key)) {
+    if (!comp_menu_v5_language_is_valid(language) || !text_key_is_valid(key)) {
         return NULL;
     }
     return language == COMP_MENU_V5_LANGUAGE_ZH_CN ?
@@ -54,7 +54,7 @@ const char *comp_menu_v5_language_display_name(comp_menu_v5_language_t language)
 const char *comp_menu_v5_action_label(comp_menu_v5_language_t language,
                                       comp_menu_v5_action_t action)
 {
-    if (!language_is_valid(language)) {
+    if (!comp_menu_v5_language_is_valid(language)) {
         return NULL;
     }
     switch (action) {
@@ -76,7 +76,7 @@ const char *comp_menu_v5_action_label(comp_menu_v5_language_t language,
 bool comp_menu_v5_toggle_language(comp_menu_v5_language_t current,
                                   comp_menu_v5_language_t *out_next)
 {
-    if (out_next == NULL || !language_is_valid(current)) {
+    if (out_next == NULL || !comp_menu_v5_language_is_valid(current)) {
         return false;
     }
     *out_next = current == COMP_MENU_V5_LANGUAGE_EN ?

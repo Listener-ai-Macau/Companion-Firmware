@@ -1656,6 +1656,18 @@ Listener 式单场景视觉验收。
 验证完整中英文文案、显示名、双向切换、非语言 action 和无效输入。真屏、语言持久化和 r4
 资源导入仍等 owner visual/camera 门禁，不能由这个主机通过替代。
 
+## Revision 116: v5 菜单决策连接真实产品事件
+
+`menu_v5_action_journey.*` 把 v5 选中项拆为无副作用的 portable decision：真实 action 生成
+`menu.select`，live data 不发动画/副作用，deferred/planned 生成 `menu.blocked`，Language 同时
+返回新语言；非法 root、index 或 language 直接失败。它不会启动录音、BLE、Flash、render 或刷新。
+这避免了“点击一个漂亮菜单行但功能全在 UI 里假装完成”的问题。
+
+目标 adapter 后续只接收 action 并调用已有 shared recording、BLE 和 settings persistence；这些
+feature 的真实成功/失败再单独送进 `pet_performance_event_bridge`，所以记录中和菜单选择的表情节奏
+不会被误当作已经录音成功。host journey 覆盖 record start/stop、language toggle、live E-paper row、
+wake-word/battery unavailable 和所有非法输入，资源/屏幕/硬件仍保持不触碰。
+
 ## 逐项验收顺序
 
 本项目遵循 AI Workflow 的全产品异步验收规则：未收到操作者明确的“开始验收”前，
