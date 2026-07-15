@@ -318,6 +318,7 @@ C_SOURCES := \
 	$(ROOT)/app/companion_pendant/epaper/menu_v5_action_journey.c \
 	$(ROOT)/app/companion_pendant/epaper/menu_v5_navigation.c \
 	$(ROOT)/app/companion_pendant/epaper/menu_v5_target_bridge.c \
+	$(ROOT)/app/companion_pendant/epaper/menu_v5_view_model.c \
 	$(ROOT)/app/companion_pendant/epaper/refresh_policy.c \
 	$(ROOT)/app/companion_pendant/epaper/screen_framebuffer.c \
 	$(ROOT)/app/companion_pendant/epaper/screen_menu.c \

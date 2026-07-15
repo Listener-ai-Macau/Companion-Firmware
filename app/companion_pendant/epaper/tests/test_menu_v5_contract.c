@@ -36,7 +36,6 @@ int main(void)
         .wake_word_available = false,
         .diagnostics_available = true,
     };
-    comp_menu_v5_context_t recording = ready;
     comp_menu_v5_item_t item;
     comp_menu_v5_text_key_t root_key;
     comp_menu_v5_language_t language;
@@ -62,8 +61,8 @@ int main(void)
     if (total != 15u) {
         return fail("four-root menu item total");
     }
-    if (expect_item(COMP_MENU_V5_ROOT_VOICE, 0u, COMP_MENU_V5_ITEM_MANUAL_RECORDING,
-                    COMP_MENU_V5_ITEM_ACTION, &ready) ||
+    if (expect_item(COMP_MENU_V5_ROOT_VOICE, 0u, COMP_MENU_V5_ITEM_RECORDING_STATUS,
+                    COMP_MENU_V5_ITEM_LIVE_DATA, &ready) ||
         expect_item(COMP_MENU_V5_ROOT_VOICE, 1u, COMP_MENU_V5_ITEM_RECORD_HISTORY,
                     COMP_MENU_V5_ITEM_LIVE_DATA, &ready) ||
         expect_item(COMP_MENU_V5_ROOT_VOICE, 2u, COMP_MENU_V5_ITEM_WAKE_WORD,
@@ -81,15 +80,18 @@ int main(void)
         return 1;
     }
     if (!comp_menu_v5_resolve_item(COMP_MENU_V5_ROOT_VOICE, 0u, &ready, &item) ||
-        item.action != COMP_MENU_V5_ACTION_RECORD_START ||
-        !comp_menu_v5_item_is_selectable(&item)) {
-        return fail("record start action");
+        item.action != COMP_MENU_V5_ACTION_NONE || !item.has_live_value || item.live_value ||
+        comp_menu_v5_item_is_selectable(&item)) {
+        return fail("recording status must be display-only while idle");
     }
-    recording.recording = true;
-    if (!comp_menu_v5_resolve_item(COMP_MENU_V5_ROOT_VOICE, 0u, &recording, &item) ||
-        item.action != COMP_MENU_V5_ACTION_RECORD_STOP ||
-        !comp_menu_v5_item_is_selectable(&item)) {
-        return fail("record stop action");
+    {
+        comp_menu_v5_context_t recording = ready;
+        recording.recording = true;
+        if (!comp_menu_v5_resolve_item(COMP_MENU_V5_ROOT_VOICE, 0u, &recording, &item) ||
+            item.action != COMP_MENU_V5_ACTION_NONE || !item.has_live_value || !item.live_value ||
+            comp_menu_v5_item_is_selectable(&item)) {
+            return fail("recording status must stay display-only while active");
+        }
     }
     if (!comp_menu_v5_resolve_item(COMP_MENU_V5_ROOT_PREFERENCES, 1u, &ready, &item) ||
         item.kind != COMP_MENU_V5_ITEM_DEFERRED || comp_menu_v5_item_is_selectable(&item) ||
@@ -108,10 +110,10 @@ int main(void)
         strcmp(comp_menu_v5_text(COMP_MENU_V5_LANGUAGE_ZH_CN, COMP_MENU_V5_TEXT_REFRESH), "刷新频率") != 0 ||
         strcmp(comp_menu_v5_language_display_name(COMP_MENU_V5_LANGUAGE_EN), "English") != 0 ||
         strcmp(comp_menu_v5_language_display_name(COMP_MENU_V5_LANGUAGE_ZH_CN), "中文") != 0 ||
-        strcmp(comp_menu_v5_action_label(COMP_MENU_V5_LANGUAGE_EN,
-                                         COMP_MENU_V5_ACTION_RECORD_START), "Record voice") != 0 ||
-        strcmp(comp_menu_v5_action_label(COMP_MENU_V5_LANGUAGE_ZH_CN,
-                                         COMP_MENU_V5_ACTION_RECORD_STOP), "停止录音") != 0 ||
+        strcmp(comp_menu_v5_text(COMP_MENU_V5_LANGUAGE_EN,
+                                 COMP_MENU_V5_TEXT_RECORDING_STATUS), "Recording") != 0 ||
+        strcmp(comp_menu_v5_text(COMP_MENU_V5_LANGUAGE_ZH_CN,
+                                 COMP_MENU_V5_TEXT_RECORDING_STATUS), "录音状态") != 0 ||
         comp_menu_v5_action_label(COMP_MENU_V5_LANGUAGE_EN, COMP_MENU_V5_ACTION_NONE) != NULL ||
         comp_menu_v5_text((comp_menu_v5_language_t)2u, COMP_MENU_V5_TEXT_VOICE) != NULL ||
         comp_menu_v5_text(COMP_MENU_V5_LANGUAGE_EN, (comp_menu_v5_text_key_t)19u) != NULL) {
@@ -125,7 +127,7 @@ int main(void)
                                              language,
                                              &language) ||
         language != COMP_MENU_V5_LANGUAGE_EN ||
-        comp_menu_v5_apply_language_action(COMP_MENU_V5_ACTION_RECORD_START,
+        comp_menu_v5_apply_language_action(COMP_MENU_V5_ACTION_RECONNECT,
                                            COMP_MENU_V5_LANGUAGE_EN,
                                            &language) ||
         comp_menu_v5_toggle_language((comp_menu_v5_language_t)2u, &language) ||

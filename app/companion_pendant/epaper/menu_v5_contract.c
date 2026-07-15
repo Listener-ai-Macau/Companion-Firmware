@@ -16,7 +16,7 @@ static const comp_menu_v5_text_key_t k_root_text_keys[COMP_MENU_V5_ROOT_COUNT] =
 };
 
 static const comp_menu_v5_item_definition_t k_voice_items[] = {
-    {COMP_MENU_V5_ITEM_MANUAL_RECORDING, COMP_MENU_V5_TEXT_MANUAL_RECORDING, COMP_MENU_V5_ITEM_ACTION},
+    {COMP_MENU_V5_ITEM_RECORDING_STATUS, COMP_MENU_V5_TEXT_RECORDING_STATUS, COMP_MENU_V5_ITEM_LIVE_DATA},
     {COMP_MENU_V5_ITEM_RECORD_HISTORY, COMP_MENU_V5_TEXT_RECORD_HISTORY, COMP_MENU_V5_ITEM_DEFERRED},
     {COMP_MENU_V5_ITEM_WAKE_WORD, COMP_MENU_V5_TEXT_WAKE_WORD, COMP_MENU_V5_ITEM_DEFERRED},
 };
@@ -126,9 +126,9 @@ bool comp_menu_v5_resolve_item(comp_menu_v5_root_t root,
         .action = COMP_MENU_V5_ACTION_NONE,
     };
     switch (definition->item_id) {
-    case COMP_MENU_V5_ITEM_MANUAL_RECORDING:
-        out_item->action = context->recording ? COMP_MENU_V5_ACTION_RECORD_STOP :
-                                                COMP_MENU_V5_ACTION_RECORD_START;
+    case COMP_MENU_V5_ITEM_RECORDING_STATUS:
+        out_item->has_live_value = true;
+        out_item->live_value = context->recording;
         break;
     case COMP_MENU_V5_ITEM_RECORD_HISTORY:
         out_item->kind = context->record_history_available ? COMP_MENU_V5_ITEM_LIVE_DATA :

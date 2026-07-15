@@ -39,28 +39,28 @@ int main(void)
         .wake_word_available = false,
         .diagnostics_available = false,
     };
-    comp_menu_v5_context_t recording = ready;
     comp_menu_v5_selection_result_t result;
 
     if (!comp_menu_v5_prepare_selection(COMP_MENU_V5_ROOT_VOICE, 0u, &ready,
                                         COMP_MENU_V5_LANGUAGE_EN, &result) ||
-        result.outcome != COMP_MENU_V5_SELECTION_ACTION_COMMITTED ||
-        result.item.action != COMP_MENU_V5_ACTION_RECORD_START ||
-        !result.has_performance_event ||
-        result.performance_event != COMP_PET_PERFORMANCE_EVENT_MENU_SELECT ||
+        result.outcome != COMP_MENU_V5_SELECTION_LIVE_DATA ||
+        result.item.item_id != COMP_MENU_V5_ITEM_RECORDING_STATUS ||
+        result.item.action != COMP_MENU_V5_ACTION_NONE ||
+        !result.item.has_live_value || result.item.live_value ||
+        result.has_performance_event ||
         result.language_changed || result.language_after != COMP_MENU_V5_LANGUAGE_EN) {
-        return fail("record start must commit a menu select without changing language");
+        return fail("idle recording status must remain display-only without a menu scene");
     }
-    if (expect_performance_scene(&result, COMP_PET_PERFORMANCE_SCENE_MENU_SELECT,
-                                 "record start must reach the menu select scene")) {
-        return 1;
-    }
-    recording.recording = true;
-    if (!comp_menu_v5_prepare_selection(COMP_MENU_V5_ROOT_VOICE, 0u, &recording,
-                                        COMP_MENU_V5_LANGUAGE_EN, &result) ||
-        result.item.action != COMP_MENU_V5_ACTION_RECORD_STOP ||
-        result.outcome != COMP_MENU_V5_SELECTION_ACTION_COMMITTED) {
-        return fail("record stop must preserve the committed menu action path");
+    {
+        comp_menu_v5_context_t recording = ready;
+        recording.recording = true;
+        if (!comp_menu_v5_prepare_selection(COMP_MENU_V5_ROOT_VOICE, 0u, &recording,
+                                            COMP_MENU_V5_LANGUAGE_EN, &result) ||
+            result.outcome != COMP_MENU_V5_SELECTION_LIVE_DATA ||
+            !result.item.has_live_value || !result.item.live_value ||
+            result.has_performance_event) {
+            return fail("active recording status must remain display-only without a menu scene");
+        }
     }
     if (!comp_menu_v5_prepare_selection(COMP_MENU_V5_ROOT_PREFERENCES, 0u, &ready,
                                         COMP_MENU_V5_LANGUAGE_EN, &result) ||

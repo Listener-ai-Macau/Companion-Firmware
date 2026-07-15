@@ -5,14 +5,14 @@
 #define COMP_MENU_V5_TEXT_KEY_COUNT ((unsigned int)COMP_MENU_V5_TEXT_ABOUT + 1u)
 
 static const char *const k_english[COMP_MENU_V5_TEXT_KEY_COUNT] = {
-    "Voice", "Device", "Connection", "Preferences", "Record voice",
+    "Voice", "Device", "Connection", "Preferences", "Recording",
     "History", "Wake word", "E-paper", "Touch", "Battery", "UI assets",
     "Pair new device", "Link status", "Reconnect", "Language", "Gesture",
     "Refresh rate", "Diagnostics", "About",
 };
 
 static const char *const k_chinese[COMP_MENU_V5_TEXT_KEY_COUNT] = {
-    "语音", "设备", "连接", "偏好设置", "录音",
+    "语音", "设备", "连接", "偏好设置", "录音状态",
     "录音历史", "唤醒词", "电子纸", "触控", "电池", "界面资源",
     "配对新设备", "连接状态", "重新连接", "语言", "手势",
     "刷新频率", "诊断", "关于",
@@ -58,10 +58,6 @@ const char *comp_menu_v5_action_label(comp_menu_v5_language_t language,
         return NULL;
     }
     switch (action) {
-    case COMP_MENU_V5_ACTION_RECORD_START:
-        return language == COMP_MENU_V5_LANGUAGE_ZH_CN ? "开始录音" : "Record voice";
-    case COMP_MENU_V5_ACTION_RECORD_STOP:
-        return language == COMP_MENU_V5_LANGUAGE_ZH_CN ? "停止录音" : "Stop recording";
     case COMP_MENU_V5_ACTION_PAIR_NEW_DEVICE:
         return language == COMP_MENU_V5_LANGUAGE_ZH_CN ? "配对新设备" : "Pair new device";
     case COMP_MENU_V5_ACTION_RECONNECT:

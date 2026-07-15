@@ -69,15 +69,14 @@ int main(void)
     result = comp_menu_v5_navigation_tap(&navigation, 100u, 60u, &ready);
     if (!result.changed || !comp_menu_v5_navigation_detail_hit_test(
                                &navigation, 100u, 41u, &ready, &index, &item) ||
-        index != 0u || item.item_id != COMP_MENU_V5_ITEM_MANUAL_RECORDING) {
-        return fail("voice first row must be the manual recording action");
+        index != 0u || item.item_id != COMP_MENU_V5_ITEM_RECORDING_STATUS) {
+        return fail("voice first row must be the recording status datum");
     }
     result = comp_menu_v5_navigation_tap(&navigation, 100u, 41u, &ready);
-    if (!result.has_selection || result.selection.item.action != COMP_MENU_V5_ACTION_RECORD_START ||
-        result.selection.outcome != COMP_MENU_V5_SELECTION_ACTION_COMMITTED ||
-        expect_scene(&result, COMP_PET_PERFORMANCE_SCENE_MENU_SELECT,
-                     "record action must enter the menu select scene")) {
-        return fail("voice selection must retain the actual recording action");
+    if (!result.has_selection || result.selection.item.action != COMP_MENU_V5_ACTION_NONE ||
+        result.selection.outcome != COMP_MENU_V5_SELECTION_LIVE_DATA ||
+        result.selection.has_performance_event) {
+        return fail("voice status must not impersonate a recording action");
     }
     (void)comp_menu_v5_navigation_back(&navigation);
 

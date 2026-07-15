@@ -17,7 +17,6 @@ int main(void)
         .external_assets_ready = true,
         .record_history_available = true,
     };
-    comp_menu_v5_context_t recording = ready;
     comp_menu_v5_target_bridge_t bridge;
     comp_menu_v5_navigation_result_t result;
 
@@ -32,23 +31,15 @@ int main(void)
     result = comp_menu_v5_target_bridge_tap(&bridge, 100u, 60u);
     if (!result.changed || result.event != COMP_MENU_V5_NAVIGATION_EVENT_ROOT_OPENED ||
         bridge.navigation.root != COMP_MENU_V5_ROOT_VOICE) {
-        return fail("the target bridge must open the Voice root from its r4 row");
+        return fail("the target bridge must open the Voice root from the first root row");
     }
     result = comp_menu_v5_target_bridge_tap(&bridge, 100u, 41u);
     if (!result.has_selection ||
-        result.selection.item.action != COMP_MENU_V5_ACTION_RECORD_START ||
-        result.selection.outcome != COMP_MENU_V5_SELECTION_ACTION_COMMITTED ||
-        result.selection.performance_event != COMP_PET_PERFORMANCE_EVENT_MENU_SELECT) {
-        return fail("voice action must return a real recording decision and select scene");
-    }
-    recording.recording = true;
-    if (!comp_menu_v5_target_bridge_update_context(&bridge, &recording)) {
-        return fail("target bridge must accept a recording-state update");
-    }
-    result = comp_menu_v5_target_bridge_tap(&bridge, 100u, 41u);
-    if (!result.has_selection ||
-        result.selection.item.action != COMP_MENU_V5_ACTION_RECORD_STOP) {
-        return fail("the same Voice row must become the real stop action while recording");
+        result.selection.item.item_id != COMP_MENU_V5_ITEM_RECORDING_STATUS ||
+        result.selection.item.action != COMP_MENU_V5_ACTION_NONE ||
+        result.selection.outcome != COMP_MENU_V5_SELECTION_LIVE_DATA ||
+        result.selection.has_performance_event) {
+        return fail("voice status must not become a recording action or select scene");
     }
     result = comp_menu_v5_target_bridge_back(&bridge);
     if (!result.changed || bridge.navigation.view != COMP_MENU_V5_NAVIGATION_ROOTS) {
@@ -56,7 +47,7 @@ int main(void)
     }
     result = comp_menu_v5_target_bridge_tap(&bridge, 100u, 180u);
     if (!result.changed || bridge.navigation.root != COMP_MENU_V5_ROOT_PREFERENCES) {
-        return fail("the fourth r4 row must remain Preferences");
+        return fail("the fourth root row must remain Preferences");
     }
     result = comp_menu_v5_target_bridge_drag(&bridge, -20);
     if (!result.changed || bridge.navigation.scroll_offset_px != 20u) {

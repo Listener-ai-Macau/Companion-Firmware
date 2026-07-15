@@ -82,9 +82,9 @@ bool comp_menu_v5_target_bridge_self_test(void)
     }
     result = comp_menu_v5_target_bridge_tap(&bridge, 100u, 41u);
     if (!result.changed || !result.has_selection ||
-        result.selection.item.action != COMP_MENU_V5_ACTION_RECORD_START ||
-        result.selection.outcome != COMP_MENU_V5_SELECTION_ACTION_COMMITTED ||
-        !result.selection.has_performance_event) {
+        result.selection.item.item_id != COMP_MENU_V5_ITEM_RECORDING_STATUS ||
+        result.selection.outcome != COMP_MENU_V5_SELECTION_LIVE_DATA ||
+        result.selection.has_performance_event) {
         return false;
     }
     result = comp_menu_v5_target_bridge_back(&bridge);

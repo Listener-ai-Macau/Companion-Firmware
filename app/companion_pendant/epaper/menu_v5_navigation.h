@@ -10,8 +10,9 @@
 extern "C" {
 #endif
 
-/* The navigation geometry is portable. A target renderer may use approved
- * external-Flash art, but must preserve these hit and scroll semantics. */
+/* The navigation geometry is portable. A target renderer may use a separately
+ * approved external-Flash visual source, but must preserve these hit and
+ * scroll semantics. */
 #define COMP_MENU_V5_NAVIGATION_WIDTH_PX 200u
 #define COMP_MENU_V5_NAVIGATION_HEIGHT_PX 200u
 #define COMP_MENU_V5_NAVIGATION_ROOT_HEADER_HEIGHT_PX 40u
