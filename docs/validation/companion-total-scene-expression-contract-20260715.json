@@ -1,0 +1,46 @@
+{
+  "schema_id": "companion.total_scene_expression_contract.v1",
+  "status": "MACHINE_REPLAY_READY_PENDING_ART_AND_HARDWARE",
+  "recorded_at": "2026-07-15T09:25:00+08:00",
+  "owner_priority": [
+    "upgrade",
+    "recording",
+    "menu"
+  ],
+  "art_baseline": {
+    "face_reference": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "face_reference_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "owner_confirmed_source": {
+      "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "status": "OWNER_APPROVED_SOURCE_MAPPING_PENDING",
+      "scope": "The only retained pet-expression iteration source for daily, gesture, recording, menu, sleep and future system-state scenes. State-specific PBM/CEMP mapping remains pending."
+    },
+    "prompt_policy": "The v15 route permits only an in-context retouch of one named visible variable in one named v9 state. It locks every non-target cell and forbids a whole-sheet regeneration or legacy candidate reference.",
+    "constraints": [
+      "no cat silhouette or device frame",
+      "inner-face grammar only",
+      "white background and black 1-bit-ready forms",
+      "generated reference is the implementation baseline"
+    ]
+  },
+  "runtime_boundaries": {
+    "recording_core": "Denzic Platform shared recording FSM only",
+    "ota": "replay and adapter contract only until Listener OTA acceptance",
+    "assets": "external Flash CEMP first",
+    "wba": "scene contract portable; target adapter owns display, timer, OTA transport, and storage access"
+  },
+  "machine_replay": {
+    "event_bridge": "app/companion_pendant/epaper/pet_performance_event_bridge.c",
+    "host_command": "pwsh -NoProfile -File .\\tools\\test_pet_performance_host.ps1",
+    "upgrade_events_are_replay_only": true,
+    "resource_activation": "disabled_pending_named_v9_state_review",
+    "hardware_or_ota_execution_claimed": false
+  },
+  "acceptance": {
+    "overall_items": 15,
+    "popup_title": "Companion 总场景验收 N/15 (本次 M/K)",
+    "physical_start_rule": "Open the canonical Chinese operator popup only after the owner explicitly says 开始验收.",
+    "blocked_physical_display_reason": "COMP-REQ-034 FTS02 analog fault"
+  }
+}

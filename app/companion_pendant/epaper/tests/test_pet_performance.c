@@ -80,7 +80,48 @@ int main(void)
                      "direct stroke event keeps its direction") ||
         require_true(!comp_pet_performance_apply_expression_signal(
                           &performance, COMP_EPAPER_EXPRESSION_SIGNAL_SPEAKER_RESULT, &frame),
-                     "generic speaker result cannot erase precise touch semantics")) {
+                     "generic speaker result cannot erase precise touch semantics") ||
+        require_true(comp_pet_performance_apply_event(
+                         &performance, COMP_PET_PERFORMANCE_EVENT_UPGRADE_OFFER, &frame) &&
+                         frame.scene == COMP_PET_PERFORMANCE_SCENE_UPGRADE_OFFER &&
+                         comp_pet_performance_event_is_replay_only(
+                             COMP_PET_PERFORMANCE_EVENT_UPGRADE_OFFER),
+                     "upgrade offer remains explicit replay-only scene metadata") ||
+        require_true(comp_pet_performance_apply_event(
+                         &performance, COMP_PET_PERFORMANCE_EVENT_UPGRADE_PREPARE, &frame) &&
+                         comp_pet_performance_apply_event(
+                             &performance, COMP_PET_PERFORMANCE_EVENT_UPGRADE_TRANSFER, &frame) &&
+                         !comp_pet_performance_apply_event(
+                             &performance, COMP_PET_PERFORMANCE_EVENT_MENU_HOLD, &frame) &&
+                         !comp_pet_performance_apply_event(
+                             &performance, COMP_PET_PERFORMANCE_EVENT_RECORDING_START, &frame),
+                     "upgrade transfer protects its committed visual journey") ||
+        require_true(comp_pet_performance_apply_event(
+                         &performance, COMP_PET_PERFORMANCE_EVENT_UPGRADE_ERROR, &frame) &&
+                         frame.scene == COMP_PET_PERFORMANCE_SCENE_UPGRADE_ERROR &&
+                         comp_pet_performance_apply_event(
+                             &performance, COMP_PET_PERFORMANCE_EVENT_UPGRADE_DISMISS, &frame) &&
+                         frame.scene == COMP_PET_PERFORMANCE_SCENE_DAILY_IDLE &&
+                         !comp_pet_performance_event_is_replay_only(
+                             COMP_PET_PERFORMANCE_EVENT_RECORDING_START),
+                     "upgrade error recovers without turning recording into replay") ||
+        require_true(comp_pet_performance_apply_event(
+                         &performance, COMP_PET_PERFORMANCE_EVENT_RECORDING_START, &frame) &&
+                         frame.scene == COMP_PET_PERFORMANCE_SCENE_RECORDING_START &&
+                         comp_pet_performance_apply_event(
+                             &performance, COMP_PET_PERFORMANCE_EVENT_RECORDING_ACTIVE, &frame) &&
+                         comp_pet_performance_apply_event(
+                             &performance, COMP_PET_PERFORMANCE_EVENT_RECORDING_SAVING, &frame) &&
+                         comp_pet_performance_apply_event(
+                             &performance, COMP_PET_PERFORMANCE_EVENT_RECORDING_SAVED, &frame) &&
+                         frame.scene == COMP_PET_PERFORMANCE_SCENE_RECORDING_SAVED &&
+                         comp_pet_performance_apply_event(
+                             &performance, COMP_PET_PERFORMANCE_EVENT_RECORDING_ERROR, &frame) &&
+                         frame.scene == COMP_PET_PERFORMANCE_SCENE_RECORDING_ERROR &&
+                         comp_pet_performance_apply_event(
+                             &performance, COMP_PET_PERFORMANCE_EVENT_RECORDING_RECOVER, &frame) &&
+                         frame.scene == COMP_PET_PERFORMANCE_SCENE_DAILY_IDLE,
+                     "recording event path remains a portable observation and recovery contract")) {
         return 1;
     }
 

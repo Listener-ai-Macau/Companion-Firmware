@@ -19,6 +19,20 @@ static const char *const k_event_names[COMP_PET_PERFORMANCE_EVENT_COUNT] = {
     "sleep_entry",
     "deep_sleep",
     "wake",
+    "recording_start",
+    "recording_active",
+    "recording_saving",
+    "recording_saved",
+    "recording_error",
+    "recording_recover",
+    "upgrade_offer",
+    "upgrade_prepare",
+    "upgrade_transfer",
+    "upgrade_verify",
+    "upgrade_restart",
+    "upgrade_success",
+    "upgrade_error",
+    "upgrade_dismiss",
 };
 
 static bool event_scene(comp_pet_performance_event_t event,
@@ -73,6 +87,44 @@ static bool event_scene(comp_pet_performance_event_t event,
     case COMP_PET_PERFORMANCE_EVENT_WAKE:
         *out_scene = COMP_PET_PERFORMANCE_SCENE_WAKE;
         return true;
+    case COMP_PET_PERFORMANCE_EVENT_RECORDING_START:
+        *out_scene = COMP_PET_PERFORMANCE_SCENE_RECORDING_START;
+        return true;
+    case COMP_PET_PERFORMANCE_EVENT_RECORDING_ACTIVE:
+        *out_scene = COMP_PET_PERFORMANCE_SCENE_RECORDING_ACTIVE;
+        return true;
+    case COMP_PET_PERFORMANCE_EVENT_RECORDING_SAVING:
+        *out_scene = COMP_PET_PERFORMANCE_SCENE_RECORDING_SAVING;
+        return true;
+    case COMP_PET_PERFORMANCE_EVENT_RECORDING_SAVED:
+        *out_scene = COMP_PET_PERFORMANCE_SCENE_RECORDING_SAVED;
+        return true;
+    case COMP_PET_PERFORMANCE_EVENT_RECORDING_ERROR:
+        *out_scene = COMP_PET_PERFORMANCE_SCENE_RECORDING_ERROR;
+        return true;
+    case COMP_PET_PERFORMANCE_EVENT_UPGRADE_OFFER:
+        *out_scene = COMP_PET_PERFORMANCE_SCENE_UPGRADE_OFFER;
+        return true;
+    case COMP_PET_PERFORMANCE_EVENT_UPGRADE_PREPARE:
+        *out_scene = COMP_PET_PERFORMANCE_SCENE_UPGRADE_PREPARE;
+        return true;
+    case COMP_PET_PERFORMANCE_EVENT_UPGRADE_TRANSFER:
+        *out_scene = COMP_PET_PERFORMANCE_SCENE_UPGRADE_TRANSFER;
+        return true;
+    case COMP_PET_PERFORMANCE_EVENT_UPGRADE_VERIFY:
+        *out_scene = COMP_PET_PERFORMANCE_SCENE_UPGRADE_VERIFY;
+        return true;
+    case COMP_PET_PERFORMANCE_EVENT_UPGRADE_RESTART:
+        *out_scene = COMP_PET_PERFORMANCE_SCENE_UPGRADE_RESTART;
+        return true;
+    case COMP_PET_PERFORMANCE_EVENT_UPGRADE_SUCCESS:
+        *out_scene = COMP_PET_PERFORMANCE_SCENE_UPGRADE_SUCCESS;
+        return true;
+    case COMP_PET_PERFORMANCE_EVENT_UPGRADE_ERROR:
+        *out_scene = COMP_PET_PERFORMANCE_SCENE_UPGRADE_ERROR;
+        return true;
+    case COMP_PET_PERFORMANCE_EVENT_RECORDING_RECOVER:
+    case COMP_PET_PERFORMANCE_EVENT_UPGRADE_DISMISS:
     case COMP_PET_PERFORMANCE_EVENT_COUNT:
     default:
         return false;
@@ -97,11 +149,21 @@ const char *comp_pet_performance_event_name(comp_pet_performance_event_t event)
     return event < COMP_PET_PERFORMANCE_EVENT_COUNT ? k_event_names[event] : "unknown";
 }
 
+bool comp_pet_performance_event_is_replay_only(comp_pet_performance_event_t event)
+{
+    return event >= COMP_PET_PERFORMANCE_EVENT_UPGRADE_OFFER &&
+           event <= COMP_PET_PERFORMANCE_EVENT_UPGRADE_DISMISS;
+}
+
 bool comp_pet_performance_apply_event(comp_pet_performance_t *performance,
                                       comp_pet_performance_event_t event,
                                       comp_pet_performance_frame_t *out_frame)
 {
     comp_pet_performance_scene_t scene;
+    if (event == COMP_PET_PERFORMANCE_EVENT_RECORDING_RECOVER ||
+        event == COMP_PET_PERFORMANCE_EVENT_UPGRADE_DISMISS) {
+        return comp_pet_performance_recover_to_idle(performance, out_frame);
+    }
     return event_scene(event, &scene) &&
            comp_pet_performance_begin(performance, scene, out_frame);
 }
@@ -235,6 +297,30 @@ bool comp_pet_performance_event_bridge_self_test(void)
                "menu_exit") != 0 ||
         strcmp(comp_pet_performance_event_name(COMP_PET_PERFORMANCE_EVENT_COUNT),
                "unknown") != 0) {
+        return false;
+    }
+    if (!comp_pet_performance_recover_to_idle(&performance, &frame) ||
+        !comp_pet_performance_apply_event(
+            &performance, COMP_PET_PERFORMANCE_EVENT_UPGRADE_OFFER, &frame) ||
+        frame.scene != COMP_PET_PERFORMANCE_SCENE_UPGRADE_OFFER ||
+        !comp_pet_performance_event_is_replay_only(
+            COMP_PET_PERFORMANCE_EVENT_UPGRADE_OFFER) ||
+        comp_pet_performance_event_is_replay_only(
+            COMP_PET_PERFORMANCE_EVENT_RECORDING_START) ||
+        !comp_pet_performance_apply_event(
+            &performance, COMP_PET_PERFORMANCE_EVENT_UPGRADE_PREPARE, &frame) ||
+        !comp_pet_performance_apply_event(
+            &performance, COMP_PET_PERFORMANCE_EVENT_UPGRADE_TRANSFER, &frame) ||
+        comp_pet_performance_apply_event(
+            &performance, COMP_PET_PERFORMANCE_EVENT_MENU_HOLD, &frame) ||
+        comp_pet_performance_apply_event(
+            &performance, COMP_PET_PERFORMANCE_EVENT_RECORDING_START, &frame) ||
+        !comp_pet_performance_apply_event(
+            &performance, COMP_PET_PERFORMANCE_EVENT_UPGRADE_ERROR, &frame) ||
+        frame.scene != COMP_PET_PERFORMANCE_SCENE_UPGRADE_ERROR ||
+        !comp_pet_performance_apply_event(
+            &performance, COMP_PET_PERFORMANCE_EVENT_UPGRADE_DISMISS, &frame) ||
+        frame.scene != COMP_PET_PERFORMANCE_SCENE_DAILY_IDLE) {
         return false;
     }
     return true;

@@ -29,10 +29,27 @@ typedef enum {
     COMP_PET_PERFORMANCE_EVENT_SLEEP_ENTRY,
     COMP_PET_PERFORMANCE_EVENT_DEEP_SLEEP,
     COMP_PET_PERFORMANCE_EVENT_WAKE,
+    COMP_PET_PERFORMANCE_EVENT_RECORDING_START,
+    COMP_PET_PERFORMANCE_EVENT_RECORDING_ACTIVE,
+    COMP_PET_PERFORMANCE_EVENT_RECORDING_SAVING,
+    COMP_PET_PERFORMANCE_EVENT_RECORDING_SAVED,
+    COMP_PET_PERFORMANCE_EVENT_RECORDING_ERROR,
+    COMP_PET_PERFORMANCE_EVENT_RECORDING_RECOVER,
+    /* Upgrade events are visual replay metadata only until the shared OTA
+     * acceptance unfreezes a target adapter. They never execute OTA work. */
+    COMP_PET_PERFORMANCE_EVENT_UPGRADE_OFFER,
+    COMP_PET_PERFORMANCE_EVENT_UPGRADE_PREPARE,
+    COMP_PET_PERFORMANCE_EVENT_UPGRADE_TRANSFER,
+    COMP_PET_PERFORMANCE_EVENT_UPGRADE_VERIFY,
+    COMP_PET_PERFORMANCE_EVENT_UPGRADE_RESTART,
+    COMP_PET_PERFORMANCE_EVENT_UPGRADE_SUCCESS,
+    COMP_PET_PERFORMANCE_EVENT_UPGRADE_ERROR,
+    COMP_PET_PERFORMANCE_EVENT_UPGRADE_DISMISS,
     COMP_PET_PERFORMANCE_EVENT_COUNT,
 } comp_pet_performance_event_t;
 
 const char *comp_pet_performance_event_name(comp_pet_performance_event_t event);
+bool comp_pet_performance_event_is_replay_only(comp_pet_performance_event_t event);
 bool comp_pet_performance_apply_event(comp_pet_performance_t *performance,
                                       comp_pet_performance_event_t event,
                                       comp_pet_performance_frame_t *out_frame);
