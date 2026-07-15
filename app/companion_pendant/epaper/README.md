@@ -4,6 +4,14 @@ This directory owns the no-hardware Companion pendant e-paper card model and
 framebuffer renderer. The code is intentionally independent from an SPI driver
 so it can be tested before a panel is wired.
 
+`pet_performance.h/.c` owns portable, event-driven whole-face scene
+choreography. It emits only a resource family, phase, keyframe index and
+generation for a renderer to map to approved external-Flash art. The state
+machine has no timer or refresh loop: feature code explicitly advances
+`entry -> sustained -> settle/exit` only when a real product event commits.
+This preserves e-paper power and touch/recording responsiveness while keeping
+art replacement separate from behavioral choreography.
+
 The screen-expression acceptance map lives in
 `docs/companion_screen_expression_system.md`.
 The BLE-to-expression policy lives in `expression_policy.py`; it maps status

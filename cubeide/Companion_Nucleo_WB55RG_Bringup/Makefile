@@ -311,6 +311,7 @@ C_SOURCES := \
 	$(ROOT)/app/companion_pendant/epaper/pet_attention.c \
 	$(ROOT)/app/companion_pendant/epaper/pet_behavior.c \
 	$(ROOT)/app/companion_pendant/epaper/pet_expression.c \
+	$(ROOT)/app/companion_pendant/epaper/pet_performance.c \
 	$(ROOT)/app/companion_pendant/epaper/refresh_policy.c \
 	$(ROOT)/app/companion_pendant/epaper/screen_framebuffer.c \
 	$(ROOT)/app/companion_pendant/epaper/screen_menu.c \
