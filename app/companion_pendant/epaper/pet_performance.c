@@ -16,6 +16,7 @@ typedef enum {
     COMP_PET_PERFORMANCE_JOURNEY_DAILY = 0u,
     COMP_PET_PERFORMANCE_JOURNEY_MENU,
     COMP_PET_PERFORMANCE_JOURNEY_RECORDING,
+    COMP_PET_PERFORMANCE_JOURNEY_VOICE,
     COMP_PET_PERFORMANCE_JOURNEY_POWER,
     COMP_PET_PERFORMANCE_JOURNEY_LINK,
     COMP_PET_PERFORMANCE_JOURNEY_UPGRADE,
@@ -54,6 +55,8 @@ static const comp_pet_performance_scene_def_t k_scene_defs[] = {
     SCENE_MOTION(COMP_PET_PERFORMANCE_SCENE_DAILY_SWIPE_RIGHT, COMP_PET_PERFORMANCE_JOURNEY_DAILY, 30u, "daily.swipe_right", "daily.swipe_right"),
     SCENE_MOTION(COMP_PET_PERFORMANCE_SCENE_DAILY_SWIPE_UP, COMP_PET_PERFORMANCE_JOURNEY_DAILY, 30u, "daily.swipe_up", "daily.swipe_up"),
     SCENE_MOTION(COMP_PET_PERFORMANCE_SCENE_DAILY_SWIPE_DOWN, COMP_PET_PERFORMANCE_JOURNEY_DAILY, 30u, "daily.swipe_down", "daily.swipe_down"),
+    SCENE_MOTION(COMP_PET_PERFORMANCE_SCENE_VOICE_LISTENING, COMP_PET_PERFORMANCE_JOURNEY_VOICE, 70u, "voice.listening", "voice.listening"),
+    SCENE_MOTION(COMP_PET_PERFORMANCE_SCENE_VOICE_SPEAKING, COMP_PET_PERFORMANCE_JOURNEY_VOICE, 65u, "voice.speaking", "voice.speaking"),
     SCENE_MOTION(COMP_PET_PERFORMANCE_SCENE_MENU_HOLD, COMP_PET_PERFORMANCE_JOURNEY_MENU, 50u, "menu.hold", "menu.hold"),
     SCENE_MOTION(COMP_PET_PERFORMANCE_SCENE_MENU_ENTER, COMP_PET_PERFORMANCE_JOURNEY_MENU, 55u, "menu.enter", "menu.enter"),
     SCENE_STATIC(COMP_PET_PERFORMANCE_SCENE_MENU_OPEN, COMP_PET_PERFORMANCE_JOURNEY_MENU, 55u, "menu.open", "menu.open"),
@@ -332,13 +335,21 @@ bool comp_pet_performance_self_test(void)
         return false;
     }
     if (!comp_pet_performance_recover_to_idle(&performance, &frame) ||
+        !comp_pet_performance_begin(&performance, COMP_PET_PERFORMANCE_SCENE_VOICE_LISTENING, &frame) ||
+        strcmp(frame.resource_family, "voice.listening") != 0 ||
+        !comp_pet_performance_begin(&performance, COMP_PET_PERFORMANCE_SCENE_VOICE_SPEAKING, &frame) ||
+        strcmp(frame.resource_family, "voice.speaking") != 0) {
+        s_pet_performance_self_test_failure_code = 5u;
+        return false;
+    }
+    if (!comp_pet_performance_recover_to_idle(&performance, &frame) ||
         frame.scene != COMP_PET_PERFORMANCE_SCENE_DAILY_IDLE ||
         frame.phase != COMP_PET_PERFORMANCE_PHASE_SUSTAINED ||
         !comp_pet_performance_begin(&performance, COMP_PET_PERFORMANCE_SCENE_SLEEP_ENTRY, &frame) ||
         !comp_pet_performance_begin(&performance, COMP_PET_PERFORMANCE_SCENE_DEEP_SLEEP, &frame) ||
         frame.phase != COMP_PET_PERFORMANCE_PHASE_SUSTAINED || frame.keyframe_count != 1u ||
         !comp_pet_performance_begin(&performance, COMP_PET_PERFORMANCE_SCENE_WAKE, &frame)) {
-        s_pet_performance_self_test_failure_code = 5u;
+        s_pet_performance_self_test_failure_code = 6u;
         return false;
     }
     if (!comp_pet_performance_begin(&performance, COMP_PET_PERFORMANCE_SCENE_SYSTEM_ERROR, &frame) ||
@@ -351,7 +362,7 @@ bool comp_pet_performance_self_test(void)
         strcmp(comp_pet_performance_scene_name(COMP_PET_PERFORMANCE_SCENE_MENU_ENTER),
                "menu.enter") != 0 ||
         strcmp(comp_pet_performance_phase_name(COMP_PET_PERFORMANCE_PHASE_EXIT), "exit") != 0) {
-        s_pet_performance_self_test_failure_code = 6u;
+        s_pet_performance_self_test_failure_code = 7u;
         return false;
     }
     return true;

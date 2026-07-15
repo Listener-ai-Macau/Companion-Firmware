@@ -23,17 +23,18 @@ $vsDevCmd = Join-Path $installPath "Common7\Tools\VsDevCmd.bat"
 $epaperRoot = Join-Path $repoRoot "app\companion_pendant\epaper"
 $testSource = Join-Path $epaperRoot "tests\test_pet_performance.c"
 $performanceSource = Join-Path $epaperRoot "pet_performance.c"
+$bridgeSource = Join-Path $epaperRoot "pet_performance_event_bridge.c"
 $outDir = Join-Path $repoRoot ".cache\host-tests\pet-performance"
 $exePath = Join-Path $outDir "test_pet_performance.exe"
-foreach ($required in @($vsDevCmd, $testSource, $performanceSource)) {
+foreach ($required in @($vsDevCmd, $testSource, $performanceSource, $bridgeSource)) {
     if (-not (Test-Path -LiteralPath $required)) {
         throw "Missing host pet-performance dependency: $required"
     }
 }
 New-Item -ItemType Directory -Force -Path $outDir | Out-Null
 
-$compileCommand = 'call "{0}" -arch=x64 -host_arch=x64 >nul && cl.exe /nologo /W4 /WX /std:c11 /I"{1}" "{2}" "{3}" /Fe:"{4}"' -f `
-    $vsDevCmd, $epaperRoot, $testSource, $performanceSource, $exePath
+$compileCommand = 'call "{0}" -arch=x64 -host_arch=x64 >nul && cl.exe /nologo /W4 /WX /std:c11 /I"{1}" "{2}" "{3}" "{4}" /Fe:"{5}"' -f `
+    $vsDevCmd, $epaperRoot, $testSource, $performanceSource, $bridgeSource, $exePath
 Push-Location $outDir
 try {
     & $env:ComSpec /d /s /c $compileCommand

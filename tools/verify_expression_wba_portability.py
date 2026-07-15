@@ -116,6 +116,10 @@ PORTABLE_FILES = [
     EPAPER_ROOT / "pet_behavior.h",
     EPAPER_ROOT / "pet_expression.c",
     EPAPER_ROOT / "pet_expression.h",
+    EPAPER_ROOT / "pet_performance.c",
+    EPAPER_ROOT / "pet_performance.h",
+    EPAPER_ROOT / "pet_performance_event_bridge.c",
+    EPAPER_ROOT / "pet_performance_event_bridge.h",
     EPAPER_ROOT / "pet_visual_style.h",
     EPAPER_ROOT / "screen_framebuffer.c",
     EPAPER_ROOT / "screen_framebuffer.h",
@@ -432,6 +436,10 @@ def check_expression_contracts(errors: list[str]) -> None:
     pet_behavior_source = read(EPAPER_ROOT / "pet_behavior.c")
     pet_expression_header = read(EPAPER_ROOT / "pet_expression.h")
     pet_expression_source = read(EPAPER_ROOT / "pet_expression.c")
+    pet_performance_header = read(EPAPER_ROOT / "pet_performance.h")
+    pet_performance_source = read(EPAPER_ROOT / "pet_performance.c")
+    pet_performance_bridge_header = read(EPAPER_ROOT / "pet_performance_event_bridge.h")
+    pet_performance_bridge_source = read(EPAPER_ROOT / "pet_performance_event_bridge.c")
     panel_source = read(EPAPER_ROOT / "panel_adapter.c")
     panel_target_source = read(PANEL_TARGET_STM32WB_SOURCE)
     panel_target_header = read(PANEL_TARGET_STM32WB_HEADER)
@@ -542,6 +550,28 @@ def check_expression_contracts(errors: list[str]) -> None:
     ]:
         require(token in pet_expression_header + pet_expression_source,
                 f"portable pet-expression composer missing {token}", errors)
+    for token in [
+        "comp_pet_performance_t",
+        "comp_pet_performance_begin",
+        "comp_pet_performance_advance",
+        "comp_pet_performance_recover_to_idle",
+        "COMP_PET_PERFORMANCE_SCENE_RECORDING_SAVED",
+        "COMP_PET_PERFORMANCE_SCENE_VOICE_LISTENING",
+        "generation",
+        "resource_family",
+    ]:
+        require(token in pet_performance_header + pet_performance_source,
+                f"portable pet-performance contract missing {token}", errors)
+    for token in [
+        "comp_pet_performance_apply_expression_signal",
+        "comp_pet_performance_apply_event",
+        "COMP_EPAPER_EXPRESSION_SIGNAL_RECORDING_START",
+        "COMP_EPAPER_EXPRESSION_SIGNAL_RECORDING_FINISHED",
+        "COMP_PET_PERFORMANCE_EVENT_DAILY_SWIPE_LEFT",
+        "COMP_EPAPER_EXPRESSION_SIGNAL_SPEAKER_RESULT",
+    ]:
+        require(token in pet_performance_bridge_header + pet_performance_bridge_source,
+                f"portable pet-performance event bridge missing {token}", errors)
     for token in [
         "comp_epaper_expression_signal_from_diag_event",
         "comp_epaper_expression_signal_from_device_status",
@@ -681,6 +711,7 @@ def check_platform_isolation(errors: list[str]) -> None:
     require('#include "display_queue.h"' in app_ble, "WB app_ble.c must consume portable display queue", errors)
     require('#include "expression_events.h"' in app_ble, "WB app_ble.c must consume portable expression event bridge", errors)
     require('#include "expression_state.h"' in app_ble, "WB app_ble.c must consume portable expression state", errors)
+    require('#include "pet_performance_event_bridge.h"' in app_ble, "WB app_ble.c must consume portable pet-performance event bridge", errors)
     require('#include "panel_adapter.h"' in app_ble, "WB app_ble.c must consume portable panel adapter contract", errors)
     require('#include "panel_target_stm32wb.h"' in app_ble, "WB app_ble.c must initialize panel through target-named adapter", errors)
     require('#include "screen_runtime.h"' in app_ble, "WB app_ble.c must consume portable screen runtime snapshot", errors)
@@ -696,11 +727,13 @@ def check_platform_isolation(errors: list[str]) -> None:
     require("comp_epaper_expression_signal_from_speaker_status" in app_ble, "WB app_ble.c must map SpeakerStatus through portable expression bridge", errors)
     require("comp_epaper_expression_signal_from_wake_word_status" in app_ble, "WB app_ble.c must map WakeWordStatus through portable expression bridge", errors)
     require("comp_epaper_expression_signal_from_ota_readiness" in app_ble, "WB app_ble.c must map OTA readiness through portable expression bridge", errors)
+    require("comp_pet_performance_apply_expression_signal" in app_ble, "WB app_ble.c must map committed expression signals into pet-performance scenes", errors)
+    require("comp_pet_performance_apply_event" in app_ble, "WB app_ble.c must map exact touch and menu events into pet-performance scenes", errors)
     require("Companion_Display_ApplySettingsExpressionHint" in app_ble, "WB app_ble.c must map SettingsV1 screen hints through portable expression state", errors)
     require("COMP_EPAPER_EXPRESSION_SIGNAL_SETTINGS_SLEEPY" in app_ble, "WB app_ble.c must use portable settings sleepy signal", errors)
     require("$(ROOT)/app/companion_pendant/epaper" in makefile, "WB Makefile must include portable epaper module path", errors)
     require(
-        "panel_adapter.c" in makefile and "panel_target_stm32wb.c" in makefile and "display_queue.c" in makefile and "expression_events.c" in makefile and "expression_state.c" in makefile and "screen_runtime.c" in makefile,
+        "panel_adapter.c" in makefile and "panel_target_stm32wb.c" in makefile and "display_queue.c" in makefile and "expression_events.c" in makefile and "expression_state.c" in makefile and "pet_performance.c" in makefile and "pet_performance_event_bridge.c" in makefile and "screen_runtime.c" in makefile,
         "WB Makefile must compile portable epaper C modules",
         errors,
     )

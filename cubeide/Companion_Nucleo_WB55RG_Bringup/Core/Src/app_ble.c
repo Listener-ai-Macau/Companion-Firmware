@@ -55,6 +55,8 @@
 #include "pet_attention.h"
 #include "pet_behavior.h"
 #include "pet_expression.h"
+#include "pet_performance.h"
+#include "pet_performance_event_bridge.h"
 #include "refresh_policy.h"
 #include "screen_presentation.h"
 #include "screen_runtime.h"
@@ -263,6 +265,7 @@ static comp_audio_stream_t s_companion_audio_stream;
 static comp_epaper_display_queue_t s_companion_display_queue;
 static comp_epaper_expression_state_t s_companion_expression_state;
 static comp_pet_behavior_t s_companion_pet_behavior;
+static comp_pet_performance_t s_companion_pet_performance;
 static comp_epaper_panel_adapter_t s_companion_panel_adapter;
 static comp_asset_store_t s_companion_screen_asset_store;
 static comp_emote_asset_mount_t s_companion_screen_asset_mount;
@@ -378,6 +381,10 @@ static uint32_t Companion_Display_MsToTimerTicks(uint32_t timeout_ms);
 static void Companion_Display_ScheduleExpressionTick(uint32_t now_ms);
 static void Companion_Display_ProcessExpressionTick(void);
 static void Companion_PetBehavior_Advance(void);
+static void Companion_PetPerformance_ApplyExpressionSignal(
+    comp_epaper_expression_signal_t signal);
+static void Companion_PetPerformance_ApplyEvent(
+    comp_pet_performance_event_t event);
 static bool Companion_Display_EmitEmoteFrame(bool force_full);
 static bool Companion_Display_EmitEmoteFrameMode(
     comp_epaper_refresh_mode_t refresh_mode);
@@ -565,6 +572,7 @@ void APP_BLE_Init( void )
   s_companion_screen_coherent_generation_marker_logged = false;
   comp_epaper_expression_state_init(&s_companion_expression_state);
   comp_pet_behavior_init(&s_companion_pet_behavior, 0xC0A55EEDu);
+  comp_pet_performance_init(&s_companion_pet_performance);
   s_companion_pet_behavior_last_advanced_ms = HAL_GetTick();
   comp_screen_presentation_init(&s_companion_screen_presentation);
   bool external_assets_ready =
@@ -665,6 +673,9 @@ void APP_BLE_Init( void )
   printf("[pet-emotion] selftest=%s failure_code=%lu moods=calm,curious,affectionate,delighted,restful,worried memory=pass strokes=pass\r\n",
          pet_behavior_selftest ? "pass" : "fail",
          (unsigned long)comp_pet_behavior_self_test_failure_code());
+  printf("[pet-performance] selftest=%s bridge=%s resource_activation=disabled\r\n",
+         comp_pet_performance_self_test() ? "pass" : "fail",
+         comp_pet_performance_event_bridge_self_test() ? "pass" : "fail");
   printf("[pet-emotion] boot mood=%s valence=%d arousal=%u curiosity=%u affection=%u attachment=%u traits=%u,%u,%u\r\n",
          comp_pet_behavior_mood_name(comp_pet_behavior_mood(&s_companion_pet_behavior)),
          (int)s_companion_pet_behavior.valence,
@@ -1237,6 +1248,43 @@ static void Companion_PetBehavior_Advance(void)
   comp_pet_behavior_advance(&s_companion_pet_behavior, elapsed_ms);
 }
 
+static void Companion_PetPerformance_ApplyExpressionSignal(
+    comp_epaper_expression_signal_t signal)
+{
+  comp_pet_performance_frame_t frame;
+
+  if (comp_pet_performance_apply_expression_signal(
+          &s_companion_pet_performance, signal, &frame))
+  {
+    printf("[pet-performance] source=expression_signal signal=%u scene=%s phase=%s generation=%lu priority=%u resource=%s activation=disabled\r\n",
+           (unsigned)signal,
+           frame.scene_name,
+           frame.phase_name,
+           (unsigned long)frame.generation,
+           (unsigned)frame.priority,
+           frame.resource_family);
+  }
+}
+
+static void Companion_PetPerformance_ApplyEvent(
+    comp_pet_performance_event_t event)
+{
+  comp_pet_performance_frame_t frame;
+
+  if (comp_pet_performance_apply_event(&s_companion_pet_performance,
+                                        event,
+                                        &frame))
+  {
+    printf("[pet-performance] source=product_event event=%s scene=%s phase=%s generation=%lu priority=%u resource=%s activation=disabled\r\n",
+           comp_pet_performance_event_name(event),
+           frame.scene_name,
+           frame.phase_name,
+           (unsigned long)frame.generation,
+           (unsigned)frame.priority,
+           frame.resource_family);
+  }
+}
+
 static bool Companion_Display_EmitEmoteFrameMode(
     comp_epaper_refresh_mode_t refresh_mode)
 {
@@ -1733,14 +1781,21 @@ bool Companion_Screen_MenuRequestClean(comp_screen_menu_view_t view,
                                        comp_screen_menu_language_t language,
                                        uint8_t home_page)
 {
+  bool requested;
+
   SCREEN_INTERACTION_TRACE("[screen] menu_boundary=enter view=%u page=%u refresh=fast_if_baseline\r\n",
          (unsigned)view,
          (unsigned)home_page);
-  return Companion_Screen_MenuRequestMode(view,
-                                          flags,
-                                          language,
-                                          home_page,
-                                          COMP_EPAPER_REFRESH_MAINTENANCE);
+  requested = Companion_Screen_MenuRequestMode(view,
+                                                flags,
+                                                language,
+                                                home_page,
+                                                COMP_EPAPER_REFRESH_MAINTENANCE);
+  if (requested)
+  {
+    Companion_PetPerformance_ApplyEvent(COMP_PET_PERFORMANCE_EVENT_MENU_OPEN);
+  }
+  return requested;
 }
 
 bool Companion_Screen_MenuMaintenance(void)
@@ -1920,6 +1975,7 @@ bool Companion_Screen_EnterLowPowerIdle(void)
   {
     HW_TS_Stop(s_companion_expression_tick_timer_id);
   }
+  Companion_PetPerformance_ApplyEvent(COMP_PET_PERFORMANCE_EVENT_SLEEP_ENTRY);
   printf("[screen] low_power_idle pose=sleepy animation=stopped\r\n");
   return true;
 }
@@ -1934,12 +1990,23 @@ bool Companion_Screen_ShowDaily(void)
 
 bool Companion_Screen_ShowDailyClean(void)
 {
+  bool shown;
+
   SCREEN_INTERACTION_TRACE("[screen] menu_boundary=exit expression=idle refresh=fast_if_baseline\r\n");
-  return Companion_Screen_StartExpressionMode(
+  shown = Companion_Screen_StartExpressionMode(
       COMP_EPAPER_EXPRESSION_IDLE,
       COMP_EPAPER_REFRESH_MAINTENANCE,
       true,
       "menu_exit_clean");
+  if (shown)
+  {
+    Companion_PetPerformance_ApplyEvent(COMP_PET_PERFORMANCE_EVENT_MENU_EXIT);
+    /* The screen has committed the daily surface, so release the menu
+     * performance priority before accepting the next touch performance. */
+    Companion_PetPerformance_ApplyExpressionSignal(
+        COMP_EPAPER_EXPRESSION_SIGNAL_RECOVERY);
+  }
+  return shown;
 }
 
 bool Companion_Screen_DailyExpression(comp_epaper_expression_t expression,
@@ -1985,6 +2052,7 @@ bool Companion_Screen_DailyExpressionSignal(
   s_companion_expression_transition_immediate = true;
   Companion_Display_EnqueueExpressionDecision(&decision, &previous_state, 0u);
   s_companion_expression_transition_immediate = false;
+  Companion_PetPerformance_ApplyExpressionSignal(signal);
   SCREEN_INTERACTION_TRACE("[screen-expression] daily_signal=%u expression=%s result=requested reason=%s\r\n",
          (unsigned)signal,
          decision.name,
@@ -2039,6 +2107,7 @@ bool Companion_Screen_DailyTapAt(uint16_t x, uint16_t y)
         0u);
   }
   s_companion_expression_transition_immediate = false;
+  Companion_PetPerformance_ApplyEvent(COMP_PET_PERFORMANCE_EVENT_DAILY_TAP);
   SCREEN_INTERACTION_TRACE("[pet-attention] x=%u y=%u direction=%u clip=%s mood=%s valence=%d arousal=%u curiosity=%u affection=%u attachment=%u engagement=%u\r\n",
          (unsigned)x,
          (unsigned)y,
@@ -2066,6 +2135,7 @@ bool Companion_Screen_DailyStrokeAt(uint16_t start_x,
   comp_epaper_expression_state_t previous_state;
   comp_pet_attention_direction_t attention;
   comp_pet_stroke_direction_t stroke;
+  comp_pet_performance_event_t performance_event;
 
   if (s_companion_screen_presentation.mode !=
       COMP_SCREEN_PRESENTATION_EXPRESSION)
@@ -2076,6 +2146,25 @@ bool Companion_Screen_DailyStrokeAt(uint16_t start_x,
   if (stroke == COMP_PET_STROKE_NONE)
   {
     return Companion_Screen_DailyTapAt(end_x, end_y);
+  }
+  performance_event = COMP_PET_PERFORMANCE_EVENT_DAILY_STROKE;
+  switch (stroke)
+  {
+  case COMP_PET_STROKE_LEFT:
+    performance_event = COMP_PET_PERFORMANCE_EVENT_DAILY_SWIPE_LEFT;
+    break;
+  case COMP_PET_STROKE_RIGHT:
+    performance_event = COMP_PET_PERFORMANCE_EVENT_DAILY_SWIPE_RIGHT;
+    break;
+  case COMP_PET_STROKE_UP:
+    performance_event = COMP_PET_PERFORMANCE_EVENT_DAILY_SWIPE_UP;
+    break;
+  case COMP_PET_STROKE_DOWN:
+    performance_event = COMP_PET_PERFORMANCE_EVENT_DAILY_SWIPE_DOWN;
+    break;
+  case COMP_PET_STROKE_NONE:
+  default:
+    break;
   }
   attention = comp_pet_attention_from_touch(end_x, end_y, 200u, 200u);
   Companion_PetBehavior_Advance();
@@ -2114,6 +2203,7 @@ bool Companion_Screen_DailyStrokeAt(uint16_t start_x,
         0u);
   }
   s_companion_expression_transition_immediate = false;
+  Companion_PetPerformance_ApplyEvent(performance_event);
   SCREEN_INTERACTION_TRACE("[pet-stroke] direction=%s start=%u,%u end=%u,%u duration_ms=%lu clip=%s mood=%s valence=%d arousal=%u curiosity=%u affection=%u attachment=%u engagement=%u\r\n",
          comp_pet_behavior_stroke_name(stroke),
          (unsigned)start_x,
@@ -2162,6 +2252,8 @@ static void Companion_Display_EnqueueExpressionSignal(
     }
     return;
   }
+
+  Companion_PetPerformance_ApplyExpressionSignal(signal);
 
   if (signal == COMP_EPAPER_EXPRESSION_SIGNAL_SPEAKER_RESULT &&
       s_companion_touch_attention_clip != NULL)

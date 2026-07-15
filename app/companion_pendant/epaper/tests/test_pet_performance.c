@@ -1,4 +1,5 @@
 #include "pet_performance.h"
+#include "pet_performance_event_bridge.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -17,7 +18,8 @@ int main(void)
     comp_pet_performance_t performance;
     comp_pet_performance_frame_t frame;
 
-    if (require_true(comp_pet_performance_self_test(), "portable self-test")) {
+    if (require_true(comp_pet_performance_self_test(), "portable self-test") ||
+        require_true(comp_pet_performance_event_bridge_self_test(), "event bridge self-test")) {
         return 1;
     }
     comp_pet_performance_init(&performance);
@@ -56,7 +58,29 @@ int main(void)
         require_true(comp_pet_performance_recover_to_idle(&performance, &frame) &&
                          frame.scene == COMP_PET_PERFORMANCE_SCENE_DAILY_IDLE &&
                          frame.phase == COMP_PET_PERFORMANCE_PHASE_SUSTAINED,
-                     "recovery returns through the only universal idle path")) {
+                     "recovery returns through the only universal idle path") ||
+        require_true(comp_pet_performance_apply_expression_signal(
+                         &performance, COMP_EPAPER_EXPRESSION_SIGNAL_RECORDING_START, &frame) &&
+                         frame.scene == COMP_PET_PERFORMANCE_SCENE_RECORDING_START,
+                     "recording signal selects a portable recording scene") ||
+        require_true(comp_pet_performance_apply_expression_signal(
+                         &performance, COMP_EPAPER_EXPRESSION_SIGNAL_RECORDING_STOP, &frame) &&
+                         frame.scene == COMP_PET_PERFORMANCE_SCENE_RECORDING_SAVING,
+                     "recording stop selects saving without target code") ||
+        require_true(comp_pet_performance_apply_expression_signal(
+                         &performance, COMP_EPAPER_EXPRESSION_SIGNAL_RECORDING_FINISHED, &frame) &&
+                         frame.scene == COMP_PET_PERFORMANCE_SCENE_RECORDING_SAVED,
+                     "recording finished selects saved scene") ||
+        require_true(comp_pet_performance_apply_expression_signal(
+                         &performance, COMP_EPAPER_EXPRESSION_SIGNAL_RECOVERY, &frame),
+                     "recovery signal returns to idle") ||
+        require_true(comp_pet_performance_apply_event(
+                         &performance, COMP_PET_PERFORMANCE_EVENT_DAILY_SWIPE_RIGHT, &frame) &&
+                         strcmp(frame.resource_family, "daily.swipe_right") == 0,
+                     "direct stroke event keeps its direction") ||
+        require_true(!comp_pet_performance_apply_expression_signal(
+                          &performance, COMP_EPAPER_EXPRESSION_SIGNAL_SPEAKER_RESULT, &frame),
+                     "generic speaker result cannot erase precise touch semantics")) {
         return 1;
     }
 
