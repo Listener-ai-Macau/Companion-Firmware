@@ -50,6 +50,7 @@
 #include "expression_asset_source.h"
 #include "expression_events.h"
 #include "expression_state.h"
+#include "menu_v5_target_bridge.h"
 #include "panel_adapter.h"
 #include "panel_target_stm32wb.h"
 #include "pet_attention.h"
@@ -653,8 +654,9 @@ void APP_BLE_Init( void )
              &s_companion_display_queue),
          (unsigned long)comp_epaper_display_queue_stale_generation_discard_count(
              &s_companion_display_queue));
-  printf("[screen] core_selftest menu=%s gesture=%s presentation=%s emote_player=%s asset_store=%s asset_pack=%s expression_source=%s refresh_policy=%s\r\n",
+  printf("[screen] core_selftest menu=%s menu_v5_bridge=%s gesture=%s presentation=%s emote_player=%s asset_store=%s asset_pack=%s expression_source=%s refresh_policy=%s\r\n",
          comp_screen_menu_self_test() ? "pass" : "fail",
+         comp_menu_v5_target_bridge_self_test() ? "pass" : "fail",
          comp_touch_gesture_self_test() ? "pass" : "fail",
          comp_screen_presentation_self_test() ? "pass" : "fail",
          comp_emote_player_self_test() ? "pass" : "fail",
