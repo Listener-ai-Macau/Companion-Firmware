@@ -33,6 +33,7 @@ static const char *const k_event_names[COMP_PET_PERFORMANCE_EVENT_COUNT] = {
     "upgrade_success",
     "upgrade_error",
     "upgrade_dismiss",
+    "recover_to_idle",
 };
 
 static bool event_scene(comp_pet_performance_event_t event,
@@ -125,6 +126,7 @@ static bool event_scene(comp_pet_performance_event_t event,
         return true;
     case COMP_PET_PERFORMANCE_EVENT_RECORDING_RECOVER:
     case COMP_PET_PERFORMANCE_EVENT_UPGRADE_DISMISS:
+    case COMP_PET_PERFORMANCE_EVENT_RECOVER_TO_IDLE:
     case COMP_PET_PERFORMANCE_EVENT_COUNT:
     default:
         return false;
@@ -161,7 +163,8 @@ bool comp_pet_performance_apply_event(comp_pet_performance_t *performance,
 {
     comp_pet_performance_scene_t scene;
     if (event == COMP_PET_PERFORMANCE_EVENT_RECORDING_RECOVER ||
-        event == COMP_PET_PERFORMANCE_EVENT_UPGRADE_DISMISS) {
+        event == COMP_PET_PERFORMANCE_EVENT_UPGRADE_DISMISS ||
+        event == COMP_PET_PERFORMANCE_EVENT_RECOVER_TO_IDLE) {
         return comp_pet_performance_recover_to_idle(performance, out_frame);
     }
     return event_scene(event, &scene) &&

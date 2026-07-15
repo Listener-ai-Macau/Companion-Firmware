@@ -32,7 +32,14 @@
   },
   "machine_replay": {
     "event_bridge": "app/companion_pendant/epaper/pet_performance_event_bridge.c",
-    "host_command": "pwsh -NoProfile -File .\\tools\\test_pet_performance_host.ps1",
+    "host_command": "pwsh -NoProfile -File .\\tools\\test_total_scene_replay_host.ps1",
+    "host_test_source": "app/companion_pendant/epaper/tests/test_total_scene_replay.c",
+    "coverage": [
+      "upgrade success and error recovery",
+      "recording success and error recovery",
+      "menu select and blocked recovery",
+      "priority preemption rejection"
+    ],
     "upgrade_events_are_replay_only": true,
     "resource_activation": "disabled_pending_named_v9_state_review",
     "hardware_or_ota_execution_claimed": false

@@ -62,6 +62,13 @@ remain event observations of the shared Denzic Platform recording lifecycle;
 the bridge neither starts nor stops DMA. Resource activation remains disabled
 until the v9 state-specific REF/PBM/CEMP review gate is passed.
 
+`pwsh -NoProfile -File .\tools\test_total_scene_replay_host.ps1` provides the
+machine-only replay proof. It validates upgrade success and failure recovery,
+recording success and failure recovery, menu select and blocked recovery, and
+the priority rule that a committed upgrade transfer or active recording cannot
+be replaced by a lower-priority menu/recording/upgrade request. It does not
+render, pack, provision, flash, or open a human acceptance window.
+
 ## Priority Scenes
 
 | Scene key | Real event boundary | Entry | Sustained state | Exit / recovery | Initial resource status |
