@@ -1,0 +1,48 @@
+{
+  "schema_id": "companion.menu_v5_function_contract.v1",
+  "status": "PASS_PORTABLE_FUNCTION_CONTRACT_PENDING_VISUAL_BASELINE",
+  "source_candidate": {
+    "path": "docs/art/iterations/companion-menu-v5-four-root/generated_menu_v5_four_root_candidate_r1.png",
+    "sha256": "8D4503ACE198A6560E89004C5B8B2FE8C972BF828C6BB4839399D696CD665935",
+    "owner_visual_decision": "PENDING_OWNER_VISUAL_REVIEW"
+  },
+  "portable_contract": {
+    "source": "app/companion_pendant/epaper/menu_v5_contract.c",
+    "roots": ["voice", "device", "connection", "preferences"],
+    "item_count": 15,
+    "selectable_actions": [
+      "record_start_or_stop",
+      "pair_new_device",
+      "reconnect",
+      "language"
+    ],
+    "live_data": [
+      "record_history_when_available",
+      "e_paper_health",
+      "touch_health",
+      "battery_when_supported",
+      "ui_asset_health",
+      "link_health",
+      "diagnostics_when_available",
+      "about"
+    ],
+    "explicitly_non_selectable_until_implemented": [
+      "wake_word",
+      "gesture_policy",
+      "refresh_policy",
+      "record_history_before_backend",
+      "diagnostics_before_ui_backend",
+      "battery_before_hardware"
+    ]
+  },
+  "forbidden_before_visual_approval": [
+    "replace the current external Flash menu pack",
+    "activate menu-v5 on hardware",
+    "import PBM or CEMP assets",
+    "claim a visual PASS"
+  ],
+  "verification": {
+    "host_test": "pwsh -NoProfile -File .\\tools\\test_menu_v5_contract_host.ps1",
+    "result": "PASS: menu-v5 keeps four roots, 15 real/deferred rows, and only committed actions selectable."
+  }
+}

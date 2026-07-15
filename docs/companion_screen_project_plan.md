@@ -1450,6 +1450,100 @@ traceback；硬件行动卡在尚未执行时必须生成 `NO_GO_WAITING_FOR_REA
 验收目录，不能只把路径留在被清理的 `.cache` 中。FTS02 升压故障仍由 Revision 90/
 COMP-REQ-034 独立阻塞真屏，不允许借这次证据修复改动显示策略或美术。
 
+## Revision 100: v9 美术基线与局部迭代锁定
+
+owner 已明确选择 `companion-pet-expression-v9` 为唯一活动表情基线；后续整张
+重新生图、自由重构或把早先候选当作 fallback 都是回退。`COMP-REQ-053` 将此
+决定关联到本计划的 3.1 生成表情包步骤：当前工作先锁定源图，资源导入仍为
+pending，而非把图直接刷到外部 Flash。
+
+每轮美术只能在原始 v9 画布内修改一个命名可见变量和一个命名状态，例如只调整
+`idle_calm` 的成对白色高光位置。请求必须同时声明锁定的非目标区域、禁止特征和
+源图哈希；产物带局部前后对比后交给 owner 选择。拒绝后仍从 v9 重试同一变量，
+不得拿失败图继续生图或扩展到其他格。只有 owner 选定的某一状态才能进入
+REF/PBM/CEMP 比对和新的外部 Flash 资源 revision。
+
+这条路线既保留将来为不同屏幕尺寸或状态扩展的速度，也防止每次生成把角色眼睛、
+构图和气质悄悄重做。历史候选是不可激活的审计记录，不是新的美术输入。
+
+## Revision 101: 无硬件总场景回放先行
+
+owner 要求在下一次实体硬件会话前，优先关闭所有可独立机器验证的工作。
+`COMP-REQ-055` 先把 upgrade、recording、menu 三条总场景接入既有的
+`pet_performance_event_bridge`：每个入口只接受已提交的产品事件，输出场景、
+phase、generation 和外部资源族元数据，不选择位图、CEMP、刷新模式或 target HAL。
+
+upgrade 事件明确是 `replay-only`。`test_total_scene_replay_host.ps1` 可在主机上
+回放成功与失败路径，覆盖 `offer -> prepare -> transfer -> verify -> restart ->
+success -> dismiss`、`transfer -> error -> dismiss`，并验证 transfer 期间不会被
+菜单或录音场景抢占；
+但不能由此启动 Denzic OTA、擦写 Flash、重启或刷机。录音仍由 shared
+Denzic Platform core 拥有，v9 美术仍需具名状态 REF/PBM/CEMP 审核，真屏仍由
+COMP-REQ-034 的 FTS02 升压恢复门禁控制。
+
+## Revision 102: v9 单状态审核包准备
+
+不再把“全 sheet 已确认”误读为资源导入授权。`prepare_v9_state_render_review.py`
+只接受一个 v9 `state_id` 和一个命名可见变量，写出 source-only 审核 JSON，固定源图
+hash、网格坐标、portable runtime bindings、允许 delta 和锁定区域。它的当前默认状态
+没有已选择的 state，`rendered_artifacts=[]`，并明确禁止 PBM crop、CEMP revision、
+external Flash、firmware flash 和 fallback substitution。
+
+owner 在该包上对一个具体状态作出明确选择后，才创建该状态的 REF/PBM/CEMP comparison。
+这样既让不同屏幕和未来美术变更可以快速进入可审计流程，也保证没有任何旧候选或
+“工程味”程序化表情被悄悄导入。
+
+## Revision 103: v9 审核包独立校验
+
+`verify_v9_state_render_review_packet.py` 读取一个待审核包后，重新比对 v9 source
+hash、3x4 网格、具名状态、runtime bindings、单一命名可见变量、锁定区域和禁止动作。
+任何图源漂移、错误 cell、错误绑定、已渲染 artifact 或提前的资源激活声明都会失败。
+它和生成器一样只处理 JSON，不能生成 PBM、CEMP、Flash 写入或 firmware flash。
+
+因此未来的单状态美术迭代有两道机器门：生成器防止未经选择的状态进入流程，验证器
+防止审核包被手改成新的来源或“已经可以导入”。明确的 owner 决定和逐状态
+REF/PBM/CEMP comparison 仍是下一步，未被这道静态验证替代。
+
+## Revision 104: 四项菜单与 v9 特殊场景优先
+
+owner 将菜单收敛为一个 200x200 的四项主页：Voice、Device、Connection、Preferences。
+原先六项主页和两页目录不再是当前方向；Status、语言和 About 作为四个真实根入口的详情
+数据/控制，不能再占用独立主页位置。`COMP-REQ-056` 固定了功能信息架构，v5 生成图只作为
+新的视觉基线候选，未经 source-to-rendered 比较和 owner 决定不得替换资源。
+
+v9 不重新生整张 sheet。录音、保存、已保存、低功耗、菜单 hold/enter 优先重用现有 v9 cell；
+其他缺失状态以单状态 extension board 生成，固定 v9 master eye 和内脸语法。`COMP-REQ-057`
+禁止另起画风或用程序化表情补偿。
+
+每次 UI/表情变更先完成静态、host journey、源到渲染资源比较，健康硬件可用时再完成摄像头
+capture 与目标区域比对；这些都是在人工前发现空白、方向、截断、陈旧画面的问题。摄像头
+证据只能解锁 Listener 风格的一项一项人工验收，不能代替 owner 的视觉选择。
+
+## Revision 105: 摄像头先行的视觉 preflight
+
+`capture_companion_camera_frame.ps1` 使用本机 DirectShow 摄像头在 12 秒内抓取一帧并保存
+ffmpeg 日志；`verify_companion_camera_visual_precheck.py` 自动寻找方形面板，透视归一化到
+200x200 后对比预期 render。它分别拒绝没有面板/低对比、180 度方向错误、内容差异和上一帧
+未变化的陈旧内容。合成 self-test 覆盖正常、反向和空白三种结果。
+
+台架排线可能遮断外轮廓；此时可把一次机器记录的四角作为 `--panel-quad` 标定输入，继续做
+自动方向、内容和陈旧画面对比。标定只定义预期区域，不能代替 expected render、摄像头 PASS
+或 owner 视觉选择。
+
+这个 preflight 不是绕过人眼的捷径：FTS02 模拟高压故障存在时它必须给出 machine NO_GO；
+恢复后每项 UI 或特殊场景先完成 camera PASS，再打开同一项的 Listener 式中文人工验收。
+
+## Revision 106: 四项菜单先落功能合同
+
+`menu_v5_contract.*` 先把新的菜单信息架构固定为 portable data contract，而不是继续修改旧的
+六项手绘 renderer：Voice 3 行、Device 4 行、Connection 3 行、Preferences 5 行，共 15 行。
+每一行在当前 runtime context 下只能解析为已提交动作、live datum、明确 deferred 或 planned；
+未实现的 wake word、手势/刷新策略、未接电池和缺失的浏览器不会伪装成可点控制。
+
+这个合同没有产生 PBM/CEMP、没有选择视觉资源，也没有激活硬件菜单。它让 WB55/WBA 共享
+四项行为与状态语义；待 menu-v5 source 获 owner 决定并完成 source-to-rendered/camera 门后，
+新 renderer 只消费该合同并替换旧六项路径，不能再自由设计一版 UI。
+
 ## 逐项验收顺序
 
 本项目遵循 AI Workflow 的全产品异步验收规则：未收到操作者明确的“开始验收”前，
