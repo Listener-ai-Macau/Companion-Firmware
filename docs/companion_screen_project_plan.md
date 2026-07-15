@@ -1668,6 +1668,19 @@ feature 的真实成功/失败再单独送进 `pet_performance_event_bridge`，�
 不会被误当作已经录音成功。host journey 覆盖 record start/stop、language toggle、live E-paper row、
 wake-word/battery unavailable 和所有非法输入，资源/屏幕/硬件仍保持不触碰。
 
+## Revision 117: 四入口与跟手详情导航内核
+
+`menu_v5_navigation.*` 让四项菜单从静态页面约定变成可测试的触控导航内核：200x200 根页固定为
+Voice、Device、Connection、Preferences 的 2x2 入口；详情采用标题下 42 px 行和连续像素 offset，
+手指上/下拖动会直接改变该 offset，行命中使用同一个 offset。Preferences 的第五项因此可在小屏上自然
+露出，而不是依赖旧 menu-v3 的离散页码或滚动位图。
+
+根页打开、标题返回和拖动只改变 UI 导航，不伪造录音、连接或保存成功；只有详情点按调用
+`menu_v5_action_journey`，继承 action/live/unavailable 和 `menu.select`/`menu.blocked` 语义。它仍不
+选择 r4 图、写外部 Flash、渲染或刷新；现有 v3 renderer 的替换必须等 r4 owner visual/camera 门禁。
+host journey 覆盖四入口、录音 action、实时电子纸状态、battery/gesture unavailable、语言切换、连续
+拖动后的行命中和标题返回。
+
 ## 逐项验收顺序
 
 本项目遵循 AI Workflow 的全产品异步验收规则：未收到操作者明确的“开始验收”前，
