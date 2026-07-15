@@ -1670,8 +1670,9 @@ wake-word/battery unavailable 和所有非法输入，资源/屏幕/硬件仍保
 
 ## Revision 117: 四入口与跟手详情导航内核
 
-`menu_v5_navigation.*` 让四项菜单从静态页面约定变成可测试的触控导航内核：200x200 根页固定为
-Voice、Device、Connection、Preferences 的 2x2 入口；详情采用标题下 42 px 行和连续像素 offset，
+`menu_v5_navigation.*` 让四项菜单从静态页面约定变成可测试的触控导航内核：200x200 根页严格采用 r4
+预览的顶端身份留白和 Voice、Device、Connection、Preferences 四条全宽入口；详情采用 40 px 标题下
+36 px 行和连续像素 offset，
 手指上/下拖动会直接改变该 offset，行命中使用同一个 offset。Preferences 的第五项因此可在小屏上自然
 露出，而不是依赖旧 menu-v3 的离散页码或滚动位图。
 

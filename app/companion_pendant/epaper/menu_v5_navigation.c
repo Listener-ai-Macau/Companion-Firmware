@@ -2,8 +2,6 @@
 
 #include <stddef.h>
 
-#define ROOT_GRID_CELL_WIDTH_PX (COMP_MENU_V5_NAVIGATION_WIDTH_PX / 2u)
-#define ROOT_GRID_CELL_HEIGHT_PX (COMP_MENU_V5_NAVIGATION_HEIGHT_PX / 2u)
 #define DETAIL_VIEWPORT_HEIGHT_PX \
     (COMP_MENU_V5_NAVIGATION_HEIGHT_PX - COMP_MENU_V5_NAVIGATION_HEADER_HEIGHT_PX)
 
@@ -56,16 +54,15 @@ bool comp_menu_v5_navigation_root_hit_test(uint16_t x,
                                            uint16_t y,
                                            comp_menu_v5_root_t *out_root)
 {
-    uint8_t column;
-    uint8_t row;
     comp_menu_v5_root_t root;
 
-    if (x >= COMP_MENU_V5_NAVIGATION_WIDTH_PX || y >= COMP_MENU_V5_NAVIGATION_HEIGHT_PX) {
+    if (x >= COMP_MENU_V5_NAVIGATION_WIDTH_PX ||
+        y < COMP_MENU_V5_NAVIGATION_ROOT_HEADER_HEIGHT_PX ||
+        y >= COMP_MENU_V5_NAVIGATION_HEIGHT_PX) {
         return false;
     }
-    column = (uint8_t)(x / ROOT_GRID_CELL_WIDTH_PX);
-    row = (uint8_t)(y / ROOT_GRID_CELL_HEIGHT_PX);
-    root = (comp_menu_v5_root_t)(row * 2u + column);
+    root = (comp_menu_v5_root_t)((y - COMP_MENU_V5_NAVIGATION_ROOT_HEADER_HEIGHT_PX) /
+                                 COMP_MENU_V5_NAVIGATION_ROOT_ROW_HEIGHT_PX);
     if (!root_is_valid(root)) {
         return false;
     }
@@ -215,19 +212,19 @@ bool comp_menu_v5_navigation_self_test(void)
 
     comp_menu_v5_navigation_init(&navigation, COMP_MENU_V5_LANGUAGE_EN);
     if (navigation.view != COMP_MENU_V5_NAVIGATION_ROOTS || navigation.revision != 1u ||
-        !comp_menu_v5_navigation_root_hit_test(150u, 150u, &navigation.root) ||
+        !comp_menu_v5_navigation_root_hit_test(100u, 180u, &navigation.root) ||
         navigation.root != COMP_MENU_V5_ROOT_PREFERENCES) {
         return false;
     }
-    result = comp_menu_v5_navigation_tap(&navigation, 150u, 150u, &context);
+    result = comp_menu_v5_navigation_tap(&navigation, 100u, 180u, &context);
     if (!result.changed || result.event != COMP_MENU_V5_NAVIGATION_EVENT_ROOT_OPENED ||
         navigation.view != COMP_MENU_V5_NAVIGATION_DETAILS ||
         navigation.root != COMP_MENU_V5_ROOT_PREFERENCES ||
-        comp_menu_v5_navigation_max_scroll_px(&navigation) != 42u) {
+        comp_menu_v5_navigation_max_scroll_px(&navigation) != 20u) {
         return false;
     }
-    result = comp_menu_v5_navigation_drag(&navigation, -31);
-    if (!result.changed || navigation.scroll_offset_px != 31u ||
+    result = comp_menu_v5_navigation_drag(&navigation, -15);
+    if (!result.changed || navigation.scroll_offset_px != 15u ||
         !comp_menu_v5_navigation_detail_hit_test(&navigation, 100u, 100u, &context,
                                                   &index, &item) ||
         index != 2u || item.item_id != COMP_MENU_V5_ITEM_REFRESH_POLICY) {
