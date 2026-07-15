@@ -1,6 +1,8 @@
 #include "menu_v5_contract.h"
+#include "menu_v5_localization.h"
 
 #include <stdio.h>
+#include <string.h>
 
 static int fail(const char *message)
 {
@@ -37,6 +39,9 @@ int main(void)
     comp_menu_v5_context_t recording = ready;
     comp_menu_v5_item_t item;
     comp_menu_v5_text_key_t root_key;
+    comp_menu_v5_language_t language;
+    const char *english;
+    const char *chinese;
     uint8_t total = 0u;
 
     if (COMP_MENU_V5_ROOT_COUNT != 4u ||
@@ -91,6 +96,42 @@ int main(void)
         comp_menu_v5_resolve_item(COMP_MENU_V5_ROOT_PREFERENCES, 5u, &ready, &item)) {
         return fail("deferred and bounds contract");
     }
-    printf("PASS: menu-v5 keeps four roots, 15 real/deferred rows, and only committed actions selectable.\n");
+    for (uint8_t key = 0u; key <= (uint8_t)COMP_MENU_V5_TEXT_ABOUT; ++key) {
+        english = comp_menu_v5_text(COMP_MENU_V5_LANGUAGE_EN, (comp_menu_v5_text_key_t)key);
+        chinese = comp_menu_v5_text(COMP_MENU_V5_LANGUAGE_ZH_CN, (comp_menu_v5_text_key_t)key);
+        if (english == NULL || chinese == NULL || english[0] == '\0' || chinese[0] == '\0') {
+            return fail("complete English and Chinese text key coverage");
+        }
+    }
+    if (strcmp(comp_menu_v5_text(COMP_MENU_V5_LANGUAGE_EN, COMP_MENU_V5_TEXT_VOICE), "Voice") != 0 ||
+        strcmp(comp_menu_v5_text(COMP_MENU_V5_LANGUAGE_ZH_CN, COMP_MENU_V5_TEXT_VOICE), "语音") != 0 ||
+        strcmp(comp_menu_v5_text(COMP_MENU_V5_LANGUAGE_ZH_CN, COMP_MENU_V5_TEXT_REFRESH), "刷新频率") != 0 ||
+        strcmp(comp_menu_v5_language_display_name(COMP_MENU_V5_LANGUAGE_EN), "English") != 0 ||
+        strcmp(comp_menu_v5_language_display_name(COMP_MENU_V5_LANGUAGE_ZH_CN), "中文") != 0 ||
+        strcmp(comp_menu_v5_action_label(COMP_MENU_V5_LANGUAGE_EN,
+                                         COMP_MENU_V5_ACTION_RECORD_START), "Record voice") != 0 ||
+        strcmp(comp_menu_v5_action_label(COMP_MENU_V5_LANGUAGE_ZH_CN,
+                                         COMP_MENU_V5_ACTION_RECORD_STOP), "停止录音") != 0 ||
+        comp_menu_v5_action_label(COMP_MENU_V5_LANGUAGE_EN, COMP_MENU_V5_ACTION_NONE) != NULL ||
+        comp_menu_v5_text((comp_menu_v5_language_t)2u, COMP_MENU_V5_TEXT_VOICE) != NULL ||
+        comp_menu_v5_text(COMP_MENU_V5_LANGUAGE_EN, (comp_menu_v5_text_key_t)19u) != NULL) {
+        return fail("complete English and Chinese text resources");
+    }
+    if (!comp_menu_v5_apply_language_action(COMP_MENU_V5_ACTION_LANGUAGE,
+                                             COMP_MENU_V5_LANGUAGE_EN,
+                                             &language) ||
+        language != COMP_MENU_V5_LANGUAGE_ZH_CN ||
+        !comp_menu_v5_apply_language_action(COMP_MENU_V5_ACTION_LANGUAGE,
+                                             language,
+                                             &language) ||
+        language != COMP_MENU_V5_LANGUAGE_EN ||
+        comp_menu_v5_apply_language_action(COMP_MENU_V5_ACTION_RECORD_START,
+                                           COMP_MENU_V5_LANGUAGE_EN,
+                                           &language) ||
+        comp_menu_v5_toggle_language((comp_menu_v5_language_t)2u, &language) ||
+        comp_menu_v5_toggle_language(COMP_MENU_V5_LANGUAGE_EN, NULL)) {
+        return fail("language action must be a real two-language selection");
+    }
+    printf("PASS: menu-v5 keeps four roots, 15 real/deferred rows, and complete English/Chinese selection semantics.\n");
     return 0;
 }

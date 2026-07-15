@@ -1544,6 +1544,118 @@ ffmpeg 日志；`verify_companion_camera_visual_precheck.py` 自动寻找方形�
 四项行为与状态语义；待 menu-v5 source 获 owner 决定并完成 source-to-rendered/camera 门后，
 新 renderer 只消费该合同并替换旧六项路径，不能再自由设计一版 UI。
 
+## Revision 107: menu-v5 的 200x200 参考渲染
+
+`render_menu_v5_candidate_review.py` 读取已记录 hash 的 menu-v5 source 和显式 crop profile，
+只生成五张 200x200 PNG review render（home、Voice、Device、Connection、Preferences）及一张
+contact sheet。它用白色 contain gutter 保留 source 的真实几何，绝不拉伸或在代码里补画控件。
+`verify_menu_v5_candidate_review.py` 重渲染并逐像素对比这五张图，且拒绝任何 PBM、CEMP、
+external Flash 或 firmware 激活声明。
+
+这些 render 让 AI 先检查 200x200 裁切、文字和控件密度；它们仍只是 owner-pending 候选，不是
+资源导入或真屏 PASS。任何新 prompt/source 只需更新 profile source/hash/crop 后重跑同一工具链。
+
+## Revision 108: v9 特殊场景的 200x200 参考渲染
+
+`render_v9_special_scene_review.py` 将 v9-derived 六格 extension board 原样切为 200x200 review
+PNG：recording.error、menu.select、menu.exit、power.charging、link.connected、system.error。
+对应 verifier 逐像素重渲染并验证 source hash、状态语义和完全禁止的 PBM/CEMP/Flash 路径。
+
+这让录音、菜单和系统状态都有同源可检查的目标尺寸候选；但它不把候选误当成 v9 已批准资源。
+每个状态仍必须取得自己的 owner 决定和 source-to-PBM/CEMP comparison，才可以连接 runtime。
+
+## Revision 109: 特殊场景的 portable 意图层
+
+`state-scene-intent.json` 把六格候选固定到已有 portable scene engine 的准确语义：
+recording.error、menu.select、menu.exit、power.charging、link.connected 和 system.error。
+它只验证 scene symbol 与 resource family 的名称一致，`rendered_artifacts=[]`，不挑选任何 PBM
+或 CEMP。这样 v9 候选获准后只需要增加 profile-specific resource mapping；WB55/WBA 的事件
+优先级、交互和低频关键帧语义继续共用，不能被重新实现成贴图分支。
+
+## Revision 110: 菜单美术的功能诚实性门禁
+
+owner 要求先完成美术/UI，并允许 AI 继续关闭不依赖硬件的相邻功能；这一轮首先对
+menu-v5 r1 做了 200x200 机器预检。预检发现 r1 把默认的 `live_data`、`deferred` 和
+`planned` 项同样画成带 chevron 的入口。`menu_v5_contract` 明确这些行不是可提交 action，
+所以 r1 不得再进入 owner 视觉审核或被实现层当作美术来源。
+
+`COMP-REQ-059` 增加独立的 functional-visual contract：只有已提交 action 使用 chevron；
+live datum 只能显示实际值/状态而不显示 chevron；deferred/planned 行必须显式显示
+`DEFERRED`/`PLANNED`，同样不能显示 chevron。它同时固定四个主页入口和 15 个详情行的
+视觉 affordance，并由 `verify_menu_v5_functional_visual_contract.py` 以 portable C 合同和
+generation request 交叉验证。r1 保留为不可激活的审计历史，不能作为 r2 生图输入。
+
+r2 的精确 prompt、锁定 v9 hash、排除的 r1 hash、五页信息架构与 200x200 行高要求均在
+`generation-request-r2.json` 中先行记录。生成后仍必须重新做 source hash、确定性 200x200
+render、功能视觉合同和摄像头 preflight；在此之前禁止 PBM、CEMP、external Flash、firmware
+activation 与人工验收窗口。
+
+## Revision 111: r2 自主美术预检拒绝与 r3 约束
+
+r2 已按 R2 prompt 生成并作为不可变的 source audit artifact 保存，但 AI 在 owner 介入前完成了
+视觉与功能合同检查。它正确消除了 fake chevron，却引入每页底部不属于任一菜单 action 或 datum 的
+lock 控件，打乱 Device 的 `E-PAPER -> TOUCH -> BATTERY -> UI ASSETS` 顺序，并把 `200x200`、
+`ENABLED`、`CONNECTED`、版本号之类固定文本画成仿真的 runtime data。因此 r2 不能交给 owner，
+不能做 PBM/CEMP，也不能作为下一轮生图的 reference。
+
+`r2-ai-visual-preflight.json` 保存完整 source hash、逐项 PASS/FAIL 及禁止动作。r3 的 request
+不引用 r0/r1/r2，而只引用锁定的 v9 内脸语法和 portable menu contract；它显式禁止 lock、底部
+toolbar 和任何假 runtime value，并冻结各详情页的行顺序。`verify_menu_v5_functional_visual_contract.py`
+同时确认 r2 rejection 完整保留、r3 尚无伪造 output hash、r3 排除了所有 rejected source。
+
+这一关仍是 AI 预检而不是 owner visual PASS。r3 生成后必须再次检查五页范围、行顺序、动态值区域、
+chevron 语义和 200x200 裁切，才可能进入 source-to-rendered 与后续摄像头门禁。
+
+## Revision 112: r3 方形目标预检拒绝与 r4 约束
+
+r3 已成功保留 action/deferred/live 的视觉区别，也没有再引入 fake footer；但 AI 对生成板逐页检查时
+发现它把所有 200x200 页面画成了高而窄的 portrait card，下面留下大块空白。这不是可通过裁切
+“修一修”的差异：contain 会把 200px UI 缩小得不可触，crop 则不再是同一张源图。r3 因此作为
+target geometry failure 保存，禁止 owner review、PBM/CEMP 或作为下一轮 source。
+
+r4 明确每一个 tile 本身就是等宽等高、满布局的 200x200 square，并把所有 live datum 改为不带
+边框的短 dash trio，避免看起来像可点击按钮。它不引用 r0-r3 中任何被拒绝的菜单图，只使用
+v9 的锁定内脸语法和 `functional-visual-contract`。机器验证同步检查 r2/r3 rejection 的 source hash、
+r4 没有预填 output hash、四项/15 行顺序和 r4 的 square/no-portrait/unboxed constraints。
+
+## Revision 113: r4 方形候选通过 AI 预检
+
+r4 生成后，AI 先按功能视觉合同而不是“看起来差不多”判断：五页都接近方形，四个根入口和每个
+详情页顺序与 portable contract 一致；chevron 仅出现在 root/action；History、Panel、Touch、
+Assets、Link、About 使用无框动态值区域；Wake Word、Battery 和三个 Preferences 未实现项有明确
+badge；没有 footer、lock、假 toggle 或固定 runtime 数值。因而 r4 可进入下一道确定性 200x200
+source-to-rendered 预检，但依然是 `PENDING_OWNER_VISUAL_REVIEW`，不是资源导入或真屏结果。
+
+`r4-ai-visual-preflight.json` 固定 1536x1024 source hash 和五个近方形 crop。render verifier 现在
+同时拒绝缺失 preflight、hash 漂移和超出 0.94-1.07 的 source aspect，防止以后又把 portrait UI
+偷偷 contain 到 200x200。下一步只生成 review PNG/contact sheet、做逐像素重渲染比较并检查裁切；
+FTS02 恢复前仍不请求硬件或人工验收。
+
+## Revision 114: r4 的确定性 200x200 审核渲染
+
+AI 已将 r4 的五个记录 crop 以 `contain_white` 固定渲染为 home、Voice、Device、Connection、
+Preferences 五张 200x200 PNG 及 contact sheet。验证器重新渲染后逐像素比对输出、hash、crop、
+near-square range 和所有禁止 activation 字段，结果通过。审阅输出保留 r4 的真实内容：四个主页入口、
+行动专用 chevron、无框的 live-value 区域和明确 `DEFERRED`/`PLANNED` 状态，没有把 AI 在源图
+上检查到的语义另行“补画”进 200x200 图。
+
+这完成机器侧 source-to-rendered 阶段，但不改变视觉 acceptance 规则。FTS02 模拟高压故障仍使
+camera preflight 为 `NO_GO`，所以不会刷资源、不会要求 owner 对坏屏作判断，也不会打开人工弹窗。
+当健康 panel 可用时，r4 contact sheet 和预期单页将首先进入摄像头方向/内容/陈旧帧门禁，再进入
+Listener 式单场景视觉验收。
+
+## Revision 115: v5 中英文本与真实语言选择
+
+在 r4 仍 owner-pending 的前提下，语言可独立从资源美术层完成：`menu_v5_localization.*`
+为四个根入口和 15 个详情 text key 提供完整 English/简体中文文案，并且只有已解析的
+`COMP_MENU_V5_ACTION_LANGUAGE` 能从 English 切换为中文或切回 English。录音、配对等任何
+其他 action，以及无效语言/key，都会被拒绝。这样 Preferences 的 Language 不再是美术中的空箭头。
+
+这层不选择位图、CEMP、external Flash 或 target settings store；它只给未来已批准的中英资源包
+和 WB55/WBA persistence adapter 提供可复用的 portable 语义。host 合同测试使用 UTF-8 编译，
+验证完整中英文文案、显示名、双向切换、非语言 action 和无效输入。真屏、语言持久化和 r4
+资源导入仍等 owner visual/camera 门禁，不能由这个主机通过替代。
+
 ## 逐项验收顺序
 
 本项目遵循 AI Workflow 的全产品异步验收规则：未收到操作者明确的“开始验收”前，
