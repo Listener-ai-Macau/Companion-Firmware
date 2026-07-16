@@ -1,0 +1,46 @@
+{
+  "schema": "companion.menu_information_architecture.v1",
+  "iteration_id": "companion-menu-v6-four-root",
+  "status": "FUNCTIONAL_CONTRACT_EXISTS_VISUAL_SOURCE_PENDING",
+  "profile": {"width": 200, "height": 200, "root_rows": 4},
+  "roots": [
+    {
+      "id": "voice",
+      "label_en": "Voice",
+      "label_zh_cn": "语音",
+      "icon_role": "voice_icon",
+      "detail_rows": ["Recording", "History", "Wake word"],
+      "truth_rule": "Recording is live status only. History and Wake word remain live or deferred based on their real availability."
+    },
+    {
+      "id": "device",
+      "label_en": "Device",
+      "label_zh_cn": "设备",
+      "icon_role": "device_icon",
+      "detail_rows": ["E-paper", "Touch", "Battery", "UI assets"],
+      "truth_rule": "Every row is a live fact or explicitly planned state; Battery is planned until hardware support exists."
+    },
+    {
+      "id": "connection",
+      "label_en": "Connection",
+      "label_zh_cn": "连接",
+      "icon_role": "connection_icon",
+      "detail_rows": ["Pair new device", "Link status", "Reconnect"],
+      "truth_rule": "Pair and Reconnect remain real actions; Link status is live data."
+    },
+    {
+      "id": "preferences",
+      "label_en": "Preferences",
+      "label_zh_cn": "偏好设置",
+      "icon_role": "preferences_icon",
+      "detail_rows": ["Language", "Gesture", "Refresh rate", "Diagnostics", "About"],
+      "truth_rule": "Language is a real action. Other rows are truthful live, deferred or planned states."
+    }
+  ],
+  "visual_contract": {
+    "header_role": "approved_v9_inner_face",
+    "row_roles": ["voice_icon", "device_icon", "connection_icon", "preferences_icon", "chevron"],
+    "text_owner": "menu_v5_localization",
+    "forbidden": ["legacy menu art", "six-root homepage", "two-page homepage", "fake action", "code-selected visual fallback"]
+  }
+}

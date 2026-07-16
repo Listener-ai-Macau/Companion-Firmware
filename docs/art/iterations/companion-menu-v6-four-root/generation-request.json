@@ -1,0 +1,39 @@
+{
+  "schema_id": "companion.visual_generation_request.v1",
+  "iteration_id": "companion-menu-v6-four-root",
+  "status": "PENDING_GENERATION_AND_REVIEW",
+  "requested_at": "2026-07-17T00:00:00+08:00",
+  "owner_requirement": "Create a new single-page four-root menu visual baseline for Companion. It must feel cute and carefully designed, retain the owner-approved v9 inner-face identity, and never restore v2-v5/legacy menu art.",
+  "target_profile": {
+    "width": 200,
+    "height": 200,
+    "pixel_style": "pure black and white, 1-bit-ready e-paper reference",
+    "runtime_text": "The renderer supplies actual English and zh-CN labels from menu_v5_localization; the generated source owns layout, icon language, spacing and decoration only.",
+    "asset_storage": "external Flash CEMP only after a separate approved source-to-PBM/CEMP and activation gate"
+  },
+  "source_references": [
+    {
+      "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "role": "sole approved Companion inner-face identity; reuse only its compact paired oval eyes, white highlights, rounded brows, petite nose/W-mouth, cheek dots and sparse charm vocabulary"
+    }
+  ],
+  "information_architecture": {
+    "roots_in_order": ["Voice", "Device", "Connection", "Preferences"],
+    "root_count": 4,
+    "interaction_truth": "Each root opens the existing truthful detail view. Voice has live recording state, history availability and deferred wake-word state; Device has panel, touch, battery and UI-assets facts; Connection has pairing, link status and reconnect; Preferences has language action, gesture/refresh/diagnostics state and About."
+  },
+  "prompt_version": "v6.0",
+  "prompt": "Use the attached owner-approved Companion v9 inner-face sheet as the only character reference. Design one finished, square, monochrome, high-contrast reference screen for a 200 by 200 e-paper companion settings menu. White background, crisp pure black marks only, no grey, gradients, shadows, texture, device frame or outer card. This is a quiet compact device UI, not a landing page. Place a tiny friendly v9-style inner face in a restrained header zone near the top center: identical paired upright black oval eyes with matched small white highlights, detached short rounded brows, petite nose/W-mouth and cheek dots; no cat head outline, ears, whiskers, eyelashes or eyelids. Add one tiny star charm in unused header whitespace. Below it, show exactly four contiguous full-width navigation rows with thin divider rules and generous but efficient vertical rhythm. Each row has a distinct simple black 1-bit icon on the left, a calm central label area, and a tiny right chevron: Voice uses a friendly sound-wave or speech-mark icon; Device uses a simple device/status icon; Connection uses two linked loops; Preferences uses three tidy slider controls. The rows represent, in this exact order, Voice, Device, Connection, Preferences. Do not attempt readable typography; use short neutral text guide strokes in the label area because real English and Chinese strings are rendered later by firmware. The header face and the four icons should look like one premium, gentle, playful Companion system: sparse rounded strokes, balanced whitespace, no dense border, no fake controls, no decorative blobs, no emoticons, no cartoon cat body. Make the composition practical for a 200x200 one-bit e-paper panel and make every touch row visually distinct and obviously tappable.",
+  "negative_constraints": [
+    "no legacy six-row or two-page menu",
+    "no cat silhouette, ears, whiskers, body or enclosure frame",
+    "no old v2-v5 art, legacy CEMP, procedural engineering face or random fallback",
+    "no unreadable generated words used as final text",
+    "no grey, gradients, shading, photography, texture, dark background or oversized black panels",
+    "no rounded floating cards, nested cards, fake status values or fake chevrons",
+    "no new eye identity, eyelid arcs, one-sided eye, sly, flirtatious, smug or tired expression"
+  ],
+  "review_rule": "The generated result is only a pending visual baseline. It cannot be imported, rendered, provisioned, flashed or called a visual pass until its source hash, machine layout review, actual localization overlay and owner decision are recorded.",
+  "next_prompt_delta": "After review, change only one owner-named visible variable against this exact generated source; do not restart the composition or reintroduce retired art."
+}
