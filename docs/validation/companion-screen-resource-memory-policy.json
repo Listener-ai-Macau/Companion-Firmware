@@ -15,6 +15,19 @@
     "revision": 53,
     "status": "runtime_recheck_pending"
   },
+  "current_goal_visual_boundary": {
+    "active_inner_face_source": "companion-pet-expression-v9",
+    "active_inner_face_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "candidate_pack": {
+      "clips": 13,
+      "frames": 39,
+      "name": "companion-v9-expression-candidate-200x200",
+      "revision": 90,
+      "status": "machine_proved_not_runtime_activated"
+    },
+    "legacy_r53": "historical WB55 storage evidence only; prohibited as a current visual source or fallback",
+    "product_runtime": "external CEMP base only; unavailable visual sources fail closed without procedural, test-pattern, or complete code-menu substitution"
+  },
   "migration": {
     "baseline": "STM32WBA55",
     "expanded": "STM32WBA65",

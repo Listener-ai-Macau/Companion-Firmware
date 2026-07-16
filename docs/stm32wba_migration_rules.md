@@ -225,9 +225,11 @@ parity remains unclaimed.
   engagement, the latest logical touch focus, and transient directional-stroke
   behavior. It changes only on product events and intentional touch; it does
   not create an idle refresh loop.
-  `pet_expression.h/.c` maps that state into eye width, reflection scale,
-  eye spacing, paired-eye tilt, full-face shift, brows, gaze, lids, mouth scale, cheeks, and marks in the existing framebuffer. WBA must
-  reuse both modules unchanged.
+  `pet_expression.h/.c` maps that state into historical diagnostic pose
+  parameters. Under the active Companion Goal it is retained only for
+  host/protocol regression and must not be compiled into a WB55/WBA product
+  renderer or used as a visual fallback. WBA reuses the target-neutral behavior
+  state and external-CEMP contract, not the retired procedural face composer.
 - Expression state telemetry is portable:
   `comp_epaper_expression_state_snapshot()` reports current face, last signal,
   revision, visible age, auto-recovery dwell, and suppressed duplicate count

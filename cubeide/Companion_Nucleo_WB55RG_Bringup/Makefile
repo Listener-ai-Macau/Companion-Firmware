@@ -310,7 +310,6 @@ C_SOURCES := \
 	$(ROOT)/app/companion_pendant/epaper/panel_target_stm32wb.c \
 	$(ROOT)/app/companion_pendant/epaper/pet_attention.c \
 	$(ROOT)/app/companion_pendant/epaper/pet_behavior.c \
-	$(ROOT)/app/companion_pendant/epaper/pet_expression.c \
 	$(ROOT)/app/companion_pendant/epaper/pet_performance.c \
 	$(ROOT)/app/companion_pendant/epaper/pet_performance_event_bridge.c \
 	$(ROOT)/app/companion_pendant/epaper/v9_candidate_resource_binding.c \

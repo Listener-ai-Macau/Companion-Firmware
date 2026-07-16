@@ -37,6 +37,8 @@ PET_EXPRESSION_H = EPAPER / "pet_expression.h"
 PET_EXPRESSION_C = EPAPER / "pet_expression.c"
 PET_BEHAVIOR_H = EPAPER / "pet_behavior.h"
 PET_BEHAVIOR_C = EPAPER / "pet_behavior.c"
+RUNTIME_VISUAL_BOUNDARY = ROOT / "docs/validation/companion-runtime-visual-boundary-20260717.json"
+V9_SHA256 = "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
 
 
 def read(path: Path) -> str:
@@ -77,6 +79,7 @@ def main() -> int:
         PET_EXPRESSION_C,
         PET_BEHAVIOR_H,
         PET_BEHAVIOR_C,
+        RUNTIME_VISUAL_BOUNDARY,
     ]
     for path in required:
         require(path.is_file(), f"missing required file: {path.relative_to(ROOT)}", errors)
@@ -104,6 +107,7 @@ def main() -> int:
     panel = read(PANEL_C)
     pet_expression = read(PET_EXPRESSION_H) + "\n" + read(PET_EXPRESSION_C)
     pet_behavior = read(PET_BEHAVIOR_H) + "\n" + read(PET_BEHAVIOR_C)
+    runtime_visual_boundary = json.loads(read(RUNTIME_VISUAL_BOUNDARY))
 
     require(
         contract.get("schema_id") == "companion.screen.resource_memory_policy.v1",
@@ -176,8 +180,8 @@ def main() -> int:
             errors,
         )
     require(
-        "$(ROOT)/app/companion_pendant/epaper/pet_expression.c" in makefile,
-        "WB55 Makefile does not compile the parameterized pet-expression composer",
+        "$(ROOT)/app/companion_pendant/epaper/pet_expression.c" not in makefile,
+        "WB55 product Makefile must not compile the retired procedural face composer",
         errors,
     )
     require(
@@ -262,18 +266,21 @@ def main() -> int:
     ):
         require(token in app_ble, f"WB55 external expression integration missing {token}", errors)
     for token in (
-        "comp_pet_expression_render",
-        "comp_pet_behavior_compose_expression_pose",
-        "screen_framebuffer",
-        "COMP_EPAPER_DISPLAY_REQUEST_PET_EXPRESSION",
-    ):
-        require(token in pet_expression + pet_behavior + panel,
-                f"parameterized pet-expression architecture missing {token}", errors)
-    for token in (
         "comp_epaper_expression_asset_source_copy_expression",
         "source=external_flash",
+        "source=unavailable kind=",
+        "suppressing visual fallback",
     ):
         require(token in panel, f"SSD1681 external frame path missing {token}", errors)
+    for token in (
+        "comp_pet_expression_render",
+        "COMP_EPAPER_DISPLAY_REQUEST_PET_EXPRESSION",
+        "comp_screen_menu_render(",
+        "source=procedural",
+        "source=rescue_ui",
+    ):
+        require(token not in app_ble + panel,
+                f"current product renderer retains a retired visual fallback: {token}", errors)
 
     frame_arrays = re.findall(
         r"static\s+const\s+uint8_t\s+s_expression_[a-z0-9_]+"
@@ -301,13 +308,16 @@ def main() -> int:
         "emote_asset_pack",
         "intro / loop / tail",
         "WBA55/WBA65",
-        "参数化表情合成器",
+        "当前 Goal 覆盖",
+        "companion-pet-expression-v9",
+        "fail closed",
+        "pet_expression.c",
     )
     for token in policy_tokens:
         require(token in policy, f"resource policy missing anchor: {token}", errors)
     for token in ("SCR-12", "SCR-13", "正常资源默认位于外部 Flash"):
         require(token in plan, f"screen project plan missing resource anchor: {token}", errors)
-    for token in ("comp_asset_store_t", "<=16 KiB rescue UI", "WBA65 internal flash", "pet_expression", "pet_behavior"):
+    for token in ("comp_asset_store_t", "<=16 KiB rescue UI", "WBA65 internal flash", "pet_expression", "pet_behavior", "must not be compiled"):
         require(token in wba_rules, f"WBA migration rules missing resource anchor: {token}", errors)
     for token in ("`ui_assets`", "wrong-profile", "rescue UI"):
         require(token in boot_layout, f"boot/flash layout missing resource anchor: {token}", errors)
@@ -321,51 +331,19 @@ def main() -> int:
     wb_partition = contract.get("wb55_devboard_partition", {})
     require(wb_partition.get("base") == "0x00200000", "WB55 ui_assets base drifted", errors)
     require(wb_partition.get("size_bytes") == 2 * 1024 * 1024, "WB55 ui_assets size drifted", errors)
-    wb55_evidence = contract.get("wb55_real_evidence", {})
-    menu_evidence_path = ROOT / "docs/validation/companion-screen-bilingual-menu-wb55.json"
-    menu_evidence = json.loads(menu_evidence_path.read_text(encoding="utf-8"))
-    menu_pack = menu_evidence.get("resource_pack", {})
-    runtime_status = str(menu_evidence.get("runtime_evidence", {}).get("status", ""))
-    candidate_pack = contract.get("candidate_pack", {})
-    if runtime_status.endswith("_RUNTIME_RECHECK_PENDING"):
-        require(candidate_pack.get("revision") == menu_pack.get("revision"),
-                "candidate pack revision drifted from menu evidence", errors)
-        require(candidate_pack.get("clips") == menu_pack.get("clips"),
-                "candidate pack clip count drifted from menu evidence", errors)
-        require(candidate_pack.get("frames") == menu_pack.get("frames"),
-                "candidate pack frame count drifted from menu evidence", errors)
-        require(candidate_pack.get("pack_bytes") == menu_pack.get("total_bytes"),
-                "candidate pack size drifted from menu evidence", errors)
-        require(candidate_pack.get("pack_crc32") == menu_pack.get("pack_crc32"),
-                "candidate pack CRC drifted from menu evidence", errors)
-        require(candidate_pack.get("status") == "runtime_recheck_pending",
-                "candidate pack must explicitly be runtime_recheck_pending", errors)
-    else:
-        require(wb55_evidence.get("revision") == menu_pack.get("revision"),
-                "WB55 real evidence revision drifted from menu evidence", errors)
-        require(wb55_evidence.get("pack_bytes") == menu_pack.get("total_bytes"),
-                "WB55 real evidence pack size drifted from menu evidence", errors)
-        require(wb55_evidence.get("pack_crc32") == menu_pack.get("pack_crc32"),
-                "WB55 real evidence CRC drifted from menu evidence", errors)
-    require(wb55_evidence.get("clips") == 33, "WB55 real evidence clip count drifted", errors)
-    require(wb55_evidence.get("frames") == menu_pack.get("frames"),
-            "WB55 real evidence frame count drifted from current menu evidence", errors)
-    if runtime_status.endswith("_RUNTIME_RECHECK_PENDING"):
-        require(
-            wb55_evidence.get("status") == "evidence_unavailable_runtime_recheck_pending",
-            "pending WB55 real evidence must state that durable artifacts are unavailable",
-            errors,
-        )
-    else:
-        for key in ("provision_runtime_log", "normal_runtime_log", "external_render_log"):
-            value = wb55_evidence.get(key)
-            require(isinstance(value, str) and (ROOT / value).is_file(), f"WB55 real evidence missing {key}", errors)
-        normal_value = wb55_evidence.get("normal_runtime_log")
-        if isinstance(normal_value, str) and (ROOT / normal_value).is_file():
-            normal_log = read(ROOT / normal_value)
-            for marker in wb55_evidence.get("required_markers", []):
-                require(isinstance(marker, str) and marker in normal_log,
-                        f"WB55 normal runtime log missing marker: {marker}", errors)
+    current_goal = contract.get("current_goal_visual_boundary", {})
+    v9_candidate = current_goal.get("candidate_pack", {})
+    require(current_goal.get("active_inner_face_source") == "companion-pet-expression-v9", "current source is not locked v9", errors)
+    require(current_goal.get("active_inner_face_sha256") == V9_SHA256, "current v9 source hash drifted", errors)
+    require(v9_candidate.get("name") == "companion-v9-expression-candidate-200x200", "current v9 candidate pack name drifted", errors)
+    require(v9_candidate.get("revision") == 90 and v9_candidate.get("clips") == 13 and v9_candidate.get("frames") == 39, "current v9 candidate geometry drifted", errors)
+    require(v9_candidate.get("status") == "machine_proved_not_runtime_activated", "v9 candidate activation boundary drifted", errors)
+    require("prohibited" in str(current_goal.get("legacy_r53", "")), "r53 legacy pack is not explicitly prohibited as a current visual source", errors)
+    require("external CEMP base only" in str(current_goal.get("product_runtime", "")), "current runtime is not external-CEMP-only", errors)
+    require(runtime_visual_boundary.get("status") == "PASS_CURRENT_SOURCE_NO_PROCEDURAL_VISUAL_FALLBACK", "runtime visual boundary is not PASS", errors)
+    require(runtime_visual_boundary.get("elf", {}).get("forbidden_symbol_matches") == 0, "runtime ELF still exposes a retired visual symbol", errors)
+    runtime_policy = runtime_visual_boundary.get("runtime_policy", {})
+    require(runtime_policy.get("menu_visual_base") == "external CEMP base required; no complete code-rendered fallback", "runtime menu fallback policy drifted", errors)
     portable_contract = contract.get("portable_contract", {})
     require(portable_contract.get("binary_pack_magic") == "CEMP", "binary pack magic drifted", errors)
     require(portable_contract.get("binary_pack_header_bytes") == 80, "binary pack header size drifted", errors)

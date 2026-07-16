@@ -18,6 +18,7 @@ ARTIFACTS = {
     "low_power": ROOT / "docs/validation/companion-low-power-requirements.json",
     "wb55_build_receipt": ROOT / "docs/validation/companion-wb55-current-build-receipt-20260717.json",
     "runtime_visual_boundary": ROOT / "docs/validation/companion-runtime-visual-boundary-20260717.json",
+    "resource_memory_policy": ROOT / "docs/validation/companion-screen-resource-memory-policy.json",
     "wba_m33_compile": ROOT / "docs/validation/companion-screen-wba-adapter-m33-compile.json",
     "wba_spi_nor": ROOT / "docs/validation/companion-wba-spi-nor-adapter.json",
     "wba_v9_callback_replay": ROOT / "docs/validation/companion-wba-v9-cemp-callback-replay-20260717.json",
@@ -66,6 +67,7 @@ def build_audit() -> dict[str, Any]:
     low_power = load_json("low_power")
     wb55_build_receipt = load_json("wb55_build_receipt")
     runtime_visual_boundary = load_json("runtime_visual_boundary")
+    resource_memory_policy = load_json("resource_memory_policy")
     wba_m33_compile = load_json("wba_m33_compile")
     wba_spi_nor = load_json("wba_spi_nor")
     wba_v9_callback_replay = load_json("wba_v9_callback_replay")
@@ -116,6 +118,15 @@ def build_audit() -> dict[str, Any]:
     check(errors, runtime_visual_boundary.get("elf", {}).get("forbidden_symbol_matches") == 0, "runtime ELF contains a retired visual symbol")
     for key in ("firmware_flashed", "panel_command", "camera_or_human_visual_pass"):
         check(errors, runtime_visual_boundary.get("hardware_boundary", {}).get(key) is False, f"runtime visual-boundary hardware claim drifted: {key}")
+    resource_goal_boundary = resource_memory_policy.get("current_goal_visual_boundary", {})
+    resource_v9_candidate = resource_goal_boundary.get("candidate_pack", {})
+    check(errors, resource_memory_policy.get("status") == "PASS", "resource memory policy is not PASS")
+    check(errors, resource_goal_boundary.get("active_inner_face_source") == "companion-pet-expression-v9", "resource policy current visual source drifted")
+    check(errors, resource_goal_boundary.get("active_inner_face_sha256") == V9_SHA256, "resource policy v9 source hash drifted")
+    check(errors, resource_v9_candidate.get("name") == "companion-v9-expression-candidate-200x200" and resource_v9_candidate.get("revision") == 90 and resource_v9_candidate.get("clips") == 13 and resource_v9_candidate.get("frames") == 39, "resource policy v9 candidate geometry drifted")
+    check(errors, resource_v9_candidate.get("status") == "machine_proved_not_runtime_activated", "resource policy permits v9 runtime activation")
+    check(errors, "prohibited" in str(resource_goal_boundary.get("legacy_r53", "")), "resource policy permits r53 as a current visual source")
+    check(errors, "external CEMP base only" in str(resource_goal_boundary.get("product_runtime", "")), "resource policy permits an internal visual fallback")
     check(errors, wba_m33_compile.get("status") == "PASS_STATIC_M33_COMPILE_CONTRACT", "WBA Cortex-M33 adapter compile is not PASS")
     wba_claims = wba_m33_compile.get("claims", {})
     check(errors, wba_claims.get("cube_wba_project_claimed") is False and wba_claims.get("wba_hardware_parity_claimed") is False, "WBA compile evidence overclaims target parity")
@@ -225,6 +236,7 @@ def build_audit() -> dict[str, Any]:
                 evidence("v9_coverage", str(coverage.get("status")), "40 scene families are explicit: 18 available candidates and 22 no-fallback pending sources."),
                 evidence("v9_binding", str(binding.get("status")), "Portable selector remains AVAILABLE_NOT_ACTIVE."),
                 evidence("runtime_visual_boundary", str(runtime_visual_boundary.get("status")), "The runtime cannot substitute a procedural or test face when an external visual asset is unavailable."),
+                evidence("resource_memory_policy", str(resource_memory_policy.get("status")), "The current resource contract accepts only v9 external CEMP candidates and prohibits legacy r53 as a visual fallback."),
             ],
         },
         {
@@ -286,6 +298,7 @@ def build_audit() -> dict[str, Any]:
             "pwsh .\\tools\\test_power_policy_host.ps1",
             "python .\\tools\\capture_wb55_current_build_receipt.py",
             "python .\\tools\\verify_companion_runtime_visual_boundary.py",
+            "python .\\tools\\verify_screen_resource_architecture.py",
             "python .\\tools\\verify_wba_adapter_m33_compile.py --self-test",
             "python .\\tools\\verify_wba_spi_nor_adapter.py --self-test",
             "python .\\tools\\capture_wba_v9_candidate_asset_replay_receipt.py",

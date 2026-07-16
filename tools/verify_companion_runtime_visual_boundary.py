@@ -19,6 +19,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_RECEIPT = ROOT / "docs/validation/companion-runtime-visual-boundary-20260717.json"
 APP_BLE = ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c"
 PANEL_TARGET = ROOT / "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c"
+MAKEFILE = ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile"
 ELF = ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/build/Companion_Nucleo_WB55RG_Bringup.elf"
 SOURCE_PATHS = (
     "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c",
@@ -72,6 +73,7 @@ def source_errors() -> list[str]:
     errors: list[str] = []
     app = APP_BLE.read_text(encoding="utf-8")
     panel = PANEL_TARGET.read_text(encoding="utf-8")
+    makefile = MAKEFILE.read_text(encoding="utf-8")
 
     for token in (
         "s_companion_last_emote_frame_valid",
@@ -112,6 +114,8 @@ def source_errors() -> list[str]:
     ):
         if token in panel:
             errors.append(f"panel runtime still contains retired visual fallback: {token}")
+    if "$(ROOT)/app/companion_pendant/epaper/pet_expression.c" in makefile:
+        errors.append("WB55 product Makefile still compiles the retired procedural face composer")
     return errors
 
 
