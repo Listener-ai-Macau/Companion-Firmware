@@ -48,6 +48,12 @@
       "The four icon roles are visually differentiated as voice, device, connection and preferences.",
       "The generated label strokes are layout guides only and must never become user-visible text; actual English and zh-CN labels remain renderer-owned."
     ],
+    "localized_preview": {
+      "status": "PASS_MACHINE_LOCALIZATION_PREVIEW_PENDING_OWNER",
+      "renderer": "tools/render_companion_menu_v6_localization_preview.py",
+      "report": "docs/validation/companion-menu-v6-localization-preview-20260717.json",
+      "rule": "The host-only preview clears generated guide strokes and draws the four actual strings from menu_v5_localization.c. It never produces a target font asset or runtime resource."
+    },
     "prohibited_before_owner_review": ["PBM import", "CEMP pack", "external Flash provisioning", "firmware flash", "visual PASS claim"]
   },
   "review_rule": "The generated result is only a pending visual baseline. It cannot be imported, rendered, provisioned, flashed or called a visual pass until its source hash, machine layout review, actual localization overlay and owner decision are recorded.",

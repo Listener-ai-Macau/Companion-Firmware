@@ -1,0 +1,138 @@
+{
+  "errors": [],
+  "localization_source": {
+    "path": "app/companion_pendant/epaper/menu_v5_localization.c",
+    "sha256": "F8D6A90EF430338DB4AF5032966429C17E3647361474BE5BF812C4DED975CC4B"
+  },
+  "preview_font": {
+    "path": "C:\\Windows\\Fonts\\msyh.ttc",
+    "scope": "host-only review renderer; never a target font asset",
+    "sha256": "D79C55E68B1131EEA0CC1C47BE4F572D964F28C682E143DB2AD09C1E4CB07A3F"
+  },
+  "previews": [
+    {
+      "black_pixels": 2916,
+      "labels": [
+        "Voice",
+        "Device",
+        "Connection",
+        "Preferences"
+      ],
+      "language": "en",
+      "path": "docs/art/iterations/companion-menu-v6-four-root/generated_menu_four_root_v6_en_200x200_localization_preview.png",
+      "placements": [
+        {
+          "bbox": [
+            54,
+            70,
+            88,
+            80
+          ],
+          "font_px": 13,
+          "label": "Voice"
+        },
+        {
+          "bbox": [
+            54,
+            105,
+            95,
+            115
+          ],
+          "font_px": 13,
+          "label": "Device"
+        },
+        {
+          "bbox": [
+            54,
+            140,
+            125,
+            150
+          ],
+          "font_px": 13,
+          "label": "Connection"
+        },
+        {
+          "bbox": [
+            54,
+            175,
+            126,
+            185
+          ],
+          "font_px": 13,
+          "label": "Preferences"
+        }
+      ]
+    },
+    {
+      "black_pixels": 2862,
+      "labels": [
+        "\u8bed\u97f3",
+        "\u8bbe\u5907",
+        "\u8fde\u63a5",
+        "\u504f\u597d\u8bbe\u7f6e"
+      ],
+      "language": "zh_cn",
+      "path": "docs/art/iterations/companion-menu-v6-four-root/generated_menu_four_root_v6_zh_cn_200x200_localization_preview.png",
+      "placements": [
+        {
+          "bbox": [
+            54,
+            69,
+            80,
+            82
+          ],
+          "font_px": 13,
+          "label": "\u8bed\u97f3"
+        },
+        {
+          "bbox": [
+            54,
+            104,
+            80,
+            116
+          ],
+          "font_px": 13,
+          "label": "\u8bbe\u5907"
+        },
+        {
+          "bbox": [
+            54,
+            139,
+            80,
+            151
+          ],
+          "font_px": 13,
+          "label": "\u8fde\u63a5"
+        },
+        {
+          "bbox": [
+            54,
+            174,
+            106,
+            186
+          ],
+          "font_px": 13,
+          "label": "\u504f\u597d\u8bbe\u7f6e"
+        }
+      ]
+    }
+  ],
+  "runtime_boundary": {
+    "cemp_packed": false,
+    "external_flash_provisioned": false,
+    "firmware_flashed": false,
+    "owner_visual_pass": false,
+    "pbm_imported": false,
+    "target_font_asset_changed": false
+  },
+  "schema": "companion.menu_v6_localization_preview.v1",
+  "source": {
+    "dimensions_px": [
+      1254,
+      1254
+    ],
+    "path": "docs/art/iterations/companion-menu-v6-four-root/generated_menu_four_root_v6_candidate.png",
+    "sha256": "07D791A898FABE6E558686F6A4B4CC86094541C6B5116D6E0A3D263930DAA868"
+  },
+  "status": "PASS_MACHINE_LOCALIZATION_PREVIEW_PENDING_OWNER"
+}

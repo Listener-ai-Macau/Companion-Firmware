@@ -20,6 +20,8 @@ SOURCE_SHA256 = "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9D
 MENU_SOURCE = MENU_V6 / "generated_menu_four_root_v6_candidate.png"
 MENU_SOURCE_SHA256 = "07D791A898FABE6E558686F6A4B4CC86094541C6B5116D6E0A3D263930DAA868"
 MENU_PREVIEW = MENU_V6 / "generated_menu_four_root_v6_candidate_200x200_preview.png"
+MENU_EN_PREVIEW = MENU_V6 / "generated_menu_four_root_v6_en_200x200_localization_preview.png"
+MENU_ZH_PREVIEW = MENU_V6 / "generated_menu_four_root_v6_zh_cn_200x200_localization_preview.png"
 SYSTEM_SOURCE = SPECIAL_STATES / "generated_pet_special_system_v1_candidate.png"
 SYSTEM_SOURCE_SHA256 = "AF9ADFD49C47C89DF674726D7201CC49C61ED636306013697822BB42FB1A9C82"
 SYSTEM_PREVIEW = SPECIAL_STATES / "generated_pet_special_system_v1_candidate_200x200_preview.png"
@@ -41,7 +43,9 @@ def main() -> int:
         path for path in ART.rglob("*")
         if path.is_file() and path.suffix.lower() in renderable_suffixes
     ]
-    allowed_menu_renderables = {MENU_SOURCE.resolve(), MENU_PREVIEW.resolve()}
+    allowed_menu_renderables = {
+        MENU_SOURCE.resolve(), MENU_PREVIEW.resolve(), MENU_EN_PREVIEW.resolve(), MENU_ZH_PREVIEW.resolve(),
+    }
     allowed_system_renderables = {SYSTEM_SOURCE.resolve(), SYSTEM_PREVIEW.resolve()}
     allowed_journey_renderables = {JOURNEY_SOURCE.resolve(), JOURNEY_PREVIEW.resolve()}
     unauthorized_renderables = [
@@ -61,6 +65,11 @@ def main() -> int:
     menu_ledger = json.loads((MENU_V6 / "iteration-ledger.json").read_text(encoding="utf-8"))
     menu_review = json.loads(
         (ROOT / "docs/validation/companion-menu-v6-source-review-20260717.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    menu_localization_review = json.loads(
+        (ROOT / "docs/validation/companion-menu-v6-localization-preview-20260717.json").read_text(
             encoding="utf-8"
         )
     )
@@ -109,10 +118,27 @@ def main() -> int:
         errors.append("v6 menu machine review does not match the pending source hash")
     if menu_review.get("preview", {}).get("dimensions_px") != [200, 200]:
         errors.append("v6 menu machine review is missing the 200x200 preview")
+    if menu_localization_review.get("status") != "PASS_MACHINE_LOCALIZATION_PREVIEW_PENDING_OWNER":
+        errors.append("v6 menu localized previews must remain a pending-owner machine preview")
+    if menu_localization_review.get("source", {}).get("sha256", "").upper() != MENU_SOURCE_SHA256:
+        errors.append("v6 menu localized previews do not match the pending source hash")
+    localized_previews = menu_localization_review.get("previews", [])
+    if [preview.get("language") for preview in localized_previews] != ["en", "zh_cn"]:
+        errors.append("v6 menu localized previews must contain English then zh-CN")
+    if any(preview.get("labels") != expected for preview, expected in zip(
+        localized_previews,
+        [["Voice", "Device", "Connection", "Preferences"], ["\u8bed\u97f3", "\u8bbe\u5907", "\u8fde\u63a5", "\u504f\u597d\u8bbe\u7f6e"]],
+        strict=True,
+    )):
+        errors.append("v6 menu localized preview labels drifted from the four-root contract")
     runtime_boundary = menu_review.get("runtime_boundary", {})
     for key in ["pbm_imported", "cemp_packed", "external_flash_provisioned", "firmware_flashed", "owner_visual_pass"]:
         if runtime_boundary.get(key) is not False:
             errors.append(f"v6 menu review must keep {key}=false")
+    localized_runtime_boundary = menu_localization_review.get("runtime_boundary", {})
+    for key in ["pbm_imported", "cemp_packed", "external_flash_provisioned", "firmware_flashed", "owner_visual_pass", "target_font_asset_changed"]:
+        if localized_runtime_boundary.get(key) is not False:
+            errors.append(f"v6 menu localized preview must keep {key}=false")
     if any(path.suffix.lower() in {".pbm", ".cemp"} for path in MENU_V6.rglob("*")):
         errors.append("pending v6 menu source must not contain PBM or CEMP")
     if special_plan.get("status") != "SYSTEM_AND_JOURNEY_SOURCES_GENERATED_MACHINE_REVIEW_PENDING_OWNER":
@@ -173,6 +199,9 @@ def main() -> int:
         "retained_source_sha256": source_sha256,
         "pending_menu_source": MENU_SOURCE.relative_to(ROOT).as_posix(),
         "pending_menu_source_sha256": menu_source_sha256,
+        "pending_menu_localization_previews": [
+            MENU_EN_PREVIEW.relative_to(ROOT).as_posix(), MENU_ZH_PREVIEW.relative_to(ROOT).as_posix(),
+        ],
         "pending_system_source": SYSTEM_SOURCE.relative_to(ROOT).as_posix(),
         "pending_system_source_sha256": system_source_sha256,
         "pending_journey_source": JOURNEY_SOURCE.relative_to(ROOT).as_posix(),
@@ -189,7 +218,7 @@ def main() -> int:
         for error in errors:
             print(f"ERROR: {error}")
         return 1
-    print("PASS: docs/art retains only v9, the pending non-importable v6 menu source, two pending v9 special sources, and their exact no-runtime mapping.")
+    print("PASS: docs/art retains only v9, the pending localized v6 menu source, two pending v9 special sources, and their exact no-runtime mapping.")
     return 0
 
 
