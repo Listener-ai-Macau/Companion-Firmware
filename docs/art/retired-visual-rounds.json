@@ -1,0 +1,24 @@
+{
+  "schema": "companion.retired_visual_rounds.v1",
+  "status": "NON_RENDERABLE_AUDIT_ONLY",
+  "active_renderable_baseline": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+  "active_renderable_baseline_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "retired_groups": [
+    {
+      "id": "legacy-expression-v5-and-interaction-v1",
+      "decision": "retired",
+      "reason": "The owner selected v9 as the sole inner-face baseline. Earlier v5 and interaction sheets have different eye and expression grammar and may not seed a prompt, PBM, CEMP, fallback, or firmware resource."
+    },
+    {
+      "id": "legacy-menu-v2-v4-and-menu-entry-v1",
+      "decision": "retired",
+      "reason": "The product now requires a new reference-first four-root menu source. Earlier menu candidates, two-page layouts, and menu-entry performance candidates are not an active visual source or fallback."
+    },
+    {
+      "id": "rejected-menu-entry-v1",
+      "decision": "retired",
+      "reason": "The owner rejected its incompatible visual style."
+    }
+  ],
+  "retention_rule": "This record retains only identifiers, decision and reason. It contains no source image, prompt, crop, PBM, preview, comparison image, or import report."
+}

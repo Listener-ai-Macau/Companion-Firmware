@@ -28,4 +28,5 @@ if ($firstPackHash -ne $secondPackHash) {
 Invoke-Python @("tools/verify_companion_v9_expression_cemp.py", "--write")
 Invoke-Python @("tools/build_companion_v9_scene_coverage.py", "--write")
 Invoke-Python @("tools/verify_companion_v9_scene_coverage.py", "--write")
-Write-Output "PASS: v9 source -> 39/39 PBM -> deterministic CEMP -> decoded PBM -> no-fallback scene coverage."
+Invoke-Python @("tools/verify_companion_art_retirement.py", "--write")
+Write-Output "PASS: v9 source -> 39/39 PBM -> deterministic CEMP -> decoded PBM -> no-fallback scene coverage -> v9-only art workspace."
