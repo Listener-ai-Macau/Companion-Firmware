@@ -1,0 +1,28 @@
+{
+  "schema": "companion.visual_generation_attempts.v1",
+  "iteration_id": "companion-pet-special-states-v1-system",
+  "style_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "attempts": [
+    {
+      "id": "system-v1-attempt-01",
+      "status": "REJECTED_MACHINE_GEOMETRY",
+      "generated_at": "2026-07-17T00:00:00+08:00",
+      "runtime_source": "C:\\Users\\Billy\\.codex\\generated_images\\019f44be-6fce-7140-acbe-cac2c63e2a4e\\exec-b5c6c26b-978b-4e9c-abf9-cb7223eb0632.png",
+      "sha256": "C761AA25CD7DEEFA9BF27342AD62D720EFAC04F49D25DD31A65286A76511214C",
+      "dimensions_px": [1086, 1448],
+      "decision": "The output is a portrait sheet, not a square 1:1 source. It is rejected before visual review because importing it would require a crop or non-uniform 200x200 distortion.",
+      "repository_retention": "No renderable copy is retained under docs/art; this metadata and the image-generator runtime path are the audit record.",
+      "runtime_boundary": {
+        "pbm_imported": false,
+        "cemp_packed": false,
+        "external_flash_provisioned": false,
+        "firmware_flashed": false,
+        "owner_visual_pass": false
+      },
+      "next_prompt_delta": "Retain the exact v9 reference and all semantic cells. Add only a hard square 1:1 canvas constraint with balanced margins."
+    }
+  ]
+}
