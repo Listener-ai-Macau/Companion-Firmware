@@ -78,7 +78,16 @@ def parse_size(output: str) -> dict[str, Any] | None:
 
 def output_tail(output: str) -> list[str]:
     lines = [line for line in output.replace("\r\n", "\n").split("\n") if line]
-    return lines[-16:]
+    interesting = [
+        line
+        for line in lines
+        if "build_nucleo_bringup:" in line
+        or "arm-none-eabi-size" in line
+        or line.strip().startswith("text")
+        or SIZE_PATTERN.fullmatch(line) is not None
+        or line.startswith("make: Leaving directory")
+    ]
+    return interesting[-8:]
 
 
 def capture_variant(name: str, args: tuple[str, ...]) -> dict[str, Any]:
