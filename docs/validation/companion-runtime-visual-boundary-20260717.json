@@ -1,0 +1,34 @@
+{
+  "elf": {
+    "forbidden_symbol_matches": 0,
+    "nm": "C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/14.2 rel1/bin/arm-none-eabi-nm.EXE",
+    "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build/Companion_Nucleo_WB55RG_Bringup.elf",
+    "sha256": "16EAEA01436FDBAB39FA9A107A1B0EB92BE36E581EBA8CFC90BBE98E82BC1389"
+  },
+  "generated_on": "2026-07-17",
+  "hardware_boundary": {
+    "camera_or_human_visual_pass": false,
+    "firmware_flashed": false,
+    "panel_command": false
+  },
+  "runtime_policy": {
+    "active_expression_maintenance": "external CEMP frame replay only",
+    "retired_procedural_face_linked": false,
+    "unavailable_visual_source": "return transport error; do not draw a procedural or test substitute"
+  },
+  "schema": "companion.runtime_visual_boundary.v1",
+  "source_commit": "04b611379827efe2cfc0c8c7939731d7dd130ff2",
+  "source_paths": [
+    "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c",
+    "cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile",
+    "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
+    "tools/verify_companion_runtime_visual_boundary.py"
+  ],
+  "source_sha256": {
+    "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c": "CB972C8BCEC57A8E506BD6B0E954974DF771E2839FAEF6544116812CC84D2C58",
+    "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c": "389B1F2D6B656A8382D1B763CEE3ECB904B7C4D58790E8EC12029C4731C6B75A",
+    "cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile": "9EB22A312E596C8ECDF456B1C9F6EAC389E74CE1FF9B05B4712B50E6EE894286",
+    "tools/verify_companion_runtime_visual_boundary.py": "BD64C5C0F06DFEDE1475F5A77250325267A7A686FF0B0CFED984A8C5AD565C73"
+  },
+  "status": "PASS_CURRENT_SOURCE_NO_PROCEDURAL_VISUAL_FALLBACK"
+}
