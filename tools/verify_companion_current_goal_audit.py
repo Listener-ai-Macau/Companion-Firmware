@@ -18,6 +18,8 @@ ARTIFACTS = {
     "low_power": ROOT / "docs/validation/companion-low-power-requirements.json",
     "wb55_build_receipt": ROOT / "docs/validation/companion-wb55-current-build-receipt-20260717.json",
     "runtime_visual_boundary": ROOT / "docs/validation/companion-runtime-visual-boundary-20260717.json",
+    "external_expression_system": ROOT / "docs/validation/companion-screen-pet-expression-system.json",
+    "refresh_feel": ROOT / "docs/validation/companion-screen-refresh-feel-contract.json",
     "resource_memory_policy": ROOT / "docs/validation/companion-screen-resource-memory-policy.json",
     "wba_m33_compile": ROOT / "docs/validation/companion-screen-wba-adapter-m33-compile.json",
     "wba_spi_nor": ROOT / "docs/validation/companion-wba-spi-nor-adapter.json",
@@ -67,6 +69,8 @@ def build_audit() -> dict[str, Any]:
     low_power = load_json("low_power")
     wb55_build_receipt = load_json("wb55_build_receipt")
     runtime_visual_boundary = load_json("runtime_visual_boundary")
+    external_expression_system = load_json("external_expression_system")
+    refresh_feel = load_json("refresh_feel")
     resource_memory_policy = load_json("resource_memory_policy")
     wba_m33_compile = load_json("wba_m33_compile")
     wba_spi_nor = load_json("wba_spi_nor")
@@ -118,6 +122,17 @@ def build_audit() -> dict[str, Any]:
     check(errors, runtime_visual_boundary.get("elf", {}).get("forbidden_symbol_matches") == 0, "runtime ELF contains a retired visual symbol")
     for key in ("firmware_flashed", "panel_command", "camera_or_human_visual_pass"):
         check(errors, runtime_visual_boundary.get("hardware_boundary", {}).get(key) is False, f"runtime visual-boundary hardware claim drifted: {key}")
+    check(errors, external_expression_system.get("schema_id") == "companion.screen.external_expression_system.v2", "external expression system schema drifted")
+    check(errors, external_expression_system.get("status") == "PASS", "external expression system is not PASS")
+    visual_baseline = external_expression_system.get("visual_baseline", {})
+    check(errors, visual_baseline.get("iteration") == "companion-pet-expression-v9" and visual_baseline.get("source_sha256") == V9_SHA256, "external expression system v9 baseline drifted")
+    check(errors, visual_baseline.get("runtime_resource_activated") is False, "external expression system permits v9 runtime activation")
+    check(errors, external_expression_system.get("runtime_guard", {}).get("expression_maintenance") == "replay the last external CEMP frame only", "external expression maintenance boundary drifted")
+    check(errors, refresh_feel.get("status") == "PASS", "screen refresh feel contract is not PASS")
+    refresh_candidate = refresh_feel.get("candidate", {})
+    check(errors, refresh_candidate.get("name") == "companion-v9-expression-candidate-200x200" and refresh_candidate.get("revision") == 90, "screen refresh candidate drifted from v9")
+    check(errors, refresh_candidate.get("runtime_resource_activated") is False, "screen refresh contract permits runtime activation")
+    check(errors, all(value is True for value in refresh_feel.get("checks", {}).values()), "screen refresh feel contract contains a failed check")
     resource_goal_boundary = resource_memory_policy.get("current_goal_visual_boundary", {})
     resource_v9_candidate = resource_goal_boundary.get("candidate_pack", {})
     check(errors, resource_memory_policy.get("status") == "PASS", "resource memory policy is not PASS")
@@ -236,7 +251,18 @@ def build_audit() -> dict[str, Any]:
                 evidence("v9_coverage", str(coverage.get("status")), "40 scene families are explicit: 18 available candidates and 22 no-fallback pending sources."),
                 evidence("v9_binding", str(binding.get("status")), "Portable selector remains AVAILABLE_NOT_ACTIVE."),
                 evidence("runtime_visual_boundary", str(runtime_visual_boundary.get("status")), "The runtime cannot substitute a procedural or test face when an external visual asset is unavailable."),
+                evidence("external_expression_system", str(external_expression_system.get("status")), "Portable mood behavior selects semantic states while only external CEMP supplies product pixels."),
                 evidence("resource_memory_policy", str(resource_memory_policy.get("status")), "The current resource contract accepts only v9 external CEMP candidates and prohibits legacy r53 as a visual fallback."),
+            ],
+        },
+        {
+            "id": "screen_refresh_generation_hygiene",
+            "status": "proved_machine_hardware_waveform_frozen",
+            "requirement": "Refresh scheduling must keep one coherent external visual generation, use bounded differential/maintenance decisions, and never reactivate a retired visual fallback; no new waveform candidate is allowed before matching vendor CWF1 evidence.",
+            "evidence": [
+                evidence("refresh_feel", str(refresh_feel.get("status")), "Static refresh/generation contract binds to the inactive v9 candidate and rejects stale procedural request routes."),
+                evidence("runtime_visual_boundary", str(runtime_visual_boundary.get("status")), "Unavailable visual resources fail closed rather than drawing a test, procedural, or code-menu substitute."),
+                evidence("waveform_freeze", "FROZEN", "No generic, nearby-panel, or guessed waveform trial is authorized."),
             ],
         },
         {
@@ -298,6 +324,8 @@ def build_audit() -> dict[str, Any]:
             "pwsh .\\tools\\test_power_policy_host.ps1",
             "python .\\tools\\capture_wb55_current_build_receipt.py",
             "python .\\tools\\verify_companion_runtime_visual_boundary.py",
+            "python .\\tools\\verify_pet_expression_system.py",
+            "python .\\tools\\verify_screen_refresh_feel_contract.py",
             "python .\\tools\\verify_screen_resource_architecture.py",
             "python .\\tools\\verify_display_queue_static.py",
             "python .\\tools\\verify_wba_adapter_m33_compile.py --self-test",

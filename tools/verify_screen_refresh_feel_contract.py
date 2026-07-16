@@ -6,7 +6,6 @@ from __future__ import annotations
 import argparse
 import json
 import pathlib
-import re
 import sys
 from typing import Any
 
@@ -24,8 +23,9 @@ DISPLAY_QUEUE_C = ROOT / "app/companion_pendant/epaper/display_queue.c"
 DISPLAY_QUEUE_H = ROOT / "app/companion_pendant/epaper/display_queue.h"
 MAIN_C = ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/main.c"
 APP_BLE = ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c"
-MENU_EVIDENCE = ROOT / "docs/validation/companion-screen-bilingual-menu-wb55.json"
-RUNTIME_RECHECK = ROOT / "docs/validation/companion-screen-wb55-runtime-recheck-logs.json"
+RESOURCE_POLICY = ROOT / "docs/validation/companion-screen-resource-memory-policy.json"
+V9_CEMP = ROOT / "docs/validation/companion-v9-expression-cemp-20260716.json"
+V9_BINDING = ROOT / "docs/validation/companion-v9-candidate-resource-binding-20260717.json"
 BOUNDARY_WAVEFORM_RESEARCH = ROOT / "docs/validation/companion-screen-menu-boundary-waveform-research.md"
 def rel(path: pathlib.Path) -> str:
     return path.resolve().relative_to(ROOT).as_posix()
@@ -39,17 +39,6 @@ def has(text: str, *needles: str) -> bool:
     return all(needle in text for needle in needles)
 
 
-def is_pending_runtime_status(status: object) -> bool:
-    return bool(re.fullmatch(r"REVISION_[1-9][0-9]*_RUNTIME_RECHECK_PENDING", str(status)))
-
-
-def is_promoted_runtime_status(status: object) -> bool:
-    return bool(re.fullmatch(
-        r"REVISION_[1-9][0-9]*_(?:PROVISION_AND_NORMAL_)?RUNTIME_PASS_HUMAN_VISUAL_PENDING",
-        str(status),
-    ))
-
-
 def build_contract() -> dict[str, Any]:
     plan = read(PLAN)
     style = read(STYLE_CONTRACT)
@@ -61,8 +50,9 @@ def build_contract() -> dict[str, Any]:
     queue_h = read(DISPLAY_QUEUE_H)
     main_c = read(MAIN_C)
     app_ble = read(APP_BLE)
-    menu = json.loads(MENU_EVIDENCE.read_text(encoding="utf-8"))
-    runtime = json.loads(RUNTIME_RECHECK.read_text(encoding="utf-8"))
+    resource_policy = json.loads(RESOURCE_POLICY.read_text(encoding="utf-8"))
+    v9_cemp = json.loads(V9_CEMP.read_text(encoding="utf-8"))
+    v9_binding = json.loads(V9_BINDING.read_text(encoding="utf-8"))
     boundary_research = read(BOUNDARY_WAVEFORM_RESEARCH)
 
     checks = {
@@ -160,13 +150,14 @@ def build_contract() -> dict[str, Any]:
             "coherent_generation=%u",
             "display_result id=%lu kind=%u resource_revision=%lu active_revision=%lu coherent_generation=%u",
         ),
-        "menu_entry_discards_all_pet_frames": has(
+        "menu_entry_discards_all_stale_external_expression_frames": has(
             app_ble,
             "COMP_EPAPER_DISPLAY_REQUEST_EXPRESSION",
-            "COMP_EPAPER_DISPLAY_REQUEST_PET_EXPRESSION",
             "discarded_expression_frames",
-            "discarded_pet_expression_frames",
-        ),
+        ) and not has(
+            app_ble,
+            "COMP_EPAPER_DISPLAY_REQUEST_PET_EXPRESSION",
+        ) and "discarded_pet_expression_frames" not in app_ble,
         "screen_interaction_success_logs_are_trace_gated": has(
             app_ble,
             "COMPANION_TOUCH_VERBOSE_TRACE 0",
@@ -290,42 +281,27 @@ def build_contract() -> dict[str, Any]:
             "Art changes and refresh changes are separate axes",
             "the panel target chooses how often to refresh it",
         ),
-        "current_candidate_runtime_state_consistent": (
-            (
-                is_pending_runtime_status(menu.get("runtime_evidence", {}).get("status"))
-                and (
-                    runtime.get("status") in {"NO_GO_MISSING_RUNTIME_LOGS", "NO_GO_INCOMPLETE_RUNTIME_MARKERS"}
-                    or (
-                        runtime.get("status") == "PASS"
-                        and runtime.get("candidate", {}).get("revision")
-                        == menu.get("runtime_evidence", {}).get("previous_runtime_proven_revision", {}).get("revision")
-                    )
-                )
-            )
-            or (
-                is_promoted_runtime_status(menu.get("runtime_evidence", {}).get("status"))
-                and (
-                    runtime.get("status") == "PASS"
-                    or (
-                        runtime.get("status") in {"NO_GO_MISSING_RUNTIME_LOGS", "NO_GO_INCOMPLETE_RUNTIME_MARKERS"}
-                        and runtime.get("candidate", {}).get("revision")
-                        == menu.get("resource_pack", {}).get("revision")
-                        and runtime.get("candidate", {}).get("runtime_status")
-                        == menu.get("runtime_evidence", {}).get("status")
-                    )
-                )
-            )
+        "current_v9_candidate_is_explicitly_inactive": (
+            v9_cemp.get("status") == "PASS_MACHINE_ONLY_CEMP_NOT_ACTIVATED"
+            and v9_cemp.get("runtime_resource_activated") is False
+            and v9_binding.get("status") == "PASS_MACHINE_ONLY_INACTIVE"
+            and v9_binding.get("candidate_pack", {}).get("revision") == 90
+            and v9_binding.get("candidate_pack", {}).get("runtime_resource_activated") is False
+            and resource_policy.get("current_goal_visual_boundary", {}).get("candidate_pack", {}).get("revision") == 90
+            and resource_policy.get("current_goal_visual_boundary", {}).get("candidate_pack", {}).get("status")
+            == "machine_proved_not_runtime_activated"
         ),
     }
 
     return {
         "schema_id": "companion.screen.refresh_feel_contract.v1",
         "status": "PASS" if all(checks.values()) else "FAIL",
-        "scope": "SCR-16 screen feel and ghosting control; machine-static until the current candidate has real WB55 logs, then human feel remains pending",
+        "scope": "SCR-16 screen feel and ghosting control; the v9 candidate remains machine-only and inactive until separate owner, integration and physical gates pass",
         "candidate": {
-            "revision": menu.get("resource_pack", {}).get("revision"),
-            "crc32": menu.get("resource_pack", {}).get("pack_crc32"),
-            "runtime_status": menu.get("runtime_evidence", {}).get("status"),
+            "name": "companion-v9-expression-candidate-200x200",
+            "revision": v9_binding.get("candidate_pack", {}).get("revision"),
+            "pack_sha256": v9_cemp.get("pack_sha256"),
+            "runtime_resource_activated": v9_binding.get("candidate_pack", {}).get("runtime_resource_activated"),
         },
         "sources": {
             "project_plan": rel(PLAN),
@@ -336,7 +312,9 @@ def build_contract() -> dict[str, Any]:
             "display_queue": rel(DISPLAY_QUEUE_C),
             "main": rel(MAIN_C),
             "app_ble": rel(APP_BLE),
-            "runtime_recheck": rel(RUNTIME_RECHECK),
+            "resource_policy": rel(RESOURCE_POLICY),
+            "v9_cemp": rel(V9_CEMP),
+            "v9_binding": rel(V9_BINDING),
             "boundary_waveform_research": rel(BOUNDARY_WAVEFORM_RESEARCH),
         },
         "product_rules": {
@@ -348,7 +326,7 @@ def build_contract() -> dict[str, Any]:
             "ghosting": "Partial/fast refresh can accumulate ghosting; tune refresh profile/cadence rather than blending old art.",
             "generation_swap": "Treat visual ghosting and old/new resource interleaving as separate failures: atomically activate one CEMP revision, drain stale queued frames, then refresh/maintain the panel baseline.",
             "generation_triage": "Classify visible old content as physical afterimage, stale queued frame, stale asset revision, or rescue/procedural fallback leakage; only physical afterimage belongs to refresh-profile tuning.",
-            "generation_backlog": "SCR-17 remains a named product backlog/release item; recognizable old faces, menus, prompt crops, fallback renderers, or framebuffer content are stale_generation_content until proven physical afterimage only.",
+            "generation_backlog": "SCR-17 remains a named product backlog/release item; recognizable old faces, menus, prompt crops, fallback renderers, or framebuffer content are stale_generation_content until proven physical afterimage only. The current v9 candidate is not activated by this static contract.",
             "portability": "Scene/player use portable refresh intents; WB55/WBA panel targets choose waveform details.",
         },
         "checks": checks,
@@ -356,8 +334,8 @@ def build_contract() -> dict[str, Any]:
             "python .\\tools\\verify_screen_refresh_feel_contract.py",
             "python .\\tools\\verify_display_queue_generation_hygiene.py",
             "python .\\tools\\verify_epaper_refresh_policy.py",
-            "python .\\tools\\verify_screen_menu_assets.py",
-            "python .\\tools\\verify_wb55_screen_runtime_recheck_logs.py",
+            "python .\\tools\\verify_companion_runtime_visual_boundary.py",
+            "pwsh .\\tools\\test_companion_v9_expression_render_pipeline.ps1",
         ],
     }
 
@@ -373,13 +351,12 @@ def verify(contract: dict[str, Any]) -> list[str]:
     candidate = contract.get("candidate", {})
     if not isinstance(candidate.get("revision"), int) or candidate.get("revision", 0) < 1:
         errors.append("candidate revision must be a positive integer")
-    if not re.fullmatch(r"0x[0-9A-F]{8}", str(candidate.get("crc32"))):
-        errors.append("candidate CRC must be an uppercase eight-digit hexadecimal value")
-    if not (
-        is_pending_runtime_status(candidate.get("runtime_status"))
-        or is_promoted_runtime_status(candidate.get("runtime_status"))
-    ):
-        errors.append("candidate runtime must be pending or promoted human-visual-pending")
+    if candidate.get("name") != "companion-v9-expression-candidate-200x200":
+        errors.append("candidate must be the locked v9 expression pack")
+    if len(str(candidate.get("pack_sha256"))) != 64:
+        errors.append("candidate must record the v9 CEMP SHA-256")
+    if candidate.get("runtime_resource_activated") is not False:
+        errors.append("candidate must remain runtime inactive")
     return errors
 
 

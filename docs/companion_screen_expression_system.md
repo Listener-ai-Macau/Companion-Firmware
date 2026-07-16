@@ -4,6 +4,21 @@ This document is the working acceptance map for the Companion screen expression
 system. The first target is the WB55 devboard, but the model must stay portable
 for a later WBA55 or WBA65 port.
 
+## Current Goal Expression Boundary
+
+The active 2026-07-17 Goal overrides the historical implementation notes below.
+Product-visible inner faces are supplied only by the owner-locked
+`companion-pet-expression-v9` source through external CEMP resources. The
+portable `pet_behavior` module still owns semantic mood and input history, but
+the retired procedural composer must not be linked into WB55/WBA product
+firmware, draw a fallback face, or replace an unavailable resource. The target
+must fail closed, preserving the existing panel image and reporting the error.
+
+The v9 CEMP pack is a machine-verified candidate only, not a runtime-activated
+or physical-screen PASS. Four-root menu and special-scene visual sources remain
+separate owner decisions. Daily validation uses deterministic source -> PBM ->
+CEMP -> decode/render evidence; a camera is only a final physical preflight.
+
 ## Development Rules
 
 - Keep expression state and rendering input models under `app/companion_pendant`

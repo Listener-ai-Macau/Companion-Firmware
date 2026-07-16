@@ -1,14 +1,15 @@
 {
   "candidate": {
-    "crc32": "0x2332E300",
-    "revision": 53,
-    "runtime_status": "REVISION_53_RUNTIME_RECHECK_PENDING"
+    "name": "companion-v9-expression-candidate-200x200",
+    "pack_sha256": "036EC78ECC1C718EF7B502E8294AE15947D398C2D94E25E1F22D0C98BE6087F1",
+    "revision": 90,
+    "runtime_resource_activated": false
   },
   "checks": {
     "art_and_refresh_axes_separate": true,
     "boundary_waveform_research_recorded": true,
     "coherent_generation_runtime_marker_is_one_shot": true,
-    "current_candidate_runtime_state_consistent": true,
+    "current_v9_candidate_is_explicitly_inactive": true,
     "display_queue_tracks_resource_generation": true,
     "full_refresh_reserved_for_baseline_or_fault": true,
     "identical_frame_suppression": true,
@@ -19,7 +20,7 @@
     "mature_product_generation_triage_recorded": true,
     "menu_boundaries_request_single_flicker_fast_path": true,
     "menu_drag_coalesces_to_latest_frame": true,
-    "menu_entry_discards_all_pet_frames": true,
+    "menu_entry_discards_all_stale_external_expression_frames": true,
     "new_old_generation_interleave_rules_recorded": true,
     "ordinary_touch_has_no_delayed_maintenance": true,
     "policy_limits_are_bounded": true,
@@ -30,7 +31,7 @@
   },
   "product_rules": {
     "full_refresh": "Use 0xF7 only for an unknown baseline or a transport/fault recovery. A normal menu boundary requests the vendor Mode 1 / 0xC7 fast path when the baseline is valid, with full as the policy fallback only when that baseline is unknown.",
-    "generation_backlog": "SCR-17 remains a named product backlog/release item; recognizable old faces, menus, prompt crops, fallback renderers, or framebuffer content are stale_generation_content until proven physical afterimage only.",
+    "generation_backlog": "SCR-17 remains a named product backlog/release item; recognizable old faces, menus, prompt crops, fallback renderers, or framebuffer content are stale_generation_content until proven physical afterimage only. The current v9 candidate is not activated by this static contract.",
     "generation_swap": "Treat visual ghosting and old/new resource interleaving as separate failures: atomically activate one CEMP revision, drain stale queued frames, then refresh/maintain the panel baseline.",
     "generation_triage": "Classify visible old content as physical afterimage, stale queued frame, stale asset revision, or rescue/procedural fallback leakage; only physical afterimage belongs to refresh-profile tuning.",
     "ghosting": "Partial/fast refresh can accumulate ghosting; tune refresh profile/cadence rather than blending old art.",
@@ -41,7 +42,7 @@
     "portability": "Scene/player use portable refresh intents; WB55/WBA panel targets choose waveform details."
   },
   "schema_id": "companion.screen.refresh_feel_contract.v1",
-  "scope": "SCR-16 screen feel and ghosting control; machine-static until the current candidate has real WB55 logs, then human feel remains pending",
+  "scope": "SCR-16 screen feel and ghosting control; the v9 candidate remains machine-only and inactive until separate owner, integration and physical gates pass",
   "sources": {
     "app_ble": "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c",
     "boundary_waveform_research": "docs/validation/companion-screen-menu-boundary-waveform-research.md",
@@ -51,15 +52,17 @@
     "main": "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/main.c",
     "project_plan": "docs/companion_screen_project_plan.md",
     "refresh_policy": "app/companion_pendant/epaper/refresh_policy.c",
-    "runtime_recheck": "docs/validation/companion-screen-wb55-runtime-recheck-logs.json",
-    "style_contract": "docs/validation/companion-screen-generated-art-style-contract.md"
+    "resource_policy": "docs/validation/companion-screen-resource-memory-policy.json",
+    "style_contract": "docs/validation/companion-screen-generated-art-style-contract.md",
+    "v9_binding": "docs/validation/companion-v9-candidate-resource-binding-20260717.json",
+    "v9_cemp": "docs/validation/companion-v9-expression-cemp-20260716.json"
   },
   "status": "PASS",
   "validation_commands": [
     "python .\\tools\\verify_screen_refresh_feel_contract.py",
     "python .\\tools\\verify_display_queue_generation_hygiene.py",
     "python .\\tools\\verify_epaper_refresh_policy.py",
-    "python .\\tools\\verify_screen_menu_assets.py",
-    "python .\\tools\\verify_wb55_screen_runtime_recheck_logs.py"
+    "python .\\tools\\verify_companion_runtime_visual_boundary.py",
+    "pwsh .\\tools\\test_companion_v9_expression_render_pipeline.ps1"
   ]
 }

@@ -94,6 +94,11 @@
           "status": "PASS_CURRENT_SOURCE_NO_PROCEDURAL_VISUAL_FALLBACK"
         },
         {
+          "detail": "Portable mood behavior selects semantic states while only external CEMP supplies product pixels.",
+          "path": "docs/validation/companion-screen-pet-expression-system.json",
+          "status": "PASS"
+        },
+        {
           "detail": "The current resource contract accepts only v9 external CEMP candidates and prohibits legacy r53 as a visual fallback.",
           "path": "docs/validation/companion-screen-resource-memory-policy.json",
           "status": "PASS"
@@ -102,6 +107,28 @@
       "id": "v9_expression_renderer",
       "requirement": "Only the owner-approved v9 inner-face sheet supplies the 39-frame, 13-clip renderer-first candidate; no retired or procedural visual fallback is allowed.",
       "status": "proved_machine_inactive"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "Static refresh/generation contract binds to the inactive v9 candidate and rejects stale procedural request routes.",
+          "path": "docs/validation/companion-screen-refresh-feel-contract.json",
+          "status": "PASS"
+        },
+        {
+          "detail": "Unavailable visual resources fail closed rather than drawing a test, procedural, or code-menu substitute.",
+          "path": "docs/validation/companion-runtime-visual-boundary-20260717.json",
+          "status": "PASS_CURRENT_SOURCE_NO_PROCEDURAL_VISUAL_FALLBACK"
+        },
+        {
+          "detail": "No generic, nearby-panel, or guessed waveform trial is authorized.",
+          "path": "docs/companion_ssd1681_vendor_waveform_freeze.md",
+          "status": "FROZEN"
+        }
+      ],
+      "id": "screen_refresh_generation_hygiene",
+      "requirement": "Refresh scheduling must keep one coherent external visual generation, use bounded differential/maintenance decisions, and never reactivate a retired visual fallback; no new waveform candidate is allowed before matching vendor CWF1 evidence.",
+      "status": "proved_machine_hardware_waveform_frozen"
     },
     {
       "evidence": [
@@ -193,6 +220,8 @@
     "pwsh .\\tools\\test_power_policy_host.ps1",
     "python .\\tools\\capture_wb55_current_build_receipt.py",
     "python .\\tools\\verify_companion_runtime_visual_boundary.py",
+    "python .\\tools\\verify_pet_expression_system.py",
+    "python .\\tools\\verify_screen_refresh_feel_contract.py",
     "python .\\tools\\verify_screen_resource_architecture.py",
     "python .\\tools\\verify_display_queue_static.py",
     "python .\\tools\\verify_wba_adapter_m33_compile.py --self-test",

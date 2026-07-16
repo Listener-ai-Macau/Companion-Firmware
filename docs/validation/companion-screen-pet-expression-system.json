@@ -1,9 +1,7 @@
 {
   "behavior": {
-    "living_phase_contract": "product-state faces get sparse whole-face phase motion by adjusting face shift, eye width/opening, highlight, mouth scale, and cheeks without storing extra frames",
-    "memory_contract": "comp_pet_behavior_memory_t is a target-owned, CRC/wear-aware external user-data payload; portable behavior never writes Flash",
-    "premium_art_contract": "generated-art principles are translated into procedural one-bit features: rounded pet nose/mouth, hollow thought bubbles, soft listening waves, tiny record dot, and small spark marks",
-    "refresh_contract": "behavior advances at real product-event or touch boundaries; it does not schedule an idle animation loop",
+    "memory_contract": "comp_pet_behavior_memory_t remains target-owned external user-data payload; portable behavior never writes Flash",
+    "role": "portable event and mood state only; it selects a semantic expression but does not compose product pixels",
     "source": "app/companion_pendant/epaper/pet_behavior.h/.c",
     "state": [
       "valence",
@@ -11,54 +9,38 @@
       "curiosity",
       "affection",
       "attachment",
-      "mood",
       "engagement",
-      "focus",
       "stroke direction",
-      "stroke energy",
       "personality"
     ]
   },
   "event_bridge": {
-    "daily_stroke": "left/right/up/down logical finger travel becomes a direction-specific full-face response and bounded emotional update while the reserved menu-edge gesture keeps priority",
-    "daily_touch": "continuous logical touch coordinates update engagement and become a three-phase attentive response pose",
-    "product_state": "all ten ExpressionV1 states advance a bounded valence/arousal/curiosity/affection/attachment mood model before composing a pose",
-    "target_request_kind": "COMP_EPAPER_DISPLAY_REQUEST_PET_EXPRESSION"
+    "expression_transport": "COMP_EPAPER_DISPLAY_REQUEST_EXPRESSION carrying a CEMP player frame",
+    "product_state": "recording, power and connection states remain semantic behavior inputs; visual frames come only from CEMP",
+    "touch": "touch and stroke events update portable behavior before the external emote player receives an expression decision"
   },
-  "purpose": "Machine-checkable architecture contract for the portable parameterized electronic-pet face.",
-  "refresh_policy": "ordinary interactions use bounded differential refresh: five completed partial frames are allowed, then the sixth selects one fast cleanup; explicit menu boundaries may request one cleanup; full refresh remains boot/recovery only",
-  "renderer": {
-    "internal_full_screen_expression_arrays": 0,
-    "logical_coordinate_space": "200x200 logical coordinates scaled to every framebuffer at or above 64x64",
-    "parameters": [
-      "expression",
-      "gaze_x",
-      "gaze_y",
-      "eye_open",
-      "eyelid_tilt",
-      "eye_width",
-      "eye_spacing",
-      "eye_pair_tilt",
-      "highlight_scale",
-      "face_shift_x",
-      "face_shift_y",
-      "brow",
-      "brow_lift",
-      "brow_asymmetry",
-      "mouth",
-      "mouth_scale",
-      "cheek_strength",
-      "mark",
-      "variation"
-    ],
-    "persistent_extra_framebuffers": 0,
-    "source": "app/companion_pendant/epaper/pet_expression.h/.c"
-  },
+  "purpose": "Machine-checkable current Goal contract for portable pet behavior and approved external-CEMP visual playback.",
   "resource_policy": {
-    "external": "CEMP keeps replaceable timelines, menu art, fonts, and larger product assets in ui_assets; emotion memory belongs in a separate target-owned user-data partition",
-    "internal": "pet_behavior and pet_expression are compact deterministic application code and render into the existing framebuffer only"
+    "external": "CEMP stores replaceable v9 timelines, menu bases, fonts and larger product assets in ui_assets",
+    "internal": "application code, behavior state, drivers and parser only; no linked full-frame face arrays or complete code-rendered menu",
+    "unavailable": "fail closed: keep the existing panel image and report transport/resource failure without drawing a substitute"
   },
-  "schema_id": "companion.screen.pet_expression_system.v1",
+  "runtime_guard": {
+    "expression_maintenance": "replay the last external CEMP frame only",
+    "forbidden": [
+      "procedural face",
+      "test pattern",
+      "complete code-rendered menu",
+      "legacy r53 visual fallback"
+    ]
+  },
+  "schema_id": "companion.screen.external_expression_system.v2",
   "status": "PASS",
-  "wba_port": "Reuse pose and renderer; replace only panel transport/profile facts in target-named adapters."
+  "visual_baseline": {
+    "iteration": "companion-pet-expression-v9",
+    "rule": "The approved v9 source is the sole inner-face candidate; no legacy, rejected, test, or code-drawn face may substitute for it.",
+    "runtime_resource_activated": false,
+    "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "wba_port": "Reuse behavior, CEMP/parser and callback-only external-NOR contract; WBA adapters must not revive the retired procedural composer."
 }
