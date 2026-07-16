@@ -313,6 +313,7 @@ C_SOURCES := \
 	$(ROOT)/app/companion_pendant/epaper/pet_expression.c \
 	$(ROOT)/app/companion_pendant/epaper/pet_performance.c \
 	$(ROOT)/app/companion_pendant/epaper/pet_performance_event_bridge.c \
+	$(ROOT)/app/companion_pendant/epaper/v9_candidate_resource_binding.c \
 	$(ROOT)/app/companion_pendant/epaper/menu_v5_contract.c \
 	$(ROOT)/app/companion_pendant/epaper/menu_v5_localization.c \
 	$(ROOT)/app/companion_pendant/epaper/menu_v5_action_journey.c \

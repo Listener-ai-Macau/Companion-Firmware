@@ -1,0 +1,53 @@
+{
+  "candidate_pack": {
+    "manifest_sha256": "4AD72C8723183BE6F584379AC59DA4C9BFAFC1870647390FB62FEE096FBED890",
+    "name": "companion-v9-expression-candidate-200x200",
+    "revision": 90,
+    "runtime_resource_activated": false
+  },
+  "errors": [],
+  "limits": [
+    "This verifier does not mount or select a CEMP pack.",
+    "This verifier does not read or write external Flash.",
+    "This verifier does not queue, render, refresh, flash, or inspect a panel.",
+    "The four-root menu visual source is still pending and menu.open has no fallback."
+  ],
+  "portable_selector": {
+    "forbidden_fallbacks": [
+      "legacy",
+      "rescue",
+      "procedural",
+      "unrelated_art"
+    ],
+    "header": "app/companion_pendant/epaper/v9_candidate_resource_binding.h",
+    "runtime_activation_allowed": false,
+    "source": "app/companion_pendant/epaper/v9_candidate_resource_binding.c"
+  },
+  "scene_coverage": {
+    "available_map": {
+      "daily.idle": "idle",
+      "daily.stroke": "touch",
+      "daily.swipe_down": "swipe_down",
+      "daily.swipe_left": "swipe_left",
+      "daily.swipe_right": "swipe_right",
+      "daily.swipe_up": "swipe_up",
+      "daily.tap": "touch",
+      "menu.enter": "menu_hold",
+      "menu.hold": "menu_hold",
+      "menu.select": "menu_hold",
+      "power.deep_sleep": "sleep",
+      "power.sleep_entry": "sleep",
+      "power.wake": "wake",
+      "recording.active": "recording",
+      "recording.saved": "saved",
+      "recording.saving": "saving",
+      "recording.start": "recording",
+      "voice.listening": "listening"
+    },
+    "available_not_active": 18,
+    "pending_visual_baseline": 22,
+    "total": 40
+  },
+  "schema": "companion.v9_candidate_resource_binding_validation.v1",
+  "status": "PASS_MACHINE_ONLY_INACTIVE"
+}

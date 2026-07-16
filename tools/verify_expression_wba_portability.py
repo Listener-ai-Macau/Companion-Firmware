@@ -120,6 +120,8 @@ PORTABLE_FILES = [
     EPAPER_ROOT / "pet_performance.h",
     EPAPER_ROOT / "pet_performance_event_bridge.c",
     EPAPER_ROOT / "pet_performance_event_bridge.h",
+    EPAPER_ROOT / "v9_candidate_resource_binding.c",
+    EPAPER_ROOT / "v9_candidate_resource_binding.h",
     EPAPER_ROOT / "pet_visual_style.h",
     EPAPER_ROOT / "screen_framebuffer.c",
     EPAPER_ROOT / "screen_framebuffer.h",
@@ -440,6 +442,8 @@ def check_expression_contracts(errors: list[str]) -> None:
     pet_performance_source = read(EPAPER_ROOT / "pet_performance.c")
     pet_performance_bridge_header = read(EPAPER_ROOT / "pet_performance_event_bridge.h")
     pet_performance_bridge_source = read(EPAPER_ROOT / "pet_performance_event_bridge.c")
+    v9_binding_header = read(EPAPER_ROOT / "v9_candidate_resource_binding.h")
+    v9_binding_source = read(EPAPER_ROOT / "v9_candidate_resource_binding.c")
     panel_source = read(EPAPER_ROOT / "panel_adapter.c")
     panel_target_source = read(PANEL_TARGET_STM32WB_SOURCE)
     panel_target_header = read(PANEL_TARGET_STM32WB_HEADER)
@@ -572,6 +576,29 @@ def check_expression_contracts(errors: list[str]) -> None:
     ]:
         require(token in pet_performance_bridge_header + pet_performance_bridge_source,
                 f"portable pet-performance event bridge missing {token}", errors)
+    for token in [
+        "comp_v9_candidate_resource_resolve",
+        "COMP_V9_CANDIDATE_RESOURCE_AVAILABLE_NOT_ACTIVE",
+        "COMP_V9_CANDIDATE_RESOURCE_PENDING_VISUAL_BASELINE",
+        "COMP_V9_CANDIDATE_RESOURCE_PENDING_MENU_VISUAL_BASELINE",
+        "COMP_V9_CANDIDATE_PACK_REVISION 90u",
+        "return false;",
+    ]:
+        require(token in v9_binding_header + v9_binding_source,
+                f"portable v9 candidate binding missing {token}", errors)
+    for token in [
+        "comp_emote_asset_pack_mount",
+        "comp_asset_store_",
+        "comp_epaper_display_queue_",
+        "companion_epaper_panel_",
+        "HAL_",
+        "STM32",
+        "GPIO",
+        "SPI",
+        "I2C",
+    ]:
+        require(token not in v9_binding_header + v9_binding_source,
+                f"portable v9 candidate binding leaked activation/platform token {token}", errors)
     for token in [
         "comp_epaper_expression_signal_from_diag_event",
         "comp_epaper_expression_signal_from_device_status",
@@ -733,7 +760,7 @@ def check_platform_isolation(errors: list[str]) -> None:
     require("COMP_EPAPER_EXPRESSION_SIGNAL_SETTINGS_SLEEPY" in app_ble, "WB app_ble.c must use portable settings sleepy signal", errors)
     require("$(ROOT)/app/companion_pendant/epaper" in makefile, "WB Makefile must include portable epaper module path", errors)
     require(
-        "panel_adapter.c" in makefile and "panel_target_stm32wb.c" in makefile and "display_queue.c" in makefile and "expression_events.c" in makefile and "expression_state.c" in makefile and "pet_performance.c" in makefile and "pet_performance_event_bridge.c" in makefile and "screen_runtime.c" in makefile,
+        "panel_adapter.c" in makefile and "panel_target_stm32wb.c" in makefile and "display_queue.c" in makefile and "expression_events.c" in makefile and "expression_state.c" in makefile and "pet_performance.c" in makefile and "pet_performance_event_bridge.c" in makefile and "v9_candidate_resource_binding.c" in makefile and "screen_runtime.c" in makefile,
         "WB Makefile must compile portable epaper C modules",
         errors,
     )
