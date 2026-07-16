@@ -23,6 +23,25 @@
         "owner_visual_pass": false
       },
       "next_prompt_delta": "Retain the exact v9 reference and all semantic cells. Add only a hard square 1:1 canvas constraint with balanced margins."
+    },
+    {
+      "id": "system-v1-attempt-02",
+      "status": "GENERATED_MACHINE_REVIEW_PENDING_OWNER",
+      "generated_at": "2026-07-17T00:00:00+08:00",
+      "prompt_record": "docs/art/iterations/companion-pet-special-states-v1/generation-plan.json#/sheets/system/prompt",
+      "runtime_source": "C:\\Users\\Billy\\.codex\\generated_images\\019f44be-6fce-7140-acbe-cac2c63e2a4e\\exec-7ea6f9d8-672b-428e-b940-a3b31b2dbf02.png",
+      "repository_source": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_system_v1_candidate.png",
+      "sha256": "AF9ADFD49C47C89DF674726D7201CC49C61ED636306013697822BB42FB1A9C82",
+      "dimensions_px": [1254, 1254],
+      "machine_decision": "Square 1:1 geometry and twelve populated 3x4 cells are candidate-valid. Semantic and visual quality remain PENDING_OWNER; no resource import or activation is authorized.",
+      "runtime_boundary": {
+        "pbm_imported": false,
+        "cemp_packed": false,
+        "external_flash_provisioned": false,
+        "firmware_flashed": false,
+        "owner_visual_pass": false
+      },
+      "next_prompt_delta": "Only after an owner decision, change one named visible variable against this exact square source; do not restart the face identity or reuse rejected art."
     }
   ]
 }

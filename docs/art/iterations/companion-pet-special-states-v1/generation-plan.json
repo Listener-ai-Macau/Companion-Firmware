@@ -1,7 +1,7 @@
 {
   "schema": "companion.special_state_art_plan.v1",
   "iteration_id": "companion-pet-special-states-v1",
-  "status": "NON_RENDERABLE_PLAN_PENDING_GENERATION",
+  "status": "SYSTEM_SOURCE_GENERATED_MACHINE_REVIEW_PENDING_OWNER_JOURNEY_PENDING_GENERATION",
   "target_profile": {
     "width": 200,
     "height": 200,
@@ -29,7 +29,7 @@
   "sheets": [
     {
       "id": "system",
-      "status": "PENDING_GENERATION",
+      "status": "GENERATED_MACHINE_REVIEW_PENDING_OWNER",
       "grid": "3x4",
       "scene_families": [
         "voice.speaking", "recording.error", "power.charge_detected", "power.charging",
@@ -37,6 +37,12 @@
         "link.syncing", "link.synced", "link.error", "system.error"
       ],
       "prompt": "Use the attached owner-approved Companion v9 face sheet as the only direct visual reference. Use a square 1:1 canvas, never a portrait or landscape page; keep the entire 3 by 4 sheet inside that square with balanced margins. Create one polished 3 by 4 sheet of exactly twelve compact, cute, lively, monochrome inner-face states for a 200x200 e-paper companion. Preserve the exact v9 eye identity: paired upright filled black ovals on the same baseline, matching small front-facing white highlights, detached rounded brows, petite nose/W-mouth and cheek dots. No cat outline, ears, whiskers, eyelids, labels, panels, grey, gradients or shading. Every state changes the complete face together, not just the eyes. Use only sparse friendly semantic charms in whitespace. Row 1: speaking with tiny alternating sound arcs and a gentle open mouth; recording error with a small broken record dot and concerned but sweet face; charge detected with a surprised sparkle arrival; charging with a calm bright face and a rising energy charm, not a plug icon; Row 2: charged with a warm proud face and two small completion sparkles; low battery with gentle worried brows, tiny low bar charm and no sad human styling; pairing with a dotted orbit charm; connected with linked loops and a happy settled face; Row 3: syncing with a dotted circular motion charm; synced with a tiny check sparkle and cheerful face; link error with a broken-link charm and a soft worried face; system error with a cracked-star charm and a clear recoverable, non-scary face. Keep all twelve cells equally spaced on white, no typography, with the same premium lovable Companion identity.",
+      "generated_output": {
+        "path": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_system_v1_candidate.png",
+        "sha256": "AF9ADFD49C47C89DF674726D7201CC49C61ED636306013697822BB42FB1A9C82",
+        "dimensions_px": [1254, 1254],
+        "runtime_source": "C:\\Users\\Billy\\.codex\\generated_images\\019f44be-6fce-7140-acbe-cac2c63e2a4e\\exec-7ea6f9d8-672b-428e-b940-a3b31b2dbf02.png"
+      },
       "machine_mapping_rule": "Each cell must map one-to-one to the listed pending resource family; no cross-family fallback."
     },
     {
