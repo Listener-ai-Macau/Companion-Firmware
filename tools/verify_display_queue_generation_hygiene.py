@@ -86,7 +86,7 @@ def build_scenario() -> dict[str, Any]:
     switch_revision(50)
     enqueue("expression", 0x5001)
     enqueue("menu", 0x5002)
-    enqueue("pet_expression", 0x5003)
+    enqueue("expression", 0x5003)
     before_switch = {
         "pending": queue["pending"],
         "request_revisions": [item["resource_revision"] for item in queue["requests"]],
@@ -209,6 +209,16 @@ def check_source(errors: list[str]) -> None:
         "out_snapshot->stale_generation_discard_count",
     ):
         require(token in source, f"display_queue.c missing generation token {token}", errors)
+    for retired in (
+        "pet_expression.h",
+        "COMP_EPAPER_DISPLAY_REQUEST_PET_EXPRESSION",
+        "comp_epaper_display_queue_enqueue_pet_expression",
+        "comp_pet_expression_pose_t",
+        "comp_pet_expression_pose_is_valid",
+        "pet_pose",
+    ):
+        require(retired not in header + source,
+                f"display queue retains a retired procedural visual route: {retired}", errors)
 
     for token in (
         "comp_epaper_display_queue_set_resource_revision(",
