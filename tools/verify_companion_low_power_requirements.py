@@ -60,7 +60,7 @@ def main() -> int:
         "WAKE_N",
         "地址匹配 I2C Stop 唤醒",
         "RTC TimerServer",
-        "15 s",
+        "3 分钟",
         "一张外部 Flash `sleepy` 休眠脸",
         "不得在 Stop 中周期性唤醒或刷新电子纸",
     ]:
@@ -74,6 +74,12 @@ def main() -> int:
     require("COMP_POWER_BLOCKER_MIC_CAPTURE" in policy_h, "policy lacks mic capture blocker", errors)
     require("COMP_POWER_BLOCKER_TOUCH_CONTACT" in policy_h, "policy lacks touch contact blocker", errors)
     require("COMP_POWER_BLOCKER_SCREEN_WAIT" in policy_h, "policy lacks screen wait blocker", errors)
+    require("COMP_POWER_BLOCKER_TOUCH_CONFIRMATION" in policy_h,
+            "policy lacks first-tap confirmation blocker", errors)
+    require("COMP_POWER_IDLE_MINUTES_DEFAULT 3u" in policy_h,
+            "policy no longer defaults the visible idle deadline to three minutes", errors)
+    require("COMP_POWER_IDLE_MINUTES_MAX 60u" in policy_h,
+            "policy lacks bounded future idle-timeout settings", errors)
     require("touch_wake_ready" in policy_c, "policy does not gate Stop on touch wake", errors)
     for blocker in [
         "COMP_POWER_BLOCKER_MIC_CAPTURE",
@@ -81,6 +87,7 @@ def main() -> int:
         "COMP_POWER_BLOCKER_MENU_TIMER",
         "COMP_POWER_BLOCKER_SCREEN_MAINTENANCE",
         "COMP_POWER_BLOCKER_SCREEN_WAIT",
+        "COMP_POWER_BLOCKER_TOUCH_CONFIRMATION",
     ]:
         require(blocker in policy_c, f"policy self-test misses: {blocker}", errors)
     require("UTIL_LPM_SetStopMode" in main_source, "WB55 target does not drive Cube LPM", errors)
@@ -91,7 +98,12 @@ def main() -> int:
     require("HAL_UART_Transmit" in main_source, "low-power serial writer does not use USART", errors)
     require("COMP_TOUCH_GESTURE_DOUBLE_TAP" in main_source, "daily double-tap recording path is absent", errors)
     require("if (!s_low_power_stop_allowed)" in main_source, "idle loop still forces fixed polling", errors)
-    require("LOW_POWER_IDLE_POSE_DELAY_MS 15000u" in main_source, "low-power sleepy delay is not the documented 15 s", errors)
+    require("comp_power_idle_settings_init(&s_power_idle_settings)" in main_source,
+            "WB55 target does not initialize the portable idle settings", errors)
+    require("comp_power_idle_settings_timeout_ms(&s_power_idle_settings)" in main_source,
+            "WB55 target does not source its idle deadline from portable settings", errors)
+    require("COMP_POWER_BLOCKER_TOUCH_CONFIRMATION" in main_source,
+            "WB55 target may enter Stop during the first-tap confirmation window", errors)
     require("HW_TS_Create" in main_source, "low-power idle timer is not created through TimerServer", errors)
     require("HW_TS_Start" in main_source, "low-power idle timer is not armed through TimerServer", errors)
     require("low_power_idle_timer_elapsed" in main_source, "low-power timer deadline callback is absent", errors)
@@ -113,6 +125,8 @@ def main() -> int:
     require("configure_touch_wake" in wba_target_h, "WBA target lacks touch-wake callback", errors)
     require("set_stop_allowed" in wba_target_h, "WBA target lacks Stop callback", errors)
     require("comp_power_policy_stop_allowed" in wba_target_c, "WBA target bypasses portable policy", errors)
+    require("comp_power_idle_settings_init(&target->idle_settings)" in wba_target_c,
+            "WBA target does not initialize the portable three-minute idle settings", errors)
     for forbidden in ["HAL_", "GPIO", "IPCC", "STM32_WPAN", "BLE_p2pServer"]:
         require(forbidden not in wba_target_c, f"WBA power target leaks platform detail: {forbidden}", errors)
     for anchor in [
@@ -129,7 +143,7 @@ def main() -> int:
         "status": "PASS" if not errors else "FAIL",
         "implementation_status": "static_policy_compiled; hardware_stop_wake_and_current_pending",
         "product_interaction": "daily double tap starts/stops touch-originated recording; wake word deferred",
-        "low_power_visual": "one static external-Flash sleepy frame follows a 15 s RTC idle deadline; no periodic e-paper breathing refresh in Stop",
+        "low_power_visual": "one static external-Flash sleepy frame follows the default 3-minute RTC idle deadline; no periodic e-paper breathing refresh in Stop",
         "idle_gate": "touch EXTI ready and no boot/mic/touch/menu/screen blockers; timer remains armed while Stop is allowed",
         "target": "final product-board LP-01 standby average <= 1 mA over >= 60 s",
         "measurement_status": "hardware_current_pending",

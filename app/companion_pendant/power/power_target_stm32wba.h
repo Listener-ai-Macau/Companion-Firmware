@@ -27,6 +27,7 @@ typedef struct {
 
 typedef struct {
     comp_power_stm32wba_config_t config;
+    comp_power_idle_settings_t idle_settings;
     bool touch_wake_configured;
     bool stop_state_applied;
     bool last_stop_allowed;

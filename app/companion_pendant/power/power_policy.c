@@ -2,6 +2,8 @@
 
 #include <string.h>
 
+#define COMP_POWER_IDLE_MINUTE_MS 60000u
+
 void comp_power_policy_init(comp_power_policy_t *policy)
 {
     if (policy == NULL) {
@@ -48,6 +50,7 @@ bool comp_power_policy_self_test(void)
         COMP_POWER_BLOCKER_MENU_TIMER,
         COMP_POWER_BLOCKER_SCREEN_MAINTENANCE,
         COMP_POWER_BLOCKER_SCREEN_WAIT,
+        COMP_POWER_BLOCKER_TOUCH_CONFIRMATION,
     };
 
     comp_power_policy_init(&policy);
@@ -72,4 +75,61 @@ bool comp_power_policy_self_test(void)
     }
 
     return comp_power_policy_stop_allowed(&policy);
+}
+
+void comp_power_idle_settings_init(comp_power_idle_settings_t *settings)
+{
+    if (settings != NULL) {
+        settings->idle_minutes = COMP_POWER_IDLE_MINUTES_DEFAULT;
+    }
+}
+
+bool comp_power_idle_settings_set_minutes(comp_power_idle_settings_t *settings,
+                                          uint8_t minutes)
+{
+    if (settings == NULL || minutes > COMP_POWER_IDLE_MINUTES_MAX) {
+        return false;
+    }
+    settings->idle_minutes = minutes;
+    return true;
+}
+
+uint8_t comp_power_idle_settings_minutes(
+    const comp_power_idle_settings_t *settings)
+{
+    return settings == NULL ? COMP_POWER_IDLE_MINUTES_DEFAULT
+                            : settings->idle_minutes;
+}
+
+uint32_t comp_power_idle_settings_timeout_ms(
+    const comp_power_idle_settings_t *settings)
+{
+    return (uint32_t)comp_power_idle_settings_minutes(settings) *
+           COMP_POWER_IDLE_MINUTE_MS;
+}
+
+bool comp_power_idle_settings_self_test(void)
+{
+    comp_power_idle_settings_t settings;
+
+    comp_power_idle_settings_init(&settings);
+    if (comp_power_idle_settings_minutes(&settings) !=
+            COMP_POWER_IDLE_MINUTES_DEFAULT ||
+        comp_power_idle_settings_timeout_ms(&settings) != 180000u) {
+        return false;
+    }
+    if (!comp_power_idle_settings_set_minutes(
+            &settings, COMP_POWER_IDLE_MINUTES_DISABLED) ||
+        comp_power_idle_settings_timeout_ms(&settings) != 0u) {
+        return false;
+    }
+    if (!comp_power_idle_settings_set_minutes(
+            &settings, COMP_POWER_IDLE_MINUTES_MAX) ||
+        comp_power_idle_settings_timeout_ms(&settings) != 3600000u) {
+        return false;
+    }
+    return !comp_power_idle_settings_set_minutes(
+               &settings, (uint8_t)(COMP_POWER_IDLE_MINUTES_MAX + 1u)) &&
+           comp_power_idle_settings_minutes(&settings) ==
+               COMP_POWER_IDLE_MINUTES_MAX;
 }

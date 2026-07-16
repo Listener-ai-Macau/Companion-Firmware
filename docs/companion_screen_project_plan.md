@@ -930,6 +930,16 @@ WB55 normal production image `86a0f01` 已在 2026-07-14 的 reset-bounded captu
 证据为 `docs/validation/companion-low-power-idle-stop-return-20260714.md`。这只关闭了回交 Stop
 的机器问题；触控取消、最终产品板电流和 ACPT-01 人工观感仍保持待办。
 
+## Revision 72: 三分钟默认可见休眠策略
+
+owner 后续明确选择默认 `3 分钟`，替换开发期间用于快速观察的 15 s one-shot。WB55
+改为从 HAL-free `power_policy` 的默认分钟设置取得 TimerServer 超时；同一模型允许未来
+经已批准的 Preferences 页面设置 `0--60` 分钟，但当前未批准的菜单不得伪造该控件。
+CPU 在无 blocker 时仍可立即进入 Stop，因此这不是周期轮询或功耗回退；它只决定何时请求
+一张静态 `sleepy` 外部资源帧。第一击的双击确认窗口也成为显式 Stop blocker，确保录音
+双击不会被休眠抢占。历史 15 s 串口记录保持审计证据，新的三分钟策略需要独立 host、静态、
+WB55 build 和后续短硬件复验。
+
 ## Revision 72: 合并交互后的清理刷新
 
 owner 最新的“这个产品，需要优化”对应到一项明确的软件卡顿：每次日常点按、滑动、菜单拖动和普通

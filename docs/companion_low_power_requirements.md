@@ -34,9 +34,15 @@ CubeWBA 的低功耗管理器。
 | 手指仍接触、长按菜单计时 | 禁止 Stop，保留 5--10 ms 触控采样 |
 | 电子纸刷新 BUSY 期或交互后维护刷新 | 禁止 Stop，保留显示与触摸缓冲服务 |
 | 空闲且 `TP_INT` 就绪 | 不再执行固定 `HAL_Delay(10 ms)`；交给 `UTIL_LPM_EnterLowPower()` |
-| 日常页完成交互后 | 立刻允许 Stop，并由 RTC TimerServer 在 `15 s` 无触控后唤醒一次；到期才排队一张外部 Flash `sleepy` 休眠脸并等待该帧完成，显示任务完成时立即复核并恢复 Stop。新 contact 必须取消该 one-shot，不得在交互后立即追加休眠局刷。 |
+| 日常页完成交互后 | 立刻允许 Stop，并由 RTC TimerServer 在默认 `3 分钟` 无触控后唤醒一次；到期才排队一张外部 Flash `sleepy` 休眠脸并等待该帧完成，显示任务完成时立即复核并恢复 Stop。新 contact 必须取消该 one-shot，不得在交互后立即追加休眠局刷。 |
 | 稳定 Stop 中 | `sleepy` 第一帧保持静态，随后停止表情播放器和定时器。休眠的呼吸关键帧是可替换美术词汇，不得在 Stop 中周期性唤醒或刷新电子纸。 |
 | 触控中断配置失败 | 禁止 Stop，保留现有触摸轮询回退 |
+
+可移植 `power_policy` 的默认可见休眠超时为 `3 分钟`，后续已批准的
+Preferences 页面可把它设置为 `0--60` 分钟；`0` 表示不显示自动休眠脸。当前
+开发板没有把未批准的设置行伪装成可操作 UI，因此运行时使用默认 `3 分钟`。无论
+超时设定为何值，CPU 在无 blocker 时仍可进入 Stop；这里控制的是何时请求那一张
+静态 `sleepy` 外部 Flash 帧，不是通过轮询延迟低功耗。
 
 当前 NUCLEO 已接 `TP_SCL/TP_SDA` 和 `P10 A0 -> CN10-33/PC6 (TP_INT)`；`TP_RST` 未接。
 开发板构建因此使用 `COMPANION_TOUCH_INT_WIRED=1`、`COMPANION_TOUCH_RST_WIRED=0`。
@@ -110,7 +116,7 @@ WBA65 的更多内部 Flash 也不能改变外部 Flash 优先规则：可替换
 python .\tools\verify_companion_low_power_requirements.py --write-fixture
 ```
 
-检查器只证明策略代码、文档、目标和 WBA 边界仍然存在。它不能替代 Stop 唤醒或
+检查器只证明策略代码、默认三分钟设置、文档、目标和 WBA 边界仍然存在。它不能替代 Stop 唤醒或
 `<=1 mA` 的最终产品板测量。
 
 ## 依据

@@ -1,0 +1,38 @@
+{
+  "classification": {
+    "art_foundation": "Its useful three-minute idle setting and first-tap Stop blocker are re-integrated through the current portable power policy. Its retired art/camera-era material is not merged.",
+    "flash_mic_evidence": "Its external-Flash/audio evidence remains preserved. Its manual Record menu action is intentionally not merged because COMP-REQ-066 selects double-tap-only daily recording.",
+    "scratch_checkpoint": "Retained as an audit recovery point only; it is not a merge source."
+  },
+  "current_main_protections": {
+    "double_tap_only_recording_menu_policy": true,
+    "first_tap_blocks_stop_until_double_tap_decision": true,
+    "rejected_renderable_art_stays_retired": true,
+    "three_minute_idle_default": true
+  },
+  "errors": [],
+  "protected_refs": [
+    {
+      "actual": "15f1a55c62120db4cc65ce8b703c5f2b9f7a78dc",
+      "expected": "15f1a55c62120db4cc65ce8b703c5f2b9f7a78dc",
+      "name": "adhoc/codex/companion-ui-art-foundation"
+    },
+    {
+      "actual": "329bb0a1a185244ef17d26ab6254530848d706a4",
+      "expected": "329bb0a1a185244ef17d26ab6254530848d706a4",
+      "name": "ai/codex-companion-wb55-flash-mic-evidence-1.1"
+    },
+    {
+      "actual": "04f7a84272f28e5a0d3c7a1273c43a714f8cf2ca",
+      "expected": "04f7a84272f28e5a0d3c7a1273c43a714f8cf2ca",
+      "name": "human/scratch/companion-firmware/companion-ui-art-foundation-cleanup-20260716-233138"
+    }
+  ],
+  "schema": "companion.historical_branch_audit.v1",
+  "status": "PASS_PRESERVED_AND_CLASSIFIED",
+  "workspace_observation": {
+    "bulk_merge": "forbidden; historical commits are not a current feature contract",
+    "main_branch": "main",
+    "worktree_cleanup": "disposable worktrees removed before this audit"
+  }
+}

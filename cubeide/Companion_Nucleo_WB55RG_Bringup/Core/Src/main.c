@@ -122,7 +122,6 @@ COMPANION_PLACE_IN_SECTION("TAG_OTA_START") const uint32_t MagicKeywordAddress =
 #define TOUCH_I2C_RECOVERY_CLOCKS 9u
 #define TOUCH_RESET_LOW_MS 10u
 #define TOUCH_RESET_BOOT_MS 320u
-#define LOW_POWER_IDLE_POSE_DELAY_MS 15000u
 #define LOW_POWER_IDLE_TIMER_ID_INVALID 0xFFu
 
 #define BOARD_TOUCH_INT_GPIO_PORT GPIOC
@@ -483,6 +482,7 @@ SPI_HandleTypeDef hspi2;
 
 static comp_recording_fsm_t s_recording_fsm;
 static comp_power_policy_t s_power_policy;
+static comp_power_idle_settings_t s_power_idle_settings;
 static bool s_power_policy_ready;
 static bool s_low_power_stop_allowed;
 static comp_spi_nor_t s_flash;
@@ -675,6 +675,7 @@ static void init_low_power_idle_timer(void);
 static void low_power_idle_timer_elapsed(void);
 static void arm_low_power_idle_pose_timer(void);
 static void cancel_low_power_idle_pose_timer(void);
+static uint32_t low_power_idle_pose_delay_ms(void);
 static uint32_t low_power_idle_ms_to_timer_ticks(uint32_t timeout_ms);
 static void update_low_power_policy(void);
 static void start_recording(comp_recording_source_t source, const char *reason);
@@ -1144,6 +1145,7 @@ int main(void)
     restore_companion_gpio_after_wpan_debug_init();
     printf("[stage] ble app init requested name=companion service=VKA1\r\n");
     comp_power_policy_init(&s_power_policy);
+    comp_power_idle_settings_init(&s_power_idle_settings);
     comp_power_policy_set_touch_wake_ready(
         &s_power_policy,
         COMPANION_TOUCH_INT_WIRED != 0u && s_touch.interrupt_mode_valid);
@@ -2224,6 +2226,11 @@ static uint32_t low_power_idle_ms_to_timer_ticks(uint32_t timeout_ms)
     return ticks == 0u ? 1u : ticks;
 }
 
+static uint32_t low_power_idle_pose_delay_ms(void)
+{
+    return comp_power_idle_settings_timeout_ms(&s_power_idle_settings);
+}
+
 static void low_power_idle_timer_elapsed(void)
 {
     /* TimerServer runs this in the RTC path. The main loop owns the e-paper
@@ -2243,7 +2250,7 @@ static void init_low_power_idle_timer(void)
                      low_power_idle_timer_elapsed) == hw_ts_Successful) {
         s_low_power_idle_timer_created = true;
         printf("[power] low_power_idle_timer=ready delay_ms=%u\r\n",
-               (unsigned)LOW_POWER_IDLE_POSE_DELAY_MS);
+               (unsigned)low_power_idle_pose_delay_ms());
     } else {
         printf("[power] low_power_idle_timer=unavailable\r\n");
     }
@@ -2251,16 +2258,22 @@ static void init_low_power_idle_timer(void)
 
 static void arm_low_power_idle_pose_timer(void)
 {
+    uint32_t delay_ms;
+
     if (!s_low_power_idle_timer_created || s_low_power_idle_timer_armed ||
         s_low_power_idle_pose_due || s_low_power_idle_pose_visible) {
         return;
     }
+    delay_ms = low_power_idle_pose_delay_ms();
+    if (delay_ms == 0u) {
+        return;
+    }
     HW_TS_Stop(s_low_power_idle_timer_id);
     HW_TS_Start(s_low_power_idle_timer_id,
-                low_power_idle_ms_to_timer_ticks(LOW_POWER_IDLE_POSE_DELAY_MS));
+                low_power_idle_ms_to_timer_ticks(delay_ms));
     s_low_power_idle_timer_armed = true;
     printf("[power] low_power_idle_timer=armed delay_ms=%u\r\n",
-           (unsigned)LOW_POWER_IDLE_POSE_DELAY_MS);
+           (unsigned)delay_ms);
 }
 
 static void cancel_low_power_idle_pose_timer(void)
@@ -2290,6 +2303,9 @@ static void update_low_power_policy(void)
                                   s_touch_contact_active ||
                                       s_touch_gesture.active ||
                                       s_touch_gesture.consumed_until_release);
+    comp_power_policy_set_blocker(&s_power_policy,
+                                  COMP_POWER_BLOCKER_TOUCH_CONFIRMATION,
+                                  s_touch_gesture.tap_pending);
     comp_power_policy_set_blocker(&s_power_policy,
                                   COMP_POWER_BLOCKER_MENU_TIMER,
                                   s_menu_entry_pending);

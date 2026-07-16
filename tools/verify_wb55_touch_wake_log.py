@@ -347,7 +347,7 @@ def evaluate(log: str, log_path: str, scope: str = "full") -> dict[str, Any]:
         recording_stopped,
     )
     low_power_sleep_pose = "[screen] low_power_idle pose=sleepy animation=stopped"
-    low_power_timer_armed = "[power] low_power_idle_timer=armed delay_ms=15000"
+    low_power_timer_armed = "[power] low_power_idle_timer=armed delay_ms=180000"
     low_power_face_request = "[power] low_power_face request=sleepy trigger=idle_timer"
     low_power_face_complete = "[power] low_power_face completed=1 stop=allowed"
     stop_allowed = "[power] stop=allowed"
@@ -451,8 +451,8 @@ def evaluate(log: str, log_path: str, scope: str = "full") -> dict[str, Any]:
     else:
         status = "NO_GO_INCOMPLETE_TOUCH_WAKE_EVIDENCE"
     next_actions = {
-        "idle-timer": "Capture at least 20 seconds after reset and prove the 15 s idle timer permits Stop before its single sleepy transition, then the display-complete callback returns to Stop.",
-        "stop-wake": "Collect one reset-bounded capture that shows the 15 s idle timer arm, static sleepy pose, Stop, then one touch so PC6 IRQ observation and consumption are logged.",
+        "idle-timer": "Capture through the default three-minute idle deadline and prove the one-shot permits Stop before its single sleepy transition, then the display-complete callback returns to Stop.",
+        "stop-wake": "Collect one reset-bounded capture that shows the default three-minute idle timer arm, static sleepy pose, Stop, then one touch so PC6 IRQ observation and consumption are logged.",
         "short-tap": "After the sleepy face reaches Stop, touch and lift in under 500 ms. The first post-wake gesture must be tap, followed by daily_reaction and one visible expression frame; a 3 s long press is a different menu contract and cannot pass this check.",
         "double-tap-recording": "Collect one bounded capture containing two daily-page double taps, restored SAI clock, successful DMA start, at least two changing PCM blocks without timeout, recording stop, successful DMA shutdown, and a successful external Flash store.",
         "full": "Collect a post-wiring serial capture with TP_INT wired, then perform one Stop wake and two daily-page double taps.",
@@ -494,7 +494,7 @@ def self_test(scope: str = "full") -> dict[str, Any]:
         [
             "[touch] ft6336 decoder=pass gesture=pass addr=0x38 probe=present probes=1 irq_mode=trigger irq_cfg_errors=0 tuning=applied threshold=0x16 period=12/24 tuning_errors=0 poll_ms=5/8 irq=PC6 wired=1 reset=PC10 wired=0 refresh_poll_ms=5",
             "[power] policy_selftest=pass touch_irq_wake=ready lpm=enabled",
-            "[power] low_power_idle_timer=armed delay_ms=15000",
+            "[power] low_power_idle_timer=armed delay_ms=180000",
             "[power] stop=allowed blockers=0x00000000 touch_irq=1",
             "[screen] low_power_idle pose=sleepy animation=stopped",
             "[power] low_power_face request=sleepy trigger=idle_timer",

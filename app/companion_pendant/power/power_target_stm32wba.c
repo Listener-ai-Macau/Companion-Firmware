@@ -21,6 +21,7 @@ void comp_power_stm32wba_init(comp_power_stm32wba_t *target,
         return;
     }
     memset(target, 0, sizeof(*target));
+    comp_power_idle_settings_init(&target->idle_settings);
     if (config != NULL) {
         target->config = *config;
     }
@@ -123,7 +124,8 @@ bool comp_power_stm32wba_self_test(void)
 
     comp_power_stm32wba_init(&target, &config);
     comp_power_policy_init(&policy);
-    if (!comp_power_stm32wba_prepare_touch_wake(&target, &policy) ||
+    if (comp_power_idle_settings_timeout_ms(&target.idle_settings) != 180000u ||
+        !comp_power_stm32wba_prepare_touch_wake(&target, &policy) ||
         test.configure_calls != 1u ||
         !comp_power_stm32wba_apply_policy(&target, &policy) ||
         test.last_stop_allowed) {
