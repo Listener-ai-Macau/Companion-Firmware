@@ -1,0 +1,47 @@
+{
+  "schema": "denzic.product_visual_iteration.v1",
+  "feature": "companion-pet-expression",
+  "target_profile": "wb55-gdey0154d67-ft6336u-200x200-1bit",
+  "rule": "docs/product_visual_design_iteration.md",
+  "baseline": {
+    "accepted_source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "owner_visual_decision": "Owner explicitly selected this v9 full sheet on 2026-07-15 as the only active Companion expression baseline. Later generated sheets are regressions and may not become sources, imports or visual references.",
+    "comparison_artifact": "docs/art/iterations/companion-pet-expression-v9/baseline-lock.json",
+    "style_lock": "Inner face only. Preserve this exact 3 by 4 v9 canvas, state order, spacing, black upright oval eye contour, paired baseline, white highlight family, detached rounded brows, petite nose/W-mouth, cheek dots and sparse semantic charms. No eyelid or eye-hugging black arc; no cat outline, ears, whiskers, frame, labels, grey or gradients."
+  },
+  "iterations": [
+    {
+      "iteration_id": "pet-expression-v9-anti-sly-cute-2026-07-15",
+      "status": "accepted_owner_visual_baseline_2026-07-15",
+      "authoring_request": "Correct the previously rejected sly/greasy eye geometry while retaining a cute, lively companion identity and semantic charm vocabulary.",
+      "prompt": "Use the attached v7 face sheet as the direct visual reference for the same tiny premium AI companion inner face. The v8 direction showed a pose construction to correct, not a style to copy. Create a polished monochrome 1-bit-ready 3 rows by 4 columns sheet of exactly 12 equally spaced cute lively interaction faces for a 200x200 e-paper display. Keep pure white background, compact filled black upright oval eyes with small white highlights, short rounded paired brows, tiny button nose, delicate W-mouth, cheek dots, generous whitespace and tiny semantic charms outside the features. No cat head outline, ears, whiskers, device frame, labels, panels, grey, gradients, shading, eyelashes, human styling or clutter. Critical eye safety rule: every open-eye pair must sit on the same horizontal baseline, have matched vertical oval proportions and matched high/front-facing white highlight placement. Do not draw any black eyelid crescent, arc or stroke touching or hugging an eye oval. No one-sided lifted eye, unequal eye size, steep diagonal brow, side-eye, smirk, flirtatious look, smug look, tired look or menacing expression. Directional gestures must remain cute and forward-friendly: use only a tiny symmetric highlight shift, paired gentle brow adjustment, slight whole-face lean and external motion ticks, never warped eyes. Make every emotion change eyes, paired brows, mouth and cheeks together. Use small friendly hanging charm marks in free whitespace only: star/spark, question, heart bead, motion ticks, sound arcs, record dot, dot trail, moon/Z or ellipsis cue. Row 1: idle calm with a small star; curious tap with question and sparkle; friendly left swipe with left ticks; friendly right swipe with right ticks. Row 2: cheerful up swipe with upward surprise ticks; affectionate down swipe with heart; listening with sound arcs; earnest recording start/active with record dot. Row 3: gentle saving with dot trail; saved happy with sparkles; low-power sleepy with moon and Z marks; hopeful menu hold/decision with ellipsis and sparkle. Keep mouths petite and sweet: soft W-mouth, tiny open O or tiny joyful open W, no protruding tongue or sharp grin. Make the full sheet feel like one lovable, animated companion with varied but consistently adorable emotions, designed for two or three low-frequency e-paper keyframes per state.",
+      "source_references": [
+        "owner visual direction and correction feedback recorded 2026-07-15",
+        "COMP-REQ-047 anti-sly geometry steering",
+        "COMP-REQ-053 owner-selected v9 baseline lock",
+        "COMP-REQ-054 retired-round source purge"
+      ],
+      "output": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "review": {
+        "outcome": "accepted_owner_2026-07-15",
+        "reason": "The owner explicitly confirmed this exact v9 sheet as the best result and directed that it become the sole active visual baseline. Later generations visibly regressed and are retired from active routing.",
+        "next_prompt_delta": "Never regenerate the complete sheet. A future candidate may only be an in-context local retouch of one named visible variable on this source, with all non-target cells locked and an explicit owner comparison before another iteration."
+      },
+      "implementation": {
+        "status": "machine_render_candidate_authorized_runtime_resource_not_activated",
+        "resource_revision": null,
+        "request_record": "docs/art/iterations/companion-pet-expression-v9/generation-request.json",
+        "validation": [
+          "verify exact prompt and source hash",
+          "retain this immutable source and hash as the only active art baseline",
+          "require an in-context one-variable candidate plus owner decision before any visual change",
+          "create the COMP-REQ-069 machine-only source-to-PBM comparison and verified candidate CEMP from this exact full-sheet source",
+          "keep legacy CEMP revision 53 outside the v9 source chain; it remains a separate current runtime resource until a separately accepted v9 resource activation replaces it"
+        ],
+        "activation_gate": "The machine-only v9 candidate may be rendered, packed and decoded under COMP-REQ-069, but no visual resource is active until a separate resource-activation decision, target integration evidence and focused physical/visual acceptance are complete."
+      }
+    }
+  ]
+}

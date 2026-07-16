@@ -1,0 +1,35 @@
+{
+  "schema": "companion.visual_baseline_lock.v1",
+  "iteration_id": "companion-pet-expression-v9",
+  "status": "OWNER_APPROVED_SOURCE_LOCKED_MACHINE_RENDER_AUTHORIZED",
+  "accepted_source": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "dimensions_px": [1254, 1254],
+    "bytes": 860832
+  },
+  "owner_decision": "The owner selected this exact full v9 sheet as the sole Companion inner-face baseline. Previously rejected or superseded image rounds cannot be restored, sampled, combined, or used as fallback art.",
+  "historical_prompt_record": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generation-request.json",
+    "status": "EXACT_HISTORICAL_RECORD_NOT_A_FUTURE_FREEFORM_INSTRUCTION",
+    "future_change_rule": "A future visual change is an in-context local retouch of one named visible variable on this exact source. It must preserve all locked non-target cells and receive a separate owner decision before resource replacement."
+  },
+  "machine_candidate_scope": {
+    "allowed": [
+      "deterministic source crop",
+      "200x200 1-bit PBM generation",
+      "declared whole-frame integer translation",
+      "CEMP packing and decode comparison",
+      "renderer contact-sheet inspection"
+    ],
+    "forbidden": [
+      "legacy or rejected bitmap input",
+      "code-drawn facial features",
+      "runtime resource activation",
+      "external Flash provisioning",
+      "firmware flash",
+      "physical or owner visual PASS claim"
+    ]
+  },
+  "activation_gate": "A candidate pack remains inactive until a separate resource activation decision, target integration evidence, and focused physical/visual acceptance are recorded."
+}

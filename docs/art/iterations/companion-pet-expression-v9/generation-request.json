@@ -1,0 +1,41 @@
+{
+  "schema_id": "companion.visual_generation_request.v1",
+  "iteration_id": "companion-pet-expression-v9",
+  "status": "OWNER_APPROVED_BASELINE_LOCKED",
+  "requested_at": "2026-07-15T12:35:00+08:00",
+  "owner_requirement": "The owner selected this exact v9 full sheet as the sole retained Companion expression source. All 12 poses remain lively, sweet and cute, never greasy or flirtatious.",
+  "target_profile": {
+    "width": 200,
+    "height": 200,
+    "pixel_style": "black-and-white 1-bit-ready e-paper keyframes",
+    "asset_storage": "external Flash CEMP after owner visual approval"
+  },
+  "source_references": [
+    {
+      "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "sha256": "919f344957661def2099ad56ab1286cca9dba4d8f08b702617b6df5b1a28e9da",
+      "role": "owner-confirmed sole retained visual source after the 2026-07-15 retirement cleanup"
+    }
+  ],
+  "prompt": "Use the attached v7 face sheet as the direct visual reference for the same tiny premium AI companion inner face. The attached v8 sheet shows a pose construction to correct, not a style to copy. Create a polished monochrome 1-bit-ready 3 rows by 4 columns sheet of exactly 12 equally spaced cute lively interaction faces for a 200x200 e-paper display. Keep pure white background, compact filled black upright oval eyes with small white highlights, short rounded paired brows, tiny button nose, delicate W-mouth, cheek dots, generous whitespace and tiny semantic charms outside the features. No cat head outline, ears, whiskers, device frame, labels, panels, grey, gradients, shading, eyelashes, human styling or clutter. Critical eye safety rule: every open-eye pair must sit on the same horizontal baseline, have matched vertical oval proportions and matched high/front-facing white highlight placement. Do not draw any black eyelid crescent, arc or stroke touching or hugging an eye oval. No one-sided lifted eye, unequal eye size, steep diagonal brow, side-eye, smirk, flirtatious look, smug look, tired look or menacing expression. Directional gestures must remain cute and forward-friendly: use only a tiny symmetric highlight shift, paired gentle brow adjustment, slight whole-face lean and external motion ticks, never warped eyes. Make every emotion change eyes, paired brows, mouth and cheeks together. Use small friendly hanging charm marks in free whitespace only: star/spark, question, heart bead, motion ticks, sound arcs, record dot, dot trail, moon/Z or ellipsis cue. Row 1: idle calm with a small star; curious tap with question and sparkle; friendly left swipe with left ticks; friendly right swipe with right ticks. Row 2: cheerful up swipe with upward surprise ticks; affectionate down swipe with heart; listening with sound arcs; earnest recording start/active with record dot. Row 3: gentle saving with dot trail; saved happy with sparkles; low-power sleepy with moon and Z marks; hopeful menu hold/decision with ellipsis and sparkle. Keep mouths petite and sweet: soft W-mouth, tiny open O or tiny joyful open W, no protruding tongue or sharp grin. Make the full sheet feel like one lovable, animated companion with varied but consistently adorable emotions, designed for two or three low-frequency e-paper keyframes per state.",
+  "negative_constraints": [
+    "no eyelid arc touching or hugging an eye oval",
+    "no unequal eye height or size",
+    "no one-sided raised eye or steep diagonal brow",
+    "no side-eye, smirk, flirtatious, smug, tired or menacing expression",
+    "no hollow ring eyes or eyelashes",
+    "no cat silhouette, panel, text, labels, grey, shading or gradients",
+    "no excessive charms or face-covering decorations"
+  ],
+  "generated_output": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "dimensions_px": [
+      1254,
+      1254
+    ],
+    "runtime_source": "C:\\Users\\Billy\\.codex\\generated_images\\019f44be-6fce-7140-acbe-cac2c63e2a4e\\exec-1b93e9b6-17b8-48a3-a0c0-600ae9b1c358.png"
+  },
+  "review_rule": "Owner-approved source only. Do not change CEMP assets, flash firmware or claim state visual PASS before a state-specific owner-approved source-to-PBM/CEMP comparison.",
+  "next_prompt_delta": "Wait for one owner-named state and one visible variable, then follow the v15 in-context comparison route."
+}

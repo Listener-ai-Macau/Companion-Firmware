@@ -1,15 +1,15 @@
 # Companion Product Requirement Registry
 
 This is the canonical Companion product-decision and handoff registry. It is
-not a second execution-status system: workflow execution state remains in
-`ai-collaboration-workflow/docs/plans/*_status.json`.
+not a second execution-status system: the active Codex Goal and this registry
+are the current contract. Historical AIW plan links below remain audit context
+only and do not replace the active Goal.
 
 ## Read Order
 
-1. Run `aiw status -Plan companion-screen-product-integration` from the
-   workflow repository.
-2. Read this registry before changing Companion behavior, hardware, visual
-   assets, or acceptance scope.
+1. Read the active Codex Goal before changing Companion behavior, hardware,
+   visual assets, or acceptance scope.
+2. Read this registry before changing the same scope.
 3. Open the linked source document and validation artifact for the selected
    requirement. Do not infer completion from a `static` status.
 
@@ -19,8 +19,8 @@ Every product-owner steer that makes a decision, rejects a direction, changes
 priority, adds a constraint, or changes acceptance must be added or updated
 here before implementation. A question without a decision stays in chat until
 clarified. Replaced requirements remain as `superseded` with a replacement ID;
-they are never deleted. Each active item must link to a workflow step in
-`companion-screen-product-integration` and its authoritative product artifact.
+they are never deleted. Each active item must link to its authoritative product
+artifact. Historical workflow-plan links remain audit context only.
 
 ## Current Requirements
 
@@ -66,6 +66,7 @@ they are never deleted. Each active item must link to a workflow step in
 | COMP-REQ-066 | Daily double-tap touch is the only default manual recording start/stop interaction. The four-root `Voice` page shows truthful live `Recording` status, history when the shared Denzic Platform core exposes it, and deferred wake-word policy; it never presents a Record action, chevron, or target side effect. `Device`, `Connection`, and `Preferences` retain only committed action, live datum, planned, or deferred rows. This supersedes the manual-recording clause in COMP-REQ-056 and prohibits an old menu art/resource from restoring it. | active P0; portable contract, navigation, target bridge and view-model pass | 2.1, 2.2, 3.2, 4.1 | `menu_v5_contract.*`, `menu_v5_navigation.*`, `menu_v5_view_model.*`, and the portable-stack evidence; target behavior and visual acceptance remain separate. |
 | COMP-REQ-067 | Future WB55/WBA renderers consume the portable four-root view model rather than re-deciding behavior while drawing. Its stable roles are header face, root icon, chevron, live mark, and deferred/planned badge; these are semantic tokens, never asset paths. The model cannot choose a font, draw a panel, load PBM/CEMP, access Flash, or dispatch a product action. Any menu art begins from a newly recorded reference-first source; no r1-r5, v3, v4, legacy CEMP, or rejected generated candidate may re-enter as an active source or fallback. | active P0; renderer input is machine-proven, visual source intentionally unselected | 3.2, 4.1 | `docs/validation/companion-menu-v5-portable-stack-20260716.json`; future source ledger, deterministic render/PBM/CEMP comparison, healthy-panel preflight and focused owner decision. |
 | COMP-REQ-068 | The v9 expression sheet (`919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA`) remains the sole active inner-face visual baseline. The portable pet-performance/event layers and four-root menu share WB55/WBA-neutral scene and metadata contracts, remain external-Flash-first once resources are approved, and cannot activate a resource, invoke OTA, alter recording DMA, or refresh a panel by themselves. Special scenes require a v9-derived, state-specific source and independent render/physical acceptance. | active P0; portable scene/event layer passes machine replay, resource activation pending | 3.1, 3.2, 4.1 | `docs/validation/companion-pet-performance-event-replay-20260716.json`; v9 source ledger, state-specific source/render gate, WBA target build and later physical evidence. |
+| COMP-REQ-069 | The owner authorizes a machine-only v9 resource candidate chain: the exact owner-approved v9 sheet is deterministically cropped to 200x200 PBM faces, mapped to 39 declared expression frames, packed into a candidate CEMP, decoded and compared back to the PBMs. This proves renderer/resource integrity only. It does not activate a CEMP revision, replace legacy runtime resources, provision external Flash, flash firmware, claim panel appearance, or approve uncovered special-scene art. Every generated PBM must trace to the v9 hash plus a declared crop/translation; rejected art and legacy CEMP are forbidden inputs and fallbacks. | active P0; renderer-first candidate chain authorized, runtime activation pending | 3.1, 3.2, 4.1 | `docs/art/iterations/companion-pet-expression-v9/baseline-lock.json`; v9 renderer report/contact sheet, CEMP decoder comparison, WBA portability check, then separate resource activation and physical acceptance. |
 | COMP-REQ-007 | Replaceable UI, expression, menu, and future model assets are external-Flash first. Internal Flash retains firmware, drivers, parsers, and small rescue UI only. Resource changes are an OTA component but OTA execution stays frozen until Listener OTA acceptance. | active; OTA externally frozen | 4.2 | `docs/companion_resource_memory_policy.md` and `docs/companion_ota_component_contract.md`; resource pack mount/CRC and Denzic OTA matrix when unfrozen. |
 | COMP-REQ-008 | Normal visual design is reference-first. Under COMP-REQ-053, the sole current generated inner-face baseline is `docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png`; firmware draws no cat outline, ears, whiskers, or device frame. New visual work records the v9 source hash, prompt, source references, output hash, review, and next single-variable delta before any CEMP import. Historical v5 or retired-round material remains traceability only and cannot seed a new prompt, asset, fallback or resource pack. | active; v9 source locked and state resource mapping pending | 3.1 | COMP-REQ-053/054; `docs/art/iterations/companion-pet-expression-v9/`; `docs/art/iterations/companion-pet-expression-v15-style-lock/`; `docs/companion_screen_project_plan.md` SCR-09 and SCR-15. |
 | COMP-REQ-009 | Expression art must be generated-reference-first and external-Flash-first. Low power must be immediately readable as deep sleep through closed lids, relaxed mouth, sparse sleep marks, and a separate two-keyframe breathing vocabulary; touch wake must visibly lift into alertness. Stop shows only one static sleep frame and must not use breathing to schedule periodic e-paper refreshes or wakeups. Recording must be immediately readable as listening: start, three whole-face active keyframes, double-tap stop/saving, saved, and failed/recovery poses. The recording-active state changes eyes, lids/brows, mouth, cheeks, and sparse side sound marks together, not an eye-only or static sticker. The physical enclosure still owns the cat outline. | active, v2 rejected for weak state readability; v3 generated art pending review and CEMP import | 3.1 | `docs/art/iterations/companion-pet-interaction-v1/iteration-ledger.json`; accepted generation, PBM/CEMP review, dynamic recording FSM evidence, and real-panel evidence. |
