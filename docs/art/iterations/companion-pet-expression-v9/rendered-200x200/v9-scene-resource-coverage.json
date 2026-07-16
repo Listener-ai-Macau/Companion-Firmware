@@ -1,0 +1,292 @@
+{
+  "schema": "companion.v9_scene_resource_coverage.v1",
+  "status": "PASS_EXHAUSTIVE_NO_LEGACY_FALLBACK",
+  "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "candidate_manifest": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/v9-expression-cemp-manifest.json",
+  "candidate_runtime_resource_activated": false,
+  "policy": "A pending scene has no visual fallback. It must receive a separately recorded v9-derived source before it can render.",
+  "available_candidate_count": 18,
+  "pending_visual_baseline_count": 22,
+  "entries": [
+    {
+      "resource_family": "daily.idle",
+      "status": "CANDIDATE_AVAILABLE_NOT_ACTIVE",
+      "candidate_clip": "idle",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "note": "v9 idle calm"
+    },
+    {
+      "resource_family": "daily.tap",
+      "status": "CANDIDATE_AVAILABLE_NOT_ACTIVE",
+      "candidate_clip": "touch",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "note": "v9 curious tap"
+    },
+    {
+      "resource_family": "daily.stroke",
+      "status": "CANDIDATE_AVAILABLE_NOT_ACTIVE",
+      "candidate_clip": "touch",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "note": "v9 curious tap is the only approved gentle-touch candidate"
+    },
+    {
+      "resource_family": "daily.swipe_left",
+      "status": "CANDIDATE_AVAILABLE_NOT_ACTIVE",
+      "candidate_clip": "swipe_left",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "note": "v9 left gesture"
+    },
+    {
+      "resource_family": "daily.swipe_right",
+      "status": "CANDIDATE_AVAILABLE_NOT_ACTIVE",
+      "candidate_clip": "swipe_right",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "note": "v9 right gesture"
+    },
+    {
+      "resource_family": "daily.swipe_up",
+      "status": "CANDIDATE_AVAILABLE_NOT_ACTIVE",
+      "candidate_clip": "swipe_up",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "note": "v9 up gesture"
+    },
+    {
+      "resource_family": "daily.swipe_down",
+      "status": "CANDIDATE_AVAILABLE_NOT_ACTIVE",
+      "candidate_clip": "swipe_down",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "note": "v9 down gesture"
+    },
+    {
+      "resource_family": "voice.listening",
+      "status": "CANDIDATE_AVAILABLE_NOT_ACTIVE",
+      "candidate_clip": "listening",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "note": "v9 sound-arc listening"
+    },
+    {
+      "resource_family": "voice.speaking",
+      "status": "PENDING_VISUAL_BASELINE",
+      "candidate_clip": null,
+      "source_sha256": null,
+      "note": "requires a v9-derived speaking source"
+    },
+    {
+      "resource_family": "menu.hold",
+      "status": "CANDIDATE_AVAILABLE_NOT_ACTIVE",
+      "candidate_clip": "menu_hold",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "note": "v9 hold/decision"
+    },
+    {
+      "resource_family": "menu.enter",
+      "status": "CANDIDATE_AVAILABLE_NOT_ACTIVE",
+      "candidate_clip": "menu_hold",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "note": "v9 hold/decision supplies only the entry handoff"
+    },
+    {
+      "resource_family": "menu.open",
+      "status": "PENDING_MENU_VISUAL_BASELINE",
+      "candidate_clip": null,
+      "source_sha256": null,
+      "note": "requires the separately approved four-root menu visual source"
+    },
+    {
+      "resource_family": "menu.select",
+      "status": "CANDIDATE_AVAILABLE_NOT_ACTIVE",
+      "candidate_clip": "menu_hold",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "note": "v9 decision supplies only the committed selection handoff"
+    },
+    {
+      "resource_family": "menu.blocked",
+      "status": "PENDING_VISUAL_BASELINE",
+      "candidate_clip": null,
+      "source_sha256": null,
+      "note": "requires a v9-derived blocked-state source"
+    },
+    {
+      "resource_family": "menu.exit",
+      "status": "PENDING_VISUAL_BASELINE",
+      "candidate_clip": null,
+      "source_sha256": null,
+      "note": "requires a v9-derived exit-state source"
+    },
+    {
+      "resource_family": "recording.start",
+      "status": "CANDIDATE_AVAILABLE_NOT_ACTIVE",
+      "candidate_clip": "recording",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "note": "v9 record-dot entry"
+    },
+    {
+      "resource_family": "recording.active",
+      "status": "CANDIDATE_AVAILABLE_NOT_ACTIVE",
+      "candidate_clip": "recording",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "note": "v9 record-dot active"
+    },
+    {
+      "resource_family": "recording.saving",
+      "status": "CANDIDATE_AVAILABLE_NOT_ACTIVE",
+      "candidate_clip": "saving",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "note": "v9 dot-trail saving"
+    },
+    {
+      "resource_family": "recording.saved",
+      "status": "CANDIDATE_AVAILABLE_NOT_ACTIVE",
+      "candidate_clip": "saved",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "note": "v9 sparkle saved"
+    },
+    {
+      "resource_family": "recording.error",
+      "status": "PENDING_VISUAL_BASELINE",
+      "candidate_clip": null,
+      "source_sha256": null,
+      "note": "requires a v9-derived recording-error source"
+    },
+    {
+      "resource_family": "power.sleep_entry",
+      "status": "CANDIDATE_AVAILABLE_NOT_ACTIVE",
+      "candidate_clip": "sleep",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "note": "v9 moon and Z sleep"
+    },
+    {
+      "resource_family": "power.deep_sleep",
+      "status": "CANDIDATE_AVAILABLE_NOT_ACTIVE",
+      "candidate_clip": "sleep",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "note": "v9 static sleep keyframe"
+    },
+    {
+      "resource_family": "power.wake",
+      "status": "CANDIDATE_AVAILABLE_NOT_ACTIVE",
+      "candidate_clip": "wake",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "note": "v9 sleep-to-idle-to-curious handoff"
+    },
+    {
+      "resource_family": "power.charge_detected",
+      "status": "PENDING_VISUAL_BASELINE",
+      "candidate_clip": null,
+      "source_sha256": null,
+      "note": "requires a v9-derived charge-detected source"
+    },
+    {
+      "resource_family": "power.charging",
+      "status": "PENDING_VISUAL_BASELINE",
+      "candidate_clip": null,
+      "source_sha256": null,
+      "note": "requires a v9-derived charging source"
+    },
+    {
+      "resource_family": "power.charged",
+      "status": "PENDING_VISUAL_BASELINE",
+      "candidate_clip": null,
+      "source_sha256": null,
+      "note": "requires a v9-derived charged source"
+    },
+    {
+      "resource_family": "power.low_battery",
+      "status": "PENDING_VISUAL_BASELINE",
+      "candidate_clip": null,
+      "source_sha256": null,
+      "note": "requires a v9-derived low-battery source"
+    },
+    {
+      "resource_family": "link.pairing",
+      "status": "PENDING_VISUAL_BASELINE",
+      "candidate_clip": null,
+      "source_sha256": null,
+      "note": "requires a v9-derived pairing source"
+    },
+    {
+      "resource_family": "link.connected",
+      "status": "PENDING_VISUAL_BASELINE",
+      "candidate_clip": null,
+      "source_sha256": null,
+      "note": "requires a v9-derived connected source"
+    },
+    {
+      "resource_family": "link.syncing",
+      "status": "PENDING_VISUAL_BASELINE",
+      "candidate_clip": null,
+      "source_sha256": null,
+      "note": "requires a v9-derived syncing source"
+    },
+    {
+      "resource_family": "link.synced",
+      "status": "PENDING_VISUAL_BASELINE",
+      "candidate_clip": null,
+      "source_sha256": null,
+      "note": "requires a v9-derived synced source"
+    },
+    {
+      "resource_family": "link.error",
+      "status": "PENDING_VISUAL_BASELINE",
+      "candidate_clip": null,
+      "source_sha256": null,
+      "note": "requires a v9-derived link-error source"
+    },
+    {
+      "resource_family": "upgrade.offer",
+      "status": "PENDING_VISUAL_BASELINE",
+      "candidate_clip": null,
+      "source_sha256": null,
+      "note": "requires a v9-derived upgrade-offer source; OTA remains frozen"
+    },
+    {
+      "resource_family": "upgrade.prepare",
+      "status": "PENDING_VISUAL_BASELINE",
+      "candidate_clip": null,
+      "source_sha256": null,
+      "note": "requires a v9-derived upgrade-prepare source; OTA remains frozen"
+    },
+    {
+      "resource_family": "upgrade.transfer",
+      "status": "PENDING_VISUAL_BASELINE",
+      "candidate_clip": null,
+      "source_sha256": null,
+      "note": "requires a v9-derived upgrade-transfer source; OTA remains frozen"
+    },
+    {
+      "resource_family": "upgrade.verify",
+      "status": "PENDING_VISUAL_BASELINE",
+      "candidate_clip": null,
+      "source_sha256": null,
+      "note": "requires a v9-derived upgrade-verify source; OTA remains frozen"
+    },
+    {
+      "resource_family": "upgrade.restart",
+      "status": "PENDING_VISUAL_BASELINE",
+      "candidate_clip": null,
+      "source_sha256": null,
+      "note": "requires a v9-derived upgrade-restart source; OTA remains frozen"
+    },
+    {
+      "resource_family": "upgrade.success",
+      "status": "PENDING_VISUAL_BASELINE",
+      "candidate_clip": null,
+      "source_sha256": null,
+      "note": "requires a v9-derived upgrade-success source; OTA remains frozen"
+    },
+    {
+      "resource_family": "upgrade.error",
+      "status": "PENDING_VISUAL_BASELINE",
+      "candidate_clip": null,
+      "source_sha256": null,
+      "note": "requires a v9-derived upgrade-error source; OTA remains frozen"
+    },
+    {
+      "resource_family": "system.error",
+      "status": "PENDING_VISUAL_BASELINE",
+      "candidate_clip": null,
+      "source_sha256": null,
+      "note": "requires a v9-derived system-error source"
+    }
+  ]
+}

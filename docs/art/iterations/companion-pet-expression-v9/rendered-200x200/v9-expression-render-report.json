@@ -1,0 +1,1076 @@
+{
+  "schema": "companion.v9_expression_render.v1",
+  "status": "PASS_MACHINE_RENDER_CANDIDATE_NOT_ACTIVATED",
+  "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+  "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "profile": {
+    "width": 200,
+    "height": 200,
+    "pixel_format": "mono_1bpp_white_is_one_msb"
+  },
+  "threshold": 180,
+  "pose_count": 12,
+  "frame_count": 39,
+  "manifest": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/v9-expression-cemp-manifest.json",
+  "pose_review": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/v9-expression-reference-to-pbm.png",
+  "frame_review": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/v9-expression-frame-contact-sheet.png",
+  "frames": [
+    {
+      "clip": "idle",
+      "phase": "entry",
+      "pose": "idle_calm",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_idle_entry.pbm",
+      "sha256": "5F078C3D876E74662917C7E2C625688A151C8D1C4A6381262E722EC1057D2B15",
+      "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "source_crop_box": [
+        7,
+        92,
+        307,
+        392
+      ],
+      "translation": [
+        0,
+        0
+      ],
+      "duration_ms": 1800,
+      "dirty": [
+        46,
+        48,
+        135,
+        139
+      ],
+      "edge_black_pixels": 0
+    },
+    {
+      "clip": "idle",
+      "phase": "sustain",
+      "pose": "idle_calm",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_idle_sustain.pbm",
+      "sha256": "7E38DA354369F63827C76101C993E340BC13AEF63F7440B16F7BE9F694A31894",
+      "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "source_crop_box": [
+        7,
+        92,
+        307,
+        392
+      ],
+      "translation": [
+        -1,
+        0
+      ],
+      "duration_ms": 1300,
+      "dirty": [
+        45,
+        48,
+        135,
+        139
+      ],
+      "edge_black_pixels": 0
+    },
+    {
+      "clip": "idle",
+      "phase": "settle",
+      "pose": "idle_calm",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_idle_settle.pbm",
+      "sha256": "5F078C3D876E74662917C7E2C625688A151C8D1C4A6381262E722EC1057D2B15",
+      "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "source_crop_box": [
+        7,
+        92,
+        307,
+        392
+      ],
+      "translation": [
+        0,
+        0
+      ],
+      "duration_ms": 1600,
+      "dirty": [
+        46,
+        48,
+        135,
+        139
+      ],
+      "edge_black_pixels": 0
+    },
+    {
+      "clip": "touch",
+      "phase": "entry",
+      "pose": "curious_tap",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_touch_entry.pbm",
+      "sha256": "BC509237D46ACB9E79EE2FFAC617EF0ED21BC0BAD02EC8F4CF0AA1F93C99B490",
+      "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "source_crop_box": [
+        320,
+        92,
+        620,
+        392
+      ],
+      "translation": [
+        0,
+        0
+      ],
+      "duration_ms": 700,
+      "dirty": [
+        34,
+        47,
+        138,
+        149
+      ],
+      "edge_black_pixels": 0
+    },
+    {
+      "clip": "touch",
+      "phase": "sustain",
+      "pose": "curious_tap",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_touch_sustain.pbm",
+      "sha256": "B4A8667BB0AB939B2101DCC7F0A07D7A8DE39E33854950F8332AED7F9D53CA5E",
+      "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "source_crop_box": [
+        320,
+        92,
+        620,
+        392
+      ],
+      "translation": [
+        0,
+        -1
+      ],
+      "duration_ms": 900,
+      "dirty": [
+        34,
+        46,
+        138,
+        149
+      ],
+      "edge_black_pixels": 0
+    },
+    {
+      "clip": "touch",
+      "phase": "settle",
+      "pose": "curious_tap",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_touch_settle.pbm",
+      "sha256": "BC509237D46ACB9E79EE2FFAC617EF0ED21BC0BAD02EC8F4CF0AA1F93C99B490",
+      "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "source_crop_box": [
+        320,
+        92,
+        620,
+        392
+      ],
+      "translation": [
+        0,
+        0
+      ],
+      "duration_ms": 1400,
+      "dirty": [
+        34,
+        47,
+        138,
+        149
+      ],
+      "edge_black_pixels": 0
+    },
+    {
+      "clip": "swipe_left",
+      "phase": "entry",
+      "pose": "swipe_left",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_left_entry.pbm",
+      "sha256": "4A9EBEEB4EEAB1E88C725E5D2C52AEAA4FE18BF628544F445A7DB4BDF84F024C",
+      "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "source_crop_box": [
+        614,
+        92,
+        934,
+        412
+      ],
+      "translation": [
+        1,
+        0
+      ],
+      "duration_ms": 650,
+      "dirty": [
+        14,
+        94,
+        158,
+        90
+      ],
+      "edge_black_pixels": 0
+    },
+    {
+      "clip": "swipe_left",
+      "phase": "sustain",
+      "pose": "swipe_left",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_left_sustain.pbm",
+      "sha256": "0B273A63F84CAD1D9A9C724B2577C9CCB3762D04045BB169FFA347F30D6F9547",
+      "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "source_crop_box": [
+        614,
+        92,
+        934,
+        412
+      ],
+      "translation": [
+        0,
+        0
+      ],
+      "duration_ms": 850,
+      "dirty": [
+        13,
+        94,
+        158,
+        90
+      ],
+      "edge_black_pixels": 0
+    },
+    {
+      "clip": "swipe_left",
+      "phase": "settle",
+      "pose": "swipe_left",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_left_settle.pbm",
+      "sha256": "CA0C511AF644596D6005E681FEF54C16A92DB9691D8B9BE20CA94562AD8BECE8",
+      "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "source_crop_box": [
+        614,
+        92,
+        934,
+        412
+      ],
+      "translation": [
+        -1,
+        0
+      ],
+      "duration_ms": 1100,
+      "dirty": [
+        12,
+        94,
+        158,
+        90
+      ],
+      "edge_black_pixels": 0
+    },
+    {
+      "clip": "swipe_right",
+      "phase": "entry",
+      "pose": "swipe_right",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_right_entry.pbm",
+      "sha256": "DC78758B5676644A7100DE96CD0E7609846A3622E75B80D5090E7AB82E06F6F5",
+      "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "source_crop_box": [
+        947,
+        92,
+        1247,
+        392
+      ],
+      "translation": [
+        -1,
+        0
+      ],
+      "duration_ms": 650,
+      "dirty": [
+        11,
+        99,
+        159,
+        97
+      ],
+      "edge_black_pixels": 0
+    },
+    {
+      "clip": "swipe_right",
+      "phase": "sustain",
+      "pose": "swipe_right",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_right_sustain.pbm",
+      "sha256": "50C85CE66814A023704D923B9BB23065FF90BCBBC99581650C97A4BBB562A93F",
+      "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "source_crop_box": [
+        947,
+        92,
+        1247,
+        392
+      ],
+      "translation": [
+        0,
+        0
+      ],
+      "duration_ms": 850,
+      "dirty": [
+        12,
+        99,
+        159,
+        97
+      ],
+      "edge_black_pixels": 0
+    },
+    {
+      "clip": "swipe_right",
+      "phase": "settle",
+      "pose": "swipe_right",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_right_settle.pbm",
+      "sha256": "7DBC7505DEC8785949F6EECC3E80AA8D9AF47325EFF52105FC962F9184FBD06E",
+      "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "source_crop_box": [
+        947,
+        92,
+        1247,
+        392
+      ],
+      "translation": [
+        1,
+        0
+      ],
+      "duration_ms": 1100,
+      "dirty": [
+        13,
+        99,
+        159,
+        97
+      ],
+      "edge_black_pixels": 0
+    },
+    {
+      "clip": "swipe_up",
+      "phase": "entry",
+      "pose": "swipe_up",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_up_entry.pbm",
+      "sha256": "069B3F20908026D1C6BB64F30A78BFB03B531B8095D36E9097E3831B878896AE",
+      "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "source_crop_box": [
+        7,
+        470,
+        307,
+        770
+      ],
+      "translation": [
+        0,
+        1
+      ],
+      "duration_ms": 650,
+      "dirty": [
+        47,
+        39,
+        132,
+        132
+      ],
+      "edge_black_pixels": 0
+    },
+    {
+      "clip": "swipe_up",
+      "phase": "sustain",
+      "pose": "swipe_up",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_up_sustain.pbm",
+      "sha256": "728C01F6EC46407DDC00287972D134B942A9B466B12CF98FD82EDF769E62870F",
+      "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "source_crop_box": [
+        7,
+        470,
+        307,
+        770
+      ],
+      "translation": [
+        0,
+        0
+      ],
+      "duration_ms": 850,
+      "dirty": [
+        47,
+        38,
+        132,
+        132
+      ],
+      "edge_black_pixels": 0
+    },
+    {
+      "clip": "swipe_up",
+      "phase": "settle",
+      "pose": "swipe_up",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_up_settle.pbm",
+      "sha256": "0821EB1AF9AA7B3B89C39C3C6E9C69548DB6355079BC5F4B2DF48B573CD7676E",
+      "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "source_crop_box": [
+        7,
+        470,
+        307,
+        770
+      ],
+      "translation": [
+        0,
+        -1
+      ],
+      "duration_ms": 1100,
+      "dirty": [
+        47,
+        37,
+        132,
+        132
+      ],
+      "edge_black_pixels": 0
+    },
+    {
+      "clip": "swipe_down",
+      "phase": "entry",
+      "pose": "swipe_down",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_down_entry.pbm",
+      "sha256": "EB5FC5039D218538ED225BCCCA313D993BA8E493730255A58766A9E05F0EC51B",
+      "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "source_crop_box": [
+        320,
+        470,
+        620,
+        770
+      ],
+      "translation": [
+        0,
+        -1
+      ],
+      "duration_ms": 650,
+      "dirty": [
+        36,
+        42,
+        130,
+        117
+      ],
+      "edge_black_pixels": 0
+    },
+    {
+      "clip": "swipe_down",
+      "phase": "sustain",
+      "pose": "swipe_down",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_down_sustain.pbm",
+      "sha256": "39AE4DE103DC01F791D9869478CD7F7E5E99FD41954FE3106ADA02D39878C2AC",
+      "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "source_crop_box": [
+        320,
+        470,
+        620,
+        770
+      ],
+      "translation": [
+        0,
+        0
+      ],
+      "duration_ms": 850,
+      "dirty": [
+        36,
+        43,
+        130,
+        117
+      ],
+      "edge_black_pixels": 0
+    },
+    {
+      "clip": "swipe_down",
+      "phase": "settle",
+      "pose": "swipe_down",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_down_settle.pbm",
+      "sha256": "B32EFF9A423469075A9B634C90EBB20803411BF788E4A34027634D3F302789AA",
+      "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "source_crop_box": [
+        320,
+        470,
+        620,
+        770
+      ],
+      "translation": [
+        0,
+        1
+      ],
+      "duration_ms": 1100,
+      "dirty": [
+        36,
+        44,
+        130,
+        117
+      ],
+      "edge_black_pixels": 0
+    },
+    {
+      "clip": "listening",
+      "phase": "entry",
+      "pose": "listening",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_listening_entry.pbm",
+      "sha256": "4644245036738743D9C5626B700390F5D5F42B258945D44964F800BC3CA05EF7",
+      "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "source_crop_box": [
+        614,
+        450,
+        934,
+        770
+      ],
+      "translation": [
+        0,
+        0
+      ],
+      "duration_ms": 1000,
+      "dirty": [
+        13,
+        84,
+        179,
+        79
+      ],
+      "edge_black_pixels": 0
+    },
+    {
+      "clip": "listening",
+      "phase": "sustain",
+      "pose": "listening",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_listening_sustain.pbm",
+      "sha256": "EB65A6733AB15F7B0152B9B9BC4D86623428C7AAC9FBE84E50CC29211B3310C3",
+      "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "source_crop_box": [
+        614,
+        450,
+        934,
+        770
+      ],
+      "translation": [
+        0,
+        -1
+      ],
+      "duration_ms": 1200,
+      "dirty": [
+        13,
+        83,
+        179,
+        79
+      ],
+      "edge_black_pixels": 0
+    },
+    {
+      "clip": "listening",
+      "phase": "settle",
+      "pose": "listening",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_listening_settle.pbm",
+      "sha256": "4644245036738743D9C5626B700390F5D5F42B258945D44964F800BC3CA05EF7",
+      "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "source_crop_box": [
+        614,
+        450,
+        934,
+        770
+      ],
+      "translation": [
+        0,
+        0
+      ],
+      "duration_ms": 1400,
+      "dirty": [
+        13,
+        84,
+        179,
+        79
+      ],
+      "edge_black_pixels": 0
+    },
+    {
+      "clip": "recording",
+      "phase": "entry",
+      "pose": "recording",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_recording_entry.pbm",
+      "sha256": "A3178A41C86C81B06FC685F44DDF40F8E64BA9C411E4631CF8BB58508C5EDB48",
+      "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "source_crop_box": [
+        947,
+        470,
+        1247,
+        770
+      ],
+      "translation": [
+        0,
+        0
+      ],
+      "duration_ms": 900,
+      "dirty": [
+        16,
+        37,
+        130,
+        133
+      ],
+      "edge_black_pixels": 0
+    },
+    {
+      "clip": "recording",
+      "phase": "sustain",
+      "pose": "recording",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_recording_sustain.pbm",
+      "sha256": "6C3FE0CE7FD7DCFA8010E2964FC832F389A20D23FA5C70CC2A4EE47057CEEC64",
+      "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "source_crop_box": [
+        947,
+        470,
+        1247,
+        770
+      ],
+      "translation": [
+        1,
+        0
+      ],
+      "duration_ms": 1200,
+      "dirty": [
+        17,
+        37,
+        130,
+        133
+      ],
+      "edge_black_pixels": 0
+    },
+    {
+      "clip": "recording",
+      "phase": "settle",
+      "pose": "recording",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_recording_settle.pbm",
+      "sha256": "A3178A41C86C81B06FC685F44DDF40F8E64BA9C411E4631CF8BB58508C5EDB48",
+      "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "source_crop_box": [
+        947,
+        470,
+        1247,
+        770
+      ],
+      "translation": [
+        0,
+        0
+      ],
+      "duration_ms": 1200,
+      "dirty": [
+        16,
+        37,
+        130,
+        133
+      ],
+      "edge_black_pixels": 0
+    },
+    {
+      "clip": "saving",
+      "phase": "entry",
+      "pose": "saving",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_saving_entry.pbm",
+      "sha256": "FA35D72B9806E81273BF54C629C1B46150DA9E60266B71B5FF05CDB235B9A4E8",
+      "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "source_crop_box": [
+        7,
+        810,
+        307,
+        1110
+      ],
+      "translation": [
+        0,
+        0
+      ],
+      "duration_ms": 900,
+      "dirty": [
+        43,
+        40,
+        130,
+        123
+      ],
+      "edge_black_pixels": 0
+    },
+    {
+      "clip": "saving",
+      "phase": "sustain",
+      "pose": "saving",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_saving_sustain.pbm",
+      "sha256": "6D61BAEAA30FD8ABC07AC174E5190D2AC09D8534AACFBAC910D555E1987D6157",
+      "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "source_crop_box": [
+        7,
+        810,
+        307,
+        1110
+      ],
+      "translation": [
+        0,
+        1
+      ],
+      "duration_ms": 1100,
+      "dirty": [
+        43,
+        41,
+        130,
+        123
+      ],
+      "edge_black_pixels": 0
+    },
+    {
+      "clip": "saving",
+      "phase": "settle",
+      "pose": "saving",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_saving_settle.pbm",
+      "sha256": "FA35D72B9806E81273BF54C629C1B46150DA9E60266B71B5FF05CDB235B9A4E8",
+      "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "source_crop_box": [
+        7,
+        810,
+        307,
+        1110
+      ],
+      "translation": [
+        0,
+        0
+      ],
+      "duration_ms": 1000,
+      "dirty": [
+        43,
+        40,
+        130,
+        123
+      ],
+      "edge_black_pixels": 0
+    },
+    {
+      "clip": "saved",
+      "phase": "entry",
+      "pose": "saved",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_saved_entry.pbm",
+      "sha256": "80DB5F9AC08BF5ABCD782B9179B7EE3C558F91A3BB9B6C5D2F0C7086545A087B",
+      "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "source_crop_box": [
+        320,
+        810,
+        620,
+        1110
+      ],
+      "translation": [
+        0,
+        0
+      ],
+      "duration_ms": 800,
+      "dirty": [
+        33,
+        29,
+        139,
+        144
+      ],
+      "edge_black_pixels": 0
+    },
+    {
+      "clip": "saved",
+      "phase": "sustain",
+      "pose": "saved",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_saved_sustain.pbm",
+      "sha256": "3FD8B9AE79A8BB27053F6393DE1356D061927A124B797B5DBA71366A4A34003B",
+      "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "source_crop_box": [
+        320,
+        810,
+        620,
+        1110
+      ],
+      "translation": [
+        0,
+        -1
+      ],
+      "duration_ms": 1000,
+      "dirty": [
+        33,
+        28,
+        139,
+        144
+      ],
+      "edge_black_pixels": 0
+    },
+    {
+      "clip": "saved",
+      "phase": "settle",
+      "pose": "saved",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_saved_settle.pbm",
+      "sha256": "80DB5F9AC08BF5ABCD782B9179B7EE3C558F91A3BB9B6C5D2F0C7086545A087B",
+      "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "source_crop_box": [
+        320,
+        810,
+        620,
+        1110
+      ],
+      "translation": [
+        0,
+        0
+      ],
+      "duration_ms": 1300,
+      "dirty": [
+        33,
+        29,
+        139,
+        144
+      ],
+      "edge_black_pixels": 0
+    },
+    {
+      "clip": "sleep",
+      "phase": "entry",
+      "pose": "sleep",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_sleep_entry.pbm",
+      "sha256": "50BDE2BBCE5B89B26502CA5F60C73BB42949CBCB63555F81EEC495D52ECEBF02",
+      "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "source_crop_box": [
+        634,
+        810,
+        934,
+        1110
+      ],
+      "translation": [
+        0,
+        0
+      ],
+      "duration_ms": 1800,
+      "dirty": [
+        27,
+        24,
+        127,
+        148
+      ],
+      "edge_black_pixels": 0
+    },
+    {
+      "clip": "sleep",
+      "phase": "sustain",
+      "pose": "sleep",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_sleep_sustain.pbm",
+      "sha256": "50BDE2BBCE5B89B26502CA5F60C73BB42949CBCB63555F81EEC495D52ECEBF02",
+      "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "source_crop_box": [
+        634,
+        810,
+        934,
+        1110
+      ],
+      "translation": [
+        0,
+        0
+      ],
+      "duration_ms": 3000,
+      "dirty": [
+        27,
+        24,
+        127,
+        148
+      ],
+      "edge_black_pixels": 0
+    },
+    {
+      "clip": "sleep",
+      "phase": "settle",
+      "pose": "sleep",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_sleep_settle.pbm",
+      "sha256": "50BDE2BBCE5B89B26502CA5F60C73BB42949CBCB63555F81EEC495D52ECEBF02",
+      "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "source_crop_box": [
+        634,
+        810,
+        934,
+        1110
+      ],
+      "translation": [
+        0,
+        0
+      ],
+      "duration_ms": 3000,
+      "dirty": [
+        27,
+        24,
+        127,
+        148
+      ],
+      "edge_black_pixels": 0
+    },
+    {
+      "clip": "menu_hold",
+      "phase": "entry",
+      "pose": "menu_hold",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_menu_hold_entry.pbm",
+      "sha256": "2C71A0D1044065F65EC06BE2D4F2FD13C85B9C8C748ADC237203DC43A667C645",
+      "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "source_crop_box": [
+        947,
+        810,
+        1247,
+        1110
+      ],
+      "translation": [
+        0,
+        0
+      ],
+      "duration_ms": 900,
+      "dirty": [
+        14,
+        43,
+        129,
+        129
+      ],
+      "edge_black_pixels": 0
+    },
+    {
+      "clip": "menu_hold",
+      "phase": "sustain",
+      "pose": "menu_hold",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_menu_hold_sustain.pbm",
+      "sha256": "023655EFEBA52F1A8595610676C140F0BB72297720D442DA931074677FDA0D89",
+      "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "source_crop_box": [
+        947,
+        810,
+        1247,
+        1110
+      ],
+      "translation": [
+        0,
+        -1
+      ],
+      "duration_ms": 1200,
+      "dirty": [
+        14,
+        42,
+        129,
+        129
+      ],
+      "edge_black_pixels": 0
+    },
+    {
+      "clip": "menu_hold",
+      "phase": "settle",
+      "pose": "menu_hold",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_menu_hold_settle.pbm",
+      "sha256": "2C71A0D1044065F65EC06BE2D4F2FD13C85B9C8C748ADC237203DC43A667C645",
+      "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "source_crop_box": [
+        947,
+        810,
+        1247,
+        1110
+      ],
+      "translation": [
+        0,
+        0
+      ],
+      "duration_ms": 1100,
+      "dirty": [
+        14,
+        43,
+        129,
+        129
+      ],
+      "edge_black_pixels": 0
+    },
+    {
+      "clip": "wake",
+      "phase": "entry",
+      "pose": "sleep",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_wake_entry.pbm",
+      "sha256": "50BDE2BBCE5B89B26502CA5F60C73BB42949CBCB63555F81EEC495D52ECEBF02",
+      "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "source_crop_box": [
+        634,
+        810,
+        934,
+        1110
+      ],
+      "translation": [
+        0,
+        0
+      ],
+      "duration_ms": 700,
+      "dirty": [
+        27,
+        24,
+        127,
+        148
+      ],
+      "edge_black_pixels": 0
+    },
+    {
+      "clip": "wake",
+      "phase": "sustain",
+      "pose": "idle_calm",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_wake_sustain.pbm",
+      "sha256": "5F078C3D876E74662917C7E2C625688A151C8D1C4A6381262E722EC1057D2B15",
+      "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "source_crop_box": [
+        7,
+        92,
+        307,
+        392
+      ],
+      "translation": [
+        0,
+        0
+      ],
+      "duration_ms": 900,
+      "dirty": [
+        46,
+        48,
+        135,
+        139
+      ],
+      "edge_black_pixels": 0
+    },
+    {
+      "clip": "wake",
+      "phase": "settle",
+      "pose": "curious_tap",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_wake_settle.pbm",
+      "sha256": "B4A8667BB0AB939B2101DCC7F0A07D7A8DE39E33854950F8332AED7F9D53CA5E",
+      "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "source_crop_box": [
+        320,
+        92,
+        620,
+        392
+      ],
+      "translation": [
+        0,
+        -1
+      ],
+      "duration_ms": 1100,
+      "dirty": [
+        34,
+        46,
+        138,
+        149
+      ],
+      "edge_black_pixels": 0
+    }
+  ],
+  "runtime_resource_activated": false,
+  "external_flash_provisioned": false,
+  "firmware_flashed": false,
+  "physical_or_owner_visual_pass": false
+}

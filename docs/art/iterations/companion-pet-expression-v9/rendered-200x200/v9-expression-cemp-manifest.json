@@ -1,0 +1,508 @@
+{
+  "schema": "companion.emote_asset_pack_manifest.v1",
+  "name": "companion-v9-expression-candidate-200x200",
+  "revision": 90,
+  "priority": 0,
+  "profile": {
+    "width": 200,
+    "height": 200,
+    "stride_bytes": 25,
+    "pixel_format": "mono_1bpp_white_is_one_msb"
+  },
+  "encoding": "packbits",
+  "provenance": {
+    "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "baseline_lock": "docs/art/iterations/companion-pet-expression-v9/baseline-lock.json",
+    "runtime_resource_activated": false,
+    "machine_only_candidate": true,
+    "forbidden_inputs": [
+      "legacy CEMP",
+      "rejected art",
+      "code-drawn face"
+    ]
+  },
+  "clips": [
+    {
+      "name": "idle",
+      "loop_start": 1,
+      "loop_end": 3,
+      "frames": [
+        {
+          "source": "pbm/v9_idle_entry.pbm",
+          "duration_ms": 1800,
+          "dirty": [
+            46,
+            48,
+            135,
+            139
+          ]
+        },
+        {
+          "source": "pbm/v9_idle_sustain.pbm",
+          "duration_ms": 1300,
+          "dirty": [
+            45,
+            48,
+            135,
+            139
+          ]
+        },
+        {
+          "source": "pbm/v9_idle_settle.pbm",
+          "duration_ms": 1600,
+          "dirty": [
+            46,
+            48,
+            135,
+            139
+          ]
+        }
+      ]
+    },
+    {
+      "name": "touch",
+      "loop_start": 1,
+      "loop_end": 3,
+      "frames": [
+        {
+          "source": "pbm/v9_touch_entry.pbm",
+          "duration_ms": 700,
+          "dirty": [
+            34,
+            47,
+            138,
+            149
+          ]
+        },
+        {
+          "source": "pbm/v9_touch_sustain.pbm",
+          "duration_ms": 900,
+          "dirty": [
+            34,
+            46,
+            138,
+            149
+          ]
+        },
+        {
+          "source": "pbm/v9_touch_settle.pbm",
+          "duration_ms": 1400,
+          "dirty": [
+            34,
+            47,
+            138,
+            149
+          ]
+        }
+      ]
+    },
+    {
+      "name": "swipe_left",
+      "loop_start": 1,
+      "loop_end": 3,
+      "frames": [
+        {
+          "source": "pbm/v9_swipe_left_entry.pbm",
+          "duration_ms": 650,
+          "dirty": [
+            14,
+            94,
+            158,
+            90
+          ]
+        },
+        {
+          "source": "pbm/v9_swipe_left_sustain.pbm",
+          "duration_ms": 850,
+          "dirty": [
+            13,
+            94,
+            158,
+            90
+          ]
+        },
+        {
+          "source": "pbm/v9_swipe_left_settle.pbm",
+          "duration_ms": 1100,
+          "dirty": [
+            12,
+            94,
+            158,
+            90
+          ]
+        }
+      ]
+    },
+    {
+      "name": "swipe_right",
+      "loop_start": 1,
+      "loop_end": 3,
+      "frames": [
+        {
+          "source": "pbm/v9_swipe_right_entry.pbm",
+          "duration_ms": 650,
+          "dirty": [
+            11,
+            99,
+            159,
+            97
+          ]
+        },
+        {
+          "source": "pbm/v9_swipe_right_sustain.pbm",
+          "duration_ms": 850,
+          "dirty": [
+            12,
+            99,
+            159,
+            97
+          ]
+        },
+        {
+          "source": "pbm/v9_swipe_right_settle.pbm",
+          "duration_ms": 1100,
+          "dirty": [
+            13,
+            99,
+            159,
+            97
+          ]
+        }
+      ]
+    },
+    {
+      "name": "swipe_up",
+      "loop_start": 1,
+      "loop_end": 3,
+      "frames": [
+        {
+          "source": "pbm/v9_swipe_up_entry.pbm",
+          "duration_ms": 650,
+          "dirty": [
+            47,
+            39,
+            132,
+            132
+          ]
+        },
+        {
+          "source": "pbm/v9_swipe_up_sustain.pbm",
+          "duration_ms": 850,
+          "dirty": [
+            47,
+            38,
+            132,
+            132
+          ]
+        },
+        {
+          "source": "pbm/v9_swipe_up_settle.pbm",
+          "duration_ms": 1100,
+          "dirty": [
+            47,
+            37,
+            132,
+            132
+          ]
+        }
+      ]
+    },
+    {
+      "name": "swipe_down",
+      "loop_start": 1,
+      "loop_end": 3,
+      "frames": [
+        {
+          "source": "pbm/v9_swipe_down_entry.pbm",
+          "duration_ms": 650,
+          "dirty": [
+            36,
+            42,
+            130,
+            117
+          ]
+        },
+        {
+          "source": "pbm/v9_swipe_down_sustain.pbm",
+          "duration_ms": 850,
+          "dirty": [
+            36,
+            43,
+            130,
+            117
+          ]
+        },
+        {
+          "source": "pbm/v9_swipe_down_settle.pbm",
+          "duration_ms": 1100,
+          "dirty": [
+            36,
+            44,
+            130,
+            117
+          ]
+        }
+      ]
+    },
+    {
+      "name": "listening",
+      "loop_start": 1,
+      "loop_end": 3,
+      "frames": [
+        {
+          "source": "pbm/v9_listening_entry.pbm",
+          "duration_ms": 1000,
+          "dirty": [
+            13,
+            84,
+            179,
+            79
+          ]
+        },
+        {
+          "source": "pbm/v9_listening_sustain.pbm",
+          "duration_ms": 1200,
+          "dirty": [
+            13,
+            83,
+            179,
+            79
+          ]
+        },
+        {
+          "source": "pbm/v9_listening_settle.pbm",
+          "duration_ms": 1400,
+          "dirty": [
+            13,
+            84,
+            179,
+            79
+          ]
+        }
+      ]
+    },
+    {
+      "name": "recording",
+      "loop_start": 1,
+      "loop_end": 3,
+      "frames": [
+        {
+          "source": "pbm/v9_recording_entry.pbm",
+          "duration_ms": 900,
+          "dirty": [
+            16,
+            37,
+            130,
+            133
+          ]
+        },
+        {
+          "source": "pbm/v9_recording_sustain.pbm",
+          "duration_ms": 1200,
+          "dirty": [
+            17,
+            37,
+            130,
+            133
+          ]
+        },
+        {
+          "source": "pbm/v9_recording_settle.pbm",
+          "duration_ms": 1200,
+          "dirty": [
+            16,
+            37,
+            130,
+            133
+          ]
+        }
+      ]
+    },
+    {
+      "name": "saving",
+      "loop_start": 1,
+      "loop_end": 3,
+      "frames": [
+        {
+          "source": "pbm/v9_saving_entry.pbm",
+          "duration_ms": 900,
+          "dirty": [
+            43,
+            40,
+            130,
+            123
+          ]
+        },
+        {
+          "source": "pbm/v9_saving_sustain.pbm",
+          "duration_ms": 1100,
+          "dirty": [
+            43,
+            41,
+            130,
+            123
+          ]
+        },
+        {
+          "source": "pbm/v9_saving_settle.pbm",
+          "duration_ms": 1000,
+          "dirty": [
+            43,
+            40,
+            130,
+            123
+          ]
+        }
+      ]
+    },
+    {
+      "name": "saved",
+      "loop_start": 1,
+      "loop_end": 3,
+      "frames": [
+        {
+          "source": "pbm/v9_saved_entry.pbm",
+          "duration_ms": 800,
+          "dirty": [
+            33,
+            29,
+            139,
+            144
+          ]
+        },
+        {
+          "source": "pbm/v9_saved_sustain.pbm",
+          "duration_ms": 1000,
+          "dirty": [
+            33,
+            28,
+            139,
+            144
+          ]
+        },
+        {
+          "source": "pbm/v9_saved_settle.pbm",
+          "duration_ms": 1300,
+          "dirty": [
+            33,
+            29,
+            139,
+            144
+          ]
+        }
+      ]
+    },
+    {
+      "name": "sleep",
+      "loop_start": 1,
+      "loop_end": 3,
+      "frames": [
+        {
+          "source": "pbm/v9_sleep_entry.pbm",
+          "duration_ms": 1800,
+          "dirty": [
+            27,
+            24,
+            127,
+            148
+          ]
+        },
+        {
+          "source": "pbm/v9_sleep_sustain.pbm",
+          "duration_ms": 3000,
+          "dirty": [
+            27,
+            24,
+            127,
+            148
+          ]
+        },
+        {
+          "source": "pbm/v9_sleep_settle.pbm",
+          "duration_ms": 3000,
+          "dirty": [
+            27,
+            24,
+            127,
+            148
+          ]
+        }
+      ]
+    },
+    {
+      "name": "menu_hold",
+      "loop_start": 1,
+      "loop_end": 3,
+      "frames": [
+        {
+          "source": "pbm/v9_menu_hold_entry.pbm",
+          "duration_ms": 900,
+          "dirty": [
+            14,
+            43,
+            129,
+            129
+          ]
+        },
+        {
+          "source": "pbm/v9_menu_hold_sustain.pbm",
+          "duration_ms": 1200,
+          "dirty": [
+            14,
+            42,
+            129,
+            129
+          ]
+        },
+        {
+          "source": "pbm/v9_menu_hold_settle.pbm",
+          "duration_ms": 1100,
+          "dirty": [
+            14,
+            43,
+            129,
+            129
+          ]
+        }
+      ]
+    },
+    {
+      "name": "wake",
+      "loop_start": 1,
+      "loop_end": 3,
+      "frames": [
+        {
+          "source": "pbm/v9_wake_entry.pbm",
+          "duration_ms": 700,
+          "dirty": [
+            27,
+            24,
+            127,
+            148
+          ]
+        },
+        {
+          "source": "pbm/v9_wake_sustain.pbm",
+          "duration_ms": 900,
+          "dirty": [
+            46,
+            48,
+            135,
+            139
+          ]
+        },
+        {
+          "source": "pbm/v9_wake_settle.pbm",
+          "duration_ms": 1100,
+          "dirty": [
+            34,
+            46,
+            138,
+            149
+          ]
+        }
+      ]
+    }
+  ]
+}
