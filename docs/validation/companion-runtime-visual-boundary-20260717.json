@@ -3,7 +3,7 @@
     "forbidden_symbol_matches": 0,
     "nm": "C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/14.2 rel1/bin/arm-none-eabi-nm.EXE",
     "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build/Companion_Nucleo_WB55RG_Bringup.elf",
-    "sha256": "475902614AD545CE88C7393B6158CA69B389E4DBBEEFE8B14AD0CB10EE3138A0"
+    "sha256": "33CE109C1E211F9EA023E1A99CFE2277DCD79C68FC231578B694BDA9945E6D26"
   },
   "generated_on": "2026-07-17",
   "hardware_boundary": {
@@ -18,18 +18,22 @@
     "unavailable_visual_source": "return transport error; do not draw a procedural or test substitute"
   },
   "schema": "companion.runtime_visual_boundary.v1",
-  "source_commit": "2ef32f47d545d0e88eae2ce8269756693aebb2d9",
+  "source_commit": "c58b952593053a4a8f7c487ec6ce270276595966",
   "source_paths": [
     "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c",
     "cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile",
+    "app/companion_pendant/epaper/display_queue.h",
+    "app/companion_pendant/epaper/display_queue.c",
     "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
     "tools/verify_companion_runtime_visual_boundary.py"
   ],
   "source_sha256": {
+    "app/companion_pendant/epaper/display_queue.c": "ECA3D0A3938A86843402E4DB5D266EBA5ED516D95F3C7ACE761B296CA71F543F",
+    "app/companion_pendant/epaper/display_queue.h": "4E8B4B34FEB9610B8CCEA5778B5F27AA2BF996449E128041D2B250CDB0E5B0C1",
     "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c": "020F920832EC03A8A77644CB0FB76490CE5F2E74084C54764059ACC1C1489E05",
     "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c": "B930B6548FC561A03C6186116DF0590589B64D52647874EABEF3596B883CB640",
     "cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile": "68583A829D4D581918F7734C9AFAD47A01E17F99B74C8A21C7D7C4CE8DA42A70",
-    "tools/verify_companion_runtime_visual_boundary.py": "B9A4A6F83680D71993FE952D133F56D01C71303FA3866C6F21E279D385CA00C8"
+    "tools/verify_companion_runtime_visual_boundary.py": "D2CF6863FA1E00E88744FD90F0E2693911B31E91C0D3526EB17316062F2F6454"
   },
   "status": "PASS_CURRENT_SOURCE_NO_PROCEDURAL_VISUAL_FALLBACK"
 }
