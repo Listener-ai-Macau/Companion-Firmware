@@ -1,7 +1,7 @@
 {
   "hardware_boundary": "No flash, serial port, lock, panel command or physical claim; this is a build-only receipt.",
   "schema": "companion.wb55_current_build_receipt.v1",
-  "source_commit": "c2e6523332a8192b1d69545cdceb2d02ba806fdd",
+  "source_commit": "caec6eea0fe921090e74ba28d0f9ee11750d6550",
   "source_paths": [
     "app/companion_pendant",
     "cubeide/Companion_Nucleo_WB55RG_Bringup",
@@ -17,7 +17,7 @@
         "tools/build_nucleo_bringup.ps1",
         "-Force"
       ],
-      "output_sha256": "25B6F9F4BC97829B4F73AE793CCC789B05B1F51EEF8BCC3FBB006C8D8A98A2AD",
+      "output_sha256": "01CD8AEE1850E630226F702B0A1C571538F6CD5F729906C81498FAB08CD49D56",
       "output_tail": [
         "build_nucleo_bringup: acquired build lock C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\locks\\build_nucleo_bringup.lock",
         "C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/arm-none-eabi-size build/Companion_Nucleo_WB55RG_Bringup.elf",
@@ -45,7 +45,7 @@
         "-ScreenAssetProvision",
         "-Force"
       ],
-      "output_sha256": "0ED6F1769EB36A04A48963C04906FDACDE34283EDE8E365571A02FA301B00B19",
+      "output_sha256": "7DE211EB0EF29E110F733ACF7C59C5A3F119EE1CC7F455405B18C789008E20F3",
       "output_tail": [
         "build_nucleo_bringup: acquired build lock C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\locks\\build_nucleo_bringup.lock",
         "C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/arm-none-eabi-size build_screen_asset_provision/Companion_Nucleo_WB55RG_ScreenAssetProvision.elf",
@@ -73,7 +73,7 @@
         "-EpaperSsd1681Bringup",
         "-Force"
       ],
-      "output_sha256": "818A40D1E4E39E2EED0A50DAD24B070E0029256EB22497AF70F602524085413C",
+      "output_sha256": "98FD38D450CFC9F032C316E2D564566E5D190F799016EF901B99EDE449510026",
       "output_tail": [
         "build_nucleo_bringup: acquired build lock C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\locks\\build_nucleo_bringup.lock",
         "C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/arm-none-eabi-size build/Companion_Nucleo_WB55RG_Bringup.elf",
