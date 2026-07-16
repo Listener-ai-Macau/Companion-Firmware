@@ -1,0 +1,27 @@
+{
+  "active_visual_baseline": {
+    "owner_approved": true,
+    "path": "docs/art/iterations/companion-pet-expression-v9/baseline-lock.json",
+    "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "errors": [],
+  "pending_visual_sources": {
+    "menu_and_special_readiness": "docs/validation/companion-ui-visual-acceptance-readiness-20260717.json",
+    "owner_decisions_required": 3,
+    "special_mapping": "docs/art/iterations/companion-pet-special-states-v1/pending-source-mapping.json"
+  },
+  "schema": "companion.v9_wba_visual_boundary.v1",
+  "status": "PASS_V9_WBA_VISUAL_BOUNDARY_PENDING_OWNER",
+  "wba_resource_boundary": {
+    "panel_parity_claimed": false,
+    "retired_visual_tokens_forbidden": [
+      "expression_assets_200x200",
+      "genref_sheet_12_inner_faces_v5",
+      "emote_matrix_white_200x200",
+      "legacy_cemp"
+    ],
+    "runtime_activation_allowed": false,
+    "storage": "external CEMP through callback-only external NOR adapter",
+    "transport": "ordinary 1-1-1 SPI NOR"
+  }
+}

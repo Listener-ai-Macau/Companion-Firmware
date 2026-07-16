@@ -202,6 +202,19 @@ Portable today:
 - `app/companion_pendant/epaper/expression_policy.py` maps host/status inputs
   into ExpressionV1 cards, including quiet hours and display-off settings as
   low-priority sleepy hints.
+
+### Current Companion Visual Source Boundary
+
+`ExpressionV1` names in this migration document are retained protocol and
+diagnostic compatibility terms. They are not a permitted visual-art baseline
+for a new WBA screen. The product visual source of truth is the owner-approved
+`companion-pet-expression-v9` sheet, followed by the separately reviewed
+four-root menu and v9 special-state sheets. WBA target adapters must consume
+approved CEMP resources through the external-NOR callback boundary; they must
+not import `expression_assets_200x200`, v5 generated sheets, old CEMP art, or
+target-specific internal-Flash bitmaps. Until visual decisions and a separate
+resource-import gate pass, these candidates remain non-active and WBA panel
+parity remains unclaimed.
 - `app/companion_pendant/epaper/expression_state.h/.c` owns firmware
   ExpressionV1 names, priorities, user-visible copy, state transitions, and
   duplicate visible-expression suppression. It also keeps the settings sleepy
