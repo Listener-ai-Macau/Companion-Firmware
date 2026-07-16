@@ -37,7 +37,7 @@
     {
       "evidence": [
         {
-          "detail": "Three WB55 variants built from source commit ca1a603547c3bbea70e3adae6771ed14e25c7fae; the receipt invalidates when listed build inputs change.",
+          "detail": "Three WB55 variants built from source commit 1931d3112fffe0ce00691df97daac0c5c6df688f; the receipt invalidates when listed build inputs change.",
           "path": "docs/validation/companion-wb55-current-build-receipt-20260717.json",
           "status": "PASS_CURRENT_SOURCE_BUILD_NO_HARDWARE"
         },
@@ -55,6 +55,11 @@
           "detail": "The inactive 39-frame v9 CEMP mounts and reads through the WBA55/WBA65 callback-only external-NOR adapter.",
           "path": "docs/validation/companion-wba-v9-cemp-callback-replay-20260717.json",
           "status": "PASS_CURRENT_SOURCE_MACHINE_ONLY_CALLBACK_REPLAY"
+        },
+        {
+          "detail": "Current WB55 source commit 04b611379827efe2cfc0c8c7939731d7dd130ff2 excludes retired procedural-face symbols and fails closed when a visual resource is unavailable.",
+          "path": "docs/validation/companion-runtime-visual-boundary-20260717.json",
+          "status": "PASS_CURRENT_SOURCE_NO_PROCEDURAL_VISUAL_FALLBACK"
         }
       ],
       "id": "current_wb55_build_and_wba_adapter",
@@ -82,6 +87,11 @@
           "detail": "Portable selector remains AVAILABLE_NOT_ACTIVE.",
           "path": "docs/validation/companion-v9-candidate-resource-binding-20260717.json",
           "status": "PASS_MACHINE_ONLY_INACTIVE"
+        },
+        {
+          "detail": "The runtime cannot substitute a procedural or test face when an external visual asset is unavailable.",
+          "path": "docs/validation/companion-runtime-visual-boundary-20260717.json",
+          "status": "PASS_CURRENT_SOURCE_NO_PROCEDURAL_VISUAL_FALLBACK"
         }
       ],
       "id": "v9_expression_renderer",
@@ -177,6 +187,7 @@
     "python .\\tools\\verify_companion_low_power_requirements.py",
     "pwsh .\\tools\\test_power_policy_host.ps1",
     "python .\\tools\\capture_wb55_current_build_receipt.py",
+    "python .\\tools\\verify_companion_runtime_visual_boundary.py",
     "python .\\tools\\verify_wba_adapter_m33_compile.py --self-test",
     "python .\\tools\\verify_wba_spi_nor_adapter.py --self-test",
     "python .\\tools\\capture_wba_v9_candidate_asset_replay_receipt.py",

@@ -17,6 +17,7 @@ ARTIFACTS = {
     "historical": ROOT / "docs/validation/companion-historical-branch-audit-20260717.json",
     "low_power": ROOT / "docs/validation/companion-low-power-requirements.json",
     "wb55_build_receipt": ROOT / "docs/validation/companion-wb55-current-build-receipt-20260717.json",
+    "runtime_visual_boundary": ROOT / "docs/validation/companion-runtime-visual-boundary-20260717.json",
     "wba_m33_compile": ROOT / "docs/validation/companion-screen-wba-adapter-m33-compile.json",
     "wba_spi_nor": ROOT / "docs/validation/companion-wba-spi-nor-adapter.json",
     "wba_v9_callback_replay": ROOT / "docs/validation/companion-wba-v9-cemp-callback-replay-20260717.json",
@@ -64,6 +65,7 @@ def build_audit() -> dict[str, Any]:
     historical = load_json("historical")
     low_power = load_json("low_power")
     wb55_build_receipt = load_json("wb55_build_receipt")
+    runtime_visual_boundary = load_json("runtime_visual_boundary")
     wba_m33_compile = load_json("wba_m33_compile")
     wba_spi_nor = load_json("wba_spi_nor")
     wba_v9_callback_replay = load_json("wba_v9_callback_replay")
@@ -103,6 +105,16 @@ def build_audit() -> dict[str, Any]:
         variant = wb55_build_receipt.get("variants", {}).get(name, {})
         check(errors, variant.get("returncode") == 0, f"current WB55 build variant failed: {name}")
         check(errors, isinstance(variant.get("size", {}).get("dec"), int), f"current WB55 build variant has no size: {name}")
+    check(errors, runtime_visual_boundary.get("status") == "PASS_CURRENT_SOURCE_NO_PROCEDURAL_VISUAL_FALLBACK", "runtime visual boundary is not PASS")
+    runtime_commit = runtime_visual_boundary.get("source_commit", "")
+    check(errors, isinstance(runtime_commit, str) and len(runtime_commit) == 40, "runtime visual boundary has no full source commit")
+    runtime_policy = runtime_visual_boundary.get("runtime_policy", {})
+    check(errors, runtime_policy.get("active_expression_maintenance") == "external CEMP frame replay only", "runtime expression maintenance drifted from external CEMP")
+    check(errors, runtime_policy.get("unavailable_visual_source") == "return transport error; do not draw a procedural or test substitute", "runtime visual fallback policy drifted")
+    check(errors, runtime_policy.get("retired_procedural_face_linked") is False, "retired procedural face is linked into runtime")
+    check(errors, runtime_visual_boundary.get("elf", {}).get("forbidden_symbol_matches") == 0, "runtime ELF contains a retired visual symbol")
+    for key in ("firmware_flashed", "panel_command", "camera_or_human_visual_pass"):
+        check(errors, runtime_visual_boundary.get("hardware_boundary", {}).get(key) is False, f"runtime visual-boundary hardware claim drifted: {key}")
     check(errors, wba_m33_compile.get("status") == "PASS_STATIC_M33_COMPILE_CONTRACT", "WBA Cortex-M33 adapter compile is not PASS")
     wba_claims = wba_m33_compile.get("claims", {})
     check(errors, wba_claims.get("cube_wba_project_claimed") is False and wba_claims.get("wba_hardware_parity_claimed") is False, "WBA compile evidence overclaims target parity")
@@ -199,6 +211,7 @@ def build_audit() -> dict[str, Any]:
                 evidence("wba_m33_compile", str(wba_m33_compile.get("status")), "Eight callback-only target adapters compile with strict Cortex-M33 flags."),
                 evidence("wba_spi_nor", str(wba_spi_nor.get("status")), "Ordinary 1-1-1 SPI NOR behavior passes without WBA hardware parity claim."),
                 evidence("wba_v9_callback_replay", str(wba_v9_callback_replay.get("status")), "The inactive 39-frame v9 CEMP mounts and reads through the WBA55/WBA65 callback-only external-NOR adapter."),
+                evidence("runtime_visual_boundary", str(runtime_visual_boundary.get("status")), f"Current WB55 source commit {runtime_commit} excludes retired procedural-face symbols and fails closed when a visual resource is unavailable."),
             ],
         },
         {
@@ -210,6 +223,7 @@ def build_audit() -> dict[str, Any]:
                 evidence("v9_cemp", str(cemp.get("status")), "39/39 PBM-to-CEMP decode comparison passes without activation."),
                 evidence("v9_coverage", str(coverage.get("status")), "40 scene families are explicit: 18 available candidates and 22 no-fallback pending sources."),
                 evidence("v9_binding", str(binding.get("status")), "Portable selector remains AVAILABLE_NOT_ACTIVE."),
+                evidence("runtime_visual_boundary", str(runtime_visual_boundary.get("status")), "The runtime cannot substitute a procedural or test face when an external visual asset is unavailable."),
             ],
         },
         {
@@ -270,6 +284,7 @@ def build_audit() -> dict[str, Any]:
             "python .\\tools\\verify_companion_low_power_requirements.py",
             "pwsh .\\tools\\test_power_policy_host.ps1",
             "python .\\tools\\capture_wb55_current_build_receipt.py",
+            "python .\\tools\\verify_companion_runtime_visual_boundary.py",
             "python .\\tools\\verify_wba_adapter_m33_compile.py --self-test",
             "python .\\tools\\verify_wba_spi_nor_adapter.py --self-test",
             "python .\\tools\\capture_wba_v9_candidate_asset_replay_receipt.py",

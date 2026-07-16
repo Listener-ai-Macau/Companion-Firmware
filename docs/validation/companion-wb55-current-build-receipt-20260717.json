@@ -1,7 +1,7 @@
 {
   "hardware_boundary": "No flash, serial port, lock, panel command or physical claim; this is a build-only receipt.",
   "schema": "companion.wb55_current_build_receipt.v1",
-  "source_commit": "ca1a603547c3bbea70e3adae6771ed14e25c7fae",
+  "source_commit": "1931d3112fffe0ce00691df97daac0c5c6df688f",
   "source_paths": [
     "app/companion_pendant",
     "cubeide/Companion_Nucleo_WB55RG_Bringup",
@@ -17,23 +17,23 @@
         "tools/build_nucleo_bringup.ps1",
         "-Force"
       ],
-      "output_sha256": "AD2AE84936BC4EE5AAE81AC4E1162C15CBAF213CFD36928A8DED4EEEF59C26DF",
+      "output_sha256": "C0892812AB17F7D6B793A9D9485CFE6ACB9E3CCAD4E2F9A2FE022EDCA3597F4B",
       "output_tail": [
         "build_nucleo_bringup: acquired build lock C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\locks\\build_nucleo_bringup.lock",
         "C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/arm-none-eabi-size build/Companion_Nucleo_WB55RG_Bringup.elf",
         "   text\t   data\t    bss\t    dec\t    hex\tfilename",
-        " 128464\t   2432\t 178279\t 309175\t  4b7b7\tbuild/Companion_Nucleo_WB55RG_Bringup.elf",
+        " 117004\t   2432\t 178311\t 297747\t  48b13\tbuild/Companion_Nucleo_WB55RG_Bringup.elf",
         "make: Leaving directory 'C:/Users/Billy/Desktop/Denzic/Companion/Companion-Firmware/cubeide/Companion_Nucleo_WB55RG_Bringup'",
         "build_nucleo_bringup: released build lock C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\locks\\build_nucleo_bringup.lock"
       ],
       "returncode": 0,
       "size": {
-        "bss": 178279,
+        "bss": 178311,
         "data": 2432,
-        "dec": 309175,
+        "dec": 297747,
         "elf": "build/Companion_Nucleo_WB55RG_Bringup.elf",
-        "hex": "4b7b7",
-        "text": 128464
+        "hex": "48b13",
+        "text": 117004
       }
     },
     "screen_asset_provision": {
@@ -45,23 +45,23 @@
         "-ScreenAssetProvision",
         "-Force"
       ],
-      "output_sha256": "26918398000526DB19AC301E04C0AFA0E8E352AB17806C5278C740E303B9C863",
+      "output_sha256": "39D3423CED9A096C9532C0C28D35B70A0C6A15C90617A9BF147E1DEB17F0AA1A",
       "output_tail": [
         "build_nucleo_bringup: acquired build lock C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\locks\\build_nucleo_bringup.lock",
         "C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/arm-none-eabi-size build_screen_asset_provision/Companion_Nucleo_WB55RG_ScreenAssetProvision.elf",
         "   text\t   data\t    bss\t    dec\t    hex\tfilename",
-        " 172132\t   2433\t 188311\t 362876\t  5897c\tbuild_screen_asset_provision/Companion_Nucleo_WB55RG_ScreenAssetProvision.elf",
+        " 162864\t   2433\t 188335\t 353632\t  56560\tbuild_screen_asset_provision/Companion_Nucleo_WB55RG_ScreenAssetProvision.elf",
         "make: Leaving directory 'C:/Users/Billy/Desktop/Denzic/Companion/Companion-Firmware/cubeide/Companion_Nucleo_WB55RG_Bringup'",
         "build_nucleo_bringup: released build lock C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\locks\\build_nucleo_bringup.lock"
       ],
       "returncode": 0,
       "size": {
-        "bss": 188311,
+        "bss": 188335,
         "data": 2433,
-        "dec": 362876,
+        "dec": 353632,
         "elf": "build_screen_asset_provision/Companion_Nucleo_WB55RG_ScreenAssetProvision.elf",
-        "hex": "5897c",
-        "text": 172132
+        "hex": "56560",
+        "text": 162864
       }
     },
     "ssd1681_real_panel": {
@@ -73,23 +73,23 @@
         "-EpaperSsd1681Bringup",
         "-Force"
       ],
-      "output_sha256": "D3A97C162435A76A37F0EC5C7C38E60ECE667DAFC3A6512D5A84E267ED82BDCE",
+      "output_sha256": "499B77FE81E32A8A58756188A37D5F6C4552586977A89525B1BE179D9B6AC018",
       "output_tail": [
         "build_nucleo_bringup: acquired build lock C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\locks\\build_nucleo_bringup.lock",
         "C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/arm-none-eabi-size build/Companion_Nucleo_WB55RG_Bringup.elf",
         "   text\t   data\t    bss\t    dec\t    hex\tfilename",
-        " 138372\t   2436\t 188335\t 329143\t  505b7\tbuild/Companion_Nucleo_WB55RG_Bringup.elf",
+        " 126716\t   2436\t 188359\t 317511\t  4d847\tbuild/Companion_Nucleo_WB55RG_Bringup.elf",
         "make: Leaving directory 'C:/Users/Billy/Desktop/Denzic/Companion/Companion-Firmware/cubeide/Companion_Nucleo_WB55RG_Bringup'",
         "build_nucleo_bringup: released build lock C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\locks\\build_nucleo_bringup.lock"
       ],
       "returncode": 0,
       "size": {
-        "bss": 188335,
+        "bss": 188359,
         "data": 2436,
-        "dec": 329143,
+        "dec": 317511,
         "elf": "build/Companion_Nucleo_WB55RG_Bringup.elf",
-        "hex": "505b7",
-        "text": 138372
+        "hex": "4d847",
+        "text": 126716
       }
     }
   }
