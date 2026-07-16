@@ -1,0 +1,233 @@
+#!/usr/bin/env python3
+"""Guard the current WB55 runtime against retired procedural face fallbacks."""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import re
+import shutil
+import subprocess
+import sys
+from datetime import date
+from pathlib import Path
+from typing import Any
+
+
+ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_RECEIPT = ROOT / "docs/validation/companion-runtime-visual-boundary-20260717.json"
+APP_BLE = ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c"
+PANEL_TARGET = ROOT / "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c"
+ELF = ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/build/Companion_Nucleo_WB55RG_Bringup.elf"
+SOURCE_PATHS = (
+    "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c",
+    "cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile",
+    "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
+    "tools/verify_companion_runtime_visual_boundary.py",
+)
+
+
+def rel(path: Path) -> str:
+    return path.resolve().relative_to(ROOT).as_posix()
+
+
+def sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest().upper()
+
+
+def run(command: list[str]) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        command,
+        cwd=ROOT,
+        check=False,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+    )
+
+
+def git_output(*args: str) -> str:
+    completed = run(["git", *args])
+    if completed.returncode != 0:
+        raise RuntimeError(completed.stdout.strip() or f"git {' '.join(args)} failed")
+    return completed.stdout.strip()
+
+
+def find_nm() -> Path:
+    from_path = shutil.which("arm-none-eabi-nm")
+    if from_path:
+        return Path(from_path)
+
+    plugins = Path(r"C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins")
+    candidates = sorted(
+        plugins.glob("com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.*/tools/bin/arm-none-eabi-nm.exe")
+    )
+    if candidates:
+        return candidates[-1]
+    raise RuntimeError("arm-none-eabi-nm was not found; build the WB55 target with STM32CubeIDE installed")
+
+
+def source_errors() -> list[str]:
+    errors: list[str] = []
+    app = APP_BLE.read_text(encoding="utf-8")
+    panel = PANEL_TARGET.read_text(encoding="utf-8")
+
+    for token in (
+        "s_companion_last_emote_frame_valid",
+        "comp_epaper_display_queue_enqueue_expression_frame",
+        "expression_maintenance source=external_flash",
+    ):
+        if token not in app:
+            errors.append(f"app runtime missing required external-CEMP maintenance marker: {token}")
+    for token in (
+        "pet_expression.h",
+        "Companion_Display_EnqueuePetPose",
+        "s_companion_last_pet_pose",
+        "comp_epaper_display_queue_enqueue_pet_expression",
+        "COMP_EPAPER_DISPLAY_REQUEST_PET_EXPRESSION",
+        "comp_pet_expression_self_test",
+    ):
+        if token in app:
+            errors.append(f"app runtime still references retired procedural visual route: {token}")
+
+    for token in (
+        "static bool frame_prepare",
+        "source=external_flash",
+        "source=unavailable kind=",
+        "suppressing visual fallback",
+        "COMP_EPAPER_PANEL_RESULT_TRANSPORT_ERROR",
+    ):
+        if token not in panel:
+            errors.append(f"panel runtime missing no-fallback guard: {token}")
+    for token in (
+        "pet_expression.h",
+        "comp_pet_expression_render",
+        "COMP_EPAPER_DISPLAY_REQUEST_PET_EXPRESSION",
+        "frame_test_pattern",
+        "source=procedural",
+    ):
+        if token in panel:
+            errors.append(f"panel runtime still contains retired visual fallback: {token}")
+    return errors
+
+
+def symbol_errors() -> tuple[list[str], dict[str, Any]]:
+    if not ELF.is_file():
+        return [f"WB55 ELF is missing: {rel(ELF)}"], {}
+
+    nm = find_nm()
+    completed = run([str(nm), "--defined-only", "-C", str(ELF)])
+    if completed.returncode != 0:
+        return [f"arm-none-eabi-nm failed: {completed.stdout.strip()}"], {}
+
+    forbidden = re.compile(r"\b(?:comp_pet_expression|frame_test_pattern|Companion_Display_EnqueuePetPose)\b")
+    matches = [line for line in completed.stdout.splitlines() if forbidden.search(line)]
+    if matches:
+        return ["WB55 ELF still defines retired procedural visual symbols:\n" + "\n".join(matches)], {}
+    return [], {
+        "path": rel(ELF),
+        "sha256": sha256(ELF),
+        "nm": rel(nm) if nm.is_relative_to(ROOT) else str(nm).replace("\\", "/"),
+        "forbidden_symbol_matches": 0,
+    }
+
+
+def inspect() -> tuple[list[str], dict[str, Any]]:
+    errors = source_errors()
+    symbol_failures, elf = symbol_errors()
+    errors.extend(symbol_failures)
+    source_hashes = {path: sha256(ROOT / path) for path in SOURCE_PATHS}
+    return errors, {
+        "source_paths": list(SOURCE_PATHS),
+        "source_sha256": source_hashes,
+        "elf": elf,
+        "runtime_policy": {
+            "active_expression_maintenance": "external CEMP frame replay only",
+            "unavailable_visual_source": "return transport error; do not draw a procedural or test substitute",
+            "retired_procedural_face_linked": False,
+        },
+        "hardware_boundary": {
+            "firmware_flashed": False,
+            "panel_command": False,
+            "camera_or_human_visual_pass": False,
+        },
+    }
+
+
+def receipt_payload() -> dict[str, Any]:
+    errors, details = inspect()
+    if errors:
+        raise RuntimeError("\n".join(errors))
+    return {
+        "schema": "companion.runtime_visual_boundary.v1",
+        "status": "PASS_CURRENT_SOURCE_NO_PROCEDURAL_VISUAL_FALLBACK",
+        "generated_on": date.today().isoformat(),
+        "source_commit": git_output("rev-parse", "HEAD"),
+        **details,
+    }
+
+
+def verify_receipt(data: dict[str, Any]) -> list[str]:
+    errors, details = inspect()
+    if data.get("schema") != "companion.runtime_visual_boundary.v1":
+        errors.append("unexpected visual-boundary receipt schema")
+    if data.get("status") != "PASS_CURRENT_SOURCE_NO_PROCEDURAL_VISUAL_FALLBACK":
+        errors.append("visual-boundary receipt is not a current-source PASS")
+    source_commit = data.get("source_commit")
+    if not isinstance(source_commit, str) or not re.fullmatch(r"[0-9a-f]{40}", source_commit):
+        errors.append("visual-boundary receipt has no full source commit")
+    elif run(["git", "cat-file", "-e", f"{source_commit}^{{commit}}"]).returncode != 0:
+        errors.append("visual-boundary receipt source commit is not available")
+    else:
+        changed = git_output("diff", "--name-only", source_commit, "HEAD", "--", *SOURCE_PATHS)
+        if changed:
+            errors.append("visual-boundary source inputs changed after receipt:\n" + changed)
+    if data.get("source_paths") != list(SOURCE_PATHS):
+        errors.append("visual-boundary source-path boundary drifted")
+    if data.get("source_sha256") != details["source_sha256"]:
+        errors.append("visual-boundary source digest drifted")
+    if data.get("elf", {}).get("forbidden_symbol_matches") != 0:
+        errors.append("visual-boundary receipt reports a forbidden ELF symbol")
+    if data.get("runtime_policy") != details["runtime_policy"]:
+        errors.append("visual-boundary runtime policy drifted")
+    if data.get("hardware_boundary") != details["hardware_boundary"]:
+        errors.append("visual-boundary hardware boundary drifted")
+    return errors
+
+
+def main(argv: list[str]) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--write", action="store_true", help="write a clean-tree machine-only receipt")
+    parser.add_argument("--receipt", type=Path, default=DEFAULT_RECEIPT)
+    args = parser.parse_args(argv)
+    receipt_path = args.receipt if args.receipt.is_absolute() else ROOT / args.receipt
+
+    if args.write:
+        try:
+            if git_output("status", "--short"):
+                raise RuntimeError("refuse to capture visual-boundary receipt from a dirty worktree")
+            data = receipt_payload()
+        except RuntimeError as exc:
+            print(f"FAIL: {exc}", file=sys.stderr)
+            return 1
+        receipt_path.parent.mkdir(parents=True, exist_ok=True)
+        receipt_path.write_text(json.dumps(data, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        print(f"PASS: captured runtime visual-boundary receipt -> {rel(receipt_path)}")
+        return 0
+
+    if not receipt_path.is_file():
+        print(f"FAIL: receipt missing: {rel(receipt_path)}", file=sys.stderr)
+        return 1
+    data = json.loads(receipt_path.read_text(encoding="utf-8"))
+    errors = verify_receipt(data)
+    if errors:
+        print("FAIL:", file=sys.stderr)
+        print("\n".join(f"- {error}" for error in errors), file=sys.stderr)
+        return 1
+    print(f"PASS: current source retains the no-procedural-visual-fallback boundary ({rel(receipt_path)})")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main(sys.argv[1:]))

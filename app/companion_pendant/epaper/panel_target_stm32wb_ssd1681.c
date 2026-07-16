@@ -1,7 +1,6 @@
 #include "panel_target_stm32wb_ssd1681.h"
 
 #include "expression_asset_source.h"
-#include "pet_expression.h"
 #include "refresh_policy.h"
 #include "screen_framebuffer.h"
 #include "screen_menu.h"
@@ -674,23 +673,6 @@ static void frame_set_pixel(uint16_t x, uint16_t y, bool black)
     }
 }
 
-static void frame_rect(uint16_t x, uint16_t y, uint16_t width, uint16_t height, bool black)
-{
-    for (uint16_t yy = y; yy < (uint16_t)(y + height); ++yy) {
-        for (uint16_t xx = x; xx < (uint16_t)(x + width); ++xx) {
-            frame_set_pixel(xx, yy, black);
-        }
-    }
-}
-
-static void frame_border(void)
-{
-    frame_rect(0u, 0u, SSD1681_WIDTH, 4u, true);
-    frame_rect(0u, (uint16_t)(SSD1681_HEIGHT - 4u), SSD1681_WIDTH, 4u, true);
-    frame_rect(0u, 0u, 4u, SSD1681_HEIGHT, true);
-    frame_rect((uint16_t)(SSD1681_WIDTH - 4u), 0u, 4u, SSD1681_HEIGHT, true);
-}
-
 static void frame_checkerboard(bool inverted)
 {
     frame_clear_white();
@@ -703,79 +685,19 @@ static void frame_checkerboard(bool inverted)
     }
 }
 
-static void frame_test_pattern(const comp_epaper_display_request_t *request)
-{
-    frame_clear_white();
-    frame_border();
-    frame_rect(12u, 12u, 176u, 12u, true);
-    frame_rect(12u, 176u, 176u, 12u, true);
-
-    for (uint16_t i = 0u; i < 180u; i += 12u) {
-        frame_set_pixel((uint16_t)(10u + i), (uint16_t)(32u + i / 2u), true);
-        frame_set_pixel((uint16_t)(11u + i), (uint16_t)(32u + i / 2u), true);
-        frame_set_pixel((uint16_t)(180u - i), (uint16_t)(32u + i / 2u), true);
-    }
-
-    frame_rect(54u, 70u, 28u, 28u, true);
-    frame_rect(118u, 70u, 28u, 28u, true);
-    frame_rect(68u, 126u, 64u, 8u, true);
-    frame_rect(76u, 136u, 48u, 8u, true);
-
-    uint8_t expression = request == NULL ? 0u : request->expression;
-    uint16_t marker_x = (uint16_t)(16u + ((uint16_t)(expression % 8u) * 20u));
-    frame_rect(marker_x, 152u, 14u, 14u, true);
-    if (request != NULL && request->request_kind == COMP_EPAPER_DISPLAY_REQUEST_CARD_WRITE) {
-        frame_rect(152u, 42u, 24u, 44u, true);
-        frame_rect(132u, 42u, 20u, 8u, true);
-        frame_rect(132u, 78u, 20u, 8u, true);
-    }
-}
-
-static void frame_prepare(comp_epaper_expression_asset_source_t *expression_assets,
+static bool frame_prepare(comp_epaper_expression_asset_source_t *expression_assets,
                           const comp_epaper_display_request_t *request)
 {
     char menu_asset_name[32];
-    comp_screen_framebuffer_t framebuffer;
-
     if (COMPANION_EPAPER_SSD1681_DIAGNOSTIC_PATTERN == 1u) {
         frame_clear_white();
+        return true;
     } else if (COMPANION_EPAPER_SSD1681_DIAGNOSTIC_PATTERN == 2u) {
         memset(s_frame, 0x00, sizeof(s_frame));
+        return true;
     } else if (COMPANION_EPAPER_SSD1681_DIAGNOSTIC_PATTERN == 3u) {
         frame_checkerboard(request != NULL && (request->request_id & 1u) == 0u);
-    } else if (request != NULL &&
-               request->request_kind == COMP_EPAPER_DISPLAY_REQUEST_PET_EXPRESSION &&
-               comp_screen_framebuffer_init(&framebuffer,
-                                            s_frame,
-                                            sizeof(s_frame),
-                                            SSD1681_WIDTH,
-                                            SSD1681_HEIGHT) &&
-               comp_pet_expression_render(&request->pet_pose, &framebuffer)) {
-        SSD1681_VERBOSE_TRACE("[epaper] scene=pet state=%s gaze=%d,%d eye_open=%u lid_tilt=%d eye_width=%u spacing=%u pair_tilt=%d highlight=%u face_shift=%d,%d brow=%u lift=%u asym=%d mouth=%u mouth_scale=%u cheek=%u mark=%u dirty=%u,%u,%u,%u source=procedural\r\n",
-               comp_epaper_expression_name(
-                   (comp_epaper_expression_t)request->expression),
-               (int)request->pet_pose.gaze_x,
-               (int)request->pet_pose.gaze_y,
-               (unsigned)request->pet_pose.eye_open,
-               (int)request->pet_pose.eyelid_tilt,
-               (unsigned)request->pet_pose.eye_width,
-               (unsigned)request->pet_pose.eye_spacing,
-               (int)request->pet_pose.eye_pair_tilt,
-               (unsigned)request->pet_pose.highlight_scale,
-               (int)request->pet_pose.face_shift_x,
-               (int)request->pet_pose.face_shift_y,
-               (unsigned)request->pet_pose.brow,
-               (unsigned)request->pet_pose.brow_lift,
-               (int)request->pet_pose.brow_asymmetry,
-               (unsigned)request->pet_pose.mouth,
-               (unsigned)request->pet_pose.mouth_scale,
-               (unsigned)request->pet_pose.cheek_strength,
-               (unsigned)request->pet_pose.mark,
-               (unsigned)request->dirty_x,
-               (unsigned)request->dirty_y,
-               (unsigned)request->dirty_width,
-               (unsigned)request->dirty_height);
-        return;
+        return true;
     } else if (request != NULL &&
                request->request_kind == COMP_EPAPER_DISPLAY_REQUEST_EXPRESSION &&
                request->asset_frame_valid != 0u &&
@@ -792,7 +714,7 @@ static void frame_prepare(comp_epaper_expression_asset_source_t *expression_asse
                (unsigned)request->dirty_y,
                (unsigned)request->dirty_width,
                (unsigned)request->dirty_height);
-        return;
+        return true;
     } else if (request != NULL &&
                request->request_kind == COMP_EPAPER_DISPLAY_REQUEST_EXPRESSION &&
                comp_epaper_expression_asset_source_copy_expression(
@@ -803,7 +725,7 @@ static void frame_prepare(comp_epaper_expression_asset_source_t *expression_asse
         SSD1681_VERBOSE_TRACE("[epaper] scene=expression name=%s source=external_flash\r\n",
                comp_epaper_expression_name(
                    (comp_epaper_expression_t)request->expression));
-        return;
+        return true;
     } else if (request != NULL &&
                request->request_kind == COMP_EPAPER_DISPLAY_REQUEST_MENU &&
                comp_screen_menu_asset_name(
@@ -829,7 +751,7 @@ static void frame_prepare(comp_epaper_expression_asset_source_t *expression_asse
         SSD1681_VERBOSE_TRACE("[epaper] scene=menu asset=%s source=external_flash flags=0x%02X\r\n",
                menu_asset_name,
                (unsigned)request->menu_flags);
-        return;
+        return true;
     } else if (request != NULL &&
                request->request_kind == COMP_EPAPER_DISPLAY_REQUEST_MENU &&
                comp_screen_menu_render((comp_screen_menu_view_t)request->menu_view,
@@ -844,10 +766,11 @@ static void frame_prepare(comp_epaper_expression_asset_source_t *expression_asse
                (unsigned)request->menu_view,
                (unsigned)request->menu_language,
                (unsigned)request->menu_flags);
-        return;
-    } else {
-        frame_test_pattern(request);
+        return true;
     }
+    SSD1681_VERBOSE_TRACE("[epaper] source=unavailable kind=%u; suppressing visual fallback\r\n",
+           request == NULL ? 0xFFu : (unsigned)request->request_kind);
+    return false;
 }
 
 static uint8_t frame_reverse_bits(uint8_t value)
@@ -1023,7 +946,16 @@ static comp_epaper_panel_result_t ssd1681_refresh(
 #endif
 
     frame_prepare_start_ms = HAL_GetTick();
-    frame_prepare(target->expression_assets, request);
+    if (!frame_prepare(target->expression_assets, request)) {
+        if (out_report != NULL) {
+            out_report->request_id = request->request_id;
+            out_report->content_crc32 = request->content_crc32;
+            out_report->transferred_bytes = 0u;
+            out_report->width = SSD1681_WIDTH;
+            out_report->height = SSD1681_HEIGHT;
+        }
+        return COMP_EPAPER_PANEL_RESULT_TRANSPORT_ERROR;
+    }
     frame_apply_target_rotation();
     frame_apply_horizontal_mirror();
     frame_prepare_elapsed_ms = HAL_GetTick() - frame_prepare_start_ms;

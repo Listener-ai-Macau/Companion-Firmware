@@ -55,7 +55,6 @@
 #include "panel_target_stm32wb.h"
 #include "pet_attention.h"
 #include "pet_behavior.h"
-#include "pet_expression.h"
 #include "pet_performance.h"
 #include "pet_performance_event_bridge.h"
 #include "refresh_policy.h"
@@ -273,6 +272,7 @@ static comp_emote_asset_mount_t s_companion_screen_asset_mount;
 static comp_epaper_expression_asset_source_t s_companion_expression_asset_source;
 static comp_emote_player_t s_companion_emote_player;
 static comp_epaper_expression_decision_t s_companion_emote_player_decision;
+static comp_emote_player_frame_t s_companion_last_emote_frame;
 static comp_screen_presentation_t s_companion_screen_presentation;
 static bool s_companion_screen_ui_ready = false;
 /* The normal runtime recheck needs one CEMP coherence proof, but emitting the
@@ -280,6 +280,7 @@ static bool s_companion_screen_ui_ready = false;
 static bool s_companion_screen_coherent_generation_marker_logged = false;
 static bool s_companion_emote_player_ready = false;
 static bool s_companion_emote_player_decision_valid = false;
+static bool s_companion_last_emote_frame_valid = false;
 static bool s_companion_expression_transition_immediate = false;
 static const char *s_companion_touch_attention_clip = NULL;
 static const char *s_companion_dynamic_touch_clip = NULL;
@@ -287,8 +288,6 @@ static uint16_t s_companion_dynamic_touch_x = 100u;
 static uint16_t s_companion_dynamic_touch_y = 100u;
 static bool s_companion_dynamic_touch_is_stroke = false;
 static uint32_t s_companion_pet_behavior_last_advanced_ms = 0u;
-static comp_pet_expression_pose_t s_companion_last_pet_pose;
-static bool s_companion_last_pet_pose_valid = false;
 static comp_emote_clip_t
     s_companion_screen_asset_clips[COMPANION_SCREEN_ASSET_CLIP_CAPACITY];
 static comp_emote_frame_t
@@ -389,11 +388,6 @@ static void Companion_PetPerformance_ApplyEvent(
 static bool Companion_Display_EmitEmoteFrame(bool force_full);
 static bool Companion_Display_EmitEmoteFrameMode(
     comp_epaper_refresh_mode_t refresh_mode);
-static bool Companion_Display_EnqueuePetPose(
-    const comp_epaper_expression_decision_t *decision,
-    const comp_pet_expression_pose_t *pose,
-    comp_epaper_refresh_mode_t refresh_mode,
-    uint32_t request_id_hint);
 static void Companion_Display_EnqueueExpressionDecision(
     const comp_epaper_expression_decision_t *decision,
     const comp_epaper_expression_state_t *previous_state,
@@ -666,15 +660,8 @@ void APP_BLE_Init( void )
          comp_epaper_refresh_policy_self_test() ? "pass" : "fail");
   printf("[screen] pet_attention_selftest=%s\r\n",
          comp_pet_attention_self_test() ? "pass" : "fail");
-  printf("[screen] pet_expression_selftest=%s\r\n",
-         comp_pet_expression_self_test() ? "pass" : "fail");
-  bool pet_behavior_selftest = comp_pet_behavior_self_test();
-  printf("[screen] pet_behavior_selftest=%s failure_code=%lu\r\n",
-         pet_behavior_selftest ? "pass" : "fail",
-         (unsigned long)comp_pet_behavior_self_test_failure_code());
-  printf("[pet-emotion] selftest=%s failure_code=%lu moods=calm,curious,affectionate,delighted,restful,worried memory=pass strokes=pass\r\n",
-         pet_behavior_selftest ? "pass" : "fail",
-         (unsigned long)comp_pet_behavior_self_test_failure_code());
+  /* The host suite owns legacy behavior self-tests.  Do not link their
+   * procedural pose composer into the product firmware. */
   printf("[pet-performance] selftest=%s bridge=%s resource_activation=disabled\r\n",
          comp_pet_performance_self_test() ? "pass" : "fail",
          comp_pet_performance_event_bridge_self_test() ? "pass" : "fail");
@@ -1344,7 +1331,8 @@ static bool Companion_Display_EmitEmoteFrameMode(
   {
     return false;
   }
-  s_companion_last_pet_pose_valid = false;
+  s_companion_last_emote_frame = player_frame;
+  s_companion_last_emote_frame_valid = true;
   Companion_Gatt_PublishCardStatus(
       COMPANION_EPAPER_EXPRESSION_CARD_SLOT,
       request_id,
@@ -1368,68 +1356,6 @@ static bool Companion_Display_EmitEmoteFrame(bool force_full)
   return Companion_Display_EmitEmoteFrameMode(
       force_full ? COMP_EPAPER_REFRESH_FULL
                  : COMP_EPAPER_REFRESH_PARTIAL_INTERACTIVE);
-}
-
-static bool Companion_Display_EnqueuePetPose(
-    const comp_epaper_expression_decision_t *decision,
-    const comp_pet_expression_pose_t *pose,
-    comp_epaper_refresh_mode_t refresh_mode,
-    uint32_t request_id_hint)
-{
-  comp_epaper_display_queue_result_t queue_result;
-  uint32_t request_id;
-  uint32_t content_crc32;
-
-  if (decision == NULL || !comp_pet_expression_pose_is_valid(pose))
-  {
-    return false;
-  }
-  request_id = Companion_Display_NextExpressionRequestId(request_id_hint);
-  content_crc32 = comp_epaper_expression_decision_crc32(decision) ^
-                  ((uint32_t)(uint8_t)pose->gaze_x << 24) ^
-                  ((uint32_t)(uint8_t)pose->gaze_y << 16) ^
-                  ((uint32_t)pose->eye_open << 8) ^
-                  ((uint32_t)(uint8_t)pose->eyelid_tilt << 4) ^
-                  ((uint32_t)pose->eye_width << 1) ^
-                  ((uint32_t)pose->eye_spacing << 18) ^
-                  ((uint32_t)(uint8_t)pose->eye_pair_tilt << 7) ^
-                  ((uint32_t)pose->highlight_scale << 9) ^
-                  ((uint32_t)(uint8_t)pose->face_shift_x << 20) ^
-                  ((uint32_t)(uint8_t)pose->face_shift_y << 12) ^
-                  ((uint32_t)pose->brow_lift << 6) ^
-                  ((uint32_t)(uint8_t)pose->brow_asymmetry << 2) ^
-                  ((uint32_t)pose->mouth_scale << 14) ^
-                  ((uint32_t)pose->brow << 10) ^
-                  ((uint32_t)pose->mouth << 5) ^
-                  ((uint32_t)pose->cheek_strength << 3) ^
-                  (uint32_t)pose->mark;
-  queue_result = comp_epaper_display_queue_enqueue_pet_expression(
-      &s_companion_display_queue,
-      COMPANION_EPAPER_EXPRESSION_CARD_SLOT,
-      0u,
-      request_id,
-      decision,
-      pose,
-      refresh_mode,
-      COMPANION_PET_FEATURE_DIRTY_X,
-      COMPANION_PET_FEATURE_DIRTY_Y,
-      COMPANION_PET_FEATURE_DIRTY_WIDTH,
-      COMPANION_PET_FEATURE_DIRTY_HEIGHT,
-      content_crc32);
-  if (queue_result == COMP_EPAPER_DISPLAY_QUEUE_OK)
-  {
-    s_companion_last_pet_pose = *pose;
-    s_companion_last_pet_pose_valid = true;
-    Companion_Gatt_PublishCardStatus(
-        COMPANION_EPAPER_EXPRESSION_CARD_SLOT,
-        request_id,
-        (uint8_t)COMP_EPAPER_RENDER_STATE_ACCEPTED,
-        0u,
-        content_crc32);
-    UTIL_SEQ_SetTask(1 << CFG_TASK_COMPANION_DISPLAY_ID, CFG_SCH_PRIO_0);
-    return true;
-  }
-  return false;
 }
 
 static void Companion_Display_ScheduleExpressionTick(uint32_t now_ms)
@@ -1582,6 +1508,7 @@ static void Companion_Display_EnqueueExpressionDecision(
   Companion_PetBehavior_Advance();
   comp_pet_behavior_apply_expression(&s_companion_pet_behavior,
                                      decision->expression);
+  s_companion_last_emote_frame_valid = false;
   SCREEN_INTERACTION_TRACE("[pet-emotion] expression=%s mood=%s valence=%d arousal=%u curiosity=%u affection=%u attachment=%u quiet_ms=%lu engagement=%u interactions=%lu\r\n",
          comp_epaper_expression_name(decision->expression),
          comp_pet_behavior_mood_name(comp_pet_behavior_mood(&s_companion_pet_behavior)),
@@ -1698,7 +1625,6 @@ static bool Companion_Screen_MenuRequestMode(
   uint32_t request_id;
   uint32_t content_crc32;
   size_t discarded_expression_frames;
-  size_t discarded_pet_expression_frames;
 
   flags &= (uint8_t)~(COMP_SCREEN_MENU_FLAG_RECORDING |
                       COMP_SCREEN_MENU_FLAG_TOUCH_OK);
@@ -1714,9 +1640,7 @@ static bool Companion_Screen_MenuRequestMode(
   discarded_expression_frames = comp_epaper_display_queue_discard_kind(
       &s_companion_display_queue,
       COMP_EPAPER_DISPLAY_REQUEST_EXPRESSION);
-  discarded_pet_expression_frames = comp_epaper_display_queue_discard_kind(
-      &s_companion_display_queue,
-      COMP_EPAPER_DISPLAY_REQUEST_PET_EXPRESSION);
+  s_companion_last_emote_frame_valid = false;
   request_id = s_companion_menu_next_request_id++;
   content_crc32 = 0x811C9DC5u;
   content_crc32 = (content_crc32 ^ (uint8_t)view) * 0x01000193u;
@@ -1744,15 +1668,14 @@ static bool Companion_Screen_MenuRequestMode(
                              COMP_SCREEN_MENU_FLAG_PRESS_ITEM_MASK)),
         language,
         home_page);
-    SCREEN_INTERACTION_TRACE("[screen] menu enqueue id=%lu view=%u page=%u language=%u flags=0x%02X refresh=%u discarded_expression_frames=%u discarded_pet_expression_frames=%u\r\n",
+    SCREEN_INTERACTION_TRACE("[screen] menu enqueue id=%lu view=%u page=%u language=%u flags=0x%02X refresh=%u discarded_expression_frames=%u\r\n",
            (unsigned long)request_id,
            (unsigned)view,
            (unsigned)home_page,
            (unsigned)language,
            (unsigned)flags,
            (unsigned)refresh_mode,
-           (unsigned)discarded_expression_frames,
-           (unsigned)discarded_pet_expression_frames);
+           (unsigned)discarded_expression_frames);
     UTIL_SEQ_SetTask(1 << CFG_TASK_COMPANION_DISPLAY_ID, CFG_SCH_PRIO_0);
     return true;
   }
@@ -1818,10 +1741,14 @@ bool Companion_Screen_ExpressionMaintenance(void)
 {
   comp_epaper_expression_decision_t decision;
   comp_emote_player_snapshot_t player_snapshot;
+  comp_epaper_display_queue_result_t queue_result;
+  uint32_t request_id;
+  uint32_t content_crc32;
 
   if (s_companion_screen_presentation.mode !=
-          COMP_SCREEN_PRESENTATION_EXPRESSION ||
-      !s_companion_last_pet_pose_valid)
+           COMP_SCREEN_PRESENTATION_EXPRESSION ||
+       !s_companion_emote_player_decision_valid ||
+       !s_companion_last_emote_frame_valid)
   {
     return false;
   }
@@ -1834,23 +1761,40 @@ bool Companion_Screen_ExpressionMaintenance(void)
       return false;
     }
   }
-  decision = (comp_epaper_expression_decision_t){
-      .expression = s_companion_last_pet_pose.expression,
-      .signal = s_companion_expression_state.initialized
-                    ? s_companion_expression_state.last_signal
-                    : COMP_EPAPER_EXPRESSION_SIGNAL_BOOT_IDLE,
-      .priority = comp_epaper_expression_priority(
-          s_companion_last_pet_pose.expression),
-      .name = comp_epaper_expression_name(s_companion_last_pet_pose.expression),
-      .title = "Pet maintenance",
-      .body = "Contrast cleanup",
-      .footer = "EXPR MAINT",
-      .reason = "quiet touch cleanup",
-  };
-  return Companion_Display_EnqueuePetPose(&decision,
-                                           &s_companion_last_pet_pose,
-                                           COMP_EPAPER_REFRESH_MAINTENANCE,
-                                           0u);
+  decision = s_companion_emote_player_decision;
+  decision.name = s_companion_last_emote_frame.clip_name;
+  request_id = Companion_Display_NextExpressionRequestId(0u);
+  content_crc32 = comp_epaper_expression_decision_crc32(&decision) ^
+                  ((uint32_t)s_companion_last_emote_frame.frame_index << 8) ^
+                  ((uint32_t)s_companion_last_emote_frame.frame_in_clip << 20) ^
+                  ((uint32_t)s_companion_last_emote_frame.frame.dirty_x << 1) ^
+                  ((uint32_t)s_companion_last_emote_frame.frame.dirty_y << 9);
+  queue_result = comp_epaper_display_queue_enqueue_expression_frame(
+      &s_companion_display_queue,
+      COMPANION_EPAPER_EXPRESSION_CARD_SLOT,
+      0u,
+      request_id,
+      &decision,
+      s_companion_last_emote_frame.frame_index,
+      COMP_EPAPER_REFRESH_MAINTENANCE,
+      s_companion_last_emote_frame.frame.dirty_x,
+      s_companion_last_emote_frame.frame.dirty_y,
+      s_companion_last_emote_frame.frame.dirty_width,
+      s_companion_last_emote_frame.frame.dirty_height,
+      content_crc32);
+  if (queue_result != COMP_EPAPER_DISPLAY_QUEUE_OK)
+  {
+    return false;
+  }
+  Companion_Gatt_PublishCardStatus(COMPANION_EPAPER_EXPRESSION_CARD_SLOT,
+                                   request_id,
+                                   (uint8_t)COMP_EPAPER_RENDER_STATE_ACCEPTED,
+                                   0u,
+                                   content_crc32);
+  UTIL_SEQ_SetTask(1 << CFG_TASK_COMPANION_DISPLAY_ID, CFG_SCH_PRIO_0);
+  SCREEN_INTERACTION_TRACE("[screen] expression_maintenance source=external_flash frame=%u\r\n",
+         (unsigned)s_companion_last_emote_frame.frame_index);
+  return true;
 }
 
 static void Companion_Screen_RefreshBleStatus(void)
@@ -1906,6 +1850,7 @@ static bool Companion_Screen_StartExpressionMode(
   };
   s_companion_emote_player_decision = decision;
   s_companion_emote_player_decision_valid = true;
+  s_companion_last_emote_frame_valid = false;
   if (daily)
   {
     Companion_PetBehavior_Advance();
