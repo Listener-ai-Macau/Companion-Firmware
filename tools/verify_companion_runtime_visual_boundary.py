@@ -19,11 +19,15 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_RECEIPT = ROOT / "docs/validation/companion-runtime-visual-boundary-20260717.json"
 APP_BLE = ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c"
 PANEL_TARGET = ROOT / "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c"
+DISPLAY_QUEUE_HEADER = ROOT / "app/companion_pendant/epaper/display_queue.h"
+DISPLAY_QUEUE_SOURCE = ROOT / "app/companion_pendant/epaper/display_queue.c"
 MAKEFILE = ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile"
 ELF = ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/build/Companion_Nucleo_WB55RG_Bringup.elf"
 SOURCE_PATHS = (
     "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c",
     "cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile",
+    "app/companion_pendant/epaper/display_queue.h",
+    "app/companion_pendant/epaper/display_queue.c",
     "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
     "tools/verify_companion_runtime_visual_boundary.py",
 )
@@ -73,6 +77,7 @@ def source_errors() -> list[str]:
     errors: list[str] = []
     app = APP_BLE.read_text(encoding="utf-8")
     panel = PANEL_TARGET.read_text(encoding="utf-8")
+    queue = DISPLAY_QUEUE_HEADER.read_text(encoding="utf-8") + "\n" + DISPLAY_QUEUE_SOURCE.read_text(encoding="utf-8")
     makefile = MAKEFILE.read_text(encoding="utf-8")
 
     for token in (
@@ -114,6 +119,16 @@ def source_errors() -> list[str]:
     ):
         if token in panel:
             errors.append(f"panel runtime still contains retired visual fallback: {token}")
+    for token in (
+        "pet_expression.h",
+        "COMP_EPAPER_DISPLAY_REQUEST_PET_EXPRESSION",
+        "comp_epaper_display_queue_enqueue_pet_expression",
+        "comp_pet_expression_pose_t",
+        "comp_pet_expression_pose_is_valid",
+        "pet_pose",
+    ):
+        if token in queue:
+            errors.append(f"display queue still contains retired procedural visual route: {token}")
     if "$(ROOT)/app/companion_pendant/epaper/pet_expression.c" in makefile:
         errors.append("WB55 product Makefile still compiles the retired procedural face composer")
     return errors

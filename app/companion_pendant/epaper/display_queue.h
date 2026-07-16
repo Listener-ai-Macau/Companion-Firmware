@@ -6,7 +6,6 @@
 #include <stdint.h>
 
 #include "expression_state.h"
-#include "pet_expression.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -35,7 +34,6 @@ typedef enum {
     COMP_EPAPER_DISPLAY_REQUEST_CARD_WRITE = 0,
     COMP_EPAPER_DISPLAY_REQUEST_EXPRESSION = 1,
     COMP_EPAPER_DISPLAY_REQUEST_MENU = 2,
-    COMP_EPAPER_DISPLAY_REQUEST_PET_EXPRESSION = 3,
 } comp_epaper_display_request_kind_t;
 
 typedef enum {
@@ -72,7 +70,6 @@ typedef struct {
     uint16_t dirty_y;
     uint16_t dirty_width;
     uint16_t dirty_height;
-    comp_pet_expression_pose_t pet_pose;
     uint8_t payload[COMP_EPAPER_DISPLAY_PAYLOAD_MAX_BYTES];
 } comp_epaper_display_request_t;
 
@@ -134,20 +131,6 @@ comp_epaper_display_queue_result_t comp_epaper_display_queue_enqueue_expression_
     uint32_t request_id,
     const comp_epaper_expression_decision_t *decision,
     uint16_t frame_index,
-    comp_epaper_refresh_mode_t refresh_mode,
-    uint16_t dirty_x,
-    uint16_t dirty_y,
-    uint16_t dirty_width,
-    uint16_t dirty_height,
-    uint32_t content_crc32);
-
-comp_epaper_display_queue_result_t comp_epaper_display_queue_enqueue_pet_expression(
-    comp_epaper_display_queue_t *queue,
-    uint8_t card_slot,
-    uint16_t display_flags,
-    uint32_t request_id,
-    const comp_epaper_expression_decision_t *decision,
-    const comp_pet_expression_pose_t *pose,
     comp_epaper_refresh_mode_t refresh_mode,
     uint16_t dirty_x,
     uint16_t dirty_y,

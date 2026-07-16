@@ -66,17 +66,14 @@ def check_queue_module(errors: list[str]) -> None:
     source = read(QUEUE_SOURCE)
     for token in [
         '#include "expression_state.h"',
-        '#include "pet_expression.h"',
         "COMP_EPAPER_DISPLAY_QUEUE_DEPTH",
         "COMP_EPAPER_DISPLAY_PAYLOAD_MAX_BYTES",
         "COMP_EPAPER_RENDER_STATE_ACCEPTED",
         "COMP_EPAPER_RENDER_STATE_RENDERED",
         "COMP_EPAPER_RENDER_STATE_BUSY",
         "COMP_EPAPER_DISPLAY_REQUEST_EXPRESSION",
-        "COMP_EPAPER_DISPLAY_REQUEST_PET_EXPRESSION",
         "comp_epaper_display_queue_enqueue_card_write",
         "comp_epaper_display_queue_enqueue_expression",
-        "comp_epaper_display_queue_enqueue_pet_expression",
         "comp_epaper_display_queue_dequeue",
         "comp_epaper_display_queue_discard_kind",
         "comp_epaper_display_queue_set_resource_revision",
@@ -90,7 +87,6 @@ def check_queue_module(errors: list[str]) -> None:
         "comp_epaper_display_queue_pending",
         "comp_epaper_display_queue_high_water_count",
         "high_water_count",
-        "pet_pose",
     ]:
         require(token in header, f"display_queue.h missing {token}", errors)
     for token in [
@@ -99,16 +95,13 @@ def check_queue_module(errors: list[str]) -> None:
         "COMP_EPAPER_DISPLAY_QUEUE_FULL",
         "COMP_EPAPER_DISPLAY_QUEUE_PAYLOAD_TOO_LONG",
         "COMP_EPAPER_DISPLAY_REQUEST_EXPRESSION",
-        "COMP_EPAPER_DISPLAY_REQUEST_PET_EXPRESSION",
         "comp_epaper_expression_is_supported",
-        "comp_pet_expression_pose_is_valid(pose)",
-        "request->pet_pose = *pose",
         "(*out_request)->resource_revision = queue->active_resource_revision",
         "comp_epaper_display_queue_set_resource_revision",
         "queue->last_stale_generation_discarded = (uint32_t)discarded",
         "queue->generation_switch_count++",
         "queue->stale_generation_discard_count += (uint32_t)discarded",
-        "request_kind > COMP_EPAPER_DISPLAY_REQUEST_PET_EXPRESSION",
+        "request_kind > COMP_EPAPER_DISPLAY_REQUEST_MENU",
         "queue->high_water_count = queue->count",
         "out_snapshot->pending_count = queue->count",
         "out_snapshot->high_water_count = queue->high_water_count",
@@ -123,6 +116,16 @@ def check_queue_module(errors: list[str]) -> None:
         "request->resource_revision = queue->active_resource_revision",
     ]:
         require(token in source, f"display_queue.c missing {token}", errors)
+    for retired in [
+        '#include "pet_expression.h"',
+        "COMP_EPAPER_DISPLAY_REQUEST_PET_EXPRESSION",
+        "comp_epaper_display_queue_enqueue_pet_expression",
+        "comp_pet_expression_pose_t",
+        "comp_pet_expression_pose_is_valid",
+        "pet_pose",
+    ]:
+        require(retired not in header + source,
+                f"display queue must not retain a procedural visual route: {retired}", errors)
     for forbidden in ["HAL_", "GPIO", "SPI", "QSPI", "stm32", "STMWPAN", "UTIL_SEQ"]:
         require(forbidden.lower() not in (header + source).lower(), f"display queue must stay platform-free: {forbidden}", errors)
 

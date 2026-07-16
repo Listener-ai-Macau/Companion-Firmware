@@ -193,51 +193,6 @@ comp_epaper_display_queue_result_t comp_epaper_display_queue_enqueue_expression_
     return COMP_EPAPER_DISPLAY_QUEUE_OK;
 }
 
-comp_epaper_display_queue_result_t comp_epaper_display_queue_enqueue_pet_expression(
-    comp_epaper_display_queue_t *queue,
-    uint8_t card_slot,
-    uint16_t display_flags,
-    uint32_t request_id,
-    const comp_epaper_expression_decision_t *decision,
-    const comp_pet_expression_pose_t *pose,
-    comp_epaper_refresh_mode_t refresh_mode,
-    uint16_t dirty_x,
-    uint16_t dirty_y,
-    uint16_t dirty_width,
-    uint16_t dirty_height,
-    uint32_t content_crc32)
-{
-    comp_epaper_display_request_t *request = NULL;
-    comp_epaper_display_queue_result_t result;
-
-    if (queue == NULL || decision == NULL || pose == NULL ||
-        refresh_mode > COMP_EPAPER_REFRESH_MAINTENANCE ||
-        !comp_epaper_expression_is_supported(decision->expression) ||
-        !comp_pet_expression_pose_is_valid(pose)) {
-        return COMP_EPAPER_DISPLAY_QUEUE_BAD_ARGUMENT;
-    }
-    result = comp_epaper_queue_reserve(queue, &request);
-    if (result != COMP_EPAPER_DISPLAY_QUEUE_OK) {
-        return result;
-    }
-    request->request_id = request_id;
-    request->content_crc32 = content_crc32;
-    request->display_flags = display_flags;
-    request->card_slot = card_slot;
-    request->request_kind = (uint8_t)COMP_EPAPER_DISPLAY_REQUEST_PET_EXPRESSION;
-    request->expression = (uint8_t)decision->expression;
-    request->expression_signal = (uint8_t)decision->signal;
-    request->expression_priority = decision->priority;
-    request->refresh_mode = (uint8_t)refresh_mode;
-    request->dirty_x = dirty_x;
-    request->dirty_y = dirty_y;
-    request->dirty_width = dirty_width;
-    request->dirty_height = dirty_height;
-    request->pet_pose = *pose;
-    comp_epaper_queue_commit(queue);
-    return COMP_EPAPER_DISPLAY_QUEUE_OK;
-}
-
 comp_epaper_display_queue_result_t comp_epaper_display_queue_enqueue_menu(
     comp_epaper_display_queue_t *queue,
     uint8_t card_slot,
@@ -315,8 +270,7 @@ size_t comp_epaper_display_queue_discard_kind(
     size_t original_count;
     size_t kept_count = 0u;
 
-    if (queue == NULL ||
-        request_kind > COMP_EPAPER_DISPLAY_REQUEST_PET_EXPRESSION) {
+    if (queue == NULL || request_kind > COMP_EPAPER_DISPLAY_REQUEST_MENU) {
         return 0u;
     }
 
