@@ -37,6 +37,28 @@
     {
       "evidence": [
         {
+          "detail": "Three WB55 variants built from source commit ca1a603547c3bbea70e3adae6771ed14e25c7fae; the receipt invalidates when listed build inputs change.",
+          "path": "docs/validation/companion-wb55-current-build-receipt-20260717.json",
+          "status": "PASS_CURRENT_SOURCE_BUILD_NO_HARDWARE"
+        },
+        {
+          "detail": "Eight callback-only target adapters compile with strict Cortex-M33 flags.",
+          "path": "docs/validation/companion-screen-wba-adapter-m33-compile.json",
+          "status": "PASS_STATIC_M33_COMPILE_CONTRACT"
+        },
+        {
+          "detail": "Ordinary 1-1-1 SPI NOR behavior passes without WBA hardware parity claim.",
+          "path": "docs/validation/companion-wba-spi-nor-adapter.json",
+          "status": "PASS_NATIVE_BEHAVIOR_AND_PORTABLE_CONTRACT"
+        }
+      ],
+      "id": "current_wb55_build_and_wba_adapter",
+      "requirement": "The current WB55 source builds in dry-run, real SSD1681 and asset-provision variants; WBA55/WBA65 callback adapters compile as Cortex-M33 and preserve ordinary SPI-NOR behavior without claiming a real WBA board.",
+      "status": "proved_machine_real_wba_pending"
+    },
+    {
+      "evidence": [
+        {
           "detail": "Locked v9 source hash is the sole current inner-face baseline.",
           "path": "docs/art/iterations/companion-pet-expression-v9/baseline-lock.json",
           "status": "OWNER_APPROVED_SOURCE_LOCKED_MACHINE_RENDER_AUTHORIZED"
@@ -131,6 +153,9 @@
     "python .\\tools\\verify_companion_v9_wba_visual_boundary.py",
     "python .\\tools\\verify_companion_historical_branch_audit.py",
     "python .\\tools\\verify_companion_low_power_requirements.py",
-    "pwsh .\\tools\\test_power_policy_host.ps1"
+    "pwsh .\\tools\\test_power_policy_host.ps1",
+    "python .\\tools\\capture_wb55_current_build_receipt.py",
+    "python .\\tools\\verify_wba_adapter_m33_compile.py --self-test",
+    "python .\\tools\\verify_wba_spi_nor_adapter.py --self-test"
   ]
 }

@@ -16,6 +16,9 @@ DEFAULT_MD = ROOT / "docs/validation/companion-current-goal-audit-20260717.md"
 ARTIFACTS = {
     "historical": ROOT / "docs/validation/companion-historical-branch-audit-20260717.json",
     "low_power": ROOT / "docs/validation/companion-low-power-requirements.json",
+    "wb55_build_receipt": ROOT / "docs/validation/companion-wb55-current-build-receipt-20260717.json",
+    "wba_m33_compile": ROOT / "docs/validation/companion-screen-wba-adapter-m33-compile.json",
+    "wba_spi_nor": ROOT / "docs/validation/companion-wba-spi-nor-adapter.json",
     "v9_baseline": ROOT / "docs/art/iterations/companion-pet-expression-v9/baseline-lock.json",
     "v9_cemp": ROOT / "docs/validation/companion-v9-expression-cemp-20260716.json",
     "v9_coverage": ROOT / "docs/validation/companion-v9-scene-coverage-20260716.json",
@@ -58,6 +61,9 @@ def build_audit() -> dict[str, Any]:
     errors: list[str] = []
     historical = load_json("historical")
     low_power = load_json("low_power")
+    wb55_build_receipt = load_json("wb55_build_receipt")
+    wba_m33_compile = load_json("wba_m33_compile")
+    wba_spi_nor = load_json("wba_spi_nor")
     baseline = load_json("v9_baseline")
     cemp = load_json("v9_cemp")
     coverage = load_json("v9_coverage")
@@ -85,6 +91,20 @@ def build_audit() -> dict[str, Any]:
     check(errors, low_power.get("status") == "PASS", "low-power static contract is not PASS")
     check(errors, low_power.get("target") == "final product-board LP-01 standby average <= 1 mA over >= 60 s", "low-power target drifted")
     check(errors, "3-minute" in str(low_power.get("low_power_visual")), "three-minute sleepy policy drifted")
+
+    check(errors, wb55_build_receipt.get("status") == "PASS_CURRENT_SOURCE_BUILD_NO_HARDWARE", "current WB55 build receipt is not PASS")
+    build_commit = wb55_build_receipt.get("source_commit", "")
+    check(errors, isinstance(build_commit, str) and len(build_commit) == 40, "current WB55 build receipt has no full source commit")
+    for name in ("dry_run_default", "ssd1681_real_panel", "screen_asset_provision"):
+        variant = wb55_build_receipt.get("variants", {}).get(name, {})
+        check(errors, variant.get("returncode") == 0, f"current WB55 build variant failed: {name}")
+        check(errors, isinstance(variant.get("size", {}).get("dec"), int), f"current WB55 build variant has no size: {name}")
+    check(errors, wba_m33_compile.get("status") == "PASS_STATIC_M33_COMPILE_CONTRACT", "WBA Cortex-M33 adapter compile is not PASS")
+    wba_claims = wba_m33_compile.get("claims", {})
+    check(errors, wba_claims.get("cube_wba_project_claimed") is False and wba_claims.get("wba_hardware_parity_claimed") is False, "WBA compile evidence overclaims target parity")
+    check(errors, wba_spi_nor.get("status") == "PASS_NATIVE_BEHAVIOR_AND_PORTABLE_CONTRACT", "WBA SPI-NOR contract is not PASS")
+    wba_targets = wba_spi_nor.get("targets", {})
+    check(errors, wba_targets.get("transport") == "spi_nor_1_1_1" and wba_targets.get("hardware_parity_claimed") is False, "WBA SPI-NOR transport boundary drifted")
 
     accepted_source = baseline.get("accepted_source", {})
     check(errors, baseline.get("status") == "OWNER_APPROVED_SOURCE_LOCKED_MACHINE_RENDER_AUTHORIZED", "v9 baseline is not owner locked")
@@ -146,6 +166,16 @@ def build_audit() -> dict[str, Any]:
             "evidence": [evidence("low_power", str(low_power.get("status")), "HAL-free policy passes; Stop wake and <=1 mA physical measurement remain hardware gates.")],
         },
         {
+            "id": "current_wb55_build_and_wba_adapter",
+            "status": "proved_machine_real_wba_pending",
+            "requirement": "The current WB55 source builds in dry-run, real SSD1681 and asset-provision variants; WBA55/WBA65 callback adapters compile as Cortex-M33 and preserve ordinary SPI-NOR behavior without claiming a real WBA board.",
+            "evidence": [
+                evidence("wb55_build_receipt", str(wb55_build_receipt.get("status")), f"Three WB55 variants built from source commit {build_commit}; the receipt invalidates when listed build inputs change."),
+                evidence("wba_m33_compile", str(wba_m33_compile.get("status")), "Eight callback-only target adapters compile with strict Cortex-M33 flags."),
+                evidence("wba_spi_nor", str(wba_spi_nor.get("status")), "Ordinary 1-1-1 SPI NOR behavior passes without WBA hardware parity claim."),
+            ],
+        },
+        {
             "id": "v9_expression_renderer",
             "status": "proved_machine_inactive",
             "requirement": "Only the owner-approved v9 inner-face sheet supplies the 39-frame, 13-clip renderer-first candidate; no retired or procedural visual fallback is allowed.",
@@ -204,6 +234,9 @@ def build_audit() -> dict[str, Any]:
             "python .\\tools\\verify_companion_historical_branch_audit.py",
             "python .\\tools\\verify_companion_low_power_requirements.py",
             "pwsh .\\tools\\test_power_policy_host.ps1",
+            "python .\\tools\\capture_wb55_current_build_receipt.py",
+            "python .\\tools\\verify_wba_adapter_m33_compile.py --self-test",
+            "python .\\tools\\verify_wba_spi_nor_adapter.py --self-test",
         ],
     }
 
