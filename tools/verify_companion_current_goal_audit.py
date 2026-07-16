@@ -24,6 +24,7 @@ ARTIFACTS = {
     "resource_memory_policy": ROOT / "docs/validation/companion-screen-resource-memory-policy.json",
     "wba_m33_compile": ROOT / "docs/validation/companion-screen-wba-adapter-m33-compile.json",
     "wba_spi_nor": ROOT / "docs/validation/companion-wba-spi-nor-adapter.json",
+    "wba_port_contract": ROOT / "docs/validation/companion-screen-wba-port-contract.json",
     "wba_v9_callback_replay": ROOT / "docs/validation/companion-wba-v9-cemp-callback-replay-20260717.json",
     "v9_baseline": ROOT / "docs/art/iterations/companion-pet-expression-v9/baseline-lock.json",
     "v9_cemp": ROOT / "docs/validation/companion-v9-expression-cemp-20260716.json",
@@ -76,6 +77,7 @@ def build_audit() -> dict[str, Any]:
     resource_memory_policy = load_json("resource_memory_policy")
     wba_m33_compile = load_json("wba_m33_compile")
     wba_spi_nor = load_json("wba_spi_nor")
+    wba_port_contract = load_json("wba_port_contract")
     wba_v9_callback_replay = load_json("wba_v9_callback_replay")
     baseline = load_json("v9_baseline")
     cemp = load_json("v9_cemp")
@@ -155,6 +157,11 @@ def build_audit() -> dict[str, Any]:
     check(errors, wba_spi_nor.get("status") == "PASS_NATIVE_BEHAVIOR_AND_PORTABLE_CONTRACT", "WBA SPI-NOR contract is not PASS")
     wba_targets = wba_spi_nor.get("targets", {})
     check(errors, wba_targets.get("transport") == "spi_nor_1_1_1" and wba_targets.get("hardware_parity_claimed") is False, "WBA SPI-NOR transport boundary drifted")
+    check(errors, wba_port_contract.get("status") == "PASS", "WBA port contract is not PASS")
+    wba_port_goal = wba_port_contract.get("current_goal_visual_boundary", {})
+    check(errors, wba_port_goal.get("active_inner_face_source") == "companion-pet-expression-v9" and wba_port_goal.get("active_inner_face_sha256") == V9_SHA256, "WBA port contract v9 baseline drifted")
+    check(errors, wba_port_goal.get("runtime_resource_activation_allowed") is False and wba_port_goal.get("real_wba_panel_parity_claimed") is False, "WBA port contract permits activation or parity claim")
+    check(errors, "external CEMP" in str(wba_port_goal.get("visual_runtime", "")) and "ordinary 1-1-1 SPI NOR" in str(wba_port_goal.get("visual_runtime", "")), "WBA port contract resource boundary drifted")
     check(errors, wba_v9_callback_replay.get("status") == "PASS_CURRENT_SOURCE_MACHINE_ONLY_CALLBACK_REPLAY", "WBA v9 callback replay is not PASS")
     wba_v9_candidate = wba_v9_callback_replay.get("candidate", {})
     check(errors, wba_v9_candidate.get("name") == "companion-v9-expression-candidate-200x200", "WBA v9 callback replay candidate name drifted")
@@ -244,6 +251,7 @@ def build_audit() -> dict[str, Any]:
                 evidence("wb55_build_receipt", str(wb55_build_receipt.get("status")), f"Three WB55 variants built from source commit {build_commit}; the receipt invalidates when listed build inputs change."),
                 evidence("wba_m33_compile", str(wba_m33_compile.get("status")), "Eight callback-only target adapters compile with strict Cortex-M33 flags."),
                 evidence("wba_spi_nor", str(wba_spi_nor.get("status")), "Ordinary 1-1-1 SPI NOR behavior passes without WBA hardware parity claim."),
+                evidence("wba_port_contract", str(wba_port_contract.get("status")), "The historical WBA portability contract is explicitly overridden by the v9 external-CEMP, inactive visual boundary."),
                 evidence("wba_v9_callback_replay", str(wba_v9_callback_replay.get("status")), "The inactive 39-frame v9 CEMP mounts and reads through the WBA55/WBA65 callback-only external-NOR adapter."),
                 evidence("runtime_visual_boundary", str(runtime_visual_boundary.get("status")), f"Current WB55 source commit {runtime_commit} excludes retired procedural-face symbols and fails closed when a visual resource is unavailable."),
             ],
@@ -339,6 +347,7 @@ def build_audit() -> dict[str, Any]:
             "python .\\tools\\verify_display_queue_static.py",
             "python .\\tools\\verify_wba_adapter_m33_compile.py --self-test",
             "python .\\tools\\verify_wba_spi_nor_adapter.py --self-test",
+            "python .\\tools\\verify_expression_wba_portability.py",
             "python .\\tools\\capture_wba_v9_candidate_asset_replay_receipt.py",
             "python .\\tools\\capture_companion_menu_v6_function_receipt.py",
         ],

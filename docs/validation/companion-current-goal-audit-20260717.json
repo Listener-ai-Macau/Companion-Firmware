@@ -52,6 +52,11 @@
           "status": "PASS_NATIVE_BEHAVIOR_AND_PORTABLE_CONTRACT"
         },
         {
+          "detail": "The historical WBA portability contract is explicitly overridden by the v9 external-CEMP, inactive visual boundary.",
+          "path": "docs/validation/companion-screen-wba-port-contract.json",
+          "status": "PASS"
+        },
+        {
           "detail": "The inactive 39-frame v9 CEMP mounts and reads through the WBA55/WBA65 callback-only external-NOR adapter.",
           "path": "docs/validation/companion-wba-v9-cemp-callback-replay-20260717.json",
           "status": "PASS_CURRENT_SOURCE_MACHINE_ONLY_CALLBACK_REPLAY"
@@ -232,6 +237,7 @@
     "python .\\tools\\verify_display_queue_static.py",
     "python .\\tools\\verify_wba_adapter_m33_compile.py --self-test",
     "python .\\tools\\verify_wba_spi_nor_adapter.py --self-test",
+    "python .\\tools\\verify_expression_wba_portability.py",
     "python .\\tools\\capture_wba_v9_candidate_asset_replay_receipt.py",
     "python .\\tools\\capture_companion_menu_v6_function_receipt.py"
   ]
