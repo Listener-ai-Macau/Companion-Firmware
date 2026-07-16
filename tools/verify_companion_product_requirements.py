@@ -58,6 +58,7 @@ REQUIRED_ANCHORS = (
     "COMP-REQ-038",
     "COMP-REQ-039",
     "COMP-REQ-076",
+    "COMP-REQ-077",
     "PC6/EXTI",
     "<=1 mA",
     "external-Flash first",
@@ -87,6 +88,9 @@ REQUIRED_ANCHORS = (
     "The Goal API cannot edit or replace an unfinished active Goal",
     "main is the sole attached worktree",
     "<AI_WORKFLOW_REPO>\\docs\\agent_quickstart.md",
+    "Current Visual Source Resolution (2026-07-17)",
+    "historical API identifiers only",
+    "reactivate any image, prompt, PBM, CEMP, menu layout, or visual validation path",
 )
 
 

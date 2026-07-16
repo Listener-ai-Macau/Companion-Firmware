@@ -29,6 +29,31 @@ recreated. Every later resume must first read the installed
 `<AI_WORKFLOW_REPO>\docs\agent_quickstart.md`; a successor Goal is created
 only after this Goal's machine, owner, and hardware gates genuinely close.
 
+## Current Visual Source Resolution (2026-07-17)
+
+This resolution is the authoritative interpretation of all historical visual
+rows below. A historical table row that still says `active` for a behavior,
+acceptance failure, touch gesture, event contract, or portable API does **not**
+reactivate any image, prompt, PBM, CEMP, menu layout, or visual validation path
+named in that row.
+
+- The sole approved inner-face input is `companion-pet-expression-v9` at
+  `919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA`.
+  Its CEMP is a 39-frame machine candidate only until the separate activation
+  and physical gates close.
+- `companion-menu-v6-four-root` is the sole pending menu visual candidate.
+  `system` and `journey` are the sole pending special-scene sources. None is a
+  PBM/CEMP, Flash, firmware, or visual-PASS authorization before its recorded
+  owner decision.
+- Historical v5/v6/v7/v8/v10+ sheets, r1-r4/r4 menu art, six-root/two-page
+  layouts, v15 style-lock paths, and all removed generated files are retired
+  audit context only. They may not be restored, sampled, combined, prompted
+  from, rendered, or cited as current visual evidence.
+- `menu_v5_*` names are historical API identifiers only. They retain the
+  portable four-root behavior, localization, navigation, and truthful-action
+  contracts; they are not visual source identifiers and cannot select v5/r4
+  artwork or a legacy CEMP.
+
 ## Read Order
 
 1. Read the active Codex Goal before changing Companion behavior, hardware,
@@ -126,6 +151,8 @@ artifact. Historical workflow-plan links remain audit context only.
 | COMP-REQ-013 | Every future product steer must be durable across agents: record it here, map it to the active workflow plan, preserve superseded history, and state unfinished gates in handoff. | active process constraint | 1.1 | `ai-collaboration-workflow/docs/ai_collaboration_protocol.md` Product Steering and Requirement Traceability; `tools/verify_companion_product_requirements.py`. |
 | COMP-REQ-014 | Acceptance is a durable product capability, not a final generic check. Each critical function must have separate normal, failure/rejection, and recovery evidence where applicable. The owner has now authorized Companion to begin the Listener-style popup acceptance flow after the active repair has machine evidence: show exactly one Chinese acceptance popup at a time with total progress, current item progress, target, action, success signal, and continue condition; product-visible modals, toasts, confirmations, errors, permissions, and recovery surfaces are separate items. Real-time captures must call the Listener canonical `aiw operator-prompt` style and persist its selection/notes beside the machine log. A promoted machine summary is valid only while its raw logs, capture summaries, run report, restore result, and required markers remain present; ignored `.cache` paths alone are not durable acceptance storage, and missing backing artifacts automatically return the item to pending hardware recheck. An accepted function becomes a protected regression contract: later related changes must explicitly preserve it with machine evidence and repeat focused human review only when the change could regress it. The first popup is now the independently repaired anywhere-right-swipe exit (`1/13`); four-up pages stay out of that popup because their generated visual baseline is still pending. Then proceed to boot/resource, TP_INT Stop wake, double-tap recording with the current visible expression, and 3 s long-press entry in the coverage order. | active, owner-authorized acceptance; runtime evidence durability repair active; visual four-up gate pending | 1.1 | `docs/companion_function_acceptance_coverage.md`; `tools/verify_companion_function_acceptance_coverage.py`; `tools/verify_screen_runtime_evidence_durability.py`; canonical `aiw operator-prompt` Chinese UI and matching durable machine artifact. |
 | COMP-REQ-076 | Goal workflow is a protected execution contract. After the 2026-07-17 cleanup, main is the only attached Companion worktree; retained historical refs are audit-only and must not be bulk-merged. Before every resumed Companion task, read the installed `ai-collaboration-workflow` skill and `<AI_WORKFLOW_REPO>\docs\agent_quickstart.md`, inspect the workspace, then continue the active Goal. An unfinished active Goal must not be marked complete merely to recreate it or receive a shorter replacement; create a successor Goal only after its stated machine, owner, and hardware gates genuinely close. | active process constraint; current Goal remains active and is the updated executable contract | active Codex Goal | `docs/validation/companion-current-goal-audit-20260717.json`; `docs/validation/companion-historical-branch-audit-20260717.json`; `tools/verify_companion_product_requirements.py`; `git worktree list`. |
+
+| COMP-REQ-077 | Current visual-source precedence is an anti-regression product rule. The active Goal, this resolution and COMP-REQ-053/069/072/073/074 are the only authority for Companion visual inputs: v9 is the only approved inner-face source; menu-v6-four-root plus special `system`/`journey` sheets remain pending owner review; no old v5/v6/v7/v8/v10+, r4, six-root/two-page, or v15 source/path may be restored. Historical rows retain only nonvisual behavior, acceptance failure and API context. `menu_v5_*` is a historical portable API name, never an art/source selector. | active P0; visual resolution is machine-guarded, approved/pending source gates unchanged | 3.1, 3.2, 4.1 | Current Visual Source Resolution above; `docs/art/retired-visual-rounds.json`; `tools/verify_visual_reference_evidence.py`; `tools/verify_companion_art_retirement.py`; `docs/validation/companion-current-goal-audit-20260717.json`. |
 
 ## Latest Machine Evidence
 
