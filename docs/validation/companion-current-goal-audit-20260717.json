@@ -86,6 +86,18 @@
     {
       "evidence": [
         {
+          "detail": "Five host replays passed from source commit d52cd593bcf3da69d06ec4a85638b7262b283c33; the v6 source hash is linked but runtime activation remains false.",
+          "path": "docs/validation/companion-menu-v6-function-receipt-20260717.json",
+          "status": "PASS_CURRENT_SOURCE_MENU_FUNCTION_PENDING_OWNER_VISUAL"
+        }
+      ],
+      "id": "four_root_menu_function_contract",
+      "requirement": "Voice, Device, Connection and Preferences remain the sole menu roots in both languages; every row is a truthful action, live datum, planned or deferred state, while daily manual recording remains double-tap only.",
+      "status": "proved_machine_visual_import_pending_owner"
+    },
+    {
+      "evidence": [
+        {
           "detail": "Four-root layout source is pending owner decision.",
           "path": "docs/validation/companion-menu-v6-source-review-20260717.json",
           "status": "PASS_MACHINE_PREVIEW_PENDING_OWNER"
@@ -156,6 +168,7 @@
     "pwsh .\\tools\\test_power_policy_host.ps1",
     "python .\\tools\\capture_wb55_current_build_receipt.py",
     "python .\\tools\\verify_wba_adapter_m33_compile.py --self-test",
-    "python .\\tools\\verify_wba_spi_nor_adapter.py --self-test"
+    "python .\\tools\\verify_wba_spi_nor_adapter.py --self-test",
+    "python .\\tools\\capture_companion_menu_v6_function_receipt.py"
   ]
 }

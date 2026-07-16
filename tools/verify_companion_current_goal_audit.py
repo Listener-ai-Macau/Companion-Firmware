@@ -23,6 +23,7 @@ ARTIFACTS = {
     "v9_cemp": ROOT / "docs/validation/companion-v9-expression-cemp-20260716.json",
     "v9_coverage": ROOT / "docs/validation/companion-v9-scene-coverage-20260716.json",
     "v9_binding": ROOT / "docs/validation/companion-v9-candidate-resource-binding-20260717.json",
+    "menu_function_receipt": ROOT / "docs/validation/companion-menu-v6-function-receipt-20260717.json",
     "menu_source": ROOT / "docs/validation/companion-menu-v6-source-review-20260717.json",
     "menu_localization": ROOT / "docs/validation/companion-menu-v6-localization-preview-20260717.json",
     "special_system": ROOT / "docs/validation/companion-pet-special-system-source-review-20260717.json",
@@ -68,6 +69,7 @@ def build_audit() -> dict[str, Any]:
     cemp = load_json("v9_cemp")
     coverage = load_json("v9_coverage")
     binding = load_json("v9_binding")
+    menu_function_receipt = load_json("menu_function_receipt")
     menu_source = load_json("menu_source")
     menu_localization = load_json("menu_localization")
     special_system = load_json("special_system")
@@ -121,6 +123,18 @@ def build_audit() -> dict[str, Any]:
     check(errors, coverage.get("candidate_mapping_count") == 18 and coverage.get("pending_no_fallback_count") == 22, "scene mapping boundary drifted")
     check(errors, binding.get("status") == "PASS_MACHINE_ONLY_INACTIVE", "v9 selector is not inactive machine-only PASS")
     check(errors, binding.get("candidate_pack", {}).get("runtime_resource_activated") is False, "v9 selector permits runtime activation")
+
+    check(errors, menu_function_receipt.get("status") == "PASS_CURRENT_SOURCE_MENU_FUNCTION_PENDING_OWNER_VISUAL", "four-root menu function receipt is not PASS")
+    menu_commit = menu_function_receipt.get("source_commit", "")
+    check(errors, isinstance(menu_commit, str) and len(menu_commit) == 40, "four-root menu receipt has no full source commit")
+    menu_contract = menu_function_receipt.get("function_contract", {})
+    check(errors, menu_contract.get("roots") == ["Voice", "Device", "Connection", "Preferences"], "four-root menu order drifted")
+    check(errors, menu_contract.get("language_support") == ["en", "zh_cn"], "four-root menu language support drifted")
+    visual_source = menu_function_receipt.get("visual_source", {})
+    check(errors, visual_source.get("source_sha256") == MENU_SHA256, "four-root menu source hash drifted")
+    check(errors, visual_source.get("owner_visual_decision") == "PENDING_OWNER_VISUAL_DECISION" and visual_source.get("runtime_activation") is False, "four-root menu visual activation boundary drifted")
+    for name in ("contract", "action_journey", "navigation", "target_bridge", "view_model"):
+        check(errors, menu_function_receipt.get("host_tests", {}).get(name, {}).get("returncode") == 0, f"four-root menu host test failed: {name}")
 
     for name, data, expected_sha in (
         ("menu_source", menu_source, MENU_SHA256),
@@ -187,6 +201,12 @@ def build_audit() -> dict[str, Any]:
             ],
         },
         {
+            "id": "four_root_menu_function_contract",
+            "status": "proved_machine_visual_import_pending_owner",
+            "requirement": "Voice, Device, Connection and Preferences remain the sole menu roots in both languages; every row is a truthful action, live datum, planned or deferred state, while daily manual recording remains double-tap only.",
+            "evidence": [evidence("menu_function_receipt", str(menu_function_receipt.get("status")), f"Five host replays passed from source commit {menu_commit}; the v6 source hash is linked but runtime activation remains false.")],
+        },
+        {
             "id": "four_root_menu_and_special_scene_sources",
             "status": "machine_previews_pass_owner_decision_pending",
             "requirement": "The four-root bilingual menu and both special-scene sheets have deterministic previews only; source approval must precede PBM/CEMP import or runtime activation.",
@@ -237,6 +257,7 @@ def build_audit() -> dict[str, Any]:
             "python .\\tools\\capture_wb55_current_build_receipt.py",
             "python .\\tools\\verify_wba_adapter_m33_compile.py --self-test",
             "python .\\tools\\verify_wba_spi_nor_adapter.py --self-test",
+            "python .\\tools\\capture_companion_menu_v6_function_receipt.py",
         ],
     }
 

@@ -1,0 +1,157 @@
+{
+  "function_contract": {
+    "daily_recording_control": "double_tap_only; Voice reports truthful live state and never presents a Record action",
+    "language_support": [
+      "en",
+      "zh_cn"
+    ],
+    "root_count": 4,
+    "roots": [
+      "Voice",
+      "Device",
+      "Connection",
+      "Preferences"
+    ],
+    "row_truth": "every detail row is an action, live datum, planned or deferred state"
+  },
+  "hardware_boundary": "No PBM/CEMP import, external Flash provision, firmware flash, panel command or visual PASS; this is host-only evidence.",
+  "host_tests": {
+    "action_journey": {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "tools/test_menu_v5_action_journey_host.ps1"
+      ],
+      "output_sha256": "F28731498F2301B4A643D75071BBFB3FE4D310D5D13BE0B8EF6427BE3282D5C0",
+      "output_tail": [
+        "test_menu_v5_action_journey.c",
+        "menu_v5_action_journey.c",
+        "menu_v5_localization.c",
+        "menu_v5_contract.c",
+        "pet_performance.c",
+        "pet_performance_event_bridge.c",
+        "正在生成代码...",
+        "PASS: menu-v5 selection routes actions, live data, unavailable rows, and language correctly."
+      ],
+      "returncode": 0
+    },
+    "contract": {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "tools/test_menu_v5_contract_host.ps1"
+      ],
+      "output_sha256": "131A5DEFC7A6F0BBD8F13C341F6D34B11C6C49CFD32471EDC3F7F6320D909DAC",
+      "output_tail": [
+        "test_menu_v5_contract.c",
+        "menu_v5_contract.c",
+        "menu_v5_localization.c",
+        "正在生成代码...",
+        "PASS: menu-v5 keeps four roots, 15 real/deferred rows, and complete English/Chinese selection semantics."
+      ],
+      "returncode": 0
+    },
+    "navigation": {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "tools/test_menu_v5_navigation_host.ps1"
+      ],
+      "output_sha256": "1788749CADAF1FAD9F39FD701F3DE0813AE1F3BB64FDFB58CA1D2844261EDA52",
+      "output_tail": [
+        "test_menu_v5_navigation.c",
+        "menu_v5_navigation.c",
+        "menu_v5_action_journey.c",
+        "menu_v5_localization.c",
+        "menu_v5_contract.c",
+        "pet_performance.c",
+        "pet_performance_event_bridge.c",
+        "正在生成代码...",
+        "PASS: menu-v5 navigation keeps four roots, finger-following detail scroll, and truthful row actions."
+      ],
+      "returncode": 0
+    },
+    "target_bridge": {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "tools/test_menu_v5_target_bridge_host.ps1"
+      ],
+      "output_sha256": "BC6BDE53B689AB8A0EBA5E3D2DFDA63FAEFF8BAB396F268439382CA80B426D0C",
+      "output_tail": [
+        "test_menu_v5_target_bridge.c",
+        "menu_v5_target_bridge.c",
+        "menu_v5_navigation.c",
+        "menu_v5_action_journey.c",
+        "menu_v5_localization.c",
+        "menu_v5_contract.c",
+        "pet_performance.c",
+        "pet_performance_event_bridge.c",
+        "正在生成代码...",
+        "PASS: target bridge keeps the four-root UI contract and returns only truthful decisions."
+      ],
+      "returncode": 0
+    },
+    "view_model": {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "tools/test_menu_v5_view_model_host.ps1"
+      ],
+      "output_sha256": "F418653D293A756854FF423DB28265303B7538FF1DEE26927E1132A263581848",
+      "output_tail": [
+        "test_menu_v5_view_model.c",
+        "menu_v5_view_model.c",
+        "menu_v5_navigation.c",
+        "menu_v5_action_journey.c",
+        "menu_v5_localization.c",
+        "menu_v5_contract.c",
+        "pet_performance.c",
+        "pet_performance_event_bridge.c",
+        "正在生成代码...",
+        "PASS: menu-v5 view model keeps four-root geometry, honest affordances, and bilingual runtime content."
+      ],
+      "returncode": 0
+    }
+  },
+  "schema": "companion.menu_v6_function_receipt.v1",
+  "source_commit": "d52cd593bcf3da69d06ec4a85638b7262b283c33",
+  "source_paths": [
+    "app/companion_pendant/epaper/menu_v5_contract.c",
+    "app/companion_pendant/epaper/menu_v5_contract.h",
+    "app/companion_pendant/epaper/menu_v5_localization.c",
+    "app/companion_pendant/epaper/menu_v5_localization.h",
+    "app/companion_pendant/epaper/menu_v5_action_journey.c",
+    "app/companion_pendant/epaper/menu_v5_action_journey.h",
+    "app/companion_pendant/epaper/menu_v5_navigation.c",
+    "app/companion_pendant/epaper/menu_v5_navigation.h",
+    "app/companion_pendant/epaper/menu_v5_target_bridge.c",
+    "app/companion_pendant/epaper/menu_v5_target_bridge.h",
+    "app/companion_pendant/epaper/menu_v5_view_model.c",
+    "app/companion_pendant/epaper/menu_v5_view_model.h",
+    "app/companion_pendant/epaper/tests",
+    "tools/test_menu_v5_contract_host.ps1",
+    "tools/test_menu_v5_action_journey_host.ps1",
+    "tools/test_menu_v5_navigation_host.ps1",
+    "tools/test_menu_v5_target_bridge_host.ps1",
+    "tools/test_menu_v5_view_model_host.ps1",
+    "docs/art/iterations/companion-menu-v6-four-root",
+    "docs/validation/companion-menu-v6-source-review-20260717.json",
+    "docs/validation/companion-menu-v6-localization-preview-20260717.json"
+  ],
+  "status": "PASS_CURRENT_SOURCE_MENU_FUNCTION_PENDING_OWNER_VISUAL",
+  "visual_source": {
+    "actual_text_owner": "menu_v5_localization",
+    "localization_preview": "docs/validation/companion-menu-v6-localization-preview-20260717.json",
+    "owner_visual_decision": "PENDING_OWNER_VISUAL_DECISION",
+    "runtime_activation": false,
+    "source": "docs/art/iterations/companion-menu-v6-four-root/generated_menu_four_root_v6_candidate.png",
+    "source_review": "docs/validation/companion-menu-v6-source-review-20260717.json",
+    "source_sha256": "07D791A898FABE6E558686F6A4B4CC86094541C6B5116D6E0A3D263930DAA868"
+  }
+}
