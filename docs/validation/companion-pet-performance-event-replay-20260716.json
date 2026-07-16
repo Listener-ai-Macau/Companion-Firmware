@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "status": "PASS_MACHINE_ONLY",
+  "scope": "portable committed-event bridge and total-scene replay",
+  "commits": [
+    "7e83021",
+    "3d1b000",
+    "cd90283"
+  ],
+  "date": "2026-07-16",
+  "covered_journeys": [
+    "daily gesture and menu hold/enter/open/select/blocked/exit",
+    "recording start/active/saving/saved/error/recover",
+    "sleep entry/deep sleep/wake",
+    "upgrade offer/prepare/transfer/verify/restart/success/error/dismiss replay"
+  ],
+  "machine_checks": [
+    {
+      "command": "git diff --check 6fd405c..HEAD",
+      "result": "PASS"
+    },
+    {
+      "command": "pwsh -NoProfile -File tools\\test_pet_performance_host.ps1",
+      "result": "PASS: pet performance scene contract"
+    },
+    {
+      "command": "pwsh -NoProfile -File tools\\test_total_scene_replay_host.ps1",
+      "result": "PASS: total scene portable replay contract"
+    },
+    {
+      "command": "python tools\\verify_expression_wba_portability.py",
+      "result": "PASS: portable layers are ready for a future WBA adapter boundary"
+    },
+    {
+      "command": "pwsh -NoProfile -File tools\\build_nucleo_bringup.ps1 -EpaperSsd1681Bringup",
+      "result": "PASS; text=136892, data=2436, bss=188327, total=327655"
+    }
+  ],
+  "required_runtime_invariants": [
+    "The bridge selects only scene, phase, generation, priority, and resource-family metadata.",
+    "Upgrade events are replay-only and cannot invoke OTA, erase storage, reset a target, or refresh a panel.",
+    "Recording events observe shared Denzic Platform outcomes and cannot start or stop DMA.",
+    "Resource activation remains disabled until a named v9 source passes its separate REF/PBM/CEMP gate."
+  ],
+  "not_claimed": [
+    "Visual acceptance of any expression, menu, recording, power, link, or upgrade scene.",
+    "Physical touch, microphone, panel, low-power, OTA, or WBA hardware acceptance.",
+    "Any SSD1681 waveform or local-refresh result."
+  ],
+  "next_gate": "Integrate the four-root portable menu contract and its host navigation/view-model tests before generated menu art is imported."
+}
