@@ -26,6 +26,7 @@ SYSTEM_PREVIEW = SPECIAL_STATES / "generated_pet_special_system_v1_candidate_200
 JOURNEY_SOURCE = SPECIAL_STATES / "generated_pet_special_journey_v1_candidate.png"
 JOURNEY_SOURCE_SHA256 = "95CC749134F169E73A2E2A99FA2B6F08AABDFE78D218677C347D2D687EA4B17F"
 JOURNEY_PREVIEW = SPECIAL_STATES / "generated_pet_special_journey_v1_candidate_200x200_preview.png"
+SPECIAL_MAPPING = SPECIAL_STATES / "pending-source-mapping.json"
 REPORT = ROOT / "docs/validation/companion-art-retirement-20260716.json"
 
 
@@ -76,6 +77,7 @@ def main() -> int:
             encoding="utf-8"
         )
     )
+    special_mapping = json.loads(SPECIAL_MAPPING.read_text(encoding="utf-8"))
     system_source_sha256 = hashlib.sha256(SYSTEM_SOURCE.read_bytes()).hexdigest().upper()
     journey_source_sha256 = hashlib.sha256(JOURNEY_SOURCE.read_bytes()).hexdigest().upper()
 
@@ -158,7 +160,9 @@ def main() -> int:
         if journey_runtime_boundary.get(key) is not False:
             errors.append(f"journey source review must keep {key}=false")
     if any(path.suffix.lower() in {".pbm", ".cemp"} for path in SPECIAL_STATES.rglob("*")):
-        errors.append("pending system source must not contain PBM or CEMP")
+        errors.append("pending special sources must not contain PBM or CEMP")
+    if special_mapping.get("status") != "PENDING_OWNER_VISUAL_DECISION_NO_RUNTIME_ACTIVATION":
+        errors.append("special-state source mapping must remain pending owner decision without runtime activation")
 
     output = {
         "schema": "companion.art_retirement_verification.v1",
@@ -174,6 +178,7 @@ def main() -> int:
         "pending_journey_source": JOURNEY_SOURCE.relative_to(ROOT).as_posix(),
         "pending_journey_source_sha256": journey_source_sha256,
         "special_state_plan": SPECIAL_STATES.relative_to(ROOT).as_posix(),
+        "pending_special_mapping": SPECIAL_MAPPING.relative_to(ROOT).as_posix(),
         "unauthorized_renderables": unauthorized_renderables,
         "errors": errors,
     }
@@ -184,7 +189,7 @@ def main() -> int:
         for error in errors:
             print(f"ERROR: {error}")
         return 1
-    print("PASS: docs/art retains only v9, the pending non-importable v6 menu source, and the two pending non-importable v9 special sources.")
+    print("PASS: docs/art retains only v9, the pending non-importable v6 menu source, two pending v9 special sources, and their exact no-runtime mapping.")
     return 0
 
 
