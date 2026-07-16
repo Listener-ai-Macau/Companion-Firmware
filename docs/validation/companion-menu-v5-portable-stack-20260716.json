@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "status": "PASS_MACHINE_ONLY",
+  "scope": "four-root portable menu behavior, renderer input, and WB55 compile boundary",
+  "date": "2026-07-16",
+  "commits": [
+    "936b970",
+    "554fd3a",
+    "54d3e92",
+    "bf9a592",
+    "fdddfcf",
+    "409fc49",
+    "5207158"
+  ],
+  "machine_checks": [
+    {
+      "command": "pwsh -NoProfile -File tools\\test_menu_v5_contract_host.ps1",
+      "result": "PASS: four roots, 15 truthful rows, and complete English/Chinese selection semantics"
+    },
+    {
+      "command": "pwsh -NoProfile -File tools\\test_menu_v5_action_journey_host.ps1",
+      "result": "PASS: actions, live data, unavailable rows, and language route correctly"
+    },
+    {
+      "command": "pwsh -NoProfile -File tools\\test_menu_v5_navigation_host.ps1",
+      "result": "PASS: four roots, finger-following detail scroll, and truthful row actions"
+    },
+    {
+      "command": "pwsh -NoProfile -File tools\\test_menu_v5_target_bridge_host.ps1",
+      "result": "PASS: target bridge returns only truthful decisions"
+    },
+    {
+      "command": "pwsh -NoProfile -File tools\\test_menu_v5_view_model_host.ps1",
+      "result": "PASS: renderer input preserves four-root geometry, truthful affordances, and bilingual content"
+    },
+    {
+      "command": "python tools\\verify_expression_wba_portability.py",
+      "result": "PASS: portable layers are ready for a future WBA adapter boundary"
+    },
+    {
+      "command": "pwsh -NoProfile -File tools\\build_nucleo_bringup.ps1 -EpaperSsd1681Bringup",
+      "result": "PASS; text=138268, data=2436, bss=188327, total=329031"
+    }
+  ],
+  "protected_invariants": [
+    "The home surface has exactly Voice, Device, Connection, and Preferences in that order.",
+    "Voice recording status is display-only; daily double tap remains the sole default manual recording control.",
+    "A chevron is reserved for navigation or a committed action; live, deferred, and planned rows cannot impersonate actions.",
+    "The portable stack cannot select a visual resource, access external Flash, refresh a panel, start DMA, change BLE, or run OTA."
+  ],
+  "visual_state": {
+    "active_menu_source": null,
+    "legacy_or_rejected_menu_art": "forbidden as active source or fallback",
+    "active_expression_source": "companion-pet-expression-v9",
+    "resource_activation": "disabled"
+  },
+  "not_claimed": [
+    "Menu visual acceptance, renderer/PBM/CEMP mapping, or external-Flash provisioning.",
+    "Physical touch, panel, microphone, low-power, BLE, OTA, or WBA hardware acceptance.",
+    "Any SSD1681 waveform or local-refresh result."
+  ],
+  "next_gate": "Record a new four-root visual reference, render it deterministically at 200x200, and pass source-to-rendered/PBM/CEMP evidence before any hardware activation."
+}
