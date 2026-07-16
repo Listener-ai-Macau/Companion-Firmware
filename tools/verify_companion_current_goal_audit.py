@@ -319,7 +319,9 @@ def build_audit() -> dict[str, Any]:
 
     return {
         "schema": "companion.current_goal_audit.v1",
-        "status": "GOAL_ACTIVE_MACHINE_BOUNDARY_PROVED_OWNER_AND_HARDWARE_PENDING" if not errors else "GOAL_AUDIT_INVALID",
+        "status": "GOAL_BLOCKED_MACHINE_BOUNDARY_PROVED_EXTERNAL_GATES_PENDING" if not errors else "GOAL_AUDIT_INVALID",
+        "codex_goal_status": "blocked",
+        "blocked_reason": "All remaining work requires an owner visual decision, real hardware evidence, a selected WBA target, or a matching vendor CWF1 waveform package.",
         "active_goal_boundary": "Only current v9/companion-menu-v6-four-root sources may be considered; historical v5/v6/v7/v8/v10+ art and six-root menus are not active inputs.",
         "daily_visual_validation": "deterministic source/PBM/CEMP/render evidence; camera is final physical preflight only, never daily art development",
         "requirements": requirements,
