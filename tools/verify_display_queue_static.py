@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Static checks for the WB55 Companion e-paper display queue boundary."""
+"""Static checks for the WB55 display queue and external-CEMP renderer boundary."""
 
 from __future__ import annotations
 
@@ -359,12 +359,10 @@ def check_wb55_integration(errors: list[str]) -> None:
         "comp_epaper_display_queue_init(&s_companion_display_queue)",
         "comp_epaper_display_queue_discard_kind(",
         "COMP_EPAPER_DISPLAY_REQUEST_EXPRESSION",
-        "COMP_EPAPER_DISPLAY_REQUEST_PET_EXPRESSION",
         "comp_epaper_display_queue_set_resource_revision(",
         "queue_generation revision=",
         "display_result id=%lu kind=%u resource_revision=%lu active_revision=%lu coherent_generation=%u",
         "generation_switches=%lu last_stale_discarded=%lu",
-        "discarded_pet_expression_frames",
         "comp_epaper_expression_state_init(&s_companion_expression_state)",
         "companion_epaper_panel_stm32wb_init(",
         "s_companion_expression_asset_source",
@@ -402,6 +400,15 @@ def check_wb55_integration(errors: list[str]) -> None:
         "Companion_Display_RecordRuntimeSnapshot",
     ]:
         require(token in app_ble, f"app_ble.c missing display queue integration token {token}", errors)
+    for retired in [
+        "COMP_EPAPER_DISPLAY_REQUEST_PET_EXPRESSION",
+        "discarded_pet_expression_frames",
+        "Companion_Display_EnqueuePetPose",
+        "comp_epaper_display_queue_enqueue_pet_expression",
+    ]:
+        require(retired not in app_ble,
+                f"app_ble.c must not reactivate retired procedural visual path: {retired}",
+                errors)
 
     card_write = slice_between(
         app_ble,

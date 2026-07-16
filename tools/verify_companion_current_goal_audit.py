@@ -299,6 +299,7 @@ def build_audit() -> dict[str, Any]:
             "python .\\tools\\capture_wb55_current_build_receipt.py",
             "python .\\tools\\verify_companion_runtime_visual_boundary.py",
             "python .\\tools\\verify_screen_resource_architecture.py",
+            "python .\\tools\\verify_display_queue_static.py",
             "python .\\tools\\verify_wba_adapter_m33_compile.py --self-test",
             "python .\\tools\\verify_wba_spi_nor_adapter.py --self-test",
             "python .\\tools\\capture_wba_v9_candidate_asset_replay_receipt.py",
