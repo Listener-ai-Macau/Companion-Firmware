@@ -74,7 +74,13 @@ int main(void)
     if (require_true(comp_pet_performance_self_test(), "pet-performance self-test") ||
         require_true(comp_v9_candidate_resource_binding_self_test(), "v9 binding self-test") ||
         require_true(!comp_v9_candidate_resource_runtime_activation_allowed(),
-                     "candidate must stay runtime-inactive")) {
+                     "candidate must stay runtime-inactive") ||
+        require_true(comp_v9_candidate_resource_pack_identity_matches(
+                         "companion-v9-expression-candidate-200x200", 90u, 13u, 39u),
+                     "v9 identity must match only the locked CEMP geometry") ||
+        require_true(!comp_v9_candidate_resource_pack_identity_matches(
+                         "emote-matrix-white-200x200-v1", 53u, 33u, 75u),
+                     "legacy r53 CEMP must not match the v9 identity gate")) {
         return 1;
     }
 

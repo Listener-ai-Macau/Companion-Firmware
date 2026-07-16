@@ -60,6 +60,11 @@ typedef enum {
     COMP_EMOTE_ASSET_MOUNT_INDEX_CRC_MISMATCH = 8u,
     COMP_EMOTE_ASSET_MOUNT_PAYLOAD_CRC_MISMATCH = 9u,
     COMP_EMOTE_ASSET_MOUNT_BAD_CATALOG = 10u,
+    /* The caller intentionally did not parse a pack because the current
+     * product visual policy has no approved runtime resource. */
+    COMP_EMOTE_ASSET_MOUNT_INACTIVE_BY_POLICY = 11u,
+    /* A syntactically valid pack did not match the approved product identity. */
+    COMP_EMOTE_ASSET_MOUNT_REJECTED_BY_POLICY = 12u,
 } comp_emote_asset_mount_result_t;
 
 typedef struct {

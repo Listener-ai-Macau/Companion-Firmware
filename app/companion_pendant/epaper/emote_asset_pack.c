@@ -356,6 +356,8 @@ const char *comp_emote_asset_mount_result_name(comp_emote_asset_mount_result_t r
     case COMP_EMOTE_ASSET_MOUNT_INDEX_CRC_MISMATCH: return "index_crc_mismatch";
     case COMP_EMOTE_ASSET_MOUNT_PAYLOAD_CRC_MISMATCH: return "payload_crc_mismatch";
     case COMP_EMOTE_ASSET_MOUNT_BAD_CATALOG: return "bad_catalog";
+    case COMP_EMOTE_ASSET_MOUNT_INACTIVE_BY_POLICY: return "inactive_by_policy";
+    case COMP_EMOTE_ASSET_MOUNT_REJECTED_BY_POLICY: return "rejected_by_policy";
     default: return "unknown";
     }
 }

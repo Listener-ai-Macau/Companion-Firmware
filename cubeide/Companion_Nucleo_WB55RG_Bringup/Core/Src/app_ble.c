@@ -60,6 +60,7 @@
 #include "refresh_policy.h"
 #include "screen_presentation.h"
 #include "screen_runtime.h"
+#include "v9_candidate_resource_binding.h"
 
 #ifndef COMPANION_SCREEN_MENU_ENABLED
 #define COMPANION_SCREEN_MENU_ENABLED 0
@@ -585,8 +586,10 @@ void APP_BLE_Init( void )
       .stride_bytes = 25u,
       .pixel_format = COMP_SCREEN_PIXEL_FORMAT_MONO_1BPP_WHITE_IS_ONE_MSB,
   };
+  const bool visual_resource_activation_allowed =
+      comp_v9_candidate_resource_runtime_activation_allowed();
   comp_emote_asset_mount_result_t mount_result =
-      external_assets_ready
+      external_assets_ready && visual_resource_activation_allowed
           ? comp_emote_asset_pack_mount(
                 &s_companion_screen_asset_mount,
                 &s_companion_screen_asset_store,
@@ -599,7 +602,19 @@ void APP_BLE_Init( void )
                 sizeof(s_companion_screen_asset_strings),
                 s_companion_screen_asset_scratch,
                 sizeof(s_companion_screen_asset_scratch))
-          : COMP_EMOTE_ASSET_MOUNT_IO_ERROR;
+          : (visual_resource_activation_allowed
+                 ? COMP_EMOTE_ASSET_MOUNT_IO_ERROR
+                 : COMP_EMOTE_ASSET_MOUNT_INACTIVE_BY_POLICY);
+  if (mount_result == COMP_EMOTE_ASSET_MOUNT_OK &&
+      !comp_v9_candidate_resource_pack_identity_matches(
+          s_companion_screen_asset_mount.pack.name,
+          s_companion_screen_asset_mount.pack.revision,
+          s_companion_screen_asset_mount.catalog.clip_count,
+          s_companion_screen_asset_mount.catalog.frame_count))
+  {
+    s_companion_screen_asset_mount = (comp_emote_asset_mount_t){0};
+    mount_result = COMP_EMOTE_ASSET_MOUNT_REJECTED_BY_POLICY;
+  }
   bool expression_assets_ready =
       mount_result == COMP_EMOTE_ASSET_MOUNT_OK &&
       comp_epaper_expression_asset_source_init(
@@ -615,13 +630,15 @@ void APP_BLE_Init( void )
   companion_epaper_panel_stm32wb_init(
       &s_companion_panel_adapter,
       expression_assets_ready ? &s_companion_expression_asset_source : NULL);
-  printf("[screen-assets] policy=external_first store=%s prefix=%s:%02X%02X%02X%02X mount=%s\r\n",
-         external_assets_ready ? "ready" : "fallback_internal",
+  printf("[screen-assets] policy=v9_external_cemp store=%s prefix=%s:%02X%02X%02X%02X activation=%s identity=%s mount=%s\r\n",
+         external_assets_ready ? "ready" : "unavailable",
          external_prefix_read ? "read" : "none",
          external_prefix[0],
          external_prefix[1],
          external_prefix[2],
          external_prefix[3],
+         visual_resource_activation_allowed ? "allowed" : "inactive",
+         mount_result == COMP_EMOTE_ASSET_MOUNT_OK ? "v9" : "not_active",
          comp_emote_asset_mount_result_name(mount_result));
   if (mount_result == COMP_EMOTE_ASSET_MOUNT_OK)
   {
@@ -638,7 +655,7 @@ void APP_BLE_Init( void )
   printf("[screen-assets] expression_renderer=%s player=%s fallback=%s\r\n",
          expression_assets_ready ? "external_pack" : "unavailable",
          s_companion_emote_player_ready ? "ready" : "unavailable",
-         expression_assets_ready ? "none" : "rescue_ui");
+         "none");
   printf("[screen-assets] queue_generation revision=%lu switches=%lu last_stale_discarded=%lu stale_discarded=%lu\r\n",
          (unsigned long)comp_epaper_display_queue_active_resource_revision(
              &s_companion_display_queue),

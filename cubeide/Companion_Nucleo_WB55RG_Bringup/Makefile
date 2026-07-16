@@ -11,13 +11,12 @@ OBJCOPY := $(TOOLCHAIN)/arm-none-eabi-objcopy
 SIZE := $(TOOLCHAIN)/arm-none-eabi-size
 PYTHON ?= python
 
-SCREEN_ASSET_MANIFEST := $(ROOT)/app/companion_pendant/epaper/assets/emote_matrix_white_200x200.json
+SCREEN_ASSET_MANIFEST := $(ROOT)/docs/art/iterations/companion-pet-expression-v9/rendered-200x200/v9-expression-cemp-manifest.json
 SCREEN_ASSET_PACK_BUILDER := $(ROOT)/tools/build_emote_asset_pack.py
 SCREEN_ASSET_PROVISION_HEADER := $(BUILD_DIR)/generated/companion_screen_asset_provision_blob.h
-SCREEN_ASSET_PROVISION_BINARY := $(BUILD_DIR)/generated/emote_matrix_white_200x200.cemp
+SCREEN_ASSET_PROVISION_BINARY := $(BUILD_DIR)/generated/companion-v9-expression-candidate-200x200.cemp
 SCREEN_ASSET_PROVISION_INPUTS := \
-	$(wildcard $(ROOT)/docs/validation/epaper/expression_*_1_54in.pbm) \
-	$(wildcard $(ROOT)/docs/validation/epaper/menu_*_1_54in.pbm)
+	$(wildcard $(ROOT)/docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/*.pbm)
 MAIN_GENERATED_DEPS :=
 
 CPU := -mcpu=cortex-m4 -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=hard

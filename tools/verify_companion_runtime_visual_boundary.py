@@ -21,6 +21,9 @@ APP_BLE = ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c"
 PANEL_TARGET = ROOT / "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c"
 DISPLAY_QUEUE_HEADER = ROOT / "app/companion_pendant/epaper/display_queue.h"
 DISPLAY_QUEUE_SOURCE = ROOT / "app/companion_pendant/epaper/display_queue.c"
+V9_BINDING = ROOT / "app/companion_pendant/epaper/v9_candidate_resource_binding.c"
+FLASH_SCRIPT = ROOT / "tools/flash_nucleo_bringup.ps1"
+LEGACY_PROMOTION = ROOT / "tools/promote_wb55_screen_runtime_recheck.py"
 MAKEFILE = ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile"
 ELF = ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/build/Companion_Nucleo_WB55RG_Bringup.elf"
 SOURCE_PATHS = (
@@ -28,7 +31,12 @@ SOURCE_PATHS = (
     "cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile",
     "app/companion_pendant/epaper/display_queue.h",
     "app/companion_pendant/epaper/display_queue.c",
+    "app/companion_pendant/epaper/v9_candidate_resource_binding.c",
+    "app/companion_pendant/epaper/emote_asset_pack.h",
+    "app/companion_pendant/epaper/emote_asset_pack.c",
     "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
+    "tools/flash_nucleo_bringup.ps1",
+    "tools/promote_wb55_screen_runtime_recheck.py",
     "tools/verify_companion_runtime_visual_boundary.py",
 )
 
@@ -78,12 +86,19 @@ def source_errors() -> list[str]:
     app = APP_BLE.read_text(encoding="utf-8")
     panel = PANEL_TARGET.read_text(encoding="utf-8")
     queue = DISPLAY_QUEUE_HEADER.read_text(encoding="utf-8") + "\n" + DISPLAY_QUEUE_SOURCE.read_text(encoding="utf-8")
+    v9_binding = V9_BINDING.read_text(encoding="utf-8")
+    flash_script = FLASH_SCRIPT.read_text(encoding="utf-8")
+    legacy_promotion = LEGACY_PROMOTION.read_text(encoding="utf-8")
     makefile = MAKEFILE.read_text(encoding="utf-8")
 
     for token in (
         "s_companion_last_emote_frame_valid",
         "comp_epaper_display_queue_enqueue_expression_frame",
         "expression_maintenance source=external_flash",
+        "comp_v9_candidate_resource_runtime_activation_allowed",
+        "comp_v9_candidate_resource_pack_identity_matches",
+        "COMP_EMOTE_ASSET_MOUNT_INACTIVE_BY_POLICY",
+        "COMP_EMOTE_ASSET_MOUNT_REJECTED_BY_POLICY",
     ):
         if token not in app:
             errors.append(f"app runtime missing required external-CEMP maintenance marker: {token}")
@@ -98,6 +113,14 @@ def source_errors() -> list[str]:
     ):
         if token in app:
             errors.append(f"app runtime still references retired procedural visual route: {token}")
+    if "external_assets_ready && visual_resource_activation_allowed" not in app:
+        errors.append("app runtime may mount an external CEMP without the v9 activation gate")
+    if "s_companion_screen_asset_mount = (comp_emote_asset_mount_t){0};" not in app:
+        errors.append("app runtime retains a rejected external CEMP mount")
+    if "rescue_ui" in app:
+        errors.append("app runtime log still claims an internal visual fallback")
+    if "return false;" not in v9_binding or "comp_v9_candidate_resource_runtime_activation_allowed" not in v9_binding:
+        errors.append("v9 binding no longer keeps runtime activation disabled")
 
     for token in (
         "static bool frame_prepare",
@@ -131,6 +154,14 @@ def source_errors() -> list[str]:
             errors.append(f"display queue still contains retired procedural visual route: {token}")
     if "$(ROOT)/app/companion_pendant/epaper/pet_expression.c" in makefile:
         errors.append("WB55 product Makefile still compiles the retired procedural face composer")
+    if "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/v9-expression-cemp-manifest.json" not in makefile:
+        errors.append("WB55 provision build is not bound to the current v9 CEMP manifest")
+    if "emote_matrix_white_200x200.json" in makefile:
+        errors.append("WB55 provision build still accepts the retired r53 visual manifest")
+    if "Screen asset provisioning is blocked by the active Companion Goal" not in flash_script:
+        errors.append("WB55 flash entry point can still provision a runtime-inactive visual pack")
+    if "active Companion Goal prohibits legacy r53 runtime promotion" not in legacy_promotion:
+        errors.append("legacy r53 promotion path is not blocked by the current visual policy")
     return errors
 
 
@@ -170,6 +201,9 @@ def inspect() -> tuple[list[str], dict[str, Any]]:
             "active_expression_maintenance": "external CEMP frame replay only",
             "menu_visual_base": "external CEMP base required; no complete code-rendered fallback",
             "unavailable_visual_source": "return transport error; do not draw a procedural or test substitute",
+            "external_mount": "v9 activation gate; inactive policy does not parse or display any CEMP pack",
+            "provision_source": "v9 candidate manifest only; no retired r53 manifest",
+            "provision_flash": "blocked while the v9 candidate remains runtime-inactive",
             "retired_procedural_face_linked": False,
         },
         "hardware_boundary": {

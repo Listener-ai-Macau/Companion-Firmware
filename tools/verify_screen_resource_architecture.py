@@ -26,7 +26,7 @@ SOURCE_H = EPAPER / "expression_asset_source.h"
 SOURCE_C = EPAPER / "expression_asset_source.c"
 PACK_BUILDER = ROOT / "tools/build_emote_asset_pack.py"
 PACK_DEDUP_VERIFIER = ROOT / "tools/verify_emote_asset_pack_dedup.py"
-PACK_MANIFEST = EPAPER / "assets/emote_matrix_white_200x200.json"
+PACK_MANIFEST = ROOT / "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/v9-expression-cemp-manifest.json"
 MAKEFILE = ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile"
 WB_STORE_H = ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Inc/companion_screen_assets_stm32wb.h"
 WB_STORE_C = ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/companion_screen_assets_stm32wb.c"
@@ -229,25 +229,26 @@ def main() -> int:
     clip_names = {
         clip.get("name") for clip in manifest.get("clips", []) if isinstance(clip, dict)
     }
-    required_expression_clips = {
-        "idle", "listening", "thinking", "speaking", "happy", "sleepy",
-        "recording", "sync_complete", "low_battery", "error",
-    }
-    required_menu_clips = {
-        f"menu.{view}.{language}"
-        for view in (
-            "home", "record", "status", "phone", "device",
-            "preferences", "about",
-        )
-        for language in ("en", "zh")
+    required_v9_clips = {
+        "idle", "touch", "swipe_left", "swipe_right", "swipe_up",
+        "swipe_down", "listening", "recording", "saving", "saved",
+        "sleep", "menu_hold", "wake",
     }
     require(
         manifest.get("schema") == "companion.emote_asset_pack_manifest.v1" and
+        manifest.get("name") == "companion-v9-expression-candidate-200x200" and
+        manifest.get("revision") == 90 and
         manifest.get("profile", {}).get("width") == 200 and
         manifest.get("encoding") == "packbits" and
-        required_expression_clips <= clip_names and
-        required_menu_clips <= clip_names,
-        "external UI manifest lost required expression or bilingual menu clips",
+        clip_names == required_v9_clips and
+        manifest.get("provenance", {}).get("runtime_resource_activated") is False,
+        "external UI manifest drifted from the inactive v9 CEMP candidate",
+        errors,
+    )
+    require(
+        "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/v9-expression-cemp-manifest.json" in makefile and
+        "emote_matrix_white_200x200.json" not in makefile,
+        "WB55 provision build must use only the v9 candidate manifest",
         errors,
     )
     for token in (
@@ -331,6 +332,11 @@ def main() -> int:
     wb_partition = contract.get("wb55_devboard_partition", {})
     require(wb_partition.get("base") == "0x00200000", "WB55 ui_assets base drifted", errors)
     require(wb_partition.get("size_bytes") == 2 * 1024 * 1024, "WB55 ui_assets size drifted", errors)
+    candidate = contract.get("candidate_pack", {})
+    require(candidate.get("pack") == "companion-v9-expression-candidate-200x200", "top-level candidate pack is not v9", errors)
+    require(candidate.get("revision") == 90 and candidate.get("clips") == 13 and candidate.get("frames") == 39, "top-level v9 candidate geometry drifted", errors)
+    require(candidate.get("status") == "machine_proved_not_runtime_activated", "top-level candidate activation boundary drifted", errors)
+    require(candidate.get("build_artifact") == "cubeide/Companion_Nucleo_WB55RG_Bringup/build_screen_asset_provision/generated/companion-v9-expression-candidate-200x200.cemp", "top-level v9 provision artifact drifted", errors)
     current_goal = contract.get("current_goal_visual_boundary", {})
     v9_candidate = current_goal.get("candidate_pack", {})
     require(current_goal.get("active_inner_face_source") == "companion-pet-expression-v9", "current source is not locked v9", errors)
@@ -344,6 +350,9 @@ def main() -> int:
     require(runtime_visual_boundary.get("elf", {}).get("forbidden_symbol_matches") == 0, "runtime ELF still exposes a retired visual symbol", errors)
     runtime_policy = runtime_visual_boundary.get("runtime_policy", {})
     require(runtime_policy.get("menu_visual_base") == "external CEMP base required; no complete code-rendered fallback", "runtime menu fallback policy drifted", errors)
+    require(runtime_policy.get("external_mount") == "v9 activation gate; inactive policy does not parse or display any CEMP pack", "runtime CEMP activation gate drifted", errors)
+    require(runtime_policy.get("provision_source") == "v9 candidate manifest only; no retired r53 manifest", "provision source policy drifted", errors)
+    require(runtime_policy.get("provision_flash") == "blocked while the v9 candidate remains runtime-inactive", "provision flash gate drifted", errors)
     portable_contract = contract.get("portable_contract", {})
     require(portable_contract.get("binary_pack_magic") == "CEMP", "binary pack magic drifted", errors)
     require(portable_contract.get("binary_pack_header_bytes") == 80, "binary pack header size drifted", errors)
@@ -368,7 +377,7 @@ def main() -> int:
     print(f"  normal linked full-frame static assets: {linked_static_bytes} bytes")
     print(f"  retired devboard static baseline: {measured_static_bytes} bytes (not linked)")
     print(f"  production internal rescue UI ceiling: {rescue_limit} bytes")
-    print("  normal expression/font/audio/model assets: external ui_assets storage")
+    print("  current v9 candidate assets: external ui_assets storage, runtime activation disabled")
     print("  screen profiles and dirty rectangles: target-independent, 16-bit coordinates")
     return 0
 

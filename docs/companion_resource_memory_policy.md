@@ -14,7 +14,8 @@
   不画程序化脸、测试图或整页代码菜单。动态数据只能叠加在已验证的外部 CEMP
   菜单底图上。
 - v9 资源候选及四根菜单/特殊场景仍需各自批准和资源激活；本节不授权 PBM/CEMP
-  导入、外部 Flash provision、刷机或视觉 PASS。
+  runtime import、外部 Flash provision、刷机或视觉 PASS。当前 provision build
+  只作字节一致性构建检查，flash entry point 必须拒绝执行。
 
 ## 结论
 
@@ -82,10 +83,11 @@ asset_store: 内部映射 / 外部 NOR / 主机流的有界 read(offset)
 - 动画名称及 `intro -> loop -> tail` 索引；
 - payload CRC32。
 
-播放器不认识 SSD1681、QSPI、OSPI、GPIO 或固定分辨率。挂载层只选择与当前
-目标 profile 精确匹配且 CRC 通过的最高优先级/最新资源包。面板旋转属于 panel
-后端，不写入表情动画逻辑。以后换屏幕时，新增 profile 和资源包；以后换整套
-表情时，提高资源 revision。两种情况都不修改播放器状态机。
+播放器不认识 SSD1681、QSPI、OSPI、GPIO 或固定分辨率。挂载层只接受同时匹配
+当前产品批准的资源身份、runtime activation、目标 profile 和 CRC 的资源包，不能
+按“最高优先级/最新”自动选到历史美术。面板旋转属于 panel 后端，不写入表情动画
+逻辑。以后换屏幕时，新增 profile 和资源包；以后换整套表情时，提高资源 revision。
+两种情况都不修改播放器状态机。
 
 ## 外部资源启动流程
 
@@ -93,8 +95,9 @@ asset_store: 内部映射 / 外部 NOR / 主机流的有界 read(offset)
 2. 读取小型 manifest/index，检查 magic、格式版本、范围和目标 profile。
 3. 分块计算 payload CRC32；通过后才发布为 active pack。
 4. player 输出帧索引，asset store 只读取该帧到有界 framebuffer/解码工作区。
-5. 读取、CRC、格式或 profile 失败时，记录诊断并显示内部救援 UI；不能继续
-   使用未验证资源。
+5. 读取、CRC、格式、profile 或产品激活策略失败时，记录诊断并 fail closed，保持
+   已有面板内容；不能继续使用未验证资源，也不能显示内部救援 UI 作为产品可见
+   替代画面。
 
 当前二进制格式 magic 为 `CEMP`，header 固定 80 字节，随后是 clip table、
 frame table、字符串表和 payload。所有多字节字段为 little-endian；解析器逐字段

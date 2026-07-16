@@ -80,6 +80,7 @@ def build_result() -> tuple[dict[str, object], list[str]]:
         "COMP_V9_CANDIDATE_RESOURCE_PENDING_VISUAL_BASELINE",
         "COMP_V9_CANDIDATE_RESOURCE_PENDING_MENU_VISUAL_BASELINE",
         "runtime_activation_allowed",
+        "comp_v9_candidate_resource_pack_identity_matches",
     ):
         check(token in binding_header + binding_source,
               f"v9 portable binding is missing {token}", errors)

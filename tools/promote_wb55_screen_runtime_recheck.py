@@ -247,6 +247,12 @@ def main(argv: list[str]) -> int:
     parser.add_argument("--json", type=pathlib.Path, default=DEFAULT_JSON)
     args = parser.parse_args(argv)
 
+    print(
+        "BLOCKED: the active Companion Goal prohibits legacy r53 runtime promotion; "
+        "v9 remains machine-only and runtime-inactive pending approved visual sources."
+    )
+    return 2
+
     output = args.json if args.json.is_absolute() else ROOT / args.json
     plan = build_plan()
     errors = verify_plan(plan)

@@ -37,6 +37,11 @@ bool comp_v9_candidate_resource_resolve(
     const comp_pet_performance_frame_t *performance_frame,
     comp_v9_candidate_resource_binding_t *out_binding);
 bool comp_v9_candidate_resource_runtime_activation_allowed(void);
+bool comp_v9_candidate_resource_pack_identity_matches(
+    const char *pack_name,
+    uint32_t pack_revision,
+    uint16_t clip_count,
+    uint16_t frame_count);
 bool comp_v9_candidate_resource_binding_self_test(void);
 
 #ifdef __cplusplus

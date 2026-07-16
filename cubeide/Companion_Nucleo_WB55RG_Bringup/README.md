@@ -97,16 +97,12 @@ Flash:
 pwsh -NoProfile -File .\tools\flash_nucleo_bringup.ps1
 ```
 
-Screen resource provisioning uses a separate oversized one-shot image. After
-writing and verifying the external `ui_assets` pack, flash the normal firmware
-back immediately so the runtime no longer carries the provision blob:
-
-```powershell
-pwsh -NoProfile -File .\tools\flash_nucleo_bringup.ps1 -ScreenAssetProvision -CheckOnly
-pwsh -NoProfile -File .\tools\flash_nucleo_bringup.ps1 -ScreenAssetProvision
-pwsh -NoProfile -File .\tools\flash_nucleo_bringup.ps1 -CheckOnly
-pwsh -NoProfile -File .\tools\flash_nucleo_bringup.ps1
-```
+The screen-asset provision image is a build-only v9 CEMP candidate check. The
+active Goal keeps v9 runtime-inactive while menu and special-scene visual
+sources await approval, so `flash_nucleo_bringup.ps1 -ScreenAssetProvision`
+intentionally refuses before invoking the programmer. A later approved
+activation proposal must re-enable that flash path with matching machine and
+human evidence; do not use an historical r53 pack as a substitute.
 
 Capture logs:
 

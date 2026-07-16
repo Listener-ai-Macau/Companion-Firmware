@@ -5,6 +5,8 @@
 
 #define COMP_V9_CANDIDATE_PACK_NAME "companion-v9-expression-candidate-200x200"
 #define COMP_V9_CANDIDATE_PACK_REVISION 90u
+#define COMP_V9_CANDIDATE_CLIP_COUNT 13u
+#define COMP_V9_CANDIDATE_FRAME_COUNT 39u
 #define COMP_V9_CANDIDATE_FRAME_ENTRY 0u
 #define COMP_V9_CANDIDATE_FRAME_SUSTAINED 1u
 #define COMP_V9_CANDIDATE_FRAME_SETTLE 2u
@@ -134,6 +136,19 @@ bool comp_v9_candidate_resource_runtime_activation_allowed(void)
     return false;
 }
 
+bool comp_v9_candidate_resource_pack_identity_matches(
+    const char *pack_name,
+    uint32_t pack_revision,
+    uint16_t clip_count,
+    uint16_t frame_count)
+{
+    return pack_name != NULL &&
+           strcmp(pack_name, COMP_V9_CANDIDATE_PACK_NAME) == 0 &&
+           pack_revision == COMP_V9_CANDIDATE_PACK_REVISION &&
+           clip_count == COMP_V9_CANDIDATE_CLIP_COUNT &&
+           frame_count == COMP_V9_CANDIDATE_FRAME_COUNT;
+}
+
 bool comp_v9_candidate_resource_binding_self_test(void)
 {
     comp_pet_performance_t performance;
@@ -142,7 +157,17 @@ bool comp_v9_candidate_resource_binding_self_test(void)
     uint8_t available_count = 0u;
     uint8_t pending_count = 0u;
 
-    if (comp_v9_candidate_resource_runtime_activation_allowed()) {
+    if (comp_v9_candidate_resource_runtime_activation_allowed() ||
+        !comp_v9_candidate_resource_pack_identity_matches(
+            COMP_V9_CANDIDATE_PACK_NAME,
+            COMP_V9_CANDIDATE_PACK_REVISION,
+            COMP_V9_CANDIDATE_CLIP_COUNT,
+            COMP_V9_CANDIDATE_FRAME_COUNT) ||
+        comp_v9_candidate_resource_pack_identity_matches(
+            "emote-matrix-white-200x200-v1",
+            53u,
+            33u,
+            75u)) {
         return false;
     }
     for (uint32_t scene = 0u; scene < COMP_PET_PERFORMANCE_SCENE_COUNT; ++scene) {

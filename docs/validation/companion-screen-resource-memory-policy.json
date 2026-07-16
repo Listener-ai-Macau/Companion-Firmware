@@ -5,15 +5,16 @@
     "retired_devboard_static_expression_baseline_bytes": 50000
   },
   "candidate_pack": {
-    "build_artifact": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_screen_asset_provision/generated/emote_matrix_white_200x200.cemp",
-    "clips": 33,
-    "frames": 75,
-    "import_report": "docs/validation/companion-screen-menu-v3-import.json",
-    "pack": "emote-matrix-white-200x200-v1",
-    "pack_bytes": 49901,
-    "pack_crc32": "0x2332E300",
-    "revision": 53,
-    "status": "runtime_recheck_pending"
+    "build_artifact": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_screen_asset_provision/generated/companion-v9-expression-candidate-200x200.cemp",
+    "clips": 13,
+    "frames": 39,
+    "import_report": "docs/validation/companion-v9-expression-cemp-20260716.json",
+    "pack": "companion-v9-expression-candidate-200x200",
+    "pack_bytes": 32489,
+    "pack_crc32": "0x1BE426D3",
+    "pack_sha256": "036EC78ECC1C718EF7B502E8294AE15947D398C2D94E25E1F22D0C98BE6087F1",
+    "revision": 90,
+    "status": "machine_proved_not_runtime_activated"
   },
   "current_goal_visual_boundary": {
     "active_inner_face_source": "companion-pet-expression-v9",
@@ -95,7 +96,7 @@
     },
     "size_bytes": 2097152
   },
-  "wb55_real_evidence": {
+  "historical_wb55_r53_evidence": {
     "clips": 33,
     "external_render_log": ".cache/validation/rev53-runtime-current/normal/nucleo-serial-raw.log",
     "frames": 75,
@@ -116,6 +117,6 @@
       "complete=1"
     ],
     "revision": 53,
-    "status": "evidence_unavailable_runtime_recheck_pending"
+    "status": "historical_not_current_not_activation_eligible"
   }
 }

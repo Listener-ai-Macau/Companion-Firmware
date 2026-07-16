@@ -63,6 +63,10 @@ if ($ScreenAssetProvision -and -not [string]::IsNullOrWhiteSpace($ImagePath)) {
     throw "Use either -ScreenAssetProvision or -ImagePath, not both."
 }
 
+if ($ScreenAssetProvision) {
+    throw "Screen asset provisioning is blocked by the active Companion Goal: the v9 CEMP is machine-only and runtime-inactive until its source/activation gate passes."
+}
+
 if ([string]::IsNullOrWhiteSpace($ImagePath)) {
     $ImagePath = if ($ScreenAssetProvision) { $provisionImagePath } else { $normalImagePath }
 }

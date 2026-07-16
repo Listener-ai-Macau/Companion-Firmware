@@ -14,6 +14,19 @@ art replacement separate from behavioral choreography.
 
 The screen-expression acceptance map lives in
 `docs/companion_screen_expression_system.md`.
+
+## Current Goal Visual Boundary
+
+The active 2026-07-17 Goal supersedes the historical renderer notes below.
+`companion-pet-expression-v9` is the sole current inner-face baseline. Its
+13-clip/39-frame external CEMP is machine-verified but runtime-inactive: WB55
+opens the external store for bounded storage health only and does not parse or
+render any pack while the activation policy is false. The provision build emits
+the same v9 bytes for deterministic build evidence, but the flash entry point
+rejects provision requests until the approved-source activation gate exists.
+Revision 53, six-root menu art, rescue UI, and procedural-composer descriptions
+below are retained as historical protocol evidence only; they cannot be active
+visual inputs or fallbacks.
 The BLE-to-expression policy lives in `expression_policy.py`; it maps status
 snapshot data and diagnostic event names into ExpressionV1 cards without
 depending on the display driver. It also treats quiet-hours settings and
@@ -165,25 +178,21 @@ rig, motion cues, and status marks on white. It must not redraw ears, a head
 outline, or whiskers.
 Idle is one quiet composed pose after its initial refresh, while CEMP retains
 replaceable timing and visual resources for touch reactions and product events.
-The current WB55 revision 53 candidate pack keeps the electronic-pet rig external-first
-and uses generated-sheet-import PBM frames as the normal expression/menu art
-path: 33 clips, 75 timeline frames, a 50368-byte CEMP pack, and CRC32 `0x9B6E6875`.
-Revision 53 has passed resource import and WB55 normal/provision builds; its
-first flash and visual runtime recheck remain pending.
+The active machine candidate is the v9 13-clip/39-frame pack, not the historical
+revision 53 pack. It remains unavailable to the product renderer until a
+separate approved activation decision; no visual source may be substituted in
+the meantime.
 The `premium pet art contract` is checked by
 `python .\tools\verify_premium_pet_art_contract.py`; it guards whole-face
 motion across eyes/brows, mouth/nose, cheeks, and state ornaments so future
 generated-art tuning does not regress to eye-only expression swaps.
 Identical decoded rasters share one payload record while retaining independent
-timing, dirty rectangles, and random access for every clip frame. The ordinary
-firmware mounts it from QSPI and does not retain the provision blob in MCU
-Flash. The owner-accepted menu-v3 reference fits all six product destinations
-on one stable 200x200 external-Flash home frame per language. Vertical strokes
-on that page remain daily pet interactions; menu home never selects a retired
-numbered scroll asset. The `menu-v3 static home contract` is checked by
-`python .\tools\verify_menu_drag_continuity_contract.py`; it guards the
-single-frame bilingual home, six visible rows, and source-layout black selected
-row.
+timing, dirty rectangles, and random access for every clip frame. Product
+firmware mounts only a resource that passes both CEMP validation and the
+approved visual-activation policy; otherwise it fails closed without a rescue
+face or code-rendered menu. The historical six-destination menu route is not a
+current visual source. The pending four-root bilingual source owns the future
+replacement path.
 Menu pet identity is limited to inner face marks: the physical shell owns the
 cat outline, while generated menu pages and the MCU rescue renderer avoid ears,
 head outlines, and whiskers. Row taps operate inside the static menu, and
@@ -194,13 +203,10 @@ press-cue partial refresh, then the destination page arrives with another
 partial refresh. Daily mode opens the menu through a nearly-still 3 s hold
 anywhere on the screen, after a 650 ms pet tease; normal taps and directional
 swipes remain pet interactions.
-Revision 23 adds `pet_expression.h/.c`, a portable parameterized face composer.
-It maps product state plus continuous touch gaze, eyelid, mouth, cheek, and
-mark parameters into the existing one-bit framebuffer. CEMP remains the
-external-Flash source of replaceable menu art, timelines, and larger visual
-assets; the composer adds no static full-screen expression arrays or second
-framebuffer to normal firmware. A WBA target reuses the same pose/render API and
-only replaces the target panel transport and profile facts.
+Revision 23's `pet_expression.h/.c` composer remains a host/protocol regression
+fixture only. It must not be linked into WB55/WBA product firmware or draw a
+visible fallback. WBA reuses the external-CEMP resource interface and replaces
+only target storage/panel callbacks.
 `tools/render_expression_visual_acceptance_matrix.py` records
 `docs/validation/companion-screen-expression-visual-acceptance-matrix.json`
 and `docs/validation/companion-screen-expression-visual-acceptance-matrix.md`,
