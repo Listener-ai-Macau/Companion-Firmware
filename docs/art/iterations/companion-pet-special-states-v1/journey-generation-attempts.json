@@ -1,0 +1,29 @@
+{
+  "schema": "companion.visual_generation_attempts.v1",
+  "iteration_id": "companion-pet-special-states-v1-journey",
+  "style_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "attempts": [
+    {
+      "id": "journey-v1-attempt-01",
+      "status": "GENERATED_MACHINE_REVIEW_PENDING_OWNER",
+      "generated_at": "2026-07-17T00:00:00+08:00",
+      "prompt_record": "docs/art/iterations/companion-pet-special-states-v1/generation-plan.json#/sheets/journey/prompt",
+      "runtime_source": "C:\\Users\\Billy\\.codex\\generated_images\\019f44be-6fce-7140-acbe-cac2c63e2a4e\\exec-ea0d3a8b-0aef-4a48-8e3e-e2baa6097136.png",
+      "repository_source": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_journey_v1_candidate.png",
+      "sha256": "95CC749134F169E73A2E2A99FA2B6F08AABDFE78D218677C347D2D687EA4B17F",
+      "dimensions_px": [1254, 1254],
+      "machine_decision": "Square 1:1 geometry and twelve populated 3x4 cells are candidate-valid. Semantic and visual quality remain PENDING_OWNER; no resource import or activation is authorized.",
+      "runtime_boundary": {
+        "pbm_imported": false,
+        "cemp_packed": false,
+        "external_flash_provisioned": false,
+        "firmware_flashed": false,
+        "owner_visual_pass": false
+      },
+      "next_prompt_delta": "Only after an owner decision, change one named visible variable against this exact square source; do not restart the face identity or reuse rejected art."
+    }
+  ]
+}

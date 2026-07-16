@@ -1,0 +1,114 @@
+{
+  "errors": [],
+  "geometry": {
+    "cell_ink": [
+      {
+        "column": 0,
+        "row": 0,
+        "scene_phase": "menu.open.entry",
+        "source_ink_pixels": 6855
+      },
+      {
+        "column": 1,
+        "row": 0,
+        "scene_phase": "menu.open.settle",
+        "source_ink_pixels": 7495
+      },
+      {
+        "column": 2,
+        "row": 0,
+        "scene_phase": "menu.blocked",
+        "source_ink_pixels": 6443
+      },
+      {
+        "column": 3,
+        "row": 0,
+        "scene_phase": "menu.exit",
+        "source_ink_pixels": 6471
+      },
+      {
+        "column": 0,
+        "row": 1,
+        "scene_phase": "upgrade.offer",
+        "source_ink_pixels": 6696
+      },
+      {
+        "column": 1,
+        "row": 1,
+        "scene_phase": "upgrade.prepare",
+        "source_ink_pixels": 6738
+      },
+      {
+        "column": 2,
+        "row": 1,
+        "scene_phase": "upgrade.transfer",
+        "source_ink_pixels": 6953
+      },
+      {
+        "column": 3,
+        "row": 1,
+        "scene_phase": "upgrade.verify",
+        "source_ink_pixels": 7229
+      },
+      {
+        "column": 0,
+        "row": 2,
+        "scene_phase": "upgrade.restart",
+        "source_ink_pixels": 7390
+      },
+      {
+        "column": 1,
+        "row": 2,
+        "scene_phase": "upgrade.success",
+        "source_ink_pixels": 4528
+      },
+      {
+        "column": 2,
+        "row": 2,
+        "scene_phase": "upgrade.error",
+        "source_ink_pixels": 6852
+      },
+      {
+        "column": 3,
+        "row": 2,
+        "scene_phase": "upgrade.error.recovery",
+        "source_ink_pixels": 6171
+      }
+    ],
+    "grid": [
+      3,
+      4
+    ]
+  },
+  "preview": {
+    "black_pixels": 2460,
+    "dimensions_px": [
+      200,
+      200
+    ],
+    "path": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_journey_v1_candidate_200x200_preview.png",
+    "pixel_format": "1-bit preview only",
+    "threshold": 180
+  },
+  "runtime_boundary": {
+    "cemp_packed": false,
+    "external_flash_provisioned": false,
+    "firmware_flashed": false,
+    "owner_visual_pass": false,
+    "pbm_imported": false
+  },
+  "schema": "companion.pet_special_journey_source_review.v1",
+  "source": {
+    "dimensions_px": [
+      1254,
+      1254
+    ],
+    "path": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_journey_v1_candidate.png",
+    "sha256": "95CC749134F169E73A2E2A99FA2B6F08AABDFE78D218677C347D2D687EA4B17F"
+  },
+  "status": "PASS_MACHINE_PREVIEW_PENDING_OWNER",
+  "style_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  }
+}

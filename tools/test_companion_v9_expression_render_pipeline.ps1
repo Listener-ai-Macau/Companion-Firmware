@@ -35,5 +35,6 @@ if ($LASTEXITCODE -ne 0) {
 Invoke-Python @("tools/verify_companion_v9_candidate_resource_binding.py", "--write")
 Invoke-Python @("tools/render_companion_menu_v6_candidate_preview.py", "--write")
 Invoke-Python @("tools/render_companion_pet_special_system_preview.py", "--write")
+Invoke-Python @("tools/render_companion_pet_special_journey_preview.py", "--write")
 Invoke-Python @("tools/verify_companion_art_retirement.py", "--write")
-Write-Output "PASS: v9 source -> 39/39 PBM -> deterministic CEMP -> decoded PBM -> no-fallback scene coverage -> inactive portable binding -> v9 baseline, pending v6 menu source, and pending system source only."
+Write-Output "PASS: v9 source -> 39/39 PBM -> deterministic CEMP -> decoded PBM -> no-fallback scene coverage -> inactive portable binding -> v9 baseline, pending v6 menu source, and two pending special sources only."

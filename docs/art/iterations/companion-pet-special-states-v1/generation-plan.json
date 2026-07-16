@@ -1,7 +1,7 @@
 {
   "schema": "companion.special_state_art_plan.v1",
   "iteration_id": "companion-pet-special-states-v1",
-  "status": "SYSTEM_SOURCE_GENERATED_MACHINE_REVIEW_PENDING_OWNER_JOURNEY_PENDING_GENERATION",
+  "status": "SYSTEM_AND_JOURNEY_SOURCES_GENERATED_MACHINE_REVIEW_PENDING_OWNER",
   "target_profile": {
     "width": 200,
     "height": 200,
@@ -47,7 +47,7 @@
     },
     {
       "id": "journey",
-      "status": "PENDING_GENERATION",
+      "status": "GENERATED_MACHINE_REVIEW_PENDING_OWNER",
       "grid": "3x4",
       "scene_families": [
         "menu.open", "menu.blocked", "menu.exit", "upgrade.offer",
@@ -55,6 +55,12 @@
         "upgrade.success", "upgrade.error"
       ],
       "prompt": "Use the attached owner-approved Companion v9 face sheet as the only direct visual reference. Use a square 1:1 canvas, never a portrait or landscape page; keep the entire 3 by 4 sheet inside that square with balanced margins. Create one polished 3 by 4 sheet of exactly twelve compact, cute, lively, monochrome inner-face journey keyframes for a 200x200 e-paper companion. Preserve the exact v9 paired upright black oval eyes, matched white highlights, rounded brows, petite nose/W-mouth, cheek dots and white-space rhythm. No cat outline, ears, whiskers, eyelids, labels, panels, grey, gradients or shading. Every state changes eyes, brows, mouth and cheeks together, with small semantic charms outside the face only. Row 1: menu open entry with a calm decision sparkle; menu open settle with a tiny welcoming star; menu blocked with a soft pause mark and patient face; menu exit with a light backward motion tick and relaxed face. Row 2: upgrade offer with a curious upgrade sparkle; upgrade prepare with a focused dotted bundle charm; upgrade transfer with a gentle moving dot trail; upgrade verify with a thoughtful magnifier-like sparkle. Row 3: upgrade restart with a small circular restart mark; upgrade success with bright paired sparkles; upgrade error with a recoverable broken-star mark and sweet concern; upgrade error recovery with the face returning toward confident calm. Keep all twelve cells equally spaced on white with no typography and no aggressive, technical or threatening visual language.",
+      "generated_output": {
+        "path": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_journey_v1_candidate.png",
+        "sha256": "95CC749134F169E73A2E2A99FA2B6F08AABDFE78D218677C347D2D687EA4B17F",
+        "dimensions_px": [1254, 1254],
+        "runtime_source": "C:\\Users\\Billy\\.codex\\generated_images\\019f44be-6fce-7140-acbe-cac2c63e2a4e\\exec-ea0d3a8b-0aef-4a48-8e3e-e2baa6097136.png"
+      },
       "machine_mapping_rule": "menu.open and upgrade.error each retain two low-frequency keyframes; all other listed families receive one named state cell until a later approved frame expansion."
     }
   ],

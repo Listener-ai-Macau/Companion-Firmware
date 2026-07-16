@@ -23,6 +23,9 @@ MENU_PREVIEW = MENU_V6 / "generated_menu_four_root_v6_candidate_200x200_preview.
 SYSTEM_SOURCE = SPECIAL_STATES / "generated_pet_special_system_v1_candidate.png"
 SYSTEM_SOURCE_SHA256 = "AF9ADFD49C47C89DF674726D7201CC49C61ED636306013697822BB42FB1A9C82"
 SYSTEM_PREVIEW = SPECIAL_STATES / "generated_pet_special_system_v1_candidate_200x200_preview.png"
+JOURNEY_SOURCE = SPECIAL_STATES / "generated_pet_special_journey_v1_candidate.png"
+JOURNEY_SOURCE_SHA256 = "95CC749134F169E73A2E2A99FA2B6F08AABDFE78D218677C347D2D687EA4B17F"
+JOURNEY_PREVIEW = SPECIAL_STATES / "generated_pet_special_journey_v1_candidate_200x200_preview.png"
 REPORT = ROOT / "docs/validation/companion-art-retirement-20260716.json"
 
 
@@ -39,11 +42,13 @@ def main() -> int:
     ]
     allowed_menu_renderables = {MENU_SOURCE.resolve(), MENU_PREVIEW.resolve()}
     allowed_system_renderables = {SYSTEM_SOURCE.resolve(), SYSTEM_PREVIEW.resolve()}
+    allowed_journey_renderables = {JOURNEY_SOURCE.resolve(), JOURNEY_PREVIEW.resolve()}
     unauthorized_renderables = [
         path.relative_to(ROOT).as_posix() for path in renderable_files
         if not path.is_relative_to(V9)
         and path.resolve() not in allowed_menu_renderables
         and path.resolve() not in allowed_system_renderables
+        and path.resolve() not in allowed_journey_renderables
     ]
     iteration_directories = sorted(
         path.name for path in (ART / "iterations").iterdir() if path.is_dir()
@@ -65,7 +70,14 @@ def main() -> int:
             encoding="utf-8"
         )
     )
+    journey_attempts = json.loads((SPECIAL_STATES / "journey-generation-attempts.json").read_text(encoding="utf-8"))
+    journey_review = json.loads(
+        (ROOT / "docs/validation/companion-pet-special-journey-source-review-20260717.json").read_text(
+            encoding="utf-8"
+        )
+    )
     system_source_sha256 = hashlib.sha256(SYSTEM_SOURCE.read_bytes()).hexdigest().upper()
+    journey_source_sha256 = hashlib.sha256(JOURNEY_SOURCE.read_bytes()).hexdigest().upper()
 
     if unauthorized_renderables:
         errors.append("unauthorized renderable art remains: " + ", ".join(unauthorized_renderables))
@@ -74,7 +86,7 @@ def main() -> int:
         "companion-pet-expression-v9",
         "companion-pet-special-states-v1",
     ]:
-        errors.append("iteration directory set is not limited to v9, pending v6 menu, and pending v9 system art")
+        errors.append("iteration directory set is not limited to v9, pending v6 menu, and pending v9 special art")
     if retirement.get("status") != "NON_RENDERABLE_AUDIT_ONLY":
         errors.append("retirement record has an unexpected status")
     if retirement.get("active_renderable_baseline_sha256", "").upper() != SOURCE_SHA256:
@@ -101,7 +113,7 @@ def main() -> int:
             errors.append(f"v6 menu review must keep {key}=false")
     if any(path.suffix.lower() in {".pbm", ".cemp"} for path in MENU_V6.rglob("*")):
         errors.append("pending v6 menu source must not contain PBM or CEMP")
-    if special_plan.get("status") != "SYSTEM_SOURCE_GENERATED_MACHINE_REVIEW_PENDING_OWNER_JOURNEY_PENDING_GENERATION":
+    if special_plan.get("status") != "SYSTEM_AND_JOURNEY_SOURCES_GENERATED_MACHINE_REVIEW_PENDING_OWNER":
         errors.append("special-state plan has an unexpected source-review status")
     system_sheet = next((sheet for sheet in special_plan.get("sheets", []) if sheet.get("id") == "system"), {})
     if system_sheet.get("status") != "GENERATED_MACHINE_REVIEW_PENDING_OWNER":
@@ -124,12 +136,33 @@ def main() -> int:
     for key in ["pbm_imported", "cemp_packed", "external_flash_provisioned", "firmware_flashed", "owner_visual_pass"]:
         if runtime_boundary.get(key) is not False:
             errors.append(f"system source review must keep {key}=false")
+    journey_sheet = next((sheet for sheet in special_plan.get("sheets", []) if sheet.get("id") == "journey"), {})
+    if journey_sheet.get("status") != "GENERATED_MACHINE_REVIEW_PENDING_OWNER":
+        errors.append("journey sheet must remain pending owner review")
+    if journey_sheet.get("generated_output", {}).get("sha256", "").upper() != JOURNEY_SOURCE_SHA256:
+        errors.append("journey sheet output hash drifted")
+    if journey_source_sha256 != JOURNEY_SOURCE_SHA256:
+        errors.append("pending journey source hash drifted")
+    if journey_review.get("status") != "PASS_MACHINE_PREVIEW_PENDING_OWNER":
+        errors.append("journey source machine review must remain a pending-owner preview")
+    if journey_review.get("source", {}).get("sha256", "").upper() != JOURNEY_SOURCE_SHA256:
+        errors.append("journey source machine review does not match the pending source hash")
+    if journey_review.get("preview", {}).get("dimensions_px") != [200, 200]:
+        errors.append("journey source machine review is missing the 200x200 preview")
+    if journey_review.get("geometry", {}).get("grid") != [3, 4]:
+        errors.append("journey source machine review is missing 3x4 geometry")
+    if not journey_attempts.get("attempts") or journey_attempts["attempts"][-1].get("status") != "GENERATED_MACHINE_REVIEW_PENDING_OWNER":
+        errors.append("journey attempt history must end with the pending square source")
+    journey_runtime_boundary = journey_review.get("runtime_boundary", {})
+    for key in ["pbm_imported", "cemp_packed", "external_flash_provisioned", "firmware_flashed", "owner_visual_pass"]:
+        if journey_runtime_boundary.get(key) is not False:
+            errors.append(f"journey source review must keep {key}=false")
     if any(path.suffix.lower() in {".pbm", ".cemp"} for path in SPECIAL_STATES.rglob("*")):
         errors.append("pending system source must not contain PBM or CEMP")
 
     output = {
         "schema": "companion.art_retirement_verification.v1",
-        "status": "PASS_V9_BASELINE_PENDING_MENU_V6_AND_SYSTEM_V1" if not errors else "FAIL",
+        "status": "PASS_V9_BASELINE_PENDING_MENU_V6_AND_SPECIAL_V1" if not errors else "FAIL",
         "renderable_file_count": len(renderable_files),
         "iteration_directories": iteration_directories,
         "retained_source": SOURCE.relative_to(ROOT).as_posix(),
@@ -138,6 +171,8 @@ def main() -> int:
         "pending_menu_source_sha256": menu_source_sha256,
         "pending_system_source": SYSTEM_SOURCE.relative_to(ROOT).as_posix(),
         "pending_system_source_sha256": system_source_sha256,
+        "pending_journey_source": JOURNEY_SOURCE.relative_to(ROOT).as_posix(),
+        "pending_journey_source_sha256": journey_source_sha256,
         "special_state_plan": SPECIAL_STATES.relative_to(ROOT).as_posix(),
         "unauthorized_renderables": unauthorized_renderables,
         "errors": errors,
@@ -149,7 +184,7 @@ def main() -> int:
         for error in errors:
             print(f"ERROR: {error}")
         return 1
-    print("PASS: docs/art retains only v9, the pending non-importable v6 menu source, and the pending non-importable v9 system source.")
+    print("PASS: docs/art retains only v9, the pending non-importable v6 menu source, and the two pending non-importable v9 special sources.")
     return 0
 
 
