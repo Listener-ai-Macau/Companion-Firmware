@@ -116,6 +116,11 @@
           "status": "PASS"
         },
         {
+          "detail": "Generation switches discard only stale external expression/menu work before the coherent next frame.",
+          "path": "docs/validation/companion-screen-display-queue-generation-hygiene.json",
+          "status": "PASS"
+        },
+        {
           "detail": "Unavailable visual resources fail closed rather than drawing a test, procedural, or code-menu substitute.",
           "path": "docs/validation/companion-runtime-visual-boundary-20260717.json",
           "status": "PASS_CURRENT_SOURCE_NO_PROCEDURAL_VISUAL_FALLBACK"
@@ -222,6 +227,7 @@
     "python .\\tools\\verify_companion_runtime_visual_boundary.py",
     "python .\\tools\\verify_pet_expression_system.py",
     "python .\\tools\\verify_screen_refresh_feel_contract.py",
+    "python .\\tools\\verify_display_queue_generation_hygiene.py",
     "python .\\tools\\verify_screen_resource_architecture.py",
     "python .\\tools\\verify_display_queue_static.py",
     "python .\\tools\\verify_wba_adapter_m33_compile.py --self-test",

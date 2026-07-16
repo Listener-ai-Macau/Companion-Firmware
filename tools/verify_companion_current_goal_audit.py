@@ -20,6 +20,7 @@ ARTIFACTS = {
     "runtime_visual_boundary": ROOT / "docs/validation/companion-runtime-visual-boundary-20260717.json",
     "external_expression_system": ROOT / "docs/validation/companion-screen-pet-expression-system.json",
     "refresh_feel": ROOT / "docs/validation/companion-screen-refresh-feel-contract.json",
+    "queue_generation_hygiene": ROOT / "docs/validation/companion-screen-display-queue-generation-hygiene.json",
     "resource_memory_policy": ROOT / "docs/validation/companion-screen-resource-memory-policy.json",
     "wba_m33_compile": ROOT / "docs/validation/companion-screen-wba-adapter-m33-compile.json",
     "wba_spi_nor": ROOT / "docs/validation/companion-wba-spi-nor-adapter.json",
@@ -71,6 +72,7 @@ def build_audit() -> dict[str, Any]:
     runtime_visual_boundary = load_json("runtime_visual_boundary")
     external_expression_system = load_json("external_expression_system")
     refresh_feel = load_json("refresh_feel")
+    queue_generation_hygiene = load_json("queue_generation_hygiene")
     resource_memory_policy = load_json("resource_memory_policy")
     wba_m33_compile = load_json("wba_m33_compile")
     wba_spi_nor = load_json("wba_spi_nor")
@@ -133,6 +135,11 @@ def build_audit() -> dict[str, Any]:
     check(errors, refresh_candidate.get("name") == "companion-v9-expression-candidate-200x200" and refresh_candidate.get("revision") == 90, "screen refresh candidate drifted from v9")
     check(errors, refresh_candidate.get("runtime_resource_activated") is False, "screen refresh contract permits runtime activation")
     check(errors, all(value is True for value in refresh_feel.get("checks", {}).values()), "screen refresh feel contract contains a failed check")
+    check(errors, queue_generation_hygiene.get("status") == "PASS", "display queue generation hygiene is not PASS")
+    queue_scenario = queue_generation_hygiene.get("scenario", {})
+    check(errors, queue_scenario.get("before_switch", {}).get("pending") == 3, "queue generation scenario lost its pending-frame precondition")
+    check(errors, queue_scenario.get("after_switch", {}).get("pending") == 0 and queue_scenario.get("after_switch", {}).get("last_stale_discarded") == 3, "queue generation scenario no longer discards stale frames")
+    check(errors, queue_scenario.get("first_current_request", {}).get("resource_revision") == 51, "queue generation scenario no longer starts with a coherent current frame")
     resource_goal_boundary = resource_memory_policy.get("current_goal_visual_boundary", {})
     resource_v9_candidate = resource_goal_boundary.get("candidate_pack", {})
     check(errors, resource_memory_policy.get("status") == "PASS", "resource memory policy is not PASS")
@@ -261,6 +268,7 @@ def build_audit() -> dict[str, Any]:
             "requirement": "Refresh scheduling must keep one coherent external visual generation, use bounded differential/maintenance decisions, and never reactivate a retired visual fallback; no new waveform candidate is allowed before matching vendor CWF1 evidence.",
             "evidence": [
                 evidence("refresh_feel", str(refresh_feel.get("status")), "Static refresh/generation contract binds to the inactive v9 candidate and rejects stale procedural request routes."),
+                evidence("queue_generation_hygiene", str(queue_generation_hygiene.get("status")), "Generation switches discard only stale external expression/menu work before the coherent next frame."),
                 evidence("runtime_visual_boundary", str(runtime_visual_boundary.get("status")), "Unavailable visual resources fail closed rather than drawing a test, procedural, or code-menu substitute."),
                 evidence("waveform_freeze", "FROZEN", "No generic, nearby-panel, or guessed waveform trial is authorized."),
             ],
@@ -326,6 +334,7 @@ def build_audit() -> dict[str, Any]:
             "python .\\tools\\verify_companion_runtime_visual_boundary.py",
             "python .\\tools\\verify_pet_expression_system.py",
             "python .\\tools\\verify_screen_refresh_feel_contract.py",
+            "python .\\tools\\verify_display_queue_generation_hygiene.py",
             "python .\\tools\\verify_screen_resource_architecture.py",
             "python .\\tools\\verify_display_queue_static.py",
             "python .\\tools\\verify_wba_adapter_m33_compile.py --self-test",
