@@ -1,0 +1,51 @@
+{
+  "schema": "companion.ui_visual_acceptance_manifest.v1",
+  "status": "READY_FOR_SEQUENTIAL_OWNER_REVIEW",
+  "review_style": "canonical Chinese aiw operator-prompt; one item at a time; any note becomes a triage requirement",
+  "items": [
+    {
+      "sequence": 1,
+      "id": "menu-v6-four-root",
+      "title": "Companion 菜单视觉验收 1/3",
+      "scope": "Verify the four-root menu layout and actual English/zh-CN text overlay. The generated guide strokes are not product text.",
+      "artifacts": [
+        "docs/art/iterations/companion-menu-v6-four-root/generated_menu_four_root_v6_candidate.png",
+        "docs/art/iterations/companion-menu-v6-four-root/generated_menu_four_root_v6_en_200x200_localization_preview.png",
+        "docs/art/iterations/companion-menu-v6-four-root/generated_menu_four_root_v6_zh_cn_200x200_localization_preview.png"
+      ],
+      "source_sha256": "07D791A898FABE6E558686F6A4B4CC86094541C6B5116D6E0A3D263930DAA868",
+      "machine_evidence": "docs/validation/companion-menu-v6-localization-preview-20260717.json",
+      "owner_decision": "PENDING_OWNER_VISUAL_DECISION",
+      "runtime_boundary": "No PBM/CEMP, Flash, firmware, target-font or runtime-menu activation."
+    },
+    {
+      "sequence": 2,
+      "id": "special-system-v1",
+      "title": "Companion 表情视觉验收 2/3",
+      "scope": "Verify v9 identity consistency and readable cute special states for voice, recording error, power, link and system errors.",
+      "artifacts": [
+        "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_system_v1_candidate.png",
+        "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_system_v1_candidate_200x200_preview.png"
+      ],
+      "source_sha256": "AF9ADFD49C47C89DF674726D7201CC49C61ED636306013697822BB42FB1A9C82",
+      "machine_evidence": "docs/validation/companion-pet-special-system-source-review-20260717.json",
+      "owner_decision": "PENDING_OWNER_VISUAL_DECISION",
+      "runtime_boundary": "No PBM/CEMP, Flash, firmware or resource-binding activation."
+    },
+    {
+      "sequence": 3,
+      "id": "special-journey-v1",
+      "title": "Companion 表情视觉验收 3/3",
+      "scope": "Verify v9 identity consistency and readable cute menu/upgrade journey keyframes. menu.open remains a handoff into the separately reviewed four-root menu source.",
+      "artifacts": [
+        "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_journey_v1_candidate.png",
+        "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_journey_v1_candidate_200x200_preview.png"
+      ],
+      "source_sha256": "95CC749134F169E73A2E2A99FA2B6F08AABDFE78D218677C347D2D687EA4B17F",
+      "machine_evidence": "docs/validation/companion-pet-special-journey-source-review-20260717.json",
+      "owner_decision": "PENDING_OWNER_VISUAL_DECISION",
+      "runtime_boundary": "No PBM/CEMP, Flash, firmware, OTA or resource-binding activation."
+    }
+  ],
+  "final_gate": "Only explicitly accepted items may proceed to a separately committed PBM/CEMP import proposal. An acceptance does not itself activate runtime resources or permit a panel flash."
+}

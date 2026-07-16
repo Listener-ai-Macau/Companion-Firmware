@@ -39,4 +39,5 @@ Invoke-Python @("tools/render_companion_pet_special_system_preview.py", "--write
 Invoke-Python @("tools/render_companion_pet_special_journey_preview.py", "--write")
 Invoke-Python @("tools/verify_companion_pending_special_source_mapping.py", "--write")
 Invoke-Python @("tools/verify_companion_art_retirement.py", "--write")
+Invoke-Python @("tools/verify_companion_ui_visual_acceptance_readiness.py", "--write")
 Write-Output "PASS: v9 source -> 39/39 PBM -> deterministic CEMP -> decoded PBM -> no-fallback scene coverage -> inactive portable binding -> localized pending v6 menu source, two pending special sources, and exact no-runtime mapping only."
