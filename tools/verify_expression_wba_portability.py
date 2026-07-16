@@ -59,6 +59,10 @@ WBA_ADAPTER_M33_COMPILE_VERIFIER = REPO_ROOT / "tools" / "verify_wba_adapter_m33
 WBA_ADAPTER_M33_COMPILE_CONTRACT = (
     REPO_ROOT / "docs" / "validation" / "companion-screen-wba-adapter-m33-compile.json"
 )
+V9_BASELINE = REPO_ROOT / "docs" / "art" / "iterations" / "companion-pet-expression-v9" / "baseline-lock.json"
+V9_WBA_VISUAL_BOUNDARY = REPO_ROOT / "docs" / "validation" / "companion-v9-wba-visual-boundary-20260717.json"
+WBA_V9_CALLBACK_REPLAY = REPO_ROOT / "docs" / "validation" / "companion-wba-v9-cemp-callback-replay-20260717.json"
+V9_SHA256 = "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
 APP_BLE = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Core" / "Src" / "app_ble.c"
 MAKEFILE = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Makefile"
 PANEL_TARGET_STM32WB_HEADER = EPAPER_ROOT / "panel_target_stm32wb.h"
@@ -209,6 +213,9 @@ def build_fixture() -> dict[str, Any]:
             "wba_lse_clock_verifier": rel(WBA_LSE_CLOCK_VERIFIER),
             "wba_adapter_m33_compile_contract": rel(WBA_ADAPTER_M33_COMPILE_CONTRACT),
             "wba_adapter_m33_compile_verifier": rel(WBA_ADAPTER_M33_COMPILE_VERIFIER),
+            "v9_baseline": rel(V9_BASELINE),
+            "v9_wba_visual_boundary": rel(V9_WBA_VISUAL_BOUNDARY),
+            "wba_v9_callback_replay": rel(WBA_V9_CALLBACK_REPLAY),
             "display_queue_verifier": rel(DISPLAY_QUEUE_STATIC),
             "display_drain_contract": rel(DISPLAY_DRAIN_CONTRACT),
             "display_drain_verifier": rel(DISPLAY_DRAIN_VERIFIER),
@@ -310,6 +317,14 @@ def build_fixture() -> dict[str, Any]:
                 "settings_sleepy_screen_status",
             ],
             "real_ble_expression_status_sequence": "real BLE artifacts must carry the six-face screen_expression_status baseline from companion-screen-expression-host-status-sequence.json before claiming panel parity.",
+        },
+        "current_goal_visual_boundary": {
+            "active_inner_face_source": "companion-pet-expression-v9",
+            "active_inner_face_sha256": V9_SHA256,
+            "visual_runtime": "external CEMP through callback-only ordinary 1-1-1 SPI NOR; the v9 candidate is machine-only and inactive",
+            "historical_procedural_composer": "pet_expression remains a historical host/protocol regression archive only and must not be reintroduced into a WB55 or WBA product framebuffer path",
+            "runtime_resource_activation_allowed": False,
+            "real_wba_panel_parity_claimed": False,
         },
         "wb55_specific_boundaries": {
             "gatt_scheduler_glue": rel(APP_BLE),
@@ -1040,6 +1055,52 @@ def check_wba_adapter_m33_compile(errors: list[str]) -> None:
     )
 
 
+def check_current_goal_visual_boundary(errors: list[str]) -> None:
+    baseline = json.loads(read(V9_BASELINE))
+    boundary = json.loads(read(V9_WBA_VISUAL_BOUNDARY))
+    replay = json.loads(read(WBA_V9_CALLBACK_REPLAY))
+
+    require(
+        baseline.get("status") == "OWNER_APPROVED_SOURCE_LOCKED_MACHINE_RENDER_AUTHORIZED",
+        "v9 baseline is not owner-locked for WBA portability", errors,
+    )
+    require(
+        baseline.get("accepted_source", {}).get("sha256") == V9_SHA256,
+        "WBA portability v9 source hash drifted", errors,
+    )
+    require(
+        boundary.get("status") == "PASS_V9_WBA_VISUAL_BOUNDARY_PENDING_OWNER",
+        "WBA visual boundary is not pending-owner machine PASS", errors,
+    )
+    wba_resource = boundary.get("wba_resource_boundary", {})
+    require(
+        wba_resource.get("storage") == "external CEMP through callback-only external NOR adapter"
+        and wba_resource.get("transport") == "ordinary 1-1-1 SPI NOR"
+        and wba_resource.get("runtime_activation_allowed") is False
+        and wba_resource.get("panel_parity_claimed") is False,
+        "WBA visual resource boundary drifted", errors,
+    )
+    require(
+        replay.get("status") == "PASS_CURRENT_SOURCE_MACHINE_ONLY_CALLBACK_REPLAY",
+        "WBA v9 callback replay is not machine-only PASS", errors,
+    )
+    candidate = replay.get("candidate", {})
+    require(
+        candidate.get("name") == "companion-v9-expression-candidate-200x200"
+        and candidate.get("revision") == 90
+        and candidate.get("clips") == 13
+        and candidate.get("frames") == 39
+        and candidate.get("runtime_resource_activated") is False,
+        "WBA v9 callback candidate drifted or permits activation", errors,
+    )
+    for key in (
+        "real_wba_board", "external_flash_provisioned", "firmware_flashed",
+        "panel_command", "owner_visual_pass", "runtime_resource_activation",
+    ):
+        require(replay.get("boundary", {}).get(key) is False,
+                f"WBA callback replay overclaims {key}", errors)
+
+
 def check_fixture_data(data: dict[str, Any], errors: list[str]) -> None:
     require(data.get("schema_id") == SCHEMA_ID, "unexpected WBA port contract schema", errors)
     require(data.get("status") == "PASS", "WBA port contract fixture must be PASS", errors)
@@ -1047,7 +1108,31 @@ def check_fixture_data(data: dict[str, Any], errors: list[str]) -> None:
     require(targets.get("baseline") == "STM32WBA55", "WBA fixture must keep WBA55 as baseline", errors)
     require(targets.get("expanded") == "STM32WBA65", "WBA fixture must mention WBA65 expanded target", errors)
     portable = data.get("portable_contracts", {})
+    current_goal = data.get("current_goal_visual_boundary", {})
     wb55_boundaries = data.get("wb55_specific_boundaries", {})
+    require(
+        current_goal.get("active_inner_face_source") == "companion-pet-expression-v9"
+        and current_goal.get("active_inner_face_sha256") == V9_SHA256,
+        "WBA fixture current v9 visual baseline drifted", errors,
+    )
+    require(
+        "external CEMP" in str(current_goal.get("visual_runtime", ""))
+        and "ordinary 1-1-1 SPI NOR" in str(current_goal.get("visual_runtime", ""))
+        and current_goal.get("runtime_resource_activation_allowed") is False
+        and current_goal.get("real_wba_panel_parity_claimed") is False,
+        "WBA fixture current external-CEMP activation boundary drifted", errors,
+    )
+    require(
+        "historical host/protocol regression archive" in str(current_goal.get("historical_procedural_composer", "")),
+        "WBA fixture does not mark the procedural composer as historical only", errors,
+    )
+    for key, path in (
+        ("v9_baseline", V9_BASELINE),
+        ("v9_wba_visual_boundary", V9_WBA_VISUAL_BOUNDARY),
+        ("wba_v9_callback_replay", WBA_V9_CALLBACK_REPLAY),
+    ):
+        require(data.get("sources", {}).get(key) == rel(path),
+                f"WBA fixture missing current-goal source {key}", errors)
     require(portable.get("display_queue_depth") == 4, "WBA fixture display queue depth drifted", errors)
     require(portable.get("display_payload_max_bytes") == 236, "WBA fixture payload bound drifted", errors)
     require(
@@ -1633,6 +1718,9 @@ def main(argv: list[str]) -> int:
         WBA_LSE_CLOCK_CONTRACT,
         WBA_ADAPTER_M33_COMPILE_VERIFIER,
         WBA_ADAPTER_M33_COMPILE_CONTRACT,
+        V9_BASELINE,
+        V9_WBA_VISUAL_BOUNDARY,
+        WBA_V9_CALLBACK_REPLAY,
         PANEL_TARGET_STM32WB_HEADER,
         PANEL_TARGET_STM32WB_SOURCE,
         SCREEN_ASSETS_STM32WBA_HEADER,
@@ -1659,6 +1747,7 @@ def main(argv: list[str]) -> int:
         check_docs(errors)
         check_third_party_clean(errors)
         check_wba_adapter_m33_compile(errors)
+        check_current_goal_visual_boundary(errors)
         if args.write_fixture and not errors:
             fixture_path.parent.mkdir(parents=True, exist_ok=True)
             fixture_path.write_text(json.dumps(expected, indent=2, sort_keys=True) + "\n", encoding="utf-8")

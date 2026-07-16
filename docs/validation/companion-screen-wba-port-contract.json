@@ -3,6 +3,14 @@
     "gate": "wba_real_panel_refresh",
     "reason": "WBA real refresh still requires a CubeWBA project, target pins, timing, refresh logs, and visual evidence; WB55 real refresh is already proven."
   },
+  "current_goal_visual_boundary": {
+    "active_inner_face_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "active_inner_face_source": "companion-pet-expression-v9",
+    "historical_procedural_composer": "pet_expression remains a historical host/protocol regression archive only and must not be reintroduced into a WB55 or WBA product framebuffer path",
+    "real_wba_panel_parity_claimed": false,
+    "runtime_resource_activation_allowed": false,
+    "visual_runtime": "external CEMP through callback-only ordinary 1-1-1 SPI NOR; the v9 candidate is machine-only and inactive"
+  },
   "forbidden_in_portable_files": [
     "Cube generated app header",
     "GPIO pin macro",
@@ -193,6 +201,8 @@
     "screen_runtime_verifier": "tools/verify_expression_screen_runtime_snapshot.py",
     "target_capability_profile": "docs/validation/companion-screen-target-capabilities.json",
     "target_capability_verifier": "tools/verify_expression_target_capabilities.py",
+    "v9_baseline": "docs/art/iterations/companion-pet-expression-v9/baseline-lock.json",
+    "v9_wba_visual_boundary": "docs/validation/companion-v9-wba-visual-boundary-20260717.json",
     "wb55_build": "cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile",
     "wb55_glue": "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c",
     "wb55_panel_target_adapter": "app/companion_pendant/epaper/panel_target_stm32wb.c",
@@ -225,7 +235,8 @@
     "wba_screen_gatt_verifier": "tools/verify_expression_screen_gatt_stm32wba.py",
     "wba_touch_target_contract": "docs/validation/companion-screen-touch-ft6336-stm32wba.json",
     "wba_touch_target_scaffold": "app/companion_pendant/touch/touch_target_stm32wba_ft6336.c",
-    "wba_touch_target_verifier": "tools/verify_touch_target_stm32wba_ft6336.py"
+    "wba_touch_target_verifier": "tools/verify_touch_target_stm32wba_ft6336.py",
+    "wba_v9_callback_replay": "docs/validation/companion-wba-v9-cemp-callback-replay-20260717.json"
   },
   "status": "PASS",
   "targets": {
