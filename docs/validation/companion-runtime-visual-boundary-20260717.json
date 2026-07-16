@@ -3,7 +3,7 @@
     "forbidden_symbol_matches": 0,
     "nm": "C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/14.2 rel1/bin/arm-none-eabi-nm.EXE",
     "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build/Companion_Nucleo_WB55RG_Bringup.elf",
-    "sha256": "16EAEA01436FDBAB39FA9A107A1B0EB92BE36E581EBA8CFC90BBE98E82BC1389"
+    "sha256": "475902614AD545CE88C7393B6158CA69B389E4DBBEEFE8B14AD0CB10EE3138A0"
   },
   "generated_on": "2026-07-17",
   "hardware_boundary": {
@@ -13,11 +13,12 @@
   },
   "runtime_policy": {
     "active_expression_maintenance": "external CEMP frame replay only",
+    "menu_visual_base": "external CEMP base required; no complete code-rendered fallback",
     "retired_procedural_face_linked": false,
     "unavailable_visual_source": "return transport error; do not draw a procedural or test substitute"
   },
   "schema": "companion.runtime_visual_boundary.v1",
-  "source_commit": "04b611379827efe2cfc0c8c7939731d7dd130ff2",
+  "source_commit": "f8e1ffa46a9033b447daca877ba482bf2781f1d1",
   "source_paths": [
     "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c",
     "cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile",
@@ -25,10 +26,10 @@
     "tools/verify_companion_runtime_visual_boundary.py"
   ],
   "source_sha256": {
-    "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c": "CB972C8BCEC57A8E506BD6B0E954974DF771E2839FAEF6544116812CC84D2C58",
-    "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c": "389B1F2D6B656A8382D1B763CEE3ECB904B7C4D58790E8EC12029C4731C6B75A",
+    "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c": "020F920832EC03A8A77644CB0FB76490CE5F2E74084C54764059ACC1C1489E05",
+    "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c": "B930B6548FC561A03C6186116DF0590589B64D52647874EABEF3596B883CB640",
     "cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile": "9EB22A312E596C8ECDF456B1C9F6EAC389E74CE1FF9B05B4712B50E6EE894286",
-    "tools/verify_companion_runtime_visual_boundary.py": "BD64C5C0F06DFEDE1475F5A77250325267A7A686FF0B0CFED984A8C5AD565C73"
+    "tools/verify_companion_runtime_visual_boundary.py": "58120031DCCA331865ABDE571CD13FDCD1784A4979E2474D9B174C1FD5A7E367"
   },
   "status": "PASS_CURRENT_SOURCE_NO_PROCEDURAL_VISUAL_FALLBACK"
 }
