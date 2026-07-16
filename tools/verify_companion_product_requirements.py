@@ -57,6 +57,7 @@ REQUIRED_ANCHORS = (
     "COMP-REQ-037",
     "COMP-REQ-038",
     "COMP-REQ-039",
+    "COMP-REQ-076",
     "PC6/EXTI",
     "<=1 mA",
     "external-Flash first",
@@ -83,6 +84,9 @@ REQUIRED_ANCHORS = (
     "companion-menu-v6-four-root",
     "physical preflight only when a healthy",
     "verify_companion_current_goal_audit.py",
+    "The Goal API cannot edit or replace an unfinished active Goal",
+    "main is the sole attached worktree",
+    "<AI_WORKFLOW_REPO>\\docs\\agent_quickstart.md",
 )
 
 
