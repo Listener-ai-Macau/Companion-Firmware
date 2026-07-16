@@ -87,6 +87,7 @@ def source_errors() -> list[str]:
         "comp_epaper_display_queue_enqueue_pet_expression",
         "COMP_EPAPER_DISPLAY_REQUEST_PET_EXPRESSION",
         "comp_pet_expression_self_test",
+        "comp_screen_menu_self_test",
     ):
         if token in app:
             errors.append(f"app runtime still references retired procedural visual route: {token}")
@@ -106,6 +107,8 @@ def source_errors() -> list[str]:
         "COMP_EPAPER_DISPLAY_REQUEST_PET_EXPRESSION",
         "frame_test_pattern",
         "source=procedural",
+        "comp_screen_menu_render(",
+        "source=rescue_ui",
     ):
         if token in panel:
             errors.append(f"panel runtime still contains retired visual fallback: {token}")
@@ -121,7 +124,9 @@ def symbol_errors() -> tuple[list[str], dict[str, Any]]:
     if completed.returncode != 0:
         return [f"arm-none-eabi-nm failed: {completed.stdout.strip()}"], {}
 
-    forbidden = re.compile(r"\b(?:comp_pet_expression|frame_test_pattern|Companion_Display_EnqueuePetPose)\b")
+    forbidden = re.compile(
+        r"\b(?:comp_pet_expression|frame_test_pattern|Companion_Display_EnqueuePetPose|comp_screen_menu_render)\b"
+    )
     matches = [line for line in completed.stdout.splitlines() if forbidden.search(line)]
     if matches:
         return ["WB55 ELF still defines retired procedural visual symbols:\n" + "\n".join(matches)], {}
@@ -144,6 +149,7 @@ def inspect() -> tuple[list[str], dict[str, Any]]:
         "elf": elf,
         "runtime_policy": {
             "active_expression_maintenance": "external CEMP frame replay only",
+            "menu_visual_base": "external CEMP base required; no complete code-rendered fallback",
             "unavailable_visual_source": "return transport error; do not draw a procedural or test substitute",
             "retired_procedural_face_linked": False,
         },

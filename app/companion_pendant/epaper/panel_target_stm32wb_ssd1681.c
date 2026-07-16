@@ -752,21 +752,6 @@ static bool frame_prepare(comp_epaper_expression_asset_source_t *expression_asse
                menu_asset_name,
                (unsigned)request->menu_flags);
         return true;
-    } else if (request != NULL &&
-               request->request_kind == COMP_EPAPER_DISPLAY_REQUEST_MENU &&
-               comp_screen_menu_render((comp_screen_menu_view_t)request->menu_view,
-                                       (comp_screen_menu_language_t)request->menu_language,
-                                       request->menu_page,
-                                       request->menu_flags,
-                                       s_frame,
-                                       sizeof(s_frame),
-                                       SSD1681_WIDTH,
-                                       SSD1681_HEIGHT)) {
-        SSD1681_VERBOSE_TRACE("[epaper] scene=menu view=%u language=%u source=rescue_ui flags=0x%02X\r\n",
-               (unsigned)request->menu_view,
-               (unsigned)request->menu_language,
-               (unsigned)request->menu_flags);
-        return true;
     }
     SSD1681_VERBOSE_TRACE("[epaper] source=unavailable kind=%u; suppressing visual fallback\r\n",
            request == NULL ? 0xFFu : (unsigned)request->request_kind);

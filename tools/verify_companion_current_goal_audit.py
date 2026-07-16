@@ -110,6 +110,7 @@ def build_audit() -> dict[str, Any]:
     check(errors, isinstance(runtime_commit, str) and len(runtime_commit) == 40, "runtime visual boundary has no full source commit")
     runtime_policy = runtime_visual_boundary.get("runtime_policy", {})
     check(errors, runtime_policy.get("active_expression_maintenance") == "external CEMP frame replay only", "runtime expression maintenance drifted from external CEMP")
+    check(errors, runtime_policy.get("menu_visual_base") == "external CEMP base required; no complete code-rendered fallback", "runtime menu visual base drifted from external CEMP")
     check(errors, runtime_policy.get("unavailable_visual_source") == "return transport error; do not draw a procedural or test substitute", "runtime visual fallback policy drifted")
     check(errors, runtime_policy.get("retired_procedural_face_linked") is False, "retired procedural face is linked into runtime")
     check(errors, runtime_visual_boundary.get("elf", {}).get("forbidden_symbol_matches") == 0, "runtime ELF contains a retired visual symbol")

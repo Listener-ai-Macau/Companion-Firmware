@@ -648,8 +648,7 @@ void APP_BLE_Init( void )
              &s_companion_display_queue),
          (unsigned long)comp_epaper_display_queue_stale_generation_discard_count(
              &s_companion_display_queue));
-  printf("[screen] core_selftest menu=%s menu_v5_bridge=%s gesture=%s presentation=%s emote_player=%s asset_store=%s asset_pack=%s expression_source=%s refresh_policy=%s\r\n",
-         comp_screen_menu_self_test() ? "pass" : "fail",
+  printf("[screen] core_selftest menu_v5_bridge=%s gesture=%s presentation=%s emote_player=%s asset_store=%s asset_pack=%s expression_source=%s refresh_policy=%s\r\n",
          comp_menu_v5_target_bridge_self_test() ? "pass" : "fail",
          comp_touch_gesture_self_test() ? "pass" : "fail",
          comp_screen_presentation_self_test() ? "pass" : "fail",
@@ -660,8 +659,8 @@ void APP_BLE_Init( void )
          comp_epaper_refresh_policy_self_test() ? "pass" : "fail");
   printf("[screen] pet_attention_selftest=%s\r\n",
          comp_pet_attention_self_test() ? "pass" : "fail");
-  /* The host suite owns legacy behavior self-tests.  Do not link their
-   * procedural pose composer into the product firmware. */
+  /* The host suite owns retired procedural-face and complete menu-renderer
+   * self-tests.  Product firmware only renders approved external CEMP bases. */
   printf("[pet-performance] selftest=%s bridge=%s resource_activation=disabled\r\n",
          comp_pet_performance_self_test() ? "pass" : "fail",
          comp_pet_performance_event_bridge_self_test() ? "pass" : "fail");
