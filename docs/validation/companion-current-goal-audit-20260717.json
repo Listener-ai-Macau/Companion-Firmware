@@ -50,6 +50,11 @@
           "detail": "Ordinary 1-1-1 SPI NOR behavior passes without WBA hardware parity claim.",
           "path": "docs/validation/companion-wba-spi-nor-adapter.json",
           "status": "PASS_NATIVE_BEHAVIOR_AND_PORTABLE_CONTRACT"
+        },
+        {
+          "detail": "The inactive 39-frame v9 CEMP mounts and reads through the WBA55/WBA65 callback-only external-NOR adapter.",
+          "path": "docs/validation/companion-wba-v9-cemp-callback-replay-20260717.json",
+          "status": "PASS_CURRENT_SOURCE_MACHINE_ONLY_CALLBACK_REPLAY"
         }
       ],
       "id": "current_wb55_build_and_wba_adapter",
@@ -138,10 +143,15 @@
           "detail": "WBA target boundary forbids retired visual inputs and runtime activation.",
           "path": "docs/validation/companion-v9-wba-visual-boundary-20260717.json",
           "status": "PASS_V9_WBA_VISUAL_BOUNDARY_PENDING_OWNER"
+        },
+        {
+          "detail": "Host-only replay proves CEMP mount, CRC validation and all 39 reads for both targets without external Flash provisioning.",
+          "path": "docs/validation/companion-wba-v9-cemp-callback-replay-20260717.json",
+          "status": "PASS_CURRENT_SOURCE_MACHINE_ONLY_CALLBACK_REPLAY"
         }
       ],
       "id": "wba_resource_portability",
-      "requirement": "WBA55/WBA65 adapters accept only v9-era external CEMP over callback-only ordinary SPI NOR; no WBA visual or panel parity is claimed.",
+      "requirement": "WBA55/WBA65 adapters accept only v9-era external CEMP over callback-only ordinary SPI NOR; the inactive v9 pack mounts and replays through each target callback, while no WBA visual or panel parity is claimed.",
       "status": "pre_port_proved_real_wba_pending"
     },
     {
@@ -169,6 +179,7 @@
     "python .\\tools\\capture_wb55_current_build_receipt.py",
     "python .\\tools\\verify_wba_adapter_m33_compile.py --self-test",
     "python .\\tools\\verify_wba_spi_nor_adapter.py --self-test",
+    "python .\\tools\\capture_wba_v9_candidate_asset_replay_receipt.py",
     "python .\\tools\\capture_companion_menu_v6_function_receipt.py"
   ]
 }

@@ -19,6 +19,7 @@ ARTIFACTS = {
     "wb55_build_receipt": ROOT / "docs/validation/companion-wb55-current-build-receipt-20260717.json",
     "wba_m33_compile": ROOT / "docs/validation/companion-screen-wba-adapter-m33-compile.json",
     "wba_spi_nor": ROOT / "docs/validation/companion-wba-spi-nor-adapter.json",
+    "wba_v9_callback_replay": ROOT / "docs/validation/companion-wba-v9-cemp-callback-replay-20260717.json",
     "v9_baseline": ROOT / "docs/art/iterations/companion-pet-expression-v9/baseline-lock.json",
     "v9_cemp": ROOT / "docs/validation/companion-v9-expression-cemp-20260716.json",
     "v9_coverage": ROOT / "docs/validation/companion-v9-scene-coverage-20260716.json",
@@ -65,6 +66,7 @@ def build_audit() -> dict[str, Any]:
     wb55_build_receipt = load_json("wb55_build_receipt")
     wba_m33_compile = load_json("wba_m33_compile")
     wba_spi_nor = load_json("wba_spi_nor")
+    wba_v9_callback_replay = load_json("wba_v9_callback_replay")
     baseline = load_json("v9_baseline")
     cemp = load_json("v9_cemp")
     coverage = load_json("v9_coverage")
@@ -107,6 +109,15 @@ def build_audit() -> dict[str, Any]:
     check(errors, wba_spi_nor.get("status") == "PASS_NATIVE_BEHAVIOR_AND_PORTABLE_CONTRACT", "WBA SPI-NOR contract is not PASS")
     wba_targets = wba_spi_nor.get("targets", {})
     check(errors, wba_targets.get("transport") == "spi_nor_1_1_1" and wba_targets.get("hardware_parity_claimed") is False, "WBA SPI-NOR transport boundary drifted")
+    check(errors, wba_v9_callback_replay.get("status") == "PASS_CURRENT_SOURCE_MACHINE_ONLY_CALLBACK_REPLAY", "WBA v9 callback replay is not PASS")
+    wba_v9_candidate = wba_v9_callback_replay.get("candidate", {})
+    check(errors, wba_v9_candidate.get("name") == "companion-v9-expression-candidate-200x200", "WBA v9 callback replay candidate name drifted")
+    check(errors, wba_v9_candidate.get("revision") == 90 and wba_v9_candidate.get("clips") == 13 and wba_v9_candidate.get("frames") == 39, "WBA v9 callback replay candidate geometry drifted")
+    check(errors, wba_v9_candidate.get("runtime_resource_activated") is False, "WBA v9 callback replay permits runtime activation")
+    check(errors, wba_v9_callback_replay.get("targets") == ["WBA55", "WBA65"], "WBA v9 callback replay target set drifted")
+    check(errors, wba_v9_callback_replay.get("host_test", {}).get("returncode") == 0, "WBA v9 callback replay host test failed")
+    for key in ("real_wba_board", "external_flash_provisioned", "firmware_flashed", "panel_command", "owner_visual_pass", "runtime_resource_activation"):
+        check(errors, wba_v9_callback_replay.get("boundary", {}).get(key) is False, f"WBA v9 callback replay boundary drifted: {key}")
 
     accepted_source = baseline.get("accepted_source", {})
     check(errors, baseline.get("status") == "OWNER_APPROVED_SOURCE_LOCKED_MACHINE_RENDER_AUTHORIZED", "v9 baseline is not owner locked")
@@ -187,6 +198,7 @@ def build_audit() -> dict[str, Any]:
                 evidence("wb55_build_receipt", str(wb55_build_receipt.get("status")), f"Three WB55 variants built from source commit {build_commit}; the receipt invalidates when listed build inputs change."),
                 evidence("wba_m33_compile", str(wba_m33_compile.get("status")), "Eight callback-only target adapters compile with strict Cortex-M33 flags."),
                 evidence("wba_spi_nor", str(wba_spi_nor.get("status")), "Ordinary 1-1-1 SPI NOR behavior passes without WBA hardware parity claim."),
+                evidence("wba_v9_callback_replay", str(wba_v9_callback_replay.get("status")), "The inactive 39-frame v9 CEMP mounts and reads through the WBA55/WBA65 callback-only external-NOR adapter."),
             ],
         },
         {
@@ -222,8 +234,11 @@ def build_audit() -> dict[str, Any]:
         {
             "id": "wba_resource_portability",
             "status": "pre_port_proved_real_wba_pending",
-            "requirement": "WBA55/WBA65 adapters accept only v9-era external CEMP over callback-only ordinary SPI NOR; no WBA visual or panel parity is claimed.",
-            "evidence": [evidence("wba_boundary", str(wba_boundary.get("status")), "WBA target boundary forbids retired visual inputs and runtime activation.")],
+            "requirement": "WBA55/WBA65 adapters accept only v9-era external CEMP over callback-only ordinary SPI NOR; the inactive v9 pack mounts and replays through each target callback, while no WBA visual or panel parity is claimed.",
+            "evidence": [
+                evidence("wba_boundary", str(wba_boundary.get("status")), "WBA target boundary forbids retired visual inputs and runtime activation."),
+                evidence("wba_v9_callback_replay", str(wba_v9_callback_replay.get("status")), "Host-only replay proves CEMP mount, CRC validation and all 39 reads for both targets without external Flash provisioning."),
+            ],
         },
         {
             "id": "ssd1681_waveform_freeze",
@@ -257,6 +272,7 @@ def build_audit() -> dict[str, Any]:
             "python .\\tools\\capture_wb55_current_build_receipt.py",
             "python .\\tools\\verify_wba_adapter_m33_compile.py --self-test",
             "python .\\tools\\verify_wba_spi_nor_adapter.py --self-test",
+            "python .\\tools\\capture_wba_v9_candidate_asset_replay_receipt.py",
             "python .\\tools\\capture_companion_menu_v6_function_receipt.py",
         ],
     }
