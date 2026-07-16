@@ -1,257 +1,73 @@
 {
   "errors": [],
   "global_rule": "docs/product_visual_design_iteration.md",
-  "ledger_count": 4,
+  "ledger_count": 2,
   "ledgers": [
     {
       "baseline": {
-        "actual_sha256": "D87E45A49AA623552B867C9EDAADB906CA282DF2C2C062D3A127A277920F9F81",
-        "expected_sha256": "D87E45A49AA623552B867C9EDAADB906CA282DF2C2C062D3A127A277920F9F81",
+        "actual_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+        "expected_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
         "hash_matches": true,
-        "path": "docs/art/generated_companion_menu_reference_v3.png"
+        "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png"
       },
-      "feature": "companion-menu",
+      "feature": "companion-four-root-menu",
       "iterations": [
         {
-          "implementation_status": "not_used",
-          "iteration_id": "menu-v2-2026-07-13",
+          "implementation_status": "not_activated_pending_owner_visual_review",
+          "iteration_id": "menu-v6-four-root-source-2026-07-17",
           "output": {
-            "actual_sha256": "064C20682F9C23CDE442A6E82906EC78339C7F8816DE3E7E6E1198738D018731",
-            "expected_sha256": "064C20682F9C23CDE442A6E82906EC78339C7F8816DE3E7E6E1198738D018731",
+            "actual_sha256": "07D791A898FABE6E558686F6A4B4CC86094541C6B5116D6E0A3D263930DAA868",
+            "expected_sha256": "07D791A898FABE6E558686F6A4B4CC86094541C6B5116D6E0A3D263930DAA868",
             "hash_matches": true,
-            "path": "docs/art/generated_companion_menu_reference_v2.png"
+            "path": "docs/art/iterations/companion-menu-v6-four-root/generated_menu_four_root_v6_candidate.png"
           },
-          "pending_owner_review": false,
-          "rejected": true,
-          "resource_revision": null,
-          "review_outcome": "rejected",
-          "status": "rejected"
-        },
-        {
-          "implementation_status": "external_flash_resources_generated_build_pass_hardware_pending",
-          "iteration_id": "menu-v3-2026-07-13",
-          "output": {
-            "actual_sha256": "D87E45A49AA623552B867C9EDAADB906CA282DF2C2C062D3A127A277920F9F81",
-            "expected_sha256": "D87E45A49AA623552B867C9EDAADB906CA282DF2C2C062D3A127A277920F9F81",
-            "hash_matches": true,
-            "path": "docs/art/generated_companion_menu_reference_v3.png"
-          },
-          "pending_owner_review": false,
+          "pending_owner_review": true,
           "rejected": false,
-          "resource_revision": 53,
-          "review_outcome": "accepted_owner_2026-07-13",
-          "status": "accepted_owner_2026-07-13"
+          "resource_revision": null,
+          "review_outcome": "PENDING_OWNER_VISUAL_REVIEW",
+          "status": "generated_machine_review_pending_owner"
         }
       ],
-      "ledger": "docs/art/iterations/companion-menu-v2/iteration-ledger.json",
+      "ledger": "docs/art/iterations/companion-menu-v6-four-root/iteration-ledger.json",
       "target_profile": "wb55-gdey0154d67-ft6336u-200x200-1bit"
     },
     {
       "baseline": {
-        "actual_sha256": "D87E45A49AA623552B867C9EDAADB906CA282DF2C2C062D3A127A277920F9F81",
-        "expected_sha256": "D87E45A49AA623552B867C9EDAADB906CA282DF2C2C062D3A127A277920F9F81",
+        "actual_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+        "expected_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
         "hash_matches": true,
-        "path": "docs/art/generated_companion_menu_reference_v3.png"
+        "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png"
       },
-      "feature": "companion-menu",
+      "feature": "companion-pet-expression",
       "iterations": [
         {
-          "implementation_status": "not_started_reference_first",
-          "iteration_id": "menu-v4-2026-07-13",
+          "implementation_status": "machine_render_candidate_authorized_runtime_resource_not_activated",
+          "iteration_id": "pet-expression-v9-anti-sly-cute-2026-07-15",
           "output": {
-            "actual_sha256": "1C44E7913B88975D57ED72A16A3629BD984673DB54C2150D766192521878BCA8",
-            "expected_sha256": "1C44E7913B88975D57ED72A16A3629BD984673DB54C2150D766192521878BCA8",
+            "actual_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+            "expected_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
             "hash_matches": true,
-            "path": "docs/art/generated_companion_menu_reference_v4.png"
-          },
-          "pending_owner_review": true,
-          "rejected": false,
-          "resource_revision": null,
-          "review_outcome": "candidate_generated_pending_owner_review",
-          "status": "candidate_generated_pending_owner_review"
-        },
-        {
-          "implementation_status": "not_started_reference_first",
-          "iteration_id": "menu-v4-production-tiles-2026-07-13",
-          "output": {
-            "actual_sha256": "BEBF7529FDBE39A2DD7D36168E38310DF57AFDA071BC8793D8BB4C6BB9259A83",
-            "expected_sha256": "BEBF7529FDBE39A2DD7D36168E38310DF57AFDA071BC8793D8BB4C6BB9259A83",
-            "hash_matches": true,
-            "path": "docs/art/generated_companion_menu_reference_v4_production_tiles.png"
+            "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png"
           },
           "pending_owner_review": false,
-          "rejected": true,
-          "resource_revision": null,
-          "review_outcome": "rejected_non_square_tile_geometry",
-          "status": "rejected_non_square_tile_geometry"
-        },
-        {
-          "implementation_status": "candidate_english_pbm_staged_not_activated",
-          "iteration_id": "menu-v4-square-tiles-2026-07-13",
-          "output": {
-            "actual_sha256": "36FA932D91538C514CB9BA59FA1B2CCD642B706CB5B91911DAE543B8E066E692",
-            "expected_sha256": "36FA932D91538C514CB9BA59FA1B2CCD642B706CB5B91911DAE543B8E066E692",
-            "hash_matches": true,
-            "path": "docs/art/generated_companion_menu_reference_v4_square_tiles.png"
-          },
-          "pending_owner_review": true,
           "rejected": false,
           "resource_revision": null,
-          "review_outcome": "candidate_generated_pending_owner_review",
-          "status": "candidate_generated_pending_owner_review"
+          "review_outcome": "accepted_owner_2026-07-15",
+          "status": "accepted_owner_visual_baseline_2026-07-15"
         }
       ],
-      "ledger": "docs/art/iterations/companion-menu-v4/iteration-ledger.json",
-      "target_profile": "wb55-gdey0154d67-ft6336u-200x200-1bit"
-    },
-    {
-      "baseline": {
-        "actual_sha256": "B8643279C191BBAB610B4910110DF38E656290A64E4BC842174E284CB3689C6B",
-        "expected_sha256": "B8643279C191BBAB610B4910110DF38E656290A64E4BC842174E284CB3689C6B",
-        "hash_matches": true,
-        "path": "docs/art/generated_pet_expression_sheet_v5.png"
-      },
-      "feature": "companion-pet-interaction-states",
-      "iterations": [
-        {
-          "implementation_status": "candidate_pbm_staged_not_activated",
-          "iteration_id": "pet-interaction-v1-queued-2026-07-13",
-          "output": null,
-          "pending_owner_review": false,
-          "rejected": false,
-          "resource_revision": null,
-          "review_outcome": "not_generated",
-          "status": "superseded"
-        },
-        {
-          "implementation_status": "not_started",
-          "iteration_id": "pet-interaction-v2-dynamic-recording-2026-07-13",
-          "output": null,
-          "pending_owner_review": false,
-          "rejected": true,
-          "resource_revision": null,
-          "review_outcome": "rejected_for_state_readability",
-          "status": "superseded"
-        },
-        {
-          "implementation_status": "candidate_pbm_staged_not_activated",
-          "iteration_id": "pet-interaction-v3-obvious-sleep-recording-2026-07-13",
-          "output": {
-            "actual_sha256": "6E7EED7A17BE65BFA564AE1DF797CC0E518CC216649136DF172BB66496ED5F4C",
-            "expected_sha256": "6E7EED7A17BE65BFA564AE1DF797CC0E518CC216649136DF172BB66496ED5F4C",
-            "hash_matches": true,
-            "path": "docs/art/generated_pet_interaction_recording_sheet_v3.png"
-          },
-          "pending_owner_review": true,
-          "rejected": false,
-          "resource_revision": null,
-          "review_outcome": "candidate_generated_pending_owner_review",
-          "status": "prompt_ready"
-        }
-      ],
-      "ledger": "docs/art/iterations/companion-pet-interaction-v1/iteration-ledger.json",
-      "target_profile": "wb55-gdey0154d67-ft6336u-200x200-1bit"
-    },
-    {
-      "baseline": {
-        "actual_sha256": "B8643279C191BBAB610B4910110DF38E656290A64E4BC842174E284CB3689C6B",
-        "expected_sha256": "B8643279C191BBAB610B4910110DF38E656290A64E4BC842174E284CB3689C6B",
-        "hash_matches": true,
-        "path": "docs/art/generated_pet_expression_sheet_v5.png"
-      },
-      "feature": "companion-pet-menu-entry",
-      "iterations": [
-        {
-          "implementation_status": "rejected_do_not_import",
-          "iteration_id": "menu-entry-v1-2026-07-13",
-          "output": {
-            "actual_sha256": "848A6FB1D61B209034DC36190D9820EA612AB7DC89C3209FDA7469D394FF5D78",
-            "expected_sha256": "848A6FB1D61B209034DC36190D9820EA612AB7DC89C3209FDA7469D394FF5D78",
-            "hash_matches": true,
-            "path": "docs/art/rejected/generated_companion_menu_entry_expression_v1-rejected.png"
-          },
-          "pending_owner_review": false,
-          "rejected": true,
-          "resource_revision": null,
-          "review_outcome": "rejected_for_v5_style_discontinuity",
-          "status": "rejected"
-        },
-        {
-          "implementation_status": "candidate_pbm_staged_not_activated",
-          "iteration_id": "menu-entry-v2-v5-continuity-2026-07-13",
-          "output": {
-            "actual_sha256": "CB3424B597AE2C34340C3E44382C3ABC01D63ADFACEBE3E5F7A76B219ABEC39A",
-            "expected_sha256": "CB3424B597AE2C34340C3E44382C3ABC01D63ADFACEBE3E5F7A76B219ABEC39A",
-            "hash_matches": true,
-            "path": "docs/art/generated_companion_menu_entry_expression_v2.png"
-          },
-          "pending_owner_review": true,
-          "rejected": false,
-          "resource_revision": null,
-          "review_outcome": "candidate_generated_pending_owner_review",
-          "status": "candidate_generated_pending_owner_review"
-        },
-        {
-          "implementation_status": "candidate_pbm_staged_not_activated",
-          "iteration_id": "menu-entry-v3-exact-v5-proportion-2026-07-13",
-          "output": {
-            "actual_sha256": "B81A6C592A8E8C228CD2566C07B32533EA73C3022854430BEE3DE05066EC1921",
-            "expected_sha256": "B81A6C592A8E8C228CD2566C07B32533EA73C3022854430BEE3DE05066EC1921",
-            "hash_matches": true,
-            "path": "docs/art/generated_companion_menu_entry_expression_v3.png"
-          },
-          "pending_owner_review": true,
-          "rejected": false,
-          "resource_revision": null,
-          "review_outcome": "candidate_generated_pending_owner_review",
-          "status": "candidate_generated_pending_owner_review"
-        }
-      ],
-      "ledger": "docs/art/iterations/companion-pet-menu-entry-v1/iteration-ledger.json",
+      "ledger": "docs/art/iterations/companion-pet-expression-v9/iteration-ledger.json",
       "target_profile": "wb55-gdey0154d67-ft6336u-200x200-1bit"
     }
   ],
   "pending_owner_visual_review": [
     {
-      "iteration_id": "menu-v4-2026-07-13",
-      "ledger": "docs/art/iterations/companion-menu-v4/iteration-ledger.json"
-    },
-    {
-      "iteration_id": "menu-v4-square-tiles-2026-07-13",
-      "ledger": "docs/art/iterations/companion-menu-v4/iteration-ledger.json"
-    },
-    {
-      "iteration_id": "pet-interaction-v3-obvious-sleep-recording-2026-07-13",
-      "ledger": "docs/art/iterations/companion-pet-interaction-v1/iteration-ledger.json"
-    },
-    {
-      "iteration_id": "menu-entry-v2-v5-continuity-2026-07-13",
-      "ledger": "docs/art/iterations/companion-pet-menu-entry-v1/iteration-ledger.json"
-    },
-    {
-      "iteration_id": "menu-entry-v3-exact-v5-proportion-2026-07-13",
-      "ledger": "docs/art/iterations/companion-pet-menu-entry-v1/iteration-ledger.json"
+      "iteration_id": "menu-v6-four-root-source-2026-07-17",
+      "ledger": "docs/art/iterations/companion-menu-v6-four-root/iteration-ledger.json"
     }
   ],
   "purpose": "Machine audit only. It proves visual evidence is retained; it does not replace owner visual acceptance.",
-  "rejected_history_preserved": [
-    {
-      "iteration_id": "menu-v2-2026-07-13",
-      "ledger": "docs/art/iterations/companion-menu-v2/iteration-ledger.json"
-    },
-    {
-      "iteration_id": "menu-v4-production-tiles-2026-07-13",
-      "ledger": "docs/art/iterations/companion-menu-v4/iteration-ledger.json"
-    },
-    {
-      "iteration_id": "pet-interaction-v2-dynamic-recording-2026-07-13",
-      "ledger": "docs/art/iterations/companion-pet-interaction-v1/iteration-ledger.json"
-    },
-    {
-      "iteration_id": "menu-entry-v1-2026-07-13",
-      "ledger": "docs/art/iterations/companion-pet-menu-entry-v1/iteration-ledger.json"
-    }
-  ],
+  "rejected_history_preserved": [],
   "schema_id": "companion.visual_reference_evidence.v1",
   "status": "PASS_LEDGER_INTEGRITY",
   "visual_pass_rule": "A visible design stays PENDING_VISUAL_BASELINE or PENDING_OWNER_VISUAL_REVIEW until its approved source, prompt, source/output hashes, comparison artifact, and owner decision are all present."

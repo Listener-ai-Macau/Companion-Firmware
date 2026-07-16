@@ -110,8 +110,26 @@ def main() -> int:
         errors.append("v6 menu generation record is not pending owner review")
     if menu_generation.get("generated_output", {}).get("sha256", "").upper() != MENU_SOURCE_SHA256:
         errors.append("v6 menu generation output hash drifted")
-    if menu_ledger.get("baseline", {}).get("status") != "GENERATED_MACHINE_REVIEW_PENDING_OWNER":
-        errors.append("v6 menu ledger must remain pending owner review")
+    menu_iterations = menu_ledger.get("iterations", [])
+    menu_candidate = next(
+        (
+            iteration
+            for iteration in menu_iterations
+            if iteration.get("iteration_id") == "menu-v6-four-root-source-2026-07-17"
+        ),
+        {},
+    )
+    if (
+        menu_candidate.get("status") != "generated_machine_review_pending_owner"
+        or menu_candidate.get("review", {}).get("outcome") != "PENDING_OWNER_VISUAL_REVIEW"
+        or menu_candidate.get("implementation", {}).get("status") != "not_activated_pending_owner_visual_review"
+    ):
+        errors.append("v6 menu ledger must retain the pending-owner, not-activated candidate")
+    if (
+        menu_candidate.get("output") != MENU_SOURCE.relative_to(ROOT).as_posix()
+        or menu_candidate.get("sha256", "").upper() != MENU_SOURCE_SHA256
+    ):
+        errors.append("v6 menu ledger candidate output/hash drifted")
     if menu_review.get("status") != "PASS_MACHINE_PREVIEW_PENDING_OWNER":
         errors.append("v6 menu machine review must remain a pending-owner preview")
     if menu_review.get("source", {}).get("sha256", "").upper() != MENU_SOURCE_SHA256:

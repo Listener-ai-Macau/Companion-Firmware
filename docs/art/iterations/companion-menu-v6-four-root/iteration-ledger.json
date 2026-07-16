@@ -2,20 +2,59 @@
   "schema": "denzic.product_visual_iteration.v1",
   "feature": "companion-four-root-menu",
   "target_profile": "wb55-gdey0154d67-ft6336u-200x200-1bit",
+  "rule": "docs/product_visual_design_iteration.md",
   "baseline": {
-    "source": "docs/art/iterations/companion-menu-v6-four-root/generated_menu_four_root_v6_candidate.png",
-    "sha256": "07D791A898FABE6E558686F6A4B4CC86094541C6B5116D6E0A3D263930DAA868",
-    "status": "GENERATED_MACHINE_REVIEW_PENDING_OWNER",
-    "reference": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
-    "reference_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+    "accepted_source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "owner_visual_decision": "The owner selected this exact full v9 sheet as the sole Companion inner-face baseline. It is the only approved character reference for a future menu source; the menu candidate itself remains pending owner review.",
+    "comparison_artifact": "docs/art/iterations/companion-pet-expression-v9/baseline-lock.json",
+    "style_lock": "Use only v9's compact paired upright oval eyes, white highlight family, detached rounded brows, petite nose/W-mouth, cheek dots and sparse charm vocabulary. The menu source may not become a cat outline, an engineering face, a legacy six-root layout or a second visual language."
   },
   "iterations": [
     {
       "iteration_id": "menu-v6-four-root-source-2026-07-17",
-      "prompt_record": "docs/art/iterations/companion-menu-v6-four-root/generation-request.json",
+      "status": "generated_machine_review_pending_owner",
+      "authoring_request": "Create one square, monochrome 200x200-ready four-root Companion menu source from the sole approved v9 face identity. The candidate must visually express the already implemented truthful Voice, Device, Connection and Preferences contract without making generated guide text user-visible.",
+      "prompt": "Use the attached owner-approved Companion v9 inner-face sheet as the only character reference. Design one finished, square, monochrome, high-contrast reference screen for a 200 by 200 e-paper companion settings menu. White background, crisp pure black marks only, no grey, gradients, shadows, texture, device frame or outer card. This is a quiet compact device UI, not a landing page. Place a tiny friendly v9-style inner face in a restrained header zone near the top center: identical paired upright black oval eyes with matched small white highlights, detached short rounded brows, petite nose/W-mouth and cheek dots; no cat head outline, ears, whiskers, eyelashes or eyelids. Add one tiny star charm in unused header whitespace. Below it, show exactly four contiguous full-width navigation rows with thin divider rules and generous but efficient vertical rhythm. Each row has a distinct simple black 1-bit icon on the left, a calm central label area, and a tiny right chevron: Voice uses a friendly sound-wave or speech-mark icon; Device uses a simple device/status icon; Connection uses two linked loops; Preferences uses three tidy slider controls. The rows represent, in this exact order, Voice, Device, Connection, Preferences. Do not attempt readable typography; use short neutral text guide strokes in the label area because real English and Chinese strings are rendered later by firmware. The header face and the four icons should look like one premium, gentle, playful Companion system: sparse rounded strokes, balanced whitespace, no dense border, no fake controls, no decorative blobs, no emoticons, no cartoon cat body. Make the composition practical for a 200x200 one-bit e-paper panel and make every touch row visually distinct and obviously tappable.",
+      "source_references": [
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+          "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+          "role": "sole approved Companion inner-face identity"
+        },
+        {
+          "path": "docs/art/iterations/companion-menu-v6-four-root/information-architecture.json",
+          "role": "truthful four-root action/data/deferred contract"
+        }
+      ],
+      "authoring_request_record": "docs/art/iterations/companion-menu-v6-four-root/generation-request.json",
       "information_architecture": "docs/art/iterations/companion-menu-v6-four-root/information-architecture.json",
       "output": "docs/art/iterations/companion-menu-v6-four-root/generated_menu_four_root_v6_candidate.png",
-      "decision": "PENDING_OWNER_VISUAL_DECISION",
+      "sha256": "07D791A898FABE6E558686F6A4B4CC86094541C6B5116D6E0A3D263930DAA868",
+      "review": {
+        "outcome": "PENDING_OWNER_VISUAL_REVIEW",
+        "reason": "The exact generated source, source hash, row geometry review and English/zh-CN deterministic overlays are retained. Only the owner may decide whether this candidate becomes an approved menu source; machine review cannot substitute for that decision.",
+        "comparison_artifacts": [
+          "docs/validation/companion-menu-v6-source-review-20260717.json",
+          "docs/validation/companion-menu-v6-localization-preview-20260717.json",
+          "docs/art/iterations/companion-menu-v6-four-root/generated_menu_four_root_v6_candidate_200x200_preview.png",
+          "docs/art/iterations/companion-menu-v6-four-root/generated_menu_four_root_v6_en_200x200_localization_preview.png",
+          "docs/art/iterations/companion-menu-v6-four-root/generated_menu_four_root_v6_zh_cn_200x200_localization_preview.png"
+        ],
+        "next_prompt_delta": "Only after an owner review, change one named visible variable against this exact source. Do not restart the layout, invent a code-drawn replacement or reuse retired menu art."
+      },
+      "implementation": {
+        "status": "not_activated_pending_owner_visual_review",
+        "resource_revision": null,
+        "semantic_view_model": "app/companion_pendant/epaper/menu_v5_view_model.c",
+        "localization_owner": "app/companion_pendant/epaper/menu_v5_localization.c",
+        "validation": [
+          "docs/validation/companion-menu-v6-function-receipt-20260717.json",
+          "docs/validation/companion-menu-v6-source-review-20260717.json",
+          "docs/validation/companion-menu-v6-localization-preview-20260717.json"
+        ],
+        "activation_gate": "No PBM, CEMP, external Flash, firmware flash or visual PASS is allowed until a separate owner source decision, source-to-resource mapping and focused physical/visual acceptance are recorded."
+      },
       "machine_scope": [
         "source hash and dimension verification",
         "four-row separator geometry verification",
