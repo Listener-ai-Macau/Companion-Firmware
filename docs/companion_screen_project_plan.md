@@ -1,5 +1,18 @@
 # Companion 屏幕子系统项目计划
 
+## 当前 Goal 边界（2026-07-17）
+
+本计划中较早的 v5/v6/v7/v8/v10+ 表情、六项菜单、以及日常相机开发说明均为
+历史证据，不得作为当前实现输入。当前唯一内脸基线是
+`companion-pet-expression-v9`（SHA-256
+`919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA`）；
+唯一待审菜单源是 `companion-menu-v6-four-root`。当前机器状态、待人工视觉项、
+硬件门和 WBA 边界以
+`docs/validation/companion-current-goal-audit-20260717.md` 为准。日常仅跑
+确定性 source -> PBM -> CEMP -> decode/render 闭环；相机只在健康且对准的真屏
+可用时作为最后的物理预检。SSD1681 新波形冻结，详见
+`docs/companion_ssd1681_vendor_waveform_freeze.md`。
+
 ## 目标
 
 先在 NUCLEO-WB55RG、GDEY0154D67-T03 200x200 电子纸和 FT6336U

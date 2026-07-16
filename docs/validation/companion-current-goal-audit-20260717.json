@@ -1,0 +1,136 @@
+{
+  "active_goal_boundary": "Only current v9/companion-menu-v6-four-root sources may be considered; historical v5/v6/v7/v8/v10+ art and six-root menus are not active inputs.",
+  "daily_visual_validation": "deterministic source/PBM/CEMP/render evidence; camera is final physical preflight only, never daily art development",
+  "errors": [],
+  "open_gates": [
+    "three sequential owner visual decisions: menu-v6-four-root, special-system-v1, special-journey-v1",
+    "separate approved-source PBM/CEMP import and runtime activation proposal",
+    "WB55 FTS02/panel recovery, real touch/Stop/current and physical visual acceptance",
+    "real WBA project, board and panel/resource parity",
+    "matching vendor CWF1 waveform package before any new waveform candidate"
+  ],
+  "requirements": [
+    {
+      "evidence": [
+        {
+          "detail": "No bulk merge; protected branch tips and useful behavior classification are verified.",
+          "path": "docs/validation/companion-historical-branch-audit-20260717.json",
+          "status": "PASS_PRESERVED_AND_CLASSIFIED"
+        }
+      ],
+      "id": "historical_behavior_protection",
+      "requirement": "Historical branches remain protected and only their classified double-tap, first-tap Stop blocker, three-minute idle and external-resource evidence are current behavior inputs.",
+      "status": "proved_machine"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "HAL-free policy passes; Stop wake and <=1 mA physical measurement remain hardware gates.",
+          "path": "docs/validation/companion-low-power-requirements.json",
+          "status": "PASS"
+        }
+      ],
+      "id": "touch_low_power_policy",
+      "requirement": "Daily double tap is the only manual recording start/stop; first tap blocks Stop, and the visible sleepy transition defaults to three minutes.",
+      "status": "proved_machine_hardware_current_pending"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "Locked v9 source hash is the sole current inner-face baseline.",
+          "path": "docs/art/iterations/companion-pet-expression-v9/baseline-lock.json",
+          "status": "OWNER_APPROVED_SOURCE_LOCKED_MACHINE_RENDER_AUTHORIZED"
+        },
+        {
+          "detail": "39/39 PBM-to-CEMP decode comparison passes without activation.",
+          "path": "docs/validation/companion-v9-expression-cemp-20260716.json",
+          "status": "PASS_MACHINE_ONLY_CEMP_NOT_ACTIVATED"
+        },
+        {
+          "detail": "40 scene families are explicit: 18 available candidates and 22 no-fallback pending sources.",
+          "path": "docs/validation/companion-v9-scene-coverage-20260716.json",
+          "status": "PASS_MACHINE_ONLY_NO_LEGACY_FALLBACK"
+        },
+        {
+          "detail": "Portable selector remains AVAILABLE_NOT_ACTIVE.",
+          "path": "docs/validation/companion-v9-candidate-resource-binding-20260717.json",
+          "status": "PASS_MACHINE_ONLY_INACTIVE"
+        }
+      ],
+      "id": "v9_expression_renderer",
+      "requirement": "Only the owner-approved v9 inner-face sheet supplies the 39-frame, 13-clip renderer-first candidate; no retired or procedural visual fallback is allowed.",
+      "status": "proved_machine_inactive"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "Four-root layout source is pending owner decision.",
+          "path": "docs/validation/companion-menu-v6-source-review-20260717.json",
+          "status": "PASS_MACHINE_PREVIEW_PENDING_OWNER"
+        },
+        {
+          "detail": "English and zh-CN overlays are deterministic previews.",
+          "path": "docs/validation/companion-menu-v6-localization-preview-20260717.json",
+          "status": "PASS_MACHINE_LOCALIZATION_PREVIEW_PENDING_OWNER"
+        },
+        {
+          "detail": "System sheet is pending owner decision.",
+          "path": "docs/validation/companion-pet-special-system-source-review-20260717.json",
+          "status": "PASS_MACHINE_PREVIEW_PENDING_OWNER"
+        },
+        {
+          "detail": "Journey sheet is pending owner decision.",
+          "path": "docs/validation/companion-pet-special-journey-source-review-20260717.json",
+          "status": "PASS_MACHINE_PREVIEW_PENDING_OWNER"
+        },
+        {
+          "detail": "All 22 uncovered families map to exact pending sources with no fallback.",
+          "path": "docs/validation/companion-pending-special-source-mapping-20260717.json",
+          "status": "PASS_EXACT_PENDING_SOURCE_MAPPING_NO_RUNTIME"
+        },
+        {
+          "detail": "Three sequential Chinese owner-review items are prepared but not opened.",
+          "path": "docs/validation/companion-ui-visual-acceptance-readiness-20260717.json",
+          "status": "PASS_READY_FOR_SEQUENTIAL_OWNER_REVIEW"
+        }
+      ],
+      "id": "four_root_menu_and_special_scene_sources",
+      "requirement": "The four-root bilingual menu and both special-scene sheets have deterministic previews only; source approval must precede PBM/CEMP import or runtime activation.",
+      "status": "machine_previews_pass_owner_decision_pending"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "WBA target boundary forbids retired visual inputs and runtime activation.",
+          "path": "docs/validation/companion-v9-wba-visual-boundary-20260717.json",
+          "status": "PASS_V9_WBA_VISUAL_BOUNDARY_PENDING_OWNER"
+        }
+      ],
+      "id": "wba_resource_portability",
+      "requirement": "WBA55/WBA65 adapters accept only v9-era external CEMP over callback-only ordinary SPI NOR; no WBA visual or panel parity is claimed.",
+      "status": "pre_port_proved_real_wba_pending"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "Vendor package requirements and fail-closed parser boundary are recorded; no panel command is authorized.",
+          "path": "docs/companion_ssd1681_vendor_waveform_freeze.md",
+          "status": "FROZEN"
+        }
+      ],
+      "id": "ssd1681_waveform_freeze",
+      "requirement": "No generic, adjacent-panel or guessed SSD1681 LUT may be tried. A candidate requires a matching CWF1 vendor package before a bounded hardware session.",
+      "status": "frozen_waiting_vendor_evidence"
+    }
+  ],
+  "schema": "companion.current_goal_audit.v1",
+  "status": "GOAL_ACTIVE_MACHINE_BOUNDARY_PROVED_OWNER_AND_HARDWARE_PENDING",
+  "validation_commands": [
+    "python .\\tools\\verify_companion_current_goal_audit.py",
+    "pwsh .\\tools\\test_companion_v9_expression_render_pipeline.ps1",
+    "python .\\tools\\verify_companion_v9_wba_visual_boundary.py",
+    "python .\\tools\\verify_companion_historical_branch_audit.py",
+    "python .\\tools\\verify_companion_low_power_requirements.py",
+    "pwsh .\\tools\\test_power_policy_host.ps1"
+  ]
+}

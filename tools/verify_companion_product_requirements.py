@@ -15,6 +15,7 @@ FIXTURE = ROOT / "docs" / "validation" / "companion-product-requirements.json"
 
 REQUIRED_ANCHORS = (
     "Companion Product Requirement Registry",
+    "Current Goal Precedence (2026-07-17)",
     "Steering Intake Rule",
     "companion-screen-product-integration",
     "COMP-REQ-001",
@@ -78,6 +79,10 @@ REQUIRED_ANCHORS = (
     "two double taps, valid non-timeout PCM, stop, and external-Flash store",
     "machine-first four-layer contract",
     "Human `通过` is necessary for physical acceptance but cannot override missing machine evidence",
+    "companion-pet-expression-v9",
+    "companion-menu-v6-four-root",
+    "physical preflight only when a healthy",
+    "verify_companion_current_goal_audit.py",
 )
 
 
@@ -98,8 +103,9 @@ def main() -> int:
         "registry": str(REGISTRY.relative_to(ROOT)).replace("\\", "/"),
         "workflow_plan": "companion-screen-product-integration",
         "requirement_ids": [f"COMP-REQ-{number}" for number in requirement_ids],
-        "current_focus": "COMP-REQ-035 through COMP-REQ-039 and COMP-REQ-006 shared recording core plus machine-first WB55 two-double-tap acceptance",
-        "active_parallel_track": "COMP-REQ-034 FTS02 analog display recovery remains documented but does not block serial recording acceptance",
+        "current_focus": "Active Codex Goal: v9 renderer-first UI, four-root menu source review, protected touch/three-minute idle behavior, WBA external-SPI-NOR boundary, and vendor waveform freeze",
+        "active_parallel_track": "WB55 FTS02/panel recovery, real touch/Stop/current and final physical review remain hardware gates; daily art validation does not require a camera",
+        "current_goal_audit": "docs/validation/companion-current-goal-audit-20260717.json",
         "errors": errors,
     }
     if args.write_fixture:
