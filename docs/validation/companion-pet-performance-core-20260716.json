@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "status": "PASS_MACHINE_ONLY",
+  "scope": "portable pet-performance scene and keyframe state core",
+  "commit": "6fd405c",
+  "date": "2026-07-16",
+  "protected_boundaries": [
+    "No PBM, CEMP, external Flash, renderer, panel command, BLE, recording, OTA, or timer loop is activated by this core.",
+    "Scenes advance only from an explicit product outcome or recovery call.",
+    "The state core is target-HAL-free so WB55 and WBA adapters share scene semantics."
+  ],
+  "machine_checks": [
+    {
+      "command": "git diff --check HEAD^ HEAD",
+      "result": "PASS"
+    },
+    {
+      "command": "pwsh -NoProfile -File tools\\test_pet_performance_host.ps1",
+      "result": "PASS: pet performance scene contract"
+    },
+    {
+      "command": "pwsh -NoProfile -File tools\\build_nucleo_bringup.ps1 -EpaperSsd1681Bringup",
+      "result": "PASS; text=132000, data=2436, bss=188303, total=322739"
+    }
+  ],
+  "not_claimed": [
+    "Any visual-art approval or resource activation.",
+    "Any physical panel, touch, power, microphone, recording, OTA, or WBA hardware acceptance.",
+    "Any SSD1681 local-refresh or waveform behavior."
+  ],
+  "next_gate": "Integrate the event bridge and scene replay as a separately tested function before binding any generated v9 resource."
+}
