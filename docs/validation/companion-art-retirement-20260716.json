@@ -1,12 +1,15 @@
 {
   "schema": "companion.art_retirement_verification.v1",
-  "status": "PASS_V9_ONLY_RENDERABLE_ART",
-  "renderable_file_count": 43,
+  "status": "PASS_V9_BASELINE_AND_PENDING_MENU_V6_ONLY",
+  "renderable_file_count": 45,
   "iteration_directories": [
+    "companion-menu-v6-four-root",
     "companion-pet-expression-v9"
   ],
   "retained_source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
   "retained_source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
-  "non_v9_renderables": [],
+  "pending_menu_source": "docs/art/iterations/companion-menu-v6-four-root/generated_menu_four_root_v6_candidate.png",
+  "pending_menu_source_sha256": "07D791A898FABE6E558686F6A4B4CC86094541C6B5116D6E0A3D263930DAA868",
+  "unauthorized_renderables": [],
   "errors": []
 }

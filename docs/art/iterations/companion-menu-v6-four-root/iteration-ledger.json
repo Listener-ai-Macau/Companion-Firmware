@@ -1,0 +1,29 @@
+{
+  "schema": "denzic.product_visual_iteration.v1",
+  "feature": "companion-four-root-menu",
+  "target_profile": "wb55-gdey0154d67-ft6336u-200x200-1bit",
+  "baseline": {
+    "source": "docs/art/iterations/companion-menu-v6-four-root/generated_menu_four_root_v6_candidate.png",
+    "sha256": "07D791A898FABE6E558686F6A4B4CC86094541C6B5116D6E0A3D263930DAA868",
+    "status": "GENERATED_MACHINE_REVIEW_PENDING_OWNER",
+    "reference": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "reference_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "iterations": [
+    {
+      "iteration_id": "menu-v6-four-root-source-2026-07-17",
+      "prompt_record": "docs/art/iterations/companion-menu-v6-four-root/generation-request.json",
+      "information_architecture": "docs/art/iterations/companion-menu-v6-four-root/information-architecture.json",
+      "output": "docs/art/iterations/companion-menu-v6-four-root/generated_menu_four_root_v6_candidate.png",
+      "decision": "PENDING_OWNER_VISUAL_DECISION",
+      "machine_scope": [
+        "source hash and dimension verification",
+        "four-row separator geometry verification",
+        "deterministic 200x200 threshold preview",
+        "no PBM, CEMP, Flash or firmware activation"
+      ],
+      "next_prompt_delta": "Only after a review decision, change one named visual variable against this exact source. Do not restart the layout or reuse retired menu art."
+    }
+  ],
+  "runtime_boundary": "The image is not a runtime resource. The final renderer must use the existing four-root semantic view model and menu_v5_localization for actual English and zh-CN text, then consume a separately approved visual source without legacy fallback."
+}

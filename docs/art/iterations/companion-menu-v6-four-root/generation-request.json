@@ -1,7 +1,7 @@
 {
   "schema_id": "companion.visual_generation_request.v1",
   "iteration_id": "companion-menu-v6-four-root",
-  "status": "PENDING_GENERATION_AND_REVIEW",
+  "status": "GENERATED_MACHINE_REVIEW_PENDING_OWNER",
   "requested_at": "2026-07-17T00:00:00+08:00",
   "owner_requirement": "Create a new single-page four-root menu visual baseline for Companion. It must feel cute and carefully designed, retain the owner-approved v9 inner-face identity, and never restore v2-v5/legacy menu art.",
   "target_profile": {
@@ -34,6 +34,22 @@
     "no rounded floating cards, nested cards, fake status values or fake chevrons",
     "no new eye identity, eyelid arcs, one-sided eye, sly, flirtatious, smug or tired expression"
   ],
+  "generated_output": {
+    "path": "docs/art/iterations/companion-menu-v6-four-root/generated_menu_four_root_v6_candidate.png",
+    "sha256": "07D791A898FABE6E558686F6A4B4CC86094541C6B5116D6E0A3D263930DAA868",
+    "dimensions_px": [1254, 1254],
+    "runtime_source": "C:\\Users\\Billy\\.codex\\generated_images\\019f44be-6fce-7140-acbe-cac2c63e2a4e\\exec-d2468e81-bd3b-4246-afb1-14b539437673.png"
+  },
+  "machine_review": {
+    "decision": "PENDING_OWNER_VISUAL_DECISION",
+    "scope": "Candidate geometry, icon differentiation and 200x200 threshold preview only.",
+    "observations": [
+      "The candidate has one compact v9-style inner face header, one star, and exactly four contiguous navigation regions.",
+      "The four icon roles are visually differentiated as voice, device, connection and preferences.",
+      "The generated label strokes are layout guides only and must never become user-visible text; actual English and zh-CN labels remain renderer-owned."
+    ],
+    "prohibited_before_owner_review": ["PBM import", "CEMP pack", "external Flash provisioning", "firmware flash", "visual PASS claim"]
+  },
   "review_rule": "The generated result is only a pending visual baseline. It cannot be imported, rendered, provisioned, flashed or called a visual pass until its source hash, machine layout review, actual localization overlay and owner decision are recorded.",
   "next_prompt_delta": "After review, change only one owner-named visible variable against this exact generated source; do not restart the composition or reintroduce retired art."
 }
