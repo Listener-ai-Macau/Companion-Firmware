@@ -1,0 +1,58 @@
+{
+  "schema": "companion.special_state_art_plan.v1",
+  "iteration_id": "companion-pet-special-states-v1",
+  "status": "NON_RENDERABLE_PLAN_PENDING_GENERATION",
+  "target_profile": {
+    "width": 200,
+    "height": 200,
+    "storage": "external Flash CEMP only after individual source approval",
+    "style_reference": {
+      "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+    }
+  },
+  "shared_style_lock": {
+    "preserve": [
+      "same paired upright black oval eyes and matched front-facing white highlights",
+      "same detached rounded brows, petite nose/W-mouth, cheek dots and large white space",
+      "whole-face change through eyes, brows, mouth and cheeks together",
+      "sparse state-specific charms outside the face only",
+      "white background and pure black 1-bit-ready marks"
+    ],
+    "forbid": [
+      "new eye identity", "eyelid arcs", "cat outline", "ears", "whiskers", "device frame",
+      "sly, flirtatious, smug, tired, menacing or engineering-test face",
+      "text labels", "grey", "gradients", "shading", "legacy art or fallback"
+    ]
+  },
+  "sheets": [
+    {
+      "id": "system",
+      "status": "PENDING_GENERATION",
+      "grid": "3x4",
+      "scene_families": [
+        "voice.speaking", "recording.error", "power.charge_detected", "power.charging",
+        "power.charged", "power.low_battery", "link.pairing", "link.connected",
+        "link.syncing", "link.synced", "link.error", "system.error"
+      ],
+      "prompt": "Use the attached owner-approved Companion v9 face sheet as the only direct visual reference. Create one polished 3 by 4 sheet of exactly twelve compact, cute, lively, monochrome inner-face states for a 200x200 e-paper companion. Preserve the exact v9 eye identity: paired upright filled black ovals on the same baseline, matching small front-facing white highlights, detached rounded brows, petite nose/W-mouth and cheek dots. No cat outline, ears, whiskers, eyelids, labels, panels, grey, gradients or shading. Every state changes the complete face together, not just the eyes. Use only sparse friendly semantic charms in whitespace. Row 1: speaking with tiny alternating sound arcs and a gentle open mouth; recording error with a small broken record dot and concerned but sweet face; charge detected with a surprised sparkle arrival; charging with a calm bright face and a rising energy charm, not a plug icon; Row 2: charged with a warm proud face and two small completion sparkles; low battery with gentle worried brows, tiny low bar charm and no sad human styling; pairing with a dotted orbit charm; connected with linked loops and a happy settled face; Row 3: syncing with a dotted circular motion charm; synced with a tiny check sparkle and cheerful face; link error with a broken-link charm and a soft worried face; system error with a cracked-star charm and a clear recoverable, non-scary face. Keep all twelve cells equally spaced on white, no typography, with the same premium lovable Companion identity.",
+      "machine_mapping_rule": "Each cell must map one-to-one to the listed pending resource family; no cross-family fallback."
+    },
+    {
+      "id": "journey",
+      "status": "PENDING_GENERATION",
+      "grid": "3x4",
+      "scene_families": [
+        "menu.open", "menu.blocked", "menu.exit", "upgrade.offer",
+        "upgrade.prepare", "upgrade.transfer", "upgrade.verify", "upgrade.restart",
+        "upgrade.success", "upgrade.error"
+      ],
+      "prompt": "Use the attached owner-approved Companion v9 face sheet as the only direct visual reference. Create one polished 3 by 4 sheet of exactly twelve compact, cute, lively, monochrome inner-face journey keyframes for a 200x200 e-paper companion. Preserve the exact v9 paired upright black oval eyes, matched white highlights, rounded brows, petite nose/W-mouth, cheek dots and white-space rhythm. No cat outline, ears, whiskers, eyelids, labels, panels, grey, gradients or shading. Every state changes eyes, brows, mouth and cheeks together, with small semantic charms outside the face only. Row 1: menu open entry with a calm decision sparkle; menu open settle with a tiny welcoming star; menu blocked with a soft pause mark and patient face; menu exit with a light backward motion tick and relaxed face. Row 2: upgrade offer with a curious upgrade sparkle; upgrade prepare with a focused dotted bundle charm; upgrade transfer with a gentle moving dot trail; upgrade verify with a thoughtful magnifier-like sparkle. Row 3: upgrade restart with a small circular restart mark; upgrade success with bright paired sparkles; upgrade error with a recoverable broken-star mark and sweet concern; upgrade error recovery with the face returning toward confident calm. Keep all twelve cells equally spaced on white with no typography and no aggressive, technical or threatening visual language.",
+      "machine_mapping_rule": "menu.open and upgrade.error each retain two low-frequency keyframes; all other listed families receive one named state cell until a later approved frame expansion."
+    }
+  ],
+  "activation_boundary": {
+    "generated_sheet_required_before": ["PBM import", "CEMP packing", "resource binding availability", "external Flash", "firmware", "OTA", "physical acceptance"],
+    "runtime_fallback": "forbidden"
+  }
+}
