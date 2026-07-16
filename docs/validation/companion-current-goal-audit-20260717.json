@@ -37,7 +37,7 @@
     {
       "evidence": [
         {
-          "detail": "Three WB55 variants built from source commit 1931d3112fffe0ce00691df97daac0c5c6df688f; the receipt invalidates when listed build inputs change.",
+          "detail": "Three WB55 variants built from source commit c2e6523332a8192b1d69545cdceb2d02ba806fdd; the receipt invalidates when listed build inputs change.",
           "path": "docs/validation/companion-wb55-current-build-receipt-20260717.json",
           "status": "PASS_CURRENT_SOURCE_BUILD_NO_HARDWARE"
         },
@@ -57,7 +57,7 @@
           "status": "PASS_CURRENT_SOURCE_MACHINE_ONLY_CALLBACK_REPLAY"
         },
         {
-          "detail": "Current WB55 source commit 04b611379827efe2cfc0c8c7939731d7dd130ff2 excludes retired procedural-face symbols and fails closed when a visual resource is unavailable.",
+          "detail": "Current WB55 source commit f8e1ffa46a9033b447daca877ba482bf2781f1d1 excludes retired procedural-face symbols and fails closed when a visual resource is unavailable.",
           "path": "docs/validation/companion-runtime-visual-boundary-20260717.json",
           "status": "PASS_CURRENT_SOURCE_NO_PROCEDURAL_VISUAL_FALLBACK"
         }
