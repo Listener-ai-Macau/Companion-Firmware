@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 from pathlib import Path
 import sys
 from typing import Any
@@ -16,6 +17,7 @@ ART_ITERATIONS = ROOT / "docs" / "art" / "iterations"
 FIXTURE = ROOT / "docs" / "validation" / "companion-visual-reference-evidence.json"
 SCHEMA_ID = "companion.visual_reference_evidence.v1"
 RULE_PATH = "docs/product_visual_design_iteration.md"
+DEFAULT_WORKFLOW_REPO = Path(r"C:\Users\Billy\Desktop\Denzic\ai-collaboration-workflow")
 
 PENDING_MARKER = "PENDING_OWNER_VISUAL_REVIEW"
 REJECTED_MARKERS = ("rejected", "not_used")
@@ -28,6 +30,18 @@ def rel(path: Path) -> str:
 
 def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest().upper()
+
+
+def resolve_workflow_rule() -> tuple[Path, str]:
+    configured = os.environ.get("AI_WORKFLOW_REPO", "").strip()
+    candidates = []
+    if configured:
+        candidates.append((Path(configured), "AI_WORKFLOW_REPO"))
+    candidates.append((DEFAULT_WORKFLOW_REPO, "default_workflow_repo"))
+    for repository, source in candidates:
+        if (repository / "docs" / "agent_quickstart.md").is_file():
+            return repository / RULE_PATH, source
+    return DEFAULT_WORKFLOW_REPO / RULE_PATH, "default_workflow_repo_missing_quickstart"
 
 
 def require(condition: bool, message: str, errors: list[str]) -> None:
@@ -177,6 +191,10 @@ def audit_ledger(path: Path, errors: list[str]) -> dict[str, Any]:
 
 def build_report() -> tuple[dict[str, Any], list[str]]:
     errors: list[str] = []
+    workflow_rule, workflow_rule_resolution = resolve_workflow_rule()
+    workflow_rule_exists = workflow_rule.is_file()
+    require(workflow_rule_exists, f"global visual rule is missing: {workflow_rule}", errors)
+    workflow_rule_sha256 = sha256(workflow_rule) if workflow_rule_exists else None
     ledgers = sorted(ART_ITERATIONS.glob("*/iteration-ledger.json"))
     require(bool(ledgers), "no visual iteration ledgers found", errors)
     rows = [audit_ledger(path, errors) for path in ledgers]
@@ -192,7 +210,11 @@ def build_report() -> tuple[dict[str, Any], list[str]]:
         "schema_id": SCHEMA_ID,
         "status": "PASS_LEDGER_INTEGRITY" if not errors else "FAIL",
         "purpose": "Machine audit only. It proves visual evidence is retained; it does not replace owner visual acceptance.",
-        "global_rule": RULE_PATH,
+        "global_rule": {
+            "path": RULE_PATH,
+            "sha256": workflow_rule_sha256,
+            "resolution": workflow_rule_resolution,
+        },
         "visual_pass_rule": (
             "A visible design stays PENDING_VISUAL_BASELINE or PENDING_OWNER_VISUAL_REVIEW until its approved source, "
             "prompt, source/output hashes, comparison artifact, and owner decision are all present."
