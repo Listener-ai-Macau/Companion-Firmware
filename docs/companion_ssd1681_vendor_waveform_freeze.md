@@ -38,6 +38,17 @@ The supplier-facing Chinese request and intake checklist are in
 original source, an archive, a binary waveform file or a complete command
 table; CWF1 is an internal intake format, not a required supplier file format.
 
+## Latest Supplier Response
+
+The owner supplied a 2026-07-17 chat screenshot in which the supplier states
+that the waveform is internal and that partial refresh uses a room-temperature
+waveform already optimized for that batch. This rules out assuming that a
+separate external `0x32` payload will be sent, but it does not identify the
+numeric temperature range, internal-profile selection sequence, lot scope,
+partial-cycle cleanup limit or residue criterion. The freeze therefore remains
+in force. The recorded intake and focused follow-up questions are in
+`docs/validation/companion-ssd1681-vendor-response-intake-20260717.json`.
+
 ## Temperature Boundary
 
 There is currently no approved panel-temperature measurement or OTP read in

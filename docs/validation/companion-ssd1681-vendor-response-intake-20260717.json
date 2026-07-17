@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "captured_date": "2026-07-17",
+  "source": {
+    "kind": "owner-provided supplier-chat screenshot",
+    "raw_attachment_path": null,
+    "integrity_note": "The screenshot was supplied in the Codex conversation. No local image file was provided, so this artifact records only the visible transcript and does not claim an independently archived original."
+  },
+  "target": {
+    "model": "GDEY0154D67-T03",
+    "reported_marking": "N524110506 / 0154BN-D67-D2",
+    "controller": "SSD1681"
+  },
+  "visible_supplier_statements": [
+    "波形都是内置",
+    "局刷都是常温波形测试，已经是这批调的最优解",
+    "有图片或者视频吗？",
+    "需要看下过程"
+  ],
+  "owner_context_visible_in_same_exchange": [
+    "类似电子宠物的表情系统",
+    "现在看着局刷有点残影严重"
+  ],
+  "interpretation": {
+    "external_0x32_payload_confirmed": false,
+    "internal_waveform_claimed": true,
+    "temperature_scope_is_numeric": false,
+    "profile_selection_sequence_provided": false,
+    "batch_or_lot_traceability_provided": false,
+    "partial_cleanup_limit_provided": false,
+    "residual_acceptance_limit_provided": false,
+    "implementation_consequence": "Do not send guessed 0x32 LUT bytes. The existing public/vendor sample may be used only as already-recorded baseline evidence; this response does not identify a new profile or permit a new waveform experiment."
+  },
+  "freeze_disposition": {
+    "state": "FROZEN_WAITING_FOR_VENDOR_CWF1",
+    "reason": "The supplier confirms an internal-waveform architecture, but has not supplied a model/lot/temperature-bound profile-selection and cleanup contract."
+  },
+  "next_supplier_request": [
+    "Confirm the numeric room-temperature range behind the statement '常温'.",
+    "Confirm the exact full, fast and partial command/profile-selection flow for this model, including internal-temperature-sensor use if required.",
+    "Confirm the maximum consecutive partial updates and the required cleanup action for visible residue.",
+    "Review a fixed-camera reproduction video that shows six consecutive normal partial updates, a three-second settle interval, and one documented cleanup refresh, with ambient temperature stated."
+  ]
+}
