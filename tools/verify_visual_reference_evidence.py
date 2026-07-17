@@ -23,6 +23,11 @@ DEFAULT_WORKFLOW_REPO = Path(r"C:\Users\Billy\Desktop\Denzic\ai-collaboration-wo
 PENDING_MARKER = "PENDING_OWNER_VISUAL_REVIEW"
 REJECTED_MARKERS = ("rejected", "not_used")
 ACTIVE_MARKERS = ("activated", "active_cemp", "resource_revision_active")
+REQUIRED_FEATURES = {
+    "companion-pet-expression",
+    "companion-four-root-menu",
+    "companion-pet-special-states",
+}
 
 
 def rel(path: Path) -> str:
@@ -143,6 +148,14 @@ def audit_ledger(path: Path, errors: list[str]) -> dict[str, Any]:
         require(isinstance(implementation, dict), f"{label} {iteration_id} missing implementation mapping", errors)
         if isinstance(implementation, dict):
             require(bool(implementation.get("status")), f"{label} {iteration_id} missing implementation status", errors)
+        request_record = iteration.get("authoring_request_record") or (
+            implementation.get("request_record") if isinstance(implementation, dict) else None
+        )
+        require(bool(request_record), f"{label} {iteration_id} missing durable request record", errors)
+        next_prompt_delta = iteration.get("next_prompt_delta") or (
+            review.get("next_prompt_delta") if isinstance(review, dict) else None
+        )
+        require(bool(next_prompt_delta), f"{label} {iteration_id} missing next_prompt_delta", errors)
 
         output = iteration.get("output")
         expected_hash = iteration.get("sha256")
@@ -203,6 +216,8 @@ def build_report() -> tuple[dict[str, Any], list[str]]:
     ledgers = sorted(ART_ITERATIONS.glob("*/iteration-ledger.json"))
     require(bool(ledgers), "no visual iteration ledgers found", errors)
     rows = [audit_ledger(path, errors) for path in ledgers]
+    features = {str(row["feature"]) for row in rows}
+    require(features == REQUIRED_FEATURES, f"visual ledgers must cover exactly {sorted(REQUIRED_FEATURES)}", errors)
     pending = [
         {"ledger": row["ledger"], "iteration_id": item["iteration_id"]}
         for row in rows for item in row["iterations"] if item["pending_owner_review"]
@@ -226,6 +241,7 @@ def build_report() -> tuple[dict[str, Any], list[str]]:
             "prompt, source/output hashes, comparison artifact, and owner decision are all present."
         ),
         "ledger_count": len(rows),
+        "features": sorted(features),
         "ledgers": rows,
         "pending_owner_visual_review": pending,
         "rejected_history_preserved": rejected,

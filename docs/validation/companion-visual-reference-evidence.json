@@ -1,6 +1,11 @@
 {
   "errors": [],
-  "ledger_count": 2,
+  "features": [
+    "companion-four-root-menu",
+    "companion-pet-expression",
+    "companion-pet-special-states"
+  ],
+  "ledger_count": 3,
   "ledgers": [
     {
       "baseline": {
@@ -57,17 +62,68 @@
       ],
       "ledger": "docs/art/iterations/companion-pet-expression-v9/iteration-ledger.json",
       "target_profile": "wb55-gdey0154d67-ft6336u-200x200-1bit"
+    },
+    {
+      "baseline": {
+        "actual_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+        "expected_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+        "hash_matches": true,
+        "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png"
+      },
+      "feature": "companion-pet-special-states",
+      "iterations": [
+        {
+          "implementation_status": "not_activated_pending_owner_visual_review",
+          "iteration_id": "special-system-v1-attempt-02",
+          "output": {
+            "actual_sha256": "AF9ADFD49C47C89DF674726D7201CC49C61ED636306013697822BB42FB1A9C82",
+            "expected_sha256": "AF9ADFD49C47C89DF674726D7201CC49C61ED636306013697822BB42FB1A9C82",
+            "hash_matches": true,
+            "path": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_system_v1_candidate.png"
+          },
+          "pending_owner_review": true,
+          "rejected": false,
+          "resource_revision": null,
+          "review_outcome": "PENDING_OWNER_VISUAL_REVIEW",
+          "status": "generated_machine_review_pending_owner"
+        },
+        {
+          "implementation_status": "not_activated_pending_owner_visual_review",
+          "iteration_id": "special-journey-v1-attempt-01",
+          "output": {
+            "actual_sha256": "95CC749134F169E73A2E2A99FA2B6F08AABDFE78D218677C347D2D687EA4B17F",
+            "expected_sha256": "95CC749134F169E73A2E2A99FA2B6F08AABDFE78D218677C347D2D687EA4B17F",
+            "hash_matches": true,
+            "path": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_journey_v1_candidate.png"
+          },
+          "pending_owner_review": true,
+          "rejected": false,
+          "resource_revision": null,
+          "review_outcome": "PENDING_OWNER_VISUAL_REVIEW",
+          "status": "generated_machine_review_pending_owner"
+        }
+      ],
+      "ledger": "docs/art/iterations/companion-pet-special-states-v1/iteration-ledger.json",
+      "target_profile": "wb55-gdey0154d67-ft6336u-200x200-1bit"
     }
   ],
   "pending_owner_visual_review": [
     {
       "iteration_id": "menu-v6-four-root-source-2026-07-17",
       "ledger": "docs/art/iterations/companion-menu-v6-four-root/iteration-ledger.json"
+    },
+    {
+      "iteration_id": "special-system-v1-attempt-02",
+      "ledger": "docs/art/iterations/companion-pet-special-states-v1/iteration-ledger.json"
+    },
+    {
+      "iteration_id": "special-journey-v1-attempt-01",
+      "ledger": "docs/art/iterations/companion-pet-special-states-v1/iteration-ledger.json"
     }
   ],
   "product_rule": {
     "path": "docs/companion_product_requirements.md",
-    "sha256": "2A55DEAAC44446112538EDF911D0D23376A5DFA529AE120EA0147914EE5DA228"
+    "sha256": "0822AC4AD2F35694015FFC1809EAC36B36B3120929B87A103E524904B9ACBB30"
   },
   "purpose": "Machine audit only. It proves visual evidence is retained; it does not replace owner visual acceptance.",
   "rejected_history_preserved": [],
@@ -77,6 +133,6 @@
   "workflow_rule": {
     "path": "docs/agent_quickstart.md",
     "resolution": "agent_quickstart",
-    "sha256": "D09400C4B7F4682258CC12F7E32433F276340B09A96BE12910AD8E7686A70590"
+    "sha256": "85C7AA91EABCB3351403A56D2343636EA032D34DC2223847978ED7C11ABEEBC3"
   }
 }

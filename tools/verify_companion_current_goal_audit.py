@@ -30,6 +30,7 @@ ARTIFACTS = {
     "v9_cemp": ROOT / "docs/validation/companion-v9-expression-cemp-20260716.json",
     "v9_coverage": ROOT / "docs/validation/companion-v9-scene-coverage-20260716.json",
     "v9_binding": ROOT / "docs/validation/companion-v9-candidate-resource-binding-20260717.json",
+    "visual_reference_ledger": ROOT / "docs/validation/companion-visual-reference-evidence.json",
     "v9_safe_area": ROOT / "docs/validation/companion-v9-frame-safe-area-20260717.json",
     "ssd1681_frame_mapping": ROOT / "docs/validation/companion-ssd1681-frame-mapping-20260717.json",
     "menu_function_receipt": ROOT / "docs/validation/companion-menu-v6-function-receipt-20260717.json",
@@ -86,6 +87,7 @@ def build_audit() -> dict[str, Any]:
     cemp = load_json("v9_cemp")
     coverage = load_json("v9_coverage")
     binding = load_json("v9_binding")
+    visual_reference_ledger = load_json("visual_reference_ledger")
     safe_area = load_json("v9_safe_area")
     ssd1681_frame_mapping = load_json("ssd1681_frame_mapping")
     menu_function_receipt = load_json("menu_function_receipt")
@@ -193,6 +195,9 @@ def build_audit() -> dict[str, Any]:
     check(errors, coverage.get("candidate_mapping_count") == 18 and coverage.get("pending_no_fallback_count") == 22, "scene mapping boundary drifted")
     check(errors, binding.get("status") == "PASS_MACHINE_ONLY_INACTIVE", "v9 selector is not inactive machine-only PASS")
     check(errors, binding.get("candidate_pack", {}).get("runtime_resource_activated") is False, "v9 selector permits runtime activation")
+    check(errors, visual_reference_ledger.get("status") == "PASS_LEDGER_INTEGRITY", "visual iteration ledger audit is not PASS")
+    check(errors, visual_reference_ledger.get("ledger_count") == 3, "visual iteration ledger count drifted")
+    check(errors, visual_reference_ledger.get("features") == ["companion-four-root-menu", "companion-pet-expression", "companion-pet-special-states"], "visual iteration ledger coverage drifted")
     check(errors, safe_area.get("status") == "PASS_MACHINE_SAFE_AREA_PHYSICAL_REVIEW_PENDING", "v9 safe-area report is not machine-only PASS")
     check(errors, safe_area.get("frame_count") == 39, "v9 safe-area report does not cover 39 frames")
     check(errors, safe_area.get("frame_profile", {}).get("minimum_edge_clearance_px") == 4, "v9 safe-area margin drifted")
@@ -294,6 +299,7 @@ def build_audit() -> dict[str, Any]:
                 evidence("v9_cemp", str(cemp.get("status")), "39/39 PBM-to-CEMP decode comparison passes without activation."),
                 evidence("v9_coverage", str(coverage.get("status")), "40 scene families are explicit: 18 available candidates and 22 no-fallback pending sources."),
                 evidence("v9_binding", str(binding.get("status")), "Portable selector remains AVAILABLE_NOT_ACTIVE."),
+                evidence("visual_reference_ledger", str(visual_reference_ledger.get("status")), "Every current visual candidate has an exact prompt, references, output hash, request record, review state and next-prompt delta; rejected special metadata stays non-reusable."),
                 evidence("v9_safe_area", str(safe_area.get("status")), "All 39 inactive v9 frames retain a >=4 px canvas margin; real-panel truncation remains a separate gate."),
                 evidence("ssd1681_frame_mapping", str(ssd1681_frame_mapping.get("status")), "All 40,000 logical pixels remain one-to-one and in-bounds through the actual 180-degree/mirror and descending-Y driver path; real-panel viewport remains a separate gate."),
                 evidence("runtime_visual_boundary", str(runtime_visual_boundary.get("status")), "The runtime cannot substitute a procedural or test face when an external visual asset is unavailable."),

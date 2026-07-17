@@ -1,0 +1,134 @@
+{
+  "schema": "denzic.product_visual_iteration.v1",
+  "feature": "companion-pet-special-states",
+  "target_profile": "wb55-gdey0154d67-ft6336u-200x200-1bit",
+  "rule": "docs/agent_quickstart.md",
+  "product_rule": "docs/companion_product_requirements.md",
+  "baseline": {
+    "accepted_source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "owner_visual_decision": "The owner selected this exact v9 full sheet as the sole Companion inner-face baseline. Both special-state candidates remain pending source decisions and may not establish another face identity.",
+    "comparison_artifact": "docs/art/iterations/companion-pet-expression-v9/baseline-lock.json",
+    "style_lock": "Preserve only v9's paired upright oval eyes, matched front-facing highlights, detached rounded brows, petite nose/W-mouth, cheek dots, large white space and sparse external charms. No cat outline, ears, whiskers, eyelids, engineering-test face, labels, grey or gradients."
+  },
+  "iterations": [
+    {
+      "iteration_id": "special-system-v1-attempt-02",
+      "status": "generated_machine_review_pending_owner",
+      "authoring_request": "Create a square 3 by 4 source sheet of twelve v9-consistent system-state faces for voice, recording error, power, link and recoverable system errors.",
+      "authoring_request_record": "docs/art/iterations/companion-pet-special-states-v1/generation-plan.json#/sheets/system",
+      "prompt": "Use the attached owner-approved Companion v9 face sheet as the only direct visual reference. Use a square 1:1 canvas, never a portrait or landscape page; keep the entire 3 by 4 sheet inside that square with balanced margins. Create one polished 3 by 4 sheet of exactly twelve compact, cute, lively, monochrome inner-face states for a 200x200 e-paper companion. Preserve the exact v9 eye identity: paired upright filled black ovals on the same baseline, matching small front-facing white highlights, detached rounded brows, petite nose/W-mouth and cheek dots. No cat outline, ears, whiskers, eyelids, labels, panels, grey, gradients or shading. Every state changes the complete face together, not just the eyes. Use only sparse friendly semantic charms in whitespace. Row 1: speaking with tiny alternating sound arcs and a gentle open mouth; recording error with a small broken record dot and concerned but sweet face; charge detected with a surprised sparkle arrival; charging with a calm bright face and a rising energy charm, not a plug icon; Row 2: charged with a warm proud face and two small completion sparkles; low battery with gentle worried brows, tiny low bar charm and no sad human styling; pairing with a dotted orbit charm; connected with linked loops and a happy settled face; Row 3: syncing with a dotted circular motion charm; synced with a tiny check sparkle and cheerful face; link error with a broken-link charm and a soft worried face; system error with a cracked-star charm and a clear recoverable, non-scary face. Keep all twelve cells equally spaced on white, no typography, with the same premium lovable Companion identity.",
+      "source_references": [
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+          "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+          "role": "sole approved Companion inner-face identity"
+        },
+        {
+          "path": "docs/art/iterations/companion-pet-special-states-v1/generation-plan.json",
+          "role": "exact request and twelve-family semantic contract"
+        },
+        {
+          "path": "docs/art/iterations/companion-pet-special-states-v1/system-generation-attempts.json",
+          "role": "attempt history and one-variable retry constraint"
+        }
+      ],
+      "output": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_system_v1_candidate.png",
+      "sha256": "AF9ADFD49C47C89DF674726D7201CC49C61ED636306013697822BB42FB1A9C82",
+      "review": {
+        "outcome": "PENDING_OWNER_VISUAL_REVIEW",
+        "reason": "Square geometry, source hash, twelve populated cells and a deterministic 200x200 preview pass machine checks. Owner feedback about lower-edge truncation is an open P0 physical gate, so this source cannot be approved, imported or activated.",
+        "comparison_artifacts": [
+          "docs/validation/companion-pet-special-system-source-review-20260717.json",
+          "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_system_v1_candidate_200x200_preview.png",
+          "docs/validation/companion-owner-feedback-triage-20260717.json"
+        ],
+        "next_prompt_delta": "Only after an owner decision, change one named visible variable against this exact square source; do not restart the face identity, crop the sheet or reuse rejected art."
+      },
+      "implementation": {
+        "status": "not_activated_pending_owner_visual_review",
+        "resource_revision": null,
+        "source_mapping": "docs/art/iterations/companion-pet-special-states-v1/pending-source-mapping.json",
+        "validation": [
+          "docs/validation/companion-pet-special-system-source-review-20260717.json",
+          "docs/validation/companion-pending-special-source-mapping-20260717.json"
+        ],
+        "activation_gate": "No PBM, CEMP, external Flash, firmware, OTA or visual PASS is allowed until an owner source decision, exact source-to-resource mapping and focused physical acceptance are recorded."
+      },
+      "machine_scope": [
+        "source hash and 1254x1254 square geometry",
+        "twelve populated 3x4 cells mapped to named system families",
+        "deterministic 200x200 1-bit preview",
+        "no PBM, CEMP, Flash or firmware activation"
+      ],
+      "next_prompt_delta": "Only after an owner decision, change one named visible variable against this exact square source; do not restart the face identity, crop the sheet or reuse rejected art."
+    },
+    {
+      "iteration_id": "special-journey-v1-attempt-01",
+      "status": "generated_machine_review_pending_owner",
+      "authoring_request": "Create a square 3 by 4 source sheet of twelve v9-consistent keyframes for menu and upgrade journeys, including explicit entry/settle and error/recovery pairs.",
+      "authoring_request_record": "docs/art/iterations/companion-pet-special-states-v1/generation-plan.json#/sheets/journey",
+      "prompt": "Use the attached owner-approved Companion v9 face sheet as the only direct visual reference. Use a square 1:1 canvas, never a portrait or landscape page; keep the entire 3 by 4 sheet inside that square with balanced margins. Create one polished 3 by 4 sheet of exactly twelve compact, cute, lively, monochrome inner-face journey keyframes for a 200x200 e-paper companion. Preserve the exact v9 paired upright black oval eyes, matched white highlights, rounded brows, petite nose/W-mouth, cheek dots and white-space rhythm. No cat outline, ears, whiskers, eyelids, labels, panels, grey, gradients or shading. Every state changes eyes, brows, mouth and cheeks together, with small semantic charms outside the face only. Row 1: menu open entry with a calm decision sparkle; menu open settle with a tiny welcoming star; menu blocked with a soft pause mark and patient face; menu exit with a light backward motion tick and relaxed face. Row 2: upgrade offer with a curious upgrade sparkle; upgrade prepare with a focused dotted bundle charm; upgrade transfer with a gentle moving dot trail; upgrade verify with a thoughtful magnifier-like sparkle. Row 3: upgrade restart with a small circular restart mark; upgrade success with bright paired sparkles; upgrade error with a recoverable broken-star mark and sweet concern; upgrade error recovery with the face returning toward confident calm. Keep all twelve cells equally spaced on white with no typography and no aggressive, technical or threatening visual language.",
+      "source_references": [
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+          "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+          "role": "sole approved Companion inner-face identity"
+        },
+        {
+          "path": "docs/art/iterations/companion-pet-special-states-v1/generation-plan.json",
+          "role": "exact request and twelve-phase journey contract"
+        },
+        {
+          "path": "docs/art/iterations/companion-pet-special-states-v1/journey-generation-attempts.json",
+          "role": "attempt record and one-variable next-prompt constraint"
+        }
+      ],
+      "output": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_journey_v1_candidate.png",
+      "sha256": "95CC749134F169E73A2E2A99FA2B6F08AABDFE78D218677C347D2D687EA4B17F",
+      "review": {
+        "outcome": "PENDING_OWNER_VISUAL_REVIEW",
+        "reason": "Square geometry, source hash, twelve populated cells and a deterministic 200x200 preview pass machine checks. This is still the third sequential owner visual item and cannot import or activate a resource before the earlier review decision.",
+        "comparison_artifacts": [
+          "docs/validation/companion-pet-special-journey-source-review-20260717.json",
+          "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_journey_v1_candidate_200x200_preview.png",
+          "docs/art/iterations/companion-pet-special-states-v1/pending-source-mapping.json"
+        ],
+        "next_prompt_delta": "Only after an owner decision, change one named visible variable against this exact square source; do not restart the face identity or reuse rejected art."
+      },
+      "implementation": {
+        "status": "not_activated_pending_owner_visual_review",
+        "resource_revision": null,
+        "source_mapping": "docs/art/iterations/companion-pet-special-states-v1/pending-source-mapping.json",
+        "validation": [
+          "docs/validation/companion-pet-special-journey-source-review-20260717.json",
+          "docs/validation/companion-pending-special-source-mapping-20260717.json"
+        ],
+        "activation_gate": "No PBM, CEMP, external Flash, firmware, OTA or visual PASS is allowed until an owner source decision, exact source-to-resource mapping and focused physical acceptance are recorded."
+      },
+      "machine_scope": [
+        "source hash and 1254x1254 square geometry",
+        "twelve populated 3x4 cells mapped to named menu and upgrade phases",
+        "deterministic 200x200 1-bit preview",
+        "no PBM, CEMP, Flash or firmware activation"
+      ],
+      "next_prompt_delta": "Only after an owner decision, change one named visible variable against this exact square source; do not restart the face identity or reuse rejected art."
+    }
+  ],
+  "rejected_history": [
+    {
+      "iteration_id": "special-system-v1-attempt-01",
+      "status": "rejected_machine_geometry_non_reusable",
+      "source_metadata": "docs/art/iterations/companion-pet-special-states-v1/system-generation-attempts.json#/attempts/0",
+      "reason": "The output was portrait 1086x1448 rather than square 1:1. Its original prompt and renderable image were not retained in the repository, so it is historical metadata only and cannot be regenerated, imported, used as a reference or activated.",
+      "runtime_boundary": {
+        "pbm_imported": false,
+        "cemp_packed": false,
+        "external_flash_provisioned": false,
+        "firmware_flashed": false,
+        "owner_visual_pass": false
+      }
+    }
+  ],
+  "runtime_boundary": "Both generated sheets are source-review candidates only. No runtime resource, fallback, external Flash provisioning, firmware flash, OTA behavior or physical visual pass is authorized."
+}

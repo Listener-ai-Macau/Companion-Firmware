@@ -96,6 +96,11 @@
           "status": "PASS_MACHINE_ONLY_INACTIVE"
         },
         {
+          "detail": "Every current visual candidate has an exact prompt, references, output hash, request record, review state and next-prompt delta; rejected special metadata stays non-reusable.",
+          "path": "docs/validation/companion-visual-reference-evidence.json",
+          "status": "PASS_LEDGER_INTEGRITY"
+        },
+        {
           "detail": "All 39 inactive v9 frames retain a >=4 px canvas margin; real-panel truncation remains a separate gate.",
           "path": "docs/validation/companion-v9-frame-safe-area-20260717.json",
           "status": "PASS_MACHINE_SAFE_AREA_PHYSICAL_REVIEW_PENDING"

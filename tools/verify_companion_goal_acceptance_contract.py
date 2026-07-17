@@ -25,6 +25,8 @@ REQUIRED_CONTRACT_ANCHORS = (
     "exactly 39 frames / 13 clips",
     "40,000",
     "4 px",
+    "durable request record",
+    "next-prompt delta",
     "try generic, adjacent-panel, guessed, online, or hand-authored LUT bytes.",
     "<=1 mA average over >=60 s",
     "one canonical Chinese `aiw operator-prompt` item at a time",
@@ -46,6 +48,10 @@ EVIDENCE = {
     "v9_resource_binding": (
         "docs/validation/companion-v9-candidate-resource-binding-20260717.json",
         "PASS_MACHINE_ONLY_INACTIVE",
+    ),
+    "visual_reference_ledger": (
+        "docs/validation/companion-visual-reference-evidence.json",
+        "PASS_LEDGER_INTEGRITY",
     ),
     "menu_function": (
         "docs/validation/companion-menu-v6-function-receipt-20260717.json",

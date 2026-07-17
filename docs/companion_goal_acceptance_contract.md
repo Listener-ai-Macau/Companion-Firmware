@@ -51,6 +51,12 @@ scale, compare it with the locked v9 identity, then record one decision and an
 optional note. Approval authorizes only a later PBM/CEMP import proposal, never
 a firmware flash by itself.
 
+- Machine precondition: the visual-reference ledger audit must cover exactly
+  the v9 expression, four-root menu and special-state feature families, with an
+  exact prompt, reference/output hashes, durable request record, review state
+  and next-prompt delta for every candidate. Historical rejected metadata may
+  remain only as non-reusable history; it can never become an art source.
+
 1. `menu-v6-four-root`: Voice, Device, Connection and Preferences must be the
    only roots; both English and Chinese overlays must be readable and every row
    must correspond to a real/deferred action.
