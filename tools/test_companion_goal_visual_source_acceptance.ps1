@@ -56,12 +56,26 @@ if ($record.item_id -ne "menu-v6-four-root" -or $record.execution.canonical_aiw_
 if ($record.source_sha256 -ne $item.source_sha256 -or $record.machine_evidence -ne $item.machine_evidence) {
     throw "G2 self-test record drifted from the manifest source or evidence identity."
 }
+$rendered = $record.rendered_prompt
+if ([string]$rendered.title -notlike "*1/3*" -or [string]$rendered.scope_text -notlike "*不会导入 PBM/CEMP*" ) {
+    throw "G2 rendered prompt lost its sequential or non-activation scope."
+}
 foreach ($field in @("target", "operator_action", "success_signal", "failure_rule", "continue_condition", "recovery_condition", "record_fields")) {
     if (-not $record.operator_prompt.$field) {
         throw "G2 self-test record is missing manifest prompt field: $field"
     }
     if (($record.operator_prompt.$field | ConvertTo-Json -Depth 8 -Compress) -ne ($item.operator_prompt.$field | ConvertTo-Json -Depth 8 -Compress)) {
         throw "G2 self-test record drifted from manifest prompt field: $field"
+    }
+}
+foreach ($text in @($item.operator_prompt.target, $item.operator_prompt.operator_action, $item.operator_prompt.failure_rule) + @($item.operator_prompt.success_signal)) {
+    if ([string]$rendered.message -notlike "*$text*") {
+        throw "G2 rendered message is missing manifest text: $text"
+    }
+}
+foreach ($text in @($item.operator_prompt.continue_condition, $item.operator_prompt.recovery_condition) + @($item.operator_prompt.record_fields)) {
+    if ([string]$rendered.expected_text -notlike "*$text*") {
+        throw "G2 rendered expected text is missing manifest text: $text"
     }
 }
 if (-not (Test-Path -LiteralPath (Join-Path $latest.FullName "operator-note.txt"))) {
