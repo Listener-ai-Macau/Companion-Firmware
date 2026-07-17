@@ -94,6 +94,8 @@ def build_report() -> dict[str, object]:
                 errors.append(f"{identifier} image lacks review context: {image.get('path')}")
         if item.get("owner_decision") != "PENDING_OWNER_VISUAL_REVIEW":
             errors.append(f"{identifier} owner decision is not pending")
+        if "computer-side" not in item.get("scope", "") or "not a physical e-paper review" not in item.get("scope", ""):
+            errors.append(f"{identifier} must clearly separate computer-source and physical-panel review")
         if "No PBM/CEMP" not in item.get("runtime_boundary", ""):
             errors.append(f"{identifier} lost its runtime non-activation boundary")
         verified.append({"id": identifier, "source_sha256": source_sha, "image_count": len(images), "machine_evidence": item.get("machine_evidence"), "artifact_review": review, "operator_prompt": prompt})

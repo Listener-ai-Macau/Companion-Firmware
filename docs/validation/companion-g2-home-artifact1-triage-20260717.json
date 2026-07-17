@@ -1,0 +1,24 @@
+{
+  "schema": "companion.g2_artifact_review_triage.v1",
+  "status": "NOT_APPLIED_OWNER_CONTEXT_MISMATCH",
+  "requirement": "COMP-REQ-083",
+  "raw_review": {
+    "path": "docs/validation/companion-g2-owner-visual-reviews/20260717-114203-837-home-v9-daily-storyboard-artifact1/operator-review.json",
+    "sha256": "712CA0CAFFE09710373939D28CE2F0F4212C32B5CA1C381B4D59A94544783A4C",
+    "selected": "已执行"
+  },
+  "owner_feedback": "The owner asked whether the popup represented the physical screen or the computer image; the distinction was not sufficiently clear before the selection.",
+  "decision": {
+    "selection_applied": false,
+    "computer_source_observation": "requires an explicit, unambiguous computer-source scope",
+    "physical_e_paper_acceptance": "remains separate G4/G5 hardware work",
+    "next_step": "Do not open home-v9 artifact 2. Regenerate the manifest/runner wording, validate it, then restart at artifact 1 only after the owner explicitly selects computer-source review."
+  },
+  "runtime_boundary": {
+    "pbm_imported": false,
+    "cemp_packed": false,
+    "external_flash_provisioned": false,
+    "firmware_flashed": false,
+    "runtime_resource_activated": false
+  }
+}

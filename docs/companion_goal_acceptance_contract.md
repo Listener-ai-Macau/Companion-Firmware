@@ -47,10 +47,12 @@ hardware gates reproducible one item at a time.
 
 ### G2: Visual Source Observations (Four Sequential Families)
 
-For each item, inspect the listed 200x200 deterministic preview at normal
-scale, compare it with the locked v9 identity, then record one decision and an
-optional note. Approval authorizes only a later PBM/CEMP import proposal, never
-a firmware flash by itself.
+For each item, inspect the listed computer-side 200x200 deterministic preview
+at normal scale, compare it with the locked v9 identity, then record one
+observation and an optional note. This is not an electronic-paper panel review:
+it cannot prove orientation, physical clipping, refresh residue or touch. Those
+belong to G4/G5. A complete source observation sequence can only inform a later
+PBM/CEMP import proposal; it never authorizes a firmware flash by itself.
 
 - Machine precondition: the visual-reference ledger audit must cover exactly
   the v9 expression, four-root menu and special-state feature families, with an

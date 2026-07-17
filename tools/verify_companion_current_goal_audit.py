@@ -46,6 +46,7 @@ ARTIFACTS = {
     "visual_readiness": ROOT / "docs/validation/companion-ui-visual-acceptance-readiness-20260717.json",
     "goal_acceptance_readiness": ROOT / "docs/validation/companion-goal-acceptance-readiness-20260717.json",
     "g2_group_triage": ROOT / "docs/validation/companion-g2-menu-group-review-triage-20260717.json",
+    "g2_home_context_triage": ROOT / "docs/validation/companion-g2-home-artifact1-triage-20260717.json",
     "wba_boundary": ROOT / "docs/validation/companion-v9-wba-visual-boundary-20260717.json",
     "waveform_freeze": ROOT / "docs/companion_ssd1681_vendor_waveform_freeze.md",
 }
@@ -109,6 +110,7 @@ def build_audit() -> dict[str, Any]:
     visual_readiness = load_json("visual_readiness")
     goal_acceptance_readiness = load_json("goal_acceptance_readiness")
     g2_group_triage = load_json("g2_group_triage")
+    g2_home_context_triage = load_json("g2_home_context_triage")
     wba_boundary = load_json("wba_boundary")
     waveform_freeze = ARTIFACTS["waveform_freeze"].read_text(encoding="utf-8")
     waveform_freeze_normalized = waveform_freeze.lower()
@@ -298,6 +300,8 @@ def build_audit() -> dict[str, Any]:
     check(errors, g2_group_triage.get("status") == "OPEN_REVIEW_FLOW_REWORK_REQUIRED", "G2 original-image review rework is not open")
     check(errors, g2_group_triage.get("requirement") == "COMP-REQ-079", "G2 original-image review rework lost its requirement")
     check(errors, g2_group_triage.get("resolution", {}).get("group_selection_applied") is False, "G2 grouped visual selection was incorrectly applied")
+    check(errors, g2_home_context_triage.get("status") == "NOT_APPLIED_OWNER_CONTEXT_MISMATCH", "G2 home observation must remain unapplied for context mismatch")
+    check(errors, g2_home_context_triage.get("requirement") == "COMP-REQ-083" and g2_home_context_triage.get("decision", {}).get("selection_applied") is False, "G2 home context triage drifted")
 
     check(errors, wba_boundary.get("status") == "PASS_V9_WBA_VISUAL_BOUNDARY_PENDING_OWNER", "WBA visual boundary is not PASS")
     wba_resource = wba_boundary.get("wba_resource_boundary", {})
@@ -384,6 +388,7 @@ def build_audit() -> dict[str, Any]:
                 evidence("visual_readiness", str(visual_readiness.get("status")), "Four sequential Chinese owner-review families retain 78 machine-locked originals and non-activation boundaries."),
                 evidence("goal_acceptance_readiness", str(goal_acceptance_readiness.get("status")), "Goal-scoped acceptance has explicit machine, owner, hardware and lower-edge-truncation gates."),
                 evidence("g2_group_triage", str(g2_group_triage.get("status")), "The first grouped menu selection remains unapplied because the owner required locked originals one image at a time."),
+                evidence("g2_home_context_triage", str(g2_home_context_triage.get("status")), "The first homepage observation remains unapplied because computer-source and physical-panel scope was unclear."),
             ],
         },
         {

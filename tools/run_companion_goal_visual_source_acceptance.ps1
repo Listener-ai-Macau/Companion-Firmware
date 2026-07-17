@@ -111,9 +111,9 @@ function Build-OperatorSpec {
     }
     $displayName = if ([string]::IsNullOrWhiteSpace([string]$Item.display_name)) { [string]$Item.id } else { [string]$Item.display_name }
     return [ordered]@{
-        title = "Companion 视觉源验收 $Position/$ItemCount · 原图 $($Artifact.index)/$ArtifactCount：$displayName"
+        title = "Companion 电脑端美术源图验收 $Position/$ItemCount · 原图 $($Artifact.index)/$ArtifactCount：$displayName"
         progress_text = "$Position/$ItemCount · 图 $($Artifact.index)/$ArtifactCount（本次 1/1）"
-        scope_text = "G2 顺序视觉源决定；已在系统图片查看器打开本张原图。当前只审这一张原图与对应 200x200 预览，不会导入 PBM/CEMP、写 Flash、刷固件或启用运行时资源。"
+        scope_text = "G2 电脑端美术源图观察；已在系统图片查看器打开本张 200x200 原图。它不是开发板上的电子纸实物屏，不能证明方向、裁切、残影、刷新或触控。当前不会导入 PBM/CEMP、写 Flash、刷固件或启用运行时资源。"
         message = Join-Lines @(
             "当前原图 $($Artifact.index)/$ArtifactCount：$($Artifact.label)",
             "文件：$($Artifact.path)",
@@ -129,14 +129,14 @@ function Build-OperatorSpec {
             "失败规则：$($card.failure_rule)"
         )
         expected_text = Join-Lines @(
-            "选择 '通过' 仅记录本项视觉源决定：$($card.continue_condition)",
+            "选择 已执行 仅记录本页观察：$($card.continue_condition)",
             "",
             "失败后的处理：$($card.recovery_condition)",
             "",
             "备注至少记录：",
             $recordFields
         )
-        observation_label = "备注（可留空；失败时必须写状态/行号与可见问题，通过时也可记录细节）"
+        observation_label = "备注（可留空；选择 需修改 时必须写状态/行号与可见问题，选择 已执行 时也可记录细节）"
     }
 }
 
@@ -162,7 +162,37 @@ function Test-ArtifactAccepted {
         if ($record.item_id -ne $ReviewItemId -or $record.artifact.index -ne $Artifact.index -or $record.artifact.sha256 -ne $Artifact.sha256) {
             continue
         }
+        if (Test-ReviewInvalidated -ReviewPath $path.FullName -Record $record) {
+            continue
+        }
         if ($record.operator_result.selected -eq "已执行" -and [string]::IsNullOrWhiteSpace([string]$record.operator_result.note) -and $record.execution.canonical_aiw_operator_prompt_opened -eq $true) {
+            return $true
+        }
+    }
+    return $false
+}
+
+function Test-ReviewInvalidated {
+    param(
+        [Parameter(Mandatory = $true)][string] $ReviewPath,
+        [Parameter(Mandatory = $true)] $Record
+    )
+
+    $triageRoot = Join-Path $repoRoot "docs\validation"
+    if (-not (Test-Path -LiteralPath $triageRoot -PathType Container)) {
+        return $false
+    }
+    $relativeReviewPath = Get-RelativePath -Path $ReviewPath
+    $reviewHash = Get-Sha256 -Path $ReviewPath
+    foreach ($triagePath in Get-ChildItem -LiteralPath $triageRoot -File -Filter "companion-g2-*-triage-*.json" -ErrorAction SilentlyContinue) {
+        try {
+            $triage = Get-Content -LiteralPath $triagePath.FullName -Raw | ConvertFrom-Json
+        } catch {
+            continue
+        }
+        $raw = $triage.raw_review
+        $selectionApplied = $triage.decision.selection_applied
+        if ($selectionApplied -is [bool] -and -not $selectionApplied -and ([string]$raw.path -eq $relativeReviewPath -or [string]$raw.sha256 -eq $reviewHash)) {
             return $true
         }
     }

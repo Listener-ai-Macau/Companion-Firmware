@@ -12,6 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 CONTRACT = ROOT / "docs" / "companion_goal_acceptance_contract.md"
 TRIAGE = ROOT / "docs" / "validation" / "companion-owner-feedback-triage-20260717.json"
 G2_GROUP_TRIAGE = ROOT / "docs" / "validation" / "companion-g2-menu-group-review-triage-20260717.json"
+G2_HOME_CONTEXT_TRIAGE = ROOT / "docs" / "validation" / "companion-g2-home-artifact1-triage-20260717.json"
 REPORT = ROOT / "docs" / "validation" / "companion-goal-acceptance-readiness-20260717.json"
 
 REQUIRED_CONTRACT_ANCHORS = (
@@ -31,6 +32,7 @@ REQUIRED_CONTRACT_ANCHORS = (
     "special-state crop preflight",
     "target, operator action, success signal, failure",
     "one canonical prompt per image",
+    "This is not an electronic-paper panel review",
     "已执行",
     "需修改",
     "home-v9-daily-storyboard",
@@ -128,6 +130,7 @@ def build_report() -> dict[str, object]:
             "OWNER_ARTIFACT_OBSERVATION_CAPTURED",
             "已执行",
             "需修改",
+            "不是开发板上的电子纸实物屏",
             "operator-prompt",
             "manifest_owner_decision_changed = $false",
             "runtime_resource_activated = $false",
@@ -180,6 +183,19 @@ def build_report() -> dict[str, object]:
     if resolution.get("group_selection_applied") is not False or resolution.get("manifest_owner_decision_changed") is not False:
         errors.append("G2 grouped menu selection was incorrectly applied")
 
+    g2_home_context_triage: dict[str, object] = {}
+    if G2_HOME_CONTEXT_TRIAGE.is_file():
+        try:
+            g2_home_context_triage = json.loads(G2_HOME_CONTEXT_TRIAGE.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            errors.append("G2 home context triage is invalid JSON")
+    else:
+        errors.append("missing G2 home context triage")
+    if g2_home_context_triage.get("status") != "NOT_APPLIED_OWNER_CONTEXT_MISMATCH" or g2_home_context_triage.get("requirement") != "COMP-REQ-083":
+        errors.append("G2 home observation must remain unapplied for computer/physical context mismatch")
+    if g2_home_context_triage.get("decision", {}).get("selection_applied") is not False:
+        errors.append("G2 home context-mismatch selection was incorrectly applied")
+
     return {
         "schema": "companion.goal_acceptance_readiness.v2",
         "status": "PASS_ACCEPTANCE_CONTRACT_READY_OWNER_AND_HARDWARE_GATED" if not errors else "FAIL",
@@ -207,6 +223,7 @@ def build_report() -> dict[str, object]:
         "machine_evidence": machine_evidence,
         "owner_feedback_triage": TRIAGE.relative_to(ROOT).as_posix(),
         "g2_group_review_triage": G2_GROUP_TRIAGE.relative_to(ROOT).as_posix(),
+        "g2_home_context_triage": G2_HOME_CONTEXT_TRIAGE.relative_to(ROOT).as_posix(),
         "errors": errors,
     }
 

@@ -66,7 +66,7 @@ if ($record.artifact.index -ne 1 -or $record.artifact.path -ne $artifact.path -o
     throw "G2 self-test record is not bound to the first locked original image."
 }
 $rendered = $record.rendered_prompt
-if ([string]$rendered.title -notlike "*1/$($manifest.items.Count)*原图 1/$($item.artifact_review.images.Count)*" -or [string]$rendered.scope_text -notlike "*系统图片查看器*" -or [string]$rendered.scope_text -notlike "*不会导入 PBM/CEMP*") {
+if ([string]$rendered.title -notlike "*电脑端美术源图验收*1/$($manifest.items.Count)*原图 1/$($item.artifact_review.images.Count)*" -or [string]$rendered.scope_text -notlike "*系统图片查看器*" -or [string]$rendered.scope_text -notlike "*不是开发板上的电子纸实物屏*" -or [string]$rendered.scope_text -notlike "*不会导入 PBM/CEMP*") {
     throw "G2 rendered prompt lost its sequential or non-activation scope."
 }
 foreach ($field in @("target", "operator_action", "success_signal", "failure_rule", "continue_condition", "recovery_condition", "record_fields")) {

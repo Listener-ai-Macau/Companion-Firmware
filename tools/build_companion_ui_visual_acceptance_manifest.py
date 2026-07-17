@@ -36,7 +36,7 @@ def item(
         "sequence": sequence,
         "id": identifier,
         "display_name": display_name,
-        "scope": "One locked original or deterministic 200x200 page is shown per canonical Chinese prompt. This records a review observation only and never activates a product resource.",
+        "scope": "One locked computer-side original or deterministic 200x200 page is shown per canonical Chinese prompt. It is not a physical e-paper review: direction, clipping, refresh residue and touch require later G4/G5 hardware evidence. This records a source observation only and never activates a product resource.",
         "source_sha256": source_sha256,
         "machine_evidence": evidence.relative_to(ROOT).as_posix(),
         "artifact_review": {"mode": "original_image_one_at_a_time", "images": images},
