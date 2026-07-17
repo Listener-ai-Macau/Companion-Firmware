@@ -1,0 +1,18 @@
+{
+  "schema": "companion.owner_feedback_triage.v1",
+  "status": "OPEN_P0_PHYSICAL_VISUAL_RECHECK",
+  "source": {
+    "path": "docs/validation/companion-pet-special-system-owner-acceptance-20260717.json",
+    "sha256": "8A3BDF4BD1254B0D0F4DE13A7F293C3D74587C800339ABD4C61FEB0B7737E227",
+    "note": "有一些是截断了的表情, 下面截断了一点"
+  },
+  "triage": {
+    "requirement": "COMP-REQ-078",
+    "classification": "P0 visible expression clipping",
+    "possible_layers": ["source crop", "200x200 frame translation", "panel orientation or viewport", "display transport or refresh"],
+    "forbidden_response": "Do not replace the locked v9 source, reactivate retired art, or claim a visual pass without a source-to-panel check.",
+    "machine_gate": "All inactive v9 PBM frames must retain at least 4 px of empty canvas at every edge.",
+    "physical_gate": "Inspect each affected state on the real 200x200 panel; no face feature, cheek, mouth or semantic charm may be clipped at any edge.",
+    "state": "pending machine safe-area proof and focused panel recheck"
+  }
+}

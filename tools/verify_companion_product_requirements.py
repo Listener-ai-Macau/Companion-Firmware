@@ -59,6 +59,7 @@ REQUIRED_ANCHORS = (
     "COMP-REQ-039",
     "COMP-REQ-076",
     "COMP-REQ-077",
+    "COMP-REQ-078",
     "PC6/EXTI",
     "<=1 mA",
     "external-Flash first",
@@ -90,8 +91,11 @@ REQUIRED_ANCHORS = (
     "main is the sole attached worktree",
     "<AI_WORKFLOW_REPO>\\docs\\agent_quickstart.md",
     "Current Visual Source Resolution (2026-07-17)",
+    "companion_goal_acceptance_contract.md",
+    "G1-G8",
     "historical API identifiers only",
     "reactivate any image, prompt, PBM, CEMP, menu layout, or visual validation path",
+    "some Companion expressions appear truncated at the lower edge",
 )
 
 

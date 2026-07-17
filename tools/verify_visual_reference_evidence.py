@@ -16,7 +16,8 @@ ROOT = Path(__file__).resolve().parents[1]
 ART_ITERATIONS = ROOT / "docs" / "art" / "iterations"
 FIXTURE = ROOT / "docs" / "validation" / "companion-visual-reference-evidence.json"
 SCHEMA_ID = "companion.visual_reference_evidence.v1"
-RULE_PATH = "docs/product_visual_design_iteration.md"
+WORKFLOW_RULE_PATH = "docs/agent_quickstart.md"
+PRODUCT_RULE_PATH = "docs/companion_product_requirements.md"
 DEFAULT_WORKFLOW_REPO = Path(r"C:\Users\Billy\Desktop\Denzic\ai-collaboration-workflow")
 
 PENDING_MARKER = "PENDING_OWNER_VISUAL_REVIEW"
@@ -40,8 +41,8 @@ def resolve_workflow_rule() -> tuple[Path, str]:
     candidates.append((DEFAULT_WORKFLOW_REPO, "default_workflow_repo"))
     for repository, source in candidates:
         if (repository / "docs" / "agent_quickstart.md").is_file():
-            return repository / RULE_PATH, source
-    return DEFAULT_WORKFLOW_REPO / RULE_PATH, "default_workflow_repo_missing_quickstart"
+            return repository / WORKFLOW_RULE_PATH, source
+    return DEFAULT_WORKFLOW_REPO / WORKFLOW_RULE_PATH, "default_workflow_repo_missing_quickstart"
 
 
 def require(condition: bool, message: str, errors: list[str]) -> None:
@@ -102,7 +103,8 @@ def audit_ledger(path: Path, errors: list[str]) -> dict[str, Any]:
     ledger = json.loads(path.read_text(encoding="utf-8"))
     label = rel(path)
     require(ledger.get("schema") == "denzic.product_visual_iteration.v1", f"{label} schema drifted", errors)
-    require(ledger.get("rule") == RULE_PATH, f"{label} must point at the global visual rule", errors)
+    require(ledger.get("rule") == WORKFLOW_RULE_PATH, f"{label} must point at the workflow quickstart", errors)
+    require(ledger.get("product_rule") == PRODUCT_RULE_PATH, f"{label} must point at the Companion visual-source registry", errors)
     require(bool(ledger.get("feature")), f"{label} missing feature", errors)
     require(bool(ledger.get("target_profile")), f"{label} missing target profile", errors)
 
@@ -191,10 +193,13 @@ def audit_ledger(path: Path, errors: list[str]) -> dict[str, Any]:
 
 def build_report() -> tuple[dict[str, Any], list[str]]:
     errors: list[str] = []
-    workflow_rule, workflow_rule_resolution = resolve_workflow_rule()
+    workflow_rule, _workflow_rule_resolution = resolve_workflow_rule()
     workflow_rule_exists = workflow_rule.is_file()
-    require(workflow_rule_exists, f"global visual rule is missing: {workflow_rule}", errors)
+    product_rule = ROOT / PRODUCT_RULE_PATH
+    require(workflow_rule_exists, f"workflow quickstart is missing: {workflow_rule}", errors)
+    require(product_rule.is_file(), f"Companion visual-source registry is missing: {product_rule}", errors)
     workflow_rule_sha256 = sha256(workflow_rule) if workflow_rule_exists else None
+    product_rule_sha256 = sha256(product_rule) if product_rule.is_file() else None
     ledgers = sorted(ART_ITERATIONS.glob("*/iteration-ledger.json"))
     require(bool(ledgers), "no visual iteration ledgers found", errors)
     rows = [audit_ledger(path, errors) for path in ledgers]
@@ -210,11 +215,12 @@ def build_report() -> tuple[dict[str, Any], list[str]]:
         "schema_id": SCHEMA_ID,
         "status": "PASS_LEDGER_INTEGRITY" if not errors else "FAIL",
         "purpose": "Machine audit only. It proves visual evidence is retained; it does not replace owner visual acceptance.",
-        "global_rule": {
-            "path": RULE_PATH,
+        "workflow_rule": {
+            "path": WORKFLOW_RULE_PATH,
             "sha256": workflow_rule_sha256,
-            "resolution": workflow_rule_resolution,
+            "resolution": "agent_quickstart",
         },
+        "product_rule": {"path": PRODUCT_RULE_PATH, "sha256": product_rule_sha256},
         "visual_pass_rule": (
             "A visible design stays PENDING_VISUAL_BASELINE or PENDING_OWNER_VISUAL_REVIEW until its approved source, "
             "prompt, source/output hashes, comparison artifact, and owner decision are all present."

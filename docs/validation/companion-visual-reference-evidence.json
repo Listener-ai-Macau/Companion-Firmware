@@ -1,10 +1,5 @@
 {
   "errors": [],
-  "global_rule": {
-    "path": "docs/product_visual_design_iteration.md",
-    "resolution": "AI_WORKFLOW_REPO",
-    "sha256": "89198F0787A1AC1A0FCBF4607DE1C584DE43A5AB6E78186F8C1462886A619535"
-  },
   "ledger_count": 2,
   "ledgers": [
     {
@@ -70,9 +65,18 @@
       "ledger": "docs/art/iterations/companion-menu-v6-four-root/iteration-ledger.json"
     }
   ],
+  "product_rule": {
+    "path": "docs/companion_product_requirements.md",
+    "sha256": "2A55DEAAC44446112538EDF911D0D23376A5DFA529AE120EA0147914EE5DA228"
+  },
   "purpose": "Machine audit only. It proves visual evidence is retained; it does not replace owner visual acceptance.",
   "rejected_history_preserved": [],
   "schema_id": "companion.visual_reference_evidence.v1",
   "status": "PASS_LEDGER_INTEGRITY",
-  "visual_pass_rule": "A visible design stays PENDING_VISUAL_BASELINE or PENDING_OWNER_VISUAL_REVIEW until its approved source, prompt, source/output hashes, comparison artifact, and owner decision are all present."
+  "visual_pass_rule": "A visible design stays PENDING_VISUAL_BASELINE or PENDING_OWNER_VISUAL_REVIEW until its approved source, prompt, source/output hashes, comparison artifact, and owner decision are all present.",
+  "workflow_rule": {
+    "path": "docs/agent_quickstart.md",
+    "resolution": "agent_quickstart",
+    "sha256": "D09400C4B7F4682258CC12F7E32433F276340B09A96BE12910AD8E7686A70590"
+  }
 }

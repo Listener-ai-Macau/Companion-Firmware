@@ -30,6 +30,7 @@ ARTIFACTS = {
     "v9_cemp": ROOT / "docs/validation/companion-v9-expression-cemp-20260716.json",
     "v9_coverage": ROOT / "docs/validation/companion-v9-scene-coverage-20260716.json",
     "v9_binding": ROOT / "docs/validation/companion-v9-candidate-resource-binding-20260717.json",
+    "v9_safe_area": ROOT / "docs/validation/companion-v9-frame-safe-area-20260717.json",
     "menu_function_receipt": ROOT / "docs/validation/companion-menu-v6-function-receipt-20260717.json",
     "menu_source": ROOT / "docs/validation/companion-menu-v6-source-review-20260717.json",
     "menu_localization": ROOT / "docs/validation/companion-menu-v6-localization-preview-20260717.json",
@@ -37,6 +38,7 @@ ARTIFACTS = {
     "special_journey": ROOT / "docs/validation/companion-pet-special-journey-source-review-20260717.json",
     "special_mapping": ROOT / "docs/validation/companion-pending-special-source-mapping-20260717.json",
     "visual_readiness": ROOT / "docs/validation/companion-ui-visual-acceptance-readiness-20260717.json",
+    "goal_acceptance_readiness": ROOT / "docs/validation/companion-goal-acceptance-readiness-20260717.json",
     "wba_boundary": ROOT / "docs/validation/companion-v9-wba-visual-boundary-20260717.json",
     "waveform_freeze": ROOT / "docs/companion_ssd1681_vendor_waveform_freeze.md",
 }
@@ -83,6 +85,7 @@ def build_audit() -> dict[str, Any]:
     cemp = load_json("v9_cemp")
     coverage = load_json("v9_coverage")
     binding = load_json("v9_binding")
+    safe_area = load_json("v9_safe_area")
     menu_function_receipt = load_json("menu_function_receipt")
     menu_source = load_json("menu_source")
     menu_localization = load_json("menu_localization")
@@ -90,6 +93,7 @@ def build_audit() -> dict[str, Any]:
     special_journey = load_json("special_journey")
     special_mapping = load_json("special_mapping")
     visual_readiness = load_json("visual_readiness")
+    goal_acceptance_readiness = load_json("goal_acceptance_readiness")
     wba_boundary = load_json("wba_boundary")
     waveform_freeze = ARTIFACTS["waveform_freeze"].read_text(encoding="utf-8")
     waveform_freeze_normalized = waveform_freeze.lower()
@@ -187,6 +191,11 @@ def build_audit() -> dict[str, Any]:
     check(errors, coverage.get("candidate_mapping_count") == 18 and coverage.get("pending_no_fallback_count") == 22, "scene mapping boundary drifted")
     check(errors, binding.get("status") == "PASS_MACHINE_ONLY_INACTIVE", "v9 selector is not inactive machine-only PASS")
     check(errors, binding.get("candidate_pack", {}).get("runtime_resource_activated") is False, "v9 selector permits runtime activation")
+    check(errors, safe_area.get("status") == "PASS_MACHINE_SAFE_AREA_PHYSICAL_REVIEW_PENDING", "v9 safe-area report is not machine-only PASS")
+    check(errors, safe_area.get("frame_count") == 39, "v9 safe-area report does not cover 39 frames")
+    check(errors, safe_area.get("frame_profile", {}).get("minimum_edge_clearance_px") == 4, "v9 safe-area margin drifted")
+    check(errors, safe_area.get("runtime_resource_activated") is False, "v9 safe-area report permits runtime activation")
+    check(errors, all(frame.get("minimum_clearance_px", 0) >= 4 for frame in safe_area.get("frames", [])), "v9 frame ink reaches the protected edge margin")
 
     check(errors, menu_function_receipt.get("status") == "PASS_CURRENT_SOURCE_MENU_FUNCTION_PENDING_OWNER_VISUAL", "four-root menu function receipt is not PASS")
     menu_commit = menu_function_receipt.get("source_commit", "")
@@ -220,6 +229,9 @@ def build_audit() -> dict[str, Any]:
     readiness_items = visual_readiness.get("items", [])
     check(errors, len(readiness_items) == 3, "visual review must retain exactly three sequential items")
     check(errors, {item.get("source_sha256") for item in readiness_items} == {MENU_SHA256, SYSTEM_SHA256, JOURNEY_SHA256}, "visual review source hashes drifted")
+    check(errors, goal_acceptance_readiness.get("status") == "PASS_ACCEPTANCE_CONTRACT_READY_OWNER_AND_HARDWARE_GATED", "detailed Goal acceptance readiness is not PASS")
+    check(errors, goal_acceptance_readiness.get("operator_prompt_opened") is False, "detailed Goal acceptance record claims a popup was opened")
+    check(errors, goal_acceptance_readiness.get("physical_acceptance", {}).get("lower_edge_truncation") == "must be checked during G5 before any visual pass", "lower-edge truncation gate is missing")
 
     check(errors, wba_boundary.get("status") == "PASS_V9_WBA_VISUAL_BOUNDARY_PENDING_OWNER", "WBA visual boundary is not PASS")
     wba_resource = wba_boundary.get("wba_resource_boundary", {})
@@ -265,6 +277,7 @@ def build_audit() -> dict[str, Any]:
                 evidence("v9_cemp", str(cemp.get("status")), "39/39 PBM-to-CEMP decode comparison passes without activation."),
                 evidence("v9_coverage", str(coverage.get("status")), "40 scene families are explicit: 18 available candidates and 22 no-fallback pending sources."),
                 evidence("v9_binding", str(binding.get("status")), "Portable selector remains AVAILABLE_NOT_ACTIVE."),
+                evidence("v9_safe_area", str(safe_area.get("status")), "All 39 inactive v9 frames retain a >=4 px canvas margin; real-panel truncation remains a separate gate."),
                 evidence("runtime_visual_boundary", str(runtime_visual_boundary.get("status")), "The runtime cannot substitute a procedural or test face when an external visual asset is unavailable."),
                 evidence("external_expression_system", str(external_expression_system.get("status")), "Portable mood behavior selects semantic states while only external CEMP supplies product pixels."),
                 evidence("resource_memory_policy", str(resource_memory_policy.get("status")), "The current resource contract accepts only v9 external CEMP candidates and prohibits legacy r53 as a visual fallback."),
@@ -298,6 +311,7 @@ def build_audit() -> dict[str, Any]:
                 evidence("special_journey", str(special_journey.get("status")), "Journey sheet is pending owner decision."),
                 evidence("special_mapping", str(special_mapping.get("status")), "All 22 uncovered families map to exact pending sources with no fallback."),
                 evidence("visual_readiness", str(visual_readiness.get("status")), "Three sequential Chinese owner-review items are prepared but not opened."),
+                evidence("goal_acceptance_readiness", str(goal_acceptance_readiness.get("status")), "Goal-scoped acceptance has explicit machine, owner, hardware and lower-edge-truncation gates."),
             ],
         },
         {
@@ -337,6 +351,8 @@ def build_audit() -> dict[str, Any]:
             "python .\\tools\\verify_companion_current_goal_audit.py",
             "pwsh .\\tools\\test_companion_v9_expression_render_pipeline.ps1",
             "python .\\tools\\verify_companion_v9_wba_visual_boundary.py",
+            "python .\\tools\\verify_companion_v9_frame_safe_area.py",
+            "python .\\tools\\verify_companion_goal_acceptance_contract.py",
             "python .\\tools\\verify_companion_historical_branch_audit.py",
             "python .\\tools\\verify_companion_low_power_requirements.py",
             "pwsh .\\tools\\test_power_policy_host.ps1",

@@ -1,0 +1,63 @@
+{
+  "errors": [],
+  "machine_evidence": {
+    "frame_safe_area": {
+      "path": "docs/validation/companion-v9-frame-safe-area-20260717.json",
+      "status": "PASS_MACHINE_SAFE_AREA_PHYSICAL_REVIEW_PENDING"
+    },
+    "menu_function": {
+      "path": "docs/validation/companion-menu-v6-function-receipt-20260717.json",
+      "status": "PASS_CURRENT_SOURCE_MENU_FUNCTION_PENDING_OWNER_VISUAL"
+    },
+    "v9_cemp_pixels": {
+      "path": "docs/validation/companion-v9-expression-cemp-20260716.json",
+      "status": "PASS_MACHINE_ONLY_CEMP_NOT_ACTIVATED"
+    },
+    "v9_resource_binding": {
+      "path": "docs/validation/companion-v9-candidate-resource-binding-20260717.json",
+      "status": "PASS_MACHINE_ONLY_INACTIVE"
+    },
+    "v9_scene_coverage": {
+      "path": "docs/validation/companion-v9-scene-coverage-20260716.json",
+      "status": "PASS_MACHINE_ONLY_NO_LEGACY_FALLBACK"
+    },
+    "visual_review_readiness": {
+      "path": "docs/validation/companion-ui-visual-acceptance-readiness-20260717.json",
+      "status": "PASS_READY_FOR_SEQUENTIAL_OWNER_REVIEW"
+    },
+    "wba_boundary": {
+      "path": "docs/validation/companion-v9-wba-visual-boundary-20260717.json",
+      "status": "PASS_V9_WBA_VISUAL_BOUNDARY_PENDING_OWNER"
+    }
+  },
+  "next_eligible_owner_item": "menu-v6-four-root",
+  "operator_prompt_opened": false,
+  "owner_feedback_triage": "docs/validation/companion-owner-feedback-triage-20260717.json",
+  "physical_acceptance": {
+    "lower_edge_truncation": "must be checked during G5 before any visual pass",
+    "required_first_machine_gates": [
+      "G1",
+      "G3",
+      "G4"
+    ],
+    "state": "not_started",
+    "vendor_waveform": "G7 remains frozen until matching CWF1",
+    "wba_board": "G8 remains deferred until target board and CubeWBA project exist"
+  },
+  "schema": "companion.goal_acceptance_readiness.v1",
+  "sequential_visual_review": [
+    {
+      "id": "menu-v6-four-root",
+      "state": "ready_for_owner_decision"
+    },
+    {
+      "id": "special-system-v1",
+      "state": "owner_feedback_triaged_correction_required"
+    },
+    {
+      "id": "special-journey-v1",
+      "state": "blocked_until_prior_visual_decision"
+    }
+  ],
+  "status": "PASS_ACCEPTANCE_CONTRACT_READY_OWNER_AND_HARDWARE_GATED"
+}

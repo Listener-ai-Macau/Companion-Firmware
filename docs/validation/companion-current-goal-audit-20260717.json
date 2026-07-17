@@ -96,6 +96,11 @@
           "status": "PASS_MACHINE_ONLY_INACTIVE"
         },
         {
+          "detail": "All 39 inactive v9 frames retain a >=4 px canvas margin; real-panel truncation remains a separate gate.",
+          "path": "docs/validation/companion-v9-frame-safe-area-20260717.json",
+          "status": "PASS_MACHINE_SAFE_AREA_PHYSICAL_REVIEW_PENDING"
+        },
+        {
           "detail": "The runtime cannot substitute a procedural or test face when an external visual asset is unavailable.",
           "path": "docs/validation/companion-runtime-visual-boundary-20260717.json",
           "status": "PASS_CURRENT_SOURCE_NO_PROCEDURAL_VISUAL_FALLBACK"
@@ -185,6 +190,11 @@
           "detail": "Three sequential Chinese owner-review items are prepared but not opened.",
           "path": "docs/validation/companion-ui-visual-acceptance-readiness-20260717.json",
           "status": "PASS_READY_FOR_SEQUENTIAL_OWNER_REVIEW"
+        },
+        {
+          "detail": "Goal-scoped acceptance has explicit machine, owner, hardware and lower-edge-truncation gates.",
+          "path": "docs/validation/companion-goal-acceptance-readiness-20260717.json",
+          "status": "PASS_ACCEPTANCE_CONTRACT_READY_OWNER_AND_HARDWARE_GATED"
         }
       ],
       "id": "four_root_menu_and_special_scene_sources",
@@ -227,6 +237,8 @@
     "python .\\tools\\verify_companion_current_goal_audit.py",
     "pwsh .\\tools\\test_companion_v9_expression_render_pipeline.ps1",
     "python .\\tools\\verify_companion_v9_wba_visual_boundary.py",
+    "python .\\tools\\verify_companion_v9_frame_safe_area.py",
+    "python .\\tools\\verify_companion_goal_acceptance_contract.py",
     "python .\\tools\\verify_companion_historical_branch_audit.py",
     "python .\\tools\\verify_companion_low_power_requirements.py",
     "pwsh .\\tools\\test_power_policy_host.ps1",
