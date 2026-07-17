@@ -33,6 +33,11 @@ match the approved request. A parser validation is not a panel update; a
 validated candidate may only be used later in one short hardware-locked
 experiment with BUSY, visible-frame and residual evidence.
 
+The supplier-facing Chinese request and intake checklist are in
+`docs/companion_ssd1681_vendor_waveform_request.md`. The supplier may send
+original source, an archive, a binary waveform file or a complete command
+table; CWF1 is an internal intake format, not a required supplier file format.
+
 ## Temperature Boundary
 
 There is currently no approved panel-temperature measurement or OTP read in
