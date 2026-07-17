@@ -1,0 +1,31 @@
+{
+  "schema": "companion.ball_motion.trigger_triage.v1",
+  "date": "2026-07-17",
+  "requirement": "COMP-REQ-086",
+  "status": "rework",
+  "operator_observations": [
+    {
+      "selection": "已执行",
+      "note_path": "docs/validation/companion-ball-motion-operator-note-20260717.txt",
+      "note": "就看见一个球, 没看见球在动"
+    },
+    {
+      "selection": "已执行",
+      "note_path": "docs/validation/companion-ball-motion-operator-rerun-note-20260717.txt",
+      "note": "按了没反应没有自动的移动"
+    }
+  ],
+  "machine_evidence": {
+    "serial_log": ".cache/validation/ball-motion-rerun-20260717/nucleo-serial-raw.log",
+    "finding": "The trace contains legacy menu_entry_activate/menu enqueue records and no ball_motion_diagnostic start record. The diagnostic did not own touch input before menu press feedback."
+  },
+  "repair": {
+    "change": "In the isolated diagnostic build, own touch handling before menu press feedback; only a completed TAP starts the motion diagnostic and all other gestures are ignored.",
+    "required_next_evidence": [
+      "Reset-bounded trace contains exactly one ball_motion_diagnostic start.",
+      "Trace contains deterministic completed steps 0 through 6 in ascending order.",
+      "No menu enqueue, recording action or daily reaction is emitted after the diagnostic tap."
+    ]
+  },
+  "acceptance": "Not accepted. A later operator observation may judge physical movement and residue only after the required machine evidence passes."
+}

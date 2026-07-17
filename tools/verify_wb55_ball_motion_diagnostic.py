@@ -53,6 +53,8 @@ def main() -> int:
     for token, label in (
         ("Companion_Screen_BallMotionDiagnosticStart()", "tap trigger"),
         ("Companion_Screen_BallMotionDiagnosticIsActive()", "input isolation"),
+        ("ball_motion_diagnostic gesture=tap action=start", "diagnostic first tap route"),
+        ("cancel_daily_tap_reaction(\"ball_motion_diagnostic\");", "diagnostic cancels provisional daily reaction"),
     ):
         require(main_c, token, label, errors)
     for token, label in (

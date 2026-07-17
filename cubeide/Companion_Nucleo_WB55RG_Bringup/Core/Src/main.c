@@ -2496,6 +2496,32 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
                (unsigned)s_touch_gesture.config.release_debounce_samples,
                s_touch_gesture.tap_pending ? 1u : 0u);
     }
+#if COMPANION_SCREEN_BALL_MOTION_DIAGNOSTIC
+    /* This isolated image verifies the motion coordinator, not product menu
+     * affordances.  It must own the contact before the home press cue can
+     * enqueue a competing display request. */
+    s_menu_home_press_active = false;
+    s_menu_home_press_candidate = false;
+    if (!gesture_ready) {
+        return;
+    }
+    cancel_daily_tap_reaction("ball_motion_diagnostic");
+    if (Companion_Screen_BallMotionDiagnosticIsActive()) {
+        TOUCH_VERBOSE_TRACE("[touch-ui] ball_motion_diagnostic gesture=%s action=ignored active=1\r\n",
+                           comp_touch_gesture_name(gesture.type));
+        return;
+    }
+    if (gesture.type == COMP_TOUCH_GESTURE_TAP) {
+        TOUCH_VERBOSE_TRACE("[touch-ui] ball_motion_diagnostic gesture=tap action=start\r\n");
+        if (!Companion_Screen_BallMotionDiagnosticStart()) {
+            TOUCH_VERBOSE_TRACE("[touch-ui] ball_motion_diagnostic action=start_failed\r\n");
+        }
+    } else {
+        TOUCH_VERBOSE_TRACE("[touch-ui] ball_motion_diagnostic gesture=%s action=ignored active=0\r\n",
+                           comp_touch_gesture_name(gesture.type));
+    }
+    return;
+#endif
     /* A long press has already consumed this contact to enter the menu.  The
      * panel wait loop may replay held samples after the new menu arrives;
      * never turn those residual samples into a second menu press refresh. */
