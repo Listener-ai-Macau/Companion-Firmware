@@ -11,6 +11,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 CONTRACT = ROOT / "docs" / "companion_goal_acceptance_contract.md"
 TRIAGE = ROOT / "docs" / "validation" / "companion-owner-feedback-triage-20260717.json"
+G2_GROUP_TRIAGE = ROOT / "docs" / "validation" / "companion-g2-menu-group-review-triage-20260717.json"
 REPORT = ROOT / "docs" / "validation" / "companion-goal-acceptance-readiness-20260717.json"
 
 REQUIRED_CONTRACT_ANCHORS = (
@@ -29,6 +30,7 @@ REQUIRED_CONTRACT_ANCHORS = (
     "next-prompt delta",
     "special-state crop preflight",
     "target, operator action, success signal, failure",
+    "one canonical prompt per image",
     "try generic, adjacent-panel, guessed, online, or hand-authored LUT bytes.",
     "<=1 mA average over >=60 s",
     "one canonical Chinese `aiw operator-prompt` item at a time",
@@ -111,6 +113,9 @@ def build_report() -> dict[str, object]:
             "operator-prompt",
             "manifest_owner_decision_changed = $false",
             "runtime_resource_activated = $false",
+            "original_image_one_at_a_time",
+            "-OriginalImageOpened $true",
+            "Start-Process -FilePath $artifactPath",
             "-SelfTest",
         ):
             if token not in runner_text:
@@ -138,10 +143,29 @@ def build_report() -> dict[str, object]:
     if triage.get("source", {}).get("note") != "有一些是截断了的表情, 下面截断了一点":
         errors.append("owner feedback text drifted")
 
+    g2_group_triage: dict[str, object] = {}
+    if G2_GROUP_TRIAGE.is_file():
+        try:
+            g2_group_triage = json.loads(G2_GROUP_TRIAGE.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            errors.append("G2 grouped-review triage is invalid JSON")
+    else:
+        errors.append("missing G2 grouped-review triage")
+    if g2_group_triage.get("status") != "OPEN_REVIEW_FLOW_REWORK_REQUIRED":
+        errors.append("G2 grouped menu review must remain open for original-image rework")
+    if g2_group_triage.get("requirement") != "COMP-REQ-079":
+        errors.append("G2 grouped menu review is not linked to COMP-REQ-079")
+    raw_review = g2_group_triage.get("raw_review", {})
+    if raw_review.get("selected") != "通过" or raw_review.get("sha256") != "C03D6F50DCC8086F820EDF347094B16D3C1E618B5FCD5E10EB0C55521840EF3E":
+        errors.append("G2 grouped menu raw result drifted")
+    resolution = g2_group_triage.get("resolution", {})
+    if resolution.get("group_selection_applied") is not False or resolution.get("manifest_owner_decision_changed") is not False:
+        errors.append("G2 grouped menu selection was incorrectly applied")
+
     return {
         "schema": "companion.goal_acceptance_readiness.v1",
         "status": "PASS_ACCEPTANCE_CONTRACT_READY_OWNER_AND_HARDWARE_GATED" if not errors else "FAIL",
-        "operator_prompt_opened": False,
+        "machine_preflight_opens_operator_prompt": False,
         "next_eligible_owner_item": "menu-v6-four-root",
         "sequential_visual_review": [
             {"id": "menu-v6-four-root", "state": "ready_for_owner_decision"},
@@ -163,6 +187,7 @@ def build_report() -> dict[str, object]:
         },
         "machine_evidence": machine_evidence,
         "owner_feedback_triage": TRIAGE.relative_to(ROOT).as_posix(),
+        "g2_group_review_triage": G2_GROUP_TRIAGE.relative_to(ROOT).as_posix(),
         "errors": errors,
     }
 

@@ -2,6 +2,32 @@
   "errors": [],
   "items": [
     {
+      "artifact_review": {
+        "images": [
+          {
+            "id": "original-source",
+            "index": 1,
+            "label": "\u539f\u56fe\uff1a\u56db\u6839\u83dc\u5355\u751f\u6210\u5019\u9009",
+            "path": "docs/art/iterations/companion-menu-v6-four-root/generated_menu_four_root_v6_candidate.png",
+            "sha256": "07D791A898FABE6E558686F6A4B4CC86094541C6B5116D6E0A3D263930DAA868"
+          },
+          {
+            "id": "english-preview",
+            "index": 2,
+            "label": "\u539f\u56fe\uff1aEnglish 200x200 \u672c\u5730\u5316\u9884\u89c8",
+            "path": "docs/art/iterations/companion-menu-v6-four-root/generated_menu_four_root_v6_en_200x200_localization_preview.png",
+            "sha256": "3C2BAB9734CA44E95DE82D7580132195B59488C6D133B64B7F1B49A5144488ED"
+          },
+          {
+            "id": "zh-cn-preview",
+            "index": 3,
+            "label": "\u539f\u56fe\uff1a\u4e2d\u6587 200x200 \u672c\u5730\u5316\u9884\u89c8",
+            "path": "docs/art/iterations/companion-menu-v6-four-root/generated_menu_four_root_v6_zh_cn_200x200_localization_preview.png",
+            "sha256": "6C244277526E268A337096483F8D3D3D2E8E2756C63596C4ECA3803DEF0F3941"
+          }
+        ],
+        "mode": "original_image_one_at_a_time"
+      },
       "evidence": "docs/validation/companion-menu-v6-localization-preview-20260717.json",
       "id": "menu-v6-four-root",
       "operator_prompt": {
@@ -26,6 +52,32 @@
       "source_sha256": "07D791A898FABE6E558686F6A4B4CC86094541C6B5116D6E0A3D263930DAA868"
     },
     {
+      "artifact_review": {
+        "images": [
+          {
+            "id": "original-source",
+            "index": 1,
+            "label": "\u539f\u56fe\uff1a\u7279\u6b8a\u7cfb\u7edf\u72b6\u6001\u751f\u6210\u5019\u9009",
+            "path": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_system_v1_candidate.png",
+            "sha256": "AF9ADFD49C47C89DF674726D7201CC49C61ED636306013697822BB42FB1A9C82"
+          },
+          {
+            "id": "200x200-preview",
+            "index": 2,
+            "label": "\u539f\u56fe\uff1a\u7279\u6b8a\u7cfb\u7edf\u72b6\u6001 200x200 \u9884\u89c8",
+            "path": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_system_v1_candidate_200x200_preview.png",
+            "sha256": "A4BBB8246E380FE80964DBA36F90D319A3936C6DA117A8F433E3A86873D0046D"
+          },
+          {
+            "id": "crop-preflight-contact-sheet",
+            "index": 3,
+            "label": "\u539f\u56fe\uff1a\u7279\u6b8a\u7cfb\u7edf\u72b6\u6001\u9010\u683c 200x200 \u63a5\u89e6\u8868",
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-200x200/generated_pet_special_system_v1_crop_preflight_contact_sheet.png",
+            "sha256": "0CA22E270C246A450FEE176730394DC8487D1FB81EE492A088CAA69DB4D6E6E5"
+          }
+        ],
+        "mode": "original_image_one_at_a_time"
+      },
       "evidence": "docs/validation/companion-pet-special-system-source-review-20260717.json",
       "id": "special-system-v1",
       "operator_prompt": {
@@ -51,6 +103,32 @@
       "source_sha256": "AF9ADFD49C47C89DF674726D7201CC49C61ED636306013697822BB42FB1A9C82"
     },
     {
+      "artifact_review": {
+        "images": [
+          {
+            "id": "original-source",
+            "index": 1,
+            "label": "\u539f\u56fe\uff1a\u7279\u6b8a\u65c5\u7a0b\u72b6\u6001\u751f\u6210\u5019\u9009",
+            "path": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_journey_v1_candidate.png",
+            "sha256": "95CC749134F169E73A2E2A99FA2B6F08AABDFE78D218677C347D2D687EA4B17F"
+          },
+          {
+            "id": "200x200-preview",
+            "index": 2,
+            "label": "\u539f\u56fe\uff1a\u7279\u6b8a\u65c5\u7a0b\u72b6\u6001 200x200 \u9884\u89c8",
+            "path": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_journey_v1_candidate_200x200_preview.png",
+            "sha256": "7207889637184F887E5EBFCA6A8C64776D23E9D46E0B9A0F7A227F2C087A0534"
+          },
+          {
+            "id": "crop-preflight-contact-sheet",
+            "index": 3,
+            "label": "\u539f\u56fe\uff1a\u7279\u6b8a\u65c5\u7a0b\u9010\u683c 200x200 \u63a5\u89e6\u8868",
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-200x200/generated_pet_special_journey_v1_crop_preflight_contact_sheet.png",
+            "sha256": "B072603D667B8BC9C54A0322E6C009526CF11D63D85AE553E931684B94AAC082"
+          }
+        ],
+        "mode": "original_image_one_at_a_time"
+      },
       "evidence": "docs/validation/companion-pet-special-journey-source-review-20260717.json",
       "id": "special-journey-v1",
       "operator_prompt": {

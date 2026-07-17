@@ -22,6 +22,10 @@ if ($LASTEXITCODE -ne 0) {
 if ($LASTEXITCODE -eq 0) {
     throw "G2 visual-source runner must reject an out-of-order item."
 }
+& pwsh -NoProfile -File $runner -CheckOnly -ArtifactIndex 2 2>$null
+if ($LASTEXITCODE -eq 0) {
+    throw "G2 visual-source runner must reject an out-of-order original image."
+}
 & pwsh -NoProfile -File $runner -CheckOnly -SelfTest 2>$null
 if ($LASTEXITCODE -eq 0) {
     throw "G2 visual-source runner must reject multiple execution modes."
@@ -35,29 +39,32 @@ if ($LASTEXITCODE -ne 0) {
     throw "G2 visual-source runner self-test failed."
 }
 
-$latest = Get-ChildItem -LiteralPath (Join-Path $repoRoot ".cache\selftests\companion-g2-visual-source-review") -Directory |
+$latest = Get-ChildItem -LiteralPath (Join-Path $repoRoot ".cache\selftests\companion-g2-visual-source-review") -Recurse -File -Filter "operator-review.json" |
     Sort-Object LastWriteTimeUtc -Descending | Select-Object -First 1
 if ($null -eq $latest) {
-    throw "G2 visual-source runner self-test did not write a review directory."
+    throw "G2 visual-source runner self-test did not write an operator review."
 }
-$recordPath = Join-Path $latest.FullName "operator-review.json"
-$record = Get-Content -LiteralPath $recordPath -Raw | ConvertFrom-Json
+$record = Get-Content -LiteralPath $latest.FullName -Raw | ConvertFrom-Json
 $manifest = Get-Content -LiteralPath (Join-Path $repoRoot "docs\validation\companion-ui-visual-acceptance-manifest-20260717.json") -Raw | ConvertFrom-Json
 $item = @($manifest.items | Where-Object { $_.id -eq "menu-v6-four-root" })[0]
-if ($record.schema -ne "companion.g2_visual_source_operator_review.v1") {
+if ($record.schema -ne "companion.g2_visual_artifact_operator_review.v1") {
     throw "G2 review schema drifted."
 }
-if ($record.status -ne "OWNER_VISUAL_SELECTION_CAPTURED_TRIAGE_REQUIRED") {
+if ($record.status -ne "OWNER_ARTIFACT_SELECTION_CAPTURED_TRIAGE_REQUIRED") {
     throw "G2 self-test selection status drifted."
 }
-if ($record.item_id -ne "menu-v6-four-root" -or $record.execution.canonical_aiw_operator_prompt_opened -ne $false -or $record.execution.self_test -ne $true) {
+if ($record.item_id -ne "menu-v6-four-root" -or $record.execution.canonical_aiw_operator_prompt_opened -ne $false -or $record.execution.original_image_opened -ne $false -or $record.execution.self_test -ne $true) {
     throw "G2 self-test must preserve the first sequential item without opening the prompt."
 }
 if ($record.source_sha256 -ne $item.source_sha256 -or $record.machine_evidence -ne $item.machine_evidence) {
     throw "G2 self-test record drifted from the manifest source or evidence identity."
 }
+$artifact = $item.artifact_review.images[0]
+if ($record.artifact.index -ne 1 -or $record.artifact.path -ne $artifact.path -or $record.artifact.sha256 -ne $artifact.sha256) {
+    throw "G2 self-test record is not bound to the first locked original image."
+}
 $rendered = $record.rendered_prompt
-if ([string]$rendered.title -notlike "*1/3*" -or [string]$rendered.scope_text -notlike "*不会导入 PBM/CEMP*" ) {
+if ([string]$rendered.title -notlike "*1/3*原图 1/3*" -or [string]$rendered.scope_text -notlike "*系统图片查看器*" -or [string]$rendered.scope_text -notlike "*不会导入 PBM/CEMP*") {
     throw "G2 rendered prompt lost its sequential or non-activation scope."
 }
 foreach ($field in @("target", "operator_action", "success_signal", "failure_rule", "continue_condition", "recovery_condition", "record_fields")) {
@@ -73,12 +80,17 @@ foreach ($text in @($item.operator_prompt.target, $item.operator_prompt.operator
         throw "G2 rendered message is missing manifest text: $text"
     }
 }
+foreach ($text in @($artifact.label, $artifact.path)) {
+    if ([string]$rendered.message -notlike "*$text*") {
+        throw "G2 rendered message is missing original-image context: $text"
+    }
+}
 foreach ($text in @($item.operator_prompt.continue_condition, $item.operator_prompt.recovery_condition) + @($item.operator_prompt.record_fields)) {
     if ([string]$rendered.expected_text -notlike "*$text*") {
         throw "G2 rendered expected text is missing manifest text: $text"
     }
 }
-if (-not (Test-Path -LiteralPath (Join-Path $latest.FullName "operator-note.txt"))) {
+if (-not (Test-Path -LiteralPath (Join-Path $latest.DirectoryName "operator-note.txt"))) {
     throw "G2 self-test did not retain the matching operator-note path."
 }
 foreach ($key in @("manifest_owner_decision_changed", "pbm_imported", "cemp_packed", "external_flash_provisioned", "firmware_flashed", "runtime_resource_activated")) {

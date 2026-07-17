@@ -1,0 +1,59 @@
+{
+  "schema": "companion.g2_visual_source_operator_review.v1",
+  "status": "OWNER_VISUAL_SELECTION_CAPTURED_TRIAGE_REQUIRED",
+  "recorded_at": "2026-07-17T09:06:37.8180432+08:00",
+  "item_id": "menu-v6-four-root",
+  "source_sha256": "07D791A898FABE6E558686F6A4B4CC86094541C6B5116D6E0A3D263930DAA868",
+  "machine_evidence": "docs/validation/companion-menu-v6-localization-preview-20260717.json",
+  "artifacts": [
+    "docs/art/iterations/companion-menu-v6-four-root/generated_menu_four_root_v6_candidate.png",
+    "docs/art/iterations/companion-menu-v6-four-root/generated_menu_four_root_v6_en_200x200_localization_preview.png",
+    "docs/art/iterations/companion-menu-v6-four-root/generated_menu_four_root_v6_zh_cn_200x200_localization_preview.png"
+  ],
+  "operator_prompt": {
+    "target": "菜单源图、English 200x200 本地化预览和中文 200x200 本地化预览；本项只决定视觉源，不观察真实面板。",
+    "operator_action": "以 100% 比例先查看 English 预览，再查看中文预览；确认每张首页都是单页四行，按 Voice、Device、Connection、Preferences 的顺序阅读。",
+    "success_signal": [
+      "首页只有 Voice、Device、Connection、Preferences 四个根入口，顺序一致且每行图标不同。",
+      "English 与中文各自完整、可读且一次只出现一种语言；生成图的引导短线不会被当作产品文字。",
+      "四行均有清晰可点的行边界和真实或明确 deferred/planned 的功能含义；没有第五码、旧六根、双页首页或底边截断。"
+    ],
+    "failure_rule": "出现旧六根/双页、额外空入口、假 chevron、混合语言、不可读标签、任何底边裁切，或与四根功能合同不一致时选择失败，并在备注写明预览语言、行号和可见问题。",
+    "continue_condition": "选择通过只解锁第 2 项 special-system-v1 的视觉源决策；不得导入 PBM/CEMP、写入 Flash、刷固件或启用运行时菜单。",
+    "recovery_condition": "选择失败后保持该源 PENDING_OWNER_VISUAL_DECISION；先按备注 triage，再只修改一个明确的提示词或信息架构变量并重新出图、比较和审计。",
+    "record_fields": [
+      "查看的预览语言",
+      "四根顺序",
+      "是否存在裁切或混合语言",
+      "选择结果",
+      "备注"
+    ]
+  },
+  "rendered_prompt": {
+    "title": "Companion 视觉源验收 1/3：四根菜单视觉源",
+    "progress_text": "1/3（本次 1/1）",
+    "scope_text": "G2 顺序视觉源决定；当前只审源图与 200x200 预览。不会导入 PBM/CEMP、写 Flash、刷固件或启用运行时资源。",
+    "message": "目标：菜单源图、English 200x200 本地化预览和中文 200x200 本地化预览；本项只决定视觉源，不观察真实面板。\r\n\r\n请这样检查：以 100% 比例先查看 English 预览，再查看中文预览；确认每张首页都是单页四行，按 Voice、Device、Connection、Preferences 的顺序阅读。\r\n\r\n通过信号：\r\n1. 首页只有 Voice、Device、Connection、Preferences 四个根入口，顺序一致且每行图标不同。 2. English 与中文各自完整、可读且一次只出现一种语言；生成图的引导短线不会被当作产品文字。 3. 四行均有清晰可点的行边界和真实或明确 deferred/planned 的功能含义；没有第五码、旧六根、双页首页或底边截断。\r\n\r\n失败规则：出现旧六根/双页、额外空入口、假 chevron、混合语言、不可读标签、任何底边裁切，或与四根功能合同不一致时选择失败，并在备注写明预览语言、行号和可见问题。",
+    "expected_text": "选择 '通过' 仅记录本项视觉源决定：选择通过只解锁第 2 项 special-system-v1 的视觉源决策；不得导入 PBM/CEMP、写入 Flash、刷固件或启用运行时菜单。\r\n\r\n失败后的处理：选择失败后保持该源 PENDING_OWNER_VISUAL_DECISION；先按备注 triage，再只修改一个明确的提示词或信息架构变量并重新出图、比较和审计。\r\n\r\n备注至少记录：\r\n- 查看的预览语言 - 四根顺序 - 是否存在裁切或混合语言 - 选择结果 - 备注",
+    "observation_label": "备注（可留空；失败时必须写状态/行号与可见问题，通过时也可记录细节）"
+  },
+  "operator_result": {
+    "selected": "通过",
+    "note": "你要给我看看原图, 然后一张一张过",
+    "note_path": "docs/validation/companion-g2-owner-visual-reviews/20260717-090555-375-menu-v6-four-root/operator-note.txt"
+  },
+  "execution": {
+    "canonical_aiw_operator_prompt_opened": true,
+    "self_test": false,
+    "owner_start_acknowledged": true
+  },
+  "boundary": {
+    "manifest_owner_decision_changed": false,
+    "pbm_imported": false,
+    "cemp_packed": false,
+    "external_flash_provisioned": false,
+    "firmware_flashed": false,
+    "runtime_resource_activated": false
+  },
+  "next_step": "Agent must triage this result before changing the manifest decision or opening another G2 item."
+}

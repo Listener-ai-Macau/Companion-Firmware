@@ -1,0 +1,25 @@
+{
+  "schema": "companion.g2_group_review_triage.v1",
+  "status": "OPEN_REVIEW_FLOW_REWORK_REQUIRED",
+  "raw_review": {
+    "path": "docs/validation/companion-g2-owner-visual-reviews/20260717-090555-375-menu-v6-four-root/operator-review.json",
+    "sha256": "C03D6F50DCC8086F820EDF347094B16D3C1E618B5FCD5E10EB0C55521840EF3E",
+    "selected": "通过"
+  },
+  "operator_note": {
+    "path": "docs/validation/companion-g2-owner-visual-reviews/20260717-090555-375-menu-v6-four-root/operator-note.txt",
+    "sha256": "C3482739FF3E4C300ACC351F1C01D2D19C4D80599B62AC4AA2ACB2F178B9CE65",
+    "text": "你要给我看看原图, 然后一张一张过"
+  },
+  "requirement": "COMP-REQ-079",
+  "resolution": {
+    "group_selection_applied": false,
+    "manifest_owner_decision_changed": false,
+    "required_recovery": "Open the locked original image at normal scale and collect one canonical G2 prompt result per image in manifest order, beginning again with menu image 1/3.",
+    "forbidden": [
+      "Do not import PBM/CEMP.",
+      "Do not provision Flash or flash firmware.",
+      "Do not open special-system-v1 until all menu images are individually reviewed and the group decision is triaged."
+    ]
+  }
+}

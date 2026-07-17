@@ -207,7 +207,7 @@
           "status": "PASS_EXACT_PENDING_SOURCE_MAPPING_NO_RUNTIME"
         },
         {
-          "detail": "Three sequential Chinese owner-review items are prepared but not opened.",
+          "detail": "Three sequential Chinese owner-review items retain machine-ready locked originals and non-activation boundaries.",
           "path": "docs/validation/companion-ui-visual-acceptance-readiness-20260717.json",
           "status": "PASS_READY_FOR_SEQUENTIAL_OWNER_REVIEW"
         },
@@ -215,6 +215,11 @@
           "detail": "Goal-scoped acceptance has explicit machine, owner, hardware and lower-edge-truncation gates.",
           "path": "docs/validation/companion-goal-acceptance-readiness-20260717.json",
           "status": "PASS_ACCEPTANCE_CONTRACT_READY_OWNER_AND_HARDWARE_GATED"
+        },
+        {
+          "detail": "The first grouped menu selection remains unapplied because the owner required locked originals one image at a time.",
+          "path": "docs/validation/companion-g2-menu-group-review-triage-20260717.json",
+          "status": "OPEN_REVIEW_FLOW_REWORK_REQUIRED"
         }
       ],
       "id": "four_root_menu_and_special_scene_sources",

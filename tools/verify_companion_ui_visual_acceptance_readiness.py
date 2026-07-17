@@ -35,6 +35,23 @@ EXPECTED = {
         "crop_preflight_source": "special-journey-v1",
     },
 }
+ARTIFACT_IMAGES = {
+    "menu-v6-four-root": [
+        ("docs/art/iterations/companion-menu-v6-four-root/generated_menu_four_root_v6_candidate.png", "07D791A898FABE6E558686F6A4B4CC86094541C6B5116D6E0A3D263930DAA868"),
+        ("docs/art/iterations/companion-menu-v6-four-root/generated_menu_four_root_v6_en_200x200_localization_preview.png", "3C2BAB9734CA44E95DE82D7580132195B59488C6D133B64B7F1B49A5144488ED"),
+        ("docs/art/iterations/companion-menu-v6-four-root/generated_menu_four_root_v6_zh_cn_200x200_localization_preview.png", "6C244277526E268A337096483F8D3D3D2E8E2756C63596C4ECA3803DEF0F3941"),
+    ],
+    "special-system-v1": [
+        ("docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_system_v1_candidate.png", "AF9ADFD49C47C89DF674726D7201CC49C61ED636306013697822BB42FB1A9C82"),
+        ("docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_system_v1_candidate_200x200_preview.png", "A4BBB8246E380FE80964DBA36F90D319A3936C6DA117A8F433E3A86873D0046D"),
+        ("docs/art/iterations/companion-pet-special-states-v1/review-200x200/generated_pet_special_system_v1_crop_preflight_contact_sheet.png", "0CA22E270C246A450FEE176730394DC8487D1FB81EE492A088CAA69DB4D6E6E5"),
+    ],
+    "special-journey-v1": [
+        ("docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_journey_v1_candidate.png", "95CC749134F169E73A2E2A99FA2B6F08AABDFE78D218677C347D2D687EA4B17F"),
+        ("docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_journey_v1_candidate_200x200_preview.png", "7207889637184F887E5EBFCA6A8C64776D23E9D46E0B9A0F7A227F2C087A0534"),
+        ("docs/art/iterations/companion-pet-special-states-v1/review-200x200/generated_pet_special_journey_v1_crop_preflight_contact_sheet.png", "B072603D667B8BC9C54A0322E6C009526CF11D63D85AE553E931684B94AAC082"),
+    ],
+}
 BOUNDARY_KEYS = ["pbm_imported", "cemp_packed", "external_flash_provisioned", "firmware_flashed", "owner_visual_pass"]
 PROMPT_FIELDS = (
     "target",
@@ -89,6 +106,23 @@ def verify() -> dict[str, object]:
             errors.append(f"{item_id} operator prompt needs multiple success signals")
         if not isinstance(prompt.get("record_fields"), list) or "选择结果" not in prompt.get("record_fields", []):
             errors.append(f"{item_id} operator prompt must retain a selection result field")
+        artifact_review = item.get("artifact_review", {})
+        if artifact_review.get("mode") != "original_image_one_at_a_time":
+            errors.append(f"{item_id} must retain original-image one-at-a-time review mode")
+        images = artifact_review.get("images", [])
+        expected_images = ARTIFACT_IMAGES[item_id]
+        if len(images) != len(expected_images):
+            errors.append(f"{item_id} original-image review count drifted")
+        for index, expected_image in enumerate(expected_images, start=1):
+            image = images[index - 1] if len(images) >= index else {}
+            image_path, image_hash = expected_image
+            if image.get("index") != index or image.get("path") != image_path or image.get("sha256", "").upper() != image_hash:
+                errors.append(f"{item_id} original-image review metadata drifted at index {index}")
+            if image_path not in item.get("artifacts", []):
+                errors.append(f"{item_id} original-image review is not bound to a listed artifact: {image_path}")
+            resolved_image = ROOT / image_path
+            if not resolved_image.is_file() or sha256(resolved_image) != image_hash:
+                errors.append(f"{item_id} original-image review hash drifted at index {index}")
         review = json.loads(evidence.read_text(encoding="utf-8")) if evidence.is_file() else {}
         if review.get("status") != expected["status"]:
             errors.append(f"{item_id} machine evidence is not ready")
@@ -112,6 +146,7 @@ def verify() -> dict[str, object]:
             "source_sha256": expected["sha256"],
             "evidence": expected["evidence"],
             "operator_prompt": prompt,
+            "artifact_review": artifact_review,
         })
 
     return {

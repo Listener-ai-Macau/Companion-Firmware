@@ -12,6 +12,8 @@ imports PBM/CEMP, writes Flash, flashes firmware, or changes a manifest decision
 param(
     [ValidateSet("menu-v6-four-root", "special-system-v1", "special-journey-v1")]
     [string] $ItemId = "menu-v6-four-root",
+    [ValidateRange(1, 16)]
+    [int] $ArtifactIndex = 1,
     [switch] $CheckOnly,
     [switch] $Execute,
     [switch] $SelfTest,
@@ -72,7 +74,9 @@ function Join-Lines {
 function Build-OperatorSpec {
     param(
         [Parameter(Mandatory = $true)] $Item,
-        [Parameter(Mandatory = $true)][int] $Position
+        [Parameter(Mandatory = $true)][int] $Position,
+        [Parameter(Mandatory = $true)] $Artifact,
+        [Parameter(Mandatory = $true)][int] $ArtifactCount
     )
 
     $card = $Item.operator_prompt
@@ -88,10 +92,13 @@ function Build-OperatorSpec {
         default { [string]$Item.id }
     }
     return [ordered]@{
-        title = "Companion 视觉源验收 $Position/3：$displayName"
-        progress_text = "$Position/3（本次 1/1）"
-        scope_text = "G2 顺序视觉源决定；当前只审源图与 200x200 预览。不会导入 PBM/CEMP、写 Flash、刷固件或启用运行时资源。"
+        title = "Companion 视觉源验收 $Position/3 · 原图 $($Artifact.index)/$ArtifactCount：$displayName"
+        progress_text = "$Position/3 · 图 $($Artifact.index)/$ArtifactCount（本次 1/1）"
+        scope_text = "G2 顺序视觉源决定；已在系统图片查看器打开本张原图。当前只审这一张原图与对应 200x200 预览，不会导入 PBM/CEMP、写 Flash、刷固件或启用运行时资源。"
         message = Join-Lines @(
+            "当前原图 $($Artifact.index)/$ArtifactCount：$($Artifact.label)",
+            "文件：$($Artifact.path)",
+            "",
             "目标：$($card.target)",
             "",
             "请这样检查：$($card.operator_action)",
@@ -113,31 +120,62 @@ function Build-OperatorSpec {
     }
 }
 
+function Test-ArtifactAccepted {
+    param(
+        [Parameter(Mandatory = $true)][string] $ReviewRoot,
+        [Parameter(Mandatory = $true)][string] $ReviewItemId,
+        [Parameter(Mandatory = $true)] $Artifact
+    )
+
+    if (-not (Test-Path -LiteralPath $ReviewRoot -PathType Container)) {
+        return $false
+    }
+    foreach ($path in Get-ChildItem -LiteralPath $ReviewRoot -Recurse -File -Filter "operator-review.json" -ErrorAction SilentlyContinue) {
+        try {
+            $record = Get-Content -LiteralPath $path.FullName -Raw | ConvertFrom-Json
+        } catch {
+            continue
+        }
+        if ($record.schema -ne "companion.g2_visual_artifact_operator_review.v1") {
+            continue
+        }
+        if ($record.item_id -ne $ReviewItemId -or $record.artifact.index -ne $Artifact.index -or $record.artifact.sha256 -ne $Artifact.sha256) {
+            continue
+        }
+        if ($record.operator_result.selected -eq "通过" -and [string]::IsNullOrWhiteSpace([string]$record.operator_result.note) -and $record.execution.canonical_aiw_operator_prompt_opened -eq $true) {
+            return $true
+        }
+    }
+    return $false
+}
+
 function Write-ReviewRecord {
     param(
         [Parameter(Mandatory = $true)] $Item,
+        [Parameter(Mandatory = $true)] $Artifact,
         [Parameter(Mandatory = $true)] $Spec,
         [Parameter(Mandatory = $true)] $Result,
         [Parameter(Mandatory = $true)][string] $RecordPath,
         [Parameter(Mandatory = $true)][string] $NotePath,
         [Parameter(Mandatory = $true)][bool] $PromptOpened,
+        [Parameter(Mandatory = $true)][bool] $OriginalImageOpened,
         [Parameter(Mandatory = $true)][bool] $SelfTestMode
     )
 
     $selection = [string]$Result.selected
     $status = switch ($selection) {
-        "通过" { "OWNER_VISUAL_SELECTION_CAPTURED_TRIAGE_REQUIRED" }
-        "失败" { "OWNER_VISUAL_REJECTION_CAPTURED_TRIAGE_REQUIRED" }
-        default { "OWNER_VISUAL_REVIEW_NOT_DECIDED" }
+        "通过" { "OWNER_ARTIFACT_SELECTION_CAPTURED_TRIAGE_REQUIRED" }
+        "失败" { "OWNER_ARTIFACT_REJECTION_CAPTURED_TRIAGE_REQUIRED" }
+        default { "OWNER_ARTIFACT_REVIEW_NOT_DECIDED" }
     }
     $record = [ordered]@{
-        schema = "companion.g2_visual_source_operator_review.v1"
+        schema = "companion.g2_visual_artifact_operator_review.v1"
         status = $status
         recorded_at = (Get-Date).ToString("o")
         item_id = [string]$Item.id
         source_sha256 = [string]$Item.source_sha256
         machine_evidence = [string]$Item.machine_evidence
-        artifacts = @($Item.artifacts)
+        artifact = $Artifact
         operator_prompt = $Item.operator_prompt
         rendered_prompt = $Spec
         operator_result = [ordered]@{
@@ -147,6 +185,7 @@ function Write-ReviewRecord {
         }
         execution = [ordered]@{
             canonical_aiw_operator_prompt_opened = $PromptOpened
+            original_image_opened = $OriginalImageOpened
             self_test = $SelfTestMode
             owner_start_acknowledged = $OwnerStartAcknowledged.IsPresent
         }
@@ -182,6 +221,15 @@ if ($LASTEXITCODE -ne 0) {
     throw "Visual acceptance readiness is not machine-ready."
 }
 
+$stamp = Get-Date -Format "yyyyMMdd-HHmmss-fff"
+$reviewRoot = if ($SelfTest) {
+    Join-Path $repoRoot ".cache\selftests\companion-g2-visual-source-review\runs\$stamp"
+} elseif ([System.IO.Path]::IsPathRooted($OutRoot)) {
+    [System.IO.Path]::GetFullPath($OutRoot)
+} else {
+    [System.IO.Path]::GetFullPath((Join-Path $repoRoot $OutRoot))
+}
+
 $manifest = Get-Content -LiteralPath $manifestPath -Raw | ConvertFrom-Json
 $items = @($manifest.items)
 $manifestIds = @($items | ForEach-Object { [string]$_.id })
@@ -205,27 +253,54 @@ foreach ($field in $promptFields) {
         throw "Visual acceptance item $ItemId is missing operator prompt field: $field"
     }
 }
+$artifactReview = $item.artifact_review
+if ($artifactReview.mode -ne "original_image_one_at_a_time") {
+    throw "Visual acceptance item $ItemId must retain original-image review mode."
+}
+$images = @($artifactReview.images)
+if ($images.Count -eq 0) {
+    throw "Visual acceptance item $ItemId has no original images to review."
+}
+for ($index = 0; $index -lt $images.Count; $index += 1) {
+    $image = $images[$index]
+    if ($image.index -ne ($index + 1) -or [string]::IsNullOrWhiteSpace([string]$image.path) -or [string]::IsNullOrWhiteSpace([string]$image.sha256)) {
+        throw "Visual acceptance item $ItemId original-image metadata is invalid at index $($index + 1)."
+    }
+    $imagePath = Join-Path $repoRoot ([string]$image.path)
+    if (-not (Test-Path -LiteralPath $imagePath -PathType Leaf) -or (Get-Sha256 -Path $imagePath) -ne $image.sha256) {
+        throw "Visual acceptance item $ItemId original image hash drifted: $($image.path)"
+    }
+}
+$nextArtifactIndex = 1
+foreach ($image in $images) {
+    if (Test-ArtifactAccepted -ReviewRoot $reviewRoot -ReviewItemId $ItemId -Artifact $image) {
+        $nextArtifactIndex += 1
+        continue
+    }
+    break
+}
+if ($nextArtifactIndex -gt $images.Count) {
+    throw "All original images for $ItemId already have no-note pass records; triage the group decision before opening another G2 item."
+}
+if ($ArtifactIndex -ne $nextArtifactIndex) {
+    throw "Original images are sequential: the next eligible image is $nextArtifactIndex/$($images.Count), not $ArtifactIndex/$($images.Count)."
+}
+$artifact = $images[$ArtifactIndex - 1]
+$artifactPath = Join-Path $repoRoot ([string]$artifact.path)
 $position = [array]::IndexOf($orderedIds, $ItemId) + 1
-$spec = Build-OperatorSpec -Item $item -Position $position
+$spec = Build-OperatorSpec -Item $item -Position $position -Artifact $artifact -ArtifactCount $images.Count
 
 if ($CheckOnly) {
-    Write-Output "CHECK: G2 item=$ItemId position=$position/3"
+    Write-Output "CHECK: G2 item=$ItemId position=$position/3 original_image=$ArtifactIndex/$($images.Count)"
     Write-Output "CHECK: Canonical operator prompt=$(Resolve-WorkflowAiwPath)"
     Write-Output "CHECK: Source SHA256=$($item.source_sha256)"
     Write-Output "CHECK: Machine evidence=$($item.machine_evidence)"
-    Write-Output "CHECK: No operator prompt is opened; use -Execute -OwnerStartAcknowledged only after the owner says 开始验收."
+    Write-Output "CHECK: Original image=$($artifact.path) sha256=$($artifact.sha256)"
+    Write-Output "CHECK: No image viewer or operator prompt is opened; use -Execute -OwnerStartAcknowledged only after the owner says 开始验收."
     exit 0
 }
 
-$reviewRoot = if ($SelfTest) {
-    Join-Path $repoRoot ".cache\selftests\companion-g2-visual-source-review"
-} elseif ([System.IO.Path]::IsPathRooted($OutRoot)) {
-    [System.IO.Path]::GetFullPath($OutRoot)
-} else {
-    [System.IO.Path]::GetFullPath((Join-Path $repoRoot $OutRoot))
-}
-$stamp = Get-Date -Format "yyyyMMdd-HHmmss-fff"
-$reviewDir = Join-Path $reviewRoot "$stamp-$ItemId"
+$reviewDir = Join-Path $reviewRoot "$stamp-$ItemId-artifact$ArtifactIndex"
 $notePath = Join-Path $reviewDir "operator-note.txt"
 $recordPath = Join-Path $reviewDir "operator-review.json"
 New-Item -ItemType Directory -Force -Path $reviewDir | Out-Null
@@ -236,11 +311,13 @@ if ($SelfTest) {
         text = "SELFTEST: $SelfTestSelection"
     }
     Set-Content -LiteralPath $notePath -Value $result.text -Encoding UTF8
-    Write-ReviewRecord -Item $item -Spec $spec -Result $result -RecordPath $recordPath -NotePath $notePath -PromptOpened $false -SelfTestMode $true
-    Write-Output "PASS: G2 visual-source runner self-test -> $(Get-RelativePath -Path $recordPath)"
+    Write-ReviewRecord -Item $item -Artifact $artifact -Spec $spec -Result $result -RecordPath $recordPath -NotePath $notePath -PromptOpened $false -OriginalImageOpened $false -SelfTestMode $true
+    Write-Output "PASS: G2 original-image runner self-test -> $(Get-RelativePath -Path $recordPath)"
     exit 0
 }
 
+$null = Start-Process -FilePath $artifactPath -PassThru
+Start-Sleep -Milliseconds 500
 $aiw = Resolve-WorkflowAiwPath
 $promptOutput = & pwsh -NoProfile -File $aiw operator-prompt `
     -Title $spec.title `
@@ -262,5 +339,5 @@ try {
 if ([string]::IsNullOrWhiteSpace([string]$result.selected)) {
     throw "Canonical operator prompt returned no selected button."
 }
-Write-ReviewRecord -Item $item -Spec $spec -Result $result -RecordPath $recordPath -NotePath $notePath -PromptOpened $true -SelfTestMode $false
-Write-Output "RESULT: G2 visual-source review -> $(Get-RelativePath -Path $recordPath)"
+Write-ReviewRecord -Item $item -Artifact $artifact -Spec $spec -Result $result -RecordPath $recordPath -NotePath $notePath -PromptOpened $true -OriginalImageOpened $true -SelfTestMode $false
+Write-Output "RESULT: G2 original-image review -> $(Get-RelativePath -Path $recordPath)"

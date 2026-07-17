@@ -42,6 +42,7 @@ ARTIFACTS = {
     "special_mapping": ROOT / "docs/validation/companion-pending-special-source-mapping-20260717.json",
     "visual_readiness": ROOT / "docs/validation/companion-ui-visual-acceptance-readiness-20260717.json",
     "goal_acceptance_readiness": ROOT / "docs/validation/companion-goal-acceptance-readiness-20260717.json",
+    "g2_group_triage": ROOT / "docs/validation/companion-g2-menu-group-review-triage-20260717.json",
     "wba_boundary": ROOT / "docs/validation/companion-v9-wba-visual-boundary-20260717.json",
     "waveform_freeze": ROOT / "docs/companion_ssd1681_vendor_waveform_freeze.md",
 }
@@ -100,6 +101,7 @@ def build_audit() -> dict[str, Any]:
     special_mapping = load_json("special_mapping")
     visual_readiness = load_json("visual_readiness")
     goal_acceptance_readiness = load_json("goal_acceptance_readiness")
+    g2_group_triage = load_json("g2_group_triage")
     wba_boundary = load_json("wba_boundary")
     waveform_freeze = ARTIFACTS["waveform_freeze"].read_text(encoding="utf-8")
     waveform_freeze_normalized = waveform_freeze.lower()
@@ -271,9 +273,16 @@ def build_audit() -> dict[str, Any]:
         prompt = item.get("operator_prompt", {})
         check(errors, all(prompt.get(key) for key in ("target", "operator_action", "success_signal", "failure_rule", "continue_condition", "recovery_condition", "record_fields")), f"{item.get('id')} lacks detailed operator-prompt fields")
         check(errors, isinstance(prompt.get("success_signal"), list) and len(prompt.get("success_signal", [])) >= 2, f"{item.get('id')} lacks multiple success signals")
+        artifact_review = item.get("artifact_review", {})
+        images = artifact_review.get("images", [])
+        check(errors, artifact_review.get("mode") == "original_image_one_at_a_time", f"{item.get('id')} lost original-image review mode")
+        check(errors, len(images) == 3 and [image.get("index") for image in images] == [1, 2, 3], f"{item.get('id')} original-image sequence drifted")
     check(errors, goal_acceptance_readiness.get("status") == "PASS_ACCEPTANCE_CONTRACT_READY_OWNER_AND_HARDWARE_GATED", "detailed Goal acceptance readiness is not PASS")
-    check(errors, goal_acceptance_readiness.get("operator_prompt_opened") is False, "detailed Goal acceptance record claims a popup was opened")
+    check(errors, goal_acceptance_readiness.get("machine_preflight_opens_operator_prompt") is False, "detailed Goal machine preflight must not open a popup")
     check(errors, goal_acceptance_readiness.get("physical_acceptance", {}).get("lower_edge_truncation") == "must be checked during G5 before any visual pass", "lower-edge truncation gate is missing")
+    check(errors, g2_group_triage.get("status") == "OPEN_REVIEW_FLOW_REWORK_REQUIRED", "G2 original-image review rework is not open")
+    check(errors, g2_group_triage.get("requirement") == "COMP-REQ-079", "G2 original-image review rework lost its requirement")
+    check(errors, g2_group_triage.get("resolution", {}).get("group_selection_applied") is False, "G2 grouped visual selection was incorrectly applied")
 
     check(errors, wba_boundary.get("status") == "PASS_V9_WBA_VISUAL_BOUNDARY_PENDING_OWNER", "WBA visual boundary is not PASS")
     wba_resource = wba_boundary.get("wba_resource_boundary", {})
@@ -356,8 +365,9 @@ def build_audit() -> dict[str, Any]:
                 evidence("special_journey", str(special_journey.get("status")), "Journey sheet is pending owner decision."),
                 evidence("special_crop_preflight", str(special_crop_preflight.get("status")), "The exact 200x200 source-crop previews retain >=4 px clearance and remain review-only."),
                 evidence("special_mapping", str(special_mapping.get("status")), "All 22 uncovered families map to exact pending sources with no fallback."),
-                evidence("visual_readiness", str(visual_readiness.get("status")), "Three sequential Chinese owner-review items are prepared but not opened."),
+                evidence("visual_readiness", str(visual_readiness.get("status")), "Three sequential Chinese owner-review items retain machine-ready locked originals and non-activation boundaries."),
                 evidence("goal_acceptance_readiness", str(goal_acceptance_readiness.get("status")), "Goal-scoped acceptance has explicit machine, owner, hardware and lower-edge-truncation gates."),
+                evidence("g2_group_triage", str(g2_group_triage.get("status")), "The first grouped menu selection remains unapplied because the owner required locked originals one image at a time."),
             ],
         },
         {

@@ -15,6 +15,32 @@
       ],
       "source_sha256": "07D791A898FABE6E558686F6A4B4CC86094541C6B5116D6E0A3D263930DAA868",
       "machine_evidence": "docs/validation/companion-menu-v6-localization-preview-20260717.json",
+      "artifact_review": {
+        "mode": "original_image_one_at_a_time",
+        "images": [
+          {
+            "index": 1,
+            "id": "original-source",
+            "label": "原图：四根菜单生成候选",
+            "path": "docs/art/iterations/companion-menu-v6-four-root/generated_menu_four_root_v6_candidate.png",
+            "sha256": "07D791A898FABE6E558686F6A4B4CC86094541C6B5116D6E0A3D263930DAA868"
+          },
+          {
+            "index": 2,
+            "id": "english-preview",
+            "label": "原图：English 200x200 本地化预览",
+            "path": "docs/art/iterations/companion-menu-v6-four-root/generated_menu_four_root_v6_en_200x200_localization_preview.png",
+            "sha256": "3C2BAB9734CA44E95DE82D7580132195B59488C6D133B64B7F1B49A5144488ED"
+          },
+          {
+            "index": 3,
+            "id": "zh-cn-preview",
+            "label": "原图：中文 200x200 本地化预览",
+            "path": "docs/art/iterations/companion-menu-v6-four-root/generated_menu_four_root_v6_zh_cn_200x200_localization_preview.png",
+            "sha256": "6C244277526E268A337096483F8D3D3D2E8E2756C63596C4ECA3803DEF0F3941"
+          }
+        ]
+      },
       "operator_prompt": {
         "target": "菜单源图、English 200x200 本地化预览和中文 200x200 本地化预览；本项只决定视觉源，不观察真实面板。",
         "operator_action": "以 100% 比例先查看 English 预览，再查看中文预览；确认每张首页都是单页四行，按 Voice、Device、Connection、Preferences 的顺序阅读。",
@@ -44,6 +70,32 @@
       ],
       "source_sha256": "AF9ADFD49C47C89DF674726D7201CC49C61ED636306013697822BB42FB1A9C82",
       "machine_evidence": "docs/validation/companion-pet-special-system-source-review-20260717.json",
+      "artifact_review": {
+        "mode": "original_image_one_at_a_time",
+        "images": [
+          {
+            "index": 1,
+            "id": "original-source",
+            "label": "原图：特殊系统状态生成候选",
+            "path": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_system_v1_candidate.png",
+            "sha256": "AF9ADFD49C47C89DF674726D7201CC49C61ED636306013697822BB42FB1A9C82"
+          },
+          {
+            "index": 2,
+            "id": "200x200-preview",
+            "label": "原图：特殊系统状态 200x200 预览",
+            "path": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_system_v1_candidate_200x200_preview.png",
+            "sha256": "A4BBB8246E380FE80964DBA36F90D319A3936C6DA117A8F433E3A86873D0046D"
+          },
+          {
+            "index": 3,
+            "id": "crop-preflight-contact-sheet",
+            "label": "原图：特殊系统状态逐格 200x200 接触表",
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-200x200/generated_pet_special_system_v1_crop_preflight_contact_sheet.png",
+            "sha256": "0CA22E270C246A450FEE176730394DC8487D1FB81EE492A088CAA69DB4D6E6E5"
+          }
+        ]
+      },
       "operator_prompt": {
         "target": "special-system-v1 的原始 3x4 源图和逐格 200x200 接触表；覆盖 speaking、recording error、充电、电量、连接和 system error。本项不清除真实面板下边缘 P0。",
         "operator_action": "以 100% 比例查看 12 格接触表，从左到右、从上到下逐格比对 v9 眼睛、眉、嘴和脸颊身份；同时确认每格的语义符号能区分状态。",
@@ -73,6 +125,32 @@
       ],
       "source_sha256": "95CC749134F169E73A2E2A99FA2B6F08AABDFE78D218677C347D2D687EA4B17F",
       "machine_evidence": "docs/validation/companion-pet-special-journey-source-review-20260717.json",
+      "artifact_review": {
+        "mode": "original_image_one_at_a_time",
+        "images": [
+          {
+            "index": 1,
+            "id": "original-source",
+            "label": "原图：特殊旅程状态生成候选",
+            "path": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_journey_v1_candidate.png",
+            "sha256": "95CC749134F169E73A2E2A99FA2B6F08AABDFE78D218677C347D2D687EA4B17F"
+          },
+          {
+            "index": 2,
+            "id": "200x200-preview",
+            "label": "原图：特殊旅程状态 200x200 预览",
+            "path": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_journey_v1_candidate_200x200_preview.png",
+            "sha256": "7207889637184F887E5EBFCA6A8C64776D23E9D46E0B9A0F7A227F2C087A0534"
+          },
+          {
+            "index": 3,
+            "id": "crop-preflight-contact-sheet",
+            "label": "原图：特殊旅程逐格 200x200 接触表",
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-200x200/generated_pet_special_journey_v1_crop_preflight_contact_sheet.png",
+            "sha256": "B072603D667B8BC9C54A0322E6C009526CF11D63D85AE553E931684B94AAC082"
+          }
+        ]
+      },
       "operator_prompt": {
         "target": "special-journey-v1 的原始 3x4 源图和逐格 200x200 接触表；覆盖菜单进入/停留/阻止/退出及升级 offer/prepare/transfer/verify/restart/success/error/recovery。",
         "operator_action": "以 100% 比例查看 12 格接触表，从左到右、从上到下确认菜单旅程与升级旅程的状态变化可读；menu.open 只作为进入已单独审阅四根菜单的交接，不替代菜单本体。",

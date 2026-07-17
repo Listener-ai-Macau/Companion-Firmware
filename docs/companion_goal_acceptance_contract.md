@@ -60,6 +60,10 @@ a firmware flash by itself.
   rule, continue condition and recovery condition from the matching manifest
   item. A `通过` records the stated visual-source decision only; it cannot
   override the P0 panel gate or activate a runtime resource.
+- Every G2 source must open its locked original image at normal scale and use
+  one canonical prompt per image, in manifest order. A selection with a
+  non-empty note is never applied automatically: triage it before the next
+  image, and preserve the raw prompt record plus original-image SHA256.
 - Use `tools/run_companion_goal_visual_source_acceptance.ps1` as the only G2
   popup entry: `-CheckOnly` and `-SelfTest` must not open a window; only an
   explicit owner `开始验收` followed by `-Execute -OwnerStartAcknowledged` may
