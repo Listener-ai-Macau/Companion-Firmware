@@ -23,6 +23,7 @@ REQUIRED_CONTRACT_ANCHORS = (
     "G7: Refresh, Residue, And Waveform Gate",
     "G8: WBA55/WBA65 Board Parity",
     "exactly 39 frames / 13 clips",
+    "40,000",
     "4 px",
     "try generic, adjacent-panel, guessed, online, or hand-authored LUT bytes.",
     "<=1 mA average over >=60 s",
@@ -57,6 +58,10 @@ EVIDENCE = {
     "frame_safe_area": (
         "docs/validation/companion-v9-frame-safe-area-20260717.json",
         "PASS_MACHINE_SAFE_AREA_PHYSICAL_REVIEW_PENDING",
+    ),
+    "ssd1681_frame_mapping": (
+        "docs/validation/companion-ssd1681-frame-mapping-20260717.json",
+        "PASS_MACHINE_EXHAUSTIVE_FRAME_MAPPING_PHYSICAL_REVIEW_PENDING",
     ),
 }
 
@@ -114,7 +119,12 @@ def build_report() -> dict[str, object]:
         ],
         "physical_acceptance": {
             "state": "not_started",
-            "required_first_machine_gates": ["G1", "G3", "G4"],
+            "required_first_machine_gates": ["G1", "G3", "G4", "G5_preflight"],
+            "g5_preflight": {
+                "frame_safe_area": "39 inactive v9 frames have >=4 px canvas clearance",
+                "ssd1681_mapping": "all 40,000 pixels are one-to-one/in-bounds through the WB55 rotation, mirror and descending-Y path",
+                "limit": "neither machine gate proves a physical panel viewport or clears the lower-edge feedback",
+            },
             "lower_edge_truncation": "must be checked during G5 before any visual pass",
             "vendor_waveform": "G7 remains frozen until matching CWF1",
             "wba_board": "G8 remains deferred until target board and CubeWBA project exist",

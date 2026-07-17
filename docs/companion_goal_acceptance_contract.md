@@ -88,9 +88,13 @@ a firmware flash by itself.
 
 ### G5: WB55 Panel, Touch, And Low-Power Reality
 
-- Precondition: normal product-equivalent WB55 image preflight, FTS02 panel
-  health, and a bounded hardware lock. Do not use a trace-only image that lacks
-  the normal SSD1681 configuration.
+- Machine precondition: normal product-equivalent WB55 image preflight, the
+  39-frame 4 px safe-area report, and the exhaustive SSD1681 transform/window
+  mapping report must pass for all 40,000 pixels. These prove only source
+  pixels remain in-bounds; they do not clear a real-panel viewport or
+  lower-edge defect.
+- Hardware precondition: FTS02 panel health and a bounded hardware lock. Do
+  not use a trace-only image that lacks the normal SSD1681 configuration.
 - Hardware action: show each available daily v9 clip; inspect all four display
   edges, especially the lower edge. Then perform three independent tap/swipe/
   three-second-hold cycles and a 3-minute idle-to-Stop-to-one-touch-wake cycle.

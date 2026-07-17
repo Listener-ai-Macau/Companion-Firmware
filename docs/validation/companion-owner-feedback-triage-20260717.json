@@ -11,8 +11,8 @@
     "classification": "P0 visible expression clipping",
     "possible_layers": ["source crop", "200x200 frame translation", "panel orientation or viewport", "display transport or refresh"],
     "forbidden_response": "Do not replace the locked v9 source, reactivate retired art, or claim a visual pass without a source-to-panel check.",
-    "machine_gate": "All inactive v9 PBM frames must retain at least 4 px of empty canvas at every edge.",
+    "machine_gate": "All inactive v9 PBM frames must retain at least 4 px of empty canvas at every edge, and the WB55 SSD1681 transform/window path must exhaustively preserve every 200x200 source pixel in-bounds.",
     "physical_gate": "Inspect each affected state on the real 200x200 panel; no face feature, cheek, mouth or semantic charm may be clipped at any edge.",
-    "state": "pending machine safe-area proof and focused panel recheck"
+    "state": "pending machine safe-area/transform proof and focused panel recheck"
   }
 }

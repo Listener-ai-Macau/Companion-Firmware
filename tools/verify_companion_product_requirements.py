@@ -116,7 +116,7 @@ def main() -> int:
         "registry": str(REGISTRY.relative_to(ROOT)).replace("\\", "/"),
         "workflow_plan": "companion-screen-product-integration",
         "requirement_ids": [f"COMP-REQ-{number}" for number in requirement_ids],
-        "current_focus": "Blocked Codex Goal: v9 renderer-first UI, four-root menu source review, protected touch/three-minute idle behavior, WBA external-SPI-NOR boundary, and vendor waveform freeze",
+        "current_focus": "Active Codex Goal: v9 renderer-first UI, four-root menu source review, protected touch/three-minute idle behavior, WBA external-SPI-NOR boundary, and vendor waveform freeze",
         "active_parallel_track": "WB55 FTS02/panel recovery, real touch/Stop/current and final physical review remain hardware gates; daily art validation does not require a camera",
         "current_goal_audit": "docs/validation/companion-current-goal-audit-20260717.json",
         "errors": errors,

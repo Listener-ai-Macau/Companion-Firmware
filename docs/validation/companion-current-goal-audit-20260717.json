@@ -1,9 +1,9 @@
 {
   "active_goal_boundary": "Only current v9/companion-menu-v6-four-root sources may be considered; historical v5/v6/v7/v8/v10+ art and six-root menus are not active inputs.",
-  "blocked_reason": "All remaining work requires an owner visual decision, real hardware evidence, a selected WBA target, or a matching vendor CWF1 waveform package.",
-  "codex_goal_status": "blocked",
+  "codex_goal_status": "active",
   "daily_visual_validation": "deterministic source/PBM/CEMP/render evidence; camera is final physical preflight only, never daily art development",
   "errors": [],
+  "external_gates": "Owner visual decisions, real hardware evidence, a selected WBA target and a matching vendor CWF1 waveform package remain required before their respective acceptance items can pass.",
   "open_gates": [
     "three sequential owner visual decisions: menu-v6-four-root, special-system-v1, special-journey-v1",
     "separate approved-source PBM/CEMP import and runtime activation proposal",
@@ -99,6 +99,11 @@
           "detail": "All 39 inactive v9 frames retain a >=4 px canvas margin; real-panel truncation remains a separate gate.",
           "path": "docs/validation/companion-v9-frame-safe-area-20260717.json",
           "status": "PASS_MACHINE_SAFE_AREA_PHYSICAL_REVIEW_PENDING"
+        },
+        {
+          "detail": "All 40,000 logical pixels remain one-to-one and in-bounds through the actual 180-degree/mirror and descending-Y driver path; real-panel viewport remains a separate gate.",
+          "path": "docs/validation/companion-ssd1681-frame-mapping-20260717.json",
+          "status": "PASS_MACHINE_EXHAUSTIVE_FRAME_MAPPING_PHYSICAL_REVIEW_PENDING"
         },
         {
           "detail": "The runtime cannot substitute a procedural or test face when an external visual asset is unavailable.",
@@ -232,12 +237,13 @@
     }
   ],
   "schema": "companion.current_goal_audit.v1",
-  "status": "GOAL_BLOCKED_MACHINE_BOUNDARY_PROVED_EXTERNAL_GATES_PENDING",
+  "status": "GOAL_ACTIVE_MACHINE_EVIDENCE_PROVED_EXTERNAL_GATES_PENDING",
   "validation_commands": [
     "python .\\tools\\verify_companion_current_goal_audit.py",
     "pwsh .\\tools\\test_companion_v9_expression_render_pipeline.ps1",
     "python .\\tools\\verify_companion_v9_wba_visual_boundary.py",
     "python .\\tools\\verify_companion_v9_frame_safe_area.py",
+    "python .\\tools\\verify_companion_ssd1681_frame_mapping.py",
     "python .\\tools\\verify_companion_goal_acceptance_contract.py",
     "python .\\tools\\verify_companion_historical_branch_audit.py",
     "python .\\tools\\verify_companion_low_power_requirements.py",

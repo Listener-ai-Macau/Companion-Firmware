@@ -31,6 +31,7 @@ ARTIFACTS = {
     "v9_coverage": ROOT / "docs/validation/companion-v9-scene-coverage-20260716.json",
     "v9_binding": ROOT / "docs/validation/companion-v9-candidate-resource-binding-20260717.json",
     "v9_safe_area": ROOT / "docs/validation/companion-v9-frame-safe-area-20260717.json",
+    "ssd1681_frame_mapping": ROOT / "docs/validation/companion-ssd1681-frame-mapping-20260717.json",
     "menu_function_receipt": ROOT / "docs/validation/companion-menu-v6-function-receipt-20260717.json",
     "menu_source": ROOT / "docs/validation/companion-menu-v6-source-review-20260717.json",
     "menu_localization": ROOT / "docs/validation/companion-menu-v6-localization-preview-20260717.json",
@@ -86,6 +87,7 @@ def build_audit() -> dict[str, Any]:
     coverage = load_json("v9_coverage")
     binding = load_json("v9_binding")
     safe_area = load_json("v9_safe_area")
+    ssd1681_frame_mapping = load_json("ssd1681_frame_mapping")
     menu_function_receipt = load_json("menu_function_receipt")
     menu_source = load_json("menu_source")
     menu_localization = load_json("menu_localization")
@@ -196,6 +198,21 @@ def build_audit() -> dict[str, Any]:
     check(errors, safe_area.get("frame_profile", {}).get("minimum_edge_clearance_px") == 4, "v9 safe-area margin drifted")
     check(errors, safe_area.get("runtime_resource_activated") is False, "v9 safe-area report permits runtime activation")
     check(errors, all(frame.get("minimum_clearance_px", 0) >= 4 for frame in safe_area.get("frames", [])), "v9 frame ink reaches the protected edge margin")
+    check(errors, ssd1681_frame_mapping.get("status") == "PASS_MACHINE_EXHAUSTIVE_FRAME_MAPPING_PHYSICAL_REVIEW_PENDING", "SSD1681 transform/window mapping is not machine-only PASS")
+    geometry = ssd1681_frame_mapping.get("geometry", {})
+    check(errors, geometry == {"width": 200, "height": 200, "bytes_per_row": 25}, "SSD1681 transform geometry drifted")
+    configurations = ssd1681_frame_mapping.get("supported_build_configurations", [])
+    check(errors, len(configurations) == 4, "SSD1681 mapping must cover all four supported orientation configurations")
+    for configuration in configurations:
+        check(errors, configuration.get("logical_pixels") == 40000, "SSD1681 mapping no longer covers all logical pixels")
+        check(errors, configuration.get("framebuffer_unique_pixels") == 40000, "SSD1681 frame transform is no longer one-to-one")
+        check(errors, configuration.get("controller_unique_bits") == 40000, "SSD1681 controller map is no longer one-to-one")
+    product_orientation = ssd1681_frame_mapping.get("product_build_orientation", {})
+    check(errors, product_orientation.get("rotation_degrees") == 180 and product_orientation.get("mirror_x") == 1, "WB55 product orientation mapping drifted")
+    mapped_v9 = ssd1681_frame_mapping.get("v9_source", {})
+    check(errors, mapped_v9.get("frame_count") == 39 and mapped_v9.get("minimum_mapped_edge_clearance_px") == 4, "SSD1681 mapped v9 frame safety drifted")
+    for key in ("external_flash_provisioned", "firmware_flashed", "panel_command", "camera_or_human_visual_pass", "physical_panel_viewport_proved"):
+        check(errors, ssd1681_frame_mapping.get("hardware_boundary", {}).get(key) is False, f"SSD1681 mapping overclaims hardware: {key}")
 
     check(errors, menu_function_receipt.get("status") == "PASS_CURRENT_SOURCE_MENU_FUNCTION_PENDING_OWNER_VISUAL", "four-root menu function receipt is not PASS")
     menu_commit = menu_function_receipt.get("source_commit", "")
@@ -278,6 +295,7 @@ def build_audit() -> dict[str, Any]:
                 evidence("v9_coverage", str(coverage.get("status")), "40 scene families are explicit: 18 available candidates and 22 no-fallback pending sources."),
                 evidence("v9_binding", str(binding.get("status")), "Portable selector remains AVAILABLE_NOT_ACTIVE."),
                 evidence("v9_safe_area", str(safe_area.get("status")), "All 39 inactive v9 frames retain a >=4 px canvas margin; real-panel truncation remains a separate gate."),
+                evidence("ssd1681_frame_mapping", str(ssd1681_frame_mapping.get("status")), "All 40,000 logical pixels remain one-to-one and in-bounds through the actual 180-degree/mirror and descending-Y driver path; real-panel viewport remains a separate gate."),
                 evidence("runtime_visual_boundary", str(runtime_visual_boundary.get("status")), "The runtime cannot substitute a procedural or test face when an external visual asset is unavailable."),
                 evidence("external_expression_system", str(external_expression_system.get("status")), "Portable mood behavior selects semantic states while only external CEMP supplies product pixels."),
                 evidence("resource_memory_policy", str(resource_memory_policy.get("status")), "The current resource contract accepts only v9 external CEMP candidates and prohibits legacy r53 as a visual fallback."),
@@ -333,9 +351,9 @@ def build_audit() -> dict[str, Any]:
 
     return {
         "schema": "companion.current_goal_audit.v1",
-        "status": "GOAL_BLOCKED_MACHINE_BOUNDARY_PROVED_EXTERNAL_GATES_PENDING" if not errors else "GOAL_AUDIT_INVALID",
-        "codex_goal_status": "blocked",
-        "blocked_reason": "All remaining work requires an owner visual decision, real hardware evidence, a selected WBA target, or a matching vendor CWF1 waveform package.",
+        "status": "GOAL_ACTIVE_MACHINE_EVIDENCE_PROVED_EXTERNAL_GATES_PENDING" if not errors else "GOAL_AUDIT_INVALID",
+        "codex_goal_status": "active",
+        "external_gates": "Owner visual decisions, real hardware evidence, a selected WBA target and a matching vendor CWF1 waveform package remain required before their respective acceptance items can pass.",
         "active_goal_boundary": "Only current v9/companion-menu-v6-four-root sources may be considered; historical v5/v6/v7/v8/v10+ art and six-root menus are not active inputs.",
         "daily_visual_validation": "deterministic source/PBM/CEMP/render evidence; camera is final physical preflight only, never daily art development",
         "requirements": requirements,
@@ -352,6 +370,7 @@ def build_audit() -> dict[str, Any]:
             "pwsh .\\tools\\test_companion_v9_expression_render_pipeline.ps1",
             "python .\\tools\\verify_companion_v9_wba_visual_boundary.py",
             "python .\\tools\\verify_companion_v9_frame_safe_area.py",
+            "python .\\tools\\verify_companion_ssd1681_frame_mapping.py",
             "python .\\tools\\verify_companion_goal_acceptance_contract.py",
             "python .\\tools\\verify_companion_historical_branch_audit.py",
             "python .\\tools\\verify_companion_low_power_requirements.py",
@@ -379,6 +398,7 @@ def render_markdown(audit: dict[str, Any]) -> str:
         "Generated by `python .\\tools\\verify_companion_current_goal_audit.py --write`.",
         "",
         f"- Status: `{audit['status']}`",
+        f"- Codex Goal lifecycle: `{audit['codex_goal_status']}`",
         f"- Current visual boundary: {audit['active_goal_boundary']}",
         f"- Daily visual validation: {audit['daily_visual_validation']}",
         "",

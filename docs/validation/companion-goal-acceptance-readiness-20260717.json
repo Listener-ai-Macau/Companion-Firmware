@@ -9,6 +9,10 @@
       "path": "docs/validation/companion-menu-v6-function-receipt-20260717.json",
       "status": "PASS_CURRENT_SOURCE_MENU_FUNCTION_PENDING_OWNER_VISUAL"
     },
+    "ssd1681_frame_mapping": {
+      "path": "docs/validation/companion-ssd1681-frame-mapping-20260717.json",
+      "status": "PASS_MACHINE_EXHAUSTIVE_FRAME_MAPPING_PHYSICAL_REVIEW_PENDING"
+    },
     "v9_cemp_pixels": {
       "path": "docs/validation/companion-v9-expression-cemp-20260716.json",
       "status": "PASS_MACHINE_ONLY_CEMP_NOT_ACTIVATED"
@@ -34,11 +38,17 @@
   "operator_prompt_opened": false,
   "owner_feedback_triage": "docs/validation/companion-owner-feedback-triage-20260717.json",
   "physical_acceptance": {
+    "g5_preflight": {
+      "frame_safe_area": "39 inactive v9 frames have >=4 px canvas clearance",
+      "limit": "neither machine gate proves a physical panel viewport or clears the lower-edge feedback",
+      "ssd1681_mapping": "all 40,000 pixels are one-to-one/in-bounds through the WB55 rotation, mirror and descending-Y path"
+    },
     "lower_edge_truncation": "must be checked during G5 before any visual pass",
     "required_first_machine_gates": [
       "G1",
       "G3",
-      "G4"
+      "G4",
+      "G5_preflight"
     ],
     "state": "not_started",
     "vendor_waveform": "G7 remains frozen until matching CWF1",
