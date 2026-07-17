@@ -35,9 +35,7 @@ useful commits were classified; main is the sole attached worktree. The current
 Codex Goal contains the updated executable contract in Chinese. Every later
 resume must first read the installed `ai-collaboration-workflow` skill and
 `<AI_WORKFLOW_REPO>\docs\agent_quickstart.md`; an unfinished active Goal must
-not be falsely completed merely to rewrite it. The Goal API cannot edit or
-replace an unfinished active Goal; the same safeguard applies while that Goal
-is blocked. An owner-deleted Goal has no active contract and can then be
+not be falsely completed merely to rewrite it. The Goal API cannot edit or replace an unfinished active Goal; the same safeguard applies while that Goal is blocked. An owner-deleted Goal has no active contract and can then be
 recreated under the current Chinese Goal rule.
 
 ## Current Visual Source Resolution (2026-07-17)
