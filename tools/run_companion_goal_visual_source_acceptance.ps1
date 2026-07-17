@@ -10,16 +10,16 @@ imports PBM/CEMP, writes Flash, flashes firmware, or changes a manifest decision
 #>
 
 param(
-    [ValidateSet("menu-v6-four-root", "special-system-v1", "special-journey-v1")]
-    [string] $ItemId = "menu-v6-four-root",
-    [ValidateRange(1, 16)]
+    [ValidatePattern("^[a-z0-9-]+$")]
+    [string] $ItemId = "home-v9-daily-storyboard",
+    [ValidateRange(1, 128)]
     [int] $ArtifactIndex = 1,
     [switch] $CheckOnly,
     [switch] $Execute,
     [switch] $SelfTest,
     [switch] $OwnerStartAcknowledged,
-    [ValidateSet("通过", "失败", "跳过", "中止")]
-    [string] $SelfTestSelection = "通过",
+    [ValidateSet("已执行", "需修改", "跳过", "中止")]
+    [string] $SelfTestSelection = "已执行",
     [ValidateRange(60, 3600)]
     [int] $OperatorTimeoutSeconds = 900,
     [string] $OutRoot = "docs\\validation\\companion-g2-owner-visual-reviews"
@@ -32,7 +32,6 @@ Set-StrictMode -Version Latest
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
 $manifestPath = Join-Path $repoRoot "docs\validation\companion-ui-visual-acceptance-manifest-20260717.json"
 $readinessVerifier = Join-Path $PSScriptRoot "verify_companion_ui_visual_acceptance_readiness.py"
-$orderedIds = @("menu-v6-four-root", "special-system-v1", "special-journey-v1")
 $promptFields = @("target", "operator_action", "success_signal", "failure_rule", "continue_condition", "recovery_condition", "record_fields")
 
 function Resolve-WorkflowAiwPath {
@@ -71,10 +70,26 @@ function Join-Lines {
     return ($Lines -join [Environment]::NewLine)
 }
 
+function Format-ReviewValue {
+    param([Parameter(Mandatory = $false)] $Value)
+
+    if ($null -eq $Value) {
+        return ""
+    }
+    if ($Value -is [System.Array]) {
+        return (($Value | ForEach-Object { [string]$_ }) -join "、")
+    }
+    if ($Value -is [System.Management.Automation.PSCustomObject]) {
+        return ($Value | ConvertTo-Json -Compress -Depth 8)
+    }
+    return [string]$Value
+}
+
 function Build-OperatorSpec {
     param(
         [Parameter(Mandatory = $true)] $Item,
         [Parameter(Mandatory = $true)][int] $Position,
+        [Parameter(Mandatory = $true)][int] $ItemCount,
         [Parameter(Mandatory = $true)] $Artifact,
         [Parameter(Mandatory = $true)][int] $ArtifactCount
     )
@@ -85,19 +100,24 @@ function Build-OperatorSpec {
         "$index. $_"
     })
     $recordFields = @($card.record_fields | ForEach-Object { "- $_" })
-    $displayName = switch ([string]$Item.id) {
-        "menu-v6-four-root" { "四根菜单视觉源" }
-        "special-system-v1" { "特殊系统状态视觉源" }
-        "special-journey-v1" { "特殊旅程状态视觉源" }
-        default { [string]$Item.id }
+    $contextLines = @()
+    if ($null -ne $Artifact.context) {
+        foreach ($property in $Artifact.context.PSObject.Properties) {
+            $value = Format-ReviewValue -Value $property.Value
+            if (-not [string]::IsNullOrWhiteSpace($value)) {
+                $contextLines += "$($property.Name)：$value"
+            }
+        }
     }
+    $displayName = if ([string]::IsNullOrWhiteSpace([string]$Item.display_name)) { [string]$Item.id } else { [string]$Item.display_name }
     return [ordered]@{
-        title = "Companion 视觉源验收 $Position/3 · 原图 $($Artifact.index)/$ArtifactCount：$displayName"
-        progress_text = "$Position/3 · 图 $($Artifact.index)/$ArtifactCount（本次 1/1）"
+        title = "Companion 视觉源验收 $Position/$ItemCount · 原图 $($Artifact.index)/$ArtifactCount：$displayName"
+        progress_text = "$Position/$ItemCount · 图 $($Artifact.index)/$ArtifactCount（本次 1/1）"
         scope_text = "G2 顺序视觉源决定；已在系统图片查看器打开本张原图。当前只审这一张原图与对应 200x200 预览，不会导入 PBM/CEMP、写 Flash、刷固件或启用运行时资源。"
         message = Join-Lines @(
             "当前原图 $($Artifact.index)/$ArtifactCount：$($Artifact.label)",
             "文件：$($Artifact.path)",
+            $(if ($contextLines.Count -gt 0) { ""; "本页语义："; $contextLines }),
             "",
             "目标：$($card.target)",
             "",
@@ -142,7 +162,7 @@ function Test-ArtifactAccepted {
         if ($record.item_id -ne $ReviewItemId -or $record.artifact.index -ne $Artifact.index -or $record.artifact.sha256 -ne $Artifact.sha256) {
             continue
         }
-        if ($record.operator_result.selected -eq "通过" -and [string]::IsNullOrWhiteSpace([string]$record.operator_result.note) -and $record.execution.canonical_aiw_operator_prompt_opened -eq $true) {
+        if ($record.operator_result.selected -eq "已执行" -and [string]::IsNullOrWhiteSpace([string]$record.operator_result.note) -and $record.execution.canonical_aiw_operator_prompt_opened -eq $true) {
             return $true
         }
     }
@@ -164,8 +184,8 @@ function Write-ReviewRecord {
 
     $selection = [string]$Result.selected
     $status = switch ($selection) {
-        "通过" { "OWNER_ARTIFACT_SELECTION_CAPTURED_TRIAGE_REQUIRED" }
-        "失败" { "OWNER_ARTIFACT_REJECTION_CAPTURED_TRIAGE_REQUIRED" }
+        "已执行" { "OWNER_ARTIFACT_OBSERVATION_CAPTURED" }
+        "需修改" { "OWNER_ARTIFACT_REWORK_CAPTURED_TRIAGE_REQUIRED" }
         default { "OWNER_ARTIFACT_REVIEW_NOT_DECIDED" }
     }
     $record = [ordered]@{
@@ -197,7 +217,7 @@ function Write-ReviewRecord {
             firmware_flashed = $false
             runtime_resource_activated = $false
         }
-        next_step = "Agent must triage this result before changing the manifest decision or opening another G2 item."
+        next_step = $(if ($selection -eq "已执行" -and [string]::IsNullOrWhiteSpace([string]$Result.text)) { "The next locked original image may be reviewed. This observation does not authorize visual-resource import or runtime activation." } else { "Agent must triage this result before changing the source, opening another G2 image, or changing any manifest decision." })
     }
     $record | ConvertTo-Json -Depth 12 | Set-Content -LiteralPath $RecordPath -Encoding UTF8
 }
@@ -233,21 +253,14 @@ $reviewRoot = if ($SelfTest) {
 $manifest = Get-Content -LiteralPath $manifestPath -Raw | ConvertFrom-Json
 $items = @($manifest.items)
 $manifestIds = @($items | ForEach-Object { [string]$_.id })
-if (($manifestIds -join "|") -ne ($orderedIds -join "|")) {
-    throw "Visual acceptance manifest order drifted."
-}
+$orderedIds = $manifestIds
+$duplicateIds = @($manifestIds | Group-Object | Where-Object { $_.Count -ne 1 })
+if ($manifestIds.Count -eq 0 -or $duplicateIds.Count -ne 0) { throw "Visual acceptance manifest has no items or duplicate ids." }
 $item = @($items | Where-Object { $_.id -eq $ItemId })
 if ($item.Count -ne 1) {
     throw "Visual acceptance item was not found exactly once: $ItemId"
 }
 $item = $item[0]
-$pending = @($items | Where-Object { $_.owner_decision -eq "PENDING_OWNER_VISUAL_DECISION" })
-if ($pending.Count -eq 0) {
-    throw "No pending G2 item remains; do not reopen a completed visual-source review."
-}
-if ([string]$pending[0].id -ne $ItemId) {
-    throw "G2 is sequential: the next eligible item is $($pending[0].id), not $ItemId."
-}
 foreach ($field in $promptFields) {
     if (-not $item.operator_prompt.$field) {
         throw "Visual acceptance item $ItemId is missing operator prompt field: $field"
@@ -271,27 +284,30 @@ for ($index = 0; $index -lt $images.Count; $index += 1) {
         throw "Visual acceptance item $ItemId original image hash drifted: $($image.path)"
     }
 }
-$nextArtifactIndex = 1
-foreach ($image in $images) {
-    if (Test-ArtifactAccepted -ReviewRoot $reviewRoot -ReviewItemId $ItemId -Artifact $image) {
-        $nextArtifactIndex += 1
-        continue
+$nextItemId = $null
+$nextArtifactIndex = 0
+foreach ($candidateItem in $items) {
+    $candidateImages = @($candidateItem.artifact_review.images)
+    foreach ($candidateImage in $candidateImages) {
+        if (-not (Test-ArtifactAccepted -ReviewRoot $reviewRoot -ReviewItemId ([string]$candidateItem.id) -Artifact $candidateImage)) {
+            $nextItemId = [string]$candidateItem.id
+            $nextArtifactIndex = [int]$candidateImage.index
+            break
+        }
     }
-    break
+    if ($null -ne $nextItemId) { break }
 }
-if ($nextArtifactIndex -gt $images.Count) {
-    throw "All original images for $ItemId already have no-note pass records; triage the group decision before opening another G2 item."
-}
-if ($ArtifactIndex -ne $nextArtifactIndex) {
-    throw "Original images are sequential: the next eligible image is $nextArtifactIndex/$($images.Count), not $ArtifactIndex/$($images.Count)."
+if ($null -eq $nextItemId) { throw "All locked original images have no-note 已执行 records; perform the separate source-import proposal only after audit." }
+if ($ItemId -ne $nextItemId -or $ArtifactIndex -ne $nextArtifactIndex) {
+    throw "G2 is sequential: the next eligible original image is $nextItemId $nextArtifactIndex, not $ItemId $ArtifactIndex."
 }
 $artifact = $images[$ArtifactIndex - 1]
 $artifactPath = Join-Path $repoRoot ([string]$artifact.path)
 $position = [array]::IndexOf($orderedIds, $ItemId) + 1
-$spec = Build-OperatorSpec -Item $item -Position $position -Artifact $artifact -ArtifactCount $images.Count
+$spec = Build-OperatorSpec -Item $item -Position $position -ItemCount $items.Count -Artifact $artifact -ArtifactCount $images.Count
 
 if ($CheckOnly) {
-    Write-Output "CHECK: G2 item=$ItemId position=$position/3 original_image=$ArtifactIndex/$($images.Count)"
+    Write-Output "CHECK: G2 item=$ItemId position=$position/$($items.Count) original_image=$ArtifactIndex/$($images.Count)"
     Write-Output "CHECK: Canonical operator prompt=$(Resolve-WorkflowAiwPath)"
     Write-Output "CHECK: Source SHA256=$($item.source_sha256)"
     Write-Output "CHECK: Machine evidence=$($item.machine_evidence)"
@@ -326,7 +342,7 @@ $promptOutput = & pwsh -NoProfile -File $aiw operator-prompt `
     -Message $spec.message `
     -ExpectedText $spec.expected_text `
     -ObservationLabel $spec.observation_label `
-    -ReviewStyle -Input -Buttons "通过,失败,跳过,中止" `
+    -ReviewStyle -Input -Buttons "已执行,需修改,跳过,中止" `
     -OutputPath $notePath -TimeoutSeconds $OperatorTimeoutSeconds -Json
 if ($LASTEXITCODE -ne 0) {
     throw "Canonical operator prompt failed with exit code $LASTEXITCODE."
@@ -340,4 +356,7 @@ if ([string]::IsNullOrWhiteSpace([string]$result.selected)) {
     throw "Canonical operator prompt returned no selected button."
 }
 Write-ReviewRecord -Item $item -Artifact $artifact -Spec $spec -Result $result -RecordPath $recordPath -NotePath $notePath -PromptOpened $true -OriginalImageOpened $true -SelfTestMode $false
+if ($result.selected -eq "需修改" -and [string]::IsNullOrWhiteSpace([string]$result.text)) {
+    throw "A 需修改 visual result requires an operator note; the raw record was retained for triage."
+}
 Write-Output "RESULT: G2 original-image review -> $(Get-RelativePath -Path $recordPath)"

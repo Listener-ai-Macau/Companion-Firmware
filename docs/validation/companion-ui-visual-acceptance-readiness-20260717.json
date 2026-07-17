@@ -5,100 +5,1166 @@
       "artifact_review": {
         "images": [
           {
-            "id": "original-source",
+            "context": {
+              "duration_ms": 1800,
+              "emotion": "平静",
+              "phase": "entry",
+              "relation": "主页基线；不轮播到其他情绪",
+              "state": "idle",
+              "trigger": "无互动时的日常首页"
+            },
+            "id": "idle-entry",
             "index": 1,
-            "label": "\u539f\u56fe\uff1a\u56db\u6839\u83dc\u5355\u751f\u6210\u5019\u9009",
-            "path": "docs/art/iterations/companion-menu-v6-four-root/generated_menu_four_root_v6_candidate.png",
-            "sha256": "07D791A898FABE6E558686F6A4B4CC86094541C6B5116D6E0A3D263930DAA868"
+            "label": "首页原图：01 idle · entry",
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/01-idle/01-v9_idle_entry.png",
+            "sha256": "80D632D9D5F4676B8CE77C2A64960CE9195021EA86AC7FF76519643F103A3F0A"
           },
           {
-            "id": "english-preview",
+            "context": {
+              "duration_ms": 1300,
+              "emotion": "平静",
+              "phase": "sustain",
+              "relation": "主页基线；不轮播到其他情绪",
+              "state": "idle",
+              "trigger": "无互动时的日常首页"
+            },
+            "id": "idle-sustain",
             "index": 2,
-            "label": "\u539f\u56fe\uff1aEnglish 200x200 \u672c\u5730\u5316\u9884\u89c8",
-            "path": "docs/art/iterations/companion-menu-v6-four-root/generated_menu_four_root_v6_en_200x200_localization_preview.png",
-            "sha256": "3C2BAB9734CA44E95DE82D7580132195B59488C6D133B64B7F1B49A5144488ED"
+            "label": "首页原图：01 idle · sustain",
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/01-idle/02-v9_idle_sustain.png",
+            "sha256": "5906EC4FFC74AD02E4553F3B4DF45F16F0EC4633CB17166348C19B4A4657D5B5"
           },
           {
-            "id": "zh-cn-preview",
+            "context": {
+              "duration_ms": 1600,
+              "emotion": "平静",
+              "phase": "settle",
+              "relation": "主页基线；不轮播到其他情绪",
+              "state": "idle",
+              "trigger": "无互动时的日常首页"
+            },
+            "id": "idle-settle",
             "index": 3,
-            "label": "\u539f\u56fe\uff1a\u4e2d\u6587 200x200 \u672c\u5730\u5316\u9884\u89c8",
-            "path": "docs/art/iterations/companion-menu-v6-four-root/generated_menu_four_root_v6_zh_cn_200x200_localization_preview.png",
-            "sha256": "6C244277526E268A337096483F8D3D3D2E8E2756C63596C4ECA3803DEF0F3941"
+            "label": "首页原图：01 idle · settle",
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/01-idle/03-v9_idle_settle.png",
+            "sha256": "80D632D9D5F4676B8CE77C2A64960CE9195021EA86AC7FF76519643F103A3F0A"
+          },
+          {
+            "context": {
+              "duration_ms": 700,
+              "emotion": "好奇",
+              "phase": "entry",
+              "relation": "看向触点后回到平静",
+              "state": "touch",
+              "trigger": "短按释放"
+            },
+            "id": "touch-entry",
+            "index": 4,
+            "label": "首页原图：02 touch · entry",
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/02-touch/01-v9_touch_entry.png",
+            "sha256": "D83B3C745046BE29EDFB303E4C40C2C4CF4C73CB9B88312900298C77FF34B1E0"
+          },
+          {
+            "context": {
+              "duration_ms": 900,
+              "emotion": "好奇",
+              "phase": "sustain",
+              "relation": "看向触点后回到平静",
+              "state": "touch",
+              "trigger": "短按释放"
+            },
+            "id": "touch-sustain",
+            "index": 5,
+            "label": "首页原图：02 touch · sustain",
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/02-touch/02-v9_touch_sustain.png",
+            "sha256": "D5D9D53A314EC2037C61B0AC2ED24C12656B3DA485DB1059ADC08D5626949BC0"
+          },
+          {
+            "context": {
+              "duration_ms": 1400,
+              "emotion": "好奇",
+              "phase": "settle",
+              "relation": "看向触点后回到平静",
+              "state": "touch",
+              "trigger": "短按释放"
+            },
+            "id": "touch-settle",
+            "index": 6,
+            "label": "首页原图：02 touch · settle",
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/02-touch/03-v9_touch_settle.png",
+            "sha256": "D83B3C745046BE29EDFB303E4C40C2C4CF4C73CB9B88312900298C77FF34B1E0"
+          },
+          {
+            "context": {
+              "duration_ms": 650,
+              "emotion": "友好回应",
+              "phase": "entry",
+              "relation": "方向化回应后回到平静",
+              "state": "swipe_left",
+              "trigger": "向左滑"
+            },
+            "id": "swipe_left-entry",
+            "index": 7,
+            "label": "首页原图：03 swipe_left · entry",
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/03-swipe_left/01-v9_swipe_left_entry.png",
+            "sha256": "801BE8B6E612F0117FB632DCFFC4B6959EEC03CAACA4A596D3377EA332EFAB22"
+          },
+          {
+            "context": {
+              "duration_ms": 850,
+              "emotion": "友好回应",
+              "phase": "sustain",
+              "relation": "方向化回应后回到平静",
+              "state": "swipe_left",
+              "trigger": "向左滑"
+            },
+            "id": "swipe_left-sustain",
+            "index": 8,
+            "label": "首页原图：03 swipe_left · sustain",
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/03-swipe_left/02-v9_swipe_left_sustain.png",
+            "sha256": "CD67CB648515367D4535DE0C676F6C08448438B950CBE38C6E82312BEB808F11"
+          },
+          {
+            "context": {
+              "duration_ms": 1100,
+              "emotion": "友好回应",
+              "phase": "settle",
+              "relation": "方向化回应后回到平静",
+              "state": "swipe_left",
+              "trigger": "向左滑"
+            },
+            "id": "swipe_left-settle",
+            "index": 9,
+            "label": "首页原图：03 swipe_left · settle",
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/03-swipe_left/03-v9_swipe_left_settle.png",
+            "sha256": "A15FBB46D7D2616EEBA0811EFBD4B7007C22AD93F36A13600B475941DF365FB6"
+          },
+          {
+            "context": {
+              "duration_ms": 650,
+              "emotion": "友好回应",
+              "phase": "entry",
+              "relation": "方向化回应后回到平静",
+              "state": "swipe_right",
+              "trigger": "向右滑"
+            },
+            "id": "swipe_right-entry",
+            "index": 10,
+            "label": "首页原图：04 swipe_right · entry",
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/04-swipe_right/01-v9_swipe_right_entry.png",
+            "sha256": "3D3A9C9D867381598CD101609DBC52BA76AD42990ACAF7F647ED6AE39BDBEFB6"
+          },
+          {
+            "context": {
+              "duration_ms": 850,
+              "emotion": "友好回应",
+              "phase": "sustain",
+              "relation": "方向化回应后回到平静",
+              "state": "swipe_right",
+              "trigger": "向右滑"
+            },
+            "id": "swipe_right-sustain",
+            "index": 11,
+            "label": "首页原图：04 swipe_right · sustain",
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/04-swipe_right/02-v9_swipe_right_sustain.png",
+            "sha256": "374778D9C1DC4295DCC7A2E93B138EB2FC4976408AD02654E15B7C92F812AE31"
+          },
+          {
+            "context": {
+              "duration_ms": 1100,
+              "emotion": "友好回应",
+              "phase": "settle",
+              "relation": "方向化回应后回到平静",
+              "state": "swipe_right",
+              "trigger": "向右滑"
+            },
+            "id": "swipe_right-settle",
+            "index": 12,
+            "label": "首页原图：04 swipe_right · settle",
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/04-swipe_right/03-v9_swipe_right_settle.png",
+            "sha256": "AFBA7236C1D7E4F89F928714CA70331ACB8687F2F1683CBDA55096AC8D9667F4"
+          },
+          {
+            "context": {
+              "duration_ms": 650,
+              "emotion": "惊喜",
+              "phase": "entry",
+              "relation": "轻微上扬后回到平静",
+              "state": "swipe_up",
+              "trigger": "向上滑"
+            },
+            "id": "swipe_up-entry",
+            "index": 13,
+            "label": "首页原图：05 swipe_up · entry",
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/05-swipe_up/01-v9_swipe_up_entry.png",
+            "sha256": "2EA4EB65ED5955F5D7B7FA579578CF2D0B828A5BB65BBD16CE29ADA9A8177604"
+          },
+          {
+            "context": {
+              "duration_ms": 850,
+              "emotion": "惊喜",
+              "phase": "sustain",
+              "relation": "轻微上扬后回到平静",
+              "state": "swipe_up",
+              "trigger": "向上滑"
+            },
+            "id": "swipe_up-sustain",
+            "index": 14,
+            "label": "首页原图：05 swipe_up · sustain",
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/05-swipe_up/02-v9_swipe_up_sustain.png",
+            "sha256": "1A4B8D945BC4AAD8B3FEF9582786E756D1767EED50016B7A492BBFF756B9D4DE"
+          },
+          {
+            "context": {
+              "duration_ms": 1100,
+              "emotion": "惊喜",
+              "phase": "settle",
+              "relation": "轻微上扬后回到平静",
+              "state": "swipe_up",
+              "trigger": "向上滑"
+            },
+            "id": "swipe_up-settle",
+            "index": 15,
+            "label": "首页原图：05 swipe_up · settle",
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/05-swipe_up/03-v9_swipe_up_settle.png",
+            "sha256": "583B95038BA6AF79FF84FD457906DB84ED0F9936422EE0F88493B8ADDF16DEE6"
+          },
+          {
+            "context": {
+              "duration_ms": 650,
+              "emotion": "亲昵",
+              "phase": "entry",
+              "relation": "爱心回应后回到平静",
+              "state": "swipe_down",
+              "trigger": "向下滑"
+            },
+            "id": "swipe_down-entry",
+            "index": 16,
+            "label": "首页原图：06 swipe_down · entry",
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/06-swipe_down/01-v9_swipe_down_entry.png",
+            "sha256": "F8DD258E86742B6C944D590BD25DA402B4F68CFBE27942EA56D3CC877AF563B5"
+          },
+          {
+            "context": {
+              "duration_ms": 850,
+              "emotion": "亲昵",
+              "phase": "sustain",
+              "relation": "爱心回应后回到平静",
+              "state": "swipe_down",
+              "trigger": "向下滑"
+            },
+            "id": "swipe_down-sustain",
+            "index": 17,
+            "label": "首页原图：06 swipe_down · sustain",
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/06-swipe_down/02-v9_swipe_down_sustain.png",
+            "sha256": "16682B286F330D09004C50855F81050BC52B7EBF94E4E5CE740547BBE58CCA96"
+          },
+          {
+            "context": {
+              "duration_ms": 1100,
+              "emotion": "亲昵",
+              "phase": "settle",
+              "relation": "爱心回应后回到平静",
+              "state": "swipe_down",
+              "trigger": "向下滑"
+            },
+            "id": "swipe_down-settle",
+            "index": 18,
+            "label": "首页原图：06 swipe_down · settle",
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/06-swipe_down/03-v9_swipe_down_settle.png",
+            "sha256": "22E45A7B54A1D260D69E16607A33C4055BFD1F04495A4AA6234E6C3F03DBC1DB"
+          },
+          {
+            "context": {
+              "duration_ms": 1000,
+              "emotion": "专注倾听",
+              "phase": "entry",
+              "relation": "由语音结果接到录音、说话或平静",
+              "state": "listening",
+              "trigger": "准备或等待语音"
+            },
+            "id": "listening-entry",
+            "index": 19,
+            "label": "首页原图：07 listening · entry",
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/07-listening/01-v9_listening_entry.png",
+            "sha256": "D3A6411339A056C869D222EDB9B0ED2B43537CBCECAD4C9192EC242841F8B633"
+          },
+          {
+            "context": {
+              "duration_ms": 1200,
+              "emotion": "专注倾听",
+              "phase": "sustain",
+              "relation": "由语音结果接到录音、说话或平静",
+              "state": "listening",
+              "trigger": "准备或等待语音"
+            },
+            "id": "listening-sustain",
+            "index": 20,
+            "label": "首页原图：07 listening · sustain",
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/07-listening/02-v9_listening_sustain.png",
+            "sha256": "F49FB358C0D8EF5EE55EA6911B728316F18A441BCFC785A5530E115DDDD48CAF"
+          },
+          {
+            "context": {
+              "duration_ms": 1400,
+              "emotion": "专注倾听",
+              "phase": "settle",
+              "relation": "由语音结果接到录音、说话或平静",
+              "state": "listening",
+              "trigger": "准备或等待语音"
+            },
+            "id": "listening-settle",
+            "index": 21,
+            "label": "首页原图：07 listening · settle",
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/07-listening/03-v9_listening_settle.png",
+            "sha256": "D3A6411339A056C869D222EDB9B0ED2B43537CBCECAD4C9192EC242841F8B633"
+          },
+          {
+            "context": {
+              "duration_ms": 900,
+              "emotion": "专注记录",
+              "phase": "entry",
+              "relation": "录音结束进入保存",
+              "state": "recording",
+              "trigger": "双击开始录音"
+            },
+            "id": "recording-entry",
+            "index": 22,
+            "label": "首页原图：08 recording · entry",
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/08-recording/01-v9_recording_entry.png",
+            "sha256": "6614C9CCF6FBF232995FD4B2FEE18872E91BA4F5BC3F489F874C0D8A40040368"
+          },
+          {
+            "context": {
+              "duration_ms": 1200,
+              "emotion": "专注记录",
+              "phase": "sustain",
+              "relation": "录音结束进入保存",
+              "state": "recording",
+              "trigger": "双击开始录音"
+            },
+            "id": "recording-sustain",
+            "index": 23,
+            "label": "首页原图：08 recording · sustain",
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/08-recording/02-v9_recording_sustain.png",
+            "sha256": "4B164E401D43FFD5687996411EBEDC0379C146606D77B60A637A7B5DC42E10DB"
+          },
+          {
+            "context": {
+              "duration_ms": 1200,
+              "emotion": "专注记录",
+              "phase": "settle",
+              "relation": "录音结束进入保存",
+              "state": "recording",
+              "trigger": "双击开始录音"
+            },
+            "id": "recording-settle",
+            "index": 24,
+            "label": "首页原图：08 recording · settle",
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/08-recording/03-v9_recording_settle.png",
+            "sha256": "6614C9CCF6FBF232995FD4B2FEE18872E91BA4F5BC3F489F874C0D8A40040368"
+          },
+          {
+            "context": {
+              "duration_ms": 900,
+              "emotion": "耐心等待",
+              "phase": "entry",
+              "relation": "保存成功或错误",
+              "state": "saving",
+              "trigger": "录音结束并写入"
+            },
+            "id": "saving-entry",
+            "index": 25,
+            "label": "首页原图：09 saving · entry",
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/09-saving/01-v9_saving_entry.png",
+            "sha256": "B486870757153171B8C974CB83E1D32F2BD2135A29E72F4C46BBC08C4616E71A"
+          },
+          {
+            "context": {
+              "duration_ms": 1100,
+              "emotion": "耐心等待",
+              "phase": "sustain",
+              "relation": "保存成功或错误",
+              "state": "saving",
+              "trigger": "录音结束并写入"
+            },
+            "id": "saving-sustain",
+            "index": 26,
+            "label": "首页原图：09 saving · sustain",
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/09-saving/02-v9_saving_sustain.png",
+            "sha256": "DAD79BB5253EE07D6CA7601445B238F497C2765C4F1FC8612BF631DF6A2DA8B8"
+          },
+          {
+            "context": {
+              "duration_ms": 1000,
+              "emotion": "耐心等待",
+              "phase": "settle",
+              "relation": "保存成功或错误",
+              "state": "saving",
+              "trigger": "录音结束并写入"
+            },
+            "id": "saving-settle",
+            "index": 27,
+            "label": "首页原图：09 saving · settle",
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/09-saving/03-v9_saving_settle.png",
+            "sha256": "B486870757153171B8C974CB83E1D32F2BD2135A29E72F4C46BBC08C4616E71A"
+          },
+          {
+            "context": {
+              "duration_ms": 800,
+              "emotion": "满足",
+              "phase": "entry",
+              "relation": "短暂停留后回到平静",
+              "state": "saved",
+              "trigger": "录音保存完成"
+            },
+            "id": "saved-entry",
+            "index": 28,
+            "label": "首页原图：10 saved · entry",
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/10-saved/01-v9_saved_entry.png",
+            "sha256": "C64F4F3C6C06564F77C0FCCBC4A149EAE93F22F8EC646FBBB7E0E284CBBE393D"
+          },
+          {
+            "context": {
+              "duration_ms": 1000,
+              "emotion": "满足",
+              "phase": "sustain",
+              "relation": "短暂停留后回到平静",
+              "state": "saved",
+              "trigger": "录音保存完成"
+            },
+            "id": "saved-sustain",
+            "index": 29,
+            "label": "首页原图：10 saved · sustain",
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/10-saved/02-v9_saved_sustain.png",
+            "sha256": "9F6A19777513D182F7C62A809DEF7B01FF721AD32797DEA3D6173073657B6F69"
+          },
+          {
+            "context": {
+              "duration_ms": 1300,
+              "emotion": "满足",
+              "phase": "settle",
+              "relation": "短暂停留后回到平静",
+              "state": "saved",
+              "trigger": "录音保存完成"
+            },
+            "id": "saved-settle",
+            "index": 30,
+            "label": "首页原图：10 saved · settle",
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/10-saved/03-v9_saved_settle.png",
+            "sha256": "C64F4F3C6C06564F77C0FCCBC4A149EAE93F22F8EC646FBBB7E0E284CBBE393D"
+          },
+          {
+            "context": {
+              "duration_ms": 1800,
+              "emotion": "困倦",
+              "phase": "entry",
+              "relation": "静态睡眠；不做周期刷新",
+              "state": "sleep",
+              "trigger": "三分钟无互动"
+            },
+            "id": "sleep-entry",
+            "index": 31,
+            "label": "首页原图：11 sleep · entry",
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/11-sleep/01-v9_sleep_entry.png",
+            "sha256": "78137223107BFEC26C969E7A13B7B3E8D908697B47A7987F643000DF3663D24E"
+          },
+          {
+            "context": {
+              "duration_ms": 3000,
+              "emotion": "困倦",
+              "phase": "sustain",
+              "relation": "静态睡眠；不做周期刷新",
+              "state": "sleep",
+              "trigger": "三分钟无互动"
+            },
+            "id": "sleep-sustain",
+            "index": 32,
+            "label": "首页原图：11 sleep · sustain",
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/11-sleep/02-v9_sleep_sustain.png",
+            "sha256": "78137223107BFEC26C969E7A13B7B3E8D908697B47A7987F643000DF3663D24E"
+          },
+          {
+            "context": {
+              "duration_ms": 3000,
+              "emotion": "困倦",
+              "phase": "settle",
+              "relation": "静态睡眠；不做周期刷新",
+              "state": "sleep",
+              "trigger": "三分钟无互动"
+            },
+            "id": "sleep-settle",
+            "index": 33,
+            "label": "首页原图：11 sleep · settle",
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/11-sleep/03-v9_sleep_settle.png",
+            "sha256": "78137223107BFEC26C969E7A13B7B3E8D908697B47A7987F643000DF3663D24E"
+          },
+          {
+            "context": {
+              "duration_ms": 900,
+              "emotion": "思考确认",
+              "phase": "entry",
+              "relation": "进入菜单或取消后回到平静",
+              "state": "menu_hold",
+              "trigger": "三秒长按"
+            },
+            "id": "menu_hold-entry",
+            "index": 34,
+            "label": "首页原图：12 menu_hold · entry",
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/12-menu_hold/01-v9_menu_hold_entry.png",
+            "sha256": "78786726D6C98986BB350554EFEF3A91986E2AED7FD9ADF675137CB0CB99A298"
+          },
+          {
+            "context": {
+              "duration_ms": 1200,
+              "emotion": "思考确认",
+              "phase": "sustain",
+              "relation": "进入菜单或取消后回到平静",
+              "state": "menu_hold",
+              "trigger": "三秒长按"
+            },
+            "id": "menu_hold-sustain",
+            "index": 35,
+            "label": "首页原图：12 menu_hold · sustain",
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/12-menu_hold/02-v9_menu_hold_sustain.png",
+            "sha256": "A12EBE78AA1D9CD1ED7C1C9513E71FEB7B8960F214C60CC147383077850859DC"
+          },
+          {
+            "context": {
+              "duration_ms": 1100,
+              "emotion": "思考确认",
+              "phase": "settle",
+              "relation": "进入菜单或取消后回到平静",
+              "state": "menu_hold",
+              "trigger": "三秒长按"
+            },
+            "id": "menu_hold-settle",
+            "index": 36,
+            "label": "首页原图：12 menu_hold · settle",
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/12-menu_hold/03-v9_menu_hold_settle.png",
+            "sha256": "78786726D6C98986BB350554EFEF3A91986E2AED7FD9ADF675137CB0CB99A298"
+          },
+          {
+            "context": {
+              "duration_ms": 700,
+              "emotion": "醒来",
+              "phase": "entry",
+              "relation": "一段短过渡后回到平静",
+              "state": "wake",
+              "trigger": "触摸或中断唤醒"
+            },
+            "id": "wake-entry",
+            "index": 37,
+            "label": "首页原图：13 wake · entry",
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/13-wake/01-v9_wake_entry.png",
+            "sha256": "78137223107BFEC26C969E7A13B7B3E8D908697B47A7987F643000DF3663D24E"
+          },
+          {
+            "context": {
+              "duration_ms": 900,
+              "emotion": "醒来",
+              "phase": "sustain",
+              "relation": "一段短过渡后回到平静",
+              "state": "wake",
+              "trigger": "触摸或中断唤醒"
+            },
+            "id": "wake-sustain",
+            "index": 38,
+            "label": "首页原图：13 wake · sustain",
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/13-wake/02-v9_wake_sustain.png",
+            "sha256": "80D632D9D5F4676B8CE77C2A64960CE9195021EA86AC7FF76519643F103A3F0A"
+          },
+          {
+            "context": {
+              "duration_ms": 1100,
+              "emotion": "醒来",
+              "phase": "settle",
+              "relation": "一段短过渡后回到平静",
+              "state": "wake",
+              "trigger": "触摸或中断唤醒"
+            },
+            "id": "wake-settle",
+            "index": 39,
+            "label": "首页原图：13 wake · settle",
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/13-wake/03-v9_wake_settle.png",
+            "sha256": "D5D9D53A314EC2037C61B0AC2ED24C12656B3DA485DB1059ADC08D5626949BC0"
           }
         ],
         "mode": "original_image_one_at_a_time"
       },
-      "evidence": "docs/validation/companion-menu-v6-localization-preview-20260717.json",
-      "id": "menu-v6-four-root",
+      "id": "home-v9-daily-storyboard",
+      "image_count": 39,
+      "machine_evidence": "docs/validation/companion-v9-home-storyboard-review-20260717.json",
       "operator_prompt": {
-        "continue_condition": "\u9009\u62e9\u901a\u8fc7\u53ea\u89e3\u9501\u7b2c 2 \u9879 special-system-v1 \u7684\u89c6\u89c9\u6e90\u51b3\u7b56\uff1b\u4e0d\u5f97\u5bfc\u5165 PBM/CEMP\u3001\u5199\u5165 Flash\u3001\u5237\u56fa\u4ef6\u6216\u542f\u7528\u8fd0\u884c\u65f6\u83dc\u5355\u3002",
-        "failure_rule": "\u51fa\u73b0\u65e7\u516d\u6839/\u53cc\u9875\u3001\u989d\u5916\u7a7a\u5165\u53e3\u3001\u5047 chevron\u3001\u6df7\u5408\u8bed\u8a00\u3001\u4e0d\u53ef\u8bfb\u6807\u7b7e\u3001\u4efb\u4f55\u5e95\u8fb9\u88c1\u5207\uff0c\u6216\u4e0e\u56db\u6839\u529f\u80fd\u5408\u540c\u4e0d\u4e00\u81f4\u65f6\u9009\u62e9\u5931\u8d25\uff0c\u5e76\u5728\u5907\u6ce8\u5199\u660e\u9884\u89c8\u8bed\u8a00\u3001\u884c\u53f7\u548c\u53ef\u89c1\u95ee\u9898\u3002",
-        "operator_action": "\u4ee5 100% \u6bd4\u4f8b\u5148\u67e5\u770b English \u9884\u89c8\uff0c\u518d\u67e5\u770b\u4e2d\u6587\u9884\u89c8\uff1b\u786e\u8ba4\u6bcf\u5f20\u9996\u9875\u90fd\u662f\u5355\u9875\u56db\u884c\uff0c\u6309 Voice\u3001Device\u3001Connection\u3001Preferences \u7684\u987a\u5e8f\u9605\u8bfb\u3002",
+        "continue_condition": "选择“已执行”仅表示本张已查看且未提出修改；它不会导入 PBM/CEMP、写入 Flash、刷固件或启用运行时资源。",
+        "failure_rule": "出现身份漂移、旧表情、情绪/触发不清、画布裁切或与本页状态不符时选择“需修改”。",
+        "operator_action": "确认本页仍是同一只 Companion：眼睛、眉、嘴、脸颊身份一致；再按本页的状态、触发和相位判断情绪是否清楚。",
         "record_fields": [
-          "\u67e5\u770b\u7684\u9884\u89c8\u8bed\u8a00",
-          "\u56db\u6839\u987a\u5e8f",
-          "\u662f\u5426\u5b58\u5728\u88c1\u5207\u6216\u6df7\u5408\u8bed\u8a00",
-          "\u9009\u62e9\u7ed3\u679c",
-          "\u5907\u6ce8"
+          "当前页状态或菜单页",
+          "触发/功能语义",
+          "身份或布局观察",
+          "200x200 可读性/裁切",
+          "选择结果",
+          "备注"
         ],
-        "recovery_condition": "\u9009\u62e9\u5931\u8d25\u540e\u4fdd\u6301\u8be5\u6e90 PENDING_OWNER_VISUAL_DECISION\uff1b\u5148\u6309\u5907\u6ce8 triage\uff0c\u518d\u53ea\u4fee\u6539\u4e00\u4e2a\u660e\u786e\u7684\u63d0\u793a\u8bcd\u6216\u4fe1\u606f\u67b6\u6784\u53d8\u91cf\u5e76\u91cd\u65b0\u51fa\u56fe\u3001\u6bd4\u8f83\u548c\u5ba1\u8ba1\u3002",
+        "recovery_condition": "选择“需修改”后保持当前页；备注必须说明具体状态/行号和可见问题。先 triage，再修改一个明确来源变量并重新生成、校验和逐页复查。",
         "success_signal": [
-          "\u9996\u9875\u53ea\u6709 Voice\u3001Device\u3001Connection\u3001Preferences \u56db\u4e2a\u6839\u5165\u53e3\uff0c\u987a\u5e8f\u4e00\u81f4\u4e14\u6bcf\u884c\u56fe\u6807\u4e0d\u540c\u3002",
-          "English \u4e0e\u4e2d\u6587\u5404\u81ea\u5b8c\u6574\u3001\u53ef\u8bfb\u4e14\u4e00\u6b21\u53ea\u51fa\u73b0\u4e00\u79cd\u8bed\u8a00\uff1b\u751f\u6210\u56fe\u7684\u5f15\u5bfc\u77ed\u7ebf\u4e0d\u4f1a\u88ab\u5f53\u4f5c\u4ea7\u54c1\u6587\u5b57\u3002",
-          "\u56db\u884c\u5747\u6709\u6e05\u6670\u53ef\u70b9\u7684\u884c\u8fb9\u754c\u548c\u771f\u5b9e\u6216\u660e\u786e deferred/planned \u7684\u529f\u80fd\u542b\u4e49\uff1b\u6ca1\u6709\u7b2c\u4e94\u7801\u3001\u65e7\u516d\u6839\u3001\u53cc\u9875\u9996\u9875\u6216\u5e95\u8fb9\u622a\u65ad\u3002"
+          "五官是同一套 v9 身份，而不是旧工程脸或随机贴图。",
+          "本页的触发、情绪和关键帧关系可读，200x200 内无裁切。",
+          "它只描述事件驱动状态，不表示主页会按验收顺序随机轮播。"
         ],
-        "target": "\u83dc\u5355\u6e90\u56fe\u3001English 200x200 \u672c\u5730\u5316\u9884\u89c8\u548c\u4e2d\u6587 200x200 \u672c\u5730\u5316\u9884\u89c8\uff1b\u672c\u9879\u53ea\u51b3\u5b9a\u89c6\u89c9\u6e90\uff0c\u4e0d\u89c2\u5bdf\u771f\u5b9e\u9762\u677f\u3002"
+        "target": "按真实日常触发顺序检查 v9 首页 13 个状态的 entry、sustain、settle 单页关键帧。"
       },
-      "source_sha256": "07D791A898FABE6E558686F6A4B4CC86094541C6B5116D6E0A3D263930DAA868"
+      "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
     },
     {
       "artifact_review": {
         "images": [
           {
-            "id": "original-source",
+            "context": {
+              "labels": [],
+              "language": "source",
+              "screen": "home",
+              "screen_title": "Home",
+              "source_crop": [
+                92,
+                158,
+                575,
+                634
+              ]
+            },
+            "id": "home-source",
             "index": 1,
-            "label": "\u539f\u56fe\uff1a\u7279\u6b8a\u7cfb\u7edf\u72b6\u6001\u751f\u6210\u5019\u9009",
-            "path": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_system_v1_candidate.png",
-            "sha256": "AF9ADFD49C47C89DF674726D7201CC49C61ED636306013697822BB42FB1A9C82"
+            "label": "菜单原图：01 Home · 原始版式",
+            "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/source/01-home.png",
+            "sha256": "3DB1EF7A6F9318744F19A3143DBCCA07CD54E48135BC7093AA1FBFCBE0B1DCFD"
           },
           {
-            "id": "200x200-preview",
+            "context": {
+              "labels": [
+                "Voice",
+                "Device",
+                "Connection",
+                "Preferences"
+              ],
+              "language": "en",
+              "screen": "home",
+              "screen_title": "Home",
+              "source_crop": [
+                92,
+                158,
+                575,
+                634
+              ]
+            },
+            "id": "home-en",
             "index": 2,
-            "label": "\u539f\u56fe\uff1a\u7279\u6b8a\u7cfb\u7edf\u72b6\u6001 200x200 \u9884\u89c8",
-            "path": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_system_v1_candidate_200x200_preview.png",
-            "sha256": "A4BBB8246E380FE80964DBA36F90D319A3936C6DA117A8F433E3A86873D0046D"
+            "label": "菜单原图：01 Home · English",
+            "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/01-home.png",
+            "sha256": "33362E4D2CEF3003559CD0304EEEEBE80CC32018E414EE9CFE32783713528612"
           },
           {
-            "id": "crop-preflight-contact-sheet",
+            "context": {
+              "labels": [
+                "语音",
+                "设备",
+                "连接",
+                "偏好设置"
+              ],
+              "language": "zh_cn",
+              "screen": "home",
+              "screen_title": "Home",
+              "source_crop": [
+                92,
+                158,
+                575,
+                634
+              ]
+            },
+            "id": "home-zh_cn",
             "index": 3,
-            "label": "\u539f\u56fe\uff1a\u7279\u6b8a\u7cfb\u7edf\u72b6\u6001\u9010\u683c 200x200 \u63a5\u89e6\u8868",
-            "path": "docs/art/iterations/companion-pet-special-states-v1/review-200x200/generated_pet_special_system_v1_crop_preflight_contact_sheet.png",
-            "sha256": "0CA22E270C246A450FEE176730394DC8487D1FB81EE492A088CAA69DB4D6E6E5"
+            "label": "菜单原图：01 Home · 中文",
+            "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/zh_cn/01-home.png",
+            "sha256": "CE7EF5EF367CBDCED6A91BB12BB0C6671C1BBE1015A642EF0BF8CC30F09A69A7"
+          },
+          {
+            "context": {
+              "labels": [],
+              "language": "source",
+              "screen": "voice",
+              "screen_title": "Voice",
+              "source_crop": [
+                680,
+                158,
+                1162,
+                634
+              ]
+            },
+            "id": "voice-source",
+            "index": 4,
+            "label": "菜单原图：02 Voice · 原始版式",
+            "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/source/02-voice.png",
+            "sha256": "0C6D74E3B515F4176819964B76F7A6BE9B9B71DE0FD953424D356A17119BD988"
+          },
+          {
+            "context": {
+              "labels": [
+                "Recording",
+                "History",
+                "Wake word",
+                "Feedback"
+              ],
+              "language": "en",
+              "screen": "voice",
+              "screen_title": "Voice",
+              "source_crop": [
+                680,
+                158,
+                1162,
+                634
+              ]
+            },
+            "id": "voice-en",
+            "index": 5,
+            "label": "菜单原图：02 Voice · English",
+            "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/02-voice.png",
+            "sha256": "905DC9102D6C8519231E342C0EBF3317118BFA74B343E38608020AA2E7D15308"
+          },
+          {
+            "context": {
+              "labels": [
+                "录音状态",
+                "录音历史",
+                "唤醒词",
+                "语音反馈"
+              ],
+              "language": "zh_cn",
+              "screen": "voice",
+              "screen_title": "Voice",
+              "source_crop": [
+                680,
+                158,
+                1162,
+                634
+              ]
+            },
+            "id": "voice-zh_cn",
+            "index": 6,
+            "label": "菜单原图：02 Voice · 中文",
+            "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/zh_cn/02-voice.png",
+            "sha256": "00C2D09C7612178AE864E565F336A8113052F3A793A93CCA9384E2A2CB059B33"
+          },
+          {
+            "context": {
+              "labels": [],
+              "language": "source",
+              "screen": "device",
+              "screen_title": "Device",
+              "source_crop": [
+                40,
+                754,
+                408,
+                1143
+              ]
+            },
+            "id": "device-source",
+            "index": 7,
+            "label": "菜单原图：03 Device · 原始版式",
+            "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/source/03-device.png",
+            "sha256": "C27F338D5CCC89174A526D0542BF6CE1D3D57A64C85817A268DD4D6649295450"
+          },
+          {
+            "context": {
+              "labels": [
+                "E-paper",
+                "Touch",
+                "Battery",
+                "UI assets"
+              ],
+              "language": "en",
+              "screen": "device",
+              "screen_title": "Device",
+              "source_crop": [
+                40,
+                754,
+                408,
+                1143
+              ]
+            },
+            "id": "device-en",
+            "index": 8,
+            "label": "菜单原图：03 Device · English",
+            "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/03-device.png",
+            "sha256": "643697B3B9F9C090E1D3F0E40CA7D8F8BAC994D469F90E0B436824B2F5067961"
+          },
+          {
+            "context": {
+              "labels": [
+                "电子纸",
+                "触控",
+                "电池",
+                "界面资源"
+              ],
+              "language": "zh_cn",
+              "screen": "device",
+              "screen_title": "Device",
+              "source_crop": [
+                40,
+                754,
+                408,
+                1143
+              ]
+            },
+            "id": "device-zh_cn",
+            "index": 9,
+            "label": "菜单原图：03 Device · 中文",
+            "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/zh_cn/03-device.png",
+            "sha256": "902D38638DBF016EDC61329265FDA3332F8446F2D0C87DB16AB579629AE97DC2"
+          },
+          {
+            "context": {
+              "labels": [],
+              "language": "source",
+              "screen": "connection",
+              "screen_title": "Connection",
+              "source_crop": [
+                442,
+                754,
+                809,
+                1143
+              ]
+            },
+            "id": "connection-source",
+            "index": 10,
+            "label": "菜单原图：04 Connection · 原始版式",
+            "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/source/04-connection.png",
+            "sha256": "AA35CC5D41E818747342B5363774BA40F04142FC52EB9C013A5180DAD61C0018"
+          },
+          {
+            "context": {
+              "labels": [
+                "Pair device",
+                "Link status",
+                "Reconnect"
+              ],
+              "language": "en",
+              "screen": "connection",
+              "screen_title": "Connection",
+              "source_crop": [
+                442,
+                754,
+                809,
+                1143
+              ]
+            },
+            "id": "connection-en",
+            "index": 11,
+            "label": "菜单原图：04 Connection · English",
+            "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/04-connection.png",
+            "sha256": "E9EB39EE4C4884D04226BDC2216E210DB253565A46CC51A20599286BA85044DF"
+          },
+          {
+            "context": {
+              "labels": [
+                "配对设备",
+                "连接状态",
+                "重新连接"
+              ],
+              "language": "zh_cn",
+              "screen": "connection",
+              "screen_title": "Connection",
+              "source_crop": [
+                442,
+                754,
+                809,
+                1143
+              ]
+            },
+            "id": "connection-zh_cn",
+            "index": 12,
+            "label": "菜单原图：04 Connection · 中文",
+            "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/zh_cn/04-connection.png",
+            "sha256": "275B93A417DDFE421BC0E4C2DEEEFBCF6A0E09E1F6A3AA476AF38FDE228BBE2C"
+          },
+          {
+            "context": {
+              "labels": [],
+              "language": "source",
+              "screen": "preferences",
+              "screen_title": "Preferences",
+              "source_crop": [
+                846,
+                754,
+                1215,
+                1143
+              ]
+            },
+            "id": "preferences-source",
+            "index": 13,
+            "label": "菜单原图：05 Preferences · 原始版式",
+            "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/source/05-preferences.png",
+            "sha256": "A76ED4E3445B5A1D57F3E5686E30981898F66BE667F1C907F86AC1084430CD21"
+          },
+          {
+            "context": {
+              "labels": [
+                "Language",
+                "Interaction",
+                "Diagnostics",
+                "About"
+              ],
+              "language": "en",
+              "screen": "preferences",
+              "screen_title": "Preferences",
+              "source_crop": [
+                846,
+                754,
+                1215,
+                1143
+              ]
+            },
+            "id": "preferences-en",
+            "index": 14,
+            "label": "菜单原图：05 Preferences · English",
+            "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/05-preferences.png",
+            "sha256": "EE89A9F63CB32967613CFD95C43D9A1391981E1A7274C6AA6EB5D97ED14AA1F8"
+          },
+          {
+            "context": {
+              "labels": [
+                "语言",
+                "交互",
+                "诊断",
+                "关于"
+              ],
+              "language": "zh_cn",
+              "screen": "preferences",
+              "screen_title": "Preferences",
+              "source_crop": [
+                846,
+                754,
+                1215,
+                1143
+              ]
+            },
+            "id": "preferences-zh_cn",
+            "index": 15,
+            "label": "菜单原图：05 Preferences · 中文",
+            "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/zh_cn/05-preferences.png",
+            "sha256": "6B70AC940C824857CC7D9C3B0D104BFFB992F7BDEFE73F2A28A385F112F8F938"
           }
         ],
         "mode": "original_image_one_at_a_time"
       },
-      "evidence": "docs/validation/companion-pet-special-system-source-review-20260717.json",
-      "id": "special-system-v1",
+      "id": "menu-v7-screen-family",
+      "image_count": 15,
+      "machine_evidence": "docs/validation/companion-menu-v7-screen-family-preview-20260717.json",
       "operator_prompt": {
-        "continue_condition": "\u9009\u62e9\u901a\u8fc7\u53ea\u89e3\u9501\u7b2c 3 \u9879 special-journey-v1 \u7684\u89c6\u89c9\u6e90\u51b3\u7b56\uff1b\u4e0d\u5f97\u5bfc\u5165 PBM/CEMP\u3001\u5199\u5165 Flash\u3001\u5237\u56fa\u4ef6\u3001\u7ed1\u5b9a\u8d44\u6e90\u6216\u5ba3\u79f0 COMP-REQ-078 \u5df2\u89e3\u51b3\u3002",
-        "failure_rule": "\u4efb\u4e00\u683c\u51fa\u73b0\u8eab\u4efd\u6f02\u79fb\u3001\u65e7\u7f8e\u672f\u3001\u773c\u795e\u4e0d\u53cb\u597d\u3001\u8bed\u4e49\u96be\u5206\u3001\u4e94\u5b98\u6216\u7b26\u53f7\u5728 200x200 \u753b\u5e03\u5185\u88ab\u88c1\u5207\u65f6\u9009\u62e9\u5931\u8d25\uff0c\u5e76\u5728\u5907\u6ce8\u5199\u660e\u72b6\u6001\u540d\u548c\u5177\u4f53\u53ef\u89c1\u95ee\u9898\u3002\u771f\u5b9e\u9762\u677f\u622a\u65ad\u4e5f\u4e0d\u80fd\u5728\u672c\u9879\u9009\u62e9\u901a\u8fc7\u6765\u63a9\u76d6\u3002",
-        "operator_action": "\u4ee5 100% \u6bd4\u4f8b\u67e5\u770b 12 \u683c\u63a5\u89e6\u8868\uff0c\u4ece\u5de6\u5230\u53f3\u3001\u4ece\u4e0a\u5230\u4e0b\u9010\u683c\u6bd4\u5bf9 v9 \u773c\u775b\u3001\u7709\u3001\u5634\u548c\u8138\u988a\u8eab\u4efd\uff1b\u540c\u65f6\u786e\u8ba4\u6bcf\u683c\u7684\u8bed\u4e49\u7b26\u53f7\u80fd\u533a\u5206\u72b6\u6001\u3002",
+        "continue_condition": "选择“已执行”仅表示本张已查看且未提出修改；它不会导入 PBM/CEMP、写入 Flash、刷固件或启用运行时资源。",
+        "failure_rule": "出现表情占位、第五行、旧六根/双页、假行或假箭头、混合语言、不可读文字或裁切时选择“需修改”。",
+        "operator_action": "首页确认四个等高根行与图标/箭头；详情确认紧凑返回和标题、真实行项目、单一语言及无表情占位。",
         "record_fields": [
-          "\u5931\u8d25\u6216\u901a\u8fc7\u7684\u72b6\u6001\u540d",
-          "v9 \u8eab\u4efd\u4e00\u81f4\u6027",
-          "\u72b6\u6001\u8bed\u4e49\u53ef\u5206\u6027",
-          "200x200 \u88c1\u5207\u89c2\u5bdf",
-          "\u9009\u62e9\u7ed3\u679c",
-          "\u5907\u6ce8"
+          "当前页状态或菜单页",
+          "触发/功能语义",
+          "身份或布局观察",
+          "200x200 可读性/裁切",
+          "选择结果",
+          "备注"
         ],
-        "recovery_condition": "\u9009\u62e9\u5931\u8d25\u540e\u4fdd\u6301\u6e90\u56fe\u548c P0 \u5907\u6ce8\uff1b\u6309\u72b6\u6001\u540d triage\uff0c\u9488\u5bf9\u4e00\u4e2a\u53ef\u89c1\u53d8\u91cf\u8c03\u6574\u63d0\u793a\u8bcd\u91cd\u65b0\u751f\u6210\u5e76\u91cd\u65b0\u6267\u884c\u9010\u683c 200x200 \u9884\u68c0\uff0c\u4e0d\u5f97\u6062\u590d\u88ab\u62d2\u7edd\u65e7\u56fe\u3002",
+        "recovery_condition": "选择“需修改”后保持当前页；备注必须说明具体状态/行号和可见问题。先 triage，再修改一个明确来源变量并重新生成、校验和逐页复查。",
         "success_signal": [
-          "12 \u683c\u90fd\u4fdd\u7559\u540c\u4e00\u5bf9\u6b63\u5411\u9ed1\u692d\u5706\u773c\u3001\u5339\u914d\u767d\u9ad8\u5149\u3001\u5706\u7709\u3001\u5c0f\u9f3b/W \u5634\u548c\u8138\u988a\u70b9\uff0c\u6ca1\u6709\u732b\u8f6e\u5ed3\u3001\u8033\u6735\u3001\u773c\u5e18\u3001\u5de5\u7a0b\u6d4b\u8bd5\u8138\u6216\u65e7\u8f6e\u6b21\u98ce\u683c\u3002",
-          "speaking\u3001\u5f55\u97f3\u9519\u8bef\u3001\u5145\u7535/\u6ee1\u7535/\u4f4e\u7535\u3001\u914d\u5bf9/\u8fde\u63a5/\u540c\u6b65/\u9519\u8bef\u4e0e\u7cfb\u7edf\u9519\u8bef\u53ef\u533a\u5206\uff0c\u4e14\u6bcf\u683c\u662f\u6574\u5f20\u5185\u8138\u5171\u540c\u53d8\u5316\u800c\u975e\u53ea\u6362\u773c\u775b\u3002",
-          "\u63a5\u89e6\u8868\u4e2d\u6bcf\u4e00\u683c\u7684\u4e94\u5b98\u548c\u8bed\u4e49\u7b26\u53f7\u5b8c\u6574\u53ef\u89c1\uff1b\u673a\u5668\u9884\u68c0\u5df2\u8bc1\u5b9e 24 \u683c\u6e90\u88c1\u5207\u5747\u4fdd\u7559\u81f3\u5c11 4 px \u7a7a\u767d\uff0c\u4f46\u8fd9\u4e0d\u4ee3\u8868\u771f\u5b9e\u9762\u677f\u5df2\u901a\u8fc7\u3002"
+          "首页只有 Voice、Device、Connection、Preferences 四行，图标和箭头清晰。",
+          "详情页没有宠物脸；最多四项真实内容，Connection 只有三项，未用假控制项填空。",
+          "English/中文页面单语言、可读，文字不截断。"
         ],
-        "target": "special-system-v1 \u7684\u539f\u59cb 3x4 \u6e90\u56fe\u548c\u9010\u683c 200x200 \u63a5\u89e6\u8868\uff1b\u8986\u76d6 speaking\u3001recording error\u3001\u5145\u7535\u3001\u7535\u91cf\u3001\u8fde\u63a5\u548c system error\u3002\u672c\u9879\u4e0d\u6e05\u9664\u771f\u5b9e\u9762\u677f\u4e0b\u8fb9\u7f18 P0\u3002"
+        "target": "检查 v7.3 无表情菜单家族：首页四根，以及 Voice、Device、Connection、Preferences 详情页的原始版式、English 和中文 200x200 页面。"
+      },
+      "source_sha256": "D2D36B1CD51D153758E64C4DCBE0E0B7192F2E3F895D62CD3C432DDFA8476C37"
+    },
+    {
+      "artifact_review": {
+        "images": [
+          {
+            "context": {
+              "emotion": "说话回应",
+              "intent": "语音回复正在输出",
+              "minimum_clearance_px": 12,
+              "state": "voice.speaking"
+            },
+            "id": "voice-speaking",
+            "index": 1,
+            "label": "特殊场景原图：01 voice.speaking",
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/01-voice-speaking.png",
+            "sha256": "E5874B384E418CD82700DD89479000B17A110AD4224028976A02DE462AAB2D8F"
+          },
+          {
+            "context": {
+              "emotion": "温和提醒",
+              "intent": "录音未能完成，需要恢复",
+              "minimum_clearance_px": 22,
+              "state": "recording.error"
+            },
+            "id": "recording-error",
+            "index": 2,
+            "label": "特殊场景原图：02 recording.error",
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/02-recording-error.png",
+            "sha256": "447BD2ACE584C17E35FF76BDD91FF04E33AB9EEF7370A55B9ED4730CA0C5C299"
+          },
+          {
+            "context": {
+              "emotion": "注意到电源",
+              "intent": "刚接入供电",
+              "minimum_clearance_px": 20,
+              "state": "power.charge_detected"
+            },
+            "id": "power-charge_detected",
+            "index": 3,
+            "label": "特殊场景原图：03 power.charge_detected",
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/03-power-charge_detected.png",
+            "sha256": "21461670341A13D2BBA5F5B77F2200DD4298ECB77B1BE1CC266D42046891A6E0"
+          },
+          {
+            "context": {
+              "emotion": "安心充电",
+              "intent": "正在充电",
+              "minimum_clearance_px": 18,
+              "state": "power.charging"
+            },
+            "id": "power-charging",
+            "index": 4,
+            "label": "特殊场景原图：04 power.charging",
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/04-power-charging.png",
+            "sha256": "19775D8D613BF56F08A8769572724773E309CD648A8A76B2F328C2B3A80ABE87"
+          },
+          {
+            "context": {
+              "emotion": "满足充满",
+              "intent": "电量已充足",
+              "minimum_clearance_px": 25,
+              "state": "power.charged"
+            },
+            "id": "power-charged",
+            "index": 5,
+            "label": "特殊场景原图：05 power.charged",
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/05-power-charged.png",
+            "sha256": "47CCD4E8FE05DA2E5024B6FFE60102FC860170C45F9D12F1BD73E3AEED2B4853"
+          },
+          {
+            "context": {
+              "emotion": "轻微求助",
+              "intent": "电量偏低",
+              "minimum_clearance_px": 39,
+              "state": "power.low_battery"
+            },
+            "id": "power-low_battery",
+            "index": 6,
+            "label": "特殊场景原图：06 power.low_battery",
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/06-power-low_battery.png",
+            "sha256": "A535205646A736A57BBDE55E86D32EC1871E02118FB97A2638B208C31DEF4A7C"
+          },
+          {
+            "context": {
+              "emotion": "期待连接",
+              "intent": "正在配对",
+              "minimum_clearance_px": 33,
+              "state": "link.pairing"
+            },
+            "id": "link-pairing",
+            "index": 7,
+            "label": "特殊场景原图：07 link.pairing",
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/07-link-pairing.png",
+            "sha256": "3B65A3F972460864972A9E597F2271B77C704FF7CC44DD85EB499CA04B406909"
+          },
+          {
+            "context": {
+              "emotion": "连接成功",
+              "intent": "设备已连上",
+              "minimum_clearance_px": 30,
+              "state": "link.connected"
+            },
+            "id": "link-connected",
+            "index": 8,
+            "label": "特殊场景原图：08 link.connected",
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/08-link-connected.png",
+            "sha256": "CAF9C0E47FB036351DA5FACDE997A4CB5238CF3B1AD5402BC7C19802419D370F"
+          },
+          {
+            "context": {
+              "emotion": "耐心同步",
+              "intent": "正在同步",
+              "minimum_clearance_px": 16,
+              "state": "link.syncing"
+            },
+            "id": "link-syncing",
+            "index": 9,
+            "label": "特殊场景原图：09 link.syncing",
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/09-link-syncing.png",
+            "sha256": "0015BC2739E277923B54B4E9F113B92BFF04E322EF1D10A624DF82F2FDF2AF81"
+          },
+          {
+            "context": {
+              "emotion": "同步完成",
+              "intent": "数据已同步",
+              "minimum_clearance_px": 18,
+              "state": "link.synced"
+            },
+            "id": "link-synced",
+            "index": 10,
+            "label": "特殊场景原图：10 link.synced",
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/10-link-synced.png",
+            "sha256": "0683302FED05A3AE38767DD24938DE522BEC4116DDCB522089F41A19A967586B"
+          },
+          {
+            "context": {
+              "emotion": "温和提示",
+              "intent": "连接需要恢复",
+              "minimum_clearance_px": 24,
+              "state": "link.error"
+            },
+            "id": "link-error",
+            "index": 11,
+            "label": "特殊场景原图：11 link.error",
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/11-link-error.png",
+            "sha256": "F1873F726AF05773091E0177CAD29975F1453D3AF19B9D7FD10159F44B0FCD43"
+          },
+          {
+            "context": {
+              "emotion": "安静求助",
+              "intent": "系统需要处理",
+              "minimum_clearance_px": 19,
+              "state": "system.error"
+            },
+            "id": "system-error",
+            "index": 12,
+            "label": "特殊场景原图：12 system.error",
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/12-system-error.png",
+            "sha256": "8AABFFF8DDE22F924BA90CB92575B72B5152D8422E48DFC72FBD04D66DF4961D"
+          }
+        ],
+        "mode": "original_image_one_at_a_time"
+      },
+      "id": "special-system-v1",
+      "image_count": 12,
+      "machine_evidence": "docs/validation/companion-pet-special-state-one-page-review-20260717.json",
+      "operator_prompt": {
+        "continue_condition": "选择“已执行”仅表示本张已查看且未提出修改；它不会导入 PBM/CEMP、写入 Flash、刷固件或启用运行时资源。",
+        "failure_rule": "出现身份漂移、状态难辨、旧美术、不可爱眼神或可见裁切时选择“需修改”。",
+        "operator_action": "逐页确认 v9 身份、状态符号和本页语义；本机已证明画布至少保留 4 px 边缘空白，但这不取代真实面板检查。",
+        "record_fields": [
+          "当前页状态或菜单页",
+          "触发/功能语义",
+          "身份或布局观察",
+          "200x200 可读性/裁切",
+          "选择结果",
+          "备注"
+        ],
+        "recovery_condition": "选择“需修改”后保持当前页；备注必须说明具体状态/行号和可见问题。先 triage，再修改一个明确来源变量并重新生成、校验和逐页复查。",
+        "success_signal": [
+          "五官身份保持 v9 一致。",
+          "状态含义可区分且不是工程测试脸。",
+          "画布内无可见裁切。"
+        ],
+        "target": "检查 speaking、录音错误、电源、连接和系统错误的 12 张独立 200x200 特殊场景原图。"
       },
       "source_sha256": "AF9ADFD49C47C89DF674726D7201CC49C61ED636306013697822BB42FB1A9C82"
     },
@@ -106,54 +1172,218 @@
       "artifact_review": {
         "images": [
           {
-            "id": "original-source",
+            "context": {
+              "emotion": "思考确认",
+              "intent": "长按进入菜单的起始帧",
+              "minimum_clearance_px": 27,
+              "state": "menu.open.entry"
+            },
+            "id": "menu-open-entry",
             "index": 1,
-            "label": "\u539f\u56fe\uff1a\u7279\u6b8a\u65c5\u7a0b\u72b6\u6001\u751f\u6210\u5019\u9009",
-            "path": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_journey_v1_candidate.png",
-            "sha256": "95CC749134F169E73A2E2A99FA2B6F08AABDFE78D218677C347D2D687EA4B17F"
+            "label": "特殊场景原图：01 menu.open.entry",
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/01-menu-open-entry.png",
+            "sha256": "5FD8369825311A09975C7087B348C5098443854F1B48E934DAFAFD268309A139"
           },
           {
-            "id": "200x200-preview",
+            "context": {
+              "emotion": "准备切换",
+              "intent": "进入菜单前的停留帧",
+              "minimum_clearance_px": 17,
+              "state": "menu.open.settle"
+            },
+            "id": "menu-open-settle",
             "index": 2,
-            "label": "\u539f\u56fe\uff1a\u7279\u6b8a\u65c5\u7a0b\u72b6\u6001 200x200 \u9884\u89c8",
-            "path": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_journey_v1_candidate_200x200_preview.png",
-            "sha256": "7207889637184F887E5EBFCA6A8C64776D23E9D46E0B9A0F7A227F2C087A0534"
+            "label": "特殊场景原图：02 menu.open.settle",
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/02-menu-open-settle.png",
+            "sha256": "F224E8FDD10210065D7F0F94B5B2F7F0E39592D6486413D6AA827F60BF7FD46D"
           },
           {
-            "id": "crop-preflight-contact-sheet",
+            "context": {
+              "emotion": "礼貌阻止",
+              "intent": "当前状态不能进入菜单",
+              "minimum_clearance_px": 19,
+              "state": "menu.blocked"
+            },
+            "id": "menu-blocked",
             "index": 3,
-            "label": "\u539f\u56fe\uff1a\u7279\u6b8a\u65c5\u7a0b\u9010\u683c 200x200 \u63a5\u89e6\u8868",
-            "path": "docs/art/iterations/companion-pet-special-states-v1/review-200x200/generated_pet_special_journey_v1_crop_preflight_contact_sheet.png",
-            "sha256": "B072603D667B8BC9C54A0322E6C009526CF11D63D85AE553E931684B94AAC082"
+            "label": "特殊场景原图：03 menu.blocked",
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/03-menu-blocked.png",
+            "sha256": "FC4F8F65EC7C5E0EEA84AC228453A270C671E847672888538A5DE575AF7BE728"
+          },
+          {
+            "context": {
+              "emotion": "轻松返回",
+              "intent": "从菜单回到首页",
+              "minimum_clearance_px": 27,
+              "state": "menu.exit"
+            },
+            "id": "menu-exit",
+            "index": 4,
+            "label": "特殊场景原图：04 menu.exit",
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/04-menu-exit.png",
+            "sha256": "65AC84E3C3B3A7A94623F54A2314BDB93477DF7E3CB2F93D26C32E9DD3425D04"
+          },
+          {
+            "context": {
+              "emotion": "好奇询问",
+              "intent": "发现可用升级",
+              "minimum_clearance_px": 31,
+              "state": "upgrade.offer"
+            },
+            "id": "upgrade-offer",
+            "index": 5,
+            "label": "特殊场景原图：05 upgrade.offer",
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/05-upgrade-offer.png",
+            "sha256": "52BF719BCC1E2677E5161AD94008B2577681EEE82A846F7081220359B3193067"
+          },
+          {
+            "context": {
+              "emotion": "准备开始",
+              "intent": "升级前检查",
+              "minimum_clearance_px": 30,
+              "state": "upgrade.prepare"
+            },
+            "id": "upgrade-prepare",
+            "index": 6,
+            "label": "特殊场景原图：06 upgrade.prepare",
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/06-upgrade-prepare.png",
+            "sha256": "1DEFAF3CF80EBD4BA1728C89E64D050A86FC2FAEBF26AEFA656061A7808B5798"
+          },
+          {
+            "context": {
+              "emotion": "耐心等待",
+              "intent": "升级数据传输中",
+              "minimum_clearance_px": 33,
+              "state": "upgrade.transfer"
+            },
+            "id": "upgrade-transfer",
+            "index": 7,
+            "label": "特殊场景原图：07 upgrade.transfer",
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/07-upgrade-transfer.png",
+            "sha256": "0603513204F7B6855D2D44B2DDD59993791647B9E7671C0C8083EF975EDD789D"
+          },
+          {
+            "context": {
+              "emotion": "认真确认",
+              "intent": "升级校验中",
+              "minimum_clearance_px": 30,
+              "state": "upgrade.verify"
+            },
+            "id": "upgrade-verify",
+            "index": 8,
+            "label": "特殊场景原图：08 upgrade.verify",
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/08-upgrade-verify.png",
+            "sha256": "2336A3B5758BABD44983D149195C82C5C22F8868C5FA037C9E303E1A9D57711C"
+          },
+          {
+            "context": {
+              "emotion": "短暂告别",
+              "intent": "即将重启",
+              "minimum_clearance_px": 30,
+              "state": "upgrade.restart"
+            },
+            "id": "upgrade-restart",
+            "index": 9,
+            "label": "特殊场景原图：09 upgrade.restart",
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/09-upgrade-restart.png",
+            "sha256": "153CDEFE2D5D33AE931085087DAF9FAFD1AF45BAB715B065C975DFD10B8D1AE9"
+          },
+          {
+            "context": {
+              "emotion": "开心完成",
+              "intent": "升级已完成",
+              "minimum_clearance_px": 31,
+              "state": "upgrade.success"
+            },
+            "id": "upgrade-success",
+            "index": 10,
+            "label": "特殊场景原图：10 upgrade.success",
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/10-upgrade-success.png",
+            "sha256": "E6CEFB14F3B65B8FF95DA28C6147B9D8249FF7EEEA10177CF9681E65AF73E415"
+          },
+          {
+            "context": {
+              "emotion": "温和提醒",
+              "intent": "升级遇到问题",
+              "minimum_clearance_px": 32,
+              "state": "upgrade.error"
+            },
+            "id": "upgrade-error",
+            "index": 11,
+            "label": "特殊场景原图：11 upgrade.error",
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/11-upgrade-error.png",
+            "sha256": "7088CB2447731DB588D8A8F0FF9D4CE049CFD777315B310FD5436317BD1C1327"
+          },
+          {
+            "context": {
+              "emotion": "恢复信心",
+              "intent": "升级失败后的可恢复状态",
+              "minimum_clearance_px": 27,
+              "state": "upgrade.error.recovery"
+            },
+            "id": "upgrade-error-recovery",
+            "index": 12,
+            "label": "特殊场景原图：12 upgrade.error.recovery",
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/12-upgrade-error-recovery.png",
+            "sha256": "A19438FC2D81D49EA475419C0EB012071F933AB81507E87E29517F19D8897EF5"
           }
         ],
         "mode": "original_image_one_at_a_time"
       },
-      "evidence": "docs/validation/companion-pet-special-journey-source-review-20260717.json",
       "id": "special-journey-v1",
+      "image_count": 12,
+      "machine_evidence": "docs/validation/companion-pet-special-state-one-page-review-20260717.json",
       "operator_prompt": {
-        "continue_condition": "\u9009\u62e9\u901a\u8fc7\u4ec5\u5141\u8bb8\u540e\u7eed\u5efa\u7acb\u4e00\u6b21\u5355\u72ec\u3001\u53ef\u5ba1\u8ba1\u7684 PBM/CEMP \u5bfc\u5165\u63d0\u6848\uff1b\u5b83\u672c\u8eab\u4e0d\u5199 Flash\u3001\u4e0d\u5237\u56fa\u4ef6\u3001\u4e0d\u542f\u7528\u8d44\u6e90\u3001\u4e0d\u6539\u53d8 OTA \u6216\u5ba3\u79f0\u771f\u5b9e\u5c4f\u5e55\u5df2\u901a\u8fc7\u3002",
-        "failure_rule": "\u4efb\u4e00\u9636\u6bb5\u65e0\u6cd5\u8fa8\u522b\u3001\u4e0e v9 \u8eab\u4efd\u4e0d\u4e00\u81f4\u3001\u8bef\u628a menu.open \u5f53\u83dc\u5355\u672c\u4f53\u3001\u6062\u590d\u72b6\u6001\u4e0d\u6e05\u6670\u3001\u51fa\u73b0\u65e7\u7f8e\u672f\u6216 200x200 \u753b\u5e03\u5185\u88c1\u5207\u65f6\u9009\u62e9\u5931\u8d25\uff0c\u5e76\u5728\u5907\u6ce8\u5199\u660e\u9636\u6bb5\u540d\u548c\u95ee\u9898\u3002",
-        "operator_action": "\u4ee5 100% \u6bd4\u4f8b\u67e5\u770b 12 \u683c\u63a5\u89e6\u8868\uff0c\u4ece\u5de6\u5230\u53f3\u3001\u4ece\u4e0a\u5230\u4e0b\u786e\u8ba4\u83dc\u5355\u65c5\u7a0b\u4e0e\u5347\u7ea7\u65c5\u7a0b\u7684\u72b6\u6001\u53d8\u5316\u53ef\u8bfb\uff1bmenu.open \u53ea\u4f5c\u4e3a\u8fdb\u5165\u5df2\u5355\u72ec\u5ba1\u9605\u56db\u6839\u83dc\u5355\u7684\u4ea4\u63a5\uff0c\u4e0d\u66ff\u4ee3\u83dc\u5355\u672c\u4f53\u3002",
+        "continue_condition": "选择“已执行”仅表示本张已查看且未提出修改；它不会导入 PBM/CEMP、写入 Flash、刷固件或启用运行时资源。",
+        "failure_rule": "出现身份漂移、旅程语义不清、旧菜单/旧表情或可见裁切时选择“需修改”。",
+        "operator_action": "逐页确认 v9 身份、旅程阶段和本页语义；菜单表情只承担进入/退出过渡，不替代无表情四行菜单本体。",
         "record_fields": [
-          "\u5931\u8d25\u6216\u901a\u8fc7\u7684\u9636\u6bb5\u540d",
-          "v9 \u8eab\u4efd\u4e00\u81f4\u6027",
-          "\u65c5\u7a0b\u8bed\u4e49\u53ef\u5206\u6027",
-          "200x200 \u88c1\u5207\u89c2\u5bdf",
-          "\u9009\u62e9\u7ed3\u679c",
-          "\u5907\u6ce8"
+          "当前页状态或菜单页",
+          "触发/功能语义",
+          "身份或布局观察",
+          "200x200 可读性/裁切",
+          "选择结果",
+          "备注"
         ],
-        "recovery_condition": "\u9009\u62e9\u5931\u8d25\u540e\u4fdd\u6301 PENDING_OWNER_VISUAL_DECISION\uff1b\u6309\u9636\u6bb5\u540d triage\uff0c\u66f4\u65b0\u4e00\u4e2a\u660e\u786e\u63d0\u793a\u8bcd\u53d8\u91cf\u5e76\u91cd\u65b0\u751f\u6210\u3001\u9010\u683c\u9884\u68c0\u548c\u5ba1\u8ba1\u540e\u624d\u53ef\u91cd\u65b0\u9a8c\u6536\u3002",
+        "recovery_condition": "选择“需修改”后保持当前页；备注必须说明具体状态/行号和可见问题。先 triage，再修改一个明确来源变量并重新生成、校验和逐页复查。",
         "success_signal": [
-          "12 \u683c\u90fd\u4fdd\u6301 v9 \u7684\u540c\u4e00\u5185\u8138\u8eab\u4efd\u548c\u767d\u5e95\u9ed1\u7ebf\u8bed\u8a00\uff0c\u60c5\u7eea\u53d8\u5316\u8986\u76d6\u773c\u3001\u7709\u3001\u5634\u3001\u8138\u988a\u4e0e\u5c11\u91cf\u72b6\u6001\u7b26\u53f7\u3002",
-          "menu entry/settle/blocked/exit \u548c\u5347\u7ea7\u5404\u9636\u6bb5\u76f8\u4e92\u53ef\u533a\u5206\uff1b\u9519\u8bef\u4e0e\u6062\u590d\u6210\u5bf9\u53ef\u8bfb\u4e14\u4e0d\u663e\u5f97\u6280\u672f\u5a01\u80c1\u6216\u5de5\u7a0b\u5316\u3002",
-          "\u6bcf\u683c\u5728 200x200 \u63a5\u89e6\u8868\u4e2d\u4e94\u5b98\u4e0e\u7b26\u53f7\u5b8c\u6574\uff0c\u65e0\u65e7\u516d\u6839\u83dc\u5355\u3001\u65e7\u8868\u60c5\u3001\u989d\u5916\u5916\u8f6e\u5ed3\u6216\u753b\u5e03\u5185\u88c1\u5207\u3002"
+          "五官身份保持 v9 一致。",
+          "菜单与升级阶段可相互区分。",
+          "画布内无可见裁切。"
         ],
-        "target": "special-journey-v1 \u7684\u539f\u59cb 3x4 \u6e90\u56fe\u548c\u9010\u683c 200x200 \u63a5\u89e6\u8868\uff1b\u8986\u76d6\u83dc\u5355\u8fdb\u5165/\u505c\u7559/\u963b\u6b62/\u9000\u51fa\u53ca\u5347\u7ea7 offer/prepare/transfer/verify/restart/success/error/recovery\u3002"
+        "target": "检查菜单进入/退出和升级旅程的 12 张独立 200x200 特殊场景原图。"
       },
       "source_sha256": "95CC749134F169E73A2E2A99FA2B6F08AABDFE78D218677C347D2D687EA4B17F"
     }
   ],
-  "schema": "companion.ui_visual_acceptance_readiness.v1",
+  "machine_preflight_opens_operator_prompt": false,
+  "next_eligible_owner_item": "home-v9-daily-storyboard",
+  "review_page_total": 78,
+  "runtime_boundary": {
+    "cemp_packed": false,
+    "external_flash_provisioned": false,
+    "firmware_flashed": false,
+    "pbm_imported": false,
+    "runtime_resource_activated": false
+  },
+  "schema": "companion.ui_visual_acceptance_readiness.v2",
+  "sequential_visual_review": [
+    {
+      "id": "home-v9-daily-storyboard",
+      "state": "ready_for_owner_observation"
+    },
+    {
+      "id": "menu-v7-screen-family",
+      "state": "ready_or_blocked_by_prior_locked_page"
+    },
+    {
+      "id": "special-system-v1",
+      "state": "ready_or_blocked_by_prior_locked_page"
+    },
+    {
+      "id": "special-journey-v1",
+      "state": "ready_or_blocked_by_prior_locked_page"
+    }
+  ],
   "status": "PASS_READY_FOR_SEQUENTIAL_OWNER_REVIEW"
 }

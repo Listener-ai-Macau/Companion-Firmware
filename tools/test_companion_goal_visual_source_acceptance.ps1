@@ -18,7 +18,10 @@ if ($parseErrors.Count -ne 0) {
 if ($LASTEXITCODE -ne 0) {
     throw "G2 visual-source runner check-only failed."
 }
-& pwsh -NoProfile -File $runner -CheckOnly -ItemId "special-system-v1" 2>$null
+$manifest = Get-Content -LiteralPath (Join-Path $repoRoot "docs\validation\companion-ui-visual-acceptance-manifest-20260717.json") -Raw | ConvertFrom-Json
+$firstItem = $manifest.items[0]
+$secondItem = $manifest.items[1]
+& pwsh -NoProfile -File $runner -CheckOnly -ItemId $secondItem.id 2>$null
 if ($LASTEXITCODE -eq 0) {
     throw "G2 visual-source runner must reject an out-of-order item."
 }
@@ -34,7 +37,7 @@ if ($LASTEXITCODE -eq 0) {
 if ($LASTEXITCODE -eq 0) {
     throw "G2 visual-source runner must require explicit owner-start acknowledgement."
 }
-& pwsh -NoProfile -File $runner -SelfTest -SelfTestSelection "通过"
+& pwsh -NoProfile -File $runner -SelfTest -SelfTestSelection "已执行"
 if ($LASTEXITCODE -ne 0) {
     throw "G2 visual-source runner self-test failed."
 }
@@ -45,15 +48,14 @@ if ($null -eq $latest) {
     throw "G2 visual-source runner self-test did not write an operator review."
 }
 $record = Get-Content -LiteralPath $latest.FullName -Raw | ConvertFrom-Json
-$manifest = Get-Content -LiteralPath (Join-Path $repoRoot "docs\validation\companion-ui-visual-acceptance-manifest-20260717.json") -Raw | ConvertFrom-Json
-$item = @($manifest.items | Where-Object { $_.id -eq "menu-v6-four-root" })[0]
+$item = $firstItem
 if ($record.schema -ne "companion.g2_visual_artifact_operator_review.v1") {
     throw "G2 review schema drifted."
 }
-if ($record.status -ne "OWNER_ARTIFACT_SELECTION_CAPTURED_TRIAGE_REQUIRED") {
+if ($record.status -ne "OWNER_ARTIFACT_OBSERVATION_CAPTURED") {
     throw "G2 self-test selection status drifted."
 }
-if ($record.item_id -ne "menu-v6-four-root" -or $record.execution.canonical_aiw_operator_prompt_opened -ne $false -or $record.execution.original_image_opened -ne $false -or $record.execution.self_test -ne $true) {
+if ($record.item_id -ne $item.id -or $record.execution.canonical_aiw_operator_prompt_opened -ne $false -or $record.execution.original_image_opened -ne $false -or $record.execution.self_test -ne $true) {
     throw "G2 self-test must preserve the first sequential item without opening the prompt."
 }
 if ($record.source_sha256 -ne $item.source_sha256 -or $record.machine_evidence -ne $item.machine_evidence) {
@@ -64,7 +66,7 @@ if ($record.artifact.index -ne 1 -or $record.artifact.path -ne $artifact.path -o
     throw "G2 self-test record is not bound to the first locked original image."
 }
 $rendered = $record.rendered_prompt
-if ([string]$rendered.title -notlike "*1/3*原图 1/3*" -or [string]$rendered.scope_text -notlike "*系统图片查看器*" -or [string]$rendered.scope_text -notlike "*不会导入 PBM/CEMP*") {
+if ([string]$rendered.title -notlike "*1/$($manifest.items.Count)*原图 1/$($item.artifact_review.images.Count)*" -or [string]$rendered.scope_text -notlike "*系统图片查看器*" -or [string]$rendered.scope_text -notlike "*不会导入 PBM/CEMP*") {
     throw "G2 rendered prompt lost its sequential or non-activation scope."
 }
 foreach ($field in @("target", "operator_action", "success_signal", "failure_rule", "continue_condition", "recovery_condition", "record_fields")) {

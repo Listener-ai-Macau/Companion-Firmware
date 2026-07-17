@@ -26,6 +26,7 @@ ACTIVE_MARKERS = ("activated", "active_cemp", "resource_revision_active")
 REQUIRED_FEATURES = {
     "companion-pet-expression",
     "companion-four-root-menu",
+    "companion-menu-screen-family",
     "companion-pet-special-states",
 }
 

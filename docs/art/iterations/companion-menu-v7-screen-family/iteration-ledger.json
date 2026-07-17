@@ -1,0 +1,67 @@
+{
+  "schema": "denzic.product_visual_iteration.v1",
+  "feature": "companion-menu-screen-family",
+  "target_profile": "wb55-gdey0154d67-ft6336u-200x200-1bit",
+  "rule": "docs/agent_quickstart.md",
+  "product_rule": "docs/companion_product_requirements.md",
+  "baseline": {
+    "accepted_source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "owner_visual_decision": "The exact v9 sheet is the only Companion inner-face reference.",
+    "comparison_artifact": "docs/art/iterations/companion-pet-expression-v9/baseline-lock.json"
+  },
+  "iterations": [
+    {
+      "iteration_id": "menu-v7-five-screen-source-v7.0-2026-07-17",
+      "status": "rejected_for_compact_menu_scope",
+      "authoring_request": "Replace the insufficient root-only v6 candidate with a reviewable home plus four truthful detail screens.",
+      "prompt": "The exact v7.0 prompt is retained in docs/art/iterations/companion-menu-v7-screen-family/generation-history.json under prompt_version v7.0; it generated a face-heavy candidate that is not a current source.",
+      "authoring_request_record": "docs/art/iterations/companion-menu-v7-screen-family/generation-history.json",
+      "source_references": ["docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png", "docs/art/iterations/companion-menu-v7-screen-family/information-architecture.json"],
+      "output": "docs/art/iterations/companion-menu-v7-screen-family/generated_menu_screen_family_v7_candidate.png",
+      "sha256": "8ED4FBC0EFA6368F98DB40C1C8D2BD4652B75F2CAE238D33DDC9E529BF6267EA",
+      "review": {"outcome": "REJECTED_OWNER_SCOPE", "reason": "The owner directed that the face must not occupy the small menu panel and every detail page must use at most four rows."},
+      "implementation": {"status": "not_activated_rejected_visual_candidate", "resource_revision": null, "activation_gate": "No runtime visual resource may be imported, provisioned or activated before per-page owner review and later separate integration gates."},
+      "next_prompt_delta": "Remove every face/expression from menu pages and constrain Home to four full-height rows and every detail page to at most four truthful rows."
+    },
+    {
+      "iteration_id": "menu-v7-five-screen-source-v7.1-2026-07-17",
+      "status": "superseded_machine_navigation_rework",
+      "authoring_request": "Generate the compact four-row menu family required by COMP-REQ-082.",
+      "prompt": "The exact v7.1 prompt is retained in docs/art/iterations/companion-menu-v7-screen-family/generation-request-v7.1.json.",
+      "authoring_request_record": "docs/art/iterations/companion-menu-v7-screen-family/generation-request-v7.1.json",
+      "source_references": ["docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png", "docs/art/iterations/companion-menu-v7-screen-family/information-architecture.json"],
+      "output": "docs/art/iterations/companion-menu-v7-screen-family/generated_menu_screen_family_v7_1_candidate.png",
+      "sha256": "4638D676E7E8DB1B4482AA4B2C904EB1509E40B6817E6E7781111D6EF934E287",
+      "review": {"outcome": "NOT_OPENED_MACHINE_NAVIGATION_REWORK", "reason": "The compact no-face candidate lacked clear, equal right chevrons on the four Home rows and was superseded before owner review."},
+      "implementation": {"status": "not_activated_superseded_visual_candidate", "resource_revision": null, "activation_gate": "No runtime visual resource may be imported, provisioned or activated before per-page owner review and later separate integration gates."},
+      "next_prompt_delta": "After the compact candidate is reviewed, change only one owner-named visible variable against that exact source."
+    },
+    {
+      "iteration_id": "menu-v7-five-screen-source-v7.2-2026-07-17",
+      "status": "superseded_machine_connection_scope_rework",
+      "authoring_request": "Preserve the compact v7.1 layout and add only legible root navigation chevrons.",
+      "prompt": "The exact v7.2 prompt is retained in docs/art/iterations/companion-menu-v7-screen-family/generation-request-v7.2.json.",
+      "authoring_request_record": "docs/art/iterations/companion-menu-v7-screen-family/generation-request-v7.2.json",
+      "source_references": ["docs/art/iterations/companion-menu-v7-screen-family/generated_menu_screen_family_v7_1_candidate.png"],
+      "output": "docs/art/iterations/companion-menu-v7-screen-family/generated_menu_screen_family_v7_2_candidate.png",
+      "sha256": "4A6C395D5D22166E1695FF71A9E57DAC31BC16311D4A4C83176E9CB81A909EF3",
+      "review": {"outcome": "NOT_OPENED_MACHINE_SCOPE_REWORK", "reason": "The Connection detail incorrectly introduced a fourth navigable row beyond the current truthful product contract."},
+      "implementation": {"status": "not_activated_superseded_visual_candidate", "resource_revision": null, "activation_gate": "No runtime visual resource may be imported, provisioned or activated before per-page owner review and later separate integration gates."},
+      "next_prompt_delta": "After v7.2 machine review, change only an owner-named visible variable against the exact v7.2 source."
+    },
+    {
+      "iteration_id": "menu-v7-five-screen-source-v7.3-2026-07-17",
+      "status": "generated_machine_review_pending_owner",
+      "authoring_request": "Preserve v7.2 except convert Connection to exactly three truthful rows.",
+      "prompt": "The exact v7.3 prompt is retained in docs/art/iterations/companion-menu-v7-screen-family/generation-request-v7.3.json.",
+      "authoring_request_record": "docs/art/iterations/companion-menu-v7-screen-family/generation-request-v7.3.json",
+      "source_references": ["docs/art/iterations/companion-menu-v7-screen-family/generated_menu_screen_family_v7_2_candidate.png"],
+      "output": "docs/art/iterations/companion-menu-v7-screen-family/generated_menu_screen_family_v7_3_candidate.png",
+      "sha256": "D2D36B1CD51D153758E64C4DCBE0E0B7192F2E3F895D62CD3C432DDFA8476C37",
+      "review": {"outcome": "PENDING_OWNER_VISUAL_REVIEW", "reason": "The Connection detail now has exactly three truthful rows and clear status/action affordances; one-page crop and localization review remains required."},
+      "implementation": {"status": "not_activated_pending_owner_visual_review", "resource_revision": null, "activation_gate": "No runtime visual resource may be imported, provisioned or activated before per-page owner review and later separate integration gates."},
+      "next_prompt_delta": "After v7.3 machine review, change only an owner-named visible variable against the exact v7.3 source."
+    }
+  ]
+}

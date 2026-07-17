@@ -1,0 +1,413 @@
+{
+  "schema": "companion.pet_special_state_one_page_review.v1",
+  "status": "PASS_MACHINE_ONE_PAGE_PER_SPECIAL_STATE_PENDING_OWNER",
+  "sources": [
+    {
+      "id": "special-system-v1",
+      "source": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_system_v1_candidate.png",
+      "source_sha256": "AF9ADFD49C47C89DF674726D7201CC49C61ED636306013697822BB42FB1A9C82",
+      "pages": [
+        {
+          "index": 1,
+          "state": "voice.speaking",
+          "emotion": "说话回应",
+          "intent": "语音回复正在输出",
+          "source_crop_box": [
+            0,
+            77,
+            330,
+            407
+          ],
+          "review_page": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/01-voice-speaking.png",
+          "review_page_sha256": "E5874B384E418CD82700DD89479000B17A110AD4224028976A02DE462AAB2D8F",
+          "minimum_clearance_px": 12,
+          "edge_ink_pixels": 0
+        },
+        {
+          "index": 2,
+          "state": "recording.error",
+          "emotion": "温和提醒",
+          "intent": "录音未能完成，需要恢复",
+          "source_crop_box": [
+            340,
+            77,
+            670,
+            407
+          ],
+          "review_page": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/02-recording-error.png",
+          "review_page_sha256": "447BD2ACE584C17E35FF76BDD91FF04E33AB9EEF7370A55B9ED4730CA0C5C299",
+          "minimum_clearance_px": 22,
+          "edge_ink_pixels": 0
+        },
+        {
+          "index": 3,
+          "state": "power.charge_detected",
+          "emotion": "注意到电源",
+          "intent": "刚接入供电",
+          "source_crop_box": [
+            610,
+            77,
+            940,
+            407
+          ],
+          "review_page": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/03-power-charge_detected.png",
+          "review_page_sha256": "21461670341A13D2BBA5F5B77F2200DD4298ECB77B1BE1CC266D42046891A6E0",
+          "minimum_clearance_px": 20,
+          "edge_ink_pixels": 0
+        },
+        {
+          "index": 4,
+          "state": "power.charging",
+          "emotion": "安心充电",
+          "intent": "正在充电",
+          "source_crop_box": [
+            924,
+            77,
+            1254,
+            407
+          ],
+          "review_page": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/04-power-charging.png",
+          "review_page_sha256": "19775D8D613BF56F08A8769572724773E309CD648A8A76B2F328C2B3A80ABE87",
+          "minimum_clearance_px": 18,
+          "edge_ink_pixels": 0
+        },
+        {
+          "index": 5,
+          "state": "power.charged",
+          "emotion": "满足充满",
+          "intent": "电量已充足",
+          "source_crop_box": [
+            0,
+            455,
+            330,
+            785
+          ],
+          "review_page": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/05-power-charged.png",
+          "review_page_sha256": "47CCD4E8FE05DA2E5024B6FFE60102FC860170C45F9D12F1BD73E3AEED2B4853",
+          "minimum_clearance_px": 25,
+          "edge_ink_pixels": 0
+        },
+        {
+          "index": 6,
+          "state": "power.low_battery",
+          "emotion": "轻微求助",
+          "intent": "电量偏低",
+          "source_crop_box": [
+            305,
+            455,
+            635,
+            785
+          ],
+          "review_page": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/06-power-low_battery.png",
+          "review_page_sha256": "A535205646A736A57BBDE55E86D32EC1871E02118FB97A2638B208C31DEF4A7C",
+          "minimum_clearance_px": 39,
+          "edge_ink_pixels": 0
+        },
+        {
+          "index": 7,
+          "state": "link.pairing",
+          "emotion": "期待连接",
+          "intent": "正在配对",
+          "source_crop_box": [
+            609,
+            455,
+            939,
+            785
+          ],
+          "review_page": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/07-link-pairing.png",
+          "review_page_sha256": "3B65A3F972460864972A9E597F2271B77C704FF7CC44DD85EB499CA04B406909",
+          "minimum_clearance_px": 33,
+          "edge_ink_pixels": 0
+        },
+        {
+          "index": 8,
+          "state": "link.connected",
+          "emotion": "连接成功",
+          "intent": "设备已连上",
+          "source_crop_box": [
+            924,
+            455,
+            1254,
+            785
+          ],
+          "review_page": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/08-link-connected.png",
+          "review_page_sha256": "CAF9C0E47FB036351DA5FACDE997A4CB5238CF3B1AD5402BC7C19802419D370F",
+          "minimum_clearance_px": 30,
+          "edge_ink_pixels": 0
+        },
+        {
+          "index": 9,
+          "state": "link.syncing",
+          "emotion": "耐心同步",
+          "intent": "正在同步",
+          "source_crop_box": [
+            0,
+            795,
+            330,
+            1125
+          ],
+          "review_page": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/09-link-syncing.png",
+          "review_page_sha256": "0015BC2739E277923B54B4E9F113B92BFF04E322EF1D10A624DF82F2FDF2AF81",
+          "minimum_clearance_px": 16,
+          "edge_ink_pixels": 0
+        },
+        {
+          "index": 10,
+          "state": "link.synced",
+          "emotion": "同步完成",
+          "intent": "数据已同步",
+          "source_crop_box": [
+            305,
+            795,
+            635,
+            1125
+          ],
+          "review_page": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/10-link-synced.png",
+          "review_page_sha256": "0683302FED05A3AE38767DD24938DE522BEC4116DDCB522089F41A19A967586B",
+          "minimum_clearance_px": 18,
+          "edge_ink_pixels": 0
+        },
+        {
+          "index": 11,
+          "state": "link.error",
+          "emotion": "温和提示",
+          "intent": "连接需要恢复",
+          "source_crop_box": [
+            609,
+            795,
+            939,
+            1125
+          ],
+          "review_page": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/11-link-error.png",
+          "review_page_sha256": "F1873F726AF05773091E0177CAD29975F1453D3AF19B9D7FD10159F44B0FCD43",
+          "minimum_clearance_px": 24,
+          "edge_ink_pixels": 0
+        },
+        {
+          "index": 12,
+          "state": "system.error",
+          "emotion": "安静求助",
+          "intent": "系统需要处理",
+          "source_crop_box": [
+            924,
+            795,
+            1254,
+            1125
+          ],
+          "review_page": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/12-system-error.png",
+          "review_page_sha256": "8AABFFF8DDE22F924BA90CB92575B72B5152D8422E48DFC72FBD04D66DF4961D",
+          "minimum_clearance_px": 19,
+          "edge_ink_pixels": 0
+        }
+      ]
+    },
+    {
+      "id": "special-journey-v1",
+      "source": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_journey_v1_candidate.png",
+      "source_sha256": "95CC749134F169E73A2E2A99FA2B6F08AABDFE78D218677C347D2D687EA4B17F",
+      "pages": [
+        {
+          "index": 1,
+          "state": "menu.open.entry",
+          "emotion": "思考确认",
+          "intent": "长按进入菜单的起始帧",
+          "source_crop_box": [
+            0,
+            77,
+            330,
+            407
+          ],
+          "review_page": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/01-menu-open-entry.png",
+          "review_page_sha256": "5FD8369825311A09975C7087B348C5098443854F1B48E934DAFAFD268309A139",
+          "minimum_clearance_px": 27,
+          "edge_ink_pixels": 0
+        },
+        {
+          "index": 2,
+          "state": "menu.open.settle",
+          "emotion": "准备切换",
+          "intent": "进入菜单前的停留帧",
+          "source_crop_box": [
+            340,
+            77,
+            670,
+            407
+          ],
+          "review_page": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/02-menu-open-settle.png",
+          "review_page_sha256": "F224E8FDD10210065D7F0F94B5B2F7F0E39592D6486413D6AA827F60BF7FD46D",
+          "minimum_clearance_px": 17,
+          "edge_ink_pixels": 0
+        },
+        {
+          "index": 3,
+          "state": "menu.blocked",
+          "emotion": "礼貌阻止",
+          "intent": "当前状态不能进入菜单",
+          "source_crop_box": [
+            610,
+            77,
+            940,
+            407
+          ],
+          "review_page": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/03-menu-blocked.png",
+          "review_page_sha256": "FC4F8F65EC7C5E0EEA84AC228453A270C671E847672888538A5DE575AF7BE728",
+          "minimum_clearance_px": 19,
+          "edge_ink_pixels": 0
+        },
+        {
+          "index": 4,
+          "state": "menu.exit",
+          "emotion": "轻松返回",
+          "intent": "从菜单回到首页",
+          "source_crop_box": [
+            924,
+            77,
+            1254,
+            407
+          ],
+          "review_page": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/04-menu-exit.png",
+          "review_page_sha256": "65AC84E3C3B3A7A94623F54A2314BDB93477DF7E3CB2F93D26C32E9DD3425D04",
+          "minimum_clearance_px": 27,
+          "edge_ink_pixels": 0
+        },
+        {
+          "index": 5,
+          "state": "upgrade.offer",
+          "emotion": "好奇询问",
+          "intent": "发现可用升级",
+          "source_crop_box": [
+            0,
+            455,
+            330,
+            785
+          ],
+          "review_page": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/05-upgrade-offer.png",
+          "review_page_sha256": "52BF719BCC1E2677E5161AD94008B2577681EEE82A846F7081220359B3193067",
+          "minimum_clearance_px": 31,
+          "edge_ink_pixels": 0
+        },
+        {
+          "index": 6,
+          "state": "upgrade.prepare",
+          "emotion": "准备开始",
+          "intent": "升级前检查",
+          "source_crop_box": [
+            305,
+            455,
+            635,
+            785
+          ],
+          "review_page": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/06-upgrade-prepare.png",
+          "review_page_sha256": "1DEFAF3CF80EBD4BA1728C89E64D050A86FC2FAEBF26AEFA656061A7808B5798",
+          "minimum_clearance_px": 30,
+          "edge_ink_pixels": 0
+        },
+        {
+          "index": 7,
+          "state": "upgrade.transfer",
+          "emotion": "耐心等待",
+          "intent": "升级数据传输中",
+          "source_crop_box": [
+            609,
+            455,
+            939,
+            785
+          ],
+          "review_page": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/07-upgrade-transfer.png",
+          "review_page_sha256": "0603513204F7B6855D2D44B2DDD59993791647B9E7671C0C8083EF975EDD789D",
+          "minimum_clearance_px": 33,
+          "edge_ink_pixels": 0
+        },
+        {
+          "index": 8,
+          "state": "upgrade.verify",
+          "emotion": "认真确认",
+          "intent": "升级校验中",
+          "source_crop_box": [
+            924,
+            455,
+            1254,
+            785
+          ],
+          "review_page": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/08-upgrade-verify.png",
+          "review_page_sha256": "2336A3B5758BABD44983D149195C82C5C22F8868C5FA037C9E303E1A9D57711C",
+          "minimum_clearance_px": 30,
+          "edge_ink_pixels": 0
+        },
+        {
+          "index": 9,
+          "state": "upgrade.restart",
+          "emotion": "短暂告别",
+          "intent": "即将重启",
+          "source_crop_box": [
+            0,
+            795,
+            330,
+            1125
+          ],
+          "review_page": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/09-upgrade-restart.png",
+          "review_page_sha256": "153CDEFE2D5D33AE931085087DAF9FAFD1AF45BAB715B065C975DFD10B8D1AE9",
+          "minimum_clearance_px": 30,
+          "edge_ink_pixels": 0
+        },
+        {
+          "index": 10,
+          "state": "upgrade.success",
+          "emotion": "开心完成",
+          "intent": "升级已完成",
+          "source_crop_box": [
+            305,
+            795,
+            635,
+            1125
+          ],
+          "review_page": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/10-upgrade-success.png",
+          "review_page_sha256": "E6CEFB14F3B65B8FF95DA28C6147B9D8249FF7EEEA10177CF9681E65AF73E415",
+          "minimum_clearance_px": 31,
+          "edge_ink_pixels": 0
+        },
+        {
+          "index": 11,
+          "state": "upgrade.error",
+          "emotion": "温和提醒",
+          "intent": "升级遇到问题",
+          "source_crop_box": [
+            609,
+            795,
+            939,
+            1125
+          ],
+          "review_page": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/11-upgrade-error.png",
+          "review_page_sha256": "7088CB2447731DB588D8A8F0FF9D4CE049CFD777315B310FD5436317BD1C1327",
+          "minimum_clearance_px": 32,
+          "edge_ink_pixels": 0
+        },
+        {
+          "index": 12,
+          "state": "upgrade.error.recovery",
+          "emotion": "恢复信心",
+          "intent": "升级失败后的可恢复状态",
+          "source_crop_box": [
+            924,
+            795,
+            1254,
+            1125
+          ],
+          "review_page": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/12-upgrade-error-recovery.png",
+          "review_page_sha256": "A19438FC2D81D49EA475419C0EB012071F933AB81507E87E29517F19D8897EF5",
+          "minimum_clearance_px": 27,
+          "edge_ink_pixels": 0
+        }
+      ]
+    }
+  ],
+  "runtime_boundary": {
+    "pbm_imported": false,
+    "cemp_packed": false,
+    "external_flash_provisioned": false,
+    "firmware_flashed": false,
+    "runtime_resource_activated": false
+  },
+  "review_rule": "Open every state page alone in source order. Each page remains review-only and cannot activate a visual resource.",
+  "errors": []
+}

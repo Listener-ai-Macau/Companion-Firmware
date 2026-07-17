@@ -16,7 +16,7 @@ REPORT = ROOT / "docs" / "validation" / "companion-goal-acceptance-readiness-202
 
 REQUIRED_CONTRACT_ANCHORS = (
     "G1: Protected Behavior And Build Boundary",
-    "G2: Visual Source Decisions (Three Sequential Items)",
+    "G2: Visual Source Observations (Four Sequential Families)",
     "G3: Renderer And External Resource Chain",
     "G4: Four-Root Menu Function And Physical Presentation",
     "G5: WB55 Panel, Touch, And Low-Power Reality",
@@ -31,6 +31,10 @@ REQUIRED_CONTRACT_ANCHORS = (
     "special-state crop preflight",
     "target, operator action, success signal, failure",
     "one canonical prompt per image",
+    "已执行",
+    "需修改",
+    "home-v9-daily-storyboard",
+    "menu-v7-screen-family",
     "try generic, adjacent-panel, guessed, online, or hand-authored LUT bytes.",
     "<=1 mA average over >=60 s",
     "one canonical Chinese `aiw operator-prompt` item at a time",
@@ -60,6 +64,18 @@ EVIDENCE = {
     "visual_reference_ledger": (
         "docs/validation/companion-visual-reference-evidence.json",
         "PASS_LEDGER_INTEGRITY",
+    ),
+    "v9_home_storyboard": (
+        "docs/validation/companion-v9-home-storyboard-review-20260717.json",
+        "PASS_MACHINE_ONE_PAGE_PER_KEYFRAME_PENDING_OWNER",
+    ),
+    "menu_v7_screen_family": (
+        "docs/validation/companion-menu-v7-screen-family-preview-20260717.json",
+        "PASS_MACHINE_SCREEN_FAMILY_PREVIEW_PENDING_OWNER",
+    ),
+    "special_one_page_review": (
+        "docs/validation/companion-pet-special-state-one-page-review-20260717.json",
+        "PASS_MACHINE_ONE_PAGE_PER_SPECIAL_STATE_PENDING_OWNER",
     ),
     "menu_function": (
         "docs/validation/companion-menu-v6-function-receipt-20260717.json",
@@ -109,7 +125,9 @@ def build_report() -> dict[str, object]:
         runner_text = G2_RUNNER.read_text(encoding="utf-8")
         for token in (
             "-Execute -OwnerStartAcknowledged",
-            "PENDING_OWNER_VISUAL_DECISION",
+            "OWNER_ARTIFACT_OBSERVATION_CAPTURED",
+            "已执行",
+            "需修改",
             "operator-prompt",
             "manifest_owner_decision_changed = $false",
             "runtime_resource_activated = $false",
@@ -163,14 +181,15 @@ def build_report() -> dict[str, object]:
         errors.append("G2 grouped menu selection was incorrectly applied")
 
     return {
-        "schema": "companion.goal_acceptance_readiness.v1",
+        "schema": "companion.goal_acceptance_readiness.v2",
         "status": "PASS_ACCEPTANCE_CONTRACT_READY_OWNER_AND_HARDWARE_GATED" if not errors else "FAIL",
         "machine_preflight_opens_operator_prompt": False,
-        "next_eligible_owner_item": "menu-v6-four-root",
+        "next_eligible_owner_item": "home-v9-daily-storyboard",
         "sequential_visual_review": [
-            {"id": "menu-v6-four-root", "state": "ready_for_owner_decision"},
-            {"id": "special-system-v1", "state": "machine_safe_preview_ready_owner_decision_pending"},
-            {"id": "special-journey-v1", "state": "blocked_until_prior_visual_decision"},
+            {"id": "home-v9-daily-storyboard", "state": "ready_for_owner_observation", "pages": 39},
+            {"id": "menu-v7-screen-family", "state": "blocked_until_prior_pages_observed", "pages": 15},
+            {"id": "special-system-v1", "state": "blocked_until_prior_pages_observed", "pages": 12},
+            {"id": "special-journey-v1", "state": "blocked_until_prior_pages_observed", "pages": 12},
         ],
         "physical_acceptance": {
             "state": "not_started",

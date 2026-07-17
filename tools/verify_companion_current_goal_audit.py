@@ -37,6 +37,9 @@ ARTIFACTS = {
     "menu_function_receipt": ROOT / "docs/validation/companion-menu-v6-function-receipt-20260717.json",
     "menu_source": ROOT / "docs/validation/companion-menu-v6-source-review-20260717.json",
     "menu_localization": ROOT / "docs/validation/companion-menu-v6-localization-preview-20260717.json",
+    "v9_home_storyboard": ROOT / "docs/validation/companion-v9-home-storyboard-review-20260717.json",
+    "menu_v7_screen_family": ROOT / "docs/validation/companion-menu-v7-screen-family-preview-20260717.json",
+    "special_one_page_review": ROOT / "docs/validation/companion-pet-special-state-one-page-review-20260717.json",
     "special_system": ROOT / "docs/validation/companion-pet-special-system-source-review-20260717.json",
     "special_journey": ROOT / "docs/validation/companion-pet-special-journey-source-review-20260717.json",
     "special_mapping": ROOT / "docs/validation/companion-pending-special-source-mapping-20260717.json",
@@ -49,6 +52,7 @@ ARTIFACTS = {
 
 V9_SHA256 = "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
 MENU_SHA256 = "07D791A898FABE6E558686F6A4B4CC86094541C6B5116D6E0A3D263930DAA868"
+MENU_V7_SHA256 = "D2D36B1CD51D153758E64C4DCBE0E0B7192F2E3F895D62CD3C432DDFA8476C37"
 SYSTEM_SHA256 = "AF9ADFD49C47C89DF674726D7201CC49C61ED636306013697822BB42FB1A9C82"
 JOURNEY_SHA256 = "95CC749134F169E73A2E2A99FA2B6F08AABDFE78D218677C347D2D687EA4B17F"
 
@@ -96,6 +100,9 @@ def build_audit() -> dict[str, Any]:
     menu_function_receipt = load_json("menu_function_receipt")
     menu_source = load_json("menu_source")
     menu_localization = load_json("menu_localization")
+    v9_home_storyboard = load_json("v9_home_storyboard")
+    menu_v7_screen_family = load_json("menu_v7_screen_family")
+    special_one_page_review = load_json("special_one_page_review")
     special_system = load_json("special_system")
     special_journey = load_json("special_journey")
     special_mapping = load_json("special_mapping")
@@ -200,8 +207,8 @@ def build_audit() -> dict[str, Any]:
     check(errors, binding.get("status") == "PASS_MACHINE_ONLY_INACTIVE", "v9 selector is not inactive machine-only PASS")
     check(errors, binding.get("candidate_pack", {}).get("runtime_resource_activated") is False, "v9 selector permits runtime activation")
     check(errors, visual_reference_ledger.get("status") == "PASS_LEDGER_INTEGRITY", "visual iteration ledger audit is not PASS")
-    check(errors, visual_reference_ledger.get("ledger_count") == 3, "visual iteration ledger count drifted")
-    check(errors, visual_reference_ledger.get("features") == ["companion-four-root-menu", "companion-pet-expression", "companion-pet-special-states"], "visual iteration ledger coverage drifted")
+    check(errors, visual_reference_ledger.get("ledger_count") == 4, "visual iteration ledger count drifted")
+    check(errors, visual_reference_ledger.get("features") == ["companion-four-root-menu", "companion-menu-screen-family", "companion-pet-expression", "companion-pet-special-states"], "visual iteration ledger coverage drifted")
     check(errors, safe_area.get("status") == "PASS_MACHINE_SAFE_AREA_PHYSICAL_REVIEW_PENDING", "v9 safe-area report is not machine-only PASS")
     check(errors, safe_area.get("frame_count") == 39, "v9 safe-area report does not cover 39 frames")
     check(errors, safe_area.get("frame_profile", {}).get("minimum_edge_clearance_px") == 4, "v9 safe-area margin drifted")
@@ -230,18 +237,16 @@ def build_audit() -> dict[str, Any]:
     check(errors, menu_contract.get("roots") == ["Voice", "Device", "Connection", "Preferences"], "four-root menu order drifted")
     check(errors, menu_contract.get("language_support") == ["en", "zh_cn"], "four-root menu language support drifted")
     visual_source = menu_function_receipt.get("visual_source", {})
-    check(errors, visual_source.get("source_sha256") == MENU_SHA256, "four-root menu source hash drifted")
-    check(errors, visual_source.get("owner_visual_decision") == "PENDING_OWNER_VISUAL_DECISION" and visual_source.get("runtime_activation") is False, "four-root menu visual activation boundary drifted")
+    check(errors, visual_source.get("source_sha256") == MENU_SHA256, "historical four-root menu receipt hash drifted")
+    check(errors, visual_source.get("runtime_activation") is False, "historical four-root menu receipt must remain non-activated")
     for name in ("contract", "action_journey", "navigation", "target_bridge", "view_model"):
         check(errors, menu_function_receipt.get("host_tests", {}).get(name, {}).get("returncode") == 0, f"four-root menu host test failed: {name}")
 
     for name, data, expected_sha in (
-        ("menu_source", menu_source, MENU_SHA256),
-        ("menu_localization", menu_localization, MENU_SHA256),
         ("special_system", special_system, SYSTEM_SHA256),
         ("special_journey", special_journey, JOURNEY_SHA256),
     ):
-        check(errors, data.get("status") == "PASS_MACHINE_PREVIEW_PENDING_OWNER" or name == "menu_localization" and data.get("status") == "PASS_MACHINE_LOCALIZATION_PREVIEW_PENDING_OWNER", f"{name} preview status drifted")
+        check(errors, data.get("status") == "PASS_MACHINE_PREVIEW_PENDING_OWNER", f"{name} preview status drifted")
         source_sha = json.dumps(data, sort_keys=True)
         check(errors, expected_sha in source_sha, f"{name} source hash missing")
 
@@ -265,10 +270,18 @@ def build_audit() -> dict[str, Any]:
     for key in ("cemp_packed", "external_flash_provisioned", "firmware_flashed", "owner_visual_pass", "pbm_imported"):
         check(errors, mapping_boundary.get(key) is False, f"special scene activation boundary drifted: {key}")
 
+    check(errors, v9_home_storyboard.get("status") == "PASS_MACHINE_ONE_PAGE_PER_KEYFRAME_PENDING_OWNER" and len(v9_home_storyboard.get("states", [])) == 13, "v9 home storyboard is not machine-ready")
+    check(errors, menu_v7_screen_family.get("status") == "PASS_MACHINE_SCREEN_FAMILY_PREVIEW_PENDING_OWNER" and menu_v7_screen_family.get("source", {}).get("sha256") == MENU_V7_SHA256, "v7.3 menu family is not machine-ready")
+    check(errors, special_one_page_review.get("status") == "PASS_MACHINE_ONE_PAGE_PER_SPECIAL_STATE_PENDING_OWNER", "special-state one-page review is not machine-ready")
     check(errors, visual_readiness.get("status") == "PASS_READY_FOR_SEQUENTIAL_OWNER_REVIEW", "visual review readiness is not PASS")
     readiness_items = visual_readiness.get("items", [])
-    check(errors, len(readiness_items) == 3, "visual review must retain exactly three sequential items")
-    check(errors, {item.get("source_sha256") for item in readiness_items} == {MENU_SHA256, SYSTEM_SHA256, JOURNEY_SHA256}, "visual review source hashes drifted")
+    expected_review_items = {
+        "home-v9-daily-storyboard": (V9_SHA256, 39),
+        "menu-v7-screen-family": (MENU_V7_SHA256, 15),
+        "special-system-v1": (SYSTEM_SHA256, 12),
+        "special-journey-v1": (JOURNEY_SHA256, 12),
+    }
+    check(errors, len(readiness_items) == 4 and {item.get("id") for item in readiness_items} == set(expected_review_items), "visual review must retain exactly four sequential source families")
     for item in readiness_items:
         prompt = item.get("operator_prompt", {})
         check(errors, all(prompt.get(key) for key in ("target", "operator_action", "success_signal", "failure_rule", "continue_condition", "recovery_condition", "record_fields")), f"{item.get('id')} lacks detailed operator-prompt fields")
@@ -276,7 +289,9 @@ def build_audit() -> dict[str, Any]:
         artifact_review = item.get("artifact_review", {})
         images = artifact_review.get("images", [])
         check(errors, artifact_review.get("mode") == "original_image_one_at_a_time", f"{item.get('id')} lost original-image review mode")
-        check(errors, len(images) == 3 and [image.get("index") for image in images] == [1, 2, 3], f"{item.get('id')} original-image sequence drifted")
+        expected_sha, expected_count = expected_review_items.get(item.get("id"), (None, 0))
+        check(errors, item.get("source_sha256") == expected_sha, f"{item.get('id')} source hash drifted")
+        check(errors, len(images) == expected_count and [image.get("index") for image in images] == list(range(1, expected_count + 1)), f"{item.get('id')} original-image sequence drifted")
     check(errors, goal_acceptance_readiness.get("status") == "PASS_ACCEPTANCE_CONTRACT_READY_OWNER_AND_HARDWARE_GATED", "detailed Goal acceptance readiness is not PASS")
     check(errors, goal_acceptance_readiness.get("machine_preflight_opens_operator_prompt") is False, "detailed Goal machine preflight must not open a popup")
     check(errors, goal_acceptance_readiness.get("physical_acceptance", {}).get("lower_edge_truncation") == "must be checked during G5 before any visual pass", "lower-edge truncation gate is missing")
@@ -352,20 +367,21 @@ def build_audit() -> dict[str, Any]:
             "id": "four_root_menu_function_contract",
             "status": "proved_machine_visual_import_pending_owner",
             "requirement": "Voice, Device, Connection and Preferences remain the sole menu roots in both languages; every row is a truthful action, live datum, planned or deferred state, while daily manual recording remains double-tap only.",
-            "evidence": [evidence("menu_function_receipt", str(menu_function_receipt.get("status")), f"Five host replays passed from source commit {menu_commit}; the v6 source hash is linked but runtime activation remains false.")],
+            "evidence": [evidence("menu_function_receipt", str(menu_function_receipt.get("status")), f"Five host replays passed from source commit {menu_commit}; this preserves menu behavior only while v6 visual art remains rejected and runtime activation remains false.")],
         },
         {
             "id": "four_root_menu_and_special_scene_sources",
             "status": "machine_previews_pass_owner_decision_pending",
-            "requirement": "The four-root bilingual menu and both special-scene sheets have deterministic previews only; source approval must precede PBM/CEMP import or runtime activation.",
+            "requirement": "The v9 homepage storyboard, the no-face v7.3 four-root menu family and both special-scene sheets have deterministic one-page previews only; a complete triaged observation sequence and separate source-import proposal must precede PBM/CEMP import or runtime activation.",
             "evidence": [
-                evidence("menu_source", str(menu_source.get("status")), "Four-root layout source is pending owner decision."),
-                evidence("menu_localization", str(menu_localization.get("status")), "English and zh-CN overlays are deterministic previews."),
+                evidence("v9_home_storyboard", str(v9_home_storyboard.get("status")), "All 39 daily keyframes are individually reviewable in trigger order."),
+                evidence("menu_v7_screen_family", str(menu_v7_screen_family.get("status")), "Five no-face menu screens each retain raw, English and zh-CN 200x200 pages."),
                 evidence("special_system", str(special_system.get("status")), "System sheet is pending owner decision."),
                 evidence("special_journey", str(special_journey.get("status")), "Journey sheet is pending owner decision."),
+                evidence("special_one_page_review", str(special_one_page_review.get("status")), "All 24 special scenes are individually reviewable and remain review-only."),
                 evidence("special_crop_preflight", str(special_crop_preflight.get("status")), "The exact 200x200 source-crop previews retain >=4 px clearance and remain review-only."),
                 evidence("special_mapping", str(special_mapping.get("status")), "All 22 uncovered families map to exact pending sources with no fallback."),
-                evidence("visual_readiness", str(visual_readiness.get("status")), "Three sequential Chinese owner-review items retain machine-ready locked originals and non-activation boundaries."),
+                evidence("visual_readiness", str(visual_readiness.get("status")), "Four sequential Chinese owner-review families retain 78 machine-locked originals and non-activation boundaries."),
                 evidence("goal_acceptance_readiness", str(goal_acceptance_readiness.get("status")), "Goal-scoped acceptance has explicit machine, owner, hardware and lower-edge-truncation gates."),
                 evidence("g2_group_triage", str(g2_group_triage.get("status")), "The first grouped menu selection remains unapplied because the owner required locked originals one image at a time."),
             ],
@@ -392,11 +408,11 @@ def build_audit() -> dict[str, Any]:
         "status": "GOAL_ACTIVE_MACHINE_EVIDENCE_PROVED_EXTERNAL_GATES_PENDING" if not errors else "GOAL_AUDIT_INVALID",
         "codex_goal_status": "active",
         "external_gates": "Owner visual decisions, real hardware evidence, a selected WBA target and a matching vendor CWF1 waveform package remain required before their respective acceptance items can pass.",
-        "active_goal_boundary": "Only current v9/companion-menu-v6-four-root sources may be considered; historical v5/v6/v7/v8/v10+ art and six-root menus are not active inputs.",
+        "active_goal_boundary": "Only current v9/companion-menu-v7-screen-family v7.3 sources may be considered; root-only v6 and historical v5/v6/v7/v8/v10+ art and six-root menus are not active inputs.",
         "daily_visual_validation": "deterministic source/PBM/CEMP/render evidence; camera is final physical preflight only, never daily art development",
         "requirements": requirements,
         "open_gates": [
-            "three sequential owner visual decisions: menu-v6-four-root, special-system-v1, special-journey-v1",
+            "78 sequential owner visual observations: 39 v9 home keyframes, 15 v7.3 menu pages, 12 system pages and 12 journey pages",
             "separate approved-source PBM/CEMP import and runtime activation proposal",
             "WB55 FTS02/panel recovery, real touch/Stop/current and physical visual acceptance",
             "real WBA project, board and panel/resource parity",
@@ -427,6 +443,10 @@ def build_audit() -> dict[str, Any]:
             "python .\\tools\\verify_expression_wba_portability.py",
             "python .\\tools\\capture_wba_v9_candidate_asset_replay_receipt.py",
             "python .\\tools\\capture_companion_menu_v6_function_receipt.py",
+            "python .\\tools\\render_companion_v9_home_storyboard_review.py --write",
+            "python .\\tools\\render_companion_menu_v7_screen_family_preview.py --write",
+            "python .\\tools\\render_companion_special_state_review_pages.py --write",
+            "python .\\tools\\build_companion_ui_visual_acceptance_manifest.py --write",
         ],
     }
 

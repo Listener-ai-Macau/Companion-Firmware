@@ -1,0 +1,25 @@
+{
+  "schema": "companion.g2_artifact_review_triage.v1",
+  "status": "REWORK_REQUIRED_MENU_SCREEN_FAMILY",
+  "requirement": "COMP-REQ-080",
+  "raw_review": {
+    "path": "docs/validation/companion-g2-owner-visual-reviews/20260717-104019-936-menu-v6-four-root-artifact1/operator-review.json",
+    "sha256": "F820B61C22D14F37942D96E9BF2BBB3971122DDB0CC2056B9561CF6254555432",
+    "selected": "通过"
+  },
+  "operator_note": {
+    "path": "docs/validation/companion-g2-owner-visual-reviews/20260717-104019-936-menu-v6-four-root-artifact1/operator-note.txt",
+    "sha256": "76B29EB1A66B1EFBB1AC6C867D61BDA738C73EA7B8BBED92D57247922FEE6237",
+    "text": "没看见菜单, 都是首页"
+  },
+  "decision": {
+    "selection_applied": false,
+    "v6_root_only_candidate": "superseded_for_insufficient_menu_scope",
+    "forbidden": [
+      "Do not open menu-v6 artifact 2/3 or 3/3 as though artifact 1 approved the menu.",
+      "Do not import, pack, provision, flash, or activate the v6 root-only art.",
+      "Do not substitute code-drawn detail pages for a generated visual baseline."
+    ],
+    "required_recovery": "Generate and machine-validate a v7 five-screen family: four-root home, Voice detail, Device detail, Connection detail and Preferences detail. Render English and zh-CN review overlays for each screen, then open one locked 200x200 page per canonical prompt."
+  }
+}

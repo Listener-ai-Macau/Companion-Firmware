@@ -1,0 +1,35 @@
+{
+  "schema_id": "companion.visual_generation_request.v1",
+  "iteration_id": "companion-menu-v7-screen-family",
+  "status": "GENERATED_MACHINE_REVIEW_PENDING_OWNER",
+  "owner_requirements": ["COMP-REQ-080", "COMP-REQ-081", "COMP-REQ-082"],
+  "target_profile": {
+    "width": 200,
+    "height": 200,
+    "pixel_style": "pure black and white, 1-bit-ready e-paper reference",
+    "runtime_text": "The renderer supplies actual English and zh-CN text from menu_v5_localization. Generated guide strokes may only define text placement.",
+    "asset_storage": "external Flash CEMP only after separate source, renderer, import and physical gates"
+  },
+  "source_references": [
+    {
+      "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "role": "sole approved Companion inner-face identity"
+    },
+    {
+      "path": "docs/art/iterations/companion-menu-v7-screen-family/information-architecture.json",
+      "role": "truthful five-screen family and review order"
+    }
+  ],
+  "prompt_version": "v7.2",
+  "prompt": "Edit the attached compact no-face Companion menu-family candidate. Preserve its exact white background, black 1-bit line language, five-screen storyboard, no pet face in menus, Home four full-height rows, compact detail top bars, and the existing row/icon structure. Change only the navigation affordance: on the Home screen add one clean small right-facing chevron at the far right of every one of the four root rows, vertically centered and with equal spacing; it must unmistakably mean tap to enter. On detail pages, keep the clear back arrow at top-left. Add a small right-facing chevron only to rows that represent a real navigation/action destination; keep live status rows as a small calm dot/value marker and do not create fake controls. Keep Voice, Device, Connection and Preferences details truthful and at most four rows. No typography, no face, no unused banner, no fifth detail row, no fake toggle, no generated final words, no grey, gradients, shadows, textures, device frame, cards or decorative blobs. This is a source baseline; English and Chinese text are renderer-owned.",
+  "negative_constraints": ["one-homepage-only composition", "six roots", "two-page homepage", "unreadable generated final text", "fake chevrons or fake actions", "legacy menu art", "new eye identity", "eye-hugging arcs", "cat silhouette", "floating cards", "dark UI", "any menu header face or expression", "fifth detail row", "fake toggle"],
+  "review_contract": "After generation, split the family into five locked 200x200 original pages; render English and zh-CN overlays for each; attach exact paths and hashes; then show one page per canonical Chinese prompt in the declared order. No contact sheet alone can receive an owner decision. The v7.0 candidate is retained as a rejected header-face reference and v7.1 as a superseded missing-chevron candidate; neither is a source or fallback.",
+  "generated_output": {
+    "path": "docs/art/iterations/companion-menu-v7-screen-family/generated_menu_screen_family_v7_2_candidate.png",
+    "sha256": "4A6C395D5D22166E1695FF71A9E57DAC31BC16311D4A4C83176E9CB81A909EF3",
+    "dimensions_px": [1254, 1254],
+    "runtime_source": "C:\\Users\\Billy\\.codex\\generated_images\\019f44be-6fce-7140-acbe-cac2c63e2a4e\\exec-04984905-5a0c-4da2-8e0b-b723822610e0.png"
+  },
+  "runtime_boundary": {"pbm_imported": false, "cemp_packed": false, "external_flash_provisioned": false, "firmware_flashed": false, "runtime_resource_activated": false}
+}

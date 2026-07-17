@@ -21,8 +21,9 @@ hardware gates reproducible one item at a time.
 
 - The v9 expression CEMP remains inactive. The 39-frame machine candidate is
   not permission to provision external Flash or flash WB55.
-- The four-root menu and the `system` / `journey` special sheets need the
-  sequential visual decisions in `companion-ui-visual-acceptance-manifest-20260717.json`.
+- The v9 homepage sequence, v7.3 four-root menu family, and the `system` /
+  `journey` special sheets need the sequential visual observations in
+  `companion-ui-visual-acceptance-manifest-20260717.json`.
 - Owner feedback says some expressions are truncated at the lower edge. This
   is an open P0 failure until both the 4 px frame-margin gate and the real-panel
   observation below pass.
@@ -44,7 +45,7 @@ hardware gates reproducible one item at a time.
   missing source/hash evidence, or a build/host failure. No operator popup is
   opened for this machine-only item.
 
-### G2: Visual Source Decisions (Three Sequential Items)
+### G2: Visual Source Observations (Four Sequential Families)
 
 For each item, inspect the listed 200x200 deterministic preview at normal
 scale, compare it with the locked v9 identity, then record one decision and an
@@ -58,8 +59,9 @@ a firmware flash by itself.
   remain only as non-reusable history; it can never become an art source.
 - Every G2 popup must take its target, operator action, success signal, failure
   rule, continue condition and recovery condition from the matching manifest
-  item. A `通过` records the stated visual-source decision only; it cannot
-  override the P0 panel gate or activate a runtime resource.
+  item. `已执行` means only that the locked page was viewed with no requested
+  change; it is not a visual-resource import pass, a firmware pass or a panel
+  pass. `需修改` requires a concrete note and blocks the next page until triage.
 - Every G2 source must open its locked original image at normal scale and use
   one canonical prompt per image, in manifest order. A selection with a
   non-empty note is never applied automatically: triage it before the next
@@ -70,16 +72,21 @@ a firmware flash by itself.
   open the next sequential item. Its result stays beside the matching source
   evidence and must be triaged before a manifest decision or the next item.
 
-1. `menu-v6-four-root`: Voice, Device, Connection and Preferences must be the
-   only roots; both English and Chinese overlays must be readable and every row
-   must correspond to a real/deferred action.
-2. `special-system-v1`: speaking, recording error, charge/charging/charged,
+1. `home-v9-daily-storyboard`: inspect all 39 individual 200x200 v9 entry,
+   sustain and settle frames in real state order. Every page names its trigger,
+   emotional intent and transition; the runtime remains event-driven and must
+   not randomly cycle this review sequence.
+2. `menu-v7-screen-family`: inspect all fifteen pages: raw source, English and
+   zh-CN for Home, Voice, Device, Connection and Preferences. Home is exactly
+   four full-height roots. The menu has no pet face; detail pages keep a compact
+   back/title bar and only truthful rows, with Connection deliberately at three.
+3. `special-system-v1`: speaking, recording error, charge/charging/charged,
    low battery, pairing/link and system-error states must retain the v9 eye,
    brow, mouth and cheek identity. The current lower-edge truncation feedback
    is unresolved. Inspect the locked-source special-state crop preflight at
    normal 200x200 cell scale: every crop must retain >=4 px canvas clearance,
    but this source-only proof does not clear the focused G5 panel recheck.
-3. `special-journey-v1`: menu entry/settle/blocked/exit and upgrade
+4. `special-journey-v1`: menu entry/settle/blocked/exit and upgrade
    offer/prepare/transfer/verify/restart/success/error/recovery must use the
    same v9 grammar and remain distinct enough to communicate state.
 
@@ -96,8 +103,9 @@ a firmware flash by itself.
 
 ### G4: Four-Root Menu Function And Physical Presentation
 
-- Precondition: G2 menu source approved and the separately reviewed resource
-  import proposal accepted. Before that, run only the five host menu replays.
+- Precondition: every G2 v7.3 menu page was reviewed with no unresolved triage,
+  and the separately reviewed resource-import proposal is accepted. Before
+  that, run only the five host menu replays.
 - Hardware action: enter the menu, inspect the four roots, open one detail row
   per root, return, switch language, and repeat the home/detail check.
 - Pass: Voice, Device, Connection and Preferences are the only home roots;

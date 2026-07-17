@@ -18,6 +18,26 @@
       "id": "rejected-menu-entry-v1",
       "decision": "retired",
       "reason": "The owner rejected its incompatible visual style."
+    },
+    {
+      "id": "menu-v6-root-only-candidate",
+      "decision": "not_renderable",
+      "reason": "The owner reported that the root-only candidate did not show a menu. It is retained only with its review record; it cannot seed, fall back to, or activate a menu screen family."
+    },
+    {
+      "id": "menu-v7.0-header-face-candidate",
+      "decision": "not_renderable",
+      "reason": "The header face occupied too much of the 200x200 menu. The compact menu must remain no-face."
+    },
+    {
+      "id": "menu-v7.1-missing-chevron-candidate",
+      "decision": "not_renderable",
+      "reason": "The compact layout lacked clear right chevrons for the four root rows."
+    },
+    {
+      "id": "menu-v7.2-extra-connection-row-candidate",
+      "decision": "not_renderable",
+      "reason": "Connection included a fourth navigation row beyond the truthful compact contract."
     }
   ],
   "retention_rule": "This record retains only identifiers, decision and reason. It contains no source image, prompt, crop, PBM, preview, comparison image, or import report."

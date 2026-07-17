@@ -1,0 +1,35 @@
+{
+  "schema_id": "companion.visual_generation_request.v1",
+  "iteration_id": "companion-menu-v7-screen-family",
+  "status": "PROMPT_READY_OWNER_REQUIRED_COMPACT_FOUR_ROW_BASELINE_PENDING_REGENERATION",
+  "owner_requirements": ["COMP-REQ-080", "COMP-REQ-081", "COMP-REQ-082"],
+  "target_profile": {
+    "width": 200,
+    "height": 200,
+    "pixel_style": "pure black and white, 1-bit-ready e-paper reference",
+    "runtime_text": "The renderer supplies actual English and zh-CN text from menu_v5_localization. Generated guide strokes may only define text placement.",
+    "asset_storage": "external Flash CEMP only after separate source, renderer, import and physical gates"
+  },
+  "source_references": [
+    {
+      "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "role": "sole approved Companion inner-face identity"
+    },
+    {
+      "path": "docs/art/iterations/companion-menu-v7-screen-family/information-architecture.json",
+      "role": "truthful five-screen family and review order"
+    }
+  ],
+  "prompt_version": "v7.1",
+  "prompt": "Use the attached owner-approved Companion v9 inner-face sheet only to preserve the product's small rounded black-line icon language; do not draw the face anywhere in this menu. Generate a monochrome 1-bit-ready visual source for a premium 200 by 200 e-paper companion settings MENU FAMILY, not one homepage. Create five separate square device screens in a clean review storyboard, each screen fully self-contained and designed to later crop exactly to 200 by 200: 1 Home, 2 Voice detail, 3 Device detail, 4 Connection detail, 5 Preferences detail. Each screen is white with crisp black marks only: no grey, gradients, shadows, texture, device frame, dark background, cards, decorative blobs or generated final words. The menu is quiet information-first; the pet expression belongs only to separately animated entry and exit transitions. Screen 1 must be exactly four full-height contiguous tappable rows filling the whole panel in this order, with distinct simple black icons: Voice, Device, Connection, Preferences. No header, no decorative face and no unused banner. Screens 2 through 5 have only one compact top bar with a clear back arrow on the left and a calm title-guide area, then at most four truthful rows represented by distinct simple icons plus neutral label guide strokes. Voice has recording status, history and wake-word-deferred. Device has e-paper, touch, battery-planned and UI-assets. Connection has pair new device, link status and reconnect; do not add a fake fourth control. Preferences has exactly Language, Interaction, Diagnostics and About, where Interaction truthfully groups gesture and refresh behavior. Detail rows must visibly be actual settings/detail rows, not another homepage: use efficient list rhythm, a live-status dot or value placeholder only where appropriate, and no fake toggles, fake numbers or fake chevrons. Keep all screens cohesive, calm, cute and usable with clear row boundaries and one consistent navigation language. The source is a design baseline; actual English and Chinese text will be rendered separately.",
+  "negative_constraints": ["one-homepage-only composition", "six roots", "two-page homepage", "unreadable generated final text", "fake chevrons or fake actions", "legacy menu art", "new eye identity", "eye-hugging arcs", "cat silhouette", "floating cards", "dark UI", "any menu header face or expression", "fifth detail row", "fake toggle"],
+  "review_contract": "After generation, split the family into five locked 200x200 original pages; render English and zh-CN overlays for each; attach exact paths and hashes; then show one page per canonical Chinese prompt in the declared order. No contact sheet alone can receive an owner decision. The v7.0 candidate is retained as a rejected header-face reference, never as a source or fallback.",
+  "generated_output": {
+    "path": "docs/art/iterations/companion-menu-v7-screen-family/generated_menu_screen_family_v7_1_candidate.png",
+    "sha256": "4638D676E7E8DB1B4482AA4B2C904EB1509E40B6817E6E7781111D6EF934E287",
+    "dimensions_px": [1254, 1254],
+    "runtime_source": "C:\\Users\\Billy\\.codex\\generated_images\\019f44be-6fce-7140-acbe-cac2c63e2a4e\\exec-691080ce-56fd-4c2f-9e18-fd5324898fe5.png"
+  },
+  "runtime_boundary": {"pbm_imported": false, "cemp_packed": false, "external_flash_provisioned": false, "firmware_flashed": false, "runtime_resource_activated": false}
+}

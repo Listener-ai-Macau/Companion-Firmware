@@ -10,6 +10,14 @@
       "path": "docs/validation/companion-menu-v6-function-receipt-20260717.json",
       "status": "PASS_CURRENT_SOURCE_MENU_FUNCTION_PENDING_OWNER_VISUAL"
     },
+    "menu_v7_screen_family": {
+      "path": "docs/validation/companion-menu-v7-screen-family-preview-20260717.json",
+      "status": "PASS_MACHINE_SCREEN_FAMILY_PREVIEW_PENDING_OWNER"
+    },
+    "special_one_page_review": {
+      "path": "docs/validation/companion-pet-special-state-one-page-review-20260717.json",
+      "status": "PASS_MACHINE_ONE_PAGE_PER_SPECIAL_STATE_PENDING_OWNER"
+    },
     "special_state_crop_preflight": {
       "path": "docs/validation/companion-pet-special-state-crop-preflight-20260717.json",
       "status": "PASS_MACHINE_SAFE_CROP_PREVIEW_NOT_IMPORTABLE"
@@ -21,6 +29,10 @@
     "v9_cemp_pixels": {
       "path": "docs/validation/companion-v9-expression-cemp-20260716.json",
       "status": "PASS_MACHINE_ONLY_CEMP_NOT_ACTIVATED"
+    },
+    "v9_home_storyboard": {
+      "path": "docs/validation/companion-v9-home-storyboard-review-20260717.json",
+      "status": "PASS_MACHINE_ONE_PAGE_PER_KEYFRAME_PENDING_OWNER"
     },
     "v9_resource_binding": {
       "path": "docs/validation/companion-v9-candidate-resource-binding-20260717.json",
@@ -44,7 +56,7 @@
     }
   },
   "machine_preflight_opens_operator_prompt": false,
-  "next_eligible_owner_item": "menu-v6-four-root",
+  "next_eligible_owner_item": "home-v9-daily-storyboard",
   "owner_feedback_triage": "docs/validation/companion-owner-feedback-triage-20260717.json",
   "physical_acceptance": {
     "g5_preflight": {
@@ -64,19 +76,27 @@
     "vendor_waveform": "G7 remains frozen until matching CWF1",
     "wba_board": "G8 remains deferred until target board and CubeWBA project exist"
   },
-  "schema": "companion.goal_acceptance_readiness.v1",
+  "schema": "companion.goal_acceptance_readiness.v2",
   "sequential_visual_review": [
     {
-      "id": "menu-v6-four-root",
-      "state": "ready_for_owner_decision"
+      "id": "home-v9-daily-storyboard",
+      "pages": 39,
+      "state": "ready_for_owner_observation"
+    },
+    {
+      "id": "menu-v7-screen-family",
+      "pages": 15,
+      "state": "blocked_until_prior_pages_observed"
     },
     {
       "id": "special-system-v1",
-      "state": "machine_safe_preview_ready_owner_decision_pending"
+      "pages": 12,
+      "state": "blocked_until_prior_pages_observed"
     },
     {
       "id": "special-journey-v1",
-      "state": "blocked_until_prior_visual_decision"
+      "pages": 12,
+      "state": "blocked_until_prior_pages_observed"
     }
   ],
   "status": "PASS_ACCEPTANCE_CONTRACT_READY_OWNER_AND_HARDWARE_GATED"

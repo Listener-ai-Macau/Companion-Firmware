@@ -1,0 +1,445 @@
+{
+  "schema": "companion.v9_home_storyboard_review.v1",
+  "status": "PASS_MACHINE_ONE_PAGE_PER_KEYFRAME_PENDING_OWNER",
+  "source_manifest": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/v9-expression-cemp-manifest.json",
+  "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "states": [
+    {
+      "order": 1,
+      "clip": "idle",
+      "emotion": "平静",
+      "trigger": "无互动时的日常首页",
+      "transition": "主页基线；不轮播到其他情绪",
+      "frames": [
+        {
+          "phase": "entry",
+          "duration_ms": 1800,
+          "source": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_idle_entry.pbm",
+          "source_sha256": "5F078C3D876E74662917C7E2C625688A151C8D1C4A6381262E722EC1057D2B15",
+          "review_page": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/01-idle/01-v9_idle_entry.png",
+          "review_page_sha256": "80D632D9D5F4676B8CE77C2A64960CE9195021EA86AC7FF76519643F103A3F0A"
+        },
+        {
+          "phase": "sustain",
+          "duration_ms": 1300,
+          "source": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_idle_sustain.pbm",
+          "source_sha256": "7E38DA354369F63827C76101C993E340BC13AEF63F7440B16F7BE9F694A31894",
+          "review_page": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/01-idle/02-v9_idle_sustain.png",
+          "review_page_sha256": "5906EC4FFC74AD02E4553F3B4DF45F16F0EC4633CB17166348C19B4A4657D5B5"
+        },
+        {
+          "phase": "settle",
+          "duration_ms": 1600,
+          "source": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_idle_settle.pbm",
+          "source_sha256": "5F078C3D876E74662917C7E2C625688A151C8D1C4A6381262E722EC1057D2B15",
+          "review_page": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/01-idle/03-v9_idle_settle.png",
+          "review_page_sha256": "80D632D9D5F4676B8CE77C2A64960CE9195021EA86AC7FF76519643F103A3F0A"
+        }
+      ]
+    },
+    {
+      "order": 2,
+      "clip": "touch",
+      "emotion": "好奇",
+      "trigger": "短按释放",
+      "transition": "看向触点后回到平静",
+      "frames": [
+        {
+          "phase": "entry",
+          "duration_ms": 700,
+          "source": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_touch_entry.pbm",
+          "source_sha256": "BC509237D46ACB9E79EE2FFAC617EF0ED21BC0BAD02EC8F4CF0AA1F93C99B490",
+          "review_page": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/02-touch/01-v9_touch_entry.png",
+          "review_page_sha256": "D83B3C745046BE29EDFB303E4C40C2C4CF4C73CB9B88312900298C77FF34B1E0"
+        },
+        {
+          "phase": "sustain",
+          "duration_ms": 900,
+          "source": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_touch_sustain.pbm",
+          "source_sha256": "B4A8667BB0AB939B2101DCC7F0A07D7A8DE39E33854950F8332AED7F9D53CA5E",
+          "review_page": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/02-touch/02-v9_touch_sustain.png",
+          "review_page_sha256": "D5D9D53A314EC2037C61B0AC2ED24C12656B3DA485DB1059ADC08D5626949BC0"
+        },
+        {
+          "phase": "settle",
+          "duration_ms": 1400,
+          "source": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_touch_settle.pbm",
+          "source_sha256": "BC509237D46ACB9E79EE2FFAC617EF0ED21BC0BAD02EC8F4CF0AA1F93C99B490",
+          "review_page": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/02-touch/03-v9_touch_settle.png",
+          "review_page_sha256": "D83B3C745046BE29EDFB303E4C40C2C4CF4C73CB9B88312900298C77FF34B1E0"
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "clip": "swipe_left",
+      "emotion": "友好回应",
+      "trigger": "向左滑",
+      "transition": "方向化回应后回到平静",
+      "frames": [
+        {
+          "phase": "entry",
+          "duration_ms": 650,
+          "source": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_left_entry.pbm",
+          "source_sha256": "4A9EBEEB4EEAB1E88C725E5D2C52AEAA4FE18BF628544F445A7DB4BDF84F024C",
+          "review_page": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/03-swipe_left/01-v9_swipe_left_entry.png",
+          "review_page_sha256": "801BE8B6E612F0117FB632DCFFC4B6959EEC03CAACA4A596D3377EA332EFAB22"
+        },
+        {
+          "phase": "sustain",
+          "duration_ms": 850,
+          "source": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_left_sustain.pbm",
+          "source_sha256": "0B273A63F84CAD1D9A9C724B2577C9CCB3762D04045BB169FFA347F30D6F9547",
+          "review_page": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/03-swipe_left/02-v9_swipe_left_sustain.png",
+          "review_page_sha256": "CD67CB648515367D4535DE0C676F6C08448438B950CBE38C6E82312BEB808F11"
+        },
+        {
+          "phase": "settle",
+          "duration_ms": 1100,
+          "source": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_left_settle.pbm",
+          "source_sha256": "CA0C511AF644596D6005E681FEF54C16A92DB9691D8B9BE20CA94562AD8BECE8",
+          "review_page": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/03-swipe_left/03-v9_swipe_left_settle.png",
+          "review_page_sha256": "A15FBB46D7D2616EEBA0811EFBD4B7007C22AD93F36A13600B475941DF365FB6"
+        }
+      ]
+    },
+    {
+      "order": 4,
+      "clip": "swipe_right",
+      "emotion": "友好回应",
+      "trigger": "向右滑",
+      "transition": "方向化回应后回到平静",
+      "frames": [
+        {
+          "phase": "entry",
+          "duration_ms": 650,
+          "source": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_right_entry.pbm",
+          "source_sha256": "DC78758B5676644A7100DE96CD0E7609846A3622E75B80D5090E7AB82E06F6F5",
+          "review_page": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/04-swipe_right/01-v9_swipe_right_entry.png",
+          "review_page_sha256": "3D3A9C9D867381598CD101609DBC52BA76AD42990ACAF7F647ED6AE39BDBEFB6"
+        },
+        {
+          "phase": "sustain",
+          "duration_ms": 850,
+          "source": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_right_sustain.pbm",
+          "source_sha256": "50C85CE66814A023704D923B9BB23065FF90BCBBC99581650C97A4BBB562A93F",
+          "review_page": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/04-swipe_right/02-v9_swipe_right_sustain.png",
+          "review_page_sha256": "374778D9C1DC4295DCC7A2E93B138EB2FC4976408AD02654E15B7C92F812AE31"
+        },
+        {
+          "phase": "settle",
+          "duration_ms": 1100,
+          "source": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_right_settle.pbm",
+          "source_sha256": "7DBC7505DEC8785949F6EECC3E80AA8D9AF47325EFF52105FC962F9184FBD06E",
+          "review_page": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/04-swipe_right/03-v9_swipe_right_settle.png",
+          "review_page_sha256": "AFBA7236C1D7E4F89F928714CA70331ACB8687F2F1683CBDA55096AC8D9667F4"
+        }
+      ]
+    },
+    {
+      "order": 5,
+      "clip": "swipe_up",
+      "emotion": "惊喜",
+      "trigger": "向上滑",
+      "transition": "轻微上扬后回到平静",
+      "frames": [
+        {
+          "phase": "entry",
+          "duration_ms": 650,
+          "source": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_up_entry.pbm",
+          "source_sha256": "069B3F20908026D1C6BB64F30A78BFB03B531B8095D36E9097E3831B878896AE",
+          "review_page": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/05-swipe_up/01-v9_swipe_up_entry.png",
+          "review_page_sha256": "2EA4EB65ED5955F5D7B7FA579578CF2D0B828A5BB65BBD16CE29ADA9A8177604"
+        },
+        {
+          "phase": "sustain",
+          "duration_ms": 850,
+          "source": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_up_sustain.pbm",
+          "source_sha256": "728C01F6EC46407DDC00287972D134B942A9B466B12CF98FD82EDF769E62870F",
+          "review_page": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/05-swipe_up/02-v9_swipe_up_sustain.png",
+          "review_page_sha256": "1A4B8D945BC4AAD8B3FEF9582786E756D1767EED50016B7A492BBFF756B9D4DE"
+        },
+        {
+          "phase": "settle",
+          "duration_ms": 1100,
+          "source": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_up_settle.pbm",
+          "source_sha256": "0821EB1AF9AA7B3B89C39C3C6E9C69548DB6355079BC5F4B2DF48B573CD7676E",
+          "review_page": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/05-swipe_up/03-v9_swipe_up_settle.png",
+          "review_page_sha256": "583B95038BA6AF79FF84FD457906DB84ED0F9936422EE0F88493B8ADDF16DEE6"
+        }
+      ]
+    },
+    {
+      "order": 6,
+      "clip": "swipe_down",
+      "emotion": "亲昵",
+      "trigger": "向下滑",
+      "transition": "爱心回应后回到平静",
+      "frames": [
+        {
+          "phase": "entry",
+          "duration_ms": 650,
+          "source": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_down_entry.pbm",
+          "source_sha256": "EB5FC5039D218538ED225BCCCA313D993BA8E493730255A58766A9E05F0EC51B",
+          "review_page": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/06-swipe_down/01-v9_swipe_down_entry.png",
+          "review_page_sha256": "F8DD258E86742B6C944D590BD25DA402B4F68CFBE27942EA56D3CC877AF563B5"
+        },
+        {
+          "phase": "sustain",
+          "duration_ms": 850,
+          "source": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_down_sustain.pbm",
+          "source_sha256": "39AE4DE103DC01F791D9869478CD7F7E5E99FD41954FE3106ADA02D39878C2AC",
+          "review_page": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/06-swipe_down/02-v9_swipe_down_sustain.png",
+          "review_page_sha256": "16682B286F330D09004C50855F81050BC52B7EBF94E4E5CE740547BBE58CCA96"
+        },
+        {
+          "phase": "settle",
+          "duration_ms": 1100,
+          "source": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_down_settle.pbm",
+          "source_sha256": "B32EFF9A423469075A9B634C90EBB20803411BF788E4A34027634D3F302789AA",
+          "review_page": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/06-swipe_down/03-v9_swipe_down_settle.png",
+          "review_page_sha256": "22E45A7B54A1D260D69E16607A33C4055BFD1F04495A4AA6234E6C3F03DBC1DB"
+        }
+      ]
+    },
+    {
+      "order": 7,
+      "clip": "listening",
+      "emotion": "专注倾听",
+      "trigger": "准备或等待语音",
+      "transition": "由语音结果接到录音、说话或平静",
+      "frames": [
+        {
+          "phase": "entry",
+          "duration_ms": 1000,
+          "source": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_listening_entry.pbm",
+          "source_sha256": "4644245036738743D9C5626B700390F5D5F42B258945D44964F800BC3CA05EF7",
+          "review_page": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/07-listening/01-v9_listening_entry.png",
+          "review_page_sha256": "D3A6411339A056C869D222EDB9B0ED2B43537CBCECAD4C9192EC242841F8B633"
+        },
+        {
+          "phase": "sustain",
+          "duration_ms": 1200,
+          "source": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_listening_sustain.pbm",
+          "source_sha256": "EB65A6733AB15F7B0152B9B9BC4D86623428C7AAC9FBE84E50CC29211B3310C3",
+          "review_page": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/07-listening/02-v9_listening_sustain.png",
+          "review_page_sha256": "F49FB358C0D8EF5EE55EA6911B728316F18A441BCFC785A5530E115DDDD48CAF"
+        },
+        {
+          "phase": "settle",
+          "duration_ms": 1400,
+          "source": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_listening_settle.pbm",
+          "source_sha256": "4644245036738743D9C5626B700390F5D5F42B258945D44964F800BC3CA05EF7",
+          "review_page": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/07-listening/03-v9_listening_settle.png",
+          "review_page_sha256": "D3A6411339A056C869D222EDB9B0ED2B43537CBCECAD4C9192EC242841F8B633"
+        }
+      ]
+    },
+    {
+      "order": 8,
+      "clip": "recording",
+      "emotion": "专注记录",
+      "trigger": "双击开始录音",
+      "transition": "录音结束进入保存",
+      "frames": [
+        {
+          "phase": "entry",
+          "duration_ms": 900,
+          "source": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_recording_entry.pbm",
+          "source_sha256": "A3178A41C86C81B06FC685F44DDF40F8E64BA9C411E4631CF8BB58508C5EDB48",
+          "review_page": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/08-recording/01-v9_recording_entry.png",
+          "review_page_sha256": "6614C9CCF6FBF232995FD4B2FEE18872E91BA4F5BC3F489F874C0D8A40040368"
+        },
+        {
+          "phase": "sustain",
+          "duration_ms": 1200,
+          "source": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_recording_sustain.pbm",
+          "source_sha256": "6C3FE0CE7FD7DCFA8010E2964FC832F389A20D23FA5C70CC2A4EE47057CEEC64",
+          "review_page": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/08-recording/02-v9_recording_sustain.png",
+          "review_page_sha256": "4B164E401D43FFD5687996411EBEDC0379C146606D77B60A637A7B5DC42E10DB"
+        },
+        {
+          "phase": "settle",
+          "duration_ms": 1200,
+          "source": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_recording_settle.pbm",
+          "source_sha256": "A3178A41C86C81B06FC685F44DDF40F8E64BA9C411E4631CF8BB58508C5EDB48",
+          "review_page": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/08-recording/03-v9_recording_settle.png",
+          "review_page_sha256": "6614C9CCF6FBF232995FD4B2FEE18872E91BA4F5BC3F489F874C0D8A40040368"
+        }
+      ]
+    },
+    {
+      "order": 9,
+      "clip": "saving",
+      "emotion": "耐心等待",
+      "trigger": "录音结束并写入",
+      "transition": "保存成功或错误",
+      "frames": [
+        {
+          "phase": "entry",
+          "duration_ms": 900,
+          "source": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_saving_entry.pbm",
+          "source_sha256": "FA35D72B9806E81273BF54C629C1B46150DA9E60266B71B5FF05CDB235B9A4E8",
+          "review_page": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/09-saving/01-v9_saving_entry.png",
+          "review_page_sha256": "B486870757153171B8C974CB83E1D32F2BD2135A29E72F4C46BBC08C4616E71A"
+        },
+        {
+          "phase": "sustain",
+          "duration_ms": 1100,
+          "source": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_saving_sustain.pbm",
+          "source_sha256": "6D61BAEAA30FD8ABC07AC174E5190D2AC09D8534AACFBAC910D555E1987D6157",
+          "review_page": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/09-saving/02-v9_saving_sustain.png",
+          "review_page_sha256": "DAD79BB5253EE07D6CA7601445B238F497C2765C4F1FC8612BF631DF6A2DA8B8"
+        },
+        {
+          "phase": "settle",
+          "duration_ms": 1000,
+          "source": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_saving_settle.pbm",
+          "source_sha256": "FA35D72B9806E81273BF54C629C1B46150DA9E60266B71B5FF05CDB235B9A4E8",
+          "review_page": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/09-saving/03-v9_saving_settle.png",
+          "review_page_sha256": "B486870757153171B8C974CB83E1D32F2BD2135A29E72F4C46BBC08C4616E71A"
+        }
+      ]
+    },
+    {
+      "order": 10,
+      "clip": "saved",
+      "emotion": "满足",
+      "trigger": "录音保存完成",
+      "transition": "短暂停留后回到平静",
+      "frames": [
+        {
+          "phase": "entry",
+          "duration_ms": 800,
+          "source": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_saved_entry.pbm",
+          "source_sha256": "80DB5F9AC08BF5ABCD782B9179B7EE3C558F91A3BB9B6C5D2F0C7086545A087B",
+          "review_page": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/10-saved/01-v9_saved_entry.png",
+          "review_page_sha256": "C64F4F3C6C06564F77C0FCCBC4A149EAE93F22F8EC646FBBB7E0E284CBBE393D"
+        },
+        {
+          "phase": "sustain",
+          "duration_ms": 1000,
+          "source": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_saved_sustain.pbm",
+          "source_sha256": "3FD8B9AE79A8BB27053F6393DE1356D061927A124B797B5DBA71366A4A34003B",
+          "review_page": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/10-saved/02-v9_saved_sustain.png",
+          "review_page_sha256": "9F6A19777513D182F7C62A809DEF7B01FF721AD32797DEA3D6173073657B6F69"
+        },
+        {
+          "phase": "settle",
+          "duration_ms": 1300,
+          "source": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_saved_settle.pbm",
+          "source_sha256": "80DB5F9AC08BF5ABCD782B9179B7EE3C558F91A3BB9B6C5D2F0C7086545A087B",
+          "review_page": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/10-saved/03-v9_saved_settle.png",
+          "review_page_sha256": "C64F4F3C6C06564F77C0FCCBC4A149EAE93F22F8EC646FBBB7E0E284CBBE393D"
+        }
+      ]
+    },
+    {
+      "order": 11,
+      "clip": "sleep",
+      "emotion": "困倦",
+      "trigger": "三分钟无互动",
+      "transition": "静态睡眠；不做周期刷新",
+      "frames": [
+        {
+          "phase": "entry",
+          "duration_ms": 1800,
+          "source": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_sleep_entry.pbm",
+          "source_sha256": "50BDE2BBCE5B89B26502CA5F60C73BB42949CBCB63555F81EEC495D52ECEBF02",
+          "review_page": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/11-sleep/01-v9_sleep_entry.png",
+          "review_page_sha256": "78137223107BFEC26C969E7A13B7B3E8D908697B47A7987F643000DF3663D24E"
+        },
+        {
+          "phase": "sustain",
+          "duration_ms": 3000,
+          "source": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_sleep_sustain.pbm",
+          "source_sha256": "50BDE2BBCE5B89B26502CA5F60C73BB42949CBCB63555F81EEC495D52ECEBF02",
+          "review_page": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/11-sleep/02-v9_sleep_sustain.png",
+          "review_page_sha256": "78137223107BFEC26C969E7A13B7B3E8D908697B47A7987F643000DF3663D24E"
+        },
+        {
+          "phase": "settle",
+          "duration_ms": 3000,
+          "source": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_sleep_settle.pbm",
+          "source_sha256": "50BDE2BBCE5B89B26502CA5F60C73BB42949CBCB63555F81EEC495D52ECEBF02",
+          "review_page": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/11-sleep/03-v9_sleep_settle.png",
+          "review_page_sha256": "78137223107BFEC26C969E7A13B7B3E8D908697B47A7987F643000DF3663D24E"
+        }
+      ]
+    },
+    {
+      "order": 12,
+      "clip": "menu_hold",
+      "emotion": "思考确认",
+      "trigger": "三秒长按",
+      "transition": "进入菜单或取消后回到平静",
+      "frames": [
+        {
+          "phase": "entry",
+          "duration_ms": 900,
+          "source": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_menu_hold_entry.pbm",
+          "source_sha256": "2C71A0D1044065F65EC06BE2D4F2FD13C85B9C8C748ADC237203DC43A667C645",
+          "review_page": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/12-menu_hold/01-v9_menu_hold_entry.png",
+          "review_page_sha256": "78786726D6C98986BB350554EFEF3A91986E2AED7FD9ADF675137CB0CB99A298"
+        },
+        {
+          "phase": "sustain",
+          "duration_ms": 1200,
+          "source": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_menu_hold_sustain.pbm",
+          "source_sha256": "023655EFEBA52F1A8595610676C140F0BB72297720D442DA931074677FDA0D89",
+          "review_page": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/12-menu_hold/02-v9_menu_hold_sustain.png",
+          "review_page_sha256": "A12EBE78AA1D9CD1ED7C1C9513E71FEB7B8960F214C60CC147383077850859DC"
+        },
+        {
+          "phase": "settle",
+          "duration_ms": 1100,
+          "source": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_menu_hold_settle.pbm",
+          "source_sha256": "2C71A0D1044065F65EC06BE2D4F2FD13C85B9C8C748ADC237203DC43A667C645",
+          "review_page": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/12-menu_hold/03-v9_menu_hold_settle.png",
+          "review_page_sha256": "78786726D6C98986BB350554EFEF3A91986E2AED7FD9ADF675137CB0CB99A298"
+        }
+      ]
+    },
+    {
+      "order": 13,
+      "clip": "wake",
+      "emotion": "醒来",
+      "trigger": "触摸或中断唤醒",
+      "transition": "一段短过渡后回到平静",
+      "frames": [
+        {
+          "phase": "entry",
+          "duration_ms": 700,
+          "source": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_wake_entry.pbm",
+          "source_sha256": "50BDE2BBCE5B89B26502CA5F60C73BB42949CBCB63555F81EEC495D52ECEBF02",
+          "review_page": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/13-wake/01-v9_wake_entry.png",
+          "review_page_sha256": "78137223107BFEC26C969E7A13B7B3E8D908697B47A7987F643000DF3663D24E"
+        },
+        {
+          "phase": "sustain",
+          "duration_ms": 900,
+          "source": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_wake_sustain.pbm",
+          "source_sha256": "5F078C3D876E74662917C7E2C625688A151C8D1C4A6381262E722EC1057D2B15",
+          "review_page": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/13-wake/02-v9_wake_sustain.png",
+          "review_page_sha256": "80D632D9D5F4676B8CE77C2A64960CE9195021EA86AC7FF76519643F103A3F0A"
+        },
+        {
+          "phase": "settle",
+          "duration_ms": 1100,
+          "source": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_wake_settle.pbm",
+          "source_sha256": "B4A8667BB0AB939B2101DCC7F0A07D7A8DE39E33854950F8332AED7F9D53CA5E",
+          "review_page": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/review-pages/13-wake/03-v9_wake_settle.png",
+          "review_page_sha256": "D5D9D53A314EC2037C61B0AC2ED24C12656B3DA485DB1059ADC08D5626949BC0"
+        }
+      ]
+    }
+  ],
+  "runtime_boundary": {
+    "pbm_imported": false,
+    "cemp_packed": false,
+    "external_flash_provisioned": false,
+    "firmware_flashed": false,
+    "runtime_resource_activated": false
+  },
+  "review_rule": "Review every 200x200 entry, sustain and settle page in listed state order. Runtime chooses states by trigger; it never cycles this review order randomly."
+}

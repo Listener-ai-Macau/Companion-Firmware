@@ -1,0 +1,49 @@
+{
+  "schema": "companion.menu_screen_family_information_architecture.v1",
+  "iteration_id": "companion-menu-v7-screen-family",
+  "status": "V7_3_COMPACT_NO_FACE_SOURCE_READY_FOR_PER_PAGE_REVIEW",
+  "profile": {"width": 200, "height": 200, "screen_count": 5},
+  "screens_in_review_order": [
+    {
+      "id": "home",
+      "title": "Home",
+      "purpose": "The only root surface, with Voice, Device, Connection and Preferences in that order.",
+      "rows": ["Voice", "Device", "Connection", "Preferences"]
+    },
+    {
+      "id": "voice",
+      "title": "Voice",
+      "purpose": "Truthful voice detail surface. Voice feedback is an explicit pending-speaker state, not a fake control.",
+      "rows": ["Recording status", "History", "Wake word", "Voice feedback (planned)"]
+    },
+    {
+      "id": "device",
+      "title": "Device",
+      "purpose": "Truthful hardware and display facts.",
+      "rows": ["E-paper", "Touch", "Battery", "UI assets"]
+    },
+    {
+      "id": "connection",
+      "title": "Connection",
+      "purpose": "Truthful pairing and link actions.",
+      "rows": ["Pair new device", "Link status", "Reconnect"]
+    },
+    {
+      "id": "preferences",
+      "title": "Preferences",
+      "purpose": "Truthful language and device-preference actions.",
+      "rows": ["Language", "Interaction", "Diagnostics", "About"]
+    }
+  ],
+  "navigation_contract": {
+    "home_entry": "long press after companion acknowledgement",
+    "detail_entry": "tap a root row",
+    "detail_exit": "right swipe or visible back affordance",
+    "row_truth": "Every shown row is a real action, live datum, or explicit planned/deferred state."
+  },
+  "visual_contract": {
+    "inner_face": "No inner face appears inside a menu page. The locked v9 identity appears only in separately reviewed menu-entry/menu-exit expression transitions.",
+    "text_owner": "menu_v5_localization; generated strokes are never product text.",
+    "forbidden": ["home-only source", "legacy six-root or two-page menu", "fake data", "code-drawn visual fallback", "cat outline", "eyes different from v9", "menu header face", "fifth detail row", "fake toggle"]
+  }
+}

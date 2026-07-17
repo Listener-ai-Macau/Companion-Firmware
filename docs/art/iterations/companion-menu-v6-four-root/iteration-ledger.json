@@ -14,7 +14,7 @@
   "iterations": [
     {
       "iteration_id": "menu-v6-four-root-source-2026-07-17",
-      "status": "generated_machine_review_pending_owner",
+      "status": "rejected_root_only_audit_evidence",
       "authoring_request": "Create one square, monochrome 200x200-ready four-root Companion menu source from the sole approved v9 face identity. The candidate must visually express the already implemented truthful Voice, Device, Connection and Preferences contract without making generated guide text user-visible.",
       "prompt": "Use the attached owner-approved Companion v9 inner-face sheet as the only character reference. Design one finished, square, monochrome, high-contrast reference screen for a 200 by 200 e-paper companion settings menu. White background, crisp pure black marks only, no grey, gradients, shadows, texture, device frame or outer card. This is a quiet compact device UI, not a landing page. Place a tiny friendly v9-style inner face in a restrained header zone near the top center: identical paired upright black oval eyes with matched small white highlights, detached short rounded brows, petite nose/W-mouth and cheek dots; no cat head outline, ears, whiskers, eyelashes or eyelids. Add one tiny star charm in unused header whitespace. Below it, show exactly four contiguous full-width navigation rows with thin divider rules and generous but efficient vertical rhythm. Each row has a distinct simple black 1-bit icon on the left, a calm central label area, and a tiny right chevron: Voice uses a friendly sound-wave or speech-mark icon; Device uses a simple device/status icon; Connection uses two linked loops; Preferences uses three tidy slider controls. The rows represent, in this exact order, Voice, Device, Connection, Preferences. Do not attempt readable typography; use short neutral text guide strokes in the label area because real English and Chinese strings are rendered later by firmware. The header face and the four icons should look like one premium, gentle, playful Companion system: sparse rounded strokes, balanced whitespace, no dense border, no fake controls, no decorative blobs, no emoticons, no cartoon cat body. Make the composition practical for a 200x200 one-bit e-paper panel and make every touch row visually distinct and obviously tappable.",
       "source_references": [
@@ -33,8 +33,8 @@
       "output": "docs/art/iterations/companion-menu-v6-four-root/generated_menu_four_root_v6_candidate.png",
       "sha256": "07D791A898FABE6E558686F6A4B4CC86094541C6B5116D6E0A3D263930DAA868",
       "review": {
-        "outcome": "PENDING_OWNER_VISUAL_REVIEW",
-        "reason": "The exact generated source, source hash, row geometry review and English/zh-CN deterministic overlays are retained. Only the owner may decide whether this candidate becomes an approved menu source; machine review cannot substitute for that decision.",
+        "outcome": "REJECTED_OWNER_SCOPE",
+        "reason": "The owner reported that this root-only image did not show the required menu detail screens. It is retained solely as audit evidence and cannot become a current menu source.",
         "comparison_artifacts": [
           "docs/validation/companion-menu-v6-source-review-20260717.json",
           "docs/validation/companion-menu-v6-localization-preview-20260717.json",
@@ -42,10 +42,10 @@
           "docs/art/iterations/companion-menu-v6-four-root/generated_menu_four_root_v6_en_200x200_localization_preview.png",
           "docs/art/iterations/companion-menu-v6-four-root/generated_menu_four_root_v6_zh_cn_200x200_localization_preview.png"
         ],
-        "next_prompt_delta": "Only after an owner review, change one named visible variable against this exact source. Do not restart the layout, invent a code-drawn replacement or reuse retired menu art."
+        "next_prompt_delta": "Replace this root-only source with the separately recorded v7 screen family; do not restart from legacy art or invent a code-drawn replacement."
       },
       "implementation": {
-        "status": "not_activated_pending_owner_visual_review",
+        "status": "not_activated_rejected_audit_candidate",
         "resource_revision": null,
         "semantic_view_model": "app/companion_pendant/epaper/menu_v5_view_model.c",
         "localization_owner": "app/companion_pendant/epaper/menu_v5_localization.c",
@@ -63,7 +63,7 @@
         "deterministic English and zh-CN overlay previews drawn from menu_v5_localization.c",
         "no PBM, CEMP, Flash or firmware activation"
       ],
-      "next_prompt_delta": "Only after a review decision, change one named visual variable against this exact source. Do not restart the layout or reuse retired menu art."
+      "next_prompt_delta": "Use the v7 screen-family generation history for the next source; do not reactivate this root-only candidate."
     }
   ],
   "runtime_boundary": "The image is not a runtime resource. The final renderer must use the existing four-root semantic view model and menu_v5_localization for actual English and zh-CN text, then consume a separately approved visual source without legacy fallback."

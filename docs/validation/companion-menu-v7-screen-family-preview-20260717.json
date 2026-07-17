@@ -1,0 +1,212 @@
+{
+  "schema": "companion.menu_v7_screen_family_preview.v1",
+  "status": "PASS_MACHINE_SCREEN_FAMILY_PREVIEW_PENDING_OWNER",
+  "source": {
+    "path": "docs/art/iterations/companion-menu-v7-screen-family/generated_menu_screen_family_v7_3_candidate.png",
+    "sha256": "D2D36B1CD51D153758E64C4DCBE0E0B7192F2E3F895D62CD3C432DDFA8476C37",
+    "dimensions_px": [
+      1254,
+      1254
+    ]
+  },
+  "screen_order": [
+    "home",
+    "voice",
+    "device",
+    "connection",
+    "preferences"
+  ],
+  "pages": [
+    {
+      "order": 1,
+      "id": "home",
+      "title": "Home",
+      "source_crop": [
+        92,
+        158,
+        575,
+        634
+      ],
+      "review_pages": {
+        "source": {
+          "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/source/01-home.png",
+          "sha256": "3DB1EF7A6F9318744F19A3143DBCCA07CD54E48135BC7093AA1FBFCBE0B1DCFD"
+        },
+        "en": {
+          "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/01-home.png",
+          "sha256": "33362E4D2CEF3003559CD0304EEEEBE80CC32018E414EE9CFE32783713528612",
+          "labels": [
+            "Voice",
+            "Device",
+            "Connection",
+            "Preferences"
+          ]
+        },
+        "zh_cn": {
+          "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/zh_cn/01-home.png",
+          "sha256": "CE7EF5EF367CBDCED6A91BB12BB0C6671C1BBE1015A642EF0BF8CC30F09A69A7",
+          "labels": [
+            "语音",
+            "设备",
+            "连接",
+            "偏好设置"
+          ]
+        }
+      }
+    },
+    {
+      "order": 2,
+      "id": "voice",
+      "title": "Voice",
+      "source_crop": [
+        680,
+        158,
+        1162,
+        634
+      ],
+      "review_pages": {
+        "source": {
+          "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/source/02-voice.png",
+          "sha256": "0C6D74E3B515F4176819964B76F7A6BE9B9B71DE0FD953424D356A17119BD988"
+        },
+        "en": {
+          "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/02-voice.png",
+          "sha256": "905DC9102D6C8519231E342C0EBF3317118BFA74B343E38608020AA2E7D15308",
+          "labels": [
+            "Recording",
+            "History",
+            "Wake word",
+            "Feedback"
+          ]
+        },
+        "zh_cn": {
+          "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/zh_cn/02-voice.png",
+          "sha256": "00C2D09C7612178AE864E565F336A8113052F3A793A93CCA9384E2A2CB059B33",
+          "labels": [
+            "录音状态",
+            "录音历史",
+            "唤醒词",
+            "语音反馈"
+          ]
+        }
+      }
+    },
+    {
+      "order": 3,
+      "id": "device",
+      "title": "Device",
+      "source_crop": [
+        40,
+        754,
+        408,
+        1143
+      ],
+      "review_pages": {
+        "source": {
+          "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/source/03-device.png",
+          "sha256": "C27F338D5CCC89174A526D0542BF6CE1D3D57A64C85817A268DD4D6649295450"
+        },
+        "en": {
+          "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/03-device.png",
+          "sha256": "643697B3B9F9C090E1D3F0E40CA7D8F8BAC994D469F90E0B436824B2F5067961",
+          "labels": [
+            "E-paper",
+            "Touch",
+            "Battery",
+            "UI assets"
+          ]
+        },
+        "zh_cn": {
+          "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/zh_cn/03-device.png",
+          "sha256": "902D38638DBF016EDC61329265FDA3332F8446F2D0C87DB16AB579629AE97DC2",
+          "labels": [
+            "电子纸",
+            "触控",
+            "电池",
+            "界面资源"
+          ]
+        }
+      }
+    },
+    {
+      "order": 4,
+      "id": "connection",
+      "title": "Connection",
+      "source_crop": [
+        442,
+        754,
+        809,
+        1143
+      ],
+      "review_pages": {
+        "source": {
+          "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/source/04-connection.png",
+          "sha256": "AA35CC5D41E818747342B5363774BA40F04142FC52EB9C013A5180DAD61C0018"
+        },
+        "en": {
+          "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/04-connection.png",
+          "sha256": "E9EB39EE4C4884D04226BDC2216E210DB253565A46CC51A20599286BA85044DF",
+          "labels": [
+            "Pair device",
+            "Link status",
+            "Reconnect"
+          ]
+        },
+        "zh_cn": {
+          "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/zh_cn/04-connection.png",
+          "sha256": "275B93A417DDFE421BC0E4C2DEEEFBCF6A0E09E1F6A3AA476AF38FDE228BBE2C",
+          "labels": [
+            "配对设备",
+            "连接状态",
+            "重新连接"
+          ]
+        }
+      }
+    },
+    {
+      "order": 5,
+      "id": "preferences",
+      "title": "Preferences",
+      "source_crop": [
+        846,
+        754,
+        1215,
+        1143
+      ],
+      "review_pages": {
+        "source": {
+          "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/source/05-preferences.png",
+          "sha256": "A76ED4E3445B5A1D57F3E5686E30981898F66BE667F1C907F86AC1084430CD21"
+        },
+        "en": {
+          "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/05-preferences.png",
+          "sha256": "EE89A9F63CB32967613CFD95C43D9A1391981E1A7274C6AA6EB5D97ED14AA1F8",
+          "labels": [
+            "Language",
+            "Interaction",
+            "Diagnostics",
+            "About"
+          ]
+        },
+        "zh_cn": {
+          "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/zh_cn/05-preferences.png",
+          "sha256": "6B70AC940C824857CC7D9C3B0D104BFFB992F7BDEFE73F2A28A385F112F8F938",
+          "labels": [
+            "语言",
+            "交互",
+            "诊断",
+            "关于"
+          ]
+        }
+      }
+    }
+  ],
+  "runtime_boundary": {
+    "pbm_imported": false,
+    "cemp_packed": false,
+    "external_flash_provisioned": false,
+    "firmware_flashed": false,
+    "runtime_resource_activated": false
+  },
+  "review_rule": "Each source, English and zh-CN page must be opened alone in order. The raw storyboard and its crops are review artifacts only."
+}

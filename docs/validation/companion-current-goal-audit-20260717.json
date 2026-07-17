@@ -1,11 +1,11 @@
 {
-  "active_goal_boundary": "Only current v9/companion-menu-v6-four-root sources may be considered; historical v5/v6/v7/v8/v10+ art and six-root menus are not active inputs.",
+  "active_goal_boundary": "Only current v9/companion-menu-v7-screen-family v7.3 sources may be considered; root-only v6 and historical v5/v6/v7/v8/v10+ art and six-root menus are not active inputs.",
   "codex_goal_status": "active",
   "daily_visual_validation": "deterministic source/PBM/CEMP/render evidence; camera is final physical preflight only, never daily art development",
   "errors": [],
   "external_gates": "Owner visual decisions, real hardware evidence, a selected WBA target and a matching vendor CWF1 waveform package remain required before their respective acceptance items can pass.",
   "open_gates": [
-    "three sequential owner visual decisions: menu-v6-four-root, special-system-v1, special-journey-v1",
+    "78 sequential owner visual observations: 39 v9 home keyframes, 15 v7.3 menu pages, 12 system pages and 12 journey pages",
     "separate approved-source PBM/CEMP import and runtime activation proposal",
     "WB55 FTS02/panel recovery, real touch/Stop/current and physical visual acceptance",
     "real WBA project, board and panel/resource parity",
@@ -165,7 +165,7 @@
     {
       "evidence": [
         {
-          "detail": "Five host replays passed from source commit 1d930258a19045781cade3fc63d289f552af7536; the v6 source hash is linked but runtime activation remains false.",
+          "detail": "Five host replays passed from source commit 1d930258a19045781cade3fc63d289f552af7536; this preserves menu behavior only while v6 visual art remains rejected and runtime activation remains false.",
           "path": "docs/validation/companion-menu-v6-function-receipt-20260717.json",
           "status": "PASS_CURRENT_SOURCE_MENU_FUNCTION_PENDING_OWNER_VISUAL"
         }
@@ -177,14 +177,14 @@
     {
       "evidence": [
         {
-          "detail": "Four-root layout source is pending owner decision.",
-          "path": "docs/validation/companion-menu-v6-source-review-20260717.json",
-          "status": "PASS_MACHINE_PREVIEW_PENDING_OWNER"
+          "detail": "All 39 daily keyframes are individually reviewable in trigger order.",
+          "path": "docs/validation/companion-v9-home-storyboard-review-20260717.json",
+          "status": "PASS_MACHINE_ONE_PAGE_PER_KEYFRAME_PENDING_OWNER"
         },
         {
-          "detail": "English and zh-CN overlays are deterministic previews.",
-          "path": "docs/validation/companion-menu-v6-localization-preview-20260717.json",
-          "status": "PASS_MACHINE_LOCALIZATION_PREVIEW_PENDING_OWNER"
+          "detail": "Five no-face menu screens each retain raw, English and zh-CN 200x200 pages.",
+          "path": "docs/validation/companion-menu-v7-screen-family-preview-20260717.json",
+          "status": "PASS_MACHINE_SCREEN_FAMILY_PREVIEW_PENDING_OWNER"
         },
         {
           "detail": "System sheet is pending owner decision.",
@@ -197,6 +197,11 @@
           "status": "PASS_MACHINE_PREVIEW_PENDING_OWNER"
         },
         {
+          "detail": "All 24 special scenes are individually reviewable and remain review-only.",
+          "path": "docs/validation/companion-pet-special-state-one-page-review-20260717.json",
+          "status": "PASS_MACHINE_ONE_PAGE_PER_SPECIAL_STATE_PENDING_OWNER"
+        },
+        {
           "detail": "The exact 200x200 source-crop previews retain >=4 px clearance and remain review-only.",
           "path": "docs/validation/companion-pet-special-state-crop-preflight-20260717.json",
           "status": "PASS_MACHINE_SAFE_CROP_PREVIEW_NOT_IMPORTABLE"
@@ -207,7 +212,7 @@
           "status": "PASS_EXACT_PENDING_SOURCE_MAPPING_NO_RUNTIME"
         },
         {
-          "detail": "Three sequential Chinese owner-review items retain machine-ready locked originals and non-activation boundaries.",
+          "detail": "Four sequential Chinese owner-review families retain 78 machine-locked originals and non-activation boundaries.",
           "path": "docs/validation/companion-ui-visual-acceptance-readiness-20260717.json",
           "status": "PASS_READY_FOR_SEQUENTIAL_OWNER_REVIEW"
         },
@@ -223,7 +228,7 @@
         }
       ],
       "id": "four_root_menu_and_special_scene_sources",
-      "requirement": "The four-root bilingual menu and both special-scene sheets have deterministic previews only; source approval must precede PBM/CEMP import or runtime activation.",
+      "requirement": "The v9 homepage storyboard, the no-face v7.3 four-root menu family and both special-scene sheets have deterministic one-page previews only; a complete triaged observation sequence and separate source-import proposal must precede PBM/CEMP import or runtime activation.",
       "status": "machine_previews_pass_owner_decision_pending"
     },
     {
@@ -281,6 +286,10 @@
     "python .\\tools\\verify_wba_spi_nor_adapter.py --self-test",
     "python .\\tools\\verify_expression_wba_portability.py",
     "python .\\tools\\capture_wba_v9_candidate_asset_replay_receipt.py",
-    "python .\\tools\\capture_companion_menu_v6_function_receipt.py"
+    "python .\\tools\\capture_companion_menu_v6_function_receipt.py",
+    "python .\\tools\\render_companion_v9_home_storyboard_review.py --write",
+    "python .\\tools\\render_companion_menu_v7_screen_family_preview.py --write",
+    "python .\\tools\\render_companion_special_state_review_pages.py --write",
+    "python .\\tools\\build_companion_ui_visual_acceptance_manifest.py --write"
   ]
 }

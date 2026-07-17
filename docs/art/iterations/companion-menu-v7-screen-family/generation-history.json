@@ -1,0 +1,57 @@
+{
+  "schema": "companion.visual_generation_history.v1",
+  "feature": "companion-menu-screen-family",
+  "rounds": [
+    {
+      "iteration_id": "menu-v7-five-screen-source-v7.0-2026-07-17",
+      "status": "REJECTED_OWNER_SCOPE",
+      "prompt_version": "v7.0",
+      "prompt": "Use the attached owner-approved Companion v9 inner-face sheet as the only character reference. Generate a monochrome 1-bit-ready visual source for a premium 200 by 200 e-paper companion settings MENU FAMILY, not one homepage. Create five separate square device screens in a clean review storyboard, each screen fully self-contained and designed to later crop exactly to 200 by 200: 1 Home, 2 Voice detail, 3 Device detail, 4 Connection detail, 5 Preferences detail. Each screen is white with crisp black marks only: no grey, gradients, shadows, texture, device frame, dark background, cards, decorative blobs or generated final words. Preserve the exact v9 eye identity: matched upright black oval eyes with small white highlights, paired rounded brow dashes, petite nose/W mouth and cheek dots; no cat outline, ears, whiskers, eyelids, eyelashes, side-eye, smirk, flirtatious or sleepy-sly expression. Use that tiny face only as a gentle header companion, with a single sparse state charm appropriate to the screen. Screen 1: four contiguous tappable rows in this order, with distinct icons: Voice, Device, Connection, Preferences. Screens 2 through 5: each has a clear back arrow at top-left, compact header face, the matching title placement and truthful rows represented by distinct simple icons plus neutral label guide strokes. Voice has recording state, history and wake-word-deferred. Device has e-paper, touch, battery-planned and UI-assets. Connection has pair, link status and reconnect. Preferences has language, gesture, refresh, diagnostics and about. Detail rows must visibly be actual settings/detail rows, not another homepage: use a smaller list rhythm, live-status dot or value placeholder only where appropriate, and no fake toggles or numbers. Keep all screens cohesive, calm, cute and usable with efficient whitespace, clear row boundaries, an obvious back affordance and one consistent navigation language. The source is a design baseline; actual English and Chinese text will be rendered separately.",
+      "source_references": [
+        {"path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png", "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"}
+      ],
+      "output": {"path": "docs/art/iterations/companion-menu-v7-screen-family/generated_menu_screen_family_v7_candidate.png", "sha256": "8ED4FBC0EFA6368F98DB40C1C8D2BD4652B75F2CAE238D33DDC9E529BF6267EA"},
+      "owner_feedback": "Menu face occupies too much room on the 200x200 panel; Home is four rows and every detail page is at most four truthful rows.",
+      "next_prompt_delta": "Remove all menu-page faces and enforce compact four-row detail layouts."
+    },
+    {
+      "iteration_id": "menu-v7-five-screen-source-v7.1-2026-07-17",
+      "status": "SUPERSEDED_MACHINE_NAVIGATION_REWORK",
+      "prompt_version": "v7.1",
+      "prompt_record": {"path": "docs/art/iterations/companion-menu-v7-screen-family/generation-request-v7.1.json", "sha256": "BDD9DD41B170153BBE6E9684199DF10F0652F6A7A172D08916A42CF70539D30C", "prompt_sha256": "4C94ACC6F7D3C8DB1A6BC85A8874F8F377238FD99A5DC17776A37B258B361020"},
+      "source_references": [
+        {"path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png", "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"}
+      ],
+      "output": {"path": "docs/art/iterations/companion-menu-v7-screen-family/generated_menu_screen_family_v7_1_candidate.png", "sha256": "4638D676E7E8DB1B4482AA4B2C904EB1509E40B6817E6E7781111D6EF934E287"},
+      "machine_decision": "ROOT_ROWS_LACK_CLEAR_RIGHT_CHEVRONS",
+      "owner_decision": "NOT_OPENED_FOR_OWNER_REVIEW",
+      "next_prompt_delta": "Preserve the compact no-face layout and add only clear, equal right chevrons to the four Home rows."
+    },
+    {
+      "iteration_id": "menu-v7-five-screen-source-v7.2-2026-07-17",
+      "status": "SUPERSEDED_MACHINE_CONNECTION_SCOPE_REWORK",
+      "prompt_version": "v7.2",
+      "prompt_record": {"path": "docs/art/iterations/companion-menu-v7-screen-family/generation-request-v7.2.json", "sha256": "6136712D7792619DE35D4F8AA6D2D815490A2021188F448CF489F49ACF331AE4", "prompt_sha256": "671BA61E204F180E350EC8B4955CB00FB7DDC0189D083DECB436B1859BD1038A"},
+      "source_references": [
+        {"path": "docs/art/iterations/companion-menu-v7-screen-family/generated_menu_screen_family_v7_1_candidate.png", "sha256": "4638D676E7E8DB1B4482AA4B2C904EB1509E40B6817E6E7781111D6EF934E287"}
+      ],
+      "output": {"path": "docs/art/iterations/companion-menu-v7-screen-family/generated_menu_screen_family_v7_2_candidate.png", "sha256": "4A6C395D5D22166E1695FF71A9E57DAC31BC16311D4A4C83176E9CB81A909EF3"},
+      "machine_decision": "CONNECTION_HAS_UNCONTRACTED_FOURTH_NAVIGATION_ROW",
+      "owner_decision": "NOT_OPENED_FOR_OWNER_REVIEW",
+      "next_prompt_delta": "Preserve every other screen and change only Connection to three truthful rows."
+    },
+    {
+      "iteration_id": "menu-v7-five-screen-source-v7.3-2026-07-17",
+      "status": "GENERATED_MACHINE_REVIEW_PENDING_OWNER",
+      "prompt_version": "v7.3",
+      "prompt_record": {"path": "docs/art/iterations/companion-menu-v7-screen-family/generation-request-v7.3.json", "sha256": "8A698B912464B28E3E0112B86069F53DF924F7B78514EDFC501AC304202963BA", "prompt_sha256": "B0D56EFC86A94FAF7EA6225E5685710BC79C2F3D3423629DD616338688EE6569"},
+      "source_references": [
+        {"path": "docs/art/iterations/companion-menu-v7-screen-family/generated_menu_screen_family_v7_2_candidate.png", "sha256": "4A6C395D5D22166E1695FF71A9E57DAC31BC16311D4A4C83176E9CB81A909EF3"}
+      ],
+      "output": {"path": "docs/art/iterations/companion-menu-v7-screen-family/generated_menu_screen_family_v7_3_candidate.png", "sha256": "D2D36B1CD51D153758E64C4DCBE0E0B7192F2E3F895D62CD3C432DDFA8476C37"},
+      "machine_decision": "PENDING_SOURCE_CROP_AND_LOCALIZATION_PREVIEW",
+      "owner_decision": "PENDING_OWNER_VISUAL_REVIEW",
+      "next_prompt_delta": "Any next round changes only one owner-named visible variable against this exact no-face, compact four-row candidate."
+    }
+  ]
+}
