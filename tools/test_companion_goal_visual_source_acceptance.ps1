@@ -55,7 +55,7 @@ if ($record.schema -ne "companion.g2_visual_artifact_operator_review.v1") {
 if ($record.status -ne "OWNER_ARTIFACT_OBSERVATION_CAPTURED") {
     throw "G2 self-test selection status drifted."
 }
-if ($record.item_id -ne $item.id -or $record.execution.canonical_aiw_operator_prompt_opened -ne $false -or $record.execution.original_image_opened -ne $false -or $record.execution.self_test -ne $true) {
+if ($record.item_id -ne $item.id -or $record.execution.canonical_aiw_operator_prompt_opened -ne $false -or $record.execution.original_image_opened -ne $false -or $record.execution.comparison_image_opened -ne $false -or $record.execution.self_test -ne $true) {
     throw "G2 self-test must preserve the first sequential item without opening the prompt."
 }
 if ($record.source_sha256 -ne $item.source_sha256 -or $record.machine_evidence -ne $item.machine_evidence) {
@@ -65,8 +65,11 @@ $artifact = $item.artifact_review.images[0]
 if ($record.artifact.index -ne 1 -or $record.artifact.path -ne $artifact.path -or $record.artifact.sha256 -ne $artifact.sha256) {
     throw "G2 self-test record is not bound to the first locked original image."
 }
+if ($record.artifact.comparison.comparison_page.sha256 -ne $artifact.comparison.comparison_page.sha256 -or $record.artifact.comparison.desktop_output.sha256 -ne $artifact.comparison.desktop_output.sha256) {
+    throw "G2 self-test record is not bound to the first locked art/output comparison."
+}
 $rendered = $record.rendered_prompt
-if ([string]$rendered.title -notlike "*电脑端美术源图验收*1/$($manifest.items.Count)*原图 1/$($item.artifact_review.images.Count)*" -or [string]$rendered.scope_text -notlike "*系统图片查看器*" -or [string]$rendered.scope_text -notlike "*不是开发板上的电子纸实物屏*" -or [string]$rendered.scope_text -notlike "*不会导入 PBM/CEMP*") {
+if ([string]$rendered.title -notlike "*电脑端美术对照验收*1/$($manifest.items.Count)*图 1/$($item.artifact_review.images.Count)*" -or [string]$rendered.scope_text -notlike "*左侧锁定生图基线*右侧 200x200 电脑端输出*" -or [string]$rendered.scope_text -notlike "*不是开发板上的电子纸实物屏*" -or [string]$rendered.scope_text -notlike "*不会导入 PBM/CEMP*") {
     throw "G2 rendered prompt lost its sequential or non-activation scope."
 }
 foreach ($field in @("target", "operator_action", "success_signal", "failure_rule", "continue_condition", "recovery_condition", "record_fields")) {
@@ -82,9 +85,9 @@ foreach ($text in @($item.operator_prompt.target, $item.operator_prompt.operator
         throw "G2 rendered message is missing manifest text: $text"
     }
 }
-foreach ($text in @($artifact.label, $artifact.path)) {
+foreach ($text in @($artifact.label, $artifact.comparison.baseline.path, $artifact.comparison.desktop_output.path, $artifact.comparison.comparison_page.path, $artifact.comparison.relation)) {
     if ([string]$rendered.message -notlike "*$text*") {
-        throw "G2 rendered message is missing original-image context: $text"
+        throw "G2 rendered message is missing paired comparison context: $text"
     }
 }
 foreach ($text in @($item.operator_prompt.continue_condition, $item.operator_prompt.recovery_condition) + @($item.operator_prompt.record_fields)) {

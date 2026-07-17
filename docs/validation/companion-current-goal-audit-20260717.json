@@ -202,6 +202,11 @@
           "status": "PASS_MACHINE_ONE_PAGE_PER_SPECIAL_STATE_PENDING_OWNER"
         },
         {
+          "detail": "All 78 G2 observations show the locked generated-art baseline beside the deterministic desktop output.",
+          "path": "docs/validation/companion-ui-visual-comparison-pages-20260717.json",
+          "status": "PASS_PAIRED_ART_BASELINE_AND_DESKTOP_OUTPUT_READY"
+        },
+        {
           "detail": "The exact 200x200 source-crop previews retain >=4 px clearance and remain review-only.",
           "path": "docs/validation/companion-pet-special-state-crop-preflight-20260717.json",
           "status": "PASS_MACHINE_SAFE_CROP_PREVIEW_NOT_IMPORTABLE"
@@ -212,7 +217,7 @@
           "status": "PASS_EXACT_PENDING_SOURCE_MAPPING_NO_RUNTIME"
         },
         {
-          "detail": "Four sequential Chinese owner-review families retain 78 machine-locked originals and non-activation boundaries.",
+          "detail": "Four sequential Chinese owner-review families retain 78 machine-locked paired source/output observations and non-activation boundaries.",
           "path": "docs/validation/companion-ui-visual-acceptance-readiness-20260717.json",
           "status": "PASS_READY_FOR_SEQUENTIAL_OWNER_REVIEW"
         },
@@ -295,6 +300,7 @@
     "python .\\tools\\render_companion_v9_home_storyboard_review.py --write",
     "python .\\tools\\render_companion_menu_v7_screen_family_preview.py --write",
     "python .\\tools\\render_companion_special_state_review_pages.py --write",
+    "python .\\tools\\render_companion_visual_comparison_pages.py --write",
     "python .\\tools\\build_companion_ui_visual_acceptance_manifest.py --write"
   ]
 }

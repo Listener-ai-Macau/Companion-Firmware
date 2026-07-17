@@ -15,6 +15,7 @@ REPORT = ROOT / "docs/validation/companion-ui-visual-acceptance-readiness-202607
 V9 = ROOT / "docs/validation/companion-v9-home-storyboard-review-20260717.json"
 MENU = ROOT / "docs/validation/companion-menu-v7-screen-family-preview-20260717.json"
 SPECIAL = ROOT / "docs/validation/companion-pet-special-state-one-page-review-20260717.json"
+COMPARISON = ROOT / "docs/validation/companion-ui-visual-comparison-pages-20260717.json"
 PROMPT_FIELDS = ("target", "operator_action", "success_signal", "failure_rule", "continue_condition", "recovery_condition", "record_fields")
 
 
@@ -42,6 +43,7 @@ def build_report() -> dict[str, object]:
     v9 = json.loads(V9.read_text(encoding="utf-8"))
     menu = json.loads(MENU.read_text(encoding="utf-8"))
     special = json.loads(SPECIAL.read_text(encoding="utf-8"))
+    comparison = json.loads(COMPARISON.read_text(encoding="utf-8"))
     expected = {
         "home-v9-daily-storyboard": (v9["source_sha256"], V9, flattened_v9(v9)),
         "menu-v7-screen-family": (menu["source"]["sha256"], MENU, flattened_menu(menu)),
@@ -57,8 +59,14 @@ def build_report() -> dict[str, object]:
         errors.append("visual acceptance manifest is not in the ready state")
     if [item.get("id") for item in items] != ordered_ids or [item.get("sequence") for item in items] != [1, 2, 3, 4]:
         errors.append("visual acceptance manifest must define the four ordered source families")
-    if "已执行" not in manifest.get("review_style", "") or "one original image at a time" not in manifest.get("review_style", ""):
-        errors.append("visual acceptance manifest lost observation-only one-page review language")
+    if "已执行" not in manifest.get("review_style", "") or "paired locked-art-baseline and desktop-output page at a time" not in manifest.get("review_style", ""):
+        errors.append("visual acceptance manifest lost paired art/output observation language")
+    if comparison.get("status") != "PASS_PAIRED_ART_BASELINE_AND_DESKTOP_OUTPUT_READY" or comparison.get("page_total") != 78:
+        errors.append("paired art/output comparison report is not complete")
+    comparisons = {
+        item.get("id"): {page.get("index"): page for page in item.get("pages", [])}
+        for item in comparison.get("items", [])
+    }
     if len(v9.get("states", [])) != 13 or len(expected["home-v9-daily-storyboard"][2]) != 39:
         errors.append("v9 daily storyboard must retain 13 states and 39 keyframes")
     if [page.get("id") for page in menu.get("pages", [])] != ["home", "voice", "device", "connection", "preferences"] or len(expected["menu-v7-screen-family"][2]) != 15:
@@ -92,6 +100,18 @@ def build_report() -> dict[str, object]:
                 errors.append(f"{identifier} image hash drifted: {image.get('path')}")
             if not image.get("context"):
                 errors.append(f"{identifier} image lacks review context: {image.get('path')}")
+            paired = image.get("comparison", {})
+            expected_paired = comparisons.get(identifier, {}).get(image.get("index"), {})
+            if paired != expected_paired or paired.get("id") != image.get("id"):
+                errors.append(f"{identifier} paired comparison binding drifted: {image.get('path')}")
+                continue
+            for role in ("baseline", "desktop_output", "comparison_page"):
+                side = paired.get(role, {})
+                side_path = ROOT / side.get("path", "")
+                if not side_path.is_file() or digest(side_path) != side.get("sha256"):
+                    errors.append(f"{identifier} paired {role} hash drifted: {image.get('path')}")
+            if paired.get("machine_result", {}).get("status") not in ("PASS_EXACT", "PASS_LOCALIZED_TARGET"):
+                errors.append(f"{identifier} paired machine relationship failed: {image.get('path')}")
         if item.get("owner_decision") != "PENDING_OWNER_VISUAL_REVIEW":
             errors.append(f"{identifier} owner decision is not pending")
         if "computer-side" not in item.get("scope", "") or "not a physical e-paper review" not in item.get("scope", ""):
@@ -101,13 +121,14 @@ def build_report() -> dict[str, object]:
         verified.append({"id": identifier, "source_sha256": source_sha, "image_count": len(images), "machine_evidence": item.get("machine_evidence"), "artifact_review": review, "operator_prompt": prompt})
 
     return {
-        "schema": "companion.ui_visual_acceptance_readiness.v2",
+        "schema": "companion.ui_visual_acceptance_readiness.v3",
         "status": "PASS_READY_FOR_SEQUENTIAL_OWNER_REVIEW" if not errors else "FAIL",
         "machine_preflight_opens_operator_prompt": False,
         "next_eligible_owner_item": ordered_ids[0],
         "sequential_visual_review": [{"id": identifier, "state": "ready_or_blocked_by_prior_locked_page" if index else "ready_for_owner_observation"} for index, identifier in enumerate(ordered_ids)],
         "items": verified,
         "review_page_total": sum(item["image_count"] for item in verified),
+        "paired_comparison_page_total": comparison.get("page_total"),
         "runtime_boundary": {"pbm_imported": False, "cemp_packed": False, "external_flash_provisioned": False, "firmware_flashed": False, "runtime_resource_activated": False},
         "errors": errors,
     }

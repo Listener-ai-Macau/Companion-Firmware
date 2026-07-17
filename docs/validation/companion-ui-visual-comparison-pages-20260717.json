@@ -1,0 +1,2375 @@
+{
+  "schema": "companion.ui_visual_comparison_pages.v1",
+  "status": "PASS_PAIRED_ART_BASELINE_AND_DESKTOP_OUTPUT_READY",
+  "review_scope": "Each G2 page shows the locked generated-art baseline beside its deterministic 200x200 desktop output. This is not a physical e-paper-panel acceptance.",
+  "items": [
+    {
+      "id": "home-v9-daily-storyboard",
+      "pages": [
+        {
+          "index": 1,
+          "id": "idle-entry",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+            "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+            "crop_box": [
+              7,
+              92,
+              307,
+              392
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_idle_entry.pbm",
+            "sha256": "5F078C3D876E74662917C7E2C625688A151C8D1C4A6381262E722EC1057D2B15"
+          },
+          "relation": "source_crop_threshold_translation_to_pbm",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0,
+            "translation": [
+              0,
+              0
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/01-idle-entry.png",
+            "sha256": "99D476AFCBD4969B9FC830E78FEA896E5E5F092C9C86F2FB42180D9AA3988241"
+          }
+        },
+        {
+          "index": 2,
+          "id": "idle-sustain",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+            "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+            "crop_box": [
+              7,
+              92,
+              307,
+              392
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_idle_sustain.pbm",
+            "sha256": "7E38DA354369F63827C76101C993E340BC13AEF63F7440B16F7BE9F694A31894"
+          },
+          "relation": "source_crop_threshold_translation_to_pbm",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0,
+            "translation": [
+              -1,
+              0
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/02-idle-sustain.png",
+            "sha256": "213017C8D3E8D15603AF253A15AA9865BAC8608C7AC88FC478E52F77D3275550"
+          }
+        },
+        {
+          "index": 3,
+          "id": "idle-settle",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+            "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+            "crop_box": [
+              7,
+              92,
+              307,
+              392
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_idle_settle.pbm",
+            "sha256": "5F078C3D876E74662917C7E2C625688A151C8D1C4A6381262E722EC1057D2B15"
+          },
+          "relation": "source_crop_threshold_translation_to_pbm",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0,
+            "translation": [
+              0,
+              0
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/03-idle-settle.png",
+            "sha256": "C7322EBED9D9113AB9603056D769CE0B6EBBC983BCD3CC5A47E8FC37FA111AF0"
+          }
+        },
+        {
+          "index": 4,
+          "id": "touch-entry",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+            "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+            "crop_box": [
+              320,
+              92,
+              620,
+              392
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_touch_entry.pbm",
+            "sha256": "BC509237D46ACB9E79EE2FFAC617EF0ED21BC0BAD02EC8F4CF0AA1F93C99B490"
+          },
+          "relation": "source_crop_threshold_translation_to_pbm",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0,
+            "translation": [
+              0,
+              0
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/04-touch-entry.png",
+            "sha256": "01FEB7367BF57FB7DB730CC0FB4DF3F058CFEF83074AEEDC7621A4EB6BDE2A05"
+          }
+        },
+        {
+          "index": 5,
+          "id": "touch-sustain",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+            "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+            "crop_box": [
+              320,
+              92,
+              620,
+              392
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_touch_sustain.pbm",
+            "sha256": "B4A8667BB0AB939B2101DCC7F0A07D7A8DE39E33854950F8332AED7F9D53CA5E"
+          },
+          "relation": "source_crop_threshold_translation_to_pbm",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0,
+            "translation": [
+              0,
+              -1
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/05-touch-sustain.png",
+            "sha256": "FF95A08A570D3ED0D528F2FDFCEBF5A1D8B69F4083E4EDD32E5CAAF43A2455C8"
+          }
+        },
+        {
+          "index": 6,
+          "id": "touch-settle",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+            "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+            "crop_box": [
+              320,
+              92,
+              620,
+              392
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_touch_settle.pbm",
+            "sha256": "BC509237D46ACB9E79EE2FFAC617EF0ED21BC0BAD02EC8F4CF0AA1F93C99B490"
+          },
+          "relation": "source_crop_threshold_translation_to_pbm",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0,
+            "translation": [
+              0,
+              0
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/06-touch-settle.png",
+            "sha256": "A54215EB321760614E3EB3B394E128E51CEC6477E7C1D64C39064A73CBBB16AA"
+          }
+        },
+        {
+          "index": 7,
+          "id": "swipe_left-entry",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+            "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+            "crop_box": [
+              614,
+              92,
+              934,
+              412
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_left_entry.pbm",
+            "sha256": "4A9EBEEB4EEAB1E88C725E5D2C52AEAA4FE18BF628544F445A7DB4BDF84F024C"
+          },
+          "relation": "source_crop_threshold_translation_to_pbm",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0,
+            "translation": [
+              1,
+              0
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/07-swipe_left-entry.png",
+            "sha256": "D819753C1F0ABA1C2D2885348C0B732D708EE9F1C7B57308197B0AC3118DF76C"
+          }
+        },
+        {
+          "index": 8,
+          "id": "swipe_left-sustain",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+            "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+            "crop_box": [
+              614,
+              92,
+              934,
+              412
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_left_sustain.pbm",
+            "sha256": "0B273A63F84CAD1D9A9C724B2577C9CCB3762D04045BB169FFA347F30D6F9547"
+          },
+          "relation": "source_crop_threshold_translation_to_pbm",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0,
+            "translation": [
+              0,
+              0
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/08-swipe_left-sustain.png",
+            "sha256": "C119801071F1304C83E534B9C50E555C18340702CD8F8E16971BA22F3E94E958"
+          }
+        },
+        {
+          "index": 9,
+          "id": "swipe_left-settle",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+            "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+            "crop_box": [
+              614,
+              92,
+              934,
+              412
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_left_settle.pbm",
+            "sha256": "CA0C511AF644596D6005E681FEF54C16A92DB9691D8B9BE20CA94562AD8BECE8"
+          },
+          "relation": "source_crop_threshold_translation_to_pbm",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0,
+            "translation": [
+              -1,
+              0
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/09-swipe_left-settle.png",
+            "sha256": "26679800DFD7FD99C5956BBAE22B30DC92F4C1E382C533681DB685241B22A3F6"
+          }
+        },
+        {
+          "index": 10,
+          "id": "swipe_right-entry",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+            "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+            "crop_box": [
+              947,
+              92,
+              1247,
+              392
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_right_entry.pbm",
+            "sha256": "DC78758B5676644A7100DE96CD0E7609846A3622E75B80D5090E7AB82E06F6F5"
+          },
+          "relation": "source_crop_threshold_translation_to_pbm",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0,
+            "translation": [
+              -1,
+              0
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/10-swipe_right-entry.png",
+            "sha256": "0A04AE890AAEA1A555F07FDEA34A5090F1401F51318F8812236FC31C3DC1B6BD"
+          }
+        },
+        {
+          "index": 11,
+          "id": "swipe_right-sustain",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+            "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+            "crop_box": [
+              947,
+              92,
+              1247,
+              392
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_right_sustain.pbm",
+            "sha256": "50C85CE66814A023704D923B9BB23065FF90BCBBC99581650C97A4BBB562A93F"
+          },
+          "relation": "source_crop_threshold_translation_to_pbm",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0,
+            "translation": [
+              0,
+              0
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/11-swipe_right-sustain.png",
+            "sha256": "4FEE0FDB40B0AC65090D4F06F9FCDA2E85402AF130200DFFA02858C36DA03CEF"
+          }
+        },
+        {
+          "index": 12,
+          "id": "swipe_right-settle",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+            "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+            "crop_box": [
+              947,
+              92,
+              1247,
+              392
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_right_settle.pbm",
+            "sha256": "7DBC7505DEC8785949F6EECC3E80AA8D9AF47325EFF52105FC962F9184FBD06E"
+          },
+          "relation": "source_crop_threshold_translation_to_pbm",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0,
+            "translation": [
+              1,
+              0
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/12-swipe_right-settle.png",
+            "sha256": "355A0EE22D819C6F826DF5ED0F7FA5B1958E391268EA7CB6ACF446C212739DD3"
+          }
+        },
+        {
+          "index": 13,
+          "id": "swipe_up-entry",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+            "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+            "crop_box": [
+              7,
+              470,
+              307,
+              770
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_up_entry.pbm",
+            "sha256": "069B3F20908026D1C6BB64F30A78BFB03B531B8095D36E9097E3831B878896AE"
+          },
+          "relation": "source_crop_threshold_translation_to_pbm",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0,
+            "translation": [
+              0,
+              1
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/13-swipe_up-entry.png",
+            "sha256": "64400276099CF2B0FCDCD3CDA339CBBA411DC84524B96ABA1CD3F0EEC416F364"
+          }
+        },
+        {
+          "index": 14,
+          "id": "swipe_up-sustain",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+            "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+            "crop_box": [
+              7,
+              470,
+              307,
+              770
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_up_sustain.pbm",
+            "sha256": "728C01F6EC46407DDC00287972D134B942A9B466B12CF98FD82EDF769E62870F"
+          },
+          "relation": "source_crop_threshold_translation_to_pbm",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0,
+            "translation": [
+              0,
+              0
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/14-swipe_up-sustain.png",
+            "sha256": "64A67117B684CCE149DDF22641DCBDCE799D45AC6A28A77AEDBDAB81F59EB35E"
+          }
+        },
+        {
+          "index": 15,
+          "id": "swipe_up-settle",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+            "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+            "crop_box": [
+              7,
+              470,
+              307,
+              770
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_up_settle.pbm",
+            "sha256": "0821EB1AF9AA7B3B89C39C3C6E9C69548DB6355079BC5F4B2DF48B573CD7676E"
+          },
+          "relation": "source_crop_threshold_translation_to_pbm",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0,
+            "translation": [
+              0,
+              -1
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/15-swipe_up-settle.png",
+            "sha256": "96C7E6E41501E37AB654137D221BA5C76A56CC6E382D929FA17C687F7BC53EC2"
+          }
+        },
+        {
+          "index": 16,
+          "id": "swipe_down-entry",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+            "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+            "crop_box": [
+              320,
+              470,
+              620,
+              770
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_down_entry.pbm",
+            "sha256": "EB5FC5039D218538ED225BCCCA313D993BA8E493730255A58766A9E05F0EC51B"
+          },
+          "relation": "source_crop_threshold_translation_to_pbm",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0,
+            "translation": [
+              0,
+              -1
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/16-swipe_down-entry.png",
+            "sha256": "3AF59D6EFE587ABCFEF2451FE8B29E010E4CB90EA28380E21A0F25050077EE75"
+          }
+        },
+        {
+          "index": 17,
+          "id": "swipe_down-sustain",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+            "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+            "crop_box": [
+              320,
+              470,
+              620,
+              770
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_down_sustain.pbm",
+            "sha256": "39AE4DE103DC01F791D9869478CD7F7E5E99FD41954FE3106ADA02D39878C2AC"
+          },
+          "relation": "source_crop_threshold_translation_to_pbm",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0,
+            "translation": [
+              0,
+              0
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/17-swipe_down-sustain.png",
+            "sha256": "17FE8B7136DF3BB4D5386614B2B64A4768F7F73462D28D789AC7E1FFAD3611D9"
+          }
+        },
+        {
+          "index": 18,
+          "id": "swipe_down-settle",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+            "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+            "crop_box": [
+              320,
+              470,
+              620,
+              770
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_down_settle.pbm",
+            "sha256": "B32EFF9A423469075A9B634C90EBB20803411BF788E4A34027634D3F302789AA"
+          },
+          "relation": "source_crop_threshold_translation_to_pbm",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0,
+            "translation": [
+              0,
+              1
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/18-swipe_down-settle.png",
+            "sha256": "71ADE092F5BCFF168C39826B9FB56BB5A044A3068E9EBABFF5883920F2A71453"
+          }
+        },
+        {
+          "index": 19,
+          "id": "listening-entry",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+            "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+            "crop_box": [
+              614,
+              450,
+              934,
+              770
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_listening_entry.pbm",
+            "sha256": "4644245036738743D9C5626B700390F5D5F42B258945D44964F800BC3CA05EF7"
+          },
+          "relation": "source_crop_threshold_translation_to_pbm",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0,
+            "translation": [
+              0,
+              0
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/19-listening-entry.png",
+            "sha256": "3B9B833FFFE924C7A114CBDF8E6ACF0127696357F7ED06833E6790FF54C6B94E"
+          }
+        },
+        {
+          "index": 20,
+          "id": "listening-sustain",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+            "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+            "crop_box": [
+              614,
+              450,
+              934,
+              770
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_listening_sustain.pbm",
+            "sha256": "EB65A6733AB15F7B0152B9B9BC4D86623428C7AAC9FBE84E50CC29211B3310C3"
+          },
+          "relation": "source_crop_threshold_translation_to_pbm",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0,
+            "translation": [
+              0,
+              -1
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/20-listening-sustain.png",
+            "sha256": "479989047F9A6B02E2BA7E0DF8358FFB92A18FE010DA3D1EEAD51533695A47C6"
+          }
+        },
+        {
+          "index": 21,
+          "id": "listening-settle",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+            "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+            "crop_box": [
+              614,
+              450,
+              934,
+              770
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_listening_settle.pbm",
+            "sha256": "4644245036738743D9C5626B700390F5D5F42B258945D44964F800BC3CA05EF7"
+          },
+          "relation": "source_crop_threshold_translation_to_pbm",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0,
+            "translation": [
+              0,
+              0
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/21-listening-settle.png",
+            "sha256": "3F56CDBA0AF6608C181ADC6AE578DDBEBD36E978920472734FC546D68EC7D58A"
+          }
+        },
+        {
+          "index": 22,
+          "id": "recording-entry",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+            "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+            "crop_box": [
+              947,
+              470,
+              1247,
+              770
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_recording_entry.pbm",
+            "sha256": "A3178A41C86C81B06FC685F44DDF40F8E64BA9C411E4631CF8BB58508C5EDB48"
+          },
+          "relation": "source_crop_threshold_translation_to_pbm",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0,
+            "translation": [
+              0,
+              0
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/22-recording-entry.png",
+            "sha256": "6235D7A1A8E8BCB1C5CEFDDCD19250401383EDE5715CEA089CD3364E830C2813"
+          }
+        },
+        {
+          "index": 23,
+          "id": "recording-sustain",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+            "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+            "crop_box": [
+              947,
+              470,
+              1247,
+              770
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_recording_sustain.pbm",
+            "sha256": "6C3FE0CE7FD7DCFA8010E2964FC832F389A20D23FA5C70CC2A4EE47057CEEC64"
+          },
+          "relation": "source_crop_threshold_translation_to_pbm",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0,
+            "translation": [
+              1,
+              0
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/23-recording-sustain.png",
+            "sha256": "461671540B3485273B8C39F60B57D1F5799C01711BE3F6DEA76B8A25F8420689"
+          }
+        },
+        {
+          "index": 24,
+          "id": "recording-settle",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+            "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+            "crop_box": [
+              947,
+              470,
+              1247,
+              770
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_recording_settle.pbm",
+            "sha256": "A3178A41C86C81B06FC685F44DDF40F8E64BA9C411E4631CF8BB58508C5EDB48"
+          },
+          "relation": "source_crop_threshold_translation_to_pbm",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0,
+            "translation": [
+              0,
+              0
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/24-recording-settle.png",
+            "sha256": "D029856F13BE0F75949A73C09BE3D0076080F55EEE1BC7FE549D240123B46557"
+          }
+        },
+        {
+          "index": 25,
+          "id": "saving-entry",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+            "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+            "crop_box": [
+              7,
+              810,
+              307,
+              1110
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_saving_entry.pbm",
+            "sha256": "FA35D72B9806E81273BF54C629C1B46150DA9E60266B71B5FF05CDB235B9A4E8"
+          },
+          "relation": "source_crop_threshold_translation_to_pbm",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0,
+            "translation": [
+              0,
+              0
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/25-saving-entry.png",
+            "sha256": "317C3A9A6DCDC7A7511E0653F8728F71A52D4FF365295297739F30E8B7E662A7"
+          }
+        },
+        {
+          "index": 26,
+          "id": "saving-sustain",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+            "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+            "crop_box": [
+              7,
+              810,
+              307,
+              1110
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_saving_sustain.pbm",
+            "sha256": "6D61BAEAA30FD8ABC07AC174E5190D2AC09D8534AACFBAC910D555E1987D6157"
+          },
+          "relation": "source_crop_threshold_translation_to_pbm",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0,
+            "translation": [
+              0,
+              1
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/26-saving-sustain.png",
+            "sha256": "D912E57E43B83773C7A6468D38C32323DB1E81FA0A093834188EFC7FA499D32F"
+          }
+        },
+        {
+          "index": 27,
+          "id": "saving-settle",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+            "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+            "crop_box": [
+              7,
+              810,
+              307,
+              1110
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_saving_settle.pbm",
+            "sha256": "FA35D72B9806E81273BF54C629C1B46150DA9E60266B71B5FF05CDB235B9A4E8"
+          },
+          "relation": "source_crop_threshold_translation_to_pbm",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0,
+            "translation": [
+              0,
+              0
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/27-saving-settle.png",
+            "sha256": "8447CE5AF935F839160AFBA6B07EEA82F1EC20660E758223226ED486DBDC66DB"
+          }
+        },
+        {
+          "index": 28,
+          "id": "saved-entry",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+            "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+            "crop_box": [
+              320,
+              810,
+              620,
+              1110
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_saved_entry.pbm",
+            "sha256": "80DB5F9AC08BF5ABCD782B9179B7EE3C558F91A3BB9B6C5D2F0C7086545A087B"
+          },
+          "relation": "source_crop_threshold_translation_to_pbm",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0,
+            "translation": [
+              0,
+              0
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/28-saved-entry.png",
+            "sha256": "55CE885D047151ACD97569B06B2926678BB9EE185CC101BE80B8B88EE6B51181"
+          }
+        },
+        {
+          "index": 29,
+          "id": "saved-sustain",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+            "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+            "crop_box": [
+              320,
+              810,
+              620,
+              1110
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_saved_sustain.pbm",
+            "sha256": "3FD8B9AE79A8BB27053F6393DE1356D061927A124B797B5DBA71366A4A34003B"
+          },
+          "relation": "source_crop_threshold_translation_to_pbm",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0,
+            "translation": [
+              0,
+              -1
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/29-saved-sustain.png",
+            "sha256": "3BC752F61EF25071BD510EF78E492DEBAC65D83216147088F52AC2EDD8BB2828"
+          }
+        },
+        {
+          "index": 30,
+          "id": "saved-settle",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+            "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+            "crop_box": [
+              320,
+              810,
+              620,
+              1110
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_saved_settle.pbm",
+            "sha256": "80DB5F9AC08BF5ABCD782B9179B7EE3C558F91A3BB9B6C5D2F0C7086545A087B"
+          },
+          "relation": "source_crop_threshold_translation_to_pbm",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0,
+            "translation": [
+              0,
+              0
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/30-saved-settle.png",
+            "sha256": "0DC64502C39A9D93670550855A73004B130DDC438B352DCA3B2782A1DD472FDE"
+          }
+        },
+        {
+          "index": 31,
+          "id": "sleep-entry",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+            "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+            "crop_box": [
+              634,
+              810,
+              934,
+              1110
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_sleep_entry.pbm",
+            "sha256": "50BDE2BBCE5B89B26502CA5F60C73BB42949CBCB63555F81EEC495D52ECEBF02"
+          },
+          "relation": "source_crop_threshold_translation_to_pbm",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0,
+            "translation": [
+              0,
+              0
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/31-sleep-entry.png",
+            "sha256": "65C831330F58FCFAE17487E10F225C353D3834CDD64213B8D79FB6975DB17534"
+          }
+        },
+        {
+          "index": 32,
+          "id": "sleep-sustain",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+            "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+            "crop_box": [
+              634,
+              810,
+              934,
+              1110
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_sleep_sustain.pbm",
+            "sha256": "50BDE2BBCE5B89B26502CA5F60C73BB42949CBCB63555F81EEC495D52ECEBF02"
+          },
+          "relation": "source_crop_threshold_translation_to_pbm",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0,
+            "translation": [
+              0,
+              0
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/32-sleep-sustain.png",
+            "sha256": "1B80F5C9C56A8563F3620CE6395C90B1D5214F57AC011EE62CFE11C81D445598"
+          }
+        },
+        {
+          "index": 33,
+          "id": "sleep-settle",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+            "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+            "crop_box": [
+              634,
+              810,
+              934,
+              1110
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_sleep_settle.pbm",
+            "sha256": "50BDE2BBCE5B89B26502CA5F60C73BB42949CBCB63555F81EEC495D52ECEBF02"
+          },
+          "relation": "source_crop_threshold_translation_to_pbm",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0,
+            "translation": [
+              0,
+              0
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/33-sleep-settle.png",
+            "sha256": "6D562CC8A03E2812386E9E2513EF24D182176535DFCCDA2515FE1D3F743703E6"
+          }
+        },
+        {
+          "index": 34,
+          "id": "menu_hold-entry",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+            "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+            "crop_box": [
+              947,
+              810,
+              1247,
+              1110
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_menu_hold_entry.pbm",
+            "sha256": "2C71A0D1044065F65EC06BE2D4F2FD13C85B9C8C748ADC237203DC43A667C645"
+          },
+          "relation": "source_crop_threshold_translation_to_pbm",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0,
+            "translation": [
+              0,
+              0
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/34-menu_hold-entry.png",
+            "sha256": "4F96E80E9F65E3CD01306B08A279B69AD0635E260A3D59502993F684AA91C69D"
+          }
+        },
+        {
+          "index": 35,
+          "id": "menu_hold-sustain",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+            "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+            "crop_box": [
+              947,
+              810,
+              1247,
+              1110
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_menu_hold_sustain.pbm",
+            "sha256": "023655EFEBA52F1A8595610676C140F0BB72297720D442DA931074677FDA0D89"
+          },
+          "relation": "source_crop_threshold_translation_to_pbm",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0,
+            "translation": [
+              0,
+              -1
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/35-menu_hold-sustain.png",
+            "sha256": "883A25F84D5782154F85191A1C781EA27A837492A390C45B22EA323923FC8A79"
+          }
+        },
+        {
+          "index": 36,
+          "id": "menu_hold-settle",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+            "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+            "crop_box": [
+              947,
+              810,
+              1247,
+              1110
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_menu_hold_settle.pbm",
+            "sha256": "2C71A0D1044065F65EC06BE2D4F2FD13C85B9C8C748ADC237203DC43A667C645"
+          },
+          "relation": "source_crop_threshold_translation_to_pbm",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0,
+            "translation": [
+              0,
+              0
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/36-menu_hold-settle.png",
+            "sha256": "2CEFCA109093C64CCACEB197E5888CF8A16F85A7C4A7C93C67C45EF512C26C6D"
+          }
+        },
+        {
+          "index": 37,
+          "id": "wake-entry",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+            "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+            "crop_box": [
+              634,
+              810,
+              934,
+              1110
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_wake_entry.pbm",
+            "sha256": "50BDE2BBCE5B89B26502CA5F60C73BB42949CBCB63555F81EEC495D52ECEBF02"
+          },
+          "relation": "source_crop_threshold_translation_to_pbm",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0,
+            "translation": [
+              0,
+              0
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/37-wake-entry.png",
+            "sha256": "556A126FFBFE887D7F92D5CE3B975475BE23199FDE2F59EAFEB3969610FF41D5"
+          }
+        },
+        {
+          "index": 38,
+          "id": "wake-sustain",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+            "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+            "crop_box": [
+              7,
+              92,
+              307,
+              392
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_wake_sustain.pbm",
+            "sha256": "5F078C3D876E74662917C7E2C625688A151C8D1C4A6381262E722EC1057D2B15"
+          },
+          "relation": "source_crop_threshold_translation_to_pbm",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0,
+            "translation": [
+              0,
+              0
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/38-wake-sustain.png",
+            "sha256": "7FA2B83590145182504322D6574007A4F270E731C12178CCB101145A2189CBA9"
+          }
+        },
+        {
+          "index": 39,
+          "id": "wake-settle",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+            "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+            "crop_box": [
+              320,
+              92,
+              620,
+              392
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_wake_settle.pbm",
+            "sha256": "B4A8667BB0AB939B2101DCC7F0A07D7A8DE39E33854950F8332AED7F9D53CA5E"
+          },
+          "relation": "source_crop_threshold_translation_to_pbm",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0,
+            "translation": [
+              0,
+              -1
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/39-wake-settle.png",
+            "sha256": "1252714C72A1F4AF87AAB24D80202A7C48A98ED67AEBC63ABEE5D06672136ED8"
+          }
+        }
+      ]
+    },
+    {
+      "id": "menu-v7-screen-family",
+      "pages": [
+        {
+          "index": 1,
+          "id": "home-source",
+          "baseline": {
+            "path": "docs/art/iterations/companion-menu-v7-screen-family/generated_menu_screen_family_v7_3_candidate.png",
+            "sha256": "D2D36B1CD51D153758E64C4DCBE0E0B7192F2E3F895D62CD3C432DDFA8476C37",
+            "crop_box": [
+              92,
+              158,
+              575,
+              634
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/source/01-home.png",
+            "sha256": "3DB1EF7A6F9318744F19A3143DBCCA07CD54E48135BC7093AA1FBFCBE0B1DCFD"
+          },
+          "relation": "locked_source_crop_to_desktop_preview",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0,
+            "language": "source",
+            "labels": []
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/menu-v7-screen-family/01-home-source.png",
+            "sha256": "E60294E574C207BB524F893AE6FFFF5AAEE4F1E192BF2F9DBE00CBCAE1C84343"
+          }
+        },
+        {
+          "index": 2,
+          "id": "home-en",
+          "baseline": {
+            "path": "docs/art/iterations/companion-menu-v7-screen-family/generated_menu_screen_family_v7_3_candidate.png",
+            "sha256": "D2D36B1CD51D153758E64C4DCBE0E0B7192F2E3F895D62CD3C432DDFA8476C37",
+            "crop_box": [
+              92,
+              158,
+              575,
+              634
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/01-home.png",
+            "sha256": "33362E4D2CEF3003559CD0304EEEEBE80CC32018E414EE9CFE32783713528612"
+          },
+          "relation": "locked_source_geometry_with_localized_desktop_text_overlay",
+          "machine_result": {
+            "status": "PASS_LOCALIZED_TARGET",
+            "different_pixels": null,
+            "language": "en",
+            "labels": [
+              "Voice",
+              "Device",
+              "Connection",
+              "Preferences"
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/menu-v7-screen-family/02-home-en.png",
+            "sha256": "33596527C79155178821268821AB1EF62CF3B0492C565C59C2DEBB86CAA46BF6"
+          }
+        },
+        {
+          "index": 3,
+          "id": "home-zh_cn",
+          "baseline": {
+            "path": "docs/art/iterations/companion-menu-v7-screen-family/generated_menu_screen_family_v7_3_candidate.png",
+            "sha256": "D2D36B1CD51D153758E64C4DCBE0E0B7192F2E3F895D62CD3C432DDFA8476C37",
+            "crop_box": [
+              92,
+              158,
+              575,
+              634
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/zh_cn/01-home.png",
+            "sha256": "CE7EF5EF367CBDCED6A91BB12BB0C6671C1BBE1015A642EF0BF8CC30F09A69A7"
+          },
+          "relation": "locked_source_geometry_with_localized_desktop_text_overlay",
+          "machine_result": {
+            "status": "PASS_LOCALIZED_TARGET",
+            "different_pixels": null,
+            "language": "zh_cn",
+            "labels": [
+              "语音",
+              "设备",
+              "连接",
+              "偏好设置"
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/menu-v7-screen-family/03-home-zh_cn.png",
+            "sha256": "7A1155A33D042FE95F93D5ECF061DC34B38082C615CCE871BB8C3781444079E4"
+          }
+        },
+        {
+          "index": 4,
+          "id": "voice-source",
+          "baseline": {
+            "path": "docs/art/iterations/companion-menu-v7-screen-family/generated_menu_screen_family_v7_3_candidate.png",
+            "sha256": "D2D36B1CD51D153758E64C4DCBE0E0B7192F2E3F895D62CD3C432DDFA8476C37",
+            "crop_box": [
+              680,
+              158,
+              1162,
+              634
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/source/02-voice.png",
+            "sha256": "0C6D74E3B515F4176819964B76F7A6BE9B9B71DE0FD953424D356A17119BD988"
+          },
+          "relation": "locked_source_crop_to_desktop_preview",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0,
+            "language": "source",
+            "labels": []
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/menu-v7-screen-family/04-voice-source.png",
+            "sha256": "4393DD9FA035EAF4DEB69C2498B77C0556AAD66725F7971654ADB06BE1DED5A5"
+          }
+        },
+        {
+          "index": 5,
+          "id": "voice-en",
+          "baseline": {
+            "path": "docs/art/iterations/companion-menu-v7-screen-family/generated_menu_screen_family_v7_3_candidate.png",
+            "sha256": "D2D36B1CD51D153758E64C4DCBE0E0B7192F2E3F895D62CD3C432DDFA8476C37",
+            "crop_box": [
+              680,
+              158,
+              1162,
+              634
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/02-voice.png",
+            "sha256": "905DC9102D6C8519231E342C0EBF3317118BFA74B343E38608020AA2E7D15308"
+          },
+          "relation": "locked_source_geometry_with_localized_desktop_text_overlay",
+          "machine_result": {
+            "status": "PASS_LOCALIZED_TARGET",
+            "different_pixels": null,
+            "language": "en",
+            "labels": [
+              "Recording",
+              "History",
+              "Wake word",
+              "Feedback"
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/menu-v7-screen-family/05-voice-en.png",
+            "sha256": "62AA323D6B21423A2E8F502006A89E15A3BA94DDFA0DA021EABCA969945E98F2"
+          }
+        },
+        {
+          "index": 6,
+          "id": "voice-zh_cn",
+          "baseline": {
+            "path": "docs/art/iterations/companion-menu-v7-screen-family/generated_menu_screen_family_v7_3_candidate.png",
+            "sha256": "D2D36B1CD51D153758E64C4DCBE0E0B7192F2E3F895D62CD3C432DDFA8476C37",
+            "crop_box": [
+              680,
+              158,
+              1162,
+              634
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/zh_cn/02-voice.png",
+            "sha256": "00C2D09C7612178AE864E565F336A8113052F3A793A93CCA9384E2A2CB059B33"
+          },
+          "relation": "locked_source_geometry_with_localized_desktop_text_overlay",
+          "machine_result": {
+            "status": "PASS_LOCALIZED_TARGET",
+            "different_pixels": null,
+            "language": "zh_cn",
+            "labels": [
+              "录音状态",
+              "录音历史",
+              "唤醒词",
+              "语音反馈"
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/menu-v7-screen-family/06-voice-zh_cn.png",
+            "sha256": "95CA58D76CFFF5498BEDCA8D0A35E1932A9A29AAAF37118C110A7864E74DCAF7"
+          }
+        },
+        {
+          "index": 7,
+          "id": "device-source",
+          "baseline": {
+            "path": "docs/art/iterations/companion-menu-v7-screen-family/generated_menu_screen_family_v7_3_candidate.png",
+            "sha256": "D2D36B1CD51D153758E64C4DCBE0E0B7192F2E3F895D62CD3C432DDFA8476C37",
+            "crop_box": [
+              40,
+              754,
+              408,
+              1143
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/source/03-device.png",
+            "sha256": "C27F338D5CCC89174A526D0542BF6CE1D3D57A64C85817A268DD4D6649295450"
+          },
+          "relation": "locked_source_crop_to_desktop_preview",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0,
+            "language": "source",
+            "labels": []
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/menu-v7-screen-family/07-device-source.png",
+            "sha256": "D112DAECA2AAB9E8832BCCC53FA5AB023AFD7F4863A00795919F1D24A98C94B4"
+          }
+        },
+        {
+          "index": 8,
+          "id": "device-en",
+          "baseline": {
+            "path": "docs/art/iterations/companion-menu-v7-screen-family/generated_menu_screen_family_v7_3_candidate.png",
+            "sha256": "D2D36B1CD51D153758E64C4DCBE0E0B7192F2E3F895D62CD3C432DDFA8476C37",
+            "crop_box": [
+              40,
+              754,
+              408,
+              1143
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/03-device.png",
+            "sha256": "643697B3B9F9C090E1D3F0E40CA7D8F8BAC994D469F90E0B436824B2F5067961"
+          },
+          "relation": "locked_source_geometry_with_localized_desktop_text_overlay",
+          "machine_result": {
+            "status": "PASS_LOCALIZED_TARGET",
+            "different_pixels": null,
+            "language": "en",
+            "labels": [
+              "E-paper",
+              "Touch",
+              "Battery",
+              "UI assets"
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/menu-v7-screen-family/08-device-en.png",
+            "sha256": "9FBB962F69FEA65CAE7E20E103F4487FC5934CE253A6F529C9A3B94F5ACB7441"
+          }
+        },
+        {
+          "index": 9,
+          "id": "device-zh_cn",
+          "baseline": {
+            "path": "docs/art/iterations/companion-menu-v7-screen-family/generated_menu_screen_family_v7_3_candidate.png",
+            "sha256": "D2D36B1CD51D153758E64C4DCBE0E0B7192F2E3F895D62CD3C432DDFA8476C37",
+            "crop_box": [
+              40,
+              754,
+              408,
+              1143
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/zh_cn/03-device.png",
+            "sha256": "902D38638DBF016EDC61329265FDA3332F8446F2D0C87DB16AB579629AE97DC2"
+          },
+          "relation": "locked_source_geometry_with_localized_desktop_text_overlay",
+          "machine_result": {
+            "status": "PASS_LOCALIZED_TARGET",
+            "different_pixels": null,
+            "language": "zh_cn",
+            "labels": [
+              "电子纸",
+              "触控",
+              "电池",
+              "界面资源"
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/menu-v7-screen-family/09-device-zh_cn.png",
+            "sha256": "0038001F68FF609417F82C2BA275910F1757B3D02B16633FE44E98BA4C1F8C1E"
+          }
+        },
+        {
+          "index": 10,
+          "id": "connection-source",
+          "baseline": {
+            "path": "docs/art/iterations/companion-menu-v7-screen-family/generated_menu_screen_family_v7_3_candidate.png",
+            "sha256": "D2D36B1CD51D153758E64C4DCBE0E0B7192F2E3F895D62CD3C432DDFA8476C37",
+            "crop_box": [
+              442,
+              754,
+              809,
+              1143
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/source/04-connection.png",
+            "sha256": "AA35CC5D41E818747342B5363774BA40F04142FC52EB9C013A5180DAD61C0018"
+          },
+          "relation": "locked_source_crop_to_desktop_preview",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0,
+            "language": "source",
+            "labels": []
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/menu-v7-screen-family/10-connection-source.png",
+            "sha256": "A759306E3977916B80FFC04D758C937DF67F79F19C17F2F4EC9372DDAE825487"
+          }
+        },
+        {
+          "index": 11,
+          "id": "connection-en",
+          "baseline": {
+            "path": "docs/art/iterations/companion-menu-v7-screen-family/generated_menu_screen_family_v7_3_candidate.png",
+            "sha256": "D2D36B1CD51D153758E64C4DCBE0E0B7192F2E3F895D62CD3C432DDFA8476C37",
+            "crop_box": [
+              442,
+              754,
+              809,
+              1143
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/04-connection.png",
+            "sha256": "E9EB39EE4C4884D04226BDC2216E210DB253565A46CC51A20599286BA85044DF"
+          },
+          "relation": "locked_source_geometry_with_localized_desktop_text_overlay",
+          "machine_result": {
+            "status": "PASS_LOCALIZED_TARGET",
+            "different_pixels": null,
+            "language": "en",
+            "labels": [
+              "Pair device",
+              "Link status",
+              "Reconnect"
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/menu-v7-screen-family/11-connection-en.png",
+            "sha256": "4769319E752037DC1BA8291C84969DE0E57E2095480A09F8F81C98729E745F05"
+          }
+        },
+        {
+          "index": 12,
+          "id": "connection-zh_cn",
+          "baseline": {
+            "path": "docs/art/iterations/companion-menu-v7-screen-family/generated_menu_screen_family_v7_3_candidate.png",
+            "sha256": "D2D36B1CD51D153758E64C4DCBE0E0B7192F2E3F895D62CD3C432DDFA8476C37",
+            "crop_box": [
+              442,
+              754,
+              809,
+              1143
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/zh_cn/04-connection.png",
+            "sha256": "275B93A417DDFE421BC0E4C2DEEEFBCF6A0E09E1F6A3AA476AF38FDE228BBE2C"
+          },
+          "relation": "locked_source_geometry_with_localized_desktop_text_overlay",
+          "machine_result": {
+            "status": "PASS_LOCALIZED_TARGET",
+            "different_pixels": null,
+            "language": "zh_cn",
+            "labels": [
+              "配对设备",
+              "连接状态",
+              "重新连接"
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/menu-v7-screen-family/12-connection-zh_cn.png",
+            "sha256": "0074C6700A075AE51AC77FD80337FDB593DF86C5FBA41AC3F1E0B69FE878F6B0"
+          }
+        },
+        {
+          "index": 13,
+          "id": "preferences-source",
+          "baseline": {
+            "path": "docs/art/iterations/companion-menu-v7-screen-family/generated_menu_screen_family_v7_3_candidate.png",
+            "sha256": "D2D36B1CD51D153758E64C4DCBE0E0B7192F2E3F895D62CD3C432DDFA8476C37",
+            "crop_box": [
+              846,
+              754,
+              1215,
+              1143
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/source/05-preferences.png",
+            "sha256": "A76ED4E3445B5A1D57F3E5686E30981898F66BE667F1C907F86AC1084430CD21"
+          },
+          "relation": "locked_source_crop_to_desktop_preview",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0,
+            "language": "source",
+            "labels": []
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/menu-v7-screen-family/13-preferences-source.png",
+            "sha256": "E05DAC3BA1034B9631F3E4C75FC5473B439575F200BFB5A7D70DD9BB291B1E13"
+          }
+        },
+        {
+          "index": 14,
+          "id": "preferences-en",
+          "baseline": {
+            "path": "docs/art/iterations/companion-menu-v7-screen-family/generated_menu_screen_family_v7_3_candidate.png",
+            "sha256": "D2D36B1CD51D153758E64C4DCBE0E0B7192F2E3F895D62CD3C432DDFA8476C37",
+            "crop_box": [
+              846,
+              754,
+              1215,
+              1143
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/05-preferences.png",
+            "sha256": "EE89A9F63CB32967613CFD95C43D9A1391981E1A7274C6AA6EB5D97ED14AA1F8"
+          },
+          "relation": "locked_source_geometry_with_localized_desktop_text_overlay",
+          "machine_result": {
+            "status": "PASS_LOCALIZED_TARGET",
+            "different_pixels": null,
+            "language": "en",
+            "labels": [
+              "Language",
+              "Interaction",
+              "Diagnostics",
+              "About"
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/menu-v7-screen-family/14-preferences-en.png",
+            "sha256": "26D88DDBDAF944904F326A372DBB2F1592AD0440B2407630B02517F3893202DD"
+          }
+        },
+        {
+          "index": 15,
+          "id": "preferences-zh_cn",
+          "baseline": {
+            "path": "docs/art/iterations/companion-menu-v7-screen-family/generated_menu_screen_family_v7_3_candidate.png",
+            "sha256": "D2D36B1CD51D153758E64C4DCBE0E0B7192F2E3F895D62CD3C432DDFA8476C37",
+            "crop_box": [
+              846,
+              754,
+              1215,
+              1143
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/zh_cn/05-preferences.png",
+            "sha256": "6B70AC940C824857CC7D9C3B0D104BFFB992F7BDEFE73F2A28A385F112F8F938"
+          },
+          "relation": "locked_source_geometry_with_localized_desktop_text_overlay",
+          "machine_result": {
+            "status": "PASS_LOCALIZED_TARGET",
+            "different_pixels": null,
+            "language": "zh_cn",
+            "labels": [
+              "语言",
+              "交互",
+              "诊断",
+              "关于"
+            ]
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/menu-v7-screen-family/15-preferences-zh_cn.png",
+            "sha256": "C0A8C8F2D1D942B8A86C0F4D5A5CF3CFF5AE39AFBB4171B540ECD508AC4FABAF"
+          }
+        }
+      ]
+    },
+    {
+      "id": "special-system-v1",
+      "pages": [
+        {
+          "index": 1,
+          "id": "voice-speaking",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_system_v1_candidate.png",
+            "sha256": "AF9ADFD49C47C89DF674726D7201CC49C61ED636306013697822BB42FB1A9C82",
+            "crop_box": [
+              0,
+              77,
+              330,
+              407
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/01-voice-speaking.png",
+            "sha256": "E5874B384E418CD82700DD89479000B17A110AD4224028976A02DE462AAB2D8F"
+          },
+          "relation": "source_crop_threshold_to_desktop_preview",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-system-v1/01-voice-speaking.png",
+            "sha256": "7A78A024DCF8086F1CDB89BA55005A2DA6271898DC60DE50596CEAC9F82F75F5"
+          }
+        },
+        {
+          "index": 2,
+          "id": "recording-error",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_system_v1_candidate.png",
+            "sha256": "AF9ADFD49C47C89DF674726D7201CC49C61ED636306013697822BB42FB1A9C82",
+            "crop_box": [
+              340,
+              77,
+              670,
+              407
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/02-recording-error.png",
+            "sha256": "447BD2ACE584C17E35FF76BDD91FF04E33AB9EEF7370A55B9ED4730CA0C5C299"
+          },
+          "relation": "source_crop_threshold_to_desktop_preview",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-system-v1/02-recording-error.png",
+            "sha256": "8E783A06C9104CC01FC3987E436C61C63ADE152E50A22B5AF750CE02C78F53CE"
+          }
+        },
+        {
+          "index": 3,
+          "id": "power-charge_detected",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_system_v1_candidate.png",
+            "sha256": "AF9ADFD49C47C89DF674726D7201CC49C61ED636306013697822BB42FB1A9C82",
+            "crop_box": [
+              610,
+              77,
+              940,
+              407
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/03-power-charge_detected.png",
+            "sha256": "21461670341A13D2BBA5F5B77F2200DD4298ECB77B1BE1CC266D42046891A6E0"
+          },
+          "relation": "source_crop_threshold_to_desktop_preview",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-system-v1/03-power-charge_detected.png",
+            "sha256": "68FA8A58174354F6C473122BD2E13A8E9AD4577FE770F3C55C44DB712288E11A"
+          }
+        },
+        {
+          "index": 4,
+          "id": "power-charging",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_system_v1_candidate.png",
+            "sha256": "AF9ADFD49C47C89DF674726D7201CC49C61ED636306013697822BB42FB1A9C82",
+            "crop_box": [
+              924,
+              77,
+              1254,
+              407
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/04-power-charging.png",
+            "sha256": "19775D8D613BF56F08A8769572724773E309CD648A8A76B2F328C2B3A80ABE87"
+          },
+          "relation": "source_crop_threshold_to_desktop_preview",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-system-v1/04-power-charging.png",
+            "sha256": "88CEEB487B927BB4BA87053AF1B389F1D72F5D5C625A44498406C635AFCD9C4F"
+          }
+        },
+        {
+          "index": 5,
+          "id": "power-charged",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_system_v1_candidate.png",
+            "sha256": "AF9ADFD49C47C89DF674726D7201CC49C61ED636306013697822BB42FB1A9C82",
+            "crop_box": [
+              0,
+              455,
+              330,
+              785
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/05-power-charged.png",
+            "sha256": "47CCD4E8FE05DA2E5024B6FFE60102FC860170C45F9D12F1BD73E3AEED2B4853"
+          },
+          "relation": "source_crop_threshold_to_desktop_preview",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-system-v1/05-power-charged.png",
+            "sha256": "3E395CFE147700AC648CEA16C668747129792041D7AB27039A7C0A7FC0DB8610"
+          }
+        },
+        {
+          "index": 6,
+          "id": "power-low_battery",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_system_v1_candidate.png",
+            "sha256": "AF9ADFD49C47C89DF674726D7201CC49C61ED636306013697822BB42FB1A9C82",
+            "crop_box": [
+              305,
+              455,
+              635,
+              785
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/06-power-low_battery.png",
+            "sha256": "A535205646A736A57BBDE55E86D32EC1871E02118FB97A2638B208C31DEF4A7C"
+          },
+          "relation": "source_crop_threshold_to_desktop_preview",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-system-v1/06-power-low_battery.png",
+            "sha256": "7B8F0E76665F091CCF4517246600213AE170A5F5F9328B1814BF5C5B9DF26F5D"
+          }
+        },
+        {
+          "index": 7,
+          "id": "link-pairing",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_system_v1_candidate.png",
+            "sha256": "AF9ADFD49C47C89DF674726D7201CC49C61ED636306013697822BB42FB1A9C82",
+            "crop_box": [
+              609,
+              455,
+              939,
+              785
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/07-link-pairing.png",
+            "sha256": "3B65A3F972460864972A9E597F2271B77C704FF7CC44DD85EB499CA04B406909"
+          },
+          "relation": "source_crop_threshold_to_desktop_preview",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-system-v1/07-link-pairing.png",
+            "sha256": "AF04E1671E3CFF34C716578F9B6084962C44BA53FD82C17F526B684135ED85E1"
+          }
+        },
+        {
+          "index": 8,
+          "id": "link-connected",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_system_v1_candidate.png",
+            "sha256": "AF9ADFD49C47C89DF674726D7201CC49C61ED636306013697822BB42FB1A9C82",
+            "crop_box": [
+              924,
+              455,
+              1254,
+              785
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/08-link-connected.png",
+            "sha256": "CAF9C0E47FB036351DA5FACDE997A4CB5238CF3B1AD5402BC7C19802419D370F"
+          },
+          "relation": "source_crop_threshold_to_desktop_preview",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-system-v1/08-link-connected.png",
+            "sha256": "AE36F525133DE194E344B4A270D79E9E4FB0FE2B166CC471B2C33E2726BC1940"
+          }
+        },
+        {
+          "index": 9,
+          "id": "link-syncing",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_system_v1_candidate.png",
+            "sha256": "AF9ADFD49C47C89DF674726D7201CC49C61ED636306013697822BB42FB1A9C82",
+            "crop_box": [
+              0,
+              795,
+              330,
+              1125
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/09-link-syncing.png",
+            "sha256": "0015BC2739E277923B54B4E9F113B92BFF04E322EF1D10A624DF82F2FDF2AF81"
+          },
+          "relation": "source_crop_threshold_to_desktop_preview",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-system-v1/09-link-syncing.png",
+            "sha256": "E6E0151AAFE9D55217DCAD9AE620CFF670232BE15689952645D3D405A6468EE1"
+          }
+        },
+        {
+          "index": 10,
+          "id": "link-synced",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_system_v1_candidate.png",
+            "sha256": "AF9ADFD49C47C89DF674726D7201CC49C61ED636306013697822BB42FB1A9C82",
+            "crop_box": [
+              305,
+              795,
+              635,
+              1125
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/10-link-synced.png",
+            "sha256": "0683302FED05A3AE38767DD24938DE522BEC4116DDCB522089F41A19A967586B"
+          },
+          "relation": "source_crop_threshold_to_desktop_preview",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-system-v1/10-link-synced.png",
+            "sha256": "D1FAE28B34C7442B5242784597C60C0057386737F876C42403E255BAE9591FB8"
+          }
+        },
+        {
+          "index": 11,
+          "id": "link-error",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_system_v1_candidate.png",
+            "sha256": "AF9ADFD49C47C89DF674726D7201CC49C61ED636306013697822BB42FB1A9C82",
+            "crop_box": [
+              609,
+              795,
+              939,
+              1125
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/11-link-error.png",
+            "sha256": "F1873F726AF05773091E0177CAD29975F1453D3AF19B9D7FD10159F44B0FCD43"
+          },
+          "relation": "source_crop_threshold_to_desktop_preview",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-system-v1/11-link-error.png",
+            "sha256": "C43E2494B7C05EECFA7D5BFE95022D301567D0C76F888A4CFE9E77BEFEC2C236"
+          }
+        },
+        {
+          "index": 12,
+          "id": "system-error",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_system_v1_candidate.png",
+            "sha256": "AF9ADFD49C47C89DF674726D7201CC49C61ED636306013697822BB42FB1A9C82",
+            "crop_box": [
+              924,
+              795,
+              1254,
+              1125
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/12-system-error.png",
+            "sha256": "8AABFFF8DDE22F924BA90CB92575B72B5152D8422E48DFC72FBD04D66DF4961D"
+          },
+          "relation": "source_crop_threshold_to_desktop_preview",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-system-v1/12-system-error.png",
+            "sha256": "EE68907E936EC7265DF6915B618A21DCE7C876F082B07C433C053D8086EE31F0"
+          }
+        }
+      ]
+    },
+    {
+      "id": "special-journey-v1",
+      "pages": [
+        {
+          "index": 1,
+          "id": "menu-open-entry",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_journey_v1_candidate.png",
+            "sha256": "95CC749134F169E73A2E2A99FA2B6F08AABDFE78D218677C347D2D687EA4B17F",
+            "crop_box": [
+              0,
+              77,
+              330,
+              407
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/01-menu-open-entry.png",
+            "sha256": "5FD8369825311A09975C7087B348C5098443854F1B48E934DAFAFD268309A139"
+          },
+          "relation": "source_crop_threshold_to_desktop_preview",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-journey-v1/01-menu-open-entry.png",
+            "sha256": "1E6B757545C4FAC1912C3EA748D487893B99126FCBC32C25349F2D85D2854DED"
+          }
+        },
+        {
+          "index": 2,
+          "id": "menu-open-settle",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_journey_v1_candidate.png",
+            "sha256": "95CC749134F169E73A2E2A99FA2B6F08AABDFE78D218677C347D2D687EA4B17F",
+            "crop_box": [
+              340,
+              77,
+              670,
+              407
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/02-menu-open-settle.png",
+            "sha256": "F224E8FDD10210065D7F0F94B5B2F7F0E39592D6486413D6AA827F60BF7FD46D"
+          },
+          "relation": "source_crop_threshold_to_desktop_preview",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-journey-v1/02-menu-open-settle.png",
+            "sha256": "400FAA7F8731F96D70CECB83ECF129045989F76704491FE444B68788BFD9E6D7"
+          }
+        },
+        {
+          "index": 3,
+          "id": "menu-blocked",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_journey_v1_candidate.png",
+            "sha256": "95CC749134F169E73A2E2A99FA2B6F08AABDFE78D218677C347D2D687EA4B17F",
+            "crop_box": [
+              610,
+              77,
+              940,
+              407
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/03-menu-blocked.png",
+            "sha256": "FC4F8F65EC7C5E0EEA84AC228453A270C671E847672888538A5DE575AF7BE728"
+          },
+          "relation": "source_crop_threshold_to_desktop_preview",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-journey-v1/03-menu-blocked.png",
+            "sha256": "6D8B5D260EDBD3CAF6932DE49385572D1B1D506BF36DD3EA4CD9813B01BECDBC"
+          }
+        },
+        {
+          "index": 4,
+          "id": "menu-exit",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_journey_v1_candidate.png",
+            "sha256": "95CC749134F169E73A2E2A99FA2B6F08AABDFE78D218677C347D2D687EA4B17F",
+            "crop_box": [
+              924,
+              77,
+              1254,
+              407
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/04-menu-exit.png",
+            "sha256": "65AC84E3C3B3A7A94623F54A2314BDB93477DF7E3CB2F93D26C32E9DD3425D04"
+          },
+          "relation": "source_crop_threshold_to_desktop_preview",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-journey-v1/04-menu-exit.png",
+            "sha256": "3E77DEC8C90A6C1EA69D6EF36F5FDFE5458A30519D164A3C4068B791FE23729E"
+          }
+        },
+        {
+          "index": 5,
+          "id": "upgrade-offer",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_journey_v1_candidate.png",
+            "sha256": "95CC749134F169E73A2E2A99FA2B6F08AABDFE78D218677C347D2D687EA4B17F",
+            "crop_box": [
+              0,
+              455,
+              330,
+              785
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/05-upgrade-offer.png",
+            "sha256": "52BF719BCC1E2677E5161AD94008B2577681EEE82A846F7081220359B3193067"
+          },
+          "relation": "source_crop_threshold_to_desktop_preview",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-journey-v1/05-upgrade-offer.png",
+            "sha256": "9D8786CE936F5296DBA2BAA8B20EAEC3D86288E4FB5CF6B2465782C92D95310D"
+          }
+        },
+        {
+          "index": 6,
+          "id": "upgrade-prepare",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_journey_v1_candidate.png",
+            "sha256": "95CC749134F169E73A2E2A99FA2B6F08AABDFE78D218677C347D2D687EA4B17F",
+            "crop_box": [
+              305,
+              455,
+              635,
+              785
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/06-upgrade-prepare.png",
+            "sha256": "1DEFAF3CF80EBD4BA1728C89E64D050A86FC2FAEBF26AEFA656061A7808B5798"
+          },
+          "relation": "source_crop_threshold_to_desktop_preview",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-journey-v1/06-upgrade-prepare.png",
+            "sha256": "840F069819A5BF0900C59F01736A56E044D4A4800E545045271B4A7AB744EE91"
+          }
+        },
+        {
+          "index": 7,
+          "id": "upgrade-transfer",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_journey_v1_candidate.png",
+            "sha256": "95CC749134F169E73A2E2A99FA2B6F08AABDFE78D218677C347D2D687EA4B17F",
+            "crop_box": [
+              609,
+              455,
+              939,
+              785
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/07-upgrade-transfer.png",
+            "sha256": "0603513204F7B6855D2D44B2DDD59993791647B9E7671C0C8083EF975EDD789D"
+          },
+          "relation": "source_crop_threshold_to_desktop_preview",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-journey-v1/07-upgrade-transfer.png",
+            "sha256": "6191CD4CA5574EFFE5E5A9885D15900A0C1587AEF0DDA7262EE8BBF1216BDF2F"
+          }
+        },
+        {
+          "index": 8,
+          "id": "upgrade-verify",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_journey_v1_candidate.png",
+            "sha256": "95CC749134F169E73A2E2A99FA2B6F08AABDFE78D218677C347D2D687EA4B17F",
+            "crop_box": [
+              924,
+              455,
+              1254,
+              785
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/08-upgrade-verify.png",
+            "sha256": "2336A3B5758BABD44983D149195C82C5C22F8868C5FA037C9E303E1A9D57711C"
+          },
+          "relation": "source_crop_threshold_to_desktop_preview",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-journey-v1/08-upgrade-verify.png",
+            "sha256": "ED45F96BEB415174E71D895EE852B8D89A1697E0B1B547C38A19D54C6FC58352"
+          }
+        },
+        {
+          "index": 9,
+          "id": "upgrade-restart",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_journey_v1_candidate.png",
+            "sha256": "95CC749134F169E73A2E2A99FA2B6F08AABDFE78D218677C347D2D687EA4B17F",
+            "crop_box": [
+              0,
+              795,
+              330,
+              1125
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/09-upgrade-restart.png",
+            "sha256": "153CDEFE2D5D33AE931085087DAF9FAFD1AF45BAB715B065C975DFD10B8D1AE9"
+          },
+          "relation": "source_crop_threshold_to_desktop_preview",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-journey-v1/09-upgrade-restart.png",
+            "sha256": "2B31F8EFDD97E8D218551BBDF83AD440991CE3939A379DA8E092C7DA8536A88B"
+          }
+        },
+        {
+          "index": 10,
+          "id": "upgrade-success",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_journey_v1_candidate.png",
+            "sha256": "95CC749134F169E73A2E2A99FA2B6F08AABDFE78D218677C347D2D687EA4B17F",
+            "crop_box": [
+              305,
+              795,
+              635,
+              1125
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/10-upgrade-success.png",
+            "sha256": "E6CEFB14F3B65B8FF95DA28C6147B9D8249FF7EEEA10177CF9681E65AF73E415"
+          },
+          "relation": "source_crop_threshold_to_desktop_preview",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-journey-v1/10-upgrade-success.png",
+            "sha256": "3E7402EF081F91D591379C7650F59FC7DE8237D604D1D96C0A43312B854E7106"
+          }
+        },
+        {
+          "index": 11,
+          "id": "upgrade-error",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_journey_v1_candidate.png",
+            "sha256": "95CC749134F169E73A2E2A99FA2B6F08AABDFE78D218677C347D2D687EA4B17F",
+            "crop_box": [
+              609,
+              795,
+              939,
+              1125
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/11-upgrade-error.png",
+            "sha256": "7088CB2447731DB588D8A8F0FF9D4CE049CFD777315B310FD5436317BD1C1327"
+          },
+          "relation": "source_crop_threshold_to_desktop_preview",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-journey-v1/11-upgrade-error.png",
+            "sha256": "3F66D821BA501E824820F49673F34036C4167B0511887DBB583A0173AA69DA9C"
+          }
+        },
+        {
+          "index": 12,
+          "id": "upgrade-error-recovery",
+          "baseline": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_journey_v1_candidate.png",
+            "sha256": "95CC749134F169E73A2E2A99FA2B6F08AABDFE78D218677C347D2D687EA4B17F",
+            "crop_box": [
+              924,
+              795,
+              1254,
+              1125
+            ]
+          },
+          "desktop_output": {
+            "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/12-upgrade-error-recovery.png",
+            "sha256": "A19438FC2D81D49EA475419C0EB012071F933AB81507E87E29517F19D8897EF5"
+          },
+          "relation": "source_crop_threshold_to_desktop_preview",
+          "machine_result": {
+            "status": "PASS_EXACT",
+            "different_pixels": 0
+          },
+          "comparison_page": {
+            "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-journey-v1/12-upgrade-error-recovery.png",
+            "sha256": "E22C72392271276D0CD8B798664EE7C8140477B19A849AA57C6441DE4A8A8FE9"
+          }
+        }
+      ]
+    }
+  ],
+  "page_total": 78,
+  "runtime_boundary": {
+    "pbm_imported": false,
+    "cemp_packed": false,
+    "external_flash_provisioned": false,
+    "firmware_flashed": false,
+    "runtime_resource_activated": false
+  }
+}

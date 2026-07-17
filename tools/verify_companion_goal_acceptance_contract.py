@@ -32,6 +32,8 @@ REQUIRED_CONTRACT_ANCHORS = (
     "special-state crop preflight",
     "target, operator action, success signal, failure",
     "one canonical prompt per image",
+    "locked generated-art baseline",
+    "desktop output",
     "This is not an electronic-paper panel review",
     "已执行",
     "需修改",
@@ -50,6 +52,10 @@ EVIDENCE = {
     "visual_review_readiness": (
         "docs/validation/companion-ui-visual-acceptance-readiness-20260717.json",
         "PASS_READY_FOR_SEQUENTIAL_OWNER_REVIEW",
+    ),
+    "visual_comparison_pages": (
+        "docs/validation/companion-ui-visual-comparison-pages-20260717.json",
+        "PASS_PAIRED_ART_BASELINE_AND_DESKTOP_OUTPUT_READY",
     ),
     "v9_cemp_pixels": (
         "docs/validation/companion-v9-expression-cemp-20260716.json",
@@ -136,7 +142,9 @@ def build_report() -> dict[str, object]:
             "runtime_resource_activated = $false",
             "original_image_one_at_a_time",
             "-OriginalImageOpened $true",
-            "Start-Process -FilePath $artifactPath",
+            "-ComparisonImageOpened $true",
+            "comparison_image_opened",
+            "Start-Process -FilePath $comparisonPagePath",
             "-SelfTest",
         ):
             if token not in runner_text:

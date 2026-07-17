@@ -47,12 +47,15 @@ hardware gates reproducible one item at a time.
 
 ### G2: Visual Source Observations (Four Sequential Families)
 
-For each item, inspect the listed computer-side 200x200 deterministic preview
-at normal scale, compare it with the locked v9 identity, then record one
-observation and an optional note. This is not an electronic-paper panel review:
-it cannot prove orientation, physical clipping, refresh residue or touch. Those
-belong to G4/G5. A complete source observation sequence can only inform a later
-PBM/CEMP import proposal; it never authorizes a firmware flash by itself.
+For each item, inspect one paired computer-side page: the left side is the
+locked generated-art baseline and the right side is the deterministic 200x200
+desktop output. Record one comparison observation and an optional note. The
+page retains both source/output paths and hashes plus its machine relationship;
+for menus, localization is an intentional overlay and is not claimed as pixel
+equality. This is not an electronic-paper panel review: it cannot prove
+orientation, physical clipping, refresh residue or touch. Those belong to
+G4/G5. A complete source observation sequence can only inform a later PBM/CEMP
+import proposal; it never authorizes a firmware flash by itself.
 
 - Machine precondition: the visual-reference ledger audit must cover exactly
   the v9 expression, four-root menu and special-state feature families, with an
@@ -64,10 +67,11 @@ PBM/CEMP import proposal; it never authorizes a firmware flash by itself.
   item. `已执行` means only that the locked page was viewed with no requested
   change; it is not a visual-resource import pass, a firmware pass or a panel
   pass. `需修改` requires a concrete note and blocks the next page until triage.
-- Every G2 source must open its locked original image at normal scale and use
-  one canonical prompt per image, in manifest order. A selection with a
+- Every G2 source must open its paired locked-baseline/desktop-output page and
+  use one canonical prompt per image, in manifest order. A selection with a
   non-empty note is never applied automatically: triage it before the next
-  image, and preserve the raw prompt record plus original-image SHA256.
+  image, and preserve the raw prompt record plus baseline, output and paired
+  comparison-page SHA256 values.
 - Use `tools/run_companion_goal_visual_source_acceptance.ps1` as the only G2
   popup entry: `-CheckOnly` and `-SelfTest` must not open a window; only an
   explicit owner `开始验收` followed by `-Execute -OwnerStartAcknowledged` may

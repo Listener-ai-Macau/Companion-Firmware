@@ -44,6 +44,7 @@ ARTIFACTS = {
     "special_journey": ROOT / "docs/validation/companion-pet-special-journey-source-review-20260717.json",
     "special_mapping": ROOT / "docs/validation/companion-pending-special-source-mapping-20260717.json",
     "visual_readiness": ROOT / "docs/validation/companion-ui-visual-acceptance-readiness-20260717.json",
+    "visual_comparison_pages": ROOT / "docs/validation/companion-ui-visual-comparison-pages-20260717.json",
     "goal_acceptance_readiness": ROOT / "docs/validation/companion-goal-acceptance-readiness-20260717.json",
     "g2_group_triage": ROOT / "docs/validation/companion-g2-menu-group-review-triage-20260717.json",
     "g2_home_context_triage": ROOT / "docs/validation/companion-g2-home-artifact1-triage-20260717.json",
@@ -108,6 +109,7 @@ def build_audit() -> dict[str, Any]:
     special_journey = load_json("special_journey")
     special_mapping = load_json("special_mapping")
     visual_readiness = load_json("visual_readiness")
+    visual_comparison_pages = load_json("visual_comparison_pages")
     goal_acceptance_readiness = load_json("goal_acceptance_readiness")
     g2_group_triage = load_json("g2_group_triage")
     g2_home_context_triage = load_json("g2_home_context_triage")
@@ -276,6 +278,7 @@ def build_audit() -> dict[str, Any]:
     check(errors, menu_v7_screen_family.get("status") == "PASS_MACHINE_SCREEN_FAMILY_PREVIEW_PENDING_OWNER" and menu_v7_screen_family.get("source", {}).get("sha256") == MENU_V7_SHA256, "v7.3 menu family is not machine-ready")
     check(errors, special_one_page_review.get("status") == "PASS_MACHINE_ONE_PAGE_PER_SPECIAL_STATE_PENDING_OWNER", "special-state one-page review is not machine-ready")
     check(errors, visual_readiness.get("status") == "PASS_READY_FOR_SEQUENTIAL_OWNER_REVIEW", "visual review readiness is not PASS")
+    check(errors, visual_comparison_pages.get("status") == "PASS_PAIRED_ART_BASELINE_AND_DESKTOP_OUTPUT_READY" and visual_comparison_pages.get("page_total") == 78, "paired art/output comparison pages are not PASS")
     readiness_items = visual_readiness.get("items", [])
     expected_review_items = {
         "home-v9-daily-storyboard": (V9_SHA256, 39),
@@ -294,6 +297,8 @@ def build_audit() -> dict[str, Any]:
         expected_sha, expected_count = expected_review_items.get(item.get("id"), (None, 0))
         check(errors, item.get("source_sha256") == expected_sha, f"{item.get('id')} source hash drifted")
         check(errors, len(images) == expected_count and [image.get("index") for image in images] == list(range(1, expected_count + 1)), f"{item.get('id')} original-image sequence drifted")
+        paired_pages = next((entry.get("pages", []) for entry in visual_comparison_pages.get("items", []) if entry.get("id") == item.get("id")), [])
+        check(errors, len(paired_pages) == expected_count and all(image.get("comparison", {}).get("comparison_page", {}).get("sha256") == paired_pages[index].get("comparison_page", {}).get("sha256") for index, image in enumerate(images)), f"{item.get('id')} paired comparison binding drifted")
     check(errors, goal_acceptance_readiness.get("status") == "PASS_ACCEPTANCE_CONTRACT_READY_OWNER_AND_HARDWARE_GATED", "detailed Goal acceptance readiness is not PASS")
     check(errors, goal_acceptance_readiness.get("machine_preflight_opens_operator_prompt") is False, "detailed Goal machine preflight must not open a popup")
     check(errors, goal_acceptance_readiness.get("physical_acceptance", {}).get("lower_edge_truncation") == "must be checked during G5 before any visual pass", "lower-edge truncation gate is missing")
@@ -383,9 +388,10 @@ def build_audit() -> dict[str, Any]:
                 evidence("special_system", str(special_system.get("status")), "System sheet is pending owner decision."),
                 evidence("special_journey", str(special_journey.get("status")), "Journey sheet is pending owner decision."),
                 evidence("special_one_page_review", str(special_one_page_review.get("status")), "All 24 special scenes are individually reviewable and remain review-only."),
+                evidence("visual_comparison_pages", str(visual_comparison_pages.get("status")), "All 78 G2 observations show the locked generated-art baseline beside the deterministic desktop output."),
                 evidence("special_crop_preflight", str(special_crop_preflight.get("status")), "The exact 200x200 source-crop previews retain >=4 px clearance and remain review-only."),
                 evidence("special_mapping", str(special_mapping.get("status")), "All 22 uncovered families map to exact pending sources with no fallback."),
-                evidence("visual_readiness", str(visual_readiness.get("status")), "Four sequential Chinese owner-review families retain 78 machine-locked originals and non-activation boundaries."),
+                evidence("visual_readiness", str(visual_readiness.get("status")), "Four sequential Chinese owner-review families retain 78 machine-locked paired source/output observations and non-activation boundaries."),
                 evidence("goal_acceptance_readiness", str(goal_acceptance_readiness.get("status")), "Goal-scoped acceptance has explicit machine, owner, hardware and lower-edge-truncation gates."),
                 evidence("g2_group_triage", str(g2_group_triage.get("status")), "The first grouped menu selection remains unapplied because the owner required locked originals one image at a time."),
                 evidence("g2_home_context_triage", str(g2_home_context_triage.get("status")), "The first homepage observation remains unapplied because computer-source and physical-panel scope was unclear."),
@@ -451,6 +457,7 @@ def build_audit() -> dict[str, Any]:
             "python .\\tools\\render_companion_v9_home_storyboard_review.py --write",
             "python .\\tools\\render_companion_menu_v7_screen_family_preview.py --write",
             "python .\\tools\\render_companion_special_state_review_pages.py --write",
+            "python .\\tools\\render_companion_visual_comparison_pages.py --write",
             "python .\\tools\\build_companion_ui_visual_acceptance_manifest.py --write",
         ],
     }

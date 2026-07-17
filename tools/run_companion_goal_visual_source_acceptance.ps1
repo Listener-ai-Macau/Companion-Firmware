@@ -111,12 +111,15 @@ function Build-OperatorSpec {
     }
     $displayName = if ([string]::IsNullOrWhiteSpace([string]$Item.display_name)) { [string]$Item.id } else { [string]$Item.display_name }
     return [ordered]@{
-        title = "Companion 电脑端美术源图验收 $Position/$ItemCount · 原图 $($Artifact.index)/$ArtifactCount：$displayName"
-        progress_text = "$Position/$ItemCount · 图 $($Artifact.index)/$ArtifactCount（本次 1/1）"
-        scope_text = "G2 电脑端美术源图观察；已在系统图片查看器打开本张 200x200 原图。它不是开发板上的电子纸实物屏，不能证明方向、裁切、残影、刷新或触控。当前不会导入 PBM/CEMP、写 Flash、刷固件或启用运行时资源。"
+        title = "Companion 电脑端美术对照验收 $Position/$ItemCount · 图 $($Artifact.index)/$ArtifactCount：$displayName"
+        progress_text = "$Position/$ItemCount · 基线/输出 $($Artifact.index)/$ArtifactCount（本次 1/1）"
+        scope_text = "G2 电脑端美术对照观察；系统图片查看器已打开左侧锁定生图基线与右侧 200x200 电脑端输出。本页不是开发板上的电子纸实物屏，不能证明方向、裁切、残影、刷新或触控。当前不会导入 PBM/CEMP、写 Flash、刷固件或启用运行时资源。"
         message = Join-Lines @(
-            "当前原图 $($Artifact.index)/$ArtifactCount：$($Artifact.label)",
-            "文件：$($Artifact.path)",
+            "当前对照 $($Artifact.index)/$ArtifactCount：$($Artifact.label)",
+            "基线：$($Artifact.comparison.baseline.path)",
+            "电脑输出：$($Artifact.comparison.desktop_output.path)",
+            "机器关系：$($Artifact.comparison.relation) / $($Artifact.comparison.machine_result.status)",
+            "对照页：$($Artifact.comparison.comparison_page.path)",
             $(if ($contextLines.Count -gt 0) { ""; "本页语义："; $contextLines }),
             "",
             "目标：$($card.target)",
@@ -159,7 +162,10 @@ function Test-ArtifactAccepted {
         if ($record.schema -ne "companion.g2_visual_artifact_operator_review.v1") {
             continue
         }
-        if ($record.item_id -ne $ReviewItemId -or $record.artifact.index -ne $Artifact.index -or $record.artifact.sha256 -ne $Artifact.sha256) {
+        if ($record.artifact.PSObject.Properties.Name -notcontains "comparison") {
+            continue
+        }
+        if ($record.item_id -ne $ReviewItemId -or $record.artifact.index -ne $Artifact.index -or $record.artifact.sha256 -ne $Artifact.sha256 -or $record.artifact.comparison.comparison_page.sha256 -ne $Artifact.comparison.comparison_page.sha256) {
             continue
         }
         if (Test-ReviewInvalidated -ReviewPath $path.FullName -Record $record) {
@@ -209,6 +215,7 @@ function Write-ReviewRecord {
         [Parameter(Mandatory = $true)][string] $NotePath,
         [Parameter(Mandatory = $true)][bool] $PromptOpened,
         [Parameter(Mandatory = $true)][bool] $OriginalImageOpened,
+        [Parameter(Mandatory = $true)][bool] $ComparisonImageOpened,
         [Parameter(Mandatory = $true)][bool] $SelfTestMode
     )
 
@@ -236,6 +243,7 @@ function Write-ReviewRecord {
         execution = [ordered]@{
             canonical_aiw_operator_prompt_opened = $PromptOpened
             original_image_opened = $OriginalImageOpened
+            comparison_image_opened = $ComparisonImageOpened
             self_test = $SelfTestMode
             owner_start_acknowledged = $OwnerStartAcknowledged.IsPresent
         }
@@ -313,6 +321,16 @@ for ($index = 0; $index -lt $images.Count; $index += 1) {
     if (-not (Test-Path -LiteralPath $imagePath -PathType Leaf) -or (Get-Sha256 -Path $imagePath) -ne $image.sha256) {
         throw "Visual acceptance item $ItemId original image hash drifted: $($image.path)"
     }
+    foreach ($role in @("baseline", "desktop_output", "comparison_page")) {
+        $comparisonSide = $image.comparison.$role
+        if ($null -eq $comparisonSide -or [string]::IsNullOrWhiteSpace([string]$comparisonSide.path) -or [string]::IsNullOrWhiteSpace([string]$comparisonSide.sha256)) {
+            throw "Visual acceptance item $ItemId comparison metadata is invalid at index $($index + 1): $role"
+        }
+        $comparisonPath = Join-Path $repoRoot ([string]$comparisonSide.path)
+        if (-not (Test-Path -LiteralPath $comparisonPath -PathType Leaf) -or (Get-Sha256 -Path $comparisonPath) -ne $comparisonSide.sha256) {
+            throw "Visual acceptance item $ItemId comparison hash drifted at index $($index + 1): $role"
+        }
+    }
 }
 $nextItemId = $null
 $nextArtifactIndex = 0
@@ -333,15 +351,19 @@ if ($ItemId -ne $nextItemId -or $ArtifactIndex -ne $nextArtifactIndex) {
 }
 $artifact = $images[$ArtifactIndex - 1]
 $artifactPath = Join-Path $repoRoot ([string]$artifact.path)
+$comparisonPagePath = Join-Path $repoRoot ([string]$artifact.comparison.comparison_page.path)
 $position = [array]::IndexOf($orderedIds, $ItemId) + 1
 $spec = Build-OperatorSpec -Item $item -Position $position -ItemCount $items.Count -Artifact $artifact -ArtifactCount $images.Count
 
 if ($CheckOnly) {
-    Write-Output "CHECK: G2 item=$ItemId position=$position/$($items.Count) original_image=$ArtifactIndex/$($images.Count)"
+    Write-Output "CHECK: G2 item=$ItemId position=$position/$($items.Count) paired_comparison=$ArtifactIndex/$($images.Count)"
     Write-Output "CHECK: Canonical operator prompt=$(Resolve-WorkflowAiwPath)"
     Write-Output "CHECK: Source SHA256=$($item.source_sha256)"
     Write-Output "CHECK: Machine evidence=$($item.machine_evidence)"
     Write-Output "CHECK: Original image=$($artifact.path) sha256=$($artifact.sha256)"
+    Write-Output "CHECK: Baseline=$($artifact.comparison.baseline.path) sha256=$($artifact.comparison.baseline.sha256)"
+    Write-Output "CHECK: Desktop output=$($artifact.comparison.desktop_output.path) sha256=$($artifact.comparison.desktop_output.sha256)"
+    Write-Output "CHECK: Comparison page=$($artifact.comparison.comparison_page.path) sha256=$($artifact.comparison.comparison_page.sha256)"
     Write-Output "CHECK: No image viewer or operator prompt is opened; use -Execute -OwnerStartAcknowledged only after the owner says 开始验收."
     exit 0
 }
@@ -357,12 +379,12 @@ if ($SelfTest) {
         text = "SELFTEST: $SelfTestSelection"
     }
     Set-Content -LiteralPath $notePath -Value $result.text -Encoding UTF8
-    Write-ReviewRecord -Item $item -Artifact $artifact -Spec $spec -Result $result -RecordPath $recordPath -NotePath $notePath -PromptOpened $false -OriginalImageOpened $false -SelfTestMode $true
-    Write-Output "PASS: G2 original-image runner self-test -> $(Get-RelativePath -Path $recordPath)"
+    Write-ReviewRecord -Item $item -Artifact $artifact -Spec $spec -Result $result -RecordPath $recordPath -NotePath $notePath -PromptOpened $false -OriginalImageOpened $false -ComparisonImageOpened $false -SelfTestMode $true
+    Write-Output "PASS: G2 paired-comparison runner self-test -> $(Get-RelativePath -Path $recordPath)"
     exit 0
 }
 
-$null = Start-Process -FilePath $artifactPath -PassThru
+$null = Start-Process -FilePath $comparisonPagePath -PassThru
 Start-Sleep -Milliseconds 500
 $aiw = Resolve-WorkflowAiwPath
 $promptOutput = & pwsh -NoProfile -File $aiw operator-prompt `
@@ -385,8 +407,8 @@ try {
 if ([string]::IsNullOrWhiteSpace([string]$result.selected)) {
     throw "Canonical operator prompt returned no selected button."
 }
-Write-ReviewRecord -Item $item -Artifact $artifact -Spec $spec -Result $result -RecordPath $recordPath -NotePath $notePath -PromptOpened $true -OriginalImageOpened $true -SelfTestMode $false
+Write-ReviewRecord -Item $item -Artifact $artifact -Spec $spec -Result $result -RecordPath $recordPath -NotePath $notePath -PromptOpened $true -OriginalImageOpened $true -ComparisonImageOpened $true -SelfTestMode $false
 if ($result.selected -eq "需修改" -and [string]::IsNullOrWhiteSpace([string]$result.text)) {
     throw "A 需修改 visual result requires an operator note; the raw record was retained for triage."
 }
-Write-Output "RESULT: G2 original-image review -> $(Get-RelativePath -Path $recordPath)"
+Write-Output "RESULT: G2 paired-comparison review -> $(Get-RelativePath -Path $recordPath)"

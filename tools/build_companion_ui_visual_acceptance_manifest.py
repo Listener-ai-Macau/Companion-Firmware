@@ -14,6 +14,7 @@ MANIFEST = ROOT / "docs/validation/companion-ui-visual-acceptance-manifest-20260
 V9 = ROOT / "docs/validation/companion-v9-home-storyboard-review-20260717.json"
 MENU = ROOT / "docs/validation/companion-menu-v7-screen-family-preview-20260717.json"
 SPECIAL = ROOT / "docs/validation/companion-pet-special-state-one-page-review-20260717.json"
+COMPARISON = ROOT / "docs/validation/companion-ui-visual-comparison-pages-20260717.json"
 
 
 def digest(path: Path) -> str:
@@ -36,7 +37,7 @@ def item(
         "sequence": sequence,
         "id": identifier,
         "display_name": display_name,
-        "scope": "One locked computer-side original or deterministic 200x200 page is shown per canonical Chinese prompt. It is not a physical e-paper review: direction, clipping, refresh residue and touch require later G4/G5 hardware evidence. This records a source observation only and never activates a product resource.",
+        "scope": "One paired locked generated-art baseline and deterministic 200x200 desktop-output page is shown per canonical Chinese prompt. It is not a physical e-paper review: direction, clipping, refresh residue and touch require later G4/G5 hardware evidence. This records a computer-side comparison observation only and never activates a product resource.",
         "source_sha256": source_sha256,
         "machine_evidence": evidence.relative_to(ROOT).as_posix(),
         "artifact_review": {"mode": "original_image_one_at_a_time", "images": images},
@@ -54,7 +55,23 @@ def item(
     }
 
 
-def home_images(data: dict[str, object]) -> list[dict[str, object]]:
+def attach_comparisons(identifier: str, images: list[dict[str, object]], comparisons: dict[str, dict[int, dict[str, object]]]) -> list[dict[str, object]]:
+    family = comparisons.get(identifier, {})
+    if len(family) != len(images):
+        raise ValueError(f"{identifier} paired-comparison count drifted")
+    for image in images:
+        comparison = family.get(int(image["index"]))
+        if comparison is None or comparison.get("id") != image["id"]:
+            raise ValueError(f"{identifier} paired-comparison identity drifted at {image['index']}")
+        page = comparison.get("comparison_page", {})
+        page_path = ROOT / str(page.get("path", ""))
+        if not page_path.is_file() or digest(page_path) != page.get("sha256"):
+            raise ValueError(f"{identifier} paired-comparison hash drifted at {image['index']}")
+        image["comparison"] = comparison
+    return images
+
+
+def home_images(data: dict[str, object], comparisons: dict[str, dict[int, dict[str, object]]]) -> list[dict[str, object]]:
     images: list[dict[str, object]] = []
     index = 1
     for state in data["states"]:
@@ -75,10 +92,10 @@ def home_images(data: dict[str, object]) -> list[dict[str, object]]:
                 },
             })
             index += 1
-    return images
+    return attach_comparisons("home-v9-daily-storyboard", images, comparisons)
 
 
-def menu_images(data: dict[str, object]) -> list[dict[str, object]]:
+def menu_images(data: dict[str, object], comparisons: dict[str, dict[int, dict[str, object]]]) -> list[dict[str, object]]:
     images: list[dict[str, object]] = []
     index = 1
     for page in data["pages"]:
@@ -100,12 +117,12 @@ def menu_images(data: dict[str, object]) -> list[dict[str, object]]:
                 },
             })
             index += 1
-    return images
+    return attach_comparisons("menu-v7-screen-family", images, comparisons)
 
 
-def special_images(data: dict[str, object], identifier: str) -> list[dict[str, object]]:
+def special_images(data: dict[str, object], identifier: str, comparisons: dict[str, dict[int, dict[str, object]]]) -> list[dict[str, object]]:
     source = next(source for source in data["sources"] if source["id"] == identifier)
-    return [
+    images = [
         {
             "index": page["index"],
             "id": page["state"].replace(".", "-"),
@@ -121,42 +138,50 @@ def special_images(data: dict[str, object], identifier: str) -> list[dict[str, o
         }
         for page in source["pages"]
     ]
+    return attach_comparisons(identifier, images, comparisons)
 
 
 def build() -> dict[str, object]:
     v9 = json.loads(V9.read_text(encoding="utf-8"))
     menu = json.loads(MENU.read_text(encoding="utf-8"))
     special = json.loads(SPECIAL.read_text(encoding="utf-8"))
+    comparison_report = json.loads(COMPARISON.read_text(encoding="utf-8"))
     for report in (v9, menu, special):
         if not str(report.get("status", "")).startswith("PASS_MACHINE"):
             raise ValueError(f"machine evidence is not ready: {report.get('status')}")
+    if comparison_report.get("status") != "PASS_PAIRED_ART_BASELINE_AND_DESKTOP_OUTPUT_READY":
+        raise ValueError("paired art/output comparison pages are not machine-ready")
+    comparisons = {
+        str(item["id"]): {int(page["index"]): page for page in item["pages"]}
+        for item in comparison_report["items"]
+    }
     items = [
         item(
-            1, "home-v9-daily-storyboard", "首页表情序列", v9["source_sha256"], V9, home_images(v9),
+            1, "home-v9-daily-storyboard", "首页表情序列", v9["source_sha256"], V9, home_images(v9, comparisons),
             "按真实日常触发顺序检查 v9 首页 13 个状态的 entry、sustain、settle 单页关键帧。",
-            "确认本页仍是同一只 Companion：眼睛、眉、嘴、脸颊身份一致；再按本页的状态、触发和相位判断情绪是否清楚。",
-            ["五官是同一套 v9 身份，而不是旧工程脸或随机贴图。", "本页的触发、情绪和关键帧关系可读，200x200 内无裁切。", "它只描述事件驱动状态，不表示主页会按验收顺序随机轮播。"],
+            "先对照左侧锁定生图基线和右侧电脑端 200x200 输出，再确认本页仍是同一只 Companion：眼睛、眉、嘴、脸颊身份一致；按状态、触发和相位判断情绪是否清楚。",
+            ["左侧生图基线与右侧电脑输出的五官身份一致，而不是旧工程脸或随机贴图。", "本页的触发、情绪和关键帧关系可读，200x200 内无裁切。", "它只描述事件驱动状态，不表示主页会按验收顺序随机轮播。"],
             "出现身份漂移、旧表情、情绪/触发不清、画布裁切或与本页状态不符时选择“需修改”。",
         ),
         item(
-            2, "menu-v7-screen-family", "紧凑四行菜单", menu["source"]["sha256"], MENU, menu_images(menu),
+            2, "menu-v7-screen-family", "紧凑四行菜单", menu["source"]["sha256"], MENU, menu_images(menu, comparisons),
             "检查 v7.3 无表情菜单家族：首页四根，以及 Voice、Device、Connection、Preferences 详情页的原始版式、English 和中文 200x200 页面。",
-            "首页确认四个等高根行与图标/箭头；详情确认紧凑返回和标题、真实行项目、单一语言及无表情占位。",
-            ["首页只有 Voice、Device、Connection、Preferences 四行，图标和箭头清晰。", "详情页没有宠物脸；最多四项真实内容，Connection 只有三项，未用假控制项填空。", "English/中文页面单语言、可读，文字不截断。"],
+            "先对照左侧锁定版式和右侧电脑端输出；首页确认四个等高根行与图标/箭头，详情确认紧凑返回和标题、真实行项目、单一语言及无表情占位。",
+            ["首页只有 Voice、Device、Connection、Preferences 四行，图标和箭头清晰。", "详情页没有宠物脸；最多四项真实内容，Connection 只有三项，未用假控制项填空。", "English/中文页面单语言、可读，文字不截断，并符合对应的本地化覆盖。"],
             "出现表情占位、第五行、旧六根/双页、假行或假箭头、混合语言、不可读文字或裁切时选择“需修改”。",
         ),
         item(
-            3, "special-system-v1", "特殊系统场景", next(source for source in special["sources"] if source["id"] == "special-system-v1")["source_sha256"], SPECIAL, special_images(special, "special-system-v1"),
+            3, "special-system-v1", "特殊系统场景", next(source for source in special["sources"] if source["id"] == "special-system-v1")["source_sha256"], SPECIAL, special_images(special, "special-system-v1", comparisons),
             "检查 speaking、录音错误、电源、连接和系统错误的 12 张独立 200x200 特殊场景原图。",
-            "逐页确认 v9 身份、状态符号和本页语义；本机已证明画布至少保留 4 px 边缘空白，但这不取代真实面板检查。",
-            ["五官身份保持 v9 一致。", "状态含义可区分且不是工程测试脸。", "画布内无可见裁切。"],
+            "逐页对照左侧锁定生图基线与右侧电脑端输出，确认 v9 身份、状态符号和本页语义；本机已证明画布至少保留 4 px 边缘空白，但这不取代真实面板检查。",
+            ["两侧五官身份保持 v9 一致。", "状态含义可区分且不是工程测试脸。", "画布内无可见裁切。"],
             "出现身份漂移、状态难辨、旧美术、不可爱眼神或可见裁切时选择“需修改”。",
         ),
         item(
-            4, "special-journey-v1", "特殊旅程场景", next(source for source in special["sources"] if source["id"] == "special-journey-v1")["source_sha256"], SPECIAL, special_images(special, "special-journey-v1"),
+            4, "special-journey-v1", "特殊旅程场景", next(source for source in special["sources"] if source["id"] == "special-journey-v1")["source_sha256"], SPECIAL, special_images(special, "special-journey-v1", comparisons),
             "检查菜单进入/退出和升级旅程的 12 张独立 200x200 特殊场景原图。",
-            "逐页确认 v9 身份、旅程阶段和本页语义；菜单表情只承担进入/退出过渡，不替代无表情四行菜单本体。",
-            ["五官身份保持 v9 一致。", "菜单与升级阶段可相互区分。", "画布内无可见裁切。"],
+            "逐页对照左侧锁定生图基线与右侧电脑端输出，确认 v9 身份、旅程阶段和本页语义；菜单表情只承担进入/退出过渡，不替代无表情四行菜单本体。",
+            ["两侧五官身份保持 v9 一致。", "菜单与升级阶段可相互区分。", "画布内无可见裁切。"],
             "出现身份漂移、旅程语义不清、旧菜单/旧表情或可见裁切时选择“需修改”。",
         ),
     ]
@@ -168,7 +193,7 @@ def build() -> dict[str, object]:
     return {
         "schema": "companion.ui_visual_acceptance_manifest.v2",
         "status": "READY_FOR_SEQUENTIAL_OWNER_REVIEW",
-        "review_style": "canonical Chinese aiw operator-prompt; one original image at a time; button 已执行 is an observation, not a runtime or source-import pass; any note or 需修改 result becomes a triage requirement",
+        "review_style": "canonical Chinese aiw operator-prompt; one paired locked-art-baseline and desktop-output page at a time; button 已执行 is an observation, not a runtime or source-import pass; any note or 需修改 result becomes a triage requirement",
         "items": items,
         "final_gate": "Only a complete, triaged per-page review can be considered by a separate PBM/CEMP import proposal. No per-page observation activates a runtime resource or permits a panel flash.",
     }

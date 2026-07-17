@@ -1,11 +1,12 @@
 {
-  "schema": "companion.art_retirement_verification.v2",
+  "schema": "companion.art_retirement_verification.v3",
   "status": "PASS_V9_BASELINE_PENDING_MENU_V7_AND_SPECIAL_V1",
   "iteration_directories": [
     "companion-menu-v6-four-root",
     "companion-menu-v7-screen-family",
     "companion-pet-expression-v9",
-    "companion-pet-special-states-v1"
+    "companion-pet-special-states-v1",
+    "companion-visual-comparison-v1"
   ],
   "retained_source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
   "retained_source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
@@ -13,7 +14,8 @@
   "pending_menu_source_sha256": "D2D36B1CD51D153758E64C4DCBE0E0B7192F2E3F895D62CD3C432DDFA8476C37",
   "pending_menu_preview": "docs/validation/companion-menu-v7-screen-family-preview-20260717.json",
   "pending_special_one_page_preview": "docs/validation/companion-pet-special-state-one-page-review-20260717.json",
-  "renderable_file_count": 135,
+  "derived_comparison_pages": "docs/validation/companion-ui-visual-comparison-pages-20260717.json",
+  "renderable_file_count": 213,
   "unauthorized_renderables": [],
   "errors": []
 }
