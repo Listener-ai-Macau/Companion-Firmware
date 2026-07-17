@@ -25,12 +25,14 @@ EXPECTED = {
         "sha256": "AF9ADFD49C47C89DF674726D7201CC49C61ED636306013697822BB42FB1A9C82",
         "evidence": "docs/validation/companion-pet-special-system-source-review-20260717.json",
         "status": "PASS_MACHINE_PREVIEW_PENDING_OWNER",
+        "crop_preflight_source": "special-system-v1",
     },
     "special-journey-v1": {
         "source": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_journey_v1_candidate.png",
         "sha256": "95CC749134F169E73A2E2A99FA2B6F08AABDFE78D218677C347D2D687EA4B17F",
         "evidence": "docs/validation/companion-pet-special-journey-source-review-20260717.json",
         "status": "PASS_MACHINE_PREVIEW_PENDING_OWNER",
+        "crop_preflight_source": "special-journey-v1",
     },
 }
 BOUNDARY_KEYS = ["pbm_imported", "cemp_packed", "external_flash_provisioned", "firmware_flashed", "owner_visual_pass"]
@@ -43,6 +45,11 @@ def sha256(path: pathlib.Path) -> str:
 def verify() -> dict[str, object]:
     errors: list[str] = []
     manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
+    crop_preflight_path = ROOT / "docs/validation/companion-pet-special-state-crop-preflight-20260717.json"
+    crop_preflight = json.loads(crop_preflight_path.read_text(encoding="utf-8")) if crop_preflight_path.is_file() else {}
+    if crop_preflight.get("status") != "PASS_MACHINE_SAFE_CROP_PREVIEW_NOT_IMPORTABLE":
+        errors.append("special-state crop preflight is not ready")
+    crop_by_id = {item.get("id"): item for item in crop_preflight.get("sources", [])}
     items = manifest.get("items", [])
     by_id = {item.get("id"): item for item in items}
     if manifest.get("status") != "READY_FOR_SEQUENTIAL_OWNER_REVIEW":
@@ -71,6 +78,14 @@ def verify() -> dict[str, object]:
         for artifact in item.get("artifacts", []):
             if not (ROOT / artifact).is_file():
                 errors.append(f"{item_id} listed artifact is missing: {artifact}")
+        crop_id = expected.get("crop_preflight_source")
+        if crop_id:
+            crop = crop_by_id.get(crop_id, {})
+            if len(crop.get("frames", [])) != 12:
+                errors.append(f"{item_id} crop preflight must retain twelve frames")
+            for frame in crop.get("frames", []):
+                if frame.get("edge_ink_pixels") != 0 or frame.get("minimum_clearance_px", 0) < 4:
+                    errors.append(f"{item_id} crop preflight contains an unsafe frame")
         verified.append({"id": item_id, "source_sha256": expected["sha256"], "evidence": expected["evidence"]})
 
     return {

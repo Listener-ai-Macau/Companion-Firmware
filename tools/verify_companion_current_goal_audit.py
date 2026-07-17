@@ -32,6 +32,7 @@ ARTIFACTS = {
     "v9_binding": ROOT / "docs/validation/companion-v9-candidate-resource-binding-20260717.json",
     "visual_reference_ledger": ROOT / "docs/validation/companion-visual-reference-evidence.json",
     "v9_safe_area": ROOT / "docs/validation/companion-v9-frame-safe-area-20260717.json",
+    "special_crop_preflight": ROOT / "docs/validation/companion-pet-special-state-crop-preflight-20260717.json",
     "ssd1681_frame_mapping": ROOT / "docs/validation/companion-ssd1681-frame-mapping-20260717.json",
     "menu_function_receipt": ROOT / "docs/validation/companion-menu-v6-function-receipt-20260717.json",
     "menu_source": ROOT / "docs/validation/companion-menu-v6-source-review-20260717.json",
@@ -89,6 +90,7 @@ def build_audit() -> dict[str, Any]:
     binding = load_json("v9_binding")
     visual_reference_ledger = load_json("visual_reference_ledger")
     safe_area = load_json("v9_safe_area")
+    special_crop_preflight = load_json("special_crop_preflight")
     ssd1681_frame_mapping = load_json("ssd1681_frame_mapping")
     menu_function_receipt = load_json("menu_function_receipt")
     menu_source = load_json("menu_source")
@@ -241,6 +243,20 @@ def build_audit() -> dict[str, Any]:
         source_sha = json.dumps(data, sort_keys=True)
         check(errors, expected_sha in source_sha, f"{name} source hash missing")
 
+    check(errors, special_crop_preflight.get("status") == "PASS_MACHINE_SAFE_CROP_PREVIEW_NOT_IMPORTABLE", "special-state crop preflight is not PASS")
+    special_preflight_sources = {item.get("id"): item for item in special_crop_preflight.get("sources", [])}
+    for identifier, expected_sha in (("special-system-v1", SYSTEM_SHA256), ("special-journey-v1", JOURNEY_SHA256)):
+        preflight = special_preflight_sources.get(identifier, {})
+        check(errors, preflight.get("source_sha256") == expected_sha, f"{identifier} preflight source hash drifted")
+        frames = preflight.get("frames", [])
+        check(errors, len(frames) == 12, f"{identifier} preflight frame count drifted")
+        for frame in frames:
+            check(errors, frame.get("edge_ink_pixels") == 0, f"{identifier} preflight has edge ink")
+            check(errors, frame.get("minimum_clearance_px", 0) >= 4, f"{identifier} preflight clearance is below 4 px")
+    preflight_boundary = special_crop_preflight.get("runtime_boundary", {})
+    for key in ("pbm_imported", "cemp_packed", "external_flash_provisioned", "firmware_flashed", "ota_behavior_changed", "owner_visual_pass"):
+        check(errors, preflight_boundary.get(key) is False, f"special crop preflight activation boundary drifted: {key}")
+
     check(errors, special_mapping.get("status") == "PASS_EXACT_PENDING_SOURCE_MAPPING_NO_RUNTIME", "special scene mapping is not pending/no-runtime PASS")
     check(errors, special_mapping.get("mapped_family_count") == 22 and special_mapping.get("pending_family_count") == 22, "special scene mapping count drifted")
     mapping_boundary = special_mapping.get("runtime_boundary", {})
@@ -301,6 +317,7 @@ def build_audit() -> dict[str, Any]:
                 evidence("v9_binding", str(binding.get("status")), "Portable selector remains AVAILABLE_NOT_ACTIVE."),
                 evidence("visual_reference_ledger", str(visual_reference_ledger.get("status")), "Every current visual candidate has an exact prompt, references, output hash, request record, review state and next-prompt delta; rejected special metadata stays non-reusable."),
                 evidence("v9_safe_area", str(safe_area.get("status")), "All 39 inactive v9 frames retain a >=4 px canvas margin; real-panel truncation remains a separate gate."),
+                evidence("special_crop_preflight", str(special_crop_preflight.get("status")), "Both pending special-state sheets have twelve locked-source 200x200 review crops with >=4 px clearance; no PBM/CEMP import is implied."),
                 evidence("ssd1681_frame_mapping", str(ssd1681_frame_mapping.get("status")), "All 40,000 logical pixels remain one-to-one and in-bounds through the actual 180-degree/mirror and descending-Y driver path; real-panel viewport remains a separate gate."),
                 evidence("runtime_visual_boundary", str(runtime_visual_boundary.get("status")), "The runtime cannot substitute a procedural or test face when an external visual asset is unavailable."),
                 evidence("external_expression_system", str(external_expression_system.get("status")), "Portable mood behavior selects semantic states while only external CEMP supplies product pixels."),
@@ -333,6 +350,7 @@ def build_audit() -> dict[str, Any]:
                 evidence("menu_localization", str(menu_localization.get("status")), "English and zh-CN overlays are deterministic previews."),
                 evidence("special_system", str(special_system.get("status")), "System sheet is pending owner decision."),
                 evidence("special_journey", str(special_journey.get("status")), "Journey sheet is pending owner decision."),
+                evidence("special_crop_preflight", str(special_crop_preflight.get("status")), "The exact 200x200 source-crop previews retain >=4 px clearance and remain review-only."),
                 evidence("special_mapping", str(special_mapping.get("status")), "All 22 uncovered families map to exact pending sources with no fallback."),
                 evidence("visual_readiness", str(visual_readiness.get("status")), "Three sequential Chinese owner-review items are prepared but not opened."),
                 evidence("goal_acceptance_readiness", str(goal_acceptance_readiness.get("status")), "Goal-scoped acceptance has explicit machine, owner, hardware and lower-edge-truncation gates."),
@@ -376,6 +394,7 @@ def build_audit() -> dict[str, Any]:
             "pwsh .\\tools\\test_companion_v9_expression_render_pipeline.ps1",
             "python .\\tools\\verify_companion_v9_wba_visual_boundary.py",
             "python .\\tools\\verify_companion_v9_frame_safe_area.py",
+            "python .\\tools\\render_companion_pet_special_state_crop_preflight.py",
             "python .\\tools\\verify_companion_ssd1681_frame_mapping.py",
             "python .\\tools\\verify_companion_goal_acceptance_contract.py",
             "python .\\tools\\verify_companion_historical_branch_audit.py",

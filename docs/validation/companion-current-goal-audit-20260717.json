@@ -106,6 +106,11 @@
           "status": "PASS_MACHINE_SAFE_AREA_PHYSICAL_REVIEW_PENDING"
         },
         {
+          "detail": "Both pending special-state sheets have twelve locked-source 200x200 review crops with >=4 px clearance; no PBM/CEMP import is implied.",
+          "path": "docs/validation/companion-pet-special-state-crop-preflight-20260717.json",
+          "status": "PASS_MACHINE_SAFE_CROP_PREVIEW_NOT_IMPORTABLE"
+        },
+        {
           "detail": "All 40,000 logical pixels remain one-to-one and in-bounds through the actual 180-degree/mirror and descending-Y driver path; real-panel viewport remains a separate gate.",
           "path": "docs/validation/companion-ssd1681-frame-mapping-20260717.json",
           "status": "PASS_MACHINE_EXHAUSTIVE_FRAME_MAPPING_PHYSICAL_REVIEW_PENDING"
@@ -192,6 +197,11 @@
           "status": "PASS_MACHINE_PREVIEW_PENDING_OWNER"
         },
         {
+          "detail": "The exact 200x200 source-crop previews retain >=4 px clearance and remain review-only.",
+          "path": "docs/validation/companion-pet-special-state-crop-preflight-20260717.json",
+          "status": "PASS_MACHINE_SAFE_CROP_PREVIEW_NOT_IMPORTABLE"
+        },
+        {
           "detail": "All 22 uncovered families map to exact pending sources with no fallback.",
           "path": "docs/validation/companion-pending-special-source-mapping-20260717.json",
           "status": "PASS_EXACT_PENDING_SOURCE_MAPPING_NO_RUNTIME"
@@ -248,6 +258,7 @@
     "pwsh .\\tools\\test_companion_v9_expression_render_pipeline.ps1",
     "python .\\tools\\verify_companion_v9_wba_visual_boundary.py",
     "python .\\tools\\verify_companion_v9_frame_safe_area.py",
+    "python .\\tools\\render_companion_pet_special_state_crop_preflight.py",
     "python .\\tools\\verify_companion_ssd1681_frame_mapping.py",
     "python .\\tools\\verify_companion_goal_acceptance_contract.py",
     "python .\\tools\\verify_companion_historical_branch_audit.py",

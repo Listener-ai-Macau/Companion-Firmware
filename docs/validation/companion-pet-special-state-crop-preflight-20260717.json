@@ -1,0 +1,659 @@
+{
+  "errors": [],
+  "physical_limit": "This source-crop proof does not clear COMP-REQ-078. Real WB55 panel viewport, orientation, transport and lower-edge behavior remain a focused G5 physical gate.",
+  "profile": {
+    "height": 200,
+    "minimum_edge_clearance_px": 4,
+    "source_crop_policy": "explicit square windows locked to the recorded 1254x1254 source hashes",
+    "threshold": 180,
+    "width": 200
+  },
+  "purpose": "Review the exact locked source crops at 200x200 before any owner decision or resource import.",
+  "runtime_boundary": {
+    "cemp_packed": false,
+    "external_flash_provisioned": false,
+    "firmware_flashed": false,
+    "ota_behavior_changed": false,
+    "owner_visual_pass": false,
+    "pbm_imported": false,
+    "review_png_only": true
+  },
+  "schema": "companion.pet_special_state_crop_preflight.v1",
+  "sources": [
+    {
+      "contact_sheet": "docs/art/iterations/companion-pet-special-states-v1/review-200x200/generated_pet_special_system_v1_crop_preflight_contact_sheet.png",
+      "contact_sheet_dimensions_px": [
+        800,
+        600
+      ],
+      "contact_sheet_sha256": "0CA22E270C246A450FEE176730394DC8487D1FB81EE492A088CAA69DB4D6E6E5",
+      "frames": [
+        {
+          "edge_clearance_px": {
+            "bottom": 21,
+            "left": 36,
+            "right": 12,
+            "top": 90
+          },
+          "edge_ink_pixels": 0,
+          "index": 0,
+          "ink_bbox": [
+            36,
+            90,
+            152,
+            89
+          ],
+          "ink_pixels": 2618,
+          "minimum_clearance_px": 12,
+          "source_crop_box": [
+            0,
+            77,
+            330,
+            407
+          ],
+          "state": "voice.speaking"
+        },
+        {
+          "edge_clearance_px": {
+            "bottom": 22,
+            "left": 24,
+            "right": 63,
+            "top": 36
+          },
+          "edge_ink_pixels": 0,
+          "index": 1,
+          "ink_bbox": [
+            24,
+            36,
+            113,
+            142
+          ],
+          "ink_pixels": 2746,
+          "minimum_clearance_px": 22,
+          "source_crop_box": [
+            340,
+            77,
+            670,
+            407
+          ],
+          "state": "recording.error"
+        },
+        {
+          "edge_clearance_px": {
+            "bottom": 20,
+            "left": 46,
+            "right": 43,
+            "top": 29
+          },
+          "edge_ink_pixels": 0,
+          "index": 2,
+          "ink_bbox": [
+            46,
+            29,
+            111,
+            151
+          ],
+          "ink_pixels": 2555,
+          "minimum_clearance_px": 20,
+          "source_crop_box": [
+            610,
+            77,
+            940,
+            407
+          ],
+          "state": "power.charge_detected"
+        },
+        {
+          "edge_clearance_px": {
+            "bottom": 32,
+            "left": 30,
+            "right": 56,
+            "top": 18
+          },
+          "edge_ink_pixels": 0,
+          "index": 3,
+          "ink_bbox": [
+            30,
+            18,
+            114,
+            150
+          ],
+          "ink_pixels": 2445,
+          "minimum_clearance_px": 18,
+          "source_crop_box": [
+            924,
+            77,
+            1254,
+            407
+          ],
+          "state": "power.charging"
+        },
+        {
+          "edge_clearance_px": {
+            "bottom": 40,
+            "left": 55,
+            "right": 34,
+            "top": 25
+          },
+          "edge_ink_pixels": 0,
+          "index": 4,
+          "ink_bbox": [
+            55,
+            25,
+            111,
+            135
+          ],
+          "ink_pixels": 2541,
+          "minimum_clearance_px": 25,
+          "source_crop_box": [
+            0,
+            455,
+            330,
+            785
+          ],
+          "state": "power.charged"
+        },
+        {
+          "edge_clearance_px": {
+            "bottom": 39,
+            "left": 47,
+            "right": 42,
+            "top": 46
+          },
+          "edge_ink_pixels": 0,
+          "index": 5,
+          "ink_bbox": [
+            47,
+            46,
+            111,
+            115
+          ],
+          "ink_pixels": 2503,
+          "minimum_clearance_px": 39,
+          "source_crop_box": [
+            305,
+            455,
+            635,
+            785
+          ],
+          "state": "power.low_battery"
+        },
+        {
+          "edge_clearance_px": {
+            "bottom": 33,
+            "left": 41,
+            "right": 49,
+            "top": 33
+          },
+          "edge_ink_pixels": 0,
+          "index": 6,
+          "ink_bbox": [
+            41,
+            33,
+            110,
+            134
+          ],
+          "ink_pixels": 2632,
+          "minimum_clearance_px": 33,
+          "source_crop_box": [
+            609,
+            455,
+            939,
+            785
+          ],
+          "state": "link.pairing"
+        },
+        {
+          "edge_clearance_px": {
+            "bottom": 31,
+            "left": 30,
+            "right": 61,
+            "top": 40
+          },
+          "edge_ink_pixels": 0,
+          "index": 7,
+          "ink_bbox": [
+            30,
+            40,
+            109,
+            129
+          ],
+          "ink_pixels": 2866,
+          "minimum_clearance_px": 30,
+          "source_crop_box": [
+            924,
+            455,
+            1254,
+            785
+          ],
+          "state": "link.connected"
+        },
+        {
+          "edge_clearance_px": {
+            "bottom": 16,
+            "left": 53,
+            "right": 35,
+            "top": 33
+          },
+          "edge_ink_pixels": 0,
+          "index": 8,
+          "ink_bbox": [
+            53,
+            33,
+            112,
+            151
+          ],
+          "ink_pixels": 2698,
+          "minimum_clearance_px": 16,
+          "source_crop_box": [
+            0,
+            795,
+            330,
+            1125
+          ],
+          "state": "link.syncing"
+        },
+        {
+          "edge_clearance_px": {
+            "bottom": 18,
+            "left": 47,
+            "right": 42,
+            "top": 57
+          },
+          "edge_ink_pixels": 0,
+          "index": 9,
+          "ink_bbox": [
+            47,
+            57,
+            111,
+            125
+          ],
+          "ink_pixels": 2577,
+          "minimum_clearance_px": 18,
+          "source_crop_box": [
+            305,
+            795,
+            635,
+            1125
+          ],
+          "state": "link.synced"
+        },
+        {
+          "edge_clearance_px": {
+            "bottom": 24,
+            "left": 41,
+            "right": 52,
+            "top": 42
+          },
+          "edge_ink_pixels": 0,
+          "index": 10,
+          "ink_bbox": [
+            41,
+            42,
+            107,
+            134
+          ],
+          "ink_pixels": 2538,
+          "minimum_clearance_px": 24,
+          "source_crop_box": [
+            609,
+            795,
+            939,
+            1125
+          ],
+          "state": "link.error"
+        },
+        {
+          "edge_clearance_px": {
+            "bottom": 19,
+            "left": 28,
+            "right": 63,
+            "top": 41
+          },
+          "edge_ink_pixels": 0,
+          "index": 11,
+          "ink_bbox": [
+            28,
+            41,
+            109,
+            140
+          ],
+          "ink_pixels": 2669,
+          "minimum_clearance_px": 19,
+          "source_crop_box": [
+            924,
+            795,
+            1254,
+            1125
+          ],
+          "state": "system.error"
+        }
+      ],
+      "id": "special-system-v1",
+      "source": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_system_v1_candidate.png",
+      "source_dimensions_px": [
+        1254,
+        1254
+      ],
+      "source_sha256": "AF9ADFD49C47C89DF674726D7201CC49C61ED636306013697822BB42FB1A9C82"
+    },
+    {
+      "contact_sheet": "docs/art/iterations/companion-pet-special-states-v1/review-200x200/generated_pet_special_journey_v1_crop_preflight_contact_sheet.png",
+      "contact_sheet_dimensions_px": [
+        800,
+        600
+      ],
+      "contact_sheet_sha256": "B072603D667B8BC9C54A0322E6C009526CF11D63D85AE553E931684B94AAC082",
+      "frames": [
+        {
+          "edge_clearance_px": {
+            "bottom": 27,
+            "left": 47,
+            "right": 29,
+            "top": 44
+          },
+          "edge_ink_pixels": 0,
+          "index": 0,
+          "ink_bbox": [
+            47,
+            44,
+            124,
+            129
+          ],
+          "ink_pixels": 2555,
+          "minimum_clearance_px": 27,
+          "source_crop_box": [
+            0,
+            77,
+            330,
+            407
+          ],
+          "state": "menu.open.entry"
+        },
+        {
+          "edge_clearance_px": {
+            "bottom": 17,
+            "left": 23,
+            "right": 54,
+            "top": 50
+          },
+          "edge_ink_pixels": 0,
+          "index": 1,
+          "ink_bbox": [
+            23,
+            50,
+            123,
+            133
+          ],
+          "ink_pixels": 2804,
+          "minimum_clearance_px": 17,
+          "source_crop_box": [
+            340,
+            77,
+            670,
+            407
+          ],
+          "state": "menu.open.settle"
+        },
+        {
+          "edge_clearance_px": {
+            "bottom": 19,
+            "left": 42,
+            "right": 39,
+            "top": 50
+          },
+          "edge_ink_pixels": 0,
+          "index": 2,
+          "ink_bbox": [
+            42,
+            50,
+            119,
+            131
+          ],
+          "ink_pixels": 2417,
+          "minimum_clearance_px": 19,
+          "source_crop_box": [
+            610,
+            77,
+            940,
+            407
+          ],
+          "state": "menu.blocked"
+        },
+        {
+          "edge_clearance_px": {
+            "bottom": 27,
+            "left": 31,
+            "right": 48,
+            "top": 56
+          },
+          "edge_ink_pixels": 0,
+          "index": 3,
+          "ink_bbox": [
+            31,
+            56,
+            121,
+            117
+          ],
+          "ink_pixels": 2425,
+          "minimum_clearance_px": 27,
+          "source_crop_box": [
+            924,
+            77,
+            1254,
+            407
+          ],
+          "state": "menu.exit"
+        },
+        {
+          "edge_clearance_px": {
+            "bottom": 39,
+            "left": 48,
+            "right": 32,
+            "top": 31
+          },
+          "edge_ink_pixels": 0,
+          "index": 4,
+          "ink_bbox": [
+            48,
+            31,
+            120,
+            130
+          ],
+          "ink_pixels": 2501,
+          "minimum_clearance_px": 31,
+          "source_crop_box": [
+            0,
+            455,
+            330,
+            785
+          ],
+          "state": "upgrade.offer"
+        },
+        {
+          "edge_clearance_px": {
+            "bottom": 47,
+            "left": 45,
+            "right": 35,
+            "top": 30
+          },
+          "edge_ink_pixels": 0,
+          "index": 5,
+          "ink_bbox": [
+            45,
+            30,
+            120,
+            123
+          ],
+          "ink_pixels": 2528,
+          "minimum_clearance_px": 30,
+          "source_crop_box": [
+            305,
+            455,
+            635,
+            785
+          ],
+          "state": "upgrade.prepare"
+        },
+        {
+          "edge_clearance_px": {
+            "bottom": 36,
+            "left": 42,
+            "right": 40,
+            "top": 33
+          },
+          "edge_ink_pixels": 0,
+          "index": 6,
+          "ink_bbox": [
+            42,
+            33,
+            118,
+            131
+          ],
+          "ink_pixels": 2615,
+          "minimum_clearance_px": 33,
+          "source_crop_box": [
+            609,
+            455,
+            939,
+            785
+          ],
+          "state": "upgrade.transfer"
+        },
+        {
+          "edge_clearance_px": {
+            "bottom": 40,
+            "left": 30,
+            "right": 50,
+            "top": 33
+          },
+          "edge_ink_pixels": 0,
+          "index": 7,
+          "ink_bbox": [
+            30,
+            33,
+            120,
+            127
+          ],
+          "ink_pixels": 2728,
+          "minimum_clearance_px": 30,
+          "source_crop_box": [
+            924,
+            455,
+            1254,
+            785
+          ],
+          "state": "upgrade.verify"
+        },
+        {
+          "edge_clearance_px": {
+            "bottom": 34,
+            "left": 45,
+            "right": 36,
+            "top": 30
+          },
+          "edge_ink_pixels": 0,
+          "index": 8,
+          "ink_bbox": [
+            45,
+            30,
+            119,
+            136
+          ],
+          "ink_pixels": 2775,
+          "minimum_clearance_px": 30,
+          "source_crop_box": [
+            0,
+            795,
+            330,
+            1125
+          ],
+          "state": "upgrade.restart"
+        },
+        {
+          "edge_clearance_px": {
+            "bottom": 37,
+            "left": 42,
+            "right": 38,
+            "top": 31
+          },
+          "edge_ink_pixels": 0,
+          "index": 9,
+          "ink_bbox": [
+            42,
+            31,
+            120,
+            132
+          ],
+          "ink_pixels": 1709,
+          "minimum_clearance_px": 31,
+          "source_crop_box": [
+            305,
+            795,
+            635,
+            1125
+          ],
+          "state": "upgrade.success"
+        },
+        {
+          "edge_clearance_px": {
+            "bottom": 45,
+            "left": 39,
+            "right": 45,
+            "top": 32
+          },
+          "edge_ink_pixels": 0,
+          "index": 10,
+          "ink_bbox": [
+            39,
+            32,
+            116,
+            123
+          ],
+          "ink_pixels": 2565,
+          "minimum_clearance_px": 32,
+          "source_crop_box": [
+            609,
+            795,
+            939,
+            1125
+          ],
+          "state": "upgrade.error"
+        },
+        {
+          "edge_clearance_px": {
+            "bottom": 45,
+            "left": 27,
+            "right": 55,
+            "top": 33
+          },
+          "edge_ink_pixels": 0,
+          "index": 11,
+          "ink_bbox": [
+            27,
+            33,
+            118,
+            122
+          ],
+          "ink_pixels": 2339,
+          "minimum_clearance_px": 27,
+          "source_crop_box": [
+            924,
+            795,
+            1254,
+            1125
+          ],
+          "state": "upgrade.error.recovery"
+        }
+      ],
+      "id": "special-journey-v1",
+      "source": "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_journey_v1_candidate.png",
+      "source_dimensions_px": [
+        1254,
+        1254
+      ],
+      "source_sha256": "95CC749134F169E73A2E2A99FA2B6F08AABDFE78D218677C347D2D687EA4B17F"
+    }
+  ],
+  "status": "PASS_MACHINE_SAFE_CROP_PREVIEW_NOT_IMPORTABLE"
+}

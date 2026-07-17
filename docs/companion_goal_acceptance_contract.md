@@ -63,8 +63,9 @@ a firmware flash by itself.
 2. `special-system-v1`: speaking, recording error, charge/charging/charged,
    low battery, pairing/link and system-error states must retain the v9 eye,
    brow, mouth and cheek identity. The current lower-edge truncation feedback
-   is unresolved, so this item cannot be approved until the corrected preview
-   and its safe-area evidence are ready.
+   is unresolved. Inspect the locked-source special-state crop preflight at
+   normal 200x200 cell scale: every crop must retain >=4 px canvas clearance,
+   but this source-only proof does not clear the focused G5 panel recheck.
 3. `special-journey-v1`: menu entry/settle/blocked/exit and upgrade
    offer/prepare/transfer/verify/restart/success/error/recovery must use the
    same v9 grammar and remain distinct enough to communicate state.
@@ -95,10 +96,10 @@ a firmware flash by itself.
 ### G5: WB55 Panel, Touch, And Low-Power Reality
 
 - Machine precondition: normal product-equivalent WB55 image preflight, the
-  39-frame 4 px safe-area report, and the exhaustive SSD1681 transform/window
-  mapping report must pass for all 40,000 pixels. These prove only source
-  pixels remain in-bounds; they do not clear a real-panel viewport or
-  lower-edge defect.
+  39-frame v9 4 px safe-area report, the 24-frame special-state crop preflight,
+  and the exhaustive SSD1681 transform/window mapping report must pass for all
+  40,000 pixels. These prove only source pixels remain in-bounds; they do not
+  clear a real-panel viewport or lower-edge defect.
 - Hardware precondition: FTS02 panel health and a bounded hardware lock. Do
   not use a trace-only image that lacks the normal SSD1681 configuration.
 - Hardware action: show each available daily v9 clip; inspect all four display

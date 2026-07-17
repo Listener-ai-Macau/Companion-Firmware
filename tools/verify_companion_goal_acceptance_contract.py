@@ -27,6 +27,7 @@ REQUIRED_CONTRACT_ANCHORS = (
     "4 px",
     "durable request record",
     "next-prompt delta",
+    "special-state crop preflight",
     "try generic, adjacent-panel, guessed, online, or hand-authored LUT bytes.",
     "<=1 mA average over >=60 s",
     "one canonical Chinese `aiw operator-prompt` item at a time",
@@ -64,6 +65,10 @@ EVIDENCE = {
     "frame_safe_area": (
         "docs/validation/companion-v9-frame-safe-area-20260717.json",
         "PASS_MACHINE_SAFE_AREA_PHYSICAL_REVIEW_PENDING",
+    ),
+    "special_state_crop_preflight": (
+        "docs/validation/companion-pet-special-state-crop-preflight-20260717.json",
+        "PASS_MACHINE_SAFE_CROP_PREVIEW_NOT_IMPORTABLE",
     ),
     "ssd1681_frame_mapping": (
         "docs/validation/companion-ssd1681-frame-mapping-20260717.json",
@@ -120,7 +125,7 @@ def build_report() -> dict[str, object]:
         "next_eligible_owner_item": "menu-v6-four-root",
         "sequential_visual_review": [
             {"id": "menu-v6-four-root", "state": "ready_for_owner_decision"},
-            {"id": "special-system-v1", "state": "owner_feedback_triaged_correction_required"},
+            {"id": "special-system-v1", "state": "machine_safe_preview_ready_owner_decision_pending"},
             {"id": "special-journey-v1", "state": "blocked_until_prior_visual_decision"},
         ],
         "physical_acceptance": {
@@ -128,6 +133,7 @@ def build_report() -> dict[str, object]:
             "required_first_machine_gates": ["G1", "G3", "G4", "G5_preflight"],
             "g5_preflight": {
                 "frame_safe_area": "39 inactive v9 frames have >=4 px canvas clearance",
+                "special_state_crop_preflight": "24 pending special-state review frames have >=4 px source-crop canvas clearance without PBM/CEMP import",
                 "ssd1681_mapping": "all 40,000 pixels are one-to-one/in-bounds through the WB55 rotation, mirror and descending-Y path",
                 "limit": "neither machine gate proves a physical panel viewport or clears the lower-edge feedback",
             },

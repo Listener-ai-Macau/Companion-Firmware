@@ -28,6 +28,10 @@ SYSTEM_PREVIEW = SPECIAL_STATES / "generated_pet_special_system_v1_candidate_200
 JOURNEY_SOURCE = SPECIAL_STATES / "generated_pet_special_journey_v1_candidate.png"
 JOURNEY_SOURCE_SHA256 = "95CC749134F169E73A2E2A99FA2B6F08AABDFE78D218677C347D2D687EA4B17F"
 JOURNEY_PREVIEW = SPECIAL_STATES / "generated_pet_special_journey_v1_candidate_200x200_preview.png"
+SPECIAL_REVIEW_DIR = SPECIAL_STATES / "review-200x200"
+SYSTEM_CROP_PREFLIGHT = SPECIAL_REVIEW_DIR / "generated_pet_special_system_v1_crop_preflight_contact_sheet.png"
+JOURNEY_CROP_PREFLIGHT = SPECIAL_REVIEW_DIR / "generated_pet_special_journey_v1_crop_preflight_contact_sheet.png"
+SPECIAL_CROP_PREFLIGHT_REPORT = ROOT / "docs/validation/companion-pet-special-state-crop-preflight-20260717.json"
 SPECIAL_MAPPING = SPECIAL_STATES / "pending-source-mapping.json"
 REPORT = ROOT / "docs/validation/companion-art-retirement-20260716.json"
 
@@ -46,8 +50,8 @@ def main() -> int:
     allowed_menu_renderables = {
         MENU_SOURCE.resolve(), MENU_PREVIEW.resolve(), MENU_EN_PREVIEW.resolve(), MENU_ZH_PREVIEW.resolve(),
     }
-    allowed_system_renderables = {SYSTEM_SOURCE.resolve(), SYSTEM_PREVIEW.resolve()}
-    allowed_journey_renderables = {JOURNEY_SOURCE.resolve(), JOURNEY_PREVIEW.resolve()}
+    allowed_system_renderables = {SYSTEM_SOURCE.resolve(), SYSTEM_PREVIEW.resolve(), SYSTEM_CROP_PREFLIGHT.resolve()}
+    allowed_journey_renderables = {JOURNEY_SOURCE.resolve(), JOURNEY_PREVIEW.resolve(), JOURNEY_CROP_PREFLIGHT.resolve()}
     unauthorized_renderables = [
         path.relative_to(ROOT).as_posix() for path in renderable_files
         if not path.is_relative_to(V9)
@@ -87,6 +91,7 @@ def main() -> int:
         )
     )
     special_mapping = json.loads(SPECIAL_MAPPING.read_text(encoding="utf-8"))
+    special_crop_preflight = json.loads(SPECIAL_CROP_PREFLIGHT_REPORT.read_text(encoding="utf-8"))
     system_source_sha256 = hashlib.sha256(SYSTEM_SOURCE.read_bytes()).hexdigest().upper()
     journey_source_sha256 = hashlib.sha256(JOURNEY_SOURCE.read_bytes()).hexdigest().upper()
 
@@ -203,6 +208,27 @@ def main() -> int:
     for key in ["pbm_imported", "cemp_packed", "external_flash_provisioned", "firmware_flashed", "owner_visual_pass"]:
         if journey_runtime_boundary.get(key) is not False:
             errors.append(f"journey source review must keep {key}=false")
+    if special_crop_preflight.get("status") != "PASS_MACHINE_SAFE_CROP_PREVIEW_NOT_IMPORTABLE":
+        errors.append("special crop preflight must remain review-only machine evidence")
+    crop_sources = {item.get("id"): item for item in special_crop_preflight.get("sources", [])}
+    for identifier, expected_source_hash, expected_contact in (
+        ("special-system-v1", SYSTEM_SOURCE_SHA256, SYSTEM_CROP_PREFLIGHT),
+        ("special-journey-v1", JOURNEY_SOURCE_SHA256, JOURNEY_CROP_PREFLIGHT),
+    ):
+        crop_source = crop_sources.get(identifier, {})
+        if crop_source.get("source_sha256", "").upper() != expected_source_hash:
+            errors.append(f"{identifier} crop preflight source hash drifted")
+        if crop_source.get("contact_sheet") != expected_contact.relative_to(ROOT).as_posix():
+            errors.append(f"{identifier} crop preflight contact path drifted")
+        if not expected_contact.is_file() or crop_source.get("contact_sheet_sha256", "").upper() != hashlib.sha256(expected_contact.read_bytes()).hexdigest().upper():
+            errors.append(f"{identifier} crop preflight contact hash drifted")
+        frames = crop_source.get("frames", [])
+        if len(frames) != 12 or any(frame.get("edge_ink_pixels") != 0 or frame.get("minimum_clearance_px", 0) < 4 for frame in frames):
+            errors.append(f"{identifier} crop preflight must retain twelve >=4 px no-edge-ink frames")
+    crop_boundary = special_crop_preflight.get("runtime_boundary", {})
+    for key in ["pbm_imported", "cemp_packed", "external_flash_provisioned", "firmware_flashed", "ota_behavior_changed", "owner_visual_pass"]:
+        if crop_boundary.get(key) is not False:
+            errors.append(f"special crop preflight must keep {key}=false")
     if any(path.suffix.lower() in {".pbm", ".cemp"} for path in SPECIAL_STATES.rglob("*")):
         errors.append("pending special sources must not contain PBM or CEMP")
     if special_mapping.get("status") != "PENDING_OWNER_VISUAL_DECISION_NO_RUNTIME_ACTIVATION":
@@ -224,6 +250,10 @@ def main() -> int:
         "pending_system_source_sha256": system_source_sha256,
         "pending_journey_source": JOURNEY_SOURCE.relative_to(ROOT).as_posix(),
         "pending_journey_source_sha256": journey_source_sha256,
+        "pending_special_crop_preflight": SPECIAL_CROP_PREFLIGHT_REPORT.relative_to(ROOT).as_posix(),
+        "pending_special_crop_previews": [
+            SYSTEM_CROP_PREFLIGHT.relative_to(ROOT).as_posix(), JOURNEY_CROP_PREFLIGHT.relative_to(ROOT).as_posix(),
+        ],
         "special_state_plan": SPECIAL_STATES.relative_to(ROOT).as_posix(),
         "pending_special_mapping": SPECIAL_MAPPING.relative_to(ROOT).as_posix(),
         "unauthorized_renderables": unauthorized_renderables,
@@ -236,7 +266,7 @@ def main() -> int:
         for error in errors:
             print(f"ERROR: {error}")
         return 1
-    print("PASS: docs/art retains only v9, the pending localized v6 menu source, two pending v9 special sources, and their exact no-runtime mapping.")
+    print("PASS: docs/art retains only v9, the pending localized v6 menu source, two pending special sources, and their exact review-only no-runtime mappings.")
     return 0
 
 

@@ -22,10 +22,12 @@
       "sequence": 2,
       "id": "special-system-v1",
       "title": "Companion 表情视觉验收 2/3",
-      "scope": "Verify v9 identity consistency and readable cute special states for voice, recording error, power, link and system errors.",
+      "scope": "Verify v9 identity consistency and readable cute special states for voice, recording error, power, link and system errors. Inspect the locked source-crop contact sheet at true 200x200 cell scale; source geometry does not clear the separate real-panel lower-edge P0 gate.",
       "artifacts": [
         "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_system_v1_candidate.png",
-        "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_system_v1_candidate_200x200_preview.png"
+        "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_system_v1_candidate_200x200_preview.png",
+        "docs/art/iterations/companion-pet-special-states-v1/review-200x200/generated_pet_special_system_v1_crop_preflight_contact_sheet.png",
+        "docs/validation/companion-pet-special-state-crop-preflight-20260717.json"
       ],
       "source_sha256": "AF9ADFD49C47C89DF674726D7201CC49C61ED636306013697822BB42FB1A9C82",
       "machine_evidence": "docs/validation/companion-pet-special-system-source-review-20260717.json",
@@ -36,10 +38,12 @@
       "sequence": 3,
       "id": "special-journey-v1",
       "title": "Companion 表情视觉验收 3/3",
-      "scope": "Verify v9 identity consistency and readable cute menu/upgrade journey keyframes. menu.open remains a handoff into the separately reviewed four-root menu source.",
+      "scope": "Verify v9 identity consistency and readable cute menu/upgrade journey keyframes at true 200x200 cell scale. menu.open remains a handoff into the separately reviewed four-root menu source; source geometry does not clear the separate real-panel lower-edge P0 gate.",
       "artifacts": [
         "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_journey_v1_candidate.png",
-        "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_journey_v1_candidate_200x200_preview.png"
+        "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_journey_v1_candidate_200x200_preview.png",
+        "docs/art/iterations/companion-pet-special-states-v1/review-200x200/generated_pet_special_journey_v1_crop_preflight_contact_sheet.png",
+        "docs/validation/companion-pet-special-state-crop-preflight-20260717.json"
       ],
       "source_sha256": "95CC749134F169E73A2E2A99FA2B6F08AABDFE78D218677C347D2D687EA4B17F",
       "machine_evidence": "docs/validation/companion-pet-special-journey-source-review-20260717.json",

@@ -37,10 +37,12 @@
       "sha256": "AF9ADFD49C47C89DF674726D7201CC49C61ED636306013697822BB42FB1A9C82",
       "review": {
         "outcome": "PENDING_OWNER_VISUAL_REVIEW",
-        "reason": "Square geometry, source hash, twelve populated cells and a deterministic 200x200 preview pass machine checks. Owner feedback about lower-edge truncation is an open P0 physical gate, so this source cannot be approved, imported or activated.",
+        "reason": "Square geometry, source hash, twelve populated cells and deterministic whole-sheet plus exact 200x200 crop previews pass machine checks. Owner feedback about lower-edge truncation remains an open P0 physical gate, so this source cannot be imported or activated.",
         "comparison_artifacts": [
           "docs/validation/companion-pet-special-system-source-review-20260717.json",
           "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_system_v1_candidate_200x200_preview.png",
+          "docs/art/iterations/companion-pet-special-states-v1/review-200x200/generated_pet_special_system_v1_crop_preflight_contact_sheet.png",
+          "docs/validation/companion-pet-special-state-crop-preflight-20260717.json",
           "docs/validation/companion-owner-feedback-triage-20260717.json"
         ],
         "next_prompt_delta": "Only after an owner decision, change one named visible variable against this exact square source; do not restart the face identity, crop the sheet or reuse rejected art."
@@ -51,6 +53,7 @@
         "source_mapping": "docs/art/iterations/companion-pet-special-states-v1/pending-source-mapping.json",
         "validation": [
           "docs/validation/companion-pet-special-system-source-review-20260717.json",
+          "docs/validation/companion-pet-special-state-crop-preflight-20260717.json",
           "docs/validation/companion-pending-special-source-mapping-20260717.json"
         ],
         "activation_gate": "No PBM, CEMP, external Flash, firmware, OTA or visual PASS is allowed until an owner source decision, exact source-to-resource mapping and focused physical acceptance are recorded."
@@ -59,6 +62,7 @@
         "source hash and 1254x1254 square geometry",
         "twelve populated 3x4 cells mapped to named system families",
         "deterministic 200x200 1-bit preview",
+        "twelve exact 200x200 source-crop review frames with >=4 px clearance",
         "no PBM, CEMP, Flash or firmware activation"
       ],
       "next_prompt_delta": "Only after an owner decision, change one named visible variable against this exact square source; do not restart the face identity, crop the sheet or reuse rejected art."
@@ -88,10 +92,12 @@
       "sha256": "95CC749134F169E73A2E2A99FA2B6F08AABDFE78D218677C347D2D687EA4B17F",
       "review": {
         "outcome": "PENDING_OWNER_VISUAL_REVIEW",
-        "reason": "Square geometry, source hash, twelve populated cells and a deterministic 200x200 preview pass machine checks. This is still the third sequential owner visual item and cannot import or activate a resource before the earlier review decision.",
+        "reason": "Square geometry, source hash, twelve populated cells and deterministic whole-sheet plus exact 200x200 crop previews pass machine checks. This is still the third sequential owner visual item and cannot import or activate a resource before the earlier review decision.",
         "comparison_artifacts": [
           "docs/validation/companion-pet-special-journey-source-review-20260717.json",
           "docs/art/iterations/companion-pet-special-states-v1/generated_pet_special_journey_v1_candidate_200x200_preview.png",
+          "docs/art/iterations/companion-pet-special-states-v1/review-200x200/generated_pet_special_journey_v1_crop_preflight_contact_sheet.png",
+          "docs/validation/companion-pet-special-state-crop-preflight-20260717.json",
           "docs/art/iterations/companion-pet-special-states-v1/pending-source-mapping.json"
         ],
         "next_prompt_delta": "Only after an owner decision, change one named visible variable against this exact square source; do not restart the face identity or reuse rejected art."
@@ -102,6 +108,7 @@
         "source_mapping": "docs/art/iterations/companion-pet-special-states-v1/pending-source-mapping.json",
         "validation": [
           "docs/validation/companion-pet-special-journey-source-review-20260717.json",
+          "docs/validation/companion-pet-special-state-crop-preflight-20260717.json",
           "docs/validation/companion-pending-special-source-mapping-20260717.json"
         ],
         "activation_gate": "No PBM, CEMP, external Flash, firmware, OTA or visual PASS is allowed until an owner source decision, exact source-to-resource mapping and focused physical acceptance are recorded."
@@ -110,6 +117,7 @@
         "source hash and 1254x1254 square geometry",
         "twelve populated 3x4 cells mapped to named menu and upgrade phases",
         "deterministic 200x200 1-bit preview",
+        "twelve exact 200x200 source-crop review frames with >=4 px clearance",
         "no PBM, CEMP, Flash or firmware activation"
       ],
       "next_prompt_delta": "Only after an owner decision, change one named visible variable against this exact square source; do not restart the face identity or reuse rejected art."
