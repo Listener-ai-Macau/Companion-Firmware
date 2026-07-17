@@ -1,0 +1,35 @@
+{
+  "schema": "companion.ball_motion.run.v1",
+  "date": "2026-07-17",
+  "requirement": "COMP-REQ-086",
+  "overall_status": "MACHINE_PASS_PHYSICAL_REWORK",
+  "image": {
+    "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ball_motion_diagnostic/Companion_Nucleo_WB55RG_BallMotionDiagnostic.hex",
+    "sha256": "56BCBA7BCC4E87C8C797C559D4A2EC13E7D83DCBFF8E14DB9BC6FA055F164A58"
+  },
+  "machine_evidence": {
+    "serial_log": ".cache/validation/ball-motion-final-20260717/nucleo-serial-raw.log",
+    "summary": ".cache/validation/ball-motion-final-20260717/nucleo-serial-summary.json",
+    "trigger": "one ball_motion_diagnostic start trigger=single_touch",
+    "steps": [
+      {"step": 0, "center": [25, 100], "mode": "full", "control": "0xF7", "elapsed_ms": 1290},
+      {"step": 1, "center": [50, 100], "mode": "differential", "control": "0xFC", "elapsed_ms": 305},
+      {"step": 2, "center": [75, 100], "mode": "differential", "control": "0xFC", "elapsed_ms": 304},
+      {"step": 3, "center": [100, 100], "mode": "differential", "control": "0xFC", "elapsed_ms": 305},
+      {"step": 4, "center": [125, 100], "mode": "differential", "control": "0xFC", "elapsed_ms": 305},
+      {"step": 5, "center": [150, 100], "mode": "differential", "control": "0xFC", "elapsed_ms": 305},
+      {"step": 6, "center": [175, 100], "mode": "maintenance", "control": "0xC7", "elapsed_ms": 1729}
+    ],
+    "completion": "ball_motion_diagnostic done interactive_steps=6 cleanup_expected=1"
+  },
+  "operator": {
+    "selection": "已执行",
+    "note_path": "docs/validation/companion-ball-motion-operator-final-note-20260717.txt",
+    "note": "按了, 一直在全刷, 就是一下一个球会一直动的感觉"
+  },
+  "verdict": {
+    "machine": "PASS: trigger routing and all seven transactions completed in order.",
+    "physical": "REWORK: motion was visible but presented as a full-refresh-like sequence of individual balls; it is not acceptable production pet motion.",
+    "next": "Use this verified sequence as the input to the portable automatic motion coordinator. Preserve the existing no-custom-waveform boundary and optimize only after each physical quality gate."
+  }
+}
