@@ -20,7 +20,9 @@ visual source, fallback or current validation path. Daily visual work is
 deterministic source-to-PBM/CEMP/render verification; a camera is final
 physical preflight only when a healthy, aligned panel is available. The current
 machine/owner/hardware boundary is recorded by the active Goal, this registry,
-and its linked validation artifacts.
+and its linked validation artifacts. The historical audit command
+`tools/verify_companion_current_goal_audit.py` remains a required compatibility
+anchor until its successor audit is explicitly recorded.
 
 The current Goal-scoped actual-acceptance authority is
 `docs/companion_goal_acceptance_contract.md` (G1 through G8). The earlier
@@ -33,7 +35,10 @@ useful commits were classified; main is the sole attached worktree. The current
 Codex Goal contains the updated executable contract in Chinese. Every later
 resume must first read the installed `ai-collaboration-workflow` skill and
 `<AI_WORKFLOW_REPO>\docs\agent_quickstart.md`; an unfinished active Goal must
-not be falsely completed merely to rewrite it.
+not be falsely completed merely to rewrite it. The Goal API cannot edit or
+replace an unfinished active Goal; the same safeguard applies while that Goal
+is blocked. An owner-deleted Goal has no active contract and can then be
+recreated under the current Chinese Goal rule.
 
 ## Current Visual Source Resolution (2026-07-17)
 
