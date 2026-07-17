@@ -21,17 +21,20 @@ The candidate package uses the `CWF1` manifest format and must include:
 1. Exact panel model `GDEY0154D67-T03`, controller and panel batch/lot scope.
 2. Temperature range and test condition, plus the supplier's intended
    temperature compensation rule.
-3. Complete waveform payload and byte count for the stated update profile.
-4. CRC/SHA-256 of the received payload, supplier/source identity, document
-   revision and receipt date.
+3. Either the complete external waveform payload and byte count, or a
+   supplier-confirmed internal waveform-profile identifier with its complete
+   selection commands for the stated update profile.
+4. CRC/SHA-256 of the received payload or source archive/command table,
+   supplier/source identity, document revision and receipt date.
 5. The supplier's initialization/update-control sequence that binds that exact
-   waveform to the stated panel and temperature range.
+   waveform or internal profile to the stated panel and temperature range.
 
 The future CWF1 parser must reject a package unless model, batch/lot,
-temperature range, payload CRC, source identity and document revision all
-match the approved request. A parser validation is not a panel update; a
-validated candidate may only be used later in one short hardware-locked
-experiment with BUSY, visible-frame and residual evidence.
+temperature range, external-payload CRC or internal-profile command signature,
+source identity and document revision all match the approved request. A parser
+validation is not a panel update; a validated candidate may only be used later
+in one short hardware-locked experiment with BUSY, visible-frame and residual
+evidence.
 
 The supplier-facing Chinese request and intake checklist are in
 `docs/companion_ssd1681_vendor_waveform_request.md`. The supplier may send

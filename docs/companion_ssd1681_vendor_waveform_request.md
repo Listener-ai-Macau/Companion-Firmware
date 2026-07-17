@@ -137,7 +137,10 @@ LUT 用在这块屏上。请确认以上资料是否覆盖 N524110506 / 0154BN-D
 
 On receipt, archive the original delivery unchanged. Record its SHA-256,
 source identity, revision, model/lot scope and temperature scope before parsing
-it. The existing fail-closed rule in
+it. For an internal profile, record a deterministic signature of the complete
+profile-selection command sequence instead of inventing a non-existent external
+payload. The existing fail-closed rule in
 `docs/companion_ssd1681_vendor_waveform_freeze.md` remains authoritative: a
-matching package must pass model, lot, temperature, payload-integrity and
-source checks before a single hardware candidate is considered.
+matching package must pass model, lot, temperature, external-payload integrity
+or internal-profile signature, and source checks before a single hardware
+candidate is considered.
