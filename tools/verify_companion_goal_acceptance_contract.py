@@ -13,6 +13,12 @@ CONTRACT = ROOT / "docs" / "companion_goal_acceptance_contract.md"
 TRIAGE = ROOT / "docs" / "validation" / "companion-owner-feedback-triage-20260717.json"
 G2_GROUP_TRIAGE = ROOT / "docs" / "validation" / "companion-g2-menu-group-review-triage-20260717.json"
 G2_HOME_CONTEXT_TRIAGE = ROOT / "docs" / "validation" / "companion-g2-home-artifact1-triage-20260717.json"
+G2_HOME_ANCHOR_TRIAGE = ROOT / "docs" / "validation" / "companion-g2-home-artifact1-anchor-triage-20260717.json"
+V9_RENDER = ROOT / "docs" / "art" / "iterations" / "companion-pet-expression-v9" / "rendered-200x200" / "v9-expression-render-report.json"
+SPECIAL_PREFLIGHT = ROOT / "docs" / "validation" / "companion-pet-special-state-crop-preflight-20260717.json"
+PLACEMENT_SOURCE = ROOT / "app" / "companion_pendant" / "epaper" / "expression_frame_placement.c"
+PLACEMENT_HEADER = ROOT / "app" / "companion_pendant" / "epaper" / "expression_frame_placement.h"
+PLACEMENT_TEST = ROOT / "tools" / "test_expression_frame_placement_host.ps1"
 REPORT = ROOT / "docs" / "validation" / "companion-goal-acceptance-readiness-20260717.json"
 
 REQUIRED_CONTRACT_ANCHORS = (
@@ -34,6 +40,11 @@ REQUIRED_CONTRACT_ANCHORS = (
     "one canonical prompt per image",
     "locked generated-art baseline",
     "desktop output",
+    "whole-expression anchor policy",
+    "canonical center `(100,100)`",
+    "source anchor",
+    "requested center",
+    "portable requested-center placement host test",
     "This is not an electronic-paper panel review",
     "已执行",
     "需修改",
@@ -100,6 +111,10 @@ EVIDENCE = {
     "special_state_crop_preflight": (
         "docs/validation/companion-pet-special-state-crop-preflight-20260717.json",
         "PASS_MACHINE_SAFE_CROP_PREVIEW_NOT_IMPORTABLE",
+    ),
+    "v9_anchor_render": (
+        "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/v9-expression-render-report.json",
+        "PASS_MACHINE_RENDER_CANDIDATE_NOT_ACTIVATED",
     ),
     "ssd1681_frame_mapping": (
         "docs/validation/companion-ssd1681-frame-mapping-20260717.json",
@@ -204,6 +219,59 @@ def build_report() -> dict[str, object]:
     if g2_home_context_triage.get("decision", {}).get("selection_applied") is not False:
         errors.append("G2 home context-mismatch selection was incorrectly applied")
 
+    g2_home_anchor_triage: dict[str, object] = {}
+    if G2_HOME_ANCHOR_TRIAGE.is_file():
+        try:
+            g2_home_anchor_triage = json.loads(G2_HOME_ANCHOR_TRIAGE.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            errors.append("G2 home anchor triage is invalid JSON")
+    else:
+        errors.append("missing G2 home anchor triage")
+    if (g2_home_anchor_triage.get("status") != "OPEN_ANCHOR_NORMALIZATION_REWORK_REQUIRED" or
+            g2_home_anchor_triage.get("requirement") != "COMP-REQ-085"):
+        errors.append("G2 home anchor rework must remain linked to COMP-REQ-085")
+    if g2_home_anchor_triage.get("decision", {}).get("selection_applied") is not False:
+        errors.append("G2 home anchor selection was incorrectly applied")
+
+    try:
+        v9_render = json.loads(V9_RENDER.read_text(encoding="utf-8"))
+        special_preflight = json.loads(SPECIAL_PREFLIGHT.read_text(encoding="utf-8"))
+    except (FileNotFoundError, json.JSONDecodeError) as exc:
+        errors.append(f"missing or invalid expression-anchor evidence: {exc}")
+        v9_render = {}
+        special_preflight = {}
+    v9_frames = v9_render.get("frames", [])
+    if len(v9_frames) != 39 or not all(
+            frame.get("anchor_policy") == "whole_expression_visible_bbox_center" and
+            frame.get("canonical_center") == [100, 100] and
+            isinstance(frame.get("source_anchor"), list) and
+            isinstance(frame.get("normalization_offset"), list) and
+            isinstance(frame.get("requested_center"), list) and
+            isinstance(frame.get("final_output_bounds"), list)
+            for frame in v9_frames):
+        errors.append("v9 frames lack complete whole-expression anchor records")
+    special_frames = [frame for source in special_preflight.get("sources", [])
+                      for frame in source.get("frames", [])]
+    if len(special_frames) != 24 or not all(
+            frame.get("anchor_policy") == "whole_expression_visible_bbox_center" and
+            frame.get("canonical_center") == [100, 100] and
+            isinstance(frame.get("source_anchor"), list) and
+            isinstance(frame.get("normalization_offset"), list) and
+            isinstance(frame.get("requested_center"), list) and
+            isinstance(frame.get("final_output_bounds"), list)
+            for frame in special_frames):
+        errors.append("special frames lack complete whole-expression anchor records")
+    for path in (PLACEMENT_SOURCE, PLACEMENT_HEADER, PLACEMENT_TEST):
+        if not path.is_file():
+            errors.append(f"missing portable expression placement artifact: {path.relative_to(ROOT).as_posix()}")
+    if PLACEMENT_SOURCE.is_file():
+        placement_text = PLACEMENT_SOURCE.read_text(encoding="utf-8")
+        for token in ("comp_expression_frame_place_1bpp", "destination_x < 0"):
+            if token not in placement_text:
+                errors.append(f"portable expression placement missing fail-closed token: {token}")
+    if PLACEMENT_HEADER.is_file() and "leaves destination untouched" not in PLACEMENT_HEADER.read_text(encoding="utf-8"):
+        errors.append("portable expression placement header lacks untouched-destination contract")
+
     return {
         "schema": "companion.goal_acceptance_readiness.v2",
         "status": "PASS_ACCEPTANCE_CONTRACT_READY_OWNER_AND_HARDWARE_GATED" if not errors else "FAIL",
@@ -232,6 +300,7 @@ def build_report() -> dict[str, object]:
         "owner_feedback_triage": TRIAGE.relative_to(ROOT).as_posix(),
         "g2_group_review_triage": G2_GROUP_TRIAGE.relative_to(ROOT).as_posix(),
         "g2_home_context_triage": G2_HOME_CONTEXT_TRIAGE.relative_to(ROOT).as_posix(),
+        "g2_home_anchor_triage": G2_HOME_ANCHOR_TRIAGE.relative_to(ROOT).as_posix(),
         "errors": errors,
     }
 

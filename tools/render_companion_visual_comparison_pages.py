@@ -10,6 +10,8 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 
+from companion_expression_anchor import ANCHOR_POLICY, CANONICAL_CENTER, normalize, translate
+
 
 ROOT = Path(__file__).resolve().parents[1]
 VALIDATION = ROOT / "docs" / "validation"
@@ -22,7 +24,6 @@ MENU = VALIDATION / "companion-menu-v7-screen-family-preview-20260717.json"
 SPECIAL = VALIDATION / "companion-pet-special-state-one-page-review-20260717.json"
 FONT = Path(r"C:\Windows\Fonts\msyh.ttc")
 CANVAS = (200, 200)
-THRESHOLD = 180
 
 
 def digest(path: Path) -> str:
@@ -35,16 +36,6 @@ def rel(path: Path) -> str:
 
 def font(size: int) -> ImageFont.FreeTypeFont:
     return ImageFont.truetype(str(FONT), size=size)
-
-
-def mono(image: Image.Image) -> Image.Image:
-    return image.convert("L").point(lambda value: 0 if value < THRESHOLD else 255, "1")
-
-
-def translated(image: Image.Image, dx: int, dy: int) -> Image.Image:
-    result = Image.new("1", CANVAS, 1)
-    result.paste(image, (dx, dy))
-    return result
 
 
 def compare(left: Image.Image, right: Image.Image) -> int:
@@ -93,7 +84,14 @@ def v9_pages() -> list[dict[str, object]]:
         for frame in state["frames"]:
             rendered = render_by_key[(state["clip"], frame["phase"])]
             baseline = source.crop(tuple(rendered["source_crop_box"])).resize(CANVAS, Image.Resampling.LANCZOS)
-            expected = translated(mono(baseline), *rendered["translation"])
+            canonical, anchor = normalize(baseline, CANONICAL_CENTER)
+            if rendered["anchor_policy"] != ANCHOR_POLICY:
+                raise ValueError(f"v9 anchor policy drift for {state['clip']}.{frame['phase']}")
+            if list(anchor.source_anchor) != rendered["source_anchor"]:
+                raise ValueError(f"v9 source anchor drift for {state['clip']}.{frame['phase']}")
+            if list(anchor.normalization_offset) != rendered["normalization_offset"]:
+                raise ValueError(f"v9 normalization offset drift for {state['clip']}.{frame['phase']}")
+            expected = translate(canonical, tuple(rendered["phase_offset"]))
             desktop = Image.open(ROOT / rendered["path"]).convert("1")
             difference = compare(expected, desktop)
             if difference:
@@ -104,7 +102,7 @@ def v9_pages() -> list[dict[str, object]]:
                 f"{state['clip']}-{frame['phase']}",
                 baseline,
                 desktop,
-                "锁定裁剪 + 阈值化 + 已记录动效位移",
+                "锁定裁剪 + 整组中心归一化 + 已记录动效位移",
                 "PASS: 0 像素偏差",
             )
             pages.append({
@@ -116,8 +114,18 @@ def v9_pages() -> list[dict[str, object]]:
                     "crop_box": rendered["source_crop_box"],
                 },
                 "desktop_output": {"path": rendered["path"], "sha256": rendered["sha256"]},
-                "relation": "source_crop_threshold_translation_to_pbm",
-                "machine_result": {"status": "PASS_EXACT", "different_pixels": difference, "translation": rendered["translation"]},
+                "relation": "source_crop_threshold_whole_expression_anchor_normalization_phase_translation_to_pbm",
+                "machine_result": {
+                    "status": "PASS_EXACT",
+                    "different_pixels": difference,
+                    "anchor_policy": rendered["anchor_policy"],
+                    "source_anchor": rendered["source_anchor"],
+                    "canonical_center": rendered["canonical_center"],
+                    "normalization_offset": rendered["normalization_offset"],
+                    "phase_offset": rendered["phase_offset"],
+                    "requested_center": rendered["requested_center"],
+                    "final_output_bounds": rendered["final_output_bounds"],
+                },
                 "comparison_page": {"path": rel(comparison), "sha256": digest(comparison)},
             })
             index += 1
@@ -182,7 +190,13 @@ def special_pages(identifier: str) -> list[dict[str, object]]:
     pages: list[dict[str, object]] = []
     for page in source_data["pages"]:
         baseline = source.crop(tuple(page["source_crop_box"])).resize(CANVAS, Image.Resampling.LANCZOS)
-        expected = mono(baseline)
+        expected, anchor = normalize(baseline, CANONICAL_CENTER)
+        if page["anchor_policy"] != ANCHOR_POLICY:
+            raise ValueError(f"special anchor policy drift for {page['state']}")
+        if list(anchor.source_anchor) != page["source_anchor"]:
+            raise ValueError(f"special source anchor drift for {page['state']}")
+        if list(anchor.normalization_offset) != page["normalization_offset"]:
+            raise ValueError(f"special normalization offset drift for {page['state']}")
         desktop = Image.open(ROOT / page["review_page"]).convert("1")
         difference = compare(expected, desktop)
         if difference:
@@ -193,7 +207,7 @@ def special_pages(identifier: str) -> list[dict[str, object]]:
             page["state"].replace(".", "-"),
             baseline,
             desktop,
-            "锁定裁剪 + 阈值化",
+            "锁定裁剪 + 整组中心归一化",
             "PASS: 0 像素偏差",
         )
         pages.append({
@@ -205,8 +219,18 @@ def special_pages(identifier: str) -> list[dict[str, object]]:
                 "crop_box": page["source_crop_box"],
             },
             "desktop_output": {"path": page["review_page"], "sha256": page["review_page_sha256"]},
-            "relation": "source_crop_threshold_to_desktop_preview",
-            "machine_result": {"status": "PASS_EXACT", "different_pixels": difference},
+            "relation": "source_crop_threshold_whole_expression_anchor_normalization_to_desktop_preview",
+            "machine_result": {
+                "status": "PASS_EXACT",
+                "different_pixels": difference,
+                "anchor_policy": page["anchor_policy"],
+                "source_anchor": page["source_anchor"],
+                "canonical_center": page["canonical_center"],
+                "normalization_offset": page["normalization_offset"],
+                "phase_offset": page["phase_offset"],
+                "requested_center": page["requested_center"],
+                "final_output_bounds": page["final_output_bounds"],
+            },
             "comparison_page": {"path": rel(comparison), "sha256": digest(comparison)},
         })
     if len(pages) != 12:

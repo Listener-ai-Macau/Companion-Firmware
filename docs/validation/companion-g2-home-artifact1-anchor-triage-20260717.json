@@ -1,0 +1,25 @@
+{
+  "schema": "companion.g2_visual_review_triage.v1",
+  "status": "OPEN_ANCHOR_NORMALIZATION_REWORK_REQUIRED",
+  "recorded_at": "2026-07-17T13:23:00+08:00",
+  "requirement": "COMP-REQ-085",
+  "raw_review": {
+    "path": "docs/validation/companion-g2-owner-visual-reviews/20260717-131603-947-home-v9-daily-storyboard-artifact1/operator-review.json",
+    "sha256": "6F1CBF7FD0802E2E649B5F6DDF1207DC6DC6EF59BDBB57B13669823D51891A30",
+    "item_id": "home-v9-daily-storyboard",
+    "artifact_id": "idle-entry",
+    "selected": "需修改",
+    "note": "被点击了就换掉了"
+  },
+  "decision": {
+    "selection_applied": false,
+    "reason": "The short note does not identify a new approved source page. The owner immediately clarified the actionable visual requirement: establish one movable whole-expression center coordinate instead of preserving arbitrary crop placement.",
+    "next_page_open_allowed": false
+  },
+  "required_rework": {
+    "source_art": "Keep the locked v9 source hash unchanged.",
+    "geometry": "Normalize every expression to an explicit canonical semantic anchor, then apply only declared phase and requested-center offsets.",
+    "runtime_boundary": "Build only a portable external-frame placement layer; do not activate resources, provision Flash, flash firmware or claim panel acceptance.",
+    "evidence": "Regenerate paired baseline/output pages and verify source anchor, target anchor, offsets and in-bounds output for every affected frame before another G2 popup."
+  }
+}

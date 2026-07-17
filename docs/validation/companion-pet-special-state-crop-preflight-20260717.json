@@ -2,6 +2,7 @@
   "errors": [],
   "physical_limit": "This source-crop proof does not clear COMP-REQ-078. Real WB55 panel viewport, orientation, transport and lower-edge behavior remain a focused G5 physical gate.",
   "profile": {
+    "anchor_policy": "whole_expression_visible_bbox_center",
     "height": 200,
     "minimum_edge_clearance_px": 4,
     "source_crop_policy": "explicit square windows locked to the recorded 1254x1254 source hashes",
@@ -26,25 +27,52 @@
         800,
         600
       ],
-      "contact_sheet_sha256": "0CA22E270C246A450FEE176730394DC8487D1FB81EE492A088CAA69DB4D6E6E5",
+      "contact_sheet_sha256": "4CD3B1E7CEF2B9C16D760A6C5F1095CA7E735C9B76E3B74FAF27F2BC5CE0E8E2",
       "frames": [
         {
+          "anchor_policy": "whole_expression_visible_bbox_center",
+          "canonical_center": [
+            100,
+            100
+          ],
           "edge_clearance_px": {
-            "bottom": 21,
-            "left": 36,
-            "right": 12,
-            "top": 90
+            "bottom": 55,
+            "left": 25,
+            "right": 23,
+            "top": 56
           },
           "edge_ink_pixels": 0,
+          "final_output_bounds": [
+            25,
+            56,
+            152,
+            89
+          ],
           "index": 0,
           "ink_bbox": [
-            36,
-            90,
+            25,
+            56,
             152,
             89
           ],
           "ink_pixels": 2618,
-          "minimum_clearance_px": 12,
+          "minimum_clearance_px": 23,
+          "normalization_offset": [
+            -11,
+            -34
+          ],
+          "phase_offset": [
+            0,
+            0
+          ],
+          "requested_center": [
+            100,
+            100
+          ],
+          "source_anchor": [
+            111,
+            134
+          ],
           "source_crop_box": [
             0,
             77,
@@ -54,22 +82,49 @@
           "state": "voice.speaking"
         },
         {
+          "anchor_policy": "whole_expression_visible_bbox_center",
+          "canonical_center": [
+            100,
+            100
+          ],
           "edge_clearance_px": {
-            "bottom": 22,
-            "left": 24,
-            "right": 63,
-            "top": 36
+            "bottom": 28,
+            "left": 44,
+            "right": 43,
+            "top": 30
           },
           "edge_ink_pixels": 0,
+          "final_output_bounds": [
+            44,
+            30,
+            113,
+            142
+          ],
           "index": 1,
           "ink_bbox": [
-            24,
-            36,
+            44,
+            30,
             113,
             142
           ],
           "ink_pixels": 2746,
-          "minimum_clearance_px": 22,
+          "minimum_clearance_px": 28,
+          "normalization_offset": [
+            20,
+            -6
+          ],
+          "phase_offset": [
+            0,
+            0
+          ],
+          "requested_center": [
+            100,
+            100
+          ],
+          "source_anchor": [
+            80,
+            106
+          ],
           "source_crop_box": [
             340,
             77,
@@ -79,22 +134,49 @@
           "state": "recording.error"
         },
         {
+          "anchor_policy": "whole_expression_visible_bbox_center",
+          "canonical_center": [
+            100,
+            100
+          ],
           "edge_clearance_px": {
-            "bottom": 20,
-            "left": 46,
-            "right": 43,
-            "top": 29
+            "bottom": 24,
+            "left": 45,
+            "right": 44,
+            "top": 25
           },
           "edge_ink_pixels": 0,
+          "final_output_bounds": [
+            45,
+            25,
+            111,
+            151
+          ],
           "index": 2,
           "ink_bbox": [
-            46,
-            29,
+            45,
+            25,
             111,
             151
           ],
           "ink_pixels": 2555,
-          "minimum_clearance_px": 20,
+          "minimum_clearance_px": 24,
+          "normalization_offset": [
+            -1,
+            -4
+          ],
+          "phase_offset": [
+            0,
+            0
+          ],
+          "requested_center": [
+            100,
+            100
+          ],
+          "source_anchor": [
+            101,
+            104
+          ],
           "source_crop_box": [
             610,
             77,
@@ -104,22 +186,49 @@
           "state": "power.charge_detected"
         },
         {
+          "anchor_policy": "whole_expression_visible_bbox_center",
+          "canonical_center": [
+            100,
+            100
+          ],
           "edge_clearance_px": {
-            "bottom": 32,
-            "left": 30,
-            "right": 56,
-            "top": 18
+            "bottom": 24,
+            "left": 44,
+            "right": 42,
+            "top": 26
           },
           "edge_ink_pixels": 0,
+          "final_output_bounds": [
+            44,
+            26,
+            114,
+            150
+          ],
           "index": 3,
           "ink_bbox": [
-            30,
-            18,
+            44,
+            26,
             114,
             150
           ],
           "ink_pixels": 2445,
-          "minimum_clearance_px": 18,
+          "minimum_clearance_px": 24,
+          "normalization_offset": [
+            14,
+            8
+          ],
+          "phase_offset": [
+            0,
+            0
+          ],
+          "requested_center": [
+            100,
+            100
+          ],
+          "source_anchor": [
+            86,
+            92
+          ],
           "source_crop_box": [
             924,
             77,
@@ -129,22 +238,49 @@
           "state": "power.charging"
         },
         {
+          "anchor_policy": "whole_expression_visible_bbox_center",
+          "canonical_center": [
+            100,
+            100
+          ],
           "edge_clearance_px": {
-            "bottom": 40,
-            "left": 55,
-            "right": 34,
-            "top": 25
+            "bottom": 32,
+            "left": 45,
+            "right": 44,
+            "top": 33
           },
           "edge_ink_pixels": 0,
+          "final_output_bounds": [
+            45,
+            33,
+            111,
+            135
+          ],
           "index": 4,
           "ink_bbox": [
-            55,
-            25,
+            45,
+            33,
             111,
             135
           ],
           "ink_pixels": 2541,
-          "minimum_clearance_px": 25,
+          "minimum_clearance_px": 32,
+          "normalization_offset": [
+            -10,
+            8
+          ],
+          "phase_offset": [
+            0,
+            0
+          ],
+          "requested_center": [
+            100,
+            100
+          ],
+          "source_anchor": [
+            110,
+            92
+          ],
           "source_crop_box": [
             0,
             455,
@@ -154,22 +290,49 @@
           "state": "power.charged"
         },
         {
+          "anchor_policy": "whole_expression_visible_bbox_center",
+          "canonical_center": [
+            100,
+            100
+          ],
           "edge_clearance_px": {
-            "bottom": 39,
-            "left": 47,
-            "right": 42,
-            "top": 46
+            "bottom": 42,
+            "left": 45,
+            "right": 44,
+            "top": 43
           },
           "edge_ink_pixels": 0,
+          "final_output_bounds": [
+            45,
+            43,
+            111,
+            115
+          ],
           "index": 5,
           "ink_bbox": [
-            47,
-            46,
+            45,
+            43,
             111,
             115
           ],
           "ink_pixels": 2503,
-          "minimum_clearance_px": 39,
+          "minimum_clearance_px": 42,
+          "normalization_offset": [
+            -2,
+            -3
+          ],
+          "phase_offset": [
+            0,
+            0
+          ],
+          "requested_center": [
+            100,
+            100
+          ],
+          "source_anchor": [
+            102,
+            103
+          ],
           "source_crop_box": [
             305,
             455,
@@ -179,22 +342,49 @@
           "state": "power.low_battery"
         },
         {
+          "anchor_policy": "whole_expression_visible_bbox_center",
+          "canonical_center": [
+            100,
+            100
+          ],
           "edge_clearance_px": {
-            "bottom": 33,
-            "left": 41,
-            "right": 49,
-            "top": 33
+            "bottom": 32,
+            "left": 46,
+            "right": 44,
+            "top": 34
           },
           "edge_ink_pixels": 0,
+          "final_output_bounds": [
+            46,
+            34,
+            110,
+            134
+          ],
           "index": 6,
           "ink_bbox": [
-            41,
-            33,
+            46,
+            34,
             110,
             134
           ],
           "ink_pixels": 2632,
-          "minimum_clearance_px": 33,
+          "minimum_clearance_px": 32,
+          "normalization_offset": [
+            5,
+            1
+          ],
+          "phase_offset": [
+            0,
+            0
+          ],
+          "requested_center": [
+            100,
+            100
+          ],
+          "source_anchor": [
+            95,
+            99
+          ],
           "source_crop_box": [
             609,
             455,
@@ -204,22 +394,49 @@
           "state": "link.pairing"
         },
         {
+          "anchor_policy": "whole_expression_visible_bbox_center",
+          "canonical_center": [
+            100,
+            100
+          ],
           "edge_clearance_px": {
-            "bottom": 31,
-            "left": 30,
-            "right": 61,
-            "top": 40
+            "bottom": 35,
+            "left": 46,
+            "right": 45,
+            "top": 36
           },
           "edge_ink_pixels": 0,
+          "final_output_bounds": [
+            46,
+            36,
+            109,
+            129
+          ],
           "index": 7,
           "ink_bbox": [
-            30,
-            40,
+            46,
+            36,
             109,
             129
           ],
           "ink_pixels": 2866,
-          "minimum_clearance_px": 30,
+          "minimum_clearance_px": 35,
+          "normalization_offset": [
+            16,
+            -4
+          ],
+          "phase_offset": [
+            0,
+            0
+          ],
+          "requested_center": [
+            100,
+            100
+          ],
+          "source_anchor": [
+            84,
+            104
+          ],
           "source_crop_box": [
             924,
             455,
@@ -229,22 +446,49 @@
           "state": "link.connected"
         },
         {
+          "anchor_policy": "whole_expression_visible_bbox_center",
+          "canonical_center": [
+            100,
+            100
+          ],
           "edge_clearance_px": {
-            "bottom": 16,
-            "left": 53,
-            "right": 35,
-            "top": 33
+            "bottom": 24,
+            "left": 45,
+            "right": 43,
+            "top": 25
           },
           "edge_ink_pixels": 0,
+          "final_output_bounds": [
+            45,
+            25,
+            112,
+            151
+          ],
           "index": 8,
           "ink_bbox": [
-            53,
-            33,
+            45,
+            25,
             112,
             151
           ],
           "ink_pixels": 2698,
-          "minimum_clearance_px": 16,
+          "minimum_clearance_px": 24,
+          "normalization_offset": [
+            -8,
+            -8
+          ],
+          "phase_offset": [
+            0,
+            0
+          ],
+          "requested_center": [
+            100,
+            100
+          ],
+          "source_anchor": [
+            108,
+            108
+          ],
           "source_crop_box": [
             0,
             795,
@@ -254,22 +498,49 @@
           "state": "link.syncing"
         },
         {
+          "anchor_policy": "whole_expression_visible_bbox_center",
+          "canonical_center": [
+            100,
+            100
+          ],
           "edge_clearance_px": {
-            "bottom": 18,
-            "left": 47,
-            "right": 42,
-            "top": 57
+            "bottom": 37,
+            "left": 45,
+            "right": 44,
+            "top": 38
           },
           "edge_ink_pixels": 0,
+          "final_output_bounds": [
+            45,
+            38,
+            111,
+            125
+          ],
           "index": 9,
           "ink_bbox": [
-            47,
-            57,
+            45,
+            38,
             111,
             125
           ],
           "ink_pixels": 2577,
-          "minimum_clearance_px": 18,
+          "minimum_clearance_px": 37,
+          "normalization_offset": [
+            -2,
+            -19
+          ],
+          "phase_offset": [
+            0,
+            0
+          ],
+          "requested_center": [
+            100,
+            100
+          ],
+          "source_anchor": [
+            102,
+            119
+          ],
           "source_crop_box": [
             305,
             795,
@@ -279,22 +550,49 @@
           "state": "link.synced"
         },
         {
+          "anchor_policy": "whole_expression_visible_bbox_center",
+          "canonical_center": [
+            100,
+            100
+          ],
           "edge_clearance_px": {
-            "bottom": 24,
-            "left": 41,
-            "right": 52,
-            "top": 42
+            "bottom": 32,
+            "left": 47,
+            "right": 46,
+            "top": 34
           },
           "edge_ink_pixels": 0,
+          "final_output_bounds": [
+            47,
+            34,
+            107,
+            134
+          ],
           "index": 10,
           "ink_bbox": [
-            41,
-            42,
+            47,
+            34,
             107,
             134
           ],
           "ink_pixels": 2538,
-          "minimum_clearance_px": 24,
+          "minimum_clearance_px": 32,
+          "normalization_offset": [
+            6,
+            -8
+          ],
+          "phase_offset": [
+            0,
+            0
+          ],
+          "requested_center": [
+            100,
+            100
+          ],
+          "source_anchor": [
+            94,
+            108
+          ],
           "source_crop_box": [
             609,
             795,
@@ -304,22 +602,49 @@
           "state": "link.error"
         },
         {
+          "anchor_policy": "whole_expression_visible_bbox_center",
+          "canonical_center": [
+            100,
+            100
+          ],
           "edge_clearance_px": {
-            "bottom": 19,
-            "left": 28,
-            "right": 63,
-            "top": 41
+            "bottom": 29,
+            "left": 46,
+            "right": 45,
+            "top": 31
           },
           "edge_ink_pixels": 0,
+          "final_output_bounds": [
+            46,
+            31,
+            109,
+            140
+          ],
           "index": 11,
           "ink_bbox": [
-            28,
-            41,
+            46,
+            31,
             109,
             140
           ],
           "ink_pixels": 2669,
-          "minimum_clearance_px": 19,
+          "minimum_clearance_px": 29,
+          "normalization_offset": [
+            18,
+            -10
+          ],
+          "phase_offset": [
+            0,
+            0
+          ],
+          "requested_center": [
+            100,
+            100
+          ],
+          "source_anchor": [
+            82,
+            110
+          ],
           "source_crop_box": [
             924,
             795,
@@ -343,25 +668,52 @@
         800,
         600
       ],
-      "contact_sheet_sha256": "B072603D667B8BC9C54A0322E6C009526CF11D63D85AE553E931684B94AAC082",
+      "contact_sheet_sha256": "7E66AA8D9334433739DF280608961C378869F739D2369E4305914D54304A6CEC",
       "frames": [
         {
+          "anchor_policy": "whole_expression_visible_bbox_center",
+          "canonical_center": [
+            100,
+            100
+          ],
           "edge_clearance_px": {
-            "bottom": 27,
-            "left": 47,
-            "right": 29,
-            "top": 44
+            "bottom": 35,
+            "left": 39,
+            "right": 37,
+            "top": 36
           },
           "edge_ink_pixels": 0,
+          "final_output_bounds": [
+            39,
+            36,
+            124,
+            129
+          ],
           "index": 0,
           "ink_bbox": [
-            47,
-            44,
+            39,
+            36,
             124,
             129
           ],
           "ink_pixels": 2555,
-          "minimum_clearance_px": 27,
+          "minimum_clearance_px": 35,
+          "normalization_offset": [
+            -8,
+            -8
+          ],
+          "phase_offset": [
+            0,
+            0
+          ],
+          "requested_center": [
+            100,
+            100
+          ],
+          "source_anchor": [
+            108,
+            108
+          ],
           "source_crop_box": [
             0,
             77,
@@ -371,22 +723,49 @@
           "state": "menu.open.entry"
         },
         {
+          "anchor_policy": "whole_expression_visible_bbox_center",
+          "canonical_center": [
+            100,
+            100
+          ],
           "edge_clearance_px": {
-            "bottom": 17,
-            "left": 23,
-            "right": 54,
-            "top": 50
+            "bottom": 33,
+            "left": 39,
+            "right": 38,
+            "top": 34
           },
           "edge_ink_pixels": 0,
+          "final_output_bounds": [
+            39,
+            34,
+            123,
+            133
+          ],
           "index": 1,
           "ink_bbox": [
-            23,
-            50,
+            39,
+            34,
             123,
             133
           ],
           "ink_pixels": 2804,
-          "minimum_clearance_px": 17,
+          "minimum_clearance_px": 33,
+          "normalization_offset": [
+            16,
+            -16
+          ],
+          "phase_offset": [
+            0,
+            0
+          ],
+          "requested_center": [
+            100,
+            100
+          ],
+          "source_anchor": [
+            84,
+            116
+          ],
           "source_crop_box": [
             340,
             77,
@@ -396,22 +775,49 @@
           "state": "menu.open.settle"
         },
         {
+          "anchor_policy": "whole_expression_visible_bbox_center",
+          "canonical_center": [
+            100,
+            100
+          ],
           "edge_clearance_px": {
-            "bottom": 19,
-            "left": 42,
-            "right": 39,
-            "top": 50
+            "bottom": 34,
+            "left": 41,
+            "right": 40,
+            "top": 35
           },
           "edge_ink_pixels": 0,
+          "final_output_bounds": [
+            41,
+            35,
+            119,
+            131
+          ],
           "index": 2,
           "ink_bbox": [
-            42,
-            50,
+            41,
+            35,
             119,
             131
           ],
           "ink_pixels": 2417,
-          "minimum_clearance_px": 19,
+          "minimum_clearance_px": 34,
+          "normalization_offset": [
+            -1,
+            -15
+          ],
+          "phase_offset": [
+            0,
+            0
+          ],
+          "requested_center": [
+            100,
+            100
+          ],
+          "source_anchor": [
+            101,
+            115
+          ],
           "source_crop_box": [
             610,
             77,
@@ -421,22 +827,49 @@
           "state": "menu.blocked"
         },
         {
+          "anchor_policy": "whole_expression_visible_bbox_center",
+          "canonical_center": [
+            100,
+            100
+          ],
           "edge_clearance_px": {
-            "bottom": 27,
-            "left": 31,
-            "right": 48,
-            "top": 56
+            "bottom": 41,
+            "left": 40,
+            "right": 39,
+            "top": 42
           },
           "edge_ink_pixels": 0,
+          "final_output_bounds": [
+            40,
+            42,
+            121,
+            117
+          ],
           "index": 3,
           "ink_bbox": [
-            31,
-            56,
+            40,
+            42,
             121,
             117
           ],
           "ink_pixels": 2425,
-          "minimum_clearance_px": 27,
+          "minimum_clearance_px": 39,
+          "normalization_offset": [
+            9,
+            -14
+          ],
+          "phase_offset": [
+            0,
+            0
+          ],
+          "requested_center": [
+            100,
+            100
+          ],
+          "source_anchor": [
+            91,
+            114
+          ],
           "source_crop_box": [
             924,
             77,
@@ -446,22 +879,49 @@
           "state": "menu.exit"
         },
         {
+          "anchor_policy": "whole_expression_visible_bbox_center",
+          "canonical_center": [
+            100,
+            100
+          ],
           "edge_clearance_px": {
-            "bottom": 39,
-            "left": 48,
-            "right": 32,
-            "top": 31
+            "bottom": 34,
+            "left": 41,
+            "right": 39,
+            "top": 36
           },
           "edge_ink_pixels": 0,
+          "final_output_bounds": [
+            41,
+            36,
+            120,
+            130
+          ],
           "index": 4,
           "ink_bbox": [
-            48,
-            31,
+            41,
+            36,
             120,
             130
           ],
           "ink_pixels": 2501,
-          "minimum_clearance_px": 31,
+          "minimum_clearance_px": 34,
+          "normalization_offset": [
+            -7,
+            5
+          ],
+          "phase_offset": [
+            0,
+            0
+          ],
+          "requested_center": [
+            100,
+            100
+          ],
+          "source_anchor": [
+            107,
+            95
+          ],
           "source_crop_box": [
             0,
             455,
@@ -471,22 +931,49 @@
           "state": "upgrade.offer"
         },
         {
+          "anchor_policy": "whole_expression_visible_bbox_center",
+          "canonical_center": [
+            100,
+            100
+          ],
           "edge_clearance_px": {
-            "bottom": 47,
-            "left": 45,
-            "right": 35,
-            "top": 30
+            "bottom": 38,
+            "left": 41,
+            "right": 39,
+            "top": 39
           },
           "edge_ink_pixels": 0,
+          "final_output_bounds": [
+            41,
+            39,
+            120,
+            123
+          ],
           "index": 5,
           "ink_bbox": [
-            45,
-            30,
+            41,
+            39,
             120,
             123
           ],
           "ink_pixels": 2528,
-          "minimum_clearance_px": 30,
+          "minimum_clearance_px": 38,
+          "normalization_offset": [
+            -4,
+            9
+          ],
+          "phase_offset": [
+            0,
+            0
+          ],
+          "requested_center": [
+            100,
+            100
+          ],
+          "source_anchor": [
+            104,
+            91
+          ],
           "source_crop_box": [
             305,
             455,
@@ -496,22 +983,49 @@
           "state": "upgrade.prepare"
         },
         {
+          "anchor_policy": "whole_expression_visible_bbox_center",
+          "canonical_center": [
+            100,
+            100
+          ],
           "edge_clearance_px": {
-            "bottom": 36,
+            "bottom": 34,
             "left": 42,
             "right": 40,
-            "top": 33
+            "top": 35
           },
           "edge_ink_pixels": 0,
+          "final_output_bounds": [
+            42,
+            35,
+            118,
+            131
+          ],
           "index": 6,
           "ink_bbox": [
             42,
-            33,
+            35,
             118,
             131
           ],
           "ink_pixels": 2615,
-          "minimum_clearance_px": 33,
+          "minimum_clearance_px": 34,
+          "normalization_offset": [
+            0,
+            2
+          ],
+          "phase_offset": [
+            0,
+            0
+          ],
+          "requested_center": [
+            100,
+            100
+          ],
+          "source_anchor": [
+            100,
+            98
+          ],
           "source_crop_box": [
             609,
             455,
@@ -521,22 +1035,49 @@
           "state": "upgrade.transfer"
         },
         {
+          "anchor_policy": "whole_expression_visible_bbox_center",
+          "canonical_center": [
+            100,
+            100
+          ],
           "edge_clearance_px": {
-            "bottom": 40,
-            "left": 30,
-            "right": 50,
-            "top": 33
+            "bottom": 36,
+            "left": 41,
+            "right": 39,
+            "top": 37
           },
           "edge_ink_pixels": 0,
+          "final_output_bounds": [
+            41,
+            37,
+            120,
+            127
+          ],
           "index": 7,
           "ink_bbox": [
-            30,
-            33,
+            41,
+            37,
             120,
             127
           ],
           "ink_pixels": 2728,
-          "minimum_clearance_px": 30,
+          "minimum_clearance_px": 36,
+          "normalization_offset": [
+            11,
+            4
+          ],
+          "phase_offset": [
+            0,
+            0
+          ],
+          "requested_center": [
+            100,
+            100
+          ],
+          "source_anchor": [
+            89,
+            96
+          ],
           "source_crop_box": [
             924,
             455,
@@ -546,22 +1087,49 @@
           "state": "upgrade.verify"
         },
         {
+          "anchor_policy": "whole_expression_visible_bbox_center",
+          "canonical_center": [
+            100,
+            100
+          ],
           "edge_clearance_px": {
-            "bottom": 34,
-            "left": 45,
-            "right": 36,
-            "top": 30
+            "bottom": 31,
+            "left": 41,
+            "right": 40,
+            "top": 33
           },
           "edge_ink_pixels": 0,
+          "final_output_bounds": [
+            41,
+            33,
+            119,
+            136
+          ],
           "index": 8,
           "ink_bbox": [
-            45,
-            30,
+            41,
+            33,
             119,
             136
           ],
           "ink_pixels": 2775,
-          "minimum_clearance_px": 30,
+          "minimum_clearance_px": 31,
+          "normalization_offset": [
+            -4,
+            3
+          ],
+          "phase_offset": [
+            0,
+            0
+          ],
+          "requested_center": [
+            100,
+            100
+          ],
+          "source_anchor": [
+            104,
+            97
+          ],
           "source_crop_box": [
             0,
             795,
@@ -571,22 +1139,49 @@
           "state": "upgrade.restart"
         },
         {
+          "anchor_policy": "whole_expression_visible_bbox_center",
+          "canonical_center": [
+            100,
+            100
+          ],
           "edge_clearance_px": {
-            "bottom": 37,
-            "left": 42,
-            "right": 38,
-            "top": 31
+            "bottom": 33,
+            "left": 41,
+            "right": 39,
+            "top": 35
           },
           "edge_ink_pixels": 0,
+          "final_output_bounds": [
+            41,
+            35,
+            120,
+            132
+          ],
           "index": 9,
           "ink_bbox": [
-            42,
-            31,
+            41,
+            35,
             120,
             132
           ],
           "ink_pixels": 1709,
-          "minimum_clearance_px": 31,
+          "minimum_clearance_px": 33,
+          "normalization_offset": [
+            -1,
+            4
+          ],
+          "phase_offset": [
+            0,
+            0
+          ],
+          "requested_center": [
+            100,
+            100
+          ],
+          "source_anchor": [
+            101,
+            96
+          ],
           "source_crop_box": [
             305,
             795,
@@ -596,22 +1191,49 @@
           "state": "upgrade.success"
         },
         {
+          "anchor_policy": "whole_expression_visible_bbox_center",
+          "canonical_center": [
+            100,
+            100
+          ],
           "edge_clearance_px": {
-            "bottom": 45,
-            "left": 39,
-            "right": 45,
-            "top": 32
+            "bottom": 38,
+            "left": 43,
+            "right": 41,
+            "top": 39
           },
           "edge_ink_pixels": 0,
+          "final_output_bounds": [
+            43,
+            39,
+            116,
+            123
+          ],
           "index": 10,
           "ink_bbox": [
+            43,
             39,
-            32,
             116,
             123
           ],
           "ink_pixels": 2565,
-          "minimum_clearance_px": 32,
+          "minimum_clearance_px": 38,
+          "normalization_offset": [
+            4,
+            7
+          ],
+          "phase_offset": [
+            0,
+            0
+          ],
+          "requested_center": [
+            100,
+            100
+          ],
+          "source_anchor": [
+            96,
+            93
+          ],
           "source_crop_box": [
             609,
             795,
@@ -621,22 +1243,49 @@
           "state": "upgrade.error"
         },
         {
+          "anchor_policy": "whole_expression_visible_bbox_center",
+          "canonical_center": [
+            100,
+            100
+          ],
           "edge_clearance_px": {
-            "bottom": 45,
-            "left": 27,
-            "right": 55,
-            "top": 33
+            "bottom": 38,
+            "left": 42,
+            "right": 40,
+            "top": 40
           },
           "edge_ink_pixels": 0,
+          "final_output_bounds": [
+            42,
+            40,
+            118,
+            122
+          ],
           "index": 11,
           "ink_bbox": [
-            27,
-            33,
+            42,
+            40,
             118,
             122
           ],
           "ink_pixels": 2339,
-          "minimum_clearance_px": 27,
+          "minimum_clearance_px": 38,
+          "normalization_offset": [
+            15,
+            7
+          ],
+          "phase_offset": [
+            0,
+            0
+          ],
+          "requested_center": [
+            100,
+            100
+          ],
+          "source_anchor": [
+            85,
+            93
+          ],
           "source_crop_box": [
             924,
             795,

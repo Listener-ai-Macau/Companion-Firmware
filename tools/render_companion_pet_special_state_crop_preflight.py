@@ -17,6 +17,8 @@ from pathlib import Path
 
 from PIL import Image
 
+from companion_expression_anchor import ANCHOR_POLICY, CANONICAL_CENTER, THRESHOLD, normalize
+
 
 ROOT = Path(__file__).resolve().parents[1]
 ART_DIR = ROOT / "docs" / "art" / "iterations" / "companion-pet-special-states-v1"
@@ -24,7 +26,6 @@ REVIEW_DIR = ART_DIR / "review-200x200"
 REPORT = ROOT / "docs" / "validation" / "companion-pet-special-state-crop-preflight-20260717.json"
 CANVAS = (200, 200)
 SOURCE_SIZE = (1254, 1254)
-THRESHOLD = 180
 MIN_EDGE_CLEARANCE_PX = 4
 
 
@@ -99,9 +100,9 @@ def png_bytes(image: Image.Image) -> bytes:
     return output.getvalue()
 
 
-def render_frame(source: Image.Image, crop_box: tuple[int, int, int, int]) -> Image.Image:
+def render_frame(source: Image.Image, crop_box: tuple[int, int, int, int]):
     reference = source.crop(crop_box).resize(CANVAS, Image.Resampling.LANCZOS)
-    return reference.point(lambda pixel: 0 if pixel < THRESHOLD else 255, "1")
+    return normalize(reference, CANONICAL_CENTER)
 
 
 def frame_metrics(image: Image.Image) -> dict[str, object]:
@@ -154,7 +155,7 @@ def candidate_result(candidate: Candidate, errors: list[str]) -> tuple[dict[str,
         if not (0 <= crop_box[0] < crop_box[2] <= SOURCE_SIZE[0] and 0 <= crop_box[1] < crop_box[3] <= SOURCE_SIZE[1]):
             errors.append(f"{candidate.identifier}: {state} crop is out of source bounds")
             continue
-        frame = render_frame(source, crop_box)
+        frame, anchor = render_frame(source, crop_box)
         metrics = frame_metrics(frame)
         if int(metrics["edge_ink_pixels"]) != 0:
             errors.append(f"{candidate.identifier}: {state} has ink on a 200x200 edge")
@@ -168,6 +169,13 @@ def candidate_result(candidate: Candidate, errors: list[str]) -> tuple[dict[str,
                 "index": index,
                 "state": state,
                 "source_crop_box": list(crop_box),
+                "anchor_policy": ANCHOR_POLICY,
+                "source_anchor": list(anchor.source_anchor),
+                "canonical_center": list(anchor.canonical_center),
+                "normalization_offset": list(anchor.normalization_offset),
+                "phase_offset": [0, 0],
+                "requested_center": list(anchor.canonical_center),
+                "final_output_bounds": metrics["ink_bbox"],
                 **metrics,
             }
         )
@@ -208,6 +216,7 @@ def build_report() -> tuple[dict[str, object], dict[Path, bytes]]:
             "threshold": THRESHOLD,
             "minimum_edge_clearance_px": MIN_EDGE_CLEARANCE_PX,
             "source_crop_policy": "explicit square windows locked to the recorded 1254x1254 source hashes",
+            "anchor_policy": ANCHOR_POLICY,
         },
         "sources": sources,
         "runtime_boundary": {

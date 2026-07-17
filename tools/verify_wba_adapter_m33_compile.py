@@ -28,6 +28,7 @@ ADAPTER_SOURCES = (
     EPAPER_ROOT / "screen_scheduler_stm32wba.c",
     EPAPER_ROOT / "screen_gatt_stm32wba.c",
     EPAPER_ROOT / "screen_assets_stm32wba.c",
+    EPAPER_ROOT / "expression_frame_placement.c",
     TOUCH_ROOT / "touch_target_stm32wba_ft6336.c",
     POWER_ROOT / "power_target_stm32wba.c",
     STORAGE_ROOT / "spi_nor_stm32wba.c",
@@ -69,7 +70,7 @@ def build_fixture() -> dict[str, Any]:
         "status": "PASS_STATIC_M33_COMPILE_CONTRACT",
         "purpose": (
             "Require the callback-only WBA screen, touch, power, asset, SPI-NOR, "
-            "and pet-memory adapters to compile as strict freestanding Cortex-M33 C "
+            "pet-memory adapters, and portable expression-frame placement to compile as strict freestanding Cortex-M33 C "
             "before a CubeWBA project exists."
         ),
         "targets": {

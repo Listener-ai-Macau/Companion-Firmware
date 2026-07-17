@@ -4,6 +4,7 @@
     "app/companion_pendant/epaper/screen_scheduler_stm32wba.c",
     "app/companion_pendant/epaper/screen_gatt_stm32wba.c",
     "app/companion_pendant/epaper/screen_assets_stm32wba.c",
+    "app/companion_pendant/epaper/expression_frame_placement.c",
     "app/companion_pendant/touch/touch_target_stm32wba_ft6336.c",
     "app/companion_pendant/power/power_target_stm32wba.c",
     "app/companion_pendant/storage/spi_nor_stm32wba.c",
@@ -45,7 +46,7 @@
     "app/companion_pendant/power",
     "app/companion_pendant/storage"
   ],
-  "purpose": "Require the callback-only WBA screen, touch, power, asset, SPI-NOR, and pet-memory adapters to compile as strict freestanding Cortex-M33 C before a CubeWBA project exists.",
+  "purpose": "Require the callback-only WBA screen, touch, power, asset, SPI-NOR, pet-memory adapters, and portable expression-frame placement to compile as strict freestanding Cortex-M33 C before a CubeWBA project exists.",
   "required_future_evidence": [
     "A separate selected-target CubeWBA IOC/project and build wrapper.",
     "WBA55 or WBA65 target pin, clock, DMA, BLE, storage, and scheduler glue.",

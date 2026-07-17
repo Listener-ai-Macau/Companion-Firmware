@@ -105,6 +105,8 @@ PORTABLE_FILES = [
     EPAPER_ROOT / "emote_player.h",
     EPAPER_ROOT / "expression_asset_source.c",
     EPAPER_ROOT / "expression_asset_source.h",
+    EPAPER_ROOT / "expression_frame_placement.c",
+    EPAPER_ROOT / "expression_frame_placement.h",
     EPAPER_ROOT / "expression_events.c",
     EPAPER_ROOT / "expression_events.h",
     EPAPER_ROOT / "expression_policy.py",

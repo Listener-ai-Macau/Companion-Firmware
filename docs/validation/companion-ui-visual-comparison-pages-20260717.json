@@ -21,20 +21,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_idle_entry.pbm",
-            "sha256": "5F078C3D876E74662917C7E2C625688A151C8D1C4A6381262E722EC1057D2B15"
+            "sha256": "B3847DF9CE2D20693C60C9CC7BC1EC8D8B8A3E23641F4521EE71508ABE13CB9E"
           },
-          "relation": "source_crop_threshold_translation_to_pbm",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_phase_translation_to_pbm",
           "machine_result": {
             "status": "PASS_EXACT",
             "different_pixels": 0,
-            "translation": [
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              113,
+              117
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              -13,
+              -17
+            ],
+            "phase_offset": [
               0,
               0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              33,
+              31,
+              135,
+              139
             ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/01-idle-entry.png",
-            "sha256": "99D476AFCBD4969B9FC830E78FEA896E5E5F092C9C86F2FB42180D9AA3988241"
+            "sha256": "CAAA925D0D9EC2B614647A5C962E94F4CBE6EAC9796D25943E3909701114AD4E"
           }
         },
         {
@@ -52,20 +75,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_idle_sustain.pbm",
-            "sha256": "7E38DA354369F63827C76101C993E340BC13AEF63F7440B16F7BE9F694A31894"
+            "sha256": "D3CF6C4557610901B46EDA10628544195ADC3CECDA0B507141B9B252F3B1BAE2"
           },
-          "relation": "source_crop_threshold_translation_to_pbm",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_phase_translation_to_pbm",
           "machine_result": {
             "status": "PASS_EXACT",
             "different_pixels": 0,
-            "translation": [
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              113,
+              117
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              -13,
+              -17
+            ],
+            "phase_offset": [
               -1,
               0
+            ],
+            "requested_center": [
+              99,
+              100
+            ],
+            "final_output_bounds": [
+              32,
+              31,
+              135,
+              139
             ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/02-idle-sustain.png",
-            "sha256": "213017C8D3E8D15603AF253A15AA9865BAC8608C7AC88FC478E52F77D3275550"
+            "sha256": "96D58936DF39FB10795457C096468807EA56BA6C07D76CFD4AB0AFE35FEAEC6B"
           }
         },
         {
@@ -83,20 +129,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_idle_settle.pbm",
-            "sha256": "5F078C3D876E74662917C7E2C625688A151C8D1C4A6381262E722EC1057D2B15"
+            "sha256": "B3847DF9CE2D20693C60C9CC7BC1EC8D8B8A3E23641F4521EE71508ABE13CB9E"
           },
-          "relation": "source_crop_threshold_translation_to_pbm",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_phase_translation_to_pbm",
           "machine_result": {
             "status": "PASS_EXACT",
             "different_pixels": 0,
-            "translation": [
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              113,
+              117
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              -13,
+              -17
+            ],
+            "phase_offset": [
               0,
               0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              33,
+              31,
+              135,
+              139
             ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/03-idle-settle.png",
-            "sha256": "C7322EBED9D9113AB9603056D769CE0B6EBBC983BCD3CC5A47E8FC37FA111AF0"
+            "sha256": "75A1634E81F332F4B95C9BE54CD3B35C5F3E64031A2CF2829423199897FDA625"
           }
         },
         {
@@ -114,20 +183,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_touch_entry.pbm",
-            "sha256": "BC509237D46ACB9E79EE2FFAC617EF0ED21BC0BAD02EC8F4CF0AA1F93C99B490"
+            "sha256": "5D4D681FA66BDAEF8887F3473A59473418428812E6C4EFDCDB960567ED21884A"
           },
-          "relation": "source_crop_threshold_translation_to_pbm",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_phase_translation_to_pbm",
           "machine_result": {
             "status": "PASS_EXACT",
             "different_pixels": 0,
-            "translation": [
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              102,
+              121
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              -2,
+              -21
+            ],
+            "phase_offset": [
               0,
               0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              32,
+              26,
+              138,
+              149
             ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/04-touch-entry.png",
-            "sha256": "01FEB7367BF57FB7DB730CC0FB4DF3F058CFEF83074AEEDC7621A4EB6BDE2A05"
+            "sha256": "7F33C31D49F548E3B5BFBDA29C6762A038753AA564E902FFC9593CE2B40820E4"
           }
         },
         {
@@ -145,20 +237,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_touch_sustain.pbm",
-            "sha256": "B4A8667BB0AB939B2101DCC7F0A07D7A8DE39E33854950F8332AED7F9D53CA5E"
+            "sha256": "BC9B99430BB113A131C803005A3F798C8F65713BD22DC7077E784EFBE15F119F"
           },
-          "relation": "source_crop_threshold_translation_to_pbm",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_phase_translation_to_pbm",
           "machine_result": {
             "status": "PASS_EXACT",
             "different_pixels": 0,
-            "translation": [
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              102,
+              121
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              -2,
+              -21
+            ],
+            "phase_offset": [
               0,
               -1
+            ],
+            "requested_center": [
+              100,
+              99
+            ],
+            "final_output_bounds": [
+              32,
+              25,
+              138,
+              149
             ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/05-touch-sustain.png",
-            "sha256": "FF95A08A570D3ED0D528F2FDFCEBF5A1D8B69F4083E4EDD32E5CAAF43A2455C8"
+            "sha256": "1BA7924B5C537DB4C693E332F0E9A9F2FB1DD0CF6515BFFA8A93C07AA500CC39"
           }
         },
         {
@@ -176,20 +291,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_touch_settle.pbm",
-            "sha256": "BC509237D46ACB9E79EE2FFAC617EF0ED21BC0BAD02EC8F4CF0AA1F93C99B490"
+            "sha256": "5D4D681FA66BDAEF8887F3473A59473418428812E6C4EFDCDB960567ED21884A"
           },
-          "relation": "source_crop_threshold_translation_to_pbm",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_phase_translation_to_pbm",
           "machine_result": {
             "status": "PASS_EXACT",
             "different_pixels": 0,
-            "translation": [
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              102,
+              121
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              -2,
+              -21
+            ],
+            "phase_offset": [
               0,
               0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              32,
+              26,
+              138,
+              149
             ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/06-touch-settle.png",
-            "sha256": "A54215EB321760614E3EB3B394E128E51CEC6477E7C1D64C39064A73CBBB16AA"
+            "sha256": "236885D4EDCE82DF4CB20EEDD303035D374FF2EC7AAB8553228CFF4B5A58991D"
           }
         },
         {
@@ -207,20 +345,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_left_entry.pbm",
-            "sha256": "4A9EBEEB4EEAB1E88C725E5D2C52AEAA4FE18BF628544F445A7DB4BDF84F024C"
+            "sha256": "D9FAEBAC5A93A3F5074109746C4A3FB89E06215A4DC5F698AF16F7FA1E1EC10D"
           },
-          "relation": "source_crop_threshold_translation_to_pbm",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_phase_translation_to_pbm",
           "machine_result": {
             "status": "PASS_EXACT",
             "different_pixels": 0,
-            "translation": [
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              91,
+              138
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              9,
+              -38
+            ],
+            "phase_offset": [
               1,
               0
+            ],
+            "requested_center": [
+              101,
+              100
+            ],
+            "final_output_bounds": [
+              23,
+              56,
+              158,
+              90
             ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/07-swipe_left-entry.png",
-            "sha256": "D819753C1F0ABA1C2D2885348C0B732D708EE9F1C7B57308197B0AC3118DF76C"
+            "sha256": "2B0123AC5797282E39E2EBE4AD6008C063AA324BFA5B1012D91EC62C73F93CED"
           }
         },
         {
@@ -238,20 +399,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_left_sustain.pbm",
-            "sha256": "0B273A63F84CAD1D9A9C724B2577C9CCB3762D04045BB169FFA347F30D6F9547"
+            "sha256": "4CA4A3E87D5706082767EDF89960846BD19045F703FBC4CDD40A8BFAD74F5BBC"
           },
-          "relation": "source_crop_threshold_translation_to_pbm",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_phase_translation_to_pbm",
           "machine_result": {
             "status": "PASS_EXACT",
             "different_pixels": 0,
-            "translation": [
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              91,
+              138
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              9,
+              -38
+            ],
+            "phase_offset": [
               0,
               0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              22,
+              56,
+              158,
+              90
             ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/08-swipe_left-sustain.png",
-            "sha256": "C119801071F1304C83E534B9C50E555C18340702CD8F8E16971BA22F3E94E958"
+            "sha256": "FB24FAE3EFCFEC0A8DFDB8DDDD293D00D70B9EBD5877274588D8BE78BD2A612D"
           }
         },
         {
@@ -269,20 +453,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_left_settle.pbm",
-            "sha256": "CA0C511AF644596D6005E681FEF54C16A92DB9691D8B9BE20CA94562AD8BECE8"
+            "sha256": "0AE15ED7936CBB3140927F7671C491A797614C16BCF0C1864783E57134A3DCFB"
           },
-          "relation": "source_crop_threshold_translation_to_pbm",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_phase_translation_to_pbm",
           "machine_result": {
             "status": "PASS_EXACT",
             "different_pixels": 0,
-            "translation": [
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              91,
+              138
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              9,
+              -38
+            ],
+            "phase_offset": [
               -1,
               0
+            ],
+            "requested_center": [
+              99,
+              100
+            ],
+            "final_output_bounds": [
+              21,
+              56,
+              158,
+              90
             ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/09-swipe_left-settle.png",
-            "sha256": "26679800DFD7FD99C5956BBAE22B30DC92F4C1E382C533681DB685241B22A3F6"
+            "sha256": "F02AABF5329425B940437D74A2C2C58C0D6B924DAD908DC6FCBDDCC033DA076D"
           }
         },
         {
@@ -300,20 +507,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_right_entry.pbm",
-            "sha256": "DC78758B5676644A7100DE96CD0E7609846A3622E75B80D5090E7AB82E06F6F5"
+            "sha256": "6B23DC6560B8C5D0C358702098C86957D628A007E4750493BEFF197C0CA73BAD"
           },
-          "relation": "source_crop_threshold_translation_to_pbm",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_phase_translation_to_pbm",
           "machine_result": {
             "status": "PASS_EXACT",
             "different_pixels": 0,
-            "translation": [
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              91,
+              147
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              9,
+              -47
+            ],
+            "phase_offset": [
               -1,
               0
+            ],
+            "requested_center": [
+              99,
+              100
+            ],
+            "final_output_bounds": [
+              20,
+              52,
+              159,
+              97
             ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/10-swipe_right-entry.png",
-            "sha256": "0A04AE890AAEA1A555F07FDEA34A5090F1401F51318F8812236FC31C3DC1B6BD"
+            "sha256": "2FB05AB1962D57F71E5DCB3FB304B5F48B221267DFA3D531E2720EE21FAE5D89"
           }
         },
         {
@@ -331,20 +561,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_right_sustain.pbm",
-            "sha256": "50C85CE66814A023704D923B9BB23065FF90BCBBC99581650C97A4BBB562A93F"
+            "sha256": "CE55F5F55D8387359F0AB676B3E8B428FF51601FBF69C93EB879EBD295E5AE97"
           },
-          "relation": "source_crop_threshold_translation_to_pbm",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_phase_translation_to_pbm",
           "machine_result": {
             "status": "PASS_EXACT",
             "different_pixels": 0,
-            "translation": [
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              91,
+              147
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              9,
+              -47
+            ],
+            "phase_offset": [
               0,
               0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              21,
+              52,
+              159,
+              97
             ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/11-swipe_right-sustain.png",
-            "sha256": "4FEE0FDB40B0AC65090D4F06F9FCDA2E85402AF130200DFFA02858C36DA03CEF"
+            "sha256": "C561F376E06479DED55FFB93408CD3854C1C69F4128BAE0975E7CAF40BB33DBF"
           }
         },
         {
@@ -362,20 +615,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_right_settle.pbm",
-            "sha256": "7DBC7505DEC8785949F6EECC3E80AA8D9AF47325EFF52105FC962F9184FBD06E"
+            "sha256": "6360449500680B88658BD45CF435153757B2F61EC02AFC9B4BC22D597A568A57"
           },
-          "relation": "source_crop_threshold_translation_to_pbm",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_phase_translation_to_pbm",
           "machine_result": {
             "status": "PASS_EXACT",
             "different_pixels": 0,
-            "translation": [
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              91,
+              147
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              9,
+              -47
+            ],
+            "phase_offset": [
               1,
               0
+            ],
+            "requested_center": [
+              101,
+              100
+            ],
+            "final_output_bounds": [
+              22,
+              52,
+              159,
+              97
             ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/12-swipe_right-settle.png",
-            "sha256": "355A0EE22D819C6F826DF5ED0F7FA5B1958E391268EA7CB6ACF446C212739DD3"
+            "sha256": "77C5F6DC290BB110E2A750E81F40D557CD1A8B5E30BBFF4B06255B76668FE494"
           }
         },
         {
@@ -393,20 +669,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_up_entry.pbm",
-            "sha256": "069B3F20908026D1C6BB64F30A78BFB03B531B8095D36E9097E3831B878896AE"
+            "sha256": "6111D9D973D08CB2244CD1BB3A2FE26F54B76137980E3E3B3385B6AABBA16D91"
           },
-          "relation": "source_crop_threshold_translation_to_pbm",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_phase_translation_to_pbm",
           "machine_result": {
             "status": "PASS_EXACT",
             "different_pixels": 0,
-            "translation": [
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              112,
+              103
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              -12,
+              -3
+            ],
+            "phase_offset": [
               0,
               1
+            ],
+            "requested_center": [
+              100,
+              101
+            ],
+            "final_output_bounds": [
+              35,
+              36,
+              132,
+              132
             ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/13-swipe_up-entry.png",
-            "sha256": "64400276099CF2B0FCDCD3CDA339CBBA411DC84524B96ABA1CD3F0EEC416F364"
+            "sha256": "D24C71E09475779F6E10C1C3901398F97AC771DE5321AB6AE602328E2CF83024"
           }
         },
         {
@@ -424,20 +723,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_up_sustain.pbm",
-            "sha256": "728C01F6EC46407DDC00287972D134B942A9B466B12CF98FD82EDF769E62870F"
+            "sha256": "D7CB08F29B0CFE536E055ABEB7124417ECC37400DF9AA513355053A335A8E83C"
           },
-          "relation": "source_crop_threshold_translation_to_pbm",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_phase_translation_to_pbm",
           "machine_result": {
             "status": "PASS_EXACT",
             "different_pixels": 0,
-            "translation": [
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              112,
+              103
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              -12,
+              -3
+            ],
+            "phase_offset": [
               0,
               0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              35,
+              35,
+              132,
+              132
             ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/14-swipe_up-sustain.png",
-            "sha256": "64A67117B684CCE149DDF22641DCBDCE799D45AC6A28A77AEDBDAB81F59EB35E"
+            "sha256": "9E7CD4C0B32940B4E6A171EFE9653A9D91809BD6052D4E9D10730E1913C807BB"
           }
         },
         {
@@ -455,20 +777,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_up_settle.pbm",
-            "sha256": "0821EB1AF9AA7B3B89C39C3C6E9C69548DB6355079BC5F4B2DF48B573CD7676E"
+            "sha256": "2FEFB349CC089C49748D390314910E20B6EE368B76E45CCDF5C0F96D0249172D"
           },
-          "relation": "source_crop_threshold_translation_to_pbm",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_phase_translation_to_pbm",
           "machine_result": {
             "status": "PASS_EXACT",
             "different_pixels": 0,
-            "translation": [
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              112,
+              103
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              -12,
+              -3
+            ],
+            "phase_offset": [
               0,
               -1
+            ],
+            "requested_center": [
+              100,
+              99
+            ],
+            "final_output_bounds": [
+              35,
+              34,
+              132,
+              132
             ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/15-swipe_up-settle.png",
-            "sha256": "96C7E6E41501E37AB654137D221BA5C76A56CC6E382D929FA17C687F7BC53EC2"
+            "sha256": "79CEEBFE9ECCD624C190DB1AC160BCF4A4D69F547DCDFFFC016A92D3A25E0A09"
           }
         },
         {
@@ -486,20 +831,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_down_entry.pbm",
-            "sha256": "EB5FC5039D218538ED225BCCCA313D993BA8E493730255A58766A9E05F0EC51B"
+            "sha256": "C3696169CAA3A0E68507619A81E015C56B12610AB0D3A8D2FA3B1CE8AC101444"
           },
-          "relation": "source_crop_threshold_translation_to_pbm",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_phase_translation_to_pbm",
           "machine_result": {
             "status": "PASS_EXACT",
             "different_pixels": 0,
-            "translation": [
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              100,
+              101
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
               0,
               -1
+            ],
+            "phase_offset": [
+              0,
+              -1
+            ],
+            "requested_center": [
+              100,
+              99
+            ],
+            "final_output_bounds": [
+              36,
+              41,
+              130,
+              117
             ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/16-swipe_down-entry.png",
-            "sha256": "3AF59D6EFE587ABCFEF2451FE8B29E010E4CB90EA28380E21A0F25050077EE75"
+            "sha256": "749925AFC826B0242FA5F7250044B9F2DEE984E1A9ABEE59A6E656083F298B56"
           }
         },
         {
@@ -517,20 +885,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_down_sustain.pbm",
-            "sha256": "39AE4DE103DC01F791D9869478CD7F7E5E99FD41954FE3106ADA02D39878C2AC"
+            "sha256": "EB5FC5039D218538ED225BCCCA313D993BA8E493730255A58766A9E05F0EC51B"
           },
-          "relation": "source_crop_threshold_translation_to_pbm",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_phase_translation_to_pbm",
           "machine_result": {
             "status": "PASS_EXACT",
             "different_pixels": 0,
-            "translation": [
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              100,
+              101
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              0,
+              -1
+            ],
+            "phase_offset": [
               0,
               0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              36,
+              42,
+              130,
+              117
             ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/17-swipe_down-sustain.png",
-            "sha256": "17FE8B7136DF3BB4D5386614B2B64A4768F7F73462D28D789AC7E1FFAD3611D9"
+            "sha256": "49FD3565E7A22A59C09F0BE167B32E059844E740089142003D94BD878F7EBF51"
           }
         },
         {
@@ -548,20 +939,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_down_settle.pbm",
-            "sha256": "B32EFF9A423469075A9B634C90EBB20803411BF788E4A34027634D3F302789AA"
+            "sha256": "39AE4DE103DC01F791D9869478CD7F7E5E99FD41954FE3106ADA02D39878C2AC"
           },
-          "relation": "source_crop_threshold_translation_to_pbm",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_phase_translation_to_pbm",
           "machine_result": {
             "status": "PASS_EXACT",
             "different_pixels": 0,
-            "translation": [
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              100,
+              101
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              0,
+              -1
+            ],
+            "phase_offset": [
               0,
               1
+            ],
+            "requested_center": [
+              100,
+              101
+            ],
+            "final_output_bounds": [
+              36,
+              43,
+              130,
+              117
             ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/18-swipe_down-settle.png",
-            "sha256": "71ADE092F5BCFF168C39826B9FB56BB5A044A3068E9EBABFF5883920F2A71453"
+            "sha256": "47689A16C144053ABEAAF88EB84FAC4F848CA7797F47C88D086979E611FA35E8"
           }
         },
         {
@@ -579,20 +993,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_listening_entry.pbm",
-            "sha256": "4644245036738743D9C5626B700390F5D5F42B258945D44964F800BC3CA05EF7"
+            "sha256": "6095157637A7D88839C4FB9D54CFDFEBF349D34387E8BF007E23481827BFDFA5"
           },
-          "relation": "source_crop_threshold_translation_to_pbm",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_phase_translation_to_pbm",
           "machine_result": {
             "status": "PASS_EXACT",
             "different_pixels": 0,
-            "translation": [
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              102,
+              123
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              -2,
+              -23
+            ],
+            "phase_offset": [
               0,
               0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              11,
+              61,
+              179,
+              79
             ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/19-listening-entry.png",
-            "sha256": "3B9B833FFFE924C7A114CBDF8E6ACF0127696357F7ED06833E6790FF54C6B94E"
+            "sha256": "2D0EB183C5AC1CD8CD5A64FFC1772B026EB0AA02283C0A48C70993C225FA130D"
           }
         },
         {
@@ -610,20 +1047,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_listening_sustain.pbm",
-            "sha256": "EB65A6733AB15F7B0152B9B9BC4D86623428C7AAC9FBE84E50CC29211B3310C3"
+            "sha256": "62A4F9B167A705549D3093CC49C8857CCCBEBAD5E1A847DCB2192C406619DF06"
           },
-          "relation": "source_crop_threshold_translation_to_pbm",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_phase_translation_to_pbm",
           "machine_result": {
             "status": "PASS_EXACT",
             "different_pixels": 0,
-            "translation": [
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              102,
+              123
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              -2,
+              -23
+            ],
+            "phase_offset": [
               0,
               -1
+            ],
+            "requested_center": [
+              100,
+              99
+            ],
+            "final_output_bounds": [
+              11,
+              60,
+              179,
+              79
             ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/20-listening-sustain.png",
-            "sha256": "479989047F9A6B02E2BA7E0DF8358FFB92A18FE010DA3D1EEAD51533695A47C6"
+            "sha256": "999AFCEA86918FB0CAFDD2478BE3953F8432C2A91C7479EC60D93F9CB9B37840"
           }
         },
         {
@@ -641,20 +1101,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_listening_settle.pbm",
-            "sha256": "4644245036738743D9C5626B700390F5D5F42B258945D44964F800BC3CA05EF7"
+            "sha256": "6095157637A7D88839C4FB9D54CFDFEBF349D34387E8BF007E23481827BFDFA5"
           },
-          "relation": "source_crop_threshold_translation_to_pbm",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_phase_translation_to_pbm",
           "machine_result": {
             "status": "PASS_EXACT",
             "different_pixels": 0,
-            "translation": [
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              102,
+              123
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              -2,
+              -23
+            ],
+            "phase_offset": [
               0,
               0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              11,
+              61,
+              179,
+              79
             ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/21-listening-settle.png",
-            "sha256": "3F56CDBA0AF6608C181ADC6AE578DDBEBD36E978920472734FC546D68EC7D58A"
+            "sha256": "E188888759A63DCE174A52991129DFE6F49E0638EAC5A1A78EBC320095C7151E"
           }
         },
         {
@@ -672,20 +1155,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_recording_entry.pbm",
-            "sha256": "A3178A41C86C81B06FC685F44DDF40F8E64BA9C411E4631CF8BB58508C5EDB48"
+            "sha256": "FAD290CBAC21610DA0FBBD359712EB9BB6C36D90158C21BE541C483857C2B1BB"
           },
-          "relation": "source_crop_threshold_translation_to_pbm",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_phase_translation_to_pbm",
           "machine_result": {
             "status": "PASS_EXACT",
             "different_pixels": 0,
-            "translation": [
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              80,
+              103
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              20,
+              -3
+            ],
+            "phase_offset": [
               0,
               0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              36,
+              34,
+              130,
+              133
             ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/22-recording-entry.png",
-            "sha256": "6235D7A1A8E8BCB1C5CEFDDCD19250401383EDE5715CEA089CD3364E830C2813"
+            "sha256": "D85A960558801E2932E6CE7BEC0502AD9FA12B1B8C6E7C3969CA1293B7CB5C92"
           }
         },
         {
@@ -703,20 +1209,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_recording_sustain.pbm",
-            "sha256": "6C3FE0CE7FD7DCFA8010E2964FC832F389A20D23FA5C70CC2A4EE47057CEEC64"
+            "sha256": "08EC6BD5E802FFCC4F5CEBB66DCFD7B4B03C23A27E8F37DF272A062A5AC79804"
           },
-          "relation": "source_crop_threshold_translation_to_pbm",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_phase_translation_to_pbm",
           "machine_result": {
             "status": "PASS_EXACT",
             "different_pixels": 0,
-            "translation": [
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              80,
+              103
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              20,
+              -3
+            ],
+            "phase_offset": [
               1,
               0
+            ],
+            "requested_center": [
+              101,
+              100
+            ],
+            "final_output_bounds": [
+              37,
+              34,
+              130,
+              133
             ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/23-recording-sustain.png",
-            "sha256": "461671540B3485273B8C39F60B57D1F5799C01711BE3F6DEA76B8A25F8420689"
+            "sha256": "EF8BE4B31BE927CF828F2439BF5D5D5A96B42628BA5A4F09E333E7E724B658BD"
           }
         },
         {
@@ -734,20 +1263,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_recording_settle.pbm",
-            "sha256": "A3178A41C86C81B06FC685F44DDF40F8E64BA9C411E4631CF8BB58508C5EDB48"
+            "sha256": "FAD290CBAC21610DA0FBBD359712EB9BB6C36D90158C21BE541C483857C2B1BB"
           },
-          "relation": "source_crop_threshold_translation_to_pbm",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_phase_translation_to_pbm",
           "machine_result": {
             "status": "PASS_EXACT",
             "different_pixels": 0,
-            "translation": [
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              80,
+              103
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              20,
+              -3
+            ],
+            "phase_offset": [
               0,
               0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              36,
+              34,
+              130,
+              133
             ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/24-recording-settle.png",
-            "sha256": "D029856F13BE0F75949A73C09BE3D0076080F55EEE1BC7FE549D240123B46557"
+            "sha256": "E3E29F021F8C62294F9DCE3BC66D31116D241515B673BA26941781C2E6FF82D2"
           }
         },
         {
@@ -765,20 +1317,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_saving_entry.pbm",
-            "sha256": "FA35D72B9806E81273BF54C629C1B46150DA9E60266B71B5FF05CDB235B9A4E8"
+            "sha256": "75CE8004875A0907751FA371A0540B15126419CE4F33824E6F34F246AC1F6C11"
           },
-          "relation": "source_crop_threshold_translation_to_pbm",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_phase_translation_to_pbm",
           "machine_result": {
             "status": "PASS_EXACT",
             "different_pixels": 0,
-            "translation": [
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              107,
+              101
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              -7,
+              -1
+            ],
+            "phase_offset": [
               0,
               0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              36,
+              39,
+              130,
+              123
             ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/25-saving-entry.png",
-            "sha256": "317C3A9A6DCDC7A7511E0653F8728F71A52D4FF365295297739F30E8B7E662A7"
+            "sha256": "EF439EC3B4CCABF85699ECC2E739CED7F594FE67A131186940E9F3B91981F81C"
           }
         },
         {
@@ -796,20 +1371,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_saving_sustain.pbm",
-            "sha256": "6D61BAEAA30FD8ABC07AC174E5190D2AC09D8534AACFBAC910D555E1987D6157"
+            "sha256": "B502704CD377541C057759CF72D37C17F902B3FD2961F9ABC36164809D93E35A"
           },
-          "relation": "source_crop_threshold_translation_to_pbm",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_phase_translation_to_pbm",
           "machine_result": {
             "status": "PASS_EXACT",
             "different_pixels": 0,
-            "translation": [
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              107,
+              101
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              -7,
+              -1
+            ],
+            "phase_offset": [
               0,
               1
+            ],
+            "requested_center": [
+              100,
+              101
+            ],
+            "final_output_bounds": [
+              36,
+              40,
+              130,
+              123
             ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/26-saving-sustain.png",
-            "sha256": "D912E57E43B83773C7A6468D38C32323DB1E81FA0A093834188EFC7FA499D32F"
+            "sha256": "75E9B3A72DF86F1AB26806BC2EF240D1429051EF1AC78E7E4F42F5563221A971"
           }
         },
         {
@@ -827,20 +1425,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_saving_settle.pbm",
-            "sha256": "FA35D72B9806E81273BF54C629C1B46150DA9E60266B71B5FF05CDB235B9A4E8"
+            "sha256": "75CE8004875A0907751FA371A0540B15126419CE4F33824E6F34F246AC1F6C11"
           },
-          "relation": "source_crop_threshold_translation_to_pbm",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_phase_translation_to_pbm",
           "machine_result": {
             "status": "PASS_EXACT",
             "different_pixels": 0,
-            "translation": [
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              107,
+              101
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              -7,
+              -1
+            ],
+            "phase_offset": [
               0,
               0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              36,
+              39,
+              130,
+              123
             ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/27-saving-settle.png",
-            "sha256": "8447CE5AF935F839160AFBA6B07EEA82F1EC20660E758223226ED486DBDC66DB"
+            "sha256": "90BDDFE39C23CBA2DA89A1118E9726F239FE7ABA62C09043734945B1FE2BDA75"
           }
         },
         {
@@ -858,20 +1479,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_saved_entry.pbm",
-            "sha256": "80DB5F9AC08BF5ABCD782B9179B7EE3C558F91A3BB9B6C5D2F0C7086545A087B"
+            "sha256": "62614884A1E352B031E202A6D2479A89C2D7B9024505DADBC9AA68DF0BC3B7B9"
           },
-          "relation": "source_crop_threshold_translation_to_pbm",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_phase_translation_to_pbm",
           "machine_result": {
             "status": "PASS_EXACT",
             "different_pixels": 0,
-            "translation": [
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              102,
+              100
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              -2,
+              0
+            ],
+            "phase_offset": [
               0,
               0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              31,
+              29,
+              139,
+              144
             ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/28-saved-entry.png",
-            "sha256": "55CE885D047151ACD97569B06B2926678BB9EE185CC101BE80B8B88EE6B51181"
+            "sha256": "EFE3A2BE3F51B93AB149A884DB67486FA2A4243470E3142776D8C9BFDED4F6AF"
           }
         },
         {
@@ -889,20 +1533,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_saved_sustain.pbm",
-            "sha256": "3FD8B9AE79A8BB27053F6393DE1356D061927A124B797B5DBA71366A4A34003B"
+            "sha256": "FD49A36696FCE849A4FE38A3D5209ECE777485FC8E092E199CA023825758CF24"
           },
-          "relation": "source_crop_threshold_translation_to_pbm",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_phase_translation_to_pbm",
           "machine_result": {
             "status": "PASS_EXACT",
             "different_pixels": 0,
-            "translation": [
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              102,
+              100
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              -2,
+              0
+            ],
+            "phase_offset": [
               0,
               -1
+            ],
+            "requested_center": [
+              100,
+              99
+            ],
+            "final_output_bounds": [
+              31,
+              28,
+              139,
+              144
             ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/29-saved-sustain.png",
-            "sha256": "3BC752F61EF25071BD510EF78E492DEBAC65D83216147088F52AC2EDD8BB2828"
+            "sha256": "8DB5AC21BA3AEA1A664AA7E4AAA282F1310698285EA6DEEA9E103DF062827E07"
           }
         },
         {
@@ -920,20 +1587,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_saved_settle.pbm",
-            "sha256": "80DB5F9AC08BF5ABCD782B9179B7EE3C558F91A3BB9B6C5D2F0C7086545A087B"
+            "sha256": "62614884A1E352B031E202A6D2479A89C2D7B9024505DADBC9AA68DF0BC3B7B9"
           },
-          "relation": "source_crop_threshold_translation_to_pbm",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_phase_translation_to_pbm",
           "machine_result": {
             "status": "PASS_EXACT",
             "different_pixels": 0,
-            "translation": [
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              102,
+              100
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              -2,
+              0
+            ],
+            "phase_offset": [
               0,
               0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              31,
+              29,
+              139,
+              144
             ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/30-saved-settle.png",
-            "sha256": "0DC64502C39A9D93670550855A73004B130DDC438B352DCA3B2782A1DD472FDE"
+            "sha256": "AB53B54FB3B9831605767549B911F9568984C7FF4212EA2EED1ED958297B0139"
           }
         },
         {
@@ -951,20 +1641,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_sleep_entry.pbm",
-            "sha256": "50BDE2BBCE5B89B26502CA5F60C73BB42949CBCB63555F81EEC495D52ECEBF02"
+            "sha256": "4DA4FAFC3E09153410F20C567178F8F6DA15C6E996376867EE0A716E169529A6"
           },
-          "relation": "source_crop_threshold_translation_to_pbm",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_phase_translation_to_pbm",
           "machine_result": {
             "status": "PASS_EXACT",
             "different_pixels": 0,
-            "translation": [
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              90,
+              97
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              10,
+              3
+            ],
+            "phase_offset": [
               0,
               0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              37,
+              27,
+              127,
+              148
             ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/31-sleep-entry.png",
-            "sha256": "65C831330F58FCFAE17487E10F225C353D3834CDD64213B8D79FB6975DB17534"
+            "sha256": "A658A3DE8913CCB590421C656D6964C31C42A10DB0C6520EFF0C4574B605E31A"
           }
         },
         {
@@ -982,20 +1695,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_sleep_sustain.pbm",
-            "sha256": "50BDE2BBCE5B89B26502CA5F60C73BB42949CBCB63555F81EEC495D52ECEBF02"
+            "sha256": "4DA4FAFC3E09153410F20C567178F8F6DA15C6E996376867EE0A716E169529A6"
           },
-          "relation": "source_crop_threshold_translation_to_pbm",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_phase_translation_to_pbm",
           "machine_result": {
             "status": "PASS_EXACT",
             "different_pixels": 0,
-            "translation": [
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              90,
+              97
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              10,
+              3
+            ],
+            "phase_offset": [
               0,
               0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              37,
+              27,
+              127,
+              148
             ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/32-sleep-sustain.png",
-            "sha256": "1B80F5C9C56A8563F3620CE6395C90B1D5214F57AC011EE62CFE11C81D445598"
+            "sha256": "B4E166231D1BECCBAC7D1E86CFC80077464093784F2D8E9154A5F859EF8B63C8"
           }
         },
         {
@@ -1013,20 +1749,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_sleep_settle.pbm",
-            "sha256": "50BDE2BBCE5B89B26502CA5F60C73BB42949CBCB63555F81EEC495D52ECEBF02"
+            "sha256": "4DA4FAFC3E09153410F20C567178F8F6DA15C6E996376867EE0A716E169529A6"
           },
-          "relation": "source_crop_threshold_translation_to_pbm",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_phase_translation_to_pbm",
           "machine_result": {
             "status": "PASS_EXACT",
             "different_pixels": 0,
-            "translation": [
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              90,
+              97
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              10,
+              3
+            ],
+            "phase_offset": [
               0,
               0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              37,
+              27,
+              127,
+              148
             ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/33-sleep-settle.png",
-            "sha256": "6D562CC8A03E2812386E9E2513EF24D182176535DFCCDA2515FE1D3F743703E6"
+            "sha256": "88DBDCEA4E79BD7E9E4742A3D7330AC9F5938F9C9BD4158DEADCE5C5F7DF61B1"
           }
         },
         {
@@ -1044,20 +1803,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_menu_hold_entry.pbm",
-            "sha256": "2C71A0D1044065F65EC06BE2D4F2FD13C85B9C8C748ADC237203DC43A667C645"
+            "sha256": "65EF908A7687F8859BF5B1EBEAAEF1DF5C8D2285CF40535D5C62FEC15558CCE2"
           },
-          "relation": "source_crop_threshold_translation_to_pbm",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_phase_translation_to_pbm",
           "machine_result": {
             "status": "PASS_EXACT",
             "different_pixels": 0,
-            "translation": [
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              78,
+              107
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              22,
+              -7
+            ],
+            "phase_offset": [
               0,
               0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              36,
+              36,
+              129,
+              129
             ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/34-menu_hold-entry.png",
-            "sha256": "4F96E80E9F65E3CD01306B08A279B69AD0635E260A3D59502993F684AA91C69D"
+            "sha256": "03F53424A584EED702376DABC61BF39CD97220EAA242521786862F95BD66A4E3"
           }
         },
         {
@@ -1075,20 +1857,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_menu_hold_sustain.pbm",
-            "sha256": "023655EFEBA52F1A8595610676C140F0BB72297720D442DA931074677FDA0D89"
+            "sha256": "2FAE6BEF9D7371B093E35B1BDFA180336EAA800DDE72267D9481D2D71109B62F"
           },
-          "relation": "source_crop_threshold_translation_to_pbm",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_phase_translation_to_pbm",
           "machine_result": {
             "status": "PASS_EXACT",
             "different_pixels": 0,
-            "translation": [
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              78,
+              107
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              22,
+              -7
+            ],
+            "phase_offset": [
               0,
               -1
+            ],
+            "requested_center": [
+              100,
+              99
+            ],
+            "final_output_bounds": [
+              36,
+              35,
+              129,
+              129
             ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/35-menu_hold-sustain.png",
-            "sha256": "883A25F84D5782154F85191A1C781EA27A837492A390C45B22EA323923FC8A79"
+            "sha256": "12104876BA2E561E4B3B011CFFD47FFB1A2C0DF0C1AF03C6F21F52D76A520067"
           }
         },
         {
@@ -1106,20 +1911,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_menu_hold_settle.pbm",
-            "sha256": "2C71A0D1044065F65EC06BE2D4F2FD13C85B9C8C748ADC237203DC43A667C645"
+            "sha256": "65EF908A7687F8859BF5B1EBEAAEF1DF5C8D2285CF40535D5C62FEC15558CCE2"
           },
-          "relation": "source_crop_threshold_translation_to_pbm",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_phase_translation_to_pbm",
           "machine_result": {
             "status": "PASS_EXACT",
             "different_pixels": 0,
-            "translation": [
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              78,
+              107
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              22,
+              -7
+            ],
+            "phase_offset": [
               0,
               0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              36,
+              36,
+              129,
+              129
             ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/36-menu_hold-settle.png",
-            "sha256": "2CEFCA109093C64CCACEB197E5888CF8A16F85A7C4A7C93C67C45EF512C26C6D"
+            "sha256": "6A094097E5CDFA1B0C6A4FE9E5D5A6A1D6E8CD231068A85B719BFD9120B5032F"
           }
         },
         {
@@ -1137,20 +1965,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_wake_entry.pbm",
-            "sha256": "50BDE2BBCE5B89B26502CA5F60C73BB42949CBCB63555F81EEC495D52ECEBF02"
+            "sha256": "4DA4FAFC3E09153410F20C567178F8F6DA15C6E996376867EE0A716E169529A6"
           },
-          "relation": "source_crop_threshold_translation_to_pbm",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_phase_translation_to_pbm",
           "machine_result": {
             "status": "PASS_EXACT",
             "different_pixels": 0,
-            "translation": [
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              90,
+              97
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              10,
+              3
+            ],
+            "phase_offset": [
               0,
               0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              37,
+              27,
+              127,
+              148
             ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/37-wake-entry.png",
-            "sha256": "556A126FFBFE887D7F92D5CE3B975475BE23199FDE2F59EAFEB3969610FF41D5"
+            "sha256": "D0243B7C59AAB25D3F2649877D4CE4E2F59D4A4956BC47BA2E019DF9BEC44EB5"
           }
         },
         {
@@ -1168,20 +2019,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_wake_sustain.pbm",
-            "sha256": "5F078C3D876E74662917C7E2C625688A151C8D1C4A6381262E722EC1057D2B15"
+            "sha256": "B3847DF9CE2D20693C60C9CC7BC1EC8D8B8A3E23641F4521EE71508ABE13CB9E"
           },
-          "relation": "source_crop_threshold_translation_to_pbm",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_phase_translation_to_pbm",
           "machine_result": {
             "status": "PASS_EXACT",
             "different_pixels": 0,
-            "translation": [
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              113,
+              117
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              -13,
+              -17
+            ],
+            "phase_offset": [
               0,
               0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              33,
+              31,
+              135,
+              139
             ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/38-wake-sustain.png",
-            "sha256": "7FA2B83590145182504322D6574007A4F270E731C12178CCB101145A2189CBA9"
+            "sha256": "99337FAD23FE57A0CE270B1247B1E3C997A413D6FD715F23037AB58385E4AB85"
           }
         },
         {
@@ -1199,20 +2073,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_wake_settle.pbm",
-            "sha256": "B4A8667BB0AB939B2101DCC7F0A07D7A8DE39E33854950F8332AED7F9D53CA5E"
+            "sha256": "BC9B99430BB113A131C803005A3F798C8F65713BD22DC7077E784EFBE15F119F"
           },
-          "relation": "source_crop_threshold_translation_to_pbm",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_phase_translation_to_pbm",
           "machine_result": {
             "status": "PASS_EXACT",
             "different_pixels": 0,
-            "translation": [
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              102,
+              121
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              -2,
+              -21
+            ],
+            "phase_offset": [
               0,
               -1
+            ],
+            "requested_center": [
+              100,
+              99
+            ],
+            "final_output_bounds": [
+              32,
+              25,
+              138,
+              149
             ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/home-v9-daily-storyboard/39-wake-settle.png",
-            "sha256": "1252714C72A1F4AF87AAB24D80202A7C48A98ED67AEBC63ABEE5D06672136ED8"
+            "sha256": "F99BBDFD43F14FAD4FDBB1565F67C888F3504400182DF096E90A6A1F01B64110"
           }
         }
       ]
@@ -1723,16 +2620,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/01-voice-speaking.png",
-            "sha256": "E5874B384E418CD82700DD89479000B17A110AD4224028976A02DE462AAB2D8F"
+            "sha256": "899C6756FD97414DD50EA63F80BC6FB3B2AAC720B1E24EA8CD6570A823879311"
           },
-          "relation": "source_crop_threshold_to_desktop_preview",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_to_desktop_preview",
           "machine_result": {
             "status": "PASS_EXACT",
-            "different_pixels": 0
+            "different_pixels": 0,
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              111,
+              134
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              -11,
+              -34
+            ],
+            "phase_offset": [
+              0,
+              0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              25,
+              56,
+              152,
+              89
+            ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-system-v1/01-voice-speaking.png",
-            "sha256": "7A78A024DCF8086F1CDB89BA55005A2DA6271898DC60DE50596CEAC9F82F75F5"
+            "sha256": "7AC4A6DDDE6383B8FC1075A53BEAE710C214253959910A0F14D0EF1990C31CF2"
           }
         },
         {
@@ -1750,16 +2674,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/02-recording-error.png",
-            "sha256": "447BD2ACE584C17E35FF76BDD91FF04E33AB9EEF7370A55B9ED4730CA0C5C299"
+            "sha256": "AD6BED8DAFD5EC67F7D1F9253445D5CDE6B3BABF249ABB9C15821241BB97C057"
           },
-          "relation": "source_crop_threshold_to_desktop_preview",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_to_desktop_preview",
           "machine_result": {
             "status": "PASS_EXACT",
-            "different_pixels": 0
+            "different_pixels": 0,
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              80,
+              106
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              20,
+              -6
+            ],
+            "phase_offset": [
+              0,
+              0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              44,
+              30,
+              113,
+              142
+            ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-system-v1/02-recording-error.png",
-            "sha256": "8E783A06C9104CC01FC3987E436C61C63ADE152E50A22B5AF750CE02C78F53CE"
+            "sha256": "B0E1D15AFEAC6B362C37D2F3DCF73D692C2925CAEB80E8E38FC0552A12B8C84F"
           }
         },
         {
@@ -1777,16 +2728,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/03-power-charge_detected.png",
-            "sha256": "21461670341A13D2BBA5F5B77F2200DD4298ECB77B1BE1CC266D42046891A6E0"
+            "sha256": "2194D08DA73EB076EE38B486CDA9E9034C3F47F7467D3A0B72283B983A9A6172"
           },
-          "relation": "source_crop_threshold_to_desktop_preview",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_to_desktop_preview",
           "machine_result": {
             "status": "PASS_EXACT",
-            "different_pixels": 0
+            "different_pixels": 0,
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              101,
+              104
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              -1,
+              -4
+            ],
+            "phase_offset": [
+              0,
+              0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              45,
+              25,
+              111,
+              151
+            ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-system-v1/03-power-charge_detected.png",
-            "sha256": "68FA8A58174354F6C473122BD2E13A8E9AD4577FE770F3C55C44DB712288E11A"
+            "sha256": "655D29A80C75466A660432AF490DB51F86335B8EC389640B76A18003EB857CB4"
           }
         },
         {
@@ -1804,16 +2782,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/04-power-charging.png",
-            "sha256": "19775D8D613BF56F08A8769572724773E309CD648A8A76B2F328C2B3A80ABE87"
+            "sha256": "54D4234C6A84CCCC0A11C7B38F87056CC304F407C90FEA895CD7E6083D1B191F"
           },
-          "relation": "source_crop_threshold_to_desktop_preview",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_to_desktop_preview",
           "machine_result": {
             "status": "PASS_EXACT",
-            "different_pixels": 0
+            "different_pixels": 0,
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              86,
+              92
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              14,
+              8
+            ],
+            "phase_offset": [
+              0,
+              0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              44,
+              26,
+              114,
+              150
+            ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-system-v1/04-power-charging.png",
-            "sha256": "88CEEB487B927BB4BA87053AF1B389F1D72F5D5C625A44498406C635AFCD9C4F"
+            "sha256": "AC1D19F1F1083D0946D33A8025B3FB7673B1FD147C4CA09B2254F8610996AE93"
           }
         },
         {
@@ -1831,16 +2836,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/05-power-charged.png",
-            "sha256": "47CCD4E8FE05DA2E5024B6FFE60102FC860170C45F9D12F1BD73E3AEED2B4853"
+            "sha256": "6EA98B1397CB57B65A21EA3EB3E026F7D2D0A842A3964D8F577CBC16B5BDD108"
           },
-          "relation": "source_crop_threshold_to_desktop_preview",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_to_desktop_preview",
           "machine_result": {
             "status": "PASS_EXACT",
-            "different_pixels": 0
+            "different_pixels": 0,
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              110,
+              92
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              -10,
+              8
+            ],
+            "phase_offset": [
+              0,
+              0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              45,
+              33,
+              111,
+              135
+            ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-system-v1/05-power-charged.png",
-            "sha256": "3E395CFE147700AC648CEA16C668747129792041D7AB27039A7C0A7FC0DB8610"
+            "sha256": "917EEC84792C2818228298558ADB23B08507520B44702E3EF44A6ADF6815C4B4"
           }
         },
         {
@@ -1858,16 +2890,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/06-power-low_battery.png",
-            "sha256": "A535205646A736A57BBDE55E86D32EC1871E02118FB97A2638B208C31DEF4A7C"
+            "sha256": "A77326F10C33AFF32303602E97E544D9EA81AF4274AD38DC3B86438A9C1F9AA7"
           },
-          "relation": "source_crop_threshold_to_desktop_preview",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_to_desktop_preview",
           "machine_result": {
             "status": "PASS_EXACT",
-            "different_pixels": 0
+            "different_pixels": 0,
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              102,
+              103
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              -2,
+              -3
+            ],
+            "phase_offset": [
+              0,
+              0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              45,
+              43,
+              111,
+              115
+            ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-system-v1/06-power-low_battery.png",
-            "sha256": "7B8F0E76665F091CCF4517246600213AE170A5F5F9328B1814BF5C5B9DF26F5D"
+            "sha256": "CDA6305DD2697A02C1F805EBEBAD30477E8011277220C6D0329582613FF7E752"
           }
         },
         {
@@ -1885,16 +2944,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/07-link-pairing.png",
-            "sha256": "3B65A3F972460864972A9E597F2271B77C704FF7CC44DD85EB499CA04B406909"
+            "sha256": "D84570E3EDC63756036562499FE4F291B0FE861F7C1DED912DEFDB5BAC0DD4D7"
           },
-          "relation": "source_crop_threshold_to_desktop_preview",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_to_desktop_preview",
           "machine_result": {
             "status": "PASS_EXACT",
-            "different_pixels": 0
+            "different_pixels": 0,
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              95,
+              99
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              5,
+              1
+            ],
+            "phase_offset": [
+              0,
+              0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              46,
+              34,
+              110,
+              134
+            ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-system-v1/07-link-pairing.png",
-            "sha256": "AF04E1671E3CFF34C716578F9B6084962C44BA53FD82C17F526B684135ED85E1"
+            "sha256": "CFFF48072C9B6C53E6B8CAA90E31B272798D1AE19166C47E545F8916CF9ABB29"
           }
         },
         {
@@ -1912,16 +2998,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/08-link-connected.png",
-            "sha256": "CAF9C0E47FB036351DA5FACDE997A4CB5238CF3B1AD5402BC7C19802419D370F"
+            "sha256": "B9A01705A9F298536D927AD7C5AAEC525A153FDF6C4B348B513FA1069FF0F7ED"
           },
-          "relation": "source_crop_threshold_to_desktop_preview",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_to_desktop_preview",
           "machine_result": {
             "status": "PASS_EXACT",
-            "different_pixels": 0
+            "different_pixels": 0,
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              84,
+              104
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              16,
+              -4
+            ],
+            "phase_offset": [
+              0,
+              0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              46,
+              36,
+              109,
+              129
+            ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-system-v1/08-link-connected.png",
-            "sha256": "AE36F525133DE194E344B4A270D79E9E4FB0FE2B166CC471B2C33E2726BC1940"
+            "sha256": "6FCF4932DFD3AED6D5868B19D222E9A75F60EEEDE445EB4BF31823C0E320AE19"
           }
         },
         {
@@ -1939,16 +3052,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/09-link-syncing.png",
-            "sha256": "0015BC2739E277923B54B4E9F113B92BFF04E322EF1D10A624DF82F2FDF2AF81"
+            "sha256": "5C784A0B6F97651BDE832526D5E873A4A3C5F8652D415CE172B75476E9BB0923"
           },
-          "relation": "source_crop_threshold_to_desktop_preview",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_to_desktop_preview",
           "machine_result": {
             "status": "PASS_EXACT",
-            "different_pixels": 0
+            "different_pixels": 0,
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              108,
+              108
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              -8,
+              -8
+            ],
+            "phase_offset": [
+              0,
+              0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              45,
+              25,
+              112,
+              151
+            ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-system-v1/09-link-syncing.png",
-            "sha256": "E6E0151AAFE9D55217DCAD9AE620CFF670232BE15689952645D3D405A6468EE1"
+            "sha256": "91D2D7B8B3BE17D7751A272B13454918598F3F7DC0ED08EB352F7C01FE92D045"
           }
         },
         {
@@ -1966,16 +3106,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/10-link-synced.png",
-            "sha256": "0683302FED05A3AE38767DD24938DE522BEC4116DDCB522089F41A19A967586B"
+            "sha256": "151DEF3A5E78CD6A1010EA901189C21323F967804E27E47D56F3AC97839CFE8C"
           },
-          "relation": "source_crop_threshold_to_desktop_preview",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_to_desktop_preview",
           "machine_result": {
             "status": "PASS_EXACT",
-            "different_pixels": 0
+            "different_pixels": 0,
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              102,
+              119
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              -2,
+              -19
+            ],
+            "phase_offset": [
+              0,
+              0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              45,
+              38,
+              111,
+              125
+            ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-system-v1/10-link-synced.png",
-            "sha256": "D1FAE28B34C7442B5242784597C60C0057386737F876C42403E255BAE9591FB8"
+            "sha256": "A376EA299D9A583E17D889F59365664312D93E613C1C771D306571A78A138545"
           }
         },
         {
@@ -1993,16 +3160,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/11-link-error.png",
-            "sha256": "F1873F726AF05773091E0177CAD29975F1453D3AF19B9D7FD10159F44B0FCD43"
+            "sha256": "6557A5F57E46719672697FFB862FA2C2987D42974F125802FB5532C8BBE61084"
           },
-          "relation": "source_crop_threshold_to_desktop_preview",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_to_desktop_preview",
           "machine_result": {
             "status": "PASS_EXACT",
-            "different_pixels": 0
+            "different_pixels": 0,
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              94,
+              108
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              6,
+              -8
+            ],
+            "phase_offset": [
+              0,
+              0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              47,
+              34,
+              107,
+              134
+            ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-system-v1/11-link-error.png",
-            "sha256": "C43E2494B7C05EECFA7D5BFE95022D301567D0C76F888A4CFE9E77BEFEC2C236"
+            "sha256": "6435226AE9CFF813A1FDD5497A2218E6DADD95942BFCF2452177BC25BB9F5D17"
           }
         },
         {
@@ -2020,16 +3214,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-system-v1/12-system-error.png",
-            "sha256": "8AABFFF8DDE22F924BA90CB92575B72B5152D8422E48DFC72FBD04D66DF4961D"
+            "sha256": "67AE1A29C95189171C6F67A19C50871CDDDEF19EA10E850099BC3B45DAA53A7F"
           },
-          "relation": "source_crop_threshold_to_desktop_preview",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_to_desktop_preview",
           "machine_result": {
             "status": "PASS_EXACT",
-            "different_pixels": 0
+            "different_pixels": 0,
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              82,
+              110
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              18,
+              -10
+            ],
+            "phase_offset": [
+              0,
+              0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              46,
+              31,
+              109,
+              140
+            ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-system-v1/12-system-error.png",
-            "sha256": "EE68907E936EC7265DF6915B618A21DCE7C876F082B07C433C053D8086EE31F0"
+            "sha256": "5DC04397998F5A937562351460FD14ABB6DC017345A71B5D1DAE76D3264C9A8B"
           }
         }
       ]
@@ -2052,16 +3273,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/01-menu-open-entry.png",
-            "sha256": "5FD8369825311A09975C7087B348C5098443854F1B48E934DAFAFD268309A139"
+            "sha256": "14BA2C87DCDAA528B178779B01AC1472BFA0512AFD7AA08E6362769E64A25469"
           },
-          "relation": "source_crop_threshold_to_desktop_preview",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_to_desktop_preview",
           "machine_result": {
             "status": "PASS_EXACT",
-            "different_pixels": 0
+            "different_pixels": 0,
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              108,
+              108
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              -8,
+              -8
+            ],
+            "phase_offset": [
+              0,
+              0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              39,
+              36,
+              124,
+              129
+            ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-journey-v1/01-menu-open-entry.png",
-            "sha256": "1E6B757545C4FAC1912C3EA748D487893B99126FCBC32C25349F2D85D2854DED"
+            "sha256": "E1FE03237AC7AA46DD101CA8B63C57DFE2925CC37907520FA223A267D6A03D20"
           }
         },
         {
@@ -2079,16 +3327,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/02-menu-open-settle.png",
-            "sha256": "F224E8FDD10210065D7F0F94B5B2F7F0E39592D6486413D6AA827F60BF7FD46D"
+            "sha256": "2689615D334BBA3CE2AA444A15F54EF46D460623A8FD756274F1CDFDCFC1297E"
           },
-          "relation": "source_crop_threshold_to_desktop_preview",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_to_desktop_preview",
           "machine_result": {
             "status": "PASS_EXACT",
-            "different_pixels": 0
+            "different_pixels": 0,
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              84,
+              116
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              16,
+              -16
+            ],
+            "phase_offset": [
+              0,
+              0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              39,
+              34,
+              123,
+              133
+            ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-journey-v1/02-menu-open-settle.png",
-            "sha256": "400FAA7F8731F96D70CECB83ECF129045989F76704491FE444B68788BFD9E6D7"
+            "sha256": "C0CEF9A8A2CADBC2110465F540DD0DB8B4929D22EB5E56DFCC1CB943A070B8A3"
           }
         },
         {
@@ -2106,16 +3381,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/03-menu-blocked.png",
-            "sha256": "FC4F8F65EC7C5E0EEA84AC228453A270C671E847672888538A5DE575AF7BE728"
+            "sha256": "B68FA023D32CAF5FA462D34E7BE7EFF9A32E35F8D571ED7DCA9EB1E4822F4DCF"
           },
-          "relation": "source_crop_threshold_to_desktop_preview",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_to_desktop_preview",
           "machine_result": {
             "status": "PASS_EXACT",
-            "different_pixels": 0
+            "different_pixels": 0,
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              101,
+              115
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              -1,
+              -15
+            ],
+            "phase_offset": [
+              0,
+              0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              41,
+              35,
+              119,
+              131
+            ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-journey-v1/03-menu-blocked.png",
-            "sha256": "6D8B5D260EDBD3CAF6932DE49385572D1B1D506BF36DD3EA4CD9813B01BECDBC"
+            "sha256": "F769180A5F6516228DFB445EF363008356F1534E103F111BEAE4EB76958D1933"
           }
         },
         {
@@ -2133,16 +3435,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/04-menu-exit.png",
-            "sha256": "65AC84E3C3B3A7A94623F54A2314BDB93477DF7E3CB2F93D26C32E9DD3425D04"
+            "sha256": "EB95537D7637DCCCD3654C9EF795DC0089BB7941715FD4E145F9A746A667048D"
           },
-          "relation": "source_crop_threshold_to_desktop_preview",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_to_desktop_preview",
           "machine_result": {
             "status": "PASS_EXACT",
-            "different_pixels": 0
+            "different_pixels": 0,
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              91,
+              114
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              9,
+              -14
+            ],
+            "phase_offset": [
+              0,
+              0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              40,
+              42,
+              121,
+              117
+            ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-journey-v1/04-menu-exit.png",
-            "sha256": "3E77DEC8C90A6C1EA69D6EF36F5FDFE5458A30519D164A3C4068B791FE23729E"
+            "sha256": "B3E61A397C838E3B5D4FD4F4C190532411C0F6B70249210AED89CF3A2D28D627"
           }
         },
         {
@@ -2160,16 +3489,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/05-upgrade-offer.png",
-            "sha256": "52BF719BCC1E2677E5161AD94008B2577681EEE82A846F7081220359B3193067"
+            "sha256": "A66776910971D924F812F855CE2958644F453A90F1297D5F73DB46A07A37C040"
           },
-          "relation": "source_crop_threshold_to_desktop_preview",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_to_desktop_preview",
           "machine_result": {
             "status": "PASS_EXACT",
-            "different_pixels": 0
+            "different_pixels": 0,
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              107,
+              95
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              -7,
+              5
+            ],
+            "phase_offset": [
+              0,
+              0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              41,
+              36,
+              120,
+              130
+            ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-journey-v1/05-upgrade-offer.png",
-            "sha256": "9D8786CE936F5296DBA2BAA8B20EAEC3D86288E4FB5CF6B2465782C92D95310D"
+            "sha256": "4F2C1F3D05D19165C0304EFAD4135638F7C6CD2A54B21F8CB65C192927D5DC85"
           }
         },
         {
@@ -2187,16 +3543,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/06-upgrade-prepare.png",
-            "sha256": "1DEFAF3CF80EBD4BA1728C89E64D050A86FC2FAEBF26AEFA656061A7808B5798"
+            "sha256": "A37234C0FC255C908875DBCC2BAE8583B346F6E5DDD268D77C473D858BB9F07E"
           },
-          "relation": "source_crop_threshold_to_desktop_preview",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_to_desktop_preview",
           "machine_result": {
             "status": "PASS_EXACT",
-            "different_pixels": 0
+            "different_pixels": 0,
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              104,
+              91
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              -4,
+              9
+            ],
+            "phase_offset": [
+              0,
+              0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              41,
+              39,
+              120,
+              123
+            ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-journey-v1/06-upgrade-prepare.png",
-            "sha256": "840F069819A5BF0900C59F01736A56E044D4A4800E545045271B4A7AB744EE91"
+            "sha256": "D7F9D709513AC969A50DE548928CABA469D5B9BBBD9DABD9E1FC248F8A28F7D2"
           }
         },
         {
@@ -2214,16 +3597,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/07-upgrade-transfer.png",
-            "sha256": "0603513204F7B6855D2D44B2DDD59993791647B9E7671C0C8083EF975EDD789D"
+            "sha256": "296AEF2E38987F4B913455778FFA52DB35D3C5B71F076D8F61329C94A5C9E118"
           },
-          "relation": "source_crop_threshold_to_desktop_preview",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_to_desktop_preview",
           "machine_result": {
             "status": "PASS_EXACT",
-            "different_pixels": 0
+            "different_pixels": 0,
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              100,
+              98
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              0,
+              2
+            ],
+            "phase_offset": [
+              0,
+              0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              42,
+              35,
+              118,
+              131
+            ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-journey-v1/07-upgrade-transfer.png",
-            "sha256": "6191CD4CA5574EFFE5E5A9885D15900A0C1587AEF0DDA7262EE8BBF1216BDF2F"
+            "sha256": "BAA02D4898F14B2944FDB1E6C3E529123606A99194892197BF08A723AF785BEB"
           }
         },
         {
@@ -2241,16 +3651,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/08-upgrade-verify.png",
-            "sha256": "2336A3B5758BABD44983D149195C82C5C22F8868C5FA037C9E303E1A9D57711C"
+            "sha256": "6D1A86E005E9F64A0EC22AA66844EC7100B8B07EA1A64745DA0216816717FAE5"
           },
-          "relation": "source_crop_threshold_to_desktop_preview",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_to_desktop_preview",
           "machine_result": {
             "status": "PASS_EXACT",
-            "different_pixels": 0
+            "different_pixels": 0,
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              89,
+              96
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              11,
+              4
+            ],
+            "phase_offset": [
+              0,
+              0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              41,
+              37,
+              120,
+              127
+            ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-journey-v1/08-upgrade-verify.png",
-            "sha256": "ED45F96BEB415174E71D895EE852B8D89A1697E0B1B547C38A19D54C6FC58352"
+            "sha256": "8CD1A107D226183BD57065C46EA8B6B41C0173F8604914134076CDB2E87A62A1"
           }
         },
         {
@@ -2268,16 +3705,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/09-upgrade-restart.png",
-            "sha256": "153CDEFE2D5D33AE931085087DAF9FAFD1AF45BAB715B065C975DFD10B8D1AE9"
+            "sha256": "7210105E0C596DA2416263B94A5E06B46A288BC36A67CD4B745428A420293B03"
           },
-          "relation": "source_crop_threshold_to_desktop_preview",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_to_desktop_preview",
           "machine_result": {
             "status": "PASS_EXACT",
-            "different_pixels": 0
+            "different_pixels": 0,
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              104,
+              97
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              -4,
+              3
+            ],
+            "phase_offset": [
+              0,
+              0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              41,
+              33,
+              119,
+              136
+            ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-journey-v1/09-upgrade-restart.png",
-            "sha256": "2B31F8EFDD97E8D218551BBDF83AD440991CE3939A379DA8E092C7DA8536A88B"
+            "sha256": "96CD55FFD0F28DA7F1498D036F9A2CAD228E42E0AEC92BCEEE571A43122CAB4C"
           }
         },
         {
@@ -2295,16 +3759,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/10-upgrade-success.png",
-            "sha256": "E6CEFB14F3B65B8FF95DA28C6147B9D8249FF7EEEA10177CF9681E65AF73E415"
+            "sha256": "F7F408963147FDEADA662ACFB72E4BA7DAD8CBC36246A21BB37445C3436A01BF"
           },
-          "relation": "source_crop_threshold_to_desktop_preview",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_to_desktop_preview",
           "machine_result": {
             "status": "PASS_EXACT",
-            "different_pixels": 0
+            "different_pixels": 0,
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              101,
+              96
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              -1,
+              4
+            ],
+            "phase_offset": [
+              0,
+              0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              41,
+              35,
+              120,
+              132
+            ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-journey-v1/10-upgrade-success.png",
-            "sha256": "3E7402EF081F91D591379C7650F59FC7DE8237D604D1D96C0A43312B854E7106"
+            "sha256": "4BF6893E662A4EAC4F1974232DDA0FFADE0DCC3815685ECF6CC8ED9B1625F09A"
           }
         },
         {
@@ -2322,16 +3813,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/11-upgrade-error.png",
-            "sha256": "7088CB2447731DB588D8A8F0FF9D4CE049CFD777315B310FD5436317BD1C1327"
+            "sha256": "17A4561ED37C46443C45B0932CDE1907EB7D326195C660EC43D6AD141F94CEA6"
           },
-          "relation": "source_crop_threshold_to_desktop_preview",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_to_desktop_preview",
           "machine_result": {
             "status": "PASS_EXACT",
-            "different_pixels": 0
+            "different_pixels": 0,
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              96,
+              93
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              4,
+              7
+            ],
+            "phase_offset": [
+              0,
+              0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              43,
+              39,
+              116,
+              123
+            ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-journey-v1/11-upgrade-error.png",
-            "sha256": "3F66D821BA501E824820F49673F34036C4167B0511887DBB583A0173AA69DA9C"
+            "sha256": "E81FF080359284AECC9164B7FB55C5EF7AE7CFFFC7CBF9C6A765315C81C37B1D"
           }
         },
         {
@@ -2349,16 +3867,43 @@
           },
           "desktop_output": {
             "path": "docs/art/iterations/companion-pet-special-states-v1/review-pages/special-journey-v1/12-upgrade-error-recovery.png",
-            "sha256": "A19438FC2D81D49EA475419C0EB012071F933AB81507E87E29517F19D8897EF5"
+            "sha256": "10DBA19E4C2BE51E86B550B8438B282998741D489DF614C2EC34E5301AEEA452"
           },
-          "relation": "source_crop_threshold_to_desktop_preview",
+          "relation": "source_crop_threshold_whole_expression_anchor_normalization_to_desktop_preview",
           "machine_result": {
             "status": "PASS_EXACT",
-            "different_pixels": 0
+            "different_pixels": 0,
+            "anchor_policy": "whole_expression_visible_bbox_center",
+            "source_anchor": [
+              85,
+              93
+            ],
+            "canonical_center": [
+              100,
+              100
+            ],
+            "normalization_offset": [
+              15,
+              7
+            ],
+            "phase_offset": [
+              0,
+              0
+            ],
+            "requested_center": [
+              100,
+              100
+            ],
+            "final_output_bounds": [
+              42,
+              40,
+              118,
+              122
+            ]
           },
           "comparison_page": {
             "path": "docs/art/iterations/companion-visual-comparison-v1/review-pages/special-journey-v1/12-upgrade-error-recovery.png",
-            "sha256": "E22C72392271276D0CD8B798664EE7C8140477B19A849AA57C6441DE4A8A8FE9"
+            "sha256": "041A5567F4195B76628C6A83D2D663656C1616E7DEED079FCEA47821978E8DFA"
           }
         }
       ]

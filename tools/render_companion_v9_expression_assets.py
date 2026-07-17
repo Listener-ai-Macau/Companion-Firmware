@@ -11,6 +11,8 @@ from dataclasses import dataclass
 
 from PIL import Image, ImageDraw
 
+from companion_expression_anchor import ANCHOR_POLICY, CANONICAL_CENTER, normalize, output_bounds, translate
+
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 ART_DIR = ROOT / "docs/art/iterations/companion-pet-expression-v9"
@@ -117,16 +119,10 @@ def edge_black_pixels(image: Image.Image) -> int:
     return count
 
 
-def to_pbm(source: Image.Image, pose: Pose) -> tuple[Image.Image, Image.Image]:
+def to_pbm(source: Image.Image, pose: Pose) -> tuple[Image.Image, Image.Image, object]:
     reference = source.crop(pose.crop_box).resize(CANVAS, Image.Resampling.LANCZOS)
-    bitmap = reference.point(lambda pixel: 0 if pixel < THRESHOLD else 255, "1")
-    return reference, bitmap
-
-
-def translated(image: Image.Image, dx: int, dy: int) -> Image.Image:
-    result = Image.new("1", CANVAS, 1)
-    result.paste(image, (dx, dy))
-    return result
+    bitmap, anchor = normalize(reference, CANONICAL_CENTER)
+    return reference, bitmap, anchor
 
 
 def write_pose_review(items: list[tuple[Pose, Image.Image, Image.Image]]) -> None:
@@ -176,10 +172,12 @@ def render() -> dict[str, object]:
 
     pose_by_name = {pose.name: pose for pose in POSES}
     pose_images: dict[str, Image.Image] = {}
+    pose_anchors: dict[str, object] = {}
     pose_review_items: list[tuple[Pose, Image.Image, Image.Image]] = []
     for pose in POSES:
-        reference, bitmap = to_pbm(source, pose)
+        reference, bitmap, anchor = to_pbm(source, pose)
         pose_images[pose.name] = bitmap
+        pose_anchors[pose.name] = anchor
         pose_review_items.append((pose, reference, bitmap))
 
     rendered: list[dict[str, object]] = []
@@ -188,14 +186,13 @@ def render() -> dict[str, object]:
         manifest_frames: list[dict[str, object]] = []
         for spec in frame_specs:
             pose = pose_by_name[spec.pose]
-            image = translated(pose_images[spec.pose], spec.dx, spec.dy)
+            image = translate(pose_images[spec.pose], (spec.dx, spec.dy))
             file_name = f"v9_{clip_name}_{spec.phase}.pbm"
             output = PBM_DIR / file_name
             output.parent.mkdir(parents=True, exist_ok=True)
             image.save(output)
-            bbox = black_bbox(image)
-            if bbox is None:
-                raise ValueError(f"{file_name} lost all visible ink")
+            bbox = output_bounds(image)
+            anchor = pose_anchors[spec.pose]
             if edge_black_pixels(image):
                 raise ValueError(f"{file_name} clips ink at a canvas edge")
             item = {
@@ -207,9 +204,17 @@ def render() -> dict[str, object]:
                 "source": repo_rel(SOURCE),
                 "source_sha256": EXPECTED_SHA256,
                 "source_crop_box": list(pose.crop_box),
+                "anchor_policy": ANCHOR_POLICY,
+                "source_anchor": list(anchor.source_anchor),
+                "canonical_center": list(anchor.canonical_center),
+                "normalization_offset": list(anchor.normalization_offset),
+                "phase_offset": [spec.dx, spec.dy],
+                "requested_center": [anchor.canonical_center[0] + spec.dx,
+                                     anchor.canonical_center[1] + spec.dy],
                 "translation": [spec.dx, spec.dy],
                 "duration_ms": spec.duration_ms,
                 "dirty": list(bbox),
+                "final_output_bounds": list(bbox),
                 "edge_black_pixels": edge_black_pixels(image),
             }
             rendered.append(item)

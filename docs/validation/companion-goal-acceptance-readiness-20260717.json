@@ -1,6 +1,7 @@
 {
   "errors": [],
   "g2_group_review_triage": "docs/validation/companion-g2-menu-group-review-triage-20260717.json",
+  "g2_home_anchor_triage": "docs/validation/companion-g2-home-artifact1-anchor-triage-20260717.json",
   "g2_home_context_triage": "docs/validation/companion-g2-home-artifact1-triage-20260717.json",
   "machine_evidence": {
     "frame_safe_area": {
@@ -26,6 +27,10 @@
     "ssd1681_frame_mapping": {
       "path": "docs/validation/companion-ssd1681-frame-mapping-20260717.json",
       "status": "PASS_MACHINE_EXHAUSTIVE_FRAME_MAPPING_PHYSICAL_REVIEW_PENDING"
+    },
+    "v9_anchor_render": {
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/v9-expression-render-report.json",
+      "status": "PASS_MACHINE_RENDER_CANDIDATE_NOT_ACTIVATED"
     },
     "v9_cemp_pixels": {
       "path": "docs/validation/companion-v9-expression-cemp-20260716.json",

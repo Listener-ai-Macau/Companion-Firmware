@@ -48,6 +48,7 @@ ARTIFACTS = {
     "goal_acceptance_readiness": ROOT / "docs/validation/companion-goal-acceptance-readiness-20260717.json",
     "g2_group_triage": ROOT / "docs/validation/companion-g2-menu-group-review-triage-20260717.json",
     "g2_home_context_triage": ROOT / "docs/validation/companion-g2-home-artifact1-triage-20260717.json",
+    "g2_home_anchor_triage": ROOT / "docs/validation/companion-g2-home-artifact1-anchor-triage-20260717.json",
     "wba_boundary": ROOT / "docs/validation/companion-v9-wba-visual-boundary-20260717.json",
     "waveform_freeze": ROOT / "docs/companion_ssd1681_vendor_waveform_freeze.md",
 }
@@ -113,6 +114,7 @@ def build_audit() -> dict[str, Any]:
     goal_acceptance_readiness = load_json("goal_acceptance_readiness")
     g2_group_triage = load_json("g2_group_triage")
     g2_home_context_triage = load_json("g2_home_context_triage")
+    g2_home_anchor_triage = load_json("g2_home_anchor_triage")
     wba_boundary = load_json("wba_boundary")
     waveform_freeze = ARTIFACTS["waveform_freeze"].read_text(encoding="utf-8")
     waveform_freeze_normalized = waveform_freeze.lower()
@@ -230,7 +232,10 @@ def build_audit() -> dict[str, Any]:
     product_orientation = ssd1681_frame_mapping.get("product_build_orientation", {})
     check(errors, product_orientation.get("rotation_degrees") == 180 and product_orientation.get("mirror_x") == 1, "WB55 product orientation mapping drifted")
     mapped_v9 = ssd1681_frame_mapping.get("v9_source", {})
-    check(errors, mapped_v9.get("frame_count") == 39 and mapped_v9.get("minimum_mapped_edge_clearance_px") == 4, "SSD1681 mapped v9 frame safety drifted")
+    check(errors, mapped_v9.get("frame_count") == 39 and
+          isinstance(mapped_v9.get("minimum_mapped_edge_clearance_px"), int) and
+          mapped_v9.get("minimum_mapped_edge_clearance_px") >= 4,
+          "SSD1681 mapped v9 frame safety fell below the 4 px threshold")
     for key in ("external_flash_provisioned", "firmware_flashed", "panel_command", "camera_or_human_visual_pass", "physical_panel_viewport_proved"):
         check(errors, ssd1681_frame_mapping.get("hardware_boundary", {}).get(key) is False, f"SSD1681 mapping overclaims hardware: {key}")
 
@@ -307,6 +312,8 @@ def build_audit() -> dict[str, Any]:
     check(errors, g2_group_triage.get("resolution", {}).get("group_selection_applied") is False, "G2 grouped visual selection was incorrectly applied")
     check(errors, g2_home_context_triage.get("status") == "NOT_APPLIED_OWNER_CONTEXT_MISMATCH", "G2 home observation must remain unapplied for context mismatch")
     check(errors, g2_home_context_triage.get("requirement") == "COMP-REQ-083" and g2_home_context_triage.get("decision", {}).get("selection_applied") is False, "G2 home context triage drifted")
+    check(errors, g2_home_anchor_triage.get("status") == "OPEN_ANCHOR_NORMALIZATION_REWORK_REQUIRED", "G2 home anchor rework must remain open")
+    check(errors, g2_home_anchor_triage.get("requirement") == "COMP-REQ-085" and g2_home_anchor_triage.get("decision", {}).get("selection_applied") is False, "G2 home anchor triage drifted")
 
     check(errors, wba_boundary.get("status") == "PASS_V9_WBA_VISUAL_BOUNDARY_PENDING_OWNER", "WBA visual boundary is not PASS")
     wba_resource = wba_boundary.get("wba_resource_boundary", {})
@@ -395,6 +402,7 @@ def build_audit() -> dict[str, Any]:
                 evidence("goal_acceptance_readiness", str(goal_acceptance_readiness.get("status")), "Goal-scoped acceptance has explicit machine, owner, hardware and lower-edge-truncation gates."),
                 evidence("g2_group_triage", str(g2_group_triage.get("status")), "The first grouped menu selection remains unapplied because the owner required locked originals one image at a time."),
                 evidence("g2_home_context_triage", str(g2_home_context_triage.get("status")), "The first homepage observation remains unapplied because computer-source and physical-panel scope was unclear."),
+                evidence("g2_home_anchor_triage", str(g2_home_anchor_triage.get("status")), "The next homepage observation remains closed until the owner-requested whole-expression anchor normalization has machine evidence."),
             ],
         },
         {

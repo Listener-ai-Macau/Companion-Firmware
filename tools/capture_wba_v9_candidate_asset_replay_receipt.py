@@ -19,7 +19,7 @@ PACK = V9_ROOT / "companion-v9-expression-candidate-200x200.cemp"
 MANIFEST = V9_ROOT / "v9-expression-cemp-manifest.json"
 HOST_TEST = ROOT / "tools/test_wba_v9_candidate_asset_mount_host.ps1"
 DEFAULT_RECEIPT = ROOT / "docs/validation/companion-wba-v9-cemp-callback-replay-20260717.json"
-PACK_SHA256 = "036EC78ECC1C718EF7B502E8294AE15947D398C2D94E25E1F22D0C98BE6087F1"
+PACK_SHA256 = "B89E6EA1D6583063969D48D28EE3D9BF444408D4347BC4974259DD75D0633F26"
 SOURCE_PATHS = (
     "app/companion_pendant/epaper/asset_store.c",
     "app/companion_pendant/epaper/asset_store.h",

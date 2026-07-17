@@ -14,6 +14,8 @@ from pathlib import Path
 
 from PIL import Image
 
+from companion_expression_anchor import CANONICAL_CENTER, normalize
+
 
 ROOT = Path(__file__).resolve().parents[1]
 ART = ROOT / "docs/art/iterations/companion-pet-special-states-v1"
@@ -58,10 +60,10 @@ def page_name(index: int, state: str) -> str:
     return f"{index:02d}-{state.replace('.', '-')}.png"
 
 
-def render(source: Path, crop_box: list[int]) -> Image.Image:
+def render(source: Path, crop_box: list[int]):
     image = Image.open(source).convert("L")
     page = image.crop(tuple(crop_box)).resize((200, 200), Image.Resampling.LANCZOS)
-    return page.point(lambda pixel: 0 if pixel < THRESHOLD else 255, "1")
+    return normalize(page, CANONICAL_CENTER)
 
 
 def main() -> int:
@@ -85,9 +87,13 @@ def main() -> int:
                 errors.append(f"missing semantic meaning for {state}")
                 continue
             target = OUT / identifier / page_name(position, state)
+            page, anchor = render(source_path, frame["source_crop_box"])
+            if list(anchor.source_anchor) != frame["source_anchor"]:
+                errors.append(f"anchor drift for {identifier}:{state}")
+                continue
             if args.write:
                 target.parent.mkdir(parents=True, exist_ok=True)
-                render(source_path, frame["source_crop_box"]).save(target, format="PNG")
+                page.save(target, format="PNG")
             if not target.is_file():
                 errors.append(f"missing review page {target.relative_to(ROOT).as_posix()}")
                 continue
@@ -98,6 +104,13 @@ def main() -> int:
                 "emotion": emotion,
                 "intent": intent,
                 "source_crop_box": frame["source_crop_box"],
+                "anchor_policy": frame["anchor_policy"],
+                "source_anchor": frame["source_anchor"],
+                "canonical_center": frame["canonical_center"],
+                "normalization_offset": frame["normalization_offset"],
+                "phase_offset": frame["phase_offset"],
+                "requested_center": frame["requested_center"],
+                "final_output_bounds": frame["final_output_bounds"],
                 "review_page": target.relative_to(ROOT).as_posix(),
                 "review_page_sha256": digest(target),
                 "minimum_clearance_px": frame["minimum_clearance_px"],

@@ -57,6 +57,15 @@ orientation, physical clipping, refresh residue or touch. Those belong to
 G4/G5. A complete source observation sequence can only inform a later PBM/CEMP
 import proposal; it never authorizes a firmware flash by itself.
 
+For every expression page, the locked left-side crop may retain its original
+composition, but the right-side 200x200 output must show the complete face group
+at the recorded canonical center `(100,100)` before any named phase motion. The
+record must retain the whole-expression anchor policy, source anchor,
+normalization offset, phase/requested center and final in-bounds ink bounds.
+This transform moves eyes, brows, mouth, cheeks and attached decoration as one
+group; it never silently repaints the locked source or clips an out-of-bounds
+request.
+
 - Machine precondition: the visual-reference ledger audit must cover exactly
   the v9 expression, four-root menu and special-state feature families, with an
   exact prompt, reference/output hashes, durable request record, review state
@@ -99,13 +108,15 @@ import proposal; it never authorizes a firmware flash by itself.
 ### G3: Renderer And External Resource Chain
 
 - Machine gate: render from the locked v9 source, then prove 39/39
-  PBM-to-CEMP decode equality, source-to-PBM geometry, scene coverage, CEMP
-  identity, and the new 4 px frame-safe-area report.
+  PBM-to-CEMP decode equality, source-to-PBM geometry, whole-expression anchor
+  normalization, scene coverage, CEMP identity, the new 4 px frame-safe-area
+  report, and the portable requested-center placement host test.
 - Pass: exactly 39 frames / 13 clips are byte and pixel verified; all 40
   portable scene families are either exact v9 candidates or explicitly pending
   with no fallback; no frame has ink closer than 4 px to an edge.
-- Fail: any source hash drift, missing frame, old asset fallback, edge ink,
-  CEMP activation, Flash write, or firmware flash.
+- Fail: any source hash drift, missing anchor record, clipped requested-center
+  placement, missing frame, old asset fallback, edge ink, CEMP activation,
+  Flash write, or firmware flash.
 
 ### G4: Four-Root Menu Function And Physical Presentation
 
