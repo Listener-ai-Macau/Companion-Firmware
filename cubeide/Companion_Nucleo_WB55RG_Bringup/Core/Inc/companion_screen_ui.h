@@ -37,6 +37,8 @@ bool Companion_Screen_DailyStrokeAt(uint16_t start_x,
                                     uint16_t end_x,
                                     uint16_t end_y,
                                     uint32_t duration_ms);
+bool Companion_Screen_BallMotionDiagnosticStart(void);
+bool Companion_Screen_BallMotionDiagnosticIsActive(void);
 bool Companion_Screen_IsReady(void);
 bool Companion_Screen_IsMenuVisible(void);
 

@@ -1,5 +1,6 @@
 #include "panel_target_stm32wb_ssd1681.h"
 
+#include "ball_motion_diagnostic.h"
 #include "expression_asset_source.h"
 #include "refresh_policy.h"
 #include "screen_framebuffer.h"
@@ -73,6 +74,9 @@
 #ifndef COMPANION_EPAPER_SSD1681_OFFICIAL_FULL_DIAGNOSTIC
 #define COMPANION_EPAPER_SSD1681_OFFICIAL_FULL_DIAGNOSTIC 0
 #endif
+#ifndef COMPANION_EPAPER_SSD1681_BALL_MOTION_DIAGNOSTIC
+#define COMPANION_EPAPER_SSD1681_BALL_MOTION_DIAGNOSTIC 0
+#endif
 #ifndef COMPANION_EPAPER_SSD1681_VERBOSE_TRACE
 #define COMPANION_EPAPER_SSD1681_VERBOSE_TRACE 0
 #endif
@@ -107,6 +111,18 @@
     COMPANION_EPAPER_SSD1681_DIAGNOSTIC_PATTERN != 1u && \
     COMPANION_EPAPER_SSD1681_DIAGNOSTIC_PATTERN != 2u
 #error "SSD1681 official full diagnostic requires a white or black pattern"
+#endif
+#if COMPANION_EPAPER_SSD1681_BALL_MOTION_DIAGNOSTIC != 0 && \
+    COMPANION_EPAPER_SSD1681_BALL_MOTION_DIAGNOSTIC != 1
+#error "SSD1681 ball-motion diagnostic must be 0 or 1"
+#endif
+#if COMPANION_EPAPER_SSD1681_BALL_MOTION_DIAGNOSTIC != 0 && \
+    COMPANION_EPAPER_SSD1681_DIAGNOSTIC_PATTERN != 4u
+#error "SSD1681 ball-motion diagnostic requires pattern 4"
+#endif
+#if COMPANION_EPAPER_SSD1681_BALL_MOTION_DIAGNOSTIC == 0 && \
+    COMPANION_EPAPER_SSD1681_DIAGNOSTIC_PATTERN == 4u
+#error "SSD1681 pattern 4 is reserved for the ball-motion diagnostic"
 #endif
 #if COMPANION_EPAPER_SSD1681_VERBOSE_TRACE != 0 && \
     COMPANION_EPAPER_SSD1681_VERBOSE_TRACE != 1
@@ -685,6 +701,25 @@ static void frame_checkerboard(bool inverted)
     }
 }
 
+static void frame_ball_motion(uint8_t step)
+{
+    const int32_t center_x =
+        (int32_t)comp_epaper_ball_motion_diagnostic_center_x(step);
+    const int32_t center_y = COMP_EPAPER_BALL_MOTION_DIAGNOSTIC_CENTER_Y;
+    const int32_t radius = COMP_EPAPER_BALL_MOTION_DIAGNOSTIC_RADIUS;
+
+    frame_clear_white();
+    for (int32_t y = center_y - radius; y <= center_y + radius; ++y) {
+        for (int32_t x = center_x - radius; x <= center_x + radius; ++x) {
+            int32_t dx = x - center_x;
+            int32_t dy = y - center_y;
+            if ((dx * dx) + (dy * dy) <= (radius * radius)) {
+                frame_set_pixel((uint16_t)x, (uint16_t)y, true);
+            }
+        }
+    }
+}
+
 static bool frame_prepare(comp_epaper_expression_asset_source_t *expression_assets,
                           const comp_epaper_display_request_t *request)
 {
@@ -697,6 +732,15 @@ static bool frame_prepare(comp_epaper_expression_asset_source_t *expression_asse
         return true;
     } else if (COMPANION_EPAPER_SSD1681_DIAGNOSTIC_PATTERN == 3u) {
         frame_checkerboard(request != NULL && (request->request_id & 1u) == 0u);
+        return true;
+    } else if (COMPANION_EPAPER_SSD1681_DIAGNOSTIC_PATTERN == 4u) {
+        const uint8_t step = request == NULL ? 0u : request->menu_page;
+        frame_ball_motion(step);
+        SSD1681_VERBOSE_TRACE("[epaper] ball_motion step=%u center=%u,%u radius=%u\r\n",
+                              (unsigned)step,
+                              (unsigned)comp_epaper_ball_motion_diagnostic_center_x(step),
+                              (unsigned)COMP_EPAPER_BALL_MOTION_DIAGNOSTIC_CENTER_Y,
+                              (unsigned)COMP_EPAPER_BALL_MOTION_DIAGNOSTIC_RADIUS);
         return true;
     } else if (request != NULL &&
                request->request_kind == COMP_EPAPER_DISPLAY_REQUEST_EXPRESSION &&
@@ -1122,7 +1166,8 @@ void companion_epaper_panel_stm32wb_ssd1681_init(
     };
     comp_epaper_panel_adapter_init(adapter, &config);
 
-#if COMPANION_EPAPER_SSD1681_DIAGNOSTIC_PATTERN != 0u
+#if COMPANION_EPAPER_SSD1681_DIAGNOSTIC_PATTERN != 0u && \
+    COMPANION_EPAPER_SSD1681_BALL_MOTION_DIAGNOSTIC == 0
     {
         for (uint8_t cycle = 1u;
              cycle <= COMPANION_EPAPER_SSD1681_DIAGNOSTIC_REPEATS;

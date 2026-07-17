@@ -44,6 +44,7 @@ param(
     [string]$EpaperDailyStrokeDemoDirection = 'down',
     [switch]$EpaperMaintenanceDiagnostic,
     [switch]$EpaperRefreshCadenceDiagnostic,
+    [switch]$EpaperSsd1681BallMotionDiagnostic,
     [switch]$EpaperSsd1681VendorPartialDiagnostic,
     [switch]$EpaperSsd1681DirectGpioSpiDiagnostic,
     [switch]$EpaperSsd1681OfficialFullDiagnostic,
@@ -352,6 +353,24 @@ if ($EpaperRefreshCadenceDiagnostic) {
         "TOUCH_VERBOSE_TRACE=1",
         "BUILD_DIR=build_refresh_cadence_diagnostic",
         "TARGET=Companion_Nucleo_WB55RG_RefreshCadenceDiagnostic"
+    )
+}
+if ($EpaperSsd1681BallMotionDiagnostic) {
+    if ($EpaperSsd1681DiagnosticPattern -ne '' -or
+        $EpaperRefreshCadenceDiagnostic -or
+        $EpaperSsd1681VendorPartialDiagnostic -or
+        $EpaperSsd1681DirectGpioSpiDiagnostic -or
+        $EpaperSsd1681OfficialFullDiagnostic) {
+        throw "Ball-motion diagnostic is an isolated current-profile image; do not combine it with another screen diagnostic."
+    }
+    $makeArgs += @(
+        "EPAPER_SSD1681_BRINGUP=1",
+        "EPAPER_MENU=1",
+        "EPAPER_SSD1681_BALL_MOTION_DIAGNOSTIC=1",
+        "EPAPER_SSD1681_VERBOSE_TRACE=1",
+        "TOUCH_VERBOSE_TRACE=1",
+        "BUILD_DIR=build_ball_motion_diagnostic",
+        "TARGET=Companion_Nucleo_WB55RG_BallMotionDiagnostic"
     )
 }
 if ($EpaperSsd1681VendorPartialDiagnostic) {

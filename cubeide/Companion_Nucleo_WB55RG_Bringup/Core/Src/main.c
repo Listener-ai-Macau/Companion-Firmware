@@ -30,6 +30,9 @@
 #ifndef COMPANION_TOUCH_VERBOSE_TRACE
 #define COMPANION_TOUCH_VERBOSE_TRACE 0
 #endif
+#ifndef COMPANION_SCREEN_BALL_MOTION_DIAGNOSTIC
+#define COMPANION_SCREEN_BALL_MOTION_DIAGNOSTIC 0
+#endif
 #ifndef COMPANION_EPAPER_SSD1681_VERBOSE_TRACE
 #define COMPANION_EPAPER_SSD1681_VERBOSE_TRACE 0
 #endif
@@ -2052,7 +2055,14 @@ static void process_daily_tap_reaction(uint32_t now_ms)
            (unsigned)event.y,
            (unsigned long)(now_ms - (due_ms -
                                      TOUCH_DOUBLE_TAP_MAX_GAP_MS - 1u)));
+#if COMPANION_SCREEN_BALL_MOTION_DIAGNOSTIC
+    if (!Companion_Screen_BallMotionDiagnosticStart()) {
+        TOUCH_VERBOSE_TRACE("[touch-ui] ball_motion_diagnostic action=ignored active=%u\r\n",
+                            Companion_Screen_BallMotionDiagnosticIsActive() ? 1u : 0u);
+    }
+#else
     (void)Companion_Screen_DailyTapAt(event.x, event.y);
+#endif
 }
 
 static void poll_touch_debug(void)
@@ -2568,6 +2578,13 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
     if (gesture.type != COMP_TOUCH_GESTURE_TAP) {
         cancel_daily_tap_reaction(comp_touch_gesture_name(gesture.type));
     }
+#if COMPANION_SCREEN_BALL_MOTION_DIAGNOSTIC
+    if (Companion_Screen_BallMotionDiagnosticIsActive()) {
+        TOUCH_VERBOSE_TRACE("[touch-ui] ball_motion_diagnostic gesture=%s action=ignored\r\n",
+                           comp_touch_gesture_name(gesture.type));
+        return;
+    }
+#endif
     if (!Companion_Screen_IsMenuVisible()) {
         if (s_recording_fsm.state == COMP_RECORDING_STATE_RECORDING &&
             gesture.type != COMP_TOUCH_GESTURE_DOUBLE_TAP) {

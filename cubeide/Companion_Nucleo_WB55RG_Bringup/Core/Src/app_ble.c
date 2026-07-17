@@ -38,6 +38,7 @@
 #endif /* OTA_SBSFU */
 
 #include "audio_stream_stm32wb.h"
+#include "ball_motion_diagnostic.h"
 #include "companion_gatt_stm32wb.h"
 #include "companion_screen_ui.h"
 #include "companion_v1_features.h"
@@ -84,6 +85,10 @@
 
 #ifndef COMPANION_SCREEN_REFRESH_CADENCE_DIAGNOSTIC
 #define COMPANION_SCREEN_REFRESH_CADENCE_DIAGNOSTIC 0
+#endif
+
+#ifndef COMPANION_SCREEN_BALL_MOTION_DIAGNOSTIC
+#define COMPANION_SCREEN_BALL_MOTION_DIAGNOSTIC 0
 #endif
 
 #define COMPANION_SCREEN_REFRESH_CADENCE_DIAGNOSTIC_REQUESTS 6u
@@ -312,6 +317,11 @@ static bool s_companion_refresh_cadence_diagnostic_baseline_complete = false;
 static uint8_t s_companion_refresh_cadence_diagnostic_queued = 0u;
 static uint8_t s_companion_refresh_cadence_diagnostic_completed = 0u;
 #endif
+#if COMPANION_SCREEN_BALL_MOTION_DIAGNOSTIC
+static bool s_companion_ball_motion_diagnostic_active = false;
+static bool s_companion_ball_motion_diagnostic_started = false;
+static uint8_t s_companion_ball_motion_diagnostic_step = 0u;
+#endif
 static uint32_t s_companion_audio_next_session_id = 1u;
 static bool s_companion_ble_connected = false;
 static bool s_companion_ble_advertising = false;
@@ -469,6 +479,14 @@ static bool Companion_Screen_MenuRequestMode(
 static void Companion_Display_AdvanceRefreshCadenceDiagnostic(
     const comp_epaper_display_request_t *request,
     comp_epaper_panel_result_t panel_result);
+#endif
+#if COMPANION_SCREEN_BALL_MOTION_DIAGNOSTIC
+static void Companion_Display_AdvanceBallMotionDiagnostic(
+    const comp_epaper_display_request_t *request,
+    comp_epaper_panel_result_t panel_result);
+static bool Companion_Screen_QueueBallMotionDiagnosticFrame(
+    uint8_t step,
+    comp_epaper_refresh_mode_t refresh_mode);
 #endif
 
 /* USER CODE END PFP */
@@ -720,6 +738,14 @@ void APP_BLE_Init( void )
                                0u,
                                COMP_SCREEN_MENU_LANGUAGE_ZH,
                                0u);
+#elif COMPANION_SCREEN_BALL_MOTION_DIAGNOSTIC
+  s_companion_ball_motion_diagnostic_active = false;
+  s_companion_ball_motion_diagnostic_started = false;
+  s_companion_ball_motion_diagnostic_step = 0u;
+  printf("[screen] ball_motion_diagnostic ready action=single_touch frames=%u partial_steps=%u\r\n",
+         (unsigned)(COMP_EPAPER_BALL_MOTION_DIAGNOSTIC_PARTIAL_STEPS + 1u),
+         (unsigned)COMP_EPAPER_BALL_MOTION_DIAGNOSTIC_PARTIAL_STEPS);
+  (void)Companion_Screen_ShowDaily();
 #elif COMPANION_SCREEN_DAILY_TAP_DEMO
   if (Companion_Screen_ShowDaily())
   {
@@ -1121,6 +1147,109 @@ static void Companion_Display_AdvanceRefreshCadenceDiagnostic(
 }
 #endif
 
+#if COMPANION_SCREEN_BALL_MOTION_DIAGNOSTIC
+static bool Companion_Screen_QueueBallMotionDiagnosticFrame(
+    uint8_t step,
+    comp_epaper_refresh_mode_t refresh_mode)
+{
+  bool queued = Companion_Screen_MenuRequestMode(
+      COMP_SCREEN_MENU_VIEW_HOME,
+      0u,
+      COMP_SCREEN_MENU_LANGUAGE_ZH,
+      step,
+      refresh_mode);
+
+  if (queued)
+  {
+    printf("[screen] ball_motion_diagnostic queue step=%u center=%u,%u refresh=%s\r\n",
+           (unsigned)step,
+           (unsigned)comp_epaper_ball_motion_diagnostic_center_x(step),
+           (unsigned)COMP_EPAPER_BALL_MOTION_DIAGNOSTIC_CENTER_Y,
+           refresh_mode == COMP_EPAPER_REFRESH_FULL ? "full" : "interactive");
+  }
+  return queued;
+}
+
+bool Companion_Screen_BallMotionDiagnosticStart(void)
+{
+  if (s_companion_ball_motion_diagnostic_started)
+  {
+    return false;
+  }
+  s_companion_ball_motion_diagnostic_started = true;
+  s_companion_ball_motion_diagnostic_active = true;
+  s_companion_ball_motion_diagnostic_step = 0u;
+  if (!Companion_Screen_QueueBallMotionDiagnosticFrame(
+          0u,
+          COMP_EPAPER_REFRESH_FULL))
+  {
+    s_companion_ball_motion_diagnostic_active = false;
+    printf("[screen] ball_motion_diagnostic abort queue=failed step=0\r\n");
+    return false;
+  }
+  printf("[screen] ball_motion_diagnostic start trigger=single_touch\r\n");
+  return true;
+}
+
+bool Companion_Screen_BallMotionDiagnosticIsActive(void)
+{
+  return s_companion_ball_motion_diagnostic_active;
+}
+
+static void Companion_Display_AdvanceBallMotionDiagnostic(
+    const comp_epaper_display_request_t *request,
+    comp_epaper_panel_result_t panel_result)
+{
+  uint8_t next_step;
+
+  if (!s_companion_ball_motion_diagnostic_active || request == NULL ||
+      request->request_kind != COMP_EPAPER_DISPLAY_REQUEST_MENU ||
+      request->menu_page != s_companion_ball_motion_diagnostic_step)
+  {
+    return;
+  }
+  if (panel_result != COMP_EPAPER_PANEL_RESULT_OK)
+  {
+    s_companion_ball_motion_diagnostic_active = false;
+    printf("[screen] ball_motion_diagnostic abort panel_result=%u step=%u\r\n",
+           (unsigned)panel_result,
+           (unsigned)request->menu_page);
+    return;
+  }
+
+  printf("[screen] ball_motion_diagnostic complete step=%u\r\n",
+         (unsigned)request->menu_page);
+  if (request->menu_page >= COMP_EPAPER_BALL_MOTION_DIAGNOSTIC_PARTIAL_STEPS)
+  {
+    s_companion_ball_motion_diagnostic_active = false;
+    printf("[screen] ball_motion_diagnostic done interactive_steps=%u cleanup_expected=1\r\n",
+           (unsigned)COMP_EPAPER_BALL_MOTION_DIAGNOSTIC_PARTIAL_STEPS);
+    return;
+  }
+
+  next_step = (uint8_t)(request->menu_page + 1u);
+  s_companion_ball_motion_diagnostic_step = next_step;
+  if (!Companion_Screen_QueueBallMotionDiagnosticFrame(
+          next_step,
+          COMP_EPAPER_REFRESH_PARTIAL_INTERACTIVE))
+  {
+    s_companion_ball_motion_diagnostic_active = false;
+    printf("[screen] ball_motion_diagnostic abort queue=failed step=%u\r\n",
+           (unsigned)next_step);
+  }
+}
+#else
+bool Companion_Screen_BallMotionDiagnosticStart(void)
+{
+  return false;
+}
+
+bool Companion_Screen_BallMotionDiagnosticIsActive(void)
+{
+  return false;
+}
+#endif
+
 static void Companion_Display_Task(void)
 {
   comp_epaper_display_request_t request;
@@ -1185,6 +1314,9 @@ static void Companion_Display_Task(void)
                                    request.content_crc32);
 #if COMPANION_SCREEN_REFRESH_CADENCE_DIAGNOSTIC
   Companion_Display_AdvanceRefreshCadenceDiagnostic(&request, panel_result);
+#endif
+#if COMPANION_SCREEN_BALL_MOTION_DIAGNOSTIC
+  Companion_Display_AdvanceBallMotionDiagnostic(&request, panel_result);
 #endif
   /* The panel transaction is synchronous. Return the power decision to the
    * application before the sequencer can sleep again. */
