@@ -1322,7 +1322,9 @@ static void Companion_Display_Task(void)
    * application before the sequencer can sleep again. */
   Companion_App_OnScreenRefreshComplete();
 
-  if (runtime_stats.display_queue.pending_count != 0u)
+  /* A completion callback can enqueue the next diagnostic or animation frame.
+   * Inspect the live queue rather than the pre-callback runtime snapshot. */
+  if (comp_epaper_display_queue_pending(&s_companion_display_queue) != 0u)
   {
     UTIL_SEQ_SetTask(1 << CFG_TASK_COMPANION_DISPLAY_ID, CFG_SCH_PRIO_0);
   }

@@ -47,6 +47,7 @@ def main() -> int:
         ("COMP_EPAPER_REFRESH_PARTIAL_INTERACTIVE", "current-profile motion request"),
         ("ball_motion_diagnostic done interactive_steps=%u cleanup_expected=1", "completion marker"),
         ("Companion_Display_AdvanceBallMotionDiagnostic(&request, panel_result)", "post-refresh sequencer"),
+        ("comp_epaper_display_queue_pending(&s_companion_display_queue)", "live queue re-schedule"),
     ):
         require(app, token, label, errors)
     for token, label in (
