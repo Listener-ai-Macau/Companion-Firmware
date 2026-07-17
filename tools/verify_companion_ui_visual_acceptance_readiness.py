@@ -36,6 +36,15 @@ EXPECTED = {
     },
 }
 BOUNDARY_KEYS = ["pbm_imported", "cemp_packed", "external_flash_provisioned", "firmware_flashed", "owner_visual_pass"]
+PROMPT_FIELDS = (
+    "target",
+    "operator_action",
+    "success_signal",
+    "failure_rule",
+    "continue_condition",
+    "recovery_condition",
+    "record_fields",
+)
 
 
 def sha256(path: pathlib.Path) -> str:
@@ -68,6 +77,18 @@ def verify() -> dict[str, object]:
             errors.append(f"{item_id} source hash drifted")
         if item.get("owner_decision") != "PENDING_OWNER_VISUAL_DECISION":
             errors.append(f"{item_id} is not pending owner review")
+        prompt = item.get("operator_prompt", {})
+        if not isinstance(prompt, dict):
+            errors.append(f"{item_id} missing structured operator prompt")
+            prompt = {}
+        for field in PROMPT_FIELDS:
+            value = prompt.get(field)
+            if not value:
+                errors.append(f"{item_id} operator prompt missing {field}")
+        if not isinstance(prompt.get("success_signal"), list) or len(prompt.get("success_signal", [])) < 2:
+            errors.append(f"{item_id} operator prompt needs multiple success signals")
+        if not isinstance(prompt.get("record_fields"), list) or "选择结果" not in prompt.get("record_fields", []):
+            errors.append(f"{item_id} operator prompt must retain a selection result field")
         review = json.loads(evidence.read_text(encoding="utf-8")) if evidence.is_file() else {}
         if review.get("status") != expected["status"]:
             errors.append(f"{item_id} machine evidence is not ready")
@@ -86,7 +107,12 @@ def verify() -> dict[str, object]:
             for frame in crop.get("frames", []):
                 if frame.get("edge_ink_pixels") != 0 or frame.get("minimum_clearance_px", 0) < 4:
                     errors.append(f"{item_id} crop preflight contains an unsafe frame")
-        verified.append({"id": item_id, "source_sha256": expected["sha256"], "evidence": expected["evidence"]})
+        verified.append({
+            "id": item_id,
+            "source_sha256": expected["sha256"],
+            "evidence": expected["evidence"],
+            "operator_prompt": prompt,
+        })
 
     return {
         "schema": "companion.ui_visual_acceptance_readiness.v1",

@@ -15,6 +15,19 @@
       ],
       "source_sha256": "07D791A898FABE6E558686F6A4B4CC86094541C6B5116D6E0A3D263930DAA868",
       "machine_evidence": "docs/validation/companion-menu-v6-localization-preview-20260717.json",
+      "operator_prompt": {
+        "target": "菜单源图、English 200x200 本地化预览和中文 200x200 本地化预览；本项只决定视觉源，不观察真实面板。",
+        "operator_action": "以 100% 比例先查看 English 预览，再查看中文预览；确认每张首页都是单页四行，按 Voice、Device、Connection、Preferences 的顺序阅读。",
+        "success_signal": [
+          "首页只有 Voice、Device、Connection、Preferences 四个根入口，顺序一致且每行图标不同。",
+          "English 与中文各自完整、可读且一次只出现一种语言；生成图的引导短线不会被当作产品文字。",
+          "四行均有清晰可点的行边界和真实或明确 deferred/planned 的功能含义；没有第五码、旧六根、双页首页或底边截断。"
+        ],
+        "failure_rule": "出现旧六根/双页、额外空入口、假 chevron、混合语言、不可读标签、任何底边裁切，或与四根功能合同不一致时选择失败，并在备注写明预览语言、行号和可见问题。",
+        "continue_condition": "选择通过只解锁第 2 项 special-system-v1 的视觉源决策；不得导入 PBM/CEMP、写入 Flash、刷固件或启用运行时菜单。",
+        "recovery_condition": "选择失败后保持该源 PENDING_OWNER_VISUAL_DECISION；先按备注 triage，再只修改一个明确的提示词或信息架构变量并重新出图、比较和审计。",
+        "record_fields": ["查看的预览语言", "四根顺序", "是否存在裁切或混合语言", "选择结果", "备注"]
+      },
       "owner_decision": "PENDING_OWNER_VISUAL_DECISION",
       "runtime_boundary": "No PBM/CEMP, Flash, firmware, target-font or runtime-menu activation."
     },
@@ -31,6 +44,19 @@
       ],
       "source_sha256": "AF9ADFD49C47C89DF674726D7201CC49C61ED636306013697822BB42FB1A9C82",
       "machine_evidence": "docs/validation/companion-pet-special-system-source-review-20260717.json",
+      "operator_prompt": {
+        "target": "special-system-v1 的原始 3x4 源图和逐格 200x200 接触表；覆盖 speaking、recording error、充电、电量、连接和 system error。本项不清除真实面板下边缘 P0。",
+        "operator_action": "以 100% 比例查看 12 格接触表，从左到右、从上到下逐格比对 v9 眼睛、眉、嘴和脸颊身份；同时确认每格的语义符号能区分状态。",
+        "success_signal": [
+          "12 格都保留同一对正向黑椭圆眼、匹配白高光、圆眉、小鼻/W 嘴和脸颊点，没有猫轮廓、耳朵、眼帘、工程测试脸或旧轮次风格。",
+          "speaking、录音错误、充电/满电/低电、配对/连接/同步/错误与系统错误可区分，且每格是整张内脸共同变化而非只换眼睛。",
+          "接触表中每一格的五官和语义符号完整可见；机器预检已证实 24 格源裁切均保留至少 4 px 空白，但这不代表真实面板已通过。"
+        ],
+        "failure_rule": "任一格出现身份漂移、旧美术、眼神不友好、语义难分、五官或符号在 200x200 画布内被裁切时选择失败，并在备注写明状态名和具体可见问题。真实面板截断也不能在本项选择通过来掩盖。",
+        "continue_condition": "选择通过只解锁第 3 项 special-journey-v1 的视觉源决策；不得导入 PBM/CEMP、写入 Flash、刷固件、绑定资源或宣称 COMP-REQ-078 已解决。",
+        "recovery_condition": "选择失败后保持源图和 P0 备注；按状态名 triage，针对一个可见变量调整提示词重新生成并重新执行逐格 200x200 预检，不得恢复被拒绝旧图。",
+        "record_fields": ["失败或通过的状态名", "v9 身份一致性", "状态语义可分性", "200x200 裁切观察", "选择结果", "备注"]
+      },
       "owner_decision": "PENDING_OWNER_VISUAL_DECISION",
       "runtime_boundary": "No PBM/CEMP, Flash, firmware or resource-binding activation."
     },
@@ -47,6 +73,19 @@
       ],
       "source_sha256": "95CC749134F169E73A2E2A99FA2B6F08AABDFE78D218677C347D2D687EA4B17F",
       "machine_evidence": "docs/validation/companion-pet-special-journey-source-review-20260717.json",
+      "operator_prompt": {
+        "target": "special-journey-v1 的原始 3x4 源图和逐格 200x200 接触表；覆盖菜单进入/停留/阻止/退出及升级 offer/prepare/transfer/verify/restart/success/error/recovery。",
+        "operator_action": "以 100% 比例查看 12 格接触表，从左到右、从上到下确认菜单旅程与升级旅程的状态变化可读；menu.open 只作为进入已单独审阅四根菜单的交接，不替代菜单本体。",
+        "success_signal": [
+          "12 格都保持 v9 的同一内脸身份和白底黑线语言，情绪变化覆盖眼、眉、嘴、脸颊与少量状态符号。",
+          "menu entry/settle/blocked/exit 和升级各阶段相互可区分；错误与恢复成对可读且不显得技术威胁或工程化。",
+          "每格在 200x200 接触表中五官与符号完整，无旧六根菜单、旧表情、额外外轮廓或画布内裁切。"
+        ],
+        "failure_rule": "任一阶段无法辨别、与 v9 身份不一致、误把 menu.open 当菜单本体、恢复状态不清晰、出现旧美术或 200x200 画布内裁切时选择失败，并在备注写明阶段名和问题。",
+        "continue_condition": "选择通过仅允许后续建立一次单独、可审计的 PBM/CEMP 导入提案；它本身不写 Flash、不刷固件、不启用资源、不改变 OTA 或宣称真实屏幕已通过。",
+        "recovery_condition": "选择失败后保持 PENDING_OWNER_VISUAL_DECISION；按阶段名 triage，更新一个明确提示词变量并重新生成、逐格预检和审计后才可重新验收。",
+        "record_fields": ["失败或通过的阶段名", "v9 身份一致性", "旅程语义可分性", "200x200 裁切观察", "选择结果", "备注"]
+      },
       "owner_decision": "PENDING_OWNER_VISUAL_DECISION",
       "runtime_boundary": "No PBM/CEMP, Flash, firmware, OTA or resource-binding activation."
     }

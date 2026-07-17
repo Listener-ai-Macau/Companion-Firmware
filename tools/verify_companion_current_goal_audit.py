@@ -267,6 +267,10 @@ def build_audit() -> dict[str, Any]:
     readiness_items = visual_readiness.get("items", [])
     check(errors, len(readiness_items) == 3, "visual review must retain exactly three sequential items")
     check(errors, {item.get("source_sha256") for item in readiness_items} == {MENU_SHA256, SYSTEM_SHA256, JOURNEY_SHA256}, "visual review source hashes drifted")
+    for item in readiness_items:
+        prompt = item.get("operator_prompt", {})
+        check(errors, all(prompt.get(key) for key in ("target", "operator_action", "success_signal", "failure_rule", "continue_condition", "recovery_condition", "record_fields")), f"{item.get('id')} lacks detailed operator-prompt fields")
+        check(errors, isinstance(prompt.get("success_signal"), list) and len(prompt.get("success_signal", [])) >= 2, f"{item.get('id')} lacks multiple success signals")
     check(errors, goal_acceptance_readiness.get("status") == "PASS_ACCEPTANCE_CONTRACT_READY_OWNER_AND_HARDWARE_GATED", "detailed Goal acceptance readiness is not PASS")
     check(errors, goal_acceptance_readiness.get("operator_prompt_opened") is False, "detailed Goal acceptance record claims a popup was opened")
     check(errors, goal_acceptance_readiness.get("physical_acceptance", {}).get("lower_edge_truncation") == "must be checked during G5 before any visual pass", "lower-edge truncation gate is missing")

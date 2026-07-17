@@ -28,6 +28,7 @@ REQUIRED_CONTRACT_ANCHORS = (
     "durable request record",
     "next-prompt delta",
     "special-state crop preflight",
+    "target, operator action, success signal, failure",
     "try generic, adjacent-panel, guessed, online, or hand-authored LUT bytes.",
     "<=1 mA average over >=60 s",
     "one canonical Chinese `aiw operator-prompt` item at a time",

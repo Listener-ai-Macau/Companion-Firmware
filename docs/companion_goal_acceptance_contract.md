@@ -56,6 +56,10 @@ a firmware flash by itself.
   exact prompt, reference/output hashes, durable request record, review state
   and next-prompt delta for every candidate. Historical rejected metadata may
   remain only as non-reusable history; it can never become an art source.
+- Every G2 popup must take its target, operator action, success signal, failure
+  rule, continue condition and recovery condition from the matching manifest
+  item. A `通过` records the stated visual-source decision only; it cannot
+  override the P0 panel gate or activate a runtime resource.
 
 1. `menu-v6-four-root`: Voice, Device, Connection and Preferences must be the
    only roots; both English and Chinese overlays must be readable and every row
