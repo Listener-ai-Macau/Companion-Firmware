@@ -60,6 +60,11 @@ a firmware flash by itself.
   rule, continue condition and recovery condition from the matching manifest
   item. A `通过` records the stated visual-source decision only; it cannot
   override the P0 panel gate or activate a runtime resource.
+- Use `tools/run_companion_goal_visual_source_acceptance.ps1` as the only G2
+  popup entry: `-CheckOnly` and `-SelfTest` must not open a window; only an
+  explicit owner `开始验收` followed by `-Execute -OwnerStartAcknowledged` may
+  open the next sequential item. Its result stays beside the matching source
+  evidence and must be triaged before a manifest decision or the next item.
 
 1. `menu-v6-four-root`: Voice, Device, Connection and Preferences must be the
    only roots; both English and Chinese overlays must be readable and every row

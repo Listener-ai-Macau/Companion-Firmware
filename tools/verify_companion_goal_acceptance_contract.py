@@ -32,7 +32,11 @@ REQUIRED_CONTRACT_ANCHORS = (
     "try generic, adjacent-panel, guessed, online, or hand-authored LUT bytes.",
     "<=1 mA average over >=60 s",
     "one canonical Chinese `aiw operator-prompt` item at a time",
+    "run_companion_goal_visual_source_acceptance.ps1",
 )
+
+G2_RUNNER = ROOT / "tools" / "run_companion_goal_visual_source_acceptance.ps1"
+G2_RUNNER_TEST = ROOT / "tools" / "test_companion_goal_visual_source_acceptance.ps1"
 
 EVIDENCE = {
     "visual_review_readiness": (
@@ -96,6 +100,21 @@ def build_report() -> dict[str, object]:
     for anchor in REQUIRED_CONTRACT_ANCHORS:
         if anchor not in text:
             errors.append(f"missing contract anchor: {anchor}")
+    for runner in (G2_RUNNER, G2_RUNNER_TEST):
+        if not runner.is_file():
+            errors.append(f"missing G2 runner artifact: {runner.relative_to(ROOT).as_posix()}")
+    if G2_RUNNER.is_file():
+        runner_text = G2_RUNNER.read_text(encoding="utf-8")
+        for token in (
+            "-Execute -OwnerStartAcknowledged",
+            "PENDING_OWNER_VISUAL_DECISION",
+            "operator-prompt",
+            "manifest_owner_decision_changed = $false",
+            "runtime_resource_activated = $false",
+            "-SelfTest",
+        ):
+            if token not in runner_text:
+                errors.append(f"G2 runner missing fail-closed token: {token}")
 
     machine_evidence: dict[str, dict[str, str | None]] = {}
     for name, (path, expected) in EVIDENCE.items():
