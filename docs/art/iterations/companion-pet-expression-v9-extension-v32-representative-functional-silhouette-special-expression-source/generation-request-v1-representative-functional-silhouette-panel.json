@@ -1,0 +1,79 @@
+{
+  "schema": "companion.v9.special_expression_generation_request.v12",
+  "status": "SUPERSEDED_AFTER_INTERNAL_SOURCE_READABILITY_REJECTION",
+  "iteration": "V32",
+  "request_revision": 1,
+  "created_at": "2026-07-20",
+  "purpose": "Generate one locked-V9-only three-pose source panel whose Menu, Recording and Charging states have an immediately distinct functional read at native 200x200. The V31 source is rejected audit history, not an art input. V32 must use strongly different mouth geometry and compact connected functional silhouettes without converting the floating V9 face into a UI card or mascot costume.",
+  "locked_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "allowed_reference_inputs": ["locked_v9_reference_only"],
+  "forbidden_reference_inputs": [
+    "V31_rejected_source_or_any_derived_asset",
+    "V30_rejected_source_or_any_derived_asset",
+    "V29_rejected_source_or_any_derived_asset",
+    "V28_superseded_request_as_visual_input",
+    "V27_rejected_source_or_any_derived_asset",
+    "V26_rejected_source_or_any_derived_asset",
+    "V25_rejected_source_or_any_derived_asset",
+    "V24_rejected_source_or_any_derived_asset",
+    "V23_candidates_or_exports",
+    "legacy_art",
+    "whole_face_runtime_cards"
+  ],
+  "v9_identity_and_simplicity_invariants": [
+    "retain the exact locked V9 floating inner-face composition with wide white margins and no enclosing head, face outline, ear, hair, headband, helmet, body, frame or screen card",
+    "retain exact V9 eye silhouette, black fill, one oval highlight and one diamond sparkle per eye, eye scale, eye spacing, eye baseline, nose, cheek dots and line weight",
+    "each state has exactly three separately extractable compact functional parts and no individual part larger than half a V9 eye",
+    "functional parts must be clean black character-bound line art, remain outside the eyes and brows, and be visibly subordinate to the V9 face",
+    "each state has a separately extractable mouth whose ink geometry differs pairwise in contour topology, endpoints and curvature; an offset, scale-only or shared mouth mask is a rejection",
+    "functional reads must be distinguishable without captions at native 200x200: navigation pages, active capture/listening, and a connected power-transfer action",
+    "objects must not be literal battery, lightning, microphone, waveform, plug, menu icon, text, label, detached UI widget or generic whole-face prop"
+  ],
+  "state_object_semantic_brief": [
+    {
+      "id": "menu_active",
+      "one_glance_read": "navigation and choosing, not hair, dots or a crown",
+      "mouth_action": "a short confident straight decision mouth with a tiny centred downward selection notch; it has two clear horizontal endpoints and is neither a smile, a U, an O nor the V9 double-wave mouth",
+      "accessories": "three stepped page tabs directly above the brows: a left rounded page tab, a clearly raised centre active page tab with one small white folded-corner notch, and a right rounded page tab. Preserve crisp white separation between the three black forms so they read as tiny layered pages rather than hair or dots.",
+      "component_parts": ["left_page_tab", "active_page_tab", "right_page_tab"],
+      "choreography": "page tabs arrive left-to-centre-to-right, the gaze makes one short selection scan, then the active centre tab settles before a hold and exact reverse"
+    },
+    {
+      "id": "recording_active",
+      "one_glance_read": "active audio capture and attentive listening, not surprise or a costume headset",
+      "mouth_action": "a short shallow rounded horizontal listening capsule under the nose: visibly flatter and wider than a U, with rounded ends and a tiny white inner opening, never an O or smile",
+      "accessories": "two open receiver cuffs just outside the cheeks, each a thin C-shaped outer arc with one compact inward contact tick, plus one small rounded pickup capsule beside the mouth. There is no bridge across the head, no filled earcup, no long boom, no microphone symbol and no waveform.",
+      "component_parts": ["left_receiver_cuff", "right_receiver_cuff", "pickup_capsule"],
+      "choreography": "receiver cuffs arrive first, make one deliberate one-pixel outward listen acknowledgement, pickup capsule settles, then hold and reverse"
+    },
+    {
+      "id": "charging_active",
+      "one_glance_read": "actively connected to power and recovering, not a decorative star on a string",
+      "mouth_action": "a small smooth upward recovery smile with gently lifted endpoints and an open white interior; it is visibly unlike the menu's straight-notch mouth and recording's flat capsule",
+      "accessories": "a compact open side coupler beside the left cheek with a white inner contact notch, one visibly connected short tether running from that coupler toward a small rounded energy dock above the brows, and an energy dock with a horizontal white inset contact slot. The coupler, tether and dock must read as one connected three-part power route rather than three decorative ornaments.",
+      "component_parts": ["side_coupler", "short_tether", "energy_dock"],
+      "choreography": "the side coupler appears first, tether visibly draws into the dock, dock makes one compact fill/settle beat, then hold and reverse"
+    }
+  ],
+  "source_gate_readability_requirements": [
+    "an internal reviewer can assign Menu, Recording and Charging correctly from the three native 200x200 crops without labels based on the declared mouth and component topology",
+    "each state has exactly three source-derived functional components, with no component overlap and each component area at or below the V9 half-eye budget",
+    "the three mouth masks differ pairwise in pixel hash, ink bounds, endpoint arrangement and at least one contour-topology measure",
+    "menu tabs form three separated page-like silhouettes with a raised notched centre; recording has two open cuffs with inner ticks and a pickup capsule; charging has a side coupler visibly tethered to a slotted energy dock",
+    "a source gate must reject hair-like menu tabs, surprise/O recording mouth, headband/costume recording, or star/string charging before export or owner review"
+  ],
+  "machine_preconditions_before_owner_review": [
+    "source gate proves locked-V9-only lineage, no enclosing head, exact state component contract, V9 half-eye object-area limit, pairwise mouth-mask geometry differences and V32 readability requirements",
+    "component export retains exact locked V9 identity components plus V32 source-derived face/object components only with zero overlap",
+    "browser and target PBM replay one deterministic component plan at native 200x200, with no full-face bitmap substitution",
+    "internal visual preflight rejects a shared/offset-only mouth, oversized or costume-like accessories, a decorative disconnected charge object, or any state failing label-free readability before an operator prompt"
+  ],
+  "runtime_policy": {
+    "runtime_resource_activated": false,
+    "active_candidate_binding": "forbidden",
+    "unavailable_special_state_policy": "fail_closed"
+  }
+}

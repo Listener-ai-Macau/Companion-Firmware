@@ -23,6 +23,11 @@ Then follow [docs/bringup_steps.md](docs/bringup_steps.md).
 For the recommended Codex + CubeIDE development loop, see
 [docs/codex_development_workflow.md](docs/codex_development_workflow.md).
 
+For the current upper-art checkpoint and the complete V9-to-V45 prompt, lineage,
+emotion and choreography handoff, see
+[docs/companion_v45_art_handoff.md](docs/companion_v45_art_handoff.md) and
+[docs/companion_art_generation_lineage.md](docs/companion_art_generation_lineage.md).
+
 ## Product CubeIDE project
 
 The Companion Pendant product CubeMX/CubeIDE configuration lives at the repo

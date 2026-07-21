@@ -1,0 +1,57 @@
+{
+  "schema": "companion.art_generation_request.v1",
+  "status": "RECORDED_BEFORE_IMAGE_GENERATION",
+  "iteration": "companion-pet-expression-v9-extension-v42-emotion-source",
+  "revision": 6,
+  "created_at": "2026-07-21",
+  "authority": [
+    "COMP-REQ-093",
+    "COMP-REQ-242",
+    "COMP-REQ-246",
+    "COMP-REQ-247",
+    "COMP-REQ-248",
+    "COMP-REQ-249"
+  ],
+  "supersedes_generation_attempt": "candidate/attempt-05-lower-face-source.png for the Thoughtful mouth component only",
+  "purpose": "Produce a calmer Thoughtful mouth source because the prior candidate reads as a wave at native 200x200. Only the Thoughtful mouth is eligible for export.",
+  "locked_v9_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "use": "sole visual reference for V9 identity, eye/highlight scale, nose anchor, monochrome ink weight, and cute restraint"
+  },
+  "reference_policy": "The locked V9 sheet is the sole image input. All V42 generated sheets are inactive evidence and are not image-generation inputs.",
+  "identity_locks": [
+    "Keep the exact V9 open-eye body, one primary highlight, one tiny sparkle, eye spacing, centered small rounded nose, brows, cheeks, and face scale.",
+    "Do not redesign the character or any component other than the Thoughtful mouth."
+  ],
+  "mouth_contract": "A small closed thoughtful lip drawn as one short, calm, gently rounded shallow curve with a subtle center dip, complete rounded ends, and no visible zigzag. It must read as a quiet pondering mouth, not a wave, squiggle, moustache, hook, W-mouth, O-mouth, frown, or broken line at native 200x200.",
+  "source_sheet": {
+    "grid": {
+      "columns": 1,
+      "rows": 1,
+      "ordered_cells": ["thoughtful_mouth_source"]
+    },
+    "cell_background": "plain pure white",
+    "source_only": true
+  },
+  "forbidden": [
+    "new_eye_shape",
+    "new_nose_shape",
+    "nostrils",
+    "text",
+    "labels",
+    "card",
+    "UI",
+    "color",
+    "gray",
+    "antialiasing",
+    "legacy_art",
+    "whole_face_runtime_playback",
+    "custom_LUT",
+    "code_drawn_geometry"
+  ],
+  "runtime": {
+    "resource_activated": false,
+    "binding": "forbidden_until_source_gate_component_export_browser_wb55_parity_total_audit_and_owner_review"
+  }
+}

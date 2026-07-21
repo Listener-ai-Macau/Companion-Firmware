@@ -1,0 +1,65 @@
+{
+  "schema": "companion.v9_expression_extension_generation_request.v2",
+  "iteration_id": "companion-pet-expression-v9-extension-v2-20260718",
+  "render_parent_iteration": "pet-expression-v9-anti-sly-cute-2026-07-15",
+  "named_prompt_delta": "repair only the open-eye identity grammar after V1; pose-program targets remain inherited and candidate-only",
+  "status": "REJECTED_MACHINE_OPEN_EYE_IDENTITY_V2_20260718",
+  "requested_at": "2026-07-18T18:09:00+08:00",
+  "owner_trigger": "COMP-REQ-117; V1 was rejected because its open eyes became hollow, drooping and overly deep rather than the locked V9 identity.",
+  "candidate_scope": "supplemental_component_source_only_not_a_baseline_replacement",
+  "target_profile": {
+    "grid": [3, 4],
+    "display_target_px": [200, 200],
+    "style": "pure black and white, 1-bit-ready e-paper inner-face components",
+    "runtime_status": "inactive_pending_component_export_machine_checks_and_owner_review"
+  },
+  "source_references": [
+    {
+      "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "role": "only character identity and open-eye geometry reference"
+    },
+    {
+      "path": "docs/art/iterations/companion-pet-expression-v9-extension-v1/generated_pet_expression_extension_v1_candidate.png",
+      "sha256": "CDBE9AE70FCEA2E03BE4341E72AB6382972054F00BCA9F01DA05B78B275D6560",
+      "role": "rejected output; do not copy its eyes, pixels or components"
+    }
+  ],
+  "required_cells": [
+    "daily_attention_left",
+    "daily_attention_right",
+    "daily_attention_up",
+    "daily_attention_down",
+    "curious_question",
+    "affectionate_delight",
+    "joyful_spark",
+    "alert_surprised",
+    "recording_focus",
+    "listening_focus",
+    "menu_thinking",
+    "sleep_rest_no_moon"
+  ],
+  "open_eye_identity_gate": "For every open-eye cell, use the exact locked-V9 visual grammar: two matched upright solid black vertical oval eye bodies on one horizontal baseline. White may appear only as one internal upper primary reflection plus one small static diamond sparkle inside each black eye body. The black eye silhouette must stay filled and continuous. Never expose a white sclera, ring outline, hollow lower eye, thin contour, eyelid crescent, lash, pupil, or drooping/romantic eye shape.",
+  "prompt": "Use the attached locked V9 Companion sheet as the only reference. Ignore the rejected V1 candidate completely. Generate a fresh supplemental 3 rows by 4 columns contact sheet of exactly 12 equally spaced expressions for source-component extraction, not a replacement V9 sheet. Pure white background, black and white only, no text or panels. HARD GLOBAL RULE: every open-eye cell must have the exact V9 eye construction, two identical upright solid filled black vertical ovals on one baseline. Inside each black oval there is one familiar white upper primary reflection and one small static diamond sparkle; there is no white eye outline, no white sclera, no ring, no thin line eye, no lower white half-moon, no pupil and no eyelid arc. Emotional variety must come from paired brow height/tilt, small mouth shape, cheek dots and one detached external charm, while the open eye bodies stay structurally unchanged. Row 1: daily left, right, up, down. Make direction readable with a clear but tasteful internal primary-reflection position, paired brow/mouth/cheek response and restrained directional cue, never with a warped or sentimental eye. Row 2: curious question, affectionate delight with heart, joyful sparkle, alert surprise with exclamation. Row 3: recording focus with dot, listening focus with sound arcs, menu thinking with ellipsis, peaceful sleep with closed curved eyes and a tiny resting mouth. Sleep has no moon, crescent or Z. Preserve the original cute, lively, forward-friendly V9 identity. No cat outline, ears, whiskers, human styling, eyelashes, eye-hugging arcs, side-eye, smirk, flirtation, sadness, romance, aggression, grey, gradient, shading, texture, labels, charging or error faces.",
+  "negative_constraints": [
+    "reject all hollow, outlined, exposed-white or drooping open-eye variants",
+    "do not use V1 candidate pixels or geometry",
+    "no moon/crescent/Z in sleep_rest_no_moon",
+    "no charging/error expression",
+    "no runtime activation or whole-face animation claim"
+  ],
+  "planned_generated_output": "docs/art/iterations/companion-pet-expression-v9-extension-v2/generated_pet_expression_extension_v2_candidate.png",
+  "generated_output": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-extension-v2/generated_pet_expression_extension_v2_candidate.png",
+    "sha256": "4C4E9D85FF3F64CDEDC5A057B09A092C2D47CF518BBB7E83F6C4717845172D0F",
+    "status": "rejected_machine_open_eye_identity_20260718",
+    "rejection_reason": "The V9-calibrated open-eye identity gate failed in daily_attention_right, daily_attention_up and daily_attention_down because the black eye bodies became too hollow/white. No V2 pixel or component may be used."
+  },
+  "lineage": {
+    "iteration_id": "companion-pet-expression-v9-extension-v2-20260718",
+    "render_parent_iteration": "companion-pet-expression-v9-anti-sly-cute-2026-07-15",
+    "rejected_predecessor": "companion-pet-expression-v9-extension-v1-20260718",
+    "reference_rule": "only the locked V9 baseline was supplied to generation; V1 is failure evidence only"
+  },
+  "post_generation_gate": "First inspect against the locked V9 eye gate. Only a visually coherent candidate can proceed to separately registered component export, machine provenance/diversity proof and owner review."
+}

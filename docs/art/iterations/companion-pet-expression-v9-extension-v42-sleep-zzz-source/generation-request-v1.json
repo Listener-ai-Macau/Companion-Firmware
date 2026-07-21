@@ -1,0 +1,31 @@
+{
+  "schema": "companion.art_generation_request.v1",
+  "status": "RECORDED_BEFORE_IMAGE_GENERATION",
+  "iteration": "companion-pet-expression-v9-extension-v42-sleep-zzz-source",
+  "created_at": "2026-07-21",
+  "authority": [
+    "COMP-REQ-093",
+    "COMP-REQ-239",
+    "COMP-REQ-245"
+  ],
+  "purpose": "Supply three individually source-addressable sleep Z components because the locked V9 sleep charm contains only two Z glyphs combined with a forbidden moon. This request generates decoration only and cannot change the locked V9 face.",
+  "locked_v9_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "use": "sole source of monochrome V9 ink weight, friendly rounded stroke style, and sleep-decoration scale"
+  },
+  "source_sheet": {
+    "grid": {
+      "columns": 3,
+      "rows": 1,
+      "ordered_cells": ["sleep_z_large", "sleep_z_medium", "sleep_z_small"]
+    },
+    "cell_background": "plain pure white",
+    "source_only": true,
+    "contract": "One isolated playful black Z glyph in each cell, descending from large to medium to small. These are the only sleep decorations. No cloud, moon, crescent, dream bubble, face, or full sleep pose."
+  },
+  "runtime": {
+    "resource_activated": false,
+    "binding": "forbidden_until_generated_source_hash_source_gate_component_export_browser_wb55_parity_total_audit_and_owner_review"
+  }
+}

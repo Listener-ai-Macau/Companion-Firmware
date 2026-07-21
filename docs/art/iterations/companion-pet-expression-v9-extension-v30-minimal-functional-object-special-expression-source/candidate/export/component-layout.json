@@ -1,0 +1,1145 @@
+{
+  "schema": "companion.v30_minimal_functional_object_special_expression_component_layout.v1",
+  "status": "UNBOUND_CANDIDATE_PENDING_COMPONENT_PERFORMANCE_AND_OWNER_ART_REVIEW",
+  "locked_v9_source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "source_gate": "docs/validation/companion-v30-minimal-functional-object-special-expression-source-gate-20260720.json",
+  "identity_components": {
+    "left_eye_open": {
+      "name": "left_eye_open",
+      "role": "left_eye",
+      "source": "locked_v9_rig_v1_component",
+      "group": "locked_v9_identity",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/left_eye_open.pbm",
+      "mask_sha256": "607A30960F6C312FC4D7DC6AD58F02E6DEB6D80EDC63388FE80671AF593DC08E",
+      "base_position": [
+        42,
+        112
+      ],
+      "anchor": [
+        16,
+        22
+      ],
+      "offset_range": {
+        "min": [
+          0,
+          0
+        ],
+        "max": [
+          0,
+          0
+        ]
+      },
+      "z_index": 30,
+      "composite_op": "ink"
+    },
+    "right_eye_open": {
+      "name": "right_eye_open",
+      "role": "right_eye",
+      "source": "locked_v9_rig_v1_component",
+      "group": "locked_v9_identity",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/right_eye_open.pbm",
+      "mask_sha256": "6F1394072AB1D5AD8D573E115594DD4630FA18877841E6AABD635379075094E6",
+      "base_position": [
+        125,
+        112
+      ],
+      "anchor": [
+        17,
+        22
+      ],
+      "offset_range": {
+        "min": [
+          0,
+          0
+        ],
+        "max": [
+          0,
+          0
+        ]
+      },
+      "z_index": 30,
+      "composite_op": "ink"
+    },
+    "left_eye_highlight_open": {
+      "name": "left_eye_highlight_open",
+      "role": "left_highlight",
+      "source": "locked_v9_rig_v1_component",
+      "group": "locked_v9_identity",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/left_eye_highlight_open.pbm",
+      "mask_sha256": "FE486194ED600C66CD3A69F0EE1025DC1CC260AD15A2B5A4712274CC8007464C",
+      "base_position": [
+        42,
+        112
+      ],
+      "anchor": [
+        16,
+        22
+      ],
+      "offset_range": {
+        "min": [
+          0,
+          0
+        ],
+        "max": [
+          0,
+          0
+        ]
+      },
+      "z_index": 31,
+      "composite_op": "erase"
+    },
+    "right_eye_highlight_open": {
+      "name": "right_eye_highlight_open",
+      "role": "right_highlight",
+      "source": "locked_v9_rig_v1_component",
+      "group": "locked_v9_identity",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/right_eye_highlight_open.pbm",
+      "mask_sha256": "518456E9D22529E4B57E61D5D2963E20F6E80CC3F210FF331281E8F0BC11E650",
+      "base_position": [
+        125,
+        112
+      ],
+      "anchor": [
+        17,
+        22
+      ],
+      "offset_range": {
+        "min": [
+          0,
+          0
+        ],
+        "max": [
+          0,
+          0
+        ]
+      },
+      "z_index": 31,
+      "composite_op": "erase"
+    },
+    "left_eye_sparkle_open": {
+      "name": "left_eye_sparkle_open",
+      "role": "left_sparkle",
+      "source": "locked_v9_rig_v1_component",
+      "group": "locked_v9_identity",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/left_eye_sparkle_open.pbm",
+      "mask_sha256": "2B62160271B54E894DFBE0DD64A0F744EA80E65A2CBC7617B1497A16A229323D",
+      "base_position": [
+        42,
+        112
+      ],
+      "anchor": [
+        16,
+        22
+      ],
+      "offset_range": {
+        "min": [
+          0,
+          0
+        ],
+        "max": [
+          0,
+          0
+        ]
+      },
+      "z_index": 32,
+      "composite_op": "erase"
+    },
+    "right_eye_sparkle_open": {
+      "name": "right_eye_sparkle_open",
+      "role": "right_sparkle",
+      "source": "locked_v9_rig_v1_component",
+      "group": "locked_v9_identity",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/right_eye_sparkle_open.pbm",
+      "mask_sha256": "B9AD58B7178E95296965DD2F4000F28B14C2C06180D1E04D86145D2A9D8D4A13",
+      "base_position": [
+        125,
+        112
+      ],
+      "anchor": [
+        17,
+        22
+      ],
+      "offset_range": {
+        "min": [
+          0,
+          0
+        ],
+        "max": [
+          0,
+          0
+        ]
+      },
+      "z_index": 32,
+      "composite_op": "erase"
+    },
+    "nose_default": {
+      "name": "nose_default",
+      "role": "nose",
+      "source": "locked_v9_rig_v1_component",
+      "group": "locked_v9_identity",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/nose_default.pbm",
+      "mask_sha256": "9E136542BCD1AB6F3A057829FC1A53F03965B9F55ABAE899666CDC6D8EF8E298",
+      "base_position": [
+        94,
+        148
+      ],
+      "anchor": [
+        6,
+        4
+      ],
+      "offset_range": {
+        "min": [
+          0,
+          0
+        ],
+        "max": [
+          0,
+          0
+        ]
+      },
+      "z_index": 50,
+      "composite_op": "ink"
+    }
+  },
+  "special_pose_components": {
+    "menu_active": {
+      "v30_menu_active__left_brow": {
+        "name": "v30_menu_active__left_brow",
+        "pose": "menu_active",
+        "role": "left_brow",
+        "source": "v30_generated_source_thresholded_normalization",
+        "source_component_box": [
+          40,
+          78,
+          80,
+          100
+        ],
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/component-masks/menu_active-left_brow.pbm",
+        "mask_sha256": "82AD076EEC4CDD75F614A131F6FE5B8C7DC4A50A4340FE2DE339163731BACCE8",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/preview-layers/menu_active-left_brow.png",
+        "base_position": [
+          40,
+          78
+        ],
+        "anchor": [
+          20,
+          11
+        ],
+        "offset_range": {
+          "min": [
+            -1,
+            -2
+          ],
+          "max": [
+            1,
+            1
+          ]
+        },
+        "z_index": 20,
+        "composite_op": "ink",
+        "ink_pixels": 123
+      },
+      "v30_menu_active__right_brow": {
+        "name": "v30_menu_active__right_brow",
+        "pose": "menu_active",
+        "role": "right_brow",
+        "source": "v30_generated_source_thresholded_normalization",
+        "source_component_box": [
+          120,
+          78,
+          160,
+          100
+        ],
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/component-masks/menu_active-right_brow.pbm",
+        "mask_sha256": "9AC445A6F39873DE9BDF15FD657444945208A9B92D850B07719D2B32A36BF4A1",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/preview-layers/menu_active-right_brow.png",
+        "base_position": [
+          120,
+          78
+        ],
+        "anchor": [
+          20,
+          11
+        ],
+        "offset_range": {
+          "min": [
+            -1,
+            -2
+          ],
+          "max": [
+            1,
+            1
+          ]
+        },
+        "z_index": 20,
+        "composite_op": "ink",
+        "ink_pixels": 128
+      },
+      "v30_menu_active__left_cheek": {
+        "name": "v30_menu_active__left_cheek",
+        "pose": "menu_active",
+        "role": "left_cheek",
+        "source": "v30_generated_source_thresholded_normalization",
+        "source_component_box": [
+          28,
+          155,
+          50,
+          171
+        ],
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/component-masks/menu_active-left_cheek.pbm",
+        "mask_sha256": "966EDB306016922DEA92B6EECC95DE4EF4B3126CAF6493FB31CF3AC5962E6447",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/preview-layers/menu_active-left_cheek.png",
+        "base_position": [
+          28,
+          155
+        ],
+        "anchor": [
+          11,
+          8
+        ],
+        "offset_range": {
+          "min": [
+            0,
+            -1
+          ],
+          "max": [
+            0,
+            1
+          ]
+        },
+        "z_index": 40,
+        "composite_op": "ink",
+        "ink_pixels": 106
+      },
+      "v30_menu_active__right_cheek": {
+        "name": "v30_menu_active__right_cheek",
+        "pose": "menu_active",
+        "role": "right_cheek",
+        "source": "v30_generated_source_thresholded_normalization",
+        "source_component_box": [
+          150,
+          155,
+          172,
+          171
+        ],
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/component-masks/menu_active-right_cheek.pbm",
+        "mask_sha256": "40343B1A267058B3D10852ECBDE7347DAD4154345B299253A555697586B9E1F9",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/preview-layers/menu_active-right_cheek.png",
+        "base_position": [
+          150,
+          155
+        ],
+        "anchor": [
+          11,
+          8
+        ],
+        "offset_range": {
+          "min": [
+            0,
+            -1
+          ],
+          "max": [
+            0,
+            1
+          ]
+        },
+        "z_index": 40,
+        "composite_op": "ink",
+        "ink_pixels": 107
+      },
+      "v30_menu_active__mouth": {
+        "name": "v30_menu_active__mouth",
+        "pose": "menu_active",
+        "role": "mouth",
+        "source": "v30_generated_source_thresholded_normalization",
+        "source_component_box": [
+          84,
+          156,
+          118,
+          172
+        ],
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/component-masks/menu_active-mouth.pbm",
+        "mask_sha256": "1ACEA1B69EB7E4F34E1BD9EC358606A0A5106DCD2A19C49028D2A73641C01CD1",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/preview-layers/menu_active-mouth.png",
+        "base_position": [
+          84,
+          156
+        ],
+        "anchor": [
+          17,
+          8
+        ],
+        "offset_range": {
+          "min": [
+            0,
+            -1
+          ],
+          "max": [
+            0,
+            1
+          ]
+        },
+        "z_index": 60,
+        "composite_op": "ink",
+        "ink_pixels": 91
+      },
+      "v30_menu_active__left_tab": {
+        "name": "v30_menu_active__left_tab",
+        "pose": "menu_active",
+        "role": "left_tab",
+        "source": "v30_generated_source_thresholded_normalization",
+        "source_component_box": [
+          60,
+          55,
+          84,
+          73
+        ],
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/component-masks/menu_active-left_tab.pbm",
+        "mask_sha256": "7D2496D39AC2140C07B748EA37DBE2FDEEE59880E2562E95E0FB566B0B7C5891",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/preview-layers/menu_active-left_tab.png",
+        "base_position": [
+          60,
+          55
+        ],
+        "anchor": [
+          12,
+          9
+        ],
+        "offset_range": {
+          "min": [
+            -1,
+            -1
+          ],
+          "max": [
+            1,
+            1
+          ]
+        },
+        "z_index": 10,
+        "composite_op": "ink",
+        "ink_pixels": 161
+      },
+      "v30_menu_active__center_tab": {
+        "name": "v30_menu_active__center_tab",
+        "pose": "menu_active",
+        "role": "center_tab",
+        "source": "v30_generated_source_thresholded_normalization",
+        "source_component_box": [
+          87,
+          55,
+          114,
+          73
+        ],
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/component-masks/menu_active-center_tab.pbm",
+        "mask_sha256": "7AC4D1F2AE4AE5C970E7D1F57338A3E61BF4808FBF38238AB9ABFDC5FBD24922",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/preview-layers/menu_active-center_tab.png",
+        "base_position": [
+          87,
+          55
+        ],
+        "anchor": [
+          13,
+          9
+        ],
+        "offset_range": {
+          "min": [
+            -1,
+            -1
+          ],
+          "max": [
+            1,
+            1
+          ]
+        },
+        "z_index": 11,
+        "composite_op": "ink",
+        "ink_pixels": 168
+      },
+      "v30_menu_active__right_tab": {
+        "name": "v30_menu_active__right_tab",
+        "pose": "menu_active",
+        "role": "right_tab",
+        "source": "v30_generated_source_thresholded_normalization",
+        "source_component_box": [
+          115,
+          55,
+          142,
+          73
+        ],
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/component-masks/menu_active-right_tab.pbm",
+        "mask_sha256": "A0918F3A9E3CEE611B0C0B20F9E9D7C2BD45D65BE13FA18CD17F63A7487B6134",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/preview-layers/menu_active-right_tab.png",
+        "base_position": [
+          115,
+          55
+        ],
+        "anchor": [
+          13,
+          9
+        ],
+        "offset_range": {
+          "min": [
+            -1,
+            -1
+          ],
+          "max": [
+            1,
+            1
+          ]
+        },
+        "z_index": 10,
+        "composite_op": "ink",
+        "ink_pixels": 163
+      }
+    },
+    "recording_active": {
+      "v30_recording_active__left_brow": {
+        "name": "v30_recording_active__left_brow",
+        "pose": "recording_active",
+        "role": "left_brow",
+        "source": "v30_generated_source_thresholded_normalization",
+        "source_component_box": [
+          40,
+          78,
+          80,
+          100
+        ],
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/component-masks/recording_active-left_brow.pbm",
+        "mask_sha256": "90EAA5E9A4A52D64791367E1B800B412DB1457E9CF18A2F3DF26BEAD7FB13E2E",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/preview-layers/recording_active-left_brow.png",
+        "base_position": [
+          40,
+          78
+        ],
+        "anchor": [
+          20,
+          11
+        ],
+        "offset_range": {
+          "min": [
+            -1,
+            -2
+          ],
+          "max": [
+            1,
+            1
+          ]
+        },
+        "z_index": 20,
+        "composite_op": "ink",
+        "ink_pixels": 123
+      },
+      "v30_recording_active__right_brow": {
+        "name": "v30_recording_active__right_brow",
+        "pose": "recording_active",
+        "role": "right_brow",
+        "source": "v30_generated_source_thresholded_normalization",
+        "source_component_box": [
+          120,
+          78,
+          160,
+          100
+        ],
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/component-masks/recording_active-right_brow.pbm",
+        "mask_sha256": "8861369E7FEB1212A4E2431242562A038774F88285C2C012A2375BF63EA98F51",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/preview-layers/recording_active-right_brow.png",
+        "base_position": [
+          120,
+          78
+        ],
+        "anchor": [
+          20,
+          11
+        ],
+        "offset_range": {
+          "min": [
+            -1,
+            -2
+          ],
+          "max": [
+            1,
+            1
+          ]
+        },
+        "z_index": 20,
+        "composite_op": "ink",
+        "ink_pixels": 124
+      },
+      "v30_recording_active__left_cheek": {
+        "name": "v30_recording_active__left_cheek",
+        "pose": "recording_active",
+        "role": "left_cheek",
+        "source": "v30_generated_source_thresholded_normalization",
+        "source_component_box": [
+          28,
+          155,
+          50,
+          171
+        ],
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/component-masks/recording_active-left_cheek.pbm",
+        "mask_sha256": "AE4980181A5615628E8D72827EA7C141A6501A78302BBBFD567E41423F689014",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/preview-layers/recording_active-left_cheek.png",
+        "base_position": [
+          28,
+          155
+        ],
+        "anchor": [
+          11,
+          8
+        ],
+        "offset_range": {
+          "min": [
+            0,
+            -1
+          ],
+          "max": [
+            0,
+            1
+          ]
+        },
+        "z_index": 40,
+        "composite_op": "ink",
+        "ink_pixels": 102
+      },
+      "v30_recording_active__right_cheek": {
+        "name": "v30_recording_active__right_cheek",
+        "pose": "recording_active",
+        "role": "right_cheek",
+        "source": "v30_generated_source_thresholded_normalization",
+        "source_component_box": [
+          150,
+          155,
+          172,
+          171
+        ],
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/component-masks/recording_active-right_cheek.pbm",
+        "mask_sha256": "3D0281172A502CCE07BF6AF3BAF5A4A5206FF1E23926EB396913AD53180DFCFE",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/preview-layers/recording_active-right_cheek.png",
+        "base_position": [
+          150,
+          155
+        ],
+        "anchor": [
+          11,
+          8
+        ],
+        "offset_range": {
+          "min": [
+            0,
+            -1
+          ],
+          "max": [
+            0,
+            1
+          ]
+        },
+        "z_index": 40,
+        "composite_op": "ink",
+        "ink_pixels": 102
+      },
+      "v30_recording_active__mouth": {
+        "name": "v30_recording_active__mouth",
+        "pose": "recording_active",
+        "role": "mouth",
+        "source": "v30_generated_source_thresholded_normalization",
+        "source_component_box": [
+          84,
+          156,
+          118,
+          172
+        ],
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/component-masks/recording_active-mouth.pbm",
+        "mask_sha256": "65D5CD9F7E2748CE63460C5892A6F145B7369F91A2F408BF5C8A9C55F316441E",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/preview-layers/recording_active-mouth.png",
+        "base_position": [
+          84,
+          156
+        ],
+        "anchor": [
+          17,
+          8
+        ],
+        "offset_range": {
+          "min": [
+            0,
+            -1
+          ],
+          "max": [
+            0,
+            1
+          ]
+        },
+        "z_index": 60,
+        "composite_op": "ink",
+        "ink_pixels": 91
+      },
+      "v30_recording_active__left_ear_cuff": {
+        "name": "v30_recording_active__left_ear_cuff",
+        "pose": "recording_active",
+        "role": "left_ear_cuff",
+        "source": "v30_generated_source_thresholded_normalization",
+        "source_component_box": [
+          10,
+          118,
+          34,
+          152
+        ],
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/component-masks/recording_active-left_ear_cuff.pbm",
+        "mask_sha256": "982ADFF82F747182C74EF584CC8D8EC20B8B5BCA6EE5B43D74323ACA2DBB061B",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/preview-layers/recording_active-left_ear_cuff.png",
+        "base_position": [
+          10,
+          118
+        ],
+        "anchor": [
+          12,
+          17
+        ],
+        "offset_range": {
+          "min": [
+            -1,
+            0
+          ],
+          "max": [
+            1,
+            0
+          ]
+        },
+        "z_index": 42,
+        "composite_op": "ink",
+        "ink_pixels": 85
+      },
+      "v30_recording_active__right_ear_cuff": {
+        "name": "v30_recording_active__right_ear_cuff",
+        "pose": "recording_active",
+        "role": "right_ear_cuff",
+        "source": "v30_generated_source_thresholded_normalization",
+        "source_component_box": [
+          166,
+          118,
+          190,
+          152
+        ],
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/component-masks/recording_active-right_ear_cuff.pbm",
+        "mask_sha256": "3A1FD5BBD5AD70AE2E1FCF71727023C517BBA8FBE38A9F8F1F58B85618F80ECE",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/preview-layers/recording_active-right_ear_cuff.png",
+        "base_position": [
+          166,
+          118
+        ],
+        "anchor": [
+          12,
+          17
+        ],
+        "offset_range": {
+          "min": [
+            -1,
+            0
+          ],
+          "max": [
+            1,
+            0
+          ]
+        },
+        "z_index": 42,
+        "composite_op": "ink",
+        "ink_pixels": 87
+      },
+      "v30_recording_active__pickup_point": {
+        "name": "v30_recording_active__pickup_point",
+        "pose": "recording_active",
+        "role": "pickup_point",
+        "source": "v30_generated_source_thresholded_normalization",
+        "source_component_box": [
+          118,
+          156,
+          130,
+          170
+        ],
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/component-masks/recording_active-pickup_point.pbm",
+        "mask_sha256": "227901EFA4367CD75B6EF598F94B108611B4068C0C06BC25C82B842926242DC7",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/preview-layers/recording_active-pickup_point.png",
+        "base_position": [
+          118,
+          156
+        ],
+        "anchor": [
+          6,
+          7
+        ],
+        "offset_range": {
+          "min": [
+            0,
+            -1
+          ],
+          "max": [
+            0,
+            1
+          ]
+        },
+        "z_index": 55,
+        "composite_op": "ink",
+        "ink_pixels": 37
+      }
+    },
+    "charging_active": {
+      "v30_charging_active__left_brow": {
+        "name": "v30_charging_active__left_brow",
+        "pose": "charging_active",
+        "role": "left_brow",
+        "source": "v30_generated_source_thresholded_normalization",
+        "source_component_box": [
+          40,
+          78,
+          80,
+          101
+        ],
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/component-masks/charging_active-left_brow.pbm",
+        "mask_sha256": "9DA36DB206CF2074ADFFC781F306526873124FA675C36A8BCDD1CA3543804D86",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/preview-layers/charging_active-left_brow.png",
+        "base_position": [
+          40,
+          78
+        ],
+        "anchor": [
+          20,
+          11
+        ],
+        "offset_range": {
+          "min": [
+            -1,
+            -2
+          ],
+          "max": [
+            1,
+            1
+          ]
+        },
+        "z_index": 20,
+        "composite_op": "ink",
+        "ink_pixels": 124
+      },
+      "v30_charging_active__right_brow": {
+        "name": "v30_charging_active__right_brow",
+        "pose": "charging_active",
+        "role": "right_brow",
+        "source": "v30_generated_source_thresholded_normalization",
+        "source_component_box": [
+          120,
+          78,
+          160,
+          101
+        ],
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/component-masks/charging_active-right_brow.pbm",
+        "mask_sha256": "36CE8381D2BF64E894ECF2A28578CAE062BB1C4E9B4071A01111DA28CD921195",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/preview-layers/charging_active-right_brow.png",
+        "base_position": [
+          120,
+          78
+        ],
+        "anchor": [
+          20,
+          11
+        ],
+        "offset_range": {
+          "min": [
+            -1,
+            -2
+          ],
+          "max": [
+            1,
+            1
+          ]
+        },
+        "z_index": 20,
+        "composite_op": "ink",
+        "ink_pixels": 122
+      },
+      "v30_charging_active__left_cheek": {
+        "name": "v30_charging_active__left_cheek",
+        "pose": "charging_active",
+        "role": "left_cheek",
+        "source": "v30_generated_source_thresholded_normalization",
+        "source_component_box": [
+          34,
+          155,
+          50,
+          171
+        ],
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/component-masks/charging_active-left_cheek.pbm",
+        "mask_sha256": "DDD7F1481BEF9B17EA1AD93A8E5DCE0B0DAD70E39199A0A5F7A3296C6147B085",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/preview-layers/charging_active-left_cheek.png",
+        "base_position": [
+          34,
+          155
+        ],
+        "anchor": [
+          8,
+          8
+        ],
+        "offset_range": {
+          "min": [
+            0,
+            -1
+          ],
+          "max": [
+            0,
+            1
+          ]
+        },
+        "z_index": 40,
+        "composite_op": "ink",
+        "ink_pixels": 92
+      },
+      "v30_charging_active__right_cheek": {
+        "name": "v30_charging_active__right_cheek",
+        "pose": "charging_active",
+        "role": "right_cheek",
+        "source": "v30_generated_source_thresholded_normalization",
+        "source_component_box": [
+          150,
+          155,
+          172,
+          171
+        ],
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/component-masks/charging_active-right_cheek.pbm",
+        "mask_sha256": "CE72C4858C80C4AAEF3DC6EEC1C34CA65A9493B11ABA3570F3373CB68F7A7AA7",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/preview-layers/charging_active-right_cheek.png",
+        "base_position": [
+          150,
+          155
+        ],
+        "anchor": [
+          11,
+          8
+        ],
+        "offset_range": {
+          "min": [
+            0,
+            -1
+          ],
+          "max": [
+            0,
+            1
+          ]
+        },
+        "z_index": 40,
+        "composite_op": "ink",
+        "ink_pixels": 104
+      },
+      "v30_charging_active__mouth": {
+        "name": "v30_charging_active__mouth",
+        "pose": "charging_active",
+        "role": "mouth",
+        "source": "v30_generated_source_thresholded_normalization",
+        "source_component_box": [
+          84,
+          156,
+          118,
+          172
+        ],
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/component-masks/charging_active-mouth.pbm",
+        "mask_sha256": "768399B9A6EFAFB4244D81195B521C77ACC4977228476489FE44B7B23CFDE9F5",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/preview-layers/charging_active-mouth.png",
+        "base_position": [
+          84,
+          156
+        ],
+        "anchor": [
+          17,
+          8
+        ],
+        "offset_range": {
+          "min": [
+            0,
+            -1
+          ],
+          "max": [
+            0,
+            1
+          ]
+        },
+        "z_index": 60,
+        "composite_op": "ink",
+        "ink_pixels": 92
+      },
+      "v30_charging_active__charge_clasp": {
+        "name": "v30_charging_active__charge_clasp",
+        "pose": "charging_active",
+        "role": "charge_clasp",
+        "source": "v30_generated_source_thresholded_normalization",
+        "source_component_box": [
+          10,
+          151,
+          34,
+          171
+        ],
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/component-masks/charging_active-charge_clasp.pbm",
+        "mask_sha256": "D48CF8A05FC439D7E45F6D9BC80F4AE9BD8AF1B618E2142B7702BCF5A3F5F8FF",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/preview-layers/charging_active-charge_clasp.png",
+        "base_position": [
+          10,
+          151
+        ],
+        "anchor": [
+          12,
+          10
+        ],
+        "offset_range": {
+          "min": [
+            -1,
+            0
+          ],
+          "max": [
+            1,
+            0
+          ]
+        },
+        "z_index": 42,
+        "composite_op": "ink",
+        "ink_pixels": 181
+      },
+      "v30_charging_active__short_tether": {
+        "name": "v30_charging_active__short_tether",
+        "pose": "charging_active",
+        "role": "short_tether",
+        "source": "v30_generated_source_thresholded_normalization",
+        "source_component_box": [
+          10,
+          118,
+          34,
+          151
+        ],
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/component-masks/charging_active-short_tether.pbm",
+        "mask_sha256": "AB445FE0FC480CD51FD8385B699E4E9C8930CB050F491D9954C1248CAE926585",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/preview-layers/charging_active-short_tether.png",
+        "base_position": [
+          10,
+          118
+        ],
+        "anchor": [
+          12,
+          16
+        ],
+        "offset_range": {
+          "min": [
+            -1,
+            -1
+          ],
+          "max": [
+            1,
+            1
+          ]
+        },
+        "z_index": 41,
+        "composite_op": "ink",
+        "ink_pixels": 128
+      },
+      "v30_charging_active__energy_core": {
+        "name": "v30_charging_active__energy_core",
+        "pose": "charging_active",
+        "role": "energy_core",
+        "source": "v30_generated_source_thresholded_normalization",
+        "source_component_box": [
+          85,
+          34,
+          116,
+          66
+        ],
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/component-masks/charging_active-energy_core.pbm",
+        "mask_sha256": "324A1238FF00DFAB93DD53E8F26E232554F1199873DDD6F232A06841847939F4",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/preview-layers/charging_active-energy_core.png",
+        "base_position": [
+          85,
+          34
+        ],
+        "anchor": [
+          15,
+          16
+        ],
+        "offset_range": {
+          "min": [
+            0,
+            -1
+          ],
+          "max": [
+            0,
+            1
+          ]
+        },
+        "z_index": 12,
+        "composite_op": "ink",
+        "ink_pixels": 298
+      }
+    }
+  },
+  "states": {
+    "menu_active": {
+      "normalized_source": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/normalized-200x200-source-review/menu-active-source-normalized.png",
+      "components": [
+        "v30_menu_active__left_brow",
+        "v30_menu_active__right_brow",
+        "v30_menu_active__left_cheek",
+        "v30_menu_active__right_cheek",
+        "v30_menu_active__mouth",
+        "v30_menu_active__left_tab",
+        "v30_menu_active__center_tab",
+        "v30_menu_active__right_tab"
+      ],
+      "component_count": 8,
+      "reassembly": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/reassembled-200x200/menu_active.pbm",
+      "reassembly_sha256": "90AB4A3210EBB89C35DF2612668D0FE1512FC6200F470745CDC4A31C622576E6",
+      "reassembly_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/reassembled-800/menu_active.png",
+      "component_overlap_audit": []
+    },
+    "recording_active": {
+      "normalized_source": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/normalized-200x200-source-review/recording-active-source-normalized.png",
+      "components": [
+        "v30_recording_active__left_brow",
+        "v30_recording_active__right_brow",
+        "v30_recording_active__left_cheek",
+        "v30_recording_active__right_cheek",
+        "v30_recording_active__mouth",
+        "v30_recording_active__left_ear_cuff",
+        "v30_recording_active__right_ear_cuff",
+        "v30_recording_active__pickup_point"
+      ],
+      "component_count": 8,
+      "reassembly": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/reassembled-200x200/recording_active.pbm",
+      "reassembly_sha256": "27D5F27E5A8316FB42595E2EBBEE8D06B00EA55B07240E4A1C772A8800A75D98",
+      "reassembly_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/reassembled-800/recording_active.png",
+      "component_overlap_audit": []
+    },
+    "charging_active": {
+      "normalized_source": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/normalized-200x200-source-review/charging-active-source-normalized.png",
+      "components": [
+        "v30_charging_active__left_brow",
+        "v30_charging_active__right_brow",
+        "v30_charging_active__left_cheek",
+        "v30_charging_active__right_cheek",
+        "v30_charging_active__mouth",
+        "v30_charging_active__charge_clasp",
+        "v30_charging_active__short_tether",
+        "v30_charging_active__energy_core"
+      ],
+      "component_count": 8,
+      "reassembly": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/reassembled-200x200/charging_active.pbm",
+      "reassembly_sha256": "9740435738C3AA6AC5BDC72F50DFD7F20A6D40B8392F5A94F3A45A6334962692",
+      "reassembly_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/reassembled-800/charging_active.png",
+      "component_overlap_audit": []
+    }
+  },
+  "component_contact_sheet": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/export/component-contact-sheet.png",
+  "source_pixel_rule": "special brow, mouth and cheek masks are thresholded crops from the V30 generated source; eyes, highlights, sparkles and nose are exact locked V9 rig masks; no full source pose is a runtime asset",
+  "prohibited_before_owner_art_review": [
+    "whole-source-panel playback",
+    "whole-face replacement",
+    "CRIG export",
+    "profile generation",
+    "event binding",
+    "firmware flash",
+    "panel output"
+  ],
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden"
+}

@@ -1,0 +1,76 @@
+{
+  "schema": "companion.v9.special_expression_generation_request.v12",
+  "status": "SUPERSEDED_AFTER_SOURCE_GATE_REJECTION",
+  "iteration": "V32",
+  "request_revision": 2,
+  "created_at": "2026-07-20",
+  "supersedes": "generation-request-v1-representative-functional-silhouette-panel.json",
+  "purpose": "Regenerate the locked-V9-only three-pose panel after V32 attempt 1 failed internal source readability. Preserve the successful menu page-tabs concept, enforce exactly one recording mouth contour, and enforce a continuous connected charging route from cheek coupler to slotted energy dock. This source must make Menu, Recording and Charging distinct at a glance at native 200x200 without V32 attempt-1 or any rejected image as visual input.",
+  "locked_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "allowed_reference_inputs": ["locked_v9_reference_only"],
+  "forbidden_reference_inputs": [
+    "V32_attempt_01_or_any_derived_asset",
+    "V31_rejected_source_or_any_derived_asset",
+    "V30_rejected_source_or_any_derived_asset",
+    "V29_rejected_source_or_any_derived_asset",
+    "V28_superseded_request_as_visual_input",
+    "V27_rejected_source_or_any_derived_asset",
+    "V26_rejected_source_or_any_derived_asset",
+    "V25_rejected_source_or_any_derived_asset",
+    "V24_rejected_source_or_any_derived_asset",
+    "V23_candidates_or_exports",
+    "legacy_art",
+    "whole_face_runtime_cards"
+  ],
+  "v9_identity_and_simplicity_invariants": [
+    "retain exact locked V9 floating-face identity: black oval eyes, one oval highlight and one diamond sparkle per eye, eye scale/spacing/baseline, nose, cheeks, line weight, wide white margins and no enclosing head, hair, ears, helmet, body, frame or card",
+    "each state has exactly three separately extractable black functional components, with no component larger than half a V9 eye or covering an eye/brow",
+    "mouths differ pairwise by pixel mask, topology, endpoint pattern and curvature; they cannot share a mask or be offset/scale variants",
+    "menu is three separated notched page tabs, recording is two receiver cuffs plus pickup, charging is a visibly continuous side-coupler-to-tether-to-slotted-dock route",
+    "no literal battery, lightning, microphone, waveform, plug, menu icon, text, label, detached UI widget, generic emotion substitution, headband, costume or whole-face prop"
+  ],
+  "state_object_semantic_brief": [
+    {
+      "id": "menu_active",
+      "one_glance_read": "navigation and choosing, not hair, dots or crown",
+      "mouth_action": "short straight decision mouth with two horizontal endpoints and exactly one centred downward selection notch",
+      "components": ["left_page_tab", "active_notched_page_tab", "right_page_tab"],
+      "topology": "three separated page-shaped tabs over brows, with a raised central tab and one white folded-corner notch"
+    },
+    {
+      "id": "recording_active",
+      "one_glance_read": "active capture and listening, not surprise, a moustache or a costume headset",
+      "mouth_action": "exactly one and only one shallow wide rounded horizontal listening capsule below the nose; never draw a second capsule, second horizontal bar, duplicate inner loop or stacked mouth",
+      "components": ["left_open_receiver_cuff_with_contact_tick", "right_open_receiver_cuff_with_contact_tick", "single_small_pickup_dot"],
+      "topology": "two thin open cheek-side C cuffs with inward contact ticks, plus one small round pickup dot offset to the right of the one mouth; no head bridge, earcup, boom, microphone or waveform"
+    },
+    {
+      "id": "charging_active",
+      "one_glance_read": "connected power transfer and recovery, not a decorative star/string",
+      "mouth_action": "small smooth upward recovery smile with gently lifted endpoints and an open white interior",
+      "components": ["left_open_side_coupler_with_contact_notch", "continuous_short_tether", "rounded_slotted_energy_dock"],
+      "topology": "the tether must be one unbroken visible black line from the left cheek-side coupler to the side edge of the small rounded dock above the brows; no gap is permitted. The dock contains a horizontal white contact slot. Keep the entire route compact, connected and within the face width."
+    }
+  ],
+  "source_gate_readability_requirements": [
+    "native 200x200 crops must be internally assignable as Menu, Recording and Charging without captions",
+    "recording must contain exactly one mouth ink island below the nose and one distinct pickup dot; a stacked capsule or duplicate bar fails",
+    "charging must have continuous 8-connected tether ink from side coupler to the dock boundary; a visual gap fails",
+    "menu must have exactly three separated page tabs and one raised notched centre; hair/dots/crown interpretation fails",
+    "all states satisfy V9 half-eye component budget, zero component overlap, no forbidden prop and pairwise mouth difference before export or owner review"
+  ],
+  "machine_preconditions_before_owner_review": [
+    "source gate validates locked-V9-only lineage, source topology and native-200 readability requirements",
+    "component export and causal performance use source-derived parts only with no whole-face substitution",
+    "browser and target PBM replay the identical deterministic native-200 component plan",
+    "internal visual preflight rejects unreadable state semantics, shared/offset mouths, duplicate recording mouth, disconnected charging tether, oversized/costume props and source misuse before an owner prompt"
+  ],
+  "runtime_policy": {
+    "runtime_resource_activated": false,
+    "active_candidate_binding": "forbidden",
+    "unavailable_special_state_policy": "fail_closed"
+  }
+}

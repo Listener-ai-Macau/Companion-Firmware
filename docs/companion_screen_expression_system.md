@@ -1,5 +1,9 @@
 # Companion Screen Expression System
 
+> **历史系统地图。** 本文中的 Goal-era implementation notes 可能早于当前
+> V45/r7 上层组件实现。美术、编舞、浏览器和 WB55 parity 的 canonical handoff
+> 见 [companion_v45_art_handoff.md](companion_v45_art_handoff.md)。
+
 This document is the working acceptance map for the Companion screen expression
 system. The first target is the WB55 devboard, but the model must stay portable
 for a later WBA55 or WBA65 port.

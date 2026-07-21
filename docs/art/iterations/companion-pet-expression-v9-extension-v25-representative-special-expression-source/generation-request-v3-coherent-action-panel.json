@@ -1,0 +1,65 @@
+{
+  "schema": "companion.v9.special_expression_generation_request.v3",
+  "status": "REQUESTED_TO_GENERATE_PENDING_SOURCE",
+  "iteration": "V25",
+  "request_revision": 3,
+  "created_at": "2026-07-20",
+  "purpose": "Generate one coherent three-pose source panel for component extraction only. It is never a runtime full-face sheet or animation playback resource.",
+  "locked_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "allowed_reference_inputs": [
+    "locked_v9_reference_only"
+  ],
+  "forbidden_reference_inputs": [
+    "V25_exploratory_outputs",
+    "V23_candidates_or_exports",
+    "V24_visually_rejected_sources_or_exports",
+    "legacy_art",
+    "whole_face_runtime_cards"
+  ],
+  "panel_contract": {
+    "layout": "one unbordered horizontal row of exactly three equally sized, centered faces on white, ordered menu_active, recording_active, charging_active, with no labels",
+    "runtime_rule": "The panel is art-source provenance only. Later runtime can export only separable registered components and may never show or cycle the three whole faces.",
+    "identity": "Each pose retains the exact locked V9 open eye silhouette, black fill, one primary oval highlight and one diamond sparkle per eye, scale, spacing, baseline, nose and monochrome ink weight."
+  },
+  "poses": [
+    {
+      "id": "menu_active",
+      "static_action_read": "deliberate evaluating/choosing",
+      "face": "clear friendly brow asymmetry, both legal highlights biased toward the same chosen direction, a small closed decisive mouth and compact quiet cheeks",
+      "no_external_marks": true,
+      "motion_read": "a deterministic later highlight scan through left, center, right, then an eyebrow decision landing"
+    },
+    {
+      "id": "recording_active",
+      "static_action_read": "active listening and ready response",
+      "face": "paired soft high brows, attentive legal highlights, a compact round listening mouth and gently opened cheeks",
+      "integral_action": "one extremely short inward-facing ear-perk stroke directly attached behind each outer cheek; no free arcs, spirals, waves or glyphs",
+      "motion_read": "cheek-attached ear perks once, then a small response-mouth acknowledgement"
+    },
+    {
+      "id": "charging_active",
+      "static_action_read": "restored calm relief",
+      "face": "outward-released brows, soft settled legal highlights, an unmistakably warm compact recovery smile and lifted cheeks",
+      "no_external_marks": true,
+      "motion_read": "a deterministic Daily-to-recovery brow release and smile arrival, slow hold, then exact reverse"
+    }
+  ],
+  "rejection_conditions": [
+    "any label, border, UI icon, punctuation, heart, star, microphone, waveform, battery, plug, bolt or color",
+    "changed eye silhouettes or unmatched eye geometry across the three poses",
+    "outside recording's two cheek-attached ear-perk strokes, any floating accent mark",
+    "menu resembles listening or charging",
+    "recording resembles broadcast decoration rather than listening",
+    "charging resembles sleep, surprise or a generic Daily smile",
+    "the panel is reused as a runtime card or frame sequence"
+  ],
+  "required_followup": [
+    "archive the exact prompt before image generation and archive generated panel path plus SHA-256 before any crop",
+    "use a source gate to prove V9-only input, panel order, identity invariants and forbidden-mark absence",
+    "export only components, produce deterministic causal action choreography and prove browser/target component-plan parity at native 200x200",
+    "keep runtime inactive and unbound through machine closure and human review"
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "schema": "companion.visual_iteration_ledger.v1",
+  "iteration_id": "companion-pet-expression-v9-extension-v5-emotion-anchors-direction-repair-20260718",
+  "status": "REJECTED_MACHINE_OPEN_EYE_IDENTITY_V5_20260718",
+  "product_requirements": ["COMP-REQ-116", "COMP-REQ-117", "COMP-REQ-118", "COMP-REQ-119"],
+  "reference_source": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "protection": "immutable locked V9 baseline and the only visual reference supplied to generation"
+  },
+  "rejected_predecessors": [
+    "companion-pet-expression-v9-extension-v1-20260718",
+    "companion-pet-expression-v9-extension-v2-20260718",
+    "companion-pet-expression-v9-extension-v3-daily-eye-proof-20260718",
+    "companion-pet-expression-v9-extension-v4-emotion-transition-anchors-20260718"
+  ],
+  "generation_request": "docs/art/iterations/companion-pet-expression-v9-extension-v5-emotion-anchors-direction-repair/generation-request.json",
+  "single_delta": "repair only V4 Daily primary-reflection directions while retaining all-state emotional anchors and V9 eye constraints",
+  "generated_output": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-extension-v5-emotion-anchors-direction-repair/generated_pet_expression_extension_v5_emotion_anchors_direction_repair_candidate.png",
+    "sha256": "36EC77426A2AE94C440B8C871880E15702242C84173C7BDFFE93B4BDDD93C819",
+    "eligibility": "rejected_machine_open_eye_identity_no_component_export_no_visual_reference"
+  },
+  "non_goals": [
+    "replace or modify the locked V9 baseline",
+    "use V1 through V4 as visual reference or component source",
+    "export components or activate runtime resources before machine and owner gates",
+    "animate by cycling complete source-face cells",
+    "supply charging or error art"
+  ]
+}

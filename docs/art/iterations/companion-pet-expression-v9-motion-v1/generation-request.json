@@ -1,0 +1,82 @@
+{
+  "schema_id": "companion.visual_generation_request.v1",
+  "iteration_id": "companion-pet-expression-v9-motion-v1",
+  "status": "CANDIDATE_GENERATED_PENDING_MACHINE_AND_OWNER_REVIEW",
+  "parent_baseline": {
+    "iteration_id": "companion-pet-expression-v9",
+    "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "rule": "Use as an in-context identity reference. Do not replace it, mix it with retired rounds, or use any code-drawn substitute."
+  },
+  "scene": {
+    "name": "daily_awake_micro_story",
+    "trigger": "awake daily surface after a real panel completion and no interaction",
+    "emotion": "calm, gentle curiosity, then calm reassurance",
+    "phases": [
+      {
+        "name": "entry",
+        "intent": "calm forward attention",
+        "visible_motion_variables": [
+          "locked upright oval eye shape",
+          "front-facing matched highlights",
+          "paired soft brows",
+          "small centered W-mouth",
+          "one small star charm"
+        ]
+      },
+      {
+        "name": "sustain",
+        "intent": "a tiny curious acknowledgement, not a new expression identity",
+        "visible_motion_variables": [
+          "same eye outline with a subtle symmetric highlight or gaze adjustment",
+          "paired brows lift or soften together",
+          "mouth or cheek dots change slightly",
+          "one small question or sparkle charm follows"
+        ]
+      },
+      {
+        "name": "settle",
+        "intent": "return to the original calm pose",
+        "visible_motion_variables": [
+          "same entry eye identity",
+          "same paired brows",
+          "same calm mouth and cheek dots",
+          "star charm returns"
+        ]
+      }
+    ]
+  },
+  "target_profile": {
+    "frame_count": 3,
+    "logical_frame_order": ["entry", "sustain", "settle"],
+    "target_canvas_px": [200, 200],
+    "style": "pure white background; monochrome black ink; 1-bit e-paper ready; inner face only; no cat outline or device shell"
+  },
+  "prompt_revision": "v9-motion-v1-r1",
+  "prompt": "Use the attached locked v9 Companion expression sheet as a strict in-context identity reference. Create one clean white art board containing exactly three equally sized square keyframes arranged left to right and labeled only by position, with no text inside the keyframes. These are three frames of the exact same tiny premium AI companion inner face for a 200x200 monochrome e-paper screen: 1) entry calm forward attention, 2) sustain gentle curious acknowledgement, 3) settle returning exactly to the entry calm. Preserve the v9 identity: compact filled black upright oval eyes with matched front-facing white highlights, short rounded paired brows, tiny centered button nose, delicate small W-mouth, symmetric cheek dots, generous white space and one small semantic charm outside the face. The sustain frame must be a local refinement, not a replacement face: retain the same eye outlines and proportions, introduce only a subtle symmetric highlight or gaze adjustment, move both brows together slightly, and also make one small mouth, cheek-dot or question/sparkle charm change. Entry and settle are the same calm identity. Do not translate the whole face between frames. No eyelids, lashes, winks, one-eyed look, side-eye, unequal eyes, smirk, flirtation, smugness, tiredness, menacing look, cat ears, cat outline, whiskers, device frame, labels, grey, gradients, shading, or clutter. The result should feel sweet, alert and alive through coordinated tiny changes, never like three unrelated stickers.",
+  "negative_constraints": [
+    "do not change the v9 eye silhouette or switch to another eye style",
+    "do not add black eyelid crescents or arcs touching an eye oval",
+    "do not use a whole-face position shift as the motion",
+    "do not create asymmetric flirtatious, smug, sleepy or menacing eye contact",
+    "do not add cat head contours, ears, whiskers, text, UI chrome, grey or gradients"
+  ],
+  "machine_requirements_before_review": [
+    "source SHA256 and prompt revision are recorded",
+    "three source crops map deterministically to 200x200 PBM",
+    "all output stays at least four pixels inside every panel edge",
+    "entry/sustain/settle have distinct source identity where required",
+    "analysis proves sustain changes eyes/highlights plus one secondary feature and is not a global translation",
+    "CEMP packing and decode are deterministic"
+  ],
+  "candidate_layout_template": "docs/art/iterations/companion-pet-expression-v9-motion-v1/candidate-layout.template.json",
+  "candidate_import_contract": "tools/render_companion_v9_motion_extension.py requires a source hash, exact entry/sustain/settle crop boxes, normalized feature regions and runtime_resource_activated=false. tools/verify_companion_v9_motion_extension.py then verifies CEMP decode before visual review.",
+  "generated_candidate": {
+    "source": "docs/art/iterations/companion-pet-expression-v9-motion-v1/candidate/generated_pet_expression_v9_motion_v1_r1.png",
+    "sha256": "AF67A20F22157FDE05D2492A9BBBFB8A1AA126C1725989C1DE00F68A73786BCB",
+    "layout": "docs/art/iterations/companion-pet-expression-v9-motion-v1/candidate/candidate-layout.json",
+    "generation_tool": "image_gen",
+    "runtime_resource_activated": false
+  },
+  "review_rule": "A generated candidate remains inactive until the source-to-render comparison and owner review pass. No CEMP activation, external Flash provisioning, firmware flash or physical PASS claim is implied by this request."
+}

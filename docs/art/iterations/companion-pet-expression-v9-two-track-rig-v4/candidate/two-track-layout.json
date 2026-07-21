@@ -1,0 +1,507 @@
+{
+  "schema": "companion.v42_expression_extension_two_track_layout.v1",
+  "status": "CANDIDATE_TRACK_MODEL_VERSIONED_RUNTIME_INACTIVE",
+  "revision": 42,
+  "authority": [
+    "COMP-REQ-093",
+    "COMP-REQ-239",
+    "COMP-REQ-240",
+    "COMP-REQ-242",
+    "COMP-REQ-243",
+    "COMP-REQ-245",
+    "COMP-REQ-246",
+    "COMP-REQ-247",
+    "COMP-REQ-248",
+    "COMP-REQ-249",
+    "COMP-REQ-250",
+    "COMP-REQ-251",
+    "COMP-REQ-253",
+    "COMP-REQ-254",
+    "COMP-REQ-256"
+  ],
+  "locked_v9_source": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "inherited_v41": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v3/candidate/two-track-layout.json",
+    "sha256": "C5DDC60D80A1C3B2657921C5E55CBB834F5DB703E18B83C5AFC293FBFFD5FC18",
+    "reuse_rule": "Retain V22 face components, V41 deterministic five-gaze machine endpoints, the dual-track separation rule, and menu withdrawal behavior."
+  },
+  "source_authority": {
+    "v22_face_layout": {
+      "path": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/target-rig-attempt-01/v22-emotion-separation-target-rig-layout.json",
+      "sha256": "3118338BCE6BD55BAAA40C1254B332805F2524425383CA104BA8E5FEEE01B953",
+      "component_count": 37
+    },
+    "v42_special_layout": {
+      "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v4/candidate/v42-special-component-layout.json",
+      "sha256": "DF52D7E5DED6F5B34BF1085C8B2993665D19E68628BD3F64C2568EE4EFB8519C",
+      "component_count": 48
+    }
+  },
+  "composition": {
+    "canvas": "200x200_1bpp_white_is_one_msb",
+    "final_plan": "deterministic_union(expression_track,functional_decoration_track)",
+    "ordering": "stable_ascending_z_index_then_expression_before_functional",
+    "maximum_layers": 16,
+    "no_mask_synthesis": true,
+    "runtime_binding": "forbidden_until_v42_machine_audit_and_owner_review"
+  },
+  "expression_track": {
+    "driven_only_by": [
+      "emotion",
+      "attention",
+      "energy",
+      "interaction_memory"
+    ],
+    "inherited_v22_performances": {
+      "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v1/candidate/two-track-layout.json",
+      "sha256": "EFBE711D121FC9F9BD6F2E6E6E1A0324CE2F2CC8DC81DC163ED0A512A0277555"
+    },
+    "added_performances": {
+      "delighted_presence": {
+        "emotion": "affectionate",
+        "base_face": [
+          575,
+          576,
+          577,
+          578,
+          579,
+          2,
+          6,
+          1,
+          5,
+          3,
+          7,
+          4
+        ]
+      },
+      "bashful_presence": {
+        "emotion": "affectionate",
+        "base_face": [
+          580,
+          581,
+          582,
+          583,
+          584,
+          2,
+          6,
+          1,
+          5,
+          3,
+          7,
+          4
+        ]
+      },
+      "thoughtful_presence": {
+        "emotion": "focused",
+        "base_face": [
+          585,
+          586,
+          587,
+          588,
+          2,
+          6,
+          1,
+          5,
+          3,
+          7,
+          4
+        ]
+      },
+      "focused_presence": {
+        "emotion": "focused",
+        "base_face": [
+          589,
+          590,
+          591,
+          592,
+          593,
+          2,
+          6,
+          1,
+          5,
+          3,
+          7,
+          4
+        ]
+      }
+    },
+    "sleep_zzz_only": {
+      "sleep_face": [
+        539,
+        540,
+        541,
+        542,
+        14,
+        17,
+        4,
+        543
+      ],
+      "zzz_components": [
+        594,
+        595,
+        596
+      ],
+      "forbidden_components": [
+        531,
+        532,
+        544
+      ],
+      "forbidden_visuals": [
+        "cloud",
+        "moon",
+        "crescent"
+      ]
+    },
+    "attention_demonstrations": {
+      "component_ids": {
+        "left_primary": 1,
+        "left_sparkle": 3,
+        "right_primary": 5,
+        "right_sparkle": 7,
+        "fixed_nose": 4
+      },
+      "endpoint_offsets": {
+        "center": {
+          "primary": [
+            1,
+            0
+          ],
+          "sparkle": [
+            1,
+            0
+          ]
+        },
+        "left": {
+          "primary": [
+            -2,
+            2
+          ],
+          "sparkle": [
+            -5,
+            3
+          ]
+        },
+        "right": {
+          "primary": [
+            5,
+            2
+          ],
+          "sparkle": [
+            5,
+            3
+          ]
+        },
+        "up": {
+          "primary": [
+            1,
+            -3
+          ],
+          "sparkle": [
+            1,
+            -5
+          ]
+        },
+        "down": {
+          "primary": [
+            1,
+            4
+          ],
+          "sparkle": [
+            1,
+            5
+          ]
+        }
+      },
+      "required_states": [
+        "center",
+        "left",
+        "right",
+        "up",
+        "down"
+      ],
+      "construction": "The registered V9 open-eye body remains fixed; only its registered highlight and sparkle masks move within their registered ranges. The V22 nose is always component 4 at [0,0].",
+      "forbidden": [
+        "new_eye_shape",
+        "whole_face_card",
+        "code_drawn_feature",
+        "random_gaze",
+        "legacy_art"
+      ]
+    },
+    "forbidden": [
+      "whole_face_card",
+      "code_drawn_face",
+      "functional_event_selects_emotion",
+      "random_gaze"
+    ]
+  },
+  "functional_decoration_track": {
+    "driven_only_by": [
+      "functional_event"
+    ],
+    "events": {
+      "recording_input": {
+        "frames": [
+          [
+            569
+          ],
+          [
+            570
+          ],
+          [
+            571
+          ],
+          [
+            570
+          ],
+          [
+            569
+          ]
+        ],
+        "durations_ms": [
+          260,
+          240,
+          520,
+          240,
+          680
+        ],
+        "safe_zone": "right_of_face_only_no_eye_brow_mouth_nose_or_cheek_overlap"
+      },
+      "bottom_connector_charging": {
+        "frames": [
+          [
+            572
+          ],
+          [
+            573
+          ],
+          [
+            574
+          ],
+          [
+            573
+          ],
+          [
+            574
+          ]
+        ],
+        "durations_ms": [
+          300,
+          260,
+          520,
+          260,
+          680
+        ],
+        "safe_zone": "below_face_only_wireless_dock"
+      },
+      "upgrade_progress": {
+        "frames": [
+          [
+            563
+          ],
+          [
+            564
+          ],
+          [
+            565
+          ],
+          [
+            564
+          ],
+          [
+            565
+          ]
+        ],
+        "durations_ms": [
+          420,
+          280,
+          520,
+          280,
+          680
+        ]
+      },
+      "error_caution": {
+        "frames": [
+          [
+            566
+          ],
+          [
+            567
+          ],
+          [
+            568
+          ],
+          [
+            567
+          ],
+          [
+            568
+          ]
+        ],
+        "durations_ms": [
+          220,
+          220,
+          620,
+          220,
+          820
+        ]
+      }
+    },
+    "forbidden": [
+      "face_component_id",
+      "functional_event_selects_emotion",
+      "functional_event_mutates_brow_eye_mouth_or_cheek",
+      "daily_face_substitution_when_source_missing"
+    ]
+  },
+  "menu_entry_exception": {
+    "event": "menu_entry_notice",
+    "frames": [
+      [
+        545
+      ],
+      [
+        546
+      ],
+      [
+        547
+      ]
+    ],
+    "durations_ms": [
+      140,
+      140,
+      180
+    ],
+    "maximum_expression_duration_ms": 500,
+    "after_last_cue": "withdraw_expression_and_functional_tracks_then_show_menu_ui",
+    "forbidden": [
+      "persistent_menu_score",
+      "selection_loop",
+      "expression_rig_behind_menu_ui",
+      "functional_track_behind_menu_ui"
+    ]
+  },
+  "preview_zh": {
+    "title": "V9 组件表情系统预览",
+    "player_label": "播放编舞",
+    "restart_label": "重新播放",
+    "atlas_title": "表情与状态总览",
+    "atlas_summary": "每张图都是同一套 200x200 组件计划的真实帧；功能状态只叠加小饰件，不替换脸。",
+    "stories": {
+      "calm_presence": {
+        "label_zh": "日常平静",
+        "summary_zh": "默认日常脸，眼神轻动后回到正中。",
+        "overview_step": 2
+      },
+      "warm_presence": {
+        "label_zh": "亲近温暖",
+        "summary_zh": "互动记忆较高时的温和回应。",
+        "overview_step": 2
+      },
+      "curious_question": {
+        "label_zh": "好奇提问",
+        "summary_zh": "眼神和眉毛先带动，再出现表情自有问号。",
+        "overview_step": 2
+      },
+      "alert_exclamation": {
+        "label_zh": "警觉提醒",
+        "summary_zh": "眉眼先进入提醒，再出现表情自有感叹号。",
+        "overview_step": 2
+      },
+      "playful_presence": {
+        "label_zh": "活泼玩心",
+        "summary_zh": "高光先活跃，随后回到轻快保持。",
+        "overview_step": 2
+      },
+      "sleepy_presence": {
+        "label_zh": "困倦入睡",
+        "summary_zh": "困眼、眉和嘴依次进入，只有 ZZZ 轻轻上浮。",
+        "overview_step": 2
+      },
+      "delighted_presence": {
+        "label_zh": "开心雀跃",
+        "summary_zh": "抬眉、开口笑和高腮点形成清楚的开心反应。",
+        "overview_step": 2
+      },
+      "bashful_presence": {
+        "label_zh": "害羞轻笑",
+        "summary_zh": "收拢的眉、贴近嘴角的腮点和小笑意表达害羞。",
+        "overview_step": 2
+      },
+      "thoughtful_presence": {
+        "label_zh": "安静思考",
+        "summary_zh": "一高一低眉与偏位思考嘴带出安静停顿。",
+        "overview_step": 2
+      },
+      "focused_presence": {
+        "label_zh": "认真专注",
+        "summary_zh": "低而圆的收拢眉与短横嘴表达稳定专注。",
+        "overview_step": 2
+      },
+      "recording_with_calm": {
+        "label_zh": "录音输入中",
+        "summary_zh": "日常脸旁边播放输入麦克风波纹，绝不覆盖脸。",
+        "overview_step": 2
+      },
+      "recording_with_warm": {
+        "label_zh": "录音输入中（温暖脸）",
+        "summary_zh": "同一输入小饰件可与独立温暖表情同时存在。",
+        "overview_step": 2
+      },
+      "charging_with_calm": {
+        "label_zh": "无线机座充电",
+        "summary_zh": "日常脸下方显示机座、接触垫和上升能量刻度，不替换脸。",
+        "overview_step": 2
+      },
+      "upgrade_with_playful": {
+        "label_zh": "升级进行中",
+        "summary_zh": "活泼脸上叠加独立上行进度装饰。",
+        "overview_step": 2
+      },
+      "error_with_calm": {
+        "label_zh": "错误提醒",
+        "summary_zh": "平静脸上叠加独立紧凑警示装饰。",
+        "overview_step": 2
+      },
+      "menu_entry_notice": {
+        "label_zh": "进入菜单提示",
+        "summary_zh": "仅短暂显示；随后组件 Rig 完全撤出，菜单独占屏幕。",
+        "overview_step": 2
+      },
+      "daily_attention_center": {
+        "label_zh": "内部眼神-center",
+        "summary_zh": "仅作为机器可复现的注意力端点证据，不在人工总览或播放器中展示。",
+        "owner_visible": false
+      },
+      "daily_attention_left": {
+        "label_zh": "内部眼神-left",
+        "summary_zh": "仅作为机器可复现的注意力端点证据，不在人工总览或播放器中展示。",
+        "owner_visible": false
+      },
+      "daily_attention_right": {
+        "label_zh": "内部眼神-right",
+        "summary_zh": "仅作为机器可复现的注意力端点证据，不在人工总览或播放器中展示。",
+        "owner_visible": false
+      },
+      "daily_attention_up": {
+        "label_zh": "内部眼神-up",
+        "summary_zh": "仅作为机器可复现的注意力端点证据，不在人工总览或播放器中展示。",
+        "owner_visible": false
+      },
+      "daily_attention_down": {
+        "label_zh": "内部眼神-down",
+        "summary_zh": "仅作为机器可复现的注意力端点证据，不在人工总览或播放器中展示。",
+        "owner_visible": false
+      }
+    }
+  },
+  "non_claims": [
+    "no_runtime_binding",
+    "no_firmware_flash",
+    "no_panel_or_driver_change",
+    "no_human_acceptance"
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "schema": "companion.v9_full_expression_source_bundle.v1",
+  "bundle_id": "companion-v9-full-expression-source-bundle-v1-20260718",
+  "status": "APPROVED_OWNER_FULL_SOURCE_BUNDLE_COMPONENT_EXPORT_ALLOWED_RUNTIME_INACTIVE",
+  "render_parent_iteration": "pet-expression-v9-anti-sly-cute-2026-07-15",
+  "locked_v9_source": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "face_sources": [
+    {
+      "iteration_id": "companion-pet-expression-v9-extension-v9-expanded-daily-direction-strip-20260718",
+      "request": "docs/art/iterations/companion-pet-expression-v9-extension-v9-expanded-daily-direction-strip/generation-request.json",
+      "candidate": "docs/art/iterations/companion-pet-expression-v9-extension-v9-expanded-daily-direction-strip/generated_pet_expression_extension_v9_expanded_daily_direction_strip_candidate.png",
+      "sha256": "06482F6401DF63ED16369660A3D2E4337A37C470F0007C0EAF8CBC90E6D768C5",
+      "states": ["daily_attention_left", "daily_attention_right", "daily_attention_up", "daily_attention_down"],
+      "machine_reports": {
+        "open_eye_identity": "docs/validation/companion-v9-extension-v9-expanded-daily-direction-strip-open-eye-identity-20260718.json",
+        "daily_attention_readability": "docs/validation/companion-v9-extension-v9-expanded-daily-direction-strip-attention-20260718.json"
+      }
+    },
+    {
+      "iteration_id": "companion-pet-expression-v9-extension-v10-expanded-emotion-panel-20260718",
+      "request": "docs/art/iterations/companion-pet-expression-v9-extension-v10-expanded-emotion-panel/generation-request.json",
+      "candidate": "docs/art/iterations/companion-pet-expression-v9-extension-v10-expanded-emotion-panel/generated_pet_expression_extension_v10_expanded_emotion_panel_candidate.png",
+      "sha256": "9475CEF565608ED70258980815B31AEEA785CB431AE5B25515FE3790ADE4DD31",
+      "states": ["calm_content", "curious_question", "alert_surprised", "joyful_spark", "affectionate_warm", "playful_bright", "anticipatory_notice", "puzzled_processing", "recording_focus", "listening_focus", "menu_thinking", "sleep_rest_no_moon"],
+      "machine_reports": {
+        "open_eye_identity": "docs/validation/companion-v9-extension-v10-expanded-emotion-panel-open-eye-identity-20260718.json",
+        "expanded_emotion_panel": "docs/validation/companion-v9-extension-v10-expanded-emotion-panel-machine-20260718.json"
+      }
+    }
+  ],
+  "detail_source": {
+    "iteration_id": "companion-pet-expression-v9-extension-v11-secondary-detail-kit-20260718",
+    "request": "docs/art/iterations/companion-pet-expression-v9-extension-v11-secondary-detail-kit/generation-request.json",
+    "candidate": "docs/art/iterations/companion-pet-expression-v9-extension-v11-secondary-detail-kit/generated_pet_expression_extension_v11_secondary_detail_kit_candidate.png",
+    "sha256": "76B0BE9F683349490C262DD4725BDDC2252DEEDFD2B675D4EF53745D8B7C1622",
+    "components": ["cheek_detail_left", "cheek_detail_right", "cheek_dot_pair", "charm_sparkle", "charm_heart", "charm_question", "charm_exclamation", "detail_listening_arcs"],
+    "machine_reports": {
+      "detail_component_kit": "docs/validation/companion-v9-extension-v11-secondary-detail-kit-machine-20260718.json"
+    }
+  },
+  "all_required_states": [
+    "daily_attention_left",
+    "daily_attention_right",
+    "daily_attention_up",
+    "daily_attention_down",
+    "calm_content",
+    "curious_question",
+    "alert_surprised",
+    "joyful_spark",
+    "affectionate_warm",
+    "playful_bright",
+    "anticipatory_notice",
+    "puzzled_processing",
+    "recording_focus",
+    "listening_focus",
+    "menu_thinking",
+    "sleep_rest_no_moon"
+  ],
+  "all_required_secondary_components": [
+    "cheek_detail_left",
+    "cheek_detail_right",
+    "cheek_dot_pair",
+    "charm_sparkle",
+    "charm_heart",
+    "charm_question",
+    "charm_exclamation",
+    "detail_listening_arcs"
+  ],
+  "runtime_resource_activated": false,
+  "component_export_eligible": true,
+  "full_face_source_card_playback": "forbidden",
+  "machine_report": "docs/validation/companion-v9-full-expression-source-bundle-machine-20260718.json",
+  "owner_review_result": "docs/validation/companion-v9-full-expression-source-bundle-owner-art-review-20260718.json",
+  "owner_review_note": "docs/validation/companion-v9-full-expression-source-bundle-owner-art-review-20260718.note.txt",
+  "owner_review_summary": "docs/validation/companion-v9-full-expression-source-bundle-owner-art-review-summary-20260718.json",
+  "next_gate": "Registered component extraction and machine-only expanded Rig preview; runtime remains inactive."
+}

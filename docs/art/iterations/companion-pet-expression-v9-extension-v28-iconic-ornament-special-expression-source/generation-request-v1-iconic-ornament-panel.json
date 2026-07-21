@@ -1,0 +1,77 @@
+{
+  "schema": "companion.v9.special_expression_generation_request.v7",
+  "status": "SUPERSEDED_BEFORE_GENERATION_BY_COMP_REQ_167",
+  "iteration": "V28",
+  "request_revision": 1,
+  "created_at": "2026-07-20",
+  "purpose": "Superseded before generation. This V28 brief proposed subtle iconic ornaments after V27 owner-art review failed, but the owner then required much larger state-specific visual changes that make charging and recording unmistakable at a glance. No V28 source image was generated or may be inferred from this request.",
+  "locked_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "allowed_reference_inputs": [
+    "locked_v9_reference_only"
+  ],
+  "forbidden_reference_inputs": [
+    "V27_rejected_source_or_any_derived_asset",
+    "V26_rejected_source_or_any_derived_asset",
+    "V25_rejected_source_or_any_derived_asset",
+    "V24_rejected_source_or_any_derived_asset",
+    "V23_candidates_or_exports",
+    "legacy_art",
+    "whole_face_runtime_cards"
+  ],
+  "identity_invariants": [
+    "retain the locked V9 open oval eye silhouette, black fill, one large white oval highlight and one small white diamond sparkle per eye",
+    "retain the locked V9 eye-pair scale, spacing, baseline, nose anchor and monochrome ink weight",
+    "do not introduce a new eye shape, iris, pupil, eyelash, colour, face outline, ear, whisker or whole-face card",
+    "all brows, mouth, cheeks, highlights and ornaments are clean separately extractable components inside a 200x200 safe face area",
+    "use no literal menu, microphone, battery, plug, lightning, waveform, cursor, punctuation, text, heart, star or emoji",
+    "ornaments must attach visually to the face/head pose and cannot be a detached generic status widget",
+    "ornaments reinforce a face-primary functional read and never carry all of the meaning alone"
+  ],
+  "previous_read_failures_not_to_repeat": {
+    "menu_active": "must not read as generic neutral, worry, uncertainty, anger or generic confusion",
+    "recording_active": "must not read as concern, surprise, alarm or broadcast",
+    "charging_active": "must not read as generic excitement, sleep, Daily or ordinary happiness",
+    "all_states": "must not lack a memorable state-specific character ornament"
+  },
+  "panel_contract": "Generate one unbordered, unlabeled left-to-right row of exactly three same-scale faces: menu_active, recording_active, charging_active. Each face has a clear face-primary brow-mouth-cheek-highlight action plus exactly one memorable state-specific ornament. The ornament must be visibly anchored to the brows, outer-eye area or forehead as a character accessory and must be independently extractable. The panel is source provenance only; later runtime may export only registered components and must perform each action and ornament through a deterministic component sequence.",
+  "poses": [
+    {
+      "id": "menu_active",
+      "action_verb": "select",
+      "static_read": "purposeful choosing with a recognizable navigator accessory",
+      "facial_action": "Use a low composed brow pair with one restrained decision lift, shared same-side legal highlight bias, a compact closed decision mouth and steady cheeks. It must read focused and friendly rather than worried or generic neutral.",
+      "iconic_ornament": "A small asymmetric navigator ribbon-pin anchored directly above the right brow. It has two compact rounded tabs and one tiny central knot, like a mascot navigation hair ornament, never an arrow, cursor, menu glyph, crown or floating mark. It belongs to the brow line and is clearly separable.",
+      "later_choreography": "the ribbon-pin gives one tiny settle as highlights scan left-to-center-to-right and the decision face lands"
+    },
+    {
+      "id": "recording_active",
+      "action_verb": "listen",
+      "static_read": "active listening with recognizable listener ornaments",
+      "facial_action": "Use low receptive brows with soft outer ends, centered attentive legal highlights, a small closed acknowledgement mouth and calm open cheeks. It must read listening, never concern, surprise, alarm or broadcast.",
+      "iconic_ornament": "A matched pair of rounded listener ear-cuffs hugging the outer eye-cheek edges, visually attached to the face rather than floating. Each is a single compact decorative cuff with one inner notch, never a microphone, headphone pictogram, waveform or repeated sound wave. They are clean separate components.",
+      "later_choreography": "the two listener cuffs make one restrained outward acknowledgement pulse after attention arrives, then hold still"
+    },
+    {
+      "id": "charging_active",
+      "action_verb": "recover",
+      "static_read": "settled replenishment with a recognizable renewal ornament",
+      "facial_action": "Use low soft brows released outward, lower settled legal highlights, a broad but compact closed recovery smile and visibly softened lifted cheeks. It must read restorative relief, never ordinary happy excitement, sleep or Daily.",
+      "iconic_ornament": "A single small three-petal renewal bud anchored at the forehead just above the brows, like a mascot energy-blossom accessory. It is an organic rounded ornament, never a lightning bolt, battery, plug, halo, sparkle, heart or floating status icon. It is cleanly separable.",
+      "later_choreography": "the renewal bud gently opens one step as the face releases into recovery, then settles and reverses exactly"
+    }
+  ],
+  "machine_preconditions_before_owner_review": [
+    "source gate proves locked-V9-only lineage, identity invariants, no literal UI symbols, exactly one state-specific ornament per pose and pairwise face-primary separation",
+    "component export retains exact locked V9 identity components and source-derived brows/mouth/cheeks/ornaments only",
+    "browser and target PBM replay the same deterministic component plan at native 200x200",
+    "internal visual preflight evaluates unlabeled target holds plus causal playback and rejects every wrong, generic or unornamented reading before an operator prompt"
+  ],
+  "runtime_policy": {
+    "runtime_resource_activated": false,
+    "active_candidate_binding": "forbidden",
+    "unavailable_special_state_policy": "fail_closed"
+  }
+}

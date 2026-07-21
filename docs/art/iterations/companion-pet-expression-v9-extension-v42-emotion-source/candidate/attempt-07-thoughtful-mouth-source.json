@@ -1,0 +1,17 @@
+{
+  "schema": "companion.art_generation_attempt.v1",
+  "status": "ACCEPTED_SOURCE_ONLY_AFTER_AGENT_VISUAL_TRIAGE",
+  "created_at": "2026-07-21",
+  "request": "docs/art/iterations/companion-pet-expression-v9-extension-v42-emotion-source/generation-request-v7.json",
+  "prompt": "docs/art/iterations/companion-pet-expression-v9-extension-v42-emotion-source/generation-prompt-v7.md",
+  "image": "docs/art/iterations/companion-pet-expression-v9-extension-v42-emotion-source/candidate/attempt-07-thoughtful-mouth-source.png",
+  "sha256": "1D76B69F92ED5ABD6BACA877A90F6C6FDD76A62B1EC06B6D726264A6F9FA0C67",
+  "locked_v9_reference_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "agent_visual_triage": "Accepted as a source-only Thoughtful mouth: the locked V9 eyes, one primary highlight, one tiny sparkle, brows, cheeks, and centered nose remain identity references; the only eligible export is one compact rounded horizontal mouth dash that remains readable at native 200x200.",
+  "source_crop": {
+    "thoughtful_mouth": [581, 780, 112, 21]
+  },
+  "threshold": 128,
+  "runtime_resource_activated": false,
+  "use": "source-only; export Thoughtful mouth component 587 after component gates"
+}

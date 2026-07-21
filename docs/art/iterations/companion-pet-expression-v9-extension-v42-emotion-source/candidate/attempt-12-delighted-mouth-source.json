@@ -1,0 +1,27 @@
+{
+  "schema": "companion.art_generation_source_metadata.v1",
+  "status": "CANDIDATE_SOURCE_ONLY_PENDING_NATIVE_200_GATE",
+  "generation_request": "docs/art/iterations/companion-pet-expression-v9-extension-v42-emotion-source/generation-request-v12.json",
+  "prompt": "docs/art/iterations/companion-pet-expression-v9-extension-v42-emotion-source/generation-prompt-v12.md",
+  "source_image": "docs/art/iterations/companion-pet-expression-v9-extension-v42-emotion-source/candidate/attempt-12-delighted-mouth-source.png",
+  "source_sha256": "E293FC2640A4E650DC37DC857930CA6C563A52ABBF560C0D5163FA7B66B3B5AB",
+  "source_dimensions": "1254x1254",
+  "locked_v9_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "supersedes": "candidate/attempt-11-delighted-mouth-source.png",
+  "export_contract": {
+    "component_id": 577,
+    "source_crop": [551, 862, 157, 78],
+    "native_scale": 0.16,
+    "runtime_resource_activated": false,
+    "owner_acceptance": "pending"
+  },
+  "agent_visual_triage": {
+    "native_200x200_required": true,
+    "symmetry_and_anchor_gate_required": true,
+    "measured_native_candidate": {"mask_size": [25, 12], "left_black_pixels": 83, "right_black_pixels": 83, "black_pixel_difference": 0},
+    "notes": "Attempt 12 is centered and bilaterally balanced in the measured native candidate; final exporter gate and full V42 preview remain required."
+  }
+}

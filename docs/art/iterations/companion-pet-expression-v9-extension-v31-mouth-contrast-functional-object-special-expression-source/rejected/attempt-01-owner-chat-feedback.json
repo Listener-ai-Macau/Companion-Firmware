@@ -1,0 +1,29 @@
+{
+  "schema": "companion.v9.special_expression_rejected_generation_attempt.v1",
+  "status": "REJECTED_OWNER_CHAT_FEEDBACK_AUDIT_ONLY",
+  "iteration": "V31",
+  "attempt": 1,
+  "locked_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "generation_request": "docs/art/iterations/companion-pet-expression-v9-extension-v31-mouth-contrast-functional-object-special-expression-source/generation-request-v1-mouth-contrast-functional-object-panel.json",
+  "generation_prompt": "docs/art/iterations/companion-pet-expression-v9-extension-v31-mouth-contrast-functional-object-special-expression-source/generation-prompt-v1-mouth-contrast-functional-object-panel.md",
+  "generated_source": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-extension-v31-mouth-contrast-functional-object-special-expression-source/rejected/attempt-01-mouth-contrast-functional-objects.png",
+    "sha256": "F899877E31C7D3235C852AC70F1D83FFDAE5C2B47B3B64060DDCDF6D7812037A",
+    "size": [1774, 887]
+  },
+  "owner_chat_feedback": "还是需要有代表性, 然后区分度大一点",
+  "rejection_reason": "Mouth contours and compact accessories did not establish three representative, clearly distinct functional reads; the charging core read as a decorative star rather than connected charging action.",
+  "disposition": {
+    "source_gate": "NOT_RUN",
+    "component_export": "FORBIDDEN",
+    "component_performance": "FORBIDDEN",
+    "browser_target_parity": "FORBIDDEN",
+    "crig_profile_event_binding_flash_or_panel_output": "FORBIDDEN",
+    "future_visual_prompt_or_reference_input": "FORBIDDEN"
+  },
+  "next_requirement": "COMP-REQ-176",
+  "next_action": "Create a fresh V32 locked-V9-only semantic request and prompt before another image generation."
+}

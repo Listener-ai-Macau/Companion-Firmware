@@ -1,0 +1,614 @@
+{
+  "schema": "companion.v18_v20_complete_special_expression_component_source_layout.v1",
+  "status": "UNBOUND_PENDING_OWNER_ART_REVIEW",
+  "function": "upgrade_active",
+  "generated_source": "docs/art/iterations/companion-pet-expression-v9-extension-v20-upgrade-special-expression-source/candidate/attempt-01-generated-upgrade-special-expression.png",
+  "generated_source_sha256": "AF29A0458CAA3276766A949ECCB7A8D0BE35BB77C09AF2F25E3A84BCD31425E3",
+  "locked_v9_source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "canvas": [
+    200,
+    200
+  ],
+  "source_alignment": {
+    "method": "source_eye_anchor_affine",
+    "source_pair_centers": [
+      [
+        401.0,
+        717.0
+      ],
+      [
+        853.0,
+        717.0
+      ]
+    ],
+    "target_pair_centers": [
+      [
+        58,
+        134
+      ],
+      [
+        142,
+        134
+      ]
+    ],
+    "uniform_scale": 0.18584070796460178,
+    "translation": [
+      -16.522123893805315,
+      0.7522123893805315
+    ]
+  },
+  "identity_components": {
+    "left_eye_open": {
+      "role": "left_eye",
+      "group": "locked_v9_identity",
+      "base_position": [
+        42,
+        112
+      ],
+      "anchor": [
+        16,
+        22
+      ],
+      "offset_range": {
+        "min": [
+          -3,
+          -2
+        ],
+        "max": [
+          3,
+          2
+        ]
+      },
+      "z_index": 30,
+      "composite_op": "ink",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/left_eye_open.pbm",
+      "mask_sha256": "607A30960F6C312FC4D7DC6AD58F02E6DEB6D80EDC63388FE80671AF593DC08E",
+      "mask_size": [
+        33,
+        45
+      ],
+      "source": "locked_v9_rig_v1_component"
+    },
+    "right_eye_open": {
+      "role": "right_eye",
+      "group": "locked_v9_identity",
+      "base_position": [
+        125,
+        112
+      ],
+      "anchor": [
+        17,
+        22
+      ],
+      "offset_range": {
+        "min": [
+          -3,
+          -2
+        ],
+        "max": [
+          3,
+          2
+        ]
+      },
+      "z_index": 30,
+      "composite_op": "ink",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/right_eye_open.pbm",
+      "mask_sha256": "6F1394072AB1D5AD8D573E115594DD4630FA18877841E6AABD635379075094E6",
+      "mask_size": [
+        34,
+        45
+      ],
+      "source": "locked_v9_rig_v1_component"
+    },
+    "left_eye_highlight_open": {
+      "role": "left_highlight",
+      "group": "locked_v9_identity",
+      "base_position": [
+        42,
+        112
+      ],
+      "anchor": [
+        16,
+        22
+      ],
+      "offset_range": {
+        "min": [
+          -2,
+          -3
+        ],
+        "max": [
+          5,
+          4
+        ]
+      },
+      "z_index": 31,
+      "composite_op": "erase",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/left_eye_highlight_open.pbm",
+      "mask_sha256": "FE486194ED600C66CD3A69F0EE1025DC1CC260AD15A2B5A4712274CC8007464C",
+      "mask_size": [
+        33,
+        45
+      ],
+      "source": "locked_v9_rig_v1_component"
+    },
+    "right_eye_highlight_open": {
+      "role": "right_highlight",
+      "group": "locked_v9_identity",
+      "base_position": [
+        125,
+        112
+      ],
+      "anchor": [
+        17,
+        22
+      ],
+      "offset_range": {
+        "min": [
+          -2,
+          -3
+        ],
+        "max": [
+          5,
+          4
+        ]
+      },
+      "z_index": 31,
+      "composite_op": "erase",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/right_eye_highlight_open.pbm",
+      "mask_sha256": "518456E9D22529E4B57E61D5D2963E20F6E80CC3F210FF331281E8F0BC11E650",
+      "mask_size": [
+        34,
+        45
+      ],
+      "source": "locked_v9_rig_v1_component"
+    },
+    "left_eye_sparkle_open": {
+      "role": "left_sparkle",
+      "group": "locked_v9_identity",
+      "base_position": [
+        42,
+        112
+      ],
+      "anchor": [
+        16,
+        22
+      ],
+      "offset_range": {
+        "min": [
+          -6,
+          -6
+        ],
+        "max": [
+          5,
+          6
+        ]
+      },
+      "z_index": 32,
+      "composite_op": "erase",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/left_eye_sparkle_open.pbm",
+      "mask_sha256": "2B62160271B54E894DFBE0DD64A0F744EA80E65A2CBC7617B1497A16A229323D",
+      "mask_size": [
+        33,
+        45
+      ],
+      "source": "locked_v9_rig_v1_component"
+    },
+    "right_eye_sparkle_open": {
+      "role": "right_sparkle",
+      "group": "locked_v9_identity",
+      "base_position": [
+        125,
+        112
+      ],
+      "anchor": [
+        17,
+        22
+      ],
+      "offset_range": {
+        "min": [
+          -6,
+          -6
+        ],
+        "max": [
+          5,
+          6
+        ]
+      },
+      "z_index": 32,
+      "composite_op": "erase",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/right_eye_sparkle_open.pbm",
+      "mask_sha256": "B9AD58B7178E95296965DD2F4000F28B14C2C06180D1E04D86145D2A9D8D4A13",
+      "mask_size": [
+        34,
+        45
+      ],
+      "source": "locked_v9_rig_v1_component"
+    },
+    "nose_default": {
+      "role": "nose",
+      "group": "locked_v9_identity",
+      "base_position": [
+        94,
+        148
+      ],
+      "anchor": [
+        6,
+        4
+      ],
+      "offset_range": {
+        "min": [
+          0,
+          0
+        ],
+        "max": [
+          0,
+          0
+        ]
+      },
+      "z_index": 50,
+      "composite_op": "ink",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/nose_default.pbm",
+      "mask_sha256": "9E136542BCD1AB6F3A057829FC1A53F03965B9F55ABAE899666CDC6D8EF8E298",
+      "mask_size": [
+        13,
+        8
+      ],
+      "source": "locked_v9_rig_v1_component"
+    }
+  },
+  "special_expression_components": {
+    "v20_upgrade_active__left_brow": {
+      "role": "left_brow",
+      "group": "expression",
+      "source_crop": [
+        349,
+        475,
+        464,
+        520
+      ],
+      "base_position": [
+        48,
+        89
+      ],
+      "anchor": [
+        10,
+        4
+      ],
+      "offset_range": {
+        "min": [
+          -2,
+          -2
+        ],
+        "max": [
+          2,
+          2
+        ]
+      },
+      "z_index": 20,
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v20-upgrade-special-expression-source/candidate/component-export-attempt-01/component-masks/u00.pbm",
+      "mask_sha256": "E39AB47E70D9E45E1D7060D9970DD4D1B9627CEBAB0492BA3C68F8C8967E6D88",
+      "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v20-upgrade-special-expression-source/candidate/component-export-attempt-01/preview-layers/u00.png",
+      "preview_layer_sha256": "EE3D10DA308A28519D056F8D3FA630A7F7030CEAEC5AE3EA1ED2CC162ED54E6F",
+      "mask_size": [
+        21,
+        8
+      ],
+      "source": "generated_complete_special_pose"
+    },
+    "v20_upgrade_active__right_brow": {
+      "role": "right_brow",
+      "group": "expression",
+      "source_crop": [
+        791,
+        475,
+        904,
+        520
+      ],
+      "base_position": [
+        130,
+        89
+      ],
+      "anchor": [
+        10,
+        4
+      ],
+      "offset_range": {
+        "min": [
+          -2,
+          -2
+        ],
+        "max": [
+          2,
+          2
+        ]
+      },
+      "z_index": 20,
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v20-upgrade-special-expression-source/candidate/component-export-attempt-01/component-masks/u01.pbm",
+      "mask_sha256": "5A1D2622F8A3B0509DEF000EBD998C3920F59691EBF643F66A53187B360780F3",
+      "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v20-upgrade-special-expression-source/candidate/component-export-attempt-01/preview-layers/u01.png",
+      "preview_layer_sha256": "DA4EFAD529342121C367DF0B56BD3F21DEABDD77E80C1D6BD9271F3EF2BE96BB",
+      "mask_size": [
+        21,
+        8
+      ],
+      "source": "generated_complete_special_pose"
+    },
+    "v20_upgrade_active__left_cheek": {
+      "role": "left_cheek",
+      "group": "expression",
+      "source_crop": [
+        279,
+        845,
+        356,
+        890
+      ],
+      "base_position": [
+        35,
+        158
+      ],
+      "anchor": [
+        7,
+        4
+      ],
+      "offset_range": {
+        "min": [
+          -2,
+          -2
+        ],
+        "max": [
+          2,
+          2
+        ]
+      },
+      "z_index": 40,
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v20-upgrade-special-expression-source/candidate/component-export-attempt-01/component-masks/u02.pbm",
+      "mask_sha256": "F79DF0E315521A60D73B97748CD96A4C1CAC97A325DD97FCC4BD0B81A6237ABB",
+      "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v20-upgrade-special-expression-source/candidate/component-export-attempt-01/preview-layers/u02.png",
+      "preview_layer_sha256": "3086B174F3B175DAADFD7F33423C83D4606367C00EC96727C98FB8D119A37450",
+      "mask_size": [
+        14,
+        8
+      ],
+      "source": "generated_complete_special_pose"
+    },
+    "v20_upgrade_active__right_cheek": {
+      "role": "right_cheek",
+      "group": "expression",
+      "source_crop": [
+        899,
+        845,
+        975,
+        890
+      ],
+      "base_position": [
+        151,
+        158
+      ],
+      "anchor": [
+        7,
+        4
+      ],
+      "offset_range": {
+        "min": [
+          -2,
+          -2
+        ],
+        "max": [
+          2,
+          2
+        ]
+      },
+      "z_index": 40,
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v20-upgrade-special-expression-source/candidate/component-export-attempt-01/component-masks/u03.pbm",
+      "mask_sha256": "C22DE72CECE6E2DC09836A478C6C1F3CB2A57B82180C1A58480322556C774E16",
+      "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v20-upgrade-special-expression-source/candidate/component-export-attempt-01/preview-layers/u03.png",
+      "preview_layer_sha256": "C12562DF57E256CB948933161B72FB0D536B926FDE8B210033610445D571EE04",
+      "mask_size": [
+        14,
+        8
+      ],
+      "source": "generated_complete_special_pose"
+    },
+    "v20_upgrade_active__mouth": {
+      "role": "mouth",
+      "group": "expression",
+      "source_crop": [
+        556,
+        855,
+        698,
+        894
+      ],
+      "base_position": [
+        87,
+        160
+      ],
+      "anchor": [
+        13,
+        3
+      ],
+      "offset_range": {
+        "min": [
+          -2,
+          -2
+        ],
+        "max": [
+          2,
+          2
+        ]
+      },
+      "z_index": 60,
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v20-upgrade-special-expression-source/candidate/component-export-attempt-01/component-masks/u04.pbm",
+      "mask_sha256": "BB35D7C60DAF144782DA54F24D10C365C468098C8CDC984CF792FCA9AD77BBF4",
+      "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v20-upgrade-special-expression-source/candidate/component-export-attempt-01/preview-layers/u04.png",
+      "preview_layer_sha256": "CD58E5ED7EA1A0609A54749D5D9B9B7C74E73E679E15AE8A208EFBDB79D542DC",
+      "mask_size": [
+        26,
+        7
+      ],
+      "source": "generated_complete_special_pose"
+    },
+    "v20_upgrade_active__upgrade_segment_top": {
+      "role": "context_detail",
+      "group": "context_detail",
+      "source_crop": [
+        641,
+        292,
+        684,
+        330
+      ],
+      "base_position": [
+        103,
+        55
+      ],
+      "anchor": [
+        4,
+        3
+      ],
+      "offset_range": {
+        "min": [
+          -2,
+          -2
+        ],
+        "max": [
+          2,
+          2
+        ]
+      },
+      "z_index": 10,
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v20-upgrade-special-expression-source/candidate/component-export-attempt-01/component-masks/u05.pbm",
+      "mask_sha256": "17F31B48C5CD177A2764CD56C35CD47DEAB971C30ADF39D0DA8017E8139BE783",
+      "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v20-upgrade-special-expression-source/candidate/component-export-attempt-01/preview-layers/u05.png",
+      "preview_layer_sha256": "3B75788A963ED570AA4105744532A736BF1A685DF896C51BCF5A0903551B5EBE",
+      "mask_size": [
+        8,
+        7
+      ],
+      "source": "generated_complete_special_pose"
+    },
+    "v20_upgrade_active__upgrade_segment_bottom": {
+      "role": "context_detail",
+      "group": "context_detail",
+      "source_crop": [
+        571,
+        292,
+        614,
+        330
+      ],
+      "base_position": [
+        90,
+        55
+      ],
+      "anchor": [
+        4,
+        3
+      ],
+      "offset_range": {
+        "min": [
+          -2,
+          -2
+        ],
+        "max": [
+          2,
+          2
+        ]
+      },
+      "z_index": 10,
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v20-upgrade-special-expression-source/candidate/component-export-attempt-01/component-masks/u06.pbm",
+      "mask_sha256": "5E11F84B7B11A171AEE2BCDEBBE569938DABF69B1E5F34FECC35D5B10A062538",
+      "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v20-upgrade-special-expression-source/candidate/component-export-attempt-01/preview-layers/u06.png",
+      "preview_layer_sha256": "634D03E7978B06B1AB90E18EA9DDDDD5C1BFF20FB7BF0BA031744C51E1460966",
+      "mask_size": [
+        8,
+        7
+      ],
+      "source": "generated_complete_special_pose"
+    },
+    "v20_upgrade_active__upgrade_segment_left": {
+      "role": "context_detail",
+      "group": "context_detail",
+      "source_crop": [
+        566,
+        363,
+        605,
+        402
+      ],
+      "base_position": [
+        89,
+        68
+      ],
+      "anchor": [
+        3,
+        3
+      ],
+      "offset_range": {
+        "min": [
+          -2,
+          -2
+        ],
+        "max": [
+          2,
+          2
+        ]
+      },
+      "z_index": 10,
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v20-upgrade-special-expression-source/candidate/component-export-attempt-01/component-masks/u07.pbm",
+      "mask_sha256": "FD20833BC434AB255AE45B4D9CB3489E546E86DD84C24BE08E9BDE814A842349",
+      "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v20-upgrade-special-expression-source/candidate/component-export-attempt-01/preview-layers/u07.png",
+      "preview_layer_sha256": "34C57DE2BFC2E8036950977C883F4A19E747B1883368A2917D3C4D2470F5398A",
+      "mask_size": [
+        7,
+        7
+      ],
+      "source": "generated_complete_special_pose"
+    },
+    "v20_upgrade_active__upgrade_segment_right": {
+      "role": "context_detail",
+      "group": "context_detail",
+      "source_crop": [
+        651,
+        363,
+        689,
+        402
+      ],
+      "base_position": [
+        104,
+        68
+      ],
+      "anchor": [
+        3,
+        3
+      ],
+      "offset_range": {
+        "min": [
+          -2,
+          -2
+        ],
+        "max": [
+          2,
+          2
+        ]
+      },
+      "z_index": 10,
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v20-upgrade-special-expression-source/candidate/component-export-attempt-01/component-masks/u08.pbm",
+      "mask_sha256": "910C322AA95C2C71290E0971371A97BF2CCAC566D7A523CA7E9BE319244B2734",
+      "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v20-upgrade-special-expression-source/candidate/component-export-attempt-01/preview-layers/u08.png",
+      "preview_layer_sha256": "E6E5FF951ECABD5D2728B777E766FF9B8D7381705A66916170CFD8356522279B",
+      "mask_size": [
+        7,
+        7
+      ],
+      "source": "generated_complete_special_pose"
+    }
+  },
+  "reassembly": "docs/art/iterations/companion-pet-expression-v9-extension-v20-upgrade-special-expression-source/candidate/component-export-attempt-01/upgrade_active-source-component-reassembly-200x200.pbm",
+  "reassembly_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v20-upgrade-special-expression-source/candidate/component-export-attempt-01/upgrade_active-source-component-reassembly-preview.png",
+  "occlusion_audit": "docs/art/iterations/companion-pet-expression-v9-extension-v20-upgrade-special-expression-source/candidate/component-export-attempt-01/component-occlusion-audit.json",
+  "prohibited_before_owner_art_review": [
+    "whole-source-pose playback",
+    "event choreography",
+    "CRIG export",
+    "runtime activation"
+  ],
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden"
+}

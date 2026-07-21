@@ -1,0 +1,67 @@
+{
+  "schema": "companion.v9.special_expression_generation_request.v17",
+  "status": "CANCELED_OWNER_DAILY_FACE_EVENT_OVERLAY_DIRECTION",
+  "iteration": "V33",
+  "request_revision": 4,
+  "created_at": "2026-07-20",
+  "supersedes": "V33 request revision 3 rejected by its native-200 preview because the recording microphone and wireless dock fell outside the target safe area",
+  "purpose": "CANCELED audit record. This request would have generated three separate dedicated functional-face source cells, but the owner replaced that architecture with the locked V9 daily face plus deterministic event-overlay components.",
+  "canceled_at": "2026-07-20",
+  "cancellation_reason": "COMP-REQ-187: functional activity is an art-derived causal overlay over the living daily face, not a dedicated functional facial pose. No source produced by this request may be imported, used visually, exported, bound or flashed.",
+  "locked_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "allowed_reference_inputs": ["locked_v9_reference_only"],
+  "forbidden_reference_inputs": [
+    "V33_attempt_03_or_any_derived_asset",
+    "V33_attempt_02_or_any_derived_asset",
+    "V33_attempt_01_or_any_derived_asset",
+    "V32_or_any_derived_asset",
+    "V31_or_any_derived_asset",
+    "V30_or_any_derived_asset",
+    "legacy_art",
+    "whole_face_runtime_cards"
+  ],
+  "art_direction_ledger": "docs/art/iterations/companion-pet-expression-v9/art-direction-ledger-v2.json",
+  "source_shape": {
+    "mode": "three_individual_square_cells",
+    "target_normalization": "each cell anchors its two V9 eyes to the canonical native 200x200 eye centers before safety inspection",
+    "minimum_clearance_px": 8,
+    "do_not_combine_before": "each individual cell passes label-hidden native-200 target-safe placement inspection"
+  },
+  "shared_facial_performance_contract": [
+    "use exact V9 eye identity while giving each state a separately extractable highlight direction, brow pose and mouth mask",
+    "menu enter: upward-right acknowledgement highlights, alert asymmetrical lifted brows and tiny closed decision mouth",
+    "recording input: rightward listening highlights, gently drawn-in brows and narrow closed listening mouth with a small white breath gap",
+    "wireless charging: high-inward relaxed highlights, lower wider restorative brows and small rounded upturn mouth with white inner gap",
+    "props validate the state but may not replace these facial differences"
+  ],
+  "cell_contracts": {
+    "menu_enter": {
+      "prompt": "prompts/v4-menu-enter.md",
+      "target_safe_objects": {"sparkle": [84, 45, 116, 75]},
+      "forbidden": ["hamburger", "list", "page", "row", "cursor", "menu icon", "menu UI", "question mark"]
+    },
+    "recording_active": {
+      "prompt": "prompts/v4-recording-input.md",
+      "target_safe_objects": {"microphone": [145, 126, 176, 171], "inward_sound_arcs_and_arrow": [124, 130, 151, 166]},
+      "forbidden": ["mouth output arcs", "talking mouth", "headset", "boom", "large waveform", "edge clipping"]
+    },
+    "charging_active": {
+      "prompt": "prompts/v4-wireless-dock.md",
+      "target_safe_objects": {"wireless_dock": [70, 163, 130, 189], "upward_induction_arcs": [82, 143, 118, 171], "energy_glint": [94, 153, 106, 165]},
+      "forbidden": ["wired plug", "cable", "socket", "Type-C", "battery", "large lightning", "edge clipping"]
+    }
+  },
+  "source_preview_gate": [
+    "each source cell renders without cropping its required object boxes after native eye normalization",
+    "each source cell is readable with labels hidden and has a correct causal direction",
+    "only then may the three cells appear in one review sheet; no component or runtime export occurs before a passing V33 source gate"
+  ],
+  "runtime_policy": {
+    "runtime_resource_activated": false,
+    "active_candidate_binding": "forbidden",
+    "unavailable_special_state_policy": "fail_closed"
+  }
+}

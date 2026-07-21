@@ -1,0 +1,66 @@
+{
+  "schema": "companion.v9.special_expression_generation_request.v1",
+  "status": "REQUESTED_TO_GENERATE_PENDING_SOURCE",
+  "iteration": "V24",
+  "request_revision": 1,
+  "created_at": "2026-07-20",
+  "purpose": "Generate three independently authored, glance-readable core special-expression sources. This is source art only: it is not a runtime resource, CRIG, profile, firmware binding, panel frame, or acceptance claim.",
+  "owner_readability_contract": "At a native 200x200 static hold and without a label, legend, surrounding UI or motion, menu_active, recording_active and charging_active must be distinguishable from each other at a glance. The complete face carries the primary functional-action reading; any accent is only a secondary reinforcement.",
+  "locked_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "allowed_reference_inputs": [
+    "locked_v9_reference_only"
+  ],
+  "forbidden_reference_inputs": [
+    "V18_menu_rejected_source",
+    "V19_recording_rejected_source",
+    "V20_upgrade_rejected_source",
+    "V23_v1_v2_v3_candidates_or_exports",
+    "legacy_art",
+    "whole_face_runtime_cards",
+    "custom_LUT_or_display_artifacts"
+  ],
+  "identity_invariants": [
+    "retain the locked V9 open-eye silhouette, pupil fills, one primary highlight and one small sparkle per eye",
+    "retain the locked V9 eye-pair scale, spacing, baseline, nose anchor and monochrome black-ink treatment",
+    "do not make a new eye shape, eyelash, iris, pupil, colour treatment, face outline or full-face card",
+    "every brow, mouth, cheek and accent mark must be a separately extractable source component inside a 200x200 export-safe face area",
+    "use a clean pure-white background with no text, label, legend, UI panel, button, screen frame or layout grid",
+    "do not add a literal menu icon, microphone, waveform, battery, plug, lightning symbol, question, exclamation, heart, star or emoji"
+  ],
+  "poses": [
+    {
+      "id": "menu_active",
+      "event": "menu_hold",
+      "functional_read": "purposeful browse/select attention, not generic thinking or surprise",
+      "face_primary": "Use an obviously intentional, composed selection pose: both brows make a firm but friendly inward focus, the mouth is a compact decisive closed selection mark rather than an open surprised O, and the cheeks stay contained. It must look meaningfully more purposeful than Daily before any accent is seen.",
+      "accent_secondary": "Use only a compact detached three-step dot cadence above the face, with clear spacing and enough visual weight to reinforce controlled navigation. It must not form a literal menu control or UI glyph.",
+      "choreography_intent": "Daily highlight pickup, two-stage brows settle inward, mouth lands on the selection pose, dot cadence enters once, then an explicit causal reverse on menu exit."
+    },
+    {
+      "id": "recording_active",
+      "event": "recording_active",
+      "functional_read": "unmistakable active listening/responding, not generic excitement or decoration",
+      "face_primary": "Use a clearly receptive listening pose: brows visibly lift and angle toward the center with alert softness, the mouth becomes a small rounded attentive response mark, and the cheek marks become visibly alert. The pose must read as listening from the face alone before surrounding marks are seen.",
+      "accent_secondary": "Use two balanced, bold but compact nested listening arcs outside the cheeks. They reinforce an already readable listening face and must not resemble a microphone, waveform or UI notification.",
+      "choreography_intent": "Legal highlight orient, brow-listen settle, one paired ripple expands and retracts, then an explicit causal reverse on recording stop or cancel."
+    },
+    {
+      "id": "charging_active",
+      "event": "charging",
+      "functional_read": "clear replenishing, restful relief, not generic joy or sleep",
+      "face_primary": "Use an unmistakably restorative contented pose: brows relax upward and outward, the mouth forms a clearly visible soft upward satisfied smile, and cheeks look gently buoyant. The face alone must read as relief and recovery, not a generic Daily smile.",
+      "accent_secondary": "Use two detached, rounded upward breathing marks above the face with a larger, calm rhythm than the menu dots. They reinforce replenishment without forming a battery, plug or lightning symbol.",
+      "choreography_intent": "Highlights soften, brows release, satisfied mouth settles, breathing marks rise once and settle, then an explicit causal reverse when charging ends."
+    }
+  ],
+  "required_followup": [
+    "generate one clean source image per pose using only the locked V9 reference",
+    "archive each exact prompt, generated source path and SHA-256 before crop, normalization or component export",
+    "reject a source whose face alone reads as Daily, whose intent relies on its accent alone, or whose accent is a literal UI/status icon",
+    "prove native 200x200 static-hold output, face-primary deltas across all three poses and browser/target component-plan parity before a canonical owner-art review",
+    "keep every V24 resource runtime inactive and unbound until owner art review and the separate physical White/Black gates pass"
+  ]
+}

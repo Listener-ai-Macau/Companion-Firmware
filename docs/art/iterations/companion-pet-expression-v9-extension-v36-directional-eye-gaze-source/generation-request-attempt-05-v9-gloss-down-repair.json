@@ -1,0 +1,47 @@
+{
+  "schema": "companion.art_generation_request.v1",
+  "id": "companion-pet-expression-v9-extension-v36-directional-eye-gaze-source-attempt-05-v9-gloss-down-repair",
+  "status": "REQUEST_RECORDED_PENDING_IMAGE_GENERATION",
+  "created_on": "2026-07-20",
+  "owner_requirement": "COMP-REQ-214",
+  "supersedes_for_direction_only": "generation-request-attempt-04-eye-interior-only-down-repair.json",
+  "purpose": "Create a source-only V9 daily-down candidate that is readable yet retains the V9 glossy, cute two-reflection eye relationship.",
+  "reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "usage": "The locked V9 image is the only generator reference. Previous V36 candidates remain comparison/rejection evidence, not prompt inputs."
+  },
+  "output_contract": {
+    "format": "one unlabelled 200x200-equivalent V9 daily-down source face; no grid, text, border or alternate state",
+    "pixel_intent": "clean monochrome black ink on a plain white background; no grey, color, texture or shading",
+    "allowed_change": "only the enclosed white large glossy oval and small four-point companion sparkle inside each fixed V9 open black eye silhouette",
+    "daily_down_geometry": {
+      "dominant_highlight": "the same soft vertically elongated glossy oval language as V9, kept light and modestly lower than V9 rest without becoming a circular lower pupil-like disc",
+      "companion_sparkle": "the same small four-point V9-like sparkle, paired close to the oval toward the nose side without detaching",
+      "relationship": "both eyes preserve V9's balanced cute glossy relationship and settle into a gentle down glance; substantial black rim remains above and below the group"
+    },
+    "protected_identity": [
+      "V9 outer black eye silhouette, placement and scale",
+      "single V9 star charm only",
+      "brows",
+      "nose and mouth",
+      "cheeks",
+      "white background and 200x200 composition"
+    ]
+  },
+  "forbidden": [
+    "replace or edit the locked V9 source file",
+    "large lower circular white disc, dot-only eye, detached sparkle, cross-eye placement or extra charm",
+    "new outer eye silhouette, eye size or eye placement",
+    "new face, brow, mouth, cheek or charm art",
+    "full-face runtime frame, full-face animation loop or full-face state card",
+    "legacy art, custom LUT, code-drawn eye, candidate activation, provisioning or firmware flash"
+  ],
+  "required_machine_gates_before_use": [
+    "generated source SHA256 and lineage record",
+    "outer-eye silhouette/identity comparison against locked V9",
+    "native-200 cute-gloss and daily-down readability evidence after locked-V9-body reassembly",
+    "component-only export with legal coordinates",
+    "browser/target component-score pixel parity"
+  ]
+}

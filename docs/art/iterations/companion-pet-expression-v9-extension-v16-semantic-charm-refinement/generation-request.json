@@ -1,0 +1,44 @@
+{
+  "schema": "companion.v9_art_generation_request.v1",
+  "status": "PROMPT_VERSIONED_PENDING_GENERATION",
+  "iteration_id": "companion-pet-expression-v9-extension-v16-semantic-charm-refinement-20260719",
+  "product_requirement": "COMP-REQ-135",
+  "render_parent_iteration": "pet-expression-v9-anti-sly-cute-2026-07-15",
+  "reference_images": [
+    {
+      "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "use": "sole character and source-ink style reference"
+    }
+  ],
+  "reference_policy": "Locked V9 is the sole render reference. V10/V11 and all rejected candidates are forbidden as visual references, pixel sources or prompt inputs.",
+  "prompt_delta": "Generate a white square monochrome source-art panel containing exactly two detached semantic charm candidates for the locked V9 Companion: one compact rounded curious cue, formed by a short soft hook with a separate small round dot, and one compact surprised cue, formed by a slim gently tapered vertical stroke with a separate small round dot. They must feel like small hand-inked marks from the same V9 pixel-art family, with restrained stroke weight, generous whitespace and a compact footprint appropriate above a 200x200 face. Keep the two marks isolated and well separated for later source-mask extraction. This is an art-source panel only, never a complete expression face or animation frame.",
+  "inherited_identity_gates": [
+    "Do not alter, redraw or include the V9 eye pair, brows, nose, mouth, cheeks or face silhouette.",
+    "Keep V9's crisp black-on-white monochrome, low-detail visual grammar and calm rounded stroke personality.",
+    "One generated sheet changes only detached semantic charm vocabulary."
+  ],
+  "negative_constraints": [
+    "no face, eyes, brows, mouth, cheeks, character silhouette or whole expression card",
+    "no labels, letters, numbers, grid, border, UI, speech bubble, emoji bubble or decorative framing",
+    "no sparkle, heart, moon, crescent, Z, cat detail, whiskers, starburst or third charm",
+    "no giant generic typography, heavy block punctuation, calligraphic flourish, outline glyph or cartoon clipart",
+    "no color, grayscale, texture, shadow, gradient or anti-aliasing",
+    "no V10, V11, V12, V13, V14, V15, legacy or rejected visual reference"
+  ],
+  "planned_output": "docs/art/iterations/companion-pet-expression-v9-extension-v16-semantic-charm-refinement/candidate/attempt-01-generated-semantic-charm-panel.png",
+  "post_generation_gate": {
+    "required": [
+      "generated file SHA256 recorded",
+      "exactly two independently extractable source-ink masks",
+      "each mask has a detached dot and no labels/border/face pixels",
+      "source-only reassembly at 200x200 has zero overlap with protected V9 face roles",
+      "candidate remains unbound, runtime inactive and unavailable to charging/error"
+    ],
+    "forbidden": [
+      "code-drawn or traced glyphs",
+      "whole-face or CEMP runtime playback",
+      "active Rig binding before canonical owner art acceptance"
+    ]
+  }
+}

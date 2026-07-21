@@ -1,0 +1,1189 @@
+{
+  "schema": "companion.emote_asset_pack_manifest.v1",
+  "name": "companion-v9-expanded-expression-rig-audit-200x200",
+  "revision": 2,
+  "priority": 0,
+  "profile": {
+    "width": 200,
+    "height": 200,
+    "stride_bytes": 25,
+    "pixel_format": "mono_1bpp_white_is_one_msb"
+  },
+  "encoding": "packbits",
+  "provenance": {
+    "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "source_hashes": {
+      "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "docs/art/iterations/companion-pet-expression-v9-extension-v9-expanded-daily-direction-strip/generated_pet_expression_extension_v9_expanded_daily_direction_strip_candidate.png": "06482F6401DF63ED16369660A3D2E4337A37C470F0007C0EAF8CBC90E6D768C5",
+      "docs/art/iterations/companion-pet-expression-v9-extension-v10-expanded-emotion-panel/generated_pet_expression_extension_v10_expanded_emotion_panel_candidate.png": "9475CEF565608ED70258980815B31AEEA785CB431AE5B25515FE3790ADE4DD31",
+      "docs/art/iterations/companion-pet-expression-v9-extension-v11-secondary-detail-kit/generated_pet_expression_extension_v11_secondary_detail_kit_candidate.png": "76B0BE9F683349490C262DD4725BDDC2252DEEDFD2B675D4EF53745D8B7C1622"
+    },
+    "runtime_resource_activated": false,
+    "machine_only_candidate": true,
+    "audit_only": true,
+    "forbidden_runtime_paths": [
+      "CEMP playback",
+      "whole-face card loop",
+      "code-drawn face",
+      "custom LUT"
+    ]
+  },
+  "clips": [
+    {
+      "name": "daily_attention_left",
+      "loop_start": 0,
+      "loop_end": 7,
+      "frames": [
+        {
+          "source": "performance-frames-200x200/daily_attention_left-00-entry.pbm",
+          "duration_ms": 420,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/daily_attention_left-01-lead.pbm",
+          "duration_ms": 140,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/daily_attention_left-02-response.pbm",
+          "duration_ms": 180,
+          "dirty": [
+            47,
+            77,
+            126,
+            79
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/daily_attention_left-03-accent.pbm",
+          "duration_ms": 180,
+          "dirty": [
+            47,
+            22,
+            126,
+            134
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/daily_attention_left-04-hold.pbm",
+          "duration_ms": 3400,
+          "dirty": [
+            47,
+            22,
+            126,
+            134
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/daily_attention_left-05-return.pbm",
+          "duration_ms": 220,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/daily_attention_left-06-settle.pbm",
+          "duration_ms": 720,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        }
+      ]
+    },
+    {
+      "name": "daily_attention_right",
+      "loop_start": 0,
+      "loop_end": 7,
+      "frames": [
+        {
+          "source": "performance-frames-200x200/daily_attention_right-00-entry.pbm",
+          "duration_ms": 420,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/daily_attention_right-01-lead.pbm",
+          "duration_ms": 140,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/daily_attention_right-02-response.pbm",
+          "duration_ms": 180,
+          "dirty": [
+            44,
+            76,
+            128,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/daily_attention_right-03-accent.pbm",
+          "duration_ms": 180,
+          "dirty": [
+            44,
+            22,
+            128,
+            135
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/daily_attention_right-04-hold.pbm",
+          "duration_ms": 3400,
+          "dirty": [
+            44,
+            22,
+            128,
+            135
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/daily_attention_right-05-return.pbm",
+          "duration_ms": 220,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/daily_attention_right-06-settle.pbm",
+          "duration_ms": 720,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        }
+      ]
+    },
+    {
+      "name": "daily_attention_up",
+      "loop_start": 0,
+      "loop_end": 7,
+      "frames": [
+        {
+          "source": "performance-frames-200x200/daily_attention_up-00-entry.pbm",
+          "duration_ms": 420,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/daily_attention_up-01-lead.pbm",
+          "duration_ms": 140,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/daily_attention_up-02-response.pbm",
+          "duration_ms": 180,
+          "dirty": [
+            47,
+            76,
+            126,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/daily_attention_up-03-accent.pbm",
+          "duration_ms": 180,
+          "dirty": [
+            47,
+            21,
+            126,
+            136
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/daily_attention_up-04-hold.pbm",
+          "duration_ms": 3400,
+          "dirty": [
+            47,
+            21,
+            126,
+            136
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/daily_attention_up-05-return.pbm",
+          "duration_ms": 220,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/daily_attention_up-06-settle.pbm",
+          "duration_ms": 720,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        }
+      ]
+    },
+    {
+      "name": "daily_attention_down",
+      "loop_start": 0,
+      "loop_end": 7,
+      "frames": [
+        {
+          "source": "performance-frames-200x200/daily_attention_down-00-entry.pbm",
+          "duration_ms": 420,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/daily_attention_down-01-lead.pbm",
+          "duration_ms": 140,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/daily_attention_down-02-response.pbm",
+          "duration_ms": 180,
+          "dirty": [
+            46,
+            76,
+            127,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/daily_attention_down-03-accent.pbm",
+          "duration_ms": 180,
+          "dirty": [
+            46,
+            22,
+            127,
+            135
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/daily_attention_down-04-hold.pbm",
+          "duration_ms": 3400,
+          "dirty": [
+            46,
+            22,
+            127,
+            135
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/daily_attention_down-05-return.pbm",
+          "duration_ms": 220,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/daily_attention_down-06-settle.pbm",
+          "duration_ms": 720,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        }
+      ]
+    },
+    {
+      "name": "calm_content",
+      "loop_start": 0,
+      "loop_end": 7,
+      "frames": [
+        {
+          "source": "performance-frames-200x200/calm_content-00-entry.pbm",
+          "duration_ms": 420,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/calm_content-01-lead.pbm",
+          "duration_ms": 140,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/calm_content-02-response.pbm",
+          "duration_ms": 180,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/calm_content-03-accent.pbm",
+          "duration_ms": 180,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/calm_content-04-hold.pbm",
+          "duration_ms": 3400,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/calm_content-05-return.pbm",
+          "duration_ms": 220,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/calm_content-06-settle.pbm",
+          "duration_ms": 720,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        }
+      ]
+    },
+    {
+      "name": "curious_question",
+      "loop_start": 0,
+      "loop_end": 7,
+      "frames": [
+        {
+          "source": "performance-frames-200x200/curious_question-00-entry.pbm",
+          "duration_ms": 420,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/curious_question-01-lead.pbm",
+          "duration_ms": 140,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/curious_question-02-response.pbm",
+          "duration_ms": 180,
+          "dirty": [
+            48,
+            75,
+            122,
+            90
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/curious_question-03-accent.pbm",
+          "duration_ms": 180,
+          "dirty": [
+            48,
+            75,
+            122,
+            90
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/curious_question-04-hold.pbm",
+          "duration_ms": 3400,
+          "dirty": [
+            48,
+            75,
+            122,
+            90
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/curious_question-05-return.pbm",
+          "duration_ms": 220,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/curious_question-06-settle.pbm",
+          "duration_ms": 720,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        }
+      ]
+    },
+    {
+      "name": "alert_surprised",
+      "loop_start": 0,
+      "loop_end": 7,
+      "frames": [
+        {
+          "source": "performance-frames-200x200/alert_surprised-00-entry.pbm",
+          "duration_ms": 420,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/alert_surprised-01-lead.pbm",
+          "duration_ms": 140,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/alert_surprised-02-response.pbm",
+          "duration_ms": 180,
+          "dirty": [
+            48,
+            74,
+            123,
+            92
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/alert_surprised-03-accent.pbm",
+          "duration_ms": 180,
+          "dirty": [
+            48,
+            74,
+            123,
+            92
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/alert_surprised-04-hold.pbm",
+          "duration_ms": 3400,
+          "dirty": [
+            48,
+            74,
+            123,
+            92
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/alert_surprised-05-return.pbm",
+          "duration_ms": 220,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/alert_surprised-06-settle.pbm",
+          "duration_ms": 720,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        }
+      ]
+    },
+    {
+      "name": "joyful_spark",
+      "loop_start": 0,
+      "loop_end": 7,
+      "frames": [
+        {
+          "source": "performance-frames-200x200/joyful_spark-00-entry.pbm",
+          "duration_ms": 420,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/joyful_spark-01-lead.pbm",
+          "duration_ms": 140,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/joyful_spark-02-response.pbm",
+          "duration_ms": 180,
+          "dirty": [
+            48,
+            75,
+            124,
+            92
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/joyful_spark-03-accent.pbm",
+          "duration_ms": 180,
+          "dirty": [
+            48,
+            21,
+            124,
+            146
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/joyful_spark-04-hold.pbm",
+          "duration_ms": 3400,
+          "dirty": [
+            48,
+            21,
+            124,
+            146
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/joyful_spark-05-return.pbm",
+          "duration_ms": 220,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/joyful_spark-06-settle.pbm",
+          "duration_ms": 720,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        }
+      ]
+    },
+    {
+      "name": "affectionate_warm",
+      "loop_start": 0,
+      "loop_end": 7,
+      "frames": [
+        {
+          "source": "performance-frames-200x200/affectionate_warm-00-entry.pbm",
+          "duration_ms": 420,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/affectionate_warm-01-lead.pbm",
+          "duration_ms": 140,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/affectionate_warm-02-response.pbm",
+          "duration_ms": 180,
+          "dirty": [
+            48,
+            76,
+            124,
+            80
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/affectionate_warm-03-accent.pbm",
+          "duration_ms": 180,
+          "dirty": [
+            48,
+            22,
+            124,
+            134
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/affectionate_warm-04-hold.pbm",
+          "duration_ms": 3400,
+          "dirty": [
+            48,
+            22,
+            124,
+            134
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/affectionate_warm-05-return.pbm",
+          "duration_ms": 220,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/affectionate_warm-06-settle.pbm",
+          "duration_ms": 720,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        }
+      ]
+    },
+    {
+      "name": "playful_bright",
+      "loop_start": 0,
+      "loop_end": 7,
+      "frames": [
+        {
+          "source": "performance-frames-200x200/playful_bright-00-entry.pbm",
+          "duration_ms": 420,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/playful_bright-01-lead.pbm",
+          "duration_ms": 140,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/playful_bright-02-response.pbm",
+          "duration_ms": 180,
+          "dirty": [
+            48,
+            75,
+            123,
+            89
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/playful_bright-03-accent.pbm",
+          "duration_ms": 180,
+          "dirty": [
+            48,
+            75,
+            123,
+            89
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/playful_bright-04-hold.pbm",
+          "duration_ms": 3400,
+          "dirty": [
+            48,
+            75,
+            123,
+            89
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/playful_bright-05-return.pbm",
+          "duration_ms": 220,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/playful_bright-06-settle.pbm",
+          "duration_ms": 720,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        }
+      ]
+    },
+    {
+      "name": "anticipatory_notice",
+      "loop_start": 0,
+      "loop_end": 7,
+      "frames": [
+        {
+          "source": "performance-frames-200x200/anticipatory_notice-00-entry.pbm",
+          "duration_ms": 420,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/anticipatory_notice-01-lead.pbm",
+          "duration_ms": 140,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/anticipatory_notice-02-response.pbm",
+          "duration_ms": 180,
+          "dirty": [
+            46,
+            70,
+            125,
+            94
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/anticipatory_notice-03-accent.pbm",
+          "duration_ms": 180,
+          "dirty": [
+            46,
+            21,
+            125,
+            143
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/anticipatory_notice-04-hold.pbm",
+          "duration_ms": 3400,
+          "dirty": [
+            46,
+            21,
+            125,
+            143
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/anticipatory_notice-05-return.pbm",
+          "duration_ms": 220,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/anticipatory_notice-06-settle.pbm",
+          "duration_ms": 720,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        }
+      ]
+    },
+    {
+      "name": "puzzled_processing",
+      "loop_start": 0,
+      "loop_end": 7,
+      "frames": [
+        {
+          "source": "performance-frames-200x200/puzzled_processing-00-entry.pbm",
+          "duration_ms": 420,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/puzzled_processing-01-lead.pbm",
+          "duration_ms": 140,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/puzzled_processing-02-response.pbm",
+          "duration_ms": 180,
+          "dirty": [
+            47,
+            77,
+            125,
+            78
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/puzzled_processing-03-accent.pbm",
+          "duration_ms": 180,
+          "dirty": [
+            47,
+            77,
+            125,
+            78
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/puzzled_processing-04-hold.pbm",
+          "duration_ms": 3400,
+          "dirty": [
+            47,
+            77,
+            125,
+            78
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/puzzled_processing-05-return.pbm",
+          "duration_ms": 220,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/puzzled_processing-06-settle.pbm",
+          "duration_ms": 720,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        }
+      ]
+    },
+    {
+      "name": "recording_focus",
+      "loop_start": 0,
+      "loop_end": 7,
+      "frames": [
+        {
+          "source": "performance-frames-200x200/recording_focus-00-entry.pbm",
+          "duration_ms": 420,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/recording_focus-01-lead.pbm",
+          "duration_ms": 140,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/recording_focus-02-response.pbm",
+          "duration_ms": 180,
+          "dirty": [
+            47,
+            75,
+            125,
+            91
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/recording_focus-03-accent.pbm",
+          "duration_ms": 180,
+          "dirty": [
+            47,
+            75,
+            125,
+            91
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/recording_focus-04-hold.pbm",
+          "duration_ms": 3400,
+          "dirty": [
+            47,
+            75,
+            125,
+            91
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/recording_focus-05-return.pbm",
+          "duration_ms": 220,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/recording_focus-06-settle.pbm",
+          "duration_ms": 720,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        }
+      ]
+    },
+    {
+      "name": "listening_focus",
+      "loop_start": 0,
+      "loop_end": 7,
+      "frames": [
+        {
+          "source": "performance-frames-200x200/listening_focus-00-entry.pbm",
+          "duration_ms": 420,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/listening_focus-01-lead.pbm",
+          "duration_ms": 140,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/listening_focus-02-response.pbm",
+          "duration_ms": 180,
+          "dirty": [
+            47,
+            73,
+            126,
+            85
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/listening_focus-03-accent.pbm",
+          "duration_ms": 180,
+          "dirty": [
+            47,
+            73,
+            126,
+            85
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/listening_focus-04-hold.pbm",
+          "duration_ms": 3400,
+          "dirty": [
+            47,
+            73,
+            126,
+            85
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/listening_focus-05-return.pbm",
+          "duration_ms": 220,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/listening_focus-06-settle.pbm",
+          "duration_ms": 720,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        }
+      ]
+    },
+    {
+      "name": "menu_thinking",
+      "loop_start": 0,
+      "loop_end": 7,
+      "frames": [
+        {
+          "source": "performance-frames-200x200/menu_thinking-00-entry.pbm",
+          "duration_ms": 420,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/menu_thinking-01-lead.pbm",
+          "duration_ms": 140,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/menu_thinking-02-response.pbm",
+          "duration_ms": 180,
+          "dirty": [
+            48,
+            77,
+            123,
+            87
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/menu_thinking-03-accent.pbm",
+          "duration_ms": 180,
+          "dirty": [
+            48,
+            77,
+            123,
+            87
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/menu_thinking-04-hold.pbm",
+          "duration_ms": 3400,
+          "dirty": [
+            48,
+            77,
+            123,
+            87
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/menu_thinking-05-return.pbm",
+          "duration_ms": 220,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        },
+        {
+          "source": "performance-frames-200x200/menu_thinking-06-settle.pbm",
+          "duration_ms": 720,
+          "dirty": [
+            48,
+            76,
+            123,
+            81
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "schema": "companion.v9.special_expression_generation_request.v14",
+  "status": "PENDING_GENERATION",
+  "iteration": "V33",
+  "request_revision": 2,
+  "created_at": "2026-07-20",
+  "supersedes": "V33 request revision 1 and attempt 01, superseded by owner feedback under COMP-REQ-181",
+  "purpose": "Generate a locked-V9-only three-pose source panel with correct causal direction: a momentary menu-enter acknowledgement that hands off to the real no-face menu UI, quiet input recording that receives sound into the character, and compact charging that visibly receives energy into a cheek-side port.",
+  "locked_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "allowed_reference_inputs": ["locked_v9_reference_only"],
+  "forbidden_reference_inputs": [
+    "V33_attempt_01_or_any_derived_asset",
+    "V32_or_any_derived_asset",
+    "V31_or_any_derived_asset",
+    "V30_or_any_derived_asset",
+    "V29_or_any_derived_asset",
+    "legacy_art",
+    "whole_face_runtime_cards"
+  ],
+  "v9_identity_invariants": [
+    "retain exact locked V9 floating-face identity: black oval eyes with one oval highlight and one diamond sparkle per eye, eye scale/spacing/baseline, small nose, cheeks, thin line weight and wide white margins",
+    "no head, hair, ears, body, helmet, headband, text, label, colour, shading, grey, card or frame",
+    "face action is primary and functional cues are compact character-bound components with clean separation boundaries",
+    "each state must remain readable in a label-hidden 200x200 crop and show a correct causal direction, not merely a functional noun"
+  ],
+  "state_action_brief": [
+    {
+      "id": "menu_enter",
+      "action_verb": "acknowledge_and_enter",
+      "product_handoff": "short transition only, then the separate no-face four-root menu UI becomes visible",
+      "face_action": "gently lifted alert brows, one focused highlight glance and a tiny composed acknowledgement mouth; a single small V9-style sparkle may lift from the brow line",
+      "cue": "no literal hamburger, list, page, row, cursor, chevron, menu icon or persistent menu-page story; the expression must read as an intentional moment before the menu appears",
+      "avoid": ["menu UI inside the face", "question mark", "generic idle face", "detached UI widget"]
+    },
+    {
+      "id": "recording_active",
+      "action_verb": "receive_and_listen",
+      "face_action": "quiet attentive brows, highlights turned toward an external sound source and one calm closed or barely parted listening mouth; never speaking or surprise",
+      "cue": "one tiny familiar microphone or sensor at the outer face edge. Exactly two short sound arcs point inward from the external microphone/environment toward the character's near cheek/eye, with no sound wave beginning at the mouth",
+      "avoid": ["mouth-to-microphone arcs", "talking face", "open speaking O", "headset", "boom", "large waveform", "duplicate mouth"]
+    },
+    {
+      "id": "charging_active",
+      "action_verb": "receive_energy_and_recover",
+      "face_action": "soft restorative brows, a compact recovery smile and highlights lifted slightly inward; not a generic happy or celebration pose",
+      "cue": "one compact standard two-prong plug reaches a small receiving port at the left cheek. A short cord comes from outside the face field and a very small energy bolt/dash sits immediately before the receiving port, oriented into the character. The connection is short, clean and smaller than an eye",
+      "avoid": ["long cable across the forehead", "large lightning bolt", "decorative star", "battery block", "oversized plug", "happy-only face"]
+    }
+  ],
+  "source_preview_gate": [
+    "render label-hidden native 200x200 crops before any component export",
+    "menu enter has no literal menu UI and visibly hands off to a no-face menu surface in later choreography",
+    "recording has inward sound direction and no mouth-originated output mark",
+    "charging has compact external-to-character energy direction without a dominating cable or bolt",
+    "the candidate remains runtime inactive and fail-closed until all later source/export/choreography/browser-target and human gates pass"
+  ],
+  "runtime_policy": {
+    "runtime_resource_activated": false,
+    "active_candidate_binding": "forbidden",
+    "unavailable_special_state_policy": "fail_closed"
+  }
+}

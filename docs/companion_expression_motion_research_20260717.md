@@ -1,5 +1,10 @@
 # Companion 动态表情参考调研（2026-07-17）
 
+> **历史研究资料。** 本文是编舞语法的来源记录，不是当前运行时入口。当前
+> entry/lead/response/hold/settle、idle blink、touch freeze 和 release resume
+> 以 [companion_art_generation_lineage.md](companion_art_generation_lineage.md)
+> 及 V45 target plan 为准。
+
 ## 目的
 
 本记录把成熟陪伴产品与屏幕脸研究转成 Companion 可执行的动态表情约束。它们是交互语法参考，不复制任何品牌造型、资源或角色；Companion 始终只使用锁定的 v9 内脸来源。

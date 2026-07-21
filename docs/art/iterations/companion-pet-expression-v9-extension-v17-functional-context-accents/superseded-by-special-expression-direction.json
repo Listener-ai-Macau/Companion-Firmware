@@ -1,0 +1,28 @@
+{
+  "schema": "companion.v17_functional_context_supersession.v1",
+  "status": "SUPERSEDED_UNBOUND_NOT_ELIGIBLE_FOR_FEATURE_EXPRESSION_BINDING",
+  "date": "2026-07-19",
+  "owner_direction": "是特殊的表情, 不是小组件",
+  "replacement_requirement": "COMP-REQ-138",
+  "replacement_iterations": [
+    "V18 Menu complete special-expression source pose",
+    "V19 Recording complete special-expression source pose",
+    "V20 Upgrade complete special-expression source pose"
+  ],
+  "retained_audit_artifacts": [
+    "generation-request.json",
+    "candidate/attempt-01-generated-functional-context-accent-panel.json",
+    "candidate/attempt-01-generated-functional-context-accent-panel.png",
+    "candidate/component-export-attempt-01/"
+  ],
+  "forbidden_uses": [
+    "face binding",
+    "event choreography",
+    "external NOR CRIG export",
+    "runtime activation",
+    "upgrade fallback",
+    "future prompt reference"
+  ],
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden"
+}

@@ -1,0 +1,66 @@
+{
+  "schema": "companion.v32.representative_functional_silhouette_special_expression_source_lineage.v1",
+  "status": "REJECTED_OWNER_CHAT_FEEDBACK_AUDIT_ONLY",
+  "iteration": "V32",
+  "locked_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "allowed_reference_inputs": ["locked_v9_reference_only"],
+  "forbidden_reference_inputs": [
+    "V32_attempt_01_or_any_derived_asset",
+    "V32_attempt_02_or_any_derived_asset",
+    "V31_rejected_source_or_any_derived_asset",
+    "V30_rejected_source_or_any_derived_asset",
+    "V29_rejected_source_or_any_derived_asset",
+    "V28_superseded_request_as_visual_input",
+    "V27_rejected_source_or_any_derived_asset",
+    "V26_rejected_source_or_any_derived_asset",
+    "V25_rejected_source_or_any_derived_asset",
+    "V24_rejected_source_or_any_derived_asset",
+    "V23_candidates_or_exports",
+    "legacy_art",
+    "whole_face_runtime_cards"
+  ],
+  "generation_request": "docs/art/iterations/companion-pet-expression-v9-extension-v32-representative-functional-silhouette-special-expression-source/request-v3.json",
+  "generation_prompt": "docs/art/iterations/companion-pet-expression-v9-extension-v32-representative-functional-silhouette-special-expression-source/prompt-v3.md",
+  "source_panel": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-extension-v32-representative-functional-silhouette-special-expression-source/candidate/v32.png",
+    "sha256": "72CA42D79519233886E338E1AB4891FB63F76498CE879A0DD61DA1513F5F7C95",
+    "size": [2022, 778],
+    "pose_order": ["menu_active", "recording_active", "charging_active"],
+    "crop_columns": [[0, 0, 674, 778], [674, 0, 1348, 778], [1348, 0, 2022, 778]]
+  },
+  "state_object_components": {
+    "menu_active": ["left_hollow_page_tab", "active_hollow_notched_page_tab", "right_hollow_page_tab"],
+    "recording_active": ["left_thin_receiver_cuff", "right_thin_receiver_cuff", "single_pickup_dot"],
+    "charging_active": ["small_open_side_coupler", "thin_continuous_short_tether", "small_hollow_slotted_energy_dock"]
+  },
+  "owner_feedback_triage": "docs/validation/companion-v32-representative-functional-silhouette-special-expression-owner-chat-feedback-triage-20260720.json",
+  "source_policy": {
+    "offline_component_source_only": true,
+    "runtime_resource_activated": false,
+    "active_candidate_binding": "forbidden",
+    "prohibited_before_machine_closure_and_internal_visual_preflight": [
+      "whole_panel_playback",
+      "whole_face_replacement",
+      "CRIG_export",
+      "profile_generation",
+      "event_binding",
+      "firmware_flash",
+      "panel_output",
+      "owner_art_prompt"
+    ],
+    "owner_art_review": "REJECTED_OWNER_CHAT_FEEDBACK",
+    "visual_reference_reuse": "forbidden",
+    "prohibited_until_owner_art_acceptance": [
+      "CRIG_export",
+      "profile_generation",
+      "event_binding",
+      "firmware_flash",
+      "physical_panel_claim",
+      "whole_face_fallback",
+      "use_as_visual_prompt_or_reference"
+    ]
+  }
+}

@@ -1,0 +1,1034 @@
+{
+  "schema": "companion.v27_face_action_gesture_special_expression_component_layout.v1",
+  "status": "UNBOUND_CANDIDATE_PENDING_COMPONENT_PERFORMANCE_AND_OWNER_ART_REVIEW",
+  "locked_v9_source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "source_gate": "docs/validation/companion-v27-face-action-gesture-special-expression-source-gate-20260720.json",
+  "identity_components": {
+    "left_eye_open": {
+      "name": "left_eye_open",
+      "role": "left_eye",
+      "source": "locked_v9_rig_v1_component",
+      "group": "locked_v9_identity",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/left_eye_open.pbm",
+      "mask_sha256": "607A30960F6C312FC4D7DC6AD58F02E6DEB6D80EDC63388FE80671AF593DC08E",
+      "base_position": [
+        42,
+        112
+      ],
+      "anchor": [
+        16,
+        22
+      ],
+      "offset_range": {
+        "min": [
+          0,
+          0
+        ],
+        "max": [
+          0,
+          0
+        ]
+      },
+      "z_index": 30,
+      "composite_op": "ink"
+    },
+    "right_eye_open": {
+      "name": "right_eye_open",
+      "role": "right_eye",
+      "source": "locked_v9_rig_v1_component",
+      "group": "locked_v9_identity",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/right_eye_open.pbm",
+      "mask_sha256": "6F1394072AB1D5AD8D573E115594DD4630FA18877841E6AABD635379075094E6",
+      "base_position": [
+        125,
+        112
+      ],
+      "anchor": [
+        17,
+        22
+      ],
+      "offset_range": {
+        "min": [
+          0,
+          0
+        ],
+        "max": [
+          0,
+          0
+        ]
+      },
+      "z_index": 30,
+      "composite_op": "ink"
+    },
+    "left_eye_highlight_open": {
+      "name": "left_eye_highlight_open",
+      "role": "left_highlight",
+      "source": "locked_v9_rig_v1_component",
+      "group": "locked_v9_identity",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/left_eye_highlight_open.pbm",
+      "mask_sha256": "FE486194ED600C66CD3A69F0EE1025DC1CC260AD15A2B5A4712274CC8007464C",
+      "base_position": [
+        42,
+        112
+      ],
+      "anchor": [
+        16,
+        22
+      ],
+      "offset_range": {
+        "min": [
+          0,
+          0
+        ],
+        "max": [
+          0,
+          0
+        ]
+      },
+      "z_index": 31,
+      "composite_op": "erase"
+    },
+    "right_eye_highlight_open": {
+      "name": "right_eye_highlight_open",
+      "role": "right_highlight",
+      "source": "locked_v9_rig_v1_component",
+      "group": "locked_v9_identity",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/right_eye_highlight_open.pbm",
+      "mask_sha256": "518456E9D22529E4B57E61D5D2963E20F6E80CC3F210FF331281E8F0BC11E650",
+      "base_position": [
+        125,
+        112
+      ],
+      "anchor": [
+        17,
+        22
+      ],
+      "offset_range": {
+        "min": [
+          0,
+          0
+        ],
+        "max": [
+          0,
+          0
+        ]
+      },
+      "z_index": 31,
+      "composite_op": "erase"
+    },
+    "left_eye_sparkle_open": {
+      "name": "left_eye_sparkle_open",
+      "role": "left_sparkle",
+      "source": "locked_v9_rig_v1_component",
+      "group": "locked_v9_identity",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/left_eye_sparkle_open.pbm",
+      "mask_sha256": "2B62160271B54E894DFBE0DD64A0F744EA80E65A2CBC7617B1497A16A229323D",
+      "base_position": [
+        42,
+        112
+      ],
+      "anchor": [
+        16,
+        22
+      ],
+      "offset_range": {
+        "min": [
+          0,
+          0
+        ],
+        "max": [
+          0,
+          0
+        ]
+      },
+      "z_index": 32,
+      "composite_op": "erase"
+    },
+    "right_eye_sparkle_open": {
+      "name": "right_eye_sparkle_open",
+      "role": "right_sparkle",
+      "source": "locked_v9_rig_v1_component",
+      "group": "locked_v9_identity",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/right_eye_sparkle_open.pbm",
+      "mask_sha256": "B9AD58B7178E95296965DD2F4000F28B14C2C06180D1E04D86145D2A9D8D4A13",
+      "base_position": [
+        125,
+        112
+      ],
+      "anchor": [
+        17,
+        22
+      ],
+      "offset_range": {
+        "min": [
+          0,
+          0
+        ],
+        "max": [
+          0,
+          0
+        ]
+      },
+      "z_index": 32,
+      "composite_op": "erase"
+    },
+    "nose_default": {
+      "name": "nose_default",
+      "role": "nose",
+      "source": "locked_v9_rig_v1_component",
+      "group": "locked_v9_identity",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/nose_default.pbm",
+      "mask_sha256": "9E136542BCD1AB6F3A057829FC1A53F03965B9F55ABAE899666CDC6D8EF8E298",
+      "base_position": [
+        94,
+        148
+      ],
+      "anchor": [
+        6,
+        4
+      ],
+      "offset_range": {
+        "min": [
+          0,
+          0
+        ],
+        "max": [
+          0,
+          0
+        ]
+      },
+      "z_index": 50,
+      "composite_op": "ink"
+    }
+  },
+  "special_pose_components": {
+    "menu_active": {
+      "v27_menu_active__left_brow": {
+        "name": "v27_menu_active__left_brow",
+        "pose": "menu_active",
+        "role": "left_brow",
+        "source": "v27_generated_source_thresholded_normalization",
+        "source_component_box": [
+          20,
+          66,
+          96,
+          110
+        ],
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/component-masks/menu_active-left_brow.pbm",
+        "mask_sha256": "1B4FE7E8E2E6379C5C1CADF249D1D9F7EB27F1BCE354B7FCFA2EACF95561A51C",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/preview-layers/menu_active-left_brow.png",
+        "base_position": [
+          20,
+          66
+        ],
+        "anchor": [
+          38,
+          22
+        ],
+        "offset_range": {
+          "min": [
+            -1,
+            -2
+          ],
+          "max": [
+            1,
+            1
+          ]
+        },
+        "z_index": 20,
+        "composite_op": "ink",
+        "ink_pixels": 157
+      },
+      "v27_menu_active__right_brow": {
+        "name": "v27_menu_active__right_brow",
+        "pose": "menu_active",
+        "role": "right_brow",
+        "source": "v27_generated_source_thresholded_normalization",
+        "source_component_box": [
+          104,
+          66,
+          180,
+          110
+        ],
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/component-masks/menu_active-right_brow.pbm",
+        "mask_sha256": "864433DA1EBD62AFE81AC56322BCF8C851050552CEFF7CD234CEA28124374564",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/preview-layers/menu_active-right_brow.png",
+        "base_position": [
+          104,
+          66
+        ],
+        "anchor": [
+          38,
+          22
+        ],
+        "offset_range": {
+          "min": [
+            -1,
+            -2
+          ],
+          "max": [
+            1,
+            1
+          ]
+        },
+        "z_index": 20,
+        "composite_op": "ink",
+        "ink_pixels": 129
+      },
+      "v27_menu_active__left_cheek": {
+        "name": "v27_menu_active__left_cheek",
+        "pose": "menu_active",
+        "role": "left_cheek",
+        "source": "v27_generated_source_thresholded_normalization",
+        "source_component_box": [
+          35,
+          158,
+          76,
+          180
+        ],
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/component-masks/menu_active-left_cheek.pbm",
+        "mask_sha256": "F221C10C89886D84391DDDE4DFBDBDD910C6F814AB0953A0AB101E41B8E7A8CC",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/preview-layers/menu_active-left_cheek.png",
+        "base_position": [
+          35,
+          158
+        ],
+        "anchor": [
+          20,
+          11
+        ],
+        "offset_range": {
+          "min": [
+            0,
+            -1
+          ],
+          "max": [
+            0,
+            1
+          ]
+        },
+        "z_index": 40,
+        "composite_op": "ink",
+        "ink_pixels": 91
+      },
+      "v27_menu_active__right_cheek": {
+        "name": "v27_menu_active__right_cheek",
+        "pose": "menu_active",
+        "role": "right_cheek",
+        "source": "v27_generated_source_thresholded_normalization",
+        "source_component_box": [
+          124,
+          158,
+          164,
+          180
+        ],
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/component-masks/menu_active-right_cheek.pbm",
+        "mask_sha256": "FD6BCF7EF3FA6E1B7E0D2D72C9BF54181A546855F24C56AEE8479502C82FDA0A",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/preview-layers/menu_active-right_cheek.png",
+        "base_position": [
+          124,
+          158
+        ],
+        "anchor": [
+          20,
+          11
+        ],
+        "offset_range": {
+          "min": [
+            0,
+            -1
+          ],
+          "max": [
+            0,
+            1
+          ]
+        },
+        "z_index": 40,
+        "composite_op": "ink",
+        "ink_pixels": 88
+      },
+      "v27_menu_active__mouth": {
+        "name": "v27_menu_active__mouth",
+        "pose": "menu_active",
+        "role": "mouth",
+        "source": "v27_generated_source_thresholded_normalization",
+        "source_component_box": [
+          72,
+          158,
+          128,
+          190
+        ],
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/component-masks/menu_active-mouth.pbm",
+        "mask_sha256": "8FC572D16788A78FBB347531FF8627B26990272332FE66F879C690BAB6BA876E",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/preview-layers/menu_active-mouth.png",
+        "base_position": [
+          72,
+          158
+        ],
+        "anchor": [
+          28,
+          16
+        ],
+        "offset_range": {
+          "min": [
+            0,
+            -1
+          ],
+          "max": [
+            0,
+            1
+          ]
+        },
+        "z_index": 60,
+        "composite_op": "ink",
+        "ink_pixels": 109
+      },
+      "v27_menu_active__left_gesture": {
+        "name": "v27_menu_active__left_gesture",
+        "pose": "menu_active",
+        "role": "left_gesture",
+        "source": "v27_generated_source_thresholded_normalization",
+        "source_component_box": [
+          12,
+          142,
+          37,
+          172
+        ],
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/component-masks/menu_active-left_gesture.pbm",
+        "mask_sha256": "545EFE9CE69EDF157B17072B00F7BB2E6A9513A520EA69B526CF2DFFD7644BFB",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/preview-layers/menu_active-left_gesture.png",
+        "base_position": [
+          12,
+          142
+        ],
+        "anchor": [
+          12,
+          15
+        ],
+        "offset_range": {
+          "min": [
+            -1,
+            -1
+          ],
+          "max": [
+            1,
+            1
+          ]
+        },
+        "z_index": 45,
+        "composite_op": "ink",
+        "ink_pixels": 43
+      },
+      "v27_menu_active__right_gesture": {
+        "name": "v27_menu_active__right_gesture",
+        "pose": "menu_active",
+        "role": "right_gesture",
+        "source": "v27_generated_source_thresholded_normalization",
+        "source_component_box": [
+          164,
+          142,
+          190,
+          172
+        ],
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/component-masks/menu_active-right_gesture.pbm",
+        "mask_sha256": "0EDDAFBB4EE9F436F67D29D7934A14B2E30880AFC3518C9A7ED1688F7B60D2CE",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/preview-layers/menu_active-right_gesture.png",
+        "base_position": [
+          164,
+          142
+        ],
+        "anchor": [
+          13,
+          15
+        ],
+        "offset_range": {
+          "min": [
+            -1,
+            -1
+          ],
+          "max": [
+            1,
+            1
+          ]
+        },
+        "z_index": 45,
+        "composite_op": "ink",
+        "ink_pixels": 43
+      }
+    },
+    "recording_active": {
+      "v27_recording_active__left_brow": {
+        "name": "v27_recording_active__left_brow",
+        "pose": "recording_active",
+        "role": "left_brow",
+        "source": "v27_generated_source_thresholded_normalization",
+        "source_component_box": [
+          20,
+          66,
+          96,
+          110
+        ],
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/component-masks/recording_active-left_brow.pbm",
+        "mask_sha256": "F615E9AAD681E663EF0313A7AFDF136E7531103B6A29CDBD20DF4285F157E8D3",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/preview-layers/recording_active-left_brow.png",
+        "base_position": [
+          20,
+          66
+        ],
+        "anchor": [
+          38,
+          22
+        ],
+        "offset_range": {
+          "min": [
+            -1,
+            -2
+          ],
+          "max": [
+            1,
+            1
+          ]
+        },
+        "z_index": 20,
+        "composite_op": "ink",
+        "ink_pixels": 112
+      },
+      "v27_recording_active__right_brow": {
+        "name": "v27_recording_active__right_brow",
+        "pose": "recording_active",
+        "role": "right_brow",
+        "source": "v27_generated_source_thresholded_normalization",
+        "source_component_box": [
+          104,
+          66,
+          180,
+          110
+        ],
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/component-masks/recording_active-right_brow.pbm",
+        "mask_sha256": "6725AEC5915F080D936DC375C07446D00402339D41244893CF3B5BF401696880",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/preview-layers/recording_active-right_brow.png",
+        "base_position": [
+          104,
+          66
+        ],
+        "anchor": [
+          38,
+          22
+        ],
+        "offset_range": {
+          "min": [
+            -1,
+            -2
+          ],
+          "max": [
+            1,
+            1
+          ]
+        },
+        "z_index": 20,
+        "composite_op": "ink",
+        "ink_pixels": 118
+      },
+      "v27_recording_active__left_cheek": {
+        "name": "v27_recording_active__left_cheek",
+        "pose": "recording_active",
+        "role": "left_cheek",
+        "source": "v27_generated_source_thresholded_normalization",
+        "source_component_box": [
+          35,
+          158,
+          76,
+          180
+        ],
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/component-masks/recording_active-left_cheek.pbm",
+        "mask_sha256": "0F5094B71ADFB71BB62C4BCC9DED3D15BB2179328ED7EC7B944D4AA81CF63A48",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/preview-layers/recording_active-left_cheek.png",
+        "base_position": [
+          35,
+          158
+        ],
+        "anchor": [
+          20,
+          11
+        ],
+        "offset_range": {
+          "min": [
+            0,
+            -1
+          ],
+          "max": [
+            0,
+            1
+          ]
+        },
+        "z_index": 40,
+        "composite_op": "ink",
+        "ink_pixels": 91
+      },
+      "v27_recording_active__right_cheek": {
+        "name": "v27_recording_active__right_cheek",
+        "pose": "recording_active",
+        "role": "right_cheek",
+        "source": "v27_generated_source_thresholded_normalization",
+        "source_component_box": [
+          124,
+          158,
+          162,
+          180
+        ],
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/component-masks/recording_active-right_cheek.pbm",
+        "mask_sha256": "30698ACCDE504BFA932D78739433F50624B249CF03D60D5A628EAF1E62CD2C83",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/preview-layers/recording_active-right_cheek.png",
+        "base_position": [
+          124,
+          158
+        ],
+        "anchor": [
+          19,
+          11
+        ],
+        "offset_range": {
+          "min": [
+            0,
+            -1
+          ],
+          "max": [
+            0,
+            1
+          ]
+        },
+        "z_index": 40,
+        "composite_op": "ink",
+        "ink_pixels": 89
+      },
+      "v27_recording_active__mouth": {
+        "name": "v27_recording_active__mouth",
+        "pose": "recording_active",
+        "role": "mouth",
+        "source": "v27_generated_source_thresholded_normalization",
+        "source_component_box": [
+          72,
+          158,
+          128,
+          190
+        ],
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/component-masks/recording_active-mouth.pbm",
+        "mask_sha256": "C38C75885B14187B1500C17F02E066B7C4851F821CEBB165892325D1335698EF",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/preview-layers/recording_active-mouth.png",
+        "base_position": [
+          72,
+          158
+        ],
+        "anchor": [
+          28,
+          16
+        ],
+        "offset_range": {
+          "min": [
+            0,
+            -1
+          ],
+          "max": [
+            0,
+            1
+          ]
+        },
+        "z_index": 60,
+        "composite_op": "ink",
+        "ink_pixels": 118
+      },
+      "v27_recording_active__left_gesture": {
+        "name": "v27_recording_active__left_gesture",
+        "pose": "recording_active",
+        "role": "left_gesture",
+        "source": "v27_generated_source_thresholded_normalization",
+        "source_component_box": [
+          10,
+          138,
+          38,
+          172
+        ],
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/component-masks/recording_active-left_gesture.pbm",
+        "mask_sha256": "BF8B7A70950D95E0D371F0825007E007162A310D2E12485BFA475598E95E7EAB",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/preview-layers/recording_active-left_gesture.png",
+        "base_position": [
+          10,
+          138
+        ],
+        "anchor": [
+          14,
+          17
+        ],
+        "offset_range": {
+          "min": [
+            -1,
+            -1
+          ],
+          "max": [
+            1,
+            1
+          ]
+        },
+        "z_index": 45,
+        "composite_op": "ink",
+        "ink_pixels": 46
+      },
+      "v27_recording_active__right_gesture": {
+        "name": "v27_recording_active__right_gesture",
+        "pose": "recording_active",
+        "role": "right_gesture",
+        "source": "v27_generated_source_thresholded_normalization",
+        "source_component_box": [
+          162,
+          138,
+          190,
+          172
+        ],
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/component-masks/recording_active-right_gesture.pbm",
+        "mask_sha256": "DEEC04B4E1084817DB291799A16207DEB0ECE0D0C69BCAFB08185455EBB150AB",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/preview-layers/recording_active-right_gesture.png",
+        "base_position": [
+          162,
+          138
+        ],
+        "anchor": [
+          14,
+          17
+        ],
+        "offset_range": {
+          "min": [
+            -1,
+            -1
+          ],
+          "max": [
+            1,
+            1
+          ]
+        },
+        "z_index": 45,
+        "composite_op": "ink",
+        "ink_pixels": 46
+      }
+    },
+    "charging_active": {
+      "v27_charging_active__left_brow": {
+        "name": "v27_charging_active__left_brow",
+        "pose": "charging_active",
+        "role": "left_brow",
+        "source": "v27_generated_source_thresholded_normalization",
+        "source_component_box": [
+          20,
+          66,
+          96,
+          110
+        ],
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/component-masks/charging_active-left_brow.pbm",
+        "mask_sha256": "9EAEBB7C6DF8E1125748214AFE0D68A95050A803B7F326E5E94BAD54734AE521",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/preview-layers/charging_active-left_brow.png",
+        "base_position": [
+          20,
+          66
+        ],
+        "anchor": [
+          38,
+          22
+        ],
+        "offset_range": {
+          "min": [
+            -1,
+            -2
+          ],
+          "max": [
+            1,
+            1
+          ]
+        },
+        "z_index": 20,
+        "composite_op": "ink",
+        "ink_pixels": 120
+      },
+      "v27_charging_active__right_brow": {
+        "name": "v27_charging_active__right_brow",
+        "pose": "charging_active",
+        "role": "right_brow",
+        "source": "v27_generated_source_thresholded_normalization",
+        "source_component_box": [
+          104,
+          66,
+          180,
+          110
+        ],
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/component-masks/charging_active-right_brow.pbm",
+        "mask_sha256": "9700A4598D53888ED255BC580864D400767E77479C269BCB432011AF9CC919FE",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/preview-layers/charging_active-right_brow.png",
+        "base_position": [
+          104,
+          66
+        ],
+        "anchor": [
+          38,
+          22
+        ],
+        "offset_range": {
+          "min": [
+            -1,
+            -2
+          ],
+          "max": [
+            1,
+            1
+          ]
+        },
+        "z_index": 20,
+        "composite_op": "ink",
+        "ink_pixels": 121
+      },
+      "v27_charging_active__left_cheek": {
+        "name": "v27_charging_active__left_cheek",
+        "pose": "charging_active",
+        "role": "left_cheek",
+        "source": "v27_generated_source_thresholded_normalization",
+        "source_component_box": [
+          25,
+          155,
+          76,
+          170
+        ],
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/component-masks/charging_active-left_cheek.pbm",
+        "mask_sha256": "84C972DCE3B8A065DB602BBAFD2772DFF8B25098EF31BC27FFC0C86FDFF552BF",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/preview-layers/charging_active-left_cheek.png",
+        "base_position": [
+          25,
+          155
+        ],
+        "anchor": [
+          25,
+          7
+        ],
+        "offset_range": {
+          "min": [
+            0,
+            -1
+          ],
+          "max": [
+            0,
+            1
+          ]
+        },
+        "z_index": 40,
+        "composite_op": "ink",
+        "ink_pixels": 110
+      },
+      "v27_charging_active__right_cheek": {
+        "name": "v27_charging_active__right_cheek",
+        "pose": "charging_active",
+        "role": "right_cheek",
+        "source": "v27_generated_source_thresholded_normalization",
+        "source_component_box": [
+          124,
+          155,
+          175,
+          170
+        ],
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/component-masks/charging_active-right_cheek.pbm",
+        "mask_sha256": "BECBEF63A0F37FD923D2E422BF5F0C37A2E92B0A3222E9DF55760EB64705369F",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/preview-layers/charging_active-right_cheek.png",
+        "base_position": [
+          124,
+          155
+        ],
+        "anchor": [
+          25,
+          7
+        ],
+        "offset_range": {
+          "min": [
+            0,
+            -1
+          ],
+          "max": [
+            0,
+            1
+          ]
+        },
+        "z_index": 40,
+        "composite_op": "ink",
+        "ink_pixels": 110
+      },
+      "v27_charging_active__mouth": {
+        "name": "v27_charging_active__mouth",
+        "pose": "charging_active",
+        "role": "mouth",
+        "source": "v27_generated_source_thresholded_normalization",
+        "source_component_box": [
+          72,
+          158,
+          128,
+          190
+        ],
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/component-masks/charging_active-mouth.pbm",
+        "mask_sha256": "F22CA606A9F34DEE017B6D37F495480532457A2707AF934EC6973CB0E5EA6CB8",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/preview-layers/charging_active-mouth.png",
+        "base_position": [
+          72,
+          158
+        ],
+        "anchor": [
+          28,
+          16
+        ],
+        "offset_range": {
+          "min": [
+            0,
+            -1
+          ],
+          "max": [
+            0,
+            1
+          ]
+        },
+        "z_index": 60,
+        "composite_op": "ink",
+        "ink_pixels": 143
+      },
+      "v27_charging_active__left_gesture": {
+        "name": "v27_charging_active__left_gesture",
+        "pose": "charging_active",
+        "role": "left_gesture",
+        "source": "v27_generated_source_thresholded_normalization",
+        "source_component_box": [
+          15,
+          168,
+          64,
+          194
+        ],
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/component-masks/charging_active-left_gesture.pbm",
+        "mask_sha256": "776F17CC3DC77C4C48474E4C5240F41EB80EF0E2FFDF640FC1DDDDD98CD80D0E",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/preview-layers/charging_active-left_gesture.png",
+        "base_position": [
+          15,
+          168
+        ],
+        "anchor": [
+          24,
+          13
+        ],
+        "offset_range": {
+          "min": [
+            -1,
+            -1
+          ],
+          "max": [
+            1,
+            1
+          ]
+        },
+        "z_index": 45,
+        "composite_op": "ink",
+        "ink_pixels": 58
+      },
+      "v27_charging_active__right_gesture": {
+        "name": "v27_charging_active__right_gesture",
+        "pose": "charging_active",
+        "role": "right_gesture",
+        "source": "v27_generated_source_thresholded_normalization",
+        "source_component_box": [
+          136,
+          168,
+          185,
+          194
+        ],
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/component-masks/charging_active-right_gesture.pbm",
+        "mask_sha256": "50A622A0D075CAEB205F48197E5F310D3C27D772CBC8A859FEE9CCBF554932EF",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/preview-layers/charging_active-right_gesture.png",
+        "base_position": [
+          136,
+          168
+        ],
+        "anchor": [
+          24,
+          13
+        ],
+        "offset_range": {
+          "min": [
+            -1,
+            -1
+          ],
+          "max": [
+            1,
+            1
+          ]
+        },
+        "z_index": 45,
+        "composite_op": "ink",
+        "ink_pixels": 56
+      }
+    }
+  },
+  "states": {
+    "menu_active": {
+      "normalized_source": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/normalized-200x200-source-review/menu-active-source-normalized.png",
+      "components": [
+        "v27_menu_active__left_brow",
+        "v27_menu_active__right_brow",
+        "v27_menu_active__left_cheek",
+        "v27_menu_active__right_cheek",
+        "v27_menu_active__mouth",
+        "v27_menu_active__left_gesture",
+        "v27_menu_active__right_gesture"
+      ],
+      "component_count": 7,
+      "reassembly": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/reassembled-200x200/menu_active.pbm",
+      "reassembly_sha256": "F514FF44F9D1924CC5723D44F205835249A67AC1395FE2761D7A299AB409B9E7",
+      "reassembly_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/reassembled-800/menu_active.png",
+      "component_overlap_audit": []
+    },
+    "recording_active": {
+      "normalized_source": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/normalized-200x200-source-review/recording-active-source-normalized.png",
+      "components": [
+        "v27_recording_active__left_brow",
+        "v27_recording_active__right_brow",
+        "v27_recording_active__left_cheek",
+        "v27_recording_active__right_cheek",
+        "v27_recording_active__mouth",
+        "v27_recording_active__left_gesture",
+        "v27_recording_active__right_gesture"
+      ],
+      "component_count": 7,
+      "reassembly": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/reassembled-200x200/recording_active.pbm",
+      "reassembly_sha256": "223FD90D945675F5B7F3E2B0D61410932673D9EE6A277B37A369073DD476CA3D",
+      "reassembly_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/reassembled-800/recording_active.png",
+      "component_overlap_audit": []
+    },
+    "charging_active": {
+      "normalized_source": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/normalized-200x200-source-review/charging-active-source-normalized.png",
+      "components": [
+        "v27_charging_active__left_brow",
+        "v27_charging_active__right_brow",
+        "v27_charging_active__left_cheek",
+        "v27_charging_active__right_cheek",
+        "v27_charging_active__mouth",
+        "v27_charging_active__left_gesture",
+        "v27_charging_active__right_gesture"
+      ],
+      "component_count": 7,
+      "reassembly": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/reassembled-200x200/charging_active.pbm",
+      "reassembly_sha256": "7C50DCBB4AAFF20E54FC7FD9859D2788969A8DA7B2DC93DFE32418F3433ED814",
+      "reassembly_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/reassembled-800/charging_active.png",
+      "component_overlap_audit": []
+    }
+  },
+  "component_contact_sheet": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/component-export-attempt-01/component-contact-sheet.png",
+  "source_pixel_rule": "special brow, mouth and cheek masks are thresholded crops from the V27 generated source; eyes, highlights, sparkles and nose are exact locked V9 rig masks; no full source pose is a runtime asset",
+  "prohibited_before_owner_art_review": [
+    "whole-source-panel playback",
+    "whole-face replacement",
+    "CRIG export",
+    "profile generation",
+    "event binding",
+    "firmware flash",
+    "panel output"
+  ],
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden"
+}

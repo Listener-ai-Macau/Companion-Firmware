@@ -1,0 +1,25 @@
+{
+  "schema": "companion.art_generation_source_metadata.v1",
+  "status": "REJECTED_AGENT_NATIVE_SYMMETRY_GATE",
+  "generation_request": "docs/art/iterations/companion-pet-expression-v9-extension-v42-emotion-source/generation-request-v11.json",
+  "prompt": "docs/art/iterations/companion-pet-expression-v9-extension-v42-emotion-source/generation-prompt-v11.md",
+  "source_image": "docs/art/iterations/companion-pet-expression-v9-extension-v42-emotion-source/candidate/attempt-11-delighted-mouth-source.png",
+  "source_sha256": "1E89B3800CD264F8A969B8667268006A2394F9990958114BF2ACE2440EABEC9B",
+  "source_dimensions": "1254x1254",
+  "locked_v9_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "supersedes": "candidate/attempt-10-delighted-mouth-source.png",
+  "export_contract": {
+    "component_id": 577,
+    "source_crop": [577, 760, 140, 90],
+    "runtime_resource_activated": false,
+    "owner_acceptance": "rejected"
+  },
+  "agent_visual_triage": {
+    "native_200x200_required": true,
+    "symmetry_and_anchor_gate_required": true,
+    "notes": "Native scaled crop measured left/right black-pixel difference 9, so this source is fail-closed and cannot be exported."
+  }
+}

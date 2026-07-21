@@ -1,0 +1,13 @@
+{
+  "schema": "companion.art_generation_attempt.v1",
+  "status": "REJECTED_AGENT_VISUAL_TRIAGE_INACTIVE_EVIDENCE",
+  "created_at": "2026-07-21",
+  "request": "docs/art/iterations/companion-pet-expression-v9-extension-v42-emotion-source/generation-request-v8.json",
+  "prompt": "docs/art/iterations/companion-pet-expression-v9-extension-v42-emotion-source/generation-prompt-v8.md",
+  "image": "docs/art/iterations/companion-pet-expression-v9-extension-v42-emotion-source/candidate/attempt-08-delighted-mouth-source.png",
+  "sha256": "82EDFB0A1BAF07EC5FFF0A13F3CB9A835E676C833E01594C0DA85D6A9A3AFF97",
+  "locked_v9_reference_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "agent_visual_triage": "Rejected: the generated open smile is too large and heavy at source scale and risks reading as an O-mouth after native 200x200 export. Do not export or bind.",
+  "runtime_resource_activated": false,
+  "use": "rejected source-only evidence; do not export or bind"
+}

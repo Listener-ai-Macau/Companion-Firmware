@@ -1,0 +1,82 @@
+{
+  "schema": "companion.v24_glance_readable_special_expression_source_lineage.v1",
+  "status": "CANDIDATE_SOURCES_ARCHIVED_PENDING_SOURCE_GATE",
+  "iteration": "V24",
+  "created_at": "2026-07-20",
+  "generation_request": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/generation-request-v1-glance-readable.json",
+  "generation_prompt": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/generation-prompt-v1-glance-readable.md",
+  "locked_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "allowed_reference_inputs": [
+    "locked_v9_reference_only"
+  ],
+  "forbidden_reference_inputs": [
+    "V18_menu_rejected_source",
+    "V19_recording_rejected_source",
+    "V20_upgrade_rejected_source",
+    "V23_v1_v2_v3_candidates_or_exports",
+    "legacy_art",
+    "whole_face_runtime_cards",
+    "custom_LUT_or_display_artifacts"
+  ],
+  "generation_backend": "image_gen",
+  "source_policy": {
+    "source_art_only": true,
+    "runtime_resource_activated": false,
+    "active_candidate_binding": "forbidden",
+    "candidate_crig_or_profile": "forbidden",
+    "dynamic_flash": "forbidden",
+    "panel_claim": "forbidden",
+    "owner_art_review": "forbidden_until_machine_closure"
+  },
+  "candidate_sources": [
+    {
+      "pose": "menu_active",
+      "event": "menu_hold",
+      "generated_image": "candidate/attempt-01-menu-active-glance-readable.png",
+      "generated_image_sha256": "792F057A589AEA518EA4F7C1815F0853488CFF5E5F522B61E8ADBE29FB73BA88",
+      "source_size": [1254, 1254],
+      "functional_read": "purposeful browse/select attention",
+      "face_primary_requirement": "firm friendly inward brows plus compact decisive closed selection mouth",
+      "accent_secondary_requirement": "three detached compact step dots only"
+    },
+    {
+      "pose": "recording_active",
+      "event": "recording_active",
+      "generated_image": "candidate/attempt-01-recording-active-glance-readable.png",
+      "generated_image_sha256": "73BB9B61446BDE7D37F759204838932CD9FAC0FEC3482195D6A3091E5EB0C43D",
+      "source_size": [1254, 1254],
+      "functional_read": "active listening/responding",
+      "face_primary_requirement": "alert-soft attentive brows plus small rounded response mouth",
+      "accent_secondary_requirement": "two balanced nested listening arcs on each outer cheek side only"
+    },
+    {
+      "pose": "charging_active",
+      "event": "charging",
+      "generated_image": "candidate/attempt-02-charging-active-glance-readable.png",
+      "generated_image_sha256": "C79BA90E21B9C453A031E79D759CEA3925A649FACB6579E3C99BD6D77BF5093D",
+      "source_size": [1254, 1254],
+      "functional_read": "replenishing restful relief",
+      "face_primary_requirement": "relaxed upward-outward brows plus a clearly visible satisfied smile",
+      "accent_secondary_requirement": "exactly two detached simple upward breathing arcs only"
+    }
+  ],
+  "rejected_attempts": [
+    {
+      "pose": "charging_active",
+      "generated_image": "rejected/attempt-01-charging-cloud-accent.png",
+      "generated_image_sha256": "710F2545807DF180582CC62788A6E86C5B38FA2EDE9F4B87C63D2F2AE8A2E667",
+      "source_size": [1254, 1254],
+      "reason": "The top accent resolved into enclosed cloud-like shapes rather than exactly two simple detachable breathing arcs; it is visually ambiguous and unsuitable for component choreography.",
+      "may_be_prompt_or_runtime_input": false
+    }
+  ],
+  "v23_correction": {
+    "previous_candidate": "V23 v3 machine closure",
+    "status": "non_binding_audit_history_only",
+    "reason": "Owner found its function reading too implicit; V23 visual output is not an allowed V24 prompt/reference input."
+  },
+  "next_stage": "Run the V24 source gate before crop, component export, choreography, browser preview or any owner-art review."
+}

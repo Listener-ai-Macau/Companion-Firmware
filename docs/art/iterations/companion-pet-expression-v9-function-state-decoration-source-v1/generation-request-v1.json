@@ -1,0 +1,123 @@
+{
+  "schema": "companion.v9.function_state_decoration_generation_request.v1",
+  "status": "REQUEST_RECORDED_PENDING_IMAGE_GENERATION",
+  "iteration": "function_state_decoration_v1",
+  "request_revision": 1,
+  "created_at": "2026-07-20",
+  "authority": [
+    "COMP-REQ-093",
+    "COMP-REQ-229",
+    "COMP-REQ-233",
+    "COMP-REQ-240"
+  ],
+  "purpose": "Create source-only component art for the three currently fail-closed functional states: Menu, Upgrade and Error. The sheet is a source for component extraction and choreography, never a complete runtime face card.",
+  "locked_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "allowed_reference_inputs": [
+    "locked_v9_reference_only",
+    "this_versioned_semantic_brief_only"
+  ],
+  "forbidden_reference_inputs": [
+    "legacy_or_rejected_expression_art",
+    "prior_special_expression_candidate_art",
+    "whole_face_runtime_cards",
+    "custom_lut_or_panel_artifacts",
+    "code_drawn_face_geometry"
+  ],
+  "output_layout": {
+    "kind": "nine_unframed_source_cells",
+    "grid": [3, 3],
+    "cell_order": [
+      "menu_grid_0",
+      "menu_grid_1",
+      "menu_grid_2",
+      "upgrade_rise_0",
+      "upgrade_rise_1",
+      "upgrade_rise_2",
+      "error_caution_0",
+      "error_caution_1",
+      "error_caution_2"
+    ],
+    "cell_target": "one isolated native-200-compatible floating face on pure white with wide margins; no cell border, caption or grid line"
+  },
+  "v9_identity_invariants": [
+    "Keep the exact V9 floating-face character identity: no head, body, ears, hair, frame, card or background.",
+    "Keep both black open oval eye silhouettes, their spacing and baseline, with exactly one oval white primary highlight and one diamond white sparkle in each eye.",
+    "Keep the small fixed nose and two cheek dots; do not create a new eye shape, eye count, face proportion or character.",
+    "All strokes are clean monochrome black on pure white, round-ended and cute; no gray, color, texture, shadow or antialiasing.",
+    "Every new functional mark must remain a small separately extractable component and must not cover an eye, brow, nose or mouth."
+  ],
+  "state_sequences": [
+    {
+      "id": "menu_grid",
+      "one_glance_read": "opening or choosing from a compact menu",
+      "face_response": "attentive neutral open eyes, gently lifted brows and a short centred decision mouth",
+      "decoration": "a small hollow two-by-two navigation grid above the brows; exactly one tiny filled selection dot moves to a neighboring cell across the three frames",
+      "frame_progression": [
+        "selection at upper-left",
+        "selection at upper-right",
+        "selection at lower-right"
+      ],
+      "forbidden": [
+        "text",
+        "list rows",
+        "screen card",
+        "oversized menu icon",
+        "crown or hair ornament"
+      ]
+    },
+    {
+      "id": "upgrade_rise",
+      "one_glance_read": "an update or upgrade is progressing upward",
+      "face_response": "calm positive open eyes, slightly raised brows and a compact hopeful upward mouth",
+      "decoration": "one thin hollow upward arrow above the brows plus two tiny separated progress ticks below it; the arrow rises one small legal step and the second tick arrives over the three frames",
+      "frame_progression": [
+        "arrow low with first tick",
+        "arrow middle with first tick",
+        "arrow high with two ticks"
+      ],
+      "forbidden": [
+        "text",
+        "download tray",
+        "battery",
+        "large filled arrow",
+        "wireless signal",
+        "full UI panel"
+      ]
+    },
+    {
+      "id": "error_caution",
+      "one_glance_read": "a clear but gentle problem or error state",
+      "face_response": "same open V9 eye silhouettes, brows softly angled toward the centre and a single small worried downward mouth",
+      "decoration": "a small hollow rounded caution diamond above the brows with one compact centre dot; it performs a restrained two-pixel settle rather than shaking wildly",
+      "frame_progression": [
+        "diamond just above brows",
+        "diamond settles one pixel higher",
+        "diamond holds with the centre dot"
+      ],
+      "forbidden": [
+        "large exclamation mark",
+        "angry eyes",
+        "tears",
+        "skull",
+        "red color",
+        "warning text",
+        "full UI panel"
+      ]
+    }
+  ],
+  "source_gate_before_export": [
+    "The output must be internally crop-addressable as the nine declared source cells without captions.",
+    "Each functional decoration must be extractable into named monochrome component masks, with a recorded anchor, legal offset range and ink/erase operation.",
+    "Every face change must map to an existing V9/V22-compatible brow, eye-highlight, cheek or mouth component; never extract a whole face.",
+    "Menu, Upgrade and Error must remain visually distinguishable at native 200x200 without relying on text or a full UI screenshot.",
+    "No candidate may become runtime active before source, CRIG, browser/WB55 parity and total-audit gates pass."
+  ],
+  "runtime_policy": {
+    "runtime_resource_activated": false,
+    "active_candidate_binding": "forbidden_until_total_machine_audit_and_owner_review",
+    "unavailable_special_state_policy": "fail_closed"
+  }
+}

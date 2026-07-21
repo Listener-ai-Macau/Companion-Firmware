@@ -1,0 +1,29 @@
+{
+  "schema": "companion.visual_iteration_ledger.v1",
+  "iteration_id": "companion-pet-expression-v9-extension-v1-20260718",
+  "status": "REJECTED_OWNER_EYE_GEOMETRY_V1_20260718",
+  "product_requirement": "COMP-REQ-116",
+  "reference_source": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "protection": "immutable locked V9 baseline; extension output is separate and candidate-only"
+  },
+  "generation_request": "docs/art/iterations/companion-pet-expression-v9-extension-v1/generation-request.json",
+  "operator_feedback": {
+    "result": "需修改",
+    "note_path": "docs/validation/companion-v9-expression-rig-expression-atlas-owner-review-20260718.note.txt",
+    "summary_path": "docs/validation/companion-v9-expression-rig-expression-atlas-owner-review-summary-20260718.json"
+  },
+  "output": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-extension-v1/generated_pet_expression_extension_v1_candidate.png",
+    "sha256": "CDBE9AE70FCEA2E03BE4341E72AB6382972054F00BCA9F01DA05B78B275D6560",
+    "status": "rejected_owner_eye_geometry_20260718",
+    "owner_feedback": "new eyes read as strange/deep; some cells may inform variety direction but no V1 pixel/component is eligible for export"
+  },
+  "non_goals": [
+    "replace or regenerate the locked V9 baseline",
+    "activate runtime resources",
+    "use full-face frame animation",
+    "supply charging or error art"
+  ]
+}

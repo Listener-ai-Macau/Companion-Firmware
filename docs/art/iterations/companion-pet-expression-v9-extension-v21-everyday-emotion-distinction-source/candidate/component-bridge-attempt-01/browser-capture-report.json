@@ -1,0 +1,76 @@
+{
+  "schema": "companion.v21_everyday_emotion_component_bridge_browser_capture.v1",
+  "status": "PASS_V21_COMPONENT_EMOTION_BRIDGE_BROWSER_CAPTURE",
+  "preview": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\art\\iterations\\companion-pet-expression-v9-extension-v21-everyday-emotion-distinction-source\\candidate\\component-bridge-attempt-01\\preview.html",
+  "preview_sha256": "4BCC111EAF62F88A4CA46297AC42CF8FDBD06ECBB09F7294C79654185C92A6D8",
+  "source_emotion": "calm",
+  "target_emotion": "curious",
+  "bridge_policy": "selected legal edge only; highlights lead; brows answer; lower face replies; no whole-face replacement",
+  "captures": [
+    {
+      "name": "source_hold",
+      "cue": "source_hold",
+      "virtual_time_ms": 400,
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\art\\iterations\\companion-pet-expression-v9-extension-v21-everyday-emotion-distinction-source\\candidate\\component-bridge-attempt-01\\v21-component-bridge-browser-source_hold.png",
+      "sha256": "D9776BBCD1C910F480A1F3BE93C9331D2FCE140FA0347CA107C6C9E0363DB968",
+      "bytes": 18103,
+      "dark_pixels": 50523
+    },
+    {
+      "name": "highlight_lead",
+      "cue": "highlight_lead",
+      "virtual_time_ms": 1300,
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\art\\iterations\\companion-pet-expression-v9-extension-v21-everyday-emotion-distinction-source\\candidate\\component-bridge-attempt-01\\v21-component-bridge-browser-highlight_lead.png",
+      "sha256": "EBA0970E6154D50AA3DEC6579289A1DAC64ED6E3AF8272942A473385ACDE979B",
+      "bytes": 18034,
+      "dark_pixels": 50500
+    },
+    {
+      "name": "brow_answer",
+      "cue": "brow_answer",
+      "virtual_time_ms": 1600,
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\art\\iterations\\companion-pet-expression-v9-extension-v21-everyday-emotion-distinction-source\\candidate\\component-bridge-attempt-01\\v21-component-bridge-browser-brow_answer.png",
+      "sha256": "AD5DC829F805ECDB76C4DE01DA76E3C6FE89998143FCF6B9C9D31249401B8CB8",
+      "bytes": 17998,
+      "dark_pixels": 50702
+    },
+    {
+      "name": "lower_face_reply",
+      "cue": "lower_face_reply",
+      "virtual_time_ms": 1900,
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\art\\iterations\\companion-pet-expression-v9-extension-v21-everyday-emotion-distinction-source\\candidate\\component-bridge-attempt-01\\v21-component-bridge-browser-lower_face_reply.png",
+      "sha256": "07353E925D52B906A1D3DCE29279C09C06B2013A9F45D4B1AE971A3484D92D14",
+      "bytes": 18182,
+      "dark_pixels": 51310
+    },
+    {
+      "name": "target_hold",
+      "cue": "target_hold",
+      "virtual_time_ms": 2200,
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\art\\iterations\\companion-pet-expression-v9-extension-v21-everyday-emotion-distinction-source\\candidate\\component-bridge-attempt-01\\v21-component-bridge-browser-target_hold.png",
+      "sha256": "6112ABA62C12C2B5783E44715F942F8D53CA04C8C6C7BD83F77AFE4B80A893F6",
+      "bytes": 18175,
+      "dark_pixels": 51313
+    },
+    {
+      "name": "highlight_settle",
+      "cue": "highlight_settle",
+      "virtual_time_ms": 3800,
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\art\\iterations\\companion-pet-expression-v9-extension-v21-everyday-emotion-distinction-source\\candidate\\component-bridge-attempt-01\\v21-component-bridge-browser-highlight_settle.png",
+      "sha256": "5F6F81422DFA2A1C96B4F6932DFDD4EDAE641B8BF2A921612F4FE76D16520AE0",
+      "bytes": 18100,
+      "dark_pixels": 51311
+    }
+  ],
+  "source_hold_pixel_differences": {
+    "highlight_lead": 4460,
+    "brow_answer": 8781,
+    "lower_face_reply": 13480,
+    "target_hold": 12688,
+    "highlight_settle": 9951
+  },
+  "state_rotation": "forbidden",
+  "full_face_source_card_playback": "forbidden",
+  "browser_rendering": "registered_component_dom_layers_only",
+  "runtime_resource_activated": false
+}

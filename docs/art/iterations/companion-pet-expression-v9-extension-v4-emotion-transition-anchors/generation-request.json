@@ -1,0 +1,76 @@
+{
+  "schema": "companion.v9_expression_extension_generation_request.v4",
+  "iteration_id": "companion-pet-expression-v9-extension-v4-emotion-transition-anchors-20260718",
+  "status": "REJECTED_MACHINE_DAILY_ATTENTION_READABILITY_V4_20260718",
+  "requested_at": "2026-07-18T19:45:00+08:00",
+  "render_parent_iteration": "pet-expression-v9-anti-sly-cute-2026-07-15",
+  "named_prompt_delta": "emotion_transition_anchor_program: replace the rejected gaze-only proof with twelve complete V9-matched state anchors whose later motion will be source-component entry/hold/settle choreography.",
+  "owner_trigger": "COMP-REQ-119; V3 remains strange and lacks all emotional transition effects.",
+  "candidate_scope": "supplemental_component_source_only_all_registered_emotion_transition_anchors_not_a_baseline_replacement",
+  "target_profile": {
+    "grid": [3, 4],
+    "display_target_px": [200, 200],
+    "style": "pure black and white, 1-bit-ready e-paper inner-face components",
+    "runtime_status": "inactive_pending_component_export_machine_checks_and_owner_review"
+  },
+  "source_references": [
+    {
+      "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "role": "only visual reference and immutable character identity parent"
+    }
+  ],
+  "rejected_predecessors": [
+    "companion-pet-expression-v9-extension-v1-20260718",
+    "companion-pet-expression-v9-extension-v2-20260718",
+    "companion-pet-expression-v9-extension-v3-daily-eye-proof-20260718"
+  ],
+  "required_cells": [
+    "daily_attention_left",
+    "daily_attention_right",
+    "daily_attention_up",
+    "daily_attention_down",
+    "curious_question",
+    "alert_surprised",
+    "joyful_spark",
+    "affectionate_warm",
+    "recording_focus",
+    "listening_focus",
+    "menu_thinking",
+    "sleep_rest_no_moon"
+  ],
+  "transition_roles": {
+    "daily_attention_left": "quiet scan entry",
+    "daily_attention_right": "quiet scan response",
+    "daily_attention_up": "notice lift",
+    "daily_attention_down": "gentle return",
+    "curious_question": "question opens from notice",
+    "alert_surprised": "brief alert peak",
+    "joyful_spark": "relief into playful joy",
+    "affectionate_warm": "warm settle after joy",
+    "recording_focus": "attention narrows into recording",
+    "listening_focus": "recording releases into listening",
+    "menu_thinking": "listening resolves into a quiet decision",
+    "sleep_rest_no_moon": "energy-down rest"
+  },
+  "same_character_not_one_expression": "The sheet is one persistent V9 character identity, not one frozen neutral face. Each named cell must have a distinctly readable emotional expression through brows, petite mouth, cheeks and one detached charm while preserving the exact same open-eye type.",
+  "prompt": "Use the attached locked V9 Companion sheet as the only visual reference. Generate one polished 3 rows by 4 columns source contact sheet with exactly twelve equally spaced V9-matched face anchors in this order: daily attention left, right, up, down; curious question; brief alert surprise; joyful spark; affectionate warm; recording focus; listening focus; menu thinking; peaceful sleep. This is one persistent character identity with twelve genuinely different emotional expressions, not twelve copies of one neutral face. It is a component-source candidate for later entry-hold-settle choreography, never a replacement V9 sheet and never an animation flipbook. Pure white background; black and white only; no text, panel, border or device frame. HARD EYE IDENTITY INVARIANT FOR EVERY OPEN-EYE CELL: exactly two matched upright solid filled black vertical oval eye bodies on one horizontal baseline, with the same compact V9 cell-normalized optical scale and surrounding whitespace. Each eye has only one compact upper primary white reflection and one materially smaller static white diamond sparkle. Keep both marks inside the black body; never make a white cap, lower-half cutout, sclera, ring, outline, pupil, lash or second moving highlight. Do not enlarge the eyes or reflections for extra cuteness. Communicate all emotion through coordinated paired brows, petite nose/mouth, cheek dots and at most one detached semantic charm; keep the eye bodies structurally unchanged. Daily directions use a restrained in-eye primary-reflection shift and coordinated subtle brow/mouth response. Curious has question and inquisitive brows; alert surprise has a small exclamation and open O mouth; joy has a tiny joyful mouth and spark; affection has a small heart and warm cheeks; recording has a record dot and focused brow; listening has detached sound arcs; menu thinking has ellipsis; sleep alone uses closed curved eyes and a tiny resting mouth with no moon, crescent or Z. Make each state visibly different at a 100px thumbnail through its eyebrow, mouth, cheek and detached-charm combination, while all still read as the same lively, forward-friendly V9 character. Gentle emotional transitions are implied by compatible brows/mouth/cheeks rather than different eye types. No cat outline, ears, whiskers, human styling, smirk, flirtation, romance, sadness, aggression, grey, gradient, shading, texture, labels, charging face or error face.",
+  "negative_constraints": [
+    "no enlarged eye bodies, oversized primary reflection, white eye cap, lower-half white cutout, hollow or ring eye",
+    "no changed eye shape, rotation, side-eye, drooping, eyelash or eye-hugging arc",
+    "no V1, V2 or V3 pixels, components or visual reference",
+    "no whole-face animation claim, CEMP/PBM flipbook or runtime activation",
+    "no moon, crescent, Z, charging or error face"
+  ],
+  "planned_generated_output": "docs/art/iterations/companion-pet-expression-v9-extension-v4-emotion-transition-anchors/generated_pet_expression_extension_v4_emotion_transition_anchors_candidate.png",
+  "generated_output": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-extension-v4-emotion-transition-anchors/generated_pet_expression_extension_v4_emotion_transition_anchors_candidate.png",
+    "sha256": "897737C31A9A9FE85B6CFF95B2F71C083F1A866B861023DFFD5624369B88FECB",
+    "status": "rejected_machine_daily_attention_readability",
+    "open_eye_identity_report": "docs/validation/companion-v9-extension-v4-emotion-transition-anchors-open-eye-identity-20260718.json",
+    "daily_attention_readability_report": "docs/validation/companion-v9-extension-v4-emotion-transition-anchors-attention-20260718.json",
+    "emotion_transition_anchor_report": "docs/validation/companion-v9-extension-v4-emotion-transition-anchors-machine-20260718.json",
+    "rejection_reason": "The all-state anchors are distinct, but automatic Daily attention proof rejected right and down: primary reflections did not reach their required directional positions."
+  },
+  "post_generation_gate": "Run the V9 open-eye identity gate with grid 3 4 and only cell 2,3 closed; run state-anchor completeness/diversity proof. Only machine-passing art may receive owner review. Even owner approval permits only separately registered source-component extraction and entry/hold/settle composition, never full-face source-cell playback."
+}

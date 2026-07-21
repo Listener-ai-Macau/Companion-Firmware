@@ -1,0 +1,47 @@
+{
+  "schema": "companion.v9_expression_extension_generation_request.v3",
+  "iteration_id": "companion-pet-expression-v9-extension-v3-daily-eye-proof-20260718",
+  "status": "REJECTED_OWNER_PREVIEW_DIRECTION_V3_20260718",
+  "requested_at": "2026-07-18T19:10:00+08:00",
+  "render_parent_iteration": "pet-expression-v9-anti-sly-cute-2026-07-15",
+  "named_prompt_delta": "eye_identity_proof_daily_attention_only: prove the unchanged V9 open-eye construction across four readable attention directions before creating any new emotion source.",
+  "owner_trigger": "COMP-REQ-117 and COMP-REQ-118; V2 failed the V9-calibrated solid-black eye-body identity gate in three daily cells.",
+  "candidate_scope": "supplemental_component_source_only_daily_attention_eye_identity_proof_not_a_baseline_replacement",
+  "target_profile": {
+    "grid": [2, 2],
+    "display_target_px": [200, 200],
+    "style": "pure black and white, 1-bit-ready e-paper inner-face components",
+    "runtime_status": "inactive_pending_component_export_machine_checks_and_owner_review"
+  },
+  "source_references": [
+    {
+      "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "role": "only visual reference and immutable character identity parent"
+    }
+  ],
+  "required_cells": [
+    "daily_attention_left",
+    "daily_attention_right",
+    "daily_attention_up",
+    "daily_attention_down"
+  ],
+  "prompt": "Use the attached locked V9 Companion sheet as the only visual reference. Generate one clean 2 rows by 2 columns contact sheet with exactly four equally spaced daily attention faces in this order: left, right, up, down. This is a narrow eye-identity proof for later source-component extraction, never a V9 replacement. Pure white background; black and white only; no text, panels, borders or device frame. HARD INVARIANT FOR ALL FOUR CELLS: draw exactly two identical upright solid filled black vertical oval eye bodies on one horizontal baseline, matching the locked V9 size, proportions and friendly front-facing construction. Each black oval contains only one small upper primary white reflection and one small static white diamond sparkle. Do not enlarge either white mark, open the lower half, expose white sclera, use a ring/outline eye, use a pupil, add a lash, add an eyelid arc, or make the eyes drooping, sentimental, side-looking, warped or asymmetric. The eye bodies must remain visibly solid black from thumbnail distance. Communicate left/right/up/down only with a restrained primary-reflection placement inside the unchanged black oval plus paired gentle brow, petite mouth and cheek-dot coordination. Keep the V9 tiny button nose, delicate W-mouth language, short rounded paired brows and generous whitespace. No detached emotion charm except at most a tiny neutral star. No cat outline, ears, whiskers, human styling, smirk, romance, sadness, aggression, grey, gradient, shading, texture, labels, charging face or error face.",
+  "negative_constraints": [
+    "no hollow, ring, contour, exposed-white or lower-half-white open eyes",
+    "no changed eye size, rotation, side-eye, drooping, eyelash or eye-hugging arc",
+    "no moon, crescent, Z, sleep, charging or error face",
+    "no use of V1 or V2 pixels, components or visual reference",
+    "no whole-face animation claim and no runtime activation"
+  ],
+  "planned_generated_output": "docs/art/iterations/companion-pet-expression-v9-extension-v3-daily-eye-proof/generated_pet_expression_extension_v3_daily_eye_proof_candidate.png",
+  "generated_output": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-extension-v3-daily-eye-proof/generated_pet_expression_extension_v3_daily_eye_proof_candidate.png",
+    "sha256": "1A4C6B4846FD42EA71C8F42C9070F2C0728C4D45D4F518E6FE252BBAF1E95CBF",
+    "status": "rejected_owner_preview_direction",
+    "rejection_reason": "Owner found the V3 preview still strange and insufficient: it proves only gaze direction and does not provide all emotion transformations.",
+    "open_eye_identity_report": "docs/validation/companion-v9-extension-v3-daily-eye-proof-open-eye-identity-20260718.json",
+    "daily_attention_readability_report": "docs/validation/companion-v9-extension-v3-daily-eye-proof-attention-20260718.json"
+  },
+  "post_generation_gate": "Run tools/verify_companion_v9_open_eye_identity.py with --grid 2 2 and no closed-eye exemptions. Only PASS_OPEN_EYE_IDENTITY_GATE may proceed to a separate visual contract review; no component export, CEMP/PBM full-face animation, firmware flash or owner review before that pass."
+}

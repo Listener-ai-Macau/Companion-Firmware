@@ -1,0 +1,27 @@
+{
+  "schema": "companion.v9.special_expression_internal_source_triage.v1",
+  "status": "REJECTED_MACHINE_SOURCE_GATE_AUDIT_ONLY",
+  "iteration": "V32",
+  "attempt": 2,
+  "generation_request": "docs/art/iterations/companion-pet-expression-v9-extension-v32-representative-functional-silhouette-special-expression-source/generation-request-v2-closed-circuit-functional-silhouette-panel.json",
+  "generation_prompt": "docs/art/iterations/companion-pet-expression-v9-extension-v32-representative-functional-silhouette-special-expression-source/generation-prompt-v2-closed-circuit-functional-silhouette-panel.md",
+  "generated_source": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-extension-v32-representative-functional-silhouette-special-expression-source/rejected/attempt-02-oversized-page-tab-source.png",
+    "sha256": "60ED7D12E4FD0F80BE7E6B3C061053EDFB2C3E1B70D98E5559400D4F54CB0474",
+    "size": [1999, 786]
+  },
+  "source_gate": "docs/validation/companion-v32-representative-functional-silhouette-special-expression-attempt-02-source-gate-20260720.json",
+  "internal_rejection_reasons": [
+    "The centre menu page tab has 737 thresholded native-200 ink pixels, exceeding the locked half-eye component budget of 504 pixels. The source cannot be split or cropped to evade this limit because it is declared as one separately extractable page-tab component.",
+    "The V32 source gate therefore remains FAIL and blocks all component export, choreography, browser/target parity, CRIG/profile/event binding, firmware flash and panel output."
+  ],
+  "disposition": {
+    "source_gate": "FAIL_RETAINED",
+    "component_export": "FORBIDDEN",
+    "component_performance": "FORBIDDEN",
+    "browser_target_parity": "FORBIDDEN",
+    "crig_profile_event_binding_flash_or_panel_output": "FORBIDDEN",
+    "future_visual_prompt_or_reference_input": "FORBIDDEN"
+  },
+  "next_generation": "request-v3.json"
+}

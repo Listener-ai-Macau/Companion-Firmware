@@ -1,0 +1,16 @@
+{
+  "schema": "companion.art_owner_triage.v1",
+  "recorded_on": "2026-07-20",
+  "owner_requirement": "COMP-REQ-219",
+  "attempt": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/attempt-06-generated-cute-down-attention.json",
+  "decision": "REJECTED_AS_INDEPENDENT_DAILY_DOWN_ENDPOINT",
+  "reason": "The down presentation still does not feel cute enough. Do not force a separate down direction.",
+  "preserved_machine_evidence": [
+    "docs/validation/companion-v36-daily-down-attention-source-gate-20260720.json",
+    "docs/validation/companion-v36-daily-down-component-browser-preview-20260720.json",
+    "docs/validation/companion-v36-daily-down-component-browser-replay-20260720.json"
+  ],
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden",
+  "replacement": "candidate/daily-attention-topology-v2.json"
+}

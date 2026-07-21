@@ -1,0 +1,495 @@
+{
+  "schema": "companion.v9_expression_rig_layout.v1",
+  "status": "CANDIDATE_PENDING_OWNER_REVIEW",
+  "runtime_resource_activated": false,
+  "revision": 107,
+  "source_baseline": {
+    "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "prompt_revision": "pet-expression-v9-anti-sly-cute-2026-07-15"
+  },
+  "profile": {
+    "width": 200,
+    "height": 200,
+    "pixel_format": "mono_1bpp_white_is_one_msb",
+    "safe_inset_px": 4
+  },
+  "source_frames": [
+    {
+      "name": "idle",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_idle_entry.pbm",
+      "sha256": "B3847DF9CE2D20693C60C9CC7BC1EC8D8B8A3E23641F4521EE71508ABE13CB9E"
+    },
+    {
+      "name": "touch",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_touch_entry.pbm",
+      "sha256": "5D4D681FA66BDAEF8887F3473A59473418428812E6C4EFDCDB960567ED21884A"
+    },
+    {
+      "name": "swipe_down",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_down_entry.pbm",
+      "sha256": "C3696169CAA3A0E68507619A81E015C56B12610AB0D3A8D2FA3B1CE8AC101444"
+    },
+    {
+      "name": "swipe_left",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_left_entry.pbm",
+      "sha256": "D9FAEBAC5A93A3F5074109746C4A3FB89E06215A4DC5F698AF16F7FA1E1EC10D"
+    },
+    {
+      "name": "swipe_right",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_swipe_right_entry.pbm",
+      "sha256": "6B23DC6560B8C5D0C358702098C86957D628A007E4750493BEFF197C0CA73BAD"
+    },
+    {
+      "name": "recording",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_recording_entry.pbm",
+      "sha256": "FAD290CBAC21610DA0FBBD359712EB9BB6C36D90158C21BE541C483857C2B1BB"
+    },
+    {
+      "name": "menu_hold",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_menu_hold_entry.pbm",
+      "sha256": "65EF908A7687F8859BF5B1EBEAAEF1DF5C8D2285CF40535D5C62FEC15558CCE2"
+    },
+    {
+      "name": "sleep",
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_sleep_entry.pbm",
+      "sha256": "4DA4FAFC3E09153410F20C567178F8F6DA15C6E996376867EE0A716E169529A6"
+    }
+  ],
+  "components": [
+    {
+      "name": "left_brow_open",
+      "role": "left_brow",
+      "variant": "open",
+      "source_frame": "idle",
+      "crop_box": [47, 85, 23, 12],
+      "base_position": [47, 85],
+      "anchor": [11, 6],
+      "offset_range": {"min": [-1, -3], "max": [1, 1]},
+      "z_index": 20
+    },
+    {
+      "name": "right_brow_open",
+      "role": "right_brow",
+      "variant": "open",
+      "source_frame": "idle",
+      "crop_box": [132, 85, 23, 12],
+      "base_position": [132, 85],
+      "anchor": [11, 6],
+      "offset_range": {"min": [-1, -3], "max": [1, 1]},
+      "z_index": 20
+    },
+    {
+      "name": "left_brow_sleepy",
+      "role": "left_brow",
+      "variant": "sleepy",
+      "source_frame": "sleep",
+      "crop_box": [48, 91, 23, 14],
+      "base_position": [48, 91],
+      "anchor": [11, 7],
+      "offset_range": {"min": [-1, -1], "max": [1, 2]},
+      "z_index": 20
+    },
+    {
+      "name": "right_brow_sleepy",
+      "role": "right_brow",
+      "variant": "sleepy",
+      "source_frame": "sleep",
+      "crop_box": [131, 91, 23, 14],
+      "base_position": [131, 91],
+      "anchor": [11, 7],
+      "offset_range": {"min": [-1, -1], "max": [1, 2]},
+      "z_index": 20
+    },
+    {
+      "name": "left_eye_open",
+      "role": "left_eye",
+      "variant": "open",
+      "source_frame": "idle",
+      "crop_box": [42, 112, 33, 45],
+      "base_position": [42, 112],
+      "anchor": [16, 22],
+      "offset_range": {"min": [-3, -2], "max": [3, 2]},
+      "z_index": 30,
+      "composite_op": "ink",
+      "extraction": "eye_body_fill_enclosed_white"
+    },
+    {
+      "name": "right_eye_open",
+      "role": "right_eye",
+      "variant": "open",
+      "source_frame": "idle",
+      "crop_box": [125, 112, 34, 45],
+      "base_position": [125, 112],
+      "anchor": [17, 22],
+      "offset_range": {"min": [-3, -2], "max": [3, 2]},
+      "z_index": 30,
+      "composite_op": "ink",
+      "extraction": "eye_body_fill_enclosed_white"
+    },
+    {
+      "name": "left_eye_highlight_open",
+      "role": "left_highlight",
+      "variant": "open",
+      "source_frame": "idle",
+      "crop_box": [42, 112, 33, 45],
+      "base_position": [42, 112],
+      "anchor": [16, 22],
+      "offset_range": {"min": [-2, -3], "max": [5, 4]},
+      "z_index": 31,
+      "composite_op": "erase",
+      "extraction": "eye_highlight_primary_enclosed_white"
+    },
+    {
+      "name": "right_eye_highlight_open",
+      "role": "right_highlight",
+      "variant": "open",
+      "source_frame": "idle",
+      "crop_box": [125, 112, 34, 45],
+      "base_position": [125, 112],
+      "anchor": [17, 22],
+      "offset_range": {"min": [-2, -3], "max": [5, 4]},
+      "z_index": 31,
+      "composite_op": "erase",
+      "extraction": "eye_highlight_primary_enclosed_white"
+    },
+    {
+      "name": "left_eye_sparkle_open",
+      "role": "left_sparkle",
+      "variant": "open",
+      "source_frame": "idle",
+      "crop_box": [42, 112, 33, 45],
+      "base_position": [42, 112],
+      "anchor": [16, 22],
+      "offset_range": {"min": [-6, -6], "max": [5, 6]},
+      "z_index": 32,
+      "composite_op": "erase",
+      "extraction": "eye_highlight_sparkle_enclosed_white"
+    },
+    {
+      "name": "right_eye_sparkle_open",
+      "role": "right_sparkle",
+      "variant": "open",
+      "source_frame": "idle",
+      "crop_box": [125, 112, 34, 45],
+      "base_position": [125, 112],
+      "anchor": [17, 22],
+      "offset_range": {"min": [-6, -6], "max": [5, 6]},
+      "z_index": 32,
+      "composite_op": "erase",
+      "extraction": "eye_highlight_sparkle_enclosed_white"
+    },
+    {
+      "name": "left_eye_sleepy",
+      "role": "left_eye",
+      "variant": "sleepy",
+      "source_frame": "sleep",
+      "crop_box": [43, 130, 34, 14],
+      "base_position": [43, 130],
+      "anchor": [17, 7],
+      "offset_range": {"min": [-2, 0], "max": [2, 2]},
+      "z_index": 30
+    },
+    {
+      "name": "right_eye_sleepy",
+      "role": "right_eye",
+      "variant": "sleepy",
+      "source_frame": "sleep",
+      "crop_box": [124, 130, 35, 14],
+      "base_position": [124, 130],
+      "anchor": [17, 7],
+      "offset_range": {"min": [-2, 0], "max": [2, 2]},
+      "z_index": 30
+    },
+    {
+      "name": "left_cheek_default",
+      "role": "left_cheek",
+      "variant": "default",
+      "source_frame": "idle",
+      "crop_box": [33, 160, 15, 9],
+      "base_position": [33, 160],
+      "anchor": [7, 4],
+      "offset_range": {"min": [0, -1], "max": [0, 1]},
+      "z_index": 40
+    },
+    {
+      "name": "right_cheek_default",
+      "role": "right_cheek",
+      "variant": "default",
+      "source_frame": "idle",
+      "crop_box": [154, 160, 14, 9],
+      "base_position": [154, 160],
+      "anchor": [7, 4],
+      "offset_range": {"min": [0, -1], "max": [0, 1]},
+      "z_index": 40
+    },
+    {
+      "name": "nose_default",
+      "role": "nose",
+      "variant": "default",
+      "source_frame": "idle",
+      "crop_box": [94, 148, 13, 8],
+      "base_position": [94, 148],
+      "anchor": [6, 4],
+      "offset_range": {"min": [0, 0], "max": [0, 0]},
+      "z_index": 50
+    },
+    {
+      "name": "mouth_default",
+      "role": "mouth",
+      "variant": "default",
+      "source_frame": "idle",
+      "crop_box": [86, 160, 29, 10],
+      "base_position": [86, 160],
+      "anchor": [14, 5],
+      "offset_range": {"min": [0, -1], "max": [0, 1]},
+      "z_index": 60
+    },
+    {
+      "name": "left_detail_swipe",
+      "role": "left_detail",
+      "variant": "swipe",
+      "source_frame": "swipe_left",
+      "crop_box": [23, 108, 22, 18],
+      "base_position": [23, 108],
+      "anchor": [11, 9],
+      "offset_range": {"min": [-1, -1], "max": [1, 1]},
+      "z_index": 35
+    },
+    {
+      "name": "right_detail_swipe",
+      "role": "right_detail",
+      "variant": "swipe",
+      "source_frame": "swipe_right",
+      "crop_box": [155, 111, 24, 19],
+      "base_position": [155, 111],
+      "anchor": [12, 9],
+      "offset_range": {"min": [-1, -1], "max": [1, 1]},
+      "z_index": 35
+    },
+    {
+      "name": "charm_star",
+      "role": "charm",
+      "variant": "idle",
+      "source_frame": "idle",
+      "crop_box": [96, 31, 23, 27],
+      "base_position": [96, 31],
+      "anchor": [11, 13],
+      "offset_range": {"min": [0, -3], "max": [2, 1]},
+      "z_index": 10
+    },
+    {
+      "name": "charm_question",
+      "role": "charm",
+      "variant": "curious",
+      "source_frame": "touch",
+      "crop_box": [137, 26, 20, 25],
+      "base_position": [137, 26],
+      "anchor": [10, 12],
+      "offset_range": {"min": [0, -3], "max": [2, 1]},
+      "z_index": 10
+    },
+    {
+      "name": "charm_heart",
+      "role": "charm",
+      "variant": "affection",
+      "source_frame": "swipe_down",
+      "crop_box": [38, 41, 25, 24],
+      "base_position": [38, 41],
+      "anchor": [12, 12],
+      "offset_range": {"min": [0, -3], "max": [2, 1]},
+      "z_index": 10
+    },
+    {
+      "name": "charm_record_dot",
+      "role": "charm",
+      "variant": "recording",
+      "source_frame": "recording",
+      "crop_box": [129, 34, 23, 24],
+      "base_position": [129, 34],
+      "anchor": [11, 12],
+      "offset_range": {"min": [0, -3], "max": [2, 1]},
+      "z_index": 10
+    },
+    {
+      "name": "charm_menu_ellipsis",
+      "role": "charm",
+      "variant": "menu",
+      "source_frame": "menu_hold",
+      "crop_box": [99, 50, 30, 7],
+      "base_position": [99, 50],
+      "anchor": [15, 3],
+      "offset_range": {"min": [0, -3], "max": [2, 1]},
+      "z_index": 10
+    },
+    {
+      "name": "charm_sleep_moon_z",
+      "role": "charm",
+      "variant": "sleep",
+      "source_frame": "sleep",
+      "crop_box": [72, 27, 83, 46],
+      "base_position": [72, 27],
+      "anchor": [41, 23],
+      "offset_range": {"min": [0, -3], "max": [2, 1]},
+      "z_index": 10
+    }
+  ],
+  "scene_charms": {
+    "daily": "charm_star",
+    "swipe": "charm_heart",
+    "recording": "charm_record_dot",
+    "menu": "charm_menu_ellipsis",
+    "touch": "charm_star",
+    "sleep": "charm_sleep_moon_z"
+  },
+  "state_matrix": [
+    {"name": "daily_calm_center", "scene": "daily", "emotion": "calm", "attention": "center", "energy": "normal", "interaction_memory": 0, "phase": "sustain"},
+    {"name": "daily_calm_left", "scene": "daily", "emotion": "calm", "attention": "left", "energy": "normal", "interaction_memory": 0, "phase": "sustain"},
+    {"name": "daily_calm_right", "scene": "daily", "emotion": "calm", "attention": "right", "energy": "normal", "interaction_memory": 0, "phase": "sustain"},
+    {"name": "daily_calm_up", "scene": "daily", "emotion": "calm", "attention": "up", "energy": "normal", "interaction_memory": 0, "phase": "sustain"},
+    {"name": "daily_calm_down", "scene": "daily", "emotion": "calm", "attention": "down", "energy": "normal", "interaction_memory": 0, "phase": "sustain"},
+    {"name": "daily_curious_left", "scene": "daily", "emotion": "curious", "attention": "left", "energy": "high", "interaction_memory": 1, "phase": "sustain"},
+    {"name": "daily_curious_right", "scene": "daily", "emotion": "curious", "attention": "right", "energy": "high", "interaction_memory": 1, "phase": "sustain"},
+    {"name": "daily_affection_down", "scene": "daily", "emotion": "affectionate", "attention": "down", "energy": "normal", "interaction_memory": 2, "phase": "sustain"},
+    {"name": "touch_curious_right", "scene": "touch", "emotion": "curious", "attention": "right", "energy": "high", "interaction_memory": 1, "phase": "sustain"},
+    {"name": "swipe_affection_left", "scene": "swipe", "emotion": "affectionate", "attention": "left", "energy": "normal", "interaction_memory": 2, "phase": "sustain"},
+    {"name": "swipe_affection_right", "scene": "swipe", "emotion": "affectionate", "attention": "right", "energy": "normal", "interaction_memory": 2, "phase": "sustain"},
+    {"name": "recording_focus_center", "scene": "recording", "emotion": "focused", "attention": "center", "energy": "high", "interaction_memory": 1, "phase": "sustain"},
+    {"name": "menu_curious_up", "scene": "menu", "emotion": "curious", "attention": "up", "energy": "normal", "interaction_memory": 1, "phase": "sustain"},
+    {"name": "sleep_low_center", "scene": "sleep", "emotion": "sleepy", "attention": "center", "energy": "low", "interaction_memory": 0, "phase": "sustain"}
+  ],
+  "stories": [
+    {"name": "daily_left", "scene": "daily", "emotion": "curious", "attention": "left", "energy": "high", "interaction_memory": 1},
+    {"name": "daily_right", "scene": "daily", "emotion": "curious", "attention": "right", "energy": "high", "interaction_memory": 1},
+    {"name": "daily_up", "scene": "daily", "emotion": "curious", "attention": "up", "energy": "high", "interaction_memory": 1},
+    {"name": "daily_down", "scene": "daily", "emotion": "affectionate", "attention": "down", "energy": "high", "interaction_memory": 2},
+    {"name": "touch_left", "scene": "touch", "emotion": "curious", "attention": "left", "energy": "high", "interaction_memory": 1},
+    {"name": "touch_right", "scene": "touch", "emotion": "curious", "attention": "right", "energy": "high", "interaction_memory": 1},
+    {"name": "swipe_left", "scene": "swipe", "emotion": "affectionate", "attention": "left", "energy": "high", "interaction_memory": 2},
+    {"name": "swipe_right", "scene": "swipe", "emotion": "affectionate", "attention": "right", "energy": "high", "interaction_memory": 2},
+    {"name": "swipe_down", "scene": "swipe", "emotion": "affectionate", "attention": "down", "energy": "normal", "interaction_memory": 2},
+    {"name": "recording_focus", "scene": "recording", "emotion": "focused", "attention": "up", "energy": "high", "interaction_memory": 1},
+    {"name": "menu_focus", "scene": "menu", "emotion": "curious", "attention": "up", "energy": "high", "interaction_memory": 1},
+    {"name": "sleep_enter", "scene": "sleep", "emotion": "sleepy", "attention": "center", "energy": "low", "interaction_memory": 0}
+  ],
+  "preview_choreography": {
+    "schema": "companion.v9_expression_rig_performance_score.v2",
+    "status": "CANDIDATE_PENDING_OWNER_REVIEW",
+    "scope": "daily_first",
+    "source_policy": "the reusable score composes only registered source-derived component masks at recorded legal offsets; each open eye moves its dominant source primary reflection and smaller source sparkle together as one constrained gaze group while the black V9 eye body stays fixed; every score step is an auditable component pose, never a full-face frame",
+    "phase_vocabulary": ["entry", "prepare", "lead", "response", "accent", "hold", "release", "return", "settle"],
+    "step_duration_ms": {"min": 80, "max": 3000},
+    "panel_presentation": {
+      "schema": "companion.v9_expression_rig_panel_presentation.v1",
+      "scope": "dedicated_daily_rig_demo_only",
+      "initial_baseline_min_dwell_ms": 2600,
+      "minimum_step_dwell_ms": 750,
+      "partial_limit": 255,
+      "replay_mode": "continuous_story_cycle",
+      "story_order": ["daily_left", "daily_right", "daily_up", "daily_down"],
+      "policy": "one controlled initial full baseline; every later frame across story and loop boundaries is partial-only or an identical hold; automatic maintenance cleanup is disabled only for this compile-time panel demo"
+    },
+    "performances": [
+      {
+        "name": "daily_left",
+        "family": "daily_gaze",
+        "beats": ["eyes/highlights", "brows", "nose-mouth/lips", "cheeks", "small charm"],
+        "score": [
+          {"phase": "entry", "label": "entry baseline", "duration_ms": 420, "poses": {}},
+          {"phase": "prepare", "label": "left reflection enters dynamic rest", "duration_ms": 100, "poses": {"left_eye_highlight_open": [0, 1], "left_eye_sparkle_open": [0, 1]}},
+          {"phase": "lead", "label": "left reflection reaches dynamic rest", "duration_ms": 110, "poses": {"left_eye_highlight_open": [0, 2], "left_eye_sparkle_open": [0, 2]}},
+          {"phase": "lead", "label": "right reflection enters dynamic rest", "duration_ms": 120, "poses": {"right_eye_highlight_open": [0, 1], "right_eye_sparkle_open": [0, 1]}},
+          {"phase": "lead", "label": "paired reflections reach dynamic rest", "duration_ms": 130, "poses": {"right_eye_highlight_open": [0, 2], "right_eye_sparkle_open": [0, 2]}},
+          {"phase": "lead", "label": "left reflection leads from rest", "duration_ms": 110, "poses": {"left_eye_highlight_open": [-1, 2], "left_eye_sparkle_open": [-1, 2]}},
+          {"phase": "lead", "label": "right reflection joins left gaze", "duration_ms": 120, "poses": {"right_eye_highlight_open": [-1, 2], "right_eye_sparkle_open": [-1, 2]}},
+          {"phase": "response", "label": "facial response follows the gaze", "duration_ms": 150, "poses": {"left_brow_open": [-1, -2], "right_brow_open": [-1, -2], "mouth_default": [0, 1], "left_cheek_default": [0, -1], "right_cheek_default": [0, -1]}},
+          {"phase": "accent", "label": "charm wakes", "duration_ms": 100, "poses": {"charm_star": [1, -1]}},
+          {"phase": "accent", "label": "charm lifts", "duration_ms": 110, "poses": {"charm_star": [1, -2]}},
+          {"phase": "accent", "label": "expression settles", "duration_ms": 100, "poses": {"left_brow_open": [-1, -3], "right_brow_open": [-1, -3], "charm_star": [1, -3]}},
+          {"phase": "hold", "label": "sustain hold", "duration_ms": 900, "poses": {}},
+          {"phase": "release", "label": "charm follows through", "duration_ms": 120, "poses": {"charm_star": [1, -1]}},
+          {"phase": "release", "label": "charm crosses home", "duration_ms": 100, "poses": {"charm_star": [0, -1]}},
+          {"phase": "release", "label": "face softens at dynamic rest", "duration_ms": 120, "poses": {"left_eye_highlight_open": [0, 2], "left_eye_sparkle_open": [0, 2], "right_eye_highlight_open": [0, 2], "right_eye_sparkle_open": [0, 2], "left_brow_open": [-1, -1], "right_brow_open": [-1, -1], "mouth_default": [0, 0], "left_cheek_default": [0, 0], "right_cheek_default": [0, 0]}},
+          {"phase": "return", "label": "left reflection rises from dynamic rest", "duration_ms": 120, "poses": {"left_eye_highlight_open": [0, 1], "left_eye_sparkle_open": [0, 1], "left_brow_open": [0, 0], "right_brow_open": [0, 0], "charm_star": [0, 0]}},
+          {"phase": "return", "label": "right reflection follows home", "duration_ms": 120, "poses": {"right_eye_highlight_open": [0, 1], "right_eye_sparkle_open": [0, 1]}},
+          {"phase": "return", "label": "paired reflections recover V9 baseline", "duration_ms": 160, "poses": {"left_eye_highlight_open": [0, 0], "left_eye_sparkle_open": [0, 0], "right_eye_highlight_open": [0, 0], "right_eye_sparkle_open": [0, 0]}},
+          {"phase": "settle", "label": "settle baseline", "duration_ms": 640, "return_to_entry": true, "poses": {}}
+        ]
+      },
+      {
+        "name": "daily_right",
+        "family": "daily_gaze",
+        "beats": ["eyes/highlights", "nose-mouth/lips", "brows", "small charm", "cheeks"],
+        "score": [
+          {"phase": "entry", "label": "entry baseline", "duration_ms": 420, "poses": {}},
+          {"phase": "prepare", "label": "right reflection enters dynamic rest", "duration_ms": 100, "poses": {"right_eye_highlight_open": [0, 1], "right_eye_sparkle_open": [0, 1]}},
+          {"phase": "lead", "label": "right reflection reaches dynamic rest", "duration_ms": 110, "poses": {"right_eye_highlight_open": [0, 2], "right_eye_sparkle_open": [0, 2]}},
+          {"phase": "lead", "label": "left reflection enters dynamic rest", "duration_ms": 120, "poses": {"left_eye_highlight_open": [0, 1], "left_eye_sparkle_open": [0, 1]}},
+          {"phase": "lead", "label": "paired reflections reach dynamic rest", "duration_ms": 130, "poses": {"left_eye_highlight_open": [0, 2], "left_eye_sparkle_open": [0, 2]}},
+          {"phase": "lead", "label": "right reflection leads from rest", "duration_ms": 110, "poses": {"right_eye_highlight_open": [1, 2], "right_eye_sparkle_open": [1, 2]}},
+          {"phase": "lead", "label": "left reflection joins right gaze", "duration_ms": 120, "poses": {"left_eye_highlight_open": [1, 2], "left_eye_sparkle_open": [1, 2]}},
+          {"phase": "response", "label": "facial response follows the gaze", "duration_ms": 150, "poses": {"left_brow_open": [1, -2], "right_brow_open": [1, -2], "mouth_default": [0, 1], "left_cheek_default": [0, -1], "right_cheek_default": [0, -1]}},
+          {"phase": "accent", "label": "charm wakes", "duration_ms": 100, "poses": {"charm_star": [1, -1]}},
+          {"phase": "accent", "label": "charm lifts", "duration_ms": 110, "poses": {"charm_star": [1, -2]}},
+          {"phase": "accent", "label": "expression settles", "duration_ms": 100, "poses": {"left_brow_open": [1, -3], "right_brow_open": [1, -3], "charm_star": [1, -3]}},
+          {"phase": "hold", "label": "sustain hold", "duration_ms": 900, "poses": {}},
+          {"phase": "release", "label": "charm follows through", "duration_ms": 120, "poses": {"charm_star": [1, -1]}},
+          {"phase": "release", "label": "face softens at dynamic rest", "duration_ms": 120, "poses": {"left_eye_highlight_open": [0, 2], "left_eye_sparkle_open": [0, 2], "right_eye_highlight_open": [0, 2], "right_eye_sparkle_open": [0, 2], "left_brow_open": [1, -1], "right_brow_open": [1, -1], "mouth_default": [0, 0], "left_cheek_default": [0, 0], "right_cheek_default": [0, 0]}},
+          {"phase": "return", "label": "right reflection rises from dynamic rest", "duration_ms": 120, "poses": {"right_eye_highlight_open": [0, 1], "right_eye_sparkle_open": [0, 1], "left_brow_open": [0, 0], "right_brow_open": [0, 0], "charm_star": [0, 0]}},
+          {"phase": "return", "label": "left reflection follows home", "duration_ms": 120, "poses": {"left_eye_highlight_open": [0, 1], "left_eye_sparkle_open": [0, 1]}},
+          {"phase": "return", "label": "paired reflections recover V9 baseline", "duration_ms": 160, "poses": {"left_eye_highlight_open": [0, 0], "left_eye_sparkle_open": [0, 0], "right_eye_highlight_open": [0, 0], "right_eye_sparkle_open": [0, 0]}},
+          {"phase": "settle", "label": "settle baseline", "duration_ms": 640, "return_to_entry": true, "poses": {}}
+        ]
+      },
+      {
+        "name": "daily_up",
+        "family": "daily_gaze",
+        "beats": ["eyes/highlights", "brows", "small charm", "nose-mouth/lips", "cheeks"],
+        "score": [
+          {"phase": "entry", "label": "entry baseline", "duration_ms": 420, "poses": {}},
+          {"phase": "prepare", "label": "left reflection enters dynamic rest", "duration_ms": 100, "poses": {"left_eye_highlight_open": [0, 1], "left_eye_sparkle_open": [0, 1]}},
+          {"phase": "lead", "label": "left reflection reaches dynamic rest", "duration_ms": 110, "poses": {"left_eye_highlight_open": [0, 2], "left_eye_sparkle_open": [0, 2]}},
+          {"phase": "lead", "label": "right reflection enters dynamic rest", "duration_ms": 120, "poses": {"right_eye_highlight_open": [0, 1], "right_eye_sparkle_open": [0, 1]}},
+          {"phase": "lead", "label": "paired reflections reach dynamic rest", "duration_ms": 130, "poses": {"right_eye_highlight_open": [0, 2], "right_eye_sparkle_open": [0, 2]}},
+          {"phase": "lead", "label": "left reflection leads upward from rest", "duration_ms": 110, "poses": {"left_eye_highlight_open": [0, 1], "left_eye_sparkle_open": [0, 1]}},
+          {"phase": "lead", "label": "right reflection joins upward gaze", "duration_ms": 120, "poses": {"right_eye_highlight_open": [0, 1], "right_eye_sparkle_open": [0, 1]}},
+          {"phase": "response", "label": "facial response follows the gaze", "duration_ms": 150, "poses": {"left_brow_open": [0, -2], "right_brow_open": [0, -2], "mouth_default": [0, 1], "left_cheek_default": [0, -1], "right_cheek_default": [0, -1]}},
+          {"phase": "accent", "label": "charm wakes", "duration_ms": 100, "poses": {"charm_star": [1, -1]}},
+          {"phase": "accent", "label": "charm lifts", "duration_ms": 110, "poses": {"charm_star": [1, -2]}},
+          {"phase": "accent", "label": "expression settles", "duration_ms": 100, "poses": {"left_brow_open": [0, -3], "right_brow_open": [0, -3], "charm_star": [1, -3]}},
+          {"phase": "hold", "label": "sustain hold", "duration_ms": 900, "poses": {}},
+          {"phase": "release", "label": "charm follows through", "duration_ms": 120, "poses": {"charm_star": [1, -1]}},
+          {"phase": "release", "label": "charm crosses home", "duration_ms": 100, "poses": {"charm_star": [0, -1]}},
+          {"phase": "release", "label": "face softens at dynamic rest", "duration_ms": 120, "poses": {"left_eye_highlight_open": [0, 2], "left_eye_sparkle_open": [0, 2], "right_eye_highlight_open": [0, 2], "right_eye_sparkle_open": [0, 2], "left_brow_open": [0, -1], "right_brow_open": [0, -1], "mouth_default": [0, 0], "left_cheek_default": [0, 0], "right_cheek_default": [0, 0]}},
+          {"phase": "return", "label": "left reflection rises from dynamic rest", "duration_ms": 120, "poses": {"left_eye_highlight_open": [0, 1], "left_eye_sparkle_open": [0, 1], "left_brow_open": [0, 0], "right_brow_open": [0, 0], "charm_star": [0, 0]}},
+          {"phase": "return", "label": "right reflection follows home", "duration_ms": 120, "poses": {"right_eye_highlight_open": [0, 1], "right_eye_sparkle_open": [0, 1]}},
+          {"phase": "return", "label": "paired reflections recover V9 baseline", "duration_ms": 160, "poses": {"left_eye_highlight_open": [0, 0], "left_eye_sparkle_open": [0, 0], "right_eye_highlight_open": [0, 0], "right_eye_sparkle_open": [0, 0]}},
+          {"phase": "settle", "label": "settle baseline", "duration_ms": 640, "return_to_entry": true, "poses": {}}
+        ]
+      },
+      {
+        "name": "daily_down",
+        "family": "daily_gaze",
+        "beats": ["eyes/highlights", "cheeks", "nose-mouth/lips", "brows", "small charm"],
+        "score": [
+          {"phase": "entry", "label": "entry baseline", "duration_ms": 420, "poses": {}},
+          {"phase": "prepare", "label": "left reflection group notices downward", "duration_ms": 100, "poses": {"left_eye_highlight_open": [0, 1], "left_eye_sparkle_open": [0, 1]}},
+          {"phase": "lead", "label": "left reflection group arrives downward", "duration_ms": 110, "poses": {"left_eye_highlight_open": [0, 2], "left_eye_sparkle_open": [0, 2]}},
+          {"phase": "lead", "label": "right reflection group follows downward", "duration_ms": 120, "poses": {"right_eye_highlight_open": [0, 1], "right_eye_sparkle_open": [0, 1]}},
+          {"phase": "lead", "label": "paired downward reflection group arrives", "duration_ms": 130, "poses": {"right_eye_highlight_open": [0, 2], "right_eye_sparkle_open": [0, 2]}},
+          {"phase": "response", "label": "facial response follows the dynamic rest", "duration_ms": 150, "poses": {"left_brow_open": [0, -1], "right_brow_open": [0, -1], "mouth_default": [0, -1], "left_cheek_default": [0, -1], "right_cheek_default": [0, -1]}},
+          {"phase": "accent", "label": "charm wakes", "duration_ms": 100, "poses": {"charm_star": [2, -1]}},
+          {"phase": "accent", "label": "charm lifts", "duration_ms": 110, "poses": {"charm_star": [2, -2]}},
+          {"phase": "accent", "label": "expression settles", "duration_ms": 100, "poses": {"left_brow_open": [0, -2], "right_brow_open": [0, -2], "charm_star": [2, -3]}},
+          {"phase": "hold", "label": "sustain hold", "duration_ms": 900, "poses": {}},
+          {"phase": "release", "label": "charm follows through", "duration_ms": 120, "poses": {"charm_star": [2, -1]}},
+          {"phase": "release", "label": "facial response softens together", "duration_ms": 120, "poses": {"left_brow_open": [0, -1], "right_brow_open": [0, -1], "mouth_default": [0, 0], "left_cheek_default": [0, 0], "right_cheek_default": [0, 0]}},
+          {"phase": "return", "label": "left reflection rises from dynamic rest", "duration_ms": 120, "poses": {"left_eye_highlight_open": [0, 1], "left_eye_sparkle_open": [0, 1], "left_brow_open": [0, 0], "right_brow_open": [0, 0], "charm_star": [0, 0]}},
+          {"phase": "return", "label": "right reflection follows home", "duration_ms": 120, "poses": {"right_eye_highlight_open": [0, 1], "right_eye_sparkle_open": [0, 1]}},
+          {"phase": "return", "label": "paired reflections recover V9 baseline", "duration_ms": 160, "poses": {"left_eye_highlight_open": [0, 0], "left_eye_sparkle_open": [0, 0], "right_eye_highlight_open": [0, 0], "right_eye_sparkle_open": [0, 0]}},
+          {"phase": "settle", "label": "settle baseline", "duration_ms": 640, "return_to_entry": true, "poses": {}}
+        ]
+      }
+    ]
+  }
+}

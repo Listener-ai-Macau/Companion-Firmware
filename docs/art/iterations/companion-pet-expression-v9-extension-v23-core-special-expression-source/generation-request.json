@@ -1,0 +1,56 @@
+{
+  "schema": "companion.v9.special_expression_generation_request.v1",
+  "status": "REQUESTED_TO_GENERATE_PENDING_SOURCE",
+  "iteration": "V23",
+  "created_at": "2026-07-20",
+  "purpose": "Core special-function source art only; not a runtime resource, CRIG, profile, firmware binding, or panel claim.",
+  "locked_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "allowed_reference_inputs": [
+    "locked_v9_reference_only"
+  ],
+  "forbidden_reference_inputs": [
+    "V18_menu_rejected_source",
+    "V19_recording_rejected_source",
+    "V20_upgrade_rejected_source",
+    "legacy_art",
+    "whole_face_runtime_cards",
+    "custom_LUT_or_display_artifacts"
+  ],
+  "identity_invariants": [
+    "same V9 open-eye silhouette, pupil fills, one primary highlight and one small sparkle per eye",
+    "same eye pair scale, spacing, baseline and nose anchor as the locked V9 reference",
+    "no new eye shape, eyelash, iris color, text, UI panel, battery icon, microphone icon or menu icon",
+    "brows, mouth, cheeks and a small contextual accent may change only when separable into source components",
+    "monochrome black ink on a clean white background with every ink component inside a 200x200 export-safe face area"
+  ],
+  "poses": [
+    {
+      "id": "menu_active",
+      "event": "menu_hold",
+      "semantic": "A composed thinking face for entering and using a menu. The brows create quiet focus, the mouth is small and thoughtful, and the contextual accent is a minimal three-dot thinking rhythm above the face rather than a UI control.",
+      "choreography_intent": "Daily enters with primary eye highlight attention, brows settle into focused thought, the three dots make one bounded beat, and exit reverses to Daily without another face swap."
+    },
+    {
+      "id": "recording_active",
+      "event": "recording_active",
+      "semantic": "An attentive listening face for active recording. The eyes stay exactly V9, brows lean into gentle concentration, the mouth is closed and calm, and two small symmetric listening ripples are optional separable accents outside the cheeks.",
+      "choreography_intent": "Entry shifts highlights first, then brows and mouth; active state performs one subtle symmetric ripple beat; stop or cancel reverses through the same components."
+    },
+    {
+      "id": "charging_active",
+      "event": "charging",
+      "semantic": "A restful replenishing face that is visibly distinct from Daily without a battery or lightning widget. Keep the V9 eyes recognizable, use relaxed brows, a soft content mouth and a tiny separable breathing accent above the face.",
+      "choreography_intent": "Entry softens highlights and brows, the active state uses a slow single accent pulse, and unplugging reverses to Daily."
+    }
+  ],
+  "required_followup": [
+    "generate one source image per pose using the locked V9 reference",
+    "write generated-source hashes and prompt lineage before any crop or export",
+    "extract only source components, reassemble deterministic 200x200 PBM frames and verify identity geometry",
+    "run browser/target component-plan parity and canonical owner-art review",
+    "keep runtime_resource_activated false until the physical White and Black gates pass"
+  ]
+}

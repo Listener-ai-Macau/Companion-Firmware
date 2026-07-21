@@ -1,0 +1,18 @@
+{
+  "schema": "companion.art_generation_attempt.v1",
+  "status": "REJECTED_OWNER_STEERING_INACTIVE_EVIDENCE",
+  "created_at": "2026-07-21",
+  "request": "docs/art/iterations/companion-pet-expression-v9-extension-v42-emotion-source/generation-request-v9.json",
+  "prompt": "docs/art/iterations/companion-pet-expression-v9-extension-v42-emotion-source/generation-prompt-v9.md",
+  "image": "docs/art/iterations/companion-pet-expression-v9-extension-v42-emotion-source/candidate/attempt-09-delighted-mouth-source.png",
+  "sha256": "DBE24B6FBBDE4330F17405165B48096DB59ABF407EE33318132E1D2E93FF43BB",
+  "locked_v9_reference_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "owner_steering": "Superseded after owner said the regenerated Delighted source was still too poor for use; preserve it only as inactive evidence.",
+  "agent_visual_triage": "Rejected for promotion: the two-arc mouth becomes too thin and scattered after native 200x200 scaling. Do not export or bind.",
+  "source_crop": {
+    "delighted_mouth": [581, 770, 127, 44]
+  },
+  "threshold": 128,
+  "runtime_resource_activated": false,
+  "use": "rejected source-only evidence; do not export or bind"
+}

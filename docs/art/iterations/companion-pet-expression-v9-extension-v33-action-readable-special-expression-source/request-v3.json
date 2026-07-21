@@ -1,0 +1,63 @@
+{
+  "schema": "companion.v9.special_expression_generation_request.v16",
+  "status": "PENDING_GENERATION",
+  "iteration": "V33",
+  "request_revision": 3,
+  "created_at": "2026-07-20",
+  "supersedes": "V33 request revision 2 and its internally rejected native-200 preview; charging direction corrected by COMP-REQ-183 before generation",
+  "purpose": "Generate a locked-V9-only facial-performance-first causal-direction panel: a short menu-enter acknowledgement before the no-face menu UI, quiet inward recording capture, and real wireless-dock charging. Eyes/highlights, brows and mouth carry each state; compact action props only corroborate the event.",
+  "locked_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "allowed_reference_inputs": ["locked_v9_reference_only"],
+  "art_direction_ledger": "docs/art/iterations/companion-pet-expression-v9/art-direction-ledger-v2.json",
+  "forbidden_reference_inputs": [
+    "V33_attempt_02_or_any_derived_asset",
+    "V33_attempt_01_or_any_derived_asset",
+    "V32_or_any_derived_asset",
+    "V31_or_any_derived_asset",
+    "V30_or_any_derived_asset",
+    "legacy_art",
+    "whole_face_runtime_cards"
+  ],
+  "common_invariants": [
+    "retain exact V9 floating-face identity and no surrounding head, body, text, card, frame or UI",
+    "after eye-anchor normalization every action cue remains at least 8 pixels inside the 200x200 canvas",
+    "functional objects are character-bound action props with component-safe boundaries, never detached widgets or whole-face replacements",
+    "each state declares a pairwise-distinct eye-highlight direction, brow pose and mouth mask/action; no cue alone may carry the event meaning",
+    "the label-hidden native-200 preview must retain every declared object and convey correct event direction before source export"
+  ],
+  "state_action_brief": [
+    {
+      "id": "menu_enter",
+      "action_verb": "acknowledge_and_enter",
+      "face_action": "brows lift with a small alert asymmetry, both highlights make a brief upward-right acknowledgement glance, and the mouth is a tiny poised closed decision chevron distinct from daily, recording and charging",
+      "cue": "no hamburger, list, page, row, cursor, chevron, menu icon, menu UI or pet face inside the later menu page; this frame hands off immediately to the separate no-face four-root UI"
+    },
+    {
+      "id": "recording_active",
+      "action_verb": "receive_and_listen",
+      "face_action": "quiet brows gently draw inward, both highlights turn right toward the sound source, and the mouth becomes one narrow flat listening slit with a tiny central white breath gap, distinct from menu and charging",
+      "cue": "one miniature classic microphone entirely inside the right face-side safe area, immediately beside the right cheek. Exactly two short nested sound arcs plus one tiny inward arrowhead point LEFT from the microphone into the character. The mouth emits nothing and no cue crosses a canvas edge."
+    },
+    {
+      "id": "charging_active",
+      "action_verb": "rest_on_wireless_dock_and_receive_energy",
+      "face_action": "soft brows settle lower and wider, highlights relax high and inward, and the mouth is one small rounded restorative upturn with a white inner gap, distinct from menu and recording; quiet replenishment, never generic delight",
+      "cue": "a compact shallow U-shaped wireless charging dock/cradle directly underneath the lower face, visibly supporting it and fully inside the 200x200 safe area. Two short induction arcs rise upward from the dock toward the lower cheeks and mouth, with a tiny centered energy glint between dock and face. The dock is narrower than the eye-to-eye span and leaves ample white margin below.",
+      "avoid": ["wired plug", "cable", "socket", "Type-C port", "battery icon", "large lightning bolt", "decorative star", "detached UI widget", "edge clipping"]
+    }
+  ],
+  "source_preview_gate": [
+    "label-hidden 200x200 review confirms menu is a transition, not a menu page",
+    "recording retains its microphone, two inward arcs and arrowhead inside the right safe area",
+    "charging retains a fully visible U-shaped wireless dock plus two upward induction arcs under the face",
+    "all action objects stay in canvas and the candidate remains runtime inactive"
+  ],
+  "runtime_policy": {
+    "runtime_resource_activated": false,
+    "active_candidate_binding": "forbidden",
+    "unavailable_special_state_policy": "fail_closed"
+  }
+}

@@ -1,0 +1,261 @@
+{
+  "schema": "companion.expression_rig_component_pack.v1",
+  "status": "CANDIDATE_PENDING_OWNER_REVIEW",
+  "runtime_resource_activated": false,
+  "revision": 107,
+  "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+  "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "prompt_revision": "pet-expression-v9-anti-sly-cute-2026-07-15",
+  "profile": {
+    "width": 200,
+    "height": 200,
+    "stride_bytes": 25,
+    "pixel_format": "mono_1bpp_white_is_one_msb",
+    "safe_inset_px": 4
+  },
+  "pack": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/revision-111/rendered-200x200/companion-v9-expression-rig-candidate-200x200.crig",
+  "pack_sha256": "CB06747696051D426228DFB76B0FEC77D8A89B3545079E1AB88A7FA908ACE1D5",
+  "total_size": 3267,
+  "components": [
+    {
+      "component_id": 1,
+      "name": "left_brow_open",
+      "width": 23,
+      "height": 12,
+      "stride_bytes": 3,
+      "data_offset": 560,
+      "data_size": 36,
+      "data_crc32": "9A95BFF8"
+    },
+    {
+      "component_id": 2,
+      "name": "right_brow_open",
+      "width": 23,
+      "height": 12,
+      "stride_bytes": 3,
+      "data_offset": 596,
+      "data_size": 36,
+      "data_crc32": "157D79CA"
+    },
+    {
+      "component_id": 3,
+      "name": "left_brow_sleepy",
+      "width": 23,
+      "height": 14,
+      "stride_bytes": 3,
+      "data_offset": 632,
+      "data_size": 42,
+      "data_crc32": "D99E60B4"
+    },
+    {
+      "component_id": 4,
+      "name": "right_brow_sleepy",
+      "width": 23,
+      "height": 14,
+      "stride_bytes": 3,
+      "data_offset": 674,
+      "data_size": 42,
+      "data_crc32": "98BCB538"
+    },
+    {
+      "component_id": 5,
+      "name": "left_eye_open",
+      "width": 33,
+      "height": 45,
+      "stride_bytes": 5,
+      "data_offset": 716,
+      "data_size": 225,
+      "data_crc32": "2A123787"
+    },
+    {
+      "component_id": 6,
+      "name": "right_eye_open",
+      "width": 34,
+      "height": 45,
+      "stride_bytes": 5,
+      "data_offset": 941,
+      "data_size": 225,
+      "data_crc32": "C3E676A0"
+    },
+    {
+      "component_id": 7,
+      "name": "left_eye_highlight_open",
+      "width": 33,
+      "height": 45,
+      "stride_bytes": 5,
+      "data_offset": 1166,
+      "data_size": 225,
+      "data_crc32": "72697139"
+    },
+    {
+      "component_id": 8,
+      "name": "right_eye_highlight_open",
+      "width": 34,
+      "height": 45,
+      "stride_bytes": 5,
+      "data_offset": 1391,
+      "data_size": 225,
+      "data_crc32": "92BAABC9"
+    },
+    {
+      "component_id": 9,
+      "name": "left_eye_sparkle_open",
+      "width": 33,
+      "height": 45,
+      "stride_bytes": 5,
+      "data_offset": 1616,
+      "data_size": 225,
+      "data_crc32": "B15AF821"
+    },
+    {
+      "component_id": 10,
+      "name": "right_eye_sparkle_open",
+      "width": 34,
+      "height": 45,
+      "stride_bytes": 5,
+      "data_offset": 1841,
+      "data_size": 225,
+      "data_crc32": "8176D69E"
+    },
+    {
+      "component_id": 11,
+      "name": "left_eye_sleepy",
+      "width": 34,
+      "height": 14,
+      "stride_bytes": 5,
+      "data_offset": 2066,
+      "data_size": 70,
+      "data_crc32": "5C83FB80"
+    },
+    {
+      "component_id": 12,
+      "name": "right_eye_sleepy",
+      "width": 35,
+      "height": 14,
+      "stride_bytes": 5,
+      "data_offset": 2136,
+      "data_size": 70,
+      "data_crc32": "E9AE75DF"
+    },
+    {
+      "component_id": 13,
+      "name": "left_cheek_default",
+      "width": 15,
+      "height": 9,
+      "stride_bytes": 2,
+      "data_offset": 2206,
+      "data_size": 18,
+      "data_crc32": "084BBC1C"
+    },
+    {
+      "component_id": 14,
+      "name": "right_cheek_default",
+      "width": 14,
+      "height": 9,
+      "stride_bytes": 2,
+      "data_offset": 2224,
+      "data_size": 18,
+      "data_crc32": "56B44F85"
+    },
+    {
+      "component_id": 15,
+      "name": "nose_default",
+      "width": 13,
+      "height": 8,
+      "stride_bytes": 2,
+      "data_offset": 2242,
+      "data_size": 16,
+      "data_crc32": "552A6529"
+    },
+    {
+      "component_id": 16,
+      "name": "mouth_default",
+      "width": 29,
+      "height": 10,
+      "stride_bytes": 4,
+      "data_offset": 2258,
+      "data_size": 40,
+      "data_crc32": "D55EC322"
+    },
+    {
+      "component_id": 17,
+      "name": "left_detail_swipe",
+      "width": 22,
+      "height": 18,
+      "stride_bytes": 3,
+      "data_offset": 2298,
+      "data_size": 54,
+      "data_crc32": "B5AD8A1E"
+    },
+    {
+      "component_id": 18,
+      "name": "right_detail_swipe",
+      "width": 24,
+      "height": 19,
+      "stride_bytes": 3,
+      "data_offset": 2352,
+      "data_size": 57,
+      "data_crc32": "367FC694"
+    },
+    {
+      "component_id": 19,
+      "name": "charm_star",
+      "width": 23,
+      "height": 27,
+      "stride_bytes": 3,
+      "data_offset": 2409,
+      "data_size": 81,
+      "data_crc32": "6DC1C74C"
+    },
+    {
+      "component_id": 20,
+      "name": "charm_question",
+      "width": 20,
+      "height": 25,
+      "stride_bytes": 3,
+      "data_offset": 2490,
+      "data_size": 75,
+      "data_crc32": "1ED848BD"
+    },
+    {
+      "component_id": 21,
+      "name": "charm_heart",
+      "width": 25,
+      "height": 24,
+      "stride_bytes": 4,
+      "data_offset": 2565,
+      "data_size": 96,
+      "data_crc32": "32E7C6B2"
+    },
+    {
+      "component_id": 22,
+      "name": "charm_record_dot",
+      "width": 23,
+      "height": 24,
+      "stride_bytes": 3,
+      "data_offset": 2661,
+      "data_size": 72,
+      "data_crc32": "D7F0E549"
+    },
+    {
+      "component_id": 23,
+      "name": "charm_menu_ellipsis",
+      "width": 30,
+      "height": 7,
+      "stride_bytes": 4,
+      "data_offset": 2733,
+      "data_size": 28,
+      "data_crc32": "235F5CFD"
+    },
+    {
+      "component_id": 24,
+      "name": "charm_sleep_moon_z",
+      "width": 83,
+      "height": 46,
+      "stride_bytes": 11,
+      "data_offset": 2761,
+      "data_size": 506,
+      "data_crc32": "D8FD3DBB"
+    }
+  ]
+}

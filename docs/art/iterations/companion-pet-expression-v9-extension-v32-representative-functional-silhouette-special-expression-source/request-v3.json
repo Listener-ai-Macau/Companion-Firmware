@@ -1,0 +1,79 @@
+{
+  "schema": "companion.v9.special_expression_generation_request.v12",
+  "status": "SOURCE_GATE_PASSED_PENDING_COMPONENT_EXPORT",
+  "iteration": "V32",
+  "request_revision": 3,
+  "created_at": "2026-07-20",
+  "supersedes": "generation-request-v2-closed-circuit-functional-silhouette-panel.json",
+  "purpose": "Regenerate one locked-V9-only three-pose source panel after V32 attempt 2 passed semantic inspection but failed the half-eye component budget. Keep high functional discrimination while making all three functional parts per state thin, hollow and individually below the V9 half-eye ink budget. Menu must retain three readable page tabs; Recording must retain one mouth, two receiver cuffs and pickup; Charging must retain a continuous connected coupler-to-tether-to-dock topology.",
+  "locked_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "allowed_reference_inputs": ["locked_v9_reference_only"],
+  "forbidden_reference_inputs": [
+    "V32_attempt_02_or_any_derived_asset",
+    "V32_attempt_01_or_any_derived_asset",
+    "V31_rejected_source_or_any_derived_asset",
+    "V30_rejected_source_or_any_derived_asset",
+    "V29_rejected_source_or_any_derived_asset",
+    "V28_superseded_request_as_visual_input",
+    "V27_rejected_source_or_any_derived_asset",
+    "V26_rejected_source_or_any_derived_asset",
+    "V25_rejected_source_or_any_derived_asset",
+    "V24_rejected_source_or_any_derived_asset",
+    "V23_candidates_or_exports",
+    "legacy_art",
+    "whole_face_runtime_cards"
+  ],
+  "v9_identity_and_simplicity_invariants": [
+    "retain exact locked V9 floating-face identity: black oval eyes, one oval highlight and one diamond sparkle per eye, eye scale/spacing/baseline, nose, cheeks, line weight, wide white margins and no enclosing head, hair, ears, helmet, body, frame or card",
+    "each state has exactly three separately extractable black functional components; each component is hollow or thin-stroked, has a white interior when enclosed, and has at most 504 thresholded native-200 ink pixels",
+    "each functional component is visibly smaller than half a V9 eye, never a filled block, and never covers an eye or brow",
+    "mouths differ pairwise by pixel mask, topology, endpoint pattern and curvature; no shared, offset or scale-only mouth is permitted",
+    "menu is three thin outlined page tabs with a raised notched centre; recording is two open receiver cuffs plus one pickup dot; charging is a continuous thin side-coupler-to-tether-to-slotted-dock route",
+    "no literal battery, lightning, microphone, waveform, plug, menu icon, text, label, detached UI widget, generic emotion substitution, headband, costume or whole-face prop"
+  ],
+  "state_object_semantic_brief": [
+    {
+      "id": "menu_active",
+      "one_glance_read": "navigation and choosing, not hair, dots or a crown",
+      "mouth_action": "short straight decision mouth with a single centred downward selection notch",
+      "components": ["left_hollow_page_tab", "active_hollow_notched_page_tab", "right_hollow_page_tab"],
+      "topology": "three small outline-only page tabs above the brows. The centre is only subtly taller, has one tiny white folded-corner notch, and must not be filled black or substantially larger than either side tab."
+    },
+    {
+      "id": "recording_active",
+      "one_glance_read": "active capture and attentive listening, not surprise, moustache or costume headset",
+      "mouth_action": "exactly one shallow wide rounded horizontal listening capsule below the nose; no duplicate, stacked or second inner mouth",
+      "components": ["left_thin_receiver_cuff", "right_thin_receiver_cuff", "single_pickup_dot"],
+      "topology": "two thin open C cuffs with one inward contact tick each, plus one small round pickup dot to the right of the mouth; no bridge, earcup, boom, microphone or waveform"
+    },
+    {
+      "id": "charging_active",
+      "one_glance_read": "connected power transfer and recovery, not a decorative star/string",
+      "mouth_action": "small smooth upward recovery smile with a white interior",
+      "components": ["small_open_side_coupler", "thin_continuous_short_tether", "small_hollow_slotted_energy_dock"],
+      "topology": "a small open coupler at the left cheek joins one thin short continuous tether which visibly touches a small hollow rounded dock above the brows. The dock has a horizontal white contact slot. Each part remains individually below the half-eye budget even though the tether connects the endpoints."
+    }
+  ],
+  "source_gate_readability_requirements": [
+    "native 200x200 crops are internally assignable as Menu, Recording and Charging without captions",
+    "each of the nine declared functional components has 8 through 504 thresholded ink pixels, no unwanted overlap and an explicit source crop",
+    "menu has three small separated hollow page-tab silhouettes; a filled or oversized centre tab fails",
+    "recording has one mouth, two open cuffs and a pickup dot; a duplicate/stacked mouth fails",
+    "charging has a thin 8-connected tether from side coupler to slotted dock; disconnected ornamentation fails",
+    "all states have pairwise different mouth masks and no forbidden object before export or owner review"
+  ],
+  "machine_preconditions_before_owner_review": [
+    "source gate validates locked-V9-only lineage, native-200 component budget, exact component topology, mouth pairwise difference and state readability",
+    "component export uses only locked V9 identity components plus source-derived V32 masks with zero overlap and no full-face substitution",
+    "browser and target PBM replay one deterministic native-200 component plan",
+    "internal visual preflight rejects shared mouths, unreadable semantics, duplicate recording mouth, disconnected charging topology, oversize/filled/costume components and source misuse before an owner prompt"
+  ],
+  "runtime_policy": {
+    "runtime_resource_activated": false,
+    "active_candidate_binding": "forbidden",
+    "unavailable_special_state_policy": "fail_closed"
+  }
+}

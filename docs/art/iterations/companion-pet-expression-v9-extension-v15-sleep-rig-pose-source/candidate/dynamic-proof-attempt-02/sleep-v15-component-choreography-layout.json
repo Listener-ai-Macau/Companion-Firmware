@@ -1,0 +1,3939 @@
+{
+  "schema": "companion.v15_sleep_component_choreography_layout.v1",
+  "status": "CANDIDATE_UNBOUND_OWNER_DIRECTION_ACCEPTED_RUNTIME_INACTIVE",
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden",
+  "crig_mount": "forbidden",
+  "full_pose_cell_playback": "forbidden",
+  "source_policy": "registered V15 source masks only",
+  "source_request": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/sleep-v15-component-choreography-v2-request.json",
+  "source_request_sha256": "428F7208FA652280782FC7F6D29F312D3568D378CAC2B2C0F4B467B95895879F",
+  "source_component_layout": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/component-export-attempt-01/v15-sleep-rig-component-layout.json",
+  "source_component_layout_sha256": "122296005EADF63D5F21D801889CD0C09794E33778464B19CB67641655794895",
+  "source_image": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/attempt-01-generated-pose-sheet.png",
+  "source_image_sha256": "FAA549D116D8ECF1B2479A097F1AF7CE79AA280DE02EA27FE6750DFE3A847D48",
+  "profile": {
+    "width": 200,
+    "height": 200,
+    "pixel_format": "mono_1bpp_white_is_one_msb"
+  },
+  "components": [
+    {
+      "component_id": 1,
+      "name": "left_brow_rest",
+      "source_pose": "sleep_rest_anchor",
+      "source_component_box": [
+        170,
+        265,
+        227,
+        288
+      ],
+      "normalized_component_box": [
+        54,
+        84,
+        73,
+        92
+      ],
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/component-export-attempt-01/component-masks/left_brow_rest.pbm",
+      "mask_sha256": "BD68CE44E899F797BFF759C8609C1B2C22BEB18FC7888A29194D9B60BF3A4627",
+      "preview_mask": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/component-export-attempt-01/preview-layers/left_brow_rest.png",
+      "base_position": [
+        54,
+        84
+      ],
+      "mask_size": [
+        19,
+        8
+      ],
+      "z_index": 20,
+      "source_sheet": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/attempt-01-generated-pose-sheet.png",
+      "source_sheet_sha256": "FAA549D116D8ECF1B2479A097F1AF7CE79AA280DE02EA27FE6750DFE3A847D48"
+    },
+    {
+      "component_id": 2,
+      "name": "left_brow_settle",
+      "source_pose": "sleep_brow_settle",
+      "source_component_box": [
+        135,
+        268,
+        193,
+        296
+      ],
+      "normalized_component_box": [
+        56,
+        85,
+        75,
+        95
+      ],
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/component-export-attempt-01/component-masks/left_brow_settle.pbm",
+      "mask_sha256": "2AA6D13BCB19528D626EA17A2C779DA7481B11788C1E4ADC0682699B2CE93B7F",
+      "preview_mask": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/component-export-attempt-01/preview-layers/left_brow_settle.png",
+      "base_position": [
+        56,
+        85
+      ],
+      "mask_size": [
+        19,
+        10
+      ],
+      "z_index": 20,
+      "source_sheet": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/attempt-01-generated-pose-sheet.png",
+      "source_sheet_sha256": "FAA549D116D8ECF1B2479A097F1AF7CE79AA280DE02EA27FE6750DFE3A847D48"
+    },
+    {
+      "component_id": 3,
+      "name": "right_brow_rest",
+      "source_pose": "sleep_rest_anchor",
+      "source_component_box": [
+        419,
+        265,
+        476,
+        288
+      ],
+      "normalized_component_box": [
+        133,
+        84,
+        152,
+        92
+      ],
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/component-export-attempt-01/component-masks/right_brow_rest.pbm",
+      "mask_sha256": "4112E32C3B6E2E0CF3FFF196F588D881FAFA3B6D7C63A7608F93F902C826EE02",
+      "preview_mask": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/component-export-attempt-01/preview-layers/right_brow_rest.png",
+      "base_position": [
+        133,
+        84
+      ],
+      "mask_size": [
+        19,
+        8
+      ],
+      "z_index": 21,
+      "source_sheet": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/attempt-01-generated-pose-sheet.png",
+      "source_sheet_sha256": "FAA549D116D8ECF1B2479A097F1AF7CE79AA280DE02EA27FE6750DFE3A847D48"
+    },
+    {
+      "component_id": 4,
+      "name": "left_closed_eye_anchor",
+      "source_pose": "sleep_rest_anchor",
+      "source_component_box": [
+        157,
+        365,
+        252,
+        403
+      ],
+      "normalized_component_box": [
+        50,
+        116,
+        81,
+        129
+      ],
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/component-export-attempt-01/component-masks/left_closed_eye_anchor.pbm",
+      "mask_sha256": "93940D00AED02B06A55EB33D65C7B533661653BB78ED25A32ACEF5A8F5EEE58F",
+      "preview_mask": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/component-export-attempt-01/preview-layers/left_closed_eye_anchor.png",
+      "base_position": [
+        50,
+        116
+      ],
+      "mask_size": [
+        31,
+        13
+      ],
+      "z_index": 30,
+      "source_sheet": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/attempt-01-generated-pose-sheet.png",
+      "source_sheet_sha256": "FAA549D116D8ECF1B2479A097F1AF7CE79AA280DE02EA27FE6750DFE3A847D48"
+    },
+    {
+      "component_id": 5,
+      "name": "right_closed_eye_anchor",
+      "source_pose": "sleep_rest_anchor",
+      "source_component_box": [
+        392,
+        365,
+        487,
+        403
+      ],
+      "normalized_component_box": [
+        125,
+        116,
+        156,
+        129
+      ],
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/component-export-attempt-01/component-masks/right_closed_eye_anchor.pbm",
+      "mask_sha256": "B3F6FFF0696DB13A3FDA4472A437FB170503A484768DA35E38E1548DD5420697",
+      "preview_mask": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/component-export-attempt-01/preview-layers/right_closed_eye_anchor.png",
+      "base_position": [
+        125,
+        116
+      ],
+      "mask_size": [
+        31,
+        13
+      ],
+      "z_index": 31,
+      "source_sheet": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/attempt-01-generated-pose-sheet.png",
+      "source_sheet_sha256": "FAA549D116D8ECF1B2479A097F1AF7CE79AA280DE02EA27FE6750DFE3A847D48"
+    },
+    {
+      "component_id": 6,
+      "name": "left_cheek_rest",
+      "source_pose": "sleep_rest_anchor",
+      "source_component_box": [
+        140,
+        422,
+        173,
+        444
+      ],
+      "normalized_component_box": [
+        44,
+        134,
+        56,
+        142
+      ],
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/component-export-attempt-01/component-masks/left_cheek_rest.pbm",
+      "mask_sha256": "52C6590EEEFB50C4B7A719654D34EA444EA0E641269980C3593D54C2109114A5",
+      "preview_mask": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/component-export-attempt-01/preview-layers/left_cheek_rest.png",
+      "base_position": [
+        44,
+        134
+      ],
+      "mask_size": [
+        12,
+        8
+      ],
+      "z_index": 40,
+      "source_sheet": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/attempt-01-generated-pose-sheet.png",
+      "source_sheet_sha256": "FAA549D116D8ECF1B2479A097F1AF7CE79AA280DE02EA27FE6750DFE3A847D48"
+    },
+    {
+      "component_id": 7,
+      "name": "left_cheek_breath",
+      "source_pose": "sleep_lower_face_breath",
+      "source_component_box": [
+        140,
+        354,
+        173,
+        375
+      ],
+      "normalized_component_box": [
+        44,
+        134,
+        56,
+        142
+      ],
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/component-export-attempt-01/component-masks/left_cheek_breath.pbm",
+      "mask_sha256": "357902FF9B7B4296DD414757ACEB866BC884A06815CA5416C32F075DE095B6F4",
+      "preview_mask": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/component-export-attempt-01/preview-layers/left_cheek_breath.png",
+      "base_position": [
+        44,
+        134
+      ],
+      "mask_size": [
+        12,
+        8
+      ],
+      "z_index": 40,
+      "source_sheet": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/attempt-01-generated-pose-sheet.png",
+      "source_sheet_sha256": "FAA549D116D8ECF1B2479A097F1AF7CE79AA280DE02EA27FE6750DFE3A847D48"
+    },
+    {
+      "component_id": 8,
+      "name": "right_cheek_rest",
+      "source_pose": "sleep_rest_anchor",
+      "source_component_box": [
+        470,
+        422,
+        503,
+        444
+      ],
+      "normalized_component_box": [
+        149,
+        134,
+        161,
+        142
+      ],
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/component-export-attempt-01/component-masks/right_cheek_rest.pbm",
+      "mask_sha256": "33E478E0A626184A5051D73B5034B89AFAD06BA88F5176DF017BF97278AAD114",
+      "preview_mask": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/component-export-attempt-01/preview-layers/right_cheek_rest.png",
+      "base_position": [
+        149,
+        134
+      ],
+      "mask_size": [
+        12,
+        8
+      ],
+      "z_index": 41,
+      "source_sheet": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/attempt-01-generated-pose-sheet.png",
+      "source_sheet_sha256": "FAA549D116D8ECF1B2479A097F1AF7CE79AA280DE02EA27FE6750DFE3A847D48"
+    },
+    {
+      "component_id": 9,
+      "name": "right_cheek_breath",
+      "source_pose": "sleep_lower_face_breath",
+      "source_component_box": [
+        471,
+        354,
+        503,
+        375
+      ],
+      "normalized_component_box": [
+        150,
+        134,
+        161,
+        142
+      ],
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/component-export-attempt-01/component-masks/right_cheek_breath.pbm",
+      "mask_sha256": "52D58B9756D7C6D0E0EFB082BB73358858EC7B03C9DC5E4570F77C1EBCD2EFC6",
+      "preview_mask": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/component-export-attempt-01/preview-layers/right_cheek_breath.png",
+      "base_position": [
+        150,
+        134
+      ],
+      "mask_size": [
+        11,
+        8
+      ],
+      "z_index": 41,
+      "source_sheet": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/attempt-01-generated-pose-sheet.png",
+      "source_sheet_sha256": "FAA549D116D8ECF1B2479A097F1AF7CE79AA280DE02EA27FE6750DFE3A847D48"
+    },
+    {
+      "component_id": 10,
+      "name": "nose_anchor",
+      "source_pose": "sleep_rest_anchor",
+      "source_component_box": [
+        309,
+        399,
+        335,
+        414
+      ],
+      "normalized_component_box": [
+        98,
+        127,
+        107,
+        133
+      ],
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/component-export-attempt-01/component-masks/nose_anchor.pbm",
+      "mask_sha256": "42EF71A15735373155A09C586DA90AA9F4981CA5F18ED95801147458160A1EF8",
+      "preview_mask": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/component-export-attempt-01/preview-layers/nose_anchor.png",
+      "base_position": [
+        98,
+        127
+      ],
+      "mask_size": [
+        9,
+        6
+      ],
+      "z_index": 50,
+      "source_sheet": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/attempt-01-generated-pose-sheet.png",
+      "source_sheet_sha256": "FAA549D116D8ECF1B2479A097F1AF7CE79AA280DE02EA27FE6750DFE3A847D48"
+    },
+    {
+      "component_id": 11,
+      "name": "mouth_rest",
+      "source_pose": "sleep_rest_anchor",
+      "source_component_box": [
+        295,
+        431,
+        350,
+        449
+      ],
+      "normalized_component_box": [
+        94,
+        137,
+        112,
+        144
+      ],
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/component-export-attempt-01/component-masks/mouth_rest.pbm",
+      "mask_sha256": "D9063F9853D45721165E660B97579F12065D536E22DFCED8C8147BF6BD9EF506",
+      "preview_mask": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/component-export-attempt-01/preview-layers/mouth_rest.png",
+      "base_position": [
+        94,
+        137
+      ],
+      "mask_size": [
+        18,
+        7
+      ],
+      "z_index": 60,
+      "source_sheet": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/attempt-01-generated-pose-sheet.png",
+      "source_sheet_sha256": "FAA549D116D8ECF1B2479A097F1AF7CE79AA280DE02EA27FE6750DFE3A847D48"
+    },
+    {
+      "component_id": 12,
+      "name": "mouth_breath",
+      "source_pose": "sleep_lower_face_breath",
+      "source_component_box": [
+        307,
+        360,
+        338,
+        394
+      ],
+      "normalized_component_box": [
+        97,
+        136,
+        108,
+        148
+      ],
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/component-export-attempt-01/component-masks/mouth_breath.pbm",
+      "mask_sha256": "C11475855713A32FF6E208F4733ECB7CD5103E9B6C3649FC98FDB8DE2440FB23",
+      "preview_mask": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/component-export-attempt-01/preview-layers/mouth_breath.png",
+      "base_position": [
+        97,
+        136
+      ],
+      "mask_size": [
+        11,
+        12
+      ],
+      "z_index": 60,
+      "source_sheet": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/attempt-01-generated-pose-sheet.png",
+      "source_sheet_sha256": "FAA549D116D8ECF1B2479A097F1AF7CE79AA280DE02EA27FE6750DFE3A847D48"
+    },
+    {
+      "component_id": 13,
+      "name": "sleep_breath_mark_left",
+      "source_pose": "sleep_rest_anchor",
+      "source_component_box": [
+        98,
+        450,
+        142,
+        484
+      ],
+      "normalized_component_box": [
+        31,
+        143,
+        46,
+        155
+      ],
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/component-export-attempt-01/component-masks/sleep_breath_mark_left.pbm",
+      "mask_sha256": "EBB01EDA134C9A1BE0C4CF79A865E1FF9E2001601D71AEDB937D3DD53F530E03",
+      "preview_mask": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/component-export-attempt-01/preview-layers/sleep_breath_mark_left.png",
+      "base_position": [
+        31,
+        143
+      ],
+      "mask_size": [
+        15,
+        12
+      ],
+      "z_index": 70,
+      "source_sheet": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/attempt-01-generated-pose-sheet.png",
+      "source_sheet_sha256": "FAA549D116D8ECF1B2479A097F1AF7CE79AA280DE02EA27FE6750DFE3A847D48"
+    },
+    {
+      "component_id": 14,
+      "name": "sleep_breath_mark_right",
+      "source_pose": "sleep_rest_anchor",
+      "source_component_box": [
+        504,
+        450,
+        548,
+        484
+      ],
+      "normalized_component_box": [
+        160,
+        143,
+        175,
+        155
+      ],
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/component-export-attempt-01/component-masks/sleep_breath_mark_right.pbm",
+      "mask_sha256": "35363119589517018780358443DEA3E608FCED7D7C91B51AA4773F630B38501C",
+      "preview_mask": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/component-export-attempt-01/preview-layers/sleep_breath_mark_right.png",
+      "base_position": [
+        160,
+        143
+      ],
+      "mask_size": [
+        15,
+        12
+      ],
+      "z_index": 71,
+      "source_sheet": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/attempt-01-generated-pose-sheet.png",
+      "source_sheet_sha256": "FAA549D116D8ECF1B2479A097F1AF7CE79AA280DE02EA27FE6750DFE3A847D48"
+    },
+    {
+      "component_id": 15,
+      "name": "sleep_zzz_cluster",
+      "source_pose": "sleep_rest_anchor",
+      "source_component_box": [
+        470,
+        145,
+        598,
+        235
+      ],
+      "normalized_component_box": [
+        149,
+        46,
+        191,
+        75
+      ],
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/component-export-attempt-01/component-masks/sleep_zzz_cluster.pbm",
+      "mask_sha256": "1EFCB8C7D9E697B547BD56B18DE4ED85C2A62E4A224E8FD6EA0C6713778078D4",
+      "preview_mask": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/component-export-attempt-01/preview-layers/sleep_zzz_cluster.png",
+      "base_position": [
+        149,
+        46
+      ],
+      "mask_size": [
+        42,
+        29
+      ],
+      "z_index": 80,
+      "source_sheet": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/attempt-01-generated-pose-sheet.png",
+      "source_sheet_sha256": "FAA549D116D8ECF1B2479A097F1AF7CE79AA280DE02EA27FE6750DFE3A847D48"
+    }
+  ],
+  "component_slots": {
+    "left_brow": [
+      "left_brow_rest",
+      "left_brow_settle"
+    ],
+    "right_brow": [
+      "right_brow_rest"
+    ],
+    "left_eye": [
+      "left_closed_eye_anchor"
+    ],
+    "right_eye": [
+      "right_closed_eye_anchor"
+    ],
+    "left_cheek": [
+      "left_cheek_rest",
+      "left_cheek_breath"
+    ],
+    "right_cheek": [
+      "right_cheek_rest",
+      "right_cheek_breath"
+    ],
+    "nose": [
+      "nose_anchor"
+    ],
+    "mouth": [
+      "mouth_rest",
+      "mouth_breath"
+    ],
+    "breath_left": [
+      "sleep_breath_mark_left"
+    ],
+    "breath_right": [
+      "sleep_breath_mark_right"
+    ],
+    "zzz_cluster": [
+      "sleep_zzz_cluster"
+    ]
+  },
+  "phase_plan": [
+    {
+      "index": 0,
+      "phase": "entry",
+      "duration_ms": 500,
+      "primary_group": "rest",
+      "active_components": [
+        "left_brow_rest",
+        "right_brow_rest",
+        "left_closed_eye_anchor",
+        "right_closed_eye_anchor",
+        "left_cheek_rest",
+        "right_cheek_rest",
+        "nose_anchor",
+        "mouth_rest",
+        "sleep_breath_mark_left",
+        "sleep_breath_mark_right",
+        "sleep_zzz_cluster"
+      ],
+      "offsets": {
+        "left_brow_rest": [
+          0,
+          0
+        ],
+        "right_brow_rest": [
+          0,
+          0
+        ],
+        "left_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "right_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "left_cheek_rest": [
+          0,
+          0
+        ],
+        "right_cheek_rest": [
+          0,
+          0
+        ],
+        "nose_anchor": [
+          0,
+          0
+        ],
+        "mouth_rest": [
+          0,
+          0
+        ],
+        "sleep_breath_mark_left": [
+          0,
+          0
+        ],
+        "sleep_breath_mark_right": [
+          0,
+          0
+        ],
+        "sleep_zzz_cluster": [
+          0,
+          0
+        ]
+      },
+      "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/00-entry-01-of-01.pbm",
+      "target_pbm_sha256": "E274DABFA57394D1B650F463E8E255461EC928E68FA43377013D820CAE2B1AAA",
+      "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/00-entry-01-of-01.png",
+      "target_preview_sha256": "E24C828D65C52903E24CE6FDE0409FE7D7B8A49C9279BE2DB664A03BD09E2D71"
+    },
+    {
+      "index": 1,
+      "phase": "lead",
+      "duration_ms": 1000,
+      "primary_group": "brow",
+      "active_components": [
+        "left_brow_settle",
+        "right_brow_rest",
+        "left_closed_eye_anchor",
+        "right_closed_eye_anchor",
+        "left_cheek_rest",
+        "right_cheek_rest",
+        "nose_anchor",
+        "mouth_rest",
+        "sleep_breath_mark_left",
+        "sleep_breath_mark_right",
+        "sleep_zzz_cluster"
+      ],
+      "offsets": {
+        "left_brow_settle": [
+          0,
+          0
+        ],
+        "right_brow_rest": [
+          0,
+          0
+        ],
+        "left_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "right_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "left_cheek_rest": [
+          0,
+          0
+        ],
+        "right_cheek_rest": [
+          0,
+          0
+        ],
+        "nose_anchor": [
+          0,
+          0
+        ],
+        "mouth_rest": [
+          0,
+          0
+        ],
+        "sleep_breath_mark_left": [
+          0,
+          2
+        ],
+        "sleep_breath_mark_right": [
+          0,
+          2
+        ],
+        "sleep_zzz_cluster": [
+          2,
+          -2
+        ]
+      },
+      "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/02-lead-02-of-02.pbm",
+      "target_pbm_sha256": "BB23DBE38D5756EB7F02DD82FBEF2B768A0CD64B74E9FFE2A0DAE29D04F01F46",
+      "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/02-lead-02-of-02.png",
+      "target_preview_sha256": "8AEE313494BCB159E4F3E5842D3B3ECAC5EB351E5C20E9E92993F41FE38F3265"
+    },
+    {
+      "index": 2,
+      "phase": "response",
+      "duration_ms": 1500,
+      "primary_group": "lower_face",
+      "active_components": [
+        "left_brow_rest",
+        "right_brow_rest",
+        "left_closed_eye_anchor",
+        "right_closed_eye_anchor",
+        "left_cheek_breath",
+        "right_cheek_breath",
+        "nose_anchor",
+        "mouth_breath",
+        "sleep_breath_mark_left",
+        "sleep_breath_mark_right",
+        "sleep_zzz_cluster"
+      ],
+      "offsets": {
+        "left_brow_rest": [
+          0,
+          0
+        ],
+        "right_brow_rest": [
+          0,
+          0
+        ],
+        "left_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "right_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "left_cheek_breath": [
+          0,
+          0
+        ],
+        "right_cheek_breath": [
+          0,
+          0
+        ],
+        "nose_anchor": [
+          0,
+          0
+        ],
+        "mouth_breath": [
+          0,
+          0
+        ],
+        "sleep_breath_mark_left": [
+          0,
+          3
+        ],
+        "sleep_breath_mark_right": [
+          0,
+          3
+        ],
+        "sleep_zzz_cluster": [
+          3,
+          -3
+        ]
+      },
+      "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/05-response-03-of-03.pbm",
+      "target_pbm_sha256": "4AF9870719AE87C7F20D67742638170B60D96FB6840573891F70B915216A7BB3",
+      "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/05-response-03-of-03.png",
+      "target_preview_sha256": "862BEB715A52DEE551AB95571517BF8634FCA9DC157FA26C4CEF4802F0BE8640"
+    },
+    {
+      "index": 3,
+      "phase": "accent",
+      "duration_ms": 1500,
+      "primary_group": "lower_face",
+      "active_components": [
+        "left_brow_rest",
+        "right_brow_rest",
+        "left_closed_eye_anchor",
+        "right_closed_eye_anchor",
+        "left_cheek_breath",
+        "right_cheek_breath",
+        "nose_anchor",
+        "mouth_breath",
+        "sleep_breath_mark_left",
+        "sleep_breath_mark_right",
+        "sleep_zzz_cluster"
+      ],
+      "offsets": {
+        "left_brow_rest": [
+          0,
+          0
+        ],
+        "right_brow_rest": [
+          0,
+          0
+        ],
+        "left_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "right_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "left_cheek_breath": [
+          0,
+          0
+        ],
+        "right_cheek_breath": [
+          0,
+          0
+        ],
+        "nose_anchor": [
+          0,
+          0
+        ],
+        "mouth_breath": [
+          0,
+          0
+        ],
+        "sleep_breath_mark_left": [
+          0,
+          5
+        ],
+        "sleep_breath_mark_right": [
+          0,
+          5
+        ],
+        "sleep_zzz_cluster": [
+          4,
+          -4
+        ]
+      },
+      "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/08-accent-03-of-03.pbm",
+      "target_pbm_sha256": "B2E446A5B47C6C6ACFB09A8EAB7DECC29C19A0A845EA23429AE078DCF37FD435",
+      "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/08-accent-03-of-03.png",
+      "target_preview_sha256": "956529EB72D49F190379EA5E1242DC59E6E0B6C2CF311813F6E5112FCD791771"
+    },
+    {
+      "index": 4,
+      "phase": "hold",
+      "duration_ms": 2000,
+      "primary_group": "rest",
+      "active_components": [
+        "left_brow_rest",
+        "right_brow_rest",
+        "left_closed_eye_anchor",
+        "right_closed_eye_anchor",
+        "left_cheek_rest",
+        "right_cheek_rest",
+        "nose_anchor",
+        "mouth_rest",
+        "sleep_breath_mark_left",
+        "sleep_breath_mark_right",
+        "sleep_zzz_cluster"
+      ],
+      "offsets": {
+        "left_brow_rest": [
+          0,
+          0
+        ],
+        "right_brow_rest": [
+          0,
+          0
+        ],
+        "left_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "right_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "left_cheek_rest": [
+          0,
+          0
+        ],
+        "right_cheek_rest": [
+          0,
+          0
+        ],
+        "nose_anchor": [
+          0,
+          0
+        ],
+        "mouth_rest": [
+          0,
+          0
+        ],
+        "sleep_breath_mark_left": [
+          0,
+          4
+        ],
+        "sleep_breath_mark_right": [
+          0,
+          4
+        ],
+        "sleep_zzz_cluster": [
+          3,
+          -3
+        ]
+      },
+      "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/12-hold-04-of-04.pbm",
+      "target_pbm_sha256": "0C80AC88281BA249DF69BA690CD3D9DB9919F650200962D34B1294937742D85B",
+      "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/12-hold-04-of-04.png",
+      "target_preview_sha256": "32C7C75D9AE6265DB729405B9B242AA1D35347BEA8C1D99E4C9CF68403633766"
+    },
+    {
+      "index": 5,
+      "phase": "return",
+      "duration_ms": 1500,
+      "primary_group": "rest",
+      "active_components": [
+        "left_brow_rest",
+        "right_brow_rest",
+        "left_closed_eye_anchor",
+        "right_closed_eye_anchor",
+        "left_cheek_rest",
+        "right_cheek_rest",
+        "nose_anchor",
+        "mouth_rest",
+        "sleep_breath_mark_left",
+        "sleep_breath_mark_right",
+        "sleep_zzz_cluster"
+      ],
+      "offsets": {
+        "left_brow_rest": [
+          0,
+          0
+        ],
+        "right_brow_rest": [
+          0,
+          0
+        ],
+        "left_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "right_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "left_cheek_rest": [
+          0,
+          0
+        ],
+        "right_cheek_rest": [
+          0,
+          0
+        ],
+        "nose_anchor": [
+          0,
+          0
+        ],
+        "mouth_rest": [
+          0,
+          0
+        ],
+        "sleep_breath_mark_left": [
+          0,
+          1
+        ],
+        "sleep_breath_mark_right": [
+          0,
+          1
+        ],
+        "sleep_zzz_cluster": [
+          1,
+          -1
+        ]
+      },
+      "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/15-return-03-of-03.pbm",
+      "target_pbm_sha256": "4D2D3CB46E2EF758DE30AE6250FE40B444F028D23B16F9633E8AE107EA3ADADC",
+      "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/15-return-03-of-03.png",
+      "target_preview_sha256": "8374B0CDE17CD443FFCB47D69D31B6FEF5B8CBA1460342A1AE2986A12DBD8ACC"
+    },
+    {
+      "index": 6,
+      "phase": "settle",
+      "duration_ms": 500,
+      "primary_group": "rest",
+      "active_components": [
+        "left_brow_rest",
+        "right_brow_rest",
+        "left_closed_eye_anchor",
+        "right_closed_eye_anchor",
+        "left_cheek_rest",
+        "right_cheek_rest",
+        "nose_anchor",
+        "mouth_rest",
+        "sleep_breath_mark_left",
+        "sleep_breath_mark_right",
+        "sleep_zzz_cluster"
+      ],
+      "offsets": {
+        "left_brow_rest": [
+          0,
+          0
+        ],
+        "right_brow_rest": [
+          0,
+          0
+        ],
+        "left_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "right_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "left_cheek_rest": [
+          0,
+          0
+        ],
+        "right_cheek_rest": [
+          0,
+          0
+        ],
+        "nose_anchor": [
+          0,
+          0
+        ],
+        "mouth_rest": [
+          0,
+          0
+        ],
+        "sleep_breath_mark_left": [
+          0,
+          0
+        ],
+        "sleep_breath_mark_right": [
+          0,
+          0
+        ],
+        "sleep_zzz_cluster": [
+          0,
+          0
+        ]
+      },
+      "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/16-settle-01-of-01.pbm",
+      "target_pbm_sha256": "E274DABFA57394D1B650F463E8E255461EC928E68FA43377013D820CAE2B1AAA",
+      "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/16-settle-01-of-01.png",
+      "target_preview_sha256": "E24C828D65C52903E24CE6FDE0409FE7D7B8A49C9279BE2DB664A03BD09E2D71"
+    }
+  ],
+  "timeline_mode": "stepwise_component_tracks",
+  "playback_mode": "one_shot_then_static",
+  "timeline_plan": [
+    {
+      "frame_index": 0,
+      "frame_id": "entry-01-of-01",
+      "phase": "entry",
+      "sample_index": 1,
+      "sample_count": 1,
+      "duration_ms": 500,
+      "active_components": [
+        "left_brow_rest",
+        "right_brow_rest",
+        "left_closed_eye_anchor",
+        "right_closed_eye_anchor",
+        "left_cheek_rest",
+        "right_cheek_rest",
+        "nose_anchor",
+        "mouth_rest",
+        "sleep_breath_mark_left",
+        "sleep_breath_mark_right",
+        "sleep_zzz_cluster"
+      ],
+      "offsets": {
+        "left_brow_rest": [
+          0,
+          0
+        ],
+        "right_brow_rest": [
+          0,
+          0
+        ],
+        "left_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "right_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "left_cheek_rest": [
+          0,
+          0
+        ],
+        "right_cheek_rest": [
+          0,
+          0
+        ],
+        "nose_anchor": [
+          0,
+          0
+        ],
+        "mouth_rest": [
+          0,
+          0
+        ],
+        "sleep_breath_mark_left": [
+          0,
+          0
+        ],
+        "sleep_breath_mark_right": [
+          0,
+          0
+        ],
+        "sleep_zzz_cluster": [
+          0,
+          0
+        ]
+      },
+      "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/00-entry-01-of-01.pbm",
+      "target_pbm_sha256": "E274DABFA57394D1B650F463E8E255461EC928E68FA43377013D820CAE2B1AAA",
+      "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/00-entry-01-of-01.png",
+      "target_preview_sha256": "E24C828D65C52903E24CE6FDE0409FE7D7B8A49C9279BE2DB664A03BD09E2D71"
+    },
+    {
+      "frame_index": 1,
+      "frame_id": "lead-01-of-02",
+      "phase": "lead",
+      "sample_index": 1,
+      "sample_count": 2,
+      "duration_ms": 500,
+      "active_components": [
+        "left_brow_settle",
+        "right_brow_rest",
+        "left_closed_eye_anchor",
+        "right_closed_eye_anchor",
+        "left_cheek_rest",
+        "right_cheek_rest",
+        "nose_anchor",
+        "mouth_rest",
+        "sleep_breath_mark_left",
+        "sleep_breath_mark_right",
+        "sleep_zzz_cluster"
+      ],
+      "offsets": {
+        "left_brow_settle": [
+          0,
+          0
+        ],
+        "right_brow_rest": [
+          0,
+          0
+        ],
+        "left_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "right_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "left_cheek_rest": [
+          0,
+          0
+        ],
+        "right_cheek_rest": [
+          0,
+          0
+        ],
+        "nose_anchor": [
+          0,
+          0
+        ],
+        "mouth_rest": [
+          0,
+          0
+        ],
+        "sleep_breath_mark_left": [
+          0,
+          1
+        ],
+        "sleep_breath_mark_right": [
+          0,
+          1
+        ],
+        "sleep_zzz_cluster": [
+          1,
+          -1
+        ]
+      },
+      "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/01-lead-01-of-02.pbm",
+      "target_pbm_sha256": "264DD732907BBBB975DD8003C38CE3A65F7589E19E5D7735A28AA320709B6172",
+      "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/01-lead-01-of-02.png",
+      "target_preview_sha256": "4A933F78D6C79D4FFA64BE79F556F18AA99BFDD665E6D669A3179EBEE0DF92E1"
+    },
+    {
+      "frame_index": 2,
+      "frame_id": "lead-02-of-02",
+      "phase": "lead",
+      "sample_index": 2,
+      "sample_count": 2,
+      "duration_ms": 500,
+      "active_components": [
+        "left_brow_settle",
+        "right_brow_rest",
+        "left_closed_eye_anchor",
+        "right_closed_eye_anchor",
+        "left_cheek_rest",
+        "right_cheek_rest",
+        "nose_anchor",
+        "mouth_rest",
+        "sleep_breath_mark_left",
+        "sleep_breath_mark_right",
+        "sleep_zzz_cluster"
+      ],
+      "offsets": {
+        "left_brow_settle": [
+          0,
+          0
+        ],
+        "right_brow_rest": [
+          0,
+          0
+        ],
+        "left_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "right_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "left_cheek_rest": [
+          0,
+          0
+        ],
+        "right_cheek_rest": [
+          0,
+          0
+        ],
+        "nose_anchor": [
+          0,
+          0
+        ],
+        "mouth_rest": [
+          0,
+          0
+        ],
+        "sleep_breath_mark_left": [
+          0,
+          2
+        ],
+        "sleep_breath_mark_right": [
+          0,
+          2
+        ],
+        "sleep_zzz_cluster": [
+          2,
+          -2
+        ]
+      },
+      "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/02-lead-02-of-02.pbm",
+      "target_pbm_sha256": "BB23DBE38D5756EB7F02DD82FBEF2B768A0CD64B74E9FFE2A0DAE29D04F01F46",
+      "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/02-lead-02-of-02.png",
+      "target_preview_sha256": "8AEE313494BCB159E4F3E5842D3B3ECAC5EB351E5C20E9E92993F41FE38F3265"
+    },
+    {
+      "frame_index": 3,
+      "frame_id": "response-01-of-03",
+      "phase": "response",
+      "sample_index": 1,
+      "sample_count": 3,
+      "duration_ms": 500,
+      "active_components": [
+        "left_brow_rest",
+        "right_brow_rest",
+        "left_closed_eye_anchor",
+        "right_closed_eye_anchor",
+        "left_cheek_breath",
+        "right_cheek_breath",
+        "nose_anchor",
+        "mouth_breath",
+        "sleep_breath_mark_left",
+        "sleep_breath_mark_right",
+        "sleep_zzz_cluster"
+      ],
+      "offsets": {
+        "left_brow_rest": [
+          0,
+          0
+        ],
+        "right_brow_rest": [
+          0,
+          0
+        ],
+        "left_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "right_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "left_cheek_breath": [
+          0,
+          0
+        ],
+        "right_cheek_breath": [
+          0,
+          0
+        ],
+        "nose_anchor": [
+          0,
+          0
+        ],
+        "mouth_breath": [
+          0,
+          0
+        ],
+        "sleep_breath_mark_left": [
+          0,
+          2
+        ],
+        "sleep_breath_mark_right": [
+          0,
+          2
+        ],
+        "sleep_zzz_cluster": [
+          2,
+          -2
+        ]
+      },
+      "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/03-response-01-of-03.pbm",
+      "target_pbm_sha256": "023B1F0725B938ACFED34DE26A9A958AA7C030BFF595CCD17081EB1F35C68F9E",
+      "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/03-response-01-of-03.png",
+      "target_preview_sha256": "FBE67B85ECACE95677D3CA2D5D409E689E0BBBDD4918A68AE448C42E3A067671"
+    },
+    {
+      "frame_index": 4,
+      "frame_id": "response-02-of-03",
+      "phase": "response",
+      "sample_index": 2,
+      "sample_count": 3,
+      "duration_ms": 500,
+      "active_components": [
+        "left_brow_rest",
+        "right_brow_rest",
+        "left_closed_eye_anchor",
+        "right_closed_eye_anchor",
+        "left_cheek_breath",
+        "right_cheek_breath",
+        "nose_anchor",
+        "mouth_breath",
+        "sleep_breath_mark_left",
+        "sleep_breath_mark_right",
+        "sleep_zzz_cluster"
+      ],
+      "offsets": {
+        "left_brow_rest": [
+          0,
+          0
+        ],
+        "right_brow_rest": [
+          0,
+          0
+        ],
+        "left_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "right_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "left_cheek_breath": [
+          0,
+          0
+        ],
+        "right_cheek_breath": [
+          0,
+          0
+        ],
+        "nose_anchor": [
+          0,
+          0
+        ],
+        "mouth_breath": [
+          0,
+          0
+        ],
+        "sleep_breath_mark_left": [
+          0,
+          3
+        ],
+        "sleep_breath_mark_right": [
+          0,
+          3
+        ],
+        "sleep_zzz_cluster": [
+          3,
+          -3
+        ]
+      },
+      "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/04-response-02-of-03.pbm",
+      "target_pbm_sha256": "4AF9870719AE87C7F20D67742638170B60D96FB6840573891F70B915216A7BB3",
+      "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/04-response-02-of-03.png",
+      "target_preview_sha256": "862BEB715A52DEE551AB95571517BF8634FCA9DC157FA26C4CEF4802F0BE8640"
+    },
+    {
+      "frame_index": 5,
+      "frame_id": "response-03-of-03",
+      "phase": "response",
+      "sample_index": 3,
+      "sample_count": 3,
+      "duration_ms": 500,
+      "active_components": [
+        "left_brow_rest",
+        "right_brow_rest",
+        "left_closed_eye_anchor",
+        "right_closed_eye_anchor",
+        "left_cheek_breath",
+        "right_cheek_breath",
+        "nose_anchor",
+        "mouth_breath",
+        "sleep_breath_mark_left",
+        "sleep_breath_mark_right",
+        "sleep_zzz_cluster"
+      ],
+      "offsets": {
+        "left_brow_rest": [
+          0,
+          0
+        ],
+        "right_brow_rest": [
+          0,
+          0
+        ],
+        "left_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "right_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "left_cheek_breath": [
+          0,
+          0
+        ],
+        "right_cheek_breath": [
+          0,
+          0
+        ],
+        "nose_anchor": [
+          0,
+          0
+        ],
+        "mouth_breath": [
+          0,
+          0
+        ],
+        "sleep_breath_mark_left": [
+          0,
+          3
+        ],
+        "sleep_breath_mark_right": [
+          0,
+          3
+        ],
+        "sleep_zzz_cluster": [
+          3,
+          -3
+        ]
+      },
+      "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/05-response-03-of-03.pbm",
+      "target_pbm_sha256": "4AF9870719AE87C7F20D67742638170B60D96FB6840573891F70B915216A7BB3",
+      "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/05-response-03-of-03.png",
+      "target_preview_sha256": "862BEB715A52DEE551AB95571517BF8634FCA9DC157FA26C4CEF4802F0BE8640"
+    },
+    {
+      "frame_index": 6,
+      "frame_id": "accent-01-of-03",
+      "phase": "accent",
+      "sample_index": 1,
+      "sample_count": 3,
+      "duration_ms": 500,
+      "active_components": [
+        "left_brow_rest",
+        "right_brow_rest",
+        "left_closed_eye_anchor",
+        "right_closed_eye_anchor",
+        "left_cheek_breath",
+        "right_cheek_breath",
+        "nose_anchor",
+        "mouth_breath",
+        "sleep_breath_mark_left",
+        "sleep_breath_mark_right",
+        "sleep_zzz_cluster"
+      ],
+      "offsets": {
+        "left_brow_rest": [
+          0,
+          0
+        ],
+        "right_brow_rest": [
+          0,
+          0
+        ],
+        "left_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "right_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "left_cheek_breath": [
+          0,
+          0
+        ],
+        "right_cheek_breath": [
+          0,
+          0
+        ],
+        "nose_anchor": [
+          0,
+          0
+        ],
+        "mouth_breath": [
+          0,
+          0
+        ],
+        "sleep_breath_mark_left": [
+          0,
+          4
+        ],
+        "sleep_breath_mark_right": [
+          0,
+          4
+        ],
+        "sleep_zzz_cluster": [
+          3,
+          -3
+        ]
+      },
+      "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/06-accent-01-of-03.pbm",
+      "target_pbm_sha256": "7B1D87151A7EFD5C4555187EDA663B05EE5C28A4A6EEDD4D0D3AB5A96F3C43D3",
+      "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/06-accent-01-of-03.png",
+      "target_preview_sha256": "15CB35D3CCB5451E7A4E7D9B4CA90706B0629014CD26AE30A20D149306FA25B9"
+    },
+    {
+      "frame_index": 7,
+      "frame_id": "accent-02-of-03",
+      "phase": "accent",
+      "sample_index": 2,
+      "sample_count": 3,
+      "duration_ms": 500,
+      "active_components": [
+        "left_brow_rest",
+        "right_brow_rest",
+        "left_closed_eye_anchor",
+        "right_closed_eye_anchor",
+        "left_cheek_breath",
+        "right_cheek_breath",
+        "nose_anchor",
+        "mouth_breath",
+        "sleep_breath_mark_left",
+        "sleep_breath_mark_right",
+        "sleep_zzz_cluster"
+      ],
+      "offsets": {
+        "left_brow_rest": [
+          0,
+          0
+        ],
+        "right_brow_rest": [
+          0,
+          0
+        ],
+        "left_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "right_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "left_cheek_breath": [
+          0,
+          0
+        ],
+        "right_cheek_breath": [
+          0,
+          0
+        ],
+        "nose_anchor": [
+          0,
+          0
+        ],
+        "mouth_breath": [
+          0,
+          0
+        ],
+        "sleep_breath_mark_left": [
+          0,
+          4
+        ],
+        "sleep_breath_mark_right": [
+          0,
+          4
+        ],
+        "sleep_zzz_cluster": [
+          4,
+          -4
+        ]
+      },
+      "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/07-accent-02-of-03.pbm",
+      "target_pbm_sha256": "26B706C3961EF3DBDE91075840A12CE06F59709133E387652D976841B4ECB29C",
+      "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/07-accent-02-of-03.png",
+      "target_preview_sha256": "57B20FDA03FBD1FAF9C872955641DAE80BF226BEBD444BE3E98FA87B46F0F688"
+    },
+    {
+      "frame_index": 8,
+      "frame_id": "accent-03-of-03",
+      "phase": "accent",
+      "sample_index": 3,
+      "sample_count": 3,
+      "duration_ms": 500,
+      "active_components": [
+        "left_brow_rest",
+        "right_brow_rest",
+        "left_closed_eye_anchor",
+        "right_closed_eye_anchor",
+        "left_cheek_breath",
+        "right_cheek_breath",
+        "nose_anchor",
+        "mouth_breath",
+        "sleep_breath_mark_left",
+        "sleep_breath_mark_right",
+        "sleep_zzz_cluster"
+      ],
+      "offsets": {
+        "left_brow_rest": [
+          0,
+          0
+        ],
+        "right_brow_rest": [
+          0,
+          0
+        ],
+        "left_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "right_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "left_cheek_breath": [
+          0,
+          0
+        ],
+        "right_cheek_breath": [
+          0,
+          0
+        ],
+        "nose_anchor": [
+          0,
+          0
+        ],
+        "mouth_breath": [
+          0,
+          0
+        ],
+        "sleep_breath_mark_left": [
+          0,
+          5
+        ],
+        "sleep_breath_mark_right": [
+          0,
+          5
+        ],
+        "sleep_zzz_cluster": [
+          4,
+          -4
+        ]
+      },
+      "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/08-accent-03-of-03.pbm",
+      "target_pbm_sha256": "B2E446A5B47C6C6ACFB09A8EAB7DECC29C19A0A845EA23429AE078DCF37FD435",
+      "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/08-accent-03-of-03.png",
+      "target_preview_sha256": "956529EB72D49F190379EA5E1242DC59E6E0B6C2CF311813F6E5112FCD791771"
+    },
+    {
+      "frame_index": 9,
+      "frame_id": "hold-01-of-04",
+      "phase": "hold",
+      "sample_index": 1,
+      "sample_count": 4,
+      "duration_ms": 500,
+      "active_components": [
+        "left_brow_rest",
+        "right_brow_rest",
+        "left_closed_eye_anchor",
+        "right_closed_eye_anchor",
+        "left_cheek_rest",
+        "right_cheek_rest",
+        "nose_anchor",
+        "mouth_rest",
+        "sleep_breath_mark_left",
+        "sleep_breath_mark_right",
+        "sleep_zzz_cluster"
+      ],
+      "offsets": {
+        "left_brow_rest": [
+          0,
+          0
+        ],
+        "right_brow_rest": [
+          0,
+          0
+        ],
+        "left_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "right_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "left_cheek_rest": [
+          0,
+          0
+        ],
+        "right_cheek_rest": [
+          0,
+          0
+        ],
+        "nose_anchor": [
+          0,
+          0
+        ],
+        "mouth_rest": [
+          0,
+          0
+        ],
+        "sleep_breath_mark_left": [
+          0,
+          5
+        ],
+        "sleep_breath_mark_right": [
+          0,
+          5
+        ],
+        "sleep_zzz_cluster": [
+          4,
+          -4
+        ]
+      },
+      "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/09-hold-01-of-04.pbm",
+      "target_pbm_sha256": "789E4A8D5D6B8C9A98D796F41E6332D84D20D59D485E61CDBD0C5DD31333633C",
+      "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/09-hold-01-of-04.png",
+      "target_preview_sha256": "2768EFA493A1EB63C7D08EE2A40195D896B88B94C41734FDB0EBFEFA11D8DDE0"
+    },
+    {
+      "frame_index": 10,
+      "frame_id": "hold-02-of-04",
+      "phase": "hold",
+      "sample_index": 2,
+      "sample_count": 4,
+      "duration_ms": 500,
+      "active_components": [
+        "left_brow_rest",
+        "right_brow_rest",
+        "left_closed_eye_anchor",
+        "right_closed_eye_anchor",
+        "left_cheek_rest",
+        "right_cheek_rest",
+        "nose_anchor",
+        "mouth_rest",
+        "sleep_breath_mark_left",
+        "sleep_breath_mark_right",
+        "sleep_zzz_cluster"
+      ],
+      "offsets": {
+        "left_brow_rest": [
+          0,
+          0
+        ],
+        "right_brow_rest": [
+          0,
+          0
+        ],
+        "left_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "right_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "left_cheek_rest": [
+          0,
+          0
+        ],
+        "right_cheek_rest": [
+          0,
+          0
+        ],
+        "nose_anchor": [
+          0,
+          0
+        ],
+        "mouth_rest": [
+          0,
+          0
+        ],
+        "sleep_breath_mark_left": [
+          0,
+          4
+        ],
+        "sleep_breath_mark_right": [
+          0,
+          4
+        ],
+        "sleep_zzz_cluster": [
+          4,
+          -4
+        ]
+      },
+      "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/10-hold-02-of-04.pbm",
+      "target_pbm_sha256": "5DE8033BDF6AB62491DF29B38A9187E9B9C0144CEE7D3A9B7CF8E6B19739920B",
+      "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/10-hold-02-of-04.png",
+      "target_preview_sha256": "5BBB94BA621D64438C4FD803120C2D3AF33C620EF1B4D25144AAFD990DB2A545"
+    },
+    {
+      "frame_index": 11,
+      "frame_id": "hold-03-of-04",
+      "phase": "hold",
+      "sample_index": 3,
+      "sample_count": 4,
+      "duration_ms": 500,
+      "active_components": [
+        "left_brow_rest",
+        "right_brow_rest",
+        "left_closed_eye_anchor",
+        "right_closed_eye_anchor",
+        "left_cheek_rest",
+        "right_cheek_rest",
+        "nose_anchor",
+        "mouth_rest",
+        "sleep_breath_mark_left",
+        "sleep_breath_mark_right",
+        "sleep_zzz_cluster"
+      ],
+      "offsets": {
+        "left_brow_rest": [
+          0,
+          0
+        ],
+        "right_brow_rest": [
+          0,
+          0
+        ],
+        "left_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "right_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "left_cheek_rest": [
+          0,
+          0
+        ],
+        "right_cheek_rest": [
+          0,
+          0
+        ],
+        "nose_anchor": [
+          0,
+          0
+        ],
+        "mouth_rest": [
+          0,
+          0
+        ],
+        "sleep_breath_mark_left": [
+          0,
+          4
+        ],
+        "sleep_breath_mark_right": [
+          0,
+          4
+        ],
+        "sleep_zzz_cluster": [
+          3,
+          -3
+        ]
+      },
+      "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/11-hold-03-of-04.pbm",
+      "target_pbm_sha256": "0C80AC88281BA249DF69BA690CD3D9DB9919F650200962D34B1294937742D85B",
+      "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/11-hold-03-of-04.png",
+      "target_preview_sha256": "32C7C75D9AE6265DB729405B9B242AA1D35347BEA8C1D99E4C9CF68403633766"
+    },
+    {
+      "frame_index": 12,
+      "frame_id": "hold-04-of-04",
+      "phase": "hold",
+      "sample_index": 4,
+      "sample_count": 4,
+      "duration_ms": 500,
+      "active_components": [
+        "left_brow_rest",
+        "right_brow_rest",
+        "left_closed_eye_anchor",
+        "right_closed_eye_anchor",
+        "left_cheek_rest",
+        "right_cheek_rest",
+        "nose_anchor",
+        "mouth_rest",
+        "sleep_breath_mark_left",
+        "sleep_breath_mark_right",
+        "sleep_zzz_cluster"
+      ],
+      "offsets": {
+        "left_brow_rest": [
+          0,
+          0
+        ],
+        "right_brow_rest": [
+          0,
+          0
+        ],
+        "left_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "right_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "left_cheek_rest": [
+          0,
+          0
+        ],
+        "right_cheek_rest": [
+          0,
+          0
+        ],
+        "nose_anchor": [
+          0,
+          0
+        ],
+        "mouth_rest": [
+          0,
+          0
+        ],
+        "sleep_breath_mark_left": [
+          0,
+          4
+        ],
+        "sleep_breath_mark_right": [
+          0,
+          4
+        ],
+        "sleep_zzz_cluster": [
+          3,
+          -3
+        ]
+      },
+      "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/12-hold-04-of-04.pbm",
+      "target_pbm_sha256": "0C80AC88281BA249DF69BA690CD3D9DB9919F650200962D34B1294937742D85B",
+      "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/12-hold-04-of-04.png",
+      "target_preview_sha256": "32C7C75D9AE6265DB729405B9B242AA1D35347BEA8C1D99E4C9CF68403633766"
+    },
+    {
+      "frame_index": 13,
+      "frame_id": "return-01-of-03",
+      "phase": "return",
+      "sample_index": 1,
+      "sample_count": 3,
+      "duration_ms": 500,
+      "active_components": [
+        "left_brow_rest",
+        "right_brow_rest",
+        "left_closed_eye_anchor",
+        "right_closed_eye_anchor",
+        "left_cheek_rest",
+        "right_cheek_rest",
+        "nose_anchor",
+        "mouth_rest",
+        "sleep_breath_mark_left",
+        "sleep_breath_mark_right",
+        "sleep_zzz_cluster"
+      ],
+      "offsets": {
+        "left_brow_rest": [
+          0,
+          0
+        ],
+        "right_brow_rest": [
+          0,
+          0
+        ],
+        "left_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "right_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "left_cheek_rest": [
+          0,
+          0
+        ],
+        "right_cheek_rest": [
+          0,
+          0
+        ],
+        "nose_anchor": [
+          0,
+          0
+        ],
+        "mouth_rest": [
+          0,
+          0
+        ],
+        "sleep_breath_mark_left": [
+          0,
+          3
+        ],
+        "sleep_breath_mark_right": [
+          0,
+          3
+        ],
+        "sleep_zzz_cluster": [
+          2,
+          -2
+        ]
+      },
+      "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/13-return-01-of-03.pbm",
+      "target_pbm_sha256": "F96EFF11E3D197F5F04BE2333492DB51A274ECCF840CE540B4B7E0C9BD93BA5C",
+      "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/13-return-01-of-03.png",
+      "target_preview_sha256": "C15D69113F800E9A3D4C07991BDD81212E87D9963F2F7A60AFC59DA7D8513BEF"
+    },
+    {
+      "frame_index": 14,
+      "frame_id": "return-02-of-03",
+      "phase": "return",
+      "sample_index": 2,
+      "sample_count": 3,
+      "duration_ms": 500,
+      "active_components": [
+        "left_brow_rest",
+        "right_brow_rest",
+        "left_closed_eye_anchor",
+        "right_closed_eye_anchor",
+        "left_cheek_rest",
+        "right_cheek_rest",
+        "nose_anchor",
+        "mouth_rest",
+        "sleep_breath_mark_left",
+        "sleep_breath_mark_right",
+        "sleep_zzz_cluster"
+      ],
+      "offsets": {
+        "left_brow_rest": [
+          0,
+          0
+        ],
+        "right_brow_rest": [
+          0,
+          0
+        ],
+        "left_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "right_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "left_cheek_rest": [
+          0,
+          0
+        ],
+        "right_cheek_rest": [
+          0,
+          0
+        ],
+        "nose_anchor": [
+          0,
+          0
+        ],
+        "mouth_rest": [
+          0,
+          0
+        ],
+        "sleep_breath_mark_left": [
+          0,
+          2
+        ],
+        "sleep_breath_mark_right": [
+          0,
+          2
+        ],
+        "sleep_zzz_cluster": [
+          2,
+          -2
+        ]
+      },
+      "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/14-return-02-of-03.pbm",
+      "target_pbm_sha256": "9010C2D1D057FF11DD28779212EE6238702D36EA4D9DA66BAFA6F49F3D6467BD",
+      "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/14-return-02-of-03.png",
+      "target_preview_sha256": "C42763F120B7ECE7715B9F1F72A7C4258D2FB8FB73C285602A7C677E0348354C"
+    },
+    {
+      "frame_index": 15,
+      "frame_id": "return-03-of-03",
+      "phase": "return",
+      "sample_index": 3,
+      "sample_count": 3,
+      "duration_ms": 500,
+      "active_components": [
+        "left_brow_rest",
+        "right_brow_rest",
+        "left_closed_eye_anchor",
+        "right_closed_eye_anchor",
+        "left_cheek_rest",
+        "right_cheek_rest",
+        "nose_anchor",
+        "mouth_rest",
+        "sleep_breath_mark_left",
+        "sleep_breath_mark_right",
+        "sleep_zzz_cluster"
+      ],
+      "offsets": {
+        "left_brow_rest": [
+          0,
+          0
+        ],
+        "right_brow_rest": [
+          0,
+          0
+        ],
+        "left_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "right_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "left_cheek_rest": [
+          0,
+          0
+        ],
+        "right_cheek_rest": [
+          0,
+          0
+        ],
+        "nose_anchor": [
+          0,
+          0
+        ],
+        "mouth_rest": [
+          0,
+          0
+        ],
+        "sleep_breath_mark_left": [
+          0,
+          1
+        ],
+        "sleep_breath_mark_right": [
+          0,
+          1
+        ],
+        "sleep_zzz_cluster": [
+          1,
+          -1
+        ]
+      },
+      "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/15-return-03-of-03.pbm",
+      "target_pbm_sha256": "4D2D3CB46E2EF758DE30AE6250FE40B444F028D23B16F9633E8AE107EA3ADADC",
+      "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/15-return-03-of-03.png",
+      "target_preview_sha256": "8374B0CDE17CD443FFCB47D69D31B6FEF5B8CBA1460342A1AE2986A12DBD8ACC"
+    },
+    {
+      "frame_index": 16,
+      "frame_id": "settle-01-of-01",
+      "phase": "settle",
+      "sample_index": 1,
+      "sample_count": 1,
+      "duration_ms": 500,
+      "active_components": [
+        "left_brow_rest",
+        "right_brow_rest",
+        "left_closed_eye_anchor",
+        "right_closed_eye_anchor",
+        "left_cheek_rest",
+        "right_cheek_rest",
+        "nose_anchor",
+        "mouth_rest",
+        "sleep_breath_mark_left",
+        "sleep_breath_mark_right",
+        "sleep_zzz_cluster"
+      ],
+      "offsets": {
+        "left_brow_rest": [
+          0,
+          0
+        ],
+        "right_brow_rest": [
+          0,
+          0
+        ],
+        "left_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "right_closed_eye_anchor": [
+          0,
+          0
+        ],
+        "left_cheek_rest": [
+          0,
+          0
+        ],
+        "right_cheek_rest": [
+          0,
+          0
+        ],
+        "nose_anchor": [
+          0,
+          0
+        ],
+        "mouth_rest": [
+          0,
+          0
+        ],
+        "sleep_breath_mark_left": [
+          0,
+          0
+        ],
+        "sleep_breath_mark_right": [
+          0,
+          0
+        ],
+        "sleep_zzz_cluster": [
+          0,
+          0
+        ]
+      },
+      "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/16-settle-01-of-01.pbm",
+      "target_pbm_sha256": "E274DABFA57394D1B650F463E8E255461EC928E68FA43377013D820CAE2B1AAA",
+      "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/16-settle-01-of-01.png",
+      "target_preview_sha256": "E24C828D65C52903E24CE6FDE0409FE7D7B8A49C9279BE2DB664A03BD09E2D71"
+    }
+  ],
+  "artifacts": {
+    "preview": "preview.html",
+    "target_frames": [
+      {
+        "frame_index": 0,
+        "frame_id": "entry-01-of-01",
+        "phase": "entry",
+        "sample_index": 1,
+        "sample_count": 1,
+        "duration_ms": 500,
+        "active_components": [
+          "left_brow_rest",
+          "right_brow_rest",
+          "left_closed_eye_anchor",
+          "right_closed_eye_anchor",
+          "left_cheek_rest",
+          "right_cheek_rest",
+          "nose_anchor",
+          "mouth_rest",
+          "sleep_breath_mark_left",
+          "sleep_breath_mark_right",
+          "sleep_zzz_cluster"
+        ],
+        "offsets": {
+          "left_brow_rest": [
+            0,
+            0
+          ],
+          "right_brow_rest": [
+            0,
+            0
+          ],
+          "left_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "right_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "left_cheek_rest": [
+            0,
+            0
+          ],
+          "right_cheek_rest": [
+            0,
+            0
+          ],
+          "nose_anchor": [
+            0,
+            0
+          ],
+          "mouth_rest": [
+            0,
+            0
+          ],
+          "sleep_breath_mark_left": [
+            0,
+            0
+          ],
+          "sleep_breath_mark_right": [
+            0,
+            0
+          ],
+          "sleep_zzz_cluster": [
+            0,
+            0
+          ]
+        },
+        "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/00-entry-01-of-01.pbm",
+        "target_pbm_sha256": "E274DABFA57394D1B650F463E8E255461EC928E68FA43377013D820CAE2B1AAA",
+        "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/00-entry-01-of-01.png",
+        "target_preview_sha256": "E24C828D65C52903E24CE6FDE0409FE7D7B8A49C9279BE2DB664A03BD09E2D71"
+      },
+      {
+        "frame_index": 1,
+        "frame_id": "lead-01-of-02",
+        "phase": "lead",
+        "sample_index": 1,
+        "sample_count": 2,
+        "duration_ms": 500,
+        "active_components": [
+          "left_brow_settle",
+          "right_brow_rest",
+          "left_closed_eye_anchor",
+          "right_closed_eye_anchor",
+          "left_cheek_rest",
+          "right_cheek_rest",
+          "nose_anchor",
+          "mouth_rest",
+          "sleep_breath_mark_left",
+          "sleep_breath_mark_right",
+          "sleep_zzz_cluster"
+        ],
+        "offsets": {
+          "left_brow_settle": [
+            0,
+            0
+          ],
+          "right_brow_rest": [
+            0,
+            0
+          ],
+          "left_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "right_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "left_cheek_rest": [
+            0,
+            0
+          ],
+          "right_cheek_rest": [
+            0,
+            0
+          ],
+          "nose_anchor": [
+            0,
+            0
+          ],
+          "mouth_rest": [
+            0,
+            0
+          ],
+          "sleep_breath_mark_left": [
+            0,
+            1
+          ],
+          "sleep_breath_mark_right": [
+            0,
+            1
+          ],
+          "sleep_zzz_cluster": [
+            1,
+            -1
+          ]
+        },
+        "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/01-lead-01-of-02.pbm",
+        "target_pbm_sha256": "264DD732907BBBB975DD8003C38CE3A65F7589E19E5D7735A28AA320709B6172",
+        "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/01-lead-01-of-02.png",
+        "target_preview_sha256": "4A933F78D6C79D4FFA64BE79F556F18AA99BFDD665E6D669A3179EBEE0DF92E1"
+      },
+      {
+        "frame_index": 2,
+        "frame_id": "lead-02-of-02",
+        "phase": "lead",
+        "sample_index": 2,
+        "sample_count": 2,
+        "duration_ms": 500,
+        "active_components": [
+          "left_brow_settle",
+          "right_brow_rest",
+          "left_closed_eye_anchor",
+          "right_closed_eye_anchor",
+          "left_cheek_rest",
+          "right_cheek_rest",
+          "nose_anchor",
+          "mouth_rest",
+          "sleep_breath_mark_left",
+          "sleep_breath_mark_right",
+          "sleep_zzz_cluster"
+        ],
+        "offsets": {
+          "left_brow_settle": [
+            0,
+            0
+          ],
+          "right_brow_rest": [
+            0,
+            0
+          ],
+          "left_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "right_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "left_cheek_rest": [
+            0,
+            0
+          ],
+          "right_cheek_rest": [
+            0,
+            0
+          ],
+          "nose_anchor": [
+            0,
+            0
+          ],
+          "mouth_rest": [
+            0,
+            0
+          ],
+          "sleep_breath_mark_left": [
+            0,
+            2
+          ],
+          "sleep_breath_mark_right": [
+            0,
+            2
+          ],
+          "sleep_zzz_cluster": [
+            2,
+            -2
+          ]
+        },
+        "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/02-lead-02-of-02.pbm",
+        "target_pbm_sha256": "BB23DBE38D5756EB7F02DD82FBEF2B768A0CD64B74E9FFE2A0DAE29D04F01F46",
+        "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/02-lead-02-of-02.png",
+        "target_preview_sha256": "8AEE313494BCB159E4F3E5842D3B3ECAC5EB351E5C20E9E92993F41FE38F3265"
+      },
+      {
+        "frame_index": 3,
+        "frame_id": "response-01-of-03",
+        "phase": "response",
+        "sample_index": 1,
+        "sample_count": 3,
+        "duration_ms": 500,
+        "active_components": [
+          "left_brow_rest",
+          "right_brow_rest",
+          "left_closed_eye_anchor",
+          "right_closed_eye_anchor",
+          "left_cheek_breath",
+          "right_cheek_breath",
+          "nose_anchor",
+          "mouth_breath",
+          "sleep_breath_mark_left",
+          "sleep_breath_mark_right",
+          "sleep_zzz_cluster"
+        ],
+        "offsets": {
+          "left_brow_rest": [
+            0,
+            0
+          ],
+          "right_brow_rest": [
+            0,
+            0
+          ],
+          "left_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "right_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "left_cheek_breath": [
+            0,
+            0
+          ],
+          "right_cheek_breath": [
+            0,
+            0
+          ],
+          "nose_anchor": [
+            0,
+            0
+          ],
+          "mouth_breath": [
+            0,
+            0
+          ],
+          "sleep_breath_mark_left": [
+            0,
+            2
+          ],
+          "sleep_breath_mark_right": [
+            0,
+            2
+          ],
+          "sleep_zzz_cluster": [
+            2,
+            -2
+          ]
+        },
+        "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/03-response-01-of-03.pbm",
+        "target_pbm_sha256": "023B1F0725B938ACFED34DE26A9A958AA7C030BFF595CCD17081EB1F35C68F9E",
+        "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/03-response-01-of-03.png",
+        "target_preview_sha256": "FBE67B85ECACE95677D3CA2D5D409E689E0BBBDD4918A68AE448C42E3A067671"
+      },
+      {
+        "frame_index": 4,
+        "frame_id": "response-02-of-03",
+        "phase": "response",
+        "sample_index": 2,
+        "sample_count": 3,
+        "duration_ms": 500,
+        "active_components": [
+          "left_brow_rest",
+          "right_brow_rest",
+          "left_closed_eye_anchor",
+          "right_closed_eye_anchor",
+          "left_cheek_breath",
+          "right_cheek_breath",
+          "nose_anchor",
+          "mouth_breath",
+          "sleep_breath_mark_left",
+          "sleep_breath_mark_right",
+          "sleep_zzz_cluster"
+        ],
+        "offsets": {
+          "left_brow_rest": [
+            0,
+            0
+          ],
+          "right_brow_rest": [
+            0,
+            0
+          ],
+          "left_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "right_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "left_cheek_breath": [
+            0,
+            0
+          ],
+          "right_cheek_breath": [
+            0,
+            0
+          ],
+          "nose_anchor": [
+            0,
+            0
+          ],
+          "mouth_breath": [
+            0,
+            0
+          ],
+          "sleep_breath_mark_left": [
+            0,
+            3
+          ],
+          "sleep_breath_mark_right": [
+            0,
+            3
+          ],
+          "sleep_zzz_cluster": [
+            3,
+            -3
+          ]
+        },
+        "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/04-response-02-of-03.pbm",
+        "target_pbm_sha256": "4AF9870719AE87C7F20D67742638170B60D96FB6840573891F70B915216A7BB3",
+        "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/04-response-02-of-03.png",
+        "target_preview_sha256": "862BEB715A52DEE551AB95571517BF8634FCA9DC157FA26C4CEF4802F0BE8640"
+      },
+      {
+        "frame_index": 5,
+        "frame_id": "response-03-of-03",
+        "phase": "response",
+        "sample_index": 3,
+        "sample_count": 3,
+        "duration_ms": 500,
+        "active_components": [
+          "left_brow_rest",
+          "right_brow_rest",
+          "left_closed_eye_anchor",
+          "right_closed_eye_anchor",
+          "left_cheek_breath",
+          "right_cheek_breath",
+          "nose_anchor",
+          "mouth_breath",
+          "sleep_breath_mark_left",
+          "sleep_breath_mark_right",
+          "sleep_zzz_cluster"
+        ],
+        "offsets": {
+          "left_brow_rest": [
+            0,
+            0
+          ],
+          "right_brow_rest": [
+            0,
+            0
+          ],
+          "left_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "right_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "left_cheek_breath": [
+            0,
+            0
+          ],
+          "right_cheek_breath": [
+            0,
+            0
+          ],
+          "nose_anchor": [
+            0,
+            0
+          ],
+          "mouth_breath": [
+            0,
+            0
+          ],
+          "sleep_breath_mark_left": [
+            0,
+            3
+          ],
+          "sleep_breath_mark_right": [
+            0,
+            3
+          ],
+          "sleep_zzz_cluster": [
+            3,
+            -3
+          ]
+        },
+        "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/05-response-03-of-03.pbm",
+        "target_pbm_sha256": "4AF9870719AE87C7F20D67742638170B60D96FB6840573891F70B915216A7BB3",
+        "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/05-response-03-of-03.png",
+        "target_preview_sha256": "862BEB715A52DEE551AB95571517BF8634FCA9DC157FA26C4CEF4802F0BE8640"
+      },
+      {
+        "frame_index": 6,
+        "frame_id": "accent-01-of-03",
+        "phase": "accent",
+        "sample_index": 1,
+        "sample_count": 3,
+        "duration_ms": 500,
+        "active_components": [
+          "left_brow_rest",
+          "right_brow_rest",
+          "left_closed_eye_anchor",
+          "right_closed_eye_anchor",
+          "left_cheek_breath",
+          "right_cheek_breath",
+          "nose_anchor",
+          "mouth_breath",
+          "sleep_breath_mark_left",
+          "sleep_breath_mark_right",
+          "sleep_zzz_cluster"
+        ],
+        "offsets": {
+          "left_brow_rest": [
+            0,
+            0
+          ],
+          "right_brow_rest": [
+            0,
+            0
+          ],
+          "left_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "right_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "left_cheek_breath": [
+            0,
+            0
+          ],
+          "right_cheek_breath": [
+            0,
+            0
+          ],
+          "nose_anchor": [
+            0,
+            0
+          ],
+          "mouth_breath": [
+            0,
+            0
+          ],
+          "sleep_breath_mark_left": [
+            0,
+            4
+          ],
+          "sleep_breath_mark_right": [
+            0,
+            4
+          ],
+          "sleep_zzz_cluster": [
+            3,
+            -3
+          ]
+        },
+        "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/06-accent-01-of-03.pbm",
+        "target_pbm_sha256": "7B1D87151A7EFD5C4555187EDA663B05EE5C28A4A6EEDD4D0D3AB5A96F3C43D3",
+        "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/06-accent-01-of-03.png",
+        "target_preview_sha256": "15CB35D3CCB5451E7A4E7D9B4CA90706B0629014CD26AE30A20D149306FA25B9"
+      },
+      {
+        "frame_index": 7,
+        "frame_id": "accent-02-of-03",
+        "phase": "accent",
+        "sample_index": 2,
+        "sample_count": 3,
+        "duration_ms": 500,
+        "active_components": [
+          "left_brow_rest",
+          "right_brow_rest",
+          "left_closed_eye_anchor",
+          "right_closed_eye_anchor",
+          "left_cheek_breath",
+          "right_cheek_breath",
+          "nose_anchor",
+          "mouth_breath",
+          "sleep_breath_mark_left",
+          "sleep_breath_mark_right",
+          "sleep_zzz_cluster"
+        ],
+        "offsets": {
+          "left_brow_rest": [
+            0,
+            0
+          ],
+          "right_brow_rest": [
+            0,
+            0
+          ],
+          "left_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "right_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "left_cheek_breath": [
+            0,
+            0
+          ],
+          "right_cheek_breath": [
+            0,
+            0
+          ],
+          "nose_anchor": [
+            0,
+            0
+          ],
+          "mouth_breath": [
+            0,
+            0
+          ],
+          "sleep_breath_mark_left": [
+            0,
+            4
+          ],
+          "sleep_breath_mark_right": [
+            0,
+            4
+          ],
+          "sleep_zzz_cluster": [
+            4,
+            -4
+          ]
+        },
+        "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/07-accent-02-of-03.pbm",
+        "target_pbm_sha256": "26B706C3961EF3DBDE91075840A12CE06F59709133E387652D976841B4ECB29C",
+        "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/07-accent-02-of-03.png",
+        "target_preview_sha256": "57B20FDA03FBD1FAF9C872955641DAE80BF226BEBD444BE3E98FA87B46F0F688"
+      },
+      {
+        "frame_index": 8,
+        "frame_id": "accent-03-of-03",
+        "phase": "accent",
+        "sample_index": 3,
+        "sample_count": 3,
+        "duration_ms": 500,
+        "active_components": [
+          "left_brow_rest",
+          "right_brow_rest",
+          "left_closed_eye_anchor",
+          "right_closed_eye_anchor",
+          "left_cheek_breath",
+          "right_cheek_breath",
+          "nose_anchor",
+          "mouth_breath",
+          "sleep_breath_mark_left",
+          "sleep_breath_mark_right",
+          "sleep_zzz_cluster"
+        ],
+        "offsets": {
+          "left_brow_rest": [
+            0,
+            0
+          ],
+          "right_brow_rest": [
+            0,
+            0
+          ],
+          "left_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "right_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "left_cheek_breath": [
+            0,
+            0
+          ],
+          "right_cheek_breath": [
+            0,
+            0
+          ],
+          "nose_anchor": [
+            0,
+            0
+          ],
+          "mouth_breath": [
+            0,
+            0
+          ],
+          "sleep_breath_mark_left": [
+            0,
+            5
+          ],
+          "sleep_breath_mark_right": [
+            0,
+            5
+          ],
+          "sleep_zzz_cluster": [
+            4,
+            -4
+          ]
+        },
+        "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/08-accent-03-of-03.pbm",
+        "target_pbm_sha256": "B2E446A5B47C6C6ACFB09A8EAB7DECC29C19A0A845EA23429AE078DCF37FD435",
+        "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/08-accent-03-of-03.png",
+        "target_preview_sha256": "956529EB72D49F190379EA5E1242DC59E6E0B6C2CF311813F6E5112FCD791771"
+      },
+      {
+        "frame_index": 9,
+        "frame_id": "hold-01-of-04",
+        "phase": "hold",
+        "sample_index": 1,
+        "sample_count": 4,
+        "duration_ms": 500,
+        "active_components": [
+          "left_brow_rest",
+          "right_brow_rest",
+          "left_closed_eye_anchor",
+          "right_closed_eye_anchor",
+          "left_cheek_rest",
+          "right_cheek_rest",
+          "nose_anchor",
+          "mouth_rest",
+          "sleep_breath_mark_left",
+          "sleep_breath_mark_right",
+          "sleep_zzz_cluster"
+        ],
+        "offsets": {
+          "left_brow_rest": [
+            0,
+            0
+          ],
+          "right_brow_rest": [
+            0,
+            0
+          ],
+          "left_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "right_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "left_cheek_rest": [
+            0,
+            0
+          ],
+          "right_cheek_rest": [
+            0,
+            0
+          ],
+          "nose_anchor": [
+            0,
+            0
+          ],
+          "mouth_rest": [
+            0,
+            0
+          ],
+          "sleep_breath_mark_left": [
+            0,
+            5
+          ],
+          "sleep_breath_mark_right": [
+            0,
+            5
+          ],
+          "sleep_zzz_cluster": [
+            4,
+            -4
+          ]
+        },
+        "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/09-hold-01-of-04.pbm",
+        "target_pbm_sha256": "789E4A8D5D6B8C9A98D796F41E6332D84D20D59D485E61CDBD0C5DD31333633C",
+        "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/09-hold-01-of-04.png",
+        "target_preview_sha256": "2768EFA493A1EB63C7D08EE2A40195D896B88B94C41734FDB0EBFEFA11D8DDE0"
+      },
+      {
+        "frame_index": 10,
+        "frame_id": "hold-02-of-04",
+        "phase": "hold",
+        "sample_index": 2,
+        "sample_count": 4,
+        "duration_ms": 500,
+        "active_components": [
+          "left_brow_rest",
+          "right_brow_rest",
+          "left_closed_eye_anchor",
+          "right_closed_eye_anchor",
+          "left_cheek_rest",
+          "right_cheek_rest",
+          "nose_anchor",
+          "mouth_rest",
+          "sleep_breath_mark_left",
+          "sleep_breath_mark_right",
+          "sleep_zzz_cluster"
+        ],
+        "offsets": {
+          "left_brow_rest": [
+            0,
+            0
+          ],
+          "right_brow_rest": [
+            0,
+            0
+          ],
+          "left_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "right_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "left_cheek_rest": [
+            0,
+            0
+          ],
+          "right_cheek_rest": [
+            0,
+            0
+          ],
+          "nose_anchor": [
+            0,
+            0
+          ],
+          "mouth_rest": [
+            0,
+            0
+          ],
+          "sleep_breath_mark_left": [
+            0,
+            4
+          ],
+          "sleep_breath_mark_right": [
+            0,
+            4
+          ],
+          "sleep_zzz_cluster": [
+            4,
+            -4
+          ]
+        },
+        "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/10-hold-02-of-04.pbm",
+        "target_pbm_sha256": "5DE8033BDF6AB62491DF29B38A9187E9B9C0144CEE7D3A9B7CF8E6B19739920B",
+        "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/10-hold-02-of-04.png",
+        "target_preview_sha256": "5BBB94BA621D64438C4FD803120C2D3AF33C620EF1B4D25144AAFD990DB2A545"
+      },
+      {
+        "frame_index": 11,
+        "frame_id": "hold-03-of-04",
+        "phase": "hold",
+        "sample_index": 3,
+        "sample_count": 4,
+        "duration_ms": 500,
+        "active_components": [
+          "left_brow_rest",
+          "right_brow_rest",
+          "left_closed_eye_anchor",
+          "right_closed_eye_anchor",
+          "left_cheek_rest",
+          "right_cheek_rest",
+          "nose_anchor",
+          "mouth_rest",
+          "sleep_breath_mark_left",
+          "sleep_breath_mark_right",
+          "sleep_zzz_cluster"
+        ],
+        "offsets": {
+          "left_brow_rest": [
+            0,
+            0
+          ],
+          "right_brow_rest": [
+            0,
+            0
+          ],
+          "left_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "right_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "left_cheek_rest": [
+            0,
+            0
+          ],
+          "right_cheek_rest": [
+            0,
+            0
+          ],
+          "nose_anchor": [
+            0,
+            0
+          ],
+          "mouth_rest": [
+            0,
+            0
+          ],
+          "sleep_breath_mark_left": [
+            0,
+            4
+          ],
+          "sleep_breath_mark_right": [
+            0,
+            4
+          ],
+          "sleep_zzz_cluster": [
+            3,
+            -3
+          ]
+        },
+        "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/11-hold-03-of-04.pbm",
+        "target_pbm_sha256": "0C80AC88281BA249DF69BA690CD3D9DB9919F650200962D34B1294937742D85B",
+        "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/11-hold-03-of-04.png",
+        "target_preview_sha256": "32C7C75D9AE6265DB729405B9B242AA1D35347BEA8C1D99E4C9CF68403633766"
+      },
+      {
+        "frame_index": 12,
+        "frame_id": "hold-04-of-04",
+        "phase": "hold",
+        "sample_index": 4,
+        "sample_count": 4,
+        "duration_ms": 500,
+        "active_components": [
+          "left_brow_rest",
+          "right_brow_rest",
+          "left_closed_eye_anchor",
+          "right_closed_eye_anchor",
+          "left_cheek_rest",
+          "right_cheek_rest",
+          "nose_anchor",
+          "mouth_rest",
+          "sleep_breath_mark_left",
+          "sleep_breath_mark_right",
+          "sleep_zzz_cluster"
+        ],
+        "offsets": {
+          "left_brow_rest": [
+            0,
+            0
+          ],
+          "right_brow_rest": [
+            0,
+            0
+          ],
+          "left_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "right_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "left_cheek_rest": [
+            0,
+            0
+          ],
+          "right_cheek_rest": [
+            0,
+            0
+          ],
+          "nose_anchor": [
+            0,
+            0
+          ],
+          "mouth_rest": [
+            0,
+            0
+          ],
+          "sleep_breath_mark_left": [
+            0,
+            4
+          ],
+          "sleep_breath_mark_right": [
+            0,
+            4
+          ],
+          "sleep_zzz_cluster": [
+            3,
+            -3
+          ]
+        },
+        "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/12-hold-04-of-04.pbm",
+        "target_pbm_sha256": "0C80AC88281BA249DF69BA690CD3D9DB9919F650200962D34B1294937742D85B",
+        "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/12-hold-04-of-04.png",
+        "target_preview_sha256": "32C7C75D9AE6265DB729405B9B242AA1D35347BEA8C1D99E4C9CF68403633766"
+      },
+      {
+        "frame_index": 13,
+        "frame_id": "return-01-of-03",
+        "phase": "return",
+        "sample_index": 1,
+        "sample_count": 3,
+        "duration_ms": 500,
+        "active_components": [
+          "left_brow_rest",
+          "right_brow_rest",
+          "left_closed_eye_anchor",
+          "right_closed_eye_anchor",
+          "left_cheek_rest",
+          "right_cheek_rest",
+          "nose_anchor",
+          "mouth_rest",
+          "sleep_breath_mark_left",
+          "sleep_breath_mark_right",
+          "sleep_zzz_cluster"
+        ],
+        "offsets": {
+          "left_brow_rest": [
+            0,
+            0
+          ],
+          "right_brow_rest": [
+            0,
+            0
+          ],
+          "left_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "right_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "left_cheek_rest": [
+            0,
+            0
+          ],
+          "right_cheek_rest": [
+            0,
+            0
+          ],
+          "nose_anchor": [
+            0,
+            0
+          ],
+          "mouth_rest": [
+            0,
+            0
+          ],
+          "sleep_breath_mark_left": [
+            0,
+            3
+          ],
+          "sleep_breath_mark_right": [
+            0,
+            3
+          ],
+          "sleep_zzz_cluster": [
+            2,
+            -2
+          ]
+        },
+        "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/13-return-01-of-03.pbm",
+        "target_pbm_sha256": "F96EFF11E3D197F5F04BE2333492DB51A274ECCF840CE540B4B7E0C9BD93BA5C",
+        "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/13-return-01-of-03.png",
+        "target_preview_sha256": "C15D69113F800E9A3D4C07991BDD81212E87D9963F2F7A60AFC59DA7D8513BEF"
+      },
+      {
+        "frame_index": 14,
+        "frame_id": "return-02-of-03",
+        "phase": "return",
+        "sample_index": 2,
+        "sample_count": 3,
+        "duration_ms": 500,
+        "active_components": [
+          "left_brow_rest",
+          "right_brow_rest",
+          "left_closed_eye_anchor",
+          "right_closed_eye_anchor",
+          "left_cheek_rest",
+          "right_cheek_rest",
+          "nose_anchor",
+          "mouth_rest",
+          "sleep_breath_mark_left",
+          "sleep_breath_mark_right",
+          "sleep_zzz_cluster"
+        ],
+        "offsets": {
+          "left_brow_rest": [
+            0,
+            0
+          ],
+          "right_brow_rest": [
+            0,
+            0
+          ],
+          "left_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "right_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "left_cheek_rest": [
+            0,
+            0
+          ],
+          "right_cheek_rest": [
+            0,
+            0
+          ],
+          "nose_anchor": [
+            0,
+            0
+          ],
+          "mouth_rest": [
+            0,
+            0
+          ],
+          "sleep_breath_mark_left": [
+            0,
+            2
+          ],
+          "sleep_breath_mark_right": [
+            0,
+            2
+          ],
+          "sleep_zzz_cluster": [
+            2,
+            -2
+          ]
+        },
+        "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/14-return-02-of-03.pbm",
+        "target_pbm_sha256": "9010C2D1D057FF11DD28779212EE6238702D36EA4D9DA66BAFA6F49F3D6467BD",
+        "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/14-return-02-of-03.png",
+        "target_preview_sha256": "C42763F120B7ECE7715B9F1F72A7C4258D2FB8FB73C285602A7C677E0348354C"
+      },
+      {
+        "frame_index": 15,
+        "frame_id": "return-03-of-03",
+        "phase": "return",
+        "sample_index": 3,
+        "sample_count": 3,
+        "duration_ms": 500,
+        "active_components": [
+          "left_brow_rest",
+          "right_brow_rest",
+          "left_closed_eye_anchor",
+          "right_closed_eye_anchor",
+          "left_cheek_rest",
+          "right_cheek_rest",
+          "nose_anchor",
+          "mouth_rest",
+          "sleep_breath_mark_left",
+          "sleep_breath_mark_right",
+          "sleep_zzz_cluster"
+        ],
+        "offsets": {
+          "left_brow_rest": [
+            0,
+            0
+          ],
+          "right_brow_rest": [
+            0,
+            0
+          ],
+          "left_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "right_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "left_cheek_rest": [
+            0,
+            0
+          ],
+          "right_cheek_rest": [
+            0,
+            0
+          ],
+          "nose_anchor": [
+            0,
+            0
+          ],
+          "mouth_rest": [
+            0,
+            0
+          ],
+          "sleep_breath_mark_left": [
+            0,
+            1
+          ],
+          "sleep_breath_mark_right": [
+            0,
+            1
+          ],
+          "sleep_zzz_cluster": [
+            1,
+            -1
+          ]
+        },
+        "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/15-return-03-of-03.pbm",
+        "target_pbm_sha256": "4D2D3CB46E2EF758DE30AE6250FE40B444F028D23B16F9633E8AE107EA3ADADC",
+        "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/15-return-03-of-03.png",
+        "target_preview_sha256": "8374B0CDE17CD443FFCB47D69D31B6FEF5B8CBA1460342A1AE2986A12DBD8ACC"
+      },
+      {
+        "frame_index": 16,
+        "frame_id": "settle-01-of-01",
+        "phase": "settle",
+        "sample_index": 1,
+        "sample_count": 1,
+        "duration_ms": 500,
+        "active_components": [
+          "left_brow_rest",
+          "right_brow_rest",
+          "left_closed_eye_anchor",
+          "right_closed_eye_anchor",
+          "left_cheek_rest",
+          "right_cheek_rest",
+          "nose_anchor",
+          "mouth_rest",
+          "sleep_breath_mark_left",
+          "sleep_breath_mark_right",
+          "sleep_zzz_cluster"
+        ],
+        "offsets": {
+          "left_brow_rest": [
+            0,
+            0
+          ],
+          "right_brow_rest": [
+            0,
+            0
+          ],
+          "left_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "right_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "left_cheek_rest": [
+            0,
+            0
+          ],
+          "right_cheek_rest": [
+            0,
+            0
+          ],
+          "nose_anchor": [
+            0,
+            0
+          ],
+          "mouth_rest": [
+            0,
+            0
+          ],
+          "sleep_breath_mark_left": [
+            0,
+            0
+          ],
+          "sleep_breath_mark_right": [
+            0,
+            0
+          ],
+          "sleep_zzz_cluster": [
+            0,
+            0
+          ]
+        },
+        "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/16-settle-01-of-01.pbm",
+        "target_pbm_sha256": "E274DABFA57394D1B650F463E8E255461EC928E68FA43377013D820CAE2B1AAA",
+        "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/16-settle-01-of-01.png",
+        "target_preview_sha256": "E24C828D65C52903E24CE6FDE0409FE7D7B8A49C9279BE2DB664A03BD09E2D71"
+      }
+    ],
+    "key_phase_frames": [
+      {
+        "index": 0,
+        "phase": "entry",
+        "duration_ms": 500,
+        "primary_group": "rest",
+        "active_components": [
+          "left_brow_rest",
+          "right_brow_rest",
+          "left_closed_eye_anchor",
+          "right_closed_eye_anchor",
+          "left_cheek_rest",
+          "right_cheek_rest",
+          "nose_anchor",
+          "mouth_rest",
+          "sleep_breath_mark_left",
+          "sleep_breath_mark_right",
+          "sleep_zzz_cluster"
+        ],
+        "offsets": {
+          "left_brow_rest": [
+            0,
+            0
+          ],
+          "right_brow_rest": [
+            0,
+            0
+          ],
+          "left_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "right_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "left_cheek_rest": [
+            0,
+            0
+          ],
+          "right_cheek_rest": [
+            0,
+            0
+          ],
+          "nose_anchor": [
+            0,
+            0
+          ],
+          "mouth_rest": [
+            0,
+            0
+          ],
+          "sleep_breath_mark_left": [
+            0,
+            0
+          ],
+          "sleep_breath_mark_right": [
+            0,
+            0
+          ],
+          "sleep_zzz_cluster": [
+            0,
+            0
+          ]
+        },
+        "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/00-entry-01-of-01.pbm",
+        "target_pbm_sha256": "E274DABFA57394D1B650F463E8E255461EC928E68FA43377013D820CAE2B1AAA",
+        "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/00-entry-01-of-01.png",
+        "target_preview_sha256": "E24C828D65C52903E24CE6FDE0409FE7D7B8A49C9279BE2DB664A03BD09E2D71"
+      },
+      {
+        "index": 1,
+        "phase": "lead",
+        "duration_ms": 1000,
+        "primary_group": "brow",
+        "active_components": [
+          "left_brow_settle",
+          "right_brow_rest",
+          "left_closed_eye_anchor",
+          "right_closed_eye_anchor",
+          "left_cheek_rest",
+          "right_cheek_rest",
+          "nose_anchor",
+          "mouth_rest",
+          "sleep_breath_mark_left",
+          "sleep_breath_mark_right",
+          "sleep_zzz_cluster"
+        ],
+        "offsets": {
+          "left_brow_settle": [
+            0,
+            0
+          ],
+          "right_brow_rest": [
+            0,
+            0
+          ],
+          "left_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "right_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "left_cheek_rest": [
+            0,
+            0
+          ],
+          "right_cheek_rest": [
+            0,
+            0
+          ],
+          "nose_anchor": [
+            0,
+            0
+          ],
+          "mouth_rest": [
+            0,
+            0
+          ],
+          "sleep_breath_mark_left": [
+            0,
+            2
+          ],
+          "sleep_breath_mark_right": [
+            0,
+            2
+          ],
+          "sleep_zzz_cluster": [
+            2,
+            -2
+          ]
+        },
+        "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/02-lead-02-of-02.pbm",
+        "target_pbm_sha256": "BB23DBE38D5756EB7F02DD82FBEF2B768A0CD64B74E9FFE2A0DAE29D04F01F46",
+        "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/02-lead-02-of-02.png",
+        "target_preview_sha256": "8AEE313494BCB159E4F3E5842D3B3ECAC5EB351E5C20E9E92993F41FE38F3265"
+      },
+      {
+        "index": 2,
+        "phase": "response",
+        "duration_ms": 1500,
+        "primary_group": "lower_face",
+        "active_components": [
+          "left_brow_rest",
+          "right_brow_rest",
+          "left_closed_eye_anchor",
+          "right_closed_eye_anchor",
+          "left_cheek_breath",
+          "right_cheek_breath",
+          "nose_anchor",
+          "mouth_breath",
+          "sleep_breath_mark_left",
+          "sleep_breath_mark_right",
+          "sleep_zzz_cluster"
+        ],
+        "offsets": {
+          "left_brow_rest": [
+            0,
+            0
+          ],
+          "right_brow_rest": [
+            0,
+            0
+          ],
+          "left_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "right_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "left_cheek_breath": [
+            0,
+            0
+          ],
+          "right_cheek_breath": [
+            0,
+            0
+          ],
+          "nose_anchor": [
+            0,
+            0
+          ],
+          "mouth_breath": [
+            0,
+            0
+          ],
+          "sleep_breath_mark_left": [
+            0,
+            3
+          ],
+          "sleep_breath_mark_right": [
+            0,
+            3
+          ],
+          "sleep_zzz_cluster": [
+            3,
+            -3
+          ]
+        },
+        "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/05-response-03-of-03.pbm",
+        "target_pbm_sha256": "4AF9870719AE87C7F20D67742638170B60D96FB6840573891F70B915216A7BB3",
+        "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/05-response-03-of-03.png",
+        "target_preview_sha256": "862BEB715A52DEE551AB95571517BF8634FCA9DC157FA26C4CEF4802F0BE8640"
+      },
+      {
+        "index": 3,
+        "phase": "accent",
+        "duration_ms": 1500,
+        "primary_group": "lower_face",
+        "active_components": [
+          "left_brow_rest",
+          "right_brow_rest",
+          "left_closed_eye_anchor",
+          "right_closed_eye_anchor",
+          "left_cheek_breath",
+          "right_cheek_breath",
+          "nose_anchor",
+          "mouth_breath",
+          "sleep_breath_mark_left",
+          "sleep_breath_mark_right",
+          "sleep_zzz_cluster"
+        ],
+        "offsets": {
+          "left_brow_rest": [
+            0,
+            0
+          ],
+          "right_brow_rest": [
+            0,
+            0
+          ],
+          "left_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "right_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "left_cheek_breath": [
+            0,
+            0
+          ],
+          "right_cheek_breath": [
+            0,
+            0
+          ],
+          "nose_anchor": [
+            0,
+            0
+          ],
+          "mouth_breath": [
+            0,
+            0
+          ],
+          "sleep_breath_mark_left": [
+            0,
+            5
+          ],
+          "sleep_breath_mark_right": [
+            0,
+            5
+          ],
+          "sleep_zzz_cluster": [
+            4,
+            -4
+          ]
+        },
+        "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/08-accent-03-of-03.pbm",
+        "target_pbm_sha256": "B2E446A5B47C6C6ACFB09A8EAB7DECC29C19A0A845EA23429AE078DCF37FD435",
+        "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/08-accent-03-of-03.png",
+        "target_preview_sha256": "956529EB72D49F190379EA5E1242DC59E6E0B6C2CF311813F6E5112FCD791771"
+      },
+      {
+        "index": 4,
+        "phase": "hold",
+        "duration_ms": 2000,
+        "primary_group": "rest",
+        "active_components": [
+          "left_brow_rest",
+          "right_brow_rest",
+          "left_closed_eye_anchor",
+          "right_closed_eye_anchor",
+          "left_cheek_rest",
+          "right_cheek_rest",
+          "nose_anchor",
+          "mouth_rest",
+          "sleep_breath_mark_left",
+          "sleep_breath_mark_right",
+          "sleep_zzz_cluster"
+        ],
+        "offsets": {
+          "left_brow_rest": [
+            0,
+            0
+          ],
+          "right_brow_rest": [
+            0,
+            0
+          ],
+          "left_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "right_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "left_cheek_rest": [
+            0,
+            0
+          ],
+          "right_cheek_rest": [
+            0,
+            0
+          ],
+          "nose_anchor": [
+            0,
+            0
+          ],
+          "mouth_rest": [
+            0,
+            0
+          ],
+          "sleep_breath_mark_left": [
+            0,
+            4
+          ],
+          "sleep_breath_mark_right": [
+            0,
+            4
+          ],
+          "sleep_zzz_cluster": [
+            3,
+            -3
+          ]
+        },
+        "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/12-hold-04-of-04.pbm",
+        "target_pbm_sha256": "0C80AC88281BA249DF69BA690CD3D9DB9919F650200962D34B1294937742D85B",
+        "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/12-hold-04-of-04.png",
+        "target_preview_sha256": "32C7C75D9AE6265DB729405B9B242AA1D35347BEA8C1D99E4C9CF68403633766"
+      },
+      {
+        "index": 5,
+        "phase": "return",
+        "duration_ms": 1500,
+        "primary_group": "rest",
+        "active_components": [
+          "left_brow_rest",
+          "right_brow_rest",
+          "left_closed_eye_anchor",
+          "right_closed_eye_anchor",
+          "left_cheek_rest",
+          "right_cheek_rest",
+          "nose_anchor",
+          "mouth_rest",
+          "sleep_breath_mark_left",
+          "sleep_breath_mark_right",
+          "sleep_zzz_cluster"
+        ],
+        "offsets": {
+          "left_brow_rest": [
+            0,
+            0
+          ],
+          "right_brow_rest": [
+            0,
+            0
+          ],
+          "left_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "right_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "left_cheek_rest": [
+            0,
+            0
+          ],
+          "right_cheek_rest": [
+            0,
+            0
+          ],
+          "nose_anchor": [
+            0,
+            0
+          ],
+          "mouth_rest": [
+            0,
+            0
+          ],
+          "sleep_breath_mark_left": [
+            0,
+            1
+          ],
+          "sleep_breath_mark_right": [
+            0,
+            1
+          ],
+          "sleep_zzz_cluster": [
+            1,
+            -1
+          ]
+        },
+        "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/15-return-03-of-03.pbm",
+        "target_pbm_sha256": "4D2D3CB46E2EF758DE30AE6250FE40B444F028D23B16F9633E8AE107EA3ADADC",
+        "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/15-return-03-of-03.png",
+        "target_preview_sha256": "8374B0CDE17CD443FFCB47D69D31B6FEF5B8CBA1460342A1AE2986A12DBD8ACC"
+      },
+      {
+        "index": 6,
+        "phase": "settle",
+        "duration_ms": 500,
+        "primary_group": "rest",
+        "active_components": [
+          "left_brow_rest",
+          "right_brow_rest",
+          "left_closed_eye_anchor",
+          "right_closed_eye_anchor",
+          "left_cheek_rest",
+          "right_cheek_rest",
+          "nose_anchor",
+          "mouth_rest",
+          "sleep_breath_mark_left",
+          "sleep_breath_mark_right",
+          "sleep_zzz_cluster"
+        ],
+        "offsets": {
+          "left_brow_rest": [
+            0,
+            0
+          ],
+          "right_brow_rest": [
+            0,
+            0
+          ],
+          "left_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "right_closed_eye_anchor": [
+            0,
+            0
+          ],
+          "left_cheek_rest": [
+            0,
+            0
+          ],
+          "right_cheek_rest": [
+            0,
+            0
+          ],
+          "nose_anchor": [
+            0,
+            0
+          ],
+          "mouth_rest": [
+            0,
+            0
+          ],
+          "sleep_breath_mark_left": [
+            0,
+            0
+          ],
+          "sleep_breath_mark_right": [
+            0,
+            0
+          ],
+          "sleep_zzz_cluster": [
+            0,
+            0
+          ]
+        },
+        "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/16-settle-01-of-01.pbm",
+        "target_pbm_sha256": "E274DABFA57394D1B650F463E8E255461EC928E68FA43377013D820CAE2B1AAA",
+        "target_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/target-frames/16-settle-01-of-01.png",
+        "target_preview_sha256": "E24C828D65C52903E24CE6FDE0409FE7D7B8A49C9279BE2DB664A03BD09E2D71"
+      }
+    ],
+    "contact_sheet": {
+      "path": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/sleep-v15-dynamic-contact-sheet.png",
+      "sha256": "A7955AE8B95DE65D69330ABD179D9E89EFA8150E853A75C5EC399251CE494983"
+    },
+    "dynamic_apng": {
+      "path": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/sleep-v15-dynamic-preview.apng",
+      "sha256": "2E59FD1EB5E08A3A6110868C41BAD3C09948E57931F86FAA7A0E268110BC32DF",
+      "frame_count": 17,
+      "playback_mode": "one_shot_then_static",
+      "source": "same registered-mask timeline as browser and target PBM"
+    },
+    "component_occlusion_audit": {
+      "path": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/component-occlusion-audit.json",
+      "sha256": "CD02D5C4433E21B4A13BF2FDFA06DF2D8D9BEBE6182E7695D436D13963CC75B8",
+      "status": "PASS_ZERO_COMPONENT_OVERLAP"
+    },
+    "motion_report": {
+      "path": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02/motion-report.json",
+      "sha256": "700CCEE987F2C8F8AC2059E1E5F5260012221EF0BFB07CED7ECE5DDED9085D92"
+    }
+  }
+}

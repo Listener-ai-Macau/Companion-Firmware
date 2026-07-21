@@ -1,0 +1,71 @@
+{
+  "schema": "companion.v9.special_expression_generation_request.v8",
+  "status": "GENERATED_ATTEMPT_01_REJECTED_BEFORE_SOURCE_GATE",
+  "iteration": "V29",
+  "request_revision": 1,
+  "created_at": "2026-07-20",
+  "purpose": "Attempt 01 was generated and rejected before source gate because it redrew a complete head and oversized the state objects. It remains provenance only; revision 2 must preserve the exact V9 face crop while retaining clear compact state objects.",
+  "locked_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "allowed_reference_inputs": [
+    "locked_v9_reference_only"
+  ],
+  "forbidden_reference_inputs": [
+    "V28_superseded_request_as_visual_input",
+    "V27_rejected_source_or_any_derived_asset",
+    "V26_rejected_source_or_any_derived_asset",
+    "V25_rejected_source_or_any_derived_asset",
+    "V24_rejected_source_or_any_derived_asset",
+    "V23_candidates_or_exports",
+    "legacy_art",
+    "whole_face_runtime_cards"
+  ],
+  "identity_invariants": [
+    "retain the locked V9 open oval eye silhouette, black fill, one large white oval highlight and one small white diamond sparkle per eye",
+    "retain the locked V9 eye-pair scale, spacing, baseline, tiny nose and monochrome ink weight",
+    "do not introduce a new eye shape, iris, pupil, eyelash, colour, face outline, ear, whisker or whole-face card",
+    "the state object is a clean separately extractable black-ink component in the 200x200 safe area and visibly anchors to the character pose",
+    "the state object changes the silhouette enough to survive the native 200x200 hold",
+    "use no detached flat UI/status glyph, text, label, menu icon, battery icon, waveform icon, emoji, generic dot, interchangeable sparkle or floating notification"
+  ],
+  "state_object_semantic_brief": [
+    {
+      "id": "menu_active",
+      "action_verb": "select",
+      "one_glance_read": "deliberate navigation and choosing",
+      "face_action": "low composed brows with one restrained decision lift, same-side highlight attention and compact closed decision mouth",
+      "silhouette_object": "one prominent three-tab navigator visor/beret attached directly above and across the eyebrow line, with three rounded page-like tabs and a central clasp. It must look like a character-owned navigation cap, not a floating menu glyph, cursor or generic crown.",
+      "choreography": "visor tabs make one deliberate left-to-center-to-right settle while highlights scan and the face lands"
+    },
+    {
+      "id": "recording_active",
+      "action_verb": "record",
+      "one_glance_read": "actively recording/listening",
+      "face_action": "receptive low brows, centered attentive highlights, tiny closed acknowledgement mouth and calm cheeks",
+      "silhouette_object": "a large matched pair of rounded recording headset earcups hugging both outer eye-cheek edges plus one short curved pickup boom that reaches toward the mouth. This is an attached mascot headset object, not a detached microphone icon, waveform or generic wave. It must be visually unmistakable at 200x200 and extractable as left earcup, right earcup and boom components.",
+      "choreography": "headset arrives as a physical object, earcups pulse once outward after attention arrives, then the pickup boom settles while the face holds"
+    },
+    {
+      "id": "charging_active",
+      "action_verb": "charge",
+      "one_glance_read": "actively charging and restoring energy",
+      "face_action": "soft released low brows, settled lower highlights, compact closed restorative smile and softened lifted cheeks",
+      "silhouette_object": "one large rounded charging dock clasp anchored on the character's left outer cheek with a thick short tether curving into a small forehead energy-core jewel. The clasp and tether are physical character equipment, visibly connected to the face, never a detached battery, lightning, plug glyph or floating icon. The silhouette must read like the character is plugged into a charging dock at 200x200. Export clasp, tether and core as separate components.",
+      "choreography": "dock clasp arrives first, tether draws inward to the core, the core makes one restrained fill/settle movement as the recovery face releases, then all reverse exactly"
+    }
+  ],
+  "panel_contract": "Generate one unbordered, unlabeled left-to-right row of exactly three same-scale faces: menu_active, recording_active, charging_active. Each pose must contain one large integrated state object plus a distinct V9 face action. The panel is source provenance only; runtime may later use only registered components in a deterministic component sequence, never whole-face playback.",
+  "machine_preconditions_before_owner_review": [
+    "source gate proves locked-V9-only lineage, identity invariants, exactly the declared state-object components and native-200x200 silhouette delta",
+    "component export retains exact locked V9 identity components and source-derived face/state-object components only",
+    "browser and target PBM replay the same deterministic component plan at native 200x200",
+    "internal visual preflight evaluates unlabeled holds plus causal playback and rejects any state that is not unmistakable as navigation, recording or charging before an operator prompt"
+  ],
+  "runtime_policy": {
+    "runtime_resource_activated": false,
+    "active_candidate_binding": "forbidden",
+    "unavailable_special_state_policy": "fail_closed"
+  }
+}

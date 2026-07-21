@@ -1,0 +1,62 @@
+{
+  "schema": "companion.v9_expression_extension_generation_request.v12",
+  "iteration_id": "companion-pet-expression-v9-extension-v12-sleep-anchor-repair-20260719",
+  "status": "REJECTED_OWNER_SLEEP_MICRO_COMPONENTS_V12_20260719",
+  "requested_at": "2026-07-19T12:20:00+08:00",
+  "render_parent_iteration": "pet-expression-v9-anti-sly-cute-2026-07-15",
+  "named_prompt_delta": "sleep_anchor_repair: replace only the owner-rejected incomplete sleep component source with one complete, restrained, moon/Z-free V9 sleep anchor.",
+  "owner_trigger": "COMP-REQ-126; the current separated V10 sleep components read as an unfinished face. The active Rig must fail closed while this distinct, versioned source candidate is generated and reviewed.",
+  "candidate_scope": "supplemental_component_source_only_single_sleep_anchor_repair_not_a_baseline_replacement",
+  "source_art_type": "face_anchor",
+  "bundle_role": "unbound_sleep_rest_component_source_candidate",
+  "bundle_completion_requirement": "This candidate is not an active Rig state, runtime asset, fallback face, or complete-face animation. It may restore sleep only after V12 source validation, registered component extraction, source-only composition gates, and a new owner art acceptance.",
+  "target_profile": {
+    "grid": [1, 1],
+    "display_target_px": [200, 200],
+    "style": "pure black and white, 1-bit-ready e-paper inner-face components",
+    "runtime_status": "inactive_pending_component_export_machine_checks_and_owner_review"
+  },
+  "source_references": [
+    {
+      "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "role": "only visual reference and immutable character identity parent"
+    }
+  ],
+  "rejected_predecessors": [
+    "companion-pet-expression-v9-extension-v10-expanded-emotion-panel-20260718"
+  ],
+  "required_cells": [
+    "sleep_rest_no_moon"
+  ],
+  "transition_roles": {
+    "sleep_rest_no_moon": "complete low-energy rest anchor; later source components may enter from and settle back to the accepted calm baseline, but this static cell is never a playback frame"
+  },
+  "prompt": "Use the attached locked V9 Companion sheet as the only visual reference. Generate exactly one centered, complete V9-matched peaceful sleep face source on a pure white square background. It is the same persistent Companion identity, but with two matched small closed curved eye strokes, two gentle brows, two restrained cheek dots, a tiny centered V9 nose and a petite resting mouth so the face reads as finished at a 100px thumbnail. Keep generous white space, compact rounded black V9 line weight and balanced horizontal geometry. There is no detached charm and no upper mark of any kind. The source must have no moon, no crescent and no Z. It must not borrow a Daily open-eye face or a normal/awake mouth as a fallback. No open eye is permitted in this sleep-only cell; the locked identity rule for any accidentally generated open eye remains exactly two matched upright solid filled black vertical oval eye bodies with compact enclosed white reflections, never sclera, ring, white cap or drooping eyes. This is static component source art for a later registered Rig only, never an animation frame, whole-face flipbook, runtime asset, charging face or error face. No text, labels, grid, border, device frame, grey, gradient, shading, texture, cat outline, ears, whiskers, human styling, smirk, flirtation, romance, sadness or aggression.",
+  "negative_constraints": [
+    "no moon, crescent, Z, sparkle, heart, question, exclamation, ellipsis, record dot, listening arc or detached charm",
+    "no Daily or normal-face fallback, no borrowed V9 moon/Z art, no code-drawn feature, no legacy art or custom LUT",
+    "no open eye; if an open eye appears, no sclera, ring, contour, white cap, lower-half white, pupil, lash, changed eye shape or drooping eye",
+    "no V1, V2, V3, V4, V5, V6, V7, V8, V9-extension, V10 or V11 pixels, components or visual reference",
+    "no whole-face animation claim, CEMP/PBM flipbook, component export or runtime activation before owner acceptance",
+    "no charging or error face"
+  ],
+  "planned_generated_output": "docs/art/iterations/companion-pet-expression-v9-extension-v12-sleep-anchor-repair/generated_pet_expression_extension_v12_sleep_anchor_repair_candidate.png",
+  "post_generation_gate": "First run the V12 locked-V9 lineage preflight. After image generation, machine-check one complete moon/Z-free sleep anchor, source-only component extractability, no Daily fallback and a readable 200x200 composition. The image remains runtime inactive and unbound until a fresh owner art acceptance; only then may a separate Rig export restore sleep.",
+  "current_runtime_disposition": "sleep_rest_no_moon is fail_closed in the active expanded Rig pending V12 source and owner acceptance",
+  "generated_output": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-extension-v12-sleep-anchor-repair/generated_pet_expression_extension_v12_sleep_anchor_repair_candidate.png",
+    "sha256": "4D61491B2AE19EA2826D2E6286A405A2EE2F3CA0A128D91630BC8CAC606F4399",
+    "status": "rejected_owner_sleep_micro_components",
+    "source_gate": "docs/validation/companion-v9-extension-v12-sleep-anchor-repair-machine-20260719.json",
+    "source_mask_export": "docs/art/iterations/companion-pet-expression-v9-extension-v12-sleep-anchor-repair/candidate/export-report.json",
+    "source_mask_export_gate": "docs/validation/companion-v9-extension-v12-sleep-anchor-repair-export-20260719.json",
+    "component_count": 8,
+    "runtime_resource_activated": false,
+    "active_candidate_binding": "forbidden",
+    "owner_review_result": "docs/validation/companion-v9-extension-v12-sleep-anchor-repair-owner-art-review-20260719.json",
+    "owner_review_note": "docs/validation/companion-v9-extension-v12-sleep-anchor-repair-owner-art-review-20260719.note.txt",
+    "owner_review_summary": "docs/validation/companion-v9-extension-v12-sleep-anchor-repair-owner-art-review-summary-20260719.json",
+    "next_gate": "rejected evidence only; V13 must generate a distinct sleep source with source-generated micro-components"
+  }
+}

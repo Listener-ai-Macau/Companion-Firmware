@@ -1,0 +1,64 @@
+{
+  "schema": "companion.art_generation_request.v1",
+  "status": "RECORDED_BEFORE_IMAGE_GENERATION",
+  "iteration": "companion-pet-expression-v9-extension-v42-emotion-source",
+  "revision": 2,
+  "created_at": "2026-07-21",
+  "authority": [
+    "COMP-REQ-093",
+    "COMP-REQ-242",
+    "COMP-REQ-245",
+    "COMP-REQ-246"
+  ],
+  "supersedes_generation_attempt": "candidate/attempt-01-emotion-source-rejected.png",
+  "locked_v9_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "use": "sole character identity reference; fixed V9 open-eye silhouette and nose anchor"
+  },
+  "purpose": "Produce a more readable but still restrained four-emotion source sheet. This is source-only art; a later Rig may extract brows, mouths, and cheeks only.",
+  "identity_locks": [
+    "Keep the exact V9 open eye body, scale, spacing, primary highlight, small sparkle, and centered nose.",
+    "No new eye shape, pupil, eyelid, eyelash, wink, face outline, color, gray, antialiasing, text, card, or UI."
+  ],
+  "emotion_contract": [
+    {
+      "name": "delighted",
+      "brows": "two high open arcs",
+      "mouth": "one clearly wider open U-smile with a white interior",
+      "cheeks": "high and full"
+    },
+    {
+      "name": "bashful",
+      "brows": "two gentle inward-softened short arcs",
+      "mouth": "one tiny closed asymmetric shy smile, never a default W-mouth",
+      "cheeks": "two compact cheeks pulled visibly closer to the mouth"
+    },
+    {
+      "name": "thoughtful",
+      "brows": "left high arch and right low relaxed arc",
+      "mouth": "one small closed offset three-part pondering curve, never an O-mouth or surprise mouth",
+      "cheeks": "left cheek subtly lifted; right cheek low"
+    },
+    {
+      "name": "focused",
+      "brows": "two short low inward-sloping but rounded brows",
+      "mouth": "one compact almost-flat confident line with soft rounded ends, never a W-mouth or frown",
+      "cheeks": "two low even compact cheeks"
+    }
+  ],
+  "separation_contract": "Every pose must differ from every other pose in its brow pair, mouth silhouette, and cheek placement. The difference must remain apparent when rendered at native 200x200.",
+  "source_sheet": {
+    "grid": {
+      "columns": 2,
+      "rows": 2,
+      "ordered_cells": ["delighted", "bashful", "thoughtful", "focused"]
+    },
+    "cell_background": "plain pure white",
+    "source_only": true
+  },
+  "runtime": {
+    "resource_activated": false,
+    "binding": "forbidden_until_source_gate_component_export_browser_wb55_parity_total_audit_and_owner_review"
+  }
+}

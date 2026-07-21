@@ -1,0 +1,979 @@
+{
+  "schema": "companion.expression_rig_component_pack.v1",
+  "status": "CANDIDATE_MACHINE_EXPORT_PENDING",
+  "runtime_resource_activated": false,
+  "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "profile": {
+    "width": 200,
+    "height": 200,
+    "stride_bytes": 25,
+    "pixel_format": "mono_1bpp_white_is_one_msb",
+    "safe_inset_px": 8
+  },
+  "pack": "docs/art/iterations/companion-pet-expression-v9-rig-v2-expanded-source/candidate/companion-v9-expanded-expression-rig-candidate-200x200.crig",
+  "pack_sha256": "DF33E5E744C3C268DC66125321F8A3D60D11140FCAE93D326EDAF9C9CCD4BEC4",
+  "total_size": 16914,
+  "component_count": 96,
+  "components": [
+    {
+      "component_id": 1,
+      "name": "daily_attention_left__left_brow",
+      "width": 45,
+      "height": 30,
+      "stride_bytes": 6,
+      "data_offset": 2000,
+      "data_size": 180,
+      "data_crc32": "AA21C7AB"
+    },
+    {
+      "component_id": 2,
+      "name": "daily_attention_left__right_brow",
+      "width": 45,
+      "height": 30,
+      "stride_bytes": 6,
+      "data_offset": 2180,
+      "data_size": 180,
+      "data_crc32": "47BEDD77"
+    },
+    {
+      "component_id": 3,
+      "name": "daily_attention_left__left_eye",
+      "width": 56,
+      "height": 95,
+      "stride_bytes": 7,
+      "data_offset": 2360,
+      "data_size": 665,
+      "data_crc32": "1743E53E"
+    },
+    {
+      "component_id": 4,
+      "name": "daily_attention_left__right_eye",
+      "width": 52,
+      "height": 95,
+      "stride_bytes": 7,
+      "data_offset": 3025,
+      "data_size": 665,
+      "data_crc32": "1CCE48A8"
+    },
+    {
+      "component_id": 5,
+      "name": "daily_attention_left__left_highlight",
+      "width": 56,
+      "height": 95,
+      "stride_bytes": 7,
+      "data_offset": 3690,
+      "data_size": 665,
+      "data_crc32": "48A5A339"
+    },
+    {
+      "component_id": 6,
+      "name": "daily_attention_left__right_highlight",
+      "width": 52,
+      "height": 95,
+      "stride_bytes": 7,
+      "data_offset": 4355,
+      "data_size": 665,
+      "data_crc32": "876723FF"
+    },
+    {
+      "component_id": 7,
+      "name": "daily_attention_left__left_sparkle",
+      "width": 56,
+      "height": 95,
+      "stride_bytes": 7,
+      "data_offset": 5020,
+      "data_size": 665,
+      "data_crc32": "DE41E271"
+    },
+    {
+      "component_id": 8,
+      "name": "daily_attention_left__right_sparkle",
+      "width": 52,
+      "height": 95,
+      "stride_bytes": 7,
+      "data_offset": 5685,
+      "data_size": 665,
+      "data_crc32": "5DC7976D"
+    },
+    {
+      "component_id": 9,
+      "name": "daily_attention_left__left_cheek",
+      "width": 22,
+      "height": 16,
+      "stride_bytes": 3,
+      "data_offset": 6350,
+      "data_size": 48,
+      "data_crc32": "A864B00E"
+    },
+    {
+      "component_id": 10,
+      "name": "daily_attention_left__right_cheek",
+      "width": 20,
+      "height": 16,
+      "stride_bytes": 3,
+      "data_offset": 6398,
+      "data_size": 48,
+      "data_crc32": "5F0CFAA9"
+    },
+    {
+      "component_id": 11,
+      "name": "daily_attention_left__nose",
+      "width": 22,
+      "height": 13,
+      "stride_bytes": 3,
+      "data_offset": 6446,
+      "data_size": 39,
+      "data_crc32": "8C688C42"
+    },
+    {
+      "component_id": 12,
+      "name": "daily_attention_left__mouth",
+      "width": 40,
+      "height": 28,
+      "stride_bytes": 5,
+      "data_offset": 6485,
+      "data_size": 140,
+      "data_crc32": "48735BF2"
+    },
+    {
+      "component_id": 13,
+      "name": "daily_attention_right__left_brow",
+      "width": 45,
+      "height": 30,
+      "stride_bytes": 6,
+      "data_offset": 6625,
+      "data_size": 180,
+      "data_crc32": "11DD81D9"
+    },
+    {
+      "component_id": 14,
+      "name": "daily_attention_right__right_brow",
+      "width": 45,
+      "height": 30,
+      "stride_bytes": 6,
+      "data_offset": 6805,
+      "data_size": 180,
+      "data_crc32": "4A7FDAB6"
+    },
+    {
+      "component_id": 15,
+      "name": "daily_attention_right__left_cheek",
+      "width": 22,
+      "height": 16,
+      "stride_bytes": 3,
+      "data_offset": 6985,
+      "data_size": 48,
+      "data_crc32": "27CA1220"
+    },
+    {
+      "component_id": 16,
+      "name": "daily_attention_right__right_cheek",
+      "width": 20,
+      "height": 16,
+      "stride_bytes": 3,
+      "data_offset": 7033,
+      "data_size": 48,
+      "data_crc32": "9D408C37"
+    },
+    {
+      "component_id": 17,
+      "name": "daily_attention_right__mouth",
+      "width": 40,
+      "height": 28,
+      "stride_bytes": 5,
+      "data_offset": 7081,
+      "data_size": 140,
+      "data_crc32": "C6FA8120"
+    },
+    {
+      "component_id": 18,
+      "name": "daily_attention_up__left_brow",
+      "width": 45,
+      "height": 30,
+      "stride_bytes": 6,
+      "data_offset": 7221,
+      "data_size": 180,
+      "data_crc32": "029CC2C3"
+    },
+    {
+      "component_id": 19,
+      "name": "daily_attention_up__right_brow",
+      "width": 45,
+      "height": 30,
+      "stride_bytes": 6,
+      "data_offset": 7401,
+      "data_size": 180,
+      "data_crc32": "EBDC3CBB"
+    },
+    {
+      "component_id": 20,
+      "name": "daily_attention_up__left_cheek",
+      "width": 22,
+      "height": 16,
+      "stride_bytes": 3,
+      "data_offset": 7581,
+      "data_size": 48,
+      "data_crc32": "A7161338"
+    },
+    {
+      "component_id": 21,
+      "name": "daily_attention_up__right_cheek",
+      "width": 20,
+      "height": 16,
+      "stride_bytes": 3,
+      "data_offset": 7629,
+      "data_size": 48,
+      "data_crc32": "B6615330"
+    },
+    {
+      "component_id": 22,
+      "name": "daily_attention_up__mouth",
+      "width": 40,
+      "height": 28,
+      "stride_bytes": 5,
+      "data_offset": 7677,
+      "data_size": 140,
+      "data_crc32": "6988B532"
+    },
+    {
+      "component_id": 23,
+      "name": "daily_attention_down__left_brow",
+      "width": 45,
+      "height": 30,
+      "stride_bytes": 6,
+      "data_offset": 7817,
+      "data_size": 180,
+      "data_crc32": "F011DBF2"
+    },
+    {
+      "component_id": 24,
+      "name": "daily_attention_down__right_brow",
+      "width": 45,
+      "height": 30,
+      "stride_bytes": 6,
+      "data_offset": 7997,
+      "data_size": 180,
+      "data_crc32": "ED4C65F6"
+    },
+    {
+      "component_id": 25,
+      "name": "daily_attention_down__left_cheek",
+      "width": 22,
+      "height": 16,
+      "stride_bytes": 3,
+      "data_offset": 8177,
+      "data_size": 48,
+      "data_crc32": "F913D0B0"
+    },
+    {
+      "component_id": 26,
+      "name": "daily_attention_down__right_cheek",
+      "width": 20,
+      "height": 16,
+      "stride_bytes": 3,
+      "data_offset": 8225,
+      "data_size": 48,
+      "data_crc32": "0FB0B1AA"
+    },
+    {
+      "component_id": 27,
+      "name": "daily_attention_down__mouth",
+      "width": 40,
+      "height": 28,
+      "stride_bytes": 5,
+      "data_offset": 8273,
+      "data_size": 140,
+      "data_crc32": "5152662D"
+    },
+    {
+      "component_id": 28,
+      "name": "calm_content__left_brow",
+      "width": 45,
+      "height": 30,
+      "stride_bytes": 6,
+      "data_offset": 8413,
+      "data_size": 180,
+      "data_crc32": "2E6366BE"
+    },
+    {
+      "component_id": 29,
+      "name": "calm_content__right_brow",
+      "width": 45,
+      "height": 30,
+      "stride_bytes": 6,
+      "data_offset": 8593,
+      "data_size": 180,
+      "data_crc32": "FCCEBB0A"
+    },
+    {
+      "component_id": 30,
+      "name": "calm_content__left_cheek",
+      "width": 22,
+      "height": 16,
+      "stride_bytes": 3,
+      "data_offset": 8773,
+      "data_size": 48,
+      "data_crc32": "1167BBF7"
+    },
+    {
+      "component_id": 31,
+      "name": "calm_content__right_cheek",
+      "width": 20,
+      "height": 16,
+      "stride_bytes": 3,
+      "data_offset": 8821,
+      "data_size": 48,
+      "data_crc32": "DB6ADCD5"
+    },
+    {
+      "component_id": 32,
+      "name": "calm_content__mouth",
+      "width": 40,
+      "height": 28,
+      "stride_bytes": 5,
+      "data_offset": 8869,
+      "data_size": 140,
+      "data_crc32": "4BA4370F"
+    },
+    {
+      "component_id": 33,
+      "name": "curious_question__left_brow",
+      "width": 45,
+      "height": 30,
+      "stride_bytes": 6,
+      "data_offset": 9009,
+      "data_size": 180,
+      "data_crc32": "CE81A62B"
+    },
+    {
+      "component_id": 34,
+      "name": "curious_question__right_brow",
+      "width": 45,
+      "height": 30,
+      "stride_bytes": 6,
+      "data_offset": 9189,
+      "data_size": 180,
+      "data_crc32": "40AB3D35"
+    },
+    {
+      "component_id": 35,
+      "name": "curious_question__left_cheek",
+      "width": 22,
+      "height": 16,
+      "stride_bytes": 3,
+      "data_offset": 9369,
+      "data_size": 48,
+      "data_crc32": "97AE1A10"
+    },
+    {
+      "component_id": 36,
+      "name": "curious_question__right_cheek",
+      "width": 20,
+      "height": 16,
+      "stride_bytes": 3,
+      "data_offset": 9417,
+      "data_size": 48,
+      "data_crc32": "9F37CFF0"
+    },
+    {
+      "component_id": 37,
+      "name": "curious_question__mouth",
+      "width": 40,
+      "height": 28,
+      "stride_bytes": 5,
+      "data_offset": 9465,
+      "data_size": 140,
+      "data_crc32": "58BFE605"
+    },
+    {
+      "component_id": 38,
+      "name": "alert_surprised__left_brow",
+      "width": 45,
+      "height": 30,
+      "stride_bytes": 6,
+      "data_offset": 9605,
+      "data_size": 180,
+      "data_crc32": "6621EC46"
+    },
+    {
+      "component_id": 39,
+      "name": "alert_surprised__right_brow",
+      "width": 45,
+      "height": 30,
+      "stride_bytes": 6,
+      "data_offset": 9785,
+      "data_size": 180,
+      "data_crc32": "439336D1"
+    },
+    {
+      "component_id": 40,
+      "name": "alert_surprised__left_cheek",
+      "width": 22,
+      "height": 16,
+      "stride_bytes": 3,
+      "data_offset": 9965,
+      "data_size": 48,
+      "data_crc32": "FAB99388"
+    },
+    {
+      "component_id": 41,
+      "name": "alert_surprised__right_cheek",
+      "width": 20,
+      "height": 16,
+      "stride_bytes": 3,
+      "data_offset": 10013,
+      "data_size": 48,
+      "data_crc32": "6A0D2739"
+    },
+    {
+      "component_id": 42,
+      "name": "alert_surprised__mouth",
+      "width": 40,
+      "height": 28,
+      "stride_bytes": 5,
+      "data_offset": 10061,
+      "data_size": 140,
+      "data_crc32": "5C166AB7"
+    },
+    {
+      "component_id": 43,
+      "name": "joyful_spark__left_brow",
+      "width": 45,
+      "height": 30,
+      "stride_bytes": 6,
+      "data_offset": 10201,
+      "data_size": 180,
+      "data_crc32": "14BBFCD7"
+    },
+    {
+      "component_id": 44,
+      "name": "joyful_spark__right_brow",
+      "width": 45,
+      "height": 30,
+      "stride_bytes": 6,
+      "data_offset": 10381,
+      "data_size": 180,
+      "data_crc32": "33F1293A"
+    },
+    {
+      "component_id": 45,
+      "name": "joyful_spark__left_cheek",
+      "width": 22,
+      "height": 16,
+      "stride_bytes": 3,
+      "data_offset": 10561,
+      "data_size": 48,
+      "data_crc32": "1B6329EF"
+    },
+    {
+      "component_id": 46,
+      "name": "joyful_spark__right_cheek",
+      "width": 20,
+      "height": 16,
+      "stride_bytes": 3,
+      "data_offset": 10609,
+      "data_size": 48,
+      "data_crc32": "807992CA"
+    },
+    {
+      "component_id": 47,
+      "name": "joyful_spark__mouth",
+      "width": 40,
+      "height": 28,
+      "stride_bytes": 5,
+      "data_offset": 10657,
+      "data_size": 140,
+      "data_crc32": "88D485C7"
+    },
+    {
+      "component_id": 48,
+      "name": "affectionate_warm__left_brow",
+      "width": 45,
+      "height": 30,
+      "stride_bytes": 6,
+      "data_offset": 10797,
+      "data_size": 180,
+      "data_crc32": "62193405"
+    },
+    {
+      "component_id": 49,
+      "name": "affectionate_warm__right_brow",
+      "width": 45,
+      "height": 30,
+      "stride_bytes": 6,
+      "data_offset": 10977,
+      "data_size": 180,
+      "data_crc32": "4FEEA13F"
+    },
+    {
+      "component_id": 50,
+      "name": "affectionate_warm__left_cheek",
+      "width": 22,
+      "height": 16,
+      "stride_bytes": 3,
+      "data_offset": 11157,
+      "data_size": 48,
+      "data_crc32": "F5FC468D"
+    },
+    {
+      "component_id": 51,
+      "name": "affectionate_warm__right_cheek",
+      "width": 20,
+      "height": 16,
+      "stride_bytes": 3,
+      "data_offset": 11205,
+      "data_size": 48,
+      "data_crc32": "1189AED8"
+    },
+    {
+      "component_id": 52,
+      "name": "affectionate_warm__mouth",
+      "width": 40,
+      "height": 28,
+      "stride_bytes": 5,
+      "data_offset": 11253,
+      "data_size": 140,
+      "data_crc32": "53935DF0"
+    },
+    {
+      "component_id": 53,
+      "name": "playful_bright__left_brow",
+      "width": 45,
+      "height": 30,
+      "stride_bytes": 6,
+      "data_offset": 11393,
+      "data_size": 180,
+      "data_crc32": "241E5EF1"
+    },
+    {
+      "component_id": 54,
+      "name": "playful_bright__right_brow",
+      "width": 45,
+      "height": 30,
+      "stride_bytes": 6,
+      "data_offset": 11573,
+      "data_size": 180,
+      "data_crc32": "3B029E9A"
+    },
+    {
+      "component_id": 55,
+      "name": "playful_bright__left_cheek",
+      "width": 22,
+      "height": 16,
+      "stride_bytes": 3,
+      "data_offset": 11753,
+      "data_size": 48,
+      "data_crc32": "73BC0C34"
+    },
+    {
+      "component_id": 56,
+      "name": "playful_bright__right_cheek",
+      "width": 20,
+      "height": 16,
+      "stride_bytes": 3,
+      "data_offset": 11801,
+      "data_size": 48,
+      "data_crc32": "38C8EF3E"
+    },
+    {
+      "component_id": 57,
+      "name": "playful_bright__mouth",
+      "width": 40,
+      "height": 28,
+      "stride_bytes": 5,
+      "data_offset": 11849,
+      "data_size": 140,
+      "data_crc32": "2426D3B9"
+    },
+    {
+      "component_id": 58,
+      "name": "anticipatory_notice__left_brow",
+      "width": 45,
+      "height": 30,
+      "stride_bytes": 6,
+      "data_offset": 11989,
+      "data_size": 180,
+      "data_crc32": "C366D24E"
+    },
+    {
+      "component_id": 59,
+      "name": "anticipatory_notice__right_brow",
+      "width": 45,
+      "height": 30,
+      "stride_bytes": 6,
+      "data_offset": 12169,
+      "data_size": 180,
+      "data_crc32": "9D3C816B"
+    },
+    {
+      "component_id": 60,
+      "name": "anticipatory_notice__left_cheek",
+      "width": 22,
+      "height": 16,
+      "stride_bytes": 3,
+      "data_offset": 12349,
+      "data_size": 48,
+      "data_crc32": "764AF075"
+    },
+    {
+      "component_id": 61,
+      "name": "anticipatory_notice__right_cheek",
+      "width": 20,
+      "height": 16,
+      "stride_bytes": 3,
+      "data_offset": 12397,
+      "data_size": 48,
+      "data_crc32": "723E5A8F"
+    },
+    {
+      "component_id": 62,
+      "name": "anticipatory_notice__mouth",
+      "width": 40,
+      "height": 28,
+      "stride_bytes": 5,
+      "data_offset": 12445,
+      "data_size": 140,
+      "data_crc32": "9E88B124"
+    },
+    {
+      "component_id": 63,
+      "name": "puzzled_processing__left_brow",
+      "width": 45,
+      "height": 30,
+      "stride_bytes": 6,
+      "data_offset": 12585,
+      "data_size": 180,
+      "data_crc32": "11FBDD7E"
+    },
+    {
+      "component_id": 64,
+      "name": "puzzled_processing__right_brow",
+      "width": 45,
+      "height": 30,
+      "stride_bytes": 6,
+      "data_offset": 12765,
+      "data_size": 180,
+      "data_crc32": "F7E863CA"
+    },
+    {
+      "component_id": 65,
+      "name": "puzzled_processing__left_cheek",
+      "width": 22,
+      "height": 16,
+      "stride_bytes": 3,
+      "data_offset": 12945,
+      "data_size": 48,
+      "data_crc32": "6E230B70"
+    },
+    {
+      "component_id": 66,
+      "name": "puzzled_processing__right_cheek",
+      "width": 20,
+      "height": 16,
+      "stride_bytes": 3,
+      "data_offset": 12993,
+      "data_size": 48,
+      "data_crc32": "B2139E71"
+    },
+    {
+      "component_id": 67,
+      "name": "puzzled_processing__mouth",
+      "width": 40,
+      "height": 28,
+      "stride_bytes": 5,
+      "data_offset": 13041,
+      "data_size": 140,
+      "data_crc32": "E81836E2"
+    },
+    {
+      "component_id": 68,
+      "name": "recording_focus__left_brow",
+      "width": 45,
+      "height": 30,
+      "stride_bytes": 6,
+      "data_offset": 13181,
+      "data_size": 180,
+      "data_crc32": "224ADE69"
+    },
+    {
+      "component_id": 69,
+      "name": "recording_focus__right_brow",
+      "width": 45,
+      "height": 30,
+      "stride_bytes": 6,
+      "data_offset": 13361,
+      "data_size": 180,
+      "data_crc32": "2EC7C4B0"
+    },
+    {
+      "component_id": 70,
+      "name": "recording_focus__left_cheek",
+      "width": 22,
+      "height": 16,
+      "stride_bytes": 3,
+      "data_offset": 13541,
+      "data_size": 48,
+      "data_crc32": "9172285C"
+    },
+    {
+      "component_id": 71,
+      "name": "recording_focus__right_cheek",
+      "width": 20,
+      "height": 16,
+      "stride_bytes": 3,
+      "data_offset": 13589,
+      "data_size": 48,
+      "data_crc32": "A3E3EC1A"
+    },
+    {
+      "component_id": 72,
+      "name": "recording_focus__mouth",
+      "width": 40,
+      "height": 28,
+      "stride_bytes": 5,
+      "data_offset": 13637,
+      "data_size": 140,
+      "data_crc32": "0A3F1F19"
+    },
+    {
+      "component_id": 73,
+      "name": "listening_focus__left_brow",
+      "width": 45,
+      "height": 30,
+      "stride_bytes": 6,
+      "data_offset": 13777,
+      "data_size": 180,
+      "data_crc32": "6CD40449"
+    },
+    {
+      "component_id": 74,
+      "name": "listening_focus__right_brow",
+      "width": 45,
+      "height": 30,
+      "stride_bytes": 6,
+      "data_offset": 13957,
+      "data_size": 180,
+      "data_crc32": "44542FE0"
+    },
+    {
+      "component_id": 75,
+      "name": "listening_focus__left_cheek",
+      "width": 22,
+      "height": 16,
+      "stride_bytes": 3,
+      "data_offset": 14137,
+      "data_size": 48,
+      "data_crc32": "CB5C522E"
+    },
+    {
+      "component_id": 76,
+      "name": "listening_focus__right_cheek",
+      "width": 20,
+      "height": 16,
+      "stride_bytes": 3,
+      "data_offset": 14185,
+      "data_size": 48,
+      "data_crc32": "A69593DD"
+    },
+    {
+      "component_id": 77,
+      "name": "listening_focus__mouth",
+      "width": 40,
+      "height": 28,
+      "stride_bytes": 5,
+      "data_offset": 14233,
+      "data_size": 140,
+      "data_crc32": "27456F07"
+    },
+    {
+      "component_id": 78,
+      "name": "menu_thinking__left_brow",
+      "width": 45,
+      "height": 30,
+      "stride_bytes": 6,
+      "data_offset": 14373,
+      "data_size": 180,
+      "data_crc32": "20045BD0"
+    },
+    {
+      "component_id": 79,
+      "name": "menu_thinking__right_brow",
+      "width": 45,
+      "height": 30,
+      "stride_bytes": 6,
+      "data_offset": 14553,
+      "data_size": 180,
+      "data_crc32": "4813C408"
+    },
+    {
+      "component_id": 80,
+      "name": "menu_thinking__left_cheek",
+      "width": 22,
+      "height": 16,
+      "stride_bytes": 3,
+      "data_offset": 14733,
+      "data_size": 48,
+      "data_crc32": "678D0679"
+    },
+    {
+      "component_id": 81,
+      "name": "menu_thinking__right_cheek",
+      "width": 20,
+      "height": 16,
+      "stride_bytes": 3,
+      "data_offset": 14781,
+      "data_size": 48,
+      "data_crc32": "288F1E74"
+    },
+    {
+      "component_id": 82,
+      "name": "menu_thinking__mouth",
+      "width": 40,
+      "height": 28,
+      "stride_bytes": 5,
+      "data_offset": 14829,
+      "data_size": 140,
+      "data_crc32": "39E7CDBD"
+    },
+    {
+      "component_id": 83,
+      "name": "sleep_rest_no_moon__left_brow",
+      "width": 45,
+      "height": 30,
+      "stride_bytes": 6,
+      "data_offset": 14969,
+      "data_size": 180,
+      "data_crc32": "CC5C26B9"
+    },
+    {
+      "component_id": 84,
+      "name": "sleep_rest_no_moon__right_brow",
+      "width": 45,
+      "height": 30,
+      "stride_bytes": 6,
+      "data_offset": 15149,
+      "data_size": 180,
+      "data_crc32": "00445CDF"
+    },
+    {
+      "component_id": 85,
+      "name": "sleep_rest_no_moon__left_cheek",
+      "width": 20,
+      "height": 12,
+      "stride_bytes": 3,
+      "data_offset": 15329,
+      "data_size": 36,
+      "data_crc32": "36DC482B"
+    },
+    {
+      "component_id": 86,
+      "name": "sleep_rest_no_moon__right_cheek",
+      "width": 20,
+      "height": 12,
+      "stride_bytes": 3,
+      "data_offset": 15365,
+      "data_size": 36,
+      "data_crc32": "C5F556B5"
+    },
+    {
+      "component_id": 87,
+      "name": "cheek_detail_left",
+      "width": 29,
+      "height": 36,
+      "stride_bytes": 4,
+      "data_offset": 15401,
+      "data_size": 144,
+      "data_crc32": "CB32BE18"
+    },
+    {
+      "component_id": 88,
+      "name": "cheek_detail_right",
+      "width": 28,
+      "height": 36,
+      "stride_bytes": 4,
+      "data_offset": 15545,
+      "data_size": 144,
+      "data_crc32": "F3944CFD"
+    },
+    {
+      "component_id": 89,
+      "name": "cheek_dot_left",
+      "width": 14,
+      "height": 13,
+      "stride_bytes": 2,
+      "data_offset": 15689,
+      "data_size": 26,
+      "data_crc32": "2AF4A63E"
+    },
+    {
+      "component_id": 90,
+      "name": "cheek_dot_right",
+      "width": 13,
+      "height": 13,
+      "stride_bytes": 2,
+      "data_offset": 15715,
+      "data_size": 26,
+      "data_crc32": "C7A85CB4"
+    },
+    {
+      "component_id": 91,
+      "name": "charm_sparkle",
+      "width": 46,
+      "height": 49,
+      "stride_bytes": 6,
+      "data_offset": 15741,
+      "data_size": 294,
+      "data_crc32": "F41C2D93"
+    },
+    {
+      "component_id": 92,
+      "name": "charm_heart",
+      "width": 41,
+      "height": 37,
+      "stride_bytes": 6,
+      "data_offset": 16035,
+      "data_size": 222,
+      "data_crc32": "1397FA41"
+    },
+    {
+      "component_id": 93,
+      "name": "charm_question",
+      "width": 32,
+      "height": 57,
+      "stride_bytes": 4,
+      "data_offset": 16257,
+      "data_size": 228,
+      "data_crc32": "2FC89983"
+    },
+    {
+      "component_id": 94,
+      "name": "charm_exclamation",
+      "width": 14,
+      "height": 57,
+      "stride_bytes": 2,
+      "data_offset": 16485,
+      "data_size": 114,
+      "data_crc32": "260FFF64"
+    },
+    {
+      "component_id": 95,
+      "name": "detail_listening_arc_left",
+      "width": 25,
+      "height": 45,
+      "stride_bytes": 4,
+      "data_offset": 16599,
+      "data_size": 180,
+      "data_crc32": "17C500B6"
+    },
+    {
+      "component_id": 96,
+      "name": "detail_listening_arc_right",
+      "width": 24,
+      "height": 45,
+      "stride_bytes": 3,
+      "data_offset": 16779,
+      "data_size": 135,
+      "data_crc32": "3FC514F1"
+    }
+  ]
+}

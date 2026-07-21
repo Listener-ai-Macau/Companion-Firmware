@@ -1,0 +1,44 @@
+{
+  "schema": "companion.visual_iteration_ledger.v1",
+  "iteration_id": "companion-pet-expression-v9-extension-v4-emotion-transition-anchors-20260718",
+  "status": "REJECTED_MACHINE_DAILY_ATTENTION_READABILITY_V4_20260718",
+  "product_requirements": ["COMP-REQ-116", "COMP-REQ-117", "COMP-REQ-118", "COMP-REQ-119"],
+  "reference_source": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "protection": "immutable locked V9 baseline and the only visual reference supplied to generation"
+  },
+  "rejected_predecessors": [
+    "companion-pet-expression-v9-extension-v1-20260718",
+    "companion-pet-expression-v9-extension-v2-20260718",
+    "companion-pet-expression-v9-extension-v3-daily-eye-proof-20260718"
+  ],
+  "generation_request": "docs/art/iterations/companion-pet-expression-v9-extension-v4-emotion-transition-anchors/generation-request.json",
+  "output": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-extension-v4-emotion-transition-anchors/generated_pet_expression_extension_v4_emotion_transition_anchors_candidate.png",
+    "sha256": "897737C31A9A9FE85B6CFF95B2F71C083F1A866B861023DFFD5624369B88FECB",
+    "status": "rejected_machine_daily_attention_readability",
+    "open_eye_identity_report": "docs/validation/companion-v9-extension-v4-emotion-transition-anchors-open-eye-identity-20260718.json",
+    "daily_attention_readability_report": "docs/validation/companion-v9-extension-v4-emotion-transition-anchors-attention-20260718.json",
+    "emotion_transition_anchor_report": "docs/validation/companion-v9-extension-v4-emotion-transition-anchors-machine-20260718.json"
+  },
+  "single_delta": "all-state emotional anchor program with tighter V9 highlight and eye-scale restraint; later motion remains component-only",
+  "owner_clarification": "One persistent V9 character, but never one frozen expression: use image generation to create different source expressions before component-only transition choreography.",
+  "machine_art_direction_review": {
+    "result": "FAIL_DAILY_ATTENTION_PROOF_GATE",
+    "failed_directions": ["right", "down"],
+    "reports": [
+      "docs/validation/companion-v9-extension-v4-emotion-transition-anchors-open-eye-identity-20260718.json",
+      "docs/validation/companion-v9-extension-v4-emotion-transition-anchors-attention-20260718.json",
+      "docs/validation/companion-v9-extension-v4-emotion-transition-anchors-machine-20260718.json"
+    ],
+    "next_allowed_delta": "daily attention reflection placement only; retain the all-state anchor program and all V9 eye/body constraints"
+  },
+  "non_goals": [
+    "replace or modify the locked V9 baseline",
+    "use rejected V1, V2 or V3 art as a reference or component source",
+    "export components or activate runtime resources before machine and owner gates",
+    "animate by cycling complete source-face cells",
+    "supply charging or error art"
+  ]
+}

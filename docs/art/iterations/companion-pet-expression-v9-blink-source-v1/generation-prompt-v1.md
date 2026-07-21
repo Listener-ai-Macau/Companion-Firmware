@@ -1,0 +1,7 @@
+# V9 Blink Component Source v1
+
+Use the attached locked V9 Companion expression sheet as the only visual reference. Generate one pure-white horizontal two-cell source sheet for component extraction, not a complete face and not an animation sheet. The left cell must contain exactly one short, gentle, rounded black closed-eye stroke derived from the V9 eye scale and line weight. The right cell must contain the matched mirrored closed-eye stroke. Keep both components compact, friendly and neutral: a blink, not sleep, a wink, lashes, a lid-heavy eye, side-eye or a changed eye shape. Leave generous white space around each component.
+
+The two cells are ordered left closed-eye component then right closed-eye component. They must be independently extractable on pure white. Use only solid black and white, no grey, antialiasing, gradient, shading, texture, text, labels, grid, border or device frame. Do not include eye bodies, pupils, highlights, sparkles, brows, mouth, nose, cheeks, decorations or any other face pixels. This source will be thresholded to 1bpp and placed over the registered V9 face only during a short synchronized idle blink; it must never become a whole-face replacement.
+
+Negative constraints: no full face, no open eye, no pupil, no highlight, no sparkle, no eyelashes, no asymmetric wink, no sleep face, no crescent, no cloud, no Z marks, no new eye grammar, no legacy art, no custom LUT, no code-drawn geometry.

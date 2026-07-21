@@ -1,0 +1,78 @@
+{
+  "schema": "companion.v9_expression_rig_pose_generation_request.v1",
+  "iteration_id": "companion-pet-expression-v9-extension-v15-sleep-rig-pose-source-20260719",
+  "status": "VERSIONED_PROMPT_PENDING_GENERATION",
+  "owner_requirement": "COMP-REQ-131",
+  "requested_at": "2026-07-19T15:30:00+08:00",
+  "render_parent_iteration": "pet-expression-v9-anti-sly-cute-2026-07-15",
+  "named_prompt_delta": "sleep_rig_pose_source: replace the rejected floating-component direction with aligned, integrated sleep pose variants that can later supply source-derived Rig masks.",
+  "owner_trigger": "COMP-REQ-130/131; V14 dynamic proof reads as a card or many stickers, so source-derived shape variants are required before further choreography.",
+  "candidate_scope": "supplemental_v9_only_sleep_rig_pose_source_for_component_extraction_not_runtime_frames",
+  "source_art_type": "aligned_pose_sheet",
+  "bundle_role": "unbound_sleep_rig_variant_component_source_candidate",
+  "bundle_completion_requirement": "The pose sheet is a generated source-only reference. It remains runtime inactive and may never be played as complete pose cells; later use requires source-gate, component-variant extraction, component-only composition and owner review.",
+  "target_profile": {
+    "grid": [2, 2],
+    "display_target_px": [200, 200],
+    "style": "pure black and white, 1-bit-ready Companion inner-face source poses",
+    "runtime_status": "inactive_pending_source_and_component_machine_checks"
+  },
+  "source_references": [
+    {
+      "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "role": "only visual reference and immutable character identity parent"
+    }
+  ],
+  "rejected_predecessors": [
+    "companion-pet-expression-v9-extension-v12-sleep-anchor-repair-20260719",
+    "companion-pet-expression-v9-extension-v13-sleep-micro-component-repair-20260719",
+    "companion-pet-expression-v9-extension-v14-sleep-zzz-component-repair-20260719"
+  ],
+  "pose_cells": [
+    {
+      "name": "sleep_rest_anchor",
+      "role": "stable integrated sleep face; closed eyes and nose define the persistent anchor"
+    },
+    {
+      "name": "sleep_brow_settle",
+      "role": "same face identity with only one gentle brow-settling variation; no face translation"
+    },
+    {
+      "name": "sleep_lower_face_breath",
+      "role": "same face identity with restrained cheek and relaxed-mouth breathing response; closed eyes and nose stay aligned"
+    },
+    {
+      "name": "sleep_rest_return",
+      "role": "return pose visually matching the stable sleep anchor"
+    }
+  ],
+  "required_source_components": [
+    "left_brow_rest",
+    "left_brow_settle",
+    "right_brow_rest",
+    "left_closed_eye_anchor",
+    "right_closed_eye_anchor",
+    "left_cheek_rest",
+    "left_cheek_breath",
+    "right_cheek_rest",
+    "right_cheek_breath",
+    "nose_anchor",
+    "mouth_rest",
+    "mouth_breath",
+    "sleep_breath_mark_left",
+    "sleep_breath_mark_right",
+    "sleep_zzz_cluster"
+  ],
+  "prompt": "Use the attached locked V9 Companion expression sheet as the only visual reference. Generate one clean square 2 by 2 source pose sheet on a pure white background, with no panel borders, labels or text. The four equally sized, coordinate-aligned cells show the same compact Companion sleep face in this exact reading order: stable rest, one gentle left-brow settling, restrained cheek-and-mouth breathing response, stable rest return. Every cell must preserve one unmistakable character identity, the same face center and the same proportions: two matched soft closed eye strokes, a tiny centered nose, petite resting mouth, restrained cheek marks and compact rounded black V9 line weight. The closed eyes and nose stay in the same anchor relationship in all four cells. Only the designated brow or lower-face response changes; do not slide, scale or redraw the entire face between cells. Add exactly two tiny paired black breath marks close below the outer cheeks, never far out at the canvas edges. Add one compact source-generated sleeping zzz cluster, made of three tightly grouped small-to-large Z marks, above and outside the upper-right of each face; it must read as one quiet decorative cluster, not three independently floating stickers. No moon, crescent, open eye, Daily expression, grey, gradient, shading, texture, device frame, cat outline, ears, whiskers, human styling, flirtation, sadness, aggression, unrelated symbols, labels or grid lines. This is static generated source art only. It is not a runtime asset, not a flipbook and not permission to play full pose cells; later software may use only registered masks extracted from this source.",
+  "negative_constraints": [
+    "no V12, V13, V14, legacy or non-V9 visual reference or pixels",
+    "no whole-face runtime playback, CEMP flipbook, CRIG mounting or runtime activation",
+    "no open eye, sclera, ring, white cap, changed eye identity or Daily fallback",
+    "no detached scattered decoration; the zzz marks form exactly one compact cluster",
+    "no charging face or error face"
+  ],
+  "planned_generated_output": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/generated_pet_expression_extension_v15_sleep_rig_pose_source_candidate.png",
+  "post_generation_gate": "Verify source hash lineage, 2x2 pose-cell count/order, anchor alignment, V9 identity, compact zzz-cluster and close paired breath marks. Then export only registered source masks and prove a component-only browser/200x200 plan before owner review.",
+  "current_runtime_disposition": "Sleep remains fail-closed in the active expanded Rig pending V15 machine gates and owner acceptance."
+}

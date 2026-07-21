@@ -1,0 +1,70 @@
+{
+  "schema": "companion.v9.special_expression_generation_request.v5",
+  "status": "REQUESTED_TO_GENERATE_PENDING_SOURCE",
+  "iteration": "V26",
+  "request_revision": 1,
+  "created_at": "2026-07-20",
+  "purpose": "Generate one V9-only three-pose component-source panel whose facial action verbs correct the V25 internal visual preflight failure. It is source art only, never a runtime face sheet, CRIG, profile, binding, flash or physical-panel claim.",
+  "locked_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "allowed_reference_inputs": [
+    "locked_v9_reference_only"
+  ],
+  "forbidden_reference_inputs": [
+    "V25_rejected_sources_components_or_previews",
+    "V23_candidates_or_exports",
+    "V24_visually_rejected_sources_or_exports",
+    "legacy_art",
+    "whole_face_runtime_cards"
+  ],
+  "identity_invariants": [
+    "retain the locked V9 open oval eye silhouette, black fill, one large white oval highlight and one small white diamond sparkle per eye",
+    "retain the locked V9 eye-pair scale, spacing, baseline, nose anchor and monochrome ink weight",
+    "do not introduce a new eye shape, iris, pupil, eyelash, colour, face outline, ear, whisker or whole-face card",
+    "all brows, mouth, cheeks and highlights are clean separately extractable source components inside a 200x200 safe face area",
+    "use no literal menu, microphone, battery, plug, lightning, waveform, cursor, punctuation, text, heart, star or emoji",
+    "use no external marks: all reading must come from the face"
+  ],
+  "v25_failure_antipatterns": {
+    "menu_active": "must not read as worry, uncertainty, anger or generic confusion",
+    "recording_active": "must not read as surprise, alarm or broadcast",
+    "charging_active": "must not read as generic excitement, sleep or Daily"
+  },
+  "panel_contract": "Generate one unbordered, unlabeled left-to-right row of exactly three same-scale faces: menu_active, recording_active, charging_active. The panel is source provenance only; later runtime may export only registered components and must perform each action through a deterministic component sequence.",
+  "poses": [
+    {
+      "id": "menu_active",
+      "action_verb": "select",
+      "static_read": "quiet deliberate choosing",
+      "facial_action": "Both brows stay low and composed rather than worried; the left brow is almost level while the right has a restrained friendly lift. Both legal highlights share a subtle same-direction attention bias. The mouth is a tiny closed, level decision mark with a barely raised center, never a downturned frown. Cheeks are compact and steady.",
+      "later_choreography": "one deterministic highlight scan left-to-center-to-right, then a brow-and-mouth decision landing"
+    },
+    {
+      "id": "recording_active",
+      "action_verb": "listen",
+      "static_read": "quiet active listening with a ready acknowledgement",
+      "facial_action": "Both brows sit slightly lower and lean gently toward the center, not high and not arched in surprise. Legal highlights are centered and attentive. The mouth is a very small closed soft acknowledgement mark, like a quiet 'mm-hm', not an O and not a smile. Cheeks open only a little and remain calm.",
+      "later_choreography": "attention arrives first, then one tiny mouth acknowledgement, then a still listening hold"
+    },
+    {
+      "id": "charging_active",
+      "action_verb": "recover",
+      "static_read": "settled restorative relief",
+      "facial_action": "Both brows release outward and sit lower than an excited face. Legal highlights are centered and settled. The mouth is a broad but compact relaxed recovery smile, with no open shout shape. Cheeks lift subtly. The result is calm after receiving energy, not celebratory joy or sleep.",
+      "later_choreography": "neutral Daily face releases into the calmer brow and recovery smile, holds, then reverses exactly"
+    }
+  ],
+  "machine_preconditions_before_owner_review": [
+    "source gate proves locked-V9-only lineage, identity invariants, no external marks and pairwise face-primary separation",
+    "component export retains exact locked V9 identity components and source-derived brows/mouth/cheeks only",
+    "browser and target PBM replay the same deterministic component plan at native 200x200",
+    "internal visual preflight evaluates unlabeled target holds plus causal playback and rejects any V25 failure read before an operator prompt"
+  ],
+  "runtime_policy": {
+    "runtime_resource_activated": false,
+    "active_candidate_binding": "forbidden",
+    "unavailable_special_state_policy": "fail_closed"
+  }
+}

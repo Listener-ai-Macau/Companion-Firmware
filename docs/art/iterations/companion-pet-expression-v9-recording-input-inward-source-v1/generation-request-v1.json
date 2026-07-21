@@ -1,0 +1,65 @@
+{
+  "schema": "companion.art_generation_request.v1",
+  "status": "RECORDED_BEFORE_IMAGE_GENERATION",
+  "iteration": "companion-pet-expression-v9-recording-input-inward-source-v1",
+  "created_at": "2026-07-21",
+  "authority": [
+    "COMP-REQ-093",
+    "COMP-REQ-263"
+  ],
+  "purpose": "Create a replacement recording-input ornament whose sound marks visibly travel inward toward the Companion face when the ornament is mounted on the face's right side. The generated sheet is source art only and can never be a runtime card.",
+  "locked_v9_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "use": "sole reference for black ink weight, rounded cute geometry, monochrome contrast, and whitespace; do not reproduce or modify the character face"
+  },
+  "reference_policy": "Use only the locked V9 sheet as visual style reference. Do not use the superseded outward-facing recording ornament, any V41/V42 preview, legacy art, or a complete face as an image-generation input.",
+  "target_track": "functional_decoration_track_only",
+  "source_sheet": {
+    "grid": {
+      "columns": 3,
+      "rows": 1,
+      "ordered_cells": [
+        "recording_input_inward_0",
+        "recording_input_inward_1",
+        "recording_input_inward_2"
+      ]
+    },
+    "cell_background": "plain pure white",
+    "source_only": true,
+    "recording_contract": "Each cell contains the same compact upright microphone silhouette on the right half and one, two, then three short curved sound-wave marks immediately to its left. The marks must face and progress toward the left edge, which represents the Companion face when this component is mounted on the face's right side. Increase input activity across the three cells without changing the microphone shape. Keep the entire ornament compact and isolated from every face feature.",
+    "mounting_contract": "The exported component will stay in the registered right-side safe zone. Its left edge must not reach the eye, eyebrow, nose, mouth, or cheek anchors at 200x200.",
+    "forbidden": [
+      "eyes",
+      "eyebrows",
+      "nose",
+      "mouth",
+      "cheeks",
+      "character",
+      "full_face",
+      "text",
+      "digits",
+      "labels",
+      "grid_lines",
+      "UI_card",
+      "button",
+      "device_frame",
+      "outward_right_waves",
+      "waves_on_microphone_right",
+      "legacy_art",
+      "custom_LUT",
+      "color",
+      "gray",
+      "gradient",
+      "antialiasing",
+      "moon",
+      "cloud",
+      "question_mark",
+      "exclamation_mark"
+    ]
+  },
+  "runtime": {
+    "resource_activated": false,
+    "binding": "forbidden_until_generated_source_hash_source_gate_component_export_browser_wb55_parity_total_audit_and_owner_review"
+  }
+}

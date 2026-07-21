@@ -1,0 +1,30 @@
+{
+  "schema": "companion.v9.special_expression_internal_source_triage.v1",
+  "status": "REJECTED_INTERNAL_SOURCE_READABILITY_AUDIT_ONLY",
+  "iteration": "V32",
+  "attempt": 1,
+  "generated_with": {
+    "generation_request": "docs/art/iterations/companion-pet-expression-v9-extension-v32-representative-functional-silhouette-special-expression-source/generation-request-v1-representative-functional-silhouette-panel.json",
+    "generation_prompt": "docs/art/iterations/companion-pet-expression-v9-extension-v32-representative-functional-silhouette-special-expression-source/generation-prompt-v1-representative-functional-silhouette-panel.md",
+    "allowed_visual_reference_input": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "forbidden_visual_reference_input": "all V32 attempt-01 pixels and all earlier rejected/superseded iteration pixels"
+  },
+  "generated_source": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-extension-v32-representative-functional-silhouette-special-expression-source/rejected/attempt-01-open-circuit-functional-silhouettes.png",
+    "sha256": "0688F682D60E656E9B1653FD0CC26A9F95CF528CFF5D6114B267FE40B93394F9",
+    "size": [1774, 887]
+  },
+  "internal_rejection_reasons": [
+    "The recording pose renders the intended single listening capsule as two stacked horizontal capsules, so the facial read is ambiguous rather than a clean active-capture expression.",
+    "The charging pose leaves a visible gap between the side coupler and the upper tether/dock, so it does not prove the required connected power-transfer topology and can still read as a decorative hanging ornament."
+  ],
+  "disposition": {
+    "source_gate": "FORBIDDEN",
+    "component_export": "FORBIDDEN",
+    "component_performance": "FORBIDDEN",
+    "browser_target_parity": "FORBIDDEN",
+    "crig_profile_event_binding_flash_or_panel_output": "FORBIDDEN",
+    "future_visual_prompt_or_reference_input": "FORBIDDEN"
+  },
+  "next_generation": "generation-request-v2-closed-circuit-functional-silhouette-panel.json"
+}

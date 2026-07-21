@@ -1,0 +1,67 @@
+{
+  "schema": "companion.art_generation_request.v1",
+  "status": "RECORDED_BEFORE_IMAGE_GENERATION",
+  "iteration": "companion-pet-expression-v9-extension-v42-functional-ornament-source",
+  "revision": 2,
+  "created_at": "2026-07-21",
+  "authority": [
+    "COMP-REQ-093",
+    "COMP-REQ-242",
+    "COMP-REQ-245",
+    "COMP-REQ-246",
+    "COMP-REQ-247"
+  ],
+  "supersedes_generation_attempt": "candidate/attempt-01-functional-ornaments.png",
+  "purpose": "Replace only the ambiguous V42 r1 bottom charging ornament. This three-cell source sheet has no face and can never be a runtime card.",
+  "locked_v9_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "use": "sole reference for monochrome ink weight, rounded endpoints, and whitespace; do not reproduce or modify the character face"
+  },
+  "reference_policy": "The locked V9 sheet is the sole visual reference. The V42 r1 ornament image is superseded evidence only and is not an image-generation input.",
+  "target_track": "functional_decoration_track_only",
+  "source_sheet": {
+    "grid": {
+      "columns": 3,
+      "rows": 1,
+      "ordered_cells": [
+        "wireless_dock_charge_0",
+        "wireless_dock_charge_1",
+        "wireless_dock_charge_2"
+      ]
+    },
+    "cell_background": "plain pure white",
+    "source_only": true,
+    "charging_contract": "Each cell contains the same compact bottom wireless charging cradle: a clearly bounded shallow U platform, a distinct small device/contact pad nested inside it, and one, two, then three tiny vertical rising energy ticks above the pad. The platform and inner pad must be visibly separate at 200x200. Do not use a double wave, W curve, smile, mouth-like arc, face, plug, battery, or sparkle.",
+    "forbidden": [
+      "eyes",
+      "eyebrows",
+      "nose",
+      "mouth",
+      "cheeks",
+      "character",
+      "full_face",
+      "text",
+      "digits",
+      "labels",
+      "grid_lines",
+      "UI_card",
+      "button",
+      "device_frame",
+      "legacy_art",
+      "custom_LUT",
+      "color",
+      "gray",
+      "gradient",
+      "antialiasing",
+      "moon",
+      "cloud",
+      "question_mark",
+      "exclamation_mark"
+    ]
+  },
+  "runtime": {
+    "resource_activated": false,
+    "binding": "forbidden_until_generated_source_hash_source_gate_component_export_browser_wb55_parity_total_audit_and_owner_review"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "schema": "companion.art_generation_attempt.v1",
+  "status": "ACCEPTED_SOURCE_ONLY_AFTER_AGENT_VISUAL_TRIAGE",
+  "created_at": "2026-07-21",
+  "request": "docs/art/iterations/companion-pet-expression-v9-extension-v42-emotion-source/generation-request-v5.json",
+  "prompt": "docs/art/iterations/companion-pet-expression-v9-extension-v42-emotion-source/generation-prompt-v5.md",
+  "image": "docs/art/iterations/companion-pet-expression-v9-extension-v42-emotion-source/candidate/attempt-05-lower-face-source.png",
+  "sha256": "AD89593250DDAB09816AD38B8B46509ADD48726499765A5BFB6D724942C40E9B",
+  "locked_v9_reference_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "agent_visual_triage": "Accepted as a source-only lower-face sheet: all four cells retain one consistent compact V9 nose and eye identity, with clean nose-to-mouth spacing and four complete mouth silhouettes. Only the four mouth regions are eligible for export; the generated eyes, brows, cheeks, and nose are not runtime resources.",
+  "source_crops": {
+    "delighted_mouth": [294, 446, 89, 65],
+    "bashful_mouth": [880, 445, 68, 26],
+    "thoughtful_mouth": [304, 992, 74, 21],
+    "focused_mouth": [878, 997, 70, 13]
+  },
+  "threshold": 128,
+  "runtime_resource_activated": false,
+  "use": "source-only; export mouth components 577, 582, 587, and 591 after component gates"
+}

@@ -1,0 +1,57 @@
+{
+  "schema": "companion.art_generation_request.v1",
+  "id": "companion-pet-expression-v9-extension-v36-directional-eye-gaze-source-attempt-06-cute-down-attention-pose",
+  "status": "GENERATED_OWNER_REJECTED_AS_INDEPENDENT_DAILY_DOWN_ENDPOINT",
+  "created_on": "2026-07-20",
+  "owner_requirement": "COMP-REQ-215",
+  "supersedes_for_direction_only": "candidate/attempt-05-generated-daily-down.json",
+  "purpose": "Create a source-only cute V9 daily-down attention pose whose reflections, brows and mouth can be exported as separate choreographed components.",
+  "reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "usage": "The locked V9 image is the only identity reference supplied to the generator. Earlier V36 attempts remain audit evidence and are not prompt inputs."
+  },
+  "output_contract": {
+    "format": "one unlabelled 200x200-equivalent V9 daily-down attention source face; no grid, text, border or alternate state",
+    "pixel_intent": "clean monochrome black ink on a plain white background; no grey, color, texture or shading",
+    "generated_components_allowed_for_export": [
+      "enclosed white large glossy oval reflection",
+      "enclosed white small four-point companion sparkle",
+      "left attentive brow",
+      "right attentive brow",
+      "restrained soft mouth"
+    ],
+    "daily_down_semantics": {
+      "eyes": "same bright V9 large vertically soft oval and small four-point sparkle, together modestly lower than rest and never a pupil-like disc",
+      "brows": "a very small lower-and-inward attentive answer, still soft and cute rather than angry, worried or sleepy",
+      "mouth": "a restrained soft V9-like mouth response that keeps warmth and does not become an open surprise or frown",
+      "hold": "at native 200x200, the combined component relation reads as a calm cute lowered-attention glance, clearly distinct from Daily rest"
+    },
+    "protected_identity": [
+      "V9 outer black eye silhouette, placement and scale",
+      "single V9 star charm only",
+      "cheeks",
+      "white background and 200x200 composition"
+    ]
+  },
+  "forbidden": [
+    "replace or edit the locked V9 source file",
+    "large lower circular white disc, dot-only eye, detached sparkle, cross-eye placement or extra charm",
+    "angry, worried, sad, sleepy, surprised, blank or generic face",
+    "new outer eye silhouette, eye size or eye placement",
+    "full-face runtime frame, full-face animation loop or full-face state card",
+    "legacy art, custom LUT, code-drawn eye, candidate activation, provisioning or firmware flash"
+  ],
+  "owner_rejection": {
+    "recorded_on": "2026-07-20",
+    "reason": "The independent daily-down endpoint is not cute enough; center replaces it as the resting/lowered-attention presentation.",
+    "replacement_topology": "candidate/daily-attention-topology-v2.json"
+  },
+  "required_machine_gates_before_use": [
+    "generated source SHA256 and lineage record",
+    "outer-eye identity plus single-charm comparison against locked V9",
+    "native-200 down-attention readability and cute-gloss evidence after locked-V9-body reassembly",
+    "component-only export of exactly allowed source component groups with legal coordinates",
+    "browser/target component-score pixel parity"
+  ]
+}

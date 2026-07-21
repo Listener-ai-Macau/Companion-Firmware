@@ -1,0 +1,78 @@
+{
+  "schema": "companion.v9_expression_rig_expression_atlas.v1",
+  "scope": "all_registered_v9_stories",
+  "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "source_layout": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rig-layout.json",
+  "source_layout_revision": 107,
+  "runtime_resource_activated": false,
+  "presentation": {
+    "first_viewport": "compact_component_composed_expression_atlas",
+    "selected_story_loop": true,
+    "automatic_story_rotation": false,
+    "atlas_thumbnail_phase": "hold"
+  },
+  "families": [
+    {
+      "id": "daily_liveness",
+      "label_zh": "日常灵动",
+      "description_zh": "同一日常身份下的注意力微动，不伪装成不同大情绪。",
+      "stories": ["daily_left", "daily_right", "daily_up", "daily_down"]
+    },
+    {
+      "id": "curious_response",
+      "label_zh": "好奇回应",
+      "description_zh": "轻触和菜单触发的源组件回应。",
+      "stories": ["touch_left", "touch_right", "menu_focus"]
+    },
+    {
+      "id": "affectionate_interaction",
+      "label_zh": "亲昵互动",
+      "description_zh": "滑动触发的心形和侧向细节回应。",
+      "stories": ["swipe_left", "swipe_right", "swipe_down"]
+    },
+    {
+      "id": "focused_activity",
+      "label_zh": "专注活动",
+      "description_zh": "录音进行中的聚焦提示。",
+      "stories": ["recording_focus"]
+    },
+    {
+      "id": "rest",
+      "label_zh": "休息",
+      "description_zh": "进入睡眠的月亮与闭眼姿态。",
+      "stories": ["sleep_enter"]
+    }
+  ],
+  "story_labels": {
+    "daily_left": "日常看左",
+    "daily_right": "日常看右",
+    "daily_up": "日常看上",
+    "daily_down": "日常看下",
+    "touch_left": "左侧轻触",
+    "touch_right": "右侧轻触",
+    "swipe_left": "左滑回应",
+    "swipe_right": "右滑回应",
+    "swipe_down": "下滑回应",
+    "recording_focus": "录音专注",
+    "menu_focus": "菜单专注",
+    "sleep_enter": "进入睡眠"
+  },
+  "story_driver_events": {
+    "daily_left": "daily_idle",
+    "daily_right": "daily_idle",
+    "daily_up": "daily_idle",
+    "daily_down": "daily_idle",
+    "touch_left": "touch_tap",
+    "touch_right": "touch_tap",
+    "swipe_left": "touch_swipe",
+    "swipe_right": "touch_swipe",
+    "swipe_down": "touch_swipe",
+    "recording_focus": "recording_active",
+    "menu_focus": "menu_hold",
+    "sleep_enter": "sleep"
+  },
+  "fail_closed_events": [
+    {"event": "charging", "status": "fail_closed_no_registered_components"},
+    {"event": "error", "status": "fail_closed_no_registered_components"}
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "schema": "companion.art_generation_request.v1",
+  "id": "companion-pet-expression-v9-extension-v36-directional-eye-gaze-source",
+  "status": "REQUEST_RECORDED_PENDING_IMAGE_GENERATION",
+  "created_on": "2026-07-20",
+  "owner_requirement": "COMP-REQ-210",
+  "purpose": "Create source-only eye-internal variants whose four Daily gaze directions remain readable at native 200x200; do not replace the locked V9 static baseline.",
+  "reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "usage": "The locked V9 image is the only identity reference supplied to the image generator."
+  },
+  "output_contract": {
+    "format": "single 2x2 source sheet with four labelled-by-order, unlabelled-in-image 200x200 face cells: left, right, up, down",
+    "pixel_intent": "clean monochrome black ink on white, no grey, color, texture or shading",
+    "allowed_change": "only the internal white highlight and small sparkle geometry inside the two existing open black eye silhouettes",
+    "protected_identity": [
+      "V9 eye outer black silhouette",
+      "eye placement and scale",
+      "brows",
+      "nose and mouth",
+      "cheeks",
+      "star charm",
+      "white background and 200x200 composition"
+    ],
+    "directional_readability": {
+      "left": "both eyes place a large white gaze light toward image-left and a smaller companion sparkle that reinforces image-left",
+      "right": "mirror of left, clearly toward image-right",
+      "up": "both eyes place the large white gaze light high inside the fixed eye body with the companion sparkle also above the eye midpoint",
+      "down": "both eyes place the large white gaze light low inside the fixed eye body with the companion sparkle also below the eye midpoint"
+    }
+  },
+  "forbidden": [
+    "replace or edit the locked V9 source file",
+    "new outer eye silhouette or eye size",
+    "new face, brow, mouth, cheek or charm art",
+    "full-face runtime frames or a whole-face animation loop",
+    "legacy art, custom LUT, code-drawn eye, candidate activation, provisioning or firmware flash"
+  ],
+  "required_machine_gates_before_use": [
+    "generated source SHA256 and lineage record",
+    "outer-eye silhouette/identity comparison against locked V9",
+    "native-200 left/right/up/down component readability evidence",
+    "component-only export with legal coordinates",
+    "browser/target component-score pixel parity"
+  ]
+}

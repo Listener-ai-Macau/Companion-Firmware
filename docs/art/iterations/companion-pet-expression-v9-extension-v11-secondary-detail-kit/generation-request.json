@@ -1,0 +1,81 @@
+{
+  "schema": "companion.v9_expression_extension_generation_request.v11",
+  "iteration_id": "companion-pet-expression-v9-extension-v11-secondary-detail-kit-20260718",
+  "status": "APPROVED_OWNER_FULL_SOURCE_BUNDLE_V11_20260718",
+  "requested_at": "2026-07-18T21:50:00+08:00",
+  "render_parent_iteration": "pet-expression-v9-anti-sly-cute-2026-07-15",
+  "named_prompt_delta": "secondary_detail_component_kit: supply sparse source-generated cheek-edge whisker-like strokes and detached charm components requested by the owner, as an isolated source sheet rather than altering the generated face anchors.",
+  "owner_trigger": "COMP-REQ-121; add independent secondary detail vocabulary while preserving one V9 character and avoiding cat-outline styling, code-drawn marks, or complete-face card animation.",
+  "candidate_scope": "supplemental_component_source_only_secondary_detail_component_kit_for_the_pending_expanded_sixteen_state_bundle_not_a_baseline_replacement",
+  "source_art_type": "detail_component_kit",
+  "bundle_role": "secondary_cheek_detail_and_detached_charm_source_kit",
+  "bundle_completion_requirement": "This sheet contains only isolated component source marks. It cannot be used as a face, exported into the Rig, or activated at runtime until the full V9/V10/V11 source bundle passes machine closure and canonical owner art review.",
+  "target_profile": {
+    "grid": [2, 4],
+    "display_target_px": [200, 200],
+    "style": "pure black and white, 1-bit-ready e-paper secondary component masks",
+    "runtime_status": "inactive_pending_component_export_machine_checks_and_owner_review"
+  },
+  "source_references": [
+    {
+      "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "role": "only visual reference and immutable character identity parent"
+    }
+  ],
+  "rejected_predecessors": [
+    "companion-pet-expression-v9-extension-v1-20260718",
+    "companion-pet-expression-v9-extension-v2-20260718",
+    "companion-pet-expression-v9-extension-v3-daily-eye-proof-20260718",
+    "companion-pet-expression-v9-extension-v4-emotion-transition-anchors-20260718",
+    "companion-pet-expression-v9-extension-v5-emotion-anchors-direction-repair-20260718",
+    "companion-pet-expression-v9-extension-v6-down-gaze-compact-reflection-20260718",
+    "companion-pet-expression-v9-extension-v7-daily-direction-strip-20260718",
+    "companion-pet-expression-v9-extension-v8-emotion-anchor-panel-20260718"
+  ],
+  "paired_face_source_iterations": [
+    "companion-pet-expression-v9-extension-v9-expanded-daily-direction-strip-20260718",
+    "companion-pet-expression-v9-extension-v10-expanded-emotion-panel-20260718"
+  ],
+  "required_cells": [
+    "cheek_detail_left",
+    "cheek_detail_right",
+    "cheek_dot_pair",
+    "charm_sparkle",
+    "charm_heart",
+    "charm_question",
+    "charm_exclamation",
+    "detail_listening_arcs"
+  ],
+  "component_semantics": {
+    "cheek_detail_left": "two or three short outward cheek-edge strokes, left-side only",
+    "cheek_detail_right": "mirror-compatible right-side cheek-edge strokes",
+    "cheek_dot_pair": "two small V9 cheek dots",
+    "charm_sparkle": "restrained detached four-point sparkle",
+    "charm_heart": "small detached warm heart",
+    "charm_question": "small detached question mark",
+    "charm_exclamation": "small detached exclamation mark",
+    "detail_listening_arcs": "two detached listening arcs"
+  },
+  "prompt": "Use the attached locked V9 Companion sheet as the only visual reference. Generate exactly one clean 2 rows by 4 columns source kit with eight equally spaced isolated black-and-white secondary components in this exact reading order: left cheek detail, right cheek detail, cheek dot pair, small four-point sparkle; small heart, small question mark, small exclamation mark, detached listening arcs. These are isolated V9-style source components only, on pure white background, with generous whitespace around every component. There must be no face, no eyes, no eyebrows, no mouth, no nose, no complete character and no panel labels. The left and right cheek details are only two or three short sparse outward face-edge strokes, like a subtle whisker-like decorative accent; they must not form permanent animal whiskers, cat outline, ears or a moustache. Keep the same compact black V9 line weight and rounded, friendly geometry. No text, grid lines, border, device frame, grey, gradient, shading or texture. This is a candidate component sheet for later registered masking and legal-position composition, never a face card, animation frame or runtime asset. No charging or error component.",
+  "negative_constraints": [
+    "no face, no eyes, no eyebrows, no nose, no mouth and no complete character",
+    "no cat outline, ears, permanent animal whiskers, moustache or animal silhouette",
+    "no V1, V2, V3, V4, V5, V6, V7, V8, V9-extension or V10 pixels, components or visual reference",
+    "no whole-face animation claim, CEMP/PBM flipbook or runtime activation",
+    "no moon, crescent, Z, charging or error face"
+  ],
+  "planned_generated_output": "docs/art/iterations/companion-pet-expression-v9-extension-v11-secondary-detail-kit/generated_pet_expression_extension_v11_secondary_detail_kit_candidate.png",
+  "post_generation_gate": "Machine-check the exact 2x4 isolated component vocabulary, nonblank/distinct masks, and absence of face or eye-shaped source components. Only if V9, V10 and V11 all pass may the combined source bundle reach canonical owner art review. Later use must register crop, anchor, legal offset, z-order and state role for every extracted detail mask.",
+  "generated_output": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-extension-v11-secondary-detail-kit/generated_pet_expression_extension_v11_secondary_detail_kit_candidate.png",
+    "sha256": "76B0BE9F683349490C262DD4725BDDC2252DEEDFD2B675D4EF53745D8B7C1622",
+    "status": "approved_owner_full_source_bundle",
+    "detail_component_kit_report": "docs/validation/companion-v9-extension-v11-secondary-detail-kit-machine-20260718.json",
+    "full_source_bundle_manifest": "docs/art/iterations/companion-pet-expression-v9-extension-v11-secondary-detail-kit/full-source-bundle-manifest.json",
+    "full_source_bundle_machine_report": "docs/validation/companion-v9-full-expression-source-bundle-machine-20260718.json",
+    "owner_review_result": "docs/validation/companion-v9-full-expression-source-bundle-owner-art-review-20260718.json",
+    "owner_review_note": "docs/validation/companion-v9-full-expression-source-bundle-owner-art-review-20260718.note.txt",
+    "owner_review_summary": "docs/validation/companion-v9-full-expression-source-bundle-owner-art-review-summary-20260718.json"
+  }
+}

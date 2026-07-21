@@ -1,0 +1,75 @@
+{
+  "schema": "companion.v9.special_expression_generation_request.v13",
+  "status": "PENDING_GENERATION",
+  "iteration": "V33",
+  "request_revision": 1,
+  "created_at": "2026-07-20",
+  "supersedes": "V32 rejected owner-chat-feedback triage under COMP-REQ-179",
+  "purpose": "Generate one locked-V9-only special-expression source panel that is understandable before a viewer reads any browser label. Replace V32's abstract page tabs, receiver cuffs and tether with face-primary actions and direct but compact action cues: browsing a menu choice, speaking/listening to a microphone, and receiving charge through a standard plug-and-energy connection.",
+  "locked_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "allowed_reference_inputs": [
+    "locked_v9_reference_only"
+  ],
+  "forbidden_reference_inputs": [
+    "V32_or_any_derived_asset",
+    "V31_or_any_derived_asset",
+    "V30_or_any_derived_asset",
+    "V29_or_any_derived_asset",
+    "V28_or_any_derived_asset",
+    "V27_or_any_derived_asset",
+    "V26_or_any_derived_asset",
+    "V25_or_any_derived_asset",
+    "V24_or_any_derived_asset",
+    "V23_or_any_derived_asset",
+    "legacy_art",
+    "whole_face_runtime_cards"
+  ],
+  "v9_identity_invariants": [
+    "retain the locked V9 floating-face identity: black oval eyes, one oval highlight and one diamond sparkle per eye, eye scale, spacing and baseline, nose, cheeks, thin black line weight and wide white margins",
+    "no enclosing head, hair, ears, body, helmet, headband, card, frame, text, label, colour, shading or grey",
+    "the face performs the state through brows, mouth and highlight direction before any action cue is read",
+    "action cues are compact and character-bound to the face field, never detached interface cards, and can be separated into component masks after source approval",
+    "the three states must differ in both face action and direct action cue; a viewer must not need a label or internal component name to identify the activity"
+  ],
+  "state_action_brief": [
+    {
+      "id": "menu_active",
+      "action_verb": "browse_and_choose",
+      "unlabeled_read": "this character is scanning or choosing from a menu",
+      "face_action": "one eyebrow slightly raised, focused level brows, decisive small horizontal mouth with one tiny centred selection notch, and highlights looking toward the active choice",
+      "direct_action_cue": "a compact, unmistakable three-row menu mark directly above the brows, with one row clearly selected by a tiny adjacent cursor wedge; it reads as browsing choices rather than as hair, pages, dots or a crown",
+      "avoid": ["page tabs", "paper shapes", "generic question mark", "thinking-only face", "detached menu card"]
+    },
+    {
+      "id": "recording_active",
+      "action_verb": "speak_and_listen",
+      "unlabeled_read": "this character is actively recording or listening to speech",
+      "face_action": "gently drawn-in attentive brows, a small rounded speaking mouth just open below the nose, and highlights directed toward the sound source; calm focus, never surprise",
+      "direct_action_cue": "one familiar minimal microphone immediately beside the mouth with two very short sound arcs travelling from the mouth toward it; the microphone is tiny, no headset, no boom, no moustache and no duplicate mouth",
+      "avoid": ["ear cuffs", "pickup dots", "costume headset", "large waveform", "surprised O face"]
+    },
+    {
+      "id": "charging_active",
+      "action_verb": "receive_energy_and_recover",
+      "unlabeled_read": "this character is plugged in and charging",
+      "face_action": "soft relaxed brows, a compact restorative smile, and highlights lifted upward; quietly recovering rather than generic celebration",
+      "direct_action_cue": "a familiar tiny two-prong plug at the left cheek visibly connects by one short cord to a small clean lightning-energy mark above the brow; the plug, cord and bolt touch as one readable charging action",
+      "avoid": ["loose string", "decorative star", "battery block", "large plug", "happy-only face"]
+    }
+  ],
+  "pre_generation_quality_bar": [
+    "all three states remain legible in a 200x200 black-and-white crop with labels hidden",
+    "the action cue uses a familiar functional pictogram but is physically attached to the character's face field rather than presented as a detached UI widget",
+    "each state has a distinct action verb, brow pose, mouth silhouette and highlight direction",
+    "the image must leave clean component boundaries for eyes, brows, mouth, cheeks and action cues",
+    "do not use multiple whole faces or full-frame state cards as animation assets"
+  ],
+  "runtime_policy": {
+    "runtime_resource_activated": false,
+    "active_candidate_binding": "forbidden",
+    "unavailable_special_state_policy": "fail_closed"
+  }
+}

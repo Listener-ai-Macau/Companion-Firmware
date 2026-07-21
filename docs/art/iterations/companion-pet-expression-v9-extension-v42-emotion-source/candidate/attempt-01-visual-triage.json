@@ -1,0 +1,18 @@
+{
+  "schema": "companion.v42_emotion_source_visual_triage.v1",
+  "status": "REJECTED_BEFORE_COMPONENT_EXPORT",
+  "generated_source": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-extension-v42-emotion-source/candidate/attempt-01-emotion-source-rejected.png",
+    "sha256": "1CA4BAF27A1CB195DAD495F5542A4C63E25DA8B712EB6A877C88B3236FF069C3"
+  },
+  "decision": "Do not export or bind components from this sheet.",
+  "reason": [
+    "The V9 eye identity is preserved.",
+    "Bashful, Thoughtful, and Focused do not yet differ strongly enough in mouth/cheek language at 200x200.",
+    "Thoughtful reads as a generic surprise O-mouth instead of a quiet thinking response.",
+    "Focused inherits too much of the everyday mouth language."
+  ],
+  "next_action": "Use the separately versioned v2 request and prompt, then re-inspect before any source extraction.",
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden"
+}

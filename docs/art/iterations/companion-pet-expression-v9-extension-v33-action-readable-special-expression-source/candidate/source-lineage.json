@@ -1,0 +1,56 @@
+{
+  "schema": "companion.v33.action_readable_special_expression_source_lineage.v1",
+  "status": "SUPERSEDED_OWNER_CHAT_FEEDBACK_AUDIT_ONLY",
+  "iteration": "V33",
+  "attempt": 1,
+  "locked_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "allowed_reference_inputs": [
+    "locked_v9_reference_only"
+  ],
+  "forbidden_reference_inputs": [
+    "V32_or_any_derived_asset",
+    "V31_or_any_derived_asset",
+    "V30_or_any_derived_asset",
+    "V29_or_any_derived_asset",
+    "legacy_art",
+    "whole_face_runtime_cards"
+  ],
+  "generation_request": "docs/art/iterations/companion-pet-expression-v9-extension-v33-action-readable-special-expression-source/request-v1.json",
+  "generation_prompt": "docs/art/iterations/companion-pet-expression-v9-extension-v33-action-readable-special-expression-source/prompt-v1.md",
+  "generator": {
+    "tool": "image_gen.imagegen",
+    "referenced_image_paths": [
+      "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png"
+    ]
+  },
+  "source_panel": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-extension-v33-action-readable-special-expression-source/candidate/v33-attempt-01.png",
+    "sha256": "1A3482BDCDFD78E1AD4388744A6C1A56BFDA6B992C42966FED65196DF4A3380D",
+    "pose_order": [
+      "menu_active",
+      "recording_active",
+      "charging_active"
+    ]
+  },
+  "source_policy": {
+    "offline_component_source_only": true,
+    "runtime_resource_activated": false,
+    "active_candidate_binding": "forbidden",
+    "visual_reference_reuse": "forbidden",
+    "prohibited_before_source_export_and_machine_closure": [
+      "whole_panel_playback",
+      "whole_face_replacement",
+      "CRIG_export",
+      "profile_generation",
+      "event_binding",
+      "firmware_flash",
+      "panel_output",
+      "owner_art_prompt"
+    ]
+  },
+  "owner_feedback_triage": "docs/art/iterations/companion-pet-expression-v9-extension-v33-action-readable-special-expression-source/candidate/attempt-01-owner-chat-feedback-triage.json",
+  "next_gate": "superseded by V33 request revision 2; do not export components from attempt 01"
+}

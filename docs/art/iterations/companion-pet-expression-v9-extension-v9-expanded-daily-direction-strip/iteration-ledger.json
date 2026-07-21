@@ -1,0 +1,25 @@
+{
+  "schema": "companion.visual_iteration_ledger.v1",
+  "iteration_id": "companion-pet-expression-v9-extension-v9-expanded-daily-direction-strip-20260718",
+  "status": "APPROVED_OWNER_FULL_SOURCE_BUNDLE_V9_20260718",
+  "product_requirements": ["COMP-REQ-116", "COMP-REQ-117", "COMP-REQ-118", "COMP-REQ-119", "COMP-REQ-120"],
+  "reference_source": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "protection": "immutable locked V9 baseline and the only visual reference supplied to generation"
+  },
+  "generation_request": "docs/art/iterations/companion-pet-expression-v9-extension-v9-expanded-daily-direction-strip/generation-request.json",
+  "single_delta": "freshly render the prior four Daily directions from locked V9 only as part of a broader sixteen-state source package; do not revive the owner-rejected V7/V8 bundle",
+  "generated_output": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-extension-v9-expanded-daily-direction-strip/generated_pet_expression_extension_v9_expanded_daily_direction_strip_candidate.png",
+    "sha256": "06482F6401DF63ED16369660A3D2E4337A37C470F0007C0EAF8CBC90E6D768C5",
+    "eligibility": "approved-owner-component-export-only_no-visual-reference_runtime-inactive"
+  },
+  "non_goals": [
+    "replace or modify the locked V9 baseline",
+    "use V1 through V8 as visual reference or component source",
+    "treat source cards as an animation or source of runtime full-face playback",
+    "export components or activate runtime resources before the complete sixteen-state bundle and owner gates",
+    "supply charging or error art"
+  ]
+}

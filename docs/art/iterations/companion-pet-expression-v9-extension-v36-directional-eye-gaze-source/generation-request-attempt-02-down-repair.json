@@ -1,0 +1,46 @@
+{
+  "schema": "companion.art_generation_request.v1",
+  "id": "companion-pet-expression-v9-extension-v36-directional-eye-gaze-source-attempt-02-down-repair",
+  "status": "REQUEST_RECORDED_PENDING_IMAGE_GENERATION",
+  "created_on": "2026-07-20",
+  "owner_requirement": "COMP-REQ-211",
+  "supersedes_for_direction_only": "candidate/attempt-01-generated-directional-eye-gaze.json#down",
+  "purpose": "Create a source-only V9 daily-down internal-reflection candidate whose two white reflections read as one controlled downward gaze group at native 200x200.",
+  "reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "usage": "The locked V9 image is the sole identity reference supplied to the generator. V36 attempt 01 may be inspected by humans for comparison but is not a generator input."
+  },
+  "output_contract": {
+    "format": "one unlabelled 200x200-equivalent V9 daily-down source face; no grid, text, border or alternate state",
+    "pixel_intent": "clean monochrome black ink on a plain white background; no grey, color, texture or shading",
+    "allowed_change": "only the large white highlight and smaller companion sparkle inside each existing open black eye silhouette",
+    "daily_down_geometry": {
+      "primary_highlight": "large, rounded and clearly in the lower central region of each eye, separated from every black edge",
+      "companion_sparkle": "small and immediately above, slightly toward the nose side of the matching large highlight",
+      "relationship": "the two white components are visually grouped as a single downward gaze in both eyes, with no outer-edge pull or diagonal scattering"
+    },
+    "protected_identity": [
+      "V9 outer black eye silhouette, placement and scale",
+      "brows",
+      "nose and mouth",
+      "cheeks",
+      "star charm",
+      "white background and 200x200 composition"
+    ]
+  },
+  "forbidden": [
+    "replace or edit the locked V9 source file",
+    "new outer eye silhouette, eye size or eye placement",
+    "new face, brow, mouth, cheek or charm art",
+    "full-face runtime frame, full-face animation loop or full-face state card",
+    "legacy art, custom LUT, code-drawn eye, candidate activation, provisioning or firmware flash"
+  ],
+  "required_machine_gates_before_use": [
+    "generated source SHA256 and lineage record",
+    "outer-eye silhouette/identity comparison against locked V9",
+    "native-200 daily-down readability and containment evidence",
+    "component-only export with legal coordinates",
+    "browser/target component-score pixel parity"
+  ]
+}

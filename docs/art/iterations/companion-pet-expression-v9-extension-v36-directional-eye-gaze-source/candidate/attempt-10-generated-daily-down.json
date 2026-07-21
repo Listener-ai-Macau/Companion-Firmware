@@ -1,0 +1,44 @@
+{
+  "schema": "companion.art_generation_attempt.v1",
+  "status": "MACHINE_SOURCE_BROWSER_AND_TARGET_HOST_PASS_PENDING_OWNER_DIRECTION",
+  "generation_request": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/generation-request-attempt-10-down-cute-midline-repair.json",
+  "source_reference_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "generated_image": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/generated_daily_down_v36_attempt_10.png",
+  "generated_image_sha256": "C054EFBA9C7A12010ACE0A56CA1715B49789B0FA0E7905052D921313046B6648",
+  "generator": {
+    "tool": "image_gen.imagegen",
+    "reference_image": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "reference_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "artifact_origin": "C:\\Users\\Billy\\.codex\\generated_images\\019f708a-c5c8-7bc0-a9d2-ed8b97c79fb3\\exec-d0225d88-f746-49ed-ae8d-9dd5a8596c79.png"
+  },
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden",
+  "supersedes_for_direction_only": "candidate/attempt-09-generated-daily-down.json",
+  "machine_evidence": {
+    "source_gate": {
+      "path": "docs/validation/companion-v36-daily-down-reflection-source-gate-attempt-10-20260720.json",
+      "sha256": "918600DBE3542CF8F66B0A68B5399C1539AB5112679258B2A3D80817C292F0B9"
+    },
+    "browser_preview": {
+      "path": "docs/validation/companion-v36-daily-down-reflection-browser-preview-attempt-10-20260720.json",
+      "sha256": "27123D3499234765E74FDF026391E0E8539367BC1A547B1589E879B1D4419D13"
+    },
+    "browser_replay": {
+      "path": "docs/validation/companion-v36-daily-down-reflection-browser-replay-attempt-10-20260720.json",
+      "sha256": "0533493FDA4349491E18A92ED46E53EA4652A85EFF3B530EB8BAE0B836C786B7"
+    },
+    "edge_browser_capture": {
+      "path": "docs/validation/companion-v36-daily-down-reflection-browser-capture-attempt-10-20260720.json",
+      "sha256": "91EE36ADBEBE273B50D99D772486C1CC5ABF63CC72E5CF55BD24F738554D3A83"
+    },
+    "target_generation": {
+      "path": "docs/validation/companion-v36-daily-down-target-rig-gate-attempt-10-20260720.json",
+      "sha256": "14A72B1B561D9D03FDA26FED2C34563FAE22D0409A33D6C800199B51EE07CCA1"
+    },
+    "target_wba_external_nor_replay": {
+      "path": "docs/validation/companion-v36-daily-down-target-rig-wba-host-attempt-10-20260720.json",
+      "sha256": "60CFE689765DCE6E2DCD85614D740E7DA95FA1360653D5AA6787A41C4D0A76F8"
+    }
+  },
+  "next_gate": "non-formal owner directional steering for the native-200 component choreography; no runtime bind before later owner acceptance"
+}

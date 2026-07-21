@@ -1,0 +1,11 @@
+# V25 Coherent Representative Action Panel Prompt
+
+Use only the attached locked V9 black-and-white expression sheet as the character identity reference. Generate a clean, unbordered horizontal row of exactly three equally sized, centered monochrome black-ink electronic-pet faces on a pure white canvas, left to right: deliberate choosing, active listening, restored relief. This is an offline component-source panel, not a UI and not a runtime animation. Do not add labels, text, boxes, borders, buttons, device frame, face outlines, color, question marks, exclamation marks, hearts, stars, emojis, menu icons, cursors, microphones, waveforms, batteries, plugs, lightning, dots, or floating decorative marks.
+
+All three faces must preserve the exact locked V9 open oval eye silhouette, black eye fill, one large white oval highlight and one small white diamond sparkle per eye, eye pair scale/spacing/baseline, tiny nose, and simple black-ink line weight. Do not change the eye shape, iris, pupil, eyelash or color. Every brow, mouth, cheek, highlight and allowed action stroke must be a clean separable component.
+
+Left face, `menu_active`: a deliberate evaluating-and-choosing face. Use clear friendly brow asymmetry, both legal highlights biased toward one shared chosen direction, a small closed decisive mouth, and compact quiet cheeks. No outside marks of any kind. It must look distinctly focused on a choice, not listening, surprise or generic confusion.
+
+Middle face, `recording_active`: an active listening-and-ready-to-answer face. Use paired soft high brows, attentive legal highlights, a compact round listening mouth, and gently opened cheeks. Add exactly one extremely short inward-facing ear-perk stroke directly attached behind each outer cheek. The strokes must be tiny character gestures, not free arcs, spirals, waves, a microphone or broadcast symbol. This face must read as listening before the two strokes are noticed.
+
+Right face, `charging_active`: a restored calm-relief face, not sleep or generic daily cuteness. Use outward-released brows, soft settled legal highlights, an unmistakably warm compact recovery smile, and lifted cheeks. No outside marks of any kind. It must feel visibly more restored and relieved than the other two poses.

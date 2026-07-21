@@ -1,0 +1,58 @@
+{
+  "schema": "companion.art_generation_request.v1",
+  "status": "RECORDED_BEFORE_IMAGE_GENERATION",
+  "iteration": "companion-pet-expression-v9-extension-v42-emotion-source",
+  "revision": 4,
+  "created_at": "2026-07-21",
+  "authority": [
+    "COMP-REQ-093",
+    "COMP-REQ-242",
+    "COMP-REQ-246",
+    "COMP-REQ-247",
+    "COMP-REQ-248"
+  ],
+  "supersedes_generation_attempt": "candidate/attempt-03-bashful-source.png for the Bashful mouth component only",
+  "purpose": "Produce one clean Bashful mouth source component while preserving the already reviewed Bashful brows, cheeks, V9 eyes, and V9 nose as separate registered components.",
+  "locked_v9_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "use": "sole visual reference for the V9 monochrome ink weight, rounded ends, cute restraint, and facial scale"
+  },
+  "reference_policy": "The locked V9 sheet is the sole image input. V42 r2 generated art is inactive evidence only and is not an image-generation input.",
+  "identity_locks": [
+    "This is a source extraction pose, not a runtime face card.",
+    "Do not redesign the eyes, highlights, nose, brows, cheeks, face outline, or character identity."
+  ],
+  "mouth_contract": "A tiny closed, shallow, rounded shy smile with two soft rounded ends and only a slight one-sided lift. It must read as a cute mouth at native 200x200, not as a detached hook, moustache, incomplete stroke, W-mouth, O-mouth, frown, or open mouth.",
+  "source_sheet": {
+    "grid": {
+      "columns": 1,
+      "rows": 1,
+      "ordered_cells": ["bashful_mouth_source"]
+    },
+    "cell_background": "plain pure white",
+    "source_only": true
+  },
+  "forbidden": [
+    "new_eye_shape",
+    "new_highlight",
+    "eyelid",
+    "eyelash",
+    "wink",
+    "face_outline",
+    "text",
+    "card",
+    "UI",
+    "color",
+    "gray",
+    "antialiasing",
+    "legacy_art",
+    "whole_face_runtime_playback",
+    "custom_LUT",
+    "code_drawn_geometry"
+  ],
+  "runtime": {
+    "resource_activated": false,
+    "binding": "forbidden_until_source_gate_component_export_browser_wb55_parity_total_audit_and_owner_review"
+  }
+}

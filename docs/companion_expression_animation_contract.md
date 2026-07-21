@@ -1,5 +1,9 @@
 # Companion Pet Expression Animation Contract
 
+> **历史兼容文档。** 本文保留早期整场景/动画语法，不能覆盖当前 V45/r7 组件
+> 编舞合同。当前上层入口是 [companion_v45_art_handoff.md](companion_v45_art_handoff.md)，
+> 完整生图和编舞 lineage 见 [companion_art_generation_lineage.md](companion_art_generation_lineage.md)。
+
 ## Purpose
 
 Companion faces are performances, not sticker swaps. A state owns a small,

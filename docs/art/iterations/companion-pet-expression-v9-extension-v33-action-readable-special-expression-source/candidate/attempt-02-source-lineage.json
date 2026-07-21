@@ -1,0 +1,41 @@
+{
+  "schema": "companion.v33.causal_direction_special_expression_source_lineage.v2",
+  "status": "REJECTED_INTERNAL_NATIVE_200_PREVIEW_AUDIT_ONLY",
+  "iteration": "V33",
+  "attempt": 2,
+  "locked_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "allowed_reference_inputs": ["locked_v9_reference_only"],
+  "forbidden_reference_inputs": [
+    "V33_attempt_01_or_any_derived_asset",
+    "V32_or_any_derived_asset",
+    "V31_or_any_derived_asset",
+    "V30_or_any_derived_asset",
+    "V29_or_any_derived_asset",
+    "legacy_art",
+    "whole_face_runtime_cards"
+  ],
+  "generation_request": "docs/art/iterations/companion-pet-expression-v9-extension-v33-action-readable-special-expression-source/request-v2.json",
+  "generation_prompt": "docs/art/iterations/companion-pet-expression-v9-extension-v33-action-readable-special-expression-source/prompt-v2.md",
+  "generator": {
+    "tool": "image_gen.imagegen",
+    "referenced_image_paths": ["docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png"]
+  },
+  "source_panel": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-extension-v33-action-readable-special-expression-source/candidate/v33-attempt-02.png",
+    "sha256": "F81BA2E8606446FC4445A4E1199631325194C7A114FF4DD6237B423B8640FAF9",
+    "size": [1774, 887],
+    "pose_order": ["menu_enter", "recording_active", "charging_active"]
+  },
+  "source_policy": {
+    "offline_component_source_only": true,
+    "runtime_resource_activated": false,
+    "active_candidate_binding": "forbidden",
+    "visual_reference_reuse": "forbidden",
+    "prohibited_before_source_export_and_machine_closure": ["whole_panel_playback", "whole_face_replacement", "CRIG_export", "profile_generation", "event_binding", "firmware_flash", "panel_output", "owner_art_prompt"]
+  },
+  "internal_triage": "docs/art/iterations/companion-pet-expression-v9-extension-v33-action-readable-special-expression-source/candidate/attempt-02-native-200-preview-triage.json",
+  "next_gate": "superseded by V33 request revision 3; do not export components from attempt 02"
+}

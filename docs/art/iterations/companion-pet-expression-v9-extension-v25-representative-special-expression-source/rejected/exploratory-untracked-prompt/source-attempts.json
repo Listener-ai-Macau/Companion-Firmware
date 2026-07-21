@@ -1,0 +1,37 @@
+{
+  "schema": "companion.v9.special_expression_exploratory_attempts.v1",
+  "iteration": "V25",
+  "status": "EXPLORATORY_OUTPUTS_NOT_ELIGIBLE_FOR_SOURCE_EXPORT",
+  "reason": "The exact invocation prompts were not archived before these exploratory image-generation calls. They are retained only to document rejected visual directions and must never become source, prompt/reference input, components, runtime assets or review candidates.",
+  "attempts": [
+    {
+      "path": "attempt-02-menu-face-led.png",
+      "sha256": "9A79D346972F63BB6177D2B52F98165EBB8CFC72D93EFDE0F558C5E7BAC04FE8",
+      "rejection_reason": "The expression reads only as generic seriousness/confusion, not purposeful choosing."
+    },
+    {
+      "path": "attempt-01-recording-oversized-listening-curls.png",
+      "sha256": "F7A4DAFA88B6828609FE6A7D63A3CCF5B0551CAF1E665A723309F060104A9CD9",
+      "rejection_reason": "The listening curls are oversized and dominate the face instead of reading as a compact character gesture."
+    },
+    {
+      "path": "attempt-01-charging-prohibited-question-marks.png",
+      "sha256": "8510BD82AC9B967346A1E4F437F14437547909D32F8780D3C80059876D46C848",
+      "rejection_reason": "The result contains prohibited question-mark symbols."
+    },
+    {
+      "path": "attempt-02-charging-generic-recovery.png",
+      "sha256": "7CAD27CD9DB7CD3D202101E5DAFC8BA3B2D9E6A127E10C8E2BDD28C559D0C66B",
+      "rejection_reason": "The clean face is a generic satisfied expression and does not independently convey restorative replenishment."
+    }
+  ],
+  "forbidden_next_use": [
+    "source export",
+    "component extraction",
+    "prompt/reference input",
+    "browser preview",
+    "CRIG/profile",
+    "event binding",
+    "firmware flash"
+  ]
+}

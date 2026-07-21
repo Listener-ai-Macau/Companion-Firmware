@@ -1,0 +1,369 @@
+{
+  "schema": "companion.v13_sleep_micro_component_source_layout.v1",
+  "status": "CANDIDATE_SOURCE_COMPONENT_EXPORT_PENDING_OWNER_ART_REVIEW",
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden",
+  "source_policy": "generated V13 source masks only; full-face source-card playback is forbidden",
+  "source_baseline": {
+    "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "source_image": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-extension-v13-sleep-micro-component-repair/generated_pet_expression_extension_v13_sleep_micro_component_repair_candidate.png",
+    "sha256": "59AD89D885AC029CA3D5B64C03DCE67E5081D8F8CF961AC0A3CB61DFA4A598B6"
+  },
+  "source_gate": "docs/validation/companion-v9-extension-v13-sleep-micro-component-repair-machine-20260719.json",
+  "normalization": {
+    "method": "generated_ink_bounds_square_crop_then_200px_threshold",
+    "source_crop": {
+      "left": 257,
+      "top": 266,
+      "side": 741
+    },
+    "normalized": "docs/art/iterations/companion-pet-expression-v9-extension-v13-sleep-micro-component-repair/candidate/normalized-sleep-micro-component-source-200x200.pbm",
+    "normalized_sha256": "A1976A46BAFD8D3D4ED1E1FAAC1A4DFCD43B1FE7D454A51EE1EFE823EF71A53E"
+  },
+  "components": [
+    {
+      "component_id": 1,
+      "name": "left_brow",
+      "source_component_box": [
+        42,
+        55,
+        63,
+        65
+      ],
+      "base_position": [
+        42,
+        55
+      ],
+      "mask_size": [
+        21,
+        10
+      ],
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v13-sleep-micro-component-repair/candidate/component-masks/left_brow.pbm",
+      "mask_sha256": "1FBDD5BDCFCA3847678ECC6C7164D7510545F9A79A67EAE6BDBFB9643D7BD70C",
+      "preview_mask": "docs/art/iterations/companion-pet-expression-v9-extension-v13-sleep-micro-component-repair/candidate/preview-layers/left_brow.png",
+      "z_index": 1,
+      "legal_offset": {
+        "min": [
+          0,
+          0
+        ],
+        "max": [
+          0,
+          0
+        ]
+      },
+      "source_sheet": "docs/art/iterations/companion-pet-expression-v9-extension-v13-sleep-micro-component-repair/generated_pet_expression_extension_v13_sleep_micro_component_repair_candidate.png",
+      "source_sheet_sha256": "59AD89D885AC029CA3D5B64C03DCE67E5081D8F8CF961AC0A3CB61DFA4A598B6"
+    },
+    {
+      "component_id": 2,
+      "name": "right_brow",
+      "source_component_box": [
+        139,
+        55,
+        160,
+        65
+      ],
+      "base_position": [
+        139,
+        55
+      ],
+      "mask_size": [
+        21,
+        10
+      ],
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v13-sleep-micro-component-repair/candidate/component-masks/right_brow.pbm",
+      "mask_sha256": "F8D403EA06369350019377E652C26B6F831FABB15927C6642B42EE7F05A2680C",
+      "preview_mask": "docs/art/iterations/companion-pet-expression-v9-extension-v13-sleep-micro-component-repair/candidate/preview-layers/right_brow.png",
+      "z_index": 2,
+      "legal_offset": {
+        "min": [
+          0,
+          0
+        ],
+        "max": [
+          0,
+          0
+        ]
+      },
+      "source_sheet": "docs/art/iterations/companion-pet-expression-v9-extension-v13-sleep-micro-component-repair/generated_pet_expression_extension_v13_sleep_micro_component_repair_candidate.png",
+      "source_sheet_sha256": "59AD89D885AC029CA3D5B64C03DCE67E5081D8F8CF961AC0A3CB61DFA4A598B6"
+    },
+    {
+      "component_id": 3,
+      "name": "left_closed_eye",
+      "source_component_box": [
+        37,
+        91,
+        70,
+        103
+      ],
+      "base_position": [
+        37,
+        91
+      ],
+      "mask_size": [
+        33,
+        12
+      ],
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v13-sleep-micro-component-repair/candidate/component-masks/left_closed_eye.pbm",
+      "mask_sha256": "81E31DE8C1BC951E9A4E25E4DC4E9917B3887D87A14F3FE65204C6F5A254AF39",
+      "preview_mask": "docs/art/iterations/companion-pet-expression-v9-extension-v13-sleep-micro-component-repair/candidate/preview-layers/left_closed_eye.png",
+      "z_index": 3,
+      "legal_offset": {
+        "min": [
+          0,
+          0
+        ],
+        "max": [
+          0,
+          0
+        ]
+      },
+      "source_sheet": "docs/art/iterations/companion-pet-expression-v9-extension-v13-sleep-micro-component-repair/generated_pet_expression_extension_v13_sleep_micro_component_repair_candidate.png",
+      "source_sheet_sha256": "59AD89D885AC029CA3D5B64C03DCE67E5081D8F8CF961AC0A3CB61DFA4A598B6"
+    },
+    {
+      "component_id": 4,
+      "name": "right_closed_eye",
+      "source_component_box": [
+        131,
+        91,
+        164,
+        103
+      ],
+      "base_position": [
+        131,
+        91
+      ],
+      "mask_size": [
+        33,
+        12
+      ],
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v13-sleep-micro-component-repair/candidate/component-masks/right_closed_eye.pbm",
+      "mask_sha256": "625CE47742EAF25859556E625F82A4331A12ABBBB417955B4156FD4B43D72483",
+      "preview_mask": "docs/art/iterations/companion-pet-expression-v9-extension-v13-sleep-micro-component-repair/candidate/preview-layers/right_closed_eye.png",
+      "z_index": 4,
+      "legal_offset": {
+        "min": [
+          0,
+          0
+        ],
+        "max": [
+          0,
+          0
+        ]
+      },
+      "source_sheet": "docs/art/iterations/companion-pet-expression-v9-extension-v13-sleep-micro-component-repair/generated_pet_expression_extension_v13_sleep_micro_component_repair_candidate.png",
+      "source_sheet_sha256": "59AD89D885AC029CA3D5B64C03DCE67E5081D8F8CF961AC0A3CB61DFA4A598B6"
+    },
+    {
+      "component_id": 5,
+      "name": "left_cheek",
+      "source_component_box": [
+        34,
+        113,
+        48,
+        121
+      ],
+      "base_position": [
+        34,
+        113
+      ],
+      "mask_size": [
+        14,
+        8
+      ],
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v13-sleep-micro-component-repair/candidate/component-masks/left_cheek.pbm",
+      "mask_sha256": "90B25361A7DEC41691741F4839F45C888716BD033DC0B3A6D8717718E0E30EF9",
+      "preview_mask": "docs/art/iterations/companion-pet-expression-v9-extension-v13-sleep-micro-component-repair/candidate/preview-layers/left_cheek.png",
+      "z_index": 5,
+      "legal_offset": {
+        "min": [
+          0,
+          0
+        ],
+        "max": [
+          0,
+          0
+        ]
+      },
+      "source_sheet": "docs/art/iterations/companion-pet-expression-v9-extension-v13-sleep-micro-component-repair/generated_pet_expression_extension_v13_sleep_micro_component_repair_candidate.png",
+      "source_sheet_sha256": "59AD89D885AC029CA3D5B64C03DCE67E5081D8F8CF961AC0A3CB61DFA4A598B6"
+    },
+    {
+      "component_id": 6,
+      "name": "right_cheek",
+      "source_component_box": [
+        154,
+        113,
+        167,
+        121
+      ],
+      "base_position": [
+        154,
+        113
+      ],
+      "mask_size": [
+        13,
+        8
+      ],
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v13-sleep-micro-component-repair/candidate/component-masks/right_cheek.pbm",
+      "mask_sha256": "9EF9AC2C9D5A2F56BF7C2863FB97DDFCD2EF1561B2DAAB767C8ACB8E3AC97D47",
+      "preview_mask": "docs/art/iterations/companion-pet-expression-v9-extension-v13-sleep-micro-component-repair/candidate/preview-layers/right_cheek.png",
+      "z_index": 6,
+      "legal_offset": {
+        "min": [
+          0,
+          0
+        ],
+        "max": [
+          0,
+          0
+        ]
+      },
+      "source_sheet": "docs/art/iterations/companion-pet-expression-v9-extension-v13-sleep-micro-component-repair/generated_pet_expression_extension_v13_sleep_micro_component_repair_candidate.png",
+      "source_sheet_sha256": "59AD89D885AC029CA3D5B64C03DCE67E5081D8F8CF961AC0A3CB61DFA4A598B6"
+    },
+    {
+      "component_id": 7,
+      "name": "nose",
+      "source_component_box": [
+        95,
+        106,
+        106,
+        112
+      ],
+      "base_position": [
+        95,
+        106
+      ],
+      "mask_size": [
+        11,
+        6
+      ],
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v13-sleep-micro-component-repair/candidate/component-masks/nose.pbm",
+      "mask_sha256": "540B912BFE8F97356EFABB6248D060CFF79E7DB2633F493FA8812492B032F0E2",
+      "preview_mask": "docs/art/iterations/companion-pet-expression-v9-extension-v13-sleep-micro-component-repair/candidate/preview-layers/nose.png",
+      "z_index": 7,
+      "legal_offset": {
+        "min": [
+          0,
+          0
+        ],
+        "max": [
+          0,
+          0
+        ]
+      },
+      "source_sheet": "docs/art/iterations/companion-pet-expression-v9-extension-v13-sleep-micro-component-repair/generated_pet_expression_extension_v13_sleep_micro_component_repair_candidate.png",
+      "source_sheet_sha256": "59AD89D885AC029CA3D5B64C03DCE67E5081D8F8CF961AC0A3CB61DFA4A598B6"
+    },
+    {
+      "component_id": 8,
+      "name": "mouth",
+      "source_component_box": [
+        86,
+        116,
+        115,
+        126
+      ],
+      "base_position": [
+        86,
+        116
+      ],
+      "mask_size": [
+        29,
+        10
+      ],
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v13-sleep-micro-component-repair/candidate/component-masks/mouth.pbm",
+      "mask_sha256": "627E9D1750540588A2CE4E5D13EF2AB77445C3DCADCD2AD9BFED42AA629191A0",
+      "preview_mask": "docs/art/iterations/companion-pet-expression-v9-extension-v13-sleep-micro-component-repair/candidate/preview-layers/mouth.png",
+      "z_index": 8,
+      "legal_offset": {
+        "min": [
+          0,
+          0
+        ],
+        "max": [
+          0,
+          0
+        ]
+      },
+      "source_sheet": "docs/art/iterations/companion-pet-expression-v9-extension-v13-sleep-micro-component-repair/generated_pet_expression_extension_v13_sleep_micro_component_repair_candidate.png",
+      "source_sheet_sha256": "59AD89D885AC029CA3D5B64C03DCE67E5081D8F8CF961AC0A3CB61DFA4A598B6"
+    },
+    {
+      "component_id": 9,
+      "name": "sleep_breath_dot_left",
+      "source_component_box": [
+        12,
+        137,
+        20,
+        145
+      ],
+      "base_position": [
+        12,
+        137
+      ],
+      "mask_size": [
+        8,
+        8
+      ],
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v13-sleep-micro-component-repair/candidate/component-masks/sleep_breath_dot_left.pbm",
+      "mask_sha256": "ED26ED22742DE1655BB9619DC899CA12AD907C7B23619B9C88289E37C810EE37",
+      "preview_mask": "docs/art/iterations/companion-pet-expression-v9-extension-v13-sleep-micro-component-repair/candidate/preview-layers/sleep_breath_dot_left.png",
+      "z_index": 9,
+      "legal_offset": {
+        "min": [
+          0,
+          0
+        ],
+        "max": [
+          0,
+          0
+        ]
+      },
+      "source_sheet": "docs/art/iterations/companion-pet-expression-v9-extension-v13-sleep-micro-component-repair/generated_pet_expression_extension_v13_sleep_micro_component_repair_candidate.png",
+      "source_sheet_sha256": "59AD89D885AC029CA3D5B64C03DCE67E5081D8F8CF961AC0A3CB61DFA4A598B6"
+    },
+    {
+      "component_id": 10,
+      "name": "sleep_breath_dot_right",
+      "source_component_box": [
+        180,
+        137,
+        188,
+        145
+      ],
+      "base_position": [
+        180,
+        137
+      ],
+      "mask_size": [
+        8,
+        8
+      ],
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v13-sleep-micro-component-repair/candidate/component-masks/sleep_breath_dot_right.pbm",
+      "mask_sha256": "7CAAAB0F749E161883F0AECC4C9B51BDB13E022B5B0E15708D954F2127B0D428",
+      "preview_mask": "docs/art/iterations/companion-pet-expression-v9-extension-v13-sleep-micro-component-repair/candidate/preview-layers/sleep_breath_dot_right.png",
+      "z_index": 10,
+      "legal_offset": {
+        "min": [
+          0,
+          0
+        ],
+        "max": [
+          0,
+          0
+        ]
+      },
+      "source_sheet": "docs/art/iterations/companion-pet-expression-v9-extension-v13-sleep-micro-component-repair/generated_pet_expression_extension_v13_sleep_micro_component_repair_candidate.png",
+      "source_sheet_sha256": "59AD89D885AC029CA3D5B64C03DCE67E5081D8F8CF961AC0A3CB61DFA4A598B6"
+    }
+  ],
+  "owner_gate": "V13 owner art acceptance is required before any sleep runtime binding or CRIG revision"
+}

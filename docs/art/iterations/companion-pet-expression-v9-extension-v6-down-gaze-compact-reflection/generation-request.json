@@ -1,0 +1,79 @@
+{
+  "schema": "companion.v9_expression_extension_generation_request.v6",
+  "iteration_id": "companion-pet-expression-v9-extension-v6-down-gaze-compact-reflection-20260718",
+  "status": "REJECTED_MACHINE_DAILY_ATTENTION_AND_SLEEP_REST_V6_20260718",
+  "requested_at": "2026-07-18T20:25:00+08:00",
+  "render_parent_iteration": "pet-expression-v9-anti-sly-cute-2026-07-15",
+  "named_prompt_delta": "daily_attention_down_compact_reflection_repair: preserve V5's full twelve-state program and passing left/right/up directions; remove the contradictory upper-only wording so the down reflection is explicitly compact, lower-biased and surrounded by black fill.",
+  "owner_trigger": "COMP-REQ-119; V5 kept one character with distinct emotion anchors but its Daily down eye reflection remained too high and reduced the black eye body below the V9 gate.",
+  "candidate_scope": "supplemental_component_source_only_all_registered_emotion_anchors_with_daily_down_reflection_repair_not_a_baseline_replacement",
+  "target_profile": {
+    "grid": [3, 4],
+    "display_target_px": [200, 200],
+    "style": "pure black and white, 1-bit-ready e-paper inner-face components",
+    "runtime_status": "inactive_pending_component_export_machine_checks_and_owner_review"
+  },
+  "source_references": [
+    {
+      "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "role": "only visual reference and immutable character identity parent"
+    }
+  ],
+  "rejected_predecessors": [
+    "companion-pet-expression-v9-extension-v1-20260718",
+    "companion-pet-expression-v9-extension-v2-20260718",
+    "companion-pet-expression-v9-extension-v3-daily-eye-proof-20260718",
+    "companion-pet-expression-v9-extension-v4-emotion-transition-anchors-20260718",
+    "companion-pet-expression-v9-extension-v5-emotion-anchors-direction-repair-20260718"
+  ],
+  "required_cells": [
+    "daily_attention_left",
+    "daily_attention_right",
+    "daily_attention_up",
+    "daily_attention_down",
+    "curious_question",
+    "alert_surprised",
+    "joyful_spark",
+    "affectionate_warm",
+    "recording_focus",
+    "listening_focus",
+    "menu_thinking",
+    "sleep_rest_no_moon"
+  ],
+  "transition_roles": {
+    "daily_attention_left": "quiet scan entry",
+    "daily_attention_right": "quiet scan response",
+    "daily_attention_up": "notice lift",
+    "daily_attention_down": "gentle return",
+    "curious_question": "question opens from notice",
+    "alert_surprised": "brief alert peak",
+    "joyful_spark": "relief into playful joy",
+    "affectionate_warm": "warm settle after joy",
+    "recording_focus": "attention narrows into recording",
+    "listening_focus": "recording releases into listening",
+    "menu_thinking": "listening resolves into a quiet decision",
+    "sleep_rest_no_moon": "energy-down rest"
+  },
+  "same_character_not_one_expression": "One persistent V9 character identity, never one frozen neutral expression: every named cell changes brows, petite mouth, cheeks and/or detached charm while every open eye retains the same filled oval eye-body type.",
+  "prompt": "Use the attached locked V9 Companion sheet as the only visual reference. Generate one polished 3 rows by 4 columns source contact sheet with exactly twelve equally spaced V9-matched anchors in this order: daily attention left, right, up, down; curious question; brief alert surprise; joyful spark; affectionate warm; recording focus; listening focus; menu thinking; peaceful sleep. This is one persistent character identity with twelve different emotional expressions, not twelve neutral-face variations. It is a component-source candidate for later entry-hold-settle choreography, never a replacement V9 sheet or animation flipbook. Pure white background; black and white only; no text, panel, border or device frame. HARD EYE IDENTITY INVARIANT FOR EVERY OPEN-EYE CELL: exactly two matched upright solid filled black vertical oval eye bodies on one horizontal baseline, with compact locked-V9 scale and whitespace. Each eye has exactly one compact primary white reflection and one much smaller static white diamond sparkle. Both white marks are completely enclosed by black with a thick continuous black rim; the reflections never touch an oval edge and never turn an eye into a white cap, lower-half cutout, sclera, ring, outline, pupil, lash, altered eye shape or enlarged eye. DAILY DIRECTION REPAIR: the primary reflection is direction-responsive only in the first four Daily cells. Cell 1 is compact and left-biased at about 30 percent of eye width; cell 2 compact and right-biased at about 70 percent; cell 3 compact and upper-biased near 25 percent of eye height; cell 4 compact and lower-biased near 70 percent of eye height. In cell 4 make the lower reflection notably smaller than one quarter of the eye body and fully surrounded by black, leaving a visibly thick black lower rim. The diamond sparkle remains static. For all non-Daily open-eye cells the primary reflection stays compact in the ordinary upper region. Communicate every emotion primarily through paired brows, petite nose/mouth, cheeks and at most one detached charm: curious question, alert exclamation/O mouth, joy spark/joyful mouth, affection heart/warm cheeks, recording dot/focused brow, listening sound arcs, menu ellipsis, sleep closed curved eyes and tiny rest mouth with no moon. Each state must read as a distinct, adorable V9 expression at 100px thumbnail while eye bodies remain the same. No cat outline, ears, whiskers, human styling, smirk, flirtation, romance, sadness, aggression, grey, gradient, shading, texture, labels, charging face or error face.",
+  "negative_constraints": [
+    "no hollow, ring, contour, exposed-white, white-cap or lower-half-white open eyes",
+    "no reflection reaching an eye edge, no large lower reflection, no weak black rim around either reflection",
+    "no changed eye size, rotation, side-eye, drooping, eyelash or eye-hugging arc",
+    "no V1, V2, V3, V4 or V5 pixels, components or visual reference",
+    "no whole-face animation claim, CEMP/PBM flipbook or runtime activation",
+    "no moon, crescent, Z, charging or error face"
+  ],
+  "planned_generated_output": "docs/art/iterations/companion-pet-expression-v9-extension-v6-down-gaze-compact-reflection/generated_pet_expression_extension_v6_down_gaze_compact_reflection_candidate.png",
+  "post_generation_gate": "Run V9 open-eye identity, Daily left/right/up/down reflection-readability and twelve-anchor completeness/diversity gates. Only a machine-passing candidate can reach owner review. Even then, later motion must be registered source-component entry/hold/settle composition, never whole-face source-cell playback.",
+  "generated_output": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-extension-v6-down-gaze-compact-reflection/generated_pet_expression_extension_v6_down_gaze_compact_reflection_candidate.png",
+    "sha256": "3EB2D45C505A505F5E5E35B1029879E2C477BF0B1B50F118284760E049737DF9",
+    "status": "rejected_machine_daily_attention_and_sleep_rest",
+    "machine_failure": "Daily right/down primary reflections did not reach their directional positions; sleep added forbidden upper Z marks despite the no-moon/no-Z contract.",
+    "open_eye_identity_report": "docs/validation/companion-v9-extension-v6-down-gaze-compact-reflection-open-eye-identity-20260718.json",
+    "daily_attention_readability_report": "docs/validation/companion-v9-extension-v6-down-gaze-compact-reflection-attention-20260718.json",
+    "emotion_transition_anchor_report": "docs/validation/companion-v9-extension-v6-down-gaze-compact-reflection-machine-20260718.json"
+  }
+}

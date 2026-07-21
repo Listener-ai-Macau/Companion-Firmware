@@ -1,0 +1,68 @@
+{
+  "schema": "companion.emote_asset_pack_manifest.v1",
+  "name": "companion-v9-motion-extension-candidate-200x200",
+  "revision": 91,
+  "priority": 0,
+  "profile": {
+    "width": 200,
+    "height": 200,
+    "stride_bytes": 25,
+    "pixel_format": "mono_1bpp_white_is_one_msb"
+  },
+  "encoding": "packbits",
+  "provenance": {
+    "parent_source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "source": "docs/art/iterations/companion-pet-expression-v9-motion-v1/candidate/generated_pet_expression_v9_motion_v1_r1.png",
+    "source_sha256": "AF67A20F22157FDE05D2492A9BBBFB8A1AA126C1725989C1DE00F68A73786BCB",
+    "prompt_revision": "v9-motion-v1-r1",
+    "layout": "docs/art/iterations/companion-pet-expression-v9-motion-v1/candidate/candidate-layout.json",
+    "runtime_resource_activated": false,
+    "machine_only_candidate": true,
+    "forbidden_inputs": [
+      "legacy CEMP",
+      "rejected art",
+      "code-drawn face",
+      "ball",
+      "custom LUT"
+    ]
+  },
+  "clips": [
+    {
+      "name": "idle",
+      "loop_start": 0,
+      "loop_end": 3,
+      "frames": [
+        {
+          "source": "pbm/v9_motion_entry.pbm",
+          "duration_ms": 3000,
+          "dirty": [
+            53,
+            55,
+            95,
+            92
+          ]
+        },
+        {
+          "source": "pbm/v9_motion_sustain.pbm",
+          "duration_ms": 3000,
+          "dirty": [
+            53,
+            53,
+            95,
+            95
+          ]
+        },
+        {
+          "source": "pbm/v9_motion_settle.pbm",
+          "duration_ms": 3000,
+          "dirty": [
+            54,
+            55,
+            93,
+            92
+          ]
+        }
+      ]
+    }
+  ]
+}

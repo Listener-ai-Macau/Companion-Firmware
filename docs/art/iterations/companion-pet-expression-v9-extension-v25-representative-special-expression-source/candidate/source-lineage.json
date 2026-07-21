@@ -1,0 +1,44 @@
+{
+  "schema": "companion.v25.representative_special_expression_source_lineage.v1",
+  "status": "CANDIDATE_PENDING_SOURCE_GATE",
+  "iteration": "V25",
+  "locked_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "allowed_reference_inputs": [
+    "locked_v9_reference_only"
+  ],
+  "generation_request": "docs/art/iterations/companion-pet-expression-v9-extension-v25-representative-special-expression-source/generation-request-v4-face-contrast-only.json",
+  "generation_prompt": "docs/art/iterations/companion-pet-expression-v9-extension-v25-representative-special-expression-source/generation-prompt-v4-face-contrast-only.md",
+  "source_panel": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-extension-v25-representative-special-expression-source/candidate/attempt-04-face-contrast-only-panel.png",
+    "sha256": "5454F7FFEFC6ABA915B7077EBBFE170F5DD135207199C69CA816A475A6401E66",
+    "size": [1935, 813],
+    "pose_order": [
+      "menu_active",
+      "recording_active",
+      "charging_active"
+    ],
+    "crop_columns": [
+      [0, 0, 645, 813],
+      [645, 0, 1290, 813],
+      [1290, 0, 1935, 813]
+    ]
+  },
+  "source_policy": {
+    "offline_component_source_only": true,
+    "runtime_resource_activated": false,
+    "active_candidate_binding": "forbidden",
+    "prohibited_before_machine_closure_and_owner_art_review": [
+      "whole-panel playback",
+      "whole-face replacement",
+      "component export",
+      "CRIG export",
+      "profile generation",
+      "event binding",
+      "firmware flash",
+      "panel output"
+    ]
+  }
+}

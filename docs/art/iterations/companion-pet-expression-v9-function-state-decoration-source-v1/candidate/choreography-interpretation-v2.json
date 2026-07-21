@@ -1,0 +1,52 @@
+{
+  "schema": "companion.v9.function_state_choreography_interpretation.v1",
+  "status": "CANDIDATE_SOURCE_SCOPE_REINTERPRETED_BEFORE_COMPONENT_EXPORT",
+  "created_at": "2026-07-20",
+  "authority": [
+    "COMP-REQ-093",
+    "COMP-REQ-229",
+    "COMP-REQ-233",
+    "COMP-REQ-240"
+  ],
+  "source_generation": {
+    "request": "docs/art/iterations/companion-pet-expression-v9-function-state-decoration-source-v1/generation-request-v1.json",
+    "sheet": "docs/art/iterations/companion-pet-expression-v9-function-state-decoration-source-v1/candidate/generated-function-state-decoration-source-v1-candidate.png",
+    "sheet_sha256": "7A8B64F8735EF2A74F1CEB2502D029236D87EA026DFF96AE218B356E8B44E449"
+  },
+  "menu": {
+    "event": "menu_entry_notice",
+    "allowed_source_cells": [
+      "menu_grid_0",
+      "menu_grid_1",
+      "menu_grid_2"
+    ],
+    "maximum_expression_duration_ms": 500,
+    "after_last_cue": "withdraw_expression_rig_then_show_menu_ui",
+    "forbidden": [
+      "persistent_menu_score",
+      "selection_loop",
+      "expression_rig_behind_menu_ui",
+      "whole_face_menu_card"
+    ]
+  },
+  "upgrade": {
+    "event": "upgrade_progress",
+    "allowed_source_cells": [
+      "upgrade_rise_0",
+      "upgrade_rise_1",
+      "upgrade_rise_2"
+    ]
+  },
+  "error": {
+    "event": "error_caution",
+    "allowed_source_cells": [
+      "error_caution_0",
+      "error_caution_1",
+      "error_caution_2"
+    ]
+  },
+  "runtime": {
+    "resource_activated": false,
+    "active_candidate_binding": "forbidden_until_total_machine_audit_and_owner_review"
+  }
+}

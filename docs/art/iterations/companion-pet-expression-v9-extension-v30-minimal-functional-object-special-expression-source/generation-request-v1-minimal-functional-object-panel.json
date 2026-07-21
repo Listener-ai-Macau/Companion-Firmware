@@ -1,0 +1,65 @@
+{
+  "schema": "companion.v9.special_expression_generation_request.v10",
+  "status": "REQUESTED_TO_GENERATE_PENDING_SOURCE",
+  "iteration": "V30",
+  "request_revision": 1,
+  "created_at": "2026-07-20",
+  "purpose": "Generate one V9-only three-pose offline source panel that preserves the accepted compact function-object direction while correcting V29's costume-like recording headset. Every functional object must be simple, small and readable at native 200x200.",
+  "locked_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "allowed_reference_inputs": ["locked_v9_reference_only"],
+  "forbidden_reference_inputs": [
+    "V29_rejected_source_or_any_derived_asset",
+    "V28_superseded_request_as_visual_input",
+    "V27_rejected_source_or_any_derived_asset",
+    "V26_rejected_source_or_any_derived_asset",
+    "V25_rejected_source_or_any_derived_asset",
+    "V24_rejected_source_or_any_derived_asset",
+    "V23_candidates_or_exports",
+    "legacy_art",
+    "whole_face_runtime_cards"
+  ],
+  "v9_identity_and_simplicity_invariants": [
+    "retain the exact locked V9 floating inner-face composition with wide white margins and no enclosing head, face outline, ear, hair, headband, helmet, body or frame",
+    "retain exact V9 eye silhouette, black fill, one oval highlight and one diamond sparkle per eye, eye scale/spacing/baseline, nose, cheek dots and line weight",
+    "each state has no more than three compact object parts and no individual part larger than half a V9 eye",
+    "objects use a small number of clean black strokes, never cover eyes or brows and never dominate the face",
+    "objects are character-bound equipment components, not detached flat UI glyphs, text, labels, battery/lightning/waveform/menu icons or generic ornaments",
+    "each state retains a distinct brow-mouth-cheek-highlight expression; objects reinforce rather than replace the action"
+  ],
+  "state_object_semantic_brief": [
+    {
+      "id": "menu_active",
+      "one_glance_read": "navigation and choosing",
+      "face_action": "low composed brows with a gentle decision lift, same-side highlight bias, compact closed decision mouth",
+      "minimal_object": "three tiny rounded page tabs immediately above the brows, only a few strokes total and separated by white gaps. They must read as a compact navigation tab strip, not three generic dots or a large hat.",
+      "component_parts": ["left_tab", "center_tab", "right_tab"],
+      "choreography": "tabs settle one short step left-to-centre-to-right with the highlight scan"
+    },
+    {
+      "id": "recording_active",
+      "one_glance_read": "actively recording/listening",
+      "face_action": "receptive low brows, centered attentive highlights, small closed acknowledgement mouth and calm cheeks",
+      "minimal_object": "two thin compact C-shaped ear-cuffs hugging the outer cheeks, each shorter than one-third of an eye height, plus one tiny rounded pickup point immediately beside the right corner of the mouth. No full earcup, no headband, no long boom, no microphone pictogram, no waveform.",
+      "component_parts": ["left_ear_cuff", "right_ear_cuff", "pickup_point"],
+      "choreography": "the cuffs appear and make one one-pixel outward acknowledgement, then the tiny pickup point settles"
+    },
+    {
+      "id": "charging_active",
+      "one_glance_read": "actively charging and recovering",
+      "face_action": "soft released brows, lower settled highlights, compact closed recovery smile and softened cheeks",
+      "minimal_object": "one small rounded charge clasp just outside the left cheek, a single very short curved tether that stops below the brow, and one small filled round energy core above the brows. Keep all parts light and compact: no large plug, no long cable, no oversized core, no battery/lightning glyph.",
+      "component_parts": ["charge_clasp", "short_tether", "energy_core"],
+      "choreography": "clasp connects, short tether draws inward, core makes one tiny fill/settle beat, then all reverse"
+    }
+  ],
+  "machine_preconditions_before_owner_review": [
+    "source gate proves locked-V9-only lineage, no enclosing head, declared minimal object parts and object-area budget at native 200x200",
+    "component export retains exact locked V9 identity components and source-derived face/object components only with zero overlap",
+    "browser and target PBM replay one deterministic component plan at native 200x200",
+    "internal visual preflight rejects any oversized/costume-like recording object or any state that is no longer readable without labels before an operator prompt"
+  ],
+  "runtime_policy": {"runtime_resource_activated": false, "active_candidate_binding": "forbidden", "unavailable_special_state_policy": "fail_closed"}
+}

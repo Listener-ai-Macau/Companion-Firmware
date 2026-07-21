@@ -1,0 +1,97 @@
+{
+  "schema": "companion.v21_everyday_emotion_component_bridge_browser_capture.v2",
+  "status": "PASS_V21_COMPONENT_EMOTION_BRIDGE_BROWSER_CAPTURE_RESEARCH_REFINED",
+  "preview": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\art\\iterations\\companion-pet-expression-v9-extension-v21-everyday-emotion-distinction-source\\candidate\\component-bridge-v2\\preview.html",
+  "preview_sha256": "84A35D3D9F9FED4389152A7C4CE675229FFCC72930570BEF4151A3E47D6F3A5C",
+  "source_emotion": "calm",
+  "target_emotion": "curious",
+  "bridge_policy": "selected legal edge only; primary highlights lead; sparkles follow; brows/lower face reach apex; no automatic reverse",
+  "captures": [
+    {
+      "name": "source_hold",
+      "cue": "source_hold",
+      "virtual_time_ms": 400,
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\art\\iterations\\companion-pet-expression-v9-extension-v21-everyday-emotion-distinction-source\\candidate\\component-bridge-v2\\v21-component-bridge-browser-source_hold.png",
+      "sha256": "AA8A23FE43923401C8821391D163482B6F6777305DFDED9F349ADA120745F6C9",
+      "bytes": 19368,
+      "dark_pixels": 50679
+    },
+    {
+      "name": "primary_highlight_lead",
+      "cue": "primary_highlight_lead",
+      "virtual_time_ms": 720,
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\art\\iterations\\companion-pet-expression-v9-extension-v21-everyday-emotion-distinction-source\\candidate\\component-bridge-v2\\v21-component-bridge-browser-primary_highlight_lead.png",
+      "sha256": "174D5B5EE2335A497718C7D1E67C9C88A8D36F9D1DCDCB08DD43B1776F4D2125",
+      "bytes": 19351,
+      "dark_pixels": 50620
+    },
+    {
+      "name": "sparkle_arrive",
+      "cue": "sparkle_arrive",
+      "virtual_time_ms": 900,
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\art\\iterations\\companion-pet-expression-v9-extension-v21-everyday-emotion-distinction-source\\candidate\\component-bridge-v2\\v21-component-bridge-browser-sparkle_arrive.png",
+      "sha256": "0DBC3B7F49B2FD51C4CFA23D1E2B017617212C2DC96C39D3D3F008C967B6F5F9",
+      "bytes": 19341,
+      "dark_pixels": 50866
+    },
+    {
+      "name": "brow_apex",
+      "cue": "brow_apex",
+      "virtual_time_ms": 1080,
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\art\\iterations\\companion-pet-expression-v9-extension-v21-everyday-emotion-distinction-source\\candidate\\component-bridge-v2\\v21-component-bridge-browser-brow_apex.png",
+      "sha256": "0DBC3B7F49B2FD51C4CFA23D1E2B017617212C2DC96C39D3D3F008C967B6F5F9",
+      "bytes": 19341,
+      "dark_pixels": 50866
+    },
+    {
+      "name": "lower_face_apex",
+      "cue": "lower_face_apex",
+      "virtual_time_ms": 1360,
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\art\\iterations\\companion-pet-expression-v9-extension-v21-everyday-emotion-distinction-source\\candidate\\component-bridge-v2\\v21-component-bridge-browser-lower_face_apex.png",
+      "sha256": "A963FFA67326B9105A0EBEA2C14CA17971B7CA1BA1E8865AE032F06A55116BFD",
+      "bytes": 19387,
+      "dark_pixels": 51456
+    },
+    {
+      "name": "target_hold",
+      "cue": "target_hold",
+      "virtual_time_ms": 1800,
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\art\\iterations\\companion-pet-expression-v9-extension-v21-everyday-emotion-distinction-source\\candidate\\component-bridge-v2\\v21-component-bridge-browser-target_hold.png",
+      "sha256": "DA408F1254ED384ABB01AAF143BA87CC260D3E1A08803E6A916D24340C8DEA3F",
+      "bytes": 19443,
+      "dark_pixels": 51469
+    },
+    {
+      "name": "highlight_settle",
+      "cue": "highlight_settle",
+      "virtual_time_ms": 3500,
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\art\\iterations\\companion-pet-expression-v9-extension-v21-everyday-emotion-distinction-source\\candidate\\component-bridge-v2\\v21-component-bridge-browser-highlight_settle.png",
+      "sha256": "2EA4F8FE254AA64B91FF60D385E3C399DE56C72EC04C2E3E1CF4C1714D3AF656",
+      "bytes": 19546,
+      "dark_pixels": 51487
+    },
+    {
+      "name": "target_persistent",
+      "cue": "target_persistent",
+      "virtual_time_ms": 5200,
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\art\\iterations\\companion-pet-expression-v9-extension-v21-everyday-emotion-distinction-source\\candidate\\component-bridge-v2\\v21-component-bridge-browser-target_persistent.png",
+      "sha256": "2EA4F8FE254AA64B91FF60D385E3C399DE56C72EC04C2E3E1CF4C1714D3AF656",
+      "bytes": 19546,
+      "dark_pixels": 51487
+    }
+  ],
+  "source_hold_pixel_differences": {
+    "primary_highlight_lead": 4059,
+    "sparkle_arrive": 8687,
+    "brow_apex": 8687,
+    "lower_face_apex": 13454,
+    "target_hold": 12688,
+    "highlight_settle": 10089,
+    "target_persistent": 10089
+  },
+  "settle_to_target_persistent_pixel_difference": 0,
+  "state_rotation": "forbidden",
+  "full_face_source_card_playback": "forbidden",
+  "browser_rendering": "registered_component_dom_layers_only",
+  "runtime_resource_activated": false
+}

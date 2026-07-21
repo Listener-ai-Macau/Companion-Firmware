@@ -1,5 +1,9 @@
 # Companion V9 表情状态系统
 
+> **历史兼容文档。** 本文记录 V42 候选语法；当前 V45/r7 的 component、故事、
+> 眨眼和触摸合同以 [companion_v45_art_handoff.md](companion_v45_art_handoff.md)
+> 及 [companion_art_generation_lineage.md](companion_art_generation_lineage.md) 为准。
+
 本文是 V42 候选的上层状态逻辑说明，不是屏驱动、刷新策略或实体屏验收。所有候选资源保持 inactive。
 
 ## 输入与优先级

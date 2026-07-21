@@ -1,0 +1,69 @@
+{
+  "schema": "companion.art_generation_request.v1",
+  "status": "RECORDED_BEFORE_IMAGE_GENERATION",
+  "iteration": "companion-pet-expression-v9-extension-v42-functional-ornament-source",
+  "created_at": "2026-07-21",
+  "authority": [
+    "COMP-REQ-093",
+    "COMP-REQ-240",
+    "COMP-REQ-242",
+    "COMP-REQ-245",
+    "COMP-REQ-246"
+  ],
+  "purpose": "Replace the unclear V41 recording and charging ornaments with readable, face-independent V9-style source components. The generated sheet contains no face and cannot be a runtime card.",
+  "locked_v9_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "use": "sole reference for black ink weight, soft cute geometry, monochrome contrast, and whitespace; do not reproduce or modify the character face"
+  },
+  "reference_policy": "The locked V9 sheet is the sole visual reference. Historical/rejected extension art, V10+, legacy art, V41 preview frames, and complete faces are not prompt inputs or visual fallbacks.",
+  "target_track": "functional_decoration_track_only",
+  "source_sheet": {
+    "grid": {
+      "columns": 3,
+      "rows": 2,
+      "ordered_cells": [
+        "recording_input_0",
+        "recording_input_1",
+        "recording_input_2",
+        "wireless_dock_charge_0",
+        "wireless_dock_charge_1",
+        "wireless_dock_charge_2"
+      ]
+    },
+    "cell_background": "plain pure white",
+    "source_only": true,
+    "recording_contract": "Each top-row cell contains a compact upright microphone with one to three short incoming sound-wave marks. It will later sit outside the lower-right cheek safe zone, so its source silhouette must be compact, balanced, and readable without touching a face. The three cells increase input activity, not output broadcast.",
+    "charging_contract": "Each bottom-row cell contains one compact bottom wireless charging cradle: a shallow U-shaped dock with two small contact marks and one to three small rising charge marks. It will later sit under the face, so it must read as a dock/charging action rather than a happy expression, plug beside an eye, battery, or generic sparkle.",
+    "forbidden": [
+      "eyes",
+      "eyebrows",
+      "nose",
+      "mouth",
+      "cheeks",
+      "character",
+      "full_face",
+      "text",
+      "digits",
+      "labels",
+      "grid_lines",
+      "UI_card",
+      "button",
+      "device_frame",
+      "legacy_art",
+      "custom_LUT",
+      "color",
+      "gray",
+      "gradient",
+      "antialiasing",
+      "moon",
+      "cloud",
+      "question_mark",
+      "exclamation_mark"
+    ]
+  },
+  "runtime": {
+    "resource_activated": false,
+    "binding": "forbidden_until_generated_source_hash_source_gate_component_export_browser_wb55_parity_total_audit_and_owner_review"
+  }
+}

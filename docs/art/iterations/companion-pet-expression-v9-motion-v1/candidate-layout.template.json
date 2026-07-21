@@ -1,0 +1,50 @@
+{
+  "schema": "companion.v9_motion_extension_layout.v1",
+  "status": "TEMPLATE_NOT_RUN",
+  "runtime_resource_activated": false,
+  "source": "docs/art/iterations/companion-pet-expression-v9-motion-v1/candidate/replace-with-generated-source.png",
+  "source_sha256": "REPLACE_WITH_GENERATED_SOURCE_SHA256",
+  "parent_source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "prompt_revision": "v9-motion-v1-r1",
+  "revision": 91,
+  "profile": {
+    "width": 200,
+    "height": 200,
+    "pixel_format": "mono_1bpp_white_is_one_msb",
+    "safe_inset_px": 4
+  },
+  "phases": [
+    {
+      "name": "entry",
+      "source_crop_box": [0, 0, 0, 0]
+    },
+    {
+      "name": "sustain",
+      "source_crop_box": [0, 0, 0, 0]
+    },
+    {
+      "name": "settle",
+      "source_crop_box": [0, 0, 0, 0]
+    }
+  ],
+  "motion_features": [
+    {
+      "name": "eye_highlights",
+      "role": "eye_highlight",
+      "regions": [[0, 0, 0, 0]],
+      "min_changed_pixels": 8
+    },
+    {
+      "name": "brows_or_mouth_or_charm",
+      "role": "secondary",
+      "regions": [[0, 0, 0, 0]],
+      "min_changed_pixels": 8
+    }
+  ],
+  "instructions": [
+    "Replace every placeholder using the generated three-keyframe source before running the importer.",
+    "All source_crop_box and motion feature regions use [x, y, width, height].",
+    "Regions are in the canonical normalized 200x200 target coordinate system, not source-image coordinates.",
+    "The importer refuses this template status, source hash placeholders, zero boxes, activation, global translation, missing eye/highlight motion, or missing secondary motion."
+  ]
+}

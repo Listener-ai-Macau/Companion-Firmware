@@ -1,0 +1,18 @@
+{
+  "schema": "companion.art_generation_attempt.v1",
+  "status": "REJECTED_OWNER_STEERING_SUPERSEDED_INACTIVE_EVIDENCE",
+  "created_at": "2026-07-21",
+  "request": "docs/art/iterations/companion-pet-expression-v9-extension-v42-emotion-source/generation-request-v4.json",
+  "prompt": "docs/art/iterations/companion-pet-expression-v9-extension-v42-emotion-source/generation-prompt-v4.md",
+  "image": "docs/art/iterations/companion-pet-expression-v9-extension-v42-emotion-source/candidate/attempt-04-bashful-mouth-source.png",
+  "sha256": "5EA434A480A9721F9AD91D5D139157184B3C47FBCFC7CE46738EC5D8079A5DF3",
+  "locked_v9_reference_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "agent_visual_triage": "The source is technically clean as a continuous shallow rounded smile, but owner requested a broader mouth/nose/eye-signal refinement before any V42 component adoption. Preserve this image as inactive evidence; do not export or bind component 582 from it.",
+  "source_crop": {
+    "box": [574, 779, 103, 36],
+    "threshold": 128,
+    "scale": 0.22
+  },
+  "runtime_resource_activated": false,
+  "use": "rejected source-only evidence; do not export or bind"
+}

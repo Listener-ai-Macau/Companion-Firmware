@@ -1,0 +1,78 @@
+{
+  "schema": "companion.v9.special_expression_generation_request.v2",
+  "status": "REQUESTED_TO_GENERATE_PENDING_SOURCE",
+  "iteration": "V25",
+  "request_revision": 1,
+  "created_at": "2026-07-20",
+  "purpose": "Generate three independently authored, representative special-expression sources. This is source art only: it is not a runtime resource, CRIG, profile, firmware binding, panel frame, or acceptance claim.",
+  "owner_readability_contract": "At a native 200x200 static hold with no caption, legend, surrounding UI or motion, the three poses must each read as a different character action: choosing/navigation, active listening/response, and restorative replenishment. The face must carry that action; a detached generic decoration cannot explain it.",
+  "locked_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "allowed_reference_inputs": [
+    "locked_v9_reference_only"
+  ],
+  "forbidden_reference_inputs": [
+    "V18_menu_rejected_source",
+    "V19_recording_rejected_source",
+    "V20_upgrade_rejected_source",
+    "V23_candidates_or_exports",
+    "V24_visually_rejected_sources_or_exports",
+    "legacy_art",
+    "whole_face_runtime_cards",
+    "custom_LUT_or_display_artifacts"
+  ],
+  "identity_invariants": [
+    "retain the locked V9 open-eye silhouette, pupil fills, one primary highlight and one small sparkle per eye",
+    "retain the locked V9 eye-pair scale, spacing, baseline, nose anchor and monochrome black-ink treatment",
+    "do not make a new eye shape, eyelash, iris, pupil, colour treatment, face outline or full-face card",
+    "use a clean pure-white background with exactly one centered face and no text, label, legend, UI panel, button, screen frame or layout grid",
+    "every brow, mouth, cheek, highlight and action mark must be separately extractable inside a 200x200 export-safe face area",
+    "do not add a literal menu, microphone, waveform, battery, plug, lightning symbol, question, exclamation, heart, star or emoji"
+  ],
+  "representative_pose_rule": "A complete action silhouette is required. It consists of a state-specific brow-mouth-cheek/highlight relationship plus one compact, character-attached action mark. The action mark must visually grow out of the face or its attention direction, not float as a generic status ornament. No dot cadence, generic ripple, sparkle, breathing mark or other interchangeable decoration may carry functional meaning.",
+  "poses": [
+    {
+      "id": "menu_active",
+      "event": "menu_hold",
+      "functional_read": "deliberate browsing and choosing, not generic surprise, questioning or generic thinking",
+      "face_primary": "One friendly brow lifts while the other settles in a shallow focused angle; the retained V9 eye pair looks purposefully gathered through legal highlight placement; the mouth is a small closed decision mark; cheeks stay compact.",
+      "integral_action_mark": "A compact paired directional scan trace begins immediately beside the focused cheek line and turns inward toward the nose, like the character is visually checking two nearby choices. It must be organic face-adjacent ink, not three dots, a cursor, a menu icon or a separate UI symbol.",
+      "state_unique_contrast": "This is the only asymmetric, decision-focused pose; it must not use listening curls or recovery lifts.",
+      "choreography_intent": "Daily highlight pickup, focused brow asymmetry settles, mouth makes one deliberate decision landing, the cheek-attached scan trace sweeps in once, short target hold, then exact causal reverse to Daily."
+    },
+    {
+      "id": "recording_active",
+      "event": "recording_active",
+      "functional_read": "active listening followed by a tiny ready-to-answer response, not generic excitement, broadcast or decorative vibration",
+      "face_primary": "Both brows lift softly toward the center; the retained V9 eye pair is open and attentive through legal highlight placement; the mouth is a small rounded listening-and-ready response mark; cheek marks open gently. The face alone must look like it is hearing someone.",
+      "integral_action_mark": "Two short asymmetric ear-like listening curls attach directly behind the outer cheek marks and lean toward the face, as if the character has perked up to hear. They are character gestures, not free-floating waves, a microphone or a waveform.",
+      "state_unique_contrast": "This is the only symmetric receptive pose with cheek-attached listening curls; it must not use a choice scan or recovery lift.",
+      "choreography_intent": "Legal highlight orient, paired brow lift, small response-mouth settle, listening curls perk and return once, calm hold, then exact causal reverse when recording stops or cancels."
+    },
+    {
+      "id": "charging_active",
+      "event": "charging",
+      "functional_read": "restorative replenishment and relief, not generic happiness, sleep or passive decoration",
+      "face_primary": "Brows release outward into a relaxed arc; eye highlights sit soft and settled; the mouth becomes a broad compact satisfied recovery smile; cheek marks lift gently. The face alone must read as receiving energy and feeling better, not merely smiling.",
+      "integral_action_mark": "One compact paired recovery lift grows from above the brows and curls upward away from the face like a slow exhale. The marks must be visibly rooted in the brow line, never a floating battery, plug, bolt, star, dot sequence or generic aura.",
+      "state_unique_contrast": "This is the only outward-release, upward-recovery pose; it must not use menu asymmetry or listening curls.",
+      "choreography_intent": "Daily highlights soften, brows release, satisfied mouth rises, rooted recovery lift expands once and settles, quiet target hold, then exact causal reverse when charging ends."
+    }
+  ],
+  "rejection_conditions": [
+    "a pose can be mistaken for the V9 Daily face after hiding its accent",
+    "two poses share the same brow-mouth-cheek relationship",
+    "removing the action mark leaves no state-specific action reading",
+    "the action mark floats as a generic widget, dot pattern, wave, sparkle or status icon",
+    "a pose resembles the V24 visually rejected result",
+    "the source uses any reference other than locked V9"
+  ],
+  "required_followup": [
+    "generate one clean source image per pose using only the locked V9 reference",
+    "archive each exact prompt, generated source path and SHA-256 before crop, normalization or component export",
+    "prove native 200x200 static-hold output, state-unique face-primary deltas, state-unique integral action components and browser/target component-plan parity before a canonical owner-art review",
+    "keep every V25 resource runtime inactive and unbound until owner art review and the separate physical White/Black gates pass"
+  ]
+}

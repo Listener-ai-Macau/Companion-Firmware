@@ -1,0 +1,36 @@
+{
+  "schema": "companion.daily_attention_topology.v2",
+  "owner_requirement": "COMP-REQ-219",
+  "status": "TEMPORARY_DOWN_COALESCING_PENDING_ATTEMPT_09_REPLACEMENT_SOURCE",
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden",
+  "visible_attention_states": ["center", "left", "right", "up"],
+  "future_attention_state": "down only after a separately selected V36 replacement source passes component-only gates",
+  "coalesced_inputs": {
+    "down": {
+      "visible_state": "center",
+      "trace_reason": "down_coalesced_to_center",
+      "semantic_claim": "resting_or_lowered_attention; not a distinct directional endpoint"
+    }
+  },
+  "center_performance": {
+    "identity": "exact V9 relaxed daily baseline",
+    "micro_choreography": ["eyes_lead", "brows_and_mouth_soften", "hold", "exact_v9_return"],
+    "random_motion": false,
+    "full_face_cards": false
+  },
+  "forbidden": [
+    "select attempt-06 daily-down components",
+    "claim a distinct daily-down gaze",
+    "whole-face animation loop",
+    "random attention selection",
+    "fallback to a different emotion or legacy art"
+  ],
+  "pending_machine_proof": [
+    "retained V36 attempt-01 left/right/up component extraction that preserves the owner-approved source direction appearance",
+    "attempt-09 down replacement source gate",
+    "combined browser component-plan replay",
+    "combined target profile/CRIG source-plan parity",
+    "explicit down_coalesced_to_center trace"
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "schema": "companion.art_generation_request.v1",
+  "status": "RECORDED_BEFORE_IMAGE_GENERATION",
+  "iteration": "companion-pet-expression-v9-extension-v42-emotion-source",
+  "revision": 3,
+  "created_at": "2026-07-21",
+  "authority": [
+    "COMP-REQ-093",
+    "COMP-REQ-242",
+    "COMP-REQ-245",
+    "COMP-REQ-246",
+    "COMP-REQ-247"
+  ],
+  "supersedes_generation_attempt": "candidate/attempt-02-emotion-source.png for the bashful components only",
+  "purpose": "Produce one readable V9 Bashful source pose. A later Rig may extract only its brows, mouth, and cheeks; eyes and nose remain locked V9 components.",
+  "locked_v9_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "use": "sole character identity reference; exact V9 open-eye silhouette and nose anchor"
+  },
+  "reference_policy": "The locked V9 sheet is the sole image input. The V42 r1 emotion sheet is superseded evidence only and is not an image-generation input.",
+  "identity_locks": [
+    "Keep the exact V9 open eye body, scale, spacing, primary highlight, small sparkle, and centered nose.",
+    "No new eye shape, pupil, eyelid, eyelash, wink, face outline, color, gray, antialiasing, text, card, or UI."
+  ],
+  "emotion_contract": {
+    "name": "bashful",
+    "brows": "two visibly short inward-softened arcs, each modestly lower than Daily and subtly angled toward the center",
+    "mouth": "one very small closed sideward shy smile with a clear asymmetric hook, never the Daily W-mouth, O-mouth, frown, or open mouth",
+    "cheeks": "two compact cheeks visibly higher and closer to the mouth than Daily, with an obvious but restrained inward placement"
+  },
+  "separation_contract": "At native 200x200, the Bashful brow pair, mouth silhouette, and cheek anchors must all visibly differ from Daily in one glance while preserving the same V9 eye identity.",
+  "source_sheet": {
+    "grid": {
+      "columns": 1,
+      "rows": 1,
+      "ordered_cells": ["bashful"]
+    },
+    "cell_background": "plain pure white",
+    "source_only": true
+  },
+  "runtime": {
+    "resource_activated": false,
+    "binding": "forbidden_until_source_gate_component_export_browser_wb55_parity_total_audit_and_owner_review"
+  }
+}

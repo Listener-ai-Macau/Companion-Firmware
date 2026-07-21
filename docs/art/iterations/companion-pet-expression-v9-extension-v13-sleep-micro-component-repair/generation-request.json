@@ -1,0 +1,74 @@
+{
+  "schema": "companion.v9_expression_extension_generation_request.v13",
+  "iteration_id": "companion-pet-expression-v9-extension-v13-sleep-micro-component-repair-20260719",
+  "status": "REJECTED_OWNER_MISSING_ZZZ_COMPONENTS_V13_20260719",
+  "requested_at": "2026-07-19T12:45:00+08:00",
+  "render_parent_iteration": "pet-expression-v9-anti-sly-cute-2026-07-15",
+  "named_prompt_delta": "sleep_micro_component_repair: replace the owner-rejected V12 sleep source with a clearly non-Daily, complete sleep anchor that contains separately extractable, source-generated lower breath micro-components.",
+  "owner_trigger": "COMP-REQ-127; the V12 owner review selected 需修改 with `没有睡眠的小组件吗, 另外生图是怎么样的, 最好跟着生图不要和日常的表情一致`. V12 is rejected evidence and must not be reused as a pixel source or visual reference.",
+  "candidate_scope": "supplemental_component_source_only_single_sleep_anchor_with_generated_micro_components_not_a_baseline_replacement",
+  "source_art_type": "face_anchor",
+  "bundle_role": "unbound_sleep_rest_and_breath_micro_component_source_candidate",
+  "bundle_completion_requirement": "This source remains runtime inactive and cannot restore Sleep by itself. Its face and lower breath components are source masks for a later unbound Rig proof only; active sleep needs source gates, component composition gates and canonical owner acceptance.",
+  "target_profile": {
+    "grid": [1, 1],
+    "display_target_px": [200, 200],
+    "style": "pure black and white, 1-bit-ready e-paper inner-face and small sleep-only component masks",
+    "runtime_status": "inactive_pending_component_export_machine_checks_and_owner_review"
+  },
+  "source_references": [
+    {
+      "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "role": "only visual reference and immutable character identity parent"
+    }
+  ],
+  "rejected_predecessors": [
+    "companion-pet-expression-v9-extension-v12-sleep-anchor-repair-20260719"
+  ],
+  "required_cells": [
+    "sleep_rest_no_moon_with_breath_components"
+  ],
+  "transition_roles": {
+    "sleep_rest_no_moon_with_breath_components": "clearly distinct low-energy sleep rest with source-generated lower breath dots that can later make a restrained two-step breathing micro-motion"
+  },
+  "required_source_components": [
+    "left_brow",
+    "right_brow",
+    "left_closed_eye",
+    "right_closed_eye",
+    "left_cheek",
+    "right_cheek",
+    "nose",
+    "mouth",
+    "sleep_breath_dot_left",
+    "sleep_breath_dot_right"
+  ],
+  "prompt": "Use the attached locked V9 Companion sheet as the only visual reference. Generate exactly one centered, complete and unmistakably sleep-only V9 face source on a pure white square background. This is the same persistent Companion identity but must not read like the normal Daily face: use two matched gentle closed curved eye strokes, softer lower brows, restrained cheek dots, a tiny centered nose and a petite relaxed resting mouth. Add exactly two tiny detached black sleep-breath dots, one low and outside each cheek, horizontally paired and clearly separated from the face so they can be extracted as two source components later. The breath dots are the only sleep micro-components; they sit below cheek height and never above the brows. Keep generous white space, compact rounded black V9 line weight and balanced symmetry. Absolutely no upper decoration: no moon, no crescent, no Z, no sparkle, heart, question, exclamation, ellipsis, record dot or listening arc. Do not use a Daily open-eye face or an awake mouth fallback. No open eye is permitted in this sleep-only cell; if an open eye accidentally appears it must preserve the locked identity of two matched upright solid filled black vertical oval eye bodies with compact enclosed white reflections, never sclera, ring, white cap or drooping eyes. This is static generated component-source art only, never a whole-face animation, flipbook, runtime asset, charging face or error face. No text, labels, grid, border, device frame, grey, gradient, shading, texture, cat outline, ears, whiskers, human styling, smirk, flirtation, romance, sadness or aggression.",
+  "negative_constraints": [
+    "no moon, crescent, Z, sparkle, heart, question, exclamation, ellipsis, record dot, listening arc or any detached mark above the brows",
+    "no Daily or normal-face fallback, no V12 pixels, no V12 visual reference, no borrowed V9 moon/Z art, no code-drawn feature, no legacy art or custom LUT",
+    "no open eye; if an open eye appears, no sclera, ring, contour, white cap, lower-half white, pupil, lash, changed eye shape or drooping eye",
+    "no component export or runtime activation before machine gates and owner acceptance",
+    "no charging or error face"
+  ],
+  "planned_generated_output": "docs/art/iterations/companion-pet-expression-v9-extension-v13-sleep-micro-component-repair/generated_pet_expression_extension_v13_sleep_micro_component_repair_candidate.png",
+  "post_generation_gate": "First run V13 locked-V9 lineage preflight. Then machine-check one complete non-Daily sleep face, exactly two lower paired source-generated breath dots, absence of upper moon/Z decoration, source-only component extractability and exact reassembly. It remains unbound and runtime inactive until a fresh canonical owner art acceptance.",
+  "current_runtime_disposition": "sleep_rest_no_moon remains fail-closed in the active expanded Rig pending a separately accepted V13 source",
+  "generated_output": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-extension-v13-sleep-micro-component-repair/generated_pet_expression_extension_v13_sleep_micro_component_repair_candidate.png",
+    "sha256": "59AD89D885AC029CA3D5B64C03DCE67E5081D8F8CF961AC0A3CB61DFA4A598B6",
+    "status": "rejected_owner_missing_zzz_components",
+    "source_gate": "docs/validation/companion-v9-extension-v13-sleep-micro-component-repair-machine-20260719.json",
+    "source_mask_export": "docs/art/iterations/companion-pet-expression-v9-extension-v13-sleep-micro-component-repair/candidate/export-report.json",
+    "source_mask_export_gate": "docs/validation/companion-v9-extension-v13-sleep-micro-component-repair-export-20260719.json",
+    "source_mask_layout": "docs/art/iterations/companion-pet-expression-v9-extension-v13-sleep-micro-component-repair/candidate/sleep-micro-component-source-layout.json",
+    "component_count": 10,
+    "runtime_resource_activated": false,
+    "active_candidate_binding": "forbidden",
+    "owner_review_result": "docs/validation/companion-v9-extension-v13-sleep-micro-component-repair-owner-art-review-20260719.json",
+    "owner_review_note": "docs/validation/companion-v9-extension-v13-sleep-micro-component-repair-owner-art-review-20260719.note.txt",
+    "owner_review_summary": "docs/validation/companion-v9-extension-v13-sleep-micro-component-repair-owner-art-review-summary-20260719.json",
+    "next_gate": "rejected evidence only; V14 must generate a distinct locked-V9-only sleep source with two lower breath dots and three source-generated Z components"
+  }
+}

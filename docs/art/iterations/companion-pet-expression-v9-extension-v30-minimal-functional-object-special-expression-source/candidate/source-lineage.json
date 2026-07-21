@@ -1,0 +1,76 @@
+{
+  "schema": "companion.v30.minimal_functional_object_special_expression_source_lineage.v1",
+  "status": "REJECTED_OWNER_ART_REVIEW_AUDIT_ONLY",
+  "iteration": "V30",
+  "locked_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "allowed_reference_inputs": [
+    "locked_v9_reference_only"
+  ],
+  "forbidden_reference_inputs": [
+    "V30_rejected_source_or_any_derived_asset",
+    "V29_rejected_source_or_any_derived_asset",
+    "V28_superseded_request_as_visual_input",
+    "V27_rejected_source_or_any_derived_asset",
+    "V26_rejected_source_or_any_derived_asset",
+    "V25_rejected_source_or_any_derived_asset",
+    "V24_rejected_source_or_any_derived_asset",
+    "V23_candidates_or_exports",
+    "legacy_art",
+    "whole_face_runtime_cards"
+  ],
+  "generation_request": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/generation-request-v1-minimal-functional-object-panel.json",
+  "generation_prompt": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/generation-prompt-v1-minimal-functional-object-panel.md",
+  "source_panel": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/attempt-01-minimal-functional-objects.png",
+    "sha256": "9F21B4F7797AEDC897C5465DE4C9CFC7620FDC57033629A29E333E0BBB9EEA97",
+    "size": [2172, 724],
+    "pose_order": [
+      "menu_active",
+      "recording_active",
+      "charging_active"
+    ],
+    "crop_columns": [
+      [0, 0, 724, 724],
+      [724, 0, 1448, 724],
+      [1448, 0, 2172, 724]
+    ]
+  },
+  "state_object_components": {
+    "menu_active": ["left_tab", "center_tab", "right_tab"],
+    "recording_active": ["left_ear_cuff", "right_ear_cuff", "pickup_point"],
+    "charging_active": ["charge_clasp", "short_tether", "energy_core"]
+  },
+  "source_policy": {
+    "offline_component_source_only": true,
+    "runtime_resource_activated": false,
+    "active_candidate_binding": "forbidden",
+    "prohibited_before_machine_closure_and_internal_visual_preflight": [
+      "whole_panel_playback",
+      "whole_face_replacement",
+      "CRIG_export",
+      "profile_generation",
+      "event_binding",
+      "firmware_flash",
+      "panel_output",
+      "owner_art_prompt"
+    ],
+    "internal_visual_preflight": "docs/validation/companion-v30-minimal-functional-object-special-expression-internal-visual-preflight-20260720.json",
+    "internal_visual_preflight_result": "PASS_INTERNAL_VISUAL_PREFLIGHT_V30_MINIMAL_FUNCTIONAL_OBJECTS",
+    "owner_art_review": "docs/validation/companion-v30-minimal-functional-object-special-expression-owner-art-review-result-20260720.json",
+    "owner_art_review_result": "REJECTED_MOUTH_VARIATION_AND_MORE_READABLE_ACCESSORIES_REQUIRED",
+    "owner_art_review_triage": "docs/validation/companion-v30-minimal-functional-object-special-expression-owner-art-review-triage-20260720.json",
+    "audit_only_after_owner_feedback": true,
+    "forbidden_as_future_visual_prompt_or_reference_input": true,
+    "prohibited_until_owner_art_acceptance": [
+      "CRIG_export",
+      "profile_generation",
+      "event_binding",
+      "firmware_flash",
+      "physical_panel_claim",
+      "whole_face_fallback"
+    ]
+  }
+}

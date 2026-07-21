@@ -1,0 +1,62 @@
+{
+  "schema": "companion.v15_sleep_rig_component_choreography_request.v1",
+  "status": "MACHINE_DYNAMIC_PROOF_PASS_PENDING_OWNER_REVIEW",
+  "owner_requirement": "COMP-REQ-131",
+  "source_layout": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/component-export-attempt-01/v15-sleep-rig-component-layout.json",
+  "source_layout_sha256": "122296005EADF63D5F21D801889CD0C09794E33778464B19CB67641655794895",
+  "source_image": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/attempt-01-generated-pose-sheet.png",
+  "source_image_sha256": "FAA549D116D8ECF1B2479A097F1AF7CE79AA280DE02EA27FE6750DFE3A847D48",
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden",
+  "crig_mount": "forbidden",
+  "full_pose_cell_playback": "forbidden",
+  "phase_order": ["entry", "lead", "response", "accent", "hold", "return", "settle"],
+  "component_slots": {
+    "left_brow": ["left_brow_rest", "left_brow_settle"],
+    "right_brow": ["right_brow_rest"],
+    "left_eye": ["left_closed_eye_anchor"],
+    "right_eye": ["right_closed_eye_anchor"],
+    "left_cheek": ["left_cheek_rest", "left_cheek_breath"],
+    "right_cheek": ["right_cheek_rest", "right_cheek_breath"],
+    "nose": ["nose_anchor"],
+    "mouth": ["mouth_rest", "mouth_breath"],
+    "breath_left": ["sleep_breath_mark_left"],
+    "breath_right": ["sleep_breath_mark_right"],
+    "zzz_cluster": ["sleep_zzz_cluster"]
+  },
+  "component_legal_offsets": {
+    "left_brow_rest": {"min": [0, 0], "max": [0, 0]},
+    "left_brow_settle": {"min": [0, 0], "max": [0, 0]},
+    "right_brow_rest": {"min": [0, 0], "max": [0, 0]},
+    "left_closed_eye_anchor": {"min": [0, 0], "max": [0, 0]},
+    "right_closed_eye_anchor": {"min": [0, 0], "max": [0, 0]},
+    "left_cheek_rest": {"min": [0, 0], "max": [0, 0]},
+    "left_cheek_breath": {"min": [0, 0], "max": [0, 0]},
+    "right_cheek_rest": {"min": [0, 0], "max": [0, 0]},
+    "right_cheek_breath": {"min": [0, 0], "max": [0, 0]},
+    "nose_anchor": {"min": [0, 0], "max": [0, 0]},
+    "mouth_rest": {"min": [0, 0], "max": [0, 0]},
+    "mouth_breath": {"min": [0, 0], "max": [0, 0]},
+    "sleep_breath_mark_left": {"min": [0, 0], "max": [0, 3]},
+    "sleep_breath_mark_right": {"min": [0, 0], "max": [0, 3]},
+    "sleep_zzz_cluster": {"min": [0, -1], "max": [1, 0]}
+  },
+  "phases": [
+    {"phase": "entry", "duration_ms": 900, "primary_group": "rest", "components": {"left_brow": "left_brow_rest", "right_brow": "right_brow_rest", "left_eye": "left_closed_eye_anchor", "right_eye": "right_closed_eye_anchor", "left_cheek": "left_cheek_rest", "right_cheek": "right_cheek_rest", "nose": "nose_anchor", "mouth": "mouth_rest", "breath_left": "sleep_breath_mark_left", "breath_right": "sleep_breath_mark_right", "zzz_cluster": "sleep_zzz_cluster"}, "offsets": {}},
+    {"phase": "lead", "duration_ms": 700, "primary_group": "brow", "components": {"left_brow": "left_brow_settle", "right_brow": "right_brow_rest", "left_eye": "left_closed_eye_anchor", "right_eye": "right_closed_eye_anchor", "left_cheek": "left_cheek_rest", "right_cheek": "right_cheek_rest", "nose": "nose_anchor", "mouth": "mouth_rest", "breath_left": "sleep_breath_mark_left", "breath_right": "sleep_breath_mark_right", "zzz_cluster": "sleep_zzz_cluster"}, "offsets": {}},
+    {"phase": "response", "duration_ms": 860, "primary_group": "lower_face", "components": {"left_brow": "left_brow_rest", "right_brow": "right_brow_rest", "left_eye": "left_closed_eye_anchor", "right_eye": "right_closed_eye_anchor", "left_cheek": "left_cheek_breath", "right_cheek": "right_cheek_breath", "nose": "nose_anchor", "mouth": "mouth_breath", "breath_left": "sleep_breath_mark_left", "breath_right": "sleep_breath_mark_right", "zzz_cluster": "sleep_zzz_cluster"}, "offsets": {"sleep_breath_mark_left": [0, 1], "sleep_breath_mark_right": [0, 1]}},
+    {"phase": "accent", "duration_ms": 960, "primary_group": "lower_face", "components": {"left_brow": "left_brow_rest", "right_brow": "right_brow_rest", "left_eye": "left_closed_eye_anchor", "right_eye": "right_closed_eye_anchor", "left_cheek": "left_cheek_breath", "right_cheek": "right_cheek_breath", "nose": "nose_anchor", "mouth": "mouth_breath", "breath_left": "sleep_breath_mark_left", "breath_right": "sleep_breath_mark_right", "zzz_cluster": "sleep_zzz_cluster"}, "offsets": {"sleep_breath_mark_left": [0, 2], "sleep_breath_mark_right": [0, 2], "sleep_zzz_cluster": [1, -1]}},
+    {"phase": "hold", "duration_ms": 3400, "primary_group": "rest", "components": {"left_brow": "left_brow_rest", "right_brow": "right_brow_rest", "left_eye": "left_closed_eye_anchor", "right_eye": "right_closed_eye_anchor", "left_cheek": "left_cheek_rest", "right_cheek": "right_cheek_rest", "nose": "nose_anchor", "mouth": "mouth_rest", "breath_left": "sleep_breath_mark_left", "breath_right": "sleep_breath_mark_right", "zzz_cluster": "sleep_zzz_cluster"}, "offsets": {"sleep_breath_mark_left": [0, 3], "sleep_breath_mark_right": [0, 3], "sleep_zzz_cluster": [1, -1]}},
+    {"phase": "return", "duration_ms": 980, "primary_group": "rest", "components": {"left_brow": "left_brow_rest", "right_brow": "right_brow_rest", "left_eye": "left_closed_eye_anchor", "right_eye": "right_closed_eye_anchor", "left_cheek": "left_cheek_rest", "right_cheek": "right_cheek_rest", "nose": "nose_anchor", "mouth": "mouth_rest", "breath_left": "sleep_breath_mark_left", "breath_right": "sleep_breath_mark_right", "zzz_cluster": "sleep_zzz_cluster"}, "offsets": {"sleep_breath_mark_left": [0, 1], "sleep_breath_mark_right": [0, 1]}},
+    {"phase": "settle", "duration_ms": 1500, "primary_group": "rest", "components": {"left_brow": "left_brow_rest", "right_brow": "right_brow_rest", "left_eye": "left_closed_eye_anchor", "right_eye": "right_closed_eye_anchor", "left_cheek": "left_cheek_rest", "right_cheek": "right_cheek_rest", "nose": "nose_anchor", "mouth": "mouth_rest", "breath_left": "sleep_breath_mark_left", "breath_right": "sleep_breath_mark_right", "zzz_cluster": "sleep_zzz_cluster"}, "offsets": {}}
+  ],
+  "machine_proof": {
+    "source_request_preflight": "docs/validation/companion-v9-extension-v15-sleep-rig-pose-request-preflight-20260719.json",
+    "source_gate": "docs/validation/companion-v9-extension-v15-sleep-rig-pose-attempt-01-20260719.json",
+    "component_export": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/component-export-attempt-01/export-report.json",
+    "dynamic_gate": "docs/validation/companion-v9-extension-v15-sleep-rig-component-choreography-20260719.json",
+    "browser_capture": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-01/browser-capture-report.json",
+    "status": "PASS_V15_UNBOUND_DYNAMIC_PROOF_GATE"
+  },
+  "owner_gate": "Machine gates have passed. A canonical V15 source-pose and component-choreography owner review must explicitly accept this unbound candidate before any Sleep Rig work or runtime binding."
+}

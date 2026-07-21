@@ -1,0 +1,37 @@
+{
+  "schema": "companion.v9.special_expression_generation_request.v2",
+  "status": "REQUESTED_TO_GENERATE_PENDING_SOURCE",
+  "iteration": "V25",
+  "request_revision": 2,
+  "created_at": "2026-07-20",
+  "supersedes": "generation-request-v1-representative-pose.json for menu_active only",
+  "locked_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "allowed_reference_inputs": [
+    "locked_v9_reference_only"
+  ],
+  "forbidden_reference_inputs": [
+    "V25_attempt_01_menu_scan_read_as_listening",
+    "V23_candidates_or_exports",
+    "V24_visually_rejected_sources_or_exports",
+    "legacy_art",
+    "whole_face_runtime_cards"
+  ],
+  "menu_active": {
+    "functional_read": "deliberate browsing and choosing, read from the face itself rather than from a surrounding glyph",
+    "required_face_action": "The exact V9 eye silhouette remains fixed, but the legal highlights form a clearly intentional off-center paired gaze that can later sweep through left, center and right stops. One brow lifts inquisitively while the other presses into a shallow focus angle; the mouth is a compact closed decision mark and cheeks stay quiet. The static target must look like the pet has paused on a choice, not like it heard a sound.",
+    "forbidden_marks": [
+      "outside-cheek arcs",
+      "dots",
+      "cursor",
+      "menu icon",
+      "question",
+      "exclamation",
+      "sparkle",
+      "any floating action mark"
+    ],
+    "choreography_intent": "The later component plan proves browse by a deterministic highlight left-center-right scan with the brow focus landing after the scan. The target hold contains only the face-primary decision pose."
+  }
+}

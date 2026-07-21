@@ -1,0 +1,20 @@
+{
+  "schema": "companion.art_generation_attempt.v1",
+  "status": "REJECTED_BY_INTERNAL_ART_TRIAGE_BEFORE_SOURCE_GATE",
+  "generation_request": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/generation-request-attempt-03-down-repair.json",
+  "source_reference_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "generated_image": "C:\\Users\\Billy\\.codex\\generated_images\\019f708a-c5c8-7bc0-a9d2-ed8b97c79fb3\\exec-d610c332-2cb8-4bab-b325-ac24fbd15095.png",
+  "generator": {
+    "tool": "image_gen.imagegen",
+    "reference_image": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "reference_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "artifact_origin": "C:\\Users\\Billy\\.codex\\generated_images\\019f708a-c5c8-7bc0-a9d2-ed8b97c79fb3\\exec-d610c332-2cb8-4bab-b325-ac24fbd15095.png"
+  },
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden",
+  "rejection": {
+    "recorded_on": "2026-07-20",
+    "reason": "Full-face output added a second top sparkle and therefore cannot be a controlled V9 source.",
+    "replacement": "generation-request-attempt-04-eye-interior-only-down-repair.json"
+  }
+}

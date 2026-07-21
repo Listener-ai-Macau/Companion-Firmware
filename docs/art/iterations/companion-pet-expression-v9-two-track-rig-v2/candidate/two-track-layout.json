@@ -1,0 +1,61 @@
+{
+  "schema": "companion.v40_two_track_rig_layout.v1",
+  "status": "CANDIDATE_TRACK_MODEL_VERSIONED_RUNTIME_INACTIVE",
+  "revision": 40,
+  "authority": ["COMP-REQ-093", "COMP-REQ-229", "COMP-REQ-233", "COMP-REQ-239", "COMP-REQ-240", "COMP-REQ-242"],
+  "locked_v9_source": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "inherited_expression_track": {
+    "layout": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v1/candidate/two-track-layout.json",
+    "sha256": "EFBE711D121FC9F9BD6F2E6E6E1A0324CE2F2CC8DC81DC163ED0A512A0277555",
+    "reuse_rule": "V39 expression-track authority is byte-for-byte retained; V40 changes only functional decoration source masks."
+  },
+  "source_authority": {
+    "v22_face_layout": {
+      "path": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/target-rig-attempt-01/v22-emotion-separation-target-rig-layout.json",
+      "sha256": "3118338BCE6BD55BAAA40C1254B332805F2524425383CA104BA8E5FEEE01B953",
+      "component_count": 37
+    },
+    "v40_special_source_layout": {
+      "path": "docs/art/iterations/companion-pet-expression-v9-functional-decoration-rig-v2/candidate/functional-decoration-component-layout.json",
+      "sha256": "CDD059DB83DC5FF3293D0992B7F0602ECA964B8D049595D6AA234E05E9D55C72",
+      "component_count": 69,
+      "crig": "docs/art/iterations/companion-pet-expression-v9-functional-decoration-rig-v2/candidate/companion-v9-functional-decoration-rig-v2-candidate-200x200.crig",
+      "crig_sha256": "6CD58678668A71E4A85AAABE4433DEE1B9A071CC686BD32B9C23ED86439DC440",
+      "functional_source_request": "docs/art/iterations/companion-pet-expression-v9-functional-decoration-source-v2/generation-request-v2.json"
+    }
+  },
+  "composition": {
+    "canvas": "200x200_1bpp_white_is_one_msb",
+    "final_plan": "deterministic_union(expression_track, functional_decoration_track)",
+    "ordering": "stable_ascending_z_index_then_expression_before_functional",
+    "maximum_layers": 16,
+    "no_mask_synthesis": true,
+    "runtime_binding": "forbidden_until_v40_machine_audit_and_owner_review"
+  },
+  "functional_decoration_track": {
+    "driven_only_by": ["functional_event"],
+    "events": {
+      "recording_input": {"frames": [[557], [558], [559]], "durations_ms": [700, 420, 420]},
+      "bottom_connector_charging": {"frames": [[560], [561], [562]], "durations_ms": [700, 420, 420]},
+      "upgrade_progress": {"frames": [[563], [564], [565]], "durations_ms": [700, 420, 900]},
+      "error_caution": {"frames": [[566], [567], [568]], "durations_ms": [260, 260, 1200]}
+    },
+    "allowed_component_ids": [557, 558, 559, 560, 561, 562, 563, 564, 565, 566, 567, 568],
+    "forbidden": ["face_component_id", "functional_event_selects_emotion", "functional_event_mutates_brow_eye_mouth_or_cheek", "daily_face_substitution_when_source_missing"]
+  },
+  "menu_entry_exception": {
+    "event": "menu_entry_notice",
+    "state_scene": "touch",
+    "frames": [[545], [546], [547]],
+    "durations_ms": [140, 140, 180],
+    "maximum_expression_duration_ms": 500,
+    "after_last_cue": "withdraw_expression_and_functional_tracks_then_show_menu_ui",
+    "forbidden": ["persistent_menu_score", "selection_loop", "expression_rig_behind_menu_ui", "functional_track_behind_menu_ui"]
+  },
+  "quarantined_rejected_v38_face_components": [554, 555, 556],
+  "unassigned_carried_v38_components_require_explicit_future_authority": [500, 501, 502, 503, 504, 505, 506, 507, 508, 509, 510, 511, 515, 516, 517, 518, 519, 520, 524, 525, 526, 527, 528, 529, 530, 533, 534, 535, 536, 537, 538, 548, 549, 550, 551, 552, 553],
+  "non_claims": ["no_v38_profile_promotion", "no_runtime_binding", "no_firmware_flash", "no_panel_or_driver_change", "no_human_acceptance"]
+}

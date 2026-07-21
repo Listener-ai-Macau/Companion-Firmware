@@ -1,0 +1,42 @@
+{
+  "schema": "companion.v9_complete_special_expression_generation_request.v1",
+  "status": "PROMPT_VERSIONED_PENDING_GENERATION",
+  "iteration_id": "companion-pet-expression-v9-extension-v18-menu-special-expression-source-20260719",
+  "product_requirement": "COMP-REQ-138",
+  "function": "menu_active",
+  "named_visible_variable": "Menu complete special-expression source pose only",
+  "reference_images": [
+    {
+      "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "use": "sole character identity, eye geometry, ink weight, and whitespace reference"
+    }
+  ],
+  "reference_policy": "Locked V9 is the sole visual reference. V17 detached accents, V10/V11, legacy art, rejected candidates, whole-face cards, and custom code art are forbidden prompt inputs, sources, or fallbacks.",
+  "source_component_contract": [
+    "One complete centered V9 Companion face is required so the pose can later yield source-derived eye/highlight, brow, nose, mouth, cheek, and one permitted menu-detail masks.",
+    "The open V9 eye silhouettes, white primary highlights, small fixed sparkles, eye spacing, nose anchor, and white background must remain the same character identity, not a new eye type.",
+    "The later runtime may compose only extracted masks; this source pose is never a runtime card or a flipbook frame."
+  ],
+  "prompt_delta": "Generate one square white monochrome source-art image containing exactly one complete, centered V9 Companion menu-active special expression. It must be the same locked V9 character: keep the same pair of open rounded black eyes, the same white primary highlight and tiny fixed sparkle inside each eye, the same eye spacing and scale, the same small centered nose, the same cheek-dot placement, crisp black-on-white low-detail pixel-ink, and generous empty margins. Change only the expression into deliberate menu navigation/thinking: the gaze is subtly raised, the two brows form a calm slightly pondering response, the tiny mouth is a compact thoughtful curve, and a restrained vertical trio of small rounded ink dots sits above the face as an integrated menu-context detail. The face should feel calm, attentive, and choosing, not surprised, romantic, sleepy, playful, or generic UI. This is one complete special-expression source pose for later component extraction, not a UI screenshot and not an animation frame.",
+  "negative_constraints": [
+    "no second face, contact sheet, grid, panel border, labels, letters, numbers, menu list, cursor, device frame, body, ears, whiskers, or speech bubble",
+    "no changed eye shape, eyelids, pupils, different highlight grammar, asymmetrical eye identity, cat face, vector icon, emoji, or full-screen UI",
+    "no question mark, exclamation mark, heart, sparkle, moon, crescent, Z, arrow, checkmark, progress bar, color, grayscale, texture, shadow, gradient, or anti-aliased glossy vector treatment",
+    "no whole-face runtime playback, CEMP card rotation, legacy art, custom LUT, code-drawn face, V17 source, or daily-face fallback"
+  ],
+  "planned_output": "docs/art/iterations/companion-pet-expression-v9-extension-v18-menu-special-expression-source/candidate/attempt-01-generated-menu-special-expression.png",
+  "post_generation_gate": {
+    "required": [
+      "source hash and locked V9 reference hash recorded",
+      "exactly one complete V9-identical open-eye face with a compact menu-context detail",
+      "source masks export eye/highlight, brows, nose, mouth, cheeks, and menu detail without overlap",
+      "candidate remains unbound, runtime inactive, and unavailable to ordinary Daily playback"
+    ],
+    "forbidden": [
+      "source-face/CEMP runtime playback",
+      "feature binding or menu choreography before source gate and canonical owner art acceptance",
+      "using this source for Recording, Upgrade, Charging, Error, or Sleep"
+    ]
+  }
+}

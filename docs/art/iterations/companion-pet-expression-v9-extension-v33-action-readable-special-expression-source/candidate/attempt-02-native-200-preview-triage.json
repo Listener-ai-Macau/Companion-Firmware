@@ -1,0 +1,19 @@
+{
+  "schema": "companion.v33.causal_direction_special_expression_attempt_02_native_200_preview_triage.v1",
+  "status": "REJECTED_INTERNAL_NATIVE_200_PREVIEW_AUDIT_ONLY",
+  "source_panel": "docs/art/iterations/companion-pet-expression-v9-extension-v33-action-readable-special-expression-source/candidate/v33-attempt-02.png",
+  "source_sha256": "F81BA2E8606446FC4445A4E1199631325194C7A114FF4DD6237B423B8640FAF9",
+  "label_hidden_native_200_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v33-action-readable-special-expression-source/candidate/review-v2/contact-native-200x200.png",
+  "finding": {
+    "menu_enter": "The short sparkle acknowledgement matches the correct handoff to the no-face menu UI.",
+    "recording_active": "The microphone is outside the normalized 200x200 component-safe area; only ambiguous arcs remain visible.",
+    "charging_active": "The plug and physical connection are outside the normalized 200x200 component-safe area; only an insufficient bolt/dot remains visible."
+  },
+  "disposition": {
+    "runtime_resource_activated": false,
+    "active_candidate_binding": "forbidden",
+    "visual_reference_reuse": "forbidden",
+    "forbidden_actions": ["component_export", "CRIG_export", "profile_generation", "event_binding", "firmware_flash", "physical_panel_claim"],
+    "next_direction": "V33 request revision 3 keeps the menu-enter acknowledgement but constrains the recording and charging cues inside the normalized face-side safe area."
+  }
+}

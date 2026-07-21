@@ -1,0 +1,65 @@
+{
+  "schema": "companion.v9_expanded_expression_rig_emotion_bridge_browser_capture.v1",
+  "status": "PASS_EXPANDED_COMPONENT_EMOTION_BRIDGE_BROWSER_CAPTURE",
+  "preview": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\art\\iterations\\companion-pet-expression-v9-rig-v2-expanded-source\\candidate\\preview.html",
+  "preview_sha256": "8B0A211063EBBF7DF0D5D57764EDD11FDC22F5256CF55AD3F876135A099287A6",
+  "source_emotion": "curious",
+  "target_emotion": "affectionate",
+  "bridge_policy": "directed affect edge; highlights lead, brows answer, lower face replies, approved accent follows",
+  "captures": [
+    {
+      "name": "source_hold",
+      "cue": "source_hold",
+      "virtual_time_ms": 500,
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\art\\iterations\\companion-pet-expression-v9-rig-v2-expanded-source\\candidate\\emotion-bridge-browser-source_hold.png",
+      "sha256": "60A91FF5269A72AC1893E96D15A6E6B413CB20D0D4843C25C12CBF4CACD537FC",
+      "bytes": 8123,
+      "dark_pixels": 43497
+    },
+    {
+      "name": "gaze_lead",
+      "cue": "gaze_lead",
+      "virtual_time_ms": 900,
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\art\\iterations\\companion-pet-expression-v9-rig-v2-expanded-source\\candidate\\emotion-bridge-browser-gaze_lead.png",
+      "sha256": "99FE4EED2011E9F9A0930502B89B79F5D4A0D09E46C7AF55A1A1824FB4585966",
+      "bytes": 8144,
+      "dark_pixels": 43497
+    },
+    {
+      "name": "brow_answer",
+      "cue": "brow_answer",
+      "virtual_time_ms": 1450,
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\art\\iterations\\companion-pet-expression-v9-rig-v2-expanded-source\\candidate\\emotion-bridge-browser-brow_answer.png",
+      "sha256": "81F6D1062C9CF5D731B5945186F3415561B979BC63098AAF4AD2627828056BB3",
+      "bytes": 8124,
+      "dark_pixels": 43271
+    },
+    {
+      "name": "lower_face_reply",
+      "cue": "lower_face_reply",
+      "virtual_time_ms": 1850,
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\art\\iterations\\companion-pet-expression-v9-rig-v2-expanded-source\\candidate\\emotion-bridge-browser-lower_face_reply.png",
+      "sha256": "50BAA662CFB7B2B724387B46B663730AC149A47D32C1C8011FD47C571BE642AD",
+      "bytes": 8116,
+      "dark_pixels": 42570
+    },
+    {
+      "name": "target_hold",
+      "cue": "target_hold",
+      "virtual_time_ms": 2700,
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\art\\iterations\\companion-pet-expression-v9-rig-v2-expanded-source\\candidate\\emotion-bridge-browser-target_hold.png",
+      "sha256": "9DC233AFEA29A6B52101AB9FFD85B1159D92A83976688597120E7188F1340F96",
+      "bytes": 8117,
+      "dark_pixels": 58628
+    }
+  ],
+  "source_hold_pixel_differences": {
+    "gaze_lead": 816,
+    "brow_answer": 7196,
+    "lower_face_reply": 11801,
+    "target_hold": 25618
+  },
+  "state_rotation": "forbidden",
+  "full_face_source_card_playback": "forbidden",
+  "runtime_resource_activated": false
+}

@@ -1,0 +1,66 @@
+{
+  "schema": "companion.v9_art_generation_request.v1",
+  "status": "PROMPT_VERSIONED_PENDING_GENERATION",
+  "iteration_id": "companion-pet-expression-v9-extension-v17-functional-context-accents-20260719",
+  "product_requirements": [
+    "COMP-REQ-091",
+    "COMP-REQ-093",
+    "COMP-REQ-137"
+  ],
+  "render_parent_iteration": "pet-expression-v9-anti-sly-cute-2026-07-15",
+  "reference_images": [
+    {
+      "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "use": "sole character geometry, black-ink weight, whitespace, and detached-accent style reference"
+    }
+  ],
+  "reference_policy": "Locked V9 is the sole render reference. V10/V11 and all retired, rejected, legacy, or hand-drawn candidates are forbidden as visual references, prompt inputs, pixel sources, fallbacks, or runtime resources.",
+  "named_visible_variable": "functional-context accent vocabulary only; no face component may be changed",
+  "function_intent": {
+    "menu_active": {
+      "trigger": "menu is open or navigation selection is active",
+      "emotion": "quietly considering a choice",
+      "planned_choreography": "gaze settles, brows answer, then one compact menu-selection accent enters and rests; no static-card carousel"
+    },
+    "recording_active": {
+      "trigger": "recording has started and remains active",
+      "emotion": "attentive listening",
+      "planned_choreography": "gaze focuses, brows settle, then paired listening ripples pulse sparsely around the unchanged V9 eye identity"
+    },
+    "upgrade_active": {
+      "trigger": "a confirmed firmware upgrade is transferring or verifying",
+      "emotion": "calm, focused progress",
+      "planned_choreography": "the unchanged V9 face stays steady while approved progress segments appear one at a time; before accepted source components exist every upgrade phase remains fail-closed"
+    }
+  },
+  "prompt_delta": "Generate one white square monochrome source-art panel for the locked V9 Companion. It contains exactly three widely separated detached functional accent groups, all made from crisp black rounded pixel-ink marks with the same gentle stroke weight and generous whitespace as V9. Group A, menu active: a compact vertical trio of three small rounded ink dots, slightly irregular and quiet, suitable as a sparse choice/consideration cue. Group B, recording active: a symmetric pair of very small inward-facing listening ripple strokes, each side formed from two short rounded arcs, restrained and airy. Group C, upgrade active: four separate tiny rounded progress segments arranged on a loose small ring, with visible gaps so each segment can be independently extracted and revealed in sequence. This is a source-art component panel only: no character face, no full expression, no animation frame, no border, and no labels. Leave generous blank space around every group and between every upgrade segment for later source-mask extraction.",
+  "inherited_identity_gates": [
+    "Do not redraw, include, alter, crop, or imply the V9 eye pair, highlights, brows, nose, mouth, cheeks, face silhouette, cat outline, ears, whiskers, or device frame.",
+    "Keep only V9's crisp black-on-white monochrome, sparse low-detail visual grammar, calm rounded stroke personality, and untextured white field.",
+    "This one panel changes only detached functional accent vocabulary. It cannot be interpreted as a complete face or a complete state card."
+  ],
+  "negative_constraints": [
+    "no face, eyes, brows, nose, mouth, cheeks, head, character silhouette, whole expression card, or body",
+    "no labels, letters, numbers, words, UI, grid, border, speech bubble, emoji, progress percentage, arrow, checkmark, exclamation, question mark, or generic typography",
+    "no sparkle, heart, moon, crescent, Z, cat detail, whiskers, starburst, decoration, confetti, or a fourth accent group",
+    "no color, grayscale, texture, shadow, gradient, anti-aliasing, outline glyph, glossy vector icon, or cartoon clipart",
+    "no V10, V11, V12, V13, V14, V15, V16, legacy, retired, rejected, or alternate visual reference"
+  ],
+  "planned_output": "docs/art/iterations/companion-pet-expression-v9-extension-v17-functional-context-accents/candidate/attempt-01-generated-functional-context-accent-panel.png",
+  "post_generation_gate": {
+    "required": [
+      "generated file SHA256 and image-generation request are recorded together",
+      "exactly three extractable context groups: menu trio, symmetric recording ripple pair, and four separately extractable upgrade segments",
+      "no face, labels, borders, forbidden glyphs, or non-V9 visual language",
+      "source-only 200x200 reassembly proves zero overlap with protected V9 face roles for every planned local offset",
+      "menu, recording, and upgrade bindings remain unbound and runtime inactive until separate machine export plus canonical owner art acceptance"
+    ],
+    "forbidden": [
+      "code-drawn, traced, or procedurally generated facial features or function glyphs",
+      "whole-face/CEMP runtime playback, ordinary-face fallback, or static state-card rotation",
+      "binding the candidate before source review, component extraction audit, machine gate, and canonical owner acceptance",
+      "using the upgrade group to pretend upgrade visuals are complete before the group is accepted"
+    ]
+  }
+}

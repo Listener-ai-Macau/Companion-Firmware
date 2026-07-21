@@ -1,0 +1,21 @@
+{
+  "schema": "companion.art_generation_attempt.v1",
+  "status": "REJECTED_BY_OWNER_AND_INTERNAL_ART_TRIAGE_BEFORE_SOURCE_GATE",
+  "generation_request": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/generation-request-attempt-02-down-repair.json",
+  "source_reference_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "generated_image": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/generated_daily_down_v36_attempt_02.png",
+  "generated_image_sha256": "474DE332F7C9DDD9E1A1B1215BF0EC76783F8D40B514E90905A00E066AF2C801",
+  "generator": {
+    "tool": "image_gen.imagegen",
+    "reference_image": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "reference_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "artifact_origin": "C:\\Users\\Billy\\.codex\\generated_images\\019f708a-c5c8-7bc0-a9d2-ed8b97c79fb3\\exec-c448c4fd-d64b-41bb-a82c-3f9ea565fa05.png"
+  },
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden",
+  "rejection": {
+    "recorded_on": "2026-07-20",
+    "reason": "Oversized lower white discs with detached upper sparkles read as startled or unfocused white holes, not a controlled down gaze.",
+    "replacement": "generation-request-attempt-03-down-repair.json"
+  }
+}

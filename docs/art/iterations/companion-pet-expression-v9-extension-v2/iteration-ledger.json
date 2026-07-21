@@ -1,0 +1,35 @@
+{
+  "schema": "companion.visual_iteration_ledger.v1",
+  "iteration_id": "companion-pet-expression-v9-extension-v2-20260718",
+  "status": "REJECTED_MACHINE_OPEN_EYE_IDENTITY_V2_20260718",
+  "product_requirement": "COMP-REQ-117",
+  "reference_source": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "protection": "immutable locked V9 baseline; V2 is a separate extension candidate"
+  },
+  "rejected_predecessor": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-extension-v1/generated_pet_expression_extension_v1_candidate.png",
+    "sha256": "CDBE9AE70FCEA2E03BE4341E72AB6382972054F00BCA9F01DA05B78B275D6560",
+    "reason": "open eye geometry broke locked V9 identity"
+  },
+  "generation_request": "docs/art/iterations/companion-pet-expression-v9-extension-v2/generation-request.json",
+  "output": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-extension-v2/generated_pet_expression_extension_v2_candidate.png",
+    "sha256": "4C4E9D85FF3F64CDEDC5A057B09A092C2D47CF518BBB7E83F6C4717845172D0F",
+    "status": "rejected_machine_open_eye_identity_20260718",
+    "rejection_reason": "V9-calibrated open-eye gate failed: daily_attention_right/up/down have hollow or excessive-white eye bodies. V2 remains non-reference, non-export evidence."
+  },
+  "machine_art_direction_review": {
+    "result": "FAIL_OPEN_EYE_IDENTITY_GATE",
+    "report": "docs/validation/companion-v9-extension-v2-open-eye-identity-20260718.json",
+    "failed_cells": ["0,1", "0,2", "0,3"],
+    "next_allowed_delta": "a narrow daily-attention eye-identity proof only; retain V9 solid black eye bodies and vary no other identity anchor"
+  },
+  "non_goals": [
+    "replace or modify the locked V9 baseline",
+    "reuse rejected V1 eye geometry",
+    "activate runtime resources",
+    "supply charging/error art"
+  ]
+}

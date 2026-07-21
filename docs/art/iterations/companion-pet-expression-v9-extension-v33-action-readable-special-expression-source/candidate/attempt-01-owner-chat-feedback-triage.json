@@ -1,0 +1,20 @@
+{
+  "schema": "companion.v33.action_readable_special_expression_attempt_01_owner_chat_feedback_triage.v1",
+  "status": "SUPERSEDED_OWNER_CHAT_FEEDBACK_AUDIT_ONLY",
+  "owner_feedback": "你这部分的感觉会更好一点，但是进入菜单应该不是这样。然后录音的话呃，就是你现在是输出，应该是要输入。然后充电的话，你看一下再优化一下，就是大概是这种感觉。",
+  "finding": {
+    "menu_active": "literal hamburger/list mark states a menu page rather than the short menu-enter acknowledgement that hands off to the separate no-face menu UI",
+    "recording_active": "mouth-to-microphone arcs depict speaking/output rather than a quiet input/listening capture",
+    "charging_active": "the long plug-to-bolt route is direct but visually dominant and lacks a clear energy-into-character direction"
+  },
+  "disposition": {
+    "source_panel": "docs/art/iterations/companion-pet-expression-v9-extension-v33-action-readable-special-expression-source/candidate/v33-attempt-01.png",
+    "source_sha256": "1A3482BDCDFD78E1AD4388744A6C1A56BFDA6B992C42966FED65196DF4A3380D",
+    "runtime_resource_activated": false,
+    "active_candidate_binding": "forbidden",
+    "visual_reference_reuse": "forbidden",
+    "forbidden_actions": ["component_export", "CRIG_export", "profile_generation", "event_binding", "firmware_flash", "physical_panel_claim"],
+    "replacement_requirement": "COMP-REQ-181",
+    "next_direction": "V33 request revision 2, using locked V9 as its only visual reference"
+  }
+}

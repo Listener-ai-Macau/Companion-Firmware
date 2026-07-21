@@ -1,0 +1,29 @@
+{
+  "schema": "companion.visual_iteration_ledger.v1",
+  "iteration_id": "companion-pet-expression-v9-extension-v11-secondary-detail-kit-20260718",
+  "status": "APPROVED_OWNER_FULL_SOURCE_BUNDLE_V11_20260718",
+  "product_requirements": ["COMP-REQ-093", "COMP-REQ-095", "COMP-REQ-101", "COMP-REQ-117", "COMP-REQ-118", "COMP-REQ-120", "COMP-REQ-121"],
+  "reference_source": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "protection": "immutable locked V9 baseline and the only visual reference supplied to generation"
+  },
+  "paired_face_source_iterations": [
+    "companion-pet-expression-v9-extension-v9-expanded-daily-direction-strip-20260718",
+    "companion-pet-expression-v9-extension-v10-expanded-emotion-panel-20260718"
+  ],
+  "generation_request": "docs/art/iterations/companion-pet-expression-v9-extension-v11-secondary-detail-kit/generation-request.json",
+  "single_delta": "add isolated secondary cheek-detail and charm source components requested by the owner without modifying, sampling, or visually referencing rejected face candidates",
+  "generated_output": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-extension-v11-secondary-detail-kit/generated_pet_expression_extension_v11_secondary_detail_kit_candidate.png",
+    "sha256": "76B0BE9F683349490C262DD4725BDDC2252DEEDFD2B675D4EF53745D8B7C1622",
+    "eligibility": "approved-owner-component-export-only_no-visual-reference_runtime-inactive"
+  },
+  "non_goals": [
+    "replace or modify the locked V9 baseline",
+    "use V1 through V10 outputs as visual reference or component source",
+    "draw a face or provide full-face source-card playback",
+    "export components or activate runtime resources before combined source-bundle gates and owner review",
+    "supply charging or error art"
+  ]
+}

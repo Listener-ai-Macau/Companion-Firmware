@@ -1,0 +1,71 @@
+{
+  "schema": "companion.art_generation_request.v1",
+  "status": "RECORDED_BEFORE_IMAGE_GENERATION",
+  "iteration": "companion-pet-expression-v9-extension-v42-emotion-source",
+  "created_at": "2026-07-21",
+  "authority": [
+    "COMP-REQ-093",
+    "COMP-REQ-242",
+    "COMP-REQ-245",
+    "COMP-REQ-246"
+  ],
+  "purpose": "Extend the V9 expression vocabulary with four clearly separable source poses. Complete poses are source art only; later runtime frames must compose only registered brows, mouth, cheek, and optional accent components with the fixed V22 open-eye Rig.",
+  "locked_v9_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "use": "sole character identity reference: fixed open black eye silhouette, eye scale and spacing, one primary highlight plus one small sparkle per eye, centered nose anchor, monochrome ink weight, and whitespace"
+  },
+  "reference_policy": "Locked V9 is the sole prompt image. Historical/rejected extension art, V10+, legacy faces, V41 preview frames, whole-face runtime cards, and custom code art are forbidden inputs and fallbacks.",
+  "identity_locks": [
+    "Every pose is the same centered V9 Companion character on a pure white background.",
+    "Keep the two open rounded black V9 eye silhouettes at the same scale and spacing, with exactly one white primary highlight and one small white sparkle in each eye.",
+    "Keep the small centered V9 nose anchor. Do not introduce pupils, eyelashes, eyelids, winks, a face outline, new eye shape, color, gray, antialiasing, texture, labels, borders, panels, or UI."
+  ],
+  "emotion_contract": [
+    {
+      "name": "delighted",
+      "read": "both brows visibly lifted and open, a clearly wider rounded upturned mouth, and higher fuller cheeks; cheerful but still restrained"
+    },
+    {
+      "name": "bashful",
+      "read": "soft brows gently converging inward, a small compact shy smile, and visibly closer rounded cheeks; cute and quiet rather than worried"
+    },
+    {
+      "name": "thoughtful",
+      "read": "one brow distinctly higher while the other stays relaxed, a small off-center thinking mouth, and one subtly lifted cheek; no punctuation"
+    },
+    {
+      "name": "focused",
+      "read": "two low gently inward brows, a short confident compact mouth, and calm low cheeks; attentive and determined but never angry"
+    }
+  ],
+  "separation_contract": {
+    "required_visible_groups": [
+      "left_brow",
+      "right_brow",
+      "mouth",
+      "left_cheek",
+      "right_cheek"
+    ],
+    "pairwise_rule": "Every pair differs in at least two visible component groups. No pair may share both brow-pair geometry and mouth geometry.",
+    "runtime_rule": "The four complete poses are source art only. Later previews and target frames must use registered source components; they may not replay a complete pose card."
+  },
+  "source_sheet": {
+    "grid": {
+      "columns": 2,
+      "rows": 2,
+      "ordered_cells": [
+        "delighted",
+        "bashful",
+        "thoughtful",
+        "focused"
+      ]
+    },
+    "cell_background": "plain pure white",
+    "source_only": true
+  },
+  "runtime": {
+    "resource_activated": false,
+    "binding": "forbidden_until_generated_source_hash_identity_and_separation_gate_component_export_browser_wb55_parity_total_audit_and_owner_review"
+  }
+}

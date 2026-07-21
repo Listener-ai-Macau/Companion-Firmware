@@ -1,0 +1,22 @@
+{
+  "schema": "companion.v29_silhouette_object_source_rejection.v1",
+  "status": "REJECTED_BEFORE_SOURCE_GATE",
+  "source_image": "docs/art/iterations/companion-pet-expression-v9-extension-v29-silhouette-object-special-expression-source/rejected/attempt-01-oversized-full-head-state-objects.png",
+  "source_sha256": "63AE618D7F8DAECA1BC76B78715785466E2118915048D380A4C3D5816B63BAFF",
+  "generation_request": "docs/art/iterations/companion-pet-expression-v9-extension-v29-silhouette-object-special-expression-source/generation-request-v1-silhouette-object-panel.json",
+  "generation_prompt": "docs/art/iterations/companion-pet-expression-v9-extension-v29-silhouette-object-special-expression-source/generation-prompt-v1-silhouette-object-panel.md",
+  "locked_reference_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "reason": [
+    "The generated panels add a complete enclosing head/face contour, which violates the locked V9 identity boundary.",
+    "The visor and headset dominate the full canvas instead of preserving the V9 200x200 face scale and safe component area.",
+    "The candidate would require a new character silhouette rather than V9 identity masks plus registered special components.",
+    "The charging object is still not a clear compact V9-face charging pose after the identity breach."
+  ],
+  "disposition": {
+    "source_gate_run": false,
+    "component_export": false,
+    "runtime_resource_activated": false,
+    "forbidden_as_future_visual_prompt_or_reference_input": true,
+    "next_action": "Create a stricter V29 revision that keeps the exact V9 face crop and permits only compact state objects inside the 200x200 safe margin."
+  }
+}

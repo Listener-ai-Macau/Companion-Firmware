@@ -1,0 +1,130 @@
+{
+  "schema": "companion.v23.core_special_expression_source_lineage.v1",
+  "status": "CANDIDATES_ARCHIVED_PENDING_MACHINE_SOURCE_GATE",
+  "iteration": "V23",
+  "created_at": "2026-07-20",
+  "locked_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "prompt_use": "sole character identity reference"
+  },
+  "source_policy": {
+    "generation_backend": "image_gen",
+    "forbidden_visual_inputs": [
+      "V18_menu_rejected_source",
+      "V19_recording_rejected_source",
+      "V20_upgrade_rejected_source",
+      "V23_v1_or_v2_output_as_prompt_reference",
+      "legacy_art",
+      "whole_face_runtime_cards",
+      "custom_LUT_or_display_artifacts"
+    ],
+    "component_export": "forbidden_pending_machine_source_gate",
+    "runtime_resource_activated": false,
+    "active_candidate_binding": "forbidden"
+  },
+  "rejected_pre_import_exploration": [
+    {
+      "pose": "menu_active",
+      "request": "generation-request.json",
+      "request_sha256": "6BFAEE8DA80B990D05CB68568BE8FAA1320A5C1502A7FD618C14B789BA95E168",
+      "generated_image": "rejected/attempt-01-menu-active-v1-accent-led.png",
+      "generated_image_sha256": "95EB8BDB838F53DC3B93DE36FB4E9D7B92E1E40C6FE11C4A905C7F3DBFA98DE6",
+      "generator_output": "C:/Users/Billy/.codex/generated_images/019f708a-c5c8-7bc0-a9d2-ed8b97c79fb3/exec-5fd4c49c-1998-4acb-b688-3682f847cf73.png",
+      "reason": "v1 treated the contextual mark as the primary read, which does not satisfy the later coordinated-pose rule.",
+      "status": "REJECTED_PRE_IMPORT_EXPLORATION"
+    },
+    {
+      "pose": "recording_active",
+      "request": "generation-request.json",
+      "request_sha256": "6BFAEE8DA80B990D05CB68568BE8FAA1320A5C1502A7FD618C14B789BA95E168",
+      "generated_image": "rejected/attempt-01-recording-active-v1-accent-led.png",
+      "generated_image_sha256": "672B6E9BE862B4E4E7F2D36463385FAB8032372C405FE9C74A076EA1BCE029AC",
+      "generator_output": "C:/Users/Billy/.codex/generated_images/019f708a-c5c8-7bc0-a9d2-ed8b97c79fb3/exec-53b50229-5da4-429b-add4-fe032891edf0.png",
+      "reason": "v1 was generated before the face-first coordinated-pose requirement and is retained only as a non-reference audit output.",
+      "status": "REJECTED_PRE_IMPORT_EXPLORATION"
+    },
+    {
+      "pose": "charging_active",
+      "request": "generation-request.json",
+      "request_sha256": "6BFAEE8DA80B990D05CB68568BE8FAA1320A5C1502A7FD618C14B789BA95E168",
+      "generated_image": "rejected/attempt-01-charging-active-v1-accent-led.png",
+      "generated_image_sha256": "0EFA66E7D964308EAAF27C62A41A66FD9FE15F42911AF4EC6F2A72750950FB12",
+      "generator_output": "C:/Users/Billy/.codex/generated_images/019f708a-c5c8-7bc0-a9d2-ed8b97c79fb3/exec-28725aa2-01e9-4ab1-be1f-8a5664d55a02.png",
+      "reason": "v1 was generated before the face-first coordinated-pose requirement and is retained only as a non-reference audit output.",
+      "status": "REJECTED_PRE_IMPORT_EXPLORATION"
+    },
+    {
+      "pose": "charging_active",
+      "request": "generation-request-v2-face-primary.json",
+      "request_sha256": "F4B3CE763B3785A33C9C2A76BD3E1EFF026E8FA4CFA0508F12E2FB81E4BAC4E0",
+      "generated_image": "rejected/attempt-01-charging-active-v2-face-primary.png",
+      "generated_image_sha256": "BD060620061E62A05828EDFF3616A5832271BFED02EFBCC0C701DC9CF5C38019",
+      "generator_output": "C:/Users/Billy/.codex/generated_images/019f708a-c5c8-7bc0-a9d2-ed8b97c79fb3/exec-45a1ef96-c47a-4e7c-a035-fa665000cfe0.png",
+      "reason": "v2 over-corrected toward a face-only reading; it cannot be used as a visual reference after request v3 restored a restrained semantic accent.",
+      "status": "REJECTED_PRE_IMPORT_EXPLORATION"
+    },
+    {
+      "pose": "menu_active",
+      "request": "generation-request-v3-coordinated-pose.json",
+      "request_sha256": "D68697841B549C250801D029F6B5C084EA7306EF54B4ED1C605182954105D0F4",
+      "generated_image": "rejected/attempt-01-menu-active-v3-sad.png",
+      "generated_image_sha256": "79BE08C1B9287BE01D588B0DB30641175CC7ACA3639FC27BD47B91715152AA8E",
+      "generator_output": "C:/Users/Billy/.codex/generated_images/019f708a-c5c8-7bc0-a9d2-ed8b97c79fb3/exec-f4c0f027-6e7e-4328-bc26-2b9b97f35dff.png",
+      "reason": "the menu face reads sad rather than quietly composed and therefore does not satisfy the requested menu intent.",
+      "status": "REJECTED_PRE_IMPORT_EXPLORATION"
+    }
+  ],
+  "candidate_sources": [
+    {
+      "attempt": 2,
+      "pose": "menu_active",
+      "request": "generation-request-v3-coordinated-pose.json",
+      "request_sha256": "D68697841B549C250801D029F6B5C084EA7306EF54B4ED1C605182954105D0F4",
+      "generated_image": "candidate/attempt-02-menu-active-coordinated-pose.png",
+      "generated_image_sha256": "BACE43B73DAF9478F812C808EF44FD84184F5297823F07033113F0EFB2721087",
+      "generator_output": "C:/Users/Billy/.codex/generated_images/019f708a-c5c8-7bc0-a9d2-ed8b97c79fb3/exec-9b5deaa9-fcb8-4213-9800-f6b0e0c3293e.png",
+      "source_size": [1254, 1254],
+      "coordinated_pose": {
+        "facial_read": "soft inward-thinking brow pair and compact positive thinking mouth",
+        "secondary_accent": "three detached thinking dots",
+        "accent_is_required_but_secondary": true
+      },
+      "status": "CANDIDATE_GENERATED_PENDING_MACHINE_SOURCE_GATE"
+    },
+    {
+      "attempt": 3,
+      "pose": "recording_active",
+      "request": "generation-request-v3-coordinated-pose.json",
+      "request_sha256": "D68697841B549C250801D029F6B5C084EA7306EF54B4ED1C605182954105D0F4",
+      "generated_image": "candidate/attempt-03-recording-active-coordinated-pose.png",
+      "generated_image_sha256": "866A5B560C247AED1348B48C9BE9AECC6AD993BF800AAB97E251374642C80F6C",
+      "generator_output": "C:/Users/Billy/.codex/generated_images/019f708a-c5c8-7bc0-a9d2-ed8b97c79fb3/exec-1ec9deee-2c62-4e64-a101-afbae6c99bb0.png",
+      "source_size": [1254, 1254],
+      "coordinated_pose": {
+        "facial_read": "attentive brow pair and compact closed focus mouth",
+        "secondary_accent": "symmetric detached listening ripple arcs",
+        "accent_is_required_but_secondary": true
+      },
+      "status": "CANDIDATE_GENERATED_PENDING_MACHINE_SOURCE_GATE"
+    },
+    {
+      "attempt": 4,
+      "pose": "charging_active",
+      "request": "generation-request-v3-coordinated-pose.json",
+      "request_sha256": "D68697841B549C250801D029F6B5C084EA7306EF54B4ED1C605182954105D0F4",
+      "generated_image": "candidate/attempt-04-charging-active-coordinated-pose.png",
+      "generated_image_sha256": "5E424D35239476E31289335D1CAA30196F2813AC39503E3B66780F8A4DBD7BE5",
+      "generator_output": "C:/Users/Billy/.codex/generated_images/019f708a-c5c8-7bc0-a9d2-ed8b97c79fb3/exec-1c70913a-b898-45ea-90f2-5b7f3d71f12e.png",
+      "source_size": [1254, 1254],
+      "coordinated_pose": {
+        "facial_read": "relaxed lifted brows and a rounded replenishing smile",
+        "secondary_accent": "centered detached two-part breathing arc",
+        "accent_is_required_but_secondary": true
+      },
+      "status": "CANDIDATE_GENERATED_PENDING_MACHINE_SOURCE_GATE"
+    }
+  ],
+  "next_required_stage": "machine source geometry and component-separation gate",
+  "owner_review": "forbidden_until_source_and_200x200_component_parity_machine_closure_passes"
+}

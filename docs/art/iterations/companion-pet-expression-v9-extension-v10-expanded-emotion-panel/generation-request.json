@@ -1,0 +1,91 @@
+{
+  "schema": "companion.v9_expression_extension_generation_request.v10",
+  "iteration_id": "companion-pet-expression-v9-extension-v10-expanded-emotion-panel-20260718",
+  "status": "APPROVED_OWNER_FULL_SOURCE_BUNDLE_V10_20260718",
+  "requested_at": "2026-07-18T21:35:00+08:00",
+  "render_parent_iteration": "pet-expression-v9-anti-sly-cute-2026-07-15",
+  "named_prompt_delta": "expanded_twelve_emotion_repertoire: replace V8's owner-rejected eight-emotion panel with a fresh locked-V9-only twelve-emotion panel that adds calm/content, playful, anticipatory and puzzled/processing anchors while retaining the required scene vocabulary.",
+  "owner_trigger": "COMP-REQ-120; V7/V8 have good clean art direction but were rejected as a complete source bundle because the expression repertoire felt too small. Do not reuse their pixels or source them visually.",
+  "candidate_scope": "supplemental_component_source_only_expanded_twelve_emotion_anchors_for_the_required_sixteen_state_bundle_not_a_baseline_replacement",
+  "bundle_role": "expanded_non_daily_twelve_emotion_anchor_source_panel",
+  "bundle_completion_requirement": "This panel and the separately generated V9 Daily direction strip form the sixteen-state source bundle only if both outputs pass their machine gates. Neither source may export components, activate runtime behavior, or play as full-face cards before canonical owner art review.",
+  "target_profile": {
+    "grid": [3, 4],
+    "display_target_px": [200, 200],
+    "style": "pure black and white, 1-bit-ready e-paper inner-face components",
+    "runtime_status": "inactive_pending_component_export_machine_checks_and_owner_review"
+  },
+  "source_references": [
+    {
+      "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "role": "only visual reference and immutable character identity parent"
+    }
+  ],
+  "rejected_predecessors": [
+    "companion-pet-expression-v9-extension-v1-20260718",
+    "companion-pet-expression-v9-extension-v2-20260718",
+    "companion-pet-expression-v9-extension-v3-daily-eye-proof-20260718",
+    "companion-pet-expression-v9-extension-v4-emotion-transition-anchors-20260718",
+    "companion-pet-expression-v9-extension-v5-emotion-anchors-direction-repair-20260718",
+    "companion-pet-expression-v9-extension-v6-down-gaze-compact-reflection-20260718",
+    "companion-pet-expression-v9-extension-v7-daily-direction-strip-20260718",
+    "companion-pet-expression-v9-extension-v8-emotion-anchor-panel-20260718"
+  ],
+  "paired_daily_source_iteration": "companion-pet-expression-v9-extension-v9-expanded-daily-direction-strip-20260718",
+  "required_cells": [
+    "calm_content",
+    "curious_question",
+    "alert_surprised",
+    "joyful_spark",
+    "affectionate_warm",
+    "playful_bright",
+    "anticipatory_notice",
+    "puzzled_processing",
+    "recording_focus",
+    "listening_focus",
+    "menu_thinking",
+    "sleep_rest_no_moon"
+  ],
+  "transition_roles": {
+    "calm_content": "resting emotional baseline",
+    "curious_question": "question opens from calm",
+    "alert_surprised": "brief alert peak",
+    "joyful_spark": "relief into playful joy",
+    "affectionate_warm": "warm settle after joy",
+    "playful_bright": "play invitation after warmth",
+    "anticipatory_notice": "small expectation before a response",
+    "puzzled_processing": "quiet processing before resolution",
+    "recording_focus": "attention narrows into recording",
+    "listening_focus": "recording releases into listening",
+    "menu_thinking": "listening resolves into a quiet decision",
+    "sleep_rest_no_moon": "energy-down rest"
+  },
+  "same_character_not_one_expression": "One persistent V9 character identity, never a frozen neutral face: every cell must have a visibly distinct emotional read through paired brows, petite mouth, cheeks and at most one detached semantic charm while every open eye retains the exact filled V9 oval-eye type.",
+  "prompt": "Use the attached locked V9 Companion sheet as the only visual reference. Generate exactly one clean 3 rows by 4 columns source panel with twelve equally spaced V9-matched emotion anchors in this exact reading order: row one calm content, curious question, alert surprise, joyful spark; row two affectionate warm, playful bright, anticipatory notice, puzzled processing; row three recording focus, listening focus, menu thinking, peaceful sleep. This is one persistent character identity with twelve genuinely different emotional expressions, not twelve neutral copies and not a Daily gaze strip. It is static source art for future source-component entry-hold-settle choreography, never an animation flipbook, a replacement V9 sheet, or a runtime asset. Pure white background; black and white only; no text, labels, panel lines, border or device frame. HARD EYE IDENTITY INVARIANT FOR EVERY OPEN-EYE CELL: exactly two matched upright solid filled black vertical oval eye bodies on one horizontal baseline at locked-V9 compact scale. Each eye has only one compact upper primary white reflection and one much smaller static white diamond sparkle, both fully enclosed by a thick black rim; no white cap, lower-half cutout, sclera, ring, outline, pupil, lash, changed eye shape or enlarged eye. Make every emotion distinct primarily through paired brows, petite nose/mouth, cheek dots and one detached charm only: calm content has a peaceful tiny w mouth with no extra charm; curious has a question and inquiring brows; alert has a small exclamation and O mouth; joy has a spark and delighted mouth; affection has a small heart and warm cheeks; playful has an open bright happy mouth and lively paired brows without changing eyes; anticipation has lifted paired brows and a tiny eager parted mouth with one restrained detached glint; puzzled processing has gently knitted paired brows and a small uncertain mouth with no question mark or ellipsis; recording has a record dot and focused brows; listening has detached sound arcs; menu thinking has ellipsis; sleep alone uses closed curved eyes and a tiny resting mouth. The sleep cell has no detached upper mark whatsoever: no moon, crescent, Z, spark, heart, dot, question or ellipsis. Each state must read as a distinct, adorable V9 expression at 100px thumbnail while all open eyes remain exactly the same V9 eye type. No Daily direction row, no cat outline, ears, whiskers, human styling, smirk, flirtation, romance, sadness, aggression, grey, gradient, shading, texture, charging face or error face.",
+  "negative_constraints": [
+    "no hollow, ring, contour, exposed-white, white-cap or lower-half-white open eyes",
+    "no changed eye size, rotation, side-eye, drooping, eyelash or eye-hugging arc",
+    "no V1, V2, V3, V4, V5, V6, V7, V8 or V9-extension pixels, components or visual reference",
+    "no whole-face animation claim, CEMP/PBM flipbook or runtime activation",
+    "no moon, crescent, Z, spark, heart, dot, question or ellipsis in the sleep cell",
+    "no charging or error face"
+  ],
+  "planned_generated_output": "docs/art/iterations/companion-pet-expression-v9-extension-v10-expanded-emotion-panel/generated_pet_expression_extension_v10_expanded_emotion_panel_candidate.png",
+  "post_generation_gate": "Run the V9 open-eye identity gate across the 3x4 panel, then machine-check all twelve transition-bound anchors for completeness, diversity and rest-only sleep. Only if V9 and V10 both pass may the complete sixteen-state art bundle reach canonical owner review. Even owner approval permits only registered source-component extraction and entry/hold/settle composition, never full-face source-card playback.",
+  "generated_output": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-extension-v10-expanded-emotion-panel/generated_pet_expression_extension_v10_expanded_emotion_panel_candidate.png",
+    "sha256": "9475CEF565608ED70258980815B31AEEA785CB431AE5B25515FE3790ADE4DD31",
+    "status": "approved_owner_full_source_bundle",
+    "open_eye_identity_report": "docs/validation/companion-v9-extension-v10-expanded-emotion-panel-open-eye-identity-20260718.json",
+    "expanded_emotion_panel_report": "docs/validation/companion-v9-extension-v10-expanded-emotion-panel-machine-20260718.json",
+    "expanded_source_bundle_manifest": "docs/art/iterations/companion-pet-expression-v9-extension-v10-expanded-emotion-panel/expanded-source-bundle-manifest.json",
+    "expanded_source_bundle_machine_report": "docs/validation/companion-v9-expanded-expression-source-bundle-machine-20260718.json",
+    "full_source_bundle_manifest": "docs/art/iterations/companion-pet-expression-v9-extension-v11-secondary-detail-kit/full-source-bundle-manifest.json",
+    "full_source_bundle_machine_report": "docs/validation/companion-v9-full-expression-source-bundle-machine-20260718.json",
+    "owner_review_result": "docs/validation/companion-v9-full-expression-source-bundle-owner-art-review-20260718.json",
+    "owner_review_note": "docs/validation/companion-v9-full-expression-source-bundle-owner-art-review-20260718.note.txt",
+    "owner_review_summary": "docs/validation/companion-v9-full-expression-source-bundle-owner-art-review-summary-20260718.json",
+    "next_gate": "registered source-component extraction into the runtime-inactive Rig candidate"
+  }
+}

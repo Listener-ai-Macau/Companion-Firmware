@@ -1,0 +1,26 @@
+{
+  "schema": "companion.v9.special_expression_generated_source_attempt.v1",
+  "iteration": "V25",
+  "pose": "menu_active",
+  "attempt": 1,
+  "generated_at": "2026-07-20",
+  "source_path": "docs/art/iterations/companion-pet-expression-v9-extension-v25-representative-special-expression-source/rejected/attempt-01-menu-scan-read-as-listening.png",
+  "source_sha256": "CA0E37558A9071189D4A821EAE02095CF0A177A65FAF22FF5453CDED0F3CA1CC",
+  "prompt_record": "docs/art/iterations/companion-pet-expression-v9-extension-v25-representative-special-expression-source/generation-prompt-v1-representative-pose.md#menu_active",
+  "reference_inputs": [
+    {
+      "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+    }
+  ],
+  "result": "REJECTED_INTERNAL_PRE_EXPORT",
+  "rejection_reason": "The cheek-side scan trace is visually read as listening/sound waves, so the requested menu action is not representative and overlaps the recording visual language.",
+  "forbidden_next_use": [
+    "component export",
+    "prompt/reference input",
+    "browser preview",
+    "CRIG/profile",
+    "event binding",
+    "firmware flash"
+  ]
+}

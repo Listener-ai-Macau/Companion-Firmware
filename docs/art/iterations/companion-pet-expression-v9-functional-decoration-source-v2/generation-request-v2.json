@@ -1,0 +1,38 @@
+{
+  "schema": "companion.art_generation_request.v1",
+  "status": "RECORDED_BEFORE_IMAGE_GENERATION",
+  "iteration": "companion-pet-expression-v9-functional-decoration-source-v2",
+  "created_at": "2026-07-20",
+  "authority": [
+    "COMP-REQ-093",
+    "COMP-REQ-229",
+    "COMP-REQ-233",
+    "COMP-REQ-240",
+    "COMP-REQ-242"
+  ],
+  "purpose": "Replace weak legacy functional ornaments with a face-independent source sheet for the V39 two-track candidate. This request generates decorations only; the locked V9 face remains separate and unchanged.",
+  "locked_v9_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "use": "line-weight, cute restrained monochrome language and scale reference only; do not reproduce or modify the face"
+  },
+  "rejected_predecessor": "docs/validation/companion-v9-expression-total-machine-audit-20260720.owner-review.json",
+  "target_track": "functional_decoration_track_only",
+  "source_sheet": {
+    "grid": {"columns": 3, "rows": 4, "ordered_cells": [
+      "recording_input_0", "recording_input_1", "recording_input_2",
+      "bottom_charge_0", "bottom_charge_1", "bottom_charge_2",
+      "upgrade_0", "upgrade_1", "upgrade_2",
+      "error_0", "error_1", "error_2"
+    ]},
+    "cell_background": "plain white",
+    "source_only": true,
+    "forbidden": [
+      "eyes", "eyebrows", "nose", "mouth", "cheeks", "character", "full_face", "text", "digits", "labels", "UI_card", "button", "legacy_art", "custom_LUT", "color", "gray", "gradient"
+    ]
+  },
+  "runtime": {
+    "resource_activated": false,
+    "binding": "forbidden_until_source_gate_component_export_two_track_browser_wb55_parity_total_audit_and_owner_review"
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "schema": "companion.visual_iteration_ledger.v1",
+  "iteration_id": "companion-pet-expression-v9-extension-v3-daily-eye-proof-20260718",
+  "status": "REJECTED_OWNER_PREVIEW_DIRECTION_V3_20260718",
+  "product_requirements": ["COMP-REQ-117", "COMP-REQ-118"],
+  "reference_source": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "protection": "immutable locked V9 baseline and the only image supplied to generation"
+  },
+  "rejected_predecessors": [
+    {
+      "iteration_id": "companion-pet-expression-v9-extension-v1-20260718",
+      "reason": "owner-rejected changed/hollow eye geometry"
+    },
+    {
+      "iteration_id": "companion-pet-expression-v9-extension-v2-20260718",
+      "reason": "machine-rejected hollow or excessive-white daily eye bodies"
+    }
+  ],
+  "generation_request": "docs/art/iterations/companion-pet-expression-v9-extension-v3-daily-eye-proof/generation-request.json",
+  "output": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-extension-v3-daily-eye-proof/generated_pet_expression_extension_v3_daily_eye_proof_candidate.png",
+    "sha256": "1A4C6B4846FD42EA71C8F42C9070F2C0728C4D45D4F518E6FE252BBAF1E95CBF",
+    "status": "rejected_owner_preview_direction",
+    "rejection_reason": "Owner rejected V3 preview direction as still strange and missing all emotional transitions.",
+    "open_eye_identity_report": "docs/validation/companion-v9-extension-v3-daily-eye-proof-open-eye-identity-20260718.json",
+    "daily_attention_readability_report": "docs/validation/companion-v9-extension-v3-daily-eye-proof-attention-20260718.json"
+  },
+  "single_delta": "daily attention eye identity only; no new emotion vocabulary",
+  "owner_steering": {
+    "result": "需修改",
+    "source": "owner chat 2026-07-18",
+    "artifact": "docs/validation/companion-v9-extension-v3-daily-eye-proof-owner-steering-20260718.json",
+    "triage": "reject V3 as a visual/preview direction; V4 must add all-state emotional anchors and component-only transition intent"
+  },
+  "non_goals": [
+    "replace or modify the locked V9 baseline",
+    "use V1 or V2 as visual reference or component source",
+    "export components or activate runtime resources",
+    "supply sleep, charging, error or new emotion art"
+  ]
+}

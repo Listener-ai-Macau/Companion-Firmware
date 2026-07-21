@@ -1,5 +1,9 @@
 # Companion 表情参考模型
 
+> **历史参考模型。** 本文保留角色语法和外部参考；不要把它当作当前美术基线。
+> 当前 V9/V45 来源、组件 lineage 和可执行规则见
+> [companion_art_generation_lineage.md](companion_art_generation_lineage.md)。
+
 ## 用途
 
 Companion 的内脸不再按单张贴图或临时代码印象扩展。每个新状态和新动作先套入本模型，

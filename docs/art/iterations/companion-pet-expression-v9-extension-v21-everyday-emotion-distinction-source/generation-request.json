@@ -1,0 +1,50 @@
+{
+  "schema": "companion.v21_everyday_emotion_distinction_generation_request.v1",
+  "status": "REQUESTED_PENDING_PREFLIGHT_AND_GENERATION",
+  "iteration_id": "companion-pet-expression-v9-extension-v21-everyday-emotion-distinction-source-20260719",
+  "owner_requirement": "COMP-REQ-140",
+  "named_visible_variable": "Everyday emotion distinction source poses only",
+  "reference_images": [
+    {
+      "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "use": "sole character identity, open-eye geometry, primary highlight grammar, ink weight, and whitespace reference"
+    }
+  ],
+  "reference_policy": "Locked V9 is the sole visual reference. V10/V11/V17, legacy art, prior emotion panels, rejected candidates, whole-face cards, custom code art, and custom LUT are forbidden prompt inputs, sources, or fallbacks.",
+  "identity_locks": [
+    "Every pose is the same centered V9 Companion character on pure white.",
+    "Keep the two open rounded black eye silhouettes, their scale and spacing, the white primary highlight plus one small fixed sparkle in each eye, and the small centered nose anchor.",
+    "Do not introduce pupils, eyelashes, new eye shapes, eyelids, color, gray, antialiasing, texture, or an outlined face boundary."
+  ],
+  "emotion_contract": [
+    {"name": "calm", "read": "level relaxed brows, compact neutral soft mouth, quiet cheeks, centered attention"},
+    {"name": "curious", "read": "one brow slightly lifted, compact small wondering mouth, subtly raised attention, modest cheek response"},
+    {"name": "warm", "read": "gently softened brows, clearly warmer upturned mouth, fuller but restrained cheek dots, caring attention"},
+    {"name": "playful", "read": "buoyant brows, visibly bright asymmetric little grin, lively cheek response, one tiny integrated sparkle detail"},
+    {"name": "puzzled", "read": "one brow distinctly high and the other compressed, small offset thinking mouth, restrained uneven cheek response, sideward attention"},
+    {"name": "alert", "read": "both brows lifted and drawn inward, clearly rounded compact surprise mouth, tight cheek response, raised attention; no exclamation glyph"}
+  ],
+  "prompt_delta": "Generate one square, white-background, crisp monochrome pixel-ink source-art sheet containing exactly six complete, centered V9 Companion everyday emotion poses in a clean unlabelled 3 by 2 grid with generous separation and equal empty margins. The six poses are Calm, Curious, Warm, Playful, Puzzled, and Alert. Every pose must be unmistakably the same locked V9 character: identical pair of open rounded black eyes, identical eye size and spacing, identical white primary highlight plus one tiny fixed sparkle per eye, identical small centered nose, and the same black-on-white low-detail pixel-ink language. Make the emotional reads genuinely distinct through the specified brow geometry, mouth shape, cheek response, gaze emphasis, and only a tiny integrated source-ink context detail for Playful. Calm is neutral and quiet; Curious has one brow slightly raised and a small wondering mouth; Warm has softer brows, a visibly warmer upturned mouth and fuller cheeks; Playful has buoyant brows, a clear small asymmetric grin, lively cheeks and one tiny integrated sparkle; Puzzled has one high brow, one compressed brow, an offset thinking mouth and sideward attention; Alert has lifted inward brows, a compact round surprise mouth and raised attention without punctuation. This is source art for later component extraction, not a UI screenshot, an animation frame, a set of cards, or a final runtime screen.",
+  "negative_prompt": [
+    "no labels, captions, speech bubbles, borders, UI, panels, card chrome, device frame, or text",
+    "no changed eye shape, different highlight count, pupil, eyelash, wink, crying, cat face, human face, emoji, vector icon, color, gray, or antialiasing",
+    "no detached giant punctuation, no question or exclamation marks, no menu, recording, upgrade, charging, error, sleep, moon, or progress symbols",
+    "no legacy art, V10/V11/V17 imagery, whole-face replacement sheet for runtime playback, custom LUT, or code-drawn geometry"
+  ],
+  "planned_output": "docs/art/iterations/companion-pet-expression-v9-extension-v21-everyday-emotion-distinction-source/candidate/attempt-01-generated-everyday-emotion-distinction.png",
+  "pre_generation_checks": [
+    "source hash and sole locked V9 reference hash recorded",
+    "exactly six named everyday emotions recorded",
+    "no special-function, sleep, charging, error, legacy, or rejected-source fallback authorized",
+    "candidate remains unbound and runtime inactive"
+  ],
+  "post_generation_required": [
+    "record generated image SHA-256 and prompt lineage",
+    "extract only source masks with anchors, legal offsets, z-order, and hashes",
+    "prove distinct source reassemblies without whole-pose runtime playback",
+    "pass component distinction and source gate, then run canonical Chinese owner art review before binding"
+  ],
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden"
+}

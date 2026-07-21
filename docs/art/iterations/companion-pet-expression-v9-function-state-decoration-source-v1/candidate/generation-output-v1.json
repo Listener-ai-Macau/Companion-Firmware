@@ -1,0 +1,42 @@
+{
+  "schema": "companion.v9.function_state_decoration_generation_output.v1",
+  "status": "GENERATED_SOURCE_PENDING_MACHINE_GATE",
+  "generated_at": "2026-07-20",
+  "authority": [
+    "COMP-REQ-093",
+    "COMP-REQ-229",
+    "COMP-REQ-233",
+    "COMP-REQ-240"
+  ],
+  "request": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-function-state-decoration-source-v1/generation-request-v1.json",
+    "prompt_path": "docs/art/iterations/companion-pet-expression-v9-function-state-decoration-source-v1/generation-prompt-v1.md",
+    "locked_reference_path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "locked_reference_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "generator": {
+    "tool": "image_gen.imagegen",
+    "source_output_path": "C:/Users/Billy/.codex/generated_images/019f708a-c5c8-7bc0-a9d2-ed8b97c79fb3/exec-b82ca8bd-908a-4af1-aeee-b80ba7a496bd.png",
+    "referenced_image_count": 1,
+    "referenced_image": "locked_v9_reference_only"
+  },
+  "candidate_sheet": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-function-state-decoration-source-v1/candidate/generated-function-state-decoration-source-v1-candidate.png",
+    "sha256": "7A8B64F8735EF2A74F1CEB2502D029236D87EA026DFF96AE218B356E8B44E449",
+    "dimensions": [1254, 1254],
+    "layout": "3x3 unframed source cells: menu frames, upgrade frames, error frames"
+  },
+  "runtime": {
+    "resource_activated": false,
+    "active_candidate_binding": "forbidden_until_total_machine_audit_and_owner_review"
+  },
+  "non_claims": [
+    "no_locked_v9_replacement",
+    "no_complete_runtime_face_cards",
+    "no_component_export_yet",
+    "no_runtime_binding",
+    "no_firmware_flash",
+    "no_panel_or_driver_change",
+    "no_human_acceptance"
+  ]
+}

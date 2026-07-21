@@ -1,0 +1,159 @@
+{
+  "schema": "companion.v9_expression_rig_registered_state_preview_score.v1",
+  "status": "CANDIDATE_PENDING_OWNER_REVIEW",
+  "scope": "registered_states_after_daily",
+  "runtime_resource_activated": false,
+  "source_layout": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rig-layout.json",
+  "source_layout_revision": 107,
+  "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "driver_fields": ["event", "emotion", "attention", "energy", "interaction_memory"],
+  "phase_vocabulary": ["entry", "prepare", "lead", "response", "accent", "hold", "release", "return", "settle"],
+  "step_duration_ms": {"min": 80, "max": 5000},
+  "presentation": {
+    "mode": "state_bound_single_story_loop",
+    "automatic_story_rotation": false,
+    "policy": "The preview replays only the operator-selected state story. It must not advance to another attention direction without a new declared driver input."
+  },
+  "fail_closed_events": [
+    {"event": "charging", "status": "fail_closed_no_registered_components"},
+    {"event": "error", "status": "fail_closed_no_registered_components"}
+  ],
+  "performances": [
+    {
+      "name": "touch_left",
+      "family": "touch_notice",
+      "driver": {"event": "touch_tap", "emotion": "curious", "attention": "left", "energy": "high", "interaction_memory": 1},
+      "beats": ["eyes/highlights", "brows", "nose-mouth/lips", "cheeks", "small charm"],
+      "score": [
+        {"phase": "entry", "label": "entry baseline", "duration_ms": 460, "state_roles": [], "poses": {}},
+        {"phase": "prepare", "label": "left primary notices", "duration_ms": 130, "state_roles": [], "poses": {"left_eye_highlight_open": [-1, 0]}},
+        {"phase": "lead", "label": "paired primaries arrive", "duration_ms": 150, "state_roles": [], "poses": {"left_eye_highlight_open": [-2, 0], "right_eye_highlight_open": [-1, 0]}},
+        {"phase": "response", "label": "curious face answers", "duration_ms": 170, "state_roles": [], "poses": {"left_eye_highlight_open": [-2, 0], "right_eye_highlight_open": [-2, 0], "left_brow_open": [-1, -2], "right_brow_open": [-1, -2], "mouth_default": [0, 1], "left_cheek_default": [0, -1], "right_cheek_default": [0, -1]}},
+        {"phase": "accent", "label": "touch question appears", "duration_ms": 150, "state_roles": ["charm"], "poses": {"left_eye_highlight_open": [-2, 0], "right_eye_highlight_open": [-2, 0], "left_brow_open": [-1, -2], "right_brow_open": [-1, -2], "mouth_default": [0, 1], "left_cheek_default": [0, -1], "right_cheek_default": [0, -1], "charm_question": [1, -2]}},
+        {"phase": "hold", "label": "sustain hold", "duration_ms": 1000, "state_roles": ["left_brow", "right_brow", "left_eye", "right_eye", "left_highlight", "right_highlight", "left_sparkle", "right_sparkle", "left_cheek", "right_cheek", "nose", "mouth", "charm", "left_detail", "right_detail"], "match_sustain": true, "poses": {}},
+        {"phase": "release", "label": "question softens", "duration_ms": 180, "state_roles": ["charm"], "poses": {"left_eye_highlight_open": [-1, 0], "right_eye_highlight_open": [-1, 0], "left_brow_open": [-1, -1], "right_brow_open": [-1, -1], "charm_question": [1, -1]}},
+        {"phase": "return", "label": "primaries return", "duration_ms": 170, "state_roles": [], "poses": {"left_eye_highlight_open": [-1, 0], "right_eye_highlight_open": [-1, 0]}},
+        {"phase": "settle", "label": "settle baseline", "duration_ms": 620, "return_to_entry": true, "state_roles": [], "poses": {}}
+      ]
+    },
+    {
+      "name": "touch_right",
+      "family": "touch_notice",
+      "driver": {"event": "touch_tap", "emotion": "curious", "attention": "right", "energy": "high", "interaction_memory": 1},
+      "beats": ["eyes/highlights", "brows", "nose-mouth/lips", "cheeks", "small charm"],
+      "score": [
+        {"phase": "entry", "label": "entry baseline", "duration_ms": 460, "state_roles": [], "poses": {}},
+        {"phase": "prepare", "label": "right primary notices", "duration_ms": 130, "state_roles": [], "poses": {"right_eye_highlight_open": [2, 0]}},
+        {"phase": "lead", "label": "paired primaries arrive", "duration_ms": 150, "state_roles": [], "poses": {"left_eye_highlight_open": [2, 0], "right_eye_highlight_open": [5, 0]}},
+        {"phase": "response", "label": "curious face answers", "duration_ms": 170, "state_roles": [], "poses": {"left_eye_highlight_open": [5, 0], "right_eye_highlight_open": [5, 0], "left_brow_open": [1, -2], "right_brow_open": [1, -2], "mouth_default": [0, 1], "left_cheek_default": [0, -1], "right_cheek_default": [0, -1]}},
+        {"phase": "accent", "label": "touch question appears", "duration_ms": 150, "state_roles": ["charm"], "poses": {"left_eye_highlight_open": [5, 0], "right_eye_highlight_open": [5, 0], "left_brow_open": [1, -2], "right_brow_open": [1, -2], "mouth_default": [0, 1], "left_cheek_default": [0, -1], "right_cheek_default": [0, -1], "charm_question": [1, -2]}},
+        {"phase": "hold", "label": "sustain hold", "duration_ms": 1000, "state_roles": ["left_brow", "right_brow", "left_eye", "right_eye", "left_highlight", "right_highlight", "left_sparkle", "right_sparkle", "left_cheek", "right_cheek", "nose", "mouth", "charm", "left_detail", "right_detail"], "match_sustain": true, "poses": {}},
+        {"phase": "release", "label": "question softens", "duration_ms": 180, "state_roles": ["charm"], "poses": {"left_eye_highlight_open": [2, 0], "right_eye_highlight_open": [2, 0], "left_brow_open": [1, -1], "right_brow_open": [1, -1], "charm_question": [1, -1]}},
+        {"phase": "return", "label": "primaries return", "duration_ms": 170, "state_roles": [], "poses": {"left_eye_highlight_open": [1, 0], "right_eye_highlight_open": [1, 0]}},
+        {"phase": "settle", "label": "settle baseline", "duration_ms": 620, "return_to_entry": true, "state_roles": [], "poses": {}}
+      ]
+    },
+    {
+      "name": "swipe_left",
+      "family": "swipe_affection",
+      "driver": {"event": "touch_swipe", "emotion": "affectionate", "attention": "left", "energy": "high", "interaction_memory": 2},
+      "beats": ["eyes/highlights", "brows", "nose-mouth/lips", "cheeks", "side detail strokes", "small charm"],
+      "score": [
+        {"phase": "entry", "label": "entry baseline", "duration_ms": 420, "state_roles": [], "poses": {}},
+        {"phase": "prepare", "label": "left primary catches motion", "duration_ms": 120, "state_roles": [], "poses": {"left_eye_highlight_open": [-1, 0]}},
+        {"phase": "lead", "label": "paired primaries follow left", "duration_ms": 150, "state_roles": [], "poses": {"left_eye_highlight_open": [-2, 0], "right_eye_highlight_open": [-2, 0]}},
+        {"phase": "response", "label": "affectionate face follows", "duration_ms": 180, "state_roles": [], "poses": {"left_eye_highlight_open": [-2, 0], "right_eye_highlight_open": [-2, 0], "left_brow_open": [-1, -2], "right_brow_open": [-1, -2], "mouth_default": [0, 1], "left_cheek_default": [0, -1], "right_cheek_default": [0, -1]}},
+        {"phase": "accent", "label": "heart and left sweep appear", "duration_ms": 150, "state_roles": ["charm", "left_detail"], "poses": {"left_eye_highlight_open": [-2, 0], "right_eye_highlight_open": [-2, 0], "left_brow_open": [-1, -2], "right_brow_open": [-1, -2], "mouth_default": [0, 1], "left_cheek_default": [0, -1], "right_cheek_default": [0, -1], "charm_heart": [1, -2], "left_detail_swipe": [-1, 0]}},
+        {"phase": "hold", "label": "sustain hold", "duration_ms": 920, "state_roles": ["left_brow", "right_brow", "left_eye", "right_eye", "left_highlight", "right_highlight", "left_sparkle", "right_sparkle", "left_cheek", "right_cheek", "nose", "mouth", "charm", "left_detail", "right_detail"], "match_sustain": true, "poses": {}},
+        {"phase": "release", "label": "heart settles", "duration_ms": 180, "state_roles": ["charm", "left_detail"], "poses": {"left_eye_highlight_open": [-1, 0], "right_eye_highlight_open": [-1, 0], "left_brow_open": [-1, -1], "right_brow_open": [-1, -1], "charm_heart": [1, -1], "left_detail_swipe": [-1, 1]}},
+        {"phase": "return", "label": "left gaze returns", "duration_ms": 170, "state_roles": [], "poses": {"left_eye_highlight_open": [-1, 0], "right_eye_highlight_open": [-1, 0]}},
+        {"phase": "settle", "label": "settle baseline", "duration_ms": 620, "return_to_entry": true, "state_roles": [], "poses": {}}
+      ]
+    },
+    {
+      "name": "swipe_right",
+      "family": "swipe_affection",
+      "driver": {"event": "touch_swipe", "emotion": "affectionate", "attention": "right", "energy": "high", "interaction_memory": 2},
+      "beats": ["eyes/highlights", "brows", "nose-mouth/lips", "cheeks", "side detail strokes", "small charm"],
+      "score": [
+        {"phase": "entry", "label": "entry baseline", "duration_ms": 420, "state_roles": [], "poses": {}},
+        {"phase": "prepare", "label": "right primary catches motion", "duration_ms": 120, "state_roles": [], "poses": {"right_eye_highlight_open": [2, 0]}},
+        {"phase": "lead", "label": "paired primaries follow right", "duration_ms": 150, "state_roles": [], "poses": {"left_eye_highlight_open": [5, 0], "right_eye_highlight_open": [5, 0]}},
+        {"phase": "response", "label": "affectionate face follows", "duration_ms": 180, "state_roles": [], "poses": {"left_eye_highlight_open": [5, 0], "right_eye_highlight_open": [5, 0], "left_brow_open": [1, -2], "right_brow_open": [1, -2], "mouth_default": [0, 1], "left_cheek_default": [0, -1], "right_cheek_default": [0, -1]}},
+        {"phase": "accent", "label": "heart and right sweep appear", "duration_ms": 150, "state_roles": ["charm", "right_detail"], "poses": {"left_eye_highlight_open": [5, 0], "right_eye_highlight_open": [5, 0], "left_brow_open": [1, -2], "right_brow_open": [1, -2], "mouth_default": [0, 1], "left_cheek_default": [0, -1], "right_cheek_default": [0, -1], "charm_heart": [1, -2], "right_detail_swipe": [1, 0]}},
+        {"phase": "hold", "label": "sustain hold", "duration_ms": 920, "state_roles": ["left_brow", "right_brow", "left_eye", "right_eye", "left_highlight", "right_highlight", "left_sparkle", "right_sparkle", "left_cheek", "right_cheek", "nose", "mouth", "charm", "left_detail", "right_detail"], "match_sustain": true, "poses": {}},
+        {"phase": "release", "label": "heart settles", "duration_ms": 180, "state_roles": ["charm", "right_detail"], "poses": {"left_eye_highlight_open": [2, 0], "right_eye_highlight_open": [2, 0], "left_brow_open": [1, -1], "right_brow_open": [1, -1], "charm_heart": [1, -1], "right_detail_swipe": [1, 1]}},
+        {"phase": "return", "label": "right gaze returns", "duration_ms": 170, "state_roles": [], "poses": {"left_eye_highlight_open": [1, 0], "right_eye_highlight_open": [1, 0]}},
+        {"phase": "settle", "label": "settle baseline", "duration_ms": 620, "return_to_entry": true, "state_roles": [], "poses": {}}
+      ]
+    },
+    {
+      "name": "swipe_down",
+      "family": "swipe_affection",
+      "driver": {"event": "touch_swipe", "emotion": "affectionate", "attention": "down", "energy": "normal", "interaction_memory": 2},
+      "beats": ["eyes/highlights", "brows", "nose-mouth/lips", "cheeks", "small charm"],
+      "score": [
+        {"phase": "entry", "label": "entry baseline", "duration_ms": 420, "state_roles": [], "poses": {}},
+        {"phase": "prepare", "label": "primaries glance down", "duration_ms": 120, "state_roles": [], "poses": {"left_eye_highlight_open": [1, 1], "right_eye_highlight_open": [1, 1]}},
+        {"phase": "lead", "label": "paired down glance lands", "duration_ms": 150, "state_roles": [], "poses": {"left_eye_highlight_open": [2, 3], "right_eye_highlight_open": [2, 3]}},
+        {"phase": "response", "label": "soft face follows", "duration_ms": 180, "state_roles": [], "poses": {"left_eye_highlight_open": [2, 3], "right_eye_highlight_open": [2, 3], "left_brow_open": [0, -2], "right_brow_open": [0, -2], "mouth_default": [0, 1], "left_cheek_default": [0, -1], "right_cheek_default": [0, -1]}},
+        {"phase": "accent", "label": "heart settles low", "duration_ms": 150, "state_roles": ["charm"], "poses": {"left_eye_highlight_open": [2, 3], "right_eye_highlight_open": [2, 3], "left_brow_open": [0, -2], "right_brow_open": [0, -2], "mouth_default": [0, 1], "left_cheek_default": [0, -1], "right_cheek_default": [0, -1], "charm_heart": [1, -2]}},
+        {"phase": "hold", "label": "sustain hold", "duration_ms": 920, "state_roles": ["left_brow", "right_brow", "left_eye", "right_eye", "left_highlight", "right_highlight", "left_sparkle", "right_sparkle", "left_cheek", "right_cheek", "nose", "mouth", "charm", "left_detail", "right_detail"], "match_sustain": true, "poses": {}},
+        {"phase": "release", "label": "heart softens", "duration_ms": 180, "state_roles": ["charm"], "poses": {"left_eye_highlight_open": [1, 1], "right_eye_highlight_open": [1, 1], "left_brow_open": [0, -1], "right_brow_open": [0, -1], "charm_heart": [1, -1]}},
+        {"phase": "return", "label": "down glance returns", "duration_ms": 170, "state_roles": [], "poses": {"left_eye_highlight_open": [1, 0], "right_eye_highlight_open": [1, 0]}},
+        {"phase": "settle", "label": "settle baseline", "duration_ms": 620, "return_to_entry": true, "state_roles": [], "poses": {}}
+      ]
+    },
+    {
+      "name": "recording_focus",
+      "family": "recording_focus",
+      "driver": {"event": "recording_active", "emotion": "focused", "attention": "up", "energy": "high", "interaction_memory": 1},
+      "beats": ["eyes/highlights", "brows", "nose-mouth/lips", "cheeks", "small charm"],
+      "score": [
+        {"phase": "entry", "label": "entry baseline", "duration_ms": 420, "state_roles": [], "poses": {}},
+        {"phase": "prepare", "label": "primary listens up", "duration_ms": 130, "state_roles": [], "poses": {"left_eye_highlight_open": [1, -1]}},
+        {"phase": "lead", "label": "paired listening arrives", "duration_ms": 150, "state_roles": [], "poses": {"left_eye_highlight_open": [2, -3], "right_eye_highlight_open": [2, -2]}},
+        {"phase": "response", "label": "focus gathers", "duration_ms": 180, "state_roles": [], "poses": {"left_eye_highlight_open": [2, -3], "right_eye_highlight_open": [2, -3], "left_brow_open": [0, -3], "right_brow_open": [0, -3], "mouth_default": [0, -1], "left_cheek_default": [0, -1], "right_cheek_default": [0, -1]}},
+        {"phase": "accent", "label": "record mark wakes", "duration_ms": 160, "state_roles": ["charm"], "poses": {"left_eye_highlight_open": [2, -3], "right_eye_highlight_open": [2, -3], "left_brow_open": [0, -3], "right_brow_open": [0, -3], "mouth_default": [0, -1], "left_cheek_default": [0, -1], "right_cheek_default": [0, -1], "charm_record_dot": [1, -2]}},
+        {"phase": "hold", "label": "sustain hold", "duration_ms": 1100, "state_roles": ["left_brow", "right_brow", "left_eye", "right_eye", "left_highlight", "right_highlight", "left_sparkle", "right_sparkle", "left_cheek", "right_cheek", "nose", "mouth", "charm", "left_detail", "right_detail"], "match_sustain": true, "poses": {}},
+        {"phase": "release", "label": "record mark rests", "duration_ms": 180, "state_roles": ["charm"], "poses": {"left_eye_highlight_open": [1, -1], "right_eye_highlight_open": [1, -1], "left_brow_open": [0, -2], "right_brow_open": [0, -2], "charm_record_dot": [1, -1]}},
+        {"phase": "return", "label": "listening returns", "duration_ms": 170, "state_roles": [], "poses": {"left_eye_highlight_open": [1, -1], "right_eye_highlight_open": [1, -1]}},
+        {"phase": "settle", "label": "settle baseline", "duration_ms": 620, "return_to_entry": true, "state_roles": [], "poses": {}}
+      ]
+    },
+    {
+      "name": "menu_focus",
+      "family": "menu_attention",
+      "driver": {"event": "menu_hold", "emotion": "curious", "attention": "up", "energy": "high", "interaction_memory": 1},
+      "beats": ["eyes/highlights", "brows", "nose-mouth/lips", "cheeks", "small charm"],
+      "score": [
+        {"phase": "entry", "label": "entry baseline", "duration_ms": 420, "state_roles": [], "poses": {}},
+        {"phase": "prepare", "label": "primary checks menu", "duration_ms": 130, "state_roles": [], "poses": {"right_eye_highlight_open": [1, -1]}},
+        {"phase": "lead", "label": "paired menu glance arrives", "duration_ms": 150, "state_roles": [], "poses": {"left_eye_highlight_open": [2, -2], "right_eye_highlight_open": [2, -3]}},
+        {"phase": "response", "label": "curious face lifts", "duration_ms": 180, "state_roles": [], "poses": {"left_eye_highlight_open": [2, -3], "right_eye_highlight_open": [2, -3], "left_brow_open": [0, -3], "right_brow_open": [0, -3], "mouth_default": [0, 1], "left_cheek_default": [0, -1], "right_cheek_default": [0, -1]}},
+        {"phase": "accent", "label": "menu ellipsis appears", "duration_ms": 160, "state_roles": ["charm"], "poses": {"left_eye_highlight_open": [2, -3], "right_eye_highlight_open": [2, -3], "left_brow_open": [0, -3], "right_brow_open": [0, -3], "mouth_default": [0, 1], "left_cheek_default": [0, -1], "right_cheek_default": [0, -1], "charm_menu_ellipsis": [1, -2]}},
+        {"phase": "hold", "label": "sustain hold", "duration_ms": 1000, "state_roles": ["left_brow", "right_brow", "left_eye", "right_eye", "left_highlight", "right_highlight", "left_sparkle", "right_sparkle", "left_cheek", "right_cheek", "nose", "mouth", "charm", "left_detail", "right_detail"], "match_sustain": true, "poses": {}},
+        {"phase": "release", "label": "menu mark rests", "duration_ms": 180, "state_roles": ["charm"], "poses": {"left_eye_highlight_open": [1, -1], "right_eye_highlight_open": [1, -1], "left_brow_open": [0, -2], "right_brow_open": [0, -2], "charm_menu_ellipsis": [1, -1]}},
+        {"phase": "return", "label": "menu glance returns", "duration_ms": 170, "state_roles": [], "poses": {"left_eye_highlight_open": [1, -1], "right_eye_highlight_open": [1, -1]}},
+        {"phase": "settle", "label": "settle baseline", "duration_ms": 620, "return_to_entry": true, "state_roles": [], "poses": {}}
+      ]
+    },
+    {
+      "name": "sleep_enter",
+      "family": "sleep_drift",
+      "driver": {"event": "sleep", "emotion": "sleepy", "attention": "center", "energy": "low", "interaction_memory": 0},
+      "beats": ["brows", "nose-mouth/lips", "cheeks", "eyes/highlights", "small charm"],
+      "score": [
+        {"phase": "entry", "label": "entry baseline", "duration_ms": 620, "state_roles": [], "poses": {}},
+        {"phase": "prepare", "label": "face begins to soften", "duration_ms": 180, "state_roles": [], "poses": {"left_brow_open": [0, 1], "right_brow_open": [0, 1], "mouth_default": [0, 1], "left_cheek_default": [0, 1], "right_cheek_default": [0, 1]}},
+        {"phase": "lead", "label": "sleepy eyes descend", "duration_ms": 220, "state_roles": ["left_brow", "right_brow", "left_eye", "right_eye", "left_highlight", "right_highlight", "left_sparkle", "right_sparkle"], "poses": {"left_brow_sleepy": [0, 1], "right_brow_sleepy": [0, 1], "left_eye_sleepy": [0, 1], "right_eye_sleepy": [0, 1], "mouth_default": [0, 1], "left_cheek_default": [0, 1], "right_cheek_default": [0, 1]}},
+        {"phase": "response", "label": "sleep settles in", "duration_ms": 220, "state_roles": ["left_brow", "right_brow", "left_eye", "right_eye", "left_highlight", "right_highlight", "left_sparkle", "right_sparkle"], "poses": {"left_brow_sleepy": [0, 2], "right_brow_sleepy": [0, 2], "left_eye_sleepy": [0, 2], "right_eye_sleepy": [0, 2], "mouth_default": [0, 1], "left_cheek_default": [0, 1], "right_cheek_default": [0, 1]}},
+        {"phase": "accent", "label": "moon rises", "duration_ms": 180, "state_roles": ["left_brow", "right_brow", "left_eye", "right_eye", "left_highlight", "right_highlight", "left_sparkle", "right_sparkle", "charm"], "poses": {"left_brow_sleepy": [0, 2], "right_brow_sleepy": [0, 2], "left_eye_sleepy": [0, 2], "right_eye_sleepy": [0, 2], "mouth_default": [0, 1], "left_cheek_default": [0, 1], "right_cheek_default": [0, 1], "charm_sleep_moon_z": [1, -2]}},
+        {"phase": "hold", "label": "sustain hold", "duration_ms": 1300, "state_roles": ["left_brow", "right_brow", "left_eye", "right_eye", "left_highlight", "right_highlight", "left_sparkle", "right_sparkle", "left_cheek", "right_cheek", "nose", "mouth", "charm", "left_detail", "right_detail"], "match_sustain": true, "poses": {}},
+        {"phase": "release", "label": "moon settles", "duration_ms": 230, "state_roles": ["left_brow", "right_brow", "left_eye", "right_eye", "left_highlight", "right_highlight", "left_sparkle", "right_sparkle", "charm"], "poses": {"left_brow_sleepy": [0, 1], "right_brow_sleepy": [0, 1], "left_eye_sleepy": [0, 1], "right_eye_sleepy": [0, 1], "charm_sleep_moon_z": [1, -1]}},
+        {"phase": "return", "label": "calm face returns", "duration_ms": 220, "state_roles": [], "poses": {"left_brow_open": [0, 1], "right_brow_open": [0, 1], "mouth_default": [0, 1]}},
+        {"phase": "settle", "label": "settle baseline", "duration_ms": 720, "return_to_entry": true, "state_roles": [], "poses": {}}
+      ]
+    }
+  ]
+}

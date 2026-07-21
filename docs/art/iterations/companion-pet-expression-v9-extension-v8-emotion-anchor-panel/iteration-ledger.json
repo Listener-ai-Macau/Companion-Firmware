@@ -1,0 +1,26 @@
+{
+  "schema": "companion.visual_iteration_ledger.v1",
+  "iteration_id": "companion-pet-expression-v9-extension-v8-emotion-anchor-panel-20260718",
+  "status": "REJECTED_OWNER_EMOTION_REPERTOIRE_V8_20260718",
+  "product_requirements": ["COMP-REQ-116", "COMP-REQ-117", "COMP-REQ-118", "COMP-REQ-119"],
+  "reference_source": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "protection": "immutable locked V9 baseline and the only visual reference supplied to generation"
+  },
+  "paired_daily_source_iteration": "companion-pet-expression-v9-extension-v7-daily-direction-strip-20260718",
+  "generation_request": "docs/art/iterations/companion-pet-expression-v9-extension-v8-emotion-anchor-panel/generation-request.json",
+  "single_delta": "supply the remaining eight emotion anchors in a separate 2x4 source panel; do not use V7 pixels as a reference and do not alter the V7 Daily strip",
+  "generated_output": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-extension-v8-emotion-anchor-panel/generated_pet_expression_extension_v8_emotion_anchor_panel_candidate.png",
+    "sha256": "23B957F99C16956BC008D23A93F102B741C579EEB7AE96FF660199B6FEF5AF9E",
+    "eligibility": "rejected-owner-emotion-repertoire_no-component-export_no-visual-reference"
+  },
+  "non_goals": [
+    "replace or modify the locked V9 baseline",
+    "use V1 through V7 as visual reference or component source",
+    "treat source cards as an animation or source of runtime full-face playback",
+    "export components or activate runtime resources before complete-bundle gates and owner review",
+    "supply charging or error art"
+  ]
+}

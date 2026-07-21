@@ -1,0 +1,21 @@
+{
+  "schema": "companion.art_generation_attempt.v1",
+  "status": "REJECTED_BY_INTERNAL_ART_TRIAGE_BEFORE_SOURCE_GATE",
+  "generation_request": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/generation-request-attempt-05-v9-gloss-down-repair.json",
+  "source_reference_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "generated_image": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/generated_daily_down_v36_attempt_05.png",
+  "generated_image_sha256": "7E8230110FAA9E6795B1F7B4DE91E8763BDD0BAEB773236AD9F28C95B88B42E0",
+  "generator": {
+    "tool": "image_gen.imagegen",
+    "reference_image": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "reference_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "artifact_origin": "C:\\Users\\Billy\\.codex\\generated_images\\019f708a-c5c8-7bc0-a9d2-ed8b97c79fb3\\exec-5619eab3-f25e-4079-8b11-6ddb6434815b.png"
+  },
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden",
+  "rejection": {
+    "recorded_on": "2026-07-20",
+    "reason": "The V9 gloss relationship is cute but the end pose is too close to rest to read as down at native 200x200.",
+    "replacement": "generation-request-attempt-06-cute-down-attention-pose.json"
+  }
+}

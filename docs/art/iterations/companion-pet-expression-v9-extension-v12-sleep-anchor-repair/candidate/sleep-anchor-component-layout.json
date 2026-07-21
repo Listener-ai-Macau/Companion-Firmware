@@ -1,0 +1,301 @@
+{
+  "schema": "companion.v12_sleep_anchor_component_source_layout.v1",
+  "status": "CANDIDATE_SOURCE_COMPONENT_EXPORT_PENDING_OWNER_ART_REVIEW",
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden",
+  "source_policy": "generated V12 source masks only; full-face source-card playback is forbidden",
+  "source_baseline": {
+    "source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "source_image": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-extension-v12-sleep-anchor-repair/generated_pet_expression_extension_v12_sleep_anchor_repair_candidate.png",
+    "sha256": "4D61491B2AE19EA2826D2E6286A405A2EE2F3CA0A128D91630BC8CAC606F4399"
+  },
+  "source_gate": "docs/validation/companion-v9-extension-v12-sleep-anchor-repair-machine-20260719.json",
+  "normalization": {
+    "method": "generated_ink_bounds_square_crop_then_200px_threshold",
+    "source_crop": {
+      "left": 227,
+      "top": 250,
+      "side": 800
+    },
+    "normalized": "docs/art/iterations/companion-pet-expression-v9-extension-v12-sleep-anchor-repair/candidate/normalized-sleep-anchor-200x200.pbm",
+    "normalized_sha256": "2F0783EFBA6E99B0DEEDDC876AC228E87542C1764522933D8065BEC4A6D0D74A"
+  },
+  "components": [
+    {
+      "component_id": 1,
+      "name": "left_brow",
+      "source_component_box": [
+        26,
+        53,
+        54,
+        66
+      ],
+      "base_position": [
+        26,
+        53
+      ],
+      "mask_size": [
+        28,
+        13
+      ],
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v12-sleep-anchor-repair/candidate/component-masks/left_brow.pbm",
+      "mask_sha256": "5E84DA10736405890E4C7BCC19183E5DBB47B5F1FF1A409E43F5DEDCA2D48C56",
+      "preview_mask": "docs/art/iterations/companion-pet-expression-v9-extension-v12-sleep-anchor-repair/candidate/preview-layers/left_brow.png",
+      "z_index": 1,
+      "legal_offset": {
+        "min": [
+          0,
+          0
+        ],
+        "max": [
+          0,
+          0
+        ]
+      },
+      "source_sheet": "docs/art/iterations/companion-pet-expression-v9-extension-v12-sleep-anchor-repair/generated_pet_expression_extension_v12_sleep_anchor_repair_candidate.png",
+      "source_sheet_sha256": "4D61491B2AE19EA2826D2E6286A405A2EE2F3CA0A128D91630BC8CAC606F4399"
+    },
+    {
+      "component_id": 2,
+      "name": "right_brow",
+      "source_component_box": [
+        146,
+        53,
+        174,
+        66
+      ],
+      "base_position": [
+        146,
+        53
+      ],
+      "mask_size": [
+        28,
+        13
+      ],
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v12-sleep-anchor-repair/candidate/component-masks/right_brow.pbm",
+      "mask_sha256": "9110B9256E99A936FC6364DD8234E7B84CA28A2DE52A9FCD8AC58C6ADA309344",
+      "preview_mask": "docs/art/iterations/companion-pet-expression-v9-extension-v12-sleep-anchor-repair/candidate/preview-layers/right_brow.png",
+      "z_index": 2,
+      "legal_offset": {
+        "min": [
+          0,
+          0
+        ],
+        "max": [
+          0,
+          0
+        ]
+      },
+      "source_sheet": "docs/art/iterations/companion-pet-expression-v9-extension-v12-sleep-anchor-repair/generated_pet_expression_extension_v12_sleep_anchor_repair_candidate.png",
+      "source_sheet_sha256": "4D61491B2AE19EA2826D2E6286A405A2EE2F3CA0A128D91630BC8CAC606F4399"
+    },
+    {
+      "component_id": 3,
+      "name": "left_closed_eye",
+      "source_component_box": [
+        22,
+        104,
+        65,
+        120
+      ],
+      "base_position": [
+        22,
+        104
+      ],
+      "mask_size": [
+        43,
+        16
+      ],
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v12-sleep-anchor-repair/candidate/component-masks/left_closed_eye.pbm",
+      "mask_sha256": "A73E0569862B9B6CDD4CE4E645F79DB6FC691AD4D18B0538F5E609C832FB7DC3",
+      "preview_mask": "docs/art/iterations/companion-pet-expression-v9-extension-v12-sleep-anchor-repair/candidate/preview-layers/left_closed_eye.png",
+      "z_index": 3,
+      "legal_offset": {
+        "min": [
+          0,
+          0
+        ],
+        "max": [
+          0,
+          0
+        ]
+      },
+      "source_sheet": "docs/art/iterations/companion-pet-expression-v9-extension-v12-sleep-anchor-repair/generated_pet_expression_extension_v12_sleep_anchor_repair_candidate.png",
+      "source_sheet_sha256": "4D61491B2AE19EA2826D2E6286A405A2EE2F3CA0A128D91630BC8CAC606F4399"
+    },
+    {
+      "component_id": 4,
+      "name": "right_closed_eye",
+      "source_component_box": [
+        135,
+        104,
+        178,
+        120
+      ],
+      "base_position": [
+        135,
+        104
+      ],
+      "mask_size": [
+        43,
+        16
+      ],
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v12-sleep-anchor-repair/candidate/component-masks/right_closed_eye.pbm",
+      "mask_sha256": "B41D9DF810516E60449136977D3A92A4AA8D6CC2A41845D2F34B4B370AFF9A97",
+      "preview_mask": "docs/art/iterations/companion-pet-expression-v9-extension-v12-sleep-anchor-repair/candidate/preview-layers/right_closed_eye.png",
+      "z_index": 4,
+      "legal_offset": {
+        "min": [
+          0,
+          0
+        ],
+        "max": [
+          0,
+          0
+        ]
+      },
+      "source_sheet": "docs/art/iterations/companion-pet-expression-v9-extension-v12-sleep-anchor-repair/generated_pet_expression_extension_v12_sleep_anchor_repair_candidate.png",
+      "source_sheet_sha256": "4D61491B2AE19EA2826D2E6286A405A2EE2F3CA0A128D91630BC8CAC606F4399"
+    },
+    {
+      "component_id": 5,
+      "name": "left_cheek",
+      "source_component_box": [
+        12,
+        129,
+        29,
+        139
+      ],
+      "base_position": [
+        12,
+        129
+      ],
+      "mask_size": [
+        17,
+        10
+      ],
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v12-sleep-anchor-repair/candidate/component-masks/left_cheek.pbm",
+      "mask_sha256": "36084DDE338D0821D05ED31329D9B56E66FC523C89A576E9B9D327CC9E28EEF8",
+      "preview_mask": "docs/art/iterations/companion-pet-expression-v9-extension-v12-sleep-anchor-repair/candidate/preview-layers/left_cheek.png",
+      "z_index": 5,
+      "legal_offset": {
+        "min": [
+          0,
+          0
+        ],
+        "max": [
+          0,
+          0
+        ]
+      },
+      "source_sheet": "docs/art/iterations/companion-pet-expression-v9-extension-v12-sleep-anchor-repair/generated_pet_expression_extension_v12_sleep_anchor_repair_candidate.png",
+      "source_sheet_sha256": "4D61491B2AE19EA2826D2E6286A405A2EE2F3CA0A128D91630BC8CAC606F4399"
+    },
+    {
+      "component_id": 6,
+      "name": "right_cheek",
+      "source_component_box": [
+        171,
+        129,
+        188,
+        139
+      ],
+      "base_position": [
+        171,
+        129
+      ],
+      "mask_size": [
+        17,
+        10
+      ],
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v12-sleep-anchor-repair/candidate/component-masks/right_cheek.pbm",
+      "mask_sha256": "F6B0084EFDDC4C0F214C1340CE7A76A977588E7BEC20272FEDB28459760A09E7",
+      "preview_mask": "docs/art/iterations/companion-pet-expression-v9-extension-v12-sleep-anchor-repair/candidate/preview-layers/right_cheek.png",
+      "z_index": 6,
+      "legal_offset": {
+        "min": [
+          0,
+          0
+        ],
+        "max": [
+          0,
+          0
+        ]
+      },
+      "source_sheet": "docs/art/iterations/companion-pet-expression-v9-extension-v12-sleep-anchor-repair/generated_pet_expression_extension_v12_sleep_anchor_repair_candidate.png",
+      "source_sheet_sha256": "4D61491B2AE19EA2826D2E6286A405A2EE2F3CA0A128D91630BC8CAC606F4399"
+    },
+    {
+      "component_id": 7,
+      "name": "nose",
+      "source_component_box": [
+        93,
+        122,
+        107,
+        130
+      ],
+      "base_position": [
+        93,
+        122
+      ],
+      "mask_size": [
+        14,
+        8
+      ],
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v12-sleep-anchor-repair/candidate/component-masks/nose.pbm",
+      "mask_sha256": "1881DA19C4AD4FF5F3FE94C78CAEFC0399526DE3624985010B4DD8886DACE750",
+      "preview_mask": "docs/art/iterations/companion-pet-expression-v9-extension-v12-sleep-anchor-repair/candidate/preview-layers/nose.png",
+      "z_index": 7,
+      "legal_offset": {
+        "min": [
+          0,
+          0
+        ],
+        "max": [
+          0,
+          0
+        ]
+      },
+      "source_sheet": "docs/art/iterations/companion-pet-expression-v9-extension-v12-sleep-anchor-repair/generated_pet_expression_extension_v12_sleep_anchor_repair_candidate.png",
+      "source_sheet_sha256": "4D61491B2AE19EA2826D2E6286A405A2EE2F3CA0A128D91630BC8CAC606F4399"
+    },
+    {
+      "component_id": 8,
+      "name": "mouth",
+      "source_component_box": [
+        83,
+        136,
+        117,
+        147
+      ],
+      "base_position": [
+        83,
+        136
+      ],
+      "mask_size": [
+        34,
+        11
+      ],
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v12-sleep-anchor-repair/candidate/component-masks/mouth.pbm",
+      "mask_sha256": "91007503C71E2F477DC91B88C3692690408B92A2973D120D3F48476DCBC0E692",
+      "preview_mask": "docs/art/iterations/companion-pet-expression-v9-extension-v12-sleep-anchor-repair/candidate/preview-layers/mouth.png",
+      "z_index": 8,
+      "legal_offset": {
+        "min": [
+          0,
+          0
+        ],
+        "max": [
+          0,
+          0
+        ]
+      },
+      "source_sheet": "docs/art/iterations/companion-pet-expression-v9-extension-v12-sleep-anchor-repair/generated_pet_expression_extension_v12_sleep_anchor_repair_candidate.png",
+      "source_sheet_sha256": "4D61491B2AE19EA2826D2E6286A405A2EE2F3CA0A128D91630BC8CAC606F4399"
+    }
+  ],
+  "owner_gate": "V12 owner art acceptance is required before any sleep runtime binding or CRIG revision"
+}

@@ -1,0 +1,33 @@
+{
+  "schema": "companion.visual_iteration_ledger.v1",
+  "iteration_id": "companion-pet-expression-v9-extension-v7-daily-direction-strip-20260718",
+  "status": "REJECTED_OWNER_EMOTION_REPERTOIRE_V7_20260718",
+  "product_requirements": ["COMP-REQ-116", "COMP-REQ-117", "COMP-REQ-118", "COMP-REQ-119"],
+  "reference_source": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "protection": "immutable locked V9 baseline and the only visual reference supplied to generation"
+  },
+  "rejected_predecessors": [
+    "companion-pet-expression-v9-extension-v1-20260718",
+    "companion-pet-expression-v9-extension-v2-20260718",
+    "companion-pet-expression-v9-extension-v3-daily-eye-proof-20260718",
+    "companion-pet-expression-v9-extension-v4-emotion-transition-anchors-20260718",
+    "companion-pet-expression-v9-extension-v5-emotion-anchors-direction-repair-20260718",
+    "companion-pet-expression-v9-extension-v6-down-gaze-compact-reflection-20260718"
+  ],
+  "generation_request": "docs/art/iterations/companion-pet-expression-v9-extension-v7-daily-direction-strip/generation-request.json",
+  "single_delta": "change only the source layout: isolate the four Daily reflection directions into a 1x4 source strip before generating the complementary emotion anchors",
+  "generated_output": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-extension-v7-daily-direction-strip/generated_pet_expression_extension_v7_daily_direction_strip_candidate.png",
+    "sha256": "A66F84A1FD761BBF70F45E9CC6B381B1CE05811D77CD99A55EDEB886015D2423",
+    "eligibility": "rejected-owner-emotion-repertoire_no-component-export_no-visual-reference"
+  },
+  "non_goals": [
+    "replace or modify the locked V9 baseline",
+    "use V1 through V6 as visual reference or component source",
+    "treat the four source cards as an animation or source of runtime full-face playback",
+    "export components or activate runtime resources before the complete twelve-state bundle and owner gates",
+    "supply charging or error art"
+  ]
+}

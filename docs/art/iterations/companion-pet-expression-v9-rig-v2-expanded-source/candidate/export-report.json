@@ -1,0 +1,44 @@
+{
+  "schema": "companion.v9_expanded_expression_rig_export.v1",
+  "status": "PASS_SOURCE_MASK_EXPORT_CANDIDATE_RUNTIME_INACTIVE",
+  "layout": "docs/art/iterations/companion-pet-expression-v9-rig-v2-expanded-source/candidate/rig-layout.json",
+  "layout_sha256": "195CAD8924A6E6AA5562F23CBE6FDC5114EC137756E5FEEE6C9CC61EA73C590B",
+  "source_hashes": {
+    "docs\\art\\iterations\\companion-pet-expression-v9\\generated_pet_expression_sheet_v9_candidate.png": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "docs\\art\\iterations\\companion-pet-expression-v9-extension-v9-expanded-daily-direction-strip\\generated_pet_expression_extension_v9_expanded_daily_direction_strip_candidate.png": "06482F6401DF63ED16369660A3D2E4337A37C470F0007C0EAF8CBC90E6D768C5",
+    "docs\\art\\iterations\\companion-pet-expression-v9-extension-v10-expanded-emotion-panel\\generated_pet_expression_extension_v10_expanded_emotion_panel_candidate.png": "9475CEF565608ED70258980815B31AEEA785CB431AE5B25515FE3790ADE4DD31",
+    "docs\\art\\iterations\\companion-pet-expression-v9-extension-v11-secondary-detail-kit\\generated_pet_expression_extension_v11_secondary_detail_kit_candidate.png": "76B0BE9F683349490C262DD4725BDDC2252DEEDFD2B675D4EF53745D8B7C1622"
+  },
+  "state_count": 15,
+  "component_count": 96,
+  "component_pack": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-rig-v2-expanded-source/candidate/companion-v9-expanded-expression-rig-candidate-200x200.crig",
+    "sha256": "DF33E5E744C3C268DC66125321F8A3D60D11140FCAE93D326EDAF9C9CCD4BEC4",
+    "metadata": "docs/art/iterations/companion-pet-expression-v9-rig-v2-expanded-source/candidate/companion-v9-expanded-expression-rig-candidate-200x200.crig.json",
+    "total_size": 16914,
+    "component_count": 96
+  },
+  "audit_cemp": {
+    "manifest": "docs/art/iterations/companion-pet-expression-v9-rig-v2-expanded-source/candidate/expanded-expression-rig-audit-cemp-manifest.json",
+    "pack": "docs/art/iterations/companion-pet-expression-v9-rig-v2-expanded-source/candidate/companion-v9-expanded-expression-rig-audit-200x200.cemp",
+    "metadata": "docs/art/iterations/companion-pet-expression-v9-rig-v2-expanded-source/candidate/companion-v9-expanded-expression-rig-audit-200x200.cemp.json",
+    "sha256": "0914781897E536D23EBE4E272A66C0BD0BDC8E1129600D38CCC56EBA5658E015",
+    "clip_count": 15,
+    "frame_count": 105,
+    "runtime_resource_activated": false,
+    "audit_only": true
+  },
+  "component_occlusion_audit": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-rig-v2-expanded-source/candidate/component-occlusion-audit.json",
+    "sha256": "0C0B90B3BE0002391D5230C660BFA3051B3E337F80905E4853BF997FADA821DD",
+    "status": "PASS_ZERO_PROTECTED_FEATURE_OVERLAP",
+    "frame_count": 540
+  },
+  "unique_rendered_frame_hashes": 15,
+  "performance_frame_count": 105,
+  "presence_frame_count": 120,
+  "emotion_bridge_count": 45,
+  "emotion_bridge_frame_count": 315,
+  "full_face_source_card_playback": "forbidden",
+  "runtime_resource_activated": false
+}

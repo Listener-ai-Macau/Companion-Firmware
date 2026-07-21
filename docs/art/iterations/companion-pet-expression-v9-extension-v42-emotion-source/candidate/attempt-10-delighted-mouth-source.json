@@ -1,0 +1,18 @@
+{
+  "schema": "companion.art_generation_attempt.v1",
+  "status": "REJECTED_OWNER_STEERING_NATIVE_200_CROOKED_MOUTH",
+  "created_at": "2026-07-21",
+  "request": "docs/art/iterations/companion-pet-expression-v9-extension-v42-emotion-source/generation-request-v10.json",
+  "prompt": "docs/art/iterations/companion-pet-expression-v9-extension-v42-emotion-source/generation-prompt-v10.md",
+  "image": "docs/art/iterations/companion-pet-expression-v9-extension-v42-emotion-source/candidate/attempt-10-delighted-mouth-source.png",
+  "sha256": "53E7ADD35636B08F6B799DFBF171BA835705F186A54F4491F7B3D6C678105B8B",
+  "locked_v9_reference_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "owner_steering": "Owner initially required the next build to use this exact imagegen result, then rejected the native preview because the mouth reads crooked.",
+  "agent_visual_triage": "Preserved as rejected source-only evidence; it is not eligible for current export after owner rejection.",
+  "source_crop": {
+    "delighted_mouth": [577, 760, 140, 90]
+  },
+  "threshold": 128,
+  "runtime_resource_activated": false,
+  "use": "rejected source-only evidence; do not export"
+}

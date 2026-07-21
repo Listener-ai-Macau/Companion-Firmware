@@ -1,5 +1,9 @@
 # Companion 情绪系统调研与候选设计（2026-07-19）
 
+> **历史研究资料。** 这些外部研究只保留设计推理，不授权新美术或替换当前
+> V45/r7 行为。实现、prompt lineage 和 owner 约束统一看
+> [companion_art_generation_lineage.md](companion_art_generation_lineage.md)。
+
 ## 问题定义
 
 当前 15 个 source-derived candidate state 只是可用的组件基线，不能被当成 15 张

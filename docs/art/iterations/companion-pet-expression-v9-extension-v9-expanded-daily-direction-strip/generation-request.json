@@ -1,0 +1,72 @@
+{
+  "schema": "companion.v9_expression_extension_generation_request.v9",
+  "iteration_id": "companion-pet-expression-v9-extension-v9-expanded-daily-direction-strip-20260718",
+  "status": "APPROVED_OWNER_FULL_SOURCE_BUNDLE_V9_20260718",
+  "requested_at": "2026-07-18T21:20:00+08:00",
+  "render_parent_iteration": "pet-expression-v9-anti-sly-cute-2026-07-15",
+  "named_prompt_delta": "fresh_daily_strip_for_expanded_repertoire: V7's direction source had good style but its whole bundle was owner-rejected for too few expressions, so regenerate the required four Daily directions fresh from locked V9 only as the first half of a broader sixteen-state source package.",
+  "owner_trigger": "COMP-REQ-120; preserve the good clean V9 visual direction while rejecting V7/V8 as visual/source inputs and expanding the emotional repertoire beyond the prior twelve states.",
+  "candidate_scope": "supplemental_component_source_only_fresh_daily_attention_subset_of_expanded_sixteen_state_bundle_not_a_baseline_replacement",
+  "bundle_role": "fresh_daily_attention_left_right_up_down_source_strip",
+  "bundle_completion_requirement": "This strip is not an eligible component export, runtime asset, or owner-review candidate until a separately versioned twelve-emotion panel completes the expanded sixteen-state bundle and every machine gate passes.",
+  "target_profile": {
+    "grid": [1, 4],
+    "display_target_px": [200, 200],
+    "style": "pure black and white, 1-bit-ready e-paper inner-face components",
+    "runtime_status": "inactive_pending_component_export_machine_checks_and_owner_review"
+  },
+  "source_references": [
+    {
+      "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "role": "only visual reference and immutable character identity parent"
+    }
+  ],
+  "rejected_predecessors": [
+    "companion-pet-expression-v9-extension-v1-20260718",
+    "companion-pet-expression-v9-extension-v2-20260718",
+    "companion-pet-expression-v9-extension-v3-daily-eye-proof-20260718",
+    "companion-pet-expression-v9-extension-v4-emotion-transition-anchors-20260718",
+    "companion-pet-expression-v9-extension-v5-emotion-anchors-direction-repair-20260718",
+    "companion-pet-expression-v9-extension-v6-down-gaze-compact-reflection-20260718",
+    "companion-pet-expression-v9-extension-v7-daily-direction-strip-20260718",
+    "companion-pet-expression-v9-extension-v8-emotion-anchor-panel-20260718"
+  ],
+  "required_cells": [
+    "daily_attention_left",
+    "daily_attention_right",
+    "daily_attention_up",
+    "daily_attention_down"
+  ],
+  "transition_roles": {
+    "daily_attention_left": "quiet scan entry",
+    "daily_attention_right": "quiet scan response",
+    "daily_attention_up": "notice lift",
+    "daily_attention_down": "gentle return"
+  },
+  "prompt": "Use the attached locked V9 Companion sheet as the only visual reference. Generate exactly one single horizontal strip of four equally spaced, isolated V9-matched Daily attention face sources, in this exact left-to-right order: looking left, looking right, looking up, looking down. This is only the four calm Daily attention directions. Pure white background; black and white only; no text, labels, panel, border, device frame or separator lines. All four have the same one persistent V9 character identity and same calm petite mouth, cheek dots, brows and detached top diamond charm. HARD EYE IDENTITY INVARIANT: each source has exactly two matched upright solid filled black vertical oval eye bodies on one horizontal baseline at locked-V9 compact scale. Each eye has one very small compact primary white reflection plus one much smaller static white diamond sparkle. Both white marks stay enclosed in black with a thick continuous rim and never touch an eye edge; no white cap, lower-half cutout, sclera, ring, outline, pupil, lash, changed eye shape, enlarged eye or extra highlight. Direction must be unmistakably encoded by only the compact primary reflection: source 1 center at 30 percent of eye width; source 2 center at 70 percent; source 3 center at 25 percent of eye height; source 4 center at 70 percent of eye height. For source 4 the lower reflection is tiny, fully surrounded by black, and leaves a thick black lower rim. The small diamond sparkle is identical in all four sources. Do not add question, exclamation, heart, spark, recording dot, sound arcs, ellipsis, sleep mark, moon, crescent or Z. No cat outline, ears, whiskers, human styling, smirk, flirtation, romance, sadness, aggression, grey, gradient, shading, texture, labels, charging face or error face. This is static art source for later source-component choreography, never animation playback or a runtime asset.",
+  "negative_constraints": [
+    "no hollow, ring, contour, exposed-white, white-cap or lower-half-white open eyes",
+    "no reflection touching an eye edge, no large lower reflection, no weak black rim around either reflection",
+    "no changed eye size, rotation, side-eye, drooping, eyelash or eye-hugging arc",
+    "no V1, V2, V3, V4, V5, V6, V7 or V8 pixels, components or visual reference",
+    "no whole-face animation claim, CEMP/PBM flipbook or runtime activation",
+    "no question, exclamation, heart, spark, record dot, sound arcs, ellipsis, moon, crescent, Z, charging or error face"
+  ],
+  "planned_generated_output": "docs/art/iterations/companion-pet-expression-v9-extension-v9-expanded-daily-direction-strip/generated_pet_expression_extension_v9_expanded_daily_direction_strip_candidate.png",
+  "post_generation_gate": "Run the V9 open-eye identity and Daily left/right/up/down reflection-readability gates on the 1x4 strip. A pass permits only creation of the complementary expanded emotion-source request; no component export, runtime activation, full-face playback or owner art review occurs until the complete sixteen-state source bundle is generated and machine-cleared.",
+  "generated_output": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-extension-v9-expanded-daily-direction-strip/generated_pet_expression_extension_v9_expanded_daily_direction_strip_candidate.png",
+    "sha256": "06482F6401DF63ED16369660A3D2E4337A37C470F0007C0EAF8CBC90E6D768C5",
+    "status": "approved_owner_full_source_bundle",
+    "open_eye_identity_report": "docs/validation/companion-v9-extension-v9-expanded-daily-direction-strip-open-eye-identity-20260718.json",
+    "daily_attention_readability_report": "docs/validation/companion-v9-extension-v9-expanded-daily-direction-strip-attention-20260718.json",
+    "expanded_source_bundle_machine_report": "docs/validation/companion-v9-expanded-expression-source-bundle-machine-20260718.json",
+    "full_source_bundle_manifest": "docs/art/iterations/companion-pet-expression-v9-extension-v11-secondary-detail-kit/full-source-bundle-manifest.json",
+    "full_source_bundle_machine_report": "docs/validation/companion-v9-full-expression-source-bundle-machine-20260718.json",
+    "owner_review_result": "docs/validation/companion-v9-full-expression-source-bundle-owner-art-review-20260718.json",
+    "owner_review_note": "docs/validation/companion-v9-full-expression-source-bundle-owner-art-review-20260718.note.txt",
+    "owner_review_summary": "docs/validation/companion-v9-full-expression-source-bundle-owner-art-review-summary-20260718.json",
+    "next_gate": "registered source-component extraction into the runtime-inactive Rig candidate"
+  }
+}

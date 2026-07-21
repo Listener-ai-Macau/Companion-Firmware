@@ -1,0 +1,82 @@
+{
+  "schema": "companion.art_generation_request.v1",
+  "status": "RECORDED_BEFORE_IMAGE_GENERATION",
+  "iteration": "companion-pet-expression-v9-extension-v42-emotion-source",
+  "revision": 5,
+  "created_at": "2026-07-21",
+  "authority": [
+    "COMP-REQ-093",
+    "COMP-REQ-242",
+    "COMP-REQ-246",
+    "COMP-REQ-247",
+    "COMP-REQ-248",
+    "COMP-REQ-249"
+  ],
+  "supersedes_generation_attempt": "candidate/attempt-02-emotion-source.png and candidate/attempt-03-bashful-source.png for added-emotion mouth extraction only",
+  "purpose": "Produce one coherent V9 lower-face source sheet so the four added emotions use refined, readable mouth silhouettes while retaining one fixed V9 nose identity. This is source art only, never runtime face playback.",
+  "locked_v9_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "use": "sole reference for character identity, exact V9 eye bodies, primary highlight, tiny sparkle, nose anchor, monochrome ink weight, and cute restraint"
+  },
+  "reference_policy": "The locked V9 sheet is the sole image input. V42 r2 and r3 generated sheets are inactive evidence only and are not image-generation inputs.",
+  "identity_locks": [
+    "Keep the exact V9 open-eye silhouette, eye scale, eye spacing, one white primary highlight and one tiny white sparkle in each eye.",
+    "Keep one consistent centered V9 nose identity in all four cells: a small clean rounded oval with no nostrils or extra marks.",
+    "Do not redesign the character, eye body, eye highlight, nose position, face outline, or color system."
+  ],
+  "mouth_contract": [
+    {
+      "name": "delighted",
+      "mouth": "one clean open U-smile with a simple white interior, rounded ends, and no extra lower stroke"
+    },
+    {
+      "name": "bashful",
+      "mouth": "one tiny closed shallow rounded smile with two complete ends and a barely asymmetric lift, never a hook, moustache, disconnected mark, W-mouth, or O-mouth"
+    },
+    {
+      "name": "thoughtful",
+      "mouth": "one small closed soft lip with a gentle center dip and slight offset, never a squiggle, W-mouth, O-mouth, or frown"
+    },
+    {
+      "name": "focused",
+      "mouth": "one compact flat rounded line with soft ends and a calm confident weight, never a frown or broken line"
+    }
+  ],
+  "lower_face_contract": "All four cells must keep the nose-to-mouth gap clean and readable at native 200x200. Cheeks may be extracted separately and positioned lower by the Rig; do not attach cheeks to the mouth source.",
+  "source_sheet": {
+    "grid": {
+      "columns": 2,
+      "rows": 2,
+      "ordered_cells": ["delighted", "bashful", "thoughtful", "focused"]
+    },
+    "cell_background": "plain pure white",
+    "source_only": true
+  },
+  "forbidden": [
+    "new_eye_shape",
+    "pupil",
+    "eyelid",
+    "eyelash",
+    "wink",
+    "new_nose_shape_per_emotion",
+    "nostrils",
+    "face_outline",
+    "text",
+    "labels",
+    "grid_lines",
+    "card",
+    "UI",
+    "color",
+    "gray",
+    "antialiasing",
+    "legacy_art",
+    "whole_face_runtime_playback",
+    "custom_LUT",
+    "code_drawn_geometry"
+  ],
+  "runtime": {
+    "resource_activated": false,
+    "binding": "forbidden_until_source_gate_component_export_browser_wb55_parity_total_audit_and_owner_review"
+  }
+}

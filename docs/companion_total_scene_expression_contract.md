@@ -1,5 +1,10 @@
 # Companion Total Scene Expression Contract
 
+> **历史场景合同。** 本文保留早期整场景设计和验收语义；当前不能用它恢复旧的
+> whole-face route 或旧 baseline。当前上层 component Rig、编舞和 prompt lineage
+> 以 [companion_art_generation_lineage.md](companion_art_generation_lineage.md)
+> 和 [companion_v45_art_handoff.md](companion_v45_art_handoff.md) 为准。
+
 ## Purpose
 
 This contract turns the Companion's three priority product flows into living

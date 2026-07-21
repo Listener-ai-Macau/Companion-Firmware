@@ -1,0 +1,36 @@
+{
+  "schema": "companion.v9.special_expression_generation_request.v4",
+  "status": "REQUESTED_TO_GENERATE_PENDING_SOURCE",
+  "iteration": "V25",
+  "request_revision": 4,
+  "created_at": "2026-07-20",
+  "supersedes": "generation-request-v3-coherent-action-panel.json after rejected attempt 03",
+  "locked_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "allowed_reference_inputs": [
+    "locked_v9_reference_only"
+  ],
+  "forbidden_reference_inputs": [
+    "V25_rejected_attempts_01_to_03",
+    "V23_candidates_or_exports",
+    "V24_visually_rejected_sources_or_exports",
+    "legacy_art",
+    "whole_face_runtime_cards"
+  ],
+  "panel_contract": "Generate an unbordered left-to-right source panel of three same-scale faces: deliberate choosing, active listening, restorative relief. No source may use an external gesture, accent, icon, punctuation, text, dot, line, curl, wave or floating mark. All semantic contrast must come from brow geometry, mouth geometry, cheek placement and legal V9 highlight placement. This panel is source provenance only and may never be shown at runtime.",
+  "pose_contrast": {
+    "menu_active": "the only deliberate asymmetry: left brow low and near-flat, right brow high and curved, highlights share a small leftward bias, mouth is short and closed with a firm decision pinch, cheeks compact",
+    "recording_active": "the only symmetric alertness: both brows high and softly sloped inward, highlights centered and lifted, mouth is a small vertical attentive O, cheeks sit slightly outward",
+    "charging_active": "the only relaxed release: both brows arc upward and outward, highlights centered and settled, mouth is an open compact upward recovery smile, cheeks visibly lifted"
+  },
+  "rejection_conditions": [
+    "any external ink mark not part of brows, eyes, nose, mouth or cheeks",
+    "any changed V9 eye silhouette",
+    "two poses share the same brow and mouth relationship",
+    "menu reads as anger, recording as surprise, or charging as sleep",
+    "a whole-face source is used at runtime"
+  ],
+  "runtime_choreography_note": "After source acceptance, semantic function is shown by deterministic component-only action: menu highlight scan then decision landing; recording attentive arrival then compact mouth acknowledgement; charging brow-release and recovery-smile arrival. This source request creates the three distinct face anchors only."
+}

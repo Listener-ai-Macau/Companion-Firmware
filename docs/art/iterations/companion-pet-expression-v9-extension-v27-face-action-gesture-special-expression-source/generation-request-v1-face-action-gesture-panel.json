@@ -1,0 +1,74 @@
+{
+  "schema": "companion.v9.special_expression_generation_request.v6",
+  "status": "REQUESTED_TO_GENERATE_PENDING_SOURCE",
+  "iteration": "V27",
+  "request_revision": 1,
+  "created_at": "2026-07-20",
+  "purpose": "Generate one V9-only three-pose offline component-source panel after V25 and V26 failed the internal native-200x200 semantic reading gate. The source must use a strong face-primary action silhouette plus a small directly face-bound gesture that reinforces, but never replaces, the reading.",
+  "locked_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "allowed_reference_inputs": [
+    "locked_v9_reference_only"
+  ],
+  "forbidden_reference_inputs": [
+    "V26_rejected_source_or_any_derived_asset",
+    "V25_rejected_source_or_any_derived_asset",
+    "V24_rejected_source_or_any_derived_asset",
+    "V23_candidates_or_exports",
+    "legacy_art",
+    "whole_face_runtime_cards"
+  ],
+  "identity_invariants": [
+    "retain the locked V9 open oval eye silhouette, black fill, one large white oval highlight and one small white diamond sparkle per eye",
+    "retain the locked V9 eye-pair scale, spacing, baseline, nose anchor and monochrome ink weight",
+    "do not introduce a new eye shape, iris, pupil, eyelash, colour, face outline, ear, whisker or whole-face card",
+    "all brows, mouth, cheeks, highlights and secondary face-bound gestures are clean separately extractable components inside a 200x200 safe face area",
+    "use no literal menu, microphone, battery, plug, lightning, waveform, cursor, punctuation, text, heart, star or emoji",
+    "never rely on a generic face plus a detached accessory or status widget"
+  ],
+  "previous_read_failures_not_to_repeat": {
+    "menu_active": "must not read as generic neutral, worry, uncertainty, anger or generic confusion",
+    "recording_active": "must not read as concern, surprise, alarm or broadcast",
+    "charging_active": "must not read as generic excitement, sleep, Daily or ordinary happiness"
+  },
+  "panel_contract": "Generate one unbordered, unlabeled left-to-right row of exactly three same-scale faces: menu_active, recording_active, charging_active. The face-primary brow-mouth-cheek-highlight relationship must carry the action at 200x200. A small attached secondary gesture may reinforce that action only when it reads as an extension of the face rather than as a floating UI symbol. The panel is source provenance only; later runtime may export only registered components and must perform each action through a deterministic component sequence.",
+  "poses": [
+    {
+      "id": "menu_active",
+      "action_verb": "select",
+      "static_read": "clear purposeful choosing and navigation attention",
+      "facial_action": "Make a visibly focused but friendly choice face. The left brow is a firm low horizontal focus line; the right brow is also low but has a compact deliberate upturn, not a high arch. Both legal highlights point together toward the same side. The mouth is a compact closed decision curve with a quiet raised center, clearly more deliberate than Daily. Cheeks are held close and steady.",
+      "secondary_face_bound_gesture": "Add one tiny tapered inward decision sweep immediately beside each outer cheek, visibly attached to the cheek area and balanced. It must look like the face narrowing its attention, not like a cursor, arrow, menu mark, wave, dot or detached icon.",
+      "later_choreography": "highlights scan left-to-center-to-right, then brows, mouth and cheek sweeps land together on the choice"
+    },
+    {
+      "id": "recording_active",
+      "action_verb": "listen",
+      "static_read": "unmistakable active listening and a quiet ready response",
+      "facial_action": "Make an alert receptive listening face, not a worried face. Both brows are low and gently open toward the centre with soft outer ends; they must never slope downward into concern or rise into surprise. Legal highlights are centered and attentive. The mouth is a compact closed one-beat acknowledgement with a shallow double bump, clearly not an O, a frown or a smile. Cheeks open only a little.",
+      "secondary_face_bound_gesture": "Add one short single curved listening fold hugging each outer cheek/eye edge. Each fold is an extension of the face and may have only one stroke: no repeated rings, no wave train, no audio waveform, no floating sound icon.",
+      "later_choreography": "attention arrives into brows and highlights, the two listening folds make one restrained outward pulse, the mouth acknowledges once, then the face holds still"
+    },
+    {
+      "id": "charging_active",
+      "action_verb": "recover",
+      "static_read": "clear settled restorative replenishment after receiving energy",
+      "facial_action": "Make a distinctly restful recovery face, not an excited happy face. Both brows are low, soft and released outward. Legal highlights are centered and lower/settled. The mouth is a broad but low, compact closed recovery smile with relaxed ends, not a celebratory open grin. Cheeks visibly lift and soften together.",
+      "secondary_face_bound_gesture": "Add a single soft lower-cheek release curve tucked immediately beneath each cheek, like the face exhaling into relief. It must be subtle, attached to the face, and never a battery, lightning, halo, sparkle, heart or floating status icon.",
+      "later_choreography": "exact V9 Daily releases through brows, mouth, cheeks and lower-cheek curves together; it holds in quiet recovery and reverses exactly"
+    }
+  ],
+  "machine_preconditions_before_owner_review": [
+    "source gate proves locked-V9-only lineage, identity invariants, no literal UI symbols and pairwise face-primary separation",
+    "component export retains exact locked V9 identity components and source-derived brows/mouth/cheeks/face-bound gestures only",
+    "browser and target PBM replay the same deterministic component plan at native 200x200",
+    "internal visual preflight evaluates unlabeled target holds plus causal playback and rejects every wrong or generic reading before an operator prompt"
+  ],
+  "runtime_policy": {
+    "runtime_resource_activated": false,
+    "active_candidate_binding": "forbidden",
+    "unavailable_special_state_policy": "fail_closed"
+  }
+}

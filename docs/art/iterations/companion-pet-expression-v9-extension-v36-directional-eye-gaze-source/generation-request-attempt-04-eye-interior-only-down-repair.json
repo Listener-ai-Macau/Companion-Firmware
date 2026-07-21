@@ -1,0 +1,57 @@
+{
+  "schema": "companion.art_generation_request.v1",
+  "id": "companion-pet-expression-v9-extension-v36-directional-eye-gaze-source-attempt-04-eye-interior-only-down-repair",
+  "status": "WITHDRAWN_BEFORE_GENERATION_OWNER_REJECTED_LOSS_OF_CUTENESS",
+  "created_on": "2026-07-20",
+  "owner_requirement": "COMP-REQ-213",
+  "supersedes_for_direction_only": "candidate/attempt-03-generated-daily-down.json",
+  "purpose": "Withdrawn before generation: the eye-interior-only specimen would remove the V9 cute glossy eye relationship.",
+  "references": [
+    {
+      "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "usage": "locked V9 character identity reference"
+    },
+    {
+      "path": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/left_eye_open.pbm",
+      "sha256": "607A30960F6C312FC4D7DC6AD58F02E6DEB6D80EDC63388FE80671AF593DC08E",
+      "usage": "locked V9 derived left open-eye body reference"
+    },
+    {
+      "path": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/right_eye_open.pbm",
+      "sha256": "6F1394072AB1D5AD8D573E115594DD4630FA18877841E6AABD635379075094E6",
+      "usage": "locked V9 derived right open-eye body reference"
+    }
+  ],
+  "output_contract": {
+    "format": "one unlabelled source specimen of exactly two black open-eye bodies, left then right, on a plain white field; no full face",
+    "pixel_intent": "clean monochrome black ink on a plain white background; no grey, color, texture or shading",
+    "allowed_change": "only enclosed white reflection geometry inside the two eye bodies",
+    "daily_down_geometry": {
+      "primary_highlight": "modest vertically soft lower-inner reflection, never a large white disc",
+      "companion_sparkle": "clearly subordinate and nearby toward the nose side, forming a compact reflection group",
+      "rim": "generous continuous black rim above and below every white mark",
+      "relationship": "the pair reads as calm downward gaze, balanced across both eyes"
+    },
+    "must_not_render": ["star charm", "brows", "nose", "mouth", "cheeks", "face outline", "labels", "border"]
+  },
+  "forbidden": [
+    "replace or edit the locked V9 source file",
+    "new black eye silhouette used by runtime",
+    "large lower circular white discs or detached diagonal sparkles",
+    "full-face runtime frame, full-face animation loop or full-face state card",
+    "legacy art, custom LUT, code-drawn eye, candidate activation, provisioning or firmware flash"
+  ],
+  "withdrawal": {
+    "recorded_on": "2026-07-20",
+    "reason": "Owner rejected the proposal because it loses the Companion's cute feeling.",
+    "replacement": "generation-request-attempt-05-v9-gloss-down-repair.json"
+  },
+  "required_machine_gates_before_use": [
+    "generated source SHA256 and lineage record",
+    "exactly two eye-interior specimen bodies and no prohibited face decoration",
+    "native-200 daily-down reflection-group coherence and containment evidence after locked-V9-body reassembly",
+    "component-only export with legal coordinates",
+    "browser/target component-score pixel parity"
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "schema": "companion.v9_expression_extension_generation_request.v1",
+  "iteration_id": "companion-pet-expression-v9-extension-v1-20260718",
+  "render_parent_iteration": "pet-expression-v9-anti-sly-cute-2026-07-15",
+  "named_prompt_delta": "initial supplemental pose-program expansion; rejected after its eye geometry changed character identity",
+  "status": "REJECTED_OWNER_EYE_GEOMETRY_V1_20260718",
+  "requested_at": "2026-07-18T17:53:00+08:00",
+  "owner_trigger": "COMP-REQ-116; failed all-V9 atlas review: existing icon swaps and tiny Daily offsets do not supply enough visually distinct emotion or scene poses. Sleep must omit the moon.",
+  "candidate_scope": "supplemental_component_source_only_not_a_baseline_replacement",
+  "target_profile": {
+    "grid": [3, 4],
+    "display_target_px": [200, 200],
+    "style": "pure black and white, 1-bit-ready e-paper inner-face components",
+    "runtime_status": "inactive_pending_component_export_machine_checks_and_owner_review"
+  },
+  "source_references": [
+    {
+      "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "role": "locked character identity reference; do not replace, crop into the output, or modify"
+    }
+  ],
+  "required_cells": [
+    "daily_attention_left",
+    "daily_attention_right",
+    "daily_attention_up",
+    "daily_attention_down",
+    "curious_question",
+    "affectionate_delight",
+    "joyful_spark",
+    "alert_surprised",
+    "recording_focus",
+    "listening_focus",
+    "menu_thinking",
+    "sleep_rest_no_moon"
+  ],
+  "prompt": "Use the attached locked V9 Companion inner-face sheet as the only character identity reference. Generate a new supplemental 3 rows by 4 columns contact sheet of exactly 12 equally spaced source poses for component extraction; this is an extension candidate, never a replacement for the attached V9 source. Pure white background, crisp filled black upright oval eyes, matched eye size and horizontal baseline, one dominant white primary reflection and a small static V9-like diamond identity sparkle, short paired rounded brows, tiny button nose, delicate petite mouth, cheek dots, generous whitespace, no labels or device frame. Keep the same sweet front-facing Companion identity. Every non-sleep pose must change eyes, paired brows, mouth and cheeks together enough to remain distinct at a 100 px thumbnail. Row 1 is daily attention left, right, up, down: make the four directions clearly distinguishable through deliberate primary-reflection placement and coordinated brow/mouth/cheek response, not only a one-pixel shift, while keeping eye bodies upright and matched. Row 2 is curious question, affectionate delight with a small heart, joyful sparkle, and alert surprised response with a restrained exclamation. Row 3 is focused recording with a record dot, listening focus with small sound arcs, menu thinking with ellipsis, and peaceful sleep with closed eyes and a soft resting mouth. The sleep cell must have no moon, no crescent and no Z mark. Charms stay detached in whitespace and never substitute for facial emotion. No cat outline, ears, whiskers, human styling, lashes, eyelid arcs touching eyes, side-eye, smirk, flirtatious look, aggression, grey, shading, gradients, noisy texture, text, panels or full-body art. Do not create charging or error faces.",
+  "negative_constraints": [
+    "do not alter or replace the locked V9 source sheet",
+    "no moon/crescent/Z in sleep_rest_no_moon",
+    "no whole-face sprite sheet runtime claim",
+    "no charging/error expression",
+    "no lopsided or warped eye bodies",
+    "no second mobile highlight track",
+    "no label text in any cell"
+  ],
+  "planned_generated_output": "docs/art/iterations/companion-pet-expression-v9-extension-v1/generated_pet_expression_extension_v1_candidate.png",
+  "generated_output": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-extension-v1/generated_pet_expression_extension_v1_candidate.png",
+    "sha256": "CDBE9AE70FCEA2E03BE4341E72AB6382972054F00BCA9F01DA05B78B275D6560",
+    "status": "rejected_owner_eye_geometry_20260718",
+    "rejection_reason": "white-outline/ring and drooping eye constructions departed from locked V9 identity and read as strange or overly deep"
+  },
+  "next_prompt_delta": "V2 must retain solid black upright V9 eye bodies for every open-eye cell; vary emotion through brows, mouth, cheeks and detached charms rather than eye-body deformation.",
+  "post_generation_gate": "Extract only source-confirmed component masks into a separate candidate Rig; no runtime activation, CEMP/PBM flipbook, firmware flash, or owner pass claim before machine provenance/diversity checks and a fresh canonical review."
+}

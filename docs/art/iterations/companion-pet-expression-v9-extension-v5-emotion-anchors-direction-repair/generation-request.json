@@ -1,0 +1,77 @@
+{
+  "schema": "companion.v9_expression_extension_generation_request.v5",
+  "iteration_id": "companion-pet-expression-v9-extension-v5-emotion-anchors-direction-repair-20260718",
+  "status": "REJECTED_MACHINE_OPEN_EYE_IDENTITY_V5_20260718",
+  "requested_at": "2026-07-18T20:10:00+08:00",
+  "render_parent_iteration": "pet-expression-v9-anti-sly-cute-2026-07-15",
+  "named_prompt_delta": "daily_attention_reflection_direction_repair: retain the V4 all-state emotional anchor program but repair only left/right/up/down compact primary-reflection placement.",
+  "owner_trigger": "COMP-REQ-119; V4 all-state anchors passed identity/diversity but right/down attention failed automatic directional readability.",
+  "candidate_scope": "supplemental_component_source_only_all_registered_emotion_anchors_with_daily_reflection_repair_not_a_baseline_replacement",
+  "target_profile": {
+    "grid": [3, 4],
+    "display_target_px": [200, 200],
+    "style": "pure black and white, 1-bit-ready e-paper inner-face components",
+    "runtime_status": "inactive_pending_component_export_machine_checks_and_owner_review"
+  },
+  "source_references": [
+    {
+      "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "role": "only visual reference and immutable character identity parent"
+    }
+  ],
+  "rejected_predecessors": [
+    "companion-pet-expression-v9-extension-v1-20260718",
+    "companion-pet-expression-v9-extension-v2-20260718",
+    "companion-pet-expression-v9-extension-v3-daily-eye-proof-20260718",
+    "companion-pet-expression-v9-extension-v4-emotion-transition-anchors-20260718"
+  ],
+  "required_cells": [
+    "daily_attention_left",
+    "daily_attention_right",
+    "daily_attention_up",
+    "daily_attention_down",
+    "curious_question",
+    "alert_surprised",
+    "joyful_spark",
+    "affectionate_warm",
+    "recording_focus",
+    "listening_focus",
+    "menu_thinking",
+    "sleep_rest_no_moon"
+  ],
+  "transition_roles": {
+    "daily_attention_left": "quiet scan entry",
+    "daily_attention_right": "quiet scan response",
+    "daily_attention_up": "notice lift",
+    "daily_attention_down": "gentle return",
+    "curious_question": "question opens from notice",
+    "alert_surprised": "brief alert peak",
+    "joyful_spark": "relief into playful joy",
+    "affectionate_warm": "warm settle after joy",
+    "recording_focus": "attention narrows into recording",
+    "listening_focus": "recording releases into listening",
+    "menu_thinking": "listening resolves into a quiet decision",
+    "sleep_rest_no_moon": "energy-down rest"
+  },
+  "same_character_not_one_expression": "One persistent V9 character identity, never one frozen neutral expression: every named cell changes brows, petite mouth, cheeks and/or detached charm while all open eyes retain one exact eye type.",
+  "prompt": "Use the attached locked V9 Companion sheet as the only visual reference. Generate one polished 3 rows by 4 columns source contact sheet with exactly twelve equally spaced V9-matched anchors in this order: daily attention left, right, up, down; curious question; brief alert surprise; joyful spark; affectionate warm; recording focus; listening focus; menu thinking; peaceful sleep. This is one persistent character identity with twelve different emotional expressions, not twelve neutral-face variations. It is a component-source candidate for later entry-hold-settle choreography, never a replacement V9 sheet or animation flipbook. Pure white background; black and white only; no text, panel, border or device frame. HARD EYE IDENTITY INVARIANT FOR EVERY OPEN-EYE CELL: exactly two matched upright solid filled black vertical oval eye bodies on one horizontal baseline, with compact locked-V9 scale and whitespace. Each eye has only one compact upper primary white reflection and one much smaller static white diamond sparkle. No white cap, lower-half cutout, sclera, ring, outline, pupil, lash, altered eye shape or enlarged eye. DAILY DIRECTION REPAIR: in both eyes of cell 1 the compact primary reflection center is clearly left-biased at about 30 percent of eye width; cell 2 is clearly right-biased at about 70 percent; cell 3 is clearly upper-biased near 25 percent of eye height; cell 4 is clearly lower-biased near 70 percent. These are small internal reflection shifts, not giant white holes. The diamond sparkle remains static. Communicate all emotion via paired brows, petite nose/mouth, cheeks and at most one detached charm: curious question, alert exclamation/O mouth, joy spark/joyful mouth, affection heart/warm cheeks, recording dot/focused brow, listening sound arcs, menu ellipsis, sleep closed curved eyes and tiny rest mouth with no moon/crescent/Z. Each state must read as a distinct, adorable V9 expression at 100px thumbnail while eye bodies remain the same. No cat outline, ears, whiskers, human styling, smirk, flirtation, romance, sadness, aggression, grey, gradient, shading, texture, labels, charging face or error face.",
+  "negative_constraints": [
+    "no hollow, ring, contour, exposed-white, white-cap or lower-half-white open eyes",
+    "no changed eye size, rotation, side-eye, drooping, eyelash or eye-hugging arc",
+    "no V1, V2, V3 or V4 pixels, components or visual reference",
+    "no whole-face animation claim, CEMP/PBM flipbook or runtime activation",
+    "no moon, crescent, Z, charging or error face"
+  ],
+  "planned_generated_output": "docs/art/iterations/companion-pet-expression-v9-extension-v5-emotion-anchors-direction-repair/generated_pet_expression_extension_v5_emotion_anchors_direction_repair_candidate.png",
+  "post_generation_gate": "Run V9 open-eye identity, Daily left/right/up/down reflection-readability and twelve-anchor completeness/diversity gates. Only a machine-passing candidate can reach owner review. Even then, later motion must be registered source-component entry/hold/settle composition, never whole-face source-cell playback.",
+  "generated_output": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-extension-v5-emotion-anchors-direction-repair/generated_pet_expression_extension_v5_emotion_anchors_direction_repair_candidate.png",
+    "sha256": "36EC77426A2AE94C440B8C871880E15702242C84173C7BDFFE93B4BDDD93C819",
+    "status": "rejected_machine_open_eye_identity",
+    "machine_failure": "daily_attention_down eye bodies fell below the V9 black-fill floor; the primary reflection also remained too high for a readable down gaze.",
+    "open_eye_identity_report": "docs/validation/companion-v9-extension-v5-emotion-anchors-direction-repair-open-eye-identity-20260718.json",
+    "daily_attention_readability_report": "docs/validation/companion-v9-extension-v5-emotion-anchors-direction-repair-attention-20260718.json",
+    "emotion_transition_anchor_report": "docs/validation/companion-v9-extension-v5-emotion-anchors-direction-repair-machine-20260718.json"
+  }
+}

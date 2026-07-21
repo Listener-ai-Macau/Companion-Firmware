@@ -1,0 +1,22 @@
+{
+  "schema": "companion.art_generation_request.v1",
+  "id": "companion-pet-expression-v9-extension-v36-directional-eye-gaze-source-attempt-08-up-rig-legibility",
+  "status": "GENERATED_NOT_SELECTED_OWNER_RETAINED_ATTEMPT_01_UP_REFERENCE",
+  "created_on": "2026-07-20",
+  "owner_requirement": "COMP-REQ-218",
+  "purpose": "Create source-only cute V9 Daily-up reflections that remain clearly image-up after fixed V9 eye-body normalization.",
+  "reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "usage": "The locked V9 image is the only generator reference. V36 attempt-01 remains comparison evidence and is not a prompt input."
+  },
+  "output_contract": {
+    "format": "one unlabelled 200x200-equivalent V9 Daily-up source face",
+    "pixel_intent": "clean monochrome black ink on plain white; no grey, color, texture or shading",
+    "allowed_change": "only the enclosed large glossy oval and small four-point companion sparkle inside each existing open black eye silhouette",
+    "rig_legibility": "after normalization into fixed V9 eye bodies, both dominant reflections are at least 3 px upward from exact V9 Daily rest; both sparkles travel with their primary and all white marks retain a continuous black rim",
+    "protected_identity": ["V9 outer black eye silhouette, placement and scale", "single V9 star charm only", "brows", "nose and mouth", "cheeks", "white background and 200x200 composition"]
+  },
+  "forbidden": ["replace or edit locked V9", "new outer eye silhouette, eye size or eye placement", "large pupil-like white disc, detached sparkle, cross-eye placement or extra charm", "new face, brow, mouth, cheek or charm art", "full-face runtime frame or animation loop", "legacy art, custom LUT, code-drawn eye, activation, provisioning or firmware flash"],
+  "required_machine_gates_before_use": ["generated source SHA256 and lineage", "fixed-V9-eye-body containment and >=3px up-primary delta", "native-200 cute-gloss pair evidence", "component-only export with legal coordinates", "browser/target component-score parity"]
+}

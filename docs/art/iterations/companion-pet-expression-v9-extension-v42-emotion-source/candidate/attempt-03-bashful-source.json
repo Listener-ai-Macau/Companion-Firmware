@@ -1,0 +1,13 @@
+{
+  "schema": "companion.art_generation_attempt.v1",
+  "status": "ACCEPTED_SOURCE_ONLY_AFTER_AGENT_VISUAL_TRIAGE",
+  "created_at": "2026-07-21",
+  "request": "docs/art/iterations/companion-pet-expression-v9-extension-v42-emotion-source/generation-request-v3.json",
+  "prompt": "docs/art/iterations/companion-pet-expression-v9-extension-v42-emotion-source/generation-prompt-v3.md",
+  "image": "docs/art/iterations/companion-pet-expression-v9-extension-v42-emotion-source/candidate/attempt-03-bashful-source.png",
+  "sha256": "6088781812BFC1F908B35876B74356D71CEDDCF93288FFF61F65163F57A0F073",
+  "locked_v9_reference_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "agent_visual_triage": "Accepted: exact V9 open-eye identity and nose anchor are retained. Both brows visibly gather inward, cheeks sit higher and closer to the mouth, and the mouth is a small asymmetric sideways hook rather than the Daily W-mouth.",
+  "runtime_resource_activated": false,
+  "use": "source-only; export only brows, mouth, and cheeks before any preview or target use"
+}

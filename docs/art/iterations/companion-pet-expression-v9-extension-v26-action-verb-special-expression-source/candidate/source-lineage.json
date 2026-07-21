@@ -1,0 +1,64 @@
+{
+  "schema": "companion.v26.action_verb_special_expression_source_lineage.v1",
+  "status": "REJECTED_INTERNAL_VISUAL_PREFLIGHT_AUDIT_ONLY",
+  "iteration": "V26",
+  "locked_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "allowed_reference_inputs": [
+    "locked_v9_reference_only"
+  ],
+  "forbidden_reference_inputs": [
+    "V25_rejected_source_or_any_derived_asset",
+    "V24_rejected_source_or_any_derived_asset",
+    "V23_candidates_or_exports",
+    "legacy_art",
+    "whole_face_runtime_cards"
+  ],
+  "generation_request": "docs/art/iterations/companion-pet-expression-v9-extension-v26-action-verb-special-expression-source/generation-request-v1-action-verb-panel.json",
+  "generation_prompt": "docs/art/iterations/companion-pet-expression-v9-extension-v26-action-verb-special-expression-source/generation-prompt-v1-action-verb-panel.md",
+  "source_panel": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-extension-v26-action-verb-special-expression-source/candidate/attempt-01-action-verb-panel.png",
+    "sha256": "8DFDE4E7F4E6A53A95500FFAC40DAD7987E5931942AF6DC771D0D28ED648D0EC",
+    "size": [1983, 793],
+    "pose_order": [
+      "menu_active",
+      "recording_active",
+      "charging_active"
+    ],
+    "crop_columns": [
+      [0, 0, 661, 793],
+      [661, 0, 1322, 793],
+      [1322, 0, 1983, 793]
+    ]
+  },
+  "source_policy": {
+    "offline_component_source_only": true,
+    "runtime_resource_activated": false,
+    "active_candidate_binding": "forbidden",
+    "prohibited_before_machine_closure_and_internal_visual_preflight": [
+      "whole_panel_playback",
+      "whole_face_replacement",
+      "CRIG_export",
+      "profile_generation",
+      "event_binding",
+      "firmware_flash",
+      "panel_output",
+      "owner_art_prompt"
+    ],
+    "internal_visual_preflight": "docs/validation/companion-v26-action-verb-special-expression-internal-visual-preflight-20260720.json",
+    "audit_only_after_preflight_failure": true,
+    "forbidden_as_future_visual_prompt_or_reference_input": true,
+    "prohibited_after_preflight_failure": [
+      "owner_art_review",
+      "CRIG_export",
+      "profile_generation",
+      "event_binding",
+      "firmware_flash",
+      "physical_panel_claim",
+      "whole_face_fallback",
+      "player_rewrite_to_mask_the_semantic_failure"
+    ]
+  }
+}
