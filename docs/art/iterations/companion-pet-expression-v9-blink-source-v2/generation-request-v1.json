@@ -1,0 +1,48 @@
+{
+  "schema": "companion.art_generation_request.v1",
+  "status": "RECORDED_BEFORE_IMAGE_GENERATION",
+  "iteration": "companion-pet-expression-v9-blink-source-v2",
+  "revision": 1,
+  "created_at": "2026-07-21",
+  "authority": ["COMP-REQ-093", "COMP-REQ-256", "COMP-REQ-261", "COMP-REQ-267"],
+  "purpose": "Replace the rejected V44 abrupt blink source with matched V9-derived half-close, closed, and half-open eye components for a readable synchronized blink transition. This is source-only component art, not a face or animation sheet.",
+  "locked_v9_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "use": "sole visual reference for the fixed black V9 eye identity, scale, spacing, rounded ink weight and friendly restraint"
+  },
+  "reference_policy": "The locked V9 sheet is the only image reference. V44 blink art is rejected evidence only and is not an image-generation input.",
+  "source_sheet": {
+    "grid": {
+      "columns": 6,
+      "rows": 1,
+      "ordered_cells": [
+        "left_half_close",
+        "right_half_close",
+        "left_closed",
+        "right_closed",
+        "left_half_open",
+        "right_half_open"
+      ]
+    },
+    "cell_background": "plain pure white",
+    "source_only": true,
+    "allowed_exports": ["left_half_close", "right_half_close", "left_closed", "right_closed", "left_half_open", "right_half_open"]
+  },
+  "blink_contract": {
+    "pairing": "left/right matched, same baseline and synchronized",
+    "stages": "open base face -> half_close pair -> closed pair -> half_open pair -> open base face",
+    "shape": "temporary V9-derived eye-closure components only; preserve the same compact friendly eye grammar, no new emotion or eye identity",
+    "motion": "visible entry and reopen transition, closed dwell 60-100 ms, each transition target 80-140 ms, post-blink settle target 900-1400 ms",
+    "native_target": "each pair is independently registered at the V9 eye anchors and must remain within the original eye footprint; no brow, mouth, nose, cheek, highlight or sparkle source is included"
+  },
+  "native_review_gate": {
+    "canvas": "200x200 after component placement",
+    "threshold": "1bpp black/white after source export",
+    "symmetry": "each left/right stage pair has matched visual mass within 2 black pixels after mirror normalization",
+    "stage_separation": "half-close and half-open are visibly distinct from closed at native 200x200, while half-close and half-open retain the same V9 eye identity",
+    "manual_visual_triage": "reject full face, changed eye body grammar, lashes, winks, side-eye, sleep face, romance/sad eyes, text, labels, grid, border or device frame"
+  },
+  "forbidden": ["whole_face_runtime_playback", "new_eye_shape", "open_eye_identity", "pupil", "highlight", "sparkle", "brow", "mouth", "nose", "cheek", "lash", "wink", "sleep_face", "text", "label", "grid", "border", "device_frame", "color", "gray", "gradient", "shading", "texture", "legacy_art", "custom_LUT", "code_drawn_geometry"],
+  "runtime": {"resource_activated": false, "binding": "forbidden_until_source_gate_component_export_browser_wb55_parity_total_audit_and_owner_review"}
+}

@@ -1,0 +1,124 @@
+{
+  "schema": "companion.v39_two_track_rig_layout.v1",
+  "status": "CANDIDATE_TRACK_MODEL_VERSIONED_RUNTIME_INACTIVE",
+  "revision": 39,
+  "authority": [
+    "COMP-REQ-093",
+    "COMP-REQ-229",
+    "COMP-REQ-233",
+    "COMP-REQ-239",
+    "COMP-REQ-240",
+    "COMP-REQ-242"
+  ],
+  "locked_v9_source": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "source_authority": {
+    "v22_face_layout": {
+      "path": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/target-rig-attempt-01/v22-emotion-separation-target-rig-layout.json",
+      "sha256": "3118338BCE6BD55BAAA40C1254B332805F2524425383CA104BA8E5FEEE01B953",
+      "component_count": 37
+    },
+    "v38_special_source_layout": {
+      "path": "docs/art/iterations/companion-pet-expression-v9-function-state-decoration-rig-v1/candidate/function-state-component-layout.json",
+      "sha256": "C81EC9F22BE85130FAFBC0E92795EE2E132AF7BCC289D15E64F6AEC2AE1141E9",
+      "component_count": 57,
+      "crig": "docs/art/iterations/companion-pet-expression-v9-function-state-decoration-rig-v1/candidate/companion-v9-function-state-rig-candidate-200x200.crig",
+      "crig_sha256": "2535E834DB2FFF870F3796C1C9F8FD4672DBA9C2C9CDB4A330E4C33C0A6C8145",
+      "reuse_rule": "source_masks_only; the rejected V38 face/function score topology is not reused"
+    },
+    "rejected_v38_review": "docs/validation/companion-v9-expression-total-machine-audit-20260720.owner-review.json"
+  },
+  "composition": {
+    "canvas": "200x200_1bpp_white_is_one_msb",
+    "final_plan": "deterministic_union(expression_track, functional_decoration_track)",
+    "ordering": "stable_ascending_z_index_then_expression_before_functional",
+    "maximum_layers": 16,
+    "no_mask_synthesis": true,
+    "runtime_binding": "forbidden_until_v39_machine_audit_and_owner_review"
+  },
+  "expression_track": {
+    "driven_only_by": [
+      "emotion",
+      "attention",
+      "energy",
+      "interaction_memory"
+    ],
+    "face_component_ids": [
+      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+      20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37
+    ],
+    "performances": {
+      "calm_presence": {"emotion": "calm", "base_face": [13, 16, 2, 6, 1, 5, 3, 7, 14, 17, 4, 15]},
+      "warm_presence": {"emotion": "affectionate", "base_face": [33, 36, 2, 6, 1, 5, 3, 7, 34, 37, 4, 35]},
+      "curious_question": {
+        "emotion": "curious",
+        "base_face": [18, 21, 2, 6, 1, 5, 3, 7, 19, 22, 4, 20],
+        "expression_owned_accent_steps": [[512], [513], [514]]
+      },
+      "alert_exclamation": {
+        "emotion": "alert",
+        "base_face": [8, 11, 2, 6, 1, 5, 3, 7, 9, 12, 4, 10],
+        "expression_owned_accent_steps": [[521], [522], [523]]
+      },
+      "playful_presence": {"emotion": "playful", "base_face": [23, 24, 27, 2, 6, 1, 5, 3, 7, 25, 28, 4, 26]},
+      "sleepy_presence": {
+        "emotion": "sleepy",
+        "base_face_steps": [
+          [13, 16, 2, 6, 1, 5, 3, 7, 14, 17, 4, 15],
+          [539, 540, 541, 542, 14, 17, 4, 543],
+          [539, 540, 541, 542, 14, 17, 4, 543, 544],
+          [539, 540, 541, 542, 14, 17, 4, 543, 544, 531],
+          [539, 540, 541, 542, 14, 17, 4, 543, 544, 532]
+        ]
+      }
+    },
+    "forbidden": [
+      "functional_event_selects_emotion",
+      "whole_face_card",
+      "code_drawn_face"
+    ]
+  },
+  "functional_decoration_track": {
+    "driven_only_by": [
+      "functional_event"
+    ],
+    "events": {
+      "recording_input": {"frames": [[500], [501, 502], [503, 504, 505]], "durations_ms": [700, 420, 420]},
+      "bottom_connector_charging": {"frames": [[506], [507, 508], [509, 510, 511]], "durations_ms": [700, 420, 420]},
+      "upgrade_progress": {"frames": [[548], [549], [550]], "durations_ms": [700, 420, 900]},
+      "error_caution": {"frames": [[551], [552], [553]], "durations_ms": [260, 260, 1200]}
+    },
+    "allowed_component_ids": [500, 501, 502, 503, 504, 505, 506, 507, 508, 509, 510, 511, 548, 549, 550, 551, 552, 553],
+    "forbidden": [
+      "face_component_id",
+      "functional_event_selects_emotion",
+      "functional_event_mutates_brow_eye_mouth_or_cheek",
+      "daily_face_substitution_when_source_missing"
+    ]
+  },
+  "menu_entry_exception": {
+    "event": "menu_entry_notice",
+    "state_scene": "touch",
+    "frames": [[545], [546], [547]],
+    "durations_ms": [140, 140, 180],
+    "maximum_expression_duration_ms": 500,
+    "after_last_cue": "withdraw_expression_and_functional_tracks_then_show_menu_ui",
+    "forbidden": [
+      "persistent_menu_score",
+      "selection_loop",
+      "expression_rig_behind_menu_ui",
+      "functional_track_behind_menu_ui"
+    ]
+  },
+  "quarantined_rejected_v38_face_components": [554, 555, 556],
+  "unassigned_source_components_require_explicit_future_authority": [515, 516, 517, 518, 519, 520, 524, 525, 526, 527, 528, 529, 530, 533, 534, 535, 536, 537, 538],
+  "non_claims": [
+    "no_v38_profile_promotion",
+    "no_runtime_binding",
+    "no_firmware_flash",
+    "no_panel_or_driver_change",
+    "no_human_acceptance"
+  ]
+}

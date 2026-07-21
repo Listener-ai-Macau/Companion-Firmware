@@ -1,0 +1,46 @@
+{
+  "schema": "companion.v44_blink_stable_center_layout_gate.v1",
+  "status": "PASS_V44_BLINK_STABLE_CENTER_RUNTIME_INACTIVE",
+  "authority": [
+    "COMP-REQ-093",
+    "COMP-REQ-261"
+  ],
+  "locked_v9_source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "blink_source": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-blink-source-v1/candidate/attempt-01-blink-component-source.png",
+    "sha256": "BAAC2D677AAC557AB74E54718B2748C4FA8D460715B8C96AB1491FD7894504FB",
+    "dimensions": [
+      1774,
+      887
+    ],
+    "request": "docs/art/iterations/companion-pet-expression-v9-blink-source-v1/generation-request-v1.json",
+    "left_mask_sha256": "C29EF1CD41D9626C0EA754A1F40AB7BACEAEA49F2B280402869BD6D9CBA90ACB",
+    "right_mask_sha256": "F472186E09F03C7C98FDD3C3997F58CFD4D49C458B009CAE8A871A8B7FDFE755",
+    "mirror_pixel_diff": 2
+  },
+  "idle_contract": {
+    "automatic_gaze": "center",
+    "synchronized_blink_cues": [
+      "calm_blink_close",
+      "calm_blink_hold"
+    ],
+    "durations_ms": [
+      110,
+      90
+    ],
+    "open_eye_components_removed": [
+      1,
+      2,
+      3,
+      5,
+      6,
+      7
+    ]
+  },
+  "runtime_resource_activated": false,
+  "non_claims": [
+    "no_lower_driver_change",
+    "no_runtime_activation",
+    "no_human_acceptance"
+  ]
+}

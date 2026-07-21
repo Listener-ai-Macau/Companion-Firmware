@@ -1,0 +1,35 @@
+{
+  "schema": "companion.v35.emotion_decoration_internal_native_200_triage.v1",
+  "date": "2026-07-20",
+  "authority": "COMP-REQ-190",
+  "input": {
+    "request": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/request-v1.json",
+    "render": "docs/validation/companion-v35-emotion-decoration-native-200-render-20260720.json",
+    "contact_sheet": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v1/contact-native-200.png"
+  },
+  "result": "REJECTED_INTERNAL_NATIVE_200_PREVIEW_AUDIT_ONLY",
+  "findings": [
+    {
+      "component": "curious_question",
+      "finding": "The question mark appears beside the inherited daily sparkle, producing two competing semantic decorations rather than one readable curious cue."
+    },
+    {
+      "component": "alert_exclamation",
+      "finding": "The narrow stem loses its friendly rounded proportion after native-200 extraction and reads as a fragmented generic mark."
+    },
+    {
+      "component": "sleepy_dream_cloud",
+      "finding": "The cloud appears together with the inherited sleep moon-and-Z charm, creating a three-symbol story instead of a restrained dream beat."
+    }
+  ],
+  "required_repair": [
+    "Generate V9-only revision-2 sources without using revision-1 images as visual input.",
+    "Compose each state from a V9 Rig component stack with mutually exclusive inherited charms omitted by selection, never by repainting facial pixels.",
+    "Use a wider alert stem and an explicit native-200 stroke-width check before any source/export gate."
+  ],
+  "runtime": {
+    "resource_activated": false,
+    "component_export": "forbidden",
+    "firmware_binding": "forbidden"
+  }
+}

@@ -1,0 +1,155 @@
+{
+  "schema": "companion.v9.expression_art_direction_ledger.v2",
+  "status": "ACTIVE",
+  "locked_identity": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "policy": "identity-only visual input; never modify, replace or use rejected descendants as visual input"
+  },
+  "performance_principle": {
+    "primary_channels": ["eye_body_or_lid_variant_when_source_exists", "paired_eye_reflection_direction", "brow_pose", "mouth_silhouette_and_action"],
+    "secondary_channels": ["cheek_state", "semantic_small_decoration", "small character_bound_event_overlay"],
+    "forbidden_substitutes": ["whole_face_swap", "PPT_loop", "static_icon_only_completion", "unanimated_daily_face_claimed_as_event_completion", "code_drawn_features"]
+  },
+  "product_flow_truth": {
+    "menu_enter": "A short acknowledgement expression hands off to the separate no-face four-root menu UI. It is not a face with a hamburger/menu icon.",
+    "recording_active": "The character listens and captures incoming sound. Sound direction is external source/microphone to character, never mouth output.",
+    "charging_active": "The real product charging connector attaches at the bottom of the Companion. The daily face remains above a compact bottom-attached connector and restrained energy rises from the connection; no dangling cable, battery, or lightning-only art."
+  },
+  "event_overlay_architecture": {
+    "authority": "COMP-REQ-187",
+    "daily_base": "The locked V9 daily component stack remains visible and retains deterministic eye/highlight, brow and mouth micro-choreography. It is not replaced by a functional full-face source.",
+    "emotion_decorations": ["question_mark", "exclamation_mark", "cloud", "sparkle"],
+    "decoration_policy": "A decoration is a registered art-derived component with a named semantic trigger and deterministic entry/hold/release sequence. It supplements eye/brow/mouth performance and never substitutes for it. Every later functional state uses this daily-face-plus-overlay grammar instead of requesting a replacement facial card.",
+    "functional_overlays": {
+      "recording_active": "A compact art-derived microphone or sensor plus inward capture pulses plays beside the daily/listening face. The pulse direction is environment to character, never speaking output.",
+      "charging_active": "A compact art-derived connector seated at the bottom of the daily/restorative face plus upward energy pulses plays below it. The attachment is physical and bottom-oriented, never a dangling cable, battery, or lightning-only badge.",
+      "menu_enter": "A very brief acknowledgement micro-beat may use the daily face and an existing registered sparkle, then it hands off to the accepted no-face menu UI."
+    },
+    "runtime_constraints": ["no_whole_face_card", "no_random_event_loop", "no_static_icon_as_completion", "no_code_drawn_facial_or_overlay_features", "fail_closed_when_an_event_overlay_has_no_accepted_source"]
+  },
+  "affect_decoration_matrix": {
+    "authority": "COMP-REQ-190",
+    "primary_performance": "Every family uses the directed affect graph and deterministic eye/highlight, brow and mouth choreography first; decorations only arrive after the facial response or as a compact causal event overlay.",
+    "families": {
+      "calm_notice_joyful_anticipatory": {"decoration": "locked_v9_sparkle", "source_status": "registered_locked_v9_candidate"},
+      "warm_affectionate": {"decoration": "locked_v9_heart", "source_status": "registered_locked_v9_candidate"},
+      "curious_puzzled": {"decoration": "v35_question", "source_status": "candidate_machine_preview_only_runtime_inactive"},
+      "alert": {"decoration": "v35_exclamation", "source_status": "candidate_machine_preview_only_runtime_inactive"},
+      "sleepy": {"decoration": "v35_dream_cloud", "source_status": "candidate_machine_preview_only_runtime_inactive"},
+      "listening_focused_recording": {"decoration": "v34_recording_input", "source_status": "candidate_machine_preview_only"},
+      "charging": {"decoration": "v34_bottom_connector", "source_status": "candidate_machine_preview_only"},
+      "menu_enter": {"decoration": "locked_v9_sparkle", "source_status": "short_acknowledgement_then_no_face_menu"},
+      "upgrade_pairing_error": {"decoration": null, "source_status": "fail_closed_until_dedicated_source"}
+    },
+    "forbidden": ["old_charm_question", "old_charm_menu_ellipsis", "detached_widget", "textual_label", "random_ornament", "whole_face_card"]
+  },
+  "motion_grammar": {
+    "authority": "COMP-REQ-190",
+    "owner_confirmed_layering": "One locked V9 character has two coordinated layers: the emotion layer is primarily the eyes/highlights, brows and mouth; the state layer is a compact, character-bound semantic decoration. A state decoration must not replace, freeze or become the emotion face.",
+    "owner_confirmed_liveness": "A held emotion remains visibly alive through a small deterministic performance, led by eye/highlight motion and answered by brows and mouth. It is not a static sticker, random twitching, or a repeating sequence of complete face cards.",
+    "owner_confirmed_change": "Changing emotion is a causal component bridge from the held source emotion to the held target emotion. The face resolves first and the eligible decoration arrives last; crossfades, filters and whole-face replacement are forbidden.",
+    "same_state_presence": ["highlight_lead", "brow_answer", "mouth_cheek_settle", "short_state_bound_accent_or_hold"],
+    "cross_state_transition": ["source_hold", "highlight_lead", "paired_highlight_arrive", "brow_answer", "mouth_cheek_reply", "decoration_follow_through", "target_hold"],
+    "constraints": ["no_random_state_selection", "no_full_face_crossfade", "no_full_face_swap", "decoration_never_precedes_facial_response", "browser_and_target_consume_the_same_score"],
+    "vertical_daily_gaze_guard": "For daily_up and daily_down, each paired primary highlight and smaller sparkle stays on the pure vertical axis at x=0, moves only one y pixel per score step, and never exceeds y=-2 or y=+2 respectively. This is stricter than source-eye containment so the reflection group reads as an internal gaze movement rather than a white block escaping the eye.",
+    "paired_eye_reflection_guard": "Within every Daily score step, the dominant source-derived highlight and smaller source-derived sparkle of the same eye carry exactly the same current offset. The black V9 eye body remains fixed. The pair can lead the other eye by a beat, but its two white reflections never split, counter-move or leave one another pinned to the source anchor.",
+    "daily_gaze_clearance_guard": "The locked V9 static center is immutable. Dynamic Daily uses the owner-preferred down=(0,2) paired-reflection position as its internal rest anchor after exact entry and before exact settle. Attention is a small relative offset from that anchor: left=(-1,2), right=(1,2), up=(0,1), down=(0,2). No score intermediate may be more peripheral than its registered rest-anchor route. Directional readability is answered by causal brow, mouth and cheek response rather than expanding the eye travel.",
+    "daily_dynamic_rest_anchor": "The original V9 (0,0) reflection layout is an identity entry/settle invariant, not the continuously held Dynamic Daily gaze center. Both source-derived reflections move together from entry to rest=(0,2); all directional holds remain close to this ordinary resting gaze."
+    "face_primary_emotion_inventory": "V9 currently has open and sleepy eye bodies, paired open-eye reflections and the default mouth. Accepted inactive V22 contributes distinct calm, curious, warm, playful, puzzled and alert brows/mouths/cheeks while keeping V9 open eyes. New lid or eye-body forms require a separately versioned V9-only image-source and component gate; code drawing or geometric distortion is forbidden."
+  },
+  "iteration_protocol": [
+    "Record every owner steering decision in companion_product_requirements.md before implementation.",
+    "Record the prompt delta and source-reference policy in a versioned request and prompt before image generation.",
+    "Use only the locked V9 image with image_gen.imagegen for a new art source; never use rejected descendants as visual input.",
+    "Render a label-hidden native 200x200 composed preview immediately after generation: the locked daily baseline plus the proposed overlay where the source is an event component.",
+    "Freeze any rejected attempt with exact feedback and prohibit visual-reference reuse.",
+    "Only a passing source proceeds to component extraction, deterministic choreography, browser/target parity, machine closure and canonical owner review."
+  ],
+  "decision_log": [
+    {
+      "iteration": "V32",
+      "status": "REJECTED_AUDIT_ONLY",
+      "reason": "Abstract tabs, cuffs and tether did not tell a first-time viewer what the character was doing.",
+      "authority": "COMP-REQ-179"
+    },
+    {
+      "iteration": "V33 attempt 01",
+      "status": "SUPERSEDED_AUDIT_ONLY",
+      "reason": "Improved direct readability but used a false hamburger menu story, output speech arcs and a wired charging metaphor.",
+      "authority": "COMP-REQ-181"
+    },
+    {
+      "iteration": "V33 attempt 02",
+      "status": "REJECTED_INTERNAL_NATIVE_200_PREVIEW_AUDIT_ONLY",
+      "reason": "Menu transition was correct, but recording microphone and wired charging connection fell outside the normalized target canvas.",
+      "authority": "COMP-REQ-181"
+    },
+    {
+      "iteration": "V33 request revision 3",
+      "status": "REJECTED_INTERNAL_NATIVE_200_PREVIEW_AUDIT_ONLY",
+      "reason": "Facial performance improved, but the microphone and wireless dock were placed outside the normalized native-200 component-safe area.",
+      "authority": "COMP-REQ-183 and COMP-REQ-184"
+    },
+    {
+      "iteration": "V33 request revision 4",
+      "status": "CANCELED_OWNER_DAILY_FACE_EVENT_OVERLAY_DIRECTION",
+      "reason": "The owner replaced dedicated functional-face generation with a living V9 daily baseline plus deterministic event-overlay components. No V33 revision-4 source is allowed to enter the repository or visual lineage.",
+      "authority": "COMP-REQ-187"
+    },
+    {
+      "iteration": "V34 wireless-charging overlay revision 1",
+      "status": "REJECTED_PHYSICAL_CHARGING_GEOMETRY_AUDIT_ONLY",
+      "reason": "The source showed a free-standing wireless cradle but omitted the owner-confirmed bottom-attached charging connector.",
+      "authority": "COMP-REQ-189"
+    },
+    {
+      "iteration": "V35 emotion-decoration kit revision 1",
+      "status": "REJECTED_INTERNAL_NATIVE_200_PREVIEW_AUDIT_ONLY",
+      "reason": "Native 200 preview showed a curious question competing with the inherited daily sparkle, an alert stem that degraded into an unbalanced thin mark, and a dream cloud competing with inherited sleep moon-and-Z art. Its sources are audit-only and forbidden as visual reference or runtime components.",
+      "authority": "COMP-REQ-190"
+    },
+    {
+      "iteration": "V35 emotion-decoration kit revision 2",
+      "status": "CANDIDATE_MACHINE_PREVIEW_ONLY_RUNTIME_INACTIVE",
+      "reason": "V9-only question, exclamation and dream-cloud sources passed the native-200 source/component choreography gate. Each state reconstructs the V9 face from registered components with mutually exclusive inherited charms omitted by selection; it remains unavailable to CRIG, firmware and panel claims pending later gates.",
+      "authority": "COMP-REQ-190"
+    },
+    {
+      "iteration": "Emotion system confirmation 2026-07-20",
+      "status": "ACTIVE_DIRECTION",
+      "reason": "Owner reconfirmed that eye/highlight, brow and mouth carry changing emotion; compact decorations communicate state context; each held emotion has deterministic micro-presence; and different emotions use a visible component transition rather than filters, whole-face swaps or random switching.",
+      "authority": "COMP-REQ-190"
+    },
+    {
+      "iteration": "Daily vertical highlight correction 2026-07-20",
+      "status": "ACTIVE_DIRECTION",
+      "reason": "Owner found the daily_up and daily_down primary highlights visually reaching the eye edge. Vertical gaze is now constrained to a pure, one-pixel-per-step internal movement from zero to plus or minus two pixels, shared by browser and target scores.",
+      "authority": "COMP-REQ-199"
+    },
+    {
+      "iteration": "Daily paired eye reflection correction 2026-07-20",
+      "status": "ACTIVE_DIRECTION",
+      "reason": "Owner found that the smaller white sparkle remained pinned while the dominant highlight moved. Each eye now moves its two source-derived reflections as one constrained gaze group, while the black V9 eye body remains fixed.",
+      "authority": "COMP-REQ-201"
+    },
+    {
+      "iteration": "Daily reflection clearance recalibration 2026-07-20",
+      "status": "ACTIVE_DIRECTION",
+      "reason": "Owner found daily_down closest to the earlier normal V9 reading while other holds felt too peripheral. The static V9 center remains fixed; daily_down supplies a source-mask eye-rim-clearance reference for re-centering the other paired-reflection holds.",
+      "authority": "COMP-REQ-203"
+    },
+    {
+      "iteration": "Daily measured gaze calibration and face-primary refinement 2026-07-20",
+      "status": "ACTIVE_DIRECTION",
+      "reason": "Mask measurement selected smaller legal paired-reflection holds instead of the former eye-rim positions. Owner also set eye/lid, brow and mouth expression as the primary next refinement: use accepted V22 brow/mouth diversity now and require versioned V9-only source art before adding unavailable eye-body vocabulary.",
+      "authority": "COMP-REQ-204/205"
+    },
+    {
+      "iteration": "Daily dynamic rest-anchor correction 2026-07-20",
+      "status": "ACTIVE_DIRECTION",
+      "reason": "Owner found the earlier safe-range score still visually anchored every direction to the wrong source-center. The normal-looking down pose is now the internal dynamic rest anchor; the locked source-center frame remains exact at entry and settle only.",
+      "authority": "COMP-REQ-207"
+    }
+  ]
+}

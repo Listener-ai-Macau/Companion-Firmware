@@ -1,0 +1,2100 @@
+{
+  "schema": "companion.v45_total_machine_audit.v1",
+  "status": "PASS_MACHINE_CLOSED_PENDING_V45_R7_REVIEW",
+  "runtime_resource_activated": false,
+  "authority": [
+    "COMP-REQ-093",
+    "COMP-REQ-250",
+    "COMP-REQ-253",
+    "COMP-REQ-256",
+    "COMP-REQ-258",
+    "COMP-REQ-261",
+    "COMP-REQ-262",
+    "COMP-REQ-263",
+    "COMP-REQ-267",
+    "COMP-REQ-269",
+    "COMP-REQ-276",
+    "COMP-REQ-279",
+    "COMP-REQ-282",
+    "COMP-REQ-283",
+    "COMP-REQ-284",
+    "COMP-REQ-286",
+    "COMP-REQ-287",
+    "COMP-REQ-288",
+    "COMP-REQ-290",
+    "COMP-REQ-294"
+  ],
+  "protected": {
+    "locked_v9_source": {
+      "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+    },
+    "prior_owner_acceptance": {
+      "path": "docs/validation/companion-pet-special-system-owner-acceptance-20260717.json",
+      "sha256": "8A3BDF4BD1254B0D0F4DE13A7F293C3D74587C800339ABD4C61FEB0B7737E227"
+    }
+  },
+  "accepted_v22_daily_regression": {
+    "artifact": "docs/validation/companion-v22-emotion-separation-target-rig-gate-20260719.json",
+    "bridge_count": 10,
+    "bridge_frame_count": 72,
+    "trace_artifact": "docs/validation/companion-v22-emotion-separation-wb55-trace-contract-r5-20260721.json",
+    "router_artifact": "docs/validation/companion-v22-everyday-bridge-router-r2-20260720.json",
+    "contract_gate": {
+      "component_count": 37,
+      "component_mask_hashes": "37_of_37_match",
+      "crig": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/target-rig-attempt-01/companion-v22-emotion-separation-rig-candidate-200x200.crig",
+      "crig_sha256": "43184DE67E28EEA2B5277A406145B54C6204453E4441F9D1BD9DE20EEEA25333",
+      "bridge_count": 10,
+      "bridge_frame_count": 72,
+      "bridges": [
+        {
+          "name": "alert__puzzled",
+          "frame_count": 7,
+          "cue_order": [
+            "source_hold",
+            "primary_highlight_lead",
+            "sparkle_arrive",
+            "brow_apex",
+            "lower_face_apex",
+            "target_hold",
+            "highlight_settle"
+          ],
+          "target_hold_ms": 1800
+        },
+        {
+          "name": "calm__curious",
+          "frame_count": 7,
+          "cue_order": [
+            "source_hold",
+            "primary_highlight_lead",
+            "sparkle_arrive",
+            "brow_apex",
+            "lower_face_apex",
+            "target_hold",
+            "highlight_settle"
+          ],
+          "target_hold_ms": 1800
+        },
+        {
+          "name": "calm__puzzled",
+          "frame_count": 7,
+          "cue_order": [
+            "source_hold",
+            "primary_highlight_lead",
+            "sparkle_arrive",
+            "brow_apex",
+            "lower_face_apex",
+            "target_hold",
+            "highlight_settle"
+          ],
+          "target_hold_ms": 1800
+        },
+        {
+          "name": "curious__calm",
+          "frame_count": 7,
+          "cue_order": [
+            "source_hold",
+            "primary_highlight_lead",
+            "sparkle_arrive",
+            "brow_apex",
+            "lower_face_apex",
+            "target_hold",
+            "highlight_settle"
+          ],
+          "target_hold_ms": 1800
+        },
+        {
+          "name": "curious__warm",
+          "frame_count": 7,
+          "cue_order": [
+            "source_hold",
+            "primary_highlight_lead",
+            "sparkle_arrive",
+            "brow_apex",
+            "lower_face_apex",
+            "target_hold",
+            "highlight_settle"
+          ],
+          "target_hold_ms": 1800
+        },
+        {
+          "name": "playful__warm",
+          "frame_count": 8,
+          "cue_order": [
+            "source_hold",
+            "primary_highlight_lead",
+            "sparkle_arrive",
+            "brow_apex",
+            "lower_face_apex",
+            "accent_resolve",
+            "target_hold",
+            "highlight_settle"
+          ],
+          "target_hold_ms": 1800
+        },
+        {
+          "name": "puzzled__alert",
+          "frame_count": 7,
+          "cue_order": [
+            "source_hold",
+            "primary_highlight_lead",
+            "sparkle_arrive",
+            "brow_apex",
+            "lower_face_apex",
+            "target_hold",
+            "highlight_settle"
+          ],
+          "target_hold_ms": 1800
+        },
+        {
+          "name": "puzzled__calm",
+          "frame_count": 7,
+          "cue_order": [
+            "source_hold",
+            "primary_highlight_lead",
+            "sparkle_arrive",
+            "brow_apex",
+            "lower_face_apex",
+            "target_hold",
+            "highlight_settle"
+          ],
+          "target_hold_ms": 1800
+        },
+        {
+          "name": "warm__curious",
+          "frame_count": 7,
+          "cue_order": [
+            "source_hold",
+            "primary_highlight_lead",
+            "sparkle_arrive",
+            "brow_apex",
+            "lower_face_apex",
+            "target_hold",
+            "highlight_settle"
+          ],
+          "target_hold_ms": 1800
+        },
+        {
+          "name": "warm__playful",
+          "frame_count": 8,
+          "cue_order": [
+            "source_hold",
+            "primary_highlight_lead",
+            "sparkle_arrive",
+            "brow_apex",
+            "lower_face_apex",
+            "accent_resolve",
+            "target_hold",
+            "highlight_settle"
+          ],
+          "target_hold_ms": 1800
+        }
+      ],
+      "deterministic_trace": {
+        "bridge": "alert__puzzled",
+        "frame_count": 7,
+        "target_pbms_and_hashes_match": true
+      },
+      "session_min_post_refresh_hold_ms": 750
+    }
+  },
+  "v45_evidence": {
+    "recording_source_gate": {
+      "artifact": "docs/validation/companion-v43-recording-input-inward-source-gate-20260721.json",
+      "status": "PASS_V43_RECORDING_INPUT_INWARD_SOURCE_RUNTIME_INACTIVE",
+      "sha256": "DF5EEFBCA56EA73A9EBB32B210065611BDE8FF7FE62BDDCE45A76C7C812D50C5"
+    },
+    "inherited_v44_layout_gate": {
+      "artifact": "docs/validation/companion-v44-blink-stable-center-layout-gate-20260721.json",
+      "status": "PASS_V44_BLINK_STABLE_CENTER_RUNTIME_INACTIVE",
+      "sha256": "5ADE7833EE92005EE08CA5CCB51BD30DB58B62825F143CE05193F24902282FC7"
+    },
+    "complete_eye_source_gate": {
+      "artifact": "docs/validation/companion-v45-complete-eye-pair-source-v6-gate-20260721.json",
+      "status": "PASS_V45_COMPLETE_EYE_CLOSURE_PAIR_SOURCE_RUNTIME_INACTIVE",
+      "sha256": "DCB40018B90424D6DEB197C5D405ADC6DA44ED4706CD7A00E9DB2FE25D45F50C"
+    },
+    "special_state_source_collision_gate": {
+      "event_groups": {
+        "menu_entry": {
+          "component_ids": [
+            545,
+            546,
+            547
+          ],
+          "pixel_count": 674,
+          "face_pixel_overlap": 6,
+          "bbox": [
+            85,
+            47,
+            113,
+            74
+          ]
+        },
+        "upgrade_progress": {
+          "component_ids": [
+            563,
+            564,
+            565
+          ],
+          "pixel_count": 548,
+          "face_pixel_overlap": 0,
+          "bbox": [
+            92,
+            12,
+            108,
+            50
+          ]
+        },
+        "error_caution": {
+          "component_ids": [
+            566,
+            567,
+            568
+          ],
+          "pixel_count": 1011,
+          "face_pixel_overlap": 0,
+          "bbox": [
+            86,
+            5,
+            113,
+            45
+          ]
+        },
+        "recording_input": {
+          "component_ids": [
+            569,
+            570,
+            571,
+            605,
+            606,
+            607,
+            608
+          ],
+          "pixel_count": 569,
+          "face_pixel_overlap": 0,
+          "bbox": [
+            161,
+            116,
+            193,
+            136
+          ]
+        },
+        "wireless_dock_charge": {
+          "component_ids": [
+            572,
+            573,
+            574
+          ],
+          "pixel_count": 422,
+          "face_pixel_overlap": 0,
+          "bbox": [
+            86,
+            181,
+            113,
+            198
+          ]
+        },
+        "sleep_zzz": {
+          "component_ids": [
+            594,
+            595,
+            596
+          ],
+          "pixel_count": 281,
+          "face_pixel_overlap": 0,
+          "bbox": [
+            94,
+            27,
+            142,
+            61
+          ]
+        }
+      },
+      "blink_stage_centers": {
+        "599": {
+          "side": "left_eye",
+          "reference_component_ids": [
+            2,
+            1,
+            3
+          ],
+          "bbox_center2": [
+            115,
+            268
+          ],
+          "center": [
+            57.5,
+            134.0
+          ],
+          "reference_bbox_center2": [
+            116,
+            268
+          ],
+          "bbox_center_error2": [
+            -1,
+            0
+          ],
+          "mask_sha256": "FF8D95CF317A60F17D02551DFD56470476BDA4F900B709991F711212A4122EDA"
+        },
+        "601": {
+          "side": "left_eye",
+          "reference_component_ids": [
+            2,
+            1,
+            3
+          ],
+          "bbox_center2": [
+            117,
+            268
+          ],
+          "center": [
+            58.5,
+            134.0
+          ],
+          "reference_bbox_center2": [
+            116,
+            268
+          ],
+          "bbox_center_error2": [
+            1,
+            0
+          ],
+          "mask_sha256": "E775C15536763D2160F5BA07AB41977125CC4F033635BF6640AE2163D1A38B64"
+        },
+        "603": {
+          "side": "left_eye",
+          "reference_component_ids": [
+            2,
+            1,
+            3
+          ],
+          "bbox_center2": [
+            115,
+            268
+          ],
+          "center": [
+            57.5,
+            134.0
+          ],
+          "reference_bbox_center2": [
+            116,
+            268
+          ],
+          "bbox_center_error2": [
+            -1,
+            0
+          ],
+          "mask_sha256": "B2413D0296CAD52BC72DE143BC09EB7F9E40F467850B3D900B6CBB7B863A8755"
+        },
+        "600": {
+          "side": "right_eye",
+          "reference_component_ids": [
+            6,
+            5,
+            7
+          ],
+          "bbox_center2": [
+            281,
+            268
+          ],
+          "center": [
+            140.5,
+            134.0
+          ],
+          "reference_bbox_center2": [
+            283,
+            268
+          ],
+          "bbox_center_error2": [
+            -2,
+            0
+          ],
+          "mask_sha256": "99B741A40C855F63BE0C9E4C23E64BB3017F6F9368F6A95D201C88986C975302"
+        },
+        "602": {
+          "side": "right_eye",
+          "reference_component_ids": [
+            6,
+            5,
+            7
+          ],
+          "bbox_center2": [
+            283,
+            268
+          ],
+          "center": [
+            141.5,
+            134.0
+          ],
+          "reference_bbox_center2": [
+            283,
+            268
+          ],
+          "bbox_center_error2": [
+            0,
+            0
+          ],
+          "mask_sha256": "5818B0EF0058D8A7CBEFE8A551081CB532D075189B25FF337F792B0433C1C6D9"
+        },
+        "604": {
+          "side": "right_eye",
+          "reference_component_ids": [
+            6,
+            5,
+            7
+          ],
+          "bbox_center2": [
+            281,
+            268
+          ],
+          "center": [
+            140.5,
+            134.0
+          ],
+          "reference_bbox_center2": [
+            283,
+            268
+          ],
+          "bbox_center_error2": [
+            -2,
+            0
+          ],
+          "mask_sha256": "501FEF9F949708D60C1C0A8CE1D5287F94972404D9C66DF8BBF14DAB02EC6EE9"
+        }
+      },
+      "face_pixel_count": 5995
+    },
+    "blink_eye_geometry_gate": {
+      "left": {
+        "reference_component_ids": [
+          2,
+          1,
+          3
+        ],
+        "reference_bbox_center_x2_y2": [
+          116,
+          268
+        ],
+        "stages": {
+          "closing": {
+            "component_ids": [
+              599
+            ],
+            "bbox_center_x2_y2": [
+              115,
+              268
+            ],
+            "delta_x2_y2": [
+              -1,
+              0
+            ]
+          },
+          "closed": {
+            "component_ids": [
+              601
+            ],
+            "bbox_center_x2_y2": [
+              117,
+              268
+            ],
+            "delta_x2_y2": [
+              1,
+              0
+            ]
+          },
+          "opening": {
+            "component_ids": [
+              603
+            ],
+            "bbox_center_x2_y2": [
+              115,
+              268
+            ],
+            "delta_x2_y2": [
+              -1,
+              0
+            ]
+          }
+        }
+      },
+      "right": {
+        "reference_component_ids": [
+          6,
+          5,
+          7
+        ],
+        "reference_bbox_center_x2_y2": [
+          283,
+          268
+        ],
+        "stages": {
+          "closing": {
+            "component_ids": [
+              600
+            ],
+            "bbox_center_x2_y2": [
+              281,
+              268
+            ],
+            "delta_x2_y2": [
+              -2,
+              0
+            ]
+          },
+          "closed": {
+            "component_ids": [
+              602
+            ],
+            "bbox_center_x2_y2": [
+              283,
+              268
+            ],
+            "delta_x2_y2": [
+              0,
+              0
+            ]
+          },
+          "opening": {
+            "component_ids": [
+              604
+            ],
+            "bbox_center_x2_y2": [
+              281,
+              268
+            ],
+            "delta_x2_y2": [
+              -2,
+              0
+            ]
+          }
+        }
+      }
+    },
+    "functional_track_gate": {
+      "recording_input": {
+        "component_ids": [
+          605,
+          606,
+          607,
+          608
+        ],
+        "step_component_ids": [
+          605,
+          606,
+          605,
+          607,
+          605,
+          608,
+          605,
+          607,
+          605,
+          606
+        ]
+      },
+      "bottom_connector_charging": {
+        "component_ids": [
+          572,
+          573,
+          574
+        ],
+        "step_component_ids": [
+          572,
+          573,
+          574,
+          573,
+          574
+        ]
+      },
+      "upgrade_progress": {
+        "component_ids": [
+          563,
+          564,
+          565
+        ],
+        "step_component_ids": [
+          563,
+          564,
+          565,
+          564,
+          565
+        ]
+      },
+      "error_caution": {
+        "component_ids": [
+          566,
+          567,
+          568
+        ],
+        "step_component_ids": [
+          566,
+          567,
+          568,
+          567,
+          568
+        ]
+      },
+      "menu_entry": {
+        "component_ids": [
+          545,
+          546,
+          547
+        ]
+      }
+    },
+    "fixed_nose_and_choreography_gate": {
+      "calm_presence": {
+        "frame_count": 5,
+        "fixed_nose_frames": 5,
+        "unique_registered_face_signatures": 4,
+        "brow_offset_variants": [
+          [
+            0,
+            0
+          ]
+        ],
+        "mouth_component_variants": [
+          15
+        ]
+      },
+      "warm_presence": {
+        "frame_count": 5,
+        "fixed_nose_frames": 5,
+        "unique_registered_face_signatures": 3,
+        "brow_offset_variants": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ]
+        ],
+        "mouth_component_variants": [
+          15,
+          35
+        ]
+      },
+      "curious_question": {
+        "frame_count": 5,
+        "fixed_nose_frames": 5,
+        "unique_registered_face_signatures": 3,
+        "brow_offset_variants": [
+          [
+            0,
+            -1
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "mouth_component_variants": [
+          15,
+          20
+        ]
+      },
+      "alert_exclamation": {
+        "frame_count": 5,
+        "fixed_nose_frames": 5,
+        "unique_registered_face_signatures": 3,
+        "brow_offset_variants": [
+          [
+            0,
+            -1
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "mouth_component_variants": [
+          10,
+          15
+        ]
+      },
+      "playful_presence": {
+        "frame_count": 5,
+        "fixed_nose_frames": 5,
+        "unique_registered_face_signatures": 3,
+        "brow_offset_variants": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ]
+        ],
+        "mouth_component_variants": [
+          15,
+          26
+        ]
+      },
+      "sleepy_presence": {
+        "frame_count": 5,
+        "fixed_nose_frames": 5,
+        "unique_registered_face_signatures": 2,
+        "brow_offset_variants": [
+          [
+            0,
+            0
+          ]
+        ],
+        "mouth_component_variants": [
+          15
+        ]
+      },
+      "delighted_presence": {
+        "frame_count": 5,
+        "fixed_nose_frames": 5,
+        "unique_registered_face_signatures": 3,
+        "brow_offset_variants": [
+          [
+            0,
+            -1
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "mouth_component_variants": [
+          15,
+          577
+        ]
+      },
+      "bashful_presence": {
+        "frame_count": 5,
+        "fixed_nose_frames": 5,
+        "unique_registered_face_signatures": 3,
+        "brow_offset_variants": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ]
+        ],
+        "mouth_component_variants": [
+          15,
+          582
+        ]
+      },
+      "thoughtful_presence": {
+        "frame_count": 5,
+        "fixed_nose_frames": 5,
+        "unique_registered_face_signatures": 3,
+        "brow_offset_variants": [
+          [
+            0,
+            -1
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "mouth_component_variants": [
+          15,
+          587
+        ]
+      },
+      "focused_presence": {
+        "frame_count": 5,
+        "fixed_nose_frames": 5,
+        "unique_registered_face_signatures": 3,
+        "brow_offset_variants": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ]
+        ],
+        "mouth_component_variants": [
+          15,
+          591
+        ]
+      },
+      "recording_with_calm": {
+        "frame_count": 5,
+        "fixed_nose_frames": 5,
+        "unique_registered_face_signatures": 4,
+        "brow_offset_variants": [
+          [
+            0,
+            0
+          ]
+        ],
+        "mouth_component_variants": [
+          15
+        ]
+      },
+      "recording_with_warm": {
+        "frame_count": 5,
+        "fixed_nose_frames": 5,
+        "unique_registered_face_signatures": 3,
+        "brow_offset_variants": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ]
+        ],
+        "mouth_component_variants": [
+          15,
+          35
+        ]
+      },
+      "charging_with_calm": {
+        "frame_count": 5,
+        "fixed_nose_frames": 5,
+        "unique_registered_face_signatures": 4,
+        "brow_offset_variants": [
+          [
+            0,
+            0
+          ]
+        ],
+        "mouth_component_variants": [
+          15
+        ]
+      },
+      "upgrade_with_playful": {
+        "frame_count": 5,
+        "fixed_nose_frames": 5,
+        "unique_registered_face_signatures": 3,
+        "brow_offset_variants": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ]
+        ],
+        "mouth_component_variants": [
+          15,
+          26
+        ]
+      },
+      "error_with_calm": {
+        "frame_count": 5,
+        "fixed_nose_frames": 5,
+        "unique_registered_face_signatures": 4,
+        "brow_offset_variants": [
+          [
+            0,
+            0
+          ]
+        ],
+        "mouth_component_variants": [
+          15
+        ]
+      },
+      "menu_entry_notice": {
+        "frame_count": 3,
+        "fixed_nose_frames": 3,
+        "unique_registered_face_signatures": 3,
+        "brow_offset_variants": [
+          [
+            0,
+            0
+          ]
+        ],
+        "mouth_component_variants": [
+          15
+        ]
+      },
+      "daily_attention_center": {
+        "frame_count": 3,
+        "fixed_nose_frames": 3,
+        "unique_registered_face_signatures": 1,
+        "brow_offset_variants": [
+          [
+            0,
+            0
+          ]
+        ],
+        "mouth_component_variants": [
+          15
+        ]
+      },
+      "daily_attention_left": {
+        "frame_count": 3,
+        "fixed_nose_frames": 3,
+        "unique_registered_face_signatures": 2,
+        "brow_offset_variants": [
+          [
+            0,
+            0
+          ]
+        ],
+        "mouth_component_variants": [
+          15
+        ]
+      },
+      "daily_attention_right": {
+        "frame_count": 3,
+        "fixed_nose_frames": 3,
+        "unique_registered_face_signatures": 2,
+        "brow_offset_variants": [
+          [
+            0,
+            0
+          ]
+        ],
+        "mouth_component_variants": [
+          15
+        ]
+      },
+      "daily_attention_up": {
+        "frame_count": 3,
+        "fixed_nose_frames": 3,
+        "unique_registered_face_signatures": 2,
+        "brow_offset_variants": [
+          [
+            0,
+            0
+          ]
+        ],
+        "mouth_component_variants": [
+          15
+        ]
+      },
+      "daily_attention_down": {
+        "frame_count": 3,
+        "fixed_nose_frames": 3,
+        "unique_registered_face_signatures": 2,
+        "brow_offset_variants": [
+          [
+            0,
+            0
+          ]
+        ],
+        "mouth_component_variants": [
+          15
+        ]
+      }
+    },
+    "profile_host": {
+      "artifact": "docs/validation/companion-v45-complete-eye-wb55-profile-host-20260721.json",
+      "status": "PASS_V45_COMPLETE_EYE_WB55_PROFILE_RUNTIME_INACTIVE",
+      "sha256": "CE6AB6ACCF22D02CF244CD509B4FBDB3D90BB172187829F4F5A014C782203137"
+    },
+    "browser_preview": {
+      "artifact": "docs/validation/companion-v45-complete-eye-browser-wb55-preview-20260721.json",
+      "status": "PASS_BROWSER_COMPONENT_PREVIEW_RENDERED_RUNTIME_INACTIVE",
+      "sha256": "83CA18501E03EE8C349D9A3794EC5584DCEA0E32AC3C0A3AC3E713301D4C9048"
+    },
+    "wb55_pixel_parity": {
+      "artifact": "docs/validation/companion-v45-complete-eye-wb55-component-parity-host-20260721.json",
+      "status": "PASS_BROWSER_WB55_COMPONENT_PIXEL_PARITY_RUNTIME_INACTIVE",
+      "sha256": "BCE59BCDB6E6C861AC0E63889A32719CB556072A26EEF9530828CF6146AD03C0"
+    },
+    "single_viewport_visual": {
+      "artifact": "docs/validation/companion-v45-single-epaper-browser-visual-20260721.json",
+      "status": "PASS_V45_SINGLE_200X200_BROWSER_VIEWPORT_RUNTIME_INACTIVE",
+      "sha256": "A6418D5018774560D3A4E448EF98981E830C224294E10FF38D803D367635BC60"
+    },
+    "real_browser_pointer_fail_safe": {
+      "artifact": "docs/validation/companion-v45-browser-pointer-fail-safe-20260721.json",
+      "status": "PASS_V45_REAL_BROWSER_POINTER_FAIL_SAFE_RUNTIME_INACTIVE",
+      "sha256": "D60B3F1A2614D4E400042DC8B293CFEAD78EF60A720C73707DAC0543E979A2AA"
+    },
+    "real_browser_pointer_replay": {
+      "raw_report": ".cache/v45-browser-pointer-fail-safe-playwright.json",
+      "spec": "tools/v45-click.spec.js",
+      "titles": [
+        "expanded wall mouse input keeps the story viewport visible",
+        "real mouse press, drag and release never hide the primary expression frame"
+      ],
+      "input_sequence": [
+        "mouse_down",
+        "mouse_drag",
+        "mouse_up"
+      ],
+      "primary_frame_assertions": [
+        "not_hidden_after_press",
+        "src_nonempty_after_press",
+        "not_hidden_after_drag",
+        "not_hidden_after_release",
+        "src_nonempty_after_release"
+      ],
+      "playwright_status": "passed",
+      "spec_count": 2,
+      "screenshots": [
+        {
+          "viewport": "single",
+          "phase": "press",
+          "path": "docs/validation/companion-v45-real-browser-touch-press-20260721.png",
+          "width": 400,
+          "height": 401,
+          "viewport_width": 394,
+          "viewport_height": 395,
+          "black_pixel_count": 10618,
+          "nonwhite_pixel_count": 10618,
+          "viewport_area": 155630,
+          "black_pixel_ratio": 0.068226,
+          "source_primary": "touch-base-calm_presence-00.png",
+          "source_gaze_overlay": "touch-gaze-overlay-229.png",
+          "source_composite_black_pixel_count": 2679,
+          "active_frame_cue": "calm_entry",
+          "active_frame_index": 0,
+          "story_index": 0
+        },
+        {
+          "viewport": "single",
+          "phase": "drag",
+          "path": "docs/validation/companion-v45-real-browser-touch-drag-20260721.png",
+          "width": 400,
+          "height": 401,
+          "viewport_width": 394,
+          "viewport_height": 395,
+          "black_pixel_count": 10618,
+          "nonwhite_pixel_count": 10618,
+          "viewport_area": 155630,
+          "black_pixel_ratio": 0.068226,
+          "source_primary": "touch-base-calm_presence-00.png",
+          "source_gaze_overlay": "touch-gaze-overlay-209.png",
+          "source_composite_black_pixel_count": 2679,
+          "active_frame_cue": "calm_entry",
+          "active_frame_index": 0,
+          "story_index": 0
+        },
+        {
+          "viewport": "single",
+          "phase": "release",
+          "path": "docs/validation/companion-v45-real-browser-touch-release-20260721.png",
+          "width": 400,
+          "height": 401,
+          "viewport_width": 394,
+          "viewport_height": 395,
+          "black_pixel_count": 6444,
+          "nonwhite_pixel_count": 6444,
+          "viewport_area": 155630,
+          "black_pixel_ratio": 0.041406,
+          "source_primary": "touch-base-calm_presence-00.png",
+          "source_gaze_overlay": "touch-gaze-overlay-189.png",
+          "source_composite_black_pixel_count": 2679,
+          "active_frame_cue": "calm_entry",
+          "active_frame_index": 0,
+          "story_index": 0
+        },
+        {
+          "viewport": "expanded-first-story",
+          "phase": "press",
+          "path": "docs/validation/companion-v45-expanded-real-browser-touch-press-20260721.png",
+          "width": 200,
+          "height": 200,
+          "viewport_width": 196,
+          "viewport_height": 196,
+          "black_pixel_count": 2679,
+          "nonwhite_pixel_count": 2679,
+          "viewport_area": 38416,
+          "black_pixel_ratio": 0.069737,
+          "source_primary": "touch-base-calm_presence-00.png",
+          "source_gaze_overlay": "touch-gaze-overlay-229.png",
+          "source_composite_black_pixel_count": 2679,
+          "active_frame_cue": "calm_entry",
+          "active_frame_index": 0,
+          "story_index": 0
+        },
+        {
+          "viewport": "expanded-first-story",
+          "phase": "drag",
+          "path": "docs/validation/companion-v45-expanded-real-browser-touch-drag-20260721.png",
+          "width": 200,
+          "height": 200,
+          "viewport_width": 196,
+          "viewport_height": 196,
+          "black_pixel_count": 2679,
+          "nonwhite_pixel_count": 2679,
+          "viewport_area": 38416,
+          "black_pixel_ratio": 0.069737,
+          "source_primary": "touch-base-calm_presence-00.png",
+          "source_gaze_overlay": "touch-gaze-overlay-209.png",
+          "source_composite_black_pixel_count": 2679,
+          "active_frame_cue": "calm_entry",
+          "active_frame_index": 0,
+          "story_index": 0
+        },
+        {
+          "viewport": "expanded-first-story",
+          "phase": "release",
+          "path": "docs/validation/companion-v45-expanded-real-browser-touch-release-20260721.png",
+          "width": 200,
+          "height": 200,
+          "viewport_width": 196,
+          "viewport_height": 196,
+          "black_pixel_count": 1625,
+          "nonwhite_pixel_count": 1625,
+          "viewport_area": 38416,
+          "black_pixel_ratio": 0.0423,
+          "source_primary": "touch-base-calm_presence-00.png",
+          "source_gaze_overlay": "touch-gaze-overlay-189.png",
+          "source_composite_black_pixel_count": 2679,
+          "active_frame_cue": "calm_entry",
+          "active_frame_index": 0,
+          "story_index": 0
+        }
+      ],
+      "duration_ms": [
+        1196,
+        1402
+      ]
+    },
+    "v34_v35_special_decorations": {
+      "profile": {
+        "artifact": "docs/validation/companion-v34-v35-special-decoration-wb55-profile-host-20260720.json",
+        "status": "PASS_V34_V35_SPECIAL_DECORATION_WB55_PROFILE_RUNTIME_INACTIVE",
+        "sha256": "350DC3E70B614709A579F32D63E399170B438470F151FBDB9FE44C1E5BD4619A"
+      },
+      "browser_preview": {
+        "artifact": "docs/validation/companion-v34-v35-special-decoration-browser-wb55-preview-20260720.json",
+        "status": "PASS_BROWSER_COMPONENT_PREVIEW_RENDERED_RUNTIME_INACTIVE",
+        "sha256": "33FEF87B55ECEB6A9BB1A544BB837C5B41C89DE78B105EE2C3513E122852B06F"
+      },
+      "wb55_pixel_parity": {
+        "artifact": "docs/validation/companion-v34-v35-special-decoration-wb55-component-parity-host-20260720.json",
+        "status": "PASS_BROWSER_WB55_COMPONENT_PIXEL_PARITY_RUNTIME_INACTIVE",
+        "sha256": "1257FCDAE275F1DC727DCECFB7F7850CA64D5213AA495FE691EC758931236665"
+      },
+      "machine_gate": {
+        "profile": {
+          "component_count": 76,
+          "score_count": 4,
+          "replayed_score_steps": 12
+        },
+        "parity": {
+          "source_packs": [
+            "v22_face",
+            "v34_v35_decoration"
+          ],
+          "component_count": 76,
+          "replayed_frame_count": 12
+        },
+        "preview": {
+          "frame_count": 12,
+          "source_score_coverage": [
+            "recording_input",
+            "bottom_connector_charging",
+            "curious_question",
+            "alert_exclamation"
+          ]
+        },
+        "source": {
+          "component_count": 39,
+          "component_id_range": [
+            500,
+            538
+          ],
+          "mask_hashes": "all_39_source_mask_sha256_match",
+          "crig": "docs/art/iterations/companion-pet-expression-v9-special-decoration-rig-v1/candidate/companion-v9-special-decoration-rig-candidate-200x200.crig",
+          "crig_sha256": "52D67D2C9FF7574799C8D092047EB60463D0631D80C8FE45A252527EE4A07F44",
+          "crig_size": 3542
+        },
+        "dream_cloud": "fail_closed_pending_v9_sleep_profile"
+      }
+    },
+    "touch_swipe_host": {
+      "artifact": "docs/validation/companion-v45-single-epaper-touch-host-20260721.json",
+      "status": "PASS_V45_SINGLE_VIEWPORT_TOUCH_SWIPE_REPLAY_RUNTIME_INACTIVE",
+      "sha256": "238FC1ED7BDEF30102351F9A9F4211BD30F7008D850391080CD8D93C8ECD76F0"
+    },
+    "expanded_review_wall": {
+      "artifact": "docs/validation/companion-v45-expanded-review-wall-20260721.json",
+      "status": "PASS_V45_EXPANDED_DYNAMIC_REVIEW_WALL_RUNTIME_INACTIVE",
+      "sha256": "4460A31D982CAD3BF4C13D68421ADFDED10F2B074B887A856825D4DB1AB58B18"
+    }
+  },
+  "machine_verified": {
+    "canvas": "200x200_1bpp",
+    "v22_daily_regression": {
+      "component_count": 37,
+      "component_mask_hashes": "37_of_37_match",
+      "crig": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/target-rig-attempt-01/companion-v22-emotion-separation-rig-candidate-200x200.crig",
+      "crig_sha256": "43184DE67E28EEA2B5277A406145B54C6204453E4441F9D1BD9DE20EEEA25333",
+      "bridge_count": 10,
+      "bridge_frame_count": 72,
+      "bridges": [
+        {
+          "name": "alert__puzzled",
+          "frame_count": 7,
+          "cue_order": [
+            "source_hold",
+            "primary_highlight_lead",
+            "sparkle_arrive",
+            "brow_apex",
+            "lower_face_apex",
+            "target_hold",
+            "highlight_settle"
+          ],
+          "target_hold_ms": 1800
+        },
+        {
+          "name": "calm__curious",
+          "frame_count": 7,
+          "cue_order": [
+            "source_hold",
+            "primary_highlight_lead",
+            "sparkle_arrive",
+            "brow_apex",
+            "lower_face_apex",
+            "target_hold",
+            "highlight_settle"
+          ],
+          "target_hold_ms": 1800
+        },
+        {
+          "name": "calm__puzzled",
+          "frame_count": 7,
+          "cue_order": [
+            "source_hold",
+            "primary_highlight_lead",
+            "sparkle_arrive",
+            "brow_apex",
+            "lower_face_apex",
+            "target_hold",
+            "highlight_settle"
+          ],
+          "target_hold_ms": 1800
+        },
+        {
+          "name": "curious__calm",
+          "frame_count": 7,
+          "cue_order": [
+            "source_hold",
+            "primary_highlight_lead",
+            "sparkle_arrive",
+            "brow_apex",
+            "lower_face_apex",
+            "target_hold",
+            "highlight_settle"
+          ],
+          "target_hold_ms": 1800
+        },
+        {
+          "name": "curious__warm",
+          "frame_count": 7,
+          "cue_order": [
+            "source_hold",
+            "primary_highlight_lead",
+            "sparkle_arrive",
+            "brow_apex",
+            "lower_face_apex",
+            "target_hold",
+            "highlight_settle"
+          ],
+          "target_hold_ms": 1800
+        },
+        {
+          "name": "playful__warm",
+          "frame_count": 8,
+          "cue_order": [
+            "source_hold",
+            "primary_highlight_lead",
+            "sparkle_arrive",
+            "brow_apex",
+            "lower_face_apex",
+            "accent_resolve",
+            "target_hold",
+            "highlight_settle"
+          ],
+          "target_hold_ms": 1800
+        },
+        {
+          "name": "puzzled__alert",
+          "frame_count": 7,
+          "cue_order": [
+            "source_hold",
+            "primary_highlight_lead",
+            "sparkle_arrive",
+            "brow_apex",
+            "lower_face_apex",
+            "target_hold",
+            "highlight_settle"
+          ],
+          "target_hold_ms": 1800
+        },
+        {
+          "name": "puzzled__calm",
+          "frame_count": 7,
+          "cue_order": [
+            "source_hold",
+            "primary_highlight_lead",
+            "sparkle_arrive",
+            "brow_apex",
+            "lower_face_apex",
+            "target_hold",
+            "highlight_settle"
+          ],
+          "target_hold_ms": 1800
+        },
+        {
+          "name": "warm__curious",
+          "frame_count": 7,
+          "cue_order": [
+            "source_hold",
+            "primary_highlight_lead",
+            "sparkle_arrive",
+            "brow_apex",
+            "lower_face_apex",
+            "target_hold",
+            "highlight_settle"
+          ],
+          "target_hold_ms": 1800
+        },
+        {
+          "name": "warm__playful",
+          "frame_count": 8,
+          "cue_order": [
+            "source_hold",
+            "primary_highlight_lead",
+            "sparkle_arrive",
+            "brow_apex",
+            "lower_face_apex",
+            "accent_resolve",
+            "target_hold",
+            "highlight_settle"
+          ],
+          "target_hold_ms": 1800
+        }
+      ],
+      "deterministic_trace": {
+        "bridge": "alert__puzzled",
+        "frame_count": 7,
+        "target_pbms_and_hashes_match": true
+      },
+      "session_min_post_refresh_hold_ms": 750
+    },
+    "component_count": 97,
+    "special_component_count": 60,
+    "story_count": 21,
+    "preview_frame_count": 93,
+    "owner_visible_story_count": 16,
+    "source_packs": [
+      "v22_face",
+      "v45_special_source"
+    ],
+    "recording_wave": "inward_toward_face_on_left",
+    "recording_face_pixel_overlap": 0,
+    "wireless_dock_face_pixel_overlap": 0,
+    "idle_gaze": "stable_center",
+    "blink_machine_choreography": true,
+    "blink_timing": {
+      "source": "registered_complete_eye_components_599_to_604",
+      "schedule": "deterministic_human_like",
+      "open_interval_ms": 6800,
+      "closing_ms": 140,
+      "closed_ms": 120,
+      "opening_ms": 150,
+      "cycle_ms": 7430,
+      "random_facial_motion": false
+    },
+    "blink_eye_geometry": {
+      "left": {
+        "reference_component_ids": [
+          2,
+          1,
+          3
+        ],
+        "reference_bbox_center_x2_y2": [
+          116,
+          268
+        ],
+        "stages": {
+          "closing": {
+            "component_ids": [
+              599
+            ],
+            "bbox_center_x2_y2": [
+              115,
+              268
+            ],
+            "delta_x2_y2": [
+              -1,
+              0
+            ]
+          },
+          "closed": {
+            "component_ids": [
+              601
+            ],
+            "bbox_center_x2_y2": [
+              117,
+              268
+            ],
+            "delta_x2_y2": [
+              1,
+              0
+            ]
+          },
+          "opening": {
+            "component_ids": [
+              603
+            ],
+            "bbox_center_x2_y2": [
+              115,
+              268
+            ],
+            "delta_x2_y2": [
+              -1,
+              0
+            ]
+          }
+        }
+      },
+      "right": {
+        "reference_component_ids": [
+          6,
+          5,
+          7
+        ],
+        "reference_bbox_center_x2_y2": [
+          283,
+          268
+        ],
+        "stages": {
+          "closing": {
+            "component_ids": [
+              600
+            ],
+            "bbox_center_x2_y2": [
+              281,
+              268
+            ],
+            "delta_x2_y2": [
+              -2,
+              0
+            ]
+          },
+          "closed": {
+            "component_ids": [
+              602
+            ],
+            "bbox_center_x2_y2": [
+              283,
+              268
+            ],
+            "delta_x2_y2": [
+              0,
+              0
+            ]
+          },
+          "opening": {
+            "component_ids": [
+              604
+            ],
+            "bbox_center_x2_y2": [
+              281,
+              268
+            ],
+            "delta_x2_y2": [
+              -2,
+              0
+            ]
+          }
+        }
+      }
+    },
+    "fixed_nose_and_choreography": {
+      "calm_presence": {
+        "frame_count": 5,
+        "fixed_nose_frames": 5,
+        "unique_registered_face_signatures": 4,
+        "brow_offset_variants": [
+          [
+            0,
+            0
+          ]
+        ],
+        "mouth_component_variants": [
+          15
+        ]
+      },
+      "warm_presence": {
+        "frame_count": 5,
+        "fixed_nose_frames": 5,
+        "unique_registered_face_signatures": 3,
+        "brow_offset_variants": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ]
+        ],
+        "mouth_component_variants": [
+          15,
+          35
+        ]
+      },
+      "curious_question": {
+        "frame_count": 5,
+        "fixed_nose_frames": 5,
+        "unique_registered_face_signatures": 3,
+        "brow_offset_variants": [
+          [
+            0,
+            -1
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "mouth_component_variants": [
+          15,
+          20
+        ]
+      },
+      "alert_exclamation": {
+        "frame_count": 5,
+        "fixed_nose_frames": 5,
+        "unique_registered_face_signatures": 3,
+        "brow_offset_variants": [
+          [
+            0,
+            -1
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "mouth_component_variants": [
+          10,
+          15
+        ]
+      },
+      "playful_presence": {
+        "frame_count": 5,
+        "fixed_nose_frames": 5,
+        "unique_registered_face_signatures": 3,
+        "brow_offset_variants": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ]
+        ],
+        "mouth_component_variants": [
+          15,
+          26
+        ]
+      },
+      "sleepy_presence": {
+        "frame_count": 5,
+        "fixed_nose_frames": 5,
+        "unique_registered_face_signatures": 2,
+        "brow_offset_variants": [
+          [
+            0,
+            0
+          ]
+        ],
+        "mouth_component_variants": [
+          15
+        ]
+      },
+      "delighted_presence": {
+        "frame_count": 5,
+        "fixed_nose_frames": 5,
+        "unique_registered_face_signatures": 3,
+        "brow_offset_variants": [
+          [
+            0,
+            -1
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "mouth_component_variants": [
+          15,
+          577
+        ]
+      },
+      "bashful_presence": {
+        "frame_count": 5,
+        "fixed_nose_frames": 5,
+        "unique_registered_face_signatures": 3,
+        "brow_offset_variants": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ]
+        ],
+        "mouth_component_variants": [
+          15,
+          582
+        ]
+      },
+      "thoughtful_presence": {
+        "frame_count": 5,
+        "fixed_nose_frames": 5,
+        "unique_registered_face_signatures": 3,
+        "brow_offset_variants": [
+          [
+            0,
+            -1
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "mouth_component_variants": [
+          15,
+          587
+        ]
+      },
+      "focused_presence": {
+        "frame_count": 5,
+        "fixed_nose_frames": 5,
+        "unique_registered_face_signatures": 3,
+        "brow_offset_variants": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ]
+        ],
+        "mouth_component_variants": [
+          15,
+          591
+        ]
+      },
+      "recording_with_calm": {
+        "frame_count": 5,
+        "fixed_nose_frames": 5,
+        "unique_registered_face_signatures": 4,
+        "brow_offset_variants": [
+          [
+            0,
+            0
+          ]
+        ],
+        "mouth_component_variants": [
+          15
+        ]
+      },
+      "recording_with_warm": {
+        "frame_count": 5,
+        "fixed_nose_frames": 5,
+        "unique_registered_face_signatures": 3,
+        "brow_offset_variants": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ]
+        ],
+        "mouth_component_variants": [
+          15,
+          35
+        ]
+      },
+      "charging_with_calm": {
+        "frame_count": 5,
+        "fixed_nose_frames": 5,
+        "unique_registered_face_signatures": 4,
+        "brow_offset_variants": [
+          [
+            0,
+            0
+          ]
+        ],
+        "mouth_component_variants": [
+          15
+        ]
+      },
+      "upgrade_with_playful": {
+        "frame_count": 5,
+        "fixed_nose_frames": 5,
+        "unique_registered_face_signatures": 3,
+        "brow_offset_variants": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            1
+          ]
+        ],
+        "mouth_component_variants": [
+          15,
+          26
+        ]
+      },
+      "error_with_calm": {
+        "frame_count": 5,
+        "fixed_nose_frames": 5,
+        "unique_registered_face_signatures": 4,
+        "brow_offset_variants": [
+          [
+            0,
+            0
+          ]
+        ],
+        "mouth_component_variants": [
+          15
+        ]
+      },
+      "menu_entry_notice": {
+        "frame_count": 3,
+        "fixed_nose_frames": 3,
+        "unique_registered_face_signatures": 3,
+        "brow_offset_variants": [
+          [
+            0,
+            0
+          ]
+        ],
+        "mouth_component_variants": [
+          15
+        ]
+      },
+      "daily_attention_center": {
+        "frame_count": 3,
+        "fixed_nose_frames": 3,
+        "unique_registered_face_signatures": 1,
+        "brow_offset_variants": [
+          [
+            0,
+            0
+          ]
+        ],
+        "mouth_component_variants": [
+          15
+        ]
+      },
+      "daily_attention_left": {
+        "frame_count": 3,
+        "fixed_nose_frames": 3,
+        "unique_registered_face_signatures": 2,
+        "brow_offset_variants": [
+          [
+            0,
+            0
+          ]
+        ],
+        "mouth_component_variants": [
+          15
+        ]
+      },
+      "daily_attention_right": {
+        "frame_count": 3,
+        "fixed_nose_frames": 3,
+        "unique_registered_face_signatures": 2,
+        "brow_offset_variants": [
+          [
+            0,
+            0
+          ]
+        ],
+        "mouth_component_variants": [
+          15
+        ]
+      },
+      "daily_attention_up": {
+        "frame_count": 3,
+        "fixed_nose_frames": 3,
+        "unique_registered_face_signatures": 2,
+        "brow_offset_variants": [
+          [
+            0,
+            0
+          ]
+        ],
+        "mouth_component_variants": [
+          15
+        ]
+      },
+      "daily_attention_down": {
+        "frame_count": 3,
+        "fixed_nose_frames": 3,
+        "unique_registered_face_signatures": 2,
+        "brow_offset_variants": [
+          [
+            0,
+            0
+          ]
+        ],
+        "mouth_component_variants": [
+          15
+        ]
+      }
+    },
+    "fail_closed": {
+      "invalid_functional_track": true,
+      "invalid_functional_step": true,
+      "missing_source_pose": true,
+      "generic_menu_synthesis": true
+    },
+    "expanded_review_wall": {
+      "story_count": 16,
+      "frame_count": 78,
+      "html": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/expanded-review-wall-01/index.html",
+      "source_preview": "docs/validation/companion-v45-complete-eye-browser-wb55-preview-20260721.json",
+      "touch_interaction": {
+        "surface": "each_story_200x200_viewport",
+        "mode": "registered_pointer_and_mouse_coordinate_to_gaze_overlay",
+        "overlay_count": 280,
+        "base_story_count": 16,
+        "center_key": "1,0,1,0",
+        "mapping": "pointer x/y maps to registered highlight and sparkle offsets",
+        "release_behavior": "center_then_resume_story",
+        "gestures": [
+          "tap",
+          "drag",
+          "release_to_center",
+          "swipe_left",
+          "swipe_right",
+          "swipe_up",
+          "swipe_down"
+        ],
+        "swipe_behavior": "scroll_to_adjacent_story",
+        "mouse_fallback": "mousedown_mousemove_mouseup"
+      }
+    },
+    "blink_visual_human_acceptance": false,
+    "blink_disposition": "PENDING_NEW_REVIEW_AFTER_TIMING_REVISION",
+    "touch": "pointer_coordinate_to_registered_highlight_and_sparkle; release_center",
+    "real_browser_pointer_fail_safe": true,
+    "real_browser_pointer_replay": {
+      "raw_report": ".cache/v45-browser-pointer-fail-safe-playwright.json",
+      "spec": "tools/v45-click.spec.js",
+      "titles": [
+        "expanded wall mouse input keeps the story viewport visible",
+        "real mouse press, drag and release never hide the primary expression frame"
+      ],
+      "input_sequence": [
+        "mouse_down",
+        "mouse_drag",
+        "mouse_up"
+      ],
+      "primary_frame_assertions": [
+        "not_hidden_after_press",
+        "src_nonempty_after_press",
+        "not_hidden_after_drag",
+        "not_hidden_after_release",
+        "src_nonempty_after_release"
+      ],
+      "playwright_status": "passed",
+      "spec_count": 2,
+      "screenshots": [
+        {
+          "viewport": "single",
+          "phase": "press",
+          "path": "docs/validation/companion-v45-real-browser-touch-press-20260721.png",
+          "width": 400,
+          "height": 401,
+          "viewport_width": 394,
+          "viewport_height": 395,
+          "black_pixel_count": 10618,
+          "nonwhite_pixel_count": 10618,
+          "viewport_area": 155630,
+          "black_pixel_ratio": 0.068226,
+          "source_primary": "touch-base-calm_presence-00.png",
+          "source_gaze_overlay": "touch-gaze-overlay-229.png",
+          "source_composite_black_pixel_count": 2679,
+          "active_frame_cue": "calm_entry",
+          "active_frame_index": 0,
+          "story_index": 0
+        },
+        {
+          "viewport": "single",
+          "phase": "drag",
+          "path": "docs/validation/companion-v45-real-browser-touch-drag-20260721.png",
+          "width": 400,
+          "height": 401,
+          "viewport_width": 394,
+          "viewport_height": 395,
+          "black_pixel_count": 10618,
+          "nonwhite_pixel_count": 10618,
+          "viewport_area": 155630,
+          "black_pixel_ratio": 0.068226,
+          "source_primary": "touch-base-calm_presence-00.png",
+          "source_gaze_overlay": "touch-gaze-overlay-209.png",
+          "source_composite_black_pixel_count": 2679,
+          "active_frame_cue": "calm_entry",
+          "active_frame_index": 0,
+          "story_index": 0
+        },
+        {
+          "viewport": "single",
+          "phase": "release",
+          "path": "docs/validation/companion-v45-real-browser-touch-release-20260721.png",
+          "width": 400,
+          "height": 401,
+          "viewport_width": 394,
+          "viewport_height": 395,
+          "black_pixel_count": 6444,
+          "nonwhite_pixel_count": 6444,
+          "viewport_area": 155630,
+          "black_pixel_ratio": 0.041406,
+          "source_primary": "touch-base-calm_presence-00.png",
+          "source_gaze_overlay": "touch-gaze-overlay-189.png",
+          "source_composite_black_pixel_count": 2679,
+          "active_frame_cue": "calm_entry",
+          "active_frame_index": 0,
+          "story_index": 0
+        },
+        {
+          "viewport": "expanded-first-story",
+          "phase": "press",
+          "path": "docs/validation/companion-v45-expanded-real-browser-touch-press-20260721.png",
+          "width": 200,
+          "height": 200,
+          "viewport_width": 196,
+          "viewport_height": 196,
+          "black_pixel_count": 2679,
+          "nonwhite_pixel_count": 2679,
+          "viewport_area": 38416,
+          "black_pixel_ratio": 0.069737,
+          "source_primary": "touch-base-calm_presence-00.png",
+          "source_gaze_overlay": "touch-gaze-overlay-229.png",
+          "source_composite_black_pixel_count": 2679,
+          "active_frame_cue": "calm_entry",
+          "active_frame_index": 0,
+          "story_index": 0
+        },
+        {
+          "viewport": "expanded-first-story",
+          "phase": "drag",
+          "path": "docs/validation/companion-v45-expanded-real-browser-touch-drag-20260721.png",
+          "width": 200,
+          "height": 200,
+          "viewport_width": 196,
+          "viewport_height": 196,
+          "black_pixel_count": 2679,
+          "nonwhite_pixel_count": 2679,
+          "viewport_area": 38416,
+          "black_pixel_ratio": 0.069737,
+          "source_primary": "touch-base-calm_presence-00.png",
+          "source_gaze_overlay": "touch-gaze-overlay-209.png",
+          "source_composite_black_pixel_count": 2679,
+          "active_frame_cue": "calm_entry",
+          "active_frame_index": 0,
+          "story_index": 0
+        },
+        {
+          "viewport": "expanded-first-story",
+          "phase": "release",
+          "path": "docs/validation/companion-v45-expanded-real-browser-touch-release-20260721.png",
+          "width": 200,
+          "height": 200,
+          "viewport_width": 196,
+          "viewport_height": 196,
+          "black_pixel_count": 1625,
+          "nonwhite_pixel_count": 1625,
+          "viewport_area": 38416,
+          "black_pixel_ratio": 0.0423,
+          "source_primary": "touch-base-calm_presence-00.png",
+          "source_gaze_overlay": "touch-gaze-overlay-189.png",
+          "source_composite_black_pixel_count": 2679,
+          "active_frame_cue": "calm_entry",
+          "active_frame_index": 0,
+          "story_index": 0
+        }
+      ],
+      "duration_ms": [
+        1196,
+        1402
+      ]
+    },
+    "v34_v35_special_decorations": {
+      "profile": {
+        "component_count": 76,
+        "score_count": 4,
+        "replayed_score_steps": 12
+      },
+      "parity": {
+        "source_packs": [
+          "v22_face",
+          "v34_v35_decoration"
+        ],
+        "component_count": 76,
+        "replayed_frame_count": 12
+      },
+      "preview": {
+        "frame_count": 12,
+        "source_score_coverage": [
+          "recording_input",
+          "bottom_connector_charging",
+          "curious_question",
+          "alert_exclamation"
+        ]
+      },
+      "source": {
+        "component_count": 39,
+        "component_id_range": [
+          500,
+          538
+        ],
+        "mask_hashes": "all_39_source_mask_sha256_match",
+        "crig": "docs/art/iterations/companion-pet-expression-v9-special-decoration-rig-v1/candidate/companion-v9-special-decoration-rig-candidate-200x200.crig",
+        "crig_sha256": "52D67D2C9FF7574799C8D092047EB60463D0631D80C8FE45A252527EE4A07F44",
+        "crig_size": 3542
+      },
+      "dream_cloud": "fail_closed_pending_v9_sleep_profile"
+    },
+    "swipe": "horizontal_or_vertical; positive_next_negative_previous",
+    "runtime_resource_activated": false
+  },
+  "human_review": {
+    "historical_artifact": "docs/validation/companion-v45-total-machine-audit-20260721.owner-review.json",
+    "historical_note": "docs/validation/companion-v45-total-machine-audit-20260721.owner-review.note.txt",
+    "historical_selected": "通过",
+    "historical_disposition": "SUPERSEDED_BY_COMP_REQ_282_TIMING_AND_COMP_REQ_283_284_REVIEW_REVISIONS",
+    "r4_artifact": "docs/validation/companion-v45-total-machine-audit-20260721-r4.owner-review.json",
+    "r4_note": "docs/validation/companion-v45-total-machine-audit-20260721-r4.owner-review.note.txt",
+    "r4_selected": "需修改",
+    "r4_disposition": "REJECTED_COMP_REQ_290_REAL_BROWSER_TOUCH_FAIL_SAFE",
+    "r5_artifact": "docs/validation/companion-v45-total-machine-audit-20260721-r5.owner-review.json",
+    "r5_note": "docs/validation/companion-v45-total-machine-audit-20260721-r5.owner-review.note.txt",
+    "r5_selected": "需修改",
+    "r5_disposition": "REJECTED_PRESERVED_ORDERED_TOUCH_FAILURE",
+    "current_review": "not_started_after_r7_real_browser_pixel_fail_safe_fix",
+    "note_is_dispositive_for_touch_fix": true
+  },
+  "non_claims": [
+    "no_runtime_binding",
+    "no_firmware_flash",
+    "no_panel_or_driver_change",
+    "no_physical_screen_acceptance",
+    "no_blink_visual_acceptance"
+  ],
+  "human_boundary": "The prior canonical Chinese reviews remain preserved. r4 and r5 rejected the real touch behavior; this machine-closed r7 real-browser pixel fail-safe revision requires a new canonical Chinese review before promotion and remains separate from physical panel acceptance."
+}

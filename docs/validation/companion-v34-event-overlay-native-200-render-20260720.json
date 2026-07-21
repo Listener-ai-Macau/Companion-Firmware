@@ -1,0 +1,119 @@
+{
+  "schema": "companion.v34.event_overlay_native_200_render.v1",
+  "status": "CANDIDATE_PENDING_INTERNAL_NATIVE_200_REVIEW",
+  "authority": "COMP-REQ-187",
+  "locked_v9": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "daily_micro_bases": {
+    "center": {
+      "path": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/pbm/matrix_daily_calm_center.pbm",
+      "sha256": "B3847DF9CE2D20693C60C9CC7BC1EC8D8B8A3E23641F4521EE71508ABE13CB9E"
+    },
+    "right": {
+      "path": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/pbm/matrix_daily_calm_right.pbm",
+      "sha256": "F7FB797533669C55B25597838B9BB57E8020B061528C75CB8EB4E38EA46F86CD"
+    },
+    "down": {
+      "path": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/pbm/matrix_daily_calm_down.pbm",
+      "sha256": "519BAE39D0A4DE00D7C65F566BC882FFE1F9BE8DCE74CA815BABABD11094A33D"
+    }
+  },
+  "generated_sources": {
+    "recording_input": {
+      "path": "docs/art/iterations/companion-pet-expression-v9-event-overlay-v1/candidate-recording-input-v1.png",
+      "sha256": "203B63C5FF7963859B7296725260A17C101C19BAE843C36DEB859843C6770B4F"
+    },
+    "bottom_connector_charging": {
+      "path": "docs/art/iterations/companion-pet-expression-v9-event-overlay-v1/candidate-bottom-connector-charging-v2.png",
+      "sha256": "791B9CF5393AD3EBE46E75BCB44D305E281BB9DFB6DAFDA49F1061FA020CBF44"
+    }
+  },
+  "composition": {
+    "canvas": [
+      200,
+      200
+    ],
+    "safe_inset_px": 8,
+    "face_channels_restored_above_overlay": [
+      "eyes",
+      "brows",
+      "nose",
+      "mouth"
+    ],
+    "rendering_policy": "source-derived masks only; no code-drawn visual feature"
+  },
+  "overlays": {
+    "recording_input": {
+      "frames": [
+        {
+          "frame": 0,
+          "png": "docs/art/iterations/companion-pet-expression-v9-event-overlay-v1/candidate/review-v1/recording-input-00.png",
+          "pbm": "docs/art/iterations/companion-pet-expression-v9-event-overlay-v1/candidate/review-v1/recording-input-00.pbm",
+          "sha256": "687FD2CE59604A7AEFCB18498B814718151FE8FCA6D4CF27211F4849D5552F19"
+        },
+        {
+          "frame": 1,
+          "png": "docs/art/iterations/companion-pet-expression-v9-event-overlay-v1/candidate/review-v1/recording-input-01.png",
+          "pbm": "docs/art/iterations/companion-pet-expression-v9-event-overlay-v1/candidate/review-v1/recording-input-01.pbm",
+          "sha256": "F8EDB79A065F95EDA48C4948940879F409C6F8889E6792E4D2EA25E9063C5337"
+        },
+        {
+          "frame": 2,
+          "png": "docs/art/iterations/companion-pet-expression-v9-event-overlay-v1/candidate/review-v1/recording-input-02.png",
+          "pbm": "docs/art/iterations/companion-pet-expression-v9-event-overlay-v1/candidate/review-v1/recording-input-02.pbm",
+          "sha256": "FEBD34667BB7E5FEDE9F19717039C2C4D5C81ACB14424A410E9030434AC501F2"
+        }
+      ],
+      "sequence_ms": [
+        700,
+        420,
+        420
+      ],
+      "daily_micro_sequence": [
+        "center",
+        "right",
+        "right"
+      ],
+      "meaning": "the daily highlight turns toward a compact sensor as environment input pulses toward it"
+    },
+    "bottom_connector_charging": {
+      "frames": [
+        {
+          "frame": 0,
+          "png": "docs/art/iterations/companion-pet-expression-v9-event-overlay-v1/candidate/review-v1/bottom-connector-charging-00.png",
+          "pbm": "docs/art/iterations/companion-pet-expression-v9-event-overlay-v1/candidate/review-v1/bottom-connector-charging-00.pbm",
+          "sha256": "6FA0C7CEB99EB3502D765A7A6C775A42C30C0ACC766D167809B9FE5E9876D215"
+        },
+        {
+          "frame": 1,
+          "png": "docs/art/iterations/companion-pet-expression-v9-event-overlay-v1/candidate/review-v1/bottom-connector-charging-01.png",
+          "pbm": "docs/art/iterations/companion-pet-expression-v9-event-overlay-v1/candidate/review-v1/bottom-connector-charging-01.pbm",
+          "sha256": "7737B57EAB235FDF826CA02E239634FF7389DF7D6777A45B3A86653CF7015CE6"
+        },
+        {
+          "frame": 2,
+          "png": "docs/art/iterations/companion-pet-expression-v9-event-overlay-v1/candidate/review-v1/bottom-connector-charging-02.png",
+          "pbm": "docs/art/iterations/companion-pet-expression-v9-event-overlay-v1/candidate/review-v1/bottom-connector-charging-02.pbm",
+          "sha256": "19495FB226EB057393905B7301EA1629220A1B46F2EBD460D72E3288C37DC5C2"
+        }
+      ],
+      "sequence_ms": [
+        700,
+        420,
+        420
+      ],
+      "daily_micro_sequence": [
+        "center",
+        "down",
+        "down"
+      ],
+      "meaning": "the daily highlight settles down toward the bottom-attached connector as restrained energy rises"
+    }
+  },
+  "contact_sheet": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-event-overlay-v1/candidate/review-v1/contact-native-200.png",
+    "sha256": "440DE3140333823CC3B93ECF11FEC44CAB36084B1994E6405E1F264EEB330390"
+  }
+}

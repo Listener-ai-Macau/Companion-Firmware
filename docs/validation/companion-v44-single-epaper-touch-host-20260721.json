@@ -1,0 +1,117 @@
+{
+  "schema": "companion.v44_single_epaper_touch_host.v1",
+  "status": "PASS_V44_SINGLE_VIEWPORT_TOUCH_SWIPE_REPLAY_RUNTIME_INACTIVE",
+  "preview_report": "docs/validation/companion-v44-blink-stable-center-single-epaper-browser-wb55-preview-20260721.json",
+  "trace": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v6/candidate/target-score-attempt-01/v44-wb55-target-profile-plan.json",
+  "canvas": "200x200",
+  "endpoint_replay": {
+    "center": {
+      "point": [
+        100,
+        100
+      ],
+      "key": "1,0,1,0",
+      "offsets": {
+        "primary_x": 1,
+        "primary_y": 0,
+        "sparkle_x": 1,
+        "sparkle_y": 0
+      }
+    },
+    "left": {
+      "point": [
+        0,
+        100
+      ],
+      "key": "-2,0,-6,0",
+      "offsets": {
+        "primary_x": -2,
+        "primary_y": 0,
+        "sparkle_x": -6,
+        "sparkle_y": 0
+      }
+    },
+    "right": {
+      "point": [
+        199,
+        100
+      ],
+      "key": "5,0,5,0",
+      "offsets": {
+        "primary_x": 5,
+        "primary_y": 0,
+        "sparkle_x": 5,
+        "sparkle_y": 0
+      }
+    },
+    "up": {
+      "point": [
+        100,
+        0
+      ],
+      "key": "1,-3,1,-6",
+      "offsets": {
+        "primary_x": 1,
+        "primary_y": -3,
+        "sparkle_x": 1,
+        "sparkle_y": -6
+      }
+    },
+    "down": {
+      "point": [
+        100,
+        199
+      ],
+      "key": "1,4,1,6",
+      "offsets": {
+        "primary_x": 1,
+        "primary_y": 4,
+        "sparkle_x": 1,
+        "sparkle_y": 6
+      }
+    }
+  },
+  "swipe_replay": {
+    "story_count": 16,
+    "transitions": [
+      {
+        "gesture": "swipe_right",
+        "before": "calm_presence",
+        "after": "warm_presence",
+        "direction": 1
+      },
+      {
+        "gesture": "swipe_down",
+        "before": "warm_presence",
+        "after": "curious_question",
+        "direction": 1
+      },
+      {
+        "gesture": "swipe_left",
+        "before": "curious_question",
+        "after": "warm_presence",
+        "direction": -1
+      },
+      {
+        "gesture": "swipe_up",
+        "before": "warm_presence",
+        "after": "calm_presence",
+        "direction": -1
+      }
+    ],
+    "wraparound": true
+  },
+  "tap_drag_release": {
+    "same_story": true,
+    "release_center_key": "1,0,1,0",
+    "resume_deterministic": true
+  },
+  "fixed_face_component_checks": 78,
+  "random_selection": false,
+  "runtime_resource_activated": false,
+  "non_claims": [
+    "no_lower_driver_change",
+    "no_physical_panel_acceptance",
+    "no_human_acceptance"
+  ]
+}

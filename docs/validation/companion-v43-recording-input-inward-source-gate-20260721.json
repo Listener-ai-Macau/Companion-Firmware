@@ -1,0 +1,84 @@
+{
+  "schema": "companion.v43_recording_input_inward_source_gate.v1",
+  "status": "PASS_V43_RECORDING_INPUT_INWARD_SOURCE_RUNTIME_INACTIVE",
+  "authority": [
+    "COMP-REQ-093",
+    "COMP-REQ-263"
+  ],
+  "locked_v9_source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "generated_source": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-recording-input-inward-source-v1/candidate/attempt-01-recording-input-inward.png",
+    "sha256": "278AE1ED5EED32F80CA09ACAD8C6F3112156ABCFB3653A5DAD3270C30FDFB4B7",
+    "dimensions": [
+      2172,
+      724
+    ],
+    "request": "docs/art/iterations/companion-pet-expression-v9-recording-input-inward-source-v1/generation-request-v1.json",
+    "cells": [
+      {
+        "cell": 0,
+        "cell_size": [
+          724,
+          724
+        ],
+        "ink_bbox": [
+          243,
+          230,
+          542,
+          496
+        ],
+        "ink_pixels": 27798,
+        "left_half_ink": 2329,
+        "right_half_ink": 25469,
+        "far_right_ink": 0
+      },
+      {
+        "cell": 1,
+        "cell_size": [
+          724,
+          724
+        ],
+        "ink_bbox": [
+          195,
+          230,
+          535,
+          496
+        ],
+        "ink_pixels": 29647,
+        "left_half_ink": 4231,
+        "right_half_ink": 25416,
+        "far_right_ink": 0
+      },
+      {
+        "cell": 2,
+        "cell_size": [
+          724,
+          724
+        ],
+        "ink_bbox": [
+          172,
+          230,
+          547,
+          496
+        ],
+        "ink_pixels": 33382,
+        "left_half_ink": 7953,
+        "right_half_ink": 25429,
+        "far_right_ink": 0
+      }
+    ]
+  },
+  "component_ids": [
+    569,
+    570,
+    571
+  ],
+  "semantic_gate": "microphone on right; one-to-three sound marks remain on its left and read inward toward the face",
+  "face_collision_gate": "registered right-side safe zone; no eye/brow/nose/mouth/cheek overlap",
+  "runtime_resource_activated": false,
+  "non_claims": [
+    "no_lower_driver_change",
+    "no_runtime_activation",
+    "no_human_acceptance"
+  ]
+}

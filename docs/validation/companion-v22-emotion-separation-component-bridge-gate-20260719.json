@@ -1,0 +1,136 @@
+{
+  "schema": "companion.v22_emotion_separation_component_bridge_gate.v1",
+  "status": "PASS_V22_EMOTION_SEPARATION_COMPONENT_BRIDGE_GATE",
+  "component_export_gate": "docs/validation/companion-v22-emotion-separation-component-export-gate-20260719.json",
+  "layout": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-bridge-attempt-01/component-bridge-layout.json",
+  "browser_capture": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-bridge-attempt-01/browser-capture-report.json",
+  "legal_directed_bridge_count": 10,
+  "bridge_metrics": [
+    {
+      "bridge": "calm__curious",
+      "frame_count": 7,
+      "adjacent_pixel_changes": [
+        134,
+        54,
+        490,
+        383,
+        104,
+        188
+      ]
+    },
+    {
+      "bridge": "curious__calm",
+      "frame_count": 7,
+      "adjacent_pixel_changes": [
+        92,
+        36,
+        554,
+        315,
+        100,
+        128
+      ]
+    },
+    {
+      "bridge": "curious__warm",
+      "frame_count": 7,
+      "adjacent_pixel_changes": [
+        122,
+        62,
+        427,
+        557,
+        164,
+        184
+      ]
+    },
+    {
+      "bridge": "warm__curious",
+      "frame_count": 7,
+      "adjacent_pixel_changes": [
+        122,
+        62,
+        429,
+        501,
+        104,
+        184
+      ]
+    },
+    {
+      "bridge": "warm__playful",
+      "frame_count": 8,
+      "adjacent_pixel_changes": [
+        68,
+        34,
+        370,
+        636,
+        64,
+        150,
+        102
+      ]
+    },
+    {
+      "bridge": "playful__warm",
+      "frame_count": 8,
+      "adjacent_pixel_changes": [
+        68,
+        34,
+        418,
+        617,
+        43,
+        164,
+        102
+      ]
+    },
+    {
+      "bridge": "calm__puzzled",
+      "frame_count": 7,
+      "adjacent_pixel_changes": [
+        120,
+        62,
+        589,
+        470,
+        86,
+        182
+      ]
+    },
+    {
+      "bridge": "puzzled__calm",
+      "frame_count": 7,
+      "adjacent_pixel_changes": [
+        120,
+        62,
+        567,
+        418,
+        100,
+        182
+      ]
+    },
+    {
+      "bridge": "puzzled__alert",
+      "frame_count": 7,
+      "adjacent_pixel_changes": [
+        120,
+        62,
+        620,
+        486,
+        108,
+        182
+      ]
+    },
+    {
+      "bridge": "alert__puzzled",
+      "frame_count": 7,
+      "adjacent_pixel_changes": [
+        120,
+        62,
+        616,
+        500,
+        86,
+        182
+      ]
+    }
+  ],
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden",
+  "screen_review": "pending_machine_closed_owner_art_and_screen_review",
+  "errors": []
+}

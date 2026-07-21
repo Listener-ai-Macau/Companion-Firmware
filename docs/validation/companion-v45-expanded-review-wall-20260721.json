@@ -1,0 +1,778 @@
+{
+  "schema": "companion.v45_expanded_review_wall.v1",
+  "status": "PASS_V45_EXPANDED_DYNAMIC_REVIEW_WALL_RUNTIME_INACTIVE",
+  "source_preview_artifact": "docs/validation/companion-v45-complete-eye-browser-wb55-preview-20260721.json",
+  "source_preview_sha256": "83CA18501E03EE8C349D9A3794EC5584DCEA0E32AC3C0A3AC3E713301D4C9048",
+  "locked_v9_source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "canvas": {
+    "width": 200,
+    "height": 200,
+    "pixel_format": "1bpp_white_is_one_msb"
+  },
+  "presentation": "vertical_scroll_single_column_all_owner_visible_stories",
+  "owner_visible_story_count": 16,
+  "stories": [
+    {
+      "name": "calm_presence",
+      "label_zh": "日常平静",
+      "summary_zh": "默认日常脸，眼神保持正中，停留时同步眨眼。",
+      "frames": [
+        {
+          "index": 0,
+          "src": "calm_presence-00-calm_entry.png",
+          "cue": "calm_entry",
+          "phase": "entry",
+          "duration_ms": 220,
+          "target_1bpp_sha256": "F243FA734F495C4012D562F98AC3643665910F2994D2F130A7E7EA843A9C4AE3"
+        },
+        {
+          "index": 1,
+          "src": "calm_presence-01-calm_blink_closing.png",
+          "cue": "calm_blink_closing",
+          "phase": "lead",
+          "duration_ms": 140,
+          "target_1bpp_sha256": "D13502FF4EE01F0F8D9098E6CBF42F28FDB11E60E5FE6571E165084161BBE0E0"
+        },
+        {
+          "index": 2,
+          "src": "calm_presence-02-calm_blink_closed.png",
+          "cue": "calm_blink_closed",
+          "phase": "hold",
+          "duration_ms": 120,
+          "target_1bpp_sha256": "25857C4094153734ACCE08F1D90D338AFA5EBDF79435BB108CB06BA3695F8A7E"
+        },
+        {
+          "index": 3,
+          "src": "calm_presence-03-calm_blink_opening.png",
+          "cue": "calm_blink_opening",
+          "phase": "response",
+          "duration_ms": 150,
+          "target_1bpp_sha256": "3D68D7463686D2DBA6E2DC9869B869C7FF5A56380FDA149C228D907DD0420B3A"
+        },
+        {
+          "index": 4,
+          "src": "calm_presence-04-calm_blink_settle.png",
+          "cue": "calm_blink_settle",
+          "phase": "hold",
+          "duration_ms": 6800,
+          "target_1bpp_sha256": "F243FA734F495C4012D562F98AC3643665910F2994D2F130A7E7EA843A9C4AE3"
+        }
+      ]
+    },
+    {
+      "name": "warm_presence",
+      "label_zh": "亲近温暖",
+      "summary_zh": "互动记忆较高时的温和回应。",
+      "frames": [
+        {
+          "index": 0,
+          "src": "warm_presence-00-warm_entry.png",
+          "cue": "warm_entry",
+          "phase": "entry",
+          "duration_ms": 220,
+          "target_1bpp_sha256": "3D4ADECC2719E1C1F499726219BFC01CC2268C713F667CC2F704E599E278A986"
+        },
+        {
+          "index": 1,
+          "src": "warm_presence-01-warm_brow_lead.png",
+          "cue": "warm_brow_lead",
+          "phase": "lead",
+          "duration_ms": 180,
+          "target_1bpp_sha256": "CF27E3ED3F3B5FE342BC2D98AEF05CA142D52C1DB7AB5084E75A06BA6ED2B2B7"
+        },
+        {
+          "index": 2,
+          "src": "warm_presence-02-warm_smile_arrive.png",
+          "cue": "warm_smile_arrive",
+          "phase": "response",
+          "duration_ms": 260,
+          "target_1bpp_sha256": "F9D3C7C17417C22A225CF2A890C392597EE7CE96F6ECBC4A2F7433119C8ED66F"
+        },
+        {
+          "index": 3,
+          "src": "warm_presence-03-warm_hold.png",
+          "cue": "warm_hold",
+          "phase": "hold",
+          "duration_ms": 760,
+          "target_1bpp_sha256": "F9D3C7C17417C22A225CF2A890C392597EE7CE96F6ECBC4A2F7433119C8ED66F"
+        },
+        {
+          "index": 4,
+          "src": "warm_presence-04-warm_settle.png",
+          "cue": "warm_settle",
+          "phase": "accent",
+          "duration_ms": 360,
+          "target_1bpp_sha256": "3D4ADECC2719E1C1F499726219BFC01CC2268C713F667CC2F704E599E278A986"
+        }
+      ]
+    },
+    {
+      "name": "curious_question",
+      "label_zh": "好奇提问",
+      "summary_zh": "眼神和眉毛先带动，再出现表情自有问号。",
+      "frames": [
+        {
+          "index": 0,
+          "src": "curious_question-00-question_entry.png",
+          "cue": "question_entry",
+          "phase": "entry",
+          "duration_ms": 180,
+          "target_1bpp_sha256": "84DF9FD0516F1CB1C4DB3593F9B2FB0F6651362FE5B90C1176401C37DA848573"
+        },
+        {
+          "index": 1,
+          "src": "curious_question-01-question_brow_lead.png",
+          "cue": "question_brow_lead",
+          "phase": "lead",
+          "duration_ms": 180,
+          "target_1bpp_sha256": "A27A877DF063217CF7944D5BB0C4DBD5D945BF989FA1F25863FABC1196F6E534"
+        },
+        {
+          "index": 2,
+          "src": "curious_question-02-question_mouth_arrive.png",
+          "cue": "question_mouth_arrive",
+          "phase": "response",
+          "duration_ms": 260,
+          "target_1bpp_sha256": "6388832731A33712E30CE59A9327ED5B7FF68AB49F5CFDF2569FDB73B2D18773"
+        },
+        {
+          "index": 3,
+          "src": "curious_question-03-question_hold.png",
+          "cue": "question_hold",
+          "phase": "hold",
+          "duration_ms": 760,
+          "target_1bpp_sha256": "CEBAAC560B9F8A9167A2F268CB9504511EE14D571D1C1749F361E89434073C15"
+        },
+        {
+          "index": 4,
+          "src": "curious_question-04-question_settle.png",
+          "cue": "question_settle",
+          "phase": "accent",
+          "duration_ms": 360,
+          "target_1bpp_sha256": "84DF9FD0516F1CB1C4DB3593F9B2FB0F6651362FE5B90C1176401C37DA848573"
+        }
+      ]
+    },
+    {
+      "name": "alert_exclamation",
+      "label_zh": "警觉提醒",
+      "summary_zh": "眉眼先进入提醒，再出现表情自有感叹号。",
+      "frames": [
+        {
+          "index": 0,
+          "src": "alert_exclamation-00-exclamation_entry.png",
+          "cue": "exclamation_entry",
+          "phase": "entry",
+          "duration_ms": 180,
+          "target_1bpp_sha256": "665D34F8A46D762B5A18969D3CF7DF9B01D23CAFCC6147E075F85D5B3DFBA375"
+        },
+        {
+          "index": 1,
+          "src": "alert_exclamation-01-exclamation_brow_lead.png",
+          "cue": "exclamation_brow_lead",
+          "phase": "lead",
+          "duration_ms": 180,
+          "target_1bpp_sha256": "681C9C11F08FA5452F6E80BB9A052584C565537BE2C224293E627503A517DC19"
+        },
+        {
+          "index": 2,
+          "src": "alert_exclamation-02-exclamation_mouth_arrive.png",
+          "cue": "exclamation_mouth_arrive",
+          "phase": "response",
+          "duration_ms": 260,
+          "target_1bpp_sha256": "3BB136211EB82241118BBAFDDFB533CA1310A58FCB76BB4DAE483C8AA30B7F90"
+        },
+        {
+          "index": 3,
+          "src": "alert_exclamation-03-exclamation_hold.png",
+          "cue": "exclamation_hold",
+          "phase": "hold",
+          "duration_ms": 760,
+          "target_1bpp_sha256": "9C797C2869BB61822F8235535EE160DE39FF202FAADACA0D455A5FA2B67442F7"
+        },
+        {
+          "index": 4,
+          "src": "alert_exclamation-04-exclamation_settle.png",
+          "cue": "exclamation_settle",
+          "phase": "accent",
+          "duration_ms": 360,
+          "target_1bpp_sha256": "665D34F8A46D762B5A18969D3CF7DF9B01D23CAFCC6147E075F85D5B3DFBA375"
+        }
+      ]
+    },
+    {
+      "name": "playful_presence",
+      "label_zh": "活泼玩心",
+      "summary_zh": "高光先活跃，随后回到轻快保持。",
+      "frames": [
+        {
+          "index": 0,
+          "src": "playful_presence-00-playful_entry.png",
+          "cue": "playful_entry",
+          "phase": "entry",
+          "duration_ms": 220,
+          "target_1bpp_sha256": "8290F00A49713728901D2C34B6AA2B445C54F6D6A8EF6AE67B35EFFE0B821EA0"
+        },
+        {
+          "index": 1,
+          "src": "playful_presence-01-playful_brow_lead.png",
+          "cue": "playful_brow_lead",
+          "phase": "lead",
+          "duration_ms": 180,
+          "target_1bpp_sha256": "A71679909C3E4C62C22BF55AD6B217A393120F9DC731536F7F5E6A222C68AF2D"
+        },
+        {
+          "index": 2,
+          "src": "playful_presence-02-playful_smile_arrive.png",
+          "cue": "playful_smile_arrive",
+          "phase": "response",
+          "duration_ms": 260,
+          "target_1bpp_sha256": "2EA22AC9A013D72DA9AEB8D45C686E5F7EA8D6E4DEFEF84E467D3DFCDC57B556"
+        },
+        {
+          "index": 3,
+          "src": "playful_presence-03-playful_hold.png",
+          "cue": "playful_hold",
+          "phase": "hold",
+          "duration_ms": 760,
+          "target_1bpp_sha256": "2EA22AC9A013D72DA9AEB8D45C686E5F7EA8D6E4DEFEF84E467D3DFCDC57B556"
+        },
+        {
+          "index": 4,
+          "src": "playful_presence-04-playful_settle.png",
+          "cue": "playful_settle",
+          "phase": "accent",
+          "duration_ms": 360,
+          "target_1bpp_sha256": "8290F00A49713728901D2C34B6AA2B445C54F6D6A8EF6AE67B35EFFE0B821EA0"
+        }
+      ]
+    },
+    {
+      "name": "sleepy_presence",
+      "label_zh": "困倦入睡",
+      "summary_zh": "困眼、眉和嘴依次进入，只有 ZZZ 轻轻上浮。",
+      "frames": [
+        {
+          "index": 0,
+          "src": "sleepy_presence-00-sleep_entry.png",
+          "cue": "sleep_entry",
+          "phase": "entry",
+          "duration_ms": 420,
+          "target_1bpp_sha256": "F243FA734F495C4012D562F98AC3643665910F2994D2F130A7E7EA843A9C4AE3"
+        },
+        {
+          "index": 1,
+          "src": "sleepy_presence-01-eyes_soften.png",
+          "cue": "eyes_soften",
+          "phase": "lead",
+          "duration_ms": 360,
+          "target_1bpp_sha256": "0CCD38598146090B1651D0359E40C4C79570CE4A70ADFAD9F1258B9087B9303F"
+        },
+        {
+          "index": 2,
+          "src": "sleepy_presence-02-zzz_arrive.png",
+          "cue": "zzz_arrive",
+          "phase": "response",
+          "duration_ms": 320,
+          "target_1bpp_sha256": "5D04B5108B41D7BBCD8CA4CF403CF65002E88E4FB0EFB319CD1963361B52D28B"
+        },
+        {
+          "index": 3,
+          "src": "sleepy_presence-03-zzz_rise.png",
+          "cue": "zzz_rise",
+          "phase": "accent",
+          "duration_ms": 420,
+          "target_1bpp_sha256": "D31AFE88EA08477C745425A9D29E01AC6D29683FB86AE3DE950FEA33F9A0E454"
+        },
+        {
+          "index": 4,
+          "src": "sleepy_presence-04-sleep_hold.png",
+          "cue": "sleep_hold",
+          "phase": "hold",
+          "duration_ms": 1400,
+          "target_1bpp_sha256": "65D9143B1A1B7C625080C631336D27F5CFCF97D0D495E93BE891C158108A0B00"
+        }
+      ]
+    },
+    {
+      "name": "delighted_presence",
+      "label_zh": "开心雀跃",
+      "summary_zh": "抬眉、开口笑和高腮点形成清楚的开心反应。",
+      "frames": [
+        {
+          "index": 0,
+          "src": "delighted_presence-00-delighted_entry.png",
+          "cue": "delighted_entry",
+          "phase": "entry",
+          "duration_ms": 220,
+          "target_1bpp_sha256": "F008BE3C354807F71366A566DB35E90281E8A5D46D88B7040223B51C72EEC8AD"
+        },
+        {
+          "index": 1,
+          "src": "delighted_presence-01-delighted_brow_lead.png",
+          "cue": "delighted_brow_lead",
+          "phase": "lead",
+          "duration_ms": 180,
+          "target_1bpp_sha256": "0B4E46F73D734E4AEA7275D738DABCFB957D99D1D93B683D3B057198FD3BF821"
+        },
+        {
+          "index": 2,
+          "src": "delighted_presence-02-delighted_mouth_arrive.png",
+          "cue": "delighted_mouth_arrive",
+          "phase": "response",
+          "duration_ms": 260,
+          "target_1bpp_sha256": "760D88BD2A9B4EED4AAE1EDCD1692C0AFACED5B2094D2768A4EA852E567887E8"
+        },
+        {
+          "index": 3,
+          "src": "delighted_presence-03-delighted_hold.png",
+          "cue": "delighted_hold",
+          "phase": "hold",
+          "duration_ms": 760,
+          "target_1bpp_sha256": "760D88BD2A9B4EED4AAE1EDCD1692C0AFACED5B2094D2768A4EA852E567887E8"
+        },
+        {
+          "index": 4,
+          "src": "delighted_presence-04-delighted_settle.png",
+          "cue": "delighted_settle",
+          "phase": "accent",
+          "duration_ms": 360,
+          "target_1bpp_sha256": "F008BE3C354807F71366A566DB35E90281E8A5D46D88B7040223B51C72EEC8AD"
+        }
+      ]
+    },
+    {
+      "name": "bashful_presence",
+      "label_zh": "害羞轻笑",
+      "summary_zh": "收拢的眉、贴近嘴角的腮点和小笑意表达害羞。",
+      "frames": [
+        {
+          "index": 0,
+          "src": "bashful_presence-00-bashful_entry.png",
+          "cue": "bashful_entry",
+          "phase": "entry",
+          "duration_ms": 220,
+          "target_1bpp_sha256": "AC04F026E8789ABD84F021653AD7D5483F46ABF10E32C31AABB0E6A32C2D35A0"
+        },
+        {
+          "index": 1,
+          "src": "bashful_presence-01-bashful_brow_lead.png",
+          "cue": "bashful_brow_lead",
+          "phase": "lead",
+          "duration_ms": 180,
+          "target_1bpp_sha256": "1D56E7B872DF60B2916F75F57C0A5E63C1FB32A51CF41070121F4C15A9EF2BAE"
+        },
+        {
+          "index": 2,
+          "src": "bashful_presence-02-bashful_mouth_arrive.png",
+          "cue": "bashful_mouth_arrive",
+          "phase": "response",
+          "duration_ms": 260,
+          "target_1bpp_sha256": "0AF704DB3DA95FE7ADAD95AC79667AE0B84088358CE0CC271D238934793DC551"
+        },
+        {
+          "index": 3,
+          "src": "bashful_presence-03-bashful_hold.png",
+          "cue": "bashful_hold",
+          "phase": "hold",
+          "duration_ms": 760,
+          "target_1bpp_sha256": "0AF704DB3DA95FE7ADAD95AC79667AE0B84088358CE0CC271D238934793DC551"
+        },
+        {
+          "index": 4,
+          "src": "bashful_presence-04-bashful_settle.png",
+          "cue": "bashful_settle",
+          "phase": "accent",
+          "duration_ms": 360,
+          "target_1bpp_sha256": "AC04F026E8789ABD84F021653AD7D5483F46ABF10E32C31AABB0E6A32C2D35A0"
+        }
+      ]
+    },
+    {
+      "name": "thoughtful_presence",
+      "label_zh": "安静思考",
+      "summary_zh": "一高一低眉与偏位思考嘴带出安静停顿。",
+      "frames": [
+        {
+          "index": 0,
+          "src": "thoughtful_presence-00-thoughtful_entry.png",
+          "cue": "thoughtful_entry",
+          "phase": "entry",
+          "duration_ms": 220,
+          "target_1bpp_sha256": "D817FAC0BA18E5583351F556C3FBDFC4D97F4C20512BC2B14882C780B9D07DD4"
+        },
+        {
+          "index": 1,
+          "src": "thoughtful_presence-01-thoughtful_brow_lead.png",
+          "cue": "thoughtful_brow_lead",
+          "phase": "lead",
+          "duration_ms": 180,
+          "target_1bpp_sha256": "E3C91625E85F8B9EA5B901FDF309D09C5D35275057A515B9CC2BC5E0A16EFDDC"
+        },
+        {
+          "index": 2,
+          "src": "thoughtful_presence-02-thoughtful_mouth_arrive.png",
+          "cue": "thoughtful_mouth_arrive",
+          "phase": "response",
+          "duration_ms": 260,
+          "target_1bpp_sha256": "FBE9E7C260D38E1B0DC53E6104A0D8CE193ED39D842DC5A82E4EBCA15F72FF6C"
+        },
+        {
+          "index": 3,
+          "src": "thoughtful_presence-03-thoughtful_hold.png",
+          "cue": "thoughtful_hold",
+          "phase": "hold",
+          "duration_ms": 760,
+          "target_1bpp_sha256": "FBE9E7C260D38E1B0DC53E6104A0D8CE193ED39D842DC5A82E4EBCA15F72FF6C"
+        },
+        {
+          "index": 4,
+          "src": "thoughtful_presence-04-thoughtful_settle.png",
+          "cue": "thoughtful_settle",
+          "phase": "accent",
+          "duration_ms": 360,
+          "target_1bpp_sha256": "D817FAC0BA18E5583351F556C3FBDFC4D97F4C20512BC2B14882C780B9D07DD4"
+        }
+      ]
+    },
+    {
+      "name": "focused_presence",
+      "label_zh": "认真专注",
+      "summary_zh": "低而圆的收拢眉与短横嘴表达稳定专注。",
+      "frames": [
+        {
+          "index": 0,
+          "src": "focused_presence-00-focused_entry.png",
+          "cue": "focused_entry",
+          "phase": "entry",
+          "duration_ms": 220,
+          "target_1bpp_sha256": "078FA1E54AAD36C70546142AF38F7241AC328A5F9505BD2200C85F23A9FF4A55"
+        },
+        {
+          "index": 1,
+          "src": "focused_presence-01-focused_brow_lead.png",
+          "cue": "focused_brow_lead",
+          "phase": "lead",
+          "duration_ms": 180,
+          "target_1bpp_sha256": "0788A9CD05F408370FFFD51F97B6D1BB39880A046B8FC209B19149925E086849"
+        },
+        {
+          "index": 2,
+          "src": "focused_presence-02-focused_mouth_arrive.png",
+          "cue": "focused_mouth_arrive",
+          "phase": "response",
+          "duration_ms": 260,
+          "target_1bpp_sha256": "BFEB13F020EE9151C1333F112F123EC804CF12D41012839EEFFBF6C580884B6B"
+        },
+        {
+          "index": 3,
+          "src": "focused_presence-03-focused_hold.png",
+          "cue": "focused_hold",
+          "phase": "hold",
+          "duration_ms": 760,
+          "target_1bpp_sha256": "BFEB13F020EE9151C1333F112F123EC804CF12D41012839EEFFBF6C580884B6B"
+        },
+        {
+          "index": 4,
+          "src": "focused_presence-04-focused_settle.png",
+          "cue": "focused_settle",
+          "phase": "accent",
+          "duration_ms": 360,
+          "target_1bpp_sha256": "078FA1E54AAD36C70546142AF38F7241AC328A5F9505BD2200C85F23A9FF4A55"
+        }
+      ]
+    },
+    {
+      "name": "recording_with_calm",
+      "label_zh": "录音输入中",
+      "summary_zh": "日常脸旁边播放输入麦克风波纹，绝不覆盖脸。",
+      "frames": [
+        {
+          "index": 0,
+          "src": "recording_with_calm-00-recording_input_0.png",
+          "cue": "recording_input_0",
+          "phase": "entry",
+          "duration_ms": 260,
+          "target_1bpp_sha256": "A0A235D6372713A56ED87D994A93B59425993C01B1F2D41926E642573257C7BF"
+        },
+        {
+          "index": 1,
+          "src": "recording_with_calm-01-recording_input_1.png",
+          "cue": "recording_input_1",
+          "phase": "lead",
+          "duration_ms": 240,
+          "target_1bpp_sha256": "DA7BC2CE3F4A787EDF4A7B59F08AAF84ED4F05FD71F5AB01A9506A979E67130D"
+        },
+        {
+          "index": 2,
+          "src": "recording_with_calm-02-recording_input_2.png",
+          "cue": "recording_input_2",
+          "phase": "response",
+          "duration_ms": 520,
+          "target_1bpp_sha256": "66A9E1567D03A570DDEC86AC35F8B868A88397ACE807C60994DD5ABB9E965072"
+        },
+        {
+          "index": 3,
+          "src": "recording_with_calm-03-recording_input_3.png",
+          "cue": "recording_input_3",
+          "phase": "hold",
+          "duration_ms": 240,
+          "target_1bpp_sha256": "F1A0D03A111626ED006CE55D6801E13A3E26EB87BE70D117AD9F5BFB42817DDE"
+        },
+        {
+          "index": 4,
+          "src": "recording_with_calm-04-recording_input_4.png",
+          "cue": "recording_input_4",
+          "phase": "accent",
+          "duration_ms": 680,
+          "target_1bpp_sha256": "A0A235D6372713A56ED87D994A93B59425993C01B1F2D41926E642573257C7BF"
+        }
+      ]
+    },
+    {
+      "name": "recording_with_warm",
+      "label_zh": "录音输入中（温暖脸）",
+      "summary_zh": "同一输入小饰件可与独立温暖表情同时存在。",
+      "frames": [
+        {
+          "index": 0,
+          "src": "recording_with_warm-00-recording_input_0.png",
+          "cue": "recording_input_0",
+          "phase": "entry",
+          "duration_ms": 260,
+          "target_1bpp_sha256": "D8FA3FECA6AFB822CCEC3C3E36921A3447F5936568FE9B475962EADB0196773D"
+        },
+        {
+          "index": 1,
+          "src": "recording_with_warm-01-recording_input_1.png",
+          "cue": "recording_input_1",
+          "phase": "lead",
+          "duration_ms": 240,
+          "target_1bpp_sha256": "F235BA972A46D6A52D4CE54F92BB7D57AA9E49B7BAA671614AC98CDEF89BA3E3"
+        },
+        {
+          "index": 2,
+          "src": "recording_with_warm-02-recording_input_2.png",
+          "cue": "recording_input_2",
+          "phase": "response",
+          "duration_ms": 520,
+          "target_1bpp_sha256": "09E1224C591F7F7804E03D2FAE891AC680F6B17911E175900738F2003BF054A8"
+        },
+        {
+          "index": 3,
+          "src": "recording_with_warm-03-recording_input_3.png",
+          "cue": "recording_input_3",
+          "phase": "hold",
+          "duration_ms": 240,
+          "target_1bpp_sha256": "001F45674E3A26894E216DB10D52E50208E165A9D3F42F2816BBC06E2D16FAEC"
+        },
+        {
+          "index": 4,
+          "src": "recording_with_warm-04-recording_input_4.png",
+          "cue": "recording_input_4",
+          "phase": "accent",
+          "duration_ms": 680,
+          "target_1bpp_sha256": "D8FA3FECA6AFB822CCEC3C3E36921A3447F5936568FE9B475962EADB0196773D"
+        }
+      ]
+    },
+    {
+      "name": "charging_with_calm",
+      "label_zh": "无线机座充电",
+      "summary_zh": "日常脸下方显示机座、接触垫和上升能量刻度，不替换脸。",
+      "frames": [
+        {
+          "index": 0,
+          "src": "charging_with_calm-00-bottom_connector_charging_0.png",
+          "cue": "bottom_connector_charging_0",
+          "phase": "entry",
+          "duration_ms": 300,
+          "target_1bpp_sha256": "2D6D9B05DDA2C90E77F60A2009FA246B89C6ED0753AD1C4E1B6DD37E6A5BA9AF"
+        },
+        {
+          "index": 1,
+          "src": "charging_with_calm-01-bottom_connector_charging_1.png",
+          "cue": "bottom_connector_charging_1",
+          "phase": "lead",
+          "duration_ms": 260,
+          "target_1bpp_sha256": "972070BCAF3D13773AA8C4A9716BEDD81EA7BEFF317711B9BC6BE90D31438BD5"
+        },
+        {
+          "index": 2,
+          "src": "charging_with_calm-02-bottom_connector_charging_2.png",
+          "cue": "bottom_connector_charging_2",
+          "phase": "response",
+          "duration_ms": 520,
+          "target_1bpp_sha256": "B8EA36EEF8F3896472EE7870C92261D97D4DEA73D42920662234039A095C35B1"
+        },
+        {
+          "index": 3,
+          "src": "charging_with_calm-03-bottom_connector_charging_3.png",
+          "cue": "bottom_connector_charging_3",
+          "phase": "hold",
+          "duration_ms": 260,
+          "target_1bpp_sha256": "EEF1B7B4DBB4444115F6929E79FC08BB0A438449CA2B14904D6BC00047B71EA6"
+        },
+        {
+          "index": 4,
+          "src": "charging_with_calm-04-bottom_connector_charging_4.png",
+          "cue": "bottom_connector_charging_4",
+          "phase": "accent",
+          "duration_ms": 680,
+          "target_1bpp_sha256": "4E414D51CA018776F7B8CB9ACDFC7B23656A4EA71631D278F28C6CDA9AF20DFD"
+        }
+      ]
+    },
+    {
+      "name": "upgrade_with_playful",
+      "label_zh": "升级进行中",
+      "summary_zh": "活泼脸上叠加独立上行进度装饰。",
+      "frames": [
+        {
+          "index": 0,
+          "src": "upgrade_with_playful-00-upgrade_progress_0.png",
+          "cue": "upgrade_progress_0",
+          "phase": "entry",
+          "duration_ms": 420,
+          "target_1bpp_sha256": "06E3254DE088CF79899824A8245798C77532051BE31AEF4377C5E451F530AF13"
+        },
+        {
+          "index": 1,
+          "src": "upgrade_with_playful-01-upgrade_progress_1.png",
+          "cue": "upgrade_progress_1",
+          "phase": "lead",
+          "duration_ms": 280,
+          "target_1bpp_sha256": "651AC829D394594008D0B71FB6EA9FE574C7356B26AF0C461C165DE57ED24A2B"
+        },
+        {
+          "index": 2,
+          "src": "upgrade_with_playful-02-upgrade_progress_2.png",
+          "cue": "upgrade_progress_2",
+          "phase": "response",
+          "duration_ms": 520,
+          "target_1bpp_sha256": "F868516BB6AFCCB829CFCDD8EB940C7D5B2CEDB25D035AEE14C297677FB60A85"
+        },
+        {
+          "index": 3,
+          "src": "upgrade_with_playful-03-upgrade_progress_3.png",
+          "cue": "upgrade_progress_3",
+          "phase": "hold",
+          "duration_ms": 280,
+          "target_1bpp_sha256": "7A928BA0CCE3434EB0FF65AB7FB96833DD122AC7246FFD7F902A2BE09772AC28"
+        },
+        {
+          "index": 4,
+          "src": "upgrade_with_playful-04-upgrade_progress_4.png",
+          "cue": "upgrade_progress_4",
+          "phase": "accent",
+          "duration_ms": 680,
+          "target_1bpp_sha256": "E53833CEC07CA53648777B518890EAC342715E9C70E27DE9FB0A40281C1F7D6A"
+        }
+      ]
+    },
+    {
+      "name": "error_with_calm",
+      "label_zh": "错误提醒",
+      "summary_zh": "平静脸上叠加独立紧凑警示装饰。",
+      "frames": [
+        {
+          "index": 0,
+          "src": "error_with_calm-00-error_caution_0.png",
+          "cue": "error_caution_0",
+          "phase": "entry",
+          "duration_ms": 220,
+          "target_1bpp_sha256": "DE8B6E3AFB4FA0B34225B4C1A2277AC31B7B294A66C4E915AA5A0EFB28775B3C"
+        },
+        {
+          "index": 1,
+          "src": "error_with_calm-01-error_caution_1.png",
+          "cue": "error_caution_1",
+          "phase": "lead",
+          "duration_ms": 220,
+          "target_1bpp_sha256": "A4734FC624CBF608CC647412731B9A3AB882434E99A54FF1B9327155008DE5D2"
+        },
+        {
+          "index": 2,
+          "src": "error_with_calm-02-error_caution_2.png",
+          "cue": "error_caution_2",
+          "phase": "response",
+          "duration_ms": 620,
+          "target_1bpp_sha256": "44FA381B8C6230442A1B7FEDDCB41CEACF2D877ED7E9528CA9F6EC7BD8F0CC96"
+        },
+        {
+          "index": 3,
+          "src": "error_with_calm-03-error_caution_3.png",
+          "cue": "error_caution_3",
+          "phase": "hold",
+          "duration_ms": 220,
+          "target_1bpp_sha256": "9A3C4831D5796AA13E4CF07F3E3D0742E9CB15A2B9D90346CC854B317C1509C9"
+        },
+        {
+          "index": 4,
+          "src": "error_with_calm-04-error_caution_4.png",
+          "cue": "error_caution_4",
+          "phase": "accent",
+          "duration_ms": 820,
+          "target_1bpp_sha256": "BB86694B3F685B14E13A9CD8F1A344BC496064275E8E409CF219F4B1472F9457"
+        }
+      ]
+    },
+    {
+      "name": "menu_entry_notice",
+      "label_zh": "进入菜单提示",
+      "summary_zh": "仅短暂显示；随后组件 Rig 完全撤出，菜单独占屏幕。",
+      "frames": [
+        {
+          "index": 0,
+          "src": "menu_entry_notice-00-menu_grid_arrive.png",
+          "cue": "menu_grid_arrive",
+          "phase": "entry",
+          "duration_ms": 140,
+          "target_1bpp_sha256": "4E0A811C9B89E1F6B5EBB1589622D2590FB4DCD9684F76B329468FE78670B8E4"
+        },
+        {
+          "index": 1,
+          "src": "menu_entry_notice-01-menu_selection_confirm.png",
+          "cue": "menu_selection_confirm",
+          "phase": "lead",
+          "duration_ms": 140,
+          "target_1bpp_sha256": "36D79EDFDBF0FA9EE2C00EA68FE9AE7554B25344EB89EE806C9A60F271A0E602"
+        },
+        {
+          "index": 2,
+          "src": "menu_entry_notice-02-menu_entry_commit.png",
+          "cue": "menu_entry_commit",
+          "phase": "hold",
+          "duration_ms": 180,
+          "target_1bpp_sha256": "7A36DF783AA0DE38D21F1ADDC649A812285BF3F380E50F10B717701FA5E6AC02"
+        }
+      ]
+    }
+  ],
+  "expanded_frame_count": 78,
+  "frame_source_rule": "every wall frame references an existing parity-rendered PNG and target_1bpp_sha256",
+  "touch_interaction": {
+    "surface": "each_story_200x200_viewport",
+    "mode": "registered_pointer_and_mouse_coordinate_to_gaze_overlay",
+    "overlay_count": 280,
+    "base_story_count": 16,
+    "center_key": "1,0,1,0",
+    "mapping": "pointer x/y maps to registered highlight and sparkle offsets",
+    "release_behavior": "center_then_resume_story",
+    "gestures": [
+      "tap",
+      "drag",
+      "release_to_center",
+      "swipe_left",
+      "swipe_right",
+      "swipe_up",
+      "swipe_down"
+    ],
+    "swipe_behavior": "scroll_to_adjacent_story",
+    "mouse_fallback": "mousedown_mousemove_mouseup"
+  },
+  "no_canvas": true,
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden_until_v45_machine_audit_and_owner_review",
+  "html": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/expanded-review-wall-01/index.html"
+}

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>V35 Native 200 Playback</title>
+<style>
+  html, body { width: 200px; height: 200px; margin: 0; overflow: hidden; background: #fff; }
+  body { display: block; }
+  #frame { width: 200px; height: 200px; image-rendering: pixelated; background: #fff; }
+</style>
+</head>
+<body>
+<img id="frame" width="200" height="200" alt="">
+<script>
+  const score = [
+    [
+      ["curious_question-presence-00.png", 900],
+      ["curious_question-presence-01.png", 150],
+      ["curious_question-presence-02.png", 150],
+      ["curious_question-presence-03.png", 170],
+      ["curious_question-presence-04.png", 190],
+      ["curious_question-presence-05.png", 1100]
+    ],
+    [
+      ["alert_exclamation-presence-00.png", 900],
+      ["alert_exclamation-presence-01.png", 150],
+      ["alert_exclamation-presence-02.png", 150],
+      ["alert_exclamation-presence-03.png", 170],
+      ["alert_exclamation-presence-04.png", 190],
+      ["alert_exclamation-presence-05.png", 1100]
+    ],
+    [
+      ["sleepy_dream_cloud-presence-00.png", 900],
+      ["sleepy_dream_cloud-presence-01.png", 150],
+      ["sleepy_dream_cloud-presence-02.png", 150],
+      ["sleepy_dream_cloud-presence-03.png", 170],
+      ["sleepy_dream_cloud-presence-04.png", 190],
+      ["sleepy_dream_cloud-presence-05.png", 1100]
+    ]
+  ];
+  window.v35Native200Score = score;
+  const frame = document.getElementById("frame");
+  let group = 0;
+  let index = 0;
+  function advance() {
+    const step = score[group][index];
+    frame.src = step[0];
+    document.body.dataset.sequence = String(group);
+    document.body.dataset.frame = String(index);
+    index += 1;
+    if (index === score[group].length) {
+      index = 0;
+      group = (group + 1) % score.length;
+    }
+    window.setTimeout(advance, step[1]);
+  }
+  advance();
+</script>
+</body>
+</html>

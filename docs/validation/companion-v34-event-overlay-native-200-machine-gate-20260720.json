@@ -1,0 +1,114 @@
+{
+  "schema": "companion.v34.event_overlay_native_200_machine_gate.v1",
+  "status": "PASS_MACHINE_PREVIEW_ONLY_RUNTIME_INACTIVE",
+  "render_report": "docs/validation/companion-v34-event-overlay-native-200-render-20260720.json",
+  "locked_v9_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "checks": [
+    "200x200 PNG/PBM pixel equality",
+    "daily Rig base selection",
+    "protected eye/brow/nose/mouth equality",
+    "overlay-only additive pixels",
+    "8px overlay safe area",
+    "deterministic three-frame playback",
+    "browser preview frame binding"
+  ],
+  "events": {
+    "recording_input": {
+      "daily_micro_sequence": [
+        "center",
+        "right",
+        "right"
+      ],
+      "frames": [
+        {
+          "frame": 0,
+          "changed_pixels": 74,
+          "changed_bounds": [
+            182,
+            127,
+            190,
+            145
+          ],
+          "png": "docs/art/iterations/companion-pet-expression-v9-event-overlay-v1/candidate/review-v1/recording-input-00.png",
+          "pbm": "docs/art/iterations/companion-pet-expression-v9-event-overlay-v1/candidate/review-v1/recording-input-00.pbm"
+        },
+        {
+          "frame": 1,
+          "changed_pixels": 102,
+          "changed_bounds": [
+            168,
+            127,
+            190,
+            145
+          ],
+          "png": "docs/art/iterations/companion-pet-expression-v9-event-overlay-v1/candidate/review-v1/recording-input-01.png",
+          "pbm": "docs/art/iterations/companion-pet-expression-v9-event-overlay-v1/candidate/review-v1/recording-input-01.pbm"
+        },
+        {
+          "frame": 2,
+          "changed_pixels": 138,
+          "changed_bounds": [
+            163,
+            127,
+            190,
+            145
+          ],
+          "png": "docs/art/iterations/companion-pet-expression-v9-event-overlay-v1/candidate/review-v1/recording-input-02.png",
+          "pbm": "docs/art/iterations/companion-pet-expression-v9-event-overlay-v1/candidate/review-v1/recording-input-02.pbm"
+        }
+      ]
+    },
+    "bottom_connector_charging": {
+      "daily_micro_sequence": [
+        "center",
+        "down",
+        "down"
+      ],
+      "frames": [
+        {
+          "frame": 0,
+          "changed_pixels": 311,
+          "changed_bounds": [
+            79,
+            172,
+            120,
+            191
+          ],
+          "png": "docs/art/iterations/companion-pet-expression-v9-event-overlay-v1/candidate/review-v1/bottom-connector-charging-00.png",
+          "pbm": "docs/art/iterations/companion-pet-expression-v9-event-overlay-v1/candidate/review-v1/bottom-connector-charging-00.pbm"
+        },
+        {
+          "frame": 1,
+          "changed_pixels": 357,
+          "changed_bounds": [
+            79,
+            170,
+            120,
+            191
+          ],
+          "png": "docs/art/iterations/companion-pet-expression-v9-event-overlay-v1/candidate/review-v1/bottom-connector-charging-01.png",
+          "pbm": "docs/art/iterations/companion-pet-expression-v9-event-overlay-v1/candidate/review-v1/bottom-connector-charging-01.pbm"
+        },
+        {
+          "frame": 2,
+          "changed_pixels": 177,
+          "changed_bounds": [
+            79,
+            170,
+            120,
+            191
+          ],
+          "png": "docs/art/iterations/companion-pet-expression-v9-event-overlay-v1/candidate/review-v1/bottom-connector-charging-02.png",
+          "pbm": "docs/art/iterations/companion-pet-expression-v9-event-overlay-v1/candidate/review-v1/bottom-connector-charging-02.pbm"
+        }
+      ]
+    }
+  },
+  "non_claims": [
+    "no_component_export",
+    "no_CRIG_binding",
+    "no_firmware_flash",
+    "no_panel_residue_clearance",
+    "no_human_art_acceptance"
+  ]
+}

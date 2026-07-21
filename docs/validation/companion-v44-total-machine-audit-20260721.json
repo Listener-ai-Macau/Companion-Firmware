@@ -1,0 +1,92 @@
+{
+  "schema": "companion.v44_total_machine_audit.v1",
+  "status": "GO_HUMAN_ACCEPTANCE_MACHINE_CLOSURE_COMPLETE",
+  "authority": [
+    "COMP-REQ-093",
+    "COMP-REQ-250",
+    "COMP-REQ-256",
+    "COMP-REQ-258",
+    "COMP-REQ-261",
+    "COMP-REQ-262",
+    "COMP-REQ-263"
+  ],
+  "protected": {
+    "locked_v9_source": {
+      "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+    },
+    "prior_owner_acceptance": {
+      "path": "docs/validation/companion-pet-special-system-owner-acceptance-20260717.json",
+      "sha256": "8A3BDF4BD1254B0D0F4DE13A7F293C3D74587C800339ABD4C61FEB0B7737E227"
+    }
+  },
+  "accepted_v22_daily_regression": {
+    "artifact": "docs/validation/companion-v22-emotion-separation-target-rig-gate-20260719.json",
+    "bridge_count": 10,
+    "bridge_frame_count": 72,
+    "trace_artifact": "docs/validation/companion-v22-emotion-separation-wb55-trace-contract-r5-20260721.json"
+  },
+  "v44_evidence": {
+    "recording_source_gate": {
+      "artifact": "docs/validation/companion-v43-recording-input-inward-source-gate-20260721.json",
+      "status": "PASS_V43_RECORDING_INPUT_INWARD_SOURCE_RUNTIME_INACTIVE",
+      "sha256": "DF5EEFBCA56EA73A9EBB32B210065611BDE8FF7FE62BDDCE45A76C7C812D50C5"
+    },
+    "layout_gate": {
+      "artifact": "docs/validation/companion-v44-blink-stable-center-layout-gate-20260721.json",
+      "status": "PASS_V44_BLINK_STABLE_CENTER_RUNTIME_INACTIVE",
+      "sha256": "5ADE7833EE92005EE08CA5CCB51BD30DB58B62825F143CE05193F24902282FC7"
+    },
+    "profile_host": {
+      "artifact": "docs/validation/companion-v44-blink-stable-center-wb55-profile-host-20260721.json",
+      "status": "PASS_V44_BLINK_STABLE_CENTER_WB55_PROFILE_RUNTIME_INACTIVE",
+      "sha256": "E754CD206AEE2E212691369AD258ED22BBE552EA230F63EFD6EE848ED11E1C65"
+    },
+    "browser_preview": {
+      "artifact": "docs/validation/companion-v44-blink-stable-center-single-epaper-browser-wb55-preview-20260721.json",
+      "status": "PASS_BROWSER_COMPONENT_PREVIEW_RENDERED_RUNTIME_INACTIVE",
+      "sha256": "F1912764D4599D35FCA24BCBCF1752450884E63C0BAC6BE2C8FF399F3DF01D9B"
+    },
+    "wb55_pixel_parity": {
+      "artifact": "docs/validation/companion-v44-blink-stable-center-wb55-component-parity-host-20260721.json",
+      "status": "PASS_BROWSER_WB55_COMPONENT_PIXEL_PARITY_RUNTIME_INACTIVE",
+      "sha256": "08EAF146C6FD56FE22D614482E0835BF43EBB5FDEF6BAB2D7421E0EC33C34727"
+    },
+    "single_viewport_visual": {
+      "artifact": "docs/validation/companion-v44-single-epaper-browser-visual-20260721.json",
+      "status": "PASS_V44_SINGLE_200X200_BROWSER_VIEWPORT_RUNTIME_INACTIVE",
+      "sha256": "FBF8B7865C0FF5D47798927318EE10EA92B17F8978DC7571432C5104D542D97E"
+    },
+    "touch_swipe_host": {
+      "artifact": "docs/validation/companion-v44-single-epaper-touch-host-20260721.json",
+      "status": "PASS_V44_SINGLE_VIEWPORT_TOUCH_SWIPE_REPLAY_RUNTIME_INACTIVE",
+      "sha256": "8A2292BD3E1941E17851CDDBF6E7ADE839C4C8964CDE2F6BA2AE1EEA545BFCAE"
+    }
+  },
+  "machine_verified": {
+    "canvas": "200x200_1bpp",
+    "component_count": 87,
+    "special_component_count": 50,
+    "story_count": 21,
+    "preview_frame_count": 93,
+    "owner_visible_story_count": 16,
+    "source_packs": [
+      "v22_face",
+      "v44_special_source"
+    ],
+    "recording_wave": "inward_toward_face_on_left",
+    "idle_gaze": "stable_center",
+    "synchronized_blink": true,
+    "touch": "pointer_coordinate_to_registered_highlight_and_sparkle; release_center",
+    "swipe": "horizontal_or_vertical; positive_next_negative_previous",
+    "runtime_resource_activated": false
+  },
+  "non_claims": [
+    "no_runtime_binding",
+    "no_firmware_flash",
+    "no_panel_or_driver_change",
+    "no_physical_screen_acceptance",
+    "no_human_acceptance"
+  ],
+  "human_boundary": "Only after this machine closure may the canonical Chinese owner review open the current single viewport; that review is separate from physical panel acceptance."
+}

@@ -1,0 +1,42 @@
+{
+  "schema": "companion.v35.emotion_decoration_source_lineage.v2",
+  "date": "2026-07-20",
+  "authority": "COMP-REQ-190",
+  "request": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/request-v2.json",
+  "sole_visual_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "generation": {
+    "tool": "image_gen.imagegen",
+    "reference_inputs": ["locked_v9_reference_only"],
+    "prohibited_visual_inputs": ["v35_revision_1_sources", "all_V34_or_V33_generated_candidates", "V32_or_earlier_rejected_descendants", "legacy_art"],
+    "date": "2026-07-20"
+  },
+  "sources": [
+    {
+      "component": "curious_question",
+      "prompt": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/prompts/v2-curious-question.md",
+      "output": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate-curious-question-v2.png",
+      "sha256": "E56DD1E4C8065863E7238C7E1C59A8DA2FA3F8FF914B692601CE2C837BBE591D"
+    },
+    {
+      "component": "alert_exclamation",
+      "prompt": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/prompts/v2-alert-exclamation.md",
+      "output": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate-alert-exclamation-v2.png",
+      "sha256": "55424E1E369865208B3B7A3E5DB7FE28F153FD2285DF382DF405AF2B5ED0AFD3"
+    },
+    {
+      "component": "sleepy_dream_cloud",
+      "prompt": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/prompts/v2-sleepy-dream-cloud.md",
+      "output": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate-sleepy-dream-cloud-v2.png",
+      "sha256": "39AE69A509DEA8EEA4E9B29962CC549CB9849D33D1F2C73732989A7BBFDF6CB5"
+    }
+  ],
+  "source_state": "GENERATED_PENDING_NATIVE_200_MACHINE_PREVIEW",
+  "runtime": {
+    "active": false,
+    "component_export": "forbidden",
+    "firmware_binding": "forbidden"
+  }
+}

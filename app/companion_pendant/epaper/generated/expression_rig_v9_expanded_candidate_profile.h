@@ -1,0 +1,32 @@
+/* Generated from the approved expanded V9 source-mask Rig; do not hand edit. */
+#ifndef COMPANION_EPAPER_GENERATED_EXPRESSION_RIG_V9_EXPANDED_CANDIDATE_PROFILE_H
+#define COMPANION_EPAPER_GENERATED_EXPRESSION_RIG_V9_EXPANDED_CANDIDATE_PROFILE_H
+
+#include "expression_rig_performance_score.h"
+
+#define COMP_V9_EXPANDED_EXPRESSION_RIG_CANDIDATE_COMPONENT_COUNT 96u
+#define COMP_V9_EXPANDED_EXPRESSION_RIG_CANDIDATE_POSE_COUNT 45u
+#define COMP_V9_EXPANDED_EXPRESSION_RIG_CANDIDATE_PERFORMANCE_COUNT 15u
+#define COMP_V9_EXPANDED_EXPRESSION_RIG_CANDIDATE_PRESENCE_SAMPLE_COUNT 8u
+#define COMP_V9_EXPANDED_EXPRESSION_RIG_CANDIDATE_EMOTION_BRIDGE_COUNT 45u
+#define COMP_V9_EXPANDED_EXPRESSION_RIG_CANDIDATE_EMOTION_BRIDGE_SAMPLE_COUNT 7u
+#define COMP_V9_EXPANDED_EXPRESSION_RIG_CANDIDATE_SOURCE_SHA256 "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+
+const comp_expression_rig_profile_t *comp_v9_expanded_expression_rig_candidate_profile(void);
+const comp_expression_rig_registered_performance_score_t *
+comp_v9_expanded_expression_rig_candidate_performance_score(
+    comp_expression_rig_scene_t scene,
+    comp_expression_rig_emotion_t emotion,
+    comp_expression_rig_attention_t attention);
+const comp_expression_rig_registered_performance_score_t *
+comp_v9_expanded_expression_rig_candidate_presence_score(
+    comp_expression_rig_scene_t scene,
+    comp_expression_rig_emotion_t emotion,
+    comp_expression_rig_attention_t attention);
+const comp_expression_rig_registered_performance_score_t *
+comp_v9_expanded_expression_rig_candidate_emotion_bridge_score(
+    comp_expression_rig_emotion_t from,
+    comp_expression_rig_emotion_t to);
+bool comp_v9_expanded_expression_rig_candidate_runtime_activation_allowed(void);
+
+#endif /* COMPANION_EPAPER_GENERATED_EXPRESSION_RIG_V9_EXPANDED_CANDIDATE_PROFILE_H */

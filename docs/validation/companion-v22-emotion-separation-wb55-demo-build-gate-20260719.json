@@ -1,0 +1,33 @@
+{
+  "schema": "companion.v22_emotion_separation_wb55_demo_build_gate.v1",
+  "status": "PASS_V22_EMOTION_SEPARATION_WB55_PRODUCTION_OFF_DEMO_BUILD_GATE",
+  "build_target": "Companion_Nucleo_WB55RG_V22EmotionBridgeDemo_0",
+  "bridge_edge": 0,
+  "artifacts": {
+    "cubeide/Companion_Nucleo_WB55RG_Bringup/build_v22_emotion_bridge_demo_0/Companion_Nucleo_WB55RG_V22EmotionBridgeDemo_0.elf": "42A1763616E17A62E6CCCC0247D9DBCAE10A9195C606567DF25F0FF0B3AD948E",
+    "cubeide/Companion_Nucleo_WB55RG_Bringup/build_v22_emotion_bridge_demo_0/Companion_Nucleo_WB55RG_V22EmotionBridgeDemo_0.hex": "C45625A1B7515EA6633785E7D28398288FA681858BABDA6D3043C11E27459379",
+    "cubeide/Companion_Nucleo_WB55RG_Bringup/build_v22_emotion_bridge_demo_0/Companion_Nucleo_WB55RG_V22EmotionBridgeDemo_0.bin": "EF8BFFCBEA471650C17BF718902A036781CA98EF7776379CD8A3DA4DBF796F2A",
+    "cubeide/Companion_Nucleo_WB55RG_Bringup/build_v22_emotion_bridge_demo_0/Companion_Nucleo_WB55RG_V22EmotionBridgeDemo_0.map": "11813CBC914DE3CBB4C3EECB171E8C0080BAF7EB89B629EA73EEB3F34761132D",
+    "cubeide/Companion_Nucleo_WB55RG_Bringup/build_v22_emotion_bridge_demo_0/generated/companion-v22-emotion-separation-rig-candidate-200x200.crig": "43184DE67E28EEA2B5277A406145B54C6204453E4441F9D1BD9DE20EEEA25333",
+    "cubeide/Companion_Nucleo_WB55RG_Bringup/build_v22_emotion_bridge_demo_0/generated/companion_screen_asset_provision_blob.h": "331AD7E19F0CBC7AB47CBA61B6A543674AE9755D88033D2080727E15D862BD3C"
+  },
+  "candidate_pack": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/target-rig-attempt-01/companion-v22-emotion-separation-rig-candidate-200x200.crig",
+  "candidate_pack_sha256": "43184DE67E28EEA2B5277A406145B54C6204453E4441F9D1BD9DE20EEEA25333",
+  "candidate_pack_bytes": 3613,
+  "provision_blob_crc32": "0x877D67D4",
+  "elf_required_symbols": [
+    "08015eb8 T comp_v22_emotion_separation_rig_candidate_bridge",
+    "08015eac T comp_v22_emotion_separation_rig_candidate_profile",
+    "08015eb4 T comp_v22_emotion_separation_rig_candidate_runtime_activation_allowed",
+    "0800163c T Companion_Screen_PlayV22EmotionBridgeDemo"
+  ],
+  "normal_product_v22_profile_linked": false,
+  "same_browser_target_component_plan": "V22 profile replay is already exact against the accepted browser/PBM plan; this build links that same profile only in the explicit demo.",
+  "refresh_policy": "every directed-bridge frame is COMP_EPAPER_REFRESH_FULL pending the vendor CWF1 waveform gate",
+  "end_behavior": "settled target remains static; automatic reverse and playlist are disabled",
+  "runtime_resource_activated": false,
+  "firmware_flashed": false,
+  "panel_observed": false,
+  "special_event_fallback": "fail_closed",
+  "errors": []
+}

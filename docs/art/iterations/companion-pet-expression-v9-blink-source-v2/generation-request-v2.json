@@ -1,0 +1,42 @@
+{
+  "schema": "companion.art_generation_request.v1",
+  "status": "RECORDED_BEFORE_IMAGE_GENERATION",
+  "iteration": "companion-pet-expression-v9-blink-source-v2",
+  "revision": 2,
+  "created_at": "2026-07-21",
+  "authority": ["COMP-REQ-267", "COMP-REQ-268"],
+  "purpose": "Replace rejected attempt-01 half-close caps with visibly progressive V9-derived compressed-eye components for a natural synchronized blink transition.",
+  "prior_attempt": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-blink-source-v2/candidate/attempt-01-blink-transition-components.png",
+    "sha256": "1D15DF8B54DEE465D45FFF9C46B02458428B4B31DDC2AB21CB9037E477BB6E33",
+    "disposition": "REJECTED_INACTIVE_HALF_CLOSE_READS_AS_BLACK_CAPS"
+  },
+  "locked_v9_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "use": "sole image reference for the fixed black vertical oval eye identity, scale, spacing and rounded ink weight"
+  },
+  "reference_policy": "Use only the locked V9 source as image reference. Do not use V44 or V45 rejected blink art as an image-generation reference.",
+  "source_sheet": {
+    "grid": {"columns": 6, "rows": 1, "ordered_cells": ["left_half_close", "right_half_close", "left_closed", "right_closed", "left_half_open", "right_half_open"]},
+    "cell_background": "plain pure white",
+    "source_only": true,
+    "allowed_exports": ["left_half_close", "right_half_close", "left_closed", "right_closed", "left_half_open", "right_half_open"]
+  },
+  "blink_contract": {
+    "pairing": "matched mirrored left/right components on the V9 eye anchors",
+    "stages": "open base V9 oval -> rounded compressed oval half-close -> short rounded closed stroke -> rounded compressed oval half-open -> open base V9 oval",
+    "half_close_shape": "clearly oval with curved top and bottom, approximately 45-60 percent of the V9 open-eye height; never a flat-top or flat-bottom cap",
+    "half_open_shape": "same V9 oval identity and rounded construction, visibly between closed and open in height; never a cap",
+    "native_target": "each component fits the original eye footprint at 200x200 and contains no other facial feature"
+  },
+  "native_review_gate": {
+    "canvas": "200x200 after component placement",
+    "threshold": "1bpp black/white",
+    "symmetry": "each left/right stage pair mirror difference <=2 black pixels",
+    "stage_separation": "both compressed-oval stages have curved top and bottom and are visibly distinct from the short closed stroke at native 200x200",
+    "manual_visual_triage": "reject caps, eyelid-only marks, changed eye grammar, lashes, winks, sleep eyes, face art, text, label, grid, border, device frame or any non-eye component"
+  },
+  "forbidden": ["whole_face_runtime_playback", "flat_cap", "eyelid_only_mark", "new_eye_identity", "pupil", "highlight", "sparkle", "brow", "mouth", "nose", "cheek", "lash", "wink", "sleep_face", "text", "label", "grid", "border", "device_frame", "color", "gray", "gradient", "shading", "texture", "legacy_art", "custom_LUT", "code_drawn_geometry"],
+  "runtime": {"resource_activated": false, "binding": "forbidden_until_source_gate_component_export_browser_wb55_parity_total_audit_and_owner_review"}
+}

@@ -1,0 +1,2206 @@
+{
+  "schema": "companion.v22_emotion_separation_component_source_layout.v1",
+  "status": "UNBOUND_CANDIDATE_PENDING_OWNER_ART_REVIEW_AND_COMPONENT_BRIDGE_GATE",
+  "locked_v9_source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "generated_source": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/attempt-01-generated-emotion-separation.png",
+  "generated_source_sha256": "A22AE7326F8BD8AE97E96235A00DEC03DE0917E2B55C57F5D3F536C203D62F63",
+  "identity_components": {
+    "left_eye_open": {
+      "name": "left_eye_open",
+      "role": "left_eye",
+      "source": "locked_v9_rig_v1_component",
+      "group": "locked_v9_identity",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/left_eye_open.pbm",
+      "mask_sha256": "607A30960F6C312FC4D7DC6AD58F02E6DEB6D80EDC63388FE80671AF593DC08E",
+      "base_position": [
+        42,
+        112
+      ],
+      "z_index": 30,
+      "composite_op": "ink"
+    },
+    "right_eye_open": {
+      "name": "right_eye_open",
+      "role": "right_eye",
+      "source": "locked_v9_rig_v1_component",
+      "group": "locked_v9_identity",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/right_eye_open.pbm",
+      "mask_sha256": "6F1394072AB1D5AD8D573E115594DD4630FA18877841E6AABD635379075094E6",
+      "base_position": [
+        125,
+        112
+      ],
+      "z_index": 30,
+      "composite_op": "ink"
+    },
+    "left_eye_highlight_open": {
+      "name": "left_eye_highlight_open",
+      "role": "left_highlight",
+      "source": "locked_v9_rig_v1_component",
+      "group": "locked_v9_identity",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/left_eye_highlight_open.pbm",
+      "mask_sha256": "FE486194ED600C66CD3A69F0EE1025DC1CC260AD15A2B5A4712274CC8007464C",
+      "base_position": [
+        42,
+        112
+      ],
+      "z_index": 31,
+      "composite_op": "erase"
+    },
+    "right_eye_highlight_open": {
+      "name": "right_eye_highlight_open",
+      "role": "right_highlight",
+      "source": "locked_v9_rig_v1_component",
+      "group": "locked_v9_identity",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/right_eye_highlight_open.pbm",
+      "mask_sha256": "518456E9D22529E4B57E61D5D2963E20F6E80CC3F210FF331281E8F0BC11E650",
+      "base_position": [
+        125,
+        112
+      ],
+      "z_index": 31,
+      "composite_op": "erase"
+    },
+    "left_eye_sparkle_open": {
+      "name": "left_eye_sparkle_open",
+      "role": "left_sparkle",
+      "source": "locked_v9_rig_v1_component",
+      "group": "locked_v9_identity",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/left_eye_sparkle_open.pbm",
+      "mask_sha256": "2B62160271B54E894DFBE0DD64A0F744EA80E65A2CBC7617B1497A16A229323D",
+      "base_position": [
+        42,
+        112
+      ],
+      "z_index": 32,
+      "composite_op": "erase"
+    },
+    "right_eye_sparkle_open": {
+      "name": "right_eye_sparkle_open",
+      "role": "right_sparkle",
+      "source": "locked_v9_rig_v1_component",
+      "group": "locked_v9_identity",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/right_eye_sparkle_open.pbm",
+      "mask_sha256": "B9AD58B7178E95296965DD2F4000F28B14C2C06180D1E04D86145D2A9D8D4A13",
+      "base_position": [
+        125,
+        112
+      ],
+      "z_index": 32,
+      "composite_op": "erase"
+    },
+    "nose_default": {
+      "name": "nose_default",
+      "role": "nose",
+      "source": "locked_v9_rig_v1_component",
+      "group": "locked_v9_identity",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/nose_default.pbm",
+      "mask_sha256": "9E136542BCD1AB6F3A057829FC1A53F03965B9F55ABAE899666CDC6D8EF8E298",
+      "base_position": [
+        94,
+        148
+      ],
+      "z_index": 50,
+      "composite_op": "ink"
+    }
+  },
+  "emotion_components": {
+    "calm": {
+      "v22_calm__left_brow": {
+        "name": "v22_calm__left_brow",
+        "emotion": "calm",
+        "role": "left_brow",
+        "source": "v22_generated_source_panel_thresholded_crop",
+        "source_transform": {
+          "source_left_eye_bbox": [
+            113,
+            336,
+            181,
+            429
+          ],
+          "source_right_eye_bbox": [
+            290,
+            336,
+            357,
+            429
+          ],
+          "source_left_eye_center": [
+            147.279,
+            386.134
+          ],
+          "source_right_eye_center": [
+            323.98,
+            385.971
+          ],
+          "scale": [
+            0.472549,
+            0.483871
+          ]
+        },
+        "source_grid_component": {
+          "role": "left_brow",
+          "normalized_ink_box": [
+            46,
+            87,
+            69,
+            96
+          ]
+        },
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/component-masks/calm-left_brow.pbm",
+        "mask_sha256": "652ABC102C7D4F31B4971F0EAB3CA27C2197DDC1E25BEF74A186C96FEFCB8EBE",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/preview-layers/calm-left_brow.png",
+        "base_position": [
+          45,
+          86
+        ],
+        "anchor": [
+          12,
+          5
+        ],
+        "offset_range": {
+          "min": [
+            -1,
+            -3
+          ],
+          "max": [
+            1,
+            1
+          ]
+        },
+        "z_index": 20,
+        "composite_op": "ink",
+        "ink_pixels": 135
+      },
+      "v22_calm__right_brow": {
+        "name": "v22_calm__right_brow",
+        "emotion": "calm",
+        "role": "right_brow",
+        "source": "v22_generated_source_panel_thresholded_crop",
+        "source_transform": {
+          "source_left_eye_bbox": [
+            113,
+            336,
+            181,
+            429
+          ],
+          "source_right_eye_bbox": [
+            290,
+            336,
+            357,
+            429
+          ],
+          "source_left_eye_center": [
+            147.279,
+            386.134
+          ],
+          "source_right_eye_center": [
+            323.98,
+            385.971
+          ],
+          "scale": [
+            0.472549,
+            0.483871
+          ]
+        },
+        "source_grid_component": {
+          "role": "right_brow",
+          "normalized_ink_box": [
+            128,
+            87,
+            151,
+            96
+          ]
+        },
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/component-masks/calm-right_brow.pbm",
+        "mask_sha256": "32B2658C18AAC42902B83CB22BD2CC2F8D8AAC3C0310F1DACA1F7EE378794A05",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/preview-layers/calm-right_brow.png",
+        "base_position": [
+          127,
+          86
+        ],
+        "anchor": [
+          12,
+          5
+        ],
+        "offset_range": {
+          "min": [
+            -1,
+            -3
+          ],
+          "max": [
+            1,
+            1
+          ]
+        },
+        "z_index": 20,
+        "composite_op": "ink",
+        "ink_pixels": 138
+      },
+      "v22_calm__left_cheek": {
+        "name": "v22_calm__left_cheek",
+        "emotion": "calm",
+        "role": "left_cheek",
+        "source": "v22_generated_source_panel_thresholded_crop",
+        "source_transform": {
+          "source_left_eye_bbox": [
+            113,
+            336,
+            181,
+            429
+          ],
+          "source_right_eye_bbox": [
+            290,
+            336,
+            357,
+            429
+          ],
+          "source_left_eye_center": [
+            147.279,
+            386.134
+          ],
+          "source_right_eye_center": [
+            323.98,
+            385.971
+          ],
+          "scale": [
+            0.472549,
+            0.483871
+          ]
+        },
+        "source_grid_component": {
+          "role": "left_cheek",
+          "normalized_ink_box": [
+            34,
+            159,
+            47,
+            167
+          ]
+        },
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/component-masks/calm-left_cheek.pbm",
+        "mask_sha256": "1BDA1450CF2E50A001EDD77D605DE48728CD7C9188DD45CBBE7F5E11C3CE3515",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/preview-layers/calm-left_cheek.png",
+        "base_position": [
+          33,
+          158
+        ],
+        "anchor": [
+          7,
+          5
+        ],
+        "offset_range": {
+          "min": [
+            0,
+            -1
+          ],
+          "max": [
+            0,
+            1
+          ]
+        },
+        "z_index": 40,
+        "composite_op": "ink",
+        "ink_pixels": 89
+      },
+      "v22_calm__right_cheek": {
+        "name": "v22_calm__right_cheek",
+        "emotion": "calm",
+        "role": "right_cheek",
+        "source": "v22_generated_source_panel_thresholded_crop",
+        "source_transform": {
+          "source_left_eye_bbox": [
+            113,
+            336,
+            181,
+            429
+          ],
+          "source_right_eye_bbox": [
+            290,
+            336,
+            357,
+            429
+          ],
+          "source_left_eye_center": [
+            147.279,
+            386.134
+          ],
+          "source_right_eye_center": [
+            323.98,
+            385.971
+          ],
+          "scale": [
+            0.472549,
+            0.483871
+          ]
+        },
+        "source_grid_component": {
+          "role": "right_cheek",
+          "normalized_ink_box": [
+            153,
+            158,
+            167,
+            167
+          ]
+        },
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/component-masks/calm-right_cheek.pbm",
+        "mask_sha256": "41ED16ACB98827EA5857F2B3332FDB842B63B0774C69B1809CB4BF3B0CEFE17F",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/preview-layers/calm-right_cheek.png",
+        "base_position": [
+          152,
+          157
+        ],
+        "anchor": [
+          8,
+          5
+        ],
+        "offset_range": {
+          "min": [
+            0,
+            -1
+          ],
+          "max": [
+            0,
+            1
+          ]
+        },
+        "z_index": 40,
+        "composite_op": "ink",
+        "ink_pixels": 92
+      },
+      "v22_calm__mouth": {
+        "name": "v22_calm__mouth",
+        "emotion": "calm",
+        "role": "mouth",
+        "source": "v22_generated_source_panel_thresholded_crop",
+        "source_transform": {
+          "source_left_eye_bbox": [
+            113,
+            336,
+            181,
+            429
+          ],
+          "source_right_eye_bbox": [
+            290,
+            336,
+            357,
+            429
+          ],
+          "source_left_eye_center": [
+            147.279,
+            386.134
+          ],
+          "source_right_eye_center": [
+            323.98,
+            385.971
+          ],
+          "scale": [
+            0.472549,
+            0.483871
+          ]
+        },
+        "source_grid_component": {
+          "role": "mouth",
+          "normalized_ink_box": [
+            87,
+            161,
+            110,
+            169
+          ]
+        },
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/component-masks/calm-mouth.pbm",
+        "mask_sha256": "68C6E19E032D8F1DEFB2D84702D297A5DB4A78694C97216AD4ADF04407C11BA8",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/preview-layers/calm-mouth.png",
+        "base_position": [
+          86,
+          160
+        ],
+        "anchor": [
+          12,
+          5
+        ],
+        "offset_range": {
+          "min": [
+            0,
+            -1
+          ],
+          "max": [
+            0,
+            1
+          ]
+        },
+        "z_index": 60,
+        "composite_op": "ink",
+        "ink_pixels": 101
+      }
+    },
+    "curious": {
+      "v22_curious__left_brow": {
+        "name": "v22_curious__left_brow",
+        "emotion": "curious",
+        "role": "left_brow",
+        "source": "v22_generated_source_panel_thresholded_crop",
+        "source_transform": {
+          "source_left_eye_bbox": [
+            93,
+            337,
+            162,
+            430
+          ],
+          "source_right_eye_bbox": [
+            263,
+            339,
+            331,
+            432
+          ],
+          "source_left_eye_center": [
+            127.884,
+            386.576
+          ],
+          "source_right_eye_center": [
+            297.616,
+            388.476
+          ],
+          "scale": [
+            0.491954,
+            0.483871
+          ]
+        },
+        "source_grid_component": {
+          "role": "left_brow",
+          "normalized_ink_box": [
+            57,
+            72,
+            86,
+            87
+          ]
+        },
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/component-masks/curious-left_brow.pbm",
+        "mask_sha256": "3E1A7A52789233A1B8D7729E8184E3823E7DA681AAD07728E5AEC5E463EB5649",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/preview-layers/curious-left_brow.png",
+        "base_position": [
+          56,
+          71
+        ],
+        "anchor": [
+          15,
+          8
+        ],
+        "offset_range": {
+          "min": [
+            -1,
+            -3
+          ],
+          "max": [
+            1,
+            1
+          ]
+        },
+        "z_index": 20,
+        "composite_op": "ink",
+        "ink_pixels": 189
+      },
+      "v22_curious__right_brow": {
+        "name": "v22_curious__right_brow",
+        "emotion": "curious",
+        "role": "right_brow",
+        "source": "v22_generated_source_panel_thresholded_crop",
+        "source_transform": {
+          "source_left_eye_bbox": [
+            93,
+            337,
+            162,
+            430
+          ],
+          "source_right_eye_bbox": [
+            263,
+            339,
+            331,
+            432
+          ],
+          "source_left_eye_center": [
+            127.884,
+            386.576
+          ],
+          "source_right_eye_center": [
+            297.616,
+            388.476
+          ],
+          "scale": [
+            0.491954,
+            0.483871
+          ]
+        },
+        "source_grid_component": {
+          "role": "right_brow",
+          "normalized_ink_box": [
+            125,
+            91,
+            148,
+            100
+          ]
+        },
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/component-masks/curious-right_brow.pbm",
+        "mask_sha256": "AC6CF0721E859F889DD1E45C0765CCC800D57DEA1181AFC42EEB8B52A7F12EC4",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/preview-layers/curious-right_brow.png",
+        "base_position": [
+          124,
+          90
+        ],
+        "anchor": [
+          12,
+          5
+        ],
+        "offset_range": {
+          "min": [
+            -1,
+            -3
+          ],
+          "max": [
+            1,
+            1
+          ]
+        },
+        "z_index": 20,
+        "composite_op": "ink",
+        "ink_pixels": 128
+      },
+      "v22_curious__left_cheek": {
+        "name": "v22_curious__left_cheek",
+        "emotion": "curious",
+        "role": "left_cheek",
+        "source": "v22_generated_source_panel_thresholded_crop",
+        "source_transform": {
+          "source_left_eye_bbox": [
+            93,
+            337,
+            162,
+            430
+          ],
+          "source_right_eye_bbox": [
+            263,
+            339,
+            331,
+            432
+          ],
+          "source_left_eye_center": [
+            127.884,
+            386.576
+          ],
+          "source_right_eye_center": [
+            297.616,
+            388.476
+          ],
+          "scale": [
+            0.491954,
+            0.483871
+          ]
+        },
+        "source_grid_component": {
+          "role": "left_cheek",
+          "normalized_ink_box": [
+            32,
+            158,
+            47,
+            167
+          ]
+        },
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/component-masks/curious-left_cheek.pbm",
+        "mask_sha256": "126F2E645C98A0D98E388138052D0E9045DB3E3B46A44E40D58A1400040B267C",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/preview-layers/curious-left_cheek.png",
+        "base_position": [
+          31,
+          157
+        ],
+        "anchor": [
+          8,
+          5
+        ],
+        "offset_range": {
+          "min": [
+            0,
+            -1
+          ],
+          "max": [
+            0,
+            1
+          ]
+        },
+        "z_index": 40,
+        "composite_op": "ink",
+        "ink_pixels": 109
+      },
+      "v22_curious__right_cheek": {
+        "name": "v22_curious__right_cheek",
+        "emotion": "curious",
+        "role": "right_cheek",
+        "source": "v22_generated_source_panel_thresholded_crop",
+        "source_transform": {
+          "source_left_eye_bbox": [
+            93,
+            337,
+            162,
+            430
+          ],
+          "source_right_eye_bbox": [
+            263,
+            339,
+            331,
+            432
+          ],
+          "source_left_eye_center": [
+            127.884,
+            386.576
+          ],
+          "source_right_eye_center": [
+            297.616,
+            388.476
+          ],
+          "scale": [
+            0.491954,
+            0.483871
+          ]
+        },
+        "source_grid_component": {
+          "role": "right_cheek",
+          "normalized_ink_box": [
+            153,
+            155,
+            168,
+            164
+          ]
+        },
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/component-masks/curious-right_cheek.pbm",
+        "mask_sha256": "CA30B1DA674DE29366B77D028B70FEEC5E0612E5DF82ED3CB2A1BFDE3325D801",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/preview-layers/curious-right_cheek.png",
+        "base_position": [
+          152,
+          154
+        ],
+        "anchor": [
+          8,
+          5
+        ],
+        "offset_range": {
+          "min": [
+            0,
+            -1
+          ],
+          "max": [
+            0,
+            1
+          ]
+        },
+        "z_index": 40,
+        "composite_op": "ink",
+        "ink_pixels": 105
+      },
+      "v22_curious__mouth": {
+        "name": "v22_curious__mouth",
+        "emotion": "curious",
+        "role": "mouth",
+        "source": "v22_generated_source_panel_thresholded_crop",
+        "source_transform": {
+          "source_left_eye_bbox": [
+            93,
+            337,
+            162,
+            430
+          ],
+          "source_right_eye_bbox": [
+            263,
+            339,
+            331,
+            432
+          ],
+          "source_left_eye_center": [
+            127.884,
+            386.576
+          ],
+          "source_right_eye_center": [
+            297.616,
+            388.476
+          ],
+          "scale": [
+            0.491954,
+            0.483871
+          ]
+        },
+        "source_grid_component": {
+          "role": "mouth",
+          "normalized_ink_box": [
+            93,
+            161,
+            108,
+            174
+          ]
+        },
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/component-masks/curious-mouth.pbm",
+        "mask_sha256": "F05F5C035832D85C81500139652A8B6AD3CF21FE7E8CB67B9B391564C240A061",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/preview-layers/curious-mouth.png",
+        "base_position": [
+          92,
+          160
+        ],
+        "anchor": [
+          8,
+          7
+        ],
+        "offset_range": {
+          "min": [
+            0,
+            -1
+          ],
+          "max": [
+            0,
+            1
+          ]
+        },
+        "z_index": 60,
+        "composite_op": "ink",
+        "ink_pixels": 119
+      }
+    },
+    "warm": {
+      "v22_warm__left_brow": {
+        "name": "v22_warm__left_brow",
+        "emotion": "warm",
+        "role": "left_brow",
+        "source": "v22_generated_source_panel_thresholded_crop",
+        "source_transform": {
+          "source_left_eye_bbox": [
+            74,
+            336,
+            141,
+            428
+          ],
+          "source_right_eye_bbox": [
+            239,
+            338,
+            305,
+            428
+          ],
+          "source_left_eye_center": [
+            107.957,
+            385.19
+          ],
+          "source_right_eye_center": [
+            272.389,
+            385.783
+          ],
+          "scale": [
+            0.507809,
+            0.494505
+          ]
+        },
+        "source_grid_component": {
+          "role": "left_brow",
+          "normalized_ink_box": [
+            50,
+            86,
+            73,
+            100
+          ]
+        },
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/component-masks/warm-left_brow.pbm",
+        "mask_sha256": "6B1FA21653DA2D61859D9BF532DE9B29C015A35F69FF1D3AFE30457C1215403E",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/preview-layers/warm-left_brow.png",
+        "base_position": [
+          49,
+          85
+        ],
+        "anchor": [
+          12,
+          8
+        ],
+        "offset_range": {
+          "min": [
+            -1,
+            -3
+          ],
+          "max": [
+            1,
+            1
+          ]
+        },
+        "z_index": 20,
+        "composite_op": "ink",
+        "ink_pixels": 147
+      },
+      "v22_warm__right_brow": {
+        "name": "v22_warm__right_brow",
+        "emotion": "warm",
+        "role": "right_brow",
+        "source": "v22_generated_source_panel_thresholded_crop",
+        "source_transform": {
+          "source_left_eye_bbox": [
+            74,
+            336,
+            141,
+            428
+          ],
+          "source_right_eye_bbox": [
+            239,
+            338,
+            305,
+            428
+          ],
+          "source_left_eye_center": [
+            107.957,
+            385.19
+          ],
+          "source_right_eye_center": [
+            272.389,
+            385.783
+          ],
+          "scale": [
+            0.507809,
+            0.494505
+          ]
+        },
+        "source_grid_component": {
+          "role": "right_brow",
+          "normalized_ink_box": [
+            123,
+            86,
+            146,
+            100
+          ]
+        },
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/component-masks/warm-right_brow.pbm",
+        "mask_sha256": "AE306285C100C320CE973AAAF3B3DA420C780D7CF6B0C0C91CDD1840797B9847",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/preview-layers/warm-right_brow.png",
+        "base_position": [
+          122,
+          85
+        ],
+        "anchor": [
+          12,
+          8
+        ],
+        "offset_range": {
+          "min": [
+            -1,
+            -3
+          ],
+          "max": [
+            1,
+            1
+          ]
+        },
+        "z_index": 20,
+        "composite_op": "ink",
+        "ink_pixels": 151
+      },
+      "v22_warm__left_cheek": {
+        "name": "v22_warm__left_cheek",
+        "emotion": "warm",
+        "role": "left_cheek",
+        "source": "v22_generated_source_panel_thresholded_crop",
+        "source_transform": {
+          "source_left_eye_bbox": [
+            74,
+            336,
+            141,
+            428
+          ],
+          "source_right_eye_bbox": [
+            239,
+            338,
+            305,
+            428
+          ],
+          "source_left_eye_center": [
+            107.957,
+            385.19
+          ],
+          "source_right_eye_center": [
+            272.389,
+            385.783
+          ],
+          "scale": [
+            0.507809,
+            0.494505
+          ]
+        },
+        "source_grid_component": {
+          "role": "left_cheek",
+          "normalized_ink_box": [
+            33,
+            156,
+            49,
+            167
+          ]
+        },
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/component-masks/warm-left_cheek.pbm",
+        "mask_sha256": "7E2F5FB18CDFF6695709987574E727ADF7414B8C1A963718303FD47D58EE211B",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/preview-layers/warm-left_cheek.png",
+        "base_position": [
+          32,
+          155
+        ],
+        "anchor": [
+          9,
+          6
+        ],
+        "offset_range": {
+          "min": [
+            0,
+            -1
+          ],
+          "max": [
+            0,
+            1
+          ]
+        },
+        "z_index": 40,
+        "composite_op": "ink",
+        "ink_pixels": 141
+      },
+      "v22_warm__right_cheek": {
+        "name": "v22_warm__right_cheek",
+        "emotion": "warm",
+        "role": "right_cheek",
+        "source": "v22_generated_source_panel_thresholded_crop",
+        "source_transform": {
+          "source_left_eye_bbox": [
+            74,
+            336,
+            141,
+            428
+          ],
+          "source_right_eye_bbox": [
+            239,
+            338,
+            305,
+            428
+          ],
+          "source_left_eye_center": [
+            107.957,
+            385.19
+          ],
+          "source_right_eye_center": [
+            272.389,
+            385.783
+          ],
+          "scale": [
+            0.507809,
+            0.494505
+          ]
+        },
+        "source_grid_component": {
+          "role": "right_cheek",
+          "normalized_ink_box": [
+            153,
+            155,
+            171,
+            166
+          ]
+        },
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/component-masks/warm-right_cheek.pbm",
+        "mask_sha256": "5C731D769E222034022153E724B388EDAC265C0C7E770663D784C8D1FF6AEBD3",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/preview-layers/warm-right_cheek.png",
+        "base_position": [
+          152,
+          154
+        ],
+        "anchor": [
+          10,
+          6
+        ],
+        "offset_range": {
+          "min": [
+            0,
+            -1
+          ],
+          "max": [
+            0,
+            1
+          ]
+        },
+        "z_index": 40,
+        "composite_op": "ink",
+        "ink_pixels": 151
+      },
+      "v22_warm__mouth": {
+        "name": "v22_warm__mouth",
+        "emotion": "warm",
+        "role": "mouth",
+        "source": "v22_generated_source_panel_thresholded_crop",
+        "source_transform": {
+          "source_left_eye_bbox": [
+            74,
+            336,
+            141,
+            428
+          ],
+          "source_right_eye_bbox": [
+            239,
+            338,
+            305,
+            428
+          ],
+          "source_left_eye_center": [
+            107.957,
+            385.19
+          ],
+          "source_right_eye_center": [
+            272.389,
+            385.783
+          ],
+          "scale": [
+            0.507809,
+            0.494505
+          ]
+        },
+        "source_grid_component": {
+          "role": "mouth",
+          "normalized_ink_box": [
+            86,
+            158,
+            115,
+            178
+          ]
+        },
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/component-masks/warm-mouth.pbm",
+        "mask_sha256": "C6FB261FB119D1469E181E7F7E086F03102E0C0B27A893A701018143E6151B86",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/preview-layers/warm-mouth.png",
+        "base_position": [
+          85,
+          157
+        ],
+        "anchor": [
+          15,
+          11
+        ],
+        "offset_range": {
+          "min": [
+            0,
+            -1
+          ],
+          "max": [
+            0,
+            1
+          ]
+        },
+        "z_index": 60,
+        "composite_op": "ink",
+        "ink_pixels": 284
+      }
+    },
+    "playful": {
+      "v22_playful__left_brow": {
+        "name": "v22_playful__left_brow",
+        "emotion": "playful",
+        "role": "left_brow",
+        "source": "v22_generated_source_panel_thresholded_crop",
+        "source_transform": {
+          "source_left_eye_bbox": [
+            104,
+            175,
+            172,
+            264
+          ],
+          "source_right_eye_bbox": [
+            276,
+            174,
+            343,
+            264
+          ],
+          "source_left_eye_center": [
+            138.338,
+            222.595
+          ],
+          "source_right_eye_center": [
+            310.077,
+            222.346
+          ],
+          "scale": [
+            0.486202,
+            0.502793
+          ]
+        },
+        "source_grid_component": {
+          "role": "left_brow",
+          "normalized_ink_box": [
+            54,
+            86,
+            76,
+            102
+          ]
+        },
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/component-masks/playful-left_brow.pbm",
+        "mask_sha256": "09F131AFFA5C61EC8E4A9C7F63F42C88D3CBAC687370ADA9C5415854021CB7EA",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/preview-layers/playful-left_brow.png",
+        "base_position": [
+          53,
+          85
+        ],
+        "anchor": [
+          12,
+          9
+        ],
+        "offset_range": {
+          "min": [
+            -1,
+            -3
+          ],
+          "max": [
+            1,
+            1
+          ]
+        },
+        "z_index": 20,
+        "composite_op": "ink",
+        "ink_pixels": 160
+      },
+      "v22_playful__right_brow": {
+        "name": "v22_playful__right_brow",
+        "emotion": "playful",
+        "role": "right_brow",
+        "source": "v22_generated_source_panel_thresholded_crop",
+        "source_transform": {
+          "source_left_eye_bbox": [
+            104,
+            175,
+            172,
+            264
+          ],
+          "source_right_eye_bbox": [
+            276,
+            174,
+            343,
+            264
+          ],
+          "source_left_eye_center": [
+            138.338,
+            222.595
+          ],
+          "source_right_eye_center": [
+            310.077,
+            222.346
+          ],
+          "scale": [
+            0.486202,
+            0.502793
+          ]
+        },
+        "source_grid_component": {
+          "role": "right_brow",
+          "normalized_ink_box": [
+            123,
+            83,
+            149,
+            93
+          ]
+        },
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/component-masks/playful-right_brow.pbm",
+        "mask_sha256": "850F45E182B04FE8AFDF2B9DCDA3F6F1ED15A93779FEA01C75A446601A97BA90",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/preview-layers/playful-right_brow.png",
+        "base_position": [
+          122,
+          82
+        ],
+        "anchor": [
+          14,
+          6
+        ],
+        "offset_range": {
+          "min": [
+            -1,
+            -3
+          ],
+          "max": [
+            1,
+            1
+          ]
+        },
+        "z_index": 20,
+        "composite_op": "ink",
+        "ink_pixels": 164
+      },
+      "v22_playful__left_cheek": {
+        "name": "v22_playful__left_cheek",
+        "emotion": "playful",
+        "role": "left_cheek",
+        "source": "v22_generated_source_panel_thresholded_crop",
+        "source_transform": {
+          "source_left_eye_bbox": [
+            104,
+            175,
+            172,
+            264
+          ],
+          "source_right_eye_bbox": [
+            276,
+            174,
+            343,
+            264
+          ],
+          "source_left_eye_center": [
+            138.338,
+            222.595
+          ],
+          "source_right_eye_center": [
+            310.077,
+            222.346
+          ],
+          "scale": [
+            0.486202,
+            0.502793
+          ]
+        },
+        "source_grid_component": {
+          "role": "left_cheek",
+          "normalized_ink_box": [
+            32,
+            156,
+            48,
+            167
+          ]
+        },
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/component-masks/playful-left_cheek.pbm",
+        "mask_sha256": "381571D3AF6514F0ED6C9683A579070C76990B536CF1D35C305D2BE23BFE102E",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/preview-layers/playful-left_cheek.png",
+        "base_position": [
+          31,
+          155
+        ],
+        "anchor": [
+          9,
+          6
+        ],
+        "offset_range": {
+          "min": [
+            0,
+            -1
+          ],
+          "max": [
+            0,
+            1
+          ]
+        },
+        "z_index": 40,
+        "composite_op": "ink",
+        "ink_pixels": 135
+      },
+      "v22_playful__right_cheek": {
+        "name": "v22_playful__right_cheek",
+        "emotion": "playful",
+        "role": "right_cheek",
+        "source": "v22_generated_source_panel_thresholded_crop",
+        "source_transform": {
+          "source_left_eye_bbox": [
+            104,
+            175,
+            172,
+            264
+          ],
+          "source_right_eye_bbox": [
+            276,
+            174,
+            343,
+            264
+          ],
+          "source_left_eye_center": [
+            138.338,
+            222.595
+          ],
+          "source_right_eye_center": [
+            310.077,
+            222.346
+          ],
+          "scale": [
+            0.486202,
+            0.502793
+          ]
+        },
+        "source_grid_component": {
+          "role": "right_cheek",
+          "normalized_ink_box": [
+            147,
+            162,
+            162,
+            171
+          ]
+        },
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/component-masks/playful-right_cheek.pbm",
+        "mask_sha256": "09E43EEAE14E9DE491876AFF3194380FB5FDA8E1E31BE1E7874129926292992F",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/preview-layers/playful-right_cheek.png",
+        "base_position": [
+          146,
+          161
+        ],
+        "anchor": [
+          8,
+          5
+        ],
+        "offset_range": {
+          "min": [
+            0,
+            -1
+          ],
+          "max": [
+            0,
+            1
+          ]
+        },
+        "z_index": 40,
+        "composite_op": "ink",
+        "ink_pixels": 106
+      },
+      "v22_playful__mouth": {
+        "name": "v22_playful__mouth",
+        "emotion": "playful",
+        "role": "mouth",
+        "source": "v22_generated_source_panel_thresholded_crop",
+        "source_transform": {
+          "source_left_eye_bbox": [
+            104,
+            175,
+            172,
+            264
+          ],
+          "source_right_eye_bbox": [
+            276,
+            174,
+            343,
+            264
+          ],
+          "source_left_eye_center": [
+            138.338,
+            222.595
+          ],
+          "source_right_eye_center": [
+            310.077,
+            222.346
+          ],
+          "scale": [
+            0.486202,
+            0.502793
+          ]
+        },
+        "source_grid_component": {
+          "role": "mouth",
+          "normalized_ink_box": [
+            87,
+            157,
+            113,
+            171
+          ]
+        },
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/component-masks/playful-mouth.pbm",
+        "mask_sha256": "8C563E35C875382B684E7EF7B24D5262B629831DB428B3B5B3073BD6276455BC",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/preview-layers/playful-mouth.png",
+        "base_position": [
+          86,
+          156
+        ],
+        "anchor": [
+          14,
+          8
+        ],
+        "offset_range": {
+          "min": [
+            0,
+            -1
+          ],
+          "max": [
+            0,
+            1
+          ]
+        },
+        "z_index": 60,
+        "composite_op": "ink",
+        "ink_pixels": 151
+      },
+      "v22_playful__accent": {
+        "name": "v22_playful__accent",
+        "emotion": "playful",
+        "role": "accent",
+        "source": "v22_generated_source_panel_thresholded_crop",
+        "source_transform": {
+          "source_left_eye_bbox": [
+            104,
+            175,
+            172,
+            264
+          ],
+          "source_right_eye_bbox": [
+            276,
+            174,
+            343,
+            264
+          ],
+          "source_left_eye_center": [
+            138.338,
+            222.595
+          ],
+          "source_right_eye_center": [
+            310.077,
+            222.346
+          ],
+          "scale": [
+            0.486202,
+            0.502793
+          ]
+        },
+        "source_grid_component": {
+          "role": "playful_integrated_sparkle",
+          "normalized_ink_box": [
+            163,
+            147,
+            176,
+            162
+          ]
+        },
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/component-masks/playful-accent.pbm",
+        "mask_sha256": "B24EC822F359A884CCF0824968091684520AE8D5E1F472909577B14FEB8827B6",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/preview-layers/playful-accent.png",
+        "base_position": [
+          162,
+          146
+        ],
+        "anchor": [
+          7,
+          8
+        ],
+        "offset_range": {
+          "min": [
+            0,
+            -2
+          ],
+          "max": [
+            2,
+            1
+          ]
+        },
+        "z_index": 10,
+        "composite_op": "ink",
+        "ink_pixels": 64
+      }
+    },
+    "puzzled": {
+      "v22_puzzled__left_brow": {
+        "name": "v22_puzzled__left_brow",
+        "emotion": "puzzled",
+        "role": "left_brow",
+        "source": "v22_generated_source_panel_thresholded_crop",
+        "source_transform": {
+          "source_left_eye_bbox": [
+            96,
+            165,
+            167,
+            263
+          ],
+          "source_right_eye_bbox": [
+            268,
+            176,
+            336,
+            263
+          ],
+          "source_left_eye_center": [
+            132.092,
+            217.435
+          ],
+          "source_right_eye_center": [
+            302.543,
+            222.422
+          ],
+          "scale": [
+            0.489878,
+            0.486486
+          ]
+        },
+        "source_grid_component": {
+          "role": "left_brow",
+          "normalized_ink_box": [
+            55,
+            71,
+            84,
+            93
+          ]
+        },
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/component-masks/puzzled-left_brow.pbm",
+        "mask_sha256": "B1ACB20C725EEA74B504826881C43EFCD86D744D2BBBAC4BB01188B1233CBFFE",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/preview-layers/puzzled-left_brow.png",
+        "base_position": [
+          54,
+          70
+        ],
+        "anchor": [
+          15,
+          12
+        ],
+        "offset_range": {
+          "min": [
+            -1,
+            -3
+          ],
+          "max": [
+            1,
+            1
+          ]
+        },
+        "z_index": 20,
+        "composite_op": "ink",
+        "ink_pixels": 220
+      },
+      "v22_puzzled__right_brow": {
+        "name": "v22_puzzled__right_brow",
+        "emotion": "puzzled",
+        "role": "right_brow",
+        "source": "v22_generated_source_panel_thresholded_crop",
+        "source_transform": {
+          "source_left_eye_bbox": [
+            96,
+            165,
+            167,
+            263
+          ],
+          "source_right_eye_bbox": [
+            268,
+            176,
+            336,
+            263
+          ],
+          "source_left_eye_center": [
+            132.092,
+            217.435
+          ],
+          "source_right_eye_center": [
+            302.543,
+            222.422
+          ],
+          "scale": [
+            0.489878,
+            0.486486
+          ]
+        },
+        "source_grid_component": {
+          "role": "right_brow",
+          "normalized_ink_box": [
+            123,
+            98,
+            148,
+            109
+          ]
+        },
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/component-masks/puzzled-right_brow.pbm",
+        "mask_sha256": "E51BEFC0E8D8A4DFACB67C556B6F866E289582679A01E6BB0D91360186E80A7B",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/preview-layers/puzzled-right_brow.png",
+        "base_position": [
+          122,
+          97
+        ],
+        "anchor": [
+          13,
+          6
+        ],
+        "offset_range": {
+          "min": [
+            -1,
+            -3
+          ],
+          "max": [
+            1,
+            1
+          ]
+        },
+        "z_index": 20,
+        "composite_op": "ink",
+        "ink_pixels": 154
+      },
+      "v22_puzzled__left_cheek": {
+        "name": "v22_puzzled__left_cheek",
+        "emotion": "puzzled",
+        "role": "left_cheek",
+        "source": "v22_generated_source_panel_thresholded_crop",
+        "source_transform": {
+          "source_left_eye_bbox": [
+            96,
+            165,
+            167,
+            263
+          ],
+          "source_right_eye_bbox": [
+            268,
+            176,
+            336,
+            263
+          ],
+          "source_left_eye_center": [
+            132.092,
+            217.435
+          ],
+          "source_right_eye_center": [
+            302.543,
+            222.422
+          ],
+          "scale": [
+            0.489878,
+            0.486486
+          ]
+        },
+        "source_grid_component": {
+          "role": "left_cheek",
+          "normalized_ink_box": [
+            33,
+            158,
+            49,
+            168
+          ]
+        },
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/component-masks/puzzled-left_cheek.pbm",
+        "mask_sha256": "0272C93C807204D0F6FBC670928C35F99D82EC3CC6A79DE5E2EDEC13C4DA2F96",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/preview-layers/puzzled-left_cheek.png",
+        "base_position": [
+          32,
+          157
+        ],
+        "anchor": [
+          9,
+          6
+        ],
+        "offset_range": {
+          "min": [
+            0,
+            -1
+          ],
+          "max": [
+            0,
+            1
+          ]
+        },
+        "z_index": 40,
+        "composite_op": "ink",
+        "ink_pixels": 129
+      },
+      "v22_puzzled__mouth": {
+        "name": "v22_puzzled__mouth",
+        "emotion": "puzzled",
+        "role": "mouth",
+        "source": "v22_generated_source_panel_thresholded_crop",
+        "source_transform": {
+          "source_left_eye_bbox": [
+            96,
+            165,
+            167,
+            263
+          ],
+          "source_right_eye_bbox": [
+            268,
+            176,
+            336,
+            263
+          ],
+          "source_left_eye_center": [
+            132.092,
+            217.435
+          ],
+          "source_right_eye_center": [
+            302.543,
+            222.422
+          ],
+          "scale": [
+            0.489878,
+            0.486486
+          ]
+        },
+        "source_grid_component": {
+          "role": "mouth",
+          "normalized_ink_box": [
+            97,
+            164,
+            124,
+            174
+          ]
+        },
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/component-masks/puzzled-mouth.pbm",
+        "mask_sha256": "2FF13BB462B2BE24545C1C38CF927F94EE45E1FD03D42223C352C2F9736DA505",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/preview-layers/puzzled-mouth.png",
+        "base_position": [
+          96,
+          163
+        ],
+        "anchor": [
+          14,
+          6
+        ],
+        "offset_range": {
+          "min": [
+            0,
+            -1
+          ],
+          "max": [
+            0,
+            1
+          ]
+        },
+        "z_index": 60,
+        "composite_op": "ink",
+        "ink_pixels": 153
+      }
+    },
+    "alert": {
+      "v22_alert__left_brow": {
+        "name": "v22_alert__left_brow",
+        "emotion": "alert",
+        "role": "left_brow",
+        "source": "v22_generated_source_panel_thresholded_crop",
+        "source_transform": {
+          "source_left_eye_bbox": [
+            73,
+            171,
+            140,
+            262
+          ],
+          "source_right_eye_bbox": [
+            236,
+            172,
+            304,
+            262
+          ],
+          "source_left_eye_center": [
+            107.017,
+            219.976
+          ],
+          "source_right_eye_center": [
+            270.265,
+            220.115
+          ],
+          "scale": [
+            0.511493,
+            0.497238
+          ]
+        },
+        "source_grid_component": {
+          "role": "left_brow",
+          "normalized_ink_box": [
+            57,
+            87,
+            79,
+            101
+          ]
+        },
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/component-masks/alert-left_brow.pbm",
+        "mask_sha256": "40165813031F76EB7AF8D16AA0DE969C4D90670649845BDF81E51C6526FD301E",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/preview-layers/alert-left_brow.png",
+        "base_position": [
+          56,
+          86
+        ],
+        "anchor": [
+          12,
+          8
+        ],
+        "offset_range": {
+          "min": [
+            -1,
+            -3
+          ],
+          "max": [
+            1,
+            1
+          ]
+        },
+        "z_index": 20,
+        "composite_op": "ink",
+        "ink_pixels": 142
+      },
+      "v22_alert__right_brow": {
+        "name": "v22_alert__right_brow",
+        "emotion": "alert",
+        "role": "right_brow",
+        "source": "v22_generated_source_panel_thresholded_crop",
+        "source_transform": {
+          "source_left_eye_bbox": [
+            73,
+            171,
+            140,
+            262
+          ],
+          "source_right_eye_bbox": [
+            236,
+            172,
+            304,
+            262
+          ],
+          "source_left_eye_center": [
+            107.017,
+            219.976
+          ],
+          "source_right_eye_center": [
+            270.265,
+            220.115
+          ],
+          "scale": [
+            0.511493,
+            0.497238
+          ]
+        },
+        "source_grid_component": {
+          "role": "right_brow",
+          "normalized_ink_box": [
+            119,
+            84,
+            142,
+            101
+          ]
+        },
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/component-masks/alert-right_brow.pbm",
+        "mask_sha256": "0C93472FD2BD7338236E6C656F1AAB5C4A494721D7C950A64AD0CE9411AD129F",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/preview-layers/alert-right_brow.png",
+        "base_position": [
+          118,
+          83
+        ],
+        "anchor": [
+          12,
+          9
+        ],
+        "offset_range": {
+          "min": [
+            -1,
+            -3
+          ],
+          "max": [
+            1,
+            1
+          ]
+        },
+        "z_index": 20,
+        "composite_op": "ink",
+        "ink_pixels": 166
+      },
+      "v22_alert__left_cheek": {
+        "name": "v22_alert__left_cheek",
+        "emotion": "alert",
+        "role": "left_cheek",
+        "source": "v22_generated_source_panel_thresholded_crop",
+        "source_transform": {
+          "source_left_eye_bbox": [
+            73,
+            171,
+            140,
+            262
+          ],
+          "source_right_eye_bbox": [
+            236,
+            172,
+            304,
+            262
+          ],
+          "source_left_eye_center": [
+            107.017,
+            219.976
+          ],
+          "source_right_eye_center": [
+            270.265,
+            220.115
+          ],
+          "scale": [
+            0.511493,
+            0.497238
+          ]
+        },
+        "source_grid_component": {
+          "role": "left_cheek",
+          "normalized_ink_box": [
+            33,
+            159,
+            48,
+            168
+          ]
+        },
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/component-masks/alert-left_cheek.pbm",
+        "mask_sha256": "3A4815BDD53EBAFFDA1F0E9D22B2E0EC37B137D04EA7B0FBE2136A6D975284D0",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/preview-layers/alert-left_cheek.png",
+        "base_position": [
+          32,
+          158
+        ],
+        "anchor": [
+          8,
+          5
+        ],
+        "offset_range": {
+          "min": [
+            0,
+            -1
+          ],
+          "max": [
+            0,
+            1
+          ]
+        },
+        "z_index": 40,
+        "composite_op": "ink",
+        "ink_pixels": 105
+      },
+      "v22_alert__right_cheek": {
+        "name": "v22_alert__right_cheek",
+        "emotion": "alert",
+        "role": "right_cheek",
+        "source": "v22_generated_source_panel_thresholded_crop",
+        "source_transform": {
+          "source_left_eye_bbox": [
+            73,
+            171,
+            140,
+            262
+          ],
+          "source_right_eye_bbox": [
+            236,
+            172,
+            304,
+            262
+          ],
+          "source_left_eye_center": [
+            107.017,
+            219.976
+          ],
+          "source_right_eye_center": [
+            270.265,
+            220.115
+          ],
+          "scale": [
+            0.511493,
+            0.497238
+          ]
+        },
+        "source_grid_component": {
+          "role": "right_cheek",
+          "normalized_ink_box": [
+            154,
+            159,
+            168,
+            168
+          ]
+        },
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/component-masks/alert-right_cheek.pbm",
+        "mask_sha256": "5AB4A99729DADC0F700406D9AADD6741CEFE88902BDDCB9FE701438E14361BF5",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/preview-layers/alert-right_cheek.png",
+        "base_position": [
+          153,
+          158
+        ],
+        "anchor": [
+          8,
+          5
+        ],
+        "offset_range": {
+          "min": [
+            0,
+            -1
+          ],
+          "max": [
+            0,
+            1
+          ]
+        },
+        "z_index": 40,
+        "composite_op": "ink",
+        "ink_pixels": 100
+      },
+      "v22_alert__mouth": {
+        "name": "v22_alert__mouth",
+        "emotion": "alert",
+        "role": "mouth",
+        "source": "v22_generated_source_panel_thresholded_crop",
+        "source_transform": {
+          "source_left_eye_bbox": [
+            73,
+            171,
+            140,
+            262
+          ],
+          "source_right_eye_bbox": [
+            236,
+            172,
+            304,
+            262
+          ],
+          "source_left_eye_center": [
+            107.017,
+            219.976
+          ],
+          "source_right_eye_center": [
+            270.265,
+            220.115
+          ],
+          "scale": [
+            0.511493,
+            0.497238
+          ]
+        },
+        "source_grid_component": {
+          "role": "mouth",
+          "normalized_ink_box": [
+            92,
+            160,
+            108,
+            177
+          ]
+        },
+        "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/component-masks/alert-mouth.pbm",
+        "mask_sha256": "E147314E3A4BE8453F53849DC6EB89227B589C328E3AB0BA04DC2A6E81CD57E0",
+        "preview_layer": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/preview-layers/alert-mouth.png",
+        "base_position": [
+          91,
+          159
+        ],
+        "anchor": [
+          9,
+          9
+        ],
+        "offset_range": {
+          "min": [
+            0,
+            -1
+          ],
+          "max": [
+            0,
+            1
+          ]
+        },
+        "z_index": 60,
+        "composite_op": "ink",
+        "ink_pixels": 159
+      }
+    }
+  },
+  "states": {
+    "calm": {
+      "source_grid_box": [
+        0,
+        0,
+        418,
+        627
+      ],
+      "normalized_source_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/normalized-source/calm.png",
+      "components": [
+        "v22_calm__left_brow",
+        "v22_calm__right_brow",
+        "v22_calm__left_cheek",
+        "v22_calm__right_cheek",
+        "v22_calm__mouth"
+      ],
+      "source_absent_roles": [],
+      "reassembly": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/reassembled-200x200/calm.pbm",
+      "reassembly_sha256": "DCDE74BE44CD33E881F33BC4FC6397D6269A4749BE90BCD7A1999A53D44D4B79",
+      "reassembly_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/reassembled-800/calm.png"
+    },
+    "curious": {
+      "source_grid_box": [
+        418,
+        0,
+        836,
+        627
+      ],
+      "normalized_source_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/normalized-source/curious.png",
+      "components": [
+        "v22_curious__left_brow",
+        "v22_curious__right_brow",
+        "v22_curious__left_cheek",
+        "v22_curious__right_cheek",
+        "v22_curious__mouth"
+      ],
+      "source_absent_roles": [],
+      "reassembly": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/reassembled-200x200/curious.pbm",
+      "reassembly_sha256": "C8D856E609C82AA88BF45EAC506BAC153AEF081A49289138F80E08813582F78F",
+      "reassembly_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/reassembled-800/curious.png"
+    },
+    "warm": {
+      "source_grid_box": [
+        836,
+        0,
+        1254,
+        627
+      ],
+      "normalized_source_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/normalized-source/warm.png",
+      "components": [
+        "v22_warm__left_brow",
+        "v22_warm__right_brow",
+        "v22_warm__left_cheek",
+        "v22_warm__right_cheek",
+        "v22_warm__mouth"
+      ],
+      "source_absent_roles": [],
+      "reassembly": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/reassembled-200x200/warm.pbm",
+      "reassembly_sha256": "8A822CA758361B7956371C6DF7A750E5DFC01947E454F14B289AE5B1BA381356",
+      "reassembly_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/reassembled-800/warm.png"
+    },
+    "playful": {
+      "source_grid_box": [
+        0,
+        627,
+        418,
+        1254
+      ],
+      "normalized_source_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/normalized-source/playful.png",
+      "components": [
+        "v22_playful__left_brow",
+        "v22_playful__right_brow",
+        "v22_playful__left_cheek",
+        "v22_playful__right_cheek",
+        "v22_playful__mouth",
+        "v22_playful__accent"
+      ],
+      "source_absent_roles": [],
+      "reassembly": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/reassembled-200x200/playful.pbm",
+      "reassembly_sha256": "B24B474BF00300EC93DCDE321D046D49871DFE58E50EE3CEB4F5A35C79C325BE",
+      "reassembly_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/reassembled-800/playful.png"
+    },
+    "puzzled": {
+      "source_grid_box": [
+        418,
+        627,
+        836,
+        1254
+      ],
+      "normalized_source_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/normalized-source/puzzled.png",
+      "components": [
+        "v22_puzzled__left_brow",
+        "v22_puzzled__right_brow",
+        "v22_puzzled__left_cheek",
+        "v22_puzzled__mouth"
+      ],
+      "source_absent_roles": [
+        "right_cheek"
+      ],
+      "reassembly": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/reassembled-200x200/puzzled.pbm",
+      "reassembly_sha256": "CCEEFD9E72C577FB4C77EF7CAA3C663C959CD96E5530C900DA042232094CF3DC",
+      "reassembly_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/reassembled-800/puzzled.png"
+    },
+    "alert": {
+      "source_grid_box": [
+        836,
+        627,
+        1254,
+        1254
+      ],
+      "normalized_source_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/normalized-source/alert.png",
+      "components": [
+        "v22_alert__left_brow",
+        "v22_alert__right_brow",
+        "v22_alert__left_cheek",
+        "v22_alert__right_cheek",
+        "v22_alert__mouth"
+      ],
+      "source_absent_roles": [],
+      "reassembly": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/reassembled-200x200/alert.pbm",
+      "reassembly_sha256": "1597FB80B822EA623790AA08F6DD661A4194C587140FA5EE4DD659D3CC9495DC",
+      "reassembly_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/reassembled-800/alert.png"
+    }
+  },
+  "component_contact_sheet": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/v22-emotion-separation-component-reassembly-contact-sheet.png",
+  "prohibited_before_component_bridge_gate": [
+    "whole-source-pose playback",
+    "whole-face replacement",
+    "CRIG export",
+    "runtime activation",
+    "menu recording upgrade binding",
+    "sleep charging error fallback"
+  ],
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden"
+}

@@ -1,0 +1,21 @@
+{
+  "schema": "companion.v9.event_overlay_source_lineage.v1",
+  "iteration": "V34",
+  "request_revision": 1,
+  "status": "GENERATED_PENDING_NATIVE_200_MACHINE_PREVIEW",
+  "candidate": {
+    "path": "candidate-recording-input-v1.png",
+    "sha256": "203B63C5FF7963859B7296725260A17C101C19BAE843C36DEB859843C6770B4F"
+  },
+  "visual_reference_inputs": [
+    {
+      "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "role": "sole_style_reference"
+    }
+  ],
+  "forbidden_inputs": ["all_rejected_V33_or_V32_assets", "legacy_art"],
+  "physical_semantic": "sensor at the right of the face with incoming pulses travelling toward the character",
+  "runtime": {"resource_activated": false, "component_export": "forbidden_until_source_gate_passes"},
+  "authority": "COMP-REQ-187"
+}

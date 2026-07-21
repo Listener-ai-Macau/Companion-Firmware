@@ -1,0 +1,22 @@
+{
+  "schema": "companion.v22_emotion_separation_target_rig_gate.v1",
+  "status": "PASS_V22_EMOTION_SEPARATION_TARGET_RIG_GATE",
+  "locked_v9_source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "pack": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/target-rig-attempt-01/companion-v22-emotion-separation-rig-candidate-200x200.crig",
+  "pack_sha256": "43184DE67E28EEA2B5277A406145B54C6204453E4441F9D1BD9DE20EEEA25333",
+  "component_count": 37,
+  "bridge_count": 10,
+  "bridge_frame_count": 72,
+  "browser_target_component_plan_parity": "exact_same_layers_offsets_durations_and_pbm_hashes",
+  "wba_external_nor_host": "PASS_V22_EMOTION_SEPARATION_TARGET_RIG_WBA_EXTERNAL_NOR_PARITY",
+  "runtime_resource_activated": false,
+  "special_event_fallback": {
+    "menu": "fail_closed",
+    "recording": "fail_closed",
+    "upgrade": "fail_closed",
+    "sleep": "fail_closed",
+    "charging": "fail_closed",
+    "error": "fail_closed"
+  },
+  "errors": []
+}

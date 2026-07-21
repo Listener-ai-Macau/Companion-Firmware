@@ -1,0 +1,485 @@
+{
+  "schema": "companion.v35.emotion_decoration_native_200_machine_gate.v2",
+  "status": "PASS_MACHINE_PREVIEW_ONLY_RUNTIME_INACTIVE",
+  "authority": "COMP-REQ-190",
+  "render": "docs/validation/companion-v35-emotion-decoration-native-200-v2-render-20260720.json",
+  "source_gate": [
+    {
+      "component": "curious_question",
+      "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate-curious-question-v2.png",
+      "sha256": "E56DD1E4C8065863E7238C7E1C59A8DA2FA3F8FF914B692601CE2C837BBE591D"
+    },
+    {
+      "component": "alert_exclamation",
+      "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate-alert-exclamation-v2.png",
+      "sha256": "55424E1E369865208B3B7A3E5DB7FE28F153FD2285DF382DF405AF2B5ED0AFD3"
+    },
+    {
+      "component": "sleepy_dream_cloud",
+      "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate-sleepy-dream-cloud-v2.png",
+      "sha256": "39AE69A509DEA8EEA4E9B29962CC549CB9849D33D1F2C73732989A7BBFDF6CB5"
+    }
+  ],
+  "browser_binding": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/native-200-playback-preview.html",
+    "frame_bindings": 18
+  },
+  "events": {
+    "curious_question": {
+      "transition_frames": [
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/calm-to-curious_question-transition-00.png",
+          "bounds": [
+            33,
+            85,
+            167,
+            169
+          ]
+        },
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/calm-to-curious_question-transition-01.png",
+          "bounds": [
+            33,
+            85,
+            167,
+            169
+          ]
+        },
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/calm-to-curious_question-transition-02.png",
+          "bounds": [
+            33,
+            85,
+            167,
+            169
+          ]
+        },
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/calm-to-curious_question-transition-03.png",
+          "bounds": [
+            33,
+            83,
+            167,
+            169
+          ]
+        },
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/calm-to-curious_question-transition-04.png",
+          "bounds": [
+            33,
+            83,
+            167,
+            169
+          ]
+        },
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/calm-to-curious_question-transition-05.png",
+          "bounds": [
+            33,
+            83,
+            167,
+            170
+          ]
+        },
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/calm-to-curious_question-transition-06.png",
+          "bounds": [
+            33,
+            38,
+            167,
+            170
+          ]
+        },
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/calm-to-curious_question-transition-07.png",
+          "bounds": [
+            33,
+            34,
+            167,
+            170
+          ]
+        },
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/calm-to-curious_question-transition-08.png",
+          "bounds": [
+            33,
+            29,
+            167,
+            170
+          ]
+        }
+      ],
+      "presence_frames": [
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/curious_question-presence-00.png",
+          "bounds": [
+            33,
+            29,
+            167,
+            170
+          ]
+        },
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/curious_question-presence-01.png",
+          "bounds": [
+            33,
+            31,
+            167,
+            170
+          ]
+        },
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/curious_question-presence-02.png",
+          "bounds": [
+            33,
+            34,
+            167,
+            170
+          ]
+        },
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/curious_question-presence-03.png",
+          "bounds": [
+            33,
+            34,
+            167,
+            170
+          ]
+        },
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/curious_question-presence-04.png",
+          "bounds": [
+            33,
+            31,
+            167,
+            169
+          ]
+        },
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/curious_question-presence-05.png",
+          "bounds": [
+            33,
+            29,
+            167,
+            170
+          ]
+        }
+      ],
+      "decoration_entry": {
+        "added_ink_pixels": 105,
+        "bounds": [
+          148,
+          38,
+          161,
+          57
+        ]
+      }
+    },
+    "alert_exclamation": {
+      "transition_frames": [
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/calm-to-alert_exclamation-transition-00.png",
+          "bounds": [
+            33,
+            85,
+            167,
+            169
+          ]
+        },
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/calm-to-alert_exclamation-transition-01.png",
+          "bounds": [
+            33,
+            85,
+            167,
+            169
+          ]
+        },
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/calm-to-alert_exclamation-transition-02.png",
+          "bounds": [
+            33,
+            85,
+            167,
+            169
+          ]
+        },
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/calm-to-alert_exclamation-transition-03.png",
+          "bounds": [
+            33,
+            83,
+            167,
+            169
+          ]
+        },
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/calm-to-alert_exclamation-transition-04.png",
+          "bounds": [
+            33,
+            83,
+            167,
+            169
+          ]
+        },
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/calm-to-alert_exclamation-transition-05.png",
+          "bounds": [
+            33,
+            83,
+            167,
+            169
+          ]
+        },
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/calm-to-alert_exclamation-transition-06.png",
+          "bounds": [
+            33,
+            42,
+            167,
+            169
+          ]
+        },
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/calm-to-alert_exclamation-transition-07.png",
+          "bounds": [
+            33,
+            35,
+            167,
+            169
+          ]
+        },
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/calm-to-alert_exclamation-transition-08.png",
+          "bounds": [
+            33,
+            25,
+            167,
+            169
+          ]
+        }
+      ],
+      "presence_frames": [
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/alert_exclamation-presence-00.png",
+          "bounds": [
+            33,
+            25,
+            167,
+            169
+          ]
+        },
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/alert_exclamation-presence-01.png",
+          "bounds": [
+            33,
+            28,
+            167,
+            169
+          ]
+        },
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/alert_exclamation-presence-02.png",
+          "bounds": [
+            33,
+            35,
+            167,
+            169
+          ]
+        },
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/alert_exclamation-presence-03.png",
+          "bounds": [
+            33,
+            35,
+            167,
+            169
+          ]
+        },
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/alert_exclamation-presence-04.png",
+          "bounds": [
+            33,
+            28,
+            167,
+            169
+          ]
+        },
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/alert_exclamation-presence-05.png",
+          "bounds": [
+            33,
+            25,
+            167,
+            169
+          ]
+        }
+      ],
+      "decoration_entry": {
+        "added_ink_pixels": 83,
+        "bounds": [
+          99,
+          42,
+          105,
+          59
+        ]
+      }
+    },
+    "sleepy_dream_cloud": {
+      "transition_frames": [
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/calm-to-sleepy_dream_cloud-transition-00.png",
+          "bounds": [
+            33,
+            85,
+            167,
+            169
+          ]
+        },
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/calm-to-sleepy_dream_cloud-transition-01.png",
+          "bounds": [
+            33,
+            85,
+            167,
+            169
+          ]
+        },
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/calm-to-sleepy_dream_cloud-transition-02.png",
+          "bounds": [
+            33,
+            85,
+            167,
+            169
+          ]
+        },
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/calm-to-sleepy_dream_cloud-transition-03.png",
+          "bounds": [
+            33,
+            93,
+            167,
+            169
+          ]
+        },
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/calm-to-sleepy_dream_cloud-transition-04.png",
+          "bounds": [
+            33,
+            93,
+            167,
+            170
+          ]
+        },
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/calm-to-sleepy_dream_cloud-transition-05.png",
+          "bounds": [
+            33,
+            93,
+            167,
+            169
+          ]
+        },
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/calm-to-sleepy_dream_cloud-transition-06.png",
+          "bounds": [
+            33,
+            41,
+            167,
+            169
+          ]
+        },
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/calm-to-sleepy_dream_cloud-transition-07.png",
+          "bounds": [
+            33,
+            35,
+            167,
+            169
+          ]
+        },
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/calm-to-sleepy_dream_cloud-transition-08.png",
+          "bounds": [
+            27,
+            30,
+            167,
+            169
+          ]
+        }
+      ],
+      "presence_frames": [
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/sleepy_dream_cloud-presence-00.png",
+          "bounds": [
+            27,
+            30,
+            167,
+            169
+          ]
+        },
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/sleepy_dream_cloud-presence-01.png",
+          "bounds": [
+            29,
+            32,
+            167,
+            169
+          ]
+        },
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/sleepy_dream_cloud-presence-02.png",
+          "bounds": [
+            33,
+            35,
+            167,
+            169
+          ]
+        },
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/sleepy_dream_cloud-presence-03.png",
+          "bounds": [
+            33,
+            35,
+            167,
+            169
+          ]
+        },
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/sleepy_dream_cloud-presence-04.png",
+          "bounds": [
+            29,
+            32,
+            167,
+            170
+          ]
+        },
+        {
+          "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/sleepy_dream_cloud-presence-05.png",
+          "bounds": [
+            27,
+            30,
+            167,
+            169
+          ]
+        }
+      ],
+      "decoration_entry": {
+        "added_ink_pixels": 81,
+        "bounds": [
+          40,
+          41,
+          62,
+          56
+        ]
+      }
+    }
+  },
+  "runtime": {
+    "resource_activated": false,
+    "component_export": "forbidden",
+    "firmware_binding": "forbidden",
+    "panel_claim": "forbidden_until_P0_panel_and_later_runtime_gates_pass"
+  }
+}

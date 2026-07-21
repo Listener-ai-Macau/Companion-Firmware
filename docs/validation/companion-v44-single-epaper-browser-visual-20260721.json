@@ -1,0 +1,36 @@
+{
+  "schema": "companion.v44_single_epaper_browser_visual.v1",
+  "status": "PASS_V44_SINGLE_200X200_BROWSER_VIEWPORT_RUNTIME_INACTIVE",
+  "preview_report": "docs/validation/companion-v44-blink-stable-center-single-epaper-browser-wb55-preview-20260721.json",
+  "html": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v6/candidate/wb55-browser-parity-attempt-02/index.html",
+  "headless_capture": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v6/candidate/wb55-browser-parity-attempt-02/headless-capture-r1/v42-chinese-overview-headless-r6.png",
+    "dimensions": [
+      1400,
+      1900
+    ]
+  },
+  "viewport": {
+    "canvas": "200x200",
+    "presentation": "single_200x200_epaper_viewport_with_in_screen_touch_and_deterministic_swipe",
+    "owner_visible_story_count": 16,
+    "horizontal_swipe": "positive_next_negative_previous",
+    "vertical_swipe": "positive_next_negative_previous",
+    "touch_surface": "the_200x200_viewport_itself",
+    "idle": "registered_center_unless_pointer_pressed",
+    "release": "center_then_resume"
+  },
+  "forbidden_fallbacks": {
+    "whole_face_carousel": false,
+    "static_wall": false,
+    "canvas_face_drawing": false,
+    "legacy_art": false,
+    "runtime_activation": false
+  },
+  "runtime_resource_activated": false,
+  "non_claims": [
+    "no_lower_driver_change",
+    "no_physical_panel_acceptance",
+    "no_human_acceptance"
+  ]
+}

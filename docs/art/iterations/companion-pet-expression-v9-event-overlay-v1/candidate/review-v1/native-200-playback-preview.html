@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>V34 Native 200 Playback</title>
+  <style>
+    :root { color-scheme: light; font-family: Arial, sans-serif; }
+    body { margin: 0; min-height: 100vh; background: #f1f2ef; color: #111; }
+    main { max-width: 520px; margin: 0 auto; padding: 28px 20px 36px; }
+    h1 { margin: 0 0 18px; font-size: 24px; font-weight: 700; }
+    .lanes { display: grid; gap: 22px; }
+    section { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 18px; }
+    h2 { margin: 0; font-size: 16px; font-weight: 700; }
+    p { margin: 6px 0 0; font-size: 13px; line-height: 1.4; }
+    img { display: block; width: 200px; height: 200px; background: #fff; border: 1px solid #111; image-rendering: pixelated; }
+    @media (max-width: 500px) { section { grid-template-columns: 1fr; gap: 10px; } }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>V34 Native 200 Playback</h1>
+    <div class="lanes">
+      <section>
+        <img id="recording" alt="">
+        <div><h2>Recording input</h2><p>200 x 200 source-derived frame sequence</p></div>
+      </section>
+      <section>
+        <img id="charging" alt="">
+        <div><h2>Bottom connector charging</h2><p>200 x 200 source-derived frame sequence</p></div>
+      </section>
+    </div>
+  </main>
+  <script>
+    const sequences = [
+      {
+        element: document.getElementById('recording'),
+        frames: ['recording-input-00.png', 'recording-input-01.png', 'recording-input-02.png'],
+        durations: [700, 420, 420]
+      },
+      {
+        element: document.getElementById('charging'),
+        frames: ['bottom-connector-charging-00.png', 'bottom-connector-charging-01.png', 'bottom-connector-charging-02.png'],
+        durations: [700, 420, 420]
+      }
+    ];
+    for (const sequence of sequences) {
+      let index = 0;
+      const tick = () => {
+        sequence.element.src = sequence.frames[index];
+        const duration = sequence.durations[index];
+        index = (index + 1) % sequence.frames.length;
+        window.setTimeout(tick, duration);
+      };
+      tick();
+    }
+  </script>
+</body>
+</html>

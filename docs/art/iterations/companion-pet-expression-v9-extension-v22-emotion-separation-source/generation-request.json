@@ -1,0 +1,75 @@
+{
+  "schema": "companion.v22_everyday_emotion_separation_generation_request.v1",
+  "status": "REQUESTED_PENDING_PREFLIGHT_AND_GENERATION",
+  "iteration_id": "companion-pet-expression-v9-extension-v22-emotion-separation-source-20260719",
+  "owner_requirement": "COMP-REQ-142",
+  "owner_visual_delta": "Keep the same V9 character, but make the six everyday emotions visibly more distinct at a glance. The eye identity remains locked; expressive separation must come from source-drawn brows, mouth/nose, cheeks, gaze emphasis, and a restrained permitted accent.",
+  "reference_images": [
+    {
+      "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "use": "sole character-identity reference: open-eye silhouette, eye scale and spacing, highlight grammar, nose anchor, monochrome ink weight, and whitespace"
+    }
+  ],
+  "reference_policy": "Locked V9 is the only prompt reference. V21 is accepted regression evidence only and must not be a visual input. V10/V11/V17, legacy art, prior emotion panels, rejected candidates, whole-face cards, custom code art, and custom LUT are forbidden prompt inputs, sources, or fallbacks.",
+  "identity_locks": [
+    "Every pose is the same centered V9 Companion character on a pure white background.",
+    "Keep two open rounded black V9 eye silhouettes with identical scale and spacing, one white primary highlight plus one small white sparkle in each eye, and the small centered V9 nose anchor.",
+    "Do not add pupils, eyelashes, eyelids, a wink, a new eye shape, a face outline, color, gray, antialiasing, texture, labels, borders, panels, UI, text, or device chrome."
+  ],
+  "emotion_contract": [
+    {
+      "name": "calm",
+      "read": "low, even, lightly relaxed brows; compact quiet soft mouth; symmetric small cheeks; settled centered attention"
+    },
+    {
+      "name": "curious",
+      "read": "one brow visibly raised while the other stays level; a compact wondering mouth; one cheek subtly lifted; attention slightly upward"
+    },
+    {
+      "name": "warm",
+      "read": "both brows gently softened downward toward the center; a clearly wider rounded upturned smile; cheeks fuller and slightly higher; caring centered attention"
+    },
+    {
+      "name": "playful",
+      "read": "an intentionally asymmetric buoyant brow pair; an obvious small side-grin distinct from Warm; lively uneven cheek response; one tiny integrated four-point shine accent"
+    },
+    {
+      "name": "puzzled",
+      "read": "one steep high brow and one compressed inward brow; a small offset thinking mouth with reverse tilt; visibly uneven cheek response; sideward attention"
+    },
+    {
+      "name": "alert",
+      "read": "both brows clearly high and drawn inward; a compact rounded surprise mouth; cheeks tight and low; raised attention without any punctuation"
+    }
+  ],
+  "separation_contract": {
+    "required_visible_groups": ["left_brow", "right_brow", "mouth_nose", "left_cheek", "right_cheek", "optional_accent"],
+    "pairwise_rule": "Every emotion pair must differ in at least two visible component groups; no two poses may share both their brow-pair geometry and mouth/nose mask.",
+    "runtime_rule": "The complete poses are source art only. Any later preview or target frame must compose registered source masks; it may never rotate these poses as cards."
+  },
+  "prompt_delta": "Generate one square, white-background, crisp monochrome pixel-ink source-art sheet containing exactly six complete, centered V9 Companion everyday emotion poses in an unlabelled 3 by 2 grid, with generous separation and equal empty margins. The six poses are Calm, Curious, Warm, Playful, Puzzled, and Alert. This is one character with the exact locked V9 eye silhouette, eye size, eye spacing, white primary highlight plus tiny white sparkle in each eye, centered nose anchor, black-on-white pixel-ink weight, and empty whitespace. Do not make the emotions a sequence of nearly identical faces: make their brow pair and mouth/nose language clearly and deliberately different at first glance. Calm has low even relaxed brows and a compact quiet mouth; Curious has one distinctly raised brow with a compact wondering mouth; Warm has softened brows and a visibly wider rounded smile with fuller raised cheeks; Playful has an asymmetric buoyant brow pair and a small side-grin unlike Warm, lively uneven cheeks, and one tiny integrated four-point shine; Puzzled has one steep high brow, one compressed inward brow, and an offset reverse-tilt thinking mouth; Alert has both brows high and inward, tight low cheeks, and a compact round surprise mouth without punctuation. Every pair must differ in at least two of brow pair, mouth/nose, cheek placement/weight, or the permitted Playful accent. This is source art for later component extraction, not UI, a card collection, an animation frame, or a runtime screen.",
+  "negative_prompt": [
+    "no labels, captions, borders, cards, device frame, UI, text, speech bubbles, panels, or grid lines",
+    "no changed eye type, pupil, eyelash, eyelid, wink, crying, human face, cat face, emoji, color, gray, antialiasing, texture, or face outline",
+    "no detached giant punctuation, question mark, exclamation mark, menu, recording, upgrade, charging, error, sleep, moon, progress, or status symbols",
+    "no legacy art, V10/V11/V17 imagery, V21 as a reference image, whole-face runtime playback, custom LUT, or code-drawn geometry"
+  ],
+  "planned_output": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/attempt-01-generated-emotion-separation.png",
+  "pre_generation_checks": [
+    "locked V9 source hash and sole-reference policy recorded",
+    "six named everyday poses and explicit source-extractable separation contract recorded",
+    "V21 preserved as accepted regression evidence rather than a prompt source",
+    "no special-function, sleep, charging, error, legacy, or rejected-source fallback authorized",
+    "candidate remains unbound and runtime inactive"
+  ],
+  "post_generation_required": [
+    "record generated image SHA-256 and prompt lineage",
+    "machine-check exact six-pose composition and V9 identity locks",
+    "extract only source masks with anchors, legal offsets, z-order, hashes, and pairwise group-separation evidence",
+    "prove source reassemblies without whole-pose runtime playback",
+    "pass source and component-export gates, then run canonical Chinese owner art review before any bridge change or binding"
+  ],
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden"
+}

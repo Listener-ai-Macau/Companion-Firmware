@@ -1,0 +1,102 @@
+{
+  "schema": "companion.v9_art_direction_contract.v1",
+  "status": "active",
+  "contract_id": "companion-v9-inner-face-art-direction-v1",
+  "product_requirement": "COMP-REQ-118",
+  "identity_mother_prompt": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generation-request.json",
+    "iteration_id": "pet-expression-v9-anti-sly-cute-2026-07-15",
+    "rule": "This prompt and the locked V9 output define character identity. Later prompts inherit its identity constraints and name only their delta."
+  },
+  "locked_visual_parent": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "dimensions_px": [1254, 1254],
+    "mutation": "forbidden",
+    "replacement": "forbidden"
+  },
+  "open_eye_identity_gate": {
+    "applies_to": "every open-eye pose",
+    "pair": {
+      "count": 2,
+      "alignment": "one horizontal baseline",
+      "shape": "matched upright solid black vertical ovals",
+      "body": "continuous filled black silhouette; no changed eye type across emotion or direction"
+    },
+    "interior_white": {
+      "allowed": ["one upper primary reflection", "one small static diamond sparkle"],
+      "rule": "Both white marks remain inside the black eye body. The sparkle is an identity anchor, not an emotion or direction channel.",
+      "scale": "The primary reflection stays compact in the upper half and may not read as a white cap, lower half, ring, or large empty cutout. The diamond stays materially smaller than the primary reflection.",
+      "eye_body_scale": "All open-eye pairs retain the locked V9 cell-normalized optical scale and generous surrounding whitespace; no enlarged kawaii-eye treatment."
+    },
+    "forbidden": [
+      "white sclera",
+      "white-outline or ring eye",
+      "hollow lower eye or lower white half-moon",
+      "thin contour eye or pupil",
+      "eye-body resize, rotation, warp or side-eye",
+      "downward half-lid, drooping, sad, romantic or deep-looking eye",
+      "eyelashes or any black eyelid arc touching/hugging the eye",
+      "second moving highlight"
+    ]
+  },
+  "expression_channels": {
+    "immutable_for_open_eyes": ["eye body", "small diamond sparkle identity anchor"],
+    "direction_channel": "the existing primary reflection may change registered in-eye position only after a candidate has passed component extraction; it must not change the eye body",
+    "emotion_channels": ["paired brows", "petite mouth", "cheek dots", "one detached semantic charm"],
+    "coordination_rule": "A named emotion needs at least brows plus mouth or cheeks in addition to any charm; a charm alone is not an emotion.",
+    "transition_rule": "Later previews must transform named source components through entry, hold and settle. A source contact-sheet cell is an anchor, never an animation frame."
+  },
+  "pose_program": {
+    "daily_attention": {
+      "states": ["left", "right", "up", "down"],
+      "meaning": "attention direction only, not four different emotions",
+      "required_readability": "visibly distinct primary-reflection placement plus coordinated brow/mouth/cheek response at thumbnail scale"
+    },
+    "emotion_or_scene_states": [
+      "curious_question",
+      "affectionate_delight",
+      "joyful_spark",
+      "alert_surprised",
+      "recording_focus",
+      "listening_focus",
+      "menu_thinking",
+      "sleep_rest_no_moon"
+    ],
+    "sleep_exception": {
+      "eye_type": "closed curved eyes only",
+      "forbidden_charms": ["moon", "crescent", "Z"],
+      "mouth": "tiny resting mouth"
+    },
+    "unavailable_states": ["charging", "error"],
+    "unavailable_state_policy": "fail_closed; no ordinary face borrowing or art export"
+  },
+  "prompt_protocol": {
+    "parent_reference": "Every generation supplies the locked V9 image as the sole render reference. Rejected candidates are evidence only and must never be supplied as visual reference.",
+    "delta_rule": "One candidate generation may change only one named scope: pose program, eye-readability refinement, mouth/brow detail, or detached charm vocabulary. It cannot silently alter identity anchors.",
+    "required_fields": [
+      "iteration_id",
+      "render_parent_iteration",
+      "reference paths and SHA256",
+      "named prompt delta",
+      "inherited identity gates",
+      "negative constraints",
+      "planned output path",
+      "post-generation gate"
+    ],
+    "prohibited": ["freeform identity rewrite", "rejected-candidate sampling", "full-face runtime animation claim", "runtime activation before approval"]
+  },
+  "lineage_status_flow": [
+    "prompt_versioned",
+    "pre_generation_lineage_pass",
+    "generated_pending_contract_review",
+    "contract_pass_or_reject",
+    "component_export_machine_pass",
+    "owner_review",
+    "accepted_or_rejected"
+  ],
+  "component_export_gate": {
+    "requires": ["PASS_ART_LINEAGE", "PASS_ART_DIRECTION_CONTRACT", "owner-approved generated candidate"],
+    "forbids": ["V1 or rejected candidate component export", "CEMP/PBM full-face animation", "runtime activation", "charging/error fallback"]
+  }
+}

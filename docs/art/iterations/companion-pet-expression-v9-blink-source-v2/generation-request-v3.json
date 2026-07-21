@@ -1,0 +1,33 @@
+{
+  "schema": "companion.art_generation_request.v1",
+  "status": "RECORDED_BEFORE_IMAGE_GENERATION",
+  "iteration": "companion-pet-expression-v9-blink-source-v2",
+  "revision": 3,
+  "created_at": "2026-07-21",
+  "authority": ["COMP-REQ-267", "COMP-REQ-268"],
+  "purpose": "Refine rejected attempt-02 into a geometrically explicit three-stage V9 blink source with half-close, closed and half-open heights that are visibly ordered at native 200x200.",
+  "prior_attempts": [
+    {"path": "docs/art/iterations/companion-pet-expression-v9-blink-source-v2/candidate/attempt-01-blink-transition-components.png", "sha256": "1D15DF8B54DEE465D45FFF9C46B02458428B4B31DDC2AB21CB9037E477BB6E33", "disposition": "REJECTED_HALF_CLOSE_READS_AS_BLACK_CAPS"},
+    {"path": "docs/art/iterations/companion-pet-expression-v9-blink-source-v2/candidate/attempt-02-blink-transition-components.png", "sha256": "EA2B73C966AFE42D3E6236E3803F6B01B5985B4F0D63B82F63F8FB2A9C7CDE50", "disposition": "REJECTED_HALF_OPEN_READS_AS_FULL_OPEN_AND_STAGE_ORDER_IS_NOT_NATURAL"}
+  ],
+  "locked_v9_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "use": "sole image reference for the fixed black vertical oval V9 eye identity, friendly ink weight and spacing"
+  },
+  "reference_policy": "Use only the locked V9 source as image reference; rejected attempts are not image references.",
+  "source_sheet": {
+    "grid": {"columns": 6, "rows": 1, "ordered_cells": ["left_half_close", "right_half_close", "left_closed", "right_closed", "left_half_open", "right_half_open"]},
+    "cell_background": "plain pure white",
+    "source_only": true,
+    "allowed_exports": ["left_half_close", "right_half_close", "left_closed", "right_closed", "left_half_open", "right_half_open"]
+  },
+  "geometry_contract": {
+    "half_close": "rounded black vertical capsule approximately 70 source pixels wide by 30-38 high; curved top and bottom; clearly compressed, not a full oval and not a flat cap",
+    "closed": "short rounded black curved stroke approximately 60-70 source pixels wide by 10-16 high",
+    "half_open": "rounded black vertical capsule approximately 70 source pixels wide by 45-55 high; visibly taller than half_close but visibly shorter than the V9 open-eye reference; curved top and bottom",
+    "pairing": "left/right identical mirrored geometry, same baseline and scale"
+  },
+  "blink_contract": {"stages": "open -> half_close -> closed -> half_open -> open", "native_target": "each mask fits the V9 eye footprint at 200x200", "runtime_resource_activated": false},
+  "forbidden": ["whole_face", "full_open_half_open", "flat_cap", "eyelid_only", "new_eye_identity", "pupil", "highlight", "sparkle", "brow", "mouth", "nose", "cheek", "lash", "wink", "sleep_face", "text", "label", "grid", "border", "device_frame", "gray", "color", "gradient", "legacy_art", "custom_LUT", "code_drawn_geometry"]
+}

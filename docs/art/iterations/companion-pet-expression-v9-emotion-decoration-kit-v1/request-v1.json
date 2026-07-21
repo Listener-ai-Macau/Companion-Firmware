@@ -1,0 +1,66 @@
+{
+  "schema": "companion.v9.emotion_decoration_generation_request.v1",
+  "status": "REJECTED_INTERNAL_NATIVE_200_PREVIEW_AUDIT_ONLY",
+  "iteration": "V35",
+  "request_revision": 1,
+  "created_at": "2026-07-20",
+  "authority": "COMP-REQ-190",
+  "purpose": "Generate three compact V9-only art-derived emotion-decoration sources. They compose over the unchanged daily Rig face and never generate or replace a face.",
+  "locked_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "allowed_reference_inputs": ["locked_v9_reference_only"],
+  "forbidden_reference_inputs": ["all_V34_or_V33_generated_candidates", "V32_or_earlier_rejected_descendants", "legacy_art", "whole_face_runtime_cards", "code_drawn_features"],
+  "component_sources": {
+    "curious_question": {
+      "prompt": "prompts/v1-curious-question.md",
+      "frame_count": 3,
+      "target_anchor": "upper_right_of_daily_face",
+      "target_safe_box": [132, 24, 164, 62],
+      "emotion_families": ["curious", "puzzled"],
+      "candidate": "candidate-curious-question-v1.png",
+      "sha256": "72DADC517B7E22F5890A26EFC2177E70FC5CCB1A10FD77B9CC19956DBCA75CA7"
+    },
+    "alert_exclamation": {
+      "prompt": "prompts/v1-alert-exclamation.md",
+      "frame_count": 3,
+      "target_anchor": "upper_center_of_daily_face",
+      "target_safe_box": [90, 22, 110, 60],
+      "emotion_families": ["alert"],
+      "candidate": "candidate-alert-exclamation-v1.png",
+      "sha256": "25A0D4D78C9A55DF303B5CBE2A9CF03E97A0612B3F42DE14758057F0D1F8C409"
+    },
+    "sleepy_dream_cloud": {
+      "prompt": "prompts/v1-sleepy-dream-cloud.md",
+      "frame_count": 3,
+      "target_anchor": "upper_left_of_daily_face",
+      "target_safe_box": [25, 24, 72, 60],
+      "emotion_families": ["sleepy"],
+      "candidate": "candidate-sleepy-dream-cloud-v1.png",
+      "sha256": "A5D5537D0AC40B39B85248245D692B21AB8105C0E8BB810AA2BCD701846F0F1A"
+    }
+  },
+  "composition_contract": [
+    "Every native 200x200 preview uses a locked V9 daily Rig base and keeps eye, brow, nose and mouth source pixels above the decoration layer.",
+    "Same-state presence is deterministic: highlight lead, brow answer, mouth/cheek settle, then an optional small decoration beat.",
+    "Cross-state bridges use highlight lead, brow answer, lower-face reply and only then the target decoration; no full-face swap or crossfade.",
+    "A decoration is state context, never the primary emotional signal or a text/UI label."
+  ],
+  "source_gate": [
+    "Each source sheet has exactly three separated poses with no face, body, text, label, border, UI panel, grayscale, color or texture.",
+    "At native 200x200, every overlay remains in its declared safe box and does not obscure primary facial masks.",
+    "Each three-beat motion is readable with labels hidden and has a distinct semantic grammar: question is curious/puzzled, exclamation is alert, cloud is sleepy/dreaming.",
+    "A failed source becomes audit-only and cannot be used as visual input, component export, CRIG binding or firmware asset."
+  ],
+  "internal_triage": {
+    "result": "REJECTED",
+    "reason": "At native 200x200 the curious question competed with the inherited daily sparkle, the alert stem degraded into an unbalanced thin mark, and the dream cloud competed with the inherited sleep moon-and-Z charm. The source shapes are audit-only and must not be used as visual reference, component export, CRIG binding or firmware art.",
+    "replacement": "request-v2.json"
+  },
+  "runtime_policy": {
+    "runtime_resource_activated": false,
+    "active_candidate_binding": "forbidden",
+    "unavailable_decoration_or_state": "fail_closed"
+  }
+}

@@ -1,0 +1,9 @@
+# V9 Blink Transition Component Source v2
+
+Use the attached locked V9 Companion expression sheet as the only visual reference. Generate one pure-white horizontal six-cell source sheet for component extraction, not a complete face and not a presentation animation. The six equal cells, in order, are: left half-close, right half-close, left closed, right closed, left half-open, right half-open. Do not draw cell borders, labels or a visible grid; leave generous pure-white space around each isolated component so the six cells can be cropped deterministically.
+
+Preserve the exact V9 eye identity: compact solid-black upright oval eye grammar, friendly rounded black line weight, matched left/right baseline and spacing, and no new emotion. These are temporary blink components that will be composed over the registered V9 face during `open -> half-close -> closed -> half-open -> open`. The half-close and half-open components should read as the same V9 eyes gently closing and reopening, not as sleepy, sad, romantic, winking, side-looking or redesigned eyes. The closed components are short gentle rounded black strokes, matched left and right. Do not include the face, eye highlights, tiny sparkles, brows, mouth, nose, cheeks or ornaments.
+
+Use only solid black and pure white. No grey, antialiasing, gradient, shading, texture, text, labels, borders, device frame or color. Every cell must contain exactly one isolated source component on a plain white background. Keep all components compact enough to fit the original V9 eye footprint when exported to native 200x200.
+
+Negative constraints: no full face, no eye sheet with visible grid, no open-eye replacement identity, no pupil, no highlight, no sparkle, no eyelashes, no asymmetric wink, no side-eye, no sleep face, no crescent, no cloud, no Z marks, no legacy art, no custom LUT, no code-drawn geometry.

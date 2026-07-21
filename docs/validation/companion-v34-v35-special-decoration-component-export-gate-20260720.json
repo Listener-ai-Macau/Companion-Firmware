@@ -1,0 +1,427 @@
+{
+  "schema": "companion.v34_v35_special_decoration_component_export_gate.v1",
+  "status": "PASS_COMPONENT_EXPORT_RUNTIME_INACTIVE",
+  "authority": [
+    "COMP-REQ-187",
+    "COMP-REQ-189",
+    "COMP-REQ-190",
+    "COMP-REQ-198",
+    "COMP-REQ-229",
+    "COMP-REQ-230"
+  ],
+  "layout": "docs/art/iterations/companion-pet-expression-v9-special-decoration-rig-v1/candidate/special-decoration-component-layout.json",
+  "layout_sha256": "2BA1CACC8B050B39E4DF843DFF37163E2041FA02B990067321E176B7E7B10A22",
+  "component_lineage": [
+    {
+      "component_id": 500,
+      "name": "v34_recording_mic_0",
+      "source_sha256": "203B63C5FF7963859B7296725260A17C101C19BAE843C36DEB859843C6770B4F",
+      "mask_sha256": "1DDC9D2FA789415A323A1EF6DDFC1F3511E267A8C6766B4CAB84CA80C7872F68"
+    },
+    {
+      "component_id": 501,
+      "name": "v34_recording_mic_1",
+      "source_sha256": "203B63C5FF7963859B7296725260A17C101C19BAE843C36DEB859843C6770B4F",
+      "mask_sha256": "51B2A02A869B71326418F132AEF7A3DCB1ADBA4DA3E9A6EE9F5A7251FB51FF0B"
+    },
+    {
+      "component_id": 502,
+      "name": "v34_recording_inward_pulse_1",
+      "source_sha256": "203B63C5FF7963859B7296725260A17C101C19BAE843C36DEB859843C6770B4F",
+      "mask_sha256": "3025BF19BB9C1A1E88D83271802DDAAAF451B69404A05C2F85DE65116E81434C"
+    },
+    {
+      "component_id": 503,
+      "name": "v34_recording_mic_2",
+      "source_sha256": "203B63C5FF7963859B7296725260A17C101C19BAE843C36DEB859843C6770B4F",
+      "mask_sha256": "AFFB5C7567DFD101077B68C99A7ABBAEC4859218E2F23F41374711FD15F5246E"
+    },
+    {
+      "component_id": 504,
+      "name": "v34_recording_inward_pulse_2_0",
+      "source_sha256": "203B63C5FF7963859B7296725260A17C101C19BAE843C36DEB859843C6770B4F",
+      "mask_sha256": "3025BF19BB9C1A1E88D83271802DDAAAF451B69404A05C2F85DE65116E81434C"
+    },
+    {
+      "component_id": 505,
+      "name": "v34_recording_inward_pulse_2_1",
+      "source_sha256": "203B63C5FF7963859B7296725260A17C101C19BAE843C36DEB859843C6770B4F",
+      "mask_sha256": "4D7F044054FBDDFDEBC281306A78E99415E5750057420F6E8217F14A69E165B7"
+    },
+    {
+      "component_id": 506,
+      "name": "v34_bottom_connector_0",
+      "source_sha256": "791B9CF5393AD3EBE46E75BCB44D305E281BB9DFB6DAFDA49F1061FA020CBF44",
+      "mask_sha256": "FF7AF6B89589ACAB1B7F861DDCD04A12ADD75CDC044447E4C1DDC47EF3FB92B0"
+    },
+    {
+      "component_id": 507,
+      "name": "v34_bottom_connector_1",
+      "source_sha256": "791B9CF5393AD3EBE46E75BCB44D305E281BB9DFB6DAFDA49F1061FA020CBF44",
+      "mask_sha256": "0DCB284FE203C571E594ED21930E9513DD8987CBD0F3C9BFE455759E05D6B7A8"
+    },
+    {
+      "component_id": 508,
+      "name": "v34_charging_pulse_1",
+      "source_sha256": "791B9CF5393AD3EBE46E75BCB44D305E281BB9DFB6DAFDA49F1061FA020CBF44",
+      "mask_sha256": "FAF366E9157F1370B5A5834A1E85BAC26A0FF8C3C82234C569408A5225D22043"
+    },
+    {
+      "component_id": 509,
+      "name": "v34_bottom_connector_2",
+      "source_sha256": "791B9CF5393AD3EBE46E75BCB44D305E281BB9DFB6DAFDA49F1061FA020CBF44",
+      "mask_sha256": "E7E56F569C56135DD1689EE6A4238E8ACE6062189B733B41A0A075564668411E"
+    },
+    {
+      "component_id": 510,
+      "name": "v34_charging_pulse_2_0",
+      "source_sha256": "791B9CF5393AD3EBE46E75BCB44D305E281BB9DFB6DAFDA49F1061FA020CBF44",
+      "mask_sha256": "25F5E06BA9894B3AB6B1B4F438B94B5D13E31E842B2E54B4DB14372B0C3397D9"
+    },
+    {
+      "component_id": 511,
+      "name": "v34_charging_pulse_2_1",
+      "source_sha256": "791B9CF5393AD3EBE46E75BCB44D305E281BB9DFB6DAFDA49F1061FA020CBF44",
+      "mask_sha256": "D892149E4CBB8004088173F6748767EC919F4502D7A2ED454299B94A4D083A96"
+    },
+    {
+      "component_id": 512,
+      "name": "v35_curious_question_0",
+      "source_sha256": "E56DD1E4C8065863E7238C7E1C59A8DA2FA3F8FF914B692601CE2C837BBE591D",
+      "mask_sha256": "184169CA130B35FCD6B95BFA040CB99564DCEE020526CF5C300A6DA7A633FCFB"
+    },
+    {
+      "component_id": 513,
+      "name": "v35_curious_question_1",
+      "source_sha256": "E56DD1E4C8065863E7238C7E1C59A8DA2FA3F8FF914B692601CE2C837BBE591D",
+      "mask_sha256": "2373A756916541E76FA48FD836640E9C68145E30F8ABA57D7329ED3B0DF50131"
+    },
+    {
+      "component_id": 514,
+      "name": "v35_curious_question_2",
+      "source_sha256": "E56DD1E4C8065863E7238C7E1C59A8DA2FA3F8FF914B692601CE2C837BBE591D",
+      "mask_sha256": "C62E904C84BDE8FCEA17C193F1C00F4006E895490254D323C1478BEC353BB28B"
+    },
+    {
+      "component_id": 515,
+      "name": "v35_curious_question_presence_0",
+      "source_sha256": "E56DD1E4C8065863E7238C7E1C59A8DA2FA3F8FF914B692601CE2C837BBE591D",
+      "mask_sha256": "C62E904C84BDE8FCEA17C193F1C00F4006E895490254D323C1478BEC353BB28B"
+    },
+    {
+      "component_id": 516,
+      "name": "v35_curious_question_presence_1",
+      "source_sha256": "E56DD1E4C8065863E7238C7E1C59A8DA2FA3F8FF914B692601CE2C837BBE591D",
+      "mask_sha256": "FEE9C68A2332D2F2718BAC0A56C5CFF1BFE6B6D1DB8E90017CE761363B80ED53"
+    },
+    {
+      "component_id": 517,
+      "name": "v35_curious_question_presence_2",
+      "source_sha256": "E56DD1E4C8065863E7238C7E1C59A8DA2FA3F8FF914B692601CE2C837BBE591D",
+      "mask_sha256": "2373A756916541E76FA48FD836640E9C68145E30F8ABA57D7329ED3B0DF50131"
+    },
+    {
+      "component_id": 518,
+      "name": "v35_curious_question_presence_3",
+      "source_sha256": "E56DD1E4C8065863E7238C7E1C59A8DA2FA3F8FF914B692601CE2C837BBE591D",
+      "mask_sha256": "2373A756916541E76FA48FD836640E9C68145E30F8ABA57D7329ED3B0DF50131"
+    },
+    {
+      "component_id": 519,
+      "name": "v35_curious_question_presence_4",
+      "source_sha256": "E56DD1E4C8065863E7238C7E1C59A8DA2FA3F8FF914B692601CE2C837BBE591D",
+      "mask_sha256": "FEE9C68A2332D2F2718BAC0A56C5CFF1BFE6B6D1DB8E90017CE761363B80ED53"
+    },
+    {
+      "component_id": 520,
+      "name": "v35_curious_question_presence_5",
+      "source_sha256": "E56DD1E4C8065863E7238C7E1C59A8DA2FA3F8FF914B692601CE2C837BBE591D",
+      "mask_sha256": "C62E904C84BDE8FCEA17C193F1C00F4006E895490254D323C1478BEC353BB28B"
+    },
+    {
+      "component_id": 521,
+      "name": "v35_alert_exclamation_0",
+      "source_sha256": "55424E1E369865208B3B7A3E5DB7FE28F153FD2285DF382DF405AF2B5ED0AFD3",
+      "mask_sha256": "B7CB6D97177D9545A9CE794CD0AB4EF5C4D72656A6BD7138A3A8ADB335D3B176"
+    },
+    {
+      "component_id": 522,
+      "name": "v35_alert_exclamation_1",
+      "source_sha256": "55424E1E369865208B3B7A3E5DB7FE28F153FD2285DF382DF405AF2B5ED0AFD3",
+      "mask_sha256": "FCDD5742980CA3DDC68CDCC2B1D19392E7FFE37B970933C1CA67A307412C61B2"
+    },
+    {
+      "component_id": 523,
+      "name": "v35_alert_exclamation_2",
+      "source_sha256": "55424E1E369865208B3B7A3E5DB7FE28F153FD2285DF382DF405AF2B5ED0AFD3",
+      "mask_sha256": "1FC88DC9CF868DE6CA7DC9F460EED425C9BA432FE92A0FDE0691CF2F2F5A31C8"
+    },
+    {
+      "component_id": 524,
+      "name": "v35_alert_exclamation_presence_0",
+      "source_sha256": "55424E1E369865208B3B7A3E5DB7FE28F153FD2285DF382DF405AF2B5ED0AFD3",
+      "mask_sha256": "1FC88DC9CF868DE6CA7DC9F460EED425C9BA432FE92A0FDE0691CF2F2F5A31C8"
+    },
+    {
+      "component_id": 525,
+      "name": "v35_alert_exclamation_presence_1",
+      "source_sha256": "55424E1E369865208B3B7A3E5DB7FE28F153FD2285DF382DF405AF2B5ED0AFD3",
+      "mask_sha256": "084258ED36E193211692C3FE80444E082E3F853D08F2C018AC63B731B78DB2AC"
+    },
+    {
+      "component_id": 526,
+      "name": "v35_alert_exclamation_presence_2",
+      "source_sha256": "55424E1E369865208B3B7A3E5DB7FE28F153FD2285DF382DF405AF2B5ED0AFD3",
+      "mask_sha256": "FCDD5742980CA3DDC68CDCC2B1D19392E7FFE37B970933C1CA67A307412C61B2"
+    },
+    {
+      "component_id": 527,
+      "name": "v35_alert_exclamation_presence_3",
+      "source_sha256": "55424E1E369865208B3B7A3E5DB7FE28F153FD2285DF382DF405AF2B5ED0AFD3",
+      "mask_sha256": "FCDD5742980CA3DDC68CDCC2B1D19392E7FFE37B970933C1CA67A307412C61B2"
+    },
+    {
+      "component_id": 528,
+      "name": "v35_alert_exclamation_presence_4",
+      "source_sha256": "55424E1E369865208B3B7A3E5DB7FE28F153FD2285DF382DF405AF2B5ED0AFD3",
+      "mask_sha256": "084258ED36E193211692C3FE80444E082E3F853D08F2C018AC63B731B78DB2AC"
+    },
+    {
+      "component_id": 529,
+      "name": "v35_alert_exclamation_presence_5",
+      "source_sha256": "55424E1E369865208B3B7A3E5DB7FE28F153FD2285DF382DF405AF2B5ED0AFD3",
+      "mask_sha256": "1FC88DC9CF868DE6CA7DC9F460EED425C9BA432FE92A0FDE0691CF2F2F5A31C8"
+    },
+    {
+      "component_id": 530,
+      "name": "v35_sleepy_dream_cloud_0",
+      "source_sha256": "39AE69A509DEA8EEA4E9B29962CC549CB9849D33D1F2C73732989A7BBFDF6CB5",
+      "mask_sha256": "BA14AE99E579C138C3C2DBDB42035454854FBFAECE218A35A6D3D882A0A08E99"
+    },
+    {
+      "component_id": 531,
+      "name": "v35_sleepy_dream_cloud_1",
+      "source_sha256": "39AE69A509DEA8EEA4E9B29962CC549CB9849D33D1F2C73732989A7BBFDF6CB5",
+      "mask_sha256": "1B093594A2BD4B76BA844CFDDC98C2E79E94AF94D6D3CA6AD6B711B8DA7EEA09"
+    },
+    {
+      "component_id": 532,
+      "name": "v35_sleepy_dream_cloud_2",
+      "source_sha256": "39AE69A509DEA8EEA4E9B29962CC549CB9849D33D1F2C73732989A7BBFDF6CB5",
+      "mask_sha256": "4D2CE579A4CA5A2A2A2A9F0B600D4A0F7B44A734DE52D9052D955D9E6830745C"
+    },
+    {
+      "component_id": 533,
+      "name": "v35_sleepy_dream_cloud_presence_0",
+      "source_sha256": "39AE69A509DEA8EEA4E9B29962CC549CB9849D33D1F2C73732989A7BBFDF6CB5",
+      "mask_sha256": "4D2CE579A4CA5A2A2A2A9F0B600D4A0F7B44A734DE52D9052D955D9E6830745C"
+    },
+    {
+      "component_id": 534,
+      "name": "v35_sleepy_dream_cloud_presence_1",
+      "source_sha256": "39AE69A509DEA8EEA4E9B29962CC549CB9849D33D1F2C73732989A7BBFDF6CB5",
+      "mask_sha256": "D7ACBD196760C0A47013E5837F1D88D2805B81D90AF8FFA1018406F566C61656"
+    },
+    {
+      "component_id": 535,
+      "name": "v35_sleepy_dream_cloud_presence_2",
+      "source_sha256": "39AE69A509DEA8EEA4E9B29962CC549CB9849D33D1F2C73732989A7BBFDF6CB5",
+      "mask_sha256": "1B093594A2BD4B76BA844CFDDC98C2E79E94AF94D6D3CA6AD6B711B8DA7EEA09"
+    },
+    {
+      "component_id": 536,
+      "name": "v35_sleepy_dream_cloud_presence_3",
+      "source_sha256": "39AE69A509DEA8EEA4E9B29962CC549CB9849D33D1F2C73732989A7BBFDF6CB5",
+      "mask_sha256": "1B093594A2BD4B76BA844CFDDC98C2E79E94AF94D6D3CA6AD6B711B8DA7EEA09"
+    },
+    {
+      "component_id": 537,
+      "name": "v35_sleepy_dream_cloud_presence_4",
+      "source_sha256": "39AE69A509DEA8EEA4E9B29962CC549CB9849D33D1F2C73732989A7BBFDF6CB5",
+      "mask_sha256": "D7ACBD196760C0A47013E5837F1D88D2805B81D90AF8FFA1018406F566C61656"
+    },
+    {
+      "component_id": 538,
+      "name": "v35_sleepy_dream_cloud_presence_5",
+      "source_sha256": "39AE69A509DEA8EEA4E9B29962CC549CB9849D33D1F2C73732989A7BBFDF6CB5",
+      "mask_sha256": "4D2CE579A4CA5A2A2A2A9F0B600D4A0F7B44A734DE52D9052D955D9E6830745C"
+    }
+  ],
+  "crig": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-special-decoration-rig-v1/candidate/companion-v9-special-decoration-rig-candidate-200x200.crig",
+    "sha256": "52D67D2C9FF7574799C8D092047EB60463D0631D80C8FE45A252527EE4A07F44",
+    "component_count": 39,
+    "payload_crc32": "065E2D92",
+    "index_crc32": "ECC11D5D"
+  },
+  "v34_native_preview_overlay_parity": {
+    "recording_input": [
+      {
+        "frame": 0,
+        "overlay_pixels": 74
+      },
+      {
+        "frame": 1,
+        "overlay_pixels": 102
+      },
+      {
+        "frame": 2,
+        "overlay_pixels": 138
+      }
+    ],
+    "bottom_connector_charging": [
+      {
+        "frame": 0,
+        "overlay_pixels": 311
+      },
+      {
+        "frame": 1,
+        "overlay_pixels": 369
+      },
+      {
+        "frame": 2,
+        "overlay_pixels": 222
+      }
+    ]
+  },
+  "v35_native_preview_overlay_parity": {
+    "curious_question": {
+      "entry": [
+        {
+          "frame": 0,
+          "overlay_pixels": 105
+        },
+        {
+          "frame": 1,
+          "overlay_pixels": 151
+        },
+        {
+          "frame": 2,
+          "overlay_pixels": 204
+        }
+      ],
+      "presence": [
+        {
+          "frame": 0,
+          "overlay_pixels": 204
+        },
+        {
+          "frame": 1,
+          "overlay_pixels": 188
+        },
+        {
+          "frame": 2,
+          "overlay_pixels": 151
+        },
+        {
+          "frame": 3,
+          "overlay_pixels": 151
+        },
+        {
+          "frame": 4,
+          "overlay_pixels": 188
+        },
+        {
+          "frame": 5,
+          "overlay_pixels": 204
+        }
+      ]
+    },
+    "alert_exclamation": {
+      "entry": [
+        {
+          "frame": 0,
+          "overlay_pixels": 83
+        },
+        {
+          "frame": 1,
+          "overlay_pixels": 144
+        },
+        {
+          "frame": 2,
+          "overlay_pixels": 284
+        }
+      ],
+      "presence": [
+        {
+          "frame": 0,
+          "overlay_pixels": 284
+        },
+        {
+          "frame": 1,
+          "overlay_pixels": 205
+        },
+        {
+          "frame": 2,
+          "overlay_pixels": 144
+        },
+        {
+          "frame": 3,
+          "overlay_pixels": 144
+        },
+        {
+          "frame": 4,
+          "overlay_pixels": 205
+        },
+        {
+          "frame": 5,
+          "overlay_pixels": 284
+        }
+      ]
+    },
+    "sleepy_dream_cloud": {
+      "entry": [
+        {
+          "frame": 0,
+          "overlay_pixels": 81
+        },
+        {
+          "frame": 1,
+          "overlay_pixels": 104
+        },
+        {
+          "frame": 2,
+          "overlay_pixels": 152
+        }
+      ],
+      "presence": [
+        {
+          "frame": 0,
+          "overlay_pixels": 152
+        },
+        {
+          "frame": 1,
+          "overlay_pixels": 147
+        },
+        {
+          "frame": 2,
+          "overlay_pixels": 104
+        },
+        {
+          "frame": 3,
+          "overlay_pixels": 104
+        },
+        {
+          "frame": 4,
+          "overlay_pixels": 147
+        },
+        {
+          "frame": 5,
+          "overlay_pixels": 152
+        }
+      ]
+    }
+  },
+  "runtime": {
+    "resource_activated": false,
+    "active_candidate_binding": "forbidden",
+    "special_event_binding": "forbidden_until_later_browser_target_component_plan_gate"
+  },
+  "non_claims": [
+    "no_special_event_runtime_binding",
+    "no_firmware_flash",
+    "no_panel_or_driver_change",
+    "no_owner_art_acceptance",
+    "no_full_face_card"
+  ]
+}

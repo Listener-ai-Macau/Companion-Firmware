@@ -15,6 +15,13 @@ typedef struct {
     uint32_t read_count;
 } file_nor_t;
 
+typedef struct {
+    const char *name;
+    uint32_t revision;
+    uint16_t clip_count;
+    uint16_t frame_count;
+} expected_pack_t;
+
 static int require_true(bool condition, const char *message)
 {
     if (!condition) {
@@ -84,7 +91,8 @@ static bool frame_has_black_and_white(const uint8_t *frame, size_t size)
 }
 
 static int exercise_target(file_nor_t *nor,
-                           companion_epaper_panel_stm32wba_target_t target)
+                           companion_epaper_panel_stm32wba_target_t target,
+                           const expected_pack_t *expected)
 {
     static const comp_screen_asset_profile_t profile = {
         .width = 200u,
@@ -110,7 +118,8 @@ static int exercise_target(file_nor_t *nor,
         .read = file_nor_read,
         .context = nor,
     };
-    if (require_true(companion_screen_assets_stm32wba_bind(&adapter, &store, &config),
+    if (expected == NULL ||
+        require_true(companion_screen_assets_stm32wba_bind(&adapter, &store, &config),
                      "WBA assets adapter must bind an external NOR callback") ||
         require_true(companion_screen_assets_stm32wba_ready(&adapter),
                      "WBA assets adapter must be ready after binding") ||
@@ -134,16 +143,17 @@ static int exercise_target(file_nor_t *nor,
                          sizeof(strings),
                          scratch,
                          sizeof(scratch)) == COMP_EMOTE_ASSET_MOUNT_OK,
-                     "v9 candidate CEMP must mount through the WBA callback") ||
+                     "candidate CEMP must mount through the WBA callback") ||
         require_true(strcmp(mount.pack.name,
-                             "companion-v9-expression-candidate-200x200") == 0 &&
-                         mount.pack.revision == 90u && mount.catalog.clip_count == 13u &&
-                         mount.catalog.frame_count == 39u,
-                     "mounted CEMP must retain the locked v9 identity") ||
+                             expected->name) == 0 &&
+                         mount.pack.revision == expected->revision &&
+                         mount.catalog.clip_count == expected->clip_count &&
+                         mount.catalog.frame_count == expected->frame_count,
+                     "mounted CEMP must retain the expected candidate identity") ||
         require_true(comp_emote_asset_pack_verify_payload(&mount.pack,
                                                            scratch,
                                                            sizeof(scratch)),
-                     "mounted v9 candidate payload CRC must verify")) {
+                     "mounted candidate payload CRC must verify")) {
         return 1;
     }
 
@@ -153,7 +163,7 @@ static int exercise_target(file_nor_t *nor,
                                                            &mount.catalog.frames[index],
                                                            output,
                                                            sizeof(output)),
-                         "every v9 CEMP frame must read through the WBA callback") ||
+                         "every candidate CEMP frame must read through the WBA callback") ||
             require_true(frame_has_black_and_white(output, sizeof(output)),
                          "decoded v9 frame must keep visible black and white pixels")) {
             return 1;
@@ -166,19 +176,34 @@ static int exercise_target(file_nor_t *nor,
 int main(int argc, char **argv)
 {
     file_nor_t nor = {0};
+    expected_pack_t expected;
     int result;
 
-    if (argc != 2 || !load_file(argv[1], &nor)) {
-        fprintf(stderr, "FAIL: expected one readable v9 candidate CEMP path\n");
+    if (argc != 6 || !load_file(argv[1], &nor)) {
+        fprintf(stderr, "FAIL: expected CEMP path, name, revision, clip count and frame count\n");
         return 1;
     }
-    result = exercise_target(&nor, COMPANION_EPAPER_PANEL_STM32WBA_TARGET_WBA55);
+    expected = (expected_pack_t){
+        .name = argv[2],
+        .revision = (uint32_t)strtoul(argv[3], NULL, 10),
+        .clip_count = (uint16_t)strtoul(argv[4], NULL, 10),
+        .frame_count = (uint16_t)strtoul(argv[5], NULL, 10),
+    };
+    if (expected.name[0] == '\0' || expected.revision == 0u ||
+        expected.clip_count == 0u || expected.frame_count == 0u) {
+        fprintf(stderr, "FAIL: candidate identity arguments must be non-zero\n");
+        free(nor.data);
+        return 1;
+    }
+    result = exercise_target(&nor, COMPANION_EPAPER_PANEL_STM32WBA_TARGET_WBA55,
+                             &expected);
     if (result == 0) {
-        result = exercise_target(&nor, COMPANION_EPAPER_PANEL_STM32WBA_TARGET_WBA65);
+        result = exercise_target(&nor, COMPANION_EPAPER_PANEL_STM32WBA_TARGET_WBA65,
+                                 &expected);
     }
     free(nor.data);
     if (result == 0) {
-        printf("PASS: WBA external-NOR callback mounted v9 candidate CEMP for WBA55 and WBA65 without runtime activation.\n");
+        printf("PASS: WBA external-NOR callback mounted candidate CEMP for WBA55 and WBA65 without runtime activation.\n");
     }
     return result;
 }

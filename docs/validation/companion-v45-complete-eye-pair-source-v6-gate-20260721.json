@@ -1,0 +1,145 @@
+{
+  "schema": "companion.v45_complete_eye_pair_source_v6_gate.v1",
+  "status": "PASS_V45_COMPLETE_EYE_CLOSURE_PAIR_SOURCE_RUNTIME_INACTIVE",
+  "authority": [
+    "COMP-REQ-093",
+    "COMP-REQ-267",
+    "COMP-REQ-269"
+  ],
+  "locked_v9_source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "generated_source": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-blink-source-v2/candidate/attempt-05-complete-eye-width-preserving.png",
+    "sha256": "07EADF4D5273CAD598631BB8A3D64231101FAA805D3F019DCEEACD54BBBCE007",
+    "dimensions": [
+      1983,
+      793
+    ],
+    "request": "docs/art/iterations/companion-pet-expression-v9-blink-source-v2/generation-request-v6.json",
+    "stages": [
+      {
+        "name": "open",
+        "left": {
+          "tight_size": [
+            82,
+            115
+          ],
+          "ink_pixels": 6281,
+          "interior_white_pixels": 1276
+        },
+        "right": {
+          "tight_size": [
+            83,
+            115
+          ],
+          "ink_pixels": 6312,
+          "interior_white_pixels": 1270
+        },
+        "width_delta": 1,
+        "relative_ink_delta": 0.00491128010139417,
+        "direct_pair_pixel_difference": 335
+      },
+      {
+        "name": "closing",
+        "left": {
+          "tight_size": [
+            102,
+            77
+          ],
+          "ink_pixels": 5069,
+          "interior_white_pixels": 1140
+        },
+        "right": {
+          "tight_size": [
+            102,
+            77
+          ],
+          "ink_pixels": 5047,
+          "interior_white_pixels": 1136
+        },
+        "width_delta": 0,
+        "relative_ink_delta": 0.004340106529887552,
+        "direct_pair_pixel_difference": 80
+      },
+      {
+        "name": "closed",
+        "left": {
+          "tight_size": [
+            84,
+            28
+          ],
+          "ink_pixels": 1372,
+          "interior_white_pixels": 0
+        },
+        "right": {
+          "tight_size": [
+            84,
+            28
+          ],
+          "ink_pixels": 1385,
+          "interior_white_pixels": 0
+        },
+        "width_delta": 0,
+        "relative_ink_delta": 0.009386281588447653,
+        "direct_pair_pixel_difference": 15
+      },
+      {
+        "name": "opening",
+        "left": {
+          "tight_size": [
+            102,
+            77
+          ],
+          "ink_pixels": 5048,
+          "interior_white_pixels": 1160
+        },
+        "right": {
+          "tight_size": [
+            102,
+            77
+          ],
+          "ink_pixels": 5059,
+          "interior_white_pixels": 1155
+        },
+        "width_delta": 0,
+        "relative_ink_delta": 0.002174342755485274,
+        "direct_pair_pixel_difference": 25
+      },
+      {
+        "name": "open_return",
+        "left": {
+          "tight_size": [
+            83,
+            115
+          ],
+          "ink_pixels": 6244,
+          "interior_white_pixels": 1283
+        },
+        "right": {
+          "tight_size": [
+            82,
+            115
+          ],
+          "ink_pixels": 6249,
+          "interior_white_pixels": 1276
+        },
+        "width_delta": 1,
+        "relative_ink_delta": 0.0008001280204832773,
+        "direct_pair_pixel_difference": 335
+      }
+    ]
+  },
+  "stage_height_order": {
+    "open": 115,
+    "closing": 77,
+    "closed": 28,
+    "opening": 77,
+    "open_return": 115
+  },
+  "complete_eye_contract": "eye body + white primary reflection + tiny white sparkle for open/closing/opening; closed stroke for closed",
+  "runtime_resource_activated": false,
+  "non_claims": [
+    "no_whole_face_art",
+    "no_lower_driver_change",
+    "no_human_acceptance"
+  ]
+}

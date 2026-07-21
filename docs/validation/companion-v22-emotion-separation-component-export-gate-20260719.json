@@ -1,0 +1,194 @@
+{
+  "schema": "companion.v22_emotion_separation_component_export_gate.v1",
+  "status": "PASS_V22_EMOTION_SEPARATION_COMPONENT_EXPORT_GATE",
+  "source_gate": "docs/validation/companion-v22-emotion-separation-source-gate-20260719.json",
+  "layout": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/everyday-emotion-component-layout.json",
+  "emotion_component_counts": {
+    "calm": 5,
+    "curious": 5,
+    "warm": 5,
+    "playful": 6,
+    "puzzled": 4,
+    "alert": 5
+  },
+  "identity_component_count": 7,
+  "pairwise_reassembly_distinction_range": {
+    "min_pixels": 500,
+    "max_pixels": 1300
+  },
+  "pairwise_component_group_differences": [
+    {
+      "left": "calm",
+      "right": "curious",
+      "changed_groups": [
+        "left_brow",
+        "left_cheek",
+        "mouth",
+        "right_brow",
+        "right_cheek"
+      ]
+    },
+    {
+      "left": "calm",
+      "right": "warm",
+      "changed_groups": [
+        "left_brow",
+        "left_cheek",
+        "mouth",
+        "right_brow",
+        "right_cheek"
+      ]
+    },
+    {
+      "left": "calm",
+      "right": "playful",
+      "changed_groups": [
+        "accent",
+        "left_brow",
+        "left_cheek",
+        "mouth",
+        "right_brow",
+        "right_cheek"
+      ]
+    },
+    {
+      "left": "calm",
+      "right": "puzzled",
+      "changed_groups": [
+        "left_brow",
+        "left_cheek",
+        "mouth",
+        "right_brow",
+        "right_cheek"
+      ]
+    },
+    {
+      "left": "calm",
+      "right": "alert",
+      "changed_groups": [
+        "left_brow",
+        "left_cheek",
+        "mouth",
+        "right_brow",
+        "right_cheek"
+      ]
+    },
+    {
+      "left": "curious",
+      "right": "warm",
+      "changed_groups": [
+        "left_brow",
+        "left_cheek",
+        "mouth",
+        "right_brow",
+        "right_cheek"
+      ]
+    },
+    {
+      "left": "curious",
+      "right": "playful",
+      "changed_groups": [
+        "accent",
+        "left_brow",
+        "left_cheek",
+        "mouth",
+        "right_brow",
+        "right_cheek"
+      ]
+    },
+    {
+      "left": "curious",
+      "right": "puzzled",
+      "changed_groups": [
+        "left_brow",
+        "left_cheek",
+        "mouth",
+        "right_brow",
+        "right_cheek"
+      ]
+    },
+    {
+      "left": "curious",
+      "right": "alert",
+      "changed_groups": [
+        "left_brow",
+        "left_cheek",
+        "mouth",
+        "right_brow",
+        "right_cheek"
+      ]
+    },
+    {
+      "left": "warm",
+      "right": "playful",
+      "changed_groups": [
+        "accent",
+        "left_brow",
+        "left_cheek",
+        "mouth",
+        "right_brow",
+        "right_cheek"
+      ]
+    },
+    {
+      "left": "warm",
+      "right": "puzzled",
+      "changed_groups": [
+        "left_brow",
+        "left_cheek",
+        "mouth",
+        "right_brow",
+        "right_cheek"
+      ]
+    },
+    {
+      "left": "warm",
+      "right": "alert",
+      "changed_groups": [
+        "left_brow",
+        "left_cheek",
+        "mouth",
+        "right_brow",
+        "right_cheek"
+      ]
+    },
+    {
+      "left": "playful",
+      "right": "puzzled",
+      "changed_groups": [
+        "accent",
+        "left_brow",
+        "left_cheek",
+        "mouth",
+        "right_brow",
+        "right_cheek"
+      ]
+    },
+    {
+      "left": "playful",
+      "right": "alert",
+      "changed_groups": [
+        "accent",
+        "left_brow",
+        "left_cheek",
+        "mouth",
+        "right_brow",
+        "right_cheek"
+      ]
+    },
+    {
+      "left": "puzzled",
+      "right": "alert",
+      "changed_groups": [
+        "left_brow",
+        "left_cheek",
+        "mouth",
+        "right_brow",
+        "right_cheek"
+      ]
+    }
+  ],
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden",
+  "errors": []
+}

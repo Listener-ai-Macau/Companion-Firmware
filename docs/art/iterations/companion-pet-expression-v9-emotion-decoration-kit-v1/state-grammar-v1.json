@@ -1,0 +1,26 @@
+{
+  "schema": "companion.v9.affect_decoration_state_grammar.v1",
+  "status": "CANDIDATE_PENDING_NATIVE_200_MACHINE_PREVIEW",
+  "authority": "COMP-REQ-190",
+  "identity": "locked_v9_component_rig_only",
+  "same_state_presence": ["highlight_lead", "brow_answer", "mouth_cheek_settle", "state_decoration_micro_beat"],
+  "cross_state_transition": ["source_hold", "highlight_lead", "paired_highlight_arrive", "brow_answer", "mouth_cheek_reply", "decoration_follow_through", "target_hold"],
+  "families": {
+    "calm": {"face_driver": "centered_primary_highlights_with_small_mouth_breath", "decoration": "locked_v9_sparkle", "availability": "registered_candidate"},
+    "notice": {"face_driver": "attention_directed_highlights_then_raised_brows", "decoration": "locked_v9_sparkle", "availability": "registered_candidate"},
+    "curious": {"face_driver": "right_or_target_directed_highlights_then_questioning_brow_and_small_mouth_reply", "decoration": "v35_curious_question", "availability": "generated_candidate"},
+    "warm": {"face_driver": "soft_downward_highlights_then_gentle_brow_and_mouth_reply", "decoration": "locked_v9_heart", "availability": "registered_candidate"},
+    "joyful": {"face_driver": "upward_highlights_then_open_brow_and_mouth_reply", "decoration": "locked_v9_sparkle", "availability": "registered_candidate"},
+    "playful": {"face_driver": "attention_lead_then_asymmetric_brow_and_mouth_reply", "decoration": "locked_v9_sparkle", "availability": "registered_candidate"},
+    "anticipatory": {"face_driver": "upward_highlights_then_held_brow", "decoration": "locked_v9_sparkle", "availability": "registered_candidate"},
+    "puzzled": {"face_driver": "side_highlights_then_drawn_brow_and_small_mouth_reply", "decoration": "v35_curious_question", "availability": "generated_candidate"},
+    "thinking": {"face_driver": "upward_highlights_then_held_brow_and_closed_mouth", "decoration": null, "availability": "menu_handoff_only"},
+    "listening": {"face_driver": "sensor_directed_highlights_then_listening_brow_and_closed_mouth", "decoration": "v34_recording_input", "availability": "generated_candidate"},
+    "focused": {"face_driver": "stable_highlights_then_compact_brow_and_mouth", "decoration": "v34_recording_input", "availability": "generated_candidate"},
+    "alert": {"face_driver": "upward_highlights_then_lifted_brow_and_small_mouth_reply", "decoration": "v35_alert_exclamation", "availability": "generated_candidate"},
+    "sleepy": {"face_driver": "sleepy_eye_hold_with_soft_brow_and_mouth_settle", "decoration": "v35_sleepy_dream_cloud", "availability": "generated_candidate"},
+    "charging": {"face_driver": "downward_highlights_then_restorative_brow_and_mouth_settle", "decoration": "v34_bottom_connector", "availability": "generated_candidate"},
+    "upgrade_pairing_error": {"face_driver": null, "decoration": null, "availability": "fail_closed"}
+  },
+  "invariants": ["one_character_only", "decoration_arrives_after_face_response", "no_random_state_or_decoration", "no_full_face_swap", "browser_target_same_component_score", "unavailable_source_fail_closed"]
+}

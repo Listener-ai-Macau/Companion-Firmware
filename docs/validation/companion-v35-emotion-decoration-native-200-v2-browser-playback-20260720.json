@@ -1,0 +1,34 @@
+{
+  "schema": "companion.v35.emotion_decoration_native_200_browser_playback.v2",
+  "status": "PASS_BROWSER_PLAYBACK_CANDIDATE_ONLY",
+  "authority": "COMP-REQ-190",
+  "preview": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/native-200-playback-preview.html",
+  "engine": {
+    "name": "Microsoft Edge headless",
+    "mode": "file URL, 200x200 viewport, device scale factor 1"
+  },
+  "snapshots": [
+    {
+      "virtual_time_ms": 1000,
+      "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/browser-playback-t1000.png",
+      "sha256": "74A26BC1FB1034B131C433729864ACB86500CEC7BE99B8A6B7C6017DCA83600D",
+      "dimensions": [200, 200]
+    },
+    {
+      "virtual_time_ms": 1400,
+      "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/candidate/review-v2/browser-playback-t1400.png",
+      "sha256": "2E213CA8F2734224206AE05A22FC20C16A8438DEEC3122C89B5A78F6F1BB8EAE",
+      "dimensions": [200, 200]
+    }
+  ],
+  "motion_observation": {
+    "changed_pixels_between_snapshots": 294,
+    "result": "frames advance in the browser instead of holding one static image"
+  },
+  "limits": {
+    "resource_activated": false,
+    "firmware_binding": false,
+    "panel_claim": false,
+    "human_art_acceptance": false
+  }
+}

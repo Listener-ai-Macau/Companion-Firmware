@@ -1,0 +1,37 @@
+{
+  "schema": "companion.v9.event_overlay_generation_request.v1",
+  "status": "GENERATED_PENDING_NATIVE_200_MACHINE_PREVIEW",
+  "iteration": "V34",
+  "request_revision": 2,
+  "created_at": "2026-07-20",
+  "authority": "COMP-REQ-189",
+  "supersedes": "V34 revision-1 wireless charging source, rejected because it omitted the bottom-attached physical connector",
+  "purpose": "Generate only the compact bottom-connector charging animation component. It composes over the locked V9 daily face and does not generate a character face.",
+  "locked_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "allowed_reference_inputs": ["locked_v9_reference_only"],
+  "forbidden_reference_inputs": ["V34_revision_1_wireless_charging", "all_v33_attempts", "V32_or_earlier_rejected_descendants", "legacy_art", "whole_face_runtime_cards", "code_drawn_features"],
+  "source_output": {
+    "name": "bottom_connector_charging",
+    "prompt": "prompts/v2-bottom-connector-charging-overlay.md",
+    "frame_count": 3,
+    "target_anchor": "bottom_center_of_daily_face",
+    "target_safe_box": [82, 172, 118, 192],
+    "semantic": "a compact connector seats into the underside, then one and two small energy pulses rise from that actual connection",
+    "candidate": "candidate-bottom-connector-charging-v2.png",
+    "sha256": "791B9CF5393AD3EBE46E75BCB44D305E281BB9DFB6DAFDA49F1061FA020CBF44"
+  },
+  "source_gate": [
+    "The generated source contains no face, body, text, label, border, UI panel, dangling cable, generic battery or lightning-only badge.",
+    "At native 200x200 composition, the bottom connector remains in the declared safe box and does not obscure daily eye, brow, nose or mouth components.",
+    "Labels hidden, the three frames read as a bottom-attached charging connection rather than a detached dock or generic happiness.",
+    "A rejected source is frozen audit-only and cannot be a visual reference, exported component, runtime binding or firmware asset."
+  ],
+  "runtime_policy": {
+    "runtime_resource_activated": false,
+    "active_candidate_binding": "forbidden",
+    "unavailable_event_overlay": "fail_closed"
+  }
+}

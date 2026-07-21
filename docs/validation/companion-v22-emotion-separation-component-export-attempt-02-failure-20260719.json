@@ -1,0 +1,10 @@
+{
+  "schema": "companion.v22_emotion_separation_component_export_attempt_failure.v1",
+  "status": "FAIL_V22_COMPONENT_EXPORT_ATTEMPT_02_RETAINED",
+  "attempt": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-02",
+  "generated_source_sha256": "A22AE7326F8BD8AE97E96235A00DEC03DE0917E2B55C57F5D3F536C203D62F63",
+  "failure": "The V21-derived extractor required at least eight disconnected source components. V22 Puzzled intentionally has no source-drawn right-cheek mark and contains seven valid components.",
+  "repair": "Attempt 03 permits a declared source-absent cheek role. The runtime may omit only that absent source component; it may not draw or borrow a cheek from another emotion.",
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden"
+}

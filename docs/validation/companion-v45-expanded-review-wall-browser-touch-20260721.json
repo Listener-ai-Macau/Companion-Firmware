@@ -1,0 +1,41 @@
+{
+  "schema": "companion.v45_expanded_review_wall_browser_touch.v1",
+  "status": "PASS_V45_REAL_EDGE_MOUSE_FRAME_REMAINS_VISIBLE",
+  "preview": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/expanded-review-wall-01/index.html",
+  "capture": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/expanded-review-wall-01/browser-touch-r1.png",
+  "event_sequence": [
+    "mousedown",
+    "mousemove",
+    "mouseup"
+  ],
+  "assertions": {
+    "during": {
+      "src": "file:///C:/Users/Billy/Desktop/Denzic/Companion/Companion-Firmware/docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/touch-base-calm_presence-00.png",
+      "hidden": false,
+      "complete": true,
+      "natural_width": 200,
+      "gaze_hidden": false,
+      "gaze_complete": true,
+      "gaze_natural_width": 200,
+      "status": "entry / 触摸注视 (163,56)"
+    },
+    "after": {
+      "src": "file:///C:/Users/Billy/Desktop/Denzic/Companion/Companion-Firmware/docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/calm_presence-01-calm_blink_closing.png",
+      "hidden": false,
+      "complete": true,
+      "natural_width": 200,
+      "gaze_hidden": true,
+      "gaze_complete": true,
+      "gaze_natural_width": 200,
+      "status": "lead / calm_blink_closing / 140 ms"
+    },
+    "story_count": 16,
+    "viewport_count": 16
+  },
+  "runtime_resource_activated": false,
+  "non_claims": [
+    "no_lower_driver_change",
+    "no_physical_panel_acceptance",
+    "no_human_acceptance"
+  ]
+}

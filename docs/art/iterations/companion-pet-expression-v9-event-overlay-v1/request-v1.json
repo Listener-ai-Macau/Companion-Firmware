@@ -1,0 +1,50 @@
+{
+  "schema": "companion.v9.event_overlay_generation_request.v1",
+  "status": "PARTIALLY_GENERATED_RECORDING_PENDING_REVIEW_CHARGING_SUPERSEDED",
+  "iteration": "V34",
+  "request_revision": 1,
+  "created_at": "2026-07-20",
+  "authority": "COMP-REQ-187",
+  "purpose": "Generate compact art-derived causal overlay component sources. These are not faces: at runtime they compose over the locked V9 daily face, whose eyes/highlights, brows and mouth retain the primary emotional performance.",
+  "locked_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "use": "the sole visual reference for line weight, black-and-white treatment, rounded geometry and restrained character grammar"
+  },
+  "allowed_reference_inputs": ["locked_v9_reference_only"],
+  "forbidden_reference_inputs": ["all_v33_attempts", "V32_or_earlier_rejected_descendants", "legacy_art", "whole_face_runtime_cards", "code_drawn_features"],
+  "source_outputs": {
+    "recording_input": {
+      "prompt": "prompts/v1-recording-input-overlay.md",
+      "frame_count": 3,
+      "target_anchor": "right_of_daily_face",
+      "semantic": "quiet incoming sound is captured from the environment toward the character",
+      "candidate": "candidate-recording-input-v1.png",
+      "sha256": "203B63C5FF7963859B7296725260A17C101C19BAE843C36DEB859843C6770B4F"
+    },
+    "wireless_charging": {
+      "prompt": "prompts/v1-wireless-charging-overlay.md",
+      "frame_count": 3,
+      "target_anchor": "below_daily_face",
+      "semantic": "SUPERSEDED_BY_COMP_REQ_189: the source omitted the owner-confirmed bottom-attached charging connector",
+      "disposition": "REJECTED_PHYSICAL_CHARGING_GEOMETRY_AUDIT_ONLY"
+    }
+  },
+  "composition_contract": [
+    "A native 200x200 preview composes every candidate only over the locked V9 daily baseline; no generated full face is accepted.",
+    "Daily eye/highlight, brow and mouth micro-choreography remains visible during event overlays and must not be obscured by an overlay.",
+    "Each event has deterministic entry, hold and release component frames; no random selection and no full-frame/card rotation.",
+    "Question mark, exclamation mark, cloud and sparkle remain separately registered emotion-decoration components, not implicit text or code-drawn substitutes."
+  ],
+  "source_gate": [
+    "The generated source contains no face, body, text, label, border, UI panel, cable, battery icon or detached dashboard widget.",
+    "At native 200x200 composition, required overlay ink remains at least 8 pixels from the canvas edge and does not cover daily eye, brow or mouth masks.",
+    "The three frames communicate the specified causal direction with labels hidden.",
+    "A rejected source is frozen audit-only and cannot be a visual reference, exported component, runtime binding or firmware asset."
+  ],
+  "runtime_policy": {
+    "runtime_resource_activated": false,
+    "active_candidate_binding": "forbidden",
+    "unavailable_event_overlay": "fail_closed"
+  }
+}

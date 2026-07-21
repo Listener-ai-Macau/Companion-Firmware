@@ -1,0 +1,95 @@
+{
+  "schema": "companion.v41_two_track_directional_gaze_layout.v1",
+  "status": "CANDIDATE_TRACK_MODEL_VERSIONED_RUNTIME_INACTIVE",
+  "revision": 41,
+  "authority": ["COMP-REQ-093", "COMP-REQ-229", "COMP-REQ-233", "COMP-REQ-239", "COMP-REQ-240", "COMP-REQ-242", "COMP-REQ-243"],
+  "locked_v9_source": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "inherited_v40_two_track_layout": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v2/candidate/two-track-layout.json",
+    "sha256": "B4B879D8F5F9BF2FC222E5E83AB643022D5543D7E661C491F8FCABCDC2DD9113",
+    "reuse_rule": "Retain V40 expression/function source masks, functional event timing, and finite Menu entry cue. V41 adds only source-addressable Daily attention demonstrations and Chinese review metadata."
+  },
+  "source_authority": {
+    "v22_face_layout": {
+      "path": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/target-rig-attempt-01/v22-emotion-separation-target-rig-layout.json",
+      "sha256": "3118338BCE6BD55BAAA40C1254B332805F2524425383CA104BA8E5FEEE01B953",
+      "component_count": 37
+    },
+    "v40_special_source_layout": {
+      "path": "docs/art/iterations/companion-pet-expression-v9-functional-decoration-rig-v2/candidate/functional-decoration-component-layout.json",
+      "sha256": "CDD059DB83DC5FF3293D0992B7F0602ECA964B8D049595D6AA234E05E9D55C72",
+      "component_count": 69
+    }
+  },
+  "composition": {
+    "canvas": "200x200_1bpp_white_is_one_msb",
+    "final_plan": "deterministic_union(expression_track, functional_decoration_track)",
+    "ordering": "stable_ascending_z_index_then_expression_before_functional",
+    "maximum_layers": 16,
+    "no_mask_synthesis": true,
+    "runtime_binding": "forbidden_until_v41_machine_audit_and_owner_review"
+  },
+  "expression_track": {
+    "driven_only_by": ["emotion", "attention", "energy", "interaction_memory"],
+    "inherited_performance_layout": {
+      "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v1/candidate/two-track-layout.json",
+      "sha256": "EFBE711D121FC9F9BD6F2E6E6E1A0324CE2F2CC8DC81DC163ED0A512A0277555",
+      "reuse_rule": "V22/V39 emotion faces and causal micro-choreography remain unchanged; V41 adds no whole-face source."
+    },
+    "attention_demonstrations": {
+      "component_ids": {"left_primary": 1, "left_sparkle": 3, "right_primary": 5, "right_sparkle": 7, "fixed_nose": 4},
+      "endpoint_offsets": {
+        "center": {"primary": [1, 0], "sparkle": [1, 0]},
+        "left": {"primary": [-2, 2], "sparkle": [-5, 3]},
+        "right": {"primary": [5, 2], "sparkle": [5, 3]},
+        "up": {"primary": [1, -3], "sparkle": [1, -5]},
+        "down": {"primary": [1, 4], "sparkle": [1, 5]}
+      },
+      "required_states": ["center", "left", "right", "up", "down"],
+      "construction": "The registered V9 open-eye body remains fixed; only its registered highlight and sparkle masks move within their registered ranges. The V22 nose is always component 4 at [0,0].",
+      "forbidden": ["new_eye_shape", "whole_face_card", "code_drawn_feature", "random_gaze", "legacy_art"]
+    },
+    "forbidden": ["functional_event_selects_emotion", "whole_face_card", "code_drawn_face"]
+  },
+  "functional_decoration_track": {
+    "driven_only_by": ["functional_event"],
+    "reuse_rule": "Reuse V40 source-only decoration frames unchanged. Functional events may decorate an independently selected expression but may not select or mutate a face.",
+    "forbidden": ["face_component_id", "functional_event_selects_emotion", "functional_event_mutates_brow_eye_mouth_or_cheek", "daily_face_substitution_when_source_missing"]
+  },
+  "menu_entry_exception": {
+    "event": "menu_entry_notice",
+    "maximum_expression_duration_ms": 500,
+    "after_last_cue": "withdraw_expression_and_functional_tracks_then_show_menu_ui",
+    "forbidden": ["persistent_menu_score", "selection_loop", "expression_rig_behind_menu_ui", "functional_track_behind_menu_ui"]
+  },
+  "preview_zh": {
+    "title": "V9 组件表情系统预览",
+    "player_label": "播放编舞",
+    "restart_label": "重新播放",
+    "atlas_title": "表情与状态总览",
+    "atlas_summary": "每张图都是同一套 200x200 组件计划的真实帧；功能状态只叠加小装饰，不替换脸。",
+    "stories": {
+      "calm_presence": {"label_zh": "日常平静", "summary_zh": "放松的默认日常脸，轻微左侧眼神后回到正中。", "overview_step": 2},
+      "warm_presence": {"label_zh": "亲近温暖", "summary_zh": "互动记忆较高时的温暖回应，轻微右侧眼神后安静保持。", "overview_step": 2},
+      "curious_question": {"label_zh": "好奇提问", "summary_zh": "先由眼神和眉毛带动，再出现表情自有的问号。", "overview_step": 2},
+      "alert_exclamation": {"label_zh": "警觉提醒", "summary_zh": "先由眼神和眉毛带动，再出现表情自有的感叹号。", "overview_step": 2},
+      "playful_presence": {"label_zh": "活泼玩心", "summary_zh": "更明快的眼神和嘴角，星光先动后回到保持。", "overview_step": 2},
+      "sleepy_presence": {"label_zh": "困倦入睡", "summary_zh": "眼睛、眉毛、嘴巴和梦境小装饰依次进入，保持后不随机跳变。", "overview_step": 4},
+      "daily_attention_center": {"label_zh": "眼神正中", "summary_zh": "日常视线基准。", "overview_step": 2},
+      "daily_attention_left": {"label_zh": "眼神向左", "summary_zh": "主高光和小星光向左侧合法终点移动。", "overview_step": 2},
+      "daily_attention_right": {"label_zh": "眼神向右", "summary_zh": "主高光和小星光向右侧合法终点移动。", "overview_step": 2},
+      "daily_attention_up": {"label_zh": "眼神向上", "summary_zh": "主高光和小星光向上侧合法终点移动。", "overview_step": 2},
+      "daily_attention_down": {"label_zh": "眼神向下", "summary_zh": "主高光和小星光向下侧合法终点移动。", "overview_step": 2},
+      "recording_with_calm": {"label_zh": "录音输入中", "summary_zh": "平静日常脸上叠加输入波纹，不替换为录音专用整脸。", "overview_step": 2},
+      "recording_with_warm": {"label_zh": "录音输入中（温暖脸）", "summary_zh": "同一录音装饰可以与温暖脸独立组合。", "overview_step": 2},
+      "charging_with_calm": {"label_zh": "底部插座充电", "summary_zh": "平静日常脸上叠加底部插座充电小装饰。", "overview_step": 2},
+      "upgrade_with_playful": {"label_zh": "升级进行中", "summary_zh": "活泼脸上叠加上行进度小装饰。", "overview_step": 2},
+      "error_with_calm": {"label_zh": "错误提醒", "summary_zh": "平静脸上叠加紧凑警示小装饰；它不改眼睛、眉毛或嘴巴。", "overview_step": 2},
+      "menu_entry_notice": {"label_zh": "进入菜单提示", "summary_zh": "仅 460 毫秒入场提示；随后两条 Rig 轨道都撤出，由菜单 UI 独占屏幕。", "overview_step": 2}
+    }
+  },
+  "non_claims": ["no_runtime_binding", "no_firmware_flash", "no_panel_or_driver_change", "no_human_acceptance"]
+}

@@ -1,0 +1,30 @@
+{
+  "schema": "companion.v45_expanded_review_wall_visual.v1",
+  "status": "PASS_V45_EXPANDED_REVIEW_WALL_DYNAMIC_200X200_RUNTIME_INACTIVE",
+  "wall_report": "docs/validation/companion-v45-expanded-review-wall-20260721.json",
+  "html": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/expanded-review-wall-01/index.html",
+  "headless_capture": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/expanded-review-wall-01/capture-r6/v45-expanded-review-wall.png",
+    "dimensions": [
+      1200,
+      6000
+    ]
+  },
+  "story_count": 16,
+  "frame_count": 78,
+  "viewport_contract": "16 independent 200x200 dynamic story viewports in vertical document order",
+  "touch_contract": "each 200x200 story viewport follows touch or mouse drag through the registered V45 overlay package and resumes centered",
+  "forbidden_fallbacks": {
+    "whole_face_carousel": false,
+    "static_wall": false,
+    "canvas_face_drawing": false,
+    "legacy_art": false,
+    "runtime_activation": false
+  },
+  "runtime_resource_activated": false,
+  "non_claims": [
+    "no_lower_driver_change",
+    "no_physical_panel_acceptance",
+    "no_current_human_acceptance"
+  ]
+}

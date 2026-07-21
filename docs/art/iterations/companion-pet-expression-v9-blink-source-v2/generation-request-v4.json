@@ -1,0 +1,41 @@
+{
+  "schema": "companion.art_generation_request.v1",
+  "status": "RECORDED_BEFORE_IMAGE_GENERATION",
+  "iteration": "companion-pet-expression-v9-blink-source-v2",
+  "revision": 4,
+  "created_at": "2026-07-21",
+  "authority": ["COMP-REQ-093", "COMP-REQ-267", "COMP-REQ-269"],
+  "purpose": "Generate complete source-derived V9 eye-group components so the preview visibly shows a full eye beginning to close and reopening, instead of swapping isolated lid shapes.",
+  "rejected_attempts": [
+    {"path": "docs/art/iterations/companion-pet-expression-v9-blink-source-v2/candidate/attempt-01-blink-transition-components.png", "sha256": "1D15DF8B54DEE465D45FFF9C46B02458428B4B31DDC2AB21CB9037E477BB6E33"},
+    {"path": "docs/art/iterations/companion-pet-expression-v9-blink-source-v2/candidate/attempt-02-blink-transition-components.png", "sha256": "EA2B73C966AFE42D3E6236E3803F6B01B5985B4F0D63B82F63F8FB2A9C7CDE50"}
+  ],
+  "locked_v9_reference": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "use": "sole image reference for the complete V9 eye group: black oval, primary white reflection and tiny white sparkle"
+  },
+  "reference_policy": "Only the locked V9 source may guide image generation. Rejected blink attempts are not references.",
+  "source_sheet": {
+    "grid": {"columns": 8, "rows": 1, "ordered_cells": ["left_open", "right_open", "left_closing", "right_closing", "left_closed", "right_closed", "left_opening", "right_opening"]},
+    "cell_background": "plain pure white",
+    "source_only": true,
+    "allowed_exports": ["left_open", "right_open", "left_closing", "right_closing", "left_closed", "right_closed", "left_opening", "right_opening"]
+  },
+  "eye_group_contract": {
+    "complete_group": "Each open/closing/opening component is a complete single V9 eye group containing the black eye body plus its familiar white primary reflection and tiny white sparkle; closed is the complete closed-eye mark with no detached highlight",
+    "stages": "open -> closing -> closed -> opening -> open",
+    "closing": "same V9 eye identity visibly compresses in height while the reflection and sparkle remain attached inside the body; do not replace it with an isolated lid or cap",
+    "opening": "same V9 eye identity visibly re-expands from the closed mark, with reflection and sparkle returning inside the body before the base open eye resumes",
+    "pairing": "left/right matched mirrored groups on the V9 anchors"
+  },
+  "native_review_gate": {
+    "canvas": "200x200 after component placement",
+    "threshold": "1bpp black/white with white reflection holes preserved in the source mask",
+    "symmetry": "each left/right group pair mirror difference <=2 black pixels after normalization",
+    "stage_order": "closing group has visibly more eye-body mass than closed and less height than open; opening is between closed and open",
+    "manual_visual_triage": "reject face art, isolated eyelid marks, caps, changed eye identity, missing reflection/sparkle in open/closing/opening groups, lashes, winks, sleep eyes, text, labels, grid, border or device frame"
+  },
+  "forbidden": ["whole_face", "whole_face_runtime_playback", "isolated_lid_only", "flat_cap", "new_eye_identity", "brow", "mouth", "nose", "cheek", "lash", "wink", "side_eye", "sleep_face", "text", "label", "grid", "border", "device_frame", "gray", "color", "gradient", "shading", "texture", "legacy_art", "custom_LUT", "code_drawn_geometry"],
+  "runtime": {"resource_activated": false, "binding": "forbidden_until_source_gate_component_export_browser_wb55_parity_total_audit_and_owner_review"}
+}

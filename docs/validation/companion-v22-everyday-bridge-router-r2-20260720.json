@@ -1,0 +1,26 @@
+{
+  "schema": "companion.v22_everyday_bridge_router_host.v1",
+  "status": "PASS_V22_EVERYDAY_BRIDGE_ROUTER_RUNTIME_INACTIVE",
+  "runtime_resource_activated": false,
+  "candidate_runtime_activation_allowed": false,
+  "ordinary_affect_only": true,
+  "bridge_count": 10,
+  "replayed_step_count": 72,
+  "session_visible_step_count": 72,
+  "session_requires_visible_acknowledgement": true,
+  "session_min_post_refresh_hold_ms": 750,
+  "unbound_product_states": ["menu", "recording", "upgrade", "sleep", "charging", "error"],
+  "edges": [
+    {"cue": "attention_novelty", "source_emotion": 0, "target_emotion": 1, "bridge": "calm__curious"},
+    {"cue": "novelty_resolved", "source_emotion": 1, "target_emotion": 0, "bridge": "curious__calm"},
+    {"cue": "positive_reciprocity", "source_emotion": 1, "target_emotion": 2, "bridge": "curious__warm"},
+    {"cue": "attention_shift", "source_emotion": 2, "target_emotion": 1, "bridge": "warm__curious"},
+    {"cue": "shared_play", "source_emotion": 2, "target_emotion": 7, "bridge": "warm__playful"},
+    {"cue": "energy_settle", "source_emotion": 7, "target_emotion": 2, "bridge": "playful__warm"},
+    {"cue": "ambiguous_input", "source_emotion": 0, "target_emotion": 9, "bridge": "calm__puzzled"},
+    {"cue": "ambiguity_resolved", "source_emotion": 9, "target_emotion": 0, "bridge": "puzzled__calm"},
+    {"cue": "high_salience", "source_emotion": 9, "target_emotion": 5, "bridge": "puzzled__alert"},
+    {"cue": "salience_reduced", "source_emotion": 5, "target_emotion": 9, "bridge": "alert__puzzled"}
+  ],
+  "forbidden": ["whole-face card playback", "code-drawn face", "legacy art", "runtime binding"]
+}

@@ -33,6 +33,21 @@ bool comp_epaper_expression_asset_source_init(
     return true;
 }
 
+bool comp_epaper_expression_asset_source_init_frame_provider(
+    comp_epaper_expression_asset_source_t *source,
+    comp_epaper_expression_frame_provider_fn provider,
+    void *provider_context)
+{
+    if (source == NULL || provider == NULL) {
+        return false;
+    }
+    *source = (comp_epaper_expression_asset_source_t){
+        .frame_provider = provider,
+        .frame_provider_context = provider_context,
+    };
+    return true;
+}
+
 bool comp_epaper_expression_asset_source_copy_frame(
     comp_epaper_expression_asset_source_t *source,
     const comp_emote_frame_t *frame,
@@ -61,7 +76,21 @@ bool comp_epaper_expression_asset_source_copy_frame_index(
 {
     const comp_emote_catalog_t *catalog;
 
-    if (source == NULL || source->pack == NULL) {
+    if (source == NULL) {
+        return false;
+    }
+    if (source->frame_provider != NULL) {
+        if (!source->frame_provider(source->frame_provider_context,
+                                    frame_index,
+                                    destination,
+                                    destination_size)) {
+            source->failed_reads++;
+            return false;
+        }
+        source->copied_frames++;
+        return true;
+    }
+    if (source->pack == NULL) {
         return false;
     }
     catalog = source->pack->catalog;

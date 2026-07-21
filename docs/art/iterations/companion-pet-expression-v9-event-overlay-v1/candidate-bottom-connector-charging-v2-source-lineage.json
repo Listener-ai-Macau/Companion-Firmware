@@ -1,0 +1,21 @@
+{
+  "schema": "companion.v9.event_overlay_source_lineage.v1",
+  "iteration": "V34",
+  "request_revision": 2,
+  "status": "GENERATED_PENDING_NATIVE_200_MACHINE_PREVIEW",
+  "candidate": {
+    "path": "candidate-bottom-connector-charging-v2.png",
+    "sha256": "791B9CF5393AD3EBE46E75BCB44D305E281BB9DFB6DAFDA49F1061FA020CBF44"
+  },
+  "visual_reference_inputs": [
+    {
+      "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "role": "sole_style_reference"
+    }
+  ],
+  "forbidden_inputs": ["V34_revision_1_wireless_charging", "all_rejected_V33_or_V32_assets", "legacy_art"],
+  "physical_semantic": "bottom-attached charging connector with restrained upward energy pulses",
+  "runtime": {"resource_activated": false, "component_export": "forbidden_until_source_gate_passes"},
+  "authority": "COMP-REQ-189"
+}

@@ -1,0 +1,27 @@
+{
+  "schema": "companion.v34_v35_special_decoration_wb55_component_parity_host.v1",
+  "status": "PASS_BROWSER_WB55_COMPONENT_PIXEL_PARITY_RUNTIME_INACTIVE",
+  "target": "STM32WB55 upper expression component path",
+  "canvas": {"width": 200, "height": 200, "stride_bytes": 25},
+  "source_packs": ["v22_face", "v34_v35_decoration"],
+  "component_count": 76,
+  "replayed_frame_count": 12,
+  "frames": [
+    {"score": "recording_input", "cue": "source_hold", "pbm": "recording_input-00-source_hold.pbm", "duration_ms": 700},
+    {"score": "recording_input", "cue": "primary_highlight_lead", "pbm": "recording_input-01-primary_highlight_lead.pbm", "duration_ms": 420},
+    {"score": "recording_input", "cue": "sparkle_arrive", "pbm": "recording_input-02-sparkle_arrive.pbm", "duration_ms": 420},
+    {"score": "bottom_connector_charging", "cue": "source_hold", "pbm": "bottom_connector_charging-00-source_hold.pbm", "duration_ms": 700},
+    {"score": "bottom_connector_charging", "cue": "primary_highlight_lead", "pbm": "bottom_connector_charging-01-primary_highlight_lead.pbm", "duration_ms": 420},
+    {"score": "bottom_connector_charging", "cue": "sparkle_arrive", "pbm": "bottom_connector_charging-02-sparkle_arrive.pbm", "duration_ms": 420},
+    {"score": "curious_question", "cue": "source_hold", "pbm": "curious_question-00-source_hold.pbm", "duration_ms": 160},
+    {"score": "curious_question", "cue": "primary_highlight_lead", "pbm": "curious_question-01-primary_highlight_lead.pbm", "duration_ms": 240},
+    {"score": "curious_question", "cue": "sparkle_arrive", "pbm": "curious_question-02-sparkle_arrive.pbm", "duration_ms": 960},
+    {"score": "alert_exclamation", "cue": "source_hold", "pbm": "alert_exclamation-00-source_hold.pbm", "duration_ms": 160},
+    {"score": "alert_exclamation", "cue": "primary_highlight_lead", "pbm": "alert_exclamation-01-primary_highlight_lead.pbm", "duration_ms": 240},
+    {"score": "alert_exclamation", "cue": "sparkle_arrive", "pbm": "alert_exclamation-02-sparkle_arrive.pbm", "duration_ms": 960}
+  ],
+  "runtime_resource_activated": false,
+  "special_event_binding": "forbidden_until_owner_review",
+  "dream_cloud": "fail_closed_pending_v9_sleep_profile",
+  "non_claims": ["no_firmware_flash", "no_panel_or_driver_change", "no_human_acceptance"]
+}

@@ -1,0 +1,16 @@
+{
+  "schema": "companion.v45_complete_eye_wb55_profile_host.v1",
+  "status": "PASS_V45_COMPLETE_EYE_WB55_PROFILE_RUNTIME_INACTIVE",
+  "component_count": 97,
+  "expression_track_count": 15,
+  "functional_track_count": 4,
+  "story_count": 21,
+  "preview_frame_count": 93,
+  "five_gaze_states": ["center", "left", "right", "up", "down"],
+  "recording_input_clear_of_face": true,
+  "wireless_dock_charging": true,
+  "sleep_zzz_only": true,
+  "fail_closed": {"invalid_functional_track": true, "invalid_functional_step": true, "missing_source_pose": true, "generic_menu_synthesis": true},
+  "runtime_resource_activated": false,
+  "non_claims": ["no_firmware_flash", "no_panel_or_driver_change", "no_human_acceptance"]
+}

@@ -1,0 +1,12 @@
+{
+  "schema": "companion.v9.event_overlay_source_triage.v1",
+  "iteration": "V34",
+  "source": "candidate-wireless-charging-v1.png",
+  "sha256": "4608F9F8D0EB1078CCD1D1F9A9555D81119DEE9E7112F504990830612885A8B2",
+  "status": "REJECTED_PHYSICAL_CHARGING_GEOMETRY_AUDIT_ONLY",
+  "date": "2026-07-20",
+  "reason": "The owner clarified that the charging plug/connector attaches at the bottom. This source depicts only a free-standing cradle and is therefore physically inaccurate.",
+  "disposition": ["do_not_use_as_visual_reference", "do_not_extract_or_export", "do_not_bind_runtime", "do_not_flash"],
+  "successor": "request-v2.json",
+  "authority": "COMP-REQ-189"
+}
