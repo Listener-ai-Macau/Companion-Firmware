@@ -1,0 +1,100 @@
+{
+  "checks": {
+    "all_bound_artifact_side_effects_zero": true,
+    "all_input_identities_exact": true,
+    "baseline_double_run_byte_stable": true,
+    "baseline_is_truthful_4dd_no_go": true,
+    "compatibility_is_17_51_8_no_go": true,
+    "fixture_matrix_all_pass": true,
+    "known_c250_aggregate_claims_rejected": true,
+    "known_c250_direct_injection_rejected": true,
+    "no_successor_pass_artifact_present": true,
+    "template_binds_exact_tools_and_placeholders": true,
+    "template_records_are_not_fabricated": true,
+    "upper_baseline_commit_resolves_exact": true
+  },
+  "default_off": true,
+  "disposition": {
+    "known_4dd_candidate": "DETERMINISTIC_NO_GO_BASELINE",
+    "known_c250_candidate": "REJECTED_DIRECT_FIXTURE_AND_TOTALS",
+    "successor": "NOT_SUPPLIED_NOT_CLAIMED"
+  },
+  "failed_checks": [],
+  "identities": [
+    {
+      "expected_sha256": "5DD10A8D41922DCE368C9C55AE97C7A67166175CDC63647A4EFA4B41159126A3",
+      "match": true,
+      "name": "intake_runner",
+      "observed_sha256": "5DD10A8D41922DCE368C9C55AE97C7A67166175CDC63647A4EFA4B41159126A3",
+      "path": "tools/faraday_upper_art/run_companion_lower_candidate_intake_comp_req_497.py"
+    },
+    {
+      "expected_sha256": "8A7C3E54DC49CB0D5B84904B9127E4047BAEAE6768A3EFBEBA2B47768A554C3C",
+      "match": true,
+      "name": "fixture_validator",
+      "observed_sha256": "8A7C3E54DC49CB0D5B84904B9127E4047BAEAE6768A3EFBEBA2B47768A554C3C",
+      "path": "tools/faraday_upper_art/validate_companion_lower_candidate_intake_comp_req_497.py"
+    },
+    {
+      "expected_sha256": "45023616CA3889911A3A035E36FC57CD32F87D9259F98003488B39A1C0E7924A",
+      "match": true,
+      "name": "template_generator",
+      "observed_sha256": "45023616CA3889911A3A035E36FC57CD32F87D9259F98003488B39A1C0E7924A",
+      "path": "tools/faraday_upper_art/generate_companion_lower_candidate_template_comp_req_497.py"
+    },
+    {
+      "expected_sha256": "900AB61CA9B89B766BE6330A07001340670CA7E6E24F5F66BFB40E85CB9371D7",
+      "match": true,
+      "name": "baseline_intake",
+      "observed_sha256": "900AB61CA9B89B766BE6330A07001340670CA7E6E24F5F66BFB40E85CB9371D7",
+      "path": "docs/validation/companion-browser-visual-contract-comp-req-471/comp-req-497-candidate-intake/baseline-4dd-intake.json"
+    },
+    {
+      "expected_sha256": "F6504C998C5127355DA63C28B8910D8126650D6319779A95C4DEC604B1779104",
+      "match": true,
+      "name": "baseline_compatibility",
+      "observed_sha256": "F6504C998C5127355DA63C28B8910D8126650D6319779A95C4DEC604B1779104",
+      "path": "docs/validation/companion-browser-visual-contract-comp-req-471/comp-req-497-candidate-intake/upper-lower-compatibility-comp-req-497-baseline-4dd.json"
+    },
+    {
+      "expected_sha256": "1A46193504FCC1A0C71D77144B2DD3D2E2F2DA1A526EC2DA30FEBD31A4CA76F4",
+      "match": true,
+      "name": "fixture_result",
+      "observed_sha256": "1A46193504FCC1A0C71D77144B2DD3D2E2F2DA1A526EC2DA30FEBD31A4CA76F4",
+      "path": "docs/validation/companion-browser-visual-contract-comp-req-471/comp-req-497-candidate-intake/candidate-intake-fixtures.json"
+    },
+    {
+      "expected_sha256": "B4B68C31CB805E0B8BC1CA8BFB3358BE20D98AA3D209F2E009FBBF688C53E393",
+      "match": true,
+      "name": "successor_template",
+      "observed_sha256": "B4B68C31CB805E0B8BC1CA8BFB3358BE20D98AA3D209F2E009FBBF688C53E393",
+      "path": "docs/validation/companion-browser-visual-contract-comp-req-471/comp-req-497-candidate-intake/successor-command-template.json"
+    }
+  ],
+  "requirements": [
+    "COMP-REQ-497"
+  ],
+  "schema": "companion.comp-req-497.candidate-intake-ready.v1",
+  "side_effect_counters": {
+    "browser": 0,
+    "execute": 0,
+    "hardware": 0,
+    "lower_write": 0,
+    "platform_write": 0,
+    "popup": 0,
+    "production_write": 0,
+    "prompt": 0,
+    "push": 0,
+    "read_only_git_processes": 1,
+    "registry_write": 0,
+    "server": 0,
+    "upper_artifact_writes": 1
+  },
+  "status": "CANDIDATE_INTAKE_READY_NO_SUCCESSOR",
+  "unexpected_successor_pass_artifacts": [],
+  "upper_baseline_commit": "c677deef3d94190e16a08fb83cf45d4bb7d820a5",
+  "verifier": {
+    "path": "tools/faraday_upper_art/verify_companion_lower_candidate_intake_readiness_comp_req_497.py",
+    "sha256": "19C692100C9F00F6204CC135C3F6C144E66C1D70A82DF7A01E0229428C55CB6B"
+  }
+}

@@ -1,0 +1,153 @@
+{
+  "bindings": {
+    "compatibility_auditor": {
+      "path": "tools/faraday_upper_art/audit_companion_upper_lower_compatibility_comp_req_474.py",
+      "sha256": "4A8A23D8E72D5B04290E5788B9486F540E41722AFB40A1C7C5C795BED5A168D7"
+    },
+    "intake_runner": {
+      "path": "tools/faraday_upper_art/run_companion_lower_candidate_intake_comp_req_497.py",
+      "sha256": "5DD10A8D41922DCE368C9C55AE97C7A67166175CDC63647A4EFA4B41159126A3"
+    }
+  },
+  "candidate_machine_ready_block_template": {
+    "base_commit": "4ddf9709034d307b333510c27e3e0a45c7ed6d15",
+    "production_sources": [
+      {
+        "path": "<COMMITTED_PRODUCTION_PATH_FOR_MAIN_DISPATCH>",
+        "role": "main_dispatch",
+        "sha256": "<EXACT_COMMITTED_BLOB_CONTENT_SHA256>"
+      },
+      {
+        "path": "<COMMITTED_PRODUCTION_PATH_FOR_GAZE_CONTROLLER>",
+        "role": "gaze_controller",
+        "sha256": "<EXACT_COMMITTED_BLOB_CONTENT_SHA256>"
+      },
+      {
+        "path": "<COMMITTED_PRODUCTION_PATH_FOR_HOLD_CANCEL_CONTROLLER>",
+        "role": "hold_cancel_controller",
+        "sha256": "<EXACT_COMMITTED_BLOB_CONTENT_SHA256>"
+      },
+      {
+        "path": "<COMMITTED_PRODUCTION_PATH_FOR_MENU_CONTROLLER>",
+        "role": "menu_controller",
+        "sha256": "<EXACT_COMMITTED_BLOB_CONTENT_SHA256>"
+      },
+      {
+        "path": "<COMMITTED_PRODUCTION_PATH_FOR_VISUAL_RUNTIME>",
+        "role": "visual_runtime",
+        "sha256": "<EXACT_COMMITTED_BLOB_CONTENT_SHA256>"
+      }
+    ],
+    "records": {
+      "event_records": [],
+      "pair_records": [],
+      "semantic_noop_records": []
+    },
+    "schema": "companion.comp-req-497.candidate-intake.v1",
+    "side_effect_counters": {
+      "browser": 0,
+      "execute": 0,
+      "flash": 0,
+      "hardware": 0,
+      "popup": 0,
+      "production": 0,
+      "programmer": 0,
+      "prompt": 0,
+      "push": 0,
+      "serial": 0,
+      "server": 0,
+      "write": 0
+    },
+    "source_commit": "<EXACT_40_HEX_SUCCESSOR_COMMIT>",
+    "tool_identities": [
+      {
+        "kind": "runner",
+        "path": "<RUNNER_REPO_PATH>",
+        "sha256": "<EXACT_COMMITTED_SHA256>"
+      },
+      {
+        "kind": "supervisor",
+        "path": "<SUPERVISOR_REPO_PATH>",
+        "sha256": "<EXACT_COMMITTED_SHA256>"
+      },
+      {
+        "kind": "tool",
+        "path": "<TOOL_REPO_PATH>",
+        "sha256": "<EXACT_COMMITTED_SHA256>"
+      }
+    ]
+  },
+  "default_off": true,
+  "fail_closed_contract": {
+    "aggregate_totals_are_not_accepted_as_records": true,
+    "direct_fixture_event_injection_is_rejected": true,
+    "empty_record_arrays_cannot_pass": true,
+    "identities_are_recomputed_from_committed_tree": true,
+    "known_4dd_baseline_cannot_be_a_successor": true,
+    "lower_head_must_equal_expected_commit": true,
+    "successor_pass_is_not_predeclared": true,
+    "tracked_lower_worktree_must_be_clean": true
+  },
+  "generator": {
+    "path": "tools/faraday_upper_art/generate_companion_lower_candidate_template_comp_req_497.py",
+    "sha256": "45023616CA3889911A3A035E36FC57CD32F87D9259F98003488B39A1C0E7924A"
+  },
+  "lower_baseline_commit": "4ddf9709034d307b333510c27e3e0a45c7ed6d15",
+  "operator_actions": [
+    "Replace every angle-bracket placeholder with an exact value.",
+    "Populate all 21 event, 59 pair, and 10 semantic no-op records from the candidate's executed production-path trace.",
+    "Repeat --tool-binding for every candidate tool identity declared in candidate_intake.tool_identities.",
+    "Run from the Companion-Firmware repository root; the runner reads lower Git objects and writes only upper validation."
+  ],
+  "prewired_command_argv": [
+    "python",
+    "-B",
+    "tools/faraday_upper_art/run_companion_lower_candidate_intake_comp_req_497.py",
+    "--mode",
+    "successor",
+    "--repo-root",
+    ".",
+    "--lower-root",
+    "<LOWER_ROOT>",
+    "--expected-commit",
+    "<EXACT_40_HEX_SUCCESSOR_COMMIT>",
+    "--lower-machine-ready",
+    "<EXACT_LOWER_MACHINE_READY_PATH>",
+    "--expected-lower-machine-ready-sha256",
+    "<EXACT_64_HEX_LOWER_MR_SHA256>",
+    "--runner-binding",
+    "<RUNNER_REPO_PATH>=<EXACT_COMMITTED_SHA256>",
+    "--supervisor-binding",
+    "<SUPERVISOR_REPO_PATH>=<EXACT_COMMITTED_SHA256>",
+    "--tool-binding",
+    "<TOOL_REPO_PATH>=<EXACT_COMMITTED_SHA256>",
+    "--compatibility-auditor",
+    "tools/faraday_upper_art/audit_companion_upper_lower_compatibility_comp_req_474.py",
+    "--expected-compatibility-auditor-sha256",
+    "4A8A23D8E72D5B04290E5788B9486F540E41722AFB40A1C7C5C795BED5A168D7",
+    "--compatibility-output",
+    "docs/validation/companion-browser-visual-contract-comp-req-471/comp-req-497-candidate-intake/<SUCCESSOR_COMMIT12>-upper-lower-compatibility.json",
+    "--output",
+    "docs/validation/companion-browser-visual-contract-comp-req-471/comp-req-497-candidate-intake/<SUCCESSOR_COMMIT12>-candidate-intake.json"
+  ],
+  "requirements": [
+    "COMP-REQ-497"
+  ],
+  "schema": "companion.comp-req-497.lower-candidate-template.v1",
+  "side_effect_counters": {
+    "browser": 0,
+    "execute": 0,
+    "hardware": 0,
+    "lower_write": 0,
+    "platform_write": 0,
+    "popup": 0,
+    "production_write": 0,
+    "prompt": 0,
+    "push": 0,
+    "registry_write": 0,
+    "server": 0,
+    "upper_artifact_writes": 1
+  },
+  "status": "PREWIRED_NO_SUCCESSOR_PASS",
+  "upper_baseline_commit": "c677deef3d94190e16a08fb83cf45d4bb7d820a5"
+}

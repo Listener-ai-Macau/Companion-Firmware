@@ -1,0 +1,444 @@
+{
+  "bindings": {
+    "baseline_machine_ready": {
+      "path": "C:/Users/Billy/Desktop/Denzic/Companion/.cache/comp-req-466-r7-runtime/.cache/validation/comp-req-488-lower/MACHINE_READY.json",
+      "sha256": "8BD2C5F3F9CEFD4794DEC29C6C244A66C0A7F99D495E9A221465019C355FB04F"
+    },
+    "compatibility_auditor": {
+      "path": "tools/faraday_upper_art/audit_companion_upper_lower_compatibility_comp_req_474.py",
+      "sha256": "4A8A23D8E72D5B04290E5788B9486F540E41722AFB40A1C7C5C795BED5A168D7"
+    },
+    "intake_runner": {
+      "path": "tools/faraday_upper_art/run_companion_lower_candidate_intake_comp_req_497.py",
+      "sha256": "5DD10A8D41922DCE368C9C55AE97C7A67166175CDC63647A4EFA4B41159126A3"
+    },
+    "rejected_c250_machine_ready": {
+      "path": "C:/Users/Billy/Desktop/Denzic/Companion/.cache/comp-req-466-r7-runtime/.cache/validation/comp-req-494-visual-touch/MACHINE_READY.json",
+      "sha256": "0003E26B56CA55ED257B56C12821F11B5BEC3A06063DE87ABB32F6C808B2D0A1"
+    }
+  },
+  "known_rejected_c250_diagnostic": {
+    "aggregate_claim_detection_pass": true,
+    "aggregate_claims": [
+      {
+        "json_pointer": "/result/faraday_pairs",
+        "reason": "forbidden_aggregate_key"
+      },
+      {
+        "json_pointer": "/result/mapping_rows",
+        "reason": "forbidden_aggregate_key"
+      },
+      {
+        "json_pointer": "/result/no_op_rows",
+        "reason": "forbidden_aggregate_key"
+      },
+      {
+        "json_pointer": "/result/stdout",
+        "reason": "forbidden_aggregate_token:10/10"
+      },
+      {
+        "json_pointer": "/result/stdout",
+        "reason": "forbidden_aggregate_token:21/21"
+      },
+      {
+        "json_pointer": "/result/stdout",
+        "reason": "forbidden_aggregate_token:59/59"
+      }
+    ],
+    "commit": "c250436e2cc3fcc8d706363fc33fc666f76dbefa",
+    "direct_fixture_injection_detected": true,
+    "injections": [
+      {
+        "direct_call": "companion_visual_runtime_enqueue_visual_event",
+        "event_tokens": [
+          "COMPANION_VISUAL_EVENT_EARLY_UP_CANCEL_BLUR_OR_DRAG",
+          "COMPANION_VISUAL_EVENT_POINTER_DRAG_CENTER"
+        ],
+        "path": "tools/comp_req_494_visual_touch_trace.c",
+        "sha256": "7A9C1796594C6B50D9D6C085B970093E0E82632C0B873EA25B71A628CCB95915"
+      }
+    ],
+    "successor_ready_claimed": false
+  },
+  "negative_tamper_matrix": {
+    "fixture_count": 31,
+    "fixtures": [
+      {
+        "expected_ready": true,
+        "id": "control_all_required_observations",
+        "mutated_check": null,
+        "observed_ready": true,
+        "pass": true
+      },
+      {
+        "expected_ready": false,
+        "failed_checks": [
+          "successor_not_baseline"
+        ],
+        "id": "stale_4dd_commit",
+        "mutated_check": "successor_not_baseline",
+        "observed_ready": false,
+        "pass": true
+      },
+      {
+        "expected_ready": false,
+        "failed_checks": [
+          "successor_mr_not_baseline"
+        ],
+        "id": "stale_4dd_machine_ready",
+        "mutated_check": "successor_mr_not_baseline",
+        "observed_ready": false,
+        "pass": true
+      },
+      {
+        "expected_ready": false,
+        "failed_checks": [
+          "successor_has_no_stale_upper_hash"
+        ],
+        "id": "stale_4dd_upper_artifact",
+        "mutated_check": "successor_has_no_stale_upper_hash",
+        "observed_ready": false,
+        "pass": true
+      },
+      {
+        "expected_ready": false,
+        "failed_checks": [
+          "lower_worktree_clean"
+        ],
+        "id": "dirty_worktree_mapping",
+        "mutated_check": "lower_worktree_clean",
+        "observed_ready": false,
+        "pass": true
+      },
+      {
+        "expected_ready": false,
+        "failed_checks": [
+          "lower_head_exact"
+        ],
+        "id": "uncommitted_only_mapping",
+        "mutated_check": "lower_head_exact",
+        "observed_ready": false,
+        "pass": true
+      },
+      {
+        "expected_ready": false,
+        "failed_checks": [
+          "mr_hash_exact"
+        ],
+        "id": "machine_ready_hash_drift",
+        "mutated_check": "mr_hash_exact",
+        "observed_ready": false,
+        "pass": true
+      },
+      {
+        "expected_ready": false,
+        "failed_checks": [
+          "mr_source_commit_exact"
+        ],
+        "id": "machine_ready_source_commit_drift",
+        "mutated_check": "mr_source_commit_exact",
+        "observed_ready": false,
+        "pass": true
+      },
+      {
+        "expected_ready": false,
+        "failed_checks": [
+          "mr_schema_exact"
+        ],
+        "id": "machine_ready_schema_drift",
+        "mutated_check": "mr_schema_exact",
+        "observed_ready": false,
+        "pass": true
+      },
+      {
+        "expected_ready": false,
+        "failed_checks": [
+          "runner_identity_exact"
+        ],
+        "id": "runner_identity_drift",
+        "mutated_check": "runner_identity_exact",
+        "observed_ready": false,
+        "pass": true
+      },
+      {
+        "expected_ready": false,
+        "failed_checks": [
+          "supervisor_identity_exact"
+        ],
+        "id": "supervisor_identity_drift",
+        "mutated_check": "supervisor_identity_exact",
+        "observed_ready": false,
+        "pass": true
+      },
+      {
+        "expected_ready": false,
+        "failed_checks": [
+          "tool_identities_exact"
+        ],
+        "id": "tool_identity_drift",
+        "mutated_check": "tool_identities_exact",
+        "observed_ready": false,
+        "pass": true
+      },
+      {
+        "expected_ready": false,
+        "failed_checks": [
+          "tool_identities_declared"
+        ],
+        "id": "tool_identity_undeclared",
+        "mutated_check": "tool_identities_declared",
+        "observed_ready": false,
+        "pass": true
+      },
+      {
+        "expected_ready": false,
+        "failed_checks": [
+          "source_roles_complete"
+        ],
+        "id": "source_role_missing",
+        "mutated_check": "source_roles_complete",
+        "observed_ready": false,
+        "pass": true
+      },
+      {
+        "expected_ready": false,
+        "failed_checks": [
+          "source_blobs_exact"
+        ],
+        "id": "source_blob_wrong",
+        "mutated_check": "source_blobs_exact",
+        "observed_ready": false,
+        "pass": true
+      },
+      {
+        "expected_ready": false,
+        "failed_checks": [
+          "production_source_changed"
+        ],
+        "id": "production_source_unchanged",
+        "mutated_check": "production_source_changed",
+        "observed_ready": false,
+        "pass": true
+      },
+      {
+        "expected_ready": false,
+        "failed_checks": [
+          "direct_fixture_injection_absent"
+        ],
+        "id": "direct_fixture_event_injection",
+        "mutated_check": "direct_fixture_injection_absent",
+        "observed_ready": false,
+        "pass": true
+      },
+      {
+        "expected_ready": false,
+        "failed_checks": [
+          "aggregate_claims_absent"
+        ],
+        "id": "claimed_aggregate_totals",
+        "mutated_check": "aggregate_claims_absent",
+        "observed_ready": false,
+        "pass": true
+      },
+      {
+        "expected_ready": false,
+        "failed_checks": [
+          "event_records_exact"
+        ],
+        "id": "event_record_mismatch",
+        "mutated_check": "event_records_exact",
+        "observed_ready": false,
+        "pass": true
+      },
+      {
+        "expected_ready": false,
+        "failed_checks": [
+          "pair_records_exact"
+        ],
+        "id": "pair_record_mismatch",
+        "mutated_check": "pair_records_exact",
+        "observed_ready": false,
+        "pass": true
+      },
+      {
+        "expected_ready": false,
+        "failed_checks": [
+          "noop_records_exact"
+        ],
+        "id": "semantic_noop_record_mismatch",
+        "mutated_check": "noop_records_exact",
+        "observed_ready": false,
+        "pass": true
+      },
+      {
+        "expected_ready": false,
+        "failed_checks": [
+          "compatibility_commit_exact"
+        ],
+        "id": "compatibility_commit_drift",
+        "mutated_check": "compatibility_commit_exact",
+        "observed_ready": false,
+        "pass": true
+      },
+      {
+        "expected_ready": false,
+        "failed_checks": [
+          "compatibility_status_pass"
+        ],
+        "id": "compatibility_status_claim_only",
+        "mutated_check": "compatibility_status_pass",
+        "observed_ready": false,
+        "pass": true
+      },
+      {
+        "expected_ready": false,
+        "failed_checks": [
+          "compatibility_events_21"
+        ],
+        "id": "compatibility_event_gap",
+        "mutated_check": "compatibility_events_21",
+        "observed_ready": false,
+        "pass": true
+      },
+      {
+        "expected_ready": false,
+        "failed_checks": [
+          "compatibility_pairs_59"
+        ],
+        "id": "compatibility_pair_gap",
+        "mutated_check": "compatibility_pairs_59",
+        "observed_ready": false,
+        "pass": true
+      },
+      {
+        "expected_ready": false,
+        "failed_checks": [
+          "compatibility_noops_10"
+        ],
+        "id": "compatibility_noop_gap",
+        "mutated_check": "compatibility_noops_10",
+        "observed_ready": false,
+        "pass": true
+      },
+      {
+        "expected_ready": false,
+        "failed_checks": [
+          "compatibility_polarity_terminal_qualification"
+        ],
+        "id": "compatibility_polarity_or_terminal_gap",
+        "mutated_check": "compatibility_polarity_terminal_qualification",
+        "observed_ready": false,
+        "pass": true
+      },
+      {
+        "expected_ready": false,
+        "failed_checks": [
+          "compatibility_side_effects_zero"
+        ],
+        "id": "compatibility_nonzero_side_effect",
+        "mutated_check": "compatibility_side_effects_zero",
+        "observed_ready": false,
+        "pass": true
+      },
+      {
+        "expected_ready": false,
+        "failed_checks": [
+          "mr_side_effects_zero"
+        ],
+        "id": "machine_ready_nonzero_side_effect",
+        "mutated_check": "mr_side_effects_zero",
+        "observed_ready": false,
+        "pass": true
+      },
+      {
+        "expected_ready": false,
+        "failed_checks": [
+          "upper_baseline_exact"
+        ],
+        "id": "upper_baseline_drift",
+        "mutated_check": "upper_baseline_exact",
+        "observed_ready": false,
+        "pass": true
+      },
+      {
+        "expected_ready": false,
+        "failed_checks": [
+          "lower_commit_exact"
+        ],
+        "id": "lower_commit_object_drift",
+        "mutated_check": "lower_commit_exact",
+        "observed_ready": false,
+        "pass": true
+      }
+    ],
+    "pass_count": 31
+  },
+  "positive_fixture": {
+    "expected_counts": {
+      "events": 17,
+      "pairs": 51,
+      "semantic_noops": 8
+    },
+    "expected_disposition": "BASELINE_NO_GO_VERIFIED",
+    "id": "known_4dd_truthful_no_go",
+    "runs": [
+      {
+        "compatibility_sha256": "F6504C998C5127355DA63C28B8910D8126650D6319779A95C4DEC604B1779104",
+        "counts": {
+          "events": 17,
+          "pairs": 51,
+          "semantic_noops": 8
+        },
+        "failed_checks": [],
+        "mr_tool_claims_not_promoted": true,
+        "result_sha256": "900AB61CA9B89B766BE6330A07001340670CA7E6E24F5F66BFB40E85CB9371D7",
+        "return_code": 0,
+        "status": "BASELINE_NO_GO_VERIFIED",
+        "stderr": "",
+        "stdout": "{\"artifact_sha256\": \"900AB61CA9B89B766BE6330A07001340670CA7E6E24F5F66BFB40E85CB9371D7\", \"failed_check_count\": 0, \"mode\": \"baseline-no-go\", \"status\": \"BASELINE_NO_GO_VERIFIED\"}"
+      },
+      {
+        "compatibility_sha256": "F6504C998C5127355DA63C28B8910D8126650D6319779A95C4DEC604B1779104",
+        "counts": {
+          "events": 17,
+          "pairs": 51,
+          "semantic_noops": 8
+        },
+        "failed_checks": [],
+        "mr_tool_claims_not_promoted": true,
+        "result_sha256": "900AB61CA9B89B766BE6330A07001340670CA7E6E24F5F66BFB40E85CB9371D7",
+        "return_code": 0,
+        "status": "BASELINE_NO_GO_VERIFIED",
+        "stderr": "",
+        "stdout": "{\"artifact_sha256\": \"900AB61CA9B89B766BE6330A07001340670CA7E6E24F5F66BFB40E85CB9371D7\", \"failed_check_count\": 0, \"mode\": \"baseline-no-go\", \"status\": \"BASELINE_NO_GO_VERIFIED\"}"
+      }
+    ],
+    "status": "PASS"
+  },
+  "requirements": [
+    "COMP-REQ-494",
+    "COMP-REQ-497"
+  ],
+  "schema": "companion.comp-req-497.candidate-intake-fixtures.v1",
+  "side_effect_counters": {
+    "browser": 0,
+    "execute": 0,
+    "hardware": 0,
+    "lower_write": 0,
+    "platform_write": 0,
+    "popup": 0,
+    "production_write": 0,
+    "prompt": 0,
+    "push": 0,
+    "read_only_baseline_intake_processes": 2,
+    "read_only_git_processes": 11,
+    "registry_write": 0,
+    "server": 0,
+    "upper_artifact_writes": 1
+  },
+  "status": "PASS_CANDIDATE_INTAKE_FIXTURES",
+  "validator": {
+    "path": "tools/faraday_upper_art/validate_companion_lower_candidate_intake_comp_req_497.py",
+    "sha256": "8A7C3E54DC49CB0D5B84904B9127E4047BAEAE6768A3EFBEBA2B47768A554C3C"
+  }
+}

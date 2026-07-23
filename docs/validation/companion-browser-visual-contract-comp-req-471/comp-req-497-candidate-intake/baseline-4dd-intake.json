@@ -1,0 +1,161 @@
+{
+  "checks": {
+    "baseline_commit_and_mr_exact": true,
+    "baseline_mr_tool_claims_not_promoted": true,
+    "baseline_no_go_counts_exact": true,
+    "compatibility_commit_exact": true,
+    "compatibility_side_effects_zero": true,
+    "lower_commit_exact": true,
+    "mr_hash_exact": true,
+    "runner_identity_exact": true,
+    "supervisor_identity_exact": true,
+    "tool_identities_exact": true,
+    "upper_baseline_exact": true
+  },
+  "compatibility": {
+    "path": "docs/validation/companion-browser-visual-contract-comp-req-471/comp-req-497-candidate-intake/upper-lower-compatibility-comp-req-497-baseline-4dd.json",
+    "process_consistent": true,
+    "process_return_code": 1,
+    "process_stderr": "",
+    "process_stdout": "{\"artifact_sha256\": \"F6504C998C5127355DA63C28B8910D8126650D6319779A95C4DEC604B1779104\", \"c692_expected_no_go_signature\": false, \"events_realizable\": \"17/21\", \"mode\": \"comparison\", \"noops_realizable\": \"8/10\", \"pairs_realizable\": \"51/59\", \"polarity_bridge\": true, \"qualification_valid\": true, \"status\": \"NO_GO_UPPER_LOWER_EVENT_PATH_GAPS\", \"terminal_retention\": true}",
+    "sha256": "F6504C998C5127355DA63C28B8910D8126650D6319779A95C4DEC604B1779104"
+  },
+  "default_off": true,
+  "failed_checks": [],
+  "generator": {
+    "path": "tools/faraday_upper_art/run_companion_lower_candidate_intake_comp_req_497.py",
+    "sha256": "5DD10A8D41922DCE368C9C55AE97C7A67166175CDC63647A4EFA4B41159126A3"
+  },
+  "lower_binding": {
+    "expected_commit": "4ddf9709034d307b333510c27e3e0a45c7ed6d15",
+    "expected_machine_ready_sha256": "8BD2C5F3F9CEFD4794DEC29C6C244A66C0A7F99D495E9A221465019C355FB04F",
+    "machine_ready_path": "C:/Users/Billy/Desktop/Denzic/Companion/.cache/comp-req-466-r7-runtime/.cache/validation/comp-req-488-lower/MACHINE_READY.json",
+    "observed_machine_ready_sha256": "8BD2C5F3F9CEFD4794DEC29C6C244A66C0A7F99D495E9A221465019C355FB04F",
+    "production_source_identities": [],
+    "resolved_commit": "4ddf9709034d307b333510c27e3e0a45c7ed6d15",
+    "root": "C:/Users/Billy/Desktop/Denzic/Companion/.cache/comp-req-466-r7-runtime",
+    "tool_identities": [
+      {
+        "bytes": 73047,
+        "match": true,
+        "observed_sha256": "890DCB397AA10B1E09A2B7BC1616134BF9EF3076CDDBE95D178862A7CA369FA4",
+        "path": "tools/run_wb55_ssd1681_r7_locked_v9.ps1",
+        "sha256": "890DCB397AA10B1E09A2B7BC1616134BF9EF3076CDDBE95D178862A7CA369FA4"
+      },
+      {
+        "bytes": 18985,
+        "match": true,
+        "observed_sha256": "91F2D42F50530BE53834D8D8CFF056B7A3D9C8AB51BFD74817D0D13812876F9E",
+        "path": "tools/supervise_wb55_ssd1681_r7_locked_v9.ps1",
+        "sha256": "91F2D42F50530BE53834D8D8CFF056B7A3D9C8AB51BFD74817D0D13812876F9E"
+      },
+      {
+        "bytes": 21429,
+        "match": true,
+        "observed_sha256": "0B08F7444ACA3D67782FCE19F3B135AD7255120555A1F8812DE7C3C486D2DF0D",
+        "path": "tools/verify_comp_req_472_visual_runtime.py",
+        "sha256": "0B08F7444ACA3D67782FCE19F3B135AD7255120555A1F8812DE7C3C486D2DF0D"
+      }
+    ]
+  },
+  "mode": "baseline-no-go",
+  "observations": {
+    "aggregate_claims": [],
+    "compatibility_status": "NO_GO_UPPER_LOWER_EVENT_PATH_GAPS",
+    "compatibility_summary": {
+      "c173_no_go_preserved_when_selected": null,
+      "c692_expected_no_go_signature": false,
+      "comparison_complete": false,
+      "emit_failure_terminal_latched": true,
+      "events": {
+        "mapping_ambiguous": 1,
+        "mapping_mapped": 17,
+        "mapping_missing": 3,
+        "realizable": 17,
+        "total": 21
+      },
+      "pairs": {
+        "pixel_noop": 10,
+        "realizable": 51,
+        "semantic_noop_realizable": 8,
+        "total": 59
+      },
+      "polarity_bridge_realizable": true,
+      "pretransport_build_failure_terminal_latched": true,
+      "pretransport_frame_lookup_failure_terminal_latched": true,
+      "qualification_valid": true,
+      "states": {
+        "identity_mapped": 17,
+        "total": 17
+      },
+      "terminal_retention": true
+    },
+    "direct_fixture_injections": [],
+    "errors": [],
+    "event_record_count": 21,
+    "pair_record_count": 59,
+    "semantic_noop_record_count": 10
+  },
+  "requirements": [
+    "COMP-REQ-494",
+    "COMP-REQ-497"
+  ],
+  "schema": "companion.comp-req-497.lower-candidate-intake-result.v1",
+  "side_effect_counters": {
+    "browser": 0,
+    "execute": 0,
+    "hardware": 0,
+    "lower_write": 0,
+    "platform_write": 0,
+    "popup": 0,
+    "production_write": 0,
+    "prompt": 0,
+    "push": 0,
+    "read_only_auditor_processes": 1,
+    "read_only_git_processes": 8,
+    "registry_write": 0,
+    "server": 0,
+    "upper_artifact_writes": 2
+  },
+  "status": "BASELINE_NO_GO_VERIFIED",
+  "successor_contract": {
+    "aggregate_claims_forbidden": true,
+    "direct_changed_fixture_event_injection_forbidden": true,
+    "records_are_recomputed_from_corrected_auditor": true,
+    "required_source_roles": [
+      "gaze_controller",
+      "hold_cancel_controller",
+      "main_dispatch",
+      "menu_controller",
+      "visual_runtime"
+    ],
+    "schema": "companion.comp-req-497.candidate-intake.v1",
+    "successor_pass_not_inferred_from_lower_status_or_totals": true
+  },
+  "upper_baseline": {
+    "commit": "c677deef3d94190e16a08fb83cf45d4bb7d820a5",
+    "identities": [
+      {
+        "bytes": 6504,
+        "match": true,
+        "observed_sha256": "86B97DAAEBD9DEEE76DDF2DBFCDAA61727E72127C6EE2D5F2B729C2243473BDD",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/auditor-main-review-provenance.json",
+        "sha256": "86B97DAAEBD9DEEE76DDF2DBFCDAA61727E72127C6EE2D5F2B729C2243473BDD"
+      },
+      {
+        "bytes": 84661,
+        "match": true,
+        "observed_sha256": "4A8A23D8E72D5B04290E5788B9486F540E41722AFB40A1C7C5C795BED5A168D7",
+        "path": "tools/faraday_upper_art/audit_companion_upper_lower_compatibility_comp_req_474.py",
+        "sha256": "4A8A23D8E72D5B04290E5788B9486F540E41722AFB40A1C7C5C795BED5A168D7"
+      },
+      {
+        "bytes": 87933,
+        "match": true,
+        "observed_sha256": "9FFE3A8E140791309C73CCF39A0BD0B63CC22387440E519F949BBCDBEB3C4948",
+        "path": "tools/faraday_upper_art/run_companion_joint_offline_gate_comp_req_479.py",
+        "sha256": "9FFE3A8E140791309C73CCF39A0BD0B63CC22387440E519F949BBCDBEB3C4948"
+      }
+    ]
+  }
+}
