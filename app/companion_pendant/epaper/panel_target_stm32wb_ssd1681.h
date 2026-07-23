@@ -18,6 +18,8 @@ void companion_epaper_panel_stm32wb_ssd1681_set_wait_service(
     companion_epaper_wait_service_fn service,
     void *context,
     uint16_t period_ms);
+bool companion_epaper_panel_stm32wb_ssd1681_set_temporary_partial_limit(
+    uint8_t partial_limit);
 
 #ifdef __cplusplus
 }

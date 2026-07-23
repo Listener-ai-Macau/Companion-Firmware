@@ -1,0 +1,45 @@
+{
+  "schema_id": "companion.ssd1681.r12_controller_window.r6.work_package.v1",
+  "requirement": "COMP-REQ-393",
+  "status": "OFFLINE_ONLY",
+  "scope": "R12 setup corridor controller Y window and counter only",
+  "logical_window": "x-byte 4..21,y22..127",
+  "controller_mapping": "controller_y=199-logical_y",
+  "controller_window": "x-byte 4..21,y177..72",
+  "ram_45": ["B1", "00", "48", "00"],
+  "counter_4f": ["B1", "00"],
+  "corridor_bytes": 1908,
+  "unchanged": [
+    "payload row order and bytes",
+    "frame and payload hashes",
+    "0x24",
+    "0xCF",
+    "0x20",
+    "BUSY and timing",
+    "waveform and command topology",
+    "source art and asset header"
+  ],
+  "negative_fixtures": [
+    "old controller 127..22",
+    "wrong 0x4F counter",
+    "window/counter mismatch",
+    "wrong data-entry direction",
+    "stacked baseline y22..127 plus movement y72..177"
+  ],
+  "build_recipe": {
+    "exact_command": "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1 -EpaperSsd1681R12V22CalmCuriousWarmSamplerDiagnostic -Optimization O2 -Force",
+    "optimization": "O2",
+    "expected_hex_sha256_before_controller_fix": "09DA5F16F7E7D2909A61AD54DCA842A8CAA9054D47A89AB31580FF20502FA4D2",
+    "expected_elf_sha256_before_controller_fix": "7F07560F1AB0500387292DFD92F58812AF0D37869CD9E3216AD6DE0F3D1D89F7",
+    "current_driver_sha256": "92C3302096CBD826F74952BEA976C91BD2EB9521BBEFB530CCC997AFE99F0FB5",
+    "current_hex_sha256": "25E826AE96E4D4242E2CD5E936D0F337F51DD99EACC63D222D5592E763249515",
+    "current_elf_sha256": "EAFDF99C968C779AFAAE952BE2E2B5325AC0BA9BC723BEAA71A994D5713E1916"
+  },
+  "hardware": {
+    "authorized": false,
+    "claim_only": false,
+    "execute": false,
+    "flash": false,
+    "contact": false
+  }
+}

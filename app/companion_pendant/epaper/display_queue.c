@@ -299,6 +299,44 @@ size_t comp_epaper_display_queue_discard_kind(
     return original_count - kept_count;
 }
 
+size_t comp_epaper_display_queue_discard_display_flags(
+    comp_epaper_display_queue_t *queue,
+    uint16_t required_flags)
+{
+    size_t source_index;
+    size_t destination_index;
+    size_t original_count;
+    size_t kept_count = 0u;
+
+    if (queue == NULL || required_flags == 0u) {
+        return 0u;
+    }
+
+    source_index = queue->read_index;
+    destination_index = queue->read_index;
+    original_count = queue->count;
+    for (size_t index = 0u; index < original_count; ++index) {
+        comp_epaper_display_request_t *source = &queue->items[source_index];
+        if ((source->display_flags & required_flags) != required_flags) {
+            if (destination_index != source_index) {
+                queue->items[destination_index] = *source;
+            }
+            destination_index = comp_epaper_queue_advance(destination_index);
+            kept_count++;
+        }
+        source_index = comp_epaper_queue_advance(source_index);
+    }
+
+    source_index = destination_index;
+    for (size_t index = kept_count; index < original_count; ++index) {
+        memset(&queue->items[source_index], 0, sizeof(queue->items[source_index]));
+        source_index = comp_epaper_queue_advance(source_index);
+    }
+    queue->write_index = destination_index;
+    queue->count = kept_count;
+    return original_count - kept_count;
+}
+
 void comp_epaper_display_queue_snapshot(const comp_epaper_display_queue_t *queue,
                                         comp_epaper_display_queue_snapshot_t *out_snapshot)
 {

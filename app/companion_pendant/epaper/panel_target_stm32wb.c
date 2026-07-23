@@ -19,3 +19,13 @@ void companion_epaper_panel_stm32wb_init(
     comp_epaper_panel_adapter_init_dry_run(adapter);
 #endif
 }
+
+bool companion_epaper_panel_stm32wb_set_temporary_partial_limit(uint8_t partial_limit)
+{
+#if COMPANION_EPAPER_PANEL_SSD1681_BRINGUP
+    return companion_epaper_panel_stm32wb_ssd1681_set_temporary_partial_limit(partial_limit);
+#else
+    (void)partial_limit;
+    return false;
+#endif
+}

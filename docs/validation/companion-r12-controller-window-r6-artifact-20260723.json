@@ -1,0 +1,61 @@
+{
+  "schema_id": "companion.ssd1681.r12_controller_window.r6.v1",
+  "requirement": "COMP-REQ-393",
+  "status": "PASS_OFFLINE_CONTROLLER_WINDOW",
+  "driver_sha256": "92C3302096CBD826F74952BEA976C91BD2EB9521BBEFB530CCC997AFE99F0FB5",
+  "logical_window": [
+    4,
+    21,
+    22,
+    127
+  ],
+  "controller_window": [
+    4,
+    21,
+    177,
+    72
+  ],
+  "ram_y_bytes": [
+    "B1",
+    "00",
+    "48",
+    "00"
+  ],
+  "y_counter_bytes": [
+    "B1",
+    "00"
+  ],
+  "logical_to_controller": "controller_y=199-logical_y",
+  "corridor_bytes": 1908,
+  "frame_sha256_unchanged": {
+    "calm": "15788734073049E9967DEA97783522CE1139023FC0AD9BA0F1C5375F2F2E555C",
+    "curious": "E98E7E347943A67F92735E9F83F71D12FC214944C7E27B8B8E0225B0F5514705",
+    "warm": "931CADB6B5209BB7B3035585994664281B037753605939EFC745A62A5889E29B"
+  },
+  "payload_sha256_unchanged": {
+    "calm": "6FFA8C8A70D87DC46AC323BFF385FEAAAD25A4C6E67E875B8030844A8158CC5B",
+    "curious": "B3FF181ED6993CBBC4DE692941793CC81C7B3D40A99528D332CBAFF54D1F6A18",
+    "warm": "15CAAB219B74A45B4E0F8F5E3CB046DB3554264E1D48DB92CE13F8260FDCD2C4"
+  },
+  "protected_topology": [
+    "0x24",
+    "0xCF",
+    "0x20",
+    "BUSY",
+    "official_cached_mode2"
+  ],
+  "negative_fixtures": {
+    "old_127_to_22": "rejected",
+    "wrong_counter": "rejected",
+    "window_counter_mismatch": "rejected",
+    "wrong_direction": "rejected",
+    "stacked_y22_to_127_plus_y72_to_177": "rejected"
+  },
+  "build": {
+    "recipe": "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1 -EpaperSsd1681R12V22CalmCuriousWarmSamplerDiagnostic -Optimization O2 -Force",
+    "optimization": "O2"
+  },
+  "failures": [],
+  "hex_sha256": "25E826AE96E4D4242E2CD5E936D0F337F51DD99EACC63D222D5592E763249515",
+  "elf_sha256": "EAFDF99C968C779AFAAE952BE2E2B5325AC0BA9BC723BEAA71A994D5713E1916"
+}

@@ -13,6 +13,7 @@ extern "C" {
 
 #define COMP_EPAPER_DISPLAY_QUEUE_DEPTH 4u
 #define COMP_EPAPER_DISPLAY_PAYLOAD_MAX_BYTES 236u
+#define COMP_EPAPER_DISPLAY_FLAG_AUTO_MOTION 0x8000u
 
 typedef enum {
     COMP_EPAPER_DISPLAY_QUEUE_OK = 0,
@@ -155,6 +156,9 @@ bool comp_epaper_display_queue_dequeue(comp_epaper_display_queue_t *queue,
 size_t comp_epaper_display_queue_discard_kind(
     comp_epaper_display_queue_t *queue,
     comp_epaper_display_request_kind_t request_kind);
+size_t comp_epaper_display_queue_discard_display_flags(
+    comp_epaper_display_queue_t *queue,
+    uint16_t required_flags);
 
 void comp_epaper_display_queue_snapshot(const comp_epaper_display_queue_t *queue,
                                         comp_epaper_display_queue_snapshot_t *out_snapshot);

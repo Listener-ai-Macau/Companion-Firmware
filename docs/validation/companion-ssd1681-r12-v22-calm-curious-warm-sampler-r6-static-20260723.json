@@ -1,0 +1,267 @@
+{
+  "checks": {
+    "all_old_window_mutations_rejected": true,
+    "all_positive_host_windows_match_parser": true,
+    "commands_remain_software_vendor_edges": true,
+    "default_off": true,
+    "driver_parser_mismatch_negative_rejected": true,
+    "edge_order_low_data_nops_high_nops_shift": true,
+    "exact_1908_length": true,
+    "explicit_minimum_operation_count_is_8": true,
+    "final_scl_low": true,
+    "frequency_proof_32_div_8_is_4_below_20": true,
+    "helper_call_after_0x24": true,
+    "helper_call_fixed_buffer_and_sizeof": true,
+    "helper_call_only_in_r12_writer": true,
+    "helper_call_within_r12_guard": true,
+    "helper_not_used_by_baseline": true,
+    "helper_not_used_by_command": true,
+    "helper_reference_count_definition_plus_one_call": true,
+    "helper_used_by_r12_payload_only": true,
+    "high_phase_has_two_nops": true,
+    "launcher_binds_current_host_chain": true,
+    "launcher_exact_future_authorization_404": true,
+    "launcher_old_72_177_absent": true,
+    "launcher_old_72_177_mutation_rejected": true,
+    "launcher_selftest_rejects_386_388_389": true,
+    "launcher_selftest_req_404_field": true,
+    "low_phase_has_two_nops": true,
+    "monitor_old_72_177_mutation_rejected": true,
+    "monitor_old_window_only_in_negative_fixture": true,
+    "monitor_positive_window_matches_parser": true,
+    "msb_first": true,
+    "no_execute_or_claim_authority": true,
+    "old_r4_metadata_absent": true,
+    "old_window_only_in_negative_or_history_fixture": true,
+    "payload_bytes_come_from_row_copy": true,
+    "pixel_detail_artifact_complete": true,
+    "preview_files_exist_and_sha_match_difference_zero": true,
+    "production_off": true,
+    "protected_acceptance": true,
+    "r12_scoped_helper_definition": true,
+    "r3_static_regression_pass": true,
+    "r4_oracle_pass": true,
+    "r6_corridor_22_127": true,
+    "r6_mapping_applied_after_asset_copy": true,
+    "r6_mapping_helper_present": true,
+    "runner_exact_future_authorization_404": true,
+    "runner_old_72_177_mutation_rejected": true,
+    "runner_old_window_only_in_negative_fixture": true,
+    "runner_positive_window_matches_parser": true,
+    "runtime_metadata_exact_r6": true,
+    "runtime_metadata_parser_consistent": true,
+    "ssd1681_rev013_pdf_hash_matches": true,
+    "supervisor_old_72_177_mutation_rejected": true,
+    "supervisor_old_window_only_in_negative_fixture": true,
+    "supervisor_positive_window_matches_parser": true
+  },
+  "driver_sha256": "92C3302096CBD826F74952BEA976C91BD2EB9521BBEFB530CCC997AFE99F0FB5",
+  "errors": [],
+  "future_physical_authorization_requirement_id": "COMP-REQ-404",
+  "hardware_contact": 0,
+  "host_window_checks": {
+    "all_old_window_mutations_rejected": true,
+    "all_positive_host_windows_match_parser": true,
+    "launcher_binds_current_host_chain": true,
+    "launcher_old_72_177_absent": true,
+    "launcher_old_72_177_mutation_rejected": true,
+    "monitor_old_72_177_mutation_rejected": true,
+    "monitor_old_window_only_in_negative_fixture": true,
+    "monitor_positive_window_matches_parser": true,
+    "old_window_only_in_negative_or_history_fixture": true,
+    "runner_old_72_177_mutation_rejected": true,
+    "runner_old_window_only_in_negative_fixture": true,
+    "runner_positive_window_matches_parser": true,
+    "supervisor_old_72_177_mutation_rejected": true,
+    "supervisor_old_window_only_in_negative_fixture": true,
+    "supervisor_positive_window_matches_parser": true
+  },
+  "mapping_negative_fixtures": {
+    "double_transform": {
+      "rejected": true
+    },
+    "horizontal_only": {
+      "rejected": true
+    },
+    "missing_transform": {
+      "rejected": true
+    },
+    "rotation_only": {
+      "rejected": true
+    },
+    "wrong_corridor": {
+      "rejected": true
+    }
+  },
+  "metadata_checks": {
+    "driver_parser_mismatch_negative_rejected": true,
+    "old_r4_metadata_absent": true,
+    "pixel_detail_artifact_complete": true,
+    "preview_files_exist_and_sha_match_difference_zero": true,
+    "runtime_metadata_exact_r6": true,
+    "runtime_metadata_parser_consistent": true
+  },
+  "negative_fixtures": {
+    "fast_helper_used_by_baseline": {
+      "base_invariants_true": true,
+      "expected_false_invariants": [
+        "helper_not_used_by_baseline",
+        "helper_used_by_r12_payload_only"
+      ],
+      "mutated_invariants": {
+        "helper_not_used_by_baseline": false,
+        "helper_used_by_r12_payload_only": false
+      },
+      "rejected": true
+    },
+    "fast_helper_used_by_command": {
+      "base_invariants_true": true,
+      "expected_false_invariants": [
+        "helper_not_used_by_command",
+        "helper_used_by_r12_payload_only"
+      ],
+      "mutated_invariants": {
+        "helper_not_used_by_command": false,
+        "helper_used_by_r12_payload_only": false
+      },
+      "rejected": true
+    },
+    "fast_helper_used_outside_r12": {
+      "base_invariants_true": true,
+      "expected_false_invariants": [
+        "helper_call_within_r12_guard",
+        "helper_used_by_r12_payload_only"
+      ],
+      "mutated_invariants": {
+        "helper_call_within_r12_guard": false,
+        "helper_used_by_r12_payload_only": false
+      },
+      "rejected": true
+    },
+    "lsb_first": {
+      "base_invariants_true": true,
+      "expected_false_invariants": [
+        "msb_first",
+        "edge_order_low_data_nops_high_nops_shift",
+        "frequency_proof_32_div_8_is_4_below_20"
+      ],
+      "mutated_invariants": {
+        "edge_order_low_data_nops_high_nops_shift": false,
+        "frequency_proof_32_div_8_is_4_below_20": false,
+        "msb_first": false
+      },
+      "rejected": true
+    },
+    "missing_high_phase_nop": {
+      "base_invariants_true": true,
+      "expected_false_invariants": [
+        "high_phase_has_two_nops",
+        "explicit_minimum_operation_count_is_8",
+        "frequency_proof_32_div_8_is_4_below_20"
+      ],
+      "mutated_invariants": {
+        "explicit_minimum_operation_count_is_8": false,
+        "frequency_proof_32_div_8_is_4_below_20": false,
+        "high_phase_has_two_nops": false
+      },
+      "rejected": true
+    },
+    "missing_low_phase_nop": {
+      "base_invariants_true": true,
+      "expected_false_invariants": [
+        "low_phase_has_two_nops",
+        "explicit_minimum_operation_count_is_8",
+        "frequency_proof_32_div_8_is_4_below_20"
+      ],
+      "mutated_invariants": {
+        "explicit_minimum_operation_count_is_8": false,
+        "frequency_proof_32_div_8_is_4_below_20": false,
+        "low_phase_has_two_nops": false
+      },
+      "rejected": true
+    },
+    "payload_bytes_changed": {
+      "base_invariants_true": true,
+      "expected_false_invariants": [
+        "payload_bytes_come_from_row_copy"
+      ],
+      "mutated_invariants": {
+        "payload_bytes_come_from_row_copy": false
+      },
+      "rejected": true
+    },
+    "payload_length_not_1908": {
+      "base_invariants_true": true,
+      "expected_false_invariants": [
+        "exact_1908_length"
+      ],
+      "mutated_invariants": {
+        "exact_1908_length": false
+      },
+      "rejected": true
+    },
+    "wrong_edge_order": {
+      "base_invariants_true": true,
+      "expected_false_invariants": [
+        "edge_order_low_data_nops_high_nops_shift",
+        "frequency_proof_32_div_8_is_4_below_20"
+      ],
+      "mutated_invariants": {
+        "edge_order_low_data_nops_high_nops_shift": false,
+        "frequency_proof_32_div_8_is_4_below_20": false
+      },
+      "rejected": true
+    }
+  },
+  "popup_count": 0,
+  "r3_static_regression_artifact": "docs/validation/companion-ssd1681-r12-v22-calm-curious-warm-sampler-r3-static-20260722.json",
+  "r3_static_regression_artifact_sha256": "88A4DE84C40FAD770246A004CD3CF560395A9FF02CCC660573750B96C8C60516",
+  "r3_static_regression_pass": true,
+  "r3_static_verifier_sha256": "5A7C815D05F3BCDA5F47BC7E911E34AD91B3F76465EAC51205756358C66BF6A8",
+  "r6_oracle_artifact_sha256": "2811122967FF30545A814CFA5FA9C324B9BB213CD7F6703A76C0CFF0A4503E5D",
+  "r6_pixel_detail_artifact_sha256": "DEF3DCB34A9711CAD7938E632DF94B75EC15C77B9FE64778A6B7635A0BAC2CD5",
+  "retry_count": 0,
+  "schema_id": "companion.wb55.ssd1681.r12_v22_calm_curious_warm_sampler.static.v7",
+  "status": "PASS",
+  "transport_evidence": {
+    "conservative_scl_upper_bound_mhz": 4.0,
+    "controller_write_limit_mhz": 20,
+    "explicit_minimum_instruction_cycles_per_bit": 8,
+    "explicit_operations_per_bit": [
+      "SCL_LOW_BSRR",
+      "SDA_DATA_BSRR",
+      "LOW_NOP",
+      "LOW_NOP",
+      "SCL_HIGH_BSRR",
+      "HIGH_NOP",
+      "HIGH_NOP",
+      "SHIFT_LEFT"
+    ],
+    "helper_references": {
+      "all_calls_in_r12_guard": true,
+      "all_calls_in_writer": true,
+      "call_after_0x24": true,
+      "call_count": 1,
+      "call_fixed_buffer_and_sizeof": true,
+      "call_not_in_baseline": true,
+      "call_not_in_command": true,
+      "call_positions": [
+        202610
+      ],
+      "definition_position": 200250,
+      "guard_end": 202766,
+      "guard_start": 199787,
+      "reference_count": 2,
+      "writer_end": 202760,
+      "writer_start": 201096
+    },
+    "mcu_clock_mhz": 32,
+    "ssd1681_rev013_pdf_path": ".cache/validation/ssd1681-read-only-research/ssd1681-rev013-2.pdf",
+    "ssd1681_rev013_pdf_sha256": "2989DB3DBBCE190F6E1F065A169479BF4FE911896FF8805894549F792FE9B53B",
+    "writer_source_span": [
+      201096,
+      202760
+    ]
+  },
+  "write_counter_sum": 0
+}

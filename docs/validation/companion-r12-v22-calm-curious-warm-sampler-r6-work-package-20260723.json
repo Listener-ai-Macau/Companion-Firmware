@@ -1,0 +1,115 @@
+{
+  "schema_id": "companion.wb55.ssd1681.r12_v22_calm_curious_warm_sampler.r6.work_package.v1",
+  "status": "AUTHORIZED_OFFLINE_ONLY",
+  "requirement": "COMP-REQ-404",
+  "future_physical_authorization_requirement_id": "COMP-REQ-404",
+  "build_recipe": {
+    "exact_command": "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1 -EpaperSsd1681R12V22CalmCuriousWarmSamplerDiagnostic -Optimization O2 -Force",
+    "optimization": "O2",
+    "rotation_degrees": 180,
+    "mirror_x": 1,
+    "expected_hex_sha256": "25E826AE96E4D4242E2CD5E936D0F337F51DD99EACC63D222D5592E763249515",
+    "expected_elf_sha256": "EAFDF99C968C779AFAAE952BE2E2B5325AC0BA9BC723BEAA71A994D5713E1916",
+    "missing_optimization_is_invalid": true
+  },
+  "owner_result": {
+    "selected": "failure",
+    "operator_review_sha256": "EA1B8FEA4C77B8A229377A54F3C980558AC0E067DBE02C8D4C3A250EC5C875E4",
+    "operator_note_sha256": "3A524C0FA029FF0994C9B19AE3D85C4C52B233BCC7136131B788D5F259DC24ED",
+    "durable_steering": [
+      "Real-panel expression orientation and position must match the browser-accepted V22 frame.",
+      "The current real-panel face is reversed and positioned incorrectly.",
+      "In the mounted-product viewing orientation, the face must be centered on the panel and face downward.",
+      "A very light whole-screen dirty/flash impression remains during transitions and should be investigated only after mapping passes."
+    ]
+  },
+  "root_cause": {
+    "normal_target_rotation_degrees": 180,
+    "normal_target_mirror_x": 1,
+    "composed_transform": "vertical_flip",
+    "r12_bug": "native renderer copies the accepted controller asset without applying the normal target transform",
+    "physical_effect": "untransformed R12 bytes appear vertically reversed on the mounted panel"
+  },
+  "single_variable": {
+    "kind": "r12_lower_path_target_mapping",
+    "source_assets_changed": false,
+    "asset_header_changed": false,
+    "runtime_transform": "apply the exact normal target rotation-plus-mirror transform once to both previous and current R12 frames",
+    "old_corridor": [4, 21, 72, 177],
+    "new_corridor": [4, 21, 22, 127],
+    "corridor_bytes": 1908
+  },
+  "expected_hashes": {
+    "controller_frames": {
+      "calm": "15788734073049E9967DEA97783522CE1139023FC0AD9BA0F1C5375F2F2E555C",
+      "curious": "E98E7E347943A67F92735E9F83F71D12FC214944C7E27B8B8E0225B0F5514705",
+      "warm": "931CADB6B5209BB7B3035585994664281B037753605939EFC745A62A5889E29B"
+    },
+    "corridor_payloads": {
+      "calm": "6FFA8C8A70D87DC46AC323BFF385FEAAAD25A4C6E67E875B8030844A8158CC5B",
+      "curious": "B3FF181ED6993CBBC4DE692941793CC81C7B3D40A99528D332CBAFF54D1F6A18",
+      "warm": "15CAAB219B74A45B4E0F8F5E3CB046DB3554264E1D48DB92CE13F8260FDCD2C4"
+    }
+  },
+  "oracle": {
+    "required_physical_to_browser_pixel_difference": 0,
+    "aligned_human_preview": "same-canvas browser versus predicted mounted-panel image plus overlay/difference preview for each frame",
+    "preview_alignment_requirement": "identical pixel coordinates; any nonzero difference fails",
+    "required_negative_fixtures": [
+      "missing_transform",
+      "double_transform",
+      "horizontal_only",
+      "rotation_only",
+      "wrong_corridor"
+    ],
+    "source_pbm_bytes_must_remain_unchanged": true,
+    "asset_header_bytes_must_remain_unchanged": true
+  },
+  "protected": {
+    "waveform": "official_cached_mode2",
+    "movement_control": "0xCF",
+    "activation": "one_0x20_busy_per_movement",
+    "payload_transport": "r12_only_direct_bsrr_msb_first",
+    "busy_ms": "<=600",
+    "transaction_ms": "<=460",
+    "start_delta_ms": "1..480",
+    "ring_bytes": 65536,
+    "owner_prompt_timeout_seconds": 0,
+    "restore_bytes": 524288,
+    "restore_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "protected_acceptance_sha256": "8A3BDF4BD1254B0D0F4DE13A7F293C3D74587C800339ABD4C61FEB0B7737E227"
+  },
+  "flicker_disposition": {
+    "current_observation": "very_light_whole_screen_dirty_flash_per_transition",
+    "r6_action": "preserve_current_waveform_and_measure_only",
+    "future_action": "after mapping PASS, consider one separately authorized lower-driver waveform/control experiment",
+    "must_not_regress": ["background_clean", "no_residue", "no_clipping", "no_missing_segment"]
+  },
+  "normal_exit_steering": {
+    "requirement": "COMP-REQ-385",
+    "desired_product_behavior": "one fast full-screen product-frame refresh on normal exit",
+    "forbidden_product_behavior": "repeated or visually five-flash full refresh on normal exit",
+    "r6_action": "record only; do not change cleanup or exit implementation in the mapping candidate",
+    "fault_path": "retain the stronger promptless fail-closed engineering cleanup until a later isolated replacement is proven"
+  },
+  "allowed": [
+    "r12 runtime mapping",
+    "r12 corridor constants",
+    "r12 telemetry/parser/oracle/static negative fixtures",
+    "isolated build",
+    "persistent CheckOnly",
+    "stable offline MACHINE_READY"
+  ],
+  "forbidden": [
+    "source art edits",
+    "asset header edits",
+    "waveform or 0xCF control changes",
+    "production integration",
+    "touch-gaze integration",
+    "authorization creation",
+    "ClaimOnly",
+    "Execute",
+    "flash or hardware contact",
+    "dirty worktree cleanup"
+  ]
+}

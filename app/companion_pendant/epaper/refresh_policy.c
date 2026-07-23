@@ -37,7 +37,8 @@ comp_epaper_refresh_selection_t comp_epaper_refresh_policy_select(
              * touches never schedule this path after a quiet-time delay. */
             selection.decision = COMP_EPAPER_REFRESH_DECISION_FAST;
             selection.reason = COMP_EPAPER_REFRESH_REASON_MAINTENANCE_BOUNDARY;
-        } else if (policy->partial_count >= policy->partial_limit) {
+        } else if (policy->partial_limit != UINT8_MAX &&
+                   policy->partial_count >= policy->partial_limit) {
             selection.decision = COMP_EPAPER_REFRESH_DECISION_FAST;
             selection.reason = COMP_EPAPER_REFRESH_REASON_PARTIAL_LIMIT;
         } else {
@@ -128,6 +129,20 @@ bool comp_epaper_refresh_policy_self_test(void)
                                       true);
     selection = comp_epaper_refresh_policy_select(
         &policy, COMP_EPAPER_REFRESH_MAINTENANCE);
-    return selection.decision == COMP_EPAPER_REFRESH_DECISION_FAST &&
-           selection.reason == COMP_EPAPER_REFRESH_REASON_MAINTENANCE_BOUNDARY;
+    if (selection.decision != COMP_EPAPER_REFRESH_DECISION_FAST ||
+        selection.reason != COMP_EPAPER_REFRESH_REASON_MAINTENANCE_BOUNDARY) {
+        return false;
+    }
+
+    /* UINT8_MAX is reserved for a compile-time visual demo that must never
+     * inject an automatic maintenance refresh into its shared score. */
+    comp_epaper_refresh_policy_init(&policy, UINT8_MAX);
+    comp_epaper_refresh_policy_commit(&policy,
+                                      COMP_EPAPER_REFRESH_DECISION_FULL,
+                                      true);
+    policy.partial_count = UINT8_MAX;
+    selection = comp_epaper_refresh_policy_select(
+        &policy, COMP_EPAPER_REFRESH_PARTIAL_INTERACTIVE);
+    return selection.decision == COMP_EPAPER_REFRESH_DECISION_PARTIAL &&
+           selection.reason == COMP_EPAPER_REFRESH_REASON_REQUESTED_PARTIAL;
 }

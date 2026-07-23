@@ -1,0 +1,41 @@
+{
+  "schema_id": "companion.r6.lower_driver.physical_pass_summary.v1",
+  "status": "PASS_OWNER_ACCEPTED_R6_BASELINE",
+  "requirement": "COMP-REQ-405",
+  "source_stage_root": ".cache/validation/wb55-r12-v22-calm-curious-warm-sampler-r6-execute-20260723",
+  "source_stage_root_is_excluded_from_commit": true,
+  "owner_review": {
+    "selected": "通过",
+    "note_sha256": "C5901A3503691BC70E59BF3207EE9B454F6ED915AC41F7717FA235075560F979",
+    "review_sha256": "DF05F8A17A678C3CF4256412863312BA721FE33C488F8F0F70DE3E016D6F30CC"
+  },
+  "candidate": {
+    "driver_sha256": "92C3302096CBD826F74952BEA976C91BD2EB9521BBEFB530CCC997AFE99F0FB5",
+    "hex_sha256": "25E826AE96E4D4242E2CD5E936D0F337F51DD99EACC63D222D5592E763249515",
+    "elf_sha256": "EAFDF99C968C779AFAAE952BE2E2B5325AC0BA9BC723BEAA71A994D5713E1916",
+    "stage_sha256": "6BF3069352344C95C149EB8FEFF53D56CE8A166EF522E2A33DCD2091188AD450",
+    "monitor_sha256": "8943266E9C38E0EC171D564197FD7206AFA129714328088CA1E42035849DC712"
+  },
+  "physical_observation": {
+    "busy_ms": 443,
+    "transaction_ms": 452,
+    "max_start_delta_ms": 470,
+    "qualification_frames": 16,
+    "loop_records": 120,
+    "popup_count": 1,
+    "retry_count": 0,
+    "ring_bytes_limit": 65536,
+    "preclean_dual_plane_white": true,
+    "postclean_dual_plane_white": true,
+    "normal_resume": true,
+    "no_lingering_process": true
+  },
+  "restore": {
+    "bytes": 524288,
+    "baseline_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "restore_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "byte_identical": true
+  },
+  "protected_acceptance_sha256": "8A3BDF4BD1254B0D0F4DE13A7F293C3D74587C800339ABD4C61FEB0B7737E227",
+  "private_bytes_embedded": false
+}

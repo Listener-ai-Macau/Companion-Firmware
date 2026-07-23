@@ -1,0 +1,58 @@
+{
+  "checkonly_root": ".cache/validation/wb55-r12-v22-calm-curious-warm-sampler-r6-primary-checkonly-20260723-404",
+  "checks": {
+    "missing_parser_sha256_rejected": true,
+    "parser_sha256_alias_equals_parser": true,
+    "parser_sha256_alias_present": true,
+    "valid_manifest_passes_launcher_equivalent_gate": true,
+    "wrong_parser_sha256_rejected": true
+  },
+  "errors": [],
+  "future_physical_authorization_requirement_id": "COMP-REQ-404",
+  "hardware_contact": 0,
+  "launcher_sha256": "436E3A827BC354F8FFB5F9A00108C9E946114214D5A4D4FDE4285909A33A4775",
+  "lifecycle_artifact_sha256": "EE5BA97D47EC9BEAC9C7920457086745CD9C70C5456B567D010F7DDC307DA473",
+  "manifest_artifacts": {
+    "hex": "25E826AE96E4D4242E2CD5E936D0F337F51DD99EACC63D222D5592E763249515",
+    "launcher": "436E3A827BC354F8FFB5F9A00108C9E946114214D5A4D4FDE4285909A33A4775",
+    "monitor": "1E3ADCFB011F8CCFABEFA416956A11BD1F620F76169F1FD42C2CECC250757DD7",
+    "parser": "964F3E896CE2D8EAD8B722EFD78151232F84EF2571DCBA18D44CEF1028D5736C",
+    "parser_sha256": "964F3E896CE2D8EAD8B722EFD78151232F84EF2571DCBA18D44CEF1028D5736C",
+    "runner": "4A7DB3015642AA3A1D78DF600E1911F8074E14E441933740D4704DB7E7FBACFF",
+    "supervisor": "F877DE8CE2E17EBE0A9A10E1C0A85CB5B8665DA460431C398F81421FC7C35D81"
+  },
+  "negative_fixture_selftest": {
+    "artifact_field_mapping": {
+      "hex": "candidate_hex_sha256",
+      "launcher": "launcher_sha256",
+      "monitor": "monitor_sha256",
+      "parser_sha256": "parser_sha256",
+      "runner": "runner_sha256",
+      "supervisor": "supervisor_sha256"
+    },
+    "fixtures": {
+      "missing_parser_sha256": {
+        "pass": true,
+        "resulting_status": "NO_GO_MACHINE_MANIFEST",
+        "target_invariant": "artifact_parser_sha256_matches",
+        "target_invariant_false": true
+      },
+      "wrong_parser_sha256": {
+        "mutated_value": "0000000000000000000000000000000000000000000000000000000000000000",
+        "pass": true,
+        "resulting_status": "NO_GO_MACHINE_MANIFEST",
+        "target_invariant": "artifact_parser_sha256_matches",
+        "target_invariant_false": true
+      }
+    },
+    "gate": "launcher Validate-MachineManifest equivalent safety and artifact comparisons",
+    "pass": true,
+    "valid_manifest_passes": true
+  },
+  "popup_count": 0,
+  "requirement": "COMP-REQ-404",
+  "retry_count": 0,
+  "schema_id": "companion.wb55.ssd1681.r12_v22_calm_curious_warm_sampler.r4.manifest_compatibility.v1",
+  "status": "PASS",
+  "write_counter_sum": 0
+}

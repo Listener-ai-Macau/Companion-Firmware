@@ -33,6 +33,9 @@
 #ifndef COMPANION_SCREEN_BALL_MOTION_DIAGNOSTIC
 #define COMPANION_SCREEN_BALL_MOTION_DIAGNOSTIC 0
 #endif
+#ifndef COMPANION_SCREEN_V9_MANUAL_STEP_DIAGNOSTIC
+#define COMPANION_SCREEN_V9_MANUAL_STEP_DIAGNOSTIC 0
+#endif
 #ifndef COMPANION_EPAPER_SSD1681_VERBOSE_TRACE
 #define COMPANION_EPAPER_SSD1681_VERBOSE_TRACE 0
 #endif
@@ -1429,6 +1432,12 @@ static void handle_button_press(size_t index)
            (unsigned long)HAL_GetTick(),
            comp_recording_state_name(s_recording_fsm.state));
 
+#if COMPANION_SCREEN_V9_MANUAL_STEP_DIAGNOSTIC
+    printf("[v9-manual-step] action=ignored source=board_button name=%s\r\n",
+           s_buttons[index].name);
+    return;
+#endif
+
     if (index == 0u) {
         run_manual_probe_request();
     } else if (index == 1u) {
@@ -2055,7 +2064,13 @@ static void process_daily_tap_reaction(uint32_t now_ms)
            (unsigned)event.y,
            (unsigned long)(now_ms - (due_ms -
                                      TOUCH_DOUBLE_TAP_MAX_GAP_MS - 1u)));
-#if COMPANION_SCREEN_BALL_MOTION_DIAGNOSTIC
+#if COMPANION_SCREEN_V9_MANUAL_STEP_DIAGNOSTIC
+    const bool queued = Companion_Screen_V9ManualStepDiagnosticAdvance();
+    TOUCH_VERBOSE_TRACE("[touch-ui] v9_manual_step result=%s source=screen_tap x=%u y=%u\r\n",
+                        queued ? "queued" : "rejected",
+                        (unsigned)event.x,
+                        (unsigned)event.y);
+#elif COMPANION_SCREEN_BALL_MOTION_DIAGNOSTIC
     if (!Companion_Screen_BallMotionDiagnosticStart()) {
         TOUCH_VERBOSE_TRACE("[touch-ui] ball_motion_diagnostic action=ignored active=%u\r\n",
                             Companion_Screen_BallMotionDiagnosticIsActive() ? 1u : 0u);

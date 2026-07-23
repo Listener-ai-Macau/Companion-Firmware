@@ -49,8 +49,13 @@
 #include "emote_asset_pack.h"
 #include "emote_player.h"
 #include "expression_asset_source.h"
+#include "expression_choreographer.h"
 #include "expression_events.h"
+#include "expression_rig_frame_source.h"
 #include "expression_state.h"
+#include "generated/expression_rig_v9_candidate_profile.h"
+#include "generated/expression_rig_v22_emotion_separation_candidate_profile.h"
+#include "motion_coordinator.h"
 #include "menu_v5_target_bridge.h"
 #include "panel_adapter.h"
 #include "panel_target_stm32wb.h"
@@ -71,6 +76,14 @@
 #define COMPANION_SCREEN_EMOTE_DEMO 0
 #endif
 
+#ifndef COMPANION_SCREEN_STABLE_DAILY_RECOVERY_DEMO
+#define COMPANION_SCREEN_STABLE_DAILY_RECOVERY_DEMO 0
+#endif
+
+#ifndef COMPANION_SCREEN_V9_MANUAL_STEP_DIAGNOSTIC
+#define COMPANION_SCREEN_V9_MANUAL_STEP_DIAGNOSTIC 0
+#endif
+
 #ifndef COMPANION_SCREEN_DAILY_TAP_DEMO
 #define COMPANION_SCREEN_DAILY_TAP_DEMO 0
 #endif
@@ -83,6 +96,46 @@
 #define COMPANION_SCREEN_DAILY_STROKE_DEMO_DIRECTION 4u
 #endif
 
+#ifndef COMPANION_SCREEN_DAILY_RIG_DEMO
+#define COMPANION_SCREEN_DAILY_RIG_DEMO 0
+#endif
+
+#ifndef COMPANION_SCREEN_DAILY_RIG_DEMO_DIRECTION
+#define COMPANION_SCREEN_DAILY_RIG_DEMO_DIRECTION 4u
+#endif
+
+#ifndef COMPANION_SCREEN_V22_EMOTION_BRIDGE_DEMO
+#define COMPANION_SCREEN_V22_EMOTION_BRIDGE_DEMO 0
+#endif
+
+#ifndef COMPANION_SCREEN_V22_EMOTION_BRIDGE_DEMO_EDGE
+#define COMPANION_SCREEN_V22_EMOTION_BRIDGE_DEMO_EDGE 0u
+#endif
+
+#if COMPANION_SCREEN_DAILY_RIG_DEMO && COMPANION_SCREEN_V22_EMOTION_BRIDGE_DEMO
+#error "Daily Rig and V22 emotion-bridge demos cannot share one candidate resource payload"
+#endif
+
+#if (COMPANION_SCREEN_STABLE_DAILY_RECOVERY_DEMO || \
+     COMPANION_SCREEN_V9_MANUAL_STEP_DIAGNOSTIC) && \
+    (COMPANION_SCREEN_EMOTE_DEMO || COMPANION_SCREEN_DAILY_TAP_DEMO || \
+     COMPANION_SCREEN_DAILY_STROKE_DEMO || COMPANION_SCREEN_DAILY_RIG_DEMO || \
+     COMPANION_SCREEN_V22_EMOTION_BRIDGE_DEMO || \
+     COMPANION_SCREEN_PRODUCT_EXPRESSION_DEMO)
+#error "Production-off V9 recovery diagnostics must be the sole expression producer"
+#endif
+
+#if COMPANION_SCREEN_STABLE_DAILY_RECOVERY_DEMO && \
+    COMPANION_SCREEN_V9_MANUAL_STEP_DIAGNOSTIC
+#error "Stable Daily recovery and V9 manual-step diagnostic are separate images"
+#endif
+
+#if COMPANION_SCREEN_V22_EMOTION_BRIDGE_DEMO && \
+    COMPANION_SCREEN_V22_EMOTION_BRIDGE_DEMO_EDGE >= \
+        COMP_V22_EMOTION_SEPARATION_RIG_CANDIDATE_BRIDGE_COUNT
+#error "COMPANION_SCREEN_V22_EMOTION_BRIDGE_DEMO_EDGE must name one registered V22 bridge"
+#endif
+
 #ifndef COMPANION_SCREEN_REFRESH_CADENCE_DIAGNOSTIC
 #define COMPANION_SCREEN_REFRESH_CADENCE_DIAGNOSTIC 0
 #endif
@@ -92,6 +145,10 @@
 #endif
 
 #define COMPANION_SCREEN_REFRESH_CADENCE_DIAGNOSTIC_REQUESTS 6u
+
+#ifndef COMPANION_SCREEN_REFRESH_CADENCE_DIAGNOSTIC_GROUPS
+#define COMPANION_SCREEN_REFRESH_CADENCE_DIAGNOSTIC_GROUPS 1u
+#endif
 
 #ifndef COMPANION_SCREEN_PRODUCT_EXPRESSION_DEMO
 #define COMPANION_SCREEN_PRODUCT_EXPRESSION_DEMO 0
@@ -115,6 +172,8 @@
 #define COMPANION_SCREEN_ASSET_FRAME_CAPACITY 256u
 #define COMPANION_SCREEN_ASSET_STRING_CAPACITY 1024u
 #define COMPANION_SCREEN_ASSET_SCRATCH_BYTES 256u
+#define COMPANION_DAILY_RIG_FRAME_BYTES (200u * 25u)
+#define COMPANION_DAILY_RIG_COMPONENT_SCRATCH_BYTES 512u
 #define COMPANION_PET_FEATURE_DIRTY_X 8u
 #define COMPANION_PET_FEATURE_DIRTY_Y 18u
 #define COMPANION_PET_FEATURE_DIRTY_WIDTH 184u
@@ -270,6 +329,7 @@ uint8_t a_ManufData[14] = {
 static comp_audio_stream_t s_companion_audio_stream;
 static comp_epaper_display_queue_t s_companion_display_queue;
 static comp_epaper_expression_state_t s_companion_expression_state;
+static comp_epaper_motion_coordinator_t s_companion_motion_coordinator;
 static comp_pet_behavior_t s_companion_pet_behavior;
 static comp_pet_performance_t s_companion_pet_performance;
 static comp_epaper_panel_adapter_t s_companion_panel_adapter;
@@ -300,8 +360,18 @@ static comp_emote_frame_t
     s_companion_screen_asset_frames[COMPANION_SCREEN_ASSET_FRAME_CAPACITY];
 static char s_companion_screen_asset_strings[COMPANION_SCREEN_ASSET_STRING_CAPACITY];
 static uint8_t s_companion_screen_asset_scratch[COMPANION_SCREEN_ASSET_SCRATCH_BYTES];
+#if COMPANION_SCREEN_DAILY_RIG_DEMO || COMPANION_SCREEN_V22_EMOTION_BRIDGE_DEMO
+static comp_asset_store_t s_companion_daily_rig_asset_store;
+static comp_expression_rig_frame_source_t s_companion_daily_rig_frame_source;
+static uint8_t s_companion_daily_rig_frame[COMPANION_DAILY_RIG_FRAME_BYTES];
+static uint8_t s_companion_daily_rig_component_scratch[
+    COMPANION_DAILY_RIG_COMPONENT_SCRATCH_BYTES];
+static bool s_companion_daily_rig_presentation_ready = false;
+#endif
 static uint32_t s_companion_expression_next_request_id =
     COMPANION_EPAPER_EXPRESSION_REQUEST_BASE | 1u;
+static uint32_t s_companion_auto_motion_request_id = 0u;
+static uint32_t s_companion_auto_motion_token = 0u;
 static uint32_t s_companion_menu_next_request_id = 0xE2000001u;
 static uint8_t s_companion_expression_tick_timer_id =
     COMPANION_EPAPER_EXPRESSION_TIMER_ID_INVALID;
@@ -316,6 +386,7 @@ static bool s_companion_refresh_cadence_diagnostic_active = false;
 static bool s_companion_refresh_cadence_diagnostic_baseline_complete = false;
 static uint8_t s_companion_refresh_cadence_diagnostic_queued = 0u;
 static uint8_t s_companion_refresh_cadence_diagnostic_completed = 0u;
+static uint8_t s_companion_refresh_cadence_diagnostic_groups_completed = 0u;
 #endif
 #if COMPANION_SCREEN_BALL_MOTION_DIAGNOSTIC
 static bool s_companion_ball_motion_diagnostic_active = false;
@@ -391,6 +462,10 @@ static void Companion_Display_TickTimerElapsed(void);
 static uint32_t Companion_Display_MsToTimerTicks(uint32_t timeout_ms);
 static void Companion_Display_ScheduleExpressionTick(uint32_t now_ms);
 static void Companion_Display_ProcessExpressionTick(void);
+static void Companion_Display_ProcessAutomaticMotion(uint32_t now_ms);
+static void Companion_Display_CancelAutomaticMotion(
+    comp_epaper_motion_cancel_reason_t reason);
+static void Companion_Display_EnterDailyMotion(uint32_t now_ms);
 static void Companion_PetBehavior_Advance(void);
 static void Companion_PetPerformance_ApplyExpressionSignal(
     comp_epaper_expression_signal_t signal);
@@ -399,10 +474,26 @@ static void Companion_PetPerformance_ApplyEvent(
 static bool Companion_Display_EmitEmoteFrame(bool force_full);
 static bool Companion_Display_EmitEmoteFrameMode(
     comp_epaper_refresh_mode_t refresh_mode);
+static bool Companion_Display_EmitEmoteFrameModeInternal(
+    comp_epaper_refresh_mode_t refresh_mode,
+    const comp_epaper_motion_request_t *motion_request);
+static bool Companion_Display_EmitAutomaticMotionFrame(
+    const comp_epaper_motion_request_t *motion_request);
 static void Companion_Display_EnqueueExpressionDecision(
     const comp_epaper_expression_decision_t *decision,
     const comp_epaper_expression_state_t *previous_state,
     uint32_t request_id_hint);
+static bool Companion_Screen_StartExpressionMode(
+    comp_epaper_expression_t expression,
+    comp_epaper_refresh_mode_t refresh_mode,
+    bool daily,
+    const char *reason);
+#if COMPANION_SCREEN_STABLE_DAILY_RECOVERY_DEMO
+static bool Companion_Screen_ShowStableDailyBaseline(void);
+#endif
+#if COMPANION_SCREEN_V9_MANUAL_STEP_DIAGNOSTIC
+static bool Companion_Screen_StartV9ManualStepDiagnostic(void);
+#endif
 static void Companion_Display_EnqueueExpressionSignal(
     comp_epaper_expression_signal_t signal,
     uint32_t request_id_hint);
@@ -585,6 +676,7 @@ void APP_BLE_Init( void )
   comp_epaper_display_queue_init(&s_companion_display_queue);
   s_companion_screen_coherent_generation_marker_logged = false;
   comp_epaper_expression_state_init(&s_companion_expression_state);
+  comp_epaper_motion_coordinator_init(&s_companion_motion_coordinator);
   comp_pet_behavior_init(&s_companion_pet_behavior, 0xC0A55EEDu);
   comp_pet_performance_init(&s_companion_pet_performance);
   s_companion_pet_behavior_last_advanced_ms = HAL_GetTick();
@@ -604,8 +696,16 @@ void APP_BLE_Init( void )
       .stride_bytes = 25u,
       .pixel_format = COMP_SCREEN_PIXEL_FORMAT_MONO_1BPP_WHITE_IS_ONE_MSB,
   };
+#if COMPANION_SCREEN_STABLE_DAILY_RECOVERY_DEMO || \
+    COMPANION_SCREEN_V9_MANUAL_STEP_DIAGNOSTIC
+  /* This production-off recovery image permits only the exact V9 CEMP so it
+   * can show a verified V9 settle frame. The normal runtime remains
+   * candidate-inactive in v9_candidate_resource_binding.c. */
+  const bool visual_resource_activation_allowed = true;
+#else
   const bool visual_resource_activation_allowed =
       comp_v9_candidate_resource_runtime_activation_allowed();
+#endif
   comp_emote_asset_mount_result_t mount_result =
       external_assets_ready && visual_resource_activation_allowed
           ? comp_emote_asset_pack_mount(
@@ -683,6 +783,109 @@ void APP_BLE_Init( void )
              &s_companion_display_queue),
          (unsigned long)comp_epaper_display_queue_stale_generation_discard_count(
              &s_companion_display_queue));
+#if COMPANION_SCREEN_DAILY_RIG_DEMO || COMPANION_SCREEN_V22_EMOTION_BRIDGE_DEMO
+  {
+    static const uint8_t expected_source_sha256[32] = {
+      0x91u, 0x9Fu, 0x34u, 0x49u, 0x57u, 0x66u, 0x1Du, 0xEFu,
+      0x20u, 0x99u, 0xADu, 0x56u, 0xABu, 0x12u, 0x86u, 0xCCu,
+      0xA9u, 0xDBu, 0xA4u, 0xD8u, 0xF0u, 0x8Bu, 0x70u, 0x26u,
+      0x17u, 0xB6u, 0xDFu, 0x5Bu, 0x1Au, 0x28u, 0xE9u, 0xDAu,
+    };
+    const comp_expression_rig_canvas_t rig_canvas = {
+      .width = 200u,
+      .height = 200u,
+      .stride_bytes = 25u,
+    };
+#if COMPANION_SCREEN_V22_EMOTION_BRIDGE_DEMO
+    const uint32_t expected_rig_revision =
+        COMP_V22_EMOTION_SEPARATION_RIG_CANDIDATE_REVISION;
+    const uint16_t expected_rig_component_count =
+        COMP_V22_EMOTION_SEPARATION_RIG_CANDIDATE_COMPONENT_COUNT;
+#else
+    const uint32_t expected_rig_revision =
+        COMP_V9_EXPRESSION_RIG_CANDIDATE_REVISION;
+    const uint16_t expected_rig_component_count =
+        COMP_V9_EXPRESSION_RIG_CANDIDATE_COMPONENT_COUNT;
+#endif
+    uint8_t rig_header[COMP_EXPRESSION_RIG_ASSET_PACK_HEADER_BYTES] = {0u};
+    uint32_t rig_pack_bytes = 0u;
+    bool rig_header_ready = external_assets_ready &&
+      comp_asset_store_read(&s_companion_screen_asset_store,
+                            0u,
+                            rig_header,
+                            sizeof(rig_header));
+    if (rig_header_ready) {
+      rig_pack_bytes = (uint32_t)rig_header[8] |
+                       ((uint32_t)rig_header[9] << 8u) |
+                       ((uint32_t)rig_header[10] << 16u) |
+                       ((uint32_t)rig_header[11] << 24u);
+      rig_header_ready = rig_header[0] == 'C' && rig_header[1] == 'R' &&
+                         rig_header[2] == 'I' && rig_header[3] == 'G' &&
+                         rig_pack_bytes >= COMP_EXPRESSION_RIG_ASSET_PACK_HEADER_BYTES &&
+                         rig_pack_bytes <= s_companion_screen_asset_store.size_bytes &&
+                         s_companion_screen_asset_store.read != NULL;
+    }
+    bool rig_store_ready = rig_header_ready &&
+      comp_asset_store_init_reader(&s_companion_daily_rig_asset_store,
+                                   COMP_ASSET_STORAGE_EXTERNAL_NOR,
+                                   rig_pack_bytes,
+                                   s_companion_screen_asset_store.read,
+                                   s_companion_screen_asset_store.context);
+    bool rig_assets_ready = rig_store_ready &&
+      comp_expression_rig_frame_source_mount(
+          &s_companion_daily_rig_frame_source,
+          &s_companion_daily_rig_asset_store,
+          &rig_canvas,
+          s_companion_daily_rig_component_scratch,
+          sizeof(s_companion_daily_rig_component_scratch),
+          s_companion_daily_rig_frame,
+          sizeof(s_companion_daily_rig_frame));
+    if (rig_assets_ready &&
+        (s_companion_daily_rig_frame_source.asset_pack.revision !=
+             expected_rig_revision ||
+         s_companion_daily_rig_frame_source.asset_pack.component_count !=
+             expected_rig_component_count ||
+         memcmp(s_companion_daily_rig_frame_source.asset_pack.source_sha256,
+                expected_source_sha256,
+                sizeof(expected_source_sha256)) != 0)) {
+      s_companion_daily_rig_frame_source = (comp_expression_rig_frame_source_t){0};
+      rig_assets_ready = false;
+    }
+    bool rig_frame_source_ready = rig_assets_ready &&
+      comp_epaper_expression_asset_source_init_frame_provider(
+          &s_companion_expression_asset_source,
+          comp_expression_rig_frame_source_copy_frame_index,
+          &s_companion_daily_rig_frame_source);
+    comp_epaper_display_queue_set_resource_revision(
+        &s_companion_display_queue,
+        rig_frame_source_ready ? expected_rig_revision : 0u);
+    companion_epaper_panel_stm32wb_init(
+        &s_companion_panel_adapter,
+        rig_frame_source_ready ? &s_companion_expression_asset_source : NULL);
+ #if COMPANION_SCREEN_DAILY_RIG_DEMO
+    s_companion_daily_rig_presentation_ready = rig_frame_source_ready &&
+      companion_epaper_panel_stm32wb_set_temporary_partial_limit(
+          COMP_V9_EXPRESSION_RIG_CANDIDATE_PANEL_PARTIAL_LIMIT);
+    printf("[daily-rig-demo] source=external_nor_crig header=%s bytes=%lu profile_revision=%u mount=%s presentation=%s partial_limit=%u cemp_fallback=disabled\r\n",
+           rig_header_ready ? "ready" : "invalid",
+           (unsigned long)rig_pack_bytes,
+           (unsigned)expected_rig_revision,
+           rig_frame_source_ready ? "pass" : "blocked",
+           s_companion_daily_rig_presentation_ready ? "pass" : "blocked",
+           (unsigned)COMP_V9_EXPRESSION_RIG_CANDIDATE_PANEL_PARTIAL_LIMIT);
+ #else
+    /* CWF1 is still pending.  The explicit V22 demo must never imply that a
+     * generic partial-refresh sequence or residue behavior was accepted. */
+    s_companion_daily_rig_presentation_ready = rig_frame_source_ready;
+    printf("[v22-rig-demo] production=off source=external_nor_crig header=%s bytes=%lu profile_revision=%u components=%u mount=%s refresh=full_only waveform=vendor_cwf1_pending cemp_fallback=disabled\r\n",
+           rig_header_ready ? "ready" : "invalid",
+           (unsigned long)rig_pack_bytes,
+           (unsigned)expected_rig_revision,
+           (unsigned)expected_rig_component_count,
+           rig_frame_source_ready ? "pass" : "blocked");
+ #endif
+  }
+#endif
   printf("[screen] core_selftest menu_v5_bridge=%s gesture=%s presentation=%s emote_player=%s asset_store=%s asset_pack=%s expression_source=%s refresh_policy=%s\r\n",
          comp_menu_v5_target_bridge_self_test() ? "pass" : "fail",
          comp_touch_gesture_self_test() ? "pass" : "fail",
@@ -732,8 +935,10 @@ void APP_BLE_Init( void )
   s_companion_refresh_cadence_diagnostic_baseline_complete = false;
   s_companion_refresh_cadence_diagnostic_queued = 0u;
   s_companion_refresh_cadence_diagnostic_completed = 0u;
-  printf("[screen] refresh_cadence_diagnostic start requests=%u\r\n",
-         (unsigned)COMPANION_SCREEN_REFRESH_CADENCE_DIAGNOSTIC_REQUESTS);
+  s_companion_refresh_cadence_diagnostic_groups_completed = 0u;
+  printf("[screen] refresh_cadence_diagnostic start requests=%u groups=%u\r\n",
+         (unsigned)COMPANION_SCREEN_REFRESH_CADENCE_DIAGNOSTIC_REQUESTS,
+         (unsigned)COMPANION_SCREEN_REFRESH_CADENCE_DIAGNOSTIC_GROUPS);
   Companion_Screen_MenuRequest(COMP_SCREEN_MENU_VIEW_HOME,
                                0u,
                                COMP_SCREEN_MENU_LANGUAGE_ZH,
@@ -771,6 +976,14 @@ void APP_BLE_Init( void )
 #error "COMPANION_SCREEN_DAILY_STROKE_DEMO_DIRECTION must be 1..4"
 #endif
   }
+#elif COMPANION_SCREEN_DAILY_RIG_DEMO
+  (void)Companion_Screen_PlayDailyRigDemo();
+#elif COMPANION_SCREEN_V22_EMOTION_BRIDGE_DEMO
+  (void)Companion_Screen_PlayV22EmotionBridgeDemo();
+#elif COMPANION_SCREEN_V9_MANUAL_STEP_DIAGNOSTIC
+  (void)Companion_Screen_StartV9ManualStepDiagnostic();
+#elif COMPANION_SCREEN_STABLE_DAILY_RECOVERY_DEMO
+  (void)Companion_Screen_ShowStableDailyBaseline();
 #elif COMPANION_SCREEN_PRODUCT_EXPRESSION_DEMO
   s_companion_product_expression_demo_started_ms = HAL_GetTick();
   s_companion_product_expression_demo_end_sent = false;
@@ -1105,6 +1318,7 @@ static void Companion_Display_AdvanceRefreshCadenceDiagnostic(
   {
     s_companion_refresh_cadence_diagnostic_baseline_complete = true;
     printf("[screen] refresh_cadence_diagnostic baseline_complete=1\r\n");
+    printf("[screen] refresh_cadence_diagnostic group_start group=1\r\n");
   }
   else if (s_companion_refresh_cadence_diagnostic_completed <
            s_companion_refresh_cadence_diagnostic_queued)
@@ -1117,10 +1331,22 @@ static void Companion_Display_AdvanceRefreshCadenceDiagnostic(
   if (s_companion_refresh_cadence_diagnostic_completed >=
       COMPANION_SCREEN_REFRESH_CADENCE_DIAGNOSTIC_REQUESTS)
   {
-    s_companion_refresh_cadence_diagnostic_active = false;
-    printf("[screen] refresh_cadence_diagnostic done interactive_requests=%u cleanup_expected=1\r\n",
-           (unsigned)s_companion_refresh_cadence_diagnostic_completed);
-    return;
+    s_companion_refresh_cadence_diagnostic_groups_completed++;
+    printf("[screen] refresh_cadence_diagnostic group_complete group=%u\r\n",
+           (unsigned)s_companion_refresh_cadence_diagnostic_groups_completed);
+    if (s_companion_refresh_cadence_diagnostic_groups_completed >=
+        COMPANION_SCREEN_REFRESH_CADENCE_DIAGNOSTIC_GROUPS)
+    {
+      s_companion_refresh_cadence_diagnostic_active = false;
+      printf("[screen] refresh_cadence_diagnostic done interactive_requests=%u cleanup_expected=1 groups=%u\r\n",
+             (unsigned)COMPANION_SCREEN_REFRESH_CADENCE_DIAGNOSTIC_REQUESTS,
+             (unsigned)s_companion_refresh_cadence_diagnostic_groups_completed);
+      return;
+    }
+    s_companion_refresh_cadence_diagnostic_queued = 0u;
+    s_companion_refresh_cadence_diagnostic_completed = 0u;
+    printf("[screen] refresh_cadence_diagnostic group_start group=%u\r\n",
+           (unsigned)(s_companion_refresh_cadence_diagnostic_groups_completed + 1u));
   }
 
   item = (uint8_t)(s_companion_refresh_cadence_diagnostic_queued %
@@ -1131,7 +1357,9 @@ static void Companion_Display_AdvanceRefreshCadenceDiagnostic(
           COMP_SCREEN_MENU_VIEW_HOME,
           flags,
           COMP_SCREEN_MENU_LANGUAGE_ZH,
-          0u,
+          (uint8_t)(s_companion_refresh_cadence_diagnostic_groups_completed *
+                        COMPANION_SCREEN_REFRESH_CADENCE_DIAGNOSTIC_REQUESTS +
+                    s_companion_refresh_cadence_diagnostic_queued + 1u),
           COMP_EPAPER_REFRESH_PARTIAL_INTERACTIVE))
   {
     s_companion_refresh_cadence_diagnostic_queued++;
@@ -1161,10 +1389,11 @@ static bool Companion_Screen_QueueBallMotionDiagnosticFrame(
 
   if (queued)
   {
-    printf("[screen] ball_motion_diagnostic queue step=%u center=%u,%u refresh=%s\r\n",
+    printf("[screen] ball_motion_diagnostic queue step=%u pose=%s center=%u,%u refresh=%s\r\n",
            (unsigned)step,
+           comp_epaper_ball_motion_diagnostic_position_name(step),
            (unsigned)comp_epaper_ball_motion_diagnostic_center_x(step),
-           (unsigned)COMP_EPAPER_BALL_MOTION_DIAGNOSTIC_CENTER_Y,
+           (unsigned)comp_epaper_ball_motion_diagnostic_center_y(step),
            refresh_mode == COMP_EPAPER_REFRESH_FULL ? "full" : "interactive");
   }
   return queued;
@@ -1187,7 +1416,7 @@ bool Companion_Screen_BallMotionDiagnosticStart(void)
     printf("[screen] ball_motion_diagnostic abort queue=failed step=0\r\n");
     return false;
   }
-  printf("[screen] ball_motion_diagnostic start trigger=single_touch\r\n");
+  printf("[screen] ball_motion_diagnostic start trigger=single_touch path=center_up_right_down_left_center\r\n");
   return true;
 }
 
@@ -1217,13 +1446,13 @@ static void Companion_Display_AdvanceBallMotionDiagnostic(
     return;
   }
 
-  printf("[screen] ball_motion_diagnostic complete step=%u\r\n",
-         (unsigned)request->menu_page);
+  printf("[screen] ball_motion_diagnostic complete step=%u pose=%s\r\n",
+         (unsigned)request->menu_page,
+         comp_epaper_ball_motion_diagnostic_position_name(request->menu_page));
   if (request->menu_page >= COMP_EPAPER_BALL_MOTION_DIAGNOSTIC_PARTIAL_STEPS)
   {
     s_companion_ball_motion_diagnostic_active = false;
-    printf("[screen] ball_motion_diagnostic done interactive_steps=%u cleanup_expected=1\r\n",
-           (unsigned)COMP_EPAPER_BALL_MOTION_DIAGNOSTIC_PARTIAL_STEPS);
+    printf("[screen] ball_motion_diagnostic done orbit=up_right_down_left return_center=1 cleanup_expected=1\r\n");
     return;
   }
 
@@ -1312,6 +1541,29 @@ static void Companion_Display_Task(void)
                                    render_state,
                                    status_error,
                                    request.content_crc32);
+  if ((request.display_flags & COMP_EPAPER_DISPLAY_FLAG_AUTO_MOTION) != 0u)
+  {
+    bool completed = request.request_id == s_companion_auto_motion_request_id &&
+                     comp_epaper_motion_coordinator_complete_request(
+                         &s_companion_motion_coordinator,
+                         s_companion_auto_motion_token,
+                         HAL_GetTick(),
+                         panel_result == COMP_EPAPER_PANEL_RESULT_OK);
+    SCREEN_INTERACTION_TRACE("[screen-motion] completion request=%lu token=%lu visible=%u accepted=%u\r\n",
+                             (unsigned long)request.request_id,
+                             (unsigned long)s_companion_auto_motion_token,
+                             panel_result == COMP_EPAPER_PANEL_RESULT_OK ? 1u : 0u,
+                             completed ? 1u : 0u);
+    s_companion_auto_motion_request_id = 0u;
+    s_companion_auto_motion_token = 0u;
+    /* A matching failed transaction remains in the coordinator's retry state.
+     * Only an unmatched completion can no longer identify a safe phase to retry. */
+    if (!completed)
+    {
+      Companion_Display_CancelAutomaticMotion(COMP_EPAPER_MOTION_CANCEL_ERROR);
+    }
+    Companion_Display_ScheduleExpressionTick(HAL_GetTick());
+  }
 #if COMPANION_SCREEN_REFRESH_CADENCE_DIAGNOSTIC
   Companion_Display_AdvanceRefreshCadenceDiagnostic(&request, panel_result);
 #endif
@@ -1424,8 +1676,9 @@ static void Companion_PetPerformance_ApplyEvent(
   }
 }
 
-static bool Companion_Display_EmitEmoteFrameMode(
-    comp_epaper_refresh_mode_t refresh_mode)
+static bool Companion_Display_EmitEmoteFrameModeInternal(
+    comp_epaper_refresh_mode_t refresh_mode,
+    const comp_epaper_motion_request_t *motion_request)
 {
   comp_emote_player_frame_t player_frame;
   comp_epaper_expression_decision_t frame_decision;
@@ -1448,7 +1701,25 @@ static bool Companion_Display_EmitEmoteFrameMode(
   frame_decision.name = player_frame.clip_name;
   touch_pose = s_companion_dynamic_touch_clip != NULL &&
                strcmp(player_frame.clip_name, s_companion_dynamic_touch_clip) == 0;
-  if (!touch_pose &&
+  if (motion_request != NULL &&
+      (frame_decision.expression != COMP_EPAPER_EXPRESSION_IDLE ||
+       strcmp(player_frame.clip_name, "idle") != 0 ||
+       player_frame.frame_in_clip != (uint16_t)motion_request->phase))
+  {
+    SCREEN_INTERACTION_TRACE("[screen-motion] reject clip=%s frame=%u requested_phase=%u\r\n",
+                             player_frame.clip_name,
+                             (unsigned)player_frame.frame_in_clip,
+                             (unsigned)motion_request->phase);
+    return false;
+  }
+  const bool allow_stable_daily_settle =
+#if COMPANION_SCREEN_STABLE_DAILY_RECOVERY_DEMO || \
+    COMPANION_SCREEN_V9_MANUAL_STEP_DIAGNOSTIC
+      true;
+#else
+      false;
+#endif
+  if (motion_request == NULL && !touch_pose && !allow_stable_daily_settle &&
       frame_decision.expression == COMP_EPAPER_EXPRESSION_IDLE &&
       player_frame.frame_in_clip != 0u)
   {
@@ -1467,7 +1738,7 @@ static bool Companion_Display_EmitEmoteFrameMode(
   queue_result = comp_epaper_display_queue_enqueue_expression_frame(
       &s_companion_display_queue,
       COMPANION_EPAPER_EXPRESSION_CARD_SLOT,
-      0u,
+      motion_request == NULL ? 0u : COMP_EPAPER_DISPLAY_FLAG_AUTO_MOTION,
       request_id,
       &frame_decision,
       player_frame.frame_index,
@@ -1483,6 +1754,11 @@ static bool Companion_Display_EmitEmoteFrameMode(
   }
   s_companion_last_emote_frame = player_frame;
   s_companion_last_emote_frame_valid = true;
+  if (motion_request != NULL)
+  {
+    s_companion_auto_motion_request_id = request_id;
+    s_companion_auto_motion_token = motion_request->token;
+  }
   Companion_Gatt_PublishCardStatus(
       COMPANION_EPAPER_EXPRESSION_CARD_SLOT,
       request_id,
@@ -1490,15 +1766,22 @@ static bool Companion_Display_EmitEmoteFrameMode(
       0u,
       content_crc32);
   UTIL_SEQ_SetTask(1 << CFG_TASK_COMPANION_DISPLAY_ID, CFG_SCH_PRIO_0);
-  SCREEN_INTERACTION_TRACE("[pet-renderer] clip=%s frame=%u in_clip=%u phase=%u touch=%u refresh=%u duration_ms=%u source=external_flash\r\n",
+  SCREEN_INTERACTION_TRACE("[pet-renderer] clip=%s frame=%u in_clip=%u phase=%u touch=%u auto=%u refresh=%u duration_ms=%u source=external_flash\r\n",
          player_frame.clip_name,
          (unsigned)player_frame.frame_index,
          (unsigned)player_frame.frame_in_clip,
          (unsigned)player_frame.phase,
          touch_pose ? 1u : 0u,
+         motion_request != NULL ? 1u : 0u,
          (unsigned)refresh_mode,
          (unsigned)player_frame.frame.duration_ms);
   return true;
+}
+
+static bool Companion_Display_EmitEmoteFrameMode(
+    comp_epaper_refresh_mode_t refresh_mode)
+{
+  return Companion_Display_EmitEmoteFrameModeInternal(refresh_mode, NULL);
 }
 
 static bool Companion_Display_EmitEmoteFrame(bool force_full)
@@ -1508,9 +1791,103 @@ static bool Companion_Display_EmitEmoteFrame(bool force_full)
                  : COMP_EPAPER_REFRESH_PARTIAL_INTERACTIVE);
 }
 
+static void Companion_Display_CancelAutomaticMotion(
+    comp_epaper_motion_cancel_reason_t reason)
+{
+  size_t discarded = comp_epaper_display_queue_discard_display_flags(
+      &s_companion_display_queue, COMP_EPAPER_DISPLAY_FLAG_AUTO_MOTION);
+
+  comp_epaper_motion_coordinator_cancel(&s_companion_motion_coordinator, reason);
+  s_companion_auto_motion_request_id = 0u;
+  s_companion_auto_motion_token = 0u;
+  if (s_companion_emote_player_ready)
+  {
+    comp_emote_player_stop(&s_companion_emote_player);
+    s_companion_emote_player_decision_valid = false;
+  }
+  SCREEN_INTERACTION_TRACE("[screen-motion] cancel reason=%u discarded=%u\r\n",
+                           (unsigned)reason,
+                           (unsigned)discarded);
+}
+
+static void Companion_Display_EnterDailyMotion(uint32_t now_ms)
+{
+  comp_epaper_motion_coordinator_enter_daily(&s_companion_motion_coordinator, now_ms);
+  SCREEN_INTERACTION_TRACE("[screen-motion] daily_enter next_phase=entry at=%lu\r\n",
+                           (unsigned long)now_ms);
+}
+
+static bool Companion_Display_EmitAutomaticMotionFrame(
+    const comp_epaper_motion_request_t *motion_request)
+{
+  uint32_t frame_wait_ms;
+
+  if (motion_request == NULL || !s_companion_emote_player_ready ||
+      !s_companion_emote_player_decision_valid ||
+      s_companion_emote_player_decision.expression != COMP_EPAPER_EXPRESSION_IDLE)
+  {
+    return false;
+  }
+  if (motion_request->phase == COMP_EPAPER_MOTION_PHASE_ENTRY)
+  {
+    if (!comp_emote_player_play_now_name(&s_companion_emote_player, "idle", false))
+    {
+      return false;
+    }
+  }
+  else
+  {
+    frame_wait_ms = comp_emote_player_next_frame_in_ms(&s_companion_emote_player);
+    if (frame_wait_ms == 0u ||
+        !comp_emote_player_tick(&s_companion_emote_player, frame_wait_ms))
+    {
+      return false;
+    }
+  }
+  return Companion_Display_EmitEmoteFrameModeInternal(
+      COMP_EPAPER_REFRESH_PARTIAL_INTERACTIVE, motion_request);
+}
+
+static void Companion_Display_ProcessAutomaticMotion(uint32_t now_ms)
+{
+  comp_epaper_motion_snapshot_t motion_snapshot;
+  comp_epaper_motion_request_t motion_request;
+
+  comp_epaper_motion_coordinator_snapshot(&s_companion_motion_coordinator,
+                                           &motion_snapshot);
+  if (!motion_snapshot.daily_awake)
+  {
+    return;
+  }
+  if (comp_epaper_motion_coordinator_idle_timeout_elapsed(
+          &s_companion_motion_coordinator, now_ms))
+  {
+    Companion_Display_CancelAutomaticMotion(COMP_EPAPER_MOTION_CANCEL_LOW_POWER);
+    return;
+  }
+  if (s_companion_screen_presentation.mode != COMP_SCREEN_PRESENTATION_EXPRESSION ||
+      !s_companion_emote_player_ready ||
+      !s_companion_emote_player_decision_valid ||
+      s_companion_emote_player_decision.expression != COMP_EPAPER_EXPRESSION_IDLE ||
+      comp_epaper_display_queue_pending(&s_companion_display_queue) != 0u)
+  {
+    Companion_Display_CancelAutomaticMotion(
+        COMP_EPAPER_MOTION_CANCEL_HIGH_PRIORITY);
+    return;
+  }
+  if (comp_epaper_motion_coordinator_take_request(&s_companion_motion_coordinator,
+                                                   now_ms,
+                                                   &motion_request) &&
+      !Companion_Display_EmitAutomaticMotionFrame(&motion_request))
+  {
+    Companion_Display_CancelAutomaticMotion(COMP_EPAPER_MOTION_CANCEL_ERROR);
+  }
+}
+
 static void Companion_Display_ScheduleExpressionTick(uint32_t now_ms)
 {
   comp_epaper_expression_state_snapshot_t expression_stats;
+  comp_epaper_motion_snapshot_t motion_stats;
   uint32_t recover_ms;
   uint32_t remaining_ms = 0u;
   uint32_t player_remaining_ms;
@@ -1524,6 +1901,26 @@ static void Companion_Display_ScheduleExpressionTick(uint32_t now_ms)
                                         &expression_stats);
   recover_ms = expression_stats.auto_recover_ms;
   HW_TS_Stop(s_companion_expression_tick_timer_id);
+
+  comp_epaper_motion_coordinator_snapshot(&s_companion_motion_coordinator,
+                                           &motion_stats);
+  if (motion_stats.daily_awake)
+  {
+    if (motion_stats.request_outstanding)
+    {
+      return;
+    }
+    remaining_ms =
+        comp_epaper_motion_coordinator_idle_timeout_elapsed(
+            &s_companion_motion_coordinator, now_ms) ||
+                (int32_t)(now_ms - motion_stats.next_request_ms) >= 0
+            ? 1u
+            : motion_stats.next_request_ms - now_ms;
+    s_companion_expression_tick_started_ms = now_ms;
+    HW_TS_Start(s_companion_expression_tick_timer_id,
+                Companion_Display_MsToTimerTicks(remaining_ms));
+    return;
+  }
 
   if (expression_stats.initialized &&
       recover_ms != COMP_EPAPER_EXPRESSION_AUTO_RECOVER_DISABLED_MS)
@@ -1590,6 +1987,13 @@ static void Companion_Display_ProcessExpressionTick(void)
     return;
   }
 
+  if (s_companion_motion_coordinator.daily_awake)
+  {
+    Companion_Display_ProcessAutomaticMotion(now_ms);
+    Companion_Display_ScheduleExpressionTick(now_ms);
+    return;
+  }
+
   if (s_companion_expression_state.initialized &&
       comp_epaper_expression_state_tick(&s_companion_expression_state,
                                         elapsed_ms,
@@ -1598,8 +2002,7 @@ static void Companion_Display_ProcessExpressionTick(void)
     expression_changed = true;
     Companion_Display_EnqueueExpressionDecision(&decision, &previous_state, 0u);
   }
-  if (!expression_changed &&
-      s_companion_emote_player_ready &&
+  if (!expression_changed && s_companion_emote_player_ready &&
       comp_emote_player_tick(&s_companion_emote_player, elapsed_ms))
   {
     Companion_Display_EmitEmoteFrame(false);
@@ -1622,6 +2025,11 @@ static void Companion_Display_EnqueueExpressionDecision(
   if (decision == NULL)
   {
     return;
+  }
+  if (decision->expression != COMP_EPAPER_EXPRESSION_IDLE)
+  {
+    Companion_Display_CancelAutomaticMotion(
+        COMP_EPAPER_MOTION_CANCEL_HIGH_PRIORITY);
   }
   if (s_companion_dynamic_touch_clip != NULL &&
       (decision->name == NULL ||
@@ -1654,6 +2062,21 @@ static void Companion_Display_EnqueueExpressionDecision(
     return;
   }
 #endif
+
+  /* A completed touch or product scene returns through idle. Re-enter the
+   * daily coordinator here so cancellation is immediate but not permanent. */
+  if (decision->expression == COMP_EPAPER_EXPRESSION_IDLE &&
+      s_companion_screen_presentation.mode ==
+          COMP_SCREEN_PRESENTATION_EXPRESSION &&
+      !s_companion_screen_presentation.expression_returns_to_menu)
+  {
+    (void)Companion_Screen_StartExpressionMode(
+        COMP_EPAPER_EXPRESSION_IDLE,
+        COMP_EPAPER_REFRESH_PARTIAL_INTERACTIVE,
+        true,
+        decision->reason == NULL ? "daily_auto_resume" : decision->reason);
+    return;
+  }
 
   Companion_PetBehavior_Advance();
   comp_pet_behavior_apply_expression(&s_companion_pet_behavior,
@@ -1778,6 +2201,7 @@ static bool Companion_Screen_MenuRequestMode(
 
   flags &= (uint8_t)~(COMP_SCREEN_MENU_FLAG_RECORDING |
                       COMP_SCREEN_MENU_FLAG_TOUCH_OK);
+  Companion_Display_CancelAutomaticMotion(COMP_EPAPER_MOTION_CANCEL_MENU);
   flags |= Companion_Screen_RuntimeMenuFlags() &
            (COMP_SCREEN_MENU_FLAG_RECORDING | COMP_SCREEN_MENU_FLAG_TOUCH_OK);
   flags = comp_screen_menu_with_ble_flag(flags, s_companion_ble_connected);
@@ -1981,12 +2405,18 @@ static bool Companion_Screen_StartExpressionMode(
 {
   comp_epaper_expression_decision_t decision;
   const char *clip_name;
+  bool automatic_daily;
 
   if (!s_companion_emote_player_ready ||
       !comp_epaper_expression_is_supported(expression))
   {
     return false;
   }
+  automatic_daily = daily && expression == COMP_EPAPER_EXPRESSION_IDLE;
+  Companion_Display_CancelAutomaticMotion(
+      expression == COMP_EPAPER_EXPRESSION_SLEEPY
+          ? COMP_EPAPER_MOTION_CANCEL_LOW_POWER
+          : COMP_EPAPER_MOTION_CANCEL_HIGH_PRIORITY);
   clip_name = comp_epaper_expression_name(expression);
   decision = (comp_epaper_expression_decision_t){
       .expression = expression,
@@ -2014,12 +2444,26 @@ static bool Companion_Screen_StartExpressionMode(
   }
   Companion_Display_CreateExpressionTickTimer();
   if (!comp_emote_player_play_now_name(&s_companion_emote_player,
-                                       clip_name,
-                                       false) ||
-      !Companion_Display_EmitEmoteFrameMode(refresh_mode))
+                                        clip_name,
+                                        false))
   {
+    goto preview_failed;
+  }
+  if (automatic_daily)
+  {
+    Companion_Display_EnterDailyMotion(HAL_GetTick());
+    Companion_Display_ProcessAutomaticMotion(HAL_GetTick());
+    if (s_companion_auto_motion_token == 0u)
+    {
+      goto preview_failed;
+    }
+  }
+  else if (!Companion_Display_EmitEmoteFrameMode(refresh_mode))
+  {
+preview_failed:
     comp_emote_player_stop(&s_companion_emote_player);
     s_companion_emote_player_decision_valid = false;
+    Companion_Display_CancelAutomaticMotion(COMP_EPAPER_MOTION_CANCEL_ERROR);
     comp_screen_presentation_show_menu(
         &s_companion_screen_presentation,
         s_companion_screen_presentation.menu_view,
@@ -2050,6 +2494,441 @@ static bool Companion_Screen_StartExpression(comp_epaper_expression_t expression
 bool Companion_Screen_ExpressionPreview(comp_epaper_expression_t expression)
 {
   return Companion_Screen_StartExpression(expression, false, false, "touch_menu");
+}
+
+#if COMPANION_SCREEN_STABLE_DAILY_RECOVERY_DEMO
+static bool Companion_Screen_ShowStableDailyBaseline(void)
+{
+  comp_emote_player_frame_t entry;
+  comp_emote_player_frame_t sustain;
+  comp_emote_player_snapshot_t snapshot;
+
+  if (!s_companion_emote_player_ready)
+  {
+    goto failed;
+  }
+  s_companion_emote_player_decision = (comp_epaper_expression_decision_t){
+      .expression = COMP_EPAPER_EXPRESSION_IDLE,
+      .signal = COMP_EPAPER_EXPRESSION_SIGNAL_BOOT_IDLE,
+      .priority = comp_epaper_expression_priority(COMP_EPAPER_EXPRESSION_IDLE),
+      .name = "idle",
+      .title = "idle",
+      .body = "stable_v9_recovery",
+      .footer = "external_flash",
+      .reason = "stable_daily_recovery",
+  };
+  s_companion_emote_player_decision_valid = true;
+  s_companion_last_emote_frame_valid = false;
+  Companion_Display_CancelAutomaticMotion(COMP_EPAPER_MOTION_CANCEL_HIGH_PRIORITY);
+  if (!comp_emote_player_play_now_name(&s_companion_emote_player, "idle", false))
+  {
+    goto failed;
+  }
+  comp_screen_presentation_show_daily(&s_companion_screen_presentation);
+
+  if (!comp_emote_player_take_frame(&s_companion_emote_player, &entry) ||
+      entry.frame_in_clip != 0u ||
+      !comp_emote_player_tick(&s_companion_emote_player, entry.frame.duration_ms) ||
+      !comp_emote_player_take_frame(&s_companion_emote_player, &sustain) ||
+      sustain.frame_in_clip != 1u ||
+      !comp_emote_player_tick(&s_companion_emote_player, sustain.frame.duration_ms))
+  {
+    goto failed;
+  }
+  comp_emote_player_snapshot(&s_companion_emote_player, &snapshot);
+  if (!snapshot.frame_ready || snapshot.frame_in_clip != 2u ||
+      !Companion_Display_EmitEmoteFrameMode(COMP_EPAPER_REFRESH_FULL))
+  {
+    goto failed;
+  }
+  comp_emote_player_stop(&s_companion_emote_player);
+  printf("[stable-daily-recovery] result=queued clip=idle frame=2 refresh=full player=stopped source=locked_v9_cemp\r\n");
+  return true;
+
+failed:
+  comp_emote_player_stop(&s_companion_emote_player);
+  s_companion_emote_player_decision_valid = false;
+  printf("[stable-daily-recovery] result=blocked reason=idle_settle_unavailable\r\n");
+  return false;
+}
+#endif
+
+#if COMPANION_SCREEN_V9_MANUAL_STEP_DIAGNOSTIC
+static const char *const k_companion_v9_manual_step_clips[] = {
+    "idle",
+    "touch",
+    "swipe_left",
+    "swipe_right",
+};
+static uint8_t s_companion_v9_manual_step_index = 0u;
+
+static bool Companion_Screen_QueueV9ManualStep(uint8_t step_index)
+{
+  comp_emote_player_frame_t entry;
+  comp_emote_player_frame_t sustain;
+  comp_emote_player_snapshot_t snapshot;
+  const char *clip_name;
+
+  if (step_index >= sizeof(k_companion_v9_manual_step_clips) /
+                        sizeof(k_companion_v9_manual_step_clips[0]) ||
+      !s_companion_emote_player_ready ||
+      comp_epaper_display_queue_pending(&s_companion_display_queue) != 0u)
+  {
+    printf("[v9-manual-step] result=blocked step=%u reason=resource_or_refresh_busy\r\n",
+           (unsigned)step_index);
+    return false;
+  }
+
+  clip_name = k_companion_v9_manual_step_clips[step_index];
+  Companion_Display_CancelAutomaticMotion(COMP_EPAPER_MOTION_CANCEL_HIGH_PRIORITY);
+  s_companion_emote_player_decision = (comp_epaper_expression_decision_t){
+      .expression = COMP_EPAPER_EXPRESSION_IDLE,
+      .signal = COMP_EPAPER_EXPRESSION_SIGNAL_BOOT_IDLE,
+      .priority = comp_epaper_expression_priority(COMP_EPAPER_EXPRESSION_IDLE),
+      .name = clip_name,
+      .title = "v9_manual_step",
+      .body = "locked_v9_settle",
+      .footer = "external_flash",
+      .reason = "v9_manual_step_diagnostic",
+  };
+  s_companion_emote_player_decision_valid = true;
+  s_companion_last_emote_frame_valid = false;
+  if (!comp_emote_player_play_now_name(&s_companion_emote_player, clip_name, false))
+  {
+    goto failed;
+  }
+  comp_screen_presentation_show_daily(&s_companion_screen_presentation);
+
+  if (!comp_emote_player_take_frame(&s_companion_emote_player, &entry) ||
+      entry.frame_in_clip != 0u ||
+      !comp_emote_player_tick(&s_companion_emote_player, entry.frame.duration_ms) ||
+      !comp_emote_player_take_frame(&s_companion_emote_player, &sustain) ||
+      sustain.frame_in_clip != 1u ||
+      !comp_emote_player_tick(&s_companion_emote_player, sustain.frame.duration_ms))
+  {
+    goto failed;
+  }
+  comp_emote_player_snapshot(&s_companion_emote_player, &snapshot);
+  if (!snapshot.frame_ready || snapshot.frame_in_clip != 2u ||
+      !Companion_Display_EmitEmoteFrameMode(COMP_EPAPER_REFRESH_FULL))
+  {
+    goto failed;
+  }
+  comp_emote_player_stop(&s_companion_emote_player);
+  printf("[v9-manual-step] result=queued step=%u clip=%s frame=2 refresh=full player=stopped source=locked_v9_cemp\r\n",
+         (unsigned)step_index,
+         clip_name);
+  return true;
+
+failed:
+  comp_emote_player_stop(&s_companion_emote_player);
+  s_companion_emote_player_decision_valid = false;
+  printf("[v9-manual-step] result=blocked step=%u clip=%s reason=settle_unavailable\r\n",
+         (unsigned)step_index,
+         clip_name == NULL ? "none" : clip_name);
+  return false;
+}
+
+static bool Companion_Screen_StartV9ManualStepDiagnostic(void)
+{
+  s_companion_v9_manual_step_index = 0u;
+  return Companion_Screen_QueueV9ManualStep(s_companion_v9_manual_step_index);
+}
+#endif
+
+bool Companion_Screen_V9ManualStepDiagnosticAdvance(void)
+{
+#if COMPANION_SCREEN_V9_MANUAL_STEP_DIAGNOSTIC
+  const uint8_t step_count =
+      (uint8_t)(sizeof(k_companion_v9_manual_step_clips) /
+                sizeof(k_companion_v9_manual_step_clips[0]));
+  const uint8_t next_index =
+      (uint8_t)((s_companion_v9_manual_step_index + 1u) % step_count);
+
+  if (!Companion_Screen_QueueV9ManualStep(next_index))
+  {
+    return false;
+  }
+  s_companion_v9_manual_step_index = next_index;
+  return true;
+#else
+  return false;
+#endif
+}
+
+bool Companion_Screen_PlayDailyRigDemo(void)
+{
+#if COMPANION_SCREEN_DAILY_RIG_DEMO
+  const comp_expression_rig_profile_t *profile =
+      comp_v9_expression_rig_candidate_profile();
+  comp_expression_rig_choreography_input_t input;
+  uint32_t full_frame_refresh_count = 0u;
+  uint32_t partial_or_hold_count = 0u;
+  const uint8_t story_count =
+      comp_v9_expression_rig_candidate_daily_presentation_story_count();
+
+  if (profile == NULL || s_companion_daily_rig_frame_source.asset_pack.store == NULL ||
+      !s_companion_daily_rig_presentation_ready ||
+      COMP_V9_EXPRESSION_RIG_CANDIDATE_PANEL_CONTINUOUS_REPLAY != 1u ||
+      story_count != COMP_V9_EXPRESSION_RIG_CANDIDATE_PANEL_STORY_COUNT) {
+    printf("[daily-rig-demo] result=blocked reason=external_crig_or_presentation_unavailable\r\n");
+    return false;
+  }
+  input = (comp_expression_rig_choreography_input_t){
+    .event = COMP_EXPRESSION_RIG_EVENT_DAILY_AUTO,
+    .attention = COMP_EXPRESSION_RIG_ATTENTION_LEFT,
+    .energy = COMP_EXPRESSION_RIG_ENERGY_NORMAL,
+    .interaction_memory = 0u,
+    .seed = 0xD911A11Eu,
+    .phase = COMP_EXPRESSION_RIG_PHASE_ENTRY,
+  };
+  printf("[daily-rig-demo] start replay=continuous_story_cycle stories=%u source=external_nor_crig renderer=component_compositor initial_dwell_ms=%u minimum_dwell_ms=%u\r\n",
+         (unsigned)story_count,
+         (unsigned)COMP_V9_EXPRESSION_RIG_CANDIDATE_PANEL_INITIAL_DWELL_MS,
+         (unsigned)COMP_V9_EXPRESSION_RIG_CANDIDATE_PANEL_MINIMUM_DWELL_MS);
+  for (uint32_t cycle_index = 0u;; ++cycle_index) {
+    for (uint8_t story_index = 0u; story_index < story_count; ++story_index) {
+      comp_expression_rig_attention_t attention;
+      const comp_expression_rig_performance_score_t *score;
+
+      if (!comp_v9_expression_rig_candidate_daily_presentation_attention(
+              story_index, &attention)) {
+        printf("[daily-rig-demo] result=blocked cycle=%lu story=%u reason=profile_story_order\r\n",
+               (unsigned long)cycle_index,
+               (unsigned)story_index);
+        return false;
+      }
+      score = comp_v9_expression_rig_candidate_daily_score(attention);
+      if (score == NULL || score->steps == NULL || score->step_count != 15u) {
+        printf("[daily-rig-demo] result=blocked cycle=%lu story=%u reason=score_unavailable\r\n",
+               (unsigned long)cycle_index,
+               (unsigned)story_index);
+        return false;
+      }
+      input.attention = attention;
+      for (uint8_t step_index = 0u; step_index < score->step_count; ++step_index) {
+        comp_expression_rig_plan_t plan;
+        const comp_expression_rig_score_step_t *score_step = &score->steps[step_index];
+        const bool initial_baseline =
+            cycle_index == 0u && story_index == 0u && step_index == 0u;
+        comp_epaper_display_request_t request;
+        comp_epaper_panel_report_t report;
+        comp_epaper_panel_result_t result;
+        uint16_t presentation_duration_ms = score_step->duration_ms;
+        uint32_t refresh_started_ms;
+        uint32_t refresh_elapsed_ms;
+        uint32_t post_refresh_delay_ms;
+        uint32_t replay_frame_index =
+            ((cycle_index * (uint32_t)story_count) + (uint32_t)story_index) *
+                (uint32_t)score->step_count +
+            (uint32_t)step_index;
+
+        if (!comp_expression_rig_choreograph_daily_score_plan(profile,
+                                                               &input,
+                                                               score,
+                                                               step_index,
+                                                               &plan) ||
+            !comp_expression_rig_frame_source_compose(&s_companion_daily_rig_frame_source,
+                                                       &plan,
+                                                       step_index)) {
+          printf("[daily-rig-demo] result=blocked cycle=%lu story=%u step=%u reason=compose\r\n",
+                 (unsigned long)cycle_index,
+                 (unsigned)story_index,
+                 (unsigned)step_index);
+          return false;
+        }
+        if (step_index == 0u) {
+          if (presentation_duration_ms <
+              COMP_V9_EXPRESSION_RIG_CANDIDATE_PANEL_INITIAL_DWELL_MS) {
+            presentation_duration_ms =
+                COMP_V9_EXPRESSION_RIG_CANDIDATE_PANEL_INITIAL_DWELL_MS;
+          }
+        } else if (presentation_duration_ms <
+                   COMP_V9_EXPRESSION_RIG_CANDIDATE_PANEL_MINIMUM_DWELL_MS) {
+          presentation_duration_ms =
+              COMP_V9_EXPRESSION_RIG_CANDIDATE_PANEL_MINIMUM_DWELL_MS;
+        }
+        request = (comp_epaper_display_request_t){
+          .request_id = COMPANION_EPAPER_EXPRESSION_REQUEST_BASE | 0x00100000u |
+                        (replay_frame_index & 0x000FFFFFu),
+          .content_crc32 = 0xD9110000u | (replay_frame_index & 0x0000FFFFu),
+          .request_kind = COMP_EPAPER_DISPLAY_REQUEST_EXPRESSION,
+          .expression = (uint8_t)COMP_EPAPER_EXPRESSION_IDLE,
+          .asset_frame_valid = 1u,
+          .asset_frame_index = step_index,
+          .refresh_mode = initial_baseline
+                            ? COMP_EPAPER_REFRESH_FULL
+                            : COMP_EPAPER_REFRESH_PARTIAL_INTERACTIVE,
+          .dirty_x = s_companion_daily_rig_frame_source.current_bounds.left,
+          .dirty_y = s_companion_daily_rig_frame_source.current_bounds.top,
+          .dirty_width = s_companion_daily_rig_frame_source.current_bounds.width,
+          .dirty_height = s_companion_daily_rig_frame_source.current_bounds.height,
+        };
+        refresh_started_ms = HAL_GetTick();
+        result = comp_epaper_panel_adapter_refresh_card(&s_companion_panel_adapter,
+                                                         &request,
+                                                         &report);
+        refresh_elapsed_ms = HAL_GetTick() - refresh_started_ms;
+        if (result != COMP_EPAPER_PANEL_RESULT_OK) {
+          printf("[daily-rig-demo] result=blocked cycle=%lu story=%u step=%u reason=panel result=%u\r\n",
+                 (unsigned long)cycle_index,
+                 (unsigned)story_index,
+                 (unsigned)step_index,
+                 (unsigned)result);
+          return false;
+        }
+        if ((initial_baseline && report.transferred_bytes < 10000u) ||
+            (!initial_baseline && report.transferred_bytes >= 10000u)) {
+          printf("[daily-rig-demo] result=blocked cycle=%lu story=%u step=%u reason=whole_frame_after_boot bytes=%lu\r\n",
+                 (unsigned long)cycle_index,
+                 (unsigned)story_index,
+                 (unsigned)step_index,
+                 (unsigned long)report.transferred_bytes);
+          return false;
+        }
+        if (initial_baseline) {
+          full_frame_refresh_count++;
+        } else {
+          partial_or_hold_count++;
+        }
+        post_refresh_delay_ms = refresh_elapsed_ms < presentation_duration_ms
+                                    ? (uint32_t)presentation_duration_ms - refresh_elapsed_ms
+                                    : 0u;
+        printf("[daily-rig-demo] cycle=%lu story=%u attention=%u step=%u phase=%s phase_id=%u score_duration_ms=%u presentation_duration_ms=%u refresh_elapsed_ms=%lu post_refresh_delay_ms=%lu layers=%u panel=%u bytes=%lu\r\n",
+               (unsigned long)cycle_index,
+               (unsigned)story_index,
+               (unsigned)attention,
+               (unsigned)step_index,
+               comp_expression_rig_score_phase_name(score_step->phase),
+               (unsigned)score_step->phase,
+               (unsigned)score_step->duration_ms,
+               (unsigned)presentation_duration_ms,
+               (unsigned long)refresh_elapsed_ms,
+               (unsigned long)post_refresh_delay_ms,
+               (unsigned)plan.layer_count,
+               (unsigned)result,
+               (unsigned long)report.transferred_bytes);
+        HAL_Delay(post_refresh_delay_ms);
+      }
+    }
+    printf("[daily-rig-demo] cycle=%lu result=pass stories=%u frames=%u composed=%lu rejected_copies=%lu full_frame_refreshes=%lu partial_or_holds=%lu\r\n",
+           (unsigned long)cycle_index,
+           (unsigned)story_count,
+           (unsigned)((uint32_t)story_count * 15u),
+           (unsigned long)s_companion_daily_rig_frame_source.composed_frame_count,
+           (unsigned long)s_companion_daily_rig_frame_source.rejected_copy_count,
+           (unsigned long)full_frame_refresh_count,
+           (unsigned long)partial_or_hold_count);
+  }
+#else
+  return false;
+#endif
+}
+
+bool Companion_Screen_PlayV22EmotionBridgeDemo(void)
+{
+#if COMPANION_SCREEN_V22_EMOTION_BRIDGE_DEMO
+  const comp_expression_rig_profile_t *profile =
+      comp_v22_emotion_separation_rig_candidate_profile();
+  const comp_v22_emotion_separation_rig_bridge_t *bridge =
+      comp_v22_emotion_separation_rig_candidate_bridge(
+          COMPANION_SCREEN_V22_EMOTION_BRIDGE_DEMO_EDGE);
+  uint8_t step_index;
+
+  if (profile == NULL || bridge == NULL || bridge->score == NULL ||
+      bridge->frames == NULL || bridge->frame_count == 0u ||
+      bridge->score->step_count != bridge->frame_count ||
+      s_companion_daily_rig_frame_source.asset_pack.store == NULL ||
+      !s_companion_daily_rig_presentation_ready ||
+      comp_v22_emotion_separation_rig_candidate_runtime_activation_allowed()) {
+    printf("[v22-rig-demo] result=blocked reason=external_crig_profile_or_policy\r\n");
+    return false;
+  }
+
+  printf("[v22-rig-demo] production=off start bridge=%s source=%s target=%s event=%s frames=%u refresh=full_only reverse=disabled playlist=disabled\r\n",
+         bridge->name,
+         bridge->source_emotion,
+         bridge->target_emotion,
+         bridge->event_name,
+         (unsigned)bridge->frame_count);
+  for (step_index = 0u; step_index < bridge->frame_count; ++step_index) {
+    const comp_v22_emotion_separation_rig_frame_t *frame =
+        &bridge->frames[step_index];
+    comp_expression_rig_plan_t plan;
+    comp_epaper_display_request_t request;
+    comp_epaper_panel_report_t report;
+    comp_epaper_panel_result_t result;
+    uint32_t refresh_started_ms;
+    uint32_t refresh_elapsed_ms;
+    uint32_t post_refresh_delay_ms;
+
+    if (!comp_expression_rig_build_registered_score_step(profile,
+                                                          bridge->score,
+                                                          step_index,
+                                                          NULL,
+                                                          &plan) ||
+        !comp_expression_rig_frame_source_compose(&s_companion_daily_rig_frame_source,
+                                                   &plan,
+                                                   step_index)) {
+      printf("[v22-rig-demo] result=blocked bridge=%s step=%u reason=compose\r\n",
+             bridge->name,
+             (unsigned)step_index);
+      return false;
+    }
+    request = (comp_epaper_display_request_t){
+      .request_id = COMPANION_EPAPER_EXPRESSION_REQUEST_BASE | 0x00220000u |
+                    ((uint32_t)COMPANION_SCREEN_V22_EMOTION_BRIDGE_DEMO_EDGE << 8u) |
+                    (uint32_t)step_index,
+      .content_crc32 = 0xD9220000u |
+                       ((uint32_t)COMPANION_SCREEN_V22_EMOTION_BRIDGE_DEMO_EDGE << 8u) |
+                       (uint32_t)step_index,
+      .request_kind = COMP_EPAPER_DISPLAY_REQUEST_EXPRESSION,
+      .expression = (uint8_t)COMP_EPAPER_EXPRESSION_IDLE,
+      .asset_frame_valid = 1u,
+      .asset_frame_index = step_index,
+      .refresh_mode = COMP_EPAPER_REFRESH_FULL,
+      .dirty_x = s_companion_daily_rig_frame_source.current_bounds.left,
+      .dirty_y = s_companion_daily_rig_frame_source.current_bounds.top,
+      .dirty_width = s_companion_daily_rig_frame_source.current_bounds.width,
+      .dirty_height = s_companion_daily_rig_frame_source.current_bounds.height,
+    };
+    refresh_started_ms = HAL_GetTick();
+    result = comp_epaper_panel_adapter_refresh_card(&s_companion_panel_adapter,
+                                                     &request,
+                                                     &report);
+    refresh_elapsed_ms = HAL_GetTick() - refresh_started_ms;
+    if (result != COMP_EPAPER_PANEL_RESULT_OK || report.transferred_bytes < 10000u) {
+      printf("[v22-rig-demo] result=blocked bridge=%s step=%u reason=panel result=%u bytes=%lu\r\n",
+             bridge->name,
+             (unsigned)step_index,
+             (unsigned)result,
+             (unsigned long)report.transferred_bytes);
+      return false;
+    }
+    post_refresh_delay_ms = refresh_elapsed_ms < frame->duration_ms
+                                ? (uint32_t)frame->duration_ms - refresh_elapsed_ms
+                                : 0u;
+    printf("[v22-rig-demo] bridge=%s step=%u cue=%s source_phase=%s score_duration_ms=%u refresh_elapsed_ms=%lu post_refresh_delay_ms=%lu layers=%u bytes=%lu\r\n",
+           bridge->name,
+           (unsigned)step_index,
+           frame->cue,
+           frame->source_phase,
+           (unsigned)frame->duration_ms,
+           (unsigned long)refresh_elapsed_ms,
+           (unsigned long)post_refresh_delay_ms,
+           (unsigned)plan.layer_count,
+           (unsigned long)report.transferred_bytes);
+    HAL_Delay(post_refresh_delay_ms);
+  }
+  printf("[v22-rig-demo] result=pass bridge=%s settled_target=%s composed=%lu rejected_copies=%lu reverse=disabled next_auto_frame=none\r\n",
+         bridge->name,
+         bridge->target_emotion,
+         (unsigned long)s_companion_daily_rig_frame_source.composed_frame_count,
+         (unsigned long)s_companion_daily_rig_frame_source.rejected_copy_count);
+  return true;
+#else
+  return false;
+#endif
 }
 
 bool Companion_Screen_EnterLowPowerIdle(void)
@@ -2173,6 +3052,7 @@ bool Companion_Screen_DailyTapAt(uint16_t x, uint16_t y)
   {
     return false;
   }
+  Companion_Display_CancelAutomaticMotion(COMP_EPAPER_MOTION_CANCEL_TOUCH);
   direction = comp_pet_attention_from_touch(x, y, 200u, 200u);
   Companion_PetBehavior_Advance();
   comp_pet_behavior_note_touch(&s_companion_pet_behavior, x, y, 200u, 200u);
@@ -2239,6 +3119,7 @@ bool Companion_Screen_DailyStrokeAt(uint16_t start_x,
   {
     return false;
   }
+  Companion_Display_CancelAutomaticMotion(COMP_EPAPER_MOTION_CANCEL_TOUCH);
   stroke = comp_pet_behavior_stroke_direction(start_x, start_y, end_x, end_y);
   if (stroke == COMP_PET_STROKE_NONE)
   {
@@ -2337,6 +3218,27 @@ static void Companion_Display_EnqueueExpressionSignal(
 {
   comp_epaper_expression_decision_t decision;
   comp_epaper_expression_state_t previous_state = s_companion_expression_state;
+
+  switch (signal)
+  {
+  case COMP_EPAPER_EXPRESSION_SIGNAL_RECORDING_START:
+  case COMP_EPAPER_EXPRESSION_SIGNAL_RECORDING_STOP:
+  case COMP_EPAPER_EXPRESSION_SIGNAL_RECORDING_CANCEL:
+  case COMP_EPAPER_EXPRESSION_SIGNAL_RECORDING_FINISHED:
+    Companion_Display_CancelAutomaticMotion(
+        COMP_EPAPER_MOTION_CANCEL_RECORDING);
+    break;
+  case COMP_EPAPER_EXPRESSION_SIGNAL_LOW_BATTERY:
+  case COMP_EPAPER_EXPRESSION_SIGNAL_SETTINGS_SLEEPY:
+    Companion_Display_CancelAutomaticMotion(
+        COMP_EPAPER_MOTION_CANCEL_LOW_POWER);
+    break;
+  case COMP_EPAPER_EXPRESSION_SIGNAL_ERROR:
+    Companion_Display_CancelAutomaticMotion(COMP_EPAPER_MOTION_CANCEL_ERROR);
+    break;
+  default:
+    break;
+  }
 
   if (!comp_epaper_expression_state_apply_signal(&s_companion_expression_state,
                                                  signal,
