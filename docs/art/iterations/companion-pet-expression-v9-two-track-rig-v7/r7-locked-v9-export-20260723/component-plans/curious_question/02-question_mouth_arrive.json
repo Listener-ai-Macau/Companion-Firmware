@@ -1,0 +1,219 @@
+{
+  "schema": "companion.r7.locked_v9.component_plan.v1",
+  "story": "curious_question",
+  "cue": "question_mouth_arrive",
+  "phase": "response",
+  "duration_ms": 260,
+  "index": 2,
+  "source_frame": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/curious_question-02-question_mouth_arrive.pbm",
+  "source_pbm_sha256": "5AD13806AEFDE6F8A06368AE9B1C899545ADD9C7266145A247A2EFD218EBE136",
+  "exported_pbm": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/r7-locked-v9-export-20260723/all-candidates/curious_question/02-question_mouth_arrive.pbm",
+  "exported_pbm_sha256": "5AD13806AEFDE6F8A06368AE9B1C899545ADD9C7266145A247A2EFD218EBE136",
+  "preview_png": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/r7-locked-v9-export-20260723/all-candidates/curious_question/02-question_mouth_arrive.png",
+  "preview_png_sha256": "0D9CB9E72B89EB4FE8126AB9BB83F9C2A1670D27874F05EB6979C09AE5971389",
+  "anchor_policy": "whole_expression_visible_bbox_center",
+  "canonical_center": [
+    100,
+    100
+  ],
+  "source_anchor": [
+    99,
+    103
+  ],
+  "normalization_offset": [
+    1,
+    -3
+  ],
+  "source_bounds": [
+    32,
+    34,
+    167,
+    173
+  ],
+  "output_bounds": [
+    33,
+    31,
+    136,
+    140
+  ],
+  "source_1bpp_sha256": "6388832731A33712E30CE59A9327ED5B7FF68AB49F5CFDF2569FDB73B2D18773",
+  "derived_1bpp_sha256": "8D81C8206CF623AD39BC78764A146661568E4365CFD1B132942CC57337C9BDF4",
+  "layers": [
+    {
+      "component_id": 18,
+      "pack": "v22_face",
+      "anchor": [
+        56,
+        71
+      ],
+      "offset": [
+        0,
+        -1
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 21,
+      "pack": "v22_face",
+      "anchor": [
+        124,
+        90
+      ],
+      "offset": [
+        0,
+        -1
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 2,
+      "pack": "v22_face",
+      "anchor": [
+        42,
+        112
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 6,
+      "pack": "v22_face",
+      "anchor": [
+        125,
+        112
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 1,
+      "pack": "v22_face",
+      "anchor": [
+        42,
+        112
+      ],
+      "offset": [
+        1,
+        0
+      ],
+      "composite_op": "erase"
+    },
+    {
+      "component_id": 5,
+      "pack": "v22_face",
+      "anchor": [
+        125,
+        112
+      ],
+      "offset": [
+        1,
+        0
+      ],
+      "composite_op": "erase"
+    },
+    {
+      "component_id": 3,
+      "pack": "v22_face",
+      "anchor": [
+        42,
+        112
+      ],
+      "offset": [
+        1,
+        0
+      ],
+      "composite_op": "erase"
+    },
+    {
+      "component_id": 7,
+      "pack": "v22_face",
+      "anchor": [
+        125,
+        112
+      ],
+      "offset": [
+        1,
+        0
+      ],
+      "composite_op": "erase"
+    },
+    {
+      "component_id": 19,
+      "pack": "v22_face",
+      "anchor": [
+        31,
+        157
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 22,
+      "pack": "v22_face",
+      "anchor": [
+        152,
+        154
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 4,
+      "pack": "v22_face",
+      "anchor": [
+        94,
+        148
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 20,
+      "pack": "v22_face",
+      "anchor": [
+        92,
+        160
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 513,
+      "pack": "v45_special_source",
+      "anchor": [
+        145,
+        34
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    }
+  ],
+  "source_linkage": {
+    "report": ".cache/validation/companion-v45-centered-gallery-r1-20260723/render-report.json",
+    "report_frame_key": [
+      "curious_question",
+      "question_mouth_arrive"
+    ]
+  }
+}

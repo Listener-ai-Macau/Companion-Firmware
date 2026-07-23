@@ -1,0 +1,206 @@
+{
+  "schema": "companion.r7.locked_v9.component_plan.v1",
+  "story": "calm_presence",
+  "cue": "calm_entry",
+  "phase": "entry",
+  "duration_ms": 220,
+  "index": 0,
+  "source_frame": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/calm_presence-00-calm_entry.pbm",
+  "source_pbm_sha256": "4EA190DF84DEEBDA6674527CEA47BBCB09D779B369AC02C63321D0296BEACA08",
+  "exported_pbm": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/r7-locked-v9-export-20260723/all-candidates/calm_presence/00-calm_entry.pbm",
+  "exported_pbm_sha256": "4EA190DF84DEEBDA6674527CEA47BBCB09D779B369AC02C63321D0296BEACA08",
+  "preview_png": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/r7-locked-v9-export-20260723/all-candidates/calm_presence/00-calm_entry.png",
+  "preview_png_sha256": "B34A34E2A1A8FBD05868D668FCE47D97C56242CC024A7A7610C95F12976B24D2",
+  "anchor_policy": "whole_expression_visible_bbox_center",
+  "canonical_center": [
+    100,
+    100
+  ],
+  "source_anchor": [
+    100,
+    127
+  ],
+  "normalization_offset": [
+    0,
+    -27
+  ],
+  "source_bounds": [
+    34,
+    87,
+    166,
+    168
+  ],
+  "output_bounds": [
+    34,
+    60,
+    133,
+    82
+  ],
+  "source_1bpp_sha256": "F243FA734F495C4012D562F98AC3643665910F2994D2F130A7E7EA843A9C4AE3",
+  "derived_1bpp_sha256": "EF4CDB579CC2C43645E0E3585D8C40CA65763112619E5EB9FBC583EAF3E28DBD",
+  "layers": [
+    {
+      "component_id": 13,
+      "pack": "v22_face",
+      "anchor": [
+        45,
+        86
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 16,
+      "pack": "v22_face",
+      "anchor": [
+        127,
+        86
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 2,
+      "pack": "v22_face",
+      "anchor": [
+        42,
+        112
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 6,
+      "pack": "v22_face",
+      "anchor": [
+        125,
+        112
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 1,
+      "pack": "v22_face",
+      "anchor": [
+        42,
+        112
+      ],
+      "offset": [
+        1,
+        0
+      ],
+      "composite_op": "erase"
+    },
+    {
+      "component_id": 5,
+      "pack": "v22_face",
+      "anchor": [
+        125,
+        112
+      ],
+      "offset": [
+        1,
+        0
+      ],
+      "composite_op": "erase"
+    },
+    {
+      "component_id": 3,
+      "pack": "v22_face",
+      "anchor": [
+        42,
+        112
+      ],
+      "offset": [
+        1,
+        0
+      ],
+      "composite_op": "erase"
+    },
+    {
+      "component_id": 7,
+      "pack": "v22_face",
+      "anchor": [
+        125,
+        112
+      ],
+      "offset": [
+        1,
+        0
+      ],
+      "composite_op": "erase"
+    },
+    {
+      "component_id": 14,
+      "pack": "v22_face",
+      "anchor": [
+        33,
+        158
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 17,
+      "pack": "v22_face",
+      "anchor": [
+        152,
+        157
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 4,
+      "pack": "v22_face",
+      "anchor": [
+        94,
+        148
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 15,
+      "pack": "v22_face",
+      "anchor": [
+        86,
+        160
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    }
+  ],
+  "source_linkage": {
+    "report": ".cache/validation/companion-v45-centered-gallery-r1-20260723/render-report.json",
+    "report_frame_key": [
+      "calm_presence",
+      "calm_entry"
+    ]
+  }
+}

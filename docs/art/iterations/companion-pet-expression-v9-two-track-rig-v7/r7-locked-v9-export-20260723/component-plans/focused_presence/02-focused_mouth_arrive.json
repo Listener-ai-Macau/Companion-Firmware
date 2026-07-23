@@ -1,0 +1,206 @@
+{
+  "schema": "companion.r7.locked_v9.component_plan.v1",
+  "story": "focused_presence",
+  "cue": "focused_mouth_arrive",
+  "phase": "response",
+  "duration_ms": 260,
+  "index": 2,
+  "source_frame": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/focused_presence-02-focused_mouth_arrive.pbm",
+  "source_pbm_sha256": "90DA2D1077C4B7F2ECCA5E63AADDB217B5966166C973DD6C7EBD706E2B1D3148",
+  "exported_pbm": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/r7-locked-v9-export-20260723/all-candidates/focused_presence/02-focused_mouth_arrive.pbm",
+  "exported_pbm_sha256": "90DA2D1077C4B7F2ECCA5E63AADDB217B5966166C973DD6C7EBD706E2B1D3148",
+  "preview_png": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/r7-locked-v9-export-20260723/all-candidates/focused_presence/02-focused_mouth_arrive.png",
+  "preview_png_sha256": "64BC07391716241C89D4871A328FB9DF82D94F3F0EA6BDD9EF57ECBE81B38F24",
+  "anchor_policy": "whole_expression_visible_bbox_center",
+  "canonical_center": [
+    100,
+    100
+  ],
+  "source_anchor": [
+    98,
+    132
+  ],
+  "normalization_offset": [
+    2,
+    -32
+  ],
+  "source_bounds": [
+    33,
+    96,
+    164,
+    169
+  ],
+  "output_bounds": [
+    35,
+    64,
+    132,
+    74
+  ],
+  "source_1bpp_sha256": "BFEB13F020EE9151C1333F112F123EC804CF12D41012839EEFFBF6C580884B6B",
+  "derived_1bpp_sha256": "E9E11D86900E7F9DC8ECDBD1F907D9749363E54FBE3699C2EE5E11013C750EA7",
+  "layers": [
+    {
+      "component_id": 589,
+      "pack": "v45_special_source",
+      "anchor": [
+        51,
+        95
+      ],
+      "offset": [
+        0,
+        1
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 592,
+      "pack": "v45_special_source",
+      "anchor": [
+        128,
+        95
+      ],
+      "offset": [
+        0,
+        1
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 2,
+      "pack": "v22_face",
+      "anchor": [
+        42,
+        112
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 6,
+      "pack": "v22_face",
+      "anchor": [
+        125,
+        112
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 1,
+      "pack": "v22_face",
+      "anchor": [
+        42,
+        112
+      ],
+      "offset": [
+        1,
+        0
+      ],
+      "composite_op": "erase"
+    },
+    {
+      "component_id": 5,
+      "pack": "v22_face",
+      "anchor": [
+        125,
+        112
+      ],
+      "offset": [
+        1,
+        0
+      ],
+      "composite_op": "erase"
+    },
+    {
+      "component_id": 3,
+      "pack": "v22_face",
+      "anchor": [
+        42,
+        112
+      ],
+      "offset": [
+        1,
+        0
+      ],
+      "composite_op": "erase"
+    },
+    {
+      "component_id": 7,
+      "pack": "v22_face",
+      "anchor": [
+        125,
+        112
+      ],
+      "offset": [
+        1,
+        0
+      ],
+      "composite_op": "erase"
+    },
+    {
+      "component_id": 590,
+      "pack": "v45_special_source",
+      "anchor": [
+        33,
+        160
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 593,
+      "pack": "v45_special_source",
+      "anchor": [
+        151,
+        160
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 4,
+      "pack": "v22_face",
+      "anchor": [
+        94,
+        148
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 591,
+      "pack": "v45_special_source",
+      "anchor": [
+        87,
+        165
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    }
+  ],
+  "source_linkage": {
+    "report": ".cache/validation/companion-v45-centered-gallery-r1-20260723/render-report.json",
+    "report_frame_key": [
+      "focused_presence",
+      "focused_mouth_arrive"
+    ]
+  }
+}

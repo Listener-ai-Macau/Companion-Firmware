@@ -1,0 +1,206 @@
+{
+  "schema": "companion.r7.locked_v9.component_plan.v1",
+  "story": "bashful_presence",
+  "cue": "bashful_brow_lead",
+  "phase": "lead",
+  "duration_ms": 180,
+  "index": 1,
+  "source_frame": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/bashful_presence-01-bashful_brow_lead.pbm",
+  "source_pbm_sha256": "BF80CEA88353DA8ED0D3F1B2CB691FC8F3E19B33D78AC3505DC2D7A167370640",
+  "exported_pbm": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/r7-locked-v9-export-20260723/all-candidates/bashful_presence/01-bashful_brow_lead.pbm",
+  "exported_pbm_sha256": "BF80CEA88353DA8ED0D3F1B2CB691FC8F3E19B33D78AC3505DC2D7A167370640",
+  "preview_png": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/r7-locked-v9-export-20260723/all-candidates/bashful_presence/01-bashful_brow_lead.png",
+  "preview_png_sha256": "054443DF24CAF77A14400FFFCACA91E82F734E6BF4E59F3D6897A118EBE60678",
+  "anchor_policy": "whole_expression_visible_bbox_center",
+  "canonical_center": [
+    100,
+    100
+  ],
+  "source_anchor": [
+    100,
+    132
+  ],
+  "normalization_offset": [
+    0,
+    -32
+  ],
+  "source_bounds": [
+    42,
+    95,
+    158,
+    168
+  ],
+  "output_bounds": [
+    42,
+    63,
+    117,
+    74
+  ],
+  "source_1bpp_sha256": "1D56E7B872DF60B2916F75F57C0A5E63C1FB32A51CF41070121F4C15A9EF2BAE",
+  "derived_1bpp_sha256": "83085A1A2E42FCEF8777332B0E2B99BCEFE9496395815E91958E6900C0FD1529",
+  "layers": [
+    {
+      "component_id": 580,
+      "pack": "v45_special_source",
+      "anchor": [
+        50,
+        94
+      ],
+      "offset": [
+        0,
+        1
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 583,
+      "pack": "v45_special_source",
+      "anchor": [
+        129,
+        94
+      ],
+      "offset": [
+        0,
+        1
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 2,
+      "pack": "v22_face",
+      "anchor": [
+        42,
+        112
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 6,
+      "pack": "v22_face",
+      "anchor": [
+        125,
+        112
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 1,
+      "pack": "v22_face",
+      "anchor": [
+        42,
+        112
+      ],
+      "offset": [
+        1,
+        0
+      ],
+      "composite_op": "erase"
+    },
+    {
+      "component_id": 5,
+      "pack": "v22_face",
+      "anchor": [
+        125,
+        112
+      ],
+      "offset": [
+        1,
+        0
+      ],
+      "composite_op": "erase"
+    },
+    {
+      "component_id": 3,
+      "pack": "v22_face",
+      "anchor": [
+        42,
+        112
+      ],
+      "offset": [
+        1,
+        0
+      ],
+      "composite_op": "erase"
+    },
+    {
+      "component_id": 7,
+      "pack": "v22_face",
+      "anchor": [
+        125,
+        112
+      ],
+      "offset": [
+        1,
+        0
+      ],
+      "composite_op": "erase"
+    },
+    {
+      "component_id": 581,
+      "pack": "v45_special_source",
+      "anchor": [
+        43,
+        157
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 584,
+      "pack": "v45_special_source",
+      "anchor": [
+        143,
+        157
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 4,
+      "pack": "v22_face",
+      "anchor": [
+        94,
+        148
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 15,
+      "pack": "v22_face",
+      "anchor": [
+        86,
+        160
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    }
+  ],
+  "source_linkage": {
+    "report": ".cache/validation/companion-v45-centered-gallery-r1-20260723/render-report.json",
+    "report_frame_key": [
+      "bashful_presence",
+      "bashful_brow_lead"
+    ]
+  }
+}

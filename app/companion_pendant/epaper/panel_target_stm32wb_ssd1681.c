@@ -145,6 +145,15 @@
 #ifndef COMPANION_EPAPER_SSD1681_DUAL_PLANE_WHITE_CLEAN_DIAGNOSTIC
 #define COMPANION_EPAPER_SSD1681_DUAL_PLANE_WHITE_CLEAN_DIAGNOSTIC 0
 #endif
+#ifndef COMPANION_EPAPER_SSD1681_SINGLE_FLASH_WHITE_CLEANUP_DIAGNOSTIC
+#define COMPANION_EPAPER_SSD1681_SINGLE_FLASH_WHITE_CLEANUP_DIAGNOSTIC 0
+#endif
+#ifndef COMPANION_EPAPER_SSD1681_R7_LOCKED_V9_CHOREOGRAPHY_DIAGNOSTIC
+#define COMPANION_EPAPER_SSD1681_R7_LOCKED_V9_CHOREOGRAPHY_DIAGNOSTIC 0
+#endif
+#if COMPANION_EPAPER_SSD1681_R7_LOCKED_V9_CHOREOGRAPHY_DIAGNOSTIC
+#include "companion_r7_locked_v9_frames.h"
+#endif
 #ifndef COMPANION_EPAPER_SSD1681_VENDOR_PARTIAL_DIAGNOSTIC
 #define COMPANION_EPAPER_SSD1681_VENDOR_PARTIAL_DIAGNOSTIC 0
 #endif
@@ -1275,7 +1284,9 @@ static void ssd1681_gpio_init(void)
     COMPANION_EPAPER_SSD1681_R10_NATIVE_GUARDED_CORRIDOR_NO_RESET_CADENCE_DIAGNOSTIC || \
     COMPANION_EPAPER_SSD1681_R10_NATIVE_GUARDED_CORRIDOR_CACHED_MODE2_CADENCE_DIAGNOSTIC || \
     COMPANION_EPAPER_SSD1681_R11_NATIVE_CACHED_MODE2_THROW_ARC_DIAGNOSTIC || \
-    COMPANION_EPAPER_SSD1681_DUAL_PLANE_WHITE_CLEAN_DIAGNOSTIC
+    COMPANION_EPAPER_SSD1681_DUAL_PLANE_WHITE_CLEAN_DIAGNOSTIC || \
+    COMPANION_EPAPER_SSD1681_SINGLE_FLASH_WHITE_CLEANUP_DIAGNOSTIC || \
+    COMPANION_EPAPER_SSD1681_R7_LOCKED_V9_CHOREOGRAPHY_DIAGNOSTIC
 static void ssd1681_read_only_gpio_init(void)
 {
     GPIO_InitTypeDef gpio = {0};
@@ -1310,7 +1321,9 @@ static void ssd1681_read_only_gpio_init(void)
     COMPANION_EPAPER_SSD1681_R10_NATIVE_GUARDED_CORRIDOR_NO_RESET_CADENCE_DIAGNOSTIC || \
     COMPANION_EPAPER_SSD1681_R10_NATIVE_GUARDED_CORRIDOR_CACHED_MODE2_CADENCE_DIAGNOSTIC || \
     COMPANION_EPAPER_SSD1681_R11_NATIVE_CACHED_MODE2_THROW_ARC_DIAGNOSTIC || \
-    COMPANION_EPAPER_SSD1681_DUAL_PLANE_WHITE_CLEAN_DIAGNOSTIC
+    COMPANION_EPAPER_SSD1681_DUAL_PLANE_WHITE_CLEAN_DIAGNOSTIC || \
+    COMPANION_EPAPER_SSD1681_SINGLE_FLASH_WHITE_CLEANUP_DIAGNOSTIC || \
+    COMPANION_EPAPER_SSD1681_R7_LOCKED_V9_CHOREOGRAPHY_DIAGNOSTIC
     HAL_GPIO_WritePin(COMPANION_EPAPER_SSD1681_RST_GPIO_PORT,
                       COMPANION_EPAPER_SSD1681_RST_PIN,
                       GPIO_PIN_SET);
@@ -1343,7 +1356,9 @@ static void ssd1681_read_only_gpio_init(void)
     COMPANION_EPAPER_SSD1681_R10_NATIVE_GUARDED_CORRIDOR_LARGE_CADENCE_DIAGNOSTIC || \
     COMPANION_EPAPER_SSD1681_R10_NATIVE_GUARDED_CORRIDOR_NO_RESET_CADENCE_DIAGNOSTIC || \
     COMPANION_EPAPER_SSD1681_R10_NATIVE_GUARDED_CORRIDOR_CACHED_MODE2_CADENCE_DIAGNOSTIC || \
-    COMPANION_EPAPER_SSD1681_DUAL_PLANE_WHITE_CLEAN_DIAGNOSTIC
+    COMPANION_EPAPER_SSD1681_DUAL_PLANE_WHITE_CLEAN_DIAGNOSTIC || \
+    COMPANION_EPAPER_SSD1681_SINGLE_FLASH_WHITE_CLEANUP_DIAGNOSTIC || \
+    COMPANION_EPAPER_SSD1681_R7_LOCKED_V9_CHOREOGRAPHY_DIAGNOSTIC
     gpio.Pin = COMPANION_EPAPER_SSD1681_RST_PIN;
     HAL_GPIO_Init(COMPANION_EPAPER_SSD1681_RST_GPIO_PORT, &gpio);
 #endif
@@ -2911,6 +2926,57 @@ static void ssd1681_ram_command_target_r8_diagnostic(void)
 #endif
 #endif
 
+#if COMPANION_EPAPER_SSD1681_SINGLE_FLASH_WHITE_CLEANUP_DIAGNOSTIC
+static bool ssd1681_native_two_pass_source_reset(uint32_t *reset_elapsed_ms);
+static bool ssd1681_native_two_pass_source_window(const ssd1681_window_t *window);
+
+static void ssd1681_single_flash_white_cleanup_diagnostic(void)
+{
+    static const uint8_t mode2_display[] = {0xFFu};
+    static const ssd1681_window_t full = {
+        .x_start_byte = 0u,
+        .x_end_byte = SSD1681_BYTES_PER_ROW - 1u,
+        .y_start = 0u,
+        .y_end = SSD1681_HEIGHT - 1u,
+        .changed = true,
+    };
+    bool ok = true;
+    bool write24_ok;
+    bool write26_ok;
+    bool activation_ok;
+    bool refresh_command_ok;
+    uint32_t reset_elapsed_ms = 0u;
+    uint32_t busy_elapsed_ms = 0u;
+
+    memset(s_frame, 0xFF, sizeof(s_frame));
+    ssd1681_read_only_gpio_init();
+    printf("[epaper] single_flash_white_cleanup start window=logical_x0-24,logical_y0-199 controller_y199-0 frame_bytes=5000 mode=otp_mode2 reset_ms=10+10 writes_24=1 writes_26=1 retries=0 maintenance=0\r\n");
+    ok = ssd1681_native_two_pass_source_reset(&reset_elapsed_ms) &&
+         ssd1681_native_two_pass_source_window(&full);
+    write24_ok = ok && ssd1681_command(0x24u) &&
+                 ssd1681_data(s_frame, sizeof(s_frame));
+    write26_ok = write24_ok && ssd1681_command(0x26u) &&
+                 ssd1681_data(s_frame, sizeof(s_frame));
+    activation_ok = write26_ok &&
+                    ssd1681_command_data(0x22u, mode2_display, sizeof(mode2_display));
+    refresh_command_ok = activation_ok && ssd1681_command(0x20u);
+    ok = refresh_command_ok;
+    if (refresh_command_ok) {
+        const uint32_t busy_start = HAL_GetTick();
+        ok = ssd1681_wait_refresh_complete(0u, SSD1681_READY_TIMEOUT_MS);
+        busy_elapsed_ms = HAL_GetTick() - busy_start;
+    }
+    printf("[epaper] single_flash_white_cleanup result=%s activation=%u control=0xFF refresh=0x20 busy_waits=%u reset_elapsed_ms=%lu busy_elapsed_ms=%lu bytes_24=%u bytes_26=%u white=1 forbidden=0 retries=0 maintenance=0\r\n",
+           ok ? "ok" : "no_go",
+           refresh_command_ok ? 1u : 0u,
+           refresh_command_ok && ok ? 1u : 0u,
+           (unsigned long)reset_elapsed_ms,
+           (unsigned long)busy_elapsed_ms,
+           write24_ok ? 5000u : 0u,
+           write26_ok ? 5000u : 0u);
+}
+#endif
+
 #if COMPANION_EPAPER_SSD1681_DUAL_PLANE_WHITE_CLEAN_DIAGNOSTIC
 #define SSD1681_DUAL_WHITE_READ_BYTES (SSD1681_FRAME_BYTES + 1u)
 
@@ -4144,6 +4210,140 @@ static bool ssd1681_write_plane_region(uint8_t command,
     return true;
 }
 
+#if COMPANION_EPAPER_SSD1681_R7_LOCKED_V9_CHOREOGRAPHY_DIAGNOSTIC
+static bool ssd1681_native_two_pass_source_reset(uint32_t *reset_elapsed_ms);
+static bool ssd1681_native_two_pass_source_window(const ssd1681_window_t *window);
+
+static void ssd1681_r7_load_baseline(void)
+{
+    memcpy(s_frame, companion_r7_locked_v9_baseline_frame, sizeof(s_frame));
+}
+
+static bool ssd1681_r7_write_payload(uint8_t current_index)
+{
+    return current_index < COMPANION_R7_LOCKED_V9_FRAME_COUNT &&
+           ssd1681_command(0x24u) &&
+           ssd1681_data(companion_r7_locked_v9_payloads[current_index],
+                        COMPANION_R7_LOCKED_V9_CORRIDOR_BYTES);
+}
+
+static bool ssd1681_r7_move(uint8_t previous_index,
+                            uint8_t current_index,
+                            const char *phase,
+                            uint32_t ordinal,
+                            uint32_t previous_movement_start_ms,
+                            bool cadence_valid,
+                            uint32_t *movement_start_ms,
+                            uint32_t *transaction_elapsed_ms,
+                            uint32_t *busy_elapsed_ms,
+                            uint32_t *start_delta_ms)
+{
+    static const uint8_t native_mode2_source[] = {0xCFu};
+    static const ssd1681_window_t corridor = {
+        .x_start_byte = 4u,
+        .x_end_byte = 21u,
+        .y_start = 26u,
+        .y_end = 170u,
+        .changed = true,
+    };
+    const uint32_t transaction_start = HAL_GetTick();
+    bool ready = false;
+    bool ok;
+    *movement_start_ms = transaction_start;
+
+    ready = ssd1681_wait_ready(0u, SSD1681_READY_TIMEOUT_MS);
+    ok = ready &&
+         ssd1681_native_two_pass_source_window(&corridor) &&
+         ssd1681_r7_write_payload(current_index);
+    if (ok) {
+        const uint32_t busy_start = HAL_GetTick();
+        ok = ssd1681_command_data(0x22u, native_mode2_source, sizeof(native_mode2_source)) &&
+             ssd1681_command(0x20u) &&
+             ssd1681_wait_refresh_complete(0u, 600u);
+        *busy_elapsed_ms = HAL_GetTick() - busy_start;
+    } else {
+        *busy_elapsed_ms = 0u;
+    }
+    *transaction_elapsed_ms = HAL_GetTick() - transaction_start;
+    *start_delta_ms = cadence_valid ? (transaction_start - previous_movement_start_ms) : 0u;
+    printf("[epaper] r7 phase=%s %s=%lu previous=%u current=%u ready=%u t=%lu b=%lu d=%lu result=%s\r\n",
+           phase,
+           phase[0] == 'q' ? "index" : "iteration",
+           (unsigned long)ordinal,
+           (unsigned)previous_index + 1u,
+           (unsigned)current_index + 1u,
+           ready ? 1u : 0u,
+           (unsigned long)*transaction_elapsed_ms,
+           (unsigned long)*busy_elapsed_ms,
+           (unsigned long)*start_delta_ms,
+           ok ? "ok" : "no_go");
+    return ok && *busy_elapsed_ms <= 600u && *transaction_elapsed_ms <= 480u &&
+           (!cadence_valid || (*start_delta_ms >= 1u && *start_delta_ms <= 480u));
+}
+
+static void ssd1681_r7_locked_v9_choreography_diagnostic(void)
+{
+    static const uint8_t baseline_mode2[] = {0xFFu};
+    static const ssd1681_window_t full = {
+        .x_start_byte = 0u,
+        .x_end_byte = SSD1681_BYTES_PER_ROW - 1u,
+        .y_start = 0u,
+        .y_end = SSD1681_HEIGHT - 1u,
+        .changed = true,
+    };
+    uint32_t reset_elapsed_ms = 0u;
+    uint32_t busy_elapsed_ms = 0u;
+    uint32_t transaction_elapsed_ms = 0u;
+    uint32_t start_delta_ms = 0u;
+    uint32_t previous_movement_start_ms = 0u;
+    uint32_t movement_start_ms = 0u;
+    uint32_t iteration = 0u;
+    bool cadence_valid = false;
+
+    ssd1681_read_only_gpio_init();
+    printf("[epaper] r7_locked_v9 metadata schema=v2 frame_count=16 frame_bytes=5000 payload_bytes=2610 window=x4-21,y26-170 controller_y=173-29 control=0xCF refresh=0x20 busy_limit=600 transaction_limit=480 cadence_limit=480 ring=65536 cleanup=COMP-REQ-409 production_enabled=0\r\n");
+    ssd1681_r7_load_baseline();
+    bool ok = ssd1681_native_two_pass_source_reset(&reset_elapsed_ms) &&
+              ssd1681_native_two_pass_source_window(&full) &&
+              ssd1681_write_plane_region(0x24u, s_frame, &full);
+    if (ok) {
+        const uint32_t busy_start = HAL_GetTick();
+        ok = ssd1681_command_data(0x22u, baseline_mode2, sizeof(baseline_mode2)) &&
+             ssd1681_command(0x20u) && ssd1681_wait_refresh_complete(0u, 600u);
+        busy_elapsed_ms = HAL_GetTick() - busy_start;
+    }
+    printf("[epaper] r7_locked_v9 baseline window=x0-24,y0-199 controller_y199-0 bytes=5000 writes_24=1 writes_26=0 control=0xFF activation=1 busy_elapsed_ms=%lu reset_elapsed_ms=%lu result=%s production_enabled=0\r\n",
+           (unsigned long)busy_elapsed_ms, (unsigned long)reset_elapsed_ms, ok ? "ok" : "no_go");
+    if (!ok) return;
+    for (uint8_t qualification = 0u; qualification < 16u; ++qualification) {
+        if (!ssd1681_r7_move((uint8_t)((qualification + 15u) % 16u), qualification,
+                             "q", (uint32_t)qualification + 1u,
+                             previous_movement_start_ms, cadence_valid, &movement_start_ms,
+                             &transaction_elapsed_ms, &busy_elapsed_ms, &start_delta_ms)) {
+            return;
+        }
+        previous_movement_start_ms = movement_start_ms;
+        cadence_valid = true;
+    }
+    printf("[epaper] r7_locked_v9 qualification=16 result=ok continuous=1 telemetry_ring=65536 popup=0 retries=0 maintenance=0\r\n");
+    /* Qualification cadence ends here; the loop starts a fresh epoch. */
+    previous_movement_start_ms = 0u;
+    cadence_valid = false;
+    for (;;) {
+        for (uint8_t current = 0u; current < 16u; ++current) {
+            const uint8_t previous = current == 0u ? 15u : (uint8_t)(current - 1u);
+            if (!ssd1681_r7_move(previous, current, "l", iteration + 1u,
+                                 previous_movement_start_ms,
+                                 cadence_valid, &movement_start_ms, &transaction_elapsed_ms,
+                                 &busy_elapsed_ms, &start_delta_ms)) return;
+            previous_movement_start_ms = movement_start_ms;
+            cadence_valid = true;
+            ++iteration;
+        }
+    }
+}
+#endif
+
 #if COMPANION_EPAPER_SSD1681_R12_V22_CALM_CURIOUS_WARM_SAMPLER_DIAGNOSTIC
 /* R12 movement is the only path allowed to coalesce its fixed corridor. */
 static uint8_t s_r12_v22_corridor_payload[COMP_R12_V22_CALM_CURIOUS_WARM_CORRIDOR_BYTES];
@@ -4568,7 +4768,9 @@ static void ssd1681_phase_parallel_r10_ball_diagnostic(void)
     COMPANION_EPAPER_SSD1681_R10_NATIVE_GUARDED_CORRIDOR_LARGE_CADENCE_DIAGNOSTIC || \
     COMPANION_EPAPER_SSD1681_R10_NATIVE_GUARDED_CORRIDOR_NO_RESET_CADENCE_DIAGNOSTIC || \
     COMPANION_EPAPER_SSD1681_R10_NATIVE_GUARDED_CORRIDOR_CACHED_MODE2_CADENCE_DIAGNOSTIC || \
-    COMPANION_EPAPER_SSD1681_R11_NATIVE_CACHED_MODE2_THROW_ARC_DIAGNOSTIC
+    COMPANION_EPAPER_SSD1681_R11_NATIVE_CACHED_MODE2_THROW_ARC_DIAGNOSTIC || \
+    COMPANION_EPAPER_SSD1681_SINGLE_FLASH_WHITE_CLEANUP_DIAGNOSTIC || \
+    COMPANION_EPAPER_SSD1681_R7_LOCKED_V9_CHOREOGRAPHY_DIAGNOSTIC
 #if COMPANION_EPAPER_SSD1681_R11_NATIVE_CACHED_MODE2_THROW_ARC_DIAGNOSTIC
 #if COMPANION_EPAPER_SSD1681_R12_V22_CALM_CURIOUS_WARM_SAMPLER_DIAGNOSTIC
 #undef COMP_R10_NATIVE_TWO_PASS_FINE_STRIDE_QUALIFICATION_FRAMES
@@ -6884,6 +7086,18 @@ void companion_epaper_panel_stm32wb_ssd1681_init(
     (void)expression_assets;
     comp_epaper_panel_adapter_init_dry_run(adapter);
     ssd1681_ram_command_target_r8_diagnostic();
+    return;
+#endif
+#if COMPANION_EPAPER_SSD1681_SINGLE_FLASH_WHITE_CLEANUP_DIAGNOSTIC
+    (void)expression_assets;
+    comp_epaper_panel_adapter_init_dry_run(adapter);
+    ssd1681_single_flash_white_cleanup_diagnostic();
+    return;
+#endif
+#if COMPANION_EPAPER_SSD1681_R7_LOCKED_V9_CHOREOGRAPHY_DIAGNOSTIC
+    (void)expression_assets;
+    comp_epaper_panel_adapter_init_dry_run(adapter);
+    ssd1681_r7_locked_v9_choreography_diagnostic();
     return;
 #endif
 #if COMPANION_EPAPER_SSD1681_DUAL_PLANE_WHITE_CLEAN_DIAGNOSTIC

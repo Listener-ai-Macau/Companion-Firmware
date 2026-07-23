@@ -103,6 +103,8 @@ param(
     [switch]$EpaperSsd1681R11NativeCachedMode2ThrowArcDiagnostic,
     [switch]$EpaperSsd1681R12V22CalmCuriousWarmSamplerDiagnostic,
     [switch]$EpaperSsd1681DualPlaneWhiteCleanDiagnostic,
+    [switch]$EpaperSsd1681SingleFlashWhiteCleanupDiagnostic,
+    [switch]$EpaperSsd1681R7LockedV9ChoreographyDiagnostic,
     [switch]$EpaperSsd1681VerboseTrace,
     [ValidateScript({ $_ -eq -1 -or ($_ -ge 1 -and $_ -le 255) })]
     [int]$Ft6336TouchThreshold = -1,
@@ -795,6 +797,22 @@ if ($EpaperSsd1681DualPlaneWhiteCleanDiagnostic) {
         "EPAPER_SSD1681_DUAL_PLANE_WHITE_CLEAN_DIAGNOSTIC=1",
         "BUILD_DIR=build_ssd1681_dual_plane_white_clean",
         "TARGET=Companion_Nucleo_WB55RG_Ssd1681DualPlaneWhiteClean"
+    )
+}
+if ($EpaperSsd1681SingleFlashWhiteCleanupDiagnostic) {
+    $makeArgs += @(
+        "EPAPER_SSD1681_BRINGUP=1",
+        "EPAPER_SSD1681_SINGLE_FLASH_WHITE_CLEANUP_DIAGNOSTIC=1",
+        "BUILD_DIR=build_ssd1681_single_flash_white_cleanup",
+        "TARGET=Companion_Nucleo_WB55RG_Ssd1681SingleFlashWhiteCleanup"
+    )
+}
+if ($EpaperSsd1681R7LockedV9ChoreographyDiagnostic) {
+    $makeArgs += @(
+        "EPAPER_SSD1681_BRINGUP=1",
+        "EPAPER_SSD1681_R7_LOCKED_V9_CHOREOGRAPHY_DIAGNOSTIC=1",
+        "BUILD_DIR=build_ssd1681_r7_locked_v9_choreography",
+        "TARGET=Companion_Nucleo_WB55RG_Ssd1681R7LockedV9Choreography"
     )
 }
 if ($EpaperSsd1681VendorPartialDiagnostic) {

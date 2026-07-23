@@ -1,0 +1,206 @@
+{
+  "schema": "companion.r7.locked_v9.component_plan.v1",
+  "story": "delighted_presence",
+  "cue": "delighted_brow_lead",
+  "phase": "lead",
+  "duration_ms": 180,
+  "index": 1,
+  "source_frame": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/delighted_presence-01-delighted_brow_lead.pbm",
+  "source_pbm_sha256": "734FDF0673B24D670728D4B1B25C3917C39E014D3E3E703A8D3DEE6048F291C6",
+  "exported_pbm": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/r7-locked-v9-export-20260723/all-candidates/delighted_presence/01-delighted_brow_lead.pbm",
+  "exported_pbm_sha256": "734FDF0673B24D670728D4B1B25C3917C39E014D3E3E703A8D3DEE6048F291C6",
+  "preview_png": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/r7-locked-v9-export-20260723/all-candidates/delighted_presence/01-delighted_brow_lead.png",
+  "preview_png_sha256": "1BAD8C06E142E0CBE6CDE07461F43FBE249905BC27171545B769C32C3F285CA1",
+  "anchor_policy": "whole_expression_visible_bbox_center",
+  "canonical_center": [
+    100,
+    100
+  ],
+  "source_anchor": [
+    99,
+    123
+  ],
+  "normalization_offset": [
+    1,
+    -23
+  ],
+  "source_bounds": [
+    33,
+    78,
+    166,
+    168
+  ],
+  "output_bounds": [
+    34,
+    55,
+    134,
+    91
+  ],
+  "source_1bpp_sha256": "0B4E46F73D734E4AEA7275D738DABCFB957D99D1D93B683D3B057198FD3BF821",
+  "derived_1bpp_sha256": "B38FC887C23F9CC1D8DECE0934B917C07001F6866152BFFBB27058FA6395B51E",
+  "layers": [
+    {
+      "component_id": 575,
+      "pack": "v45_special_source",
+      "anchor": [
+        45,
+        80
+      ],
+      "offset": [
+        0,
+        -1
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 578,
+      "pack": "v45_special_source",
+      "anchor": [
+        127,
+        79
+      ],
+      "offset": [
+        0,
+        -1
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 2,
+      "pack": "v22_face",
+      "anchor": [
+        42,
+        112
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 6,
+      "pack": "v22_face",
+      "anchor": [
+        125,
+        112
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 1,
+      "pack": "v22_face",
+      "anchor": [
+        42,
+        112
+      ],
+      "offset": [
+        1,
+        0
+      ],
+      "composite_op": "erase"
+    },
+    {
+      "component_id": 5,
+      "pack": "v22_face",
+      "anchor": [
+        125,
+        112
+      ],
+      "offset": [
+        1,
+        0
+      ],
+      "composite_op": "erase"
+    },
+    {
+      "component_id": 3,
+      "pack": "v22_face",
+      "anchor": [
+        42,
+        112
+      ],
+      "offset": [
+        1,
+        0
+      ],
+      "composite_op": "erase"
+    },
+    {
+      "component_id": 7,
+      "pack": "v22_face",
+      "anchor": [
+        125,
+        112
+      ],
+      "offset": [
+        1,
+        0
+      ],
+      "composite_op": "erase"
+    },
+    {
+      "component_id": 576,
+      "pack": "v45_special_source",
+      "anchor": [
+        33,
+        157
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 579,
+      "pack": "v45_special_source",
+      "anchor": [
+        152,
+        157
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 4,
+      "pack": "v22_face",
+      "anchor": [
+        94,
+        148
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 15,
+      "pack": "v22_face",
+      "anchor": [
+        86,
+        160
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    }
+  ],
+  "source_linkage": {
+    "report": ".cache/validation/companion-v45-centered-gallery-r1-20260723/render-report.json",
+    "report_frame_key": [
+      "delighted_presence",
+      "delighted_brow_lead"
+    ]
+  }
+}

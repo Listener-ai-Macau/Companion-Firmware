@@ -1,0 +1,206 @@
+{
+  "schema": "companion.r7.locked_v9.component_plan.v1",
+  "story": "warm_presence",
+  "cue": "warm_brow_lead",
+  "phase": "lead",
+  "duration_ms": 180,
+  "index": 1,
+  "source_frame": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/warm_presence-01-warm_brow_lead.pbm",
+  "source_pbm_sha256": "CC4FAC9439CA3BEB1E39D6051A39E5F6DA7F6F7FFCF4E44BDC1766CD759B5ABA",
+  "exported_pbm": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/r7-locked-v9-export-20260723/all-candidates/warm_presence/01-warm_brow_lead.pbm",
+  "exported_pbm_sha256": "CC4FAC9439CA3BEB1E39D6051A39E5F6DA7F6F7FFCF4E44BDC1766CD759B5ABA",
+  "preview_png": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/r7-locked-v9-export-20260723/all-candidates/warm_presence/01-warm_brow_lead.png",
+  "preview_png_sha256": "CFDD49125BB4CF5B4BE0394208E4BB382FF169C77E1165A0A80759D6B97E8DFC",
+  "anchor_policy": "whole_expression_visible_bbox_center",
+  "canonical_center": [
+    100,
+    100
+  ],
+  "source_anchor": [
+    101,
+    132
+  ],
+  "normalization_offset": [
+    -1,
+    -32
+  ],
+  "source_bounds": [
+    33,
+    87,
+    170,
+    168
+  ],
+  "output_bounds": [
+    32,
+    55,
+    138,
+    82
+  ],
+  "source_1bpp_sha256": "CF27E3ED3F3B5FE342BC2D98AEF05CA142D52C1DB7AB5084E75A06BA6ED2B2B7",
+  "derived_1bpp_sha256": "18773DB24D5D1E23CCBEF676473BD4D9BC4BB6E7CA71834C025F0D7F3D460F7F",
+  "layers": [
+    {
+      "component_id": 33,
+      "pack": "v22_face",
+      "anchor": [
+        49,
+        85
+      ],
+      "offset": [
+        0,
+        1
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 36,
+      "pack": "v22_face",
+      "anchor": [
+        122,
+        85
+      ],
+      "offset": [
+        0,
+        1
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 2,
+      "pack": "v22_face",
+      "anchor": [
+        42,
+        112
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 6,
+      "pack": "v22_face",
+      "anchor": [
+        125,
+        112
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 1,
+      "pack": "v22_face",
+      "anchor": [
+        42,
+        112
+      ],
+      "offset": [
+        1,
+        0
+      ],
+      "composite_op": "erase"
+    },
+    {
+      "component_id": 5,
+      "pack": "v22_face",
+      "anchor": [
+        125,
+        112
+      ],
+      "offset": [
+        1,
+        0
+      ],
+      "composite_op": "erase"
+    },
+    {
+      "component_id": 3,
+      "pack": "v22_face",
+      "anchor": [
+        42,
+        112
+      ],
+      "offset": [
+        1,
+        0
+      ],
+      "composite_op": "erase"
+    },
+    {
+      "component_id": 7,
+      "pack": "v22_face",
+      "anchor": [
+        125,
+        112
+      ],
+      "offset": [
+        1,
+        0
+      ],
+      "composite_op": "erase"
+    },
+    {
+      "component_id": 34,
+      "pack": "v22_face",
+      "anchor": [
+        32,
+        155
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 37,
+      "pack": "v22_face",
+      "anchor": [
+        152,
+        154
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 4,
+      "pack": "v22_face",
+      "anchor": [
+        94,
+        148
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 15,
+      "pack": "v22_face",
+      "anchor": [
+        86,
+        160
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    }
+  ],
+  "source_linkage": {
+    "report": ".cache/validation/companion-v45-centered-gallery-r1-20260723/render-report.json",
+    "report_frame_key": [
+      "warm_presence",
+      "warm_brow_lead"
+    ]
+  }
+}

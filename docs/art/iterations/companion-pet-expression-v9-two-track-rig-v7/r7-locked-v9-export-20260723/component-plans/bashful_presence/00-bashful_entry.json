@@ -1,0 +1,206 @@
+{
+  "schema": "companion.r7.locked_v9.component_plan.v1",
+  "story": "bashful_presence",
+  "cue": "bashful_entry",
+  "phase": "entry",
+  "duration_ms": 220,
+  "index": 0,
+  "source_frame": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/bashful_presence-00-bashful_entry.pbm",
+  "source_pbm_sha256": "54340A9A546B7A01D726BABDDB73C0087E7EE208BC3F3D8C09628341DB43E918",
+  "exported_pbm": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/r7-locked-v9-export-20260723/all-candidates/bashful_presence/00-bashful_entry.pbm",
+  "exported_pbm_sha256": "54340A9A546B7A01D726BABDDB73C0087E7EE208BC3F3D8C09628341DB43E918",
+  "preview_png": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/r7-locked-v9-export-20260723/all-candidates/bashful_presence/00-bashful_entry.png",
+  "preview_png_sha256": "8F8ED1BEABE0394B73A86DBB3F2E291D7B94CB306A4C3396FA5AAA549B8F47B4",
+  "anchor_policy": "whole_expression_visible_bbox_center",
+  "canonical_center": [
+    100,
+    100
+  ],
+  "source_anchor": [
+    100,
+    132
+  ],
+  "normalization_offset": [
+    0,
+    -32
+  ],
+  "source_bounds": [
+    42,
+    94,
+    158,
+    168
+  ],
+  "output_bounds": [
+    42,
+    62,
+    117,
+    75
+  ],
+  "source_1bpp_sha256": "AC04F026E8789ABD84F021653AD7D5483F46ABF10E32C31AABB0E6A32C2D35A0",
+  "derived_1bpp_sha256": "E707E121577B0C72C70456BF34282B25935804C14F3F991016FD7B8F3178A30D",
+  "layers": [
+    {
+      "component_id": 580,
+      "pack": "v45_special_source",
+      "anchor": [
+        50,
+        94
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 583,
+      "pack": "v45_special_source",
+      "anchor": [
+        129,
+        94
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 2,
+      "pack": "v22_face",
+      "anchor": [
+        42,
+        112
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 6,
+      "pack": "v22_face",
+      "anchor": [
+        125,
+        112
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 1,
+      "pack": "v22_face",
+      "anchor": [
+        42,
+        112
+      ],
+      "offset": [
+        1,
+        0
+      ],
+      "composite_op": "erase"
+    },
+    {
+      "component_id": 5,
+      "pack": "v22_face",
+      "anchor": [
+        125,
+        112
+      ],
+      "offset": [
+        1,
+        0
+      ],
+      "composite_op": "erase"
+    },
+    {
+      "component_id": 3,
+      "pack": "v22_face",
+      "anchor": [
+        42,
+        112
+      ],
+      "offset": [
+        1,
+        0
+      ],
+      "composite_op": "erase"
+    },
+    {
+      "component_id": 7,
+      "pack": "v22_face",
+      "anchor": [
+        125,
+        112
+      ],
+      "offset": [
+        1,
+        0
+      ],
+      "composite_op": "erase"
+    },
+    {
+      "component_id": 581,
+      "pack": "v45_special_source",
+      "anchor": [
+        43,
+        157
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 584,
+      "pack": "v45_special_source",
+      "anchor": [
+        143,
+        157
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 4,
+      "pack": "v22_face",
+      "anchor": [
+        94,
+        148
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 15,
+      "pack": "v22_face",
+      "anchor": [
+        86,
+        160
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    }
+  ],
+  "source_linkage": {
+    "report": ".cache/validation/companion-v45-centered-gallery-r1-20260723/render-report.json",
+    "report_frame_key": [
+      "bashful_presence",
+      "bashful_entry"
+    ]
+  }
+}

@@ -1,0 +1,206 @@
+{
+  "schema": "companion.r7.locked_v9.component_plan.v1",
+  "story": "warm_presence",
+  "cue": "warm_smile_arrive",
+  "phase": "response",
+  "duration_ms": 260,
+  "index": 2,
+  "source_frame": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/warm_presence-02-warm_smile_arrive.pbm",
+  "source_pbm_sha256": "4879F391290FA1D3786A5705FF291C524B779034AFE8F8C7CE95505E3A08C333",
+  "exported_pbm": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/r7-locked-v9-export-20260723/all-candidates/warm_presence/02-warm_smile_arrive.pbm",
+  "exported_pbm_sha256": "4879F391290FA1D3786A5705FF291C524B779034AFE8F8C7CE95505E3A08C333",
+  "preview_png": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/r7-locked-v9-export-20260723/all-candidates/warm_presence/02-warm_smile_arrive.png",
+  "preview_png_sha256": "848816C58F060D70553339ACBB1C43CFFA9FD6D8D6964C353E51DC2AFE4D2E22",
+  "anchor_policy": "whole_expression_visible_bbox_center",
+  "canonical_center": [
+    100,
+    100
+  ],
+  "source_anchor": [
+    101,
+    132
+  ],
+  "normalization_offset": [
+    -1,
+    -32
+  ],
+  "source_bounds": [
+    33,
+    87,
+    170,
+    177
+  ],
+  "output_bounds": [
+    32,
+    55,
+    138,
+    91
+  ],
+  "source_1bpp_sha256": "F9D3C7C17417C22A225CF2A890C392597EE7CE96F6ECBC4A2F7433119C8ED66F",
+  "derived_1bpp_sha256": "D581870CF58B88712EA9F15DC67C12B9D0CA56EFD119B44A48901640CB946236",
+  "layers": [
+    {
+      "component_id": 33,
+      "pack": "v22_face",
+      "anchor": [
+        49,
+        85
+      ],
+      "offset": [
+        0,
+        1
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 36,
+      "pack": "v22_face",
+      "anchor": [
+        122,
+        85
+      ],
+      "offset": [
+        0,
+        1
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 2,
+      "pack": "v22_face",
+      "anchor": [
+        42,
+        112
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 6,
+      "pack": "v22_face",
+      "anchor": [
+        125,
+        112
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 1,
+      "pack": "v22_face",
+      "anchor": [
+        42,
+        112
+      ],
+      "offset": [
+        1,
+        0
+      ],
+      "composite_op": "erase"
+    },
+    {
+      "component_id": 5,
+      "pack": "v22_face",
+      "anchor": [
+        125,
+        112
+      ],
+      "offset": [
+        1,
+        0
+      ],
+      "composite_op": "erase"
+    },
+    {
+      "component_id": 3,
+      "pack": "v22_face",
+      "anchor": [
+        42,
+        112
+      ],
+      "offset": [
+        1,
+        0
+      ],
+      "composite_op": "erase"
+    },
+    {
+      "component_id": 7,
+      "pack": "v22_face",
+      "anchor": [
+        125,
+        112
+      ],
+      "offset": [
+        1,
+        0
+      ],
+      "composite_op": "erase"
+    },
+    {
+      "component_id": 34,
+      "pack": "v22_face",
+      "anchor": [
+        32,
+        155
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 37,
+      "pack": "v22_face",
+      "anchor": [
+        152,
+        154
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 4,
+      "pack": "v22_face",
+      "anchor": [
+        94,
+        148
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 35,
+      "pack": "v22_face",
+      "anchor": [
+        85,
+        157
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    }
+  ],
+  "source_linkage": {
+    "report": ".cache/validation/companion-v45-centered-gallery-r1-20260723/render-report.json",
+    "report_frame_key": [
+      "warm_presence",
+      "warm_smile_arrive"
+    ]
+  }
+}

@@ -1,0 +1,206 @@
+{
+  "schema": "companion.r7.locked_v9.component_plan.v1",
+  "story": "daily_attention_right",
+  "cue": "gaze_right_arrive",
+  "phase": "lead",
+  "duration_ms": 260,
+  "index": 1,
+  "source_frame": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/daily_attention_right-01-gaze_right_arrive.pbm",
+  "source_pbm_sha256": "AF7AF48DADF1A622D4B651446671CAE8764CE248B305F5B7CFDB214AE5257E05",
+  "exported_pbm": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/r7-locked-v9-export-20260723/all-candidates/daily_attention_right/01-gaze_right_arrive.pbm",
+  "exported_pbm_sha256": "AF7AF48DADF1A622D4B651446671CAE8764CE248B305F5B7CFDB214AE5257E05",
+  "preview_png": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/r7-locked-v9-export-20260723/all-candidates/daily_attention_right/01-gaze_right_arrive.png",
+  "preview_png_sha256": "7CD3D50D8C67830165054C22D7EE8F7ACAE23C95EB27A7B5A422A333E2CDF8BF",
+  "anchor_policy": "whole_expression_visible_bbox_center",
+  "canonical_center": [
+    100,
+    100
+  ],
+  "source_anchor": [
+    100,
+    127
+  ],
+  "normalization_offset": [
+    0,
+    -27
+  ],
+  "source_bounds": [
+    34,
+    87,
+    166,
+    168
+  ],
+  "output_bounds": [
+    34,
+    60,
+    133,
+    82
+  ],
+  "source_1bpp_sha256": "D9B3974424A1C79100031C164DC877F2BAA26F39A3B9BD6D9A63310D23178C52",
+  "derived_1bpp_sha256": "C41FEF1C8529428B075D2803FDDA7B4C76B2B583AA63E38C815FA034B891FC04",
+  "layers": [
+    {
+      "component_id": 13,
+      "pack": "v22_face",
+      "anchor": [
+        45,
+        86
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 16,
+      "pack": "v22_face",
+      "anchor": [
+        127,
+        86
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 2,
+      "pack": "v22_face",
+      "anchor": [
+        42,
+        112
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 6,
+      "pack": "v22_face",
+      "anchor": [
+        125,
+        112
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 1,
+      "pack": "v22_face",
+      "anchor": [
+        42,
+        112
+      ],
+      "offset": [
+        5,
+        2
+      ],
+      "composite_op": "erase"
+    },
+    {
+      "component_id": 5,
+      "pack": "v22_face",
+      "anchor": [
+        125,
+        112
+      ],
+      "offset": [
+        5,
+        2
+      ],
+      "composite_op": "erase"
+    },
+    {
+      "component_id": 3,
+      "pack": "v22_face",
+      "anchor": [
+        42,
+        112
+      ],
+      "offset": [
+        5,
+        3
+      ],
+      "composite_op": "erase"
+    },
+    {
+      "component_id": 7,
+      "pack": "v22_face",
+      "anchor": [
+        125,
+        112
+      ],
+      "offset": [
+        5,
+        3
+      ],
+      "composite_op": "erase"
+    },
+    {
+      "component_id": 14,
+      "pack": "v22_face",
+      "anchor": [
+        33,
+        158
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 17,
+      "pack": "v22_face",
+      "anchor": [
+        152,
+        157
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 4,
+      "pack": "v22_face",
+      "anchor": [
+        94,
+        148
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 15,
+      "pack": "v22_face",
+      "anchor": [
+        86,
+        160
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    }
+  ],
+  "source_linkage": {
+    "report": ".cache/validation/companion-v45-centered-gallery-r1-20260723/render-report.json",
+    "report_frame_key": [
+      "daily_attention_right",
+      "gaze_right_arrive"
+    ]
+  }
+}

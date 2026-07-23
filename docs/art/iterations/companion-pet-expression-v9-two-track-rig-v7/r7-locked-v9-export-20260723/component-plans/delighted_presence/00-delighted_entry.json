@@ -1,0 +1,206 @@
+{
+  "schema": "companion.r7.locked_v9.component_plan.v1",
+  "story": "delighted_presence",
+  "cue": "delighted_entry",
+  "phase": "entry",
+  "duration_ms": 220,
+  "index": 0,
+  "source_frame": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/delighted_presence-00-delighted_entry.pbm",
+  "source_pbm_sha256": "B602B17534FA93DBEF3E4C89C3BC68AAB10616375B1FEF71B2F0E9741A3CCF62",
+  "exported_pbm": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/r7-locked-v9-export-20260723/all-candidates/delighted_presence/00-delighted_entry.pbm",
+  "exported_pbm_sha256": "B602B17534FA93DBEF3E4C89C3BC68AAB10616375B1FEF71B2F0E9741A3CCF62",
+  "preview_png": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/r7-locked-v9-export-20260723/all-candidates/delighted_presence/00-delighted_entry.png",
+  "preview_png_sha256": "379C7CE0D8617C368AAAD6DDF1C019237148F64EB43D88C0BB628B3B261772D1",
+  "anchor_policy": "whole_expression_visible_bbox_center",
+  "canonical_center": [
+    100,
+    100
+  ],
+  "source_anchor": [
+    99,
+    123
+  ],
+  "normalization_offset": [
+    1,
+    -23
+  ],
+  "source_bounds": [
+    33,
+    79,
+    166,
+    168
+  ],
+  "output_bounds": [
+    34,
+    56,
+    134,
+    90
+  ],
+  "source_1bpp_sha256": "F008BE3C354807F71366A566DB35E90281E8A5D46D88B7040223B51C72EEC8AD",
+  "derived_1bpp_sha256": "8BD2A7DCE4ADAA3CE1DAC745B8CF9146D93A827CD2AB4ED86C6B2EBB8C05E258",
+  "layers": [
+    {
+      "component_id": 575,
+      "pack": "v45_special_source",
+      "anchor": [
+        45,
+        80
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 578,
+      "pack": "v45_special_source",
+      "anchor": [
+        127,
+        79
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 2,
+      "pack": "v22_face",
+      "anchor": [
+        42,
+        112
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 6,
+      "pack": "v22_face",
+      "anchor": [
+        125,
+        112
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 1,
+      "pack": "v22_face",
+      "anchor": [
+        42,
+        112
+      ],
+      "offset": [
+        1,
+        0
+      ],
+      "composite_op": "erase"
+    },
+    {
+      "component_id": 5,
+      "pack": "v22_face",
+      "anchor": [
+        125,
+        112
+      ],
+      "offset": [
+        1,
+        0
+      ],
+      "composite_op": "erase"
+    },
+    {
+      "component_id": 3,
+      "pack": "v22_face",
+      "anchor": [
+        42,
+        112
+      ],
+      "offset": [
+        1,
+        0
+      ],
+      "composite_op": "erase"
+    },
+    {
+      "component_id": 7,
+      "pack": "v22_face",
+      "anchor": [
+        125,
+        112
+      ],
+      "offset": [
+        1,
+        0
+      ],
+      "composite_op": "erase"
+    },
+    {
+      "component_id": 576,
+      "pack": "v45_special_source",
+      "anchor": [
+        33,
+        157
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 579,
+      "pack": "v45_special_source",
+      "anchor": [
+        152,
+        157
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 4,
+      "pack": "v22_face",
+      "anchor": [
+        94,
+        148
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    },
+    {
+      "component_id": 15,
+      "pack": "v22_face",
+      "anchor": [
+        86,
+        160
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "composite_op": "ink"
+    }
+  ],
+  "source_linkage": {
+    "report": ".cache/validation/companion-v45-centered-gallery-r1-20260723/render-report.json",
+    "report_frame_key": [
+      "delighted_presence",
+      "delighted_entry"
+    ]
+  }
+}
