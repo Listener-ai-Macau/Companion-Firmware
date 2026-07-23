@@ -198,8 +198,8 @@ async function capture(page, id, kind = "stage") {
   return row;
 }
 
-async function screenSnapshot(page) {
-  return page.evaluate(() => {
+async function screenSnapshot(page, freezeOverallAfterSnapshot = false) {
+  return page.evaluate((freezeAfterSnapshot) => {
     const stage = document.querySelector("#overall-viewport");
     const frame = stage.querySelector(".viewport-frame");
     const gaze = stage.querySelector(".viewport-gaze");
@@ -336,7 +336,7 @@ async function screenSnapshot(page) {
         outOfBounds.push(name);
       }
     }
-    return {
+    const snapshot = {
       contract: {
         active_pointer: contract.activePointer
           ? {
@@ -403,7 +403,18 @@ async function screenSnapshot(page) {
         menu: menu.getAttribute("src") || "",
       },
     };
-  });
+    if (freezeAfterSnapshot) {
+      const overallState = window.__companionViewportStates?.overall;
+      if (overallState) {
+        clearTimeout(overallState.timer);
+        overallState.timer = 0;
+        overallState.touching = true;
+        overallState.request += 1;
+        overallState.gazeRequest += 1;
+      }
+    }
+    return snapshot;
+  }, freezeOverallAfterSnapshot);
 }
 
 function assertSnapshot(snapshot, expectedMode, id) {
@@ -677,7 +688,7 @@ async function replaySingle(browser, viewport, type) {
       await sleep(390);
       await waitForVisibleImages(page);
       const committed = assertSnapshot(
-        await screenSnapshot(page),
+        await screenSnapshot(page, true),
         "expression",
         `${id}-committed`,
       );

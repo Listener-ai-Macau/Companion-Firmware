@@ -4,9 +4,9 @@
       {
         "bytes": 3055,
         "exists": true,
-        "expected_sha256": "65ADEF4F50D1BB5A3635835F63AD9D353337F4684DFA7610E975AB022A22DD26",
+        "expected_sha256": "71C23ECF69CE759BAD8D328946385A82ABFA5F09D5AE14C109D3EBBB505F3B8D",
         "match": true,
-        "observed_sha256": "65ADEF4F50D1BB5A3635835F63AD9D353337F4684DFA7610E975AB022A22DD26",
+        "observed_sha256": "71C23ECF69CE759BAD8D328946385A82ABFA5F09D5AE14C109D3EBBB505F3B8D",
         "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/browser-replay-result.json"
       },
       {
@@ -20,9 +20,9 @@
       {
         "bytes": 16583,
         "exists": true,
-        "expected_sha256": "DE6E009B1676E525BF1860EDB67E09F46A7B1E085380F426E7507049663688C5",
+        "expected_sha256": "83B9EB8239D34CB772A1E85DC717DF2674C85960D63ACE81797D029CA697E823",
         "match": true,
-        "observed_sha256": "DE6E009B1676E525BF1860EDB67E09F46A7B1E085380F426E7507049663688C5",
+        "observed_sha256": "83B9EB8239D34CB772A1E85DC717DF2674C85960D63ACE81797D029CA697E823",
         "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshot-manifest.json"
       },
       {
@@ -90,11 +90,11 @@
         "path": "docs/validation/companion-pet-special-system-owner-acceptance-20260717.json"
       },
       {
-        "bytes": 44157,
+        "bytes": 44604,
         "exists": true,
-        "expected_sha256": "6F3C58A3F2DFD47717ABFCA040467870DAF48F47ED0999EF26955E0DAD4B56BA",
+        "expected_sha256": "259CB0D0D914A882634F2B37A05C6AAF5CD4413DAD766A98B997B7B7649C9E6D",
         "match": true,
-        "observed_sha256": "6F3C58A3F2DFD47717ABFCA040467870DAF48F47ED0999EF26955E0DAD4B56BA",
+        "observed_sha256": "259CB0D0D914A882634F2B37A05C6AAF5CD4413DAD766A98B997B7B7649C9E6D",
         "path": "tools/faraday_upper_art/replay_companion_browser_owner_review_ready.mjs"
       }
     ],
@@ -366,8 +366,8 @@
       }
     ],
     "replay_tool": {
-      "expected_sha256": "6F3C58A3F2DFD47717ABFCA040467870DAF48F47ED0999EF26955E0DAD4B56BA",
-      "observed_sha256": "6F3C58A3F2DFD47717ABFCA040467870DAF48F47ED0999EF26955E0DAD4B56BA",
+      "expected_sha256": "259CB0D0D914A882634F2B37A05C6AAF5CD4413DAD766A98B997B7B7649C9E6D",
+      "observed_sha256": "259CB0D0D914A882634F2B37A05C6AAF5CD4413DAD766A98B997B7B7649C9E6D",
       "path": "tools/faraday_upper_art/replay_companion_browser_owner_review_ready.mjs"
     }
   },
@@ -397,11 +397,11 @@
       "--replay-tool",
       "tools/faraday_upper_art/replay_companion_browser_owner_review_ready.mjs",
       "--expected-replay-tool-sha256",
-      "6F3C58A3F2DFD47717ABFCA040467870DAF48F47ED0999EF26955E0DAD4B56BA",
+      "259CB0D0D914A882634F2B37A05C6AAF5CD4413DAD766A98B997B7B7649C9E6D",
       "--replay-result",
       "docs/validation/companion-browser-owner-review-ready-comp-req-471/browser-replay-result.json",
       "--expected-replay-result-sha256",
-      "65ADEF4F50D1BB5A3635835F63AD9D353337F4684DFA7610E975AB022A22DD26",
+      "71C23ECF69CE759BAD8D328946385A82ABFA5F09D5AE14C109D3EBBB505F3B8D",
       "--pixel-dom-route",
       "docs/validation/companion-browser-owner-review-ready-comp-req-471/pixel-dom-route-artifact.json",
       "--expected-pixel-dom-route-sha256",
@@ -409,7 +409,7 @@
       "--screenshot-manifest",
       "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshot-manifest.json",
       "--expected-screenshot-manifest-sha256",
-      "DE6E009B1676E525BF1860EDB67E09F46A7B1E085380F426E7507049663688C5",
+      "83B9EB8239D34CB772A1E85DC717DF2674C85960D63ACE81797D029CA697E823",
       "--output",
       "docs/validation/companion-browser-owner-review-ready-comp-req-471/BROWSER_OWNER_REVIEW_READY.json"
     ],
@@ -423,8 +423,8 @@
   "failed_checks": [],
   "machine_replay": {
     "pixel_dom_route_sha256": "670E41E6D928AD6FFAF50D580D87EC2FA19DD8507D0513375B7259BE9375C2FA",
-    "replay_result_sha256": "65ADEF4F50D1BB5A3635835F63AD9D353337F4684DFA7610E975AB022A22DD26",
-    "screenshot_manifest_sha256": "DE6E009B1676E525BF1860EDB67E09F46A7B1E085380F426E7507049663688C5"
+    "replay_result_sha256": "71C23ECF69CE759BAD8D328946385A82ABFA5F09D5AE14C109D3EBBB505F3B8D",
+    "screenshot_manifest_sha256": "83B9EB8239D34CB772A1E85DC717DF2674C85960D63ACE81797D029CA697E823"
   },
   "owner_boundary": {
     "owner_pass_claimed": false,
@@ -635,19 +635,19 @@
       }
     },
     {
-      "expected_sha256": "CA4938164F3EADDE21B5365FE1556D14ABAB2AAE6E6CC4DE68503190CCA62ABE",
+      "expected_sha256": "6A7885875AEB8DCDA7E4D72F73713E06DC29E93F5D82B5CBF31260F9BBA64B91",
       "id": "desktop-mouse-single-tap-response",
       "match": true,
-      "observed_sha256": "CA4938164F3EADDE21B5365FE1556D14ABAB2AAE6E6CC4DE68503190CCA62ABE",
+      "observed_sha256": "6A7885875AEB8DCDA7E4D72F73713E06DC29E93F5D82B5CBF31260F9BBA64B91",
       "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-mouse-single-tap-response.png",
       "pixel_measurement": {
         "black_bounds": {
           "max_x": 168,
           "max_y": 166,
           "min_x": 33,
-          "min_y": 36
+          "min_y": 70
         },
-        "black_pixels": 2770,
+        "black_pixels": 2665,
         "edge_touch": {
           "bottom": false,
           "left": false,
@@ -827,19 +827,19 @@
       }
     },
     {
-      "expected_sha256": "CA4938164F3EADDE21B5365FE1556D14ABAB2AAE6E6CC4DE68503190CCA62ABE",
+      "expected_sha256": "6A7885875AEB8DCDA7E4D72F73713E06DC29E93F5D82B5CBF31260F9BBA64B91",
       "id": "desktop-pen-single-tap-response",
       "match": true,
-      "observed_sha256": "CA4938164F3EADDE21B5365FE1556D14ABAB2AAE6E6CC4DE68503190CCA62ABE",
+      "observed_sha256": "6A7885875AEB8DCDA7E4D72F73713E06DC29E93F5D82B5CBF31260F9BBA64B91",
       "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-pen-single-tap-response.png",
       "pixel_measurement": {
         "black_bounds": {
           "max_x": 168,
           "max_y": 166,
           "min_x": 33,
-          "min_y": 36
+          "min_y": 70
         },
-        "black_pixels": 2770,
+        "black_pixels": 2665,
         "edge_touch": {
           "bottom": false,
           "left": false,
@@ -1019,19 +1019,19 @@
       }
     },
     {
-      "expected_sha256": "CA4938164F3EADDE21B5365FE1556D14ABAB2AAE6E6CC4DE68503190CCA62ABE",
+      "expected_sha256": "6A7885875AEB8DCDA7E4D72F73713E06DC29E93F5D82B5CBF31260F9BBA64B91",
       "id": "desktop-touch-single-tap-response",
       "match": true,
-      "observed_sha256": "CA4938164F3EADDE21B5365FE1556D14ABAB2AAE6E6CC4DE68503190CCA62ABE",
+      "observed_sha256": "6A7885875AEB8DCDA7E4D72F73713E06DC29E93F5D82B5CBF31260F9BBA64B91",
       "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-touch-single-tap-response.png",
       "pixel_measurement": {
         "black_bounds": {
           "max_x": 168,
           "max_y": 166,
           "min_x": 33,
-          "min_y": 36
+          "min_y": 70
         },
-        "black_pixels": 2770,
+        "black_pixels": 2665,
         "edge_touch": {
           "bottom": false,
           "left": false,
@@ -1235,19 +1235,19 @@
       }
     },
     {
-      "expected_sha256": "5BA0556D8F82E5C8A06A0E04278D84632DC9F78152DC8F46411282738F17C5D1",
+      "expected_sha256": "009BA438CF6EC727C85E4A8192BBF2D2D0ECFA6E101FF8A102BA94A7B7E24B3A",
       "id": "mobile-mouse-single-tap-response",
       "match": true,
-      "observed_sha256": "5BA0556D8F82E5C8A06A0E04278D84632DC9F78152DC8F46411282738F17C5D1",
+      "observed_sha256": "009BA438CF6EC727C85E4A8192BBF2D2D0ECFA6E101FF8A102BA94A7B7E24B3A",
       "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-mouse-single-tap-response.png",
       "pixel_measurement": {
         "black_bounds": {
           "max_x": 168,
           "max_y": 165,
           "min_x": 33,
-          "min_y": 35
+          "min_y": 69
         },
-        "black_pixels": 2770,
+        "black_pixels": 2665,
         "edge_touch": {
           "bottom": false,
           "left": false,
@@ -1619,19 +1619,19 @@
       }
     },
     {
-      "expected_sha256": "5BA0556D8F82E5C8A06A0E04278D84632DC9F78152DC8F46411282738F17C5D1",
+      "expected_sha256": "009BA438CF6EC727C85E4A8192BBF2D2D0ECFA6E101FF8A102BA94A7B7E24B3A",
       "id": "mobile-touch-single-tap-response",
       "match": true,
-      "observed_sha256": "5BA0556D8F82E5C8A06A0E04278D84632DC9F78152DC8F46411282738F17C5D1",
+      "observed_sha256": "009BA438CF6EC727C85E4A8192BBF2D2D0ECFA6E101FF8A102BA94A7B7E24B3A",
       "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-touch-single-tap-response.png",
       "pixel_measurement": {
         "black_bounds": {
           "max_x": 168,
           "max_y": 165,
           "min_x": 33,
-          "min_y": 35
+          "min_y": 69
         },
-        "black_pixels": 2770,
+        "black_pixels": 2665,
         "edge_touch": {
           "bottom": false,
           "left": false,

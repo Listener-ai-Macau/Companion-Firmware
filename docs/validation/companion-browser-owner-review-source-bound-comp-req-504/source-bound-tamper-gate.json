@@ -1,0 +1,701 @@
+{
+  "accepted_page_binding": {
+    "accepted_worktree_sha256": "BAE21BCCC7BB5FAD4A0922D5E9C42FCB25EF58DD7B8102A7C72656F7B700CF5E",
+    "binding_policy": "The accepted page predates the evidence commit as an owner dirty-tree source. The gate pins both the historical candidate blob and the exact accepted worktree content SHA; the page is never staged by this task.",
+    "candidate_tree_historical_sha256": "696B68E440E12427A49D089AE3A2EEB1BB713C08671B94050349C2B1A1CD25A2",
+    "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html"
+  },
+  "candidate_commit": {
+    "argument": "0f8fb928a726d99b4a6dacff2b59cc5f1c0caea9",
+    "expected": "0f8fb928a726d99b4a6dacff2b59cc5f1c0caea9",
+    "match": true,
+    "resolved": "0f8fb928a726d99b4a6dacff2b59cc5f1c0caea9"
+  },
+  "candidate_screenshot_manifest_sha256": "DE6E009B1676E525BF1860EDB67E09F46A7B1E085380F426E7507049663688C5",
+  "clean_replay_receipt": {
+    "expected_sha256": "AD6E1E39E31F68DED4FA00DFC074772994B5EED2C4E62BFC6CB80BF81FBB7A7E",
+    "match": true,
+    "observed_sha256": "AD6E1E39E31F68DED4FA00DFC074772994B5EED2C4E62BFC6CB80BF81FBB7A7E",
+    "path": "docs/validation/companion-browser-owner-review-source-bound-comp-req-504/clean-replay-determinism.json"
+  },
+  "failed_checks": [],
+  "file_identities": [
+    {
+      "candidate_tree_bound": false,
+      "candidate_tree_expected_sha256": null,
+      "candidate_tree_match": null,
+      "candidate_tree_sha256": null,
+      "expected_sha256": "BAE21BCCC7BB5FAD4A0922D5E9C42FCB25EF58DD7B8102A7C72656F7B700CF5E",
+      "id": "accepted_page",
+      "match": true,
+      "observed_sha256": "BAE21BCCC7BB5FAD4A0922D5E9C42FCB25EF58DD7B8102A7C72656F7B700CF5E",
+      "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html"
+    },
+    {
+      "candidate_tree_bound": true,
+      "candidate_tree_expected_sha256": "6F3C58A3F2DFD47717ABFCA040467870DAF48F47ED0999EF26955E0DAD4B56BA",
+      "candidate_tree_match": true,
+      "candidate_tree_sha256": "6F3C58A3F2DFD47717ABFCA040467870DAF48F47ED0999EF26955E0DAD4B56BA",
+      "expected_sha256": "259CB0D0D914A882634F2B37A05C6AAF5CD4413DAD766A98B997B7B7649C9E6D",
+      "id": "replay_tool",
+      "match": true,
+      "observed_sha256": "259CB0D0D914A882634F2B37A05C6AAF5CD4413DAD766A98B997B7B7649C9E6D",
+      "path": "tools/faraday_upper_art/replay_companion_browser_owner_review_ready.mjs"
+    },
+    {
+      "candidate_tree_bound": true,
+      "candidate_tree_expected_sha256": "33581C21402DDD7591B364F8BEB32E710585CEA7C1DC8C27A615F440FF86D44D",
+      "candidate_tree_match": true,
+      "candidate_tree_sha256": "33581C21402DDD7591B364F8BEB32E710585CEA7C1DC8C27A615F440FF86D44D",
+      "expected_sha256": "33581C21402DDD7591B364F8BEB32E710585CEA7C1DC8C27A615F440FF86D44D",
+      "id": "prior_checkonly_verifier",
+      "match": true,
+      "observed_sha256": "33581C21402DDD7591B364F8BEB32E710585CEA7C1DC8C27A615F440FF86D44D",
+      "path": "tools/faraday_upper_art/verify_companion_browser_owner_review_ready_checkonly.py"
+    },
+    {
+      "candidate_tree_bound": true,
+      "candidate_tree_expected_sha256": "65ADEF4F50D1BB5A3635835F63AD9D353337F4684DFA7610E975AB022A22DD26",
+      "candidate_tree_match": true,
+      "candidate_tree_sha256": "65ADEF4F50D1BB5A3635835F63AD9D353337F4684DFA7610E975AB022A22DD26",
+      "expected_sha256": "71C23ECF69CE759BAD8D328946385A82ABFA5F09D5AE14C109D3EBBB505F3B8D",
+      "id": "replay_result",
+      "match": true,
+      "observed_sha256": "71C23ECF69CE759BAD8D328946385A82ABFA5F09D5AE14C109D3EBBB505F3B8D",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/browser-replay-result.json"
+    },
+    {
+      "candidate_tree_bound": true,
+      "candidate_tree_expected_sha256": "670E41E6D928AD6FFAF50D580D87EC2FA19DD8507D0513375B7259BE9375C2FA",
+      "candidate_tree_match": true,
+      "candidate_tree_sha256": "670E41E6D928AD6FFAF50D580D87EC2FA19DD8507D0513375B7259BE9375C2FA",
+      "expected_sha256": "670E41E6D928AD6FFAF50D580D87EC2FA19DD8507D0513375B7259BE9375C2FA",
+      "id": "pixel_dom_route",
+      "match": true,
+      "observed_sha256": "670E41E6D928AD6FFAF50D580D87EC2FA19DD8507D0513375B7259BE9375C2FA",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/pixel-dom-route-artifact.json"
+    },
+    {
+      "candidate_tree_bound": true,
+      "candidate_tree_expected_sha256": "DE6E009B1676E525BF1860EDB67E09F46A7B1E085380F426E7507049663688C5",
+      "candidate_tree_match": true,
+      "candidate_tree_sha256": "DE6E009B1676E525BF1860EDB67E09F46A7B1E085380F426E7507049663688C5",
+      "expected_sha256": "83B9EB8239D34CB772A1E85DC717DF2674C85960D63ACE81797D029CA697E823",
+      "id": "screenshot_manifest",
+      "match": true,
+      "observed_sha256": "83B9EB8239D34CB772A1E85DC717DF2674C85960D63ACE81797D029CA697E823",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshot-manifest.json"
+    },
+    {
+      "candidate_tree_bound": true,
+      "candidate_tree_expected_sha256": "BBEB0766ED8D9202207F5043815CB142CE9015A500F0FBDF5321307B75315515",
+      "candidate_tree_match": true,
+      "candidate_tree_sha256": "BBEB0766ED8D9202207F5043815CB142CE9015A500F0FBDF5321307B75315515",
+      "expected_sha256": "166FEC2E69BDF17D1EA9D398964AF146DE9EB9CC589797CE84DD03299876A7E8",
+      "id": "browser_owner_review_ready",
+      "match": true,
+      "observed_sha256": "166FEC2E69BDF17D1EA9D398964AF146DE9EB9CC589797CE84DD03299876A7E8",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/BROWSER_OWNER_REVIEW_READY.json"
+    }
+  ],
+  "owner_boundary": {
+    "owner_pass_claimed": false,
+    "owner_prompt_invoked": false,
+    "owner_result_exists": false,
+    "owner_result_paths_checked": [
+      "docs/validation/companion-browser-visual-contract-comp-req-471/owner-review.json",
+      "docs/validation/companion-browser-owner-review-ready-comp-req-471/owner-review.json"
+    ]
+  },
+  "requirements": [
+    "COMP-REQ-440",
+    "COMP-REQ-441",
+    "COMP-REQ-442",
+    "COMP-REQ-471",
+    "COMP-REQ-504"
+  ],
+  "schema": "companion.browser-source-bound-tamper-gate.v1",
+  "screenshot_observations": [
+    {
+      "bytes": 42806,
+      "dimensions": [
+        1280,
+        900
+      ],
+      "id": "desktop-layout",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-layout.png",
+      "sha256": "00CE0A64FC0209281A314CC197FA9E01D1FFF030A341FD9127109870EA447017"
+    },
+    {
+      "bytes": 1269,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "desktop-mouse-drag-center-held",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-mouse-drag-center-held.png",
+      "sha256": "BB050DA00019428E73E3DF2C45ED7BECC248E3015B45C4787FE3D35E8C3E2CA4"
+    },
+    {
+      "bytes": 1388,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "desktop-mouse-hold-menu-return-device-ui-assets",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-mouse-hold-menu-return-device-ui-assets.png",
+      "sha256": "6470A7558F68DF345DB332ABABEB83CD31761BB9FCBBBCDB45733E86CE47006E"
+    },
+    {
+      "bytes": 1615,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "desktop-mouse-hold-menu-return-hold-50",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-mouse-hold-menu-return-hold-50.png",
+      "sha256": "12D0423BB21EF2AF0874E84E93DE71D24F92DC83A6D6F514241BF65C77404FB1"
+    },
+    {
+      "bytes": 1916,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "desktop-mouse-hold-menu-return-menu-roots",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-mouse-hold-menu-return-menu-roots.png",
+      "sha256": "265CAAE45F5E94AE592899F4DF1598B02DDD7664CB3C32124FA51E6C70B33A0B"
+    },
+    {
+      "bytes": 1269,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "desktop-mouse-hold-menu-return-returned",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-mouse-hold-menu-return-returned.png",
+      "sha256": "BB050DA00019428E73E3DF2C45ED7BECC248E3015B45C4787FE3D35E8C3E2CA4"
+    },
+    {
+      "bytes": 1358,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "desktop-mouse-recording-return-entry",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-mouse-recording-return-entry.png",
+      "sha256": "54A9E1CE3A1DA160B0747124FF117357677827B648796FFCAAB857D447C820D6"
+    },
+    {
+      "bytes": 1269,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "desktop-mouse-recording-return-returned",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-mouse-recording-return-returned.png",
+      "sha256": "BB050DA00019428E73E3DF2C45ED7BECC248E3015B45C4787FE3D35E8C3E2CA4"
+    },
+    {
+      "bytes": 1339,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "desktop-mouse-single-tap-response",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-mouse-single-tap-response.png",
+      "sha256": "6A7885875AEB8DCDA7E4D72F73713E06DC29E93F5D82B5CBF31260F9BBA64B91"
+    },
+    {
+      "bytes": 1269,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "desktop-pen-drag-center-held",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-pen-drag-center-held.png",
+      "sha256": "BB050DA00019428E73E3DF2C45ED7BECC248E3015B45C4787FE3D35E8C3E2CA4"
+    },
+    {
+      "bytes": 1388,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "desktop-pen-hold-menu-return-device-ui-assets",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-pen-hold-menu-return-device-ui-assets.png",
+      "sha256": "6470A7558F68DF345DB332ABABEB83CD31761BB9FCBBBCDB45733E86CE47006E"
+    },
+    {
+      "bytes": 1615,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "desktop-pen-hold-menu-return-hold-50",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-pen-hold-menu-return-hold-50.png",
+      "sha256": "12D0423BB21EF2AF0874E84E93DE71D24F92DC83A6D6F514241BF65C77404FB1"
+    },
+    {
+      "bytes": 1916,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "desktop-pen-hold-menu-return-menu-roots",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-pen-hold-menu-return-menu-roots.png",
+      "sha256": "265CAAE45F5E94AE592899F4DF1598B02DDD7664CB3C32124FA51E6C70B33A0B"
+    },
+    {
+      "bytes": 1269,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "desktop-pen-hold-menu-return-returned",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-pen-hold-menu-return-returned.png",
+      "sha256": "BB050DA00019428E73E3DF2C45ED7BECC248E3015B45C4787FE3D35E8C3E2CA4"
+    },
+    {
+      "bytes": 1358,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "desktop-pen-recording-return-entry",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-pen-recording-return-entry.png",
+      "sha256": "54A9E1CE3A1DA160B0747124FF117357677827B648796FFCAAB857D447C820D6"
+    },
+    {
+      "bytes": 1269,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "desktop-pen-recording-return-returned",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-pen-recording-return-returned.png",
+      "sha256": "BB050DA00019428E73E3DF2C45ED7BECC248E3015B45C4787FE3D35E8C3E2CA4"
+    },
+    {
+      "bytes": 1339,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "desktop-pen-single-tap-response",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-pen-single-tap-response.png",
+      "sha256": "6A7885875AEB8DCDA7E4D72F73713E06DC29E93F5D82B5CBF31260F9BBA64B91"
+    },
+    {
+      "bytes": 1269,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "desktop-touch-drag-center-held",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-touch-drag-center-held.png",
+      "sha256": "BB050DA00019428E73E3DF2C45ED7BECC248E3015B45C4787FE3D35E8C3E2CA4"
+    },
+    {
+      "bytes": 1388,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "desktop-touch-hold-menu-return-device-ui-assets",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-touch-hold-menu-return-device-ui-assets.png",
+      "sha256": "6470A7558F68DF345DB332ABABEB83CD31761BB9FCBBBCDB45733E86CE47006E"
+    },
+    {
+      "bytes": 1615,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "desktop-touch-hold-menu-return-hold-50",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-touch-hold-menu-return-hold-50.png",
+      "sha256": "12D0423BB21EF2AF0874E84E93DE71D24F92DC83A6D6F514241BF65C77404FB1"
+    },
+    {
+      "bytes": 1916,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "desktop-touch-hold-menu-return-menu-roots",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-touch-hold-menu-return-menu-roots.png",
+      "sha256": "265CAAE45F5E94AE592899F4DF1598B02DDD7664CB3C32124FA51E6C70B33A0B"
+    },
+    {
+      "bytes": 1269,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "desktop-touch-hold-menu-return-returned",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-touch-hold-menu-return-returned.png",
+      "sha256": "BB050DA00019428E73E3DF2C45ED7BECC248E3015B45C4787FE3D35E8C3E2CA4"
+    },
+    {
+      "bytes": 1358,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "desktop-touch-recording-return-entry",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-touch-recording-return-entry.png",
+      "sha256": "54A9E1CE3A1DA160B0747124FF117357677827B648796FFCAAB857D447C820D6"
+    },
+    {
+      "bytes": 1269,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "desktop-touch-recording-return-returned",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-touch-recording-return-returned.png",
+      "sha256": "BB050DA00019428E73E3DF2C45ED7BECC248E3015B45C4787FE3D35E8C3E2CA4"
+    },
+    {
+      "bytes": 1339,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "desktop-touch-single-tap-response",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-touch-single-tap-response.png",
+      "sha256": "6A7885875AEB8DCDA7E4D72F73713E06DC29E93F5D82B5CBF31260F9BBA64B91"
+    },
+    {
+      "bytes": 31689,
+      "dimensions": [
+        390,
+        844
+      ],
+      "id": "mobile-layout",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-layout.png",
+      "sha256": "F59780620F42E45796F2F95D35F43A0FADFF11AC45C69DDE262F4DD867FE64ED"
+    },
+    {
+      "bytes": 1261,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "mobile-mouse-drag-center-held",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-mouse-drag-center-held.png",
+      "sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31"
+    },
+    {
+      "bytes": 1379,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "mobile-mouse-hold-menu-return-device-ui-assets",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-mouse-hold-menu-return-device-ui-assets.png",
+      "sha256": "6DF0EAE1423AD50AA7DDE5B0D90910EF7F8967AAFA404B0F214CCD6621B1F216"
+    },
+    {
+      "bytes": 1610,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "mobile-mouse-hold-menu-return-hold-50",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-mouse-hold-menu-return-hold-50.png",
+      "sha256": "D4417B43C595A0A123D1BF8D374133621B40813A498A3C62236329F37CB0503C"
+    },
+    {
+      "bytes": 1909,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "mobile-mouse-hold-menu-return-menu-roots",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-mouse-hold-menu-return-menu-roots.png",
+      "sha256": "B6A2DAF80493BE09F2F20585CDAE82708E6DD38A285D0D2F9F8132E3FA4D7750"
+    },
+    {
+      "bytes": 1261,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "mobile-mouse-hold-menu-return-returned",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-mouse-hold-menu-return-returned.png",
+      "sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31"
+    },
+    {
+      "bytes": 1350,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "mobile-mouse-recording-return-entry",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-mouse-recording-return-entry.png",
+      "sha256": "EA4B8A3ECF89EEF37036526FA6F8026AF0A771CF24CD0B36125E4397F8C12E90"
+    },
+    {
+      "bytes": 1261,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "mobile-mouse-recording-return-returned",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-mouse-recording-return-returned.png",
+      "sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31"
+    },
+    {
+      "bytes": 1330,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "mobile-mouse-single-tap-response",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-mouse-single-tap-response.png",
+      "sha256": "009BA438CF6EC727C85E4A8192BBF2D2D0ECFA6E101FF8A102BA94A7B7E24B3A"
+    },
+    {
+      "bytes": 1261,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "mobile-pen-drag-center-held",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-pen-drag-center-held.png",
+      "sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31"
+    },
+    {
+      "bytes": 1379,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "mobile-pen-hold-menu-return-device-ui-assets",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-pen-hold-menu-return-device-ui-assets.png",
+      "sha256": "6DF0EAE1423AD50AA7DDE5B0D90910EF7F8967AAFA404B0F214CCD6621B1F216"
+    },
+    {
+      "bytes": 1610,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "mobile-pen-hold-menu-return-hold-50",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-pen-hold-menu-return-hold-50.png",
+      "sha256": "D4417B43C595A0A123D1BF8D374133621B40813A498A3C62236329F37CB0503C"
+    },
+    {
+      "bytes": 1909,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "mobile-pen-hold-menu-return-menu-roots",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-pen-hold-menu-return-menu-roots.png",
+      "sha256": "B6A2DAF80493BE09F2F20585CDAE82708E6DD38A285D0D2F9F8132E3FA4D7750"
+    },
+    {
+      "bytes": 1261,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "mobile-pen-hold-menu-return-returned",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-pen-hold-menu-return-returned.png",
+      "sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31"
+    },
+    {
+      "bytes": 1350,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "mobile-pen-recording-return-entry",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-pen-recording-return-entry.png",
+      "sha256": "EA4B8A3ECF89EEF37036526FA6F8026AF0A771CF24CD0B36125E4397F8C12E90"
+    },
+    {
+      "bytes": 1261,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "mobile-pen-recording-return-returned",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-pen-recording-return-returned.png",
+      "sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31"
+    },
+    {
+      "bytes": 1330,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "mobile-pen-single-tap-response",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-pen-single-tap-response.png",
+      "sha256": "009BA438CF6EC727C85E4A8192BBF2D2D0ECFA6E101FF8A102BA94A7B7E24B3A"
+    },
+    {
+      "bytes": 1261,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "mobile-touch-drag-center-held",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-touch-drag-center-held.png",
+      "sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31"
+    },
+    {
+      "bytes": 1379,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "mobile-touch-hold-menu-return-device-ui-assets",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-touch-hold-menu-return-device-ui-assets.png",
+      "sha256": "6DF0EAE1423AD50AA7DDE5B0D90910EF7F8967AAFA404B0F214CCD6621B1F216"
+    },
+    {
+      "bytes": 1610,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "mobile-touch-hold-menu-return-hold-50",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-touch-hold-menu-return-hold-50.png",
+      "sha256": "D4417B43C595A0A123D1BF8D374133621B40813A498A3C62236329F37CB0503C"
+    },
+    {
+      "bytes": 1909,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "mobile-touch-hold-menu-return-menu-roots",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-touch-hold-menu-return-menu-roots.png",
+      "sha256": "B6A2DAF80493BE09F2F20585CDAE82708E6DD38A285D0D2F9F8132E3FA4D7750"
+    },
+    {
+      "bytes": 1261,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "mobile-touch-hold-menu-return-returned",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-touch-hold-menu-return-returned.png",
+      "sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31"
+    },
+    {
+      "bytes": 1350,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "mobile-touch-recording-return-entry",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-touch-recording-return-entry.png",
+      "sha256": "EA4B8A3ECF89EEF37036526FA6F8026AF0A771CF24CD0B36125E4397F8C12E90"
+    },
+    {
+      "bytes": 1261,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "mobile-touch-recording-return-returned",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-touch-recording-return-returned.png",
+      "sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31"
+    },
+    {
+      "bytes": 1330,
+      "dimensions": [
+        200,
+        200
+      ],
+      "id": "mobile-touch-single-tap-response",
+      "match": true,
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-touch-single-tap-response.png",
+      "sha256": "009BA438CF6EC727C85E4A8192BBF2D2D0ECFA6E101FF8A102BA94A7B7E24B3A"
+    }
+  ],
+  "semantic_counts": {
+    "active_200x200_surfaces": 1,
+    "conflicting_overlap": 0,
+    "http_404": 0,
+    "matrix_rows": 42,
+    "microphone_requests": 0,
+    "out_of_bounds": 0,
+    "route_menu_entries": 6,
+    "route_recording_entries": 6,
+    "screenshots": 50,
+    "stale_layers": 0,
+    "state_snapshots": 192,
+    "unique_pointer_records": 42
+  },
+  "side_effect_counters": {
+    "browser_start": 0,
+    "evidence_artifact_write": 1,
+    "hardware": 0,
+    "lower_write": 0,
+    "microphone_permission_request": 0,
+    "operator_prompt": 0,
+    "persistent_process_start": 0,
+    "platform_write": 0,
+    "popup": 0,
+    "production_write": 0,
+    "read_only_git_queries": 60,
+    "registry_write": 0,
+    "server_start": 0
+  },
+  "status": "PASS_SOURCE_BOUND_TAMPER_GATE",
+  "url": "http://127.0.0.1:4173/docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html"
+}

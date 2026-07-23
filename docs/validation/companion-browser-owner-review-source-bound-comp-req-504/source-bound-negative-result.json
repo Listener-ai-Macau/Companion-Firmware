@@ -1,0 +1,203 @@
+{
+  "candidate_commit": "0f8fb928a726d99b4a6dacff2b59cc5f1c0caea9",
+  "fixture_count": 17,
+  "fixture_mode": "in_memory_read_overlay",
+  "gate_tool": {
+    "path": "tools/faraday_upper_art/verify_companion_browser_source_bound_gate.py",
+    "sha256": "8965D538E70EADB4504F73612302FD9A87DA30C42C7FA589A8DD9A1F4D46E97D"
+  },
+  "passed_count": 17,
+  "real_files_mutated": false,
+  "requirements": [
+    "COMP-REQ-471",
+    "COMP-REQ-504"
+  ],
+  "results": [
+    {
+      "failure_count": 1,
+      "failures_sha256": "05AD34A62D1050F5D24FE2526FED4A42DC984FBAB29139D49626E3CE46E5984F",
+      "id": "accepted_page_byte_mutation",
+      "pass": true,
+      "rejected": true,
+      "required_reason_fragment": "bound file SHA mismatch: accepted_page",
+      "required_reason_observed": true,
+      "status": "NO_GO"
+    },
+    {
+      "failure_count": 2,
+      "failures_sha256": "95922D514C8F248BF27A7F87565EBE3A1E5D14062F250CF7420B059D9CD788AB",
+      "id": "replay_tool_byte_mutation",
+      "pass": true,
+      "rejected": true,
+      "required_reason_fragment": "bound file SHA mismatch: replay_tool",
+      "required_reason_observed": true,
+      "status": "NO_GO"
+    },
+    {
+      "failure_count": 1,
+      "failures_sha256": "22643758606CDF70398336DAAB19A8E3D49FCB8B230FD441AB4FCDE6A013F967",
+      "id": "prior_checkonly_verifier_byte_mutation",
+      "pass": true,
+      "rejected": true,
+      "required_reason_fragment": "bound file SHA mismatch: prior_checkonly_verifier",
+      "required_reason_observed": true,
+      "status": "NO_GO"
+    },
+    {
+      "failure_count": 3,
+      "failures_sha256": "2FC31876CC37C9FC280DA8A1202A1CD92D3D3EC2EDA540EA5770B36DB6684270",
+      "id": "replay_result_mutation",
+      "pass": true,
+      "rejected": true,
+      "required_reason_fragment": "replay status",
+      "required_reason_observed": true,
+      "status": "NO_GO"
+    },
+    {
+      "failure_count": 3,
+      "failures_sha256": "67F2A8824498CCC629A5A9A81B501B93BEDFE776F66311981C99B963E924D32E",
+      "id": "pixel_dom_route_mutation",
+      "pass": true,
+      "rejected": true,
+      "required_reason_fragment": "face_count",
+      "required_reason_observed": true,
+      "status": "NO_GO"
+    },
+    {
+      "failure_count": 3,
+      "failures_sha256": "A2C1161AB47EFF80257E3E527186F99B46624A4A7E103C55E31450A4BF981334",
+      "id": "screenshot_manifest_mutation",
+      "pass": true,
+      "rejected": true,
+      "required_reason_fragment": "screenshot SHA mismatch",
+      "required_reason_observed": true,
+      "status": "NO_GO"
+    },
+    {
+      "failure_count": 1,
+      "failures_sha256": "01A188AE39EA290C4BB6CBE48004A8380C9A984D6FC176220C3F22852E609339",
+      "id": "screenshot_png_mutation",
+      "pass": true,
+      "rejected": true,
+      "required_reason_fragment": "screenshot SHA mismatch",
+      "required_reason_observed": true,
+      "status": "NO_GO"
+    },
+    {
+      "failure_count": 2,
+      "failures_sha256": "CADF03D89F34F121BFF46DF76B04E47A8EB0177182368724650700C677F45265",
+      "id": "ready_artifact_mutation",
+      "pass": true,
+      "rejected": true,
+      "required_reason_fragment": "ready status",
+      "required_reason_observed": true,
+      "status": "NO_GO"
+    },
+    {
+      "failure_count": 2,
+      "failures_sha256": "8F8777EB1411B7D6187051E6E93A904924B63B9DA77127A5D5E97F209CEBA122",
+      "id": "stale_candidate_commit",
+      "pass": true,
+      "rejected": true,
+      "required_reason_fragment": "candidate commit argument",
+      "required_reason_observed": true,
+      "status": "NO_GO"
+    },
+    {
+      "failure_count": 4,
+      "failures_sha256": "28EF44AFC039AAB7D03E73D1FE61E568D88C2D05FB8BDBA6EACA1DB94B8749AB",
+      "id": "second_active_200x200_surface",
+      "pass": true,
+      "rejected": true,
+      "required_reason_fragment": "primary_screen_count",
+      "required_reason_observed": true,
+      "status": "NO_GO"
+    },
+    {
+      "failure_count": 4,
+      "failures_sha256": "20FFEFAB96C9FDFE5078040D72E8986FED89289E1E5A11A68D1359BF1520D564",
+      "id": "duplicate_pointer_record",
+      "pass": true,
+      "rejected": true,
+      "required_reason_fragment": "matrix row count",
+      "required_reason_observed": true,
+      "status": "NO_GO"
+    },
+    {
+      "failure_count": 6,
+      "failures_sha256": "85D2C16F1AABDA80D059C6B6E4FE8A289DF2416B5EE702CE3BC6B7D219BEA929",
+      "id": "duplicate_route_activation",
+      "pass": true,
+      "rejected": true,
+      "required_reason_fragment": "route_menu_entries",
+      "required_reason_observed": true,
+      "status": "NO_GO"
+    },
+    {
+      "failure_count": 6,
+      "failures_sha256": "23D72C657921578BF62426F6BE66440CAA9DBB43C1ACBA10D8404297E98CB0D4",
+      "id": "nonzero_http_404",
+      "pass": true,
+      "rejected": true,
+      "required_reason_fragment": "http_404_count",
+      "required_reason_observed": true,
+      "status": "NO_GO"
+    },
+    {
+      "failure_count": 6,
+      "failures_sha256": "494DF3027C20E87E27B23E44D36C733CE19028BEA30BF4B356F25BA0C85C155D",
+      "id": "nonzero_stale_layer",
+      "pass": true,
+      "rejected": true,
+      "required_reason_fragment": "stale_layer_count",
+      "required_reason_observed": true,
+      "status": "NO_GO"
+    },
+    {
+      "failure_count": 6,
+      "failures_sha256": "BA6D7EC3BF3F7794B8115E532AF5F307E0F6D1B366A5E7252705B78739BBC13C",
+      "id": "nonzero_conflicting_overlap",
+      "pass": true,
+      "rejected": true,
+      "required_reason_fragment": "conflicting_surface_overlap_count",
+      "required_reason_observed": true,
+      "status": "NO_GO"
+    },
+    {
+      "failure_count": 6,
+      "failures_sha256": "DA7DAFEACF87A098E62D5A1DCECE97B6A77CD179948AB28120591DDD9A17B2C3",
+      "id": "nonzero_out_of_bounds",
+      "pass": true,
+      "rejected": true,
+      "required_reason_fragment": "out_of_bounds_count",
+      "required_reason_observed": true,
+      "status": "NO_GO"
+    },
+    {
+      "failure_count": 6,
+      "failures_sha256": "0E9497B8F04C084C160C069D5516F198DBAA83B9D717DB09FD0ADEC46F7DE552",
+      "id": "microphone_request",
+      "pass": true,
+      "rejected": true,
+      "required_reason_fragment": "microphone_requests",
+      "required_reason_observed": true,
+      "status": "NO_GO"
+    }
+  ],
+  "schema": "companion.browser-source-bound-negative-matrix.v1",
+  "side_effect_counters": {
+    "browser_start": 0,
+    "evidence_artifact_write": 1,
+    "hardware": 0,
+    "lower_write": 0,
+    "microphone_permission_request": 0,
+    "operator_prompt": 0,
+    "platform_write": 0,
+    "popup": 0,
+    "production_write": 0,
+    "real_accepted_file_write": 0,
+    "registry_write": 0,
+    "server_start": 0
+  },
+  "status": "PASS_ALL_TAMPERS_FAIL_CLOSED"
+}
