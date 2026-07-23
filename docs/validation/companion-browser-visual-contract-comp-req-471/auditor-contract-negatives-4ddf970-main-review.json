@@ -1,0 +1,182 @@
+{
+  "auditor_ast_contract": {
+    "comparison_complete_expression": "bool(not audit_errors and (not compatibility_blockers) and (realizable_events == 21) and (realizable_pairs == 59) and (realizable_noops == 10) and polarity_bridge_realizable and terminal_retention and valid_qualification_sequence)",
+    "pass": true,
+    "required_fragments": [
+      "realizable_events == 21",
+      "realizable_pairs == 59",
+      "realizable_noops == 10",
+      "polarity_bridge_realizable",
+      "terminal_retention",
+      "valid_qualification_sequence"
+    ]
+  },
+  "bindings": {
+    "auditor": {
+      "path": "tools/faraday_upper_art/audit_companion_upper_lower_compatibility_comp_req_474.py",
+      "sha256": "4A8A23D8E72D5B04290E5788B9486F540E41722AFB40A1C7C5C795BED5A168D7"
+    },
+    "compatibility": {
+      "path": "docs/validation/companion-browser-visual-contract-comp-req-471/upper-lower-compatibility-4ddf970-main-review.json",
+      "sha256": "F6504C998C5127355DA63C28B8910D8126650D6319779A95C4DEC604B1779104"
+    }
+  },
+  "mutation_fixtures": [
+    {
+      "events": 21,
+      "expected_ready": true,
+      "id": "control_exact_full_contract",
+      "observed_ready": true,
+      "pairs": 59,
+      "pass": true,
+      "polarity": true,
+      "qualification": true,
+      "semantic_noops": 10,
+      "terminal": true
+    },
+    {
+      "events": 17,
+      "expected_ready": false,
+      "id": "current_4dd_polarity_true_real_gaps",
+      "observed_ready": false,
+      "pairs": 51,
+      "pass": true,
+      "polarity": true,
+      "qualification": true,
+      "semantic_noops": 8,
+      "terminal": true
+    },
+    {
+      "events": 20,
+      "expected_ready": false,
+      "id": "one_event_missing",
+      "observed_ready": false,
+      "pairs": 59,
+      "pass": true,
+      "polarity": true,
+      "qualification": true,
+      "semantic_noops": 10,
+      "terminal": true
+    },
+    {
+      "events": 21,
+      "expected_ready": false,
+      "id": "one_pair_missing",
+      "observed_ready": false,
+      "pairs": 58,
+      "pass": true,
+      "polarity": true,
+      "qualification": true,
+      "semantic_noops": 10,
+      "terminal": true
+    },
+    {
+      "events": 21,
+      "expected_ready": false,
+      "id": "one_semantic_noop_missing",
+      "observed_ready": false,
+      "pairs": 59,
+      "pass": true,
+      "polarity": true,
+      "qualification": true,
+      "semantic_noops": 9,
+      "terminal": true
+    },
+    {
+      "events": 21,
+      "expected_ready": false,
+      "id": "polarity_missing_with_full_counts",
+      "observed_ready": false,
+      "pairs": 59,
+      "pass": true,
+      "polarity": false,
+      "qualification": true,
+      "semantic_noops": 10,
+      "terminal": true
+    },
+    {
+      "events": 21,
+      "expected_ready": false,
+      "id": "terminal_missing_with_full_counts",
+      "observed_ready": false,
+      "pairs": 59,
+      "pass": true,
+      "polarity": true,
+      "qualification": true,
+      "semantic_noops": 10,
+      "terminal": false
+    },
+    {
+      "events": 21,
+      "expected_ready": false,
+      "id": "qualification_missing_with_full_counts",
+      "observed_ready": false,
+      "pairs": 59,
+      "pass": true,
+      "polarity": true,
+      "qualification": false,
+      "semantic_noops": 10,
+      "terminal": true
+    }
+  ],
+  "polarity_isolation": {
+    "claim": "Polarity is independently realizable and does not promote missing production event or pair paths.",
+    "observed": {
+      "event_gaps": [
+        "early_up_cancel_blur_or_drag",
+        "pointer_drag_center",
+        "pointer_move",
+        "select_ui_assets"
+      ],
+      "events": "17/21",
+      "missing_pair_ids": [
+        "T04-P00-centered_rest--gaze_center",
+        "T05-P04-gaze_left--gaze_center",
+        "T05-P09-gaze_up--gaze_center",
+        "T05-P14-gaze_right--gaze_center",
+        "T05-P19-gaze_down--gaze_center",
+        "T05-P24-gaze_center--gaze_center",
+        "T10-P00-hold_feedback_50--centered_rest",
+        "T17-P00-menu_device--menu_device_ui_assets"
+      ],
+      "pairs": "51/59",
+      "pointer_move_center_missing": 5,
+      "pointer_move_directional_realizable": 20,
+      "polarity_bridge": true,
+      "semantic_noops": "8/10"
+    },
+    "pass": true
+  },
+  "requirements": [
+    "COMP-REQ-477",
+    "COMP-REQ-479",
+    "COMP-REQ-488"
+  ],
+  "schema": "companion.auditor-contract-negative-result.v1",
+  "side_effect_counters": {
+    "browser": 0,
+    "execute": 0,
+    "hardware": 0,
+    "lower_read": 0,
+    "lower_write": 0,
+    "platform_write": 0,
+    "popup": 0,
+    "production_write": 0,
+    "prompt": 0,
+    "push": 0,
+    "registry_write": 0,
+    "server": 0,
+    "upper_artifact_write": 1
+  },
+  "status": "PASS_NEGATIVE_FIXTURES",
+  "summary": {
+    "events_pairs_noops_each_fail_closed": true,
+    "fixture_count": 8,
+    "fixture_pass_count": 8,
+    "polarity_isolation_pass": true
+  },
+  "verifier": {
+    "path": "tools/faraday_upper_art/verify_companion_auditor_contract_negatives.py",
+    "sha256": "4D61D3FB29DD2113A73BB4C0614CCA82554A011028EE07DD5431FE3648FDB7AF"
+  }
+}
