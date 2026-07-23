@@ -1,0 +1,1667 @@
+{
+  "bindings": {
+    "accepted_identities": [
+      {
+        "bytes": 3055,
+        "exists": true,
+        "expected_sha256": "65ADEF4F50D1BB5A3635835F63AD9D353337F4684DFA7610E975AB022A22DD26",
+        "match": true,
+        "observed_sha256": "65ADEF4F50D1BB5A3635835F63AD9D353337F4684DFA7610E975AB022A22DD26",
+        "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/browser-replay-result.json"
+      },
+      {
+        "bytes": 363440,
+        "exists": true,
+        "expected_sha256": "670E41E6D928AD6FFAF50D580D87EC2FA19DD8507D0513375B7259BE9375C2FA",
+        "match": true,
+        "observed_sha256": "670E41E6D928AD6FFAF50D580D87EC2FA19DD8507D0513375B7259BE9375C2FA",
+        "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/pixel-dom-route-artifact.json"
+      },
+      {
+        "bytes": 16583,
+        "exists": true,
+        "expected_sha256": "DE6E009B1676E525BF1860EDB67E09F46A7B1E085380F426E7507049663688C5",
+        "match": true,
+        "observed_sha256": "DE6E009B1676E525BF1860EDB67E09F46A7B1E085380F426E7507049663688C5",
+        "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshot-manifest.json"
+      },
+      {
+        "bytes": 72769,
+        "exists": true,
+        "expected_sha256": "EAD7000FEB32CD7915FEAD82A49D23FD66755412AEDFA53B4B7A264CABA3BB69",
+        "match": true,
+        "observed_sha256": "EAD7000FEB32CD7915FEAD82A49D23FD66755412AEDFA53B4B7A264CABA3BB69",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/UPPER_MACHINE_READY.json"
+      },
+      {
+        "bytes": 258544,
+        "exists": true,
+        "expected_sha256": "1BEA10C8B988F72F48886012859F1D6C8801B15AFA18E89171235B7E33D2C815",
+        "match": true,
+        "observed_sha256": "1BEA10C8B988F72F48886012859F1D6C8801B15AFA18E89171235B7E33D2C815",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/browser-capture/capture-manifest.json"
+      },
+      {
+        "bytes": 11360,
+        "exists": true,
+        "expected_sha256": "6A7EDAC4A9624842B154B717C090441E745AC6F65F8E73BC235E8E3C16D11EBD",
+        "match": true,
+        "observed_sha256": "6A7EDAC4A9624842B154B717C090441E745AC6F65F8E73BC235E8E3C16D11EBD",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/machine-result.json"
+      },
+      {
+        "bytes": 194915,
+        "exists": true,
+        "expected_sha256": "652C33E7BFB155974FD369DB069800E14595C26F5F1D7B6A7322ED30320CCA76",
+        "match": true,
+        "observed_sha256": "652C33E7BFB155974FD369DB069800E14595C26F5F1D7B6A7322ED30320CCA76",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/measured-diagnostic.json"
+      },
+      {
+        "bytes": 10396,
+        "exists": true,
+        "expected_sha256": "21FCE148BBD11C68074F98EE10E8F1A75A0DD4D86FAC4F65EE7CB03CFFABDCC7",
+        "match": true,
+        "observed_sha256": "21FCE148BBD11C68074F98EE10E8F1A75A0DD4D86FAC4F65EE7CB03CFFABDCC7",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/owner-review-checkonly.json"
+      },
+      {
+        "bytes": 7711,
+        "exists": true,
+        "expected_sha256": "245B8BDB94A00A23224CF1E9A7F43CA65936CCC16518D3067D48BD98A5E61D80",
+        "match": true,
+        "observed_sha256": "245B8BDB94A00A23224CF1E9A7F43CA65936CCC16518D3067D48BD98A5E61D80",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/owner-review-scope.json"
+      },
+      {
+        "bytes": 322084,
+        "exists": true,
+        "expected_sha256": "082344F03017DC54E0A385E5CFF8BB7F4031889A602476FFD2589B130CFFE09F",
+        "match": true,
+        "observed_sha256": "082344F03017DC54E0A385E5CFF8BB7F4031889A602476FFD2589B130CFFE09F",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/pointer-contract/touch-pointer-contract-result.json"
+      },
+      {
+        "bytes": 55,
+        "exists": true,
+        "expected_sha256": "8A3BDF4BD1254B0D0F4DE13A7F293C3D74587C800339ABD4C61FEB0B7737E227",
+        "match": true,
+        "observed_sha256": "8A3BDF4BD1254B0D0F4DE13A7F293C3D74587C800339ABD4C61FEB0B7737E227",
+        "path": "docs/validation/companion-pet-special-system-owner-acceptance-20260717.json"
+      },
+      {
+        "bytes": 44157,
+        "exists": true,
+        "expected_sha256": "6F3C58A3F2DFD47717ABFCA040467870DAF48F47ED0999EF26955E0DAD4B56BA",
+        "match": true,
+        "observed_sha256": "6F3C58A3F2DFD47717ABFCA040467870DAF48F47ED0999EF26955E0DAD4B56BA",
+        "path": "tools/faraday_upper_art/replay_companion_browser_owner_review_ready.mjs"
+      }
+    ],
+    "accepted_source_assets": [
+      {
+        "bytes": 927,
+        "exists": true,
+        "expected_sha256": "33362E4D2CEF3003559CD0304EEEEBE80CC32018E414EE9CFE32783713528612",
+        "match": true,
+        "observed_sha256": "33362E4D2CEF3003559CD0304EEEEBE80CC32018E414EE9CFE32783713528612",
+        "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/01-home.png",
+        "role": null
+      },
+      {
+        "bytes": 1031,
+        "exists": true,
+        "expected_sha256": "905DC9102D6C8519231E342C0EBF3317118BFA74B343E38608020AA2E7D15308",
+        "match": true,
+        "observed_sha256": "905DC9102D6C8519231E342C0EBF3317118BFA74B343E38608020AA2E7D15308",
+        "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/02-voice.png",
+        "role": null
+      },
+      {
+        "bytes": 977,
+        "exists": true,
+        "expected_sha256": "643697B3B9F9C090E1D3F0E40CA7D8F8BAC994D469F90E0B436824B2F5067961",
+        "match": true,
+        "observed_sha256": "643697B3B9F9C090E1D3F0E40CA7D8F8BAC994D469F90E0B436824B2F5067961",
+        "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/03-device.png",
+        "role": null
+      },
+      {
+        "bytes": 864,
+        "exists": true,
+        "expected_sha256": "E9EB39EE4C4884D04226BDC2216E210DB253565A46CC51A20599286BA85044DF",
+        "match": true,
+        "observed_sha256": "E9EB39EE4C4884D04226BDC2216E210DB253565A46CC51A20599286BA85044DF",
+        "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/04-connection.png",
+        "role": null
+      },
+      {
+        "bytes": 1160,
+        "exists": true,
+        "expected_sha256": "EE89A9F63CB32967613CFD95C43D9A1391981E1A7274C6AA6EB5D97ED14AA1F8",
+        "match": true,
+        "observed_sha256": "EE89A9F63CB32967613CFD95C43D9A1391981E1A7274C6AA6EB5D97ED14AA1F8",
+        "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/05-preferences.png",
+        "role": null
+      },
+      {
+        "bytes": 580,
+        "exists": true,
+        "expected_sha256": "CACD27828EE8197B46C5B34BFD04F271501698B2F171D37115E88E5590A7AB47",
+        "match": true,
+        "observed_sha256": "CACD27828EE8197B46C5B34BFD04F271501698B2F171D37115E88E5590A7AB47",
+        "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/touch-base-calm_presence-04.png",
+        "role": null
+      },
+      {
+        "bytes": 730,
+        "exists": true,
+        "expected_sha256": "45F88F8ED0D47E8F20EE9776CFA6FEC99EEB9A4C2096F5C5AADA73FE927CC74E",
+        "match": true,
+        "observed_sha256": "45F88F8ED0D47E8F20EE9776CFA6FEC99EEB9A4C2096F5C5AADA73FE927CC74E",
+        "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/touch-base-curious_question-03.png",
+        "role": null
+      },
+      {
+        "bytes": 468,
+        "exists": true,
+        "expected_sha256": "72845ECE4EAD76BC9593716C5778EF1E0741B3D5F8A90213D60F0B9464EB9C84",
+        "match": true,
+        "observed_sha256": "72845ECE4EAD76BC9593716C5778EF1E0741B3D5F8A90213D60F0B9464EB9C84",
+        "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/touch-base-recording_with_calm-02.png",
+        "role": null
+      },
+      {
+        "bytes": 800,
+        "exists": true,
+        "expected_sha256": "99C6C1C9D9FFA8E5F1B9E011C69126E208B8B645A64600D9EA637F734D3B654E",
+        "match": true,
+        "observed_sha256": "99C6C1C9D9FFA8E5F1B9E011C69126E208B8B645A64600D9EA637F734D3B654E",
+        "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/touch-gaze-overlay-069.png",
+        "role": null
+      },
+      {
+        "bytes": 795,
+        "exists": true,
+        "expected_sha256": "A014BB0F5462463A4B75B9B3E9FB895E39915AF46AFC39343CDBB74CB3EEA3E6",
+        "match": true,
+        "observed_sha256": "A014BB0F5462463A4B75B9B3E9FB895E39915AF46AFC39343CDBB74CB3EEA3E6",
+        "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/touch-gaze-overlay-183.png",
+        "role": null
+      },
+      {
+        "bytes": 801,
+        "exists": true,
+        "expected_sha256": "CAA97AF4119CA606B1E919D6B1D43D5F772045825144E848F81B5EA9F84988C4",
+        "match": true,
+        "observed_sha256": "CAA97AF4119CA606B1E919D6B1D43D5F772045825144E848F81B5EA9F84988C4",
+        "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/touch-gaze-overlay-189.png",
+        "role": null
+      },
+      {
+        "bytes": 802,
+        "exists": true,
+        "expected_sha256": "DB0A70D7AA1DD7A88269B85A4D1EBAC25C94A32D4572E58693128AB9024FA85E",
+        "match": true,
+        "observed_sha256": "DB0A70D7AA1DD7A88269B85A4D1EBAC25C94A32D4572E58693128AB9024FA85E",
+        "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/touch-gaze-overlay-196.png",
+        "role": null
+      },
+      {
+        "bytes": 797,
+        "exists": true,
+        "expected_sha256": "6C40DAE1978914F2B8454A814D5038FA5C623322C76CF02DE2B8DD2F080FF90E",
+        "match": true,
+        "observed_sha256": "6C40DAE1978914F2B8454A814D5038FA5C623322C76CF02DE2B8DD2F080FF90E",
+        "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/touch-gaze-overlay-227.png",
+        "role": null
+      },
+      {
+        "bytes": 800,
+        "exists": true,
+        "expected_sha256": "9E816FEA5B58AE3D2AA5CD36787EC5CC6003D66D13289D7BE26050A36166E6AF",
+        "match": true,
+        "observed_sha256": "9E816FEA5B58AE3D2AA5CD36787EC5CC6003D66D13289D7BE26050A36166E6AF",
+        "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/touch-gaze-overlay-249.png",
+        "role": null
+      },
+      {
+        "bytes": 569,
+        "exists": true,
+        "expected_sha256": "B34A34E2A1A8FBD05868D668FCE47D97C56242CC024A7A7610C95F12976B24D2",
+        "match": true,
+        "observed_sha256": "B34A34E2A1A8FBD05868D668FCE47D97C56242CC024A7A7610C95F12976B24D2",
+        "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/r7-locked-v9-export-20260723/all-candidates/calm_presence/04-calm_blink_settle.png",
+        "role": null
+      }
+    ],
+    "inherited_owner_review_identities": [
+      {
+        "bytes": 111537,
+        "exists": true,
+        "expected_sha256": "BAE21BCCC7BB5FAD4A0922D5E9C42FCB25EF58DD7B8102A7C72656F7B700CF5E",
+        "match": true,
+        "observed_sha256": "BAE21BCCC7BB5FAD4A0922D5E9C42FCB25EF58DD7B8102A7C72656F7B700CF5E",
+        "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html"
+      },
+      {
+        "bytes": 11360,
+        "exists": true,
+        "expected_sha256": "6A7EDAC4A9624842B154B717C090441E745AC6F65F8E73BC235E8E3C16D11EBD",
+        "match": true,
+        "observed_sha256": "6A7EDAC4A9624842B154B717C090441E745AC6F65F8E73BC235E8E3C16D11EBD",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/machine-result.json"
+      },
+      {
+        "bytes": 194915,
+        "exists": true,
+        "expected_sha256": "652C33E7BFB155974FD369DB069800E14595C26F5F1D7B6A7322ED30320CCA76",
+        "match": true,
+        "observed_sha256": "652C33E7BFB155974FD369DB069800E14595C26F5F1D7B6A7322ED30320CCA76",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/measured-diagnostic.json"
+      },
+      {
+        "bytes": 258544,
+        "exists": true,
+        "expected_sha256": "1BEA10C8B988F72F48886012859F1D6C8801B15AFA18E89171235B7E33D2C815",
+        "match": true,
+        "observed_sha256": "1BEA10C8B988F72F48886012859F1D6C8801B15AFA18E89171235B7E33D2C815",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/browser-capture/capture-manifest.json"
+      },
+      {
+        "bytes": 322084,
+        "exists": true,
+        "expected_sha256": "082344F03017DC54E0A385E5CFF8BB7F4031889A602476FFD2589B130CFFE09F",
+        "match": true,
+        "observed_sha256": "082344F03017DC54E0A385E5CFF8BB7F4031889A602476FFD2589B130CFFE09F",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/pointer-contract/touch-pointer-contract-result.json"
+      },
+      {
+        "bytes": 13500,
+        "exists": true,
+        "expected_sha256": "17B71D7AC5FC777FEB301EED39E70431CC65BEFF8CC25FD7EEC613206280CD1E",
+        "match": true,
+        "observed_sha256": "17B71D7AC5FC777FEB301EED39E70431CC65BEFF8CC25FD7EEC613206280CD1E",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/c-asset-pack-machine-result.json"
+      },
+      {
+        "bytes": 85000,
+        "exists": true,
+        "expected_sha256": "D4DA2FCA6863C1B8F5DD28D70566712DCD91AB7383CA486735DFD253F7361E6D",
+        "match": true,
+        "observed_sha256": "D4DA2FCA6863C1B8F5DD28D70566712DCD91AB7383CA486735DFD253F7361E6D",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/frames.bin"
+      },
+      {
+        "bytes": 257114,
+        "exists": true,
+        "expected_sha256": "E5C6B30D8BF317FC8321D82E087D3B46552B4523FD8B67FFF3E6ABA89AAE4260",
+        "match": true,
+        "observed_sha256": "E5C6B30D8BF317FC8321D82E087D3B46552B4523FD8B67FFF3E6ABA89AAE4260",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/visual-contract.json"
+      },
+      {
+        "bytes": 5179,
+        "exists": true,
+        "expected_sha256": "442F5A9E87988A3F8BE15ECC2A2500CA64537FA2B6DBD96F6FFDDD070DD7F918",
+        "match": true,
+        "observed_sha256": "442F5A9E87988A3F8BE15ECC2A2500CA64537FA2B6DBD96F6FFDDD070DD7F918",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/state-transitions.json"
+      },
+      {
+        "bytes": 4597,
+        "exists": true,
+        "expected_sha256": "E89E3E40EF9DE9466CFBC9664AD16E49E36747F8A600966A6CF0D640EFED1468",
+        "match": true,
+        "observed_sha256": "E89E3E40EF9DE9466CFBC9664AD16E49E36747F8A600966A6CF0D640EFED1468",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/handoff-manifest.json"
+      },
+      {
+        "bytes": 21714,
+        "exists": true,
+        "expected_sha256": "0F0FE7B91707F20CF942A0B994BD776B69D404A004D9985B98EC6838CA752DBA",
+        "match": true,
+        "observed_sha256": "0F0FE7B91707F20CF942A0B994BD776B69D404A004D9985B98EC6838CA752DBA",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/c-asset-pack-manifest.json"
+      },
+      {
+        "bytes": 5321,
+        "exists": true,
+        "expected_sha256": "2180FE281AFF31C8688BCB290740F898CF7E032C90D97FFE679F535689A814F9",
+        "match": true,
+        "observed_sha256": "2180FE281AFF31C8688BCB290740F898CF7E032C90D97FFE679F535689A814F9",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/companion_visual_asset_pack.h"
+      },
+      {
+        "bytes": 405618,
+        "exists": true,
+        "expected_sha256": "1EE7BD5DDB210A3C3F90ADB607BA317CF2F00127099B876C9DB5948C7A5D03A0",
+        "match": true,
+        "observed_sha256": "1EE7BD5DDB210A3C3F90ADB607BA317CF2F00127099B876C9DB5948C7A5D03A0",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/companion_visual_asset_pack.c"
+      },
+      {
+        "bytes": 1303,
+        "exists": true,
+        "expected_sha256": "982B582FAEDDF956AF8557A9A333362A0D91DD7CA92FB3E0E7A37FC3D79F14D9",
+        "match": true,
+        "observed_sha256": "982B582FAEDDF956AF8557A9A333362A0D91DD7CA92FB3E0E7A37FC3D79F14D9",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/c-asset-pack-handoff.json"
+      },
+      {
+        "bytes": 32049,
+        "exists": true,
+        "expected_sha256": "6739E7BDF6CEB8118CC8ED9E660D5FB193F110D36E5D84F3C152753D9A424C81",
+        "match": true,
+        "observed_sha256": "6739E7BDF6CEB8118CC8ED9E660D5FB193F110D36E5D84F3C152753D9A424C81",
+        "path": "tools/faraday_upper_art/run_companion_browser_owner_review_comp_req_471.ps1"
+      },
+      {
+        "bytes": 5844,
+        "exists": true,
+        "expected_sha256": "E7E599F906886030B95B47A17B0ADA88F8648A232F2A45D0C86C901AD9096F87",
+        "match": true,
+        "observed_sha256": "E7E599F906886030B95B47A17B0ADA88F8648A232F2A45D0C86C901AD9096F87",
+        "path": "tools/faraday_upper_art/supervise_companion_browser_owner_review_comp_req_471.ps1"
+      }
+    ],
+    "replay_tool": {
+      "expected_sha256": "6F3C58A3F2DFD47717ABFCA040467870DAF48F47ED0999EF26955E0DAD4B56BA",
+      "observed_sha256": "6F3C58A3F2DFD47717ABFCA040467870DAF48F47ED0999EF26955E0DAD4B56BA",
+      "path": "tools/faraday_upper_art/replay_companion_browser_owner_review_ready.mjs"
+    }
+  },
+  "checks": {
+    "accepted_identity_chain_exact": true,
+    "accepted_source_assets_15_of_15": true,
+    "actual_single_overall_url_exact": true,
+    "deterministic_rerun_exact_hashes": true,
+    "inherited_owner_review_bindings_exact": true,
+    "owner_result_absent_and_owner_pass_not_claimed": true,
+    "pixel_dom_route_matrix_42_of_42": true,
+    "pixel_dom_route_states_192_of_192": true,
+    "prior_checkonly_was_zero_side_effect": true,
+    "replay_side_effect_boundary_exact": true,
+    "replay_status_and_all_checks_pass": true,
+    "replay_totals_exact": true,
+    "screenshot_manifest_bound_to_page": true,
+    "screenshots_50_of_50_rehashed_and_nonblank": true
+  },
+  "commands": {
+    "checkonly": [
+      "python",
+      "-B",
+      "tools/faraday_upper_art/verify_companion_browser_owner_review_ready_checkonly.py",
+      "--repo-root",
+      ".",
+      "--replay-tool",
+      "tools/faraday_upper_art/replay_companion_browser_owner_review_ready.mjs",
+      "--expected-replay-tool-sha256",
+      "6F3C58A3F2DFD47717ABFCA040467870DAF48F47ED0999EF26955E0DAD4B56BA",
+      "--replay-result",
+      "docs/validation/companion-browser-owner-review-ready-comp-req-471/browser-replay-result.json",
+      "--expected-replay-result-sha256",
+      "65ADEF4F50D1BB5A3635835F63AD9D353337F4684DFA7610E975AB022A22DD26",
+      "--pixel-dom-route",
+      "docs/validation/companion-browser-owner-review-ready-comp-req-471/pixel-dom-route-artifact.json",
+      "--expected-pixel-dom-route-sha256",
+      "670E41E6D928AD6FFAF50D580D87EC2FA19DD8507D0513375B7259BE9375C2FA",
+      "--screenshot-manifest",
+      "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshot-manifest.json",
+      "--expected-screenshot-manifest-sha256",
+      "DE6E009B1676E525BF1860EDB67E09F46A7B1E085380F426E7507049663688C5",
+      "--output",
+      "docs/validation/companion-browser-owner-review-ready-comp-req-471/BROWSER_OWNER_REVIEW_READY.json"
+    ],
+    "machine_replay": [
+      "node",
+      "tools/faraday_upper_art/replay_companion_browser_owner_review_ready.mjs",
+      "docs/validation/companion-browser-owner-review-ready-comp-req-471"
+    ]
+  },
+  "default_off": true,
+  "failed_checks": [],
+  "machine_replay": {
+    "pixel_dom_route_sha256": "670E41E6D928AD6FFAF50D580D87EC2FA19DD8507D0513375B7259BE9375C2FA",
+    "replay_result_sha256": "65ADEF4F50D1BB5A3635835F63AD9D353337F4684DFA7610E975AB022A22DD26",
+    "screenshot_manifest_sha256": "DE6E009B1676E525BF1860EDB67E09F46A7B1E085380F426E7507049663688C5"
+  },
+  "owner_boundary": {
+    "owner_pass_claimed": false,
+    "owner_prompt_invoked": false,
+    "owner_result_exists": false,
+    "remaining_gate": "One canonical browser owner review of the existing overall URL; this CheckOnly does not authorize or invoke it."
+  },
+  "pixel_dom_route_failures": [],
+  "requirements": [
+    "COMP-REQ-440",
+    "COMP-REQ-441",
+    "COMP-REQ-442",
+    "COMP-REQ-471"
+  ],
+  "schema": "companion.browser-owner-review-ready-checkonly.v1",
+  "screenshot_failures": [],
+  "screenshot_pixel_measurements": [
+    {
+      "expected_sha256": "00CE0A64FC0209281A314CC197FA9E01D1FFF030A341FD9127109870EA447017",
+      "id": "desktop-layout",
+      "match": true,
+      "observed_sha256": "00CE0A64FC0209281A314CC197FA9E01D1FFF030A341FD9127109870EA447017",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-layout.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 826,
+          "max_y": 877,
+          "min_x": 246,
+          "min_y": 26
+        },
+        "black_pixels": 24754,
+        "edge_touch": {
+          "bottom": false,
+          "left": false,
+          "right": false,
+          "top": false
+        },
+        "height": 900,
+        "width": 1280
+      }
+    },
+    {
+      "expected_sha256": "BB050DA00019428E73E3DF2C45ED7BECC248E3015B45C4787FE3D35E8C3E2CA4",
+      "id": "desktop-mouse-drag-center-held",
+      "match": true,
+      "observed_sha256": "BB050DA00019428E73E3DF2C45ED7BECC248E3015B45C4787FE3D35E8C3E2CA4",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-mouse-drag-center-held.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 166,
+          "max_y": 142,
+          "min_x": 34,
+          "min_y": 61
+        },
+        "black_pixels": 2679,
+        "edge_touch": {
+          "bottom": false,
+          "left": false,
+          "right": false,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "6470A7558F68DF345DB332ABABEB83CD31761BB9FCBBBCDB45733E86CE47006E",
+      "id": "desktop-mouse-hold-menu-return-device-ui-assets",
+      "match": true,
+      "observed_sha256": "6470A7558F68DF345DB332ABABEB83CD31761BB9FCBBBCDB45733E86CE47006E",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-mouse-hold-menu-return-device-ui-assets.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 169,
+          "max_y": 146,
+          "min_x": 32,
+          "min_y": 56
+        },
+        "black_pixels": 2998,
+        "edge_touch": {
+          "bottom": false,
+          "left": false,
+          "right": false,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "12D0423BB21EF2AF0874E84E93DE71D24F92DC83A6D6F514241BF65C77404FB1",
+      "id": "desktop-mouse-hold-menu-return-hold-50",
+      "match": true,
+      "observed_sha256": "12D0423BB21EF2AF0874E84E93DE71D24F92DC83A6D6F514241BF65C77404FB1",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-mouse-hold-menu-return-hold-50.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 166,
+          "max_y": 190,
+          "min_x": 34,
+          "min_y": 61
+        },
+        "black_pixels": 3011,
+        "edge_touch": {
+          "bottom": false,
+          "left": false,
+          "right": false,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "265CAAE45F5E94AE592899F4DF1598B02DDD7664CB3C32124FA51E6C70B33A0B",
+      "id": "desktop-mouse-hold-menu-return-menu-roots",
+      "match": true,
+      "observed_sha256": "265CAAE45F5E94AE592899F4DF1598B02DDD7664CB3C32124FA51E6C70B33A0B",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-mouse-hold-menu-return-menu-roots.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 199,
+          "max_y": 199,
+          "min_x": 0,
+          "min_y": 3
+        },
+        "black_pixels": 3144,
+        "edge_touch": {
+          "bottom": true,
+          "left": true,
+          "right": true,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "BB050DA00019428E73E3DF2C45ED7BECC248E3015B45C4787FE3D35E8C3E2CA4",
+      "id": "desktop-mouse-hold-menu-return-returned",
+      "match": true,
+      "observed_sha256": "BB050DA00019428E73E3DF2C45ED7BECC248E3015B45C4787FE3D35E8C3E2CA4",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-mouse-hold-menu-return-returned.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 166,
+          "max_y": 142,
+          "min_x": 34,
+          "min_y": 61
+        },
+        "black_pixels": 2679,
+        "edge_touch": {
+          "bottom": false,
+          "left": false,
+          "right": false,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "54A9E1CE3A1DA160B0747124FF117357677827B648796FFCAAB857D447C820D6",
+      "id": "desktop-mouse-recording-return-entry",
+      "match": true,
+      "observed_sha256": "54A9E1CE3A1DA160B0747124FF117357677827B648796FFCAAB857D447C820D6",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-mouse-recording-return-entry.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 178,
+          "max_y": 142,
+          "min_x": 22,
+          "min_y": 61
+        },
+        "black_pixels": 2854,
+        "edge_touch": {
+          "bottom": false,
+          "left": false,
+          "right": false,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "BB050DA00019428E73E3DF2C45ED7BECC248E3015B45C4787FE3D35E8C3E2CA4",
+      "id": "desktop-mouse-recording-return-returned",
+      "match": true,
+      "observed_sha256": "BB050DA00019428E73E3DF2C45ED7BECC248E3015B45C4787FE3D35E8C3E2CA4",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-mouse-recording-return-returned.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 166,
+          "max_y": 142,
+          "min_x": 34,
+          "min_y": 61
+        },
+        "black_pixels": 2679,
+        "edge_touch": {
+          "bottom": false,
+          "left": false,
+          "right": false,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "CA4938164F3EADDE21B5365FE1556D14ABAB2AAE6E6CC4DE68503190CCA62ABE",
+      "id": "desktop-mouse-single-tap-response",
+      "match": true,
+      "observed_sha256": "CA4938164F3EADDE21B5365FE1556D14ABAB2AAE6E6CC4DE68503190CCA62ABE",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-mouse-single-tap-response.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 168,
+          "max_y": 166,
+          "min_x": 33,
+          "min_y": 36
+        },
+        "black_pixels": 2770,
+        "edge_touch": {
+          "bottom": false,
+          "left": false,
+          "right": false,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "BB050DA00019428E73E3DF2C45ED7BECC248E3015B45C4787FE3D35E8C3E2CA4",
+      "id": "desktop-pen-drag-center-held",
+      "match": true,
+      "observed_sha256": "BB050DA00019428E73E3DF2C45ED7BECC248E3015B45C4787FE3D35E8C3E2CA4",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-pen-drag-center-held.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 166,
+          "max_y": 142,
+          "min_x": 34,
+          "min_y": 61
+        },
+        "black_pixels": 2679,
+        "edge_touch": {
+          "bottom": false,
+          "left": false,
+          "right": false,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "6470A7558F68DF345DB332ABABEB83CD31761BB9FCBBBCDB45733E86CE47006E",
+      "id": "desktop-pen-hold-menu-return-device-ui-assets",
+      "match": true,
+      "observed_sha256": "6470A7558F68DF345DB332ABABEB83CD31761BB9FCBBBCDB45733E86CE47006E",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-pen-hold-menu-return-device-ui-assets.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 169,
+          "max_y": 146,
+          "min_x": 32,
+          "min_y": 56
+        },
+        "black_pixels": 2998,
+        "edge_touch": {
+          "bottom": false,
+          "left": false,
+          "right": false,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "12D0423BB21EF2AF0874E84E93DE71D24F92DC83A6D6F514241BF65C77404FB1",
+      "id": "desktop-pen-hold-menu-return-hold-50",
+      "match": true,
+      "observed_sha256": "12D0423BB21EF2AF0874E84E93DE71D24F92DC83A6D6F514241BF65C77404FB1",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-pen-hold-menu-return-hold-50.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 166,
+          "max_y": 190,
+          "min_x": 34,
+          "min_y": 61
+        },
+        "black_pixels": 3011,
+        "edge_touch": {
+          "bottom": false,
+          "left": false,
+          "right": false,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "265CAAE45F5E94AE592899F4DF1598B02DDD7664CB3C32124FA51E6C70B33A0B",
+      "id": "desktop-pen-hold-menu-return-menu-roots",
+      "match": true,
+      "observed_sha256": "265CAAE45F5E94AE592899F4DF1598B02DDD7664CB3C32124FA51E6C70B33A0B",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-pen-hold-menu-return-menu-roots.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 199,
+          "max_y": 199,
+          "min_x": 0,
+          "min_y": 3
+        },
+        "black_pixels": 3144,
+        "edge_touch": {
+          "bottom": true,
+          "left": true,
+          "right": true,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "BB050DA00019428E73E3DF2C45ED7BECC248E3015B45C4787FE3D35E8C3E2CA4",
+      "id": "desktop-pen-hold-menu-return-returned",
+      "match": true,
+      "observed_sha256": "BB050DA00019428E73E3DF2C45ED7BECC248E3015B45C4787FE3D35E8C3E2CA4",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-pen-hold-menu-return-returned.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 166,
+          "max_y": 142,
+          "min_x": 34,
+          "min_y": 61
+        },
+        "black_pixels": 2679,
+        "edge_touch": {
+          "bottom": false,
+          "left": false,
+          "right": false,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "54A9E1CE3A1DA160B0747124FF117357677827B648796FFCAAB857D447C820D6",
+      "id": "desktop-pen-recording-return-entry",
+      "match": true,
+      "observed_sha256": "54A9E1CE3A1DA160B0747124FF117357677827B648796FFCAAB857D447C820D6",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-pen-recording-return-entry.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 178,
+          "max_y": 142,
+          "min_x": 22,
+          "min_y": 61
+        },
+        "black_pixels": 2854,
+        "edge_touch": {
+          "bottom": false,
+          "left": false,
+          "right": false,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "BB050DA00019428E73E3DF2C45ED7BECC248E3015B45C4787FE3D35E8C3E2CA4",
+      "id": "desktop-pen-recording-return-returned",
+      "match": true,
+      "observed_sha256": "BB050DA00019428E73E3DF2C45ED7BECC248E3015B45C4787FE3D35E8C3E2CA4",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-pen-recording-return-returned.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 166,
+          "max_y": 142,
+          "min_x": 34,
+          "min_y": 61
+        },
+        "black_pixels": 2679,
+        "edge_touch": {
+          "bottom": false,
+          "left": false,
+          "right": false,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "CA4938164F3EADDE21B5365FE1556D14ABAB2AAE6E6CC4DE68503190CCA62ABE",
+      "id": "desktop-pen-single-tap-response",
+      "match": true,
+      "observed_sha256": "CA4938164F3EADDE21B5365FE1556D14ABAB2AAE6E6CC4DE68503190CCA62ABE",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-pen-single-tap-response.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 168,
+          "max_y": 166,
+          "min_x": 33,
+          "min_y": 36
+        },
+        "black_pixels": 2770,
+        "edge_touch": {
+          "bottom": false,
+          "left": false,
+          "right": false,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "BB050DA00019428E73E3DF2C45ED7BECC248E3015B45C4787FE3D35E8C3E2CA4",
+      "id": "desktop-touch-drag-center-held",
+      "match": true,
+      "observed_sha256": "BB050DA00019428E73E3DF2C45ED7BECC248E3015B45C4787FE3D35E8C3E2CA4",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-touch-drag-center-held.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 166,
+          "max_y": 142,
+          "min_x": 34,
+          "min_y": 61
+        },
+        "black_pixels": 2679,
+        "edge_touch": {
+          "bottom": false,
+          "left": false,
+          "right": false,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "6470A7558F68DF345DB332ABABEB83CD31761BB9FCBBBCDB45733E86CE47006E",
+      "id": "desktop-touch-hold-menu-return-device-ui-assets",
+      "match": true,
+      "observed_sha256": "6470A7558F68DF345DB332ABABEB83CD31761BB9FCBBBCDB45733E86CE47006E",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-touch-hold-menu-return-device-ui-assets.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 169,
+          "max_y": 146,
+          "min_x": 32,
+          "min_y": 56
+        },
+        "black_pixels": 2998,
+        "edge_touch": {
+          "bottom": false,
+          "left": false,
+          "right": false,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "12D0423BB21EF2AF0874E84E93DE71D24F92DC83A6D6F514241BF65C77404FB1",
+      "id": "desktop-touch-hold-menu-return-hold-50",
+      "match": true,
+      "observed_sha256": "12D0423BB21EF2AF0874E84E93DE71D24F92DC83A6D6F514241BF65C77404FB1",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-touch-hold-menu-return-hold-50.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 166,
+          "max_y": 190,
+          "min_x": 34,
+          "min_y": 61
+        },
+        "black_pixels": 3011,
+        "edge_touch": {
+          "bottom": false,
+          "left": false,
+          "right": false,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "265CAAE45F5E94AE592899F4DF1598B02DDD7664CB3C32124FA51E6C70B33A0B",
+      "id": "desktop-touch-hold-menu-return-menu-roots",
+      "match": true,
+      "observed_sha256": "265CAAE45F5E94AE592899F4DF1598B02DDD7664CB3C32124FA51E6C70B33A0B",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-touch-hold-menu-return-menu-roots.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 199,
+          "max_y": 199,
+          "min_x": 0,
+          "min_y": 3
+        },
+        "black_pixels": 3144,
+        "edge_touch": {
+          "bottom": true,
+          "left": true,
+          "right": true,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "BB050DA00019428E73E3DF2C45ED7BECC248E3015B45C4787FE3D35E8C3E2CA4",
+      "id": "desktop-touch-hold-menu-return-returned",
+      "match": true,
+      "observed_sha256": "BB050DA00019428E73E3DF2C45ED7BECC248E3015B45C4787FE3D35E8C3E2CA4",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-touch-hold-menu-return-returned.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 166,
+          "max_y": 142,
+          "min_x": 34,
+          "min_y": 61
+        },
+        "black_pixels": 2679,
+        "edge_touch": {
+          "bottom": false,
+          "left": false,
+          "right": false,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "54A9E1CE3A1DA160B0747124FF117357677827B648796FFCAAB857D447C820D6",
+      "id": "desktop-touch-recording-return-entry",
+      "match": true,
+      "observed_sha256": "54A9E1CE3A1DA160B0747124FF117357677827B648796FFCAAB857D447C820D6",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-touch-recording-return-entry.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 178,
+          "max_y": 142,
+          "min_x": 22,
+          "min_y": 61
+        },
+        "black_pixels": 2854,
+        "edge_touch": {
+          "bottom": false,
+          "left": false,
+          "right": false,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "BB050DA00019428E73E3DF2C45ED7BECC248E3015B45C4787FE3D35E8C3E2CA4",
+      "id": "desktop-touch-recording-return-returned",
+      "match": true,
+      "observed_sha256": "BB050DA00019428E73E3DF2C45ED7BECC248E3015B45C4787FE3D35E8C3E2CA4",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-touch-recording-return-returned.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 166,
+          "max_y": 142,
+          "min_x": 34,
+          "min_y": 61
+        },
+        "black_pixels": 2679,
+        "edge_touch": {
+          "bottom": false,
+          "left": false,
+          "right": false,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "CA4938164F3EADDE21B5365FE1556D14ABAB2AAE6E6CC4DE68503190CCA62ABE",
+      "id": "desktop-touch-single-tap-response",
+      "match": true,
+      "observed_sha256": "CA4938164F3EADDE21B5365FE1556D14ABAB2AAE6E6CC4DE68503190CCA62ABE",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/desktop-touch-single-tap-response.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 168,
+          "max_y": 166,
+          "min_x": 33,
+          "min_y": 36
+        },
+        "black_pixels": 2770,
+        "edge_touch": {
+          "bottom": false,
+          "left": false,
+          "right": false,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "F59780620F42E45796F2F95D35F43A0FADFF11AC45C69DDE262F4DD867FE64ED",
+      "id": "mobile-layout",
+      "match": true,
+      "observed_sha256": "F59780620F42E45796F2F95D35F43A0FADFF11AC45C69DDE262F4DD867FE64ED",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-layout.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 379,
+          "max_y": 768,
+          "min_x": 10,
+          "min_y": 21
+        },
+        "black_pixels": 31283,
+        "edge_touch": {
+          "bottom": false,
+          "left": false,
+          "right": false,
+          "top": false
+        },
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "expected_sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31",
+      "id": "mobile-mouse-drag-center-held",
+      "match": true,
+      "observed_sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-mouse-drag-center-held.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 166,
+          "max_y": 141,
+          "min_x": 34,
+          "min_y": 60
+        },
+        "black_pixels": 2679,
+        "edge_touch": {
+          "bottom": false,
+          "left": false,
+          "right": false,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "6DF0EAE1423AD50AA7DDE5B0D90910EF7F8967AAFA404B0F214CCD6621B1F216",
+      "id": "mobile-mouse-hold-menu-return-device-ui-assets",
+      "match": true,
+      "observed_sha256": "6DF0EAE1423AD50AA7DDE5B0D90910EF7F8967AAFA404B0F214CCD6621B1F216",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-mouse-hold-menu-return-device-ui-assets.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 169,
+          "max_y": 145,
+          "min_x": 32,
+          "min_y": 55
+        },
+        "black_pixels": 2998,
+        "edge_touch": {
+          "bottom": false,
+          "left": false,
+          "right": false,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "D4417B43C595A0A123D1BF8D374133621B40813A498A3C62236329F37CB0503C",
+      "id": "mobile-mouse-hold-menu-return-hold-50",
+      "match": true,
+      "observed_sha256": "D4417B43C595A0A123D1BF8D374133621B40813A498A3C62236329F37CB0503C",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-mouse-hold-menu-return-hold-50.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 166,
+          "max_y": 189,
+          "min_x": 34,
+          "min_y": 60
+        },
+        "black_pixels": 3011,
+        "edge_touch": {
+          "bottom": false,
+          "left": false,
+          "right": false,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "B6A2DAF80493BE09F2F20585CDAE82708E6DD38A285D0D2F9F8132E3FA4D7750",
+      "id": "mobile-mouse-hold-menu-return-menu-roots",
+      "match": true,
+      "observed_sha256": "B6A2DAF80493BE09F2F20585CDAE82708E6DD38A285D0D2F9F8132E3FA4D7750",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-mouse-hold-menu-return-menu-roots.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 199,
+          "max_y": 198,
+          "min_x": 0,
+          "min_y": 2
+        },
+        "black_pixels": 3144,
+        "edge_touch": {
+          "bottom": false,
+          "left": true,
+          "right": true,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31",
+      "id": "mobile-mouse-hold-menu-return-returned",
+      "match": true,
+      "observed_sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-mouse-hold-menu-return-returned.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 166,
+          "max_y": 141,
+          "min_x": 34,
+          "min_y": 60
+        },
+        "black_pixels": 2679,
+        "edge_touch": {
+          "bottom": false,
+          "left": false,
+          "right": false,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "EA4B8A3ECF89EEF37036526FA6F8026AF0A771CF24CD0B36125E4397F8C12E90",
+      "id": "mobile-mouse-recording-return-entry",
+      "match": true,
+      "observed_sha256": "EA4B8A3ECF89EEF37036526FA6F8026AF0A771CF24CD0B36125E4397F8C12E90",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-mouse-recording-return-entry.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 178,
+          "max_y": 141,
+          "min_x": 22,
+          "min_y": 60
+        },
+        "black_pixels": 2854,
+        "edge_touch": {
+          "bottom": false,
+          "left": false,
+          "right": false,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31",
+      "id": "mobile-mouse-recording-return-returned",
+      "match": true,
+      "observed_sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-mouse-recording-return-returned.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 166,
+          "max_y": 141,
+          "min_x": 34,
+          "min_y": 60
+        },
+        "black_pixels": 2679,
+        "edge_touch": {
+          "bottom": false,
+          "left": false,
+          "right": false,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "5BA0556D8F82E5C8A06A0E04278D84632DC9F78152DC8F46411282738F17C5D1",
+      "id": "mobile-mouse-single-tap-response",
+      "match": true,
+      "observed_sha256": "5BA0556D8F82E5C8A06A0E04278D84632DC9F78152DC8F46411282738F17C5D1",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-mouse-single-tap-response.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 168,
+          "max_y": 165,
+          "min_x": 33,
+          "min_y": 35
+        },
+        "black_pixels": 2770,
+        "edge_touch": {
+          "bottom": false,
+          "left": false,
+          "right": false,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31",
+      "id": "mobile-pen-drag-center-held",
+      "match": true,
+      "observed_sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-pen-drag-center-held.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 166,
+          "max_y": 141,
+          "min_x": 34,
+          "min_y": 60
+        },
+        "black_pixels": 2679,
+        "edge_touch": {
+          "bottom": false,
+          "left": false,
+          "right": false,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "6DF0EAE1423AD50AA7DDE5B0D90910EF7F8967AAFA404B0F214CCD6621B1F216",
+      "id": "mobile-pen-hold-menu-return-device-ui-assets",
+      "match": true,
+      "observed_sha256": "6DF0EAE1423AD50AA7DDE5B0D90910EF7F8967AAFA404B0F214CCD6621B1F216",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-pen-hold-menu-return-device-ui-assets.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 169,
+          "max_y": 145,
+          "min_x": 32,
+          "min_y": 55
+        },
+        "black_pixels": 2998,
+        "edge_touch": {
+          "bottom": false,
+          "left": false,
+          "right": false,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "D4417B43C595A0A123D1BF8D374133621B40813A498A3C62236329F37CB0503C",
+      "id": "mobile-pen-hold-menu-return-hold-50",
+      "match": true,
+      "observed_sha256": "D4417B43C595A0A123D1BF8D374133621B40813A498A3C62236329F37CB0503C",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-pen-hold-menu-return-hold-50.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 166,
+          "max_y": 189,
+          "min_x": 34,
+          "min_y": 60
+        },
+        "black_pixels": 3011,
+        "edge_touch": {
+          "bottom": false,
+          "left": false,
+          "right": false,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "B6A2DAF80493BE09F2F20585CDAE82708E6DD38A285D0D2F9F8132E3FA4D7750",
+      "id": "mobile-pen-hold-menu-return-menu-roots",
+      "match": true,
+      "observed_sha256": "B6A2DAF80493BE09F2F20585CDAE82708E6DD38A285D0D2F9F8132E3FA4D7750",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-pen-hold-menu-return-menu-roots.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 199,
+          "max_y": 198,
+          "min_x": 0,
+          "min_y": 2
+        },
+        "black_pixels": 3144,
+        "edge_touch": {
+          "bottom": false,
+          "left": true,
+          "right": true,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31",
+      "id": "mobile-pen-hold-menu-return-returned",
+      "match": true,
+      "observed_sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-pen-hold-menu-return-returned.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 166,
+          "max_y": 141,
+          "min_x": 34,
+          "min_y": 60
+        },
+        "black_pixels": 2679,
+        "edge_touch": {
+          "bottom": false,
+          "left": false,
+          "right": false,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "EA4B8A3ECF89EEF37036526FA6F8026AF0A771CF24CD0B36125E4397F8C12E90",
+      "id": "mobile-pen-recording-return-entry",
+      "match": true,
+      "observed_sha256": "EA4B8A3ECF89EEF37036526FA6F8026AF0A771CF24CD0B36125E4397F8C12E90",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-pen-recording-return-entry.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 178,
+          "max_y": 141,
+          "min_x": 22,
+          "min_y": 60
+        },
+        "black_pixels": 2854,
+        "edge_touch": {
+          "bottom": false,
+          "left": false,
+          "right": false,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31",
+      "id": "mobile-pen-recording-return-returned",
+      "match": true,
+      "observed_sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-pen-recording-return-returned.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 166,
+          "max_y": 141,
+          "min_x": 34,
+          "min_y": 60
+        },
+        "black_pixels": 2679,
+        "edge_touch": {
+          "bottom": false,
+          "left": false,
+          "right": false,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "009BA438CF6EC727C85E4A8192BBF2D2D0ECFA6E101FF8A102BA94A7B7E24B3A",
+      "id": "mobile-pen-single-tap-response",
+      "match": true,
+      "observed_sha256": "009BA438CF6EC727C85E4A8192BBF2D2D0ECFA6E101FF8A102BA94A7B7E24B3A",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-pen-single-tap-response.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 168,
+          "max_y": 165,
+          "min_x": 33,
+          "min_y": 69
+        },
+        "black_pixels": 2665,
+        "edge_touch": {
+          "bottom": false,
+          "left": false,
+          "right": false,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31",
+      "id": "mobile-touch-drag-center-held",
+      "match": true,
+      "observed_sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-touch-drag-center-held.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 166,
+          "max_y": 141,
+          "min_x": 34,
+          "min_y": 60
+        },
+        "black_pixels": 2679,
+        "edge_touch": {
+          "bottom": false,
+          "left": false,
+          "right": false,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "6DF0EAE1423AD50AA7DDE5B0D90910EF7F8967AAFA404B0F214CCD6621B1F216",
+      "id": "mobile-touch-hold-menu-return-device-ui-assets",
+      "match": true,
+      "observed_sha256": "6DF0EAE1423AD50AA7DDE5B0D90910EF7F8967AAFA404B0F214CCD6621B1F216",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-touch-hold-menu-return-device-ui-assets.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 169,
+          "max_y": 145,
+          "min_x": 32,
+          "min_y": 55
+        },
+        "black_pixels": 2998,
+        "edge_touch": {
+          "bottom": false,
+          "left": false,
+          "right": false,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "D4417B43C595A0A123D1BF8D374133621B40813A498A3C62236329F37CB0503C",
+      "id": "mobile-touch-hold-menu-return-hold-50",
+      "match": true,
+      "observed_sha256": "D4417B43C595A0A123D1BF8D374133621B40813A498A3C62236329F37CB0503C",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-touch-hold-menu-return-hold-50.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 166,
+          "max_y": 189,
+          "min_x": 34,
+          "min_y": 60
+        },
+        "black_pixels": 3011,
+        "edge_touch": {
+          "bottom": false,
+          "left": false,
+          "right": false,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "B6A2DAF80493BE09F2F20585CDAE82708E6DD38A285D0D2F9F8132E3FA4D7750",
+      "id": "mobile-touch-hold-menu-return-menu-roots",
+      "match": true,
+      "observed_sha256": "B6A2DAF80493BE09F2F20585CDAE82708E6DD38A285D0D2F9F8132E3FA4D7750",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-touch-hold-menu-return-menu-roots.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 199,
+          "max_y": 198,
+          "min_x": 0,
+          "min_y": 2
+        },
+        "black_pixels": 3144,
+        "edge_touch": {
+          "bottom": false,
+          "left": true,
+          "right": true,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31",
+      "id": "mobile-touch-hold-menu-return-returned",
+      "match": true,
+      "observed_sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-touch-hold-menu-return-returned.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 166,
+          "max_y": 141,
+          "min_x": 34,
+          "min_y": 60
+        },
+        "black_pixels": 2679,
+        "edge_touch": {
+          "bottom": false,
+          "left": false,
+          "right": false,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "EA4B8A3ECF89EEF37036526FA6F8026AF0A771CF24CD0B36125E4397F8C12E90",
+      "id": "mobile-touch-recording-return-entry",
+      "match": true,
+      "observed_sha256": "EA4B8A3ECF89EEF37036526FA6F8026AF0A771CF24CD0B36125E4397F8C12E90",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-touch-recording-return-entry.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 178,
+          "max_y": 141,
+          "min_x": 22,
+          "min_y": 60
+        },
+        "black_pixels": 2854,
+        "edge_touch": {
+          "bottom": false,
+          "left": false,
+          "right": false,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31",
+      "id": "mobile-touch-recording-return-returned",
+      "match": true,
+      "observed_sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-touch-recording-return-returned.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 166,
+          "max_y": 141,
+          "min_x": 34,
+          "min_y": 60
+        },
+        "black_pixels": 2679,
+        "edge_touch": {
+          "bottom": false,
+          "left": false,
+          "right": false,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    },
+    {
+      "expected_sha256": "5BA0556D8F82E5C8A06A0E04278D84632DC9F78152DC8F46411282738F17C5D1",
+      "id": "mobile-touch-single-tap-response",
+      "match": true,
+      "observed_sha256": "5BA0556D8F82E5C8A06A0E04278D84632DC9F78152DC8F46411282738F17C5D1",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-471/screenshots/mobile-touch-single-tap-response.png",
+      "pixel_measurement": {
+        "black_bounds": {
+          "max_x": 168,
+          "max_y": 165,
+          "min_x": 33,
+          "min_y": 35
+        },
+        "black_pixels": 2770,
+        "edge_touch": {
+          "bottom": false,
+          "left": false,
+          "right": false,
+          "top": false
+        },
+        "height": 200,
+        "width": 200
+      }
+    }
+  ],
+  "side_effect_counters": {
+    "browser": 0,
+    "evidence_artifact_write": 1,
+    "external_process": 0,
+    "hardware": 0,
+    "lower_write": 0,
+    "microphone_permission_request": 0,
+    "owner_prompt": 0,
+    "owner_result_write": 0,
+    "platform_write": 0,
+    "production_write": 0,
+    "registry_write": 0,
+    "server_probe": 0,
+    "server_start": 0
+  },
+  "status": "BROWSER_OWNER_REVIEW_READY",
+  "url": "http://127.0.0.1:4173/docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html",
+  "verifier": {
+    "path": "tools/faraday_upper_art/verify_companion_browser_owner_review_ready_checkonly.py",
+    "sha256": "33581C21402DDD7591B364F8BEB32E710585CEA7C1DC8C27A615F440FF86D44D"
+  }
+}
