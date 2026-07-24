@@ -17,8 +17,8 @@
       "path": "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/focused-oracle.json"
     },
     {
-      "canonical_lf_sha256": "988FBD722F28CFFCCCB425A5C4D0F63B5ABF34589C2F90327ED66BB986DB7676",
-      "git_blob": "4574f96c68dc2d1cfd7d4f63cc664d22c84f57e9",
+      "canonical_lf_sha256": "CF135427F921BFD3C38943DED62C2D155A29A9939CA5F53215248D3CEB69BAAF",
+      "git_blob": "f1a8eaf438365da3cd3ccb3ce93c152e9b9a72e4",
       "id": "machine",
       "path": "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/MACHINE_READY.json"
     },
@@ -65,8 +65,8 @@
       "path": "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/replay-run/browser-replay-result.json"
     },
     {
-      "canonical_lf_sha256": "85886DFB978F8235AC97C7F57BDCA6F713E0EA5AA95F2FFC65923E74CEF700D2",
-      "git_blob": "2b335aa2fc39872459f0e73c285c804bec3a90c4",
+      "canonical_lf_sha256": "3BB77B799DB54124A4152E902BFCA3575D2FA932F7BF592C266DA2412E8A997A",
+      "git_blob": "c70858cc19cbfa95dbd3a5f2377ac10c34caed53",
       "id": "runner",
       "path": "tools/faraday_upper_art/run_companion_browser_owner_review_comp_req_536_538.ps1"
     },
@@ -77,8 +77,8 @@
       "path": "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/replay-run/screenshot-manifest.json"
     },
     {
-      "canonical_lf_sha256": "76077D1153265CDCAABC2B857268D2A8B3B8AE2C2A0AD29379C24D1FB71E2B1A",
-      "git_blob": "4d2bc95d5f78b9dc5841958cf20a05ee9d1abf8b",
+      "canonical_lf_sha256": "78F1DF64676C85A58F936E3C9D1C1C692D618E8D729C49ED4709BE353A4B3AB6",
+      "git_blob": "4faa617a7c17f6944f9d6127c6e011122bf52f08",
       "id": "source_gate",
       "path": "tools/faraday_upper_art/verify_companion_browser_epaper_source_bound_comp_req_536_538.py"
     }
@@ -106,10 +106,10 @@
         "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html"
       },
       {
-        "expected_sha256": "988FBD722F28CFFCCCB425A5C4D0F63B5ABF34589C2F90327ED66BB986DB7676",
+        "expected_sha256": "CF135427F921BFD3C38943DED62C2D155A29A9939CA5F53215248D3CEB69BAAF",
         "id": "machine",
         "match": true,
-        "observed_sha256": "988FBD722F28CFFCCCB425A5C4D0F63B5ABF34589C2F90327ED66BB986DB7676",
+        "observed_sha256": "CF135427F921BFD3C38943DED62C2D155A29A9939CA5F53215248D3CEB69BAAF",
         "path": "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/MACHINE_READY.json"
       },
       {
@@ -162,10 +162,10 @@
         "path": "docs/art/exports/companion-browser-epaper-parity-comp-req-536-538/visual-frame-manifest.json"
       },
       {
-        "expected_sha256": "76077D1153265CDCAABC2B857268D2A8B3B8AE2C2A0AD29379C24D1FB71E2B1A",
+        "expected_sha256": "78F1DF64676C85A58F936E3C9D1C1C692D618E8D729C49ED4709BE353A4B3AB6",
         "id": "source_gate",
         "match": true,
-        "observed_sha256": "76077D1153265CDCAABC2B857268D2A8B3B8AE2C2A0AD29379C24D1FB71E2B1A",
+        "observed_sha256": "78F1DF64676C85A58F936E3C9D1C1C692D618E8D729C49ED4709BE353A4B3AB6",
         "path": "tools/faraday_upper_art/verify_companion_browser_epaper_source_bound_comp_req_536_538.py"
       },
       {
@@ -182,7 +182,7 @@
         "\u5931\u8d25"
       ],
       "expected_text": "\u9009\u62e9\u901a\u8fc7\u8868\u793a COMP-REQ-536/537/538 browser-only successor \u6210\u4e3a\u4eba\u5de5\u56de\u5f52\u5408\u540c\uff1b\u9009\u62e9\u5931\u8d25\u4f1a\u4fdd\u7559\u673a\u5668\u8bc1\u636e\u5e76\u8fd4\u56de Faraday \u8fed\u4ee3\u3002\u5907\u6ce8\u5141\u8bb8\u7559\u7a7a\u3002",
-      "message": "\u8bf7\u5728\u603b\u4f53\u9875\u9762\u6309\u6b63\u5e38\u901f\u5ea6\u5b9e\u9645\u64cd\u4f5c\uff1a\n1. \u89c2\u5bdf\u65e0\u64cd\u4f5c\u65f6\u7684\u786e\u5b9a\u6027\u9ad8\u5149\u5c0f\u52a8\u4f5c\uff1a\u7ea6\u6bcf 480 ms \u79bb\u6563\u4e00\u6b65\uff0c\u77ed\u5e8f\u5217\u540e\u7cbe\u786e\u56de\u5230\u57fa\u7ebf\uff0c\u6ca1\u6709\u5e73\u6ed1\u63d2\u503c\u6216\u968f\u673a\u95ea\u70c1\u3002\n2. \u4e25\u683c\u53cc\u51fb\u5f00\u542f\u5f55\u97f3\u9644\u4ef6\uff1a\u53ea\u589e\u52a0\u4e00\u4e2a\u5c0f\u578b\u5f55\u97f3\u72b6\u6001\u6807\u8bb0\u548c\u4e09\u9053\u7b49\u9ad8\u3001\u7b49\u7c97\u3001\u7b49\u66f2\u7387\u7684\u77ed\u6ce2\u524d\uff1b\u6ce2\u524d\u9010\u5e27\u5411\u8138\u65c1\u542c\u89c9\u70b9\u6536\u62e2\u5e76\u5438\u6536\uff0c\u518d\u4ece\u5916\u7f18\u8865\u5165\u3002\n3. \u5f55\u97f3\u9644\u4ef6\u5f00\u542f\u65f6\u7ee7\u7eed\u5355\u70b9\u548c\u62d6\u52a8\uff0c\u786e\u8ba4\u5e95\u5c42\u8868\u60c5\u4e0e\u773c\u795e\u7167\u5e38\u54cd\u5e94\uff0c\u9644\u4ef6\u53ea\u51fa\u73b0\u4e00\u4efd\uff0c\u4e0d\u51bb\u7ed3\u3001\u4e0d\u91cd\u542f\u3001\u4e0d\u589e\u52a0\u7b2c\u4e8c\u5f20\u8138\u6216\u7b2c\u4e8c\u5957\u773c\u73e0\u3002\n4. \u518d\u6b21\u4e25\u683c\u53cc\u51fb\u5173\u95ed\uff0c\u786e\u8ba4\u53ea\u79fb\u9664\u5f55\u97f3\u9644\u4ef6\uff0c\u4fdd\u7559\u5f53\u65f6\u5df2\u7ecf\u6f14\u5316\u7684\u8868\u60c5\u548c\u773c\u795e\u3002\n5. \u68c0\u67e5\u957f\u6309\u83dc\u5355\u3001\u56db\u6839\u83dc\u5355\u3001Device > UI assets\u3001\u8fd4\u56de\uff1b\u59cb\u7ec8\u5c45\u4e2d\u3001\u65b9\u5411\u6b63\u786e\u3001\u65e0\u65e7\u5c42\u3001\u88c1\u5207\u3001404\u3001\u91cd\u53e0\u3001\u8c03\u8bd5\u53c2\u6570\u6216\u9ea6\u514b\u98ce\u6743\u9650\u8bf7\u6c42\u3002",
+      "message": "\u8bf7\u5728\u603b\u4f53\u9875\u9762\u6309\u6b63\u5e38\u901f\u5ea6\u5b9e\u9645\u64cd\u4f5c\uff1a\r\n1. \u89c2\u5bdf\u65e0\u64cd\u4f5c\u65f6\u7684\u786e\u5b9a\u6027\u9ad8\u5149\u5c0f\u52a8\u4f5c\uff1a\u7ea6\u6bcf 480 ms \u79bb\u6563\u4e00\u6b65\uff0c\u77ed\u5e8f\u5217\u540e\u7cbe\u786e\u56de\u5230\u57fa\u7ebf\uff0c\u6ca1\u6709\u5e73\u6ed1\u63d2\u503c\u6216\u968f\u673a\u95ea\u70c1\u3002\r\n2. \u4e25\u683c\u53cc\u51fb\u5f00\u542f\u5f55\u97f3\u9644\u4ef6\uff1a\u53ea\u589e\u52a0\u4e00\u4e2a\u5c0f\u578b\u5f55\u97f3\u72b6\u6001\u6807\u8bb0\u548c\u4e09\u9053\u7b49\u9ad8\u3001\u7b49\u7c97\u3001\u7b49\u66f2\u7387\u7684\u77ed\u6ce2\u524d\uff1b\u6ce2\u524d\u9010\u5e27\u5411\u8138\u65c1\u542c\u89c9\u70b9\u6536\u62e2\u5e76\u5438\u6536\uff0c\u518d\u4ece\u5916\u7f18\u8865\u5165\u3002\r\n3. \u5f55\u97f3\u9644\u4ef6\u5f00\u542f\u65f6\u7ee7\u7eed\u5355\u70b9\u548c\u62d6\u52a8\uff0c\u786e\u8ba4\u5e95\u5c42\u8868\u60c5\u4e0e\u773c\u795e\u7167\u5e38\u54cd\u5e94\uff0c\u9644\u4ef6\u53ea\u51fa\u73b0\u4e00\u4efd\uff0c\u4e0d\u51bb\u7ed3\u3001\u4e0d\u91cd\u542f\u3001\u4e0d\u589e\u52a0\u7b2c\u4e8c\u5f20\u8138\u6216\u7b2c\u4e8c\u5957\u773c\u73e0\u3002\r\n4. \u518d\u6b21\u4e25\u683c\u53cc\u51fb\u5173\u95ed\uff0c\u786e\u8ba4\u53ea\u79fb\u9664\u5f55\u97f3\u9644\u4ef6\uff0c\u4fdd\u7559\u5f53\u65f6\u5df2\u7ecf\u6f14\u5316\u7684\u8868\u60c5\u548c\u773c\u795e\u3002\r\n5. \u68c0\u67e5\u957f\u6309\u83dc\u5355\u3001\u56db\u6839\u83dc\u5355\u3001Device > UI assets\u3001\u8fd4\u56de\uff1b\u59cb\u7ec8\u5c45\u4e2d\u3001\u65b9\u5411\u6b63\u786e\u3001\u65e0\u65e7\u5c42\u3001\u88c1\u5207\u3001404\u3001\u91cd\u53e0\u3001\u8c03\u8bd5\u53c2\u6570\u6216\u9ea6\u514b\u98ce\u6743\u9650\u8bf7\u6c42\u3002",
       "progress_text": "1/1 \u6d4f\u89c8\u5668\u603b\u4f53\u4f53\u9a8c",
       "scope_text": "\u4ec5\u9a8c\u6536\u540c\u4e00 4173 \u603b\u4f53\u9875\u9762\u4e2d\u7684\u8868\u60c5\u3001\u83dc\u5355\u3001\u5f55\u97f3\u9644\u4ef6\u4e0e 200x200 \u58a8\u6c34\u5c4f\u9884\u89c8\uff1bbrowser-only\u3002",
       "title": "Companion \u6d4f\u89c8\u5668\u603b\u4f53\u4f53\u9a8c\u9a8c\u6536"
@@ -205,12 +205,12 @@
   ],
   "schema": "companion.browser-owner-review-checkonly-artifact.v1",
   "snapshot_after": {
-    "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/MACHINE_READY.json": "988FBD722F28CFFCCCB425A5C4D0F63B5ABF34589C2F90327ED66BB986DB7676",
-    "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/focused-oracle.json": "6F3E806C4703E677DE9E2D108F8D3241546D87D41D05D099731A89BCD1603271",
-    "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/parity-verifier.json": "D8CDA1082AC334FB4CEABB097D52EF8D6EFB9374455A8369A6720A848DC2EACB",
-    "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/replay-run/browser-replay-result.json": "4108424DA67141EA31F7755CF3974CA982093B1D7B1FEE8A8263B25B9CDD5B26",
-    "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/replay-run/pixel-dom-route-artifact.json": "C44BB53F2D07BE61D5EE27521E9237412EC1CFADCFEE57D6C9ED3636BEBBBE2F",
-    "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/replay-run/screenshot-manifest.json": "81C10D5E17A633AC8F2411C82658C3A05F60963BDDBB36D592DADE19C901512C",
+    "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/MACHINE_READY.json": "CF135427F921BFD3C38943DED62C2D155A29A9939CA5F53215248D3CEB69BAAF",
+    "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/focused-oracle.json": "0596B84BAFC63E185627D8ABA7A0368773B67C63D2C8024A038F69ED84B6A9C4",
+    "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/parity-verifier.json": "A7ABDE8E9AB0493844206C94ED273B55470FC28C0C3D6D030C3FC7C477B9FD6D",
+    "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/replay-run/browser-replay-result.json": "194BD1771F7C49D90D5AD73F72ADF1BEDBA3D666A7483826221E2D050DAA08AD",
+    "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/replay-run/pixel-dom-route-artifact.json": "6C8DE920C31872A41926EAF7E5767A8C4AE7175FAF8D1210F68D3A8A6349FC02",
+    "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/replay-run/screenshot-manifest.json": "936BBCA2D729BE8FFC01C46668CB806ABE44352853FF57A320DE11A37F4CB229",
     "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/replay-run/screenshots/desktop-mouse-exit.png": "D4D36EA6A6C78946C45EAA5C3CC8A39EFA97B4B4F242BA3FC3D1DB4F7312997A",
     "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/replay-run/screenshots/desktop-mouse-recording.png": "89BD75320E9BE6DDF9D9734E0C6DE03EDAAEACBF75E4CF3435C3D5B527BD71A4",
     "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/replay-run/screenshots/desktop-pen-exit.png": "D4D36EA6A6C78946C45EAA5C3CC8A39EFA97B4B4F242BA3FC3D1DB4F7312997A",
@@ -226,12 +226,12 @@
     "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/source-bound-negatives.json": "03594FBCFB115E4DC069EC87CF7B11C190A57D413F6902018CCEED6192A4BFA5"
   },
   "snapshot_before": {
-    "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/MACHINE_READY.json": "988FBD722F28CFFCCCB425A5C4D0F63B5ABF34589C2F90327ED66BB986DB7676",
-    "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/focused-oracle.json": "6F3E806C4703E677DE9E2D108F8D3241546D87D41D05D099731A89BCD1603271",
-    "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/parity-verifier.json": "D8CDA1082AC334FB4CEABB097D52EF8D6EFB9374455A8369A6720A848DC2EACB",
-    "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/replay-run/browser-replay-result.json": "4108424DA67141EA31F7755CF3974CA982093B1D7B1FEE8A8263B25B9CDD5B26",
-    "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/replay-run/pixel-dom-route-artifact.json": "C44BB53F2D07BE61D5EE27521E9237412EC1CFADCFEE57D6C9ED3636BEBBBE2F",
-    "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/replay-run/screenshot-manifest.json": "81C10D5E17A633AC8F2411C82658C3A05F60963BDDBB36D592DADE19C901512C",
+    "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/MACHINE_READY.json": "CF135427F921BFD3C38943DED62C2D155A29A9939CA5F53215248D3CEB69BAAF",
+    "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/focused-oracle.json": "0596B84BAFC63E185627D8ABA7A0368773B67C63D2C8024A038F69ED84B6A9C4",
+    "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/parity-verifier.json": "A7ABDE8E9AB0493844206C94ED273B55470FC28C0C3D6D030C3FC7C477B9FD6D",
+    "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/replay-run/browser-replay-result.json": "194BD1771F7C49D90D5AD73F72ADF1BEDBA3D666A7483826221E2D050DAA08AD",
+    "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/replay-run/pixel-dom-route-artifact.json": "6C8DE920C31872A41926EAF7E5767A8C4AE7175FAF8D1210F68D3A8A6349FC02",
+    "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/replay-run/screenshot-manifest.json": "936BBCA2D729BE8FFC01C46668CB806ABE44352853FF57A320DE11A37F4CB229",
     "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/replay-run/screenshots/desktop-mouse-exit.png": "D4D36EA6A6C78946C45EAA5C3CC8A39EFA97B4B4F242BA3FC3D1DB4F7312997A",
     "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/replay-run/screenshots/desktop-mouse-recording.png": "89BD75320E9BE6DDF9D9734E0C6DE03EDAAEACBF75E4CF3435C3D5B527BD71A4",
     "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/replay-run/screenshots/desktop-pen-exit.png": "D4D36EA6A6C78946C45EAA5C3CC8A39EFA97B4B4F242BA3FC3D1DB4F7312997A",

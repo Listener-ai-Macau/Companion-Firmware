@@ -2,10 +2,10 @@
   "checkonly": {
     "command": "pwsh -NoProfile -File .\\tools\\faraday_upper_art\\run_companion_browser_owner_review_comp_req_536_538.ps1 -CheckOnly",
     "path": "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/owner-review-checkonly.json",
-    "sha256": "6270EED1BD7145A8B6C7D1F6DB4C34AB254D1C04ECF43671F2CDE8225EBFBE39"
+    "sha256": "5FBE384DD540DC2287115D3660774177AA5875F25AF7F8C69777CB192C5BEB87"
   },
   "default_off": true,
-  "evidence_commit": "c919bfe5198067e60d0b6cbf5fd38d82853e23a1",
+  "evidence_commit": "c7e8403cd6744cff135679010ddf9d7e5f0471af",
   "future_execute_command": "pwsh -NoProfile -File .\\tools\\faraday_upper_art\\run_companion_browser_owner_review_comp_req_536_538.ps1 -Execute -OwnerStartAcknowledged",
   "identities": [
     {
@@ -15,8 +15,8 @@
       "path": "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/focused-oracle.json"
     },
     {
-      "canonical_lf_sha256": "988FBD722F28CFFCCCB425A5C4D0F63B5ABF34589C2F90327ED66BB986DB7676",
-      "git_blob": "4574f96c68dc2d1cfd7d4f63cc664d22c84f57e9",
+      "canonical_lf_sha256": "CF135427F921BFD3C38943DED62C2D155A29A9939CA5F53215248D3CEB69BAAF",
+      "git_blob": "f1a8eaf438365da3cd3ccb3ce93c152e9b9a72e4",
       "id": "machine",
       "path": "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/MACHINE_READY.json"
     },
@@ -63,8 +63,8 @@
       "path": "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/replay-run/browser-replay-result.json"
     },
     {
-      "canonical_lf_sha256": "85886DFB978F8235AC97C7F57BDCA6F713E0EA5AA95F2FFC65923E74CEF700D2",
-      "git_blob": "2b335aa2fc39872459f0e73c285c804bec3a90c4",
+      "canonical_lf_sha256": "3BB77B799DB54124A4152E902BFCA3575D2FA932F7BF592C266DA2412E8A997A",
+      "git_blob": "c70858cc19cbfa95dbd3a5f2377ac10c34caed53",
       "id": "runner",
       "path": "tools/faraday_upper_art/run_companion_browser_owner_review_comp_req_536_538.ps1"
     },
@@ -75,14 +75,14 @@
       "path": "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/replay-run/screenshot-manifest.json"
     },
     {
-      "canonical_lf_sha256": "76077D1153265CDCAABC2B857268D2A8B3B8AE2C2A0AD29379C24D1FB71E2B1A",
-      "git_blob": "4d2bc95d5f78b9dc5841958cf20a05ee9d1abf8b",
+      "canonical_lf_sha256": "78F1DF64676C85A58F936E3C9D1C1C692D618E8D729C49ED4709BE353A4B3AB6",
+      "git_blob": "4faa617a7c17f6944f9d6127c6e011122bf52f08",
       "id": "source_gate",
       "path": "tools/faraday_upper_art/verify_companion_browser_epaper_source_bound_comp_req_536_538.py"
     }
   ],
-  "implementation_commit": "41677c9f96b44c9d45a28f29ea576ff30aef1f88",
-  "machine_ready_sha256": "988FBD722F28CFFCCCB425A5C4D0F63B5ABF34589C2F90327ED66BB986DB7676",
+  "implementation_commit": "c7e8403cd6744cff135679010ddf9d7e5f0471af",
+  "machine_ready_sha256": "CF135427F921BFD3C38943DED62C2D155A29A9939CA5F53215248D3CEB69BAAF",
   "owner_pass_claimed": false,
   "owner_result_exists": false,
   "prompt_lifecycle": {
@@ -105,7 +105,7 @@
     "COMP-REQ-538"
   ],
   "schema": "companion.browser-owner-review-packet.v1",
-  "source_commit": "985c91d12c0210952fd4ede5812a65328157048d",
+  "source_commit": "c7e8403cd6744cff135679010ddf9d7e5f0471af",
   "status": "READY_FOR_OWNER_REVIEW_PENDING",
   "url": "http://127.0.0.1:4173/docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html"
 }
