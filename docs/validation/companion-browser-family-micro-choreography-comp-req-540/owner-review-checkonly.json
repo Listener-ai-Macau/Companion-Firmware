@@ -1,0 +1,133 @@
+{
+  "schema": "companion.comp-req-540-owner-review-checkonly.v1",
+  "status": "PASS_CHECKONLY_NO_EXECUTE",
+  "default_off": true,
+  "execute_performed": false,
+  "requirements": [
+    "COMP-REQ-540",
+    "COMP-REQ-541"
+  ],
+  "url": "http://127.0.0.1:4173/docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html",
+  "packet_sha256": "CEF1CF131E1083BA671F503FA6F19102D43D8F66D945BEB017040BC1AB80EA80",
+  "prompt_contract": {
+    "acceptance_rule": {
+      "blocking_note_overrides_pass_button": true,
+      "pass_means_no_remaining_required_changes": true,
+      "viewed_only_is_not_pass": true
+    },
+    "buttons": [
+      "通过",
+      "失败"
+    ],
+    "expected_text": "“通过”表示没有任何仍需修改的问题；仅看过候选不能选择“通过”。若备注中写有必须修改、移除、拒绝或质量缺陷，即使按钮选择“通过”，也按 NOT_ACCEPTED_OWNER_CHANGES_REQUIRED 归档。",
+    "message": "请逐项观察十种表情的细微编舞，并实际操作单击、拖动、双击录音、三秒长按菜单及返回。录音态应仅有一组三列输入电平，不应出现左上黑点。",
+    "note_allowed": true,
+    "progress_text": "请按正常速度体验十种表情、录音电平与既有手势。",
+    "scope_text": "仅验收 200x200 浏览器表情、美术编舞与录音配件。",
+    "title": "Companion 表情精修浏览器验收"
+  },
+  "identities": [
+    {
+      "id": "machine",
+      "path": "docs/validation/companion-browser-family-micro-choreography-comp-req-540/MACHINE_READY.json",
+      "expected_sha256": "BC9CC1D248391C4CC7B03138C8F190231B971C77352C14EE4D54B3CD283D3BA5",
+      "observed_sha256": "BC9CC1D248391C4CC7B03138C8F190231B971C77352C14EE4D54B3CD283D3BA5",
+      "match": true
+    },
+    {
+      "id": "page",
+      "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html",
+      "expected_sha256": "D3537B7EDE53075DC25091C6F5CFF75408E4975F2A71D0FDF5D1A248C871CBC8",
+      "observed_sha256": "D3537B7EDE53075DC25091C6F5CFF75408E4975F2A71D0FDF5D1A248C871CBC8",
+      "match": true
+    },
+    {
+      "id": "focused",
+      "path": "docs/validation/companion-browser-family-micro-choreography-comp-req-540/focused-smoke-result.json",
+      "expected_sha256": "01D3023142C8A0F44706EE9995A7312EF24FAE55A1CD0428E4FA8C7F8648460A",
+      "observed_sha256": "01D3023142C8A0F44706EE9995A7312EF24FAE55A1CD0428E4FA8C7F8648460A",
+      "match": true
+    },
+    {
+      "id": "static",
+      "path": "docs/validation/companion-browser-family-micro-choreography-comp-req-540/ten-family-static-result.json",
+      "expected_sha256": "327308FCC10CAB9FC7D21F629DA1BEAAD378E561D6D7E41509EA951BBD9F765A",
+      "observed_sha256": "327308FCC10CAB9FC7D21F629DA1BEAAD378E561D6D7E41509EA951BBD9F765A",
+      "match": true
+    },
+    {
+      "id": "clock",
+      "path": "docs/validation/companion-browser-family-micro-choreography-comp-req-540/full-family-real-clock-result.json",
+      "expected_sha256": "C1C57C470F16F549D4284EF562C9211B634C33E305851D4D7010C235A2890A6D",
+      "observed_sha256": "C1C57C470F16F549D4284EF562C9211B634C33E305851D4D7010C235A2890A6D",
+      "match": true
+    },
+    {
+      "id": "replay",
+      "path": "docs/validation/companion-browser-family-micro-choreography-comp-req-540/replay-run/browser-replay-result.json",
+      "expected_sha256": "A4C5FC4A910DD15514F0736DB016D94E6FD569A5B5EF8B55591558139CAF1B74",
+      "observed_sha256": "A4C5FC4A910DD15514F0736DB016D94E6FD569A5B5EF8B55591558139CAF1B74",
+      "match": true
+    },
+    {
+      "id": "pixel",
+      "path": "docs/validation/companion-browser-family-micro-choreography-comp-req-540/replay-run/pixel-dom-route-artifact.json",
+      "expected_sha256": "37568E8BE5D1AABE7C051FB85FE82D6ACCEB3D0BF1F0AE7083B9344905C91B9A",
+      "observed_sha256": "37568E8BE5D1AABE7C051FB85FE82D6ACCEB3D0BF1F0AE7083B9344905C91B9A",
+      "match": true
+    },
+    {
+      "id": "screenshots",
+      "path": "docs/validation/companion-browser-family-micro-choreography-comp-req-540/replay-run/screenshot-manifest.json",
+      "expected_sha256": "92056F1B8FC52A18FD707F6AB3155DDD90102C8B25600B6CE0B44745632DE4FD",
+      "observed_sha256": "92056F1B8FC52A18FD707F6AB3155DDD90102C8B25600B6CE0B44745632DE4FD",
+      "match": true
+    },
+    {
+      "id": "parity",
+      "path": "docs/validation/companion-browser-family-micro-choreography-comp-req-540/parity-verifier-result.json",
+      "expected_sha256": "F621326AAC92B5DDFA8565ECDC5DE0A407AD4D28A8E599EAA30BAFB2D7BBF439",
+      "observed_sha256": "F621326AAC92B5DDFA8565ECDC5DE0A407AD4D28A8E599EAA30BAFB2D7BBF439",
+      "match": true
+    },
+    {
+      "id": "manifest",
+      "path": "docs/validation/companion-browser-family-micro-choreography-comp-req-540/device-pack/visual-frame-manifest.json",
+      "expected_sha256": "48DF1DFE8893048F2912357A7E40A031A064428234D6C9282252956D2914618A",
+      "observed_sha256": "48DF1DFE8893048F2912357A7E40A031A064428234D6C9282252956D2914618A",
+      "match": true
+    },
+    {
+      "id": "source_negatives",
+      "path": "docs/validation/companion-browser-family-micro-choreography-comp-req-540/source-bound-negatives.json",
+      "expected_sha256": "C7A35360734CB6E4892AD4BECEE9D1CD0B1D5FA23CE273D9DC5495F210CAE8F0",
+      "observed_sha256": "C7A35360734CB6E4892AD4BECEE9D1CD0B1D5FA23CE273D9DC5495F210CAE8F0",
+      "match": true
+    },
+    {
+      "id": "source_gate",
+      "path": "tools/faraday_upper_art/verify_companion_family_micro_source_bound_comp_req_540.py",
+      "expected_sha256": "526004BD1845C3DDA0529C4BF0EAB4A2CA110C15B07CEE2B6160DE407893569B",
+      "observed_sha256": "526004BD1845C3DDA0529C4BF0EAB4A2CA110C15B07CEE2B6160DE407893569B",
+      "match": true
+    },
+    {
+      "id": "owner_runner",
+      "path": "tools/faraday_upper_art/run_companion_family_micro_owner_review_comp_req_540.ps1",
+      "expected_sha256": "FB4AC37AA98BAB3AE98EB62DF16E70A666A2BCE174523FDEA7E416E67EA22A0B",
+      "observed_sha256": "FB4AC37AA98BAB3AE98EB62DF16E70A666A2BCE174523FDEA7E416E67EA22A0B",
+      "match": true
+    }
+  ],
+  "failures": [],
+  "counters": {
+    "process": 0,
+    "browser": 0,
+    "popup": 0,
+    "server": 0,
+    "owner_prompt": 0,
+    "hardware": 0,
+    "write": 0,
+    "microphone_permission_request": 0
+  }
+}
