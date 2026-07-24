@@ -24,6 +24,8 @@ const SUCCESSOR_CANONICAL_SHA256 =
   "D3537B7EDE53075DC25091C6F5CFF75408E4975F2A71D0FDF5D1A248C871CBC8";
 const COMP_REQ_543_PREVIEW_SHA256 =
   "D91C6A2440FC75A2FE8CCD7626FA28B7CE588219EFC960B1F6CDFF907E1954CC";
+const CURRENT_DYNAMIC_PAGE_SHA256 =
+  "8E95CD8F770E5B8EFF22749EAE952D7ECD2AFCF9BB9B0E53615DA27DCDA527DB";
 
 const FAMILY_PLANS = [
   {
@@ -212,6 +214,79 @@ const FAMILY_PLANS = [
   },
 ];
 
+// COMP-REQ-544 keeps blink out of the family beat. These are slow, authored
+// pose changes; the sparse blink timeline below owns eyelid closure separately.
+const familyBeat = (frame, gaze, components, max_step_px = 1, extra = {}) => ({
+  frame,
+  gaze,
+  components,
+  max_step_px,
+  ...extra,
+});
+const NON_BLINK_BEATS = {
+  calm: [
+    familyBeat(4, "-2,0,-6,0", ["gaze", "gaze_highlight", "brow"], 1, { shifts: [{ rect: [40, 76, 38, 28], delta: [0, -1] }, { rect: [120, 76, 38, 28], delta: [0, -1] }] }),
+    familyBeat(4, "5,0,5,0", ["gaze", "gaze_highlight", "brow", "cheek"], 1, { shifts: [{ rect: [40, 76, 38, 28], delta: [0, -1] }, { rect: [120, 76, 38, 28], delta: [0, -1] }, { rect: [27, 150, 27, 23], delta: [0, -1] }, { rect: [147, 150, 27, 23], delta: [0, -1] }] }),
+    familyBeat(4, "1,4,1,6", ["gaze", "gaze_highlight", "mouth"], 1),
+    familyBeat(4, "0,0,0,0", ["gaze", "gaze_highlight", "brow", "mouth"], 1, { shifts: [{ rect: [95, 128, 12, 12], delta: [0, -1] }] }),
+  ],
+  curious: [
+    familyBeat(1, "1,-3,1,-6", ["gaze", "gaze_highlight", "brow"]),
+    familyBeat(2, "5,0,5,0", ["gaze", "gaze_highlight", "brow", "mouth"]),
+    familyBeat(1, "-2,0,-6,0", ["gaze", "gaze_highlight", "brow", "cheek"]),
+    familyBeat(2, "0,0,0,0", ["gaze", "gaze_highlight", "brow", "mouth"]),
+  ],
+  warm: [
+    familyBeat(1, "-2,0,-6,0", ["gaze", "brow", "gaze_highlight"]),
+    familyBeat(2, "1,-3,1,-6", ["gaze", "mouth", "cheek", "gaze_highlight"]),
+    familyBeat(3, "5,0,5,0", ["gaze", "mouth", "cheek", "gaze_highlight"]),
+    familyBeat(4, "0,0,0,0", ["gaze", "brow", "mouth", "gaze_highlight"]),
+  ],
+  playful: [
+    familyBeat(1, "5,0,5,0", ["gaze", "brow", "gaze_highlight"]),
+    familyBeat(2, "-2,0,-6,0", ["gaze", "brow", "mouth", "gaze_highlight"], 2),
+    familyBeat(3, "1,4,1,6", ["gaze", "brow", "cheek", "gaze_highlight"], 2),
+    familyBeat(4, "0,0,0,0", ["gaze", "brow", "mouth", "gaze_highlight"], 2),
+  ],
+  sleepy: [
+    familyBeat(1, "1,4,1,6", ["eyelid", "gaze", "brow", "gaze_highlight"], 2),
+    familyBeat(2, "1,-3,1,-6", ["eyelid", "sleep_symbol", "gaze", "gaze_highlight"]),
+    familyBeat(3, "-2,0,-6,0", ["eyelid", "sleep_symbol", "mouth", "gaze_highlight"]),
+    familyBeat(4, "0,0,0,0", ["eyelid", "gaze", "brow", "gaze_highlight"]),
+  ],
+  delighted: [
+    familyBeat(1, "1,-3,1,-6", ["gaze", "brow", "cheek", "gaze_highlight"], 2),
+    familyBeat(2, "5,0,5,0", ["gaze", "brow", "mouth", "cheek", "gaze_highlight"], 2),
+    familyBeat(3, "1,4,1,6", ["gaze", "mouth", "cheek", "gaze_highlight"]),
+    familyBeat(4, "0,0,0,0", ["gaze", "brow", "cheek", "gaze_highlight"]),
+  ],
+  bashful: [
+    familyBeat(1, "1,4,1,6", ["gaze", "brow", "gaze_highlight"], 2),
+    familyBeat(2, "-2,0,-6,0", ["gaze", "mouth", "cheek", "gaze_highlight"]),
+    familyBeat(3, "1,-3,1,-6", ["gaze", "mouth", "cheek", "gaze_highlight"]),
+    familyBeat(4, "0,0,0,0", ["gaze", "brow", "mouth", "gaze_highlight"]),
+  ],
+  thoughtful: [
+    familyBeat(1, "1,-3,1,-6", ["gaze", "brow", "gaze_highlight"]),
+    familyBeat(2, "-2,0,-6,0", ["gaze", "brow", "mouth", "gaze_highlight"]),
+    familyBeat(3, "5,0,5,0", ["gaze", "brow", "cheek", "gaze_highlight"]),
+    familyBeat(4, "0,0,0,0", ["gaze", "brow", "mouth", "gaze_highlight"]),
+  ],
+  focused: [
+    familyBeat(1, "5,0,5,0", ["gaze", "brow", "gaze_highlight"]),
+    familyBeat(2, "1,-3,1,-6", ["gaze", "brow", "mouth", "gaze_highlight"]),
+    familyBeat(3, "-2,0,-6,0", ["gaze", "cheek", "gaze_highlight"]),
+    familyBeat(4, "0,0,0,0", ["gaze", "brow", "mouth", "gaze_highlight"]),
+  ],
+  alert: [
+    familyBeat(1, "-2,0,-6,0", ["gaze", "brow", "gaze_highlight"]),
+    familyBeat(2, "1,4,1,6", ["gaze", "brow", "mouth", "gaze_highlight"]),
+    familyBeat(3, "5,0,5,0", ["gaze", "brow", "cheek", "gaze_highlight"]),
+    familyBeat(4, "0,0,0,0", ["gaze", "brow", "mouth", "gaze_highlight"]),
+  ],
+};
+for (const plan of FAMILY_PLANS) plan.beat = NON_BLINK_BEATS[plan.state];
+
 function sha256(value) {
   return crypto.createHash("sha256").update(value).digest("hex").toUpperCase();
 }
@@ -250,6 +325,7 @@ if (
   && initialSha256 !== COMPONENT_PRE_FIX_CANONICAL_SHA256
   && initialSha256 !== SUCCESSOR_CANONICAL_SHA256
   && initialSha256 !== COMP_REQ_543_PREVIEW_SHA256
+  && initialSha256 !== CURRENT_DYNAMIC_PAGE_SHA256
 ) {
   throw new Error(`unexpected predecessor page SHA-256 ${sha256(page)}`);
 }
@@ -355,18 +431,24 @@ function familyMicroSpec(plan,step){const normalized=((Number(step)||0)%epaperVi
 function familyMicroPreparedBase(frame,spec){if(!spec.transplants.length&&!spec.shifts.length)return touchGazeClearedBase(frame,'');const source=frame?.touch_base||frame?.src;if(!source)return Promise.resolve(null);const cacheKey=JSON.stringify([source,spec.transplants,spec.shifts]);if(!familyMicroBasePromises.has(cacheKey)){const transplantFrames=spec.transplants.map(item=>storyByName.get(item.story)?.frames[item.frame]),sources=[source,...transplantFrames.map(item=>item?.touch_base||item?.src)];familyMicroBasePromises.set(cacheKey,Promise.all(sources.map(item=>item?touchGazeImage(cached(item)):Promise.resolve(null))).then(images=>{if(images.some(item=>!item))return null;const canvas=document.createElement('canvas');canvas.width=canvas.height=200;const context=canvas.getContext('2d');context.imageSmoothingEnabled=false;context.fillStyle='#fff';context.fillRect(0,0,200,200);context.drawImage(images[0],0,0);spec.transplants.forEach((item,index)=>{const[x,y,width,height]=item.rect;context.fillStyle='#fff';context.fillRect(x,y,width,height);context.drawImage(images[index+1],x,y,width,height,x,y,width,height)});spec.shifts.forEach(item=>{const[x,y,width,height]=item.rect,[dx,dy]=item.delta,temp=document.createElement('canvas');temp.width=width;temp.height=height;const tempContext=temp.getContext('2d');tempContext.imageSmoothingEnabled=false;tempContext.drawImage(canvas,x,y,width,height,0,0,width,height);context.fillStyle='#fff';context.fillRect(x,y,width,height);context.drawImage(temp,x+dx,y+dy)});return canvas.toDataURL('image/png')}))}return familyMicroBasePromises.get(cacheKey)}
 async function presentFamilyMicroSpec(plan,spec,source){const story=storyByName.get(plan.story),frame=story?.frames[spec.frameIndex];if(!frame||!touchData.overlays[spec.key])return false;const state=overallController.state,request=++idleGlintState.request,epoch=++gazeEpoch,stateRequest=state.request,offset=[0,0],[baseSrc,overlayImage]=await Promise.all([familyMicroPreparedBase(frame,spec),touchGazeImage(cached(touchData.overlays[spec.key]))]);if(!baseSrc||!overlayImage||request!==idleGlintState.request||epoch!==gazeEpoch||interactionMode!=='expression'||!overallStage.isConnected||state.storyName!==plan.story||state.request!==stateRequest)return false;await touchGazeImage(baseSrc);if(request!==idleGlintState.request||epoch!==gazeEpoch||interactionMode!=='expression'||state.storyName!==plan.story||state.request!==stateRequest)return false;clearTimeout(state.timer);state.timer=0;state.touching=true;state.activeFrame=frame;state.activeFrameIndex=spec.frameIndex;state.activeBaseSrc=frame.touch_base||frame.src;state.activeFrameStartedAt=performance.now();state.activeFrameDurationMs=epaperVisualManifest.cadence_ms;state.pausedRemainingMs=epaperVisualManifest.cadence_ms;state.request++;state.gazeRequest++;state.refreshRequestCount++;overallFrame.dataset.gazeCleared='true';overallFrame.src=baseSrc;overallGaze.style.transform='translate('+offset[0]+'px,'+offset[1]+'px)';overallGaze.src=cached(touchData.overlays[spec.key]);overallFrame.hidden=false;overallGaze.hidden=false;overallStaging.hidden=true;idleGlintState.currentKey=spec.key;idleGlintState.currentFrameSrc=frame.src+'|'+sha256LikeMicroSpec(spec);idleGlintState.family=plan.state;lastInteraction=source;return true}
 function sha256LikeMicroSpec(spec){return JSON.stringify([spec.frameIndex,spec.transplants,spec.shifts])}
-function idleGlintEligible(){return interactionMode==='expression'&&!gesture&&!pendingTapPoint&&!touchStoryPaused&&!naturalState.bridge&&naturalState.modeOverride==='none'&&overallController.state.activeFrame&&!overallFrame.hidden&&!!familyMicroPlan()}
-function stopIdleGlint(reason='stop'){if(idleGlintState.timer)clearTimeout(idleGlintState.timer);idleGlintState.timer=0;idleGlintState.active=false;idleGlintState.request++;gazeEpoch++;if(reason!=='test_freeze')idleGlintState.interruptions++}
+const blinkTimelineState={timer:0,active:false,phase:0,interval_index:0,next_due_at:0,deferred:0,trace:[],interrupted:0};
+function blinkEligible(){return interactionMode==='expression'&&!gesture&&!pendingTapPoint&&!touchStoryPaused&&!naturalState.bridge&&naturalState.modeOverride==='none'&&!recordingState.active&&!blinkTimelineState.active&&!!familyMicroPlan()}
+function deferBlink(reason){if(blinkTimelineState.timer)clearTimeout(blinkTimelineState.timer);blinkTimelineState.timer=0;if(blinkTimelineState.active){blinkTimelineState.active=false;blinkTimelineState.interrupted++}if(reason!=='test_freeze'){blinkTimelineState.deferred++;blinkTimelineState.next_due_at=performance.now()+epaperVisualManifest.blink.minimum_interval_ms}}
+function familyBlinkSpec(plan,phase){const calm=storyByName.get(epaperVisualManifest.blink.story),frameIndex=epaperVisualManifest.blink.ordered_frame_indices[phase],frame=calm?.frames[frameIndex],eyeRects=[{story:epaperVisualManifest.blink.story,frame:frameIndex,rect:[38,108,44,52]},{story:epaperVisualManifest.blink.story,frame:frameIndex,rect:[120,108,44,52]}];return{normalized:0,frameIndex:plan.baseline_frame,key:idleGlintState.currentKey||epaperVisualManifest.idle_glint.baseline_key,components:['blink','eyelid'],maxStepPx:1,transplants:eyeRects,shifts:[],phase:['close','closed','reopen','hold'][phase],blink_frame:frame?.src||null}}
+async function commitBlinkPhase(plan,phase){const spec=familyBlinkSpec(plan,phase),ok=await presentFamilyMicroSpec(plan,spec,'blink_timeline');if(ok)blinkTimelineState.trace.push({phase:spec.phase,frame:spec.blink_frame,elapsed_ms:phase*epaperVisualManifest.cadence_ms,committed_1bpp:true});return ok}
+function scheduleBlinkTimeline(){if(blinkTimelineState.timer||blinkTimelineState.active||!familyMicroPlan())return;const now=performance.now(),delay=Math.max(0,(blinkTimelineState.next_due_at||now+epaperVisualManifest.blink.minimum_interval_ms)-now);blinkTimelineState.timer=setTimeout(async()=>{blinkTimelineState.timer=0;if(!blinkEligible()){blinkTimelineState.next_due_at=performance.now()+epaperVisualManifest.blink.minimum_interval_ms;scheduleBlinkTimeline();return}const plan=familyMicroPlan();blinkTimelineState.active=true;blinkTimelineState.phase=0;clearTimeout(idleGlintState.timer);idleGlintState.timer=0;await commitBlinkPhase(plan,0);const advance=async()=>{if(!blinkTimelineState.active)return;blinkTimelineState.phase++;if(blinkTimelineState.phase>=epaperVisualManifest.blink.ordered_frame_indices.length){blinkTimelineState.active=false;blinkTimelineState.next_due_at=performance.now()+epaperVisualManifest.blink.interval_sequence_ms[blinkTimelineState.interval_index++%epaperVisualManifest.blink.interval_sequence_ms.length];await resumeFamilyMicroBaseline('blink_reopen');return}blinkTimelineState.timer=setTimeout(async()=>{blinkTimelineState.timer=0;await commitBlinkPhase(plan,blinkTimelineState.phase);advance()},epaperVisualManifest.cadence_ms)};advance()},delay)}
+function idleGlintEligible(){return interactionMode==='expression'&&!gesture&&!pendingTapPoint&&!touchStoryPaused&&!naturalState.bridge&&naturalState.modeOverride==='none'&&!blinkTimelineState.active&&overallController.state.activeFrame&&!overallFrame.hidden&&!!familyMicroPlan()}
+function stopIdleGlint(reason='stop'){if(idleGlintState.timer)clearTimeout(idleGlintState.timer);idleGlintState.timer=0;idleGlintState.active=false;idleGlintState.request++;gazeEpoch++;if(reason!=='test_freeze'){idleGlintState.interruptions++;deferBlink(reason)}}
 async function commitIdleGlintStep(step,source='scheduler'){const plan=familyMicroPlan();if(!plan)return null;const spec=familyMicroSpec(plan,step),frame=storyByName.get(plan.story)?.frames[spec.frameIndex],frameIdentity=frame?.src+'|'+sha256LikeMicroSpec(spec),previousKey=idleGlintState.currentKey,previousFrame=idleGlintState.currentFrameSrc,changed=spec.key!==previousKey||frameIdentity!==previousFrame;idleGlintState.step=spec.normalized;if(changed){if(!await presentFamilyMicroSpec(plan,spec,source))return null;idleGlintState.refreshRequests++}else idleGlintState.unchangedSteps++;const row={sequence:idleGlintState.trace.length+1,cycle:idleGlintState.cycle,step:spec.normalized,family:plan.state,story:plan.story,phase:spec.phase,frame:frame?.src||null,frame_identity:frameIdentity,frame_index:spec.frameIndex,key:spec.key,previous_key:previousKey,previous_frame:previousFrame,changed,refresh_requested:changed,components:spec.components,max_component_step_px:spec.maxStepPx,transplant_count:spec.transplants.length,shift_count:spec.shifts.length,source};idleGlintState.trace.push(row);if(idleGlintState.trace.length>300)idleGlintState.trace.shift();return row}
 function scheduleIdleGlint(){if(!idleGlintEligible()||idleGlintState.timer)return;idleGlintState.active=true;idleGlintState.timer=setTimeout(async()=>{idleGlintState.timer=0;if(!idleGlintEligible()){idleGlintState.active=false;return}const next=(idleGlintState.step+1)%epaperVisualManifest.idle_glint.cycle_steps;if(next===0)idleGlintState.cycle++;await commitIdleGlintStep(next);scheduleIdleGlint()},epaperVisualManifest.cadence_ms)}
-async function resumeFamilyMicroBaseline(reason){const plan=familyMicroPlan();if(!plan||!idleGlintEligible())return false;const spec=familyMicroSpec(plan,0),frame=storyByName.get(plan.story)?.frames[spec.frameIndex],identity=frame?.src+'|'+sha256LikeMicroSpec(spec),needsRestore=idleGlintState.currentKey!==spec.key||idleGlintState.currentFrameSrc!==identity;if(needsRestore&&!await presentFamilyMicroSpec(plan,spec,'resume_'+reason))return false;idleGlintState.step=0;idleGlintState.active=true;scheduleIdleGlint();return true}
+async function resumeFamilyMicroBaseline(reason){const plan=familyMicroPlan();if(!plan||!idleGlintEligible())return false;const spec=familyMicroSpec(plan,0),frame=storyByName.get(plan.story)?.frames[spec.frameIndex],identity=frame?.src+'|'+sha256LikeMicroSpec(spec),needsRestore=idleGlintState.currentKey!==spec.key||idleGlintState.currentFrameSrc!==identity;if(needsRestore&&!await presentFamilyMicroSpec(plan,spec,'resume_'+reason))return false;idleGlintState.step=0;idleGlintState.active=true;scheduleIdleGlint();scheduleBlinkTimeline();return true}
 window.__interruptEpaperIdleGlint=reason=>{stopIdleGlint(reason);idleGlintState.step=0};
 window.__resumeEpaperIdleGlint=reason=>{const eligible=idleGlintEligible();if(eligible)resumeFamilyMicroBaseline(reason);return{reason,active:eligible}};
 window.__epaperFreezeIdleGlintStep=async step=>{stopIdleGlint('test_freeze');return commitIdleGlintStep(step,'test_freeze')};
 window.__resumeEpaperIdleGlintScheduler=()=>{idleGlintState.active=true;scheduleIdleGlint();return idleGlintState.active};
-window.__resetEpaperIdleGlintRealClock=async()=>{stopIdleGlint('test_freeze');idleGlintState.step=0;idleGlintState.cycle=0;idleGlintState.trace=[];idleGlintState.refreshRequests=0;idleGlintState.unchangedSteps=0;const plan=familyMicroPlan();if(!plan)return{eligible:false,started:false,cadence_ms:epaperVisualManifest.cadence_ms};const baseline=familyMicroSpec(plan,0);if(!await presentFamilyMicroSpec(plan,baseline,'idle_real_clock_reset'))return{eligible:false,started:false,cadence_ms:epaperVisualManifest.cadence_ms};scheduleIdleGlint();return{eligible:idleGlintEligible(),started:idleGlintState.active,cadence_ms:epaperVisualManifest.cadence_ms,family:plan.state}};
+window.__resetEpaperIdleGlintRealClock=async()=>{stopIdleGlint('test_freeze');idleGlintState.step=0;idleGlintState.cycle=0;idleGlintState.trace=[];idleGlintState.refreshRequests=0;idleGlintState.unchangedSteps=0;blinkTimelineState.active=false;blinkTimelineState.phase=0;blinkTimelineState.trace=[];blinkTimelineState.deferred=0;blinkTimelineState.next_due_at=performance.now()+epaperVisualManifest.blink.minimum_interval_ms;const plan=familyMicroPlan();if(!plan)return{eligible:false,started:false,cadence_ms:epaperVisualManifest.cadence_ms};const baseline=familyMicroSpec(plan,0);if(!await presentFamilyMicroSpec(plan,baseline,'idle_real_clock_reset'))return{eligible:false,started:false,cadence_ms:epaperVisualManifest.cadence_ms};scheduleIdleGlint();scheduleBlinkTimeline();return{eligible:idleGlintEligible(),started:idleGlintState.active,cadence_ms:epaperVisualManifest.cadence_ms,family:plan.state}};
 window.__setFamilyMicroChoreographyFamily=async family=>{const plan=epaperVisualManifest.family_micro_choreography.plans.find(item=>item.state===family);if(!plan)throw new Error('unknown family '+family);stopIdleGlint('test_freeze');naturalEpoch++;naturalClearTimer();naturalState.bridge=null;naturalState.coalescedPending=null;naturalState.pendingOrient=null;naturalState.baseAffect=plan.state;naturalState.reactionPhase='steady';naturalState.modeOverride='none';naturalState.gazeTarget={x:100,y:100,key:epaperVisualManifest.idle_glint.baseline_key};const state=overallController.state,story=storyByName.get(plan.story),baseline=familyMicroSpec(plan,0);clearTimeout(state.timer);state.timer=0;state.touching=true;state.storyName=plan.story;state.frameIndex=plan.baseline_frame;state.activeFrame=story.frames[plan.baseline_frame];state.activeFrameIndex=plan.baseline_frame;state.activeBaseSrc=state.activeFrame.touch_base||state.activeFrame.src;state.request++;idleGlintState.currentFrameSrc='';idleGlintState.currentKey='';idleGlintState.family=plan.state;const presented=await presentFamilyMicroSpec(plan,baseline,'family_test_select');renderExpressionStateView({kind:'family_test_select',family:plan.state});return{family:plan.state,story:plan.story,presented,baseline_frame:plan.baseline_frame}};
-window.__familyMicroChoreographyState=()=>({manifest:naturalClone(epaperVisualManifest.family_micro_choreography),family:familyMicroPlan()?.state||null,active:idleGlintState.active,step:idleGlintState.step,cycle:idleGlintState.cycle,current_key:idleGlintState.currentKey,current_frame:idleGlintState.currentFrameSrc,refresh_requests:idleGlintState.refreshRequests,unchanged_steps:idleGlintState.unchangedSteps,interruptions:idleGlintState.interruptions,trace:idleGlintState.trace.map(row=>({...row,components:[...row.components]}))});
+window.__familyMicroChoreographyState=()=>({manifest:naturalClone(epaperVisualManifest.family_micro_choreography),family:familyMicroPlan()?.state||null,active:idleGlintState.active,step:idleGlintState.step,cycle:idleGlintState.cycle,current_key:idleGlintState.currentKey,current_frame:idleGlintState.currentFrameSrc,refresh_requests:idleGlintState.refreshRequests,unchanged_steps:idleGlintState.unchangedSteps,interruptions:idleGlintState.interruptions,trace:idleGlintState.trace.map(row=>({...row,components:[...row.components]})),blink:{active:blinkTimelineState.active,phase:blinkTimelineState.phase,deferred:blinkTimelineState.deferred,interrupted:blinkTimelineState.interrupted,trace:blinkTimelineState.trace.map(row=>({...row}))}});
 `;
 
 if (initialSha256 === PREDECESSOR_CANONICAL_SHA256) {
@@ -458,7 +540,10 @@ if (initialSha256 === THOUGHTFUL_PRE_FIX_CANONICAL_SHA256) {
   );
 }
 
-if (initialSha256 === COMPONENT_PRE_FIX_CANONICAL_SHA256) {
+if (
+  initialSha256 === COMPONENT_PRE_FIX_CANONICAL_SHA256
+  || initialSha256 === CURRENT_DYNAMIC_PAGE_SHA256
+) {
   page = page.replace(
     /(<script id="companion-epaper-visual-manifest" type="application\/json">)(.*?)(<\/script>)/s,
     (_match, prefix, rawManifest, suffix) => {
@@ -470,7 +555,7 @@ if (initialSha256 === COMPONENT_PRE_FIX_CANONICAL_SHA256) {
   page = replaceRange(
     page,
     "function familyMicroPlan(",
-    "window.__familyMicroChoreographyState=()=>({manifest:naturalClone(epaperVisualManifest.family_micro_choreography),family:familyMicroPlan()?.state||null,active:idleGlintState.active,step:idleGlintState.step,cycle:idleGlintState.cycle,current_key:idleGlintState.currentKey,current_frame:idleGlintState.currentFrameSrc,refresh_requests:idleGlintState.refreshRequests,unchanged_steps:idleGlintState.unchangedSteps,interruptions:idleGlintState.interruptions,trace:idleGlintState.trace.map(row=>({...row,components:[...row.components]}))});",
+    "window.__familyMicroChoreographyState=()=>",
     familyRuntime.trimEnd(),
     "registered component micro runtime",
   );
@@ -480,17 +565,30 @@ if (initialSha256 === COMPONENT_PRE_FIX_CANONICAL_SHA256) {
 // and runtime aligned when applying this source to that already-bound candidate.
 page = page.replace(
   '"cycle_steps":12,"active_steps":[2,3],"baseline_return_step":4,"first_nonbaseline_max_ms":960,"repeat_quiet_steps":9',
+  '"cycle_steps":10,"active_steps":[2,4,6,8],"baseline_return_step":9,"first_nonbaseline_max_ms":960,"repeat_quiet_steps":1',
+);
+page = page.replace(
   '"cycle_steps":10,"active_steps":[1,3,5,7,8],"baseline_return_step":9,"first_nonbaseline_max_ms":960,"repeat_quiet_steps":1',
+  '"cycle_steps":10,"active_steps":[2,4,6,8],"baseline_return_step":9,"first_nonbaseline_max_ms":960,"repeat_quiet_steps":1',
 );
 page = page.replace('"changed_frames_per_beat":3,"interrupt_policy"', '"changed_frames_per_beat":5,"interrupt_policy"');
+page = page.replace('"changed_frames_per_beat":5,"interrupt_policy"', '"changed_frames_per_beat":4,"interrupt_policy"');
 page = page.replace('"first_beat_max_ms":2880,"max_changed_frames":3', '"first_beat_max_ms":960,"max_changed_frames":5');
 page = page.replace(
-  'beat=beatIndex>=0?plan.beat[beatIndex]:null',
   'beat=beatIndex>=0?plan.beat[(beatIndex+1)%plan.beat.length]:null',
+  'beat=beatIndex>=0?plan.beat[beatIndex]:null',
 );
 page = page.replace(
   'beat=beatIndex>=0?plan.beat[beatIndex%plan.beat.length]:null',
-  'beat=beatIndex>=0?plan.beat[(beatIndex+1)%plan.beat.length]:null',
+  'beat=beatIndex>=0?plan.beat[beatIndex]:null',
+);
+page = page.replace(
+  '"blink":{"story":"calm_presence","ordered_frame_indices":[1,2,3,4],"reopen_frame_index":4,"registered_event_only":true}',
+  '"blink":{"story":"calm_presence","ordered_frame_indices":[1,2,3,4],"reopen_frame_index":4,"registered_event_only":true,"mode":"sparse_deterministic","minimum_interval_ms":8000,"interval_sequence_ms":[8000,10000,12000],"frame_cadence_ms":480,"duration_ms":1920,"sleepy_only_settle":true}',
+);
+page = page.replace(
+  /(?:const familyMicroBasePromises=new Map\(\);\s*){2,}/,
+  "const familyMicroBasePromises=new Map();\n",
 );
 
 if (page.includes("recording-indicator")) {
