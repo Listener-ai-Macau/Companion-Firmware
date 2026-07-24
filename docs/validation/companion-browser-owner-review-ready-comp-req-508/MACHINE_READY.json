@@ -1,0 +1,204 @@
+{
+  "artifact_bindings": [
+    {
+      "commit": "6e6e521fddcdb9a99af0608fa86714df199e6c9c",
+      "commit_expected_sha256": "A1F3B09015D0AB4E0951EE0C0A7963C4E8C6A7D48DA06F6030D71C6FB5D71D9A",
+      "commit_sha256": "A1F3B09015D0AB4E0951EE0C0A7963C4E8C6A7D48DA06F6030D71C6FB5D71D9A",
+      "expected_sha256": "9990C4316AF8F4D656F2C2B057AB789846A10CD21E18367336FC6BD277631EB7",
+      "id": "page",
+      "observed_sha256": "9990C4316AF8F4D656F2C2B057AB789846A10CD21E18367336FC6BD277631EB7",
+      "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html"
+    },
+    {
+      "commit": "6e6e521fddcdb9a99af0608fa86714df199e6c9c",
+      "commit_expected_sha256": "304575095583ACACDD45F4E218315F5829B0E2D0E68061403AD70287DDC9DE64",
+      "commit_sha256": "304575095583ACACDD45F4E218315F5829B0E2D0E68061403AD70287DDC9DE64",
+      "expected_sha256": "304575095583ACACDD45F4E218315F5829B0E2D0E68061403AD70287DDC9DE64",
+      "id": "replay_tool",
+      "observed_sha256": "304575095583ACACDD45F4E218315F5829B0E2D0E68061403AD70287DDC9DE64",
+      "path": "tools/faraday_upper_art/replay_companion_browser_owner_review_ready_comp_req_508.mjs"
+    },
+    {
+      "commit": "6e6e521fddcdb9a99af0608fa86714df199e6c9c",
+      "commit_expected_sha256": "96C8992E5806D137A104F64D17F602080D6F9A0B52EF2655E7FA9FAEF85C4EF9",
+      "commit_sha256": "96C8992E5806D137A104F64D17F602080D6F9A0B52EF2655E7FA9FAEF85C4EF9",
+      "expected_sha256": "96C8992E5806D137A104F64D17F602080D6F9A0B52EF2655E7FA9FAEF85C4EF9",
+      "id": "stale_gaze_oracle_tool",
+      "observed_sha256": "96C8992E5806D137A104F64D17F602080D6F9A0B52EF2655E7FA9FAEF85C4EF9",
+      "path": "tools/faraday_upper_art/verify_companion_browser_stale_gaze_comp_req_508.mjs"
+    },
+    {
+      "commit": "1874859d769925696ca46aa158fa71fdb70b3500",
+      "commit_expected_sha256": "B56BF027CD9D1CCFA0F55950E004FD960D2D9F5BC777602B9891B1657F6E2C43",
+      "commit_sha256": "B56BF027CD9D1CCFA0F55950E004FD960D2D9F5BC777602B9891B1657F6E2C43",
+      "expected_sha256": "B56BF027CD9D1CCFA0F55950E004FD960D2D9F5BC777602B9891B1657F6E2C43",
+      "id": "determinism_tool",
+      "observed_sha256": "B56BF027CD9D1CCFA0F55950E004FD960D2D9F5BC777602B9891B1657F6E2C43",
+      "path": "tools/faraday_upper_art/run_companion_browser_clean_replay_determinism_comp_req_508.py"
+    },
+    {
+      "commit": "6e6e521fddcdb9a99af0608fa86714df199e6c9c",
+      "commit_expected_sha256": "3FC9D52C81ACB643A93F90FB5CABC66B6466DC6F6BE298C389F831A0512565A4",
+      "commit_sha256": "3FC9D52C81ACB643A93F90FB5CABC66B6466DC6F6BE298C389F831A0512565A4",
+      "expected_sha256": "3FC9D52C81ACB643A93F90FB5CABC66B6466DC6F6BE298C389F831A0512565A4",
+      "id": "before_oracle",
+      "observed_sha256": "3FC9D52C81ACB643A93F90FB5CABC66B6466DC6F6BE298C389F831A0512565A4",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-508/before-fix/stale-gaze-oracle.json"
+    },
+    {
+      "commit": "6e6e521fddcdb9a99af0608fa86714df199e6c9c",
+      "commit_expected_sha256": "1ACA45A3682D49328299460DD1FF5381C8845CE8C802CE6BE1C7A6F306D0392D",
+      "commit_sha256": "1ACA45A3682D49328299460DD1FF5381C8845CE8C802CE6BE1C7A6F306D0392D",
+      "expected_sha256": "1ACA45A3682D49328299460DD1FF5381C8845CE8C802CE6BE1C7A6F306D0392D",
+      "id": "before_screenshot",
+      "observed_sha256": "1ACA45A3682D49328299460DD1FF5381C8845CE8C802CE6BE1C7A6F306D0392D",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-508/before-fix/drag-stale-gaze.png"
+    },
+    {
+      "commit": "1874859d769925696ca46aa158fa71fdb70b3500",
+      "commit_expected_sha256": "CF90052E8938E5F76E6EDB199E7B43BBDCC621AE2A8B48329F46C4A6CE0ED2A5",
+      "commit_sha256": "CF90052E8938E5F76E6EDB199E7B43BBDCC621AE2A8B48329F46C4A6CE0ED2A5",
+      "expected_sha256": "CF90052E8938E5F76E6EDB199E7B43BBDCC621AE2A8B48329F46C4A6CE0ED2A5",
+      "id": "after_oracle",
+      "observed_sha256": "CF90052E8938E5F76E6EDB199E7B43BBDCC621AE2A8B48329F46C4A6CE0ED2A5",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-508/after-fix/stale-gaze-oracle.json"
+    },
+    {
+      "commit": "1874859d769925696ca46aa158fa71fdb70b3500",
+      "commit_expected_sha256": "61C57163C49F6B6A7AA323BBEFDB7915CEF7B6DC596AFC55382C9BBE562323BC",
+      "commit_sha256": "61C57163C49F6B6A7AA323BBEFDB7915CEF7B6DC596AFC55382C9BBE562323BC",
+      "expected_sha256": "61C57163C49F6B6A7AA323BBEFDB7915CEF7B6DC596AFC55382C9BBE562323BC",
+      "id": "after_screenshot",
+      "observed_sha256": "61C57163C49F6B6A7AA323BBEFDB7915CEF7B6DC596AFC55382C9BBE562323BC",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-508/after-fix/drag-stale-gaze.png"
+    },
+    {
+      "commit": "1874859d769925696ca46aa158fa71fdb70b3500",
+      "commit_expected_sha256": "8FCAD0AC4C5370EFBBBC6C3785B6E115AA1E77C69EA81C0E137207AC1D33721C",
+      "commit_sha256": "8FCAD0AC4C5370EFBBBC6C3785B6E115AA1E77C69EA81C0E137207AC1D33721C",
+      "expected_sha256": "8FCAD0AC4C5370EFBBBC6C3785B6E115AA1E77C69EA81C0E137207AC1D33721C",
+      "id": "replay_result",
+      "observed_sha256": "8FCAD0AC4C5370EFBBBC6C3785B6E115AA1E77C69EA81C0E137207AC1D33721C",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-508/browser-replay-result.json"
+    },
+    {
+      "commit": "1874859d769925696ca46aa158fa71fdb70b3500",
+      "commit_expected_sha256": "91E6793F01B8368933E61115E93AD7280B435A9A1429D4B2DE743B61878BD1F3",
+      "commit_sha256": "91E6793F01B8368933E61115E93AD7280B435A9A1429D4B2DE743B61878BD1F3",
+      "expected_sha256": "91E6793F01B8368933E61115E93AD7280B435A9A1429D4B2DE743B61878BD1F3",
+      "id": "pixel_dom_route",
+      "observed_sha256": "91E6793F01B8368933E61115E93AD7280B435A9A1429D4B2DE743B61878BD1F3",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-508/pixel-dom-route-artifact.json"
+    },
+    {
+      "commit": "1874859d769925696ca46aa158fa71fdb70b3500",
+      "commit_expected_sha256": "1886C6193AE846C11116462A20A1DCDC093DB4BD65BED36C9B19CB762965460A",
+      "commit_sha256": "1886C6193AE846C11116462A20A1DCDC093DB4BD65BED36C9B19CB762965460A",
+      "expected_sha256": "1886C6193AE846C11116462A20A1DCDC093DB4BD65BED36C9B19CB762965460A",
+      "id": "screenshot_manifest",
+      "observed_sha256": "1886C6193AE846C11116462A20A1DCDC093DB4BD65BED36C9B19CB762965460A",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-508/screenshot-manifest.json"
+    },
+    {
+      "commit": "1874859d769925696ca46aa158fa71fdb70b3500",
+      "commit_expected_sha256": "EAE756749EDC2030D18CB349137598F2C33642BB381DD64F6CD12C4DE73A51DB",
+      "commit_sha256": "EAE756749EDC2030D18CB349137598F2C33642BB381DD64F6CD12C4DE73A51DB",
+      "expected_sha256": "EAE756749EDC2030D18CB349137598F2C33642BB381DD64F6CD12C4DE73A51DB",
+      "id": "determinism",
+      "observed_sha256": "EAE756749EDC2030D18CB349137598F2C33642BB381DD64F6CD12C4DE73A51DB",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-508/clean-replay-determinism.json"
+    },
+    {
+      "commit": null,
+      "commit_expected_sha256": null,
+      "commit_sha256": null,
+      "expected_sha256": "54B1AD42C955FB6AE4F9AAA50E4AF9A64FB0468C0A38FD13A704B769AAB1AA95",
+      "id": "failed_owner_result",
+      "observed_sha256": "54B1AD42C955FB6AE4F9AAA50E4AF9A64FB0468C0A38FD13A704B769AAB1AA95",
+      "path": "docs/validation/companion-browser-visual-contract-comp-req-471/owner-review.json"
+    },
+    {
+      "commit": null,
+      "commit_expected_sha256": null,
+      "commit_sha256": null,
+      "expected_sha256": "065F5F1E298550DE2FFE170116F5791D19D3156570265DDB0A08FF3C5039FD2B",
+      "id": "failed_owner_raw",
+      "observed_sha256": "065F5F1E298550DE2FFE170116F5791D19D3156570265DDB0A08FF3C5039FD2B",
+      "path": "docs/validation/companion-browser-visual-contract-comp-req-471/owner-review.raw.json"
+    },
+    {
+      "commit": null,
+      "commit_expected_sha256": null,
+      "commit_sha256": null,
+      "expected_sha256": "7EB70257593DA06F682A3DDDA54A9D260D4FC514F645237F5CA74B08F8DA61A6",
+      "id": "failed_owner_note",
+      "observed_sha256": "7EB70257593DA06F682A3DDDA54A9D260D4FC514F645237F5CA74B08F8DA61A6",
+      "path": "docs/validation/companion-browser-visual-contract-comp-req-471/owner-review.note.txt"
+    }
+  ],
+  "checks": {
+    "all_bound_worktree_and_commit_hashes_exact": true,
+    "before_page_real_pixel_negative_failed": true,
+    "deterministic_replay_byte_identical": true,
+    "new_owner_result_absent": true,
+    "old_owner_failure_preserved": true,
+    "source_and_evidence_commits_exact": true,
+    "stale_pupil_pixels_zero_all_observed_expression_states": true
+  },
+  "commit_bindings": {
+    "evidence": "1874859d769925696ca46aa158fa71fdb70b3500",
+    "evidence_argument": "1874859d769925696ca46aa158fa71fdb70b3500",
+    "evidence_resolved": "1874859d769925696ca46aa158fa71fdb70b3500",
+    "source": "6e6e521fddcdb9a99af0608fa86714df199e6c9c",
+    "source_argument": "6e6e521fddcdb9a99af0608fa86714df199e6c9c",
+    "source_resolved": "6e6e521fddcdb9a99af0608fa86714df199e6c9c"
+  },
+  "default_off": true,
+  "failed_checks": [],
+  "owner_boundary": {
+    "new_owner_prompt_invoked": false,
+    "new_owner_result_exists": false,
+    "owner_pass_claimed": false,
+    "prior_owner_failure_preserved": true,
+    "remaining_gate": "One new canonical Chinese browser owner review after an exact zero-effect CheckOnly; this artifact does not invoke it."
+  },
+  "page": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html",
+    "sha256": "9990C4316AF8F4D656F2C2B057AB789846A10CD21E18367336FC6BD277631EB7",
+    "url": "http://127.0.0.1:4173/docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html"
+  },
+  "requirements": [
+    "COMP-REQ-440",
+    "COMP-REQ-441",
+    "COMP-REQ-442",
+    "COMP-REQ-471",
+    "COMP-REQ-504",
+    "COMP-REQ-507",
+    "COMP-REQ-508",
+    "COMP-REQ-509",
+    "COMP-REQ-510"
+  ],
+  "schema": "companion.browser-source-bound-machine-ready.v3",
+  "semantic_counts": {
+    "matrix_scenarios": 42,
+    "recording_negative_checks": 54,
+    "recording_route_entries": 12,
+    "recording_route_exits": 12,
+    "replay_combinations": 6,
+    "screenshots": 50,
+    "stale_pupil_pixels": 0,
+    "stale_pupil_states": 0,
+    "state_snapshots": 252
+  },
+  "side_effect_counters": {
+    "browser": 0,
+    "hardware": 0,
+    "microphone_permission_request": 0,
+    "owner_prompt": 0,
+    "popup": 0,
+    "process": 0,
+    "server_start": 0,
+    "write": 0
+  },
+  "status": "BROWSER_OWNER_REVIEW_READY_SUCCESSOR"
+}
