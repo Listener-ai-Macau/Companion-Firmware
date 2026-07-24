@@ -1,0 +1,321 @@
+{
+  "build_files": [
+    {
+      "bytes": 78892,
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\.cache\\comp-req-531-platform-integration\\cubeide\\Companion_BLE_Audio_Fixture\\build\\Companion_BLE_Audio_Fixture.elf",
+      "sha256": "ED5604709527A7C5DCA691039E99D842AD3858A36CECFFFC8767F251852BB083"
+    },
+    {
+      "bytes": 97119,
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\.cache\\comp-req-531-platform-integration\\cubeide\\Companion_BLE_Audio_Fixture\\build\\Companion_BLE_Audio_Fixture.hex",
+      "sha256": "DF59902C576C5BF533A15D0BCF415B927DA1C39C16384E07B73C4BA3862341D3"
+    },
+    {
+      "bytes": 305846,
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\.cache\\comp-req-531-platform-integration\\cubeide\\Companion_BLE_Audio_Fixture\\build\\Companion_BLE_Audio_Fixture.map",
+      "sha256": "F72D1BDA7D9CE46D0B7D472697C75D5C63B43722BB1702601D853B5C3F18F14F"
+    },
+    {
+      "bytes": 3300488,
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\.cache\\comp-req-531-platform-integration\\cubeide\\Companion_Nucleo_WB55RG_Bringup\\build_ssd1681_r7_visual_runtime\\Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntime.elf",
+      "sha256": "1927110C6D5010D6815CAE49D2E232B8E521023B9A1E01C611E708F1F37266B3"
+    },
+    {
+      "bytes": 569581,
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\.cache\\comp-req-531-platform-integration\\cubeide\\Companion_Nucleo_WB55RG_Bringup\\build_ssd1681_r7_visual_runtime\\Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntime.hex",
+      "sha256": "60C6289CF4AAFB5052A6D3353D68B9B79EA2FB5AA98F1CE5A39A35994B0BCB47"
+    },
+    {
+      "bytes": 1634693,
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\.cache\\comp-req-531-platform-integration\\cubeide\\Companion_Nucleo_WB55RG_Bringup\\build_ssd1681_r7_visual_runtime\\Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntime.map",
+      "sha256": "6565DC5CC21F1442BBFC3815A4A1CE85E45E05546EA84D8FAA311323B39074B9"
+    },
+    {
+      "bytes": 1602472,
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\.cache\\comp-req-531-platform-integration\\cubeide\\Companion_Nucleo_WB55RG_Bringup\\build_ssd1681_r7_visual_runtime\\app_ble.o",
+      "sha256": "7AF85AA13CFFB341E712D55561C0CBCC3B41D69E5EA4C5D181F38A57D353AA8F"
+    },
+    {
+      "bytes": 95364,
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\.cache\\comp-req-531-platform-integration\\cubeide\\Companion_Nucleo_WB55RG_Bringup\\build_ssd1681_r7_visual_runtime\\companion_platform_adapters.o",
+      "sha256": "C8B20DA7150F487C650C7B85A3CF281877C088CAC051E51E14896B24E222C47C"
+    },
+    {
+      "bytes": 57168,
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\.cache\\comp-req-531-platform-integration\\cubeide\\Companion_Nucleo_WB55RG_Bringup\\build_ssd1681_r7_visual_runtime\\companion_product_entry_glue.o",
+      "sha256": "0B5B166FFB13347625DF70F1A2676C6DC6336C7A2C5C9C968A15C44DF0F6D219"
+    },
+    {
+      "bytes": 56500,
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\.cache\\comp-req-531-platform-integration\\cubeide\\Companion_Nucleo_WB55RG_Bringup\\build_ssd1681_r7_visual_runtime\\companion_product_transport.o",
+      "sha256": "B2DFC387736BA8FB42059BF69ECBA3731F63AB04F061E4E8329D6ED186FD6EAF"
+    },
+    {
+      "bytes": 1708,
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\.cache\\comp-req-531-platform-integration\\cubeide\\Companion_BLE_Audio_Fixture\\build\\companion_product_entry_glue.o",
+      "sha256": "FF7F8307D0E49883DA6DE20980FCA99EEB91A204EF58C7DD5F6C12ABEF66668B"
+    },
+    {
+      "bytes": 1688,
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\.cache\\comp-req-531-platform-integration\\cubeide\\Companion_BLE_Audio_Fixture\\build\\companion_product_transport.o",
+      "sha256": "3083E8FC86674B75A79672D4D2586F90409E72B1044E48335AE5E3F0849CCFBF"
+    }
+  ],
+  "evidence_head": "6fce496f627b820cf6487feff7274dbd03e6b73d",
+  "host_trace": {
+    "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\.cache\\comp-req-531-run-e2\\host.stdout.txt",
+    "sha256": "D145E76B2E6A62E53307358DD7198B655E0DFC2F5648689232D3B2E1DB9A5D9B"
+  },
+  "manifest_commit": "6fce496f627b820cf6487feff7274dbd03e6b73d",
+  "manifest_sha256": "186BE25EBE1873169A56C74E35A8D15DDD906BB48C87924FD11FF576DCD0CBDD",
+  "negative_contract": [
+    "wrong_evidence_head",
+    "zero_verifier_blob",
+    "changed_verifier_blob",
+    "unbound_copied_path",
+    "changed_run_byte",
+    "changed_source_blob",
+    "changed_manifest_blob",
+    "changed_validator_blob",
+    "malformed_receipt",
+    "parser_bypass_invalid_payload",
+    "host_failure",
+    "side_effect",
+    "opened_gate"
+  ],
+  "physical_gates": {
+    "execute": "CLOSED_NOT_AUTHORIZED",
+    "hardware": "CLOSED_NOT_AUTHORIZED",
+    "ota_transfer_apply": "CLOSED_NOT_AUTHORIZED",
+    "real_ble": "CLOSED_NOT_AUTHORIZED"
+  },
+  "platform_pin": "d311af3db60e118a6d2c6e68873b2d00f2647a96",
+  "repo_blobs": [
+    {
+      "bytes": 22219,
+      "commit": "352794e796fb0859cac8571294adc4cb56b5c2aa",
+      "path": "app/companion_pendant/gatt/companion_gatt_stm32wb.c",
+      "sha256": "E43DB0A5A87A94563A5771BCEDD189BDCDFF24FBC58406E9F5FF915DF7536000"
+    },
+    {
+      "bytes": 10699,
+      "commit": "352794e796fb0859cac8571294adc4cb56b5c2aa",
+      "path": "app/companion_pendant/gatt/companion_gatt_stm32wb.h",
+      "sha256": "E36791D22728A8993500F3A3A0B155CFA0DF2A3BAE46FB4124924C2DED02BE22"
+    },
+    {
+      "bytes": 13037,
+      "commit": "352794e796fb0859cac8571294adc4cb56b5c2aa",
+      "path": "app/companion_pendant/platform/companion_platform_adapters.c",
+      "sha256": "5F894E187AD1130585A0A3C805752F667C60EF14E3E0D0C83598A95795A8C6C0"
+    },
+    {
+      "bytes": 4775,
+      "commit": "352794e796fb0859cac8571294adc4cb56b5c2aa",
+      "path": "app/companion_pendant/platform/companion_platform_adapters.h",
+      "sha256": "4781BB626D220D1BC812A1DC6B33D77307C57E00F04306EDD224A4523925962F"
+    },
+    {
+      "bytes": 3362,
+      "commit": "352794e796fb0859cac8571294adc4cb56b5c2aa",
+      "path": "app/companion_pendant/platform/companion_product_entry_glue.c",
+      "sha256": "A90764AA95E6D142D190B6BD3A76823FC7A4D15D29DCF3465BAC84FF7493D7E6"
+    },
+    {
+      "bytes": 1424,
+      "commit": "352794e796fb0859cac8571294adc4cb56b5c2aa",
+      "path": "app/companion_pendant/platform/companion_product_entry_glue.h",
+      "sha256": "F1003C8B21120E58E56B57A42679F57A3C40C07ADA043AC12F0F17B378613BED"
+    },
+    {
+      "bytes": 2087,
+      "commit": "352794e796fb0859cac8571294adc4cb56b5c2aa",
+      "path": "app/companion_pendant/platform/companion_product_identity.c",
+      "sha256": "0BB18DD76BC1E3875787AF8BA91438C69CC585A84AD21B2D4923912F434E1F12"
+    },
+    {
+      "bytes": 508,
+      "commit": "352794e796fb0859cac8571294adc4cb56b5c2aa",
+      "path": "app/companion_pendant/platform/companion_product_identity.h",
+      "sha256": "E92054C4EB3D8CEFBF84811B8D315BD0455932855B5AE3E9FE2DDA7C23A8620F"
+    },
+    {
+      "bytes": 1485,
+      "commit": "352794e796fb0859cac8571294adc4cb56b5c2aa",
+      "path": "app/companion_pendant/platform/companion_product_transport.c",
+      "sha256": "70B7C08F671FDEDFB5232D45C8DA4432B0242C08DF129EDA803246C9E680D7CE"
+    },
+    {
+      "bytes": 1035,
+      "commit": "352794e796fb0859cac8571294adc4cb56b5c2aa",
+      "path": "app/companion_pendant/platform/companion_product_transport.h",
+      "sha256": "C8BCFA97598D011F8DB24C9E84AABD474556A21B2CD09A47FBA8A3B473C1B664"
+    },
+    {
+      "bytes": 13064,
+      "commit": "352794e796fb0859cac8571294adc4cb56b5c2aa",
+      "path": "cubeide/Companion_BLE_Ota_Loader/Src/companion_ota_v1.c",
+      "sha256": "3ABE7D6273A80C70EE3EFFF45607B127E8C4BD2BCB46342747D256D93D13AAC5"
+    },
+    {
+      "bytes": 380,
+      "commit": "352794e796fb0859cac8571294adc4cb56b5c2aa",
+      "path": "cubeide/Companion_BLE_Ota_Loader/Src/companion_ota_v1.h",
+      "sha256": "2DF9D3769E5308DEFE620AE3609A75DAD730A3394A46454B1DCC66D96FF8B5B0"
+    },
+    {
+      "bytes": 204170,
+      "commit": "352794e796fb0859cac8571294adc4cb56b5c2aa",
+      "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c",
+      "sha256": "43277F1530836582D006FA8E882D37A1F5BEA3BB907EBAB77AD3270B217709D6"
+    },
+    {
+      "bytes": 1347,
+      "commit": "352794e796fb0859cac8571294adc4cb56b5c2aa",
+      "path": "tools/fixtures/companion_gatt_host_stubs.c",
+      "sha256": "B1ABA00907E286F2DAEF4BE57F3B6623DD6FB6023D713ED83492AB6D2A5A7F45"
+    },
+    {
+      "bytes": 18231,
+      "commit": "352794e796fb0859cac8571294adc4cb56b5c2aa",
+      "path": "tools/fixtures/companion_platform_adapters_test.c",
+      "sha256": "1D6F8244FC0B7DF315CE5C6BB5E2BE48964EB0BDE24DE87029A293821212A04F"
+    },
+    {
+      "bytes": 1380,
+      "commit": "6fce496f627b820cf6487feff7274dbd03e6b73d",
+      "path": "docs/validation/companion-platform-adapters-531-manifest.json",
+      "sha256": "186BE25EBE1873169A56C74E35A8D15DDD906BB48C87924FD11FF576DCD0CBDD"
+    },
+    {
+      "bytes": 16053,
+      "commit": "9fe637a9b99fb207948a6ef2eab8aac81f781b5b",
+      "path": "tools/verify_companion_platform_integration_fresh.py",
+      "sha256": "96BC2C27079706E30C126A5034630915A3C96685097D5B9A659B3DCB900BA92A"
+    },
+    {
+      "bytes": 11992,
+      "commit": "03b970f78bdfa94bd59593ae3d69b7e26464c278",
+      "path": "tools/verify_companion_platform_adapters_505_receipt.py",
+      "sha256": "8334C76FDD73F2E75B611D8B5F13F59181A4B71F81E8A108D9E84B0351E0545D"
+    }
+  ],
+  "runs": [
+    {
+      "files": [
+        {
+          "bytes": 2311,
+          "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\.cache\\comp-req-531-run-e2\\comp-req-485-ble.stderr.txt",
+          "sha256": "47D004BC451BA889ACD27CEDDB6AEDB59CE919869129CE8AC341C33EFF892A0F"
+        },
+        {
+          "bytes": 149607,
+          "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\.cache\\comp-req-531-run-e2\\comp-req-485-ble.stdout.txt",
+          "sha256": "AE49CD0BEC6E797EAFA202F5217000D3AF57031D62282CA321EBD9BECC3187DD"
+        },
+        {
+          "bytes": 0,
+          "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\.cache\\comp-req-531-run-e2\\comp-req-485-host.compile.stderr.txt",
+          "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+        },
+        {
+          "bytes": 324,
+          "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\.cache\\comp-req-531-run-e2\\comp-req-485-host.compile.stdout.txt",
+          "sha256": "54F8023CAE70467EFB10CB588D5F6C06D380C8847128BEC3B208382F73D71852"
+        },
+        {
+          "bytes": 1515,
+          "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\.cache\\comp-req-531-run-e2\\comp-req-485-host.stdout.txt",
+          "sha256": "D145E76B2E6A62E53307358DD7198B655E0DFC2F5648689232D3B2E1DB9A5D9B"
+        },
+        {
+          "bytes": 12982,
+          "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\.cache\\comp-req-531-run-e2\\comp-req-485-wb55.stderr.txt",
+          "sha256": "43A9A079E60A8A359C9189F7DE1D88BF48D6D88148AF8757E260374B38BDE680"
+        },
+        {
+          "bytes": 376469,
+          "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\.cache\\comp-req-531-run-e2\\comp-req-485-wb55.stdout.txt",
+          "sha256": "428E9C6884C024DF8F07DAF46C25B508ECF90254DB8226118E167125529F37FA"
+        },
+        {
+          "bytes": 1515,
+          "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\.cache\\comp-req-531-run-e2\\host.stdout.txt",
+          "sha256": "D145E76B2E6A62E53307358DD7198B655E0DFC2F5648689232D3B2E1DB9A5D9B"
+        },
+        {
+          "bytes": 8097,
+          "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\.cache\\comp-req-531-run-e2\\machine-ready.json",
+          "sha256": "BDE4DE8E8465CEE84FFBE29C36632032E0AE83859BB0AAE24CCC5F04A3C44948"
+        }
+      ],
+      "root": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\.cache\\comp-req-531-run-e2"
+    },
+    {
+      "files": [
+        {
+          "bytes": 2311,
+          "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\.cache\\comp-req-531-run-f2\\comp-req-485-ble.stderr.txt",
+          "sha256": "47D004BC451BA889ACD27CEDDB6AEDB59CE919869129CE8AC341C33EFF892A0F"
+        },
+        {
+          "bytes": 149607,
+          "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\.cache\\comp-req-531-run-f2\\comp-req-485-ble.stdout.txt",
+          "sha256": "AE49CD0BEC6E797EAFA202F5217000D3AF57031D62282CA321EBD9BECC3187DD"
+        },
+        {
+          "bytes": 0,
+          "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\.cache\\comp-req-531-run-f2\\comp-req-485-host.compile.stderr.txt",
+          "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+        },
+        {
+          "bytes": 324,
+          "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\.cache\\comp-req-531-run-f2\\comp-req-485-host.compile.stdout.txt",
+          "sha256": "54F8023CAE70467EFB10CB588D5F6C06D380C8847128BEC3B208382F73D71852"
+        },
+        {
+          "bytes": 1515,
+          "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\.cache\\comp-req-531-run-f2\\comp-req-485-host.stdout.txt",
+          "sha256": "D145E76B2E6A62E53307358DD7198B655E0DFC2F5648689232D3B2E1DB9A5D9B"
+        },
+        {
+          "bytes": 12982,
+          "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\.cache\\comp-req-531-run-f2\\comp-req-485-wb55.stderr.txt",
+          "sha256": "43A9A079E60A8A359C9189F7DE1D88BF48D6D88148AF8757E260374B38BDE680"
+        },
+        {
+          "bytes": 376469,
+          "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\.cache\\comp-req-531-run-f2\\comp-req-485-wb55.stdout.txt",
+          "sha256": "428E9C6884C024DF8F07DAF46C25B508ECF90254DB8226118E167125529F37FA"
+        },
+        {
+          "bytes": 1515,
+          "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\.cache\\comp-req-531-run-f2\\host.stdout.txt",
+          "sha256": "D145E76B2E6A62E53307358DD7198B655E0DFC2F5648689232D3B2E1DB9A5D9B"
+        },
+        {
+          "bytes": 8097,
+          "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\.cache\\comp-req-531-run-f2\\machine-ready.json",
+          "sha256": "BDE4DE8E8465CEE84FFBE29C36632032E0AE83859BB0AAE24CCC5F04A3C44948"
+        }
+      ],
+      "root": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\.cache\\comp-req-531-run-f2"
+    }
+  ],
+  "schema": "companion.platform_adapters.comp_req_531.receipt.v1",
+  "side_effects": {
+    "ble_write": 0,
+    "hardware": 0,
+    "ota_apply": 0,
+    "ota_transfer": 0,
+    "popup": 0,
+    "programmer": 0,
+    "push": 0,
+    "serial": 0
+  },
+  "source_commit": "352794e796fb0859cac8571294adc4cb56b5c2aa",
+  "validator_blob_sha256": "8334C76FDD73F2E75B611D8B5F13F59181A4B71F81E8A108D9E84B0351E0545D",
+  "validator_commit": "03b970f78bdfa94bd59593ae3d69b7e26464c278",
+  "verifier_blob_sha256": "96BC2C27079706E30C126A5034630915A3C96685097D5B9A659B3DCB900BA92A",
+  "verifier_commit": "9fe637a9b99fb207948a6ef2eab8aac81f781b5b"
+}
