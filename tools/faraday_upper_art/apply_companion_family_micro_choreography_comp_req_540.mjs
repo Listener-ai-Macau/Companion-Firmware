@@ -16,8 +16,12 @@ const PREDECESSOR_CANONICAL_SHA256 =
   "28E9971C068749F67811AD14BF7B81D93E42BE53526243B2B4DE43FA585E52F6";
 const INTERMEDIATE_CANONICAL_SHA256 =
   "B6942531757900F1A0787F3B4E49665D35D8704FB700280D75C7FF886DDEAFC9";
-const SUCCESSOR_CANONICAL_SHA256 =
+const THOUGHTFUL_PRE_FIX_CANONICAL_SHA256 =
   "B0FD8BDFFDF8932A22CFC962B413F1D6DB860514835A9698C761AB21477A5362";
+const COMPONENT_PRE_FIX_CANONICAL_SHA256 =
+  "D33950E3771649A2AB3F980F51351FA77FEE306436A58FC2C7170F40F0BD0507";
+const SUCCESSOR_CANONICAL_SHA256 =
+  "D3537B7EDE53075DC25091C6F5CFF75408E4975F2A71D0FDF5D1A248C871CBC8";
 
 const FAMILY_PLANS = [
   {
@@ -46,7 +50,16 @@ const FAMILY_PLANS = [
     baseline_frame: 2,
     description: "soft_blink_smile_cheek_settle",
     beat: [
-      { frame: 1, gaze: "1,1,1,1", components: ["eyelid", "brow", "gaze_highlight"], max_step_px: 1 },
+      {
+        frame: 1,
+        gaze: "1,1,1,1",
+        components: ["eyelid", "brow", "gaze_highlight"],
+        max_step_px: 1,
+        transplants: [
+          { story: "calm_presence", frame: 3, rect: [38, 108, 44, 52] },
+          { story: "calm_presence", frame: 3, rect: [120, 108, 44, 52] },
+        ],
+      },
       { frame: 2, gaze: "0,1,0,1", components: ["mouth", "cheek", "gaze_highlight"], max_step_px: 1 },
     ],
   },
@@ -76,8 +89,28 @@ const FAMILY_PLANS = [
     baseline_frame: 2,
     description: "compact_brow_cheek_lift",
     beat: [
-      { frame: 1, gaze: "1,-1,1,-2", components: ["brow", "gaze_highlight"], max_step_px: 2 },
-      { frame: 2, gaze: "0,-1,0,-1", components: ["mouth", "cheek", "gaze_highlight"], max_step_px: 1 },
+      {
+        frame: 2,
+        gaze: "1,-1,1,-2",
+        components: ["brow", "cheek", "gaze_highlight"],
+        max_step_px: 2,
+        shifts: [
+          { rect: [40, 76, 38, 28], delta: [0, -1] },
+          { rect: [120, 76, 38, 28], delta: [0, -1] },
+          { rect: [27, 150, 27, 23], delta: [0, -1] },
+          { rect: [147, 150, 27, 23], delta: [0, -1] },
+        ],
+      },
+      {
+        frame: 2,
+        gaze: "0,-1,0,-1",
+        components: ["cheek", "gaze_highlight"],
+        max_step_px: 1,
+        shifts: [
+          { rect: [27, 150, 27, 23], delta: [0, -1] },
+          { rect: [147, 150, 27, 23], delta: [0, -1] },
+        ],
+      },
     ],
   },
   {
@@ -96,8 +129,8 @@ const FAMILY_PLANS = [
     baseline_frame: 2,
     description: "measured_side_gaze_brow_settle",
     beat: [
-      { frame: 1, gaze: "0,0,-1,0", components: ["brow", "gaze_highlight"], max_step_px: 2 },
-      { frame: 2, gaze: "-1,-1,-1,-1", components: ["brow", "mouth", "gaze_highlight"], max_step_px: 1 },
+      { frame: 1, gaze: "0,0,0,0", components: ["brow", "gaze_highlight"], max_step_px: 1 },
+      { frame: 2, gaze: "0,-1,0,-1", components: ["brow", "mouth", "gaze_highlight"], max_step_px: 1 },
     ],
   },
   {
@@ -106,7 +139,16 @@ const FAMILY_PLANS = [
     baseline_frame: 2,
     description: "narrow_blink_centered_return",
     beat: [
-      { frame: 1, gaze: "1,-1,1,-1", components: ["eyelid", "brow", "gaze_highlight"], max_step_px: 1 },
+      {
+        frame: 2,
+        gaze: "1,-1,1,-1",
+        components: ["eyelid", "brow", "gaze_highlight"],
+        max_step_px: 1,
+        transplants: [
+          { story: "calm_presence", frame: 3, rect: [38, 108, 44, 52] },
+          { story: "calm_presence", frame: 3, rect: [120, 108, 44, 52] },
+        ],
+      },
       { frame: 2, gaze: "0,-1,0,-1", components: ["eyelid", "mouth", "gaze_highlight"], max_step_px: 1 },
     ],
   },
@@ -156,6 +198,8 @@ const initialSha256 = sha256(page);
 if (
   initialSha256 !== PREDECESSOR_CANONICAL_SHA256
   && initialSha256 !== INTERMEDIATE_CANONICAL_SHA256
+  && initialSha256 !== THOUGHTFUL_PRE_FIX_CANONICAL_SHA256
+  && initialSha256 !== COMPONENT_PRE_FIX_CANONICAL_SHA256
   && initialSha256 !== SUCCESSOR_CANONICAL_SHA256
 ) {
   throw new Error(`unexpected predecessor page SHA-256 ${sha256(page)}`);
@@ -254,15 +298,19 @@ page = replaceExact(
   "idleGlintState.currentKey=resolvedKey;idleGlintState.currentFrameSrc=frame?.src||'';lastInteraction=mode;return true",
   "gaze idle state sync",
 );
+}
 
-const familyRuntime = String.raw`function familyMicroPlan(storyName=overallController.state.storyName){return epaperVisualManifest.family_micro_choreography.plans.find(plan=>plan.story===storyName)||null}
-function familyMicroSpec(plan,step){const normalized=((Number(step)||0)%epaperVisualManifest.idle_glint.cycle_steps+epaperVisualManifest.idle_glint.cycle_steps)%epaperVisualManifest.idle_glint.cycle_steps,beatIndex=epaperVisualManifest.idle_glint.active_steps.indexOf(normalized),beat=beatIndex>=0?plan.beat[beatIndex]:null;return{normalized,frameIndex:beat?beat.frame:plan.baseline_frame,key:beat?beat.gaze:epaperVisualManifest.idle_glint.baseline_key,components:beat?[...beat.components]:[],maxStepPx:beat?beat.max_step_px:0,phase:beat?'micro_'+(beatIndex+1):(normalized===epaperVisualManifest.idle_glint.baseline_return_step?'baseline_return':'quiet_hold')}}
-async function presentFamilyMicroSpec(plan,spec,source){const story=storyByName.get(plan.story),frame=story?.frames[spec.frameIndex];if(!frame||!touchData.overlays[spec.key])return false;const state=overallController.state,request=++idleGlintState.request,epoch=++gazeEpoch,stateRequest=state.request,offset=[0,0],[baseSrc,overlayImage]=await Promise.all([touchGazeClearedBase(frame,''),touchGazeImage(cached(touchData.overlays[spec.key]))]);if(!baseSrc||!overlayImage||request!==idleGlintState.request||epoch!==gazeEpoch||interactionMode!=='expression'||!overallStage.isConnected||state.storyName!==plan.story||state.request!==stateRequest)return false;await touchGazeImage(baseSrc);if(request!==idleGlintState.request||epoch!==gazeEpoch||interactionMode!=='expression'||state.storyName!==plan.story||state.request!==stateRequest)return false;clearTimeout(state.timer);state.timer=0;state.touching=true;state.activeFrame=frame;state.activeFrameIndex=spec.frameIndex;state.activeBaseSrc=frame.touch_base||frame.src;state.activeFrameStartedAt=performance.now();state.activeFrameDurationMs=epaperVisualManifest.cadence_ms;state.pausedRemainingMs=epaperVisualManifest.cadence_ms;state.request++;state.gazeRequest++;state.refreshRequestCount++;overallFrame.dataset.gazeCleared='true';overallFrame.src=baseSrc;overallGaze.style.transform='translate('+offset[0]+'px,'+offset[1]+'px)';overallGaze.src=cached(touchData.overlays[spec.key]);overallFrame.hidden=false;overallGaze.hidden=false;overallStaging.hidden=true;idleGlintState.currentKey=spec.key;idleGlintState.currentFrameSrc=frame.src;idleGlintState.family=plan.state;lastInteraction=source;return true}
+const familyRuntime = String.raw`const familyMicroBasePromises=new Map();
+function familyMicroPlan(storyName=overallController.state.storyName){return epaperVisualManifest.family_micro_choreography.plans.find(plan=>plan.story===storyName)||null}
+function familyMicroSpec(plan,step){const normalized=((Number(step)||0)%epaperVisualManifest.idle_glint.cycle_steps+epaperVisualManifest.idle_glint.cycle_steps)%epaperVisualManifest.idle_glint.cycle_steps,beatIndex=epaperVisualManifest.idle_glint.active_steps.indexOf(normalized),beat=beatIndex>=0?plan.beat[beatIndex]:null;return{normalized,frameIndex:beat?beat.frame:plan.baseline_frame,key:beat?beat.gaze:epaperVisualManifest.idle_glint.baseline_key,components:beat?[...beat.components]:[],maxStepPx:beat?beat.max_step_px:0,transplants:beat?.transplants?.map(item=>({...item,rect:[...item.rect]}))||[],shifts:beat?.shifts?.map(item=>({...item,rect:[...item.rect],delta:[...item.delta]}))||[],phase:beat?'micro_'+(beatIndex+1):(normalized===epaperVisualManifest.idle_glint.baseline_return_step?'baseline_return':'quiet_hold')}}
+function familyMicroPreparedBase(frame,spec){if(!spec.transplants.length&&!spec.shifts.length)return touchGazeClearedBase(frame,'');const source=frame?.touch_base||frame?.src;if(!source)return Promise.resolve(null);const cacheKey=JSON.stringify([source,spec.transplants,spec.shifts]);if(!familyMicroBasePromises.has(cacheKey)){const transplantFrames=spec.transplants.map(item=>storyByName.get(item.story)?.frames[item.frame]),sources=[source,...transplantFrames.map(item=>item?.touch_base||item?.src)];familyMicroBasePromises.set(cacheKey,Promise.all(sources.map(item=>item?touchGazeImage(cached(item)):Promise.resolve(null))).then(images=>{if(images.some(item=>!item))return null;const canvas=document.createElement('canvas');canvas.width=canvas.height=200;const context=canvas.getContext('2d');context.imageSmoothingEnabled=false;context.fillStyle='#fff';context.fillRect(0,0,200,200);context.drawImage(images[0],0,0);spec.transplants.forEach((item,index)=>{const[x,y,width,height]=item.rect;context.fillStyle='#fff';context.fillRect(x,y,width,height);context.drawImage(images[index+1],x,y,width,height,x,y,width,height)});spec.shifts.forEach(item=>{const[x,y,width,height]=item.rect,[dx,dy]=item.delta,temp=document.createElement('canvas');temp.width=width;temp.height=height;const tempContext=temp.getContext('2d');tempContext.imageSmoothingEnabled=false;tempContext.drawImage(canvas,x,y,width,height,0,0,width,height);context.fillStyle='#fff';context.fillRect(x,y,width,height);context.drawImage(temp,x+dx,y+dy)});return canvas.toDataURL('image/png')}))}return familyMicroBasePromises.get(cacheKey)}
+async function presentFamilyMicroSpec(plan,spec,source){const story=storyByName.get(plan.story),frame=story?.frames[spec.frameIndex];if(!frame||!touchData.overlays[spec.key])return false;const state=overallController.state,request=++idleGlintState.request,epoch=++gazeEpoch,stateRequest=state.request,offset=[0,0],[baseSrc,overlayImage]=await Promise.all([familyMicroPreparedBase(frame,spec),touchGazeImage(cached(touchData.overlays[spec.key]))]);if(!baseSrc||!overlayImage||request!==idleGlintState.request||epoch!==gazeEpoch||interactionMode!=='expression'||!overallStage.isConnected||state.storyName!==plan.story||state.request!==stateRequest)return false;await touchGazeImage(baseSrc);if(request!==idleGlintState.request||epoch!==gazeEpoch||interactionMode!=='expression'||state.storyName!==plan.story||state.request!==stateRequest)return false;clearTimeout(state.timer);state.timer=0;state.touching=true;state.activeFrame=frame;state.activeFrameIndex=spec.frameIndex;state.activeBaseSrc=frame.touch_base||frame.src;state.activeFrameStartedAt=performance.now();state.activeFrameDurationMs=epaperVisualManifest.cadence_ms;state.pausedRemainingMs=epaperVisualManifest.cadence_ms;state.request++;state.gazeRequest++;state.refreshRequestCount++;overallFrame.dataset.gazeCleared='true';overallFrame.src=baseSrc;overallGaze.style.transform='translate('+offset[0]+'px,'+offset[1]+'px)';overallGaze.src=cached(touchData.overlays[spec.key]);overallFrame.hidden=false;overallGaze.hidden=false;overallStaging.hidden=true;idleGlintState.currentKey=spec.key;idleGlintState.currentFrameSrc=frame.src+'|'+sha256LikeMicroSpec(spec);idleGlintState.family=plan.state;lastInteraction=source;return true}
+function sha256LikeMicroSpec(spec){return JSON.stringify([spec.frameIndex,spec.transplants,spec.shifts])}
 function idleGlintEligible(){return interactionMode==='expression'&&!gesture&&!pendingTapPoint&&!touchStoryPaused&&!naturalState.bridge&&naturalState.modeOverride==='none'&&overallController.state.activeFrame&&!overallFrame.hidden&&!!familyMicroPlan()}
 function stopIdleGlint(reason='stop'){if(idleGlintState.timer)clearTimeout(idleGlintState.timer);idleGlintState.timer=0;idleGlintState.active=false;idleGlintState.request++;gazeEpoch++;if(reason!=='test_freeze')idleGlintState.interruptions++}
-async function commitIdleGlintStep(step,source='scheduler'){const plan=familyMicroPlan();if(!plan)return null;const spec=familyMicroSpec(plan,step),previousKey=idleGlintState.currentKey,previousFrame=idleGlintState.currentFrameSrc,changed=spec.key!==previousKey||storyByName.get(plan.story)?.frames[spec.frameIndex]?.src!==previousFrame;idleGlintState.step=spec.normalized;if(changed){if(!await presentFamilyMicroSpec(plan,spec,source))return null;idleGlintState.refreshRequests++}else idleGlintState.unchangedSteps++;const row={sequence:idleGlintState.trace.length+1,cycle:idleGlintState.cycle,step:spec.normalized,family:plan.state,story:plan.story,phase:spec.phase,frame:storyByName.get(plan.story)?.frames[spec.frameIndex]?.src||null,frame_index:spec.frameIndex,key:spec.key,previous_key:previousKey,previous_frame:previousFrame,changed,refresh_requested:changed,components:spec.components,max_component_step_px:spec.maxStepPx,source};idleGlintState.trace.push(row);if(idleGlintState.trace.length>300)idleGlintState.trace.shift();return row}
+async function commitIdleGlintStep(step,source='scheduler'){const plan=familyMicroPlan();if(!plan)return null;const spec=familyMicroSpec(plan,step),frame=storyByName.get(plan.story)?.frames[spec.frameIndex],frameIdentity=frame?.src+'|'+sha256LikeMicroSpec(spec),previousKey=idleGlintState.currentKey,previousFrame=idleGlintState.currentFrameSrc,changed=spec.key!==previousKey||frameIdentity!==previousFrame;idleGlintState.step=spec.normalized;if(changed){if(!await presentFamilyMicroSpec(plan,spec,source))return null;idleGlintState.refreshRequests++}else idleGlintState.unchangedSteps++;const row={sequence:idleGlintState.trace.length+1,cycle:idleGlintState.cycle,step:spec.normalized,family:plan.state,story:plan.story,phase:spec.phase,frame:frame?.src||null,frame_identity:frameIdentity,frame_index:spec.frameIndex,key:spec.key,previous_key:previousKey,previous_frame:previousFrame,changed,refresh_requested:changed,components:spec.components,max_component_step_px:spec.maxStepPx,transplant_count:spec.transplants.length,shift_count:spec.shifts.length,source};idleGlintState.trace.push(row);if(idleGlintState.trace.length>300)idleGlintState.trace.shift();return row}
 function scheduleIdleGlint(){if(!idleGlintEligible()||idleGlintState.timer)return;idleGlintState.active=true;idleGlintState.timer=setTimeout(async()=>{idleGlintState.timer=0;if(!idleGlintEligible()){idleGlintState.active=false;return}const next=(idleGlintState.step+1)%epaperVisualManifest.idle_glint.cycle_steps;if(next===0)idleGlintState.cycle++;await commitIdleGlintStep(next);scheduleIdleGlint()},epaperVisualManifest.cadence_ms)}
-async function resumeFamilyMicroBaseline(reason){const plan=familyMicroPlan();if(!plan||!idleGlintEligible())return false;const spec=familyMicroSpec(plan,0),frame=storyByName.get(plan.story)?.frames[spec.frameIndex],needsRestore=idleGlintState.currentKey!==spec.key||idleGlintState.currentFrameSrc!==frame?.src;if(needsRestore&&!await presentFamilyMicroSpec(plan,spec,'resume_'+reason))return false;idleGlintState.step=0;idleGlintState.active=true;scheduleIdleGlint();return true}
+async function resumeFamilyMicroBaseline(reason){const plan=familyMicroPlan();if(!plan||!idleGlintEligible())return false;const spec=familyMicroSpec(plan,0),frame=storyByName.get(plan.story)?.frames[spec.frameIndex],identity=frame?.src+'|'+sha256LikeMicroSpec(spec),needsRestore=idleGlintState.currentKey!==spec.key||idleGlintState.currentFrameSrc!==identity;if(needsRestore&&!await presentFamilyMicroSpec(plan,spec,'resume_'+reason))return false;idleGlintState.step=0;idleGlintState.active=true;scheduleIdleGlint();return true}
 window.__interruptEpaperIdleGlint=reason=>{stopIdleGlint(reason);idleGlintState.step=0};
 window.__resumeEpaperIdleGlint=reason=>{const eligible=idleGlintEligible();if(eligible)resumeFamilyMicroBaseline(reason);return{reason,active:eligible}};
 window.__epaperFreezeIdleGlintStep=async step=>{stopIdleGlint('test_freeze');return commitIdleGlintStep(step,'test_freeze')};
@@ -272,6 +320,7 @@ window.__setFamilyMicroChoreographyFamily=async family=>{const plan=epaperVisual
 window.__familyMicroChoreographyState=()=>({manifest:naturalClone(epaperVisualManifest.family_micro_choreography),family:familyMicroPlan()?.state||null,active:idleGlintState.active,step:idleGlintState.step,cycle:idleGlintState.cycle,current_key:idleGlintState.currentKey,current_frame:idleGlintState.currentFrameSrc,refresh_requests:idleGlintState.refreshRequests,unchanged_steps:idleGlintState.unchangedSteps,interruptions:idleGlintState.interruptions,trace:idleGlintState.trace.map(row=>({...row,components:[...row.components]}))});
 `;
 
+if (initialSha256 === PREDECESSOR_CANONICAL_SHA256) {
 page = replaceRange(
   page,
   "function idleGlintEligible()",
@@ -342,6 +391,39 @@ if (initialSha256 === INTERMEDIATE_CANONICAL_SHA256) {
     "const state=overallController.state,story=storyByName.get(plan.story),baseline=familyMicroSpec(plan,0);state.storyName=plan.story;",
     "const state=overallController.state,story=storyByName.get(plan.story),baseline=familyMicroSpec(plan,0);clearTimeout(state.timer);state.timer=0;state.touching=true;state.storyName=plan.story;",
     "family test timer ownership",
+  );
+}
+
+if (initialSha256 === THOUGHTFUL_PRE_FIX_CANONICAL_SHA256) {
+  page = replaceExact(
+    page,
+    '"gaze":"0,0,-1,0","components":["brow","gaze_highlight"]',
+    '"gaze":"0,0,0,0","components":["brow","gaze_highlight"]',
+    "thoughtful registered first gaze",
+  );
+  page = replaceExact(
+    page,
+    '"gaze":"-1,-1,-1,-1","components":["brow","mouth","gaze_highlight"]',
+    '"gaze":"0,-1,0,-1","components":["brow","mouth","gaze_highlight"]',
+    "thoughtful registered second gaze",
+  );
+}
+
+if (initialSha256 === COMPONENT_PRE_FIX_CANONICAL_SHA256) {
+  page = page.replace(
+    /(<script id="companion-epaper-visual-manifest" type="application\/json">)(.*?)(<\/script>)/s,
+    (_match, prefix, rawManifest, suffix) => {
+      const manifest = JSON.parse(rawManifest);
+      manifest.family_micro_choreography.plans = FAMILY_PLANS;
+      return `${prefix}${JSON.stringify(manifest)}${suffix}`;
+    },
+  );
+  page = replaceRange(
+    page,
+    "function familyMicroPlan(",
+    "window.__familyMicroChoreographyState=()=>({manifest:naturalClone(epaperVisualManifest.family_micro_choreography),family:familyMicroPlan()?.state||null,active:idleGlintState.active,step:idleGlintState.step,cycle:idleGlintState.cycle,current_key:idleGlintState.currentKey,current_frame:idleGlintState.currentFrameSrc,refresh_requests:idleGlintState.refreshRequests,unchanged_steps:idleGlintState.unchangedSteps,interruptions:idleGlintState.interruptions,trace:idleGlintState.trace.map(row=>({...row,components:[...row.components]}))});",
+    familyRuntime.trimEnd(),
+    "registered component micro runtime",
   );
 }
 
