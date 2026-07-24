@@ -1,0 +1,141 @@
+{
+  "checkonly": {
+    "command": "pwsh -NoProfile -File .\\tools\\faraday_upper_art\\run_companion_browser_owner_review_comp_req_521.ps1 -CheckOnly",
+    "path": "docs/validation/companion-browser-natural-expression-successor-comp-req-518-520-521/owner-review-checkonly.json",
+    "sha256": "527C6CAF2E912D9DA88149C18BEC1D78D94B12D37A78961623415FD78637979E",
+    "status": "PASS_CHECKONLY_NO_EXECUTE"
+  },
+  "default_off": true,
+  "execute_performed": false,
+  "future_execute": {
+    "authorized_now": false,
+    "buttons": [
+      "\u901a\u8fc7",
+      "\u5931\u8d25"
+    ],
+    "canonical_aiw_subcommand": "operator-prompt",
+    "command": "pwsh -NoProfile -File .\\tools\\faraday_upper_art\\run_companion_browser_owner_review_comp_req_521.ps1 -Execute -OwnerStartAcknowledged",
+    "note_allowed": true,
+    "operator_prompt_instance_count": 1,
+    "result_paths": {
+      "fault": "docs/validation/companion-browser-natural-expression-successor-comp-req-518-520-521/owner-review-fault.json",
+      "optional_note": "docs/validation/companion-browser-natural-expression-successor-comp-req-518-520-521/owner-review.note.txt",
+      "owner_result": "docs/validation/companion-browser-natural-expression-successor-comp-req-518-520-521/owner-review.json",
+      "prompt_lock": "docs/validation/companion-browser-natural-expression-successor-comp-req-518-520-521/.owner-review.prompt-active.lock",
+      "raw_result": "docs/validation/companion-browser-natural-expression-successor-comp-req-518-520-521/owner-review.raw.json"
+    },
+    "title": "Companion \u6d4f\u89c8\u5668\u603b\u4f53\u4f53\u9a8c\u9a8c\u6536"
+  },
+  "human_visible_checks": [
+    "center, orientation and accepted single-face identity",
+    "single release orient then one natural expression transition after the 650 ms discriminator",
+    "continuous drag gaze replacement and center return without stale pupils",
+    "strict double-tap recording entry and fresh double-tap exact restore",
+    "one stable listening face, inward absorbed waves and one compact recording-status icon",
+    "stationary hold progress, four menu roots, Device > UI assets and return",
+    "one 200x200 screen, one face, one gaze/highlight, no debug, mic request or mic glyph"
+  ],
+  "machine_artifact_bindings": [
+    {
+      "bytes": 33371,
+      "id": "determinism",
+      "path": "docs/validation/companion-browser-natural-expression-successor-comp-req-518-520-521/deterministic-replay-receipt.json",
+      "sha256": "FC290AAFB6CEB203F885B81992DE63895AD026A8F0B2BC6FCA6B6B41FF383330"
+    },
+    {
+      "bytes": 122734,
+      "id": "focused_natural",
+      "path": "docs/validation/companion-browser-natural-expression-successor-comp-req-518-520-521/focused-natural-expression.json",
+      "sha256": "93A1D3BF6D701A74007CCE5E5F9C1556630D3AAA7BCD5DD16C63718593BD5A4A"
+    },
+    {
+      "bytes": 84172,
+      "id": "focused_recording",
+      "path": "docs/validation/companion-browser-natural-expression-successor-comp-req-518-520-521/focused-recording-temporal.json",
+      "sha256": "60EF928EE104035F1DE7756A0600A499A6B9A84D28869BDB8AB9A1A1290C526E"
+    },
+    {
+      "bytes": 10034,
+      "id": "machine_ready",
+      "path": "docs/validation/companion-browser-natural-expression-successor-comp-req-518-520-521/MACHINE_READY.json",
+      "sha256": "16973DD68F45E0897AA7C0F7D5003A51EE9C095C599C55820E82625445B1DCC4"
+    },
+    {
+      "bytes": 13765,
+      "id": "negative_matrix",
+      "path": "docs/validation/companion-browser-natural-expression-successor-comp-req-518-520-521/source-bound-negatives.json",
+      "sha256": "1161156D89BEC5CB12B4AB4928E699214B0A80C915A41FD0AB13EB0CC543ECAF"
+    },
+    {
+      "bytes": 9551,
+      "id": "negative_verifier",
+      "path": "tools/faraday_upper_art/test_companion_browser_combined_source_bound_negatives_comp_req_521.py",
+      "provenance": {
+        "commit": "605e583f659b995ff0945259e11afa91482b7269",
+        "git_blob": "877f29a7ca1bd9759af6d392bbda54ab7c03d993"
+      },
+      "sha256": "679D513B28D6A7B9C73B40E9D88042501531BA5ACEE6F0C7A7C7B4929782CA99"
+    },
+    {
+      "bytes": 141345,
+      "id": "page",
+      "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html",
+      "sha256": "24B5720F14B6793B201C4E74AD8BDB2219EE4F8CC941454983876979DA9ADAB1"
+    },
+    {
+      "bytes": 1868572,
+      "id": "pixel_dom_route",
+      "path": "docs/validation/companion-browser-natural-expression-successor-comp-req-518-520-521/determinism-run/pixel-dom-route-artifact.json",
+      "sha256": "1688A1FF837A9F771E6950967F5891F5922D432180392863CAA431EAC8116382"
+    },
+    {
+      "bytes": 4147,
+      "id": "replay",
+      "path": "docs/validation/companion-browser-natural-expression-successor-comp-req-518-520-521/determinism-run/browser-replay-result.json",
+      "sha256": "50027010EC4923ADD5B73B71F56DFBEA48DF0268427955F34D48C1B368913B37"
+    },
+    {
+      "bytes": 12870,
+      "id": "runner",
+      "path": "tools/faraday_upper_art/run_companion_browser_owner_review_comp_req_521.ps1",
+      "provenance": {
+        "commit": "605e583f659b995ff0945259e11afa91482b7269",
+        "git_blob": "b842016d8c0878de84ac3ab5815924feba170e5b"
+      },
+      "sha256": "91BCA9CE1B4391BAAFF41880531F4D4E3AC477618C9820D8C42C7EEB309A6E15"
+    },
+    {
+      "bytes": 18367,
+      "id": "screenshots",
+      "path": "docs/validation/companion-browser-natural-expression-successor-comp-req-518-520-521/determinism-run/screenshot-manifest.json",
+      "sha256": "4E577A7C4E65A5C349B88C887CC59BE7446B10B62EC06CE255D4F17BF5500651"
+    },
+    {
+      "bytes": 28045,
+      "id": "source_bound_verifier",
+      "path": "tools/faraday_upper_art/verify_companion_browser_combined_source_bound_comp_req_521.py",
+      "provenance": {
+        "commit": "605e583f659b995ff0945259e11afa91482b7269",
+        "git_blob": "80083156e704ba9c52e7156696ca04e1c9bfb596"
+      },
+      "sha256": "8A8216AC64D368AD2BFBC9FB3F2352DADE860B4E4CDB973E6540D173356DAEEC"
+    }
+  ],
+  "owner_boundary": {
+    "owner_prompt_invoked": false,
+    "owner_result_exists": false,
+    "remaining_gate": "Main agent must explicitly authorize the one future Execute."
+  },
+  "owner_pass_claimed": false,
+  "replay_tool_commit": "a9753faab76048f3a350292cb61cbbff762ae32c",
+  "requirements": [
+    "COMP-REQ-508",
+    "COMP-REQ-518",
+    "COMP-REQ-520",
+    "COMP-REQ-521"
+  ],
+  "schema": "companion.browser-owner-review-packet.v3",
+  "source_commit": "119c0b8c873d7817c64edec31391b393e00b09ac",
+  "status": "READY_FOR_ONE_FUTURE_OWNER_REVIEW_NOT_OWNER_PASS",
+  "url": "http://127.0.0.1:4173/docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html"
+}

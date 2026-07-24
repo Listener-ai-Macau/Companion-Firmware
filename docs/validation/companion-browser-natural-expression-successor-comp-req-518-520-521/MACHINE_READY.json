@@ -1,0 +1,234 @@
+{
+  "bound_commits": {
+    "source": "119c0b8c873d7817c64edec31391b393e00b09ac",
+    "tooling": "a9753faab76048f3a350292cb61cbbff762ae32c"
+  },
+  "failed_checks": [],
+  "identities": [
+    {
+      "bytes": 141345,
+      "commit": "119c0b8c873d7817c64edec31391b393e00b09ac",
+      "exists": true,
+      "expected_sha256": "24B5720F14B6793B201C4E74AD8BDB2219EE4F8CC941454983876979DA9ADAB1",
+      "label": "page",
+      "match": true,
+      "observed_sha256": "24B5720F14B6793B201C4E74AD8BDB2219EE4F8CC941454983876979DA9ADAB1",
+      "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html"
+    },
+    {
+      "bytes": 14438,
+      "commit": "119c0b8c873d7817c64edec31391b393e00b09ac",
+      "exists": true,
+      "expected_sha256": "3E3ACBD6861D98ABC3665D39C62A6CF36FA8CC14809785F62982653B7A30C9A0",
+      "label": "natural_oracle_tool",
+      "match": true,
+      "observed_sha256": "3E3ACBD6861D98ABC3665D39C62A6CF36FA8CC14809785F62982653B7A30C9A0",
+      "path": "tools/faraday_upper_art/verify_companion_browser_natural_expression_comp_req_521.mjs"
+    },
+    {
+      "bytes": 76449,
+      "commit": "a9753faab76048f3a350292cb61cbbff762ae32c",
+      "exists": true,
+      "expected_sha256": "3BF371C0684328D9B2259BE4420EC0329DEFC3C4B6B58251BAC0D0ADC2923AA7",
+      "label": "replay_tool",
+      "match": true,
+      "observed_sha256": "3BF371C0684328D9B2259BE4420EC0329DEFC3C4B6B58251BAC0D0ADC2923AA7",
+      "path": "tools/faraday_upper_art/replay_companion_browser_natural_expression_successor_comp_req_521.mjs"
+    },
+    {
+      "bytes": 6083,
+      "commit": "a9753faab76048f3a350292cb61cbbff762ae32c",
+      "exists": true,
+      "expected_sha256": "FB20136C3D424DA3C6719B1AB92BF6D411DAC3E4F981A390D5922C42CACC34D4",
+      "label": "determinism_tool",
+      "match": true,
+      "observed_sha256": "FB20136C3D424DA3C6719B1AB92BF6D411DAC3E4F981A390D5922C42CACC34D4",
+      "path": "tools/faraday_upper_art/run_companion_browser_clean_replay_determinism_comp_req_521.py"
+    },
+    {
+      "bytes": 13215,
+      "commit": null,
+      "exists": true,
+      "expected_sha256": "323571F845565038C33E10CD3EBE8E7D4B2398531088C9F8681109F5E24A9D6A",
+      "label": "recording_temporal_tool",
+      "match": true,
+      "observed_sha256": "323571F845565038C33E10CD3EBE8E7D4B2398531088C9F8681109F5E24A9D6A",
+      "path": "tools/faraday_upper_art/verify_companion_browser_recording_temporal_comp_req_518.mjs"
+    },
+    {
+      "bytes": 5902,
+      "commit": null,
+      "exists": true,
+      "expected_sha256": "6B81FE75B19082F0CC93078003CD16E8F0ED1AA231EBE47EB54083CDBAA66788",
+      "label": "research_contract",
+      "match": true,
+      "observed_sha256": "6B81FE75B19082F0CC93078003CD16E8F0ED1AA231EBE47EB54083CDBAA66788",
+      "path": "docs/validation/companion-natural-expression-transition-research-20260724.md"
+    },
+    {
+      "bytes": 557818,
+      "commit": null,
+      "exists": true,
+      "expected_sha256": "081967DF89E20790148052E518ADD69244C63D47F4BD07B862F6DAA84631C846",
+      "label": "v22_component_bridge",
+      "match": true,
+      "observed_sha256": "081967DF89E20790148052E518ADD69244C63D47F4BD07B862F6DAA84631C846",
+      "path": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-bridge-attempt-01/component-bridge-layout.json"
+    },
+    {
+      "bytes": 70982,
+      "commit": null,
+      "exists": true,
+      "expected_sha256": "380F7D72450ACA7EC26D4694B0CC1AD18C66F51260DC7C30E5B1E4272CD55524",
+      "label": "r7_transition_graph",
+      "match": true,
+      "observed_sha256": "380F7D72450ACA7EC26D4694B0CC1AD18C66F51260DC7C30E5B1E4272CD55524",
+      "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/r7-locked-v9-export-20260723/r7-transition-graph.json"
+    },
+    {
+      "bytes": 3101,
+      "commit": null,
+      "exists": true,
+      "expected_sha256": "2C111532CCB6C85AFD1A8AF16320BFCA3BCC02B7F765D85366FF2149EB277714",
+      "label": "v9_state_grammar",
+      "match": true,
+      "observed_sha256": "2C111532CCB6C85AFD1A8AF16320BFCA3BCC02B7F765D85366FF2149EB277714",
+      "path": "docs/art/iterations/companion-pet-expression-v9-emotion-decoration-kit-v1/state-grammar-v1.json"
+    },
+    {
+      "bytes": 4147,
+      "commit": null,
+      "exists": true,
+      "expected_sha256": "50027010EC4923ADD5B73B71F56DFBEA48DF0268427955F34D48C1B368913B37",
+      "label": "replay_result",
+      "match": true,
+      "observed_sha256": "50027010EC4923ADD5B73B71F56DFBEA48DF0268427955F34D48C1B368913B37",
+      "path": "docs/validation/companion-browser-natural-expression-successor-comp-req-518-520-521/determinism-run/browser-replay-result.json"
+    },
+    {
+      "bytes": 1868572,
+      "commit": null,
+      "exists": true,
+      "expected_sha256": "1688A1FF837A9F771E6950967F5891F5922D432180392863CAA431EAC8116382",
+      "label": "pixel_dom_route",
+      "match": true,
+      "observed_sha256": "1688A1FF837A9F771E6950967F5891F5922D432180392863CAA431EAC8116382",
+      "path": "docs/validation/companion-browser-natural-expression-successor-comp-req-518-520-521/determinism-run/pixel-dom-route-artifact.json"
+    },
+    {
+      "bytes": 18367,
+      "commit": null,
+      "exists": true,
+      "expected_sha256": "4E577A7C4E65A5C349B88C887CC59BE7446B10B62EC06CE255D4F17BF5500651",
+      "label": "screenshot_manifest",
+      "match": true,
+      "observed_sha256": "4E577A7C4E65A5C349B88C887CC59BE7446B10B62EC06CE255D4F17BF5500651",
+      "path": "docs/validation/companion-browser-natural-expression-successor-comp-req-518-520-521/determinism-run/screenshot-manifest.json"
+    },
+    {
+      "bytes": 33371,
+      "commit": null,
+      "exists": true,
+      "expected_sha256": "FC290AAFB6CEB203F885B81992DE63895AD026A8F0B2BC6FCA6B6B41FF383330",
+      "label": "determinism_receipt",
+      "match": true,
+      "observed_sha256": "FC290AAFB6CEB203F885B81992DE63895AD026A8F0B2BC6FCA6B6B41FF383330",
+      "path": "docs/validation/companion-browser-natural-expression-successor-comp-req-518-520-521/deterministic-replay-receipt.json"
+    },
+    {
+      "bytes": 84172,
+      "commit": null,
+      "exists": true,
+      "expected_sha256": "60EF928EE104035F1DE7756A0600A499A6B9A84D28869BDB8AB9A1A1290C526E",
+      "label": "focused_recording",
+      "match": true,
+      "observed_sha256": "60EF928EE104035F1DE7756A0600A499A6B9A84D28869BDB8AB9A1A1290C526E",
+      "path": "docs/validation/companion-browser-natural-expression-successor-comp-req-518-520-521/focused-recording-temporal.json"
+    },
+    {
+      "bytes": 122734,
+      "commit": null,
+      "exists": true,
+      "expected_sha256": "93A1D3BF6D701A74007CCE5E5F9C1556630D3AAA7BCD5DD16C63718593BD5A4A",
+      "label": "focused_natural",
+      "match": true,
+      "observed_sha256": "93A1D3BF6D701A74007CCE5E5F9C1556630D3AAA7BCD5DD16C63718593BD5A4A",
+      "path": "docs/validation/companion-browser-natural-expression-successor-comp-req-518-520-521/focused-natural-expression.json"
+    },
+    {
+      "bytes": 2474,
+      "commit": null,
+      "exists": true,
+      "expected_sha256": "3FC9D52C81ACB643A93F90FB5CABC66B6466DC6F6BE298C389F831A0512565A4",
+      "label": "before_stale_pupil",
+      "match": true,
+      "observed_sha256": "3FC9D52C81ACB643A93F90FB5CABC66B6466DC6F6BE298C389F831A0512565A4",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-508/before-fix/stale-gaze-oracle.json"
+    },
+    {
+      "bytes": 79354,
+      "commit": null,
+      "exists": true,
+      "expected_sha256": "EEC0C1BBF97C25BF69111F75F3652B8A767576C4546EB8D73520EC415A0192D9",
+      "label": "before_recording",
+      "match": true,
+      "observed_sha256": "EEC0C1BBF97C25BF69111F75F3652B8A767576C4546EB8D73520EC415A0192D9",
+      "path": "docs/validation/companion-browser-recording-successor-comp-req-518/before-fix/recording-temporal-oracle.json"
+    },
+    {
+      "bytes": 703,
+      "commit": null,
+      "exists": true,
+      "expected_sha256": "912890518A8C758B915F3DD674372FEBB642EF89996DACF9B1E06A587C519979",
+      "label": "failed_owner_result",
+      "match": true,
+      "observed_sha256": "912890518A8C758B915F3DD674372FEBB642EF89996DACF9B1E06A587C519979",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-508/owner-review.json"
+    },
+    {
+      "bytes": 247,
+      "commit": null,
+      "exists": true,
+      "expected_sha256": "50C3563002CF4E81E84EA2344AEE1919D29A4F3854E663966451D602E6CF2DB3",
+      "label": "failed_owner_raw",
+      "match": true,
+      "observed_sha256": "50C3563002CF4E81E84EA2344AEE1919D29A4F3854E663966451D602E6CF2DB3",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-508/owner-review.raw.json"
+    },
+    {
+      "bytes": 2,
+      "commit": null,
+      "exists": true,
+      "expected_sha256": "7EB70257593DA06F682A3DDDA54A9D260D4FC514F645237F5CA74B08F8DA61A6",
+      "label": "failed_owner_note",
+      "match": true,
+      "observed_sha256": "7EB70257593DA06F682A3DDDA54A9D260D4FC514F645237F5CA74B08F8DA61A6",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-508/owner-review.note.txt"
+    }
+  ],
+  "owner_gate": {
+    "owner_result_exists": false,
+    "owner_result_path": "docs/validation/companion-browser-natural-expression-successor-comp-req-518-520-521/owner-review.json",
+    "status": "PENDING_OWNER_REVIEW"
+  },
+  "requirements": [
+    "COMP-REQ-508",
+    "COMP-REQ-518",
+    "COMP-REQ-520",
+    "COMP-REQ-521"
+  ],
+  "schema": "companion.browser-combined-source-bound-machine-ready.v1",
+  "side_effect_counters": {
+    "browser": 0,
+    "hardware": 0,
+    "lower_write": 0,
+    "microphone_permission_request": 0,
+    "owner_prompt": 0,
+    "platform_write": 0,
+    "production_write": 0,
+    "registry_write": 0,
+    "server_start": 0
+  },
+  "status": "MACHINE_READY",
+  "url": "http://127.0.0.1:4173/docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html"
+}

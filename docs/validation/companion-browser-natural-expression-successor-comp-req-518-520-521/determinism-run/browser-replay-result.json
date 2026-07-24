@@ -1,0 +1,109 @@
+{
+  "artifacts": {
+    "pixel_dom_route": {
+      "path": "docs/validation/companion-browser-natural-expression-successor-comp-req-518-520-521/determinism-run/pixel-dom-route-artifact.json",
+      "sha256": "1688A1FF837A9F771E6950967F5891F5922D432180392863CAA431EAC8116382"
+    },
+    "screenshot_manifest": {
+      "path": "docs/validation/companion-browser-natural-expression-successor-comp-req-518-520-521/determinism-run/screenshot-manifest.json",
+      "sha256": "4E577A7C4E65A5C349B88C887CC59BE7446B10B62EC06CE255D4F17BF5500651"
+    }
+  },
+  "checks": {
+    "accepted_centered_rest_lineage_bound": true,
+    "debug_parameters_hidden": true,
+    "desktop_mobile_layout": true,
+    "device_ui_assets_6_of_6": true,
+    "directional_replacement_30_of_30": true,
+    "early_up_cancel_blur_18_of_18": true,
+    "layer_exclusivity": true,
+    "menu_recording_return_identity_12_of_12": true,
+    "menu_roots_24_of_24": true,
+    "mouse_touch_pen_6_of_6": true,
+    "natural_bridge_ordered_6_of_6": true,
+    "natural_first_release_orient_6_of_6": true,
+    "no_404_overlap_bounds_or_stale": true,
+    "no_false_recording_toggle_54_of_54": true,
+    "no_microphone_glyph_pixels": true,
+    "no_microphone_request": true,
+    "ordered_recording_phases_12_of_12": true,
+    "recording_double_tap_enter_exit_reenter_6_of_6": true,
+    "recording_inward_wave_cycle_6_of_6": true,
+    "route_activation_exactly_once": true,
+    "single_tap_once_6_of_6": true,
+    "stale_pupil_oracle_all_expression_states": true,
+    "successor_page_identity": true
+  },
+  "page": {
+    "accepted_sha256": "24B5720F14B6793B201C4E74AD8BDB2219EE4F8CC941454983876979DA9ADAB1",
+    "observed_sha256": "24B5720F14B6793B201C4E74AD8BDB2219EE4F8CC941454983876979DA9ADAB1",
+    "repo_path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html",
+    "runtime_url": "http://127.0.0.1:4173/docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html",
+    "url": "http://127.0.0.1:4173/docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html"
+  },
+  "requirements": [
+    "COMP-REQ-440",
+    "COMP-REQ-441",
+    "COMP-REQ-442",
+    "COMP-REQ-471",
+    "COMP-REQ-508",
+    "COMP-REQ-509",
+    "COMP-REQ-510",
+    "COMP-REQ-518",
+    "COMP-REQ-520",
+    "COMP-REQ-521"
+  ],
+  "runtime": {
+    "browser": "chromium",
+    "browser_version": "149.0.7827.55",
+    "playwright_module_path": "C:/Users/Billy/AppData/Local/npm-cache/_npx/420ff84f11983ee5/node_modules/playwright",
+    "playwright_package_sha256": "6B840268612656F0639FB7D68782E8353BDF11518589D30DDF66F283C2670ED5",
+    "playwright_version": "1.61.1"
+  },
+  "schema": "companion.browser-natural-expression-replay.v1",
+  "side_effect_counters": {
+    "browser_processes": 1,
+    "hardware": 0,
+    "lower_write": 0,
+    "microphone_permission_requests": 0,
+    "owner_prompt": 0,
+    "owner_result_write": 0,
+    "platform_write": 0,
+    "production_write": 0,
+    "registry_write": 0,
+    "server_start": 0,
+    "upper_artifact_writes": 53
+  },
+  "status": "PASS_BROWSER_NATURAL_EXPRESSION_MACHINE_REPLAY",
+  "totals": {
+    "browser_contexts": 44,
+    "browser_pages": 44,
+    "cancellation_scenarios": 18,
+    "conflicting_surface_overlap_count": 0,
+    "device_ui_assets_visits": 6,
+    "directional_moves": 30,
+    "document_requests": 44,
+    "http_404_count": 0,
+    "menu_root_visits": 24,
+    "mic_glyph_pixel_count": 0,
+    "microphone_requests": 0,
+    "natural_bridge_commits": 6,
+    "natural_bridge_ordered": 6,
+    "out_of_bounds_count": 0,
+    "outside_black_pixel_count": 0,
+    "page_error_count": 0,
+    "recording_negative_checks": 54,
+    "recording_ordered_phase_traces": 12,
+    "recording_reentries": 6,
+    "recording_wave_cycles": 6,
+    "replay_combinations": 6,
+    "route_menu_entries": 6,
+    "route_recording_entries": 12,
+    "route_recording_exits": 12,
+    "scenario_count": 42,
+    "snapshot_count": 258,
+    "stale_layer_count": 0,
+    "stale_pupil_pixel_count": 0,
+    "stale_pupil_state_count": 0
+  }
+}

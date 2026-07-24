@@ -1,0 +1,214 @@
+{
+  "cases": [
+    {
+      "failed_check_count": 0,
+      "id": "clean",
+      "rejected": false,
+      "sample_failures": [],
+      "status": "MACHINE_READY"
+    },
+    {
+      "failed_check_count": 1,
+      "id": "page_source_drift",
+      "rejected": true,
+      "sample_failures": [
+        "page SHA: expected '24B5720F14B6793B201C4E74AD8BDB2219EE4F8CC941454983876979DA9ADAB1', observed '60DAB3D583C66B4186BA1CEF14D3AE15CC2A3AB476546A52DE1F50C9FF841E15'"
+      ],
+      "status": "NO_GO"
+    },
+    {
+      "failed_check_count": 1,
+      "id": "replay_tool_drift",
+      "rejected": true,
+      "sample_failures": [
+        "replay_tool SHA: expected '3BF371C0684328D9B2259BE4420EC0329DEFC3C4B6B58251BAC0D0ADC2923AA7', observed '13621B6486C32C330958C41AD91EE16095E96CABB54F69F16EE905F9670DA161'"
+      ],
+      "status": "NO_GO"
+    },
+    {
+      "failed_check_count": 1,
+      "id": "stale_source_commit",
+      "rejected": true,
+      "sample_failures": [
+        "source commit object: expected '119c0b8c873d7817c64edec31391b393e00b09a0', observed None"
+      ],
+      "status": "NO_GO"
+    },
+    {
+      "failed_check_count": 1,
+      "id": "stale_tool_commit",
+      "rejected": true,
+      "sample_failures": [
+        "tool commit object: expected 'a9753faab76048f3a350292cb61cbbff762ae320', observed None"
+      ],
+      "status": "NO_GO"
+    },
+    {
+      "failed_check_count": 2,
+      "id": "forged_aggregate_totals",
+      "rejected": true,
+      "sample_failures": [
+        "replay_result SHA: expected '50027010EC4923ADD5B73B71F56DFBEA48DF0268427955F34D48C1B368913B37', observed 'ADA084F958BB3C013CFB4F86E875E5E81ECB2C390E95B681BB2B8CCFE1B6C524'",
+        "replay totals: expected {'browser_contexts': 44, 'browser_pages': 44, 'cancellation_scenarios': 18, 'conflicting_surface_overlap_count': 0, 'device_ui_assets_visits': 6, 'directional_moves': 30, 'document_requests': 44, 'http_404_count': 0, 'menu_root_visits': 24, 'mic_glyph_pixel_count': 0, 'microphone_requests': 0, 'natural_bridge_commits': 6, 'natural_bridge_ordered': 6, 'out_of_bounds_count': 0, 'outside_black_pixel_count': 0, 'page_error_count': 0, 'recording_negative_checks': 54, 'recording_ordered_phase_traces': 12, 'recording_reentries': 6, 'recording_wave_cycles': 6, 'replay_combinations': 6, 'route_menu_entries': 6, 'route_recording_entries': 12, 'route_recording_exits': 12, 'scenario_count': 42, 'snapshot_count': 258, 'stale_layer_count': 0, 'stale_pupil_pixel_count': 0, 'stale_pupil_state_count': 0}, observed {'browser_contexts': 44, 'browser_pages': 44, 'cancellation_scenarios': 18, 'conflicting_surface_overlap_count': 0, 'device_ui_assets_visits': 6, 'directional_moves': 30, 'document_requests': 44, 'http_404_count': 0, 'menu_root_visits': 24, 'mic_glyph_pixel_count': 0, 'microphone_requests': 0, 'natural_bridge_commits': 7, 'natural_bridge_ordered': 6, 'out_of_bounds_count': 0, 'outside_black_pixel_count': 0, 'page_error_count': 0, 'recording_negative_checks': 54, 'recording_ordered_phase_traces': 12, 'recording_reentries': 6, 'recording_wave_cycles': 6, 'replay_combinations': 6, 'route_menu_entries': 6, 'route_recording_entries': 12, 'route_recording_exits': 12, 'scenario_count': 42, 'snapshot_count': 258, 'stale_layer_count': 0, 'stale_pupil_pixel_count': 0, 'stale_pupil_state_count': 0}"
+      ],
+      "status": "NO_GO"
+    },
+    {
+      "failed_check_count": 3,
+      "id": "duplicate_matrix_record",
+      "rejected": true,
+      "sample_failures": [
+        "pixel_dom_route SHA: expected '1688A1FF837A9F771E6950967F5891F5922D432180392863CAA431EAC8116382', observed '8FD106E63E9F4E1CE2A12EBC9FAB3E1D9ADDCBD7A9C985FA9D720FC4E42D254F'",
+        "matrix IDs: expected ['desktop-mouse-blur', 'desktop-mouse-drag', 'desktop-mouse-early-up', 'desktop-mouse-hold-menu-return', 'desktop-mouse-pointercancel', 'desktop-mouse-recording-return', 'desktop-mouse-single-tap', 'desktop-pen-blur', 'desktop-pen-drag', 'desktop-pen-early-up', 'desktop-pen-hold-menu-return', 'desktop-pen-pointercancel', 'desktop-pen-recording-return', 'desktop-pen-single-tap', 'desktop-touch-blur', 'desktop-touch-drag', 'desktop-touch-early-up', 'desktop-touch-hold-menu-return', 'desktop-touch-pointercancel', 'desktop-touch-recording-return', 'desktop-touch-single-tap', 'mobile-mouse-blur', 'mobile-mouse-drag', 'mobile-mouse-early-up', 'mobile-mouse-hold-menu-return', 'mobile-mouse-pointercancel', 'mobile-mouse-recording-return', 'mobile-mouse-single-tap', 'mobile-pen-blur', 'mobile-pen-drag', 'mobile-pen-early-up', 'mobile-pen-hold-menu-return', 'mobile-pen-pointercancel', 'mobile-pen-recording-return', 'mobile-pen-single-tap', 'mobile-touch-blur', 'mobile-touch-drag', 'mobile-touch-early-up', 'mobile-touch-hold-menu-return', 'mobile-touch-pointercancel', 'mobile-touch-recording-return', 'mobile-touch-single-tap'], observed ['desktop-mouse-blur', 'desktop-mouse-blur', 'desktop-mouse-early-up', 'desktop-mouse-hold-menu-return', 'desktop-mouse-pointercancel', 'desktop-mouse-recording-return', 'desktop-mouse-single-tap', 'desktop-pen-blur', 'desktop-pen-drag', 'desktop-pen-early-up', 'desktop-pen-hold-menu-return', 'desktop-pen-pointercancel', 'desktop-pen-recording-return', 'desktop-pen-single-tap', 'desktop-touch-blur', 'desktop-touch-drag', 'desktop-touch-early-up', 'desktop-touch-hold-menu-return', 'desktop-touch-pointercancel', 'desktop-touch-recording-return', 'desktop-touch-single-tap', 'mobile-mouse-blur', 'mobile-mouse-drag', 'mobile-mouse-early-up', 'mobile-mouse-hold-menu-return', 'mobile-mouse-pointercancel', 'mobile-mouse-recording-return', 'mobile-mouse-single-tap', 'mobile-pen-blur', 'mobile-pen-drag', 'mobile-pen-early-up', 'mobile-pen-hold-menu-return', 'mobile-pen-pointercancel', 'mobile-pen-recording-return', 'mobile-pen-single-tap', 'mobile-touch-blur', 'mobile-touch-drag', 'mobile-touch-early-up', 'mobile-touch-hold-menu-return', 'mobile-touch-pointercancel', 'mobile-touch-recording-return', 'mobile-touch-single-tap']",
+        "matrix IDs unique: expected 42, observed 41"
+      ],
+      "status": "NO_GO"
+    },
+    {
+      "failed_check_count": 2,
+      "id": "stale_pupil_pixel",
+      "rejected": true,
+      "sample_failures": [
+        "pixel_dom_route SHA: expected '1688A1FF837A9F771E6950967F5891F5922D432180392863CAA431EAC8116382', observed '58A56F3619D0272DFA1C8C1226BF38DE60C44E1131517DA826FDB6DD47563F54'",
+        "state 0 pupil stale_center_mask_left_eye: expected 0, observed 1"
+      ],
+      "status": "NO_GO"
+    },
+    {
+      "failed_check_count": 2,
+      "id": "recording_indicator_missing",
+      "rejected": true,
+      "sample_failures": [
+        "pixel_dom_route SHA: expected '1688A1FF837A9F771E6950967F5891F5922D432180392863CAA431EAC8116382', observed '0FCDB8ACF44325DD67CB1C3AEAB9BEBAA8DED01752793C1DB358965DDA1B977F'",
+        "state 26 recording_indicator_count: expected 1, observed 0"
+      ],
+      "status": "NO_GO"
+    },
+    {
+      "failed_check_count": 2,
+      "id": "microphone_request_nonzero",
+      "rejected": true,
+      "sample_failures": [
+        "replay_result SHA: expected '50027010EC4923ADD5B73B71F56DFBEA48DF0268427955F34D48C1B368913B37', observed 'E50254C74B17443ED12EF28944B71A129F965AD844489064626779D0390EB153'",
+        "replay totals: expected {'browser_contexts': 44, 'browser_pages': 44, 'cancellation_scenarios': 18, 'conflicting_surface_overlap_count': 0, 'device_ui_assets_visits': 6, 'directional_moves': 30, 'document_requests': 44, 'http_404_count': 0, 'menu_root_visits': 24, 'mic_glyph_pixel_count': 0, 'microphone_requests': 0, 'natural_bridge_commits': 6, 'natural_bridge_ordered': 6, 'out_of_bounds_count': 0, 'outside_black_pixel_count': 0, 'page_error_count': 0, 'recording_negative_checks': 54, 'recording_ordered_phase_traces': 12, 'recording_reentries': 6, 'recording_wave_cycles': 6, 'replay_combinations': 6, 'route_menu_entries': 6, 'route_recording_entries': 12, 'route_recording_exits': 12, 'scenario_count': 42, 'snapshot_count': 258, 'stale_layer_count': 0, 'stale_pupil_pixel_count': 0, 'stale_pupil_state_count': 0}, observed {'browser_contexts': 44, 'browser_pages': 44, 'cancellation_scenarios': 18, 'conflicting_surface_overlap_count': 0, 'device_ui_assets_visits': 6, 'directional_moves': 30, 'document_requests': 44, 'http_404_count': 0, 'menu_root_visits': 24, 'mic_glyph_pixel_count': 0, 'microphone_requests': 1, 'natural_bridge_commits': 6, 'natural_bridge_ordered': 6, 'out_of_bounds_count': 0, 'outside_black_pixel_count': 0, 'page_error_count': 0, 'recording_negative_checks': 54, 'recording_ordered_phase_traces': 12, 'recording_reentries': 6, 'recording_wave_cycles': 6, 'replay_combinations': 6, 'route_menu_entries': 6, 'route_recording_entries': 12, 'route_recording_exits': 12, 'scenario_count': 42, 'snapshot_count': 258, 'stale_layer_count': 0, 'stale_pupil_pixel_count': 0, 'stale_pupil_state_count': 0}"
+      ],
+      "status": "NO_GO"
+    },
+    {
+      "failed_check_count": 2,
+      "id": "natural_discriminator_drift",
+      "rejected": true,
+      "sample_failures": [
+        "focused_natural SHA: expected '93A1D3BF6D701A74007CCE5E5F9C1556630D3AAA7BCD5DD16C63718593BD5A4A', observed 'E17750DC9E850AB20D9C6F91D62D8113BFC23AA3F03A7077DDD87D542368C6AA'",
+        "natural contract tapDiscriminatorMs: expected 650, observed 649"
+      ],
+      "status": "NO_GO"
+    },
+    {
+      "failed_check_count": 2,
+      "id": "natural_priority_drift",
+      "rejected": true,
+      "sample_failures": [
+        "focused_natural SHA: expected '93A1D3BF6D701A74007CCE5E5F9C1556630D3AAA7BCD5DD16C63718593BD5A4A', observed '73A22D0931806F2F9C0C1AF38240B115DE22DEF5E325DF4FFE2FFAE6E5D4215C'",
+        "natural priority: expected ['error', 'alert', 'menu', 'recording', 'drag', 'single_tap', 'ambient'], observed ['ambient', 'single_tap', 'drag', 'recording', 'menu', 'alert', 'error']"
+      ],
+      "status": "NO_GO"
+    },
+    {
+      "failed_check_count": 2,
+      "id": "recording_thoughtful_injected",
+      "rejected": true,
+      "sample_failures": [
+        "focused_recording SHA: expected '60EF928EE104035F1DE7756A0600A499A6B9A84D28869BDB8AB9A1A1290C526E', observed '7BF5D424D5676BE62CA3C3C7C56333D5E65B28EA387EC16825DD19CA8B8B158A'",
+        "recording phase trace: expected ['expression', 'listening', 'listening_hold', 'expression'], observed ['expression', 'listening', 'thoughtful_listening', 'expression']"
+      ],
+      "status": "NO_GO"
+    },
+    {
+      "failed_check_count": 2,
+      "id": "recording_outward_wrap",
+      "rejected": true,
+      "sample_failures": [
+        "focused_recording SHA: expected '60EF928EE104035F1DE7756A0600A499A6B9A84D28869BDB8AB9A1A1290C526E', observed '7310479C0605E6F9665F2948932C62EF021D3F6ECD4B8A01856284DF1BAF219B'",
+        "recording outward transitions: expected [], observed [{'from': 8, 'to': 36}]"
+      ],
+      "status": "NO_GO"
+    },
+    {
+      "failed_check_count": 2,
+      "id": "recording_matrix_wave_reversed",
+      "rejected": true,
+      "sample_failures": [
+        "pixel_dom_route SHA: expected '1688A1FF837A9F771E6950967F5891F5922D432180392863CAA431EAC8116382', observed '2A2E019B33512F31D321F110412968C77E31E2B06474D04D59531E9ED96BCBC0'",
+        "desktop-mouse-recording-return: wave is not strictly inward"
+      ],
+      "status": "NO_GO"
+    },
+    {
+      "failed_check_count": 2,
+      "id": "determinism_false",
+      "rejected": true,
+      "sample_failures": [
+        "determinism_receipt SHA: expected 'FC290AAFB6CEB203F885B81992DE63895AD026A8F0B2BC6FCA6B6B41FF383330', observed '53EC530D3589861CBDEC36F7C6C4F399EF1B9AE01599B1DC2AC85F38715E72B0'",
+        "determinism equality: expected True, observed False"
+      ],
+      "status": "NO_GO"
+    },
+    {
+      "failed_check_count": 2,
+      "id": "runtime_url_drift",
+      "rejected": true,
+      "sample_failures": [
+        "replay_result SHA: expected '50027010EC4923ADD5B73B71F56DFBEA48DF0268427955F34D48C1B368913B37', observed '5B5BBDECD4CBF8D1A89DE1DF3AE1AD7321EBAEDC26D34A147A8C1C87A9F660AA'",
+        "replay URL: expected 'http://127.0.0.1:4173/docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html', observed 'http://127.0.0.1:4174/wrong'"
+      ],
+      "status": "NO_GO"
+    },
+    {
+      "failed_check_count": 2,
+      "id": "screenshot_payload_drift",
+      "rejected": true,
+      "sample_failures": [
+        "screenshot 0 SHA: expected '00CE0A64FC0209281A314CC197FA9E01D1FFF030A341FD9127109870EA447017', observed 'A1EC872ECE10C2375679840F8710F2BF51859ED2BD0D1199C8717FCDCFBD816C'",
+        "screenshot 0 bytes: expected 42806, observed 42807"
+      ],
+      "status": "NO_GO"
+    },
+    {
+      "failed_check_count": 2,
+      "id": "screenshot_manifest_drift",
+      "rejected": true,
+      "sample_failures": [
+        "screenshot_manifest SHA: expected '4E577A7C4E65A5C349B88C887CC59BE7446B10B62EC06CE255D4F17BF5500651', observed 'EB1F953DCDA2CF45B27096A985A0D3374F4780BF298868E728DC0C94240E5EE5'",
+        "screenshot 0 bytes: expected 42807, observed 42806"
+      ],
+      "status": "NO_GO"
+    },
+    {
+      "failed_check_count": 1,
+      "id": "successor_owner_result_preexists",
+      "rejected": true,
+      "sample_failures": [
+        "successor owner result absent: expected False, observed True"
+      ],
+      "status": "NO_GO"
+    }
+  ],
+  "clean_status": "MACHINE_READY",
+  "negative_case_count": 19,
+  "rejected_negative_count": 19,
+  "requirements": [
+    "COMP-REQ-518",
+    "COMP-REQ-520",
+    "COMP-REQ-521"
+  ],
+  "schema": "companion.browser-combined-source-bound-negatives.v1",
+  "side_effect_counters": {
+    "browser": 0,
+    "hardware": 0,
+    "microphone_permission_request": 0,
+    "owner_prompt": 0,
+    "server_start": 0
+  },
+  "status": "PASS"
+}
