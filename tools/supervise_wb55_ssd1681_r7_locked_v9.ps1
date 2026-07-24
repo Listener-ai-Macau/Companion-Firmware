@@ -9,6 +9,8 @@ param(
     [string]$EmergencyStopPath,
     [string]$SimulationPromptScript,
     [string]$OutRoot,
+    [string]$RunNonce,
+    [string]$CandidateSha256,
     [ValidateRange(0,1800)]
     [int]$TimeoutSeconds = 0
 )
@@ -23,6 +25,7 @@ if (@($CheckOnly,$Execute,$SelfTest,$SimulateQualifiedPrompt).Where({ $_ }).Coun
 if ($Execute -and -not [string]::IsNullOrWhiteSpace($SimulationPromptScript)) {
     throw "Simulation prompt injection is forbidden in Execute mode."
 }
+if ($Execute -and ([string]::IsNullOrWhiteSpace($RunNonce) -or [string]::IsNullOrWhiteSpace($CandidateSha256))) { throw "Execute requires a fresh run nonce and candidate SHA binding." }
 if ($SimulateQualifiedPrompt -and [string]::IsNullOrWhiteSpace($SimulationPromptScript)) {
     throw "SimulateQualifiedPrompt requires a process-only prompt script."
 }
@@ -149,6 +152,7 @@ if ((Test-Path -LiteralPath $guardPath -PathType Leaf) -or
 }
 
 $qualification = Get-Content -LiteralPath $QualificationSignalPath -Raw | ConvertFrom-Json
+if ($Execute -and ([string]$qualification.nonce -cne $RunNonce -or [string]$qualification.sha256 -cne $CandidateSha256)) { throw "Qualification signal is not bound to this run." }
 $expectedHardwareContact = if ($SimulateQualifiedPrompt) { 0 } else { 1 }
 if ($qualification.status -ne "PASS_R7_QUALIFICATION_READY" -or
     $qualification.hardware_contact -ne $expectedHardwareContact -or
@@ -231,7 +235,7 @@ try {
     $noteSha = if (Test-Path -LiteralPath $notePath -PathType Leaf) { (Get-FileHash -LiteralPath $notePath -Algorithm SHA256).Hash.ToUpperInvariant() } else { $null }
     $review = [ordered]@{schema_id="companion.wb55.ssd1681.r7_locked_v9_choreography.operator_review.v2";status=$status;style="aiw_operator_prompt_v1";selected=$selected;note=$note;note_path=$notePath;note_sha256=$noteSha;qualification_artifact=[string]$qualification.parser_artifact;qualification_sha256=(Get-FileHash -LiteralPath ([string]$qualification.parser_artifact) -Algorithm SHA256).Hash.ToUpperInvariant();machine_qualification_steps=16;continuous_loop_was_concurrent=$true;simulation_no_hardware=[bool]$SimulateQualifiedPrompt;actual_popup_count=if($SimulateQualifiedPrompt){0}else{1}}
     Write-JsonAtomic $reviewPath $review
-    Write-JsonAtomic $resultPath ([ordered]@{schema_id="companion.wb55.ssd1681.r7_locked_v9_choreography.operator_result.v2";status=$status;selected=$selected;actual_popup_count=if($SimulateQualifiedPrompt){0}else{1};review_path=$reviewPath;prompt_process_start_count=1})
+    Write-JsonAtomic $resultPath ([ordered]@{schema_id="companion.wb55.ssd1681.r7_locked_v9_choreography.operator_result.v3";status=$status;selected=$selected;actual_popup_count=if($SimulateQualifiedPrompt){0}else{1};review_path=$reviewPath;prompt_process_start_count=1;prompt_count=1;nonce=$RunNonce;sha256=$CandidateSha256;process_id=$PID;supervisor_process_id=$PID})
     if (Test-Path -LiteralPath $StopSignalPath -PathType Leaf) { throw "A stop signal already exists; duplicate operator completion is forbidden." }
     Write-JsonAtomic $StopSignalPath ([ordered]@{schema_id="companion.wb55.ssd1681.r7_locked_v9_choreography.operator_stop.v2";reason="operator_selection";selected=$selected;review_path=$reviewPath;result_path=$resultPath})
     $review | ConvertTo-Json -Depth 10 -Compress

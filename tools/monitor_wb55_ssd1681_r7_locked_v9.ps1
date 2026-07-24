@@ -10,7 +10,9 @@ param(
     [string]$QualificationSignalPath,
     [string]$StopSignalPath,
     [string]$EmergencyStopPath,
-    [string]$OutDir
+    [string]$OutDir,
+    [string]$RunNonce,
+    [string]$CandidateSha256
 )
 $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
@@ -201,9 +203,10 @@ if ($SelfTest -or $CheckOnly) {
     Write-Json $resultPath $r; $r|ConvertTo-Json -Depth 10; exit 0
 }
 foreach($path in @($ReadySignalPath,$QualificationSignalPath,$StopSignalPath,$EmergencyStopPath)){if(-not $path){throw "Execute requires all lifecycle signal paths."}}
+if ($Execute -and ([string]::IsNullOrWhiteSpace($RunNonce) -or [string]::IsNullOrWhiteSpace($CandidateSha256))) { throw "Execute requires a fresh run nonce and candidate SHA binding." }
 try {
     $resolved=Get-Port $Port; $serial=[IO.Ports.SerialPort]::new($resolved,115200,[IO.Ports.Parity]::None,8,[IO.Ports.StopBits]::One); $serial.ReadTimeout=250; $serial.Open(); $serial.DiscardInBuffer()
-    Write-Json $ReadySignalPath ([ordered]@{schema_id="companion.wb55.ssd1681.r7_locked_v9_choreography.monitor_ready.v1";status="READY";process_id=$PID;port=$resolved;ring_bytes_limit=$RingBytes})
+    Write-Json $ReadySignalPath ([ordered]@{schema_id="companion.wb55.ssd1681.r7_locked_v9_choreography.monitor_ready.v2";status="READY";process_id=$PID;port=$resolved;ring_bytes_limit=$RingBytes;nonce=$RunNonce;sha256=$CandidateSha256})
     while($true){
         if(Test-Path $EmergencyStopPath){$status="NO_GO_EMERGENCY_STOP";throw "Emergency stop received."}
         if(Test-Path $StopSignalPath){if(-not $qualified){$status="NO_GO_STOP_BEFORE_QUALIFICATION";throw "Stop arrived before qualification."};$status="STOP_REQUESTED_AFTER_QUALIFICATION";break}
@@ -235,7 +238,7 @@ try {
                 $qualificationParsed = Read-CanonicalR7Artifact $qualificationArtifact 1
                 $cadenceMeasurements=[int]$qualificationParsed.cadence_measurements; $maxStartDeltaMs=[int]$qualificationParsed.max_start_delta_ms
                 Copy-Item -LiteralPath $qualificationArtifact -Destination $parserArtifact -Force
-                Write-Json $QualificationSignalPath ([ordered]@{schema_id="companion.wb55.ssd1681.r7_locked_v9_choreography.qualification.v2";status="PASS_R7_QUALIFICATION_READY";process_id=$PID;parser_artifact=$qualificationArtifact;qualification_snapshot=$qualificationSnapshotPath;qualification_frames=16;qualification_cadence_measurements=[int]$qualificationParsed.qualification_cadence_measurements;loop_records=[int]$qualificationParsed.loop_records;cadence_measurements=$cadenceMeasurements;max_start_delta_ms=$maxStartDeltaMs;ring_bytes_limit=65536;hardware_contact=1})
+                Write-Json $QualificationSignalPath ([ordered]@{schema_id="companion.wb55.ssd1681.r7_locked_v9_choreography.qualification.v3";status="PASS_R7_QUALIFICATION_READY";process_id=$PID;parser_artifact=$qualificationArtifact;qualification_snapshot=$qualificationSnapshotPath;qualification_frames=16;qualification_cadence_measurements=[int]$qualificationParsed.qualification_cadence_measurements;loop_records=[int]$qualificationParsed.loop_records;cadence_measurements=$cadenceMeasurements;max_start_delta_ms=$maxStartDeltaMs;ring_bytes_limit=65536;hardware_contact=1;nonce=$RunNonce;sha256=$CandidateSha256})
                 $qualified=$true
             }
         }
@@ -252,6 +255,6 @@ try {
     }
 } catch { $errorText=$_.Exception.Message; if($finalizationAttempted){$status="NO_GO_FINALIZATION"} elseif($status -eq "NO_GO_MONITOR_UNSTARTED"){$status="NO_GO_MONITOR_FAULT"}; if($EmergencyStopPath -and -not(Test-Path $EmergencyStopPath)){Write-Json $EmergencyStopPath ([ordered]@{schema_id="companion.wb55.ssd1681.r7_locked_v9_choreography.emergency_stop.v1";reason=$status;detail=$errorText})} } finally {
     if($serial){$serial.Close();$serial.Dispose()}; try{Snapshot}catch{}
-    Write-Json $resultPath ([ordered]@{schema_id="companion.wb55.ssd1681.r7_locked_v9_choreography.monitor.v2";status=$status;hardware_contact=1;popup_count=0;retry_count=0;qualified=$qualified;loop_records_seen=$loopRecords;cadence_measurements=$cadenceMeasurements;max_start_delta_ms=$maxStartDeltaMs;ring_path=$ringPath;ring_bytes_limit=65536;ring_peak_bytes=$script:ringPeakBytes;ring_final_bytes=if(Test-Path $ringPath){(Get-Item $ringPath).Length}else{$null};ring_snapshot_writes=$script:ringWrites;qualification_snapshot=if(Test-Path $qualificationSnapshotPath){$qualificationSnapshotPath}else{$null};qualification_artifact=if(Test-Path $qualificationArtifact){$qualificationArtifact}else{$null};final_loop_snapshot=if(Test-Path $finalLoopSnapshotPath){$finalLoopSnapshotPath}else{$null};final_loop_artifact=if(Test-Path $finalLoopArtifact){$finalLoopArtifact}else{$null};unbounded_log_created=$false;finalization_attempted=$finalizationAttempted;error=$errorText})
+    Write-Json $resultPath ([ordered]@{schema_id="companion.wb55.ssd1681.r7_locked_v9_choreography.monitor.v3";status=$status;hardware_contact=1;popup_count=0;retry_count=0;qualified=$qualified;loop_records_seen=$loopRecords;cadence_measurements=$cadenceMeasurements;max_start_delta_ms=$maxStartDeltaMs;ring_path=$ringPath;ring_bytes_limit=65536;ring_peak_bytes=$script:ringPeakBytes;ring_final_bytes=if(Test-Path $ringPath){(Get-Item $ringPath).Length}else{$null};ring_snapshot_writes=$script:ringWrites;qualification_snapshot=if(Test-Path $qualificationSnapshotPath){$qualificationSnapshotPath}else{$null};qualification_artifact=if(Test-Path $qualificationArtifact){$qualificationArtifact}else{$null};final_loop_snapshot=if(Test-Path $finalLoopSnapshotPath){$finalLoopSnapshotPath}else{$null};final_loop_artifact=if(Test-Path $finalLoopArtifact){$finalLoopArtifact}else{$null};unbounded_log_created=$false;finalization_attempted=$finalizationAttempted;error=$errorText;nonce=$RunNonce;sha256=$CandidateSha256;process_id=$PID})
 }
 if($status -eq "STOP_REQUESTED_AFTER_QUALIFICATION"){exit 0}; exit 1
