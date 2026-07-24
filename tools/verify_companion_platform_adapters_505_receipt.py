@@ -29,6 +29,10 @@ def digest_bytes(data):
     return hashlib.sha256(data).hexdigest().upper()
 
 
+def canonical_bytes(data):
+    return data.replace(b"\r\n", b"\n")
+
+
 def digest(path):
     return digest_bytes(path.read_bytes())
 
@@ -236,7 +240,7 @@ def main():
     if not ns.receipt or not ns.receipt_commit:
         raise SystemExit("NO_GO: committed receipt and commit are required")
     canonical = blob(ns.receipt_commit, ns.receipt_path)
-    if ns.receipt.read_bytes() != canonical:
+    if canonical_bytes(ns.receipt.read_bytes()) != canonical_bytes(canonical):
         raise SystemExit("NO_GO: receipt bytes differ from git show")
     receipt = json.loads(canonical.decode("utf-8"))
     ok = validate(receipt)
