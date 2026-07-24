@@ -1,0 +1,3315 @@
+{
+  "checks": {
+    "accessory_does_not_change_affect": true,
+    "accessory_does_not_change_gaze": true,
+    "accessory_only_exit_affect": true,
+    "accessory_only_exit_frame": true,
+    "accessory_only_exit_gaze": true,
+    "accessory_state_view_separate": true,
+    "exactly_three_equal_fronts": true,
+    "idle_baseline_return_exact": true,
+    "idle_glint_changed_frames_three": true,
+    "idle_quiet_hold_stable": true,
+    "idle_two_runs_equal": true,
+    "inward_or_absorb_insert_only": true,
+    "no_css_interpolation": true,
+    "one_bit_runtime_pixels": true,
+    "recording_is_not_mode_override": true,
+    "source_page_exact": true,
+    "zero_page_or_http_errors": true
+  },
+  "errors": [],
+  "failed": [],
+  "inputs": {
+    "page_canonical_sha256": "6176B9B3A7948291F430B5C47EBB5CDB2DA339BEEA86FBD1C72920D74438DD10",
+    "page_repo_path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html"
+  },
+  "observed": {
+    "accessory": {
+      "after_exit": {
+        "frame": "data:image/png;base64,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",
+        "gaze": "http://127.0.0.1:58536/docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/touch-gaze-overlay-189.png?review=v45-authority-wall-r2",
+        "natural": {
+          "accessory_active": false,
+          "affect_after": {
+            "affinity": 0,
+            "arousal": 1,
+            "valence": 0
+          },
+          "base_affect": "calm",
+          "bridge": null,
+          "changed_frame_count": 0,
+          "coalesced_pending": null,
+          "contract": {
+            "bridgeWindowMs": 480,
+            "explicitResolveEdges": {
+              "ambiguity_resolved": [
+                "puzzled",
+                "calm"
+              ],
+              "high_salience": [
+                "puzzled",
+                "alert"
+              ],
+              "salience_reduced": [
+                "alert",
+                "puzzled"
+              ]
+            },
+            "legalTapEdges": {
+              "calm": "curious",
+              "curious": "warm",
+              "warm": "playful"
+            },
+            "maxCoalescedPending": 1,
+            "maxPostSourceChangedFrames": 3,
+            "priority": [
+              "error",
+              "alert",
+              "menu",
+              "recording",
+              "drag",
+              "single_tap",
+              "ambient"
+            ],
+            "stateStories": {
+              "alert": "alert_exclamation",
+              "calm": "calm_presence",
+              "curious": "curious_question",
+              "playful": "playful_presence",
+              "puzzled": "curious_question",
+              "warm": "warm_presence"
+            },
+            "tapDiscriminatorMs": 650
+          },
+          "epaper_manifest": {
+            "blink": {
+              "ordered_frame_indices": [
+                1,
+                2,
+                3,
+                4
+              ],
+              "registered_event_only": true,
+              "reopen_frame_index": 4,
+              "story": "calm_presence"
+            },
+            "cadence_ms": 480,
+            "emotion_choreography": {
+              "legal_edges": [
+                [
+                  "calm",
+                  "curious"
+                ],
+                [
+                  "curious",
+                  "warm"
+                ],
+                [
+                  "warm",
+                  "playful"
+                ],
+                [
+                  "playful",
+                  "playful"
+                ],
+                [
+                  "puzzled",
+                  "calm"
+                ],
+                [
+                  "puzzled",
+                  "alert"
+                ],
+                [
+                  "alert",
+                  "puzzled"
+                ]
+              ],
+              "max_post_source_changed_frames": 3,
+              "ordered_phases": [
+                "source_hold",
+                "gaze_highlight_orient",
+                "brow_eye_reply",
+                "lower_face_reply",
+                "target_hold"
+              ],
+              "states": [
+                {
+                  "brow": 1,
+                  "hold": 4,
+                  "lower": 4,
+                  "source": 4,
+                  "state": "calm",
+                  "story": "calm_presence"
+                },
+                {
+                  "brow": 1,
+                  "hold": 2,
+                  "lower": 2,
+                  "source": 0,
+                  "state": "curious",
+                  "story": "curious_question"
+                },
+                {
+                  "brow": 1,
+                  "hold": 2,
+                  "lower": 2,
+                  "source": 0,
+                  "state": "warm",
+                  "story": "warm_presence"
+                },
+                {
+                  "brow": 1,
+                  "hold": 2,
+                  "lower": 2,
+                  "source": 0,
+                  "state": "playful",
+                  "story": "playful_presence"
+                },
+                {
+                  "brow": 1,
+                  "hold": 2,
+                  "lower": 2,
+                  "source": 0,
+                  "state": "sleepy",
+                  "story": "sleepy_presence"
+                },
+                {
+                  "brow": 1,
+                  "hold": 2,
+                  "lower": 2,
+                  "source": 0,
+                  "state": "delighted",
+                  "story": "delighted_presence"
+                },
+                {
+                  "brow": 1,
+                  "hold": 2,
+                  "lower": 2,
+                  "source": 0,
+                  "state": "bashful",
+                  "story": "bashful_presence"
+                },
+                {
+                  "brow": 1,
+                  "hold": 2,
+                  "lower": 2,
+                  "source": 0,
+                  "state": "thoughtful",
+                  "story": "thoughtful_presence"
+                },
+                {
+                  "brow": 1,
+                  "hold": 2,
+                  "lower": 2,
+                  "source": 0,
+                  "state": "focused",
+                  "story": "focused_presence"
+                },
+                {
+                  "brow": 1,
+                  "hold": 2,
+                  "lower": 2,
+                  "source": 0,
+                  "state": "alert",
+                  "story": "alert_exclamation"
+                }
+              ],
+              "target_hold_refresh": false
+            },
+            "format": {
+              "bits_per_pixel": 1,
+              "black_bit": 1,
+              "frame_bytes": 5000,
+              "height": 200,
+              "orientation": {
+                "device_transform": "identity",
+                "positive_x": "right",
+                "positive_y": "down",
+                "screen_origin": "top_left"
+              },
+              "row_stride_bytes": 25,
+              "white_bit": 0,
+              "width": 200
+            },
+            "gaze_samples": [
+              {
+                "key": "1,0,1,0",
+                "state": "gaze_center"
+              },
+              {
+                "key": "-2,0,-6,0",
+                "state": "gaze_left"
+              },
+              {
+                "key": "1,-3,1,-6",
+                "state": "gaze_up"
+              },
+              {
+                "key": "5,0,5,0",
+                "state": "gaze_right"
+              },
+              {
+                "key": "1,4,1,6",
+                "state": "gaze_down"
+              }
+            ],
+            "idle_glint": {
+              "baseline_key": "1,0,1,0",
+              "changed_frames_per_beat": 3,
+              "cycle_steps": 11,
+              "interrupt_policy": "cancel_once_then_retarget",
+              "ordered_keys": [
+                "1,0,1,0",
+                "1,0,1,0",
+                "1,0,1,0",
+                "1,0,1,0",
+                "1,0,1,0",
+                "1,0,1,0",
+                "1,0,1,0",
+                "1,0,1,0",
+                "0,0,0,0",
+                "1,-1,1,-1",
+                "1,0,1,0"
+              ],
+              "quiet_steps": 8
+            },
+            "menu_frames": [
+              {
+                "src": "/docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/01-home.png",
+                "state": "menu_roots"
+              },
+              {
+                "src": "/docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/02-voice.png",
+                "state": "menu_voice"
+              },
+              {
+                "src": "/docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/03-device.png",
+                "state": "menu_device"
+              },
+              {
+                "src": "/docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/04-connection.png",
+                "state": "menu_connection"
+              },
+              {
+                "src": "/docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/05-preferences.png",
+                "state": "menu_preferences"
+              }
+            ],
+            "recording_accessory": {
+              "indicator": {
+                "kind": "compact_record_status",
+                "origin": [
+                  10,
+                  10
+                ],
+                "size": [
+                  18,
+                  18
+                ]
+              },
+              "orthogonal_to_expression": true,
+              "wave": {
+                "corridor": [
+                  168,
+                  64,
+                  197,
+                  76
+                ],
+                "front_height": 13,
+                "front_width": 6,
+                "listening_point": [
+                  158,
+                  70
+                ],
+                "ring_policy": "inner_absorb_outer_insert",
+                "slot_distances": [
+                  34,
+                  26,
+                  18,
+                  10
+                ],
+                "state_count": 4,
+                "stroke_px": 2,
+                "visible_fronts": 3
+              }
+            },
+            "rendering": {
+              "committed_frames_only": true,
+              "css_interpolation": "none",
+              "opacity_tween": false,
+              "subpixel_motion": false
+            },
+            "requirements": [
+              "COMP-REQ-536",
+              "COMP-REQ-537",
+              "COMP-REQ-538"
+            ],
+            "schema": "companion.browser-epaper-visual-manifest.v1"
+          },
+          "gaze_target": {
+            "key": "1,0,1,0",
+            "x": 100,
+            "y": 100
+          },
+          "interaction_memory": 0,
+          "mode_override": "none",
+          "pending_orient": null,
+          "reaction_phase": "steady",
+          "route_count": 0,
+          "trace": [
+            {
+              "base_affect": "calm",
+              "gaze_target": {
+                "key": "1,0,1,0",
+                "x": 100,
+                "y": 100
+              },
+              "kind": "source_hold",
+              "mode_override": "none",
+              "reaction_phase": "gaze_highlight_lead",
+              "release_event_id": "upper-0002",
+              "sequence": 1
+            },
+            {
+              "base_affect": "calm",
+              "changed_frame": 1,
+              "gaze_target": {
+                "key": "1,0,1,0",
+                "x": 100,
+                "y": 100
+              },
+              "kind": "gaze_highlight_lead",
+              "mode_override": "none",
+              "reaction_phase": "gaze_highlight_lead",
+              "release_event_id": "upper-0002",
+              "sequence": 2,
+              "target": {
+                "key": "1,0,1,0",
+                "x": 100,
+                "y": 100
+              }
+            },
+            {
+              "base_affect": "calm",
+              "gaze_target": {
+                "key": "1,0,1,0",
+                "x": 100,
+                "y": 100
+              },
+              "kind": "pending_canceled",
+              "mode_override": "none",
+              "reaction_phase": "steady",
+              "reason": "double_tap_toggle",
+              "sequence": 3
+            },
+            {
+              "base_affect": "calm",
+              "gaze_target": {
+                "key": "1,0,1,0",
+                "x": 100,
+                "y": 100
+              },
+              "kind": "source_hold",
+              "mode_override": "none",
+              "reaction_phase": "gaze_highlight_lead",
+              "release_event_id": "upper-0008",
+              "sequence": 4
+            },
+            {
+              "base_affect": "calm",
+              "changed_frame": 1,
+              "gaze_target": {
+                "key": "1,0,1,0",
+                "x": 100,
+                "y": 100
+              },
+              "kind": "gaze_highlight_lead",
+              "mode_override": "none",
+              "reaction_phase": "gaze_highlight_lead",
+              "release_event_id": "upper-0008",
+              "sequence": 5,
+              "target": {
+                "key": "1,0,1,0",
+                "x": 100,
+                "y": 100
+              }
+            },
+            {
+              "base_affect": "calm",
+              "gaze_target": {
+                "key": "1,0,1,0",
+                "x": 100,
+                "y": 100
+              },
+              "kind": "pending_canceled",
+              "mode_override": "none",
+              "reaction_phase": "steady",
+              "reason": "double_tap_toggle",
+              "sequence": 6
+            }
+          ]
+        },
+        "recording": {
+          "accessory_active": false,
+          "active": false,
+          "base_affect": "calm",
+          "consumedPairs": [
+            {
+              "action": "enter",
+              "release_event_ids": [
+                "upper-0002",
+                "upper-0004"
+              ],
+              "sequence": 1
+            },
+            {
+              "action": "exit",
+              "release_event_ids": [
+                "upper-0008",
+                "upper-0010"
+              ],
+              "sequence": 1
+            }
+          ],
+          "entries": 1,
+          "exits": 1,
+          "ignoredInputs": 0,
+          "indicatorNodes": 1,
+          "indicatorVisible": false,
+          "interaction_mode": "expression",
+          "micGlyphPresent": false,
+          "mode_override": "none",
+          "orthogonal_to_expression": true,
+          "phase": "accessory_inactive",
+          "phaseTrace": [
+            {
+              "base_affect": "calm",
+              "face_capture": false,
+              "face_restart": false,
+              "frame": "calm_presence-04-calm_blink_settle.png",
+              "phase": "accessory_active",
+              "reaction_phase": "steady",
+              "sequence": 1,
+              "story": "calm_presence"
+            },
+            {
+              "accessory_only": true,
+              "base_affect": "calm",
+              "frame": "calm_presence-04-calm_blink_settle.png",
+              "phase": "accessory_inactive",
+              "reaction_phase": "steady",
+              "sequence": 1,
+              "story": "calm_presence"
+            }
+          ],
+          "reaction_phase": "steady",
+          "sequence": 1,
+          "waveContract": {
+            "front_height": 13,
+            "front_width": 6,
+            "interpolation": "none",
+            "listening_point": {
+              "x": 158,
+              "y": 70
+            },
+            "ring_policy": "inner_absorb_outer_insert",
+            "scheduler": "bounded_setTimeout",
+            "slot_distances": [
+              34,
+              26,
+              18,
+              10
+            ],
+            "state_count": 4,
+            "step_ms": 480,
+            "stroke_px": 2
+          },
+          "waveFronts": [
+            {
+              "id": "front_000",
+              "lifecycle": "front",
+              "slot": 0
+            },
+            {
+              "id": "front_001",
+              "lifecycle": "front",
+              "slot": 1
+            },
+            {
+              "id": "front_002",
+              "lifecycle": "front",
+              "slot": 2
+            }
+          ],
+          "waveStep": 3,
+          "waveTrace": [
+            {
+              "arc_count": 3,
+              "arcs": [
+                {
+                  "bounds": {
+                    "x_max": 197,
+                    "x_min": 192,
+                    "y_max": 76,
+                    "y_min": 64
+                  },
+                  "convex_direction": "toward_listening_point",
+                  "distance_to_listening_point": 34,
+                  "geometry": {
+                    "height": 13,
+                    "stroke": 2,
+                    "width": 6
+                  },
+                  "id": "front_000",
+                  "lifecycle": "front",
+                  "slot": 0
+                },
+                {
+                  "bounds": {
+                    "x_max": 189,
+                    "x_min": 184,
+                    "y_max": 76,
+                    "y_min": 64
+                  },
+                  "convex_direction": "toward_listening_point",
+                  "distance_to_listening_point": 26,
+                  "geometry": {
+                    "height": 13,
+                    "stroke": 2,
+                    "width": 6
+                  },
+                  "id": "front_001",
+                  "lifecycle": "front",
+                  "slot": 1
+                },
+                {
+                  "bounds": {
+                    "x_max": 181,
+                    "x_min": 176,
+                    "y_max": 76,
+                    "y_min": 64
+                  },
+                  "convex_direction": "toward_listening_point",
+                  "distance_to_listening_point": 18,
+                  "geometry": {
+                    "height": 13,
+                    "stroke": 2,
+                    "width": 6
+                  },
+                  "id": "front_002",
+                  "lifecycle": "front",
+                  "slot": 2
+                }
+              ],
+              "centroid": {
+                "x": 186.038,
+                "y": 70
+              },
+              "cycle": 0,
+              "gray_pixels": 0,
+              "ink_pixels": 78,
+              "listening_point": {
+                "x": 158,
+                "y": 70
+              },
+              "sequence": 1,
+              "step": 0,
+              "transition": {
+                "absorbed": [],
+                "inserted": [],
+                "moved": []
+              }
+            }
+          ],
+          "waveVisible": false
+        },
+        "state_view": {
+          "accessory_active": false,
+          "affect": "calm",
+          "displayed_edge_legal": true,
+          "event": "recording_route_exit",
+          "exists": true,
+          "interaction_mode": "expression",
+          "mode": "none",
+          "next": [
+            {
+              "event": "touch_tap",
+              "from": "calm",
+              "label": "好奇",
+              "legal": true,
+              "to": "curious"
+            },
+            {
+              "event": "recording_accessory_toggle",
+              "from": "calm",
+              "label": "平静",
+              "legal": true,
+              "to": "calm"
+            },
+            {
+              "event": "menu",
+              "from": "calm",
+              "label": "平静",
+              "legal": true,
+              "to": "calm"
+            }
+          ],
+          "outside_screen": true,
+          "phase": "steady",
+          "source_identity": "naturalState+recordingState",
+          "source_sequence": 6,
+          "timeline": [
+            {
+              "label": "取消等待 · 平静",
+              "sequence": 3
+            },
+            {
+              "label": "触点定向 · 平静",
+              "sequence": 4
+            },
+            {
+              "label": "眼神先行 · 平静",
+              "sequence": 5
+            },
+            {
+              "label": "取消等待 · 平静",
+              "sequence": 6
+            }
+          ],
+          "visible": true
+        }
+      },
+      "before": {
+        "natural": {
+          "accessory_active": false,
+          "affect_after": {
+            "affinity": 0,
+            "arousal": 1,
+            "valence": 0
+          },
+          "base_affect": "calm",
+          "bridge": null,
+          "changed_frame_count": 0,
+          "coalesced_pending": null,
+          "contract": {
+            "bridgeWindowMs": 480,
+            "explicitResolveEdges": {
+              "ambiguity_resolved": [
+                "puzzled",
+                "calm"
+              ],
+              "high_salience": [
+                "puzzled",
+                "alert"
+              ],
+              "salience_reduced": [
+                "alert",
+                "puzzled"
+              ]
+            },
+            "legalTapEdges": {
+              "calm": "curious",
+              "curious": "warm",
+              "warm": "playful"
+            },
+            "maxCoalescedPending": 1,
+            "maxPostSourceChangedFrames": 3,
+            "priority": [
+              "error",
+              "alert",
+              "menu",
+              "recording",
+              "drag",
+              "single_tap",
+              "ambient"
+            ],
+            "stateStories": {
+              "alert": "alert_exclamation",
+              "calm": "calm_presence",
+              "curious": "curious_question",
+              "playful": "playful_presence",
+              "puzzled": "curious_question",
+              "warm": "warm_presence"
+            },
+            "tapDiscriminatorMs": 650
+          },
+          "epaper_manifest": {
+            "blink": {
+              "ordered_frame_indices": [
+                1,
+                2,
+                3,
+                4
+              ],
+              "registered_event_only": true,
+              "reopen_frame_index": 4,
+              "story": "calm_presence"
+            },
+            "cadence_ms": 480,
+            "emotion_choreography": {
+              "legal_edges": [
+                [
+                  "calm",
+                  "curious"
+                ],
+                [
+                  "curious",
+                  "warm"
+                ],
+                [
+                  "warm",
+                  "playful"
+                ],
+                [
+                  "playful",
+                  "playful"
+                ],
+                [
+                  "puzzled",
+                  "calm"
+                ],
+                [
+                  "puzzled",
+                  "alert"
+                ],
+                [
+                  "alert",
+                  "puzzled"
+                ]
+              ],
+              "max_post_source_changed_frames": 3,
+              "ordered_phases": [
+                "source_hold",
+                "gaze_highlight_orient",
+                "brow_eye_reply",
+                "lower_face_reply",
+                "target_hold"
+              ],
+              "states": [
+                {
+                  "brow": 1,
+                  "hold": 4,
+                  "lower": 4,
+                  "source": 4,
+                  "state": "calm",
+                  "story": "calm_presence"
+                },
+                {
+                  "brow": 1,
+                  "hold": 2,
+                  "lower": 2,
+                  "source": 0,
+                  "state": "curious",
+                  "story": "curious_question"
+                },
+                {
+                  "brow": 1,
+                  "hold": 2,
+                  "lower": 2,
+                  "source": 0,
+                  "state": "warm",
+                  "story": "warm_presence"
+                },
+                {
+                  "brow": 1,
+                  "hold": 2,
+                  "lower": 2,
+                  "source": 0,
+                  "state": "playful",
+                  "story": "playful_presence"
+                },
+                {
+                  "brow": 1,
+                  "hold": 2,
+                  "lower": 2,
+                  "source": 0,
+                  "state": "sleepy",
+                  "story": "sleepy_presence"
+                },
+                {
+                  "brow": 1,
+                  "hold": 2,
+                  "lower": 2,
+                  "source": 0,
+                  "state": "delighted",
+                  "story": "delighted_presence"
+                },
+                {
+                  "brow": 1,
+                  "hold": 2,
+                  "lower": 2,
+                  "source": 0,
+                  "state": "bashful",
+                  "story": "bashful_presence"
+                },
+                {
+                  "brow": 1,
+                  "hold": 2,
+                  "lower": 2,
+                  "source": 0,
+                  "state": "thoughtful",
+                  "story": "thoughtful_presence"
+                },
+                {
+                  "brow": 1,
+                  "hold": 2,
+                  "lower": 2,
+                  "source": 0,
+                  "state": "focused",
+                  "story": "focused_presence"
+                },
+                {
+                  "brow": 1,
+                  "hold": 2,
+                  "lower": 2,
+                  "source": 0,
+                  "state": "alert",
+                  "story": "alert_exclamation"
+                }
+              ],
+              "target_hold_refresh": false
+            },
+            "format": {
+              "bits_per_pixel": 1,
+              "black_bit": 1,
+              "frame_bytes": 5000,
+              "height": 200,
+              "orientation": {
+                "device_transform": "identity",
+                "positive_x": "right",
+                "positive_y": "down",
+                "screen_origin": "top_left"
+              },
+              "row_stride_bytes": 25,
+              "white_bit": 0,
+              "width": 200
+            },
+            "gaze_samples": [
+              {
+                "key": "1,0,1,0",
+                "state": "gaze_center"
+              },
+              {
+                "key": "-2,0,-6,0",
+                "state": "gaze_left"
+              },
+              {
+                "key": "1,-3,1,-6",
+                "state": "gaze_up"
+              },
+              {
+                "key": "5,0,5,0",
+                "state": "gaze_right"
+              },
+              {
+                "key": "1,4,1,6",
+                "state": "gaze_down"
+              }
+            ],
+            "idle_glint": {
+              "baseline_key": "1,0,1,0",
+              "changed_frames_per_beat": 3,
+              "cycle_steps": 11,
+              "interrupt_policy": "cancel_once_then_retarget",
+              "ordered_keys": [
+                "1,0,1,0",
+                "1,0,1,0",
+                "1,0,1,0",
+                "1,0,1,0",
+                "1,0,1,0",
+                "1,0,1,0",
+                "1,0,1,0",
+                "1,0,1,0",
+                "0,0,0,0",
+                "1,-1,1,-1",
+                "1,0,1,0"
+              ],
+              "quiet_steps": 8
+            },
+            "menu_frames": [
+              {
+                "src": "/docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/01-home.png",
+                "state": "menu_roots"
+              },
+              {
+                "src": "/docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/02-voice.png",
+                "state": "menu_voice"
+              },
+              {
+                "src": "/docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/03-device.png",
+                "state": "menu_device"
+              },
+              {
+                "src": "/docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/04-connection.png",
+                "state": "menu_connection"
+              },
+              {
+                "src": "/docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/05-preferences.png",
+                "state": "menu_preferences"
+              }
+            ],
+            "recording_accessory": {
+              "indicator": {
+                "kind": "compact_record_status",
+                "origin": [
+                  10,
+                  10
+                ],
+                "size": [
+                  18,
+                  18
+                ]
+              },
+              "orthogonal_to_expression": true,
+              "wave": {
+                "corridor": [
+                  168,
+                  64,
+                  197,
+                  76
+                ],
+                "front_height": 13,
+                "front_width": 6,
+                "listening_point": [
+                  158,
+                  70
+                ],
+                "ring_policy": "inner_absorb_outer_insert",
+                "slot_distances": [
+                  34,
+                  26,
+                  18,
+                  10
+                ],
+                "state_count": 4,
+                "stroke_px": 2,
+                "visible_fronts": 3
+              }
+            },
+            "rendering": {
+              "committed_frames_only": true,
+              "css_interpolation": "none",
+              "opacity_tween": false,
+              "subpixel_motion": false
+            },
+            "requirements": [
+              "COMP-REQ-536",
+              "COMP-REQ-537",
+              "COMP-REQ-538"
+            ],
+            "schema": "companion.browser-epaper-visual-manifest.v1"
+          },
+          "gaze_target": {
+            "key": "1,0,1,0",
+            "x": 100,
+            "y": 100
+          },
+          "interaction_memory": 0,
+          "mode_override": "none",
+          "pending_orient": null,
+          "reaction_phase": "steady",
+          "route_count": 0,
+          "trace": []
+        },
+        "snapshot": {
+          "canvasInk": 2983,
+          "canvasSignature": "2f7ed52e",
+          "frame": "data:image/png;base64,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",
+          "gaze": "http://127.0.0.1:58536/docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/touch-gaze-overlay-189.png?review=v45-authority-wall-r2",
+          "gazeHidden": false,
+          "gazeTransform": "matrix(1, 0, 0, 1, 0, -27)",
+          "layers": {
+            "frame_src": "data:image/png;base64,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",
+            "gaze_nodes": 1,
+            "gaze_src": "touch-gaze-overlay-189.png?review=v45-authority-wall-r2",
+            "image_nodes": 4,
+            "menu_nodes": 1,
+            "visible_images": 2
+          },
+          "recordingIndicatorHidden": true,
+          "recordingPhase": "accessory_inactive",
+          "recordingWaveHidden": true,
+          "recordingWaveStep": -1
+        }
+      },
+      "before_exit": {
+        "frame": "data:image/png;base64,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",
+        "gaze": "http://127.0.0.1:58536/docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/touch-gaze-overlay-189.png?review=v45-authority-wall-r2",
+        "natural": {
+          "accessory_active": true,
+          "affect_after": {
+            "affinity": 0,
+            "arousal": 1,
+            "valence": 0
+          },
+          "base_affect": "calm",
+          "bridge": null,
+          "changed_frame_count": 0,
+          "coalesced_pending": null,
+          "contract": {
+            "bridgeWindowMs": 480,
+            "explicitResolveEdges": {
+              "ambiguity_resolved": [
+                "puzzled",
+                "calm"
+              ],
+              "high_salience": [
+                "puzzled",
+                "alert"
+              ],
+              "salience_reduced": [
+                "alert",
+                "puzzled"
+              ]
+            },
+            "legalTapEdges": {
+              "calm": "curious",
+              "curious": "warm",
+              "warm": "playful"
+            },
+            "maxCoalescedPending": 1,
+            "maxPostSourceChangedFrames": 3,
+            "priority": [
+              "error",
+              "alert",
+              "menu",
+              "recording",
+              "drag",
+              "single_tap",
+              "ambient"
+            ],
+            "stateStories": {
+              "alert": "alert_exclamation",
+              "calm": "calm_presence",
+              "curious": "curious_question",
+              "playful": "playful_presence",
+              "puzzled": "curious_question",
+              "warm": "warm_presence"
+            },
+            "tapDiscriminatorMs": 650
+          },
+          "epaper_manifest": {
+            "blink": {
+              "ordered_frame_indices": [
+                1,
+                2,
+                3,
+                4
+              ],
+              "registered_event_only": true,
+              "reopen_frame_index": 4,
+              "story": "calm_presence"
+            },
+            "cadence_ms": 480,
+            "emotion_choreography": {
+              "legal_edges": [
+                [
+                  "calm",
+                  "curious"
+                ],
+                [
+                  "curious",
+                  "warm"
+                ],
+                [
+                  "warm",
+                  "playful"
+                ],
+                [
+                  "playful",
+                  "playful"
+                ],
+                [
+                  "puzzled",
+                  "calm"
+                ],
+                [
+                  "puzzled",
+                  "alert"
+                ],
+                [
+                  "alert",
+                  "puzzled"
+                ]
+              ],
+              "max_post_source_changed_frames": 3,
+              "ordered_phases": [
+                "source_hold",
+                "gaze_highlight_orient",
+                "brow_eye_reply",
+                "lower_face_reply",
+                "target_hold"
+              ],
+              "states": [
+                {
+                  "brow": 1,
+                  "hold": 4,
+                  "lower": 4,
+                  "source": 4,
+                  "state": "calm",
+                  "story": "calm_presence"
+                },
+                {
+                  "brow": 1,
+                  "hold": 2,
+                  "lower": 2,
+                  "source": 0,
+                  "state": "curious",
+                  "story": "curious_question"
+                },
+                {
+                  "brow": 1,
+                  "hold": 2,
+                  "lower": 2,
+                  "source": 0,
+                  "state": "warm",
+                  "story": "warm_presence"
+                },
+                {
+                  "brow": 1,
+                  "hold": 2,
+                  "lower": 2,
+                  "source": 0,
+                  "state": "playful",
+                  "story": "playful_presence"
+                },
+                {
+                  "brow": 1,
+                  "hold": 2,
+                  "lower": 2,
+                  "source": 0,
+                  "state": "sleepy",
+                  "story": "sleepy_presence"
+                },
+                {
+                  "brow": 1,
+                  "hold": 2,
+                  "lower": 2,
+                  "source": 0,
+                  "state": "delighted",
+                  "story": "delighted_presence"
+                },
+                {
+                  "brow": 1,
+                  "hold": 2,
+                  "lower": 2,
+                  "source": 0,
+                  "state": "bashful",
+                  "story": "bashful_presence"
+                },
+                {
+                  "brow": 1,
+                  "hold": 2,
+                  "lower": 2,
+                  "source": 0,
+                  "state": "thoughtful",
+                  "story": "thoughtful_presence"
+                },
+                {
+                  "brow": 1,
+                  "hold": 2,
+                  "lower": 2,
+                  "source": 0,
+                  "state": "focused",
+                  "story": "focused_presence"
+                },
+                {
+                  "brow": 1,
+                  "hold": 2,
+                  "lower": 2,
+                  "source": 0,
+                  "state": "alert",
+                  "story": "alert_exclamation"
+                }
+              ],
+              "target_hold_refresh": false
+            },
+            "format": {
+              "bits_per_pixel": 1,
+              "black_bit": 1,
+              "frame_bytes": 5000,
+              "height": 200,
+              "orientation": {
+                "device_transform": "identity",
+                "positive_x": "right",
+                "positive_y": "down",
+                "screen_origin": "top_left"
+              },
+              "row_stride_bytes": 25,
+              "white_bit": 0,
+              "width": 200
+            },
+            "gaze_samples": [
+              {
+                "key": "1,0,1,0",
+                "state": "gaze_center"
+              },
+              {
+                "key": "-2,0,-6,0",
+                "state": "gaze_left"
+              },
+              {
+                "key": "1,-3,1,-6",
+                "state": "gaze_up"
+              },
+              {
+                "key": "5,0,5,0",
+                "state": "gaze_right"
+              },
+              {
+                "key": "1,4,1,6",
+                "state": "gaze_down"
+              }
+            ],
+            "idle_glint": {
+              "baseline_key": "1,0,1,0",
+              "changed_frames_per_beat": 3,
+              "cycle_steps": 11,
+              "interrupt_policy": "cancel_once_then_retarget",
+              "ordered_keys": [
+                "1,0,1,0",
+                "1,0,1,0",
+                "1,0,1,0",
+                "1,0,1,0",
+                "1,0,1,0",
+                "1,0,1,0",
+                "1,0,1,0",
+                "1,0,1,0",
+                "0,0,0,0",
+                "1,-1,1,-1",
+                "1,0,1,0"
+              ],
+              "quiet_steps": 8
+            },
+            "menu_frames": [
+              {
+                "src": "/docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/01-home.png",
+                "state": "menu_roots"
+              },
+              {
+                "src": "/docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/02-voice.png",
+                "state": "menu_voice"
+              },
+              {
+                "src": "/docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/03-device.png",
+                "state": "menu_device"
+              },
+              {
+                "src": "/docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/04-connection.png",
+                "state": "menu_connection"
+              },
+              {
+                "src": "/docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/05-preferences.png",
+                "state": "menu_preferences"
+              }
+            ],
+            "recording_accessory": {
+              "indicator": {
+                "kind": "compact_record_status",
+                "origin": [
+                  10,
+                  10
+                ],
+                "size": [
+                  18,
+                  18
+                ]
+              },
+              "orthogonal_to_expression": true,
+              "wave": {
+                "corridor": [
+                  168,
+                  64,
+                  197,
+                  76
+                ],
+                "front_height": 13,
+                "front_width": 6,
+                "listening_point": [
+                  158,
+                  70
+                ],
+                "ring_policy": "inner_absorb_outer_insert",
+                "slot_distances": [
+                  34,
+                  26,
+                  18,
+                  10
+                ],
+                "state_count": 4,
+                "stroke_px": 2,
+                "visible_fronts": 3
+              }
+            },
+            "rendering": {
+              "committed_frames_only": true,
+              "css_interpolation": "none",
+              "opacity_tween": false,
+              "subpixel_motion": false
+            },
+            "requirements": [
+              "COMP-REQ-536",
+              "COMP-REQ-537",
+              "COMP-REQ-538"
+            ],
+            "schema": "companion.browser-epaper-visual-manifest.v1"
+          },
+          "gaze_target": {
+            "key": "1,0,1,0",
+            "x": 100,
+            "y": 100
+          },
+          "interaction_memory": 0,
+          "mode_override": "none",
+          "pending_orient": null,
+          "reaction_phase": "steady",
+          "route_count": 0,
+          "trace": [
+            {
+              "base_affect": "calm",
+              "gaze_target": {
+                "key": "1,0,1,0",
+                "x": 100,
+                "y": 100
+              },
+              "kind": "source_hold",
+              "mode_override": "none",
+              "reaction_phase": "gaze_highlight_lead",
+              "release_event_id": "upper-0002",
+              "sequence": 1
+            },
+            {
+              "base_affect": "calm",
+              "changed_frame": 1,
+              "gaze_target": {
+                "key": "1,0,1,0",
+                "x": 100,
+                "y": 100
+              },
+              "kind": "gaze_highlight_lead",
+              "mode_override": "none",
+              "reaction_phase": "gaze_highlight_lead",
+              "release_event_id": "upper-0002",
+              "sequence": 2,
+              "target": {
+                "key": "1,0,1,0",
+                "x": 100,
+                "y": 100
+              }
+            },
+            {
+              "base_affect": "calm",
+              "gaze_target": {
+                "key": "1,0,1,0",
+                "x": 100,
+                "y": 100
+              },
+              "kind": "pending_canceled",
+              "mode_override": "none",
+              "reaction_phase": "steady",
+              "reason": "double_tap_toggle",
+              "sequence": 3
+            }
+          ]
+        }
+      },
+      "entered": {
+        "natural": {
+          "accessory_active": true,
+          "affect_after": {
+            "affinity": 0,
+            "arousal": 1,
+            "valence": 0
+          },
+          "base_affect": "calm",
+          "bridge": null,
+          "changed_frame_count": 0,
+          "coalesced_pending": null,
+          "contract": {
+            "bridgeWindowMs": 480,
+            "explicitResolveEdges": {
+              "ambiguity_resolved": [
+                "puzzled",
+                "calm"
+              ],
+              "high_salience": [
+                "puzzled",
+                "alert"
+              ],
+              "salience_reduced": [
+                "alert",
+                "puzzled"
+              ]
+            },
+            "legalTapEdges": {
+              "calm": "curious",
+              "curious": "warm",
+              "warm": "playful"
+            },
+            "maxCoalescedPending": 1,
+            "maxPostSourceChangedFrames": 3,
+            "priority": [
+              "error",
+              "alert",
+              "menu",
+              "recording",
+              "drag",
+              "single_tap",
+              "ambient"
+            ],
+            "stateStories": {
+              "alert": "alert_exclamation",
+              "calm": "calm_presence",
+              "curious": "curious_question",
+              "playful": "playful_presence",
+              "puzzled": "curious_question",
+              "warm": "warm_presence"
+            },
+            "tapDiscriminatorMs": 650
+          },
+          "epaper_manifest": {
+            "blink": {
+              "ordered_frame_indices": [
+                1,
+                2,
+                3,
+                4
+              ],
+              "registered_event_only": true,
+              "reopen_frame_index": 4,
+              "story": "calm_presence"
+            },
+            "cadence_ms": 480,
+            "emotion_choreography": {
+              "legal_edges": [
+                [
+                  "calm",
+                  "curious"
+                ],
+                [
+                  "curious",
+                  "warm"
+                ],
+                [
+                  "warm",
+                  "playful"
+                ],
+                [
+                  "playful",
+                  "playful"
+                ],
+                [
+                  "puzzled",
+                  "calm"
+                ],
+                [
+                  "puzzled",
+                  "alert"
+                ],
+                [
+                  "alert",
+                  "puzzled"
+                ]
+              ],
+              "max_post_source_changed_frames": 3,
+              "ordered_phases": [
+                "source_hold",
+                "gaze_highlight_orient",
+                "brow_eye_reply",
+                "lower_face_reply",
+                "target_hold"
+              ],
+              "states": [
+                {
+                  "brow": 1,
+                  "hold": 4,
+                  "lower": 4,
+                  "source": 4,
+                  "state": "calm",
+                  "story": "calm_presence"
+                },
+                {
+                  "brow": 1,
+                  "hold": 2,
+                  "lower": 2,
+                  "source": 0,
+                  "state": "curious",
+                  "story": "curious_question"
+                },
+                {
+                  "brow": 1,
+                  "hold": 2,
+                  "lower": 2,
+                  "source": 0,
+                  "state": "warm",
+                  "story": "warm_presence"
+                },
+                {
+                  "brow": 1,
+                  "hold": 2,
+                  "lower": 2,
+                  "source": 0,
+                  "state": "playful",
+                  "story": "playful_presence"
+                },
+                {
+                  "brow": 1,
+                  "hold": 2,
+                  "lower": 2,
+                  "source": 0,
+                  "state": "sleepy",
+                  "story": "sleepy_presence"
+                },
+                {
+                  "brow": 1,
+                  "hold": 2,
+                  "lower": 2,
+                  "source": 0,
+                  "state": "delighted",
+                  "story": "delighted_presence"
+                },
+                {
+                  "brow": 1,
+                  "hold": 2,
+                  "lower": 2,
+                  "source": 0,
+                  "state": "bashful",
+                  "story": "bashful_presence"
+                },
+                {
+                  "brow": 1,
+                  "hold": 2,
+                  "lower": 2,
+                  "source": 0,
+                  "state": "thoughtful",
+                  "story": "thoughtful_presence"
+                },
+                {
+                  "brow": 1,
+                  "hold": 2,
+                  "lower": 2,
+                  "source": 0,
+                  "state": "focused",
+                  "story": "focused_presence"
+                },
+                {
+                  "brow": 1,
+                  "hold": 2,
+                  "lower": 2,
+                  "source": 0,
+                  "state": "alert",
+                  "story": "alert_exclamation"
+                }
+              ],
+              "target_hold_refresh": false
+            },
+            "format": {
+              "bits_per_pixel": 1,
+              "black_bit": 1,
+              "frame_bytes": 5000,
+              "height": 200,
+              "orientation": {
+                "device_transform": "identity",
+                "positive_x": "right",
+                "positive_y": "down",
+                "screen_origin": "top_left"
+              },
+              "row_stride_bytes": 25,
+              "white_bit": 0,
+              "width": 200
+            },
+            "gaze_samples": [
+              {
+                "key": "1,0,1,0",
+                "state": "gaze_center"
+              },
+              {
+                "key": "-2,0,-6,0",
+                "state": "gaze_left"
+              },
+              {
+                "key": "1,-3,1,-6",
+                "state": "gaze_up"
+              },
+              {
+                "key": "5,0,5,0",
+                "state": "gaze_right"
+              },
+              {
+                "key": "1,4,1,6",
+                "state": "gaze_down"
+              }
+            ],
+            "idle_glint": {
+              "baseline_key": "1,0,1,0",
+              "changed_frames_per_beat": 3,
+              "cycle_steps": 11,
+              "interrupt_policy": "cancel_once_then_retarget",
+              "ordered_keys": [
+                "1,0,1,0",
+                "1,0,1,0",
+                "1,0,1,0",
+                "1,0,1,0",
+                "1,0,1,0",
+                "1,0,1,0",
+                "1,0,1,0",
+                "1,0,1,0",
+                "0,0,0,0",
+                "1,-1,1,-1",
+                "1,0,1,0"
+              ],
+              "quiet_steps": 8
+            },
+            "menu_frames": [
+              {
+                "src": "/docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/01-home.png",
+                "state": "menu_roots"
+              },
+              {
+                "src": "/docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/02-voice.png",
+                "state": "menu_voice"
+              },
+              {
+                "src": "/docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/03-device.png",
+                "state": "menu_device"
+              },
+              {
+                "src": "/docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/04-connection.png",
+                "state": "menu_connection"
+              },
+              {
+                "src": "/docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/05-preferences.png",
+                "state": "menu_preferences"
+              }
+            ],
+            "recording_accessory": {
+              "indicator": {
+                "kind": "compact_record_status",
+                "origin": [
+                  10,
+                  10
+                ],
+                "size": [
+                  18,
+                  18
+                ]
+              },
+              "orthogonal_to_expression": true,
+              "wave": {
+                "corridor": [
+                  168,
+                  64,
+                  197,
+                  76
+                ],
+                "front_height": 13,
+                "front_width": 6,
+                "listening_point": [
+                  158,
+                  70
+                ],
+                "ring_policy": "inner_absorb_outer_insert",
+                "slot_distances": [
+                  34,
+                  26,
+                  18,
+                  10
+                ],
+                "state_count": 4,
+                "stroke_px": 2,
+                "visible_fronts": 3
+              }
+            },
+            "rendering": {
+              "committed_frames_only": true,
+              "css_interpolation": "none",
+              "opacity_tween": false,
+              "subpixel_motion": false
+            },
+            "requirements": [
+              "COMP-REQ-536",
+              "COMP-REQ-537",
+              "COMP-REQ-538"
+            ],
+            "schema": "companion.browser-epaper-visual-manifest.v1"
+          },
+          "gaze_target": {
+            "key": "1,0,1,0",
+            "x": 100,
+            "y": 100
+          },
+          "interaction_memory": 0,
+          "mode_override": "none",
+          "pending_orient": null,
+          "reaction_phase": "steady",
+          "route_count": 0,
+          "trace": [
+            {
+              "base_affect": "calm",
+              "gaze_target": {
+                "key": "1,0,1,0",
+                "x": 100,
+                "y": 100
+              },
+              "kind": "source_hold",
+              "mode_override": "none",
+              "reaction_phase": "gaze_highlight_lead",
+              "release_event_id": "upper-0002",
+              "sequence": 1
+            },
+            {
+              "base_affect": "calm",
+              "changed_frame": 1,
+              "gaze_target": {
+                "key": "1,0,1,0",
+                "x": 100,
+                "y": 100
+              },
+              "kind": "gaze_highlight_lead",
+              "mode_override": "none",
+              "reaction_phase": "gaze_highlight_lead",
+              "release_event_id": "upper-0002",
+              "sequence": 2,
+              "target": {
+                "key": "1,0,1,0",
+                "x": 100,
+                "y": 100
+              }
+            },
+            {
+              "base_affect": "calm",
+              "gaze_target": {
+                "key": "1,0,1,0",
+                "x": 100,
+                "y": 100
+              },
+              "kind": "pending_canceled",
+              "mode_override": "none",
+              "reaction_phase": "steady",
+              "reason": "double_tap_toggle",
+              "sequence": 3
+            }
+          ]
+        },
+        "recording": {
+          "accessory_active": true,
+          "active": true,
+          "base_affect": "calm",
+          "consumedPairs": [
+            {
+              "action": "enter",
+              "release_event_ids": [
+                "upper-0002",
+                "upper-0004"
+              ],
+              "sequence": 1
+            }
+          ],
+          "entries": 1,
+          "exits": 0,
+          "ignoredInputs": 0,
+          "indicatorNodes": 1,
+          "indicatorVisible": true,
+          "interaction_mode": "expression",
+          "micGlyphPresent": false,
+          "mode_override": "none",
+          "orthogonal_to_expression": true,
+          "phase": "accessory_active",
+          "phaseTrace": [
+            {
+              "base_affect": "calm",
+              "face_capture": false,
+              "face_restart": false,
+              "frame": "calm_presence-04-calm_blink_settle.png",
+              "phase": "accessory_active",
+              "reaction_phase": "steady",
+              "sequence": 1,
+              "story": "calm_presence"
+            }
+          ],
+          "reaction_phase": "steady",
+          "sequence": 1,
+          "waveContract": {
+            "front_height": 13,
+            "front_width": 6,
+            "interpolation": "none",
+            "listening_point": {
+              "x": 158,
+              "y": 70
+            },
+            "ring_policy": "inner_absorb_outer_insert",
+            "scheduler": "bounded_setTimeout",
+            "slot_distances": [
+              34,
+              26,
+              18,
+              10
+            ],
+            "state_count": 4,
+            "step_ms": 480,
+            "stroke_px": 2
+          },
+          "waveFronts": [
+            {
+              "id": "front_000",
+              "lifecycle": "front",
+              "slot": 0
+            },
+            {
+              "id": "front_001",
+              "lifecycle": "front",
+              "slot": 1
+            },
+            {
+              "id": "front_002",
+              "lifecycle": "front",
+              "slot": 2
+            }
+          ],
+          "waveStep": 0,
+          "waveTrace": [
+            {
+              "arc_count": 3,
+              "arcs": [
+                {
+                  "bounds": {
+                    "x_max": 197,
+                    "x_min": 192,
+                    "y_max": 76,
+                    "y_min": 64
+                  },
+                  "convex_direction": "toward_listening_point",
+                  "distance_to_listening_point": 34,
+                  "geometry": {
+                    "height": 13,
+                    "stroke": 2,
+                    "width": 6
+                  },
+                  "id": "front_000",
+                  "lifecycle": "front",
+                  "slot": 0
+                },
+                {
+                  "bounds": {
+                    "x_max": 189,
+                    "x_min": 184,
+                    "y_max": 76,
+                    "y_min": 64
+                  },
+                  "convex_direction": "toward_listening_point",
+                  "distance_to_listening_point": 26,
+                  "geometry": {
+                    "height": 13,
+                    "stroke": 2,
+                    "width": 6
+                  },
+                  "id": "front_001",
+                  "lifecycle": "front",
+                  "slot": 1
+                },
+                {
+                  "bounds": {
+                    "x_max": 181,
+                    "x_min": 176,
+                    "y_max": 76,
+                    "y_min": 64
+                  },
+                  "convex_direction": "toward_listening_point",
+                  "distance_to_listening_point": 18,
+                  "geometry": {
+                    "height": 13,
+                    "stroke": 2,
+                    "width": 6
+                  },
+                  "id": "front_002",
+                  "lifecycle": "front",
+                  "slot": 2
+                }
+              ],
+              "centroid": {
+                "x": 186.038,
+                "y": 70
+              },
+              "cycle": 0,
+              "gray_pixels": 0,
+              "ink_pixels": 78,
+              "listening_point": {
+                "x": 158,
+                "y": 70
+              },
+              "sequence": 1,
+              "step": 0,
+              "transition": {
+                "absorbed": [],
+                "inserted": [],
+                "moved": []
+              }
+            }
+          ],
+          "waveVisible": true
+        },
+        "snapshot": {
+          "canvasInk": 3141,
+          "canvasSignature": "51b7f0c4",
+          "frame": "data:image/png;base64,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",
+          "gaze": "http://127.0.0.1:58536/docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/touch-gaze-overlay-189.png?review=v45-authority-wall-r2",
+          "gazeHidden": false,
+          "gazeTransform": "matrix(1, 0, 0, 1, 0, -27)",
+          "layers": {
+            "frame_src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAKEUlEQVR4AeydiXLjNhBE3fv//+x4pGJE0zwAEtcMXipYUuBgjtdsK7WbSv598xcEIHBI4N8Xf0EAAocEMMghGh5A4OsLg/AWQOCEAAY5gcMjCFQ0CHAh4J8ABvGvIRNUJIBBKsIltX8CGMS/hkxQkQAGqQiX1P4J+DSIf+5M4IQABnEiFG32IYBB+nCnqhMCGMSJULTZhwAG6cOdqk4IYJCNUHyEwJoABlnT4B4CGwIYZAOEjxBYE8AgaxrcQ2BDAINsgPARAmsCGGRNo+492R0SwCAORaPldgQwSDvWVHJIAIM4FI2W2xHAIO1YU8khAQziULS/LbNTiwAGqUWWvCEIYJAQMjJELQIYpBZZ8oYggEFCyMgQtQhgkFpko+SdfA4MMvkLwPjnBDDIOR+eTk4Ag0z+AjD+OQEMcs6Hp5MTwCCTvwA9x/dQG4N4UIkeuxHAIN3QU9gDAQziQSV67EYAg3RDT2EPBDCIB5XoMZdAsXgMUgwliSISwCARVWWmYgQwSDGUJIpIAINEVJWZihHAIMVQkigigb8GiTglM0HgJgEMchMcx+YggEHm0JkpbxLAIDfBcWwOAhhkDp2Z8iaBpga52SPHINCNAAbphp7CHghgEA8q0WM3AhikG3oKeyCAQTyoRI/dCEQxSDeAFI5NAIPE1pfpHhLAIA8Bcjw2AQwSW1+me0gAgzwEyPHYBDDIpb4EzEwAg8ysPrNfEsAgl4gImJkABplZfWa/JIBBLhERMDMBDNJTfWoPTwCDDC8RDfYkgEF60qf28AQwyPAS0WBPAhikJ31qD08Agwwv0b0GOVWGAAYpw5EsQQlgkKDCMlYZAhikDEeyBCWAQYIKy1hlCGCQMhxnyjLVrBhkKrkZNpcABsklRvxUBDDIVHIzbC4BDJJLjPipCGCQqeQefdjx+sMg42lCRwMRwCADiUEr4xHAIONpQkcDEcAgA4lBK+MRwCDjaUJHNQjczBnWIJK+pLR1k13IY1IaM+kdFxLCaqhQBpHeoklajXh9K+l/M11Hx4yQ3gxyp5Pe5yTlHnURH8Igkl4veAnikkqkcZVDKjOzVCbPSPBcG0RSMWOMJErLXiQVLScplCauDVJUWZIVJSCpaL5eyVIM0qs36kKgOwG3BpHu/4T6/v7+WtZWAdvf7kX+vDfv3l5kBmezuTVIKREtz3qdwYr6bD2/3Ued885cbg1yZ1jOpBGQ8r6dzVS21tm3n9fPPN27NoiJYMsT8Mi9mhbLijJnZ4NEwRhnDinv2yPO5PuTYJB9LuwmErBvjMRQl2HTGSS6oC7fwoGbns4gA2vhrrUZfthMZZAZBHXnssEbjmuQDXjMsQFy8DGVU2rcQRk32yEMMotYo7xVM/EOYRB7cY5Es31bFnO2JH57c+FzxMv2bS1xR1dJYf6N3jAGMbFMvO2y/asl6RUiva+vD5P/suVon2dEEsogdwSUMMUdbkdnpA9P6XN/FD/6/tQGkf4KKP3d24rI530C0l920t+9/dNj7k5tkCNJJN+iHs3Va1/yy3Nqgxz9c/XRfq8XzHtdzzynNoi9eFvxtp8thpVGYI/d3l5atjGipjfIWgbvYq5n6XW/Zri+79XP07qhDSLp9fvx0v51gWdC2lo+d7wOWVra5yf93l+aN5a2ls+er+EMIn1EuxJGesdexc36XMrjI+XFe+AayiCSbjGX9PqmuXU46CFJtyeTFIZnGINIui3oclB6nmPJ5fkqleEglcnTk6V7g0gq+tNKUk89uteWys4vlc3XGpB7g9QAJvkWdZ/J9a4059xnZFwbRKonqFQv95kgvZ5J9eaV6uWuzcutQSS/0GuLmptfqs9Sql8jd+6UeLcGSRnuaYzkU9Snc3P+Q8ClQSRe3I+Ez+6kdiyldrWeUfmcdmcQqS1kqW29jzSO7gK36s4ggbVoPprU3vxS+5pPwGKQBHqSL1ETRiIkkYArg0i8qIm6ElaIgCuDFJqZND8EpH4/bKR+tX9Gz/obg2ThIrg1gd713BhE6vtTR+pbv/eLMmt9NwaZVSDm7ksAg/TlP211ycc3MgaZ8BWVfLycI0iDQUZQgR56EEiqiUGSMBE0KwEMMqvyzJ1EAIMkYSJoVgIYZFblmTuJAAZJwkTQrATuGWRWWsw9HQEMMp3kX18j/GdBR+ghRXoMkkKJmGkJYJBppWfwFAJuDNL7K7l3/RQxiSlPYDiDlB+RjBC4TwCD3Gfn+mTPb8SetXNFc2WQXmB71c0Vk/jyBFwZpPz4ZITAOQEMcs5niD8zuGjx9uMe34w9at4G9HPQnUEeAP4Zd+y/Jb3+XyfS+zp2t/ndedTOnUFMllagW9SR3maQZKP9WpJehvm1WfhDixkLt9w0nUuDNCVUsZikpOxSWlxSsp2gFiZpUWNntMdbbg1SG3jt/FLeSy/lxT9+MwomqM2yYKt/Urk1iE1SC3ytvNbzqKvWzLXytuLo2iAGqbQA9/JZJ3krt05ufF4372irYev96fmvJXM97+ZeBvcGsbFLCGE5bFm+Viu1Xmpcqb5L1CuRo9Q8T/KEMIgBMEFs2X3uunsut85evNW2tffM9s6e2fNay+rays1vZ2zlnhs1PoxBFsAmzrKWvb3rEmPXveet96yPvdW6j229paft/vrzEmPX9X6E+3AGWYtigh2tdRz31wSOONr+9Wm/EaEN4leWVeeBbyVV/4PQp/iGNIj0Bif9vT4dmPP9CEi/9Vw6kT77y94o16EMIr1BncGRrmPOzvOsDwFJSYUlDfWtMoxBJCUBXIKkvPjl3KhXSUO9GCU5SSqZrmmuYQzSdOqGxSS9XnxJh1WlzzPpc789IOmVa7sf8bOkIcbCIBVlkK5Flq5jrEXpEyd97u3Z3cW5awIY5JrR7Yjtb4FKv19s6ffnpZCkX98UkpZHLq9bDilD3DmTkjc3ZhiD5ALJjc8FUyte0uvll3RZQtIrdhvocfacnnNit2xKfx7GIDaYgbFl92crJebsfMtnqb2Wjms5Y2otm9HWUbw9s3X0vMf+UAZZABiks7XEebnaLGe9Ls+X61lshGc2594acbYhDTIiqKc9LS/EOk/unsWvzw98H6Y1DNJYSnvJl3VWeomx61kcz+oSwCB1+ZLdOQEM4lxA2q9LAIPU5Ut25wQwiHMB52u/7cQYpC1vqjkjgEGcCUa7bQlgkLa8qeaMAAZxJhjttiWAQdryptrIBHZ6wyA7UNiCwEIAgywkuEJghwAG2YHCFgQWAhhkIcEVAjsEMMgOFLYgsBAoZZAlH1cIhCKAQULJyTClCWCQ0kTJF4oABgklJ8OUJoBBShMlXygCDgwSijfDOCOAQZwJRrttCWCQtryp5owABnEmGO22JYBB2vKmmjMCcxvEmVi0254ABmnPnIqOCGAQR2LRansCGKQ9cyo6IoBBHIlFq+0JYJBKzEkbg8B/AAAA///H7EVCAAAABklEQVQDAN2XXrx87ysiAAAAAElFTkSuQmCC",
+            "gaze_nodes": 1,
+            "gaze_src": "touch-gaze-overlay-189.png?review=v45-authority-wall-r2",
+            "image_nodes": 4,
+            "menu_nodes": 1,
+            "visible_images": 2
+          },
+          "recordingIndicatorHidden": false,
+          "recordingPhase": "accessory_active",
+          "recordingWaveHidden": false,
+          "recordingWaveStep": 0
+        },
+        "state_view": {
+          "accessory_active": true,
+          "affect": "calm",
+          "displayed_edge_legal": true,
+          "event": "recording_route_enter",
+          "exists": true,
+          "interaction_mode": "expression",
+          "mode": "none",
+          "next": [
+            {
+              "event": "touch_tap",
+              "from": "calm",
+              "label": "好奇",
+              "legal": true,
+              "to": "curious"
+            },
+            {
+              "event": "recording_accessory_toggle",
+              "from": "calm",
+              "label": "平静",
+              "legal": true,
+              "to": "calm"
+            },
+            {
+              "event": "menu",
+              "from": "calm",
+              "label": "平静",
+              "legal": true,
+              "to": "calm"
+            }
+          ],
+          "outside_screen": true,
+          "phase": "steady",
+          "source_identity": "naturalState+recordingState",
+          "source_sequence": 3,
+          "timeline": [
+            {
+              "label": "触点定向 · 平静",
+              "sequence": 1
+            },
+            {
+              "label": "眼神先行 · 平静",
+              "sequence": 2
+            },
+            {
+              "label": "取消等待 · 平静",
+              "sequence": 3
+            }
+          ],
+          "visible": true
+        },
+        "transition_duration": "0s"
+      }
+    },
+    "idle": {
+      "cadence_ms": 480,
+      "run_sha256": [
+        "B862739B0B0E74DAE09C802A6214CC3A589056C295D2EAEE0F0DE39E6FAF05B3",
+        "B862739B0B0E74DAE09C802A6214CC3A589056C295D2EAEE0F0DE39E6FAF05B3"
+      ],
+      "runs": [
+        [
+          {
+            "cadence": 0,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 0
+          },
+          {
+            "cadence": 1,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 1
+          },
+          {
+            "cadence": 2,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 2
+          },
+          {
+            "cadence": 3,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 3
+          },
+          {
+            "cadence": 4,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 4
+          },
+          {
+            "cadence": 5,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 5
+          },
+          {
+            "cadence": 6,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 6
+          },
+          {
+            "cadence": 7,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 7
+          },
+          {
+            "cadence": 8,
+            "full_frame_hash": "9f775153",
+            "gaze_key": "0,0,0,0",
+            "gray_pixels": 0,
+            "step": 8
+          },
+          {
+            "cadence": 9,
+            "full_frame_hash": "018357a0",
+            "gaze_key": "1,-1,1,-1",
+            "gray_pixels": 0,
+            "step": 9
+          },
+          {
+            "cadence": 10,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 10
+          },
+          {
+            "cadence": 11,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 0
+          },
+          {
+            "cadence": 12,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 1
+          },
+          {
+            "cadence": 13,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 2
+          },
+          {
+            "cadence": 14,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 3
+          },
+          {
+            "cadence": 15,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 4
+          },
+          {
+            "cadence": 16,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 5
+          },
+          {
+            "cadence": 17,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 6
+          },
+          {
+            "cadence": 18,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 7
+          },
+          {
+            "cadence": 19,
+            "full_frame_hash": "9f775153",
+            "gaze_key": "0,0,0,0",
+            "gray_pixels": 0,
+            "step": 8
+          },
+          {
+            "cadence": 20,
+            "full_frame_hash": "018357a0",
+            "gaze_key": "1,-1,1,-1",
+            "gray_pixels": 0,
+            "step": 9
+          },
+          {
+            "cadence": 21,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 10
+          },
+          {
+            "cadence": 22,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 0
+          },
+          {
+            "cadence": 23,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 1
+          },
+          {
+            "cadence": 24,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 2
+          },
+          {
+            "cadence": 25,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 3
+          },
+          {
+            "cadence": 26,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 4
+          },
+          {
+            "cadence": 27,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 5
+          },
+          {
+            "cadence": 28,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 6
+          },
+          {
+            "cadence": 29,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 7
+          },
+          {
+            "cadence": 30,
+            "full_frame_hash": "9f775153",
+            "gaze_key": "0,0,0,0",
+            "gray_pixels": 0,
+            "step": 8
+          },
+          {
+            "cadence": 31,
+            "full_frame_hash": "018357a0",
+            "gaze_key": "1,-1,1,-1",
+            "gray_pixels": 0,
+            "step": 9
+          },
+          {
+            "cadence": 32,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 10
+          },
+          {
+            "cadence": 33,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 0
+          },
+          {
+            "cadence": 34,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 1
+          },
+          {
+            "cadence": 35,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 2
+          },
+          {
+            "cadence": 36,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 3
+          },
+          {
+            "cadence": 37,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 4
+          },
+          {
+            "cadence": 38,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 5
+          },
+          {
+            "cadence": 39,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 6
+          },
+          {
+            "cadence": 40,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 7
+          },
+          {
+            "cadence": 41,
+            "full_frame_hash": "9f775153",
+            "gaze_key": "0,0,0,0",
+            "gray_pixels": 0,
+            "step": 8
+          },
+          {
+            "cadence": 42,
+            "full_frame_hash": "018357a0",
+            "gaze_key": "1,-1,1,-1",
+            "gray_pixels": 0,
+            "step": 9
+          },
+          {
+            "cadence": 43,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 10
+          },
+          {
+            "cadence": 44,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 0
+          },
+          {
+            "cadence": 45,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 1
+          },
+          {
+            "cadence": 46,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 2
+          },
+          {
+            "cadence": 47,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 3
+          },
+          {
+            "cadence": 48,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 4
+          },
+          {
+            "cadence": 49,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 5
+          },
+          {
+            "cadence": 50,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 6
+          },
+          {
+            "cadence": 51,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 7
+          },
+          {
+            "cadence": 52,
+            "full_frame_hash": "9f775153",
+            "gaze_key": "0,0,0,0",
+            "gray_pixels": 0,
+            "step": 8
+          },
+          {
+            "cadence": 53,
+            "full_frame_hash": "018357a0",
+            "gaze_key": "1,-1,1,-1",
+            "gray_pixels": 0,
+            "step": 9
+          },
+          {
+            "cadence": 54,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 10
+          },
+          {
+            "cadence": 55,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 0
+          },
+          {
+            "cadence": 56,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 1
+          },
+          {
+            "cadence": 57,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 2
+          },
+          {
+            "cadence": 58,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 3
+          },
+          {
+            "cadence": 59,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 4
+          }
+        ],
+        [
+          {
+            "cadence": 0,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 0
+          },
+          {
+            "cadence": 1,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 1
+          },
+          {
+            "cadence": 2,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 2
+          },
+          {
+            "cadence": 3,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 3
+          },
+          {
+            "cadence": 4,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 4
+          },
+          {
+            "cadence": 5,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 5
+          },
+          {
+            "cadence": 6,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 6
+          },
+          {
+            "cadence": 7,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 7
+          },
+          {
+            "cadence": 8,
+            "full_frame_hash": "9f775153",
+            "gaze_key": "0,0,0,0",
+            "gray_pixels": 0,
+            "step": 8
+          },
+          {
+            "cadence": 9,
+            "full_frame_hash": "018357a0",
+            "gaze_key": "1,-1,1,-1",
+            "gray_pixels": 0,
+            "step": 9
+          },
+          {
+            "cadence": 10,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 10
+          },
+          {
+            "cadence": 11,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 0
+          },
+          {
+            "cadence": 12,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 1
+          },
+          {
+            "cadence": 13,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 2
+          },
+          {
+            "cadence": 14,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 3
+          },
+          {
+            "cadence": 15,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 4
+          },
+          {
+            "cadence": 16,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 5
+          },
+          {
+            "cadence": 17,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 6
+          },
+          {
+            "cadence": 18,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 7
+          },
+          {
+            "cadence": 19,
+            "full_frame_hash": "9f775153",
+            "gaze_key": "0,0,0,0",
+            "gray_pixels": 0,
+            "step": 8
+          },
+          {
+            "cadence": 20,
+            "full_frame_hash": "018357a0",
+            "gaze_key": "1,-1,1,-1",
+            "gray_pixels": 0,
+            "step": 9
+          },
+          {
+            "cadence": 21,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 10
+          },
+          {
+            "cadence": 22,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 0
+          },
+          {
+            "cadence": 23,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 1
+          },
+          {
+            "cadence": 24,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 2
+          },
+          {
+            "cadence": 25,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 3
+          },
+          {
+            "cadence": 26,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 4
+          },
+          {
+            "cadence": 27,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 5
+          },
+          {
+            "cadence": 28,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 6
+          },
+          {
+            "cadence": 29,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 7
+          },
+          {
+            "cadence": 30,
+            "full_frame_hash": "9f775153",
+            "gaze_key": "0,0,0,0",
+            "gray_pixels": 0,
+            "step": 8
+          },
+          {
+            "cadence": 31,
+            "full_frame_hash": "018357a0",
+            "gaze_key": "1,-1,1,-1",
+            "gray_pixels": 0,
+            "step": 9
+          },
+          {
+            "cadence": 32,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 10
+          },
+          {
+            "cadence": 33,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 0
+          },
+          {
+            "cadence": 34,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 1
+          },
+          {
+            "cadence": 35,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 2
+          },
+          {
+            "cadence": 36,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 3
+          },
+          {
+            "cadence": 37,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 4
+          },
+          {
+            "cadence": 38,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 5
+          },
+          {
+            "cadence": 39,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 6
+          },
+          {
+            "cadence": 40,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 7
+          },
+          {
+            "cadence": 41,
+            "full_frame_hash": "9f775153",
+            "gaze_key": "0,0,0,0",
+            "gray_pixels": 0,
+            "step": 8
+          },
+          {
+            "cadence": 42,
+            "full_frame_hash": "018357a0",
+            "gaze_key": "1,-1,1,-1",
+            "gray_pixels": 0,
+            "step": 9
+          },
+          {
+            "cadence": 43,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 10
+          },
+          {
+            "cadence": 44,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 0
+          },
+          {
+            "cadence": 45,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 1
+          },
+          {
+            "cadence": 46,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 2
+          },
+          {
+            "cadence": 47,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 3
+          },
+          {
+            "cadence": 48,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 4
+          },
+          {
+            "cadence": 49,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 5
+          },
+          {
+            "cadence": 50,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 6
+          },
+          {
+            "cadence": 51,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 7
+          },
+          {
+            "cadence": 52,
+            "full_frame_hash": "9f775153",
+            "gaze_key": "0,0,0,0",
+            "gray_pixels": 0,
+            "step": 8
+          },
+          {
+            "cadence": 53,
+            "full_frame_hash": "018357a0",
+            "gaze_key": "1,-1,1,-1",
+            "gray_pixels": 0,
+            "step": 9
+          },
+          {
+            "cadence": 54,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 10
+          },
+          {
+            "cadence": 55,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 0
+          },
+          {
+            "cadence": 56,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 1
+          },
+          {
+            "cadence": 57,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 2
+          },
+          {
+            "cadence": 58,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 3
+          },
+          {
+            "cadence": 59,
+            "full_frame_hash": "2f7ed52e",
+            "gaze_key": "1,0,1,0",
+            "gray_pixels": 0,
+            "step": 4
+          }
+        ]
+      ]
+    },
+    "waves": [
+      {
+        "arc_count": 3,
+        "arcs": [
+          {
+            "bounds": {
+              "x_max": 197,
+              "x_min": 192,
+              "y_max": 76,
+              "y_min": 64
+            },
+            "convex_direction": "toward_listening_point",
+            "distance_to_listening_point": 34,
+            "geometry": {
+              "height": 13,
+              "stroke": 2,
+              "width": 6
+            },
+            "id": "front_000",
+            "lifecycle": "front",
+            "slot": 0
+          },
+          {
+            "bounds": {
+              "x_max": 189,
+              "x_min": 184,
+              "y_max": 76,
+              "y_min": 64
+            },
+            "convex_direction": "toward_listening_point",
+            "distance_to_listening_point": 26,
+            "geometry": {
+              "height": 13,
+              "stroke": 2,
+              "width": 6
+            },
+            "id": "front_001",
+            "lifecycle": "front",
+            "slot": 1
+          },
+          {
+            "bounds": {
+              "x_max": 181,
+              "x_min": 176,
+              "y_max": 76,
+              "y_min": 64
+            },
+            "convex_direction": "toward_listening_point",
+            "distance_to_listening_point": 18,
+            "geometry": {
+              "height": 13,
+              "stroke": 2,
+              "width": 6
+            },
+            "id": "front_002",
+            "lifecycle": "front",
+            "slot": 2
+          }
+        ],
+        "centroid": {
+          "x": 186.038,
+          "y": 70
+        },
+        "cycle": 0,
+        "gray_pixels": 0,
+        "ink_pixels": 78,
+        "listening_point": {
+          "x": 158,
+          "y": 70
+        },
+        "step": 0,
+        "transition": {
+          "absorbed": [],
+          "inserted": [],
+          "moved": [
+            {
+              "id": "front_000",
+              "lifecycle": "front",
+              "slot": 0
+            },
+            {
+              "id": "front_001",
+              "lifecycle": "front",
+              "slot": 1
+            },
+            {
+              "id": "front_002",
+              "lifecycle": "front",
+              "slot": 2
+            }
+          ]
+        }
+      },
+      {
+        "arc_count": 3,
+        "arcs": [
+          {
+            "bounds": {
+              "x_max": 189,
+              "x_min": 184,
+              "y_max": 76,
+              "y_min": 64
+            },
+            "convex_direction": "toward_listening_point",
+            "distance_to_listening_point": 26,
+            "from_slot": 0,
+            "geometry": {
+              "height": 13,
+              "stroke": 2,
+              "width": 6
+            },
+            "id": "front_000",
+            "lifecycle": "inward",
+            "slot": 1,
+            "to_slot": 1
+          },
+          {
+            "bounds": {
+              "x_max": 181,
+              "x_min": 176,
+              "y_max": 76,
+              "y_min": 64
+            },
+            "convex_direction": "toward_listening_point",
+            "distance_to_listening_point": 18,
+            "from_slot": 1,
+            "geometry": {
+              "height": 13,
+              "stroke": 2,
+              "width": 6
+            },
+            "id": "front_001",
+            "lifecycle": "inward",
+            "slot": 2,
+            "to_slot": 2
+          },
+          {
+            "bounds": {
+              "x_max": 173,
+              "x_min": 168,
+              "y_max": 76,
+              "y_min": 64
+            },
+            "convex_direction": "toward_listening_point",
+            "distance_to_listening_point": 10,
+            "from_slot": 2,
+            "geometry": {
+              "height": 13,
+              "stroke": 2,
+              "width": 6
+            },
+            "id": "front_002",
+            "lifecycle": "inward",
+            "slot": 3,
+            "to_slot": 3
+          }
+        ],
+        "centroid": {
+          "x": 178.038,
+          "y": 70
+        },
+        "cycle": 0,
+        "gray_pixels": 0,
+        "ink_pixels": 78,
+        "listening_point": {
+          "x": 158,
+          "y": 70
+        },
+        "step": 1,
+        "transition": {
+          "absorbed": [],
+          "inserted": [],
+          "moved": [
+            {
+              "from_slot": 0,
+              "id": "front_000",
+              "lifecycle": "inward",
+              "slot": 1,
+              "to_slot": 1
+            },
+            {
+              "from_slot": 1,
+              "id": "front_001",
+              "lifecycle": "inward",
+              "slot": 2,
+              "to_slot": 2
+            },
+            {
+              "from_slot": 2,
+              "id": "front_002",
+              "lifecycle": "inward",
+              "slot": 3,
+              "to_slot": 3
+            }
+          ]
+        }
+      },
+      {
+        "arc_count": 3,
+        "arcs": [
+          {
+            "bounds": {
+              "x_max": 197,
+              "x_min": 192,
+              "y_max": 76,
+              "y_min": 64
+            },
+            "convex_direction": "toward_listening_point",
+            "distance_to_listening_point": 34,
+            "from_slot": null,
+            "geometry": {
+              "height": 13,
+              "stroke": 2,
+              "width": 6
+            },
+            "id": "front_003",
+            "lifecycle": "outer_insert",
+            "slot": 0,
+            "to_slot": 0
+          },
+          {
+            "bounds": {
+              "x_max": 181,
+              "x_min": 176,
+              "y_max": 76,
+              "y_min": 64
+            },
+            "convex_direction": "toward_listening_point",
+            "distance_to_listening_point": 18,
+            "from_slot": 1,
+            "geometry": {
+              "height": 13,
+              "stroke": 2,
+              "width": 6
+            },
+            "id": "front_000",
+            "lifecycle": "inward",
+            "slot": 2,
+            "to_slot": 2
+          },
+          {
+            "bounds": {
+              "x_max": 173,
+              "x_min": 168,
+              "y_max": 76,
+              "y_min": 64
+            },
+            "convex_direction": "toward_listening_point",
+            "distance_to_listening_point": 10,
+            "from_slot": 2,
+            "geometry": {
+              "height": 13,
+              "stroke": 2,
+              "width": 6
+            },
+            "id": "front_001",
+            "lifecycle": "inward",
+            "slot": 3,
+            "to_slot": 3
+          }
+        ],
+        "centroid": {
+          "x": 180.705,
+          "y": 70
+        },
+        "cycle": 0,
+        "gray_pixels": 0,
+        "ink_pixels": 78,
+        "listening_point": {
+          "x": 158,
+          "y": 70
+        },
+        "step": 2,
+        "transition": {
+          "absorbed": [
+            {
+              "from_slot": 3,
+              "id": "front_002"
+            }
+          ],
+          "inserted": [
+            {
+              "id": "front_003",
+              "to_slot": 0
+            }
+          ],
+          "moved": [
+            {
+              "from_slot": null,
+              "id": "front_003",
+              "lifecycle": "outer_insert",
+              "slot": 0,
+              "to_slot": 0
+            },
+            {
+              "from_slot": 1,
+              "id": "front_000",
+              "lifecycle": "inward",
+              "slot": 2,
+              "to_slot": 2
+            },
+            {
+              "from_slot": 2,
+              "id": "front_001",
+              "lifecycle": "inward",
+              "slot": 3,
+              "to_slot": 3
+            }
+          ]
+        }
+      },
+      {
+        "arc_count": 3,
+        "arcs": [
+          {
+            "bounds": {
+              "x_max": 197,
+              "x_min": 192,
+              "y_max": 76,
+              "y_min": 64
+            },
+            "convex_direction": "toward_listening_point",
+            "distance_to_listening_point": 34,
+            "from_slot": null,
+            "geometry": {
+              "height": 13,
+              "stroke": 2,
+              "width": 6
+            },
+            "id": "front_004",
+            "lifecycle": "outer_insert",
+            "slot": 0,
+            "to_slot": 0
+          },
+          {
+            "bounds": {
+              "x_max": 189,
+              "x_min": 184,
+              "y_max": 76,
+              "y_min": 64
+            },
+            "convex_direction": "toward_listening_point",
+            "distance_to_listening_point": 26,
+            "from_slot": 0,
+            "geometry": {
+              "height": 13,
+              "stroke": 2,
+              "width": 6
+            },
+            "id": "front_003",
+            "lifecycle": "inward",
+            "slot": 1,
+            "to_slot": 1
+          },
+          {
+            "bounds": {
+              "x_max": 173,
+              "x_min": 168,
+              "y_max": 76,
+              "y_min": 64
+            },
+            "convex_direction": "toward_listening_point",
+            "distance_to_listening_point": 10,
+            "from_slot": 2,
+            "geometry": {
+              "height": 13,
+              "stroke": 2,
+              "width": 6
+            },
+            "id": "front_000",
+            "lifecycle": "inward",
+            "slot": 3,
+            "to_slot": 3
+          }
+        ],
+        "centroid": {
+          "x": 183.372,
+          "y": 70
+        },
+        "cycle": 0,
+        "gray_pixels": 0,
+        "ink_pixels": 78,
+        "listening_point": {
+          "x": 158,
+          "y": 70
+        },
+        "step": 3,
+        "transition": {
+          "absorbed": [
+            {
+              "from_slot": 3,
+              "id": "front_001"
+            }
+          ],
+          "inserted": [
+            {
+              "id": "front_004",
+              "to_slot": 0
+            }
+          ],
+          "moved": [
+            {
+              "from_slot": null,
+              "id": "front_004",
+              "lifecycle": "outer_insert",
+              "slot": 0,
+              "to_slot": 0
+            },
+            {
+              "from_slot": 0,
+              "id": "front_003",
+              "lifecycle": "inward",
+              "slot": 1,
+              "to_slot": 1
+            },
+            {
+              "from_slot": 2,
+              "id": "front_000",
+              "lifecycle": "inward",
+              "slot": 3,
+              "to_slot": 3
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "schema": "companion.comp-req-536-538-focused-oracle.v1",
+  "side_effects": {
+    "hardware": 0,
+    "microphone_request": 0,
+    "owner_prompt": 0,
+    "production_write": 0
+  },
+  "status": "PASS"
+}

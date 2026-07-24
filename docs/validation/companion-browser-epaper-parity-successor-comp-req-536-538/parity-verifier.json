@@ -1,0 +1,325 @@
+{
+  "checks": {
+    "browser_to_c_pixel_diff_zero": true,
+    "c_bytes_reconstruct_frames_exact": true,
+    "c_hash_exact": true,
+    "default_off": true,
+    "embedded_manifest_contract": true,
+    "emotion_catalog_complete": true,
+    "frame_pack_bytes_exact": true,
+    "frames_hash_exact": true,
+    "header_hash_exact": true,
+    "orientation_identity": true,
+    "page_identity_exact": true,
+    "pbm_reconstructs_every_state": true,
+    "source_manifest_pass": true,
+    "state_count_exact": true
+  },
+  "failed": [],
+  "inputs": {
+    "manifest_repo_path": "docs/art/exports/companion-browser-epaper-parity-comp-req-536-538/visual-frame-manifest.json",
+    "manifest_sha256": "198ED5AFBA59F06BE507E0BC6C1778363DB1E401AF17A8859A2A3D0665DB36DB",
+    "page_canonical_sha256": "6176B9B3A7948291F430B5C47EBB5CDB2DA339BEEA86FBD1C72920D74438DD10"
+  },
+  "observed": {
+    "c_payload_bytes": 275000,
+    "pack_bytes": 275000,
+    "pbm_reconstructed": 71,
+    "state_count": 71,
+    "unique_frame_count": 55
+  },
+  "pbm_rows": [
+    {
+      "id": "emotion_calm_source",
+      "pass": true
+    },
+    {
+      "id": "emotion_calm_brow",
+      "pass": true
+    },
+    {
+      "id": "emotion_calm_lower",
+      "pass": true
+    },
+    {
+      "id": "emotion_calm_hold",
+      "pass": true
+    },
+    {
+      "id": "emotion_curious_source",
+      "pass": true
+    },
+    {
+      "id": "emotion_curious_brow",
+      "pass": true
+    },
+    {
+      "id": "emotion_curious_lower",
+      "pass": true
+    },
+    {
+      "id": "emotion_curious_hold",
+      "pass": true
+    },
+    {
+      "id": "emotion_warm_source",
+      "pass": true
+    },
+    {
+      "id": "emotion_warm_brow",
+      "pass": true
+    },
+    {
+      "id": "emotion_warm_lower",
+      "pass": true
+    },
+    {
+      "id": "emotion_warm_hold",
+      "pass": true
+    },
+    {
+      "id": "emotion_playful_source",
+      "pass": true
+    },
+    {
+      "id": "emotion_playful_brow",
+      "pass": true
+    },
+    {
+      "id": "emotion_playful_lower",
+      "pass": true
+    },
+    {
+      "id": "emotion_playful_hold",
+      "pass": true
+    },
+    {
+      "id": "emotion_sleepy_source",
+      "pass": true
+    },
+    {
+      "id": "emotion_sleepy_brow",
+      "pass": true
+    },
+    {
+      "id": "emotion_sleepy_lower",
+      "pass": true
+    },
+    {
+      "id": "emotion_sleepy_hold",
+      "pass": true
+    },
+    {
+      "id": "emotion_delighted_source",
+      "pass": true
+    },
+    {
+      "id": "emotion_delighted_brow",
+      "pass": true
+    },
+    {
+      "id": "emotion_delighted_lower",
+      "pass": true
+    },
+    {
+      "id": "emotion_delighted_hold",
+      "pass": true
+    },
+    {
+      "id": "emotion_bashful_source",
+      "pass": true
+    },
+    {
+      "id": "emotion_bashful_brow",
+      "pass": true
+    },
+    {
+      "id": "emotion_bashful_lower",
+      "pass": true
+    },
+    {
+      "id": "emotion_bashful_hold",
+      "pass": true
+    },
+    {
+      "id": "emotion_thoughtful_source",
+      "pass": true
+    },
+    {
+      "id": "emotion_thoughtful_brow",
+      "pass": true
+    },
+    {
+      "id": "emotion_thoughtful_lower",
+      "pass": true
+    },
+    {
+      "id": "emotion_thoughtful_hold",
+      "pass": true
+    },
+    {
+      "id": "emotion_focused_source",
+      "pass": true
+    },
+    {
+      "id": "emotion_focused_brow",
+      "pass": true
+    },
+    {
+      "id": "emotion_focused_lower",
+      "pass": true
+    },
+    {
+      "id": "emotion_focused_hold",
+      "pass": true
+    },
+    {
+      "id": "emotion_alert_source",
+      "pass": true
+    },
+    {
+      "id": "emotion_alert_brow",
+      "pass": true
+    },
+    {
+      "id": "emotion_alert_lower",
+      "pass": true
+    },
+    {
+      "id": "emotion_alert_hold",
+      "pass": true
+    },
+    {
+      "id": "idle_glint_0",
+      "pass": true
+    },
+    {
+      "id": "idle_glint_8",
+      "pass": true
+    },
+    {
+      "id": "idle_glint_9",
+      "pass": true
+    },
+    {
+      "id": "idle_glint_10",
+      "pass": true
+    },
+    {
+      "id": "gaze_center",
+      "pass": true
+    },
+    {
+      "id": "gaze_left",
+      "pass": true
+    },
+    {
+      "id": "gaze_up",
+      "pass": true
+    },
+    {
+      "id": "gaze_right",
+      "pass": true
+    },
+    {
+      "id": "gaze_down",
+      "pass": true
+    },
+    {
+      "id": "blink_0",
+      "pass": true
+    },
+    {
+      "id": "blink_1",
+      "pass": true
+    },
+    {
+      "id": "blink_2",
+      "pass": true
+    },
+    {
+      "id": "blink_3",
+      "pass": true
+    },
+    {
+      "id": "menu_roots",
+      "pass": true
+    },
+    {
+      "id": "menu_voice",
+      "pass": true
+    },
+    {
+      "id": "menu_device",
+      "pass": true
+    },
+    {
+      "id": "menu_connection",
+      "pass": true
+    },
+    {
+      "id": "menu_preferences",
+      "pass": true
+    },
+    {
+      "id": "recording_calm_hold_wave_0",
+      "pass": true
+    },
+    {
+      "id": "recording_curious_hold_wave_0",
+      "pass": true
+    },
+    {
+      "id": "recording_warm_hold_wave_0",
+      "pass": true
+    },
+    {
+      "id": "recording_playful_hold_wave_0",
+      "pass": true
+    },
+    {
+      "id": "recording_sleepy_hold_wave_0",
+      "pass": true
+    },
+    {
+      "id": "recording_delighted_hold_wave_0",
+      "pass": true
+    },
+    {
+      "id": "recording_bashful_hold_wave_0",
+      "pass": true
+    },
+    {
+      "id": "recording_thoughtful_hold_wave_0",
+      "pass": true
+    },
+    {
+      "id": "recording_focused_hold_wave_0",
+      "pass": true
+    },
+    {
+      "id": "recording_alert_hold_wave_0",
+      "pass": true
+    },
+    {
+      "id": "recording_calm_hold_wave_1",
+      "pass": true
+    },
+    {
+      "id": "recording_calm_hold_wave_2",
+      "pass": true
+    },
+    {
+      "id": "recording_calm_hold_wave_3",
+      "pass": true
+    }
+  ],
+  "schema": "companion.comp-req-536-538-parity-verifier.v1",
+  "side_effects": {
+    "browser": 0,
+    "hardware": 0,
+    "owner_prompt": 0,
+    "production_write": 0
+  },
+  "status": "PASS"
+}

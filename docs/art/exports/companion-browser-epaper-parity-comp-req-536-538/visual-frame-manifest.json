@@ -1,0 +1,2037 @@
+{
+  "files": {
+    "c": {
+      "path": "companion_browser_epaper_visual_pack.c",
+      "sha256": "BAC08B23D336AEC7E06EFD3BF4C9A82F836433791336486AB9C30CA8E0680E3F"
+    },
+    "frames": {
+      "bytes": 275000,
+      "path": "frames.bin",
+      "sha256": "27226B06DDDB5C3614A0575738344CE1DB45CC60C90BE5FA8F32A7EB891DF514"
+    },
+    "h": {
+      "path": "companion_browser_epaper_visual_pack.h",
+      "sha256": "26073FA87A70E05ECA9EE7146A2656536DE4ECD7BF212A562607820580164CFE"
+    }
+  },
+  "format": {
+    "bits_per_pixel": 1,
+    "black_bit": 1,
+    "frame_bytes": 5000,
+    "height": 200,
+    "orientation": {
+      "device_transform": "identity",
+      "positive_x": "right",
+      "positive_y": "down",
+      "screen_origin": "top_left"
+    },
+    "row_stride_bytes": 25,
+    "white_bit": 0,
+    "width": 200
+  },
+  "invariants": {
+    "all_states_are_5000_bytes": true,
+    "browser_to_c_pixel_diff": 0,
+    "cadence_ms": 480,
+    "default_off": true,
+    "device_transform": "identity",
+    "emotion_count": 10,
+    "recording_composed_emotion_count": 10,
+    "state_count": 71,
+    "unique_frame_count": 55
+  },
+  "schema": "companion.comp-req-536-538-browser-device-parity.v1",
+  "source": {
+    "embedded_manifest": {
+      "blink": {
+        "ordered_frame_indices": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "registered_event_only": true,
+        "reopen_frame_index": 4,
+        "story": "calm_presence"
+      },
+      "cadence_ms": 480,
+      "emotion_choreography": {
+        "legal_edges": [
+          [
+            "calm",
+            "curious"
+          ],
+          [
+            "curious",
+            "warm"
+          ],
+          [
+            "warm",
+            "playful"
+          ],
+          [
+            "playful",
+            "playful"
+          ],
+          [
+            "puzzled",
+            "calm"
+          ],
+          [
+            "puzzled",
+            "alert"
+          ],
+          [
+            "alert",
+            "puzzled"
+          ]
+        ],
+        "max_post_source_changed_frames": 3,
+        "ordered_phases": [
+          "source_hold",
+          "gaze_highlight_orient",
+          "brow_eye_reply",
+          "lower_face_reply",
+          "target_hold"
+        ],
+        "states": [
+          {
+            "brow": 1,
+            "hold": 4,
+            "lower": 4,
+            "source": 4,
+            "state": "calm",
+            "story": "calm_presence"
+          },
+          {
+            "brow": 1,
+            "hold": 2,
+            "lower": 2,
+            "source": 0,
+            "state": "curious",
+            "story": "curious_question"
+          },
+          {
+            "brow": 1,
+            "hold": 2,
+            "lower": 2,
+            "source": 0,
+            "state": "warm",
+            "story": "warm_presence"
+          },
+          {
+            "brow": 1,
+            "hold": 2,
+            "lower": 2,
+            "source": 0,
+            "state": "playful",
+            "story": "playful_presence"
+          },
+          {
+            "brow": 1,
+            "hold": 2,
+            "lower": 2,
+            "source": 0,
+            "state": "sleepy",
+            "story": "sleepy_presence"
+          },
+          {
+            "brow": 1,
+            "hold": 2,
+            "lower": 2,
+            "source": 0,
+            "state": "delighted",
+            "story": "delighted_presence"
+          },
+          {
+            "brow": 1,
+            "hold": 2,
+            "lower": 2,
+            "source": 0,
+            "state": "bashful",
+            "story": "bashful_presence"
+          },
+          {
+            "brow": 1,
+            "hold": 2,
+            "lower": 2,
+            "source": 0,
+            "state": "thoughtful",
+            "story": "thoughtful_presence"
+          },
+          {
+            "brow": 1,
+            "hold": 2,
+            "lower": 2,
+            "source": 0,
+            "state": "focused",
+            "story": "focused_presence"
+          },
+          {
+            "brow": 1,
+            "hold": 2,
+            "lower": 2,
+            "source": 0,
+            "state": "alert",
+            "story": "alert_exclamation"
+          }
+        ],
+        "target_hold_refresh": false
+      },
+      "format": {
+        "bits_per_pixel": 1,
+        "black_bit": 1,
+        "frame_bytes": 5000,
+        "height": 200,
+        "orientation": {
+          "device_transform": "identity",
+          "positive_x": "right",
+          "positive_y": "down",
+          "screen_origin": "top_left"
+        },
+        "row_stride_bytes": 25,
+        "white_bit": 0,
+        "width": 200
+      },
+      "gaze_samples": [
+        {
+          "key": "1,0,1,0",
+          "state": "gaze_center"
+        },
+        {
+          "key": "-2,0,-6,0",
+          "state": "gaze_left"
+        },
+        {
+          "key": "1,-3,1,-6",
+          "state": "gaze_up"
+        },
+        {
+          "key": "5,0,5,0",
+          "state": "gaze_right"
+        },
+        {
+          "key": "1,4,1,6",
+          "state": "gaze_down"
+        }
+      ],
+      "idle_glint": {
+        "baseline_key": "1,0,1,0",
+        "changed_frames_per_beat": 3,
+        "cycle_steps": 11,
+        "interrupt_policy": "cancel_once_then_retarget",
+        "ordered_keys": [
+          "1,0,1,0",
+          "1,0,1,0",
+          "1,0,1,0",
+          "1,0,1,0",
+          "1,0,1,0",
+          "1,0,1,0",
+          "1,0,1,0",
+          "1,0,1,0",
+          "0,0,0,0",
+          "1,-1,1,-1",
+          "1,0,1,0"
+        ],
+        "quiet_steps": 8
+      },
+      "menu_frames": [
+        {
+          "src": "/docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/01-home.png",
+          "state": "menu_roots"
+        },
+        {
+          "src": "/docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/02-voice.png",
+          "state": "menu_voice"
+        },
+        {
+          "src": "/docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/03-device.png",
+          "state": "menu_device"
+        },
+        {
+          "src": "/docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/04-connection.png",
+          "state": "menu_connection"
+        },
+        {
+          "src": "/docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/05-preferences.png",
+          "state": "menu_preferences"
+        }
+      ],
+      "recording_accessory": {
+        "indicator": {
+          "kind": "compact_record_status",
+          "origin": [
+            10,
+            10
+          ],
+          "size": [
+            18,
+            18
+          ]
+        },
+        "orthogonal_to_expression": true,
+        "wave": {
+          "corridor": [
+            168,
+            64,
+            197,
+            76
+          ],
+          "front_height": 13,
+          "front_width": 6,
+          "listening_point": [
+            158,
+            70
+          ],
+          "ring_policy": "inner_absorb_outer_insert",
+          "slot_distances": [
+            34,
+            26,
+            18,
+            10
+          ],
+          "state_count": 4,
+          "stroke_px": 2,
+          "visible_fronts": 3
+        }
+      },
+      "rendering": {
+        "committed_frames_only": true,
+        "css_interpolation": "none",
+        "opacity_tween": false,
+        "subpixel_motion": false
+      },
+      "requirements": [
+        "COMP-REQ-536",
+        "COMP-REQ-537",
+        "COMP-REQ-538"
+      ],
+      "schema": "companion.browser-epaper-visual-manifest.v1"
+    },
+    "page_canonical_sha256": "6176B9B3A7948291F430B5C47EBB5CDB2DA339BEEA86FBD1C72920D74438DD10",
+    "page_repo_path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html"
+  },
+  "states": [
+    {
+      "black_bounds": [
+        34,
+        87,
+        166,
+        168
+      ],
+      "black_pixels": 2983,
+      "browser_frame_sha256": "C478287951E1DD472CF93C84CF3007D97C65A7ADCBAB84E615F08793F9D7DEAA",
+      "c_reconstructed_sha256": "C478287951E1DD472CF93C84CF3007D97C65A7ADCBAB84E615F08793F9D7DEAA",
+      "gray_input_pixels": 0,
+      "id": "emotion_calm_source",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_calm_source.pbm",
+      "pbm_sha256": "1A05B0C83C98B4F9D1F1DCC2182C450C6F91758F61A09DFC6938D4C1F1E8D36D",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 4,
+        "gaze_key": "1,0,1,0",
+        "story": "calm_presence"
+      },
+      "unique_frame_index": 0
+    },
+    {
+      "black_bounds": [
+        34,
+        87,
+        166,
+        168
+      ],
+      "black_pixels": 1685,
+      "browser_frame_sha256": "D93BF3D7ECC6C678D9EFE7CBA205139F1B3DAF126082A1E5C8FDB7B9B61AFA88",
+      "c_reconstructed_sha256": "D93BF3D7ECC6C678D9EFE7CBA205139F1B3DAF126082A1E5C8FDB7B9B61AFA88",
+      "gray_input_pixels": 0,
+      "id": "emotion_calm_brow",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_calm_brow.pbm",
+      "pbm_sha256": "B46E339B1BF6EF7FD2700A26F113278A74361249CD476051345CCE3709711345",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 1,
+        "gaze_key": "1,0,1,0",
+        "story": "calm_presence"
+      },
+      "unique_frame_index": 1
+    },
+    {
+      "black_bounds": [
+        34,
+        87,
+        166,
+        168
+      ],
+      "black_pixels": 2983,
+      "browser_frame_sha256": "C478287951E1DD472CF93C84CF3007D97C65A7ADCBAB84E615F08793F9D7DEAA",
+      "c_reconstructed_sha256": "C478287951E1DD472CF93C84CF3007D97C65A7ADCBAB84E615F08793F9D7DEAA",
+      "gray_input_pixels": 0,
+      "id": "emotion_calm_lower",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_calm_lower.pbm",
+      "pbm_sha256": "1A05B0C83C98B4F9D1F1DCC2182C450C6F91758F61A09DFC6938D4C1F1E8D36D",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 4,
+        "gaze_key": "1,0,1,0",
+        "story": "calm_presence"
+      },
+      "unique_frame_index": 0
+    },
+    {
+      "black_bounds": [
+        34,
+        87,
+        166,
+        168
+      ],
+      "black_pixels": 2983,
+      "browser_frame_sha256": "C478287951E1DD472CF93C84CF3007D97C65A7ADCBAB84E615F08793F9D7DEAA",
+      "c_reconstructed_sha256": "C478287951E1DD472CF93C84CF3007D97C65A7ADCBAB84E615F08793F9D7DEAA",
+      "gray_input_pixels": 0,
+      "id": "emotion_calm_hold",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_calm_hold.pbm",
+      "pbm_sha256": "1A05B0C83C98B4F9D1F1DCC2182C450C6F91758F61A09DFC6938D4C1F1E8D36D",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 4,
+        "gaze_key": "1,0,1,0",
+        "story": "calm_presence"
+      },
+      "unique_frame_index": 0
+    },
+    {
+      "black_bounds": [
+        32,
+        72,
+        167,
+        168
+      ],
+      "black_pixels": 2756,
+      "browser_frame_sha256": "8F855B5BFE60CB1A7FEF7C159D86A5DEEB04780A58909BFB482FD5AC4A050503",
+      "c_reconstructed_sha256": "8F855B5BFE60CB1A7FEF7C159D86A5DEEB04780A58909BFB482FD5AC4A050503",
+      "gray_input_pixels": 0,
+      "id": "emotion_curious_source",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_curious_source.pbm",
+      "pbm_sha256": "CAFA9151E37EBF2F17F968CB61F9A0059F6EC17D1C07DF2DA171A749A375E810",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 0,
+        "gaze_key": "1,0,1,0",
+        "story": "curious_question"
+      },
+      "unique_frame_index": 2
+    },
+    {
+      "black_bounds": [
+        32,
+        38,
+        167,
+        168
+      ],
+      "black_pixels": 2861,
+      "browser_frame_sha256": "16971F24A52A18ABE8B726B48B86D0FAA996846B5E76993D9C596A9A70B764BE",
+      "c_reconstructed_sha256": "16971F24A52A18ABE8B726B48B86D0FAA996846B5E76993D9C596A9A70B764BE",
+      "gray_input_pixels": 0,
+      "id": "emotion_curious_brow",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_curious_brow.pbm",
+      "pbm_sha256": "98168B066C477EA2028DE80E9A2DCE0EAD43EAEA835BB0EF48E2ACFB2325F731",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 1,
+        "gaze_key": "1,0,1,0",
+        "story": "curious_question"
+      },
+      "unique_frame_index": 3
+    },
+    {
+      "black_bounds": [
+        32,
+        34,
+        167,
+        173
+      ],
+      "black_pixels": 2925,
+      "browser_frame_sha256": "C7FBB44DAF33F2EC7219B13879EC14CE794865DEF20A07C5E5CCDC0F63CDF8BB",
+      "c_reconstructed_sha256": "C7FBB44DAF33F2EC7219B13879EC14CE794865DEF20A07C5E5CCDC0F63CDF8BB",
+      "gray_input_pixels": 0,
+      "id": "emotion_curious_lower",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_curious_lower.pbm",
+      "pbm_sha256": "B6F6E489795106483E42AC696DDA519F7C7769F53D368EE8CFE002A3D6129929",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "curious_question"
+      },
+      "unique_frame_index": 4
+    },
+    {
+      "black_bounds": [
+        32,
+        34,
+        167,
+        173
+      ],
+      "black_pixels": 2925,
+      "browser_frame_sha256": "C7FBB44DAF33F2EC7219B13879EC14CE794865DEF20A07C5E5CCDC0F63CDF8BB",
+      "c_reconstructed_sha256": "C7FBB44DAF33F2EC7219B13879EC14CE794865DEF20A07C5E5CCDC0F63CDF8BB",
+      "gray_input_pixels": 0,
+      "id": "emotion_curious_hold",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_curious_hold.pbm",
+      "pbm_sha256": "B6F6E489795106483E42AC696DDA519F7C7769F53D368EE8CFE002A3D6129929",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "curious_question"
+      },
+      "unique_frame_index": 4
+    },
+    {
+      "black_bounds": [
+        33,
+        86,
+        170,
+        168
+      ],
+      "black_pixels": 3058,
+      "browser_frame_sha256": "D3AAA13AACDA35537239D5A4DE5CDFC2D1728F1CC8F949E5505D186EAD950278",
+      "c_reconstructed_sha256": "D3AAA13AACDA35537239D5A4DE5CDFC2D1728F1CC8F949E5505D186EAD950278",
+      "gray_input_pixels": 0,
+      "id": "emotion_warm_source",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_warm_source.pbm",
+      "pbm_sha256": "2B824B2F439E8FCB9388C2E978D91C32A2EFC656CC71ECD1063E3A93649AFB8B",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 0,
+        "gaze_key": "1,0,1,0",
+        "story": "warm_presence"
+      },
+      "unique_frame_index": 5
+    },
+    {
+      "black_bounds": [
+        33,
+        87,
+        170,
+        168
+      ],
+      "black_pixels": 3072,
+      "browser_frame_sha256": "608F128CF9F18C15643F7AF491E339E2D8A52799EBBCE96257B15E4F695E4D1C",
+      "c_reconstructed_sha256": "608F128CF9F18C15643F7AF491E339E2D8A52799EBBCE96257B15E4F695E4D1C",
+      "gray_input_pixels": 0,
+      "id": "emotion_warm_brow",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_warm_brow.pbm",
+      "pbm_sha256": "E49F75F571B8BAB955231CE9E79B10991BB515F6D732F3A10925ED3FE2A9D996",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 1,
+        "gaze_key": "1,0,1,0",
+        "story": "warm_presence"
+      },
+      "unique_frame_index": 6
+    },
+    {
+      "black_bounds": [
+        33,
+        87,
+        170,
+        177
+      ],
+      "black_pixels": 3255,
+      "browser_frame_sha256": "A90DD97E246AA658E47C2F26E045EAF424FC9DAA67B51DD11F54FC90BD258945",
+      "c_reconstructed_sha256": "A90DD97E246AA658E47C2F26E045EAF424FC9DAA67B51DD11F54FC90BD258945",
+      "gray_input_pixels": 0,
+      "id": "emotion_warm_lower",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_warm_lower.pbm",
+      "pbm_sha256": "B88921224CD54D93C6312D3B8EB819C63D68D26AF518A89501429F77923BBFEA",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "warm_presence"
+      },
+      "unique_frame_index": 7
+    },
+    {
+      "black_bounds": [
+        33,
+        87,
+        170,
+        177
+      ],
+      "black_pixels": 3255,
+      "browser_frame_sha256": "A90DD97E246AA658E47C2F26E045EAF424FC9DAA67B51DD11F54FC90BD258945",
+      "c_reconstructed_sha256": "A90DD97E246AA658E47C2F26E045EAF424FC9DAA67B51DD11F54FC90BD258945",
+      "gray_input_pixels": 0,
+      "id": "emotion_warm_hold",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_warm_hold.pbm",
+      "pbm_sha256": "B88921224CD54D93C6312D3B8EB819C63D68D26AF518A89501429F77923BBFEA",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "warm_presence"
+      },
+      "unique_frame_index": 7
+    },
+    {
+      "black_bounds": [
+        32,
+        83,
+        175,
+        170
+      ],
+      "black_pixels": 3194,
+      "browser_frame_sha256": "FA93F7A5C3813E889DC221D52B6A524C8405B084F63BABB40EA63008E4155B92",
+      "c_reconstructed_sha256": "FA93F7A5C3813E889DC221D52B6A524C8405B084F63BABB40EA63008E4155B92",
+      "gray_input_pixels": 0,
+      "id": "emotion_playful_source",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_playful_source.pbm",
+      "pbm_sha256": "545DD19C85213CAFBFA8C36094ABB3956C7795F79382CEE546C8261270FA2D44",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 0,
+        "gaze_key": "1,0,1,0",
+        "story": "playful_presence"
+      },
+      "unique_frame_index": 8
+    },
+    {
+      "black_bounds": [
+        32,
+        84,
+        175,
+        170
+      ],
+      "black_pixels": 3196,
+      "browser_frame_sha256": "02E517988A4B190721630777575072F3EBFF9BE730E8B074F7CC2241C84BCCBC",
+      "c_reconstructed_sha256": "02E517988A4B190721630777575072F3EBFF9BE730E8B074F7CC2241C84BCCBC",
+      "gray_input_pixels": 0,
+      "id": "emotion_playful_brow",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_playful_brow.pbm",
+      "pbm_sha256": "29C75E76CA3226B678E490E2F010FED421C5BEAFF70A011BB4DBAFC0EF87B5BE",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 1,
+        "gaze_key": "1,0,1,0",
+        "story": "playful_presence"
+      },
+      "unique_frame_index": 9
+    },
+    {
+      "black_bounds": [
+        32,
+        84,
+        175,
+        170
+      ],
+      "black_pixels": 3246,
+      "browser_frame_sha256": "1A447190DEA09939BFD23EFE7EF90530CF816E5486339EBAF0717E59A15958B0",
+      "c_reconstructed_sha256": "1A447190DEA09939BFD23EFE7EF90530CF816E5486339EBAF0717E59A15958B0",
+      "gray_input_pixels": 0,
+      "id": "emotion_playful_lower",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_playful_lower.pbm",
+      "pbm_sha256": "23EC79BA689E69723EDE6AB87F38A9A65E53CA1A600E96DB474C374E2BE2FE8B",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "playful_presence"
+      },
+      "unique_frame_index": 10
+    },
+    {
+      "black_bounds": [
+        32,
+        84,
+        175,
+        170
+      ],
+      "black_pixels": 3246,
+      "browser_frame_sha256": "1A447190DEA09939BFD23EFE7EF90530CF816E5486339EBAF0717E59A15958B0",
+      "c_reconstructed_sha256": "1A447190DEA09939BFD23EFE7EF90530CF816E5486339EBAF0717E59A15958B0",
+      "gray_input_pixels": 0,
+      "id": "emotion_playful_hold",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_playful_hold.pbm",
+      "pbm_sha256": "23EC79BA689E69723EDE6AB87F38A9A65E53CA1A600E96DB474C374E2BE2FE8B",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "playful_presence"
+      },
+      "unique_frame_index": 10
+    },
+    {
+      "black_bounds": [
+        34,
+        87,
+        166,
+        168
+      ],
+      "black_pixels": 2679,
+      "browser_frame_sha256": "B96D4A0A486A06BC41951DE3EE30C7BC452FFD98D543B3D2FDE1F8A114DDC46B",
+      "c_reconstructed_sha256": "B96D4A0A486A06BC41951DE3EE30C7BC452FFD98D543B3D2FDE1F8A114DDC46B",
+      "gray_input_pixels": 0,
+      "id": "emotion_sleepy_source",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_sleepy_source.pbm",
+      "pbm_sha256": "F95F38838BF6FA271AC2A1E3F82E50ACD86F5C4CA4D4EC63350E528CFA0217F8",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 0,
+        "gaze_key": "1,0,1,0",
+        "story": "sleepy_presence"
+      },
+      "unique_frame_index": 11
+    },
+    {
+      "black_bounds": [
+        34,
+        91,
+        166,
+        169
+      ],
+      "black_pixels": 1203,
+      "browser_frame_sha256": "E829627615F42ED6798B56E7F4B6D93C4F89F4B6D67AE18D56D74CC527B47C3F",
+      "c_reconstructed_sha256": "E829627615F42ED6798B56E7F4B6D93C4F89F4B6D67AE18D56D74CC527B47C3F",
+      "gray_input_pixels": 0,
+      "id": "emotion_sleepy_brow",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_sleepy_brow.pbm",
+      "pbm_sha256": "EC5F6115C1E741627FDEBFD107897BB16FA521870BD31FA1B4232570942DC236",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 1,
+        "gaze_key": "1,0,1,0",
+        "story": "sleepy_presence"
+      },
+      "unique_frame_index": 12
+    },
+    {
+      "black_bounds": [
+        34,
+        27,
+        166,
+        169
+      ],
+      "black_pixels": 1435,
+      "browser_frame_sha256": "0A52838E68ACA9E518522D05C364CE2A6DB4125847C2338EDEED79E3EAF156EE",
+      "c_reconstructed_sha256": "0A52838E68ACA9E518522D05C364CE2A6DB4125847C2338EDEED79E3EAF156EE",
+      "gray_input_pixels": 0,
+      "id": "emotion_sleepy_lower",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_sleepy_lower.pbm",
+      "pbm_sha256": "981E67302DCC4222D719872188A8A9F2597BF4C1A93C262BC3ADE4914D857A95",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "sleepy_presence"
+      },
+      "unique_frame_index": 13
+    },
+    {
+      "black_bounds": [
+        34,
+        27,
+        166,
+        169
+      ],
+      "black_pixels": 1435,
+      "browser_frame_sha256": "0A52838E68ACA9E518522D05C364CE2A6DB4125847C2338EDEED79E3EAF156EE",
+      "c_reconstructed_sha256": "0A52838E68ACA9E518522D05C364CE2A6DB4125847C2338EDEED79E3EAF156EE",
+      "gray_input_pixels": 0,
+      "id": "emotion_sleepy_hold",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_sleepy_hold.pbm",
+      "pbm_sha256": "981E67302DCC4222D719872188A8A9F2597BF4C1A93C262BC3ADE4914D857A95",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "sleepy_presence"
+      },
+      "unique_frame_index": 13
+    },
+    {
+      "black_bounds": [
+        33,
+        79,
+        166,
+        168
+      ],
+      "black_pixels": 3141,
+      "browser_frame_sha256": "4DE1106BD4769E458D88E90F97E86F3A42B1B7384FF6C9352517EDB69335040F",
+      "c_reconstructed_sha256": "4DE1106BD4769E458D88E90F97E86F3A42B1B7384FF6C9352517EDB69335040F",
+      "gray_input_pixels": 0,
+      "id": "emotion_delighted_source",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_delighted_source.pbm",
+      "pbm_sha256": "D03CD15D7DF15D90C58242B993B0E1547E1E9F669F9946A4019ED36C4CDFC169",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 0,
+        "gaze_key": "1,0,1,0",
+        "story": "delighted_presence"
+      },
+      "unique_frame_index": 14
+    },
+    {
+      "black_bounds": [
+        33,
+        78,
+        166,
+        168
+      ],
+      "black_pixels": 3141,
+      "browser_frame_sha256": "B6C5699BF1CF63FE008C56884FC8AF5F201E4FDD8039A1A63E40DEB6C6094980",
+      "c_reconstructed_sha256": "B6C5699BF1CF63FE008C56884FC8AF5F201E4FDD8039A1A63E40DEB6C6094980",
+      "gray_input_pixels": 0,
+      "id": "emotion_delighted_brow",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_delighted_brow.pbm",
+      "pbm_sha256": "B0EFA98DEBF1E296A26763AA9B86B379910BDFB1FDE857215CEF841C7642D785",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 1,
+        "gaze_key": "1,0,1,0",
+        "story": "delighted_presence"
+      },
+      "unique_frame_index": 15
+    },
+    {
+      "black_bounds": [
+        33,
+        78,
+        166,
+        169
+      ],
+      "black_pixels": 3212,
+      "browser_frame_sha256": "678C8B5E0C58D716B113ED036233A8C2502DB8F6FCB414B2B8A9500A956C56D6",
+      "c_reconstructed_sha256": "678C8B5E0C58D716B113ED036233A8C2502DB8F6FCB414B2B8A9500A956C56D6",
+      "gray_input_pixels": 0,
+      "id": "emotion_delighted_lower",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_delighted_lower.pbm",
+      "pbm_sha256": "BC31AA6905A024FDDDA3385EE3EA3B9E1DC5CF40FB642A85D113674C46B041B1",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "delighted_presence"
+      },
+      "unique_frame_index": 16
+    },
+    {
+      "black_bounds": [
+        33,
+        78,
+        166,
+        169
+      ],
+      "black_pixels": 3212,
+      "browser_frame_sha256": "678C8B5E0C58D716B113ED036233A8C2502DB8F6FCB414B2B8A9500A956C56D6",
+      "c_reconstructed_sha256": "678C8B5E0C58D716B113ED036233A8C2502DB8F6FCB414B2B8A9500A956C56D6",
+      "gray_input_pixels": 0,
+      "id": "emotion_delighted_hold",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_delighted_hold.pbm",
+      "pbm_sha256": "BC31AA6905A024FDDDA3385EE3EA3B9E1DC5CF40FB642A85D113674C46B041B1",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "delighted_presence"
+      },
+      "unique_frame_index": 16
+    },
+    {
+      "black_bounds": [
+        42,
+        94,
+        158,
+        168
+      ],
+      "black_pixels": 2973,
+      "browser_frame_sha256": "62E830A83196D79ED20C7E4B7975E41FDDE4AB4461A457F56DC7C8BF1856094F",
+      "c_reconstructed_sha256": "62E830A83196D79ED20C7E4B7975E41FDDE4AB4461A457F56DC7C8BF1856094F",
+      "gray_input_pixels": 0,
+      "id": "emotion_bashful_source",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_bashful_source.pbm",
+      "pbm_sha256": "44B0DCA544D35203E5765698B305F3968B7D6A5EED149A748CA3C72FAF3DCB17",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 0,
+        "gaze_key": "1,0,1,0",
+        "story": "bashful_presence"
+      },
+      "unique_frame_index": 17
+    },
+    {
+      "black_bounds": [
+        42,
+        95,
+        158,
+        168
+      ],
+      "black_pixels": 2980,
+      "browser_frame_sha256": "1F5B56F07954C1C81FD578716B9334B0C1DC79810CEF5DEAD7CC7EF6FF9298D5",
+      "c_reconstructed_sha256": "1F5B56F07954C1C81FD578716B9334B0C1DC79810CEF5DEAD7CC7EF6FF9298D5",
+      "gray_input_pixels": 0,
+      "id": "emotion_bashful_brow",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_bashful_brow.pbm",
+      "pbm_sha256": "C136285A75207D2DF143641E6AAA143B9A63A02CE62F1610CB63C368254BEA2F",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 1,
+        "gaze_key": "1,0,1,0",
+        "story": "bashful_presence"
+      },
+      "unique_frame_index": 18
+    },
+    {
+      "black_bounds": [
+        42,
+        95,
+        158,
+        170
+      ],
+      "black_pixels": 2982,
+      "browser_frame_sha256": "1E00600DFB83AE792CCE74BA6C2ADE712879CAE5736819C3187A834FCAA66058",
+      "c_reconstructed_sha256": "1E00600DFB83AE792CCE74BA6C2ADE712879CAE5736819C3187A834FCAA66058",
+      "gray_input_pixels": 0,
+      "id": "emotion_bashful_lower",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_bashful_lower.pbm",
+      "pbm_sha256": "DB6D45195A22F597D22578C8375307D5907ED1A1B73E5F615228FA9050CC2E45",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "bashful_presence"
+      },
+      "unique_frame_index": 19
+    },
+    {
+      "black_bounds": [
+        42,
+        95,
+        158,
+        170
+      ],
+      "black_pixels": 2982,
+      "browser_frame_sha256": "1E00600DFB83AE792CCE74BA6C2ADE712879CAE5736819C3187A834FCAA66058",
+      "c_reconstructed_sha256": "1E00600DFB83AE792CCE74BA6C2ADE712879CAE5736819C3187A834FCAA66058",
+      "gray_input_pixels": 0,
+      "id": "emotion_bashful_hold",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_bashful_hold.pbm",
+      "pbm_sha256": "DB6D45195A22F597D22578C8375307D5907ED1A1B73E5F615228FA9050CC2E45",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "bashful_presence"
+      },
+      "unique_frame_index": 19
+    },
+    {
+      "black_bounds": [
+        33,
+        77,
+        158,
+        168
+      ],
+      "black_pixels": 2948,
+      "browser_frame_sha256": "AF0EA685516507F8040BAF9572F6B23B6A032BD0424755736D647BAB4BD2698F",
+      "c_reconstructed_sha256": "AF0EA685516507F8040BAF9572F6B23B6A032BD0424755736D647BAB4BD2698F",
+      "gray_input_pixels": 0,
+      "id": "emotion_thoughtful_source",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_thoughtful_source.pbm",
+      "pbm_sha256": "0F959954297ABB7361A3F685253BDD73D799AA151774D58A44D046B5AB6491E4",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 0,
+        "gaze_key": "1,0,1,0",
+        "story": "thoughtful_presence"
+      },
+      "unique_frame_index": 20
+    },
+    {
+      "black_bounds": [
+        33,
+        76,
+        158,
+        168
+      ],
+      "black_pixels": 2952,
+      "browser_frame_sha256": "D72A366F0987EBBFB81BF7E1F32B689426258363A686D9546204874B8A486D59",
+      "c_reconstructed_sha256": "D72A366F0987EBBFB81BF7E1F32B689426258363A686D9546204874B8A486D59",
+      "gray_input_pixels": 0,
+      "id": "emotion_thoughtful_brow",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_thoughtful_brow.pbm",
+      "pbm_sha256": "9B2FBB2B62BC179FF53253489768B673D4934CD52F950C3DEF3CD6E5F9B011ED",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 1,
+        "gaze_key": "1,0,1,0",
+        "story": "thoughtful_presence"
+      },
+      "unique_frame_index": 21
+    },
+    {
+      "black_bounds": [
+        33,
+        76,
+        158,
+        167
+      ],
+      "black_pixels": 2982,
+      "browser_frame_sha256": "7709EDCB05C4C3FE12C145276F590BDD97F7C6E49573626C84C2E182993D4DFE",
+      "c_reconstructed_sha256": "7709EDCB05C4C3FE12C145276F590BDD97F7C6E49573626C84C2E182993D4DFE",
+      "gray_input_pixels": 0,
+      "id": "emotion_thoughtful_lower",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_thoughtful_lower.pbm",
+      "pbm_sha256": "B0B1CB2C457964F3FBF48BF94DA8FEB0737CB52A5C9FD0217D75DFCECB3BBA13",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "thoughtful_presence"
+      },
+      "unique_frame_index": 22
+    },
+    {
+      "black_bounds": [
+        33,
+        76,
+        158,
+        167
+      ],
+      "black_pixels": 2982,
+      "browser_frame_sha256": "7709EDCB05C4C3FE12C145276F590BDD97F7C6E49573626C84C2E182993D4DFE",
+      "c_reconstructed_sha256": "7709EDCB05C4C3FE12C145276F590BDD97F7C6E49573626C84C2E182993D4DFE",
+      "gray_input_pixels": 0,
+      "id": "emotion_thoughtful_hold",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_thoughtful_hold.pbm",
+      "pbm_sha256": "B0B1CB2C457964F3FBF48BF94DA8FEB0737CB52A5C9FD0217D75DFCECB3BBA13",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "thoughtful_presence"
+      },
+      "unique_frame_index": 22
+    },
+    {
+      "black_bounds": [
+        33,
+        95,
+        164,
+        168
+      ],
+      "black_pixels": 2928,
+      "browser_frame_sha256": "7F8F344350090C5174AD53F2CCA5AF5120156A190E84C42632EFE209A1629521",
+      "c_reconstructed_sha256": "7F8F344350090C5174AD53F2CCA5AF5120156A190E84C42632EFE209A1629521",
+      "gray_input_pixels": 0,
+      "id": "emotion_focused_source",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_focused_source.pbm",
+      "pbm_sha256": "3606A7D9A49654E8A62A1F4A3270B57722355C66808DAEB013BA8040C51EEB91",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 0,
+        "gaze_key": "1,0,1,0",
+        "story": "focused_presence"
+      },
+      "unique_frame_index": 23
+    },
+    {
+      "black_bounds": [
+        33,
+        96,
+        164,
+        168
+      ],
+      "black_pixels": 2946,
+      "browser_frame_sha256": "5752E54651E3F005E5DE0AD29E496A0A6314C332DF9156DA46A5B64E604C4796",
+      "c_reconstructed_sha256": "5752E54651E3F005E5DE0AD29E496A0A6314C332DF9156DA46A5B64E604C4796",
+      "gray_input_pixels": 0,
+      "id": "emotion_focused_brow",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_focused_brow.pbm",
+      "pbm_sha256": "F9FA17B65CD22A16E446CF37F29601B3E5B66365E622BD053B24478E1F23ED0B",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 1,
+        "gaze_key": "1,0,1,0",
+        "story": "focused_presence"
+      },
+      "unique_frame_index": 24
+    },
+    {
+      "black_bounds": [
+        33,
+        96,
+        164,
+        169
+      ],
+      "black_pixels": 2961,
+      "browser_frame_sha256": "44626DAB00F8DD98BA55635DB25028874969B9010AD5BF57FD35A07E13293519",
+      "c_reconstructed_sha256": "44626DAB00F8DD98BA55635DB25028874969B9010AD5BF57FD35A07E13293519",
+      "gray_input_pixels": 0,
+      "id": "emotion_focused_lower",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_focused_lower.pbm",
+      "pbm_sha256": "8A6DC06823EBC519331BC7C886FA72531282B1B0ED9492B7E2AE60E0AE3D7DCF",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "focused_presence"
+      },
+      "unique_frame_index": 25
+    },
+    {
+      "black_bounds": [
+        33,
+        96,
+        164,
+        169
+      ],
+      "black_pixels": 2961,
+      "browser_frame_sha256": "44626DAB00F8DD98BA55635DB25028874969B9010AD5BF57FD35A07E13293519",
+      "c_reconstructed_sha256": "44626DAB00F8DD98BA55635DB25028874969B9010AD5BF57FD35A07E13293519",
+      "gray_input_pixels": 0,
+      "id": "emotion_focused_hold",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_focused_hold.pbm",
+      "pbm_sha256": "8A6DC06823EBC519331BC7C886FA72531282B1B0ED9492B7E2AE60E0AE3D7DCF",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "focused_presence"
+      },
+      "unique_frame_index": 25
+    },
+    {
+      "black_bounds": [
+        33,
+        84,
+        167,
+        168
+      ],
+      "black_pixels": 2740,
+      "browser_frame_sha256": "968597CFE0FABA3A045D2CD1DB74659AC1371F3E17787053A64AB49DAD1AB459",
+      "c_reconstructed_sha256": "968597CFE0FABA3A045D2CD1DB74659AC1371F3E17787053A64AB49DAD1AB459",
+      "gray_input_pixels": 0,
+      "id": "emotion_alert_source",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_alert_source.pbm",
+      "pbm_sha256": "05D042A1AF28D7B395B97D60904DC23ECFDB6AA6F369F61DA1B95AAE9C2EF2BA",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 0,
+        "gaze_key": "1,0,1,0",
+        "story": "alert_exclamation"
+      },
+      "unique_frame_index": 26
+    },
+    {
+      "black_bounds": [
+        33,
+        42,
+        167,
+        168
+      ],
+      "black_pixels": 2823,
+      "browser_frame_sha256": "7B84ABE4E40FE9F0AD479400C6CE02D0B72760AE8EB2D6196CEC4EE27E6ADCFC",
+      "c_reconstructed_sha256": "7B84ABE4E40FE9F0AD479400C6CE02D0B72760AE8EB2D6196CEC4EE27E6ADCFC",
+      "gray_input_pixels": 0,
+      "id": "emotion_alert_brow",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_alert_brow.pbm",
+      "pbm_sha256": "3E0B62936EAD668E69BB91E1F70631A5B15880FA1A23EE55B5A20219E6D437E3",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 1,
+        "gaze_key": "1,0,1,0",
+        "story": "alert_exclamation"
+      },
+      "unique_frame_index": 27
+    },
+    {
+      "black_bounds": [
+        33,
+        35,
+        167,
+        176
+      ],
+      "black_pixels": 2942,
+      "browser_frame_sha256": "F5D08D9D28C37E4BC0ABE6EC1756C5CC2D40CE3EDDFFE4448400778242969DF9",
+      "c_reconstructed_sha256": "F5D08D9D28C37E4BC0ABE6EC1756C5CC2D40CE3EDDFFE4448400778242969DF9",
+      "gray_input_pixels": 0,
+      "id": "emotion_alert_lower",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_alert_lower.pbm",
+      "pbm_sha256": "CBEDA51F5BC39250F4535975C889C30985AC31AD2B6F403A5630695748A1EE37",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "alert_exclamation"
+      },
+      "unique_frame_index": 28
+    },
+    {
+      "black_bounds": [
+        33,
+        35,
+        167,
+        176
+      ],
+      "black_pixels": 2942,
+      "browser_frame_sha256": "F5D08D9D28C37E4BC0ABE6EC1756C5CC2D40CE3EDDFFE4448400778242969DF9",
+      "c_reconstructed_sha256": "F5D08D9D28C37E4BC0ABE6EC1756C5CC2D40CE3EDDFFE4448400778242969DF9",
+      "gray_input_pixels": 0,
+      "id": "emotion_alert_hold",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_alert_hold.pbm",
+      "pbm_sha256": "CBEDA51F5BC39250F4535975C889C30985AC31AD2B6F403A5630695748A1EE37",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "alert_exclamation"
+      },
+      "unique_frame_index": 28
+    },
+    {
+      "black_bounds": [
+        34,
+        87,
+        166,
+        168
+      ],
+      "black_pixels": 2983,
+      "browser_frame_sha256": "C478287951E1DD472CF93C84CF3007D97C65A7ADCBAB84E615F08793F9D7DEAA",
+      "c_reconstructed_sha256": "C478287951E1DD472CF93C84CF3007D97C65A7ADCBAB84E615F08793F9D7DEAA",
+      "gray_input_pixels": 0,
+      "id": "idle_glint_0",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/idle_glint_0.pbm",
+      "pbm_sha256": "1A05B0C83C98B4F9D1F1DCC2182C450C6F91758F61A09DFC6938D4C1F1E8D36D",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 4,
+        "gaze_key": "1,0,1,0",
+        "story": "calm_presence"
+      },
+      "unique_frame_index": 0
+    },
+    {
+      "black_bounds": [
+        34,
+        87,
+        166,
+        168
+      ],
+      "black_pixels": 2981,
+      "browser_frame_sha256": "CD9223E3C143D43074130A507307B3C0BA60BC4447F0FA045227C160E8BB3A62",
+      "c_reconstructed_sha256": "CD9223E3C143D43074130A507307B3C0BA60BC4447F0FA045227C160E8BB3A62",
+      "gray_input_pixels": 0,
+      "id": "idle_glint_8",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/idle_glint_8.pbm",
+      "pbm_sha256": "C0FB80C27C219169030C100AAD342FE8C9A1571D8ED369A08CF8A52AB0F06BB1",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 4,
+        "gaze_key": "0,0,0,0",
+        "story": "calm_presence"
+      },
+      "unique_frame_index": 29
+    },
+    {
+      "black_bounds": [
+        34,
+        87,
+        166,
+        168
+      ],
+      "black_pixels": 2960,
+      "browser_frame_sha256": "0A6D5FF808B361049C7B2E618C2EE30439F219E5A28976BFC48F7D0D263B867D",
+      "c_reconstructed_sha256": "0A6D5FF808B361049C7B2E618C2EE30439F219E5A28976BFC48F7D0D263B867D",
+      "gray_input_pixels": 0,
+      "id": "idle_glint_9",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/idle_glint_9.pbm",
+      "pbm_sha256": "897101BA7FA8308833A5985F13716EC6EA944BA4519A4E836E9816113D894B66",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 4,
+        "gaze_key": "1,-1,1,-1",
+        "story": "calm_presence"
+      },
+      "unique_frame_index": 30
+    },
+    {
+      "black_bounds": [
+        34,
+        87,
+        166,
+        168
+      ],
+      "black_pixels": 2983,
+      "browser_frame_sha256": "C478287951E1DD472CF93C84CF3007D97C65A7ADCBAB84E615F08793F9D7DEAA",
+      "c_reconstructed_sha256": "C478287951E1DD472CF93C84CF3007D97C65A7ADCBAB84E615F08793F9D7DEAA",
+      "gray_input_pixels": 0,
+      "id": "idle_glint_10",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/idle_glint_10.pbm",
+      "pbm_sha256": "1A05B0C83C98B4F9D1F1DCC2182C450C6F91758F61A09DFC6938D4C1F1E8D36D",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 4,
+        "gaze_key": "1,0,1,0",
+        "story": "calm_presence"
+      },
+      "unique_frame_index": 0
+    },
+    {
+      "black_bounds": [
+        34,
+        87,
+        166,
+        168
+      ],
+      "black_pixels": 2983,
+      "browser_frame_sha256": "C478287951E1DD472CF93C84CF3007D97C65A7ADCBAB84E615F08793F9D7DEAA",
+      "c_reconstructed_sha256": "C478287951E1DD472CF93C84CF3007D97C65A7ADCBAB84E615F08793F9D7DEAA",
+      "gray_input_pixels": 0,
+      "id": "gaze_center",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/gaze_center.pbm",
+      "pbm_sha256": "1A05B0C83C98B4F9D1F1DCC2182C450C6F91758F61A09DFC6938D4C1F1E8D36D",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 4,
+        "gaze_key": "1,0,1,0",
+        "story": "calm_presence"
+      },
+      "unique_frame_index": 0
+    },
+    {
+      "black_bounds": [
+        34,
+        87,
+        166,
+        168
+      ],
+      "black_pixels": 2975,
+      "browser_frame_sha256": "824379CAC9A6AD351088AF20289B90427449FDD5333190651F1E17FFF0F5BDD5",
+      "c_reconstructed_sha256": "824379CAC9A6AD351088AF20289B90427449FDD5333190651F1E17FFF0F5BDD5",
+      "gray_input_pixels": 0,
+      "id": "gaze_left",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/gaze_left.pbm",
+      "pbm_sha256": "DD707BA705595F9BAF961D3278F4F75A1D7DDDA246C2E8301D3F228097090526",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 4,
+        "gaze_key": "-2,0,-6,0",
+        "story": "calm_presence"
+      },
+      "unique_frame_index": 31
+    },
+    {
+      "black_bounds": [
+        34,
+        87,
+        166,
+        168
+      ],
+      "black_pixels": 2914,
+      "browser_frame_sha256": "512448B7A7C133010659395DF2C6501A22EB1E6A3940541C7BBF1D42990FD377",
+      "c_reconstructed_sha256": "512448B7A7C133010659395DF2C6501A22EB1E6A3940541C7BBF1D42990FD377",
+      "gray_input_pixels": 0,
+      "id": "gaze_up",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/gaze_up.pbm",
+      "pbm_sha256": "49376DF54BF0DBC5A783114C03C09B628C2A240047E07C9F5E7FA39049C0A055",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 4,
+        "gaze_key": "1,-3,1,-6",
+        "story": "calm_presence"
+      },
+      "unique_frame_index": 32
+    },
+    {
+      "black_bounds": [
+        34,
+        87,
+        166,
+        168
+      ],
+      "black_pixels": 2978,
+      "browser_frame_sha256": "4336947CD5474FE82365695FD058F6A185CE55F4A581036A36DBC0169CF8A267",
+      "c_reconstructed_sha256": "4336947CD5474FE82365695FD058F6A185CE55F4A581036A36DBC0169CF8A267",
+      "gray_input_pixels": 0,
+      "id": "gaze_right",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/gaze_right.pbm",
+      "pbm_sha256": "CA755637942B1B795CF5E16D13AAD7C4AAD50B538201965211135844EB8C9862",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 4,
+        "gaze_key": "5,0,5,0",
+        "story": "calm_presence"
+      },
+      "unique_frame_index": 33
+    },
+    {
+      "black_bounds": [
+        34,
+        87,
+        166,
+        168
+      ],
+      "black_pixels": 3007,
+      "browser_frame_sha256": "E455ECCB48EED186B26384CF268A0F8A4D8D485321176FF4934C80501AA55ED7",
+      "c_reconstructed_sha256": "E455ECCB48EED186B26384CF268A0F8A4D8D485321176FF4934C80501AA55ED7",
+      "gray_input_pixels": 0,
+      "id": "gaze_down",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/gaze_down.pbm",
+      "pbm_sha256": "1659C4B97D3519246735B21E4C43B9F3B1060D04B0B5E3DA502422ECB385752F",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 4,
+        "gaze_key": "1,4,1,6",
+        "story": "calm_presence"
+      },
+      "unique_frame_index": 34
+    },
+    {
+      "black_bounds": [
+        34,
+        87,
+        166,
+        168
+      ],
+      "black_pixels": 1685,
+      "browser_frame_sha256": "D93BF3D7ECC6C678D9EFE7CBA205139F1B3DAF126082A1E5C8FDB7B9B61AFA88",
+      "c_reconstructed_sha256": "D93BF3D7ECC6C678D9EFE7CBA205139F1B3DAF126082A1E5C8FDB7B9B61AFA88",
+      "gray_input_pixels": 0,
+      "id": "blink_0",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/blink_0.pbm",
+      "pbm_sha256": "B46E339B1BF6EF7FD2700A26F113278A74361249CD476051345CCE3709711345",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 1,
+        "gaze_key": "1,0,1,0",
+        "story": "calm_presence"
+      },
+      "unique_frame_index": 1
+    },
+    {
+      "black_bounds": [
+        34,
+        87,
+        166,
+        168
+      ],
+      "black_pixels": 864,
+      "browser_frame_sha256": "7B3C5C8A3D7D5514BE16F67BD248E001261BA2838BE2809CF581DCBEF1B9BE57",
+      "c_reconstructed_sha256": "7B3C5C8A3D7D5514BE16F67BD248E001261BA2838BE2809CF581DCBEF1B9BE57",
+      "gray_input_pixels": 0,
+      "id": "blink_1",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/blink_1.pbm",
+      "pbm_sha256": "9F785BCF1D05B0732E5692FC20EEFE91FEF61380343D194464FD241D169F46BA",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "calm_presence"
+      },
+      "unique_frame_index": 35
+    },
+    {
+      "black_bounds": [
+        34,
+        87,
+        166,
+        168
+      ],
+      "black_pixels": 1686,
+      "browser_frame_sha256": "9A2679B975E59D19FE122116AFAA8544D252DAA316D37B06D312FFFE34E23915",
+      "c_reconstructed_sha256": "9A2679B975E59D19FE122116AFAA8544D252DAA316D37B06D312FFFE34E23915",
+      "gray_input_pixels": 0,
+      "id": "blink_2",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/blink_2.pbm",
+      "pbm_sha256": "053387BCC6D8D54362EB863594F2F169512E5A2196AF84BC092059A3C52482CA",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 3,
+        "gaze_key": "1,0,1,0",
+        "story": "calm_presence"
+      },
+      "unique_frame_index": 36
+    },
+    {
+      "black_bounds": [
+        34,
+        87,
+        166,
+        168
+      ],
+      "black_pixels": 2983,
+      "browser_frame_sha256": "C478287951E1DD472CF93C84CF3007D97C65A7ADCBAB84E615F08793F9D7DEAA",
+      "c_reconstructed_sha256": "C478287951E1DD472CF93C84CF3007D97C65A7ADCBAB84E615F08793F9D7DEAA",
+      "gray_input_pixels": 0,
+      "id": "blink_3",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/blink_3.pbm",
+      "pbm_sha256": "1A05B0C83C98B4F9D1F1DCC2182C450C6F91758F61A09DFC6938D4C1F1E8D36D",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 4,
+        "gaze_key": "1,0,1,0",
+        "story": "calm_presence"
+      },
+      "unique_frame_index": 0
+    },
+    {
+      "black_bounds": [
+        0,
+        2,
+        199,
+        198
+      ],
+      "black_pixels": 3144,
+      "browser_frame_sha256": "EA85CFB199657D7829D181DD3D62BF19612F995E47C58112FFA7E713790DEFA0",
+      "c_reconstructed_sha256": "EA85CFB199657D7829D181DD3D62BF19612F995E47C58112FFA7E713790DEFA0",
+      "gray_input_pixels": 0,
+      "id": "menu_roots",
+      "kind": "menu",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/menu_roots.pbm",
+      "pbm_sha256": "8A469694911F60EE709BA63F8DDFE8C6BE1979914E4D9448200EC611471444E0",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "src": "/docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/01-home.png"
+      },
+      "unique_frame_index": 37
+    },
+    {
+      "black_bounds": [
+        0,
+        1,
+        199,
+        198
+      ],
+      "black_pixels": 3280,
+      "browser_frame_sha256": "7B3C8FAAF42DFEC2F309F43A6D769A8A1F5A4789BCD0CF46D0555F89A9A7169A",
+      "c_reconstructed_sha256": "7B3C8FAAF42DFEC2F309F43A6D769A8A1F5A4789BCD0CF46D0555F89A9A7169A",
+      "gray_input_pixels": 0,
+      "id": "menu_voice",
+      "kind": "menu",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/menu_voice.pbm",
+      "pbm_sha256": "73EE2C66AB7F098EA3A33017FAF8625449F981F67D8B21609D6220621DF257F8",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "src": "/docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/02-voice.png"
+      },
+      "unique_frame_index": 38
+    },
+    {
+      "black_bounds": [
+        6,
+        0,
+        194,
+        199
+      ],
+      "black_pixels": 4118,
+      "browser_frame_sha256": "6C237EFA7573A35578849CE3E337FE2156CCDE2125AD4BB9D252830ECF3F677A",
+      "c_reconstructed_sha256": "6C237EFA7573A35578849CE3E337FE2156CCDE2125AD4BB9D252830ECF3F677A",
+      "gray_input_pixels": 0,
+      "id": "menu_device",
+      "kind": "menu",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/menu_device.pbm",
+      "pbm_sha256": "47DCA8921A432E6F76DD88A5742451FBEE0FF44F40BEB6B531C1DB4B279B0960",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "src": "/docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/03-device.png"
+      },
+      "unique_frame_index": 39
+    },
+    {
+      "black_bounds": [
+        6,
+        0,
+        194,
+        199
+      ],
+      "black_pixels": 3027,
+      "browser_frame_sha256": "F103D49AF3A8B315CE6B2D8CDB4474CD3F2D62C19C7E1F8105DA43AE32C3FC15",
+      "c_reconstructed_sha256": "F103D49AF3A8B315CE6B2D8CDB4474CD3F2D62C19C7E1F8105DA43AE32C3FC15",
+      "gray_input_pixels": 0,
+      "id": "menu_connection",
+      "kind": "menu",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/menu_connection.pbm",
+      "pbm_sha256": "94327696B2304E1B85AE60AEAECBE1852B38FF2EB0DA1FB0D13F249352A84C76",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "src": "/docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/04-connection.png"
+      },
+      "unique_frame_index": 40
+    },
+    {
+      "black_bounds": [
+        5,
+        0,
+        193,
+        199
+      ],
+      "black_pixels": 3871,
+      "browser_frame_sha256": "AE0BC022B83A98AC42D7B54819718136FF745A4A1A4EF036E3D33655E43EB29C",
+      "c_reconstructed_sha256": "AE0BC022B83A98AC42D7B54819718136FF745A4A1A4EF036E3D33655E43EB29C",
+      "gray_input_pixels": 0,
+      "id": "menu_preferences",
+      "kind": "menu",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/menu_preferences.pbm",
+      "pbm_sha256": "2E9EB6A6B5F866DFDE450C0388D83BEF3C0D6C71138645B9E84C532AC0744970",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "src": "/docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/05-preferences.png"
+      },
+      "unique_frame_index": 41
+    },
+    {
+      "black_bounds": [
+        12,
+        12,
+        197,
+        168
+      ],
+      "black_pixels": 3141,
+      "browser_frame_sha256": "5990393ACBF4A0A7CD9CC85DE3D8290DA69618FFE747A8EF62DE2E79EEFCCB80",
+      "c_reconstructed_sha256": "5990393ACBF4A0A7CD9CC85DE3D8290DA69618FFE747A8EF62DE2E79EEFCCB80",
+      "gray_input_pixels": 0,
+      "id": "recording_calm_hold_wave_0",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/recording_calm_hold_wave_0.pbm",
+      "pbm_sha256": "5719820471BAD966B8C62BC8C75DDBC1D9EB5B9E6BBC922C8B67AEFE5934DE7E",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "accessory": true,
+        "frame_index": 4,
+        "gaze_key": "1,0,1,0",
+        "story": "calm_presence",
+        "wave_step": 0
+      },
+      "unique_frame_index": 42
+    },
+    {
+      "black_bounds": [
+        12,
+        12,
+        197,
+        173
+      ],
+      "black_pixels": 3083,
+      "browser_frame_sha256": "E70B6AF34F19B8736AC8406413B219E883B239BC8943876B3E409BA6DA64B4C1",
+      "c_reconstructed_sha256": "E70B6AF34F19B8736AC8406413B219E883B239BC8943876B3E409BA6DA64B4C1",
+      "gray_input_pixels": 0,
+      "id": "recording_curious_hold_wave_0",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/recording_curious_hold_wave_0.pbm",
+      "pbm_sha256": "382E3EA98DA8684B005965F63C8C2FBD454321D7A9B3646EF8BA2BF213C17917",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "accessory": true,
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "curious_question",
+        "wave_step": 0
+      },
+      "unique_frame_index": 43
+    },
+    {
+      "black_bounds": [
+        12,
+        12,
+        197,
+        177
+      ],
+      "black_pixels": 3413,
+      "browser_frame_sha256": "C4BE8883E7C21DB41B402103D9DA0F9A616439BCF8769F47BDDC5FA54F8B6164",
+      "c_reconstructed_sha256": "C4BE8883E7C21DB41B402103D9DA0F9A616439BCF8769F47BDDC5FA54F8B6164",
+      "gray_input_pixels": 0,
+      "id": "recording_warm_hold_wave_0",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/recording_warm_hold_wave_0.pbm",
+      "pbm_sha256": "29712342B7E98796CE0A4BC5CF1A927B31E6348A0169416E423D54E2A4B14A5B",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "accessory": true,
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "warm_presence",
+        "wave_step": 0
+      },
+      "unique_frame_index": 44
+    },
+    {
+      "black_bounds": [
+        12,
+        12,
+        197,
+        170
+      ],
+      "black_pixels": 3404,
+      "browser_frame_sha256": "130F1FF17BB6F594A2BC5A84A8A8A6E1FBD5432915A3F07877CF2EF8E463556B",
+      "c_reconstructed_sha256": "130F1FF17BB6F594A2BC5A84A8A8A6E1FBD5432915A3F07877CF2EF8E463556B",
+      "gray_input_pixels": 0,
+      "id": "recording_playful_hold_wave_0",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/recording_playful_hold_wave_0.pbm",
+      "pbm_sha256": "2D385A23D1A0323F5CE126DBF634997522C0B5016A71F510EA9E73C1EC7C04A2",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "accessory": true,
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "playful_presence",
+        "wave_step": 0
+      },
+      "unique_frame_index": 45
+    },
+    {
+      "black_bounds": [
+        12,
+        12,
+        197,
+        169
+      ],
+      "black_pixels": 1593,
+      "browser_frame_sha256": "B607790B071BCCEEBA41C1CE9F2090D09FD0ED0D46367172F0ACD3ACE965F87E",
+      "c_reconstructed_sha256": "B607790B071BCCEEBA41C1CE9F2090D09FD0ED0D46367172F0ACD3ACE965F87E",
+      "gray_input_pixels": 0,
+      "id": "recording_sleepy_hold_wave_0",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/recording_sleepy_hold_wave_0.pbm",
+      "pbm_sha256": "767E049F1116437A016967D457B0273618519071D12E8CF2589D6FA7272BFF0F",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "accessory": true,
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "sleepy_presence",
+        "wave_step": 0
+      },
+      "unique_frame_index": 46
+    },
+    {
+      "black_bounds": [
+        12,
+        12,
+        197,
+        169
+      ],
+      "black_pixels": 3370,
+      "browser_frame_sha256": "03D9F322CB9FBE8C36B2C9B77E24B88F985AD95A94E720982621BDFC1A40BDF6",
+      "c_reconstructed_sha256": "03D9F322CB9FBE8C36B2C9B77E24B88F985AD95A94E720982621BDFC1A40BDF6",
+      "gray_input_pixels": 0,
+      "id": "recording_delighted_hold_wave_0",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/recording_delighted_hold_wave_0.pbm",
+      "pbm_sha256": "844C36D0AAB2161766CAFFEB3079EE74A6A8C16D67008C39D0DCB76178A3FBB4",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "accessory": true,
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "delighted_presence",
+        "wave_step": 0
+      },
+      "unique_frame_index": 47
+    },
+    {
+      "black_bounds": [
+        12,
+        12,
+        197,
+        170
+      ],
+      "black_pixels": 3140,
+      "browser_frame_sha256": "58C638C640FFDCC18378082AB39348D286C777CCF94E1EB7B7038228F49EEF94",
+      "c_reconstructed_sha256": "58C638C640FFDCC18378082AB39348D286C777CCF94E1EB7B7038228F49EEF94",
+      "gray_input_pixels": 0,
+      "id": "recording_bashful_hold_wave_0",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/recording_bashful_hold_wave_0.pbm",
+      "pbm_sha256": "C038D8F2408EE0A7A229711CCF675A45B44C325FF3A92082FD928809782D2D8B",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "accessory": true,
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "bashful_presence",
+        "wave_step": 0
+      },
+      "unique_frame_index": 48
+    },
+    {
+      "black_bounds": [
+        12,
+        12,
+        197,
+        167
+      ],
+      "black_pixels": 3140,
+      "browser_frame_sha256": "70BE497AE61F5DF8EAEA5CC4DF414A6CEDFA415D0C1B7CF419C0EB3C98768EF4",
+      "c_reconstructed_sha256": "70BE497AE61F5DF8EAEA5CC4DF414A6CEDFA415D0C1B7CF419C0EB3C98768EF4",
+      "gray_input_pixels": 0,
+      "id": "recording_thoughtful_hold_wave_0",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/recording_thoughtful_hold_wave_0.pbm",
+      "pbm_sha256": "A38D36C66FC2369A2F3FB4F42ADD26F3968DA7B6119881A9AB3650DC8AA39CA8",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "accessory": true,
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "thoughtful_presence",
+        "wave_step": 0
+      },
+      "unique_frame_index": 49
+    },
+    {
+      "black_bounds": [
+        12,
+        12,
+        197,
+        169
+      ],
+      "black_pixels": 3119,
+      "browser_frame_sha256": "65D3CAEB76608E73B184A5EC52546D32AF81F0ADDE72B4C004C0D19E211B3DC2",
+      "c_reconstructed_sha256": "65D3CAEB76608E73B184A5EC52546D32AF81F0ADDE72B4C004C0D19E211B3DC2",
+      "gray_input_pixels": 0,
+      "id": "recording_focused_hold_wave_0",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/recording_focused_hold_wave_0.pbm",
+      "pbm_sha256": "5778F59636042CF3773D0E0583770DA5166A82BBEFBA30B02FC72EDC31234DDD",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "accessory": true,
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "focused_presence",
+        "wave_step": 0
+      },
+      "unique_frame_index": 50
+    },
+    {
+      "black_bounds": [
+        12,
+        12,
+        197,
+        176
+      ],
+      "black_pixels": 3100,
+      "browser_frame_sha256": "B963B14E71DA293A5E15E225A1E65E7E43407E1406AC6AC2FBFE2D9577E4A4C6",
+      "c_reconstructed_sha256": "B963B14E71DA293A5E15E225A1E65E7E43407E1406AC6AC2FBFE2D9577E4A4C6",
+      "gray_input_pixels": 0,
+      "id": "recording_alert_hold_wave_0",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/recording_alert_hold_wave_0.pbm",
+      "pbm_sha256": "F62DA9935C89EF797B9C35E819C669181FC7FB4BCCC0E59264949D7893484ECC",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "accessory": true,
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "alert_exclamation",
+        "wave_step": 0
+      },
+      "unique_frame_index": 51
+    },
+    {
+      "black_bounds": [
+        12,
+        12,
+        189,
+        168
+      ],
+      "black_pixels": 3141,
+      "browser_frame_sha256": "D7609735B9038034384CAC0C92B955AB290F2133D99FA8B70078978FC2E85BFC",
+      "c_reconstructed_sha256": "D7609735B9038034384CAC0C92B955AB290F2133D99FA8B70078978FC2E85BFC",
+      "gray_input_pixels": 0,
+      "id": "recording_calm_hold_wave_1",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/recording_calm_hold_wave_1.pbm",
+      "pbm_sha256": "FB2CE8858399D76E20BB79849C00ACDD73D5A23C8273BECB4366A6BAA118C962",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "accessory": true,
+        "frame_index": 4,
+        "gaze_key": "1,0,1,0",
+        "story": "calm_presence",
+        "wave_step": 1
+      },
+      "unique_frame_index": 52
+    },
+    {
+      "black_bounds": [
+        12,
+        12,
+        197,
+        168
+      ],
+      "black_pixels": 3141,
+      "browser_frame_sha256": "767D4D062D13AFBAC60605B1D37220626AAD0B56342CD491B3EFC70D24F8CCFA",
+      "c_reconstructed_sha256": "767D4D062D13AFBAC60605B1D37220626AAD0B56342CD491B3EFC70D24F8CCFA",
+      "gray_input_pixels": 0,
+      "id": "recording_calm_hold_wave_2",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/recording_calm_hold_wave_2.pbm",
+      "pbm_sha256": "46E706C816628A20D7CBF99229E1DE441927A3B6EECE58527E8A6A3763491AFB",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "accessory": true,
+        "frame_index": 4,
+        "gaze_key": "1,0,1,0",
+        "story": "calm_presence",
+        "wave_step": 2
+      },
+      "unique_frame_index": 53
+    },
+    {
+      "black_bounds": [
+        12,
+        12,
+        197,
+        168
+      ],
+      "black_pixels": 3141,
+      "browser_frame_sha256": "AEF000E022DB84AA219F9F282957474F09CFF5353A198F09DCEF9715ADC19DC0",
+      "c_reconstructed_sha256": "AEF000E022DB84AA219F9F282957474F09CFF5353A198F09DCEF9715ADC19DC0",
+      "gray_input_pixels": 0,
+      "id": "recording_calm_hold_wave_3",
+      "kind": "expression",
+      "orientation_transform": "identity",
+      "pbm_file": "frames/recording_calm_hold_wave_3.pbm",
+      "pbm_sha256": "9928FD9B8E2F0832F4104383E530A71BD661CC650637282C2AD2EC44246F4A46",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "accessory": true,
+        "frame_index": 4,
+        "gaze_key": "1,0,1,0",
+        "story": "calm_presence",
+        "wave_step": 3
+      },
+      "unique_frame_index": 54
+    }
+  ],
+  "status": "PASS"
+}
