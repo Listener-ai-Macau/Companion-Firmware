@@ -77,7 +77,7 @@ def main():
     verifier_worktree_blob = canonical_worktree_sha(ROOT / verifier_path)
     gitlink = run(["git", "ls-tree", ns.source_commit, "third_party/denzic-platform"]).stdout.strip()
     drift = run(["git", "diff", "--quiet", ns.source_commit, "--", *source_paths]).returncode
-    isolated = ROOT / ".cache" / "comp-req-485-fresh-host"
+    isolated = ROOT / ".cache" / "comp-req-531-fresh-host"
     shutil.rmtree(isolated, ignore_errors=True)
     isolated.mkdir(parents=True, exist_ok=True)
     try:
@@ -128,9 +128,9 @@ def main():
         stdout = "" if host is None else host.stdout
         (run_dir / "host.stdout.txt").write_text(stdout, encoding="utf-8")
         validation = run_dir
-        (validation / "comp-req-485-host.stdout.txt").write_text(stdout, encoding="utf-8")
-        (validation / "comp-req-485-host.compile.stdout.txt").write_text(compile.stdout, encoding="utf-8")
-        (validation / "comp-req-485-host.compile.stderr.txt").write_text(compile.stderr, encoding="utf-8")
+        (validation / "comp-req-531-host.stdout.txt").write_text(stdout, encoding="utf-8")
+        (validation / "comp-req-531-host.compile.stdout.txt").write_text(compile.stdout, encoding="utf-8")
+        (validation / "comp-req-531-host.compile.stderr.txt").write_text(compile.stderr, encoding="utf-8")
         wrapper_commands = [
             ["pwsh", "-NoProfile", "-File", "tools/build_nucleo_bringup.ps1", "-EpaperSsd1681R7VisualRuntimeDiagnostic", "-Force", "-Optimization", "O2"],
             ["pwsh", "-NoProfile", "-File", "tools/build_companion_ble_audio_fixture.ps1", "-Force"],
@@ -139,8 +139,8 @@ def main():
         for args in wrapper_commands:
             result = run(args)
             label = "wb55" if len(wrappers) == 0 else "ble"
-            (validation / f"comp-req-485-{label}.stdout.txt").write_text(result.stdout, encoding="utf-8")
-            (validation / f"comp-req-485-{label}.stderr.txt").write_text(result.stderr, encoding="utf-8")
+            (validation / f"comp-req-531-{label}.stdout.txt").write_text(result.stdout, encoding="utf-8")
+            (validation / f"comp-req-531-{label}.stderr.txt").write_text(result.stderr, encoding="utf-8")
             wrappers.append({"command": args, "exit": result.returncode,
                              "stdout_sha256": hashlib.sha256(result.stdout.encode()).hexdigest().upper(),
                              "stderr_sha256": hashlib.sha256(result.stderr.encode()).hexdigest().upper()})
