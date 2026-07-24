@@ -1,0 +1,2634 @@
+{
+  "checks": {
+    "accessory_does_not_replace_affect": true,
+    "accessory_does_not_replace_gaze": true,
+    "accessory_only_exit": true,
+    "committed_480ms_contract": true,
+    "deterministic_level_pipeline": true,
+    "exactly_three_equal_columns": true,
+    "full_hold_direct_menu_once": true,
+    "idle_first_change_within_960ms": true,
+    "idle_real_clock_has_changes": true,
+    "idle_real_clock_repeats": true,
+    "idle_returns_to_baseline": true,
+    "no_arc_pixels": true,
+    "no_browser_interpolation": true,
+    "no_hold_dom_or_pixels": true,
+    "no_legacy_recording_renderer": true,
+    "one_bit_runtime": true,
+    "one_recording_dot_and_level_layer": true,
+    "page_and_requests_clean": true,
+    "source_page_exact": true
+  },
+  "errors": [],
+  "failed": [],
+  "inputs": {
+    "page_canonical_sha256": "28E9971C068749F67811AD14BF7B81D93E42BE53526243B2B4DE43FA585E52F6",
+    "page_repo_path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html"
+  },
+  "observed": {
+    "hold": {
+      "full_hold": {
+        "menu_entries": 1,
+        "mode": "menu",
+        "progress_nodes": 0
+      },
+      "menu_hold_ms": 3000,
+      "rows": [
+        {
+          "label": "rest",
+          "nodes": 0,
+          "screen": "2f7ed52e"
+        },
+        {
+          "label": "pointerdown",
+          "nodes": 0,
+          "screen": "2f7ed52e"
+        },
+        {
+          "label": "hold_1200ms",
+          "nodes": 0,
+          "screen": "2f7ed52e"
+        },
+        {
+          "label": "early_up",
+          "nodes": 0,
+          "screen": "2f7ed52e"
+        },
+        {
+          "label": "drag",
+          "nodes": 0,
+          "screen": "0eb4f470"
+        },
+        {
+          "label": "cancel",
+          "nodes": 0,
+          "screen": "c8791c08"
+        },
+        {
+          "label": "hold_1500ms",
+          "nodes": 0,
+          "screen": "c8791c08"
+        }
+      ]
+    },
+    "idle": {
+      "cadence_ms": 480,
+      "first_changed_within_960ms": true,
+      "run_sha256": [
+        "74B7E7873186040ACD5EE4E1E3CB1105BDF4669574A2382F8EECEE1CF9BE3167",
+        "74B7E7873186040ACD5EE4E1E3CB1105BDF4669574A2382F8EECEE1CF9BE3167"
+      ],
+      "runs": [
+        [
+          {
+            "changed": true,
+            "cycle": 0,
+            "key": "0,0,0,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": true,
+            "source": "scheduler",
+            "step": 1
+          },
+          {
+            "changed": true,
+            "cycle": 0,
+            "key": "1,-1,1,-1",
+            "previous_key": "0,0,0,0",
+            "refresh_requested": true,
+            "source": "scheduler",
+            "step": 2
+          },
+          {
+            "changed": true,
+            "cycle": 0,
+            "key": "1,0,1,0",
+            "previous_key": "1,-1,1,-1",
+            "refresh_requested": true,
+            "source": "scheduler",
+            "step": 3
+          },
+          {
+            "changed": false,
+            "cycle": 0,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 4
+          },
+          {
+            "changed": false,
+            "cycle": 0,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 5
+          },
+          {
+            "changed": false,
+            "cycle": 0,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 6
+          },
+          {
+            "changed": false,
+            "cycle": 0,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 7
+          },
+          {
+            "changed": false,
+            "cycle": 0,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 8
+          },
+          {
+            "changed": false,
+            "cycle": 0,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 9
+          },
+          {
+            "changed": false,
+            "cycle": 0,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 10
+          },
+          {
+            "changed": false,
+            "cycle": 1,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 0
+          },
+          {
+            "changed": true,
+            "cycle": 1,
+            "key": "0,0,0,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": true,
+            "source": "scheduler",
+            "step": 1
+          },
+          {
+            "changed": true,
+            "cycle": 1,
+            "key": "1,-1,1,-1",
+            "previous_key": "0,0,0,0",
+            "refresh_requested": true,
+            "source": "scheduler",
+            "step": 2
+          },
+          {
+            "changed": true,
+            "cycle": 1,
+            "key": "1,0,1,0",
+            "previous_key": "1,-1,1,-1",
+            "refresh_requested": true,
+            "source": "scheduler",
+            "step": 3
+          },
+          {
+            "changed": false,
+            "cycle": 1,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 4
+          },
+          {
+            "changed": false,
+            "cycle": 1,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 5
+          },
+          {
+            "changed": false,
+            "cycle": 1,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 6
+          },
+          {
+            "changed": false,
+            "cycle": 1,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 7
+          },
+          {
+            "changed": false,
+            "cycle": 1,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 8
+          },
+          {
+            "changed": false,
+            "cycle": 1,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 9
+          },
+          {
+            "changed": false,
+            "cycle": 1,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 10
+          },
+          {
+            "changed": false,
+            "cycle": 2,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 0
+          },
+          {
+            "changed": true,
+            "cycle": 2,
+            "key": "0,0,0,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": true,
+            "source": "scheduler",
+            "step": 1
+          },
+          {
+            "changed": true,
+            "cycle": 2,
+            "key": "1,-1,1,-1",
+            "previous_key": "0,0,0,0",
+            "refresh_requested": true,
+            "source": "scheduler",
+            "step": 2
+          },
+          {
+            "changed": true,
+            "cycle": 2,
+            "key": "1,0,1,0",
+            "previous_key": "1,-1,1,-1",
+            "refresh_requested": true,
+            "source": "scheduler",
+            "step": 3
+          },
+          {
+            "changed": false,
+            "cycle": 2,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 4
+          },
+          {
+            "changed": false,
+            "cycle": 2,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 5
+          },
+          {
+            "changed": false,
+            "cycle": 2,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 6
+          },
+          {
+            "changed": false,
+            "cycle": 2,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 7
+          },
+          {
+            "changed": false,
+            "cycle": 2,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 8
+          },
+          {
+            "changed": false,
+            "cycle": 2,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 9
+          },
+          {
+            "changed": false,
+            "cycle": 2,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 10
+          },
+          {
+            "changed": false,
+            "cycle": 3,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 0
+          },
+          {
+            "changed": true,
+            "cycle": 3,
+            "key": "0,0,0,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": true,
+            "source": "scheduler",
+            "step": 1
+          },
+          {
+            "changed": true,
+            "cycle": 3,
+            "key": "1,-1,1,-1",
+            "previous_key": "0,0,0,0",
+            "refresh_requested": true,
+            "source": "scheduler",
+            "step": 2
+          },
+          {
+            "changed": true,
+            "cycle": 3,
+            "key": "1,0,1,0",
+            "previous_key": "1,-1,1,-1",
+            "refresh_requested": true,
+            "source": "scheduler",
+            "step": 3
+          },
+          {
+            "changed": false,
+            "cycle": 3,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 4
+          },
+          {
+            "changed": false,
+            "cycle": 3,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 5
+          },
+          {
+            "changed": false,
+            "cycle": 3,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 6
+          },
+          {
+            "changed": false,
+            "cycle": 3,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 7
+          },
+          {
+            "changed": false,
+            "cycle": 3,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 8
+          },
+          {
+            "changed": false,
+            "cycle": 3,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 9
+          },
+          {
+            "changed": false,
+            "cycle": 3,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 10
+          },
+          {
+            "changed": false,
+            "cycle": 4,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 0
+          },
+          {
+            "changed": true,
+            "cycle": 4,
+            "key": "0,0,0,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": true,
+            "source": "scheduler",
+            "step": 1
+          },
+          {
+            "changed": true,
+            "cycle": 4,
+            "key": "1,-1,1,-1",
+            "previous_key": "0,0,0,0",
+            "refresh_requested": true,
+            "source": "scheduler",
+            "step": 2
+          },
+          {
+            "changed": true,
+            "cycle": 4,
+            "key": "1,0,1,0",
+            "previous_key": "1,-1,1,-1",
+            "refresh_requested": true,
+            "source": "scheduler",
+            "step": 3
+          },
+          {
+            "changed": false,
+            "cycle": 4,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 4
+          },
+          {
+            "changed": false,
+            "cycle": 4,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 5
+          },
+          {
+            "changed": false,
+            "cycle": 4,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 6
+          },
+          {
+            "changed": false,
+            "cycle": 4,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 7
+          },
+          {
+            "changed": false,
+            "cycle": 4,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 8
+          },
+          {
+            "changed": false,
+            "cycle": 4,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 9
+          },
+          {
+            "changed": false,
+            "cycle": 4,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 10
+          },
+          {
+            "changed": false,
+            "cycle": 5,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 0
+          },
+          {
+            "changed": true,
+            "cycle": 5,
+            "key": "0,0,0,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": true,
+            "source": "scheduler",
+            "step": 1
+          },
+          {
+            "changed": true,
+            "cycle": 5,
+            "key": "1,-1,1,-1",
+            "previous_key": "0,0,0,0",
+            "refresh_requested": true,
+            "source": "scheduler",
+            "step": 2
+          },
+          {
+            "changed": true,
+            "cycle": 5,
+            "key": "1,0,1,0",
+            "previous_key": "1,-1,1,-1",
+            "refresh_requested": true,
+            "source": "scheduler",
+            "step": 3
+          },
+          {
+            "changed": false,
+            "cycle": 5,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 4
+          },
+          {
+            "changed": false,
+            "cycle": 5,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 5
+          }
+        ],
+        [
+          {
+            "changed": true,
+            "cycle": 0,
+            "key": "0,0,0,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": true,
+            "source": "scheduler",
+            "step": 1
+          },
+          {
+            "changed": true,
+            "cycle": 0,
+            "key": "1,-1,1,-1",
+            "previous_key": "0,0,0,0",
+            "refresh_requested": true,
+            "source": "scheduler",
+            "step": 2
+          },
+          {
+            "changed": true,
+            "cycle": 0,
+            "key": "1,0,1,0",
+            "previous_key": "1,-1,1,-1",
+            "refresh_requested": true,
+            "source": "scheduler",
+            "step": 3
+          },
+          {
+            "changed": false,
+            "cycle": 0,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 4
+          },
+          {
+            "changed": false,
+            "cycle": 0,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 5
+          },
+          {
+            "changed": false,
+            "cycle": 0,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 6
+          },
+          {
+            "changed": false,
+            "cycle": 0,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 7
+          },
+          {
+            "changed": false,
+            "cycle": 0,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 8
+          },
+          {
+            "changed": false,
+            "cycle": 0,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 9
+          },
+          {
+            "changed": false,
+            "cycle": 0,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 10
+          },
+          {
+            "changed": false,
+            "cycle": 1,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 0
+          },
+          {
+            "changed": true,
+            "cycle": 1,
+            "key": "0,0,0,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": true,
+            "source": "scheduler",
+            "step": 1
+          },
+          {
+            "changed": true,
+            "cycle": 1,
+            "key": "1,-1,1,-1",
+            "previous_key": "0,0,0,0",
+            "refresh_requested": true,
+            "source": "scheduler",
+            "step": 2
+          },
+          {
+            "changed": true,
+            "cycle": 1,
+            "key": "1,0,1,0",
+            "previous_key": "1,-1,1,-1",
+            "refresh_requested": true,
+            "source": "scheduler",
+            "step": 3
+          },
+          {
+            "changed": false,
+            "cycle": 1,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 4
+          },
+          {
+            "changed": false,
+            "cycle": 1,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 5
+          },
+          {
+            "changed": false,
+            "cycle": 1,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 6
+          },
+          {
+            "changed": false,
+            "cycle": 1,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 7
+          },
+          {
+            "changed": false,
+            "cycle": 1,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 8
+          },
+          {
+            "changed": false,
+            "cycle": 1,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 9
+          },
+          {
+            "changed": false,
+            "cycle": 1,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 10
+          },
+          {
+            "changed": false,
+            "cycle": 2,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 0
+          },
+          {
+            "changed": true,
+            "cycle": 2,
+            "key": "0,0,0,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": true,
+            "source": "scheduler",
+            "step": 1
+          },
+          {
+            "changed": true,
+            "cycle": 2,
+            "key": "1,-1,1,-1",
+            "previous_key": "0,0,0,0",
+            "refresh_requested": true,
+            "source": "scheduler",
+            "step": 2
+          },
+          {
+            "changed": true,
+            "cycle": 2,
+            "key": "1,0,1,0",
+            "previous_key": "1,-1,1,-1",
+            "refresh_requested": true,
+            "source": "scheduler",
+            "step": 3
+          },
+          {
+            "changed": false,
+            "cycle": 2,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 4
+          },
+          {
+            "changed": false,
+            "cycle": 2,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 5
+          },
+          {
+            "changed": false,
+            "cycle": 2,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 6
+          },
+          {
+            "changed": false,
+            "cycle": 2,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 7
+          },
+          {
+            "changed": false,
+            "cycle": 2,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 8
+          },
+          {
+            "changed": false,
+            "cycle": 2,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 9
+          },
+          {
+            "changed": false,
+            "cycle": 2,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 10
+          },
+          {
+            "changed": false,
+            "cycle": 3,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 0
+          },
+          {
+            "changed": true,
+            "cycle": 3,
+            "key": "0,0,0,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": true,
+            "source": "scheduler",
+            "step": 1
+          },
+          {
+            "changed": true,
+            "cycle": 3,
+            "key": "1,-1,1,-1",
+            "previous_key": "0,0,0,0",
+            "refresh_requested": true,
+            "source": "scheduler",
+            "step": 2
+          },
+          {
+            "changed": true,
+            "cycle": 3,
+            "key": "1,0,1,0",
+            "previous_key": "1,-1,1,-1",
+            "refresh_requested": true,
+            "source": "scheduler",
+            "step": 3
+          },
+          {
+            "changed": false,
+            "cycle": 3,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 4
+          },
+          {
+            "changed": false,
+            "cycle": 3,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 5
+          },
+          {
+            "changed": false,
+            "cycle": 3,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 6
+          },
+          {
+            "changed": false,
+            "cycle": 3,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 7
+          },
+          {
+            "changed": false,
+            "cycle": 3,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 8
+          },
+          {
+            "changed": false,
+            "cycle": 3,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 9
+          },
+          {
+            "changed": false,
+            "cycle": 3,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 10
+          },
+          {
+            "changed": false,
+            "cycle": 4,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 0
+          },
+          {
+            "changed": true,
+            "cycle": 4,
+            "key": "0,0,0,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": true,
+            "source": "scheduler",
+            "step": 1
+          },
+          {
+            "changed": true,
+            "cycle": 4,
+            "key": "1,-1,1,-1",
+            "previous_key": "0,0,0,0",
+            "refresh_requested": true,
+            "source": "scheduler",
+            "step": 2
+          },
+          {
+            "changed": true,
+            "cycle": 4,
+            "key": "1,0,1,0",
+            "previous_key": "1,-1,1,-1",
+            "refresh_requested": true,
+            "source": "scheduler",
+            "step": 3
+          },
+          {
+            "changed": false,
+            "cycle": 4,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 4
+          },
+          {
+            "changed": false,
+            "cycle": 4,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 5
+          },
+          {
+            "changed": false,
+            "cycle": 4,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 6
+          },
+          {
+            "changed": false,
+            "cycle": 4,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 7
+          },
+          {
+            "changed": false,
+            "cycle": 4,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 8
+          },
+          {
+            "changed": false,
+            "cycle": 4,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 9
+          },
+          {
+            "changed": false,
+            "cycle": 4,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 10
+          },
+          {
+            "changed": false,
+            "cycle": 5,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 0
+          },
+          {
+            "changed": true,
+            "cycle": 5,
+            "key": "0,0,0,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": true,
+            "source": "scheduler",
+            "step": 1
+          },
+          {
+            "changed": true,
+            "cycle": 5,
+            "key": "1,-1,1,-1",
+            "previous_key": "0,0,0,0",
+            "refresh_requested": true,
+            "source": "scheduler",
+            "step": 2
+          },
+          {
+            "changed": true,
+            "cycle": 5,
+            "key": "1,0,1,0",
+            "previous_key": "1,-1,1,-1",
+            "refresh_requested": true,
+            "source": "scheduler",
+            "step": 3
+          },
+          {
+            "changed": false,
+            "cycle": 5,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 4
+          },
+          {
+            "changed": false,
+            "cycle": 5,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "refresh_requested": false,
+            "source": "scheduler",
+            "step": 5
+          }
+        ]
+      ]
+    },
+    "meter": {
+      "gray_pixels": 0,
+      "pixel_x": [
+        170,
+        171,
+        172,
+        173,
+        181,
+        182,
+        183,
+        184,
+        192,
+        193,
+        194,
+        195
+      ],
+      "rows": [
+        {
+          "column_count": 3,
+          "columns": [
+            {
+              "bounds": {
+                "x_max": 173,
+                "x_min": 170,
+                "y_max": 72,
+                "y_min": 67
+              },
+              "direction": "toward_listening_point",
+              "energy_level": 6,
+              "geometry": {
+                "height": 6,
+                "width": 4
+              },
+              "slot": 0
+            },
+            {
+              "bounds": {
+                "x_max": 184,
+                "x_min": 181,
+                "y_max": 76,
+                "y_min": 63
+              },
+              "direction": "toward_listening_point",
+              "energy_level": 14,
+              "geometry": {
+                "height": 14,
+                "width": 4
+              },
+              "slot": 1
+            },
+            {
+              "bounds": {
+                "x_max": 195,
+                "x_min": 192,
+                "y_max": 73,
+                "y_min": 66
+              },
+              "direction": "outer_input",
+              "energy_level": 8,
+              "geometry": {
+                "height": 8,
+                "width": 4
+              },
+              "slot": 2
+            }
+          ],
+          "cycle": 0,
+          "gray_pixels": 0,
+          "ink_pixels": 112,
+          "listening_point": {
+            "x": 158,
+            "y": 70
+          },
+          "samples": [
+            6,
+            14,
+            8
+          ],
+          "step": 0,
+          "transition": {
+            "absorbed": null,
+            "inserted": null,
+            "shifted": []
+          }
+        },
+        {
+          "column_count": 3,
+          "columns": [
+            {
+              "bounds": {
+                "x_max": 173,
+                "x_min": 170,
+                "y_max": 76,
+                "y_min": 63
+              },
+              "direction": "toward_listening_point",
+              "energy_level": 14,
+              "geometry": {
+                "height": 14,
+                "width": 4
+              },
+              "slot": 0
+            },
+            {
+              "bounds": {
+                "x_max": 184,
+                "x_min": 181,
+                "y_max": 73,
+                "y_min": 66
+              },
+              "direction": "toward_listening_point",
+              "energy_level": 8,
+              "geometry": {
+                "height": 8,
+                "width": 4
+              },
+              "slot": 1
+            },
+            {
+              "bounds": {
+                "x_max": 195,
+                "x_min": 192,
+                "y_max": 77,
+                "y_min": 62
+              },
+              "direction": "outer_input",
+              "energy_level": 16,
+              "geometry": {
+                "height": 16,
+                "width": 4
+              },
+              "slot": 2
+            }
+          ],
+          "cycle": 0,
+          "gray_pixels": 0,
+          "ink_pixels": 152,
+          "listening_point": {
+            "x": 158,
+            "y": 70
+          },
+          "samples": [
+            14,
+            8,
+            16
+          ],
+          "step": 1,
+          "transition": {
+            "absorbed": 6,
+            "inserted": {
+              "level": 16,
+              "slot": 2
+            },
+            "shifted": [
+              {
+                "from": 1,
+                "level": 14,
+                "to": 0
+              },
+              {
+                "from": 2,
+                "level": 8,
+                "to": 1
+              }
+            ]
+          }
+        },
+        {
+          "column_count": 3,
+          "columns": [
+            {
+              "bounds": {
+                "x_max": 173,
+                "x_min": 170,
+                "y_max": 73,
+                "y_min": 66
+              },
+              "direction": "toward_listening_point",
+              "energy_level": 8,
+              "geometry": {
+                "height": 8,
+                "width": 4
+              },
+              "slot": 0
+            },
+            {
+              "bounds": {
+                "x_max": 184,
+                "x_min": 181,
+                "y_max": 77,
+                "y_min": 62
+              },
+              "direction": "toward_listening_point",
+              "energy_level": 16,
+              "geometry": {
+                "height": 16,
+                "width": 4
+              },
+              "slot": 1
+            },
+            {
+              "bounds": {
+                "x_max": 195,
+                "x_min": 192,
+                "y_max": 74,
+                "y_min": 65
+              },
+              "direction": "outer_input",
+              "energy_level": 10,
+              "geometry": {
+                "height": 10,
+                "width": 4
+              },
+              "slot": 2
+            }
+          ],
+          "cycle": 0,
+          "gray_pixels": 0,
+          "ink_pixels": 136,
+          "listening_point": {
+            "x": 158,
+            "y": 70
+          },
+          "samples": [
+            8,
+            16,
+            10
+          ],
+          "step": 2,
+          "transition": {
+            "absorbed": 14,
+            "inserted": {
+              "level": 10,
+              "slot": 2
+            },
+            "shifted": [
+              {
+                "from": 1,
+                "level": 8,
+                "to": 0
+              },
+              {
+                "from": 2,
+                "level": 16,
+                "to": 1
+              }
+            ]
+          }
+        },
+        {
+          "column_count": 3,
+          "columns": [
+            {
+              "bounds": {
+                "x_max": 173,
+                "x_min": 170,
+                "y_max": 77,
+                "y_min": 62
+              },
+              "direction": "toward_listening_point",
+              "energy_level": 16,
+              "geometry": {
+                "height": 16,
+                "width": 4
+              },
+              "slot": 0
+            },
+            {
+              "bounds": {
+                "x_max": 184,
+                "x_min": 181,
+                "y_max": 74,
+                "y_min": 65
+              },
+              "direction": "toward_listening_point",
+              "energy_level": 10,
+              "geometry": {
+                "height": 10,
+                "width": 4
+              },
+              "slot": 1
+            },
+            {
+              "bounds": {
+                "x_max": 195,
+                "x_min": 192,
+                "y_max": 71,
+                "y_min": 68
+              },
+              "direction": "outer_input",
+              "energy_level": 4,
+              "geometry": {
+                "height": 4,
+                "width": 4
+              },
+              "slot": 2
+            }
+          ],
+          "cycle": 0,
+          "gray_pixels": 0,
+          "ink_pixels": 120,
+          "listening_point": {
+            "x": 158,
+            "y": 70
+          },
+          "samples": [
+            16,
+            10,
+            4
+          ],
+          "step": 3,
+          "transition": {
+            "absorbed": 8,
+            "inserted": {
+              "level": 4,
+              "slot": 2
+            },
+            "shifted": [
+              {
+                "from": 1,
+                "level": 16,
+                "to": 0
+              },
+              {
+                "from": 2,
+                "level": 10,
+                "to": 1
+              }
+            ]
+          }
+        },
+        {
+          "column_count": 3,
+          "columns": [
+            {
+              "bounds": {
+                "x_max": 173,
+                "x_min": 170,
+                "y_max": 74,
+                "y_min": 65
+              },
+              "direction": "toward_listening_point",
+              "energy_level": 10,
+              "geometry": {
+                "height": 10,
+                "width": 4
+              },
+              "slot": 0
+            },
+            {
+              "bounds": {
+                "x_max": 184,
+                "x_min": 181,
+                "y_max": 71,
+                "y_min": 68
+              },
+              "direction": "toward_listening_point",
+              "energy_level": 4,
+              "geometry": {
+                "height": 4,
+                "width": 4
+              },
+              "slot": 1
+            },
+            {
+              "bounds": {
+                "x_max": 195,
+                "x_min": 192,
+                "y_max": 75,
+                "y_min": 64
+              },
+              "direction": "outer_input",
+              "energy_level": 12,
+              "geometry": {
+                "height": 12,
+                "width": 4
+              },
+              "slot": 2
+            }
+          ],
+          "cycle": 0,
+          "gray_pixels": 0,
+          "ink_pixels": 104,
+          "listening_point": {
+            "x": 158,
+            "y": 70
+          },
+          "samples": [
+            10,
+            4,
+            12
+          ],
+          "step": 4,
+          "transition": {
+            "absorbed": 16,
+            "inserted": {
+              "level": 12,
+              "slot": 2
+            },
+            "shifted": [
+              {
+                "from": 1,
+                "level": 10,
+                "to": 0
+              },
+              {
+                "from": 2,
+                "level": 4,
+                "to": 1
+              }
+            ]
+          }
+        },
+        {
+          "column_count": 3,
+          "columns": [
+            {
+              "bounds": {
+                "x_max": 173,
+                "x_min": 170,
+                "y_max": 71,
+                "y_min": 68
+              },
+              "direction": "toward_listening_point",
+              "energy_level": 4,
+              "geometry": {
+                "height": 4,
+                "width": 4
+              },
+              "slot": 0
+            },
+            {
+              "bounds": {
+                "x_max": 184,
+                "x_min": 181,
+                "y_max": 75,
+                "y_min": 64
+              },
+              "direction": "toward_listening_point",
+              "energy_level": 12,
+              "geometry": {
+                "height": 12,
+                "width": 4
+              },
+              "slot": 1
+            },
+            {
+              "bounds": {
+                "x_max": 195,
+                "x_min": 192,
+                "y_max": 73,
+                "y_min": 66
+              },
+              "direction": "outer_input",
+              "energy_level": 8,
+              "geometry": {
+                "height": 8,
+                "width": 4
+              },
+              "slot": 2
+            }
+          ],
+          "cycle": 0,
+          "gray_pixels": 0,
+          "ink_pixels": 96,
+          "listening_point": {
+            "x": 158,
+            "y": 70
+          },
+          "samples": [
+            4,
+            12,
+            8
+          ],
+          "step": 5,
+          "transition": {
+            "absorbed": 10,
+            "inserted": {
+              "level": 8,
+              "slot": 2
+            },
+            "shifted": [
+              {
+                "from": 1,
+                "level": 4,
+                "to": 0
+              },
+              {
+                "from": 2,
+                "level": 12,
+                "to": 1
+              }
+            ]
+          }
+        },
+        {
+          "column_count": 3,
+          "columns": [
+            {
+              "bounds": {
+                "x_max": 173,
+                "x_min": 170,
+                "y_max": 75,
+                "y_min": 64
+              },
+              "direction": "toward_listening_point",
+              "energy_level": 12,
+              "geometry": {
+                "height": 12,
+                "width": 4
+              },
+              "slot": 0
+            },
+            {
+              "bounds": {
+                "x_max": 184,
+                "x_min": 181,
+                "y_max": 73,
+                "y_min": 66
+              },
+              "direction": "toward_listening_point",
+              "energy_level": 8,
+              "geometry": {
+                "height": 8,
+                "width": 4
+              },
+              "slot": 1
+            },
+            {
+              "bounds": {
+                "x_max": 195,
+                "x_min": 192,
+                "y_max": 72,
+                "y_min": 67
+              },
+              "direction": "outer_input",
+              "energy_level": 6,
+              "geometry": {
+                "height": 6,
+                "width": 4
+              },
+              "slot": 2
+            }
+          ],
+          "cycle": 0,
+          "gray_pixels": 0,
+          "ink_pixels": 104,
+          "listening_point": {
+            "x": 158,
+            "y": 70
+          },
+          "samples": [
+            12,
+            8,
+            6
+          ],
+          "step": 6,
+          "transition": {
+            "absorbed": 4,
+            "inserted": {
+              "level": 6,
+              "slot": 2
+            },
+            "shifted": [
+              {
+                "from": 1,
+                "level": 12,
+                "to": 0
+              },
+              {
+                "from": 2,
+                "level": 8,
+                "to": 1
+              }
+            ]
+          }
+        },
+        {
+          "column_count": 3,
+          "columns": [
+            {
+              "bounds": {
+                "x_max": 173,
+                "x_min": 170,
+                "y_max": 73,
+                "y_min": 66
+              },
+              "direction": "toward_listening_point",
+              "energy_level": 8,
+              "geometry": {
+                "height": 8,
+                "width": 4
+              },
+              "slot": 0
+            },
+            {
+              "bounds": {
+                "x_max": 184,
+                "x_min": 181,
+                "y_max": 72,
+                "y_min": 67
+              },
+              "direction": "toward_listening_point",
+              "energy_level": 6,
+              "geometry": {
+                "height": 6,
+                "width": 4
+              },
+              "slot": 1
+            },
+            {
+              "bounds": {
+                "x_max": 195,
+                "x_min": 192,
+                "y_max": 76,
+                "y_min": 63
+              },
+              "direction": "outer_input",
+              "energy_level": 14,
+              "geometry": {
+                "height": 14,
+                "width": 4
+              },
+              "slot": 2
+            }
+          ],
+          "cycle": 0,
+          "gray_pixels": 0,
+          "ink_pixels": 112,
+          "listening_point": {
+            "x": 158,
+            "y": 70
+          },
+          "samples": [
+            8,
+            6,
+            14
+          ],
+          "step": 7,
+          "transition": {
+            "absorbed": 12,
+            "inserted": {
+              "level": 14,
+              "slot": 2
+            },
+            "shifted": [
+              {
+                "from": 1,
+                "level": 8,
+                "to": 0
+              },
+              {
+                "from": 2,
+                "level": 6,
+                "to": 1
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "recording": {
+      "entered": {
+        "accessory_active": true,
+        "active": true,
+        "base_affect": "calm",
+        "consumedPairs": [
+          {
+            "action": "enter",
+            "release_event_ids": [
+              "upper-0011",
+              "upper-0013"
+            ],
+            "sequence": 1
+          }
+        ],
+        "entries": 1,
+        "exits": 0,
+        "ignoredInputs": 0,
+        "indicatorNodes": 1,
+        "indicatorVisible": true,
+        "interaction_mode": "expression",
+        "levelNodes": 1,
+        "levelsVisible": true,
+        "meterContract": {
+          "center_y": 70,
+          "column_width": 4,
+          "column_x": [
+            170,
+            181,
+            192
+          ],
+          "interpolation": "none",
+          "level_sequence": [
+            6,
+            14,
+            8,
+            16,
+            10,
+            4,
+            12,
+            8
+          ],
+          "listening_point": {
+            "x": 158,
+            "y": 70
+          },
+          "pipeline": "outer_insert_shift_inward",
+          "scheduler": "bounded_setTimeout",
+          "state_count": 8,
+          "step_ms": 480
+        },
+        "meterStep": 0,
+        "meterTrace": [
+          {
+            "column_count": 3,
+            "columns": [
+              {
+                "bounds": {
+                  "x_max": 173,
+                  "x_min": 170,
+                  "y_max": 72,
+                  "y_min": 67
+                },
+                "direction": "toward_listening_point",
+                "energy_level": 6,
+                "geometry": {
+                  "height": 6,
+                  "width": 4
+                },
+                "slot": 0
+              },
+              {
+                "bounds": {
+                  "x_max": 184,
+                  "x_min": 181,
+                  "y_max": 76,
+                  "y_min": 63
+                },
+                "direction": "toward_listening_point",
+                "energy_level": 14,
+                "geometry": {
+                  "height": 14,
+                  "width": 4
+                },
+                "slot": 1
+              },
+              {
+                "bounds": {
+                  "x_max": 195,
+                  "x_min": 192,
+                  "y_max": 73,
+                  "y_min": 66
+                },
+                "direction": "outer_input",
+                "energy_level": 8,
+                "geometry": {
+                  "height": 8,
+                  "width": 4
+                },
+                "slot": 2
+              }
+            ],
+            "cycle": 0,
+            "gray_pixels": 0,
+            "ink_pixels": 112,
+            "listening_point": {
+              "x": 158,
+              "y": 70
+            },
+            "samples": [
+              6,
+              14,
+              8
+            ],
+            "sequence": 1,
+            "step": 0,
+            "transition": {
+              "absorbed": null,
+              "inserted": null,
+              "shifted": []
+            }
+          }
+        ],
+        "micGlyphPresent": false,
+        "mode_override": "none",
+        "orthogonal_to_expression": true,
+        "phase": "accessory_active",
+        "phaseTrace": [
+          {
+            "base_affect": "calm",
+            "face_capture": false,
+            "face_restart": false,
+            "frame": "curious_question-01-question_brow_lead.png",
+            "phase": "accessory_active",
+            "reaction_phase": "steady",
+            "sequence": 1,
+            "story": "curious_question"
+          }
+        ],
+        "reaction_phase": "steady",
+        "residualArcPresent": false,
+        "samples": [
+          6,
+          14,
+          8
+        ],
+        "sequence": 1
+      },
+      "evolved": {
+        "accessory_active": true,
+        "active": true,
+        "base_affect": "calm",
+        "consumedPairs": [
+          {
+            "action": "enter",
+            "release_event_ids": [
+              "upper-0011",
+              "upper-0013"
+            ],
+            "sequence": 1
+          }
+        ],
+        "entries": 1,
+        "exits": 0,
+        "ignoredInputs": 0,
+        "indicatorNodes": 1,
+        "indicatorVisible": true,
+        "interaction_mode": "expression",
+        "levelNodes": 1,
+        "levelsVisible": true,
+        "meterContract": {
+          "center_y": 70,
+          "column_width": 4,
+          "column_x": [
+            170,
+            181,
+            192
+          ],
+          "interpolation": "none",
+          "level_sequence": [
+            6,
+            14,
+            8,
+            16,
+            10,
+            4,
+            12,
+            8
+          ],
+          "listening_point": {
+            "x": 158,
+            "y": 70
+          },
+          "pipeline": "outer_insert_shift_inward",
+          "scheduler": "bounded_setTimeout",
+          "state_count": 8,
+          "step_ms": 480
+        },
+        "meterStep": 0,
+        "meterTrace": [
+          {
+            "column_count": 3,
+            "columns": [
+              {
+                "bounds": {
+                  "x_max": 173,
+                  "x_min": 170,
+                  "y_max": 72,
+                  "y_min": 67
+                },
+                "direction": "toward_listening_point",
+                "energy_level": 6,
+                "geometry": {
+                  "height": 6,
+                  "width": 4
+                },
+                "slot": 0
+              },
+              {
+                "bounds": {
+                  "x_max": 184,
+                  "x_min": 181,
+                  "y_max": 76,
+                  "y_min": 63
+                },
+                "direction": "toward_listening_point",
+                "energy_level": 14,
+                "geometry": {
+                  "height": 14,
+                  "width": 4
+                },
+                "slot": 1
+              },
+              {
+                "bounds": {
+                  "x_max": 195,
+                  "x_min": 192,
+                  "y_max": 73,
+                  "y_min": 66
+                },
+                "direction": "outer_input",
+                "energy_level": 8,
+                "geometry": {
+                  "height": 8,
+                  "width": 4
+                },
+                "slot": 2
+              }
+            ],
+            "cycle": 0,
+            "gray_pixels": 0,
+            "ink_pixels": 112,
+            "listening_point": {
+              "x": 158,
+              "y": 70
+            },
+            "samples": [
+              6,
+              14,
+              8
+            ],
+            "sequence": 1,
+            "step": 0,
+            "transition": {
+              "absorbed": null,
+              "inserted": null,
+              "shifted": []
+            }
+          },
+          {
+            "column_count": 3,
+            "columns": [
+              {
+                "bounds": {
+                  "x_max": 173,
+                  "x_min": 170,
+                  "y_max": 76,
+                  "y_min": 63
+                },
+                "direction": "toward_listening_point",
+                "energy_level": 14,
+                "geometry": {
+                  "height": 14,
+                  "width": 4
+                },
+                "slot": 0
+              },
+              {
+                "bounds": {
+                  "x_max": 184,
+                  "x_min": 181,
+                  "y_max": 73,
+                  "y_min": 66
+                },
+                "direction": "toward_listening_point",
+                "energy_level": 8,
+                "geometry": {
+                  "height": 8,
+                  "width": 4
+                },
+                "slot": 1
+              },
+              {
+                "bounds": {
+                  "x_max": 195,
+                  "x_min": 192,
+                  "y_max": 77,
+                  "y_min": 62
+                },
+                "direction": "outer_input",
+                "energy_level": 16,
+                "geometry": {
+                  "height": 16,
+                  "width": 4
+                },
+                "slot": 2
+              }
+            ],
+            "cycle": 1,
+            "gray_pixels": 0,
+            "ink_pixels": 152,
+            "listening_point": {
+              "x": 158,
+              "y": 70
+            },
+            "samples": [
+              14,
+              8,
+              16
+            ],
+            "sequence": 1,
+            "step": 0,
+            "transition": {
+              "absorbed": 6,
+              "inserted": {
+                "level": 16,
+                "slot": 2
+              },
+              "shifted": [
+                {
+                  "from": 1,
+                  "level": 14,
+                  "to": 0
+                },
+                {
+                  "from": 2,
+                  "level": 8,
+                  "to": 1
+                }
+              ]
+            }
+          }
+        ],
+        "micGlyphPresent": false,
+        "mode_override": "none",
+        "orthogonal_to_expression": true,
+        "phase": "accessory_active",
+        "phaseTrace": [
+          {
+            "base_affect": "calm",
+            "face_capture": false,
+            "face_restart": false,
+            "frame": "curious_question-01-question_brow_lead.png",
+            "phase": "accessory_active",
+            "reaction_phase": "steady",
+            "sequence": 1,
+            "story": "curious_question"
+          }
+        ],
+        "reaction_phase": "brow_reply",
+        "residualArcPresent": false,
+        "samples": [
+          14,
+          8,
+          16
+        ],
+        "sequence": 1
+      },
+      "exited": {
+        "accessory_active": false,
+        "active": false,
+        "base_affect": "curious",
+        "consumedPairs": [
+          {
+            "action": "enter",
+            "release_event_ids": [
+              "upper-0011",
+              "upper-0013"
+            ],
+            "sequence": 1
+          },
+          {
+            "action": "exit",
+            "release_event_ids": [
+              "upper-0020",
+              "upper-0022"
+            ],
+            "sequence": 1
+          }
+        ],
+        "entries": 1,
+        "exits": 1,
+        "ignoredInputs": 0,
+        "indicatorNodes": 1,
+        "indicatorVisible": false,
+        "interaction_mode": "expression",
+        "levelNodes": 1,
+        "levelsVisible": false,
+        "meterContract": {
+          "center_y": 70,
+          "column_width": 4,
+          "column_x": [
+            170,
+            181,
+            192
+          ],
+          "interpolation": "none",
+          "level_sequence": [
+            6,
+            14,
+            8,
+            16,
+            10,
+            4,
+            12,
+            8
+          ],
+          "listening_point": {
+            "x": 158,
+            "y": 70
+          },
+          "pipeline": "outer_insert_shift_inward",
+          "scheduler": "bounded_setTimeout",
+          "state_count": 8,
+          "step_ms": 480
+        },
+        "meterStep": 2,
+        "meterTrace": [
+          {
+            "column_count": 3,
+            "columns": [
+              {
+                "bounds": {
+                  "x_max": 173,
+                  "x_min": 170,
+                  "y_max": 72,
+                  "y_min": 67
+                },
+                "direction": "toward_listening_point",
+                "energy_level": 6,
+                "geometry": {
+                  "height": 6,
+                  "width": 4
+                },
+                "slot": 0
+              },
+              {
+                "bounds": {
+                  "x_max": 184,
+                  "x_min": 181,
+                  "y_max": 76,
+                  "y_min": 63
+                },
+                "direction": "toward_listening_point",
+                "energy_level": 14,
+                "geometry": {
+                  "height": 14,
+                  "width": 4
+                },
+                "slot": 1
+              },
+              {
+                "bounds": {
+                  "x_max": 195,
+                  "x_min": 192,
+                  "y_max": 73,
+                  "y_min": 66
+                },
+                "direction": "outer_input",
+                "energy_level": 8,
+                "geometry": {
+                  "height": 8,
+                  "width": 4
+                },
+                "slot": 2
+              }
+            ],
+            "cycle": 0,
+            "gray_pixels": 0,
+            "ink_pixels": 112,
+            "listening_point": {
+              "x": 158,
+              "y": 70
+            },
+            "samples": [
+              6,
+              14,
+              8
+            ],
+            "sequence": 1,
+            "step": 0,
+            "transition": {
+              "absorbed": null,
+              "inserted": null,
+              "shifted": []
+            }
+          },
+          {
+            "column_count": 3,
+            "columns": [
+              {
+                "bounds": {
+                  "x_max": 173,
+                  "x_min": 170,
+                  "y_max": 76,
+                  "y_min": 63
+                },
+                "direction": "toward_listening_point",
+                "energy_level": 14,
+                "geometry": {
+                  "height": 14,
+                  "width": 4
+                },
+                "slot": 0
+              },
+              {
+                "bounds": {
+                  "x_max": 184,
+                  "x_min": 181,
+                  "y_max": 73,
+                  "y_min": 66
+                },
+                "direction": "toward_listening_point",
+                "energy_level": 8,
+                "geometry": {
+                  "height": 8,
+                  "width": 4
+                },
+                "slot": 1
+              },
+              {
+                "bounds": {
+                  "x_max": 195,
+                  "x_min": 192,
+                  "y_max": 77,
+                  "y_min": 62
+                },
+                "direction": "outer_input",
+                "energy_level": 16,
+                "geometry": {
+                  "height": 16,
+                  "width": 4
+                },
+                "slot": 2
+              }
+            ],
+            "cycle": 1,
+            "gray_pixels": 0,
+            "ink_pixels": 152,
+            "listening_point": {
+              "x": 158,
+              "y": 70
+            },
+            "samples": [
+              14,
+              8,
+              16
+            ],
+            "sequence": 1,
+            "step": 0,
+            "transition": {
+              "absorbed": 6,
+              "inserted": {
+                "level": 16,
+                "slot": 2
+              },
+              "shifted": [
+                {
+                  "from": 1,
+                  "level": 14,
+                  "to": 0
+                },
+                {
+                  "from": 2,
+                  "level": 8,
+                  "to": 1
+                }
+              ]
+            }
+          },
+          {
+            "column_count": 3,
+            "columns": [
+              {
+                "bounds": {
+                  "x_max": 173,
+                  "x_min": 170,
+                  "y_max": 73,
+                  "y_min": 66
+                },
+                "direction": "toward_listening_point",
+                "energy_level": 8,
+                "geometry": {
+                  "height": 8,
+                  "width": 4
+                },
+                "slot": 0
+              },
+              {
+                "bounds": {
+                  "x_max": 184,
+                  "x_min": 181,
+                  "y_max": 77,
+                  "y_min": 62
+                },
+                "direction": "toward_listening_point",
+                "energy_level": 16,
+                "geometry": {
+                  "height": 16,
+                  "width": 4
+                },
+                "slot": 1
+              },
+              {
+                "bounds": {
+                  "x_max": 195,
+                  "x_min": 192,
+                  "y_max": 74,
+                  "y_min": 65
+                },
+                "direction": "outer_input",
+                "energy_level": 10,
+                "geometry": {
+                  "height": 10,
+                  "width": 4
+                },
+                "slot": 2
+              }
+            ],
+            "cycle": 1,
+            "gray_pixels": 0,
+            "ink_pixels": 136,
+            "listening_point": {
+              "x": 158,
+              "y": 70
+            },
+            "samples": [
+              8,
+              16,
+              10
+            ],
+            "sequence": 1,
+            "step": 1,
+            "transition": {
+              "absorbed": 14,
+              "inserted": {
+                "level": 10,
+                "slot": 2
+              },
+              "shifted": [
+                {
+                  "from": 1,
+                  "level": 8,
+                  "to": 0
+                },
+                {
+                  "from": 2,
+                  "level": 16,
+                  "to": 1
+                }
+              ]
+            }
+          },
+          {
+            "column_count": 3,
+            "columns": [
+              {
+                "bounds": {
+                  "x_max": 173,
+                  "x_min": 170,
+                  "y_max": 77,
+                  "y_min": 62
+                },
+                "direction": "toward_listening_point",
+                "energy_level": 16,
+                "geometry": {
+                  "height": 16,
+                  "width": 4
+                },
+                "slot": 0
+              },
+              {
+                "bounds": {
+                  "x_max": 184,
+                  "x_min": 181,
+                  "y_max": 74,
+                  "y_min": 65
+                },
+                "direction": "toward_listening_point",
+                "energy_level": 10,
+                "geometry": {
+                  "height": 10,
+                  "width": 4
+                },
+                "slot": 1
+              },
+              {
+                "bounds": {
+                  "x_max": 195,
+                  "x_min": 192,
+                  "y_max": 71,
+                  "y_min": 68
+                },
+                "direction": "outer_input",
+                "energy_level": 4,
+                "geometry": {
+                  "height": 4,
+                  "width": 4
+                },
+                "slot": 2
+              }
+            ],
+            "cycle": 1,
+            "gray_pixels": 0,
+            "ink_pixels": 120,
+            "listening_point": {
+              "x": 158,
+              "y": 70
+            },
+            "samples": [
+              16,
+              10,
+              4
+            ],
+            "sequence": 1,
+            "step": 2,
+            "transition": {
+              "absorbed": 8,
+              "inserted": {
+                "level": 4,
+                "slot": 2
+              },
+              "shifted": [
+                {
+                  "from": 1,
+                  "level": 16,
+                  "to": 0
+                },
+                {
+                  "from": 2,
+                  "level": 10,
+                  "to": 1
+                }
+              ]
+            }
+          }
+        ],
+        "micGlyphPresent": false,
+        "mode_override": "none",
+        "orthogonal_to_expression": true,
+        "phase": "accessory_inactive",
+        "phaseTrace": [
+          {
+            "base_affect": "calm",
+            "face_capture": false,
+            "face_restart": false,
+            "frame": "curious_question-01-question_brow_lead.png",
+            "phase": "accessory_active",
+            "reaction_phase": "steady",
+            "sequence": 1,
+            "story": "curious_question"
+          },
+          {
+            "accessory_only": true,
+            "base_affect": "curious",
+            "frame": "curious_question-02-question_mouth_arrive.png",
+            "phase": "accessory_inactive",
+            "reaction_phase": "steady",
+            "sequence": 1,
+            "story": "curious_question"
+          }
+        ],
+        "reaction_phase": "steady",
+        "residualArcPresent": false,
+        "samples": [
+          16,
+          10,
+          4
+        ],
+        "sequence": 1
+      }
+    }
+  },
+  "requirements": [
+    "COMP-REQ-539"
+  ],
+  "schema": "companion.comp-req-539-focused-real-clock.v1",
+  "side_effects": {
+    "hardware": 0,
+    "microphone_request": 0,
+    "owner_prompt": 0,
+    "production_write": 0
+  },
+  "status": "PASS"
+}
