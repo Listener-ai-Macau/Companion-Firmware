@@ -1,0 +1,132 @@
+{
+  "bindings": {
+    "after_oracle": {
+      "path": "docs/validation/companion-browser-recording-successor-comp-req-518/after-fix/recording-temporal-oracle.json",
+      "sha256": "572892334570B259B92C69F14078593989AA987A8E51DF3D0601176771BADC63"
+    },
+    "before_oracle": {
+      "path": "docs/validation/companion-browser-recording-successor-comp-req-518/before-fix/recording-temporal-oracle.json",
+      "sha256": "EEC0C1BBF97C25BF69111F75F3652B8A767576C4546EB8D73520EC415A0192D9"
+    },
+    "owner_failure": {
+      "owner-review.json": {
+        "path": "docs/validation/companion-browser-owner-review-ready-comp-req-508/owner-review.json",
+        "sha256": "912890518A8C758B915F3DD674372FEBB642EF89996DACF9B1E06A587C519979"
+      },
+      "owner-review.note.txt": {
+        "path": "docs/validation/companion-browser-owner-review-ready-comp-req-508/owner-review.note.txt",
+        "sha256": "7EB70257593DA06F682A3DDDA54A9D260D4FC514F645237F5CA74B08F8DA61A6"
+      },
+      "owner-review.raw.json": {
+        "path": "docs/validation/companion-browser-owner-review-ready-comp-req-508/owner-review.raw.json",
+        "sha256": "50C3563002CF4E81E84EA2344AEE1919D29A4F3854E663966451D602E6CF2DB3"
+      }
+    },
+    "page": {
+      "checkout_identity": {
+        "commit_sha256": "FEA65C4AD7C7BAB54604619609ECC55B44F6D5F3700D302C0D0172D7FB6B7292",
+        "matches": [],
+        "worktree_sha256": "689E007087C866470232A4F3A61086B84D70C2AD34CBDFD02F492C9843A686B3"
+      },
+      "commit_blob": "4f77dbaafbba7d2c1917c6b154adebee9d6d4349",
+      "commit_sha256": "FEA65C4AD7C7BAB54604619609ECC55B44F6D5F3700D302C0D0172D7FB6B7292",
+      "git_clean_worktree_blob": "4f77dbaafbba7d2c1917c6b154adebee9d6d4349",
+      "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html",
+      "worktree_sha256": "689E007087C866470232A4F3A61086B84D70C2AD34CBDFD02F492C9843A686B3"
+    },
+    "temporal_oracle": {
+      "checkout_identity": {
+        "commit_sha256": "323571F845565038C33E10CD3EBE8E7D4B2398531088C9F8681109F5E24A9D6A",
+        "matches": [
+          "commit_bytes"
+        ],
+        "worktree_sha256": "323571F845565038C33E10CD3EBE8E7D4B2398531088C9F8681109F5E24A9D6A"
+      },
+      "commit_blob": "538d94f921fa36990dce57f88fd69344b09a73c7",
+      "commit_sha256": "323571F845565038C33E10CD3EBE8E7D4B2398531088C9F8681109F5E24A9D6A",
+      "git_clean_worktree_blob": "538d94f921fa36990dce57f88fd69344b09a73c7",
+      "path": "tools/faraday_upper_art/verify_companion_browser_recording_temporal_comp_req_518.mjs",
+      "worktree_sha256": "323571F845565038C33E10CD3EBE8E7D4B2398531088C9F8681109F5E24A9D6A"
+    }
+  },
+  "checks": {
+    "after_oracle_pass": true,
+    "before_oracle_fails_required_defects": true,
+    "owner_failure_bindings_exact": true,
+    "page_changed_from_failed_predecessor": true,
+    "protected_gesture_menu_tap_lines_unchanged": true,
+    "source_commit_exact": true,
+    "worktree_matches_source_commit": true
+  },
+  "failed_checks": [],
+  "owner_boundary": {
+    "combined_successor_claimed": false,
+    "owner_pass_claimed": false,
+    "owner_prompt_invoked": false,
+    "remaining_work": "COMP-REQ-521 implementation and combined replay"
+  },
+  "predecessor": {
+    "commit": "6e6e521fddcdb9a99af0608fa86714df199e6c9c",
+    "page_sha256": "A1F3B09015D0AB4E0951EE0C0A7963C4E8C6A7D48DA06F6030D71C6FB5D71D9A"
+  },
+  "protected_line_checks": {
+    "const touchContract=": {
+      "equal": true,
+      "sha256": "83ABBAC61D4146322DD11D4068F6317D25E3BDBBACFA84D10F5EFD09F3B3A5B6"
+    },
+    "function enterIntegratedMenu(": {
+      "equal": true,
+      "sha256": "166431C08A3ADAF2CDF7908713828F985BBF63A86E96BAE9A7F1EEDDA3F3F2BC"
+    },
+    "function menuSelect(": {
+      "equal": true,
+      "sha256": "569A653EACB6EAEE057A4413DCE5C65D27E00A7FEE02F30D4FF27E2CE09F4E28"
+    },
+    "function touchArmRelease(": {
+      "equal": true,
+      "sha256": "6B138F2E6ED9BA6D02F8D1685D87339B462CFABB5D734482A69B088D25626117"
+    },
+    "function touchCancel(": {
+      "equal": true,
+      "sha256": "F3BB2F5B4E8930E15A4F79AE32D80C727BF71D816EDA0C2E9B5F73C003C89547"
+    },
+    "function touchCommitPendingSingle(": {
+      "equal": true,
+      "sha256": "049326219921D89CD9CF3696B01FCA79A59B5A35F668F080D71DA39DA104A2A6"
+    },
+    "function touchConsumeValidPair(": {
+      "equal": true,
+      "sha256": "70493765B26E6E2862FEBF5E2F5C7728BA15CDA59FB64C996EB828BD2594E6A9"
+    },
+    "function touchPointerCancel(": {
+      "equal": true,
+      "sha256": "13C1E3AD5AC56C69CF21BD5F71AF31BB6FCA977C7CDFAA7686D088C9D1A5F4FF"
+    },
+    "function touchPointerDown(": {
+      "equal": true,
+      "sha256": "61EB4DD33982EAAABBEF658D499129EBC2426E630E1E9C88B7FAA04B29A2F2FE"
+    },
+    "function touchPointerMove(": {
+      "equal": true,
+      "sha256": "DABBB6CC2B2FEEC0845722C700CC9046C86F1C742F5D20A7D6994DF5AD5DE496"
+    },
+    "function touchPointerUp(": {
+      "equal": true,
+      "sha256": "C16F0847035C6643F4FA9B2602CAB64E50AD1107ADE18077AA20B9915539724E"
+    }
+  },
+  "requirements": [
+    "COMP-REQ-518",
+    "COMP-REQ-520"
+  ],
+  "schema": "companion.browser-recording-source-bound-intermediate.v1",
+  "side_effect_counters": {
+    "browser": 0,
+    "hardware": 0,
+    "owner_prompt": 0,
+    "production_write": 0,
+    "server_start": 0
+  },
+  "source_commit": "18069c4a60c9f69389a9424acb39e4d1772ffd5f",
+  "status": "PASS_SOURCE_BOUND_RECORDING_INTERMEDIATE"
+}
