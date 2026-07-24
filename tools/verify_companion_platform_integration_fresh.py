@@ -26,6 +26,10 @@ def git_blob_sha256(commit, path):
     return hashlib.sha256(result.stdout).hexdigest().upper() if result.returncode == 0 else ""
 
 
+def canonical_worktree_sha(path):
+    return hashlib.sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest().upper()
+
+
 def run(args, cwd=ROOT):
     return subprocess.run(args, cwd=cwd, text=True, capture_output=True)
 
@@ -70,7 +74,7 @@ def main():
     head = run(["git", "rev-parse", "HEAD"]).stdout.strip()
     verifier_path = "tools/verify_companion_platform_integration_fresh.py"
     verifier_blob = git_blob_sha256(ns.verifier_commit, verifier_path)
-    verifier_worktree_blob = sha(ROOT / verifier_path)
+    verifier_worktree_blob = canonical_worktree_sha(ROOT / verifier_path)
     gitlink = run(["git", "ls-tree", ns.source_commit, "third_party/denzic-platform"]).stdout.strip()
     drift = run(["git", "diff", "--quiet", ns.source_commit, "--", *source_paths]).returncode
     isolated = ROOT / ".cache" / "comp-req-485-fresh-host"
