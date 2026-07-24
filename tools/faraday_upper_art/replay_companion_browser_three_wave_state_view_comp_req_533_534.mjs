@@ -1987,7 +1987,7 @@ async function captureLayout(browser, viewport) {
   try {
     await pageLayoutAssertions(session.page, viewport);
     await session.page.evaluate(() => {
-      for (const state of Object.values(
+      for (const [scope, state] of Object.entries(
         window.__companionViewportStates || {},
       )) {
         clearTimeout(state.timer);
@@ -1995,6 +1995,25 @@ async function captureLayout(browser, viewport) {
         state.touching = true;
         state.request += 1;
         state.gazeRequest += 1;
+        const story = stories.find((item) => item.name === state.storyName);
+        const frame = story?.frames[0];
+        const stage = scope === "overall"
+          ? document.querySelector("#overall-viewport")
+          : document.querySelector(
+            `[data-viewport-story="${CSS.escape(scope)}"]`,
+          );
+        if (frame && stage) {
+          const face = stage.querySelector(".viewport-frame");
+          const staging = stage.querySelector(".viewport-staging");
+          const gaze = stage.querySelector(".viewport-gaze");
+          state.activeFrame = frame;
+          state.activeFrameIndex = 0;
+          state.activeBaseSrc = frame.touch_base || frame.src;
+          face.src = cached(frame.src);
+          face.hidden = false;
+          staging.hidden = true;
+          gaze.hidden = true;
+        }
       }
       window.scrollTo(0, 0);
     });
