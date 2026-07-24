@@ -1,0 +1,421 @@
+{
+  "accepted_machine_ready": {
+    "path": "docs/validation/companion-browser-owner-review-ready-comp-req-508/MACHINE_READY.json",
+    "sha256": "94962CA64121D0BBE9BF69D45BAA6D20D4EEE4B54C8C7F6CB8868C69DB6BA911",
+    "status": "BROWSER_OWNER_REVIEW_READY_SUCCESSOR"
+  },
+  "checks": {
+    "accepted_machine_identity_unchanged": true,
+    "accepted_page_identity_unchanged": true,
+    "all_owner_visible_checks_pass": true,
+    "desktop_and_mobile_audited": true,
+    "fresh_stale_pupil_oracle_pass": true,
+    "no_browser_errors_or_404": true,
+    "no_microphone_request": true,
+    "no_owner_prompt": true,
+    "runtime_page_matches_source": true,
+    "screenshot_groups_complete": true
+  },
+  "expected_identities": {
+    "machine_ready_sha256": "94962CA64121D0BBE9BF69D45BAA6D20D4EEE4B54C8C7F6CB8868C69DB6BA911",
+    "page_sha256": "9990C4316AF8F4D656F2C2B057AB789846A10CD21E18367336FC6BD277631EB7",
+    "pixel_dom_route_sha256": "91E6793F01B8368933E61115E93AD7280B435A9A1429D4B2DE743B61878BD1F3",
+    "replay_sha256": "8FCAD0AC4C5370EFBBBC6C3785B6E115AA1E77C69EA81C0E137207AC1D33721C"
+  },
+  "observed_identities": {
+    "machine_ready_sha256": "94962CA64121D0BBE9BF69D45BAA6D20D4EEE4B54C8C7F6CB8868C69DB6BA911",
+    "page_sha256": "9990C4316AF8F4D656F2C2B057AB789846A10CD21E18367336FC6BD277631EB7",
+    "pixel_dom_route_sha256": "91E6793F01B8368933E61115E93AD7280B435A9A1429D4B2DE743B61878BD1F3",
+    "replay_sha256": "8FCAD0AC4C5370EFBBBC6C3785B6E115AA1E77C69EA81C0E137207AC1D33721C"
+  },
+  "owner_boundary": {
+    "owner_pass_claimed": false,
+    "owner_prompt_opened": false,
+    "remaining_gate": "one future owner visual review only"
+  },
+  "page": {
+    "repo_path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html",
+    "runtime_response_sha256": "9990C4316AF8F4D656F2C2B057AB789846A10CD21E18367336FC6BD277631EB7",
+    "runtime_status": 200,
+    "url": "http://127.0.0.1:4173/docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html"
+  },
+  "playwright": {
+    "module_path": "C:/Users/Billy/AppData/Local/npm-cache/_npx/420ff84f11983ee5/node_modules/playwright",
+    "package_sha256": "6B840268612656F0639FB7D68782E8353BDF11518589D30DDF66F283C2670ED5",
+    "version": "1.61.1"
+  },
+  "requirement": [
+    "COMP-REQ-508",
+    "COMP-REQ-509",
+    "COMP-REQ-510"
+  ],
+  "schema": "companion.browser-visual-final-audit.v1",
+  "screenshots": [
+    {
+      "bytes": 42299,
+      "id": "layout",
+      "kind": "layout",
+      "path": "docs/validation/companion-browser-visual-final-audit-comp-req-510/screenshots/desktop-mouse-layout.png",
+      "sha256": "E6B00671EB84F52D5C9162333E6852BB511E602C58A9ED9D4E60DBAE216E5AFC",
+      "viewport": "desktop-mouse"
+    },
+    {
+      "bytes": 1269,
+      "id": "rest",
+      "kind": "stage",
+      "path": "docs/validation/companion-browser-visual-final-audit-comp-req-510/screenshots/desktop-mouse-rest.png",
+      "sha256": "BB050DA00019428E73E3DF2C45ED7BECC248E3015B45C4787FE3D35E8C3E2CA4",
+      "viewport": "desktop-mouse"
+    },
+    {
+      "bytes": 1268,
+      "id": "drag-right",
+      "kind": "stage",
+      "path": "docs/validation/companion-browser-visual-final-audit-comp-req-510/screenshots/desktop-mouse-drag-right.png",
+      "sha256": "61C57163C49F6B6A7AA323BBEFDB7915CEF7B6DC596AFC55382C9BBE562323BC",
+      "viewport": "desktop-mouse"
+    },
+    {
+      "bytes": 1269,
+      "id": "drag-center",
+      "kind": "stage",
+      "path": "docs/validation/companion-browser-visual-final-audit-comp-req-510/screenshots/desktop-mouse-drag-center.png",
+      "sha256": "BB050DA00019428E73E3DF2C45ED7BECC248E3015B45C4787FE3D35E8C3E2CA4",
+      "viewport": "desktop-mouse"
+    },
+    {
+      "bytes": 1269,
+      "id": "pre-recording",
+      "kind": "stage",
+      "path": "docs/validation/companion-browser-visual-final-audit-comp-req-510/screenshots/desktop-mouse-pre-recording.png",
+      "sha256": "BB050DA00019428E73E3DF2C45ED7BECC248E3015B45C4787FE3D35E8C3E2CA4",
+      "viewport": "desktop-mouse"
+    },
+    {
+      "bytes": 2099,
+      "id": "listening",
+      "kind": "stage",
+      "path": "docs/validation/companion-browser-visual-final-audit-comp-req-510/screenshots/desktop-mouse-listening.png",
+      "sha256": "9EB46DAA1D184F7158826A08EF7B620AC3BA52002EACF4A68F8243E9919B0442",
+      "viewport": "desktop-mouse"
+    },
+    {
+      "bytes": 1774,
+      "id": "thoughtful-listening",
+      "kind": "stage",
+      "path": "docs/validation/companion-browser-visual-final-audit-comp-req-510/screenshots/desktop-mouse-thoughtful-listening.png",
+      "sha256": "D52DEC34C2DF951A2881CECCBF17E2D7919F5DA2B2E4589487D1777ACDDE54D5",
+      "viewport": "desktop-mouse"
+    },
+    {
+      "bytes": 1269,
+      "id": "restored",
+      "kind": "stage",
+      "path": "docs/validation/companion-browser-visual-final-audit-comp-req-510/screenshots/desktop-mouse-restored.png",
+      "sha256": "BB050DA00019428E73E3DF2C45ED7BECC248E3015B45C4787FE3D35E8C3E2CA4",
+      "viewport": "desktop-mouse"
+    },
+    {
+      "bytes": 31718,
+      "id": "layout",
+      "kind": "layout",
+      "path": "docs/validation/companion-browser-visual-final-audit-comp-req-510/screenshots/mobile-touch-layout.png",
+      "sha256": "9942FD91D500F287A196F756BB97B01A9EB80C00B4749596C047EE7281C3D206",
+      "viewport": "mobile-touch"
+    },
+    {
+      "bytes": 1341,
+      "id": "rest",
+      "kind": "stage",
+      "path": "docs/validation/companion-browser-visual-final-audit-comp-req-510/screenshots/mobile-touch-rest.png",
+      "sha256": "DCC50F7A6470534F45A360E09DDE907232C3FBE8D5235DFC24481BE236139677",
+      "viewport": "mobile-touch"
+    },
+    {
+      "bytes": 1344,
+      "id": "drag-right",
+      "kind": "stage",
+      "path": "docs/validation/companion-browser-visual-final-audit-comp-req-510/screenshots/mobile-touch-drag-right.png",
+      "sha256": "D16CA548195A0BC28C797C24CE6086D7B993DCFCA4BE323C632F8CA6E14E2287",
+      "viewport": "mobile-touch"
+    },
+    {
+      "bytes": 1341,
+      "id": "drag-center",
+      "kind": "stage",
+      "path": "docs/validation/companion-browser-visual-final-audit-comp-req-510/screenshots/mobile-touch-drag-center.png",
+      "sha256": "DCC50F7A6470534F45A360E09DDE907232C3FBE8D5235DFC24481BE236139677",
+      "viewport": "mobile-touch"
+    },
+    {
+      "bytes": 1341,
+      "id": "pre-recording",
+      "kind": "stage",
+      "path": "docs/validation/companion-browser-visual-final-audit-comp-req-510/screenshots/mobile-touch-pre-recording.png",
+      "sha256": "DCC50F7A6470534F45A360E09DDE907232C3FBE8D5235DFC24481BE236139677",
+      "viewport": "mobile-touch"
+    },
+    {
+      "bytes": 2302,
+      "id": "listening",
+      "kind": "stage",
+      "path": "docs/validation/companion-browser-visual-final-audit-comp-req-510/screenshots/mobile-touch-listening.png",
+      "sha256": "78208D9DA9784FED64733F78ECB9F705D32F234561369985F0A703D7E1D849CF",
+      "viewport": "mobile-touch"
+    },
+    {
+      "bytes": 1807,
+      "id": "thoughtful-listening",
+      "kind": "stage",
+      "path": "docs/validation/companion-browser-visual-final-audit-comp-req-510/screenshots/mobile-touch-thoughtful-listening.png",
+      "sha256": "1B0EB11357D4536F88E5DB72288F668F6E8600FAE9ED2F399128536D0A6FC629",
+      "viewport": "mobile-touch"
+    },
+    {
+      "bytes": 1341,
+      "id": "restored",
+      "kind": "stage",
+      "path": "docs/validation/companion-browser-visual-final-audit-comp-req-510/screenshots/mobile-touch-restored.png",
+      "sha256": "DCC50F7A6470534F45A360E09DDE907232C3FBE8D5235DFC24481BE236139677",
+      "viewport": "mobile-touch"
+    }
+  ],
+  "side_effect_counters": {
+    "browser_process": 1,
+    "hardware": 0,
+    "microphone_permission_request": 0,
+    "owner_prompt": 0,
+    "page_write": 0,
+    "production_write": 0,
+    "server_start": 0
+  },
+  "stale_gaze_oracle": {
+    "path": "docs/validation/companion-browser-visual-final-audit-comp-req-510/stale-gaze-final.json",
+    "sha256": "1BABB14650C4CE0ACDE951B32A5E6D8F8805CB8264C3E3D650988194DD04E5EE",
+    "stale_center_mask_left_eye": 0,
+    "stale_center_mask_right_eye": 0,
+    "stale_center_mask_total": 0,
+    "status": "PASS"
+  },
+  "status": "PASS_VISUAL_FINAL_AUDIT_MACHINE_OBSERVED",
+  "viewports": [
+    {
+      "checks": {
+        "double_tap_entry_exactly_once": true,
+        "double_tap_exit_exactly_once": true,
+        "drag_atomic_cleared_base": true,
+        "exact_pre_recording_restore": true,
+        "inward_wave_centroids": true,
+        "no_false_entry": true,
+        "no_false_exit": true,
+        "no_microphone_glyph_or_request": true,
+        "one_face_one_gaze": true,
+        "ordered_choreography": true
+      },
+      "document_requests": 1,
+      "errors": [],
+      "name": "desktop-mouse",
+      "negative_checks": [
+        {
+          "label": "desktop-mouse-single",
+          "mode": "expression",
+          "recording_entries": 0,
+          "route_entries": 0
+        },
+        {
+          "label": "desktop-mouse-late",
+          "mode": "expression",
+          "recording_entries": 0,
+          "route_entries": 0
+        },
+        {
+          "label": "desktop-mouse-far",
+          "mode": "expression",
+          "recording_entries": 0,
+          "route_entries": 0
+        },
+        {
+          "label": "desktop-mouse-drag",
+          "mode": "expression",
+          "recording_entries": 0,
+          "route_entries": 0
+        },
+        {
+          "label": "desktop-mouse-cancel",
+          "mode": "expression",
+          "recording_entries": 0,
+          "route_entries": 0
+        },
+        {
+          "label": "desktop-mouse-hold-menu-only",
+          "menu_entries": 1,
+          "mode": "menu",
+          "recording_entries": 0
+        }
+      ],
+      "phase_trace": [
+        "expression",
+        "listening",
+        "thoughtful_listening",
+        "expression"
+      ],
+      "pointer_type": "mouse",
+      "recording_event_ids": {
+        "entry": [
+          "upper-0032"
+        ],
+        "exit": [
+          "upper-0046"
+        ]
+      },
+      "restore": {
+        "canvas_signature": "4f4523e7",
+        "screenshot_sha256": "BB050DA00019428E73E3DF2C45ED7BECC248E3015B45C4787FE3D35E8C3E2CA4",
+        "source_identity_equal": true
+      },
+      "wave_centroids": [
+        {
+          "centroid": {
+            "x": 187.601,
+            "y": 69.557
+          },
+          "distance_to_listening_point": 29.604,
+          "step": 0
+        },
+        {
+          "centroid": {
+            "x": 182.077,
+            "y": 69.468
+          },
+          "distance_to_listening_point": 24.083,
+          "step": 1
+        },
+        {
+          "centroid": {
+            "x": 176.63,
+            "y": 69.532
+          },
+          "distance_to_listening_point": 18.636,
+          "step": 2
+        },
+        {
+          "centroid": {
+            "x": 171.597,
+            "y": 69.452
+          },
+          "distance_to_listening_point": 13.608,
+          "step": 3
+        }
+      ]
+    },
+    {
+      "checks": {
+        "double_tap_entry_exactly_once": true,
+        "double_tap_exit_exactly_once": true,
+        "drag_atomic_cleared_base": true,
+        "exact_pre_recording_restore": true,
+        "inward_wave_centroids": true,
+        "no_false_entry": true,
+        "no_false_exit": true,
+        "no_microphone_glyph_or_request": true,
+        "one_face_one_gaze": true,
+        "ordered_choreography": true
+      },
+      "document_requests": 1,
+      "errors": [],
+      "name": "mobile-touch",
+      "negative_checks": [
+        {
+          "label": "mobile-touch-single",
+          "mode": "expression",
+          "recording_entries": 0,
+          "route_entries": 0
+        },
+        {
+          "label": "mobile-touch-late",
+          "mode": "expression",
+          "recording_entries": 0,
+          "route_entries": 0
+        },
+        {
+          "label": "mobile-touch-far",
+          "mode": "expression",
+          "recording_entries": 0,
+          "route_entries": 0
+        },
+        {
+          "label": "mobile-touch-drag",
+          "mode": "expression",
+          "recording_entries": 0,
+          "route_entries": 0
+        },
+        {
+          "label": "mobile-touch-cancel",
+          "mode": "expression",
+          "recording_entries": 0,
+          "route_entries": 0
+        },
+        {
+          "label": "mobile-touch-hold-menu-only",
+          "menu_entries": 1,
+          "mode": "menu",
+          "recording_entries": 0
+        }
+      ],
+      "phase_trace": [
+        "expression",
+        "listening",
+        "thoughtful_listening",
+        "expression"
+      ],
+      "pointer_type": "touch",
+      "recording_event_ids": {
+        "entry": [
+          "upper-0031"
+        ],
+        "exit": [
+          "upper-0045"
+        ]
+      },
+      "restore": {
+        "canvas_signature": "4f4523e7",
+        "screenshot_sha256": "DCC50F7A6470534F45A360E09DDE907232C3FBE8D5235DFC24481BE236139677",
+        "source_identity_equal": true
+      },
+      "wave_centroids": [
+        {
+          "centroid": {
+            "x": 187.601,
+            "y": 69.557
+          },
+          "distance_to_listening_point": 29.604,
+          "step": 0
+        },
+        {
+          "centroid": {
+            "x": 182.077,
+            "y": 69.468
+          },
+          "distance_to_listening_point": 24.083,
+          "step": 1
+        },
+        {
+          "centroid": {
+            "x": 176.63,
+            "y": 69.532
+          },
+          "distance_to_listening_point": 18.636,
+          "step": 2
+        },
+        {
+          "centroid": {
+            "x": 171.597,
+            "y": 69.452
+          },
+          "distance_to_listening_point": 13.608,
+          "step": 3
+        }
+      ]
+    }
+  ]
+}
