@@ -178,8 +178,11 @@ def require(
     expected: Any,
 ) -> None:
     if observed != expected:
+        stable_expected = sorted(expected) if isinstance(expected, set) else expected
+        stable_observed = sorted(observed) if isinstance(observed, set) else observed
         failures.append(
-            f"{label}: expected {expected!r}, observed {observed!r}"
+            f"{label}: expected {stable_expected!r}, "
+            f"observed {stable_observed!r}"
         )
 
 
