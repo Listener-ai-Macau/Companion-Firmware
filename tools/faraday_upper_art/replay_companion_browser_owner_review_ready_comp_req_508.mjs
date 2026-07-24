@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/* Deterministic COMP-REQ-508 replay with a source-derived pupil oracle. */
+/* Deterministic COMP-REQ-508/509/510 replay with pixel and event oracles. */
 
 import crypto from "node:crypto";
 import fs from "node:fs";
@@ -29,7 +29,7 @@ const pageRepoPath = [
 ].join("/");
 const pagePath = path.join(repoRoot, ...pageRepoPath.split("/"));
 const acceptedPageSha256 =
-  "0D3F928AB66A04DF0397F5ACA04AEDB3423FE0768770B6841C3DD3394FAEBAD4";
+  "9990C4316AF8F4D656F2C2B057AB789846A10CD21E18367336FC6BD277631EB7";
 const acceptedCenteredRestPngSha256 =
   "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31";
 const overallUrl =
@@ -148,6 +148,12 @@ const totals = {
   microphone_requests: 0,
   replay_combinations: 0,
   route_recording_entries: 0,
+  route_recording_exits: 0,
+  recording_negative_checks: 0,
+  recording_ordered_phase_traces: 0,
+  recording_reentries: 0,
+  recording_wave_cycles: 0,
+  mic_glyph_pixel_count: 0,
   route_menu_entries: 0,
   scenario_count: 0,
   snapshot_count: 0,
@@ -208,6 +214,7 @@ async function screenSnapshot(page, freezeOverallAfterSnapshot = false) {
     const menu = stage.querySelector(".integrated-menu-image");
     const menuSurface = stage.querySelector("#integrated-menu");
     const hold = stage.querySelector(".hold-progress");
+    const recordingWave = stage.querySelector(".recording-waves");
     const visible = (element) => {
       if (!element || element.hidden || element.closest("[hidden]")) {
         return false;
@@ -275,7 +282,7 @@ async function screenSnapshot(page, freezeOverallAfterSnapshot = false) {
         }
       }
     }
-    const pixels = context.getImageData(0, 0, 200, 200).data;
+    const facePixels = context.getImageData(0, 0, 200, 200).data;
     const pupilOracle = {
       binary_mismatch_count: 0,
       checked: false,
@@ -344,9 +351,9 @@ async function screenSnapshot(page, freezeOverallAfterSnapshot = false) {
       for (let pixel = 0; pixel < 40000; pixel += 1) {
         const index = pixel * 4;
         const actualBlack = (
-          pixels[index] < 128
-          && pixels[index + 1] < 128
-          && pixels[index + 2] < 128
+          facePixels[index] < 128
+          && facePixels[index + 1] < 128
+          && facePixels[index + 2] < 128
         );
         const expectedBlack = (
           expectedPixels[index] < 128
@@ -371,6 +378,124 @@ async function screenSnapshot(page, freezeOverallAfterSnapshot = false) {
       }
       pupilOracle.checked = true;
     }
+    const micOracle = {
+      checked: false,
+      current_wave_mask_overlap: 0,
+      old_mic_mask_pixels: 0,
+      visible_mic_asset_sources: 0,
+    };
+    if (visible(recordingWave)) {
+      const load = (source) => new Promise((resolve, reject) => {
+        const image = new Image();
+        image.onload = () => resolve(image);
+        image.onerror = () => reject(new Error(
+          `microphone oracle image load failed: ${source}`,
+        ));
+        image.src = source;
+      });
+      const oldRecording = await load(
+        new URL(
+          "recording_with_calm-00-recording_input_0.png",
+          location.href,
+        ).href,
+      );
+      const sourceCanvas = document.createElement("canvas");
+      sourceCanvas.width = 200;
+      sourceCanvas.height = 200;
+      const sourceContext = sourceCanvas.getContext(
+        "2d",
+        { willReadFrequently: true },
+      );
+      sourceContext.fillStyle = "#fff";
+      sourceContext.fillRect(0, 0, 200, 200);
+      sourceContext.drawImage(oldRecording, 0, 0, 200, 200);
+      const sourcePixels = sourceContext.getImageData(
+        0,
+        0,
+        200,
+        200,
+      ).data;
+      const wavePixels = recordingWave.getContext(
+        "2d",
+        { willReadFrequently: true },
+      ).getImageData(0, 0, 200, 200).data;
+      const seen = new Uint8Array(40000);
+      const micMask = new Uint8Array(40000);
+      const isBlack = (index) => (
+        sourcePixels[index * 4 + 3] > 0
+        && sourcePixels[index * 4] < 128
+        && sourcePixels[index * 4 + 1] < 128
+        && sourcePixels[index * 4 + 2] < 128
+      );
+      for (let seed = 0; seed < 40000; seed += 1) {
+        if (seen[seed] || !isBlack(seed)) {
+          continue;
+        }
+        const queue = [seed];
+        const component = [];
+        seen[seed] = 1;
+        let minX = 200;
+        let minY = 200;
+        let maxX = -1;
+        let maxY = -1;
+        while (queue.length) {
+          const current = queue.pop();
+          component.push(current);
+          const x = current % 200;
+          const y = Math.floor(current / 200);
+          minX = Math.min(minX, x);
+          minY = Math.min(minY, y);
+          maxX = Math.max(maxX, x);
+          maxY = Math.max(maxY, y);
+          for (const [dx, dy] of [[-1, 0], [1, 0], [0, -1], [0, 1]]) {
+            const nx = x + dx;
+            const ny = y + dy;
+            if (nx < 0 || nx >= 200 || ny < 0 || ny >= 200) {
+              continue;
+            }
+            const next = ny * 200 + nx;
+            if (!seen[next] && isBlack(next)) {
+              seen[next] = 1;
+              queue.push(next);
+            }
+          }
+        }
+        if (
+          minX >= 150
+          && minY >= 80
+          && maxY <= 115
+          && maxX >= 155
+          && component.length >= 3
+        ) {
+          for (const index of component) {
+            micMask[index] = 1;
+          }
+        }
+      }
+      for (let index = 0; index < 40000; index += 1) {
+        if (!micMask[index]) {
+          continue;
+        }
+        micOracle.old_mic_mask_pixels += 1;
+        const offset = index * 4;
+        if (
+          wavePixels[offset + 3] > 0
+          && wavePixels[offset] < 128
+          && wavePixels[offset + 1] < 128
+          && wavePixels[offset + 2] < 128
+        ) {
+          micOracle.current_wave_mask_overlap += 1;
+        }
+      }
+      micOracle.visible_mic_asset_sources = [frame, gaze, menu]
+        .filter((element) => visible(element))
+        .filter((element) => (
+          (element.getAttribute("src") || "").includes("recording_with_")
+        )).length;
+      micOracle.checked = true;
+      context.drawImage(recordingWave, 0, 0, 200, 200);
+    }
+    const pixels = context.getImageData(0, 0, 200, 200).data;
     let blackPixels = 0;
     let minX = 200;
     let minY = 200;
@@ -398,12 +523,21 @@ async function screenSnapshot(page, freezeOverallAfterSnapshot = false) {
     }
     const contract = window.__touchContractState();
     const overallContract = window.__overallInteractionState();
+    const recordingContract = window.__recordingContractState();
+    const interactionTrace = window.__touchInteractionTrace || [];
     const faceVisible = visible(frame) ? 1 : 0;
     const gazeVisible = visible(gaze) ? 1 : 0;
     const menuVisible = visible(menu) && visible(menuSurface) ? 1 : 0;
+    const waveVisible = visible(recordingWave) ? 1 : 0;
     const expected = contract.mode === "menu"
-      ? { face: 0, gaze: 0, highlight: 0, menu: 1 }
-      : { face: 1, gaze: 1, highlight: 1, menu: 0 };
+      ? { face: 0, gaze: 0, highlight: 0, menu: 1, wave: 0 }
+      : {
+          face: 1,
+          gaze: 1,
+          highlight: 1,
+          menu: 0,
+          wave: contract.mode === "recording" ? 1 : 0,
+        };
     const debugSelectors = [
       ".screen-meta",
       ".decision-panel",
@@ -419,6 +553,7 @@ async function screenSnapshot(page, freezeOverallAfterSnapshot = false) {
       ["stage", stage],
       ["menu", menuSurface],
       ["hold", hold],
+      ["recording_wave", recordingWave],
     ]) {
       if (!visible(element) || name === "stage") {
         continue;
@@ -447,12 +582,16 @@ async function screenSnapshot(page, freezeOverallAfterSnapshot = false) {
         menu_view: overallContract.menuView,
         mode: contract.mode,
         pending_tap: contract.pendingTap,
+        pending_tap_mode: contract.pendingTapMode,
+        recording_exits: contract.recordingExits,
         recording_entries: contract.recordingEntries,
         story_paused: contract.storyPaused,
         story_touching: contract.storyTouching,
       },
       dom: {
-        conflict_count: menuVisible && (faceVisible || gazeVisible) ? 1 : 0,
+        conflict_count: menuVisible && (
+          faceVisible || gazeVisible || waveVisible
+        ) ? 1 : 0,
         debug_visible: debugVisible,
         expected,
         face_count: faceVisible,
@@ -462,6 +601,7 @@ async function screenSnapshot(page, freezeOverallAfterSnapshot = false) {
         hold_count: visible(hold) ? 1 : 0,
         menu_count: menuVisible,
         menu_node_count: stage.querySelectorAll(".integrated-menu-image").length,
+        recording_wave_count: waveVisible,
         out_of_bounds: outOfBounds,
         primary_screen_count: document.querySelectorAll(
           "#overall-viewport.live-viewport",
@@ -473,7 +613,18 @@ async function screenSnapshot(page, freezeOverallAfterSnapshot = false) {
         stage_width: stageRect.width,
         visible_image_count: layers.filter(([, image]) => visible(image)).length,
       },
+      events: {
+        event_ids: interactionTrace.map((row) => row.event_id),
+        kinds: interactionTrace.map((row) => row.kind),
+        route_enter_ids: interactionTrace
+          .filter((row) => row.kind === "recording_route_enter")
+          .map((row) => row.event_id),
+        route_exit_ids: interactionTrace
+          .filter((row) => row.kind === "recording_route_exit")
+          .map((row) => row.event_id),
+      },
       media_request_count: window.__ownerMediaRequestCount || 0,
+      microphone_oracle: micOracle,
       pixel: {
         black_bounds: blackPixels
           ? { max_x: maxX, max_y: maxY, min_x: minX, min_y: minY }
@@ -491,6 +642,19 @@ async function screenSnapshot(page, freezeOverallAfterSnapshot = false) {
         signature: signature.toString(16).padStart(8, "0"),
       },
       pupil_oracle: pupilOracle,
+      recording: {
+        active: recordingContract.active,
+        consumed_pairs: recordingContract.consumedPairs,
+        entries: recordingContract.entries,
+        exits: recordingContract.exits,
+        mic_glyph_present: recordingContract.micGlyphPresent,
+        phase: recordingContract.phase,
+        phase_trace: recordingContract.phaseTrace,
+        sequence: recordingContract.sequence,
+        wave_step: recordingContract.waveStep,
+        wave_trace: recordingContract.waveTrace,
+        wave_visible: recordingContract.waveVisible,
+      },
       route: {
         hash: location.hash,
         pathname: location.pathname,
@@ -525,6 +689,7 @@ function assertSnapshot(snapshot, expectedMode, id) {
       snapshot.dom.highlight_layer_count - expected.highlight
     )
     + Math.abs(snapshot.dom.menu_count - expected.menu)
+    + Math.abs(snapshot.dom.recording_wave_count - expected.wave)
   );
   totals.stale_layer_count += stale;
   totals.stale_pupil_pixel_count += (
@@ -537,6 +702,9 @@ function assertSnapshot(snapshot, expectedMode, id) {
   totals.outside_black_pixel_count += snapshot.pixel.outside_black_pixels;
   totals.out_of_bounds_count += snapshot.dom.out_of_bounds.length;
   totals.microphone_requests += snapshot.media_request_count;
+  totals.mic_glyph_pixel_count += (
+    snapshot.microphone_oracle.current_wave_mask_overlap
+  );
   assert(snapshot.contract.mode === expectedMode, `${id}: wrong mode`);
   assert(stale === 0, `${id}: stale/duplicate surface layer`);
   assert(snapshot.dom.conflict_count === 0, `${id}: conflicting surfaces`);
@@ -563,6 +731,21 @@ function assertSnapshot(snapshot, expectedMode, id) {
       `${id}: stale pupil/highlight pixels`,
     );
   }
+  if (expectedMode === "recording") {
+    assert(
+      snapshot.microphone_oracle.checked
+      && snapshot.microphone_oracle.old_mic_mask_pixels > 0
+      && snapshot.microphone_oracle.current_wave_mask_overlap === 0
+      && snapshot.microphone_oracle.visible_mic_asset_sources === 0
+      && !snapshot.recording.mic_glyph_present,
+      `${id}: microphone glyph/source present`,
+    );
+  }
+  assert(
+    new Set(snapshot.events.event_ids).size
+      === snapshot.events.event_ids.length,
+    `${id}: duplicate interaction event id`,
+  );
   assert(snapshot.media_request_count === 0, `${id}: microphone requested`);
   assert(
     snapshot.route.pathname === `/${pageRepoPath}`,
@@ -573,9 +756,12 @@ function assertSnapshot(snapshot, expectedMode, id) {
   stateRows.push({
     contract: snapshot.contract,
     dom: snapshot.dom,
+    events: snapshot.events,
     id,
+    microphone_oracle: snapshot.microphone_oracle,
     pixel: snapshot.pixel,
     pupil_oracle: snapshot.pupil_oracle,
+    recording: snapshot.recording,
     route: snapshot.route,
     sources: snapshot.sources,
   });
@@ -736,6 +922,16 @@ async function release(page, type, x, y, pointerId) {
   }
 }
 
+async function tap(page, type, x, y, pointerId, downMs = 25) {
+  await press(page, type, x, y, pointerId);
+  await sleep(downMs);
+  await release(page, type, x, y, pointerId);
+}
+
+async function syntheticRelease(page, type, x, y, pointerId) {
+  await pointer(page, type, "pointerup", x, y, pointerId);
+}
+
 async function clickStageTarget(page, type, selector, pointerId) {
   const target = page.locator(selector);
   await target.waitFor({ state: "visible" });
@@ -800,7 +996,7 @@ async function replaySingle(browser, viewport, type) {
         pending.sources.gaze !== baseline.sources.gaze,
         `${id}: no contact gaze response`,
       );
-      await sleep(390);
+      await sleep(680);
       await waitForVisibleImages(page);
       const committed = assertSnapshot(
         await screenSnapshot(page, true),
@@ -817,6 +1013,17 @@ async function replaySingle(browser, viewport, type) {
       ));
       assert(traceCount === 1, `${id}: single tap committed ${traceCount}`);
       assert(event === "touch_tap", `${id}: TOUCH_TAP not dispatched`);
+      assert(
+        committed.events.kinds.filter(
+          (kind) => kind === "pointerdown_consumed",
+        ).length === 1
+        && committed.events.kinds.filter(
+          (kind) => kind === "pointer_release_consumed",
+        ).length === 1
+        && committed.events.route_enter_ids.length === 0
+        && committed.events.route_exit_ids.length === 0,
+        `${id}: single tap event consumption`,
+      );
       assert(
         committed.contract.recording_entries === 0
         && committed.contract.menu_entries === 0,
@@ -922,14 +1129,15 @@ async function replayRecording(browser, viewport, type) {
       const box = await stageBox(page);
       const x = box.x + 100;
       const y = box.y + 100;
-      await press(page, type, x, y, 301);
-      await sleep(40);
-      await release(page, type, x, y, 301);
+      const negativeChecks = [];
+      await tap(page, type, x, y, 301, 30);
       await sleep(90);
-      await press(page, type, x + 3, y + 2, 302);
-      await sleep(40);
-      await release(page, type, x + 3, y + 2, 302);
-      await sleep(120);
+      await tap(page, type, x + 3, y + 2, 302, 30);
+      await page.waitForFunction(() => (
+        window.__recordingContractState().phase === "thoughtful_listening"
+      ), null, { timeout: 2500 });
+      await sleep(80);
+      await page.evaluate(() => window.__recordingFreezeWaveStep(3));
       await waitForVisibleImages(page);
       const recording = assertSnapshot(
         await screenSnapshot(page),
@@ -941,15 +1149,196 @@ async function replayRecording(browser, viewport, type) {
         && recording.contract.menu_entries === 0,
         `${id}: recording route count`,
       );
-      const singleCommits = await page.evaluate(() => (
-        window.__v45TouchTrace.filter(
-          (row) => row.kind === "single_tap_committed",
+      assert(
+        recording.contract.recording_exits === 0,
+        `${id}: recording exited on entry`,
+      );
+      assert(
+        recording.events.kinds.filter(
+          (kind) => kind === "pointerdown_consumed",
+        ).length === 2
+        && recording.events.kinds.filter(
+          (kind) => kind === "pointer_release_consumed",
+        ).length === 2
+        && recording.events.kinds.filter(
+          (kind) => kind === "double_tap_pair_consumed",
+        ).length === 1
+        && recording.events.route_enter_ids.length === 1
+        && recording.events.route_exit_ids.length === 0,
+        `${id}: recording entry event/route counts`,
+      );
+      const entryEvidence = await page.evaluate(() => {
+        const recording = window.__recordingContractState();
+        const trace = window.__touchInteractionTrace;
+        const phases = recording.phaseTrace.filter(
+          (row) => row.sequence === recording.sequence,
+        );
+        const cycle = recording.waveTrace.filter(
+          (row) => row.sequence === recording.sequence && row.cycle === 0,
+        );
+        const releaseIds = trace.filter(
+          (row) => row.kind === "pointer_release_consumed",
+        ).map((row) => row.event_id);
+        return {
+          consumedPair: recording.consumedPairs.at(-1),
+          cycle,
+          phases,
+          releaseIds,
+          singleCommits: window.__v45TouchTrace.filter(
+            (row) => row.kind === "single_tap_committed",
+          ).length,
+        };
+      });
+      assert(
+        entryEvidence.singleCommits === 0,
+        `${id}: double tap committed single`,
+      );
+      assert(
+        JSON.stringify(entryEvidence.phases.map((row) => row.phase))
+          === JSON.stringify([
+            "expression",
+            "listening",
+            "thoughtful_listening",
+          ]),
+        `${id}: recording phase order`,
+      );
+      assert(
+        entryEvidence.phases[1].story === "focused_presence"
+        && entryEvidence.phases[2].story === "thoughtful_presence"
+        && entryEvidence.phases[1].waves_visible
+        && entryEvidence.phases[2].waves_visible,
+        `${id}: accepted listening/thoughtful art sequence`,
+      );
+      assert(
+        JSON.stringify(entryEvidence.cycle.map((row) => row.step))
+          === JSON.stringify([0, 1, 2, 3])
+        && entryEvidence.cycle.every((row, index, rows) => (
+          index === 0
+          || row.distance_to_listening_point
+            < rows[index - 1].distance_to_listening_point
+        )),
+        `${id}: inward wave centroid motion`,
+      );
+      assert(
+        JSON.stringify(entryEvidence.consumedPair.release_event_ids)
+          === JSON.stringify(entryEvidence.releaseIds),
+        `${id}: entry pair event identity`,
+      );
+      assert(
+        recording.microphone_oracle.old_mic_mask_pixels > 0
+        && recording.microphone_oracle.current_wave_mask_overlap === 0
+        && recording.microphone_oracle.visible_mic_asset_sources === 0,
+        `${id}: microphone pixel/source oracle`,
+      );
+      totals.route_recording_entries += 1;
+      totals.recording_ordered_phase_traces += 1;
+      totals.recording_wave_cycles += 1;
+      await capture(page, `${id}-entry`);
+      await page.evaluate(() => window.__recordingResumeWaves());
+
+      const assertNoRecordingToggle = async (label) => {
+        await waitForVisibleImages(page);
+        const snapshot = assertSnapshot(
+          await screenSnapshot(page),
+          "recording",
+          `${id}-${label}`,
+        );
+        assert(
+          snapshot.recording.entries === 1
+          && snapshot.recording.exits === 0
+          && snapshot.recording.sequence === 1
+          && snapshot.recording.phase === "thoughtful_listening"
+          && snapshot.recording.phase_trace.filter(
+            (row) => row.sequence === 1,
+          ).length === 3
+          && snapshot.events.route_enter_ids.length === 1
+          && snapshot.events.route_exit_ids.length === 0
+          && snapshot.contract.menu_entries === 0,
+          `${id}-${label}: false toggle or choreography restart`,
+        );
+        negativeChecks.push({
+          event_id: snapshot.events.event_ids.at(-1),
+          kind: label,
+          route_entries: snapshot.events.route_enter_ids.length,
+          route_exits: snapshot.events.route_exit_ids.length,
+          sequence: snapshot.recording.sequence,
+        });
+        totals.recording_negative_checks += 1;
+      };
+
+      await tap(page, type, x, y, 303);
+      await sleep(680);
+      await assertNoRecordingToggle("single-no-exit");
+
+      await tap(page, type, x, y, 304);
+      await sleep(675);
+      await tap(page, type, x + 2, y, 305);
+      await sleep(680);
+      await assertNoRecordingToggle("late-pair-no-exit");
+
+      await tap(page, type, x, y, 306);
+      await sleep(80);
+      await tap(page, type, x + 50, y, 307);
+      await sleep(680);
+      await assertNoRecordingToggle("far-pair-no-exit");
+
+      await press(page, type, x, y, 308);
+      await sleep(30);
+      await move(page, type, x + 60, y, 308);
+      await sleep(30);
+      await release(page, type, x + 60, y, 308);
+      await sleep(80);
+      await assertNoRecordingToggle("drag-no-exit");
+
+      await press(page, type, x, y, 309);
+      await sleep(730);
+      await release(page, type, x, y, 309);
+      await sleep(80);
+      await assertNoRecordingToggle("hold-no-exit");
+
+      await press(page, type, x, y, 310);
+      await sleep(40);
+      await page.evaluate((pointerType) => {
+        const active = window.__touchContractState().activePointer;
+        document.querySelector("#overall-viewport").dispatchEvent(
+          new PointerEvent("pointercancel", {
+            bubbles: true,
+            cancelable: true,
+            pointerId: active?.id ?? 310,
+            pointerType: active?.type ?? pointerType,
+          }),
+        );
+      }, type);
+      if (type === "mouse") {
+        await page.mouse.up().catch(() => {});
+      }
+      await sleep(80);
+      await assertNoRecordingToggle("cancel-no-exit");
+
+      await press(page, type, x, y, 311);
+      await sleep(40);
+      await page.evaluate(() => window.dispatchEvent(new Event("blur")));
+      if (type === "mouse") {
+        await page.mouse.up().catch(() => {});
+      }
+      await sleep(80);
+      await assertNoRecordingToggle("blur-no-exit");
+
+      await tap(page, type, x, y, 312);
+      await syntheticRelease(page, type, x, y, 312);
+      await sleep(680);
+      await assertNoRecordingToggle("duplicate-release-no-exit");
+      const duplicateCount = await page.evaluate(() => (
+        window.__touchInteractionTrace.filter(
+          (row) => row.kind === "duplicate_release_ignored",
         ).length
       ));
-      assert(singleCommits === 0, `${id}: double tap committed single`);
-      totals.route_recording_entries += 1;
-      await capture(page, `${id}-entry`);
-      await page.locator('[data-testid="recording-return"]').click();
+      assert(duplicateCount >= 1, `${id}: duplicate release not observed`);
+
+      await tap(page, type, x, y, 320);
+      await sleep(500);
+      await tap(page, type, x + 39, y, 321);
+      await sleep(80);
       await waitForVisibleImages(page);
       const returned = assertSnapshot(
         await screenSnapshot(page),
@@ -969,10 +1358,109 @@ async function replayRecording(browser, viewport, type) {
         && returned.contract.hold_progress === 0,
         `${id}: recording return transient state`,
       );
+      assert(
+        returned.contract.recording_entries === 1
+        && returned.contract.recording_exits === 1
+        && returned.events.route_enter_ids.length === 1
+        && returned.events.route_exit_ids.length === 1,
+        `${id}: recording exit event/route counts`,
+      );
+      const firstExitEvidence = await page.evaluate(() => {
+        const recording = window.__recordingContractState();
+        const trace = window.__touchInteractionTrace;
+        const pair = recording.consumedPairs.at(-1);
+        const releaseIds = trace.filter(
+          (row) => row.kind === "pointer_release_consumed",
+        ).slice(-2).map((row) => row.event_id);
+        return {
+          pair,
+          releaseIds,
+          routeExitIds: trace.filter(
+            (row) => row.kind === "recording_route_exit",
+          ).map((row) => row.event_id),
+        };
+      });
+      assert(
+        firstExitEvidence.pair.action === "exit"
+        && JSON.stringify(firstExitEvidence.pair.release_event_ids)
+          === JSON.stringify(firstExitEvidence.releaseIds)
+        && firstExitEvidence.routeExitIds.length === 1,
+        `${id}: exit pair event identity`,
+      );
+      totals.route_recording_exits += 1;
       await capture(page, `${id}-returned`);
+
+      await tap(page, type, x, y, 330);
+      await sleep(500);
+      await tap(page, type, x + 39, y, 331);
+      await sleep(70);
+      await tap(page, type, x + 2, y + 2, 332);
+      await page.waitForFunction(() => (
+        window.__recordingContractState().phase === "thoughtful_listening"
+      ), null, { timeout: 2500 });
+      await sleep(680);
+      const triple = assertSnapshot(
+        await screenSnapshot(page),
+        "recording",
+        `${id}-triple-no-extra-toggle`,
+      );
+      assert(
+        triple.recording.entries === 2
+        && triple.recording.exits === 1
+        && triple.recording.sequence === 2
+        && triple.recording.phase_trace.filter(
+          (row) => row.sequence === 2,
+        ).length === 3
+        && triple.events.route_enter_ids.length === 2
+        && triple.events.route_exit_ids.length === 1,
+        `${id}: triple input caused an unintended toggle`,
+      );
+      negativeChecks.push({
+        event_id: triple.events.event_ids.at(-1),
+        kind: "triple-no-extra-toggle",
+        route_entries: triple.events.route_enter_ids.length,
+        route_exits: triple.events.route_exit_ids.length,
+        sequence: triple.recording.sequence,
+      });
+      totals.recording_negative_checks += 1;
+      totals.recording_ordered_phase_traces += 1;
+      totals.recording_reentries += 1;
+      totals.route_recording_entries += 1;
+
+      await tap(page, type, x, y, 340);
+      await sleep(90);
+      await tap(page, type, x + 3, y + 2, 341);
+      await sleep(80);
+      await waitForVisibleImages(page);
+      const finalReturn = assertSnapshot(
+        await screenSnapshot(page),
+        "expression",
+        `${id}-reentry-returned`,
+      );
+      assert(
+        boolPixelEqual(finalReturn.pixel, baseline.pixel)
+        && finalReturn.sources.face === baseline.sources.face
+        && finalReturn.sources.gaze === baseline.sources.gaze
+        && finalReturn.recording.entries === 2
+        && finalReturn.recording.exits === 2
+        && finalReturn.events.route_enter_ids.length === 2
+        && finalReturn.events.route_exit_ids.length === 2,
+        `${id}: re-entry return identity/counts`,
+      );
+      totals.route_recording_exits += 1;
       return {
+        event_ids_unique: true,
+        exit_route_activations: 2,
+        inward_wave_cycle: entryEvidence.cycle.map((row) => ({
+          distance_to_listening_point: row.distance_to_listening_point,
+          step: row.step,
+        })),
         microphone_requests: recording.media_request_count,
-        recording_entries: recording.contract.recording_entries,
+        negative_checks: negativeChecks,
+        ordered_phases: entryEvidence.phases.map((row) => row.phase),
+        recording_entries: finalReturn.recording.entries,
+        recording_exits: finalReturn.recording.exits,
+        reentry_count: 1,
         return_equals_fresh_centered_rest: returnPixelsEqual,
       };
     },
@@ -1376,7 +1864,21 @@ async function run() {
   assert(totals.replay_combinations === 6, "replay matrix is not 6/6");
   assert(totals.scenario_count === 42, "scenario count is not 42");
   assert(totals.directional_moves === 30, "direction count is not 30");
-  assert(totals.route_recording_entries === 6, "recording count is not 6");
+  assert(totals.route_recording_entries === 12, "recording entries not 12");
+  assert(totals.route_recording_exits === 12, "recording exits not 12");
+  assert(totals.recording_reentries === 6, "recording reentries not 6");
+  assert(
+    totals.recording_negative_checks === 54,
+    "recording negatives are not 54/54",
+  );
+  assert(
+    totals.recording_ordered_phase_traces === 12,
+    "recording phase traces are not 12/12",
+  );
+  assert(
+    totals.recording_wave_cycles === 6,
+    "recording inward wave cycles are not 6/6",
+  );
   assert(totals.route_menu_entries === 6, "menu count is not 6");
   assert(totals.menu_root_visits === 24, "menu roots are not 24/24");
   assert(
@@ -1385,6 +1887,7 @@ async function run() {
   );
   for (const key of [
     "microphone_requests",
+    "mic_glyph_pixel_count",
     "stale_layer_count",
     "stale_pupil_pixel_count",
     "stale_pupil_state_count",
@@ -1399,8 +1902,8 @@ async function run() {
 
   const screenshotManifest = {
     accepted_page_sha256: acceptedPageSha256,
-    requirement: "COMP-REQ-508",
-    schema: "companion.browser-owner-review-screenshots.v2",
+    requirements: ["COMP-REQ-508", "COMP-REQ-509", "COMP-REQ-510"],
+    schema: "companion.browser-owner-review-screenshots.v3",
     screenshots: screenshotRows.sort((a, b) => a.id.localeCompare(b.id)),
     status: "PASS",
   };
@@ -1416,6 +1919,7 @@ async function run() {
       document_route_per_scenario: 1,
       http_404_count: totals.http_404_count,
       microphone_request_count: totals.microphone_requests,
+      microphone_glyph_pixel_count: totals.mic_glyph_pixel_count,
       out_of_bounds_count: totals.out_of_bounds_count,
       outside_black_pixel_count: totals.outside_black_pixel_count,
       primary_screen_count: 1,
@@ -1424,8 +1928,8 @@ async function run() {
       stale_pupil_state_count: totals.stale_pupil_state_count,
     },
     matrix: matrixRows.sort((a, b) => a.id.localeCompare(b.id)),
-    requirement: "COMP-REQ-508",
-    schema: "companion.browser-owner-review-pixel-dom-route.v2",
+    requirements: ["COMP-REQ-508", "COMP-REQ-509", "COMP-REQ-510"],
+    schema: "companion.browser-owner-review-pixel-dom-route.v3",
     states: stateRows.sort((a, b) => a.id.localeCompare(b.id)),
     status: "PASS",
   };
@@ -1456,8 +1960,13 @@ async function run() {
       menu_recording_return_identity_12_of_12: true,
       menu_roots_24_of_24: true,
       mouse_touch_pen_6_of_6: true,
+      no_false_recording_toggle_54_of_54: true,
       no_404_overlap_bounds_or_stale: true,
+      no_microphone_glyph_pixels: true,
       no_microphone_request: true,
+      ordered_recording_phases_12_of_12: true,
+      recording_double_tap_enter_exit_reenter_6_of_6: true,
+      recording_inward_wave_cycle_6_of_6: true,
       route_activation_exactly_once: true,
       single_tap_once_6_of_6: true,
       stale_pupil_oracle_all_expression_states: true,
@@ -1474,6 +1983,8 @@ async function run() {
       "COMP-REQ-442",
       "COMP-REQ-471",
       "COMP-REQ-508",
+      "COMP-REQ-509",
+      "COMP-REQ-510",
     ],
     runtime: {
       browser: "chromium",
@@ -1482,7 +1993,7 @@ async function run() {
       playwright_package_sha256: playwright.packageSha256,
       playwright_version: playwright.version,
     },
-    schema: "companion.browser-owner-review-replay.v2",
+    schema: "companion.browser-owner-review-replay.v3",
     side_effect_counters: {
       browser_processes: 1,
       hardware: 0,
