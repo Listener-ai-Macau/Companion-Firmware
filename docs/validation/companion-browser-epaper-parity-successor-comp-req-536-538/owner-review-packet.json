@@ -1,0 +1,111 @@
+{
+  "checkonly": {
+    "command": "pwsh -NoProfile -File .\\tools\\faraday_upper_art\\run_companion_browser_owner_review_comp_req_536_538.ps1 -CheckOnly",
+    "path": "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/owner-review-checkonly.json",
+    "sha256": "6270EED1BD7145A8B6C7D1F6DB4C34AB254D1C04ECF43671F2CDE8225EBFBE39"
+  },
+  "default_off": true,
+  "evidence_commit": "c919bfe5198067e60d0b6cbf5fd38d82853e23a1",
+  "future_execute_command": "pwsh -NoProfile -File .\\tools\\faraday_upper_art\\run_companion_browser_owner_review_comp_req_536_538.ps1 -Execute -OwnerStartAcknowledged",
+  "identities": [
+    {
+      "canonical_lf_sha256": "6F3E806C4703E677DE9E2D108F8D3241546D87D41D05D099731A89BCD1603271",
+      "git_blob": "31eb2cdb8f3b28c38efbc7a18ce7381d43c3052c",
+      "id": "focused",
+      "path": "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/focused-oracle.json"
+    },
+    {
+      "canonical_lf_sha256": "988FBD722F28CFFCCCB425A5C4D0F63B5ABF34589C2F90327ED66BB986DB7676",
+      "git_blob": "4574f96c68dc2d1cfd7d4f63cc664d22c84f57e9",
+      "id": "machine",
+      "path": "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/MACHINE_READY.json"
+    },
+    {
+      "canonical_lf_sha256": "198ED5AFBA59F06BE507E0BC6C1778363DB1E401AF17A8859A2A3D0665DB36DB",
+      "git_blob": "a7d5dfb990d5aa864e9bf546bada5b4b7ddcb2ce",
+      "id": "manifest",
+      "path": "docs/art/exports/companion-browser-epaper-parity-comp-req-536-538/visual-frame-manifest.json"
+    },
+    {
+      "canonical_lf_sha256": "C0656F1B797D870C6CBE3704D3D5D0F5FD877F717E6326A9D0E9C47531B33021",
+      "git_blob": "1d14ba1c84b5b577971b102313c3785e8b0c148f",
+      "id": "negative_gate",
+      "path": "tools/faraday_upper_art/test_companion_browser_epaper_source_bound_negatives_comp_req_536_538.py"
+    },
+    {
+      "canonical_lf_sha256": "03594FBCFB115E4DC069EC87CF7B11C190A57D413F6902018CCEED6192A4BFA5",
+      "git_blob": "e48c2f5d349760c7f664407fe45adc7973bf93c9",
+      "id": "negatives",
+      "path": "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/source-bound-negatives.json"
+    },
+    {
+      "canonical_lf_sha256": "6176B9B3A7948291F430B5C47EBB5CDB2DA339BEEA86FBD1C72920D74438DD10",
+      "git_blob": "8352264ac8a1359f1c0650f07589e76da1999665",
+      "id": "page",
+      "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html"
+    },
+    {
+      "canonical_lf_sha256": "D8CDA1082AC334FB4CEABB097D52EF8D6EFB9374455A8369A6720A848DC2EACB",
+      "git_blob": "09738ff0da616d4b6095aa442ca57c7ea8e28630",
+      "id": "parity",
+      "path": "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/parity-verifier.json"
+    },
+    {
+      "canonical_lf_sha256": "C44BB53F2D07BE61D5EE27521E9237412EC1CFADCFEE57D6C9ED3636BEBBBE2F",
+      "git_blob": "d7cb8e8bd98ff7c19220abcd559c77d7393c3c7f",
+      "id": "pixel",
+      "path": "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/replay-run/pixel-dom-route-artifact.json"
+    },
+    {
+      "canonical_lf_sha256": "4108424DA67141EA31F7755CF3974CA982093B1D7B1FEE8A8263B25B9CDD5B26",
+      "git_blob": "87a035125d16411175f10e1dbf4754db0fee561e",
+      "id": "replay",
+      "path": "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/replay-run/browser-replay-result.json"
+    },
+    {
+      "canonical_lf_sha256": "85886DFB978F8235AC97C7F57BDCA6F713E0EA5AA95F2FFC65923E74CEF700D2",
+      "git_blob": "2b335aa2fc39872459f0e73c285c804bec3a90c4",
+      "id": "runner",
+      "path": "tools/faraday_upper_art/run_companion_browser_owner_review_comp_req_536_538.ps1"
+    },
+    {
+      "canonical_lf_sha256": "81C10D5E17A633AC8F2411C82658C3A05F60963BDDBB36D592DADE19C901512C",
+      "git_blob": "8381c449e4256a40a97537305eb6bbae83b8e3eb",
+      "id": "screenshots",
+      "path": "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/replay-run/screenshot-manifest.json"
+    },
+    {
+      "canonical_lf_sha256": "76077D1153265CDCAABC2B857268D2A8B3B8AE2C2A0AD29379C24D1FB71E2B1A",
+      "git_blob": "4d2bc95d5f78b9dc5841958cf20a05ee9d1abf8b",
+      "id": "source_gate",
+      "path": "tools/faraday_upper_art/verify_companion_browser_epaper_source_bound_comp_req_536_538.py"
+    }
+  ],
+  "implementation_commit": "41677c9f96b44c9d45a28f29ea576ff30aef1f88",
+  "machine_ready_sha256": "988FBD722F28CFFCCCB425A5C4D0F63B5ABF34589C2F90327ED66BB986DB7676",
+  "owner_pass_claimed": false,
+  "owner_result_exists": false,
+  "prompt_lifecycle": {
+    "buttons": [
+      "\u901a\u8fc7",
+      "\u5931\u8d25"
+    ],
+    "canonical_operator_prompt_calls": 1,
+    "note_allowed": true,
+    "note_path": "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/owner-review.note.txt",
+    "raw_path": "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/owner-review.raw.json",
+    "result_path": "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/owner-review.json",
+    "title": "Companion \u6d4f\u89c8\u5668\u603b\u4f53\u4f53\u9a8c\u9a8c\u6536"
+  },
+  "remaining_gate": "one canonical Chinese owner prompt; not executed",
+  "requirements": [
+    "COMP-REQ-521",
+    "COMP-REQ-536",
+    "COMP-REQ-537",
+    "COMP-REQ-538"
+  ],
+  "schema": "companion.browser-owner-review-packet.v1",
+  "source_commit": "985c91d12c0210952fd4ede5812a65328157048d",
+  "status": "READY_FOR_OWNER_REVIEW_PENDING",
+  "url": "http://127.0.0.1:4173/docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html"
+}
