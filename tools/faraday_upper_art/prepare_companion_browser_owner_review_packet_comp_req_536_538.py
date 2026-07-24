@@ -39,7 +39,7 @@ BINDINGS = {
     "page": (PAGE, "6176B9B3A7948291F430B5C47EBB5CDB2DA339BEEA86FBD1C72920D74438DD10"),
     "machine": (
         f"{VALIDATION_DIR}/MACHINE_READY.json",
-        "988FBD722F28CFFCCCB425A5C4D0F63B5ABF34589C2F90327ED66BB986DB7676",
+        "CF135427F921BFD3C38943DED62C2D155A29A9939CA5F53215248D3CEB69BAAF",
     ),
     "negatives": (
         f"{VALIDATION_DIR}/source-bound-negatives.json",
@@ -72,12 +72,12 @@ BINDINGS = {
     ),
     "runner": (
         RUNNER,
-        "85886DFB978F8235AC97C7F57BDCA6F713E0EA5AA95F2FFC65923E74CEF700D2",
+        "3BB77B799DB54124A4152E902BFCA3575D2FA932F7BF592C266DA2412E8A997A",
     ),
     "source_gate": (
         "tools/faraday_upper_art/"
         "verify_companion_browser_epaper_source_bound_comp_req_536_538.py",
-        "76077D1153265CDCAABC2B857268D2A8B3B8AE2C2A0AD29379C24D1FB71E2B1A",
+        "78F1DF64676C85A58F936E3C9D1C1C692D618E8D729C49ED4709BE353A4B3AB6",
     ),
     "negative_gate": (
         "tools/faraday_upper_art/"
@@ -244,9 +244,9 @@ def main() -> int:
         "owner_result_exists": False,
         "owner_pass_claimed": False,
         "url": URL,
-        "source_commit": "985c91d12c0210952fd4ede5812a65328157048d",
-        "implementation_commit": "41677c9f96b44c9d45a28f29ea576ff30aef1f88",
-        "evidence_commit": "c919bfe5198067e60d0b6cbf5fd38d82853e23a1",
+        "source_commit": "c7e8403cd6744cff135679010ddf9d7e5f0471af",
+        "implementation_commit": "c7e8403cd6744cff135679010ddf9d7e5f0471af",
+        "evidence_commit": "c7e8403cd6744cff135679010ddf9d7e5f0471af",
         "machine_ready_sha256": BINDINGS["machine"][1],
         "checkonly": {
             "command": CHECKONLY_COMMAND,

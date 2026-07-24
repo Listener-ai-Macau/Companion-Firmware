@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import Any
 
 
-SOURCE_COMMIT = "985c91d12c0210952fd4ede5812a65328157048d"
+SOURCE_COMMIT = "c7e8403cd6744cff135679010ddf9d7e5f0471af"
 PAGE_SHA256 = "6176B9B3A7948291F430B5C47EBB5CDB2DA339BEEA86FBD1C72920D74438DD10"
 PAGE_PATH = (
     "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/"

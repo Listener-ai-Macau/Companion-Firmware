@@ -43,7 +43,7 @@ $promptLockPath = Join-Path $validationDir ".owner-review.prompt-active.lock"
 
 $bindings = [ordered]@{
     page = @($pageRelative, "6176B9B3A7948291F430B5C47EBB5CDB2DA339BEEA86FBD1C72920D74438DD10", $true)
-    machine = @("$validationRelative\MACHINE_READY.json", "988FBD722F28CFFCCCB425A5C4D0F63B5ABF34589C2F90327ED66BB986DB7676", $true)
+    machine = @("$validationRelative\MACHINE_READY.json", "CF135427F921BFD3C38943DED62C2D155A29A9939CA5F53215248D3CEB69BAAF", $true)
     negatives = @("$validationRelative\source-bound-negatives.json", "03594FBCFB115E4DC069EC87CF7B11C190A57D413F6902018CCEED6192A4BFA5", $true)
     focused = @("$validationRelative\focused-oracle.json", "6F3E806C4703E677DE9E2D108F8D3241546D87D41D05D099731A89BCD1603271", $true)
     replay = @("$validationRelative\replay-run\browser-replay-result.json", "4108424DA67141EA31F7755CF3974CA982093B1D7B1FEE8A8263B25B9CDD5B26", $true)
@@ -51,7 +51,7 @@ $bindings = [ordered]@{
     screenshots = @("$validationRelative\replay-run\screenshot-manifest.json", "81C10D5E17A633AC8F2411C82658C3A05F60963BDDBB36D592DADE19C901512C", $true)
     parity = @("$validationRelative\parity-verifier.json", "D8CDA1082AC334FB4CEABB097D52EF8D6EFB9374455A8369A6720A848DC2EACB", $true)
     manifest = @("docs\art\exports\companion-browser-epaper-parity-comp-req-536-538\visual-frame-manifest.json", "198ED5AFBA59F06BE507E0BC6C1778363DB1E401AF17A8859A2A3D0665DB36DB", $true)
-    source_gate = @("tools\faraday_upper_art\verify_companion_browser_epaper_source_bound_comp_req_536_538.py", "76077D1153265CDCAABC2B857268D2A8B3B8AE2C2A0AD29379C24D1FB71E2B1A", $true)
+    source_gate = @("tools\faraday_upper_art\verify_companion_browser_epaper_source_bound_comp_req_536_538.py", "78F1DF64676C85A58F936E3C9D1C1C692D618E8D729C49ED4709BE353A4B3AB6", $true)
     negative_gate = @("tools\faraday_upper_art\test_companion_browser_epaper_source_bound_negatives_comp_req_536_538.py", "C0656F1B797D870C6CBE3704D3D5D0F5FD877F717E6326A9D0E9C47531B33021", $true)
 }
 
