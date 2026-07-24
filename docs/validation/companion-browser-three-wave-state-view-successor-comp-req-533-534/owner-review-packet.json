@@ -1,7 +1,7 @@
 {
   "checkonly_artifact": {
-    "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/owner-review-checkonly.json",
-    "sha256": "1FEAF2B706D03F3587644D702E4899BC511EAB98F321868C7E62C4959E563A9D"
+    "canonical_sha256": "E5CCA61D30389847E1D0BC7ABC1740EBBFDF0AA3348CBBC1037FFDAF3EA36387",
+    "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/owner-review-checkonly.json"
   },
   "checkonly_command": "pwsh -NoProfile -File .\\tools\\faraday_upper_art\\run_companion_browser_owner_review_comp_req_533_534.ps1 -CheckOnly",
   "counters": {
@@ -19,85 +19,107 @@
   "execute_performed": false,
   "identities": [
     {
-      "bytes": 33198,
+      "canonical_bytes": 33198,
+      "canonical_sha256": "7A65317B4FF4296543AF94D0D16662C6D4464726328BB9F172BE0ACFEA3674A7",
+      "checkout_bytes": 33779,
+      "git_blob": "4554fc310726fadd567d98606b5f206ff4500810",
       "id": "determinism",
-      "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/deterministic-replay-receipt.json",
-      "sha256": "7A65317B4FF4296543AF94D0D16662C6D4464726328BB9F172BE0ACFEA3674A7"
+      "identity_basis": "git_blob_plus_canonical_lf_sha256",
+      "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/deterministic-replay-receipt.json"
     },
     {
-      "bytes": 26381,
+      "canonical_bytes": 26381,
+      "canonical_sha256": "9FC4A390A71A431029A3B50E6DC117D441D832694E7BDEA5E53A11A306DE7626",
+      "checkout_bytes": 27435,
+      "git_blob": "7797edcfc3bba8fd7679e60bc2e3fe496cc4bf0b",
       "id": "focused",
-      "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/after-fix/geometry-temporal-state-oracle.json",
-      "sha256": "9FC4A390A71A431029A3B50E6DC117D441D832694E7BDEA5E53A11A306DE7626"
+      "identity_basis": "git_blob_plus_canonical_lf_sha256",
+      "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/after-fix/geometry-temporal-state-oracle.json"
     },
     {
-      "bytes": 4194,
+      "canonical_bytes": 5609,
+      "canonical_sha256": "F35D392C68AB660014E6DFAC861DE013090BBA02BAE8B2ADF2895478D68A9D6F",
+      "checkout_bytes": 5609,
+      "git_blob": "40cb66b9a9cfe04cf278e12708105415609934c0",
       "id": "machine_ready",
-      "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/MACHINE_READY.json",
-      "sha256": "97F757617A7828B61B11FEC3621861820C088C8047CD1836EC473680844BBB8A"
+      "identity_basis": "git_blob_plus_canonical_lf_sha256",
+      "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/MACHINE_READY.json"
     },
     {
-      "bytes": 7646,
+      "canonical_bytes": 8307,
+      "canonical_sha256": "71F7788E81865E292C023678793264DF371BB05DDC7FD59151581037469C92F4",
+      "checkout_bytes": 8566,
+      "git_blob": "eaa850904bee1498b677e367f6c376c637cfc523",
       "id": "negative_gate",
-      "path": "tools/faraday_upper_art/test_companion_browser_three_wave_state_view_source_bound_negatives_comp_req_533_534.py",
-      "provenance": {
-        "commit": "4f89f047867294d9e7e410d951681a1ca40aafec",
-        "git_blob": "810ffc8271f464b57e548b0679322e5357232514"
-      },
-      "sha256": "176BEFAB647FB9D561C79E7B40F22D05FDD4FBCC7F82FA7A30C410842743E217"
+      "identity_basis": "git_blob_plus_canonical_lf_sha256",
+      "path": "tools/faraday_upper_art/test_companion_browser_three_wave_state_view_source_bound_negatives_comp_req_533_534.py"
     },
     {
-      "bytes": 10873,
+      "canonical_bytes": 11113,
+      "canonical_sha256": "4FF9EAB610BFEB10757D30D6BAC2F8B9D51EE30A641686E3FDB992467E5E159B",
+      "checkout_bytes": 11113,
+      "git_blob": "016e03686a4cba9e5c21a98fc3767e34dd1157f6",
       "id": "negative_matrix",
-      "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/source-bound-negatives.json",
-      "sha256": "44581B66DD0D4662A7B99DE281D433C2CDB05D8DFD400CBE3B4C566DD99616DC"
+      "identity_basis": "git_blob_plus_canonical_lf_sha256",
+      "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/source-bound-negatives.json"
     },
     {
-      "bytes": 151959,
+      "canonical_bytes": 151817,
+      "canonical_sha256": "8F8FC05C5DAA3A95C7A2E80D677B56A831CF620A752EABB1DCB535F01705AB9D",
+      "checkout_bytes": 152013,
+      "git_blob": "fdf6c7c8e9ad7293dfd1115e7f42cca015d9a15e",
       "id": "page",
-      "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html",
-      "sha256": "0C29D5FF40D80C41461F0738C1C747A6C2B27A5DA74B5C79E166621A7566D9DA"
+      "identity_basis": "git_blob_plus_canonical_lf_sha256",
+      "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html"
     },
     {
-      "bytes": 1952726,
+      "canonical_bytes": 1952726,
+      "canonical_sha256": "21CA3E864CE8523C497F38ABC758B1ADE34BB92EF755F63D9DFA2FC7A4F5B4F6",
+      "checkout_bytes": 1998211,
+      "git_blob": "f29e86ebbe53e1e27759be65d5c3cfa5743f2b4b",
       "id": "pixel",
-      "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/pixel-dom-route-artifact.json",
-      "sha256": "21CA3E864CE8523C497F38ABC758B1ADE34BB92EF755F63D9DFA2FC7A4F5B4F6"
+      "identity_basis": "git_blob_plus_canonical_lf_sha256",
+      "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/pixel-dom-route-artifact.json"
     },
     {
-      "bytes": 4282,
+      "canonical_bytes": 4282,
+      "canonical_sha256": "842073FF357B7ADF03775B432E87C67B45824F6EC271FE59D5B7CE46A05CF94C",
+      "checkout_bytes": 4395,
+      "git_blob": "6ebbf0882fcc794562d1f5d07e29aae894b15b8d",
       "id": "replay",
-      "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/browser-replay-result.json",
-      "sha256": "842073FF357B7ADF03775B432E87C67B45824F6EC271FE59D5B7CE46A05CF94C"
+      "identity_basis": "git_blob_plus_canonical_lf_sha256",
+      "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/browser-replay-result.json"
     },
     {
-      "bytes": 13323,
+      "canonical_bytes": 14252,
+      "canonical_sha256": "94FDD088BB8EFC18228EC2118D5CA65056C5954E6A69779073E3BD03628D5B9F",
+      "checkout_bytes": 14518,
+      "git_blob": "b0031112fb1fb5172358067f0ae718675b41970a",
       "id": "runner",
-      "path": "tools/faraday_upper_art/run_companion_browser_owner_review_comp_req_533_534.ps1",
-      "provenance": {
-        "commit": "760e23efb3ac4fa712749af82bb6df713715c260",
-        "git_blob": "74491cc16f407d0d0a60a6fbc3b88aec640328c5"
-      },
-      "sha256": "68B378EEF564E02EE70013382416AECDEF8AF58A7DDC67D7BE17681F9D77AA7C"
+      "identity_basis": "git_blob_plus_canonical_lf_sha256",
+      "path": "tools/faraday_upper_art/run_companion_browser_owner_review_comp_req_533_534.ps1"
     },
     {
-      "bytes": 18297,
+      "canonical_bytes": 18297,
+      "canonical_sha256": "4806A36D7E0BA0C456CA588888E237911D8D5B46B55F0B9E1B6DA238976A8BC5",
+      "checkout_bytes": 18658,
+      "git_blob": "bbe8db4070b82a1c034d98e0e3edf55b37d16e62",
       "id": "screenshots",
-      "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshot-manifest.json",
-      "sha256": "4806A36D7E0BA0C456CA588888E237911D8D5B46B55F0B9E1B6DA238976A8BC5"
+      "identity_basis": "git_blob_plus_canonical_lf_sha256",
+      "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshot-manifest.json"
     },
     {
-      "bytes": 17647,
+      "canonical_bytes": 19664,
+      "canonical_sha256": "BC547A8C13B6BCF2AB411DB5D8847D36D9006E38F2A5928B0520810D65BC0D27",
+      "checkout_bytes": 20068,
+      "git_blob": "c0815e81cb706d4b67d418f3375c03366ac91299",
       "id": "source_gate",
-      "path": "tools/faraday_upper_art/verify_companion_browser_three_wave_state_view_source_bound_comp_req_533_534.py",
-      "provenance": {
-        "commit": "760e23efb3ac4fa712749af82bb6df713715c260",
-        "git_blob": "7569c8d6a5f3968ce028d359e20f3f717ad359f4"
-      },
-      "sha256": "63F665BFE69A898BA6E6981B88532DDAC31EC0DBB068FF6039301EF8BBD76198"
+      "identity_basis": "git_blob_plus_canonical_lf_sha256",
+      "path": "tools/faraday_upper_art/verify_companion_browser_three_wave_state_view_source_bound_comp_req_533_534.py"
     }
   ],
-  "machine_ready_sha256": "97F757617A7828B61B11FEC3621861820C088C8047CD1836EC473680844BBB8A",
+  "identity_basis": "git_blob_plus_canonical_lf_sha256",
+  "machine_ready_canonical_sha256": "F35D392C68AB660014E6DFAC861DE013090BBA02BAE8B2ADF2895478D68A9D6F",
   "owner_gate": {
     "may_claim_owner_pass": false,
     "prompt_count": 1,
@@ -110,14 +132,14 @@
   "owner_note_path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/owner-review.note.txt",
   "owner_raw_path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/owner-review.raw.json",
   "owner_result_path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/owner-review.json",
-  "page_sha256": "0C29D5FF40D80C41461F0738C1C747A6C2B27A5DA74B5C79E166621A7566D9DA",
+  "page_canonical_sha256": "8F8FC05C5DAA3A95C7A2E80D677B56A831CF620A752EABB1DCB535F01705AB9D",
   "prompt": {
     "buttons": [
       "\u901a\u8fc7",
       "\u5931\u8d25"
     ],
     "expected_text": "\u9009\u62e9\u901a\u8fc7\u8868\u793a COMP-REQ-533/534 browser-only successor \u6210\u4e3a\u4eba\u5de5\u56de\u5f52\u5408\u540c\uff1b\u9009\u62e9\u5931\u8d25\u4f1a\u4fdd\u7559\u673a\u5668\u8bc1\u636e\u5e76\u8fd4\u56de Faraday \u8fed\u4ee3\u3002\u5907\u6ce8\u5141\u8bb8\u7559\u7a7a\u3002",
-    "message": "\u8bf7\u5728\u603b\u4f53\u9875\u9762\u6309\u6b63\u5e38\u901f\u5ea6\u5b9e\u9645\u64cd\u4f5c\uff1a\n1. \u4e25\u683c\u53cc\u51fb\u8fdb\u5165\u5f55\u97f3\uff0c\u786e\u8ba4\u5168\u7a0b\u662f\u540c\u4e00\u5f20\u7a33\u5b9a\u503e\u542c\u8138\uff0c\u53ea\u6709\u4e00\u4e2a\u5c0f\u578b\u5f55\u97f3\u72b6\u6001\u56fe\u6807\u3002\n2. \u786e\u8ba4\u6bcf\u4e2a\u5f55\u97f3\u5e27\u6070\u597d\u4e09\u9053\u9ed1\u767d\u6ce2\u5f27\uff1b\u6bcf\u9053\u51f8\u9762\u671d\u8138\u65c1\u503e\u542c\u70b9\uff0c\u7ea6\u6bcf 480 ms \u79bb\u6563\u5411\u5185\u4e00\u6b65\uff0c\u5438\u6536\u540e\u624d\u4ece\u5916\u7f18\u91cd\u542f\uff0c\u6ca1\u6709\u5e73\u6ed1\u63d2\u503c\u6216\u5411\u5916\u8df3\u3002\n3. \u518d\u6b21\u4e25\u683c\u53cc\u51fb\u9000\u51fa\uff0c\u786e\u8ba4\u7cbe\u786e\u6062\u590d\u8fdb\u5165\u524d\u7684\u8868\u60c5\u548c\u773c\u795e\uff1b\u5355\u70b9\u3001\u62d6\u52a8\u3001\u957f\u6309\u83dc\u5355\u3001Device > UI assets \u4e0e\u83dc\u5355\u8fd4\u56de\u4fdd\u6301\u539f\u884c\u4e3a\u3002\n4. \u67e5\u770b 200x200 \u771f\u5c4f\u65c1\u7684\u4e2d\u6587\u72b6\u6001\u56fe\uff1a\u6301\u7eed\u60c5\u611f\u3001\u4ea4\u4e92\u6a21\u5f0f\u3001\u8fc7\u6e21\u9636\u6bb5\u3001\u89e6\u53d1\u4e8b\u4ef6\u3001\u5408\u6cd5\u540e\u7eed\u4e0e\u9875\u9762\u5b9e\u9645\u53d8\u5316\u540c\u6b65\uff1b\u771f\u5c4f\u5185\u90e8\u65e0\u8bf4\u660e\u548c\u8c03\u8bd5\u53c2\u6570\u3002\n5. \u5224\u65ad\u6240\u6709\u8868\u60c5\u5171\u4eab\u540c\u4e00\u89c6\u89c9\u951a\u70b9\uff0c\u5207\u6362\u4e0d\u8df3\u4f4d\u3001\u4e0d\u88c1\u5207\uff0c\u59cb\u7ec8\u4e00\u5f20\u8138\u3001\u4e00\u5957\u773c\u73e0\u4e0e\u9ad8\u5149\uff0c\u65e0\u65e7\u5c42\u3001404\u3001\u91cd\u53e0\u6216\u9ea6\u514b\u98ce\u6743\u9650\u8bf7\u6c42\u3002",
+    "message": "\u8bf7\u5728\u603b\u4f53\u9875\u9762\u6309\u6b63\u5e38\u901f\u5ea6\u5b9e\u9645\u64cd\u4f5c\uff1a\r\n1. \u4e25\u683c\u53cc\u51fb\u8fdb\u5165\u5f55\u97f3\uff0c\u786e\u8ba4\u5168\u7a0b\u662f\u540c\u4e00\u5f20\u7a33\u5b9a\u503e\u542c\u8138\uff0c\u53ea\u6709\u4e00\u4e2a\u5c0f\u578b\u5f55\u97f3\u72b6\u6001\u56fe\u6807\u3002\r\n2. \u786e\u8ba4\u6bcf\u4e2a\u5f55\u97f3\u5e27\u6070\u597d\u4e09\u9053\u9ed1\u767d\u6ce2\u5f27\uff1b\u6bcf\u9053\u51f8\u9762\u671d\u8138\u65c1\u503e\u542c\u70b9\uff0c\u7ea6\u6bcf 480 ms \u79bb\u6563\u5411\u5185\u4e00\u6b65\uff0c\u5438\u6536\u540e\u624d\u4ece\u5916\u7f18\u91cd\u542f\uff0c\u6ca1\u6709\u5e73\u6ed1\u63d2\u503c\u6216\u5411\u5916\u8df3\u3002\r\n3. \u518d\u6b21\u4e25\u683c\u53cc\u51fb\u9000\u51fa\uff0c\u786e\u8ba4\u7cbe\u786e\u6062\u590d\u8fdb\u5165\u524d\u7684\u8868\u60c5\u548c\u773c\u795e\uff1b\u5355\u70b9\u3001\u62d6\u52a8\u3001\u957f\u6309\u83dc\u5355\u3001Device > UI assets \u4e0e\u83dc\u5355\u8fd4\u56de\u4fdd\u6301\u539f\u884c\u4e3a\u3002\r\n4. \u67e5\u770b 200x200 \u771f\u5c4f\u65c1\u7684\u4e2d\u6587\u72b6\u6001\u56fe\uff1a\u6301\u7eed\u60c5\u611f\u3001\u4ea4\u4e92\u6a21\u5f0f\u3001\u8fc7\u6e21\u9636\u6bb5\u3001\u89e6\u53d1\u4e8b\u4ef6\u3001\u5408\u6cd5\u540e\u7eed\u4e0e\u9875\u9762\u5b9e\u9645\u53d8\u5316\u540c\u6b65\uff1b\u771f\u5c4f\u5185\u90e8\u65e0\u8bf4\u660e\u548c\u8c03\u8bd5\u53c2\u6570\u3002\r\n5. \u5224\u65ad\u6240\u6709\u8868\u60c5\u5171\u4eab\u540c\u4e00\u89c6\u89c9\u951a\u70b9\uff0c\u5207\u6362\u4e0d\u8df3\u4f4d\u3001\u4e0d\u88c1\u5207\uff0c\u59cb\u7ec8\u4e00\u5f20\u8138\u3001\u4e00\u5957\u773c\u73e0\u4e0e\u9ad8\u5149\uff0c\u65e0\u65e7\u5c42\u3001404\u3001\u91cd\u53e0\u6216\u9ea6\u514b\u98ce\u6743\u9650\u8bf7\u6c42\u3002",
     "progress_text": "1/1 \u6d4f\u89c8\u5668\u603b\u4f53\u4f53\u9a8c",
     "scope_text": "\u4ec5\u9a8c\u6536\u540c\u4e00 4173 \u603b\u4f53\u9875\u9762\u4e2d\u7684\u8868\u60c5\u3001\u83dc\u5355\u4e0e\u5f55\u97f3\u9884\u89c8\uff1bbrowser-only\uff0c\u4e0d\u63a5\u89e6\u786c\u4ef6\u6216 production\u3002",
     "title": "Companion \u6d4f\u89c8\u5668\u603b\u4f53\u4f53\u9a8c\u9a8c\u6536"

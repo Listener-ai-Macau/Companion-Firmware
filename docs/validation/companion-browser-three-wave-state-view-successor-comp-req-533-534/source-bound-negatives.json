@@ -5,18 +5,17 @@
       "id": "page_drift",
       "rejected": true,
       "sample_failures": [
-        "worktree page sha256: expected '0C29D5FF40D80C41461F0738C1C747A6C2B27A5DA74B5C79E166621A7566D9DA', observed '7EDA595A6358D5876EFDBA47C09D0C6F839BBF840341EFF1592AB951B4E1C825'"
+        "page canonical sha256: expected '8F8FC05C5DAA3A95C7A2E80D677B56A831CF620A752EABB1DCB535F01705AB9D', observed 'CD9C3FA07D17A9EB2DA723C11E6A6FA1859D7AAB219E5C80CD90DD1559C946A7'"
       ],
       "status": "NO_GO"
     },
     {
-      "failed_check_count": 3,
+      "failed_check_count": 2,
       "id": "stale_source_commit",
       "rejected": true,
       "sample_failures": [
-        "source commit: expected '235bc31c64ff82c99f2a2ba9783eef353754cbd5', observed None",
-        "page git blob: expected 'fdf6c7c8e9ad7293dfd1115e7f42cca015d9a15e', observed None",
-        "committed page sha256: expected '8F8FC05C5DAA3A95C7A2E80D677B56A831CF620A752EABB1DCB535F01705AB9D', observed None"
+        "main source commit: expected '4338f0c1614a58a334008c992c9bb61a73071718', observed None",
+        "page git blob: expected 'fdf6c7c8e9ad7293dfd1115e7f42cca015d9a15e', observed None"
       ],
       "status": "NO_GO"
     },
@@ -25,7 +24,7 @@
       "id": "stale_tool_commit",
       "rejected": true,
       "sample_failures": [
-        "tool commit: expected 'bc4049d5cfd957d22b408ab32d5ae196f683458b', observed None"
+        "main tool commit: expected '4338f0c1614a58a334008c992c9bb61a73071718', observed None"
       ],
       "status": "NO_GO"
     },
@@ -34,7 +33,7 @@
       "id": "replay_tool_drift",
       "rejected": true,
       "sample_failures": [
-        "replay_tool sha256: expected 'EC9E0F9C6370F4244532CFF157AD15CCC2295A31901BE790F53AF5D051C3C86A', observed 'F743D972843054147B890A8ADCDDA3BBDC81B94DEBE045870666716DCADBF8CF'"
+        "replay_tool canonical sha256: expected '17BEF0230EA0E0FD715A6B0212BCF5A421BA5041AC950DA4EE6F525999783ACD', observed 'E572AD29F71E875CC7EB8CE86C3E9C7991EC4CCF72AA51FD689F8127FFE8B286'"
       ],
       "status": "NO_GO"
     },
@@ -43,7 +42,7 @@
       "id": "forged_before_pass",
       "rejected": true,
       "sample_failures": [
-        "before_oracle sha256: expected 'D6C6D0952BD7E985467E629F17AECEE216C23E46BDED86ACC1419B16EAE6F356', observed 'A36F8D5249896D3E339129406993F5BF86093F6064A91BF165A966CD19D86781'",
+        "before_oracle canonical sha256: expected 'D6C6D0952BD7E985467E629F17AECEE216C23E46BDED86ACC1419B16EAE6F356', observed 'A36F8D5249896D3E339129406993F5BF86093F6064A91BF165A966CD19D86781'",
         "before status: expected 'NO_GO', observed 'PASS'",
         "before oracle did not fail exactly_three_pixel_arcs_every_step",
         "before oracle did not fail every_arc_convex_toward_listening_point"
@@ -55,7 +54,7 @@
       "id": "two_wave_components",
       "rejected": true,
       "sample_failures": [
-        "after_oracle sha256: expected '9FC4A390A71A431029A3B50E6DC117D441D832694E7BDEA5E53A11A306DE7626', observed '35E45727F2408E8FB0DA6D4968376812931CA7826E16FB5E359130404C7B1684'",
+        "after_oracle canonical sha256: expected '9FC4A390A71A431029A3B50E6DC117D441D832694E7BDEA5E53A11A306DE7626', observed '35E45727F2408E8FB0DA6D4968376812931CA7826E16FB5E359130404C7B1684'",
         "wave state 0 pixel component count: expected 3, observed 2"
       ],
       "status": "NO_GO"
@@ -65,7 +64,7 @@
       "id": "outward_wave_transition",
       "rejected": true,
       "sample_failures": [
-        "after_oracle sha256: expected '9FC4A390A71A431029A3B50E6DC117D441D832694E7BDEA5E53A11A306DE7626', observed '2B7843864657BAFF9FB17DE0D03518F39808D7834AD761C6C964851579591E71'",
+        "after_oracle canonical sha256: expected '9FC4A390A71A431029A3B50E6DC117D441D832694E7BDEA5E53A11A306DE7626', observed '2B7843864657BAFF9FB17DE0D03518F39808D7834AD761C6C964851579591E71'",
         "wave identity transition contains outward/wrap motion"
       ],
       "status": "NO_GO"
@@ -75,7 +74,7 @@
       "id": "forged_edge_accepted",
       "rejected": true,
       "sample_failures": [
-        "after_oracle sha256: expected '9FC4A390A71A431029A3B50E6DC117D441D832694E7BDEA5E53A11A306DE7626', observed '53548D39670A0DBBFA45AF5E319F06A74B2EA517F9127CCD28B213F378B453EC'",
+        "after_oracle canonical sha256: expected '9FC4A390A71A431029A3B50E6DC117D441D832694E7BDEA5E53A11A306DE7626', observed '53548D39670A0DBBFA45AF5E319F06A74B2EA517F9127CCD28B213F378B453EC'",
         "forged edge accepted"
       ],
       "status": "NO_GO"
@@ -85,7 +84,7 @@
       "id": "separate_demo_state_source",
       "rejected": true,
       "sample_failures": [
-        "after_oracle sha256: expected '9FC4A390A71A431029A3B50E6DC117D441D832694E7BDEA5E53A11A306DE7626', observed 'FC1D50941A5BD34D3644B8F0BB7B71ABE18C7C09A4B9C63785687B1A2D5102B0'",
+        "after_oracle canonical sha256: expected '9FC4A390A71A431029A3B50E6DC117D441D832694E7BDEA5E53A11A306DE7626', observed 'FC1D50941A5BD34D3644B8F0BB7B71ABE18C7C09A4B9C63785687B1A2D5102B0'",
         "state view source identity: expected 'naturalState', observed 'demoState'"
       ],
       "status": "NO_GO"
@@ -95,7 +94,7 @@
       "id": "early_intermediate_frame",
       "rejected": true,
       "sample_failures": [
-        "after_oracle sha256: expected '9FC4A390A71A431029A3B50E6DC117D441D832694E7BDEA5E53A11A306DE7626', observed '5FECD97382B9C8EB1D4AD40244B1412E173764C6E2CFB56A31AA4B0AB2EB7F91'",
+        "after_oracle canonical sha256: expected '9FC4A390A71A431029A3B50E6DC117D441D832694E7BDEA5E53A11A306DE7626', observed '5FECD97382B9C8EB1D4AD40244B1412E173764C6E2CFB56A31AA4B0AB2EB7F91'",
         "observed 480ms boundary out of range: 120"
       ],
       "status": "NO_GO"
@@ -105,7 +104,7 @@
       "id": "forged_aggregate_totals",
       "rejected": true,
       "sample_failures": [
-        "replay sha256: expected '842073FF357B7ADF03775B432E87C67B45824F6EC271FE59D5B7CE46A05CF94C', observed '87BC075973590073105BD127C3D882FF34E9618E566C7D7AE1BD6C72041011AE'",
+        "replay canonical sha256: expected '842073FF357B7ADF03775B432E87C67B45824F6EC271FE59D5B7CE46A05CF94C', observed '87BC075973590073105BD127C3D882FF34E9618E566C7D7AE1BD6C72041011AE'",
         "replay totals: expected {'browser_contexts': 44, 'browser_pages': 44, 'cancellation_scenarios': 18, 'conflicting_surface_overlap_count': 0, 'device_ui_assets_visits': 6, 'directional_moves': 30, 'document_requests': 44, 'http_404_count': 0, 'menu_root_visits': 24, 'mic_glyph_pixel_count': 0, 'microphone_requests': 0, 'natural_bridge_commits': 6, 'natural_bridge_ordered': 6, 'out_of_bounds_count': 0, 'outside_black_pixel_count': 0, 'page_error_count': 0, 'recording_negative_checks': 54, 'recording_ordered_phase_traces': 12, 'recording_reentries': 6, 'recording_wave_cycles': 6, 'replay_combinations': 6, 'route_menu_entries': 6, 'route_recording_entries': 12, 'route_recording_exits': 12, 'scenario_count': 42, 'snapshot_count': 258, 'stale_layer_count': 0, 'stale_pupil_pixel_count': 0, 'stale_pupil_state_count': 0}, observed {'browser_contexts': 44, 'browser_pages': 44, 'cancellation_scenarios': 18, 'conflicting_surface_overlap_count': 0, 'device_ui_assets_visits': 6, 'directional_moves': 30, 'document_requests': 44, 'http_404_count': 0, 'menu_root_visits': 24, 'mic_glyph_pixel_count': 0, 'microphone_requests': 0, 'natural_bridge_commits': 6, 'natural_bridge_ordered': 6, 'out_of_bounds_count': 0, 'outside_black_pixel_count': 0, 'page_error_count': 0, 'recording_negative_checks': 54, 'recording_ordered_phase_traces': 12, 'recording_reentries': 6, 'recording_wave_cycles': 6, 'replay_combinations': 6, 'route_menu_entries': 6, 'route_recording_entries': 12, 'route_recording_exits': 12, 'scenario_count': 43, 'snapshot_count': 258, 'stale_layer_count': 0, 'stale_pupil_pixel_count': 0, 'stale_pupil_state_count': 0}"
       ],
       "status": "NO_GO"
@@ -115,7 +114,7 @@
       "id": "duplicate_named_scenario",
       "rejected": true,
       "sample_failures": [
-        "pixel sha256: expected '21CA3E864CE8523C497F38ABC758B1ADE34BB92EF755F63D9DFA2FC7A4F5B4F6', observed '7730FD70DC1122F6337706262517B65E99333F36DDD1546B2D0E61982F6ADAD9'",
+        "pixel canonical sha256: expected '21CA3E864CE8523C497F38ABC758B1ADE34BB92EF755F63D9DFA2FC7A4F5B4F6', observed '7730FD70DC1122F6337706262517B65E99333F36DDD1546B2D0E61982F6ADAD9'",
         "matrix identities: expected ['desktop-mouse-blur', 'desktop-mouse-drag', 'desktop-mouse-early-up', 'desktop-mouse-hold-menu-return', 'desktop-mouse-pointercancel', 'desktop-mouse-recording-return', 'desktop-mouse-single-tap', 'desktop-pen-blur', 'desktop-pen-drag', 'desktop-pen-early-up', 'desktop-pen-hold-menu-return', 'desktop-pen-pointercancel', 'desktop-pen-recording-return', 'desktop-pen-single-tap', 'desktop-touch-blur', 'desktop-touch-drag', 'desktop-touch-early-up', 'desktop-touch-hold-menu-return', 'desktop-touch-pointercancel', 'desktop-touch-recording-return', 'desktop-touch-single-tap', 'mobile-mouse-blur', 'mobile-mouse-drag', 'mobile-mouse-early-up', 'mobile-mouse-hold-menu-return', 'mobile-mouse-pointercancel', 'mobile-mouse-recording-return', 'mobile-mouse-single-tap', 'mobile-pen-blur', 'mobile-pen-drag', 'mobile-pen-early-up', 'mobile-pen-hold-menu-return', 'mobile-pen-pointercancel', 'mobile-pen-recording-return', 'mobile-pen-single-tap', 'mobile-touch-blur', 'mobile-touch-drag', 'mobile-touch-early-up', 'mobile-touch-hold-menu-return', 'mobile-touch-pointercancel', 'mobile-touch-recording-return', 'mobile-touch-single-tap'], observed ['desktop-mouse-blur', 'desktop-mouse-early-up', 'desktop-mouse-hold-menu-return', 'desktop-mouse-pointercancel', 'desktop-mouse-recording-return', 'desktop-mouse-single-tap', 'desktop-pen-blur', 'desktop-pen-drag', 'desktop-pen-early-up', 'desktop-pen-hold-menu-return', 'desktop-pen-pointercancel', 'desktop-pen-recording-return', 'desktop-pen-single-tap', 'desktop-touch-blur', 'desktop-touch-drag', 'desktop-touch-early-up', 'desktop-touch-hold-menu-return', 'desktop-touch-pointercancel', 'desktop-touch-recording-return', 'desktop-touch-single-tap', 'mobile-mouse-blur', 'mobile-mouse-drag', 'mobile-mouse-early-up', 'mobile-mouse-hold-menu-return', 'mobile-mouse-pointercancel', 'mobile-mouse-recording-return', 'mobile-mouse-single-tap', 'mobile-pen-blur', 'mobile-pen-drag', 'mobile-pen-early-up', 'mobile-pen-hold-menu-return', 'mobile-pen-pointercancel', 'mobile-pen-recording-return', 'mobile-pen-single-tap', 'mobile-touch-blur', 'mobile-touch-drag', 'mobile-touch-early-up', 'mobile-touch-hold-menu-return', 'mobile-touch-pointercancel', 'mobile-touch-recording-return', 'mobile-touch-single-tap']"
       ],
       "status": "NO_GO"
@@ -125,7 +124,7 @@
       "id": "stale_pupil_nonzero",
       "rejected": true,
       "sample_failures": [
-        "pixel sha256: expected '21CA3E864CE8523C497F38ABC758B1ADE34BB92EF755F63D9DFA2FC7A4F5B4F6', observed '2EB2B512F397936AE5542CD5567FAB561C4C394D290EDC7C473CA9BE241B8967'",
+        "pixel canonical sha256: expected '21CA3E864CE8523C497F38ABC758B1ADE34BB92EF755F63D9DFA2FC7A4F5B4F6', observed '2EB2B512F397936AE5542CD5567FAB561C4C394D290EDC7C473CA9BE241B8967'",
         "pixel invariant stale_pupil_pixel_count: expected 0, observed 1"
       ],
       "status": "NO_GO"
@@ -144,7 +143,7 @@
       "id": "determinism_forged",
       "rejected": true,
       "sample_failures": [
-        "determinism sha256: expected '7A65317B4FF4296543AF94D0D16662C6D4464726328BB9F172BE0ACFEA3674A7', observed 'E4B650D41A939D11349E1F2E5C96A6279F1292FB0F8F5D6C2C40E483E8C73CAB'",
+        "determinism canonical sha256: expected '7A65317B4FF4296543AF94D0D16662C6D4464726328BB9F172BE0ACFEA3674A7', observed 'E4B650D41A939D11349E1F2E5C96A6279F1292FB0F8F5D6C2C40E483E8C73CAB'",
         "determinism flag: expected True, observed False"
       ],
       "status": "NO_GO"
@@ -166,7 +165,15 @@
     "sample_failures": [],
     "status": "MACHINE_READY"
   },
+  "identity_basis": "git_blob_plus_canonical_lf_sha256",
   "negative_case_count": 16,
+  "newline_equivalence": {
+    "failed_check_count": 0,
+    "id": "canonical_lf_equivalent_checkout",
+    "rejected": false,
+    "sample_failures": [],
+    "status": "MACHINE_READY"
+  },
   "rejected_negative_count": 16,
   "requirements": [
     "COMP-REQ-533",

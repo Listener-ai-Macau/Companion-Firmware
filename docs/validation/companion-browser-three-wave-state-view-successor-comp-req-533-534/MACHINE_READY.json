@@ -2,58 +2,85 @@
   "failed_checks": [],
   "identities": [
     {
-      "bytes": 19296,
+      "canonical_bytes": 19296,
+      "canonical_sha256": "F6C43D2D4C7F893D5B59013A3FB4FB679C7F3ED3448D7290EC2202C3E5FA21D4",
+      "checkout_bytes": 19844,
+      "git_blob": "00e9fabe1eb3fba01a886016d282debf30bb5b83",
       "id": "focused_tool",
-      "path": "tools/faraday_upper_art/verify_companion_browser_three_wave_state_view_comp_req_533_534.mjs",
-      "sha256": "F6C43D2D4C7F893D5B59013A3FB4FB679C7F3ED3448D7290EC2202C3E5FA21D4"
+      "identity_basis": "git_blob_plus_canonical_lf_sha256",
+      "path": "tools/faraday_upper_art/verify_companion_browser_three_wave_state_view_comp_req_533_534.mjs"
     },
     {
-      "bytes": 80696,
+      "canonical_bytes": 78497,
+      "canonical_sha256": "17BEF0230EA0E0FD715A6B0212BCF5A421BA5041AC950DA4EE6F525999783ACD",
+      "checkout_bytes": 80816,
+      "git_blob": "b3d83b5e085c4e765fc763c9f799b4ff2fc35a5c",
       "id": "replay_tool",
-      "path": "tools/faraday_upper_art/replay_companion_browser_three_wave_state_view_comp_req_533_534.mjs",
-      "sha256": "EC9E0F9C6370F4244532CFF157AD15CCC2295A31901BE790F53AF5D051C3C86A"
+      "identity_basis": "git_blob_plus_canonical_lf_sha256",
+      "path": "tools/faraday_upper_art/replay_companion_browser_three_wave_state_view_comp_req_533_534.mjs"
     },
     {
-      "bytes": 6744,
+      "canonical_bytes": 6744,
+      "canonical_sha256": "40FBE5CC57CBC5ECAF84EB0A311D7FE7AAD5203CE82CF8F6BBF64E346145147A",
+      "checkout_bytes": 6956,
+      "git_blob": "0e18d6b78682cc07085f92283fd4f871d0be0db2",
       "id": "determinism_tool",
-      "path": "tools/faraday_upper_art/run_companion_browser_three_wave_state_view_determinism_comp_req_533_534.py",
-      "sha256": "40FBE5CC57CBC5ECAF84EB0A311D7FE7AAD5203CE82CF8F6BBF64E346145147A"
+      "identity_basis": "git_blob_plus_canonical_lf_sha256",
+      "path": "tools/faraday_upper_art/run_companion_browser_three_wave_state_view_determinism_comp_req_533_534.py"
     },
     {
-      "bytes": 12730,
+      "canonical_bytes": 12730,
+      "canonical_sha256": "D6C6D0952BD7E985467E629F17AECEE216C23E46BDED86ACC1419B16EAE6F356",
+      "checkout_bytes": 13240,
+      "git_blob": "3fa1c51c049516ab6d098da85ec48d9579f3d45c",
       "id": "before_oracle",
-      "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/before-fix/geometry-temporal-state-oracle.json",
-      "sha256": "D6C6D0952BD7E985467E629F17AECEE216C23E46BDED86ACC1419B16EAE6F356"
+      "identity_basis": "git_blob_plus_canonical_lf_sha256",
+      "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/before-fix/geometry-temporal-state-oracle.json"
     },
     {
-      "bytes": 26381,
+      "canonical_bytes": 26381,
+      "canonical_sha256": "9FC4A390A71A431029A3B50E6DC117D441D832694E7BDEA5E53A11A306DE7626",
+      "checkout_bytes": 27435,
+      "git_blob": "7797edcfc3bba8fd7679e60bc2e3fe496cc4bf0b",
       "id": "after_oracle",
-      "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/after-fix/geometry-temporal-state-oracle.json",
-      "sha256": "9FC4A390A71A431029A3B50E6DC117D441D832694E7BDEA5E53A11A306DE7626"
+      "identity_basis": "git_blob_plus_canonical_lf_sha256",
+      "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/after-fix/geometry-temporal-state-oracle.json"
     },
     {
-      "bytes": 4282,
+      "canonical_bytes": 4282,
+      "canonical_sha256": "842073FF357B7ADF03775B432E87C67B45824F6EC271FE59D5B7CE46A05CF94C",
+      "checkout_bytes": 4395,
+      "git_blob": "6ebbf0882fcc794562d1f5d07e29aae894b15b8d",
       "id": "replay",
-      "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/browser-replay-result.json",
-      "sha256": "842073FF357B7ADF03775B432E87C67B45824F6EC271FE59D5B7CE46A05CF94C"
+      "identity_basis": "git_blob_plus_canonical_lf_sha256",
+      "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/browser-replay-result.json"
     },
     {
-      "bytes": 1952726,
+      "canonical_bytes": 1952726,
+      "canonical_sha256": "21CA3E864CE8523C497F38ABC758B1ADE34BB92EF755F63D9DFA2FC7A4F5B4F6",
+      "checkout_bytes": 1998211,
+      "git_blob": "f29e86ebbe53e1e27759be65d5c3cfa5743f2b4b",
       "id": "pixel",
-      "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/pixel-dom-route-artifact.json",
-      "sha256": "21CA3E864CE8523C497F38ABC758B1ADE34BB92EF755F63D9DFA2FC7A4F5B4F6"
+      "identity_basis": "git_blob_plus_canonical_lf_sha256",
+      "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/pixel-dom-route-artifact.json"
     },
     {
-      "bytes": 18297,
+      "canonical_bytes": 18297,
+      "canonical_sha256": "4806A36D7E0BA0C456CA588888E237911D8D5B46B55F0B9E1B6DA238976A8BC5",
+      "checkout_bytes": 18658,
+      "git_blob": "bbe8db4070b82a1c034d98e0e3edf55b37d16e62",
       "id": "screenshots",
-      "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshot-manifest.json",
-      "sha256": "4806A36D7E0BA0C456CA588888E237911D8D5B46B55F0B9E1B6DA238976A8BC5"
+      "identity_basis": "git_blob_plus_canonical_lf_sha256",
+      "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshot-manifest.json"
     },
     {
-      "bytes": 33198,
+      "canonical_bytes": 33198,
+      "canonical_sha256": "7A65317B4FF4296543AF94D0D16662C6D4464726328BB9F172BE0ACFEA3674A7",
+      "checkout_bytes": 33779,
+      "git_blob": "4554fc310726fadd567d98606b5f206ff4500810",
       "id": "determinism",
-      "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/deterministic-replay-receipt.json",
-      "sha256": "7A65317B4FF4296543AF94D0D16662C6D4464726328BB9F172BE0ACFEA3674A7"
+      "identity_basis": "git_blob_plus_canonical_lf_sha256",
+      "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/deterministic-replay-receipt.json"
     }
   ],
   "owner_gate": {
@@ -90,13 +117,11 @@
     "visible_browser": 0
   },
   "source": {
-    "base_commit": "ec626c7f4a18bda1f3ace14ba5e6574942218a38",
-    "page_committed_sha256": "8F8FC05C5DAA3A95C7A2E80D677B56A831CF620A752EABB1DCB535F01705AB9D",
+    "identity_basis": "git_blob_plus_canonical_lf_sha256",
+    "main_base_commit": "4338f0c1614a58a334008c992c9bb61a73071718",
+    "page_canonical_sha256": "8F8FC05C5DAA3A95C7A2E80D677B56A831CF620A752EABB1DCB535F01705AB9D",
     "page_git_blob": "fdf6c7c8e9ad7293dfd1115e7f42cca015d9a15e",
-    "page_path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html",
-    "page_sha256": "0C29D5FF40D80C41461F0738C1C747A6C2B27A5DA74B5C79E166621A7566D9DA",
-    "source_commit": "235bc31c64ff82c99f2a2ba9783eef353754cbd5",
-    "tool_commit": "bc4049d5cfd957d22b408ab32d5ae196f683458b"
+    "page_path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html"
   },
   "status": "MACHINE_READY",
   "url": "http://127.0.0.1:4173/docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html"
