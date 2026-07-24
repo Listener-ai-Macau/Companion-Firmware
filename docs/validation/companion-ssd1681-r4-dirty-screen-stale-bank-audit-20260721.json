@@ -1,0 +1,61 @@
+{
+  "schema_id": "companion.wb55.ssd1681_r4_dirty_screen_stale_bank_audit.v1",
+  "status": "PASS_MACHINE_STALE_0X26_IS_SUFFICIENT_EXPLANATION_R5_AB_REQUIRED",
+  "requirement": "COMP-REQ-297",
+  "hardware_contact": 0,
+  "goal_action": "none; active Goal remains owned by the root thread",
+  "proven_facts": [
+    "The R4 preclean artifact proves official_current_plane_only=true and single_data_plane=true, so only full-plane 0x24 White was initialized before the candidate.",
+    "The locked R4 candidate then performed nine local 0x26 old-plane plus 0x24 new-plane writes and one full-panel Mode2 activation per transition.",
+    "SSD1681 Rev 0.13 evidence records that software reset 0x12 leaves RAM unaffected.",
+    "The Phase A fingerprint physically proved selector 0 maps to 0x24 and selector 1 maps to 0x26, with repeat-identical reads and a unique post-activation swap mapping.",
+    "The R4 machine trace passed, while canonical operator review failed with note: 不太行, 屏幕很杂.",
+    "The supplier EPD_SetRAMValue_BaseMap sequence writes the same 5000-byte image to 0x24 and 0x26 before EPD_Update."
+  ],
+  "inference": {
+    "statement": "Stale outside-window content in the uninitialized 0x26 bank is a sufficient evidence-backed explanation for the R4 whole-screen dirty appearance when the local two-bank payload is followed by full-panel Mode2 activation.",
+    "strength": "admissible single-variable hypothesis",
+    "not_claimed": "This artifact does not prove that stale 0x26 caused every dirty pixel or that R5 fixes the physical display."
+  },
+  "r5_test": {
+    "only_changed_mechanism": "Replace the R4 one-plane White pre/post cleanup with supplier-exact dual-plane all-White BaseMap cleanup; keep R4 candidate HEX, LUT, CF/20/BUSY sequence, nine transitions, payloads, window, timing and voltage tail byte-identical.",
+    "pre_and_post_clean": "0x24 5000xFF, 0x26 5000xFF, 0x22=F7, 0x20, BUSY",
+    "readback_gate": "Before candidate review-start, selector 0 and selector 1 are each read twice as 5001 bytes after reprogramming full window and counters before every read; all four 5000-byte payloads must be FF and repeats must be identical.",
+    "production_allowed": false,
+    "physical_ab_required": true
+  },
+  "evidence": {
+    "r4_preclean": {
+      "path": ".cache/validation/wb55-custom-mode2-transition-safety-r4-execute-20260721-a/preclean-white.json",
+      "sha256": "AC5AE02315F064759FC3B48A3A5881F50FEB033486B190661FA7595C64B4D87D"
+    },
+    "r4_stage": {
+      "path": ".cache/validation/wb55-custom-mode2-transition-safety-r4-execute-20260721-a/stage-run.json",
+      "sha256": "596F3D250DD4628CAF126D30C6E265F27306D3F98DB162649850523E96BA8474"
+    },
+    "r4_disposition": {
+      "path": "docs/validation/companion-ssd1681-custom-mode2-transition-safety-r4-disposition-20260721.json",
+      "sha256": "C4E52FF8B1E0A4A2E7D084E65166BACC5748E96B31A3822DC32C275FD4C259D0"
+    },
+    "ram_source": {
+      "path": "docs/validation/companion-ssd1681-ram-ping-pong-fingerprint-source-hash-20260721.json",
+      "sha256": "1270787E592283394A8089C3169CCF11DFE506BD9F59CCA81F6D6AF208D94CF6"
+    },
+    "ram_machine": {
+      "path": "docs/validation/companion-ssd1681-ram-ping-pong-fingerprint-machine-20260721.json",
+      "sha256": "5D3DE03A707BA7FB6AD17CDE1361448DFF8087B9E4A7205A18B5CD7D4FB915FE"
+    },
+    "supplier_epaper_c": {
+      "path": "C:/Users/Billy/Desktop/GDEH0154D67-20211203-P-LUT(1s) -1s快刷/EPD_W21/EPAPER.c",
+      "sha256": "7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896",
+      "immutability": "read_only_supplier_input"
+    }
+  },
+  "protected_boundaries": {
+    "supplier_input_modified": false,
+    "owner_acceptance_modified": false,
+    "v9_rig_crig_browser_dynamic_binding_modified": false,
+    "custom_waveform_or_temperature_rule_added": false,
+    "production_path_changed": false
+  }
+}

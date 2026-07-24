@@ -1,0 +1,62 @@
+{
+  "authority": "COMP-REQ-345",
+  "direction_negative": {
+    "name": "wrong_direction",
+    "reason": "R9/R5/R6 LUT hash drift",
+    "result": "rejected"
+  },
+  "driver_sha256": "A4076C592C8F54B7327EBF1BDE40B6BC5383BBA3076F26C97BE4B0EEB4B97C00",
+  "execute_authorized": false,
+  "hardware_contact": 0,
+  "parser": {
+    "negative_fixtures": [
+      {
+        "name": "r5_lut",
+        "reason": "start: lut_sha256='447FB169543F3E33EA6080607B685E2ADB8F38066952FCDF020882359BA94E89', expected '8525533D1971CE99F46A1AD6580741920B7FA152D2A99632206BE0E17696A5E8'",
+        "result": "rejected"
+      },
+      {
+        "name": "old_lut",
+        "reason": "start: lut_sha256='9BCBAC1A07ED0A112D26409FBCDB8F5FE27CE07D922C2E18881C10A53229DDCD', expected '8525533D1971CE99F46A1AD6580741920B7FA152D2A99632206BE0E17696A5E8'",
+        "result": "rejected"
+      },
+      {
+        "name": "wrong_payload",
+        "reason": "qualification_frame=1: previous_payload_sha256='0000000000000000000000000000000000000000000000000000000000000000', expected '51CFA32FECE0135F38198DA2529E7C6A0C1F53747984D55705077B7F6920CC76'",
+        "result": "rejected"
+      }
+    ],
+    "positive_schema_v5": {
+      "busy_max_ms": 599,
+      "loop_status": "PASS_R10_LOOP_LOG",
+      "status": "PASS_R10_BALL_LOG"
+    }
+  },
+  "schema_id": "companion.wb55.ssd1681.r10_r6_target_unipolar_focused.v1",
+  "status": "PASS_R10_R6_TARGET_UNIPOLAR_FOCUSED",
+  "waveform": {
+    "bb_net": 0,
+    "bw_net": -16,
+    "non_lut_contract_unchanged": true,
+    "r5_lut_sha256": "447FB169543F3E33EA6080607B685E2ADB8F38066952FCDF020882359BA94E89",
+    "r6_lut_sha256": "8525533D1971CE99F46A1AD6580741920B7FA152D2A99632206BE0E17696A5E8",
+    "r6_vs_r5_changed_offsets": [
+      14,
+      15,
+      26,
+      27
+    ],
+    "r6_vs_r9_changed_offsets": [
+      12,
+      13,
+      24,
+      25
+    ],
+    "r9_lut_sha256": "9BCBAC1A07ED0A112D26409FBCDB8F5FE27CE07D922C2E18881C10A53229DDCD",
+    "shared_tp_frames": 16,
+    "tail_hex": "221741A83258",
+    "timing_bytes_60_143_preserved": true,
+    "wb_net": 16,
+    "ww_net": 0
+  }
+}

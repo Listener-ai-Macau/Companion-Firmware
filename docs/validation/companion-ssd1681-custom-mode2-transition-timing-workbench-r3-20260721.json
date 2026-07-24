@@ -1,0 +1,77 @@
+{
+  "schema_id": "companion.wb55.ssd1681_custom_mode2_transition_timing_workbench.v2",
+  "status": "PASS_WORKBENCH_ADMIT_MINIMUM_INTEGER_TP19_MODE2_R3",
+  "errors": [],
+  "hardware_contact": 0,
+  "requirements": [
+    "COMP-REQ-285",
+    "COMP-REQ-289",
+    "COMP-REQ-291"
+  ],
+  "timing_model": {
+    "type": "two_point_linear_estimate_for_candidate_selection_only",
+    "r1_tp_frame_counts": 50,
+    "r1_busy_elapsed_ms": [
+      1284,
+      1285,
+      1285,
+      1285,
+      1285,
+      1285,
+      1285,
+      1285,
+      1285
+    ],
+    "r1_busy_mean_ms": 1284.889,
+    "r2_tp_frame_counts": 20,
+    "r2_busy_elapsed_ms": 602.0,
+    "estimated_ms_per_tp_count": 22.763,
+    "estimated_fixed_overhead_ms": 146.741,
+    "r3_tp_frame_counts": 19,
+    "predicted_r3_busy_ms": 579.237,
+    "busy_limit_ms": 600.0,
+    "predicted_margin_ms": 20.763,
+    "minimum_required_predicted_margin_ms": 15.0,
+    "boundary": "prediction selects the smallest integer candidate; hardware BUSY remains the authoritative gate"
+  },
+  "candidate": {
+    "name": "stationary_suppression_tp19_r3",
+    "single_mechanism_variable": "decrement exactly one active TP duration byte so total active TP frame-counts change from 20 to 19",
+    "selected_offset": 74,
+    "selection_reason": "minimum integer decrement on the long transition timing group exercised by the R2 first W-to-B safety step",
+    "r2_lut_sha256": "EBF88D6FB0BEB39AB2428C98BBDF1DC04308CEA156AF61D14C2B1591902B64C7",
+    "r3_lut_hex": "0000000000000000000000005410A8200000000000000000AA8055400000000000000000000000000000000000000000000000000000000000000000020200020200000101000000000001020002020000010100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000222222222222000000221741A83258",
+    "r3_lut_sha256": "CFE301B8FAA15C09B55509C9110E014FB49B959AD40FDF73F062A84D9D6769D3",
+    "byte_differences_from_r2": [
+      {
+        "offset": 74,
+        "r2_hex": "02",
+        "r3_hex": "01"
+      }
+    ],
+    "protected_tail_hex": "221741A83258"
+  },
+  "machine_limits": {
+    "safety_activations": 9,
+    "maximum_activations": 16,
+    "busy_per_activation_max_ms": 600,
+    "full_frame_candidate_activations": 0,
+    "motion_120_frame_admitted": false,
+    "r2_rerun_allowed": false
+  },
+  "runner_contract": {
+    "detached_execute_required": true,
+    "durable_stdout_stderr_required": true,
+    "output_directory_reuse_forbidden": true,
+    "canonical_pre_execute_candidate_prompt": true,
+    "deterministic_white_preclean_first": true,
+    "exact_raw_restore_readback_normal_resume": true
+  },
+  "source_hashes": {
+    "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\companion-ssd1681-custom-mode2-transition-timing-workbench-r2-20260721.json": "266FC130BAEB68219A759A9A15E292D6E2BED97919FC5A9F0086BCC6733A5148",
+    "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\companion-ssd1681-custom-mode2-transition-safety-r1-disposition-20260721.json": "F99762508C6B2C94A19CE1E3D2DA2901D56884220544C8B725D5F129D05D1901",
+    "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\companion-ssd1681-custom-mode2-transition-safety-r2-disposition-20260721.json": "05A96AED5B1989AA958B971011CCC3835231ED58BDFB5D169E7AA4DCD072197A"
+  },
+  "production_allowed": false,
+  "goal_terminal": false
+}

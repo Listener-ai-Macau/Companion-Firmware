@@ -1,0 +1,49 @@
+{
+  "schema_id": "companion.gdey0154d67_t03.vendor_t03_fast_state_physical_run.v1",
+  "status": "FAIL_OPERATOR_RESIDUE_NORMAL_RESTORED",
+  "claim_scope": "one current-room production-off diagnostic record; no production, temperature-range, panel-identity or residue-free claim",
+  "recorded_from": {
+    "original_runner_stage_path": ".cache/validation/wb55-vendor-t03-fast-state-current-room-20260720/stage-run.json",
+    "original_runner_stage_sha256_at_capture": "9C95267934EEAD43C5C576A455FCADB6EBB1DE104E0DCC7A4EA7FE2EA89121FE",
+    "preservation_note": "The first physical run's summary was captured before a later CheckOnly preflight reused that cache path and replaced the cache stage file with DRY_RUN. This immutable validation artifact preserves the physical-run facts; the raw machine trace and canonical operator note remain at their original paths and hashes."
+  },
+  "run": {
+    "started_at": "2026-07-20T16:40:20.8571493+08:00",
+    "completed_at": "2026-07-20T16:41:21.9106334+08:00",
+    "target": "NUCLEO-WB55RG + ESP32-FTS02 + observed 0154BN-D67-D2 panel",
+    "diagnostic_image": {
+      "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_vendor_t03_fast_state_diagnostic/Companion_Nucleo_WB55RG_VendorT03FastStateDiagnostic.hex",
+      "sha256": "1B8EA1DD3A7E5070440223DB27EC300C5DA5861B710EFD7C3E7A71890B537C66"
+    },
+    "normal_restore_image": {
+      "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build/Companion_Nucleo_WB55RG_Bringup.hex",
+      "sha256": "E1997F29DCB8735899B4BC0B9012CF75025F3CA8D21250485BCC21E4C4691B46"
+    },
+    "steps": [
+      {"id": "flash_vendor_t03_fast_state", "status": "PASS", "started_at": "2026-07-20T16:40:20.8571493+08:00", "ended_at": "2026-07-20T16:40:27.3945986+08:00"},
+      {"id": "capture_vendor_t03_fast_state", "status": "PASS", "started_at": "2026-07-20T16:40:27.3957747+08:00", "ended_at": "2026-07-20T16:40:50.9067980+08:00"},
+      {"id": "parse_vendor_t03_fast_state", "status": "PASS", "started_at": "2026-07-20T16:40:50.9069158+08:00", "ended_at": "2026-07-20T16:40:51.0039334+08:00"},
+      {"id": "flash_vendor_t03_fast_state_for_review", "status": "PASS", "started_at": "2026-07-20T16:40:51.0056184+08:00", "ended_at": "2026-07-20T16:40:56.6767855+08:00"},
+      {"id": "flash_normal_restore_after_operator_failure", "status": "PASS", "started_at": "2026-07-20T16:41:16.5617141+08:00", "ended_at": "2026-07-20T16:41:21.9091472+08:00"}
+    ],
+    "normal_firmware_restored": true
+  },
+  "machine_trace": {
+    "path": ".cache/validation/wb55-vendor-t03-fast-state-current-room-20260720/vendor-t03-fast-state-trace.json",
+    "sha256": "09DD2B68EC58F44B3DDD6149FF955E017F14C1A13CBC78FE29D9934081869959",
+    "status": "PASS_MACHINE_VENDOR_T03_FAST_STATE_TRACE",
+    "baseline": "0x18=80; 0x22=B1/0x20/BUSY; 0x1A=64 00; 0x22=91/0x20/BUSY; 0x24 and 0x26 each 5000 bytes; 0xC7/0x20/BUSY",
+    "partial_region_bytes": [75, 81, 78, 78, 78],
+    "partial_elapsed_ms": [447, 447, 447, 447, 447],
+    "partial_control": "0x24-only changed region, 0xFF/0x20/BUSY",
+    "panel_error": false
+  },
+  "operator_review": {
+    "style": "aiw_operator_prompt_v1",
+    "path": ".cache/validation/wb55-vendor-t03-fast-state-current-room-20260720/operator-prompt-observation.txt",
+    "sha256": "CB07CADE55380B9FB24CAF7044A552A8C5E5D3295297A896ACF35C3A57076F08",
+    "selected": "失败",
+    "note": "一样的, 还是以前的现象",
+    "result": "physical following-trail residue remains"
+  }
+}

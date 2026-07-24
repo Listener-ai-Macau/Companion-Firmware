@@ -1,0 +1,48 @@
+{
+  "schema_id": "companion.screen.v9_clean_external_cemp_observation.v1",
+  "status": "PASS_OWNER_ACCEPTED_LIMITED_CLEAN_EXTERNAL_CEMP_BASELINE",
+  "claim_scope": "limited_physical_external_cemp_full_frame_visual_baseline_not_white_recovery_or_runtime_acceptance",
+  "owner_steering": "The owner observed a clean normal expression on the physical panel and requested that it be preserved.",
+  "machine_correlated_frame": {
+    "clip": "recording",
+    "frame_index": 21,
+    "frame_in_clip": 0,
+    "source": "locked_v9_external_cemp",
+    "refresh_mode": "full",
+    "update_control": "0xF7",
+    "data_planes": 2,
+    "frame_bytes_per_plane": 5000,
+    "refresh_complete": true,
+    "elapsed_ms": 1289
+  },
+  "flashed_image": {
+    "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_v9_manual_step_diagnostic/Companion_Nucleo_WB55RG_V9ManualStepDiagnostic.hex",
+    "sha256": "4AD581BE285858D704A3343A0CFEAF4CC289F68BE4E91926CD0A2E1FBCE6A672"
+  },
+  "locked_art": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "trace": {
+    "path": ".cache/validation/v9-manual-step-diagnostic/capture/nucleo-serial-raw.log",
+    "sha256": "3720E0005C09E678E9B4BB8377A32D5630E633AAAFF8D0823AB2138B717517C9",
+    "manual_step_trace_status": "NO_GO_MANUAL_STEP_TRACE_INCOMPLETE",
+    "reason": "automatic-motion cancellation stopped the player before the first manual settle frame; the corrected diagnostic has been rebuilt but is deliberately not flashed while the accepted display remains visible."
+  },
+  "corrected_unflashed_follow_up_build": {
+    "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_v9_manual_step_diagnostic/Companion_Nucleo_WB55RG_V9ManualStepDiagnostic.hex",
+    "sha256": "CE69017247FBABDB85F5A4555A195566993A41982BFC5CE9A42AFE53D6765425",
+    "static_contract": "docs/validation/companion-v9-manual-step-diagnostic-build-20260719.json",
+    "status": "PASS_BUILD_ONLY_NOT_FLASHED"
+  },
+  "guardrails": [
+    "This does not replace the prior White/Black, FTS02, or rail gates.",
+    "This does not activate the V22/CRIG runtime or accept the complete expression system.",
+    "This does not assert that the pure-white diagnostic failure is a hardware or software root cause."
+  ],
+  "canonical_owner_observation": {
+    "selected": "通过",
+    "note": "现在是一切正常，那个表情也是一个正常的表情。",
+    "note_artifact": "docs/validation/companion-screen-v9-clean-expression-owner-observation-20260719.json"
+  }
+}

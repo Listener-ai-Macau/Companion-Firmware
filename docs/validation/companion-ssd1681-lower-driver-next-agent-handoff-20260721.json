@@ -1,0 +1,547 @@
+{
+  "schema_id": "companion.wb55.ssd1681_lower_driver.next_agent_handoff.v1",
+  "status": "HANDOFF_COMPLETE_OWNER_PAUSED_R10_NOT_STARTED",
+  "generated_at": "2026-07-21T23:12:07+08:00",
+  "language": "zh-CN",
+  "requirement": "COMP-REQ-320",
+  "status_legend": {
+    "MACHINE PASS": "机器证据满足该项合同，但不替代人眼结论。",
+    "MACHINE FAIL": "机器门失败；不得打开视觉验收或继续候选。",
+    "HUMAN PASS": "owner 对该次限定问题给出通过；备注中的保留问题仍然有效。",
+    "HUMAN FAIL": "owner 的视觉拒绝是最终边界，机器通过不能覆盖。",
+    "NOT OBSERVED": "没有得到足以判定该视觉性质的观察。",
+    "NOT RUN": "该候选或阶段没有执行。"
+  },
+  "pause": {
+    "status": "ACTIVE",
+    "implementation": false,
+    "build": false,
+    "flash": false,
+    "execute": false,
+    "hardware_contact": false,
+    "popup": false,
+    "r10": "PLANNED_NOT_STARTED",
+    "interrupted_unbuilt_r10_scaffold_removed": true,
+    "allowed_work": [
+      "registry audit",
+      "current-goal audit",
+      "handoff schema/hash/protected-boundary checks",
+      "git diff --check",
+      "process/PID audit"
+    ]
+  },
+  "product_boundary": {
+    "in_scope": "Companion-Firmware WB55 + ESP32-FTS02 + replacement display FPC + GDEY0154D67-T03/SSD1681 production-off lower-driver evidence",
+    "out_of_scope": [
+      "production refresh policy or runtime activation",
+      "V9/Rig/CRIG/browser/art/expression edits",
+      "touch, BLE, recording or power-policy behavior",
+      "generic, adjacent-panel, online or guessed LUTs",
+      "Goal management by this child agent"
+    ],
+    "protected_source": {
+      "supplier_epaper_c": "C:/Users/Billy/Desktop/GDEH0154D67-20211203-P-LUT(1s) -1s快刷/EPD_W21/EPAPER.c",
+      "supplier_epaper_c_sha256": "7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896",
+      "immutability": "read_only"
+    },
+    "panel_identity": {
+      "official_model": "GDEY0154D67-T03",
+      "controller": "SSD1681",
+      "resolution": "200x200",
+      "observed_marking": "0154BN-D67-D2 N524110506",
+      "owner_photo_observed_but_not_locally_archived": true,
+      "supplier_transcript_correlates_marking_model_controller": true,
+      "one_second_source_tree_names_t03": false,
+      "temperature_banded_cwf1_table_present": false,
+      "boundary": "Panel/source correlation supports production-off research only; it is not production CWF1 identity or temperature coverage."
+    },
+    "protected_upper_hashes": {
+      "locked_v9_source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+      "owner_acceptance_sha256": "8A3BDF4BD1254B0D0F4DE13A7F293C3D74587C800339ABD4C61FEB0B7737E227"
+    }
+  },
+  "supplier_159_byte_decode": {
+    "status": "MACHINE PASS",
+    "source_lut_sha256": "F83EA7360CFFF04FE9D004A75858A46213CBD710AAA2F0C4A62597E3EA176D15",
+    "total_bytes": 159,
+    "command_0x32_payload_bytes": 153,
+    "tail_hex": "221741A83258",
+    "tail_commands": {
+      "0x3F": ["0x22"],
+      "0x03": ["0x17"],
+      "0x04": ["0x41", "0xA8", "0x32"],
+      "0x2C": ["0x58"]
+    },
+    "decode_layout": "bytes 0..59 voltage tables LUT0..LUT4; later 0x32 bytes contain shared phase timing/repeat/frame/XON fields; bytes 153..158 are controller tail registers",
+    "official_voltage_code_encoding": "00=VSS/DCVCOM, 01=VSH1, 10=VSL; each voltage byte packs A/B/C/D as D7:D6/D5:D4/D3:D2/D1:D0",
+    "command_modes": [
+      "ordinary official full White/Black: one 5000-byte 0x24 plane, 0x22=0xF7, 0x20, BUSY",
+      "supplier BaseMap: 5000-byte 0x24 then 5000-byte 0x26, activation after both planes",
+      "supplier external-LUT full mode: load 153 bytes through 0x32 plus six-byte tail, then 0x22=0xC7, 0x20, BUSY",
+      "supplier ordinary partial: reset 10/10 ms, border 0x3C=0x80, local current-only 0x24, 0x22=0xFF, 0x20, BUSY; no 0x32 load",
+      "admitted R9 research mode: exact R9 159 bytes, local fixed-bank old/new writes, 0x22=0xCF, 0x20, BUSY"
+    ],
+    "do_not_claim": [
+      "The supplier tree does not supply a numeric temperature band or complete CWF1 selection table.",
+      "The compiled about-1s LUT is not itself a residue-free partial-refresh solution.",
+      "No production waveform is admitted."
+    ]
+  },
+  "power_and_fpc": {
+    "historical_broken_fpc": {
+      "status": "HUMAN FAIL",
+      "measurement": "PREVGH1 remained 3.3 V; PREVGL1 minimum 4.2 mV; screen unchanged/grainy",
+      "interpretation": "Immutable history from the broken display FPC, not the current adapter/panel diagnosis."
+    },
+    "replacement_fpc": {
+      "status": "MACHINE PASS",
+      "owner_report": "replacement display FPC installed; logic input remains 3.3 V only; current dynamic expressions visible",
+      "artifact": "docs/validation/companion-screen-wb55-replacement-fpc-evidence-20260720.json",
+      "sha256": "E1124866DBBBF083B3512EB75A4C8AE14BF6808ACCDD45B774A5095BD41D7D35"
+    },
+    "replacement_fpc_white_rails": {
+      "status": "MACHINE PASS",
+      "human_status": "HUMAN PASS",
+      "cycles": 30,
+      "refresh_elapsed_ms": 1288,
+      "prevgh1_max_v": 20.0,
+      "prevgl1_min_v": -20.0,
+      "screen_observation": "uniform_white",
+      "artifact": "docs/validation/companion-screen-wb55-white-rail-measurement-current-source-r2-20260720.json",
+      "sha256": "827DC52B8E7CA8CF0BF0B6E5CC2A64D37F3B1F69C1B73E4D2CED2CA7E6C51A8C"
+    },
+    "official_white_black_retest": {
+      "status": "MACHINE PASS",
+      "human_status": "HUMAN PASS",
+      "scope": "Current replacement-FPC official White/Black and rail prerequisite only; not fast-LUT, partial, normal-expression or production acceptance."
+    }
+  },
+  "best_visual_baseline": {
+    "requirements": ["COMP-REQ-236", "COMP-REQ-237"],
+    "machine_status": "MACHINE PASS",
+    "human_status": "HUMAN PASS",
+    "topology": [
+      "pass 1: previous-black byte-aligned bbox; CPU-held current bytes through 0x24; own reset/border/0xFF/0x20/BUSY",
+      "pass 2: old/new difference union; current bytes through 0x24; second reset/border/0xFF/0x20/BUSY"
+    ],
+    "busy_ms_each_activation": "446-447",
+    "accepted": [
+      "visible movement",
+      "recurring hatch-like old-position residual absent",
+      "no whole-screen black flash"
+    ],
+    "known_gap": "For a new-only pixel P=1,N=0, erase-first leaves it white (P OR N) until the second completed activation writes N=0. The leading edge is therefore visibly cut, then restored; this is optical topology, not a missing SPI byte or incomplete BUSY wait.",
+    "owner_note": "好很多, 就是移动的时候移动方向会切掉一点, 随后还原, 能优化吗",
+    "artifact": "docs/validation/companion-gdey0154d67-t03-vendor-partial-no-union-settle-operator-20260720.json",
+    "sha256": "DA2FE11DB4CB1AFC5D433B2798BADBB576FC9C82BB39C472236E084C48F1EC57",
+    "boundary": "Quality floor/reference, not mandatory architecture and not production activation."
+  },
+  "partial_topology_history": [
+    {
+      "name": "cleanup_then_draw_no_union_baseline",
+      "machine": "MACHINE PASS",
+      "human": "HUMAN PASS",
+      "note": "这个感觉相当好, 但是球可以不要消失再出现吗, 感觉不够连续, 但是没有残影了, 比黑色全刷好很多",
+      "result": "No residue/black flash; disappearance/reappearance remains."
+    },
+    {
+      "name": "old_or_current_union_then_current_settle_draw_final",
+      "machine": "MACHINE PASS",
+      "human": "HUMAN FAIL",
+      "note": "可以, 但是有一帧会出现残影",
+      "result": "The empty gap is replaced by a visible old+new residue frame; durable no-go."
+    },
+    {
+      "name": "current_union_then_old_settle",
+      "machine": "MACHINE PASS",
+      "canonical_human": "NOT OBSERVED",
+      "asynchronous_owner": "HUMAN FAIL",
+      "note": "没修好, 吃掉的部分越来越多了",
+      "result": "Cumulative content loss; no promotion/retry."
+    },
+    {
+      "name": "removed_black_repair_then_current_union",
+      "machine": "MACHINE PASS",
+      "human": "HUMAN FAIL",
+      "note": "你这个局部修复好像修反了，以前是消失一小节，现在是消失一大节，你看一下吧。",
+      "result": "The first repair activation enlarged the missing portion."
+    },
+    {
+      "name": "disjoint_current_only_single_activation_r4_r5_r6",
+      "machine": "MACHINE PASS",
+      "r4_human": "HUMAN FAIL",
+      "r4_note": "没看见, 再跑一次, 另外球大一点",
+      "r5_human": "HUMAN FAIL",
+      "r5_note": "你现在没有在移动?",
+      "r6_human_visibility": "HUMAN PASS",
+      "r6_residue_criterion": "HUMAN FAIL",
+      "r6_note": "你现在这样子直接移动是会有残影的，你看看昨天的这种工作方式去学习一下",
+      "result": "Larger/faster probe made motion visible, but direct one-activation topology retained residue."
+    },
+    {
+      "name": "disjoint_erase_first_no_union_settle",
+      "machine": "MACHINE PASS",
+      "human": "HUMAN FAIL",
+      "note": "还是移动的时候会吞掉一截再补全, 但是已经没有残影了, 能不要吞掉一截再补全吗, 移动方向上回吞掉一小截",
+      "result": "Residue floor preserved, but the same two-activation leading-edge cutoff remains."
+    },
+    {
+      "name": "added_first_old_cleanup",
+      "machine": "MACHINE PASS",
+      "human": "HUMAN FAIL",
+      "notes": ["这个不行, 其它的残影更多了", "方向不对", "而且就像是这样那一消失的一截也是在的"],
+      "result": "More residue plus original cutoff; durable no-go."
+    },
+    {
+      "name": "explicit_old_new_ram_0x26_P_0x24_N_one_FF_activation",
+      "machine": "MACHINE PASS",
+      "human": "HUMAN FAIL",
+      "result": "Moving black residue followed motion; this direct P-to-N topology is already executed, not a new R7 candidate."
+    },
+    {
+      "name": "post_activation_fixed_0x24_sync_phase_b",
+      "machine": "MACHINE PASS",
+      "human": "HUMAN FAIL",
+      "observation_quality": "NOT OBSERVED",
+      "note": "不太行, 没有看见移动, 另外整个屏幕都很脏",
+      "later_steering": "也不是说不行，只是我没有看到而已，要不你再试一次。",
+      "result": "Inconclusive motion-not-observed with dirty screen; current one-attempt contract exhausted."
+    },
+    {
+      "name": "fast_post_sync_round_1",
+      "machine": "MACHINE PASS",
+      "human": "NOT OBSERVED",
+      "note": "没看出来有移动, 屏幕无变化",
+      "metrics": "120/120, 522-523 ms frame, BUSY max 447 ms"
+    },
+    {
+      "name": "fast_post_sync_round_2_inverse_seed",
+      "machine": "MACHINE PASS",
+      "human": "HUMAN FAIL",
+      "note": "没看见有任何的移动 / 还是没有任何反应?",
+      "metrics": "120/120, 522-523 ms frame, BUSY max 447 ms",
+      "result": "Inverse-seed hypothesis falsified."
+    }
+  ],
+  "phase_a_r7_r8": {
+    "phase_a": {
+      "status": "MACHINE PASS",
+      "human": "NOT RUN",
+      "reads": 12,
+      "mapping_before_activation": "after 0x24=N staging, selector0=N and selector1=P",
+      "mapping_after_activation": "selector0=P and selector1=N",
+      "busy_ms": 447,
+      "important_limit": "This proved visible selector content swapping, not post-swap write-command targeting."
+    },
+    "r7": {
+      "status": "MACHINE PASS",
+      "candidate": "NOT RUN",
+      "decision": "NO_GO_R7_POST_ACTIVATION_SYNC_TARGET_UNPROVEN_NO_NEW_VISUAL_CANDIDATE",
+      "duplicate_fact": "Explicit 0x26=P + 0x24=N + one FF/20/BUSY had already executed and failed visually.",
+      "unresolved_fact": "Fixed 0x24 post-sync was executed 264 times in three runs with zero post-write selector readbacks; 0x26/selector-aware post-sync were NOT RUN."
+    },
+    "r8_launch_incident": {
+      "cleanup_restore": "MACHINE PASS",
+      "candidate": "NOT RUN",
+      "human": "NOT RUN",
+      "result": "Outer timeout broke stdout transport while the child continued. Candidate start boundary was never invoked; candidate/programmer writes were zero; empty prompt response must remain empty."
+    },
+    "r8_r2": {
+      "status": "MACHINE PASS",
+      "human": "NOT RUN",
+      "mapping": "fixed_bank",
+      "command_0x24_target_selector": 0,
+      "command_0x26_target_selector": 1,
+      "after_swap_selector0_role": "base",
+      "after_swap_selector1_role": "current",
+      "selector_reads": 28,
+      "post_tag_activations": 0,
+      "popup_count": 0,
+      "runtime_artifact": "docs/validation/companion-ssd1681-ram-command-target-r8-r2-runtime-20260721.json",
+      "runtime_sha256": "BAD97BBABFD2E1B515A2E1D1A45EE3C4E68EF3FFC167D03468E1859659C07FF5",
+      "authorization_consumed": true
+    }
+  },
+  "custom_lut_rounds": [
+    {
+      "round": "R1",
+      "lut_sha256": "B0C729D4157054C4EA69521C3E4837B75B2E6A7740A48C5C754714A84925722E",
+      "single_variable": "zero supplier stationary BB/LUT0 bytes 0..3 and WW/LUT3 bytes 36..39",
+      "timing": "9 activations, 1284-1285 ms each",
+      "machine": "MACHINE FAIL",
+      "human": "HUMAN FAIL",
+      "note": "你先刷全白恢复游一下?",
+      "pitfall": "Acceptance window opened after Execute, so the owner was not prepared."
+    },
+    {
+      "round": "R2",
+      "lut_sha256": "EBF88D6FB0BEB39AB2428C98BBDF1DC04308CEA156AF61D14C2B1591902B64C7",
+      "single_variable": "scale active TP total from 50 to 20 at offsets 60/61/63/64/67/68/74/75/77/78/81/82",
+      "timing": "first activation 602 ms > 600 ms",
+      "machine": "MACHINE FAIL",
+      "human": "NOT RUN"
+    },
+    {
+      "round": "R3",
+      "lut_sha256": "CFE301B8FAA15C09B55509C9110E014FB49B959AD40FDF73F062A84D9D6769D3",
+      "single_variable": "offset 74 from 0x02 to 0x01; TP20 to TP19",
+      "timing": "first activation still 602 ms; timing plateau",
+      "machine": "MACHINE FAIL",
+      "human": "NOT RUN"
+    },
+    {
+      "round": "R4",
+      "lut_sha256": "75D7647188ACF1C79BC37313DC40105AF4445B9B6F422AD4FDAF0A465413984D",
+      "single_variable": "uniform symmetric TP16 allocation; offsets 61/64/75/78 from 0x02 to 0x01",
+      "timing": "9/9 at 598-599 ms",
+      "machine": "MACHINE PASS",
+      "human": "HUMAN FAIL",
+      "note": "不太行, 屏幕很杂",
+      "disposition": "No rerun/promotion/motion."
+    },
+    {
+      "round": "R5",
+      "lut_sha256": "75D7647188ACF1C79BC37313DC40105AF4445B9B6F422AD4FDAF0A465413984D",
+      "single_variable": "R4 candidate byte-identical; replace one-plane cleanup with dual-plane 0x24+0x26 White and repeated selector readback",
+      "timing": "9 activations, 598-599 ms",
+      "machine": "MACHINE PASS",
+      "human": "NOT OBSERVED",
+      "owner_selection": "HUMAN FAIL",
+      "note": "没看见, 下次你搞连续的变动, 然后有一次提醒就行我就会来看",
+      "discovery": "R4 whole-screen dirtiness had a sufficient stale-opposite-bank explanation because reset/0x12 do not clear RAM; R5 proved both banks White but did not obtain a visual cleanliness conclusion."
+    },
+    {
+      "round": "R6",
+      "lut_sha256": "75D7647188ACF1C79BC37313DC40105AF4445B9B6F422AD4FDAF0A465413984D",
+      "single_variable": "extend R5 W/A/B chain from 9 to exactly 16; remove countdown, dwell and verbose in-window UART",
+      "timing": "16 activations, 599 ms each, 9633 ms total",
+      "machine": "MACHINE PASS",
+      "human": "HUMAN FAIL",
+      "note": "这个不太行, 应该方向是错误的, 没有图案了直接",
+      "result": "TP16 stationary-suppression direction made the intended pattern disappear; do not rerun."
+    }
+  ],
+  "r9_lineage": {
+    "workbench": {
+      "status": "MACHINE PASS",
+      "human": "NOT RUN",
+      "decision": "ADMIT_ONE_VARIABLE_R9",
+      "artifact": "docs/validation/companion-ssd1681-phase-parallel-r9-workbench-20260721.json",
+      "sha256": "E7311523D6FE571434F0C1F2D5EC76B7ED9B64DC725B0726DDEC023421D7E4EF",
+      "lut_sha256": "9BCBAC1A07ED0A112D26409FBCDB8F5FE27CE07D922C2E18881C10A53229DDCD",
+      "mechanism": "Retain supplier TP fields 5/3/5/3 and overlap independently source-derived opposite-polarity BW/WB VS fields in shared phases; BW/WB each receive effective 16 counts with +8/-8 and zero net source-frame impulse; WW/BB remain zero drive.",
+      "tail": "221741A83258"
+    },
+    "one_shot": {
+      "machine": "MACHINE PASS",
+      "human": "HUMAN FAIL",
+      "qualification": "16/16 local 32x32 activations, BUSY 597-599 ms, 16 CF/20/post-sync; forbidden counts zero",
+      "note": "你这个应该要一直运动才行，因为我也不是一直在屏幕前的。",
+      "note_sha256": "E2EDDD3239D7FE8E195D266040B0C1800D585887788FE64D9D6B772692928E56",
+      "hex_sha256": "724DA17F385756BA779739E73DA47131F563E0C071A2EB173F5F77871F3CADDF",
+      "runner_sha256": "0B0A536E7B03DD5F2A4F9CF7B2B76A1B0DB3F34745172E352CB0B4726011B34B",
+      "runtime_disposition_sha256": "B5A1248CE91170631C025B8D7639D8786DBF039DD0917AD32B05A25412A8DC3D",
+      "authorization_consumed": true
+    },
+    "continuous_r1": {
+      "machine_qualification": "MACHINE PASS",
+      "visual": "NOT OBSERVED",
+      "qualification": "16 activations, BUSY max 599 ms",
+      "loop": "1 record, BUSY 597 ms, 10736-byte bounded ring",
+      "popup": "NOT RUN",
+      "incident": "PowerShell line 126 used two unparenthesized Test-Path calls around -or; -LiteralPath bound twice. Supervisor exited before guard/popup.",
+      "cleanup_restore": "MACHINE PASS",
+      "runtime_disposition_sha256": "976018FA78CAE8B17B4A06D0AD2CC415DC72598AAE087F5F041B16C3040631DD",
+      "authorization_consumed": true,
+      "retry": false
+    },
+    "continuous_r2": {
+      "machine": "MACHINE PASS",
+      "human": "HUMAN FAIL",
+      "qualification": "16 activations, BUSY max 599 ms",
+      "loop": "1060 contiguous W/A/B/A iterations; last=1060; bounded ring=65536 bytes; archived tail iterations 931..1060",
+      "operator_note": "呃，这样子的话就不是一个连续的球在运动，作为那个连续球运动的东西。\r\n",
+      "operator_note_sha256": "30DDA3C9CC92110E636C9954652716EA805086DD15E889ED26B4F88D720B5698",
+      "interpretation": "Rejects W/A/B/A payload topology as not one continuously moving ball; does not reject admitted R9 waveform, fixed-bank mapping, bounded BUSY, one-activation loop, supervisor, cleanup or restore lifecycle.",
+      "candidate_hex_sha256": "3B416BFF08B630D23BDB6107B2C17DFE9FBBFAAA7D5CFBCA5063AE68E62B79C5",
+      "supervisor_sha256": "39ACC31A561413717B77ACAFE5E7E562B0C44734F07D72007B46C900C85883D2",
+      "machine_ready_sha256": "59DA81BDCDC31AB93459BFCA6575F5A007182374912D1A476B54B747A106D5E7",
+      "runtime_disposition": "docs/validation/companion-ssd1681-phase-parallel-r9-continuous-r2-runtime-disposition-20260721.json",
+      "runtime_disposition_sha256": "C7F097CE905AA84F687C9E2EC6E5FEAEDED8D0D6C9C98DF8E09F3624797DE0CA",
+      "authorization_consumed": true,
+      "retry": false,
+      "motion_or_promotion_entered": false
+    }
+  },
+  "popup_policy": {
+    "evolution": [
+      "Early custom rounds used pre-start plus final prompts; R1 sequencing showed why after-run start prompts are invalid.",
+      "Owner then rejected routine cleanup/recovery prompts and redundant start friction.",
+      "COMP-REQ-305 is controlling: machine-only runs have zero popup; routine pre/post-clean, restore, recovery and failures have zero popup; a visual candidate may have exactly one final canonical Chinese acceptance popup after its machine gate.",
+      "R9 continuous observation legitimately opens that one final acceptance popup concurrently with the loop only after 16/16 qualification."
+    ],
+    "canonical_tree": "supervisor -> pwsh aiw.ps1 operator-prompt (+ conhost) -> STA operator_prompt.ps1 (+ conhost); this is one canonical popup, not duplicates",
+    "forbidden_popup_contexts": ["start", "countdown", "reminder", "cleanup", "recovery", "fault acknowledgement", "machine failure"]
+  },
+  "cleanup_restore_contract": {
+    "routine_popup": false,
+    "pre_and_post_clean": "0x24 5000xFF, 0x26 5000xFF, 0x22=0xF7, 0x20, BUSY; selector0 and selector1 each read twice after full window/counter programming; all payload bytes FF and repeats identical",
+    "raw_restore": "Capture 524288 application bytes at 0x08000000, restore them, upload/read back exactly, require byte equality, then require normal boot/ready resume.",
+    "protected_restore_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "warning": "Raw MCU Flash restore alone does not clean retained e-paper pigment or stale RAM; physical White post-clean is a separate mandatory stage."
+  },
+  "runner_and_process_pitfalls": [
+    "Parenthesize each Test-Path expression before combining with -or in PowerShell.",
+    "When auditing Win32_Process command lines, exclude the auditing PowerShell's own $PID; its command line contains the run root and caused two false positives.",
+    "Do not decide liveness from a historical numeric PID alone; Windows may reuse it. Match PID with process name, command line and creation identity. At final audit, historical numbers 34332 and 10652 belonged to unrelated WebView/RuntimeBroker processes.",
+    "Use a persistent hidden Start-Process launcher with durable stdout/stderr, a fresh output root and recorded child PID/arguments/hashes. A direct outer tool timeout can detach or close stdout while the child continues.",
+    "Do not interpret runner exit code alone. Owner FAIL intentionally ends with a nonzero diagnostic gate even when post-clean, exact restore and normal resume pass; read stage-run/restore/normal artifacts.",
+    "Normalize timestamps, PIDs and fixed verifier cache paths before hashing stable artifacts.",
+    "Prompt timeout is 900 s; every wait must remain bounded and fail closed.",
+    "The R9 telemetry file is a fixed 65536-byte ring. The qualification parser is an initial-gate snapshot; final monitor-result is authoritative for total loop_records_seen and last_iteration.",
+    "Long functions.exec/shell sessions must be waited to terminal completion; never leave runner, monitor, supervisor, prompt or programmer processes alive.",
+    "Reject output-directory reuse, consumed authorization reuse, hash drift, simulation injection in Execute, child nonzero without disposition, and any automatic retry.",
+    "Routine cleanup/recovery/fault paths must never open a popup."
+  ],
+  "must_never_rerun": [
+    "COMP-REQ-236/237 accepted reference solely to reconfirm what is already accepted",
+    "draw-final old+new residue topology",
+    "current-union then old-settle cumulative-loss topology",
+    "removed-black then current-union enlarged-gap topology",
+    "disjoint erase-first no-union settle duplicate COMP-REQ-252 topology",
+    "added-first old-cleanup topology",
+    "explicit 0x26=P + 0x24=N + one FF/20 direct topology",
+    "fast post-sync R1/R2 or inverse-seed hypotheses",
+    "custom LUT R1, R2, R3, R4, R5 or R6",
+    "R7 duplicate visual candidate",
+    "R8 launch incident or consumed R8-R2 authorization",
+    "R9 one-shot, R9 continuous R1 or R9 continuous R2 authorization",
+    "any old authorization artifact, output root or hardware candidate without a new registry contract and root authorization"
+  ],
+  "current_state": {
+    "device": "Last contacted run completed promptless dual-plane post-clean, exact raw restore/readback and normal application resume. This handoff did not query or contact the device.",
+    "restored_application_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "last_stage": "NO_GO_R9_CONTINUOUS_VISUAL_NOT_PASSED_RESTORED",
+    "process_audit_at": "2026-07-21T23:21:17+08:00",
+    "process_patterns": [
+      "wb55-r9-continuous-r2-execute-20260721-r1",
+      "run_wb55_ssd1681_phase_parallel_r9_continuous_observation",
+      "monitor_wb55_ssd1681_phase_parallel_r9_continuous",
+      "supervise_wb55_ssd1681_phase_parallel_r9_continuous_prompt",
+      "STM32_Programmer_CLI",
+      "operator_prompt.ps1"
+    ],
+    "live_process_matches": [],
+    "known_run_pids_alive": [],
+    "historical_pid_reuse_observed": {
+      "34332": "unrelated msedgewebview2.exe created 2026-07-21 20:10:27",
+      "10652": "unrelated RuntimeBroker.exe created 2026-07-16 08:02:34"
+    },
+    "handoff_hardware_contact": 0,
+    "handoff_popup_count": 0
+  },
+  "dirty_worktree": {
+    "observed_entries": 1432,
+    "warning": "The repository is massively dirty with concurrent upper-art and firmware work. Assume unrelated changes belong to the owner/other agents. Never reset, checkout, delete or normalize unrelated files.",
+    "lower_driver_caution": "panel_target_stm32wb_ssd1681.c contains the full accepted lower-driver history. The interrupted R10-only scaffold was removed surgically; do not revert the file to Git HEAD.",
+    "upper_agent_caution": "Do not edit locked V9, Rig/CRIG, browser preview, generated art, touch or recording files while resuming lower-driver work."
+  },
+  "files_and_tools_to_inspect": {
+    "registry": "docs/companion_product_requirements.md",
+    "current_goal": "docs/validation/companion-current-goal-audit-20260717.json",
+    "driver": "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
+    "baseline": "docs/validation/companion-gdey0154d67-t03-vendor-partial-no-union-settle-operator-20260720.json",
+    "phase_a": "docs/validation/companion-ssd1681-ram-ping-pong-fingerprint-machine-20260721.json",
+    "r7": "docs/validation/companion-ssd1681-r7-activation-state-audit-20260721.json",
+    "r8": "docs/validation/companion-ssd1681-ram-command-target-r8-r2-runtime-20260721.json",
+    "r9_workbench": "docs/validation/companion-ssd1681-phase-parallel-r9-workbench-20260721.json",
+    "r9_r2_runtime": "docs/validation/companion-ssd1681-phase-parallel-r9-continuous-r2-runtime-disposition-20260721.json",
+    "r9_r2_archive": "docs/validation/companion-ssd1681-phase-parallel-r9-continuous-r2-runtime-20260721/",
+    "runner": "tools/run_wb55_ssd1681_phase_parallel_r9_continuous_observation.ps1",
+    "launcher": "tools/start_wb55_ssd1681_phase_parallel_r9_continuous_observation.ps1",
+    "monitor": "tools/monitor_wb55_ssd1681_phase_parallel_r9_continuous.ps1",
+    "supervisor": "tools/supervise_wb55_ssd1681_phase_parallel_r9_continuous_prompt.ps1",
+    "runtime_verifier": "tools/verify_wb55_ssd1681_phase_parallel_r9_continuous_r2_runtime_disposition.py"
+  },
+  "r10_plan": {
+    "status": "NOT RUN",
+    "implementation_status": "NOT_STARTED",
+    "machine_ready": false,
+    "hardware_authorized": false,
+    "single_variable": "payload topology only; replace W/A/B fixed stripes with one complete moving ball while preserving R9 waveform, tail, fixed-bank mapping, CF/20/BUSY, post-sync, bounded telemetry, supervisor, cleanup and restore lifecycle",
+    "planned_geometry": {
+      "shape": "provisionally described as 12x12 solid black ball",
+      "y": 80,
+      "x_positions": [32, 40, 48, 56, 64],
+      "stride_px": 8,
+      "travel_span_px": 32,
+      "path": "ping-pong",
+      "one_activation_per_frame": true
+    },
+    "admission_questions": [
+      "Does owner mean a visually round disk, or is a 12x12 solid square acceptable as a ball? Do not infer.",
+      "Are y=80, x=32..64, 8 px byte-aligned stride and 32 px travel span visibly acceptable?",
+      "What is the exact initial White-to-ball frame and first 16-position qualification sequence?",
+      "Must the 12x12 ball remain complete at every landing and have four-pixel overlap between 8 px moves?",
+      "The current supervisor/status schema is R9-named. Is an unchanged compatibility wrapper acceptable, or must a versioned R10 supervisor be admitted despite the preserve-supervisor preference?",
+      "Does one canonical final acceptance popup concurrent with the post-qualification loop remain the desired human boundary?"
+    ],
+    "ordered_next_steps_after_pause_is_lifted": [
+      "Record answers to all admission questions in a new registry requirement before implementation.",
+      "Re-read workflow skill/quickstart, current registry/current-goal and this handoff; audit hashes and dirty worktree ownership.",
+      "Build a pure full-frame pixel oracle first: complete ball, exact position path, previous/current hashes, byte-aligned changed union, transition-class counts and 16-step sequence.",
+      "Implement a default-off R10 driver path changing payload topology only; no build until source/static review closes.",
+      "Add parser/monitor/supervisor/persistent launcher/CheckOnly and negative fixtures; preserve bounded ring and all forbidden-operation zeros.",
+      "Create isolated build and distinct stable R10 MACHINE_READY only after registry/current-goal/diff/protected hashes pass.",
+      "Return to root. Hardware requires a new one-shot authorization bound to exact MACHINE_READY/HEX/LUT/supervisor hashes.",
+      "On any future Execute: promptless dual-plane preclean, 16/16 qualification, sole final popup concurrent with loop, immediate stop on verdict/fault, promptless postclean, exact raw restore/readback, normal resume, archive and process-exit audit."
+    ]
+  },
+  "next_agent_first_30_minutes": [
+    "0-5 min: read ai-collaboration-workflow SKILL.md, agent_quickstart.md, COMP-REQ-318..320 and this MD/JSON; do not run build or hardware commands.",
+    "5-10 min: verify handoff JSON, product registry, current-goal audit and protected hashes; confirm R10_BALL is absent from app/tools/docs/validation.",
+    "10-15 min: inspect git status/diff only for owned lower-driver files; note concurrent upper-art changes and do not revert them.",
+    "15-20 min: inspect R9 workbench, R8 runtime and R9 continuous R2 runtime/archive; confirm HUMAN FAIL is not being reclassified as machine failure or missed observation.",
+    "20-25 min: rerun process audit excluding own PID; require zero runner/monitor/supervisor/prompt/programmer matches.",
+    "25-30 min: stop. Ask/resolve R10 admission questions through registry-first steering; remain document-only while COMP-REQ-320 is active."
+  ],
+  "stop_go_gates": {
+    "stop_now": [
+      "COMP-REQ-320 pause remains active",
+      "any R10 admission question is unanswered",
+      "R10 implementation/tool/build artifact already exists unexpectedly",
+      "protected hash drift is unexplained",
+      "relevant live process exists",
+      "worktree ownership is ambiguous for a required edit",
+      "candidate differs in waveform/tail/fixed-bank/cleanup/restore/popup lifecycle rather than payload topology only"
+    ],
+    "go_to_implementation_only": [
+      "owner/root explicitly lifts pause",
+      "new registry contract records resolved R10 shape/path/supervisor/popup decisions",
+      "all protected hashes and no-R10-start baseline pass"
+    ],
+    "go_to_machine_ready_only": [
+      "pixel oracle, source/static, parser/monitor/supervisor, negative fixtures, isolated build and persistent CheckOnly all pass with hardware_contact=0",
+      "distinct R10 MACHINE_READY is stable and root-reviewed"
+    ],
+    "go_to_hardware_only": [
+      "fresh explicit one-shot root authorization binds exact R10 MACHINE_READY/HEX/LUT/supervisor/runner hashes and fresh output root"
+    ],
+    "always_stop_after_future_run": [
+      "any machine fault or BUSY >600 ms",
+      "popup abnormal exit or more than one popup",
+      "owner PASS or FAIL",
+      "postclean/restore/normal-resume failure",
+      "process-exit audit failure"
+    ]
+  },
+  "validation": {
+    "registry": "PASS",
+    "current_goal": "PASS",
+    "handoff_schema": "PASS",
+    "protected_hashes": "PASS",
+    "diff_check": "PASS",
+    "process_audit": "PASS",
+    "hardware_contact": 0
+  }
+}

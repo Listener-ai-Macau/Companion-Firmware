@@ -1,0 +1,53 @@
+{
+  "schema": "companion.v30_minimal_functional_object_special_expression_machine_closure.v1",
+  "status": "PASS_V30_MINIMAL_FUNCTIONAL_OBJECT_MACHINE_CLOSURE_RUNTIME_INACTIVE",
+  "claim_scope": "source-to-component-to-browser/target machine closure for an unbound runtime-inactive candidate; no firmware binding, CRIG/profile export, flash, panel output, physical acceptance, or human art acceptance",
+  "locked_v9_source": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "artifacts": {
+    "source_gate": {
+      "path": "docs/validation/companion-v30-minimal-functional-object-special-expression-source-gate-20260720.json",
+      "sha256": "025F8C774C807B6A0FCED94B8B693D989267DD4EE0085D36151540EC37D1CF32",
+      "status": "PASS_V30_MINIMAL_FUNCTIONAL_OBJECT_SOURCE_GATE_PENDING_COMPONENT_EXPORT"
+    },
+    "component_export_gate": {
+      "path": "docs/validation/companion-v30-minimal-functional-object-special-expression-component-export-gate-20260720.json",
+      "sha256": "E7600F6D4A6B167B52B4DE93CE3A7C29FC77E9A8FBBB32CE6D78AB56CB0FC594",
+      "status": "PASS_V30_MINIMAL_FUNCTIONAL_OBJECT_COMPONENT_EXPORT_UNBOUND"
+    },
+    "component_performance": {
+      "path": "docs/validation/companion-v30-minimal-functional-object-special-expression-component-performance-preview-20260720.json",
+      "sha256": "8E92C166E0892543C9BAC40B36AC481F86E11D5F64B67606197D52347C747C82",
+      "status": "PASS_V30_MINIMAL_FUNCTIONAL_OBJECT_COMPONENT_PERFORMANCE_RUNTIME_INACTIVE"
+    },
+    "browser_target_parity": {
+      "path": "docs/validation/companion-v30-minimal-functional-object-special-expression-component-performance-parity-20260720.json",
+      "sha256": "36CEDF41CAAC261B8DAF7F1B6201564D62317F39821640E06B1603BD27845ACA",
+      "status": "PASS_V30_MINIMAL_FUNCTIONAL_OBJECT_COMPONENT_PERFORMANCE_BROWSER_TARGET_PLAN_PARITY"
+    },
+    "browser_render": {
+      "path": "docs/validation/companion-v30-minimal-functional-object-special-expression-component-browser-render-20260720.json",
+      "sha256": "2B921DBBE05E9E059A59AB2E14F7940A8CC35B05585A6119AF5B8AACBD7A0B3C",
+      "status": "PASS_V30_BROWSER_RENDER_INSPECTION_NATIVE_200X200"
+    }
+  },
+  "selection_policy": {
+    "mode": "explicit_event_performance",
+    "random_state_selection": false,
+    "automatic_cross_state_cycle": false,
+    "special_state_exit_returns_to": "v9_daily",
+    "unavailable_special_states": [
+      "upgrade",
+      "sleep",
+      "error"
+    ],
+    "unavailable_special_state_policy": "fail_closed"
+  },
+  "next_human_boundary": "internal V30 visual preflight, then canonical browser-only Chinese owner art review of the V30 candidate; any FAIL returns to generated-source refinement before a CRIG/profile or behavior binding",
+  "physical_gate": "PENDING_CURRENT_FPC_OFFICIAL_WHITE_BLACK_GATE",
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden",
+  "errors": []
+}

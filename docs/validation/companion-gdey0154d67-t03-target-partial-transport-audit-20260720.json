@@ -1,0 +1,106 @@
+{
+  "checks": {
+    "default_differential_path_uses_actual_changed_window_old_new_planes_and_identical_skip": true,
+    "owner_photo_rejected_continuous_partial_for_residue_with_normal_restore": true,
+    "physical_trace_proves_each_tested_partial_used_one_source_reset_ff_20_busy": true,
+    "source_audit_binds_current_target_and_vendor_hashes": true,
+    "source_partial_waveform_busy_dominates_payload_transfer": true,
+    "supplier_demo_has_six_updates_then_full_white_clear_not_continuous_recovery": true,
+    "target_partial_data_polarity_is_white_ff_black_zero": true,
+    "target_partial_sequence_has_source_reset_border_window_counter_24_ff_20_busy": true,
+    "target_transform_and_controller_y_mapping_are_explicit": true,
+    "target_updates_whitened_old_region_and_current_region_from_one_frame": true,
+    "vendor_partial_data_polarity_is_white_ff_black_zero": true,
+    "vendor_partial_sequence_has_10ms_reset_border_window_counter_24_ff_20_busy": true,
+    "vendor_source_supports_five_separate_ram_regions_before_one_partial_activation": true
+  },
+  "claim_scope": "read-only source-vs-target transport audit; no LUT synthesis, production policy change, or physical promotion",
+  "disposition": {
+    "next_required_supplier_input": "Exact-panel partial waveform/recovery guidance that preserves content after repeated partial updates, plus its temperature applicability.",
+    "production_dynamic_expression": "NO_GO",
+    "self_authored_waveform_or_lut": "prohibited",
+    "source_authentic_six_update_recovery": "would be a full-white 0x24/F7 clear and visibly interrupts animation, so it does not satisfy the owner requirement",
+    "source_bounded_multi_region_transport": "The vendor source permits at most five preloaded local regions before one existing partial activation; it is diagnostic-only until identity and rail gates pass, and it cannot make a no-residue claim."
+  },
+  "failures": [],
+  "match_conclusion": {
+    "matched": [
+      "Data polarity: 0xFF is white and cleared bits are black.",
+      "Each tested partial performs the supplier-style 10 ms reset, border lock, RAM window/counters, one 0x24 region write, 0xFF control, 0x20 activation and BUSY completion.",
+      "The target makes transform and SSD1681 descending-Y mapping explicit; the physical trace records the configured transform for each tested frame.",
+      "Old dot pixels are whitened in the target frame before the old/current selected regions are written.",
+      "The ordinary differential path independently derives the byte-aligned changed window from the previous and current frame, skips an identical frame, and transmits both its old and current pixels.",
+      "The supplier's EPD_Dis_Part_myself transport programs five distinct RAM regions before one partial activation, so non-contiguous dirty islands are source-backed as a data-volume optimization."
+    ],
+    "not_a_proven_mismatch": [
+      "No omitted source partial reset, border, RAM-window, data-polarity, 0x24, 0xFF, 0x20 or BUSY command was found in the tested path.",
+      "No source evidence permits deriving different LUT bytes, drive voltages, temperature bands or waveform timing.",
+      "The measured 75-81 byte source-partial payload takes 11 ms before activation, while the panel remains BUSY for 446-447 ms; further payload/SPI reduction cannot materially change cadence or residue.",
+      "Five-region staging is not a new partial waveform or a residue-recovery sequence: it ends in the same source 0xFF/0x20/BUSY activation that left residual image in the physical continuous-motion run."
+    ],
+    "proven_mismatch": "The operator slow-motion diagnostic deliberately extended the supplier demo from six partial updates to 360 continuous partial frames. The owner photo records residue during that extension."
+  },
+  "schema_id": "companion.gdey0154d67_t03.target_partial_transport_audit.v1",
+  "source": {
+    "slow_raw_log": {
+      "path": ".cache/validation/wb55-vendor-partial-slow-motion-retry-3-20260720/capture/nucleo-serial-raw.log",
+      "sha256": "44D0C67B2F6FF1F51F4133538307CA10C5D5E999612291F3E14BEB623B1AFCDF"
+    },
+    "slow_stage": {
+      "path": ".cache/validation/wb55-vendor-partial-slow-motion-retry-3-20260720/stage-run.json",
+      "sha256": "99718445734557C77A13A9E51A04A1409D152F343D2F9522B7722448262207AD"
+    },
+    "slow_trace": {
+      "path": ".cache/validation/wb55-vendor-partial-slow-motion-retry-3-20260720/vendor-partial-slow-motion-trace.json",
+      "sha256": "05F36DB509CA758BBBD943653ED31FF0D106F87A3D9ED93C0674F4A672D6590C"
+    },
+    "source_audit": {
+      "path": "docs/validation/companion-gdey0154d67-t03-vendor-1s-source-audit-20260720.json",
+      "sha256": "A367A8ADBED91438D0BAFF7964227BACE0F9FCCDABAEDF8E99A32B018D6282CE"
+    },
+    "target_driver": {
+      "path": "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
+      "sha256": "759758DC97FEFB552EDBD50D787A600D859915750E6F33B1736F280852CA85A6"
+    },
+    "vendor_epaper_c": {
+      "path": "C:\\Users\\Billy\\Desktop\\GDEH0154D67-20211203-P-LUT(1s) -1s快刷\\EPD_W21\\EPAPER.c",
+      "sha256": "7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896"
+    },
+    "vendor_main_c": {
+      "path": "C:\\Users\\Billy\\Desktop\\GDEH0154D67-20211203-P-LUT(1s) -1s快刷\\User\\main.c",
+      "sha256": "66BF0AC2E1C75C28FF95906666E720F3EC584EDD5D721D1293948A1596A315E0"
+    }
+  },
+  "status": "NO_GO_CONTINUOUS_DYNAMIC_NEEDS_PANEL_BOUND_WAVEFORM_RECOVERY",
+  "target": "NUCLEO-WB55RG + ESP32-FTS02 + GDEY0154D67-T03",
+  "timing_evidence": {
+    "conclusion": "Panel waveform/BUSY time, not the 75-81 byte SPI payload, dominates observed source-partial cadence.",
+    "source_partial_samples": [
+      {
+        "busy_refresh_ms": 446,
+        "payload_share_percent": 2.5,
+        "payload_transfer_before_activation_ms": 11
+      },
+      {
+        "busy_refresh_ms": 446,
+        "payload_share_percent": 2.5,
+        "payload_transfer_before_activation_ms": 11
+      },
+      {
+        "busy_refresh_ms": 446,
+        "payload_share_percent": 2.5,
+        "payload_transfer_before_activation_ms": 11
+      },
+      {
+        "busy_refresh_ms": 447,
+        "payload_share_percent": 2.5,
+        "payload_transfer_before_activation_ms": 11
+      },
+      {
+        "busy_refresh_ms": 447,
+        "payload_share_percent": 2.5,
+        "payload_transfer_before_activation_ms": 11
+      }
+    ]
+  }
+}

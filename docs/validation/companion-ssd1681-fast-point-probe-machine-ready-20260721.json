@@ -1,0 +1,64 @@
+{
+  "schema_id": "companion.wb55.ssd1681_fast_point_probe_machine_ready.v1",
+  "status": "MACHINE_READY",
+  "date": "2026-07-21",
+  "hardware_contact": 0,
+  "requirement": "COMP-REQ-273",
+  "candidate": {
+    "production_enabled": false,
+    "hex": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_fast_point_probe/Companion_Nucleo_WB55RG_Ssd1681FastPointProbe.hex",
+    "sha256": "210B9851889457F951E20FC96DC509CA4DCB8B779E40031F7DC47C136C4CB222",
+    "elf_sha256": "38B1DC3942624F3DF5FF28CEB5A47E21F12584B6160A315B77F5EE88465E24B1"
+  },
+  "machine_contract": {
+    "non_screen_countdown_seconds": 3,
+    "frames": 120,
+    "target_frame_interval_ms": [475, 550],
+    "frame_interval_p95_max_ms": 600,
+    "step_px": 8,
+    "excursion_px": 32,
+    "motion_duration": "about 60 seconds",
+    "controls_ff": 120,
+    "refresh_0x20": 120,
+    "busy_completions": 120,
+    "post_activation_0x24_sync_without_refresh": 120,
+    "motion_0x26_writes": 0,
+    "full_refreshes": 0,
+    "controls_f7": 0,
+    "controls_c7": 0,
+    "lut_writes": 0,
+    "automatic_retries": 0,
+    "panel_hard_resets": 121,
+    "panel_writes": 242
+  },
+  "proven_mapping_basis": "activation_swapped_banks_selector0_base_selector1_current",
+  "raw_restore": {
+    "bytes": 524288,
+    "sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "finally_enforced": true,
+    "normal_resume_required": true
+  },
+  "protected_inputs": {
+    "owner_acceptance_sha256": "8A3BDF4BD1254B0D0F4DE13A7F293C3D74587C800339ABD4C61FEB0B7737E227",
+    "supplier_source_sha256": "CD08AFD1D56E8F7E1D0AE5C935A4D060E65C658ABC30CE29ACF65166141ACEE2"
+  },
+  "gates": [
+    {"name": "registry_verifier", "status": "PASS"},
+    {"name": "current_goal_audit", "status": "PASS"},
+    {"name": "parser_self_test", "status": "PASS"},
+    {"name": "static_default_off_raw_restore", "status": "PASS_STATIC_SSD1681_FAST_POINT_PROBE_RAW_RESTORE_DEFAULT_OFF"},
+    {"name": "diagnostic_build", "status": "PASS"},
+    {"name": "runner_check_only", "status": "READY_NO_HARDWARE_CONTACT"},
+    {"name": "git_diff_check", "status": "PASS"}
+  ],
+  "check_only_artifact": ".cache/validation/wb55-fast-point-probe-machine-ready-check-20260721/stage-run.json",
+  "execute_command": "pwsh -NoProfile -File tools/run_wb55_ssd1681_read_only_controller_state_raw_restore.ps1 -Execute -FastPointProbe -OutRoot .cache/validation/wb55-fast-point-probe-execute-20260721-r1",
+  "human_boundary": "Only after all machine gates passed: use canonical Chinese aiw operator-prompt to start the bounded observation, then store the selected visual result and note beside the execute artifact. A FAIL or missed observation restores and continues this Goal; it does not complete or stop it.",
+  "claims_not_made": [
+    "no hardware execution yet",
+    "no visual acceptance yet",
+    "no production admission",
+    "no custom LUT or waveform claim",
+    "no Rig, CRIG, art, touch or BLE change"
+  ]
+}

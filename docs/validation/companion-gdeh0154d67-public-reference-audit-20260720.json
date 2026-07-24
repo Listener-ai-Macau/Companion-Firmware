@@ -1,0 +1,71 @@
+{
+  "checks": {
+    "panel_geometry_200x200_is_shared": true,
+    "public_reference_documents_no_flash_local_claim": true,
+    "public_reference_does_not_bind_physical_fpc": true,
+    "shared_base_map_sequence": true,
+    "shared_local_ram_update_control": true,
+    "supplier_only_159_byte_one_second_lut": true,
+    "supplier_partial_has_reset_and_border_lock": true,
+    "target_has_a_compile_time_disabled_cleanup_draw_candidate": true
+  },
+  "claim_scope": "hash and source-command comparison only; public download is research input and not a new firmware LUT source",
+  "failures": [],
+  "machine_status": "PASS_AUDIT_NO_GO_FOR_PROFILE_PROMOTION",
+  "matching_conclusion": {
+    "no_black_flash_profile_proven_clean": false,
+    "physical_fpc_controller_identity_proven": false,
+    "production_profile_allowed": false,
+    "reason": "The public sample corroborates the supplier's local 0xFF command family, but it supplies neither a binding to 0154BN-D67-D2 nor evidence that the observed local residue is eliminated. It is therefore not promoted into firmware as a new operational waveform source.",
+    "source_sequence_correlated": true
+  },
+  "schema_id": "companion.gdeh0154d67.public_reference_audit.v1",
+  "source_manifest": {
+    "current_target_driver": {
+      "bytes": 92426,
+      "path": "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
+      "sha256": "80B91FB50E5D1367BB909613E09371393B6AF271326167E2C140EEE12E8BE3ED"
+    },
+    "official_archive": {
+      "bytes": 2030891,
+      "path": ".cache/reference/good-display-gdeh0154d67/S-GDEH0154D67.rar",
+      "sha256": "C0502FA53648B038CBAE779BBA39C934528E340A3F25E11D8F9B727D672C3C6B"
+    },
+    "official_public_epaper_c": {
+      "bytes": 15765,
+      "path": ".cache/reference/good-display-gdeh0154d67/extracted/S-GDEH0154D67-20221011/HARDWARE/EPD/Display_EPD_W21.c",
+      "sha256": "0A3786E84C05A3FE7817F6364AEC0047517D77B6A953C1CDCC4D0767F1589422"
+    },
+    "official_public_main_c": {
+      "bytes": 6418,
+      "path": ".cache/reference/good-display-gdeh0154d67/extracted/S-GDEH0154D67-20221011/USER/main.c",
+      "sha256": "68B8D900FAF770CC6ABEEC171F064B360D0435CB2CE623D9366630A885546AE8"
+    },
+    "supplier_epaper_c": {
+      "bytes": 19512,
+      "path": "C:/Users/Billy/Desktop/GDEH0154D67-20211203-P-LUT(1s) -1s\u5feb\u5237/EPD_W21/EPAPER.c",
+      "sha256": "7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896"
+    },
+    "supplier_main_c": {
+      "bytes": 8904,
+      "path": "C:/Users/Billy/Desktop/GDEH0154D67-20211203-P-LUT(1s) -1s\u5feb\u5237/User/main.c",
+      "sha256": "66BF0AC2E1C75C28FF95906666E720F3EC584EDD5D721D1293948A1596A315E0"
+    }
+  },
+  "status": "PASS_PUBLIC_REFERENCE_AUDITED_NO_OPERATIONAL_PROFILE_PROMOTION",
+  "word_level_diff_summary": {
+    "public_only": [
+      "EPD_HW_Init_GUI mirror variant",
+      "source comment asserting partial refresh does not flash"
+    ],
+    "shared": [
+      "200x200 RAM geometry via X end 0x18 and Y end 0x00C7",
+      "base map writes 0x24 then 0x26 before normal 0xF7/0x20/BUSY activation",
+      "local path writes 0x24 in a window then 0xFF/0x20/BUSY"
+    ],
+    "supplier_only": [
+      "159-byte LUT_DATA and its 153-byte 0x32 load plus 0xC7 one-second full-frame route",
+      "100 ms base initialization reset and 10 ms local EPD_Dis_Part reset with 0x3C=0x80 border lock"
+    ]
+  }
+}

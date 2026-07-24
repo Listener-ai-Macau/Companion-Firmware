@@ -1,0 +1,75 @@
+{
+  "schema": "companion.v9_expression_rig_daily_rig_screen_demo_machine.v1",
+  "status": "PASS_MACHINE_SCREEN_DEMO",
+  "scope": "Dedicated Daily-down display demonstration only; normal product runtime remains inactive and charging/error remain fail-closed.",
+  "locked_inputs": {
+    "v9_source": {
+      "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+    },
+    "protected_owner_acceptance": {
+      "path": "docs/validation/companion-pet-special-system-owner-acceptance-20260717.json",
+      "sha256": "8A3BDF4BD1254B0D0F4DE13A7F293C3D74587C800339ABD4C61FEB0B7737E227"
+    }
+  },
+  "browser_target_logical_parity": {
+    "path": "docs/validation/companion-v9-expression-rig-target-frame-parity-20260718.json",
+    "sha256": "74E6CACF0922061B3B509A47AA3DA5256E0A1637A6D5316BCBBF00B157966DFD",
+    "status": "PASS",
+    "frame_count": 60,
+    "mismatched_pixels": 0
+  },
+  "flash_image": {
+    "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_daily_rig_screen_asset_provision_down/Companion_Nucleo_WB55RG_DailyRigScreenAssetProvision_down.hex",
+    "sha256": "2BF0FF81118C624902F6178BFCAC3CBB87DF5570C6364BC7AB36690398EC7A28",
+    "bytes": 348525,
+    "target": "NUCLEO-WB55RG Cortex-M4"
+  },
+  "device_serial": {
+    "summary": {
+      "path": "docs/validation/artifacts/companion-v9-expression-rig-target-frame-parity-20260718/device-serial/nucleo-serial-summary.json",
+      "sha256": "E691A4A1B530BA22889096B589C4E794927D5E23147D61EA22B97DBE47C42C7B"
+    },
+    "raw_log": {
+      "path": "docs/validation/artifacts/companion-v9-expression-rig-target-frame-parity-20260718/device-serial/nucleo-serial-raw.log",
+      "sha256": "C52A89B4BD9A3849C2009D5D0C3323FF6A08ED6808AE072998561919B00E03A9"
+    },
+    "port": "COM13",
+    "bytes_read": 4431,
+    "crig_provisioned_or_verified": true,
+    "external_nor_mount": "pass",
+    "cemp_fallback": "disabled",
+    "renderer": "component_compositor",
+    "direction": "daily_down",
+    "score_steps_in_order": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14
+    ],
+    "composed_frames": 15,
+    "rejected_frame_provider_copies": 0
+  },
+  "human_acceptance": {
+    "status": "PENDING",
+    "boundary": "Machine checks prove the shared logical sequence and device playback. Screen appearance, orientation, ghosting and perceived liveliness still require the canonical Chinese operator review."
+  },
+  "forbidden_runtime_paths": [
+    "whole-face CEMP/PBM timeline",
+    "whole-face card loop",
+    "code-drawn face",
+    "legacy art",
+    "custom LUT"
+  ]
+}

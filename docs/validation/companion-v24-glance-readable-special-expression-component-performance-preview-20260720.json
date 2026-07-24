@@ -1,0 +1,6051 @@
+{
+  "schema": "companion.v24_glance_readable_special_expression_component_performance_preview.v1",
+  "status": "PASS_V24_SPECIAL_COMPONENT_PERFORMANCE_RUNTIME_INACTIVE",
+  "claim_scope": "candidate component choreography and target PBM plan only; not a behavior binding, CRIG, firmware flash, panel output, or physical acceptance",
+  "locked_v9_source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "source_component_export_gate": "docs/validation/companion-v24-glance-readable-special-expression-component-export-gate-20260720.json",
+  "runtime_resource_activated": false,
+  "physical_panel_acceptance": false,
+  "selection_policy": {
+    "mode": "explicit_event_performance",
+    "random_state_selection": false,
+    "automatic_cross_state_cycle": false,
+    "daily_auto_only_runs_daily_micro_choreography": true,
+    "special_state_exit_returns_to": "v9_daily",
+    "unavailable_special_states": [
+      "upgrade",
+      "sleep",
+      "error"
+    ],
+    "unavailable_special_state_policy": "fail_closed"
+  },
+  "performances": [
+    {
+      "id": "daily_micro",
+      "event": "daily_auto",
+      "frame_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "inspect_frame_index": 0,
+      "terminal_art_pose": "v9_daily"
+    },
+    {
+      "id": "menu_active",
+      "event": "menu_hold",
+      "exit_event": "menu_exit",
+      "frame_indices": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "inspect_frame_index": 10,
+      "terminal_art_pose": "v9_daily"
+    },
+    {
+      "id": "recording_active",
+      "event": "recording_active",
+      "exit_event": "recording_stop_or_cancel",
+      "frame_indices": [
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "inspect_frame_index": 18,
+      "terminal_art_pose": "v9_daily"
+    },
+    {
+      "id": "charging_active",
+      "event": "charging",
+      "exit_event": "charging_unplug",
+      "frame_indices": [
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28
+      ],
+      "inspect_frame_index": 26,
+      "terminal_art_pose": "v9_daily"
+    }
+  ],
+  "special_state_reassembly_differences_pixels": {
+    "menu_active": 0,
+    "recording_active": 0,
+    "charging_active": 0
+  },
+  "daily_entry_settle_difference_pixels": {
+    "entry": 0,
+    "final_settle": 0
+  },
+  "frames": [
+    {
+      "index": 0,
+      "segment": "daily_entry",
+      "logicalState": "daily",
+      "artPose": "v9_daily",
+      "event": "daily_auto",
+      "phase": "emotion_hold",
+      "postRefreshHoldMs": 800,
+      "layers": [
+        {
+          "component": "v9:charm_star",
+          "name": "charm_star",
+          "role": "charm",
+          "source": "locked_v9_rig_component",
+          "x": 96,
+          "y": 31,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 10,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_brow_open",
+          "name": "left_brow_open",
+          "role": "left_brow",
+          "source": "locked_v9_rig_component",
+          "x": 47,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_brow_open",
+          "name": "right_brow_open",
+          "role": "right_brow",
+          "source": "locked_v9_rig_component",
+          "x": 132,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_cheek_default",
+          "name": "left_cheek_default",
+          "role": "left_cheek",
+          "source": "locked_v9_rig_component",
+          "x": 33,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_cheek_default",
+          "name": "right_cheek_default",
+          "role": "right_cheek",
+          "source": "locked_v9_rig_component",
+          "x": 154,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:mouth_default",
+          "name": "mouth_default",
+          "role": "mouth",
+          "source": "locked_v9_rig_component",
+          "x": 86,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v24-special-expression-performance-preview-20260720/frame-00-daily_entry.pbm",
+      "targetPbmSha256": "B3847DF9CE2D20693C60C9CC7BC1EC8D8B8A3E23641F4521EE71508ABE13CB9E"
+    },
+    {
+      "index": 1,
+      "segment": "daily_highlight_notice",
+      "logicalState": "daily",
+      "artPose": "v9_daily",
+      "event": "daily_auto",
+      "phase": "micro_choreography",
+      "postRefreshHoldMs": 180,
+      "layers": [
+        {
+          "component": "v9:charm_star",
+          "name": "charm_star",
+          "role": "charm",
+          "source": "locked_v9_rig_component",
+          "x": 96,
+          "y": 31,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 10,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_brow_open",
+          "name": "left_brow_open",
+          "role": "left_brow",
+          "source": "locked_v9_rig_component",
+          "x": 47,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_brow_open",
+          "name": "right_brow_open",
+          "role": "right_brow",
+          "source": "locked_v9_rig_component",
+          "x": 132,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 43,
+          "y": 111,
+          "offset": [
+            1,
+            -1
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 126,
+          "y": 111,
+          "offset": [
+            1,
+            -1
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_cheek_default",
+          "name": "left_cheek_default",
+          "role": "left_cheek",
+          "source": "locked_v9_rig_component",
+          "x": 33,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_cheek_default",
+          "name": "right_cheek_default",
+          "role": "right_cheek",
+          "source": "locked_v9_rig_component",
+          "x": 154,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:mouth_default",
+          "name": "mouth_default",
+          "role": "mouth",
+          "source": "locked_v9_rig_component",
+          "x": 86,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v24-special-expression-performance-preview-20260720/frame-01-daily_highlight_notice.pbm",
+      "targetPbmSha256": "4A9ECFEED7CFD3F2795C77D7D0DD8B03AAC58D6819FFB2F8D102ECA3DE71B2A5"
+    },
+    {
+      "index": 2,
+      "segment": "daily_star_lift",
+      "logicalState": "daily",
+      "artPose": "v9_daily",
+      "event": "daily_auto",
+      "phase": "micro_choreography",
+      "postRefreshHoldMs": 220,
+      "layers": [
+        {
+          "component": "v9:charm_star",
+          "name": "charm_star",
+          "role": "charm",
+          "source": "locked_v9_rig_component",
+          "x": 97,
+          "y": 29,
+          "offset": [
+            1,
+            -2
+          ],
+          "z_index": 10,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_brow_open",
+          "name": "left_brow_open",
+          "role": "left_brow",
+          "source": "locked_v9_rig_component",
+          "x": 47,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_brow_open",
+          "name": "right_brow_open",
+          "role": "right_brow",
+          "source": "locked_v9_rig_component",
+          "x": 132,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_cheek_default",
+          "name": "left_cheek_default",
+          "role": "left_cheek",
+          "source": "locked_v9_rig_component",
+          "x": 33,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_cheek_default",
+          "name": "right_cheek_default",
+          "role": "right_cheek",
+          "source": "locked_v9_rig_component",
+          "x": 154,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:mouth_default",
+          "name": "mouth_default",
+          "role": "mouth",
+          "source": "locked_v9_rig_component",
+          "x": 86,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v24-special-expression-performance-preview-20260720/frame-02-daily_star_lift.pbm",
+      "targetPbmSha256": "72BFE8790FD7C78228DA99881F47D31687CA56BEF40D3E048A95567AB9BF23FB"
+    },
+    {
+      "index": 3,
+      "segment": "daily_settle",
+      "logicalState": "daily",
+      "artPose": "v9_daily",
+      "event": "daily_auto",
+      "phase": "emotion_hold",
+      "postRefreshHoldMs": 1000,
+      "layers": [
+        {
+          "component": "v9:charm_star",
+          "name": "charm_star",
+          "role": "charm",
+          "source": "locked_v9_rig_component",
+          "x": 96,
+          "y": 31,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 10,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_brow_open",
+          "name": "left_brow_open",
+          "role": "left_brow",
+          "source": "locked_v9_rig_component",
+          "x": 47,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_brow_open",
+          "name": "right_brow_open",
+          "role": "right_brow",
+          "source": "locked_v9_rig_component",
+          "x": 132,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_cheek_default",
+          "name": "left_cheek_default",
+          "role": "left_cheek",
+          "source": "locked_v9_rig_component",
+          "x": 33,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_cheek_default",
+          "name": "right_cheek_default",
+          "role": "right_cheek",
+          "source": "locked_v9_rig_component",
+          "x": 154,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:mouth_default",
+          "name": "mouth_default",
+          "role": "mouth",
+          "source": "locked_v9_rig_component",
+          "x": 86,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v24-special-expression-performance-preview-20260720/frame-03-daily_settle.pbm",
+      "targetPbmSha256": "B3847DF9CE2D20693C60C9CC7BC1EC8D8B8A3E23641F4521EE71508ABE13CB9E"
+    },
+    {
+      "index": 4,
+      "segment": "menu_active_daily_entry",
+      "logicalState": "daily",
+      "artPose": "v9_daily",
+      "event": "menu_hold",
+      "phase": "entry",
+      "postRefreshHoldMs": 700,
+      "layers": [
+        {
+          "component": "v9:charm_star",
+          "name": "charm_star",
+          "role": "charm",
+          "source": "locked_v9_rig_component",
+          "x": 96,
+          "y": 31,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 10,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_brow_open",
+          "name": "left_brow_open",
+          "role": "left_brow",
+          "source": "locked_v9_rig_component",
+          "x": 47,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_brow_open",
+          "name": "right_brow_open",
+          "role": "right_brow",
+          "source": "locked_v9_rig_component",
+          "x": 132,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_cheek_default",
+          "name": "left_cheek_default",
+          "role": "left_cheek",
+          "source": "locked_v9_rig_component",
+          "x": 33,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_cheek_default",
+          "name": "right_cheek_default",
+          "role": "right_cheek",
+          "source": "locked_v9_rig_component",
+          "x": 154,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:mouth_default",
+          "name": "mouth_default",
+          "role": "mouth",
+          "source": "locked_v9_rig_component",
+          "x": 86,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v24-special-expression-performance-preview-20260720/frame-04-menu_active_daily_entry.pbm",
+      "targetPbmSha256": "B3847DF9CE2D20693C60C9CC7BC1EC8D8B8A3E23641F4521EE71508ABE13CB9E"
+    },
+    {
+      "index": 5,
+      "segment": "menu_active_daily_notice",
+      "logicalState": "daily",
+      "artPose": "v9_daily",
+      "event": "menu_hold",
+      "phase": "prepare",
+      "postRefreshHoldMs": 380,
+      "layers": [
+        {
+          "component": "v9:charm_star",
+          "name": "charm_star",
+          "role": "charm",
+          "source": "locked_v9_rig_component",
+          "x": 96,
+          "y": 31,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 10,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_brow_open",
+          "name": "left_brow_open",
+          "role": "left_brow",
+          "source": "locked_v9_rig_component",
+          "x": 47,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_brow_open",
+          "name": "right_brow_open",
+          "role": "right_brow",
+          "source": "locked_v9_rig_component",
+          "x": 132,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 43,
+          "y": 111,
+          "offset": [
+            1,
+            -1
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 126,
+          "y": 111,
+          "offset": [
+            1,
+            -1
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_cheek_default",
+          "name": "left_cheek_default",
+          "role": "left_cheek",
+          "source": "locked_v9_rig_component",
+          "x": 33,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_cheek_default",
+          "name": "right_cheek_default",
+          "role": "right_cheek",
+          "source": "locked_v9_rig_component",
+          "x": 154,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:mouth_default",
+          "name": "mouth_default",
+          "role": "mouth",
+          "source": "locked_v9_rig_component",
+          "x": 86,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v24-special-expression-performance-preview-20260720/frame-05-menu_active_daily_notice.pbm",
+      "targetPbmSha256": "4A9ECFEED7CFD3F2795C77D7D0DD8B03AAC58D6819FFB2F8D102ECA3DE71B2A5"
+    },
+    {
+      "index": 6,
+      "segment": "menu_active_face_arrival",
+      "logicalState": "menu_active",
+      "artPose": "menu_active",
+      "event": "menu_hold",
+      "phase": "transition",
+      "postRefreshHoldMs": 420,
+      "layers": [
+        {
+          "component": "v24:v24_menu_active__left_brow",
+          "name": "v24_menu_active__left_brow",
+          "role": "left_brow",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 47,
+          "y": 86,
+          "offset": [
+            0,
+            -2
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_menu_active__right_brow",
+          "name": "v24_menu_active__right_brow",
+          "role": "right_brow",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 128,
+          "y": 86,
+          "offset": [
+            0,
+            -2
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 111,
+          "offset": [
+            0,
+            -1
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 111,
+          "offset": [
+            0,
+            -1
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v24:v24_menu_active__left_cheek",
+          "name": "v24_menu_active__left_cheek",
+          "role": "left_cheek",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 31,
+          "y": 158,
+          "offset": [
+            0,
+            1
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_menu_active__right_cheek",
+          "name": "v24_menu_active__right_cheek",
+          "role": "right_cheek",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 154,
+          "y": 158,
+          "offset": [
+            0,
+            1
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_menu_active__mouth",
+          "name": "v24_menu_active__mouth",
+          "role": "mouth",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 85,
+          "y": 161,
+          "offset": [
+            0,
+            1
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v24-special-expression-performance-preview-20260720/frame-06-menu_active_face_arrival.pbm",
+      "targetPbmSha256": "3F7AD82F24C5DF7756D3EB5D569B2B89BCBB4B601131C092774E9C86FC98C0B6"
+    },
+    {
+      "index": 7,
+      "segment": "menu_active_face_settle",
+      "logicalState": "menu_active",
+      "artPose": "menu_active",
+      "event": "menu_hold",
+      "phase": "transition",
+      "postRefreshHoldMs": 420,
+      "layers": [
+        {
+          "component": "v24:v24_menu_active__left_brow",
+          "name": "v24_menu_active__left_brow",
+          "role": "left_brow",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 47,
+          "y": 88,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_menu_active__right_brow",
+          "name": "v24_menu_active__right_brow",
+          "role": "right_brow",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 128,
+          "y": 88,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v24:v24_menu_active__left_cheek",
+          "name": "v24_menu_active__left_cheek",
+          "role": "left_cheek",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 31,
+          "y": 157,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_menu_active__right_cheek",
+          "name": "v24_menu_active__right_cheek",
+          "role": "right_cheek",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 154,
+          "y": 157,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_menu_active__mouth",
+          "name": "v24_menu_active__mouth",
+          "role": "mouth",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 85,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v24-special-expression-performance-preview-20260720/frame-07-menu_active_face_settle.pbm",
+      "targetPbmSha256": "196EA5D13506FA45EAC14239B7569193381FDFE275D50F0A75C0EA95B40A1614"
+    },
+    {
+      "index": 8,
+      "segment": "menu_active_dots_lead",
+      "logicalState": "menu_active",
+      "artPose": "menu_active",
+      "event": "menu_hold",
+      "phase": "micro_choreography",
+      "postRefreshHoldMs": 300,
+      "layers": [
+        {
+          "component": "v24:v24_menu_active__selection_dot_left",
+          "name": "v24_menu_active__selection_dot_left",
+          "role": "accent",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 74,
+          "y": 61,
+          "offset": [
+            0,
+            -1
+          ],
+          "z_index": 10,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_menu_active__left_brow",
+          "name": "v24_menu_active__left_brow",
+          "role": "left_brow",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 47,
+          "y": 88,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_menu_active__right_brow",
+          "name": "v24_menu_active__right_brow",
+          "role": "right_brow",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 128,
+          "y": 88,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 111,
+          "offset": [
+            0,
+            -1
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 111,
+          "offset": [
+            0,
+            -1
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v24:v24_menu_active__left_cheek",
+          "name": "v24_menu_active__left_cheek",
+          "role": "left_cheek",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 31,
+          "y": 157,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_menu_active__right_cheek",
+          "name": "v24_menu_active__right_cheek",
+          "role": "right_cheek",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 154,
+          "y": 157,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_menu_active__mouth",
+          "name": "v24_menu_active__mouth",
+          "role": "mouth",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 85,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v24-special-expression-performance-preview-20260720/frame-08-menu_active_dots_lead.pbm",
+      "targetPbmSha256": "8E696A1A66BBB837E3FB4F3324B2F71B1644EA68A7D0AA492B022B6743311B8D"
+    },
+    {
+      "index": 9,
+      "segment": "menu_active_dots_response",
+      "logicalState": "menu_active",
+      "artPose": "menu_active",
+      "event": "menu_hold",
+      "phase": "micro_choreography",
+      "postRefreshHoldMs": 300,
+      "layers": [
+        {
+          "component": "v24:v24_menu_active__selection_dot_center",
+          "name": "v24_menu_active__selection_dot_center",
+          "role": "accent",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 96,
+          "y": 61,
+          "offset": [
+            0,
+            -1
+          ],
+          "z_index": 10,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_menu_active__selection_dot_left",
+          "name": "v24_menu_active__selection_dot_left",
+          "role": "accent",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 74,
+          "y": 61,
+          "offset": [
+            0,
+            -1
+          ],
+          "z_index": 10,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_menu_active__left_brow",
+          "name": "v24_menu_active__left_brow",
+          "role": "left_brow",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 47,
+          "y": 88,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_menu_active__right_brow",
+          "name": "v24_menu_active__right_brow",
+          "role": "right_brow",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 128,
+          "y": 88,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 111,
+          "offset": [
+            0,
+            -1
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 111,
+          "offset": [
+            0,
+            -1
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v24:v24_menu_active__left_cheek",
+          "name": "v24_menu_active__left_cheek",
+          "role": "left_cheek",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 31,
+          "y": 157,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_menu_active__right_cheek",
+          "name": "v24_menu_active__right_cheek",
+          "role": "right_cheek",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 154,
+          "y": 157,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_menu_active__mouth",
+          "name": "v24_menu_active__mouth",
+          "role": "mouth",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 85,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v24-special-expression-performance-preview-20260720/frame-09-menu_active_dots_response.pbm",
+      "targetPbmSha256": "A9AFEC222B6619036B8F1A57698989A4DFD099C074776BE7766ACBDB6741C1D3"
+    },
+    {
+      "index": 10,
+      "segment": "menu_active_state_hold",
+      "logicalState": "menu_active",
+      "artPose": "menu_active",
+      "event": "menu_hold",
+      "phase": "emotion_hold",
+      "postRefreshHoldMs": 1400,
+      "layers": [
+        {
+          "component": "v24:v24_menu_active__selection_dot_center",
+          "name": "v24_menu_active__selection_dot_center",
+          "role": "accent",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 96,
+          "y": 62,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 10,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_menu_active__selection_dot_left",
+          "name": "v24_menu_active__selection_dot_left",
+          "role": "accent",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 74,
+          "y": 62,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 10,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_menu_active__selection_dot_right",
+          "name": "v24_menu_active__selection_dot_right",
+          "role": "accent",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 117,
+          "y": 62,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 10,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_menu_active__left_brow",
+          "name": "v24_menu_active__left_brow",
+          "role": "left_brow",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 47,
+          "y": 88,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_menu_active__right_brow",
+          "name": "v24_menu_active__right_brow",
+          "role": "right_brow",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 128,
+          "y": 88,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v24:v24_menu_active__left_cheek",
+          "name": "v24_menu_active__left_cheek",
+          "role": "left_cheek",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 31,
+          "y": 157,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_menu_active__right_cheek",
+          "name": "v24_menu_active__right_cheek",
+          "role": "right_cheek",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 154,
+          "y": 157,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_menu_active__mouth",
+          "name": "v24_menu_active__mouth",
+          "role": "mouth",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 85,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v24-special-expression-performance-preview-20260720/frame-10-menu_active_state_hold.pbm",
+      "targetPbmSha256": "9BDE5DAA2E03D5FB4322932F0B2A19D1CAD0A6AFB3793EDBD3428CAF8C276890"
+    },
+    {
+      "index": 11,
+      "segment": "menu_active_dots_release",
+      "logicalState": "menu_active",
+      "artPose": "menu_active",
+      "event": "menu_exit",
+      "phase": "release",
+      "postRefreshHoldMs": 360,
+      "layers": [
+        {
+          "component": "v24:v24_menu_active__left_brow",
+          "name": "v24_menu_active__left_brow",
+          "role": "left_brow",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 47,
+          "y": 88,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_menu_active__right_brow",
+          "name": "v24_menu_active__right_brow",
+          "role": "right_brow",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 128,
+          "y": 88,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 111,
+          "offset": [
+            0,
+            -1
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 111,
+          "offset": [
+            0,
+            -1
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v24:v24_menu_active__left_cheek",
+          "name": "v24_menu_active__left_cheek",
+          "role": "left_cheek",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 31,
+          "y": 157,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_menu_active__right_cheek",
+          "name": "v24_menu_active__right_cheek",
+          "role": "right_cheek",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 154,
+          "y": 157,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_menu_active__mouth",
+          "name": "v24_menu_active__mouth",
+          "role": "mouth",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 85,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v24-special-expression-performance-preview-20260720/frame-11-menu_active_dots_release.pbm",
+      "targetPbmSha256": "D8E611D0FFE0A3FF205742B3A78C1C077379C417D19C876AC66E99743EAF3651"
+    },
+    {
+      "index": 12,
+      "segment": "menu_active_daily_settle",
+      "logicalState": "daily",
+      "artPose": "v9_daily",
+      "event": "menu_exit",
+      "phase": "settle",
+      "postRefreshHoldMs": 900,
+      "layers": [
+        {
+          "component": "v9:charm_star",
+          "name": "charm_star",
+          "role": "charm",
+          "source": "locked_v9_rig_component",
+          "x": 96,
+          "y": 31,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 10,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_brow_open",
+          "name": "left_brow_open",
+          "role": "left_brow",
+          "source": "locked_v9_rig_component",
+          "x": 47,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_brow_open",
+          "name": "right_brow_open",
+          "role": "right_brow",
+          "source": "locked_v9_rig_component",
+          "x": 132,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_cheek_default",
+          "name": "left_cheek_default",
+          "role": "left_cheek",
+          "source": "locked_v9_rig_component",
+          "x": 33,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_cheek_default",
+          "name": "right_cheek_default",
+          "role": "right_cheek",
+          "source": "locked_v9_rig_component",
+          "x": 154,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:mouth_default",
+          "name": "mouth_default",
+          "role": "mouth",
+          "source": "locked_v9_rig_component",
+          "x": 86,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v24-special-expression-performance-preview-20260720/frame-12-menu_active_daily_settle.pbm",
+      "targetPbmSha256": "B3847DF9CE2D20693C60C9CC7BC1EC8D8B8A3E23641F4521EE71508ABE13CB9E"
+    },
+    {
+      "index": 13,
+      "segment": "recording_active_daily_entry",
+      "logicalState": "daily",
+      "artPose": "v9_daily",
+      "event": "recording_active",
+      "phase": "entry",
+      "postRefreshHoldMs": 700,
+      "layers": [
+        {
+          "component": "v9:charm_star",
+          "name": "charm_star",
+          "role": "charm",
+          "source": "locked_v9_rig_component",
+          "x": 96,
+          "y": 31,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 10,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_brow_open",
+          "name": "left_brow_open",
+          "role": "left_brow",
+          "source": "locked_v9_rig_component",
+          "x": 47,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_brow_open",
+          "name": "right_brow_open",
+          "role": "right_brow",
+          "source": "locked_v9_rig_component",
+          "x": 132,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_cheek_default",
+          "name": "left_cheek_default",
+          "role": "left_cheek",
+          "source": "locked_v9_rig_component",
+          "x": 33,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_cheek_default",
+          "name": "right_cheek_default",
+          "role": "right_cheek",
+          "source": "locked_v9_rig_component",
+          "x": 154,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:mouth_default",
+          "name": "mouth_default",
+          "role": "mouth",
+          "source": "locked_v9_rig_component",
+          "x": 86,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v24-special-expression-performance-preview-20260720/frame-13-recording_active_daily_entry.pbm",
+      "targetPbmSha256": "B3847DF9CE2D20693C60C9CC7BC1EC8D8B8A3E23641F4521EE71508ABE13CB9E"
+    },
+    {
+      "index": 14,
+      "segment": "recording_active_daily_notice",
+      "logicalState": "daily",
+      "artPose": "v9_daily",
+      "event": "recording_active",
+      "phase": "prepare",
+      "postRefreshHoldMs": 380,
+      "layers": [
+        {
+          "component": "v9:charm_star",
+          "name": "charm_star",
+          "role": "charm",
+          "source": "locked_v9_rig_component",
+          "x": 96,
+          "y": 31,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 10,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_brow_open",
+          "name": "left_brow_open",
+          "role": "left_brow",
+          "source": "locked_v9_rig_component",
+          "x": 47,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_brow_open",
+          "name": "right_brow_open",
+          "role": "right_brow",
+          "source": "locked_v9_rig_component",
+          "x": 132,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 43,
+          "y": 111,
+          "offset": [
+            1,
+            -1
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 126,
+          "y": 111,
+          "offset": [
+            1,
+            -1
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_cheek_default",
+          "name": "left_cheek_default",
+          "role": "left_cheek",
+          "source": "locked_v9_rig_component",
+          "x": 33,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_cheek_default",
+          "name": "right_cheek_default",
+          "role": "right_cheek",
+          "source": "locked_v9_rig_component",
+          "x": 154,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:mouth_default",
+          "name": "mouth_default",
+          "role": "mouth",
+          "source": "locked_v9_rig_component",
+          "x": 86,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v24-special-expression-performance-preview-20260720/frame-14-recording_active_daily_notice.pbm",
+      "targetPbmSha256": "4A9ECFEED7CFD3F2795C77D7D0DD8B03AAC58D6819FFB2F8D102ECA3DE71B2A5"
+    },
+    {
+      "index": 15,
+      "segment": "recording_active_face_arrival",
+      "logicalState": "recording_active",
+      "artPose": "recording_active",
+      "event": "recording_active",
+      "phase": "transition",
+      "postRefreshHoldMs": 420,
+      "layers": [
+        {
+          "component": "v24:v24_recording_active__left_brow",
+          "name": "v24_recording_active__left_brow",
+          "role": "left_brow",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 47,
+          "y": 82,
+          "offset": [
+            0,
+            -2
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_recording_active__right_brow",
+          "name": "v24_recording_active__right_brow",
+          "role": "right_brow",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 132,
+          "y": 82,
+          "offset": [
+            0,
+            -2
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 111,
+          "offset": [
+            0,
+            -1
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 111,
+          "offset": [
+            0,
+            -1
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v24:v24_recording_active__left_cheek",
+          "name": "v24_recording_active__left_cheek",
+          "role": "left_cheek",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 32,
+          "y": 158,
+          "offset": [
+            0,
+            1
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_recording_active__right_cheek",
+          "name": "v24_recording_active__right_cheek",
+          "role": "right_cheek",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 152,
+          "y": 158,
+          "offset": [
+            0,
+            1
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_recording_active__mouth",
+          "name": "v24_recording_active__mouth",
+          "role": "mouth",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 89,
+          "y": 159,
+          "offset": [
+            0,
+            1
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v24-special-expression-performance-preview-20260720/frame-15-recording_active_face_arrival.pbm",
+      "targetPbmSha256": "0CE248EA42925B6D5B500DE54FFF0078CCF7ACFE25EE7A62110C42987C17AE6B"
+    },
+    {
+      "index": 16,
+      "segment": "recording_active_face_settle",
+      "logicalState": "recording_active",
+      "artPose": "recording_active",
+      "event": "recording_active",
+      "phase": "transition",
+      "postRefreshHoldMs": 420,
+      "layers": [
+        {
+          "component": "v24:v24_recording_active__left_brow",
+          "name": "v24_recording_active__left_brow",
+          "role": "left_brow",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 47,
+          "y": 84,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_recording_active__right_brow",
+          "name": "v24_recording_active__right_brow",
+          "role": "right_brow",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 132,
+          "y": 84,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v24:v24_recording_active__left_cheek",
+          "name": "v24_recording_active__left_cheek",
+          "role": "left_cheek",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 32,
+          "y": 157,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_recording_active__right_cheek",
+          "name": "v24_recording_active__right_cheek",
+          "role": "right_cheek",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 152,
+          "y": 157,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_recording_active__mouth",
+          "name": "v24_recording_active__mouth",
+          "role": "mouth",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 89,
+          "y": 158,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v24-special-expression-performance-preview-20260720/frame-16-recording_active_face_settle.pbm",
+      "targetPbmSha256": "08EA7C0DF33BF7B9D11379081D16A54D65590328A4588A7A05E26B2D4F2A9053"
+    },
+    {
+      "index": 17,
+      "segment": "recording_active_listening_inner",
+      "logicalState": "recording_active",
+      "artPose": "recording_active",
+      "event": "recording_active",
+      "phase": "micro_choreography",
+      "postRefreshHoldMs": 320,
+      "layers": [
+        {
+          "component": "v24:v24_recording_active__left_brow",
+          "name": "v24_recording_active__left_brow",
+          "role": "left_brow",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 47,
+          "y": 84,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_recording_active__right_brow",
+          "name": "v24_recording_active__right_brow",
+          "role": "right_brow",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 132,
+          "y": 84,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 111,
+          "offset": [
+            0,
+            -1
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 111,
+          "offset": [
+            0,
+            -1
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v24:v24_recording_active__left_listening_inner",
+          "name": "v24_recording_active__left_listening_inner",
+          "role": "left_listening_arc",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 12,
+          "y": 122,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 35,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_recording_active__right_listening_inner",
+          "name": "v24_recording_active__right_listening_inner",
+          "role": "right_listening_arc",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 181,
+          "y": 122,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 35,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_recording_active__left_cheek",
+          "name": "v24_recording_active__left_cheek",
+          "role": "left_cheek",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 32,
+          "y": 157,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_recording_active__right_cheek",
+          "name": "v24_recording_active__right_cheek",
+          "role": "right_cheek",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 152,
+          "y": 157,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_recording_active__mouth",
+          "name": "v24_recording_active__mouth",
+          "role": "mouth",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 89,
+          "y": 158,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v24-special-expression-performance-preview-20260720/frame-17-recording_active_listening_inner.pbm",
+      "targetPbmSha256": "2C8123058CC502BFD033051D36F933C83B6BB8EB133B4BA5801D655AB956B66A"
+    },
+    {
+      "index": 18,
+      "segment": "recording_active_state_hold",
+      "logicalState": "recording_active",
+      "artPose": "recording_active",
+      "event": "recording_active",
+      "phase": "emotion_hold",
+      "postRefreshHoldMs": 1400,
+      "layers": [
+        {
+          "component": "v24:v24_recording_active__left_brow",
+          "name": "v24_recording_active__left_brow",
+          "role": "left_brow",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 47,
+          "y": 84,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_recording_active__right_brow",
+          "name": "v24_recording_active__right_brow",
+          "role": "right_brow",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 132,
+          "y": 84,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v24:v24_recording_active__left_listening_inner",
+          "name": "v24_recording_active__left_listening_inner",
+          "role": "left_listening_arc",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 12,
+          "y": 122,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 35,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_recording_active__left_listening_outer",
+          "name": "v24_recording_active__left_listening_outer",
+          "role": "left_listening_arc",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 0,
+          "y": 115,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 35,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_recording_active__right_listening_inner",
+          "name": "v24_recording_active__right_listening_inner",
+          "role": "right_listening_arc",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 181,
+          "y": 122,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 35,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_recording_active__right_listening_outer",
+          "name": "v24_recording_active__right_listening_outer",
+          "role": "right_listening_arc",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 190,
+          "y": 115,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 35,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_recording_active__left_cheek",
+          "name": "v24_recording_active__left_cheek",
+          "role": "left_cheek",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 32,
+          "y": 157,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_recording_active__right_cheek",
+          "name": "v24_recording_active__right_cheek",
+          "role": "right_cheek",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 152,
+          "y": 157,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_recording_active__mouth",
+          "name": "v24_recording_active__mouth",
+          "role": "mouth",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 89,
+          "y": 158,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v24-special-expression-performance-preview-20260720/frame-18-recording_active_state_hold.pbm",
+      "targetPbmSha256": "279D5D13A791A41C79B3179CCC323CC929A50182185AA93897E4028C47FD7CF3"
+    },
+    {
+      "index": 19,
+      "segment": "recording_active_listening_release",
+      "logicalState": "recording_active",
+      "artPose": "recording_active",
+      "event": "recording_stop_or_cancel",
+      "phase": "release",
+      "postRefreshHoldMs": 360,
+      "layers": [
+        {
+          "component": "v24:v24_recording_active__left_brow",
+          "name": "v24_recording_active__left_brow",
+          "role": "left_brow",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 47,
+          "y": 84,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_recording_active__right_brow",
+          "name": "v24_recording_active__right_brow",
+          "role": "right_brow",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 132,
+          "y": 84,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 111,
+          "offset": [
+            0,
+            -1
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 111,
+          "offset": [
+            0,
+            -1
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v24:v24_recording_active__left_cheek",
+          "name": "v24_recording_active__left_cheek",
+          "role": "left_cheek",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 32,
+          "y": 157,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_recording_active__right_cheek",
+          "name": "v24_recording_active__right_cheek",
+          "role": "right_cheek",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 152,
+          "y": 157,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_recording_active__mouth",
+          "name": "v24_recording_active__mouth",
+          "role": "mouth",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 89,
+          "y": 158,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v24-special-expression-performance-preview-20260720/frame-19-recording_active_listening_release.pbm",
+      "targetPbmSha256": "38C4B0C655BE64834A7C7AE2BC468FB53DFEE66548FBFF3CD86C69A6D53B5223"
+    },
+    {
+      "index": 20,
+      "segment": "recording_active_daily_settle",
+      "logicalState": "daily",
+      "artPose": "v9_daily",
+      "event": "recording_stop_or_cancel",
+      "phase": "settle",
+      "postRefreshHoldMs": 900,
+      "layers": [
+        {
+          "component": "v9:charm_star",
+          "name": "charm_star",
+          "role": "charm",
+          "source": "locked_v9_rig_component",
+          "x": 96,
+          "y": 31,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 10,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_brow_open",
+          "name": "left_brow_open",
+          "role": "left_brow",
+          "source": "locked_v9_rig_component",
+          "x": 47,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_brow_open",
+          "name": "right_brow_open",
+          "role": "right_brow",
+          "source": "locked_v9_rig_component",
+          "x": 132,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_cheek_default",
+          "name": "left_cheek_default",
+          "role": "left_cheek",
+          "source": "locked_v9_rig_component",
+          "x": 33,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_cheek_default",
+          "name": "right_cheek_default",
+          "role": "right_cheek",
+          "source": "locked_v9_rig_component",
+          "x": 154,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:mouth_default",
+          "name": "mouth_default",
+          "role": "mouth",
+          "source": "locked_v9_rig_component",
+          "x": 86,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v24-special-expression-performance-preview-20260720/frame-20-recording_active_daily_settle.pbm",
+      "targetPbmSha256": "B3847DF9CE2D20693C60C9CC7BC1EC8D8B8A3E23641F4521EE71508ABE13CB9E"
+    },
+    {
+      "index": 21,
+      "segment": "charging_active_daily_entry",
+      "logicalState": "daily",
+      "artPose": "v9_daily",
+      "event": "charging",
+      "phase": "entry",
+      "postRefreshHoldMs": 700,
+      "layers": [
+        {
+          "component": "v9:charm_star",
+          "name": "charm_star",
+          "role": "charm",
+          "source": "locked_v9_rig_component",
+          "x": 96,
+          "y": 31,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 10,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_brow_open",
+          "name": "left_brow_open",
+          "role": "left_brow",
+          "source": "locked_v9_rig_component",
+          "x": 47,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_brow_open",
+          "name": "right_brow_open",
+          "role": "right_brow",
+          "source": "locked_v9_rig_component",
+          "x": 132,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_cheek_default",
+          "name": "left_cheek_default",
+          "role": "left_cheek",
+          "source": "locked_v9_rig_component",
+          "x": 33,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_cheek_default",
+          "name": "right_cheek_default",
+          "role": "right_cheek",
+          "source": "locked_v9_rig_component",
+          "x": 154,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:mouth_default",
+          "name": "mouth_default",
+          "role": "mouth",
+          "source": "locked_v9_rig_component",
+          "x": 86,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v24-special-expression-performance-preview-20260720/frame-21-charging_active_daily_entry.pbm",
+      "targetPbmSha256": "B3847DF9CE2D20693C60C9CC7BC1EC8D8B8A3E23641F4521EE71508ABE13CB9E"
+    },
+    {
+      "index": 22,
+      "segment": "charging_active_daily_notice",
+      "logicalState": "daily",
+      "artPose": "v9_daily",
+      "event": "charging",
+      "phase": "prepare",
+      "postRefreshHoldMs": 380,
+      "layers": [
+        {
+          "component": "v9:charm_star",
+          "name": "charm_star",
+          "role": "charm",
+          "source": "locked_v9_rig_component",
+          "x": 96,
+          "y": 31,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 10,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_brow_open",
+          "name": "left_brow_open",
+          "role": "left_brow",
+          "source": "locked_v9_rig_component",
+          "x": 47,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_brow_open",
+          "name": "right_brow_open",
+          "role": "right_brow",
+          "source": "locked_v9_rig_component",
+          "x": 132,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 43,
+          "y": 111,
+          "offset": [
+            1,
+            -1
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 126,
+          "y": 111,
+          "offset": [
+            1,
+            -1
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_cheek_default",
+          "name": "left_cheek_default",
+          "role": "left_cheek",
+          "source": "locked_v9_rig_component",
+          "x": 33,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_cheek_default",
+          "name": "right_cheek_default",
+          "role": "right_cheek",
+          "source": "locked_v9_rig_component",
+          "x": 154,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:mouth_default",
+          "name": "mouth_default",
+          "role": "mouth",
+          "source": "locked_v9_rig_component",
+          "x": 86,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v24-special-expression-performance-preview-20260720/frame-22-charging_active_daily_notice.pbm",
+      "targetPbmSha256": "4A9ECFEED7CFD3F2795C77D7D0DD8B03AAC58D6819FFB2F8D102ECA3DE71B2A5"
+    },
+    {
+      "index": 23,
+      "segment": "charging_active_face_arrival",
+      "logicalState": "charging_active",
+      "artPose": "charging_active",
+      "event": "charging",
+      "phase": "transition",
+      "postRefreshHoldMs": 420,
+      "layers": [
+        {
+          "component": "v24:v24_charging_active__left_brow",
+          "name": "v24_charging_active__left_brow",
+          "role": "left_brow",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 46,
+          "y": 87,
+          "offset": [
+            0,
+            -2
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_charging_active__right_brow",
+          "name": "v24_charging_active__right_brow",
+          "role": "right_brow",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 130,
+          "y": 87,
+          "offset": [
+            0,
+            -2
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 111,
+          "offset": [
+            0,
+            -1
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 111,
+          "offset": [
+            0,
+            -1
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v24:v24_charging_active__left_cheek",
+          "name": "v24_charging_active__left_cheek",
+          "role": "left_cheek",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 32,
+          "y": 154,
+          "offset": [
+            0,
+            1
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_charging_active__right_cheek",
+          "name": "v24_charging_active__right_cheek",
+          "role": "right_cheek",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 155,
+          "y": 154,
+          "offset": [
+            0,
+            1
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_charging_active__mouth",
+          "name": "v24_charging_active__mouth",
+          "role": "mouth",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 85,
+          "y": 159,
+          "offset": [
+            0,
+            1
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v24-special-expression-performance-preview-20260720/frame-23-charging_active_face_arrival.pbm",
+      "targetPbmSha256": "92D14AC1B0AF0EB39F36B07CAE732605360F45881A96E16F802D57B505BD0502"
+    },
+    {
+      "index": 24,
+      "segment": "charging_active_face_settle",
+      "logicalState": "charging_active",
+      "artPose": "charging_active",
+      "event": "charging",
+      "phase": "transition",
+      "postRefreshHoldMs": 420,
+      "layers": [
+        {
+          "component": "v24:v24_charging_active__left_brow",
+          "name": "v24_charging_active__left_brow",
+          "role": "left_brow",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 46,
+          "y": 89,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_charging_active__right_brow",
+          "name": "v24_charging_active__right_brow",
+          "role": "right_brow",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 130,
+          "y": 89,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v24:v24_charging_active__left_cheek",
+          "name": "v24_charging_active__left_cheek",
+          "role": "left_cheek",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 32,
+          "y": 153,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_charging_active__right_cheek",
+          "name": "v24_charging_active__right_cheek",
+          "role": "right_cheek",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 155,
+          "y": 153,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_charging_active__mouth",
+          "name": "v24_charging_active__mouth",
+          "role": "mouth",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 85,
+          "y": 158,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v24-special-expression-performance-preview-20260720/frame-24-charging_active_face_settle.pbm",
+      "targetPbmSha256": "04EF2ED694F825849B699F3B972C343452EF939882804CE2C28DFCA9FB6C7C0E"
+    },
+    {
+      "index": 25,
+      "segment": "charging_active_breathing_lead",
+      "logicalState": "charging_active",
+      "artPose": "charging_active",
+      "event": "charging",
+      "phase": "micro_choreography",
+      "postRefreshHoldMs": 360,
+      "layers": [
+        {
+          "component": "v24:v24_charging_active__breathing_arc_left",
+          "name": "v24_charging_active__breathing_arc_left",
+          "role": "accent",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 64,
+          "y": 39,
+          "offset": [
+            0,
+            -1
+          ],
+          "z_index": 10,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_charging_active__left_brow",
+          "name": "v24_charging_active__left_brow",
+          "role": "left_brow",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 46,
+          "y": 89,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_charging_active__right_brow",
+          "name": "v24_charging_active__right_brow",
+          "role": "right_brow",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 130,
+          "y": 89,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 111,
+          "offset": [
+            0,
+            -1
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 111,
+          "offset": [
+            0,
+            -1
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v24:v24_charging_active__left_cheek",
+          "name": "v24_charging_active__left_cheek",
+          "role": "left_cheek",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 32,
+          "y": 153,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_charging_active__right_cheek",
+          "name": "v24_charging_active__right_cheek",
+          "role": "right_cheek",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 155,
+          "y": 153,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_charging_active__mouth",
+          "name": "v24_charging_active__mouth",
+          "role": "mouth",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 85,
+          "y": 158,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v24-special-expression-performance-preview-20260720/frame-25-charging_active_breathing_lead.pbm",
+      "targetPbmSha256": "A90BFA6A511383A684848261601B1EC01B7DF951910FEE11D8AEFD0372E59879"
+    },
+    {
+      "index": 26,
+      "segment": "charging_active_state_hold",
+      "logicalState": "charging_active",
+      "artPose": "charging_active",
+      "event": "charging",
+      "phase": "emotion_hold",
+      "postRefreshHoldMs": 1400,
+      "layers": [
+        {
+          "component": "v24:v24_charging_active__breathing_arc_left",
+          "name": "v24_charging_active__breathing_arc_left",
+          "role": "accent",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 64,
+          "y": 40,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 10,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_charging_active__breathing_arc_right",
+          "name": "v24_charging_active__breathing_arc_right",
+          "role": "accent",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 115,
+          "y": 40,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 10,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_charging_active__left_brow",
+          "name": "v24_charging_active__left_brow",
+          "role": "left_brow",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 46,
+          "y": 89,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_charging_active__right_brow",
+          "name": "v24_charging_active__right_brow",
+          "role": "right_brow",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 130,
+          "y": 89,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v24:v24_charging_active__left_cheek",
+          "name": "v24_charging_active__left_cheek",
+          "role": "left_cheek",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 32,
+          "y": 153,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_charging_active__right_cheek",
+          "name": "v24_charging_active__right_cheek",
+          "role": "right_cheek",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 155,
+          "y": 153,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_charging_active__mouth",
+          "name": "v24_charging_active__mouth",
+          "role": "mouth",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 85,
+          "y": 158,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v24-special-expression-performance-preview-20260720/frame-26-charging_active_state_hold.pbm",
+      "targetPbmSha256": "DB89438B83E7E7FE5C7854EB66FE728453917A93590FDBDBD30EFAD8E1B83B99"
+    },
+    {
+      "index": 27,
+      "segment": "charging_active_breathing_release",
+      "logicalState": "charging_active",
+      "artPose": "charging_active",
+      "event": "charging_unplug",
+      "phase": "release",
+      "postRefreshHoldMs": 360,
+      "layers": [
+        {
+          "component": "v24:v24_charging_active__left_brow",
+          "name": "v24_charging_active__left_brow",
+          "role": "left_brow",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 46,
+          "y": 89,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_charging_active__right_brow",
+          "name": "v24_charging_active__right_brow",
+          "role": "right_brow",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 130,
+          "y": 89,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 111,
+          "offset": [
+            0,
+            -1
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 111,
+          "offset": [
+            0,
+            -1
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v24:v24_charging_active__left_cheek",
+          "name": "v24_charging_active__left_cheek",
+          "role": "left_cheek",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 32,
+          "y": 153,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_charging_active__right_cheek",
+          "name": "v24_charging_active__right_cheek",
+          "role": "right_cheek",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 155,
+          "y": 153,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v24:v24_charging_active__mouth",
+          "name": "v24_charging_active__mouth",
+          "role": "mouth",
+          "source": "v24_generated_source_thresholded_normalization",
+          "x": 85,
+          "y": 158,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v24-special-expression-performance-preview-20260720/frame-27-charging_active_breathing_release.pbm",
+      "targetPbmSha256": "3B1F65778361755EE4F6D16D395287EB843F21E2737773A0EF5663FE107D7754"
+    },
+    {
+      "index": 28,
+      "segment": "charging_active_daily_settle",
+      "logicalState": "daily",
+      "artPose": "v9_daily",
+      "event": "charging_unplug",
+      "phase": "settle",
+      "postRefreshHoldMs": 900,
+      "layers": [
+        {
+          "component": "v9:charm_star",
+          "name": "charm_star",
+          "role": "charm",
+          "source": "locked_v9_rig_component",
+          "x": 96,
+          "y": 31,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 10,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_brow_open",
+          "name": "left_brow_open",
+          "role": "left_brow",
+          "source": "locked_v9_rig_component",
+          "x": 47,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_brow_open",
+          "name": "right_brow_open",
+          "role": "right_brow",
+          "source": "locked_v9_rig_component",
+          "x": 132,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_cheek_default",
+          "name": "left_cheek_default",
+          "role": "left_cheek",
+          "source": "locked_v9_rig_component",
+          "x": 33,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_cheek_default",
+          "name": "right_cheek_default",
+          "role": "right_cheek",
+          "source": "locked_v9_rig_component",
+          "x": 154,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:mouth_default",
+          "name": "mouth_default",
+          "role": "mouth",
+          "source": "locked_v9_rig_component",
+          "x": 86,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v24-special-expression-performance-preview-20260720/frame-28-charging_active_daily_settle.pbm",
+      "targetPbmSha256": "B3847DF9CE2D20693C60C9CC7BC1EC8D8B8A3E23641F4521EE71508ABE13CB9E"
+    }
+  ],
+  "browser_player": {
+    "path": "docs/validation/artifacts/companion-v24-special-expression-performance-preview-20260720/player.html",
+    "sha256": "6D2D3FEB0D35B0FDA28F364DA6FC10E345B2CBB7552F1770AA7EC1F1AF27886F"
+  },
+  "component_count": 37,
+  "components": [
+    {
+      "key": "v24:v24_charging_active__breathing_arc_left",
+      "name": "v24_charging_active__breathing_arc_left",
+      "role": "accent",
+      "source": "v24_generated_source_thresholded_normalization",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/charging_active-breathing_arc_left.pbm",
+      "mask_sha256": "89CBDB40C237346C94CCA240407397CBCD26151E54EBBB5A315F192AD26B5A1F"
+    },
+    {
+      "key": "v24:v24_charging_active__breathing_arc_right",
+      "name": "v24_charging_active__breathing_arc_right",
+      "role": "accent",
+      "source": "v24_generated_source_thresholded_normalization",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/charging_active-breathing_arc_right.pbm",
+      "mask_sha256": "56DEBCC92807D810113A8DEE24AE2E41869233D4D85934986BB79635F462B8EB"
+    },
+    {
+      "key": "v24:v24_charging_active__left_brow",
+      "name": "v24_charging_active__left_brow",
+      "role": "left_brow",
+      "source": "v24_generated_source_thresholded_normalization",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/charging_active-left_brow.pbm",
+      "mask_sha256": "B45D0EEEA1E7B8F39B4743DBC5B7B519D0A1CA940699AA2FE6D0BE9A64B48945"
+    },
+    {
+      "key": "v24:v24_charging_active__left_cheek",
+      "name": "v24_charging_active__left_cheek",
+      "role": "left_cheek",
+      "source": "v24_generated_source_thresholded_normalization",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/charging_active-left_cheek.pbm",
+      "mask_sha256": "290E10F2F838F6B47AE3967990137572E1FB656C4BDFCB6CA9B10E2E17D816FC"
+    },
+    {
+      "key": "v24:v24_charging_active__mouth",
+      "name": "v24_charging_active__mouth",
+      "role": "mouth",
+      "source": "v24_generated_source_thresholded_normalization",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/charging_active-mouth.pbm",
+      "mask_sha256": "D6CEE9F5C08615D309F90AB4D8B2CE44F35CB52F2DA12578AA512890AA432036"
+    },
+    {
+      "key": "v24:v24_charging_active__right_brow",
+      "name": "v24_charging_active__right_brow",
+      "role": "right_brow",
+      "source": "v24_generated_source_thresholded_normalization",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/charging_active-right_brow.pbm",
+      "mask_sha256": "624414D7410FE3EA00841A1E0B5B7C922DF0A956D47BC6338A4F5F51AAE51768"
+    },
+    {
+      "key": "v24:v24_charging_active__right_cheek",
+      "name": "v24_charging_active__right_cheek",
+      "role": "right_cheek",
+      "source": "v24_generated_source_thresholded_normalization",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/charging_active-right_cheek.pbm",
+      "mask_sha256": "4C49D73C725D5CB08C8A8FD77ECCD5A581B585AFE71D2CCB8C70C08827563C91"
+    },
+    {
+      "key": "v24:v24_menu_active__left_brow",
+      "name": "v24_menu_active__left_brow",
+      "role": "left_brow",
+      "source": "v24_generated_source_thresholded_normalization",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/menu_active-left_brow.pbm",
+      "mask_sha256": "27937249500E31E517A6DBABE7F02C76003DA57196D170D5464C33B55FEC2DDC"
+    },
+    {
+      "key": "v24:v24_menu_active__left_cheek",
+      "name": "v24_menu_active__left_cheek",
+      "role": "left_cheek",
+      "source": "v24_generated_source_thresholded_normalization",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/menu_active-left_cheek.pbm",
+      "mask_sha256": "5D938B991DF8C37DA6E2E533043ED9AF14598EB7D5DDBF9246E734065CED83EF"
+    },
+    {
+      "key": "v24:v24_menu_active__mouth",
+      "name": "v24_menu_active__mouth",
+      "role": "mouth",
+      "source": "v24_generated_source_thresholded_normalization",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/menu_active-mouth.pbm",
+      "mask_sha256": "24E427620D1B6CEF5CED59694D688BACA5CD9E01E1C2633E1E4CBBEEC2F4A807"
+    },
+    {
+      "key": "v24:v24_menu_active__right_brow",
+      "name": "v24_menu_active__right_brow",
+      "role": "right_brow",
+      "source": "v24_generated_source_thresholded_normalization",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/menu_active-right_brow.pbm",
+      "mask_sha256": "04555DA2D899FD1412D5FB4C8C5C0782D1A3C7ACD2777C395D501E9CC341793A"
+    },
+    {
+      "key": "v24:v24_menu_active__right_cheek",
+      "name": "v24_menu_active__right_cheek",
+      "role": "right_cheek",
+      "source": "v24_generated_source_thresholded_normalization",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/menu_active-right_cheek.pbm",
+      "mask_sha256": "7F75196CB0820CC51918CD3519C26BD5F6D2184235A28D9AD7C0DE994316A91B"
+    },
+    {
+      "key": "v24:v24_menu_active__selection_dot_center",
+      "name": "v24_menu_active__selection_dot_center",
+      "role": "accent",
+      "source": "v24_generated_source_thresholded_normalization",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/menu_active-selection_dot_center.pbm",
+      "mask_sha256": "C6BB5D013892A9FE577ABB172BE667264842423A93CF2C92F6EE9B9C16687B4F"
+    },
+    {
+      "key": "v24:v24_menu_active__selection_dot_left",
+      "name": "v24_menu_active__selection_dot_left",
+      "role": "accent",
+      "source": "v24_generated_source_thresholded_normalization",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/menu_active-selection_dot_left.pbm",
+      "mask_sha256": "AB121FA232BEB06C380720F32F36436026AF602D7FDB3D8063BB4CEA7B223F1A"
+    },
+    {
+      "key": "v24:v24_menu_active__selection_dot_right",
+      "name": "v24_menu_active__selection_dot_right",
+      "role": "accent",
+      "source": "v24_generated_source_thresholded_normalization",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/menu_active-selection_dot_right.pbm",
+      "mask_sha256": "B29F5933E2FB07925EC99B6BF11FC51E0E93B22619C52A34C823BD5BF6554C3E"
+    },
+    {
+      "key": "v24:v24_recording_active__left_brow",
+      "name": "v24_recording_active__left_brow",
+      "role": "left_brow",
+      "source": "v24_generated_source_thresholded_normalization",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/recording_active-left_brow.pbm",
+      "mask_sha256": "856B646BDD2C2C658AAFC7E8BF870A71B0AF22375F3C502122BC70B648926A9C"
+    },
+    {
+      "key": "v24:v24_recording_active__left_cheek",
+      "name": "v24_recording_active__left_cheek",
+      "role": "left_cheek",
+      "source": "v24_generated_source_thresholded_normalization",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/recording_active-left_cheek.pbm",
+      "mask_sha256": "264A9CDCA00EC42590D3172DAD6CE145F63BE44884A781F34B70E1BA1C7138DE"
+    },
+    {
+      "key": "v24:v24_recording_active__left_listening_inner",
+      "name": "v24_recording_active__left_listening_inner",
+      "role": "left_listening_arc",
+      "source": "v24_generated_source_thresholded_normalization",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/recording_active-left_listening_inner.pbm",
+      "mask_sha256": "3AAB5C04FCDC29CD8390FD00F24E257803681A06E27B0CFCF96400818CFF38FB"
+    },
+    {
+      "key": "v24:v24_recording_active__left_listening_outer",
+      "name": "v24_recording_active__left_listening_outer",
+      "role": "left_listening_arc",
+      "source": "v24_generated_source_thresholded_normalization",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/recording_active-left_listening_outer.pbm",
+      "mask_sha256": "858C0D8B3C422E20BD7CDE53D66236C5083F0B21A0535C75D2B7037801919F44"
+    },
+    {
+      "key": "v24:v24_recording_active__mouth",
+      "name": "v24_recording_active__mouth",
+      "role": "mouth",
+      "source": "v24_generated_source_thresholded_normalization",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/recording_active-mouth.pbm",
+      "mask_sha256": "E58DD9E406A500FF969AD06C1114D1B9FA5C50AB7A99538419A447284D2E78C0"
+    },
+    {
+      "key": "v24:v24_recording_active__right_brow",
+      "name": "v24_recording_active__right_brow",
+      "role": "right_brow",
+      "source": "v24_generated_source_thresholded_normalization",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/recording_active-right_brow.pbm",
+      "mask_sha256": "1B1BC434C5A8BAA696D8116630A3D39A2300758E42EE8656B092317D95858370"
+    },
+    {
+      "key": "v24:v24_recording_active__right_cheek",
+      "name": "v24_recording_active__right_cheek",
+      "role": "right_cheek",
+      "source": "v24_generated_source_thresholded_normalization",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/recording_active-right_cheek.pbm",
+      "mask_sha256": "366D5EED9C7084923E185320403BC207F292EDF494C6DFFD594938384D3AE1C9"
+    },
+    {
+      "key": "v24:v24_recording_active__right_listening_inner",
+      "name": "v24_recording_active__right_listening_inner",
+      "role": "right_listening_arc",
+      "source": "v24_generated_source_thresholded_normalization",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/recording_active-right_listening_inner.pbm",
+      "mask_sha256": "4FF94E65B38DB25B418421F7D988502C5DD2947CFA2933B2F8FC321C86E4FF3D"
+    },
+    {
+      "key": "v24:v24_recording_active__right_listening_outer",
+      "name": "v24_recording_active__right_listening_outer",
+      "role": "right_listening_arc",
+      "source": "v24_generated_source_thresholded_normalization",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/recording_active-right_listening_outer.pbm",
+      "mask_sha256": "ADD90D80A0291E0002A1A485A919D9E3D4193F628B581F89CC8BC363A7E16CAB"
+    },
+    {
+      "key": "v9:charm_star",
+      "name": "charm_star",
+      "role": "charm",
+      "source": "locked_v9_rig_component",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/charm_star.pbm",
+      "mask_sha256": "E813BF81E43559F5AE2A7642D67DEB57F29EE408ED46114F2F39164C9B53DA50"
+    },
+    {
+      "key": "v9:left_brow_open",
+      "name": "left_brow_open",
+      "role": "left_brow",
+      "source": "locked_v9_rig_component",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/left_brow_open.pbm",
+      "mask_sha256": "38A5830E09D77A0C727965F558688E39C1AF9FD96B15CC46C15A3B648FFA5444"
+    },
+    {
+      "key": "v9:left_cheek_default",
+      "name": "left_cheek_default",
+      "role": "left_cheek",
+      "source": "locked_v9_rig_component",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/left_cheek_default.pbm",
+      "mask_sha256": "50330397F3B4A0E3CEFEEBC796599D1ABEDB1DEE3C216D50F70EBD0E71AC69F6"
+    },
+    {
+      "key": "v9:left_eye_highlight_open",
+      "name": "left_eye_highlight_open",
+      "role": "left_highlight",
+      "source": "locked_v9_rig_component",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/left_eye_highlight_open.pbm",
+      "mask_sha256": "FE486194ED600C66CD3A69F0EE1025DC1CC260AD15A2B5A4712274CC8007464C"
+    },
+    {
+      "key": "v9:left_eye_open",
+      "name": "left_eye_open",
+      "role": "left_eye",
+      "source": "locked_v9_rig_component",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/left_eye_open.pbm",
+      "mask_sha256": "607A30960F6C312FC4D7DC6AD58F02E6DEB6D80EDC63388FE80671AF593DC08E"
+    },
+    {
+      "key": "v9:left_eye_sparkle_open",
+      "name": "left_eye_sparkle_open",
+      "role": "left_sparkle",
+      "source": "locked_v9_rig_component",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/left_eye_sparkle_open.pbm",
+      "mask_sha256": "2B62160271B54E894DFBE0DD64A0F744EA80E65A2CBC7617B1497A16A229323D"
+    },
+    {
+      "key": "v9:mouth_default",
+      "name": "mouth_default",
+      "role": "mouth",
+      "source": "locked_v9_rig_component",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/mouth_default.pbm",
+      "mask_sha256": "082B0BFCCFD4788146E229F929AF0E11307B1E85D189538E5D89EC63C81763EA"
+    },
+    {
+      "key": "v9:nose_default",
+      "name": "nose_default",
+      "role": "nose",
+      "source": "locked_v9_rig_component",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/nose_default.pbm",
+      "mask_sha256": "9E136542BCD1AB6F3A057829FC1A53F03965B9F55ABAE899666CDC6D8EF8E298"
+    },
+    {
+      "key": "v9:right_brow_open",
+      "name": "right_brow_open",
+      "role": "right_brow",
+      "source": "locked_v9_rig_component",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/right_brow_open.pbm",
+      "mask_sha256": "12797464C45AE6F33844AEA6AD0A8F94324B42E6570ED9CCC88A8708E4001868"
+    },
+    {
+      "key": "v9:right_cheek_default",
+      "name": "right_cheek_default",
+      "role": "right_cheek",
+      "source": "locked_v9_rig_component",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/right_cheek_default.pbm",
+      "mask_sha256": "FFFA58B0B991987F117C10FF914724ED5E270778D49F43CEAA1D187A2C1D06DC"
+    },
+    {
+      "key": "v9:right_eye_highlight_open",
+      "name": "right_eye_highlight_open",
+      "role": "right_highlight",
+      "source": "locked_v9_rig_component",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/right_eye_highlight_open.pbm",
+      "mask_sha256": "518456E9D22529E4B57E61D5D2963E20F6E80CC3F210FF331281E8F0BC11E650"
+    },
+    {
+      "key": "v9:right_eye_open",
+      "name": "right_eye_open",
+      "role": "right_eye",
+      "source": "locked_v9_rig_component",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/right_eye_open.pbm",
+      "mask_sha256": "6F1394072AB1D5AD8D573E115594DD4630FA18877841E6AABD635379075094E6"
+    },
+    {
+      "key": "v9:right_eye_sparkle_open",
+      "name": "right_eye_sparkle_open",
+      "role": "right_sparkle",
+      "source": "locked_v9_rig_component",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/right_eye_sparkle_open.pbm",
+      "mask_sha256": "B9AD58B7178E95296965DD2F4000F28B14C2C06180D1E04D86145D2A9D8D4A13"
+    }
+  ],
+  "forbidden": [
+    "whole-face card playback",
+    "code-drawn face",
+    "legacy art",
+    "custom LUT",
+    "runtime binding"
+  ],
+  "active_candidate_binding": "forbidden"
+}

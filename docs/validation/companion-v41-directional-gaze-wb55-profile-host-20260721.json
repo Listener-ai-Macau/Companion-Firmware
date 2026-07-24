@@ -1,0 +1,15 @@
+{
+  "schema": "companion.v41_directional_gaze_wb55_profile_host.v1",
+  "status": "PASS_V41_DIRECTIONAL_GAZE_WB55_PROFILE_RUNTIME_INACTIVE",
+  "component_count": 106,
+  "expression_track_count": 11,
+  "functional_track_count": 4,
+  "story_count": 17,
+  "preview_frame_count": 53,
+  "five_gaze_states": ["center", "left", "right", "up", "down"],
+  "fixed_v22_nose": true,
+  "two_track_independence": true,
+  "menu_entry_policy": {"state_scene": "touch", "maximum_expression_duration_ms": 500, "after_last_cue": "withdraw_expression_and_functional_tracks_then_show_menu_ui"},
+  "runtime_resource_activated": false,
+  "non_claims": ["no_firmware_flash", "no_panel_or_driver_change", "no_human_acceptance"]
+}

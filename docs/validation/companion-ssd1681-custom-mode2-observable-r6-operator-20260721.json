@@ -1,0 +1,37 @@
+{
+  "schema_id": "companion.wb55.ssd1681_custom_mode2_observable_r6_operator.v1",
+  "status": "FAIL_OPERATOR_R6_PATTERN_DISAPPEARED_DIRECTION_WRONG",
+  "requirement": "COMP-REQ-300",
+  "tool": "canonical aiw operator-prompt",
+  "title": "Companion R6 连续局刷观感结论",
+  "selected": "失败",
+  "note": "这个不太行, 应该方向是错误的, 没有图案了直接",
+  "interpretation": "Hard visual failure: the intended local pattern disappeared entirely. TP16 stationary suppression is invalid for progression despite machine timing PASS.",
+  "start_window_steering": {
+    "selected": "开始并立即看屏幕",
+    "note": "以后不要有这个东西了，直接开始看屏幕就好。",
+    "interpretation": "Owner rejects redundant start-window friction for a future run; mandatory human-boundary design requires root reconciliation before any successor hardware candidate."
+  },
+  "artifacts": {
+    "visual_verdict": {
+      "path": ".cache/validation/wb55-custom-mode2-observable-r6-execute-20260721-a/r6-visual-verdict.json",
+      "sha256": "59B907EB12DE404F3FB4DF39546F18DE628DAC55F234C3BD5239E22D0DC20887"
+    },
+    "canonical_note": {
+      "path": ".cache/validation/wb55-custom-mode2-observable-r6-execute-20260721-a/r6-visual-verdict-note.txt",
+      "sha256": "0E9031D3324F6E4CB5D08FD87CF027276F8DB036870C981AC8253E36609FEED5"
+    },
+    "candidate_start_decision": {
+      "path": ".cache/validation/wb55-custom-mode2-observable-r6-execute-20260721-a/candidate-start-decision.json",
+      "sha256": "D82BB6AFDEE52717DC43974945C14CB0AE05780A181146D8F8A5422B10B111E8"
+    },
+    "machine_stage_sha256": "8C1E70EAA2D5AACEF1467B06B296B9790A92C27512D1EC3833B3CA6CFF468A80"
+  },
+  "boundaries": {
+    "r6_rerun_allowed": false,
+    "production_promotion_allowed": false,
+    "expression_binding_allowed": false,
+    "motion_120_frame_allowed": false,
+    "new_hardware_candidate_allowed_before_root_review": false
+  }
+}

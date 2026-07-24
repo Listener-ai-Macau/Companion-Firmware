@@ -1,0 +1,115 @@
+{
+  "schema": "companion.v9_open_eye_identity_gate.v1",
+  "status": "PASS_OPEN_EYE_IDENTITY_GATE",
+  "candidate": "docs/art/iterations/companion-pet-expression-v9-extension-v3-daily-eye-proof/generated_pet_expression_extension_v3_daily_eye_proof_candidate.png",
+  "candidate_sha256": "1A4C6B4846FD42EA71C8F42C9070F2C0728C4D45D4F518E6FE252BBAF1E95CBF",
+  "grid": [
+    2,
+    2
+  ],
+  "closed_eye_cells": [],
+  "calibration": {
+    "locked_v9_source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "locked_v9_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "minimum_eye_width_px": 40,
+    "minimum_eye_height_px": 58,
+    "minimum_black_pixels": 1850,
+    "minimum_black_fill_ratio": 0.6,
+    "maximum_pair_baseline_delta_px": 8
+  },
+  "records": [
+    {
+      "cell": "0,0",
+      "eye_mode": "open",
+      "eye_components": [
+        {
+          "x": 241,
+          "y": 267,
+          "width": 84,
+          "height": 119,
+          "black_pixels": 6788,
+          "black_fill_ratio": 0.6791
+        },
+        {
+          "x": 460,
+          "y": 268,
+          "width": 84,
+          "height": 118,
+          "black_pixels": 6750,
+          "black_fill_ratio": 0.681
+        }
+      ],
+      "pair_baseline_delta_px": 1
+    },
+    {
+      "cell": "0,1",
+      "eye_mode": "open",
+      "eye_components": [
+        {
+          "x": 184,
+          "y": 265,
+          "width": 84,
+          "height": 120,
+          "black_pixels": 6835,
+          "black_fill_ratio": 0.6781
+        },
+        {
+          "x": 399,
+          "y": 265,
+          "width": 83,
+          "height": 120,
+          "black_pixels": 6766,
+          "black_fill_ratio": 0.6793
+        }
+      ],
+      "pair_baseline_delta_px": 0
+    },
+    {
+      "cell": "1,0",
+      "eye_mode": "open",
+      "eye_components": [
+        {
+          "x": 245,
+          "y": 166,
+          "width": 84,
+          "height": 120,
+          "black_pixels": 6773,
+          "black_fill_ratio": 0.6719
+        },
+        {
+          "x": 458,
+          "y": 167,
+          "width": 84,
+          "height": 119,
+          "black_pixels": 6755,
+          "black_fill_ratio": 0.6758
+        }
+      ],
+      "pair_baseline_delta_px": 1
+    },
+    {
+      "cell": "1,1",
+      "eye_mode": "open",
+      "eye_components": [
+        {
+          "x": 183,
+          "y": 167,
+          "width": 82,
+          "height": 119,
+          "black_pixels": 6482,
+          "black_fill_ratio": 0.6643
+        },
+        {
+          "x": 398,
+          "y": 167,
+          "width": 81,
+          "height": 119,
+          "black_pixels": 6418,
+          "black_fill_ratio": 0.6658
+        }
+      ],
+      "pair_baseline_delta_px": 0
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,104 @@
+{
+  "schema_id": "companion.wb55.ssd1681_phase_parallel_r9_continuous_observation_static.v1",
+  "status": "PASS_STATIC_R9_CONTINUOUS_OBSERVATION",
+  "hardware_contact": 0,
+  "errors": [],
+  "checks": {
+    "continuous_macro_default_off": true,
+    "continuous_macro_mutually_excludes_historical_r9": true,
+    "historical_r9_function_unchanged": true,
+    "historical_runner_unchanged": true,
+    "historical_hex_unchanged": true,
+    "same_admitted_lut_exact": true,
+    "initial_patterns_match_16_step_r9": true,
+    "initial_gate_exactly_16": true,
+    "loop_has_no_preset_limit": true,
+    "one_fixed_bank_activation_per_iteration": true,
+    "busy_limit_600_in_qualification_and_loop": true,
+    "post_sync_24_in_qualification_and_loop": true,
+    "fault_restores_bus": true,
+    "forbidden_counts_declared_zero": true,
+    "production_disabled_in_telemetry": true,
+    "makefile_isolated_define": true,
+    "builder_isolated_switch": true,
+    "hex_identity": true,
+    "elf_identity": true,
+    "monitor_ring_default_65536": true,
+    "monitor_checks_memory_and_disk_bound": true,
+    "monitor_fail_closed_boundaries": true,
+    "monitor_creates_no_popup": true,
+    "prompt_is_canonical_two_option_only": true,
+    "prompt_requires_qualification_and_live_monitor": true,
+    "prompt_has_single_invocation_guard": true,
+    "prompt_fault_kills_tree_and_emergency": true,
+    "operator_selection_is_only_normal_stop": true,
+    "runner_uses_original_cleanup_restore_lifecycle": true,
+    "runner_requires_later_execute_authorization": true,
+    "runner_starts_prompt_after_qualification": true,
+    "runner_fail_closed_stops_process_trees": true,
+    "registry_313_present": true,
+    "parser_selftest_pass": true,
+    "monitor_selftest_pass": true,
+    "prompt_supervisor_selftest_pass": true
+  },
+  "identities": {
+    "candidate_hex_sha256": "3B416BFF08B630D23BDB6107B2C17DFE9FBBFAAA7D5CFBCA5063AE68E62B79C5",
+    "candidate_elf_sha256": "B9808E72F8490B015A9B09B6B8B896390566D06FB8ABC98C5060CEF489BE8047",
+    "lut_sha256": "9BCBAC1A07ED0A112D26409FBCDB8F5FE27CE07D922C2E18881C10A53229DDCD",
+    "historical_r9_hex_sha256": "724DA17F385756BA779739E73DA47131F563E0C071A2EB173F5F77871F3CADDF",
+    "historical_runner_sha256": "0B0A536E7B03DD5F2A4F9CF7B2B76A1B0DB3F34745172E352CB0B4726011B34B",
+    "continuous_runner_sha256": "F608E9F1EF018EA215BD7189E415AF7490C21605C5BAE3FA8886EEC74004903A",
+    "monitor_sha256": "FF60FEEA483F6844DA7B252B8910D22D6240EABCB9C42AFAE2362122C7026920",
+    "prompt_supervisor_sha256": "E9CCDB0E99C6B38F0F18F46F379AB9D0A6FF7054ADE699AD32768198641CCB50",
+    "parser_sha256": "859F1E3868464676859821209C765E48B8A60BCFE2E4F8E17EDC9EBE0B963A34"
+  },
+  "selftests": {
+    "parser": {
+      "command": [
+        "C:\\Users\\Billy\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\tools\\verify_wb55_ssd1681_phase_parallel_r9_continuous_log.py",
+        "--self-test"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"schema_id\": \"companion.wb55.ssd1681_phase_parallel_r9_continuous_parser_selftest.v1\",\n  \"status\": \"PASS\",\n  \"hardware_contact\": 0,\n  \"positive_fixture\": \"PASS_MACHINE_R9_CONTINUOUS_TRACE\",\n  \"negative_cases_rejected\": {\n    \"missing_qualification_step\": true,\n    \"qualification_busy_over_limit\": true,\n    \"loop_busy_over_limit\": true,\n    \"missing_post_sync\": true,\n    \"wrong_lut\": true,\n    \"fault_marker\": true,\n    \"malformed_loop\": true,\n    \"noncontiguous_loop\": true\n  }\n}\n",
+      "stderr": ""
+    },
+    "monitor": {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\tools\\monitor_wb55_ssd1681_phase_parallel_r9_continuous.ps1",
+        "-SelfTest",
+        "-OutDir",
+        "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\r9-continuous-static-monitor-selftest"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"schema_id\": \"companion.wb55.ssd1681_phase_parallel_r9_continuous_monitor_selftest.v1\",\n  \"status\": \"PASS\",\n  \"hardware_contact\": 0,\n  \"ring_bytes_limit\": 16384,\n  \"ring_peak_bytes\": 16384,\n  \"checks\": {\n    \"ring_memory_bounded\": true,\n    \"ring_file_bounded\": true,\n    \"valid_busy_600_accepted\": true,\n    \"busy_601_rejected\": true,\n    \"disconnect_maps_to_fault\": true,\n    \"emergency_maps_to_fault\": true,\n    \"prompt_abnormal_stop_is_not_operator_stop\": true,\n    \"storage_fault_detected\": true,\n    \"stop_before_qualification_rejected\": true\n  }\n}\n",
+      "stderr": ""
+    },
+    "prompt_supervisor": {
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\tools\\supervise_wb55_ssd1681_phase_parallel_r9_continuous_prompt.ps1",
+        "-SelfTest",
+        "-OutRoot",
+        "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\r9-continuous-static-prompt-selftest"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"schema_id\": \"companion.wb55.ssd1681_phase_parallel_r9_continuous_prompt_supervisor_selftest.v1\",\n  \"status\": \"PASS\",\n  \"hardware_contact\": 0,\n  \"popup_count\": 0,\n  \"checks\": {\n    \"pass_maps_once\": true,\n    \"fail_maps_once\": true,\n    \"replay_option_absent\": true,\n    \"prompt_requires_qualification_signal\": true,\n    \"monitor_abnormal_exit_kills_prompt_tree\": true,\n    \"prompt_abnormal_exit_sets_emergency_signal\": true,\n    \"operator_selection_sets_single_stop_signal\": true,\n    \"popup_policy_is_one_acceptance_only\": true\n  }\n}\n",
+      "stderr": ""
+    }
+  },
+  "popup_policy": {
+    "start": 0,
+    "cleanup": 0,
+    "recovery": 0,
+    "fault": 0,
+    "acceptance": 1
+  },
+  "authorization": "implementation/build/CheckOnly/MACHINE_READY only; no Execute",
+  "production_allowed": false
+}

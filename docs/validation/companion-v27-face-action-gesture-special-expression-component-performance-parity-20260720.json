@@ -1,0 +1,42 @@
+{
+  "schema": "companion.v27_face_action_gesture_special_expression_component_performance_parity.v1",
+  "status": "PASS_V27_FACE_ACTION_GESTURE_COMPONENT_PERFORMANCE_BROWSER_TARGET_PLAN_PARITY",
+  "performance_preview": "docs/validation/companion-v27-face-action-gesture-special-expression-component-performance-preview-20260720.json",
+  "performance_preview_sha256": "A46FB3463E0052C9EDE1F88727AFBD2B1BCF4FE65F1E69C75858CEF2E901E076",
+  "browser_target_plan_rule": "The browser player consumes each frame's canonical layers array and target PBM is composed from that exact same array; no second whole-face frame plan exists.",
+  "daily_entry_settle_difference_pixels": {
+    "entry": 0,
+    "final_settle": 0
+  },
+  "special_state_reassembly_differences_pixels": {
+    "menu_active": 0,
+    "recording_active": 0,
+    "charging_active": 0
+  },
+  "special_performance_evidence": {
+    "menu_active": {
+      "frame_count": 12,
+      "target_hold_frame": 11,
+      "target_layer_count": 14,
+      "entry_frame": 3,
+      "settle_frame": 14
+    },
+    "recording_active": {
+      "frame_count": 11,
+      "target_hold_frame": 22,
+      "target_layer_count": 14,
+      "entry_frame": 15,
+      "settle_frame": 25
+    },
+    "charging_active": {
+      "frame_count": 11,
+      "target_hold_frame": 33,
+      "target_layer_count": 14,
+      "entry_frame": 26,
+      "settle_frame": 36
+    }
+  },
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden",
+  "errors": []
+}

@@ -1,0 +1,114 @@
+{
+  "schema_id": "companion.wb55.ssd1681_reset_read_controller_state.research_source_hash.v1",
+  "requirement_id": "COMP-REQ-265",
+  "status": "PASS_RESEARCH_AUTHORIZES_ONE_RESET_READ_CONTROLLER_CAPTURE_AND_RAW_RESTORE",
+  "decision": "ADMIT_EXACTLY_ONE_PRODUCTION_OFF_HARD_RESET_READ_ATTEMPT_AFTER_ALL_MACHINE_GATES",
+  "source_manifest": [
+    {
+      "path": "C:/Users/Billy/Downloads/ESP32-FTS02_SCH-20250819.pdf",
+      "length": 382336,
+      "sha256": "659BCDD1C74082EB4FAFBC7646DFFDD18E2798A780C679B933B07B1C66606676",
+      "provenance": "Good Display official ESP32-FTS02 schematic download",
+      "immutability": "read_only_research_input"
+    },
+    {
+      "path": ".cache/validation/ssd1681-read-only-research/ssd1681-rev013-2.pdf",
+      "length": 1869774,
+      "sha256": "2989DB3DBBCE190F6E1F065A169479BF4FE911896FF8805894549F792FE9B53B",
+      "provenance": "Solomon Systech SSD1681 Rev 0.13 controller manual",
+      "immutability": "read_only_research_input"
+    },
+    {
+      "path": ".cache/incoming/S-GDEY0154D67-FP-Touch-official-20260720/S-GDEY0154D67-FP-Touch20230303/HARDWARE/EPD/Display_EPD_W21.c",
+      "length": 20707,
+      "sha256": "CD08AFD1D56E8F7E1D0AE5C935A4D060E65C658ABC30CE29ACF65166141ACEE2",
+      "provenance": "Good Display official GDEY0154D67-T03 STM32 sample",
+      "immutability": "read_only_supplier_input"
+    },
+    {
+      "path": ".cache/incoming/S-GDEY0154D67-FP-Touch-official-20260720/S-GDEY0154D67-FP-Touch20230303/HARDWARE/EPD/Display_EPD_W21_spi.c",
+      "length": 2064,
+      "sha256": "10E5F1A8AE0EEA1213640CB3A4A9D968BF1DDE555D2D91205AA8E29196495055",
+      "provenance": "Good Display official GDEY0154D67-T03 STM32 SPI sample",
+      "immutability": "read_only_supplier_input"
+    },
+    {
+      "path": "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
+      "length": 160394,
+      "sha256": "BAE2FAEA0656ABBCFAA5765C0E6465183D5E9235E1B4FE50CDB7107BD727EB3D",
+      "role": "pre-change local SSD1681 target"
+    },
+    {
+      "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/main.c",
+      "length": 239141,
+      "sha256": "75D19712F2F6175F5A933CAE79C574F24465B12616B0D0D22607E4D12DDC0487",
+      "role": "current WB55 SPI2 and GPIO BSP binding"
+    },
+    {
+      "path": "docs/validation/companion-ssd1681-reset-read-controller-state-hardware-prerequisite-20260721.json",
+      "length": 1688,
+      "sha256": "04E3DC8A8A57ACE0E312B11C41128499285510A3C04003C4A0C24DFAE895DEDE",
+      "role": "canonical operator plus owner wiring prerequisite"
+    }
+  ],
+  "parsed_audit": {
+    "reverse_path": {
+      "status": "PROVEN_FOR_DOCUMENTED_FTS02_NET_AND_CONFIRMED_WIRING",
+      "facts": [
+        "FTS02 schematic P5 display FPC pin 14 SDI is on the same direct net named SPI_MOSI as P8 pin 6; no level shifter, output-only buffer, or series-direction element is present on that net.",
+        "The display SPI_MISO/SDI return does not use FTS02 P8 pin 5; that separate SPI_MISO net belongs to the SD-card path.",
+        "The current WB55 target maps display SDA to PC1. The existing diagnostic deinitializes SPI2 and changes PC1 between push-pull output and no-pull GPIO input for the bounded response.",
+        "The canonical operator result and owner chat confirm the actual RES and BUSY wiring requested for this attempt."
+      ]
+    },
+    "spi_read_timing": {
+      "status": "PROVEN_MATCH",
+      "facts": [
+        "SSD1681 four-wire read keeps CS low, sends the command with DC low, then reads data with DC high.",
+        "The controller shifts response bits on SCL falling edges; the local reader drives falling edge first and samples after the following rising edge, within the controller data-stability interval.",
+        "The read-clock ceiling is 2.5 MHz. HAL GPIO calls plus explicit NOPs are far slower than that ceiling.",
+        "Each command ends with PC1 output-low, SCK low, DC high, and CS high."
+      ]
+    },
+    "reset_and_ready": {
+      "status": "PROVEN_SAFE_FOR_ONE_ISOLATED_ATTEMPT",
+      "facts": [
+        "SSD1681 Deep Sleep is exited only by hardware reset; MCU programming alone does not prove the panel left that state. This is the strongest source-supported explanation for the prior all-FF capture.",
+        "The SSD1681 manual initialization flow requires VCI settling, hardware reset, and readiness before commands.",
+        "The matching Good Display sample asserts RES low for 10 ms and high for 10 ms, then waits while BUSY is high before initialization commands.",
+        "The candidate deliberately uses one conservative 100 ms low plus 100 ms high reset, followed by exactly one bounded 5000 ms BUSY-low wait, and then only the read commands 0x2F and 0x2D."
+      ]
+    }
+  },
+  "root_cause_assessment": {
+    "proven": "The prior candidate did not hard-reset the panel and did not wait for BUSY before reading.",
+    "inference": "A retained Deep Sleep or otherwise not-ready controller can leave the bidirectional SDI net released, yielding the observed repeated all-FF bytes.",
+    "unknown": "No register read can prove the root cause until the single reset/read attempt returns nontrivial stable bytes.",
+    "single_variable": "Add exactly one panel hard reset and one bounded ready wait; retain the same PC1 net, command set, read edge, group count, byte counts, and GPIO restore."
+  },
+  "revision_caveat": "The downloaded FTS02 schematic is the official 2025 revision; this Goal has not independently read the silk revision of the physically connected adapter. The direct-net proof is combined with the owner-confirmed exact RES/BUSY wiring and existing successful display write transport. This admits one bounded diagnostic attempt, not production promotion.",
+  "candidate_contract": {
+    "default": "disabled",
+    "production": "off",
+    "panel_hard_resets": 1,
+    "busy_waits": 1,
+    "busy_timeout_ms": 5000,
+    "groups": 3,
+    "group_commands": [
+      { "command": "0x2F", "bytes": 1 },
+      { "command": "0x2D", "bytes": 11 }
+    ],
+    "allowed_panel_commands": ["0x2F", "0x2D"],
+    "forbidden_panel_commands": ["0x20", "0x22", "0x24", "0x26", "0x27", "0x32", "0x37", "0x41"],
+    "panel_writes": 0,
+    "refreshes": 0,
+    "hardware_attempts": 1,
+    "automatic_retries": 0,
+    "raw_restore_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C"
+  },
+  "non_claims": [
+    "No waveform tuning, visual cutoff repair, residue acceptance, temperature rule, or production behavior.",
+    "No authorization for 0x27, 0x37, 0x41, RAM/LUT/OTP writes, refresh, White/Black, rail, FPC, V9, Rig, CRIG, browser, binding, touch, or BLE work.",
+    "No claim that a fast or residue-free result exists before the one bounded machine capture."
+  ]
+}

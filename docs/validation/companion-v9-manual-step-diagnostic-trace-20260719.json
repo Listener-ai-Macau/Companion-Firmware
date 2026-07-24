@@ -1,0 +1,50 @@
+{
+  "checks": {
+    "exactly_four_accepted_screen_taps": false,
+    "exactly_four_deterministic_step_clips": false,
+    "five_completed_full_refreshes": false,
+    "no_board_button_advance": true,
+    "no_panel_failure_marker": true,
+    "no_rejected_or_blocked_step": false,
+    "two_plane_full_frame_transfer": false
+  },
+  "claim_scope": "controlled_locked_v9_static_panel_comparator_not_product_animation_or_panel_recovery",
+  "expected_sequence_after_boot": [
+    "touch",
+    "swipe_left",
+    "swipe_right",
+    "idle"
+  ],
+  "expected_short_taps": 4,
+  "failures": [
+    "exactly_four_accepted_screen_taps",
+    "exactly_four_deterministic_step_clips",
+    "no_rejected_or_blocked_step",
+    "five_completed_full_refreshes",
+    "two_plane_full_frame_transfer"
+  ],
+  "log": {
+    "path": ".cache/validation/v9-manual-step-diagnostic/capture/nucleo-serial-raw.log",
+    "sha256": "3720E0005C09E678E9B4BB8377A32D5630E633AAAFF8D0823AB2138B717517C9"
+  },
+  "refreshes": [
+    {
+      "activate": 1,
+      "complete": 1,
+      "control": "0xF7",
+      "elapsed_ms": 1289,
+      "profile": "default",
+      "update": 1
+    }
+  ],
+  "schema_id": "companion.wb55.v9_manual_step_diagnostic_trace.v1",
+  "screen_taps": [],
+  "status": "NO_GO_MANUAL_STEP_TRACE_INCOMPLETE",
+  "steps": [],
+  "timings": [
+    {
+      "bytes": 5000,
+      "data_planes": 2
+    }
+  ]
+}

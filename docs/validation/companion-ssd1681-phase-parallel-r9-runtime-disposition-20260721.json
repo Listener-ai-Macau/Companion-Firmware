@@ -1,0 +1,221 @@
+{
+  "schema_id": "companion.wb55.ssd1681_phase_parallel_r9.runtime_disposition.v1",
+  "status": "NO_GO_R9_OWNER_VISUAL_FAILED_RESTORED_STOP_NO_MOTION",
+  "requirements": [
+    "COMP-REQ-310",
+    "COMP-REQ-311"
+  ],
+  "errors": [],
+  "checks": {
+    "required_inputs": true,
+    "sealed_authorization": true,
+    "registry_disposition": true,
+    "goal_and_protected_behavior": true,
+    "persistent_execute": true,
+    "controller_machine_pass": true,
+    "controller_forbidden_zero": true,
+    "operator_verbatim_fail": true,
+    "stage_disposition": true,
+    "bounded_counts": true,
+    "promptless_clean_both_banks": true,
+    "exact_restore_and_normal_resume": true,
+    "durable_logs": true,
+    "command_registry": true,
+    "command_current_goal": true,
+    "command_diff_check": true,
+    "archive_persistent-launch.json": true,
+    "archive_baseline-gate.json": true,
+    "archive_preclean-white.json": true,
+    "archive_controller-state.json": true,
+    "archive_operator-review.json": true,
+    "archive_operator-note.txt": true,
+    "archive_postclean-white.json": true,
+    "archive_restore-gate.json": true,
+    "archive_normal-resume.json": true,
+    "archive_stage-run.json": true,
+    "archive_runner.stdout.log": true,
+    "archive_runner.stderr.log": true,
+    "archive_preclean-serial-raw.log": true,
+    "archive_candidate-serial-raw.log": true,
+    "archive_postclean-serial-raw.log": true,
+    "archive_normal-serial-raw.log": true
+  },
+  "machine_status": "PASS_MACHINE_PHASE_PARALLEL_R9",
+  "machine_steps": 16,
+  "machine_busy_min_ms": 597,
+  "machine_busy_max_ms": 599,
+  "operator_status": "NO_GO_OWNER_R9_LOCAL_VISUAL",
+  "operator_selected": "失败",
+  "operator_note_verbatim": "你这个应该要一直运动才行，因为我也不是一直在屏幕前的。\r\n",
+  "operator_note_sha256": "E2EDDD3239D7FE8E195D266040B0C1800D585887788FE64D9D6B772692928E56",
+  "popup_counts": {
+    "start": 0,
+    "cleanup": 0,
+    "recovery": 0,
+    "fault": 0,
+    "final_visual_acceptance": 1
+  },
+  "restore_status": "PASS_RESTORE_EQUALS_CAPTURED_PRE_RUN_APPLICATION_BYTES",
+  "restore_bytes": 524288,
+  "restore_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+  "normal_resume_status": "PASS_APPLICATION_RESUMED_AFTER_BACKUP",
+  "authorization_consumed": true,
+  "retry_allowed": false,
+  "motion_stage_entered": false,
+  "motion_authorized": false,
+  "production_allowed": false,
+  "next_boundary": "root review of restored owner FAIL; a new explicit contract is required for any motion or hardware contact",
+  "commands": {
+    "registry": {
+      "command": [
+        "C:\\Users\\Billy\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\tools\\verify_companion_product_requirements.py"
+      ],
+      "returncode": 0,
+      "output": "  \"COMP-REQ-235\",\n    \"COMP-REQ-236\",\n    \"COMP-REQ-237\",\n    \"COMP-REQ-238\",\n    \"COMP-REQ-239\",\n    \"COMP-REQ-240\",\n    \"COMP-REQ-241\",\n    \"COMP-REQ-242\",\n    \"COMP-REQ-243\",\n    \"COMP-REQ-244\",\n    \"COMP-REQ-245\",\n    \"COMP-REQ-246\",\n    \"COMP-REQ-247\",\n    \"COMP-REQ-248\",\n    \"COMP-REQ-249\",\n    \"COMP-REQ-250\",\n    \"COMP-REQ-251\",\n    \"COMP-REQ-252\",\n    \"COMP-REQ-253\",\n    \"COMP-REQ-254\",\n    \"COMP-REQ-255\",\n    \"COMP-REQ-256\",\n    \"COMP-REQ-257\",\n    \"COMP-REQ-258\",\n    \"COMP-REQ-259\",\n    \"COMP-REQ-260\",\n    \"COMP-REQ-261\",\n    \"COMP-REQ-262\",\n    \"COMP-REQ-263\",\n    \"COMP-REQ-264\",\n    \"COMP-REQ-265\",\n    \"COMP-REQ-266\",\n    \"COMP-REQ-267\",\n    \"COMP-REQ-268\",\n    \"COMP-REQ-269\",\n    \"COMP-REQ-270\",\n    \"COMP-REQ-271\",\n    \"COMP-REQ-272\",\n    \"COMP-REQ-273\",\n    \"COMP-REQ-274\",\n    \"COMP-REQ-275\",\n    \"COMP-REQ-276\",\n    \"COMP-REQ-277\",\n    \"COMP-REQ-278\",\n    \"COMP-REQ-279\",\n    \"COMP-REQ-280\",\n    \"COMP-REQ-281\",\n    \"COMP-REQ-282\",\n    \"COMP-REQ-283\",\n    \"COMP-REQ-284\",\n    \"COMP-REQ-285\",\n    \"COMP-REQ-286\",\n    \"COMP-REQ-287\",\n    \"COMP-REQ-288\",\n    \"COMP-REQ-289\",\n    \"COMP-REQ-290\",\n    \"COMP-REQ-291\",\n    \"COMP-REQ-292\",\n    \"COMP-REQ-293\",\n    \"COMP-REQ-294\",\n    \"COMP-REQ-295\",\n    \"COMP-REQ-296\",\n    \"COMP-REQ-297\",\n    \"COMP-REQ-298\",\n    \"COMP-REQ-299\",\n    \"COMP-REQ-300\",\n    \"COMP-REQ-301\",\n    \"COMP-REQ-302\",\n    \"COMP-REQ-303\",\n    \"COMP-REQ-304\",\n    \"COMP-REQ-305\",\n    \"COMP-REQ-306\",\n    \"COMP-REQ-307\",\n    \"COMP-REQ-308\",\n    \"COMP-REQ-309\",\n    \"COMP-REQ-310\",\n    \"COMP-REQ-311\"\n  ],\n  \"current_focus\": \"Active Codex Goal: physical White/Black recovery before V9 component-Rig screen activation, with deterministic behavior and vendor waveform freeze protected\",\n  \"active_parallel_track\": \"WB55 FTS02/panel recovery, real touch/Stop/current and final physical review remain hardware gates; daily art validation does not require a camera\",\n  \"current_goal_audit\": \"docs/validation/companion-current-goal-audit-20260717.json\",\n  \"errors\": []\n}"
+    },
+    "current_goal": {
+      "command": [
+        "C:\\Users\\Billy\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\tools\\verify_companion_current_goal_audit.py"
+      ],
+      "returncode": 0,
+      "output": "PASS: current Companion Goal audit -> docs/validation/companion-current-goal-audit-20260717.json"
+    },
+    "diff_check": {
+      "command": [
+        "git",
+        "diff",
+        "--check",
+        "--",
+        "docs/companion_product_requirements.md"
+      ],
+      "returncode": 0,
+      "output": "warning: in the working copy of 'docs/companion_product_requirements.md', LF will be replaced by CRLF the next time Git touches it"
+    }
+  },
+  "archive_root": "docs/validation/companion-ssd1681-phase-parallel-r9-runtime-20260721",
+  "archive_evidence": {
+    "persistent-launch.json": {
+      "source": ".cache/validation/wb55-phase-parallel-r9-persistent-execute-20260721-r1/persistent-launch.json",
+      "source_sha256": "9BAA6A5D46288C2CA267F7A9B31B59CDE42DF0A33231A9E8714752CCB58D8CE5",
+      "archive_sha256": "9BAA6A5D46288C2CA267F7A9B31B59CDE42DF0A33231A9E8714752CCB58D8CE5",
+      "bytes": 2467,
+      "byte_identical": true
+    },
+    "baseline-gate.json": {
+      "source": ".cache/validation/wb55-phase-parallel-r9-persistent-execute-20260721-r1/baseline-gate.json",
+      "source_sha256": "249A675E732C85CB32CAE51D2A871376B40E4A03B0EA235059FAFC12CBCE018B",
+      "archive_sha256": "249A675E732C85CB32CAE51D2A871376B40E4A03B0EA235059FAFC12CBCE018B",
+      "bytes": 1936,
+      "byte_identical": true
+    },
+    "preclean-white.json": {
+      "source": ".cache/validation/wb55-phase-parallel-r9-persistent-execute-20260721-r1/preclean-white.json",
+      "source_sha256": "64D33D192CA81C59AA440658939AC75E18C8F1997CCED8B02B9200233F042A49",
+      "archive_sha256": "64D33D192CA81C59AA440658939AC75E18C8F1997CCED8B02B9200233F042A49",
+      "bytes": 2148,
+      "byte_identical": true
+    },
+    "controller-state.json": {
+      "source": ".cache/validation/wb55-phase-parallel-r9-persistent-execute-20260721-r1/controller-state.json",
+      "source_sha256": "25AA75E4F4CE0CE5EA42ECBFF6CC093B6669B979C539AD40F32E1FD7CDA76210",
+      "archive_sha256": "25AA75E4F4CE0CE5EA42ECBFF6CC093B6669B979C539AD40F32E1FD7CDA76210",
+      "bytes": 7338,
+      "byte_identical": true
+    },
+    "operator-review.json": {
+      "source": ".cache/validation/wb55-phase-parallel-r9-persistent-execute-20260721-r1/operator-review.json",
+      "source_sha256": "58C9D137ACFB27D2176468AD9798F9D29D35476B87B0706ED20D29D9A33F008D",
+      "archive_sha256": "58C9D137ACFB27D2176468AD9798F9D29D35476B87B0706ED20D29D9A33F008D",
+      "bytes": 1176,
+      "byte_identical": true
+    },
+    "operator-note.txt": {
+      "source": ".cache/validation/wb55-phase-parallel-r9-persistent-execute-20260721-r1/operator-note.txt",
+      "source_sha256": "E2EDDD3239D7FE8E195D266040B0C1800D585887788FE64D9D6B772692928E56",
+      "archive_sha256": "E2EDDD3239D7FE8E195D266040B0C1800D585887788FE64D9D6B772692928E56",
+      "bytes": 83,
+      "byte_identical": true
+    },
+    "postclean-white.json": {
+      "source": ".cache/validation/wb55-phase-parallel-r9-persistent-execute-20260721-r1/postclean-white.json",
+      "source_sha256": "64D33D192CA81C59AA440658939AC75E18C8F1997CCED8B02B9200233F042A49",
+      "archive_sha256": "64D33D192CA81C59AA440658939AC75E18C8F1997CCED8B02B9200233F042A49",
+      "bytes": 2148,
+      "byte_identical": true
+    },
+    "restore-gate.json": {
+      "source": ".cache/validation/wb55-phase-parallel-r9-persistent-execute-20260721-r1/restore-gate.json",
+      "source_sha256": "1110C9F8340D34C6E285128A57D6D27A58EB669E7FBAB5A7DF86D11C94B70524",
+      "archive_sha256": "1110C9F8340D34C6E285128A57D6D27A58EB669E7FBAB5A7DF86D11C94B70524",
+      "bytes": 1555,
+      "byte_identical": true
+    },
+    "normal-resume.json": {
+      "source": ".cache/validation/wb55-phase-parallel-r9-persistent-execute-20260721-r1/normal-resume.json",
+      "source_sha256": "E22ADDFE04D127C5920533382C16EB6C1BA8ED5CA8C1CC03769C6B46EC17DE80",
+      "archive_sha256": "E22ADDFE04D127C5920533382C16EB6C1BA8ED5CA8C1CC03769C6B46EC17DE80",
+      "bytes": 771,
+      "byte_identical": true
+    },
+    "stage-run.json": {
+      "source": ".cache/validation/wb55-phase-parallel-r9-persistent-execute-20260721-r1/stage-run.json",
+      "source_sha256": "CCC7CFABE07F407F83BD076244A408ED762F7DE2E967ECCC37F8D63AAFDB9683",
+      "archive_sha256": "CCC7CFABE07F407F83BD076244A408ED762F7DE2E967ECCC37F8D63AAFDB9683",
+      "bytes": 29370,
+      "byte_identical": true
+    },
+    "runner.stdout.log": {
+      "source": ".cache/validation/wb55-phase-parallel-r9-persistent-execute-20260721-r1/runner.stdout.log",
+      "source_sha256": "48D65604628913EE6B4451D9A1FE00933CDDC6093902AC6C9AD58E3C37942F18",
+      "archive_sha256": "48D65604628913EE6B4451D9A1FE00933CDDC6093902AC6C9AD58E3C37942F18",
+      "bytes": 317,
+      "byte_identical": true
+    },
+    "runner.stderr.log": {
+      "source": ".cache/validation/wb55-phase-parallel-r9-persistent-execute-20260721-r1/runner.stderr.log",
+      "source_sha256": "2DB71BB2098A2CDC3293F5BC94B173534A9B148AD10D0E9B5A8808D9D5E6BE1D",
+      "archive_sha256": "2DB71BB2098A2CDC3293F5BC94B173534A9B148AD10D0E9B5A8808D9D5E6BE1D",
+      "bytes": 623,
+      "byte_identical": true
+    },
+    "preclean-serial-raw.log": {
+      "source": ".cache/validation/wb55-phase-parallel-r9-persistent-execute-20260721-r1/preclean-capture/nucleo-serial-raw.log",
+      "source_sha256": "C379BFB3B2CBB0374E47EB28ABE46736E2C47F1E318D4500A21F2A9E4707CECB",
+      "archive_sha256": "C379BFB3B2CBB0374E47EB28ABE46736E2C47F1E318D4500A21F2A9E4707CECB",
+      "bytes": 44458,
+      "byte_identical": true
+    },
+    "candidate-serial-raw.log": {
+      "source": ".cache/validation/wb55-phase-parallel-r9-persistent-execute-20260721-r1/candidate-capture/nucleo-serial-raw.log",
+      "source_sha256": "DCB875A31B3395C165AA17F54D9BD7F675B39441CCB315079319EE612690CD28",
+      "archive_sha256": "DCB875A31B3395C165AA17F54D9BD7F675B39441CCB315079319EE612690CD28",
+      "bytes": 10853,
+      "byte_identical": true
+    },
+    "postclean-serial-raw.log": {
+      "source": ".cache/validation/wb55-phase-parallel-r9-persistent-execute-20260721-r1/postclean-capture/nucleo-serial-raw.log",
+      "source_sha256": "C379BFB3B2CBB0374E47EB28ABE46736E2C47F1E318D4500A21F2A9E4707CECB",
+      "archive_sha256": "C379BFB3B2CBB0374E47EB28ABE46736E2C47F1E318D4500A21F2A9E4707CECB",
+      "bytes": 44458,
+      "byte_identical": true
+    },
+    "normal-serial-raw.log": {
+      "source": ".cache/validation/wb55-phase-parallel-r9-persistent-execute-20260721-r1/normal-capture/nucleo-serial-raw.log",
+      "source_sha256": "8270836CAA3675077F8F177E956B767A699C32C4FB142B1A9EF87AFD52C1A2B3",
+      "archive_sha256": "8270836CAA3675077F8F177E956B767A699C32C4FB142B1A9EF87AFD52C1A2B3",
+      "bytes": 3052,
+      "byte_identical": true
+    }
+  },
+  "protected_hashes": {
+    "machine_ready_sha256": "B3B93CE7EBB97425F10CFC60425D99B97224B995ADF065AE388E062C022C8879",
+    "locked_v9_source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "owner_acceptance_sha256": "8A3BDF4BD1254B0D0F4DE13A7F293C3D74587C800339ABD4C61FEB0B7737E227",
+    "registry_sha256": "A813087E8C13B3F8E23C5E4FC7E4E11CD5C53D6465949E8E112AC5DC29E77D8F",
+    "registry_fixture_sha256": "997CEFAB71479CC5458D088D7F7B8CED29AEBC026317DA9F28269606FA03D040",
+    "current_goal_sha256": "E46CAD79A6AE6F9838BD658BC84827731E057BDE1A43F821535797F83DF73AA7",
+    "closure_tool_sha256": "70E9E3E923FE68A88D43511DA9FCFB02F8A0B16C7350A4455D4AB3D6B177DD9C"
+  }
+}

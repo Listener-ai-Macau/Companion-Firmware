@@ -1,0 +1,750 @@
+{
+  "claim_scope": "read_only_supplier_source_audit_and_production_off_gate_only",
+  "command_evidence": {
+    "busy_polarity": "high_active_low_ready",
+    "full_plane_bytes": 5000,
+    "full_plane_command": "0x24",
+    "full_update_control": "0xF7",
+    "lut_fast_update_control": "0xC7",
+    "master_activation": "0x20",
+    "production_lut_reference_absent": true
+  },
+  "driver_checks": {
+    "target_busy_is_high_active_low_ready": true,
+    "target_declares_200x200_5000_bytes": true,
+    "target_fast_profile_is_distinct_from_new_vendor_lut": true,
+    "target_full_recovery_is_0x24_one_plane_then_0xf7_0x20": true,
+    "target_full_window_is_25_by_200": true,
+    "target_normal_border_is_0x05": true,
+    "target_vendor_lut_diagnostic_is_verbatim": true,
+    "target_vendor_lut_is_not_present_in_production": true,
+    "target_vendor_partial_operator_loop_is_default_off": true,
+    "target_vendor_partial_operator_loop_matches_basemap_and_region_sequence": true
+  },
+  "failures": [],
+  "identity_evidence": {
+    "controller_identity_ssd1681_or_ssd1680_is_explicit": true,
+    "data_polarity_is_documented": true,
+    "init_order_can_be_audited": true,
+    "resolution_200x200_is_explicit": true,
+    "target_string_present_in_vendor_text": false,
+    "temperature_banded_cwf1_table_is_documented": false
+  },
+  "identity_unproven": [
+    "target_string_present_in_vendor_text",
+    "temperature_banded_cwf1_table_is_documented"
+  ],
+  "machine_status": "PASS_AUDIT_COMPLETE",
+  "production_off_diagnostic": {
+    "allowed": false,
+    "non_goals": [
+      "No production LUT import.",
+      "No CWF1 or temperature-band claim.",
+      "No expression, Rig, CRIG, browser-preview, dynamic-binding or animation change."
+    ],
+    "reason": "Panel/FPC/controller identity and temperature coverage are not proven by the supplied package."
+  },
+  "promotion_status": "NO_GO_PANEL_IDENTITY_UNPROVEN",
+  "schema_id": "companion.gdey0154d67_t03.vendor_1s_source_audit.v1",
+  "source_manifest": {
+    "critical_sources": {
+      "current_ssd1681_target": {
+        "path": "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
+        "sha256": "C7B3A17CE0EBEF541533E3CBC35B28FE41D9CB7F8BA32FE3B0055D87D0176042"
+      },
+      "epaper_c": {
+        "path": "C:\\Users\\Billy\\Desktop\\GDEH0154D67-20211203-P-LUT(1s) -1s快刷\\EPD_W21\\EPAPER.c",
+        "sha256": "7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896"
+      },
+      "epaper_h": {
+        "path": "C:\\Users\\Billy\\Desktop\\GDEH0154D67-20211203-P-LUT(1s) -1s快刷\\EPD_W21\\EPAPER.h",
+        "sha256": "67F71F3C294BA6A26F9D288D268CDB8E417805C3E32DE075216F0351CD8994F8"
+      },
+      "readme": {
+        "path": "C:\\Users\\Billy\\Desktop\\GDEH0154D67-20211203-P-LUT(1s) -1s快刷\\read me.txt",
+        "sha256": "755D2598F00B1FF049A764CF56AD82236440329C64C8ADBCBA6763BF07FE0A47"
+      }
+    },
+    "file_count": 124,
+    "files": [
+      {
+        "bytes": 19512,
+        "path": "EPD_W21/EPAPER.c",
+        "sha256": "7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896"
+      },
+      {
+        "bytes": 2608,
+        "path": "EPD_W21/EPAPER.h",
+        "sha256": "67F71F3C294BA6A26F9D288D268CDB8E417805C3E32DE075216F0351CD8994F8"
+      },
+      {
+        "bytes": 177272,
+        "path": "EPD_W21/picture.h",
+        "sha256": "528CD8E6AEA73DD9F59C753E869696B9A3D7E89544B13E73FAE867DA9CDBBAC4"
+      },
+      {
+        "bytes": 6931,
+        "path": "FWLib/misc.c",
+        "sha256": "C1E02E852CC35DD8297A6AE77DFE146C12D06EFEF36C36E1E4D3259C701905C9"
+      },
+      {
+        "bytes": 8893,
+        "path": "FWLib/misc.h",
+        "sha256": "2CBC55B0900948470FA2BF3770B92C615B24C66AD7EF4A59D55716316E66CB2E"
+      },
+      {
+        "bytes": 6852,
+        "path": "FWLib/stm32f10x_exti.c",
+        "sha256": "000009010961A3485156C9B8FAD4F3E9B599C7AB223CDA48D36894F3445B6A9F"
+      },
+      {
+        "bytes": 6682,
+        "path": "FWLib/stm32f10x_exti.h",
+        "sha256": "6B1443558ACF896D392A39DBE6FAD51EEF867DDF8851B938B484F8F96DBD1790"
+      },
+      {
+        "bytes": 26787,
+        "path": "FWLib/stm32f10x_flash.c",
+        "sha256": "3C68B6004143F653EEAFF2ADA21D9B96E0FC354CB8CF89AF317207351A8B2813"
+      },
+      {
+        "bytes": 19528,
+        "path": "FWLib/stm32f10x_flash.h",
+        "sha256": "BC9E63F45E9B832970542ACDEC3FFCE9E71A5DF5CBC8ABA1C03E57CE35FCB06D"
+      },
+      {
+        "bytes": 19195,
+        "path": "FWLib/stm32f10x_gpio.c",
+        "sha256": "21C3C9E13DD99E6BD621A904F1191FDCE3BA4CEEDB12283130325FAD2D4EEE08"
+      },
+      {
+        "bytes": 17304,
+        "path": "FWLib/stm32f10x_gpio.h",
+        "sha256": "045DADA3B4ED5B1D44CE3E09F2FC238E3958343399899FB7EE99D3B81DE1E3F4"
+      },
+      {
+        "bytes": 4827,
+        "path": "FWLib/stm32f10x_iwdg.c",
+        "sha256": "6104742CF1FF7F5F6ED9C48848C3EBB574B36C22BFAB8D1999A5E77C31BDD6D1"
+      },
+      {
+        "bytes": 3739,
+        "path": "FWLib/stm32f10x_iwdg.h",
+        "sha256": "D02DB8CB0F2CD299F1237AF8479150EDB74BA3CBB843AFEDEAFEE8859FFD0B70"
+      },
+      {
+        "bytes": 49626,
+        "path": "FWLib/stm32f10x_rcc.c",
+        "sha256": "2171BAF0256A27A6B34EE403A86F619D42C4129C476AF78A443DCA15A0873D63"
+      },
+      {
+        "bytes": 29022,
+        "path": "FWLib/stm32f10x_rcc.h",
+        "sha256": "376D8531C98FB5D460027B586BFF5532427B6A0FCF35466284E4B6A0373443D9"
+      },
+      {
+        "bytes": 30092,
+        "path": "FWLib/stm32f10x_spi.c",
+        "sha256": "973D353E3ACA5052091536E2EB37497C05A9F65C4DF232A22D91DA4C0A5679D9"
+      },
+      {
+        "bytes": 18095,
+        "path": "FWLib/stm32f10x_spi.h",
+        "sha256": "5A03C176BFBB67B672CB1FDE9538E3F207DB1E43B5289F9949D759EC37A05DC5"
+      },
+      {
+        "bytes": 104871,
+        "path": "FWLib/stm32f10x_tim.c",
+        "sha256": "C719E7A8C80CA5E797E57C91AD67459DABCCEE5618105A4EC6A355A2576AF96C"
+      },
+      {
+        "bytes": 44904,
+        "path": "FWLib/stm32f10x_tim.h",
+        "sha256": "D34A3388317E72544FD10D74C5D92B81BE44F057EAB816D70E87F0FB085DAEB1"
+      },
+      {
+        "bytes": 35053,
+        "path": "FWLib/stm32f10x_usart.c",
+        "sha256": "E4F9E02771DD522D69E8BC08AF17DFF0A5C3EEE7FB5A0168870FE876B53C5785"
+      },
+      {
+        "bytes": 16307,
+        "path": "FWLib/stm32f10x_usart.h",
+        "sha256": "1578E63DE3FC606D7696959AEFE053A328BEEDF3AE253C192F1AB3FA99FD22C7"
+      },
+      {
+        "bytes": 70040,
+        "path": "Project/Debug/list/mdk.map",
+        "sha256": "890D8FB3CE71EC008E1945ED1CFC0A7CE174B159C9411F510904AB3A6AAD1ACE"
+      },
+      {
+        "bytes": 324,
+        "path": "Project/Debug/obj/application_main.__i",
+        "sha256": "AA0A572A3EDDD81966454BADC57EAC62713D0689BA8CB27CAA655FB5C8482657"
+      },
+      {
+        "bytes": 269013,
+        "path": "Project/Debug/obj/application_main.crf",
+        "sha256": "6DA5729D7B3462350C3A9C3953943CC5005C195334B88A9A990B4022B3A70F0B"
+      },
+      {
+        "bytes": 997,
+        "path": "Project/Debug/obj/application_main.d",
+        "sha256": "FF5025BCCD8E4277B4610438B0F0C844266824333B034D78E23C52C4EA4368DB"
+      },
+      {
+        "bytes": 284300,
+        "path": "Project/Debug/obj/application_main.o",
+        "sha256": "F750934BC1431A7889ED0EE5818148CF1B23AC59FB5C977A3D9C7970683339B0"
+      },
+      {
+        "bytes": 3584,
+        "path": "Project/Debug/obj/core_cm3.crf",
+        "sha256": "51BBA8F1BC5CCD1D37E3D4A5BF4F79888A0208455B5A7F7B861B4BAD58CBC2F7"
+      },
+      {
+        "bytes": 117,
+        "path": "Project/Debug/obj/core_cm3.d",
+        "sha256": "0D03FC13D34A34537FAF6E3736D47F5AF346468E7B7F31E0BB71A12213552ED8"
+      },
+      {
+        "bytes": 10572,
+        "path": "Project/Debug/obj/core_cm3.o",
+        "sha256": "3EFD6D3A57537D8646987B2F9D6C1EA74D0EA346EAF8C1857666F80E15F0EB55"
+      },
+      {
+        "bytes": 270282,
+        "path": "Project/Debug/obj/display_epd_w21.crf",
+        "sha256": "B4D12EFAF5BBCDBE1B6EADE1554BB06E964C9DAEC06424EDE6180BC1C7F5F3FD"
+      },
+      {
+        "bytes": 1021,
+        "path": "Project/Debug/obj/display_epd_w21.d",
+        "sha256": "383CA20BECF8634955A6F42764CAEB4EA7191B54CE1CC099477B7977EE521253"
+      },
+      {
+        "bytes": 292960,
+        "path": "Project/Debug/obj/display_epd_w21.o",
+        "sha256": "AC65981DDE9A1984255B0D04317D98DCC6CCA0821CDCA7351AA3AD479C368FA9"
+      },
+      {
+        "bytes": 265686,
+        "path": "Project/Debug/obj/display_epd_w21_aux.crf",
+        "sha256": "6408A464B0C16EAA1E0A67157582C07252F5997F16AAB2098B4959B138A1C168"
+      },
+      {
+        "bytes": 1028,
+        "path": "Project/Debug/obj/display_epd_w21_aux.d",
+        "sha256": "0C67CD08FBCF6651980247B9EF7AB9266595100CEE057C60893CF1740E5CCE69"
+      },
+      {
+        "bytes": 282100,
+        "path": "Project/Debug/obj/display_epd_w21_aux.o",
+        "sha256": "26A9D13BDFE2371B2810625654182349A8DED6857A97B1E17CA923F8CBC59235"
+      },
+      {
+        "bytes": 346,
+        "path": "Project/Debug/obj/display_epd_w21_spi.__i",
+        "sha256": "604F4FCE18DD9FF1143BA3FA54F01EA38F5D61728AD53A477459548B31044541"
+      },
+      {
+        "bytes": 264650,
+        "path": "Project/Debug/obj/display_epd_w21_spi.crf",
+        "sha256": "C0ADEFD538FA825194EDD3E1E3178A6FFCC47E99C98A7957A5254FDA86DD331B"
+      },
+      {
+        "bytes": 989,
+        "path": "Project/Debug/obj/display_epd_w21_spi.d",
+        "sha256": "46CD66381BB60D8A2EB572D2DBB5B401F071512935F4D301F9780464DF64DFD0"
+      },
+      {
+        "bytes": 277616,
+        "path": "Project/Debug/obj/display_epd_w21_spi.o",
+        "sha256": "0877491FB105D6069A32BE550BD4B22B9BD038C51BD0892D9C945BF6188A1D0A"
+      },
+      {
+        "bytes": 271957,
+        "path": "Project/Debug/obj/epaper.crf",
+        "sha256": "806BE9C84E304F13061D2B20AA9D3C1DA307DE00B57EEC6C3593A0752CA21AC0"
+      },
+      {
+        "bytes": 776,
+        "path": "Project/Debug/obj/epaper.d",
+        "sha256": "02C418F087C4E1D7280D323A29974D9A33D68C0EC4A1CC057A9FCB717344AA80"
+      },
+      {
+        "bytes": 292544,
+        "path": "Project/Debug/obj/epaper.o",
+        "sha256": "E1028ED4E1AF0FF7E52ED725571E71E700F0826780A4860224F3BCB3B7E54A42"
+      },
+      {
+        "bytes": 19,
+        "path": "Project/Debug/obj/ExtDll.iex",
+        "sha256": "93EF77447ACAFAED3FB015AF57B4C066B48DD9194A52D477177C90A5742A973E"
+      },
+      {
+        "bytes": 268834,
+        "path": "Project/Debug/obj/main.crf",
+        "sha256": "FABC01B519D4B06DBEE6F2CA03F95222523F6558F16D5CB8A626022EC44FC081"
+      },
+      {
+        "bytes": 781,
+        "path": "Project/Debug/obj/main.d",
+        "sha256": "F3EBBBFB046204A87E565961D6AB53E20E2C9C5C1D542E948DDC4BEFDE2A08C3"
+      },
+      {
+        "bytes": 320904,
+        "path": "Project/Debug/obj/main.o",
+        "sha256": "2937EC63F49CB1368D6F15AE4F8648C16B63551239A7C7F398DDAD5ACB4B50D2"
+      },
+      {
+        "bytes": 531844,
+        "path": "Project/Debug/obj/mdk.axf",
+        "sha256": "B9329586886BAE521A578854BEE5FC07A66FCACC0CFA191A6F6B01E8F294AD55"
+      },
+      {
+        "bytes": 2072,
+        "path": "Project/Debug/obj/mdk.build_log.htm",
+        "sha256": "7462F0DDBFF5E7A70DBA0E6CF7DD274B584C5AD2B69D45E6DC5586464A2602FF"
+      },
+      {
+        "bytes": 115857,
+        "path": "Project/Debug/obj/mdk.hex",
+        "sha256": "EB6F751F82175DECD01E0A2D5D1A750ED84F22F2C3ACC491304FB2E05C4F4908"
+      },
+      {
+        "bytes": 71104,
+        "path": "Project/Debug/obj/mdk.htm",
+        "sha256": "9029201F748E2F235AE3C43146F6E40AB2BDFBD369C5105E261FD1FA037C7C42"
+      },
+      {
+        "bytes": 660,
+        "path": "Project/Debug/obj/mdk.lnp",
+        "sha256": "EAA912A1FFC6781AD3D6A261F719C3AA386AA29DFE47DB4F327875A745C0274B"
+      },
+      {
+        "bytes": 41231,
+        "path": "Project/Debug/obj/mdk.plg",
+        "sha256": "A77DFDD533715151E30B5B612D450EF9F906C18DBA92060CC5ADBDEB48D91A83"
+      },
+      {
+        "bytes": 479,
+        "path": "Project/Debug/obj/mdk.sct",
+        "sha256": "423A6C6CF4F05391C822BD966C95CF85AD94C3D067784866948118CF71F5D22E"
+      },
+      {
+        "bytes": 2222,
+        "path": "Project/Debug/obj/mdk.tra",
+        "sha256": "F7912388BB2DE7689B2AC48280BC04AABC707F4EC69320ED724A81A78A3A593B"
+      },
+      {
+        "bytes": 17465,
+        "path": "Project/Debug/obj/mdk_GDE.dep",
+        "sha256": "EBD3552D48C90FB477672DF2E5E4C8F5349ECA0DBE75BBB22A4F840CE62453DC"
+      },
+      {
+        "bytes": 479,
+        "path": "Project/Debug/obj/mdk_sct.Bak",
+        "sha256": "A18239D2EF21B2772B33AB01D9A312BB3513B88FD18792CE64FADD6729D1818A"
+      },
+      {
+        "bytes": 265625,
+        "path": "Project/Debug/obj/misc.crf",
+        "sha256": "5DB16A3F065AC44E01721A81371C5BCA34BAB52F1B5749AC734E29DAB9A9D41D"
+      },
+      {
+        "bytes": 736,
+        "path": "Project/Debug/obj/misc.d",
+        "sha256": "EEFF3529E6DC58AAA052A3D5E6F7F066C817EF936A842F62F7FA2FDEBED704CA"
+      },
+      {
+        "bytes": 280320,
+        "path": "Project/Debug/obj/misc.o",
+        "sha256": "BE5DBB0D6E4CCB800BAB4C1D14AF3F9800676E713B4BC356408686F5B119A5C8"
+      },
+      {
+        "bytes": 267234,
+        "path": "Project/Debug/obj/myuart.crf",
+        "sha256": "A4093DF2F40C3D4CB79AA1E9B103E17C6DFDE3CC1EF947AA5FCE28C8C5979FE9"
+      },
+      {
+        "bytes": 715,
+        "path": "Project/Debug/obj/myuart.d",
+        "sha256": "BA17BD0CB22CB41CD794C29C41ED8FB1C5196C1C448E9206AD4C0482F91E7258"
+      },
+      {
+        "bytes": 282308,
+        "path": "Project/Debug/obj/myuart.o",
+        "sha256": "B60B2E4F1A4F4A8D15B60E389316E51322D1FAB39B8D298C077740736236EA34"
+      },
+      {
+        "bytes": 71,
+        "path": "Project/Debug/obj/startup_stm32f10x_hd.d",
+        "sha256": "5D2C25611AE6B44BBB4858E769CF24768EF9CD8D606F4DE83B2240DCA9F78F8E"
+      },
+      {
+        "bytes": 6872,
+        "path": "Project/Debug/obj/startup_stm32f10x_hd.o",
+        "sha256": "DC3B8E1748C1857BAF3034329EF97003DBF2750A5D973642DF0BE1FFC0001DCB"
+      },
+      {
+        "bytes": 271732,
+        "path": "Project/Debug/obj/stm32f10x_flash.crf",
+        "sha256": "29E26EB015618F0BAD4A966767C04EF9E51348C6BC23D8A45394197BFA502EBE"
+      },
+      {
+        "bytes": 934,
+        "path": "Project/Debug/obj/stm32f10x_flash.d",
+        "sha256": "E5F1BF7DDB74D352E3EADBE3B45E150C312C9BFF7E568ADE0EF21BD2E871631D"
+      },
+      {
+        "bytes": 289296,
+        "path": "Project/Debug/obj/stm32f10x_flash.o",
+        "sha256": "91CF9E1CBB62618EAB222616D0103A883C71B5979A0159C9B9011AD88925642B"
+      },
+      {
+        "bytes": 269037,
+        "path": "Project/Debug/obj/stm32f10x_gpio.crf",
+        "sha256": "5B700DDBEC88FEF9E0A2D90CFBCA8AD2DD532AAE912D198504A26B8B11D7016E"
+      },
+      {
+        "bytes": 916,
+        "path": "Project/Debug/obj/stm32f10x_gpio.d",
+        "sha256": "1634475D061158207479543B5C549DF1478462EC7192A468177DC9304770E17E"
+      },
+      {
+        "bytes": 286516,
+        "path": "Project/Debug/obj/stm32f10x_gpio.o",
+        "sha256": "536C90C7B0A1DDAE78F18282F192CECB6FD1658DCC7DE8430C87836A0A93DED2"
+      },
+      {
+        "bytes": 267827,
+        "path": "Project/Debug/obj/stm32f10x_it.crf",
+        "sha256": "C1B318C662437158D004E9E264342B8991846A3AB6C38B0D2D72EECA3CB06B49"
+      },
+      {
+        "bytes": 878,
+        "path": "Project/Debug/obj/stm32f10x_it.d",
+        "sha256": "18999D8CB82CFF9C691E91C743686BEF776D85806F8F5D41B242B154A44583A0"
+      },
+      {
+        "bytes": 291796,
+        "path": "Project/Debug/obj/stm32f10x_it.o",
+        "sha256": "BE03397E09922C00B6ECF6826044B47BC965DF46F9BAFCBD07DF92C32EE31EF3"
+      },
+      {
+        "bytes": 265278,
+        "path": "Project/Debug/obj/stm32f10x_iwdg.crf",
+        "sha256": "E6279400D6E5F3FDB074B9D30E13136DDEF49B1A6131A7FEAD851001BDBD7E08"
+      },
+      {
+        "bytes": 916,
+        "path": "Project/Debug/obj/stm32f10x_iwdg.d",
+        "sha256": "BD7187AE32EFB5E7B162BDB2C688BA0D75F369F47B78E25BA31361A0B7D5739C"
+      },
+      {
+        "bytes": 280132,
+        "path": "Project/Debug/obj/stm32f10x_iwdg.o",
+        "sha256": "AC10599C143CE002FB669C07E0ACD3ED932C29961C2BC57D74B9E55CF20343C8"
+      },
+      {
+        "bytes": 272717,
+        "path": "Project/Debug/obj/stm32f10x_rcc.crf",
+        "sha256": "BDBE674EB94FAFE766E6EC88C76A7DB2BEB488E69236DA5E82BC225F1A913992"
+      },
+      {
+        "bytes": 898,
+        "path": "Project/Debug/obj/stm32f10x_rcc.d",
+        "sha256": "7F3EF4C61C5852DEF7BD671D342B6F67ED426A0F0C3799744BD425BC9353CEA1"
+      },
+      {
+        "bytes": 291140,
+        "path": "Project/Debug/obj/stm32f10x_rcc.o",
+        "sha256": "BA24706A5E478169FBA9B1D560346A1C3505850900AAC59A38CF9FA4134BB3F3"
+      },
+      {
+        "bytes": 269603,
+        "path": "Project/Debug/obj/stm32f10x_spi.crf",
+        "sha256": "2B9B0B87EF4374F866828F578CB69C89A3718A46E62EBAFD670FE3C7981DF5C9"
+      },
+      {
+        "bytes": 898,
+        "path": "Project/Debug/obj/stm32f10x_spi.d",
+        "sha256": "D2C852B30586656A8768CB598CFBBB58186D96286DA87C03B0F94649E5602ECD"
+      },
+      {
+        "bytes": 287992,
+        "path": "Project/Debug/obj/stm32f10x_spi.o",
+        "sha256": "0A40CFBEAA867598B9431A609AA67FA89F5FD4C2A32F2F30529F4B9509C6B6B9"
+      },
+      {
+        "bytes": 286340,
+        "path": "Project/Debug/obj/stm32f10x_tim.crf",
+        "sha256": "8E6D426B6D92DBEBFA0B78DC9527EB3A7C43419F17EDA14CB6F456F15C901AE6"
+      },
+      {
+        "bytes": 898,
+        "path": "Project/Debug/obj/stm32f10x_tim.d",
+        "sha256": "54528D2A140D7B6B414626BDF3969684D14E5CA419C4799E5CFB70B04AAB1846"
+      },
+      {
+        "bytes": 315908,
+        "path": "Project/Debug/obj/stm32f10x_tim.o",
+        "sha256": "D4A3C0D11304238706AA8F077840F65BD782C463EC2544B8CB86DE9A80001613"
+      },
+      {
+        "bytes": 270732,
+        "path": "Project/Debug/obj/stm32f10x_usart.crf",
+        "sha256": "29363D22ABCFA27CE1AED6D587A5AA0BD8ADCB2FAD330C3E1A1AF4E090A45110"
+      },
+      {
+        "bytes": 934,
+        "path": "Project/Debug/obj/stm32f10x_usart.d",
+        "sha256": "4A7FF8BFACE450CEB1204B1E82561F1BB8C27866EDE8B6D2BA68E928A1700783"
+      },
+      {
+        "bytes": 289984,
+        "path": "Project/Debug/obj/stm32f10x_usart.o",
+        "sha256": "3999D0421F20DB7AF46564E9268C5EDF5EA7EB8E04053CCD5E17C9D042EB16BA"
+      },
+      {
+        "bytes": 266230,
+        "path": "Project/Debug/obj/system_stm32f10x.crf",
+        "sha256": "DCAB1D8A7B68A6B99380994036DD0829B0C02C7DBF410290AED472331055DF3F"
+      },
+      {
+        "bytes": 893,
+        "path": "Project/Debug/obj/system_stm32f10x.d",
+        "sha256": "C8749DA5243BA09873F9F7979E987D96837C304D8EB8997C5454284CDB6EC363"
+      },
+      {
+        "bytes": 280456,
+        "path": "Project/Debug/obj/system_stm32f10x.o",
+        "sha256": "E5895DAC068F087241ADF22101D3BA1DE602CF9C0D597515098150DE31C91C06"
+      },
+      {
+        "bytes": 39768,
+        "path": "Project/Debug/obj/T64.bin",
+        "sha256": "DD01D824BFBF85FDAE8C136FE4F6F20A86C605A492A6F5772F99317028D84E62"
+      },
+      {
+        "bytes": 6956,
+        "path": "Project/DebugConfig/GDE_STM32F103C8.dbgconf",
+        "sha256": "C4495CBDB25B80794D6E183091FE25C669DF4D0E5B3F5466E822FE608D2F82D1"
+      },
+      {
+        "bytes": 497,
+        "path": "Project/JLink Regs CM3.txt",
+        "sha256": "40350AE735E7CAF8186123C0A3B4E3E68C26D6182C14558DD1FD5BE73C61225C"
+      },
+      {
+        "bytes": 205,
+        "path": "Project/JLinkArm_mdk.ini",
+        "sha256": "9495ED5044B9717709673352B21D883C9D8DA9675A85597003E4FD23DB255A09"
+      },
+      {
+        "bytes": 386037,
+        "path": "Project/JLinkLog.txt",
+        "sha256": "9C64F386502EC0BBF3874356C77DA90942F5F91D045C1A14DD6292683BE1D9A2"
+      },
+      {
+        "bytes": 285,
+        "path": "Project/JLinkSettings.ini",
+        "sha256": "B9A1B834E4DDE8B56777290E39CCE4A7DBCCBE74197DAFEB19E1441D08116458"
+      },
+      {
+        "bytes": 4671,
+        "path": "Project/mdk.opt.bak",
+        "sha256": "1F31E2B19D23DE1FE0A18AEB769C45610862C11746672B74F359DEACFB3AFAF9"
+      },
+      {
+        "bytes": 3464,
+        "path": "Project/mdk.Uv2.bak",
+        "sha256": "5F3D25878C058692DA255DA7D8B0162B6B6093F5FC181D23E0649852874267C7"
+      },
+      {
+        "bytes": 140011,
+        "path": "Project/mdk.uvgui.Administrator",
+        "sha256": "6A9689C887D050112BCF6965471E1F6AEF0289169BBA300722A418CD802E4D8C"
+      },
+      {
+        "bytes": 139462,
+        "path": "Project/mdk.uvgui_Administrator.bak",
+        "sha256": "0014F45AD61DEFB3375031A2E56121B6AC27EE100C7F9DEB2406EE3166798671"
+      },
+      {
+        "bytes": 71091,
+        "path": "Project/mdk.uvguix.Administrator",
+        "sha256": "7CE56059EFFDEC3E9ECBFC6E6B2681B5830730C8408532AE1D1372839CDA49D6"
+      },
+      {
+        "bytes": 19345,
+        "path": "Project/mdk.uvopt",
+        "sha256": "299720D2A45AB010071E373A976DA14857AC37ED5616C667AEB6FB526CAB0AF3"
+      },
+      {
+        "bytes": 18420,
+        "path": "Project/mdk.uvoptx",
+        "sha256": "2731AFD4795CD03500831D24D21A157F114113707608694F968D11DA8083F73A"
+      },
+      {
+        "bytes": 17971,
+        "path": "Project/mdk.uvproj",
+        "sha256": "FA405B4F44BB8BAFE3205A4C87E37C10881EA6A5971A9630DF9D400B4970EB9F"
+      },
+      {
+        "bytes": 12907,
+        "path": "Project/mdk_EPD_W2.9.dep",
+        "sha256": "E784E1D190E14BCE7516CE73521C33783B8011C296705F34C19E9A600B308719"
+      },
+      {
+        "bytes": 12321,
+        "path": "Project/mdk_GDE.dep",
+        "sha256": "2EDBB38914221661C010234B4ECBF2F84FBDF9088DF237C361A70DD6A697530F"
+      },
+      {
+        "bytes": 12720,
+        "path": "Project/mdk_mdk.dep",
+        "sha256": "600380D73DBC9B7B2E062D2B0FAE9AC7C7B80658F30777ABB165595CB1968BCC"
+      },
+      {
+        "bytes": 4671,
+        "path": "Project/mdk_Opt.Bak",
+        "sha256": "403DA23631DFB6F4A3BFC88715D3C91DBDDC9C54EBC6B758FCC17DFA72034BA1"
+      },
+      {
+        "bytes": 3464,
+        "path": "Project/mdk_Uv2.Bak",
+        "sha256": "E53691B6B6AD4B748FC832AC1F9F8DBAABE0F3CE3C7C7143414E1FF1818E6103"
+      },
+      {
+        "bytes": 21235,
+        "path": "Project/mdk_uvopt.bak",
+        "sha256": "8C0B369A010CC33EEAFA200EF973456CFD261F34F2349B16B7307F749626DF09"
+      },
+      {
+        "bytes": 17761,
+        "path": "Project/mdk_uvproj.bak",
+        "sha256": "4A0AC7A38AB9AD709F97CDE175D84ABF95AB7E11635DFA0D13DBB9A727F6E1B1"
+      },
+      {
+        "bytes": 338,
+        "path": "Project/RTE/RTE_Components.h",
+        "sha256": "EBB3FB8553C6EBBA1C193FE894CA8D7CE90C62803ECDC640D1C02ED8FD3E1C34"
+      },
+      {
+        "bytes": 281,
+        "path": "read me.txt",
+        "sha256": "755D2598F00B1FF049A764CF56AD82236440329C64C8ADBCBA6763BF07FE0A47"
+      },
+      {
+        "bytes": 17206,
+        "path": "StartUp/core_cm3.c",
+        "sha256": "4AAD992E0CAA72A576160752F40FE11A04A9F758C73876520324F3AE028C8B5B"
+      },
+      {
+        "bytes": 46533,
+        "path": "StartUp/core_cm3.h",
+        "sha256": "018AB37AA4494795B33035BDFA0AD416E246A8CDBC9A724B41015F1D3975AF85"
+      },
+      {
+        "bytes": 15872,
+        "path": "StartUp/startup_stm32f10x_hd.s",
+        "sha256": "A5D3E7C9EDCAD60F21F0A09435DB783FEA49C7084EB66B4DFB669E7D845D4F02"
+      },
+      {
+        "bytes": 593381,
+        "path": "StartUp/stm32f10x.h",
+        "sha256": "24006A8CAE247C4CAB4D6995BEAB445143411695E90444E8FD7FBC08212F67DF"
+      },
+      {
+        "bytes": 3185,
+        "path": "StartUp/stm32f10x_conf.h",
+        "sha256": "8CFE33B302AB6B0E572F61A26E3D85EE78CC0290CFC3F1DFE8AB05EDF84BD522"
+      },
+      {
+        "bytes": 30622,
+        "path": "StartUp/system_stm32f10x.c",
+        "sha256": "E0822CD2ABA4EBCFB73DE154E6CB738A808308466CD7260BFFC0D43F172674DB"
+      },
+      {
+        "bytes": 2404,
+        "path": "StartUp/system_stm32f10x.h",
+        "sha256": "0ED6A1E97BB331F9255A6F2CB90DC23364B18E39E1F4C67028C86DF0E50219D0"
+      },
+      {
+        "bytes": 8904,
+        "path": "User/main.c",
+        "sha256": "66BF0AC2E1C75C28FF95906666E720F3EC584EDD5D721D1293948A1596A315E0"
+      },
+      {
+        "bytes": 29132,
+        "path": "User/stm32f10x_it.c",
+        "sha256": "58E428EB0C1B8AFDE68039AF43C7A4B85BDF770EF19B125F506A4A65036FE765"
+      },
+      {
+        "bytes": 2012,
+        "path": "User/stm32f10x_it.h",
+        "sha256": "8EEC1E0D108761D6FE5BF84EA0800544487558ED514C84FBB4E1ED0E03C6AE8B"
+      }
+    ],
+    "lut_data": {
+      "declared_bytes": 159,
+      "literal_count": 159,
+      "load_command": "0x32",
+      "load_payload_bytes": 153,
+      "sha256": "F83EA7360CFFF04FE9D004A75858A46213CBD710AAA2F0C4A62597E3EA176D15",
+      "tail_bindings": {
+        "0x03": [
+          "0x17"
+        ],
+        "0x04": [
+          "0x41",
+          "0xA8",
+          "0x32"
+        ],
+        "0x2C": [
+          "0x58"
+        ],
+        "0x3F": [
+          "0x22"
+        ]
+      }
+    },
+    "vendor_root": "C:\\Users\\Billy\\Desktop\\GDEH0154D67-20211203-P-LUT(1s) -1s快刷",
+    "vendor_tree_sha256": "2A6E307D5448D673ACB147751E3100DB2F3B2D8F8DB66A4D9FEE71EBCB4D4663"
+  },
+  "supplier_input_is_read_only": true,
+  "target": "NUCLEO-WB55RG + ESP32-FTS02 + GDEY0154D67-T03",
+  "vendor_checks": {
+    "busy_waits_for_low_ready": true,
+    "full_lut_frame_is_0x24_one_5000_byte_plane": true,
+    "load_0x32_has_exactly_153_payload_bytes": true,
+    "lut_declares_159_bytes": true,
+    "lut_fast_update_is_0xc7_then_0x20": true,
+    "lut_has_exactly_159_literals": true,
+    "lut_tail_is_bound_to_0x3f_0x03_0x04_0x2c": true,
+    "normal_full_update_is_0xf7_then_0x20": true,
+    "partial_basemap_writes_0x24_then_0x26_before_normal_f7": true,
+    "partial_multi_region_path_uses_one_reset_border_five_0x24_then_one_ff_0x20": true,
+    "partial_path_resets_and_locks_border_0x80": true,
+    "partial_path_uses_10ms_reset_region_0x24_and_0xff_0x20": true,
+    "readme_requires_post_partial_hardware_reset_and_border_change": true,
+    "reset_and_normal_border_are_explicit": true,
+    "resolution_declares_200x200_and_5000_bytes": true
+  },
+  "verbatim_diff": {
+    "differences": [
+      "The new package loads one literal 159-byte LUT through 0x32 plus controller tail registers, while the current production path uses the recorded SSD1681 Mode-1 profile and does not contain this LUT.",
+      "The package's ordinary partial function activates 0xFF; its LUT full update activates 0xC7. Neither is authorized as production behavior by this audit.",
+      "The package declares 200x200 geometry but does not declare GDEY0154D67-T03 panel/FPC identity or a temperature-banded CWF1 table."
+    ],
+    "match_conclusion": "NO_GO_PANEL_IDENTITY_UNPROVEN; retain as read-only, production-off candidate only.",
+    "matching_evidence": [
+      "200x200 / 5000-byte full-plane geometry is explicit in both sources.",
+      "Both audited full paths use 0x24 for the current plane, 0x22=0xF7, 0x20 and BUSY completion.",
+      "Both sources use normal border 0x3C=0x05; the vendor partial path hard-resets and uses 0x3C=0x80.",
+      "Both sources treat BUSY high as active and low as ready."
+    ]
+  }
+}

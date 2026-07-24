@@ -1,0 +1,36 @@
+{
+  "schema_id": "companion.v9_expression_rig.daily_artifact_byte_drift_triage.v1",
+  "status": "FAIL_ACCEPTED_DAILY_ARTIFACT_BYTES_WITH_ZERO_PIXEL_FRAMES",
+  "claim_scope": "machine_triage_only_runtime_inactive",
+  "authority": "COMP-REQ-096, COMP-REQ-192 and COMP-REQ-194",
+  "protected_identity": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "observed_contract": {
+    "accepted_daily_baseline": "docs/validation/companion-v9-expression-rig-daily-focus-accepted-dynamic-baseline-20260718.json",
+    "current_preview": "docs/validation/companion-v9-expression-rig-daily-focus-preview-revision-107-isolated-20260720.json",
+    "zero_pixel_evidence": {
+      "component_layers": "24 of 24 byte-identical PNG masks",
+      "keyframe_strip_pixels": 0,
+      "story_phase_pixels": "12 of 12 PBM frames at zero difference",
+      "animated_gif_pixels": "60 of 60 frames byte-identical after 1-bit decode"
+    },
+    "nonvisual_byte_drift": {
+      "html": "The current player adds atlas-capable UI code and driver/state-role diagnostics.",
+      "gif_timing": "The current player uses the generated panel pacing contract (initial 2600 ms, later frames at least 750 ms); the accepted historical GIF used 100-160 ms preview steps."
+    }
+  },
+  "required_recovery": [
+    "Do not rewrite the accepted baseline bytes or call a source-identical Daily performance an art drift solely because its player shell changes.",
+    "Compare Daily regression by component mask identity, keyframe/story-phase pixels and decoded GIF frame pixels in exact sequence.",
+    "Treat GIF/HTML byte differences as acceptable only when the logical component frame sequence is unchanged and the current timing is separately bound to the target panel-presentation contract.",
+    "Keep the isolated 60-frame browser/target parity gate mandatory for the final timing/target claim."
+  ],
+  "forbidden": [
+    "weakening zero-pixel Daily component or frame comparison",
+    "accepting timing changes without target-presentation evidence",
+    "rewriting accepted artifacts",
+    "whole-face fallback, runtime activation, hardware flash or physical acceptance"
+  ]
+}

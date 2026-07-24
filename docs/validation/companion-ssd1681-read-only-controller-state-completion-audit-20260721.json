@@ -1,0 +1,225 @@
+{
+  "schema_id": "companion.wb55.ssd1681.read_only_controller_state_completion_audit.v1",
+  "status": "NO_GO_CONDITION_GATE_CLOSED_WITHOUT_HARDWARE_CONTACT",
+  "generated_at": "2026-07-21T13:03:00+08:00",
+  "goal_scope": "COMP-REQ-257 production-off SSD1681 controller-state read-only evidence",
+  "completion_decision": "The controlled validation reached its fail-closed terminal result. Hardware Execute was conditional on both the diagnostic candidate and a reusable byte-exact E1997F... normal restore artifact being present before hardware contact. The candidate exists, but the exact restore file does not; therefore Execute's admission condition is false, Execute is not a remaining required action in this run, and NO_GO is the legitimate terminal evidence result. No controller-state value was read or inferred.",
+  "condition_gate": {
+    "candidate_image_present": true,
+    "candidate_image_sha256": "52D79CB3BC55D9738EFA580B95D3930216C23FD8825356F7860B7C1718C0C6AD",
+    "required_normal_restore_sha256": "E1997F29DCB8735899B4BC0B9012CF75025F3CA8D21250485BCC21E4C4691B46",
+    "required_normal_restore_file_present": false,
+    "current_normal_build_sha256": "BC850BE39E20BDC499ADDE65A00739A556AC778B03D41439CFB1B374468CD2FD",
+    "current_normal_build_accepted_as_restore": false,
+    "static_gate_passed": false,
+    "runner_check_only_passed": false,
+    "execute_condition_satisfied": false,
+    "execute_required_after_false_condition": false,
+    "gate_result": "NO_GO_BEFORE_HARDWARE"
+  },
+  "artifact_loss_incident": {
+    "agent_caused_retained_artifact_overwrite": true,
+    "verbatim_account": "The lower-driver agent first checked the wrong repo-root build path and then ran a forced normal build from the concurrently changed upper-layer source tree. That build overwrote the retained CubeIDE normal build output before the E1997F... file was copied to a protected path, producing BC850B... instead.",
+    "concealed": false,
+    "shared_dirty_source_reverted": false,
+    "hash_requirement_relaxed": false,
+    "board_readback_attempted": false,
+    "recovery_attempted_by_reconstructing_old_source": false,
+    "post_incident_search": {
+      "searched": true,
+      "roots": [
+        "cubeide/Companion_Nucleo_WB55RG_Bringup build directories",
+        ".cache/validation",
+        "repository HEX artifacts",
+        "previous runner, stage-run and flash-log referenced paths"
+      ],
+      "exact_e1997f_artifact_found": false,
+      "search_stopped_after_closed_result": true
+    }
+  },
+  "last_known_board_state": {
+    "statement": "No hardware contact occurred in this Goal. The last available programmer-verified evidence from the preceding rejected candidate says the board was restored with E1997F...; therefore the last known board content remains that prior image, but this was not re-read or re-verified here and no reusable host HEX file remains.",
+    "evidence_path": "docs/validation/companion-gdey0154d67-t03-vendor-partial-added-first-old-cleanup-completion-audit-20260721.json",
+    "evidence_sha256": "0E3643391446640D0D9A2A9B2E050D41A14D4BBB0D32785D814B4E57D98D2CF4",
+    "prior_programmer_verified_restore_sha256": "E1997F29DCB8735899B4BC0B9012CF75025F3CA8D21250485BCC21E4C4691B46",
+    "current_goal_board_verification_performed": false,
+    "reusable_restore_file_available": false
+  },
+  "implementation": {
+    "default_disabled": true,
+    "production_off": true,
+    "software_spi": "independent four-wire GPIO path",
+    "planned_boots": 1,
+    "planned_groups": 3,
+    "planned_group_sequence": [
+      "0x2F read 1 byte",
+      "0x2D read 11 bytes"
+    ],
+    "gpio_postcondition": "PC1 SDA output-low, SCL-low, CS-high after each response",
+    "serial_order": "serial ready signal before candidate flash; no post-flash reset",
+    "normal_panel_init_entered": false,
+    "display_hard_reset": false,
+    "display_writes": 0,
+    "refresh_commands": 0,
+    "automatic_retries": 0
+  },
+  "controller_state_readings": {
+    "read_attempted": false,
+    "captured_group_count": 0,
+    "raw_0x2f_groups": null,
+    "raw_0x2d_groups": null,
+    "payload_sha256": null,
+    "chip_id_bits_1_0": null,
+    "busy_bit_2": null,
+    "vcom_otp_selection": null,
+    "vcom_register": null,
+    "display_option_0x37_b_through_f": null,
+    "f6_mode2_ram_ping_pong_state": null,
+    "waveform_version": null,
+    "reason": "Execute was inadmissible because the exact restore artifact was unavailable.",
+    "otp_read_claim": false
+  },
+  "commands": [
+    {
+      "name": "mandatory_workflow_and_goal_contract_reads",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "registry_steering_COMP_REQ_257_and_verifier",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "versioned_source_hash_and_controller_research",
+      "exit_code": 0,
+      "result": "PASS_RESEARCH_AUTHORIZES_ONE_READ_ONLY_0X2F_0X2D_CAPTURE"
+    },
+    {
+      "name": "candidate_build",
+      "command": "pwsh -NoProfile -File tools/build_nucleo_bringup.ps1 -EpaperSsd1681ReadOnlyControllerStateDiagnostic -Force",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "normal_build",
+      "command": "pwsh -NoProfile -File tools/build_nucleo_bringup.ps1 -EpaperSsd1681Bringup -Force",
+      "exit_code": 0,
+      "result": "PASS_BUILD_BUT_OVERWROTE_RETAINED_ARTIFACT_AND_HASH_MISMATCH"
+    },
+    {
+      "name": "decoder_c_arm_werror_syntax",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "parser_positive_and_negative_matrix",
+      "command": "python tools/verify_wb55_ssd1681_read_only_controller_state_log.py --self-test",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "isolated_build_conflict_test",
+      "exit_code": 1,
+      "result": "PASS_EXPECTED_REJECTION_BEFORE_BUILD"
+    },
+    {
+      "name": "static_gate",
+      "command": "python tools/verify_wb55_ssd1681_read_only_controller_state_diagnostic.py",
+      "exit_code": 1,
+      "result": "EXPECTED_NO_GO_ONLY_NORMAL_RESTORE_HASH_CHECK_FALSE"
+    },
+    {
+      "name": "runner_check_only",
+      "command": "pwsh -NoProfile -File tools/run_wb55_ssd1681_read_only_controller_state.ps1 -CheckOnly",
+      "exit_code": 1,
+      "result": "EXPECTED_NO_GO_HARDWARE_CONTACT_ZERO"
+    },
+    {
+      "name": "hardware_execute",
+      "exit_code": null,
+      "result": "NOT_INVOKED_CONDITION_FALSE"
+    },
+    {
+      "name": "registry_verifier_final",
+      "command": "python tools/verify_companion_product_requirements.py",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "current_goal_audit_final",
+      "command": "python tools/verify_companion_current_goal_audit.py",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "git_diff_check_final",
+      "command": "git diff --check",
+      "exit_code": 0,
+      "result": "PASS_WITH_LINE_ENDING_WARNINGS_ONLY"
+    },
+    {
+      "name": "canonical_operator_prompt",
+      "exit_code": null,
+      "result": "NOT_REQUIRED_NO_HUMAN_PHYSICAL_ACTION_AND_NO_MACHINE_READ"
+    }
+  ],
+  "hardware_contact": {
+    "count": 0,
+    "candidate_flash_attempts": 0,
+    "serial_controller_capture_attempts": 0,
+    "controller_read_groups": 0,
+    "normal_flash_attempts": 0,
+    "execute_invoked": false
+  },
+  "artifacts": {
+    "research": {
+      "path": "docs/validation/companion-ssd1681-read-only-controller-state-research-source-hash-20260721.json",
+      "sha256": "BD43C9FD65703CE5CAE89573F5846436BF425475C74D0F96E7F43CC1E915662C"
+    },
+    "static": {
+      "path": "docs/validation/companion-ssd1681-read-only-controller-state-static-20260721.json",
+      "sha256": "7661B9BDF7A7DECA93ED082A64CC91A7526E2DC7951080E4766A9EB6C9A77D42",
+      "status": "NO_GO_STATIC_READ_ONLY_CONTROLLER_STATE"
+    },
+    "prehardware_disposition": {
+      "path": "docs/validation/companion-ssd1681-read-only-controller-state-prehardware-no-go-20260721.json",
+      "sha256": "8124D819587AB671F9AC4DF1C37B7B3CCAE232681A0B1EC937C51D6575AD6C9F"
+    },
+    "runner_check_only": {
+      "path": ".cache/validation/wb55-ssd1681-read-only-controller-state-check-only-r2/stage-run.json",
+      "sha256": "53B6250C43CAEF2F3567F9F42AF5803A90228248191CDDE8D32D2A751F0EAB24",
+      "status": "NO_GO",
+      "hardware_contact": 0
+    }
+  },
+  "source_manifest": {
+    "supplier_epaper_c": "7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896",
+    "panel_target_stm32wb_ssd1681_c": "BAE2FAEA0656ABBCFAA5765C0E6465183D5E9235E1B4FE50CDB7107BD727EB3D",
+    "decoder_c": "661AEA992BF152A5A994FF592988535AD59740F05F5DF6FAB16116749B94EDBB",
+    "decoder_h": "8272392B14925E7655891F65E609BE4105EA9DFC69661A208EE4DEFCA7890E97",
+    "makefile": "F001536E902B566A83DD74FE0F8E522FB8B1C2EF4A9A63FB8575DFE8C569F052",
+    "build_wrapper": "9C1E308FC29F3198FFF62E9A9D32762E4C95FB4753AF700BF067AE0AC7F9D70C",
+    "serial_capture": "59677805F4CA7FBD181C1A19350CE89E957FCCE3F2ACB6682099D585C3789FB1",
+    "runner": "FFE2121FBDE58A268F63883E8263D001B6290F0EFD6A6919842712E5138D8482",
+    "static_verifier": "F1B855F08D4CF9D89A80C1B5F370509A36EF0969985DB1A5E86F594EAE36333B",
+    "log_parser": "4D173912345257191370DE703EBFDBB790883922D192CBF1FF3C1A5B7060AB01",
+    "registry": "B6F920D9958E27AFC19857461870F45B0EA545B921373ED232F2AC56B675CC29"
+  },
+  "protected_boundaries": {
+    "supplier_directory_modified": false,
+    "locked_v9_or_owner_acceptance_modified": false,
+    "rig_crig_browser_art_or_dynamic_binding_modified": false,
+    "lut_waveform_register_control_reset_border_timing_rail_or_temperature_modified": false,
+    "prior_no_go_candidate_rerun": false,
+    "shared_upper_changes_reverted": false,
+    "production_path_enabled": false
+  },
+  "future_admission": {
+    "same_goal_execute_allowed_without_exact_restore_artifact": false,
+    "0x41_or_0x27_ram_fingerprint_allowed_here": false,
+    "0x37_write_allowed": false,
+    "required_new_input": "An existing byte-exact E1997F... restore HEX, or a separately authorized owner recovery/restore contract.",
+    "goal_state_decision_owner": "root agent"
+  }
+}

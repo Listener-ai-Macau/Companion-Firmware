@@ -1,0 +1,84 @@
+{
+  "schema_id": "companion.wb55.ssd1681_ram_command_target_r8.launch_transport_incident.v1",
+  "status": "R8_CANDIDATE_NOT_EXECUTED_CLEAN_RESTORE_RESUME_PASS_LAUNCH_TRANSPORT_FAILED",
+  "recorded_at": "2026-07-21T19:39:34+08:00",
+  "requirements": [
+    "COMP-REQ-303",
+    "COMP-REQ-304",
+    "COMP-REQ-305"
+  ],
+  "invocation": {
+    "command": "pwsh -NoProfile -File tools/run_wb55_ssd1681_custom_mode2_observable_r6_raw_restore.ps1 -Execute -RamCommandTargetR8 -OutRoot .cache/validation/wb55-ram-command-target-r8-execute-20260721-r1",
+    "caller_timeout_observed": true,
+    "caller_exit_code": 124,
+    "runner_continued_after_caller_timeout": true,
+    "runner_process_id": 12872,
+    "runner_exited": true
+  },
+  "machine_evidence": {
+    "aggregate_stage_run": {
+      "path": ".cache/validation/wb55-ram-command-target-r8-execute-20260721-r1/stage-run.json",
+      "sha256": "2F4E7998C402E060370605B2A5E82B790069B2CE8FA800175722FB7642500A92",
+      "reported_status": "NEED_HUMAN_RESTORE_OR_APPLICATION_FAILED",
+      "disposition": "FALSE_FAILURE_CLASSIFICATION_CONTRADICTED_BY_INNER_MACHINE_ARTIFACTS"
+    },
+    "preclean": {
+      "path": ".cache/validation/wb55-ram-command-target-r8-execute-20260721-r1/preclean-white.json",
+      "sha256": "64D33D192CA81C59AA440658939AC75E18C8F1997CCED8B02B9200233F042A49",
+      "status": "PASS_MACHINE_DUAL_PLANE_WHITE_CLEAN_BOTH_BANKS_READBACK_WHITE"
+    },
+    "postclean": {
+      "path": ".cache/validation/wb55-ram-command-target-r8-execute-20260721-r1/postclean-white.json",
+      "sha256": "64D33D192CA81C59AA440658939AC75E18C8F1997CCED8B02B9200233F042A49",
+      "status": "PASS_MACHINE_DUAL_PLANE_WHITE_CLEAN_BOTH_BANKS_READBACK_WHITE"
+    },
+    "raw_restore": {
+      "path": ".cache/validation/wb55-ram-command-target-r8-execute-20260721-r1/restore-gate.json",
+      "sha256": "ABADC0AC04455EB0D46B253CE0124E6B2F04E456F807E72AB323CB1F3DFFDD7B",
+      "status": "PASS_RESTORE_EQUALS_CAPTURED_PRE_RUN_APPLICATION_BYTES",
+      "restored_bytes": 524288,
+      "restored_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C"
+    },
+    "normal_resume": {
+      "path": ".cache/validation/wb55-ram-command-target-r8-execute-20260721-r1/normal-resume.json",
+      "sha256": "5B8433172BBCC50438BBD9054C4DA50F6EC2E6EC41F72088AFDECF26E18CD561",
+      "status": "PASS_APPLICATION_RESUMED_AFTER_BACKUP"
+    }
+  },
+  "candidate_boundary": {
+    "candidate_start_prompt_invoked": false,
+    "candidate_start_artifact_exists": false,
+    "candidate_programmer_processes": 0,
+    "candidate_write_calls": 0,
+    "panel_writes_attributed_to_candidate": 0,
+    "swap_activation_executed": false,
+    "tag_write_executed": false,
+    "selector_mapping_collected": false,
+    "r8_experiment_consumed": false,
+    "automatic_retry_authorized": false
+  },
+  "superseded_non_acceptance_prompt": {
+    "path": ".cache/validation/wb55-ram-command-target-r8-execute-20260721-r1/restore-or-app-failure-operator.json",
+    "sha256": "7EB70257593DA06F682A3DDDA54A9D260D4FC514F645237F5CA74B08F8DA61A6",
+    "bytes": 2,
+    "content": "CRLF_ONLY",
+    "selected": null,
+    "note": null,
+    "visual_acceptance": false,
+    "disposition": "SUPERSEDED_CANCELLED_NON_ACCEPTANCE_PROMPT_NO_SYNTHETIC_RESPONSE"
+  },
+  "cause_assessment": {
+    "classification": "INFERENCE",
+    "confidence": "high",
+    "finding": "The direct runner inherited the caller output pipe. The caller timed out while the runner remained alive; later successful Python verifier processes could write their JSON files but returned nonzero when their stdout pipe was no longer available, causing the outer runner to overwrite successful inner results with failure text.",
+    "repair": "Launch the unchanged runner as a hidden persistent child with stdout and stderr redirected to durable files before returning control to the caller."
+  },
+  "popup_policy": {
+    "routine_cleanup": 0,
+    "recovery_or_fault_acknowledgement": 0,
+    "pre_execute_or_start": 0,
+    "machine_only_r8_total": 0,
+    "visual_candidate_final_acceptance_only": 1
+  },
+  "next_boundary": "Archive complete; build and verify MACHINE_READY_R8_R2 without hardware contact. A retry requires a new explicit root authorization."
+}

@@ -1,0 +1,65 @@
+{
+  "schema_id": "companion.wb55.ssd1681_dual_plane_white_clean_recovery.v1",
+  "status": "PASS_MACHINE_DUAL_PLANE_WHITE_CLEAN_EXACT_RAW_RESTORED_PHYSICAL_CLEANLINESS_PENDING_OWNER_OBSERVATION",
+  "requirement": "COMP-REQ-297",
+  "hardware_contact": 1,
+  "candidate_executed": false,
+  "candidate_prompt_invoked": false,
+  "routine_cleanup_promptless": true,
+  "port": "COM13",
+  "execution": {
+    "run_root": ".cache/validation/wb55-dual-plane-white-recovery-execute-20260721-a",
+    "status": "PASS_DUAL_PLANE_WHITE_CLEAN_EXACT_RAW_RESTORED",
+    "dual_plane_clean_hex_sha256": "3AC4E52E37E15DC3CC058A4B0B0E6A3227D23E6C6DEFAEDCB786C08497888AAD",
+    "writes_0x24": 1,
+    "writes_0x26": 1,
+    "bytes_per_plane": 5000,
+    "control": "0xF7",
+    "refresh": "0x20",
+    "busy_elapsed_ms": 1289,
+    "automatic_retries": 0
+  },
+  "readback": {
+    "status": "PASS_MACHINE_DUAL_PLANE_WHITE_CLEAN_BOTH_BANKS_READBACK_WHITE",
+    "selectors": [0, 1],
+    "repeats_per_selector": 2,
+    "response_bytes": 5001,
+    "payload_bytes": 5000,
+    "all_four_payloads_all_ff": true,
+    "repeat_mismatches": 0,
+    "payload_sha256": "D41BF2913D4C6ED6E9EF11EB8B9064AC3125A7A95B48F60E305DACF048D15C2B",
+    "full_window_and_counters_reprogrammed_before_every_read": true
+  },
+  "restore": {
+    "status": "PASS_RESTORE_EQUALS_CAPTURED_PRE_RUN_APPLICATION_BYTES",
+    "bytes": 524288,
+    "baseline_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "readback_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "normal_resume": "PASS_APPLICATION_RESUMED_AFTER_BACKUP"
+  },
+  "artifacts": {
+    "stage_run": {
+      "path": ".cache/validation/wb55-dual-plane-white-recovery-execute-20260721-a/stage-run.json",
+      "sha256": "3F12E7D3569BC4EAD86F870F4F0BE202A429193089FA7D7C29035956A26F343C"
+    },
+    "clean_trace": {
+      "path": ".cache/validation/wb55-dual-plane-white-recovery-execute-20260721-a/postclean-white.json",
+      "sha256": "64D33D192CA81C59AA440658939AC75E18C8F1997CCED8B02B9200233F042A49"
+    },
+    "restore_gate": {
+      "path": ".cache/validation/wb55-dual-plane-white-recovery-execute-20260721-a/restore-gate.json",
+      "sha256": "2B5386671A328E8ED76BD9DA6776C5B89274ECC0E7E62DCC6A566E1A6653F528"
+    },
+    "normal_resume": {
+      "path": ".cache/validation/wb55-dual-plane-white-recovery-execute-20260721-a/normal-resume.json",
+      "sha256": "DF7FE394B33F8AC123E1CDA96B599F14141EE51961AB4D65FC42E849A3A364A1"
+    }
+  },
+  "physical_observation": {
+    "selected": null,
+    "note": null,
+    "boundary": "Machine evidence proves both controller RAM payloads and exact firmware restore, not visual panel cleanliness. Owner observation may be recorded without re-running cleanup."
+  },
+  "r5_candidate_boundary": "NOT_EXECUTED; canonical Chinese candidate-start popup remains mandatory",
+  "production_allowed": false
+}

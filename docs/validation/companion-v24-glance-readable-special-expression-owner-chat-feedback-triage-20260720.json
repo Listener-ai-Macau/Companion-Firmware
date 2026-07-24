@@ -1,0 +1,35 @@
+{
+  "schema": "companion.v24_glance_readable_special_expression_owner_chat_feedback_triage.v1",
+  "status": "OWNER_VISUAL_REJECTION_REQUIRES_NEW_VERSIONED_SEMANTIC_SOURCE",
+  "owner_chat_feedback": {
+    "date": "2026-07-20",
+    "text": "这些表情都不太行, 看着不知道是在干嘛的, 需要具有代表性?",
+    "authoritative_for": "V24 visual-source disposition"
+  },
+  "review_history": {
+    "initial_operator_review": {
+      "selected": "失败",
+      "note": "点了是一样的表情, 另外缺少过度",
+      "triage": "docs/validation/companion-v24-glance-readable-special-expression-owner-art-review-triage-20260720.json"
+    },
+    "repaired_review_window": {
+      "result": "interrupted_without_operator_selection",
+      "raw_output_path": "docs/validation/companion-v24-glance-readable-special-expression-owner-art-review-retry-20260720.json",
+      "reason": "owner supplied the more specific chat feedback before a retry selection was recorded"
+    }
+  },
+  "disposition": {
+    "v24_source_art": "VISUALLY_REJECTED_AUDIT_ONLY",
+    "v24_machine_artifacts": "RETAINED_MACHINE_EVIDENCE_RUNTIME_INACTIVE",
+    "forbidden": [
+      "treating V24 as an accepted visual baseline",
+      "using V24 source art or components as a V25 prompt/reference input",
+      "further micro-adjustment of V24 to obtain approval",
+      "candidate CRIG/profile export",
+      "event binding",
+      "firmware flash",
+      "physical-panel claim"
+    ],
+    "required_next_step": "Create a V25 locked-V9-only representative-pose brief before any generation."
+  }
+}

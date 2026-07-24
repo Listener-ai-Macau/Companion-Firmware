@@ -1,0 +1,74 @@
+{
+  "schema": "companion.v9_idle_motion_analysis.v1",
+  "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "clip": "idle",
+  "phases": [
+    {
+      "phase": "entry",
+      "pbm": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_idle_entry.pbm",
+      "sha256": "B3847DF9CE2D20693C60C9CC7BC1EC8D8B8A3E23641F4521EE71508ABE13CB9E",
+      "source_crop_box": [
+        7,
+        92,
+        307,
+        392
+      ],
+      "phase_offset": [
+        0,
+        0
+      ],
+      "bounds": [
+        33,
+        31,
+        135,
+        139
+      ]
+    },
+    {
+      "phase": "sustain",
+      "pbm": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_idle_sustain.pbm",
+      "sha256": "D3CF6C4557610901B46EDA10628544195ADC3CECDA0B507141B9B252F3B1BAE2",
+      "source_crop_box": [
+        7,
+        92,
+        307,
+        392
+      ],
+      "phase_offset": [
+        -1,
+        0
+      ],
+      "bounds": [
+        32,
+        31,
+        135,
+        139
+      ]
+    },
+    {
+      "phase": "settle",
+      "pbm": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_idle_settle.pbm",
+      "sha256": "B3847DF9CE2D20693C60C9CC7BC1EC8D8B8A3E23641F4521EE71508ABE13CB9E",
+      "source_crop_box": [
+        7,
+        92,
+        307,
+        392
+      ],
+      "phase_offset": [
+        0,
+        0
+      ],
+      "bounds": [
+        33,
+        31,
+        135,
+        139
+      ]
+    }
+  ],
+  "global_translation_only": true,
+  "multi_feature_daily_motion_ready": false,
+  "status": "REWORK_ART_GLOBAL_TRANSLATION_ONLY",
+  "next_required_art": "Create a versioned v9 motion extension where eye/highlight or gaze changes and at least one brow, mouth, cheek, or ornament also changes; retain the same identity."
+}

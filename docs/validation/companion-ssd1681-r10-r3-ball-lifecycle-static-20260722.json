@@ -1,0 +1,456 @@
+{
+  "authorization_positive": {
+    "command": "launcher -ClaimOnly with disposable authorization copy",
+    "executed": true,
+    "hardware_contact": 0,
+    "name": "disposable_claimonly_positive",
+    "popup_count": 0,
+    "receipt_created": true,
+    "rejected": false,
+    "returncode": 0,
+    "write_count": 0
+  },
+  "checks": {
+    "checkonly_zero_contract": true,
+    "launcher_atomic_claim": true,
+    "launcher_detached_execute": true,
+    "monitor_exact_ring": true,
+    "monitor_fail_closed": true,
+    "monitor_full_frame_and_snapshot": true,
+    "r3_hold_parser_contract": true,
+    "r3_machine_ready_calls_canonical_audit": true,
+    "r3_stable_hold_source": true,
+    "receipt_machine_path_binding": true,
+    "runner_cleanup_fail_closed": true,
+    "runner_consumed_receipt_bound": true,
+    "runner_only_r10_path": true,
+    "runner_real_execute": true,
+    "runner_supervisor_interface": true,
+    "successor_machine_binding": true,
+    "supervisor_real_selection": true
+  },
+  "driver_sha256": "F78316637B94277FEB58EF62FA077BDB39C7A5628F5CB4D1406C8ADEEE751451",
+  "file_hashes": {
+    "launcher": "D368453930C1258BFBE2B6717F206B30BCAE046DCC5D982141095155197D4462",
+    "monitor": "4FE14A93D819B653C0A98BE8611B7F6A8178792FCA5CDDC90E28FAB558595E23",
+    "runner": "417C9C10ACA4C76AC58D2EDD5D02CAD7B99A88EDB721C68AB917DCF991148F9E",
+    "supervisor": "F712AD30EE4A52D26EEB8168CBB50F12D52C4AEF7DB3A8B0FF7A37BFF65757F1"
+  },
+  "monitor_finalization_fixture": {
+    "passed": true,
+    "record": {
+      "command": "monitor -FinalizationSelfTest -OutDir monitor-finalization-selftest",
+      "emergency_created": true,
+      "executed": true,
+      "hardware_contact": 0,
+      "name": "stop_then_final_parser_exception_no_go",
+      "popup_count": 0,
+      "returncode": 1,
+      "status": "NO_GO_FINALIZATION",
+      "stderr": "",
+      "stdout": "",
+      "write_count": 0
+    }
+  },
+  "negative_fixture_count": 25,
+  "negative_fixtures": [
+    {
+      "command": "launcher -ClaimOnly twice with one source",
+      "executed": true,
+      "hardware_contact": 0,
+      "name": "two_competing_claims",
+      "popup_count": 0,
+      "rejected": true,
+      "returncode": 1,
+      "write_count": 0
+    },
+    {
+      "command": "launcher -ClaimOnly with consumed=true",
+      "executed": true,
+      "hardware_contact": 0,
+      "name": "consumed_authorization",
+      "popup_count": 0,
+      "rejected": true,
+      "returncode": 1,
+      "write_count": 0
+    },
+    {
+      "command": "launcher -ClaimOnly with COMP-REQ-324",
+      "executed": true,
+      "hardware_contact": 0,
+      "name": "steering_requirement_not_authority",
+      "popup_count": 0,
+      "rejected": true,
+      "returncode": 1,
+      "write_count": 0
+    },
+    {
+      "command": "launcher -ClaimOnly with mismatched output_root",
+      "executed": true,
+      "hardware_contact": 0,
+      "name": "output_root_mismatch",
+      "popup_count": 0,
+      "rejected": true,
+      "returncode": 1,
+      "write_count": 0
+    },
+    {
+      "command": "launcher -ClaimOnly with candidate hash drift",
+      "executed": true,
+      "hardware_contact": 0,
+      "name": "hash_drift",
+      "popup_count": 0,
+      "rejected": true,
+      "returncode": 1,
+      "write_count": 0
+    },
+    {
+      "command": "launcher -ClaimOnly with launcher hash drift",
+      "executed": true,
+      "hardware_contact": 0,
+      "name": "launcher_hash_drift",
+      "popup_count": 0,
+      "rejected": true,
+      "returncode": 1,
+      "write_count": 0
+    },
+    {
+      "command": "launcher -ClaimOnly with runner hash drift",
+      "executed": true,
+      "hardware_contact": 0,
+      "name": "runner_hash_drift",
+      "popup_count": 0,
+      "rejected": true,
+      "returncode": 1,
+      "write_count": 0
+    },
+    {
+      "command": "launcher -ClaimOnly with historical R2 MACHINE_READY path/hash",
+      "executed": true,
+      "hardware_contact": 0,
+      "name": "r2_machine_ready_path_rejected",
+      "popup_count": 0,
+      "rejected": true,
+      "returncode": 1,
+      "write_count": 0
+    },
+    {
+      "command": "launcher -ClaimOnly with historical C419 R3 MR",
+      "executed": true,
+      "hardware_contact": 0,
+      "name": "stale_c419_machine_ready_rejected",
+      "popup_count": 0,
+      "rejected": true,
+      "returncode": 1,
+      "write_count": 0
+    },
+    {
+      "command": "launcher -ClaimOnly with wrong successor MR path",
+      "executed": true,
+      "hardware_contact": 0,
+      "name": "wrong_successor_machine_ready_path",
+      "popup_count": 0,
+      "rejected": true,
+      "returncode": 1,
+      "write_count": 0
+    },
+    {
+      "command": "launcher -ClaimOnly with wrong successor MR hash",
+      "executed": true,
+      "hardware_contact": 0,
+      "name": "wrong_successor_machine_ready_hash",
+      "popup_count": 0,
+      "rejected": true,
+      "returncode": 1,
+      "write_count": 0
+    },
+    {
+      "command": "launcher -ClaimOnly with existing output_root",
+      "executed": true,
+      "hardware_contact": 0,
+      "name": "stale_or_reused_output_root",
+      "popup_count": 0,
+      "rejected": true,
+      "returncode": 1,
+      "write_count": 0
+    },
+    {
+      "command": "launcher -ClaimOnly with consumed receipt",
+      "executed": true,
+      "hardware_contact": 0,
+      "name": "reused_consumed_receipt",
+      "popup_count": 0,
+      "rejected": true,
+      "returncode": 1,
+      "write_count": 0
+    },
+    {
+      "command": "python parser --validate-loop-line mutated-frame",
+      "executed": true,
+      "hardware_contact": 0,
+      "name": "malformed_hash",
+      "popup_count": 0,
+      "rejected": true,
+      "returncode": 1,
+      "write_count": 0
+    },
+    {
+      "command": "python parser --validate-loop-line mutated-frame",
+      "executed": true,
+      "hardware_contact": 0,
+      "name": "malformed_window",
+      "popup_count": 0,
+      "rejected": true,
+      "returncode": 1,
+      "write_count": 0
+    },
+    {
+      "command": "python parser --validate-loop-line mutated-frame",
+      "executed": true,
+      "hardware_contact": 0,
+      "name": "malformed_position",
+      "popup_count": 0,
+      "rejected": true,
+      "returncode": 1,
+      "write_count": 0
+    },
+    {
+      "command": "python parser --validate-loop-line mutated-frame",
+      "executed": true,
+      "hardware_contact": 0,
+      "name": "malformed_count",
+      "popup_count": 0,
+      "rejected": true,
+      "returncode": 1,
+      "write_count": 0
+    },
+    {
+      "command": "python parser --validate-loop-line mutated-frame",
+      "executed": true,
+      "hardware_contact": 0,
+      "name": "busy_601",
+      "popup_count": 0,
+      "rejected": true,
+      "returncode": 1,
+      "write_count": 0
+    },
+    {
+      "command": "python parser --loop-log loop-only ring",
+      "executed": true,
+      "hardware_contact": 0,
+      "name": "noncontiguous_loop_after_qualification_rolled_out",
+      "popup_count": 0,
+      "rejected": true,
+      "returncode": 1,
+      "write_count": 0
+    },
+    {
+      "command": "launcher -CheckOnly with empty programmer root",
+      "executed": true,
+      "hardware_contact": 0,
+      "name": "child_failure",
+      "popup_count": 0,
+      "rejected": true,
+      "returncode": 1,
+      "write_count": 0
+    },
+    {
+      "command": "supervisor -Execute before qualification PASS",
+      "executed": true,
+      "hardware_contact": 0,
+      "name": "popup_before_qualification",
+      "popup_count": 0,
+      "rejected": true,
+      "returncode": 1,
+      "write_count": 0
+    },
+    {
+      "command": "supervisor process-only prompt stub exits 7",
+      "executed": true,
+      "hardware_contact": 0,
+      "name": "prompt_abnormal_exit_emergency",
+      "popup_count": 0,
+      "rejected": true,
+      "returncode": 1,
+      "write_count": 0
+    },
+    {
+      "command": "monitor -Execute with absent COM999",
+      "executed": true,
+      "hardware_contact": 0,
+      "name": "monitor_fault_emergency",
+      "popup_count": 0,
+      "rejected": true,
+      "returncode": 1,
+      "write_count": 0
+    },
+    {
+      "command": "python cleanup/restore invariant fixture",
+      "executed": true,
+      "hardware_contact": 0,
+      "name": "cleanup_failure_restore_required",
+      "popup_count": 0,
+      "rejected": true,
+      "returncode": 1,
+      "write_count": 0
+    },
+    {
+      "command": "python cleanup/restore invariant fixture",
+      "executed": true,
+      "hardware_contact": 0,
+      "name": "restore_readback_mismatch",
+      "popup_count": 0,
+      "rejected": true,
+      "returncode": 1,
+      "write_count": 0
+    }
+  ],
+  "parser_finalization_fixtures": {
+    "accepted": {
+      "accepted": true,
+      "command": "python parser --loop-log trailing-partial.log --minimum-loop-iterations 2",
+      "executed": true,
+      "hardware_contact": 0,
+      "ignored_trailing_partial_bytes": 1079,
+      "ignored_trailing_partial_line": true,
+      "name": "one_trailing_partial_accepted",
+      "popup_count": 0,
+      "rejected": false,
+      "returncode": 0,
+      "write_count": 0
+    },
+    "negative": [
+      {
+        "command": "python parser --loop-log completed-partial.log",
+        "executed": true,
+        "hardware_contact": 0,
+        "name": "same_partial_with_newline_rejected",
+        "popup_count": 0,
+        "reason_observed": true,
+        "rejected": true,
+        "returncode": 1,
+        "write_count": 0
+      },
+      {
+        "command": "python parser --loop-log middle-malformed.log",
+        "executed": true,
+        "hardware_contact": 0,
+        "name": "middle_malformed_complete_rejected",
+        "popup_count": 0,
+        "reason_observed": true,
+        "rejected": true,
+        "returncode": 1,
+        "write_count": 0
+      },
+      {
+        "command": "python parser --loop-log complete-then-trailing-partial.log",
+        "executed": true,
+        "hardware_contact": 0,
+        "name": "complete_malformed_before_trailing_partial_rejected",
+        "popup_count": 0,
+        "reason_observed": true,
+        "rejected": true,
+        "returncode": 1,
+        "write_count": 0
+      }
+    ],
+    "passed": true
+  },
+  "parser_sha256": "14DF9BD2B0966F41EDC9807F18D7F4794708A7179ED3759B36A68F0C6F66F563",
+  "parser_write_regression": {
+    "artifact_exists": true,
+    "command": "python verify_wb55_ssd1681_r10_ball_log.py --log --write --hardware-contact 0",
+    "executed": true,
+    "hardware_contact": 0,
+    "passed": true,
+    "returncode": 0,
+    "status": "PASS_R10_BALL_LOG",
+    "stdout_artifact_match": true
+  },
+  "schema_id": "companion.wb55.ssd1681.r10_r3_ball.lifecycle_static.v8",
+  "status": "PASS_R10_R3_REAL_EXECUTE_LIFECYCLE_STATIC",
+  "supervisor_regressions": {
+    "positive": {
+      "actual_popup_count": 0,
+      "executed": true,
+      "guard_count": 1,
+      "guard_created": true,
+      "name": "qualified_live_monitor_process_only_prompt",
+      "prompt_process_start_count": 1,
+      "prompt_receipt_created": true,
+      "rejected": false,
+      "result_created": true,
+      "returncode": 0,
+      "stop_created": true
+    },
+    "rejection_count": 6,
+    "rejections": [
+      {
+        "executed": true,
+        "name": "missing_qualification_zero_prompt",
+        "new_result": false,
+        "prompt_process_start_count": 0,
+        "prompt_receipt_created": false,
+        "reason_expected": "R10 qualification signal is absent",
+        "reason_observed": true,
+        "rejected": true,
+        "returncode": 1
+      },
+      {
+        "executed": true,
+        "name": "missing_parser_artifact_zero_prompt",
+        "new_result": false,
+        "prompt_process_start_count": 0,
+        "prompt_receipt_created": false,
+        "reason_expected": "R10 qualification evidence is incomplete",
+        "reason_observed": true,
+        "rejected": true,
+        "returncode": 1
+      },
+      {
+        "executed": true,
+        "name": "mismatched_hardware_contact_zero_prompt",
+        "new_result": false,
+        "prompt_process_start_count": 0,
+        "prompt_receipt_created": false,
+        "reason_expected": "R10 qualification evidence is incomplete for mode-correct contact",
+        "reason_observed": true,
+        "rejected": true,
+        "returncode": 1
+      },
+      {
+        "executed": true,
+        "name": "preexisting_guard_zero_prompt",
+        "new_result": false,
+        "prompt_process_start_count": 0,
+        "prompt_receipt_created": false,
+        "reason_expected": "sole acceptance prompt has already been invoked",
+        "reason_observed": true,
+        "rejected": true,
+        "returncode": 1
+      },
+      {
+        "executed": true,
+        "name": "preexisting_review_zero_prompt",
+        "new_result": false,
+        "prompt_process_start_count": 0,
+        "prompt_receipt_created": false,
+        "reason_expected": "sole acceptance prompt has already been invoked",
+        "reason_observed": true,
+        "rejected": true,
+        "returncode": 1
+      },
+      {
+        "executed": true,
+        "name": "preexisting_result_zero_prompt",
+        "new_result": false,
+        "prompt_process_start_count": 0,
+        "prompt_receipt_created": false,
+        "reason_expected": "sole acceptance prompt has already been invoked",
+        "reason_observed": true,
+        "rejected": true,
+        "returncode": 1
+      }
+    ]
+  }
+}

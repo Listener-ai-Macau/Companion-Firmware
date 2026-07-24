@@ -1,0 +1,221 @@
+{
+  "schema": "companion.v24_glance_readable_special_expression_component_export_gate.v1",
+  "status": "PASS_V24_SPECIAL_COMPONENT_EXPORT_UNBOUND",
+  "source_gate": "docs/validation/companion-v24-glance-readable-special-expression-source-gate-20260720.json",
+  "layout": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-layout.json",
+  "locked_v9_source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "identity": [
+    {
+      "name": "left_eye_open",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/left_eye_open.pbm",
+      "hash_matches": true
+    },
+    {
+      "name": "right_eye_open",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/right_eye_open.pbm",
+      "hash_matches": true
+    },
+    {
+      "name": "left_eye_highlight_open",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/left_eye_highlight_open.pbm",
+      "hash_matches": true
+    },
+    {
+      "name": "right_eye_highlight_open",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/right_eye_highlight_open.pbm",
+      "hash_matches": true
+    },
+    {
+      "name": "left_eye_sparkle_open",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/left_eye_sparkle_open.pbm",
+      "hash_matches": true
+    },
+    {
+      "name": "right_eye_sparkle_open",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/right_eye_sparkle_open.pbm",
+      "hash_matches": true
+    },
+    {
+      "name": "nose_default",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/nose_default.pbm",
+      "hash_matches": true
+    }
+  ],
+  "poses": [
+    {
+      "pose": "menu_active",
+      "expected_component_count": 8,
+      "actual_component_count": 8,
+      "components": [
+        {
+          "name": "v24_menu_active__left_brow",
+          "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/menu_active-left_brow.pbm",
+          "hash_matches": true,
+          "role": "left_brow"
+        },
+        {
+          "name": "v24_menu_active__right_brow",
+          "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/menu_active-right_brow.pbm",
+          "hash_matches": true,
+          "role": "right_brow"
+        },
+        {
+          "name": "v24_menu_active__left_cheek",
+          "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/menu_active-left_cheek.pbm",
+          "hash_matches": true,
+          "role": "left_cheek"
+        },
+        {
+          "name": "v24_menu_active__right_cheek",
+          "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/menu_active-right_cheek.pbm",
+          "hash_matches": true,
+          "role": "right_cheek"
+        },
+        {
+          "name": "v24_menu_active__mouth",
+          "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/menu_active-mouth.pbm",
+          "hash_matches": true,
+          "role": "mouth"
+        },
+        {
+          "name": "v24_menu_active__selection_dot_left",
+          "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/menu_active-selection_dot_left.pbm",
+          "hash_matches": true,
+          "role": "accent"
+        },
+        {
+          "name": "v24_menu_active__selection_dot_center",
+          "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/menu_active-selection_dot_center.pbm",
+          "hash_matches": true,
+          "role": "accent"
+        },
+        {
+          "name": "v24_menu_active__selection_dot_right",
+          "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/menu_active-selection_dot_right.pbm",
+          "hash_matches": true,
+          "role": "accent"
+        }
+      ],
+      "reassembly": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/reassembled-200x200/menu_active.pbm",
+      "reassembly_hash_matches": true
+    },
+    {
+      "pose": "recording_active",
+      "expected_component_count": 9,
+      "actual_component_count": 9,
+      "components": [
+        {
+          "name": "v24_recording_active__left_brow",
+          "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/recording_active-left_brow.pbm",
+          "hash_matches": true,
+          "role": "left_brow"
+        },
+        {
+          "name": "v24_recording_active__right_brow",
+          "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/recording_active-right_brow.pbm",
+          "hash_matches": true,
+          "role": "right_brow"
+        },
+        {
+          "name": "v24_recording_active__left_cheek",
+          "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/recording_active-left_cheek.pbm",
+          "hash_matches": true,
+          "role": "left_cheek"
+        },
+        {
+          "name": "v24_recording_active__right_cheek",
+          "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/recording_active-right_cheek.pbm",
+          "hash_matches": true,
+          "role": "right_cheek"
+        },
+        {
+          "name": "v24_recording_active__mouth",
+          "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/recording_active-mouth.pbm",
+          "hash_matches": true,
+          "role": "mouth"
+        },
+        {
+          "name": "v24_recording_active__left_listening_outer",
+          "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/recording_active-left_listening_outer.pbm",
+          "hash_matches": true,
+          "role": "left_listening_arc"
+        },
+        {
+          "name": "v24_recording_active__left_listening_inner",
+          "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/recording_active-left_listening_inner.pbm",
+          "hash_matches": true,
+          "role": "left_listening_arc"
+        },
+        {
+          "name": "v24_recording_active__right_listening_inner",
+          "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/recording_active-right_listening_inner.pbm",
+          "hash_matches": true,
+          "role": "right_listening_arc"
+        },
+        {
+          "name": "v24_recording_active__right_listening_outer",
+          "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/recording_active-right_listening_outer.pbm",
+          "hash_matches": true,
+          "role": "right_listening_arc"
+        }
+      ],
+      "reassembly": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/reassembled-200x200/recording_active.pbm",
+      "reassembly_hash_matches": true
+    },
+    {
+      "pose": "charging_active",
+      "expected_component_count": 7,
+      "actual_component_count": 7,
+      "components": [
+        {
+          "name": "v24_charging_active__left_brow",
+          "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/charging_active-left_brow.pbm",
+          "hash_matches": true,
+          "role": "left_brow"
+        },
+        {
+          "name": "v24_charging_active__right_brow",
+          "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/charging_active-right_brow.pbm",
+          "hash_matches": true,
+          "role": "right_brow"
+        },
+        {
+          "name": "v24_charging_active__left_cheek",
+          "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/charging_active-left_cheek.pbm",
+          "hash_matches": true,
+          "role": "left_cheek"
+        },
+        {
+          "name": "v24_charging_active__right_cheek",
+          "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/charging_active-right_cheek.pbm",
+          "hash_matches": true,
+          "role": "right_cheek"
+        },
+        {
+          "name": "v24_charging_active__mouth",
+          "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/charging_active-mouth.pbm",
+          "hash_matches": true,
+          "role": "mouth"
+        },
+        {
+          "name": "v24_charging_active__breathing_arc_left",
+          "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/charging_active-breathing_arc_left.pbm",
+          "hash_matches": true,
+          "role": "accent"
+        },
+        {
+          "name": "v24_charging_active__breathing_arc_right",
+          "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/component-masks/charging_active-breathing_arc_right.pbm",
+          "hash_matches": true,
+          "role": "accent"
+        }
+      ],
+      "reassembly": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/component-export-attempt-01/reassembled-200x200/charging_active.pbm",
+      "reassembly_hash_matches": true
+    }
+  ],
+  "required_next_stage": "component performance plan plus browser-target parity before owner art review",
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden",
+  "errors": []
+}

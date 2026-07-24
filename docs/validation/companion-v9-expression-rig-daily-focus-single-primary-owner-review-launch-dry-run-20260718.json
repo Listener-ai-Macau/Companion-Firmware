@@ -1,0 +1,23 @@
+{
+  "schema": "companion.v9_expression_rig_owner_review_launch_dry_run.v1",
+  "status": "PASS_DRY_RUN_READY_TO_PROMPT",
+  "review_page": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/v9-expression-rig-owner-review.html",
+  "review_page_sha256": "14BD7F7753B43E9257578C8E9C1B8EB5A75F90F4BAABCCDAF4F1BE331D66F3C6",
+  "preview_distance": "docs\\validation\\companion-v9-expression-rig-preview-distance-20260717.json",
+  "preview_distance_status": "PASS_PREVIEW_DISTANCE_READY_FOR_OWNER_PROMPT",
+  "result_path": "docs\\validation\\companion-v9-expression-rig-dynamic-owner-review-20260717.json",
+  "note_path": "docs\\validation\\companion-v9-expression-rig-dynamic-owner-review-20260717.note.txt",
+  "summary_path": "docs\\validation\\companion-v9-expression-rig-dynamic-owner-review-summary-20260717.json",
+  "accepted_dynamic_baseline_path": "docs\\validation\\companion-v9-expression-rig-accepted-dynamic-baseline.json",
+  "accepted_dynamic_baseline_artifact_dir": "docs\\validation\\artifacts\\companion-v9-expression-rig-accepted-dynamic-baseline",
+  "accepted_dynamic_baseline": {
+    "status": "not_yet_accepted",
+    "comparison_required": false,
+    "path": "docs/validation/companion-v9-expression-rig-accepted-dynamic-baseline.json",
+    "reason": "no canonical owner PASS has promoted a dynamic preview baseline yet"
+  },
+  "timeout_seconds": 840,
+  "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "runtime_resource_activated": false,
+  "prompt_would_launch": false
+}

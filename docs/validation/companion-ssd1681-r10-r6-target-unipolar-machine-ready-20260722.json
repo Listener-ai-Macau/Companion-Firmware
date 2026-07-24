@@ -1,0 +1,99 @@
+{
+  "artifacts": {
+    "driver": "49253290E423BC9B58875C3687D37D17C232BBEF826C05BC146E88B64DD29A8A",
+    "elf": "E8021193388F3AE71F89B9DEF4ADE83359B784D7E82E7CA6981126E8DF7EACF5",
+    "focused_artifact": "36D3A66F569B217E66FA6EEFDE15753682CE74CC1F9941611B19C44193F6294F",
+    "focused_regression": "8F1B1D0D2AF0A39AC8121DD6377C1CD94F6154B0469BBC738CD465E1D3C8FF5F",
+    "hex": "772AF8F14369C47E063E488237891FAC0CDF9EAC198A2C40770E85DE44BB0150",
+    "launcher": "633534165A634DE02160CB9D3881BEC06A63826311E1BD597EBFCEBA59417B4D",
+    "monitor": "CA496D91D7E42EF0CEE99C9534F93F8E168E008ECC8E82055E880AA6FB2936B1",
+    "parser_sha256": "DEF79FD54DEC6A1627C8E7393D9751D33E7752815D942633D184B1D4C13B242B",
+    "r6_lut": "8525533D1971CE99F46A1AD6580741920B7FA152D2A99632206BE0E17696A5E8",
+    "runner": "4C5624A3EF456FB01F24315363D88FBC42D7261A6A0F12BBB3C5467BD450DB22",
+    "static_verifier": "6B2AF701B8538768600769F8FB6BFB7C6B0976E8863CC64116EF1C4FC1B7B90E",
+    "supervisor": "F712AD30EE4A52D26EEB8168CBB50F12D52C4AEF7DB3A8B0FF7A37BFF65757F1",
+    "work_package": "6CD254C24F52A853C71F1E7D19065B5BE901ACC0A3C41DBC39134A568417F93C"
+  },
+  "authority": "COMP-REQ-345",
+  "authorization_created": false,
+  "cached_gates": {
+    "checkonly_reused_by_exact_sha": true,
+    "no_checkonly_rerun": true,
+    "no_hardware_contact": true,
+    "unchanged_host_lifecycle_reused_by_sha": true
+  },
+  "execute_authorized": false,
+  "focused_evidence": {
+    "parser": {
+      "negative_fixtures": [
+        {
+          "name": "r5_lut",
+          "reason": "start: lut_sha256='447FB169543F3E33EA6080607B685E2ADB8F38066952FCDF020882359BA94E89', expected '8525533D1971CE99F46A1AD6580741920B7FA152D2A99632206BE0E17696A5E8'",
+          "result": "rejected"
+        },
+        {
+          "name": "old_lut",
+          "reason": "start: lut_sha256='9BCBAC1A07ED0A112D26409FBCDB8F5FE27CE07D922C2E18881C10A53229DDCD', expected '8525533D1971CE99F46A1AD6580741920B7FA152D2A99632206BE0E17696A5E8'",
+          "result": "rejected"
+        },
+        {
+          "name": "wrong_payload",
+          "reason": "qualification_frame=1: previous_payload_sha256='0000000000000000000000000000000000000000000000000000000000000000', expected '51CFA32FECE0135F38198DA2529E7C6A0C1F53747984D55705077B7F6920CC76'",
+          "result": "rejected"
+        }
+      ],
+      "positive_schema_v5": {
+        "busy_max_ms": 599,
+        "loop_status": "PASS_R10_LOOP_LOG",
+        "status": "PASS_R10_BALL_LOG"
+      }
+    },
+    "static_verifier_sha256": "6B2AF701B8538768600769F8FB6BFB7C6B0976E8863CC64116EF1C4FC1B7B90E",
+    "static_verifier_status": "PASS_R10_R4_CORRIDOR_STATIC",
+    "status": "PASS_R10_R6_TARGET_UNIPOLAR_FOCUSED"
+  },
+  "hardware_contact": 0,
+  "protected": {
+    "historical_r9_lut_sha256": "9BCBAC1A07ED0A112D26409FBCDB8F5FE27CE07D922C2E18881C10A53229DDCD",
+    "r6_lut_sha256": "8525533D1971CE99F46A1AD6580741920B7FA152D2A99632206BE0E17696A5E8",
+    "r6_vs_r5_changed_offsets": [
+      14,
+      15,
+      26,
+      27
+    ],
+    "r6_vs_r9_changed_offsets": [
+      12,
+      13,
+      24,
+      25
+    ],
+    "restore_application_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "shared_tp_frames": 16,
+    "tail_hex": "221741A83258",
+    "timing_bytes_60_143_preserved": true
+  },
+  "r5_r2_disposition": {
+    "authorization_consumed": true,
+    "busy_max_ms": 599,
+    "loop_iterations": 132,
+    "normal_resume": "PASS",
+    "popup_note": "还是一样，就是它移动的时候，屏幕会变成黑白相间的脏，然后再变白。然后呢在不停的移动。但是感觉还是有残留。\r\n",
+    "popup_note_sha256": "59F9E2FB6B5FD9C3F05750D0FD98653ECB90668AA65CC1B342B52693DC8C312B",
+    "popup_selected": "失败",
+    "postclean": "PASS",
+    "qualification_frames": 16,
+    "restore_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "retry_count": 0
+  },
+  "r6_variable": {
+    "bb_net": 0,
+    "bw_net": -16,
+    "description": "target-unipolar BW/WB with all 16 shared TP frames retained",
+    "non_lut_contract_unchanged": true,
+    "wb_net": 16,
+    "ww_net": 0
+  },
+  "schema_id": "companion.wb55.ssd1681.r10_r6_target_unipolar.machine_ready.v1",
+  "status": "MACHINE_READY_R10_R6_TARGET_UNIPOLAR_OFFLINE_ONLY"
+}

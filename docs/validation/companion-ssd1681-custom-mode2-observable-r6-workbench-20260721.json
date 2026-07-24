@@ -1,0 +1,152 @@
+{
+  "schema_id": "companion.wb55.ssd1681_custom_mode2_observable_r6_workbench.v1",
+  "status": "PASS_WORKBENCH_ADMIT_R6_EXACTLY_16_CONTIGUOUS_LOCAL_ACTIVATIONS",
+  "errors": [],
+  "hardware_contact": 0,
+  "requirement": "COMP-REQ-299",
+  "sealed_lineage": {
+    "r5_hex_sha256": "E695A1A6D3D121AA585E69A1A0D8DA21FEBC5566198BD314FE27F2D40C30B564",
+    "tp16_lut_sha256": "75D7647188ACF1C79BC37313DC40105AF4445B9B6F422AD4FDAF0A465413984D",
+    "protected_tail_hex": "221741A83258",
+    "dual_plane_clean_hex_sha256": "3AC4E52E37E15DC3CC058A4B0B0E6A3227D23E6C6DEFAEDCB786C08497888AAD"
+  },
+  "single_variable": "increase the byte-identical local activation chain from 9 to exactly 16 while removing countdown, dwell and in-observation verbose UART",
+  "sequence": {
+    "previous": [
+      "W",
+      "A",
+      "B",
+      "A",
+      "B",
+      "A",
+      "B",
+      "A",
+      "B",
+      "A",
+      "B",
+      "A",
+      "B",
+      "A",
+      "B",
+      "A"
+    ],
+    "current": [
+      "A",
+      "B",
+      "A",
+      "B",
+      "A",
+      "B",
+      "A",
+      "B",
+      "A",
+      "B",
+      "A",
+      "B",
+      "A",
+      "B",
+      "A",
+      "W"
+    ],
+    "activations": 16,
+    "chain": [
+      "W->A",
+      "A->B",
+      "B->A",
+      "A->B",
+      "B->A",
+      "A->B",
+      "B->A",
+      "A->B",
+      "B->A",
+      "A->B",
+      "B->A",
+      "A->B",
+      "B->A",
+      "A->B",
+      "B->A",
+      "A->W"
+    ],
+    "window": {
+      "x_bytes": [
+        1,
+        4
+      ],
+      "y": [
+        8,
+        39
+      ],
+      "pixels": [
+        32,
+        32
+      ],
+      "bytes_per_plane": 128
+    },
+    "payloads": {
+      "W": {
+        "row_hex": "FFFFFFFF",
+        "bytes": 128,
+        "sha256": "E9175DB65A9789096CA9CB5524D3ABC2107DF03E3C9BA3AF1ACA628F9C5D3BD2"
+      },
+      "A": {
+        "row_hex": "0000FFFF",
+        "bytes": 128,
+        "sha256": "F8EB0E02D90007B551C7A5E2B19751E837FC138AFA3F76CA0CDF6A40D79511A5"
+      },
+      "B": {
+        "row_hex": "00FF00FF",
+        "bytes": 128,
+        "sha256": "4E7304D2EB82B60C60A38FEF79FBC4161D126134BC0B5AA0576D7BF8E24D0056"
+      }
+    },
+    "every_activation": {
+      "old_bank": "0x26",
+      "new_bank": "0x24",
+      "old_bytes": 128,
+      "new_bytes": 128,
+      "control": "0xCF",
+      "refresh": "0x20",
+      "busy_max_ms": 600
+    }
+  },
+  "timing": {
+    "r5_measured_busy_ms": [
+      598,
+      599,
+      599,
+      599,
+      599,
+      599,
+      599,
+      599,
+      599
+    ],
+    "prediction_method": "one observed 598 ms activation plus fifteen conservative observed 599 ms activations",
+    "predicted_busy_sum_ms": 9583,
+    "bounded_expected_observation_ms": [
+      9000,
+      11000
+    ],
+    "countdown_seconds": 0,
+    "inter_activation_dwell_ms": 0,
+    "verbose_uart_during_observation": false
+  },
+  "forbidden": {
+    "extra_activations": true,
+    "compensation": true,
+    "full_frame": true,
+    "controls_ff_f7_c7": true,
+    "retry": true,
+    "motion_120_frame": true
+  },
+  "human_boundary": "one canonical Chinese start popup only after dual-plane preclean passes; clicking starts the candidate immediately; later verdict is record-only",
+  "admission": "machine-only; hardware candidate remains forbidden pending explicit root instruction after MACHINE_READY",
+  "source_hashes": {
+    "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\companion-ssd1681-custom-mode2-transition-timing-workbench-r4-20260721.json": "E7467B808CE7BD1BE317BC282B7990CF343922DE8C15B092588B9968DEAB444D",
+    "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\companion-ssd1681-custom-mode2-dual-plane-clean-r5-runtime-20260721.json": "949F9AC1DE90CD966AC915781A08B33EDA621ED47B8D88110DDCE7A12769F5EC",
+    "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\companion-ssd1681-custom-mode2-dual-plane-clean-r5-operator-20260721.json": "868F7854441C628C48BD5534DD2214C02339F410E2DC8067734AFC12BCFC81BF",
+    "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\companion-ssd1681-custom-mode2-dual-plane-clean-r5-disposition-20260721.json": "E061343CF42A39BE75552E528D0C2EEB8B0DBA9A8C54964E6924F64D02A0352B"
+  },
+  "production_allowed": false,
+  "goal_terminal": false
+}

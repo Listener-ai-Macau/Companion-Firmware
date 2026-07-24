@@ -1,0 +1,13 @@
+{
+  "schema": "companion.v38_function_state_wb55_profile_host.v1",
+  "status": "PASS_V38_FUNCTION_STATE_WB55_PROFILE_RUNTIME_INACTIVE",
+  "target": "STM32WB55 upper expression plan only",
+  "component_count": 94,
+  "max_component_mask_bytes": 506,
+  "score_count": 8,
+  "replayed_score_steps": 26,
+  "menu_entry_policy": {"maximum_expression_duration_ms": 500, "after_last_cue": "withdraw_expression_rig_then_show_menu_ui", "persistent_menu_score": "forbidden"},
+  "runtime_resource_activated": false,
+  "special_event_binding": "forbidden_until_total_machine_audit_and_owner_review",
+  "non_claims": ["no_firmware_flash", "no_panel_or_driver_change", "no_human_acceptance"]
+}

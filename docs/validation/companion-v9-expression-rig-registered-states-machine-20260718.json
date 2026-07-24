@@ -1,0 +1,25 @@
+{
+  "schema": "companion.v9_expression_rig_registered_state_preview_machine.v1",
+  "status": "PASS_REGISTERED_STATE_PREVIEW_MACHINE",
+  "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "runtime_resource_activated": false,
+  "preview_report": "docs/validation/companion-v9-expression-rig-registered-states-preview-20260718.json",
+  "score_contract": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/state-preview-rig-score-v1.json",
+  "score_contract_sha256": "7DD59C4052C7C3138C6EECAEC05B832FCE6D181D809D50D4C57485125AA4E749",
+  "stories": [
+    "touch_left",
+    "touch_right",
+    "swipe_left",
+    "swipe_right",
+    "swipe_down",
+    "recording_focus",
+    "menu_focus",
+    "sleep_enter"
+  ],
+  "minimum_visible_steps": 8,
+  "minimum_max_step_pixels": 650,
+  "maximum_max_step_pixels": 6500,
+  "charging_error": "fail_closed_no_registered_components",
+  "protected_owner_acceptance_sha256": "8A3BDF4BD1254B0D0F4DE13A7F293C3D74587C800339ABD4C61FEB0B7737E227",
+  "errors": []
+}

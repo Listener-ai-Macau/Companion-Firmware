@@ -1,0 +1,150 @@
+{
+  "schema_id": "companion.wb55.ssd1681_read_only_controller_state_raw_restore_machine.v1",
+  "status": "NO_GO_CONTROLLER_READ_RESTORED",
+  "requirement_id": "COMP-REQ-264",
+  "generated_at": "2026-07-21T13:36:29+08:00",
+  "claim_scope": "One production-off locked 0x2F/0x2D capture and one exact restore to the captured pre-run application bytes; no waveform, display-quality, temperature, visual or production claim.",
+  "execution": {
+    "hardware_contact": 1,
+    "serial_capture_processes": 2,
+    "candidate_programmer_processes": 1,
+    "candidate_write_calls": 1,
+    "restore_programmer_processes": 1,
+    "restore_write_calls": 1,
+    "restore_verify_operations": 1,
+    "restore_upload_calls": 1,
+    "restore_reset_arguments": 1,
+    "panel_writes": 0,
+    "panel_refresh_commands": 0,
+    "panel_hard_resets": 0,
+    "automatic_retries": 0
+  },
+  "controller_capture": {
+    "status": "NO_GO_INVALID_ALL_FF_RESPONSE",
+    "commands": {
+      "chip_status": "0x2F",
+      "chip_status_bytes_per_group": 1,
+      "display_option": "0x2D",
+      "display_option_bytes_per_group": 11,
+      "groups": 3
+    },
+    "raw_groups": [
+      {
+        "group": 1,
+        "chip_status_hex": "FF",
+        "display_option_raw_hex": "FFFFFFFFFFFFFFFFFFFFFF",
+        "gpio_restore": true,
+        "sda_output_low": true,
+        "scl_low": true,
+        "cs_high": true
+      },
+      {
+        "group": 2,
+        "chip_status_hex": "FF",
+        "display_option_raw_hex": "FFFFFFFFFFFFFFFFFFFFFF",
+        "gpio_restore": true,
+        "sda_output_low": true,
+        "scl_low": true,
+        "cs_high": true
+      },
+      {
+        "group": 3,
+        "chip_status_hex": "FF",
+        "display_option_raw_hex": "FFFFFFFFFFFFFFFFFFFFFF",
+        "gpio_restore": true,
+        "sda_output_low": true,
+        "scl_low": true,
+        "cs_high": true
+      }
+    ],
+    "consistency": {
+      "chip_status_identical": true,
+      "display_payload_identical": true,
+      "gpio_restore_all_groups": true
+    },
+    "payload_sha256": "15300BD714EFBC71D4830E661D7D6F7A052EAA0BD377A3332A3ED6DBBCEE3F87",
+    "admission_checks": {
+      "exactly_three_groups": true,
+      "chip_response_length_one": true,
+      "display_response_length_eleven": true,
+      "chip_id_bits_1_0_equal_01": false,
+      "busy_bit_2_zero": false,
+      "payload_not_all_zero": true,
+      "payload_not_all_ff": false,
+      "forbidden_panel_commands_absent": true
+    },
+    "raw_bit_observation_not_admissible_as_controller_state": {
+      "chip_id_bits_1_0": 3,
+      "busy_bit_2": 1,
+      "apparent_vcom_otp_selection_hex": "FF",
+      "apparent_vcom_register_hex": "FF",
+      "apparent_display_option_0x37_b_through_f_hex": "FFFFFFFFFF",
+      "apparent_f6_mode2_ram_ping_pong_enabled": true,
+      "apparent_waveform_version_hex": "FFFFFFFF",
+      "admissible": false,
+      "reason": "The response failed chip-ID, BUSY and all-FF gates; these apparent decoded values are line-idle/invalid data and cannot support VCOM, Display Option, Mode2 or waveform claims."
+    },
+    "parser_result": {
+      "exit_code": 1,
+      "first_failure": "NO_GO: chip ID bits[1:0] are not 01"
+    }
+  },
+  "restore": {
+    "status": "PASS_RESTORE_EQUALS_CAPTURED_PRE_RUN_APPLICATION_BYTES",
+    "restore_identity": "RESTORED_TO_CAPTURED_PRE_RUN_APPLICATION_BYTES",
+    "address_hex": "0x08000000",
+    "length_hex": "0x80000",
+    "bytes": 524288,
+    "baseline_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "restore_upload_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "byte_identical": true,
+    "e199_hex_reproduction": false,
+    "private_restore_upload": true
+  },
+  "normal_resume": {
+    "status": "PASS_APPLICATION_RESUMED_AFTER_BACKUP",
+    "capture_window_seconds_max": 30,
+    "normal_boot_count": 1,
+    "normal_ready_count": 1,
+    "ready_after_boot": true,
+    "controller_diagnostic_markers": 0,
+    "panel_error_markers": 0,
+    "hardfault_markers": 0
+  },
+  "programmer_observation": {
+    "version": "2.22.0",
+    "st_link_serial": "066EFF535570514867221931",
+    "board": "NUCLEO-WB55RG",
+    "voltage_v": 3.24,
+    "device_id": "0x495",
+    "connect_mode": "Under Reset",
+    "candidate_download_verified": true,
+    "restore_download_verified": true,
+    "restore_upload_read_successfully": true
+  },
+  "artifact_hashes": {
+    "check_only_stage_run_sha256": "8182C0332005FB707097A9C89396D2525D3572E6EEF04E2E4FBACC197F8D4685",
+    "execute_stage_run_sha256": "D5251F8384CFABC039D78CB81AA036AAC7F5581B036C061CDC38B8B154D5368E",
+    "candidate_serial_raw_sha256": "57CD1BC50D8020D58BDBC15E848C07E5ED1F1EA3A3115357B6F847520AA027E5",
+    "candidate_programmer_stdout_sha256": "CBF652A508BEC69E62861923CE8F2D0EEE0D93556FBA8BF4ED3410B430E125B6",
+    "restore_programmer_stdout_sha256": "237569661FB546F17852624839D8C87D7C33A13A1B2A381DBE412EF5E2CA00C0",
+    "restore_gate_sha256": "240B4141BE706CB3FFC3BC7BBC4C74287F76152D3C54B70BC59E8594060E2E4C",
+    "normal_serial_raw_sha256": "8270836CAA3675077F8F177E956B767A699C32C4FB142B1A9EF87AFD52C1A2B3",
+    "normal_resume_artifact_sha256": "96142871C8652214A0090575BFA820E8B16678395D6C8ED17E48B2935898D09D"
+  },
+  "future_boundary": {
+    "controller_state_admitted": false,
+    "read_only_0x41_0x27_future_goal_admitted": false,
+    "retry_allowed_under_this_requirement": false,
+    "operator_prompt_required": false,
+    "reason": "The controller read was invalid, while restore and post-restore application gates passed."
+  },
+  "protected_boundaries": {
+    "supplier_input_modified": false,
+    "v9_or_owner_acceptance_modified": false,
+    "rig_crig_browser_binding_art_modified": false,
+    "waveform_or_temperature_claimed": false,
+    "visual_or_residue_acceptance_claimed": false,
+    "raw_application_binary_published": false
+  }
+}

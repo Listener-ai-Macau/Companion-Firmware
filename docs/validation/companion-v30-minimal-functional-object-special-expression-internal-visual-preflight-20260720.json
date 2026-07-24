@@ -1,0 +1,236 @@
+{
+  "schema": "companion.v9_special_expression_internal_visual_preflight.v5",
+  "status": "PASS_INTERNAL_VISUAL_PREFLIGHT_V30_MINIMAL_FUNCTIONAL_OBJECTS",
+  "candidate": "V30 V9-only minimal functional-object special-expression source, attempt 01",
+  "machine_evidence": {
+    "source_gate": {
+      "path": "docs/validation/companion-v30-minimal-functional-object-special-expression-source-gate-20260720.json",
+      "sha256": "025F8C774C807B6A0FCED94B8B693D989267DD4EE0085D36151540EC37D1CF32",
+      "status": "PASS_V30_MINIMAL_FUNCTIONAL_OBJECT_SOURCE_GATE_PENDING_COMPONENT_EXPORT"
+    },
+    "component_export_gate": {
+      "path": "docs/validation/companion-v30-minimal-functional-object-special-expression-component-export-gate-20260720.json",
+      "sha256": "E7600F6D4A6B167B52B4DE93CE3A7C29FC77E9A8FBBB32CE6D78AB56CB0FC594",
+      "status": "PASS_V30_MINIMAL_FUNCTIONAL_OBJECT_COMPONENT_EXPORT_UNBOUND"
+    },
+    "component_performance": {
+      "path": "docs/validation/companion-v30-minimal-functional-object-special-expression-component-performance-preview-20260720.json",
+      "sha256": "8E92C166E0892543C9BAC40B36AC481F86E11D5F64B67606197D52347C747C82",
+      "status": "PASS_V30_MINIMAL_FUNCTIONAL_OBJECT_COMPONENT_PERFORMANCE_RUNTIME_INACTIVE"
+    },
+    "browser_target_parity": {
+      "path": "docs/validation/companion-v30-minimal-functional-object-special-expression-component-performance-parity-20260720.json",
+      "sha256": "36CEDF41CAAC261B8DAF7F1B6201564D62317F39821640E06B1603BD27845ACA",
+      "status": "PASS_V30_MINIMAL_FUNCTIONAL_OBJECT_COMPONENT_PERFORMANCE_BROWSER_TARGET_PLAN_PARITY"
+    },
+    "browser_render": {
+      "path": "docs/validation/companion-v30-minimal-functional-object-special-expression-component-browser-render-20260720.json",
+      "sha256": "2B921DBBE05E9E059A59AB2E14F7940A8CC35B05585A6119AF5B8AACBD7A0B3C",
+      "status": "PASS_V30_BROWSER_RENDER_INSPECTION_NATIVE_200X200"
+    },
+    "machine_closure": {
+      "path": "docs/validation/companion-v30-minimal-functional-object-special-expression-machine-closure-20260720.json",
+      "sha256": "F331F1AF3BDBF6D4029303868BB37CDF06E28787D85FD5EA06AFD0E8009E4F0E",
+      "status": "PASS_V30_MINIMAL_FUNCTIONAL_OBJECT_MACHINE_CLOSURE_RUNTIME_INACTIVE"
+    }
+  },
+  "inspection_contract": {
+    "native_target_size": [
+      200,
+      200
+    ],
+    "labels_hidden_for_reading": true,
+    "same_browser_target_component_plan": true,
+    "whole_face_playback": false,
+    "runtime_resource_activated": false,
+    "object_parts_per_state": 3,
+    "object_part_ink_limit": 504
+  },
+  "source_component_evidence": {
+    "menu_active": {
+      "object_roles": [
+        "center_tab",
+        "left_tab",
+        "right_tab"
+      ],
+      "object_ink_pixels": {
+        "left_tab": 161,
+        "center_tab": 168,
+        "right_tab": 163
+      },
+      "object_part_ink_limit": 504,
+      "outside_face_ink_pixels": 0
+    },
+    "recording_active": {
+      "object_roles": [
+        "left_ear_cuff",
+        "pickup_point",
+        "right_ear_cuff"
+      ],
+      "object_ink_pixels": {
+        "left_ear_cuff": 125,
+        "right_ear_cuff": 127,
+        "pickup_point": 37
+      },
+      "object_part_ink_limit": 504,
+      "outside_face_ink_pixels": 0
+    },
+    "charging_active": {
+      "object_roles": [
+        "charge_clasp",
+        "energy_core",
+        "short_tether"
+      ],
+      "object_ink_pixels": {
+        "charge_clasp": 198,
+        "short_tether": 154,
+        "energy_core": 298
+      },
+      "object_part_ink_limit": 504,
+      "outside_face_ink_pixels": 0
+    }
+  },
+  "causal_performance_evidence": {
+    "menu_active": {
+      "segments": [
+        "menu_active_daily_entry",
+        "menu_active_notice",
+        "menu_active_brows_arrive",
+        "menu_active_mouth_arrive",
+        "menu_active_object_arrive",
+        "menu_active_object_connect",
+        "menu_active_face_settle",
+        "menu_active_scan_left",
+        "menu_active_scan_center",
+        "menu_active_decision_hold",
+        "menu_active_object_release",
+        "menu_active_release_face",
+        "menu_active_daily_settle"
+      ],
+      "connect_roles": [
+        "center_tab",
+        "left_tab",
+        "right_tab"
+      ],
+      "hold_roles": [
+        "center_tab",
+        "left_tab",
+        "right_tab"
+      ],
+      "micro_segment": "menu_active_scan_left",
+      "micro_offsets": {
+        "left_tab": [
+          -1,
+          0
+        ],
+        "center_tab": [
+          -1,
+          0
+        ],
+        "right_tab": [
+          -1,
+          0
+        ]
+      }
+    },
+    "recording_active": {
+      "segments": [
+        "recording_active_daily_entry",
+        "recording_active_notice",
+        "recording_active_brows_arrive",
+        "recording_active_mouth_arrive",
+        "recording_active_object_arrive",
+        "recording_active_object_connect",
+        "recording_active_face_settle",
+        "recording_active_listen_pulse",
+        "recording_active_listen_hold",
+        "recording_active_object_release",
+        "recording_active_release_face",
+        "recording_active_daily_settle"
+      ],
+      "connect_roles": [
+        "left_ear_cuff",
+        "pickup_point",
+        "right_ear_cuff"
+      ],
+      "hold_roles": [
+        "left_ear_cuff",
+        "pickup_point",
+        "right_ear_cuff"
+      ],
+      "micro_segment": "recording_active_listen_pulse",
+      "micro_offsets": {
+        "left_ear_cuff": [
+          -1,
+          0
+        ],
+        "right_ear_cuff": [
+          1,
+          0
+        ],
+        "pickup_point": [
+          0,
+          -1
+        ]
+      }
+    },
+    "charging_active": {
+      "segments": [
+        "charging_active_daily_entry",
+        "charging_active_notice",
+        "charging_active_brows_arrive",
+        "charging_active_mouth_arrive",
+        "charging_active_object_arrive",
+        "charging_active_object_connect",
+        "charging_active_face_settle",
+        "charging_active_recovery_breathe",
+        "charging_active_recovery_hold",
+        "charging_active_object_release",
+        "charging_active_release_face",
+        "charging_active_daily_settle"
+      ],
+      "connect_roles": [
+        "charge_clasp",
+        "energy_core",
+        "short_tether"
+      ],
+      "hold_roles": [
+        "charge_clasp",
+        "energy_core",
+        "short_tether"
+      ],
+      "micro_segment": "charging_active_recovery_breathe",
+      "micro_offsets": {
+        "charge_clasp": [
+          1,
+          0
+        ],
+        "short_tether": [
+          1,
+          0
+        ],
+        "energy_core": [
+          0,
+          -1
+        ]
+      }
+    }
+  },
+  "decision": {
+    "owner_operator_prompt_opened": false,
+    "human_art_acceptance_requested": false,
+    "candidate_disposition": "PENDING_CANONICAL_OWNER_ART_REVIEW",
+    "runtime_resource_activated": false,
+    "active_candidate_binding": "forbidden",
+    "still_forbidden_before_owner_acceptance": [
+      "CRIG_export",
+      "profile_generation",
+      "event_binding",
+      "firmware_flash",
+      "physical_panel_claim",
+      "whole_face_fallback"
+    ],
+    "owner_fail_route": "Freeze V30 as audit-only, preserve the machine artifacts, forbid it as a future visual prompt/reference input, and return to a new locked-V9-only source direction."
+  },
+  "errors": []
+}

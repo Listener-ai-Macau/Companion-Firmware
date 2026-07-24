@@ -1,0 +1,40 @@
+{
+  "schema": "companion.v24_glance_readable_special_expression_owner_art_review_triage.v1",
+  "status": "OWNER_ART_REVIEW_FAIL_REQUIRES_PREVIEW_AND_CHOREOGRAPHY_REPAIR",
+  "review": {
+    "selected": "失败",
+    "operator_note": "点了是一样的表情, 另外缺少过度",
+    "raw_operator_note": "docs/validation/companion-v24-glance-readable-special-expression-owner-art-review-20260720.json",
+    "prompt_archive": "C:/Users/Billy/Desktop/Denzic/ai-collaboration-workflow/.cache/prompt-archive/20260720-101010-317-v24-特殊表情动态预览验收-e6668685.json"
+  },
+  "machine_closure": {
+    "path": "docs/validation/companion-v24-glance-readable-special-expression-machine-closure-20260720.json",
+    "sha256": "6716F26976E1D903883BA0D0BCA7C935E10C04C4A3C4151118E9DFC95A5FE4F7",
+    "status": "PASS_V24_SPECIAL_EXPRESSION_MACHINE_CLOSURE_RUNTIME_INACTIVE"
+  },
+  "triage": {
+    "failure_class": "browser_preview_semantics_and_performance_readability",
+    "preserved": [
+      "locked V9 source identity",
+      "V24 generated-source lineage and source gate",
+      "component-only export",
+      "runtime inactive and unbound state",
+      "fail-closed unavailable special states"
+    ],
+    "required_repair": [
+      "Selecting Menu, Recording or Charging must visibly inspect that state target hold rather than the shared daily_entry frame.",
+      "Play must restart the selected causal performance from V9 Daily and visibly traverse preparation, face-first arrival, secondary-accent arrival, hold, release and exact V9 Daily settle.",
+      "The browser player must make the transition readable without relying on page state labels, while using the same registered component plan as target PBM output.",
+      "Regenerate browser screenshots, browser-target parity and machine closure before another canonical owner review."
+    ],
+    "forbidden": [
+      "accepting V24 art from the failed review",
+      "whole-face-card playback",
+      "source-art replacement without a new versioned request",
+      "candidate CRIG/profile export",
+      "event binding",
+      "firmware flash",
+      "physical-panel claim"
+    ]
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "schema": "companion.v32_representative_functional_silhouette_special_expression_owner_chat_feedback_triage.v1",
+  "status": "REJECTED_OWNER_CHAT_FEEDBACK",
+  "owner_feedback": "不太行, 太差了, 人家看着根本不知道在干啥",
+  "feedback_channel": "owner_chat_after_machine_closure",
+  "formal_operator_prompt": {
+    "status": "NO_SELECTION_RECORDED",
+    "reason": "The owner supplied an unambiguous rejection in chat after the V32 browser review was opened; it must be triaged before any further V32 use."
+  },
+  "candidate": {
+    "source": "docs/art/iterations/companion-pet-expression-v9-extension-v32-representative-functional-silhouette-special-expression-source/candidate/v32.png",
+    "source_sha256": "72CA42D79519233886E338E1AB4891FB63F76498CE879A0DD61DA1513F5F7C95",
+    "machine_closure": "docs/validation/companion-v32-representative-functional-silhouette-special-expression-machine-closure-20260720.json",
+    "machine_closure_sha256": "D054AB458235A20CF85009656A94331A5F23B87CDAF2EC98785E33A21EB8E165",
+    "internal_preflight": "docs/validation/companion-v32-representative-functional-silhouette-special-expression-internal-visual-preflight-20260720.json",
+    "internal_preflight_sha256": "2E6210E58D66303B64751724E6604FEA409B687E0E57A579F9C5DEDBA3736CEC"
+  },
+  "finding": "V32 proves component mechanics and visual separation, but its functional cues are abstract marks that do not let a first-time viewer infer Menu, Recording, or Charging without labels.",
+  "disposition": {
+    "candidate_state": "REJECTED_AUDIT_ONLY",
+    "runtime_resource_activated": false,
+    "active_candidate_binding": "forbidden",
+    "forbidden_actions": [
+      "use_as_visual_prompt_or_reference",
+      "CRIG_export",
+      "profile_generation",
+      "event_binding",
+      "firmware_flash",
+      "physical_panel_claim",
+      "whole_face_fallback"
+    ],
+    "replacement_requirement": "COMP-REQ-179",
+    "next_art_direction": "V33 locked-V9-only face-primary action readability with an unlabeled forced-choice fixture before owner review"
+  }
+}

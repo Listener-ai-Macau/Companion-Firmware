@@ -1,0 +1,137 @@
+{
+  "claim_scope": "source/evidence study only; no hardware contact, no physical claim, no production promotion",
+  "conclusions": {
+    "evidence_rule": {
+      "draw_before_erase_no_go": [
+        "vendor_partial_current_union_old_settle: physical NO_GO recorded via COMP-REQ-239 owner steering (没修好, 吃掉的部分越来越多了)",
+        "vendor_partial_removed_black_repair_current_union: NO_GO_OPERATOR_VISIBLE_ENLARGED_GAP",
+        "vendor_partial_draw_final: NO_GO_OPERATOR_VISIBLE_RESIDUE_DRAW_FINAL"
+      ],
+      "erase_and_draw_in_one_activation_no_go": [
+        "vendor_partial_slow_motion: NO_GO_PHYSICAL_CONTINUOUS_PARTIAL_RESIDUE",
+        "vendor_partial_disjoint_current_stage r6: physically same single-activation path; residue reported in r6 operator steering note"
+      ],
+      "erase_old_exclusive_activation_first_no_residue": [
+        "vendor_partial_no_union_settle: PASS_OPERATOR_ACCEPTED_PRODUCTION_OFF_NO_UNION_SETTLE_BASELINE",
+        "vendor_partial_cleanup_draw: PASS_OPERATOR_ACCEPTED_PRODUCTION_OFF_CLEANUP_DRAW_BASELINE"
+      ]
+    },
+    "key_differences_vs_failed_candidates": [
+      "activation count per changed frame: accepted method uses 2 (erase-exclusive then draw-exclusive); slow-motion and disjoint-current-stage r6 use 1 shared activation",
+      "phase separation: erase-old owns its own activation and strictly precedes draw-new; failed candidates either share one activation for erase+draw or draw before erasing",
+      "window semantics: pass 1 window is the previous-frame black-byte bounding box (not the diff union); pass 2 window is the diff union; r6/slow-motion use a single diff window for both erase and draw",
+      "waveform budget: each activation in the accepted method drives only one visual phase (old-removal or new-drawing), so the 0xFF local waveform never has to erase and draw the same window in one activation"
+    ],
+    "r6_residue_cause": {
+      "fact": [
+        "r6 trace regions_per_step is 1 for all 48 changed frames (.cache/validation/wb55-vendor-partial-disjoint-current-stage-r6-20260721/vendor-partial-disjoint-current-stage-trace.json)",
+        "r6 therefore physically degenerated to one diff window + current-frame 0x24 + a single 0xFF -> 0x20 -> BUSY per frame",
+        "that is the same physical path as the 2026-07-20 slow-motion candidate, which is NO_GO_PHYSICAL_CONTINUOUS_PARTIAL_RESIDUE with human-confirmed residue"
+      ],
+      "hypothesis": [
+        "within one 0xFF activation that must both erase old black pixels and draw new black pixels in the same window, the black -> white erase is not driven sufficiently, leaving the observed old-position residue"
+      ]
+    },
+    "yesterday_method": {
+      "candidate": "vendor_partial_no_union_settle (COMP-REQ-236, human-accepted 2026-07-20 21:53)",
+      "forbidden_in_method": "no 0x26 (except the frame-1 basemap seed), no 0xC7, no full-screen write",
+      "known_accepted_defect": "leading edge of the moving point is briefly cut by the erase pass, then restored by the draw pass",
+      "operator_acceptance_note_verbatim": "好很多, 就是移动的时候移动方向会切掉一点, 随后还原, 能优化吗",
+      "pass_1_erase": {
+        "activation": "own ssd1681_reset() + border lock + 0x22=0xFF -> 0x20 -> BUSY",
+        "payload": "current-frame bytes on 0x24 (white at old-only byte positions), dedicated to erasing the old image",
+        "window": "bounding box of previous-frame black bytes, ssd1681_window_from_previous_black_pixels() (app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c:862-899)"
+      },
+      "pass_2_draw": {
+        "activation": "own ssd1681_reset() + border lock + 0x22=0xFF -> 0x20 -> BUSY (driver :2134-2186)",
+        "payload": "current-frame bytes on 0x24, draws the new image",
+        "window": "old/new difference union, ssd1681_window_from_difference()"
+      },
+      "runtime_evidence": {
+        "activations_per_changed_frame": 2,
+        "approx_frame_cost_ms": 894,
+        "partial_activation_count": 96,
+        "partial_frame_count": 48,
+        "per_pass_elapsed_ms": 447
+      },
+      "structure": "two supplier source-order partial passes per changed frame"
+    }
+  },
+  "generated_at": "2026-07-21",
+  "implication": {
+    "boundaries": "default-off, production-off, no LUT/waveform/register/control (other than supplier 0xFF)/reset/border/timing/rail/temperature change, no 0x26, no 0xC7, no full-screen write, no historical NO_GO order rerun",
+    "direction": "keep the human-accepted erase-old-exclusive-activation-first two-pass structure; replace only pass 2's single union window with the generic difference comparator's disjoint 1..5 byte-aligned window staging of current-frame 0x24, followed by one 0xFF -> 0x20 -> BUSY per pass",
+    "kept_from_accepted_method": "pass 1 = previous-black bounding-box window + current-frame 0x24 + own reset/border/0xFF/0x20/BUSY; identical frames still skip with zero payload and zero activation",
+    "kept_from_disjoint_candidate": "generic ssd1681_windows_from_difference() 1..5 byte-aligned regions, current-frame 0x24 payload, five-anchor 12 px probe geometry",
+    "new_candidate": "vendor_partial_disjoint_no_union_settle"
+  },
+  "inputs": {
+    "accepted_no_union_settle_operator_20260720": {
+      "path": "docs/validation/companion-gdey0154d67-t03-vendor-partial-no-union-settle-operator-20260720.json",
+      "recorded_status": "PASS_OPERATOR_ACCEPTED_PRODUCTION_OFF_NO_UNION_SETTLE_BASELINE",
+      "sha256": "DA2FE11DB4CB1AFC5D433B2798BADBB576FC9C82BB39C472236E084C48F1EC57"
+    },
+    "accepted_no_union_settle_raw_log_20260720": {
+      "path": ".cache/validation/wb55-vendor-partial-no-union-settle-r1-20260720/capture/nucleo-serial-raw.log",
+      "sha256": "974E87E12685C76A31FCE1C03E2025FCA6D11FDCB5D18913238F47B57FB8DB52"
+    },
+    "accepted_no_union_settle_runtime_20260720": {
+      "path": "docs/validation/companion-gdey0154d67-t03-vendor-partial-no-union-settle-runtime-20260720.json",
+      "recorded_status": "PASS_MACHINE_NO_UNION_SETTLE_TRACE",
+      "sha256": "AE50830D1DB091AD2E526A132D55A7D512EA55E09D534F66CA7E71DB81BFF814"
+    },
+    "accepted_no_union_settle_static_20260720": {
+      "path": "docs/validation/companion-gdey0154d67-t03-vendor-partial-no-union-settle-static-20260720.json",
+      "recorded_status": "PASS_STATIC_PRODUCTION_OFF_VENDOR_PARTIAL_NO_UNION_SETTLE",
+      "sha256": "0AAA8C8E20483A5CDBBA176E1A66332DE8BCCEB40D84BCA3E01759C54A40389F"
+    },
+    "cleanup_draw_operator_20260720": {
+      "path": "docs/validation/companion-gdey0154d67-t03-vendor-partial-cleanup-draw-operator-20260720.json",
+      "recorded_status": "PASS_OPERATOR_ACCEPTED_PRODUCTION_OFF_CLEANUP_DRAW_BASELINE",
+      "sha256": "C636E54EA839EAA20ECD66D187306C2E5824B4B053533D6A1E57DC7752A55188"
+    },
+    "current_union_old_settle_runtime_20260720": {
+      "note": "No operator JSON exists under docs/validation for this candidate; its physical NO_GO is recorded as owner asynchronous failure steering in registry row COMP-REQ-239, with the operator observation preserved at .cache/validation/wb55-vendor-partial-current-union-old-settle-r1-20260720/operator/operator-observation.json.",
+      "path": "docs/validation/companion-gdey0154d67-t03-vendor-partial-current-union-old-settle-runtime-20260720.json",
+      "recorded_status": "PASS_MACHINE_CURRENT_UNION_OLD_SETTLE_TRACE",
+      "sha256": "FDFC2BAE85F868328E198A68DCF75854713F0A3B6B12B1039522A4F68554F599"
+    },
+    "disjoint_current_stage_r6_operator_20260721": {
+      "path": "docs/validation/companion-gdey0154d67-t03-vendor-partial-disjoint-current-stage-operator-r6-20260721.json",
+      "recorded_status": "PASS_OPERATOR_WITH_RESIDUE_STEERING_PRODUCTION_OFF",
+      "sha256": "13CF51F221110829949075864973DF769AAF1C8222B73B482124BF14FD55D9C3"
+    },
+    "disjoint_current_stage_r6_trace_20260721": {
+      "path": ".cache/validation/wb55-vendor-partial-disjoint-current-stage-r6-20260721/vendor-partial-disjoint-current-stage-trace.json",
+      "recorded_status": "PASS_MACHINE_VENDOR_PARTIAL_DISJOINT_CURRENT_STAGE_TRACE",
+      "sha256": "9EDE11E629886FADF7B3B585F7775C9CCBDD5A7B1A8703997209BFE4D7CAAB86"
+    },
+    "draw_final_operator_20260720": {
+      "path": "docs/validation/companion-gdey0154d67-t03-vendor-partial-draw-final-operator-20260720.json",
+      "recorded_status": "NO_GO_OPERATOR_VISIBLE_RESIDUE_DRAW_FINAL",
+      "sha256": "69FC1FC6A01EBDDD45A10E477270ACC4EC4F22999BB4C3B78EE474E2CAC03B1E"
+    },
+    "removed_black_repair_current_union_operator_20260720": {
+      "path": "docs/validation/companion-gdey0154d67-t03-vendor-partial-removed-black-repair-current-union-operator-20260720.json",
+      "recorded_status": "NO_GO_OPERATOR_VISIBLE_ENLARGED_GAP",
+      "sha256": "2FEBAB3365FE8481760DB0DC6C4180EFD01C24B10D985F751B6CAD9F4E1A2932"
+    },
+    "slow_motion_residue_triage_20260720": {
+      "path": "docs/validation/companion-gdey0154d67-t03-vendor-partial-slow-motion-residue-triage-20260720.json",
+      "recorded_status": "NO_GO_PHYSICAL_CONTINUOUS_PARTIAL_RESIDUE",
+      "sha256": "6686459B31E12B0189F6195FC02B2F3EA5166D08C337C5C8F2F195057A9CF033"
+    },
+    "supplier_epaper_c_readonly": {
+      "access": "read-only; bound by hash only, never modified",
+      "path": "C:\\Users\\Billy\\Desktop\\GDEH0154D67-20211203-P-LUT(1s) -1s快刷\\EPD_W21\\EPAPER.c",
+      "sha256": "7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896"
+    }
+  },
+  "owner_steering": {
+    "interpretation": "study the accepted 2026-07-20 working method (COMP-REQ-236 no-union-settle) before proposing any renewed probe",
+    "note_verbatim": "你现在这样子直接移动是会有残影的，你看看昨天的这种工作方式去学习一下",
+    "source": "COMP-REQ-242 r6 canonical review note, 2026-07-21"
+  },
+  "schema_id": "companion.wb55.gdey0154d67_t03.yesterday_method_study.v1",
+  "status": "STUDY_COMPLETE_TWO_PASS_ERASE_FIRST_IS_ACCEPTED_METHOD"
+}

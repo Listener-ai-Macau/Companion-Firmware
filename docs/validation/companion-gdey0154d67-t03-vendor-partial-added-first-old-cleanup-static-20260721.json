@@ -1,0 +1,358 @@
+{
+  "checks": {
+    "branch_explicitly_forbids_fallback_union_and_unapproved_commands": true,
+    "branch_has_added_then_cleanup_and_exactly_two_completions": true,
+    "common_union_setup_and_third_activation_are_bypassed": true,
+    "diagnostic_and_observer_elves_contain_profile": true,
+    "helper_implements_exact_predicate_and_eight_run_fail_closed_limit": true,
+    "identical_frame_returns_before_gpio_or_payload": true,
+    "macro_is_default_off_binary_guarded_and_isolated": true,
+    "make_and_build_have_isolated_50_and_360_images": true,
+    "normal_restore_image_is_exact_and_profile_absent": true,
+    "pass1_rechecks_predicate_and_writes_only_current_0x24": true,
+    "pass2_uses_previous_black_bbox_with_current_0x24": true,
+    "registry_records_exact_comp_req_255_contract": true,
+    "research_authorizes_only_this_candidate": true,
+    "runner_is_fail_closed_and_requires_machine_gate_before_prompt": true,
+    "supplier_and_prior_evidence_hashes_are_exact": true,
+    "synthetic_48_changed_frames_match_research": true
+  },
+  "claim_scope": "machine-only default-off production-off source contract; no physical success claim",
+  "failures": [],
+  "forbidden": [
+    "fallback",
+    "union",
+    "mixed pass-1 byte",
+    "0x21",
+    "0x2D",
+    "0x37",
+    "0x26 after baseline",
+    "LUT/waveform mutation",
+    "third activation"
+  ],
+  "schema_id": "companion.wb55.gdey0154d67_t03.vendor_partial_added_first_old_cleanup_static.v1",
+  "source_manifest": {
+    "C:/Users/Billy/Desktop/GDEH0154D67-20211203-P-LUT(1s) -1s\u5feb\u5237/EPD_W21/EPAPER.c": "7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896",
+    "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c": "DCB3CE5E1D7FF5BFE39EB46140096F0B425F4F8FDAD7CD90247430632AE7061C",
+    "cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile": "F61F50EBEBE9DEB150D5E52C2C63C7B8910CB292F0ED9A1F4D89699D52DFACF6",
+    "cubeide/Companion_Nucleo_WB55RG_Bringup/build/Companion_Nucleo_WB55RG_Bringup.elf": "ECCD9F386129DF57A8F8D01B55C2B9BD7D2D71A838FB2D636DBDCCC1A5C4A38F",
+    "cubeide/Companion_Nucleo_WB55RG_Bringup/build/Companion_Nucleo_WB55RG_Bringup.hex": "E1997F29DCB8735899B4BC0B9012CF75025F3CA8D21250485BCC21E4C4691B46",
+    "cubeide/Companion_Nucleo_WB55RG_Bringup/build_vendor_partial_added_first_old_cleanup_diagnostic/Companion_Nucleo_WB55RG_VendorPartialAddedFirstOldCleanupDiagnostic.elf": "E54B9CC1B190AB622639295E9F0CE67B234AEF752FF778C4D889CEA292A881F8",
+    "cubeide/Companion_Nucleo_WB55RG_Bringup/build_vendor_partial_added_first_old_cleanup_operator_loop_diagnostic/Companion_Nucleo_WB55RG_VendorPartialAddedFirstOldCleanupOperatorLoopDiagnostic.elf": "4297C4B4146C62108346B4B2A516D4A2427848111D7EDCEA5AD1ECEE431FCC95",
+    "docs/companion_product_requirements.md": "A7362DA3A2E12A2505BE071024D8B13126C2119571A82E0298C9A00C2C864506",
+    "docs/validation/companion-gdey0154d67-t03-vendor-partial-added-first-old-cleanup-research-source-hash-20260721.json": "A7609EBAC9AE29E6492E491390B66D0F83E05A03A8DEC5CD4D6D795E6D8C3809",
+    "docs/validation/companion-gdey0154d67-t03-vendor-partial-disjoint-no-union-settle-completion-audit-20260721.json": "42D611AB16D10403B820D9DE6E25B8B24A6D0BD4105AE12222BB1517BF46058F",
+    "docs/validation/companion-gdey0154d67-t03-vendor-partial-disjoint-no-union-settle-operator-r1-20260721.json": "67E43FBBD7546EB99E4CE8B06EE84141D0B0F4419E77C7ED1AF7D9C38D7D9C00",
+    "tools/build_nucleo_bringup.ps1": "4B0B286906516B67BA01078486B9322E28BCF6E9E62C68A9A5EE573E37287617",
+    "tools/run_wb55_vendor_partial_added_first_old_cleanup_diagnostic.ps1": "2F76447E9FEC3F080C358478AC17EF27CFA981589F1870762994378A10972B0F",
+    "tools/verify_wb55_vendor_partial_added_first_old_cleanup_hardware_prerequisite.py": "46966EBE6A7F49C5A6C03CFFF5002FF792172A66CBD444506C700746F5D9C099",
+    "tools/verify_wb55_vendor_partial_added_first_old_cleanup_log.py": "E37ED575E45F4F52C004FB8936CAFDC0D4CE873EF5E2CA183321124AB8201048"
+  },
+  "status": "PASS_STATIC_SOURCE_EXACT_ADDED_FIRST_OLD_CLEANUP_DEFAULT_OFF",
+  "synthetic_probe": {
+    "changed_frames": 48,
+    "eligible_bytes_max": 49,
+    "eligible_bytes_min": 28,
+    "empty_changed_frames": 0,
+    "frames": [
+      {
+        "cycle": 2,
+        "eligible_bytes": 28,
+        "mixed_bytes": 0,
+        "regions": 4
+      },
+      {
+        "cycle": 3,
+        "eligible_bytes": 33,
+        "mixed_bytes": 0,
+        "regions": 4
+      },
+      {
+        "cycle": 4,
+        "eligible_bytes": 30,
+        "mixed_bytes": 0,
+        "regions": 4
+      },
+      {
+        "cycle": 5,
+        "eligible_bytes": 30,
+        "mixed_bytes": 0,
+        "regions": 4
+      },
+      {
+        "cycle": 6,
+        "eligible_bytes": 30,
+        "mixed_bytes": 0,
+        "regions": 4
+      },
+      {
+        "cycle": 7,
+        "eligible_bytes": 33,
+        "mixed_bytes": 0,
+        "regions": 4
+      },
+      {
+        "cycle": 8,
+        "eligible_bytes": 30,
+        "mixed_bytes": 0,
+        "regions": 4
+      },
+      {
+        "cycle": 9,
+        "eligible_bytes": 33,
+        "mixed_bytes": 0,
+        "regions": 4
+      },
+      {
+        "cycle": 10,
+        "eligible_bytes": 39,
+        "mixed_bytes": 0,
+        "regions": 5
+      },
+      {
+        "cycle": 11,
+        "eligible_bytes": 48,
+        "mixed_bytes": 0,
+        "regions": 4
+      },
+      {
+        "cycle": 12,
+        "eligible_bytes": 37,
+        "mixed_bytes": 0,
+        "regions": 4
+      },
+      {
+        "cycle": 13,
+        "eligible_bytes": 39,
+        "mixed_bytes": 0,
+        "regions": 5
+      },
+      {
+        "cycle": 14,
+        "eligible_bytes": 46,
+        "mixed_bytes": 0,
+        "regions": 4
+      },
+      {
+        "cycle": 15,
+        "eligible_bytes": 39,
+        "mixed_bytes": 0,
+        "regions": 4
+      },
+      {
+        "cycle": 16,
+        "eligible_bytes": 39,
+        "mixed_bytes": 0,
+        "regions": 5
+      },
+      {
+        "cycle": 17,
+        "eligible_bytes": 46,
+        "mixed_bytes": 0,
+        "regions": 4
+      },
+      {
+        "cycle": 18,
+        "eligible_bytes": 41,
+        "mixed_bytes": 0,
+        "regions": 4
+      },
+      {
+        "cycle": 19,
+        "eligible_bytes": 39,
+        "mixed_bytes": 0,
+        "regions": 3
+      },
+      {
+        "cycle": 20,
+        "eligible_bytes": 46,
+        "mixed_bytes": 0,
+        "regions": 5
+      },
+      {
+        "cycle": 21,
+        "eligible_bytes": 44,
+        "mixed_bytes": 0,
+        "regions": 4
+      },
+      {
+        "cycle": 22,
+        "eligible_bytes": 38,
+        "mixed_bytes": 0,
+        "regions": 3
+      },
+      {
+        "cycle": 23,
+        "eligible_bytes": 49,
+        "mixed_bytes": 0,
+        "regions": 4
+      },
+      {
+        "cycle": 24,
+        "eligible_bytes": 44,
+        "mixed_bytes": 0,
+        "regions": 4
+      },
+      {
+        "cycle": 25,
+        "eligible_bytes": 37,
+        "mixed_bytes": 0,
+        "regions": 3
+      },
+      {
+        "cycle": 26,
+        "eligible_bytes": 42,
+        "mixed_bytes": 0,
+        "regions": 5
+      },
+      {
+        "cycle": 27,
+        "eligible_bytes": 46,
+        "mixed_bytes": 0,
+        "regions": 4
+      },
+      {
+        "cycle": 28,
+        "eligible_bytes": 38,
+        "mixed_bytes": 0,
+        "regions": 3
+      },
+      {
+        "cycle": 29,
+        "eligible_bytes": 47,
+        "mixed_bytes": 0,
+        "regions": 4
+      },
+      {
+        "cycle": 30,
+        "eligible_bytes": 37,
+        "mixed_bytes": 0,
+        "regions": 4
+      },
+      {
+        "cycle": 31,
+        "eligible_bytes": 41,
+        "mixed_bytes": 0,
+        "regions": 3
+      },
+      {
+        "cycle": 32,
+        "eligible_bytes": 47,
+        "mixed_bytes": 0,
+        "regions": 4
+      },
+      {
+        "cycle": 33,
+        "eligible_bytes": 46,
+        "mixed_bytes": 0,
+        "regions": 4
+      },
+      {
+        "cycle": 34,
+        "eligible_bytes": 38,
+        "mixed_bytes": 4,
+        "regions": 2
+      },
+      {
+        "cycle": 35,
+        "eligible_bytes": 38,
+        "mixed_bytes": 2,
+        "regions": 6
+      },
+      {
+        "cycle": 36,
+        "eligible_bytes": 33,
+        "mixed_bytes": 0,
+        "regions": 3
+      },
+      {
+        "cycle": 37,
+        "eligible_bytes": 38,
+        "mixed_bytes": 4,
+        "regions": 2
+      },
+      {
+        "cycle": 38,
+        "eligible_bytes": 32,
+        "mixed_bytes": 0,
+        "regions": 4
+      },
+      {
+        "cycle": 39,
+        "eligible_bytes": 37,
+        "mixed_bytes": 0,
+        "regions": 3
+      },
+      {
+        "cycle": 40,
+        "eligible_bytes": 38,
+        "mixed_bytes": 4,
+        "regions": 2
+      },
+      {
+        "cycle": 41,
+        "eligible_bytes": 32,
+        "mixed_bytes": 0,
+        "regions": 4
+      },
+      {
+        "cycle": 42,
+        "eligible_bytes": 28,
+        "mixed_bytes": 0,
+        "regions": 4
+      },
+      {
+        "cycle": 43,
+        "eligible_bytes": 33,
+        "mixed_bytes": 0,
+        "regions": 4
+      },
+      {
+        "cycle": 44,
+        "eligible_bytes": 30,
+        "mixed_bytes": 0,
+        "regions": 4
+      },
+      {
+        "cycle": 45,
+        "eligible_bytes": 30,
+        "mixed_bytes": 0,
+        "regions": 4
+      },
+      {
+        "cycle": 46,
+        "eligible_bytes": 30,
+        "mixed_bytes": 0,
+        "regions": 4
+      },
+      {
+        "cycle": 47,
+        "eligible_bytes": 33,
+        "mixed_bytes": 0,
+        "regions": 4
+      },
+      {
+        "cycle": 48,
+        "eligible_bytes": 30,
+        "mixed_bytes": 0,
+        "regions": 4
+      },
+      {
+        "cycle": 49,
+        "eligible_bytes": 33,
+        "mixed_bytes": 0,
+        "regions": 4
+      }
+    ],
+    "identical": {
+      "eligible_bytes": 0,
+      "mixed_bytes": 0,
+      "regions": 0
+    },
+    "mixed_bytes_max": 4,
+    "mixed_bytes_min": 0,
+    "over_limit_frames": 0,
+    "region_count_max": 6,
+    "region_count_min": 2
+  }
+}

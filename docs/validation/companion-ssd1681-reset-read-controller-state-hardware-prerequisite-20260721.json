@@ -1,0 +1,32 @@
+{
+  "schema_id": "companion.wb55.ssd1681_reset_read_controller_state.hardware_prerequisite.v1",
+  "requirement_id": "COMP-REQ-265",
+  "recorded_at": "2026-07-21T13:58:54.6459759+08:00",
+  "status": "PASS_HUMAN_WIRING_PREREQUISITE_ONLY",
+  "resolved_predecessor": "docs/validation/companion-ssd1681-reset-read-controller-state-prehardware-no-go-20260721.json",
+  "canonical_operator_prompt": {
+    "selected": "已接好",
+    "note_path": "docs/validation/companion-ssd1681-reset-read-controller-state-prehardware-wiring-operator-20260721.json",
+    "note_sha256": "22DEB99DF27C9A0AAC36EE7DE0969710BAA507C1E2427EE3B1C555BD6B7464D9",
+    "note_verbatim": "已断电接好 RES：P9-6/T5 -> CN10-24/PB1；已目视确认 BUSY：P9-5/T4 -> CN7-3/PC5；未触碰 FPC。"
+  },
+  "owner_chat_confirmation": {
+    "verbatim": "确认接了",
+    "scope": [
+      "FTS02 P9 pin 6 / T5 / RES -> NUCLEO CN10 pin 24 / PB1",
+      "FTS02 P9 pin 5 / T4 / BUSY -> NUCLEO CN7 pin 3 / PC5"
+    ],
+    "scope_basis": "The owner wording confirms the exact immediately preceding wiring request; no additional visual or electrical detail is inferred."
+  },
+  "admission": {
+    "res_wire": "HUMAN_CONFIRMED",
+    "busy_wire": "HUMAN_CONFIRMED",
+    "candidate_hardware_attempts_so_far": 0,
+    "next_machine_stage": "Rerun prerequisite/static/host/build/CheckOnly gates before any hardware contact."
+  },
+  "non_claims": [
+    "This is not electrical continuity or voltage evidence.",
+    "This does not establish a valid controller read, panel identity, waveform, residue, visual, temperature, or production result.",
+    "This does not authorize retry after the single Goal-bounded hardware attempt."
+  ]
+}

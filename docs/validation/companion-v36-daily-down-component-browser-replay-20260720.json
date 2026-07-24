@@ -1,0 +1,70 @@
+{
+  "schema": "companion.v36_daily_down_component_browser_replay_gate.v1",
+  "status": "PASS_V36_DAILY_DOWN_COMPONENT_BROWSER_REPLAY_GATE",
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden",
+  "source_gate": "docs/validation/companion-v36-daily-down-attention-source-gate-20260720.json",
+  "source_gate_sha256": "79762C13FCD58EF62168BCF8264678ADC31BAF4E971D2A8D6A4CEE43550A5EA2",
+  "preview_gate": "docs/validation/companion-v36-daily-down-component-browser-preview-20260720.json",
+  "preview_gate_sha256": "91DBF7C45A645F1FE699D116F89A6869B0843B17E887FE3E98CE837D1FA0FE3F",
+  "locked_v9_source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+  "locked_v9_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "canvas": {
+    "width": 200,
+    "height": 200
+  },
+  "component_only": true,
+  "full_face_cards": false,
+  "random_motion": false,
+  "phases": [
+    "entry",
+    "eyes_lead",
+    "brows_answer",
+    "mouth_settles",
+    "hold",
+    "settle",
+    "rest_dwell"
+  ],
+  "frame_replay": [
+    {
+      "phase": "entry",
+      "pixels_different_from_component_replay": 0,
+      "frame": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/component-export-attempt-06/preview/pbm/00-entry.pbm"
+    },
+    {
+      "phase": "eyes_lead",
+      "pixels_different_from_component_replay": 0,
+      "frame": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/component-export-attempt-06/preview/pbm/01-eyes_lead.pbm"
+    },
+    {
+      "phase": "brows_answer",
+      "pixels_different_from_component_replay": 0,
+      "frame": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/component-export-attempt-06/preview/pbm/02-brows_answer.pbm"
+    },
+    {
+      "phase": "mouth_settles",
+      "pixels_different_from_component_replay": 0,
+      "frame": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/component-export-attempt-06/preview/pbm/03-mouth_settles.pbm"
+    },
+    {
+      "phase": "hold",
+      "pixels_different_from_component_replay": 0,
+      "frame": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/component-export-attempt-06/preview/pbm/04-hold.pbm"
+    },
+    {
+      "phase": "settle",
+      "pixels_different_from_component_replay": 0,
+      "frame": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/component-export-attempt-06/preview/pbm/05-settle.pbm"
+    },
+    {
+      "phase": "rest_dwell",
+      "pixels_different_from_component_replay": 0,
+      "frame": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/component-export-attempt-06/preview/pbm/06-rest_dwell.pbm"
+    }
+  ],
+  "component_beat_differences": {
+    "entry_to_eyes_lead": 156,
+    "eyes_lead_to_brows_answer": 471,
+    "brows_answer_to_mouth_settles": 158
+  }
+}

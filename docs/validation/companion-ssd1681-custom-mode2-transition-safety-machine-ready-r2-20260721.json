@@ -1,0 +1,103 @@
+{
+  "schema_id": "companion.wb55.ssd1681_custom_mode2_transition_safety_machine_ready.v2",
+  "status": "MACHINE_READY_CUSTOM_MODE2_TP_SCALE_R2",
+  "requirements": [
+    "COMP-REQ-285",
+    "COMP-REQ-289"
+  ],
+  "goal_action": "none; the root thread already owns the active Codex Goal, so this child scope did not create, replace, complete, block, or delete it",
+  "hardware_contact": 0,
+  "production_enabled": false,
+  "research_conclusion": {
+    "direction_can_continue": true,
+    "accepted_behavior_preserved": "R1 stationary-pixel suppression and explicit old/new RAM topology remain unchanged",
+    "single_new_mechanism_variable": "scale only active TP phase durations from 50 to 20 frame-counts (ratio 0.4)",
+    "automatic_rejection": "any of the nine candidate activations with BUSY elapsed above 600 ms is NO_GO before physical review",
+    "not_claimed": [
+      "production waveform",
+      "complete temperature CWF1 profile",
+      "panel identity promotion",
+      "residue-free or visually continuous motion before physical review"
+    ]
+  },
+  "candidate": {
+    "name": "stationary_suppression_tp_scale_r2",
+    "lut_sha256": "EBF88D6FB0BEB39AB2428C98BBDF1DC04308CEA156AF61D14C2B1591902B64C7",
+    "hex_sha256": "6FE07FEA3F449D4B76ECF07D8DDA97BD0EA551B3769D97A15A469C38772832DB",
+    "elf_sha256": "EE02A40415AF078B7AD8A572725DCB1A62A2F8339E076FDF9E49B52B80D5FF7F",
+    "protected_tail_hex": "221741A83258",
+    "changed_tp_offsets": [60, 61, 63, 64, 67, 68, 74, 75, 77, 78, 81, 82],
+    "local_activations": 9,
+    "maximum_local_activations": 16,
+    "transition_classes": ["WW", "WB", "BW", "BB"],
+    "busy_per_activation_max_ms": 600,
+    "full_frame_candidate_activations": 0,
+    "motion_120_frame_admitted": false
+  },
+  "pre_execute_contract": {
+    "canonical_chinese_start_prompt_required": true,
+    "start_selection_required": "开始实验",
+    "cancel_or_timeout_hardware_contact": 0,
+    "deterministic_white_preclean_first": true,
+    "selected_preclean_profile": "official_0x24_f7_white",
+    "preclean_image_sha256": "F7CB7EE8C497CF1A01ACFF4BC921B43E274B0A934CA8B658AC24C34480F32925",
+    "selection_reason": "the supplier C7 evidence says no residue but its canonical result failed and does not independently accept uniform White; the official profile has an exact uniform-White acceptance",
+    "preclean_custom_lut_used": false,
+    "preclean_excluded_from_candidate_metrics": true,
+    "preclean_failure_forbids_candidate": true,
+    "post_run_restore": "one exact captured-raw write/verify/upload followed by byte-equal readback and normal-resume proof"
+  },
+  "machine_gates": [
+    {
+      "name": "r2_tp_duration_workbench",
+      "status": "PASS_WORKBENCH_ADMIT_TP_DURATION_SCALE_MODE2_R2",
+      "artifact_sha256": "266FC130BAEB68219A759A9A15E292D6E2BED97919FC5A9F0086BCC6733A5148"
+    },
+    {
+      "name": "custom_static_default_off_preclean_restore",
+      "status": "PASS_STATIC_CUSTOM_MODE2_TRANSITION_SAFETY_DEFAULT_OFF_RAW_RESTORE",
+      "artifact_sha256": "C096FE0D8C3FEB0AD7930F2917B466CAD115C1718A0D663FFC2B140848B08B91"
+    },
+    {
+      "name": "runner_check_only",
+      "status": "READY_NO_HARDWARE_CONTACT",
+      "hardware_contact": 0,
+      "artifact_sha256": "FF5CF3888D7FC9CB02EE6CE7EFBB1E83B8ED5D90A865C3E20C90E9117B6199D9"
+    },
+    {
+      "name": "diagnostic_build",
+      "status": "PASS"
+    },
+    {
+      "name": "parser_positive_negative_matrix",
+      "status": "PASS"
+    },
+    {
+      "name": "product_registry",
+      "status": "PASS"
+    },
+    {
+      "name": "current_goal_audit",
+      "status": "PASS",
+      "artifact_sha256": "E5D2EF9F41EB9EE28171F269A1085E02DF5A7ECA8D21190B4C4D157C117ECFFD"
+    },
+    {
+      "name": "git_diff_check",
+      "status": "PASS_WITH_LINE_ENDING_WARNINGS_ONLY"
+    }
+  ],
+  "historical_generic_recovery_gate_triage": {
+    "status": "NOT_USED_AS_R2_CUSTOM_GATE",
+    "observed_result": "FAIL_STALE_WHOLE_FILE_SOURCE_HASH",
+    "reason": "the retained official White/Black artifacts bind an earlier whole-file SSD1681 source hash; R2 adds only a compile-time default-off diagnostic block. Owner already rejected duplicate rail measurement, so historical physical artifacts were not rewritten or remeasured.",
+    "replacement": "the R2 custom static gate proves default-off isolation, binds the accepted White preclean image and existing FPC/rail prerequisites, and fail-closes before candidate hardware contact"
+  },
+  "protected_inputs": {
+    "supplier_epaper_c_sha256": "7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896",
+    "owner_acceptance_sha256": "8A3BDF4BD1254B0D0F4DE13A7F293C3D74587C800339ABD4C61FEB0B7737E227",
+    "captured_raw_baseline_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "source_audit_sha256": "E941DFE5F0E415F39696C5C312BE664A27CCD4BE50BB51B99373012D65CBBEE1"
+  },
+  "next_action": "under the existing active Goal, invoke exactly one Execute; the canonical pre-execute prompt must appear before hardware, then machine-verified White preclean, nine R2 local transitions, exact raw restore/readback/normal resume, and only after machine PASS a canonical Chinese physical review for residue, whole-screen flash, missing segment and motion continuity",
+  "goal_terminal": false
+}

@@ -1,0 +1,71 @@
+{
+  "schema_id": "companion.wb55.hotplug_backup_controller_state_machine.v1",
+  "status": "NO_GO_DUAL_BACKUP_ZERO_WRITES",
+  "generated_at": "2026-07-21T04:56:54.4757802Z",
+  "requirement_id": "COMP-REQ-259",
+  "claim_scope": "One locked execution of the production-off recovery gate; no controller-state or display behavior claim.",
+  "admission_result": {
+    "dual_backup_admitted": false,
+    "failed_operation": "backup-a",
+    "failure": "STM32CubeProgrammer identified ST-LINK and NUCLEO-WB55RG at 3.24 V, then reported Unable to get core ID and No STM32 target found.",
+    "retry_performed": false,
+    "retry_allowed_in_this_goal": false
+  },
+  "hardware_contact": 1,
+  "counters": {
+    "hotplug_upload_attempts": 1,
+    "successful_hotplug_backup_uploads": 0,
+    "candidate_write_calls": 0,
+    "restore_write_calls": 0,
+    "post_restore_hotplug_upload_calls": 0,
+    "display_write_commands": 0,
+    "display_refresh_commands": 0,
+    "display_hard_resets": 0,
+    "automatic_retries": 0
+  },
+  "programmer_observation": {
+    "version": "2.22.0",
+    "st_link_serial": "066EFF535570514867221931",
+    "st_link_firmware": "V2J39M27",
+    "board": "NUCLEO-WB55RG",
+    "voltage_v": 3.24,
+    "errors": [
+      "Unable to get core ID",
+      "No STM32 target found"
+    ]
+  },
+  "command_contract": {
+    "attempted": [
+      "STM32_Programmer_CLI.exe -c port=SWD mode=HOTPLUG -u 0x08000000 0x80000 <private backup-a.bin>"
+    ],
+    "not_attempted": [
+      "second HOTPLUG backup upload",
+      "candidate programming",
+      "controller-state serial capture",
+      "restore programming",
+      "post-restore upload"
+    ]
+  },
+  "hash_evidence": {
+    "candidate_hex_sha256": "52D79CB3BC55D9738EFA580B95D3930216C23FD8825356F7860B7C1718C0C6AD",
+    "programmer_sha256": "BD520005962377155515A2C9E8FEAB73F304A696AAE1698F3B7760672160FD5E",
+    "check_only_stage_run_sha256": "7705A9A6C0BBA149C0913C192609100F8EEA3E70B1ACA151F89BF8E78F66333D",
+    "execute_stage_run_sha256": "4B25108021772E17473DCE7CCDEE6AF14768651933988052BB563F8F0D577C3B",
+    "programmer_stdout_sha256": "543B370F35C91A2AF18B0BBC2CA2773B513829EB65C88EA142248F58AB636A32"
+  },
+  "private_evidence": {
+    "root": ".cache/validation/wb55-hotplug-backup-controller-state-execute-20260721-r1",
+    "stage_run": "stage-run.json",
+    "programmer_stdout": "backup-a.stdout.log",
+    "backup_a_created": false,
+    "backup_b_created": false,
+    "raw_backup_copied_to_docs": false
+  },
+  "conclusion": {
+    "application_backup_identity": "NOT_OBTAINED",
+    "controller_state": "NOT_READ",
+    "board_application_modified": false,
+    "panel_modified": false,
+    "next_action": "A later separately authorized goal may investigate why HOTPLUG cannot acquire the core. This goal may not retry or substitute reset-under-connect because that would bypass the pre-write backup contract."
+  }
+}

@@ -1,0 +1,183 @@
+{
+  "schema": "companion.v36_daily_down_attention_source_gate.v1",
+  "status": "PASS_V36_DAILY_DOWN_ATTENTION_SOURCE_GATE",
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden",
+  "locked_v9_source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+  "locked_v9_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "attempt": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/attempt-06-generated-cute-down-attention.json",
+  "candidate": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/generated_daily_down_v36_attempt_06.png",
+  "candidate_sha256": "1CB3787F48D130D7A915F6CED37ED19530A0E1174F2B721165F6EB42DFAB31F8",
+  "normalization": {
+    "source_eye_boxes_200": [
+      [
+        68,
+        92,
+        86,
+        115
+      ],
+      [
+        116,
+        92,
+        135,
+        115
+      ]
+    ],
+    "scale_x": 1.731959,
+    "scale_y": 1.956522,
+    "translate_x": -74.494845,
+    "translate_y": -67.521739,
+    "normalized_source": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/component-export-attempt-06/normalized-source-200x200.pbm",
+    "normalized_source_sha256": "553DC970EDCAF3355893A7FB78256650FB6F55CFDD9911A1C5498AC4EC4FDF4F"
+  },
+  "components": {
+    "source_only": [
+      "v36_down_left_brow",
+      "v36_down_left_primary",
+      "v36_down_left_sparkle",
+      "v36_down_mouth",
+      "v36_down_right_brow",
+      "v36_down_right_primary",
+      "v36_down_right_sparkle"
+    ],
+    "sha256": {
+      "v36_down_left_primary": "F6A1E44A7B0AC9FF724C3D6DF63807DAF9B5241DBA59817840C2E309ABD17BCB",
+      "v36_down_left_sparkle": "3B115C1B27E554B2E15B3E4AC56E4205828B041C6D67691F6DB7906366FBA3A2",
+      "v36_down_right_primary": "92BC503D606CA5FB4CCBE3B05D2AEB50842ED7DB2DA407D180EBC7645D55BCF8",
+      "v36_down_right_sparkle": "90963BFCC66D7EA787FD4D7A747B829B8CDDCAD476272AA69D0A748682B5D340",
+      "v36_down_left_brow": "9C4C03A811DDF0C4C391383ED2F5ED0CA522863F85C160FE6D317B89C39320F3",
+      "v36_down_right_brow": "9178E7F1FE2796AD886D16178D05E810EDAA05FFFB6B7A4930399C15F59C74BE",
+      "v36_down_mouth": "ED87165E1E4609B0F4B9DAADB758604A91ABF72C32BEAAEBFBDFD4C711AFC27D"
+    },
+    "reflection_metrics": {
+      "left": {
+        "primary": {
+          "pixels": 162,
+          "bbox": [
+            6,
+            4,
+            19,
+            22
+          ],
+          "center": [
+            11.642,
+            12.796
+          ]
+        },
+        "sparkle": {
+          "pixels": 36,
+          "bbox": [
+            20,
+            22,
+            26,
+            30
+          ],
+          "center": [
+            22.722,
+            25.167
+          ]
+        }
+      },
+      "right": {
+        "primary": {
+          "pixels": 156,
+          "bbox": [
+            8,
+            4,
+            20,
+            22
+          ],
+          "center": [
+            13.397,
+            12.885
+          ]
+        },
+        "sparkle": {
+          "pixels": 28,
+          "bbox": [
+            22,
+            22,
+            27,
+            30
+          ],
+          "center": [
+            24.143,
+            25.5
+          ]
+        }
+      }
+    },
+    "brow_pixels": {
+      "left": 140,
+      "right": 140
+    },
+    "mouth_pixels": 182,
+    "locked_identity_components": [
+      "left_eye_open",
+      "right_eye_open",
+      "nose_default",
+      "left_cheek_default",
+      "right_cheek_default",
+      "charm_star"
+    ]
+  },
+  "native_200_readability": {
+    "primary_down_delta_px": 0.914,
+    "minimum_primary_down_delta_px": 0.5,
+    "brow_lower_delta_px": 5.833,
+    "minimum_brow_lower_delta_px": 3.0,
+    "hold_pixel_difference_from_exact_v9_rest": 785,
+    "minimum_hold_pixel_difference": 300
+  },
+  "choreography": {
+    "deterministic": true,
+    "random_motion": false,
+    "full_face_cards": false,
+    "ordered_components": [
+      "exact_v9_rest",
+      "eye_reflection_lead",
+      "brow_answer",
+      "mouth_settle",
+      "hold",
+      "exact_v9_settle"
+    ],
+    "frames": [
+      {
+        "name": "00_entry_v9_rest",
+        "path": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/component-export-attempt-06/pbm/00_entry_v9_rest.pbm",
+        "sha256": "B3847DF9CE2D20693C60C9CC7BC1EC8D8B8A3E23641F4521EE71508ABE13CB9E",
+        "duration_ms": 220
+      },
+      {
+        "name": "01_eye_lead",
+        "path": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/component-export-attempt-06/pbm/01_eye_lead.pbm",
+        "sha256": "2CE8CA87FB434044CA73E73C41EDDD98108EF6837BED87D56CABC6C2C5E978A6",
+        "duration_ms": 240
+      },
+      {
+        "name": "02_brow_answer",
+        "path": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/component-export-attempt-06/pbm/02_brow_answer.pbm",
+        "sha256": "DA6F2EB68665C1863885455DA0A38711EC116FA60515FB2183CE688940018A9B",
+        "duration_ms": 260
+      },
+      {
+        "name": "03_mouth_settle",
+        "path": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/component-export-attempt-06/pbm/03_mouth_settle.pbm",
+        "sha256": "D243F4630FA65F6F173F8BB14D3F99D8663CA0702F43FB3C81A000C1FB0691E5",
+        "duration_ms": 340
+      },
+      {
+        "name": "04_hold",
+        "path": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/component-export-attempt-06/pbm/04_hold.pbm",
+        "sha256": "D243F4630FA65F6F173F8BB14D3F99D8663CA0702F43FB3C81A000C1FB0691E5",
+        "duration_ms": 900
+      },
+      {
+        "name": "05_exact_v9_settle",
+        "path": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/component-export-attempt-06/pbm/05_exact_v9_settle.pbm",
+        "sha256": "B3847DF9CE2D20693C60C9CC7BC1EC8D8B8A3E23641F4521EE71508ABE13CB9E",
+        "duration_ms": 220
+      }
+    ]
+  }
+}

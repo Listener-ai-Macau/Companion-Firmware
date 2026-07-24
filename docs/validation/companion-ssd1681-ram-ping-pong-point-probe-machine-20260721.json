@@ -1,0 +1,70 @@
+{
+  "schema_id": "companion.wb55.ssd1681_ram_ping_pong_point_probe.machine.v1",
+  "requirement_id": "COMP-REQ-266",
+  "status": "PASS_MACHINE_RAM_PING_PONG_POINT_PROBE_RESTORED",
+  "claim_scope": "One production-off 24-frame Phase B execution, machine trace proof, exact raw restore and normal application resumption. Physical visual acceptance remains human-only.",
+  "execution": {
+    "run_root": ".cache/validation/wb55-ram-ping-pong-point-probe-execute-20260721-r1",
+    "hardware_contact": 1,
+    "candidate_programmer_processes": 1,
+    "candidate_write_calls": 1,
+    "logical_frames": 24,
+    "panel_writes": 50,
+    "panel_refresh_commands": 24,
+    "panel_hard_resets": 25,
+    "panel_busy_completions": 24,
+    "automatic_retries": 0,
+    "restore_programmer_processes": 1,
+    "restore_write_calls": 1,
+    "restore_verify_operations": 1,
+    "restore_upload_calls": 1
+  },
+  "transport": {
+    "status": "PASS_MACHINE_RAM_PING_PONG_POINT_PROBE",
+    "phase_a_mapping": "activation_swapped_banks_selector0_base_selector1_current",
+    "frames": 24,
+    "controls_ff": 24,
+    "refresh_0x20": 24,
+    "busy_completions": 24,
+    "motion_0x26_writes": 0,
+    "post_activation_0x24_sync_without_refresh": 24,
+    "full_refreshes": 0,
+    "controls_f7": 0,
+    "controls_c7": 0,
+    "lut_writes": 0,
+    "busy_elapsed_ms": {"minimum": 447, "maximum": 447, "required_maximum": 1000},
+    "frame_interval_ms": {"first_sentinel": 0, "remaining_minimum": 822, "remaining_maximum": 822, "required_range": [600, 1000]},
+    "stage_bytes_per_frame": [24, 36, 36, 24, 24, 36, 36, 24, 24, 36, 36, 24, 24, 36, 36, 24, 24, 36, 36, 24, 24, 36, 36, 24],
+    "post_sync_bytes_equal_stage_bytes": true,
+    "byte_aligned_window_oracle": "PASS",
+    "out_of_bounds_windows": 0
+  },
+  "restore": {
+    "status": "PASS_RESTORE_EQUALS_CAPTURED_PRE_RUN_APPLICATION_BYTES",
+    "address_hex": "0x08000000",
+    "length_bytes": 524288,
+    "sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "normal_resume": "PASS_APPLICATION_RESUMED_AFTER_BACKUP"
+  },
+  "artifact_hashes": {
+    ".cache/validation/wb55-ram-ping-pong-point-probe-execute-20260721-r1/stage-run.json": "523FAF0AE1DDD75DE373E335682BADC12F6CE8E840E49B68184542B3274AE8D3",
+    ".cache/validation/wb55-ram-ping-pong-point-probe-execute-20260721-r1/controller-state.json": "82BFCAA698078CD2749A432D4300009379D04DEE908EF4AA7497B41E787BB991",
+    ".cache/validation/wb55-ram-ping-pong-point-probe-execute-20260721-r1/restore-gate.json": "2DF3F3A67EF83D4304C67849695231B6E87688D7BE4DACF907471BDCBEDA2F85",
+    ".cache/validation/wb55-ram-ping-pong-point-probe-execute-20260721-r1/normal-resume.json": "B698B64CC131F9DDEAD312F4FDDE7D63FAA77014E95379BFD0C9499CB33E5C4E",
+    ".cache/validation/wb55-ram-ping-pong-point-probe-execute-20260721-r1/candidate-capture/nucleo-serial-raw.log": "55D247D7A0D936D50AAFD540CD294E87BC71DD17053332E79D1194434E373815"
+  },
+  "human_boundary": {
+    "canonical_operator_prompt_required": true,
+    "review_target": "the just-completed 24-frame physical run",
+    "criteria": ["no old-position stripe or residue", "no leading-edge cutoff or expanding loss", "no whole-screen flash or dirtying", "continuous motion", "the point reappears complete in the same logical frame and is not repaired every other frame"],
+    "normal_raw_image_already_restored": true
+  },
+  "production_admitted": false,
+  "protected_boundaries": {
+    "supplier_input_modified": false,
+    "v9_or_owner_acceptance_modified": false,
+    "rig_crig_browser_dynamic_binding_modified": false,
+    "lut_waveform_temperature_voltage_changed": false,
+    "touch_or_ble_changed": false
+  }
+}

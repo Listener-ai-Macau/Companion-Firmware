@@ -1,0 +1,63 @@
+{
+  "schema_id": "companion.wb55.ssd1681_fast_point_probe_inverse_seed_machine_ready.v1",
+  "status": "MACHINE_READY",
+  "round": 2,
+  "hardware_contact": 0,
+  "requirement": "COMP-REQ-275",
+  "root_cause_evidence": {
+    "status": "PASS_DIAGNOSIS_PREVIOUS_PLANE_NOT_PHYSICALLY_SYNCHRONIZED",
+    "artifact": "docs/validation/companion-ssd1681-fast-point-probe-round1-diagnosis-20260721.json",
+    "sha256": "990B3D9AEB57B21F8AB4A02AE98900394AC25D780694845E9D52E55F6E53F929"
+  },
+  "single_variable": {
+    "name": "first_frame_previous_plane_seed",
+    "round_1": "all-white previous plane",
+    "round_2": "local inverse of frame 1 across x=52..95, y=94..105",
+    "frame_1_expected": {
+      "dirty_bytes": 72,
+      "window_bytes": 72,
+      "white_to_black_pixels": 144,
+      "black_to_white_pixels": 384
+    }
+  },
+  "unchanged": {
+    "frames": 120,
+    "target_spacing_ms": 500,
+    "allowed_interval_ms": [475, 550],
+    "p95_max_ms": 600,
+    "step_px": 8,
+    "excursion_px": 32,
+    "controls_ff": 120,
+    "refresh_0x20": 120,
+    "busy_completions": 120,
+    "post_activation_0x24_sync_without_refresh": 120,
+    "motion_0x26_writes": 0,
+    "full_refreshes": 0,
+    "lut_writes": 0,
+    "automatic_retries": 0
+  },
+  "candidate": {
+    "production_enabled": false,
+    "hex": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_fast_point_probe_inverse_seed/Companion_Nucleo_WB55RG_Ssd1681FastPointProbeInverseSeed.hex",
+    "hex_sha256": "F7E20B26A479F690064F95FED25B18F632B3CDBC2AEDDD842645377CA0EBB2E9",
+    "elf_sha256": "D5D61FCFAAFFCD1FBAC3199E5864C9660B1759E1BDC683C1BE5E4A5B7A5B2FF2"
+  },
+  "restore": {
+    "baseline_bytes": 524288,
+    "baseline_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "finally_enforced": true,
+    "normal_resume_required": true
+  },
+  "gates": [
+    {"name": "registry", "status": "PASS"},
+    {"name": "current_goal_audit", "status": "PASS"},
+    {"name": "round1_diagnosis", "status": "PASS"},
+    {"name": "inverse_seed_parser", "status": "PASS"},
+    {"name": "static_default_off_raw_restore", "status": "PASS_STATIC_SSD1681_FAST_POINT_PROBE_INVERSE_SEED_RAW_RESTORE_DEFAULT_OFF"},
+    {"name": "build", "status": "PASS"},
+    {"name": "runner_check_only", "status": "READY_NO_HARDWARE_CONTACT"},
+    {"name": "git_diff_check", "status": "PASS"}
+  ],
+  "check_only_artifact": ".cache/validation/wb55-fast-point-probe-inverse-seed-machine-ready-check-20260721/stage-run.json",
+  "claims_not_made": ["no round-2 hardware execution", "no round-2 visual result", "no production admission", "no custom LUT/waveform/full-refresh/Rig/CRIG/touch/BLE change"]
+}

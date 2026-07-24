@@ -1,0 +1,33 @@
+{
+  "schema_id": "companion.wb55.ssd1681_custom_mode2_transition_safety_disposition.v1",
+  "status": "NO_GO_BUSY_OVER_LIMIT_AND_OPERATOR_FAILED_RESTORED",
+  "requirement": "COMP-REQ-285",
+  "candidate": "stationary_suppression_r1",
+  "hardware_contact": 1,
+  "machine_result": {
+    "transport_completed": true,
+    "activations": 9,
+    "busy_elapsed_ms": [1284, 1285, 1285, 1285, 1285, 1285, 1285, 1285, 1285],
+    "busy_limit_ms": 600,
+    "busy_limit_pass": false,
+    "reason": "Every activation exceeded the active Goal safety limit; command completion is not candidate admission."
+  },
+  "operator_result": {
+    "selected": "不通过",
+    "note": "你先刷全白恢复游一下?",
+    "note_artifact": "docs/validation/companion-ssd1681-custom-mode2-transition-safety-operator-r1-20260721.json",
+    "note_artifact_sha256": "4D0B77F81810F490BD1DBAC5FFD5DDDFA92A14D581419EF94916CE135F3FDA74",
+    "sequencing_defect": "The canonical observation window opened after Execute, so the owner was not prepared before the bounded visual sequence. Future custom Execute requires a canonical pre-execute start gate."
+  },
+  "restore": {
+    "status": "PASS_RESTORE_EQUALS_CAPTURED_PRE_RUN_APPLICATION_BYTES",
+    "identity": "RESTORED_TO_CAPTURED_PRE_RUN_APPLICATION_BYTES",
+    "sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "normal_resume_status": "PASS_APPLICATION_RESUMED_AFTER_BACKUP"
+  },
+  "protected_tail_hex": "221741A83258",
+  "production_allowed": false,
+  "motion_120_frame_admitted": false,
+  "next_action": "Pause custom iteration. Run only the existing supplier-exact official White recovery path, then exact raw application restore/readback and normal-resume verification; wait for physical cleanliness confirmation before any R2.",
+  "goal_terminal": false
+}

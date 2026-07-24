@@ -1,0 +1,130 @@
+{
+  "schema": "companion.v42_expression_extension_total_machine_audit.v1",
+  "status": "GO_HUMAN_ACCEPTANCE_MACHINE_CLOSURE_COMPLETE",
+  "authority": [
+    "COMP-REQ-093",
+    "COMP-REQ-239",
+    "COMP-REQ-240",
+    "COMP-REQ-242",
+    "COMP-REQ-243",
+    "COMP-REQ-245",
+    "COMP-REQ-246",
+    "COMP-REQ-247",
+    "COMP-REQ-248",
+    "COMP-REQ-249",
+    "COMP-REQ-250",
+    "COMP-REQ-251"
+  ],
+  "revision_label": "r4",
+  "protected": {
+    "locked_v9_source": {
+      "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+    },
+    "prior_owner_acceptance": {
+      "path": "docs/validation/companion-pet-special-system-owner-acceptance-20260717.json",
+      "sha256": "8A3BDF4BD1254B0D0F4DE13A7F293C3D74587C800339ABD4C61FEB0B7737E227"
+    }
+  },
+  "accepted_v22_daily_regression": {
+    "artifact": "docs/validation/companion-v22-emotion-separation-target-rig-gate-20260719.json",
+    "bridge_count": 10,
+    "bridge_frame_count": 72
+  },
+  "v41_inactive_evidence_preserved": {
+    "failed_delivery_review": "docs/validation/companion-v41-directional-gaze-total-machine-audit-20260721.owner-review.json",
+    "cancelled_rereview": "docs/validation/companion-v41-directional-gaze-total-machine-audit-20260721.owner-review-r2.json"
+  },
+  "v42_r1_inactive_evidence_preserved": {
+    "artifact": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v4/revision-1-machine-closure-preservation.json",
+    "sha256": "CF56547329DCA897A916A2F170913F05FBCA44F8701FEA9C34FDF84135F3AE09"
+  },
+  "v42_r2_inactive_evidence_preserved": {
+    "artifact": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v4/revision-2-machine-closure-preservation.json",
+    "sha256": "3D0941B0D0BEFEEFBABD5BC489425BE06881C4C6302011777A5B073FF03C214B"
+  },
+  "v42_evidence": {
+    "layout": {
+      "artifact": "docs/validation/companion-v42-expression-extension-layout-r4-20260721.json",
+      "status": "PASS_V42_EXPRESSION_EXTENSION_LAYOUT_RUNTIME_INACTIVE",
+      "sha256": "0A4871BE0F6C89F6FC5EBC57F2E5D4FBCA6825C723CC8F6A6834D1FF10A1718A"
+    },
+    "profile": {
+      "artifact": "docs/validation/companion-v42-expression-extension-wb55-profile-host-r4-20260721.json",
+      "status": "PASS_V42_EXPRESSION_EXTENSION_WB55_PROFILE_RUNTIME_INACTIVE",
+      "sha256": "AFB2B45C34455284E45293BFB2FFE599055BE73723178C5770EAF619817DD301"
+    },
+    "browser_preview": {
+      "artifact": "docs/validation/companion-v42-expression-extension-browser-wb55-preview-r4-20260721.json",
+      "status": "PASS_BROWSER_COMPONENT_PREVIEW_RENDERED_RUNTIME_INACTIVE",
+      "sha256": "01E08228E16ECC77A5BABC45FD9FA650C2D3211C4512699EC088101CD1534531"
+    },
+    "wb55_pixel_parity": {
+      "artifact": "docs/validation/companion-v42-expression-extension-wb55-parity-r4-20260721.json",
+      "status": "PASS_BROWSER_WB55_COMPONENT_PIXEL_PARITY_RUNTIME_INACTIVE",
+      "sha256": "7CEBB140C286F7E555673B2F20D472D700D0C26F7D7F44E3B13FC7210030FCC5"
+    },
+    "browser_visual": {
+      "artifact": "docs/validation/companion-v42-expression-extension-browser-visual-r4-20260721.json",
+      "status": "PASS_V42_HEADLESS_BROWSER_VISUAL_CAPTURE",
+      "sha256": "6CABCB15CCA02515DA39BBB40AB9463795F3CAE6FA077CBCF8D0C276C15DE83F"
+    },
+    "touch_follow_gaze": {
+      "artifact": "docs/validation/companion-expression-touch-gaze-wb55-host-20260721.json",
+      "status": "PASS_TOUCH_COORDINATE_GAZE_RUNTIME_INACTIVE",
+      "sha256": "6C03E344A7881E1AD5AF0956489EB1A5D5F20C702210CFD0ADE5D7C7E14AE82D"
+    },
+    "design_note": {
+      "artifact": "docs/companion_expression_emotion_system_cn.md",
+      "sha256": "F960A05776B955BDDBEC516EFA98C13BADE155616CF962F72C96AC34279D58F7"
+    }
+  },
+  "machine_verified": {
+    "canvas": "200x200_1bpp",
+    "component_count": 85,
+    "special_component_count": 48,
+    "story_count": 21,
+    "preview_frame_count": 65,
+    "owner_visible_story_count": 16,
+    "added_emotions": [
+      "delighted",
+      "bashful",
+      "thoughtful",
+      "focused"
+    ],
+    "recording_input_face_pixel_overlap": 0,
+    "wireless_dock_face_pixel_overlap": 0,
+    "sleep_zzz_only": true,
+    "five_gaze_states": [
+      "center",
+      "left",
+      "right",
+      "up",
+      "down"
+    ],
+    "endpoint_pixel_sha256": {
+      "center": "F243FA734F495C4012D562F98AC3643665910F2994D2F130A7E7EA843A9C4AE3",
+      "left": "71E568A3BDB3AF5003D2920D54268BF3B8991450C247290315623B6F80C2BA5C",
+      "right": "D9B3974424A1C79100031C164DC877F2BAA26F39A3B9BD6D9A63310D23178C52",
+      "up": "3D5CA0B4C9513AF889756AF4301D78A0C1B0F613DB1C6CB434C3847E374D438F",
+      "down": "D8216B8AA4B258DF3B28DDE119EB1C2821B1EA98DFE9A5E70C5C4E35A2F4A748"
+    },
+    "touch_follow_gaze": {
+      "canvas": "200x200_1bpp",
+      "dead_zone_px": 18,
+      "release_target": "center",
+      "moves": "registered primary highlight and sparkle endpoints only"
+    },
+    "final_plan": "deterministic_union(expression_track,functional_decoration_track)",
+    "menu_entry": "touch / 3 frames / 460ms / withdraw both tracks / Menu UI owns screen"
+  },
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden_until_owner_review",
+  "human_review_scope": "Agent first opens the bound Chinese 200x200 V42 browser preview. The owner reviews added emotion readability, recording-input and wireless-dock meaning, ZZZ-only sleep, choreography, and finite Menu entry; this is not physical-screen acceptance or runtime activation.",
+  "non_claims": [
+    "no_runtime_binding",
+    "no_firmware_flash",
+    "no_panel_or_driver_change",
+    "no_physical_screen_acceptance"
+  ]
+}

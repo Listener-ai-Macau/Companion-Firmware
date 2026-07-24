@@ -1,0 +1,70 @@
+{
+  "schema": "companion.v9_v22_touch_emotion_browser_pixel_parity.v1",
+  "status": "PASS_BROWSER_RENDER_PIXEL_PARITY_NATIVE_200X200",
+  "claim_scope": "runtime_inactive_browser_capture_pixel_parity_not_flash_or_physical_panel_acceptance",
+  "route": {
+    "path": "docs/validation/companion-v9-v22-touch-emotion-route-preview-r2-20260720.json",
+    "sha256": "E59357CF34C3B58F06AF56A5220B7494A06F05649766C306D9E5E6C0AE171E32"
+  },
+  "capture": {
+    "path": "docs/validation/companion-v9-v22-touch-emotion-route-browser-render-r2-20260720.json",
+    "sha256": "4BC47B4B62D44E1C20DAD03C67FBA8C8C2EC222244E392DF4F6ABEF4668520A5"
+  },
+  "checks": {
+    "route_is_runtime_inactive_component_candidate": true,
+    "capture_is_native_200x200_component_render": true,
+    "daily_stage_equals_v9_entry_pbm": true,
+    "familiar_touch_stage_equals_v22_warm_settle_pbm": true
+  },
+  "records": [
+    {
+      "scene": "daily_micro",
+      "screenshot": {
+        "path": "docs/validation/artifacts/companion-v9-v22-touch-emotion-route-r2-20260720/browser-daily-200x200-20260720.png",
+        "sha256": "986E3FC861E746A0DE9430419850A11484EE7A439DBE1E6DD13777A2ABD8D8DF",
+        "size": [
+          520,
+          420
+        ]
+      },
+      "stage_box": [
+        31,
+        65,
+        231,
+        265
+      ],
+      "expected_frame_index": 0,
+      "expected_art_pose": "v9_daily",
+      "target_pbm": {
+        "path": "docs/validation/artifacts/companion-v9-v22-touch-emotion-route-r2-20260720/frame-00-v9_daily_entry.pbm",
+        "sha256": "B3847DF9CE2D20693C60C9CC7BC1EC8D8B8A3E23641F4521EE71508ABE13CB9E"
+      },
+      "different_pixels": 0
+    },
+    {
+      "scene": "familiar_touch",
+      "screenshot": {
+        "path": "docs/validation/artifacts/companion-v9-v22-touch-emotion-route-r2-20260720/browser-familiar-touch-warm-200x200-11000ms-20260720.png",
+        "sha256": "B4EF3A35C97870131906EB621D85B463F2E490B713A8B5990F9F1274E3FAC5F1",
+        "size": [
+          520,
+          420
+        ]
+      },
+      "stage_box": [
+        31,
+        65,
+        231,
+        265
+      ],
+      "expected_frame_index": 15,
+      "expected_art_pose": "v22_warm",
+      "target_pbm": {
+        "path": "docs/validation/artifacts/companion-v9-v22-touch-emotion-route-r2-20260720/frame-15-curious__warm_highlight_settle.pbm",
+        "sha256": "8A822CA758361B7956371C6DF7A750E5DFC01947E454F14B289AE5B1BA381356"
+      },
+      "different_pixels": 0
+    }
+  ],
+  "failures": []
+}

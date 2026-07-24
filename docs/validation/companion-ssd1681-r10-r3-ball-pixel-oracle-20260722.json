@@ -1,0 +1,556 @@
+{
+  "c_header": {
+    "black_pixel_count": 112,
+    "matches_independent_equation_at_all_positions": true,
+    "path": "app/companion_pendant/epaper/r10_ball_diagnostic.h",
+    "positions": [
+      32,
+      40,
+      48,
+      56,
+      64,
+      56,
+      48,
+      40,
+      32,
+      40,
+      48,
+      56,
+      64,
+      56,
+      48,
+      40
+    ],
+    "row_masks_hex": [
+      [
+        "0F",
+        "00"
+      ],
+      [
+        "3F",
+        "C0"
+      ],
+      [
+        "7F",
+        "E0"
+      ],
+      [
+        "7F",
+        "E0"
+      ],
+      [
+        "FF",
+        "F0"
+      ],
+      [
+        "FF",
+        "F0"
+      ],
+      [
+        "FF",
+        "F0"
+      ],
+      [
+        "FF",
+        "F0"
+      ],
+      [
+        "7F",
+        "E0"
+      ],
+      [
+        "7F",
+        "E0"
+      ],
+      [
+        "3F",
+        "C0"
+      ],
+      [
+        "0F",
+        "00"
+      ]
+    ],
+    "row_widths": [
+      4,
+      8,
+      10,
+      10,
+      12,
+      12,
+      12,
+      12,
+      10,
+      10,
+      8,
+      4
+    ],
+    "sha256": "BD4EB58A4F1B2679559EAE3F668B6E2A9A76F5ABB6FC7A4DE50A22CC0DD91B36"
+  },
+  "geometry": {
+    "ball_bounding_box": [
+      12,
+      12
+    ],
+    "ball_radius_doubled": 12,
+    "ball_shape": "solid_disk",
+    "black_pixel_count": 112,
+    "frame_height": 200,
+    "frame_width": 200,
+    "independent_equation": "(2*x-11)^2 + (2*y-11)^2 <= 144",
+    "path": "ping_pong",
+    "stride_px": 8,
+    "travel_span_px": 32,
+    "x_positions": [
+      32,
+      40,
+      48,
+      56,
+      64
+    ],
+    "y": 80
+  },
+  "loop": {
+    "automatic_until_owner_verdict": true,
+    "bounded_telemetry_required": true,
+    "positions": [
+      32,
+      40,
+      48,
+      56,
+      64,
+      56,
+      48,
+      40
+    ]
+  },
+  "negative_fixtures": [
+    {
+      "name": "missing_pixel",
+      "result": "rejected"
+    },
+    {
+      "name": "solid_square",
+      "result": "rejected"
+    },
+    {
+      "name": "wrong_step",
+      "result": "rejected"
+    },
+    {
+      "name": "clipped_union_window",
+      "result": "rejected"
+    }
+  ],
+  "protected": {
+    "control": "0xCF",
+    "lut_sha256": "9BCBAC1A07ED0A112D26409FBCDB8F5FE27CE07D922C2E18881C10A53229DDCD",
+    "new_command": "0x24",
+    "old_command": "0x26",
+    "post_sync_command": "0x24",
+    "refresh": "0x20",
+    "restore_application_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "tail_hex": "221741A83258"
+  },
+  "qualification": {
+    "activation_count": 16,
+    "full_frame_bytes": 5000,
+    "initial_previous": "white",
+    "positions": [
+      32,
+      40,
+      48,
+      56,
+      64,
+      56,
+      48,
+      40,
+      32,
+      40,
+      48,
+      56,
+      64,
+      56,
+      48,
+      40
+    ],
+    "transitions": [
+      {
+        "changed_pixels": 112,
+        "current_frame_sha256": "FD4063FBC8A62425D84B9D04E8E1DE703C97F9175E98057B5B80C6FBFBD0D7C8",
+        "current_payload_sha256": "15C1A7E76242A2D1A91BAB445FF2CB7669A9776E22E6281D99ED01A327384763",
+        "current_x": 32,
+        "previous_frame_sha256": "D41BF2913D4C6ED6E9EF11EB8B9064AC3125A7A95B48F60E305DACF048D15C2B",
+        "previous_payload_sha256": "44A5F7891570E5631E8C91C85186E6633F4AB5364F644040B2A00126A07985B6",
+        "previous_x": null,
+        "transition_classes": {
+          "bb": 0,
+          "bw": 0,
+          "wb": 112,
+          "ww": 80
+        },
+        "window": {
+          "bytes": 24,
+          "changed": true,
+          "x_end_byte": 5,
+          "x_start_byte": 4,
+          "y_end": 91,
+          "y_start": 80
+        }
+      },
+      {
+        "changed_pixels": 176,
+        "current_frame_sha256": "FE534F3D3533104C26E8D7C0E2EF3F8A057F8236901C51ECC45805AFCB129EC0",
+        "current_payload_sha256": "E3A7157D2E4A9C6E8E9EDDAC812F52551959574F23784425614C23318FE6B1AC",
+        "current_x": 40,
+        "previous_frame_sha256": "FD4063FBC8A62425D84B9D04E8E1DE703C97F9175E98057B5B80C6FBFBD0D7C8",
+        "previous_payload_sha256": "CEA57CB2BAD8C7E416FACB829DC10D78BF8D6A7E9702A085868BBB2B131D2079",
+        "previous_x": 32,
+        "transition_classes": {
+          "bb": 24,
+          "bw": 88,
+          "wb": 88,
+          "ww": 88
+        },
+        "window": {
+          "bytes": 36,
+          "changed": true,
+          "x_end_byte": 6,
+          "x_start_byte": 4,
+          "y_end": 91,
+          "y_start": 80
+        }
+      },
+      {
+        "changed_pixels": 176,
+        "current_frame_sha256": "B3EE55E9EA250DDD8DEFDC621CFA3FFEC646A67A2D80B5ABDDC6C2ED6002BFC7",
+        "current_payload_sha256": "E3A7157D2E4A9C6E8E9EDDAC812F52551959574F23784425614C23318FE6B1AC",
+        "current_x": 48,
+        "previous_frame_sha256": "FE534F3D3533104C26E8D7C0E2EF3F8A057F8236901C51ECC45805AFCB129EC0",
+        "previous_payload_sha256": "CEA57CB2BAD8C7E416FACB829DC10D78BF8D6A7E9702A085868BBB2B131D2079",
+        "previous_x": 40,
+        "transition_classes": {
+          "bb": 24,
+          "bw": 88,
+          "wb": 88,
+          "ww": 88
+        },
+        "window": {
+          "bytes": 36,
+          "changed": true,
+          "x_end_byte": 7,
+          "x_start_byte": 5,
+          "y_end": 91,
+          "y_start": 80
+        }
+      },
+      {
+        "changed_pixels": 176,
+        "current_frame_sha256": "8BAC81334BBBA52B19DB6BC24CE78A004E11B565011BA0B3EA5FF54200B68D16",
+        "current_payload_sha256": "E3A7157D2E4A9C6E8E9EDDAC812F52551959574F23784425614C23318FE6B1AC",
+        "current_x": 56,
+        "previous_frame_sha256": "B3EE55E9EA250DDD8DEFDC621CFA3FFEC646A67A2D80B5ABDDC6C2ED6002BFC7",
+        "previous_payload_sha256": "CEA57CB2BAD8C7E416FACB829DC10D78BF8D6A7E9702A085868BBB2B131D2079",
+        "previous_x": 48,
+        "transition_classes": {
+          "bb": 24,
+          "bw": 88,
+          "wb": 88,
+          "ww": 88
+        },
+        "window": {
+          "bytes": 36,
+          "changed": true,
+          "x_end_byte": 8,
+          "x_start_byte": 6,
+          "y_end": 91,
+          "y_start": 80
+        }
+      },
+      {
+        "changed_pixels": 176,
+        "current_frame_sha256": "FDE0E045ECF6C7AFB8C2AC2FB79CA4F51D6486EA7FAFAB210383B307554BB87C",
+        "current_payload_sha256": "E3A7157D2E4A9C6E8E9EDDAC812F52551959574F23784425614C23318FE6B1AC",
+        "current_x": 64,
+        "previous_frame_sha256": "8BAC81334BBBA52B19DB6BC24CE78A004E11B565011BA0B3EA5FF54200B68D16",
+        "previous_payload_sha256": "CEA57CB2BAD8C7E416FACB829DC10D78BF8D6A7E9702A085868BBB2B131D2079",
+        "previous_x": 56,
+        "transition_classes": {
+          "bb": 24,
+          "bw": 88,
+          "wb": 88,
+          "ww": 88
+        },
+        "window": {
+          "bytes": 36,
+          "changed": true,
+          "x_end_byte": 9,
+          "x_start_byte": 7,
+          "y_end": 91,
+          "y_start": 80
+        }
+      },
+      {
+        "changed_pixels": 176,
+        "current_frame_sha256": "8BAC81334BBBA52B19DB6BC24CE78A004E11B565011BA0B3EA5FF54200B68D16",
+        "current_payload_sha256": "CEA57CB2BAD8C7E416FACB829DC10D78BF8D6A7E9702A085868BBB2B131D2079",
+        "current_x": 56,
+        "previous_frame_sha256": "FDE0E045ECF6C7AFB8C2AC2FB79CA4F51D6486EA7FAFAB210383B307554BB87C",
+        "previous_payload_sha256": "E3A7157D2E4A9C6E8E9EDDAC812F52551959574F23784425614C23318FE6B1AC",
+        "previous_x": 64,
+        "transition_classes": {
+          "bb": 24,
+          "bw": 88,
+          "wb": 88,
+          "ww": 88
+        },
+        "window": {
+          "bytes": 36,
+          "changed": true,
+          "x_end_byte": 9,
+          "x_start_byte": 7,
+          "y_end": 91,
+          "y_start": 80
+        }
+      },
+      {
+        "changed_pixels": 176,
+        "current_frame_sha256": "B3EE55E9EA250DDD8DEFDC621CFA3FFEC646A67A2D80B5ABDDC6C2ED6002BFC7",
+        "current_payload_sha256": "CEA57CB2BAD8C7E416FACB829DC10D78BF8D6A7E9702A085868BBB2B131D2079",
+        "current_x": 48,
+        "previous_frame_sha256": "8BAC81334BBBA52B19DB6BC24CE78A004E11B565011BA0B3EA5FF54200B68D16",
+        "previous_payload_sha256": "E3A7157D2E4A9C6E8E9EDDAC812F52551959574F23784425614C23318FE6B1AC",
+        "previous_x": 56,
+        "transition_classes": {
+          "bb": 24,
+          "bw": 88,
+          "wb": 88,
+          "ww": 88
+        },
+        "window": {
+          "bytes": 36,
+          "changed": true,
+          "x_end_byte": 8,
+          "x_start_byte": 6,
+          "y_end": 91,
+          "y_start": 80
+        }
+      },
+      {
+        "changed_pixels": 176,
+        "current_frame_sha256": "FE534F3D3533104C26E8D7C0E2EF3F8A057F8236901C51ECC45805AFCB129EC0",
+        "current_payload_sha256": "CEA57CB2BAD8C7E416FACB829DC10D78BF8D6A7E9702A085868BBB2B131D2079",
+        "current_x": 40,
+        "previous_frame_sha256": "B3EE55E9EA250DDD8DEFDC621CFA3FFEC646A67A2D80B5ABDDC6C2ED6002BFC7",
+        "previous_payload_sha256": "E3A7157D2E4A9C6E8E9EDDAC812F52551959574F23784425614C23318FE6B1AC",
+        "previous_x": 48,
+        "transition_classes": {
+          "bb": 24,
+          "bw": 88,
+          "wb": 88,
+          "ww": 88
+        },
+        "window": {
+          "bytes": 36,
+          "changed": true,
+          "x_end_byte": 7,
+          "x_start_byte": 5,
+          "y_end": 91,
+          "y_start": 80
+        }
+      },
+      {
+        "changed_pixels": 176,
+        "current_frame_sha256": "FD4063FBC8A62425D84B9D04E8E1DE703C97F9175E98057B5B80C6FBFBD0D7C8",
+        "current_payload_sha256": "CEA57CB2BAD8C7E416FACB829DC10D78BF8D6A7E9702A085868BBB2B131D2079",
+        "current_x": 32,
+        "previous_frame_sha256": "FE534F3D3533104C26E8D7C0E2EF3F8A057F8236901C51ECC45805AFCB129EC0",
+        "previous_payload_sha256": "E3A7157D2E4A9C6E8E9EDDAC812F52551959574F23784425614C23318FE6B1AC",
+        "previous_x": 40,
+        "transition_classes": {
+          "bb": 24,
+          "bw": 88,
+          "wb": 88,
+          "ww": 88
+        },
+        "window": {
+          "bytes": 36,
+          "changed": true,
+          "x_end_byte": 6,
+          "x_start_byte": 4,
+          "y_end": 91,
+          "y_start": 80
+        }
+      },
+      {
+        "changed_pixels": 176,
+        "current_frame_sha256": "FE534F3D3533104C26E8D7C0E2EF3F8A057F8236901C51ECC45805AFCB129EC0",
+        "current_payload_sha256": "E3A7157D2E4A9C6E8E9EDDAC812F52551959574F23784425614C23318FE6B1AC",
+        "current_x": 40,
+        "previous_frame_sha256": "FD4063FBC8A62425D84B9D04E8E1DE703C97F9175E98057B5B80C6FBFBD0D7C8",
+        "previous_payload_sha256": "CEA57CB2BAD8C7E416FACB829DC10D78BF8D6A7E9702A085868BBB2B131D2079",
+        "previous_x": 32,
+        "transition_classes": {
+          "bb": 24,
+          "bw": 88,
+          "wb": 88,
+          "ww": 88
+        },
+        "window": {
+          "bytes": 36,
+          "changed": true,
+          "x_end_byte": 6,
+          "x_start_byte": 4,
+          "y_end": 91,
+          "y_start": 80
+        }
+      },
+      {
+        "changed_pixels": 176,
+        "current_frame_sha256": "B3EE55E9EA250DDD8DEFDC621CFA3FFEC646A67A2D80B5ABDDC6C2ED6002BFC7",
+        "current_payload_sha256": "E3A7157D2E4A9C6E8E9EDDAC812F52551959574F23784425614C23318FE6B1AC",
+        "current_x": 48,
+        "previous_frame_sha256": "FE534F3D3533104C26E8D7C0E2EF3F8A057F8236901C51ECC45805AFCB129EC0",
+        "previous_payload_sha256": "CEA57CB2BAD8C7E416FACB829DC10D78BF8D6A7E9702A085868BBB2B131D2079",
+        "previous_x": 40,
+        "transition_classes": {
+          "bb": 24,
+          "bw": 88,
+          "wb": 88,
+          "ww": 88
+        },
+        "window": {
+          "bytes": 36,
+          "changed": true,
+          "x_end_byte": 7,
+          "x_start_byte": 5,
+          "y_end": 91,
+          "y_start": 80
+        }
+      },
+      {
+        "changed_pixels": 176,
+        "current_frame_sha256": "8BAC81334BBBA52B19DB6BC24CE78A004E11B565011BA0B3EA5FF54200B68D16",
+        "current_payload_sha256": "E3A7157D2E4A9C6E8E9EDDAC812F52551959574F23784425614C23318FE6B1AC",
+        "current_x": 56,
+        "previous_frame_sha256": "B3EE55E9EA250DDD8DEFDC621CFA3FFEC646A67A2D80B5ABDDC6C2ED6002BFC7",
+        "previous_payload_sha256": "CEA57CB2BAD8C7E416FACB829DC10D78BF8D6A7E9702A085868BBB2B131D2079",
+        "previous_x": 48,
+        "transition_classes": {
+          "bb": 24,
+          "bw": 88,
+          "wb": 88,
+          "ww": 88
+        },
+        "window": {
+          "bytes": 36,
+          "changed": true,
+          "x_end_byte": 8,
+          "x_start_byte": 6,
+          "y_end": 91,
+          "y_start": 80
+        }
+      },
+      {
+        "changed_pixels": 176,
+        "current_frame_sha256": "FDE0E045ECF6C7AFB8C2AC2FB79CA4F51D6486EA7FAFAB210383B307554BB87C",
+        "current_payload_sha256": "E3A7157D2E4A9C6E8E9EDDAC812F52551959574F23784425614C23318FE6B1AC",
+        "current_x": 64,
+        "previous_frame_sha256": "8BAC81334BBBA52B19DB6BC24CE78A004E11B565011BA0B3EA5FF54200B68D16",
+        "previous_payload_sha256": "CEA57CB2BAD8C7E416FACB829DC10D78BF8D6A7E9702A085868BBB2B131D2079",
+        "previous_x": 56,
+        "transition_classes": {
+          "bb": 24,
+          "bw": 88,
+          "wb": 88,
+          "ww": 88
+        },
+        "window": {
+          "bytes": 36,
+          "changed": true,
+          "x_end_byte": 9,
+          "x_start_byte": 7,
+          "y_end": 91,
+          "y_start": 80
+        }
+      },
+      {
+        "changed_pixels": 176,
+        "current_frame_sha256": "8BAC81334BBBA52B19DB6BC24CE78A004E11B565011BA0B3EA5FF54200B68D16",
+        "current_payload_sha256": "CEA57CB2BAD8C7E416FACB829DC10D78BF8D6A7E9702A085868BBB2B131D2079",
+        "current_x": 56,
+        "previous_frame_sha256": "FDE0E045ECF6C7AFB8C2AC2FB79CA4F51D6486EA7FAFAB210383B307554BB87C",
+        "previous_payload_sha256": "E3A7157D2E4A9C6E8E9EDDAC812F52551959574F23784425614C23318FE6B1AC",
+        "previous_x": 64,
+        "transition_classes": {
+          "bb": 24,
+          "bw": 88,
+          "wb": 88,
+          "ww": 88
+        },
+        "window": {
+          "bytes": 36,
+          "changed": true,
+          "x_end_byte": 9,
+          "x_start_byte": 7,
+          "y_end": 91,
+          "y_start": 80
+        }
+      },
+      {
+        "changed_pixels": 176,
+        "current_frame_sha256": "B3EE55E9EA250DDD8DEFDC621CFA3FFEC646A67A2D80B5ABDDC6C2ED6002BFC7",
+        "current_payload_sha256": "CEA57CB2BAD8C7E416FACB829DC10D78BF8D6A7E9702A085868BBB2B131D2079",
+        "current_x": 48,
+        "previous_frame_sha256": "8BAC81334BBBA52B19DB6BC24CE78A004E11B565011BA0B3EA5FF54200B68D16",
+        "previous_payload_sha256": "E3A7157D2E4A9C6E8E9EDDAC812F52551959574F23784425614C23318FE6B1AC",
+        "previous_x": 56,
+        "transition_classes": {
+          "bb": 24,
+          "bw": 88,
+          "wb": 88,
+          "ww": 88
+        },
+        "window": {
+          "bytes": 36,
+          "changed": true,
+          "x_end_byte": 8,
+          "x_start_byte": 6,
+          "y_end": 91,
+          "y_start": 80
+        }
+      },
+      {
+        "changed_pixels": 176,
+        "current_frame_sha256": "FE534F3D3533104C26E8D7C0E2EF3F8A057F8236901C51ECC45805AFCB129EC0",
+        "current_payload_sha256": "CEA57CB2BAD8C7E416FACB829DC10D78BF8D6A7E9702A085868BBB2B131D2079",
+        "current_x": 40,
+        "previous_frame_sha256": "B3EE55E9EA250DDD8DEFDC621CFA3FFEC646A67A2D80B5ABDDC6C2ED6002BFC7",
+        "previous_payload_sha256": "E3A7157D2E4A9C6E8E9EDDAC812F52551959574F23784425614C23318FE6B1AC",
+        "previous_x": 48,
+        "transition_classes": {
+          "bb": 24,
+          "bw": 88,
+          "wb": 88,
+          "ww": 88
+        },
+        "window": {
+          "bytes": 36,
+          "changed": true,
+          "x_end_byte": 7,
+          "x_start_byte": 5,
+          "y_end": 91,
+          "y_start": 80
+        }
+      }
+    ],
+    "window_rule": "exact black-pixel union envelope with byte-aligned X"
+  },
+  "r2_payload_hash_identity": {
+    "artifact": "docs/validation/companion-ssd1681-phase-parallel-r10-ball-pixel-oracle-20260722.json",
+    "artifact_sha256": "E7698F75414F13F91D6267671FAC9E041D822999F53732B66CF368D23C06FC31",
+    "frame_and_payload_hashes_match": true
+  },
+  "schema_id": "companion.wb55.ssd1681.r10_r3_ball_pixel_oracle.v2",
+  "status": "PASS_R10_BALL_PIXEL_ORACLE"
+}

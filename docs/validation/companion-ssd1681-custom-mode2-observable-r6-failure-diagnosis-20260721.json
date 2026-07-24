@@ -1,0 +1,248 @@
+{
+  "schema_id": "companion.wb55.ssd1681_custom_mode2_observable_r6_failure_diagnosis.v1",
+  "status": "PASS_RESEARCH_R6_FAILURE_DIAGNOSIS_NO_NEW_HARDWARE_CANDIDATE",
+  "errors": [],
+  "hardware_contact": 0,
+  "requirement": "COMP-REQ-300",
+  "observed_failure": {
+    "machine_status": "PASS_MACHINE_CUSTOM_MODE2_OBSERVABLE_R6_RESTORED",
+    "activations": 16,
+    "observation_elapsed_ms": 9633,
+    "busy_elapsed_ms": [
+      599,
+      599,
+      599,
+      599,
+      599,
+      599,
+      599,
+      599,
+      599,
+      599,
+      599,
+      599,
+      599,
+      599,
+      599,
+      599
+    ],
+    "canonical_selected": "\u5931\u8d25",
+    "canonical_note": "\u8fd9\u4e2a\u4e0d\u592a\u884c, \u5e94\u8be5\u65b9\u5411\u662f\u9519\u8bef\u7684, \u6ca1\u6709\u56fe\u6848\u4e86\u76f4\u63a5"
+  },
+  "supplier_vs_tp16": {
+    "supplier_lut_sha256": "F83EA7360CFFF04FE9D004A75858A46213CBD710AAA2F0C4A62597E3EA176D15",
+    "tp16_lut_sha256": "75D7647188ACF1C79BC37313DC40105AF4445B9B6F422AD4FDAF0A465413984D",
+    "difference_count": 20,
+    "differences": [
+      {
+        "offset": 0,
+        "supplier_hex": "AA",
+        "tp16_hex": "00"
+      },
+      {
+        "offset": 1,
+        "supplier_hex": "80",
+        "tp16_hex": "00"
+      },
+      {
+        "offset": 2,
+        "supplier_hex": "55",
+        "tp16_hex": "00"
+      },
+      {
+        "offset": 3,
+        "supplier_hex": "40",
+        "tp16_hex": "00"
+      },
+      {
+        "offset": 36,
+        "supplier_hex": "54",
+        "tp16_hex": "00"
+      },
+      {
+        "offset": 37,
+        "supplier_hex": "10",
+        "tp16_hex": "00"
+      },
+      {
+        "offset": 38,
+        "supplier_hex": "A8",
+        "tp16_hex": "00"
+      },
+      {
+        "offset": 39,
+        "supplier_hex": "20",
+        "tp16_hex": "00"
+      },
+      {
+        "offset": 60,
+        "supplier_hex": "05",
+        "tp16_hex": "02"
+      },
+      {
+        "offset": 61,
+        "supplier_hex": "05",
+        "tp16_hex": "01"
+      },
+      {
+        "offset": 63,
+        "supplier_hex": "05",
+        "tp16_hex": "02"
+      },
+      {
+        "offset": 64,
+        "supplier_hex": "05",
+        "tp16_hex": "01"
+      },
+      {
+        "offset": 67,
+        "supplier_hex": "03",
+        "tp16_hex": "01"
+      },
+      {
+        "offset": 68,
+        "supplier_hex": "02",
+        "tp16_hex": "01"
+      },
+      {
+        "offset": 74,
+        "supplier_hex": "05",
+        "tp16_hex": "02"
+      },
+      {
+        "offset": 75,
+        "supplier_hex": "05",
+        "tp16_hex": "01"
+      },
+      {
+        "offset": 77,
+        "supplier_hex": "05",
+        "tp16_hex": "02"
+      },
+      {
+        "offset": 78,
+        "supplier_hex": "05",
+        "tp16_hex": "01"
+      },
+      {
+        "offset": 81,
+        "supplier_hex": "03",
+        "tp16_hex": "01"
+      },
+      {
+        "offset": 82,
+        "supplier_hex": "02",
+        "tp16_hex": "01"
+      }
+    ],
+    "stationary_tables": {
+      "mapping": {
+        "LUT0": "BB",
+        "LUT3": "WW"
+      },
+      "supplier_nonzero_offsets": [
+        0,
+        1,
+        2,
+        3,
+        36,
+        37,
+        38,
+        39
+      ],
+      "tp16_zeroed": true,
+      "effect": "TP16 intentionally supplies no reinforcing drive for already-black BB or already-white WW cells"
+    },
+    "transition_tables": {
+      "mapping": {
+        "LUT1": "BW",
+        "LUT2": "WB"
+      },
+      "voltage_code_bytes_12_through_35_supplier_exact": true,
+      "supplier_timing_groups": [
+        [
+          5,
+          5,
+          5,
+          5,
+          3,
+          2
+        ],
+        [
+          5,
+          5,
+          5,
+          5,
+          3,
+          2
+        ]
+      ],
+      "tp16_timing_groups": [
+        [
+          2,
+          1,
+          2,
+          1,
+          1,
+          1
+        ],
+        [
+          2,
+          1,
+          2,
+          1,
+          1,
+          1
+        ]
+      ],
+      "supplier_frame_count_per_symmetric_group": 25,
+      "tp16_frame_count_per_symmetric_group": 8,
+      "tp16_to_supplier_duration_ratio": 0.32,
+      "duration_reduction_percent": 68.0
+    },
+    "protected_tail_equal": true
+  },
+  "first_activation_optical_obligation": {
+    "transition": "W->A",
+    "classes": {
+      "WW": 512,
+      "WB": 512,
+      "BW": 0,
+      "BB": 0
+    },
+    "required_visible_effect": "the 512 WB pixels must darken through LUT2 to make pattern A visible",
+    "actual_owner_observation": "no pattern; it disappeared directly"
+  },
+  "diagnosis": {
+    "mapping_error_found": false,
+    "transport_error_found": false,
+    "strongest_evidence_backed_hypothesis": "TP16 kept the supplier BW/WB voltage-code tables but reduced each active transition timing group from 25 to 8 frame counts (32 percent of supplier duration) while also removing all BB/WW reinforcement. The first W-to-A activation therefore depended entirely on the shortened WB drive for 512 pixels. The canonical disappearance is consistent with insufficient optical transition impulse, not with an old/new RAM mapping swap.",
+    "why_busy_pass_does_not_refute": "BUSY remained 599 ms on the controller timing plateau; it proves completion and the safety bound, not that the shortened voltage phases moved enough pigment to render black.",
+    "causality_limit": "The owner verdict is not a time-resolved optical measurement, so insufficient transition impulse is a bounded inference rather than a proven per-phase causal attribution."
+  },
+  "supplier_original_boundary": {
+    "source_topology_confirmed": true,
+    "source_behavior": "the supplied LUT path writes a 5000-byte 0x24 full frame and activates 0xC7; it is not a supplied local old/new-bank no-flash profile",
+    "not_safe_to_infer": [
+      "copying the full supplier LUT into the R6 local 0x26/0x24/0xCF topology will be no-flash",
+      "restoring stationary BB/WW drive only inside a local window will not affect the rest of the panel",
+      "a new intermediate timing scale is supplier-authored or temperature-complete"
+    ]
+  },
+  "disposition": {
+    "r6_rerun_allowed": false,
+    "motion_120_frame_allowed": false,
+    "new_lut_or_hardware_candidate_admitted": false,
+    "next_step": "root review is required before any new bounded contract; research alone does not authorize waveform tuning or flash"
+  },
+  "source_hashes": {
+    "C:\\Users\\Billy\\Desktop\\GDEH0154D67-20211203-P-LUT(1s) -1s\u5feb\u5237\\EPD_W21\\EPAPER.c": "7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896",
+    "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\companion-ssd1681-custom-mode2-transition-workbench-20260721.json": "8653B6ABD0E299E6C99B50C5A086EE840E38CED37F358F7AA326B37F7933CF05",
+    "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\companion-ssd1681-custom-mode2-transition-timing-workbench-r4-20260721.json": "E7467B808CE7BD1BE317BC282B7990CF343922DE8C15B092588B9968DEAB444D",
+    "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\companion-ssd1681-custom-mode2-mapping-r5-disposition-20260721.json": "3EDF9BF927291D78DC4119C160B25B985350803502C0A5F5C297774C574FCD39",
+    "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\companion-ssd1681-custom-mode2-observable-r6-runtime-20260721.json": "6CB1E7D395D6CACF4297D5E95FCE3E74A078D446762F27A57738F3FD6A6359DE",
+    "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\companion-ssd1681-custom-mode2-observable-r6-operator-20260721.json": "A031EAE5E7FE365741D023F715F04973B78D69012FDC2149B57F0623F81F77D0"
+  },
+  "production_allowed": false,
+  "goal_terminal": false
+}

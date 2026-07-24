@@ -1,0 +1,1678 @@
+{
+  "schema_id": "companion.wb55.ssd1681_mechanism_lut_research_disposition.v1",
+  "status": "RESEARCH_DISPOSITION_MISSING_PANEL_BOUND_LOCAL_MODE2_RULE_NO_R3",
+  "errors": [],
+  "hardware_contact": 0,
+  "requirement": "COMP-REQ-281",
+  "owner_boundary": {
+    "accepted_reference": "COMP-REQ-236/237 is a successful physical reference and quality floor, not mandatory architecture",
+    "protected_quality_floor": [
+      "visible movement",
+      "no recurring old-position hatch",
+      "no whole-screen black flash"
+    ],
+    "remaining_reference_defect": "The leading edge of the moving point is briefly cut, then restored by the second source-local current-frame pass."
+  },
+  "official_sources": [
+    {
+      "title": "Good Display GDEY0154D67-T03 product page",
+      "url": "https://www.good-display.com/product/258.html",
+      "archive": ".cache/validation/ssd1681-mechanism-lut-research-20260721/official-sources/good-display-gdey0154d67-t03-product.html",
+      "sha256": "ED1618FD1CEF2FDEF3B5714502CC5BF5A8CB0C3C70366C803AB1168D348D73B8"
+    },
+    {
+      "title": "Good Display GDEY0154D67-T03 specification 2024-10-21",
+      "url": "https://v4.cecdn.yun300.cn/100001_1909185148/GDEY0154D67-T03.pdf",
+      "archive": ".cache/validation/ssd1681-mechanism-lut-research-20260721/official-sources/GDEY0154D67-T03-20241021.pdf",
+      "sha256": "CCDD48B7EF9F72288E5CE5596D01C962BFF890653135AE6FF2360417F86F6FA9"
+    },
+    {
+      "title": "Good Display hosted SSD1681 Rev 0.13 specification",
+      "url": "https://www.good-display.com/companyfile/85.html",
+      "resolved_url": "https://v4.cecdn.yun300.cn/100001_1909185148/SSD1681V0.13_Spec.pdf",
+      "archive": ".cache/validation/ssd1681-mechanism-lut-research-20260721/official-sources/SSD1681V0.13_Spec-200529.pdf",
+      "sha256": "2989DB3DBBCE190F6E1F065A169479BF4FE911896FF8805894549F792FE9B53B"
+    },
+    {
+      "title": "Good Display official T03 STM32 sample",
+      "url": "https://www.good-display.com/companyfile/1029.html",
+      "resolved_url": "https://v4.cecdn.yun300.cn/100001_1909185148/S-GDEY0154D67-FP-Touch.rar",
+      "source_path": ".cache/incoming/S-GDEY0154D67-FP-Touch-official-20260720/S-GDEY0154D67-FP-Touch20230303/HARDWARE/EPD/Display_EPD_W21.c",
+      "source_sha256": "CD08AFD1D56E8F7E1D0AE5C935A4D060E65C658ABC30CE29ACF65166141ACEE2"
+    }
+  ],
+  "supplier_159_byte_lut": {
+    "source_path": "C:\\Users\\Billy\\Desktop\\GDEH0154D67-20211203-P-LUT(1s) -1s快刷\\EPD_W21\\EPAPER.c",
+    "source_sha256": "7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896",
+    "decode": {
+      "length": 159,
+      "register_0x32_bytes_0_152": {
+        "voltage_tables_bytes_0_59": [
+          {
+            "lut": 0,
+            "groups": [
+              {
+                "group": 0,
+                "raw_hex": "AA",
+                "phase_codes_abcd": [
+                  2,
+                  2,
+                  2,
+                  2
+                ],
+                "levels_abcd": [
+                  "VSL/VSL+DCVCOM",
+                  "VSL/VSL+DCVCOM",
+                  "VSL/VSL+DCVCOM",
+                  "VSL/VSL+DCVCOM"
+                ]
+              },
+              {
+                "group": 1,
+                "raw_hex": "80",
+                "phase_codes_abcd": [
+                  2,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSL/VSL+DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 2,
+                "raw_hex": "55",
+                "phase_codes_abcd": [
+                  1,
+                  1,
+                  1,
+                  1
+                ],
+                "levels_abcd": [
+                  "VSH1/VSH1+DCVCOM",
+                  "VSH1/VSH1+DCVCOM",
+                  "VSH1/VSH1+DCVCOM",
+                  "VSH1/VSH1+DCVCOM"
+                ]
+              },
+              {
+                "group": 3,
+                "raw_hex": "40",
+                "phase_codes_abcd": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSH1/VSH1+DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 4,
+                "raw_hex": "00",
+                "phase_codes_abcd": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 5,
+                "raw_hex": "00",
+                "phase_codes_abcd": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 6,
+                "raw_hex": "00",
+                "phase_codes_abcd": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 7,
+                "raw_hex": "00",
+                "phase_codes_abcd": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 8,
+                "raw_hex": "00",
+                "phase_codes_abcd": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 9,
+                "raw_hex": "00",
+                "phase_codes_abcd": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 10,
+                "raw_hex": "00",
+                "phase_codes_abcd": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 11,
+                "raw_hex": "00",
+                "phase_codes_abcd": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              }
+            ]
+          },
+          {
+            "lut": 1,
+            "groups": [
+              {
+                "group": 0,
+                "raw_hex": "54",
+                "phase_codes_abcd": [
+                  1,
+                  1,
+                  1,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSH1/VSH1+DCVCOM",
+                  "VSH1/VSH1+DCVCOM",
+                  "VSH1/VSH1+DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 1,
+                "raw_hex": "10",
+                "phase_codes_abcd": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSH1/VSH1+DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 2,
+                "raw_hex": "A8",
+                "phase_codes_abcd": [
+                  2,
+                  2,
+                  2,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSL/VSL+DCVCOM",
+                  "VSL/VSL+DCVCOM",
+                  "VSL/VSL+DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 3,
+                "raw_hex": "20",
+                "phase_codes_abcd": [
+                  0,
+                  2,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSL/VSL+DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 4,
+                "raw_hex": "00",
+                "phase_codes_abcd": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 5,
+                "raw_hex": "00",
+                "phase_codes_abcd": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 6,
+                "raw_hex": "00",
+                "phase_codes_abcd": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 7,
+                "raw_hex": "00",
+                "phase_codes_abcd": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 8,
+                "raw_hex": "00",
+                "phase_codes_abcd": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 9,
+                "raw_hex": "00",
+                "phase_codes_abcd": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 10,
+                "raw_hex": "00",
+                "phase_codes_abcd": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 11,
+                "raw_hex": "00",
+                "phase_codes_abcd": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              }
+            ]
+          },
+          {
+            "lut": 2,
+            "groups": [
+              {
+                "group": 0,
+                "raw_hex": "AA",
+                "phase_codes_abcd": [
+                  2,
+                  2,
+                  2,
+                  2
+                ],
+                "levels_abcd": [
+                  "VSL/VSL+DCVCOM",
+                  "VSL/VSL+DCVCOM",
+                  "VSL/VSL+DCVCOM",
+                  "VSL/VSL+DCVCOM"
+                ]
+              },
+              {
+                "group": 1,
+                "raw_hex": "80",
+                "phase_codes_abcd": [
+                  2,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSL/VSL+DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 2,
+                "raw_hex": "55",
+                "phase_codes_abcd": [
+                  1,
+                  1,
+                  1,
+                  1
+                ],
+                "levels_abcd": [
+                  "VSH1/VSH1+DCVCOM",
+                  "VSH1/VSH1+DCVCOM",
+                  "VSH1/VSH1+DCVCOM",
+                  "VSH1/VSH1+DCVCOM"
+                ]
+              },
+              {
+                "group": 3,
+                "raw_hex": "40",
+                "phase_codes_abcd": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSH1/VSH1+DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 4,
+                "raw_hex": "00",
+                "phase_codes_abcd": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 5,
+                "raw_hex": "00",
+                "phase_codes_abcd": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 6,
+                "raw_hex": "00",
+                "phase_codes_abcd": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 7,
+                "raw_hex": "00",
+                "phase_codes_abcd": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 8,
+                "raw_hex": "00",
+                "phase_codes_abcd": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 9,
+                "raw_hex": "00",
+                "phase_codes_abcd": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 10,
+                "raw_hex": "00",
+                "phase_codes_abcd": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 11,
+                "raw_hex": "00",
+                "phase_codes_abcd": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              }
+            ]
+          },
+          {
+            "lut": 3,
+            "groups": [
+              {
+                "group": 0,
+                "raw_hex": "54",
+                "phase_codes_abcd": [
+                  1,
+                  1,
+                  1,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSH1/VSH1+DCVCOM",
+                  "VSH1/VSH1+DCVCOM",
+                  "VSH1/VSH1+DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 1,
+                "raw_hex": "10",
+                "phase_codes_abcd": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSH1/VSH1+DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 2,
+                "raw_hex": "A8",
+                "phase_codes_abcd": [
+                  2,
+                  2,
+                  2,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSL/VSL+DCVCOM",
+                  "VSL/VSL+DCVCOM",
+                  "VSL/VSL+DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 3,
+                "raw_hex": "20",
+                "phase_codes_abcd": [
+                  0,
+                  2,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSL/VSL+DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 4,
+                "raw_hex": "00",
+                "phase_codes_abcd": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 5,
+                "raw_hex": "00",
+                "phase_codes_abcd": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 6,
+                "raw_hex": "00",
+                "phase_codes_abcd": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 7,
+                "raw_hex": "00",
+                "phase_codes_abcd": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 8,
+                "raw_hex": "00",
+                "phase_codes_abcd": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 9,
+                "raw_hex": "00",
+                "phase_codes_abcd": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 10,
+                "raw_hex": "00",
+                "phase_codes_abcd": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 11,
+                "raw_hex": "00",
+                "phase_codes_abcd": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              }
+            ]
+          },
+          {
+            "lut": 4,
+            "groups": [
+              {
+                "group": 0,
+                "raw_hex": "00",
+                "phase_codes_abcd": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 1,
+                "raw_hex": "00",
+                "phase_codes_abcd": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 2,
+                "raw_hex": "00",
+                "phase_codes_abcd": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 3,
+                "raw_hex": "00",
+                "phase_codes_abcd": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 4,
+                "raw_hex": "00",
+                "phase_codes_abcd": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 5,
+                "raw_hex": "00",
+                "phase_codes_abcd": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 6,
+                "raw_hex": "00",
+                "phase_codes_abcd": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 7,
+                "raw_hex": "00",
+                "phase_codes_abcd": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 8,
+                "raw_hex": "00",
+                "phase_codes_abcd": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 9,
+                "raw_hex": "00",
+                "phase_codes_abcd": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 10,
+                "raw_hex": "00",
+                "phase_codes_abcd": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              },
+              {
+                "group": 11,
+                "raw_hex": "00",
+                "phase_codes_abcd": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "levels_abcd": [
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM",
+                  "VSS/DCVCOM"
+                ]
+              }
+            ]
+          }
+        ],
+        "timing_bytes_60_143": [
+          {
+            "group": 0,
+            "raw_hex": [
+              "05",
+              "05",
+              "00",
+              "05",
+              "05",
+              "00",
+              "00"
+            ],
+            "fields": {
+              "TP_A": 5,
+              "TP_B": 5,
+              "SR_AB": 0,
+              "TP_C": 5,
+              "TP_D": 5,
+              "SR_CD": 0,
+              "RP": 0
+            },
+            "effective_repeat_counts": {
+              "SR_AB": 1,
+              "SR_CD": 1,
+              "RP": 1
+            }
+          },
+          {
+            "group": 1,
+            "raw_hex": [
+              "03",
+              "02",
+              "00",
+              "00",
+              "00",
+              "00",
+              "00"
+            ],
+            "fields": {
+              "TP_A": 3,
+              "TP_B": 2,
+              "SR_AB": 0,
+              "TP_C": 0,
+              "TP_D": 0,
+              "SR_CD": 0,
+              "RP": 0
+            },
+            "effective_repeat_counts": {
+              "SR_AB": 1,
+              "SR_CD": 1,
+              "RP": 1
+            }
+          },
+          {
+            "group": 2,
+            "raw_hex": [
+              "05",
+              "05",
+              "00",
+              "05",
+              "05",
+              "00",
+              "00"
+            ],
+            "fields": {
+              "TP_A": 5,
+              "TP_B": 5,
+              "SR_AB": 0,
+              "TP_C": 5,
+              "TP_D": 5,
+              "SR_CD": 0,
+              "RP": 0
+            },
+            "effective_repeat_counts": {
+              "SR_AB": 1,
+              "SR_CD": 1,
+              "RP": 1
+            }
+          },
+          {
+            "group": 3,
+            "raw_hex": [
+              "03",
+              "02",
+              "00",
+              "00",
+              "00",
+              "00",
+              "00"
+            ],
+            "fields": {
+              "TP_A": 3,
+              "TP_B": 2,
+              "SR_AB": 0,
+              "TP_C": 0,
+              "TP_D": 0,
+              "SR_CD": 0,
+              "RP": 0
+            },
+            "effective_repeat_counts": {
+              "SR_AB": 1,
+              "SR_CD": 1,
+              "RP": 1
+            }
+          },
+          {
+            "group": 4,
+            "raw_hex": [
+              "00",
+              "00",
+              "00",
+              "00",
+              "00",
+              "00",
+              "00"
+            ],
+            "fields": {
+              "TP_A": 0,
+              "TP_B": 0,
+              "SR_AB": 0,
+              "TP_C": 0,
+              "TP_D": 0,
+              "SR_CD": 0,
+              "RP": 0
+            },
+            "effective_repeat_counts": {
+              "SR_AB": 1,
+              "SR_CD": 1,
+              "RP": 1
+            }
+          },
+          {
+            "group": 5,
+            "raw_hex": [
+              "00",
+              "00",
+              "00",
+              "00",
+              "00",
+              "00",
+              "00"
+            ],
+            "fields": {
+              "TP_A": 0,
+              "TP_B": 0,
+              "SR_AB": 0,
+              "TP_C": 0,
+              "TP_D": 0,
+              "SR_CD": 0,
+              "RP": 0
+            },
+            "effective_repeat_counts": {
+              "SR_AB": 1,
+              "SR_CD": 1,
+              "RP": 1
+            }
+          },
+          {
+            "group": 6,
+            "raw_hex": [
+              "00",
+              "00",
+              "00",
+              "00",
+              "00",
+              "00",
+              "00"
+            ],
+            "fields": {
+              "TP_A": 0,
+              "TP_B": 0,
+              "SR_AB": 0,
+              "TP_C": 0,
+              "TP_D": 0,
+              "SR_CD": 0,
+              "RP": 0
+            },
+            "effective_repeat_counts": {
+              "SR_AB": 1,
+              "SR_CD": 1,
+              "RP": 1
+            }
+          },
+          {
+            "group": 7,
+            "raw_hex": [
+              "00",
+              "00",
+              "00",
+              "00",
+              "00",
+              "00",
+              "00"
+            ],
+            "fields": {
+              "TP_A": 0,
+              "TP_B": 0,
+              "SR_AB": 0,
+              "TP_C": 0,
+              "TP_D": 0,
+              "SR_CD": 0,
+              "RP": 0
+            },
+            "effective_repeat_counts": {
+              "SR_AB": 1,
+              "SR_CD": 1,
+              "RP": 1
+            }
+          },
+          {
+            "group": 8,
+            "raw_hex": [
+              "00",
+              "00",
+              "00",
+              "00",
+              "00",
+              "00",
+              "00"
+            ],
+            "fields": {
+              "TP_A": 0,
+              "TP_B": 0,
+              "SR_AB": 0,
+              "TP_C": 0,
+              "TP_D": 0,
+              "SR_CD": 0,
+              "RP": 0
+            },
+            "effective_repeat_counts": {
+              "SR_AB": 1,
+              "SR_CD": 1,
+              "RP": 1
+            }
+          },
+          {
+            "group": 9,
+            "raw_hex": [
+              "00",
+              "00",
+              "00",
+              "00",
+              "00",
+              "00",
+              "00"
+            ],
+            "fields": {
+              "TP_A": 0,
+              "TP_B": 0,
+              "SR_AB": 0,
+              "TP_C": 0,
+              "TP_D": 0,
+              "SR_CD": 0,
+              "RP": 0
+            },
+            "effective_repeat_counts": {
+              "SR_AB": 1,
+              "SR_CD": 1,
+              "RP": 1
+            }
+          },
+          {
+            "group": 10,
+            "raw_hex": [
+              "00",
+              "00",
+              "00",
+              "00",
+              "00",
+              "00",
+              "00"
+            ],
+            "fields": {
+              "TP_A": 0,
+              "TP_B": 0,
+              "SR_AB": 0,
+              "TP_C": 0,
+              "TP_D": 0,
+              "SR_CD": 0,
+              "RP": 0
+            },
+            "effective_repeat_counts": {
+              "SR_AB": 1,
+              "SR_CD": 1,
+              "RP": 1
+            }
+          },
+          {
+            "group": 11,
+            "raw_hex": [
+              "00",
+              "00",
+              "00",
+              "00",
+              "00",
+              "00",
+              "00"
+            ],
+            "fields": {
+              "TP_A": 0,
+              "TP_B": 0,
+              "SR_AB": 0,
+              "TP_C": 0,
+              "TP_D": 0,
+              "SR_CD": 0,
+              "RP": 0
+            },
+            "effective_repeat_counts": {
+              "SR_AB": 1,
+              "SR_CD": 1,
+              "RP": 1
+            }
+          }
+        ],
+        "frame_rate_bytes_144_149": [
+          {
+            "group": 0,
+            "code": 2
+          },
+          {
+            "group": 1,
+            "code": 2
+          },
+          {
+            "group": 2,
+            "code": 2
+          },
+          {
+            "group": 3,
+            "code": 2
+          },
+          {
+            "group": 4,
+            "code": 2
+          },
+          {
+            "group": 5,
+            "code": 2
+          },
+          {
+            "group": 6,
+            "code": 2
+          },
+          {
+            "group": 7,
+            "code": 2
+          },
+          {
+            "group": 8,
+            "code": 2
+          },
+          {
+            "group": 9,
+            "code": 2
+          },
+          {
+            "group": 10,
+            "code": 2
+          },
+          {
+            "group": 11,
+            "code": 2
+          }
+        ],
+        "all_gate_on_bytes_150_152": [
+          {
+            "group": 0,
+            "subgroup": "AB",
+            "enabled": false
+          },
+          {
+            "group": 0,
+            "subgroup": "CD",
+            "enabled": false
+          },
+          {
+            "group": 1,
+            "subgroup": "AB",
+            "enabled": false
+          },
+          {
+            "group": 1,
+            "subgroup": "CD",
+            "enabled": false
+          },
+          {
+            "group": 2,
+            "subgroup": "AB",
+            "enabled": false
+          },
+          {
+            "group": 2,
+            "subgroup": "CD",
+            "enabled": false
+          },
+          {
+            "group": 3,
+            "subgroup": "AB",
+            "enabled": false
+          },
+          {
+            "group": 3,
+            "subgroup": "CD",
+            "enabled": false
+          },
+          {
+            "group": 4,
+            "subgroup": "AB",
+            "enabled": false
+          },
+          {
+            "group": 4,
+            "subgroup": "CD",
+            "enabled": false
+          },
+          {
+            "group": 5,
+            "subgroup": "AB",
+            "enabled": false
+          },
+          {
+            "group": 5,
+            "subgroup": "CD",
+            "enabled": false
+          },
+          {
+            "group": 6,
+            "subgroup": "AB",
+            "enabled": false
+          },
+          {
+            "group": 6,
+            "subgroup": "CD",
+            "enabled": false
+          },
+          {
+            "group": 7,
+            "subgroup": "AB",
+            "enabled": false
+          },
+          {
+            "group": 7,
+            "subgroup": "CD",
+            "enabled": false
+          },
+          {
+            "group": 8,
+            "subgroup": "AB",
+            "enabled": false
+          },
+          {
+            "group": 8,
+            "subgroup": "CD",
+            "enabled": false
+          },
+          {
+            "group": 9,
+            "subgroup": "AB",
+            "enabled": false
+          },
+          {
+            "group": 9,
+            "subgroup": "CD",
+            "enabled": false
+          },
+          {
+            "group": 10,
+            "subgroup": "AB",
+            "enabled": false
+          },
+          {
+            "group": 10,
+            "subgroup": "CD",
+            "enabled": false
+          },
+          {
+            "group": 11,
+            "subgroup": "AB",
+            "enabled": false
+          },
+          {
+            "group": 11,
+            "subgroup": "CD",
+            "enabled": false
+          }
+        ]
+      },
+      "tail_registers": {
+        "0x3F_EOPT_byte_153": "22",
+        "0x03_VGH_byte_154": {
+          "raw_hex": "17",
+          "volts": 20.0
+        },
+        "0x04_source_bytes_155_157": {
+          "raw_hex": [
+            "41",
+            "A8",
+            "32"
+          ],
+          "VSH1_volts": 15.0,
+          "VSH2_volts": 5.0,
+          "VSL_volts": -15.0
+        },
+        "0x2C_VCOM_byte_158": {
+          "raw_hex": "58",
+          "volts": -2.2
+        }
+      }
+    },
+    "black_white_mapping": {
+      "R0_BW0": "black through LUT0",
+      "R0_BW1": "white through LUT1",
+      "R1_BW0": "black through LUT2 equal to LUT0 in controller mapping",
+      "R1_BW1": "white through LUT3 equal to LUT1 in controller mapping",
+      "LUT4": "present in 0x32 mapping; no black/white RAM-color assignment is stated in SSD1681 Table 6-5; supplier bytes are all zero"
+    },
+    "supplier_usage": {
+      "load": "0x3F/0x03/0x04/0x2C tail then 153 bytes under 0x32",
+      "image": "one 0x24 plane, exactly 5000 bytes",
+      "activation": "0x22=0xC7, 0x20, BUSY",
+      "scope": "supplier demonstrates this loaded LUT only with a full 200x200 frame"
+    }
+  },
+  "control_decode": {
+    "0xC7": "enable clock + analog, display with Mode 1, disable analog and oscillator; it does not load a LUT",
+    "0xF7": "enable clock + analog, load temperature, display with Mode 1, disable analog and oscillator",
+    "0xFF": "enable clock + analog, load temperature, display with Mode 2, disable analog and oscillator",
+    "mode_boundary": "SSD1681 register 0x37 states RAM Ping-Pong is supported for Mode 2 and not for Mode 1",
+    "correction": "0xC7 is loaded-LUT Mode1 display in the supplied program; 0xFF is temperature-selected OTP Mode2 display, not a synonym for external LUT refresh"
+  },
+  "phase_reconstruction": [
+    {
+      "case": "accepted_two_stage_erase_then_draw",
+      "ram_command_phase": [
+        "pass 1 writes current bytes over previous-black window through 0x24, then FF/20/BUSY",
+        "pass 2 writes current bytes over current/difference window through 0x24, then FF/20/BUSY"
+      ],
+      "representative_pixels": [
+        {
+          "phase": "visible_previous",
+          "old_only": "black",
+          "new_only": "white"
+        },
+        {
+          "phase": "after_pass_1",
+          "old_only": "white",
+          "new_only": "white"
+        },
+        {
+          "phase": "after_pass_2",
+          "old_only": "white",
+          "new_only": "black"
+        }
+      ],
+      "optical_result": "accepted: no recurring hatch and no whole-screen black flash; new-only leading edge is visibly absent between activations"
+    },
+    {
+      "case": "single_stage_r6_current_only",
+      "ram_command_phase": [
+        "stage disjoint current regions through 0x24",
+        "one FF/20/BUSY activation; no post-activation sync"
+      ],
+      "optical_result": "visible motion, but direct-motion residue remained"
+    },
+    {
+      "case": "post_sync_rounds_r1_r2",
+      "ram_command_phase": [
+        "extended reset/init/window sequence, current diff through 0x24, FF/20/BUSY",
+        "after activation reissue setup and write current through 0x24 without another 0x20"
+      ],
+      "controller_result": "120 activations completed in each round; R2 frame 1 encoded both W-to-B and B-to-W transitions",
+      "optical_result": "no visible reaction; controller command completion is not optical-transition proof"
+    },
+    {
+      "case": "added_or_draw_first_then_cleanup",
+      "ram_command_phase": [
+        "draw eligible added-black bytes first through current 0x24 and FF/20/BUSY",
+        "clean previous-black area second through current 0x24 and FF/20/BUSY"
+      ],
+      "optical_result": "owner observed more residue while the disappearing/cutoff segment persisted"
+    },
+    {
+      "case": "explicit_old_0x26_new_0x24_one_stage",
+      "ram_command_phase": [
+        "write prior changed region to 0x26 and current changed region to 0x24",
+        "one supplier FF/20/BUSY activation"
+      ],
+      "controller_result": "Phase A separately proved Mode2 activation swaps the two RAM-bank selectors",
+      "optical_result": "physical negative control retained black following residue"
+    }
+  ],
+  "candidate_assessment": [
+    {
+      "candidate": "exact_159_byte_LUT_plus_local_window_plus_C7",
+      "admitted": false,
+      "reason": "The LUT bytes and C7 command are individually traceable, but their local-window composition is absent from both supplier programs. Mode1 cannot use RAM Ping-Pong, and Good Display demonstrates this LUT only as a 5000-byte full-frame fast refresh that visibly flashes once."
+    },
+    {
+      "candidate": "OTP_Mode2_current_only_or_old_new_one_activation",
+      "admitted": false,
+      "reason": "This is the documented no-flash local family, but both the current-only and explicit old/new RAM forms already have physical residue evidence. Repackaging either is not a materially new R3."
+    },
+    {
+      "candidate": "two_stage_order_or_region_rearrangement",
+      "admitted": false,
+      "reason": "It can preserve final cleanliness, but all evidenced erase-first forms expose an incomplete new edge and draw-first forms regress residue or content integrity. The accepted implementation remains a reference, not mandatory architecture."
+    }
+  ],
+  "disposition": {
+    "machine_ready_candidate": false,
+    "hardware_allowed": false,
+    "production_allowed": false,
+    "accepted_reference_preserved": true,
+    "missing_fact": "Good Display must provide a manufacturer mapping from observed FPC 0154BN-D67-D2 to the exact panel/OTP, plus a panel-bound local Mode2 waveform/temperature/update rule materially different from the already-tested FF path; alternatively it must explicitly document local no-flash use of this exact 159-byte LUT with RAM-plane semantics.",
+    "why_research_can_continue_but_R3_cannot": "The controller mechanism is now understood, but no source-backed command/LUT topology remains untested that can claim clean simultaneous W-to-B and B-to-W transitions without a visible incomplete intermediate state.",
+    "forbidden": [
+      "custom or guessed LUT bytes",
+      "combining the full-frame Mode1 LUT with local windows by inference",
+      "repeating an already failed OTP Mode2 topology under a new name",
+      "hardware contact before a materially new source-bound machine gate"
+    ],
+    "goal_terminal": false
+  },
+  "source_hashes": {
+    "C:\\Users\\Billy\\Desktop\\GDEH0154D67-20211203-P-LUT(1s) -1s快刷\\EPD_W21\\EPAPER.c": "7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896",
+    "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\incoming\\S-GDEY0154D67-FP-Touch-official-20260720\\S-GDEY0154D67-FP-Touch20230303\\HARDWARE\\EPD\\Display_EPD_W21.c": "CD08AFD1D56E8F7E1D0AE5C935A4D060E65C658ABC30CE29ACF65166141ACEE2",
+    "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\ssd1681-mechanism-lut-research-20260721\\official-sources\\SSD1681V0.13_Spec-200529.pdf": "2989DB3DBBCE190F6E1F065A169479BF4FE911896FF8805894549F792FE9B53B",
+    "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\ssd1681-mechanism-lut-research-20260721\\official-sources\\GDEY0154D67-T03-20241021.pdf": "CCDD48B7EF9F72288E5CE5596D01C962BFF890653135AE6FF2360417F86F6FA9",
+    "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\ssd1681-mechanism-lut-research-20260721\\official-sources\\good-display-ssd1681-download-page.html": "ACD8C915DC91964EFD60A07BC20CD316C728F975FEDBCF1A6BA965932C7EDF3D",
+    "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\ssd1681-mechanism-lut-research-20260721\\official-sources\\good-display-gdey0154d67-t03-product.html": "ED1618FD1CEF2FDEF3B5714502CC5BF5A8CB0C3C70366C803AB1168D348D73B8",
+    "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\ssd1681-mechanism-lut-research-20260721\\official-sources\\good-display-gdey0154d67-product.html": "B4DC17ED369F83B488A5190D58AEF0A2B1E88FB73DAD62E7E5EBD37EE8AB365F",
+    "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\companion-gdey0154d67-t03-vendor-partial-no-union-settle-operator-20260720.json": "DA2FE11DB4CB1AFC5D433B2798BADBB576FC9C82BB39C472236E084C48F1EC57",
+    "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\companion-gdey0154d67-t03-vendor-partial-no-union-settle-runtime-20260720.json": "AE50830D1DB091AD2E526A132D55A7D512EA55E09D534F66CA7E71DB81BFF814",
+    "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\companion-gdey0154d67-t03-vendor-partial-disjoint-current-stage-operator-r6-20260721.json": "13CF51F221110829949075864973DF769AAF1C8222B73B482124BF14FD55D9C3",
+    "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\companion-gdey0154d67-t03-vendor-partial-added-first-old-cleanup-completion-audit-20260721.json": "0E3643391446640D0D9A2A9B2E050D41A14D4BBB0D32785D814B4E57D98D2CF4",
+    "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\companion-gdey0154d67-t03-vendor-partial-removed-black-repair-current-union-operator-20260720.json": "2FEBAB3365FE8481760DB0DC6C4180EFD01C24B10D985F751B6CAD9F4E1A2932",
+    "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\companion-gdey0154d67-t03-vendor-partial-disjoint-no-union-settle-operator-r1-20260721.json": "67E43FBBD7546EB99E4CE8B06EE84141D0B0F4419E77C7ED1AF7D9C38D7D9C00",
+    "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\companion-ssd1681-ram-ping-pong-fingerprint-machine-20260721.json": "5D3DE03A707BA7FB6AD17CDE1361448DFF8087B9E4A7205A18B5CD7D4FB915FE",
+    "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\companion-gdey0154d67-t03-vendor-t03-fast-state-residue-triage-20260720.json": "2EC85A59C950AEC033D4D2D78853E2B457DF6B870618F62E458672FA6C0C4291",
+    "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\companion-gdey0154d67-t03-official-stm32-source-audit-20260720.json": "2472F102E8C8CEFF2914E4AB73AC45180A7D868E587F4C90E844B32DB65A5294"
+  }
+}

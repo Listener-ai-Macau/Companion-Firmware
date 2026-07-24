@@ -1,0 +1,30 @@
+{
+  "cleanup_gate_replayed": true,
+  "final_artifact_sha256": "E8D0D437DB977B570530E5F40DD81E4A1481AA69D79D293309F34A793A058DAF",
+  "monitor_result_sha256": "E2605B2A20901F2FDCDAA9FD87A267FE4877ECEC5623A3A7D61A9F706F886D99",
+  "negative_fixtures": {
+    "fault": true,
+    "missing_baseline_not_contract": true,
+    "missing_contact": true,
+    "missing_qualification": true,
+    "missing_timing": true,
+    "runner_old_nested_baseline_read_rejected": true,
+    "supervisor_old_nested_baseline_read_rejected": true,
+    "tail_fail": true,
+    "tamper": true
+  },
+  "normal_resume_replayed": true,
+  "process_audit": true,
+  "qualification_artifact_sha256": "E8D0D437DB977B570530E5F40DD81E4A1481AA69D79D293309F34A793A058DAF",
+  "restore_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+  "runner_checkonly_hardware_contact": 0,
+  "runner_checkonly_root": ".cache/validation/wb55-r7-locked-v9-r437-replay-20260723/runner-checkonly",
+  "schema_id": "companion.wb55.ssd1681.r7_locked_v9.r10_lifecycle_replay.v1",
+  "shared_monitor_finalization": true,
+  "source_snapshot_sha256": "FBEE0328A9921269F1643C1C655A5422753A1C2E9CE3CFF22181EB06A72ADA8E",
+  "source_stage_sha256": "59C0BF61D6D2791988BC62A3F9D8E505493C4D133C55AB2DDA3AA4389AECEF90",
+  "status": "PASS_R10_REAL_ARTIFACT_LIFECYCLE_REPLAY",
+  "supervisor_selection": "\u901a\u8fc7",
+  "supervisor_simulated_popup_count": 0,
+  "tail_artifact_sha256": "FB0F40E87AE096544A53180316D493CE8FC90C0D9DCC70EAD07F58ED27DCEBC0"
+}

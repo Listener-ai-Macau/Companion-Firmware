@@ -1,0 +1,652 @@
+{
+  "schema": "companion.v24_glance_readable_special_expression_source_gate.v1",
+  "status": "PASS_V24_SPECIAL_SOURCE_GATE_PENDING_COMPONENT_EXPORT",
+  "generation_request": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/generation-request-v1-glance-readable.json",
+  "source_lineage": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/source-lineage.json",
+  "locked_v9_source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "locked_v9_daily": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/pbm/v9_idle_entry.pbm",
+  "locked_v9_daily_sha256": "B3847DF9CE2D20693C60C9CC7BC1EC8D8B8A3E23641F4521EE71508ABE13CB9E",
+  "target_eye_centers": [
+    [
+      58.5,
+      134.5
+    ],
+    [
+      142.0,
+      134.5
+    ]
+  ],
+  "threshold": {
+    "ink_value_lt": 96,
+    "max_anti_alias_fraction": 0.25,
+    "minimum_face_primary_delta_from_daily": 90,
+    "minimum_pairwise_face_primary_delta": 70
+  },
+  "poses": [
+    {
+      "pose": "menu_active",
+      "errors": [],
+      "source_size": [
+        1254,
+        1254
+      ],
+      "source_ink_bbox": [
+        285,
+        301,
+        971,
+        862
+      ],
+      "anti_alias_fraction": 0.064113,
+      "normalization": {
+        "source_left_eye_bbox": [
+          335,
+          553,
+          505,
+          788
+        ],
+        "source_right_eye_bbox": [
+          751,
+          553,
+          921,
+          788
+        ],
+        "source_left_eye_center": [
+          422.449,
+          679.341
+        ],
+        "source_right_eye_center": [
+          838.052,
+          679.306
+        ],
+        "source_eye_gap": 415.603,
+        "source_average_eye_height": 235.0,
+        "normalization_scale": [
+          0.200913,
+          0.191489
+        ]
+      },
+      "normalized_source_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/normalized-200x200-source-review/menu-active-source-normalized.png",
+      "face_primary_zone_ink_pixels": {
+        "brows": 583,
+        "mouth": 188,
+        "left_cheek": 187,
+        "right_cheek": 179
+      },
+      "face_primary_delta_from_v9_daily": 978,
+      "accent": {
+        "mode": "three_step_dots",
+        "detached_component_count": 3,
+        "components": [
+          {
+            "area": 1007,
+            "bbox": [
+              41,
+              110,
+              75,
+              155
+            ],
+            "center": [
+              58.075,
+              134.012
+            ]
+          },
+          {
+            "area": 1007,
+            "bbox": [
+              125,
+              110,
+              159,
+              155
+            ],
+            "center": [
+              141.624,
+              133.959
+            ]
+          },
+          {
+            "area": 153,
+            "bbox": [
+              47,
+              88,
+              73,
+              101
+            ],
+            "center": [
+              59.15,
+              94.007
+            ]
+          },
+          {
+            "area": 146,
+            "bbox": [
+              128,
+              88,
+              153,
+              101
+            ],
+            "center": [
+              140.247,
+              93.925
+            ]
+          },
+          {
+            "area": 146,
+            "bbox": [
+              85,
+              160,
+              115,
+              169
+            ],
+            "center": [
+              99.11,
+              164.808
+            ]
+          },
+          {
+            "area": 105,
+            "bbox": [
+              31,
+              157,
+              46,
+              166
+            ],
+            "center": [
+              37.79,
+              160.733
+            ]
+          },
+          {
+            "area": 98,
+            "bbox": [
+              154,
+              157,
+              169,
+              165
+            ],
+            "center": [
+              160.888,
+              160.602
+            ]
+          },
+          {
+            "area": 70,
+            "bbox": [
+              93,
+              147,
+              106,
+              154
+            ],
+            "center": [
+              99.329,
+              150.029
+            ]
+          },
+          {
+            "area": 49,
+            "bbox": [
+              117,
+              62,
+              125,
+              70
+            ],
+            "center": [
+              120.49,
+              65.286
+            ]
+          },
+          {
+            "area": 48,
+            "bbox": [
+              74,
+              62,
+              82,
+              70
+            ],
+            "center": [
+              77.583,
+              65.25
+            ]
+          },
+          {
+            "area": 45,
+            "bbox": [
+              96,
+              62,
+              103,
+              70
+            ],
+            "center": [
+              99.044,
+              65.156
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "pose": "recording_active",
+      "errors": [],
+      "source_size": [
+        1254,
+        1254
+      ],
+      "source_ink_bbox": [
+        117,
+        348,
+        1173,
+        855
+      ],
+      "anti_alias_fraction": 0.067812,
+      "normalization": {
+        "source_left_eye_bbox": [
+          327,
+          493,
+          513,
+          744
+        ],
+        "source_right_eye_bbox": [
+          767,
+          493,
+          954,
+          744
+        ],
+        "source_left_eye_center": [
+          423.839,
+          628.846
+        ],
+        "source_right_eye_center": [
+          863.78,
+          628.293
+        ],
+        "source_eye_gap": 439.941,
+        "source_average_eye_height": 251.0,
+        "normalization_scale": [
+          0.189798,
+          0.179283
+        ]
+      },
+      "normalized_source_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/normalized-200x200-source-review/recording-active-source-normalized.png",
+      "face_primary_zone_ink_pixels": {
+        "brows": 400,
+        "mouth": 223,
+        "left_cheek": 198,
+        "right_cheek": 195
+      },
+      "face_primary_delta_from_v9_daily": 861,
+      "accent": {
+        "mode": "paired_nested_listening_arcs",
+        "left_detached_component_count": 2,
+        "right_detached_component_count": 2,
+        "components": [
+          {
+            "area": 1057,
+            "bbox": [
+              40,
+              110,
+              75,
+              155
+            ],
+            "center": [
+              57.989,
+              134.031
+            ]
+          },
+          {
+            "area": 1056,
+            "bbox": [
+              124,
+              110,
+              159,
+              155
+            ],
+            "center": [
+              141.603,
+              133.943
+            ]
+          },
+          {
+            "area": 202,
+            "bbox": [
+              89,
+              158,
+              109,
+              175
+            ],
+            "center": [
+              98.738,
+              165.178
+            ]
+          },
+          {
+            "area": 153,
+            "bbox": [
+              0,
+              115,
+              11,
+              151
+            ],
+            "center": [
+              4.288,
+              132.052
+            ]
+          },
+          {
+            "area": 140,
+            "bbox": [
+              190,
+              115,
+              200,
+              150
+            ],
+            "center": [
+              195.571,
+              132.157
+            ]
+          },
+          {
+            "area": 126,
+            "bbox": [
+              47,
+              84,
+              69,
+              97
+            ],
+            "center": [
+              57.778,
+              90.976
+            ]
+          },
+          {
+            "area": 125,
+            "bbox": [
+              132,
+              84,
+              155,
+              97
+            ],
+            "center": [
+              142.408,
+              91.032
+            ]
+          },
+          {
+            "area": 110,
+            "bbox": [
+              32,
+              157,
+              48,
+              165
+            ],
+            "center": [
+              39.636,
+              160.5
+            ]
+          },
+          {
+            "area": 109,
+            "bbox": [
+              152,
+              157,
+              167,
+              166
+            ],
+            "center": [
+              159.092,
+              160.624
+            ]
+          },
+          {
+            "area": 91,
+            "bbox": [
+              181,
+              122,
+              189,
+              144
+            ],
+            "center": [
+              185.022,
+              132.582
+            ]
+          },
+          {
+            "area": 90,
+            "bbox": [
+              12,
+              122,
+              20,
+              144
+            ],
+            "center": [
+              14.911,
+              132.656
+            ]
+          },
+          {
+            "area": 65,
+            "bbox": [
+              93,
+              146,
+              106,
+              152
+            ],
+            "center": [
+              98.908,
+              148.6
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "pose": "charging_active",
+      "errors": [],
+      "source_size": [
+        1254,
+        1254
+      ],
+      "source_ink_bbox": [
+        269,
+        257,
+        994,
+        909
+      ],
+      "anti_alias_fraction": 0.068017,
+      "normalization": {
+        "source_left_eye_bbox": [
+          321,
+          606,
+          496,
+          830
+        ],
+        "source_right_eye_bbox": [
+          765,
+          606,
+          941,
+          830
+        ],
+        "source_left_eye_center": [
+          411.181,
+          726.443
+        ],
+        "source_right_eye_center": [
+          855.08,
+          726.666
+        ],
+        "source_eye_gap": 443.899,
+        "source_average_eye_height": 224.0,
+        "normalization_scale": [
+          0.188106,
+          0.200893
+        ]
+      },
+      "normalized_source_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/normalized-200x200-source-review/charging-active-source-normalized.png",
+      "face_primary_zone_ink_pixels": {
+        "brows": 362,
+        "mouth": 150,
+        "left_cheek": 172,
+        "right_cheek": 174
+      },
+      "face_primary_delta_from_v9_daily": 1015,
+      "accent": {
+        "mode": "two_simple_breathing_arcs",
+        "detached_component_count": 2,
+        "components": [
+          {
+            "area": 977,
+            "bbox": [
+              125,
+              110,
+              158,
+              155
+            ],
+            "center": [
+              141.606,
+              134.177
+            ]
+          },
+          {
+            "area": 963,
+            "bbox": [
+              42,
+              110,
+              74,
+              155
+            ],
+            "center": [
+              58.121,
+              134.086
+            ]
+          },
+          {
+            "area": 144,
+            "bbox": [
+              85,
+              158,
+              114,
+              171
+            ],
+            "center": [
+              99.16,
+              164.215
+            ]
+          },
+          {
+            "area": 119,
+            "bbox": [
+              130,
+              89,
+              153,
+              99
+            ],
+            "center": [
+              141.664,
+              92.37
+            ]
+          },
+          {
+            "area": 116,
+            "bbox": [
+              46,
+              89,
+              69,
+              99
+            ],
+            "center": [
+              56.991,
+              92.319
+            ]
+          },
+          {
+            "area": 93,
+            "bbox": [
+              32,
+              153,
+              45,
+              162
+            ],
+            "center": [
+              38.086,
+              157.355
+            ]
+          },
+          {
+            "area": 93,
+            "bbox": [
+              155,
+              153,
+              168,
+              162
+            ],
+            "center": [
+              160.914,
+              157.355
+            ]
+          },
+          {
+            "area": 92,
+            "bbox": [
+              115,
+              40,
+              138,
+              49
+            ],
+            "center": [
+              126.043,
+              43.696
+            ]
+          },
+          {
+            "area": 90,
+            "bbox": [
+              64,
+              40,
+              87,
+              49
+            ],
+            "center": [
+              75.144,
+              43.611
+            ]
+          },
+          {
+            "area": 64,
+            "bbox": [
+              94,
+              144,
+              106,
+              151
+            ],
+            "center": [
+              99.328,
+              147.094
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "pairwise_face_primary_differences": [
+    {
+      "left": "menu_active",
+      "right": "recording_active",
+      "face_primary_pixel_difference": 865
+    },
+    {
+      "left": "menu_active",
+      "right": "charging_active",
+      "face_primary_pixel_difference": 851
+    },
+    {
+      "left": "recording_active",
+      "right": "charging_active",
+      "face_primary_pixel_difference": 654
+    }
+  ],
+  "source_review_html": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/normalized-200x200-source-review/source-review.html",
+  "source_review_contact_sheet": "docs/art/iterations/companion-pet-expression-v9-extension-v24-glance-readable-special-expression-source/candidate/normalized-200x200-source-review/source-contact-sheet.png",
+  "source_preview_contract": "thresholded generated-source normalization at native 200x200 for static comparison only; not a component export, target frame, dynamic preview, CRIG, runtime binding or panel output",
+  "component_export": "required_before_owner_art_review",
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden",
+  "errors": []
+}

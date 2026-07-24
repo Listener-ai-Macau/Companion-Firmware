@@ -1,0 +1,77 @@
+{
+  "schema": "companion.r12_v22_calm_curious_warm_sampler.r4_work_package.v1",
+  "status": "AUTHORIZED_OFFLINE_IMPLEMENTATION_ONLY",
+  "requirement": "COMP-REQ-377",
+  "candidate": "r12_v22_calm_curious_warm_sampler",
+  "implementation_owner": "luna",
+  "history": {
+    "r3_root": ".cache/validation/wb55-r12-v22-calm-curious-warm-sampler-execute-20260722-r3",
+    "r3_fault": "[r12] fault schema=v2 phase=qualification index=1 reason=transaction t=461 b=441 d=0",
+    "r3_disposition": "NO_GO_R12_V22_CALM_CURIOUS_WARM_SAMPLER_SAFETY_FAULT_RESTORED",
+    "r3_stage_sha256": "216676FCB2F19A8A4AA8C6DF7424FB4A77C20212DE6858E4D9CA5363E44C089F",
+    "r3_restore_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C"
+  },
+  "only_variable": {
+    "name": "r12_contiguous_payload_direct_bsrr_transport",
+    "scope": "the 1908-byte payload after the movement 0x24 command only",
+    "target_transaction_ms": "<=460",
+    "unchanged_transport": [
+      "baseline",
+      "0x44/0x45 one-time setup",
+      "0x4E/0x4F movement counters",
+      "0x24 command byte",
+      "0x22=0xCF",
+      "0x20",
+      "BUSY"
+    ]
+  },
+  "edge_contract": {
+    "order_per_bit": ["SCL_LOW", "SDA_MSB", "NOP", "NOP", "SCL_HIGH", "NOP", "NOP", "SHIFT_LEFT"],
+    "end_state": "SCL_LOW",
+    "byte_order": "unchanged contiguous corridor row order",
+    "controller_write_limit_mhz": 20,
+    "controller_source": ".cache/validation/ssd1681-read-only-research/ssd1681-rev013-2.pdf",
+    "controller_source_sha256": "2989DB3DBBCE190F6E1F065A169479BF4FE911896FF8805894549F792FE9B53B",
+    "mcu_clock_mhz": 32,
+    "required_static_frequency_proof": "instruction lower bound yields SCL strictly below 20 MHz"
+  },
+  "preserved": {
+    "source_frame_payload_hashes": true,
+    "corridor": "x-byte 4..21,y72..177,1908 bytes",
+    "full_previous_current_diff": true,
+    "r3_fixed_window_setup": true,
+    "movement_commands": "ready,0x4E,0x4F,0x24,payload,0xCF,0x20,BUSY",
+    "official_cached_mode2": true,
+    "busy_limit_ms": 600,
+    "transaction_limit_ms": 460,
+    "cadence_accept_ms": "1..480",
+    "ring_bytes": 65536,
+    "protected_r11_visual_floor": true
+  },
+  "required_negative_fixtures": [
+    "fast_helper_used_by_command",
+    "fast_helper_used_by_baseline",
+    "fast_helper_used_outside_r12",
+    "missing_low_phase_nop",
+    "missing_high_phase_nop",
+    "wrong_edge_order",
+    "lsb_first",
+    "payload_length_not_1908",
+    "payload_bytes_changed"
+  ],
+  "deliverables": [
+    "driver implementation",
+    "transport scope and edge-order static/oracle evidence",
+    "negative fixtures",
+    "unchanged pixel/payload oracle",
+    "parser and lifecycle regression",
+    "isolated build",
+    "persistent launcher CheckOnly",
+    "stable r4 MACHINE_READY"
+  ],
+  "future_authorization_requirement": "COMP-REQ-378",
+  "execute": false,
+  "claim_only": false,
+  "hardware_contact": false,
+  "production_enabled": false
+}

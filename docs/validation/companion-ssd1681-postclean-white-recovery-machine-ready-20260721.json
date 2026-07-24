@@ -1,0 +1,36 @@
+{
+  "schema_id": "companion.wb55.ssd1681_postclean_white_recovery_machine_ready.v1",
+  "status": "MACHINE_READY_POSTCLEAN_WHITE_RECOVERY_ZERO_CANDIDATE",
+  "requirement": "COMP-REQ-293",
+  "hardware_contact": 0,
+  "goal_action": "none",
+  "r5_paused": true,
+  "contract": {
+    "canonical_pre_execute_title": "Companion R4 残留纯白清理确认",
+    "official_white_image_sha256": "F7CB7EE8C497CF1A01ACFF4BC921B43E274B0A934CA8B658AC24C34480F32925",
+    "frame_command": "0x24",
+    "frame_bytes": 5000,
+    "control": "0xF7",
+    "refresh": "0x20",
+    "custom_candidate_writes": 0,
+    "custom_lut_used": false,
+    "raw_restore_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "independent_readback_and_normal_resume_required": true,
+    "canonical_white_cleanliness_review_required": true
+  },
+  "future_runner_rule": {
+    "preclean_white_required": true,
+    "postcandidate_white_required_in_finally": true,
+    "postclean_failure_status": "NO_GO_CUSTOM_MODE2_POSTCLEAN_FAILED_RESTORED",
+    "raw_flash_restore_alone_is_cleanup": false
+  },
+  "gates": [
+    {"name": "postclean_static_and_negative_fixtures", "status": "PASS_POSTCLEAN_WHITE_RECOVERY_STATIC", "artifact_sha256": "2487F46416AC0ED63526C3F428E5FF3C9D8BBDC9CF402B069C45643556B7BA08"},
+    {"name": "detached_check_only", "status": "READY_NO_HARDWARE_CONTACT", "hardware_contact": 0, "launch_sha256": "028DFEC742EA6E765DD613774E4F4312CC7D4E2C2B4125E1254C917335B96F9A", "stage_sha256": "B7F03A61A727B8692612F3F686E3581C0BE9DCF7E6A1DD9D467C81378F23AEA0"},
+    {"name": "registry", "status": "PASS"},
+    {"name": "current_goal", "status": "PASS"},
+    {"name": "git_diff_check", "status": "PASS_WITH_LINE_ENDING_WARNINGS_ONLY"}
+  ],
+  "production_allowed": false,
+  "goal_terminal": false
+}

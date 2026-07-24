@@ -1,0 +1,73 @@
+{
+  "schema_id": "companion.wb55.ssd1681.read_only_controller_state_prehardware_disposition.v1",
+  "status": "NO_GO_PRE_HARDWARE_LOCKED_NORMAL_IMAGE_UNAVAILABLE",
+  "goal_scope": "COMP-REQ-257 production-off SSD1681 controller-state read-only evidence",
+  "decision": "Do not run the sole Execute until a byte-exact retained normal restore HEX with the required SHA-256 is present. The candidate, parser and runner remain default-off and production-off.",
+  "incident": {
+    "summary": "The lower-driver agent first checked the wrong repo-root build path, then ran the forced normal build against concurrently changed upper-layer sources. That build overwrote the retained CubeIDE normal output with BC850B... before its E1997F... bytes were copied to a protected path.",
+    "agent_caused_artifact_overwrite": true,
+    "shared_source_reverted": false,
+    "hardware_contact": 0,
+    "followup_search": "No remaining byte-exact E1997F... HEX was found under repository build outputs or .cache/validation references.",
+    "disposition": "Recorded without concealment; fail closed and require an existing exact artifact or a separately authorized recovery contract."
+  },
+  "implementation": {
+    "diagnostic": "software 4-wire SPI; one boot; three fixed groups; one 0x2F byte then one 0x2D eleven-byte response per group",
+    "gpio_restore": "PC1 output-low, SCL-low, CS-high after every bounded response",
+    "normal_panel_init": false,
+    "display_hard_reset": false,
+    "writes": 0,
+    "refresh_commands": 0,
+    "automatic_retries": 0,
+    "production_enabled": false
+  },
+  "machine_results": {
+    "registry_verifier": "PASS",
+    "current_goal_audit": "PASS",
+    "decoder_c_arm_werror_syntax": "PASS",
+    "parser_positive_negative_matrix": "PASS",
+    "candidate_build": "PASS",
+    "normal_build": "PASS_BUILD_HASH_MISMATCH",
+    "isolated_build_conflict_test": "PASS_REJECTED_CONFLICT",
+    "git_diff_check": "PASS_WITH_LINE_ENDING_WARNINGS_ONLY",
+    "static_gate": "NO_GO_NORMAL_RESTORE_HASH_MISMATCH",
+    "runner_check_only": "NO_GO_BEFORE_HARDWARE"
+  },
+  "images": {
+    "candidate_hex": {
+      "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_read_only_controller_state/Companion_Nucleo_WB55RG_Ssd1681ReadOnlyControllerState.hex",
+      "sha256": "52D79CB3BC55D9738EFA580B95D3930216C23FD8825356F7860B7C1718C0C6AD"
+    },
+    "current_normal_hex": {
+      "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build/Companion_Nucleo_WB55RG_Bringup.hex",
+      "sha256": "BC850BE39E20BDC499ADDE65A00739A556AC778B03D41439CFB1B374468CD2FD",
+      "accepted_as_restore": false
+    },
+    "required_normal_hex": {
+      "sha256": "E1997F29DCB8735899B4BC0B9012CF75025F3CA8D21250485BCC21E4C4691B46",
+      "retained_artifact_found": false
+    }
+  },
+  "artifacts": {
+    "research": "docs/validation/companion-ssd1681-read-only-controller-state-research-source-hash-20260721.json",
+    "static": "docs/validation/companion-ssd1681-read-only-controller-state-static-20260721.json",
+    "runner_check_only": ".cache/validation/wb55-ssd1681-read-only-controller-state-check-only-r2/stage-run.json"
+  },
+  "hardware_contact": {
+    "count": 0,
+    "candidate_flashes": 0,
+    "controller_read_groups": 0,
+    "normal_flashes": 0,
+    "execute_invoked": false
+  },
+  "protected_boundaries": {
+    "supplier_directory_modified": false,
+    "locked_v9_or_owner_acceptance_modified": false,
+    "rig_crig_browser_art_or_dynamic_binding_modified": false,
+    "lut_waveform_register_control_reset_border_timing_rail_or_temperature_modified": false,
+    "shared_upper_changes_reverted": false,
+    "hash_gate_relaxed": false
+  },
+  "resume_requirement": "Supply an existing byte-exact E1997F... normal HEX artifact. Do not reconstruct it by rolling back the shared dirty worktree and do not contact hardware while it is missing.",
+  "goal_completion": false
+}

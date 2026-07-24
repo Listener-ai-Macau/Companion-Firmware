@@ -1,0 +1,50 @@
+{
+  "checks": {
+    "cadence_bound": true,
+    "compact_single_activation_schema": true,
+    "default_off": true,
+    "fixed_guarded_corridor": true,
+    "forbidden_absent_native": true,
+    "frame_sha_table_bound": true,
+    "geometry_24_448_step2": true,
+    "gpio_guard": true,
+    "identity": true,
+    "movement_body_no_reset": true,
+    "movement_body_source_contract": true,
+    "movement_no_reset_fields": true,
+    "mutation_cf_replacing_ff_rejected": true,
+    "mutation_injected_reset_rejected": true,
+    "mutation_missing_ready_rejected": true,
+    "one_activation": true,
+    "oracle_pass": true,
+    "production_off": true,
+    "qualification_16": true,
+    "schema_v11": true,
+    "selector": true,
+    "source_bound": true,
+    "union_reused": true
+  },
+  "errors": [],
+  "negative_fixtures": {
+    "cf_replacing_ff": {
+      "executed": true,
+      "rejected": true
+    },
+    "custom_lut": true,
+    "forbidden_0x26": true,
+    "full_frame": true,
+    "injected_reset_call": {
+      "executed": true,
+      "rejected": true
+    },
+    "missing_ready": {
+      "executed": true,
+      "rejected": true
+    },
+    "mutated_old_12x12_frame_sha": true,
+    "second_activation": true
+  },
+  "payload_table_rows": 32,
+  "schema_id": "companion.wb55.ssd1681.r10_native_guarded_corridor_no_reset_cadence.static.v3",
+  "status": "PASS"
+}

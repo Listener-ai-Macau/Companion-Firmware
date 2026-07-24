@@ -1,0 +1,51 @@
+{
+  "schema": "companion.v30_minimal_functional_object_special_expression_component_browser_render_inspection.v1",
+  "status": "PASS_V30_BROWSER_RENDER_INSPECTION_NATIVE_200X200",
+  "claim_scope": "actual browser screenshots for a runtime-inactive component compositor; not a behavior binding, flash, panel output, or physical acceptance",
+  "browser_engine": "playwright-chromium",
+  "route": {
+    "path": "docs/validation/companion-v30-minimal-functional-object-special-expression-component-performance-preview-20260720.json",
+    "sha256": "8E92C166E0892543C9BAC40B36AC481F86E11D5F64B67606197D52347C747C82"
+  },
+  "player": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/perf/player.html",
+    "sha256": "8B4A97D5E78BFDB3CE553147AA367E172EF6B7CE4688360F3C23FCD5DAA66287"
+  },
+  "screenshots": [
+    {
+      "scene": "daily_micro",
+      "virtual_time_ms": 100,
+      "edge_exit_code": 0,
+      "path": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/perf/browser-v30-daily-native-200x200-20260720.png",
+      "sha256": "3C1D66C52B5684E173FCEEA1459D6743A0E93D78968A05A1EEEFE4F378553EDB"
+    },
+    {
+      "scene": "menu_active",
+      "virtual_time_ms": 3600,
+      "edge_exit_code": 0,
+      "path": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/perf/browser-v30-menu-hold-native-200x200-20260720.png",
+      "sha256": "1F35AEA0284E773FF90AC4419342BEDAC567B6F8106896D54F6281E3501C77AA"
+    },
+    {
+      "scene": "recording_active",
+      "virtual_time_ms": 3300,
+      "edge_exit_code": 0,
+      "path": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/perf/browser-v30-recording-hold-native-200x200-20260720.png",
+      "sha256": "3072411D1C6F2E70E07EC8729C8328D288EFC75B6F7A225D3EEAF7324C076D86"
+    },
+    {
+      "scene": "charging_active",
+      "virtual_time_ms": 3300,
+      "edge_exit_code": 0,
+      "path": "docs/art/iterations/companion-pet-expression-v9-extension-v30-minimal-functional-object-special-expression-source/candidate/perf/browser-v30-charging-hold-native-200x200-20260720.png",
+      "sha256": "5602ACF697D9EFFF8B44F4D0F0215464BEAF49830B4BC108AD7E825C5317C59E"
+    }
+  ],
+  "checks": {
+    "route_is_runtime_inactive_candidate": true,
+    "native_200x200_component_stage": true,
+    "explicit_event_player": true,
+    "every_screenshot_written": true
+  },
+  "failures": []
+}

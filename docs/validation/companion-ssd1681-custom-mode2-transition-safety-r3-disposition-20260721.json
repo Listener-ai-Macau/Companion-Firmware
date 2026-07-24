@@ -1,0 +1,67 @@
+{
+  "schema_id": "companion.wb55.ssd1681_custom_mode2_transition_safety_disposition.v3",
+  "status": "NO_GO_R3_BUSY_602_OVER_600_EXACT_RAW_RESTORED",
+  "requirement": "COMP-REQ-291",
+  "goal_action": "none; active Goal remains owned by the root thread and was not completed, blocked, replaced, or deleted",
+  "production_allowed": false,
+  "r3_rerun_allowed": false,
+  "motion_admitted": false,
+  "optical_review": {
+    "permitted": false,
+    "invoked": false,
+    "reason": "machine BUSY gate failed on the first activation"
+  },
+  "candidate": {
+    "name": "stationary_suppression_tp19_r3",
+    "lut_sha256": "CFE301B8FAA15C09B55509C9110E014FB49B959AD40FDF73F062A84D9D6769D3",
+    "hex_sha256": "2679A542AF71208B33A8AFCC5478DD5F8AED59D022035C4D3AEC5BFFBE4391E5",
+    "single_difference_from_r2": {
+      "offset": 74,
+      "r2_hex": "02",
+      "r3_hex": "01"
+    },
+    "predicted_busy_ms": 579.237,
+    "predicted_margin_ms": 20.763,
+    "prediction_authoritative": false
+  },
+  "execution": {
+    "count": 1,
+    "launcher_mode": "detached_durable_stdout_stderr",
+    "output_root": ".cache/validation/wb55-custom-mode2-transition-safety-r3-execute-20260721-a",
+    "pre_execute_title": "Companion R3 局刷实验开始确认",
+    "pre_execute_selection": "开始实验",
+    "white_preclean_status": "PASS_MACHINE_DIGITAL_ONLY",
+    "planned_local_activations": 9,
+    "observed_local_records": 1,
+    "first_busy_elapsed_ms": 602,
+    "busy_limit_ms": 600,
+    "stopped_immediately": true,
+    "automatic_retries": 0,
+    "controller_status": "NO_GO_CUSTOM_MODE2_TRANSITION_SAFETY"
+  },
+  "restore": {
+    "status": "PASS_RESTORE_EQUALS_CAPTURED_PRE_RUN_APPLICATION_BYTES",
+    "bytes": 524288,
+    "baseline_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "readback_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "byte_identical": true,
+    "normal_resume_status": "PASS_APPLICATION_RESUMED_AFTER_BACKUP",
+    "restore_status_misreported": false
+  },
+  "evidence": {
+    "machine_ready_sha256": "314C766801DE1627C3E1DD6F861644356BEF21F687DC696F7E9E23066BC46381",
+    "detached_launch_sha256": "665A108A88BB90B4D64F48E794F2C6369E18DEC8C2F107B0851180F0D80D83C2",
+    "start_decision_sha256": "CB02E78141A60CE023A63AA24F92CDEC159697FB760597F89D0EDA387F0DAEED",
+    "white_preclean_sha256": "2C0B964DD3C7778636EC080EE32D6D2F609A08F13ED7E06546C9F05E362049B3",
+    "controller_state_sha256": "940CA0DF96829CB17695A5BF623781369D2204F7DF09B6E04331A480D8D70BF9",
+    "restore_gate_sha256": "9215D2235BAC1E676800197B5FE9A4CEE7515A65BB4240EE0092D014A65F6FA6",
+    "normal_resume_sha256": "040CECE124F5FC8FADAD7B286BB97F9AC8E981220E63AF8DAA723E881BCC5F70",
+    "stage_run_sha256": "DE149AB85A88973BD66A3EE18B0C49F9D4012033B3D2DC53423192EE4FB31F93"
+  },
+  "protected_inputs": {
+    "supplier_epaper_c_sha256": "7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896",
+    "owner_acceptance_sha256": "8A3BDF4BD1254B0D0F4DE13A7F293C3D74587C800339ABD4C61FEB0B7737E227"
+  },
+  "conclusion": "TP20 to TP19 did not reduce the observed first-transition BUSY below the exact 600 ms gate. The two-point prediction was not confirmed by hardware. R3 is a durable machine NO_GO and may not be promoted or rerun.",
+  "goal_terminal": false
+}

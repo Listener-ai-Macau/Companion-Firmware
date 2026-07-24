@@ -1,0 +1,51 @@
+{
+  "schema": "companion.v23_special_expression_component_browser_render_inspection.v1",
+  "status": "PASS_V23_BROWSER_RENDER_INSPECTION_NATIVE_200X200",
+  "claim_scope": "actual browser screenshots for a runtime-inactive candidate component compositor; not a behavior binding, flash, panel output, or physical acceptance",
+  "browser_engine": "playwright-chromium",
+  "route": {
+    "path": "docs/validation/companion-v23-special-expression-component-performance-preview-20260720.json",
+    "sha256": "D6C730A2FEA0D8F71020D8EB287BFA2E28F1E936ABE4039BB87D355535566E73"
+  },
+  "player": {
+    "path": "docs/validation/artifacts/companion-v23-special-expression-component-performance-preview-20260720/v23-special-expression-component-player.html",
+    "sha256": "2FD1CE83B2BB94D50D9C037313D9832FC3C20DD6DA211DDE4560DA96918D5E40"
+  },
+  "screenshots": [
+    {
+      "scene": "daily_micro",
+      "virtual_time_ms": 100,
+      "edge_exit_code": 0,
+      "path": "docs/validation/artifacts/companion-v23-special-expression-component-performance-preview-20260720/browser-daily-native-200x200-20260720.png",
+      "sha256": "D2DA343E11E1C47C3C110BF509BBE3407199B86F98BD5328B6BF3BE3AF47B4C6"
+    },
+    {
+      "scene": "menu_active",
+      "virtual_time_ms": 1750,
+      "edge_exit_code": 0,
+      "path": "docs/validation/artifacts/companion-v23-special-expression-component-performance-preview-20260720/browser-menu-hold-native-200x200-20260720.png",
+      "sha256": "96F77FE6784E188D58D00FBEB52349F7EB4EE07BA6E093AB16BB6A5BF47F1176"
+    },
+    {
+      "scene": "recording_active",
+      "virtual_time_ms": 1600,
+      "edge_exit_code": 0,
+      "path": "docs/validation/artifacts/companion-v23-special-expression-component-performance-preview-20260720/browser-recording-hold-native-200x200-20260720.png",
+      "sha256": "5EC37B1E0340A644C27B54DA959C4A6502A2BF2220F8D5483B60F860DC59A205"
+    },
+    {
+      "scene": "charging_active",
+      "virtual_time_ms": 1600,
+      "edge_exit_code": 0,
+      "path": "docs/validation/artifacts/companion-v23-special-expression-component-performance-preview-20260720/browser-charging-hold-native-200x200-20260720.png",
+      "sha256": "77879852E19DA59CD5C9CB875666BE6250791BC81F7D7F19B77E7632CD7B81BF"
+    }
+  ],
+  "checks": {
+    "route_is_runtime_inactive_candidate": true,
+    "native_200x200_component_stage": true,
+    "explicit_event_player": true,
+    "every_screenshot_written": true
+  },
+  "failures": []
+}

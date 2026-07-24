@@ -1,0 +1,165 @@
+{
+  "schema": "companion.v9_expression_rig_goal_machine_closure.v1",
+  "status": "PASS_GOAL_MACHINE_CLOSURE_OWNER_ART_REVIEW_PENDING",
+  "locked_v9_source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+  "locked_v9_source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "protected_owner_acceptance_sha256": "8A3BDF4BD1254B0D0F4DE13A7F293C3D74587C800339ABD4C61FEB0B7737E227",
+  "commands": [
+    {
+      "name": "profile",
+      "command": [
+        "C:\\Users\\Billy\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "tools/generate_companion_v9_expression_rig_profile.py",
+        "--check"
+      ],
+      "returncode": 0,
+      "duration_ms": 63,
+      "stdout_sha256": "589C98AF9E09B65F211FEB836231A87B81B81E62AB945EEB15FC8780D44907B2",
+      "output_tail": "PASS: v9 Rig profile is generated deterministically from the audited layout.\n"
+    },
+    {
+      "name": "render",
+      "command": [
+        "C:\\Users\\Billy\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "tools/render_companion_v9_expression_rig.py",
+        "--layout",
+        "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rig-layout.json",
+        "--output-dir",
+        "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200",
+        "--report",
+        "docs/validation/companion-v9-expression-rig-render-20260717.json"
+      ],
+      "returncode": 0,
+      "duration_ms": 781,
+      "stdout_sha256": "8FC9CEC60F3A0885EF6F18B6F8C8040520265626B0DC558B4EB5DF8817C15BDA",
+      "output_tail": "PASS: v9 Rig composed deterministic non-card state-matrix frames and a pending CEMP candidate.\n"
+    },
+    {
+      "name": "rig_verify",
+      "command": [
+        "C:\\Users\\Billy\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "tools/verify_companion_v9_expression_rig.py",
+        "--report",
+        "docs/validation/companion-v9-expression-rig-render-20260717.json",
+        "--write",
+        "docs/validation/companion-v9-expression-rig-cemp-20260717.json"
+      ],
+      "returncode": 0,
+      "duration_ms": 250,
+      "stdout_sha256": "971162DB2DDA458D01A526D21AA315B61569F999A6E7A945681B040A6B8A94AF",
+      "output_tail": "PASS: v9 Rig preserves source-derived components, deterministic diversity, recovery and CEMP decode without activation.\n"
+    },
+    {
+      "name": "rig_host",
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "tools/test_expression_rig_host.ps1"
+      ],
+      "returncode": 0,
+      "duration_ms": 3672,
+      "stdout_sha256": "7DE71CB04A77A0E32849CDBAB6E2473B814D0C278F2DF876BD18E04A3502F59F",
+      "output_tail": "test_expression_rig.c\nexpression_rig.c\n正在生成代码...\nPASS: expression Rig builds deterministic component plans and composes source masks without drawing a face\ntest_expression_rig_performance_score.c\nexpression_rig.c\nexpression_rig_performance_score.c\nexpression_rig_v9_candidate_profile.c\n正在生成代码...\nPASS: generated Daily performance scores move legal source primary reflections without moving eye bodies or sparkles\n"
+    },
+    {
+      "name": "choreographer_host",
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "tools/test_expression_choreographer_host.ps1"
+      ],
+      "returncode": 0,
+      "duration_ms": 2140,
+      "stdout_sha256": "CA59B6BF7A5B5B6062EDF447F9541AC355945C35C7FBF803F0BC91956ECEDB5B",
+      "output_tail": "PASS: v9 Rig profile is generated deterministically from the audited layout.\ntest_expression_choreographer.c\nexpression_choreographer.c\nexpression_rig.c\nexpression_rig_performance_score.c\nexpression_rig_v9_candidate_profile.c\n正在生成代码...\nPASS: expression choreographer maps event, attention, energy and memory to legal v9 Rig plans with fail-closed special scenes\n"
+    },
+    {
+      "name": "wba_mount_host",
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "tools/test_wba_v9_expression_rig_asset_mount_host.ps1"
+      ],
+      "returncode": 0,
+      "duration_ms": 2125,
+      "stdout_sha256": "84C908AD6134060786A774361C8C5FA105EBD52931A99576D81960E62C2A15F6",
+      "output_tail": "PASS: v9 Rig profile is generated deterministically from the audited layout.\ntest_wba_v9_expression_rig_asset_mount.c\nasset_store.c\nexpression_rig.c\nexpression_rig_asset_pack.c\nexpression_rig_v9_candidate_profile.c\nscreen_assets_stm32wba.c\n正在生成代码...\nPASS: WBA55/WBA65 callback-only external NOR reconstructs the source-derived v9 Rig face\n"
+    },
+    {
+      "name": "motion_coordinator_host",
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "tools/test_motion_coordinator_host.ps1"
+      ],
+      "returncode": 0,
+      "duration_ms": 2000,
+      "stdout_sha256": "DECE5CC93D21C6F2CF00504762CB0B1847F4CB64C8DB7C16ABBE0EBBDA60BBE7",
+      "output_tail": "test_motion_coordinator.c\nmotion_coordinator.c\n正在生成代码...\nPASS: daily expression coordinator preserves dwell, order, cancellation and idle timeout\n"
+    },
+    {
+      "name": "motion_queue_host",
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "tools/test_motion_display_queue_host.ps1"
+      ],
+      "returncode": 0,
+      "duration_ms": 2032,
+      "stdout_sha256": "18DF34C05970D58F5751DCDF1DFCFEA89FD86F3E92616112EA151EACAE78F5AA",
+      "output_tail": "test_motion_display_queue.c\ndisplay_queue.c\nexpression_state.c\n正在生成代码...\nPASS: automatic display frames are selectively removable without dropping events\n"
+    },
+    {
+      "name": "pipeline",
+      "command": [
+        "C:\\Users\\Billy\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "tools/test_v9_expression_rig_pipeline.py"
+      ],
+      "returncode": 0,
+      "duration_ms": 34562,
+      "stdout_sha256": "5FFB7BFDF75980D1C6EB8613502FD1C09F8C0C7B3369E1563D4CB42F9B28B0B6",
+      "output_tail": "PASS: v9 Rig composes source-derived state diversity and state-bound component previews.\n"
+    },
+    {
+      "name": "display_queue_static",
+      "command": [
+        "C:\\Users\\Billy\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "tools/verify_display_queue_static.py"
+      ],
+      "returncode": 0,
+      "duration_ms": 438,
+      "stdout_sha256": "8052ED55FC72F3407E88FBD4B5F4F7B7D166EA35A17023689AD5E6295F4AE8C9",
+      "output_tail": "PASS: Companion WB55 display queue boundary verified.\n"
+    },
+    {
+      "name": "art_lineage",
+      "command": [
+        "C:\\Users\\Billy\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "tools/verify_companion_v9_art_lineage.py",
+        "--write",
+        "docs/validation/companion-v9-art-lineage-machine-20260718.json"
+      ],
+      "returncode": 0,
+      "duration_ms": 62,
+      "stdout_sha256": "046240A42CFD76FCBCFE1A6F7A157A46FDCC28C1B034DB20E8383BB0E99FF89D",
+      "output_tail": "PASS: PASS_ART_LINEAGE\n"
+    }
+  ],
+  "art_reports": {
+    "rig_cemp": "PASS_MACHINE_CANDIDATE_NOT_ACTIVATED",
+    "art_lineage": "PASS_ART_LINEAGE",
+    "v3_open_eye": "PASS_OPEN_EYE_IDENTITY_GATE",
+    "v3_daily_attention": "PASS_DAILY_ATTENTION_PROOF_GATE",
+    "v3_runtime_resource_activated": false,
+    "v3_component_export": "forbidden_pending_owner_review"
+  },
+  "runtime_resource_activated": false,
+  "charging_error": "fail_closed_no_registered_components",
+  "owner_art_review": "V3 daily eye proof is machine-passing but has no owner selection; extension component export remains forbidden.",
+  "errors": []
+}

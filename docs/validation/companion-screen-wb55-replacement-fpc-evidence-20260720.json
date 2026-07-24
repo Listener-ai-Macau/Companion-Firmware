@@ -1,0 +1,42 @@
+{
+  "authorization": {
+    "allowed_path": "existing matched official 0x24 one-plane then 0x22=0xF7, 0x20, BUSY",
+    "allowed_stage": "White",
+    "black_requires": "PASS_MACHINE_AND_RAILS_ESTABLISHED_WHITE",
+    "prohibited": [
+      "0xC7 or one-second LUT load",
+      "production refresh-policy modification",
+      "custom or guessed waveform",
+      "Black before new White rail evidence",
+      "physical success claim before source-bound trace and canonical White review"
+    ]
+  },
+  "checks": {
+    "authorization_is_white_official_path_only": true,
+    "current_dynamic_expressions_visible": true,
+    "display_fpc_replaced": true,
+    "logic_input_is_3v3_only": true,
+    "one_second_lut_remains_prohibited": true,
+    "owner_photo_observed_in_conversation": true,
+    "panel_back_marking_visible": true
+  },
+  "claim_scope": "owner_photo_and_owner_statement_only_authorizes_one_official_white_retest_not_panel_or_lut_acceptance",
+  "failures": [],
+  "historical_evidence": {
+    "disposition": "retained_history_for_old_broken_fpc_not_current_fts02_or_panel_diagnosis",
+    "old_white_failure": "docs/validation/companion-screen-wb55-white-recovery-failure-20260719.json"
+  },
+  "owner_observation": {
+    "adapter_logic_supply": "3.3V only",
+    "current_dynamic_expressions_visible": true,
+    "historical_failure_cause": "old display FPC was broken",
+    "observation_date": "2026-07-20",
+    "panel_back_marking": "0154BN-D67-D2 N524110506",
+    "photo_observed_in_conversation": true,
+    "raw_photo_archived_locally": false,
+    "replacement_display_fpc_installed": true
+  },
+  "schema_id": "companion.wb55.display_fpc_replacement_evidence.v1",
+  "status": "PASS_OWNER_REPORTED_REPLACEMENT_FPC_CURRENT_PANEL_VISIBLE",
+  "target": "NUCLEO-WB55RG + ESP32-FTS02 + GDEY0154D67-T03"
+}

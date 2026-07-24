@@ -1,0 +1,73 @@
+{
+  "schema": "companion.v36_directional_reflection_browser_replay_gate.v1",
+  "status": "PASS_V36_DIRECTIONAL_REFLECTION_BROWSER_REPLAY_GATE",
+  "direction": "down",
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden",
+  "source_gate": "docs/validation/companion-v36-daily-down-reflection-source-gate-20260720.json",
+  "source_gate_sha256": "25F4BF3587ED3BA6CAA673A44517584C12BB71C8B8261038BDD962B9A53C97DF",
+  "preview_gate": "docs/validation/companion-v36-daily-down-reflection-browser-preview-20260720.json",
+  "preview_gate_sha256": "3A29F35CBFB16EF3D15092BCC85F39AD0EC0F5BC0E8AFA3114066D121D695EF6",
+  "locked_v9_source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+  "locked_v9_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "canvas": {
+    "width": 200,
+    "height": 200
+  },
+  "component_only": true,
+  "full_face_cards": false,
+  "random_motion": false,
+  "phases": [
+    "rest",
+    "eyes_lower_1",
+    "eyes_lower_2",
+    "down_hold",
+    "eyes_return",
+    "rest_dwell"
+  ],
+  "frame_replay": [
+    {
+      "phase": "rest",
+      "pixels_different_from_component_replay": 0,
+      "frame": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/component-export-attempt-09/preview/frames/00-rest-200x200.png",
+      "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/component-export-attempt-09/preview/pbm/00-rest-200x200.pbm"
+    },
+    {
+      "phase": "eyes_lower_1",
+      "pixels_different_from_component_replay": 0,
+      "frame": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/component-export-attempt-09/preview/frames/01-eyes_lower_1-200x200.png",
+      "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/component-export-attempt-09/preview/pbm/01-eyes_lower_1-200x200.pbm"
+    },
+    {
+      "phase": "eyes_lower_2",
+      "pixels_different_from_component_replay": 0,
+      "frame": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/component-export-attempt-09/preview/frames/02-eyes_lower_2-200x200.png",
+      "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/component-export-attempt-09/preview/pbm/02-eyes_lower_2-200x200.pbm"
+    },
+    {
+      "phase": "down_hold",
+      "pixels_different_from_component_replay": 0,
+      "frame": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/component-export-attempt-09/preview/frames/03-down_hold-200x200.png",
+      "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/component-export-attempt-09/preview/pbm/03-down_hold-200x200.pbm"
+    },
+    {
+      "phase": "eyes_return",
+      "pixels_different_from_component_replay": 0,
+      "frame": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/component-export-attempt-09/preview/frames/04-eyes_return-200x200.png",
+      "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/component-export-attempt-09/preview/pbm/04-eyes_return-200x200.pbm"
+    },
+    {
+      "phase": "rest_dwell",
+      "pixels_different_from_component_replay": 0,
+      "frame": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/component-export-attempt-09/preview/frames/05-rest_dwell-200x200.png",
+      "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/component-export-attempt-09/preview/pbm/05-rest_dwell-200x200.pbm"
+    }
+  ],
+  "component_beat_differences": {
+    "rest_to_lower_1": 290,
+    "lower_1_to_lower_2": 290,
+    "lower_2_to_hold": 433,
+    "hold_to_return": 573,
+    "return_to_rest": 290
+  }
+}

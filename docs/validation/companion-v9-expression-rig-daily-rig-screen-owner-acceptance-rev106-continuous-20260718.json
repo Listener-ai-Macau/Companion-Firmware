@@ -1,0 +1,28 @@
+{
+  "schema": "companion.v9_expression_rig_daily_rig_screen_owner_acceptance.v2",
+  "status": "PASS_OWNER_SCREEN_REVIEW_WITH_FOLLOWUP",
+  "selected": "通过",
+  "text": "可以的，我觉得现在是可以再动的。就是看得出来在动。然后，但是还是动的感觉是随机的，只是要这种动法，但是你这个动的，这个动的方式要再调一下。",
+  "scope": "Dedicated continuous four-story v9 Rig screen demo only; normal candidate runtime remains inactive.",
+  "machine_artifact": {
+    "path": "docs/validation/companion-v9-expression-rig-daily-rig-screen-demo-machine-rev106-continuous-20260718.json",
+    "sha256": "E83CCBF52588A78636CBA9A504A690C7A93EF8C86ABE37E2A2536D11D08C145E",
+    "status": "PASS_MACHINE_SCREEN_DEMO_REV106_CONTINUOUS"
+  },
+  "canonical_operator_capture": {
+    "summary_path": "docs/validation/artifacts/companion-v9-expression-rig-target-frame-parity-20260718/operator-screen-replay-rev106-continuous/nucleo-serial-summary.json",
+    "summary_sha256": "0F69D80AC8F47703E701BB67D232C5BA847FF8F8D2C7D42BE368B1794F419023",
+    "raw_log_path": "docs/validation/artifacts/companion-v9-expression-rig-target-frame-parity-20260718/operator-screen-replay-rev106-continuous/nucleo-serial-raw.log",
+    "raw_log_sha256": "4B05800C6EC81929A709B4D108DCB6A509E861A83AAE8BE7BB840D9C926A7066",
+    "selected": "通过"
+  },
+  "operator_note": {
+    "path": "docs/validation/companion-v9-expression-rig-daily-rig-screen-demo-machine-rev106-continuous-20260718.note.txt",
+    "sha256": "61D3D6525E4A72CB35D1E828D443C7858CE34894A0595A063BFB752860EE776D"
+  },
+  "accepted_regression_contract": {
+    "preserve": "Source-component micro-motion is visibly legible on the physical e-paper panel; it uses one boot full baseline only and later partial-or-hold updates with no whole-face timeline.",
+    "not_accepted_as_final_runtime_behavior": "A deterministic four-direction showcase loop without real attention/event selection reads as random and must not be promoted as the product behavior engine."
+  },
+  "next_gate": "Version event/state-bound previews for the remaining registered stories before changing the accepted physical Daily component-motion contract; charging and error remain fail-closed until separately approved art components exist."
+}

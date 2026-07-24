@@ -1,0 +1,184 @@
+{
+  "schema": "companion.v23_special_expression_component_performance_parity.v1",
+  "status": "PASS_V23_SPECIAL_COMPONENT_PERFORMANCE_PARITY_RUNTIME_INACTIVE",
+  "claim_scope": "native_200x200_browser_target_component_plan parity only; no runtime binding, flash, panel output, or physical acceptance",
+  "route": {
+    "path": "docs/validation/companion-v23-special-expression-component-performance-preview-20260720.json",
+    "sha256": "D6C730A2FEA0D8F71020D8EB287BFA2E28F1E936ABE4039BB87D355535566E73"
+  },
+  "browser_player": {
+    "path": "docs/validation/artifacts/companion-v23-special-expression-component-performance-preview-20260720/v23-special-expression-component-player.html",
+    "sha256": "2FD1CE83B2BB94D50D9C037313D9832FC3C20DD6DA211DDE4560DA96918D5E40"
+  },
+  "checks": {
+    "route_is_passing_runtime_inactive_candidate": true,
+    "selection_policy_is_explicit_and_fail_closed": true,
+    "daily_entry_and_final_settle_are_exact_v9": true,
+    "special_holds_are_exact_component_reassemblies": true,
+    "forbidden_paths_remain_declared": true,
+    "all_target_frames_are_registered_native_200x200_component_plans": true,
+    "each_special_event_is_a_face_first_coordinated_pose_with_a_secondary_accent": true,
+    "browser_player_uses_exact_target_component_plan": true,
+    "browser_player_is_native_dom_component_composition": true,
+    "browser_component_assets_exist_for_every_used_component": true
+  },
+  "failures": [],
+  "frames": [
+    {
+      "index": 0,
+      "segment": "daily_entry",
+      "valid": true,
+      "targetPbm": "docs/validation/artifacts/companion-v23-special-expression-component-performance-preview-20260720/frame-00-daily_entry.pbm"
+    },
+    {
+      "index": 1,
+      "segment": "daily_highlight_notice",
+      "valid": true,
+      "targetPbm": "docs/validation/artifacts/companion-v23-special-expression-component-performance-preview-20260720/frame-01-daily_highlight_notice.pbm"
+    },
+    {
+      "index": 2,
+      "segment": "daily_star_lift",
+      "valid": true,
+      "targetPbm": "docs/validation/artifacts/companion-v23-special-expression-component-performance-preview-20260720/frame-02-daily_star_lift.pbm"
+    },
+    {
+      "index": 3,
+      "segment": "daily_settle",
+      "valid": true,
+      "targetPbm": "docs/validation/artifacts/companion-v23-special-expression-component-performance-preview-20260720/frame-03-daily_settle.pbm"
+    },
+    {
+      "index": 4,
+      "segment": "menu_active_daily_entry",
+      "valid": true,
+      "targetPbm": "docs/validation/artifacts/companion-v23-special-expression-component-performance-preview-20260720/frame-04-menu_active_daily_entry.pbm"
+    },
+    {
+      "index": 5,
+      "segment": "menu_active_daily_notice",
+      "valid": true,
+      "targetPbm": "docs/validation/artifacts/companion-v23-special-expression-component-performance-preview-20260720/frame-05-menu_active_daily_notice.pbm"
+    },
+    {
+      "index": 6,
+      "segment": "menu_active_face_entry",
+      "valid": true,
+      "targetPbm": "docs/validation/artifacts/companion-v23-special-expression-component-performance-preview-20260720/frame-06-menu_active_face_entry.pbm"
+    },
+    {
+      "index": 7,
+      "segment": "menu_active_dots_lead",
+      "valid": true,
+      "targetPbm": "docs/validation/artifacts/companion-v23-special-expression-component-performance-preview-20260720/frame-07-menu_active_dots_lead.pbm"
+    },
+    {
+      "index": 8,
+      "segment": "menu_active_dots_response",
+      "valid": true,
+      "targetPbm": "docs/validation/artifacts/companion-v23-special-expression-component-performance-preview-20260720/frame-08-menu_active_dots_response.pbm"
+    },
+    {
+      "index": 9,
+      "segment": "menu_active_state_hold",
+      "valid": true,
+      "targetPbm": "docs/validation/artifacts/companion-v23-special-expression-component-performance-preview-20260720/frame-09-menu_active_state_hold.pbm"
+    },
+    {
+      "index": 10,
+      "segment": "menu_active_dots_release",
+      "valid": true,
+      "targetPbm": "docs/validation/artifacts/companion-v23-special-expression-component-performance-preview-20260720/frame-10-menu_active_dots_release.pbm"
+    },
+    {
+      "index": 11,
+      "segment": "menu_active_daily_settle",
+      "valid": true,
+      "targetPbm": "docs/validation/artifacts/companion-v23-special-expression-component-performance-preview-20260720/frame-11-menu_active_daily_settle.pbm"
+    },
+    {
+      "index": 12,
+      "segment": "recording_active_daily_entry",
+      "valid": true,
+      "targetPbm": "docs/validation/artifacts/companion-v23-special-expression-component-performance-preview-20260720/frame-12-recording_active_daily_entry.pbm"
+    },
+    {
+      "index": 13,
+      "segment": "recording_active_daily_notice",
+      "valid": true,
+      "targetPbm": "docs/validation/artifacts/companion-v23-special-expression-component-performance-preview-20260720/frame-13-recording_active_daily_notice.pbm"
+    },
+    {
+      "index": 14,
+      "segment": "recording_active_face_entry",
+      "valid": true,
+      "targetPbm": "docs/validation/artifacts/companion-v23-special-expression-component-performance-preview-20260720/frame-14-recording_active_face_entry.pbm"
+    },
+    {
+      "index": 15,
+      "segment": "recording_active_listening_inner",
+      "valid": true,
+      "targetPbm": "docs/validation/artifacts/companion-v23-special-expression-component-performance-preview-20260720/frame-15-recording_active_listening_inner.pbm"
+    },
+    {
+      "index": 16,
+      "segment": "recording_active_state_hold",
+      "valid": true,
+      "targetPbm": "docs/validation/artifacts/companion-v23-special-expression-component-performance-preview-20260720/frame-16-recording_active_state_hold.pbm"
+    },
+    {
+      "index": 17,
+      "segment": "recording_active_listening_release",
+      "valid": true,
+      "targetPbm": "docs/validation/artifacts/companion-v23-special-expression-component-performance-preview-20260720/frame-17-recording_active_listening_release.pbm"
+    },
+    {
+      "index": 18,
+      "segment": "recording_active_daily_settle",
+      "valid": true,
+      "targetPbm": "docs/validation/artifacts/companion-v23-special-expression-component-performance-preview-20260720/frame-18-recording_active_daily_settle.pbm"
+    },
+    {
+      "index": 19,
+      "segment": "charging_active_daily_entry",
+      "valid": true,
+      "targetPbm": "docs/validation/artifacts/companion-v23-special-expression-component-performance-preview-20260720/frame-19-charging_active_daily_entry.pbm"
+    },
+    {
+      "index": 20,
+      "segment": "charging_active_daily_notice",
+      "valid": true,
+      "targetPbm": "docs/validation/artifacts/companion-v23-special-expression-component-performance-preview-20260720/frame-20-charging_active_daily_notice.pbm"
+    },
+    {
+      "index": 21,
+      "segment": "charging_active_face_entry",
+      "valid": true,
+      "targetPbm": "docs/validation/artifacts/companion-v23-special-expression-component-performance-preview-20260720/frame-21-charging_active_face_entry.pbm"
+    },
+    {
+      "index": 22,
+      "segment": "charging_active_breathing_lead",
+      "valid": true,
+      "targetPbm": "docs/validation/artifacts/companion-v23-special-expression-component-performance-preview-20260720/frame-22-charging_active_breathing_lead.pbm"
+    },
+    {
+      "index": 23,
+      "segment": "charging_active_state_hold",
+      "valid": true,
+      "targetPbm": "docs/validation/artifacts/companion-v23-special-expression-component-performance-preview-20260720/frame-23-charging_active_state_hold.pbm"
+    },
+    {
+      "index": 24,
+      "segment": "charging_active_breathing_release",
+      "valid": true,
+      "targetPbm": "docs/validation/artifacts/companion-v23-special-expression-component-performance-preview-20260720/frame-24-charging_active_breathing_release.pbm"
+    },
+    {
+      "index": 25,
+      "segment": "charging_active_daily_settle",
+      "valid": true,
+      "targetPbm": "docs/validation/artifacts/companion-v23-special-expression-component-performance-preview-20260720/frame-25-charging_active_daily_settle.pbm"
+    }
+  ]
+}

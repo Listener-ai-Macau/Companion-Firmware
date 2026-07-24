@@ -1,0 +1,141 @@
+{
+  "schema_id": "companion.wb55.gdey0154d67_t03.vendor_partial_disjoint_no_union_settle_completion_audit.v1",
+  "status": "NO_GO_OPERATOR_LEADING_EDGE_CUTOFF_NORMAL_RESTORED",
+  "goal_scope": "COMP-REQ-243 lower-driver-only production-off two-pass erase-old then disjoint-draw diagnostic",
+  "completion_decision": "The implementation and machine trace are complete, but canonical physical acceptance failed. Preserve the evidence and default-off code; do not promote or bind the candidate.",
+  "changed_files": [
+    "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
+    "cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile",
+    "tools/build_nucleo_bringup.ps1",
+    "tools/run_wb55_vendor_partial_disjoint_no_union_settle_diagnostic.ps1",
+    "tools/verify_wb55_vendor_partial_disjoint_no_union_settle_diagnostic.py",
+    "tools/verify_wb55_vendor_partial_disjoint_no_union_settle_hardware_prerequisite.py",
+    "tools/verify_wb55_vendor_partial_disjoint_no_union_settle_log.py",
+    "docs/companion_product_requirements.md",
+    "docs/validation/companion-gdey0154d67-t03-lower-driver-luna-handoff-20260721.md",
+    "docs/validation/companion-gdey0154d67-t03-vendor-partial-disjoint-no-union-settle-static-20260721.json",
+    "docs/validation/companion-gdey0154d67-t03-vendor-partial-disjoint-no-union-settle-r2-hardware-prerequisite-20260721.json",
+    "docs/validation/companion-gdey0154d67-t03-vendor-partial-disjoint-no-union-settle-operator-r1-20260721.json",
+    "docs/validation/companion-gdey0154d67-t03-vendor-partial-disjoint-no-union-settle-completion-audit-20260721.json"
+  ],
+  "implementation": {
+    "candidate": "vendor_partial_disjoint_no_union_settle",
+    "default_disabled": true,
+    "production_off": true,
+    "changed_frame_order": [
+      "previous-frame black bounding box + current-frame 0x24 + supplier completion",
+      "one-to-five byte-aligned non-overlapping diff windows + current-frame 0x24 + supplier completion"
+    ],
+    "forbidden_transport_absent": [
+      "0x26 after baseline",
+      "0xC7",
+      "159-byte LUT load",
+      "5000-byte full write after baseline",
+      "third activation",
+      "old-or-current union",
+      "historical failed ordering"
+    ]
+  },
+  "commands": [
+    {"name": "diagnostic_build", "exit_code": 0},
+    {"name": "observer_build", "exit_code": 0},
+    {"name": "trace_parser_positive_and_five_negative_fixtures", "exit_code": 0},
+    {"name": "python_compile_and_powershell_syntax", "exit_code": 0},
+    {"name": "r2_hardware_prerequisite_write_and_no_write", "exit_code": 0},
+    {"name": "static_gate", "exit_code": 0},
+    {"name": "runner_check_only", "exit_code": 0},
+    {"name": "product_registry_verifier", "exit_code": 0},
+    {"name": "current_goal_audit", "exit_code": 0},
+    {"name": "recovery_runner_host_test", "exit_code": 0},
+    {"name": "white_rail_parser_self_test", "exit_code": 0},
+    {"name": "serial_open_retry_self_test", "exit_code": 0},
+    {"name": "bounded_hardware_capture", "exit_code": 0},
+    {"name": "same_raw_trace_machine_gate", "exit_code": 0},
+    {"name": "canonical_operator_review", "exit_code": 1, "reason": "operator selected failure"},
+    {"name": "normal_restore_flash_and_verify", "exit_code": 0},
+    {"name": "git_diff_check", "exit_code": 0}
+  ],
+  "legacy_gate_note": {
+    "command_status": "EXPECTED_REJECT_STALE_CURRENT_SOURCE_BINDING",
+    "explanation": "The generic historical recovery gate correctly refuses to rebind retained r2 White/Black/rail evidence to the changed current driver. The dedicated prerequisite preserves the historical source hash and separately proves the current candidate remains default-off.",
+    "evidence_mutated_or_rebound": false
+  },
+  "artifacts": {
+    "supplier_epaper_c": {
+      "path": "C:/Users/Billy/Desktop/GDEH0154D67-20211203-P-LUT(1s) -1s快刷/EPD_W21/EPAPER.c",
+      "sha256": "7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896",
+      "access": "read-only"
+    },
+    "static": {
+      "path": "docs/validation/companion-gdey0154d67-t03-vendor-partial-disjoint-no-union-settle-static-20260721.json",
+      "sha256": "667C59DDDE07C19E6756E2E0EA62A5659112462D90102F4F7C7C66D43DE8CC80",
+      "status": "PASS_STATIC_SOURCE_EXACT_DISJOINT_NO_UNION_SETTLE_DEFAULT_OFF"
+    },
+    "hardware_prerequisite": {
+      "path": "docs/validation/companion-gdey0154d67-t03-vendor-partial-disjoint-no-union-settle-r2-hardware-prerequisite-20260721.json",
+      "sha256": "90D5EA544B5A7131E36C74C28C9BEE04DF08041D47D9EB0C2EF6FBC59008C04A",
+      "status": "PASS_R2_HARDWARE_PREREQUISITE_DISJOINT_NO_UNION_SETTLE_UNPROVEN"
+    },
+    "raw_log": {
+      "path": ".cache/validation/wb55-vendor-partial-disjoint-no-union-settle-r1-20260721/capture/nucleo-serial-raw.log",
+      "sha256": "5506E1CB38AF6117DDD4B2F11E585F46824B504125DB220B3021A78B5F7E495A"
+    },
+    "machine_trace": {
+      "path": ".cache/validation/wb55-vendor-partial-disjoint-no-union-settle-r1-20260721/vendor-partial-disjoint-no-union-settle-trace.json",
+      "sha256": "8BC7D28C8D54C175525CF95D91977CCE2D649434F7746CA84F203FC1DE2A8355",
+      "status": "PASS_MACHINE_VENDOR_PARTIAL_DISJOINT_NO_UNION_SETTLE_TRACE"
+    },
+    "operator": {
+      "path": "docs/validation/companion-gdey0154d67-t03-vendor-partial-disjoint-no-union-settle-operator-r1-20260721.json",
+      "sha256": "67E43FBBD7546EB99E4CE8B06EE84141D0B0F4419E77C7ED1AF7D9C38D7D9C00",
+      "status": "NO_GO_OPERATOR_LEADING_EDGE_CUTOFF_DISJOINT_NO_UNION_SETTLE"
+    },
+    "stage_run": {
+      "path": ".cache/validation/wb55-vendor-partial-disjoint-no-union-settle-r1-20260721/stage-run.json",
+      "sha256": "DA62B9313499F726D70CC235B2C4F1E5A53FA96BA6310D5F22336FD0162736FE",
+      "status": "NO_GO"
+    },
+    "normal_restore_log": {
+      "path": ".cache/validation/flash-nucleo/stm32-programmer-20260721-112018-10532.stdout.log",
+      "sha256": "10920B33903F13BFB544541442DFFAD46156E62094F87D9CAA792513FD43D6C2",
+      "verified": true
+    }
+  },
+  "machine_result": {
+    "changed_frames": 48,
+    "controller_completions": 96,
+    "busy_completions": 96,
+    "panel_errors": 0,
+    "single_completion_max_ms": 447,
+    "two_completion_p95_ms": 894,
+    "two_completion_max_ms": 894
+  },
+  "human_result": {
+    "selected": "失败",
+    "note": "还是移动的时候会吞掉一截再补全, 但是已经没有残影了, 能不要吞掉一截再补全吗, 移动方向上回吞掉一小截",
+    "residue_visible": false,
+    "leading_edge_cutoff_visible": true,
+    "continuity_accepted": false
+  },
+  "hardware_contact": {
+    "bounded_diagnostic_runs": 1,
+    "observer_runs": 1,
+    "white_black_or_rail_retests": 0
+  },
+  "normal_restore": {
+    "restored": true,
+    "verified": true,
+    "hex_sha256": "E1997F29DCB8735899B4BC0B9012CF75025F3CA8D21250485BCC21E4C4691B46"
+  },
+  "remaining_gaps": [
+    "No owner-accepted no-residue and no-leading-edge-cutoff local-motion topology exists.",
+    "No further physical candidate is authorized without new steering and materially distinct evidence."
+  ],
+  "protected_boundaries": {
+    "supplier_directory_modified": false,
+    "locked_v9_or_owner_acceptance_modified": false,
+    "rig_crig_browser_or_dynamic_binding_modified": false,
+    "lut_waveform_register_control_reset_border_timing_rail_or_temperature_modified": false,
+    "production_path_enabled": false
+  }
+}

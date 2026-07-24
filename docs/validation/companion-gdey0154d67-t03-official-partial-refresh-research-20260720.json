@@ -1,0 +1,58 @@
+{
+  "schema_id": "companion.gdey0154d67_t03.official_partial_refresh_research.v1",
+  "status": "PASS_OFFICIAL_METHOD_IDENTIFIED_PANEL_IDENTITY_REMAINS_UNPROVEN",
+  "claim_scope": "official-source research for a default-disabled current-room diagnostic only; no panel identity, LUT, temperature or production claim",
+  "retrieved_on": "2026-07-20",
+  "owner_request": "看能不能优化底层，解决下这个问题。然后你上网查一下有没有类似的解决方法。然后呢，如果没有的话，你看一下要怎么办？",
+  "official_sources": [
+    {
+      "title": "Good Display FAQ-1 General Questions",
+      "url": "https://www.good-display.com/news/238.html",
+      "findings": [
+        "GDEH partial refresh requires background preparation before partial refresh.",
+        "Partial refresh process is old data, then new data, then update.",
+        "After five partial refreshes, Good Display recommends a full black-and-white refresh and a longer interval to reduce ghosting.",
+        "Partial refresh is best above 20 degrees C; below 20 degrees C the refresh time must increase and below 0 degrees C partial refresh is unsupported."
+      ]
+    },
+    {
+      "title": "Good Display update-mode guidance",
+      "url": "https://www.good-display.com/news/134.html",
+      "findings": [
+        "Repeated partial or fast updates can leave prior content visible as ghosting.",
+        "A full update removes ghosting and Good Display recommends one after five or six partial or fast updates."
+      ]
+    },
+    {
+      "title": "Good Display GDEY0154D67 product and download page",
+      "url": "https://www.good-display.com/product/388.html",
+      "findings": [
+        "The official product identifies GDEY0154D67 as 200x200, SSD1681 and supporting partial refresh.",
+        "The official site separately publishes GDEY0154D67 STM32 sample code and an SSD1681 driver document."
+      ]
+    },
+    {
+      "title": "Good Display GDEY0154D67-FT01 product page",
+      "url": "https://www.good-display.com/product/615.html",
+      "findings": [
+        "The related 200x200 SSD1681 product lists partial refresh at 0.3 s and fast refresh at 1.5 s."
+      ]
+    }
+  ],
+  "allowed_single_variable_diagnostic": {
+    "baseline": "retain supplier source 0x24 then 0x26 full 5000-byte base map and 0xF7 update",
+    "partial": "retain source reset, 0x3C=0x80, window/counter order, 0xFF, 0x20 and BUSY; write prior changed region to 0x26 then current changed region to 0x24",
+    "forbidden": [
+      "LUT_DATA change or a custom LUT",
+      "VCOM, rail, temperature or update-control-byte tuning",
+      "production refresh-policy or dynamic-expression activation",
+      "claiming that the external GDEY source proves the current panel/FPC identity"
+    ]
+  },
+  "decision_tree": {
+    "old_new_ram_ab_removes_or_materially_reduces_residue": "retain only as a separately reviewed, bounded diagnostic candidate; no production promotion without panel identity and repeated physical evidence",
+    "old_new_ram_ab_still_has_material_residue": "the official available remedy is a full black/white clean after five partial updates; compare that visible interruption separately, or request a panel-bound partial waveform/recovery source from Good Display",
+    "full_clean_is_visually_unacceptable": "NO_GO for OLED-like continuous e-paper expression motion with the current source set"
+  },
+  "identity_boundary": "The official web source is exact for the GDEY0154D67 family but the observed panel/FPC marking 0154BN-D67-D2 is not yet documentary proof of exact identity; use only production-off current-room evidence."
+}

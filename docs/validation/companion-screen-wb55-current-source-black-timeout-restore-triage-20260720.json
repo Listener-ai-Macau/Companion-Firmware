@@ -1,0 +1,74 @@
+{
+  "schema_id": "companion.wb55.current_source_black_timeout_restore_triage.v1",
+  "status": "FAIL_RETRY_REQUIRES_EXCLUSIVE_MUTEX_AND_FOCUSED_OWNER_WINDOW",
+  "claim_scope": "triage_only_no_new_hardware_or_visual_claim",
+  "target": "NUCLEO-WB55RG + ESP32-FTS02 + replacement display FPC + GDEY0154D67-T03",
+  "failed_stage": {
+    "path": ".cache/validation/wb55-screen-recovery-current-source-20260720/black/stage-run.json",
+    "stage_status": "FAIL",
+    "digital_steps": {
+      "flash_black": "PASS",
+      "capture_black": "PASS",
+      "parse_black": "PASS"
+    },
+    "operator_result": {
+      "selected": "Timeout",
+      "visual_acceptance": "NOT_OBTAINED",
+      "note_policy": "The recorded free text is not interpreted as an observation or instruction because the selected result was Timeout."
+    },
+    "normal_restore": {
+      "step": "flash_normal_restore_after_failure",
+      "status": "FAIL",
+      "exit_code": 1,
+      "error_classification": "RESTORE_STLINK_CONNECT_FAILURE_CONCURRENCY_UNRESOLVED"
+    }
+  },
+  "source_binding": {
+    "ssd1681_target": {
+      "path": "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
+      "sha256": "759758DC97FEFB552EDBD50D787A600D859915750E6F33B1736F280852CA85A6"
+    },
+    "black_diagnostic_image": {
+      "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_official_full_diagnostic_black/Companion_Nucleo_WB55RG_OfficialFullDiagnostic_black.hex",
+      "sha256": "71B136C2F0DA2DA74A9D16BF22EA79B461C33DBA9AC47128B1FDD4900F641ED8"
+    },
+    "normal_restore_image": {
+      "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build/Companion_Nucleo_WB55RG_Bringup.hex",
+      "sha256": "E1997F29DCB8735899B4BC0B9012CF75025F3CA8D21250485BCC21E4C4691B46"
+    }
+  },
+  "raw_log_evidence": {
+    "earlier_normal_restore_success": {
+      "path": ".cache/validation/flash-nucleo/stm32-programmer-20260720-143531-14408.stdout.log",
+      "observation": "The normal image downloaded, verified and reset successfully."
+    },
+    "failed_black_stage_restore": {
+      "path": ".cache/validation/flash-nucleo/stm32-programmer-20260720-143533-28592.stdout.log",
+      "observation": "STM32CubeProgrammer reported ST-LINK error (DEV_CONNECT_ERR)."
+    }
+  },
+  "causal_assessment": {
+    "proved": [
+      "The source-bound Black digital trace is not a physical visual acceptance because the operator result timed out.",
+      "The required normal restore failed during the Black stage.",
+      "A normal restore did succeed five seconds earlier in a different invocation."
+    ],
+    "not_proved": [
+      "Concurrent ST-LINK access caused the failure.",
+      "The FTS02, FPC, panel, source driver or LUT caused the restore failure.",
+      "The Black panel was visibly uniform."
+    ],
+    "forbidden_inference": "Do not modify a LUT, panel driver, V9 art, CRIG or runtime policy from this timeout/restore failure."
+  },
+  "remediation": {
+    "aiw_surface": "The installed canonical AIW retains operator-prompt but no longer exposes with-lock.",
+    "implemented_control": "Firmware-owned Local\\Companion-WB55-Hardware-Exclusive-v1 mutex, held by the recovery runner across flash, capture, parser, review and normal restore; direct flash/capture acquire the same mutex and runner children verify a live inherited grant.",
+    "machine_preconditions": [
+      "pwsh -NoProfile -File tools/test_companion_wb55_lock_host.ps1",
+      "python tools/verify_wb55_screen_hardware_recovery_runner.py",
+      "pwsh -NoProfile -File tools/flash_nucleo_bringup.ps1 -CheckOnly"
+    ],
+    "next_physical_action": "Only after the owner explicitly starts a focused Black retest, run the official Black recovery stage once. The canonical Chinese prompt must remain open during observation, a nonempty 通过 note is mandatory, and normal firmware must restore before any claim advances."
+  },
+  "p0_disposition": "P0 remains open. The only valid next closure evidence is a fresh source-bound locked Black stage with all machine steps PASS, normal firmware restored, and canonical physical Black PASS; the existing White rail artifact remains prerequisite evidence only."
+}

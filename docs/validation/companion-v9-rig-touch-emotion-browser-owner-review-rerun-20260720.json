@@ -1,0 +1,28 @@
+{
+  "schema": "companion.v9_rig_touch_emotion_browser_owner_review.v1",
+  "status": "FAIL_OWNER_TOUCH_EMOTION_BROWSER_PREVIEW_REVIEW",
+  "selected": "失败",
+  "operator_note": "\r\n",
+  "closure": {
+    "path": "docs\\validation\\companion-v9-rig-touch-emotion-machine-closure-20260720.json",
+    "sha256": "56D3254E23E9C3409690B0FA0FB4FEACDCA24C56DD82CAD564334F9F4805DBFC"
+  },
+  "preview": {
+    "path": "docs\\validation\\companion-v9-rig-touch-emotion-machine-preview-20260719.json",
+    "sha256": "20151419070E28D94995712C89F877CD452857BBE53239190ADEE338A0EF75CB"
+  },
+  "parity": {
+    "path": "docs\\validation\\companion-v9-rig-touch-emotion-machine-parity-20260719.json",
+    "sha256": "06317A4F00F364D5C5F377CD5365027DC59C3180736270076DD5136B4264E392"
+  },
+  "browser_player": {
+    "path": "docs/validation/artifacts/companion-v9-rig-touch-emotion-machine-preview-20260719/touch-emotion-component-player.html",
+    "sha256": "E3754142E441AE91682EE07ACB7DC16402E6D5657BCA060610453CC0678BBCA3"
+  },
+  "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "runtime_resource_activated": false,
+  "physical_panel_acceptance": false,
+  "physical_dynamic_flash_authorized": false,
+  "special_state_fallback": "fail_closed",
+  "accepted_regression_baseline": null
+}

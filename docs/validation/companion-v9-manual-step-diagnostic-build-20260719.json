@@ -1,0 +1,72 @@
+{
+  "checks": {
+    "build_requires_explicit_external_nor_provisioning": true,
+    "build_verifier_never_flashes_hardware": true,
+    "exact_step_clips_exist_with_three_frames": true,
+    "locked_cemp_hash": true,
+    "locked_v9_identity": true,
+    "locked_v9_source_hash": true,
+    "manual_step_excludes_rig_v22_and_behavior_logic": true,
+    "manual_step_is_explicit_compile_time_demo": true,
+    "manual_step_sequence_is_exact": true,
+    "motion_cancellation_precedes_manual_player_start": true,
+    "next_press_requires_drained_queue": true,
+    "normal_runtime_remains_inactive": true,
+    "only_settle_frame_is_rendered_full": true,
+    "provisioned_cemp_byte_identical_to_locked_v9": true,
+    "screen_tap_is_the_only_diagnostic_advance": true
+  },
+  "claim_scope": "build_only_locked_v9_static_panel_path_comparator_not_product_animation",
+  "failures": [],
+  "image": {
+    "exists": true,
+    "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_v9_manual_step_diagnostic/Companion_Nucleo_WB55RG_V9ManualStepDiagnostic.hex",
+    "sha256": "CE69017247FBABDB85F5A4555A195566993A41982BFC5CE9A42AFE53D6765425"
+  },
+  "manual_step_sequence": [
+    "idle",
+    "touch",
+    "swipe_left",
+    "swipe_right"
+  ],
+  "physical_flash_gate": "Requires explicit owner start for one controlled diagnostic; it does not clear the White/Black, FTS02, or rail gates.",
+  "provisioned_cemp": {
+    "exists": true,
+    "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_v9_manual_step_diagnostic/generated/companion-v9-expression-candidate-200x200.cemp",
+    "sha256": "B89E6EA1D6583063969D48D28EE3D9BF444408D4347BC4974259DD75D0633F26"
+  },
+  "refresh_mode": "full",
+  "rendered_frame_in_clip": 2,
+  "schema_id": "companion.wb55.v9_manual_step_diagnostic.v1",
+  "sources": {
+    "app_ble": {
+      "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c",
+      "sha256": "55C89F390576E2197BC9B74DDFEC05C5D360E4D8D2A2B56DDA65B07297DEBA32"
+    },
+    "build_script": {
+      "path": "tools/build_nucleo_bringup.ps1",
+      "sha256": "FCE8CE691FFCCDAEDD6E563BFE402AF99B69F0F28DEE06F70F508464955FA394"
+    },
+    "locked_v9_cemp": {
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/companion-v9-expression-candidate-200x200.cemp",
+      "sha256": "B89E6EA1D6583063969D48D28EE3D9BF444408D4347BC4974259DD75D0633F26"
+    },
+    "locked_v9_source": {
+      "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+    },
+    "main": {
+      "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/main.c",
+      "sha256": "75D19712F2F6175F5A933CAE79C574F24465B12616B0D0D22607E4D12DDC0487"
+    },
+    "v9_binding": {
+      "path": "app/companion_pendant/epaper/v9_candidate_resource_binding.c",
+      "sha256": "220A310FFA860C0D2B40FC8CD4D8467EBB016BB6C5160BF5868B3BAAD6875F86"
+    },
+    "v9_manifest": {
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/v9-expression-cemp-manifest.json",
+      "sha256": "FC9A961D1553376D36DB5717EC1ACF952B801465D57CE8D1E37012D122EAE02B"
+    }
+  },
+  "status": "PASS_BUILD_ONLY_PHYSICAL_DIAGNOSTIC_NOT_FLASHED"
+}

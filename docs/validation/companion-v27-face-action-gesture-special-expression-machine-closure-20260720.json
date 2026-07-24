@@ -1,0 +1,53 @@
+{
+  "schema": "companion.v27_face_action_gesture_special_expression_machine_closure.v1",
+  "status": "PASS_V27_FACE_ACTION_GESTURE_MACHINE_CLOSURE_RUNTIME_INACTIVE",
+  "claim_scope": "source-to-component-to-browser/target machine closure for an unbound runtime-inactive candidate; no firmware binding, CRIG/profile export, flash, panel output, physical acceptance, or human art acceptance",
+  "locked_v9_source": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "artifacts": {
+    "source_gate": {
+      "path": "docs/validation/companion-v27-face-action-gesture-special-expression-source-gate-20260720.json",
+      "sha256": "DCFDBA777AA65A469CFBBAE9CD70AACE1C66C29884C202E6B2BAF60FDA13C1A6",
+      "status": "PASS_V27_FACE_ACTION_GESTURE_SOURCE_GATE_PENDING_COMPONENT_EXPORT"
+    },
+    "component_export_gate": {
+      "path": "docs/validation/companion-v27-face-action-gesture-special-expression-component-export-gate-20260720.json",
+      "sha256": "91F16409E4F943B4498F94969EEC8FD5AD49DE6D030A49CDFA942004DB1BF587",
+      "status": "PASS_V27_FACE_ACTION_GESTURE_COMPONENT_EXPORT_UNBOUND"
+    },
+    "component_performance": {
+      "path": "docs/validation/companion-v27-face-action-gesture-special-expression-component-performance-preview-20260720.json",
+      "sha256": "A46FB3463E0052C9EDE1F88727AFBD2B1BCF4FE65F1E69C75858CEF2E901E076",
+      "status": "PASS_V27_FACE_ACTION_GESTURE_COMPONENT_PERFORMANCE_RUNTIME_INACTIVE"
+    },
+    "browser_target_parity": {
+      "path": "docs/validation/companion-v27-face-action-gesture-special-expression-component-performance-parity-20260720.json",
+      "sha256": "3AB1B55C5535AFE9BC7743A960C8944FA7FF8A293AA81B5ED242DFC379075A04",
+      "status": "PASS_V27_FACE_ACTION_GESTURE_COMPONENT_PERFORMANCE_BROWSER_TARGET_PLAN_PARITY"
+    },
+    "browser_render": {
+      "path": "docs/validation/companion-v27-face-action-gesture-special-expression-component-browser-render-20260720.json",
+      "sha256": "D3A583B3B3C949BFE7AC680FAF79FF1271E62B64ACCBE6E4453FA58C8C7424EC",
+      "status": "PASS_V27_BROWSER_RENDER_INSPECTION_NATIVE_200X200"
+    }
+  },
+  "selection_policy": {
+    "mode": "explicit_event_performance",
+    "random_state_selection": false,
+    "automatic_cross_state_cycle": false,
+    "special_state_exit_returns_to": "v9_daily",
+    "unavailable_special_states": [
+      "upgrade",
+      "sleep",
+      "error"
+    ],
+    "unavailable_special_state_policy": "fail_closed"
+  },
+  "next_human_boundary": "canonical browser-only Chinese owner art review of the V27 candidate; any FAIL returns to generated-source refinement before a CRIG/profile or behavior binding",
+  "physical_gate": "PENDING_CURRENT_FPC_OFFICIAL_WHITE_BLACK_GATE",
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden",
+  "errors": []
+}

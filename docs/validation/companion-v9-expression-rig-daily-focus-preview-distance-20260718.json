@@ -1,0 +1,119 @@
+{
+  "schema": "companion.v9_expression_rig_preview_distance.v1",
+  "status": "PASS_PREVIEW_DISTANCE_READY_FOR_OWNER_PROMPT",
+  "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "runtime_resource_activated": false,
+  "preview_scope": "daily_focus",
+  "preview_report": "docs/validation/companion-v9-expression-rig-daily-focus-preview-20260718.json",
+  "render_report": "docs/validation/companion-v9-expression-rig-render-20260717.json",
+  "min_visible_distance_pixels": 700,
+  "max_whole_face_distance_pixels": 6500,
+  "dynamic_groups": [
+    "brows",
+    "cheeks",
+    "eyes/highlights",
+    "nose-mouth/lips",
+    "small charm"
+  ],
+  "distance_records": [
+    {
+      "story": "daily_down",
+      "entry_to_sustain_pixels": 772,
+      "entry_to_settle_pixels": 0,
+      "sustain_layer_count": 13,
+      "sustain_roles": [
+        "charm",
+        "left_brow",
+        "left_cheek",
+        "left_eye",
+        "left_highlight",
+        "left_sparkle",
+        "mouth",
+        "nose",
+        "right_brow",
+        "right_cheek",
+        "right_eye",
+        "right_highlight",
+        "right_sparkle"
+      ]
+    },
+    {
+      "story": "daily_left",
+      "entry_to_sustain_pixels": 702,
+      "entry_to_settle_pixels": 0,
+      "sustain_layer_count": 13,
+      "sustain_roles": [
+        "charm",
+        "left_brow",
+        "left_cheek",
+        "left_eye",
+        "left_highlight",
+        "left_sparkle",
+        "mouth",
+        "nose",
+        "right_brow",
+        "right_cheek",
+        "right_eye",
+        "right_highlight",
+        "right_sparkle"
+      ]
+    },
+    {
+      "story": "daily_right",
+      "entry_to_sustain_pixels": 882,
+      "entry_to_settle_pixels": 0,
+      "sustain_layer_count": 13,
+      "sustain_roles": [
+        "charm",
+        "left_brow",
+        "left_cheek",
+        "left_eye",
+        "left_highlight",
+        "left_sparkle",
+        "mouth",
+        "nose",
+        "right_brow",
+        "right_cheek",
+        "right_eye",
+        "right_highlight",
+        "right_sparkle"
+      ]
+    },
+    {
+      "story": "daily_up",
+      "entry_to_sustain_pixels": 738,
+      "entry_to_settle_pixels": 0,
+      "sustain_layer_count": 13,
+      "sustain_roles": [
+        "charm",
+        "left_brow",
+        "left_cheek",
+        "left_eye",
+        "left_highlight",
+        "left_sparkle",
+        "mouth",
+        "nose",
+        "right_brow",
+        "right_cheek",
+        "right_eye",
+        "right_highlight",
+        "right_sparkle"
+      ]
+    }
+  ],
+  "accepted_dynamic_baseline": {
+    "status": "not_yet_accepted",
+    "comparison_required": false,
+    "path": "docs/validation/companion-v9-expression-rig-accepted-dynamic-baseline.json",
+    "reason": "no canonical owner PASS has promoted a dynamic preview baseline yet"
+  },
+  "forbidden_html_tokens": [
+    "v9-expression-rig-state-matrix.png",
+    ".pbm",
+    "pbm/",
+    "matrix_",
+    "story_"
+  ],
+  "human_prompt_launched": false,
+  "errors": []
+}

@@ -1,0 +1,703 @@
+{
+  "schema_id": "companion.wb55.ssd1681_phase_parallel_r9_static.v1",
+  "status": "PASS_STATIC_PHASE_PARALLEL_R9",
+  "hardware_contact": 0,
+  "execute_invoked": false,
+  "popup_count": 0,
+  "requirement": "COMP-REQ-309",
+  "checks": {
+    "required_inputs": true,
+    "hash_companion-ssd1681-phase-parallel-r9-workbench-20260721.json_1": true,
+    "hash_EPAPER.c_2": true,
+    "hash_companion-ssd1681-ram-command-target-r8-r2-runtime-20260721.json_3": true,
+    "hash_backup-a.bin_4": true,
+    "hash_backup-b.bin_5": true,
+    "hash_companion-pet-special-system-owner-acceptance-20260717.json_6": true,
+    "hash_generated_pet_expression_sheet_v9_candidate.png_7": true,
+    "hash_Companion_Nucleo_WB55RG_Ssd1681PhaseParallelR9.hex_8": true,
+    "hash_Companion_Nucleo_WB55RG_Ssd1681PhaseParallelR9.elf_9": true,
+    "hash_Companion_Nucleo_WB55RG_Ssd1681DualPlaneWhiteClean.hex_10": true,
+    "hash_Companion_Nucleo_WB55RG_Ssd1681DualPlaneWhiteClean.elf_11": true,
+    "hash_run_wb55_ssd1681_custom_mode2_observable_r6_raw_restore.ps1_12": true,
+    "hash_start_wb55_ssd1681_phase_parallel_r9.ps1_13": true,
+    "hash_invoke_wb55_ssd1681_phase_parallel_r9_final_visual_prompt.ps1_14": true,
+    "hash_verify_wb55_ssd1681_phase_parallel_r9_log.py_15": true,
+    "supplier_lut": true,
+    "registry_comp_req_309": true,
+    "workbench_admission": true,
+    "r8_fixed_bank": true,
+    "waveform": true,
+    "driver": true,
+    "isolated_build": true,
+    "elf_markers": true,
+    "runner": true,
+    "prompt": true,
+    "launcher": true,
+    "negative_tail_drift": true,
+    "negative_invented_timing": true,
+    "negative_stationary_drive": true,
+    "negative_activation_17": true,
+    "negative_loop_dwell": true,
+    "negative_early_uart": true,
+    "negative_forbidden_f7": true,
+    "negative_missing_post_sync": true,
+    "negative_fixed_bank_swap": true,
+    "negative_lut_payload_152": true,
+    "negative_runner_hash": true,
+    "negative_runner_missing_postclean": true,
+    "negative_runner_machine_popup": true,
+    "negative_runner_missing_prompt": true,
+    "negative_prompt_wrong_buttons": true,
+    "negative_prompt_before_machine": true,
+    "negative_prompt_second_popup": true,
+    "host_r9_log_parser": true,
+    "host_r9_workbench": true,
+    "host_dual_plane_parser": true,
+    "host_restore": true,
+    "host_normal_resume": true,
+    "host_launcher": true,
+    "powershell_runner": true,
+    "powershell_launcher": true,
+    "powershell_prompt": true,
+    "powershell_builder": true
+  },
+  "failures": [],
+  "candidate": {
+    "name": "source_field_reorder_phase_parallel_r9",
+    "production_enabled": false,
+    "default_enabled": false,
+    "lut_byte_count": 159,
+    "lut_hex": "000000000000000000000000404080800000000000000000808040400000000000000000000000000000000000000000000000000000000000000000050000000000000300000000000005000000000000030000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000222222222222000000221741A83258",
+    "lut_sha256": "9BCBAC1A07ED0A112D26409FBCDB8F5FE27CE07D922C2E18881C10A53229DDCD",
+    "supplier_lut_sha256": "F83EA7360CFFF04FE9D004A75858A46213CBD710AAA2F0C4A62597E3EA176D15",
+    "workbench_sha256": "E7311523D6FE571434F0C1F2D5EC76B7ED9B64DC725B0726DDEC023421D7E4EF",
+    "tail_hex": "221741A83258",
+    "fr_xon_tail_hex": "222222222222000000221741A83258",
+    "modified_byte_count": 22,
+    "modified_byte_manifest": [
+      {
+        "index": 0,
+        "field": "VS[LUT0][group0:A-D packed]",
+        "supplier_hex": "AA",
+        "candidate_hex": "00",
+        "derivation": "delete complete supplier fields to VSS/zero timing",
+        "supplier_source_fields": []
+      },
+      {
+        "index": 1,
+        "field": "VS[LUT0][group1:A-D packed]",
+        "supplier_hex": "80",
+        "candidate_hex": "00",
+        "derivation": "delete complete supplier fields to VSS/zero timing",
+        "supplier_source_fields": []
+      },
+      {
+        "index": 2,
+        "field": "VS[LUT0][group2:A-D packed]",
+        "supplier_hex": "55",
+        "candidate_hex": "00",
+        "derivation": "delete complete supplier fields to VSS/zero timing",
+        "supplier_source_fields": []
+      },
+      {
+        "index": 3,
+        "field": "VS[LUT0][group3:A-D packed]",
+        "supplier_hex": "40",
+        "candidate_hex": "00",
+        "derivation": "delete complete supplier fields to VSS/zero timing",
+        "supplier_source_fields": []
+      },
+      {
+        "index": 12,
+        "field": "VS[LUT1][group0:A-D packed]",
+        "supplier_hex": "54",
+        "candidate_hex": "40",
+        "derivation": "repack complete supplier VS fields into admitted destination phases",
+        "supplier_source_fields": [
+          "VS[0A-LUT1]"
+        ]
+      },
+      {
+        "index": 13,
+        "field": "VS[LUT1][group1:A-D packed]",
+        "supplier_hex": "10",
+        "candidate_hex": "40",
+        "derivation": "repack complete supplier VS fields into admitted destination phases",
+        "supplier_source_fields": [
+          "VS[1B-LUT1]"
+        ]
+      },
+      {
+        "index": 14,
+        "field": "VS[LUT1][group2:A-D packed]",
+        "supplier_hex": "A8",
+        "candidate_hex": "80",
+        "derivation": "repack complete supplier VS fields into admitted destination phases",
+        "supplier_source_fields": [
+          "VS[2A-LUT1]"
+        ]
+      },
+      {
+        "index": 15,
+        "field": "VS[LUT1][group3:A-D packed]",
+        "supplier_hex": "20",
+        "candidate_hex": "80",
+        "derivation": "repack complete supplier VS fields into admitted destination phases",
+        "supplier_source_fields": [
+          "VS[3B-LUT1]"
+        ]
+      },
+      {
+        "index": 24,
+        "field": "VS[LUT2][group0:A-D packed]",
+        "supplier_hex": "AA",
+        "candidate_hex": "80",
+        "derivation": "repack complete supplier VS fields into admitted destination phases",
+        "supplier_source_fields": [
+          "VS[0A-LUT2]"
+        ]
+      },
+      {
+        "index": 26,
+        "field": "VS[LUT2][group2:A-D packed]",
+        "supplier_hex": "55",
+        "candidate_hex": "40",
+        "derivation": "repack complete supplier VS fields into admitted destination phases",
+        "supplier_source_fields": [
+          "VS[2A-LUT2]"
+        ]
+      },
+      {
+        "index": 36,
+        "field": "VS[LUT3][group0:A-D packed]",
+        "supplier_hex": "54",
+        "candidate_hex": "00",
+        "derivation": "delete complete supplier fields to VSS/zero timing",
+        "supplier_source_fields": []
+      },
+      {
+        "index": 37,
+        "field": "VS[LUT3][group1:A-D packed]",
+        "supplier_hex": "10",
+        "candidate_hex": "00",
+        "derivation": "delete complete supplier fields to VSS/zero timing",
+        "supplier_source_fields": []
+      },
+      {
+        "index": 38,
+        "field": "VS[LUT3][group2:A-D packed]",
+        "supplier_hex": "A8",
+        "candidate_hex": "00",
+        "derivation": "delete complete supplier fields to VSS/zero timing",
+        "supplier_source_fields": []
+      },
+      {
+        "index": 39,
+        "field": "VS[LUT3][group3:A-D packed]",
+        "supplier_hex": "20",
+        "candidate_hex": "00",
+        "derivation": "delete complete supplier fields to VSS/zero timing",
+        "supplier_source_fields": []
+      },
+      {
+        "index": 61,
+        "field": "TP-B[group0]",
+        "supplier_hex": "05",
+        "candidate_hex": "00",
+        "derivation": "delete complete supplier fields to VSS/zero timing",
+        "supplier_source_fields": []
+      },
+      {
+        "index": 63,
+        "field": "TP-C[group0]",
+        "supplier_hex": "05",
+        "candidate_hex": "00",
+        "derivation": "delete complete supplier fields to VSS/zero timing",
+        "supplier_source_fields": []
+      },
+      {
+        "index": 64,
+        "field": "TP-D[group0]",
+        "supplier_hex": "05",
+        "candidate_hex": "00",
+        "derivation": "delete complete supplier fields to VSS/zero timing",
+        "supplier_source_fields": []
+      },
+      {
+        "index": 68,
+        "field": "TP-B[group1]",
+        "supplier_hex": "02",
+        "candidate_hex": "00",
+        "derivation": "delete complete supplier fields to VSS/zero timing",
+        "supplier_source_fields": []
+      },
+      {
+        "index": 75,
+        "field": "TP-B[group2]",
+        "supplier_hex": "05",
+        "candidate_hex": "00",
+        "derivation": "delete complete supplier fields to VSS/zero timing",
+        "supplier_source_fields": []
+      },
+      {
+        "index": 77,
+        "field": "TP-C[group2]",
+        "supplier_hex": "05",
+        "candidate_hex": "00",
+        "derivation": "delete complete supplier fields to VSS/zero timing",
+        "supplier_source_fields": []
+      },
+      {
+        "index": 78,
+        "field": "TP-D[group2]",
+        "supplier_hex": "05",
+        "candidate_hex": "00",
+        "derivation": "delete complete supplier fields to VSS/zero timing",
+        "supplier_source_fields": []
+      },
+      {
+        "index": 82,
+        "field": "TP-B[group3]",
+        "supplier_hex": "02",
+        "candidate_hex": "00",
+        "derivation": "delete complete supplier fields to VSS/zero timing",
+        "supplier_source_fields": []
+      }
+    ],
+    "field_lineage": [
+      {
+        "destination": "0A",
+        "duration": {
+          "value": 5,
+          "source_field": "TP[0A]"
+        },
+        "BW": {
+          "code": 1,
+          "voltage": "VSH1",
+          "source_field": "VS[0A-LUT1]"
+        },
+        "WB": {
+          "code": 2,
+          "voltage": "VSL",
+          "source_field": "VS[0A-LUT2]"
+        }
+      },
+      {
+        "destination": "1A",
+        "duration": {
+          "value": 3,
+          "source_field": "TP[1A]"
+        },
+        "BW": {
+          "code": 1,
+          "voltage": "VSH1",
+          "source_field": "VS[1B-LUT1]"
+        },
+        "WB": {
+          "code": 2,
+          "voltage": "VSL",
+          "source_field": "VS[1A-LUT2]"
+        }
+      },
+      {
+        "destination": "2A",
+        "duration": {
+          "value": 5,
+          "source_field": "TP[2A]"
+        },
+        "BW": {
+          "code": 2,
+          "voltage": "VSL",
+          "source_field": "VS[2A-LUT1]"
+        },
+        "WB": {
+          "code": 1,
+          "voltage": "VSH1",
+          "source_field": "VS[2A-LUT2]"
+        }
+      },
+      {
+        "destination": "3A",
+        "duration": {
+          "value": 3,
+          "source_field": "TP[3A]"
+        },
+        "BW": {
+          "code": 2,
+          "voltage": "VSL",
+          "source_field": "VS[3B-LUT1]"
+        },
+        "WB": {
+          "code": 1,
+          "voltage": "VSH1",
+          "source_field": "VS[3A-LUT2]"
+        }
+      }
+    ]
+  },
+  "transition_oracle": {
+    "shared_timing_frames": 16,
+    "active_phases": [
+      {
+        "slot": "0A",
+        "duration_frames": 5,
+        "BB": {
+          "code": 0,
+          "voltage": "VSS"
+        },
+        "BW": {
+          "code": 1,
+          "voltage": "VSH1"
+        },
+        "WB": {
+          "code": 2,
+          "voltage": "VSL"
+        },
+        "WW": {
+          "code": 0,
+          "voltage": "VSS"
+        }
+      },
+      {
+        "slot": "1A",
+        "duration_frames": 3,
+        "BB": {
+          "code": 0,
+          "voltage": "VSS"
+        },
+        "BW": {
+          "code": 1,
+          "voltage": "VSH1"
+        },
+        "WB": {
+          "code": 2,
+          "voltage": "VSL"
+        },
+        "WW": {
+          "code": 0,
+          "voltage": "VSS"
+        }
+      },
+      {
+        "slot": "2A",
+        "duration_frames": 5,
+        "BB": {
+          "code": 0,
+          "voltage": "VSS"
+        },
+        "BW": {
+          "code": 2,
+          "voltage": "VSL"
+        },
+        "WB": {
+          "code": 1,
+          "voltage": "VSH1"
+        },
+        "WW": {
+          "code": 0,
+          "voltage": "VSS"
+        }
+      },
+      {
+        "slot": "3A",
+        "duration_frames": 3,
+        "BB": {
+          "code": 0,
+          "voltage": "VSS"
+        },
+        "BW": {
+          "code": 2,
+          "voltage": "VSL"
+        },
+        "WB": {
+          "code": 1,
+          "voltage": "VSH1"
+        },
+        "WW": {
+          "code": 0,
+          "voltage": "VSS"
+        }
+      }
+    ],
+    "transitions": {
+      "BB": {
+        "effective_drive_frames": 0,
+        "positive_drive_frames": 0,
+        "negative_drive_frames": 0,
+        "zero_drive_frames": 16,
+        "source_volt_frame_impulse": 0,
+        "sequence": [
+          {
+            "slot": "0A",
+            "code": 0,
+            "voltage": "VSS",
+            "duration_frames": 5
+          },
+          {
+            "slot": "1A",
+            "code": 0,
+            "voltage": "VSS",
+            "duration_frames": 3
+          },
+          {
+            "slot": "2A",
+            "code": 0,
+            "voltage": "VSS",
+            "duration_frames": 5
+          },
+          {
+            "slot": "3A",
+            "code": 0,
+            "voltage": "VSS",
+            "duration_frames": 3
+          }
+        ]
+      },
+      "BW": {
+        "effective_drive_frames": 16,
+        "positive_drive_frames": 8,
+        "negative_drive_frames": 8,
+        "zero_drive_frames": 0,
+        "source_volt_frame_impulse": 0,
+        "sequence": [
+          {
+            "slot": "0A",
+            "code": 1,
+            "voltage": "VSH1",
+            "duration_frames": 5
+          },
+          {
+            "slot": "1A",
+            "code": 1,
+            "voltage": "VSH1",
+            "duration_frames": 3
+          },
+          {
+            "slot": "2A",
+            "code": 2,
+            "voltage": "VSL",
+            "duration_frames": 5
+          },
+          {
+            "slot": "3A",
+            "code": 2,
+            "voltage": "VSL",
+            "duration_frames": 3
+          }
+        ]
+      },
+      "WB": {
+        "effective_drive_frames": 16,
+        "positive_drive_frames": 8,
+        "negative_drive_frames": 8,
+        "zero_drive_frames": 0,
+        "source_volt_frame_impulse": 0,
+        "sequence": [
+          {
+            "slot": "0A",
+            "code": 2,
+            "voltage": "VSL",
+            "duration_frames": 5
+          },
+          {
+            "slot": "1A",
+            "code": 2,
+            "voltage": "VSL",
+            "duration_frames": 3
+          },
+          {
+            "slot": "2A",
+            "code": 1,
+            "voltage": "VSH1",
+            "duration_frames": 5
+          },
+          {
+            "slot": "3A",
+            "code": 1,
+            "voltage": "VSH1",
+            "duration_frames": 3
+          }
+        ]
+      },
+      "WW": {
+        "effective_drive_frames": 0,
+        "positive_drive_frames": 0,
+        "negative_drive_frames": 0,
+        "zero_drive_frames": 16,
+        "source_volt_frame_impulse": 0,
+        "sequence": [
+          {
+            "slot": "0A",
+            "code": 0,
+            "voltage": "VSS",
+            "duration_frames": 5
+          },
+          {
+            "slot": "1A",
+            "code": 0,
+            "voltage": "VSS",
+            "duration_frames": 3
+          },
+          {
+            "slot": "2A",
+            "code": 0,
+            "voltage": "VSS",
+            "duration_frames": 5
+          },
+          {
+            "slot": "3A",
+            "code": 0,
+            "voltage": "VSS",
+            "duration_frames": 3
+          }
+        ]
+      }
+    }
+  },
+  "command_oracle": {
+    "activations_max": 16,
+    "window": {
+      "x_bytes": [
+        1,
+        4
+      ],
+      "y": [
+        8,
+        39
+      ],
+      "width": 32,
+      "height": 32,
+      "bytes_per_plane": 128
+    },
+    "previous": {
+      "command": "0x26",
+      "selector": 1,
+      "writes_per_step": 1
+    },
+    "current": {
+      "command": "0x24",
+      "selector": 0,
+      "stage_writes_per_step": 1
+    },
+    "post_sync": {
+      "command": "0x24",
+      "selector": 0,
+      "writes_per_step": 1,
+      "activation": 0
+    },
+    "activation": {
+      "control": "0xCF",
+      "refresh": "0x20",
+      "busy_limit_ms": 600,
+      "per_step": 1
+    },
+    "observation_forbidden": {
+      "full_frame_writes": 0,
+      "full_refreshes": 0,
+      "0xF7": 0,
+      "0xC7": 0,
+      "0xFF": 0,
+      "0x37": 0,
+      "automatic_retries": 0,
+      "motion_120_frame": 0
+    }
+  },
+  "lifecycle": {
+    "preclean": "promptless supplier-exact dual-plane White; selector0/1 each read twice",
+    "visual_popup": "exactly one canonical Chinese PASS/FAIL after candidate machine PASS only",
+    "postclean": "promptless identical dual-plane White",
+    "restore": {
+      "bytes": 524288,
+      "sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+      "normal_resume_required": true
+    },
+    "start_cleanup_recovery_fault_popup_count": 0
+  },
+  "images": {
+    "r9_hex_sha256": "724DA17F385756BA779739E73DA47131F563E0C071A2EB173F5F77871F3CADDF",
+    "r9_elf_sha256": "777A1288A0E6FC83373602F9895B07AA08F31269AB68B7EB1699723583D03485",
+    "dual_clean_hex_sha256": "3AC4E52E37E15DC3CC058A4B0B0E6A3227D23E6C6DEFAEDCB786C08497888AAD",
+    "dual_clean_elf_sha256": "1AE76AB804D81E828A2B3AA700821CBD69AF79561CE72E612872F1FAC8550DB0"
+  },
+  "negative_fixtures": {
+    "tail_drift": true,
+    "invented_timing": true,
+    "stationary_drive": true,
+    "activation_17": true,
+    "loop_dwell": true,
+    "early_uart": true,
+    "forbidden_f7": true,
+    "missing_post_sync": true,
+    "fixed_bank_swap": true,
+    "lut_payload_152": true,
+    "runner_hash": true,
+    "runner_missing_postclean": true,
+    "runner_machine_popup": true,
+    "runner_missing_prompt": true,
+    "prompt_wrong_buttons": true,
+    "prompt_before_machine": true,
+    "prompt_second_popup": true
+  },
+  "host_tests": {
+    "r9_log_parser": {
+      "returncode": 0,
+      "output": "PASS: R9 trace parser positive and bounded negative fixtures"
+    },
+    "r9_workbench": {
+      "returncode": 0,
+      "output": "{\"status\": \"ADMIT_ONE_VARIABLE_R9\", \"errors\": [], \"artifact\": \"C:\\\\Users\\\\Billy\\\\Desktop\\\\Denzic\\\\Companion\\\\Companion-Firmware\\\\docs\\\\validation\\\\companion-ssd1681-phase-parallel-r9-workbench-20260721.json\", \"lut_sha256\": \"9BCBAC1A07ED0A112D26409FBCDB8F5FE27CE07D922C2E18881C10A53229DDCD\"}"
+    },
+    "dual_plane_parser": {
+      "returncode": 0,
+      "output": "PASS: dual-plane White parser positive/missing-0x26/read/nonwhite/repeat fixtures"
+    },
+    "restore": {
+      "returncode": 0,
+      "output": "PASS: WB55 raw application restore positive/negative self-test"
+    },
+    "normal_resume": {
+      "returncode": 0,
+      "output": "PASS: WB55 normal-resume parser positive/negative self-test"
+    },
+    "launcher": {
+      "returncode": 0,
+      "output": "PASS_R9_PERSISTENT_LAUNCHER_STATIC_AND_NEGATIVE_FIXTURES"
+    },
+    "powershell_runner": {
+      "returncode": 0,
+      "output": "PASS"
+    },
+    "powershell_launcher": {
+      "returncode": 0,
+      "output": "PASS"
+    },
+    "powershell_prompt": {
+      "returncode": 0,
+      "output": "PASS"
+    },
+    "powershell_builder": {
+      "returncode": 0,
+      "output": "PASS"
+    }
+  },
+  "protected_hashes": {
+    "locked_v9_source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "owner_acceptance_sha256": "8A3BDF4BD1254B0D0F4DE13A7F293C3D74587C800339ABD4C61FEB0B7737E227",
+    "supplier_source_sha256": "7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896",
+    "r8_runtime_sha256": "BAD97BBABFD2E1B515A2E1D1A45EE3C4E68EF3FFC167D03468E1859659C07FF5"
+  },
+  "source_hashes": {
+    "app\\companion_pendant\\epaper\\panel_target_stm32wb_ssd1681.c": "24C707650D65EE7F805FF390A7C47A50DD30E5992700A1F9425979B3393D1701",
+    "cubeide\\Companion_Nucleo_WB55RG_Bringup\\Makefile": "27AA96F7186443063E81E3A9EE2109AF9BD33773D8C366996E5374D8E72B805A",
+    "tools\\build_nucleo_bringup.ps1": "0FA2C338551264D5300A909CBC8B2769C1371FE80DD125BD708A120097BD8EEF",
+    "tools\\run_wb55_ssd1681_custom_mode2_observable_r6_raw_restore.ps1": "0B0A536E7B03DD5F2A4F9CF7B2B76A1B0DB3F34745172E352CB0B4726011B34B",
+    "tools\\start_wb55_ssd1681_phase_parallel_r9.ps1": "7B5080DC29D45169A7CE513E88861840FCB24CBCB41A82675884FF9C72B4A124",
+    "tools\\invoke_wb55_ssd1681_phase_parallel_r9_final_visual_prompt.ps1": "56794D5856248E1D868DEF23DC9CE983F7069CF4C15A59308F2F011BC9164E15",
+    "tools\\verify_wb55_ssd1681_phase_parallel_r9_log.py": "F13A58941390688EDB68B71C2148343E11C6569D128FF4D353E0DB76BC6844EC",
+    "tools\\verify_wb55_ssd1681_phase_parallel_r9_workbench.py": "4D9E918377A1810EF888907816652A58F352B0F6A73D4AC96CE1924CCBB6CA7B",
+    "docs\\validation\\companion-ssd1681-phase-parallel-r9-workbench-20260721.json": "E7311523D6FE571434F0C1F2D5EC76B7ED9B64DC725B0726DDEC023421D7E4EF"
+  },
+  "production_allowed": false,
+  "hardware_execute_allowed": false,
+  "machine_ready_boundary": "persistent CheckOnly plus registry/current-goal/diff closure still required; no Execute"
+}

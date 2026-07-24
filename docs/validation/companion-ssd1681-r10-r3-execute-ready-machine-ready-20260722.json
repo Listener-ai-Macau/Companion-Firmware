@@ -1,0 +1,90 @@
+{
+  "artifacts": {
+    "elf": "A08FD3105087879BB325526B0F60E4E4693E7E2AF830575E7704B9794132D354",
+    "hex": "E62DEC303E51F6DA3143D849E50B129BD6F2EC1B32F2CBD6389B7683CA73A9F0",
+    "launcher": "D368453930C1258BFBE2B6717F206B30BCAE046DCC5D982141095155197D4462",
+    "monitor": "4FE14A93D819B653C0A98BE8611B7F6A8178792FCA5CDDC90E28FAB558595E23",
+    "parser_sha256": "14DF9BD2B0966F41EDC9807F18D7F4794708A7179ED3759B36A68F0C6F66F563",
+    "runner": "417C9C10ACA4C76AC58D2EDD5D02CAD7B99A88EDB721C68AB917DCF991148F9E",
+    "supervisor": "F712AD30EE4A52D26EEB8168CBB50F12D52C4AEF7DB3A8B0FF7A37BFF65757F1"
+  },
+  "authority": "COMP-REQ-335",
+  "authorization_created": false,
+  "binding_successor": true,
+  "canonical_audit_invocation": "python tools/verify_companion_current_goal_audit.py",
+  "canonical_audit_required": true,
+  "canonical_audit_sha256": "F64387FE37D178913FC8498DC23AD3986AC7F5E51A7F18F4B7C575245CC36B0E",
+  "evidence": {
+    "checkonly": {
+      "child_exited": true,
+      "children": [
+        {
+          "child_exited": true,
+          "exit_code": 0,
+          "name": "monitor",
+          "stderr": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\r10-r3-stable-hold-machine-ready-checkonly-20260722\\checkonly-monitor\\monitor.stderr.log",
+          "stdout": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\r10-r3-stable-hold-machine-ready-checkonly-20260722\\checkonly-monitor\\monitor.stdout.log"
+        },
+        {
+          "child_exited": true,
+          "exit_code": 0,
+          "name": "supervisor",
+          "stderr": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\r10-r3-stable-hold-machine-ready-checkonly-20260722\\checkonly-supervisor\\supervisor.stderr.log",
+          "stdout": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\r10-r3-stable-hold-machine-ready-checkonly-20260722\\checkonly-supervisor\\supervisor.stdout.log"
+        }
+      ],
+      "durable_stdout_stderr": true,
+      "evidence_root": ".cache/validation/r10-r3-stable-hold-machine-ready-checkonly-20260722",
+      "fixed_ring_bytes": 65536,
+      "hardware_contact": 0,
+      "popup": 0,
+      "retry": 0,
+      "status": "READY_NO_HARDWARE_CONTACT",
+      "writes": 0
+    },
+    "lifecycle_static": {
+      "path": "docs/validation/companion-ssd1681-r10-r3-ball-lifecycle-static-20260722.json",
+      "sha256": "0F670490B01B3EA82BB7DCA7CD0975A7EE414640697C5713CC42F641A6F7BF94"
+    },
+    "log_parser": {
+      "path": "docs/validation/companion-ssd1681-r10-r3-ball-log-parser-20260722.json",
+      "sha256": "703A69DD21F46638FFB178B9D3787574683ABC99537C97DFDB451E504B3791FD"
+    },
+    "parser_tool": {
+      "path": "tools/verify_wb55_ssd1681_r10_ball_log.py",
+      "sha256": "14DF9BD2B0966F41EDC9807F18D7F4794708A7179ED3759B36A68F0C6F66F563"
+    },
+    "pixel_oracle": {
+      "path": "docs/validation/companion-ssd1681-r10-r3-ball-pixel-oracle-20260722.json",
+      "sha256": "8BE16C128C363C33BE01F6C9C8C3D149F66C5B31921B193ED9F8F15120009B72"
+    },
+    "static": {
+      "path": "docs/validation/companion-ssd1681-r10-r3-ball-static-20260722.json",
+      "sha256": "80B46A5901FEC7728E2BC276EE3E5E3940F97B987EE48EA84DF0407D664738FF"
+    }
+  },
+  "execute_authorized": false,
+  "future_execute_command": null,
+  "hardware_contact": 0,
+  "protected": {
+    "lut_sha256": "9BCBAC1A07ED0A112D26409FBCDB8F5FE27CE07D922C2E18881C10A53229DDCD",
+    "r2_payload_hashes_preserved": true,
+    "restore_application_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "tail_hex": "221741A83258"
+  },
+  "r10_audit_sha256": "F31C1531CE720020477554D59F9B0035C336258C191242B2130A272B496C2B4E",
+  "r3_variable": {
+    "accepted_range_ms": [
+      400,
+      410
+    ],
+    "cadence_discriminator_only": true,
+    "hold_count_per_frame": 1,
+    "name": "post_sync_stable_hold",
+    "qualification_and_loop_same": true,
+    "target_ms": 400
+  },
+  "schema_id": "companion.wb55.ssd1681.r10_r3_execute_ready.machine_ready.v1",
+  "status": "MACHINE_READY_R10_R3_EXECUTE_READY_HOST_BINDING_SUCCESSOR",
+  "supersedes_machine_ready": "docs/validation/companion-ssd1681-r10-r3-stable-hold-machine-ready-20260722.json"
+}

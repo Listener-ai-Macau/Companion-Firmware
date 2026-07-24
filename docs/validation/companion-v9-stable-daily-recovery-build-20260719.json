@@ -1,0 +1,51 @@
+{
+  "checks": {
+    "build_requires_explicit_external_nor_provisioning": true,
+    "demo_is_explicit_and_compile_time_gated": true,
+    "demo_refuses_other_expression_producers": true,
+    "demo_selects_only_idle_settle": true,
+    "idle_has_exact_three_rendered_frames": true,
+    "locked_cemp_hash": true,
+    "locked_v9_identity": true,
+    "no_hardware_flash_in_build_verifier": true,
+    "normal_runtime_remains_inactive": true,
+    "provisioned_cemp_byte_identical_to_locked_v9": true
+  },
+  "claim_scope": "build_only_locked_v9_idle_settle_no_hardware_or_panel_acceptance",
+  "failures": [],
+  "image": {
+    "exists": true,
+    "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_v9_stable_daily_recovery/Companion_Nucleo_WB55RG_V9StableDailyRecovery.hex",
+    "sha256": "25B302A681F0A76FCD23AC02EBA244F4565728AB67803B5BCD8D17CA84495EC4"
+  },
+  "physical_flash_gate": "Blocked until a later official White PASS and ordered Black PASS under COMP-REQ-145.",
+  "provisioned_cemp": {
+    "exists": true,
+    "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_v9_stable_daily_recovery/generated/companion-v9-expression-candidate-200x200.cemp",
+    "sha256": "B89E6EA1D6583063969D48D28EE3D9BF444408D4347BC4974259DD75D0633F26"
+  },
+  "schema_id": "companion.wb55.v9_stable_daily_recovery.v1",
+  "sources": {
+    "app_ble": {
+      "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c",
+      "sha256": "3D937681FA48DA2606CF1B627CBC7E9C4E019E2DEF62CEFB8A3782FAA78FD60D"
+    },
+    "build_script": {
+      "path": "tools/build_nucleo_bringup.ps1",
+      "sha256": "BA203148CE2C7BB1B3EBFF3BF14BC469BC175E82AAD7BA4F9CE96B9A4ABC7A10"
+    },
+    "locked_v9_cemp": {
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/companion-v9-expression-candidate-200x200.cemp",
+      "sha256": "B89E6EA1D6583063969D48D28EE3D9BF444408D4347BC4974259DD75D0633F26"
+    },
+    "v9_binding": {
+      "path": "app/companion_pendant/epaper/v9_candidate_resource_binding.c",
+      "sha256": "220A310FFA860C0D2B40FC8CD4D8467EBB016BB6C5160BF5868B3BAAD6875F86"
+    },
+    "v9_manifest": {
+      "path": "docs/art/iterations/companion-pet-expression-v9/rendered-200x200/v9-expression-cemp-manifest.json",
+      "sha256": "FC9A961D1553376D36DB5717EC1ACF952B801465D57CE8D1E37012D122EAE02B"
+    }
+  },
+  "status": "PASS_BUILD_ONLY_PHYSICAL_FLASH_BLOCKED"
+}

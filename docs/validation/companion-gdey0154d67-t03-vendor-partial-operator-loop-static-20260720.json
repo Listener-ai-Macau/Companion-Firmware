@@ -1,0 +1,38 @@
+{
+  "checks": {
+    "build_is_separate_bounded_and_default_off": true,
+    "current_fpc_white_black_recovery_gate_passed": true,
+    "makefile_requires_explicit_partial_operator_macro": true,
+    "operator_loop_is_default_off_and_source_partial_only": true,
+    "owner_authorized_source_partial_comparator": true,
+    "runner_requires_machine_trace_before_operator_loop": true,
+    "source_audit_passes_and_binds_current_driver": true,
+    "source_audit_proves_vendor_partial_sequence": true,
+    "target_basemap_order_and_region_path_are_source_bound": true
+  },
+  "claim_scope": "owner-authorized source-bound production-off partial comparator only",
+  "controlled_behavior": {
+    "baseline": "source 0x24 then 0x26, 5000 bytes each, 0xF7, 0x20, BUSY",
+    "normal_firmware_restore_required": true,
+    "operator_loop_maintenance_full_refresh": "disabled with UINT8_MAX only in this diagnostic image",
+    "operator_loop_maximum_frames": 360,
+    "production_default": "disabled",
+    "production_promotion": "not authorized",
+    "region_refresh": "source 10 ms reset, border 0x80, one changed-region 0x24, 0xFF, 0x20, BUSY",
+    "temperature_claim": "none"
+  },
+  "failures": [],
+  "schema_id": "companion.wb55.gdey0154d67_t03.vendor_partial_operator_loop_static.v1",
+  "source": {
+    "source_audit": {
+      "path": "docs/validation/companion-gdey0154d67-t03-vendor-1s-source-audit-20260720.json",
+      "sha256": "A367A8ADBED91438D0BAFF7964227BACE0F9FCCDABAEDF8E99A32B018D6282CE"
+    },
+    "target_driver": {
+      "path": "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
+      "sha256": "759758DC97FEFB552EDBD50D787A600D859915750E6F33B1736F280852CA85A6"
+    }
+  },
+  "status": "PASS_STATIC_OWNER_AUTHORIZED_PRODUCTION_OFF_VENDOR_PARTIAL_OPERATOR_LOOP",
+  "target": "NUCLEO-WB55RG + ESP32-FTS02 + GDEY0154D67-T03"
+}

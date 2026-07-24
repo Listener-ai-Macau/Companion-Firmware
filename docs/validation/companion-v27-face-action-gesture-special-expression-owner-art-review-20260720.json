@@ -1,0 +1,32 @@
+{
+  "schema": "companion.v9_special_expression_owner_art_review.v2",
+  "status": "FAIL_OWNER_ART_REVIEW_V27_SPECIAL_EXPRESSION",
+  "date": "2026-07-20",
+  "candidate": "V27 face-action-gesture special-expression source",
+  "machine_closure": "docs/validation/companion-v27-face-action-gesture-special-expression-machine-closure-20260720.json",
+  "internal_visual_preflight": "docs/validation/companion-v27-face-action-gesture-special-expression-internal-visual-preflight-20260720.json",
+  "review_scope": "browser native 200x200 component choreography for Menu, Recording and Charging; source and runtime candidate remain inactive and unbound",
+  "operator_prompt": {
+    "tool": "aiw operator-prompt",
+    "selection": "失败",
+    "note": "还是没有标志性的饰品",
+    "note_path": "docs/validation/companion-v27-face-action-gesture-special-expression-owner-art-review-20260720.note.txt",
+    "note_sha256": "5C59FCAFA3E86B07652B9F20788192759514A7A791DDD827D04F5303BC3DAA3D"
+  },
+  "disposition": {
+    "candidate_art": "REJECTED_AUDIT_ONLY",
+    "retain_machine_evidence": true,
+    "forbidden_as_future_visual_prompt_or_reference_input": true,
+    "forbidden_actions": [
+      "owner_review_retry_without_new_source",
+      "CRIG_export",
+      "profile_generation",
+      "event_binding",
+      "firmware_flash",
+      "physical_panel_claim",
+      "whole_face_fallback",
+      "player_rewrite_to_mask_the_art_failure"
+    ],
+    "required_next_step": "Record the owner requirement for a state-specific iconic character ornament, then create a new locked-V9-only source request."
+  }
+}

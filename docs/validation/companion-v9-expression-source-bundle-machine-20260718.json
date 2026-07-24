@@ -1,0 +1,38 @@
+{
+  "schema": "companion.v9_expression_source_bundle_gate.v1",
+  "status": "PASS_COMPLETE_EXPRESSION_SOURCE_BUNDLE_GATE",
+  "manifest": "docs/art/iterations/companion-pet-expression-v9-extension-v8-emotion-anchor-panel/source-bundle-manifest.json",
+  "locked_v9_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "sources": [
+    {
+      "iteration_id": "companion-pet-expression-v9-extension-v7-daily-direction-strip-20260718",
+      "candidate": "docs/art/iterations/companion-pet-expression-v9-extension-v7-daily-direction-strip/generated_pet_expression_extension_v7_daily_direction_strip_candidate.png",
+      "sha256": "A66F84A1FD761BBF70F45E9CC6B381B1CE05811D77CD99A55EDEB886015D2423",
+      "states": [
+        "daily_attention_left",
+        "daily_attention_right",
+        "daily_attention_up",
+        "daily_attention_down"
+      ]
+    },
+    {
+      "iteration_id": "companion-pet-expression-v9-extension-v8-emotion-anchor-panel-20260718",
+      "candidate": "docs/art/iterations/companion-pet-expression-v9-extension-v8-emotion-anchor-panel/generated_pet_expression_extension_v8_emotion_anchor_panel_candidate.png",
+      "sha256": "23B957F99C16956BC008D23A93F102B741C579EEB7AE96FF660199B6FEF5AF9E",
+      "states": [
+        "curious_question",
+        "alert_surprised",
+        "joyful_spark",
+        "affectionate_warm",
+        "recording_focus",
+        "listening_focus",
+        "menu_thinking",
+        "sleep_rest_no_moon"
+      ]
+    }
+  ],
+  "runtime_resource_activated": false,
+  "component_export_eligible": false,
+  "full_face_source_card_playback": "forbidden",
+  "errors": []
+}

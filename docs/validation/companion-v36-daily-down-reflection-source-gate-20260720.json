@@ -1,0 +1,176 @@
+{
+  "schema": "companion.v36_directional_reflection_source_gate.v1",
+  "status": "PASS_V36_DIRECTIONAL_REFLECTION_SOURCE_GATE",
+  "direction": "down",
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden",
+  "locked_v9_source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+  "locked_v9_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "attempt": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/attempt-09-generated-daily-down.json",
+  "candidate": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/generated_daily_down_v36_attempt_09.png",
+  "candidate_sha256": "CD04E67826C78DA9A3FB31B167B19493C91481CAFD1D5137F683336B5440863B",
+  "normalization": {
+    "source_eye_boxes_200": [
+      [
+        42,
+        95,
+        75,
+        140
+      ],
+      [
+        125,
+        95,
+        158,
+        140
+      ]
+    ],
+    "scale_x": 1.012048,
+    "scale_y": 1.0,
+    "translate_x": -0.698795,
+    "translate_y": 17.0,
+    "normalized_source": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/component-export-attempt-09/normalized-source-200x200.pbm",
+    "normalized_source_sha256": "645DD4B6C9CCD48F766C245F1A18D11BC3E5C9BF33152274FF4C67ECEB83026C"
+  },
+  "source_reflection_metrics": {
+    "left": {
+      "primary": {
+        "pixels": 79,
+        "bbox": [
+          10,
+          21,
+          18,
+          34
+        ],
+        "center": [
+          13.595,
+          27.139
+        ]
+      },
+      "sparkle": {
+        "pixels": 33,
+        "bbox": [
+          17,
+          30,
+          25,
+          39
+        ],
+        "center": [
+          20.485,
+          33.879
+        ]
+      }
+    },
+    "right": {
+      "primary": {
+        "pixels": 79,
+        "bbox": [
+          11,
+          21,
+          19,
+          34
+        ],
+        "center": [
+          14.443,
+          27.203
+        ]
+      },
+      "sparkle": {
+        "pixels": 34,
+        "bbox": [
+          18,
+          30,
+          26,
+          39
+        ],
+        "center": [
+          21.471,
+          33.765
+        ]
+      }
+    }
+  },
+  "v9_rest_reflection_metrics": {
+    "left": {
+      "primary": {
+        "pixels": 145,
+        "bbox": [
+          6,
+          5,
+          18,
+          20
+        ],
+        "center": [
+          11.586,
+          11.952
+        ]
+      },
+      "sparkle": {
+        "pixels": 31,
+        "bbox": [
+          20,
+          19,
+          27,
+          27
+        ],
+        "center": [
+          22.806,
+          22.677
+        ]
+      }
+    },
+    "right": {
+      "primary": {
+        "pixels": 151,
+        "bbox": [
+          6,
+          4,
+          19,
+          20
+        ],
+        "center": [
+          12.007,
+          11.901
+        ]
+      },
+      "sparkle": {
+        "pixels": 33,
+        "bbox": [
+          21,
+          19,
+          28,
+          27
+        ],
+        "center": [
+          23.606,
+          22.758
+        ]
+      }
+    }
+  },
+  "direction_deltas": {
+    "left": {
+      "primary_axis_delta_px": 15.187,
+      "sparkle_axis_delta_px": 11.202
+    },
+    "right": {
+      "primary_axis_delta_px": 15.302,
+      "sparkle_axis_delta_px": 11.007
+    }
+  },
+  "minimum_primary_axis_delta_px": 3.0,
+  "minimum_sparkle_axis_delta_px": 1.0,
+  "native_200_hold": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/component-export-attempt-09/pbm/v36_down_hold.pbm",
+    "sha256": "9DE2C3392E153BCFFF345DDB05C25AF5802252BA8024EBAF7F7230ED081A77AC",
+    "pixels_different_from_exact_v9_rest": 585
+  },
+  "component_hashes": {
+    "v36_down_left_primary.pbm": "EF79016B5A2DCD4049B2653C8A43FA770B685CCB54E982477BF373B5C224EA43",
+    "v36_down_left_sparkle.pbm": "F21C6DC4B9FC047FA92CEA52C533A1BDA2BC6FD6880A6E812BEC8102A5586ACA",
+    "v36_down_right_primary.pbm": "51BADCC3B6E1E3009A82E00455DB91AA427AD437190996595839DB0B6BDA8D63",
+    "v36_down_right_sparkle.pbm": "1CE946597069350BDDCEEB97ECED442F15C22B6875593A5F212D6808F9D38B70"
+  },
+  "component_only": true,
+  "full_face_cards": false,
+  "random_motion": false
+}

@@ -1,0 +1,30 @@
+{
+  "schema": "companion.v9_expression_rig_daily_rig_screen_owner_acceptance.v1",
+  "status": "FAIL_OWNER_SCREEN_REVIEW",
+  "selected": "失败",
+  "text": "没看到在动, 和浏览器不一样, 另外一直在全刷?",
+  "scope": "Dedicated Daily-down v9 Rig screen demo only; this is not normal candidate-runtime activation.",
+  "machine_artifact": {
+    "path": "docs/validation/companion-v9-expression-rig-daily-rig-screen-demo-machine-20260718.json",
+    "sha256": "0100C7481C2B821711FC6CBB16AEDF31F3634728B354039AF32868BAB86A24A8",
+    "status": "PASS_MACHINE_SCREEN_DEMO"
+  },
+  "canonical_operator_capture": {
+    "summary_path": "docs/validation/artifacts/companion-v9-expression-rig-target-frame-parity-20260718/operator-screen-replay/nucleo-serial-summary.json",
+    "summary_sha256": "A9979CD38A3A734346E675EB19933E99B2C212AFB3C9F4DB26FCBD74D5353875",
+    "raw_log_path": "docs/validation/artifacts/companion-v9-expression-rig-target-frame-parity-20260718/operator-screen-replay/nucleo-serial-raw.log",
+    "raw_log_sha256": "C52A89B4BD9A3849C2009D5D0C3323FF6A08ED6808AE072998561919B00E03A9",
+    "selected": "失败"
+  },
+  "operator_note": {
+    "path": "docs/validation/companion-v9-expression-rig-daily-rig-screen-owner-acceptance-20260718.note.txt",
+    "sha256": "18F31D07C7942C752CB1BC0749C20FFE90C7EA350D7112E7A40FCFFFE8EFAD64"
+  },
+  "observed_root_cause": {
+    "browser_target_logical_pixels": "machine-identical before panel calibration",
+    "device_score_execution": "15 component-composed steps in order",
+    "physical_failure": "the panel cadence injected 10000-byte whole-frame cleanups at score steps 0, 6 and 13, so the score did not read as the browser performance",
+    "prohibited_response": "Do not change or regenerate the locked v9 art, replace the Rig with a whole-face animation, or claim this physical result passed."
+  },
+  "next_gate": "Record a panel-presentable shared-score contract before code changes. It must prevent mid-score whole-frame cleanup, make browser timing reflect the same target presentation cadence, and pass a new machine/device run before another canonical screen review."
+}

@@ -1,0 +1,54 @@
+{
+  "claim_scope": "official_full_refresh_p0_closed_without_vendor_lut_promotion_or_dynamic_expression_claim",
+  "enforced_invariants": {
+    "black_requires_pass_white_rail": true,
+    "official_white_black_are_0x24_one_5000_byte_plane_f7_0x20_busy": true,
+    "vendor_lut_absent_from_production": true,
+    "vendor_lut_is_not_cwf1": true,
+    "white_requires_replacement_display_fpc_evidence": true
+  },
+  "failures": [],
+  "human_observations": {
+    "black": "全黑均匀；无灰白颗粒、无旧图残留。",
+    "residue_observation": {
+      "black_note_mentions_residue": true,
+      "conclusion": "Both canonical White and Black reviews explicitly report no old-image residue.",
+      "white_note_mentions_residue": true
+    },
+    "white": "全白均匀；无黑白颗粒、无旧图残留。"
+  },
+  "official_full_retest": {
+    "black": {
+      "digital": ".cache/validation/wb55-screen-recovery-current-source-r2-20260720/black/official-full-result.json",
+      "operator_note": "全黑均匀；无灰白颗粒、无旧图残留。",
+      "stage": ".cache/validation/wb55-screen-recovery-current-source-r2-20260720/black/stage-run.json"
+    },
+    "final_gate": "docs/validation/companion-screen-wb55-hardware-recovery-gate-r2-20260720.json",
+    "white": {
+      "digital": ".cache/validation/wb55-screen-recovery-current-source-r2-20260720/white/official-full-result.json",
+      "operator_note": "全白均匀；无黑白颗粒、无旧图残留。",
+      "stage": ".cache/validation/wb55-screen-recovery-current-source-r2-20260720/white/stage-run.json"
+    },
+    "white_rail": "docs/validation/companion-screen-wb55-white-rail-measurement-current-source-r2-20260720.json"
+  },
+  "remaining_no_go": [
+    "No exact Good Display T03 identity binding from the supplied one-second source tree.",
+    "No Good Display temperature applicability table for the one-second LUT.",
+    "No production-off fast-LUT diagnostic or production refresh-policy change was authorized or run."
+  ],
+  "schema_id": "companion.gdey0154d67_t03.p0_closure.v1",
+  "status": "PASS_P0_OFFICIAL_FULL_RETEST_LUT_PROMOTION_NO_GO",
+  "target": "NUCLEO-WB55RG + ESP32-FTS02 + replacement display FPC + GDEY0154D67-T03",
+  "vendor_lut_disposition": {
+    "panel_correlation": "docs/validation/companion-gdey0154d67-t03-panel-marking-correlation-20260720.json",
+    "production_off_diagnostic_allowed": false,
+    "promotion_status": "NO_GO_PANEL_IDENTITY_UNPROVEN",
+    "remaining_evidence": [
+      "Archived raw panel-back/FPC photograph with the marking visible.",
+      "Exact Good Display T03 document that binds the candidate LUT source to the panel/controller.",
+      "Good Display temperature applicability table for the candidate waveform.",
+      "Versioned replacement-display-FPC evidence plus current official White/Black and White-rail artifacts before any separately authorized physical diagnostic."
+    ],
+    "source_audit": "docs/validation/companion-gdey0154d67-t03-vendor-1s-source-audit-20260720.json"
+  }
+}

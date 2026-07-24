@@ -1,0 +1,117 @@
+{
+  "schema_id": "companion.wb55.ssd1681_read_only_controller_state_research_source_hash.v1",
+  "status": "PASS_RESEARCH_AUTHORIZES_ONE_READ_ONLY_0X2F_0X2D_CAPTURE",
+  "claim_scope": "source and failure-causality research before implementation; no controller state, panel identity, waveform, temperature, production, residue-free or visual claim",
+  "registry_id": "COMP-REQ-257",
+  "WHY_WORSE": [
+    "The rejected added-first candidate produced two electrophoretic activations for every changed logical frame and hard-reset before both passes; the captured partial run reached 94 activations before the owner stopped it.",
+    "The owner observed more residue. Repeated activations and interrupted controller state are plausible contributors, but the exact physical cause is not proven without controller-state and panel-bound waveform evidence."
+  ],
+  "CUTOFF_CAUSE": [
+    "Pass 1 deliberately excluded every mixed-transition byte. Any new leading-edge pixel sharing a byte with an old pixel being removed could not appear in the first visible state.",
+    "The first activation was therefore intentionally incomplete; pass 2 later restored the missing current-frame content in the previous-black bounding box. This topology explains the owner-observed disappearing/eaten segment that then returned."
+  ],
+  "PROVEN": [
+    "COMP-REQ-255 is a permanent physical NO_GO: other residue increased and the original disappearing/eaten movement segment remained.",
+    "SSD1681 Rev0.13 command 0x2D returns eleven Display Option bytes; response bytes 2 through 6 correspond to register 0x37 bytes B through F, response byte 6 bit 6 is the Mode2 RAM Ping-Pong selection, and bytes 7 through 10 are waveform version.",
+    "SSD1681 Rev0.13 command 0x2F exposes Chip ID in bits 1:0; the diagnostic contract additionally requires busy bit 2 to be zero.",
+    "The Good Display exact marketed T03 public sample uses SSD1681 at 200x200 and contains no 0x2D read or 0x37 write in its normal/fast/partial path.",
+    "The supplied one-second EPAPER.c is immutable input and its SHA256 remains 7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896."
+  ],
+  "INFERENCE": [
+    "A stable read of Mode2 RAM Ping-Pong may explain whether controller-internal RAM selection matters to future one-activation experiments, but it does not itself prove the physical panel uses a residue-controlled partial waveform.",
+    "The prior two-pass reset/activation topology plausibly worsened accumulated residue; that causal contribution is an inference rather than a controller-internal measurement."
+  ],
+  "UNKNOWN": [
+    "Whether the current physical 0154BN-D67-D2 FPC is manufacturer-bound to the exact marketed GDEY0154D67-T03 public sample.",
+    "Whether Mode2 RAM Ping-Pong is enabled in this controller OTP/display-option state before the read.",
+    "The panel-bound partial waveform, its temperature rules and any complete CWF1 classification.",
+    "Which physical old/new waveform state, if any, the controller associates with RAM command 0x24 versus 0x26 for this panel and mode.",
+    "A RAM X/Y window limits controller RAM addresses written; neither the datasheet nor current evidence proves that the electrophoretic physical scan is limited to that rectangle.",
+    "Public black/white RAM mappings do not authorize treating 0x26 as an arbitrary old-frame plane. No such assumption is allowed in this Goal."
+  ],
+  "NEXT_ADMISSIBLE_STEP": {
+    "current_goal": "Exactly one default-off, production-off, no-reset/no-refresh software-SPI capture of three identical 0x2F one-byte responses and three identical 0x2D eleven-byte responses, followed by exact normal restore.",
+    "future_goal_only_if_valid": "A separate future Goal may consider read-only 0x41/0x27 RAM fingerprints before and after one official partial update while researching one 0x20 activation per logical frame.",
+    "forbidden_now": "No RAM read, 0x20, 0x22, 0x24, 0x26, 0x30, 0x31, 0x32, 0x36, 0x37, 0x39, display reset, high-voltage activation, OTP/LUT/Display Option write, visual test or F6-derived 0x37 guess."
+  },
+  "read_only_machine_contract": {
+    "groups": 3,
+    "per_group": ["0x2F exactly one response byte", "0x2D exactly eleven response bytes"],
+    "gpio_final_state_per_command": "PC1 output-low, SCL-low, CS-high",
+    "all_0x2f_identical": true,
+    "all_0x2d_identical": true,
+    "chip_id_bits_1_0": "01",
+    "busy_bit_2": 0,
+    "reject_0x2d": ["all 00", "all FF", "short", "long", "inconsistent"],
+    "automatic_retry": false
+  },
+  "source_manifest": {
+    "ssd1681_rev013_pdf": {
+      "source_url": "https://files.seeedstudio.com/wiki/Other_Display/154-epaper/IC%20Driver%20SSD1681.pdf",
+      "cached_path": ".cache/validation/ssd1681-read-only-research/ssd1681-rev013-2.pdf",
+      "sha256": "2989DB3DBBCE190F6E1F065A169479BF4FE911896FF8805894549F792FE9B53B",
+      "bytes": 1869774
+    },
+    "good_display_exact_t03_archive": {
+      "product_page": "https://www.good-display.com/product/258.html",
+      "sample_page": "https://www.good-display.com/companyfile/1029.html",
+      "cached_path": ".cache/incoming/S-GDEY0154D67-FP-Touch-official-20260720.rar",
+      "sha256": "202ADAB27515FDBA790565F643C3C83C52C11FF36844E8C387F66676C3D82CD4"
+    },
+    "good_display_exact_t03_driver": {
+      "path": ".cache/incoming/S-GDEY0154D67-FP-Touch-official-20260720/S-GDEY0154D67-FP-Touch20230303/HARDWARE/EPD/Display_EPD_W21.c",
+      "sha256": "CD08AFD1D56E8F7E1D0AE5C935A4D060E65C658ABC30CE29ACF65166141ACEE2"
+    },
+    "supplier_epaper_c": {
+      "path": "C:/Users/Billy/Desktop/GDEH0154D67-20211203-P-LUT(1s) -1s快刷/EPD_W21/EPAPER.c",
+      "sha256": "7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896",
+      "access": "read-only"
+    },
+    "supplier_readme": {
+      "path": "C:/Users/Billy/Desktop/GDEH0154D67-20211203-P-LUT(1s) -1s快刷/read me.txt",
+      "sha256": "755D2598F00B1FF049A764CF56AD82236440329C64C8ADBCBA6763BF07FE0A47",
+      "access": "read-only"
+    },
+    "prior_added_first_completion": {
+      "path": "docs/validation/companion-gdey0154d67-t03-vendor-partial-added-first-old-cleanup-completion-audit-20260721.json",
+      "sha256": "0E3643391446640D0D9A2A9B2E050D41A14D4BBB0D32785D814B4E57D98D2CF4",
+      "status": "NO_GO_OWNER_MORE_RESIDUE_AND_CUTOFF_PERSISTS_NORMAL_RESTORED"
+    },
+    "prior_added_first_operator": {
+      "path": "docs/validation/companion-gdey0154d67-t03-vendor-partial-added-first-old-cleanup-operator-r1-20260721.json",
+      "sha256": "63B2FA66812E161174348EDDF9CF56BDC15FE5FC253431982C44913CF3CA447E",
+      "status": "NO_GO_OWNER_LIVE_OBSERVATION_MORE_RESIDUE_AND_CUTOFF_PERSISTS"
+    },
+    "prior_added_first_raw_trace": {
+      "path": ".cache/validation/wb55-vendor-partial-added-first-old-cleanup-r1-20260721/capture/nucleo-serial-raw.log",
+      "sha256": "0FCE992469591C7F46591D7A095EA2CF457F604ADB42AEDD25EABEE03D6D855A"
+    },
+    "historical_reference_branch": {
+      "name": "human/scratch/companion-firmware/companion-ssd1681-otp-read-20260716-20260716-223844",
+      "commit": "8F76C139385B48BB4F39187A1C35C37DA513EABF",
+      "use": "per-file read-only reference; no merge or cherry-pick",
+      "blob_sha1": {
+        "ssd1681_otp_display_option.c": "E4A909FB6C30F6FAF2C46B8B0866DB456497234A",
+        "ssd1681_otp_display_option.h": "940EC6366D50AFE3F47A21D9BDDD3B6F6E49B10B",
+        "test_ssd1681_otp_display_option.c": "382F2F62F5C639DDE4A94F8D620DD2ECCBEE0852",
+        "verify_ssd1681_otp_read_diagnostic.py": "A64D1A181CC6ECD3D6FB116776D7584A28B5C76C",
+        "run_wb55_ssd1681_otp_read_machine.ps1": "B9F7F170F0E2BA734BBDF489E3DD74A1B7B975F0"
+      }
+    },
+    "preimplementation_driver": {
+      "path": "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
+      "sha256": "DCB3CE5E1D7FF5BFE39EB46140096F0B425F4F8FDAD7CD90247430632AE7061C"
+    },
+    "registry_after_comp_req_257": {
+      "path": "docs/companion_product_requirements.md",
+      "sha256": "2CBDA46698902B504F64DFFF006D39348B555DEB9126BB458DA7A1F34B8D51F2"
+    }
+  },
+  "implementation_permission": {
+    "allowed": true,
+    "exact_scope": "default-off independent 3x(0x2F+0x2D) read-only image, decoder/tests/static/build/runner and evidence",
+    "hardware_allowed_now": false,
+    "next_gate": "Static, host, diagnostic build, normal hash, runner CheckOnly, registry/current-goal and diff gates must all pass before the sole locked Execute."
+  }
+}

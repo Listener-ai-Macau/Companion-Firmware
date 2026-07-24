@@ -1,0 +1,134 @@
+{
+  "schema_id": "companion.wb55.ur_dual_application_backup_research.v1",
+  "status": "PASS_RESEARCH_AUTHORIZES_ONE_UR_DUAL_APPLICATION_BACKUP_ZERO_WRITES",
+  "generated_at": "2026-07-21T13:30:00+08:00",
+  "requirement_id": "COMP-REQ-260",
+  "scope": "One under-reset connection to read the current NUCLEO-WB55RG application twice, reset once, and machine-check normal application resumption without any application or panel write command.",
+  "source_manifest": {
+    "comp_req_259_machine": {
+      "path": "docs/validation/companion-wb55-hotplug-backup-controller-state-machine-20260721.json",
+      "sha256": "1A830C5F0F574E9B6A85534A56298E32DD58243340E219D00C3EEA4513746A32"
+    },
+    "comp_req_259_completion": {
+      "path": "docs/validation/companion-wb55-hotplug-backup-controller-state-completion-audit-20260721.json",
+      "sha256": "CD35A3C379197EADD4B5C99FAAD93A32D755999C0574851DD0E6C4AE938909DD"
+    },
+    "stm32_programmer_cli": {
+      "path": "C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.cubeprogrammer.win32_2.2.400.202601091506/tools/bin/STM32_Programmer_CLI.exe",
+      "sha256": "BD520005962377155515A2C9E8FEAB73F304A696AAE1698F3B7760672160FD5E",
+      "reported_version": "2.22.0",
+      "version_stdout_utf8_sha256": "F9F1AFF32A01917B5A6BA9BF01C31A5C449C4B3A294F42584A573AC713CA9D58",
+      "help_stdout_utf8_bytes": 31120,
+      "help_stdout_utf8_sha256": "74C09C3178A314A0EDC04A3102E6033FC94234A38BEA567722EC05B05F35B937",
+      "help_relevant_verbatim": [
+        "mode=<mode>      : Connection mode. Value in {UR/HOTPLUG/NORMAL/POWERDOWN/HWRSTPULSE}",
+        "Reset mode with UR connection mode is HWrst",
+        "-u,     --upload       : Upload the device memory content to a .bin/.hex/.srec/.s19 file",
+        "<address>          : Start address of read and upload",
+        "<size>             : Size of memory content to be read",
+        "-rst                   : Reset system"
+      ]
+    },
+    "existing_flash_runner": {
+      "path": "tools/flash_nucleo_bringup.ps1",
+      "sha256": "1FEFF712B6CA1DADC328C50FAD7CBB7B297E627585BFD4288EAF49108BB35D56",
+      "connection_shape": "-c port=SWD mode=UR reset=HWrst freq=4000"
+    },
+    "linker_script": {
+      "path": "third_party/STM32CubeWB/Projects/P-NUCLEO-WB55.Nucleo/Applications/BLE/BLE_p2pServer/STM32CubeIDE/STM32WB55RGVX_FLASH.ld",
+      "sha256": "4FB899EAB4A324B5CB642D37884341577413634710B4B301B59B21493BE0E4BD",
+      "application_flash": "ORIGIN = 0x08000000, LENGTH = 512K"
+    },
+    "prior_restore_completion": {
+      "path": "docs/validation/companion-gdey0154d67-t03-vendor-partial-added-first-old-cleanup-completion-audit-20260721.json",
+      "sha256": "0E3643391446640D0D9A2A9B2E050D41A14D4BBB0D32785D814B4E57D98D2CF4"
+    },
+    "prior_restore_programmer_stdout": {
+      "path": ".cache/validation/flash-nucleo/stm32-programmer-20260721-115950-29716.stdout.log",
+      "sha256": "E7738539B9EE71721A45A54B61350BA98FA776753E3CDB4ECD8DD2CFA8106977",
+      "observed": "Under Reset, Hardware reset, Device ID 0x495, STM32WB5x/35xx, Cortex-M4, 3.24V, download verified"
+    },
+    "normal_resume_reference": {
+      "path": "docs/validation/companion-screen-normal-restore-after-black-20260714.raw.log",
+      "sha256": "3AE5B0DD29CA1A6785C5D986C0D91C9C80EDA9916A279B8EAF064B34486BF405",
+      "required_identity": "[boot] Companion NUCLEO-WB55RG bringup",
+      "required_ready": "[boot] boot_selftests=skipped reason=production_ble_path"
+    },
+    "normal_source": {
+      "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/main.c",
+      "sha256": "75D19712F2F6175F5A933CAE79C574F24465B12616B0D0D22607E4D12DDC0487"
+    },
+    "serial_capture": {
+      "path": "tools/capture_nucleo_serial.ps1",
+      "sha256": "59677805F4CA7FBD181C1A19350CE89E957FCCE3F2ACB6682099D585C3789FB1"
+    },
+    "hardware_lock": {
+      "path": "tools/companion_wb55_lock.ps1",
+      "sha256": "E688A06E6F6BD5DAA8D03A2E342ABF33B525FDA45F97A23AD59A56FF501F73C5"
+    }
+  },
+  "PROVEN": [
+    "COMP-REQ-259 made one HOTPLUG upload attempt, obtained no bytes and ended NO_GO with zero candidate, restore or panel writes; HOTPLUG may not be retried here.",
+    "The installed STM32CubeProgrammer v2.22.0 help exposes UR, HWrst, upload address/size/file arguments and system reset as separate CLI operations.",
+    "The existing flash runner uses the exact connection prefix port=SWD mode=UR reset=HWrst freq=4000.",
+    "A prior restore on the same ST-LINK serial 066EFF535570514867221931 connected Under Reset at 3.24V and identified Device ID 0x495 / STM32WB5x/35xx / Cortex-M4 before verified programming.",
+    "The linker assigns application FLASH 0x08000000..0x0807FFFF, exactly 0x80000 bytes.",
+    "Historical normal-restore serial evidence contains both the Companion NUCLEO-WB55RG boot identity and the production BLE path ready marker.",
+    "Under-reset necessarily resets or holds the MCU during connection; the final -rst restarts the existing application, which may execute its existing display behavior."
+  ],
+  "INFERENCE": [
+    "STM32CubeProgrammer's command sequencing accepts two upload operations followed by one reset in one process; if the installed version rejects that sequence, the single run must fail without splitting it into another connection.",
+    "Two byte-identical, full-length, nontrivial uploads with a plausible vector table and programmed span are sufficient to establish a reusable raw application-byte baseline.",
+    "The two historical boot markers within the bounded post-reset capture, with no diagnostic/error markers, are sufficient evidence that the pre-existing normal application resumed; they do not prove every peripheral or display behavior."
+  ],
+  "UNKNOWN": [
+    "The current board application's raw SHA-256, vector words, programmed span and relation to the lost E199 Intel HEX file remain unknown before the admitted reads.",
+    "Whether the current application will emit both normal markers within the bounded serial window is unknown.",
+    "Physical screen appearance during the reset and resumed normal firmware is not observed or accepted in this Goal.",
+    "Option bytes, wireless stack, OTP, secrets, memory above 0x0807FFFF and SSD1681 controller state remain unread."
+  ],
+  "RISK": [
+    "Under-reset disrupts normal MCU execution and the explicit reset restarts it; the existing application may refresh or otherwise change the display even though this runner sends no panel command.",
+    "An upload failure after the single connection begins cannot be retried or replaced by HOTPLUG, NORMAL, POWERDOWN, another reset or a second programmer process.",
+    "Short, long, inconsistent, all-zero/all-FF, implausible-vector or implausibly sparse data must be rejected and never used as a restore baseline.",
+    "A valid backup without normal boot evidence means application resumption is unproven and requires human attention without another reset or connection."
+  ],
+  "ADMISSION": {
+    "locks": [
+      "Companion-WB55 exclusive lock",
+      "dedicated SWD/COM exclusive mutex"
+    ],
+    "serial_order": "Open normal serial capture and receive its ready signal before launching the sole programmer process.",
+    "sole_programmer_arguments": [
+      "-c",
+      "port=SWD",
+      "mode=UR",
+      "reset=HWrst",
+      "freq=4000",
+      "-u",
+      "0x08000000",
+      "0x80000",
+      "<private backup-a.bin>",
+      "-u",
+      "0x08000000",
+      "0x80000",
+      "<private backup-b.bin>",
+      "-rst"
+    ],
+    "connection_process_count": 1,
+    "upload_count": 2,
+    "explicit_reset_count": 1,
+    "application_write_count": 0,
+    "backup_pass": "two private 524288-byte identical files, common SHA-256, nonzero/non-FF, valid MSP/reset vector, first non-FF byte in the vector table and at least 4096-byte non-FF span with at least 1024 non-FF bytes",
+    "normal_resume_pass": "within at most 30 seconds after the reset, normal boot identity and production ready marker present; no readonly controller diagnostic, panel error or hardfault marker",
+    "success_status": "PASS_MACHINE_UR_DUAL_APPLICATION_BACKUP_NORMAL_RESUMED_ZERO_WRITES",
+    "backup_identity": "CAPTURED_PRE_RUN_APPLICATION_BYTES_NOT_E199_HEX_REPRODUCTION"
+  },
+  "non_goals": [
+    "Write, erase, download, verify-write, read-unprotect, option-byte, wireless-stack or OTP operation",
+    "HOTPLUG, NORMAL, POWERDOWN, a second connection, retry, halt, run or hardRst command",
+    "Controller candidate, SSD1681 0x2D/0x2F or any 0x20/0x22/0x24/0x26/0x32/0x37 operation",
+    "Screen, residue, White/Black, rail, temperature, animation, touch, BLE, waveform, production or visual acceptance",
+    "Claim that the captured raw binary reproduces the lost E199 Intel HEX file"
+  ]
+}

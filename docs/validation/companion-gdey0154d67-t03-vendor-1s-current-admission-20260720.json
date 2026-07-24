@@ -1,0 +1,90 @@
+{
+  "schema_id": "companion.gdey0154d67_t03.vendor_1s_lut_current_admission.v1",
+  "status": "NO_GO_CURRENT_PREFLIGHT_AND_HISTORICAL_OWNER_REJECTION",
+  "claim_scope": "current no-hardware admission audit for the source-bound production-off diagnostic; no production, panel-identity, temperature-range, or optical-locality claim",
+  "goal_state_action": "none; this evidence does not complete, delete, block, or recreate the active Codex Goal",
+  "hardware_action": {
+    "duplicate_measurement": "stopped at owner direction",
+    "normal_firmware_restored": true,
+    "restore_log": {
+      "path": ".cache/validation/flash-nucleo/stm32-programmer-20260720-200209-16808.stdout.log",
+      "sha256": "A587E129D320C90CBE9903115405F54DDC6BA1636A4D15F7301CC382253A91EC",
+      "result": "Download verified successfully; MCU Reset; Software reset is performed"
+    }
+  },
+  "current_preflight": {
+    "status": "NO_GO_VENDOR_1S_LUT_DIAGNOSTIC_NOT_AUTHORIZED",
+    "static_contract": {
+      "path": "docs/validation/companion-gdey0154d67-t03-vendor-1s-diagnostic-static-20260720.json",
+      "sha256": "A223B448C23D520F831FFD9C67DD68C3DA95DE5B7C6E1C3E0BBCBB193B360D31"
+    },
+    "replacement_fpc": {
+      "path": "docs/validation/companion-screen-wb55-replacement-fpc-evidence-20260720.json",
+      "sha256": "E1124866DBBBF083B3512EB75A4C8AE14BF6808ACCDD45B774A5095BD41D7D35",
+      "status": "PASS_OWNER_REPORTED_REPLACEMENT_FPC_CURRENT_PANEL_VISIBLE"
+    },
+    "white_rail": {
+      "path": "docs/validation/companion-screen-wb55-white-rail-measurement-current-source-20260720.json",
+      "sha256": "E2F72CAC2662315A0B66480D3D5D8075BDA6F0070CC3DC2CFC72882DCDF8ACFC",
+      "status": "PASS_MACHINE_AND_RAILS_ESTABLISHED_WHITE",
+      "prevgh1_max_v": 20.0,
+      "prevgl1_min_v": -20.0
+    },
+    "p0_closure": {
+      "path": "docs/validation/companion-gdey0154d67-t03-p0-closure-20260720.json",
+      "sha256": "C71CAF11511679D2E7BCFE967501AC383D73FD713763D2F870762A536266384E",
+      "status": "FAIL",
+      "failures": [
+        "White rail artifact is bound to a stale SSD1681 target source hash",
+        "White digital trace is bound to a stale SSD1681 target source hash",
+        "Black digital trace is bound to a stale SSD1681 target source hash"
+      ]
+    },
+    "admission_decision": "No vendor-LUT build, flash, serial capture, six-frame diagnostic, or 360-frame loop may start while this P0 closure remains FAIL."
+  },
+  "historical_source_bound_diagnostic": {
+    "supplier_epaper_c_sha256": "7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896",
+    "lut_sha256": "F83EA7360CFFF04FE9D004A75858A46213CBD710AAA2F0C4A62597E3EA176D15",
+    "lut_contract": {
+      "bytes": 159,
+      "load": "0x32 with 153 bytes",
+      "tail_order": ["0x3F", "0x03", "0x04", "0x2C"],
+      "frame": "one 5000-byte 0x24 plane",
+      "activate": "0x22=0xC7, 0x20, BUSY-ready"
+    },
+    "six_frame_machine_trace": {
+      "path": ".cache/validation/wb55-vendor-1s-lut-current-room-20260720/vendor-1s-trace.json",
+      "sha256": "CB4B119C8F8490B5F5D0E842B12005E7E8B204B5669A0DD01BCE8BBC110BB6EC",
+      "status": "PASS_MACHINE_VENDOR_1S_LUT_SIX_FRAME_TRACE",
+      "frames": 6,
+      "elapsed_ms": [1284, 1285, 1285, 1285, 1285, 1285]
+    },
+    "canonical_operator_review": {
+      "path": ".cache/validation/wb55-vendor-1s-lut-current-room-20260720/stage-run.json",
+      "sha256": "F6F82CCAA1603C32D8C2C8E81691E7C32F87A18AFF36674FD7E2C3DB44128AC6",
+      "selected": "failure",
+      "note": "No residual image, but every refresh briefly blackens the panel.",
+      "operator_loop_maximum_full_frames": 360,
+      "operator_loop_accepted": false,
+      "normal_firmware_restored": true
+    },
+    "historical_disposition": {
+      "path": "docs/validation/companion-gdey0154d67-t03-vendor-1s-final-disposition-20260720.json",
+      "sha256": "7C2304FE98D6498C25FC4AF312ABAA9CC3267A7DCAB20A8F47F371061C9A131D",
+      "status": "FAIL_OWNER_REJECTED_SINGLE_FLASH_VENDOR_1S_LUT"
+    }
+  },
+  "current_optical_profile_boundary": {
+    "path": "docs/validation/companion-ssd1681-partial-profile-admission-20260720.json",
+    "sha256": "A366762C02BBFC07F9C7285A5A74F5EF9DCF23C8B6E7947801BE5FFA447B92D9",
+    "status": "NO_GO_UNBOUND_PANEL_PARTIAL_PROFILE",
+    "conclusion": "The known local 0xFF path leaves residue, the four-byte-per-plane 0xFC path still looks broad or dirty, and the literal 159-byte C7 path black-flashes per full frame."
+  },
+  "final_disposition": {
+    "diagnostic_result": "FAIL",
+    "current_hardware_admission": "NO_GO",
+    "production_promotion": "NO_GO",
+    "temperature_or_cwf1_claim": "prohibited",
+    "next_action": "No further hardware or waveform trial without a new owner decision and Good Display evidence binding 0154BN-D67-D2 to a complete partial-refresh profile or OTP flow."
+  }
+}

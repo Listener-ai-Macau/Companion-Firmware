@@ -1,0 +1,65 @@
+{
+  "schema_id": "companion.wb55.ssd1681_ram_ping_pong_fingerprint.machine.v1",
+  "requirement_id": "COMP-REQ-266",
+  "status": "PASS_MACHINE_RAM_PING_PONG_FINGERPRINT_RESTORED",
+  "claim_scope": "One production-off Phase A execution, unique RAM mapping proof, exact captured-raw restore and normal application resumption. This is not visual or production acceptance.",
+  "execution": {
+    "run_root": ".cache/validation/wb55-ram-ping-pong-fingerprint-execute-20260721-r1",
+    "hardware_contact": 1,
+    "candidate_programmer_processes": 1,
+    "candidate_write_calls": 1,
+    "read_count": 12,
+    "bytes_per_read": 5001,
+    "payload_bytes_per_read": 5000,
+    "panel_writes": 3,
+    "panel_refresh_commands": 2,
+    "panel_hard_resets": 2,
+    "panel_busy_waits": 4,
+    "automatic_retries": 0,
+    "restore_programmer_processes": 1,
+    "restore_write_calls": 1,
+    "restore_verify_operations": 1,
+    "restore_upload_calls": 1
+  },
+  "fingerprint": {
+    "status": "PASS_UNIQUE_RAM_MAPPING",
+    "base_stage": "selector0 equals CPU base and selector1 equals CPU base",
+    "staged_before_activation": "selector0/0x24 equals CPU current and selector1/0x26 equals CPU base",
+    "after_activation": "selector0/0x24 equals CPU base and selector1/0x26 equals CPU current",
+    "unique_mapping": "activation_swapped_banks_selector0_base_selector1_current",
+    "dirty_indices": [2410, 2411, 2435, 2436, 2460, 2461, 2485, 2486, 2510, 2511, 2535, 2536, 2560, 2561, 2585, 2586],
+    "out_of_window_changes": 0,
+    "repeat_mismatches": 0,
+    "baseline_busy_elapsed_ms": 1289,
+    "partial_busy_elapsed_ms": 447,
+    "forbidden_0x32_count": 0,
+    "forbidden_0x37_count": 0
+  },
+  "phase_b_admission": {
+    "admitted": true,
+    "required_sequence": "Before activation, stage CPU current diff through 0x24 while 0x26 retains previous. After the one 0xFF/0x20/BUSY completion, selector0/0x24 is previous and selector1/0x26 is displayed current; synchronize CPU current through 0x24 only, without 0x20, before the next logical frame.",
+    "motion_0x26_writes_allowed": 0,
+    "production_admitted": false
+  },
+  "restore": {
+    "status": "PASS_RESTORE_EQUALS_CAPTURED_PRE_RUN_APPLICATION_BYTES",
+    "address_hex": "0x08000000",
+    "length_bytes": 524288,
+    "sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "normal_resume": "PASS_APPLICATION_RESUMED_AFTER_BACKUP"
+  },
+  "artifact_hashes": {
+    ".cache/validation/wb55-ram-ping-pong-fingerprint-execute-20260721-r1/stage-run.json": "499EB184AEA61124B9EE30C89A8EF3BD489574D0787611F083CB507F6271D28F",
+    ".cache/validation/wb55-ram-ping-pong-fingerprint-execute-20260721-r1/controller-state.json": "005FCE209E6072ABA7A3FF6A45C96B7F87269A60D80BE4D497ACE9CEB499D572",
+    ".cache/validation/wb55-ram-ping-pong-fingerprint-execute-20260721-r1/restore-gate.json": "63A576E89FB5333FE8F7CE004A315E7D7E0FF1E07AB106F5E4FEDB13B2464305",
+    ".cache/validation/wb55-ram-ping-pong-fingerprint-execute-20260721-r1/normal-resume.json": "0339B4CD43E361989C0C14D338E3AB97F3F8873C73005BCDEDD6FD16100ECE27",
+    ".cache/validation/wb55-ram-ping-pong-fingerprint-execute-20260721-r1/candidate-capture/nucleo-serial-raw.log": "CD44EF9C98D43B4CF5A55773610E8A63C86AF6E268F6C038EFE091B6EE8654C4"
+  },
+  "protected_boundaries": {
+    "supplier_input_modified": false,
+    "v9_or_owner_acceptance_modified": false,
+    "rig_crig_browser_dynamic_binding_modified": false,
+    "lut_waveform_temperature_voltage_changed": false,
+    "production_changed": false
+  }
+}

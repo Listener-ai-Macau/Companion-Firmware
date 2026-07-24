@@ -1,0 +1,21 @@
+{
+  "schema_id": "companion.v9_expression_rig.isolated_frame_export_path_triage.v1",
+  "status": "FAIL_EXPLICIT_TARGET_OUTPUT_DIR_RESOLVED_IN_HOST_CACHE",
+  "claim_scope": "machine_triage_only_runtime_inactive",
+  "authority": "COMP-REQ-194",
+  "observed_contract": {
+    "command": "tools/test_expression_rig_frame_source_host.ps1 -Pack <revision-107.crig> -OutputDir <relative revisioned target-raw-pbm>",
+    "mount_status": "WBA external-NOR mount passed for the same revision-107 CRIG",
+    "failure": "The PowerShell wrapper created the relative output directory from the repository root, then launched the C executable from its .cache build directory and passed the still-relative path. The C exporter therefore attempted to write under .cache rather than the requested versioned artifact root."
+  },
+  "required_recovery": [
+    "After creating an explicit output directory, resolve it to an absolute path before launching the host executable.",
+    "Keep explicit pack and output arguments bound to the isolated revision-107 root.",
+    "Rerun the frame-source export and the 60-frame browser/target parity gate; do not substitute historical target PBMs."
+  ],
+  "forbidden": [
+    "using historical target frame artifacts as current output",
+    "changing CRIG bytes, component sources or profile identity to address a path bug",
+    "runtime activation, external-NOR provisioning, hardware flash or physical acceptance"
+  ]
+}

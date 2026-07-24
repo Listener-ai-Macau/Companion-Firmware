@@ -1,0 +1,6341 @@
+{
+  "schema": "companion.v41_directional_gaze_browser_wb55_preview.v1",
+  "status": "PASS_BROWSER_COMPONENT_PREVIEW_RENDERED_RUNTIME_INACTIVE",
+  "authority": [
+    "COMP-REQ-093",
+    "COMP-REQ-229",
+    "COMP-REQ-233"
+  ],
+  "locked_v9_source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "canvas": {
+    "width": 200,
+    "height": 200,
+    "stride_bytes": 25,
+    "pixel_format": "1bpp_white_is_one_msb"
+  },
+  "renderer": "registered source masks only; ordered ink/erase composition; no full-face source frame",
+  "source_score_coverage": [
+    "calm_presence",
+    "warm_presence",
+    "curious_question",
+    "alert_exclamation",
+    "playful_presence",
+    "sleepy_presence",
+    "daily_attention_center",
+    "daily_attention_left",
+    "daily_attention_right",
+    "daily_attention_up",
+    "daily_attention_down",
+    "recording_with_calm",
+    "recording_with_warm",
+    "charging_with_calm",
+    "upgrade_with_playful",
+    "error_with_calm",
+    "menu_entry_notice"
+  ],
+  "frame_count": 53,
+  "frames": [
+    {
+      "score": "calm_presence",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 0,
+      "cue": "settled",
+      "duration_ms": 520,
+      "layers": [
+        {
+          "component_id": 13,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 16,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 14,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 17,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 15,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        }
+      ],
+      "pbm": "calm_presence-00-settled.pbm",
+      "png": "calm_presence-00-settled.png",
+      "target_1bpp_sha256": "BBE5EBE794D8375855EC3108D25D25CF999288F3FB4C389FC90638A0C85F679F",
+      "state_scene": "daily",
+      "expression_track": "calm_presence",
+      "expression_step": 0,
+      "functional_decoration_track": null,
+      "functional_step": null
+    },
+    {
+      "score": "calm_presence",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 1,
+      "cue": "soft_glance",
+      "duration_ms": 280,
+      "layers": [
+        {
+          "component_id": 13,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 16,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            -1,
+            1
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            -1,
+            1
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            -1,
+            1
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            -1,
+            1
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 14,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 17,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 15,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        }
+      ],
+      "pbm": "calm_presence-01-soft_glance.pbm",
+      "png": "calm_presence-01-soft_glance.png",
+      "target_1bpp_sha256": "3746054FA1BDDF83E191B121ECB81BF34DD461DCDD9CC3CC94507527CF3F1A3E",
+      "state_scene": "daily",
+      "expression_track": "calm_presence",
+      "expression_step": 1,
+      "functional_decoration_track": null,
+      "functional_step": null
+    },
+    {
+      "score": "calm_presence",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 2,
+      "cue": "return",
+      "duration_ms": 820,
+      "layers": [
+        {
+          "component_id": 13,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 16,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 14,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 17,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 15,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        }
+      ],
+      "pbm": "calm_presence-02-return.pbm",
+      "png": "calm_presence-02-return.png",
+      "target_1bpp_sha256": "BBE5EBE794D8375855EC3108D25D25CF999288F3FB4C389FC90638A0C85F679F",
+      "state_scene": "daily",
+      "expression_track": "calm_presence",
+      "expression_step": 2,
+      "functional_decoration_track": null,
+      "functional_step": null
+    },
+    {
+      "score": "warm_presence",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 0,
+      "cue": "settled",
+      "duration_ms": 520,
+      "layers": [
+        {
+          "component_id": 33,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 36,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 34,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 37,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 35,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        }
+      ],
+      "pbm": "warm_presence-00-settled.pbm",
+      "png": "warm_presence-00-settled.png",
+      "target_1bpp_sha256": "563E9B89CB02FF0883E793281507C0392E186E514DCFA7808AB3173838D03B8B",
+      "state_scene": "daily",
+      "expression_track": "warm_presence",
+      "expression_step": 0,
+      "functional_decoration_track": null,
+      "functional_step": null
+    },
+    {
+      "score": "warm_presence",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 1,
+      "cue": "soft_glance",
+      "duration_ms": 280,
+      "layers": [
+        {
+          "component_id": 33,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 36,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            1,
+            1
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            1,
+            1
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            1,
+            1
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            1,
+            1
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 34,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 37,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 35,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        }
+      ],
+      "pbm": "warm_presence-01-soft_glance.pbm",
+      "png": "warm_presence-01-soft_glance.png",
+      "target_1bpp_sha256": "4E02689C3F6997E3434BD054626CF6513F9357BC92627D0290090BDBF45C2D76",
+      "state_scene": "daily",
+      "expression_track": "warm_presence",
+      "expression_step": 1,
+      "functional_decoration_track": null,
+      "functional_step": null
+    },
+    {
+      "score": "warm_presence",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 2,
+      "cue": "return",
+      "duration_ms": 820,
+      "layers": [
+        {
+          "component_id": 33,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 36,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 34,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 37,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 35,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        }
+      ],
+      "pbm": "warm_presence-02-return.pbm",
+      "png": "warm_presence-02-return.png",
+      "target_1bpp_sha256": "563E9B89CB02FF0883E793281507C0392E186E514DCFA7808AB3173838D03B8B",
+      "state_scene": "daily",
+      "expression_track": "warm_presence",
+      "expression_step": 2,
+      "functional_decoration_track": null,
+      "functional_step": null
+    },
+    {
+      "score": "curious_question",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 0,
+      "cue": "question_arrive",
+      "duration_ms": 160,
+      "layers": [
+        {
+          "component_id": 18,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 21,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 19,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 22,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 20,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 512,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        }
+      ],
+      "pbm": "curious_question-00-question_arrive.pbm",
+      "png": "curious_question-00-question_arrive.png",
+      "target_1bpp_sha256": "50EEA21A401AA0AD1CDC182974E67F46FE35DDA382F3D1ADB7C523A73D74BCEB",
+      "state_scene": "daily",
+      "expression_track": "curious_question",
+      "expression_step": 0,
+      "functional_decoration_track": null,
+      "functional_step": null
+    },
+    {
+      "score": "curious_question",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 1,
+      "cue": "question_lift",
+      "duration_ms": 240,
+      "layers": [
+        {
+          "component_id": 18,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 21,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            -1,
+            1
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            -1,
+            1
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            -1,
+            1
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            -1,
+            1
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 19,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 22,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 20,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 513,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        }
+      ],
+      "pbm": "curious_question-01-question_lift.pbm",
+      "png": "curious_question-01-question_lift.png",
+      "target_1bpp_sha256": "D544E87C669280F8B264B43102B3B94C27293CB486A039BBBB70AD5BF0CCDC18",
+      "state_scene": "daily",
+      "expression_track": "curious_question",
+      "expression_step": 1,
+      "functional_decoration_track": null,
+      "functional_step": null
+    },
+    {
+      "score": "curious_question",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 2,
+      "cue": "question_hold",
+      "duration_ms": 960,
+      "layers": [
+        {
+          "component_id": 18,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 21,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 19,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 22,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 20,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 514,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        }
+      ],
+      "pbm": "curious_question-02-question_hold.pbm",
+      "png": "curious_question-02-question_hold.png",
+      "target_1bpp_sha256": "FE41C0463723D457D8B4AC82EE75F6C14272DE0B41033EDD09B8D923AF082423",
+      "state_scene": "daily",
+      "expression_track": "curious_question",
+      "expression_step": 2,
+      "functional_decoration_track": null,
+      "functional_step": null
+    },
+    {
+      "score": "alert_exclamation",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 0,
+      "cue": "exclamation_arrive",
+      "duration_ms": 160,
+      "layers": [
+        {
+          "component_id": 8,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 11,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 9,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 12,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 10,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 521,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        }
+      ],
+      "pbm": "alert_exclamation-00-exclamation_arrive.pbm",
+      "png": "alert_exclamation-00-exclamation_arrive.png",
+      "target_1bpp_sha256": "8DB79CE8BD8EC861A1FD7F45D4BA113EE3B59B3FF885056F02DA8B454352C3E2",
+      "state_scene": "daily",
+      "expression_track": "alert_exclamation",
+      "expression_step": 0,
+      "functional_decoration_track": null,
+      "functional_step": null
+    },
+    {
+      "score": "alert_exclamation",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 1,
+      "cue": "exclamation_lift",
+      "duration_ms": 240,
+      "layers": [
+        {
+          "component_id": 8,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 11,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            1,
+            1
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            1,
+            1
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            1,
+            1
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            1,
+            1
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 9,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 12,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 10,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 522,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        }
+      ],
+      "pbm": "alert_exclamation-01-exclamation_lift.pbm",
+      "png": "alert_exclamation-01-exclamation_lift.png",
+      "target_1bpp_sha256": "530AD7DE5F14C4BB56EE76F57912B634A21002DAB9A9FAED21A9806E37BFC482",
+      "state_scene": "daily",
+      "expression_track": "alert_exclamation",
+      "expression_step": 1,
+      "functional_decoration_track": null,
+      "functional_step": null
+    },
+    {
+      "score": "alert_exclamation",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 2,
+      "cue": "exclamation_hold",
+      "duration_ms": 960,
+      "layers": [
+        {
+          "component_id": 8,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 11,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 9,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 12,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 10,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 523,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        }
+      ],
+      "pbm": "alert_exclamation-02-exclamation_hold.pbm",
+      "png": "alert_exclamation-02-exclamation_hold.png",
+      "target_1bpp_sha256": "74BB07E4EDB0AFAB28ED53D367BC0DA0EBD4B125CD4F52F2D26703D32919CECB",
+      "state_scene": "daily",
+      "expression_track": "alert_exclamation",
+      "expression_step": 2,
+      "functional_decoration_track": null,
+      "functional_step": null
+    },
+    {
+      "score": "playful_presence",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 0,
+      "cue": "settled",
+      "duration_ms": 440,
+      "layers": [
+        {
+          "component_id": 23,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 24,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 27,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 25,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 28,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 26,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        }
+      ],
+      "pbm": "playful_presence-00-settled.pbm",
+      "png": "playful_presence-00-settled.png",
+      "target_1bpp_sha256": "0A800BD3D1FC624F4D5F505315E18163DD4FA608F35C5B0E7B2A7B3512863255",
+      "state_scene": "daily",
+      "expression_track": "playful_presence",
+      "expression_step": 0,
+      "functional_decoration_track": null,
+      "functional_step": null
+    },
+    {
+      "score": "playful_presence",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 1,
+      "cue": "sparkle_lead",
+      "duration_ms": 300,
+      "layers": [
+        {
+          "component_id": 23,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 24,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 27,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            1,
+            1
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            1,
+            1
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            1,
+            1
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            1,
+            1
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 25,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 28,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 26,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        }
+      ],
+      "pbm": "playful_presence-01-sparkle_lead.pbm",
+      "png": "playful_presence-01-sparkle_lead.png",
+      "target_1bpp_sha256": "C05FB9312D006E40E7C7599E0F494C4B9FEEDAD3D6134C64992032DD4647938A",
+      "state_scene": "daily",
+      "expression_track": "playful_presence",
+      "expression_step": 1,
+      "functional_decoration_track": null,
+      "functional_step": null
+    },
+    {
+      "score": "playful_presence",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 2,
+      "cue": "return",
+      "duration_ms": 820,
+      "layers": [
+        {
+          "component_id": 23,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 24,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 27,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 25,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 28,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 26,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        }
+      ],
+      "pbm": "playful_presence-02-return.pbm",
+      "png": "playful_presence-02-return.png",
+      "target_1bpp_sha256": "0A800BD3D1FC624F4D5F505315E18163DD4FA608F35C5B0E7B2A7B3512863255",
+      "state_scene": "daily",
+      "expression_track": "playful_presence",
+      "expression_step": 2,
+      "functional_decoration_track": null,
+      "functional_step": null
+    },
+    {
+      "score": "sleepy_presence",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 0,
+      "cue": "sleep_entry",
+      "duration_ms": 420,
+      "layers": [
+        {
+          "component_id": 13,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 16,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 14,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 17,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 15,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        }
+      ],
+      "pbm": "sleepy_presence-00-sleep_entry.pbm",
+      "png": "sleepy_presence-00-sleep_entry.png",
+      "target_1bpp_sha256": "BBE5EBE794D8375855EC3108D25D25CF999288F3FB4C389FC90638A0C85F679F",
+      "state_scene": "daily",
+      "expression_track": "sleepy_presence",
+      "expression_step": 0,
+      "functional_decoration_track": null,
+      "functional_step": null
+    },
+    {
+      "score": "sleepy_presence",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 1,
+      "cue": "eyes_soften",
+      "duration_ms": 360,
+      "layers": [
+        {
+          "component_id": 539,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        },
+        {
+          "component_id": 540,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        },
+        {
+          "component_id": 541,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        },
+        {
+          "component_id": 542,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        },
+        {
+          "component_id": 14,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 17,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 543,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        }
+      ],
+      "pbm": "sleepy_presence-01-eyes_soften.pbm",
+      "png": "sleepy_presence-01-eyes_soften.png",
+      "target_1bpp_sha256": "0CCD38598146090B1651D0359E40C4C79570CE4A70ADFAD9F1258B9087B9303F",
+      "state_scene": "sleep",
+      "expression_track": "sleepy_presence",
+      "expression_step": 1,
+      "functional_decoration_track": null,
+      "functional_step": null
+    },
+    {
+      "score": "sleepy_presence",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 2,
+      "cue": "moon_arrive",
+      "duration_ms": 320,
+      "layers": [
+        {
+          "component_id": 544,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        },
+        {
+          "component_id": 539,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        },
+        {
+          "component_id": 540,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        },
+        {
+          "component_id": 541,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        },
+        {
+          "component_id": 542,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        },
+        {
+          "component_id": 14,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 17,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 543,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        }
+      ],
+      "pbm": "sleepy_presence-02-moon_arrive.pbm",
+      "png": "sleepy_presence-02-moon_arrive.png",
+      "target_1bpp_sha256": "DDD30B1C05DCAD63C3CB7011D1FF635AFAA3382CE81EA2CA3446FE8240236F3A",
+      "state_scene": "sleep",
+      "expression_track": "sleepy_presence",
+      "expression_step": 2,
+      "functional_decoration_track": null,
+      "functional_step": null
+    },
+    {
+      "score": "sleepy_presence",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 3,
+      "cue": "dream_lift",
+      "duration_ms": 420,
+      "layers": [
+        {
+          "component_id": 544,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        },
+        {
+          "component_id": 539,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        },
+        {
+          "component_id": 540,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        },
+        {
+          "component_id": 541,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        },
+        {
+          "component_id": 542,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        },
+        {
+          "component_id": 14,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 17,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 543,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        },
+        {
+          "component_id": 531,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        }
+      ],
+      "pbm": "sleepy_presence-03-dream_lift.pbm",
+      "png": "sleepy_presence-03-dream_lift.png",
+      "target_1bpp_sha256": "8A5213BD5A5F6255C006517C472D966BC6547296B2AE409433D1BB24D8DADFFD",
+      "state_scene": "sleep",
+      "expression_track": "sleepy_presence",
+      "expression_step": 3,
+      "functional_decoration_track": null,
+      "functional_step": null
+    },
+    {
+      "score": "sleepy_presence",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 4,
+      "cue": "sleep_hold",
+      "duration_ms": 1400,
+      "layers": [
+        {
+          "component_id": 544,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        },
+        {
+          "component_id": 539,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        },
+        {
+          "component_id": 540,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        },
+        {
+          "component_id": 541,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        },
+        {
+          "component_id": 542,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        },
+        {
+          "component_id": 14,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 17,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 543,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        },
+        {
+          "component_id": 532,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        }
+      ],
+      "pbm": "sleepy_presence-04-sleep_hold.pbm",
+      "png": "sleepy_presence-04-sleep_hold.png",
+      "target_1bpp_sha256": "DAD4784495D614F389154AE347D90F354CFF2853755E92D014161FB5E3904962",
+      "state_scene": "sleep",
+      "expression_track": "sleepy_presence",
+      "expression_step": 4,
+      "functional_decoration_track": null,
+      "functional_step": null
+    },
+    {
+      "score": "daily_attention_center",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 0,
+      "cue": "gaze_center_entry",
+      "duration_ms": 220,
+      "layers": [
+        {
+          "component_id": 13,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 16,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            1,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            1,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            1,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            1,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 14,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 17,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 15,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        }
+      ],
+      "pbm": "daily_attention_center-00-gaze_center_entry.pbm",
+      "png": "daily_attention_center-00-gaze_center_entry.png",
+      "target_1bpp_sha256": "F243FA734F495C4012D562F98AC3643665910F2994D2F130A7E7EA843A9C4AE3",
+      "state_scene": "daily",
+      "emotion": "calm",
+      "attention": "center",
+      "expression_track": "daily_attention_center",
+      "expression_step": 0,
+      "functional_decoration_track": null,
+      "functional_step": null
+    },
+    {
+      "score": "daily_attention_center",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 1,
+      "cue": "gaze_center_micro",
+      "duration_ms": 260,
+      "layers": [
+        {
+          "component_id": 13,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 16,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            1,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            1,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            1,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            1,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 14,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 17,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 15,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        }
+      ],
+      "pbm": "daily_attention_center-01-gaze_center_micro.pbm",
+      "png": "daily_attention_center-01-gaze_center_micro.png",
+      "target_1bpp_sha256": "F243FA734F495C4012D562F98AC3643665910F2994D2F130A7E7EA843A9C4AE3",
+      "state_scene": "daily",
+      "emotion": "calm",
+      "attention": "center",
+      "expression_track": "daily_attention_center",
+      "expression_step": 1,
+      "functional_decoration_track": null,
+      "functional_step": null
+    },
+    {
+      "score": "daily_attention_center",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 2,
+      "cue": "gaze_center_hold",
+      "duration_ms": 900,
+      "layers": [
+        {
+          "component_id": 13,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 16,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            1,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            1,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            1,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            1,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 14,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 17,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 15,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        }
+      ],
+      "pbm": "daily_attention_center-02-gaze_center_hold.pbm",
+      "png": "daily_attention_center-02-gaze_center_hold.png",
+      "target_1bpp_sha256": "F243FA734F495C4012D562F98AC3643665910F2994D2F130A7E7EA843A9C4AE3",
+      "state_scene": "daily",
+      "emotion": "calm",
+      "attention": "center",
+      "expression_track": "daily_attention_center",
+      "expression_step": 2,
+      "functional_decoration_track": null,
+      "functional_step": null
+    },
+    {
+      "score": "daily_attention_left",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 0,
+      "cue": "gaze_left_depart",
+      "duration_ms": 180,
+      "layers": [
+        {
+          "component_id": 13,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 16,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            1,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            1,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            1,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            1,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 14,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 17,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 15,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        }
+      ],
+      "pbm": "daily_attention_left-00-gaze_left_depart.pbm",
+      "png": "daily_attention_left-00-gaze_left_depart.png",
+      "target_1bpp_sha256": "F243FA734F495C4012D562F98AC3643665910F2994D2F130A7E7EA843A9C4AE3",
+      "state_scene": "daily",
+      "emotion": "calm",
+      "attention": "center",
+      "expression_track": "daily_attention_left",
+      "expression_step": 0,
+      "functional_decoration_track": null,
+      "functional_step": null
+    },
+    {
+      "score": "daily_attention_left",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 1,
+      "cue": "gaze_left_arrive",
+      "duration_ms": 260,
+      "layers": [
+        {
+          "component_id": 13,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 16,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            -2,
+            2
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            -2,
+            2
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            -5,
+            3
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            -5,
+            3
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 14,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 17,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 15,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        }
+      ],
+      "pbm": "daily_attention_left-01-gaze_left_arrive.pbm",
+      "png": "daily_attention_left-01-gaze_left_arrive.png",
+      "target_1bpp_sha256": "71E568A3BDB3AF5003D2920D54268BF3B8991450C247290315623B6F80C2BA5C",
+      "state_scene": "daily",
+      "emotion": "calm",
+      "attention": "left",
+      "expression_track": "daily_attention_left",
+      "expression_step": 1,
+      "functional_decoration_track": null,
+      "functional_step": null
+    },
+    {
+      "score": "daily_attention_left",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 2,
+      "cue": "gaze_left_hold",
+      "duration_ms": 900,
+      "layers": [
+        {
+          "component_id": 13,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 16,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            -2,
+            2
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            -2,
+            2
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            -5,
+            3
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            -5,
+            3
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 14,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 17,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 15,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        }
+      ],
+      "pbm": "daily_attention_left-02-gaze_left_hold.pbm",
+      "png": "daily_attention_left-02-gaze_left_hold.png",
+      "target_1bpp_sha256": "71E568A3BDB3AF5003D2920D54268BF3B8991450C247290315623B6F80C2BA5C",
+      "state_scene": "daily",
+      "emotion": "calm",
+      "attention": "left",
+      "expression_track": "daily_attention_left",
+      "expression_step": 2,
+      "functional_decoration_track": null,
+      "functional_step": null
+    },
+    {
+      "score": "daily_attention_right",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 0,
+      "cue": "gaze_right_depart",
+      "duration_ms": 180,
+      "layers": [
+        {
+          "component_id": 13,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 16,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            1,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            1,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            1,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            1,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 14,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 17,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 15,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        }
+      ],
+      "pbm": "daily_attention_right-00-gaze_right_depart.pbm",
+      "png": "daily_attention_right-00-gaze_right_depart.png",
+      "target_1bpp_sha256": "F243FA734F495C4012D562F98AC3643665910F2994D2F130A7E7EA843A9C4AE3",
+      "state_scene": "daily",
+      "emotion": "calm",
+      "attention": "center",
+      "expression_track": "daily_attention_right",
+      "expression_step": 0,
+      "functional_decoration_track": null,
+      "functional_step": null
+    },
+    {
+      "score": "daily_attention_right",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 1,
+      "cue": "gaze_right_arrive",
+      "duration_ms": 260,
+      "layers": [
+        {
+          "component_id": 13,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 16,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            5,
+            2
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            5,
+            2
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            5,
+            3
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            5,
+            3
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 14,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 17,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 15,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        }
+      ],
+      "pbm": "daily_attention_right-01-gaze_right_arrive.pbm",
+      "png": "daily_attention_right-01-gaze_right_arrive.png",
+      "target_1bpp_sha256": "D9B3974424A1C79100031C164DC877F2BAA26F39A3B9BD6D9A63310D23178C52",
+      "state_scene": "daily",
+      "emotion": "calm",
+      "attention": "right",
+      "expression_track": "daily_attention_right",
+      "expression_step": 1,
+      "functional_decoration_track": null,
+      "functional_step": null
+    },
+    {
+      "score": "daily_attention_right",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 2,
+      "cue": "gaze_right_hold",
+      "duration_ms": 900,
+      "layers": [
+        {
+          "component_id": 13,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 16,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            5,
+            2
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            5,
+            2
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            5,
+            3
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            5,
+            3
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 14,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 17,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 15,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        }
+      ],
+      "pbm": "daily_attention_right-02-gaze_right_hold.pbm",
+      "png": "daily_attention_right-02-gaze_right_hold.png",
+      "target_1bpp_sha256": "D9B3974424A1C79100031C164DC877F2BAA26F39A3B9BD6D9A63310D23178C52",
+      "state_scene": "daily",
+      "emotion": "calm",
+      "attention": "right",
+      "expression_track": "daily_attention_right",
+      "expression_step": 2,
+      "functional_decoration_track": null,
+      "functional_step": null
+    },
+    {
+      "score": "daily_attention_up",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 0,
+      "cue": "gaze_up_depart",
+      "duration_ms": 180,
+      "layers": [
+        {
+          "component_id": 13,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 16,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            1,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            1,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            1,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            1,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 14,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 17,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 15,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        }
+      ],
+      "pbm": "daily_attention_up-00-gaze_up_depart.pbm",
+      "png": "daily_attention_up-00-gaze_up_depart.png",
+      "target_1bpp_sha256": "F243FA734F495C4012D562F98AC3643665910F2994D2F130A7E7EA843A9C4AE3",
+      "state_scene": "daily",
+      "emotion": "calm",
+      "attention": "center",
+      "expression_track": "daily_attention_up",
+      "expression_step": 0,
+      "functional_decoration_track": null,
+      "functional_step": null
+    },
+    {
+      "score": "daily_attention_up",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 1,
+      "cue": "gaze_up_arrive",
+      "duration_ms": 260,
+      "layers": [
+        {
+          "component_id": 13,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 16,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            1,
+            -3
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            1,
+            -3
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            1,
+            -5
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            1,
+            -5
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 14,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 17,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 15,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        }
+      ],
+      "pbm": "daily_attention_up-01-gaze_up_arrive.pbm",
+      "png": "daily_attention_up-01-gaze_up_arrive.png",
+      "target_1bpp_sha256": "3D5CA0B4C9513AF889756AF4301D78A0C1B0F613DB1C6CB434C3847E374D438F",
+      "state_scene": "daily",
+      "emotion": "calm",
+      "attention": "up",
+      "expression_track": "daily_attention_up",
+      "expression_step": 1,
+      "functional_decoration_track": null,
+      "functional_step": null
+    },
+    {
+      "score": "daily_attention_up",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 2,
+      "cue": "gaze_up_hold",
+      "duration_ms": 900,
+      "layers": [
+        {
+          "component_id": 13,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 16,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            1,
+            -3
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            1,
+            -3
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            1,
+            -5
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            1,
+            -5
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 14,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 17,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 15,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        }
+      ],
+      "pbm": "daily_attention_up-02-gaze_up_hold.pbm",
+      "png": "daily_attention_up-02-gaze_up_hold.png",
+      "target_1bpp_sha256": "3D5CA0B4C9513AF889756AF4301D78A0C1B0F613DB1C6CB434C3847E374D438F",
+      "state_scene": "daily",
+      "emotion": "calm",
+      "attention": "up",
+      "expression_track": "daily_attention_up",
+      "expression_step": 2,
+      "functional_decoration_track": null,
+      "functional_step": null
+    },
+    {
+      "score": "daily_attention_down",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 0,
+      "cue": "gaze_down_depart",
+      "duration_ms": 180,
+      "layers": [
+        {
+          "component_id": 13,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 16,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            1,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            1,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            1,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            1,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 14,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 17,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 15,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        }
+      ],
+      "pbm": "daily_attention_down-00-gaze_down_depart.pbm",
+      "png": "daily_attention_down-00-gaze_down_depart.png",
+      "target_1bpp_sha256": "F243FA734F495C4012D562F98AC3643665910F2994D2F130A7E7EA843A9C4AE3",
+      "state_scene": "daily",
+      "emotion": "calm",
+      "attention": "center",
+      "expression_track": "daily_attention_down",
+      "expression_step": 0,
+      "functional_decoration_track": null,
+      "functional_step": null
+    },
+    {
+      "score": "daily_attention_down",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 1,
+      "cue": "gaze_down_arrive",
+      "duration_ms": 260,
+      "layers": [
+        {
+          "component_id": 13,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 16,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            1,
+            4
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            1,
+            4
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            1,
+            5
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            1,
+            5
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 14,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 17,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 15,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        }
+      ],
+      "pbm": "daily_attention_down-01-gaze_down_arrive.pbm",
+      "png": "daily_attention_down-01-gaze_down_arrive.png",
+      "target_1bpp_sha256": "D8216B8AA4B258DF3B28DDE119EB1C2821B1EA98DFE9A5E70C5C4E35A2F4A748",
+      "state_scene": "daily",
+      "emotion": "calm",
+      "attention": "down",
+      "expression_track": "daily_attention_down",
+      "expression_step": 1,
+      "functional_decoration_track": null,
+      "functional_step": null
+    },
+    {
+      "score": "daily_attention_down",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 2,
+      "cue": "gaze_down_hold",
+      "duration_ms": 900,
+      "layers": [
+        {
+          "component_id": 13,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 16,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            1,
+            4
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            1,
+            4
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            1,
+            5
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            1,
+            5
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 14,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 17,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 15,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        }
+      ],
+      "pbm": "daily_attention_down-02-gaze_down_hold.pbm",
+      "png": "daily_attention_down-02-gaze_down_hold.png",
+      "target_1bpp_sha256": "D8216B8AA4B258DF3B28DDE119EB1C2821B1EA98DFE9A5E70C5C4E35A2F4A748",
+      "state_scene": "daily",
+      "emotion": "calm",
+      "attention": "down",
+      "expression_track": "daily_attention_down",
+      "expression_step": 2,
+      "functional_decoration_track": null,
+      "functional_step": null
+    },
+    {
+      "score": "recording_with_calm",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 0,
+      "cue": "recording_input_0",
+      "duration_ms": 700,
+      "layers": [
+        {
+          "component_id": 13,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 16,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 14,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 17,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 15,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 557,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        }
+      ],
+      "pbm": "recording_with_calm-00-recording_input_0.pbm",
+      "png": "recording_with_calm-00-recording_input_0.png",
+      "target_1bpp_sha256": "DEB31E15178CBBFEEC27CFC66EAB9E318858C2CAAACB175A410FBC08A0F984A2",
+      "state_scene": "daily",
+      "expression_track": "calm_presence",
+      "expression_step": 0,
+      "functional_decoration_track": "recording_input",
+      "functional_step": 0
+    },
+    {
+      "score": "recording_with_calm",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 1,
+      "cue": "recording_input_1",
+      "duration_ms": 420,
+      "layers": [
+        {
+          "component_id": 13,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 16,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            -1,
+            1
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            -1,
+            1
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            -1,
+            1
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            -1,
+            1
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 14,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 17,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 15,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 558,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        }
+      ],
+      "pbm": "recording_with_calm-01-recording_input_1.pbm",
+      "png": "recording_with_calm-01-recording_input_1.png",
+      "target_1bpp_sha256": "9125B7AC2B87DDF716D2E9751423633A49A718094C7B218FDDB834C326AACB08",
+      "state_scene": "daily",
+      "expression_track": "calm_presence",
+      "expression_step": 1,
+      "functional_decoration_track": "recording_input",
+      "functional_step": 1
+    },
+    {
+      "score": "recording_with_calm",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 2,
+      "cue": "recording_input_2",
+      "duration_ms": 420,
+      "layers": [
+        {
+          "component_id": 13,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 16,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 14,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 17,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 15,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 559,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        }
+      ],
+      "pbm": "recording_with_calm-02-recording_input_2.pbm",
+      "png": "recording_with_calm-02-recording_input_2.png",
+      "target_1bpp_sha256": "3D7BE4CD55728A94C4038D777F43CF36F33B7E490163E2D59D20D4C571C43054",
+      "state_scene": "daily",
+      "expression_track": "calm_presence",
+      "expression_step": 2,
+      "functional_decoration_track": "recording_input",
+      "functional_step": 2
+    },
+    {
+      "score": "recording_with_warm",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 0,
+      "cue": "recording_input_0",
+      "duration_ms": 700,
+      "layers": [
+        {
+          "component_id": 33,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 36,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 34,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 37,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 35,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 557,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        }
+      ],
+      "pbm": "recording_with_warm-00-recording_input_0.pbm",
+      "png": "recording_with_warm-00-recording_input_0.png",
+      "target_1bpp_sha256": "9DF6D710DA3C4F6950C1531EE7885E10D9D5ADD5D3EE2AE7B5E0CB4411C4D593",
+      "state_scene": "daily",
+      "expression_track": "warm_presence",
+      "expression_step": 0,
+      "functional_decoration_track": "recording_input",
+      "functional_step": 0
+    },
+    {
+      "score": "recording_with_warm",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 1,
+      "cue": "recording_input_1",
+      "duration_ms": 420,
+      "layers": [
+        {
+          "component_id": 33,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 36,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            1,
+            1
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            1,
+            1
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            1,
+            1
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            1,
+            1
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 34,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 37,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 35,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 558,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        }
+      ],
+      "pbm": "recording_with_warm-01-recording_input_1.pbm",
+      "png": "recording_with_warm-01-recording_input_1.png",
+      "target_1bpp_sha256": "73C6062B8204336DEC882592F73593D125057B42519E4957D3D3A3362ABE6960",
+      "state_scene": "daily",
+      "expression_track": "warm_presence",
+      "expression_step": 1,
+      "functional_decoration_track": "recording_input",
+      "functional_step": 1
+    },
+    {
+      "score": "recording_with_warm",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 2,
+      "cue": "recording_input_2",
+      "duration_ms": 420,
+      "layers": [
+        {
+          "component_id": 33,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 36,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 34,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 37,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 35,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 559,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        }
+      ],
+      "pbm": "recording_with_warm-02-recording_input_2.pbm",
+      "png": "recording_with_warm-02-recording_input_2.png",
+      "target_1bpp_sha256": "EA896D4565F85DCE82E49A4F47F8EE407327C210C4CA9290529D4E98A26CE09B",
+      "state_scene": "daily",
+      "expression_track": "warm_presence",
+      "expression_step": 2,
+      "functional_decoration_track": "recording_input",
+      "functional_step": 2
+    },
+    {
+      "score": "charging_with_calm",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 0,
+      "cue": "bottom_connector_charging_0",
+      "duration_ms": 700,
+      "layers": [
+        {
+          "component_id": 13,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 16,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 14,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 17,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 15,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 560,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        }
+      ],
+      "pbm": "charging_with_calm-00-bottom_connector_charging_0.pbm",
+      "png": "charging_with_calm-00-bottom_connector_charging_0.png",
+      "target_1bpp_sha256": "30C7C08B47058061C8EF0C46CD88C118AC88D3B71A984D425EA63D6567D1350E",
+      "state_scene": "daily",
+      "expression_track": "calm_presence",
+      "expression_step": 0,
+      "functional_decoration_track": "bottom_connector_charging",
+      "functional_step": 0
+    },
+    {
+      "score": "charging_with_calm",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 1,
+      "cue": "bottom_connector_charging_1",
+      "duration_ms": 420,
+      "layers": [
+        {
+          "component_id": 13,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 16,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            -1,
+            1
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            -1,
+            1
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            -1,
+            1
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            -1,
+            1
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 14,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 17,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 15,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 561,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        }
+      ],
+      "pbm": "charging_with_calm-01-bottom_connector_charging_1.pbm",
+      "png": "charging_with_calm-01-bottom_connector_charging_1.png",
+      "target_1bpp_sha256": "556BD71E33FA9AE2550187A684417E7B9E550C29B656F9510B284F31B684B6CB",
+      "state_scene": "daily",
+      "expression_track": "calm_presence",
+      "expression_step": 1,
+      "functional_decoration_track": "bottom_connector_charging",
+      "functional_step": 1
+    },
+    {
+      "score": "charging_with_calm",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 2,
+      "cue": "bottom_connector_charging_2",
+      "duration_ms": 420,
+      "layers": [
+        {
+          "component_id": 13,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 16,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 14,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 17,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 15,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 562,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        }
+      ],
+      "pbm": "charging_with_calm-02-bottom_connector_charging_2.pbm",
+      "png": "charging_with_calm-02-bottom_connector_charging_2.png",
+      "target_1bpp_sha256": "0324ED401FB468419AF0F3FCD4F68218D63A65A370A03B33DB189BBC7CB3E43C",
+      "state_scene": "daily",
+      "expression_track": "calm_presence",
+      "expression_step": 2,
+      "functional_decoration_track": "bottom_connector_charging",
+      "functional_step": 2
+    },
+    {
+      "score": "upgrade_with_playful",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 0,
+      "cue": "upgrade_progress_0",
+      "duration_ms": 700,
+      "layers": [
+        {
+          "component_id": 23,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 24,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 27,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 25,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 28,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 26,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 563,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        }
+      ],
+      "pbm": "upgrade_with_playful-00-upgrade_progress_0.pbm",
+      "png": "upgrade_with_playful-00-upgrade_progress_0.png",
+      "target_1bpp_sha256": "9128871F89DB54E612F73CEE01CBE4B88A1EBF4AF03FAF5157170A9D9CF121A4",
+      "state_scene": "daily",
+      "expression_track": "playful_presence",
+      "expression_step": 0,
+      "functional_decoration_track": "upgrade_progress",
+      "functional_step": 0
+    },
+    {
+      "score": "upgrade_with_playful",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 1,
+      "cue": "upgrade_progress_1",
+      "duration_ms": 420,
+      "layers": [
+        {
+          "component_id": 23,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 24,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 27,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            1,
+            1
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            1,
+            1
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            1,
+            1
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            1,
+            1
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 25,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 28,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 26,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 564,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        }
+      ],
+      "pbm": "upgrade_with_playful-01-upgrade_progress_1.pbm",
+      "png": "upgrade_with_playful-01-upgrade_progress_1.png",
+      "target_1bpp_sha256": "4AE975F758CC3E3A67F72890B7BBF1D63800B89ECA7F2A347F26101B9475960B",
+      "state_scene": "daily",
+      "expression_track": "playful_presence",
+      "expression_step": 1,
+      "functional_decoration_track": "upgrade_progress",
+      "functional_step": 1
+    },
+    {
+      "score": "upgrade_with_playful",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 2,
+      "cue": "upgrade_progress_2",
+      "duration_ms": 900,
+      "layers": [
+        {
+          "component_id": 23,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 24,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 27,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 25,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 28,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 26,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 565,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        }
+      ],
+      "pbm": "upgrade_with_playful-02-upgrade_progress_2.pbm",
+      "png": "upgrade_with_playful-02-upgrade_progress_2.png",
+      "target_1bpp_sha256": "51575FCD069EF7BF4CDBF34366698738B8CB754A6E465B179C22F5FCE023D332",
+      "state_scene": "daily",
+      "expression_track": "playful_presence",
+      "expression_step": 2,
+      "functional_decoration_track": "upgrade_progress",
+      "functional_step": 2
+    },
+    {
+      "score": "error_with_calm",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 0,
+      "cue": "error_caution_0",
+      "duration_ms": 260,
+      "layers": [
+        {
+          "component_id": 13,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 16,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 14,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 17,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 15,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 566,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        }
+      ],
+      "pbm": "error_with_calm-00-error_caution_0.pbm",
+      "png": "error_with_calm-00-error_caution_0.png",
+      "target_1bpp_sha256": "01AA5F5FCBABE673CBF0BC8B68FE64087B0670AE90DF2E10BF37B7FABDD212B7",
+      "state_scene": "daily",
+      "expression_track": "calm_presence",
+      "expression_step": 0,
+      "functional_decoration_track": "error_caution",
+      "functional_step": 0
+    },
+    {
+      "score": "error_with_calm",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 1,
+      "cue": "error_caution_1",
+      "duration_ms": 260,
+      "layers": [
+        {
+          "component_id": 13,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 16,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            -1,
+            1
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            -1,
+            1
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            -1,
+            1
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            -1,
+            1
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 14,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 17,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 15,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 567,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        }
+      ],
+      "pbm": "error_with_calm-01-error_caution_1.pbm",
+      "png": "error_with_calm-01-error_caution_1.png",
+      "target_1bpp_sha256": "C1C33BFE7FEEBE808FAADAFE61E7B0B2A69CBA4DA6C49E043D7421E3F7B826BF",
+      "state_scene": "daily",
+      "expression_track": "calm_presence",
+      "expression_step": 1,
+      "functional_decoration_track": "error_caution",
+      "functional_step": 1
+    },
+    {
+      "score": "error_with_calm",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 2,
+      "cue": "error_caution_2",
+      "duration_ms": 1200,
+      "layers": [
+        {
+          "component_id": 13,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 16,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 14,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 17,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 15,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 568,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        }
+      ],
+      "pbm": "error_with_calm-02-error_caution_2.pbm",
+      "png": "error_with_calm-02-error_caution_2.png",
+      "target_1bpp_sha256": "963C32E0F5964547C94153B9BFF9231ACE6DF0AFE84489758DDE237F7ADF2D68",
+      "state_scene": "daily",
+      "expression_track": "calm_presence",
+      "expression_step": 2,
+      "functional_decoration_track": "error_caution",
+      "functional_step": 2
+    },
+    {
+      "score": "menu_entry_notice",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 0,
+      "cue": "menu_grid_arrive",
+      "duration_ms": 140,
+      "layers": [
+        {
+          "component_id": 13,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 16,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 14,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 17,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 15,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 545,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        }
+      ],
+      "pbm": "menu_entry_notice-00-menu_grid_arrive.pbm",
+      "png": "menu_entry_notice-00-menu_grid_arrive.png",
+      "target_1bpp_sha256": "C035804EA71A2F67C6DEA9331F5A945BC70912AF637F7F721B25D95897A92CCD",
+      "state_scene": "touch",
+      "expression_track": "calm_presence",
+      "expression_step": 0,
+      "functional_decoration_track": "menu_entry_notice",
+      "functional_step": 0
+    },
+    {
+      "score": "menu_entry_notice",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 1,
+      "cue": "menu_selection_confirm",
+      "duration_ms": 140,
+      "layers": [
+        {
+          "component_id": 13,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 16,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            -1,
+            1
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            -1,
+            1
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            -1,
+            1
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            -1,
+            1
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 14,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 17,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 15,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 546,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        }
+      ],
+      "pbm": "menu_entry_notice-01-menu_selection_confirm.pbm",
+      "png": "menu_entry_notice-01-menu_selection_confirm.png",
+      "target_1bpp_sha256": "7396BF010A02CEFAE7DAFF9DB2AD2489F9B29073CD59548F5D0B067B93EFE0B6",
+      "state_scene": "touch",
+      "expression_track": "calm_presence",
+      "expression_step": 1,
+      "functional_decoration_track": "menu_entry_notice",
+      "functional_step": 1
+    },
+    {
+      "score": "menu_entry_notice",
+      "prelude_bridge": "independent_two_track_composition",
+      "index": 2,
+      "cue": "menu_entry_commit",
+      "duration_ms": 180,
+      "layers": [
+        {
+          "component_id": 13,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 16,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 2,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 6,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 1,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 5,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 3,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 7,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 14,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 17,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 4,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 15,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v22_face"
+        },
+        {
+          "component_id": 547,
+          "offset": [
+            0,
+            0
+          ],
+          "pack": "v40_special_source"
+        }
+      ],
+      "pbm": "menu_entry_notice-02-menu_entry_commit.pbm",
+      "png": "menu_entry_notice-02-menu_entry_commit.png",
+      "target_1bpp_sha256": "B50DF338F45FC1B409FE9737EBFF0270138B30FB6E464E9573FF65637D87B22F",
+      "state_scene": "touch",
+      "expression_track": "calm_presence",
+      "expression_step": 2,
+      "functional_decoration_track": "menu_entry_notice",
+      "functional_step": 2
+    }
+  ],
+  "dynamic_preview": {
+    "html": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v3/candidate/wb55-browser-parity-attempt-01/index.html",
+    "story_gifs": {
+      "calm_presence": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v3/candidate/wb55-browser-parity-attempt-01/calm_presence-component-rig.gif",
+      "warm_presence": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v3/candidate/wb55-browser-parity-attempt-01/warm_presence-component-rig.gif",
+      "curious_question": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v3/candidate/wb55-browser-parity-attempt-01/curious_question-component-rig.gif",
+      "alert_exclamation": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v3/candidate/wb55-browser-parity-attempt-01/alert_exclamation-component-rig.gif",
+      "playful_presence": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v3/candidate/wb55-browser-parity-attempt-01/playful_presence-component-rig.gif",
+      "sleepy_presence": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v3/candidate/wb55-browser-parity-attempt-01/sleepy_presence-component-rig.gif",
+      "daily_attention_center": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v3/candidate/wb55-browser-parity-attempt-01/daily_attention_center-component-rig.gif",
+      "daily_attention_left": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v3/candidate/wb55-browser-parity-attempt-01/daily_attention_left-component-rig.gif",
+      "daily_attention_right": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v3/candidate/wb55-browser-parity-attempt-01/daily_attention_right-component-rig.gif",
+      "daily_attention_up": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v3/candidate/wb55-browser-parity-attempt-01/daily_attention_up-component-rig.gif",
+      "daily_attention_down": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v3/candidate/wb55-browser-parity-attempt-01/daily_attention_down-component-rig.gif",
+      "recording_with_calm": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v3/candidate/wb55-browser-parity-attempt-01/recording_with_calm-component-rig.gif",
+      "recording_with_warm": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v3/candidate/wb55-browser-parity-attempt-01/recording_with_warm-component-rig.gif",
+      "charging_with_calm": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v3/candidate/wb55-browser-parity-attempt-01/charging_with_calm-component-rig.gif",
+      "upgrade_with_playful": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v3/candidate/wb55-browser-parity-attempt-01/upgrade_with_playful-component-rig.gif",
+      "error_with_calm": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v3/candidate/wb55-browser-parity-attempt-01/error_with_calm-component-rig.gif",
+      "menu_entry_notice": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v3/candidate/wb55-browser-parity-attempt-01/menu_entry_notice-component-rig.gif"
+    }
+  },
+  "chinese_overview": {
+    "enabled": true,
+    "story_count": 17,
+    "metadata": {
+      "title": "V9 \u7ec4\u4ef6\u8868\u60c5\u7cfb\u7edf\u9884\u89c8",
+      "player_label": "\u64ad\u653e\u7f16\u821e",
+      "restart_label": "\u91cd\u65b0\u64ad\u653e",
+      "atlas_title": "\u8868\u60c5\u4e0e\u72b6\u6001\u603b\u89c8",
+      "atlas_summary": "\u6bcf\u5f20\u56fe\u90fd\u662f\u540c\u4e00\u5957 200x200 \u7ec4\u4ef6\u8ba1\u5212\u7684\u771f\u5b9e\u5e27\uff1b\u529f\u80fd\u72b6\u6001\u53ea\u53e0\u52a0\u5c0f\u88c5\u9970\uff0c\u4e0d\u66ff\u6362\u8138\u3002",
+      "stories": {
+        "calm_presence": {
+          "label_zh": "\u65e5\u5e38\u5e73\u9759",
+          "summary_zh": "\u653e\u677e\u7684\u9ed8\u8ba4\u65e5\u5e38\u8138\uff0c\u8f7b\u5fae\u5de6\u4fa7\u773c\u795e\u540e\u56de\u5230\u6b63\u4e2d\u3002",
+          "overview_step": 2
+        },
+        "warm_presence": {
+          "label_zh": "\u4eb2\u8fd1\u6e29\u6696",
+          "summary_zh": "\u4e92\u52a8\u8bb0\u5fc6\u8f83\u9ad8\u65f6\u7684\u6e29\u6696\u56de\u5e94\uff0c\u8f7b\u5fae\u53f3\u4fa7\u773c\u795e\u540e\u5b89\u9759\u4fdd\u6301\u3002",
+          "overview_step": 2
+        },
+        "curious_question": {
+          "label_zh": "\u597d\u5947\u63d0\u95ee",
+          "summary_zh": "\u5148\u7531\u773c\u795e\u548c\u7709\u6bdb\u5e26\u52a8\uff0c\u518d\u51fa\u73b0\u8868\u60c5\u81ea\u6709\u7684\u95ee\u53f7\u3002",
+          "overview_step": 2
+        },
+        "alert_exclamation": {
+          "label_zh": "\u8b66\u89c9\u63d0\u9192",
+          "summary_zh": "\u5148\u7531\u773c\u795e\u548c\u7709\u6bdb\u5e26\u52a8\uff0c\u518d\u51fa\u73b0\u8868\u60c5\u81ea\u6709\u7684\u611f\u53f9\u53f7\u3002",
+          "overview_step": 2
+        },
+        "playful_presence": {
+          "label_zh": "\u6d3b\u6cfc\u73a9\u5fc3",
+          "summary_zh": "\u66f4\u660e\u5feb\u7684\u773c\u795e\u548c\u5634\u89d2\uff0c\u661f\u5149\u5148\u52a8\u540e\u56de\u5230\u4fdd\u6301\u3002",
+          "overview_step": 2
+        },
+        "sleepy_presence": {
+          "label_zh": "\u56f0\u5026\u5165\u7761",
+          "summary_zh": "\u773c\u775b\u3001\u7709\u6bdb\u3001\u5634\u5df4\u548c\u68a6\u5883\u5c0f\u88c5\u9970\u4f9d\u6b21\u8fdb\u5165\uff0c\u4fdd\u6301\u540e\u4e0d\u968f\u673a\u8df3\u53d8\u3002",
+          "overview_step": 4
+        },
+        "daily_attention_center": {
+          "label_zh": "\u773c\u795e\u6b63\u4e2d",
+          "summary_zh": "\u65e5\u5e38\u89c6\u7ebf\u57fa\u51c6\u3002",
+          "overview_step": 2
+        },
+        "daily_attention_left": {
+          "label_zh": "\u773c\u795e\u5411\u5de6",
+          "summary_zh": "\u4e3b\u9ad8\u5149\u548c\u5c0f\u661f\u5149\u5411\u5de6\u4fa7\u5408\u6cd5\u7ec8\u70b9\u79fb\u52a8\u3002",
+          "overview_step": 2
+        },
+        "daily_attention_right": {
+          "label_zh": "\u773c\u795e\u5411\u53f3",
+          "summary_zh": "\u4e3b\u9ad8\u5149\u548c\u5c0f\u661f\u5149\u5411\u53f3\u4fa7\u5408\u6cd5\u7ec8\u70b9\u79fb\u52a8\u3002",
+          "overview_step": 2
+        },
+        "daily_attention_up": {
+          "label_zh": "\u773c\u795e\u5411\u4e0a",
+          "summary_zh": "\u4e3b\u9ad8\u5149\u548c\u5c0f\u661f\u5149\u5411\u4e0a\u4fa7\u5408\u6cd5\u7ec8\u70b9\u79fb\u52a8\u3002",
+          "overview_step": 2
+        },
+        "daily_attention_down": {
+          "label_zh": "\u773c\u795e\u5411\u4e0b",
+          "summary_zh": "\u4e3b\u9ad8\u5149\u548c\u5c0f\u661f\u5149\u5411\u4e0b\u4fa7\u5408\u6cd5\u7ec8\u70b9\u79fb\u52a8\u3002",
+          "overview_step": 2
+        },
+        "recording_with_calm": {
+          "label_zh": "\u5f55\u97f3\u8f93\u5165\u4e2d",
+          "summary_zh": "\u5e73\u9759\u65e5\u5e38\u8138\u4e0a\u53e0\u52a0\u8f93\u5165\u6ce2\u7eb9\uff0c\u4e0d\u66ff\u6362\u4e3a\u5f55\u97f3\u4e13\u7528\u6574\u8138\u3002",
+          "overview_step": 2
+        },
+        "recording_with_warm": {
+          "label_zh": "\u5f55\u97f3\u8f93\u5165\u4e2d\uff08\u6e29\u6696\u8138\uff09",
+          "summary_zh": "\u540c\u4e00\u5f55\u97f3\u88c5\u9970\u53ef\u4ee5\u4e0e\u6e29\u6696\u8138\u72ec\u7acb\u7ec4\u5408\u3002",
+          "overview_step": 2
+        },
+        "charging_with_calm": {
+          "label_zh": "\u5e95\u90e8\u63d2\u5ea7\u5145\u7535",
+          "summary_zh": "\u5e73\u9759\u65e5\u5e38\u8138\u4e0a\u53e0\u52a0\u5e95\u90e8\u63d2\u5ea7\u5145\u7535\u5c0f\u88c5\u9970\u3002",
+          "overview_step": 2
+        },
+        "upgrade_with_playful": {
+          "label_zh": "\u5347\u7ea7\u8fdb\u884c\u4e2d",
+          "summary_zh": "\u6d3b\u6cfc\u8138\u4e0a\u53e0\u52a0\u4e0a\u884c\u8fdb\u5ea6\u5c0f\u88c5\u9970\u3002",
+          "overview_step": 2
+        },
+        "error_with_calm": {
+          "label_zh": "\u9519\u8bef\u63d0\u9192",
+          "summary_zh": "\u5e73\u9759\u8138\u4e0a\u53e0\u52a0\u7d27\u51d1\u8b66\u793a\u5c0f\u88c5\u9970\uff1b\u5b83\u4e0d\u6539\u773c\u775b\u3001\u7709\u6bdb\u6216\u5634\u5df4\u3002",
+          "overview_step": 2
+        },
+        "menu_entry_notice": {
+          "label_zh": "\u8fdb\u5165\u83dc\u5355\u63d0\u793a",
+          "summary_zh": "\u4ec5 460 \u6beb\u79d2\u5165\u573a\u63d0\u793a\uff1b\u968f\u540e\u4e24\u6761 Rig \u8f68\u9053\u90fd\u64a4\u51fa\uff0c\u7531\u83dc\u5355 UI \u72ec\u5360\u5c4f\u5e55\u3002",
+          "overview_step": 2
+        }
+      }
+    }
+  },
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden_until_v41_machine_audit_and_owner_review",
+  "fail_closed": {
+    "all_special_runtime_binding": "forbidden_until_total_machine_audit_and_owner_review"
+  },
+  "non_claims": [
+    "no_target_pixel_parity_yet",
+    "no_firmware_flash",
+    "no_panel_or_driver_change",
+    "no_human_acceptance"
+  ]
+}

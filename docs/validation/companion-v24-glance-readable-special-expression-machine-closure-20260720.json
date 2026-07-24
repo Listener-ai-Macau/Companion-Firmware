@@ -1,0 +1,54 @@
+{
+  "schema": "companion.v24_glance_readable_special_expression_machine_closure.v1",
+  "status": "PASS_V24_SPECIAL_EXPRESSION_MACHINE_CLOSURE_RUNTIME_INACTIVE",
+  "claim_scope": "source-to-component-to-browser/target machine closure for an unbound runtime-inactive candidate; no firmware binding, CRIG/profile export, flash, panel output, physical acceptance, or human art acceptance",
+  "locked_v9_source": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "artifacts": {
+    "source_gate": {
+      "path": "docs/validation/companion-v24-glance-readable-special-expression-source-gate-20260720.json",
+      "sha256": "8A41B0212E6FDF555FD3F1DEC78E2BE4A92A3FD7313D4BCFA5A9BDB947936044",
+      "status": "PASS_V24_SPECIAL_SOURCE_GATE_PENDING_COMPONENT_EXPORT"
+    },
+    "component_export_gate": {
+      "path": "docs/validation/companion-v24-glance-readable-special-expression-component-export-gate-20260720.json",
+      "sha256": "45B665DC297B3E43F11FA9EF5B8E9FCAD649C777E8B8B5CE6C03F24246BED965",
+      "status": "PASS_V24_SPECIAL_COMPONENT_EXPORT_UNBOUND"
+    },
+    "component_performance": {
+      "path": "docs/validation/companion-v24-glance-readable-special-expression-component-performance-preview-20260720.json",
+      "sha256": "CE5BC296B3B2921D19AF85D2403223A09E82F385F5C06331E618720E0C130173",
+      "status": "PASS_V24_SPECIAL_COMPONENT_PERFORMANCE_RUNTIME_INACTIVE"
+    },
+    "browser_target_parity": {
+      "path": "docs/validation/companion-v24-glance-readable-special-expression-component-performance-parity-20260720.json",
+      "sha256": "FBF3EE53E7BA7F2CE33D7086D52A227472CE202F6F856AD5BE0B3B9F287D46A5",
+      "status": "PASS_V24_SPECIAL_COMPONENT_PERFORMANCE_PARITY_RUNTIME_INACTIVE"
+    },
+    "browser_render": {
+      "path": "docs/validation/companion-v24-glance-readable-special-expression-component-browser-render-20260720.json",
+      "sha256": "CF3587B6737FF8643FDB8DD531CDFFAA812F67499796CD12517BCFCA6DA2CAB1",
+      "status": "PASS_V24_BROWSER_RENDER_INSPECTION_NATIVE_200X200"
+    }
+  },
+  "selection_policy": {
+    "mode": "explicit_event_performance",
+    "random_state_selection": false,
+    "automatic_cross_state_cycle": false,
+    "daily_auto_only_runs_daily_micro_choreography": true,
+    "special_state_exit_returns_to": "v9_daily",
+    "unavailable_special_states": [
+      "upgrade",
+      "sleep",
+      "error"
+    ],
+    "unavailable_special_state_policy": "fail_closed"
+  },
+  "next_human_boundary": "canonical browser-only Chinese owner art review of the V24 candidate; any FAIL returns to generated-source refinement before a CRIG/profile or behavior binding",
+  "physical_gate": "PENDING_FTS02_REPLACEMENT_OR_CROSS_SWAP_RAIL_EVIDENCE",
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden",
+  "errors": []
+}

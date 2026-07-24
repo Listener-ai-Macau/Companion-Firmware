@@ -1,0 +1,22 @@
+{
+  "schema": "companion.v9_special_expression_owner_art_review.v3",
+  "status": "INVALID_OWNER_REVIEW_PLAYER_NOT_OPENED",
+  "date": "2026-07-20",
+  "candidate": "V29 V9-safe silhouette-object special-expression source",
+  "machine_closure": "docs/validation/companion-v29-silhouette-object-special-expression-machine-closure-20260720.json",
+  "internal_visual_preflight": "docs/validation/companion-v29-silhouette-object-special-expression-internal-visual-preflight-20260720.json",
+  "operator_prompt": {
+    "tool": "aiw operator-prompt",
+    "selection": "失败",
+    "note": "没开, 看不到",
+    "note_path": "docs/validation/companion-v29-silhouette-object-special-expression-owner-art-review-20260720.note.txt",
+    "note_sha256": "D698FFDF65C777251A7BAEC886E7052372C900FB900060D5AF826AFAA6E44DA5"
+  },
+  "triage": {
+    "classification": "REVIEW_PROCEDURE_FAILURE_NOT_ART_JUDGMENT",
+    "candidate_art_disposition": "PENDING_OWNER_REVIEW",
+    "retry_permitted": true,
+    "required_retry_precondition": "Open the actual V29 component-performance player in the user's browser and leave it visible before launching the retry operator prompt.",
+    "forbidden": ["treating this result as V29 art rejection", "binding or flashing V29 before a valid owner review"]
+  }
+}

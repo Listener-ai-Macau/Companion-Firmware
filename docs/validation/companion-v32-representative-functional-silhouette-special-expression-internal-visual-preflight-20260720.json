@@ -1,0 +1,271 @@
+{
+  "schema": "companion.v32_representative_functional_silhouette_internal_visual_preflight.v1",
+  "status": "PASS_INTERNAL_VISUAL_PREFLIGHT_V32_REPRESENTATIVE_FUNCTIONAL_SILHOUETTES",
+  "candidate": "V32 locked-V9-only representative functional-silhouette source, attempt 03",
+  "machine_evidence": {
+    "source_gate": {
+      "path": "docs/validation/companion-v32-representative-functional-silhouette-special-expression-source-gate-20260720.json",
+      "sha256": "34986C864EBF539C7A88DFA5D921CA65725095BE06A09F50439970B8A2ECA3DC",
+      "status": "PASS_V32_REPRESENTATIVE_FUNCTIONAL_SILHOUETTE_SOURCE_GATE_PENDING_COMPONENT_EXPORT"
+    },
+    "component_export_gate": {
+      "path": "docs/validation/companion-v32-representative-functional-silhouette-special-expression-component-export-gate-20260720.json",
+      "sha256": "608F4630F63BFE584668917B21685BE92BE9F9E54B58D925ACD8D81A5ADEAF5E",
+      "status": "PASS_V32_REPRESENTATIVE_FUNCTIONAL_SILHOUETTE_COMPONENT_EXPORT_UNBOUND"
+    },
+    "component_performance": {
+      "path": "docs/validation/companion-v32-representative-functional-silhouette-special-expression-component-performance-preview-20260720.json",
+      "sha256": "0B39389F3EE89714F3888BD1A4BCA325E6F4EB5BF460015D9EFE59DB1E765D4A",
+      "status": "PASS_V32_REPRESENTATIVE_FUNCTIONAL_SILHOUETTE_COMPONENT_PERFORMANCE_RUNTIME_INACTIVE"
+    },
+    "browser_target_parity": {
+      "path": "docs/validation/companion-v32-representative-functional-silhouette-special-expression-component-performance-parity-20260720.json",
+      "sha256": "33C22DA7D6B62377C0A0C83AFABC056DB22D0C8D560F0C78E4E9B4666548CBAB",
+      "status": "PASS_V32_REPRESENTATIVE_FUNCTIONAL_SILHOUETTE_COMPONENT_PERFORMANCE_BROWSER_TARGET_PLAN_PARITY"
+    },
+    "browser_render": {
+      "path": "docs/validation/companion-v32-representative-functional-silhouette-special-expression-component-browser-render-20260720.json",
+      "sha256": "35B68BA79EAD380BBF42DF1021D949FAC8D9EEE3BDB8914CFBD1B033D6008EAC",
+      "status": "PASS_V32_BROWSER_RENDER_INSPECTION_NATIVE_200X200"
+    },
+    "machine_closure": {
+      "path": "docs/validation/companion-v32-representative-functional-silhouette-special-expression-machine-closure-20260720.json",
+      "sha256": "D054AB458235A20CF85009656A94331A5F23B87CDAF2EC98785E33A21EB8E165",
+      "status": "PASS_V32_REPRESENTATIVE_FUNCTIONAL_SILHOUETTE_MACHINE_CLOSURE_RUNTIME_INACTIVE"
+    }
+  },
+  "inspection_contract": {
+    "native_target_size": [
+      200,
+      200
+    ],
+    "labels_hidden_for_reading": true,
+    "same_browser_target_component_plan": true,
+    "whole_face_playback": false,
+    "runtime_resource_activated": false,
+    "object_parts_per_state": 3,
+    "object_part_ink_limit": 504
+  },
+  "representative_readability": {
+    "roles_by_state": {
+      "menu_active": [
+        "active_hollow_notched_page_tab",
+        "left_hollow_page_tab",
+        "right_hollow_page_tab"
+      ],
+      "recording_active": [
+        "left_thin_receiver_cuff",
+        "right_thin_receiver_cuff",
+        "single_pickup_dot"
+      ],
+      "charging_active": [
+        "small_hollow_slotted_energy_dock",
+        "small_open_side_coupler",
+        "thin_continuous_short_tether"
+      ]
+    },
+    "minimum_pairwise_mouth_difference": 100,
+    "minimum_pairwise_face_primary_difference": 25000,
+    "mouth_contours": {
+      "menu_active": {
+        "box": [
+          76,
+          159,
+          123,
+          179
+        ],
+        "mask_sha256": "519971CB0A291C1ACFF2FC9186840F44ACB920F57019490103128DEFEE2298FF",
+        "ink_pixels": 138,
+        "connected_contours": 1
+      },
+      "recording_active": {
+        "box": [
+          76,
+          159,
+          123,
+          179
+        ],
+        "mask_sha256": "628BDC450686B5E48869E22A7B766071526912DB2D6D9511C45C3381877EBD6B",
+        "ink_pixels": 236,
+        "connected_contours": 1
+      },
+      "charging_active": {
+        "box": [
+          76,
+          159,
+          123,
+          179
+        ],
+        "mask_sha256": "F86C402CE4BE4FA82603F8733D00810E2EAA593A837F6DD25A666D9A90AF015A",
+        "ink_pixels": 124,
+        "connected_contours": 1
+      }
+    },
+    "pairwise_mouth_differences": [
+      {
+        "left": "menu_active",
+        "right": "recording_active",
+        "mouth_pixel_difference": 332,
+        "same_mask": false
+      },
+      {
+        "left": "menu_active",
+        "right": "charging_active",
+        "mouth_pixel_difference": 132,
+        "same_mask": false
+      },
+      {
+        "left": "recording_active",
+        "right": "charging_active",
+        "mouth_pixel_difference": 298,
+        "same_mask": false
+      }
+    ],
+    "pairwise_face_primary_differences": [
+      {
+        "left": "menu_active",
+        "right": "recording_active",
+        "face_primary_pixel_difference": 25917
+      },
+      {
+        "left": "menu_active",
+        "right": "charging_active",
+        "face_primary_pixel_difference": 25756
+      },
+      {
+        "left": "recording_active",
+        "right": "charging_active",
+        "face_primary_pixel_difference": 25733
+      }
+    ]
+  },
+  "causal_performance_evidence": {
+    "menu_active": {
+      "segments": [
+        "menu_active_daily_entry",
+        "menu_active_notice",
+        "menu_active_brows_arrive",
+        "menu_active_mouth_arrive",
+        "menu_active_object_arrive",
+        "menu_active_active_page_arrive",
+        "menu_active_object_connect",
+        "menu_active_face_settle",
+        "menu_active_scan_left",
+        "menu_active_scan_center",
+        "menu_active_decision_hold",
+        "menu_active_object_release",
+        "menu_active_release_face",
+        "menu_active_daily_settle"
+      ],
+      "hold_roles": [
+        "active_hollow_notched_page_tab",
+        "left_hollow_page_tab",
+        "right_hollow_page_tab"
+      ],
+      "micro_segment": "menu_active_scan_left",
+      "micro_offsets": {
+        "left_hollow_page_tab": [
+          -1,
+          0
+        ],
+        "active_hollow_notched_page_tab": [
+          -1,
+          0
+        ],
+        "right_hollow_page_tab": [
+          -1,
+          0
+        ]
+      }
+    },
+    "recording_active": {
+      "segments": [
+        "recording_active_daily_entry",
+        "recording_active_notice",
+        "recording_active_brows_arrive",
+        "recording_active_mouth_arrive",
+        "recording_active_object_arrive",
+        "recording_active_object_connect",
+        "recording_active_face_settle",
+        "recording_active_listen_pulse",
+        "recording_active_listen_hold",
+        "recording_active_object_release",
+        "recording_active_release_face",
+        "recording_active_daily_settle"
+      ],
+      "hold_roles": [
+        "left_thin_receiver_cuff",
+        "right_thin_receiver_cuff",
+        "single_pickup_dot"
+      ],
+      "micro_segment": "recording_active_listen_pulse",
+      "micro_offsets": {
+        "left_thin_receiver_cuff": [
+          0,
+          -1
+        ],
+        "right_thin_receiver_cuff": [
+          1,
+          0
+        ],
+        "single_pickup_dot": [
+          0,
+          -1
+        ]
+      }
+    },
+    "charging_active": {
+      "segments": [
+        "charging_active_daily_entry",
+        "charging_active_notice",
+        "charging_active_brows_arrive",
+        "charging_active_mouth_arrive",
+        "charging_active_object_arrive",
+        "charging_active_object_connect",
+        "charging_active_face_settle",
+        "charging_active_recovery_breathe",
+        "charging_active_recovery_hold",
+        "charging_active_object_release",
+        "charging_active_release_face",
+        "charging_active_daily_settle"
+      ],
+      "hold_roles": [
+        "small_hollow_slotted_energy_dock",
+        "small_open_side_coupler",
+        "thin_continuous_short_tether"
+      ],
+      "micro_segment": "charging_active_recovery_breathe",
+      "micro_offsets": {
+        "small_open_side_coupler": [
+          1,
+          0
+        ],
+        "thin_continuous_short_tether": [
+          1,
+          0
+        ],
+        "small_hollow_slotted_energy_dock": [
+          0,
+          -1
+        ]
+      }
+    }
+  },
+  "decision": {
+    "owner_operator_prompt_opened": false,
+    "human_art_acceptance_requested": false,
+    "candidate_disposition": "PENDING_CANONICAL_OWNER_ART_REVIEW",
+    "runtime_resource_activated": false,
+    "active_candidate_binding": "forbidden",
+    "still_forbidden_before_owner_acceptance": [
+      "CRIG_export",
+      "profile_generation",
+      "event_binding",
+      "firmware_flash",
+      "physical_panel_claim",
+      "whole_face_fallback"
+    ],
+    "owner_fail_route": "Freeze V32 as audit-only and return to a fresh locked-V9-only source direction."
+  },
+  "errors": []
+}

@@ -1,0 +1,65 @@
+{
+  "schema_id": "companion.wb55.ssd1681_fast_point_probe_round1_diagnosis.v1",
+  "status": "PASS_DIAGNOSIS_PREVIOUS_PLANE_NOT_PHYSICALLY_SYNCHRONIZED",
+  "errors": [],
+  "locked_round1": {
+    ".cache\\validation\\wb55-fast-point-probe-execute-20260721-r1\\stage-run.json": "AAAF6B4C51C89E12038D3938DAB9CD348BBB3BAAE50DD8635A46769DE061558C",
+    ".cache\\validation\\wb55-fast-point-probe-execute-20260721-r1\\controller-state.json": "FBD5EE6781F8EEB6A142BC7553F7A8567E0D286472732B3E5CC42D266900BD9A",
+    ".cache\\validation\\wb55-fast-point-probe-execute-20260721-r1\\visual-operator.json": "5203C644434173CE4C97489A20A8D85DEA1DD6BABF2B0D169935315F901E7E73",
+    ".cache\\validation\\wb55-fast-point-probe-execute-20260721-r1\\candidate-image\\Companion_Nucleo_WB55RG_Ssd1681FastPointProbe.hex": "210B9851889457F951E20FC96DC509CA4DCB8B779E40031F7DC47C136C4CB222",
+    ".cache\\validation\\wb55-fast-point-probe-execute-20260721-r1\\candidate-image\\Companion_Nucleo_WB55RG_Ssd1681FastPointProbe.elf": "38B1DC3942624F3DF5FF28CEB5A47E21F12584B6160A315B77F5EE88465E24B1",
+    "docs\\validation\\companion-ssd1681-ram-ping-pong-fingerprint-machine-20260721.json": "5D3DE03A707BA7FB6AD17CDE1361448DFF8087B9E4A7205A18B5CD7D4FB915FE"
+  },
+  "checks": {
+    "framebuffer_polarity": "0xFF=white; cleared bit=black",
+    "cpu_window": {
+      "x_byte_range": [
+        6,
+        11
+      ],
+      "y_range": [
+        94,
+        105
+      ]
+    },
+    "controller_window_y": {
+      "start": 105,
+      "end": 94,
+      "data_entry": "0x01 (X increment, Y decrement)"
+    },
+    "frame_1": {
+      "frame": 1,
+      "x": 52,
+      "dirty_bytes": 24,
+      "window_bytes": 24,
+      "white_to_black_pixels": 144,
+      "black_to_white_pixels": 0
+    },
+    "frames_2_to_120": {
+      "dirty_bytes": 36,
+      "window_bytes": 36,
+      "white_to_black_pixels_each": 96,
+      "black_to_white_pixels_each": 96
+    },
+    "ram_phase": "activation_swapped_banks_selector0_base_selector1_current",
+    "post_activation_sync": "0x24 current-only, no second activation",
+    "review_sequence_offsets": {
+      "countdown_3": 1923,
+      "start_signal": 2130,
+      "seed": 2492,
+      "frame_1": 2567
+    }
+  },
+  "root_cause_boundary": {
+    "proved": "The firmware transmitted valid changing bytes and completed 120 bounded activations, but the controller RAM seed was not activated before observation and therefore did not synchronize the electrophoretic pixels to the assumed all-white previous framebuffer.",
+    "inference": "The first local frame only drives the 12x12 white-to-black dot against an assumed-white previous plane; it cannot establish a clean, known local physical baseline when the restored product image is already on glass. This explains how transport can pass while a small motion is not visibly distinguishable.",
+    "not_proved": "No electrical panel readback proves pixel color; the no-visible-change observation remains the physical authority."
+  },
+  "next_single_variable": {
+    "name": "first_frame_previous_plane_seed",
+    "from": "all-white previous plane",
+    "to": "local inverse of frame 1 across the trajectory corridor",
+    "unchanged": "120 frames, 500 ms pacing, one FF/20/BUSY per frame, post-activation 0x24 sync, zero motion 0x26, no full refresh, no LUT",
+    "reason": "An inverse old-plane seed makes every corridor pixel transition exactly once to the first desired local image within frame 1, without an extra activation or whole-screen refresh."
+  }
+}

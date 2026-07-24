@@ -1,0 +1,42 @@
+{
+  "schema_id": "companion.wb55.ssd1681_fast_point_probe_round_disposition.v1",
+  "status": "FAIL_NO_VISIBLE_REACTION_RESTORED_CONTINUE_GOAL",
+  "round": 2,
+  "requirement": "COMP-REQ-277",
+  "machine": {
+    "status": "PASS_MACHINE_SSD1681_FAST_POINT_PROBE_INVERSE_SEED_RESTORED",
+    "frames": 120,
+    "interval_ms": [522, 523],
+    "interval_p95_ms": 523,
+    "busy_max_ms": 447,
+    "motion_elapsed_ms": 62140,
+    "automatic_retries": 0,
+    "frame_1_dirty_bytes": 72,
+    "frame_1_white_to_black_pixels": 144,
+    "frame_1_black_to_white_pixels": 384
+  },
+  "operator": {
+    "selected": "失败",
+    "canonical_note": "没看见有任何的移动",
+    "owner_disposition": "还是没有任何反应?",
+    "visual_pass": false,
+    "physical_effect": "no visible screen reaction",
+    "artifact": ".cache/validation/wb55-fast-point-probe-inverse-seed-execute-20260721-r2/visual-operator.txt",
+    "artifact_sha256": "90A94EB5A191B54E9442C8314124E2E7C4EDA58C28F32A7F73E2D86F5C1917DE"
+  },
+  "restore": {
+    "status": "PASS_RESTORE_EQUALS_CAPTURED_PRE_RUN_APPLICATION_BYTES",
+    "baseline_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "normal_resume": "PASS_APPLICATION_RESUMED_AFTER_BACKUP"
+  },
+  "artifacts": {
+    "stage_run": ".cache/validation/wb55-fast-point-probe-inverse-seed-execute-20260721-r2/stage-run.json",
+    "stage_run_sha256": "8BA7B5E5F4FB6E3A0D8EA210B901E7B8132F85DC88C08284E057156D2D44CDBD",
+    "controller_state": ".cache/validation/wb55-fast-point-probe-inverse-seed-execute-20260721-r2/controller-state.json",
+    "controller_state_sha256": "614E2B4146369475E2B28082417DD3B885A333590FD5983C3B1430679652D22F",
+    "start_operator_sha256": "7EB70257593DA06F682A3DDDA54A9D260D4FC514F645237F5CA74B08F8DA61A6"
+  },
+  "hypothesis_disposition": "The local inverse previous-plane seed is physically falsified as the explanation or remedy; do not stack further seed variants.",
+  "next_audit": "Move earlier: actual hardware reset/wake/init, hardware SPI transport, and byte-exact supplier pre-partial reset/border/address phase versus the prior visibly effective diagnostic.",
+  "goal_terminal": false
+}

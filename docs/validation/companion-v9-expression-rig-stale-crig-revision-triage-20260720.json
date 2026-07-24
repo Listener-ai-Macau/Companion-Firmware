@@ -1,0 +1,36 @@
+{
+  "schema_id": "companion.v9_expression_rig.stale_crig_revision_triage.v1",
+  "status": "FAIL_CANDIDATE_CRIG_PROFILE_REVISION_MISMATCH",
+  "claim_scope": "machine_triage_only_runtime_inactive",
+  "authority": "active component-Rig Goal and COMP-REQ-093",
+  "protected_identity": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "observed_contract": {
+    "generated_profile": "app/companion_pendant/epaper/generated/expression_rig_v9_candidate_profile.h",
+    "generated_profile_revision": 107,
+    "candidate_pack": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/companion-v9-expression-rig-candidate-200x200.crig",
+    "mount_test_failures": [
+      "mounted Rig identity must match the generated profile",
+      "mounted CRIG revision and source hash match the locked v9 profile"
+    ]
+  },
+  "facts": [
+    "The generated profile determinism check passes at revision 107.",
+    "The stale candidate pack is runtime inactive and has not been authorized for external-NOR provisioning or panel use.",
+    "The mount code correctly rejected the pack instead of accepting a revision mismatch."
+  ],
+  "required_recovery": [
+    "Regenerate the candidate CRIG and its PBM audit frames from the current audited layout without changing the locked V9 source or drawing a face.",
+    "Write new revision-107 render and CEMP evidence rather than overwriting historical reports.",
+    "Regenerate the target profile check, rerun external-NOR mount/CRC tests and frame-source composition tests, then re-establish browser/target parity using the current player rebind evidence.",
+    "Keep runtime activation, external-NOR provisioning, target flash and panel claims forbidden until P0 and later gates pass."
+  ],
+  "forbidden": [
+    "editing the CRIG header revision by hand",
+    "relaxing profile mismatch rejection",
+    "whole-face export or legacy art fallback",
+    "runtime activation or hardware flash"
+  ]
+}

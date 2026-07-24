@@ -1,0 +1,30 @@
+{
+  "schema_id": "companion.v9_expression_rig.browser_binding_drift_triage.v1",
+  "status": "FAIL_STALE_BROWSER_BINDING_REQUIRES_COMPONENT_PIXEL_REBIND",
+  "claim_scope": "machine_triage_only_no_runtime_or_panel_claim",
+  "authority": "active component-Rig Goal and COMP-REQ-093",
+  "protected_identity": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "stale_preview_binding": {
+    "preview_report": "docs/validation/companion-v9-expression-rig-daily-focus-panel-paced-preview-20260718.json",
+    "browser_player": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/v9-expression-rig-daily-focus-player.html",
+    "recorded_sha256": "37708353FF5FF3586CEFE85FC6C46D6065B3BDB2DE15D581971C00C8C999AB87",
+    "observed_sha256": "E6E91265805731539C3E6400652FE998ED8F0E2087D94DF272A4CA57A53061DB",
+    "initial_failure": "verify_companion_v9_expression_rig_target_frame_parity.py refused the stale player binding before comparing logical frames."
+  },
+  "facts": [
+    "The locked V9 source hash remains unchanged.",
+    "The current player still declares four Daily stories with fifteen component frames each.",
+    "A changed HTML hash alone does not prove that its executable component DATA, component sources, offsets or target parity are unchanged."
+  ],
+  "disposition": {
+    "forbidden": [
+      "treating the historical browser/target PASS as current evidence",
+      "overwriting the historical preview report hash by hand",
+      "runtime activation, CRIG export, panel claim or physical replay from the stale binding"
+    ],
+    "permitted_recovery": "Create a separate current-browser machine rebind artifact only when every current executable component frame composes to exactly the existing target pre-panel PBM frame, all referenced layers remain archived source-derived components, all four stories retain fifteen steps and the target profile/CRIG checks pass. Any nonzero pixel mismatch remains FAIL and requires source/score triage rather than a hash update."
+  }
+}

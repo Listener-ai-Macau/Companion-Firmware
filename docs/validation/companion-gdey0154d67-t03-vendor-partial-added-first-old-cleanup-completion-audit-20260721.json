@@ -1,0 +1,155 @@
+{
+  "schema_id": "companion.wb55.gdey0154d67_t03.vendor_partial_added_first_old_cleanup_completion_audit.v1",
+  "status": "NO_GO_OWNER_MORE_RESIDUE_AND_CUTOFF_PERSISTS_NORMAL_RESTORED",
+  "goal_scope": "COMP-REQ-255 lower-driver-only production-off pure-added-first then previous-black-cleanup diagnostic",
+  "completion_decision": "The implementation and machine preflight are complete. The one bounded live run was stopped on the owner's unambiguous physical rejection before the 50-request machine gate closed. Preserve the evidence and default-off code, do not tune, repeat, promote or bind this direction, and retain the verified normal firmware restore.",
+  "changed_files": [
+    "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
+    "cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile",
+    "tools/build_nucleo_bringup.ps1",
+    "tools/run_wb55_vendor_partial_added_first_old_cleanup_diagnostic.ps1",
+    "tools/verify_wb55_vendor_partial_added_first_old_cleanup_diagnostic.py",
+    "tools/verify_wb55_vendor_partial_added_first_old_cleanup_hardware_prerequisite.py",
+    "tools/verify_wb55_vendor_partial_added_first_old_cleanup_log.py",
+    "docs/companion_product_requirements.md",
+    "docs/validation/companion-gdey0154d67-t03-vendor-partial-added-first-old-cleanup-research-source-hash-20260721.json",
+    "docs/validation/companion-gdey0154d67-t03-vendor-partial-added-first-old-cleanup-static-20260721.json",
+    "docs/validation/companion-gdey0154d67-t03-vendor-partial-added-first-old-cleanup-r2-hardware-prerequisite-20260721.json",
+    "docs/validation/companion-gdey0154d67-t03-vendor-partial-added-first-old-cleanup-operator-r1-20260721.json",
+    "docs/validation/companion-gdey0154d67-t03-vendor-partial-added-first-old-cleanup-completion-audit-20260721.json"
+  ],
+  "implementation": {
+    "candidate": "vendor_partial_added_first_old_cleanup",
+    "default_disabled": true,
+    "production_off": true,
+    "changed_frame_order": [
+      "one-to-eight per-x-byte contiguous runs containing added-black and no removed-black transition + current 0x24 + supplier completion",
+      "previous-frame black bounding box + current 0x24 + supplier completion"
+    ],
+    "fail_closed": [
+      "mixed-transition bytes excluded",
+      "empty or more-than-eight pure-added runs stop before payload or activation",
+      "no fallback or union",
+      "identical frame returns before controller contact"
+    ],
+    "forbidden_transport_absent": [
+      "0x21",
+      "0x2D read",
+      "0x37",
+      "0x26 after baseline",
+      "0xC7",
+      "159-byte LUT load or waveform change",
+      "5000-byte full write after baseline",
+      "third activation"
+    ]
+  },
+  "commands": [
+    {"name": "diagnostic_build", "exit_code": 0},
+    {"name": "observer_build", "exit_code": 0},
+    {"name": "normal_source_rebuild_reproduces_accepted_restore_hash", "exit_code": 0},
+    {"name": "python_compile_and_trace_parser_positive_negative_self_test", "exit_code": 0},
+    {"name": "r2_hardware_prerequisite_write_and_no_write", "exit_code": 0},
+    {"name": "static_gate", "exit_code": 0},
+    {"name": "runner_check_only", "exit_code": 0},
+    {"name": "product_registry_verifier", "exit_code": 0},
+    {"name": "current_goal_audit", "exit_code": 0},
+    {"name": "recovery_runner_host_test", "exit_code": 0},
+    {"name": "white_rail_parser_self_test", "exit_code": 0},
+    {"name": "serial_open_retry_self_test", "exit_code": 0},
+    {"name": "bounded_hardware_capture", "exit_code": 130, "reason": "stopped immediately on owner live physical NO_GO; no second attempt"},
+    {"name": "partial_raw_trace_gate", "exit_code": 1, "reason": "expected fail-closed: only cycles 1..48 and 94/96 completions were captured before stop"},
+    {"name": "canonical_operator_window", "exit_code": null, "reason": "not invoked because machine closure was incomplete and owner had already rejected the live result"},
+    {"name": "normal_restore_flash_and_programmer_verify", "exit_code": 0},
+    {"name": "post_result_registry_static_goal_and_diff_checks", "exit_code": 0}
+  ],
+  "artifacts": {
+    "supplier_epaper_c": {
+      "path": "C:/Users/Billy/Desktop/GDEH0154D67-20211203-P-LUT(1s) -1s快刷/EPD_W21/EPAPER.c",
+      "sha256": "7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896",
+      "access": "read-only"
+    },
+    "research": {
+      "path": "docs/validation/companion-gdey0154d67-t03-vendor-partial-added-first-old-cleanup-research-source-hash-20260721.json",
+      "sha256": "A7609EBAC9AE29E6492E491390B66D0F83E05A03A8DEC5CD4D6D795E6D8C3809",
+      "status": "PASS_RESEARCH_AUTHORIZES_ONE_ADDED_FIRST_OLD_CLEANUP_CANDIDATE"
+    },
+    "static": {
+      "path": "docs/validation/companion-gdey0154d67-t03-vendor-partial-added-first-old-cleanup-static-20260721.json",
+      "sha256": "BC8B13C9219F05F76CC5F5C3D29A8B286E210055F89D685C434A23BF1A29F3E4",
+      "status": "PASS_STATIC_SOURCE_EXACT_ADDED_FIRST_OLD_CLEANUP_DEFAULT_OFF"
+    },
+    "hardware_prerequisite": {
+      "path": "docs/validation/companion-gdey0154d67-t03-vendor-partial-added-first-old-cleanup-r2-hardware-prerequisite-20260721.json",
+      "sha256": "CC97A5DBA2E9D2B70817B4474BDB02781C902E59DD54FA8042F5D1FDC9A820D8",
+      "status": "PASS_R2_HARDWARE_PREREQUISITE_ADDED_FIRST_OLD_CLEANUP_UNPROVEN"
+    },
+    "raw_log": {
+      "path": ".cache/validation/wb55-vendor-partial-added-first-old-cleanup-r1-20260721/capture/nucleo-serial-raw.log",
+      "sha256": "0FCE992469591C7F46591D7A095EA2CF457F604ADB42AEDD25EABEE03D6D855A"
+    },
+    "machine_trace": {
+      "path": ".cache/validation/wb55-vendor-partial-added-first-old-cleanup-r1-20260721/vendor-partial-added-first-old-cleanup-trace.json",
+      "sha256": "DF320F7E7D29B0410CC192E2EFC47E7837424931F878AF561FA1987875ACCE80",
+      "status": "NO_GO_INCOMPLETE_VENDOR_PARTIAL_ADDED_FIRST_OLD_CLEANUP_TRACE"
+    },
+    "operator": {
+      "path": "docs/validation/companion-gdey0154d67-t03-vendor-partial-added-first-old-cleanup-operator-r1-20260721.json",
+      "sha256": "63B2FA66812E161174348EDDF9CF56BDC15FE5FC253431982C44913CF3CA447E",
+      "status": "NO_GO_OWNER_LIVE_OBSERVATION_MORE_RESIDUE_AND_CUTOFF_PERSISTS"
+    },
+    "stage_run": {
+      "path": ".cache/validation/wb55-vendor-partial-added-first-old-cleanup-r1-20260721/stage-run.json",
+      "sha256": "C3C9FDD31DC919988BFF92EB5ED33BB99B261E469E8F95969F677BB222B46912",
+      "status": "NO_GO_OWNER_LIVE_OBSERVATION_NORMAL_RESTORED"
+    },
+    "normal_restore_log": {
+      "path": ".cache/validation/flash-nucleo/stm32-programmer-20260721-115950-29716.stdout.log",
+      "sha256": "E7738539B9EE71721A45A54B61350BA98FA776753E3CDB4ECD8DD2CFA8106977",
+      "verified": true
+    }
+  },
+  "partial_machine_result": {
+    "captured_requests": 48,
+    "captured_controller_completions": 94,
+    "captured_busy_completions": 94,
+    "panel_errors_in_captured_trace": 0,
+    "single_completion_max_ms": 447,
+    "two_completion_p95_ms": 894,
+    "machine_contract_closed": false,
+    "repeat_performed": false
+  },
+  "human_result": {
+    "selected": "failure",
+    "notes_verbatim": [
+      "这个不行, 其它的残影更多了",
+      "方向不对",
+      "而且就像是这样那一消失的一截也是在的"
+    ],
+    "more_residue_visible": true,
+    "original_disappearing_or_eaten_segment_persists": true,
+    "direction_accepted": false
+  },
+  "hardware_contact": {
+    "bounded_diagnostic_runs": 1,
+    "observer_runs": 0,
+    "second_attempts": 0,
+    "white_black_or_rail_retests": 0
+  },
+  "normal_restore": {
+    "restored": true,
+    "programmer_verified": true,
+    "diagnostic_left_installed": false,
+    "hex_sha256": "E1997F29DCB8735899B4BC0B9012CF75025F3CA8D21250485BCC21E4C4691B46"
+  },
+  "remaining_gaps": [
+    "No owner-accepted local-motion topology simultaneously eliminates residue and the disappearing/eaten movement segment.",
+    "The added-first direction is closed as physical NO_GO and may not be tuned or reflashed under this Goal."
+  ],
+  "protected_boundaries": {
+    "supplier_directory_modified": false,
+    "locked_v9_or_owner_acceptance_modified": false,
+    "rig_crig_browser_art_or_dynamic_binding_modified": false,
+    "lut_waveform_register_control_reset_border_timing_rail_or_temperature_modified": false,
+    "production_path_enabled": false
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "checks": {
+    "official_research_is_present_and_non_promotional": true,
+    "old_new_mode_is_default_off_and_requires_slow_source_path": true,
+    "only_changed_region_ram_planes_differ": true,
+    "owner_authorizes_official_method_ab": true,
+    "separate_build_and_runner_mode_exist": true,
+    "source_audit_still_passes_and_binds_current_driver": true,
+    "source_reset_border_control_and_busy_remain": true,
+    "white_black_recovery_gate_still_passes": true
+  },
+  "claim_scope": "owner-authorized current-room, default-disabled old/new RAM A/B; no LUT, temperature or production claim",
+  "controlled_behavior": {
+    "baseline": "supplier 0x24 then 0x26, 5000 bytes each, 0xF7, 0x20, BUSY",
+    "max_frames": 360,
+    "maximum_region_bytes_per_plane": 567,
+    "normal_restore_required": true,
+    "partial": "prior changed bytes 0x26, current changed bytes 0x24, supplier 0xFF, 0x20, BUSY",
+    "production_default": "disabled",
+    "single_variable": "second RAM-plane payload only",
+    "temperature_claim": "none"
+  },
+  "failures": [],
+  "schema_id": "companion.wb55.gdey0154d67_t03.vendor_partial_old_new_ram_static.v1",
+  "source": {
+    "official_research": {
+      "path": "docs/validation/companion-gdey0154d67-t03-official-partial-refresh-research-20260720.json",
+      "sha256": "7AF5B42F4C55C351B9ADF42A1F3458C9B9BF2E1E7373D79C6A3BBD6BEFF37B61"
+    },
+    "recovery_gate": {
+      "path": "docs/validation/companion-screen-wb55-hardware-recovery-gate.json",
+      "sha256": "5F2A508E5BCF9D93AC8C3CBBC82960CE745FFADF6E06DB42155B6ECFC5DDDC6E"
+    },
+    "source_audit": {
+      "path": "docs/validation/companion-gdey0154d67-t03-vendor-1s-source-audit-20260720.json",
+      "sha256": "616B6086DA176787F06BC82ECBBF23406865341404BEBE24B27826FC2B12B597"
+    },
+    "target_driver": {
+      "path": "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
+      "sha256": "ACDD6BC09387B2C3FEEFD910C5203B30D1E3A68EE787BAA53AA8C8143FE1CAC6"
+    }
+  },
+  "status": "PASS_STATIC_OWNER_AUTHORIZED_VENDOR_PARTIAL_OLD_NEW_RAM_AB",
+  "target": "NUCLEO-WB55RG + ESP32-FTS02 + GDEY0154D67-T03"
+}

@@ -1,0 +1,157 @@
+{
+  "schema_id": "companion.wb55.ssd1681_ram_command_target_r8.r2_closure.v1",
+  "status": "MACHINE_READY_R8_R2_NO_HARDWARE_CONTACT_EXECUTE_FORBIDDEN_PENDING_ROOT",
+  "claim_scope": "R8 candidate bytes are unchanged; this closes only persistent launch transport, zero-popup policy, no-hardware lifecycle and prior incident disposition.",
+  "hardware_contact": 0,
+  "execute_performed": false,
+  "automatic_retry_performed": false,
+  "goal_action": "none_root_owned",
+  "checks": {
+    "hash:companion-ssd1681-ram-command-target-r8-machine-ready-20260721.json": true,
+    "hash:companion-ssd1681-ram-command-target-r8-r2-static-20260721.json": true,
+    "hash:companion-ssd1681-ram-command-target-r8-persistent-launcher-static-20260721.json": true,
+    "hash:companion-ssd1681-ram-command-target-r8-launch-transport-incident-20260721.json": true,
+    "hash:persistent-launch.json": true,
+    "hash:stage-run.json": true,
+    "hash:run_wb55_ssd1681_custom_mode2_observable_r6_raw_restore.ps1": true,
+    "hash:start_wb55_ssd1681_ram_command_target_r8.ps1": true,
+    "hash:Companion_Nucleo_WB55RG_Ssd1681RamCommandTargetR8.hex": true,
+    "hash:companion-pet-special-system-owner-acceptance-20260717.json": true,
+    "hash:EPAPER.c": true,
+    "r1_candidate_machine_ready": true,
+    "r2_static": true,
+    "launcher_static": true,
+    "incident_archived": true,
+    "incident_candidate_zero": true,
+    "incident_no_synthetic_response": true,
+    "goal_audit": true,
+    "persistent_checkonly": true,
+    "persistent_streams": true,
+    "persistent_child_exit": true,
+    "persistent_zero_contact": true,
+    "checkonly_never_execute": true,
+    "stage_ready": true,
+    "stage_zero_writes": true,
+    "stage_zero_popups": true,
+    "command:product_registry": true,
+    "command:current_goal_audit": true,
+    "command:r8_static": true,
+    "command:launcher_static_negative_fixtures": true,
+    "command:python_compile": true,
+    "command:git_diff_check": true
+  },
+  "errors": [],
+  "candidate": {
+    "hex_sha256": "9ECF8F4A2A75A054077908C775879447ADCE089F55DC33315A8C852C4F47CB13",
+    "changed_by_r2": false,
+    "production_enabled": false,
+    "swap_activations_max_if_later_authorized": 1,
+    "post_tag_activations": 0,
+    "selector_reads": 28
+  },
+  "incident": {
+    "candidate_write_calls": 0,
+    "preclean": "PASS",
+    "postclean": "PASS",
+    "raw_restore": "PASS_524288_BYTES_EXACT",
+    "normal_resume": "PASS",
+    "non_acceptance_prompt": "SUPERSEDED_CANCELLED_EMPTY_NO_SYNTHETIC_RESPONSE"
+  },
+  "persistent_checkonly": {
+    "launch_sha256": "E3F24A8E478818DB72F602306E37D28ECCB040A7B0490846E348A03AD2B3B954",
+    "stage_sha256": "A44544343CD02DA4A65B087CB9F2F38CBA742E925E6C3E81C6223545C358A57C",
+    "child_process_id": 25980,
+    "child_exit_code": 0,
+    "hardware_contact": 0,
+    "write_counter_sum": 0,
+    "stdout_sha256": "43314F0B5AD0D5CD59DA9D90D3E562E92E1156520121DA1104ABCEDD2823FB68",
+    "stderr_sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+  },
+  "popup_policy": {
+    "cleanup": 0,
+    "recovery_or_fault_acknowledgement": 0,
+    "pre_execute_or_start": 0,
+    "machine_only_r8_total": 0,
+    "genuinely_visual_candidate": "one final canonical PASS/FAIL acceptance popup only"
+  },
+  "evidence_hashes": {
+    "docs/validation/companion-ssd1681-ram-command-target-r8-machine-ready-20260721.json": "5FC97C92136A2EAC862620C847C1B6910491800EC84248ED8F255D32D9DFA568",
+    "docs/validation/companion-ssd1681-ram-command-target-r8-r2-static-20260721.json": "C855F1883EFB4AC66E1C99D419BF2210A19F14B84881BF1FC371BBABFE77F66E",
+    "docs/validation/companion-ssd1681-ram-command-target-r8-persistent-launcher-static-20260721.json": "03B05783166631436DEC344BAF3EF8C958E6C6BEA535E6010627752D4E718B54",
+    "docs/validation/companion-ssd1681-ram-command-target-r8-launch-transport-incident-20260721.json": "C3D8C8809C2C807592A92D9749F235013AF465434DD16ED9B558308E71CB7900",
+    "docs/validation/companion-current-goal-audit-20260717.json": "BE7EF07A12F507B701317F9830437A85684C0BF209341A768BCE1148E3350AB9",
+    "tools/run_wb55_ssd1681_custom_mode2_observable_r6_raw_restore.ps1": "3E1A3FFDC4B44BDE107CF6A0922E81ECA1F95442B8A6A3BDF4F71C018806D017",
+    "tools/start_wb55_ssd1681_ram_command_target_r8.ps1": "697CDA08E8DC3DBAEAFDCA373A008FFF9D81D2AB1FAD08B087F793ECF940D568"
+  },
+  "protected_hashes": {
+    "docs/validation/companion-pet-special-system-owner-acceptance-20260717.json": "8A3BDF4BD1254B0D0F4DE13A7F293C3D74587C800339ABD4C61FEB0B7737E227",
+    "C:\\Users\\Billy\\Desktop\\GDEH0154D67-20211203-P-LUT(1s) -1s\u5feb\u5237\\EPD_W21\\EPAPER.c": "7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896"
+  },
+  "commands": [
+    {
+      "name": "product_registry",
+      "command": [
+        "C:\\Users\\Billy\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\tools\\verify_companion_product_requirements.py"
+      ],
+      "returncode": 0,
+      "stdout": "{\n  \"schema_id\": \"companion.product.requirements.v1\",\n  \"status\": \"PASS\",\n  \"registry\": \"docs/companion_product_requirements.md\",\n  \"workflow_plan\": \"companion-screen-product-integration\",\n  \"requirement_ids\": [\n    \"COMP-REQ-001\",\n    \"COMP-REQ-002\",\n    \"COMP-REQ-003\",\n    \"COMP-REQ-004\",\n    \"COMP-REQ-005\",\n    \"COMP-REQ-006\",\n    \"COMP-REQ-007\",\n    \"COMP-REQ-008\",\n    \"COMP-REQ-009\",\n    \"COMP-REQ-010\",\n    \"COMP-REQ-011\",\n    \"COMP-REQ-012\",\n    \"COMP-REQ-013\",\n    \"COMP-REQ-014\",\n    \"COMP-REQ-015\",\n    \"COMP-REQ-016\",\n    \"COMP-REQ-017\",\n    \"COMP-REQ-018\",\n    \"COMP-REQ-019\",\n    \"COMP-REQ-020\",\n    \"COMP-REQ-021\",\n    \"COMP-REQ-022\",\n    \"COMP-REQ-023\",\n    \"COMP-REQ-024\",\n    \"COMP-REQ-025\",\n    \"COMP-REQ-026\",\n    \"COMP-REQ-027\",\n    \"COMP-REQ-028\",\n    \"COMP-REQ-029\",\n    \"COMP-REQ-030\",\n    \"COMP-REQ-031\",\n    \"COMP-REQ-032\",\n    \"COMP-REQ-033\",\n    \"COMP-REQ-034\",\n    \"COMP-REQ-035\",\n    \"COMP-REQ-036\",\n    \"COMP-REQ-037\",\n    \"COMP-REQ-038\",\n    \"COMP-REQ-039\",\n    \"COMP-REQ-040\",\n    \"COMP-REQ-041\",\n    \"COMP-REQ-042\",\n    \"COMP-REQ-043\",\n    \"COMP-REQ-044\",\n    \"COMP-REQ-045\",\n    \"COMP-REQ-046\",\n    \"COMP-REQ-047\",\n    \"COMP-REQ-048\",\n    \"COMP-REQ-049\",\n    \"COMP-REQ-050\",\n    \"COMP-REQ-051\",\n    \"COMP-REQ-052\",\n    \"COMP-REQ-053\",\n    \"COMP-REQ-054\",\n    \"COMP-REQ-055\",\n    \"COMP-REQ-056\",\n    \"COMP-REQ-057\",\n    \"COMP-REQ-058\",\n    \"COMP-REQ-059\",\n    \"COMP-REQ-060\",\n    \"COMP-REQ-061\",\n    \"COMP-REQ-062\",\n    \"COMP-REQ-063\",\n    \"COMP-REQ-064\",\n    \"COMP-REQ-065\",\n    \"COMP-REQ-066\",\n    \"COMP-REQ-067\",\n    \"COMP-REQ-068\",\n    \"COMP-REQ-069\",\n    \"COMP-REQ-070\",\n    \"COMP-REQ-071\",\n    \"COMP-REQ-072\",\n    \"COMP-REQ-073\",\n    \"COMP-REQ-074\",\n    \"COMP-REQ-075\",\n    \"COMP-REQ-076\",\n    \"COMP-REQ-077\",\n    \"COMP-REQ-078\",\n    \"COMP-REQ-079\",\n    \"COMP-REQ-080\",\n    \"COMP-REQ-081\",\n    \"COMP-REQ-082\",\n    \"COMP-REQ-083\",\n    \"COMP-REQ-084\",\n    \"COMP-REQ-085\",\n    \"COMP-REQ-086\",\n    \"COMP-REQ-087\",\n    \"COMP-REQ-088\",\n    \"COMP-REQ-089\",\n    \"COMP-REQ-090\",\n    \"COMP-REQ-091\",\n    \"COMP-REQ-092\",\n    \"COMP-REQ-093\",\n    \"COMP-REQ-094\",\n    \"COMP-REQ-095\",\n    \"COMP-REQ-096\",\n    \"COMP-REQ-097\",\n    \"COMP-REQ-098\",\n    \"COMP-REQ-099\",\n    \"COMP-REQ-100\",\n    \"COMP-REQ-101\",\n    \"COMP-REQ-102\",\n    \"COMP-REQ-103\",\n    \"COMP-REQ-104\",\n    \"COMP-REQ-105\",\n    \"COMP-REQ-106\",\n    \"COMP-REQ-107\",\n    \"COMP-REQ-108\",\n    \"COMP-REQ-109\",\n    \"COMP-REQ-110\",\n    \"COMP-REQ-111\",\n    \"COMP-REQ-112\",\n    \"COMP-REQ-113\",\n    \"COMP-REQ-114\",\n    \"COMP-REQ-115\",\n    \"COMP-REQ-116\",\n    \"COMP-REQ-117\",\n    \"COMP-REQ-118\",\n    \"COMP-REQ-119\",\n    \"COMP-REQ-120\",\n    \"COMP-REQ-121\",\n    \"COMP-REQ-122\",\n    \"COMP-REQ-123\",\n    \"COMP-REQ-124\",\n    \"COMP-REQ-125\",\n    \"COMP-REQ-126\",\n    \"COMP-REQ-127\",\n    \"COMP-REQ-128\",\n    \"COMP-REQ-129\",\n    \"COMP-REQ-130\",\n    \"COMP-REQ-131\",\n    \"COMP-REQ-132\",\n    \"COMP-REQ-133\",\n    \"COMP-REQ-134\",\n    \"COMP-REQ-135\",\n    \"COMP-REQ-136\",\n    \"COMP-REQ-137\",\n    \"COMP-REQ-138\",\n    \"COMP-REQ-139\",\n    \"COMP-REQ-140\",\n    \"COMP-REQ-141\",\n    \"COMP-REQ-142\",\n    \"COMP-REQ-143\",\n    \"COMP-REQ-144\",\n    \"COMP-REQ-145\",\n    \"COMP-REQ-146\",\n    \"COMP-REQ-147\",\n    \"COMP-REQ-148\",\n    \"COMP-REQ-149\",\n    \"COMP-REQ-150\",\n    \"COMP-REQ-151\",\n    \"COMP-REQ-152\",\n    \"COMP-REQ-153\",\n    \"COMP-REQ-154\",\n    \"COMP-REQ-155\",\n    \"COMP-REQ-156\",\n    \"COMP-REQ-157\",\n    \"COMP-REQ-158\",\n    \"COMP-REQ-159\",\n    \"COMP-REQ-160\",\n    \"COMP-REQ-161\",\n    \"COMP-REQ-162\",\n    \"COMP-REQ-163\",\n    \"COMP-REQ-164\",\n    \"COMP-REQ-165\",\n    \"COMP-REQ-166\",\n    \"COMP-REQ-167\",\n    \"COMP-REQ-168\",\n    \"COMP-REQ-169\",\n    \"COMP-REQ-170\",\n    \"COMP-REQ-171\",\n    \"COMP-REQ-172\",\n    \"COMP-REQ-173\",\n    \"COMP-REQ-174\",\n    \"COMP-REQ-175\",\n    \"COMP-REQ-176\",\n    \"COMP-REQ-177\",\n    \"COMP-REQ-178\",\n    \"COMP-REQ-179\",\n    \"COMP-REQ-180\",\n    \"COMP-REQ-181\",\n    \"COMP-REQ-182\",\n    \"COMP-REQ-183\",\n    \"COMP-REQ-184\",\n    \"COMP-REQ-185\",\n    \"COMP-REQ-186\",\n    \"COMP-REQ-187\",\n    \"COMP-REQ-188\",\n    \"COMP-REQ-189\",\n    \"COMP-REQ-190\",\n    \"COMP-REQ-191\",\n    \"COMP-REQ-192\",\n    \"COMP-REQ-193\",\n    \"COMP-REQ-194\",\n    \"COMP-REQ-195\",\n    \"COMP-REQ-196\",\n    \"COMP-REQ-197\",\n    \"COMP-REQ-198\",\n    \"COMP-REQ-199\",\n    \"COMP-REQ-200\",\n    \"COMP-REQ-201\",\n    \"COMP-REQ-202\",\n    \"COMP-REQ-203\",\n    \"COMP-REQ-204\",\n    \"COMP-REQ-205\",\n    \"COMP-REQ-206\",\n    \"COMP-REQ-207\",\n    \"COMP-REQ-208\",\n    \"COMP-REQ-209\",\n    \"COMP-REQ-210\",\n    \"COMP-REQ-211\",\n    \"COMP-REQ-212\",\n    \"COMP-REQ-213\",\n    \"COMP-REQ-214\",\n    \"COMP-REQ-215\",\n    \"COMP-REQ-216\",\n    \"COMP-REQ-217\",\n    \"COMP-REQ-218\",\n    \"COMP-REQ-219\",\n    \"COMP-REQ-220\",\n    \"COMP-REQ-221\",\n    \"COMP-REQ-222\",\n    \"COMP-REQ-223\",\n    \"COMP-REQ-224\",\n    \"COMP-REQ-225\",\n    \"COMP-REQ-226\",\n    \"COMP-REQ-227\",\n    \"COMP-REQ-228\",\n    \"COMP-REQ-229\",\n    \"COMP-REQ-230\",\n    \"COMP-REQ-231\",\n    \"COMP-REQ-232\",\n    \"COMP-REQ-233\",\n    \"COMP-REQ-234\",\n    \"COMP-REQ-235\",\n    \"COMP-REQ-236\",\n    \"COMP-REQ-237\",\n    \"COMP-REQ-238\",\n    \"COMP-REQ-239\",\n    \"COMP-REQ-240\",\n    \"COMP-REQ-241\",\n    \"COMP-REQ-242\",\n    \"COMP-REQ-243\",\n    \"COMP-REQ-244\",\n    \"COMP-REQ-245\",\n    \"COMP-REQ-246\",\n    \"COMP-REQ-247\",\n    \"COMP-REQ-248\",\n    \"COMP-REQ-249\",\n    \"COMP-REQ-250\",\n    \"COMP-REQ-251\",\n    \"COMP-REQ-252\",\n    \"COMP-REQ-253\",\n    \"COMP-REQ-254\",\n    \"COMP-REQ-255\",\n    \"COMP-REQ-256\",\n    \"COMP-REQ-257\",\n    \"COMP-REQ-258\",\n    \"COMP-REQ-259\",\n    \"COMP-REQ-260\",\n    \"COMP-REQ-261\",\n    \"COMP-REQ-262\",\n    \"COMP-REQ-263\",\n    \"COMP-REQ-264\",\n    \"COMP-REQ-265\",\n    \"COMP-REQ-266\",\n    \"COMP-REQ-267\",\n    \"COMP-REQ-268\",\n    \"COMP-REQ-269\",\n    \"COMP-REQ-270\",\n    \"COMP-REQ-271\",\n    \"COMP-REQ-272\",\n    \"COMP-REQ-273\",\n    \"COMP-REQ-274\",\n    \"COMP-REQ-275\",\n    \"COMP-REQ-276\",\n    \"COMP-REQ-277\",\n    \"COMP-REQ-278\",\n    \"COMP-REQ-279\",\n    \"COMP-REQ-280\",\n    \"COMP-REQ-281\",\n    \"COMP-REQ-282\",\n    \"COMP-REQ-283\",\n    \"COMP-REQ-284\",\n    \"COMP-REQ-285\",\n    \"COMP-REQ-286\",\n    \"COMP-REQ-287\",\n    \"COMP-REQ-288\",\n    \"COMP-REQ-289\",\n    \"COMP-REQ-290\",\n    \"COMP-REQ-291\",\n    \"COMP-REQ-292\",\n    \"COMP-REQ-293\",\n    \"COMP-REQ-294\",\n    \"COMP-REQ-295\",\n    \"COMP-REQ-296\",\n    \"COMP-REQ-297\",\n    \"COMP-REQ-298\",\n    \"COMP-REQ-299\",\n    \"COMP-REQ-300\",\n    \"COMP-REQ-301\",\n    \"COMP-REQ-302\",\n    \"COMP-REQ-303\",\n    \"COMP-REQ-304\",\n    \"COMP-REQ-305\"\n  ],\n  \"current_focus\": \"Active Codex Goal: physical White/Black recovery before V9 component-Rig screen activation, with deterministic behavior and vendor waveform freeze protected\",\n  \"active_parallel_track\": \"WB55 FTS02/panel recovery, real touch/Stop/current and final physical review remain hardware gates; daily art validation does not require a camera\",\n  \"current_goal_audit\": \"docs/validation/companion-current-goal-audit-20260717.json\",\n  \"errors\": []\n}",
+      "stderr": ""
+    },
+    {
+      "name": "current_goal_audit",
+      "command": [
+        "C:\\Users\\Billy\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\tools\\verify_companion_current_goal_audit.py"
+      ],
+      "returncode": 0,
+      "stdout": "PASS: current Companion Goal audit -> docs/validation/companion-current-goal-audit-20260717.json",
+      "stderr": ""
+    },
+    {
+      "name": "r8_static",
+      "command": [
+        "C:\\Users\\Billy\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\tools\\verify_wb55_ssd1681_ram_command_target_r8_diagnostic.py"
+      ],
+      "returncode": 0,
+      "stdout": "MACHINE_READY_R8_R2_NO_HARDWARE_CONTACT_EXECUTE_FORBIDDEN_PENDING_ROOT",
+      "stderr": ""
+    },
+    {
+      "name": "launcher_static_negative_fixtures",
+      "command": [
+        "C:\\Users\\Billy\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\tools\\verify_wb55_ssd1681_ram_command_target_r8_launcher.py"
+      ],
+      "returncode": 0,
+      "stdout": "PASS_R8_PERSISTENT_LAUNCHER_STATIC_AND_NEGATIVE_FIXTURES",
+      "stderr": ""
+    },
+    {
+      "name": "python_compile",
+      "command": [
+        "C:\\Users\\Billy\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "-m",
+        "py_compile",
+        "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\tools\\verify_wb55_ssd1681_ram_command_target_r8_diagnostic.py",
+        "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\tools\\verify_wb55_ssd1681_ram_command_target_r8_launcher.py"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "name": "git_diff_check",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "warning: in the working copy of 'app/companion_pendant/epaper/ball_motion_diagnostic.h', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'app/companion_pendant/epaper/display_queue.c', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'app/companion_pendant/epaper/display_queue.h', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'app/companion_pendant/epaper/panel_target_stm32wb.c', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'app/companion_pendant/epaper/panel_target_stm32wb.h', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.h', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'app/companion_pendant/epaper/refresh_policy.c', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Inc/companion_screen_ui.h', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/main.c', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'docs/companion_devboard_physical_checklist.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'docs/companion_product_requirements.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'tools/build_nucleo_bringup.ps1', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'tools/capture_nucleo_serial.ps1', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'tools/companion_expression_anchor.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'tools/flash_nucleo_bringup.ps1', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'tools/run_wb55_refresh_ab.ps1', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'tools/run_wb55_screen_hardware_recovery.ps1', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'tools/test_wba_v9_candidate_asset_mount_host.ps1', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'tools/verify_companion_current_goal_audit.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'tools/verify_companion_product_requirements.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'tools/verify_display_queue_static.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'tools/verify_wb55_ball_motion_diagnostic.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'tools/verify_wb55_official_full_diagnostic_log.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'tools/verify_wb55_refresh_ab_runner.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'tools/verify_wb55_refresh_cadence_diagnostic.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'tools/verify_wb55_refresh_cadence_log.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'tools/verify_wb55_screen_hardware_recovery_gate.py', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'tools/verify_wb55_screen_hardware_recovery_runner.py', LF will be replaced by CRLF the next time Git touches it"
+    }
+  ],
+  "next_boundary": "Stop. No Execute or retry is authorized. Root must record a new explicit one-run authorization before using the persistent launcher with -Execute."
+}

@@ -1,0 +1,118 @@
+{
+  "schema": "companion.r12_v22_calm_curious_warm_sampler.work_package.v1",
+  "status": "AUTHORIZED_OFFLINE_IMPLEMENTATION_ONLY",
+  "candidate": "r12_v22_calm_curious_warm_sampler",
+  "registry_requirement": "COMP-REQ-370",
+  "decision_owner": "primary_agent",
+  "implementation_owner": "luna",
+  "production_enabled": false,
+  "hardware_authorized": false,
+  "resource_family": {
+    "identity": "locked_v9_with_owner_accepted_v22_components",
+    "locked_v9_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "layout": {
+      "path": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/everyday-emotion-component-layout.json",
+      "sha256": "E8CA9A59011D29069821217685C61760C6F0627EBE13CDA5DD1D042A9AB38F32"
+    },
+    "component_export_gate_sha256": "FBEB0AD4677D836FB96D718F48CEA9F0D27CA858CB54423118824908CEF0CC94",
+    "owner_review_sha256": "2539FC80B2A49FFC1975381DED32E4D4BC26D48A464FB06057EC82045DE9A2B1",
+    "owner_review_selected": "通过",
+    "runtime_resource_activated": false
+  },
+  "frames": [
+    {
+      "id": 0,
+      "name": "calm",
+      "path": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/reassembled-200x200/calm.pbm",
+      "source_sha256": "DCDE74BE44CD33E881F33BC4FC6397D6269A4749BE90BCD7A1999A53D44D4B79",
+      "anchor": [0, 0],
+      "size": [200, 200],
+      "black_pixels": 2679,
+      "ink_bbox": [34, 87, 166, 168],
+      "controller_frame_sha256": "BBE5EBE794D8375855EC3108D25D25CF999288F3FB4C389FC90638A0C85F679F",
+      "corridor_payload_sha256": "0649D2E5B3446C93CFCF4C8CB3A826F31349F31F00E8FF6FCEB7B400CE1577BE"
+    },
+    {
+      "id": 1,
+      "name": "curious",
+      "path": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/reassembled-200x200/curious.pbm",
+      "source_sha256": "C8D856E609C82AA88BF45EAC506BAC153AEF081A49289138F80E08813582F78F",
+      "anchor": [0, 0],
+      "size": [200, 200],
+      "black_pixels": 2774,
+      "ink_bbox": [32, 72, 167, 173],
+      "controller_frame_sha256": "99DB877B39968AA9021FF427CD5A3DAC8E09A16F5F2B19CC2BE7EF00F82DBFF8",
+      "corridor_payload_sha256": "30DD44898CA499C4658C85B7FF480426F90828DC4160B07753D4376AC6DFBD9A"
+    },
+    {
+      "id": 2,
+      "name": "warm",
+      "path": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/reassembled-200x200/warm.pbm",
+      "source_sha256": "8A822CA758361B7956371C6DF7A750E5DFC01947E454F14B289AE5B1BA381356",
+      "anchor": [0, 0],
+      "size": [200, 200],
+      "black_pixels": 2998,
+      "ink_bbox": [33, 86, 170, 177],
+      "controller_frame_sha256": "563E9B89CB02FF0883E793281507C0392E186E514DCFA7808AB3173838D03B8B",
+      "corridor_payload_sha256": "3A6ED64C5866137A7B1B67578A85989B75C25095A7D7CD70F6028B96E399E287"
+    }
+  ],
+  "sequence": {
+    "baseline_frame_id": 0,
+    "path": [0, 1, 2, 1, 0],
+    "movement_cycle": [1, 2, 1, 0],
+    "qualification_transitions": 16,
+    "qualification_cycles": 4,
+    "observation": "repeat_movement_cycle_without_dwell"
+  },
+  "pixel_contract": {
+    "format": "200x200_1bpp",
+    "pbm_black_bit": 1,
+    "ssd1681_black_bit": 0,
+    "source_to_logical_frame_pixel_difference": 0,
+    "transition_changed_pixels": [765, 846, 846, 765],
+    "transition_diff_bboxes": [[32, 72, 167, 173], [32, 72, 170, 177], [32, 72, 170, 177], [32, 72, 167, 173]],
+    "fixed_corridor": {
+      "x_start_byte": 4,
+      "x_end_byte": 21,
+      "y_start": 72,
+      "y_end": 177,
+      "bytes": 1908,
+      "full_current_rewrite": true,
+      "outside_unchanged": true
+    }
+  },
+  "activation_contract": {
+    "baseline": "one reset 10/10ms, ready, full current frame via 0x24, 0x22=0xFF, 0x20, BUSY",
+    "movement": "no reset, one ready, one fixed-corridor current write via 0x24, 0x22=0xCF, 0x20, BUSY",
+    "movement_busy_limit_ms": 600,
+    "movement_transaction_limit_ms": 460,
+    "start_delta_min_ms": 1,
+    "start_delta_max_ms_inclusive": 480,
+    "cadence_target_ms": 450,
+    "movement_activation_count": 1,
+    "forbidden": ["movement_reset", "movement_0xFF", "0x26", "0x32", "0x37", "F7", "C7", "custom_lut", "full_frame_movement", "second_activation", "post_sync", "retry", "maintenance_refresh"]
+  },
+  "host_contract": {
+    "telemetry_complete_line_max_bytes_including_crlf": 192,
+    "ring_bytes": 65536,
+    "popup": "one canonical Chinese 通过/失败 window only after qualification plus two contiguous loop records and one real loop cadence",
+    "check_only_zero_counters": ["hardware_contact", "programmer", "serial", "write", "reset", "refresh", "popup", "retry"],
+    "automatic_retries": 0
+  },
+  "lifecycle_contract": {
+    "preclean": "promptless dual-plane White",
+    "postclean": "promptless dual-plane White",
+    "restore_bytes": 524288,
+    "restore_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "normal_resume_required": true,
+    "related_processes_after_exit": 0
+  },
+  "implementation_limits": {
+    "may_modify": ["production-off diagnostic firmware", "candidate asset binding", "oracle", "static verifier", "strict parser", "negative fixtures", "isolated build", "persistent launcher", "monitor", "supervisor", "runner", "MACHINE_READY evidence"],
+    "must_not_modify": ["source art bytes", "anchors", "V9", "V22 Rig semantics", "CRIG", "browser", "production route", "vendor files", "official waveform", "SPI configuration", "protected owner acceptance artifact", "unrelated dirty worktree"],
+    "execute": false,
+    "claim_only": false,
+    "hardware_contact": false
+  }
+}

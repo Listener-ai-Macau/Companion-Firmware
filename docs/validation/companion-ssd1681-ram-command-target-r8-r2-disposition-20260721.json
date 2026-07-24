@@ -1,0 +1,87 @@
+{
+  "schema_id": "companion.wb55.ssd1681_ram_command_target_r8.r2_disposition.v1",
+  "status": "PASS_R8_R2_FIXED_BANK_MAPPING_ONE_SHOT_CONSUMED",
+  "requirements": [
+    "COMP-REQ-305",
+    "COMP-REQ-306",
+    "COMP-REQ-307"
+  ],
+  "machine_result": {
+    "mapping": "fixed_bank",
+    "command_0x24_target_selector": 0,
+    "command_0x26_target_selector": 1,
+    "selector_0_role_after_swap": "base_role_after_swap",
+    "selector_1_role_after_swap": "current_role_after_swap",
+    "selector_reads": 28,
+    "known_swap_activations": 1,
+    "known_swap_busy_elapsed_ms": 447,
+    "post_tag_activations": 0,
+    "automatic_retries": 0,
+    "popup_count": 0
+  },
+  "cleanup_restore": {
+    "preclean": "PASS_MACHINE_DUAL_PLANE_WHITE_CLEAN_BOTH_BANKS_READBACK_WHITE",
+    "postclean": "PASS_MACHINE_DUAL_PLANE_WHITE_CLEAN_BOTH_BANKS_READBACK_WHITE",
+    "restore": "PASS_RESTORE_EQUALS_CAPTURED_PRE_RUN_APPLICATION_BYTES",
+    "restore_bytes": 524288,
+    "restore_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "normal_resume": "PASS_APPLICATION_RESUMED_AFTER_BACKUP"
+  },
+  "evidence": {
+    "machine_ready": {
+      "path": "docs/validation/companion-ssd1681-ram-command-target-r8-r2-machine-ready-20260721.json",
+      "sha256": "7F6E52EBDB5975EFEB49CFD6E5A696DB9601B160376C89D54747677F6A4F2794"
+    },
+    "persistent_launch": {
+      "path": ".cache/validation/wb55-ram-command-target-r8-r2-execute-20260721-r1/persistent-launch.json",
+      "sha256": "B12B9006796754EA393DBE4D564ABD2AE610FE355386E84D69B5B0785E37142A"
+    },
+    "candidate_raw_log": {
+      "path": ".cache/validation/wb55-ram-command-target-r8-r2-execute-20260721-r1/candidate-capture/nucleo-serial-raw.log",
+      "sha256": "D630F873E804726E2AE71D8AB0CAC0A13E321DB0F4EA18083846F0D7EB5F487B"
+    },
+    "controller_mapping": {
+      "path": ".cache/validation/wb55-ram-command-target-r8-r2-execute-20260721-r1/controller-state.json",
+      "sha256": "B6DA656245A8FE49C4CCF259C425D7DB618A197809DE4AA169FB8F18CF0F8FD0"
+    },
+    "preclean": {
+      "path": ".cache/validation/wb55-ram-command-target-r8-r2-execute-20260721-r1/preclean-white.json",
+      "sha256": "64D33D192CA81C59AA440658939AC75E18C8F1997CCED8B02B9200233F042A49"
+    },
+    "postclean": {
+      "path": ".cache/validation/wb55-ram-command-target-r8-r2-execute-20260721-r1/postclean-white.json",
+      "sha256": "64D33D192CA81C59AA440658939AC75E18C8F1997CCED8B02B9200233F042A49"
+    },
+    "restore": {
+      "path": ".cache/validation/wb55-ram-command-target-r8-r2-execute-20260721-r1/restore-gate.json",
+      "sha256": "BE83519FB294B167E2803F01CE51FE21E67DA6745EF2C0EA0E6D069BB2D616F9"
+    },
+    "normal_resume": {
+      "path": ".cache/validation/wb55-ram-command-target-r8-r2-execute-20260721-r1/normal-resume.json",
+      "sha256": "4A5B6B4610D024A722AF27FFF95D1007FCBE389F53B4DCF5B4DDBAC803FD389E"
+    },
+    "stage_run": {
+      "path": ".cache/validation/wb55-ram-command-target-r8-r2-execute-20260721-r1/stage-run.json",
+      "sha256": "AAF0199C1D0CAF3195397943A16B7526EDE1583792623C76B6C04C8475773248"
+    },
+    "runtime_selector_hash_manifest": {
+      "path": "docs/validation/companion-ssd1681-ram-command-target-r8-r2-runtime-20260721.json",
+      "sha256": "BAD97BBABFD2E1B515A2E1D1A45EE3C4E68EF3FFC167D03468E1859659C07FF5",
+      "response_hash_count": 28,
+      "payload_hash_count": 28
+    }
+  },
+  "claims_not_made": [
+    "no optical or ghosting result",
+    "no motion or visual acceptance result",
+    "no production admission",
+    "no LUT, waveform, temperature, voltage, Rig, CRIG, or expression claim"
+  ],
+  "authorization": {
+    "one_shot_consumed": true,
+    "retry_authorized": false,
+    "visual_candidate_authorized": false,
+    "subsequent_experiment_authorized": false
+  },
+  "next_boundary": "Stop and report the fixed-bank mapping to root."
+}

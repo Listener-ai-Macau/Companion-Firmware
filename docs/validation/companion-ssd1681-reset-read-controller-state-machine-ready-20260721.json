@@ -1,0 +1,49 @@
+{
+  "schema_id": "companion.wb55.ssd1681_reset_read_controller_state.machine_ready.v1",
+  "requirement_id": "COMP-REQ-265",
+  "status": "MACHINE_READY",
+  "hardware_contact_so_far": 0,
+  "gates": {
+    "human_wiring_prerequisite": "PASS_HUMAN_WIRING_PREREQUISITE_ONLY",
+    "research_source_hash": "PASS_RESEARCH_AUTHORIZES_ONE_RESET_READ_CONTROLLER_CAPTURE_AND_RAW_RESTORE",
+    "registry_verifier": "PASS",
+    "current_goal_audit": "PASS",
+    "static_host_build": "PASS_STATIC_RESET_READ_CONTROLLER_STATE_RAW_RESTORE_DEFAULT_OFF",
+    "runner_check_only": "READY_NO_HARDWARE_CONTACT",
+    "controller_parser_positive_negative": "PASS",
+    "raw_restore_positive_negative": "PASS",
+    "normal_resume_positive_negative": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "locked_inputs": {
+    "candidate_hex": {
+      "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_reset_read_controller_state/Companion_Nucleo_WB55RG_Ssd1681ResetReadControllerState.hex",
+      "bytes": 331055,
+      "sha256": "DB6F1CDBC091A8F4B12AFDB82BBCA62E9C850D57B343E722C4EBE5E05BB7AD7E"
+    },
+    "raw_restore_baseline": {
+      "bytes": 524288,
+      "sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C"
+    },
+    "static_artifact": {
+      "path": "docs/validation/companion-ssd1681-reset-read-controller-state-static-20260721.json",
+      "sha256": "D7106C399092602B68B1694ABC7DFE8F4827A8274B422805B66332EE9DBBAC04"
+    },
+    "check_only_artifact": {
+      "path": ".cache/validation/wb55-reset-read-controller-checkonly-20260721-r1/stage-run.json",
+      "sha256": "6C00BFCA930EFBF6670B43694142930CE2BE776ED269F389D3819B9B79D571D8"
+    }
+  },
+  "authorized_execution": {
+    "hardware_attempts": 1,
+    "automatic_retries": 0,
+    "panel_hard_resets": 1,
+    "busy_waits": 1,
+    "read_groups": 3,
+    "allowed_panel_commands": ["0x2F", "0x2D"],
+    "panel_writes": 0,
+    "panel_refreshes": 0,
+    "mandatory_restore_writes": 1
+  },
+  "next": "Begin the sole locked Execute. Regardless of controller result, perform the one exact raw restore, upload hash compare, and bounded normal-resume proof."
+}

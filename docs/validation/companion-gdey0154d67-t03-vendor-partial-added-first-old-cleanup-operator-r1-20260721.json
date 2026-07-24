@@ -1,0 +1,52 @@
+{
+  "schema_id": "companion.wb55.gdey0154d67_t03.vendor_partial_added_first_old_cleanup_operator.v1",
+  "status": "NO_GO_OWNER_LIVE_OBSERVATION_MORE_RESIDUE_AND_CUTOFF_PERSISTS",
+  "candidate": "vendor_partial_added_first_old_cleanup",
+  "production_enabled": false,
+  "observation_source": "owner live chat while the single bounded diagnostic was visibly running",
+  "canonical_operator_prompt": {
+    "invoked": false,
+    "reason": "The owner issued an unambiguous live physical rejection before the 50-request machine trace closed. The fail-closed contract forbids opening the canonical acceptance window without machine closure; this record archives the live rejection without fabricating a canonical PASS or selection."
+  },
+  "operator_review": {
+    "selected": "failure",
+    "notes_verbatim": [
+      "这个不行, 其它的残影更多了",
+      "方向不对",
+      "而且就像是这样那一消失的一截也是在的"
+    ],
+    "more_residue_visible": true,
+    "original_disappearing_or_eaten_segment_persists": true,
+    "direction_accepted": false,
+    "continuity_accepted": false
+  },
+  "disposition": {
+    "physical_result": "NO_GO",
+    "stop_candidate_immediately": true,
+    "second_hardware_attempt_allowed": false,
+    "parameter_tuning_allowed": false,
+    "production_promotion_allowed": false,
+    "normal_restore_required": true
+  },
+  "machine_context": {
+    "raw_trace_status": "NO_GO_INCOMPLETE_VENDOR_PARTIAL_ADDED_FIRST_OLD_CLEANUP_TRACE",
+    "captured_requests": 48,
+    "captured_source_completions": 94,
+    "captured_busy_completions": 94,
+    "captured_completion_max_ms": 447,
+    "captured_two_completion_frame_p95_ms": 894,
+    "why_incomplete": "The owner rejection stopped the candidate before the required 50 requests, 96 completions and identical-frame proof. No repeat was performed."
+  },
+  "normal_restore": {
+    "restored": true,
+    "programmer_verify": "Download verified successfully",
+    "hex_sha256": "E1997F29DCB8735899B4BC0B9012CF75025F3CA8D21250485BCC21E4C4691B46"
+  },
+  "protected_boundaries": {
+    "supplier_directory_modified": false,
+    "locked_v9_or_owner_acceptance_modified": false,
+    "rig_crig_browser_art_or_dynamic_binding_modified": false,
+    "lut_waveform_register_control_reset_border_timing_rail_or_temperature_modified": false,
+    "white_black_or_rail_retest_performed": false
+  }
+}

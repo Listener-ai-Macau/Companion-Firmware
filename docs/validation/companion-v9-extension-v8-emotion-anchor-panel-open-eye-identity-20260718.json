@@ -1,0 +1,191 @@
+{
+  "schema": "companion.v9_open_eye_identity_gate.v1",
+  "status": "PASS_OPEN_EYE_IDENTITY_GATE",
+  "candidate": "docs/art/iterations/companion-pet-expression-v9-extension-v8-emotion-anchor-panel/generated_pet_expression_extension_v8_emotion_anchor_panel_candidate.png",
+  "candidate_sha256": "23B957F99C16956BC008D23A93F102B741C579EEB7AE96FF660199B6FEF5AF9E",
+  "grid": [
+    2,
+    4
+  ],
+  "closed_eye_cells": [
+    "1,3"
+  ],
+  "calibration": {
+    "locked_v9_source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "locked_v9_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "minimum_eye_width_px": 40,
+    "minimum_eye_height_px": 58,
+    "minimum_black_pixels": 1850,
+    "minimum_black_fill_ratio": 0.6,
+    "maximum_pair_baseline_delta_px": 8
+  },
+  "records": [
+    {
+      "cell": "0,0",
+      "eye_mode": "open",
+      "eye_components": [
+        {
+          "x": 313,
+          "y": 257,
+          "width": 60,
+          "height": 80,
+          "black_pixels": 3153,
+          "black_fill_ratio": 0.6569
+        },
+        {
+          "x": 154,
+          "y": 257,
+          "width": 59,
+          "height": 81,
+          "black_pixels": 3148,
+          "black_fill_ratio": 0.6587
+        }
+      ],
+      "pair_baseline_delta_px": 0
+    },
+    {
+      "cell": "0,1",
+      "eye_mode": "open",
+      "eye_components": [
+        {
+          "x": 131,
+          "y": 257,
+          "width": 60,
+          "height": 81,
+          "black_pixels": 3152,
+          "black_fill_ratio": 0.6486
+        },
+        {
+          "x": 287,
+          "y": 257,
+          "width": 59,
+          "height": 81,
+          "black_pixels": 3138,
+          "black_fill_ratio": 0.6566
+        }
+      ],
+      "pair_baseline_delta_px": 0
+    },
+    {
+      "cell": "0,2",
+      "eye_mode": "open",
+      "eye_components": [
+        {
+          "x": 105,
+          "y": 257,
+          "width": 59,
+          "height": 81,
+          "black_pixels": 3129,
+          "black_fill_ratio": 0.6547
+        },
+        {
+          "x": 257,
+          "y": 257,
+          "width": 59,
+          "height": 81,
+          "black_pixels": 3118,
+          "black_fill_ratio": 0.6524
+        }
+      ],
+      "pair_baseline_delta_px": 0
+    },
+    {
+      "cell": "0,3",
+      "eye_mode": "open",
+      "eye_components": [
+        {
+          "x": 78,
+          "y": 258,
+          "width": 59,
+          "height": 81,
+          "black_pixels": 3136,
+          "black_fill_ratio": 0.6562
+        },
+        {
+          "x": 231,
+          "y": 258,
+          "width": 60,
+          "height": 80,
+          "black_pixels": 3105,
+          "black_fill_ratio": 0.6469
+        }
+      ],
+      "pair_baseline_delta_px": 0
+    },
+    {
+      "cell": "1,0",
+      "eye_mode": "open",
+      "eye_components": [
+        {
+          "x": 154,
+          "y": 174,
+          "width": 60,
+          "height": 80,
+          "black_pixels": 3133,
+          "black_fill_ratio": 0.6527
+        },
+        {
+          "x": 310,
+          "y": 174,
+          "width": 60,
+          "height": 79,
+          "black_pixels": 3107,
+          "black_fill_ratio": 0.6555
+        }
+      ],
+      "pair_baseline_delta_px": 0
+    },
+    {
+      "cell": "1,1",
+      "eye_mode": "open",
+      "eye_components": [
+        {
+          "x": 281,
+          "y": 175,
+          "width": 59,
+          "height": 79,
+          "black_pixels": 3088,
+          "black_fill_ratio": 0.6625
+        },
+        {
+          "x": 128,
+          "y": 175,
+          "width": 59,
+          "height": 79,
+          "black_pixels": 3081,
+          "black_fill_ratio": 0.661
+        }
+      ],
+      "pair_baseline_delta_px": 0
+    },
+    {
+      "cell": "1,2",
+      "eye_mode": "open",
+      "eye_components": [
+        {
+          "x": 259,
+          "y": 175,
+          "width": 59,
+          "height": 79,
+          "black_pixels": 3056,
+          "black_fill_ratio": 0.6557
+        },
+        {
+          "x": 110,
+          "y": 175,
+          "width": 58,
+          "height": 79,
+          "black_pixels": 3035,
+          "black_fill_ratio": 0.6624
+        }
+      ],
+      "pair_baseline_delta_px": 0
+    },
+    {
+      "cell": "1,3",
+      "eye_mode": "closed",
+      "eye_components": []
+    }
+  ],
+  "errors": []
+}

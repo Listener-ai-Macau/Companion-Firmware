@@ -1,0 +1,46 @@
+{
+  "schema_id": "companion.wb55.ssd1681.r10_ball.r1_runtime_disposition.v1",
+  "status": "NO_GO_R1_HOST_EVIDENCE_PERSISTENCE",
+  "output_root": ".cache/validation/wb55-r10-ball-execute-20260722-r1",
+  "authorization": {
+    "consumed_once": true,
+    "attempts": 1,
+    "automatic_retries": 0
+  },
+  "qualification": {
+    "captured_frames": 16,
+    "loop_iterations_captured": 1,
+    "original_monitor_gate": "NO_GO",
+    "original_gate_failure": "parser --log --write returned 0 without writing qualification-parser.json",
+    "post_run_direct_parser": {
+      "status": "PASS_R10_BALL_LOG",
+      "busy_max_ms": 599,
+      "hardware_contact": 1,
+      "qualification_snapshot_sha256": "B328FCD623D7EA0A6E61CA08171183B94AE52567B140BE0841AD3A3B56CFD500"
+    }
+  },
+  "owner_acceptance": {
+    "popup_count": 0,
+    "owner_verdict": null,
+    "visual_verdict": "NOT_EVALUATED"
+  },
+  "lifecycle": {
+    "postclean": "PASS",
+    "restore_bytes": 524288,
+    "restore_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "normal_resume": "PASS",
+    "relevant_processes_remaining": 0
+  },
+  "evidence": {
+    "stage_run_sha256": "F97F861C8221D29A1456D24D7258BD307691A1C13770B6A3B6DC17A61F7C68DB",
+    "monitor_result_sha256": "B1E8A45E0E79411749247AC026649E63C5A3B05F975E396ADCEB6BE005806BAD",
+    "qualification_snapshot_sha256": "B328FCD623D7EA0A6E61CA08171183B94AE52567B140BE0841AD3A3B56CFD500",
+    "qualification_snapshot_bytes": 20455,
+    "postclean_sha256": "64D33D192CA81C59AA440658939AC75E18C8F1997CCED8B02B9200233F042A49",
+    "restore_gate_sha256": "4D2AF45C35296ECDFA4D1066CA46F4DFD3D58EF27C1CDF687130CEDE214589B6",
+    "normal_resume_sha256": "C8D99D7F6CCE64D658D8779EEF4365F74DE23D4AD048F063CC9746F5C747E642",
+    "persistent_launch_sha256": "F46561624E7C41D151FD721D4F7F4DD7D1E8C68A28203824D2665768EE839DD7"
+  },
+  "interpretation": "Host evidence-persistence incident only; this is not a driver, ball, waveform or visual verdict.",
+  "retry_or_reuse": false
+}

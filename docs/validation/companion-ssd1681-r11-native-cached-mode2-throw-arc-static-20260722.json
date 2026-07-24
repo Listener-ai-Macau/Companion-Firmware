@@ -1,0 +1,76 @@
+{
+  "cadence_gate": {
+    "accepted_ms": 480,
+    "rejected_ms": 481,
+    "target_ms": 450
+  },
+  "candidate": "r12_v22_calm_curious_warm_sampler",
+  "candidate_resets": {
+    "baseline": 1,
+    "movement": 0
+  },
+  "checks": {
+    "all_node_coordinates": true,
+    "candidate_identity": true,
+    "checkonly_zero_contact_contract": true,
+    "default_off": true,
+    "fixed_corridor": true,
+    "forbidden_commands_absent": true,
+    "frozen_driver_header_parser": true,
+    "geometry_and_nodes": true,
+    "inclusive_cadence_480": true,
+    "isolated_make_selector": true,
+    "launcher_candidate_named": true,
+    "launcher_checkonly_path_present": true,
+    "launcher_execute_path_present": true,
+    "launcher_negative_selftest_present": true,
+    "launcher_present": true,
+    "launcher_source_authorization_gate": true,
+    "metadata_family": true,
+    "monitor_candidate_named": true,
+    "monitor_checkonly_path_present": true,
+    "monitor_execute_path_present": true,
+    "monitor_fixed_ring_and_cadence": true,
+    "monitor_present": true,
+    "monitor_real_combined_serial_parser": true,
+    "movement_no_reset": true,
+    "no_legacy_cadence_residue": true,
+    "official_cached_mode2": true,
+    "oracle_pass": true,
+    "parser_present": true,
+    "parser_selftest_pass": true,
+    "production_off": true,
+    "protected_hash": true,
+    "qualification_gate": true,
+    "runner_candidate_named": true,
+    "runner_checkonly_path_present": true,
+    "runner_consumed_authorization_gate": true,
+    "runner_execute_path_present": true,
+    "runner_hash_bound_machine_ready": true,
+    "runner_present": true,
+    "single_activation": true,
+    "supervisor_candidate_named": true,
+    "supervisor_checkonly_path_present": true,
+    "supervisor_execute_path_present": true,
+    "supervisor_metadata_and_canonical_prompt": true,
+    "supervisor_present": true
+  },
+  "errors": [],
+  "negative_fixtures": {
+    "cadence_481_rejected": true,
+    "duplicate_metadata_rejected": true,
+    "malformed_r11_rejected": true,
+    "movement_ff_rejected": true,
+    "movement_reset_rejected": true,
+    "unrelated_serial_lines_ignored": true
+  },
+  "positive_fixtures": {
+    "cadence_480_accepted": {
+      "accepted": true,
+      "executed": true,
+      "rejected": false
+    }
+  },
+  "schema_id": "companion.wb55.ssd1681.r12_v22_calm_curious_warm_sampler.static.v2",
+  "status": "PASS"
+}

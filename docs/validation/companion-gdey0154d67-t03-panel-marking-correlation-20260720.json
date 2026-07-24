@@ -1,0 +1,44 @@
+{
+  "checks": {
+    "owner_back_marking_is_recorded_verbatim": true,
+    "owner_photo_visibly_shows_the_reported_marking": true,
+    "production_off_remains_forbidden": true,
+    "source_audit_completed": true,
+    "supplier_transcript_has_no_archived_raw_attachment": true,
+    "supplier_transcript_marking_matches_same_two_tokens": true,
+    "supplier_transcript_targets_gdey0154d67_t03": true,
+    "supplier_transcript_targets_ssd1681": true,
+    "vendor_lut_promotion_remains_no_go": true,
+    "vendor_tree_does_not_name_t03": true,
+    "vendor_tree_has_no_temperature_table": true
+  },
+  "claim_scope": "owner_photo_observed_in_conversation_and_retained_supplier_transcript_no_archived_photo_or_lut_promotion",
+  "conclusion": "The owner-supplied conversation photo visibly shows the reported back marking, which is coherent with the retained supplier transcript that names GDEY0154D67-T03 and SSD1681. The image is not locally archived, does not bind the supplied one-second tree to T03, and does not provide a temperature applicability table.",
+  "failures": [],
+  "owner_observation": {
+    "observation_date": "2026-07-20",
+    "photo_observed_in_conversation": true,
+    "raw_panel_photo_archived": false,
+    "reported_panel_back_marking": "0154BN-D67-D2 N524110506"
+  },
+  "promotion_status": "NO_GO_PANEL_IDENTITY_UNPROVEN",
+  "remaining_required_evidence": [
+    "Archived raw panel-back/FPC photograph with the marking visible.",
+    "Exact Good Display T03 document that binds the candidate LUT source to the panel/controller.",
+    "Good Display temperature applicability table for the candidate waveform.",
+    "Versioned replacement-display-FPC evidence plus current official White/Black and White-rail artifacts before any separately authorized physical diagnostic."
+  ],
+  "schema_id": "companion.gdey0154d67_t03.panel_marking_correlation.v1",
+  "source_audit": {
+    "path": "docs/validation/companion-gdey0154d67-t03-vendor-1s-source-audit-20260720.json",
+    "sha256": "D6528AECCE750AFB126A40015DB428B1AD6ABEB40739CF7344059A3E8AFA8539"
+  },
+  "status": "PASS_OWNER_PHOTO_LABEL_OBSERVED_UNARCHIVED",
+  "supplier_transcript": {
+    "path": "docs/validation/companion-ssd1681-vendor-response-intake-20260717.json",
+    "raw_attachment_archived": false,
+    "reported_marking": "N524110506 / 0154BN-D67-D2",
+    "sha256": "7CAB699FE69566A3275B886A66E876B8AD5156D22EA96CDB48996B2F9D96048D"
+  },
+  "target": "NUCLEO-WB55RG + ESP32-FTS02 + GDEY0154D67-T03"
+}

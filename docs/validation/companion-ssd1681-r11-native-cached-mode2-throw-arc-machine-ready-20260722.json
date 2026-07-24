@@ -1,0 +1,158 @@
+{
+  "artifact_paths": {
+    "driver": "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
+    "elf": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r12_v22_calm_curious_warm_sampler/Companion_Nucleo_WB55RG_Ssd1681R12V22CalmCuriousWarmSampler.elf",
+    "header": "app/companion_pendant/epaper/r12_v22_calm_curious_warm_sampler.h",
+    "hex": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r12_v22_calm_curious_warm_sampler/Companion_Nucleo_WB55RG_Ssd1681R12V22CalmCuriousWarmSampler.hex",
+    "launcher": "tools/start_wb55_ssd1681_r12_v22_calm_curious_warm_sampler.ps1",
+    "lifecycle": "tools/verify_wb55_ssd1681_r12_v22_calm_curious_warm_sampler_lifecycle.py",
+    "lifecycle_artifact": "docs/validation/companion-ssd1681-r11-native-cached-mode2-throw-arc-lifecycle-20260722.json",
+    "monitor": "tools/monitor_wb55_ssd1681_r12_v22_calm_curious_warm_sampler.ps1",
+    "oracle": "tools/verify_wb55_ssd1681_r12_v22_calm_curious_warm_sampler.py",
+    "oracle_artifact": "docs/validation/companion-ssd1681-r11-native-cached-mode2-throw-arc-oracle-20260722.json",
+    "parser": "tools/verify_wb55_ssd1681_r12_v22_calm_curious_warm_sampler_log.py",
+    "runner": "tools/run_wb55_ssd1681_r12_v22_calm_curious_warm_sampler.ps1",
+    "static": "tools/verify_wb55_ssd1681_r12_v22_calm_curious_warm_sampler_static.py",
+    "static_artifact": "docs/validation/companion-ssd1681-r11-native-cached-mode2-throw-arc-static-20260722.json",
+    "supervisor": "tools/supervise_wb55_ssd1681_r12_v22_calm_curious_warm_sampler_prompt.ps1",
+    "work_package": "docs/validation/companion-ssd1681-r11-native-cached-mode2-throw-arc-work-package-20260722.md"
+  },
+  "artifacts": {
+    "driver": "6342D523B9CBA6A2832DE21603CF8E604B412D8ADFBEC25C08D8ACA6B0AECB6D",
+    "elf": "802BBCE644F5FBAD118AF9AC2FCD0092DADE8C6B6BBE63E87DFD2C3A617209D6",
+    "header": "0E90E7056FF784EFA60DA8F0F5CEA1027FAB961C8C501CBAB35E9528A4ECFAFC",
+    "hex": "F016392B1AD6EC1EA273BA03E53D34DFA37B33E76058634337B911C439769A5B",
+    "launcher": "17B13A5824671DDA69C44004A06800CF7F16998333BCF90F9F184021D576E15E",
+    "lifecycle": "79C5E5F61DAB3C7CB552EE1F09AC792E758C6EA094B12726B4CCE95710022676",
+    "lifecycle_artifact": "AF074BCFE7AF15929249E02F4A08C4762EBE66DED1ED583F0B65962790AB05FC",
+    "monitor": "62D820AFE7C5DAE57DC51B27C395A0A44E856506BFBDF691694BD4C3406C445F",
+    "oracle": "66560B52AFCBB47A7D2B704DFD42F7F553EC50DD69B254B217C434387D11663C",
+    "oracle_artifact": "D304453E51B511BDF0E31CAF36B3BF9E030AD9E53B0CD23C945DCD0CE27E6AE5",
+    "parser": "5B10AF8B08E0C65E4F44A77B1A3CF0178233684911A282EE7AA52C55ED2FAC98",
+    "parser_sha256": "5B10AF8B08E0C65E4F44A77B1A3CF0178233684911A282EE7AA52C55ED2FAC98",
+    "runner": "63234F1678FB36BF62B80C2C71018350B2E287425A24DA1A347713D554190BA3",
+    "static": "45DA390CECB15B0DDD802ED4366B01EB7B078F08EDB2B9DB52EA59B2297A0EEB",
+    "static_artifact": "9E1A545D729325A7E9F330831702674FA4402EE45D77A3537FBC7FE4BD25A550",
+    "supervisor": "B947998441C92477675007937E46D126AA7353F576712C531B483A311206F095",
+    "work_package": "13CB96FDF97B53AFD45D573CDD3EC817BE4F1A10B8E5E3B4F88951915AF9D2EA"
+  },
+  "authority": "COMP-REQ-367",
+  "authorization_created": false,
+  "candidate": "r12_v22_calm_curious_warm_sampler",
+  "checkonly": {
+    "hardware_contact": 0,
+    "persistent_launcher": true,
+    "popup_count": 0,
+    "programmer_calls": 0,
+    "refresh_count": 0,
+    "reset_count": 0,
+    "retry_count": 0,
+    "ring_bytes": 65536,
+    "serial_open_count": 0,
+    "writes": 0
+  },
+  "checks": {
+    "cadence_480": false,
+    "current_goal_audit_present": true,
+    "default_off": true,
+    "diff_scope": true,
+    "lifecycle_selftest_checkonly_pass": true,
+    "no_physical_authorization": false,
+    "oracle_pass": true,
+    "production_off": true,
+    "protected_hash": true,
+    "registry_comp_req_367": true,
+    "restore_hash_contract": true,
+    "static_pass": true
+  },
+  "claim_only_authorized": false,
+  "errors": [
+    "cadence_480",
+    "no_physical_authorization"
+  ],
+  "execute_authorized": false,
+  "future_execute_template": "pwsh -NoProfile -File tools/start_wb55_ssd1681_r12_v22_calm_curious_warm_sampler.ps1 -Execute -OutRoot <FUTURE_FRESH_ROOT> -AuthorizationArtifact <FUTURE_R12_AUTHORIZATION_JSON>",
+  "geometry": {
+    "apex_px": 48,
+    "corridor": "3-19,64-135",
+    "corridor_bytes": 1224,
+    "disk": "solid_centered_integer_24x24_448_pixels",
+    "full_current_rewrite": true,
+    "nodes": [
+      [
+        32,
+        112
+      ],
+      [
+        44,
+        91
+      ],
+      [
+        56,
+        76
+      ],
+      [
+        68,
+        67
+      ],
+      [
+        80,
+        64
+      ],
+      [
+        92,
+        67
+      ],
+      [
+        104,
+        76
+      ],
+      [
+        116,
+        91
+      ],
+      [
+        128,
+        112
+      ]
+    ],
+    "path_transitions": 16,
+    "step_px": 12,
+    "travel_px": 96
+  },
+  "hardware_contact": 0,
+  "lifecycle": {
+    "automatic_retries": 0,
+    "execute_path": "future_hash_bound_one_shot_only",
+    "normal_resume": "future_process_audited",
+    "popup": "not_invoked_offline",
+    "postclean": "future_promptless_dual_plane_white",
+    "preclean": "future_promptless_dual_plane_white",
+    "restore_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C"
+  },
+  "lut": {
+    "custom_lut_loads": 0,
+    "kind": "official_ssd1681_otp_mode2",
+    "sha256": "OFFICIAL_OTP_MODE2_NO_CUSTOM_LUT_FILE"
+  },
+  "production_enabled": false,
+  "protected_acceptance_sha256": "8A3BDF4BD1254B0D0F4DE13A7F293C3D74587C800339ABD4C61FEB0B7737E227",
+  "schema_id": "companion.wb55.ssd1681.r12_v22_calm_curious_warm_sampler.machine_ready.v2",
+  "status": "NO_GO_R12_MACHINE_READY",
+  "transport": {
+    "baseline_source_ff": 1,
+    "baseline_source_resets": 1,
+    "busy_limit_ms": 600,
+    "cadence_accept_ms": "1..480",
+    "cadence_reject_ms": 481,
+    "cadence_target_ms": 450,
+    "minimum_contiguous_loops": 2,
+    "movement_source_cf": 1,
+    "movement_source_resets": 0,
+    "qualification_frames": 16,
+    "real_cadence_required": true,
+    "ring_bytes": 65536,
+    "telemetry_max_bytes_including_crlf": 192,
+    "transaction_limit_ms": 460
+  }
+}

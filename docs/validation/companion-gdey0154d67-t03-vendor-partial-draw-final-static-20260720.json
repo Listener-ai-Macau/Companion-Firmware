@@ -1,0 +1,37 @@
+{
+  "checks": {
+    "candidate_is_compile_time_disabled_and_source_partial_only": true,
+    "first_pass_uses_only_the_local_old_or_new_black_union": true,
+    "fixed_machine_and_operator_builds_are_isolated": true,
+    "generic_third_activation_is_suppressed": true,
+    "hardware_recovery_gate_is_current": true,
+    "owner_authorizes_only_draw_then_final_comparison": true,
+    "supplier_source_is_frozen": true,
+    "two_source_0xff_busy_passes_settle_to_current_frame": true
+  },
+  "claim_scope": "default-disabled local draw/final transport only; no optical, production, LUT, temperature or panel-identity claim",
+  "controlled_behavior": {
+    "forbidden": [
+      "0xC7",
+      "full local-motion write",
+      "LUT or waveform-byte change",
+      "production promotion"
+    ],
+    "pass_1": "source reset/border/local 0x24 old-or-new-black union, 0xFF, 0x20, BUSY",
+    "pass_2": "source reset/border/same local 0x24 final current frame, 0xFF, 0x20, BUSY"
+  },
+  "failures": [],
+  "machine_status": "PASS_STATIC_HARDWARE_ADMITTED",
+  "schema_id": "companion.wb55.gdey0154d67_t03.vendor_partial_draw_final_static.v1",
+  "source": {
+    "driver": {
+      "path": "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
+      "sha256": "D096D76ABF4A28EF6F3447B80E32E95745D552B31DBB94A7F34D0575A5606DB7"
+    },
+    "supplier_epaper_c": {
+      "path": "C:/Users/Billy/Desktop/GDEH0154D67-20211203-P-LUT(1s) -1s\u5feb\u5237/EPD_W21/EPAPER.c",
+      "sha256": "7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896"
+    }
+  },
+  "status": "PASS_STATIC_PRODUCTION_OFF_VENDOR_PARTIAL_DRAW_FINAL"
+}

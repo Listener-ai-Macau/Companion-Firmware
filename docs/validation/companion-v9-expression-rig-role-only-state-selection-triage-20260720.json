@@ -1,0 +1,23 @@
+{
+  "schema_id": "companion.v9_expression_rig.role_only_state_selection_triage.v1",
+  "status": "NO_GO_ROLE_ONLY_STATE_SELECTION",
+  "claim_scope": "machine_contract_only_runtime_inactive",
+  "authority": "COMP-REQ-190 and COMP-REQ-195",
+  "observed_problem": {
+    "legacy_score": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/state-preview-rig-score-v1.json",
+    "unsafe_abstraction": "state_roles selects a semantic role such as charm but does not name the source-derived component that may occupy it",
+    "risk": "A future recording, charging, question or sleep source could be silently substituted by an unrelated same-role component."
+  },
+  "required_recovery": [
+    "A non-entry registered-state score step that selects a role must also declare a unique state_components list of exact registered component IDs.",
+    "Composition selects only those named components from the source sustain frame and replaces the corresponding entry role; it must reject unknown or unselected IDs.",
+    "The sustain step must name every source component it uses, and score/browser audits must expose the selected component IDs.",
+    "The legacy score remains fail-closed until its special sources have completed their source-specific acceptance path."
+  ],
+  "forbidden": [
+    "role-name-only component selection",
+    "automatic selection of another charm variant",
+    "old special-art fallback or daily-face completion",
+    "whole-face replacement, runtime activation, external-NOR provisioning, firmware flash or physical acceptance"
+  ]
+}

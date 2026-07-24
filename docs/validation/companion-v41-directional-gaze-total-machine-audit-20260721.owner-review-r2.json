@@ -1,0 +1,21 @@
+{
+  "schema": "companion.v41_directional_gaze_owner_review.v1",
+  "status": "CANCELLED_OWNER_REVIEW_NO_DECISION",
+  "reviewed_at": "2026-07-21",
+  "review_method": "canonical_aiw_operator_prompt",
+  "related_machine_artifact": "docs/validation/companion-v41-directional-gaze-total-machine-audit-20260721.json",
+  "selected": "Cancel",
+  "operator_note_path": "docs/validation/companion-v41-directional-gaze-total-machine-audit-20260721.owner-review-r2.note.txt",
+  "operator_note": "",
+  "disposition": {
+    "v41_candidate": "remain_inactive_pending_a_new_explicit_owner_decision",
+    "runtime_binding": "forbidden",
+    "human_acceptance": "not_recorded"
+  },
+  "non_claims": [
+    "no_human_acceptance",
+    "no_runtime_binding",
+    "no_firmware_flash",
+    "no_panel_or_driver_change"
+  ]
+}

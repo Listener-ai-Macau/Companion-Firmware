@@ -1,0 +1,39 @@
+{
+  "schema_id": "companion.wb55.ssd1681_fast_point_probe_round_disposition.v1",
+  "status": "UNSEEN_NO_VISIBLE_CHANGE_RESTORED_CONTINUE_GOAL",
+  "round": 1,
+  "requirement": "COMP-REQ-275",
+  "machine": {
+    "status": "PASS_MACHINE_SSD1681_FAST_POINT_PROBE_RESTORED",
+    "frames": 120,
+    "interval_ms": [522, 523],
+    "interval_p95_ms": 523,
+    "busy_max_ms": 447,
+    "motion_elapsed_ms": 62212,
+    "panel_writes": 242,
+    "refresh_0x20": 120,
+    "panel_hard_resets": 121,
+    "automatic_retries": 0
+  },
+  "operator": {
+    "selected": "未看清",
+    "canonical_note": "没看出来有移动",
+    "owner_disposition": "没看出来有移动, 屏幕无变化",
+    "visual_pass": false,
+    "artifact": ".cache/validation/wb55-fast-point-probe-execute-20260721-r1/visual-operator.json",
+    "artifact_sha256": "5203C644434173CE4C97489A20A8D85DEA1DD6BABF2B0D169935315F901E7E73"
+  },
+  "restore": {
+    "status": "PASS_RESTORE_EQUALS_CAPTURED_PRE_RUN_APPLICATION_BYTES",
+    "baseline_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "normal_resume": "PASS_APPLICATION_RESUMED_AFTER_BACKUP"
+  },
+  "artifacts": {
+    "stage_run": ".cache/validation/wb55-fast-point-probe-execute-20260721-r1/stage-run.json",
+    "stage_run_sha256": "AAAF6B4C51C89E12038D3938DAB9CD348BBB3BAAE50DD8635A46769DE061558C",
+    "controller_state": ".cache/validation/wb55-fast-point-probe-execute-20260721-r1/controller-state.json",
+    "controller_state_sha256": "FBD5EE6781F8EEB6A142BC7553F7A8567E0D286472732B3E5CC42D266900BD9A",
+    "start_operator_sha256": "7EB70257593DA06F682A3DDDA54A9D260D4FC514F645237F5CA74B08F8DA61A6"
+  },
+  "disposition": "Not PASS and not terminal. Investigate the machine/visible disagreement, then continue with a separately gated single-variable candidate."
+}

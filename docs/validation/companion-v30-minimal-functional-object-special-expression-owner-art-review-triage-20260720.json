@@ -1,0 +1,22 @@
+{
+  "schema": "companion.v9_special_expression_owner_art_review_triage.v1",
+  "status": "TRIAGED_OWNER_ART_FAIL_V30_TO_V31_SOURCE_REFINEMENT",
+  "source_review": "docs/validation/companion-v30-minimal-functional-object-special-expression-owner-art-review-result-20260720.json",
+  "owner_decision": "失败",
+  "owner_note": "嘴型可以变化一下, 然后可以饰件再明显一定, 你再生图一下",
+  "disposition": {
+    "v30_visual_source": "REJECTED_AUDIT_ONLY",
+    "v30_technical_component_and_choreography_artifacts": "RETAINED_AS_NON_VISUAL_TECHNICAL_EVIDENCE_ONLY",
+    "v30_visual_prompt_or_reference_eligibility": "FORBIDDEN",
+    "v30_crig_profile_event_binding_flash_or_panel_output": "FORBIDDEN",
+    "v31_generation": "REQUIRED_LOCKED_V9_ONLY"
+  },
+  "next_source_delta": {
+    "mouth": "Every V31 special state must contain a visibly different, separately extractable source mouth shape with a distinct contour, not only a one-pixel offset or the same V9 mouth reused across states.",
+    "accessories": "Keep no more than three character-bound parts per state and no individual part larger than half a V9 eye, but increase native-200x200 silhouette readability with clearer compact forms. Do not use a full headset, headband, long boom, large plug, battery, lightning, detached UI card, text, or a generic whole-face prop.",
+    "choreography": "Retain deterministic component-only entry, one causal micro-action, hold, release, and exact V9 Daily settle. The V31 player may not hide a source-art failure by changing the playback model."
+  },
+  "registry_requirement": "COMP-REQ-177",
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden"
+}

@@ -1,0 +1,102 @@
+{
+  "authorization": {
+    "current_p0_closure": {
+      "path": "docs/validation/companion-gdey0154d67-t03-p0-closure-20260720.json",
+      "sha256": "673D270075A6F5AE7F3D46E870A2DB0116D19F6E063832001D1AE3D779A5407A",
+      "status": "FAIL"
+    },
+    "hardware_execution_authorized": false,
+    "replacement_fpc": {
+      "path": "docs/validation/companion-screen-wb55-replacement-fpc-evidence-20260720.json",
+      "sha256": "E1124866DBBBF083B3512EB75A4C8AE14BF6808ACCDD45B774A5095BD41D7D35",
+      "status": "PASS_OWNER_REPORTED_REPLACEMENT_FPC_CURRENT_PANEL_VISIBLE"
+    },
+    "source_audit": {
+      "current_room_diagnostic_authorization": "COMP-REQ-168/169/171",
+      "path": "docs/validation/companion-gdey0154d67-t03-vendor-1s-source-audit-20260720.json",
+      "production_off_diagnostic_allowed_by_source_audit": false,
+      "promotion_status": "NO_GO_PANEL_IDENTITY_UNPROVEN",
+      "sha256": "176BCF3B0FB9FAF9C871F373D547838729172AC8301110EF35D4FF0CD55CB1C8"
+    },
+    "white_rail": {
+      "path": "docs/validation/companion-screen-wb55-white-rail-measurement-current-source-20260720.json",
+      "prevgh1_max_v": 20.0,
+      "prevgl1_min_v": -20.0,
+      "sha256": "E2F72CAC2662315A0B66480D3D5D8075BDA6F0070CC3DC2CFC72882DCDF8ACFC",
+      "status": "NO_GO_OFFICIAL_WHITE_RAIL_SESSION_INCOMPLETE"
+    }
+  },
+  "checks": {
+    "current_p0_official_white_black_closure_passed": false,
+    "diagnostic_image_sha256_is_source_bound": true,
+    "diagnostic_is_default_off": true,
+    "diagnostic_lut_has_159_bytes": true,
+    "diagnostic_lut_is_compile_guarded": true,
+    "diagnostic_lut_is_verbatim_supplier_data": true,
+    "diagnostic_uses_six_isolated_full_frames": true,
+    "historical_recovery_gate_fixture_passed": true,
+    "makefile_exposes_only_explicit_diagnostic_macros": true,
+    "operator_loop_image_sha256_is_source_bound": true,
+    "operator_loop_is_a_separate_bounded_build": true,
+    "operator_loop_is_default_off_and_requires_source_bound_diagnostic": true,
+    "operator_loop_repeats_the_same_six_marker_positions": true,
+    "operator_replay_waits_for_visible_prompt_window": true,
+    "owner_authorized_supplier_provenance_and_diagnostic_use": true,
+    "panel_marking_correlates_to_t03_ssd1681": true,
+    "replacement_fpc_evidence_passed": true,
+    "runner_directly_requires_current_replacement_fpc_and_white_rail": true,
+    "runner_flashes_bounded_operator_loop_after_machine_pass": true,
+    "source_audit_preserves_non_promotion_boundary": true,
+    "source_audit_still_matches_supplier_and_driver": true,
+    "supplier_lut_has_159_bytes": true,
+    "supplier_lut_sha256_matches_manifest": true,
+    "vendor_init_loads_153_bytes_to_0x32": true,
+    "vendor_init_loads_exact_tail_registers": true,
+    "vendor_refresh_is_full_5000_byte_0x24_then_c7_20_busy": true,
+    "vendor_reset_is_100ms_low_then_high": true,
+    "white_rail_measurement_passed": false
+  },
+  "claim_scope": "owner-authorized source-bound production-off diagnostic static contract only",
+  "controlled_behavior": {
+    "diagnostic_build": "machine six-frame pass then one source-identical bounded 360-frame operator loop",
+    "hardware_execution_authorized": false,
+    "normal_firmware_restore_required": true,
+    "operator_loop_marker_positions": 6,
+    "operator_loop_maximum_full_frames": 360,
+    "production_default": "disabled",
+    "production_promotion": "not authorized",
+    "refresh": "0x24, 0x22=0xC7, 0x20, BUSY high-active/low-ready",
+    "source_temperature_table": "not supplied",
+    "temperature_claim": "none"
+  },
+  "failures": [
+    "white_rail_measurement_passed",
+    "current_p0_official_white_black_closure_passed"
+  ],
+  "images": {
+    "diagnostic": {
+      "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_vendor_1s_lut_diagnostic/Companion_Nucleo_WB55RG_Vendor1sLutDiagnostic.hex",
+      "sha256": "FCB793FF1F204643CA7EA7CE972A6A4B87708044633792197F96A08F5E50E180"
+    },
+    "operator_loop": {
+      "maximum_full_frames": 360,
+      "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_vendor_1s_lut_operator_loop_diagnostic/Companion_Nucleo_WB55RG_Vendor1sLutOperatorLoopDiagnostic.hex",
+      "sha256": "E84D361450927E01F7F2C2F6CDFF35B68138820FAA10E4D930D2FC95365F39D5"
+    }
+  },
+  "schema_id": "companion.wb55.gdey0154d67_t03.vendor_1s_lut_diagnostic_static.v1",
+  "source": {
+    "supplier_lut_sha256": "F83EA7360CFFF04FE9D004A75858A46213CBD710AAA2F0C4A62597E3EA176D15",
+    "target_driver": {
+      "path": "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
+      "sha256": "6C44ACEF9534836878B0D6ED539EB35071E5C44D527744FA0948C9E6CDBFE853"
+    },
+    "target_lut_sha256": "F83EA7360CFFF04FE9D004A75858A46213CBD710AAA2F0C4A62597E3EA176D15",
+    "vendor_epaper_c": {
+      "path": "C:\\Users\\Billy\\Desktop\\GDEH0154D67-20211203-P-LUT(1s) -1s快刷\\EPD_W21\\EPAPER.c",
+      "sha256": "7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896"
+    }
+  },
+  "status": "NO_GO_VENDOR_1S_LUT_DIAGNOSTIC_NOT_AUTHORIZED",
+  "target": "NUCLEO-WB55RG + ESP32-FTS02 + GDEY0154D67-T03"
+}

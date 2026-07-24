@@ -1,0 +1,59 @@
+{
+  "schema_id": "companion.wb55.ssd1681_ram_ping_pong_fingerprint.machine_ready.v1",
+  "requirement_id": "COMP-REQ-266",
+  "status": "MACHINE_READY_PHASE_A_ZERO_HARDWARE_CONTACT",
+  "claim_scope": "Static, host, build and CheckOnly closure for exactly one production-off Phase A execution; this is not a RAM mapping result or Phase B admission.",
+  "hardware_contact": 0,
+  "candidate": {
+    "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_ram_ping_pong_fingerprint/Companion_Nucleo_WB55RG_Ssd1681RamPingPongFingerprint.hex",
+    "sha256": "2ED8AEC1B665C4FF516BE603D9C2CCEEAEB6411CFF38B6113283FBEEA7E17B90",
+    "default_off": true,
+    "production_off": true
+  },
+  "phase_a_contract": {
+    "stages": 3,
+    "selectors_per_stage": 2,
+    "repeats_per_selector": 2,
+    "read_count": 12,
+    "bytes_per_read": 5001,
+    "dummy_bytes_per_read": 1,
+    "payload_bytes_per_read": 5000,
+    "write_0x24_count": 2,
+    "write_0x26_count": 1,
+    "control_0xf7_count": 1,
+    "control_0xff_count": 1,
+    "activation_0x20_count": 2,
+    "hard_reset_count": 2,
+    "automatic_retries": 0,
+    "forbidden_0x32_count": 0,
+    "forbidden_0x37_count": 0
+  },
+  "restore_contract": {
+    "address_hex": "0x08000000",
+    "length_bytes": 524288,
+    "baseline_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "one_finally_restore": true,
+    "post_restore_upload_private": true,
+    "normal_boot_gate": true
+  },
+  "gates": [
+    {"name": "registry_verifier", "result": "PASS"},
+    {"name": "current_goal_audit", "result": "PASS"},
+    {"name": "parser_positive_and_negative_fixtures", "result": "PASS"},
+    {"name": "static_source_build_restore_gate", "result": "PASS_STATIC_RAM_PING_PONG_FINGERPRINT_RAW_RESTORE_DEFAULT_OFF"},
+    {"name": "wb55_candidate_build", "result": "PASS"},
+    {"name": "runner_check_only", "result": "READY_NO_HARDWARE_CONTACT"},
+    {"name": "git_diff_check", "result": "PASS"}
+  ],
+  "evidence": {
+    "source_research_sha256": "1270787E592283394A8089C3169CCF11DFE506BD9F59CCA81F6D6AF208D94CF6",
+    "static_artifact_sha256": "0DA65A4EBE840EECAAE4B982F7B555B6CA370CD4D7DAABDFFB6D345132D37CA3",
+    "check_only_stage_run_sha256": "BC7BF9C16C96BB35C56FD366E2996EBB899EB0994C8E3B968080A8A896BEA1C3",
+    "programmer_sha256": "BD520005962377155515A2C9E8FEAB73F304A696AAE1698F3B7760672160FD5E"
+  },
+  "next_action": "Run the locked Phase A candidate exactly once, parse all twelve reads, and restore the captured raw application bytes in finally. A unique mapping PASS alone may admit Phase B.",
+  "forbidden_claims": [
+    "No RAM mapping has yet been observed.",
+    "No Phase B, production, waveform, LUT, temperature, voltage, visual, Rig, CRIG, touch, or BLE claim is made."
+  ]
+}

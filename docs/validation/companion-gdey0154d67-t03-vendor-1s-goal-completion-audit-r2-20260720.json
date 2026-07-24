@@ -1,0 +1,74 @@
+{
+  "schema_id": "companion.gdey0154d67_t03.vendor_1s_lut_goal_completion_audit.v1",
+  "status": "COMPLETE_NO_GO_OWNER_REJECTED_VENDOR_1S_LUT",
+  "claim_scope": "completion audit for the active Goal's source-bound, current-room, production-off diagnostic only; no production, panel-identity, local-refresh, CWF1, or temperature-range claim",
+  "goal_result": {
+    "six_frame_machine_diagnostic": "PASS",
+    "canonical_operator_observation": "FAIL_OWNER_REJECTED_BLACK_FLASH",
+    "bounded_360_frame_success_claim": "NOT_ENTERED_AFTER_FAILED_REVIEW",
+    "normal_firmware_restore": "PASS",
+    "production_promotion": "NO_GO",
+    "further_hardware_retry": "PROHIBITED_UNTIL_NEW_OWNER_STEERING_AND_MATERIALLY_NEW_PANEL_BOUND_SUPPLIER_EVIDENCE"
+  },
+  "requirements": {
+    "supplier_traceability": {
+      "status": "PASS",
+      "readonly_vendor_epaper_c": "C:/Users/Billy/Desktop/GDEH0154D67-20211203-P-LUT(1s) -1s快刷/EPD_W21/EPAPER.c",
+      "vendor_epaper_c_sha256": "7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896",
+      "lut_sha256": "F83EA7360CFFF04FE9D004A75858A46213CBD710AAA2F0C4A62597E3EA176D15",
+      "lut_bytes": 159,
+      "lut_0x32_payload_bytes": 153,
+      "tail_command_order": ["0x3F", "0x03", "0x04", "0x2C"],
+      "source_audit_current_reaudit": {
+        "path": "docs/validation/companion-gdey0154d67-t03-vendor-1s-source-audit-20260720.json",
+        "sha256": "176BCF3B0FB9FAF9C871F373D547838729172AC8301110EF35D4FF0CD55CB1C8",
+        "status": "PASS_AUDIT_COMPLETE",
+        "promotion_status": "NO_GO_PANEL_IDENTITY_UNPROVEN"
+      }
+    },
+    "historical_authorized_machine_run": {
+      "status": "PASS_MACHINE_VENDOR_1S_LUT_SIX_FRAME_TRACE",
+      "trace": {
+        "path": ".cache/validation/wb55-vendor-1s-lut-current-room-20260720/vendor-1s-trace.json",
+        "sha256": "CB4B119C8F8490B5F5D0E842B12005E7E8B204B5669A0DD01BCE8BBC110BB6EC"
+      },
+      "frames": 6,
+      "marker_steps": [0, 1, 2, 3, 4, 5],
+      "per_frame": "one 5000-byte 0x24 plane, then 0x22=0xC7, 0x20 and BUSY-ready",
+      "elapsed_ms": [1284, 1285, 1285, 1285, 1285, 1285],
+      "diagnostic_image_sha256": "FCB793FF1F204643CA7EA7CE972A6A4B87708044633792197F96A08F5E50E180"
+    },
+    "human_boundary": {
+      "status": "FAIL_OWNER_REJECTED",
+      "canonical_stage_run": {
+        "path": ".cache/validation/wb55-vendor-1s-lut-current-room-20260720/stage-run.json",
+        "sha256": "F6F82CCAA1603C32D8C2C8E81691E7C32F87A18AFF36674FD7E2C3DB44128AC6"
+      },
+      "prompt_style": "aiw_operator_prompt_v1",
+      "selection": "失败",
+      "note": "感觉不太行，就是你，是没有残影，但是就是每次会黑屏一下。",
+      "effect": "A successful 360-frame observation was not admitted. The diagnostic's full-frame black transition is rejected even though the six-frame machine command trace is valid."
+    },
+    "restore": {
+      "status": "PASS",
+      "normal_image_sha256": "E1997F29DCB8735899B4BC0B9012CF75025F3CA8D21250485BCC21E4C4691B46",
+      "stage_run_records_normal_firmware_restored": true
+    },
+    "current_fail_closed_state": {
+      "status": "PASS_FAIL_CLOSED",
+      "finding": "The current static preflight rejects a new vendor-LUT flash because its P0/White-rail source-bound prerequisites are stale. This is not converted into a new rail claim and no hardware was touched during the re-audit.",
+      "static_contract": {
+        "path": "docs/validation/companion-gdey0154d67-t03-vendor-1s-diagnostic-static-20260720.json",
+        "sha256": "3B83E7069786C2B77FEDA88F5EB57E293CB521416DADB66131466C3E3B8D434B",
+        "status": "NO_GO_VENDOR_1S_LUT_DIAGNOSTIC_NOT_AUTHORIZED"
+      },
+      "runner_check_only": "Refused before build, flash, capture, or operator prompt."
+    }
+  },
+  "immutable_historical_disposition": {
+    "path": "docs/validation/companion-gdey0154d67-t03-vendor-1s-final-disposition-20260720.json",
+    "sha256": "7C2304FE98D6498C25FC4AF312ABAA9CC3267A7DCAB20A8F47F371061C9A131D",
+    "status": "FAIL_OWNER_REJECTED_SINGLE_FLASH_VENDOR_1S_LUT"
+  },
+  "conclusion": "The active Goal is complete with a controlled diagnostic FAIL/NO_GO, not a performance success. The literal supplier 159-byte LUT was validated for provenance and six-frame transport, then rejected by the required human observation because every full-frame C7 refresh visibly blackened the panel. No production code path, custom or web-derived waveform, temperature/CWF1 claim, or dynamic-expression binding was introduced."
+}

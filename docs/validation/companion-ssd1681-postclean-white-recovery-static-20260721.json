@@ -1,0 +1,37 @@
+{
+  "schema_id": "companion.wb55.ssd1681_postclean_white_recovery_static.v1",
+  "status": "PASS_POSTCLEAN_WHITE_RECOVERY_STATIC",
+  "errors": [],
+  "hardware_contact": 0,
+  "contract": {
+    "official_white_image_sha256": "F7CB7EE8C497CF1A01ACFF4BC921B43E274B0A934CA8B658AC24C34480F32925",
+    "frame_command": "0x24",
+    "frame_bytes": 5000,
+    "control": "0xF7",
+    "refresh": "0x20",
+    "candidate_writes": 0,
+    "raw_restore_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "future_custom_postclean_fail_closed": true
+  },
+  "negative_fixtures": [
+    "missing_future_postclean",
+    "missing_fail_closed",
+    "allows_reuse",
+    "adds_cleanup_prompt"
+  ],
+  "host_tests": {
+    "white_parser": {
+      "exit_code": 0,
+      "stdout": "PASS: official full diagnostic parser self-test"
+    },
+    "restore": {
+      "exit_code": 0,
+      "stdout": "PASS: WB55 raw application restore positive/negative self-test"
+    },
+    "normal": {
+      "exit_code": 0,
+      "stdout": "PASS: WB55 normal-resume parser positive/negative self-test"
+    }
+  },
+  "production_allowed": false
+}

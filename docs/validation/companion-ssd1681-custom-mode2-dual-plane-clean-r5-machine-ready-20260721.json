@@ -1,0 +1,84 @@
+{
+  "schema_id": "companion.wb55.ssd1681_custom_mode2_dual_plane_clean_r5_machine_ready.v1",
+  "status": "MACHINE_READY_CUSTOM_MODE2_DUAL_PLANE_CLEAN_R5",
+  "requirement": "COMP-REQ-297",
+  "hardware_contact": 0,
+  "production_allowed": false,
+  "goal_action": "none; active Goal remains owned by the root thread",
+  "candidate": {
+    "r4_hex_sha256": "E695A1A6D3D121AA585E69A1A0D8DA21FEBC5566198BD314FE27F2D40C30B564",
+    "byte_identical_to_accepted_r4_machine_candidate": true,
+    "changed_candidate_lut_payload_timing_tail_window_or_control": false
+  },
+  "dual_plane_clean": {
+    "hex_sha256": "3AC4E52E37E15DC3CC058A4B0B0E6A3227D23E6C6DEFAEDCB786C08497888AAD",
+    "elf_sha256": "1AE76AB804D81E828A2B3AA700821CBD69AF79561CE72E612872F1FAC8550DB0",
+    "supplier_source_sha256": "7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896",
+    "profile": "promptless supplier-exact 0x24/0x26 all-White BaseMap, F7/20/BUSY, then both selectors read twice",
+    "bytes_per_plane": 5000,
+    "read_response_bytes": 5001,
+    "payload_bytes": 5000,
+    "all_white_and_repeat_identical_required": true
+  },
+  "single_variable": "Only the R4 one-plane pre/post White cleanup is replaced by supplier-exact dual-plane all-White cleanup with readback; the candidate itself is byte-identical.",
+  "machine_gates": {
+    "static": {
+      "status": "PASS_STATIC_CUSTOM_MODE2_DUAL_PLANE_CLEAN_R5",
+      "path": "docs/validation/companion-ssd1681-custom-mode2-dual-plane-clean-r5-static-20260721.json",
+      "sha256": "B64D1C603E8471F35292BAEEF967444947F9204BD0E6E7EC49FC9B9D464C1E10"
+    },
+    "detached_check_only": {
+      "status": "READY_NO_HARDWARE_CONTACT",
+      "stage_path": ".cache/validation/wb55-custom-mode2-dual-plane-clean-r5-checkonly-20260721-c/stage-run.json",
+      "stage_sha256": "4D1673B5310609A2373051710FC3B0921B369FAA30FE4DB5FFD2A4C6139CE62F",
+      "launch_path": ".cache/validation/wb55-custom-mode2-dual-plane-clean-r5-checkonly-20260721-c/detached-launch.json",
+      "launch_sha256": "3A956EF613119D4389DFE7F4460E21A7853F22C6F55B7F2F8932ECB508EE9AC2",
+      "programmer_calls": 0,
+      "hardware_contact": 0
+    },
+    "registry": "PASS",
+    "current_goal_audit": "PASS",
+    "dual_build": "PASS",
+    "locked_r4_rebuild": "PASS"
+  },
+  "negative_fixtures": {
+    "missing_0x26": "NO_GO",
+    "missing_dual_bank_read": "NO_GO",
+    "missing_read_window_counter_reprogram": "NO_GO",
+    "one_bank_nonwhite": "NO_GO",
+    "repeat_mismatch": "NO_GO",
+    "missing_postclean": "NO_GO",
+    "cleanup_only_candidate_guard_removed": "NO_GO",
+    "candidate_hash_drift": "NO_GO",
+    "prompt_order_drift": "NO_GO"
+  },
+  "first_failure_record": {
+    "category": "invocation misuse",
+    "detail": "The first build invocation supplied both the base Bringup switch and an isolated diagnostic switch; the existing mutual-exclusion gate rejected it. The corrected isolated-switch command passed.",
+    "product_defect": false
+  },
+  "execute_boundary": {
+    "allowed_command": "pwsh -NoProfile -File tools/start_wb55_ssd1681_custom_mode2_dual_plane_clean_r5.ps1 -Execute -OutRoot <fresh-path>",
+    "routine_cleanup_prompts": false,
+    "candidate_start_prompt": true,
+    "final_physical_review_required": true,
+    "physical_claim_before_execute": "NO_GO",
+    "operator_should_judge": [
+      "whole-screen cleanliness after dual-plane preclean",
+      "whether the nine local transitions remain visible",
+      "whether the previously reported dirty-screen appearance is removed",
+      "whether clipping, ghosting or full-screen flashing is introduced"
+    ]
+  },
+  "routine_cleanup_execution": {
+    "status": "PASS_MACHINE_DUAL_PLANE_WHITE_CLEAN_EXACT_RAW_RESTORED_PHYSICAL_CLEANLINESS_PENDING_OWNER_OBSERVATION",
+    "artifact": "docs/validation/companion-ssd1681-dual-plane-white-clean-recovery-r1-20260721.json",
+    "candidate_executed": false,
+    "candidate_prompt_invoked": false
+  },
+  "protected_hashes": {
+    "owner_acceptance_sha256": "8A3BDF4BD1254B0D0F4DE13A7F293C3D74587C800339ABD4C61FEB0B7737E227",
+    "baseline_a_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "baseline_b_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C"
+  }
+}

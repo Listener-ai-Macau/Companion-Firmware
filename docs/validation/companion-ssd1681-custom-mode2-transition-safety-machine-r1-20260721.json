@@ -1,0 +1,65 @@
+{
+  "schema_id": "companion.wb55.ssd1681_custom_mode2_transition_safety_machine_run.v1",
+  "status": "NO_GO_BUSY_OVER_LIMIT_AND_OPERATOR_FAILED_RESTORED",
+  "requirement": "COMP-REQ-285",
+  "hardware_contact": 1,
+  "production_enabled": false,
+  "candidate": {
+    "name": "stationary_suppression_r1",
+    "lut_sha256": "B0C729D4157054C4EA69521C3E4837B75B2E6A7740A48C5C754714A84925722E",
+    "hex_sha256": "FA8437E4D0D5E71FDFB08669C324E433CCD0A57FF5CA9DB75D002B01D4EB295A",
+    "protected_tail_hex": "221741A83258"
+  },
+  "trace": {
+    "status": "NO_GO_BUSY_OVER_600MS",
+    "activations": 9,
+    "controls_cf": 9,
+    "refresh_0x20": 9,
+    "busy_completions": 9,
+    "busy_elapsed_ms": [1284, 1285, 1285, 1285, 1285, 1285, 1285, 1285, 1285],
+    "writes_0x26": 9,
+    "writes_0x24": 9,
+    "bytes_per_plane_per_activation": 128,
+    "transition_classes": ["WW", "WB", "BW", "BB"],
+    "final_local_state": "white",
+    "full_frame_activations": 0,
+    "controls_ff": 0,
+    "controls_f7": 0,
+    "controls_c7": 0,
+    "hard_resets_after_lut": 0,
+    "automatic_retries": 0
+  },
+  "runner": {
+    "candidate_programmer_processes": 1,
+    "candidate_write_calls": 1,
+    "restore_programmer_processes": 1,
+    "restore_write_calls": 1,
+    "restore_verify_operations": 1,
+    "restore_upload_calls": 1,
+    "restore_reset_arguments": 1,
+    "stage_run_sha256": "7C846725F41A204CCDE37C2FF5E778E582F7C6015CB56E23B38583E117BAF8C2",
+    "trace_artifact_sha256": "DC12E908CAF1381047A180015C8188413383ADB52CD528FCF4C0F3BC3C020592"
+  },
+  "restore": {
+    "identity": "RESTORED_TO_CAPTURED_PRE_RUN_APPLICATION_BYTES",
+    "status": "PASS_RESTORE_EQUALS_CAPTURED_PRE_RUN_APPLICATION_BYTES",
+    "restored_bytes": 524288,
+    "restored_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "restore_artifact_sha256": "A7D01833C88BB56DA63AED960B6CD853AB90BB948F686B1CB1CF3920BA3435A4",
+    "normal_resume_status": "PASS_APPLICATION_RESUMED_AFTER_BACKUP",
+    "normal_resume_artifact_sha256": "475B8EF60B8CD9AB52169513D489E2473BAD46DCB6A9D90E7BAAC741F60D6852"
+  },
+  "physical_acceptance": {
+    "required": true,
+    "status": "FAIL_OPERATOR_REQUESTED_WHITE_RECOVERY",
+    "criteria": [
+      "only the local 32x32 test patch changes",
+      "WW and BB stable quarters do not visibly pulse or dirty",
+      "WB and BW transition quarters complete without residue or missing edges",
+      "no whole-screen flash or whole-screen dirtying",
+      "final local patch returns clean white"
+    ]
+  },
+  "motion_120_frame_admitted": false,
+  "goal_terminal": false
+}

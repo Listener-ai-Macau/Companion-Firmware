@@ -1,0 +1,51 @@
+{
+  "schema_id": "companion.wb55.hotplug_backup_controller_state_static.v1",
+  "status": "PASS_STATIC_HOTPLUG_BACKUP_CONTROLLER_STATE_DEFAULT_OFF",
+  "claim_scope": "machine-only zero-prewrite dual backup gate, one candidate, one restore and post-restore compare; no hardware result",
+  "checks": {
+    "required_inputs_exist": true,
+    "registry_comp_req_259": true,
+    "research_exact_status": true,
+    "programmer_hash_exact": true,
+    "programmer_v2_22": true,
+    "programmer_local_help_upload_hotplug": true,
+    "linker_hash_and_exact_application_range": true,
+    "candidate_hash_exact": true,
+    "candidate_is_read_only_profile": true,
+    "prior_diagnostic_static_only_lost_hex_failure": true,
+    "dual_locks_before_hardware": true,
+    "exact_two_hotplug_backup_upload_calls": true,
+    "zero_write_reset_halt_before_backup_admission": true,
+    "backup_gate_before_serial_and_candidate": true,
+    "serial_ready_before_candidate_write_no_reset_after_open": true,
+    "single_candidate_and_single_restore_write": true,
+    "finally_restore_and_post_restore_hotplug_compare": true,
+    "restore_failure_popup_and_no_second_write": true,
+    "private_cache_only": true,
+    "backup_negative_matrix": true,
+    "controller_log_negative_matrix": true,
+    "runner_powershell_parse": true
+  },
+  "failures": [],
+  "source_manifest": {
+    "docs/companion_product_requirements.md": "A80AB57C173421964086E28CDB19247A3D024D756F37197B951604C00610FE24",
+    "docs/validation/companion-wb55-hotplug-application-backup-controller-state-research-source-hash-20260721.json": "90C2495C61D7AE75F2A7C75D5CFAAD61F87DE2CF682B84BE0346B4D271C89029",
+    "docs/validation/companion-ssd1681-read-only-controller-state-static-20260721.json": "44217EB34E859363B892F53084CEF6E97F2611C6A40C89E65D0E9FF64E79A30F",
+    "tools/verify_wb55_ssd1681_read_only_controller_state_diagnostic.py": "F1B855F08D4CF9D89A80C1B5F370509A36EF0969985DB1A5E86F594EAE36333B",
+    "tools/verify_wb55_hotplug_application_backup.py": "2B99E9663F681BBB5D3CCAD89165E94E2D1EDBD0D8C20FC593E0E13A8B9C7DF8",
+    "tools/verify_wb55_ssd1681_read_only_controller_state_log.py": "4D173912345257191370DE703EBFDBB790883922D192CBF1FF3C1A5B7060AB01",
+    "tools/run_wb55_hotplug_backup_controller_state.ps1": "5E3AC78C628020377A8EA606CCD9FF7933AD0229214302D13DF301FCCD392E45",
+    "tools/capture_nucleo_serial.ps1": "59677805F4CA7FBD181C1A19350CE89E957FCCE3F2ACB6682099D585C3789FB1",
+    "tools/companion_wb55_lock.ps1": "E688A06E6F6BD5DAA8D03A2E342ABF33B525FDA45F97A23AD59A56FF501F73C5",
+    "third_party/STM32CubeWB/Projects/P-NUCLEO-WB55.Nucleo/Applications/BLE/BLE_p2pServer/STM32CubeIDE/STM32WB55RGVX_FLASH.ld": "4FB899EAB4A324B5CB642D37884341577413634710B4B301B59B21493BE0E4BD",
+    "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_read_only_controller_state/Companion_Nucleo_WB55RG_Ssd1681ReadOnlyControllerState.hex": "52D79CB3BC55D9738EFA580B95D3930216C23FD8825356F7860B7C1718C0C6AD",
+    "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_read_only_controller_state/Companion_Nucleo_WB55RG_Ssd1681ReadOnlyControllerState.elf": "2C37D2416EF3EABBECFE08BAC1F5886DFC93D7FFDCC24486F9A8E26E21E5CDB6",
+    "C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.cubeprogrammer.win32_2.2.400.202601091506/tools/bin/STM32_Programmer_CLI.exe": "BD520005962377155515A2C9E8FEAB73F304A696AAE1698F3B7760672160FD5E"
+  },
+  "candidate_hex_sha256": "52D79CB3BC55D9738EFA580B95D3930216C23FD8825356F7860B7C1718C0C6AD",
+  "programmer_sha256": "BD520005962377155515A2C9E8FEAB73F304A696AAE1698F3B7760672160FD5E",
+  "host_tests": {
+    "backup": "PASS: WB55 HOTPLUG application backup positive/negative self-test",
+    "controller_log": "PASS: SSD1681 read-only parser positive/negative self-test"
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "schema_id": "companion.wb55.ssd1681_fast_probe_r6_sequence_diff.v1",
+  "status": "PASS_DIFF_ADMIT_R3_SUPPLIER_PRE_PARTIAL_SEQUENCE",
+  "errors": [],
+  "physical_authority": {
+    "r6_status": "PASS_OPERATOR_WITH_RESIDUE_STEERING_PRODUCTION_OFF",
+    "selection": "\u901a\u8fc7",
+    "note": "\u4f60\u73b0\u5728\u8fd9\u6837\u5b50\u76f4\u63a5\u79fb\u52a8\u662f\u4f1a\u6709\u6b8b\u5f71\u7684\uff0c\u4f60\u770b\u770b\u6628\u5929\u7684\u8fd9\u79cd\u5de5\u4f5c\u65b9\u5f0f\u53bb\u5b66\u4e60\u4e00\u4e0b",
+    "partial_steps": 48,
+    "busy_ms": [
+      446,
+      447
+    ]
+  },
+  "real_hardware_path": {
+    "reset": "HAL_GPIO_WritePin physical RST low/high with 10 ms dwell",
+    "spi": "command/data call ssd1681_spi_tx, toggling physical PA9 SCK, PC1 MOSI, CS and DC",
+    "busy": "48 visibly effective r6 completions and 120 r2 completions are GPIO BUSY waits, not log-only counters"
+  },
+  "byte_order_diff": {
+    "supplier_and_r6_pre_partial": [
+      "hard_reset_10_10",
+      "0x3C:0x80",
+      "0x44",
+      "0x45",
+      "0x4E",
+      "0x4F",
+      "0x24 data",
+      "0x22:0xFF",
+      "0x20",
+      "BUSY"
+    ],
+    "r2_pre_partial": [
+      "hard_reset_10_10",
+      "0x01",
+      "0x11:0x01",
+      "0x44",
+      "0x45",
+      "0x3C:0x80",
+      "0x18:0x80",
+      "0x4E",
+      "0x4F",
+      "0x24 data",
+      "0x22:0xFF",
+      "0x20",
+      "BUSY"
+    ],
+    "r6_post_activation": "no 0x24 sync",
+    "r2_post_activation": "reissues extended setup then 0x24 current, no activation"
+  },
+  "causal_selection": {
+    "r3_single_variable": "pre_partial_window_register_sequence",
+    "from": "extended 0x01/0x11/0x44/0x45/0x3C/0x18/0x4E/0x4F",
+    "to": "visibly effective supplier/r6 0x3C/0x44/0x45/0x4E/0x4F",
+    "why_not_post_sync_first": "Post-sync occurs after the first physical activation and cannot explain zero reaction on frame 1; the pre-partial sequence can.",
+    "branch_basis": "R3 branches from round 1 all-white seed and changes only the pre-partial setup sequence; it does not retain or extend the falsified inverse seed."
+  },
+  "unchanged": "120 fast frames, one FF/20/BUSY per frame, post-activation 0x24 sync, no full refresh, no custom LUT, exact raw restore"
+}

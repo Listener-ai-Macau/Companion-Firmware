@@ -1,0 +1,43 @@
+{
+  "schema_id": "companion.wb55.gdey0154d67_t03.vendor_partial_disjoint_current_stage_operator_timeout.v1",
+  "generated_at": "2026-07-20T23:30:35.7391908+08:00",
+  "status": "NO_GO_OPERATOR_OBSERVATION_TIMEOUT_NORMAL_RESTORED",
+  "claim_scope": "The bounded machine trace passed. The canonical human review produced no visual observation, so this is neither a visual pass nor a visual failure and cannot promote the diagnostic.",
+  "target": "NUCLEO-WB55RG + ESP32-FTS02 + GDEY0154D67-T03",
+  "machine_trace": {
+    "path": ".cache/validation/wb55-vendor-partial-disjoint-current-stage-current/vendor-partial-disjoint-current-stage-trace.json",
+    "sha256": "6DD4076B578D50FB2C3C7F6A9B2BE8AC0E9FEE4F2684A1594D4BF98E1B778EB0",
+    "status": "PASS_MACHINE_VENDOR_PARTIAL_DISJOINT_CURRENT_STAGE_TRACE",
+    "partial_steps": 48,
+    "regions_per_step": 2,
+    "current_0x24_only": true,
+    "one_source_ff_20_busy_completion_per_partial": true,
+    "no_0x26": true,
+    "no_c7": true
+  },
+  "operator_review": {
+    "style": "aiw_operator_prompt_v1",
+    "selected": "Timeout",
+    "note": "",
+    "accepted": false,
+    "reason": "No human visual conclusion was recorded."
+  },
+  "images": {
+    "diagnostic": {
+      "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_vendor_partial_disjoint_current_stage_diagnostic/Companion_Nucleo_WB55RG_VendorPartialDisjointCurrentStageDiagnostic.hex",
+      "sha256": "1345D1F984FF0EF8D7560EA7BBCFFF55698BCC2AEF33997FA8413F00C85C0A8D"
+    },
+    "normal_restore": {
+      "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build/Companion_Nucleo_WB55RG_Bringup.hex",
+      "sha256": "BC850BE39E20BDC499ADDE65A00739A556AC778B03D41439CFB1B374468CD2FD",
+      "restored": true
+    }
+  },
+  "archived_stage_report": {
+    "original_cache_path": ".cache/validation/wb55-vendor-partial-disjoint-current-stage-current/stage-run.json",
+    "sha256": "13BBA536D3E5A0B409D55D25F081E564B571AA1EDE3B7C02F835B0A6FE3DB7D1",
+    "status": "NO_GO",
+    "availability": "The mutable cache path was later reused for a separate observer-loop attempt; this artifact preserves the first attempt's immutable report hash and fields."
+  },
+  "next_controlled_step": "Use only the same default-off source-bound diagnostic with the observer-loop image, which is displayed while the canonical review window remains open. No LUT, waveform, timing, controller, rail, temperature, production or expression-binding change is authorized by this timeout."
+}

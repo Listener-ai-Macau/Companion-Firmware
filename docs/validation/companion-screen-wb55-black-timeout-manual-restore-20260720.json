@@ -1,0 +1,47 @@
+{
+  "schema_id": "companion.wb55.black_timeout_manual_restore.v1",
+  "status": "PASS_NORMAL_FIRMWARE_RESTORED_AFTER_OPERATOR_TIMEOUT",
+  "claim_scope": "manual_normal_firmware_restore_only_not_black_visual_acceptance",
+  "trigger": {
+    "stage_report": ".cache/validation/wb55-screen-recovery-current-source-20260720/black/stage-run.json",
+    "operator_selected": "Timeout",
+    "black_visual_acceptance": "NOT_ACCEPTED",
+    "runner_restore_status": "FAIL"
+  },
+  "recovery_analysis": {
+    "runner_restore_attempt": {
+      "stdout": ".cache/validation/flash-nucleo/stm32-programmer-20260720-143533-28592.stdout.log",
+      "sha256": "FFFFF91C8295D3A59964C4297DF66854D09D85F48CC2192A6EF787BAD8EAA303",
+      "result": "ST-LINK error (DEV_CONNECT_ERR)"
+    },
+    "manual_restore_attempt": {
+      "stdout": ".cache/validation/flash-nucleo/stm32-programmer-20260720-143531-14408.stdout.log",
+      "result": "Download verified successfully; MCU Reset"
+    },
+    "conclusion": "The two restore attempts overlap in the same second after the operator-prompt timeout. The runner failure is a competing ST-LINK connection, not evidence that its recovery command or the board's normal image is defective."
+  },
+  "manual_restore": {
+    "normal_image": {
+      "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build/Companion_Nucleo_WB55RG_Bringup.hex",
+      "sha256": "E1997F29DCB8735899B4BC0B9012CF75025F3CA8D21250485BCC21E4C4691B46"
+    },
+    "programmer_stdout": {
+      "path": ".cache/validation/flash-nucleo/stm32-programmer-20260720-143531-14408.stdout.log",
+      "sha256": "4BCB2FFA3BCD30BA744A1212F89FFB6C2C2B12F0F07262C45F2FC76DDB12A721",
+      "required_markers": [
+        "Download verified successfully",
+        "MCU Reset"
+      ]
+    },
+    "programmer_stderr": {
+      "path": ".cache/validation/flash-nucleo/stm32-programmer-20260720-143531-14408.stderr.log",
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    }
+  },
+  "non_go": [
+    "This artifact does not change the Black stage's Timeout result.",
+    "This artifact does not provide a Black visual acceptance.",
+    "The P0 White/Black gate remains fail-closed until a fresh canonical Black operator review passes.",
+    "No second restore command may be launched until the runner process has exited or its stage report records a completed recovery attempt."
+  ]
+}

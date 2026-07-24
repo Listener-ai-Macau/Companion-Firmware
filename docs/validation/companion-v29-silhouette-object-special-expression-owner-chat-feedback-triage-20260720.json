@@ -1,0 +1,17 @@
+{
+  "schema": "companion.v9_special_expression_owner_chat_feedback_triage.v1",
+  "status": "TRIAGED_V29_RECORDING_ART_REJECTED_RETURN_TO_NEW_V9_ONLY_SOURCE",
+  "owner_feedback": [
+    "这个录音的表奇怪也太夸张了",
+    "搞简单简约一点"
+  ],
+  "root_cause": "V29 recording uses oversized bilateral earcups and a long pickup boom. Although function-recognizable, the object dominates the V9 face and reads as a costume rather than a restrained electronic-pet expression.",
+  "disposition": {
+    "v29_source_art": "REJECTED_AUDIT_ONLY",
+    "retain_machine_artifacts": true,
+    "forbidden_as_future_visual_prompt_or_reference_input": true,
+    "cancel_pending_visible_player_retry": true,
+    "forbidden": ["V29 CRIG/profile/binding/flash", "whole-face fallback", "player rewrite to hide the art failure"]
+  },
+  "next_source_direction": "V30 must use only the locked V9 source. Recording becomes a minimal signature: two thin compact ear-cuffs plus a very short mouth-side pickup point, no full earcups, headband, costume silhouette or long boom. Menu and Charging must use equally compact, functional state objects and keep the same V9 floating-face simplicity."
+}

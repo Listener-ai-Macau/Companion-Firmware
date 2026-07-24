@@ -1,0 +1,39 @@
+{
+  "schema_id": "companion.v9_expression_rig.shared_output_history_drift_triage.v1",
+  "status": "FAIL_HISTORICAL_RENDER_REPORT_REFERENCES_MUTATED_CANDIDATE_OUTPUT",
+  "claim_scope": "machine_triage_only_runtime_inactive",
+  "authority": "active component-Rig Goal and COMP-REQ-093",
+  "protected_identity": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "protected_accepted_behavior": {
+    "daily_baseline": "docs/validation/companion-v9-expression-rig-daily-focus-accepted-dynamic-baseline-20260718.json",
+    "artifact_root": "docs/validation/artifacts/companion-v9-expression-rig-daily-focus-accepted-dynamic-baseline-20260718",
+    "rule": "The archived accepted Daily component layers and story-phase PBMs remain immutable regression evidence."
+  },
+  "observed_contract": {
+    "historical_render_report": "docs/validation/companion-v9-expression-rig-render-20260717.json",
+    "shared_candidate_output": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200",
+    "current_layout_revision": 107,
+    "failure": "A revision-107 CRIG/PBM regeneration reused the mutable shared candidate output path. The historical report still records earlier hashes for those same live paths, so current reads through that report are no longer valid historical proof."
+  },
+  "facts": [
+    "The locked V9 source and the archived accepted Daily regression artifacts were not modified.",
+    "The stale-CRIG revision-107 recovery must not be repaired by rewriting hashes in the historical 20260717 render/CEMP reports.",
+    "The failure is evidence-path drift, not permission to replace V9 art, relax component validation, activate runtime resources or make a panel claim."
+  ],
+  "required_recovery": [
+    "Render revision 107 into a versioned candidate root and write distinct render/CEMP reports.",
+    "Make preview, CRIG mount and target-frame tools accept explicit revisioned input/output paths instead of silently consuming the mutable historical candidate root.",
+    "Run fresh revision-107 mount, frame-source and 60-frame current-browser/target parity checks from the isolated root.",
+    "Render an isolated Daily component preview and require zero-pixel regression against the archived accepted Daily layers and story-phase artifacts."
+  ],
+  "forbidden": [
+    "changing the locked V9 source",
+    "rewriting historical report hashes or accepted-baseline artifacts",
+    "copying or hand-editing a CRIG pack",
+    "whole-face animation fallback",
+    "runtime activation, external-NOR provisioning, hardware flash or physical acceptance"
+  ]
+}

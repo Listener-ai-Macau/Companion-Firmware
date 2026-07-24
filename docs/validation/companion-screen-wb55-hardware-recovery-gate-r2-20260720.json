@@ -1,0 +1,96 @@
+{
+  "acceptance_criteria": {
+    "current_source_bound_black_machine_trace": true,
+    "current_source_bound_white_machine_trace": true,
+    "normal_current_expression_visible": false,
+    "official_black_solid_and_deterministic": true,
+    "official_white_solid_and_deterministic": true,
+    "partial_expression_transition_visible": false,
+    "positive_and_negative_refresh_rails_established": true,
+    "touch_and_maintenance_visual_recheck_passed": false
+  },
+  "claim_scope": "source_bound_official_white_black_and_rail_retest_not_fast_lut_or_dynamic_expression_acceptance",
+  "current_fault": {
+    "classification": "CURRENT_OFFICIAL_WHITE_BLACK_RETEST_PASSED_ON_REPLACEMENT_FPC",
+    "current_white_black_machine_or_operator_acceptance": true,
+    "historical_old_fpc_measurement": {
+      "negative_rail_min_v": 0.0042,
+      "normal_expression_status": "NO_GO_NORMAL_EXPRESSION_NOT_VISIBLE",
+      "operator_result": "FAIL",
+      "positive_rail_max_v": 3.3
+    },
+    "owner_observed_dynamic_expressions_visible": true
+  },
+  "gate_id": "wb55_real_panel_refresh",
+  "historical_evidence_policy": {
+    "previous_visible_refresh_is_current_acceptance": false,
+    "previous_visible_refresh_records_retained": true,
+    "reason": "The old White failure and rail record were captured with a broken display FPC. They remain immutable history, not a diagnosis or acceptance result for the replacement FPC."
+  },
+  "prohibited_shortcuts": [
+    "Do not change expression, menu, recording, CEMP, or normal refresh policy during the official White/Black retest.",
+    "Do not use TP_INT/PC6 or optional TP_RST/PC10 as e-paper recovery wiring.",
+    "Do not promote historical visible-refresh evidence as current acceptance.",
+    "Do not load the unaffiliated 0xC7/one-second LUT or invent a waveform from the replacement-FPC observation."
+  ],
+  "recovery_order": [
+    "Validate the versioned owner-reported replacement display-FPC evidence; the existing logic input remains 3.3 V only.",
+    "Under the Companion-WB55 workflow lock, run the existing source-bound official White diagnostic and record one focused visible result.",
+    "Capture a new labelled PREVGH1/PREVGL1 artifact during that verified White refresh; only a PASS machine-and-rails artifact can unlock Black.",
+    "Run Black only after the new White rail artifact passes, then record one focused visible result.",
+    "After solid white and black pass, run RestoreNormal, then prove the current expression, one partial transition, touch, and one maintenance boundary."
+  ],
+  "recovery_runner": {
+    "claim_scope": "static_and_stubbed_recovery_no_hardware_claim",
+    "machine_pass_is_panel_acceptance": false,
+    "operator_sequence": [
+      "Run White only after the versioned replacement-display-FPC evidence passes; the runner holds the Companion-WB55 firmware mutex across flash, capture, review and restore.",
+      "Only after White rail evidence passes, run Black and record one focused visible-frame decision.",
+      "Run RestoreNormal before any product interaction or runtime-resource acceptance.",
+      "If either visible frame fails, measure PREVGH1/PREVGL1 during that verified refresh and stop software changes."
+    ],
+    "parser": "tools/verify_wb55_official_full_diagnostic_log.py",
+    "runner": "tools/run_wb55_screen_hardware_recovery.ps1",
+    "stage_order": [
+      "white",
+      "black",
+      "restorenormal"
+    ],
+    "status": "PASS_MACHINE_PREFLIGHT"
+  },
+  "remaining_non_go_facts": [
+    "Exact GDEY0154D67-T03 temperature applicability and panel/FPC/controller identity evidence for the supplier one-second LUT.",
+    "A separately authorized sparse expression sequence with six distinct frames and focused residue review; no such fast-LUT experiment has run."
+  ],
+  "schema_id": "companion.screen.wb55_hardware_recovery_gate.v3",
+  "source_binding": {
+    "current_ssd1681_target_sha256": "66A5A2E7DC1F85BC7A02F0BCDA9F009BEA6B96E2995941E90E218D141FF2EE3F",
+    "vendor_epaper_c_sha256": "7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896",
+    "vendor_source_audit": "docs/validation/companion-gdey0154d67-t03-vendor-1s-source-audit-20260720.json"
+  },
+  "sources": {
+    "current_black_digital": ".cache/validation/wb55-screen-recovery-current-source-r2-20260720/black/official-full-result.json",
+    "current_black_stage": ".cache/validation/wb55-screen-recovery-current-source-r2-20260720/black/stage-run.json",
+    "current_white_digital": ".cache/validation/wb55-screen-recovery-current-source-r2-20260720/white/official-full-result.json",
+    "current_white_rail": "docs/validation/companion-screen-wb55-white-rail-measurement-current-source-r2-20260720.json",
+    "current_white_stage": ".cache/validation/wb55-screen-recovery-current-source-r2-20260720/white/stage-run.json",
+    "grain_recovery_research": "docs/validation/companion-screen-ssd1681-grain-recovery-research-20260714.md",
+    "normal_restore": "docs/validation/companion-screen-normal-restore-after-black-20260714.json",
+    "official_white_black_recovery": "docs/validation/companion-screen-ssd1681-official-full-recovery-20260714.json",
+    "product_requirements": "docs/companion_product_requirements.md",
+    "replacement_display_fpc_evidence": "docs/validation/companion-screen-wb55-replacement-fpc-evidence-20260720.json",
+    "staged_recovery_runner": "docs/validation/companion-screen-wb55-hardware-recovery-runner.json",
+    "vendor_source_audit": "docs/validation/companion-gdey0154d67-t03-vendor-1s-source-audit-20260720.json",
+    "voltage_operator_review": "docs/validation/companion-screen-ssd1681-voltage-rails-operator-20260714.json",
+    "voltage_probe": "docs/validation/companion-screen-ssd1681-voltage-probe-image-20260714.json"
+  },
+  "status": "PASS_CURRENT_FPC_OFFICIAL_WHITE_BLACK_RETEST",
+  "target": "NUCLEO-WB55RG + ESP32-FTS02 + replacement display FPC + GDEY0154D67-T03",
+  "validation_commands": [
+    "python .\\tools\\verify_wb55_screen_hardware_recovery_gate.py",
+    "python .\\tools\\verify_wb55_screen_hardware_recovery_runner.py",
+    "python .\\tools\\verify_expression_acceptance_index.py",
+    "python .\\tools\\verify_companion_screen_goal_audit.py"
+  ],
+  "wba_impact": "Keep this failure target-local. WBA55/WBA65 reuse portable screen, expression, touch, and refresh-intent contracts but require their own panel power/rail implementation and real hardware evidence."
+}

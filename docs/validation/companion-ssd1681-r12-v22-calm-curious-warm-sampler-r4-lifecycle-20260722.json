@@ -1,0 +1,86 @@
+{
+  "checkonly_root": ".cache/validation/wb55-r12-v22-calm-curious-warm-sampler-r4b-primary-checkonly-20260722-r1",
+  "checkonly_tool_hash_bindings": {
+    "launcher": {
+      "available_in_checkonly_artifacts": false,
+      "current_sha256": "B6E249EE23856C4F61E71683E21163EDD803B63501B6EFC1007BCEDD1698B121",
+      "declared_references": [],
+      "matches_current": null,
+      "path": "tools/start_wb55_ssd1681_r12_v22_calm_curious_warm_sampler_r4.ps1"
+    },
+    "monitor": {
+      "available_in_checkonly_artifacts": false,
+      "current_sha256": "D01340783ED27588E5CDEAC94BC12871E84A2E00A1538DB23A88E1B93B06FD86",
+      "declared_references": [],
+      "matches_current": null,
+      "path": "tools/monitor_wb55_ssd1681_r12_v22_calm_curious_warm_sampler_r4.ps1"
+    },
+    "runner": {
+      "available_in_checkonly_artifacts": false,
+      "current_sha256": "AE959E1E5895ABF21620EC8ED2DEF24118BC24E76AFB0BBC1E59A569285EA00A",
+      "declared_references": [],
+      "matches_current": null,
+      "path": "tools/run_wb55_ssd1681_r12_v22_calm_curious_warm_sampler_r4.ps1"
+    },
+    "supervisor": {
+      "available_in_checkonly_artifacts": false,
+      "current_sha256": "F324CAB684C1789CA833FDDACDC17B6F73C08156D920A9B6ADAB995AF11B4867",
+      "declared_references": [],
+      "matches_current": null,
+      "path": "tools/supervise_wb55_ssd1681_r12_v22_calm_curious_warm_sampler_prompt_r4.ps1"
+    }
+  },
+  "checks": {
+    "current_hex_matches_primary_review_sha256": true,
+    "declared_checkonly_tool_hashes_match_current": true,
+    "persistent_launcher_all_counters_zero": true,
+    "persistent_launcher_arguments_current": true,
+    "persistent_launcher_exit_zero_and_exited": true,
+    "persistent_launcher_mode_check_only": true,
+    "persistent_launcher_no_authorization": true,
+    "persistent_launcher_output_root_current": true,
+    "persistent_launcher_ready": true,
+    "persistent_launcher_runner_path_current": true,
+    "persistent_launcher_stage_ready": true,
+    "stage_all_counters_zero": true,
+    "stage_authorization_none": true,
+    "stage_candidate_path_current": true,
+    "stage_candidate_required_sha_matches_current_hex": true,
+    "stage_candidate_sha_matches_current_hex": true,
+    "stage_checkonly_children_complete": true,
+    "stage_counter_set_complete": true,
+    "stage_errors_clear": true,
+    "stage_fixed_ring": true,
+    "stage_hardware_contact_zero": true,
+    "stage_mode_check_only": true,
+    "stage_popup_zero": true,
+    "stage_programmer_calls_empty": true,
+    "stage_ready": true,
+    "stage_retry_zero": true,
+    "stale_checkonly_candidate_hash_selftest_pass": true
+  },
+  "compatibility_rebind": {
+    "kind": "unchanged_lifecycle_verifier_rebound_to_fresh_checkonly_root",
+    "lifecycle_verifier_sha256": "D728BBACA25E9EA20DFD36307E9916A51591F58BC849B903C44EDAFC0A71A249"
+  },
+  "current_hex_sha256": "4B7558F08BA5A188615D2B8B6A169F67BADA127215FF4DC2ABA93893B8323A42",
+  "errors": [],
+  "future_physical_authorization_requirement_id": "COMP-REQ-383",
+  "hardware_contact": 0,
+  "mode": "persistent_checkonly_only",
+  "popup_count": 0,
+  "required_current_hex_sha256": "4B7558F08BA5A188615D2B8B6A169F67BADA127215FF4DC2ABA93893B8323A42",
+  "requirement": "COMP-REQ-382",
+  "retry_count": 0,
+  "schema_id": "companion.wb55.ssd1681.r12_v22_calm_curious_warm_sampler.r4.lifecycle.v4",
+  "stale_candidate_hash_selftest": {
+    "fixture": "stale_checkonly_candidate_sha256",
+    "mutated_candidate_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "pass": true,
+    "resulting_status": "NO_GO_STALE_CHECKONLY_CANDIDATE_HASH",
+    "target_invariant": "stage_candidate_sha_matches_current_hex",
+    "target_invariant_false": true
+  },
+  "status": "PASS",
+  "write_counter_sum": 0
+}

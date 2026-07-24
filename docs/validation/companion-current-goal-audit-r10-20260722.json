@@ -1,0 +1,51 @@
+{
+  "active_boundary": "R10 lower-driver R2 hash-bound one-shot authorization pending only; no execution, production promotion or hardware contact",
+  "authority": "COMP-REQ-323/324/325/327/328",
+  "checks": {
+    "COMP-REQ-318": true,
+    "COMP-REQ-319": true,
+    "COMP-REQ-320": true,
+    "COMP-REQ-321": true,
+    "COMP-REQ-322": true,
+    "COMP-REQ-323": true,
+    "COMP-REQ-324": true,
+    "COMP-REQ-325": true,
+    "COMP-REQ-326": true,
+    "COMP-REQ-327": true,
+    "COMP-REQ-328": true,
+    "historical_audit_preserved": true,
+    "machine_only": true,
+    "r10_files_present": true,
+    "r1_work_package_present": true,
+    "r2_execute_authorization_boundary_recorded": true
+  },
+  "codex_goal_status": "active_or_owner_goal_managed",
+  "errors": [],
+  "historical_audit": "docs/validation/companion-current-goal-audit-20260717.json",
+  "missing": [],
+  "owned_file_hashes": {
+    "app/companion_pendant/epaper/r10_ball_diagnostic.h": "BD4EB58A4F1B2679559EAE3F668B6E2A9A76F5ABB6FC7A4DE50A22CC0DD91B36",
+    "docs/validation/companion-ssd1681-r10-r1-execute-work-package-20260722.md": "E08947F48D59D1CC3FE0013126B73CFD72F8A556BE7DF2CC8A96D9B6392F285E",
+    "docs/validation/companion-ssd1681-r10-r1-runtime-disposition-20260722.json": "E244B1935BD2C86F3D17E30E11430E8BC2D553C0D98B1D0ED0430C25DE43A1AA",
+    "docs/validation/companion-ssd1681-r10-r2-execute-work-package-20260722.md": "AFC1E4BF11E6B08BB2E020EA72E3C406B27669AFF7458AD130283FA6D26F9D7B",
+    "docs/validation/companion-ssd1681-r10-r2-luna-work-package-20260722.md": "BEA3979A3B812917B5D83A7B79FF95975E20FBC4384DDF634B83948A9FF037EB",
+    "tools/monitor_wb55_ssd1681_phase_parallel_r10_ball.ps1": "4FE14A93D819B653C0A98BE8611B7F6A8178792FCA5CDDC90E28FAB558595E23",
+    "tools/run_wb55_ssd1681_phase_parallel_r10_ball.ps1": "0BB9395D36F4F8983E35C5B82C3A1C379863670587CB004F427383AFBA188382",
+    "tools/start_wb55_ssd1681_phase_parallel_r10_ball.ps1": "7239FB33F0BC35887CD46CF85B8B0BBA1788987F73D0A239C20DDBCD14350659",
+    "tools/supervise_wb55_ssd1681_phase_parallel_r10_ball_prompt.ps1": "F712AD30EE4A52D26EEB8168CBB50F12D52C4AEF7DB3A8B0FF7A37BFF65757F1",
+    "tools/verify_wb55_ssd1681_r10_ball_log.py": "9CC287AB6F4DFEA94E82FF54922BE5C3241B020BACAF59665708130600935539",
+    "tools/verify_wb55_ssd1681_r10_ball_pixel_oracle.py": "0CA96592767F25F82366D00066341FBB2B9A3E958FFFDCB7C41B821868B40B8C",
+    "tools/verify_wb55_ssd1681_r10_ball_static.py": "3836E64AEB9EE53D792CB64B332D6606C8A7635B5876B6E28F9B8DE60E9F361B"
+  },
+  "r1_authorization": {
+    "path": ".cache/validation/wb55-r10-ball-r2-authorization.json",
+    "present": false,
+    "r1_runtime_disposition_present": true,
+    "r2_execute_work_package_present": true,
+    "r2_offline_work_package_present": true,
+    "r2_pending_marker_in_work_package": true,
+    "source_absent_after_consumption": true
+  },
+  "schema_id": "companion.current_goal_audit.r10_successor.v2",
+  "status": "PASS_R10_ACTIVE_MACHINE_ONLY_AUDIT"
+}

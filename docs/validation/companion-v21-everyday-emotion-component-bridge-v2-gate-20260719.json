@@ -1,0 +1,136 @@
+{
+  "schema": "companion.v21_everyday_emotion_component_bridge_gate.v2",
+  "status": "PASS_V21_EVERYDAY_EMOTION_COMPONENT_BRIDGE_V2_GATE",
+  "component_export_gate": "docs/validation/companion-v21-everyday-emotion-distinction-component-export-gate-20260719.json",
+  "layout": "docs/art/iterations/companion-pet-expression-v9-extension-v21-everyday-emotion-distinction-source/candidate/component-bridge-v2/component-bridge-layout.json",
+  "browser_capture": "docs/art/iterations/companion-pet-expression-v9-extension-v21-everyday-emotion-distinction-source/candidate/component-bridge-v2/browser-capture-report.json",
+  "legal_directed_bridge_count": 10,
+  "bridge_metrics": [
+    {
+      "bridge": "calm__curious",
+      "frame_count": 7,
+      "adjacent_pixel_changes": [
+        134,
+        54,
+        282,
+        335,
+        104,
+        188
+      ]
+    },
+    {
+      "bridge": "curious__calm",
+      "frame_count": 7,
+      "adjacent_pixel_changes": [
+        92,
+        36,
+        360,
+        351,
+        108,
+        128
+      ]
+    },
+    {
+      "bridge": "curious__warm",
+      "frame_count": 7,
+      "adjacent_pixel_changes": [
+        122,
+        62,
+        383,
+        306,
+        134,
+        184
+      ]
+    },
+    {
+      "bridge": "warm__curious",
+      "frame_count": 7,
+      "adjacent_pixel_changes": [
+        122,
+        62,
+        341,
+        290,
+        104,
+        184
+      ]
+    },
+    {
+      "bridge": "warm__playful",
+      "frame_count": 8,
+      "adjacent_pixel_changes": [
+        68,
+        34,
+        309,
+        484,
+        146,
+        184,
+        102
+      ]
+    },
+    {
+      "bridge": "playful__warm",
+      "frame_count": 8,
+      "adjacent_pixel_changes": [
+        68,
+        34,
+        287,
+        424,
+        146,
+        134,
+        102
+      ]
+    },
+    {
+      "bridge": "calm__puzzled",
+      "frame_count": 7,
+      "adjacent_pixel_changes": [
+        120,
+        62,
+        386,
+        267,
+        82,
+        182
+      ]
+    },
+    {
+      "bridge": "puzzled__calm",
+      "frame_count": 7,
+      "adjacent_pixel_changes": [
+        120,
+        62,
+        348,
+        325,
+        108,
+        182
+      ]
+    },
+    {
+      "bridge": "puzzled__alert",
+      "frame_count": 7,
+      "adjacent_pixel_changes": [
+        120,
+        62,
+        440,
+        403,
+        108,
+        182
+      ]
+    },
+    {
+      "bridge": "alert__puzzled",
+      "frame_count": 7,
+      "adjacent_pixel_changes": [
+        120,
+        62,
+        438,
+        307,
+        82,
+        182
+      ]
+    }
+  ],
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden",
+  "screen_review": "pending_research_refined_machine_bridge_gate",
+  "errors": []
+}

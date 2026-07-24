@@ -1,0 +1,64 @@
+{
+  "schema_id": "companion.ssd1681.partial_profile_admission.v1",
+  "status": "NO_GO_UNBOUND_PANEL_PARTIAL_PROFILE",
+  "machine_status": "PASS_AUDIT_FAIL_CLOSED",
+  "claim_scope": "no-hardware lower-driver profile admission audit; not a waveform, panel identity, temperature, or production claim",
+  "hardware_action": "none; duplicate White/Black and rail measurement were explicitly stopped",
+  "source_manifest": {
+    "supplier_epaper_c": {
+      "path": "C:/Users/Billy/Desktop/GDEH0154D67-20211203-P-LUT(1s) -1s\u5feb\u5237/EPD_W21/EPAPER.c",
+      "sha256": "7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896"
+    },
+    "current_driver": {
+      "path": "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
+      "sha256": "66A5A2E7DC1F85BC7A02F0BCDA9F009BEA6B96E2995941E90E218D141FF2EE3F"
+    },
+    "input_artifacts": [
+      {
+        "path": "docs/validation/companion-ssd1681-local-update-research-20260720.md",
+        "sha256": "1139826B6F33CFFC6B60067C35F5FBDCEDDF280E6D2557B6D8B5B8EDE5DB895C"
+      },
+      {
+        "path": "docs/validation/companion-gdey0154d67-t03-vendor-partial-slow-motion-residue-triage-20260720.json",
+        "sha256": "6686459B31E12B0189F6195FC02B2F3EA5166D08C337C5C8F2F195057A9CF033"
+      },
+      {
+        "path": "docs/validation/companion-wb55-micro-delta-visual-no-go-20260720.json",
+        "sha256": "FB901F2F1A88AA9C1E5EC5220698DB8F4FB06B12BF8FFDC18DAF548FE9C83534"
+      },
+      {
+        "path": "docs/validation/companion-gdey0154d67-t03-vendor-1s-final-disposition-20260720.json",
+        "sha256": "7C2304FE98D6498C25FC4AF312ABAA9CC3267A7DCAB20A8F47F371061C9A131D"
+      }
+    ]
+  },
+  "checks": {
+    "supplier_partial_route_is_distinct_from_159_byte_full_lut": true,
+    "driver_preserves_byte_aligned_changed_window_transport": true,
+    "supplier_partial_physical_result_is_no_go": true,
+    "minimum_payload_physical_result_is_no_go": true,
+    "full_frame_159_byte_lut_visual_result_is_no_go": true,
+    "registry_forbids_repeating_payload_or_cadence_experiments": true,
+    "registry_records_no_repeated_rail_or_white_black_runs": true,
+    "research_states_ram_local_is_not_optically_local": true
+  },
+  "failures": [],
+  "admission": {
+    "production_profile_allowed": false,
+    "new_diagnostic_allowed": false,
+    "reason": "Local RAM transport is proven, but every available optical route is rejected: supplier 0xFF local motion leaves residue, four-byte 0xFC motion still looks broad/dirty, and the source-bound 159-byte C7 route flashes black per full frame.",
+    "forbidden_actions": [
+      "Repeat White, Black, or rail measurement as a waveform substitute.",
+      "Repeat payload-size, cadence, or existing local-motion diagnostics.",
+      "Promote 0xFC, 0xFF, or the 159-byte LUT into production as a clean local optical profile.",
+      "Invent, tune, interpolate, or import a LUT or waveform."
+    ]
+  },
+  "required_vendor_evidence_for_reconsideration": [
+    "Written mapping from physical FPC marking 0154BN-D67-D2 to the exact panel/module and controller profile.",
+    "Exact residue-controlled partial-refresh profile for that marking: external LUT bytes and load order, or a complete OTP/profile-selection flow.",
+    "Temperature envelope, thresholds or sensor-selection rules, and behavior outside the supported range.",
+    "Required base-map sequence, including 0x24 and 0x26 plane roles, data polarity, reset duration, border setting, RAM orientation, and 0x22 control.",
+    "Maximum consecutive local updates and the required cleanup behavior, including whether a no-black-flash cleanup exists."
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "schema_id": "companion.wb55.ssd1681_custom_mode2_dual_plane_clean_r5_disposition.v1",
+  "status": "NO_GO_R5_MACHINE_PASS_OPERATOR_FAILED_NOT_OBSERVED_EXACT_RAW_RESTORED",
+  "requirement": "COMP-REQ-298",
+  "goal_action": "none; active Goal remains owned by the root thread",
+  "production_allowed": false,
+  "r5_rerun_allowed": false,
+  "motion_120_frame_admitted": false,
+  "machine": {
+    "status": "PASS_MACHINE_CUSTOM_MODE2_DUAL_PLANE_CLEAN_R5_RESTORED",
+    "runtime_artifact": "docs/validation/companion-ssd1681-custom-mode2-dual-plane-clean-r5-runtime-20260721.json",
+    "runtime_artifact_sha256": "949F9AC1DE90CD966AC915781A08B33EDA621ED47B8D88110DDCE7A12769F5EC",
+    "candidate_hex_sha256": "E695A1A6D3D121AA585E69A1A0D8DA21FEBC5566198BD314FE27F2D40C30B564",
+    "dual_plane_clean_hex_sha256": "3AC4E52E37E15DC3CC058A4B0B0E6A3227D23E6C6DEFAEDCB786C08497888AAD",
+    "preclean_both_banks_all_white": true,
+    "candidate_activations": 9,
+    "postclean_both_banks_all_white": true,
+    "exact_raw_restore": true,
+    "normal_application_resumed": true
+  },
+  "operator": {
+    "status": "FAIL_OPERATOR_R5_NOT_OBSERVED",
+    "selected": "失败",
+    "note": "没看见, 下次你搞连续的变动, 然后有一次提醒就行我就会来看",
+    "operator_artifact": "docs/validation/companion-ssd1681-custom-mode2-dual-plane-clean-r5-operator-20260721.json",
+    "operator_artifact_sha256": "868F7854441C628C48BD5534DD2214C02339F410E2DC8067734AFC12BCFC81BF"
+  },
+  "conclusion": "R5 closed the stale-bank machine hypothesis for one controlled run by proving both RAM banks all-white before and after the byte-identical R4 candidate, but the finite nine-step interval was not observed. No physical cleanliness, clipping, ghosting, continuity or motion conclusion is permitted.",
+  "next_boundary": "Research and machine-gate a separate bounded continuously observable sequence plus one timely reminder. Do not silently rerun R5 and do not enter the previously forbidden 120-frame motion path without a new explicit contract.",
+  "protected_boundaries": {
+    "supplier_input_modified": false,
+    "owner_acceptance_modified": false,
+    "v9_rig_crig_browser_dynamic_binding_modified": false,
+    "production_path_promoted": false,
+    "custom_lut_or_temperature_rule_changed_in_r5": false
+  },
+  "goal_terminal": false
+}

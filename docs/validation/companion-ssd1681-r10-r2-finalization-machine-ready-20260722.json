@@ -1,0 +1,79 @@
+{
+  "artifacts": {
+    "elf": "67066AF4199ED24556B285449839C35C649B05A8B0160031335E0AF9C0C12110",
+    "hex": "CB186A2ABB44962316C47315061AF64772273B0A70BBFBA77B6166DD551778A6",
+    "launcher": "7239FB33F0BC35887CD46CF85B8B0BBA1788987F73D0A239C20DDBCD14350659",
+    "monitor": "4FE14A93D819B653C0A98BE8611B7F6A8178792FCA5CDDC90E28FAB558595E23",
+    "parser_sha256": "9CC287AB6F4DFEA94E82FF54922BE5C3241B020BACAF59665708130600935539",
+    "runner": "0BB9395D36F4F8983E35C5B82C3A1C379863670587CB004F427383AFBA188382",
+    "supervisor": "F712AD30EE4A52D26EEB8168CBB50F12D52C4AEF7DB3A8B0FF7A37BFF65757F1"
+  },
+  "authority": "COMP-REQ-331",
+  "authorization_created": false,
+  "evidence": {
+    "checkonly": {
+      "child_exited": true,
+      "children": [
+        {
+          "child_exited": true,
+          "exit_code": 0,
+          "name": "monitor",
+          "stderr": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\r10-ball-machine-ready-rework-checkonly-20260722\\checkonly-monitor\\monitor.stderr.log",
+          "stdout": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\r10-ball-machine-ready-rework-checkonly-20260722\\checkonly-monitor\\monitor.stdout.log"
+        },
+        {
+          "child_exited": true,
+          "exit_code": 0,
+          "name": "supervisor",
+          "stderr": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\r10-ball-machine-ready-rework-checkonly-20260722\\checkonly-supervisor\\supervisor.stderr.log",
+          "stdout": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\r10-ball-machine-ready-rework-checkonly-20260722\\checkonly-supervisor\\supervisor.stdout.log"
+        }
+      ],
+      "durable_stdout_stderr": true,
+      "evidence_root": ".cache/validation/r10-ball-machine-ready-rework-checkonly-20260722",
+      "fixed_ring_bytes": 65536,
+      "hardware_contact": 0,
+      "popup": 0,
+      "retry": 0,
+      "status": "READY_NO_HARDWARE_CONTACT",
+      "writes": 0
+    },
+    "lifecycle_static": {
+      "path": "docs/validation/companion-ssd1681-r10-ball-lifecycle-static-20260722.json",
+      "sha256": "85A6B0FD7C4D7DD9456B89A5B1C5F1AE19AD66BA82C6641777B8B45FAC0625A7"
+    },
+    "log_parser": {
+      "path": "docs/validation/companion-ssd1681-phase-parallel-r10-ball-log-parser-20260722.json",
+      "sha256": "06FE609260584D78D153B9F1EDB12B745DF39C70BAD69948C24E00D440BD0C5E"
+    },
+    "parser_tool": {
+      "path": "tools/verify_wb55_ssd1681_r10_ball_log.py",
+      "sha256": "9CC287AB6F4DFEA94E82FF54922BE5C3241B020BACAF59665708130600935539"
+    },
+    "pixel_oracle": {
+      "path": "docs/validation/companion-ssd1681-phase-parallel-r10-ball-pixel-oracle-20260722.json",
+      "sha256": "E7698F75414F13F91D6267671FAC9E041D822999F53732B66CF368D23C06FC31"
+    },
+    "static": {
+      "path": "docs/validation/companion-ssd1681-phase-parallel-r10-ball-static-20260722.json",
+      "sha256": "C08B14564327CCF435D42DAA15D5D0CD20EAEA74009FC189BAA0848E651EA756"
+    }
+  },
+  "execute_authorized": false,
+  "finalization_contract": {
+    "candidate_elf_hex_lut_unchanged": true,
+    "complete_malformed": "reject",
+    "post_stop_exception_status": "NO_GO_FINALIZATION",
+    "trailing_partial": "ignore at most one final unterminated fragment only when input lacks CR/LF; record bytes"
+  },
+  "future_execute_command": null,
+  "hardware_contact": 0,
+  "host_finalization_only": true,
+  "protected": {
+    "lut_sha256": "9BCBAC1A07ED0A112D26409FBCDB8F5FE27CE07D922C2E18881C10A53229DDCD",
+    "restore_application_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "tail_hex": "221741A83258"
+  },
+  "schema_id": "companion.wb55.ssd1681.r10_ball.machine_ready.v4",
+  "status": "MACHINE_READY_R10_BALL_HOST_FINALIZATION_ONLY"
+}

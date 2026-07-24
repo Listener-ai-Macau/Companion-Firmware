@@ -1,0 +1,145 @@
+{
+  "schema_id": "companion.wb55.ssd1681_custom_mode2_transition_workbench.v1",
+  "status": "PASS_WORKBENCH_ADMIT_STATIONARY_SUPPRESSION_MODE2_R1",
+  "errors": [],
+  "hardware_contact": 0,
+  "requirement": "COMP-REQ-285",
+  "candidate": {
+    "name": "custom_mode2_stationary_suppression_r1",
+    "production_enabled": false,
+    "single_mechanism_variable": "suppress stationary BB/WW voltage drive while retaining supplier BW/WB transition drive",
+    "supplier_lut_hex": "AA80554000000000000000005410A8200000000000000000AA80554000000000000000005410A8200000000000000000000000000000000000000000050500050500000302000000000005050005050000030200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000222222222222000000221741A83258",
+    "supplier_lut_sha256": "F83EA7360CFFF04FE9D004A75858A46213CBD710AAA2F0C4A62597E3EA176D15",
+    "candidate_lut_hex": "0000000000000000000000005410A8200000000000000000AA8055400000000000000000000000000000000000000000000000000000000000000000050500050500000302000000000005050005050000030200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000222222222222000000221741A83258",
+    "candidate_lut_sha256": "B0C729D4157054C4EA69521C3E4837B75B2E6A7740A48C5C754714A84925722E",
+    "byte_differences": [
+      {
+        "offset": 0,
+        "supplier_hex": "AA",
+        "candidate_hex": "00"
+      },
+      {
+        "offset": 1,
+        "supplier_hex": "80",
+        "candidate_hex": "00"
+      },
+      {
+        "offset": 2,
+        "supplier_hex": "55",
+        "candidate_hex": "00"
+      },
+      {
+        "offset": 3,
+        "supplier_hex": "40",
+        "candidate_hex": "00"
+      },
+      {
+        "offset": 36,
+        "supplier_hex": "54",
+        "candidate_hex": "00"
+      },
+      {
+        "offset": 37,
+        "supplier_hex": "10",
+        "candidate_hex": "00"
+      },
+      {
+        "offset": 38,
+        "supplier_hex": "A8",
+        "candidate_hex": "00"
+      },
+      {
+        "offset": 39,
+        "supplier_hex": "20",
+        "candidate_hex": "00"
+      }
+    ],
+    "unchanged_ranges": [
+      {
+        "start": 4,
+        "end_inclusive": 35,
+        "meaning": "remaining LUT0 plus exact BW and WB transition LUTs"
+      },
+      {
+        "start": 40,
+        "end_inclusive": 152,
+        "meaning": "LUT3 remainder, LUT4, timing, repeat, frame-rate and XON"
+      },
+      {
+        "start": 153,
+        "end_inclusive": 158,
+        "meaning": "protected EOPT/VGH/VSH1/VSH2/VSL/VCOM tail"
+      }
+    ],
+    "protected_tail_hex": "221741A83258"
+  },
+  "transition_oracle": [
+    {
+      "old_0x26": 0,
+      "new_0x24": 0,
+      "class": "BB",
+      "lut": 0,
+      "candidate_drive": "suppressed"
+    },
+    {
+      "old_0x26": 0,
+      "new_0x24": 1,
+      "class": "BW",
+      "lut": 1,
+      "candidate_drive": "supplier_exact"
+    },
+    {
+      "old_0x26": 1,
+      "new_0x24": 0,
+      "class": "WB",
+      "lut": 2,
+      "candidate_drive": "supplier_exact"
+    },
+    {
+      "old_0x26": 1,
+      "new_0x24": 1,
+      "class": "WW",
+      "lut": 3,
+      "candidate_drive": "suppressed"
+    }
+  ],
+  "command_topology": {
+    "load": "write bytes 0..152 under 0x32, then byte153 under 0x3F, byte154 under 0x03, bytes155..157 under 0x04, byte158 under 0x2C",
+    "per_transition": "set local window; write explicit previous bytes under 0x26; reset pointer; write explicit current bytes under 0x24; 0x22=0xCF; 0x20; BUSY",
+    "why_0xCF": "SSD1681 page 26 defines CF as Display Mode2 with no LUT/temperature reload, preserving the MCU-loaded custom LUT",
+    "why_not_0xFF": "SSD1681 page 26 defines FF as temperature load plus Display Mode2; it can select OTP waveform state and is excluded from the loaded-LUT candidate",
+    "hard_reset_after_load": false
+  },
+  "official_evidence": {
+    "pdf_pages": [
+      13,
+      15,
+      26,
+      30
+    ],
+    "checks": {
+      "page13_table_6_5_maps_ram_pairs_to_lut0_3": true,
+      "page15_defines_159_byte_waveform": true,
+      "page26_cf_displays_mode2_without_load": true,
+      "page26_ff_loads_temperature_then_displays_mode2": true,
+      "page30_pingpong_only_mode2": true
+    }
+  },
+  "scope": {
+    "physical_stage_max_local_activations": 16,
+    "required_classes": [
+      "WW",
+      "WB",
+      "BW",
+      "BB"
+    ],
+    "full_frame_activation_allowed": false,
+    "voltage_or_temperature_tuning_allowed": false,
+    "promotion_allowed": false
+  },
+  "source_hashes": {
+    "C:\\Users\\Billy\\Desktop\\GDEH0154D67-20211203-P-LUT(1s) -1s\u5feb\u5237\\EPD_W21\\EPAPER.c": "7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896",
+    "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\ssd1681-mechanism-lut-research-20260721\\official-sources\\SSD1681V0.13_Spec-200529.pdf": "2989DB3DBBCE190F6E1F065A169479BF4FE911896FF8805894549F792FE9B53B",
+    "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\companion-ssd1681-mechanism-lut-research-disposition-20260721.json": "478EECD541623713C665D2FCFCCF17743B9F3489A934097978033C1893E20F93"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "schema_id": "companion.wb55.gdey0154d67_t03.vendor_partial_disjoint_current_stage_observer_loop_timeout.v1",
+  "generated_at": "2026-07-20T23:53:25.0704054+08:00",
+  "status": "NO_GO_NO_CANONICAL_OPERATOR_OBSERVATION_NORMAL_RESTORED",
+  "claim_scope": "The observer-loop image used the already-passed bounded trace and the same default-off source-bound current-stage path. No human visual observation was submitted, so no residue, continuity, panel-quality or production conclusion exists.",
+  "target": "NUCLEO-WB55RG + ESP32-FTS02 + GDEY0154D67-T03",
+  "machine_trace": {
+    "reused_raw_log": true,
+    "path": ".cache/validation/wb55-vendor-partial-disjoint-current-stage-current/vendor-partial-disjoint-current-stage-trace.json",
+    "sha256": "6DD4076B578D50FB2C3C7F6A9B2BE8AC0E9FEE4F2684A1594D4BF98E1B778EB0",
+    "status": "PASS_MACHINE_VENDOR_PARTIAL_DISJOINT_CURRENT_STAGE_TRACE",
+    "full_baselines": 1,
+    "partial_steps": 48,
+    "regions_per_step": 2,
+    "current_0x24_only": true,
+    "one_source_ff_20_busy_completion_per_partial": true,
+    "no_0x26": true,
+    "no_c7": true,
+    "no_full_frame_after_baseline": true
+  },
+  "observer_image": {
+    "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_vendor_partial_disjoint_current_stage_operator_loop_diagnostic/Companion_Nucleo_WB55RG_VendorPartialDisjointCurrentStageOperatorLoopDiagnostic.hex",
+    "sha256": "A054B3B95B3E906A7EF895710B7F67ACA1100EC37DF93A12C6C7A54FAF371639",
+    "diagnostic_repeats": 360,
+    "diagnostic_interval_ms": 250,
+    "purpose": "Present the same two-component source-bound stage path while the canonical Chinese operator window is open; not a production image."
+  },
+  "static_contract": {
+    "path": "docs/validation/companion-gdey0154d67-t03-vendor-partial-disjoint-current-stage-static-20260720.json",
+    "sha256": "A9F634847692692668FE1F5D29E795E9FCB74B638C3B5D59247DC2006FA04FCC",
+    "status": "PASS_STATIC_SOURCE_EXACT_DISJOINT_CURRENT_STAGE_DEFAULT_OFF"
+  },
+  "operator_review": {
+    "style": "aiw_operator_prompt_v1",
+    "selected": "Timeout",
+    "note": "",
+    "accepted": false,
+    "reason": "The focused canonical window remained open from 2026-07-20T23:38:18+08:00 until its configured timeout; no visual judgement was entered."
+  },
+  "normal_restore": {
+    "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build/Companion_Nucleo_WB55RG_Bringup.hex",
+    "sha256": "BC850BE39E20BDC499ADDE65A00739A556AC778B03D41439CFB1B374468CD2FD",
+    "restored": true
+  },
+  "stage_report": {
+    "path": ".cache/validation/wb55-vendor-partial-disjoint-current-stage-current/stage-run.json",
+    "sha256": "96081677ACB02858EFDFAE0B5E801D2F41F068654278B96BE2FECAE883847A2C",
+    "status": "NO_GO"
+  },
+  "next_controlled_step": "Do not alter LUT, waveform, timing, controller registers, rail, temperature policy, production refresh policy or expression binding. On the owner's next explicit physical-review start, open one canonical lower-driver window without another concurrent review and record a nonempty human observation while the observer loop is visible."
+}

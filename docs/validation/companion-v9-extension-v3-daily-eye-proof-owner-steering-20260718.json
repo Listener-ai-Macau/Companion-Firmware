@@ -1,0 +1,19 @@
+{
+  "schema": "companion.v9_art_owner_steering.v1",
+  "iteration_id": "companion-pet-expression-v9-extension-v3-daily-eye-proof-20260718",
+  "result": "需修改",
+  "source": "owner chat 2026-07-18",
+  "note": "先继续打磨一下, 现在还是很奇怪, 另外没有所有的情绪转化效果, 做一下给我看看预览",
+  "canonical_operator_prompt_history": [
+    "NO_OWNER_SELECTION_TIMEOUT",
+    "NO_OWNER_SELECTION_TIMEOUT",
+    "NO_OWNER_SELECTION_TIMEOUT"
+  ],
+  "decision": "reject_owner_preview_direction",
+  "consequences": [
+    "V3 is not a visual reference or component source",
+    "V4 must use only locked V9 as visual reference",
+    "V4 must provide all registered emotional/scene anchors and component-only transition intent",
+    "charging and error remain fail-closed"
+  ]
+}

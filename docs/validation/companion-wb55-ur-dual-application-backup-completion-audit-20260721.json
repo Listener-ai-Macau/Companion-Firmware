@@ -1,0 +1,118 @@
+{
+  "schema_id": "companion.wb55.ur_dual_application_backup_completion_audit.v1",
+  "status": "PASS_MACHINE_UR_DUAL_APPLICATION_BACKUP_NORMAL_RESUMED_ZERO_WRITES",
+  "requirement_id": "COMP-REQ-260",
+  "summary": "The sole authorized under-reset execution captured two identical private 512KiB application binaries, reset the MCU once, and proved the pre-existing normal application resumed. No application write, erase, controller read, panel command, retry or second connection occurred.",
+  "machine_result": {
+    "hardware_contact": 1,
+    "programmer_processes": 1,
+    "connections": 1,
+    "uploads": 2,
+    "resets": 1,
+    "writes": 0,
+    "erases": 0,
+    "panel_commands": 0,
+    "retries": 0,
+    "backup_files": 2,
+    "bytes_each": 524288,
+    "shared_raw_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "normal_resume": "PASS_APPLICATION_RESUMED_AFTER_BACKUP"
+  },
+  "commands": [
+    {
+      "command": "python tools/verify_companion_product_requirements.py",
+      "exit_code": 0,
+      "result": "PASS through COMP-REQ-260"
+    },
+    {
+      "command": "python tools/verify_companion_current_goal_audit.py",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "command": "python tools/verify_wb55_ur_application_backup.py --self-test",
+      "exit_code": 0,
+      "result": "PASS short/long/mismatch/all00/allFF/MSP/vector/span negative matrix"
+    },
+    {
+      "command": "python tools/verify_wb55_normal_resume_after_ur_backup_log.py --self-test",
+      "exit_code": 0,
+      "result": "PASS missing boot/ready, controller diagnostic, panel error and hardfault negative matrix"
+    },
+    {
+      "command": "python tools/verify_wb55_ur_dual_application_backup_diagnostic.py --self-test",
+      "exit_code": 0,
+      "result": "PASS exact whitelist and second connection/reset/write/rdu/option-byte/range/docs-bin negative matrix"
+    },
+    {
+      "command": "python tools/verify_wb55_ur_dual_application_backup_diagnostic.py",
+      "exit_code": 0,
+      "result": "PASS_STATIC_UR_DUAL_APPLICATION_BACKUP_DEFAULT_OFF"
+    },
+    {
+      "command": "pwsh -NoProfile -File tools/run_wb55_ur_dual_application_backup.ps1 -CheckOnly -OutRoot .cache/validation/wb55-ur-dual-application-backup-check-20260721",
+      "exit_code": 0,
+      "result": "READY_NO_HARDWARE_CONTACT"
+    },
+    {
+      "command": "pwsh -NoProfile -File tools/run_wb55_ur_dual_application_backup.ps1 -Execute -OutRoot .cache/validation/wb55-ur-dual-application-backup-execute-20260721-r1",
+      "exit_code": 0,
+      "result": "PASS_MACHINE_UR_DUAL_APPLICATION_BACKUP_NORMAL_RESUMED_ZERO_WRITES"
+    },
+    {
+      "command": "python -m py_compile tools/verify_wb55_ur_application_backup.py tools/verify_wb55_normal_resume_after_ur_backup_log.py tools/verify_wb55_ur_dual_application_backup_diagnostic.py",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "command": "python tools/verify_wb55_ur_application_backup.py --backup-a <private-a> --backup-b <private-b> --out <private-run>/backup-gate.json",
+      "exit_code": 0,
+      "result": "PASS_DUAL_UR_APPLICATION_BACKUP"
+    },
+    {
+      "command": "python tools/verify_wb55_normal_resume_after_ur_backup_log.py --log <private-run>/capture/nucleo-serial-raw.log --out <private-run>/normal-resume.json",
+      "exit_code": 0,
+      "result": "PASS_APPLICATION_RESUMED_AFTER_BACKUP"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "result": "PASS; line-ending warnings only"
+    }
+  ],
+  "artifact_hashes": {
+    "research_sha256": "CD997124E365D0D15C9557C51FEAC19B3FA9C15632B934BDFE435019E32C750F",
+    "static_final_sha256": "3F284858F09C7D94322454BC556740EBB626D5AFB6368B566415B44539C37BAF",
+    "machine_sha256": "88C40CA71343933EABCC1BAFDD7227DCDCE6034F98BFCA99DFAC621159A018DD",
+    "check_only_stage_run_sha256": "1F93F0F2F555FB2120A9305359085705358E9D6D801C3BA0175BFE39CB5DF2F9",
+    "execute_stage_run_sha256": "BCC7132E669FFD8C4AB4AC7ED14CE33FBE596D6C0429DF9F3FDCC8D3B7B19DE2",
+    "programmer_stdout_sha256": "A77B60660B0BC5907B63270CEDA087F8EA1D80B96D4F027DE6FB525CD4F833B8",
+    "serial_raw_sha256": "8270836CAA3675077F8F177E956B767A699C32C4FB142B1A9EF87AFD52C1A2B3",
+    "backup_gate_sha256": "E602FBC63B814A97BDB166455E99626ED124F3691959BB0B2C43268DDBD2BB3A",
+    "normal_resume_sha256": "0E76C1FA98BB143E2CEEA19E904223FDC5AD15ECBCCA37CCF696A285985DA621",
+    "runner_sha256": "08409A11465FE20D5C074A7502717F52411FA7FE2824A700ABA1E19929D60497",
+    "backup_verifier_sha256": "5CB48DAFFC70073E3BDA290A0252946393939005DE1188936C7EF3FA97F98F32",
+    "resume_parser_sha256": "27C64C6B59ACEC7C8BA7C0A51BC3D3EBC5A38C03D5D53CC074504A88B1E70A3C",
+    "static_verifier_sha256": "7B54263F910FDCD17E860DB03ADB03055B64193D6215A058D9B20D7D5B3E3E83"
+  },
+  "backup_identity": {
+    "description": "Captured pre-run raw application bytes",
+    "e199_hex_reproduction": false,
+    "private_cache_only": true,
+    "future_restore_requires_new_goal": true
+  },
+  "protected_boundaries": {
+    "supplier_input_modified": false,
+    "v9_acceptance_rig_crig_browser_binding_art_modified": false,
+    "production_touch_ble_waveform_border_temperature_power_modified": false,
+    "controller_candidate_or_register_read": false,
+    "screen_white_black_rail_residue_animation_tested": false,
+    "memory_above_0x0807ffff_read": false,
+    "option_bytes_wireless_stack_otp_or_secrets_read": false,
+    "read_unprotect_or_write_operation": false
+  },
+  "human_boundary": {
+    "operator_prompt_invoked": false,
+    "remaining_human_action": "None for this backup-only Goal. Any restore or controller diagnostic requires a separate Goal."
+  }
+}

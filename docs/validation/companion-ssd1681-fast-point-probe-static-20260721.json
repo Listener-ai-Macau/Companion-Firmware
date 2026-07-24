@@ -1,0 +1,66 @@
+{
+  "schema_id": "companion.wb55.ssd1681_fast_point_probe_static.v1",
+  "status": "PASS_STATIC_SSD1681_FAST_POINT_PROBE_RAW_RESTORE_DEFAULT_OFF",
+  "claim_scope": "Static/build/host proof only; hardware_contact=0 and no visual result.",
+  "checks": {
+    "required_inputs_exist": true,
+    "hash_companion-ssd1681-ram-ping-pong-fingerprint-machine-20260721.json": true,
+    "hash_companion-ssd1681-ram-ping-pong-point-probe-completion-audit-20260721.json": true,
+    "hash_companion-pet-special-system-owner-acceptance-20260717.json": true,
+    "hash_Display_EPD_W21.c": true,
+    "hash_backup-a.bin": true,
+    "hash_backup-b.bin": true,
+    "hash_panel_target_stm32wb_ssd1681.c": true,
+    "hash_Makefile": true,
+    "hash_build_nucleo_bringup.ps1": true,
+    "hash_verify_wb55_ssd1681_fast_point_probe_log.py": true,
+    "hash_run_wb55_ssd1681_read_only_controller_state_raw_restore.ps1": true,
+    "hash_Companion_Nucleo_WB55RG_Ssd1681FastPointProbe.hex": true,
+    "hash_Companion_Nucleo_WB55RG_Ssd1681FastPointProbe.elf": true,
+    "hash_STM32_Programmer_CLI.exe": true,
+    "registry_contract": true,
+    "unique_phase_a_admission": true,
+    "raw_restore_baseline": true,
+    "default_off": true,
+    "function_and_120_frames": true,
+    "non_screen_countdown": true,
+    "fast_trajectory": true,
+    "generic_diff": true,
+    "one_ff_20_busy_per_frame": true,
+    "post_activation_0x24_sync": true,
+    "zero_motion_0x26": true,
+    "seed_not_activated": true,
+    "timing_contract": true,
+    "transfer_oracle": true,
+    "zero_forbidden": true,
+    "isolated_builder": true,
+    "candidate_marker": true,
+    "runner_binding": true,
+    "runner_zero_retry": true,
+    "one_finally_restore": true,
+    "parser_negative_matrix": true,
+    "restore_negative_matrix": true,
+    "normal_negative_matrix": true,
+    "runner_powershell_parse": true,
+    "programmer_v2_22": true
+  },
+  "failures": [],
+  "candidate": {
+    "hex_sha256": "210B9851889457F951E20FC96DC509CA4DCB8B779E40031F7DC47C136C4CB222",
+    "elf_sha256": "38B1DC3942624F3DF5FF28CEB5A47E21F12584B6160A315B77F5EE88465E24B1"
+  },
+  "phase_a_mapping": "activation_swapped_banks_selector0_base_selector1_current",
+  "baseline": {
+    "bytes": 524288,
+    "sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C"
+  },
+  "host_tests": {
+    "parser": "PASS: fast-point parser positive/missing/timing/transfer/0x26/countdown fixtures",
+    "restore": "PASS: WB55 raw application restore positive/negative self-test",
+    "normal": "PASS: WB55 normal-resume parser positive/negative self-test"
+  },
+  "forbidden_claims": [
+    "no hardware/visual/production result",
+    "no custom LUT/waveform/temperature/voltage/Rig/CRIG/touch/BLE change"
+  ]
+}

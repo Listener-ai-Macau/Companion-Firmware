@@ -1,0 +1,119 @@
+{
+  "authority": "COMP-REQ-332",
+  "geometry": {
+    "black_pixel_count": 112,
+    "matches_independent_equation_at_all_positions": true,
+    "path": "app/companion_pendant/epaper/r10_ball_diagnostic.h",
+    "positions": [
+      32,
+      40,
+      48,
+      56,
+      64,
+      56,
+      48,
+      40,
+      32,
+      40,
+      48,
+      56,
+      64,
+      56,
+      48,
+      40
+    ],
+    "row_masks_hex": [
+      [
+        "0F",
+        "00"
+      ],
+      [
+        "3F",
+        "C0"
+      ],
+      [
+        "7F",
+        "E0"
+      ],
+      [
+        "7F",
+        "E0"
+      ],
+      [
+        "FF",
+        "F0"
+      ],
+      [
+        "FF",
+        "F0"
+      ],
+      [
+        "FF",
+        "F0"
+      ],
+      [
+        "FF",
+        "F0"
+      ],
+      [
+        "7F",
+        "E0"
+      ],
+      [
+        "7F",
+        "E0"
+      ],
+      [
+        "3F",
+        "C0"
+      ],
+      [
+        "0F",
+        "00"
+      ]
+    ],
+    "row_widths": [
+      4,
+      8,
+      10,
+      10,
+      12,
+      12,
+      12,
+      12,
+      10,
+      10,
+      8,
+      4
+    ],
+    "sha256": "BD4EB58A4F1B2679559EAE3F668B6E2A9A76F5ABB6FC7A4DE50A22CC0DD91B36"
+  },
+  "protected_lut": {
+    "bytes": 159,
+    "sha256": "9BCBAC1A07ED0A112D26409FBCDB8F5FE27CE07D922C2E18881C10A53229DDCD",
+    "tail_hex": "221741A83258"
+  },
+  "proved": [
+    "default_off_and_mutually_exclusive",
+    "independent_disk_masks_and_path",
+    "r9_lut_and_tail_byte_identical",
+    "complete_previous_current_framebuffers_and_full_diff",
+    "dynamic_24_36_byte_union_windows",
+    "one_0x26_one_staged_0x24_one_activation_one_post_sync_0x24",
+    "one_400_to_410ms_post_sync_stable_hold_in_qualification_and_loop",
+    "busy_hard_limit_600_ms",
+    "forbidden_commands_and_paths_absent",
+    "exact_16_frame_qualification_and_40_to_32_loop_continuation",
+    "r10_only_init_dispatch_and_isolated_build"
+  ],
+  "schema_id": "companion.wb55.ssd1681.r10_r3_ball_static.v2",
+  "source": {
+    "build_script_sha256": "91E2E2C0578047FA5FCCEEB5A2019B4A8DBEDEBA656DDC81C0731E8319399D37",
+    "driver": "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
+    "driver_sha256": "F78316637B94277FEB58EF62FA077BDB39C7A5628F5CB4D1406C8ADEEE751451",
+    "header": "app/companion_pendant/epaper/r10_ball_diagnostic.h",
+    "header_sha256": "BD4EB58A4F1B2679559EAE3F668B6E2A9A76F5ABB6FC7A4DE50A22CC0DD91B36",
+    "makefile_sha256": "70B188B8152BA668AD9CFB188D6879BAF7B419D1BF2AA8C169424442BE87887D"
+  },
+  "status": "PASS_R10_BALL_STATIC"
+}

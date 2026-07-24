@@ -1,0 +1,71 @@
+{
+  "schema_id": "companion.wb55.ssd1681_phase_parallel_r9_continuous.r2_prompt_supervisor_regression.v1",
+  "status": "PASS_R9_CONTINUOUS_R2_REAL_SUPERVISOR_PATH_NO_HARDWARE",
+  "requirement": "COMP-REQ-316",
+  "hardware_contact": 0,
+  "actual_popup_count": 0,
+  "errors": [],
+  "checks": {
+    "positive_exit_zero": true,
+    "positive_guard_created_before_process": true,
+    "positive_exactly_one_prompt_process_zero_popup": true,
+    "positive_common_result_and_stop_path": true,
+    "missing_qualification_fails_before_guard_or_process": true,
+    "duplicate_guard_fails_before_process_or_result": true,
+    "duplicate_review_fails_before_guard_or_process": true,
+    "execute_rejects_simulation_injection_before_output": true,
+    "powershell_parse_pass": true,
+    "exact_separately_parenthesized_guard_condition": true,
+    "single_common_process_start_statement": true
+  },
+  "cases": {
+    "positive": {
+      "exit_code": 0,
+      "guard_created": true,
+      "prompt_process_start_count": 1,
+      "actual_popup_count": 0,
+      "review_created": true,
+      "stop_created": true,
+      "selected": "通过"
+    },
+    "missing_qualification": {
+      "exit_code_nonzero": true,
+      "expected_error": true,
+      "guard_created": false,
+      "prompt_receipt_created": false
+    },
+    "duplicate_guard": {
+      "exit_code_nonzero": true,
+      "expected_error": true,
+      "preexisting_guard_unchanged": true,
+      "prompt_receipt_created": false
+    },
+    "duplicate_review_result": {
+      "exit_code_nonzero": true,
+      "expected_error": true,
+      "preexisting_result_unchanged": true,
+      "guard_created": false,
+      "prompt_receipt_created": false
+    },
+    "execute_injection": {
+      "exit_code_nonzero": true,
+      "expected_error": true,
+      "output_root_created": false
+    }
+  },
+  "positive_proof": {
+    "guard_created": true,
+    "prompt_process_start_count": 1,
+    "actual_popup_count": 0
+  },
+  "negative_proof": {
+    "missing_qualification_processes": 0,
+    "duplicate_guard_processes": 0,
+    "duplicate_review_result_processes": 0
+  },
+  "identities": {
+    "supervisor_sha256": "39ACC31A561413717B77ACAFE5E7E562B0C44734F07D72007B46C900C85883D2",
+    "verifier_sha256": "FED46379D9044E84D0FCF80DEC4458457AF7AFAA283FA9613B3C98025E552765"
+  },
+  "authorization": "simulation and MACHINE_READY only; no Execute or hardware contact"
+}

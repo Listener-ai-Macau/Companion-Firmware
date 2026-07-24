@@ -1,0 +1,51 @@
+{
+  "schema": "companion.v27_face_action_gesture_special_expression_component_browser_render_inspection.v1",
+  "status": "PASS_V27_BROWSER_RENDER_INSPECTION_NATIVE_200X200",
+  "claim_scope": "actual browser screenshots for a runtime-inactive component compositor; not a behavior binding, flash, panel output, or physical acceptance",
+  "browser_engine": "playwright-chromium",
+  "route": {
+    "path": "docs/validation/companion-v27-face-action-gesture-special-expression-component-performance-preview-20260720.json",
+    "sha256": "A46FB3463E0052C9EDE1F88727AFBD2B1BCF4FE65F1E69C75858CEF2E901E076"
+  },
+  "player": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/perf/player.html",
+    "sha256": "A9B6EA9472018429A8A447D23A77D7B229189A523841798575399B93B71E1BD9"
+  },
+  "screenshots": [
+    {
+      "scene": "daily_micro",
+      "virtual_time_ms": 100,
+      "edge_exit_code": 0,
+      "path": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/perf/browser-daily-native-200x200-20260720.png",
+      "sha256": "6A6F72605F2FE63AB8468440C1BE015EC001F513D405C3997DB41B948DF1E30E"
+    },
+    {
+      "scene": "menu_active",
+      "virtual_time_ms": 3000,
+      "edge_exit_code": 0,
+      "path": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/perf/browser-menu-hold-native-200x200-20260720.png",
+      "sha256": "97B19FC0886B0E16BD490D4DB13BBC353F15A0A3E6834A44468560526366212F"
+    },
+    {
+      "scene": "recording_active",
+      "virtual_time_ms": 2900,
+      "edge_exit_code": 0,
+      "path": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/perf/browser-recording-hold-native-200x200-20260720.png",
+      "sha256": "78FE696A2C5D98445E52BB4C9A7FC218EF79DB4D5B291EAA3F23B8F9DB2CE748"
+    },
+    {
+      "scene": "charging_active",
+      "virtual_time_ms": 2900,
+      "edge_exit_code": 0,
+      "path": "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/perf/browser-charging-hold-native-200x200-20260720.png",
+      "sha256": "966A201ADF78C35ABDD56453A5FC83B60434F157EEBA840A0817E0BDBEA0D459"
+    }
+  ],
+  "checks": {
+    "route_is_runtime_inactive_candidate": true,
+    "native_200x200_component_stage": true,
+    "explicit_event_player": true,
+    "every_screenshot_written": true
+  },
+  "failures": []
+}

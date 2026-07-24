@@ -1,0 +1,31 @@
+{
+  "checks": {
+    "cadence_bound": true,
+    "compact_single_activation_schema": true,
+    "default_off": true,
+    "forbidden_absent_native": true,
+    "frame_sha_table_bound": true,
+    "geometry_24_448_step2": true,
+    "gpio_guard": true,
+    "identity": true,
+    "one_activation": true,
+    "oracle_pass": true,
+    "production_off": true,
+    "qualification_16": true,
+    "schema_v9": true,
+    "selector": true,
+    "source_bound": true,
+    "union_reused": true
+  },
+  "errors": [],
+  "negative_fixtures": {
+    "custom_lut": true,
+    "forbidden_0x26": true,
+    "full_frame": true,
+    "mutated_old_12x12_frame_sha": true,
+    "second_activation": true
+  },
+  "payload_table_rows": 32,
+  "schema_id": "companion.wb55.ssd1681.r10_native_single_union_large_cadence.static.v2",
+  "status": "PASS"
+}

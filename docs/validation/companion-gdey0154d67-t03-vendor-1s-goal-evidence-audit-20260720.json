@@ -1,0 +1,86 @@
+{
+  "schema_id": "companion.gdey0154d67_t03.vendor_1s_lut_goal_evidence_audit.v1",
+  "status": "FAIL_CLOSED_OWNER_REJECTED_VENDOR_1S_LUT",
+  "claim_scope": "current-room, source-bound, production-off diagnostic evidence audit; no production, panel-identity, or temperature-range claim",
+  "goal_state_action": "none; this audit does not complete, delete, or recreate the active Codex Goal",
+  "requirements": {
+    "supplier_traceability": {
+      "status": "PASS",
+      "evidence": {
+        "path": "docs/validation/companion-gdey0154d67-t03-vendor-1s-source-audit-20260720.json",
+        "sha256": "47B44FF5E04ED2610DBCAF7CE4E82C03874BE67E4C5CB209A434BE662BD1C81C",
+        "vendor_epaper_c_sha256": "7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896",
+        "lut_sha256": "F83EA7360CFFF04FE9D004A75858A46213CBD710AAA2F0C4A62597E3EA176D15",
+        "lut_declared_bytes": 159,
+        "lut_0x32_payload_bytes": 153,
+        "tail_command_order": ["0x3F", "0x03", "0x04", "0x2C"]
+      }
+    },
+    "preflight_protection": {
+      "status": "PASS",
+      "evidence": [
+        {
+          "path": "docs/validation/companion-screen-wb55-replacement-fpc-evidence-20260720.json",
+          "sha256": "E1124866DBBBF083B3512EB75A4C8AE14BF6808ACCDD45B774A5095BD41D7D35",
+          "status": "PASS_OWNER_REPORTED_REPLACEMENT_FPC_CURRENT_PANEL_VISIBLE"
+        },
+        {
+          "path": "docs/validation/companion-screen-wb55-white-rail-measurement-current-source-20260720.json",
+          "sha256": "230F723F45B00FE4F1F1F252839EF146383C95DA6F0E3F6E740260D7C2463A30",
+          "status": "PASS_MACHINE_AND_RAILS_ESTABLISHED_WHITE",
+          "prevgh1_max_v": 20.0,
+          "prevgl1_min_v": -20.0
+        },
+        {
+          "path": "docs/validation/companion-gdey0154d67-t03-p0-closure-20260720.json",
+          "sha256": "E2111A283ABBE932CF3F7A118046E38814C118F71CBA493DD2883B8457E80658",
+          "status": "PASS_P0_OFFICIAL_FULL_RETEST_LUT_PROMOTION_NO_GO"
+        },
+        {
+          "path": "docs/validation/companion-gdey0154d67-t03-vendor-1s-diagnostic-static-20260720.json",
+          "sha256": "0A294539FE323D0CB745A1C8420BC857BE23BA62630FFB0C39CD8DC2C02E4A69",
+          "status": "PASS_STATIC_OWNER_AUTHORIZED_PRODUCTION_OFF_VENDOR_1S_LUT",
+          "direct_runner_gate": "The current runner reads and hash-binds the current replacement-FPC and White-rail artifacts before flash/capture."
+        }
+      ],
+      "negative_case": "An explicit nonexistent White-rail path was rejected at required-input validation before any hardware action."
+    },
+    "six_frame_machine_trace": {
+      "status": "PASS",
+      "evidence": {
+        "path": ".cache/validation/wb55-vendor-1s-lut-current-room-20260720/vendor-1s-trace.json",
+        "sha256": "CB4B119C8F8490B5F5D0E842B12005E7E8B204B5669A0DD01BCE8BBC110BB6EC",
+        "status": "PASS_MACHINE_VENDOR_1S_LUT_SIX_FRAME_TRACE",
+        "marker_steps": [0, 1, 2, 3, 4, 5],
+        "one_0x24_plane_bytes_per_frame": 5000,
+        "control": "0xC7 -> 0x20 -> BUSY-ready",
+        "elapsed_ms": [1284, 1285, 1285, 1285, 1285, 1285],
+        "diagnostic_image_sha256": "FCB793FF1F204643CA7EA7CE972A6A4B87708044633792197F96A08F5E50E180"
+      }
+    },
+    "bounded_observation_and_recovery": {
+      "status": "FAIL_OWNER_REJECTED",
+      "evidence": {
+        "path": ".cache/validation/wb55-vendor-1s-lut-current-room-20260720/stage-run.json",
+        "sha256": "F6F82CCAA1603C32D8C2C8E81691E7C32F87A18AFF36674FD7E2C3DB44128AC6",
+        "canonical_prompt_style": "aiw_operator_prompt_v1",
+        "operator_selected": "失败",
+        "operator_note": "感觉不太行，就是你，是没有残影，但是就是每次会黑屏一下。",
+        "operator_loop_maximum_full_frames": 360,
+        "normal_firmware_restored": true
+      },
+      "conclusion": "The literal source-bound full-frame C7 route is traceable and machine-valid, but it fails the required visual no-black-flash experience. Timing is not treated as residue or experience acceptance."
+    },
+    "production_and_temperature_boundary": {
+      "status": "PASS_BOUNDARY_PRESERVED",
+      "evidence": "The source audit retains NO_GO_PANEL_IDENTITY_UNPROVEN, no CWF1/temperature claim, and no production reference to the vendor LUT."
+    }
+  },
+  "final_disposition": {
+    "diagnostic_result": "FAIL",
+    "production_promotion": "NO_GO",
+    "new_waveform_authorized": false,
+    "hardware_rerun_after_fail": false,
+    "reason": "Owner rejected the repeated full-screen black transition despite the absence of visible residue."
+  }
+}

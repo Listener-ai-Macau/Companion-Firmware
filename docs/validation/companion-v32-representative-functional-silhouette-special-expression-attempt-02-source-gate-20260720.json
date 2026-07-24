@@ -1,0 +1,234 @@
+{
+  "schema": "companion.v32_representative_functional_silhouette_special_expression_source_gate.v1",
+  "status": "FAIL_V32_MINIMAL_FUNCTIONAL_OBJECT_SOURCE_GATE",
+  "generation_request": "docs/art/iterations/companion-pet-expression-v9-extension-v32-representative-functional-silhouette-special-expression-source/generation-request-v2-closed-circuit-functional-silhouette-panel.json",
+  "generation_prompt": "docs/art/iterations/companion-pet-expression-v9-extension-v32-representative-functional-silhouette-special-expression-source/generation-prompt-v2-closed-circuit-functional-silhouette-panel.md",
+  "source_lineage": "docs/art/iterations/companion-pet-expression-v9-extension-v32-representative-functional-silhouette-special-expression-source/candidate/source-lineage.json",
+  "locked_v9_source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "locked_v9_eye_ink_pixels": {
+    "left_eye": 1009,
+    "right_eye": 1015
+  },
+  "object_part_ink_limit": 504,
+  "target_eye_centers": [
+    [
+      58.5,
+      134.5
+    ],
+    [
+      142.0,
+      134.5
+    ]
+  ],
+  "poses": [
+    {
+      "pose": "menu_active",
+      "crop": [
+        0,
+        0,
+        666,
+        786
+      ],
+      "normalization": {
+        "source_left_eye_bbox": [
+          189,
+          365,
+          280,
+          491
+        ],
+        "source_right_eye_bbox": [
+          425,
+          365,
+          516,
+          491
+        ],
+        "source_left_eye_center": [
+          235.171,
+          432.346
+        ],
+        "source_right_eye_center": [
+          471.585,
+          432.5
+        ],
+        "source_eye_gap": 236.414,
+        "source_average_eye_height": 126.0,
+        "normalization_scale": [
+          0.353194,
+          0.357143
+        ],
+        "eye_detection_top_mask_rows": 346
+      },
+      "normalized_source_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v32-representative-functional-silhouette-special-expression-source/candidate/review/menu_active.png",
+      "component_ink_pixels": {
+        "left_brow": 599,
+        "right_brow": 656,
+        "left_eye": 972,
+        "right_eye": 981,
+        "nose": 68,
+        "left_cheek": 301,
+        "right_cheek": 302,
+        "mouth": 213
+      },
+      "state_object_ink_pixels": {
+        "left_tab": 163,
+        "center_tab": 447,
+        "right_tab": 170
+      },
+      "object_part_ink_limit": 504,
+      "outside_face_ink_pixels": 147,
+      "face_primary_delta_from_v9_daily": 26869,
+      "errors": [
+        "menu_active contains forbidden outside-face ink (147 pixels)"
+      ]
+    },
+    {
+      "pose": "recording_active",
+      "crop": [
+        666,
+        0,
+        1332,
+        786
+      ],
+      "normalization": {
+        "source_left_eye_bbox": [
+          173,
+          367,
+          262,
+          492
+        ],
+        "source_right_eye_bbox": [
+          402,
+          367,
+          492,
+          493
+        ],
+        "source_left_eye_center": [
+          218.41,
+          434.206
+        ],
+        "source_right_eye_center": [
+          448.273,
+          434.744
+        ],
+        "source_eye_gap": 229.862,
+        "source_average_eye_height": 125.5,
+        "normalization_scale": [
+          0.363261,
+          0.358566
+        ],
+        "eye_detection_top_mask_rows": 346
+      },
+      "normalized_source_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v32-representative-functional-silhouette-special-expression-source/candidate/review/recording_active.png",
+      "component_ink_pixels": {
+        "left_brow": 120,
+        "right_brow": 118,
+        "left_eye": 962,
+        "right_eye": 995,
+        "nose": 59,
+        "left_cheek": 326,
+        "right_cheek": 417,
+        "mouth": 341
+      },
+      "state_object_ink_pixels": {
+        "left_ear_cuff": 151,
+        "right_ear_cuff": 161,
+        "pickup_point": 0
+      },
+      "object_part_ink_limit": 504,
+      "outside_face_ink_pixels": 88,
+      "face_primary_delta_from_v9_daily": 26040,
+      "errors": [
+        "recording_active lacks three extractable state-object parts",
+        "recording_active contains forbidden outside-face ink (88 pixels)"
+      ]
+    },
+    {
+      "pose": "charging_active",
+      "crop": [
+        1332,
+        0,
+        1999,
+        786
+      ],
+      "normalization": {
+        "source_left_eye_bbox": [
+          178,
+          367,
+          265,
+          492
+        ],
+        "source_right_eye_bbox": [
+          399,
+          367,
+          487,
+          492
+        ],
+        "source_left_eye_center": [
+          222.482,
+          434.095
+        ],
+        "source_right_eye_center": [
+          443.929,
+          434.29
+        ],
+        "source_eye_gap": 221.447,
+        "source_average_eye_height": 125.0,
+        "normalization_scale": [
+          0.377065,
+          0.36
+        ],
+        "eye_detection_top_mask_rows": 346
+      },
+      "normalized_source_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v32-representative-functional-silhouette-special-expression-source/candidate/review/charging_active.png",
+      "component_ink_pixels": {
+        "left_brow": 520,
+        "right_brow": 315,
+        "left_eye": 1059,
+        "right_eye": 992,
+        "nose": 62,
+        "left_cheek": 316,
+        "right_cheek": 306,
+        "mouth": 216
+      },
+      "state_object_ink_pixels": {
+        "charge_clasp": 16,
+        "short_tether": 299,
+        "energy_core": 233
+      },
+      "object_part_ink_limit": 504,
+      "outside_face_ink_pixels": 244,
+      "face_primary_delta_from_v9_daily": 26439,
+      "errors": [
+        "charging_active contains forbidden outside-face ink (244 pixels)"
+      ]
+    }
+  ],
+  "pairwise_face_primary_differences": [
+    {
+      "left": "menu_active",
+      "right": "recording_active",
+      "face_primary_pixel_difference": 26677
+    },
+    {
+      "left": "menu_active",
+      "right": "charging_active",
+      "face_primary_pixel_difference": 26480
+    },
+    {
+      "left": "recording_active",
+      "right": "charging_active",
+      "face_primary_pixel_difference": 26255
+    }
+  ],
+  "source_review_html": "docs/art/iterations/companion-pet-expression-v9-extension-v32-representative-functional-silhouette-special-expression-source/candidate/review/source-review.html",
+  "source_review_contact_sheet": "docs/art/iterations/companion-pet-expression-v9-extension-v32-representative-functional-silhouette-special-expression-source/candidate/review/contact.png",
+  "source_preview_contract": "thresholded native 200x200 source normalization for static provenance comparison only; not a runtime frame, component export, target output or animation",
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden",
+  "errors": [
+    "menu_active contains forbidden outside-face ink (147 pixels)",
+    "recording_active lacks three extractable state-object parts",
+    "recording_active contains forbidden outside-face ink (88 pixels)",
+    "charging_active contains forbidden outside-face ink (244 pixels)"
+  ]
+}

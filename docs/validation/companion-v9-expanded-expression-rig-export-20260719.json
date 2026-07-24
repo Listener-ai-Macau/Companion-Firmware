@@ -1,0 +1,417 @@
+{
+  "schema": "companion.v9_expanded_expression_rig_machine_gate.v1",
+  "status": "PASS_EXPANDED_COMPONENT_RIG_MACHINE_GATE",
+  "candidate": "docs/art/iterations/companion-pet-expression-v9-rig-v2-expanded-source/candidate",
+  "layout_sha256": "195CAD8924A6E6AA5562F23CBE6FDC5114EC137756E5FEEE6C9CC61EA73C590B",
+  "source_hashes": {
+    "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "docs/art/iterations/companion-pet-expression-v9-extension-v9-expanded-daily-direction-strip/generated_pet_expression_extension_v9_expanded_daily_direction_strip_candidate.png": "06482F6401DF63ED16369660A3D2E4337A37C470F0007C0EAF8CBC90E6D768C5",
+    "docs/art/iterations/companion-pet-expression-v9-extension-v10-expanded-emotion-panel/generated_pet_expression_extension_v10_expanded_emotion_panel_candidate.png": "9475CEF565608ED70258980815B31AEEA785CB431AE5B25515FE3790ADE4DD31",
+    "docs/art/iterations/companion-pet-expression-v9-extension-v11-secondary-detail-kit/generated_pet_expression_extension_v11_secondary_detail_kit_candidate.png": "76B0BE9F683349490C262DD4725BDDC2252DEEDFD2B675D4EF53745D8B7C1622"
+  },
+  "state_count": 15,
+  "owner_rejected_fail_closed_state_count": 1,
+  "component_count": 96,
+  "component_pack": {
+    "present": true,
+    "path": "docs/art/iterations/companion-pet-expression-v9-rig-v2-expanded-source/candidate/companion-v9-expanded-expression-rig-candidate-200x200.crig",
+    "sha256": "DF33E5E744C3C268DC66125321F8A3D60D11140FCAE93D326EDAF9C9CCD4BEC4",
+    "byte_size": 16914,
+    "revision": 1,
+    "component_count": 96,
+    "payload_crc32": "6820EAC5",
+    "index_crc32": "B2DF2CD7"
+  },
+  "component_occlusion_audit": {
+    "present": true,
+    "frame_count": 540,
+    "path": "docs/art/iterations/companion-pet-expression-v9-rig-v2-expanded-source/candidate/component-occlusion-audit.json",
+    "status": "PASS_ZERO_PROTECTED_FEATURE_OVERLAP",
+    "performance_contact_sheet_count": 15,
+    "presence_contact_sheet_count": 15,
+    "emotion_bridge_contact_sheet_count": 45
+  },
+  "audit_cemp": {
+    "present": true,
+    "path": "docs/art/iterations/companion-pet-expression-v9-rig-v2-expanded-source/candidate/companion-v9-expanded-expression-rig-audit-200x200.cemp",
+    "sha256": "0914781897E536D23EBE4E272A66C0BD0BDC8E1129600D38CCC56EBA5658E015",
+    "frame_count": 105
+  },
+  "unique_rendered_frame_hashes": 15,
+  "performance_frame_count": 105,
+  "presence_frame_count": 120,
+  "emotion_bridge_count": 45,
+  "emotion_bridge_frame_count": 315,
+  "browser_component_preview_parity_frames": 540,
+  "presence_browser_component_preview_parity_frames": 120,
+  "emotion_bridge_browser_component_preview_parity_frames": 315,
+  "performance_phase_pixel_metrics": {
+    "anticipatory_notice": {
+      "entry_to_hold_pixels": 1455,
+      "entry_to_settle_pixels": 0
+    },
+    "listening_focus": {
+      "entry_to_hold_pixels": 583,
+      "entry_to_settle_pixels": 0
+    },
+    "menu_thinking": {
+      "entry_to_hold_pixels": 448,
+      "entry_to_settle_pixels": 0
+    },
+    "recording_focus": {
+      "entry_to_hold_pixels": 514,
+      "entry_to_settle_pixels": 0
+    },
+    "daily_attention_up": {
+      "entry_to_hold_pixels": 955,
+      "entry_to_settle_pixels": 0
+    },
+    "playful_bright": {
+      "entry_to_hold_pixels": 418,
+      "entry_to_settle_pixels": 0
+    },
+    "puzzled_processing": {
+      "entry_to_hold_pixels": 608,
+      "entry_to_settle_pixels": 0
+    },
+    "daily_attention_down": {
+      "entry_to_hold_pixels": 1002,
+      "entry_to_settle_pixels": 0
+    },
+    "affectionate_warm": {
+      "entry_to_hold_pixels": 1212,
+      "entry_to_settle_pixels": 0
+    },
+    "alert_surprised": {
+      "entry_to_hold_pixels": 419,
+      "entry_to_settle_pixels": 0
+    },
+    "daily_attention_left": {
+      "entry_to_hold_pixels": 974,
+      "entry_to_settle_pixels": 0
+    },
+    "daily_attention_right": {
+      "entry_to_hold_pixels": 1045,
+      "entry_to_settle_pixels": 0
+    },
+    "curious_question": {
+      "entry_to_hold_pixels": 631,
+      "entry_to_settle_pixels": 0
+    },
+    "joyful_spark": {
+      "entry_to_hold_pixels": 1053,
+      "entry_to_settle_pixels": 0
+    },
+    "calm_content": {
+      "entry_to_hold_pixels": 106,
+      "entry_to_settle_pixels": 0
+    }
+  },
+  "presence_pixel_metrics": {
+    "anticipatory_notice": {
+      "baseline_to_gaze_pixels": 72,
+      "baseline_to_brow_pixels": 164,
+      "baseline_to_lower_pixels": 114
+    },
+    "listening_focus": {
+      "baseline_to_gaze_pixels": 72,
+      "baseline_to_brow_pixels": 176,
+      "baseline_to_lower_pixels": 114
+    },
+    "menu_thinking": {
+      "baseline_to_gaze_pixels": 72,
+      "baseline_to_brow_pixels": 164,
+      "baseline_to_lower_pixels": 102
+    },
+    "recording_focus": {
+      "baseline_to_gaze_pixels": 72,
+      "baseline_to_brow_pixels": 162,
+      "baseline_to_lower_pixels": 104
+    },
+    "daily_attention_up": {
+      "baseline_to_gaze_pixels": 72,
+      "baseline_to_brow_pixels": 156,
+      "baseline_to_lower_pixels": 100
+    },
+    "playful_bright": {
+      "baseline_to_gaze_pixels": 72,
+      "baseline_to_brow_pixels": 174,
+      "baseline_to_lower_pixels": 132
+    },
+    "puzzled_processing": {
+      "baseline_to_gaze_pixels": 72,
+      "baseline_to_brow_pixels": 160,
+      "baseline_to_lower_pixels": 86
+    },
+    "daily_attention_down": {
+      "baseline_to_gaze_pixels": 80,
+      "baseline_to_brow_pixels": 168,
+      "baseline_to_lower_pixels": 102
+    },
+    "affectionate_warm": {
+      "baseline_to_gaze_pixels": 72,
+      "baseline_to_brow_pixels": 158,
+      "baseline_to_lower_pixels": 110
+    },
+    "alert_surprised": {
+      "baseline_to_gaze_pixels": 72,
+      "baseline_to_brow_pixels": 160,
+      "baseline_to_lower_pixels": 104
+    },
+    "daily_attention_left": {
+      "baseline_to_gaze_pixels": 72,
+      "baseline_to_brow_pixels": 158,
+      "baseline_to_lower_pixels": 98
+    },
+    "daily_attention_right": {
+      "baseline_to_gaze_pixels": 72,
+      "baseline_to_brow_pixels": 160,
+      "baseline_to_lower_pixels": 102
+    },
+    "curious_question": {
+      "baseline_to_gaze_pixels": 72,
+      "baseline_to_brow_pixels": 158,
+      "baseline_to_lower_pixels": 100
+    },
+    "joyful_spark": {
+      "baseline_to_gaze_pixels": 72,
+      "baseline_to_brow_pixels": 162,
+      "baseline_to_lower_pixels": 130
+    },
+    "calm_content": {
+      "baseline_to_gaze_pixels": 72,
+      "baseline_to_brow_pixels": 160,
+      "baseline_to_lower_pixels": 104
+    }
+  },
+  "emotion_bridge_pixel_metrics": {
+    "thinking_to_focused": {
+      "source_to_gaze_pixels": 106,
+      "gaze_to_brow_pixels": 235,
+      "brow_to_lower_pixels": 191
+    },
+    "affectionate_to_curious": {
+      "source_to_gaze_pixels": 106,
+      "gaze_to_brow_pixels": 464,
+      "brow_to_lower_pixels": 261
+    },
+    "affectionate_to_playful": {
+      "source_to_gaze_pixels": 112,
+      "gaze_to_brow_pixels": 223,
+      "brow_to_lower_pixels": 287
+    },
+    "anticipatory_to_joyful": {
+      "source_to_gaze_pixels": 106,
+      "gaze_to_brow_pixels": 403,
+      "brow_to_lower_pixels": 321
+    },
+    "puzzled_to_alert": {
+      "source_to_gaze_pixels": 112,
+      "gaze_to_brow_pixels": 549,
+      "brow_to_lower_pixels": 182
+    },
+    "curious_to_focused": {
+      "source_to_gaze_pixels": 170,
+      "gaze_to_brow_pixels": 422,
+      "brow_to_lower_pixels": 185
+    },
+    "curious_to_alert": {
+      "source_to_gaze_pixels": 170,
+      "gaze_to_brow_pixels": 458,
+      "brow_to_lower_pixels": 136
+    },
+    "listening_to_calm": {
+      "source_to_gaze_pixels": 112,
+      "gaze_to_brow_pixels": 233,
+      "brow_to_lower_pixels": 272
+    },
+    "thinking_to_puzzled": {
+      "source_to_gaze_pixels": 106,
+      "gaze_to_brow_pixels": 388,
+      "brow_to_lower_pixels": 166
+    },
+    "playful_to_calm": {
+      "source_to_gaze_pixels": 112,
+      "gaze_to_brow_pixels": 183,
+      "brow_to_lower_pixels": 349
+    },
+    "curious_to_affectionate": {
+      "source_to_gaze_pixels": 106,
+      "gaze_to_brow_pixels": 358,
+      "brow_to_lower_pixels": 295
+    },
+    "focused_to_listening": {
+      "source_to_gaze_pixels": 106,
+      "gaze_to_brow_pixels": 439,
+      "brow_to_lower_pixels": 314
+    },
+    "curious_to_puzzled": {
+      "source_to_gaze_pixels": 112,
+      "gaze_to_brow_pixels": 425,
+      "brow_to_lower_pixels": 190
+    },
+    "thinking_to_curious": {
+      "source_to_gaze_pixels": 106,
+      "gaze_to_brow_pixels": 399,
+      "brow_to_lower_pixels": 134
+    },
+    "playful_to_curious": {
+      "source_to_gaze_pixels": 170,
+      "gaze_to_brow_pixels": 397,
+      "brow_to_lower_pixels": 332
+    },
+    "focused_to_alert": {
+      "source_to_gaze_pixels": 106,
+      "gaze_to_brow_pixels": 366,
+      "brow_to_lower_pixels": 123
+    },
+    "joyful_to_affectionate": {
+      "source_to_gaze_pixels": 106,
+      "gaze_to_brow_pixels": 225,
+      "brow_to_lower_pixels": 330
+    },
+    "affectionate_to_joyful": {
+      "source_to_gaze_pixels": 106,
+      "gaze_to_brow_pixels": 321,
+      "brow_to_lower_pixels": 272
+    },
+    "joyful_to_calm": {
+      "source_to_gaze_pixels": 106,
+      "gaze_to_brow_pixels": 347,
+      "brow_to_lower_pixels": 300
+    },
+    "thinking_to_calm": {
+      "source_to_gaze_pixels": 106,
+      "gaze_to_brow_pixels": 159,
+      "brow_to_lower_pixels": 255
+    },
+    "anticipatory_to_calm": {
+      "source_to_gaze_pixels": 106,
+      "gaze_to_brow_pixels": 520,
+      "brow_to_lower_pixels": 327
+    },
+    "calm_to_listening": {
+      "source_to_gaze_pixels": 112,
+      "gaze_to_brow_pixels": 403,
+      "brow_to_lower_pixels": 266
+    },
+    "anticipatory_to_curious": {
+      "source_to_gaze_pixels": 106,
+      "gaze_to_brow_pixels": 434,
+      "brow_to_lower_pixels": 272
+    },
+    "listening_to_focused": {
+      "source_to_gaze_pixels": 106,
+      "gaze_to_brow_pixels": 365,
+      "brow_to_lower_pixels": 384
+    },
+    "puzzled_to_thinking": {
+      "source_to_gaze_pixels": 106,
+      "gaze_to_brow_pixels": 486,
+      "brow_to_lower_pixels": 184
+    },
+    "puzzled_to_calm": {
+      "source_to_gaze_pixels": 170,
+      "gaze_to_brow_pixels": 487,
+      "brow_to_lower_pixels": 231
+    },
+    "curious_to_calm": {
+      "source_to_gaze_pixels": 106,
+      "gaze_to_brow_pixels": 392,
+      "brow_to_lower_pixels": 273
+    },
+    "joyful_to_anticipatory": {
+      "source_to_gaze_pixels": 106,
+      "gaze_to_brow_pixels": 519,
+      "brow_to_lower_pixels": 245
+    },
+    "playful_to_affectionate": {
+      "source_to_gaze_pixels": 112,
+      "gaze_to_brow_pixels": 141,
+      "brow_to_lower_pixels": 377
+    },
+    "calm_to_curious": {
+      "source_to_gaze_pixels": 106,
+      "gaze_to_brow_pixels": 382,
+      "brow_to_lower_pixels": 277
+    },
+    "alert_to_calm": {
+      "source_to_gaze_pixels": 112,
+      "gaze_to_brow_pixels": 112,
+      "brow_to_lower_pixels": 283
+    },
+    "alert_to_anticipatory": {
+      "source_to_gaze_pixels": 106,
+      "gaze_to_brow_pixels": 318,
+      "brow_to_lower_pixels": 178
+    },
+    "curious_to_thinking": {
+      "source_to_gaze_pixels": 106,
+      "gaze_to_brow_pixels": 383,
+      "brow_to_lower_pixels": 98
+    },
+    "alert_to_curious": {
+      "source_to_gaze_pixels": 170,
+      "gaze_to_brow_pixels": 402,
+      "brow_to_lower_pixels": 100
+    },
+    "anticipatory_to_alert": {
+      "source_to_gaze_pixels": 106,
+      "gaze_to_brow_pixels": 220,
+      "brow_to_lower_pixels": 264
+    },
+    "joyful_to_playful": {
+      "source_to_gaze_pixels": 170,
+      "gaze_to_brow_pixels": 132,
+      "brow_to_lower_pixels": 295
+    },
+    "alert_to_focused": {
+      "source_to_gaze_pixels": 106,
+      "gaze_to_brow_pixels": 320,
+      "brow_to_lower_pixels": 133
+    },
+    "listening_to_curious": {
+      "source_to_gaze_pixels": 170,
+      "gaze_to_brow_pixels": 485,
+      "brow_to_lower_pixels": 459
+    },
+    "puzzled_to_curious": {
+      "source_to_gaze_pixels": 112,
+      "gaze_to_brow_pixels": 423,
+      "brow_to_lower_pixels": 206
+    },
+    "affectionate_to_calm": {
+      "source_to_gaze_pixels": 112,
+      "gaze_to_brow_pixels": 292,
+      "brow_to_lower_pixels": 144
+    },
+    "playful_to_joyful": {
+      "source_to_gaze_pixels": 170,
+      "gaze_to_brow_pixels": 290,
+      "brow_to_lower_pixels": 355
+    },
+    "curious_to_anticipatory": {
+      "source_to_gaze_pixels": 106,
+      "gaze_to_brow_pixels": 516,
+      "brow_to_lower_pixels": 222
+    },
+    "anticipatory_to_focused": {
+      "source_to_gaze_pixels": 106,
+      "gaze_to_brow_pixels": 392,
+      "brow_to_lower_pixels": 267
+    },
+    "focused_to_thinking": {
+      "source_to_gaze_pixels": 106,
+      "gaze_to_brow_pixels": 261,
+      "brow_to_lower_pixels": 153
+    },
+    "focused_to_calm": {
+      "source_to_gaze_pixels": 112,
+      "gaze_to_brow_pixels": 300,
+      "brow_to_lower_pixels": 290
+    }
+  },
+  "runtime_resource_activated": false,
+  "full_face_source_card_playback": "forbidden",
+  "errors": []
+}

@@ -1,0 +1,37 @@
+{
+  "schema_id": "companion.wb55.ssd1681_official_white_clean_recovery.v1",
+  "status": "PASS_OFFICIAL_WHITE_CLEAN_EXACT_RAW_RESTORED",
+  "requirements": ["COMP-REQ-285", "COMP-REQ-289"],
+  "owner_result_exact": "恢复了, 继续吧",
+  "operator_review": {
+    "selected": "通过",
+    "note": "全白均匀；无黑白颗粒、无旧图残留。"
+  },
+  "white": {
+    "image_sha256": "F7CB7EE8C497CF1A01ACFF4BC921B43E274B0A934CA8B658AC24C34480F32925",
+    "profile": "supplier-exact official single-plane White",
+    "frame_command": "0x24",
+    "frame_bytes": 5000,
+    "control": "0xF7",
+    "activation": "0x20",
+    "busy_complete": true,
+    "busy_elapsed_ms": 1289,
+    "rail_remeasurement_performed": false,
+    "custom_lut_used": false,
+    "machine_status": "PASS",
+    "stage_run_sha256": "05BB86AC0EEC111DFA417EB50DEFB8BC62190D252C64F26AAB11696815ECF841"
+  },
+  "restore": {
+    "baseline_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "baseline_hex_roundtrip_byte_identical": true,
+    "programmer_write_verify": "PASS",
+    "independent_readback_bytes": 524288,
+    "independent_readback_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "independent_readback_status": "PASS_RESTORE_EQUALS_CAPTURED_PRE_RUN_APPLICATION_BYTES",
+    "normal_resume_status": "PASS_APPLICATION_RESUMED_AFTER_BACKUP",
+    "readback_stage_sha256": "BC0312FA6AE11835C2FEE2399091BB1472C7EBE0B3562BDDE8F99BBD0095BD70"
+  },
+  "custom_r1_disposition": "NO_GO_BUSY_OVER_LIMIT_AND_OPERATOR_FAILED_RESTORED",
+  "custom_r2_allowed_to_resume": true,
+  "goal_terminal": false
+}

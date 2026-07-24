@@ -1,0 +1,134 @@
+{
+  "schema_id": "companion.wb55.gdey0154d67_t03.vendor_partial_added_first_old_cleanup_research_source_hash.v1",
+  "status": "PASS_RESEARCH_AUTHORIZES_ONE_ADDED_FIRST_OLD_CLEANUP_CANDIDATE",
+  "claim_scope": "no-hardware source/topology research before implementation; no waveform, register, temperature, production, visual, or OLED-like claim",
+  "candidate": "vendor_partial_added_first_old_cleanup",
+  "owner_steering": {
+    "registry_id": "COMP-REQ-255",
+    "goal": "Remove the visible erase-first leading-edge cutoff by drawing only safe newly-black bytes before the accepted previous-black cleanup pass, without reintroducing residue or black flash.",
+    "only_new_candidate": true
+  },
+  "transition_predicate": {
+    "white_bit": 1,
+    "black_bit": 0,
+    "added_black_mask": "previous_byte & ~current_byte",
+    "removed_black_mask": "~previous_byte & current_byte",
+    "eligible_byte": "added_black_mask != 0 && removed_black_mask == 0",
+    "mixed_transition_byte": "added_black_mask != 0 && removed_black_mask != 0",
+    "mixed_byte_action": "exclude",
+    "empty_or_over_limit_action": "fail closed before payload or activation",
+    "fallback": "forbidden"
+  },
+  "two_pass_topology": [
+    {
+      "pass": 1,
+      "name": "added_first",
+      "window": "one to eight byte-aligned per-x-byte contiguous eligible-y runs; every byte in each rectangle satisfies the predicate",
+      "payload": "CPU-held current frame on 0x24",
+      "completion": "one supplier reset/border/0x22=0xFF/0x20/BUSY"
+    },
+    {
+      "pass": 2,
+      "name": "old_cleanup",
+      "window": "previous-frame black bounding box",
+      "payload": "CPU-held current frame on 0x24",
+      "completion": "one supplier reset/border/0x22=0xFF/0x20/BUSY"
+    }
+  ],
+  "material_difference": {
+    "accepted_comp_req_236": "erase previous-black bbox first, then draw difference union; visually no residue but has a temporary leading-edge cutoff",
+    "rejected_comp_req_243_252": "erase previous-black bbox first, then draw disjoint difference regions; machine PASS but same visible leading-edge cutoff",
+    "new_candidate": "draw only bytes that cannot erase any current black pixel, complete that activation, then clean the previous-black bbox with current bytes",
+    "why_not_a_historical_retry": "The first activation changes from old cleanup to pure added-black drawing; it excludes every byte that could contain a simultaneous removal and does not use a union or a historical draw/erase ordering with mixed bytes."
+  },
+  "synthetic_five_anchor_probe": {
+    "frame_contract": "1 baseline + 48 changed + 1 identical",
+    "changed_frames": 48,
+    "radius_px": 12,
+    "anchors": [[100, 100], [100, 58], [142, 100], [100, 142], [58, 100]],
+    "steps_per_segment": 8,
+    "pure_added_byte_count_min": 28,
+    "pure_added_byte_count_max": 49,
+    "mixed_transition_byte_count_min": 0,
+    "mixed_transition_byte_count_max": 4,
+    "eligible_region_count_min": 2,
+    "eligible_region_count_max": 6,
+    "implementation_region_limit": 8,
+    "eligible_payload_bytes_min": 28,
+    "eligible_payload_bytes_max": 49,
+    "changed_frames_with_zero_eligible_bytes": 0,
+    "fallback_required": false
+  },
+  "machine_contract": {
+    "changed_frames": 48,
+    "completions_per_changed_frame": 2,
+    "total_completions": 96,
+    "busy_completions": 96,
+    "panel_errors": 0,
+    "identical_payload_bytes": 0,
+    "identical_activations": 0,
+    "single_completion_max_ms": 700,
+    "two_completion_p95_max_ms": 1200,
+    "two_completion_absolute_max_ms": 1400
+  },
+  "forbidden_current_goal": [
+    "fallback or union window",
+    "mixed-transition byte in pass 1",
+    "0x21",
+    "0x37",
+    "0x2D read",
+    "LUT or waveform change",
+    "0x26 after baseline",
+    "third activation",
+    "full-frame compensation",
+    "reset, border, control, timing, rail, or temperature change",
+    "White, Black, or rail rerun",
+    "V9, Rig, CRIG, browser, art, or dynamic-expression binding"
+  ],
+  "future_boundary_not_authorized_here": {
+    "source": "root backstop research note; SSD1681 Rev0.13 PDF is not checked into this repository",
+    "facts_for_a_separate_goal_only": [
+      "0x2D can read the 11-byte OTP Display Option; bytes C through G correspond to 0x37 bytes B through F.",
+      "0x37 F[6] selects Display Mode 2 RAM Ping-Pong.",
+      "The T03 supplier sample neither reads 0x2D nor writes 0x37, and OTP revisions may differ."
+    ],
+    "possible_separate_goal": "If this candidate is NO_GO, first perform read-only 0x2D identity/profile capture, then decide whether exact-copy plus only F6 could be a separately authorized single-variable experiment.",
+    "current_disposition": "Do not implement, send, read, or write 0x2D/0x21/0x37 in this Goal."
+  },
+  "source_manifest": {
+    "supplier_epaper_c": {
+      "path": "C:/Users/Billy/Desktop/GDEH0154D67-20211203-P-LUT(1s) -1s快刷/EPD_W21/EPAPER.c",
+      "sha256": "7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896",
+      "access": "read-only"
+    },
+    "preimplementation_driver": {
+      "path": "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
+      "sha256": "410E0703623F18B9C1BAF3EC56BABADE3A276E79003269EFFA10533D2A9B8C87"
+    },
+    "product_registry_after_steering": {
+      "path": "docs/companion_product_requirements.md",
+      "sha256": "29C6A2A85A76A8E206BEEC671B49A41BC0167273DB64FE889EA18D485687EAFC"
+    },
+    "prior_operator_no_go": {
+      "path": "docs/validation/companion-gdey0154d67-t03-vendor-partial-disjoint-no-union-settle-operator-r1-20260721.json",
+      "sha256": "67E43FBBD7546EB99E4CE8B06EE84141D0B0F4419E77C7ED1AF7D9C38D7D9C00",
+      "status": "NO_GO_OPERATOR_LEADING_EDGE_CUTOFF_DISJOINT_NO_UNION_SETTLE"
+    },
+    "prior_completion_audit": {
+      "path": "docs/validation/companion-gdey0154d67-t03-vendor-partial-disjoint-no-union-settle-completion-audit-20260721.json",
+      "sha256": "42D611AB16D10403B820D9DE6E25B8B24A6D0BD4105AE12222BB1517BF46058F",
+      "status": "NO_GO_OPERATOR_LEADING_EDGE_CUTOFF_NORMAL_RESTORED"
+    },
+    "accepted_method_study": {
+      "path": "docs/validation/companion-gdey0154d67-t03-yesterday-method-study-20260721.json",
+      "sha256": "A88B022423E6ADFBA83B1362BAACB0C6CAC3A970DAEC93EB521E63EEB0030C2D",
+      "status": "STUDY_COMPLETE_TWO_PASS_ERASE_FIRST_IS_ACCEPTED_METHOD"
+    }
+  },
+  "implementation_permission": {
+    "allowed": true,
+    "exact_scope": "one default-off, production-off added-first then previous-black cleanup diagnostic plus fail-closed build/verifier/runner artifacts",
+    "hardware_allowed_now": false,
+    "next_gate": "All static, build, prerequisite, parser fixture, registry/current-goal, runner CheckOnly and diff checks must pass before one bounded hardware run."
+  }
+}

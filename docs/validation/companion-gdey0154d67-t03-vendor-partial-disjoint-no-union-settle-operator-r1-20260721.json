@@ -1,0 +1,72 @@
+{
+  "schema_id": "companion.wb55.gdey0154d67_t03.vendor_partial_disjoint_no_union_settle_operator.v1",
+  "status": "NO_GO_OPERATOR_LEADING_EDGE_CUTOFF_DISJOINT_NO_UNION_SETTLE",
+  "claim_scope": "canonical physical observation of one default-off two-pass erase-then-disjoint-draw diagnostic; no production, temperature, waveform, LUT, OLED-like, or expression-binding claim",
+  "candidate": "vendor_partial_disjoint_no_union_settle",
+  "machine_trace": {
+    "status": "PASS_MACHINE_VENDOR_PARTIAL_DISJOINT_NO_UNION_SETTLE_TRACE",
+    "changed_frames": 48,
+    "controller_completions": 96,
+    "busy_completions": 96,
+    "panel_errors": 0,
+    "single_completion_max_ms": 447,
+    "two_completion_p95_ms": 894,
+    "two_completion_max_ms": 894,
+    "path": ".cache/validation/wb55-vendor-partial-disjoint-no-union-settle-r1-20260721/vendor-partial-disjoint-no-union-settle-trace.json",
+    "sha256": "8BC7D28C8D54C175525CF95D91977CCE2D649434F7746CA84F203FC1DE2A8355"
+  },
+  "operator_review": {
+    "style": "aiw_operator_prompt_v1",
+    "selected": "失败",
+    "note": "还是移动的时候会吞掉一截再补全, 但是已经没有残影了, 能不要吞掉一截再补全吗, 移动方向上回吞掉一小截",
+    "artifact": {
+      "path": ".cache/validation/wb55-vendor-partial-disjoint-no-union-settle-r1-20260721/operator-prompt-observation.txt",
+      "sha256": "BA616661A06993C8381BDF758C637A93F3AFA1521F17D917182C0D3BF91C9047"
+    }
+  },
+  "disposition": {
+    "residue_regression_preserved": true,
+    "whole_screen_black_flash_regression_preserved": true,
+    "remaining_failure": "Each move still visibly removes a small leading-direction segment before the draw pass restores it, so continuity is not owner-accepted.",
+    "production_promotion": "prohibited",
+    "expression_binding": "prohibited",
+    "candidate_default": "off",
+    "next_action": "No automatic follow-up diagnostic is authorized by this artifact. Record new owner steering and a materially distinct, evidence-bounded topology before any further physical run."
+  },
+  "source_binding": {
+    "supplier_epaper_c_sha256": "7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896",
+    "driver_sha256": "410E0703623F18B9C1BAF3EC56BABADE3A276E79003269EFFA10533D2A9B8C87",
+    "trace_verifier_sha256": "6A3BF99D1EC2CCFE1E3E6DD66228F2638964DF154F53D233BC5388EECA5B7719",
+    "static_contract": {
+      "path": "docs/validation/companion-gdey0154d67-t03-vendor-partial-disjoint-no-union-settle-static-20260721.json",
+      "sha256": "667C59DDDE07C19E6756E2E0EA62A5659112462D90102F4F7C7C66D43DE8CC80",
+      "status": "PASS_STATIC_SOURCE_EXACT_DISJOINT_NO_UNION_SETTLE_DEFAULT_OFF"
+    },
+    "hardware_prerequisite": {
+      "path": "docs/validation/companion-gdey0154d67-t03-vendor-partial-disjoint-no-union-settle-r2-hardware-prerequisite-20260721.json",
+      "sha256": "90D5EA544B5A7131E36C74C28C9BEE04DF08041D47D9EB0C2EF6FBC59008C04A",
+      "status": "PASS_R2_HARDWARE_PREREQUISITE_DISJOINT_NO_UNION_SETTLE_UNPROVEN"
+    }
+  },
+  "images": {
+    "diagnostic_hex_sha256": "7513F5862990EB0E4655E2186C6E771ED7252666AB42366821B016B798DF370B",
+    "observer_hex_sha256": "3BC671316AB354B49DBEE263E0047F45628B9038CD131918D307CD0E0366FCEE",
+    "normal_restore_hex_sha256": "E1997F29DCB8735899B4BC0B9012CF75025F3CA8D21250485BCC21E4C4691B46"
+  },
+  "normal_restore": {
+    "restored": true,
+    "verified": true,
+    "flash_stdout": ".cache/validation/flash-nucleo/stm32-programmer-20260721-112018-10532.stdout.log",
+    "flash_stdout_sha256": "10920B33903F13BFB544541442DFFAD46156E62094F87D9CAA792513FD43D6C2"
+  },
+  "retained_runtime": {
+    "raw_log": {
+      "path": ".cache/validation/wb55-vendor-partial-disjoint-no-union-settle-r1-20260721/capture/nucleo-serial-raw.log",
+      "sha256": "5506E1CB38AF6117DDD4B2F11E585F46824B504125DB220B3021A78B5F7E495A"
+    },
+    "stage_run": {
+      "path": ".cache/validation/wb55-vendor-partial-disjoint-no-union-settle-r1-20260721/stage-run.json",
+      "sha256": "DA62B9313499F726D70CC235B2C4F1E5A53FA96BA6310D5F22336FD0162736FE"
+    }
+  }
+}

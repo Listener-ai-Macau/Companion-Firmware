@@ -1,0 +1,356 @@
+{
+  "schema": "companion.v9_expression_total_machine_audit.v1",
+  "status": "GO_HUMAN_ACCEPTANCE_MACHINE_CLOSURE_COMPLETE",
+  "authority": [
+    "COMP-REQ-187",
+    "COMP-REQ-189",
+    "COMP-REQ-190",
+    "COMP-REQ-198",
+    "COMP-REQ-229",
+    "COMP-REQ-233",
+    "COMP-REQ-239",
+    "COMP-REQ-240"
+  ],
+  "scope": "upper V9 expression system only; no panel target, driver, LUT, refresh, flash, or hardware claim",
+  "protected": {
+    "locked_v9": {
+      "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+    },
+    "owner_acceptance": {
+      "path": "docs/validation/companion-pet-special-system-owner-acceptance-20260717.json",
+      "sha256": "8A3BDF4BD1254B0D0F4DE13A7F293C3D74587C800339ABD4C61FEB0B7737E227"
+    }
+  },
+  "daily_v22": {
+    "target_gate": {
+      "artifact": "docs/validation/companion-v22-emotion-separation-target-rig-gate-20260719.json",
+      "status": "PASS_V22_EMOTION_SEPARATION_TARGET_RIG_GATE"
+    },
+    "router_session": {
+      "artifact": "docs/validation/companion-v22-everyday-bridge-router-r2-20260720.json",
+      "status": "PASS_V22_EVERYDAY_BRIDGE_ROUTER_RUNTIME_INACTIVE"
+    },
+    "upper_gate": {
+      "artifact": "docs/validation/companion-v9-v22-expression-upper-gate-r5-20260720.json",
+      "status": "PASS_V9_V22_EXPRESSION_UPPER_GATE_RUNTIME_INACTIVE"
+    },
+    "component_choreography": {
+      "component_count": 37,
+      "required_roles": [
+        "left_brow",
+        "left_cheek",
+        "left_eye",
+        "left_highlight",
+        "left_sparkle",
+        "mouth",
+        "nose",
+        "right_brow",
+        "right_cheek",
+        "right_eye",
+        "right_highlight",
+        "right_sparkle"
+      ],
+      "nose_component_id": 4,
+      "nose_policy": "identity_only_fixed_offset",
+      "bridge_count": 10,
+      "frame_count": 72,
+      "bridges": [
+        {
+          "name": "alert__puzzled",
+          "source": "alert",
+          "target": "puzzled",
+          "frame_count": 7,
+          "cues": [
+            "source_hold",
+            "primary_highlight_lead",
+            "sparkle_arrive",
+            "brow_apex",
+            "lower_face_apex",
+            "target_hold",
+            "highlight_settle"
+          ]
+        },
+        {
+          "name": "calm__curious",
+          "source": "calm",
+          "target": "curious",
+          "frame_count": 7,
+          "cues": [
+            "source_hold",
+            "primary_highlight_lead",
+            "sparkle_arrive",
+            "brow_apex",
+            "lower_face_apex",
+            "target_hold",
+            "highlight_settle"
+          ]
+        },
+        {
+          "name": "calm__puzzled",
+          "source": "calm",
+          "target": "puzzled",
+          "frame_count": 7,
+          "cues": [
+            "source_hold",
+            "primary_highlight_lead",
+            "sparkle_arrive",
+            "brow_apex",
+            "lower_face_apex",
+            "target_hold",
+            "highlight_settle"
+          ]
+        },
+        {
+          "name": "curious__calm",
+          "source": "curious",
+          "target": "calm",
+          "frame_count": 7,
+          "cues": [
+            "source_hold",
+            "primary_highlight_lead",
+            "sparkle_arrive",
+            "brow_apex",
+            "lower_face_apex",
+            "target_hold",
+            "highlight_settle"
+          ]
+        },
+        {
+          "name": "curious__warm",
+          "source": "curious",
+          "target": "warm",
+          "frame_count": 7,
+          "cues": [
+            "source_hold",
+            "primary_highlight_lead",
+            "sparkle_arrive",
+            "brow_apex",
+            "lower_face_apex",
+            "target_hold",
+            "highlight_settle"
+          ]
+        },
+        {
+          "name": "playful__warm",
+          "source": "playful",
+          "target": "warm",
+          "frame_count": 8,
+          "cues": [
+            "source_hold",
+            "primary_highlight_lead",
+            "sparkle_arrive",
+            "brow_apex",
+            "lower_face_apex",
+            "accent_resolve",
+            "target_hold",
+            "highlight_settle"
+          ]
+        },
+        {
+          "name": "puzzled__alert",
+          "source": "puzzled",
+          "target": "alert",
+          "frame_count": 7,
+          "cues": [
+            "source_hold",
+            "primary_highlight_lead",
+            "sparkle_arrive",
+            "brow_apex",
+            "lower_face_apex",
+            "target_hold",
+            "highlight_settle"
+          ]
+        },
+        {
+          "name": "puzzled__calm",
+          "source": "puzzled",
+          "target": "calm",
+          "frame_count": 7,
+          "cues": [
+            "source_hold",
+            "primary_highlight_lead",
+            "sparkle_arrive",
+            "brow_apex",
+            "lower_face_apex",
+            "target_hold",
+            "highlight_settle"
+          ]
+        },
+        {
+          "name": "warm__curious",
+          "source": "warm",
+          "target": "curious",
+          "frame_count": 7,
+          "cues": [
+            "source_hold",
+            "primary_highlight_lead",
+            "sparkle_arrive",
+            "brow_apex",
+            "lower_face_apex",
+            "target_hold",
+            "highlight_settle"
+          ]
+        },
+        {
+          "name": "warm__playful",
+          "source": "warm",
+          "target": "playful",
+          "frame_count": 8,
+          "cues": [
+            "source_hold",
+            "primary_highlight_lead",
+            "sparkle_arrive",
+            "brow_apex",
+            "lower_face_apex",
+            "accent_resolve",
+            "target_hold",
+            "highlight_settle"
+          ]
+        }
+      ]
+    },
+    "same_emotion_presence": {
+      "refresh_acknowledged": true,
+      "minimum_post_refresh_hold_ms": 750,
+      "visible_component_steps": 72
+    }
+  },
+  "special_candidate_sources": {
+    "v34_v35_export_foundation": {
+      "artifact": "docs/validation/companion-v34-v35-special-decoration-component-export-gate-20260720.json",
+      "status": "PASS_COMPONENT_EXPORT_RUNTIME_INACTIVE"
+    },
+    "v34_v35_target_asset_mount": {
+      "artifact": "docs/validation/companion-v34-v35-special-decoration-target-asset-mount-20260720.json",
+      "status": "PASS_TARGET_ASSET_MOUNT_RUNTIME_INACTIVE"
+    },
+    "v34_v35_wb55_candidate_profile": {
+      "artifact": "docs/art/iterations/companion-pet-expression-v9-special-decoration-rig-v1/candidate/target-score-attempt-01/special-decoration-wb55-target-profile-plan.json",
+      "status": "PASS_CANDIDATE_PROFILE_GENERATED_RUNTIME_INACTIVE"
+    },
+    "v34_v35_browser_component_preview": {
+      "artifact": "docs/validation/companion-v34-v35-special-decoration-browser-wb55-preview-20260720.json",
+      "status": "PASS_BROWSER_COMPONENT_PREVIEW_RENDERED_RUNTIME_INACTIVE"
+    },
+    "v34_v35_wb55_component_pixel_parity": {
+      "artifact": "docs/validation/companion-v34-v35-special-decoration-wb55-component-parity-host-20260720.json",
+      "status": "PASS_BROWSER_WB55_COMPONENT_PIXEL_PARITY_RUNTIME_INACTIVE"
+    },
+    "v37_sleep_export_gate": {
+      "artifact": "docs/validation/companion-v37-sleepy-dream-component-export-gate-20260720.json",
+      "status": "PASS_COMPONENT_EXPORT_RUNTIME_INACTIVE"
+    },
+    "v37_wb55_candidate_profile": {
+      "artifact": "docs/art/iterations/companion-pet-expression-v9-sleepy-dream-rig-v1/candidate/target-score-attempt-01/sleepy-dream-wb55-target-profile-plan.json",
+      "status": "PASS_CANDIDATE_PROFILE_GENERATED_RUNTIME_INACTIVE"
+    },
+    "v37_wb55_profile_host": {
+      "artifact": "docs/validation/companion-v37-sleepy-dream-wb55-profile-host-20260720.json",
+      "status": "PASS_V37_SLEEPY_DREAM_WB55_PROFILE_RUNTIME_INACTIVE"
+    },
+    "v37_browser_component_preview": {
+      "artifact": "docs/validation/companion-v37-sleepy-dream-browser-wb55-preview-20260720.json",
+      "status": "PASS_BROWSER_COMPONENT_PREVIEW_RENDERED_RUNTIME_INACTIVE"
+    },
+    "v37_wb55_component_pixel_parity": {
+      "artifact": "docs/validation/companion-v37-sleepy-dream-wb55-component-parity-host-20260720.json",
+      "status": "PASS_BROWSER_WB55_COMPONENT_PIXEL_PARITY_RUNTIME_INACTIVE"
+    },
+    "v37_component_plan_parity": {
+      "score_count": 5,
+      "frame_count": 17,
+      "source_components": 82,
+      "max_component_mask_bytes": 506,
+      "comparison": "exact score/cue/PBM/duration sequence and host pixel replay",
+      "sleepy_dream_cloud": "locked_v9_source_components_candidate_only"
+    },
+    "v38_function_state_export_gate": {
+      "artifact": "docs/validation/companion-v38-function-state-component-export-gate-20260720.json",
+      "status": "PASS_COMPONENT_EXPORT_RUNTIME_INACTIVE"
+    },
+    "v38_wb55_candidate_profile": {
+      "artifact": "docs/art/iterations/companion-pet-expression-v9-function-state-decoration-rig-v1/candidate/target-score-attempt-01/function-state-wb55-target-profile-plan.json",
+      "status": "PASS_CANDIDATE_PROFILE_GENERATED_RUNTIME_INACTIVE"
+    },
+    "v38_wb55_profile_host": {
+      "artifact": "docs/validation/companion-v38-function-state-wb55-profile-host-20260720.json",
+      "status": "PASS_V38_FUNCTION_STATE_WB55_PROFILE_RUNTIME_INACTIVE"
+    },
+    "v38_browser_component_preview": {
+      "artifact": "docs/validation/companion-v38-function-state-browser-wb55-preview-20260720.json",
+      "status": "PASS_BROWSER_COMPONENT_PREVIEW_RENDERED_RUNTIME_INACTIVE"
+    },
+    "v38_wb55_component_pixel_parity": {
+      "artifact": "docs/validation/companion-v38-function-state-wb55-component-parity-host-20260720.json",
+      "status": "PASS_BROWSER_WB55_COMPONENT_PIXEL_PARITY_RUNTIME_INACTIVE"
+    },
+    "v38_component_plan_parity": {
+      "score_count": 8,
+      "frame_count": 26,
+      "source_components": 94,
+      "max_component_mask_bytes": 506,
+      "comparison": "exact score/cue/PBM/duration sequence and host pixel replay",
+      "menu_entry_notice": "three finite frames / 460ms / withdraws before Menu UI",
+      "upgrade_progress": "source-derived arrow/progress components",
+      "error_caution": "source-derived caution, brows and mouth"
+    },
+    "component_count": 57,
+    "runtime_resource_activated": false,
+    "active_candidate_binding": "forbidden"
+  },
+  "wba_portability_regression": {
+    "target": "future STM32WBA portability only; not the active STM32WB55 expression path",
+    "adapter": "app/companion_pendant/epaper/screen_assets_stm32wba.c",
+    "state": "unavailable_current_worktree_adapter_deleted",
+    "blocking": false,
+    "follow_up": "Replay the WBA portability host regression after the WBA adapter owning workstream restores or replaces its source."
+  },
+  "fail_closed": {
+    "all_special_runtime_events": [
+      "charging",
+      "error",
+      "menu",
+      "recording",
+      "sleep",
+      "upgrade"
+    ],
+    "missing_source_score_events": [],
+    "candidate_only_unaccepted_events": [
+      "recording",
+      "charging",
+      "sleep",
+      "menu_entry",
+      "upgrade",
+      "error"
+    ],
+    "daily_substitution": "forbidden",
+    "whole_face_card": "forbidden",
+    "code_drawn_face": "forbidden"
+  },
+  "machine_checks_passed": [
+    "locked V9 and protected acceptance hashes",
+    "V22 eye/highlight/brow/mouth/cheek/nose component coverage",
+    "V22 eye -> brow -> lower-face causal bridge ordering",
+    "V22 nose identity-only fixed offset",
+    "V22 10 directed bridges / 72 frames / refresh acknowledgement",
+    "V34/V35 source component export, native-200 reassembly parity, CRIG CRC and recorded WBA55/WBA65 portability asset mount evidence",
+    "V37 merges 39 byte-identical V34/V35 source masks with six registered locked-V9 sleepy components in a 45-mask external-NOR CRIG",
+    "V37 inactive WB55 profile: 82 registered source components / five scores / seventeen browser-WB55 pixel-identical candidate frames / 506-byte source-mask scratch requirement",
+    "V38 merges 45 byte-identical V37 source masks with twelve versioned imagegen Menu-entry/Upgrade/Error masks in a 57-mask external-NOR CRIG",
+    "V38 inactive WB55 profile: 94 registered source components / eight scores / twenty-six browser-WB55 pixel-identical candidate frames / 506-byte source-mask scratch requirement",
+    "Menu is a finite 460ms entry notice that withdraws before the actual Menu UI; generic MENU-state Rig synthesis remains fail-closed",
+    "special fail-closed boundary"
+  ],
+  "machine_check_blockers": [
+    "All candidate art and browser/WB55 component-plan/pixel gates pass, but no special candidate has human semantic or screen acceptance yet; runtime remains inactive until that review records an accepted result."
+  ],
+  "human_acceptance_eligible": true,
+  "next_required_machine_work": "Open the canonical Chinese aiw operator-prompt review for the native-200 component previews, with special attention to Menu entry withdrawing into the Menu UI, Upgrade readability, Error readability, source-preserved eye identity and absence of whole-face swaps. Keep all runtime bindings inactive until the selected human result is stored.",
+  "non_claims": [
+    "no_special_runtime_binding",
+    "no_firmware_flash",
+    "no_panel_or_driver_change",
+    "no_human_acceptance"
+  ]
+}

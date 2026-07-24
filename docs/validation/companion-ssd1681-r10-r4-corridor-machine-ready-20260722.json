@@ -1,0 +1,117 @@
+{
+  "artifacts": {
+    "elf": "C3F6C1430848E5CDD5D05E0D137C37518D546EB1BA97CED5C401D5497B5DEEB1",
+    "hex": "AD97EE23DD3BA2AB71E412DF11C0D7961F1EBC3D0DFD5FDF003F05AC8A8D8B9F",
+    "launcher": "633534165A634DE02160CB9D3881BEC06A63826311E1BD597EBFCEBA59417B4D",
+    "monitor": "CA496D91D7E42EF0CEE99C9534F93F8E168E008ECC8E82055E880AA6FB2936B1",
+    "parser_sha256": "E44F01B820F689002EC7766A3D2EA165B395FB46D05AF47466A5FD6586438EBF",
+    "runner": "4C5624A3EF456FB01F24315363D88FBC42D7261A6A0F12BBB3C5467BD450DB22",
+    "supervisor": "F712AD30EE4A52D26EEB8168CBB50F12D52C4AEF7DB3A8B0FF7A37BFF65757F1"
+  },
+  "authorization_created": false,
+  "evidence": {
+    "checkonly": {
+      "child_exited": true,
+      "hardware_contact": 0,
+      "popup": 0,
+      "retry": 0,
+      "status": "READY_NO_HARDWARE_CONTACT",
+      "writes": 0
+    },
+    "host_targeted": {
+      "claimonly_positive": true,
+      "reused_source_rejected": true,
+      "wrong_machine_ready_hash_rejected": true
+    },
+    "r3_disposition": "FC726BBD97327F6DC3F2237AD91749491E4E3E8C8AC1F68F777946B1781F3F19",
+    "targeted_parser": {
+      "cases": {
+        "busy_601": "REJECTED",
+        "positive_v3": "PASS",
+        "unknown_preamble": "REJECTED",
+        "wrong_corridor": "REJECTED",
+        "wrong_hash": "REJECTED"
+      },
+      "loop": {
+        "busy_max_ms": 500,
+        "busy_within_600_ms": true,
+        "first_loop_iteration": 1,
+        "ignored_preamble_lines": 21,
+        "ignored_trailing_partial_bytes": 0,
+        "ignored_trailing_partial_line": false,
+        "last_loop_iteration": 3,
+        "loop_iterations": 3,
+        "ring_bytes": 65536,
+        "status": "PASS_R10_LOOP_LOG"
+      }
+    },
+    "targeted_static": {
+      "checks": {
+        "classes": true,
+        "exact_transport": true,
+        "fixed_corridor": true,
+        "full_diff_then_corridor": true,
+        "generic_launcher_manifest": true,
+        "generic_runner_manifest": true,
+        "parser_r4_and_preamble": true,
+        "popup_and_lifecycle_untouched": true,
+        "r3_hold_preserved": true,
+        "r4_schema": true,
+        "r9_waveform_preserved": true,
+        "ring_line_boundary": true
+      },
+      "driver_sha256": "9A3F26122DEFBDBADF04ACD52FDC241D29644EDFBB6D193B0050E1349363F70E",
+      "launcher_sha256": "633534165A634DE02160CB9D3881BEC06A63826311E1BD597EBFCEBA59417B4D",
+      "lut_sha256": "9BCBAC1A07ED0A112D26409FBCDB8F5FE27CE07D922C2E18881C10A53229DDCD",
+      "lut_source_present": true,
+      "monitor_sha256": "CA496D91D7E42EF0CEE99C9534F93F8E168E008ECC8E82055E880AA6FB2936B1",
+      "parser_sha256": "E44F01B820F689002EC7766A3D2EA165B395FB46D05AF47466A5FD6586438EBF",
+      "runner_sha256": "4C5624A3EF456FB01F24315363D88FBC42D7261A6A0F12BBB3C5467BD450DB22",
+      "schema_id": "companion.wb55.ssd1681.r10_r4.corridor_static.v1",
+      "status": "PASS_R10_R4_CORRIDOR_STATIC",
+      "supervisor_sha256": "F712AD30EE4A52D26EEB8168CBB50F12D52C4AEF7DB3A8B0FF7A37BFF65757F1"
+    },
+    "work_package": "B2B57847AB4BCDD453C303405BC7CA007A560EABD0FD0B77E58513607B551F5E"
+  },
+  "execute_authorized": false,
+  "hardware_contact": 0,
+  "protected": {
+    "lut_sha256": "9BCBAC1A07ED0A112D26409FBCDB8F5FE27CE07D922C2E18881C10A53229DDCD",
+    "restore_application_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "tail_hex": "221741A83258"
+  },
+  "r4": {
+    "corridor": "x4-9,y80-91,bytes72",
+    "first_classes": {
+      "bb": 0,
+      "bw": 0,
+      "wb": 112,
+      "ww": 464
+    },
+    "frame_hashes": [
+      "8BAC81334BBBA52B19DB6BC24CE78A004E11B565011BA0B3EA5FF54200B68D16",
+      "B3EE55E9EA250DDD8DEFDC621CFA3FFEC646A67A2D80B5ABDDC6C2ED6002BFC7",
+      "D41BF2913D4C6ED6E9EF11EB8B9064AC3125A7A95B48F60E305DACF048D15C2B",
+      "FD4063FBC8A62425D84B9D04E8E1DE703C97F9175E98057B5B80C6FBFBD0D7C8",
+      "FDE0E045ECF6C7AFB8C2AC2FB79CA4F51D6486EA7FAFAB210383B307554BB87C",
+      "FE534F3D3533104C26E8D7C0E2EF3F8A057F8236901C51ECC45805AFCB129EC0"
+    ],
+    "moving_classes": {
+      "bb": 24,
+      "bw": 88,
+      "wb": 88,
+      "ww": 376
+    },
+    "payload_hashes": [
+      "51CFA32FECE0135F38198DA2529E7C6A0C1F53747984D55705077B7F6920CC76",
+      "51ECCB35B2C3D9CA78D193482D623F0809D1F094D0804E10ABE677C11D0BC930",
+      "5740CC300E6C89757B0588D495F2C2943917933FCBC9190B5432E9D126F160F8",
+      "82D7C8ED67824AEDF8DD7E0DE02B5C7D375A5F11AD9731B24C87E063221416BB",
+      "933CD8FFC54D7BB04C3EB45460303613D3860EADDC959A5D117196ED4B467862",
+      "B96DFF5E9B1B552B49C7B3A0DE5228A2761319007565E807B610785A5D7B1B06"
+    ],
+    "r3_hold": "400-410ms after post-sync 0x24"
+  },
+  "schema_id": "companion.wb55.ssd1681.r10_r4_corridor.machine_ready.v1",
+  "status": "MACHINE_READY_R10_R4_CORRIDOR_OFFLINE_ONLY"
+}

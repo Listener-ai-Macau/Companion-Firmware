@@ -1,0 +1,58 @@
+{
+  "schema_id": "companion.wb55.gdey0154d67_t03.vendor_partial_cleanup_draw_operator.v1",
+  "status": "PASS_OPERATOR_ACCEPTED_PRODUCTION_OFF_CLEANUP_DRAW_BASELINE",
+  "generated_at": "2026-07-20T21:07:23+08:00",
+  "claim_scope": "Current-room, production-off physical observation of the source-bound cleanup/draw diagnostic only. This is neither a production promotion nor a temperature, panel-identity, custom-waveform, or continuous-motion claim.",
+  "machine_prerequisites": {
+    "static_gate": {
+      "path": "docs/validation/companion-gdey0154d67-t03-vendor-partial-cleanup-draw-static-20260720.json",
+      "sha256": "C625C942E82E4C4255D268E68F0C7141A0AF2F7B785FDB6D3CA4541948CB4269",
+      "status": "PASS_STATIC_PRODUCTION_OFF_VENDOR_PARTIAL_CLEANUP_DRAW"
+    },
+    "runtime_trace": {
+      "path": "docs/validation/companion-gdey0154d67-t03-vendor-partial-cleanup-draw-runtime-20260720.json",
+      "sha256": "C321AEDF0900CC1757FFE77AC20604FBE481311137341166923D3561F6830850",
+      "status": "PASS_MACHINE_CLEANUP_DRAW_TRACE",
+      "observed_partial_frames": 48,
+      "per_motion_activation_count": 2,
+      "control": "0xFF",
+      "forbidden_control": "0xC7",
+      "local_window_bytes": "75..108"
+    }
+  },
+  "operator_review": {
+    "tool": "aiw operator-prompt",
+    "selection": "通过",
+    "artifact": {
+      "path": ".cache/validation/wb55-vendor-partial-cleanup-draw-r3-20260720/operator/operator-observation.json",
+      "sha256": "0E2F1C9344F02A32C741A148353E57DCDA9CB62152972A0A0EEB2FEC73590457"
+    },
+    "note": "这个感觉相当好, 但是球可以不要消失再出现吗, 感觉不够连续, 但是没有残影了, 比黑色全刷好很多",
+    "accepted_behavior": [
+      "No visible residual image during the bounded local cleanup/draw loop.",
+      "No whole-screen black flash during local motion.",
+      "The result is materially preferred to the black full-refresh path."
+    ],
+    "unaccepted_behavior": "The point visibly disappears before reappearing, so the motion is not continuous."
+  },
+  "implementation_binding": {
+    "driver": {
+      "path": "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
+      "sha256": "4F1CA496202D7AC674AF2960F2E72F40918AD1F71D5E115B213B70B7460F8921"
+    },
+    "diagnostic_image": {
+      "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_vendor_partial_cleanup_draw_operator_loop_diagnostic/Companion_Nucleo_WB55RG_VendorPartialCleanupDrawOperatorLoopDiagnostic.hex",
+      "sha256": "A0EA3B4FF2E3FEEB74DAA674AC7E7D46F693EB61F97CCB21364C6FC0C34ED8D9",
+      "frames": 360
+    },
+    "normal_restore": {
+      "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build/Companion_Nucleo_WB55RG_Bringup.hex",
+      "sha256": "E1997F29DCB8735899B4BC0B9012CF75025F3CA8D21250485BCC21E4C4691B46",
+      "flash_stdout": ".cache/validation/flash-nucleo/stm32-programmer-20260720-210348-14632.stdout.log",
+      "flash_stdout_sha256": "61DB21ADBB0BB5FF0977C7ACEAB37B42A42904E6FE062582404BDFC9BD7B2B48",
+      "verified": true
+    }
+  },
+  "regression_contract": "Future lower-driver work must preserve this no-residue/no-whole-screen-black-flash observation unless a later canonical operator review explicitly supersedes it.",
+  "next_boundary": "The already tested one-activation 0x26-old plus 0x24-new source partial route physically failed with moving black residue. Do not repeat it. More-continuous no-residue motion is NO_GO pending a panel/FPC-bound Good Display local recovery waveform or controller rule."
+}

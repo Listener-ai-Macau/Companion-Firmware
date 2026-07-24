@@ -1,0 +1,64 @@
+{
+  "schema_id": "companion.wb55.ssd1681_ram_ping_pong_point_probe.machine_ready.v1",
+  "requirement_id": "COMP-REQ-266",
+  "status": "MACHINE_READY_PHASE_B_ZERO_HARDWARE_CONTACT",
+  "hardware_contact": 0,
+  "phase_a_admission": {
+    "status": "PASS_UNIQUE_RAM_MAPPING",
+    "mapping": "activation_swapped_banks_selector0_base_selector1_current",
+    "machine_artifact_sha256": "5D3DE03A707BA7FB6AD17CDE1361448DFF8087B9E4A7205A18B5CD7D4FB915FE"
+  },
+  "candidate": {
+    "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_ram_ping_pong_point_probe/Companion_Nucleo_WB55RG_Ssd1681RamPingPongPointProbe.hex",
+    "sha256": "00880EBC4678ED83927FE69A797876C0513BF7AE4D18119FCE5E7FC833A64F0B",
+    "default_off": true,
+    "production_off": true
+  },
+  "motion_contract": {
+    "logical_frames": 24,
+    "generic_previous_current_diff": true,
+    "diagnostic_geometry": "12x12 point, 2 px horizontal step; not product or ball geometry",
+    "stage_0x24_per_frame": 1,
+    "control_0xff_per_frame": 1,
+    "refresh_0x20_per_frame": 1,
+    "busy_completion_per_frame": 1,
+    "motion_0x26_writes": 0,
+    "post_activation_sync_0x24_without_refresh_per_frame": 1,
+    "total_controls_ff": 24,
+    "total_refresh_0x20": 24,
+    "total_busy_completions": 24,
+    "total_post_sync_0x24_without_refresh": 24,
+    "full_refreshes": 0,
+    "controls_f7": 0,
+    "controls_c7": 0,
+    "lut_writes": 0,
+    "automatic_retries": 0,
+    "frame_spacing_ms": [600, 1000],
+    "busy_max_ms": 1000,
+    "window": "byte-aligned and bounded inside 25 bytes x 200 rows",
+    "transfer_oracle": "stage bytes and post-sync bytes must each equal window byte width times row height"
+  },
+  "restore_contract": {
+    "address_hex": "0x08000000",
+    "length_bytes": 524288,
+    "baseline_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "one_finally_restore": true,
+    "normal_boot_gate": true
+  },
+  "gates": [
+    {"name": "registry_verifier", "result": "PASS"},
+    {"name": "current_goal_audit", "result": "PASS"},
+    {"name": "parser_positive_negative_matrix", "result": "PASS"},
+    {"name": "static", "result": "PASS_STATIC_RAM_PING_PONG_POINT_PROBE_RAW_RESTORE_DEFAULT_OFF"},
+    {"name": "wb55_build", "result": "PASS"},
+    {"name": "runner_check_only", "result": "READY_NO_HARDWARE_CONTACT"},
+    {"name": "git_diff_check", "result": "PASS"}
+  ],
+  "evidence": {
+    "static_artifact_sha256": "A4BB988D263D07621D154BD9E8739EC4718AA9BA2029EA26A5E3441B513DFCB1",
+    "check_only_stage_run_sha256": "CD02E4F6EC17CEFFADB142F7A23306D37A9B5BD82D37B9F0E6B0262DCF5929A2",
+    "programmer_sha256": "BD520005962377155515A2C9E8FEAB73F304A696AAE1698F3B7760672160FD5E"
+  },
+  "next_action": "Execute the locked Phase B candidate exactly once, parse all 24 frames, restore the exact raw baseline, then open the canonical Chinese visual review only if every machine gate passes.",
+  "forbidden_claims": ["No Phase B hardware or visual result yet.", "No production, LUT, waveform, temperature, voltage, Rig, CRIG, touch, or BLE claim."]
+}

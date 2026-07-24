@@ -1,0 +1,77 @@
+{
+  "checks": {
+    "current_driver_keeps_candidate_default_off": true,
+    "current_driver_keeps_official_full_white_black_transport": true,
+    "owner_authorized_versioned_r2_prerequisite_only": true,
+    "r2_black_digital_is_one_plane_f7_busy_and_historically_bound": true,
+    "r2_black_stage_machine_operator_restore_passes": true,
+    "r2_closure_retains_lut_and_dynamic_no_go": true,
+    "r2_gate_retains_official_white_black_rail_pass": true,
+    "r2_white_digital_is_one_plane_f7_busy_and_historically_bound": true,
+    "r2_white_rail_is_30_cycle_positive_negative_and_historically_bound": true,
+    "r2_white_stage_machine_operator_restore_passes": true,
+    "replacement_fpc_evidence_passes": true,
+    "supplier_input_hash_is_immutable": true
+  },
+  "claim_scope": "r2 replacement-FPC/White/Black/rail prerequisite plus current default-off source guard; not a claim that r2 executed the current diagnostic or that the candidate is residue-free",
+  "current_source_guard": {
+    "candidate_default": "disabled",
+    "driver": {
+      "path": "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
+      "sha256": "410E0703623F18B9C1BAF3EC56BABADE3A276E79003269EFFA10533D2A9B8C87"
+    },
+    "official_full_path_asserted": "0x24 current plane, 0xF7, 0x20, BUSY",
+    "product_requirements": {
+      "path": "docs/companion_product_requirements.md",
+      "sha256": "EA59CE04032C7F1158BE4555A764F26E976A3666D49CB6B48ED657E90D0C3FC5"
+    }
+  },
+  "failures": [],
+  "forbidden_claims": [
+    "No current-diagnostic physical pass before its own new machine trace and canonical operator review.",
+    "No production promotion, temperature claim, LUT import, waveform mutation, or dynamic-expression binding.",
+    "No rewrite or source-hash rebinding of the r2 physical artifacts."
+  ],
+  "historical_source_binding": {
+    "preserved_not_rebound_to_current_source": true,
+    "r2_ssd1681_target_sha256": "66A5A2E7DC1F85BC7A02F0BCDA9F009BEA6B96E2995941E90E218D141FF2EE3F",
+    "vendor_epaper_c_sha256": "7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896"
+  },
+  "machine_status": "PASS_STATIC_HARDWARE_PREREQUISITE_ONLY",
+  "physical_evidence": {
+    "black_digital": {
+      "path": ".cache/validation/wb55-screen-recovery-current-source-r2-20260720/black/official-full-result.json",
+      "sha256": "92F38BEC9C46D5ADB913461D3031C5A9C82B5A56D154DC6C66DDD55E7360EBE9"
+    },
+    "black_stage": {
+      "path": ".cache/validation/wb55-screen-recovery-current-source-r2-20260720/black/stage-run.json",
+      "sha256": "231B5AA7288E1E81BCBC01E388CC4A74FD815B4522C36C9617EA2E03EDDE9011"
+    },
+    "r2_closure": {
+      "path": "docs/validation/companion-gdey0154d67-t03-p0-closure-r2-20260720.json",
+      "sha256": "DA2A6E8ECE1E3E7CC749E2E812B2C6711C228571A062198829BCA24803386FF9"
+    },
+    "r2_gate": {
+      "path": "docs/validation/companion-screen-wb55-hardware-recovery-gate-r2-20260720.json",
+      "sha256": "C4C9ABF1619819B3A110A099E4CDDDE2F6061DED22DD242759F493D86D36AEC3"
+    },
+    "replacement_fpc": {
+      "path": "docs/validation/companion-screen-wb55-replacement-fpc-evidence-20260720.json",
+      "sha256": "E1124866DBBBF083B3512EB75A4C8AE14BF6808ACCDD45B774A5095BD41D7D35"
+    },
+    "white_digital": {
+      "path": ".cache/validation/wb55-screen-recovery-current-source-r2-20260720/white/official-full-result.json",
+      "sha256": "05645DFF7539F6350196E10B0FA6A087B963A6F9938042B7C2762D9648089684"
+    },
+    "white_rail": {
+      "path": "docs/validation/companion-screen-wb55-white-rail-measurement-current-source-r2-20260720.json",
+      "sha256": "827DC52B8E7CA8CF0BF0B6E5CC2A64D37F3B1F69C1B73E4D2CED2CA7E6C51A8C"
+    },
+    "white_stage": {
+      "path": ".cache/validation/wb55-screen-recovery-current-source-r2-20260720/white/stage-run.json",
+      "sha256": "798835935293BB197971D4C1155B3AFEBCD6B8B6EEFD4BDC7E5D63B39DDBA5C3"
+    }
+  },
+  "schema_id": "companion.wb55.gdey0154d67_t03.vendor_partial_disjoint_no_union_settle_r2_hardware_prerequisite.v1",
+  "status": "PASS_R2_HARDWARE_PREREQUISITE_DISJOINT_NO_UNION_SETTLE_UNPROVEN"
+}

@@ -1,0 +1,90 @@
+{
+  "schema_id": "companion.wb55.ssd1681_phase_parallel_r9_continuous.r2_runtime_disposition.v1",
+  "status": "NO_GO_R9_CONTINUOUS_R2_OWNER_VISUAL_FAILED_RESTORED_NO_RETRY",
+  "requirements": [
+    "COMP-REQ-313",
+    "COMP-REQ-316",
+    "COMP-REQ-317",
+    "COMP-REQ-318"
+  ],
+  "errors": [],
+  "checks": {
+    "runtime_and_archive_inputs": true,
+    "archive_byte_identical": true,
+    "authorization_consumed_once": true,
+    "qualification_pass": true,
+    "bounded_contiguous_loop": true,
+    "single_canonical_owner_fail": true,
+    "promptless_preclean_postclean": true,
+    "exact_restore_normal_resume": true,
+    "stage_counts_and_no_retry": true,
+    "registry_verbatim_disposition": true,
+    "all_run_processes_exited": true
+  },
+  "qualification": {
+    "activations": 16,
+    "busy_max_ms": 599
+  },
+  "loop": {
+    "records": 1060,
+    "last_iteration": 1060,
+    "archived_tail_first_iteration": 931,
+    "archived_tail_records": 130,
+    "archived_tail_busy_max_ms": 599,
+    "ring_bytes": 65536
+  },
+  "operator": {
+    "selected": "失败",
+    "note": "呃，这样子的话就不是一个连续的球在运动，作为那个连续球运动的东西。\r\n",
+    "note_sha256": "30DDA3C9CC92110E636C9954652716EA805086DD15E889ED26B4F88D720B5698",
+    "popup_count": 1
+  },
+  "restore": {
+    "status": "PASS_RESTORE_EQUALS_CAPTURED_PRE_RUN_APPLICATION_BYTES",
+    "bytes": 524288,
+    "sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "normal_resume_status": "PASS_APPLICATION_RESUMED_AFTER_BACKUP"
+  },
+  "authorization": {
+    "consumed": true,
+    "retry_allowed": false,
+    "sha256_before_consumption": "5960EFF0D0A2D58F03A07589E476D4362767E62243F79CE81933739F632A034D",
+    "current_sha256": "ED0563183BDB45203F1E18702535D6E4F13D8A591381FD1CDDDAEEA8D4A9DADD"
+  },
+  "motion_or_promotion_entered": false,
+  "process_matches": [],
+  "archive_root": "docs/validation/companion-ssd1681-phase-parallel-r9-continuous-r2-runtime-20260721",
+  "archive_hashes": {
+    "persistent-launch.json": "9814B861C125E310D9286CBF5EE36AE00115F86F60C9BDCD8C98A2AA2CE69A7D",
+    "baseline-gate.json": "249A675E732C85CB32CAE51D2A871376B40E4A03B0EA235059FAFC12CBCE018B",
+    "preclean-white.json": "64D33D192CA81C59AA440658939AC75E18C8F1997CCED8B02B9200233F042A49",
+    "continuous-monitor-ready.json": "F63D2F957C05272D74F41B32824F35809C22BDBDC5B709E1584107B1481BBB59",
+    "continuous-qualification-ready.json": "51D72A1C160709A38A9D508009848318F6874A4A4B920848EC089F14B95AB121",
+    "controller-state.json": "558A375AE7FCC33BAF25F88F5FE466DB47927BFFF77BEFECB3500E2C42393A0B",
+    "acceptance-prompt-invoked.json": "933544B13E2953E4AB3E15770B78E4CE647520A9469BFF2D15724106CC7F6207",
+    "acceptance-prompt.stdout.log": "A14F32CA7ECFCF21360A894B10494BE3885B038AA555890353C5BE57E4E528BD",
+    "acceptance-prompt.stderr.log": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "prompt-supervisor.stdout.log": "67E1E613F114B7A3D6A50BB24E6583B9CAAC70BF79669990A37F297DE96B0EFE",
+    "prompt-supervisor.stderr.log": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "operator-note.txt": "30DDA3C9CC92110E636C9954652716EA805086DD15E889ED26B4F88D720B5698",
+    "operator-review.json": "4D98A1FCBA7C47A2773003CCF5C07664A3CFE0866033046F35DB6DFCAC29C10A",
+    "continuous-stop.json": "E0DC0F0A8EC0B2BCC0D04B118162C62A4BCA9A2E3B564E3D14AF2E2EF2A216BC",
+    "postclean-white.json": "64D33D192CA81C59AA440658939AC75E18C8F1997CCED8B02B9200233F042A49",
+    "restore-gate.json": "A09464D768885066EE8A01881A41EE567F0806163D5397839F33B6A8FB8A1776",
+    "normal-resume.json": "9CC5BE90713B73D448DF0FD74A7197766C9067104E8DF705D7139CA78EAAD200",
+    "stage-run.json": "9702B95000AEA05B553CAF6B1EBEAFB495CC0F411B878870EC002EFDFF07E7E8",
+    "runner.stdout.log": "DF83DEF20DA6B08ADFF9425745B3AA91580EA8C0CFC57AC68698E883F81BB93C",
+    "runner.stderr.log": "3DE186B8A6B871F45E13DF42AF173B48EF0608B5C1108A83D6589B25F36F69A1",
+    "qualification-and-ring.json": "558A375AE7FCC33BAF25F88F5FE466DB47927BFFF77BEFECB3500E2C42393A0B",
+    "monitor-result.json": "6DC6E3462359E6CC1E48CCED4A914E5DA85C2C7ACDFD5EAD3FEDF234FBB4BF22",
+    "telemetry-ring.log": "C791D7C5121C80FD78D53D07E5A06DBF021269760542C93A02C383C9E1C4062D",
+    "preclean-serial-raw.log": "C379BFB3B2CBB0374E47EB28ABE46736E2C47F1E318D4500A21F2A9E4707CECB",
+    "preclean-serial-summary.json": "907C52A787E3FB8090E0AC03BAE880ED7BC892840A7C75EC6C700E9E6A6A6A68",
+    "postclean-serial-raw.log": "0E745BF056B821B56DF0DC37339DF0D4B4AF6702AAB165A045AA3CF5D4EC8DBD",
+    "postclean-serial-summary.json": "6959B25B3408703D2E8FFFB9F98CEBDA130650D1A3CA1DA2ECF8733FCC35D52F",
+    "normal-serial-raw.log": "8270836CAA3675077F8F177E956B767A699C32C4FB142B1A9EF87AFD52C1A2B3",
+    "normal-serial-summary.json": "501EE5D0C9ED449D9DE5C55447F42641DB49E4AF34E06405CB278BDB9BEC857C"
+  },
+  "next_boundary": "new R10 payload-topology contract and MACHINE_READY only; no hardware Execute without root authorization",
+  "tool_sha256": "EE04F94040A9D10457F83DEDCAC16BBD265EBC75B80C92281679A0AD31BCFA8F"
+}

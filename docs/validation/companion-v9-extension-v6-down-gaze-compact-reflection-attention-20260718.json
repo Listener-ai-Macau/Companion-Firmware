@@ -1,0 +1,45 @@
+{
+  "schema": "companion.v9_daily_attention_proof_gate.v1",
+  "status": "FAIL_DAILY_ATTENTION_PROOF_GATE",
+  "candidate": "docs/art/iterations/companion-pet-expression-v9-extension-v6-down-gaze-compact-reflection/generated_pet_expression_extension_v6_down_gaze_compact_reflection_candidate.png",
+  "candidate_sha256": "3EB2D45C505A505F5E5E35B1029879E2C477BF0B1B50F118284760E049737DF9",
+  "grid": [
+    3,
+    4
+  ],
+  "direction_cells": {
+    "left": "0,0",
+    "right": "0,1",
+    "up": "0,2",
+    "down": "0,3"
+  },
+  "direction_primary_positions": {
+    "left": {
+      "primary_reflection_x": 0.3525,
+      "primary_reflection_y": 0.2714
+    },
+    "right": {
+      "primary_reflection_x": 0.354,
+      "primary_reflection_y": 0.2701
+    },
+    "up": {
+      "primary_reflection_x": 0.3575,
+      "primary_reflection_y": 0.2668
+    },
+    "down": {
+      "primary_reflection_x": 0.3543,
+      "primary_reflection_y": 0.2666
+    }
+  },
+  "minimum_pair_pixel_difference": 100,
+  "direction_thresholds": {
+    "left_max_primary_x": 0.47,
+    "right_min_primary_x": 0.53,
+    "up_max_primary_y": 0.43,
+    "down_min_primary_y": 0.57
+  },
+  "errors": [
+    "right: primary reflection is not visibly right-biased",
+    "down: primary reflection is not visibly lower-biased"
+  ]
+}

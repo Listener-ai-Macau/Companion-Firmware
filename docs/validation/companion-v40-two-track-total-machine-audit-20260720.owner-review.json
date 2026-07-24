@@ -1,0 +1,27 @@
+{
+  "schema": "companion.v40_two_track_owner_review.v1",
+  "status": "REJECTED_OWNER_DIRECTIONAL_GAZE_AND_CHINESE_OVERVIEW_STEERING",
+  "reviewed_at": "2026-07-21",
+  "review_method": "canonical_aiw_operator_prompt",
+  "related_machine_artifact": "docs/validation/companion-v40-two-track-total-machine-audit-20260720.json",
+  "selected": "失败",
+  "operator_note_path": "docs/validation/companion-v40-two-track-total-machine-audit-20260720.owner-review.note.txt",
+  "operator_note": "眼睛不是分上下左右吗, 那个整好了? 另外用中文, 然后给全景图给我, 每一个情绪是什么表情, 另外这个东西帮我看看情绪是怎么弄得",
+  "disposition": {
+    "v40_candidate": "preserve_as_rejected_inactive_evidence",
+    "runtime_binding": "forbidden",
+    "next_candidate": "v41_directional_gaze_chinese_emotion_overview",
+    "required_repairs": [
+      "complete_machine-verifiable_center_left_right_up_down_gaze",
+      "Chinese_visible_preview_labels_and_controls",
+      "Chinese_full_emotion_overview_with_expression_identity",
+      "documented_deterministic_emotion_selection_and_transition_logic"
+    ]
+  },
+  "non_claims": [
+    "no_human_acceptance",
+    "no_runtime_binding",
+    "no_firmware_flash",
+    "no_panel_or_driver_change"
+  ]
+}

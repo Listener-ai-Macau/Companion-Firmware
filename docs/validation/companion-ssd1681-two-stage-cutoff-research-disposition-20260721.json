@@ -1,0 +1,106 @@
+{
+  "schema_id": "companion.wb55.ssd1681_two_stage_cutoff_research.v1",
+  "status": "RESEARCH_DISPOSITION_RETAIN_ACCEPTED_BASELINE_NO_ADMISSIBLE_UNTESTED_SINGLE_VARIABLE",
+  "errors": [],
+  "hardware_contact": 0,
+  "owner_selected_floor": {
+    "requirement": "COMP-REQ-236/237/280",
+    "status": "PASS_OPERATOR_ACCEPTED_PRODUCTION_OFF_NO_UNION_SETTLE_BASELINE",
+    "note": "\u597d\u5f88\u591a, \u5c31\u662f\u79fb\u52a8\u7684\u65f6\u5019\u79fb\u52a8\u65b9\u5411\u4f1a\u5207\u6389\u4e00\u70b9, \u968f\u540e\u8fd8\u539f, \u80fd\u4f18\u5316\u5417",
+    "accepted": [
+      "visible movement",
+      "no recurring old-position hatch",
+      "no whole-screen black flash"
+    ],
+    "remaining": "temporary movement-direction leading-edge cutoff between two activations"
+  },
+  "machine_state_proof": {
+    "polarity": "1=white, 0=black",
+    "representative_states": [
+      {
+        "phase": "visible_old",
+        "old_only": 0,
+        "new_only": 1
+      },
+      {
+        "phase": "after_erase_first",
+        "old_only": 1,
+        "new_only": 1
+      },
+      {
+        "phase": "after_draw_second",
+        "old_only": 1,
+        "new_only": 0
+      }
+    ],
+    "conclusion": "With erase-before-draw, a new-only leading-edge pixel is necessarily white after pass 1 and becomes black only after pass 2. The observed cutoff is the exact intermediate state, not an unaccounted transfer bug."
+  },
+  "artifact_backed_topology_matrix": [
+    {
+      "class": "erase_old_then_draw_new",
+      "artifact": "accepted",
+      "physical": "accepted current best; no old hatch/no whole-screen black flash; temporary leading-edge cutoff"
+    },
+    {
+      "class": "erase_old_then_disjoint_draw_new",
+      "artifact": "disjoint_settle",
+      "physical": "no residue, but same leading-edge cutoff"
+    },
+    {
+      "class": "draw_added_then_erase_old",
+      "artifact": "added_first",
+      "physical": "more other residue and cutoff persists"
+    },
+    {
+      "class": "removed_only_erase_then_union_draw",
+      "artifact": "removed_first",
+      "physical": "visible missing segment enlarged"
+    },
+    {
+      "class": "simultaneous_current_regions_one_activation",
+      "artifact": "single_activation",
+      "physical": "visible movement with direct-motion residue"
+    },
+    {
+      "class": "current_union_then_cleanup",
+      "artifact": "COMP-REQ-239/241",
+      "physical": "cumulative content loss and enlarged eaten segment"
+    },
+    {
+      "class": "old_or_current_union",
+      "artifact": "COMP-REQ-236 video diagnosis",
+      "physical": "recurring old-position hatch until settle"
+    }
+  ],
+  "admissibility": {
+    "unchanged_boundaries": [
+      "supplier 0xFF/0x20/BUSY",
+      "no custom LUT",
+      "no full black flash",
+      "no old hatch",
+      "source reset/border",
+      "production off"
+    ],
+    "required_to_remove_cutoff": "make new-only black pixels visible before or during old-only erasure",
+    "already_observed_outcomes": "Every source-bound ordering that does so is represented by draw-first, union-current, disjoint-current or old-or-current artifacts and regresses residue or content integrity.",
+    "untested_single_variable": null
+  },
+  "disposition": {
+    "candidate_admitted": false,
+    "baseline_rerun": false,
+    "reason": "No materially distinct, source-bound one-variable topology remains that can remove the mathematically required inter-pass cutoff without repeating a durable physical NO_GO or violating the accepted no-residue/no-full-flash floor.",
+    "preserve": "Keep COMP-REQ-236/237 default-disabled current-best baseline unchanged.",
+    "future_unlock": "A panel-bound waveform/control that cleanly drives simultaneous old-only white and new-only black transitions, or explicit owner permission to relax a protected floor, would create a genuinely new candidate class.",
+    "goal_terminal": false
+  },
+  "locked_hashes": {
+    "accepted": "DA2FE11DB4CB1AFC5D433B2798BADBB576FC9C82BB39C472236E084C48F1EC57",
+    "accepted_runtime": "AE50830D1DB091AD2E526A132D55A7D512EA55E09D534F66CA7E71DB81BFF814",
+    "accepted_static": "0AAA8C8E20483A5CDBBA176E1A66332DE8BCCEB40D84BCA3E01759C54A40389F",
+    "disjoint_settle": "67E43FBBD7546EB99E4CE8B06EE84141D0B0F4419E77C7ED1AF7D9C38D7D9C00",
+    "added_first": "0E3643391446640D0D9A2A9B2E050D41A14D4BBB0D32785D814B4E57D98D2CF4",
+    "removed_first": "2FEBAB3365FE8481760DB0DC6C4180EFD01C24B10D985F751B6CAD9F4E1A2932",
+    "single_activation": "13CF51F221110829949075864973DF769AAF1C8222B73B482124BF14FD55D9C3",
+    "method_study": "A88B022423E6ADFBA83B1362BAACB0C6CAC3A970DAEC93EB521E63EEB0030C2D"
+  }
+}

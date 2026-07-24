@@ -1,0 +1,1488 @@
+{
+  "schema": "companion.v9_rig_touch_emotion_machine_preview.v1",
+  "status": "PASS_BROWSER_COMPONENT_PREVIEW_FROM_TARGET_TRACE",
+  "claim_scope": "browser_component_preview_from_runtime_inactive_target_trace_not_firmware_flash_or_panel_acceptance",
+  "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "runtime_resource_activated": false,
+  "target_trace": {
+    "path": "docs/validation/companion-v9-rig-touch-emotion-machine-20260719.json",
+    "sha256": "3C5673D7C4581533E65D521A560AA83B96BFE925F3E08096C60BCBA36C0F9AAB"
+  },
+  "browser_player": {
+    "path": "docs/validation/artifacts/companion-v9-rig-touch-emotion-machine-preview-20260719/touch-emotion-component-player.html",
+    "sha256": "3633161904A9E8D8A75B1DD3DDA97F2DAF14A2B5AFFEA5B8CD5F118403AE7649"
+  },
+  "browser_trace": {
+    "schema": "companion.v9_rig_touch_emotion_browser_trace.v1",
+    "sourceTraceSha256": "3C5673D7C4581533E65D521A560AA83B96BFE925F3E08096C60BCBA36C0F9AAB",
+    "runtimeResourceActivated": false,
+    "frames": [
+      {
+        "index": 0,
+        "kind": "performance",
+        "routeIndex": 0,
+        "state": {
+          "scene": "daily",
+          "emotion": "calm",
+          "attention": "right",
+          "energy": 2,
+          "interactionMemory": 0,
+          "phase": 0
+        },
+        "scorePhase": "entry",
+        "scoreStepIndex": 0,
+        "postRefreshHoldMs": 750,
+        "layers": [
+          {
+            "component": "left_brow_open",
+            "componentId": 1,
+            "role": "left_brow",
+            "baseX": 47,
+            "baseY": 85,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 47,
+            "y": 85,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "right_brow_open",
+            "componentId": 2,
+            "role": "right_brow",
+            "baseX": 132,
+            "baseY": 85,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 132,
+            "y": 85,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "left_eye_open",
+            "componentId": 5,
+            "role": "left_eye",
+            "baseX": 42,
+            "baseY": 112,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 42,
+            "y": 112,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "right_eye_open",
+            "componentId": 6,
+            "role": "right_eye",
+            "baseX": 125,
+            "baseY": 112,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 125,
+            "y": 112,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "left_eye_highlight_open",
+            "componentId": 7,
+            "role": "left_highlight",
+            "baseX": 42,
+            "baseY": 112,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 42,
+            "y": 112,
+            "compositeOp": "erase"
+          },
+          {
+            "component": "right_eye_highlight_open",
+            "componentId": 8,
+            "role": "right_highlight",
+            "baseX": 125,
+            "baseY": 112,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 125,
+            "y": 112,
+            "compositeOp": "erase"
+          },
+          {
+            "component": "left_eye_sparkle_open",
+            "componentId": 9,
+            "role": "left_sparkle",
+            "baseX": 42,
+            "baseY": 112,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 42,
+            "y": 112,
+            "compositeOp": "erase"
+          },
+          {
+            "component": "right_eye_sparkle_open",
+            "componentId": 10,
+            "role": "right_sparkle",
+            "baseX": 125,
+            "baseY": 112,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 125,
+            "y": 112,
+            "compositeOp": "erase"
+          },
+          {
+            "component": "left_cheek_default",
+            "componentId": 13,
+            "role": "left_cheek",
+            "baseX": 33,
+            "baseY": 160,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 33,
+            "y": 160,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "right_cheek_default",
+            "componentId": 14,
+            "role": "right_cheek",
+            "baseX": 154,
+            "baseY": 160,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 154,
+            "y": 160,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "nose_default",
+            "componentId": 15,
+            "role": "nose",
+            "baseX": 94,
+            "baseY": 148,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 94,
+            "y": 148,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "mouth_default",
+            "componentId": 16,
+            "role": "mouth",
+            "baseX": 86,
+            "baseY": 160,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 86,
+            "y": 160,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "charm_star",
+            "componentId": 19,
+            "role": "charm",
+            "baseX": 96,
+            "baseY": 31,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 96,
+            "y": 31,
+            "compositeOp": "ink"
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "kind": "performance",
+        "routeIndex": 0,
+        "state": {
+          "scene": "daily",
+          "emotion": "calm",
+          "attention": "right",
+          "energy": 2,
+          "interactionMemory": 0,
+          "phase": 0
+        },
+        "scorePhase": "lead",
+        "scoreStepIndex": 4,
+        "postRefreshHoldMs": 750,
+        "layers": [
+          {
+            "component": "left_brow_open",
+            "componentId": 1,
+            "role": "left_brow",
+            "baseX": 47,
+            "baseY": 85,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 47,
+            "y": 85,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "right_brow_open",
+            "componentId": 2,
+            "role": "right_brow",
+            "baseX": 132,
+            "baseY": 85,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 132,
+            "y": 85,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "left_eye_open",
+            "componentId": 5,
+            "role": "left_eye",
+            "baseX": 42,
+            "baseY": 112,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 42,
+            "y": 112,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "right_eye_open",
+            "componentId": 6,
+            "role": "right_eye",
+            "baseX": 125,
+            "baseY": 112,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 125,
+            "y": 112,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "left_eye_highlight_open",
+            "componentId": 7,
+            "role": "left_highlight",
+            "baseX": 42,
+            "baseY": 112,
+            "offsetX": 5,
+            "offsetY": 0,
+            "x": 47,
+            "y": 112,
+            "compositeOp": "erase"
+          },
+          {
+            "component": "right_eye_highlight_open",
+            "componentId": 8,
+            "role": "right_highlight",
+            "baseX": 125,
+            "baseY": 112,
+            "offsetX": 5,
+            "offsetY": 0,
+            "x": 130,
+            "y": 112,
+            "compositeOp": "erase"
+          },
+          {
+            "component": "left_eye_sparkle_open",
+            "componentId": 9,
+            "role": "left_sparkle",
+            "baseX": 42,
+            "baseY": 112,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 42,
+            "y": 112,
+            "compositeOp": "erase"
+          },
+          {
+            "component": "right_eye_sparkle_open",
+            "componentId": 10,
+            "role": "right_sparkle",
+            "baseX": 125,
+            "baseY": 112,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 125,
+            "y": 112,
+            "compositeOp": "erase"
+          },
+          {
+            "component": "left_cheek_default",
+            "componentId": 13,
+            "role": "left_cheek",
+            "baseX": 33,
+            "baseY": 160,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 33,
+            "y": 160,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "right_cheek_default",
+            "componentId": 14,
+            "role": "right_cheek",
+            "baseX": 154,
+            "baseY": 160,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 154,
+            "y": 160,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "nose_default",
+            "componentId": 15,
+            "role": "nose",
+            "baseX": 94,
+            "baseY": 148,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 94,
+            "y": 148,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "mouth_default",
+            "componentId": 16,
+            "role": "mouth",
+            "baseX": 86,
+            "baseY": 160,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 86,
+            "y": 160,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "charm_star",
+            "componentId": 19,
+            "role": "charm",
+            "baseX": 96,
+            "baseY": 31,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 96,
+            "y": 31,
+            "compositeOp": "ink"
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "kind": "performance",
+        "routeIndex": 0,
+        "state": {
+          "scene": "daily",
+          "emotion": "calm",
+          "attention": "right",
+          "energy": 2,
+          "interactionMemory": 0,
+          "phase": 0
+        },
+        "scorePhase": "response",
+        "scoreStepIndex": 5,
+        "postRefreshHoldMs": 750,
+        "layers": [
+          {
+            "component": "left_brow_open",
+            "componentId": 1,
+            "role": "left_brow",
+            "baseX": 47,
+            "baseY": 85,
+            "offsetX": 1,
+            "offsetY": -2,
+            "x": 48,
+            "y": 83,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "right_brow_open",
+            "componentId": 2,
+            "role": "right_brow",
+            "baseX": 132,
+            "baseY": 85,
+            "offsetX": 1,
+            "offsetY": -2,
+            "x": 133,
+            "y": 83,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "left_eye_open",
+            "componentId": 5,
+            "role": "left_eye",
+            "baseX": 42,
+            "baseY": 112,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 42,
+            "y": 112,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "right_eye_open",
+            "componentId": 6,
+            "role": "right_eye",
+            "baseX": 125,
+            "baseY": 112,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 125,
+            "y": 112,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "left_eye_highlight_open",
+            "componentId": 7,
+            "role": "left_highlight",
+            "baseX": 42,
+            "baseY": 112,
+            "offsetX": 5,
+            "offsetY": 0,
+            "x": 47,
+            "y": 112,
+            "compositeOp": "erase"
+          },
+          {
+            "component": "right_eye_highlight_open",
+            "componentId": 8,
+            "role": "right_highlight",
+            "baseX": 125,
+            "baseY": 112,
+            "offsetX": 5,
+            "offsetY": 0,
+            "x": 130,
+            "y": 112,
+            "compositeOp": "erase"
+          },
+          {
+            "component": "left_eye_sparkle_open",
+            "componentId": 9,
+            "role": "left_sparkle",
+            "baseX": 42,
+            "baseY": 112,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 42,
+            "y": 112,
+            "compositeOp": "erase"
+          },
+          {
+            "component": "right_eye_sparkle_open",
+            "componentId": 10,
+            "role": "right_sparkle",
+            "baseX": 125,
+            "baseY": 112,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 125,
+            "y": 112,
+            "compositeOp": "erase"
+          },
+          {
+            "component": "left_cheek_default",
+            "componentId": 13,
+            "role": "left_cheek",
+            "baseX": 33,
+            "baseY": 160,
+            "offsetX": 0,
+            "offsetY": -1,
+            "x": 33,
+            "y": 159,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "right_cheek_default",
+            "componentId": 14,
+            "role": "right_cheek",
+            "baseX": 154,
+            "baseY": 160,
+            "offsetX": 0,
+            "offsetY": -1,
+            "x": 154,
+            "y": 159,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "nose_default",
+            "componentId": 15,
+            "role": "nose",
+            "baseX": 94,
+            "baseY": 148,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 94,
+            "y": 148,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "mouth_default",
+            "componentId": 16,
+            "role": "mouth",
+            "baseX": 86,
+            "baseY": 160,
+            "offsetX": 0,
+            "offsetY": 1,
+            "x": 86,
+            "y": 161,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "charm_star",
+            "componentId": 19,
+            "role": "charm",
+            "baseX": 96,
+            "baseY": 31,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 96,
+            "y": 31,
+            "compositeOp": "ink"
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "kind": "performance",
+        "routeIndex": 0,
+        "state": {
+          "scene": "daily",
+          "emotion": "calm",
+          "attention": "right",
+          "energy": 2,
+          "interactionMemory": 0,
+          "phase": 0
+        },
+        "scorePhase": "accent",
+        "scoreStepIndex": 8,
+        "postRefreshHoldMs": 1000,
+        "layers": [
+          {
+            "component": "left_brow_open",
+            "componentId": 1,
+            "role": "left_brow",
+            "baseX": 47,
+            "baseY": 85,
+            "offsetX": 1,
+            "offsetY": -3,
+            "x": 48,
+            "y": 82,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "right_brow_open",
+            "componentId": 2,
+            "role": "right_brow",
+            "baseX": 132,
+            "baseY": 85,
+            "offsetX": 1,
+            "offsetY": -3,
+            "x": 133,
+            "y": 82,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "left_eye_open",
+            "componentId": 5,
+            "role": "left_eye",
+            "baseX": 42,
+            "baseY": 112,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 42,
+            "y": 112,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "right_eye_open",
+            "componentId": 6,
+            "role": "right_eye",
+            "baseX": 125,
+            "baseY": 112,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 125,
+            "y": 112,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "left_eye_highlight_open",
+            "componentId": 7,
+            "role": "left_highlight",
+            "baseX": 42,
+            "baseY": 112,
+            "offsetX": 5,
+            "offsetY": 0,
+            "x": 47,
+            "y": 112,
+            "compositeOp": "erase"
+          },
+          {
+            "component": "right_eye_highlight_open",
+            "componentId": 8,
+            "role": "right_highlight",
+            "baseX": 125,
+            "baseY": 112,
+            "offsetX": 5,
+            "offsetY": 0,
+            "x": 130,
+            "y": 112,
+            "compositeOp": "erase"
+          },
+          {
+            "component": "left_eye_sparkle_open",
+            "componentId": 9,
+            "role": "left_sparkle",
+            "baseX": 42,
+            "baseY": 112,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 42,
+            "y": 112,
+            "compositeOp": "erase"
+          },
+          {
+            "component": "right_eye_sparkle_open",
+            "componentId": 10,
+            "role": "right_sparkle",
+            "baseX": 125,
+            "baseY": 112,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 125,
+            "y": 112,
+            "compositeOp": "erase"
+          },
+          {
+            "component": "left_cheek_default",
+            "componentId": 13,
+            "role": "left_cheek",
+            "baseX": 33,
+            "baseY": 160,
+            "offsetX": 0,
+            "offsetY": -1,
+            "x": 33,
+            "y": 159,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "right_cheek_default",
+            "componentId": 14,
+            "role": "right_cheek",
+            "baseX": 154,
+            "baseY": 160,
+            "offsetX": 0,
+            "offsetY": -1,
+            "x": 154,
+            "y": 159,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "nose_default",
+            "componentId": 15,
+            "role": "nose",
+            "baseX": 94,
+            "baseY": 148,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 94,
+            "y": 148,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "mouth_default",
+            "componentId": 16,
+            "role": "mouth",
+            "baseX": 86,
+            "baseY": 160,
+            "offsetX": 0,
+            "offsetY": 1,
+            "x": 86,
+            "y": 161,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "charm_star",
+            "componentId": 19,
+            "role": "charm",
+            "baseX": 96,
+            "baseY": 31,
+            "offsetX": 1,
+            "offsetY": -3,
+            "x": 97,
+            "y": 28,
+            "compositeOp": "ink"
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "kind": "performance",
+        "routeIndex": 0,
+        "state": {
+          "scene": "daily",
+          "emotion": "calm",
+          "attention": "right",
+          "energy": 2,
+          "interactionMemory": 0,
+          "phase": 0
+        },
+        "scorePhase": "release",
+        "scoreStepIndex": 11,
+        "postRefreshHoldMs": 750,
+        "layers": [
+          {
+            "component": "left_brow_open",
+            "componentId": 1,
+            "role": "left_brow",
+            "baseX": 47,
+            "baseY": 85,
+            "offsetX": 1,
+            "offsetY": -1,
+            "x": 48,
+            "y": 84,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "right_brow_open",
+            "componentId": 2,
+            "role": "right_brow",
+            "baseX": 132,
+            "baseY": 85,
+            "offsetX": 1,
+            "offsetY": -1,
+            "x": 133,
+            "y": 84,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "left_eye_open",
+            "componentId": 5,
+            "role": "left_eye",
+            "baseX": 42,
+            "baseY": 112,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 42,
+            "y": 112,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "right_eye_open",
+            "componentId": 6,
+            "role": "right_eye",
+            "baseX": 125,
+            "baseY": 112,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 125,
+            "y": 112,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "left_eye_highlight_open",
+            "componentId": 7,
+            "role": "left_highlight",
+            "baseX": 42,
+            "baseY": 112,
+            "offsetX": 5,
+            "offsetY": 0,
+            "x": 47,
+            "y": 112,
+            "compositeOp": "erase"
+          },
+          {
+            "component": "right_eye_highlight_open",
+            "componentId": 8,
+            "role": "right_highlight",
+            "baseX": 125,
+            "baseY": 112,
+            "offsetX": 5,
+            "offsetY": 0,
+            "x": 130,
+            "y": 112,
+            "compositeOp": "erase"
+          },
+          {
+            "component": "left_eye_sparkle_open",
+            "componentId": 9,
+            "role": "left_sparkle",
+            "baseX": 42,
+            "baseY": 112,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 42,
+            "y": 112,
+            "compositeOp": "erase"
+          },
+          {
+            "component": "right_eye_sparkle_open",
+            "componentId": 10,
+            "role": "right_sparkle",
+            "baseX": 125,
+            "baseY": 112,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 125,
+            "y": 112,
+            "compositeOp": "erase"
+          },
+          {
+            "component": "left_cheek_default",
+            "componentId": 13,
+            "role": "left_cheek",
+            "baseX": 33,
+            "baseY": 160,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 33,
+            "y": 160,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "right_cheek_default",
+            "componentId": 14,
+            "role": "right_cheek",
+            "baseX": 154,
+            "baseY": 160,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 154,
+            "y": 160,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "nose_default",
+            "componentId": 15,
+            "role": "nose",
+            "baseX": 94,
+            "baseY": 148,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 94,
+            "y": 148,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "mouth_default",
+            "componentId": 16,
+            "role": "mouth",
+            "baseX": 86,
+            "baseY": 160,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 86,
+            "y": 160,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "charm_star",
+            "componentId": 19,
+            "role": "charm",
+            "baseX": 96,
+            "baseY": 31,
+            "offsetX": 1,
+            "offsetY": -1,
+            "x": 97,
+            "y": 30,
+            "compositeOp": "ink"
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "kind": "bridge",
+        "routeIndex": 1,
+        "state": {
+          "scene": "daily",
+          "emotion": "curious",
+          "attention": "right",
+          "energy": 2,
+          "interactionMemory": 1,
+          "phase": 1
+        },
+        "scorePhase": null,
+        "scoreStepIndex": null,
+        "postRefreshHoldMs": 750,
+        "layers": [
+          {
+            "component": "left_brow_open",
+            "componentId": 1,
+            "role": "left_brow",
+            "baseX": 47,
+            "baseY": 85,
+            "offsetX": 1,
+            "offsetY": -3,
+            "x": 48,
+            "y": 82,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "right_brow_open",
+            "componentId": 2,
+            "role": "right_brow",
+            "baseX": 132,
+            "baseY": 85,
+            "offsetX": 1,
+            "offsetY": -3,
+            "x": 133,
+            "y": 82,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "left_eye_open",
+            "componentId": 5,
+            "role": "left_eye",
+            "baseX": 42,
+            "baseY": 112,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 42,
+            "y": 112,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "right_eye_open",
+            "componentId": 6,
+            "role": "right_eye",
+            "baseX": 125,
+            "baseY": 112,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 125,
+            "y": 112,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "left_eye_highlight_open",
+            "componentId": 7,
+            "role": "left_highlight",
+            "baseX": 42,
+            "baseY": 112,
+            "offsetX": 5,
+            "offsetY": 0,
+            "x": 47,
+            "y": 112,
+            "compositeOp": "erase"
+          },
+          {
+            "component": "right_eye_highlight_open",
+            "componentId": 8,
+            "role": "right_highlight",
+            "baseX": 125,
+            "baseY": 112,
+            "offsetX": 5,
+            "offsetY": 0,
+            "x": 130,
+            "y": 112,
+            "compositeOp": "erase"
+          },
+          {
+            "component": "left_eye_sparkle_open",
+            "componentId": 9,
+            "role": "left_sparkle",
+            "baseX": 42,
+            "baseY": 112,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 42,
+            "y": 112,
+            "compositeOp": "erase"
+          },
+          {
+            "component": "right_eye_sparkle_open",
+            "componentId": 10,
+            "role": "right_sparkle",
+            "baseX": 125,
+            "baseY": 112,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 125,
+            "y": 112,
+            "compositeOp": "erase"
+          },
+          {
+            "component": "left_cheek_default",
+            "componentId": 13,
+            "role": "left_cheek",
+            "baseX": 33,
+            "baseY": 160,
+            "offsetX": 0,
+            "offsetY": -1,
+            "x": 33,
+            "y": 159,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "right_cheek_default",
+            "componentId": 14,
+            "role": "right_cheek",
+            "baseX": 154,
+            "baseY": 160,
+            "offsetX": 0,
+            "offsetY": -1,
+            "x": 154,
+            "y": 159,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "nose_default",
+            "componentId": 15,
+            "role": "nose",
+            "baseX": 94,
+            "baseY": 148,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 94,
+            "y": 148,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "mouth_default",
+            "componentId": 16,
+            "role": "mouth",
+            "baseX": 86,
+            "baseY": 160,
+            "offsetX": 0,
+            "offsetY": 1,
+            "x": 86,
+            "y": 161,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "charm_star",
+            "componentId": 19,
+            "role": "charm",
+            "baseX": 96,
+            "baseY": 31,
+            "offsetX": 1,
+            "offsetY": -3,
+            "x": 97,
+            "y": 28,
+            "compositeOp": "ink"
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "kind": "target",
+        "routeIndex": 2,
+        "state": {
+          "scene": "daily",
+          "emotion": "affectionate",
+          "attention": "right",
+          "energy": 2,
+          "interactionMemory": 2,
+          "phase": 1
+        },
+        "scorePhase": null,
+        "scoreStepIndex": null,
+        "postRefreshHoldMs": 750,
+        "layers": [
+          {
+            "component": "left_brow_open",
+            "componentId": 1,
+            "role": "left_brow",
+            "baseX": 47,
+            "baseY": 85,
+            "offsetX": 1,
+            "offsetY": -3,
+            "x": 48,
+            "y": 82,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "right_brow_open",
+            "componentId": 2,
+            "role": "right_brow",
+            "baseX": 132,
+            "baseY": 85,
+            "offsetX": 1,
+            "offsetY": -3,
+            "x": 133,
+            "y": 82,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "left_eye_open",
+            "componentId": 5,
+            "role": "left_eye",
+            "baseX": 42,
+            "baseY": 112,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 42,
+            "y": 112,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "right_eye_open",
+            "componentId": 6,
+            "role": "right_eye",
+            "baseX": 125,
+            "baseY": 112,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 125,
+            "y": 112,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "left_eye_highlight_open",
+            "componentId": 7,
+            "role": "left_highlight",
+            "baseX": 42,
+            "baseY": 112,
+            "offsetX": 5,
+            "offsetY": 0,
+            "x": 47,
+            "y": 112,
+            "compositeOp": "erase"
+          },
+          {
+            "component": "right_eye_highlight_open",
+            "componentId": 8,
+            "role": "right_highlight",
+            "baseX": 125,
+            "baseY": 112,
+            "offsetX": 5,
+            "offsetY": 0,
+            "x": 130,
+            "y": 112,
+            "compositeOp": "erase"
+          },
+          {
+            "component": "left_eye_sparkle_open",
+            "componentId": 9,
+            "role": "left_sparkle",
+            "baseX": 42,
+            "baseY": 112,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 42,
+            "y": 112,
+            "compositeOp": "erase"
+          },
+          {
+            "component": "right_eye_sparkle_open",
+            "componentId": 10,
+            "role": "right_sparkle",
+            "baseX": 125,
+            "baseY": 112,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 125,
+            "y": 112,
+            "compositeOp": "erase"
+          },
+          {
+            "component": "left_cheek_default",
+            "componentId": 13,
+            "role": "left_cheek",
+            "baseX": 33,
+            "baseY": 160,
+            "offsetX": 0,
+            "offsetY": -1,
+            "x": 33,
+            "y": 159,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "right_cheek_default",
+            "componentId": 14,
+            "role": "right_cheek",
+            "baseX": 154,
+            "baseY": 160,
+            "offsetX": 0,
+            "offsetY": -1,
+            "x": 154,
+            "y": 159,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "nose_default",
+            "componentId": 15,
+            "role": "nose",
+            "baseX": 94,
+            "baseY": 148,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 94,
+            "y": 148,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "mouth_default",
+            "componentId": 16,
+            "role": "mouth",
+            "baseX": 86,
+            "baseY": 160,
+            "offsetX": 0,
+            "offsetY": -1,
+            "x": 86,
+            "y": 159,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "charm_star",
+            "componentId": 19,
+            "role": "charm",
+            "baseX": 96,
+            "baseY": 31,
+            "offsetX": 2,
+            "offsetY": -3,
+            "x": 98,
+            "y": 28,
+            "compositeOp": "ink"
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "kind": "settle",
+        "routeIndex": 2,
+        "state": {
+          "scene": "daily",
+          "emotion": "calm",
+          "attention": "center",
+          "energy": 1,
+          "interactionMemory": 0,
+          "phase": 2
+        },
+        "scorePhase": null,
+        "scoreStepIndex": null,
+        "postRefreshHoldMs": 750,
+        "layers": [
+          {
+            "component": "left_brow_open",
+            "componentId": 1,
+            "role": "left_brow",
+            "baseX": 47,
+            "baseY": 85,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 47,
+            "y": 85,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "right_brow_open",
+            "componentId": 2,
+            "role": "right_brow",
+            "baseX": 132,
+            "baseY": 85,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 132,
+            "y": 85,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "left_eye_open",
+            "componentId": 5,
+            "role": "left_eye",
+            "baseX": 42,
+            "baseY": 112,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 42,
+            "y": 112,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "right_eye_open",
+            "componentId": 6,
+            "role": "right_eye",
+            "baseX": 125,
+            "baseY": 112,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 125,
+            "y": 112,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "left_eye_highlight_open",
+            "componentId": 7,
+            "role": "left_highlight",
+            "baseX": 42,
+            "baseY": 112,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 42,
+            "y": 112,
+            "compositeOp": "erase"
+          },
+          {
+            "component": "right_eye_highlight_open",
+            "componentId": 8,
+            "role": "right_highlight",
+            "baseX": 125,
+            "baseY": 112,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 125,
+            "y": 112,
+            "compositeOp": "erase"
+          },
+          {
+            "component": "left_eye_sparkle_open",
+            "componentId": 9,
+            "role": "left_sparkle",
+            "baseX": 42,
+            "baseY": 112,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 42,
+            "y": 112,
+            "compositeOp": "erase"
+          },
+          {
+            "component": "right_eye_sparkle_open",
+            "componentId": 10,
+            "role": "right_sparkle",
+            "baseX": 125,
+            "baseY": 112,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 125,
+            "y": 112,
+            "compositeOp": "erase"
+          },
+          {
+            "component": "left_cheek_default",
+            "componentId": 13,
+            "role": "left_cheek",
+            "baseX": 33,
+            "baseY": 160,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 33,
+            "y": 160,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "right_cheek_default",
+            "componentId": 14,
+            "role": "right_cheek",
+            "baseX": 154,
+            "baseY": 160,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 154,
+            "y": 160,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "nose_default",
+            "componentId": 15,
+            "role": "nose",
+            "baseX": 94,
+            "baseY": 148,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 94,
+            "y": 148,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "mouth_default",
+            "componentId": 16,
+            "role": "mouth",
+            "baseX": 86,
+            "baseY": 160,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 86,
+            "y": 160,
+            "compositeOp": "ink"
+          },
+          {
+            "component": "charm_star",
+            "componentId": 19,
+            "role": "charm",
+            "baseX": 96,
+            "baseY": 31,
+            "offsetX": 0,
+            "offsetY": 0,
+            "x": 96,
+            "y": 31,
+            "compositeOp": "ink"
+          }
+        ]
+      }
+    ]
+  },
+  "frames": [
+    {
+      "index": 0,
+      "kind": "performance",
+      "path": "docs/validation/artifacts/companion-v9-rig-touch-emotion-machine-preview-20260719/frame-00-performance.png",
+      "sha256": "F0212575D1D988551E1A0B477AF9C7ABFB58DB1A12E6FED35BE10EC3998FC21D"
+    },
+    {
+      "index": 1,
+      "kind": "performance",
+      "path": "docs/validation/artifacts/companion-v9-rig-touch-emotion-machine-preview-20260719/frame-01-performance.png",
+      "sha256": "EC94ED11A8EED169E1E627B09820FAC042E6EE40AF3CBF9C167D05DCA532971A"
+    },
+    {
+      "index": 2,
+      "kind": "performance",
+      "path": "docs/validation/artifacts/companion-v9-rig-touch-emotion-machine-preview-20260719/frame-02-performance.png",
+      "sha256": "F86680DF0AE8E3E4311B578D2222F2B61777F3BE65C02D9B40BDAC1BC672ED9D"
+    },
+    {
+      "index": 3,
+      "kind": "performance",
+      "path": "docs/validation/artifacts/companion-v9-rig-touch-emotion-machine-preview-20260719/frame-03-performance.png",
+      "sha256": "B4AF4DEDA6AF0727FE848F8FBE046F210BDDD9261E5B35CD2C47CEFB170FD3D9"
+    },
+    {
+      "index": 4,
+      "kind": "performance",
+      "path": "docs/validation/artifacts/companion-v9-rig-touch-emotion-machine-preview-20260719/frame-04-performance.png",
+      "sha256": "6D2C636AEE98D314D7078D8D88685C09D3619A0019BBC656351DFC45ED518ED3"
+    },
+    {
+      "index": 5,
+      "kind": "bridge",
+      "path": "docs/validation/artifacts/companion-v9-rig-touch-emotion-machine-preview-20260719/frame-05-bridge.png",
+      "sha256": "B4AF4DEDA6AF0727FE848F8FBE046F210BDDD9261E5B35CD2C47CEFB170FD3D9"
+    },
+    {
+      "index": 6,
+      "kind": "target",
+      "path": "docs/validation/artifacts/companion-v9-rig-touch-emotion-machine-preview-20260719/frame-06-target.png",
+      "sha256": "B934B41840ED3EE78CA068CA119B65181BF1845BA33112031783FD95DE1240C9"
+    },
+    {
+      "index": 7,
+      "kind": "settle",
+      "path": "docs/validation/artifacts/companion-v9-rig-touch-emotion-machine-preview-20260719/frame-07-settle.png",
+      "sha256": "F0212575D1D988551E1A0B477AF9C7ABFB58DB1A12E6FED35BE10EC3998FC21D"
+    }
+  ],
+  "component_layer_dir": "docs/validation/artifacts/companion-v9-rig-touch-emotion-machine-preview-20260719/components",
+  "component_layer_count": 13,
+  "native_static_composition": {
+    "baseline": {
+      "path": "docs/validation/artifacts/companion-v9-expression-rig-daily-focus-accepted-dynamic-baseline-20260718/story-phases/daily_right_entry.pbm",
+      "sha256": "B3847DF9CE2D20693C60C9CC7BC1EC8D8B8A3E23641F4521EE71508ABE13CB9E"
+    },
+    "frame_differences": [
+      {
+        "frame_index": 0,
+        "different_pixels": 0
+      },
+      {
+        "frame_index": 7,
+        "different_pixels": 0
+      }
+    ]
+  },
+  "forbidden_runtime_paths": [
+    "whole-face card loop",
+    "code-drawn face",
+    "legacy art",
+    "custom LUT"
+  ]
+}

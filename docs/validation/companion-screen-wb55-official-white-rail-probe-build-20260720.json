@@ -1,0 +1,40 @@
+{
+  "build_contract": {
+    "bytes_per_plane": 5000,
+    "data_planes": 1,
+    "interval_ms": 5000,
+    "official_full_current_plane": "0x24_only",
+    "pattern": "white",
+    "refresh_control": "0xF7",
+    "repeats": 30,
+    "target": "Companion_Nucleo_WB55RG_OfficialFullRailProbeWhite"
+  },
+  "checks": {
+    "build_wrapper_does_not_flash": true,
+    "probe_does_not_select_a_lut_or_partial_mode": true,
+    "probe_has_exact_white_rail_defines": true,
+    "probe_rejects_runtime_overrides": true,
+    "probe_switch_is_declared": true,
+    "target_trace_has_cycle_and_busy_markers": true,
+    "target_uses_official_one_plane_current_write": true
+  },
+  "claim_scope": "compile_time_and_image_identity_only_not_flash_or_panel_acceptance",
+  "failures": [],
+  "image": {
+    "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_official_full_rail_probe_white/Companion_Nucleo_WB55RG_OfficialFullRailProbeWhite.hex",
+    "sha256": "6A437E3F140BD079BCFEAEE8A8F287A1BCAAD431A6335BF4B71C6108AF52D480"
+  },
+  "next_physical_gate": "After the versioned replacement-display-FPC evidence and flex/wiring verification, flash this exact SHA under the bounded hardware session, collect a reset-bounded log and PREVGH1/PREVGL1 measurements, then run verify_wb55_official_full_rail_measurement.py. This build artifact does not authorize a White PASS, Black stage, normal-runtime claim, or any LUT change.",
+  "schema_id": "companion.wb55.official_white_rail_probe_build.v1",
+  "sources": {
+    "build_wrapper": {
+      "path": "tools/build_nucleo_bringup.ps1",
+      "sha256": "2EB2C4DD963064FA66B9C7EE24E1BD2ED18469210FCBA4C74831945C706C7BDB"
+    },
+    "panel_target": {
+      "path": "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
+      "sha256": "66A5A2E7DC1F85BC7A02F0BCDA9F009BEA6B96E2995941E90E218D141FF2EE3F"
+    }
+  },
+  "status": "PASS_BUILD_ONLY_OFFICIAL_WHITE_RAIL_PROBE_NOT_FLASHED"
+}

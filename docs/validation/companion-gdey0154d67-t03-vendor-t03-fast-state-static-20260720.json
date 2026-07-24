@@ -1,0 +1,46 @@
+{
+  "checks": {
+    "baseline_is_two_full_planes_then_c7": true,
+    "default_off_and_source_partial_dependency": true,
+    "exact_otp_temperature_state_is_used": true,
+    "isolated_build_and_runner_exist": true,
+    "later_updates_keep_source_region_path": true,
+    "official_t03_archive_and_command_audit_passes": true,
+    "owner_authorizes_exact_t03_production_off_comparator": true,
+    "source_audit_still_binds_current_driver": true,
+    "white_black_recovery_gate_passes": true
+  },
+  "claim_scope": "owner-authorized, current-room, exact-public-T03-sequence adaptation; production-off with no external LUT, residue-free, temperature-range or panel-identity claim",
+  "controlled_behavior": {
+    "baseline": "T03 built-in temperature/OTP setup: 0x18=80, 0x22=B1/0x20/BUSY, 0x1A=64 00, 0x22=91/0x20/BUSY; then 0x24 and 0x26 each 5000 bytes, 0xC7/0x20/BUSY",
+    "external_lut": "forbidden",
+    "max_frames": 360,
+    "maximum_region_bytes_per_plane": 567,
+    "normal_restore_required": true,
+    "partial": "source reset low/high 10 ms, 0x3C=80, one or two changed current-image 0x24 regions, 0xFF/0x20/BUSY",
+    "production_default": "disabled",
+    "temperature_claim": "none"
+  },
+  "failures": [],
+  "schema_id": "companion.wb55.gdey0154d67_t03.vendor_t03_fast_state_static.v1",
+  "source": {
+    "official_t03_audit": {
+      "path": "docs/validation/companion-gdey0154d67-t03-official-stm32-source-audit-20260720.json",
+      "sha256": "2472F102E8C8CEFF2914E4AB73AC45180A7D868E587F4C90E844B32DB65A5294"
+    },
+    "recovery_gate": {
+      "path": "docs/validation/companion-screen-wb55-hardware-recovery-gate.json",
+      "sha256": "5F2A508E5BCF9D93AC8C3CBBC82960CE745FFADF6E06DB42155B6ECFC5DDDC6E"
+    },
+    "supplier_source_audit": {
+      "path": "docs/validation/companion-gdey0154d67-t03-vendor-1s-source-audit-20260720.json",
+      "sha256": "7FF010E11E63922A2E00E5FD2FA4ECE376F576BB22912A1862202DF0A183C443"
+    },
+    "target_driver": {
+      "path": "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
+      "sha256": "4126F937543974D3801B087D507391DB50D573F23069C6C1AFAE1E238B3CB3ED"
+    }
+  },
+  "status": "PASS_STATIC_OWNER_AUTHORIZED_VENDOR_T03_FAST_STATE_AB",
+  "target": "NUCLEO-WB55RG + ESP32-FTS02 + observed 0154BN-D67-D2 panel"
+}

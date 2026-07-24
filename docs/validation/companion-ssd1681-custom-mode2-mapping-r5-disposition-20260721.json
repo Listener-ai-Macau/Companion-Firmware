@@ -1,0 +1,203 @@
+{
+  "schema_id": "companion.wb55.ssd1681_custom_mode2_mapping_r5_disposition.v1",
+  "status": "PASS_R5_MAPPING_CONFIRMS_LUT0_LUT3_TARGETING_NO_NEW_HARDWARE_CANDIDATE",
+  "errors": [],
+  "hardware_contact": 0,
+  "requirements": [
+    "COMP-REQ-296"
+  ],
+  "official_mapping": {
+    "black_white_transition_table": [
+      {
+        "old_r_ram": 0,
+        "new_bw_ram": 0,
+        "class": "BB",
+        "lut": 0
+      },
+      {
+        "old_r_ram": 0,
+        "new_bw_ram": 1,
+        "class": "BW",
+        "lut": 1
+      },
+      {
+        "old_r_ram": 1,
+        "new_bw_ram": 0,
+        "class": "WB",
+        "lut": 2
+      },
+      {
+        "old_r_ram": 1,
+        "new_bw_ram": 1,
+        "class": "WW",
+        "lut": 3
+      }
+    ],
+    "supplier_159_byte_layout": {
+      "lut0": [
+        0,
+        11
+      ],
+      "lut1": [
+        12,
+        23
+      ],
+      "lut2": [
+        24,
+        35
+      ],
+      "lut3": [
+        36,
+        47
+      ],
+      "lut4": [
+        48,
+        59
+      ],
+      "timing": [
+        60,
+        143
+      ],
+      "frame_rate": [
+        144,
+        149
+      ],
+      "xon": [
+        150,
+        152
+      ],
+      "register_tail": [
+        153,
+        158
+      ]
+    },
+    "register_0x37_boundary": "B..F select Display Mode 1 or Mode 2 per waveform-setting slot WS0..WS35; they do not select LUT0..LUT4 and are not byte addresses into the 159-byte waveform"
+  },
+  "measured_controller_decode": {
+    "display_option_0x37_b_through_f_hex": "4020100040",
+    "mode2_ws_slots": [
+      6,
+      13,
+      20
+    ],
+    "f6_mode2_ram_pingpong_enabled": true,
+    "slot_decode": [
+      {
+        "byte": "B",
+        "value_hex": "40",
+        "mode2_ws_slots": [
+          6
+        ]
+      },
+      {
+        "byte": "C",
+        "value_hex": "20",
+        "mode2_ws_slots": [
+          13
+        ]
+      },
+      {
+        "byte": "D",
+        "value_hex": "10",
+        "mode2_ws_slots": [
+          20
+        ]
+      },
+      {
+        "byte": "E",
+        "value_hex": "00",
+        "mode2_ws_slots": []
+      },
+      {
+        "byte": "F",
+        "value_hex": "40",
+        "mode2_ws_slots": [],
+        "f6_pingpong": true
+      }
+    ]
+  },
+  "r1_through_r4_audit": {
+    "supplier_nonzero_lut0_lut3_offsets": [
+      0,
+      1,
+      2,
+      3,
+      36,
+      37,
+      38,
+      39
+    ],
+    "r1_cleared_offsets": [
+      0,
+      1,
+      2,
+      3,
+      36,
+      37,
+      38,
+      39
+    ],
+    "r2_timing_offsets_from_r1": [
+      60,
+      61,
+      63,
+      64,
+      67,
+      68,
+      74,
+      75,
+      77,
+      78,
+      81,
+      82
+    ],
+    "r3_timing_offsets_from_r2": [
+      74
+    ],
+    "r4_timing_offsets_from_r2": [
+      61,
+      64,
+      75,
+      78
+    ],
+    "conclusion": "R1 targeted the correct stationary transition tables: LUT0 for BB and LUT3 for WW. R2, R3 and R4 preserved those tables and changed timing bytes only."
+  },
+  "checks": {
+    "page13_bw_ram_pairs_map_to_lut0_lut1_lut2_lut3": true,
+    "page15_waveform_setting_is_159_bytes": true,
+    "page26_0x24_is_bw_ram_and_cf_is_mode2_without_lut_load": true,
+    "page27_0x26_is_red_ram": true,
+    "page30_0x37_is_mode_selection_per_ws_slot": true,
+    "page30_f6_enables_mode2_ram_pingpong": true,
+    "measured_0x37_b_through_f_exact": true,
+    "measured_mode2_ws_slots_exact": true,
+    "measured_mode2_pingpong_enabled": true,
+    "ram_fingerprint_unique_swap_proven": true,
+    "supplier_lut_length_159": true,
+    "r1_cleared_exact_nonzero_lut0_lut3_bytes": true,
+    "r2_r3_r4_preserve_zeroed_lut0_lut3": true,
+    "r2_r3_r4_changes_are_timing_only": true,
+    "r4_physical_no_go_preserved": true
+  },
+  "disposition": {
+    "mapping_error_found": false,
+    "hardware_candidate_admitted": false,
+    "hardware_allowed": false,
+    "production_allowed": false,
+    "r1_r4_rerun_allowed": false,
+    "r4_no_go_preserved": true,
+    "reason": "The measured 0x37 bytes do not reveal a LUT-table swap or byte-address remap. R4 dirtiness therefore cannot be corrected by swapping the stationary LUT targets; a materially new, machine-gated mechanism is required before any hardware contact."
+  },
+  "source_hashes": {
+    "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\ssd1681-mechanism-lut-research-20260721\\official-sources\\SSD1681V0.13_Spec-200529.pdf": "2989DB3DBBCE190F6E1F065A169479BF4FE911896FF8805894549F792FE9B53B",
+    "C:\\Users\\Billy\\Desktop\\GDEH0154D67-20211203-P-LUT(1s) -1s快刷\\EPD_W21\\EPAPER.c": "7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896",
+    "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\companion-ssd1681-reset-read-controller-state-machine-20260721.json": "70D235CC0228C8326438B325A0A145D66AFF9D0D60BA5A38200DD6F3E4666E13",
+    "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\companion-ssd1681-ram-ping-pong-fingerprint-machine-20260721.json": "5D3DE03A707BA7FB6AD17CDE1361448DFF8087B9E4A7205A18B5CD7D4FB915FE",
+    "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\companion-ssd1681-mechanism-lut-research-disposition-20260721.json": "478EECD541623713C665D2FCFCCF17743B9F3489A934097978033C1893E20F93",
+    "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\companion-ssd1681-custom-mode2-transition-workbench-20260721.json": "8653B6ABD0E299E6C99B50C5A086EE840E38CED37F358F7AA326B37F7933CF05",
+    "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\companion-ssd1681-custom-mode2-transition-timing-workbench-r2-20260721.json": "266FC130BAEB68219A759A9A15E292D6E2BED97919FC5A9F0086BCC6733A5148",
+    "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\companion-ssd1681-custom-mode2-transition-timing-workbench-r3-20260721.json": "CCFB9EF0AE1CBF1038A7ED4E188D3A6DF8303CFF5E18C4391418A20310C16124",
+    "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\companion-ssd1681-custom-mode2-transition-timing-workbench-r4-20260721.json": "E7467B808CE7BD1BE317BC282B7990CF343922DE8C15B092588B9968DEAB444D",
+    "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\companion-ssd1681-custom-mode2-transition-safety-r4-disposition-20260721.json": "C4E52FF8B1E0A4A2E7D084E65166BACC5748E96B31A3822DC32C275FD4C259D0"
+  }
+}

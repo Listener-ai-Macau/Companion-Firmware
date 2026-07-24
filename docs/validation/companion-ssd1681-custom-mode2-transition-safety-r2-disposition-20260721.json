@@ -1,0 +1,87 @@
+{
+  "schema_id": "companion.wb55.ssd1681_custom_mode2_transition_safety_disposition.v2",
+  "status": "NO_GO_R2_BUSY_602_OVER_600_EXACT_RAW_RESTORED",
+  "requirements": ["COMP-REQ-285", "COMP-REQ-289"],
+  "goal_action": "none; a failed candidate is dispositioned and the active Goal remains open",
+  "production_enabled": false,
+  "hardware_contact": 1,
+  "pre_execute_prompt": {
+    "title": "Companion R2 局刷实验开始确认",
+    "selected": "开始实验",
+    "shown_before_hardware_contact": true,
+    "artifact_sha256": "C2C3374E6AB45D2C4E8F421D69E3CD4B29E91F4D62A167A153AD80F9843C6A36"
+  },
+  "preclean": {
+    "status": "PASS_MACHINE_DIGITAL_ONLY",
+    "profile": "official_0x24_f7_white",
+    "image_sha256": "F7CB7EE8C497CF1A01ACFF4BC921B43E274B0A934CA8B658AC24C34480F32925",
+    "custom_lut_used": false,
+    "frame_bytes": 5000,
+    "frame_command": "0x24",
+    "control": "0xF7",
+    "activation": "0x20",
+    "busy_complete": true,
+    "excluded_from_candidate_metrics": true,
+    "artifact_sha256": "E43D8A6EFA7AE505392DD139E1E7153D5F4CE93631487DD2977034FF2D3F7870"
+  },
+  "candidate": {
+    "name": "stationary_suppression_tp_scale_r2",
+    "lut_sha256": "EBF88D6FB0BEB39AB2428C98BBDF1DC04308CEA156AF61D14C2B1591902B64C7",
+    "hex_sha256": "6FE07FEA3F449D4B76ECF07D8DDA97BD0EA551B3769D97A15A469C38772832DB",
+    "busy_limit_ms": 600,
+    "planned_local_activations": 9,
+    "actual_local_activations": 1,
+    "first_step": {
+      "previous": "W",
+      "current": "A",
+      "ww_pixels": 512,
+      "wb_pixels": 512,
+      "old_plane_command": "0x26",
+      "new_plane_command": "0x24",
+      "control": "0xCF",
+      "activation": "0x20",
+      "busy_elapsed_ms": 602,
+      "busy_complete_within_limit": false
+    },
+    "machine_status": "NO_GO_CUSTOM_MODE2_TRANSITION_SAFETY",
+    "failure_rule": "602 ms exceeds the exact 600 ms limit",
+    "remaining_eight_activations_executed": false,
+    "motion_120_frame_executed": false,
+    "physical_optical_review_performed": false,
+    "parser_artifact_sha256": "570C0AE34C6CB42FC5EFD83A1CC52FA7706EC8065D085C62A01EEA0ECB181FCC"
+  },
+  "restore": {
+    "programmer_calls": 1,
+    "automatic_retries": 0,
+    "bytes": 524288,
+    "baseline_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "readback_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "byte_identical": true,
+    "offline_recheck_status": "PASS_RESTORE_EQUALS_CAPTURED_PRE_RUN_APPLICATION_BYTES",
+    "offline_recheck_exit_code": 0,
+    "offline_recheck_artifact_sha256": "DDA1F8C41F1FCD43CBF889679658A3A89642FE0542B7226221EB2B4582D33928"
+  },
+  "normal_resume": {
+    "status": "PASS_APPLICATION_RESUMED_AFTER_BACKUP",
+    "offline_recheck_exit_code": 0,
+    "offline_recheck_artifact_sha256": "4D06D324CDB12070A0C56F4FE3D34F18391516CD5DD0B47D4C778BD6D749EAC8"
+  },
+  "runner_stage_triage": {
+    "stage_run_status": "NEED_HUMAN_RESTORE_OR_APPLICATION_FAILED",
+    "stage_run_sha256": "4222380226E70A96D385EA130A47198E1D761317732C4A4D0B321BEEBF74A2C2",
+    "restore_alert_acknowledged": true,
+    "restore_alert_note_sha256": "7EB70257593DA06F682A3DDDA54A9D260D4FC514F645237F5CA74B08F8DA61A6",
+    "root_cause": "the outer command observer timed out and closed stdout while the child runner continued; the restore verifier wrote a valid PASS artifact but its output channel caused the parent runner to record a nonzero verifier result",
+    "authoritative_recovery_evidence": "the retained readback file was re-evaluated offline with stdout available and passed byte equality; the retained normal serial log independently passed normal-resume parsing",
+    "hardware_rerun_required": false
+  },
+  "post_run_runner_fix": {
+    "scope": "machine accounting only; no waveform or hardware change",
+    "change": "custom candidate counters now derive from parser observed transition records instead of the planned count of nine",
+    "runner_sha256": "EA0DED6F143E9EE1FFD0F55C1217621A06897E5278725F646ACCD07CA6380722",
+    "static_gate": "PASS_STATIC_CUSTOM_MODE2_TRANSITION_SAFETY_DEFAULT_OFF_RAW_RESTORE",
+    "check_only_hardware_contact": 0
+  },
+  "next_action": "do not rerun R2 and do not enter motion; design and machine-gate a separately named one-variable R3 only after this NO_GO remains durable",
+  "goal_terminal": false
+}

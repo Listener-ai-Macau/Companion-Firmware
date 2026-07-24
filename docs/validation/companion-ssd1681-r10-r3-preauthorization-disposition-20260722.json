@@ -1,0 +1,35 @@
+{
+  "schema_id": "companion.wb55.ssd1681.r10_r3.preauthorization_disposition.v1",
+  "status": "NO_GO_R3_BIND_REPAIR_REQUIRED",
+  "requirement_id": "COMP-REQ-334",
+  "source_requirement": "COMP-REQ-333",
+  "historical_authorization": {
+    "path": ".cache/validation/wb55-r10-r3-stable-hold-execute-20260722-r1-authorization.json",
+    "sha256": "886E53989D6A2C4504D15DE316C7EBAA29AAA3D945F9B594C9DB249EE4E6FCDA",
+    "consumed": false,
+    "claim_marker_present": false,
+    "spent_marker_present": false,
+    "consumed_receipt_present": false,
+    "preserve_exact_bytes": true,
+    "reuse_allowed": false
+  },
+  "historical_output_root": {
+    "path": ".cache/validation/wb55-r10-r3-stable-hold-execute-20260722-r1",
+    "existed_during_preparation": false,
+    "reuse_allowed": false
+  },
+  "no_go_reason": "launcher and runner hard-coded the R2 MACHINE_READY path, so the R3 C419 successor hash could not pass the exact claim and receipt binding",
+  "historical_r3_machine_ready_sha256": "C41948595CE27041349949A80E5777CB381ABB416FACB8F08274701503911B23",
+  "historical_r2_machine_ready_sha256": "E29DCC1E591B9C1E36088148EF7BC5C1EA96FFBAF20DD86BCB7E4875F556BE11",
+  "preparation_hardware_contact": 0,
+  "preparation_write_count": 0,
+  "preparation_popup_count": 0,
+  "repair_scope": [
+    "launcher exact MACHINE_READY successor path/hash binding",
+    "runner exact MACHINE_READY successor path/hash binding",
+    "R3 successor MACHINE_READY artifact and generator default output",
+    "no driver/parser/monitor/supervisor/HEX/ELF/LUT changes"
+  ],
+  "physical_execution": false,
+  "real_popup": false
+}

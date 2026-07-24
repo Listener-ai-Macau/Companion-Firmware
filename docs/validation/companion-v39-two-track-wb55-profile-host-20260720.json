@@ -1,0 +1,13 @@
+{
+  "schema": "companion.v39_two_track_wb55_profile_host.v1",
+  "status": "PASS_V39_TWO_TRACK_WB55_PROFILE_RUNTIME_INACTIVE",
+  "component_count": 94,
+  "expression_track_count": 6,
+  "functional_track_count": 4,
+  "story_count": 12,
+  "preview_frame_count": 38,
+  "two_track_independence": true,
+  "menu_entry_policy": {"state_scene": "touch", "maximum_expression_duration_ms": 500, "after_last_cue": "withdraw_expression_and_functional_tracks_then_show_menu_ui"},
+  "runtime_resource_activated": false,
+  "non_claims": ["no_firmware_flash", "no_panel_or_driver_change", "no_human_acceptance"]
+}

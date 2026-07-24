@@ -1,0 +1,45 @@
+{
+  "schema_id": "companion.wb55.gdey0154d67_t03.vendor_partial_disjoint_current_stage_operator.v1",
+  "status": "PASS_OPERATOR_WITH_RESIDUE_STEERING_PRODUCTION_OFF",
+  "claim_scope": "canonical physical observation of the default-off single 12 px five-anchor diagnostic probe only; no waveform, panel-identity, temperature, production, or OLED-like continuity claim",
+  "operator_review": {
+    "style": "aiw_operator_prompt_v1",
+    "selected": "通过",
+    "note": "你现在这样子直接移动是会有残影的，你看看昨天的这种工作方式去学习一下"
+  },
+  "machine_trace": {
+    "status": "PASS_MACHINE_VENDOR_PARTIAL_DISJOINT_CURRENT_STAGE_TRACE",
+    "partial_steps": 48,
+    "identical_frame_steps": 1,
+    "busy_completions": 48,
+    "panel_errors": 0,
+    "probe_radius_px": 12,
+    "probe_orbit": "single ball, five anchors center/up/right/down/left, 42 px orbit, 8 interpolated steps per segment",
+    "trace_path": ".cache/validation/wb55-vendor-partial-disjoint-current-stage-r6-20260721/vendor-partial-disjoint-current-stage-trace.json",
+    "trace_sha256": "9EDE11E629886FADF7B3B585F7775C9CCBDD5A7B1A8703997209BFE4D7CAAB86"
+  },
+  "normal_restore": {
+    "restored": true,
+    "normal_hex_sha256": "E1997F29DCB8735899B4BC0B9012CF75025F3CA8D21250485BCC21E4C4691B46"
+  },
+  "retained_evidence": {
+    "stage_run_path": ".cache/validation/wb55-vendor-partial-disjoint-current-stage-r6-20260721/stage-run.json",
+    "stage_run_sha256": "7A5B97CE371116EBD995DDD50A918B2050B27519B426899A7632122C56A54D27",
+    "raw_log_path": ".cache/validation/wb55-vendor-partial-disjoint-current-stage-r6-20260721/capture/nucleo-serial-raw.log",
+    "raw_log_sha256": "B46B87AF3442797BABD43C555A499F82489A40EEF714F5E34F5F8580E56947",
+    "canonical_note_path": ".cache/validation/wb55-vendor-partial-disjoint-current-stage-r6-20260721/operator-prompt-observation.txt",
+    "canonical_note_sha256": "4E7987BD009E93D6C65ACB7FB285BA456B68C0319E39453FEB1FE543DA44113C"
+  },
+  "triage": {
+    "disposition": "The five-anchor 12 px probe visibly moves and the operator selected 通过, so this run passes and remains production-off. The non-empty operator note is a requirement input: direct per-frame movement in this topology still shows residue, and the owner steers follow-up work to study the prior night's working method before any renewed probe. The note is triaged as deferred follow-up steering, not as acceptance of a residue-free path and not as a production or expression-binding decision.",
+    "note_classification": "deferred_follow_up_steering",
+    "prohibited": [
+      "LUT or waveform mutation",
+      "controller/control/timing/reset/border/rail/temperature changes",
+      "full refresh or black flash as compensation",
+      "production promotion",
+      "product expression geometry or V9/Rig/browser binding",
+      "reusing this pass as residue-free or OLED-like continuity evidence"
+    ]
+  }
+}

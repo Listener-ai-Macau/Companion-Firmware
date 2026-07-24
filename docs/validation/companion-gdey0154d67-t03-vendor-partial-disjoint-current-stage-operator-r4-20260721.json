@@ -1,0 +1,49 @@
+{
+  "schema_id": "companion.wb55.gdey0154d67_t03.vendor_partial_disjoint_current_stage_operator.v1",
+  "status": "NO_GO_OPERATOR_PROBE_NOT_VISIBLE",
+  "claim_scope": "canonical physical observation of the default-off 4 px diagnostic probe only; no waveform, panel-identity, temperature, production, or OLED-like continuity claim",
+  "operator_review": {
+    "style": "aiw_operator_prompt_v1",
+    "selected": "失败",
+    "note": "没看见, 再跑一次, 另外球大一点",
+    "criteria": [
+      "old-position residue",
+      "leading-edge or cumulative content loss",
+      "dirtying",
+      "whole-screen black flash",
+      "motion continuity and visible local region"
+    ]
+  },
+  "machine_trace": {
+    "status": "PASS_MACHINE_VENDOR_PARTIAL_DISJOINT_CURRENT_STAGE_TRACE",
+    "partial_steps": 48,
+    "identical_frame_steps": 1,
+    "busy_completions": 48,
+    "panel_errors": 0,
+    "trace_path": ".cache/validation/wb55-vendor-partial-disjoint-current-stage-r4-20260721/vendor-partial-disjoint-current-stage-trace.json",
+    "trace_sha256": "315C92030B6AF8359FF6BE4503F446FC96751038091B5E99A82BB815C9CE1858"
+  },
+  "normal_restore": {
+    "restored": true,
+    "normal_hex_sha256": "E1997F29DCB8735899B4BC0B9012CF75025F3CA8D21250485BCC21E4C4691B46"
+  },
+  "retained_evidence": {
+    "stage_run_path": ".cache/validation/wb55-vendor-partial-disjoint-current-stage-r4-20260721/stage-run.json",
+    "stage_run_sha256": "E2C37394EC8A3B307FBB3FC8A8F8B5E033586A1640C13C002B39250D2EA3A724",
+    "raw_log_path": ".cache/validation/wb55-vendor-partial-disjoint-current-stage-r4-20260721/capture/nucleo-serial-raw.log",
+    "raw_log_sha256": "82BE204509D323BF5F3E8C3042C626E9F9A0EFB51D45FE3965A4E304CD82816E",
+    "canonical_note_path": ".cache/validation/wb55-vendor-partial-disjoint-current-stage-r4-20260721/operator-prompt-observation.txt",
+    "canonical_note_sha256": "7F9D6B987DC7942A4EA74DD5E4F3063A9599DC1FEC45A66CA099FA99C2E858E4"
+  },
+  "triage": {
+    "disposition": "The 4 px probe is physically not visible enough for the intended observation; it is not accepted and must not be promoted or reused as visual success evidence.",
+    "owner_authorized_follow_up": "One renewed default-off run with two 12 px-radius disjoint diagnostic components only. Preserve current-frame 0x24 staging, one source 0xFF/0x20/BUSY completion, the 48 plus one trace contract, every historical NO_GO exclusion, and normal restore.",
+    "prohibited": [
+      "LUT or waveform mutation",
+      "controller/control/timing/reset/border/rail/temperature changes",
+      "full refresh or black flash as compensation",
+      "production promotion",
+      "product expression geometry or V9/Rig/browser binding"
+    ]
+  }
+}

@@ -1,0 +1,410 @@
+{
+  "schema": "companion.v9_expression_rig_accepted_dynamic_baseline.v1",
+  "status": "ACCEPTED_DYNAMIC_BASELINE",
+  "accepted_at_utc": "2026-07-18T07:48:51+00:00",
+  "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "runtime_resource_activated": false,
+  "owner_review": {
+    "summary_path": "docs/validation/companion-v9-expression-rig-daily-focus-primary-motion-static-sparkle-owner-review-summary-20260718.json",
+    "result": {
+      "path": "docs/validation/companion-v9-expression-rig-daily-focus-primary-motion-static-sparkle-owner-review-20260718.json",
+      "sha256": "BEE567B7877806E7ECFBD1CFFDBFC370A146410BEF5C547820AE1CC70E0E4387"
+    },
+    "status": "PASS_OWNER_REVIEW",
+    "selected": "通过",
+    "text": ""
+  },
+  "preview_report": {
+    "path": "docs/validation/companion-v9-expression-rig-daily-focus-preview-20260718.json",
+    "sha256": "AE9FB38D4C182D609E7FED29B945BD6D3CA473392522AE4C30B77E4713813EF5"
+  },
+  "preview_distance_report": {
+    "path": "docs/validation/companion-v9-expression-rig-daily-focus-preview-distance-20260718.json",
+    "sha256": "74E896AA902F625B32BEE1E274BB147F8E18903BAA1FF1EA71F5D13205C24323"
+  },
+  "render_report": {
+    "path": "docs/validation/companion-v9-expression-rig-render-20260717.json",
+    "sha256": "AD68B504BE1917D4B3DA85287179731EF891039892FA442BFCB5AAFDD76DB791"
+  },
+  "artifacts": {
+    "review_page": {
+      "path": "docs/validation/artifacts/companion-v9-expression-rig-daily-focus-accepted-dynamic-baseline-20260718/v9-expression-rig-dynamic-player.html",
+      "sha256": "84CA8C0A4AEF93D4DB438370DD3DF0FD5B24253AA6E66E403F1A7FD2BCC62AB6",
+      "bytes": 180297
+    },
+    "owner_review_page": {
+      "path": "docs/validation/artifacts/companion-v9-expression-rig-daily-focus-accepted-dynamic-baseline-20260718/v9-expression-rig-owner-review.html",
+      "sha256": "84CA8C0A4AEF93D4DB438370DD3DF0FD5B24253AA6E66E403F1A7FD2BCC62AB6",
+      "bytes": 180297
+    },
+    "animated_preview": {
+      "path": "docs/validation/artifacts/companion-v9-expression-rig-daily-focus-accepted-dynamic-baseline-20260718/v9-expression-rig-dynamic-preview.gif",
+      "sha256": "861DAEEACC882A92FCF620BA8C1845261981540AFB37BC9FCCB2E197E558CD93",
+      "bytes": 270073
+    },
+    "keyframe_strip": {
+      "path": "docs/validation/artifacts/companion-v9-expression-rig-daily-focus-accepted-dynamic-baseline-20260718/v9-expression-rig-dynamic-keyframes.png",
+      "sha256": "82150373295A5CBAFCA23F49275FCE77A260A4C8711D231AA50EE2876EEDEA3B",
+      "bytes": 74530
+    }
+  },
+  "component_layer_dir": "docs/validation/artifacts/companion-v9-expression-rig-daily-focus-accepted-dynamic-baseline-20260718/dynamic-review-layers",
+  "component_layer_count": 24,
+  "component_layers": [
+    {
+      "path": "docs/validation/artifacts/companion-v9-expression-rig-daily-focus-accepted-dynamic-baseline-20260718/dynamic-review-layers/charm_heart.png",
+      "sha256": "724343299CB9427F79D0AF873DBEF49DC339FBC688E1FD06E1E2BCE94A561BF2",
+      "bytes": 184,
+      "component": "charm_heart"
+    },
+    {
+      "path": "docs/validation/artifacts/companion-v9-expression-rig-daily-focus-accepted-dynamic-baseline-20260718/dynamic-review-layers/charm_menu_ellipsis.png",
+      "sha256": "D3352E410DB09475769BEE75E5F1F060C429FEDB6268431B4878318BF78F9D83",
+      "bytes": 131,
+      "component": "charm_menu_ellipsis"
+    },
+    {
+      "path": "docs/validation/artifacts/companion-v9-expression-rig-daily-focus-accepted-dynamic-baseline-20260718/dynamic-review-layers/charm_question.png",
+      "sha256": "32C432ECCB3FBD469BD41D675E115496DF35829AFB5AFE0C39ED1B175B2C0B78",
+      "bytes": 190,
+      "component": "charm_question"
+    },
+    {
+      "path": "docs/validation/artifacts/companion-v9-expression-rig-daily-focus-accepted-dynamic-baseline-20260718/dynamic-review-layers/charm_record_dot.png",
+      "sha256": "654B5B48BB0794F4FE753CD0E4B047AF937F85B6944BE1EC6CA7412A2D49742A",
+      "bytes": 185,
+      "component": "charm_record_dot"
+    },
+    {
+      "path": "docs/validation/artifacts/companion-v9-expression-rig-daily-focus-accepted-dynamic-baseline-20260718/dynamic-review-layers/charm_sleep_moon_z.png",
+      "sha256": "A92B6AB37D2BE863BCEC95A8FE46D4BD806FD37B0D034DC10E77A3857229568D",
+      "bytes": 429,
+      "component": "charm_sleep_moon_z"
+    },
+    {
+      "path": "docs/validation/artifacts/companion-v9-expression-rig-daily-focus-accepted-dynamic-baseline-20260718/dynamic-review-layers/charm_star.png",
+      "sha256": "A807F8DD3CD1134E2414AF975EF17ED9DDDD882709FC5A6F60DE5416520068ED",
+      "bytes": 200,
+      "component": "charm_star"
+    },
+    {
+      "path": "docs/validation/artifacts/companion-v9-expression-rig-daily-focus-accepted-dynamic-baseline-20260718/dynamic-review-layers/left_brow_open.png",
+      "sha256": "6DB046C8AA36C5ADA9368E5BBC0C7F57A44B050F388AA4F4E057A5D32EBB39AC",
+      "bytes": 144,
+      "component": "left_brow_open"
+    },
+    {
+      "path": "docs/validation/artifacts/companion-v9-expression-rig-daily-focus-accepted-dynamic-baseline-20260718/dynamic-review-layers/left_brow_sleepy.png",
+      "sha256": "03BE2CF6196D569ED70753864F3A914C602753537A6E2B013D9E5EBE2FEA2178",
+      "bytes": 151,
+      "component": "left_brow_sleepy"
+    },
+    {
+      "path": "docs/validation/artifacts/companion-v9-expression-rig-daily-focus-accepted-dynamic-baseline-20260718/dynamic-review-layers/left_cheek_default.png",
+      "sha256": "FAD4CD077BD1048015B71D797D4B858A7429649E650C4501508086D0613EA257",
+      "bytes": 116,
+      "component": "left_cheek_default"
+    },
+    {
+      "path": "docs/validation/artifacts/companion-v9-expression-rig-daily-focus-accepted-dynamic-baseline-20260718/dynamic-review-layers/left_detail_swipe.png",
+      "sha256": "67CF0C977857953C5338A77459B6D64DB6E9BE81705D9B269E98D6E5EAF8CE12",
+      "bytes": 165,
+      "component": "left_detail_swipe"
+    },
+    {
+      "path": "docs/validation/artifacts/companion-v9-expression-rig-daily-focus-accepted-dynamic-baseline-20260718/dynamic-review-layers/left_eye_highlight_open.png",
+      "sha256": "733F9DBC6E931061362E15FE9B744AE032178645FDD35AC9B9E09992207443B9",
+      "bytes": 162,
+      "component": "left_eye_highlight_open"
+    },
+    {
+      "path": "docs/validation/artifacts/companion-v9-expression-rig-daily-focus-accepted-dynamic-baseline-20260718/dynamic-review-layers/left_eye_open.png",
+      "sha256": "0F1EDD40F1DEDFBFB394B21D3398A698DFC27CE14C8AB33BB97FB9F0E15EFF7F",
+      "bytes": 254,
+      "component": "left_eye_open"
+    },
+    {
+      "path": "docs/validation/artifacts/companion-v9-expression-rig-daily-focus-accepted-dynamic-baseline-20260718/dynamic-review-layers/left_eye_sleepy.png",
+      "sha256": "81DF741F2FBB14F331DED6B75CB3D3614C9CC13F8E2B8A268C0B32D4D402E975",
+      "bytes": 179,
+      "component": "left_eye_sleepy"
+    },
+    {
+      "path": "docs/validation/artifacts/companion-v9-expression-rig-daily-focus-accepted-dynamic-baseline-20260718/dynamic-review-layers/left_eye_sparkle_open.png",
+      "sha256": "0ECCFF6478716C24C6C41D8FC1B12760CE4E37BF1EE8D6646307C51718F2618A",
+      "bytes": 135,
+      "component": "left_eye_sparkle_open"
+    },
+    {
+      "path": "docs/validation/artifacts/companion-v9-expression-rig-daily-focus-accepted-dynamic-baseline-20260718/dynamic-review-layers/mouth_default.png",
+      "sha256": "E8A2637681F0C1574A8E6DD27BC3287093B1BF6486A72BE6F6F5844BE5B22E73",
+      "bytes": 161,
+      "component": "mouth_default"
+    },
+    {
+      "path": "docs/validation/artifacts/companion-v9-expression-rig-daily-focus-accepted-dynamic-baseline-20260718/dynamic-review-layers/nose_default.png",
+      "sha256": "B334EA700950825C11C97A3CAEA3BC9667F0B2E581415CEF16A583A773A65FA6",
+      "bytes": 115,
+      "component": "nose_default"
+    },
+    {
+      "path": "docs/validation/artifacts/companion-v9-expression-rig-daily-focus-accepted-dynamic-baseline-20260718/dynamic-review-layers/right_brow_open.png",
+      "sha256": "601D226632545AF0D0D89804A8DB6D0C5259B3F53DB0DCB7EA877B620D4299EA",
+      "bytes": 138,
+      "component": "right_brow_open"
+    },
+    {
+      "path": "docs/validation/artifacts/companion-v9-expression-rig-daily-focus-accepted-dynamic-baseline-20260718/dynamic-review-layers/right_brow_sleepy.png",
+      "sha256": "6F2FD94D7F7ACA025C743B10A67EF2E2547B9B695F535C8080952B79C0E9669C",
+      "bytes": 153,
+      "component": "right_brow_sleepy"
+    },
+    {
+      "path": "docs/validation/artifacts/companion-v9-expression-rig-daily-focus-accepted-dynamic-baseline-20260718/dynamic-review-layers/right_cheek_default.png",
+      "sha256": "9469506742029B0AB2C3F3C444040141750BDF1E13B6D7FD969B358DEDAD9617",
+      "bytes": 117,
+      "component": "right_cheek_default"
+    },
+    {
+      "path": "docs/validation/artifacts/companion-v9-expression-rig-daily-focus-accepted-dynamic-baseline-20260718/dynamic-review-layers/right_detail_swipe.png",
+      "sha256": "2EA47D11AF9AA3E235AB65729172223CC70DBEA83BC5B3A97300761375161966",
+      "bytes": 172,
+      "component": "right_detail_swipe"
+    },
+    {
+      "path": "docs/validation/artifacts/companion-v9-expression-rig-daily-focus-accepted-dynamic-baseline-20260718/dynamic-review-layers/right_eye_highlight_open.png",
+      "sha256": "4AE2BB2DA3E47219BD548C363CF4380111C89F5A3ABE84A5B3C7C6FC407998B1",
+      "bytes": 172,
+      "component": "right_eye_highlight_open"
+    },
+    {
+      "path": "docs/validation/artifacts/companion-v9-expression-rig-daily-focus-accepted-dynamic-baseline-20260718/dynamic-review-layers/right_eye_open.png",
+      "sha256": "3472087D1ADF439D982B2ADBA90D0F2A0A3EFF8F3C72A7D8BD9E2174A1C75B4B",
+      "bytes": 262,
+      "component": "right_eye_open"
+    },
+    {
+      "path": "docs/validation/artifacts/companion-v9-expression-rig-daily-focus-accepted-dynamic-baseline-20260718/dynamic-review-layers/right_eye_sleepy.png",
+      "sha256": "360C353B821C693992B511ECA50CBAC62168CB7CC88A87268516F5AE2BFF2143",
+      "bytes": 180,
+      "component": "right_eye_sleepy"
+    },
+    {
+      "path": "docs/validation/artifacts/companion-v9-expression-rig-daily-focus-accepted-dynamic-baseline-20260718/dynamic-review-layers/right_eye_sparkle_open.png",
+      "sha256": "65558F942E8A16264A95816C085677C06F7CE65D720BE559C21DDE70AEFBE2D3",
+      "bytes": 136,
+      "component": "right_eye_sparkle_open"
+    }
+  ],
+  "story_count": 4,
+  "stories": [
+    "daily_down",
+    "daily_left",
+    "daily_right",
+    "daily_up"
+  ],
+  "dynamic_groups": [
+    "brows",
+    "cheeks",
+    "eyes/highlights",
+    "nose-mouth/lips",
+    "small charm"
+  ],
+  "distance_records": [
+    {
+      "story": "daily_down",
+      "entry_to_sustain_pixels": 772,
+      "entry_to_settle_pixels": 0,
+      "sustain_layer_count": 13,
+      "sustain_roles": [
+        "charm",
+        "left_brow",
+        "left_cheek",
+        "left_eye",
+        "left_highlight",
+        "left_sparkle",
+        "mouth",
+        "nose",
+        "right_brow",
+        "right_cheek",
+        "right_eye",
+        "right_highlight",
+        "right_sparkle"
+      ]
+    },
+    {
+      "story": "daily_left",
+      "entry_to_sustain_pixels": 702,
+      "entry_to_settle_pixels": 0,
+      "sustain_layer_count": 13,
+      "sustain_roles": [
+        "charm",
+        "left_brow",
+        "left_cheek",
+        "left_eye",
+        "left_highlight",
+        "left_sparkle",
+        "mouth",
+        "nose",
+        "right_brow",
+        "right_cheek",
+        "right_eye",
+        "right_highlight",
+        "right_sparkle"
+      ]
+    },
+    {
+      "story": "daily_right",
+      "entry_to_sustain_pixels": 882,
+      "entry_to_settle_pixels": 0,
+      "sustain_layer_count": 13,
+      "sustain_roles": [
+        "charm",
+        "left_brow",
+        "left_cheek",
+        "left_eye",
+        "left_highlight",
+        "left_sparkle",
+        "mouth",
+        "nose",
+        "right_brow",
+        "right_cheek",
+        "right_eye",
+        "right_highlight",
+        "right_sparkle"
+      ]
+    },
+    {
+      "story": "daily_up",
+      "entry_to_sustain_pixels": 738,
+      "entry_to_settle_pixels": 0,
+      "sustain_layer_count": 13,
+      "sustain_roles": [
+        "charm",
+        "left_brow",
+        "left_cheek",
+        "left_eye",
+        "left_highlight",
+        "left_sparkle",
+        "mouth",
+        "nose",
+        "right_brow",
+        "right_cheek",
+        "right_eye",
+        "right_highlight",
+        "right_sparkle"
+      ]
+    }
+  ],
+  "story_phase_frames": [
+    {
+      "path": "docs/validation/artifacts/companion-v9-expression-rig-daily-focus-accepted-dynamic-baseline-20260718/story-phases/daily_down_entry.pbm",
+      "sha256": "B3847DF9CE2D20693C60C9CC7BC1EC8D8B8A3E23641F4521EE71508ABE13CB9E",
+      "bytes": 5011,
+      "story": "daily_down",
+      "phase": "entry",
+      "frame_sha256": "B3847DF9CE2D20693C60C9CC7BC1EC8D8B8A3E23641F4521EE71508ABE13CB9E",
+      "layer_count": 13
+    },
+    {
+      "path": "docs/validation/artifacts/companion-v9-expression-rig-daily-focus-accepted-dynamic-baseline-20260718/story-phases/daily_down_sustain.pbm",
+      "sha256": "193BCA33258BBEBFA0A9F29DD3C0305A7024F0F2F96850CD0ADF089661A89706",
+      "bytes": 5011,
+      "story": "daily_down",
+      "phase": "sustain",
+      "frame_sha256": "193BCA33258BBEBFA0A9F29DD3C0305A7024F0F2F96850CD0ADF089661A89706",
+      "layer_count": 13
+    },
+    {
+      "path": "docs/validation/artifacts/companion-v9-expression-rig-daily-focus-accepted-dynamic-baseline-20260718/story-phases/daily_down_settle.pbm",
+      "sha256": "B3847DF9CE2D20693C60C9CC7BC1EC8D8B8A3E23641F4521EE71508ABE13CB9E",
+      "bytes": 5011,
+      "story": "daily_down",
+      "phase": "settle",
+      "frame_sha256": "B3847DF9CE2D20693C60C9CC7BC1EC8D8B8A3E23641F4521EE71508ABE13CB9E",
+      "layer_count": 13
+    },
+    {
+      "path": "docs/validation/artifacts/companion-v9-expression-rig-daily-focus-accepted-dynamic-baseline-20260718/story-phases/daily_left_entry.pbm",
+      "sha256": "B3847DF9CE2D20693C60C9CC7BC1EC8D8B8A3E23641F4521EE71508ABE13CB9E",
+      "bytes": 5011,
+      "story": "daily_left",
+      "phase": "entry",
+      "frame_sha256": "B3847DF9CE2D20693C60C9CC7BC1EC8D8B8A3E23641F4521EE71508ABE13CB9E",
+      "layer_count": 13
+    },
+    {
+      "path": "docs/validation/artifacts/companion-v9-expression-rig-daily-focus-accepted-dynamic-baseline-20260718/story-phases/daily_left_sustain.pbm",
+      "sha256": "B2209356DB7480A2301F6119F9BC86976D535A82955D18A46D242C2BFBDB244B",
+      "bytes": 5011,
+      "story": "daily_left",
+      "phase": "sustain",
+      "frame_sha256": "B2209356DB7480A2301F6119F9BC86976D535A82955D18A46D242C2BFBDB244B",
+      "layer_count": 13
+    },
+    {
+      "path": "docs/validation/artifacts/companion-v9-expression-rig-daily-focus-accepted-dynamic-baseline-20260718/story-phases/daily_left_settle.pbm",
+      "sha256": "B3847DF9CE2D20693C60C9CC7BC1EC8D8B8A3E23641F4521EE71508ABE13CB9E",
+      "bytes": 5011,
+      "story": "daily_left",
+      "phase": "settle",
+      "frame_sha256": "B3847DF9CE2D20693C60C9CC7BC1EC8D8B8A3E23641F4521EE71508ABE13CB9E",
+      "layer_count": 13
+    },
+    {
+      "path": "docs/validation/artifacts/companion-v9-expression-rig-daily-focus-accepted-dynamic-baseline-20260718/story-phases/daily_right_entry.pbm",
+      "sha256": "B3847DF9CE2D20693C60C9CC7BC1EC8D8B8A3E23641F4521EE71508ABE13CB9E",
+      "bytes": 5011,
+      "story": "daily_right",
+      "phase": "entry",
+      "frame_sha256": "B3847DF9CE2D20693C60C9CC7BC1EC8D8B8A3E23641F4521EE71508ABE13CB9E",
+      "layer_count": 13
+    },
+    {
+      "path": "docs/validation/artifacts/companion-v9-expression-rig-daily-focus-accepted-dynamic-baseline-20260718/story-phases/daily_right_sustain.pbm",
+      "sha256": "71E2E2A54EC0E0757B9D508CEDABF3EE7B328EC75DE4EFB66F9D14B30D762772",
+      "bytes": 5011,
+      "story": "daily_right",
+      "phase": "sustain",
+      "frame_sha256": "71E2E2A54EC0E0757B9D508CEDABF3EE7B328EC75DE4EFB66F9D14B30D762772",
+      "layer_count": 13
+    },
+    {
+      "path": "docs/validation/artifacts/companion-v9-expression-rig-daily-focus-accepted-dynamic-baseline-20260718/story-phases/daily_right_settle.pbm",
+      "sha256": "B3847DF9CE2D20693C60C9CC7BC1EC8D8B8A3E23641F4521EE71508ABE13CB9E",
+      "bytes": 5011,
+      "story": "daily_right",
+      "phase": "settle",
+      "frame_sha256": "B3847DF9CE2D20693C60C9CC7BC1EC8D8B8A3E23641F4521EE71508ABE13CB9E",
+      "layer_count": 13
+    },
+    {
+      "path": "docs/validation/artifacts/companion-v9-expression-rig-daily-focus-accepted-dynamic-baseline-20260718/story-phases/daily_up_entry.pbm",
+      "sha256": "B3847DF9CE2D20693C60C9CC7BC1EC8D8B8A3E23641F4521EE71508ABE13CB9E",
+      "bytes": 5011,
+      "story": "daily_up",
+      "phase": "entry",
+      "frame_sha256": "B3847DF9CE2D20693C60C9CC7BC1EC8D8B8A3E23641F4521EE71508ABE13CB9E",
+      "layer_count": 13
+    },
+    {
+      "path": "docs/validation/artifacts/companion-v9-expression-rig-daily-focus-accepted-dynamic-baseline-20260718/story-phases/daily_up_sustain.pbm",
+      "sha256": "A3FB8370BA857DEFEE052AA77F5E4BDED5A5DDC731682818E6267D7CAEEBACBC",
+      "bytes": 5011,
+      "story": "daily_up",
+      "phase": "sustain",
+      "frame_sha256": "A3FB8370BA857DEFEE052AA77F5E4BDED5A5DDC731682818E6267D7CAEEBACBC",
+      "layer_count": 13
+    },
+    {
+      "path": "docs/validation/artifacts/companion-v9-expression-rig-daily-focus-accepted-dynamic-baseline-20260718/story-phases/daily_up_settle.pbm",
+      "sha256": "B3847DF9CE2D20693C60C9CC7BC1EC8D8B8A3E23641F4521EE71508ABE13CB9E",
+      "bytes": 5011,
+      "story": "daily_up",
+      "phase": "settle",
+      "frame_sha256": "B3847DF9CE2D20693C60C9CC7BC1EC8D8B8A3E23641F4521EE71508ABE13CB9E",
+      "layer_count": 13
+    }
+  ],
+  "max_allowed_pixel_distance_for_regression": 0
+}

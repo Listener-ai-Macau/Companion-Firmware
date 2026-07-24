@@ -1,0 +1,51 @@
+{
+  "schema_id": "companion.wb55.ssd1681_ram_ping_pong_fingerprint.source_hash.v1",
+  "requirement_id": "COMP-REQ-266",
+  "status": "PASS_RESEARCH_ADMITS_ONE_PHASE_A_FINGERPRINT_BUILD_BEFORE_HARDWARE",
+  "source_manifest": [
+    { "path": "docs/companion_product_requirements.md", "length": 441515, "sha256": "3B35896DF01AB9414E0E27FCBA8400366F7750A90ECF735C788D204EC5C6F3AD", "role": "owner steering and ordered Phase A/Phase B contract" },
+    { "path": "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c", "length": 164624, "sha256": "5680AE90E6A3385450756F42B00D265BA9E42602FDC87E81763A2210F32F13FA", "role": "pre-Phase-A lower-driver source" },
+    { "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile", "length": 27479, "sha256": "43F01A86B02E06A95672980252C5ACFDC16CEE84FF354BD7BE21DDD3D2993671", "role": "pre-Phase-A build graph" },
+    { "path": "tools/build_nucleo_bringup.ps1", "length": 64488, "sha256": "4BEBD2D253DD250D9E7AE553F0C7D09F9D2B964DC354F8FF9CFEAA63CF069510", "role": "pre-Phase-A isolated build wrapper" },
+    { "path": ".cache/validation/ssd1681-read-only-research/ssd1681-rev013-2.pdf", "length": 1869774, "sha256": "2989DB3DBBCE190F6E1F065A169479BF4FE911896FF8805894549F792FE9B53B", "role": "SSD1681 Rev 0.13 command and SPI read authority", "immutability": "read_only" },
+    { "path": ".cache/incoming/S-GDEY0154D67-FP-Touch-official-20260720/S-GDEY0154D67-FP-Touch20230303/HARDWARE/EPD/Display_EPD_W21.c", "length": 20707, "sha256": "CD08AFD1D56E8F7E1D0AE5C935A4D060E65C658ABC30CE29ACF65166141ACEE2", "role": "matching Good Display reset/border/window/write/activation sequence", "immutability": "read_only_supplier_input" },
+    { "path": "docs/validation/companion-ssd1681-reset-read-controller-state-machine-20260721.json", "length": 6381, "sha256": "70D235CC0228C8326438B325A0A145D66AFF9D0D60BA5A38200DD6F3E4666E13", "role": "proven PC1/SDA reverse transport and F6.6=1 prerequisite" },
+    { "path": "docs/validation/companion-pet-special-system-owner-acceptance-20260717.json", "length": 55, "sha256": "8A3BDF4BD1254B0D0F4DE13A7F293C3D74587C800339ABD4C61FEB0B7737E227", "role": "protected owner acceptance hash" }
+  ],
+  "manual_facts": {
+    "spi_read": "In four-wire mode, CS remains low across command and response; DC is low for command then high for response; the controller shifts response bits on SCL falling edges.",
+    "read_ram_0x27": "0x27 reads the RAM selected by register 0x41, advances address pointers, and returns one dummy byte before RAM bytes.",
+    "read_ram_option_0x41": "A0=0 selects RAM corresponding to command 0x24; A0=1 selects RAM corresponding to command 0x26.",
+    "ram_names": "The manual calls 0x24 Black/White RAM and 0x26 RED RAM. On a monochrome panel both contribute black/white LUT mapping; neither is called previous or current by the manual.",
+    "window": "A full 200x200 plane is X byte 0 through 24 and Y 0 through 199. 0x4E and 0x4F set the current RAM address counters.",
+    "data_entry": "0x11 defines X/Y increment direction and whether X or Y advances first.",
+    "software_reset": "0x12 leaves RAM unaffected, but Deep Sleep is exited only by hardware reset.",
+    "ping_pong": "Display Option F6 bit 6 enables RAM Ping-Pong only for Display Mode 2; the manual does not state the observed pre/post-activation logical bank mapping."
+  },
+  "supplier_facts": {
+    "partial_reset": "EPD_Dis_Part performs one 10 ms low plus 10 ms high hardware reset before border/window/RAM staging.",
+    "partial_border": "EPD_Dis_Part writes border register 0x3C=0x80.",
+    "partial_staging": "EPD_Dis_Part writes only current bytes through command 0x24.",
+    "partial_activation": "EPD_Part_Update performs 0x22=0xFF, then 0x20, then BUSY wait.",
+    "ram_retention_boundary": "The supplier sequence relies on RAM content surviving its per-partial hard reset after a prior basemap. The datasheet does not explicitly guarantee hard-reset RAM retention, so Phase A must machine-test this invariant rather than treat it as a source fact."
+  },
+  "phase_a_design": {
+    "cpu_payload_orientation": "Compare 0x27 bytes to the exact linear 5000-byte payload written under the same explicit data-entry/window/counter configuration; make no visual-orientation assumption.",
+    "repeated_read_rule": "Before every one of the twelve 0x27 reads, reissue the same full 0x44/0x45 window, 0x4E/0x4F counters, and 0x41 selector because each read advances address pointers.",
+    "response_bytes": 5001,
+    "dummy_bytes": 1,
+    "payload_bytes": 5000,
+    "stages": ["basemap_after_activation", "dirty_staged_before_activation", "after_partial_activation"],
+    "ram_selectors": [0, 1],
+    "repeats_per_stage_selector": 2,
+    "hardware_executes": 1,
+    "automatic_retries": 0,
+    "mandatory_restore_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C"
+  },
+  "admission": "Phase A source/build/parser/static work may proceed. No Phase A hardware contact before full machine gates, and no Phase B code or candidate before a unique Phase A mapping PASS.",
+  "forbidden_claims": [
+    "Do not label RAM0x26 old/previous or RAM0x24 current from the manual alone.",
+    "Do not infer a waveform, LUT, temperature rule, voltage rule, visual fix, or production behavior from F6.6 or RAM fingerprints.",
+    "Do not touch supplier input, V9, protected owner acceptance, Rig, CRIG, browser, dynamic-expression binding, touch, or BLE."
+  ]
+}

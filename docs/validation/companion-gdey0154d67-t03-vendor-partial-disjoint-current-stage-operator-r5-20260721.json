@@ -1,0 +1,43 @@
+{
+  "schema_id": "companion.wb55.gdey0154d67_t03.vendor_partial_disjoint_current_stage_operator.v1",
+  "status": "NO_GO_OPERATOR_PROBE_MOTION_NOT_VISIBLE",
+  "claim_scope": "canonical physical observation of the default-off 12 px diagnostic probe only; no waveform, panel-identity, temperature, production, or OLED-like continuity claim",
+  "operator_review": {
+    "style": "aiw_operator_prompt_v1",
+    "selected": "失败",
+    "note": "你现在没有在移动?"
+  },
+  "machine_trace": {
+    "status": "PASS_MACHINE_VENDOR_PARTIAL_DISJOINT_CURRENT_STAGE_TRACE",
+    "partial_steps": 48,
+    "identical_frame_steps": 1,
+    "busy_completions": 48,
+    "panel_errors": 0,
+    "probe_radius_px": 12,
+    "trace_path": ".cache/validation/wb55-vendor-partial-disjoint-current-stage-r5-20260721/vendor-partial-disjoint-current-stage-trace.json",
+    "trace_sha256": "ED765A125CF5DAA8AB20CD911AF75708C5C67E229A1567F14D03E4FC263388B9"
+  },
+  "normal_restore": {
+    "restored": true,
+    "normal_hex_sha256": "E1997F29DCB8735899B4BC0B9012CF75025F3CA8D21250485BCC21E4C4691B46"
+  },
+  "retained_evidence": {
+    "stage_run_path": ".cache/validation/wb55-vendor-partial-disjoint-current-stage-r5-20260721/stage-run.json",
+    "stage_run_sha256": "C50353606670C6910074BD80B5862A8EB985679B8384CC33CCD15AB73A7BDD52",
+    "raw_log_path": ".cache/validation/wb55-vendor-partial-disjoint-current-stage-r5-20260721/capture/nucleo-serial-raw.log",
+    "raw_log_sha256": "CD8379B57B155C794DAE1B7019A8BE272C8AC19378FE0A60F754B2DAC868608C",
+    "canonical_note_path": ".cache/validation/wb55-vendor-partial-disjoint-current-stage-r5-20260721/operator-prompt-observation.txt",
+    "canonical_note_sha256": "FADA199167F17DA92BF457F2173AAB1B151363311C6B9079C95BE763604CCAF4"
+  },
+  "triage": {
+    "disposition": "The 12 px components are visible but the 1 px step and 4 px excursion do not demonstrate movement. This run is not accepted and cannot be promoted or reused as visual success evidence.",
+    "owner_authorized_follow_up": "Supersede the unflashed 2 px/8 px micro-trajectory with the prior in-screen 5-anchor orbit geometry: a 12 px-radius probe moves between center/up/right/down/left anchors with 42 px offset and 8 interpolated steps per segment. Reuse only geometry; preserve the current-stage source transport, one completion, exclusions, normal restore, and canonical review.",
+    "prohibited": [
+      "LUT or waveform mutation",
+      "controller/control/timing/reset/border/rail/temperature changes",
+      "full refresh or black flash as compensation",
+      "production promotion",
+      "product expression geometry or V9/Rig/browser binding"
+    ]
+  }
+}

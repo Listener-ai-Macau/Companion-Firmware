@@ -1,0 +1,51 @@
+{
+  "schema_id": "companion.wb55.micro_delta_visual_no_go.v1",
+  "status": "NO_GO_VISIBLE_GLOBAL_FLUSH_OR_DIRTYING",
+  "date": "2026-07-20",
+  "claim_scope": "production-off four-byte micro-motion diagnostic only; no panel-wide or production behavior claim",
+  "target": "NUCLEO-WB55RG + ESP32-FTS02 + connected 200x200 monochrome panel",
+  "diagnostic": {
+    "image": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_refresh_cadence_micro_4byte_diagnostic/Companion_Nucleo_WB55RG_RefreshCadenceMicro4ByteDiagnostic.hex",
+    "geometry": "4x4 black highlight; one-pixel horizontal movement within one display RAM byte",
+    "per_local_update": {
+      "bytes_per_plane": 4,
+      "planes": ["0x26 previous", "0x24 current"],
+      "control": "0xFC",
+      "activate": "0x20",
+      "busy": "required"
+    },
+    "existing_maintenance": "after five local updates, 5000-byte-per-plane Mode-1 0xC7 maintenance"
+  },
+  "machine_trace": {
+    "path": ".cache/validation/wb55-differential-cadence-micro-4byte-g25-current-room-20260720-machine/differential/refresh-cadence-result.json",
+    "status": "NO_GO_INCOMPLETE_REFRESH_CADENCE",
+    "reason": "owner stopped the visual run before its requested 25 groups completed",
+    "observed_before_stop": "serial trace contains the local four-byte-per-plane FC path and periodic C7 maintenance, but is incomplete and cannot be a PASS"
+  },
+  "owner_observation": {
+    "source": "live physical review on 2026-07-20",
+    "statement": "whole screen appears to flush and look dirty even though the payload is reduced to the changed highlight",
+    "disposition": "reject further payload-size or cadence experiments as a solution to the local-cleanliness requirement"
+  },
+  "technical_finding": {
+    "proved": "changed-region RAM transfer can be restricted to four bytes per plane",
+    "not_proved": "a four-byte RAM transfer causes an optically local, residue-free waveform on this panel",
+    "conclusion": "smaller RAM payload alone is not an acceptable solution; do not infer a local visible refresh from a local write window"
+  },
+  "recovery": {
+    "normal_firmware_flash": "completed after the stopped run",
+    "official_white_diagnostic_flash": "STM32CubeProgrammer verified after the owner requested a pure-white recovery",
+    "current_hardware_instruction": "do not flash or run another motion diagnostic until an approved source-bound local-waveform research action is ready"
+  },
+  "next_allowed_research": [
+    "Audit the supplied Good Display partial path: 0x44/0x45/0x4E/0x4F, local 0x24, 0xFF, 0x20 and BUSY.",
+    "Treat the existing physical residue failure of that source partial path as a NO_GO for continuous expressions.",
+    "Request a panel-bound partial waveform or OTP/profile instruction for the physical 0154BN-D67-D2 marking before a new waveform test."
+  ],
+  "prohibitions": [
+    "No custom, generic, web-derived or guessed LUT.",
+    "No production refresh-policy change.",
+    "No V9, Rig, CRIG, browser preview or dynamic-art binding change.",
+    "No claim that the connected panel is GDEY0154D67-T03 solely from shared resolution or controller family."
+  ]
+}

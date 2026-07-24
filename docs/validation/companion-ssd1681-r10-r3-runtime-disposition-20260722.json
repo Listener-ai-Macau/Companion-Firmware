@@ -1,0 +1,41 @@
+{
+  "schema_id": "companion.wb55.ssd1681.r10_r3.runtime_disposition.v1",
+  "status": "NO_GO_R10_R3_OWNER_VISUAL_FAIL_RESTORED",
+  "requirement_id": "COMP-REQ-337",
+  "qualification": {
+    "frames": 16,
+    "status": "PASS",
+    "busy_max_ms": 599,
+    "stable_hold_range_ms": "400..410"
+  },
+  "live_loop": {
+    "complete_records": 31,
+    "status": "PASS"
+  },
+  "operator_acceptance": {
+    "popup_count": 1,
+    "selected": "失败",
+    "note": "和之前一样的现象, 可以移动但是会全屏刷新",
+    "note_sha256": "BC298A7D2CABF837FFF1323E036DA37018B07699A969604E212CD2E6FF7F6F28",
+    "subsequent_chat_verbatim": " 不要自行加前导空格，以用户原文为准：不太行，还是跟之前一样的现象。就是呃移动的时候整个屏幕会变脏，然后再变白色，然后呢就会观感很差。",
+    "visual_disposition": "FAIL_TRANSIENT_FULL_SCREEN_REFRESH_DIRTY_THEN_WHITE"
+  },
+  "lifecycle": {
+    "postclean": "PASS",
+    "restore_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "normal_resume": "PASS",
+    "automatic_retries": 0
+  },
+  "finalization": {
+    "monitor_status": "NO_GO_FINALIZATION",
+    "cause": "short_observation_ring_retained_complete_qualification_preamble",
+    "interpretation": "host evidence finalization boundary only; not a screen failure or qualification failure",
+    "complete_qualification_preamble_present": true
+  },
+  "r4_boundary": {
+    "offline_machine_ready_only": true,
+    "hardware_authorized": false,
+    "new_driver_variable_selected": "fixed_full_motion_corridor_window",
+    "lut_changed": false
+  }
+}

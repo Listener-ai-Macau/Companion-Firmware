@@ -1,0 +1,48 @@
+{
+  "authorization_created": false,
+  "checkonly_root": ".cache/validation/wb55-r7-locked-v9-r437-monitor-20260723",
+  "child_hashes": {
+    "persistent-launch.json": "CB38E22E3EE40801DA1C5B7347D5675139D001A8D2F7D0D19E0979743FABF794",
+    "stage-run.json": "7038885CBDDB06260D51AFEBE75A063A42B215775279210480BB53BAC991FC0F"
+  },
+  "counters": {
+    "authorization": 0,
+    "claim_only": 0,
+    "execute": 0,
+    "hardware_contact": 0,
+    "popup": 0,
+    "programmer": 0,
+    "refresh": 0,
+    "reset": 0,
+    "retry": 0,
+    "serial": 0,
+    "write": 0
+  },
+  "future_physical_authorization_requirement_id": "COMP-REQ-413",
+  "launcher_invoked": true,
+  "loop_cadence_measurements": 31,
+  "loop_cadence_measurements_exclude_first": true,
+  "loop_cycles_minimum": 2,
+  "loop_epoch_reset_after_qualification_summary": true,
+  "loop_first_delta_ms": 0,
+  "normal_resume": true,
+  "physical_verdict": "UNPROVEN",
+  "post_cleanup_requirement": "COMP-REQ-409",
+  "pre_cleanup_requirement": "COMP-REQ-409",
+  "process_audit": true,
+  "qualification": 16,
+  "qualification_cadence_measurements": 15,
+  "r9_replay_required": true,
+  "real_persistent_checkonly": true,
+  "requirement": "COMP-REQ-437",
+  "restore_bytes": 524288,
+  "restore_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+  "retry_count": 0,
+  "schema_id": "companion.wb55.ssd1681.r7_locked_v9_choreography.lifecycle.v3",
+  "status": "PASS",
+  "telemetry_schema": "immutable_metadata_plus_compact_96_byte_crlf_records",
+  "unproven": [
+    "physical measured timing",
+    "physical panel visual acceptance"
+  ]
+}

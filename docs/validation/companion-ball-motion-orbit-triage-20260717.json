@@ -1,0 +1,34 @@
+{
+  "schema": "companion.ball_motion.orbit.triage.v1",
+  "requirement": "COMP-REQ-089",
+  "machine_capture": {
+    "summary": ".cache/validation/ball-motion-orbit-20260717/nucleo-serial-summary.json",
+    "raw_log": ".cache/validation/ball-motion-orbit-20260717/nucleo-serial-raw.log",
+    "result": "PASS",
+    "observed_path": [
+      "baseline_center",
+      "up",
+      "right",
+      "down",
+      "left",
+      "return_center",
+      "settle_center"
+    ],
+    "sequencing": "Each next request was queued only after the preceding panel completion."
+  },
+  "operator_review": {
+    "result_path": ".cache/validation/ball-motion-orbit-20260717/operator-prompt-result.json",
+    "selected": "需修改",
+    "note": "跳的太快了, 你看看能不能像是一个动画一样, 锁了不要做球了, 直接做表情脸好了"
+  },
+  "triage": {
+    "decision": "lock_ball_diagnostic_as_timing_baseline",
+    "do_not_use_for": [
+      "product_visual",
+      "expression_animation",
+      "future_human_visual_acceptance"
+    ],
+    "next_work": "Use locked v9 face resources for sparse, readable facial motion under the same one-frame-after-completion policy.",
+    "status": "rework_expression_first"
+  }
+}

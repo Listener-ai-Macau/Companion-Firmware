@@ -1,0 +1,69 @@
+{
+  "schema_id": "companion.wb55.ssd1681_custom_mode2_transition_safety_machine_ready.v4",
+  "status": "MACHINE_READY_CUSTOM_MODE2_UNIFORM_ACTIVE_TP16_R4",
+  "requirements": ["COMP-REQ-285", "COMP-REQ-289", "COMP-REQ-292"],
+  "goal_action": "none; active Goal remains owned by the root thread",
+  "hardware_contact": 0,
+  "production_enabled": false,
+  "r2_r3_rerun_allowed": false,
+  "candidate": {
+    "name": "stationary_suppression_uniform_tp16_r4",
+    "single_mechanism_variable": "uniform 4/5 aggregate scale of both complete symmetric active-TP groups using cumulative half-up integer allocation",
+    "r2_group_values": [[2, 2, 2, 2, 1, 1], [2, 2, 2, 2, 1, 1]],
+    "r4_group_values": [[2, 1, 2, 1, 1, 1], [2, 1, 2, 1, 1, 1]],
+    "aggregate_tp": {"r2": 20, "r4": 16},
+    "changed_from_r2_offsets": [61, 64, 75, 78],
+    "all_active_fields_nonzero": true,
+    "lut_sha256": "75D7647188ACF1C79BC37313DC40105AF4445B9B6F422AD4FDAF0A465413984D",
+    "hex_sha256": "E695A1A6D3D121AA585E69A1A0D8DA21FEBC5566198BD314FE27F2D40C30B564",
+    "elf_sha256": "BD1003A14BB2F62B58E6A56AA2926633D3A1B5A8FD58BC6D263E8FE2A56A2698",
+    "protected_tail_hex": "221741A83258",
+    "local_activations": 9,
+    "busy_per_activation_max_ms": 600,
+    "full_frame_candidate_activations": 0,
+    "motion_admitted": false
+  },
+  "model": {
+    "r3_plateau_observation_ms": 602,
+    "predicted_r4_busy_ms": 510.948,
+    "predicted_margin_ms": 89.052,
+    "required_predicted_max_ms": 550,
+    "required_minimum_margin_ms": 50,
+    "authority": "candidate selection only; hardware BUSY remains authoritative"
+  },
+  "runner_contract": {
+    "execute_launcher": "tools/start_wb55_ssd1681_custom_mode2_transition_safety.ps1",
+    "fresh_output_directory_required": true,
+    "canonical_pre_execute_title": "Companion R4 局刷实验开始确认",
+    "start_selection_required": "开始实验",
+    "deterministic_white_preclean_first": true,
+    "preclean_failure_forbids_candidate": true,
+    "immediate_stop_on_busy_failure": true,
+    "exact_raw_restore_readback_normal_resume": true,
+    "optical_review_only_after_machine_pass": true
+  },
+  "machine_gates": [
+    {"name": "r4_workbench", "status": "PASS_WORKBENCH_ADMIT_UNIFORM_ACTIVE_TP16_MODE2_R4", "artifact_sha256": "E7467B808CE7BD1BE317BC282B7990CF343922DE8C15B092588B9968DEAB444D"},
+    {"name": "static_gate", "status": "PASS_STATIC_CUSTOM_MODE2_TRANSITION_SAFETY_DEFAULT_OFF_RAW_RESTORE", "artifact_sha256": "7454035F930DC665C6101C1FFBFB3B3430A7E577D793C632583709135D2F99C8"},
+    {"name": "detached_launcher_negative_fixtures", "status": "PASS_DETACHED_LAUNCHER_DURABLE_STREAMS_AND_NEGATIVE_FIXTURES", "artifact_sha256": "FFB52AAED746EE3387B3E44EC807EB41527B0D6A0E00644BCA17A4CECFD18ECB"},
+    {"name": "detached_check_only", "status": "READY_NO_HARDWARE_CONTACT", "hardware_contact": 0, "launch_sha256": "C7CA13CCD726B0CB2D040250E3E1D232E3F1DDE81DD8DF9D0D1368DF04115B56", "stage_sha256": "15B08B8E6A5FCFDBA108F38C211052E7D6ADFCE6EB0F17FAF4889357D890C09C"},
+    {"name": "diagnostic_force_build", "status": "PASS"},
+    {"name": "parser_positive_negative_matrix", "status": "PASS"},
+    {"name": "product_registry", "status": "PASS_WITH_SEPARATELY_ARTIFACTED_DUPLICATE_291_DEFECT"},
+    {"name": "current_goal_audit", "status": "PASS", "artifact_sha256": "E5D2EF9F41EB9EE28171F269A1085E02DF5A7ECA8D21190B4C4D157C117ECFFD"},
+    {"name": "git_diff_check", "status": "PASS_WITH_LINE_ENDING_WARNINGS_ONLY"}
+  ],
+  "registry_integrity": {
+    "duplicate_291_is_lineage_authority": false,
+    "r4_lineage": "R3 disposition SHA-256 65F9CC8C505B370F0D683CDD9FAA08BDF22168E8D481D322EDC30270CEE407DC",
+    "defect_artifact": "docs/validation/companion-product-registry-duplicate-id-collision-20260721.json"
+  },
+  "protected_inputs": {
+    "supplier_epaper_c_sha256": "7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896",
+    "owner_acceptance_sha256": "8A3BDF4BD1254B0D0F4DE13A7F293C3D74587C800339ABD4C61FEB0B7737E227",
+    "captured_raw_baseline_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "source_audit_sha256": "5395705759D9F149B0CCE4FCC5C576B78D3A13A5FBD45FF0F0799495736EF645"
+  },
+  "next_action": "launch exactly one detached R4 Execute with a fresh output directory and canonical pre-execute window",
+  "goal_terminal": false
+}

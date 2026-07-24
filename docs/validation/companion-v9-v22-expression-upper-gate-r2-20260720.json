@@ -1,0 +1,68 @@
+{
+  "schema": "companion.v9_v22_expression_upper_gate.v1",
+  "status": "PASS_V9_V22_EXPRESSION_UPPER_GATE_RUNTIME_INACTIVE",
+  "claim_scope": "upper_expression_rig_choreography_browser_target_and_build_admission_only_not_driver_change_flash_or_physical_panel_acceptance",
+  "driver_workstream": "delegated_to_separate_ai_per_comp_req_229",
+  "runtime_resource_activated": false,
+  "candidate_provision_or_flash_performed_by_this_gate": false,
+  "checks": {
+    "locked_v9_identity_is_preserved": true,
+    "v9_touch_score_browser_target_parity_passes": true,
+    "v22_route_is_event_driven_runtime_inactive": true,
+    "v22_browser_target_component_plan_parity_passes": true,
+    "native_browser_daily_and_warm_pixels_match_target_pbms": true,
+    "external_nor_component_pack_and_special_fail_closed_policy_pass": true,
+    "wba_external_nor_component_replay_passes": true,
+    "wb55_v22_candidate_build_contains_component_bridge_and_exact_crig": true
+  },
+  "failures": [],
+  "artifacts": {
+    "v9_parity": {
+      "path": "docs/validation/companion-v9-rig-touch-emotion-machine-parity-r2-20260720.json",
+      "sha256": "E158DB56824EAF1156B311E766A7CAD38AA6DA6CFE3C3B5987BB26667344EE0F"
+    },
+    "route": {
+      "path": "docs/validation/companion-v9-v22-touch-emotion-route-preview-r2-20260720.json",
+      "sha256": "E59357CF34C3B58F06AF56A5220B7494A06F05649766C306D9E5E6C0AE171E32"
+    },
+    "route_parity": {
+      "path": "docs/validation/companion-v9-v22-touch-emotion-route-parity-r2-20260720.json",
+      "sha256": "2727475DBF4070328DB60D8DEC0FEF3A8B563CAC45BD4CE68573192FB746CB71"
+    },
+    "browser_pixels": {
+      "path": "docs/validation/companion-v9-v22-touch-emotion-route-browser-pixels-r2-20260720.json",
+      "sha256": "6D02264992D94AA277DB6D82B82CA062728ED9304D490DA813FE13FF62F0A9E9"
+    },
+    "target_rig": {
+      "path": "docs/validation/companion-v22-emotion-separation-target-rig-gate-r2-20260720.json",
+      "sha256": "33D5909D6DF4F7D25DB7C03485E70152204AB9373793D7DA40B8A8B82883A598"
+    },
+    "wba_host": {
+      "path": "docs/validation/companion-v22-emotion-separation-target-rig-wba-host-20260719.json",
+      "sha256": "138F08C41A879F255AB75C836DDD5145BC7DAE0BE7436211D38108E69295BD5B"
+    },
+    "candidate_source_pack": {
+      "path": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/target-rig-attempt-01/companion-v22-emotion-separation-rig-candidate-200x200.crig",
+      "sha256": "43184DE67E28EEA2B5277A406145B54C6204453E4441F9D1BD9DE20EEEA25333"
+    },
+    "candidate_build": {
+      "hex": {
+        "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_v22_emotion_bridge_demo_0/Companion_Nucleo_WB55RG_V22EmotionBridgeDemo_0.hex",
+        "sha256": "34E90A08FD64491A44B445548426DF5CDF2F44C706D2CC07DA16A57A056B03B7"
+      },
+      "elf": {
+        "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_v22_emotion_bridge_demo_0/Companion_Nucleo_WB55RG_V22EmotionBridgeDemo_0.elf",
+        "sha256": "D811156CF3711285E032DD1CA0B7E7C6568FD004D13425477EAE0468D1D36E45"
+      },
+      "map": {
+        "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_v22_emotion_bridge_demo_0/Companion_Nucleo_WB55RG_V22EmotionBridgeDemo_0.map",
+        "sha256": "F1683AD6F054A373B1A15740F3DD2207CD67FFF21A1C0FC3F0FEDB84DA5F322C"
+      },
+      "provisioned_candidate_blob": {
+        "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_v22_emotion_bridge_demo_0/generated/companion-v22-emotion-separation-rig-candidate-200x200.crig",
+        "sha256": "43184DE67E28EEA2B5277A406145B54C6204453E4441F9D1BD9DE20EEEA25333"
+      }
+    }
+  },
+  "next_boundary": "No driver, LUT, refresh-policy, hardware or physical panel action belongs to this upper-expression gate."
+}

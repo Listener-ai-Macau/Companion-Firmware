@@ -1,0 +1,54 @@
+{
+  "schema": "companion.v23_special_expression_machine_closure.v1",
+  "status": "PASS_V23_SPECIAL_EXPRESSION_MACHINE_CLOSURE_RUNTIME_INACTIVE",
+  "claim_scope": "source-to-component-to-browser/target machine closure for an unbound runtime-inactive candidate; no firmware binding, CRIG/profile export, flash, panel output, physical acceptance, or human art acceptance",
+  "locked_v9_source": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "artifacts": {
+    "source_gate": {
+      "path": "docs/validation/companion-v23-core-special-expression-source-gate-20260720.json",
+      "sha256": "059C2733CB1CD5B1FA9FFA0CA736663729580F027647077106BDC795132F5E5A",
+      "status": "PASS_V23_SPECIAL_SOURCE_GATE_PENDING_COMPONENT_EXPORT"
+    },
+    "component_export_gate": {
+      "path": "docs/validation/companion-v23-core-special-expression-component-export-gate-20260720.json",
+      "sha256": "6F910541B42010EC241F92721263AD08B5772CFFAEAB2DFC5E206B38D0E2CED3",
+      "status": "PASS_V23_SPECIAL_COMPONENT_EXPORT_UNBOUND"
+    },
+    "component_performance": {
+      "path": "docs/validation/companion-v23-special-expression-component-performance-preview-20260720.json",
+      "sha256": "D6C730A2FEA0D8F71020D8EB287BFA2E28F1E936ABE4039BB87D355535566E73",
+      "status": "PASS_V23_SPECIAL_COMPONENT_PERFORMANCE_RUNTIME_INACTIVE"
+    },
+    "browser_target_parity": {
+      "path": "docs/validation/companion-v23-special-expression-component-performance-parity-20260720.json",
+      "sha256": "C0F3F93338971516DF5F394498FA71A8F8330D3821EF99EF215046D281F5EEF5",
+      "status": "PASS_V23_SPECIAL_COMPONENT_PERFORMANCE_PARITY_RUNTIME_INACTIVE"
+    },
+    "browser_render": {
+      "path": "docs/validation/companion-v23-special-expression-component-browser-render-20260720.json",
+      "sha256": "57653BECAE09C19AF0474EC2B1BAADC7BEBE404C907497E62F2DD9ED0000C576",
+      "status": "PASS_V23_BROWSER_RENDER_INSPECTION_NATIVE_200X200"
+    }
+  },
+  "selection_policy": {
+    "mode": "explicit_event_performance",
+    "random_state_selection": false,
+    "automatic_cross_state_cycle": false,
+    "daily_auto_only_runs_daily_micro_choreography": true,
+    "special_state_exit_returns_to": "v9_daily",
+    "unavailable_special_states": [
+      "upgrade",
+      "sleep",
+      "error"
+    ],
+    "unavailable_special_state_policy": "fail_closed"
+  },
+  "next_human_boundary": "canonical browser-only Chinese owner art review of the V23 candidate; any FAIL returns to generated-source refinement before a CRIG/profile or behavior binding",
+  "physical_gate": "PENDING_FTS02_REPLACEMENT_OR_CROSS_SWAP_RAIL_EVIDENCE",
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden",
+  "errors": []
+}

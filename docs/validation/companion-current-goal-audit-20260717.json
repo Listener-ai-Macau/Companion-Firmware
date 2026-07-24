@@ -1,16 +1,18 @@
 {
-  "active_goal_boundary": "Only current v9/companion-menu-v7-screen-family v7.3 sources may be considered; root-only v6 and historical v5/v6/v7/v8/v10+ art and six-root menus are not active inputs.",
+  "active_goal_boundary": "Only current v9/companion-menu-v7-screen-family v7.3 sources may be considered; root-only v6 and historical v5/v6/v7/v8/v10+ art and six-root menus are not active inputs. For SSD1681 R10, driver, candidate and existing R3 evidence remain unchanged; R6-R1 has no visual verdict, and COMP-REQ-348 permits only one byte-identical R6-R2 re-observation. Future human iterations are constrained by COMP-REQ-336 incremental-shutter SHA reuse and generic authorization-bound MACHINE_READY manifest steering.",
   "codex_goal_status": "active",
   "daily_visual_validation": "deterministic source/PBM/CEMP/render evidence; camera is final physical preflight only, never daily art development",
   "errors": [],
-  "external_gates": "Owner visual decisions, real hardware evidence, a selected WBA target and a matching vendor CWF1 waveform package remain required before their respective acceptance items can pass.",
+  "external_gates": "Owner visual decisions, remaining real hardware evidence and a selected WBA target remain required before their respective acceptance items can pass. R8-R2, R9 one-shot, R9 continuous R1/R2 and R10 R1/R2/R4b/R6-R1 authorizations are historical/consumed as recorded. R4b was an owner visual FAIL; R6-R1 is NOT OBSERVED after NO_GO_EMERGENCY_STOP, while COMP-REQ-348 permits only the fresh unconsumed R6-R2 re-observation package. R5 is offline-only MACHINE_READY and future SSD1681 human iterations follow COMP-REQ-336 incremental-shutter targeted gates.",
   "open_gates": [
     "78 sequential owner visual observations: 39 v9 home keyframes, 15 v7.3 menu pages, 12 system pages and 12 journey pages",
     "separate approved-source PBM/CEMP import and runtime activation proposal",
     "WB55 FTS02/panel recovery, real touch/Stop/current and physical visual acceptance",
     "real WBA project, board and panel/resource parity",
-    "matching vendor CWF1 waveform package before any new waveform candidate"
+    "matching vendor CWF1 waveform package before any new waveform candidate",
+    "no retry of any consumed R8/R9/R10 authorization; R3 stable-hold MACHINE_READY is offline-only and no future Execute authorization is created here"
   ],
+  "post_safety_observation_exception": "COMP-REQ-313 preserves the historical 16-step qualification cap as the gate. COMP-REQ-315 closes R1 as restored with zero popup and no visual verdict. COMP-REQ-318 closes R2 as 16/16 machine PASS plus 1060-loop HUMAN FAIL, exact restore and no retry. COMP-REQ-330 records R10 R2's 16/160 machine evidence and owner visual FAIL; COMP-REQ-332 records R3's single 400-410 ms post-sync hold discriminator. COMP-REQ-339 records R4's consumed MACHINE_NO_GO telemetry incident with no visual verdict; COMP-REQ-341 records R4b's owner visual FAIL and R5's offline-only polarity discriminator. COMP-REQ-347 records R6-R1's machine qualification and 823 loop records followed by NO_GO_EMERGENCY_STOP before operator review, with NOT OBSERVED visual status and restored completion. COMP-REQ-348 permits one fresh byte-identical R6-R2 re-observation source only; it is not consumed here. COMP-REQ-336 preserves incremental-shutter SHA reuse and one-closure human iteration.",
   "requirements": [
     {
       "evidence": [
@@ -23,6 +25,30 @@
       "id": "historical_behavior_protection",
       "requirement": "Historical branches remain protected and only their classified double-tap, first-tap Stop blocker, three-minute idle and external-resource evidence are current behavior inputs.",
       "status": "proved_machine"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "R5 binds the new ELF/HEX/driver and focused schema-v4 waveform/parser evidence while reusing unchanged host gates by exact SHA.",
+          "path": "docs/validation/companion-ssd1681-r10-r5-polarity-direction-machine-ready-20260722.json",
+          "status": "MACHINE_READY_R10_R5_POLARITY_DIRECTION_OFFLINE_ONLY"
+        }
+      ],
+      "id": "ssd1681_r10_r5_polarity_direction_offline_machine_ready",
+      "requirement": "COMP-REQ-341 archives the R4b visual FAIL and authorizes only the R5 dedicated-LUT polarity-direction discriminator. The historical R9 LUT remains unchanged; R5 changes exactly eight bytes, preserves the ball/corridor/command/hold/lifecycle contract, accepts schema v4 while retaining v2/v3, and stops at default-off MACHINE_READY with no authorization or hardware contact.",
+      "status": "r5_single_lut_direction_discriminator_offline_only"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "R5 authorization is hash-bound to the regenerated MR and exact candidate/tool identities while remaining unconsumed.",
+          "path": ".cache/validation/wb55-r10-r5-polarity-execute-20260722-r2-authorization.json",
+          "status": "CONSUMED_AUTHORIZED_R10_BALL_ONCE"
+        }
+      ],
+      "id": "ssd1681_r10_r5_physical_execute_preparation",
+      "requirement": "COMP-REQ-344 authorizes exactly one fresh R5 r2 physical closure after the COMP-REQ-343 zero-write preflight repair. The source remains consumed=false, with fresh root and claim/spent/receipt absence; no ClaimOnly or Execute has occurred.",
+      "status": "r5_exactly_one_execute_pending_unconsumed"
     },
     {
       "evidence": [
@@ -274,12 +300,346 @@
       "id": "ssd1681_waveform_freeze",
       "requirement": "No generic, adjacent-panel or guessed SSD1681 LUT may be tried. A candidate requires a matching CWF1 vendor package before a bounded hardware session.",
       "status": "frozen_waiting_vendor_evidence"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "Inner artifacts prove dual-plane cleanup, exact restore and normal resume; candidate writes stayed zero and the empty non-acceptance popup is not a verdict.",
+          "path": "docs/validation/companion-ssd1681-ram-command-target-r8-launch-transport-incident-20260721.json",
+          "status": "R8_CANDIDATE_NOT_EXECUTED_CLEAN_RESTORE_RESUME_PASS_LAUNCH_TRANSPORT_FAILED"
+        },
+        {
+          "detail": "Static and no-hardware negative fixtures reject missing redirects/PID/hidden launch, hash drift, output reuse, child failure and mixed modes.",
+          "path": "docs/validation/companion-ssd1681-ram-command-target-r8-persistent-launcher-static-20260721.json",
+          "status": "PASS_R8_PERSISTENT_LAUNCHER_STATIC_AND_NEGATIVE_FIXTURES"
+        },
+        {
+          "detail": "The unchanged R8 candidate and zero-popup runner pass static/parser gates.",
+          "path": "docs/validation/companion-ssd1681-ram-command-target-r8-r2-static-20260721.json",
+          "status": "MACHINE_READY_R8_R2_NO_HARDWARE_CONTACT_EXECUTE_FORBIDDEN_PENDING_ROOT"
+        },
+        {
+          "detail": "Persistent child exited zero with durable logs, hardware_contact=0 and write_counter_sum=0.",
+          "path": ".cache/validation/wb55-ram-command-target-r8-r2-persistent-checkonly-20260721-r1/persistent-launch.json",
+          "status": "READY_NO_HARDWARE_CONTACT"
+        },
+        {
+          "detail": "The inner stage proves zero writes, zero panel commands and zero popup invocation.",
+          "path": ".cache/validation/wb55-ram-command-target-r8-r2-persistent-checkonly-20260721-r1/stage-run.json",
+          "status": "READY_NO_HARDWARE_CONTACT"
+        },
+        {
+          "detail": "The sole Execute proves fixed-bank command mapping, 28 selector response hashes, zero post-tag activation, promptless dual-plane cleanup, exact restore and normal resume.",
+          "path": "docs/validation/companion-ssd1681-ram-command-target-r8-r2-runtime-20260721.json",
+          "status": "PASS_MACHINE_R8_R2_FIXED_BANK_MAPPING_CLEANED_RESTORED"
+        }
+      ],
+      "id": "ssd1681_r8_transport_recovery",
+      "requirement": "R8 remains production-off and machine-only. The direct-launch incident executed no candidate and recovered exact raw bytes. The sole later persistent run proved fixed-bank command targeting (`0x24 -> selector0`, `0x26 -> selector1`), archived all 28 response hashes, then completed promptless cleanup and exact restore. Its one-shot authorization is consumed and no successor experiment is authorized.",
+      "status": "r8_r2_machine_pass_fixed_bank_mapping_restored_stop"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "The historical sealed R9 run remains 16/16 machine PASS, owner FAIL, promptless cleanup and exact restore; its qualification result is unchanged.",
+          "path": "docs/validation/companion-ssd1681-phase-parallel-r9-runtime-disposition-20260721.json",
+          "status": "NO_GO_R9_OWNER_VISUAL_FAILED_RESTORED_STOP_NO_MOTION"
+        },
+        {
+          "detail": "The consumed R1 attempt archives 16-step max 599 ms, one loop max 597 ms, bounded telemetry, exact restore, zero popup/selection/note and no retry.",
+          "path": "docs/validation/companion-ssd1681-phase-parallel-r9-continuous-runtime-disposition-20260721.json",
+          "status": "NO_GO_R9_CONTINUOUS_PROMPT_SUPERVISOR_PRE_GUARD_FAILED_RESTORED_NO_RETRY"
+        },
+        {
+          "detail": "The real no-hardware supervisor path creates one guard, starts exactly one process and opens zero actual popups; missing qualification and duplicate guard/result fail before process start.",
+          "path": "docs/validation/companion-ssd1681-phase-parallel-r9-continuous-r2-prompt-supervisor-regression-20260721.json",
+          "status": "PASS_R9_CONTINUOUS_R2_REAL_SUPERVISOR_PATH_NO_HARDWARE"
+        },
+        {
+          "detail": "The R2 repair preserves the default-off build, candidate HEX, LUT and initial 16-step gate while fixing only prompt supervision and adding real-path regression.",
+          "path": "docs/validation/companion-ssd1681-phase-parallel-r9-continuous-r2-observation-static-20260721.json",
+          "status": "PASS_STATIC_R9_CONTINUOUS_R2_OBSERVATION"
+        },
+        {
+          "detail": "Static and negative fixtures prove consumed authorization rejection, fail-closed child handling and output-reuse rejection.",
+          "path": "docs/validation/companion-ssd1681-phase-parallel-r9-continuous-r2-launcher-static-20260721.json",
+          "status": "PASS_STATIC_R9_CONTINUOUS_R2_LAUNCHER"
+        },
+        {
+          "detail": "Persistent CheckOnly exited zero with durable streams, zero hardware contact, zero writes and zero popup invocation.",
+          "path": ".cache/validation/wb55-r9-continuous-r2-persistent-checkonly-20260721-r1/persistent-launch.json",
+          "status": "READY_NO_HARDWARE_CONTACT"
+        },
+        {
+          "detail": "The inner stage retains one eligible acceptance popup only after future machine qualification while invoking none during CheckOnly.",
+          "path": ".cache/validation/wb55-r9-continuous-r2-persistent-checkonly-20260721-r1/stage-run.json",
+          "status": "READY_NO_HARDWARE_CONTACT"
+        },
+        {
+          "detail": "The sole R2 Execute qualified 16/16, looped 1060 contiguous iterations with a bounded 65536-byte ring, recorded one owner visual FAIL, then completed promptless cleanup, exact restore, normal resume and process exit; no retry is allowed.",
+          "path": "docs/validation/companion-ssd1681-phase-parallel-r9-continuous-r2-runtime-disposition-20260721.json",
+          "status": "NO_GO_R9_CONTINUOUS_R2_OWNER_VISUAL_FAILED_RESTORED_NO_RETRY"
+        }
+      ],
+      "id": "ssd1681_r9_continuous_observation_exception",
+      "requirement": "COMP-REQ-313 preserves the completed historical R9 16-step qualification and separate no-preset-limit observation loop. R1 remains a zero-popup supervisor incident. The sole later COMP-REQ-317 R2 Execute passed its 16-step qualification, looped W/A/B/A 1060 times, then received the owner's final visual FAIL because it did not read as one continuously moving ball; it cleaned both planes, restored exact raw bytes and resumed the normal application. COMP-REQ-320 and the former R10 NOT STARTED pause remain historical facts; current successor boundaries are recorded by COMP-REQ-322..331.",
+      "status": "r2_owner_visual_failed_restored_historical_boundary"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "R1 is archived as a host evidence-persistence incident, not a driver or visual verdict; post-run diagnostic parsing is not retroactively treated as the original gate.",
+          "path": "docs/validation/companion-ssd1681-r10-r1-runtime-disposition-20260722.json",
+          "status": "NO_GO_R1_HOST_EVIDENCE_PERSISTENCE"
+        },
+        {
+          "detail": "R2 archives 16/16 qualification, 160 complete records plus partial 161, the verbatim owner FAIL and cleanup/restore/resume evidence.",
+          "path": "docs/validation/companion-ssd1681-r10-r2-runtime-disposition-20260722.json",
+          "status": "NO_GO_R10_R2_OWNER_VISUAL_FAIL_FINALIZATION_PARTIAL_LINE"
+        },
+        {
+          "detail": "The parser rejects 36 executed negative fixtures and owns the bounded trailing-partial rule.",
+          "path": "docs/validation/companion-ssd1681-phase-parallel-r10-ball-log-parser-20260722.json",
+          "status": "PASS_R10_BALL_LOG_PARSER"
+        },
+        {
+          "detail": "No-hardware lifecycle evidence executes the parser write contract, trailing-partial positives/negatives and monitor NO_GO_FINALIZATION regression.",
+          "path": "docs/validation/companion-ssd1681-r10-ball-lifecycle-static-20260722.json",
+          "status": "PASS_R10_REAL_EXECUTE_LIFECYCLE_STATIC"
+        },
+        {
+          "detail": "Existing R2 MACHINE_READY remains a zero-contact, production-off historical artifact.",
+          "path": "docs/validation/companion-ssd1681-r10-r2-machine-ready-20260722.json",
+          "status": "MACHINE_READY_R10_BALL_NO_HARDWARE"
+        },
+        {
+          "detail": "The new successor binds current parser/monitor/lifecycle hashes while remaining COMP-REQ-331 host-finalization-only with no authorization.",
+          "path": "docs/validation/companion-ssd1681-r10-r2-finalization-machine-ready-20260722.json",
+          "status": "MACHINE_READY_R10_BALL_HOST_FINALIZATION_ONLY"
+        }
+      ],
+      "id": "ssd1681_r10_r1_r2_and_finalization_boundary",
+      "requirement": "COMP-REQ-322..331 record the R10 R1 host evidence-persistence incident, R2's 16-frame machine PASS, 599 ms BUSY maximum, 160 complete live-validated loop records, one canonical owner FAIL, promptless cleanup, exact 524288-byte restore and normal resume, plus the completed offline finalization repair. COMP-REQ-329 preserves the durable single-low-level-variable owner workflow. COMP-REQ-332 then authorizes only the primary-selected R3 stable-hold cadence discriminator for offline MACHINE_READY; no additional variable or hardware authority is implied.",
+      "status": "r2_machine_pass_owner_visual_fail_offline_finalization_only"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "R3 independently proves the solid disk and exact R2 frame/payload hash identity.",
+          "path": "docs/validation/companion-ssd1681-r10-r3-ball-pixel-oracle-20260722.json",
+          "status": "PASS_R10_BALL_PIXEL_ORACLE"
+        },
+        {
+          "detail": "Static source evidence proves exactly one measured post-sync stable hold with 400-410 ms bounds and no second dwell.",
+          "path": "docs/validation/companion-ssd1681-r10-r3-ball-static-20260722.json",
+          "status": "PASS_R10_BALL_STATIC"
+        },
+        {
+          "detail": "The v2 parser executes hold timing/order/count negatives while retaining the R2 finalization rule.",
+          "path": "docs/validation/companion-ssd1681-r10-r3-ball-log-parser-20260722.json",
+          "status": "PASS_R10_BALL_LOG_PARSER"
+        },
+        {
+          "detail": "No-hardware lifecycle and CheckOnly regression remain production-off.",
+          "path": "docs/validation/companion-ssd1681-r10-r3-ball-lifecycle-static-20260722.json",
+          "status": "PASS_R10_R3_REAL_EXECUTE_LIFECYCLE_STATIC"
+        },
+        {
+          "detail": "Distinct R3 MACHINE_READY binds the current ELF/HEX/LUT and all tool hashes, and directly invokes the canonical audit.",
+          "path": "docs/validation/companion-ssd1681-r10-r3-execute-ready-machine-ready-20260722.json",
+          "status": "MACHINE_READY_R10_R3_EXECUTE_READY_HOST_BINDING_SUCCESSOR"
+        }
+      ],
+      "id": "ssd1681_r10_r3_stable_hold_cadence_discriminator",
+      "requirement": "COMP-REQ-332 records the primary-selected single R3 variable: one measured 400-410 ms stable hold after every successful post-sync 0x24 and before the next frame, in both qualification and unlimited loop. R2 frame/payload hashes, geometry, command topology, LUT/tail/mapping and finalization rules remain protected. R3 is a cadence discriminator only and claims no final visual repair or hardware authority.",
+      "status": "r3_machine_ready_offline_only_cadence_discriminator"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "Owner's latest 2026-07-22 incremental-shutter and generic-MR-manifest steering is registered without selecting a new driver variable or authorizing hardware.",
+          "path": "docs/companion_product_requirements.md",
+          "status": "REGISTERED"
+        }
+      ],
+      "id": "ssd1681_incremental_shutter_validation_and_generic_mr_manifest",
+      "requirement": "COMP-REQ-336 establishes the durable owner workflow: future SSD1681 human iterations use an incremental shutter, run targeted oracle/parser/build only for affected inputs, reuse unchanged gates by input SHA, avoid repeated unchanged full negatives/CheckOnly/MACHINE_READY/docs, and run exactly one complete closure before each hardware candidate. Fresh one-shot authorization, candidate/tool hashes, dual-plane White pre/post-clean, BUSY/command safety, one canonical popup, exact restore/readback, normal resume and final process audit remain mandatory; the launcher is to evolve toward a generic authorization-bound MACHINE_READY manifest.",
+      "status": "incremental_shutter_targeted_gates_sha_reuse_and_one_closure"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "R4 disposition is restored with no visual verdict; R4b binds only the position-keyed telemetry repair and reuses unchanged host gates by SHA.",
+          "path": "docs/validation/companion-ssd1681-r10-r4b-corridor-telemetry-repair-machine-ready-20260722.json",
+          "status": "MACHINE_READY_R10_R4B_TELEMETRY_REPAIR_OFFLINE_ONLY"
+        }
+      ],
+      "id": "ssd1681_r10_r4_corridor_execute_preparation",
+      "requirement": "COMP-REQ-338's R4 physical run consumed its one-shot authorization but stopped at MACHINE_NO_GO before popup because telemetry persisted the obsolete compact-window payload hashes. COMP-REQ-339 permits only the R4b offline telemetry repair and fresh zero-contact MACHINE_READY.",
+      "status": "r4_machine_no_go_consumed_r4b_offline_repair"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "The fresh R4b auth is consumed=false, hash-bound to the accepted MR and has no root, claim, spent or receipt artifact.",
+          "path": ".cache/validation/wb55-r10-r4b-corridor-execute-20260722-r1-authorization.json",
+          "status": "HISTORICAL_CONSUMED_SOURCE_ABSENT"
+        }
+      ],
+      "id": "ssd1681_r10_r4b_corridor_execute_preparation",
+      "requirement": "COMP-REQ-340 authorizes exactly one sealed R4b physical run with requirement_id COMP-REQ-323, a fresh output root and atomic one-shot consumption; no ClaimOnly or Execute occurred during preparation.",
+      "status": "r4b_exactly_one_execute_pending_unconsumed"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "R6 physical disposition is recorded as machine evidence plus NO_GO_EMERGENCY_STOP with no popup/selection/note; it is not a visual verdict.",
+          "path": "docs/companion_product_requirements.md",
+          "status": "REGISTERED"
+        }
+      ],
+      "id": "ssd1681_r10_r6_target_unipolar_physical_disposition",
+      "requirement": "COMP-REQ-347 archives R6 machine qualification and 823 observed loop records, but the canonical supervisor timed out and failed closed before operator review; the visual verdict is NOT OBSERVED. Cleanup, exact restore and normal resume passed, and no successor variable or authorization is allowed until direct owner visual feedback.",
+      "status": "r6_machine_pass_not_observed_emergency_stopped_restored"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "R2 authorization is consumed history and its runtime root, claim, spent and receipt evidence remain archived.",
+          "path": ".cache/validation/wb55-r10-r6-target-unipolar-execute-20260722-r2-authorization.json",
+          "status": "CONSUMED_AUTHORIZED_R10_BALL_ONCE"
+        },
+        {
+          "detail": "The human FAIL is valid visual evidence; NO_GO_FINALIZATION is separately classified as a host finalization fault.",
+          "path": "docs/validation/companion-ssd1681-r10-r6-r2-runtime-disposition-20260722.json",
+          "status": "OWNER_VISUAL_FAIL_HOST_FINALIZATION_SEPARATE"
+        }
+      ],
+      "id": "ssd1681_r10_r6_r2_reobservation_preparation",
+      "requirement": "COMP-REQ-349 archives the consumed R6-R2 runtime: 16 qualification PASS, BUSY max599, 52 loop records, canonical owner FAIL, and a separate NO_GO_FINALIZATION host fault. Promptless postclean, exact restore and normal resume passed with retry0 and no live process.",
+      "status": "r2_consumed_visual_fail_finalization_fault_archived"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "R6-R2 records 16 qualification, BUSY max599, 52 loops, human FAIL, finalization fault, cleanup, exact restore and normal resume.",
+          "path": "docs/validation/companion-ssd1681-r10-r6-r2-runtime-disposition-20260722.json",
+          "status": "OWNER_VISUAL_FAIL_HOST_FINALIZATION_SEPARATE"
+        },
+        {
+          "detail": "The oracle proves 112-pixel disk geometry, 2px ping-pong path, previous-black/full-diff windows, 16 qualification frames and 32 activations.",
+          "path": "docs/validation/companion-ssd1681-r10-native-two-pass-fine-stride-oracle-20260722.json",
+          "status": "PASS"
+        },
+        {
+          "detail": "Static evidence proves the native source-bound 0xFF/0x24/0x20 path and forbidden-command zeros.",
+          "path": "docs/validation/companion-ssd1681-r10-native-two-pass-fine-stride-static-20260722.json",
+          "status": "PASS"
+        },
+        {
+          "detail": "MACHINE_READY is production-off with hardware_contact=0, execute_authorized=false, authorization_created=false and CheckOnly 0/0/0/0.",
+          "path": "docs/validation/companion-ssd1681-r10-native-two-pass-fine-stride-machine-ready-20260722.json",
+          "status": "MACHINE_READY_R10_NATIVE_TWO_PASS_FINE_STRIDE_OFFLINE_ONLY"
+        }
+      ],
+      "id": "ssd1681_r10_native_two_pass_fine_stride",
+      "requirement": "COMP-REQ-349 archives the R6-R2 human FAIL and separate NO_GO_FINALIZATION host fault, then defines the owner-accepted COMP-REQ-236 native OTP Mode2 baseline: one x32 baseline activation followed by 16 qualification movement frames using 32 activations and the same path for an unlimited loop. This candidate is default-off, production-off and not hardware-authorized.",
+      "status": "native_otp_mode2_two_pass_machine_ready_offline_only"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "The oracle exhaustively proves 448 black pixels, exact 2px path, union windows, full current payload hashes and zero omitted columns.",
+          "path": "docs/validation/companion-ssd1681-r10-native-single-union-large-cadence-oracle-20260722.json",
+          "status": "PASS"
+        },
+        {
+          "detail": "Static evidence proves one source-bound activation, 0xFF/0x24/0x20 transport, cadence target and forbidden-command zeros.",
+          "path": "docs/validation/companion-ssd1681-r10-native-single-union-large-cadence-static-20260722.json",
+          "status": "PASS"
+        },
+        {
+          "detail": "MACHINE_READY is default-off with hardware_contact=0, execute_authorized=false, authorization_created=false and CheckOnly 0/0/0/0.",
+          "path": "docs/validation/companion-ssd1681-r10-native-single-union-large-cadence-machine-ready-20260722.json",
+          "status": "MACHINE_READY_R10_NATIVE_SINGLE_UNION_LARGE_CADENCE_OFFLINE_ONLY"
+        },
+        {
+          "detail": "Persistent CheckOnly child exited 0 with hardware_contact=0, writes=0, popup=0 and retry=0.",
+          "path": ".cache/validation/wb55-r10-native-single-union-large-cadence-checkonly-20260722-r14/persistent-launch.json",
+          "status": "READY_NO_HARDWARE_CONTACT"
+        }
+      ],
+      "id": "ssd1681_r10_native_single_union_large_cadence",
+      "requirement": "COMP-REQ-353 preserves the r2 current-best visual floor and implements only the refresh-cadence discriminator: a 24x24/448-pixel disk, 2px ping-pong, one exact source-bound activation per movement, 16-frame qualification and 32-transition unbounded loop. Physical residue, dirty-white flash or missing edge remains an owner NO_GO boundary.",
+      "status": "native_otp_mode2_single_union_large_cadence_machine_ready_offline_only"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "The oracle proves 448 black pixels, exact 2px/32px ping-pong, fixed 216-byte corridor payloads and omitted_columns=0 for every transition.",
+          "path": "docs/validation/companion-ssd1681-r10-native-guarded-corridor-large-cadence-oracle-20260722.json",
+          "status": "PASS"
+        },
+        {
+          "detail": "Static evidence proves the new default-off macro/header, one source-bound activation, exact corridor, frame SHA binding and forbidden-command zeros.",
+          "path": "docs/validation/companion-ssd1681-r10-native-guarded-corridor-large-cadence-static-20260722.json",
+          "status": "PASS"
+        },
+        {
+          "detail": "MACHINE_READY is production-off with execute_authorized=false, authorization_created=false and physical residue explicitly unproven.",
+          "path": "docs/validation/companion-ssd1681-r10-native-guarded-corridor-large-cadence-machine-ready-20260722.json",
+          "status": "MACHINE_READY_R10_NATIVE_GUARDED_CORRIDOR_LARGE_CADENCE_OFFLINE_ONLY"
+        },
+        {
+          "detail": "Persistent CheckOnly child exited 0 with hardware_contact=0, writes=0, popup=0 and retry=0.",
+          "path": ".cache/validation/wb55-r10-native-guarded-corridor-large-cadence-checkonly-20260722-r1/persistent-launch.json",
+          "status": "READY_NO_HARDWARE_CONTACT"
+        }
+      ],
+      "id": "ssd1681_r10_native_guarded_corridor_large_cadence",
+      "requirement": "COMP-REQ-357 preserves the COMP-REQ-356 r2 current-best floor and records the latest owner steering about black line residue. The offline-only successor changes only the write topology to a fixed x-byte 3..11/y80..103 guarded corridor that rewrites full current-frame bytes once per source-bound native activation; optical residue remains an owner hardware boundary.",
+      "status": "guarded_corridor_offline_machine_ready_visual_residue_unproven"
+    },
+    {
+      "evidence": [
+        {
+          "detail": "The focused oracle proves the accepted 24x24/448-pixel geometry, fixed corridor and 32-transition path.",
+          "path": "docs/validation/companion-ssd1681-r10-native-guarded-corridor-no-reset-cadence-oracle-20260722.json",
+          "status": "PASS"
+        },
+        {
+          "detail": "Static evidence proves default-off selector, v11 no-reset telemetry fields, one activation and forbidden-command zeros.",
+          "path": "docs/validation/companion-ssd1681-r10-native-guarded-corridor-no-reset-cadence-static-20260722.json",
+          "status": "PASS"
+        },
+        {
+          "detail": "MACHINE_READY remains production-off, execute unauthorized and explicitly unproven for physical cadence/optical quality.",
+          "path": "docs/validation/companion-ssd1681-r10-native-guarded-corridor-no-reset-cadence-machine-ready-20260722.json",
+          "status": "MACHINE_READY_R10_NATIVE_GUARDED_CORRIDOR_NO_RESET_CADENCE_OFFLINE_ONLY"
+        },
+        {
+          "detail": "Persistent CheckOnly exited with hardware_contact=0, writes=0, popup=0 and retry=0.",
+          "path": ".cache/validation/wb55-r10-native-guarded-corridor-no-reset-cadence-checkonly-20260722/persistent-launch.json",
+          "status": "READY_NO_HARDWARE_CONTACT"
+        }
+      ],
+      "id": "ssd1681_r10_native_guarded_corridor_no_reset_cadence",
+      "requirement": "COMP-REQ-359 preserves the accepted guarded-corridor visual floor and authorizes only offline implementation of the no-reset cadence discriminator: one baseline hardware reset, movement ready-state checks without reset, one official OTP Mode2 activation per 24x24/448-pixel movement, and unchanged owner/hardware boundaries.",
+      "status": "no_reset_cadence_machine_ready_offline_only_visual_latency_unproven"
     }
   ],
   "schema": "companion.current_goal_audit.v1",
   "status": "GOAL_ACTIVE_MACHINE_EVIDENCE_PROVED_EXTERNAL_GATES_PENDING",
   "validation_commands": [
     "python .\\tools\\verify_companion_current_goal_audit.py",
+    "python .\\tools\\verify_wb55_ssd1681_ram_command_target_r8_launcher.py",
+    "python .\\tools\\verify_wb55_ssd1681_ram_command_target_r8_diagnostic.py",
+    "python .\\tools\\verify_wb55_ssd1681_ram_command_target_r8_r2_runtime.py",
+    "python .\\tools\\verify_wb55_ssd1681_phase_parallel_r9_continuous_observation.py",
+    "python .\\tools\\verify_wb55_ssd1681_phase_parallel_r9_continuous_launcher.py",
+    "python .\\tools\\verify_wb55_ssd1681_phase_parallel_r9_continuous_prompt_supervisor_r2.py",
+    "python .\\tools\\verify_wb55_ssd1681_phase_parallel_r9_continuous_runtime_disposition.py",
+    "python .\\tools\\verify_wb55_ssd1681_phase_parallel_r9_continuous_r2_runtime_disposition.py",
     "pwsh .\\tools\\test_companion_v9_expression_render_pipeline.ps1",
     "python .\\tools\\verify_companion_v9_wba_visual_boundary.py",
     "python .\\tools\\verify_companion_v9_frame_safe_area.py",

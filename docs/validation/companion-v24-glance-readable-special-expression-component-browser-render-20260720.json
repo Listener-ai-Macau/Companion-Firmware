@@ -1,0 +1,51 @@
+{
+  "schema": "companion.v24_glance_readable_special_expression_component_browser_render_inspection.v1",
+  "status": "PASS_V24_BROWSER_RENDER_INSPECTION_NATIVE_200X200",
+  "claim_scope": "actual browser screenshots for a runtime-inactive candidate component compositor; not a behavior binding, flash, panel output, or physical acceptance",
+  "browser_engine": "playwright-chromium",
+  "route": {
+    "path": "docs/validation/companion-v24-glance-readable-special-expression-component-performance-preview-20260720.json",
+    "sha256": "CE5BC296B3B2921D19AF85D2403223A09E82F385F5C06331E618720E0C130173"
+  },
+  "player": {
+    "path": "docs/validation/artifacts/companion-v24-special-expression-performance-preview-20260720/player.html",
+    "sha256": "6D2D3FEB0D35B0FDA28F364DA6FC10E345B2CBB7552F1770AA7EC1F1AF27886F"
+  },
+  "screenshots": [
+    {
+      "scene": "daily_micro",
+      "virtual_time_ms": 100,
+      "edge_exit_code": 0,
+      "path": "docs/validation/artifacts/companion-v24-special-expression-performance-preview-20260720/browser-daily-native-200x200-20260720.png",
+      "sha256": "79BD1FA688534498B4BA63BD905B8A6B195FB3CF9CB95339612008460420A117"
+    },
+    {
+      "scene": "menu_active",
+      "virtual_time_ms": 2700,
+      "edge_exit_code": 0,
+      "path": "docs/validation/artifacts/companion-v24-special-expression-performance-preview-20260720/browser-menu-hold-native-200x200-20260720.png",
+      "sha256": "CEF926DB373DCA3BA23A2603A1A9919B00894132D34C40CF656657ACAAEC5C13"
+    },
+    {
+      "scene": "recording_active",
+      "virtual_time_ms": 2450,
+      "edge_exit_code": 0,
+      "path": "docs/validation/artifacts/companion-v24-special-expression-performance-preview-20260720/browser-recording-hold-native-200x200-20260720.png",
+      "sha256": "5C9B1AC5DEFA68D54FFC36EE72035347E0CB4717ABDF237407E630372F8BCA7E"
+    },
+    {
+      "scene": "charging_active",
+      "virtual_time_ms": 2500,
+      "edge_exit_code": 0,
+      "path": "docs/validation/artifacts/companion-v24-special-expression-performance-preview-20260720/browser-charging-hold-native-200x200-20260720.png",
+      "sha256": "D0D8BB61651F67A1ED0213951E1310334BE03D511D193F0B607279B640518366"
+    }
+  ],
+  "checks": {
+    "route_is_runtime_inactive_candidate": true,
+    "native_200x200_component_stage": true,
+    "explicit_event_player": true,
+    "every_screenshot_written": true
+  },
+  "failures": []
+}

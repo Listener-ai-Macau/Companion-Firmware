@@ -1,0 +1,69 @@
+{
+  "schema_id": "companion.gdey0154d67_t03.vendor_partial_slow_motion_residue_triage.v1",
+  "status": "NO_GO_PHYSICAL_CONTINUOUS_PARTIAL_RESIDUE",
+  "claim_scope": "current-room source-bound diagnostic triage; no custom waveform, temperature or production claim",
+  "target": "NUCLEO-WB55RG + ESP32-FTS02 + GDEY0154D67-T03",
+  "owner_observation": {
+    "date": "2026-07-20",
+    "source": "conversation image attachment",
+    "statement": "类似这种残影 / 应该是擦除不干净, 或者是别的什么原因, 会留下这种线条",
+    "disposition": "physical failure; not an accepted animation effect"
+  },
+  "machine_evidence": {
+    "stage_run": {
+      "path": ".cache/validation/wb55-vendor-partial-slow-motion-current-room-20260720/stage-run.json",
+      "sha256": "75658968145A418F58E5D99FB7ACDB7661385050E1852A0C787DF837C12A6A96",
+      "status": "FAIL",
+      "failure_reason": "operator selected failure without a note",
+      "normal_firmware_restored": true
+    },
+    "trace": {
+      "path": ".cache/validation/wb55-vendor-partial-slow-motion-current-room-20260720/vendor-partial-slow-motion-trace.json",
+      "sha256": "F09767AD966DCCC4DBF723B2F4AD214171F44C0641114DE147B57C0EFDE8BC6F",
+      "status": "PASS_MACHINE_VENDOR_PARTIAL_SLOW_MOTION_TRACE",
+      "first_five_old_new_union_region_bytes": [75, 81, 78, 78, 78],
+      "first_five_refresh_elapsed_ms": [446, 446, 446, 447, 447],
+      "source_partial_control": "0xFF",
+      "activation_command": "0x20",
+      "busy_completion": true,
+      "panel_error_marker": false
+    }
+  },
+  "source_evidence": {
+    "supplier_epaper_c": {
+      "path": "C:/Users/Billy/Desktop/GDEH0154D67-20211203-P-LUT(1s) -1s快刷/EPD_W21/EPAPER.c",
+      "sha256": "7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896",
+      "partial_update": "EPD_Dis_Part and EPD_Dis_Part_myself write current pixels through 0x24, then use the source partial update ending in 0xFF, 0x20 and BUSY"
+    },
+    "supplier_main_c": {
+      "path": "C:/Users/Billy/Desktop/GDEH0154D67-20211203-P-LUT(1s) -1s快刷/User/main.c",
+      "partial_demo_disposition": "after six EPD_Dis_Part_myself calls, goto Clear; EPD_HW_Init then EPD_WhiteScreen_White then deep sleep"
+    },
+    "current_driver": {
+      "path": "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
+      "sha256": "759758DC97FEFB552EDBD50D787A600D859915750E6F33B1736F280852CA85A6",
+      "old_new_window_behavior": "the source-bound diagnostic clears the generated frame before drawing the current point, then writes the union of old and new point regions through 0x24"
+    },
+    "slow_motion_runner": {
+      "path": "tools/run_wb55_vendor_partial_slow_motion_diagnostic.ps1",
+      "sha256": "828BF3485864932C646BE6A8EFED7FD9A7BF7947EB77F006872EFBD384139D8A"
+    }
+  },
+  "finding": {
+    "missing_dirty_region": "not supported by the recorded old/new union-window evidence",
+    "missing_refresh_command_or_busy_completion": "not supported by the recorded 0xFF, 0x20 and BUSY evidence",
+    "most_supported_cause": "the available source partial waveform/sequence does not establish sufficient white-state erasure for content-preserving continuous movement on this panel",
+    "unproven": [
+      "a panel-bound residue-free partial waveform",
+      "a content-preserving source recovery after repeated partial updates",
+      "temperature applicability or compensation"
+    ]
+  },
+  "required_disposition": {
+    "continuous_product_expression_transport": "NO_GO with the available supplier source",
+    "custom_or_generic_waveform": "prohibited",
+    "159_byte_c7_lut_as_partial_erase": "prohibited; source evidence binds it to full 5000-byte 0x24 refreshes",
+    "source_full_white_clear": "authentic but visibly interrupts animation and is not a continuous-motion solution",
+    "normal_firmware_state": "restored after the diagnostic"
+  }
+}

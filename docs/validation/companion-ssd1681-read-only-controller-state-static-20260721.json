@@ -1,0 +1,54 @@
+{
+  "schema_id": "companion.wb55.ssd1681.read_only_controller_state_static.v1",
+  "status": "NO_GO_STATIC_READ_ONLY_CONTROLLER_STATE",
+  "claim_scope": "default-off read-only controller-state evidence only; no display write, refresh, waveform, visual, temperature, or production claim",
+  "checks": {
+    "required_sources_and_images_exist": true,
+    "registry_comp_req_257": true,
+    "research_authorizes_only_read_capture": true,
+    "macro_default_off": true,
+    "early_return_before_normal_init": true,
+    "only_2f_and_2d_register_reads": true,
+    "forbidden_commands_absent": true,
+    "reset_absent": true,
+    "three_fixed_groups": true,
+    "bounded_lengths": true,
+    "gpio_restore_contract": true,
+    "build_profile_isolated": true,
+    "make_profile_links_decoder": true,
+    "runner_hashes_before_hardware_and_restores_finally": true,
+    "serial_ready_precedes_flash": true,
+    "host_parser_negative_matrix": true,
+    "decoder_and_c_negative_test_compile_clean": true,
+    "candidate_contains_read_only_trace": true,
+    "normal_excludes_read_only_trace": true,
+    "normal_restore_hash_exact": false
+  },
+  "failures": [
+    "normal HEX hash is BC850BE39E20BDC499ADDE65A00739A556AC778B03D41439CFB1B374468CD2FD, expected E1997F29DCB8735899B4BC0B9012CF75025F3CA8D21250485BCC21E4C4691B46"
+  ],
+  "images": {
+    "candidate_hex_sha256": "52D79CB3BC55D9738EFA580B95D3930216C23FD8825356F7860B7C1718C0C6AD",
+    "candidate_elf_sha256": "2C37D2416EF3EABBECFE08BAC1F5886DFC93D7FFDCC24486F9A8E26E21E5CDB6",
+    "normal_hex_sha256": "BC850BE39E20BDC499ADDE65A00739A556AC778B03D41439CFB1B374468CD2FD",
+    "required_normal_hex_sha256": "E1997F29DCB8735899B4BC0B9012CF75025F3CA8D21250485BCC21E4C4691B46"
+  },
+  "source_manifest": {
+    "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c": "BAE2FAEA0656ABBCFAA5765C0E6465183D5E9235E1B4FE50CDB7107BD727EB3D",
+    "app/companion_pendant/epaper/ssd1681_read_only_controller_state.c": "661AEA992BF152A5A994FF592988535AD59740F05F5DF6FAB16116749B94EDBB",
+    "app/companion_pendant/epaper/ssd1681_read_only_controller_state.h": "8272392B14925E7655891F65E609BE4105EA9DFC69661A208EE4DEFCA7890E97",
+    "tools/test_ssd1681_read_only_controller_state.c": "23D1BC4039FAB3A50B823CD3058EDBF1ECFD05732D40831DB826A9D80A4A157C",
+    "tools/verify_wb55_ssd1681_read_only_controller_state_log.py": "4D173912345257191370DE703EBFDBB790883922D192CBF1FF3C1A5B7060AB01",
+    "cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile": "F001536E902B566A83DD74FE0F8E522FB8B1C2EF4A9A63FB8575DFE8C569F052",
+    "tools/build_nucleo_bringup.ps1": "9C1E308FC29F3198FFF62E9A9D32762E4C95FB4753AF700BF067AE0AC7F9D70C",
+    "tools/run_wb55_ssd1681_read_only_controller_state.ps1": "FFE2121FBDE58A268F63883E8263D001B6290F0EFD6A6919842712E5138D8482",
+    "tools/capture_nucleo_serial.ps1": "59677805F4CA7FBD181C1A19350CE89E957FCCE3F2ACB6682099D585C3789FB1",
+    "docs/companion_product_requirements.md": "46208B8E09DFD7D193C5298AE1FCCD976B358DBBC47CB290199D3E103BA33ADA",
+    "docs/validation/companion-ssd1681-read-only-controller-state-research-source-hash-20260721.json": "BD43C9FD65703CE5CAE89573F5846436BF425475C74D0F96E7F43CC1E915662C",
+    "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_read_only_controller_state/Companion_Nucleo_WB55RG_Ssd1681ReadOnlyControllerState.elf": "2C37D2416EF3EABBECFE08BAC1F5886DFC93D7FFDCC24486F9A8E26E21E5CDB6",
+    "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_read_only_controller_state/Companion_Nucleo_WB55RG_Ssd1681ReadOnlyControllerState.hex": "52D79CB3BC55D9738EFA580B95D3930216C23FD8825356F7860B7C1718C0C6AD",
+    "cubeide/Companion_Nucleo_WB55RG_Bringup/build/Companion_Nucleo_WB55RG_Bringup.elf": "21333F41600818008C9743ABB566B1BDCEE4C1EB25E2E8E19258DE7E26DE6253",
+    "cubeide/Companion_Nucleo_WB55RG_Bringup/build/Companion_Nucleo_WB55RG_Bringup.hex": "BC850BE39E20BDC499ADDE65A00739A556AC778B03D41439CFB1B374468CD2FD"
+  },
+  "host_test_stdout": "PASS: SSD1681 read-only parser positive/negative self-test"
+}

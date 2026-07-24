@@ -1,0 +1,29 @@
+{
+  "schema_id": "companion.wb55.ssd1681_phase_parallel_r9.persistent_launcher_static.v1",
+  "status": "PASS_R9_PERSISTENT_LAUNCHER_STATIC_AND_NEGATIVE_FIXTURES",
+  "errors": [],
+  "checks": {
+    "source_contract": true,
+    "static_negative_fixture_count": 12,
+    "powershell_parse": true,
+    "dynamic_no_hardware_negative_fixtures": {
+      "child_nonzero": {
+        "passed": true,
+        "process_exit": 1,
+        "child_exit": 23,
+        "status": "NO_GO_CHECK_CHILD_EXIT",
+        "hardware_contact": 0
+      },
+      "reused_output_root": {
+        "passed": true,
+        "process_exit": 1
+      },
+      "checkonly_execute_exclusive": {
+        "passed": true,
+        "process_exit": 1
+      }
+    },
+    "hardware_contact": 0,
+    "execute_invoked": false
+  }
+}

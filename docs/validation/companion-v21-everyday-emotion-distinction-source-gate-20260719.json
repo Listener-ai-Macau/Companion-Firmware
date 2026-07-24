@@ -1,0 +1,193 @@
+{
+  "schema": "companion.v21_everyday_emotion_distinction_source_gate.v1",
+  "status": "PASS_V21_EVERYDAY_EMOTION_DISTINCTION_SOURCE_GATE_PENDING_OWNER_ART_REVIEW",
+  "generation_request": "docs/art/iterations/companion-pet-expression-v9-extension-v21-everyday-emotion-distinction-source/generation-request.json",
+  "attempt": "docs/art/iterations/companion-pet-expression-v9-extension-v21-everyday-emotion-distinction-source/candidate/attempt-01-generated-everyday-emotion-distinction.json",
+  "locked_v9_source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "generated_image": "docs/art/iterations/companion-pet-expression-v9-extension-v21-everyday-emotion-distinction-source/candidate/attempt-01-generated-everyday-emotion-distinction.png",
+  "generated_image_sha256": "1BE54D44380CFE3D457E8CB24AC0935D5E1F0E6F4AE9414F66ED5C2C2FAA32F5",
+  "threshold": {
+    "ink_value_lt": 96,
+    "anti_alias_fraction": 0.14562082743900925,
+    "max_threshold_safe_anti_alias_fraction": 0.2
+  },
+  "poses": [
+    {
+      "emotion": "calm",
+      "grid_box": [
+        0,
+        0,
+        418,
+        627
+      ],
+      "ink_bbox": [
+        83,
+        284,
+        365,
+        462
+      ],
+      "ink_pixels": 11611
+    },
+    {
+      "emotion": "curious",
+      "grid_box": [
+        418,
+        0,
+        836,
+        627
+      ],
+      "ink_bbox": [
+        76,
+        270,
+        352,
+        483
+      ],
+      "ink_pixels": 11856
+    },
+    {
+      "emotion": "warm",
+      "grid_box": [
+        836,
+        0,
+        1254,
+        627
+      ],
+      "ink_bbox": [
+        59,
+        281,
+        335,
+        482
+      ],
+      "ink_pixels": 11916
+    },
+    {
+      "emotion": "playful",
+      "grid_box": [
+        0,
+        627,
+        418,
+        1254
+      ],
+      "ink_bbox": [
+        85,
+        93,
+        398,
+        318
+      ],
+      "ink_pixels": 12714
+    },
+    {
+      "emotion": "puzzled",
+      "grid_box": [
+        418,
+        627,
+        836,
+        1254
+      ],
+      "ink_bbox": [
+        75,
+        110,
+        354,
+        309
+      ],
+      "ink_pixels": 11382
+    },
+    {
+      "emotion": "alert",
+      "grid_box": [
+        836,
+        627,
+        1254,
+        1254
+      ],
+      "ink_bbox": [
+        60,
+        109,
+        333,
+        318
+      ],
+      "ink_pixels": 11235
+    }
+  ],
+  "pairwise_distinction": [
+    {
+      "left": "calm",
+      "right": "curious",
+      "normalized_difference_pixels": 1411
+    },
+    {
+      "left": "calm",
+      "right": "warm",
+      "normalized_difference_pixels": 2382
+    },
+    {
+      "left": "calm",
+      "right": "playful",
+      "normalized_difference_pixels": 3711
+    },
+    {
+      "left": "calm",
+      "right": "puzzled",
+      "normalized_difference_pixels": 3503
+    },
+    {
+      "left": "calm",
+      "right": "alert",
+      "normalized_difference_pixels": 3427
+    },
+    {
+      "left": "curious",
+      "right": "warm",
+      "normalized_difference_pixels": 1967
+    },
+    {
+      "left": "curious",
+      "right": "playful",
+      "normalized_difference_pixels": 3750
+    },
+    {
+      "left": "curious",
+      "right": "puzzled",
+      "normalized_difference_pixels": 3552
+    },
+    {
+      "left": "curious",
+      "right": "alert",
+      "normalized_difference_pixels": 3524
+    },
+    {
+      "left": "warm",
+      "right": "playful",
+      "normalized_difference_pixels": 3671
+    },
+    {
+      "left": "warm",
+      "right": "puzzled",
+      "normalized_difference_pixels": 3507
+    },
+    {
+      "left": "warm",
+      "right": "alert",
+      "normalized_difference_pixels": 3497
+    },
+    {
+      "left": "playful",
+      "right": "puzzled",
+      "normalized_difference_pixels": 1612
+    },
+    {
+      "left": "playful",
+      "right": "alert",
+      "normalized_difference_pixels": 2584
+    },
+    {
+      "left": "puzzled",
+      "right": "alert",
+      "normalized_difference_pixels": 1874
+    }
+  ],
+  "component_export": "forbidden_pending_owner_art_review",
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden",
+  "errors": []
+}

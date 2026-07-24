@@ -1,0 +1,222 @@
+{
+  "schema_id": "companion.wb55.ssd1681_phase_parallel_r9.machine_ready.v1",
+  "status": "MACHINE_READY_R9_NO_HARDWARE_CONTACT_EXECUTE_FORBIDDEN_PENDING_ROOT",
+  "requirement": "COMP-REQ-309",
+  "errors": [],
+  "checks": {
+    "required_inputs": true,
+    "registry": true,
+    "current_goal": true,
+    "workbench": true,
+    "static": true,
+    "transition_oracle": true,
+    "launcher_static": true,
+    "build_identity": true,
+    "persistent_launch": true,
+    "persistent_hashes": true,
+    "checkonly_stage": true,
+    "checkonly_images": true,
+    "popup_policy": true,
+    "durable_logs": true,
+    "rejected_r1_archived": true,
+    "protected_hashes": true,
+    "command_registry": true,
+    "command_current_goal": true,
+    "command_diff_check": true,
+    "source_whitespace": true
+  },
+  "hardware_contact": 0,
+  "execute_invoked": false,
+  "popup_invoked": 0,
+  "candidate": {
+    "lut_sha256": "9BCBAC1A07ED0A112D26409FBCDB8F5FE27CE07D922C2E18881C10A53229DDCD",
+    "lut_byte_count": 159,
+    "tail_hex": "221741A83258",
+    "hex_sha256": "724DA17F385756BA779739E73DA47131F563E0C071A2EB173F5F77871F3CADDF",
+    "elf_sha256": "777A1288A0E6FC83373602F9895B07AA08F31269AB68B7EB1699723583D03485",
+    "production_enabled": false,
+    "default_enabled": false
+  },
+  "waveform": {
+    "shared_timing_frames": 16,
+    "BW": {
+      "drive": 16,
+      "positive": 8,
+      "negative": 8,
+      "net_impulse": 0
+    },
+    "WB": {
+      "drive": 16,
+      "positive": 8,
+      "negative": 8,
+      "net_impulse": 0
+    },
+    "WW_drive": 0,
+    "BB_drive": 0,
+    "full_manifest_artifact": "docs/validation/companion-ssd1681-phase-parallel-r9-static-20260721.json"
+  },
+  "bounded_future_execute_contract": {
+    "local_window": "32x32",
+    "maximum_activations": 16,
+    "control": "0xCF",
+    "refresh": "0x20",
+    "busy_limit_ms": 600,
+    "fixed_bank": {
+      "0x24": 0,
+      "0x26": 1
+    },
+    "post_activation_sync": "0x24 selector0, no refresh",
+    "forbidden": [
+      "full-frame",
+      "0xF7",
+      "0xC7",
+      "0xFF",
+      "0x37",
+      "retry",
+      "120-frame motion"
+    ]
+  },
+  "popup_policy": {
+    "start": 0,
+    "cleanup": 0,
+    "recovery": 0,
+    "fault": 0,
+    "final_visual_acceptance": "exactly one canonical Chinese PASS/FAIL after future machine PASS only",
+    "checkonly_invoked": 0
+  },
+  "restore_contract": {
+    "captured_raw_bytes": 524288,
+    "captured_raw_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "promptless_dual_plane_preclean": true,
+    "promptless_dual_plane_postclean": true,
+    "normal_resume_required": true
+  },
+  "persistent_checkonly": {
+    "root": ".cache/validation/wb55-phase-parallel-r9-persistent-checkonly-20260721-r3",
+    "launch_sha256": "F64E63A7FFABE3EDB3219014CB78F7BF7941700228185341945466113FDADCC6",
+    "stage_sha256": "518D60E1ADCAC2BD06262C0F05052D825720C4BF7594156617D4615EA39BA498",
+    "stdout_sha256": "BBFE4BF5AB3E18F90A0F59C16C359F4BC287FCAB0AAB23DCAE61F83EDA93046D",
+    "stderr_sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "child_exit_code": 0,
+    "hardware_contact": 0,
+    "write_counter_sum": 0
+  },
+  "rejected_checkonly_r1": {
+    "root": ".cache/validation/wb55-phase-parallel-r9-persistent-checkonly-20260721-r1",
+    "status": "NO_GO_CHECK_STAGE",
+    "reason": "SwitchParameter serialized as an object; launcher rejected the schema before any hardware contact. R2 explicitly casts the field to boolean.",
+    "launch_sha256": "49705E2B032F02DC55CC77C9C9B23D85F26A00608146B11A76E38A6F9A7FCC24",
+    "stage_sha256": "A914A0FA42FED298CC8966A313BEB0162FD88C60393654C67F17650B29D8D699",
+    "hardware_contact": 0,
+    "write_counter_sum": 0
+  },
+  "protected_hashes": {
+    "locked_v9_source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+    "owner_acceptance_sha256": "8A3BDF4BD1254B0D0F4DE13A7F293C3D74587C800339ABD4C61FEB0B7737E227",
+    "workbench_sha256": "E7311523D6FE571434F0C1F2D5EC76B7ED9B64DC725B0726DDEC023421D7E4EF"
+  },
+  "commands": {
+    "registry": {
+      "command": [
+        "C:\\Users\\Billy\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\tools\\verify_companion_product_requirements.py"
+      ],
+      "returncode": 0,
+      "output": "  \"COMP-REQ-233\",\n    \"COMP-REQ-234\",\n    \"COMP-REQ-235\",\n    \"COMP-REQ-236\",\n    \"COMP-REQ-237\",\n    \"COMP-REQ-238\",\n    \"COMP-REQ-239\",\n    \"COMP-REQ-240\",\n    \"COMP-REQ-241\",\n    \"COMP-REQ-242\",\n    \"COMP-REQ-243\",\n    \"COMP-REQ-244\",\n    \"COMP-REQ-245\",\n    \"COMP-REQ-246\",\n    \"COMP-REQ-247\",\n    \"COMP-REQ-248\",\n    \"COMP-REQ-249\",\n    \"COMP-REQ-250\",\n    \"COMP-REQ-251\",\n    \"COMP-REQ-252\",\n    \"COMP-REQ-253\",\n    \"COMP-REQ-254\",\n    \"COMP-REQ-255\",\n    \"COMP-REQ-256\",\n    \"COMP-REQ-257\",\n    \"COMP-REQ-258\",\n    \"COMP-REQ-259\",\n    \"COMP-REQ-260\",\n    \"COMP-REQ-261\",\n    \"COMP-REQ-262\",\n    \"COMP-REQ-263\",\n    \"COMP-REQ-264\",\n    \"COMP-REQ-265\",\n    \"COMP-REQ-266\",\n    \"COMP-REQ-267\",\n    \"COMP-REQ-268\",\n    \"COMP-REQ-269\",\n    \"COMP-REQ-270\",\n    \"COMP-REQ-271\",\n    \"COMP-REQ-272\",\n    \"COMP-REQ-273\",\n    \"COMP-REQ-274\",\n    \"COMP-REQ-275\",\n    \"COMP-REQ-276\",\n    \"COMP-REQ-277\",\n    \"COMP-REQ-278\",\n    \"COMP-REQ-279\",\n    \"COMP-REQ-280\",\n    \"COMP-REQ-281\",\n    \"COMP-REQ-282\",\n    \"COMP-REQ-283\",\n    \"COMP-REQ-284\",\n    \"COMP-REQ-285\",\n    \"COMP-REQ-286\",\n    \"COMP-REQ-287\",\n    \"COMP-REQ-288\",\n    \"COMP-REQ-289\",\n    \"COMP-REQ-290\",\n    \"COMP-REQ-291\",\n    \"COMP-REQ-292\",\n    \"COMP-REQ-293\",\n    \"COMP-REQ-294\",\n    \"COMP-REQ-295\",\n    \"COMP-REQ-296\",\n    \"COMP-REQ-297\",\n    \"COMP-REQ-298\",\n    \"COMP-REQ-299\",\n    \"COMP-REQ-300\",\n    \"COMP-REQ-301\",\n    \"COMP-REQ-302\",\n    \"COMP-REQ-303\",\n    \"COMP-REQ-304\",\n    \"COMP-REQ-305\",\n    \"COMP-REQ-306\",\n    \"COMP-REQ-307\",\n    \"COMP-REQ-308\",\n    \"COMP-REQ-309\"\n  ],\n  \"current_focus\": \"Active Codex Goal: physical White/Black recovery before V9 component-Rig screen activation, with deterministic behavior and vendor waveform freeze protected\",\n  \"active_parallel_track\": \"WB55 FTS02/panel recovery, real touch/Stop/current and final physical review remain hardware gates; daily art validation does not require a camera\",\n  \"current_goal_audit\": \"docs/validation/companion-current-goal-audit-20260717.json\",\n  \"errors\": []\n}"
+    },
+    "current_goal": {
+      "command": [
+        "C:\\Users\\Billy\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\tools\\verify_companion_current_goal_audit.py"
+      ],
+      "returncode": 0,
+      "output": "PASS: current Companion Goal audit -> docs/validation/companion-current-goal-audit-20260717.json"
+    },
+    "diff_check": {
+      "command": [
+        "git",
+        "diff",
+        "--check",
+        "--",
+        "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
+        "cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile",
+        "tools/build_nucleo_bringup.ps1",
+        "tools/run_wb55_ssd1681_custom_mode2_observable_r6_raw_restore.ps1",
+        "docs/companion_product_requirements.md"
+      ],
+      "returncode": 0,
+      "output": "warning: in the working copy of 'app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'docs/companion_product_requirements.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'tools/build_nucleo_bringup.ps1', LF will be replaced by CRLF the next time Git touches it"
+    }
+  },
+  "evidence": {
+    "docs/validation/companion-ssd1681-phase-parallel-r9-workbench-20260721.json": {
+      "sha256": "E7311523D6FE571434F0C1F2D5EC76B7ED9B64DC725B0726DDEC023421D7E4EF",
+      "bytes": 240882
+    },
+    "docs/validation/companion-ssd1681-phase-parallel-r9-static-20260721.json": {
+      "sha256": "F2FCFAEE3782AF87AD9CE590D52276EC8E67E55B16947B29CFD0553F0D1278DE",
+      "bytes": 21846
+    },
+    "docs/validation/companion-ssd1681-phase-parallel-r9-persistent-launcher-static-20260721.json": {
+      "sha256": "8FD647A9EEB51161CC521E6376FF8E1C53AD7B732172CF4F38176D1F9805DA48",
+      "bytes": 809
+    },
+    "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_phase_parallel_r9/Companion_Nucleo_WB55RG_Ssd1681PhaseParallelR9.hex": {
+      "sha256": "724DA17F385756BA779739E73DA47131F563E0C071A2EB173F5F77871F3CADDF",
+      "bytes": 341397
+    },
+    "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_phase_parallel_r9/Companion_Nucleo_WB55RG_Ssd1681PhaseParallelR9.elf": {
+      "sha256": "777A1288A0E6FC83373602F9895B07AA08F31269AB68B7EB1699723583D03485",
+      "bytes": 3076544
+    },
+    ".cache/validation/wb55-phase-parallel-r9-persistent-checkonly-20260721-r3/persistent-launch.json": {
+      "sha256": "F64E63A7FFABE3EDB3219014CB78F7BF7941700228185341945466113FDADCC6",
+      "bytes": 2604
+    },
+    ".cache/validation/wb55-phase-parallel-r9-persistent-checkonly-20260721-r3/stage-run.json": {
+      "sha256": "518D60E1ADCAC2BD06262C0F05052D825720C4BF7594156617D4615EA39BA498",
+      "bytes": 9871
+    },
+    ".cache/validation/wb55-phase-parallel-r9-persistent-checkonly-20260721-r3/runner.stdout.log": {
+      "sha256": "BBFE4BF5AB3E18F90A0F59C16C359F4BC287FCAB0AAB23DCAE61F83EDA93046D",
+      "bytes": 144
+    },
+    ".cache/validation/wb55-phase-parallel-r9-persistent-checkonly-20260721-r3/runner.stderr.log": {
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "bytes": 0
+    },
+    ".cache/validation/wb55-phase-parallel-r9-persistent-checkonly-20260721-r1/persistent-launch.json": {
+      "sha256": "49705E2B032F02DC55CC77C9C9B23D85F26A00608146B11A76E38A6F9A7FCC24",
+      "bytes": 2596
+    },
+    ".cache/validation/wb55-phase-parallel-r9-persistent-checkonly-20260721-r1/stage-run.json": {
+      "sha256": "A914A0FA42FED298CC8966A313BEB0162FD88C60393654C67F17650B29D8D699",
+      "bytes": 9900
+    },
+    "docs/validation/companion-product-requirements.json": {
+      "sha256": "01A3D2B1C613C79C2988577070862EAEC245639286E9C82E77B15A3D34451BF6",
+      "bytes": 7176
+    },
+    "docs/validation/companion-current-goal-audit-20260717.json": {
+      "sha256": "E46CAD79A6AE6F9838BD658BC84827731E057BDE1A43F821535797F83DF73AA7",
+      "bytes": 21321
+    }
+  },
+  "source_hashes": {
+    "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c": "24C707650D65EE7F805FF390A7C47A50DD30E5992700A1F9425979B3393D1701",
+    "cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile": "27AA96F7186443063E81E3A9EE2109AF9BD33773D8C366996E5374D8E72B805A",
+    "tools/build_nucleo_bringup.ps1": "0FA2C338551264D5300A909CBC8B2769C1371FE80DD125BD708A120097BD8EEF",
+    "tools/run_wb55_ssd1681_custom_mode2_observable_r6_raw_restore.ps1": "0B0A536E7B03DD5F2A4F9CF7B2B76A1B0DB3F34745172E352CB0B4726011B34B",
+    "tools/start_wb55_ssd1681_phase_parallel_r9.ps1": "7B5080DC29D45169A7CE513E88861840FCB24CBCB41A82675884FF9C72B4A124",
+    "tools/invoke_wb55_ssd1681_phase_parallel_r9_final_visual_prompt.ps1": "56794D5856248E1D868DEF23DC9CE983F7069CF4C15A59308F2F011BC9164E15",
+    "tools/verify_wb55_ssd1681_phase_parallel_r9_log.py": "F13A58941390688EDB68B71C2148343E11C6569D128FF4D353E0DB76BC6844EC",
+    "tools/verify_wb55_ssd1681_phase_parallel_r9_diagnostic.py": "DB9F2BD871357FFE07581AB596F834DE48DFAB7660D380A312364EA55B4E96FF",
+    "tools/verify_wb55_ssd1681_phase_parallel_r9_launcher.py": "1F02CD722D8CB4863AED97012A22059DDD882BEBA2B852C79BFB563BC9710882",
+    "tools/verify_wb55_ssd1681_phase_parallel_r9_workbench.py": "4D9E918377A1810EF888907816652A58F352B0F6A73D4AC96CE1924CCBB6CA7B",
+    "tools/verify_wb55_ssd1681_phase_parallel_r9_machine_ready.py": "BED71ADF01D75D97628071BE1E37266019A60BFC595922A07FD5D4EF0E2A40DB"
+  },
+  "machine_ready": true,
+  "hardware_execute_allowed": false,
+  "production_allowed": false,
+  "next_boundary": "root review and a separate explicit hardware authorization contract; do not Execute from COMP-REQ-309"
+}

@@ -1,0 +1,51 @@
+{
+  "schema": "companion.v26_action_verb_special_expression_component_browser_render_inspection.v1",
+  "status": "PASS_V26_BROWSER_RENDER_INSPECTION_NATIVE_200X200",
+  "claim_scope": "actual browser screenshots for a runtime-inactive component compositor; not a behavior binding, flash, panel output, or physical acceptance",
+  "browser_engine": "playwright-chromium",
+  "route": {
+    "path": "docs/validation/companion-v26-action-verb-special-expression-component-performance-preview-20260720.json",
+    "sha256": "1B1942121D7A241495C331C8C9E8A5E0A485314CADFA0A91251C903DB3E5B672"
+  },
+  "player": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-extension-v26-action-verb-special-expression-source/candidate/component-performance-preview/player.html",
+    "sha256": "B9D74D49D369E84B76821D88BEA6724EF1F1E6D1C2CBE754A2E9B99EBE8BC947"
+  },
+  "screenshots": [
+    {
+      "scene": "daily_micro",
+      "virtual_time_ms": 100,
+      "edge_exit_code": 0,
+      "path": "docs/art/iterations/companion-pet-expression-v9-extension-v26-action-verb-special-expression-source/candidate/component-performance-preview/browser-daily-native-200x200-20260720.png",
+      "sha256": "D33B9F566003BE48FF5A862385D1071C230ADBAFB979D4EF024152017C290C0E"
+    },
+    {
+      "scene": "menu_active",
+      "virtual_time_ms": 3000,
+      "edge_exit_code": 0,
+      "path": "docs/art/iterations/companion-pet-expression-v9-extension-v26-action-verb-special-expression-source/candidate/component-performance-preview/browser-menu-hold-native-200x200-20260720.png",
+      "sha256": "168A9493F3C2592E2A7CBFC72DBEFE8F9CDE24102637AE7DC1328AF5C9F96519"
+    },
+    {
+      "scene": "recording_active",
+      "virtual_time_ms": 2900,
+      "edge_exit_code": 0,
+      "path": "docs/art/iterations/companion-pet-expression-v9-extension-v26-action-verb-special-expression-source/candidate/component-performance-preview/browser-recording-hold-native-200x200-20260720.png",
+      "sha256": "AC988283CEF0FB01096ED765FCE898A2C0F4C1B95D3F093B848F5C4124196A99"
+    },
+    {
+      "scene": "charging_active",
+      "virtual_time_ms": 2900,
+      "edge_exit_code": 0,
+      "path": "docs/art/iterations/companion-pet-expression-v9-extension-v26-action-verb-special-expression-source/candidate/component-performance-preview/browser-charging-hold-native-200x200-20260720.png",
+      "sha256": "12F21FCB0B7CDE8679DD169819CF1FDBEB935460EB451AA13D83DE99D0472CC9"
+    }
+  ],
+  "checks": {
+    "route_is_runtime_inactive_candidate": true,
+    "native_200x200_component_stage": true,
+    "explicit_event_player": true,
+    "every_screenshot_written": true
+  },
+  "failures": []
+}

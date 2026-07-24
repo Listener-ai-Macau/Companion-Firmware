@@ -1,0 +1,110 @@
+{
+  "candidate_byte_differences": [
+    {
+      "about_1s": 0,
+      "commented_1_5s": 12,
+      "index": 70
+    },
+    {
+      "about_1s": 0,
+      "commented_1_5s": 12,
+      "index": 71
+    }
+  ],
+  "candidates": [
+    {
+      "compiled": true,
+      "declared_bytes": 159,
+      "id": "active_about_1s",
+      "line": 4,
+      "literal_bytes": 159,
+      "lut_sha256": "F83EA7360CFFF04FE9D004A75858A46213CBD710AAA2F0C4A62597E3EA176D15",
+      "ordinal": 1,
+      "payload_0x32_bytes": 153,
+      "payload_0x32_sha256": "EB822ACEF9622F4671CD5609A40F9C72DA9F2294FE9303E1E5A808472F45885A",
+      "voltage_tail": {
+        "0x03_vgh": 23,
+        "0x04_vsh1": 65,
+        "0x04_vsh2": 168,
+        "0x04_vsl": 50,
+        "0x2C_vcom": 88,
+        "0x3F_eopq": 34
+      }
+    },
+    {
+      "compiled": false,
+      "declared_bytes": 159,
+      "id": "commented_1_5s",
+      "line": 28,
+      "literal_bytes": 159,
+      "lut_sha256": "7B308E17D923D1ED32162237E884B968DA2E96E172F46B1B06B65918C8FEF80F",
+      "ordinal": 2,
+      "payload_0x32_bytes": 153,
+      "payload_0x32_sha256": "BB1963EAFA38244B0C8C0914575051550FD6DA0DF611EE5C09E6AFB9C0FA39B5",
+      "voltage_tail": {
+        "0x03_vgh": 23,
+        "0x04_vsh1": 65,
+        "0x04_vsh2": 168,
+        "0x04_vsl": 50,
+        "0x2C_vcom": 88,
+        "0x3F_eopq": 34
+      }
+    }
+  ],
+  "checks": {
+    "active_candidate_is_compiled_and_exactly_159_bytes": true,
+    "both_candidates_have_exactly_153_byte_0x32_payloads": true,
+    "both_candidates_have_same_voltage_tail": true,
+    "commented_candidate_is_not_an_executable_profile_selection": true,
+    "commented_candidate_is_not_compiled_and_exactly_159_bytes": true,
+    "readme_requires_hardware_reset_and_border_80_after_partial": true,
+    "source_lut_activation_is_full_frame_c7_not_partial_ff": true,
+    "source_lut_initializer_loads_tail_then_0x32_payload": true,
+    "source_partial_path_uses_ff_and_has_no_lut_initializer": true,
+    "temperature_bands_or_cwf1_are_not_supplied": true
+  },
+  "claim_scope": "read-only inventory and classification of literal supplier LUT candidates; no physical run or LUT mutation",
+  "conclusion": {
+    "disposition": {
+      "active_about_1s": "production-off only after the existing identity and rail gates pass; not a partial-refresh cure.",
+      "commented_1_5s": "NO_GO: source text exists, but it is commented out and unbound; do not enable or mutate it without explicit supplier confirmation and full gates.",
+      "production_dynamic_expression": "NO_GO",
+      "self_authored_waveform": "prohibited"
+    },
+    "what_the_package_does_not_supply": [
+      "A temperature-banded CWF1 table or a temperature-to-LUT selection rule.",
+      "A panel/FPC/controller binding for the observed 0154BN-D67-D2 module.",
+      "An executable selection mechanism for the commented 1.5s array.",
+      "A supplier-defined repeated-local-refresh recovery that removes residue without a full white clear."
+    ],
+    "what_the_package_supplies": [
+      "One compiled about-1s 159-byte LUT_DATA array and one commented-out about-1.5s literal alternative.",
+      "The same six-byte voltage tail for both arrays, then a 153-byte 0x32 LUT payload.",
+      "A 0xC7 full-frame LUT activation path with 5000-byte 0x24 writes.",
+      "A separate 0xFF local-update path with reset and border 0x80, but no selected LUT or content-preserving residue recovery."
+    ]
+  },
+  "failures": [],
+  "schema_id": "companion.gdey0154d67_t03.vendor_waveform_candidate_inventory.v1",
+  "source": {
+    "epaper_c": {
+      "path": "C:\\Users\\Billy\\Desktop\\GDEH0154D67-20211203-P-LUT(1s) -1s快刷\\EPD_W21\\EPAPER.c",
+      "sha256": "7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896"
+    },
+    "main_c": {
+      "path": "C:\\Users\\Billy\\Desktop\\GDEH0154D67-20211203-P-LUT(1s) -1s快刷\\User\\main.c",
+      "sha256": "66BF0AC2E1C75C28FF95906666E720F3EC584EDD5D721D1293948A1596A315E0"
+    },
+    "readme": {
+      "path": "C:\\Users\\Billy\\Desktop\\GDEH0154D67-20211203-P-LUT(1s) -1s快刷\\read me.txt",
+      "sha256": "755D2598F00B1FF049A764CF56AD82236440329C64C8ADBCBA6763BF07FE0A47"
+    },
+    "target_driver": {
+      "path": "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
+      "sha256": "5E3207312E1C257D611C89E80D5E5916B3C13BAEE0E7D44D221EE946C118700C"
+    },
+    "vendor_root": "C:\\Users\\Billy\\Desktop\\GDEH0154D67-20211203-P-LUT(1s) -1s快刷"
+  },
+  "status": "NO_GO_VENDOR_WAVEFORM_CANDIDATES_UNBOUND_TO_PANEL_PARTIAL_RECOVERY",
+  "target": "NUCLEO-WB55RG + ESP32-FTS02 + GDEY0154D67-T03"
+}

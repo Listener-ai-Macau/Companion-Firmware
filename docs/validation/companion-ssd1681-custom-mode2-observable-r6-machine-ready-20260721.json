@@ -1,0 +1,89 @@
+{
+  "schema_id": "companion.wb55.ssd1681_custom_mode2_observable_r6_machine_ready.v1",
+  "status": "MACHINE_READY_CUSTOM_MODE2_OBSERVABLE_R6",
+  "requirement": "COMP-REQ-299",
+  "hardware_contact": 0,
+  "programmer_calls": 0,
+  "operator_prompts_opened": 0,
+  "production_allowed": false,
+  "hardware_execute_allowed": false,
+  "root_instruction_required_before_execute": true,
+  "candidate": {
+    "r6_hex_sha256": "71933D316D2D6DCDA75DB1C387B012D7B44E9C61244BEEBD4BF7C3DD68047D99",
+    "r6_elf_sha256": "2D16C29543BCC56788EC892031E31F9114F5D2713D2C30E6E253338E4C434163",
+    "sealed_r5_hex_sha256": "E695A1A6D3D121AA585E69A1A0D8DA21FEBC5566198BD314FE27F2D40C30B564",
+    "tp16_lut_sha256": "75D7647188ACF1C79BC37313DC40105AF4445B9B6F422AD4FDAF0A465413984D",
+    "protected_tail_hex": "221741A83258",
+    "dual_plane_clean_hex_sha256": "3AC4E52E37E15DC3CC058A4B0B0E6A3227D23E6C6DEFAEDCB786C08497888AAD"
+  },
+  "observation_contract": {
+    "activations": 16,
+    "sequence": "W->A->B->A->B->A->B->A->B->A->B->A->B->A->B->A->W",
+    "predicted_busy_sum_ms": 9583,
+    "window": "x_bytes=1..4,y=8..39,32x32,128_bytes_per_plane",
+    "each_activation": "complete_0x26_old_then_complete_0x24_new_then_0xCF_0x20_BUSY_max_600ms",
+    "countdown": 0,
+    "inter_activation_dwell_ms": 0,
+    "verbose_uart_during_observation": false,
+    "compensation_activations": 0,
+    "full_frame_candidate_refreshes": 0,
+    "forbidden_controls_ff_f7_c7": 0,
+    "retries": 0,
+    "motion_120_frame": false,
+    "final_local_state": "white"
+  },
+  "runner_contract": {
+    "preclean": "promptless supplier-exact dual-plane all-white; selector 0 and 1 each read twice and all 5000 payload bytes must be FF",
+    "start_prompt": "exactly one canonical Chinese prompt after preclean; button is [start and look at screen immediately]",
+    "candidate": "begins immediately after authorization; no firmware countdown or dwell",
+    "postclean": "unconditional promptless identical dual-plane all-white after any candidate attempt",
+    "restore": "unconditional exact 524288-byte raw restore/readback and normal application resume"
+  },
+  "machine_gates": [
+    {"name": "r5_sealed_rebuild", "status": "PASS", "hex_sha256": "E695A1A6D3D121AA585E69A1A0D8DA21FEBC5566198BD314FE27F2D40C30B564"},
+    {"name": "r6_isolated_build", "status": "PASS", "hex_sha256": "71933D316D2D6DCDA75DB1C387B012D7B44E9C61244BEEBD4BF7C3DD68047D99"},
+    {"name": "r6_workbench", "status": "PASS_WORKBENCH_ADMIT_R6_EXACTLY_16_CONTIGUOUS_LOCAL_ACTIVATIONS", "artifact_sha256": "3BF58E753767CAC1996EB56CF36F1D630D7D7E6FAAC68D6998352445E4FFE243"},
+    {"name": "r6_parser_positive_negative", "status": "PASS"},
+    {"name": "r6_static", "status": "PASS_STATIC_CUSTOM_MODE2_OBSERVABLE_R6", "artifact_sha256": "3767D5E2D2ED2745722A1B1CA8DC782465F38C99341A8E744D57FB8F47F63F15"},
+    {"name": "detached_check_only", "status": "READY_NO_HARDWARE_CONTACT", "stage_sha256": "B58555D19436E06522434AE7A240723D24B2F004720BDF5C413D4F977A89BCBC", "launch_sha256": "BB5094FB4848B4BA351AC4B376021B2011CF6C7F038AEE5BBD62C6A2BF178804"},
+    {"name": "product_registry", "status": "PASS", "artifact_sha256": "5A23AE97872706AC8313614E6F8A211806363290C20440F5F010A877A1D1DC81"},
+    {"name": "current_goal_audit", "status": "PASS", "artifact_sha256": "E5D2EF9F41EB9EE28171F269A1085E02DF5A7ECA8D21190B4C4D157C117ECFFD"},
+    {"name": "git_diff_check", "status": "PASS"},
+    {"name": "protected_hashes", "status": "PASS"}
+  ],
+  "negative_fixtures": [
+    "missing_activation",
+    "extra_activation",
+    "wrong_transition_class",
+    "busy_over_600ms",
+    "dwell_inserted",
+    "countdown_inserted",
+    "verbose_uart_before_observation_complete",
+    "forbidden_control",
+    "retry",
+    "motion_120_frame",
+    "missing_postclean",
+    "prompt_before_preclean",
+    "non_immediate_prompt_button",
+    "candidate_hash_drift"
+  ],
+  "artifacts": {
+    "workbench": "docs/validation/companion-ssd1681-custom-mode2-observable-r6-workbench-20260721.json",
+    "static": "docs/validation/companion-ssd1681-custom-mode2-observable-r6-static-20260721.json",
+    "check_only_stage": ".cache/validation/wb55-custom-mode2-observable-r6-checkonly-20260721-a/stage-run.json",
+    "check_only_launch": ".cache/validation/wb55-custom-mode2-observable-r6-checkonly-20260721-a/detached-launch.json"
+  },
+  "commands": [
+    "python tools/verify_wb55_ssd1681_custom_mode2_observable_r6_workbench.py",
+    "python tools/verify_wb55_ssd1681_custom_mode2_observable_r6_log.py --self-test",
+    "pwsh -NoProfile -File tools/build_nucleo_bringup.ps1 -EpaperSsd1681CustomMode2TransitionSafetyDiagnostic -Force",
+    "pwsh -NoProfile -File tools/build_nucleo_bringup.ps1 -EpaperSsd1681CustomMode2ObservableR6Diagnostic -Force",
+    "python tools/verify_wb55_ssd1681_custom_mode2_observable_r6.py",
+    "pwsh -NoProfile -File tools/start_wb55_ssd1681_custom_mode2_observable_r6.ps1 -CheckOnly -OutRoot .cache/validation/wb55-custom-mode2-observable-r6-checkonly-20260721-a",
+    "python tools/verify_companion_product_requirements.py",
+    "python tools/verify_companion_current_goal_audit.py",
+    "git diff --check"
+  ],
+  "interpretation_boundary": "A and B are complete bitmap patterns in one fixed 32x32 window, not a geometric product-expression translation. R6 tests whether the accepted local old/new-bank mechanism can be observed continuously for about 9.5 seconds. It does not prove final expression motion, optical cleanliness, clipping, continuity or ghosting.",
+  "next_action": "Wait for an explicit root instruction. Only then may the detached Execute path open the single start prompt and contact hardware."
+}

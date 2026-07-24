@@ -1,0 +1,38 @@
+{
+  "checks": {
+    "candidate_is_compile_time_disabled_and_source_partial_only": true,
+    "first_pass_shows_complete_current_union_window": true,
+    "fixed_machine_and_operator_builds_are_isolated": true,
+    "hardware_recovery_gate_is_current": true,
+    "owner_authorizes_reversed_order_generic_repair_comparator": true,
+    "second_pass_settles_only_removed_black_difference_with_current_frame": true,
+    "supplier_source_is_frozen": true,
+    "two_source_resets_and_no_generic_third_activation": true
+  },
+  "claim_scope": "default-disabled reversed-order local transport only; no optical, production, LUT, temperature or panel-identity claim",
+  "controlled_behavior": {
+    "forbidden": [
+      "old-or-current union payload",
+      "0xC7",
+      "full local-motion write",
+      "LUT or waveform-byte change",
+      "production promotion"
+    ],
+    "pass_1": "source reset/border/difference-union window/current 0x24 bytes, 0xFF, 0x20, BUSY",
+    "pass_2": "source reset/border/removed-black-difference window/current 0x24 bytes, 0xFF, 0x20, BUSY"
+  },
+  "failures": [],
+  "machine_status": "PASS_STATIC_HARDWARE_ADMITTED",
+  "schema_id": "companion.wb55.gdey0154d67_t03.vendor_partial_current_union_old_settle_static.v1",
+  "source": {
+    "driver": {
+      "path": "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
+      "sha256": "83FEF412B0BB1F35FBF0A25CC33A09D42D1AA09A84EC99F177432EB637CD5209"
+    },
+    "supplier_epaper_c": {
+      "path": "C:/Users/Billy/Desktop/GDEH0154D67-20211203-P-LUT(1s) -1s\u5feb\u5237/EPD_W21/EPAPER.c",
+      "sha256": "7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896"
+    }
+  },
+  "status": "PASS_STATIC_PRODUCTION_OFF_VENDOR_PARTIAL_CURRENT_UNION_OLD_SETTLE"
+}

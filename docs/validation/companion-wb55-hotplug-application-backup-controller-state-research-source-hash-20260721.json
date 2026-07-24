@@ -1,0 +1,110 @@
+{
+  "schema_id": "companion.wb55.hotplug_application_backup_controller_state_research.v1",
+  "status": "PASS_RESEARCH_AUTHORIZES_DUAL_HOTPLUG_APPLICATION_BACKUP_THEN_ONE_READ_ONLY_CONTROLLER_CAPTURE",
+  "generated_at": "2026-07-21T13:20:00+08:00",
+  "scope": "NUCLEO-WB55RG application flash 0x08000000..0x0807FFFF recovery identity followed, only after dual backup admission, by the existing production-off SSD1681 0x2F/0x2D diagnostic",
+  "source_manifest": {
+    "prior_goal_completion_audit": {
+      "path": "docs/validation/companion-ssd1681-read-only-controller-state-completion-audit-20260721.json",
+      "sha256": "9CA7539D8092926A7A6FA73C874FD59884EA92355BF77C4D0CE71BF15E84EE9F"
+    },
+    "prior_goal_research": {
+      "path": "docs/validation/companion-ssd1681-read-only-controller-state-research-source-hash-20260721.json",
+      "sha256": "BD43C9FD65703CE5CAE89573F5846436BF425475C74D0F96E7F43CC1E915662C"
+    },
+    "prior_goal_static": {
+      "path": "docs/validation/companion-ssd1681-read-only-controller-state-static-20260721.json",
+      "sha256": "7661B9BDF7A7DECA93ED082A64CC91A7526E2DC7951080E4766A9EB6C9A77D42"
+    },
+    "stm32_programmer_cli": {
+      "path": "C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.cubeprogrammer.win32_2.2.400.202601091506/tools/bin/STM32_Programmer_CLI.exe",
+      "sha256": "BD520005962377155515A2C9E8FEAB73F304A696AAE1698F3B7760672160FD5E",
+      "reported_version": "2.22.0",
+      "version_stdout_utf8_sha256": "F9F1AFF32A01917B5A6BA9BF01C31A5C449C4B3A294F42584A573AC713CA9D58",
+      "help_stdout_utf8_bytes": 31120,
+      "help_stdout_utf8_sha256": "74C09C3178A314A0EDC04A3102E6033FC94234A38BEA567722EC05B05F35B937",
+      "help_relevant_verbatim": [
+        "mode=<mode>      : Connection mode. Value in {UR/HOTPLUG/NORMAL/POWERDOWN/HWRSTPULSE}",
+        "-u,     --upload       : Upload the device memory content to a .bin/.hex/.srec/.s19 file",
+        "<address>          : Start address of read and upload",
+        "<size>             : Size of memory content to be read"
+      ]
+    },
+    "linker_script": {
+      "path": "third_party/STM32CubeWB/Projects/P-NUCLEO-WB55.Nucleo/Applications/BLE/BLE_p2pServer/STM32CubeIDE/STM32WB55RGVX_FLASH.ld",
+      "sha256": "4FB899EAB4A324B5CB642D37884341577413634710B4B301B59B21493BE0E4BD",
+      "application_flash": "ORIGIN = 0x08000000, LENGTH = 512K"
+    },
+    "candidate_hex": {
+      "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_read_only_controller_state/Companion_Nucleo_WB55RG_Ssd1681ReadOnlyControllerState.hex",
+      "sha256": "52D79CB3BC55D9738EFA580B95D3930216C23FD8825356F7860B7C1718C0C6AD"
+    },
+    "prior_runner": {
+      "path": "tools/run_wb55_ssd1681_read_only_controller_state.ps1",
+      "sha256": "FFE2121FBDE58A268F63883E8263D001B6290F0EFD6A6919842712E5138D8482"
+    },
+    "hardware_lock": {
+      "path": "tools/companion_wb55_lock.ps1",
+      "sha256": "E688A06E6F6BD5DAA8D03A2E342ABF33B525FDA45F97A23AD59A56FF501F73C5"
+    }
+  },
+  "PROVEN": [
+    "The preceding Goal permanently records that the lower-driver agent overwrote the retained host E1997F... build artifact and made zero hardware contacts afterward.",
+    "The preceding candidate HEX remains byte-identical at SHA-256 52D79C... and its diagnostic is default-disabled, production-off, and independent of normal panel initialization.",
+    "The locally installed official STM32CubeProgrammer v2.22.0 help defines SWD HOTPLUG as a connection mode and -u/--upload as device-memory export to a file.",
+    "The active WB55 linker script assigns exactly 512K of application FLASH beginning at 0x08000000; 0x80000 bytes ends at 0x0807FFFF.",
+    "Two 524288-byte uploads can be compared byte-for-byte and screened for all-zero/all-FF content and a plausible Cortex-M vector table before any write is admitted.",
+    "The prior runner already orders serial readiness before candidate flash and avoids a post-flash reset, but its old normal-HEX restore contract must be replaced rather than weakened."
+  ],
+  "INFERENCE": [
+    "Because the preceding programmer-verified restore installed E1997F... and this work has made no later hardware contact, the current board is expected to still contain those prior application bytes.",
+    "If two independent HOTPLUG uploads are identical and pass length/content/vector checks, their shared raw SHA-256 is adequate as a new pre-run application-byte identity for one bounded restore cycle.",
+    "A post-restore HOTPLUG upload equal to backup-a proves restoration to the captured pre-run application bytes, not reproduction of the lost E199 Intel HEX file or its file hash."
+  ],
+  "UNKNOWN": [
+    "The board application raw SHA-256 and vector words remain unknown until the two admitted uploads complete.",
+    "HOTPLUG's exact transient electrical/runtime effect on this connected MCU is not proven to be absolutely zero; the defensible boundary is zero write, erase, reset, halt, run, read-unprotect or option-byte command before backup admission.",
+    "SSD1681 chip status, 0x2D display option bytes, VCOM, F6 ping-pong state and waveform version remain unread.",
+    "The board contents are not currently available as a reusable host artifact and must not be called an E199 HEX reconstruction."
+  ],
+  "RISK": [
+    "Any accidental reset, erase, write or read-unprotect before two valid backups would destroy the only recoverable pre-run application identity.",
+    "A short, long, inconsistent, all-zero/all-FF or implausible-vector upload may be transport failure or protected/invalid content and must terminate without retry or write.",
+    "After candidate programming is attempted, failure to perform the single restore or failure of post-restore byte comparison leaves the board in an uncertain application state and requires immediate human escalation without a second write.",
+    "Starting the serial capture after flashing would miss the sole diagnostic boot; resetting after serial open would execute the read groups twice."
+  ],
+  "ADMISSION": {
+    "locks": [
+      "Companion-WB55 exclusive lock",
+      "dedicated SWD/COM exclusive mutex"
+    ],
+    "pre_backup_forbidden_tokens": [
+      "-rdu",
+      "-e",
+      "-w",
+      "-w8",
+      "-w16",
+      "-w32",
+      "-ob",
+      "-rst",
+      "-hardRst",
+      "mode=UR",
+      "reset=HWrst",
+      "halt",
+      "run"
+    ],
+    "backup_command_shape": "STM32_Programmer_CLI -c port=SWD mode=HOTPLUG -u 0x08000000 0x80000 <private-bin>",
+    "backup_pass": "two independent 524288-byte nontrivial files, byte-identical and SHA-identical, valid MSP/reset vector",
+    "candidate_write_admission": "all non-hardware gates and dual-backup gate PASS",
+    "restore": "at most one backup-a write after any candidate write attempt, programmer verify, then one HOTPLUG upload and byte/hash equality",
+    "success_status": "PASS_MACHINE_READ_ONLY_CONTROLLER_STATE_RESTORED",
+    "restore_identity": "RESTORED_TO_CAPTURED_PRE_RUN_APPLICATION_BYTES",
+    "future_only": "A later Goal may consider read-only 0x41/0x27 around one official partial update; this Goal does not read RAM or refresh the panel."
+  },
+  "non_goals": [
+    "Recreate or claim the lost E199 Intel HEX file hash",
+    "Read above 0x0807FFFF, option bytes, secrets, controller RAM, 0x41 or 0x27",
+    "Read-unprotect, tune LUT/OTP/0x37/0x20, refresh the panel, or perform visual/White/Black/rail/temperature/animation work",
+    "Claim zero residue, OLED-like behavior, production readiness, T03 binding or temperature-complete CWF1"
+  ]
+}

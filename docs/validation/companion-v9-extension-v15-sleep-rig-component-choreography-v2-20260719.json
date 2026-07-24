@@ -1,0 +1,134 @@
+{
+  "schema": "companion.v15_sleep_component_choreography_gate.v1",
+  "status": "PASS_V15_UNBOUND_DYNAMIC_PROOF_GATE",
+  "candidate": "docs/art/iterations/companion-pet-expression-v9-extension-v15-sleep-rig-pose-source/candidate/dynamic-proof-attempt-02",
+  "phase_count": 7,
+  "entry_pixel_difference_by_phase": {
+    "entry": 0,
+    "lead": 456,
+    "response": 485,
+    "accent": 501,
+    "hold": 396,
+    "return": 172,
+    "settle": 0
+  },
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden",
+  "crig_mount": "forbidden",
+  "full_pose_cell_playback": "forbidden",
+  "component_choreography_audit": {
+    "anchors": [
+      "left_closed_eye_anchor",
+      "nose_anchor",
+      "right_closed_eye_anchor"
+    ],
+    "lead_variant": "left_brow_settle",
+    "lower_face_variants": [
+      "left_cheek_breath",
+      "mouth_breath",
+      "right_cheek_breath"
+    ],
+    "phase_active_components": {
+      "entry": [
+        "left_brow_rest",
+        "right_brow_rest",
+        "left_closed_eye_anchor",
+        "right_closed_eye_anchor",
+        "left_cheek_rest",
+        "right_cheek_rest",
+        "nose_anchor",
+        "mouth_rest",
+        "sleep_breath_mark_left",
+        "sleep_breath_mark_right",
+        "sleep_zzz_cluster"
+      ],
+      "lead": [
+        "left_brow_settle",
+        "right_brow_rest",
+        "left_closed_eye_anchor",
+        "right_closed_eye_anchor",
+        "left_cheek_rest",
+        "right_cheek_rest",
+        "nose_anchor",
+        "mouth_rest",
+        "sleep_breath_mark_left",
+        "sleep_breath_mark_right",
+        "sleep_zzz_cluster"
+      ],
+      "response": [
+        "left_brow_rest",
+        "right_brow_rest",
+        "left_closed_eye_anchor",
+        "right_closed_eye_anchor",
+        "left_cheek_breath",
+        "right_cheek_breath",
+        "nose_anchor",
+        "mouth_breath",
+        "sleep_breath_mark_left",
+        "sleep_breath_mark_right",
+        "sleep_zzz_cluster"
+      ],
+      "accent": [
+        "left_brow_rest",
+        "right_brow_rest",
+        "left_closed_eye_anchor",
+        "right_closed_eye_anchor",
+        "left_cheek_breath",
+        "right_cheek_breath",
+        "nose_anchor",
+        "mouth_breath",
+        "sleep_breath_mark_left",
+        "sleep_breath_mark_right",
+        "sleep_zzz_cluster"
+      ],
+      "hold": [
+        "left_brow_rest",
+        "right_brow_rest",
+        "left_closed_eye_anchor",
+        "right_closed_eye_anchor",
+        "left_cheek_rest",
+        "right_cheek_rest",
+        "nose_anchor",
+        "mouth_rest",
+        "sleep_breath_mark_left",
+        "sleep_breath_mark_right",
+        "sleep_zzz_cluster"
+      ],
+      "return": [
+        "left_brow_rest",
+        "right_brow_rest",
+        "left_closed_eye_anchor",
+        "right_closed_eye_anchor",
+        "left_cheek_rest",
+        "right_cheek_rest",
+        "nose_anchor",
+        "mouth_rest",
+        "sleep_breath_mark_left",
+        "sleep_breath_mark_right",
+        "sleep_zzz_cluster"
+      ],
+      "settle": [
+        "left_brow_rest",
+        "right_brow_rest",
+        "left_closed_eye_anchor",
+        "right_closed_eye_anchor",
+        "left_cheek_rest",
+        "right_cheek_rest",
+        "nose_anchor",
+        "mouth_rest",
+        "sleep_breath_mark_left",
+        "sleep_breath_mark_right",
+        "sleep_zzz_cluster"
+      ]
+    }
+  },
+  "motion_readability_audit": {
+    "first_visible_phase": "lead",
+    "entry_to_first_visible_ms": 500,
+    "response_difference_pixels": 485,
+    "accent_difference_pixels": 501,
+    "breath_travel_px": 5,
+    "zzz_travel_px": 8
+  },
+  "errors": []
+}

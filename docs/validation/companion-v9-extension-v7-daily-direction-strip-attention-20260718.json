@@ -1,0 +1,42 @@
+{
+  "schema": "companion.v9_daily_attention_proof_gate.v1",
+  "status": "PASS_DAILY_ATTENTION_PROOF_GATE",
+  "candidate": "docs/art/iterations/companion-pet-expression-v9-extension-v7-daily-direction-strip/generated_pet_expression_extension_v7_daily_direction_strip_candidate.png",
+  "candidate_sha256": "A66F84A1FD761BBF70F45E9CC6B381B1CE05811D77CD99A55EDEB886015D2423",
+  "grid": [
+    1,
+    4
+  ],
+  "direction_cells": {
+    "left": "0,0",
+    "right": "0,1",
+    "up": "0,2",
+    "down": "0,3"
+  },
+  "direction_primary_positions": {
+    "left": {
+      "primary_reflection_x": 0.3047,
+      "primary_reflection_y": 0.3128
+    },
+    "right": {
+      "primary_reflection_x": 0.6509,
+      "primary_reflection_y": 0.314
+    },
+    "up": {
+      "primary_reflection_x": 0.4565,
+      "primary_reflection_y": 0.2434
+    },
+    "down": {
+      "primary_reflection_x": 0.489,
+      "primary_reflection_y": 0.7706
+    }
+  },
+  "minimum_pair_pixel_difference": 100,
+  "direction_thresholds": {
+    "left_max_primary_x": 0.47,
+    "right_min_primary_x": 0.53,
+    "up_max_primary_y": 0.43,
+    "down_min_primary_y": 0.57
+  },
+  "errors": []
+}

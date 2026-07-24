@@ -1,0 +1,89 @@
+{
+  "schema_id": "companion.wb55.ssd1681_phase_parallel_r9_continuous.r1_runtime_disposition.v1",
+  "status": "NO_GO_R9_CONTINUOUS_PROMPT_SUPERVISOR_PRE_GUARD_FAILED_RESTORED_NO_RETRY",
+  "requirements": [
+    "COMP-REQ-313",
+    "COMP-REQ-314",
+    "COMP-REQ-315"
+  ],
+  "errors": [],
+  "checks": {
+    "required_inputs": true,
+    "archive_hashes_exact": true,
+    "authorization_consumed_once": true,
+    "sealed_machine_identity": true,
+    "registry_incident_unique": true,
+    "qualification_and_loop_observed": true,
+    "bounded_telemetry": true,
+    "exact_prompt_supervisor_failure": true,
+    "no_popup_or_operator_result": true,
+    "fail_closed_stop": true,
+    "promptless_preclean_postclean": true,
+    "exact_restore_and_normal_resume": true,
+    "qualification_signal_identity": true,
+    "all_run_processes_exited": true,
+    "registry_verifier_pass": true
+  },
+  "machine_qualification": {
+    "status": "PASS_MACHINE_R9_CONTINUOUS_TRACE",
+    "activations": 16,
+    "busy_max_ms": 599
+  },
+  "continuous_loop": {
+    "records": 1,
+    "busy_max_ms": 597,
+    "ring_bytes": 10736,
+    "ring_limit_bytes": 65536
+  },
+  "acceptance": {
+    "popup_opened": false,
+    "guard_created": false,
+    "selected": null,
+    "note": null,
+    "visual_verdict": null,
+    "reason": "prompt_supervisor_failed_before_guard"
+  },
+  "restore": {
+    "status": "PASS_RESTORE_EQUALS_CAPTURED_PRE_RUN_APPLICATION_BYTES",
+    "bytes": 524288,
+    "sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "normal_resume_status": "PASS_APPLICATION_RESUMED_AFTER_BACKUP"
+  },
+  "authorization": {
+    "consumed": true,
+    "retry_allowed": false,
+    "original_sha256": "8183D7803AC4177B86042805BD8CB98912FE4DC72674E88D8F8B87E5C5064306",
+    "current_sha256": "AC323521B1E55A8EC7BA6E8549B8804929115E2C2623F290ADBBBC3329EC9242"
+  },
+  "process_audit": {
+    "command_line_matches": [],
+    "known_pids_alive": []
+  },
+  "archive_root": "docs/validation/companion-ssd1681-phase-parallel-r9-continuous-runtime-20260721",
+  "archive_hashes": {
+    "continuous-emergency-stop.json": "9675375441218D5BCF358BE15FCD7C9D362C1C9E09481DAF680C44CC8D30CF55",
+    "continuous-qualification-ready.json": "24CD22E2BF0114308253EEE850492B0C9E5B20A1E53B750301312968DA5B7BA6",
+    "controller-state.json": "558A375AE7FCC33BAF25F88F5FE466DB47927BFFF77BEFECB3500E2C42393A0B",
+    "final-ring-parse.json": "B5297629734F94BA77664B03B7E14B04581D7B5884C80371F8B0F9B209289085",
+    "monitor-result.json": "8E31CDF93D2729210279C42C42A353B5CC9E541357D377D8DD7A466B18773995",
+    "normal-resume.json": "048DE073BA860A41B481BB61F360DEE091BE551BD9CE974758BCBFCC679956EC",
+    "persistent-launch.json": "AAE554D7DA0817A38E014F0CEE78A6E9F2EC5B386A24BFF4829D9B9E7FDCEF59",
+    "postclean-white.json": "64D33D192CA81C59AA440658939AC75E18C8F1997CCED8B02B9200233F042A49",
+    "preclean-white.json": "64D33D192CA81C59AA440658939AC75E18C8F1997CCED8B02B9200233F042A49",
+    "prompt-supervisor.stderr.log": "2570645DCFC2D4A05D8DB590A05C3677CD3BE42798B5986A711D10738CE63716",
+    "prompt-supervisor.stdout.log": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "qualification-and-ring.json": "558A375AE7FCC33BAF25F88F5FE466DB47927BFFF77BEFECB3500E2C42393A0B",
+    "restore-gate.json": "EC2A9488D09FE7E53CE91F7D5F9D029A9F8FA09ABC9B508A8533AE10AC5226D7",
+    "stage-run.json": "0A5823EE2B95E12BF3883F2F32C29242683CDD021BC5B0373D8BB60D22866F3E",
+    "telemetry-ring.log": "3C7C787B8A85F03F203BF26551AAB5249A16272236EFF38F4CFD77C073DCBD19"
+  },
+  "next_boundary": "R2 implementation/build/CheckOnly/MACHINE_READY only; any Execute requires a new explicit root authorization",
+  "protected_hashes": {
+    "machine_ready_sha256": "68BA95CE95BF4FA3D17847B1A3731E26012CAE5A166B4156C2B44457B139E170",
+    "candidate_hex_sha256": "3B416BFF08B630D23BDB6107B2C17DFE9FBBFAAA7D5CFBCA5063AE68E62B79C5",
+    "lut_sha256": "9BCBAC1A07ED0A112D26409FBCDB8F5FE27CE07D922C2E18881C10A53229DDCD",
+    "registry_sha256": "A15CBAB7183513B0A117F0CFE395AD0462FDD71A397768F45D12065EA725DA62",
+    "registry_fixture_sha256": "480E3CACFC7F061D8627BFC8911DDBB00AE930584FEAF65ED12E7CECCECAD7C6",
+    "disposition_tool_sha256": "AA0EFD9E12AA94C1D4D317C544D4C601A21E94C027E0AA6F09CEB0FC12B5C1B8"
+  }
+}

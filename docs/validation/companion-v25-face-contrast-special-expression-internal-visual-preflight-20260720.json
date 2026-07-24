@@ -1,0 +1,49 @@
+{
+  "schema": "companion.v25_face_contrast_special_expression_internal_visual_preflight.v1",
+  "status": "FAIL_INTERNAL_VISUAL_PREFLIGHT_REQUIRES_NEW_V9_ONLY_SOURCE",
+  "purpose": "Machine screenshots were inspected before a canonical owner-art review. This is an internal art-quality rejection, not a human acceptance result.",
+  "machine_evidence": {
+    "source_gate": "docs/validation/companion-v25-face-contrast-special-expression-source-gate-20260720.json",
+    "component_export_gate": "docs/validation/companion-v25-face-contrast-special-expression-component-export-gate-20260720.json",
+    "performance_parity": "docs/validation/companion-v25-face-contrast-special-expression-component-performance-parity-20260720.json",
+    "browser_render": "docs/validation/companion-v25-face-contrast-special-expression-component-browser-render-20260720.json"
+  },
+  "native_200x200_holds": {
+    "menu_active": {
+      "screenshot": "docs/validation/artifacts/companion-v25-face-contrast-special-expression-performance-preview-20260720/browser-menu-hold-native-200x200-20260720.png",
+      "result": "REJECTED",
+      "reason": "The hold reads as worry or uncertainty, not deliberate browsing/choosing."
+    },
+    "recording_active": {
+      "screenshot": "docs/validation/artifacts/companion-v25-face-contrast-special-expression-performance-preview-20260720/browser-recording-hold-native-200x200-20260720.png",
+      "result": "REJECTED",
+      "reason": "The hold reads as surprise, not active listening or ready response."
+    },
+    "charging_active": {
+      "screenshot": "docs/validation/artifacts/companion-v25-face-contrast-special-expression-performance-preview-20260720/browser-charging-hold-native-200x200-20260720.png",
+      "result": "REJECTED",
+      "reason": "The hold reads as generic happiness, not restorative replenishment."
+    }
+  },
+  "preserved_machine_results": [
+    "locked V9 source lineage",
+    "exact V9 eye, highlight, sparkle and nose component reuse",
+    "registered-component-only composition",
+    "deterministic entry, action, hold, release and exact V9 Daily settle",
+    "identical browser canonical-layer and target-PBM plan",
+    "runtime inactive, unbound, fail-closed state"
+  ],
+  "disposition": {
+    "v25_source_and_export": "VISUALLY_REJECTED_AUDIT_ONLY",
+    "forbidden": [
+      "V25 prompt/reference input for V26",
+      "whole-face playback",
+      "CRIG/profile export",
+      "event binding",
+      "firmware flash",
+      "physical-panel claim",
+      "canonical owner-art review"
+    ],
+    "required_next_step": "Create a V26 locked-V9-only source brief that makes menu, listening and restorative intent read from stronger, non-interchangeable facial action before repeating component export and choreography."
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "schema_id": "companion.v9_expression_rig.registered_state_decoration_fail_closed_triage.v1",
+  "status": "NO_GO_REGISTERED_STATE_SCORE_REFERENCES_UNSELECTED_DECORATION",
+  "claim_scope": "machine_triage_only_runtime_inactive",
+  "authority": "COMP-REQ-187 and COMP-REQ-190",
+  "protected_identity": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "observed_contract": {
+    "score": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/state-preview-rig-score-v1.json",
+    "story": "touch_left",
+    "phase": "accent",
+    "selected_roles": ["charm"],
+    "requested_component": "charm_question",
+    "machine_rejection": "state score poses a component absent from its selected Rig layers: charm_question"
+  },
+  "facts": [
+    "The score expresses a role-level charm selection but the source frame does not select charm_question as a component layer.",
+    "The rejected question, menu, recording and sleep decorations are not accepted current runtime sources under COMP-REQ-190.",
+    "The renderer rejected the old decoration instead of falling back to an arbitrary charm, a whole-face card or a code-drawn symbol."
+  ],
+  "required_recovery": [
+    "Keep registered-state decoration playback unavailable until each state has an accepted, source-derived component contract with an explicit component identity.",
+    "Keep the isolated Daily eye/highlight, brow, mouth and cheek score as the current machine-testable living-face path.",
+    "After V9-only source generation and the required native-200/source/component gates, introduce each eligible decoration through an explicit component-selection contract and re-run its score, browser and target parity checks."
+  ],
+  "forbidden": [
+    "selecting a component by role name alone",
+    "reviving old charm_question, charm_menu_ellipsis, recording or sleep assets as a fallback",
+    "using a daily face as a special-function completion",
+    "whole-face animation fallback",
+    "runtime activation, external-NOR provisioning, target flash or physical acceptance"
+  ]
+}

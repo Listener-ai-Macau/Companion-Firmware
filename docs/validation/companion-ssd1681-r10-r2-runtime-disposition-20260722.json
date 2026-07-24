@@ -1,0 +1,55 @@
+{
+  "schema_id": "companion.wb55.ssd1681.r10_ball.r2_runtime_disposition.v2",
+  "status": "NO_GO_R10_R2_OWNER_VISUAL_FAIL_FINALIZATION_PARTIAL_LINE",
+  "requirements": ["COMP-REQ-328", "COMP-REQ-329", "COMP-REQ-330", "COMP-REQ-331"],
+  "output_root": ".cache/validation/wb55-r10-ball-execute-20260722-r2",
+  "authorization": {
+    "status": "CONSUMED_AUTHORIZED_R10_BALL_ONCE",
+    "consumed_once": true,
+    "receipt_sha256": "BE50EBE6E8DF199E5E2E7A0268036558ECAFA2755541008F6F93DCD88D28CC96",
+    "automatic_retries": 0
+  },
+  "machine_qualification": {
+    "status": "PASS_R10_BALL_LOG",
+    "qualification_frames": 16,
+    "busy_max_ms": 599,
+    "qualification_parser_sha256": "2EA9582040BF9E7F2BC6C5AC560D0EC2C9F278781C25D894273655D4C13AFDF0",
+    "qualification_snapshot_sha256": "4FBB98F0DFB89E128F97447781CFE87E1175864DDA5915F94D19A3D1E332CB87"
+  },
+  "live_loop": {
+    "complete_live_validated_records": 160,
+    "partial_uart_record": "loop_iteration=161",
+    "partial_record_complete": false,
+    "monitor_status_before_finalization_repair": "STOP_REQUESTED_AFTER_QUALIFICATION",
+    "final_loop_artifact": null,
+    "finalization_incident": "STOP arrived while loop_iteration=161 was mid-line; final parser raised after STOP and the old monitor preserved STOP_REQUESTED success instead of NO_GO_FINALIZATION."
+  },
+  "owner_acceptance": {
+    "popup_count": 1,
+    "selected": "失败",
+    "note": "问题是每次更新的时候, 屏幕会变成黑白相间的粒子状态, 另外还是会被吃掉一截, 然后下一帧恢复白色, 比之前那轮明显改善的白要差了, 移动的时候背景不能改, 而且也是会吃掉一截\r\n",
+    "note_sha256": "35B06B7587CDA2E4AE084CBA8206D79D4A6C9AF556347A08D1E081B5242C2C65",
+    "interpretation": "Visual FAIL of current payload/update presentation: transient black-white particulate state, background disturbance, cropped slice and inferior white recovery. This does not reject the accepted validation method."
+  },
+  "lifecycle": {
+    "postclean": "PASS",
+    "postclean_sha256": "64D33D192CA81C59AA440658939AC75E18C8F1997CCED8B02B9200233F042A49",
+    "restore_gate_sha256": "92A31C12B973BC9E6EFA389148CB520778BD339AA57038F8A3BD92FC6C4DC79D",
+    "restore_bytes": 524288,
+    "restore_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "normal_resume": "PASS",
+    "normal_resume_sha256": "2AFF77CC0DB1A2D21C565B9E2AC380534F7599DA01D91AA34C9671E3302CA4E5",
+    "relevant_processes_remaining": 0
+  },
+  "evidence": {
+    "stage_run_sha256": "3A57F04BDA2F4AA8FACFB5DB3BDBBA23460C23A327858541BC5691645FA4E578",
+    "operator_review_sha256": "FE800C42D36270AFB6E16AF05E3F539AE4A34588EBB1E11FA0BF8FB5A88717A5",
+    "operator_result_sha256": "A03C8D952758A1297737D5333C7BD989208054832452475E95F3E9A36312F706",
+    "monitor_result_sha256": "A7E3D9F9EBE26E45803B8960C4C1E76D567592C57E6F257393F2FBF9A29DBE6D",
+    "postclean_sha256": "64D33D192CA81C59AA440658939AC75E18C8F1997CCED8B02B9200233F042A49",
+    "restore_gate_sha256": "92A31C12B973BC9E6EFA389148CB520778BD339AA57038F8A3BD92FC6C4DC79D",
+    "normal_resume_sha256": "2AFF77CC0DB1A2D21C565B9E2AC380534F7599DA01D91AA34C9671E3302CA4E5",
+    "persistent_launch_sha256": "CA63D042DBA15A42949765A8B9E20BEC1EDE22F3082CE5DA324D1AEAA065313C"
+  },
+  "next_boundary": "COMP-REQ-331 offline finalization repair only; no driver variable chosen and no next hardware authority"
+}

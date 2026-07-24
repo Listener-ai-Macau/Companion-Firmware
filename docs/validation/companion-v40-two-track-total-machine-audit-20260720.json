@@ -1,0 +1,96 @@
+{
+  "schema": "companion.v40_two_track_total_machine_audit.v1",
+  "status": "GO_HUMAN_ACCEPTANCE_MACHINE_CLOSURE_COMPLETE",
+  "authority": [
+    "COMP-REQ-093",
+    "COMP-REQ-229",
+    "COMP-REQ-233",
+    "COMP-REQ-239",
+    "COMP-REQ-240",
+    "COMP-REQ-242"
+  ],
+  "protected": {
+    "locked_v9_source": {
+      "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+    },
+    "prior_owner_acceptance": {
+      "path": "docs/validation/companion-pet-special-system-owner-acceptance-20260717.json",
+      "sha256": "8A3BDF4BD1254B0D0F4DE13A7F293C3D74587C800339ABD4C61FEB0B7737E227"
+    }
+  },
+  "accepted_v22_daily_regression": {
+    "artifact": "docs/validation/companion-v22-emotion-separation-target-rig-gate-20260719.json",
+    "bridge_count": 10,
+    "bridge_frame_count": 72
+  },
+  "rejected_v38_architecture_preserved": {
+    "artifact": "docs/validation/companion-v9-expression-total-machine-audit-20260720.owner-review.json",
+    "status": "REJECTED_OWNER_ARCHITECTURE_STEERING"
+  },
+  "v40_evidence": {
+    "functional_export": {
+      "artifact": "docs/validation/companion-v40-functional-decoration-component-export-gate-20260720.json",
+      "status": "PASS_COMPONENT_EXPORT_RUNTIME_INACTIVE",
+      "sha256": "253E7158A15373E34D372DE330E8DC58D452580A753149B604976335C14F3479"
+    },
+    "two_track_layout": {
+      "artifact": "docs/validation/companion-v40-two-track-layout-gate-20260720.json",
+      "status": "PASS_V40_TWO_TRACK_LAYOUT_RUNTIME_INACTIVE",
+      "sha256": "4A4B015CAEAD5F9FB3BE6FC1D8192DAF84F670D08970DAD85C77D2387DEB7F41"
+    },
+    "profile": {
+      "artifact": "docs/validation/companion-v40-two-track-wb55-profile-host-20260720.json",
+      "status": "PASS_V40_TWO_TRACK_WB55_PROFILE_RUNTIME_INACTIVE",
+      "sha256": "0DA22B0014CA6AD4ACEC71E1B2CDA854B4416EAB72F84EC63D8D0F0411176D17"
+    },
+    "browser_preview": {
+      "artifact": "docs/validation/companion-v40-two-track-browser-wb55-preview-20260720.json",
+      "status": "PASS_BROWSER_COMPONENT_PREVIEW_RENDERED_RUNTIME_INACTIVE",
+      "sha256": "F9BDCF14B1A1C9039291899646B29A2EBBFE6DC74E3B6952712D6A8A7422E865"
+    },
+    "wb55_pixel_parity": {
+      "artifact": "docs/validation/companion-v40-two-track-wb55-component-parity-host-20260720.json",
+      "status": "PASS_BROWSER_WB55_COMPONENT_PIXEL_PARITY_RUNTIME_INACTIVE",
+      "sha256": "C90B225882183CC1685C470B4EEEC3941B1EA31FD351F108BAA9D611146E0402"
+    }
+  },
+  "machine_verified": {
+    "canvas": "200x200_1bpp",
+    "component_count": 106,
+    "story_count": 12,
+    "preview_frame_count": 38,
+    "final_plan": "deterministic_union(expression_track, functional_decoration_track)",
+    "same_recording_decoration_over_independent_calm_and_warm_faces": true,
+    "function_track_component_ids": [
+      557,
+      558,
+      559,
+      560,
+      561,
+      562,
+      563,
+      564,
+      565,
+      566,
+      567,
+      568
+    ],
+    "quarantined_v38_face_component_ids": [
+      554,
+      555,
+      556
+    ],
+    "menu_entry": "touch / 3 frames / 460ms / withdraw both tracks / menu UI owns screen",
+    "selected_story_browser_player": true
+  },
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden_until_owner_review",
+  "human_review_scope": "Review the selected-story 200x200 dynamic preview for readable functional decorations, independent face emotion, and finite menu entry before any runtime binding.",
+  "non_claims": [
+    "no_runtime_binding",
+    "no_firmware_flash",
+    "no_panel_or_driver_change",
+    "no_physical_screen_acceptance"
+  ]
+}

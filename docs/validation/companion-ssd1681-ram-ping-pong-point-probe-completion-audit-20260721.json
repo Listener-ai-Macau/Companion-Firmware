@@ -1,0 +1,114 @@
+{
+  "schema_id": "companion.wb55.ssd1681_ram_ping_pong_point_probe.completion_audit.v1",
+  "requirement_ids": ["COMP-REQ-266", "COMP-REQ-270", "COMP-REQ-271", "COMP-REQ-272"],
+  "status": "FINAL_NO_GO_INCONCLUSIVE_MOTION_NOT_OBSERVED_WITH_DIRTY_SCREEN_REPORTED",
+  "goal_ownership": "Root owns the active Codex Goal; Luna did not call create_goal, update_goal, complete, delete or rebuild it.",
+  "phase_a": {
+    "status": "PASS_MACHINE_RAM_PING_PONG_FINGERPRINT_RESTORED",
+    "unique_mapping": "activation_swapped_banks_selector0_base_selector1_current",
+    "read_count": 12,
+    "bytes_per_read": 5001,
+    "out_of_window_changes": 0,
+    "automatic_retries": 0
+  },
+  "phase_b": {
+    "machine_status": "PASS_MACHINE_RAM_PING_PONG_POINT_PROBE_RESTORED",
+    "candidate_sha256": "00880EBC4678ED83927FE69A797876C0513BF7AE4D18119FCE5E7FC833A64F0B",
+    "frames": 24,
+    "controls_ff": 24,
+    "refresh_0x20": 24,
+    "busy_completions": 24,
+    "motion_0x26_writes": 0,
+    "post_activation_0x24_sync_without_refresh": 24,
+    "full_refreshes": 0,
+    "controls_f7": 0,
+    "controls_c7": 0,
+    "lut_writes": 0,
+    "automatic_retries": 0,
+    "busy_elapsed_ms": 447,
+    "frame_intervals_ms_after_first": 822,
+    "window_transfer_oracle": "PASS"
+  },
+  "ordered_owner_observations": [
+    {
+      "order": 1,
+      "source": "canonical Chinese operator review",
+      "selected": "失败",
+      "text_verbatim": "不太行, 没有看见移动, 另外整个屏幕都很脏",
+      "recorded_at_utc": "2026-07-21T07:06:42.6498641Z"
+    },
+    {
+      "order": 2,
+      "source": "latest owner chat clarification",
+      "text_verbatim": "也不是说不行，只是我没有看到而已，要不你再试一次。",
+      "effect": "Permanent topology rejection is superseded; current observation remains non-PASS and inconclusive."
+    },
+    {
+      "order": 3,
+      "source": "latest owner timing correction",
+      "text_verbatim": "不需要停留更久，你需要很快的移动才行。",
+      "effect": "A successor observation must not add per-frame dwell."
+    }
+  ],
+  "final_disposition": {
+    "code": "INCONCLUSIVE_MOTION_NOT_OBSERVED_WITH_DIRTY_SCREEN_REPORTED",
+    "visual_pass": false,
+    "production_promoted": false,
+    "permanent_topology_rejection": false,
+    "current_goal_retry_allowed": false,
+    "reason": "The one allowed run was not visibly observed as motion and the owner reported a dirty whole screen. Machine counts alone cannot clear the human visual boundary, while the later owner clarification prevents treating the topology as permanently disproven."
+  },
+  "causal_triage": {
+    "status": "UNPROVEN_INFERENCE_ONLY",
+    "inference": "The dirty/no-motion report could be consistent with the post-activation 0x24 current sync eliminating the old/current differential needed by the next Mode2 frame, but the run did not provide decisive visual observation and therefore cannot prove this cause."
+  },
+  "restore": {
+    "status": "PASS_RESTORE_EQUALS_CAPTURED_PRE_RUN_APPLICATION_BYTES",
+    "address_hex": "0x08000000",
+    "length_bytes": 524288,
+    "sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "normal_resume": "PASS_APPLICATION_RESUMED_AFTER_BACKUP",
+    "normal_boot_count": 1,
+    "normal_ready_count": 1,
+    "controller_diagnostic_markers": [],
+    "panel_error_markers": [],
+    "hardfault_markers": []
+  },
+  "successor_goal_boundary": {
+    "requires_separate_new_goal_and_requirement": true,
+    "current_goal_must_not_rerun": true,
+    "one_pre_loop_visible_countdown_start_marker": true,
+    "somewhat_larger_but_local_displacement": true,
+    "target_frame_ms": [450, 550],
+    "condition": "Use the target only if measured BUSY permits.",
+    "longer_per_frame_dwell": false,
+    "compensating_pause": false,
+    "second_activation": false,
+    "refresh_0x20_per_frame": 1,
+    "underlying_sequence": "Keep the same one 0xFF/0x20/BUSY plus one post-activation current-only 0x24 no-refresh sync per frame unless a future separately contracted research gate changes it."
+  },
+  "final_gates": [
+    {"command": "python tools/verify_companion_product_requirements.py", "result": "PASS"},
+    {"command": "python tools/verify_companion_current_goal_audit.py", "result": "PASS"},
+    {"command": "python tools/verify_wb55_ssd1681_ram_ping_pong_point_probe_diagnostic.py", "result": "PASS_STATIC_RAM_PING_PONG_POINT_PROBE_RAW_RESTORE_DEFAULT_OFF"},
+    {"command": "python tools/verify_wb55_ssd1681_ram_ping_pong_point_probe_log.py --self-test", "result": "PASS"},
+    {"command": "pwsh tools/run_wb55_ssd1681_read_only_controller_state_raw_restore.ps1 -RamPingPongPointProbe -Execute ...", "result": "PASS_MACHINE_RAM_PING_PONG_POINT_PROBE_RESTORED; exactly one Execute"},
+    {"command": "git diff --check", "result": "PASS"}
+  ],
+  "artifact_hashes": {
+    "docs/companion_product_requirements.md": "57767FC01BAEA24379B245E8240E8DED74FCF1C3B2438E647BE50DAD8227E026",
+    "docs/validation/companion-ssd1681-ram-ping-pong-point-probe-machine-20260721.json": "C0399F525B0908A31EB0303DFD06DC569EDEE6AE042B40A0272E85C188EC7776",
+    "docs/validation/companion-ssd1681-ram-ping-pong-point-probe-operator-20260721.json": "EF4EB402CCB9858B9F420EAB40688BCE524C7F3458E7F786F7759A6B0DDEBD5C",
+    "docs/validation/companion-ssd1681-ram-ping-pong-point-probe-operator-result-20260721.json": "C74E48DFBE2801A92D99DD38475C10214D91DEBE2B9A8514320C29A825007AF0",
+    "docs/validation/companion-pet-special-system-owner-acceptance-20260717.json": "8A3BDF4BD1254B0D0F4DE13A7F293C3D74587C800339ABD4C61FEB0B7737E227",
+    ".cache/incoming/S-GDEY0154D67-FP-Touch-official-20260720/S-GDEY0154D67-FP-Touch20230303/HARDWARE/EPD/Display_EPD_W21.c": "CD08AFD1D56E8F7E1D0AE5C935A4D060E65C658ABC30CE29ACF65166141ACEE2"
+  },
+  "protected_boundaries": {
+    "supplier_input_modified": false,
+    "locked_v9_or_owner_acceptance_modified": false,
+    "rig_crig_browser_dynamic_expression_modified": false,
+    "touch_or_ble_modified": false,
+    "lut_waveform_temperature_voltage_modified": false,
+    "production_modified": false
+  }
+}

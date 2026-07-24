@@ -1,0 +1,52 @@
+{
+  "schema_id": "companion.gdey0154d67_t03.vendor_t03_fast_state_residue_triage.v1",
+  "status": "NO_GO_SOURCE_BACKED_NO_FLASH_RESIDUE_FREE_LOCAL_MOTION_NOT_FOUND",
+  "claim_scope": "current-room physical lower-driver triage; no production, panel-identity, temperature-range or OLED-equivalence claim",
+  "target": "NUCLEO-WB55RG + ESP32-FTS02 + observed 0154BN-D67-D2 panel",
+  "inputs": {
+    "official_t03_source_audit": {
+      "path": "docs/validation/companion-gdey0154d67-t03-official-stm32-source-audit-20260720.json",
+      "sha256": "2472F102E8C8CEFF2914E4AB73AC45180A7D868E587F4C90E844B32DB65A5294"
+    },
+    "static_contract": {
+      "path": "docs/validation/companion-gdey0154d67-t03-vendor-t03-fast-state-static-20260720.json",
+      "sha256": "D6C83A42DCD2C84D577EA52AA492F504A2E874182868EC1CCA85DE0E9C7FD6B6",
+      "status": "PASS_STATIC_OWNER_AUTHORIZED_VENDOR_T03_FAST_STATE_AB"
+    },
+    "machine_trace": {
+      "path": ".cache/validation/wb55-vendor-t03-fast-state-current-room-20260720/vendor-t03-fast-state-trace.json",
+      "sha256": "09DD2B68EC58F44B3DDD6149FF955E017F14C1A13CBC78FE29D9934081869959",
+      "status": "PASS_MACHINE_VENDOR_T03_FAST_STATE_TRACE"
+    },
+    "physical_run": {
+      "path": "docs/validation/companion-gdey0154d67-t03-vendor-t03-fast-state-physical-run-20260720.json",
+      "sha256": "7CF2338CC92DF2C96D76EF988107043A6B6BDAEC9E351E2FE3F81A30BF6E4CCF",
+      "status": "FAIL_OPERATOR_RESIDUE_NORMAL_RESTORED"
+    }
+  },
+  "machine_evidence": {
+    "baseline": "T03 built-in temperature/OTP state and two 5000-byte 0x24/0x26 planes, then 0xC7/0x20/BUSY",
+    "partial_control": "current 0x24-only region, source reset and border, 0xFF/0x20/BUSY",
+    "partial_region_bytes": [75, 81, 78, 78, 78],
+    "partial_elapsed_ms": [447, 447, 447, 447, 447],
+    "panel_error": false
+  },
+  "physical_evidence": {
+    "operator_prompt_style": "aiw_operator_prompt_v1",
+    "selected": "失败",
+    "note": "一样的, 还是以前的现象",
+    "interpretation": "The owner reports the same prior following-trail phenomenon. This is a physical residue failure; the previous runner's keyword-only residue boolean is not used to weaken the explicit failure selection and note."
+  },
+  "comparison": {
+    "old_new_ram_ab": "machine PASS, physical FAIL: black following residue remained after adding CPU-held prior-region 0x26 before current 0x24",
+    "t03_fast_state_ab": "machine PASS, physical FAIL: black following residue remained after exact public T03 built-in-temperature/OTP initialization plus C7 two-plane base map",
+    "conclusion": "RAM synchronization and the public T03 fast-state initialization are not sufficient causes or fixes for the observed moving trail."
+  },
+  "decision": {
+    "production": "NO_GO",
+    "no_flash_continuous_expression_motion": "NO_GO with currently sourced material",
+    "permitted_next_input": "Good Display evidence explicitly mapping physical 0154BN-D67-D2 to a panel-bound partial waveform/OTP/temperature regime",
+    "forbidden_next_action": "custom, generic, internet-derived or guessed waveform/register/timing/voltage tuning",
+    "known_official_fallback": "periodic full clean only; rejected for this expression-loop user experience because visible full-screen flashing is unacceptable"
+  }
+}

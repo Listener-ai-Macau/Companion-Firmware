@@ -1,0 +1,97 @@
+{
+  "checks": {
+    "no_supplier_defined_partial_count_or_content_preserving_recovery_exists": true,
+    "no_supplier_defined_partial_lut_initializer_exists": true,
+    "physical_rejection_is_residue_not_machine_failure": true,
+    "supplied_basemap_is_two_full_5000_byte_planes_then_normal_f7": true,
+    "supplied_clear_is_full_screen_white_f7_not_a_partial_residue_recovery": true,
+    "supplied_partial_update_is_exactly_ff_then_20_busy": true,
+    "supplier_readme_mentions_background_stability_but_no_residue_free_continuous_claim": true,
+    "supplier_time_demo_stops_after_six_partial_updates_then_full_white_clear": true,
+    "target_continuous_slow_loop_exceeds_supplier_six_update_then_clear_demo": true,
+    "target_source_partial_payload_comes_from_current_whitened_frame": true
+  },
+  "claim_scope": "read-only Good Display source plus failed physical residue observation; no waveform change",
+  "failures": [],
+  "physical_observation": {
+    "failure_mode": "owner photo shows accumulated old-position black trail around the moving dot",
+    "machine_trace": {
+      "normal_firmware_restored": true,
+      "region_refresh_elapsed_ms": [
+        446,
+        446,
+        446,
+        447,
+        447
+      ],
+      "region_transfer_bytes": [
+        75,
+        81,
+        78,
+        78,
+        78
+      ]
+    },
+    "result": "failed"
+  },
+  "required_disposition": {
+    "custom_lut_or_waveform": "prohibited",
+    "full_screen_supplier_clear": "source-authentic but visibly interrupts animation and does not satisfy continuous-expression transport",
+    "generic_timing_or_geometry_tuning": "prohibited",
+    "new_physical_experiment": "NO_GO without new Good Display panel-bound residue-recovery source evidence",
+    "production_expression_transport": "NO_GO"
+  },
+  "schema_id": "companion.gdey0154d67_t03.vendor_partial_residue_recovery_audit.v1",
+  "source": {
+    "epaper_c": {
+      "path": "C:\\Users\\Billy\\Desktop\\GDEH0154D67-20211203-P-LUT(1s) -1s快刷\\EPD_W21\\EPAPER.c",
+      "sha256": "7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896"
+    },
+    "main_c": {
+      "path": "C:\\Users\\Billy\\Desktop\\GDEH0154D67-20211203-P-LUT(1s) -1s快刷\\User\\main.c",
+      "sha256": "66BF0AC2E1C75C28FF95906666E720F3EC584EDD5D721D1293948A1596A315E0"
+    },
+    "physical_stage": {
+      "path": ".cache/validation/wb55-vendor-partial-slow-motion-retry-3-20260720/stage-run.json",
+      "sha256": "99718445734557C77A13A9E51A04A1409D152F343D2F9522B7722448262207AD"
+    },
+    "physical_trace": {
+      "path": ".cache/validation/wb55-vendor-partial-slow-motion-retry-3-20260720/vendor-partial-slow-motion-trace.json",
+      "sha256": "05F36DB509CA758BBBD943653ED31FF0D106F87A3D9ED93C0674F4A672D6590C"
+    },
+    "readme": {
+      "path": "C:\\Users\\Billy\\Desktop\\GDEH0154D67-20211203-P-LUT(1s) -1s快刷\\read me.txt",
+      "sha256": "755D2598F00B1FF049A764CF56AD82236440329C64C8ADBCBA6763BF07FE0A47"
+    },
+    "slow_build": {
+      "path": "tools/build_nucleo_bringup.ps1",
+      "sha256": "6463AAAFDA32CB5FA9DF9A088617CE28DEE6C33F3A688B63730DA17223546764"
+    },
+    "target_driver": {
+      "path": "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
+      "sha256": "5E3207312E1C257D611C89E80D5E5916B3C13BAEE0E7D44D221EE946C118700C"
+    },
+    "vendor_root": "C:\\Users\\Billy\\Desktop\\GDEH0154D67-20211203-P-LUT(1s) -1s快刷"
+  },
+  "status": "NO_GO_PHYSICAL_RESIDUE_OBSERVED_NO_SOURCE_BOUND_CONTINUOUS_RECOVERY",
+  "supplier_behavior": {
+    "continuous_content_preserving_residue_recovery": "not supplied",
+    "partial_demo_budget": "six EPD_Dis_Part_myself calls before goto Clear",
+    "partial_lut": "not supplied as a defined implementation",
+    "partial_update": "0x22=0xFF, 0x20, BUSY",
+    "post_budget_action": "EPD_HW_Init then EPD_WhiteScreen_White (full 5000-byte 0x24, 0xF7), then deep sleep",
+    "temperature_bands": "not supplied"
+  },
+  "target": "NUCLEO-WB55RG + ESP32-FTS02 + GDEY0154D67-T03",
+  "target_transport_audit": {
+    "continuous_loop_budget": "360 partial frames in the production-off slow diagnostic",
+    "current_region_payload": "target clears the generated frame to white before drawing the current dot, then writes s_frame through 0x24 for each selected source region",
+    "proven_target_driver_issue": "the diagnostic's continuous-loop budget exceeds the supplied source demo; this is not evidence that a custom LUT would remove residue",
+    "supplier_demo_budget": "six partial updates before full white clear and deep sleep",
+    "unproven": [
+      "A panel-bound residue-free partial waveform.",
+      "A content-preserving supplier recovery after repeated partial updates.",
+      "Temperature applicability for either full or partial update behavior."
+    ]
+  }
+}

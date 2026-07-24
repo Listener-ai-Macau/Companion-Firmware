@@ -1,0 +1,29 @@
+{
+  "schema": "companion.v9_expression_preview_surfaces.v1",
+  "status": "PASS_DYNAMIC_DAILY_PREVIEW_AND_STATIC_SPECIAL_ART_GATE",
+  "locked_v9_source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "daily_preview": {
+    "classification": "moving_component_preview",
+    "report": "docs/validation/companion-v9-expression-rig-daily-selected-state-current-moving-20260719.json",
+    "player": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/v9-expression-rig-daily-selected-state-player.html",
+    "animated_gif": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/v9-expression-rig-daily-selected-state-preview.gif",
+    "gif_size": [
+      432,
+      470
+    ],
+    "gif_frames": 15,
+    "gif_loop": 0,
+    "runtime_resource_activated": false,
+    "whole_face_animation_forbidden": true
+  },
+  "special_expression_art": {
+    "classification": "static_source_art_pending_explicit_refinement",
+    "component_export_gate": "docs/validation/companion-v18-v20-special-expression-component-export-gate-20260719.json",
+    "owner_art_triage": "docs/validation/companion-v18-v20-special-expression-owner-art-review-triage-20260719.json",
+    "event_fail_closed_evidence": "docs/validation/companion-v9-expression-choreographer-special-failclosed-20260719.json",
+    "owner_selection": "需修改",
+    "active_candidate_binding": "forbidden",
+    "runtime_resource_activated": false
+  },
+  "errors": []
+}

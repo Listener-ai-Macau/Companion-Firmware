@@ -1,0 +1,10 @@
+{
+  "schema": "companion.v9_special_expression_owner_art_review_triage.v2",
+  "status": "TRIAGED_RETRY_AFTER_PLAYER_OPEN",
+  "review": "docs/validation/companion-v29-silhouette-object-special-expression-owner-art-review-20260720.json",
+  "failure_signal": "没开, 看不到",
+  "root_cause": "The canonical operator prompt was opened without making the actual native-200x200 V29 component-performance player visible to the owner. No art or choreography judgment occurred.",
+  "repair": "Open the exact player referenced by the passing V29 performance report in the default browser, verify the file exists and remains visible, then open a separate canonical retry prompt.",
+  "preserve": ["V29 V9-only source and all passing machine artifacts", "runtime-inactive and unbound policy"],
+  "prohibit": ["marking V29 art rejected", "creating V30 source", "CRIG/profile/binding/flash before a valid owner review"]
+}

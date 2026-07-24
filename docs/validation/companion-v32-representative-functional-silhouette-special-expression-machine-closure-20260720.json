@@ -1,0 +1,52 @@
+{
+  "schema": "companion.v32_representative_functional_silhouette_special_expression_machine_closure.v1",
+  "status": "PASS_V32_REPRESENTATIVE_FUNCTIONAL_SILHOUETTE_MACHINE_CLOSURE_RUNTIME_INACTIVE",
+  "claim_scope": "source-to-component-to-browser/target machine closure for a runtime-inactive V32 candidate; no CRIG/profile export, event binding, firmware flash, panel output, physical acceptance, or human art acceptance",
+  "locked_v9_source": {
+    "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+    "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+  },
+  "artifacts": {
+    "source_gate": {
+      "path": "docs/validation/companion-v32-representative-functional-silhouette-special-expression-source-gate-20260720.json",
+      "sha256": "34986C864EBF539C7A88DFA5D921CA65725095BE06A09F50439970B8A2ECA3DC",
+      "status": "PASS_V32_REPRESENTATIVE_FUNCTIONAL_SILHOUETTE_SOURCE_GATE_PENDING_COMPONENT_EXPORT"
+    },
+    "component_export_gate": {
+      "path": "docs/validation/companion-v32-representative-functional-silhouette-special-expression-component-export-gate-20260720.json",
+      "sha256": "608F4630F63BFE584668917B21685BE92BE9F9E54B58D925ACD8D81A5ADEAF5E",
+      "status": "PASS_V32_REPRESENTATIVE_FUNCTIONAL_SILHOUETTE_COMPONENT_EXPORT_UNBOUND"
+    },
+    "component_performance": {
+      "path": "docs/validation/companion-v32-representative-functional-silhouette-special-expression-component-performance-preview-20260720.json",
+      "sha256": "0B39389F3EE89714F3888BD1A4BCA325E6F4EB5BF460015D9EFE59DB1E765D4A",
+      "status": "PASS_V32_REPRESENTATIVE_FUNCTIONAL_SILHOUETTE_COMPONENT_PERFORMANCE_RUNTIME_INACTIVE"
+    },
+    "browser_target_parity": {
+      "path": "docs/validation/companion-v32-representative-functional-silhouette-special-expression-component-performance-parity-20260720.json",
+      "sha256": "33C22DA7D6B62377C0A0C83AFABC056DB22D0C8D560F0C78E4E9B4666548CBAB",
+      "status": "PASS_V32_REPRESENTATIVE_FUNCTIONAL_SILHOUETTE_COMPONENT_PERFORMANCE_BROWSER_TARGET_PLAN_PARITY"
+    },
+    "browser_render": {
+      "path": "docs/validation/companion-v32-representative-functional-silhouette-special-expression-component-browser-render-20260720.json",
+      "sha256": "35B68BA79EAD380BBF42DF1021D949FAC8D9EEE3BDB8914CFBD1B033D6008EAC",
+      "status": "PASS_V32_BROWSER_RENDER_INSPECTION_NATIVE_200X200"
+    }
+  },
+  "selection_policy": {
+    "mode": "explicit_event_performance",
+    "random_state_selection": false,
+    "automatic_cross_state_cycle": false,
+    "special_state_exit_returns_to": "v9_daily",
+    "unavailable_special_states": [
+      "upgrade",
+      "sleep",
+      "error"
+    ],
+    "unavailable_special_state_policy": "fail_closed"
+  },
+  "next_human_boundary": "internal V32 representative-readability preflight, then canonical browser-only Chinese owner art review; a FAIL freezes V32 and returns to a fresh locked-V9-only source direction",
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden",
+  "errors": []
+}

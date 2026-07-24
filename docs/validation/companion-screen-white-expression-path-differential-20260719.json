@@ -1,0 +1,39 @@
+{
+  "checks": {
+    "accepted_expression_is_two_plane_full_refresh": true,
+    "both_paths_share_full_window_and_activation": true,
+    "failed_white_is_recorded_official_single_plane": true,
+    "official_source_uses_current_plane_only": true,
+    "product_full_path_is_explicit_two_plane_baseline": true,
+    "rail_failure_remains_a_hardware_no_go": true
+  },
+  "claim_scope": "source_and_recorded_physical_artifact_differential_not_white_recovery_or_hardware_root_cause_proof",
+  "conclusion": "The clean expression establishes a real display-path difference, but it does not identify a mismatch with the recorded Good Display official White reference. The existing PREVGH/PREVGL failure remains controlling; no White driver, LUT, or expression policy change is authorized.",
+  "failures": [],
+  "next_permitted_action": "Record replacement or cross-swapped ESP32-FTS02 identity and wiring/flex seating, then repeat the official White diagnostic while measuring PREVGH1 and PREVGL1 in the verified refresh window.",
+  "observed_difference": {
+    "accepted_expression": "The observed locked V9 external-CEMP expression full refresh wrote two 5000-byte planes: 0x26 baseline then 0x24 current.",
+    "common_path": "Both route through the same full-window setup, normal border 0x3C=0x05, full activation selection, and BUSY-completion wait.",
+    "official_white": "Good Display official full diagnostic writes current 5000-byte frame to 0x24 only before 0x22=0xF7 and 0x20."
+  },
+  "schema_id": "companion.wb55.white_expression_path_differential.v1",
+  "sources": {
+    "clean_expression": {
+      "path": "docs/validation/companion-screen-v9-clean-expression-observation-20260719.json",
+      "sha256": "F0FB8F98EBC7647ABFB757F0E82FD7C9090F2D8F1FE347AB4BCF26AEC5AAF0C1"
+    },
+    "panel_source": {
+      "path": "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
+      "sha256": "F36680E1D228882519D765DC97C8AE18AC7C070059E925A0E402ED1EB3650718"
+    },
+    "rail_failure": {
+      "path": "docs/validation/companion-screen-ssd1681-voltage-rails-operator-20260714.json",
+      "sha256": "DA6EEDEBB48B62CE7321F141A353AB1C1E5E2C92D86F158D5BA3D47A07FEFD9D"
+    },
+    "white_failure": {
+      "path": "docs/validation/companion-screen-wb55-white-recovery-failure-20260719.json",
+      "sha256": "51C5D9B96E851725B5E36FC2853911A8EE33BC2027C35E81518FA630513099B3"
+    }
+  },
+  "status": "PASS_MACHINE_DIFFERENTIAL_NO_DRIVER_CHANGE_AUTHORIZED"
+}

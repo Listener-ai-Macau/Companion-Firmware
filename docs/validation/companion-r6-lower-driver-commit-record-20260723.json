@@ -1,0 +1,55 @@
+{
+  "schema_id": "companion.r6.lower_driver.commit_record.v1",
+  "status": "PASS_COMMITTED_NO_PUSH",
+  "requirement": "COMP-REQ-406",
+  "commit": {
+    "sha": "6991aaaa0c5649005608f7688454ff8746ae32b8",
+    "parent_sha": "57c1e77e390501f2d61fd866ac46d77afc6a6a2e",
+    "subject": "COMP-REQ-406: archive accepted SSD1681 R6 baseline",
+    "changed_path_count": 47,
+    "push_performed": false
+  },
+  "staging": {
+    "manifest": "docs/validation/companion-r6-lower-driver-proposed-staging-manifest-20260723.json",
+    "manifest_sha256": "616ED3BA67A134F8B09FFBD060B6BB84415828E466DC7F58B1BE58FC99CEC0BB",
+    "allowed_path_count": 50,
+    "staged_changed_path_count": 47,
+    "unchanged_existing_input_count": 3,
+    "unexpected_staged_path_count": 0,
+    "unchanged_existing_inputs": [
+      "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/reassembled-200x200/calm.pbm",
+      "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/reassembled-200x200/curious.pbm",
+      "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/reassembled-200x200/warm.pbm"
+    ],
+    "focused_diff_check_pass": true,
+    "known_hash_bound_legacy_eof_blank_paths_excluded_from_whitespace_only_check": [
+      "tools/monitor_wb55_ssd1681_r12_v22_calm_curious_warm_sampler_r6.ps1",
+      "tools/run_wb55_ssd1681_r12_v22_calm_curious_warm_sampler_r6.ps1",
+      "tools/start_wb55_ssd1681_r12_v22_calm_curious_warm_sampler_r6.ps1",
+      "tools/supervise_wb55_ssd1681_r12_v22_calm_curious_warm_sampler_prompt_r6.ps1"
+    ]
+  },
+  "accepted_identity": {
+    "driver_sha256": "92C3302096CBD826F74952BEA976C91BD2EB9521BBEFB530CCC997AFE99F0FB5",
+    "o2_hex_sha256": "25E826AE96E4D4242E2CD5E936D0F337F51DD99EACC63D222D5592E763249515",
+    "o2_elf_sha256": "EAFDF99C968C779AFAAE952BE2E2B5325AC0BA9BC723BEAA71A994D5713E1916",
+    "protected_acceptance_sha256": "8A3BDF4BD1254B0D0F4DE13A7F293C3D74587C800339ABD4C61FEB0B7737E227"
+  },
+  "verification": {
+    "controller_window": "PASS_OFFLINE_CONTROLLER_WINDOW",
+    "source_pixel_oracle": "PASS",
+    "parser_and_negative_fixtures": "PASS",
+    "static": "PASS",
+    "lifecycle": "PASS",
+    "machine_ready": "MACHINE_READY_R12_V22_CALM_CURIOUS_WARM_SAMPLER_R6_OFFLINE_ONLY",
+    "persistent_checkonly_hardware_contact": 0,
+    "persistent_checkonly_writes": 0,
+    "persistent_checkonly_popup_count": 0,
+    "product_registry": "PASS",
+    "current_goal_audit": "PASS",
+    "o2_rebuild_hashes_match": true
+  },
+  "hardware_contact_during_commit_work": 0,
+  "worktree_cleanup_performed": false,
+  "stash_reset_rebase_force_performed": false
+}

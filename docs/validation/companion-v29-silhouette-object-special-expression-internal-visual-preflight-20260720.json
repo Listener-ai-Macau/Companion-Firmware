@@ -1,0 +1,51 @@
+{
+  "schema": "companion.v9_special_expression_internal_visual_preflight.v3",
+  "status": "PASS_INTERNAL_VISUAL_PREFLIGHT_V29_SILHOUETTE_OBJECTS",
+  "date": "2026-07-20",
+  "candidate": "V29 V9-safe silhouette-object special-expression source, attempt 02",
+  "machine_evidence": {
+    "source_gate": "docs/validation/companion-v29-silhouette-object-special-expression-source-gate-20260720.json",
+    "component_export_gate": "docs/validation/companion-v29-silhouette-object-special-expression-component-export-gate-20260720.json",
+    "component_performance_preview": "docs/validation/companion-v29-silhouette-object-special-expression-component-performance-preview-20260720.json",
+    "browser_target_plan_parity": "docs/validation/companion-v29-silhouette-object-special-expression-component-performance-parity-20260720.json",
+    "browser_render": "docs/validation/companion-v29-silhouette-object-special-expression-component-browser-render-20260720.json",
+    "machine_closure": "docs/validation/companion-v29-silhouette-object-special-expression-machine-closure-20260720.json"
+  },
+  "inspection_contract": {
+    "native_target_size": [200, 200],
+    "labels_hidden_for_reading": true,
+    "causal_playback_reviewed": true,
+    "same_browser_target_component_plan": true,
+    "whole_face_playback": false,
+    "runtime_resource_activated": false
+  },
+  "state_reading": [
+    {
+      "state": "menu_active",
+      "observed_unlabeled_read": "navigation/choice: three compact page tabs above the low decision brows create a menu-specific silhouette rather than a generic emotional face",
+      "causal_playback_read": "the tabs settle across the brow line with the deterministic highlight scan and decision landing",
+      "result": "PASS_UNIQUE_FUNCTION_READ"
+    },
+    {
+      "state": "recording_active",
+      "observed_unlabeled_read": "active recording/listening: the matched earcups and short pickup boom are recognizable physical mascot equipment at native 200x200",
+      "causal_playback_read": "earcups arrive then make one restrained outward pulse before the boom settles; this reads as an explicit recording action rather than an affect change",
+      "result": "PASS_UNIQUE_FUNCTION_READ"
+    },
+    {
+      "state": "charging_active",
+      "observed_unlabeled_read": "active charging: the cheek-mounted charge clasp, short tether and forehead energy core form a compact connected charging silhouette without a detached UI glyph",
+      "causal_playback_read": "the clasp connects first, then tether/core settle as the recovery face releases and reverse together on exit",
+      "result": "PASS_UNIQUE_FUNCTION_READ"
+    }
+  ],
+  "decision": {
+    "owner_operator_prompt_opened": false,
+    "human_art_acceptance_requested": true,
+    "candidate_disposition": "PENDING_CANONICAL_OWNER_ART_REVIEW",
+    "runtime_resource_activated": false,
+    "active_candidate_binding": "forbidden",
+    "still_forbidden_before_owner_acceptance": ["CRIG_export", "profile_generation", "event_binding", "firmware_flash", "physical_panel_claim", "whole_face_fallback"],
+    "owner_fail_route": "Freeze V29 as audit-only, preserve the passing technical artifacts, forbid it as a future visual prompt/reference input, and return to a new locked-V9-only source direction."
+  }
+}

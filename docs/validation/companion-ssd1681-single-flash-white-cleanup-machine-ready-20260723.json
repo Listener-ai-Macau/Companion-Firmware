@@ -1,0 +1,58 @@
+{
+  "authorization_created": false,
+  "build_recipe": "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1 -EpaperSsd1681SingleFlashWhiteCleanupDiagnostic -Optimization O2 -Force",
+  "candidate": {
+    "activation": 1,
+    "busy_waits": 1,
+    "control": "0xFF",
+    "forbidden": [
+      "0x12",
+      "0x01",
+      "0x11",
+      "0x18",
+      "0x05 border",
+      "0xF7",
+      "0x32",
+      "custom LUT",
+      "second activation",
+      "retry",
+      "maintenance"
+    ],
+    "frame_bytes": 5000,
+    "plane24": 5000,
+    "plane26": 5000,
+    "reset": "10ms low + 10ms high + ready",
+    "window": "logical_x0-24,logical_y0-199/controller_y199-0"
+  },
+  "checkonly_counters": {
+    "authorization": 0,
+    "claim_only": 0,
+    "execute": 0,
+    "hardware_contact": 0,
+    "popup": 0,
+    "programmer": 0,
+    "refresh": 0,
+    "reset": 0,
+    "retry": 0,
+    "serial": 0,
+    "write": 0
+  },
+  "checkonly_root": ".cache/validation/wb55-ssd1681-single-flash-white-cleanup-checkonly-20260723-r2",
+  "driver_hashes": {
+    "driver": "3D2D264DCDFC9A1DB493D2E6C323E76F8DB92EBA6D4143A7B89E4D372302C541",
+    "elf": "CFAED195C69DB43F639EC513BCAF9CD04211FB3F588DE2E8E6260CB76C8DB3DB",
+    "hex": "1EF9AD150BD72E694CFC4E09E76CA445749FEFEDA63DB7485E1675280089E8D6",
+    "launcher": "4CE34AF498A219F9E57A011BE1E9D187A1606FECF29BE6DB0A3C03FB1A61108C",
+    "parser": "4398B9CA16025806C60F150ABAC1475D40DCA01395A6EDD54839397E8EBD9A51",
+    "runner": "28C06C64B23DB19F953F73EE9AB7D0D983709794923CAFADB179B46A35A9E644",
+    "static": "D37B16FF4BA071C31049AA021B135C4236B40A93FA968F53CF511027A1D2A2CF"
+  },
+  "negative_fixtures": "parser and static self-tests PASS",
+  "offline_only": true,
+  "physical_visual_flash_count": "UNPROVEN_OWNER_HARDWARE_ACCEPTANCE_REQUIRED",
+  "protected_acceptance_sha256": "8A3BDF4BD1254B0D0F4DE13A7F293C3D74587C800339ABD4C61FEB0B7737E227",
+  "r6_movement": "unchanged source signature; no 0x24/0xCF/0x20/BUSY movement edits",
+  "requirement": "COMP-REQ-409",
+  "restore_application_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+  "status": "MACHINE_READY"
+}

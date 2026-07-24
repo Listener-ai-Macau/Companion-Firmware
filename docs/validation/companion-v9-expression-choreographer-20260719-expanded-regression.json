@@ -1,0 +1,12 @@
+{
+  "schema": "companion.v9_expression_choreographer_host.v1",
+  "status": "PASS",
+  "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "runtime_resource_activated": false,
+  "daily_replay": {"scene": 0, "emotion": 1, "attention": 4, "energy": 1, "memory": 1},
+  "memory_variant": {"scene": 0, "emotion": 2, "attention": 4, "energy": 1, "memory": 2},
+  "swipe_left": {"scene": 2, "emotion": 1, "attention": 1, "energy": 2, "memory": 1},
+  "swipe_right": {"scene": 2, "emotion": 1, "attention": 2, "energy": 2, "memory": 1},
+  "fail_closed_events": ["charging", "error"],
+  "forbidden_runtime_paths": ["whole-face card loop", "code-drawn face", "custom LUT"]
+}

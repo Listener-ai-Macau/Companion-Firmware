@@ -1,0 +1,107 @@
+{
+  "artifacts": {
+    "driver": "81078382AA9E40E8FE6BCF9B2C08E09759D36D7D703BB15BD7E28A83CDC11073",
+    "elf": "79608ACF12C77ADA22053E3DBDA0FC9751C132F2CE866B1B731F0E871D25804A",
+    "focused_artifact": "7842E1A1AE3ACAA5541E5DAEB3F3EE5D853D29476F5F1603BD22D2A3AEEF77AA",
+    "focused_regression": "8A5A6C145DA18D07E8C195E2078B65944FBC8118821DDF42F52A85AF4E492A39",
+    "hex": "37768F04A444BB9B9F4C15D4B0DE4AD8517D48F65C462D3F952D28A70F5CDD71",
+    "launcher": "633534165A634DE02160CB9D3881BEC06A63826311E1BD597EBFCEBA59417B4D",
+    "monitor": "CA496D91D7E42EF0CEE99C9534F93F8E168E008ECC8E82055E880AA6FB2936B1",
+    "parser_sha256": "CE8FE4210808797CF24B4177E59306B9DAC5BA14AEA898EB73AF2FBC257EA254",
+    "r4_corridor_static_verifier": "95D180FC743D0DD28D1337BFDC2B6D101F891E9777AFD617BD55B79160395D5D",
+    "r5_lut": "447FB169543F3E33EA6080607B685E2ADB8F38066952FCDF020882359BA94E89",
+    "runner": "4C5624A3EF456FB01F24315363D88FBC42D7261A6A0F12BBB3C5467BD450DB22",
+    "supervisor": "F712AD30EE4A52D26EEB8168CBB50F12D52C4AEF7DB3A8B0FF7A37BFF65757F1",
+    "work_package": "7B878A80D3826746DFA3EF447FF507CA70A5BFCB9AAC566B1D766512CEC50C23"
+  },
+  "authority": "COMP-REQ-343",
+  "authorization_created": false,
+  "cached_gates": {
+    "checkonly_reused_by_exact_sha": true,
+    "no_checkonly_rerun": true,
+    "no_hardware_contact": true,
+    "r4b_machine_ready_sha256": "F4C1EE53AB729F2817CF7A963F48D9F4D5B48D8C1C208C4093DDA21229C5A8E8",
+    "unchanged_host_lifecycle_reused_by_sha": true
+  },
+  "execute_authorized": false,
+  "focused_evidence": {
+    "negative_cases": [
+      {
+        "name": "old_lut_sha",
+        "reason": "start: lut_sha256='9BCBAC1A07ED0A112D26409FBCDB8F5FE27CE07D922C2E18881C10A53229DDCD', expected '447FB169543F3E33EA6080607B685E2ADB8F38066952FCDF020882359BA94E89'",
+        "result": "rejected"
+      },
+      {
+        "name": "wrong_payload_hash",
+        "reason": "qualification_frame=1: previous_payload_sha256='0000000000000000000000000000000000000000000000000000000000000000', expected '51CFA32FECE0135F38198DA2529E7C6A0C1F53747984D55705077B7F6920CC76'",
+        "result": "rejected"
+      },
+      {
+        "name": "wrong_direction",
+        "reason": "R5 LUT hash does not match the sealed candidate",
+        "result": "rejected"
+      }
+    ],
+    "positive_schema_v4_busy_599": {
+      "busy_max_ms": 599,
+      "loop_status": "PASS_R10_LOOP_LOG",
+      "status": "PASS_R10_BALL_LOG"
+    },
+    "r4_corridor_static_verifier_sha256": "95D180FC743D0DD28D1337BFDC2B6D101F891E9777AFD617BD55B79160395D5D",
+    "r4_corridor_static_verifier_status": "PASS_R10_R4_CORRIDOR_STATIC",
+    "status": "PASS_R10_R5_POLARITY_FOCUSED"
+  },
+  "hardware_contact": 0,
+  "protected": {
+    "historical_r9_lut_sha256": "9BCBAC1A07ED0A112D26409FBCDB8F5FE27CE07D922C2E18881C10A53229DDCD",
+    "r5_changed_offsets": [
+      12,
+      13,
+      14,
+      15,
+      24,
+      25,
+      26,
+      27
+    ],
+    "r5_lut_sha256": "447FB169543F3E33EA6080607B685E2ADB8F38066952FCDF020882359BA94E89",
+    "r5_shared_bytes_preserved": 151,
+    "restore_application_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "tail_hex": "221741A83258"
+  },
+  "r4b_disposition": {
+    "authorization_consumed": true,
+    "busy_max_ms": 597,
+    "loop_iterations": 68,
+    "normal_resume": "PASS",
+    "output_root": ".cache/validation/wb55-r10-r4b-corridor-execute-20260722-r1",
+    "popup_count": 1,
+    "popup_note": "还是跟以前的那个效果是一样的，没有丝毫的改变。\r\n",
+    "popup_note_sha256": "A4F368D7D4B670CF48F39642327F68DC01DA9240612573BA8DFC42BDF12562A",
+    "popup_selected": "失败",
+    "postclean": "PASS",
+    "qualification_frames": 16,
+    "restore_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "retry_count": 0,
+    "visual_verdict": "FAIL_FIXED_CORRIDOR_NOT_A_VISUAL_REPAIR"
+  },
+  "r5_variable": {
+    "changed_offsets": [
+      12,
+      13,
+      14,
+      15,
+      24,
+      25,
+      26,
+      27
+    ],
+    "description": "only R5 polarity-direction reversal in the dedicated 159-byte LUT",
+    "direction": "BW_VSH1_to_VSL_and_WB_VSL_to_VSH1",
+    "new_lut_sha256": "447FB169543F3E33EA6080607B685E2ADB8F38066952FCDF020882359BA94E89",
+    "non_lut_contract_unchanged": true,
+    "old_lut_sha256": "9BCBAC1A07ED0A112D26409FBCDB8F5FE27CE07D922C2E18881C10A53229DDCD"
+  },
+  "schema_id": "companion.wb55.ssd1681.r10_r5_polarity_direction.machine_ready.v1",
+  "status": "MACHINE_READY_R10_R5_POLARITY_DIRECTION_OFFLINE_ONLY"
+}

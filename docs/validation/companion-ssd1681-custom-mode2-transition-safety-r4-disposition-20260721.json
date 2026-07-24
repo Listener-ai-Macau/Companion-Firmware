@@ -1,0 +1,63 @@
+{
+  "schema_id": "companion.wb55.ssd1681_custom_mode2_transition_safety_disposition.v4",
+  "status": "NO_GO_R4_MACHINE_PASS_OPERATOR_FAILED_SCREEN_DIRTY_EXACT_RAW_RESTORED",
+  "requirement": "COMP-REQ-292",
+  "goal_action": "none; active Goal remains owned by the root thread",
+  "production_allowed": false,
+  "r4_rerun_allowed": false,
+  "motion_admitted": false,
+  "candidate": {
+    "name": "stationary_suppression_uniform_tp16_r4",
+    "lut_sha256": "75D7647188ACF1C79BC37313DC40105AF4445B9B6F422AD4FDAF0A465413984D",
+    "hex_sha256": "E695A1A6D3D121AA585E69A1A0D8DA21FEBC5566198BD314FE27F2D40C30B564",
+    "aggregate_tp": 16,
+    "changed_from_r2_offsets": [61, 64, 75, 78],
+    "protected_tail_hex": "221741A83258"
+  },
+  "machine_result": {
+    "status": "PASS_MACHINE_CUSTOM_MODE2_TRANSITION_SAFETY_RESTORED",
+    "white_preclean_status": "PASS_MACHINE_DIGITAL_ONLY",
+    "activation_records": 9,
+    "busy_elapsed_ms": [598, 599, 599, 599, 599, 599, 599, 599, 599],
+    "busy_limit_ms": 600,
+    "all_transition_classes_covered": true,
+    "old_plane_writes": 9,
+    "new_plane_writes": 9,
+    "refresh_commands": 9,
+    "automatic_retries": 0,
+    "final_local_state": "white"
+  },
+  "restore": {
+    "status": "PASS_RESTORE_EQUALS_CAPTURED_PRE_RUN_APPLICATION_BYTES",
+    "bytes": 524288,
+    "baseline_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "readback_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "byte_identical": true,
+    "normal_resume_status": "PASS_APPLICATION_RESUMED_AFTER_BACKUP",
+    "restore_status_misreported": false
+  },
+  "operator_review": {
+    "title": "Companion R4 局刷观感验收",
+    "selected": "失败",
+    "note": "不太行, 屏幕很杂",
+    "interpretation": "machine timing improvement is real, but the waveform remains visually unacceptable because the panel appeared dirty",
+    "artifact_sha256": "85524A619FB1369819EFD2E13822B4F1FEFBDAD727D87B34736F830383937ECA",
+    "note_sha256": "26F9CD1FB18590A4451CFF78EEF910D61437DA90655A679AD3E0BCA33ABB28DE"
+  },
+  "evidence": {
+    "machine_ready_sha256": "22F871A8CF4920CC0E64A012FC31E79623F79BBE8A18C0C7F3856990C9914AAE",
+    "detached_launch_sha256": "57FB2E75ACCAF21C46C52314C7652AD93A7503D97E46B7FB8CAA20466C66F6C0",
+    "candidate_start_decision_sha256": "A5A91EEDC72ED74EDFA1141DEA3833D6FCF0C3BBECBE429A58B14E782E446B71",
+    "white_preclean_sha256": "AC5AE02315F064759FC3B48A3A5881F50FEB033486B190661FA7595C64B4D87D",
+    "controller_state_sha256": "E627D873203D15EF29E5953C93E438C68C7D40A38248DF8448E533E8913C4540",
+    "restore_gate_sha256": "9786869F4D47AB46E032C37F5C35556ED634098326ECCBF38B2EA7D973313B15",
+    "normal_resume_sha256": "0D2C2E236FBFDF6B678A6AD9058768EA86667138E0B20373386A22E043EDA583",
+    "stage_run_sha256": "596F3D250DD4628CAF126D30C6E265F27306D3F98DB162649850523E96BA8474"
+  },
+  "protected_inputs": {
+    "supplier_epaper_c_sha256": "7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896",
+    "owner_acceptance_sha256": "8A3BDF4BD1254B0D0F4DE13A7F293C3D74587C800339ABD4C61FEB0B7737E227"
+  },
+  "conclusion": "Uniform TP16 reduced BUSY from the R2/R3 602 ms plateau to 598-599 ms and passed all machine gates, but canonical physical review failed because the screen looked dirty. R4 is not a product solution and cannot be promoted or rerun.",
+  "goal_terminal": false
+}

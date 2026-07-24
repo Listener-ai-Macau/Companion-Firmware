@@ -1,0 +1,81 @@
+{
+  "schema_id": "companion.wb55.ssd1681_reset_read_controller_state.completion_audit.v1",
+  "requirement_id": "COMP-REQ-265",
+  "status": "PASS_COMPLETION_AUDIT_RESET_READ_CONTROLLER_STATE_RESTORED",
+  "machine_artifact": {
+    "path": "docs/validation/companion-ssd1681-reset-read-controller-state-machine-20260721.json",
+    "sha256": "70D235CC0228C8326438B325A0A145D66AFF9D0D60BA5A38200DD6F3E4666E13",
+    "status": "PASS_MACHINE_RESET_READ_CONTROLLER_STATE_RESTORED"
+  },
+  "checks": {
+    "registry_contains_comp_req_265": true,
+    "human_res_and_busy_prerequisite_passed": true,
+    "research_authorized_one_reset_read_attempt": true,
+    "candidate_default_disabled_and_production_off": true,
+    "candidate_hex_hash_locked": true,
+    "private_524288_byte_baseline_hash_locked": true,
+    "static_host_build_gate_passed": true,
+    "runner_check_only_zero_contact_passed": true,
+    "single_hardware_attempt": true,
+    "zero_automatic_retry": true,
+    "exactly_one_panel_hard_reset": true,
+    "exactly_one_bounded_busy_wait": true,
+    "exactly_three_0x2f_0x2d_groups": true,
+    "three_chip_status_values_identical_and_id_01_ready": true,
+    "three_display_option_payloads_identical_nonzero_nonff": true,
+    "every_group_gpio_restore_passed": true,
+    "panel_write_count_zero": true,
+    "panel_refresh_count_zero": true,
+    "forbidden_command_count_zero": true,
+    "exactly_one_raw_restore_write": true,
+    "programmer_verify_passed": true,
+    "post_restore_upload_length_and_hash_exact": true,
+    "normal_boot_count_one": true,
+    "normal_ready_count_one": true,
+    "normal_diagnostic_residue_zero": true,
+    "normal_panel_fault_zero": true,
+    "normal_hardfault_zero": true,
+    "visual_prompt_not_opened": true,
+    "supplier_input_unmodified": true,
+    "protected_owner_acceptance_hash_preserved": true,
+    "v9_rig_crig_browser_binding_unmodified_by_lower_driver_work": true,
+    "no_waveform_lut_temperature_visual_or_production_promotion": true
+  },
+  "controller_result": {
+    "0x2f_hex": "01",
+    "0x2d_hex": "0028402010004003000000",
+    "payload_sha256": "7C4BFE5C19AE405A24E3EF820253700F3870CEAC339B56AA55EB672865BF1D44",
+    "mode2_ram_ping_pong_enabled": true,
+    "waveform_version_hex": "03000000"
+  },
+  "restore_result": {
+    "identity": "RESTORED_TO_CAPTURED_PRE_RUN_APPLICATION_BYTES",
+    "length_bytes": 524288,
+    "sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "writes": 1,
+    "retries": 0
+  },
+  "protected_artifacts": {
+    "owner_acceptance": {
+      "path": "docs/validation/companion-pet-special-system-owner-acceptance-20260717.json",
+      "sha256": "8A3BDF4BD1254B0D0F4DE13A7F293C3D74587C800339ABD4C61FEB0B7737E227"
+    },
+    "supplier_display_epd_w21_c": {
+      "path": ".cache/incoming/S-GDEY0154D67-FP-Touch-official-20260720/S-GDEY0154D67-FP-Touch20230303/HARDWARE/EPD/Display_EPD_W21.c",
+      "sha256": "CD08AFD1D56E8F7E1D0AE5C935A4D060E65C658ABC30CE29ACF65166141ACEE2"
+    },
+    "supplier_display_epd_w21_spi_c": {
+      "path": ".cache/incoming/S-GDEY0154D67-FP-Touch-official-20260720/S-GDEY0154D67-FP-Touch20230303/HARDWARE/EPD/Display_EPD_W21_spi.c",
+      "sha256": "10E5F1A8AE0EEA1213640CB3A4A9D968BF1DDE555D2D91205AA8E29196495055"
+    }
+  },
+  "commands_and_results": [
+    { "command": "python tools/verify_companion_product_requirements.py", "result": "PASS" },
+    { "command": "python tools/verify_companion_current_goal_audit.py", "result": "PASS" },
+    { "command": "python tools/verify_wb55_ssd1681_reset_read_controller_state_diagnostic.py", "result": "PASS_STATIC_RESET_READ_CONTROLLER_STATE_RAW_RESTORE_DEFAULT_OFF" },
+    { "command": "pwsh tools/run_wb55_ssd1681_read_only_controller_state_raw_restore.ps1 -CheckOnly -ResetReadControllerState", "result": "READY_NO_HARDWARE_CONTACT" },
+    { "command": "pwsh tools/run_wb55_ssd1681_read_only_controller_state_raw_restore.ps1 -Execute -ResetReadControllerState", "result": "PASS_MACHINE_RESET_READ_CONTROLLER_STATE_RESTORED" },
+    { "command": "git diff --check -- <P0 lower-driver paths>", "result": "PASS" }
+  ],
+  "final_disposition": "The PC1/SDI reverse read and reset/readiness prerequisite are now machine-proven and the board is back on the exact captured pre-run application bytes. No additional hardware retry, visual review, waveform change, or production promotion is authorized by this completion."
+}

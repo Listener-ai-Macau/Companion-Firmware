@@ -1,0 +1,39 @@
+{
+  "schema": "companion.v9_v22_touch_emotion_browser_render_inspection.v1",
+  "status": "PASS_BROWSER_RENDER_INSPECTION_NATIVE_200X200",
+  "claim_scope": "actual_browser_render_screenshots_for_runtime_inactive_candidate_not_runtime_binding_flash_or_physical_acceptance",
+  "route": {
+    "path": "docs/validation/companion-v9-v22-touch-emotion-route-preview-20260720.json",
+    "sha256": "3F403B310DC7579AC65AA5890828CA8B7C3AD0896F132E3EF35A140E4AE0F95C"
+  },
+  "player": {
+    "path": "docs/validation/artifacts/companion-v9-v22-touch-emotion-route-preview-20260720/v9-v22-touch-emotion-route-player.html",
+    "sha256": "40DE1D2CD055DEC28F9557A32048AE05F7EA7A47E14F6B7F99FC70FDD2678F43"
+  },
+  "screenshots": [
+    {
+      "scene": "daily_micro",
+      "virtual_time_ms": 0,
+      "expected_art_pose": "v9_daily",
+      "edge_exit_code": 13,
+      "path": "docs/validation/artifacts/companion-v9-v22-touch-emotion-route-preview-20260720/browser-daily-200x200-20260720.png",
+      "sha256": "986E3FC861E746A0DE9430419850A11484EE7A439DBE1E6DD13777A2ABD8D8DF"
+    },
+    {
+      "scene": "familiar_touch",
+      "virtual_time_ms": 11000,
+      "expected_art_pose": "v22_warm",
+      "edge_exit_code": 13,
+      "path": "docs/validation/artifacts/companion-v9-v22-touch-emotion-route-preview-20260720/browser-familiar-touch-warm-200x200-11000ms-20260720.png",
+      "sha256": "B4EF3A35C97870131906EB621D85B463F2E490B713A8B5990F9F1274E3FAC5F1"
+    }
+  ],
+  "checks": {
+    "route_is_runtime_inactive_candidate": true,
+    "native_200x200_component_stage": true,
+    "explicit_event_player": true,
+    "daily_screenshot_written": true,
+    "familiar_touch_warm_screenshot_written": true
+  },
+  "failures": []
+}

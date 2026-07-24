@@ -1,0 +1,97 @@
+{
+  "schema": "companion.v41_directional_gaze_total_machine_audit.v1",
+  "status": "GO_HUMAN_ACCEPTANCE_MACHINE_CLOSURE_COMPLETE",
+  "authority": [
+    "COMP-REQ-093",
+    "COMP-REQ-229",
+    "COMP-REQ-233",
+    "COMP-REQ-239",
+    "COMP-REQ-240",
+    "COMP-REQ-242",
+    "COMP-REQ-243"
+  ],
+  "protected": {
+    "locked_v9_source": {
+      "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+    },
+    "prior_owner_acceptance": {
+      "path": "docs/validation/companion-pet-special-system-owner-acceptance-20260717.json",
+      "sha256": "8A3BDF4BD1254B0D0F4DE13A7F293C3D74587C800339ABD4C61FEB0B7737E227"
+    }
+  },
+  "accepted_v22_daily_regression": {
+    "artifact": "docs/validation/companion-v22-emotion-separation-target-rig-gate-20260719.json",
+    "bridge_count": 10,
+    "bridge_frame_count": 72
+  },
+  "v40_rejection_preserved": {
+    "artifact": "docs/validation/companion-v40-two-track-total-machine-audit-20260720.owner-review.json",
+    "status": "REJECTED_OWNER_DIRECTIONAL_GAZE_AND_CHINESE_OVERVIEW_STEERING"
+  },
+  "v41_evidence": {
+    "directional_layout": {
+      "artifact": "docs/validation/companion-v41-directional-gaze-layout-gate-20260721.json",
+      "status": "PASS_V41_DIRECTIONAL_GAZE_LAYOUT_RUNTIME_INACTIVE",
+      "sha256": "E6A923A1A4F79FA340E418B6F24B263443812F07F0AB69B0995BEBE448FC5E70"
+    },
+    "profile": {
+      "artifact": "docs/validation/companion-v41-directional-gaze-wb55-profile-host-20260721.json",
+      "status": "PASS_V41_DIRECTIONAL_GAZE_WB55_PROFILE_RUNTIME_INACTIVE",
+      "sha256": "20344452330144A53FC375ECC687ABB9242BF833A375D035B1FA2B97B7B329EC"
+    },
+    "browser_preview": {
+      "artifact": "docs/validation/companion-v41-directional-gaze-browser-wb55-preview-20260721.json",
+      "status": "PASS_BROWSER_COMPONENT_PREVIEW_RENDERED_RUNTIME_INACTIVE",
+      "sha256": "07D59D56A7B863B6D7DE3DB0F6A77984C9A5387983D176AA7D9512A16F410376"
+    },
+    "browser_visual": {
+      "artifact": "docs/validation/companion-v41-directional-gaze-browser-visual-20260721.json",
+      "status": "PASS_V41_HEADLESS_BROWSER_VISUAL_CAPTURE",
+      "sha256": "C94BE7E6B617C57505AD33DAF186BBC2E4A4CB4D736DE01CD11DE91FD75308B8"
+    },
+    "wb55_pixel_parity": {
+      "artifact": "docs/validation/companion-v41-directional-gaze-wb55-component-parity-host-20260721.json",
+      "status": "PASS_BROWSER_WB55_COMPONENT_PIXEL_PARITY_RUNTIME_INACTIVE",
+      "sha256": "8D8584FE9207D218BFF4FB7F970DF615A2D26FCE01F36BB1B8DDDFEB493B9D19"
+    },
+    "design_note": {
+      "artifact": "docs/companion_expression_emotion_system_cn.md",
+      "sha256": "A08B8B9EEF15C2ECF2D973F943CCAB53E3CEB0C53E60379B63809AEBD7DC1514"
+    }
+  },
+  "machine_verified": {
+    "canvas": "200x200_1bpp",
+    "component_count": 106,
+    "story_count": 17,
+    "preview_frame_count": 53,
+    "five_gaze_states": [
+      "center",
+      "left",
+      "right",
+      "up",
+      "down"
+    ],
+    "endpoint_pixel_sha256": {
+      "center": "F243FA734F495C4012D562F98AC3643665910F2994D2F130A7E7EA843A9C4AE3",
+      "left": "71E568A3BDB3AF5003D2920D54268BF3B8991450C247290315623B6F80C2BA5C",
+      "right": "D9B3974424A1C79100031C164DC877F2BAA26F39A3B9BD6D9A63310D23178C52",
+      "up": "3D5CA0B4C9513AF889756AF4301D78A0C1B0F613DB1C6CB434C3847E374D438F",
+      "down": "D8216B8AA4B258DF3B28DDE119EB1C2821B1EA98DFE9A5E70C5C4E35A2F4A748"
+    },
+    "fixed_v22_nose": true,
+    "Chinese_full_atlas": true,
+    "deterministic_selection_documented": true,
+    "final_plan": "deterministic_union(expression_track, functional_decoration_track)",
+    "menu_entry": "touch / 3 frames / 460ms / withdraw both tracks / Menu UI owns screen"
+  },
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden_until_owner_review",
+  "human_review_scope": "Review the Chinese 200x200 selected-story player and full atlas: five gaze endpoints, every listed emotion/performance, readable function decoration, and finite Menu entry. This is not physical-screen acceptance or runtime activation.",
+  "non_claims": [
+    "no_runtime_binding",
+    "no_firmware_flash",
+    "no_panel_or_driver_change",
+    "no_physical_screen_acceptance"
+  ]
+}

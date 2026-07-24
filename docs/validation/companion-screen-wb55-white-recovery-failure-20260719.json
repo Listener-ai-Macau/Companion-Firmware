@@ -1,0 +1,51 @@
+{
+  "schema_id": "companion.screen.wb55.white_recovery_attempt.v1",
+  "status": "FAIL_VISIBLE_OFFICIAL_WHITE_FULL_REFRESH",
+  "claim_scope": "current_wb55_white_diagnostic_machine_and_operator_failure",
+  "target": "NUCLEO-WB55RG + ESP32-FTS02 + GDEY0154D67-T03",
+  "attempted_at": "2026-07-19T21:32:06+08:00",
+  "stage": "White",
+  "diagnostic_image": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_official_full_diagnostic_white/Companion_Nucleo_WB55RG_OfficialFullDiagnostic_white.hex",
+  "machine_result": {
+    "flash_verified": true,
+    "serial_log": ".cache/validation/wb55-fts02-recovery-current/white/capture/nucleo-serial-raw.log",
+    "serial_log_sha256": "9D98F296D39CD68C65F5F9D5F1B3E6541E54A20022DC21FA92D4552F06A8C4E9",
+    "official_one_plane_0x24_only": true,
+    "refresh_mode": "full",
+    "bytes": 5000,
+    "data_planes": 1,
+    "refresh_elapsed_ms": 1289,
+    "busy_asserted_and_completed": true,
+    "parser_status": "PASS_MACHINE_DIGITAL_ONLY"
+  },
+  "operator_review": {
+    "style": "aiw_operator_prompt_v1",
+    "selected": "失败",
+    "note": "并不是纯白的, 有一些脏? 你看看是不是要短暂全刷",
+    "source": ".cache/validation/wb55-fts02-recovery-current/white/operator-prompt-observation.txt"
+  },
+  "triage": {
+    "conclusion": "This was already an official 5000-byte full single-plane refresh, so a brief extra full refresh is not a supported remediation or an acceptance substitute.",
+    "do_not_do": [
+      "Do not run Black, normal expression, dynamic V22, partial-refresh, or residue acceptance after this White failure.",
+      "Do not introduce a generic, adjacent-panel, guessed, online, or hand-authored LUT.",
+      "Do not change expression art, component choreography, CEMP, or normal refresh policy to hide the dirty White result."
+    ],
+    "next_required_hardware_evidence": [
+      "Record the replacement or cross-swapped ESP32-FTS02 board identity and its wiring/flex seating.",
+      "Measure PREVGH1 and PREVGL1 during this verified official White refresh window.",
+      "Only after a deterministic White pass may the ordered Black diagnostic run."
+    ]
+  },
+  "normal_firmware_restored": true,
+  "diagnostic_left_installed": false,
+  "runtime_resource_activated": false,
+  "firmware_v22_demo_flashed": false,
+  "panel_expression_accepted": false,
+  "sources": {
+    "stage_report": ".cache/validation/wb55-fts02-recovery-current/white/stage-run.json",
+    "machine_parser": ".cache/validation/wb55-fts02-recovery-current/white/official-full-result.json",
+    "recovery_gate": "docs/validation/companion-screen-wb55-hardware-recovery-gate.json",
+    "product_registry": "docs/companion_product_requirements.md"
+  }
+}

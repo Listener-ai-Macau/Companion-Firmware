@@ -1,0 +1,141 @@
+{
+  "schema": "companion.v42_expression_extension_total_machine_audit.v1",
+  "status": "GO_HUMAN_ACCEPTANCE_MACHINE_CLOSURE_COMPLETE",
+  "authority": [
+    "COMP-REQ-093",
+    "COMP-REQ-239",
+    "COMP-REQ-240",
+    "COMP-REQ-242",
+    "COMP-REQ-243",
+    "COMP-REQ-245",
+    "COMP-REQ-246",
+    "COMP-REQ-247",
+    "COMP-REQ-248",
+    "COMP-REQ-249",
+    "COMP-REQ-250",
+    "COMP-REQ-251",
+    "COMP-REQ-253",
+    "COMP-REQ-254",
+    "COMP-REQ-256",
+    "COMP-REQ-258"
+  ],
+  "revision_label": "r6",
+  "protected": {
+    "locked_v9_source": {
+      "path": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+      "sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA"
+    },
+    "prior_owner_acceptance": {
+      "path": "docs/validation/companion-pet-special-system-owner-acceptance-20260717.json",
+      "sha256": "8A3BDF4BD1254B0D0F4DE13A7F293C3D74587C800339ABD4C61FEB0B7737E227"
+    }
+  },
+  "accepted_v22_daily_regression": {
+    "artifact": "docs/validation/companion-v22-emotion-separation-target-rig-gate-20260719.json",
+    "bridge_count": 10,
+    "bridge_frame_count": 72
+  },
+  "v41_inactive_evidence_preserved": {
+    "failed_delivery_review": "docs/validation/companion-v41-directional-gaze-total-machine-audit-20260721.owner-review.json",
+    "cancelled_rereview": "docs/validation/companion-v41-directional-gaze-total-machine-audit-20260721.owner-review-r2.json"
+  },
+  "v42_r1_inactive_evidence_preserved": {
+    "artifact": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v4/revision-1-machine-closure-preservation.json",
+    "sha256": "CF56547329DCA897A916A2F170913F05FBCA44F8701FEA9C34FDF84135F3AE09"
+  },
+  "v42_r2_inactive_evidence_preserved": {
+    "artifact": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v4/revision-2-machine-closure-preservation.json",
+    "sha256": "3D0941B0D0BEFEEFBABD5BC489425BE06881C4C6302011777A5B073FF03C214B"
+  },
+  "v42_evidence": {
+    "layout": {
+      "artifact": "docs/validation/companion-v42-expression-extension-layout-r5-20260721.json",
+      "status": "PASS_V42_EXPRESSION_EXTENSION_LAYOUT_RUNTIME_INACTIVE",
+      "sha256": "0A4871BE0F6C89F6FC5EBC57F2E5D4FBCA6825C723CC8F6A6834D1FF10A1718A"
+    },
+    "profile": {
+      "artifact": "docs/validation/companion-v42-expression-extension-wb55-profile-host-r5-20260721.json",
+      "status": "PASS_V42_EXPRESSION_EXTENSION_WB55_PROFILE_RUNTIME_INACTIVE",
+      "sha256": "52B91C5594C02E108A35612512EA2FAF842FF14AF6CE0D99CEA878312941819A"
+    },
+    "browser_preview": {
+      "artifact": "docs/validation/companion-v42-expression-extension-browser-wb55-preview-r6-20260721.json",
+      "status": "PASS_BROWSER_COMPONENT_PREVIEW_RENDERED_RUNTIME_INACTIVE",
+      "sha256": "9D16863CAC759ADD05F6D9535EBB7AC36529FB16E2092F48E1FD6E8346608524"
+    },
+    "wb55_pixel_parity": {
+      "artifact": "docs/validation/companion-v42-expression-extension-wb55-parity-r6-20260721.json",
+      "status": "PASS_BROWSER_WB55_COMPONENT_PIXEL_PARITY_RUNTIME_INACTIVE",
+      "sha256": "5905514411948B51CB53E4DB0B4353B25F595F4DD97ED6C854540C7F03F5AF59"
+    },
+    "browser_visual": {
+      "artifact": "docs/validation/companion-v42-expression-extension-browser-visual-r6-20260721.json",
+      "status": "PASS_V42_HEADLESS_BROWSER_VISUAL_CAPTURE",
+      "sha256": "113F097C21573AB2A2481EBC612C8AEF633C715FDB05A2D8F1B39B4B6D2BEA70"
+    },
+    "touch_follow_gaze": {
+      "artifact": "docs/validation/companion-expression-touch-gaze-wb55-host-r6-20260721.json",
+      "status": "PASS_TOUCH_COORDINATE_GAZE_RUNTIME_INACTIVE",
+      "sha256": "E6A03A6B13586E2263839F22234C5ED53BF3DE5AA01849A55B792FB745CA67DA"
+    },
+    "v22_trace": {
+      "artifact": "docs/validation/companion-v22-emotion-separation-wb55-trace-contract-r5-20260721.json",
+      "status": "PASS_V22_EMOTION_SEPARATION_WB55_TRACE_CONTRACT",
+      "sha256": "AFE81832DE2B906B89887F108BADCF53E2691B1F6EB2D1624BD748FA3B1FB40B"
+    },
+    "design_note": {
+      "artifact": "docs/companion_expression_emotion_system_cn.md",
+      "sha256": "ABFFF14BE1E0BEF70225149DE6B805DBAAB66A555D08AC301773B1F9FE8DC440"
+    }
+  },
+  "machine_verified": {
+    "canvas": "200x200_1bpp",
+    "component_count": 85,
+    "special_component_count": 48,
+    "story_count": 21,
+    "preview_frame_count": 93,
+    "owner_visible_story_count": 16,
+    "all_performance_wall": "16 owner-visible stories simultaneously autoplay",
+    "added_emotions": [
+      "delighted",
+      "bashful",
+      "thoughtful",
+      "focused"
+    ],
+    "recording_input_face_pixel_overlap": 0,
+    "wireless_dock_face_pixel_overlap": 0,
+    "sleep_zzz_only": true,
+    "five_gaze_states": [
+      "center",
+      "left",
+      "right",
+      "up",
+      "down"
+    ],
+    "endpoint_pixel_sha256": {
+      "center": "F243FA734F495C4012D562F98AC3643665910F2994D2F130A7E7EA843A9C4AE3",
+      "left": "71E568A3BDB3AF5003D2920D54268BF3B8991450C247290315623B6F80C2BA5C",
+      "right": "D9B3974424A1C79100031C164DC877F2BAA26F39A3B9BD6D9A63310D23178C52",
+      "up": "3D5CA0B4C9513AF889756AF4301D78A0C1B0F613DB1C6CB434C3847E374D438F",
+      "down": "D8216B8AA4B258DF3B28DDE119EB1C2821B1EA98DFE9A5E70C5C4E35A2F4A748"
+    },
+    "touch_follow_gaze": {
+      "canvas": "200x200_1bpp",
+      "surface": "owner_visible_performance_card_face_box",
+      "mapping": "direct pixel-derived legal highlight and sparkle offsets",
+      "release_target": "center",
+      "moves": "registered primary highlight and sparkle components only"
+    },
+    "final_plan": "deterministic_union(expression_track,functional_decoration_track)",
+    "menu_entry": "touch / 3 frames / 460ms / withdraw both tracks / Menu UI owns screen"
+  },
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden_until_owner_review",
+  "human_review_scope": "Agent first opens the bound Chinese 200x200 V42 browser preview. The owner reviews added emotion readability, recording-input and wireless-dock meaning, ZZZ-only sleep, choreography, and finite Menu entry; this is not physical-screen acceptance or runtime activation.",
+  "non_claims": [
+    "no_runtime_binding",
+    "no_firmware_flash",
+    "no_panel_or_driver_change",
+    "no_physical_screen_acceptance"
+  ]
+}

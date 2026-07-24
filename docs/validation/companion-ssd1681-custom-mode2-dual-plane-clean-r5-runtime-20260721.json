@@ -1,0 +1,58 @@
+{
+  "schema_id": "companion.wb55.ssd1681_custom_mode2_dual_plane_clean_r5_runtime.v1",
+  "status": "PASS_MACHINE_CUSTOM_MODE2_DUAL_PLANE_CLEAN_R5_RESTORED",
+  "requirement": "COMP-REQ-298",
+  "run_root": ".cache/validation/wb55-custom-mode2-dual-plane-clean-r5-execute-20260721-a",
+  "hardware_contact": 1,
+  "production_allowed": false,
+  "candidate": {
+    "hex_sha256": "E695A1A6D3D121AA585E69A1A0D8DA21FEBC5566198BD314FE27F2D40C30B564",
+    "byte_identical_to_r4": true,
+    "start_selection": "开始实验",
+    "start_note": "",
+    "activation_records": 9,
+    "busy_elapsed_ms": [598, 599, 599, 599, 599, 599, 599, 599, 599],
+    "busy_limit_ms": 600,
+    "old_plane_writes": 9,
+    "new_plane_writes": 9,
+    "refresh_commands": 9,
+    "automatic_retries": 0,
+    "final_local_state": "white",
+    "motion_120_frame_executed": false
+  },
+  "dual_plane_preclean": {
+    "status": "PASS_MACHINE_DUAL_PLANE_WHITE_CLEAN_BOTH_BANKS_READBACK_WHITE",
+    "hex_sha256": "3AC4E52E37E15DC3CC058A4B0B0E6A3227D23E6C6DEFAEDCB786C08497888AAD",
+    "busy_elapsed_ms": 1289,
+    "writes": ["0x24:5000xFF", "0x26:5000xFF"],
+    "control_refresh": "0xF7/0x20",
+    "selectors_read_twice": [0, 1],
+    "all_four_payloads_all_ff": true,
+    "repeat_mismatches": 0
+  },
+  "dual_plane_postclean": {
+    "status": "PASS_MACHINE_DUAL_PLANE_WHITE_CLEAN_BOTH_BANKS_READBACK_WHITE",
+    "busy_elapsed_ms": 1289,
+    "writes": ["0x24:5000xFF", "0x26:5000xFF"],
+    "all_four_payloads_all_ff": true,
+    "repeat_mismatches": 0
+  },
+  "restore": {
+    "status": "PASS_RESTORE_EQUALS_CAPTURED_PRE_RUN_APPLICATION_BYTES",
+    "bytes": 524288,
+    "baseline_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "readback_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "normal_resume": "PASS_APPLICATION_RESUMED_AFTER_BACKUP"
+  },
+  "artifacts": {
+    "detached_launch_sha256": "8B51E0273B5B7B93DD0D7B25F0891F3C59258F8A9C8E96AFC7608FA1E90A7F74",
+    "candidate_start_decision_sha256": "A87F5B8E956C9747685FA644CF16488EC87CA198FC82B3D04B0A2C5100BC51CB",
+    "preclean_sha256": "64D33D192CA81C59AA440658939AC75E18C8F1997CCED8B02B9200233F042A49",
+    "controller_state_sha256": "E627D873203D15EF29E5953C93E438C68C7D40A38248DF8448E533E8913C4540",
+    "postclean_sha256": "64D33D192CA81C59AA440658939AC75E18C8F1997CCED8B02B9200233F042A49",
+    "restore_gate_sha256": "28758F09810BC670A402D54C3C6107286AD17AA93BF0F8E5081298E73B4B1264",
+    "normal_resume_sha256": "EBF2CC3BC792BBEF44C2295795629C94C1353FEAD01144A397543B5CB0DA0A50",
+    "stage_run_sha256": "820FBB484C13B22D83380437750DBD15E8D144B484017CB76EA24661FF3F07BD"
+  },
+  "machine_boundary": "Machine PASS establishes command, RAM, BUSY and restore invariants only; it makes no visual claim."
+}

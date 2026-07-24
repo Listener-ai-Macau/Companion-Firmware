@@ -1,0 +1,196 @@
+{
+  "schema": "companion.v25_face_contrast_special_expression_source_gate.v1",
+  "status": "PASS_V25_FACE_CONTRAST_SOURCE_GATE_PENDING_COMPONENT_EXPORT",
+  "generation_request": "docs/art/iterations/companion-pet-expression-v9-extension-v25-representative-special-expression-source/generation-request-v4-face-contrast-only.json",
+  "generation_prompt": "docs/art/iterations/companion-pet-expression-v9-extension-v25-representative-special-expression-source/generation-prompt-v4-face-contrast-only.md",
+  "source_lineage": "docs/art/iterations/companion-pet-expression-v9-extension-v25-representative-special-expression-source/candidate/source-lineage.json",
+  "locked_v9_source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "target_eye_centers": [
+    [
+      58.5,
+      134.5
+    ],
+    [
+      142.0,
+      134.5
+    ]
+  ],
+  "poses": [
+    {
+      "pose": "menu_active",
+      "crop": [
+        0,
+        0,
+        645,
+        813
+      ],
+      "normalization": {
+        "source_left_eye_bbox": [
+          165,
+          369,
+          261,
+          499
+        ],
+        "source_right_eye_bbox": [
+          420,
+          369,
+          516,
+          498
+        ],
+        "source_left_eye_center": [
+          213.978,
+          438.798
+        ],
+        "source_right_eye_center": [
+          469.036,
+          438.434
+        ],
+        "source_eye_gap": 255.059,
+        "source_average_eye_height": 129.5,
+        "normalization_scale": [
+          0.327376,
+          0.34749
+        ]
+      },
+      "normalized_source_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v25-representative-special-expression-source/candidate/normalized-200x200-source-review/menu-active-source-normalized.png",
+      "component_ink_pixels": {
+        "left_brow": 133,
+        "right_brow": 149,
+        "left_eye": 1051,
+        "right_eye": 928,
+        "nose": 73,
+        "left_cheek": 297,
+        "right_cheek": 302,
+        "mouth": 111
+      },
+      "outside_face_ink_pixels": 0,
+      "face_primary_delta_from_v9_daily": 26084,
+      "errors": []
+    },
+    {
+      "pose": "recording_active",
+      "crop": [
+        645,
+        0,
+        1290,
+        813
+      ],
+      "normalization": {
+        "source_left_eye_bbox": [
+          152,
+          369,
+          247,
+          498
+        ],
+        "source_right_eye_bbox": [
+          395,
+          369,
+          493,
+          498
+        ],
+        "source_left_eye_center": [
+          200.768,
+          438.421
+        ],
+        "source_right_eye_center": [
+          444.933,
+          438.199
+        ],
+        "source_eye_gap": 244.164,
+        "source_average_eye_height": 129.0,
+        "normalization_scale": [
+          0.341983,
+          0.348837
+        ]
+      },
+      "normalized_source_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v25-representative-special-expression-source/candidate/normalized-200x200-source-review/recording-active-source-normalized.png",
+      "component_ink_pixels": {
+        "left_brow": 147,
+        "right_brow": 155,
+        "left_eye": 953,
+        "right_eye": 978,
+        "nose": 81,
+        "left_cheek": 309,
+        "right_cheek": 317,
+        "mouth": 234
+      },
+      "outside_face_ink_pixels": 0,
+      "face_primary_delta_from_v9_daily": 26008,
+      "errors": []
+    },
+    {
+      "pose": "charging_active",
+      "crop": [
+        1290,
+        0,
+        1935,
+        813
+      ],
+      "normalization": {
+        "source_left_eye_bbox": [
+          121,
+          370,
+          217,
+          499
+        ],
+        "source_right_eye_bbox": [
+          368,
+          370,
+          465,
+          499
+        ],
+        "source_left_eye_center": [
+          169.585,
+          439.164
+        ],
+        "source_right_eye_center": [
+          417.478,
+          438.832
+        ],
+        "source_eye_gap": 247.893,
+        "source_average_eye_height": 129.0,
+        "normalization_scale": [
+          0.336839,
+          0.348837
+        ]
+      },
+      "normalized_source_preview": "docs/art/iterations/companion-pet-expression-v9-extension-v25-representative-special-expression-source/candidate/normalized-200x200-source-review/charging-active-source-normalized.png",
+      "component_ink_pixels": {
+        "left_brow": 152,
+        "right_brow": 155,
+        "left_eye": 954,
+        "right_eye": 973,
+        "nose": 78,
+        "left_cheek": 311,
+        "right_cheek": 315,
+        "mouth": 380
+      },
+      "outside_face_ink_pixels": 0,
+      "face_primary_delta_from_v9_daily": 26029,
+      "errors": []
+    }
+  ],
+  "pairwise_face_primary_differences": [
+    {
+      "left": "menu_active",
+      "right": "recording_active",
+      "face_primary_pixel_difference": 25740
+    },
+    {
+      "left": "menu_active",
+      "right": "charging_active",
+      "face_primary_pixel_difference": 25889
+    },
+    {
+      "left": "recording_active",
+      "right": "charging_active",
+      "face_primary_pixel_difference": 25593
+    }
+  ],
+  "source_review_html": "docs/art/iterations/companion-pet-expression-v9-extension-v25-representative-special-expression-source/candidate/normalized-200x200-source-review/source-review.html",
+  "source_review_contact_sheet": "docs/art/iterations/companion-pet-expression-v9-extension-v25-representative-special-expression-source/candidate/normalized-200x200-source-review/source-contact-sheet.png",
+  "source_preview_contract": "thresholded native 200x200 source normalization for static provenance comparison only; not a runtime frame, component export, target output or animation",
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden",
+  "errors": []
+}

@@ -1,0 +1,101 @@
+{
+  "schema": "companion.v9_expanded_emotion_panel_gate.v1",
+  "status": "PASS_EXPANDED_EMOTION_PANEL_GATE",
+  "candidate": "docs/art/iterations/companion-pet-expression-v9-extension-v10-expanded-emotion-panel/generated_pet_expression_extension_v10_expanded_emotion_panel_candidate.png",
+  "candidate_sha256": "9475CEF565608ED70258980815B31AEEA785CB431AE5B25515FE3790ADE4DD31",
+  "request": "docs/art/iterations/companion-pet-expression-v9-extension-v10-expanded-emotion-panel/generation-request.json",
+  "open_eye_identity_report": "docs/validation/companion-v9-extension-v10-expanded-emotion-panel-open-eye-identity-20260718.json",
+  "state_count": 12,
+  "unique_anchor_count": 12,
+  "minimum_pair_pixel_difference": 6035,
+  "records": [
+    {
+      "state": "calm_content",
+      "cell": "0,0",
+      "transition_role": "resting emotional baseline",
+      "ink_pixels": 6490,
+      "binary_sha256": "E8A2376D1287779B62CE2192FB72493B6CB30187128F404265BC875F9DEC1DE2"
+    },
+    {
+      "state": "curious_question",
+      "cell": "0,1",
+      "transition_role": "question opens from calm",
+      "ink_pixels": 7325,
+      "binary_sha256": "6F873B576DE237626F0E756C6DFCFCB7C44FD81AEAA24FD65CD85835CCD844D3"
+    },
+    {
+      "state": "alert_surprised",
+      "cell": "0,2",
+      "transition_role": "brief alert peak",
+      "ink_pixels": 6957,
+      "binary_sha256": "07EA48328CB203AA6163DCAAEC7D81749214C6952798E25C94849CE94B068D96"
+    },
+    {
+      "state": "joyful_spark",
+      "cell": "0,3",
+      "transition_role": "relief into playful joy",
+      "ink_pixels": 7434,
+      "binary_sha256": "75C71E50138510184F4E7DA9773F85B4FBF333613E1B4A5BA18A3199A70B0E0E"
+    },
+    {
+      "state": "affectionate_warm",
+      "cell": "1,0",
+      "transition_role": "warm settle after joy",
+      "ink_pixels": 7496,
+      "binary_sha256": "AC816211701C961639EDA257C84B2AECDDE0B3817F73DE6B41F1A64605C86A33"
+    },
+    {
+      "state": "playful_bright",
+      "cell": "1,1",
+      "transition_role": "play invitation after warmth",
+      "ink_pixels": 6410,
+      "binary_sha256": "5A89D2AB9D73693D19845919B8FD1D5B341BA3DE85E01435A13422DF0A4DD9C9"
+    },
+    {
+      "state": "anticipatory_notice",
+      "cell": "1,2",
+      "transition_role": "small expectation before a response",
+      "ink_pixels": 6708,
+      "binary_sha256": "9EDA0260D61D8C985B63D495A41D586BFDCE7F24CFACF16B7C73CB30212E233A"
+    },
+    {
+      "state": "puzzled_processing",
+      "cell": "1,3",
+      "transition_role": "quiet processing before resolution",
+      "ink_pixels": 5671,
+      "binary_sha256": "084BAA9F21C45A0AAADDF686FD8F7425A45C2EBD80E68AB2860198E7F9F53FBF"
+    },
+    {
+      "state": "recording_focus",
+      "cell": "2,0",
+      "transition_role": "attention narrows into recording",
+      "ink_pixels": 7564,
+      "binary_sha256": "74D233AEE50579130C7AD4F2EFF9D5C1E00C110A560CB62A42E3048B2039A04F"
+    },
+    {
+      "state": "listening_focus",
+      "cell": "2,1",
+      "transition_role": "recording releases into listening",
+      "ink_pixels": 7497,
+      "binary_sha256": "CE04F5727CC66A6D9A31ACB34E2A46873A783917086EB91F9BAC2768262261C0"
+    },
+    {
+      "state": "menu_thinking",
+      "cell": "2,2",
+      "transition_role": "listening resolves into a quiet decision",
+      "ink_pixels": 6350,
+      "binary_sha256": "E9E048DE3770F72184F9B8350D89AB7111C0DE578F9EC669E51BE80E5501B5E6"
+    },
+    {
+      "state": "sleep_rest_no_moon",
+      "cell": "2,3",
+      "transition_role": "energy-down rest",
+      "ink_pixels": 2727,
+      "binary_sha256": "636FF4EEDEB9F26F3A14DF51C8CF41F414649A9A9C16D97E71877D9407767A11",
+      "upper_band_ink_pixels": 0
+    }
+  ],
+  "runtime_resource_activated": false,
+  "full_face_playback": "forbidden",
+  "errors": []
+}

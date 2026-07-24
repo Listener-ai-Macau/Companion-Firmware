@@ -1,0 +1,45 @@
+{
+  "schema_id": "companion.wb55.ssd1681_custom_mode2_observable_r6_disposition.v1",
+  "status": "NO_GO_R6_MACHINE_PASS_OPERATOR_FAILED_PATTERN_DISAPPEARED_EXACT_RAW_RESTORED",
+  "requirement": "COMP-REQ-300",
+  "goal_action": "none; active Goal remains owned by the root thread",
+  "production_allowed": false,
+  "r6_rerun_allowed": false,
+  "motion_120_frame_admitted": false,
+  "machine": {
+    "status": "PASS_MACHINE_CUSTOM_MODE2_OBSERVABLE_R6_RESTORED",
+    "runtime_artifact": "docs/validation/companion-ssd1681-custom-mode2-observable-r6-runtime-20260721.json",
+    "runtime_artifact_sha256": "6CB1E7D395D6CACF4297D5E95FCE3E74A078D446762F27A57738F3FD6A6359DE",
+    "candidate_hex_sha256": "71933D316D2D6DCDA75DB1C387B012D7B44E9C61244BEEBD4BF7C3DD68047D99",
+    "candidate_activations": 16,
+    "observation_elapsed_ms": 9633,
+    "busy_elapsed_ms": [599, 599, 599, 599, 599, 599, 599, 599, 599, 599, 599, 599, 599, 599, 599, 599],
+    "dual_plane_preclean_both_banks_all_white": true,
+    "dual_plane_postclean_both_banks_all_white": true,
+    "exact_raw_restore": true,
+    "normal_application_resumed": true
+  },
+  "operator": {
+    "status": "FAIL_OPERATOR_R6_PATTERN_DISAPPEARED_DIRECTION_WRONG",
+    "selected": "失败",
+    "note": "这个不太行, 应该方向是错误的, 没有图案了直接",
+    "operator_artifact": "docs/validation/companion-ssd1681-custom-mode2-observable-r6-operator-20260721.json",
+    "operator_artifact_sha256": "A031EAE5E7FE365741D023F715F04973B78D69012FDC2149B57F0623F81F77D0"
+  },
+  "conclusion": "R6 proved the TP16 transport and timing chain but failed its optical purpose: the local pattern disappeared entirely. The stationary-suppression TP16 direction is rejected, not merely under-observed.",
+  "research_diagnosis": {
+    "status": "PASS_RESEARCH_R6_FAILURE_DIAGNOSIS_NO_NEW_HARDWARE_CANDIDATE",
+    "artifact": "docs/validation/companion-ssd1681-custom-mode2-observable-r6-failure-diagnosis-20260721.json",
+    "artifact_sha256": "CD58E1AFF90339A2A3528C9C86B22F641DD010A4D275AF75410E16F812552289",
+    "strongest_hypothesis": "TP16 preserves supplier BW/WB voltage codes but reduces each symmetric transition timing group from 25 to 8 frame counts and removes all BB/WW reinforcement; pattern disappearance is consistent with insufficient optical transition impulse, not a RAM-bank mapping error."
+  },
+  "next_boundary": "Research-only compare the R4/R6 TP16 transition bytes and semantics against the immutable supplier original LUT. Do not build, flash, rerun R6 or admit a successor until root reviews the diagnosis and records a new bounded contract.",
+  "protected_boundaries": {
+    "supplier_input_modified": false,
+    "owner_acceptance_modified": false,
+    "v9_rig_crig_browser_dynamic_binding_modified": false,
+    "production_path_promoted": false,
+    "new_hardware_candidate_executed": false
+  },
+  "goal_terminal": false
+}

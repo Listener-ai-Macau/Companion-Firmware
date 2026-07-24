@@ -1,0 +1,57 @@
+{
+  "schema_id": "companion.wb55.gdey0154d67_t03.vendor_partial_draw_final_operator.v1",
+  "status": "NO_GO_OPERATOR_VISIBLE_RESIDUE_DRAW_FINAL",
+  "generated_at": "2026-07-20T21:34:51+08:00",
+  "claim_scope": "Current-room, production-off physical observation of the source-bound draw-then-final diagnostic only. This is neither a production promotion nor a temperature, panel-identity, custom-waveform, or residue-free continuous-motion claim.",
+  "machine_prerequisites": {
+    "static_gate": {
+      "path": "docs/validation/companion-gdey0154d67-t03-vendor-partial-draw-final-static-20260720.json",
+      "sha256": "5DB8A40C212A166B7D96F19D6C7860EC33D2263F7F9B11653980411282524160",
+      "status": "PASS_STATIC_PRODUCTION_OFF_VENDOR_PARTIAL_DRAW_FINAL"
+    },
+    "runtime_trace": {
+      "path": "docs/validation/companion-gdey0154d67-t03-vendor-partial-draw-final-runtime-20260720.json",
+      "sha256": "FCD31FDF99BEA9DFBA2BFBA49BB1490FBA6999A926E9364EF2D51EDABE0C6F8D",
+      "status": "PASS_MACHINE_DRAW_FINAL_TRACE",
+      "observed_partial_frames": 48,
+      "per_motion_activation_count": 2,
+      "control": "0xFF",
+      "forbidden_control": "0xC7",
+      "local_window_bytes": "75..135"
+    }
+  },
+  "operator_review": {
+    "tool": "aiw operator-prompt",
+    "selection": "失败",
+    "artifact": {
+      "path": ".cache/validation/wb55-vendor-partial-draw-final-r1-20260720/operator/operator-observation.json",
+      "sha256": "89A5B1EB710EA7BC122BB6CADD3E99542D277C45DB902EB9E94942777E1AA008"
+    },
+    "note": "可以, 但是有一帧会出现残影",
+    "observed_behavior": [
+      "The temporary old-plus-new draw removes the prior empty disappearance gap.",
+      "At least one settling frame has visible residual image."
+    ],
+    "disposition": "Visible residue is a physical failure even though the source hash, command family, bounded local writes, two 0xFF activations, BUSY completions, and no-C7 machine trace all pass. Do not promote or repeat this exact draw-union then full-final-window candidate."
+  },
+  "implementation_binding": {
+    "driver": {
+      "path": "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
+      "sha256": "D096D76ABF4A28EF6F3447B80E32E95745D552B31DBB94A7F34D0575A5606DB7"
+    },
+    "diagnostic_image": {
+      "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_vendor_partial_draw_final_operator_loop_diagnostic/Companion_Nucleo_WB55RG_VendorPartialDrawFinalOperatorLoopDiagnostic.hex",
+      "sha256": "CECE4139D3CA401B1724265947AF27FAEAAA985B5CF6D0247310ED152F038211",
+      "frames": 360
+    },
+    "normal_restore": {
+      "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build/Companion_Nucleo_WB55RG_Bringup.hex",
+      "sha256": "E1997F29DCB8735899B4BC0B9012CF75025F3CA8D21250485BCC21E4C4691B46",
+      "flash_stdout": ".cache/validation/flash-nucleo/stm32-programmer-20260720-213451-31252.stdout.log",
+      "flash_stdout_sha256": "64CFDA5E730F10FD3BEB8D2C78D7598BEB8832829B86E5C5D5B3982EB9E29807",
+      "verified": true
+    }
+  },
+  "regression_contract": "The accepted erase-then-draw cleanup/draw observation remains the no-visible-residue/no-whole-screen-black-flash fallback. This draw-union then full-final candidate is a regression failure and must not replace that fallback.",
+  "next_boundary": "Only the separately registered production-off old-only cleanup after union-draw comparator may be evaluated next; it must use the same supplier local command family and separately prove bounded payloads, exactly two 0xFF activations, no C7, BUSY completion, canonical operator review, and normal restore."
+}

@@ -1,0 +1,27 @@
+{
+  "schema_id": "companion.wb55.ssd1681_custom_mode2_dual_plane_clean_r5_operator.v1",
+  "status": "FAIL_OPERATOR_R5_NOT_OBSERVED",
+  "requirement": "COMP-REQ-298",
+  "tool": "canonical aiw operator-prompt",
+  "title": "Companion R5 双平面基线局刷观感验收",
+  "selected": "失败",
+  "note": "没看见, 下次你搞连续的变动, 然后有一次提醒就行我就会来看",
+  "interpretation": "The owner did not observe the finite nine-transition interval. This is a visual NO_GO due to missing observation, not evidence that R5 looked clean or dirty.",
+  "artifacts": {
+    "visual_verdict": {
+      "path": ".cache/validation/wb55-custom-mode2-dual-plane-clean-r5-execute-20260721-a/r5-visual-verdict.json",
+      "sha256": "EF82B130F5CDD4F6594AF2F9B6FCF1435C3A063DCDADB9816DFBB6C12793D1D4"
+    },
+    "canonical_note": {
+      "path": ".cache/validation/wb55-custom-mode2-dual-plane-clean-r5-execute-20260721-a/r5-visual-verdict-note.txt",
+      "sha256": "1C0EC5D9BE970FA1DE3D50DF31E3007E8D921FB84CD5D5C857336FBC7D91BD4C"
+    },
+    "machine_stage_sha256": "820FBB484C13B22D83380437750DBD15E8D144B484017CB76EA24661FF3F07BD"
+  },
+  "next_owner_direction": {
+    "continuous_visible_change": true,
+    "one_timely_reminder": true,
+    "automatic_rerun_authorized": false,
+    "motion_120_frame_authorized": false
+  }
+}

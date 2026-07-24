@@ -1,0 +1,67 @@
+{
+  "schema": "companion.v9_special_expression_internal_visual_preflight.v2",
+  "status": "FAIL_INTERNAL_VISUAL_PREFLIGHT_V26_ACTION_SEMANTICS",
+  "date": "2026-07-20",
+  "candidate": "V26 action-verb special-expression source",
+  "purpose": "Internal native-200x200 semantic reading gate required before any canonical Chinese owner-art window. This is a visual-semantic decision, not a replacement for the passing component or browser-target machine gates.",
+  "machine_evidence": {
+    "source_gate": "docs/validation/companion-v26-action-verb-special-expression-source-gate-20260720.json",
+    "component_export_gate": "docs/validation/companion-v26-action-verb-special-expression-component-export-gate-20260720.json",
+    "component_performance_preview": "docs/validation/companion-v26-action-verb-special-expression-component-performance-preview-20260720.json",
+    "browser_target_plan_parity": "docs/validation/companion-v26-action-verb-special-expression-component-performance-parity-20260720.json",
+    "browser_render": "docs/validation/companion-v26-action-verb-special-expression-component-browser-render-20260720.json"
+  },
+  "inspection_contract": {
+    "native_target_size": [200, 200],
+    "labels_hidden_for_reading": true,
+    "evaluated_artifacts": [
+      "docs/art/iterations/companion-pet-expression-v9-extension-v26-action-verb-special-expression-source/candidate/component-performance-preview/browser-menu-hold-native-200x200-20260720.png",
+      "docs/art/iterations/companion-pet-expression-v9-extension-v26-action-verb-special-expression-source/candidate/component-performance-preview/browser-recording-hold-native-200x200-20260720.png",
+      "docs/art/iterations/companion-pet-expression-v9-extension-v26-action-verb-special-expression-source/candidate/component-performance-preview/browser-charging-hold-native-200x200-20260720.png"
+    ],
+    "causal_playback_reviewed": true,
+    "whole_face_playback": false,
+    "runtime_resource_activated": false
+  },
+  "state_reading": [
+    {
+      "state": "menu_active",
+      "intended_read": "quiet deliberate choosing/navigation",
+      "observed_unlabeled_read": "neutral focus with a trace of hesitation; the asymmetric brow alone does not independently establish choosing",
+      "causal_choreography_read": "the highlight scan adds motion but the hold remains semantically generic without its label",
+      "result": "FAIL_UNIQUE_ACTION_READ"
+    },
+    {
+      "state": "recording_active",
+      "intended_read": "quiet active listening with a ready acknowledgement",
+      "observed_unlabeled_read": "concern or apprehension; the inward-sloping brows dominate the tiny acknowledgement mouth at 200x200",
+      "causal_choreography_read": "the acknowledgement amplitude is too small to reverse the concern read during the short performance",
+      "result": "FAIL_WRONG_AFFECT_READ"
+    },
+    {
+      "state": "charging_active",
+      "intended_read": "settled restorative replenishment",
+      "observed_unlabeled_read": "generic pleasant happiness; the relaxed smile is not independently restorative or charge-specific",
+      "causal_choreography_read": "the release motion is causal but too shallow to distinguish recovery from a normal happy beat",
+      "result": "FAIL_GENERIC_AFFECT_READ"
+    }
+  ],
+  "decision": {
+    "owner_operator_prompt_opened": false,
+    "human_art_acceptance_requested": false,
+    "candidate_disposition": "AUDIT_ONLY_REJECTED_SOURCE",
+    "forbidden_as_future_prompt_or_reference_input": true,
+    "retain_machine_artifacts": true,
+    "forbidden_next_actions": [
+      "owner_art_review",
+      "CRIG_export",
+      "profile_generation",
+      "event_binding",
+      "firmware_flash",
+      "physical_panel_claim",
+      "whole_face_fallback",
+      "player_rewrite_to_mask_the_semantic_failure"
+    ],
+    "required_next_direction": "Start a new V9-only source brief that creates stronger face-primary and motion-integral action silhouettes. It may not use V26, V25, V24, V23 or legacy art as visual prompt/reference input."
+  }
+}

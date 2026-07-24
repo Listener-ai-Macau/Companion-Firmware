@@ -1,0 +1,11 @@
+{
+  "schema_id": "companion.wb55.ssd1681.r10.r6_r2_runtime_disposition.v1",
+  "status": "OWNER_VISUAL_FAIL_HOST_FINALIZATION_SEPARATE",
+  "input_root": ".cache/validation/wb55-r10-r6-target-unipolar-execute-20260722-r2",
+  "machine_qualification": {"status": "PASS", "frames": 16, "busy_max_ms": 599},
+  "observation": {"loop_records": 52, "status": "NO_GO_FINALIZATION", "visual_verdict": "FAIL", "owner_note": "还是那种脏背景的感觉，然后你的背景就一下脏一下变白，一下脏一下变白。然后呢球本身也会和交接的重影。然后那个交接的位置会被截断。整体来看起来跟以前的现象失败的现象是一样的。\r\n", "owner_note_sha256": "FAA99D6EE5B6CAFEB71BA9FF0A569B2B34FECC67DF56C2F344678D35CDEC704C"},
+  "cleanup": {"postclean": "PASS", "restore_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C", "restore_byte_identical": true, "normal_resume": "PASS", "retry_count": 0, "live_processes": 0},
+  "host_fault": "NO_GO_FINALIZATION after valid owner selection; this does not invalidate the human visual FAIL.",
+  "hardware_contact": 1,
+  "popup_count": 1
+}

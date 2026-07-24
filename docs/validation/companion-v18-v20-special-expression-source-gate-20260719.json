@@ -1,0 +1,204 @@
+{
+  "schema": "companion.v18_v20_complete_special_expression_source_gate.v1",
+  "status": "PASS_V18_V20_COMPLETE_SPECIAL_EXPRESSION_SOURCE_GATE",
+  "entries": {
+    "menu_active": {
+      "attempt": "docs/art/iterations/companion-pet-expression-v9-extension-v18-menu-special-expression-source/candidate/attempt-01-generated-menu-special-expression.json",
+      "status": "PASS",
+      "metrics": {
+        "component_count": 11,
+        "ink_pixels": 66514,
+        "border_ink_pixels": 0,
+        "identity_geometry": {
+          "left_eye": {
+            "crop": [
+              333,
+              575,
+              500,
+              794
+            ],
+            "ink_pixels": 23885
+          },
+          "right_eye": {
+            "crop": [
+              754,
+              575,
+              921,
+              794
+            ],
+            "ink_pixels": 23843
+          },
+          "eye_pair_center": [
+            627.0,
+            684.5
+          ],
+          "eye_gap_ratio": 1.5209580838323353,
+          "brow_component_count": 2,
+          "lower_face_component_count": 3
+        },
+        "special_geometry": {
+          "context_component_count": 3,
+          "context_crops": [
+            [
+              610,
+              239,
+              643,
+              271
+            ],
+            [
+              610,
+              300,
+              643,
+              333
+            ],
+            [
+              610,
+              362,
+              643,
+              394
+            ]
+          ]
+        }
+      },
+      "errors": []
+    },
+    "recording_active": {
+      "attempt": "docs/art/iterations/companion-pet-expression-v9-extension-v19-recording-special-expression-source/candidate/attempt-01-generated-recording-special-expression.json",
+      "status": "PASS",
+      "metrics": {
+        "component_count": 12,
+        "ink_pixels": 68522,
+        "border_ink_pixels": 0,
+        "identity_geometry": {
+          "left_eye": {
+            "crop": [
+              364,
+              510,
+              522,
+              721
+            ],
+            "ink_pixels": 22203
+          },
+          "right_eye": {
+            "crop": [
+              750,
+              510,
+              908,
+              721
+            ],
+            "ink_pixels": 22163
+          },
+          "eye_pair_center": [
+            636.0,
+            615.5
+          ],
+          "eye_gap_ratio": 1.4430379746835442,
+          "brow_component_count": 2,
+          "lower_face_component_count": 3
+        },
+        "special_geometry": {
+          "context_component_count": 4,
+          "left_ripple_count": 2,
+          "right_ripple_count": 2,
+          "context_crops": [
+            [
+              163,
+              519,
+              215,
+              700
+            ],
+            [
+              1052,
+              520,
+              1102,
+              700
+            ],
+            [
+              214,
+              558,
+              249,
+              665
+            ],
+            [
+              1015,
+              558,
+              1050,
+              665
+            ]
+          ]
+        }
+      },
+      "errors": []
+    },
+    "upgrade_active": {
+      "attempt": "docs/art/iterations/companion-pet-expression-v9-extension-v20-upgrade-special-expression-source/candidate/attempt-01-generated-upgrade-special-expression.json",
+      "status": "PASS",
+      "metrics": {
+        "component_count": 12,
+        "ink_pixels": 75070,
+        "border_ink_pixels": 0,
+        "identity_geometry": {
+          "left_eye": {
+            "crop": [
+              313,
+              599,
+              489,
+              835
+            ],
+            "ink_pixels": 27526
+          },
+          "right_eye": {
+            "crop": [
+              765,
+              599,
+              941,
+              835
+            ],
+            "ink_pixels": 27367
+          },
+          "eye_pair_center": [
+            627.0,
+            717.0
+          ],
+          "eye_gap_ratio": 1.5681818181818181,
+          "brow_component_count": 2,
+          "lower_face_component_count": 3
+        },
+        "special_geometry": {
+          "context_component_count": 4,
+          "context_crops": [
+            [
+              571,
+              292,
+              614,
+              330
+            ],
+            [
+              641,
+              292,
+              684,
+              330
+            ],
+            [
+              566,
+              363,
+              605,
+              402
+            ],
+            [
+              651,
+              363,
+              689,
+              402
+            ]
+          ]
+        }
+      },
+      "errors": []
+    }
+  },
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden",
+  "component_export": "pending_source_mask_export",
+  "errors": []
+}

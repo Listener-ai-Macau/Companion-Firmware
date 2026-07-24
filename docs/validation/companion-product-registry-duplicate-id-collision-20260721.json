@@ -1,0 +1,20 @@
+{
+  "schema_id": "companion.product_registry.duplicate_id_collision.v1",
+  "status": "OPEN_DUPLICATE_ID_COLLISION_DO_NOT_INFER_LINEAGE",
+  "registry_sha256": "36BF6B7A4679CFEF5F7465D1DA3132DDF99786B3620E12301CE6FB654E95FD3C",
+  "duplicate_id": "COMP-REQ-291",
+  "occurrences": 2,
+  "parallel_tracks": [
+    "V45 browser review r5",
+    "lower-driver R3 TP19 experiment"
+  ],
+  "current_verifier_observation": "verify_companion_product_requirements.py returned PASS because its emitted ID list de-duplicates rows and does not reject duplicate IDs",
+  "sealed_artifacts_rewritten": false,
+  "r4_resolution": {
+    "requirement_id": "COMP-REQ-292",
+    "lineage_authority": "R3 disposition SHA-256 65F9CC8C505B370F0D683CDD9FAA08BDF22168E8D481D322EDC30270CEE407DC",
+    "depends_on_duplicate_id_semantics": false
+  },
+  "follow_up": "add a duplicate-ID rejection gate when the parallel registry writer can migrate its row without rewriting sealed lower-driver evidence",
+  "goal_terminal": false
+}

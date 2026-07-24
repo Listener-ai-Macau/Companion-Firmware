@@ -1,0 +1,5966 @@
+{
+  "schema": "companion.v9_v22_touch_emotion_route_preview.v1",
+  "status": "PASS_V9_V22_TOUCH_EMOTION_ROUTE_RUNTIME_INACTIVE",
+  "claim_scope": "candidate_component_route_preview_and_target_pbm_plan_not_runtime_binding_flash_or_physical_acceptance",
+  "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "runtime_resource_activated": false,
+  "physical_panel_acceptance": false,
+  "logical_route": [
+    "calm",
+    "curious",
+    "affectionate",
+    "curious",
+    "calm"
+  ],
+  "art_route": [
+    "v9_daily",
+    "v22_calm",
+    "v22_curious",
+    "v22_warm",
+    "v22_curious",
+    "v22_calm",
+    "v9_daily"
+  ],
+  "affectionate_art_pose": "v22_warm",
+  "entry_settle_v9_static_difference_pixels": {
+    "entry": 0,
+    "settle": 0
+  },
+  "daily_micro_settle_v9_static_difference_pixels": 0,
+  "v22_waypoints": [
+    {
+      "name": "v22_calm",
+      "frame_index": 5,
+      "emotion": "calm",
+      "different_pixels": 0
+    },
+    {
+      "name": "calm__curious_target",
+      "frame_index": 10,
+      "emotion": "curious",
+      "different_pixels": 0
+    },
+    {
+      "name": "curious__warm_target",
+      "frame_index": 15,
+      "emotion": "warm",
+      "different_pixels": 0
+    },
+    {
+      "name": "warm__curious_target",
+      "frame_index": 20,
+      "emotion": "curious",
+      "different_pixels": 0
+    },
+    {
+      "name": "curious__calm_target",
+      "frame_index": 25,
+      "emotion": "calm",
+      "different_pixels": 0
+    }
+  ],
+  "selection_policy": {
+    "mode": "explicit_event_performance",
+    "random_emotion_selection": false,
+    "automatic_cross_emotion_cycle": false,
+    "daily_auto_only_runs_daily_micro_choreography": true,
+    "familiar_touch_terminal_logical_emotion": "affectionate",
+    "idle_settle_returns_to": "v9_daily"
+  },
+  "performances": [
+    {
+      "id": "daily_micro",
+      "event": "daily_auto",
+      "frame_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "terminal_art_pose": "v9_daily"
+    },
+    {
+      "id": "familiar_touch",
+      "event": "familiar_touch",
+      "frame_indices": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "terminal_art_pose": "v22_warm"
+    },
+    {
+      "id": "idle_settle",
+      "event": "idle_settle",
+      "frame_indices": [
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29
+      ],
+      "terminal_art_pose": "v9_daily"
+    }
+  ],
+  "emotion_micro_choreography": {
+    "daily": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "curious": [
+      9,
+      10,
+      19,
+      20
+    ],
+    "affectionate": [
+      14,
+      15
+    ],
+    "calm": [
+      24,
+      25
+    ]
+  },
+  "frames": [
+    {
+      "index": 0,
+      "segment": "v9_daily_entry",
+      "logicalEmotion": "calm",
+      "artPose": "v9_daily",
+      "phase": "emotion_hold",
+      "event": "daily_auto",
+      "postRefreshHoldMs": 750,
+      "layers": [
+        {
+          "component": "v9:charm_star",
+          "name": "charm_star",
+          "role": "charm",
+          "source": "locked_v9_rig_component",
+          "x": 96,
+          "y": 31,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 10,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_brow_open",
+          "name": "left_brow_open",
+          "role": "left_brow",
+          "source": "locked_v9_rig_component",
+          "x": 47,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_brow_open",
+          "name": "right_brow_open",
+          "role": "right_brow",
+          "source": "locked_v9_rig_component",
+          "x": 132,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_cheek_default",
+          "name": "left_cheek_default",
+          "role": "left_cheek",
+          "source": "locked_v9_rig_component",
+          "x": 33,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_cheek_default",
+          "name": "right_cheek_default",
+          "role": "right_cheek",
+          "source": "locked_v9_rig_component",
+          "x": 154,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:mouth_default",
+          "name": "mouth_default",
+          "role": "mouth",
+          "source": "locked_v9_rig_component",
+          "x": 86,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v9-v22-touch-emotion-route-r2-20260720/frame-00-v9_daily_entry.pbm",
+      "targetPbmSha256": "B3847DF9CE2D20693C60C9CC7BC1EC8D8B8A3E23641F4521EE71508ABE13CB9E"
+    },
+    {
+      "index": 1,
+      "segment": "v9_attention_lead",
+      "logicalEmotion": "calm",
+      "artPose": "v9_daily",
+      "phase": "micro_choreography",
+      "event": "daily_auto",
+      "postRefreshHoldMs": 750,
+      "layers": [
+        {
+          "component": "v9:charm_star",
+          "name": "charm_star",
+          "role": "charm",
+          "source": "locked_v9_rig_component",
+          "x": 96,
+          "y": 31,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 10,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_brow_open",
+          "name": "left_brow_open",
+          "role": "left_brow",
+          "source": "locked_v9_rig_component",
+          "x": 47,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_brow_open",
+          "name": "right_brow_open",
+          "role": "right_brow",
+          "source": "locked_v9_rig_component",
+          "x": 132,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 43,
+          "y": 111,
+          "offset": [
+            1,
+            -1
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 126,
+          "y": 111,
+          "offset": [
+            1,
+            -1
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_cheek_default",
+          "name": "left_cheek_default",
+          "role": "left_cheek",
+          "source": "locked_v9_rig_component",
+          "x": 33,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_cheek_default",
+          "name": "right_cheek_default",
+          "role": "right_cheek",
+          "source": "locked_v9_rig_component",
+          "x": 154,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:mouth_default",
+          "name": "mouth_default",
+          "role": "mouth",
+          "source": "locked_v9_rig_component",
+          "x": 86,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v9-v22-touch-emotion-route-r2-20260720/frame-01-v9_attention_lead.pbm",
+      "targetPbmSha256": "4A9ECFEED7CFD3F2795C77D7D0DD8B03AAC58D6819FFB2F8D102ECA3DE71B2A5"
+    },
+    {
+      "index": 2,
+      "segment": "v9_charm_lift",
+      "logicalEmotion": "calm",
+      "artPose": "v9_daily",
+      "phase": "micro_choreography",
+      "event": "daily_auto",
+      "postRefreshHoldMs": 750,
+      "layers": [
+        {
+          "component": "v9:charm_star",
+          "name": "charm_star",
+          "role": "charm",
+          "source": "locked_v9_rig_component",
+          "x": 97,
+          "y": 29,
+          "offset": [
+            1,
+            -2
+          ],
+          "z_index": 10,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_brow_open",
+          "name": "left_brow_open",
+          "role": "left_brow",
+          "source": "locked_v9_rig_component",
+          "x": 47,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_brow_open",
+          "name": "right_brow_open",
+          "role": "right_brow",
+          "source": "locked_v9_rig_component",
+          "x": 132,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_cheek_default",
+          "name": "left_cheek_default",
+          "role": "left_cheek",
+          "source": "locked_v9_rig_component",
+          "x": 33,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_cheek_default",
+          "name": "right_cheek_default",
+          "role": "right_cheek",
+          "source": "locked_v9_rig_component",
+          "x": 154,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:mouth_default",
+          "name": "mouth_default",
+          "role": "mouth",
+          "source": "locked_v9_rig_component",
+          "x": 86,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v9-v22-touch-emotion-route-r2-20260720/frame-02-v9_charm_lift.pbm",
+      "targetPbmSha256": "72BFE8790FD7C78228DA99881F47D31687CA56BEF40D3E048A95567AB9BF23FB"
+    },
+    {
+      "index": 3,
+      "segment": "v9_daily_micro_settle",
+      "logicalEmotion": "calm",
+      "artPose": "v9_daily",
+      "phase": "emotion_hold",
+      "event": "daily_auto",
+      "postRefreshHoldMs": 750,
+      "layers": [
+        {
+          "component": "v9:charm_star",
+          "name": "charm_star",
+          "role": "charm",
+          "source": "locked_v9_rig_component",
+          "x": 96,
+          "y": 31,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 10,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_brow_open",
+          "name": "left_brow_open",
+          "role": "left_brow",
+          "source": "locked_v9_rig_component",
+          "x": 47,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_brow_open",
+          "name": "right_brow_open",
+          "role": "right_brow",
+          "source": "locked_v9_rig_component",
+          "x": 132,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_cheek_default",
+          "name": "left_cheek_default",
+          "role": "left_cheek",
+          "source": "locked_v9_rig_component",
+          "x": 33,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_cheek_default",
+          "name": "right_cheek_default",
+          "role": "right_cheek",
+          "source": "locked_v9_rig_component",
+          "x": 154,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:mouth_default",
+          "name": "mouth_default",
+          "role": "mouth",
+          "source": "locked_v9_rig_component",
+          "x": 86,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v9-v22-touch-emotion-route-r2-20260720/frame-03-v9_daily_micro_settle.pbm",
+      "targetPbmSha256": "B3847DF9CE2D20693C60C9CC7BC1EC8D8B8A3E23641F4521EE71508ABE13CB9E"
+    },
+    {
+      "index": 4,
+      "segment": "v9_to_calm_brows",
+      "logicalEmotion": "calm",
+      "artPose": "v22_calm",
+      "phase": "transition",
+      "event": "familiar_touch",
+      "postRefreshHoldMs": 750,
+      "layers": [
+        {
+          "component": "v22:v22_calm__left_brow",
+          "name": "v22_calm__left_brow",
+          "role": "left_brow",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 45,
+          "y": 86,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_calm__right_brow",
+          "name": "v22_calm__right_brow",
+          "role": "right_brow",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 127,
+          "y": 86,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_cheek_default",
+          "name": "left_cheek_default",
+          "role": "left_cheek",
+          "source": "locked_v9_rig_component",
+          "x": 33,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_cheek_default",
+          "name": "right_cheek_default",
+          "role": "right_cheek",
+          "source": "locked_v9_rig_component",
+          "x": 154,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:mouth_default",
+          "name": "mouth_default",
+          "role": "mouth",
+          "source": "locked_v9_rig_component",
+          "x": 86,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v9-v22-touch-emotion-route-r2-20260720/frame-04-v9_to_calm_brows.pbm",
+      "targetPbmSha256": "D0A71407C7146F8A376EE3D3EA43A67205E63DCD212164D9F1A822BCAFE76723"
+    },
+    {
+      "index": 5,
+      "segment": "v9_to_calm_lower",
+      "logicalEmotion": "calm",
+      "artPose": "v22_calm",
+      "phase": "transition",
+      "event": "familiar_touch",
+      "postRefreshHoldMs": 750,
+      "layers": [
+        {
+          "component": "v22:v22_calm__left_brow",
+          "name": "v22_calm__left_brow",
+          "role": "left_brow",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 45,
+          "y": 86,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_calm__right_brow",
+          "name": "v22_calm__right_brow",
+          "role": "right_brow",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 127,
+          "y": 86,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:v22_calm__left_cheek",
+          "name": "v22_calm__left_cheek",
+          "role": "left_cheek",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 33,
+          "y": 158,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_calm__right_cheek",
+          "name": "v22_calm__right_cheek",
+          "role": "right_cheek",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 152,
+          "y": 157,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_calm__mouth",
+          "name": "v22_calm__mouth",
+          "role": "mouth",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 86,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v9-v22-touch-emotion-route-r2-20260720/frame-05-v9_to_calm_lower.pbm",
+      "targetPbmSha256": "DCDE74BE44CD33E881F33BC4FC6397D6269A4749BE90BCD7A1999A53D44D4B79"
+    },
+    {
+      "index": 6,
+      "segment": "calm__curious_primary_highlight_lead",
+      "logicalEmotion": "curious",
+      "artPose": "v22_curious",
+      "phase": "transition",
+      "event": "familiar_touch",
+      "postRefreshHoldMs": 750,
+      "layers": [
+        {
+          "component": "v22:v22_calm__left_brow",
+          "name": "v22_calm__left_brow",
+          "role": "left_brow",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 45,
+          "y": 86,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_calm__right_brow",
+          "name": "v22_calm__right_brow",
+          "role": "right_brow",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 127,
+          "y": 86,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_v1_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_v1_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_v1_component",
+          "x": 41,
+          "y": 110,
+          "offset": [
+            -1,
+            -2
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_v1_component",
+          "x": 124,
+          "y": 110,
+          "offset": [
+            -1,
+            -2
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_v1_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_v1_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:v22_calm__left_cheek",
+          "name": "v22_calm__left_cheek",
+          "role": "left_cheek",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 33,
+          "y": 158,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_calm__right_cheek",
+          "name": "v22_calm__right_cheek",
+          "role": "right_cheek",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 152,
+          "y": 157,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_v1_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_calm__mouth",
+          "name": "v22_calm__mouth",
+          "role": "mouth",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 86,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v9-v22-touch-emotion-route-r2-20260720/frame-06-calm__curious_primary_highlight_lead.pbm",
+      "targetPbmSha256": "628260039BF64C94034A843677251823903DC0ECC78181ABB49CB96AA43DB647"
+    },
+    {
+      "index": 7,
+      "segment": "calm__curious_brow_apex",
+      "logicalEmotion": "curious",
+      "artPose": "v22_curious",
+      "phase": "transition",
+      "event": "familiar_touch",
+      "postRefreshHoldMs": 750,
+      "layers": [
+        {
+          "component": "v22:v22_curious__left_brow",
+          "name": "v22_curious__left_brow",
+          "role": "left_brow",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 56,
+          "y": 70,
+          "offset": [
+            0,
+            -1
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_curious__right_brow",
+          "name": "v22_curious__right_brow",
+          "role": "right_brow",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 124,
+          "y": 89,
+          "offset": [
+            0,
+            -1
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_v1_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_v1_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_v1_component",
+          "x": 41,
+          "y": 110,
+          "offset": [
+            -1,
+            -2
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_v1_component",
+          "x": 124,
+          "y": 110,
+          "offset": [
+            -1,
+            -2
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_v1_component",
+          "x": 41,
+          "y": 110,
+          "offset": [
+            -1,
+            -2
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_v1_component",
+          "x": 124,
+          "y": 110,
+          "offset": [
+            -1,
+            -2
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:v22_calm__left_cheek",
+          "name": "v22_calm__left_cheek",
+          "role": "left_cheek",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 33,
+          "y": 158,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_calm__right_cheek",
+          "name": "v22_calm__right_cheek",
+          "role": "right_cheek",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 152,
+          "y": 157,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_v1_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_calm__mouth",
+          "name": "v22_calm__mouth",
+          "role": "mouth",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 86,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v9-v22-touch-emotion-route-r2-20260720/frame-07-calm__curious_brow_apex.pbm",
+      "targetPbmSha256": "5A587963321769808CEDCAFFDED6C2F3314D015F08259E7592F531F9F38A8F78"
+    },
+    {
+      "index": 8,
+      "segment": "calm__curious_lower_face_apex",
+      "logicalEmotion": "curious",
+      "artPose": "v22_curious",
+      "phase": "transition",
+      "event": "familiar_touch",
+      "postRefreshHoldMs": 750,
+      "layers": [
+        {
+          "component": "v22:v22_curious__left_brow",
+          "name": "v22_curious__left_brow",
+          "role": "left_brow",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 56,
+          "y": 71,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_curious__right_brow",
+          "name": "v22_curious__right_brow",
+          "role": "right_brow",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 124,
+          "y": 90,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_v1_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_v1_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_v1_component",
+          "x": 41,
+          "y": 110,
+          "offset": [
+            -1,
+            -2
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_v1_component",
+          "x": 124,
+          "y": 110,
+          "offset": [
+            -1,
+            -2
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_v1_component",
+          "x": 41,
+          "y": 110,
+          "offset": [
+            -1,
+            -2
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_v1_component",
+          "x": 124,
+          "y": 110,
+          "offset": [
+            -1,
+            -2
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:v22_curious__left_cheek",
+          "name": "v22_curious__left_cheek",
+          "role": "left_cheek",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 31,
+          "y": 156,
+          "offset": [
+            0,
+            -1
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_curious__right_cheek",
+          "name": "v22_curious__right_cheek",
+          "role": "right_cheek",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 152,
+          "y": 153,
+          "offset": [
+            0,
+            -1
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_v1_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_curious__mouth",
+          "name": "v22_curious__mouth",
+          "role": "mouth",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 92,
+          "y": 161,
+          "offset": [
+            0,
+            1
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v9-v22-touch-emotion-route-r2-20260720/frame-08-calm__curious_lower_face_apex.pbm",
+      "targetPbmSha256": "80341E33C45C243ED25082381C3C27C912F108EF1CD1336F7D21BC5B8D15624B"
+    },
+    {
+      "index": 9,
+      "segment": "calm__curious_target_hold",
+      "logicalEmotion": "curious",
+      "artPose": "v22_curious",
+      "phase": "emotion_hold",
+      "event": "familiar_touch",
+      "postRefreshHoldMs": 1500,
+      "layers": [
+        {
+          "component": "v22:v22_curious__left_brow",
+          "name": "v22_curious__left_brow",
+          "role": "left_brow",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 56,
+          "y": 71,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_curious__right_brow",
+          "name": "v22_curious__right_brow",
+          "role": "right_brow",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 124,
+          "y": 90,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_v1_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_v1_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_v1_component",
+          "x": 41,
+          "y": 110,
+          "offset": [
+            -1,
+            -2
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_v1_component",
+          "x": 124,
+          "y": 110,
+          "offset": [
+            -1,
+            -2
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_v1_component",
+          "x": 41,
+          "y": 110,
+          "offset": [
+            -1,
+            -2
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_v1_component",
+          "x": 124,
+          "y": 110,
+          "offset": [
+            -1,
+            -2
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:v22_curious__left_cheek",
+          "name": "v22_curious__left_cheek",
+          "role": "left_cheek",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 31,
+          "y": 157,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_curious__right_cheek",
+          "name": "v22_curious__right_cheek",
+          "role": "right_cheek",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 152,
+          "y": 154,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_v1_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_curious__mouth",
+          "name": "v22_curious__mouth",
+          "role": "mouth",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 92,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v9-v22-touch-emotion-route-r2-20260720/frame-09-calm__curious_target_hold.pbm",
+      "targetPbmSha256": "F97E8923DDD1C3B448D764BA502A692D7758A77EB772B6222CD1C0985F312958"
+    },
+    {
+      "index": 10,
+      "segment": "calm__curious_highlight_settle",
+      "logicalEmotion": "curious",
+      "artPose": "v22_curious",
+      "phase": "micro_choreography",
+      "event": "familiar_touch",
+      "postRefreshHoldMs": 750,
+      "layers": [
+        {
+          "component": "v22:v22_curious__left_brow",
+          "name": "v22_curious__left_brow",
+          "role": "left_brow",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 56,
+          "y": 71,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_curious__right_brow",
+          "name": "v22_curious__right_brow",
+          "role": "right_brow",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 124,
+          "y": 90,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_v1_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_v1_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_v1_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_v1_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_v1_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_v1_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:v22_curious__left_cheek",
+          "name": "v22_curious__left_cheek",
+          "role": "left_cheek",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 31,
+          "y": 157,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_curious__right_cheek",
+          "name": "v22_curious__right_cheek",
+          "role": "right_cheek",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 152,
+          "y": 154,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_v1_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_curious__mouth",
+          "name": "v22_curious__mouth",
+          "role": "mouth",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 92,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v9-v22-touch-emotion-route-r2-20260720/frame-10-calm__curious_highlight_settle.pbm",
+      "targetPbmSha256": "C8D856E609C82AA88BF45EAC506BAC153AEF081A49289138F80E08813582F78F"
+    },
+    {
+      "index": 11,
+      "segment": "curious__warm_primary_highlight_lead",
+      "logicalEmotion": "affectionate",
+      "artPose": "v22_warm",
+      "phase": "transition",
+      "event": "familiar_touch",
+      "postRefreshHoldMs": 750,
+      "layers": [
+        {
+          "component": "v22:v22_curious__left_brow",
+          "name": "v22_curious__left_brow",
+          "role": "left_brow",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 56,
+          "y": 71,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_curious__right_brow",
+          "name": "v22_curious__right_brow",
+          "role": "right_brow",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 124,
+          "y": 90,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_v1_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_v1_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_v1_component",
+          "x": 44,
+          "y": 112,
+          "offset": [
+            2,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_v1_component",
+          "x": 127,
+          "y": 112,
+          "offset": [
+            2,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_v1_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_v1_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:v22_curious__left_cheek",
+          "name": "v22_curious__left_cheek",
+          "role": "left_cheek",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 31,
+          "y": 157,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_curious__right_cheek",
+          "name": "v22_curious__right_cheek",
+          "role": "right_cheek",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 152,
+          "y": 154,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_v1_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_curious__mouth",
+          "name": "v22_curious__mouth",
+          "role": "mouth",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 92,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v9-v22-touch-emotion-route-r2-20260720/frame-11-curious__warm_primary_highlight_lead.pbm",
+      "targetPbmSha256": "274BB329A4AD4BF9EF4C8B9CDB2C8263F84B66BE5B0587FFE9632049C2FDC03F"
+    },
+    {
+      "index": 12,
+      "segment": "curious__warm_brow_apex",
+      "logicalEmotion": "affectionate",
+      "artPose": "v22_warm",
+      "phase": "transition",
+      "event": "familiar_touch",
+      "postRefreshHoldMs": 750,
+      "layers": [
+        {
+          "component": "v22:v22_warm__left_brow",
+          "name": "v22_warm__left_brow",
+          "role": "left_brow",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 49,
+          "y": 84,
+          "offset": [
+            0,
+            -1
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_warm__right_brow",
+          "name": "v22_warm__right_brow",
+          "role": "right_brow",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 122,
+          "y": 84,
+          "offset": [
+            0,
+            -1
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_v1_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_v1_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_v1_component",
+          "x": 44,
+          "y": 112,
+          "offset": [
+            2,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_v1_component",
+          "x": 127,
+          "y": 112,
+          "offset": [
+            2,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_v1_component",
+          "x": 44,
+          "y": 112,
+          "offset": [
+            2,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_v1_component",
+          "x": 127,
+          "y": 112,
+          "offset": [
+            2,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:v22_curious__left_cheek",
+          "name": "v22_curious__left_cheek",
+          "role": "left_cheek",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 31,
+          "y": 157,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_curious__right_cheek",
+          "name": "v22_curious__right_cheek",
+          "role": "right_cheek",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 152,
+          "y": 154,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_v1_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_curious__mouth",
+          "name": "v22_curious__mouth",
+          "role": "mouth",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 92,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v9-v22-touch-emotion-route-r2-20260720/frame-12-curious__warm_brow_apex.pbm",
+      "targetPbmSha256": "BBFFE38C7D61BF0F92EB273685AC29178AC49F92C465ED552CB7CFAF17614CA8"
+    },
+    {
+      "index": 13,
+      "segment": "curious__warm_lower_face_apex",
+      "logicalEmotion": "affectionate",
+      "artPose": "v22_warm",
+      "phase": "transition",
+      "event": "familiar_touch",
+      "postRefreshHoldMs": 750,
+      "layers": [
+        {
+          "component": "v22:v22_warm__left_brow",
+          "name": "v22_warm__left_brow",
+          "role": "left_brow",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 49,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_warm__right_brow",
+          "name": "v22_warm__right_brow",
+          "role": "right_brow",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 122,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_v1_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_v1_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_v1_component",
+          "x": 44,
+          "y": 112,
+          "offset": [
+            2,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_v1_component",
+          "x": 127,
+          "y": 112,
+          "offset": [
+            2,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_v1_component",
+          "x": 44,
+          "y": 112,
+          "offset": [
+            2,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_v1_component",
+          "x": 127,
+          "y": 112,
+          "offset": [
+            2,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:v22_warm__left_cheek",
+          "name": "v22_warm__left_cheek",
+          "role": "left_cheek",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 32,
+          "y": 154,
+          "offset": [
+            0,
+            -1
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_warm__right_cheek",
+          "name": "v22_warm__right_cheek",
+          "role": "right_cheek",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 152,
+          "y": 153,
+          "offset": [
+            0,
+            -1
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_v1_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_warm__mouth",
+          "name": "v22_warm__mouth",
+          "role": "mouth",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 85,
+          "y": 158,
+          "offset": [
+            0,
+            1
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v9-v22-touch-emotion-route-r2-20260720/frame-13-curious__warm_lower_face_apex.pbm",
+      "targetPbmSha256": "FC3AE8F53FF29D1D0F580C7A980027FA76350CDFFE0EDB25DC12D56000116D0B"
+    },
+    {
+      "index": 14,
+      "segment": "curious__warm_target_hold",
+      "logicalEmotion": "affectionate",
+      "artPose": "v22_warm",
+      "phase": "emotion_hold",
+      "event": "familiar_touch",
+      "postRefreshHoldMs": 1500,
+      "layers": [
+        {
+          "component": "v22:v22_warm__left_brow",
+          "name": "v22_warm__left_brow",
+          "role": "left_brow",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 49,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_warm__right_brow",
+          "name": "v22_warm__right_brow",
+          "role": "right_brow",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 122,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_v1_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_v1_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_v1_component",
+          "x": 44,
+          "y": 112,
+          "offset": [
+            2,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_v1_component",
+          "x": 127,
+          "y": 112,
+          "offset": [
+            2,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_v1_component",
+          "x": 44,
+          "y": 112,
+          "offset": [
+            2,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_v1_component",
+          "x": 127,
+          "y": 112,
+          "offset": [
+            2,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:v22_warm__left_cheek",
+          "name": "v22_warm__left_cheek",
+          "role": "left_cheek",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 32,
+          "y": 155,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_warm__right_cheek",
+          "name": "v22_warm__right_cheek",
+          "role": "right_cheek",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 152,
+          "y": 154,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_v1_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_warm__mouth",
+          "name": "v22_warm__mouth",
+          "role": "mouth",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 85,
+          "y": 157,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v9-v22-touch-emotion-route-r2-20260720/frame-14-curious__warm_target_hold.pbm",
+      "targetPbmSha256": "9970E8C9A227D22BE24DDD8AC07AF73794070DC5DDDBF811362B1133E2BA1D21"
+    },
+    {
+      "index": 15,
+      "segment": "curious__warm_highlight_settle",
+      "logicalEmotion": "affectionate",
+      "artPose": "v22_warm",
+      "phase": "micro_choreography",
+      "event": "familiar_touch",
+      "postRefreshHoldMs": 750,
+      "layers": [
+        {
+          "component": "v22:v22_warm__left_brow",
+          "name": "v22_warm__left_brow",
+          "role": "left_brow",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 49,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_warm__right_brow",
+          "name": "v22_warm__right_brow",
+          "role": "right_brow",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 122,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_v1_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_v1_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_v1_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_v1_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_v1_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_v1_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:v22_warm__left_cheek",
+          "name": "v22_warm__left_cheek",
+          "role": "left_cheek",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 32,
+          "y": 155,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_warm__right_cheek",
+          "name": "v22_warm__right_cheek",
+          "role": "right_cheek",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 152,
+          "y": 154,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_v1_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_warm__mouth",
+          "name": "v22_warm__mouth",
+          "role": "mouth",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 85,
+          "y": 157,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v9-v22-touch-emotion-route-r2-20260720/frame-15-curious__warm_highlight_settle.pbm",
+      "targetPbmSha256": "8A822CA758361B7956371C6DF7A750E5DFC01947E454F14B289AE5B1BA381356"
+    },
+    {
+      "index": 16,
+      "segment": "warm__curious_primary_highlight_lead",
+      "logicalEmotion": "curious",
+      "artPose": "v22_curious",
+      "phase": "transition",
+      "event": "idle_settle",
+      "postRefreshHoldMs": 750,
+      "layers": [
+        {
+          "component": "v22:v22_warm__left_brow",
+          "name": "v22_warm__left_brow",
+          "role": "left_brow",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 49,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_warm__right_brow",
+          "name": "v22_warm__right_brow",
+          "role": "right_brow",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 122,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_v1_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_v1_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_v1_component",
+          "x": 40,
+          "y": 112,
+          "offset": [
+            -2,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_v1_component",
+          "x": 123,
+          "y": 112,
+          "offset": [
+            -2,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_v1_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_v1_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:v22_warm__left_cheek",
+          "name": "v22_warm__left_cheek",
+          "role": "left_cheek",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 32,
+          "y": 155,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_warm__right_cheek",
+          "name": "v22_warm__right_cheek",
+          "role": "right_cheek",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 152,
+          "y": 154,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_v1_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_warm__mouth",
+          "name": "v22_warm__mouth",
+          "role": "mouth",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 85,
+          "y": 157,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v9-v22-touch-emotion-route-r2-20260720/frame-16-warm__curious_primary_highlight_lead.pbm",
+      "targetPbmSha256": "E7AD3F642F183A18ECD6BB706AC0B7D6D4153C8E3C1FEF2AD75B3192456392A3"
+    },
+    {
+      "index": 17,
+      "segment": "warm__curious_brow_apex",
+      "logicalEmotion": "curious",
+      "artPose": "v22_curious",
+      "phase": "transition",
+      "event": "idle_settle",
+      "postRefreshHoldMs": 750,
+      "layers": [
+        {
+          "component": "v22:v22_curious__left_brow",
+          "name": "v22_curious__left_brow",
+          "role": "left_brow",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 56,
+          "y": 70,
+          "offset": [
+            0,
+            -1
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_curious__right_brow",
+          "name": "v22_curious__right_brow",
+          "role": "right_brow",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 124,
+          "y": 89,
+          "offset": [
+            0,
+            -1
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_v1_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_v1_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_v1_component",
+          "x": 40,
+          "y": 112,
+          "offset": [
+            -2,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_v1_component",
+          "x": 123,
+          "y": 112,
+          "offset": [
+            -2,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_v1_component",
+          "x": 40,
+          "y": 112,
+          "offset": [
+            -2,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_v1_component",
+          "x": 123,
+          "y": 112,
+          "offset": [
+            -2,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:v22_warm__left_cheek",
+          "name": "v22_warm__left_cheek",
+          "role": "left_cheek",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 32,
+          "y": 155,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_warm__right_cheek",
+          "name": "v22_warm__right_cheek",
+          "role": "right_cheek",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 152,
+          "y": 154,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_v1_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_warm__mouth",
+          "name": "v22_warm__mouth",
+          "role": "mouth",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 85,
+          "y": 157,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v9-v22-touch-emotion-route-r2-20260720/frame-17-warm__curious_brow_apex.pbm",
+      "targetPbmSha256": "FE84AB215EC7D4F2E19904D185370C396D54210A7CE64F26829D6708BBFA402C"
+    },
+    {
+      "index": 18,
+      "segment": "warm__curious_lower_face_apex",
+      "logicalEmotion": "curious",
+      "artPose": "v22_curious",
+      "phase": "transition",
+      "event": "idle_settle",
+      "postRefreshHoldMs": 750,
+      "layers": [
+        {
+          "component": "v22:v22_curious__left_brow",
+          "name": "v22_curious__left_brow",
+          "role": "left_brow",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 56,
+          "y": 71,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_curious__right_brow",
+          "name": "v22_curious__right_brow",
+          "role": "right_brow",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 124,
+          "y": 90,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_v1_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_v1_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_v1_component",
+          "x": 40,
+          "y": 112,
+          "offset": [
+            -2,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_v1_component",
+          "x": 123,
+          "y": 112,
+          "offset": [
+            -2,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_v1_component",
+          "x": 40,
+          "y": 112,
+          "offset": [
+            -2,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_v1_component",
+          "x": 123,
+          "y": 112,
+          "offset": [
+            -2,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:v22_curious__left_cheek",
+          "name": "v22_curious__left_cheek",
+          "role": "left_cheek",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 31,
+          "y": 156,
+          "offset": [
+            0,
+            -1
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_curious__right_cheek",
+          "name": "v22_curious__right_cheek",
+          "role": "right_cheek",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 152,
+          "y": 153,
+          "offset": [
+            0,
+            -1
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_v1_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_curious__mouth",
+          "name": "v22_curious__mouth",
+          "role": "mouth",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 92,
+          "y": 161,
+          "offset": [
+            0,
+            1
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v9-v22-touch-emotion-route-r2-20260720/frame-18-warm__curious_lower_face_apex.pbm",
+      "targetPbmSha256": "CCA1A9C87F40150C6B24066D730074061C340F2B9CDF6FDEE414E603E0FE934B"
+    },
+    {
+      "index": 19,
+      "segment": "warm__curious_target_hold",
+      "logicalEmotion": "curious",
+      "artPose": "v22_curious",
+      "phase": "emotion_hold",
+      "event": "idle_settle",
+      "postRefreshHoldMs": 1500,
+      "layers": [
+        {
+          "component": "v22:v22_curious__left_brow",
+          "name": "v22_curious__left_brow",
+          "role": "left_brow",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 56,
+          "y": 71,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_curious__right_brow",
+          "name": "v22_curious__right_brow",
+          "role": "right_brow",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 124,
+          "y": 90,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_v1_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_v1_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_v1_component",
+          "x": 40,
+          "y": 112,
+          "offset": [
+            -2,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_v1_component",
+          "x": 123,
+          "y": 112,
+          "offset": [
+            -2,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_v1_component",
+          "x": 40,
+          "y": 112,
+          "offset": [
+            -2,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_v1_component",
+          "x": 123,
+          "y": 112,
+          "offset": [
+            -2,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:v22_curious__left_cheek",
+          "name": "v22_curious__left_cheek",
+          "role": "left_cheek",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 31,
+          "y": 157,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_curious__right_cheek",
+          "name": "v22_curious__right_cheek",
+          "role": "right_cheek",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 152,
+          "y": 154,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_v1_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_curious__mouth",
+          "name": "v22_curious__mouth",
+          "role": "mouth",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 92,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v9-v22-touch-emotion-route-r2-20260720/frame-19-warm__curious_target_hold.pbm",
+      "targetPbmSha256": "86C1EB9B08FB5908B9837B7BEFAA7E98D5297355DFE4F37EA7AD2F16AFE5211E"
+    },
+    {
+      "index": 20,
+      "segment": "warm__curious_highlight_settle",
+      "logicalEmotion": "curious",
+      "artPose": "v22_curious",
+      "phase": "micro_choreography",
+      "event": "idle_settle",
+      "postRefreshHoldMs": 750,
+      "layers": [
+        {
+          "component": "v22:v22_curious__left_brow",
+          "name": "v22_curious__left_brow",
+          "role": "left_brow",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 56,
+          "y": 71,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_curious__right_brow",
+          "name": "v22_curious__right_brow",
+          "role": "right_brow",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 124,
+          "y": 90,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_v1_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_v1_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_v1_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_v1_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_v1_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_v1_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:v22_curious__left_cheek",
+          "name": "v22_curious__left_cheek",
+          "role": "left_cheek",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 31,
+          "y": 157,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_curious__right_cheek",
+          "name": "v22_curious__right_cheek",
+          "role": "right_cheek",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 152,
+          "y": 154,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_v1_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_curious__mouth",
+          "name": "v22_curious__mouth",
+          "role": "mouth",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 92,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v9-v22-touch-emotion-route-r2-20260720/frame-20-warm__curious_highlight_settle.pbm",
+      "targetPbmSha256": "C8D856E609C82AA88BF45EAC506BAC153AEF081A49289138F80E08813582F78F"
+    },
+    {
+      "index": 21,
+      "segment": "curious__calm_primary_highlight_lead",
+      "logicalEmotion": "calm",
+      "artPose": "v22_calm",
+      "phase": "transition",
+      "event": "idle_settle",
+      "postRefreshHoldMs": 750,
+      "layers": [
+        {
+          "component": "v22:v22_curious__left_brow",
+          "name": "v22_curious__left_brow",
+          "role": "left_brow",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 56,
+          "y": 71,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_curious__right_brow",
+          "name": "v22_curious__right_brow",
+          "role": "right_brow",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 124,
+          "y": 90,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_v1_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_v1_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_v1_component",
+          "x": 43,
+          "y": 113,
+          "offset": [
+            1,
+            1
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_v1_component",
+          "x": 126,
+          "y": 113,
+          "offset": [
+            1,
+            1
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_v1_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_v1_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:v22_curious__left_cheek",
+          "name": "v22_curious__left_cheek",
+          "role": "left_cheek",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 31,
+          "y": 157,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_curious__right_cheek",
+          "name": "v22_curious__right_cheek",
+          "role": "right_cheek",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 152,
+          "y": 154,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_v1_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_curious__mouth",
+          "name": "v22_curious__mouth",
+          "role": "mouth",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 92,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v9-v22-touch-emotion-route-r2-20260720/frame-21-curious__calm_primary_highlight_lead.pbm",
+      "targetPbmSha256": "FE88C6DC2A50C018708586E8F51B56BD11E55A1D7D842C695C58D041C5613074"
+    },
+    {
+      "index": 22,
+      "segment": "curious__calm_brow_apex",
+      "logicalEmotion": "calm",
+      "artPose": "v22_calm",
+      "phase": "transition",
+      "event": "idle_settle",
+      "postRefreshHoldMs": 750,
+      "layers": [
+        {
+          "component": "v22:v22_calm__left_brow",
+          "name": "v22_calm__left_brow",
+          "role": "left_brow",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 45,
+          "y": 85,
+          "offset": [
+            0,
+            -1
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_calm__right_brow",
+          "name": "v22_calm__right_brow",
+          "role": "right_brow",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 127,
+          "y": 85,
+          "offset": [
+            0,
+            -1
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_v1_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_v1_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_v1_component",
+          "x": 43,
+          "y": 113,
+          "offset": [
+            1,
+            1
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_v1_component",
+          "x": 126,
+          "y": 113,
+          "offset": [
+            1,
+            1
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_v1_component",
+          "x": 43,
+          "y": 113,
+          "offset": [
+            1,
+            1
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_v1_component",
+          "x": 126,
+          "y": 113,
+          "offset": [
+            1,
+            1
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:v22_curious__left_cheek",
+          "name": "v22_curious__left_cheek",
+          "role": "left_cheek",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 31,
+          "y": 157,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_curious__right_cheek",
+          "name": "v22_curious__right_cheek",
+          "role": "right_cheek",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 152,
+          "y": 154,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_v1_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_curious__mouth",
+          "name": "v22_curious__mouth",
+          "role": "mouth",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 92,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v9-v22-touch-emotion-route-r2-20260720/frame-22-curious__calm_brow_apex.pbm",
+      "targetPbmSha256": "BFAB6DAFE4BC40F7D6CE08518B5304C04DA4A64117837CABAB54DCDB950B82C1"
+    },
+    {
+      "index": 23,
+      "segment": "curious__calm_lower_face_apex",
+      "logicalEmotion": "calm",
+      "artPose": "v22_calm",
+      "phase": "transition",
+      "event": "idle_settle",
+      "postRefreshHoldMs": 750,
+      "layers": [
+        {
+          "component": "v22:v22_calm__left_brow",
+          "name": "v22_calm__left_brow",
+          "role": "left_brow",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 45,
+          "y": 86,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_calm__right_brow",
+          "name": "v22_calm__right_brow",
+          "role": "right_brow",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 127,
+          "y": 86,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_v1_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_v1_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_v1_component",
+          "x": 43,
+          "y": 113,
+          "offset": [
+            1,
+            1
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_v1_component",
+          "x": 126,
+          "y": 113,
+          "offset": [
+            1,
+            1
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_v1_component",
+          "x": 43,
+          "y": 113,
+          "offset": [
+            1,
+            1
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_v1_component",
+          "x": 126,
+          "y": 113,
+          "offset": [
+            1,
+            1
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:v22_calm__left_cheek",
+          "name": "v22_calm__left_cheek",
+          "role": "left_cheek",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 33,
+          "y": 157,
+          "offset": [
+            0,
+            -1
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_calm__right_cheek",
+          "name": "v22_calm__right_cheek",
+          "role": "right_cheek",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 152,
+          "y": 156,
+          "offset": [
+            0,
+            -1
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_v1_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_calm__mouth",
+          "name": "v22_calm__mouth",
+          "role": "mouth",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 86,
+          "y": 161,
+          "offset": [
+            0,
+            1
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v9-v22-touch-emotion-route-r2-20260720/frame-23-curious__calm_lower_face_apex.pbm",
+      "targetPbmSha256": "A5F83C1A0037A2226CEFAA86D5B397366925086E97E3C744F8EF2BFE2D223966"
+    },
+    {
+      "index": 24,
+      "segment": "curious__calm_target_hold",
+      "logicalEmotion": "calm",
+      "artPose": "v22_calm",
+      "phase": "emotion_hold",
+      "event": "idle_settle",
+      "postRefreshHoldMs": 1500,
+      "layers": [
+        {
+          "component": "v22:v22_calm__left_brow",
+          "name": "v22_calm__left_brow",
+          "role": "left_brow",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 45,
+          "y": 86,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_calm__right_brow",
+          "name": "v22_calm__right_brow",
+          "role": "right_brow",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 127,
+          "y": 86,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_v1_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_v1_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_v1_component",
+          "x": 43,
+          "y": 113,
+          "offset": [
+            1,
+            1
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_v1_component",
+          "x": 126,
+          "y": 113,
+          "offset": [
+            1,
+            1
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_v1_component",
+          "x": 43,
+          "y": 113,
+          "offset": [
+            1,
+            1
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_v1_component",
+          "x": 126,
+          "y": 113,
+          "offset": [
+            1,
+            1
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:v22_calm__left_cheek",
+          "name": "v22_calm__left_cheek",
+          "role": "left_cheek",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 33,
+          "y": 158,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_calm__right_cheek",
+          "name": "v22_calm__right_cheek",
+          "role": "right_cheek",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 152,
+          "y": 157,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_v1_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_calm__mouth",
+          "name": "v22_calm__mouth",
+          "role": "mouth",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 86,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v9-v22-touch-emotion-route-r2-20260720/frame-24-curious__calm_target_hold.pbm",
+      "targetPbmSha256": "D04F5740CB1D63C61569727911E820B591A29BE1ABE35B8EFF904D068E689E4C"
+    },
+    {
+      "index": 25,
+      "segment": "curious__calm_highlight_settle",
+      "logicalEmotion": "calm",
+      "artPose": "v22_calm",
+      "phase": "micro_choreography",
+      "event": "idle_settle",
+      "postRefreshHoldMs": 750,
+      "layers": [
+        {
+          "component": "v22:v22_calm__left_brow",
+          "name": "v22_calm__left_brow",
+          "role": "left_brow",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 45,
+          "y": 86,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_calm__right_brow",
+          "name": "v22_calm__right_brow",
+          "role": "right_brow",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 127,
+          "y": 86,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_v1_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_v1_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_v1_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_v1_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_v1_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_v1_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:v22_calm__left_cheek",
+          "name": "v22_calm__left_cheek",
+          "role": "left_cheek",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 33,
+          "y": 158,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_calm__right_cheek",
+          "name": "v22_calm__right_cheek",
+          "role": "right_cheek",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 152,
+          "y": 157,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_v1_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_calm__mouth",
+          "name": "v22_calm__mouth",
+          "role": "mouth",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 86,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v9-v22-touch-emotion-route-r2-20260720/frame-25-curious__calm_highlight_settle.pbm",
+      "targetPbmSha256": "DCDE74BE44CD33E881F33BC4FC6397D6269A4749BE90BCD7A1999A53D44D4B79"
+    },
+    {
+      "index": 26,
+      "segment": "calm_to_v9_brows",
+      "logicalEmotion": "calm",
+      "artPose": "v9_daily",
+      "phase": "transition",
+      "event": "idle_settle",
+      "postRefreshHoldMs": 750,
+      "layers": [
+        {
+          "component": "v9:left_brow_open",
+          "name": "left_brow_open",
+          "role": "left_brow",
+          "source": "locked_v9_rig_component",
+          "x": 47,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_brow_open",
+          "name": "right_brow_open",
+          "role": "right_brow",
+          "source": "locked_v9_rig_component",
+          "x": 132,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_v1_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_v1_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_v1_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_v1_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_v1_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_v1_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:v22_calm__left_cheek",
+          "name": "v22_calm__left_cheek",
+          "role": "left_cheek",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 33,
+          "y": 158,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_calm__right_cheek",
+          "name": "v22_calm__right_cheek",
+          "role": "right_cheek",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 152,
+          "y": 157,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_v1_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:v22_calm__mouth",
+          "name": "v22_calm__mouth",
+          "role": "mouth",
+          "source": "v22_generated_source_panel_thresholded_crop",
+          "x": 86,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v9-v22-touch-emotion-route-r2-20260720/frame-26-calm_to_v9_brows.pbm",
+      "targetPbmSha256": "C3D393E5A5135BD5D97EABF6A8B1AF88D4F2EBFD05A66801B516E8EDE59C5ACE"
+    },
+    {
+      "index": 27,
+      "segment": "calm_to_v9_lower",
+      "logicalEmotion": "calm",
+      "artPose": "v9_daily",
+      "phase": "transition",
+      "event": "idle_settle",
+      "postRefreshHoldMs": 750,
+      "layers": [
+        {
+          "component": "v9:left_brow_open",
+          "name": "left_brow_open",
+          "role": "left_brow",
+          "source": "locked_v9_rig_component",
+          "x": 47,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_brow_open",
+          "name": "right_brow_open",
+          "role": "right_brow",
+          "source": "locked_v9_rig_component",
+          "x": 132,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_v1_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_v1_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_v1_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_v1_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_v1_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_v1_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_cheek_default",
+          "name": "left_cheek_default",
+          "role": "left_cheek",
+          "source": "locked_v9_rig_component",
+          "x": 33,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_cheek_default",
+          "name": "right_cheek_default",
+          "role": "right_cheek",
+          "source": "locked_v9_rig_component",
+          "x": 154,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_v1_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:mouth_default",
+          "name": "mouth_default",
+          "role": "mouth",
+          "source": "locked_v9_rig_component",
+          "x": 86,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v9-v22-touch-emotion-route-r2-20260720/frame-27-calm_to_v9_lower.pbm",
+      "targetPbmSha256": "2792F70973BC1C5A9FC50D65CE69BE84E87F8E0E2D1969C6EB599ACB5DFE29F9"
+    },
+    {
+      "index": 28,
+      "segment": "calm_to_v9_charm",
+      "logicalEmotion": "calm",
+      "artPose": "v9_daily",
+      "phase": "transition",
+      "event": "idle_settle",
+      "postRefreshHoldMs": 750,
+      "layers": [
+        {
+          "component": "v9:charm_star",
+          "name": "charm_star",
+          "role": "charm",
+          "source": "locked_v9_rig_component",
+          "x": 97,
+          "y": 29,
+          "offset": [
+            1,
+            -2
+          ],
+          "z_index": 10,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_brow_open",
+          "name": "left_brow_open",
+          "role": "left_brow",
+          "source": "locked_v9_rig_component",
+          "x": 47,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_brow_open",
+          "name": "right_brow_open",
+          "role": "right_brow",
+          "source": "locked_v9_rig_component",
+          "x": 132,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_v1_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_v1_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_v1_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_v1_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_v1_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v22:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_v1_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_cheek_default",
+          "name": "left_cheek_default",
+          "role": "left_cheek",
+          "source": "locked_v9_rig_component",
+          "x": 33,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_cheek_default",
+          "name": "right_cheek_default",
+          "role": "right_cheek",
+          "source": "locked_v9_rig_component",
+          "x": 154,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v22:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_v1_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:mouth_default",
+          "name": "mouth_default",
+          "role": "mouth",
+          "source": "locked_v9_rig_component",
+          "x": 86,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v9-v22-touch-emotion-route-r2-20260720/frame-28-calm_to_v9_charm.pbm",
+      "targetPbmSha256": "72BFE8790FD7C78228DA99881F47D31687CA56BEF40D3E048A95567AB9BF23FB"
+    },
+    {
+      "index": 29,
+      "segment": "v9_daily_settle",
+      "logicalEmotion": "calm",
+      "artPose": "v9_daily",
+      "phase": "emotion_hold",
+      "event": "idle_settle",
+      "postRefreshHoldMs": 750,
+      "layers": [
+        {
+          "component": "v9:charm_star",
+          "name": "charm_star",
+          "role": "charm",
+          "source": "locked_v9_rig_component",
+          "x": 96,
+          "y": 31,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 10,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_brow_open",
+          "name": "left_brow_open",
+          "role": "left_brow",
+          "source": "locked_v9_rig_component",
+          "x": 47,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_brow_open",
+          "name": "right_brow_open",
+          "role": "right_brow",
+          "source": "locked_v9_rig_component",
+          "x": 132,
+          "y": 85,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 20,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_open",
+          "name": "left_eye_open",
+          "role": "left_eye",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_eye_open",
+          "name": "right_eye_open",
+          "role": "right_eye",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 30,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:left_eye_highlight_open",
+          "name": "left_eye_highlight_open",
+          "role": "left_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_highlight_open",
+          "name": "right_eye_highlight_open",
+          "role": "right_highlight",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 31,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_eye_sparkle_open",
+          "name": "left_eye_sparkle_open",
+          "role": "left_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 42,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:right_eye_sparkle_open",
+          "name": "right_eye_sparkle_open",
+          "role": "right_sparkle",
+          "source": "locked_v9_rig_component",
+          "x": 125,
+          "y": 112,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 32,
+          "composite_op": "erase"
+        },
+        {
+          "component": "v9:left_cheek_default",
+          "name": "left_cheek_default",
+          "role": "left_cheek",
+          "source": "locked_v9_rig_component",
+          "x": 33,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:right_cheek_default",
+          "name": "right_cheek_default",
+          "role": "right_cheek",
+          "source": "locked_v9_rig_component",
+          "x": 154,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 40,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:nose_default",
+          "name": "nose_default",
+          "role": "nose",
+          "source": "locked_v9_rig_component",
+          "x": 94,
+          "y": 148,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 50,
+          "composite_op": "ink"
+        },
+        {
+          "component": "v9:mouth_default",
+          "name": "mouth_default",
+          "role": "mouth",
+          "source": "locked_v9_rig_component",
+          "x": 86,
+          "y": 160,
+          "offset": [
+            0,
+            0
+          ],
+          "z_index": 60,
+          "composite_op": "ink"
+        }
+      ],
+      "targetPbm": "docs/validation/artifacts/companion-v9-v22-touch-emotion-route-r2-20260720/frame-29-v9_daily_settle.pbm",
+      "targetPbmSha256": "B3847DF9CE2D20693C60C9CC7BC1EC8D8B8A3E23641F4521EE71508ABE13CB9E"
+    }
+  ],
+  "browser_player": {
+    "path": "docs/validation/artifacts/companion-v9-v22-touch-emotion-route-r2-20260720/v9-v22-touch-emotion-route-player.html",
+    "sha256": "F89A34E7F06B79DA3D81BD7F48EA4C5F6275FBD5DA4FDB9712494428B528D920"
+  },
+  "component_count": 35,
+  "components": [
+    {
+      "key": "v22:left_eye_highlight_open",
+      "name": "left_eye_highlight_open",
+      "role": "left_highlight",
+      "source": "locked_v9_rig_v1_component",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/left_eye_highlight_open.pbm",
+      "mask_sha256": "FE486194ED600C66CD3A69F0EE1025DC1CC260AD15A2B5A4712274CC8007464C"
+    },
+    {
+      "key": "v22:left_eye_open",
+      "name": "left_eye_open",
+      "role": "left_eye",
+      "source": "locked_v9_rig_v1_component",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/left_eye_open.pbm",
+      "mask_sha256": "607A30960F6C312FC4D7DC6AD58F02E6DEB6D80EDC63388FE80671AF593DC08E"
+    },
+    {
+      "key": "v22:left_eye_sparkle_open",
+      "name": "left_eye_sparkle_open",
+      "role": "left_sparkle",
+      "source": "locked_v9_rig_v1_component",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/left_eye_sparkle_open.pbm",
+      "mask_sha256": "2B62160271B54E894DFBE0DD64A0F744EA80E65A2CBC7617B1497A16A229323D"
+    },
+    {
+      "key": "v22:nose_default",
+      "name": "nose_default",
+      "role": "nose",
+      "source": "locked_v9_rig_v1_component",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/nose_default.pbm",
+      "mask_sha256": "9E136542BCD1AB6F3A057829FC1A53F03965B9F55ABAE899666CDC6D8EF8E298"
+    },
+    {
+      "key": "v22:right_eye_highlight_open",
+      "name": "right_eye_highlight_open",
+      "role": "right_highlight",
+      "source": "locked_v9_rig_v1_component",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/right_eye_highlight_open.pbm",
+      "mask_sha256": "518456E9D22529E4B57E61D5D2963E20F6E80CC3F210FF331281E8F0BC11E650"
+    },
+    {
+      "key": "v22:right_eye_open",
+      "name": "right_eye_open",
+      "role": "right_eye",
+      "source": "locked_v9_rig_v1_component",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/right_eye_open.pbm",
+      "mask_sha256": "6F1394072AB1D5AD8D573E115594DD4630FA18877841E6AABD635379075094E6"
+    },
+    {
+      "key": "v22:right_eye_sparkle_open",
+      "name": "right_eye_sparkle_open",
+      "role": "right_sparkle",
+      "source": "locked_v9_rig_v1_component",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/right_eye_sparkle_open.pbm",
+      "mask_sha256": "B9AD58B7178E95296965DD2F4000F28B14C2C06180D1E04D86145D2A9D8D4A13"
+    },
+    {
+      "key": "v22:v22_calm__left_brow",
+      "name": "v22_calm__left_brow",
+      "role": "left_brow",
+      "source": "v22_generated_source_panel_thresholded_crop",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/component-masks/calm-left_brow.pbm",
+      "mask_sha256": "652ABC102C7D4F31B4971F0EAB3CA27C2197DDC1E25BEF74A186C96FEFCB8EBE"
+    },
+    {
+      "key": "v22:v22_calm__left_cheek",
+      "name": "v22_calm__left_cheek",
+      "role": "left_cheek",
+      "source": "v22_generated_source_panel_thresholded_crop",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/component-masks/calm-left_cheek.pbm",
+      "mask_sha256": "1BDA1450CF2E50A001EDD77D605DE48728CD7C9188DD45CBBE7F5E11C3CE3515"
+    },
+    {
+      "key": "v22:v22_calm__mouth",
+      "name": "v22_calm__mouth",
+      "role": "mouth",
+      "source": "v22_generated_source_panel_thresholded_crop",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/component-masks/calm-mouth.pbm",
+      "mask_sha256": "68C6E19E032D8F1DEFB2D84702D297A5DB4A78694C97216AD4ADF04407C11BA8"
+    },
+    {
+      "key": "v22:v22_calm__right_brow",
+      "name": "v22_calm__right_brow",
+      "role": "right_brow",
+      "source": "v22_generated_source_panel_thresholded_crop",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/component-masks/calm-right_brow.pbm",
+      "mask_sha256": "32B2658C18AAC42902B83CB22BD2CC2F8D8AAC3C0310F1DACA1F7EE378794A05"
+    },
+    {
+      "key": "v22:v22_calm__right_cheek",
+      "name": "v22_calm__right_cheek",
+      "role": "right_cheek",
+      "source": "v22_generated_source_panel_thresholded_crop",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/component-masks/calm-right_cheek.pbm",
+      "mask_sha256": "41ED16ACB98827EA5857F2B3332FDB842B63B0774C69B1809CB4BF3B0CEFE17F"
+    },
+    {
+      "key": "v22:v22_curious__left_brow",
+      "name": "v22_curious__left_brow",
+      "role": "left_brow",
+      "source": "v22_generated_source_panel_thresholded_crop",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/component-masks/curious-left_brow.pbm",
+      "mask_sha256": "3E1A7A52789233A1B8D7729E8184E3823E7DA681AAD07728E5AEC5E463EB5649"
+    },
+    {
+      "key": "v22:v22_curious__left_cheek",
+      "name": "v22_curious__left_cheek",
+      "role": "left_cheek",
+      "source": "v22_generated_source_panel_thresholded_crop",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/component-masks/curious-left_cheek.pbm",
+      "mask_sha256": "126F2E645C98A0D98E388138052D0E9045DB3E3B46A44E40D58A1400040B267C"
+    },
+    {
+      "key": "v22:v22_curious__mouth",
+      "name": "v22_curious__mouth",
+      "role": "mouth",
+      "source": "v22_generated_source_panel_thresholded_crop",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/component-masks/curious-mouth.pbm",
+      "mask_sha256": "F05F5C035832D85C81500139652A8B6AD3CF21FE7E8CB67B9B391564C240A061"
+    },
+    {
+      "key": "v22:v22_curious__right_brow",
+      "name": "v22_curious__right_brow",
+      "role": "right_brow",
+      "source": "v22_generated_source_panel_thresholded_crop",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/component-masks/curious-right_brow.pbm",
+      "mask_sha256": "AC6CF0721E859F889DD1E45C0765CCC800D57DEA1181AFC42EEB8B52A7F12EC4"
+    },
+    {
+      "key": "v22:v22_curious__right_cheek",
+      "name": "v22_curious__right_cheek",
+      "role": "right_cheek",
+      "source": "v22_generated_source_panel_thresholded_crop",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/component-masks/curious-right_cheek.pbm",
+      "mask_sha256": "CA30B1DA674DE29366B77D028B70FEEC5E0612E5DF82ED3CB2A1BFDE3325D801"
+    },
+    {
+      "key": "v22:v22_warm__left_brow",
+      "name": "v22_warm__left_brow",
+      "role": "left_brow",
+      "source": "v22_generated_source_panel_thresholded_crop",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/component-masks/warm-left_brow.pbm",
+      "mask_sha256": "6B1FA21653DA2D61859D9BF532DE9B29C015A35F69FF1D3AFE30457C1215403E"
+    },
+    {
+      "key": "v22:v22_warm__left_cheek",
+      "name": "v22_warm__left_cheek",
+      "role": "left_cheek",
+      "source": "v22_generated_source_panel_thresholded_crop",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/component-masks/warm-left_cheek.pbm",
+      "mask_sha256": "7E2F5FB18CDFF6695709987574E727ADF7414B8C1A963718303FD47D58EE211B"
+    },
+    {
+      "key": "v22:v22_warm__mouth",
+      "name": "v22_warm__mouth",
+      "role": "mouth",
+      "source": "v22_generated_source_panel_thresholded_crop",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/component-masks/warm-mouth.pbm",
+      "mask_sha256": "C6FB261FB119D1469E181E7F7E086F03102E0C0B27A893A701018143E6151B86"
+    },
+    {
+      "key": "v22:v22_warm__right_brow",
+      "name": "v22_warm__right_brow",
+      "role": "right_brow",
+      "source": "v22_generated_source_panel_thresholded_crop",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/component-masks/warm-right_brow.pbm",
+      "mask_sha256": "AE306285C100C320CE973AAAF3B3DA420C780D7CF6B0C0C91CDD1840797B9847"
+    },
+    {
+      "key": "v22:v22_warm__right_cheek",
+      "name": "v22_warm__right_cheek",
+      "role": "right_cheek",
+      "source": "v22_generated_source_panel_thresholded_crop",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-extension-v22-emotion-separation-source/candidate/component-export-attempt-03/component-masks/warm-right_cheek.pbm",
+      "mask_sha256": "5C731D769E222034022153E724B388EDAC265C0C7E770663D784C8D1FF6AEBD3"
+    },
+    {
+      "key": "v9:charm_star",
+      "name": "charm_star",
+      "role": "charm",
+      "source": "locked_v9_rig_component",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/charm_star.pbm",
+      "mask_sha256": "E813BF81E43559F5AE2A7642D67DEB57F29EE408ED46114F2F39164C9B53DA50"
+    },
+    {
+      "key": "v9:left_brow_open",
+      "name": "left_brow_open",
+      "role": "left_brow",
+      "source": "locked_v9_rig_component",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/left_brow_open.pbm",
+      "mask_sha256": "38A5830E09D77A0C727965F558688E39C1AF9FD96B15CC46C15A3B648FFA5444"
+    },
+    {
+      "key": "v9:left_cheek_default",
+      "name": "left_cheek_default",
+      "role": "left_cheek",
+      "source": "locked_v9_rig_component",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/left_cheek_default.pbm",
+      "mask_sha256": "50330397F3B4A0E3CEFEEBC796599D1ABEDB1DEE3C216D50F70EBD0E71AC69F6"
+    },
+    {
+      "key": "v9:left_eye_highlight_open",
+      "name": "left_eye_highlight_open",
+      "role": "left_highlight",
+      "source": "locked_v9_rig_component",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/left_eye_highlight_open.pbm",
+      "mask_sha256": "FE486194ED600C66CD3A69F0EE1025DC1CC260AD15A2B5A4712274CC8007464C"
+    },
+    {
+      "key": "v9:left_eye_open",
+      "name": "left_eye_open",
+      "role": "left_eye",
+      "source": "locked_v9_rig_component",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/left_eye_open.pbm",
+      "mask_sha256": "607A30960F6C312FC4D7DC6AD58F02E6DEB6D80EDC63388FE80671AF593DC08E"
+    },
+    {
+      "key": "v9:left_eye_sparkle_open",
+      "name": "left_eye_sparkle_open",
+      "role": "left_sparkle",
+      "source": "locked_v9_rig_component",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/left_eye_sparkle_open.pbm",
+      "mask_sha256": "2B62160271B54E894DFBE0DD64A0F744EA80E65A2CBC7617B1497A16A229323D"
+    },
+    {
+      "key": "v9:mouth_default",
+      "name": "mouth_default",
+      "role": "mouth",
+      "source": "locked_v9_rig_component",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/mouth_default.pbm",
+      "mask_sha256": "082B0BFCCFD4788146E229F929AF0E11307B1E85D189538E5D89EC63C81763EA"
+    },
+    {
+      "key": "v9:nose_default",
+      "name": "nose_default",
+      "role": "nose",
+      "source": "locked_v9_rig_component",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/nose_default.pbm",
+      "mask_sha256": "9E136542BCD1AB6F3A057829FC1A53F03965B9F55ABAE899666CDC6D8EF8E298"
+    },
+    {
+      "key": "v9:right_brow_open",
+      "name": "right_brow_open",
+      "role": "right_brow",
+      "source": "locked_v9_rig_component",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/right_brow_open.pbm",
+      "mask_sha256": "12797464C45AE6F33844AEA6AD0A8F94324B42E6570ED9CCC88A8708E4001868"
+    },
+    {
+      "key": "v9:right_cheek_default",
+      "name": "right_cheek_default",
+      "role": "right_cheek",
+      "source": "locked_v9_rig_component",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/right_cheek_default.pbm",
+      "mask_sha256": "FFFA58B0B991987F117C10FF914724ED5E270778D49F43CEAA1D187A2C1D06DC"
+    },
+    {
+      "key": "v9:right_eye_highlight_open",
+      "name": "right_eye_highlight_open",
+      "role": "right_highlight",
+      "source": "locked_v9_rig_component",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/right_eye_highlight_open.pbm",
+      "mask_sha256": "518456E9D22529E4B57E61D5D2963E20F6E80CC3F210FF331281E8F0BC11E650"
+    },
+    {
+      "key": "v9:right_eye_open",
+      "name": "right_eye_open",
+      "role": "right_eye",
+      "source": "locked_v9_rig_component",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/right_eye_open.pbm",
+      "mask_sha256": "6F1394072AB1D5AD8D573E115594DD4630FA18877841E6AABD635379075094E6"
+    },
+    {
+      "key": "v9:right_eye_sparkle_open",
+      "name": "right_eye_sparkle_open",
+      "role": "right_sparkle",
+      "source": "locked_v9_rig_component",
+      "mask": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/components/right_eye_sparkle_open.pbm",
+      "mask_sha256": "B9AD58B7178E95296965DD2F4000F28B14C2C06180D1E04D86145D2A9D8D4A13"
+    }
+  ],
+  "v9_daily_baseline": {
+    "path": "docs/validation/artifacts/companion-v9-expression-rig-daily-focus-accepted-dynamic-baseline-20260718/story-phases/daily_right_entry.pbm",
+    "sha256": "B3847DF9CE2D20693C60C9CC7BC1EC8D8B8A3E23641F4521EE71508ABE13CB9E"
+  },
+  "v22_owner_review": {
+    "path": "docs/validation/companion-v22-emotion-separation-component-bridge-owner-art-screen-review-20260719.json",
+    "sha256": "2539FC80B2A49FFC1975381DED32E4D4BC26D48A464FB06057EC82045DE9A2B1"
+  },
+  "forbidden": [
+    "whole-face card playback",
+    "code-drawn face",
+    "legacy art",
+    "custom LUT",
+    "runtime binding"
+  ],
+  "special_state_fallback": "fail_closed"
+}

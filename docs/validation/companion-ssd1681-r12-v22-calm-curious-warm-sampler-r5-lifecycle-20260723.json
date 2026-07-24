@@ -1,0 +1,132 @@
+{
+  "checkonly_root": ".cache/validation/wb55-r12-v22-calm-curious-warm-sampler-r5-primary-checkonly-20260723-r7",
+  "checkonly_tool_hash_bindings": {
+    "launcher": {
+      "available_in_checkonly_artifacts": false,
+      "current_sha256": "8F0FBCAFA1BCF481A9346F20621434FCC0FCF5560AE40C5B467AAFC745842596",
+      "declared_references": [],
+      "matches_current": null,
+      "path": "tools/start_wb55_ssd1681_r12_v22_calm_curious_warm_sampler_r5.ps1"
+    },
+    "monitor": {
+      "available_in_checkonly_artifacts": false,
+      "current_sha256": "A096D03C7255C8C2CBD9BF5F2F072DAAAF4F9030E61FEFEDE36E009862A33DA2",
+      "declared_references": [],
+      "matches_current": null,
+      "path": "tools/monitor_wb55_ssd1681_r12_v22_calm_curious_warm_sampler_r5.ps1"
+    },
+    "runner": {
+      "available_in_checkonly_artifacts": false,
+      "current_sha256": "AD07BEADC8174D0573B240C5FAFEE49F9D1A0F1F9FBCAB0BB25FCF8C4E1B3172",
+      "declared_references": [],
+      "matches_current": null,
+      "path": "tools/run_wb55_ssd1681_r12_v22_calm_curious_warm_sampler_r5.ps1"
+    },
+    "supervisor": {
+      "available_in_checkonly_artifacts": false,
+      "current_sha256": "F877DE8CE2E17EBE0A9A10E1C0A85CB5B8665DA460431C398F81421FC7C35D81",
+      "declared_references": [],
+      "matches_current": null,
+      "path": "tools/supervise_wb55_ssd1681_r12_v22_calm_curious_warm_sampler_prompt_r5.ps1"
+    }
+  },
+  "checks": {
+    "current_hex_matches_primary_review_sha256": true,
+    "declared_checkonly_tool_hashes_match_current": true,
+    "host_old_window_mutations_rejected": true,
+    "host_positive_windows_match_parser": true,
+    "launcher_selftest_new_comp_req_390_field_true": true,
+    "launcher_selftest_old_comp_req_383_rejected": true,
+    "launcher_selftest_old_comp_req_384_rejected": true,
+    "launcher_selftest_old_comp_req_385_rejected": true,
+    "launcher_selftest_old_comp_req_386_rejected": true,
+    "launcher_selftest_old_comp_req_388_rejected": true,
+    "launcher_selftest_old_comp_req_389_rejected": true,
+    "persistent_launcher_all_counters_zero": true,
+    "persistent_launcher_arguments_current": true,
+    "persistent_launcher_exit_zero_and_exited": true,
+    "persistent_launcher_mode_check_only": true,
+    "persistent_launcher_no_authorization": true,
+    "persistent_launcher_output_root_current": true,
+    "persistent_launcher_ready": true,
+    "persistent_launcher_runner_path_current": true,
+    "persistent_launcher_stage_ready": true,
+    "stage_all_counters_zero": true,
+    "stage_authorization_none": true,
+    "stage_candidate_path_current": true,
+    "stage_candidate_required_sha_matches_current_hex": true,
+    "stage_candidate_sha_matches_current_hex": true,
+    "stage_checkonly_children_complete": true,
+    "stage_claim_scope_matches_parser_window": true,
+    "stage_counter_set_complete": true,
+    "stage_errors_clear": true,
+    "stage_fixed_ring": true,
+    "stage_hardware_contact_zero": true,
+    "stage_mode_check_only": true,
+    "stage_popup_zero": true,
+    "stage_programmer_calls_empty": true,
+    "stage_ready": true,
+    "stage_retry_zero": true,
+    "stale_checkonly_candidate_hash_selftest_pass": true
+  },
+  "compatibility_rebind": {
+    "kind": "unchanged_lifecycle_verifier_rebound_to_fresh_checkonly_root",
+    "lifecycle_verifier_sha256": "847E42691290DCBC739FE87CEDBE3C493AA5CEFC7E6EDADE1E922F7652903C0D"
+  },
+  "current_hex_sha256": "09DA5F16F7E7D2909A61AD54DCA842A8CAA9054D47A89AB31580FF20502FA4D2",
+  "errors": [],
+  "future_physical_authorization_requirement_id": "COMP-REQ-390",
+  "hardware_contact": 0,
+  "host_window_contract": {
+    "all_old_mutations_rejected": true,
+    "old_72_177_mutations_rejected": {
+      "launcher": true,
+      "monitor": true,
+      "runner": true,
+      "supervisor": true
+    },
+    "old_window_only_in_negative_or_history_fixture": {
+      "launcher": true,
+      "monitor": true,
+      "runner": true,
+      "supervisor": true
+    },
+    "parser_window": "4-21,22-127",
+    "positive_paths": {
+      "launcher": true,
+      "monitor": true,
+      "runner": true,
+      "supervisor": true
+    },
+    "positive_paths_match_parser": true,
+    "stage_claim_scope_matches_parser": true
+  },
+  "launcher_selftest_requirement_contract": {
+    "new_field": "valid_r12_comp_req_390_identity_and_hashes_pass",
+    "new_field_true": true,
+    "old_ids_rejected": {
+      "launcher_selftest_old_comp_req_383_rejected": true,
+      "launcher_selftest_old_comp_req_384_rejected": true,
+      "launcher_selftest_old_comp_req_385_rejected": true,
+      "launcher_selftest_old_comp_req_386_rejected": true,
+      "launcher_selftest_old_comp_req_388_rejected": true,
+      "launcher_selftest_old_comp_req_389_rejected": true
+    }
+  },
+  "mode": "persistent_checkonly_only",
+  "popup_count": 0,
+  "required_current_hex_sha256": "09DA5F16F7E7D2909A61AD54DCA842A8CAA9054D47A89AB31580FF20502FA4D2",
+  "requirement": "COMP-REQ-384",
+  "retry_count": 0,
+  "schema_id": "companion.wb55.ssd1681.r12_v22_calm_curious_warm_sampler.r5.lifecycle.v4",
+  "stale_candidate_hash_selftest": {
+    "fixture": "stale_checkonly_candidate_sha256",
+    "mutated_candidate_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "pass": true,
+    "resulting_status": "NO_GO_STALE_CHECKONLY_CANDIDATE_HASH",
+    "target_invariant": "stage_candidate_sha_matches_current_hex",
+    "target_invariant_false": true
+  },
+  "status": "PASS",
+  "write_counter_sum": 0
+}

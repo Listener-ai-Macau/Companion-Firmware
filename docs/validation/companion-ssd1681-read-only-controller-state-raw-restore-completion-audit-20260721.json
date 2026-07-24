@@ -1,0 +1,138 @@
+{
+  "schema_id": "companion.wb55.ssd1681_read_only_controller_state_raw_restore_completion_audit.v1",
+  "status": "NO_GO_CONTROLLER_READ_RESTORED",
+  "requirement_id": "COMP-REQ-264",
+  "summary": "The sole locked production-off execution captured three stable but invalid all-FF 0x2F/0x2D response groups. The diagnostic sent no panel write, refresh or hard-reset command. Its finally path then performed exactly one raw-baseline restore, programmer verify, 524288-byte upload comparison and reset; the restored bytes matched the captured pre-run baseline and the normal application resumed without diagnostic residue, panel error or hardfault.",
+  "machine_result": {
+    "controller_capture": "NO_GO_INVALID_ALL_FF_RESPONSE",
+    "final_status": "NO_GO_CONTROLLER_READ_RESTORED",
+    "hardware_contact": 1,
+    "raw_groups": 3,
+    "chip_status_each_hex": "FF",
+    "display_payload_each_hex": "FFFFFFFFFFFFFFFFFFFFFF",
+    "display_payload_bytes_each": 11,
+    "display_payload_sha256": "15300BD714EFBC71D4830E661D7D6F7A052EAA0BD377A3332A3ED6DBBCEE3F87",
+    "transport_trace": 1,
+    "gpio_restore_all_groups": true,
+    "decoder_result_code": 4,
+    "candidate_write_calls": 1,
+    "restore_write_calls": 1,
+    "restore_verify_operations": 1,
+    "restore_upload_calls": 1,
+    "panel_writes": 0,
+    "panel_refresh_commands": 0,
+    "panel_hard_resets": 0,
+    "automatic_retries": 0,
+    "restore_identity": "RESTORED_TO_CAPTURED_PRE_RUN_APPLICATION_BYTES",
+    "restore_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "normal_resume": "PASS_APPLICATION_RESUMED_AFTER_BACKUP",
+    "operator_prompt_required": false
+  },
+  "verification": [
+    {
+      "command": "python tools/verify_companion_product_requirements.py",
+      "exit_code": 0,
+      "result": "PASS through COMP-REQ-264"
+    },
+    {
+      "command": "python tools/verify_companion_current_goal_audit.py",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "command": "python tools/verify_wb55_ssd1681_read_only_controller_state_log.py --self-test",
+      "exit_code": 0,
+      "result": "PASS positive/negative matrix"
+    },
+    {
+      "command": "python tools/verify_wb55_raw_application_restore.py --self-test",
+      "exit_code": 0,
+      "result": "PASS mismatch/short/long/all00/allFF/MSP/vector negative matrix"
+    },
+    {
+      "command": "python tools/verify_wb55_normal_resume_after_ur_backup_log.py --self-test",
+      "exit_code": 0,
+      "result": "PASS missing boot/ready, diagnostic residue, panel error and hardfault negative matrix"
+    },
+    {
+      "command": "python tools/verify_wb55_ssd1681_read_only_controller_state_raw_restore_diagnostic.py --self-test",
+      "exit_code": 0,
+      "result": "PASS candidate/restore exact-command whitelist negative matrix"
+    },
+    {
+      "command": "python tools/verify_wb55_ssd1681_read_only_controller_state_raw_restore_diagnostic.py",
+      "exit_code": 0,
+      "result": "PASS_STATIC_CONTROLLER_STATE_RAW_RESTORE_DEFAULT_OFF"
+    },
+    {
+      "command": "pwsh -NoProfile -File tools/run_wb55_ssd1681_read_only_controller_state_raw_restore.ps1 -CheckOnly -OutRoot .cache/validation/wb55-readonly-controller-raw-restore-check-20260721",
+      "exit_code": 0,
+      "result": "READY_NO_HARDWARE_CONTACT; all hardware/write/reset/retry counters zero"
+    },
+    {
+      "command": "pwsh -NoProfile -File tools/run_wb55_ssd1681_read_only_controller_state_raw_restore.ps1 -Execute -OutRoot .cache/validation/wb55-readonly-controller-raw-restore-execute-20260721-r1",
+      "exit_code": 1,
+      "result": "EXPECTED_FAIL_CLOSED_NO_GO_CONTROLLER_READ_RESTORED; no retry"
+    },
+    {
+      "command": "python tools/verify_wb55_ssd1681_read_only_controller_state_log.py --log <execute>/candidate-capture/nucleo-serial-raw.log --out <execute>/controller-state-unexpected-pass.json",
+      "exit_code": 1,
+      "result": "EXPECTED NO_GO: chip ID bits[1:0] are not 01; no output artifact admitted"
+    },
+    {
+      "command": "python tools/verify_wb55_raw_application_restore.py --backup-a <private-a> --backup-b <private-b> --restore-verify <execute>/private/restore-verify.bin --out <execute>/restore-gate.json",
+      "exit_code": 0,
+      "result": "PASS_RESTORE_EQUALS_CAPTURED_PRE_RUN_APPLICATION_BYTES"
+    },
+    {
+      "command": "python tools/verify_wb55_normal_resume_after_ur_backup_log.py --log <execute>/normal-capture/nucleo-serial-raw.log --out <execute>/normal-resume.json",
+      "exit_code": 0,
+      "result": "PASS_APPLICATION_RESUMED_AFTER_BACKUP"
+    },
+    {
+      "command": "python -m py_compile tools/verify_wb55_ssd1681_read_only_controller_state_log.py tools/verify_wb55_raw_application_restore.py tools/verify_wb55_normal_resume_after_ur_backup_log.py tools/verify_wb55_ssd1681_read_only_controller_state_raw_restore_diagnostic.py",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "command": "PowerShell stage-run exact operation-count audit",
+      "exit_code": 0,
+      "result": "PASS candidate/restore/write/verify/upload/reset counts, zero panel commands and zero retries"
+    },
+    {
+      "command": "Git/docs raw application binary absence audit",
+      "exit_code": 0,
+      "result": "PASS no backup-a.bin, backup-b.bin or restore-verify.bin in docs/Git"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "result": "PASS; line-ending warnings only"
+    }
+  ],
+  "artifact_hashes": {
+    "research_sha256": "5AD649AF7D798D79BA6200F81BC190E65595916935E330AD4AD14602B2EE78D5",
+    "static_sha256": "CE3CD8E9FC315D0F0C8C0065D40EE49C2202BDEAE81FC7BE5B5E5049FE64EBE0",
+    "machine_sha256": "27F90202D5D1FA82871AAEDA72F7BEFAA3EEAE4DD4B3095857CEBE2652BDD92C",
+    "check_only_stage_run_sha256": "8182C0332005FB707097A9C89396D2525D3572E6EEF04E2E4FBACC197F8D4685",
+    "execute_stage_run_sha256": "D5251F8384CFABC039D78CB81AA036AAC7F5581B036C061CDC38B8B154D5368E",
+    "candidate_serial_raw_sha256": "57CD1BC50D8020D58BDBC15E848C07E5ED1F1EA3A3115357B6F847520AA027E5",
+    "restore_gate_sha256": "240B4141BE706CB3FFC3BC7BBC4C74287F76152D3C54B70BC59E8594060E2E4C",
+    "normal_resume_sha256": "96142871C8652214A0090575BFA820E8B16678395D6C8ED17E48B2935898D09D",
+    "candidate_hex_sha256": "52D79CB3BC55D9738EFA580B95D3930216C23FD8825356F7860B7C1718C0C6AD",
+    "runner_sha256": "16BFCEA30CE8EB10DA2FB2F2903918ACAD490DB502543AB760A04D7D3ABDB551",
+    "restore_verifier_sha256": "22F167723E99F885D92061F5E6BA2DDEC0111E35F3DE7D88FB4A5544F6830733",
+    "static_verifier_sha256": "8A5C74CB4B4CDA7F87BFEFB342E4212A39DA880ADD87E67E95B66D2608E9E0BB"
+  },
+  "protected_boundaries": {
+    "hardware_retried_after_sole_execute": false,
+    "supplier_input_modified_moved_or_deleted": false,
+    "locked_v9_or_owner_acceptance_modified": false,
+    "rig_crig_browser_binding_art_modified": false,
+    "panel_ram_lut_otp_or_0x37_written": false,
+    "panel_refresh_or_hard_reset_sent_by_diagnostic": false,
+    "waveform_temperature_visual_residue_or_production_claimed": false,
+    "raw_application_binary_published": false
+  },
+  "final_boundary": "The controller-state read is invalid and cannot admit VCOM, Display Option, F6 Mode2, waveform-version or future 0x41/0x27 work. The exact captured pre-run application bytes are restored and the normal application resumed. There is no human visual gate or operator popup for this machine NO_GO. Any future controller investigation requires a new explicit requirement and Goal; this execution must not be retried."
+}

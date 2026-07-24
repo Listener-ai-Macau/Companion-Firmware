@@ -1,0 +1,131 @@
+{
+  "schema": "companion.v9_rig_touch_emotion_machine_closure.v1",
+  "status": "PASS_TOUCH_EMOTION_MACHINE_CLOSURE_RUNTIME_INACTIVE",
+  "claim_scope": "simulated_touch_component_rig_browser_target_parity_and_wb55_compile_only_not_flash_or_physical_panel_acceptance",
+  "runtime_resource_activated": false,
+  "commands": [
+    [
+      "pwsh",
+      "-NoProfile",
+      "-File",
+      "tools/test_expression_rig_host.ps1"
+    ],
+    [
+      "pwsh",
+      "-NoProfile",
+      "-File",
+      "tools/test_expression_choreographer_host.ps1",
+      "-EvidencePath",
+      "docs/validation/companion-v9-expression-choreographer-20260720-touch-loop.json"
+    ],
+    [
+      "pwsh",
+      "-NoProfile",
+      "-File",
+      "tools/test_motion_coordinator_host.ps1"
+    ],
+    [
+      "pwsh",
+      "-NoProfile",
+      "-File",
+      "tools/test_motion_display_queue_host.ps1"
+    ],
+    [
+      "pwsh",
+      "-NoProfile",
+      "-File",
+      "tools/test_expression_interaction_session_host.ps1"
+    ],
+    [
+      "C:\\Users\\Billy\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+      "tools/render_companion_v9_touch_emotion_machine_preview.py"
+    ],
+    [
+      "C:\\Users\\Billy\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+      "tools/verify_companion_v9_touch_emotion_machine_preview.py"
+    ],
+    [
+      "C:\\Users\\Billy\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+      "tools/render_companion_v9_v22_touch_emotion_route.py"
+    ],
+    [
+      "C:\\Users\\Billy\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+      "tools/verify_companion_v9_v22_touch_emotion_route.py"
+    ],
+    [
+      "pwsh",
+      "-NoProfile",
+      "-File",
+      "tools/capture_companion_v9_v22_touch_emotion_route_browser.ps1"
+    ],
+    [
+      "pwsh",
+      "-NoProfile",
+      "-File",
+      "tools/build_nucleo_bringup.ps1",
+      "-EpaperSsd1681Bringup",
+      "-Force"
+    ]
+  ],
+  "checks": {
+    "locked_v9_source_hash": true,
+    "protected_owner_acceptance_hash": true,
+    "touch_trace_is_runtime_inactive_pass": true,
+    "touch_trace_has_registered_component_keyframes_and_causal_route": true,
+    "notice_score_is_coalesced_for_epaper": true,
+    "touch_trace_sequences_only_after_visible_completion": true,
+    "unavailable_system_faces_remain_fail_closed": true,
+    "browser_preview_is_runtime_inactive_component_only": true,
+    "browser_target_trace_parity": true,
+    "v22_visual_route_is_runtime_inactive_200x200_component_candidate": true,
+    "v22_visual_route_has_actual_curious_and_warm_component_waypoints": true,
+    "v22_visual_route_browser_target_plan_parity": true,
+    "v22_visual_route_is_event_driven_micro_choreography": true,
+    "v22_visual_route_actual_browser_render_inspection_passes": true,
+    "target_build_compiled_interaction_session_without_flash": true,
+    "session_uses_component_score_not_face_drawing": true
+  },
+  "failures": [],
+  "artifacts": {
+    "touch_trace": {
+      "path": "docs/validation/companion-v9-rig-touch-emotion-machine-20260719.json",
+      "sha256": "3C5673D7C4581533E65D521A560AA83B96BFE925F3E08096C60BCBA36C0F9AAB"
+    },
+    "browser_preview": {
+      "path": "docs/validation/companion-v9-rig-touch-emotion-machine-preview-20260719.json",
+      "sha256": "2C808D209101436B2A0DDA5CF0EEB9870A614C5FB08940E39738459E2875F350"
+    },
+    "browser_target_parity": {
+      "path": "docs/validation/companion-v9-rig-touch-emotion-machine-parity-20260719.json",
+      "sha256": "8761632C7FED25DF660224981C79362090BC2426B22D0D5BF66A38A1E8BBE816"
+    },
+    "v22_visual_route_candidate": {
+      "path": "docs/validation/companion-v9-v22-touch-emotion-route-preview-20260720.json",
+      "sha256": "3F403B310DC7579AC65AA5890828CA8B7C3AD0896F132E3EF35A140E4AE0F95C"
+    },
+    "v22_visual_route_parity": {
+      "path": "docs/validation/companion-v9-v22-touch-emotion-route-parity-20260720.json",
+      "sha256": "A66D3DCB7328069CCBA77548C78D2F8DB99769D9DA66F6E554A9C0549921D175"
+    },
+    "v22_visual_route_browser_render_inspection": {
+      "path": "docs/validation/companion-v9-v22-touch-emotion-route-browser-render-20260720.json",
+      "sha256": "F9E2104CAF8C12326DAFCA06449F1271EAB2CD8E4437476A78C75FC8E675DD7E"
+    },
+    "target_hex": {
+      "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build/Companion_Nucleo_WB55RG_Bringup.hex",
+      "sha256": "78DCD26DACBD017CC64764ECA133AD862790FED3DAE887893B997475AE25675E"
+    },
+    "target_elf": {
+      "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build/Companion_Nucleo_WB55RG_Bringup.elf",
+      "sha256": "18A3E1CE9739597CF6260CF0499611662F1CA097CC64970C10CC3BB3926B2A39"
+    },
+    "target_interaction_object": {
+      "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build/expression_interaction_session.o",
+      "sha256": "6FB3A43507735ADB7B1874AE475061B4B630915547AB5698CC4376E2D3FBB863"
+    }
+  },
+  "physical_gate": {
+    "white_black_hardware_pass_required_before_dynamic_flash_or_panel_acceptance": true,
+    "current_state": "PENDING_FTS02_REPLACEMENT_OR_CROSS_SWAP_RAIL_EVIDENCE"
+  }
+}

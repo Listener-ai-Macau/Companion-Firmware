@@ -1,0 +1,29 @@
+{
+  "schema": "companion.v9_expression_rig_review_readiness.v2",
+  "status": "PASS_DYNAMIC_REVIEW_READY",
+  "review_page": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/v9-expression-rig-owner-review.html",
+  "review_page_sha256": "ABD13434F845B69FAE5CC24C64785E2FA20A2CEBD96AE868ABFE7F60AB9E4184",
+  "dynamic_player": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/v9-expression-rig-dynamic-player.html",
+  "dynamic_player_sha256": "ABD13434F845B69FAE5CC24C64785E2FA20A2CEBD96AE868ABFE7F60AB9E4184",
+  "animated_preview": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/v9-expression-rig-dynamic-preview.gif",
+  "animated_preview_sha256": "52449C549B92A1BCD7EA274395CF79D5C8C6B636994E0DEDF839CEDB49C76771",
+  "keyframe_strip": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/v9-expression-rig-dynamic-keyframes.png",
+  "keyframe_strip_sha256": "C419001EE8424C8281C28AEF546671FC71A152EFA7B58B49E5F3206D1386D310",
+  "component_layer_dir": "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200/dynamic-review-layers",
+  "component_layer_count": 24,
+  "dynamic_groups": [
+    "brows",
+    "cheeks",
+    "eyes/highlights",
+    "nose-mouth/lips",
+    "side detail strokes",
+    "small charm"
+  ],
+  "preview_distance_report": "docs/validation/companion-v9-expression-rig-preview-distance-20260717.json",
+  "preview_distance_status": "PASS_PREVIEW_DISTANCE_READY_FOR_OWNER_PROMPT",
+  "source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "runtime_resource_activated": false,
+  "physical_epaper_acceptance": false,
+  "legacy_static_matrix_owner_review": "rejected_by_COMP_REQ_095",
+  "operator_prompt_prerequisite": "Open review_page before launching operator-prompt."
+}

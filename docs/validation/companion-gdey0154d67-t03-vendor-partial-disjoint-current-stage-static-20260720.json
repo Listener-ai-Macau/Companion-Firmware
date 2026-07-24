@@ -1,0 +1,368 @@
+{
+  "checks": {
+    "diagnostic_elf_exists": true,
+    "diagnostic_probe_is_not_product_expression_binding": true,
+    "historical_ball_trace_exercised_only_one_region": true,
+    "historical_candidate_artifacts_are_explicitly_preserved_and_not_reclassified": true,
+    "identical_frame_synthetic_probe_has_zero_regions_zero_payload_and_zero_activation": true,
+    "makefile_and_build_script_are_explicit_and_isolated": true,
+    "new_probe_is_single_12px_ball_on_42px_five_anchor_orbit": true,
+    "new_probe_proves_two_disjoint_regions_and_strict_payload_reduction": true,
+    "normal_firmware_omits_the_default_off_diagnostic_profile": true,
+    "observer_elf_exists": true,
+    "owner_steering_records_new_source_topology_only": true,
+    "runner_is_fail_closed_and_captures_all_48_partial_steps": true,
+    "serial_capture_retries_only_transient_vcp_open_races_and_records_attempts": true,
+    "supplier_function_is_five_current_0x24_stages_then_one_partial_activation": true,
+    "target_compile_time_excludes_every_historical_partial_or_lut_candidate": true,
+    "target_derives_generic_bounded_byte_aligned_difference_regions": true,
+    "target_has_one_source_completion_after_all_stages": true,
+    "target_is_default_off_binary_guarded_and_pattern_isolated": true,
+    "target_skips_identical_partial_frame_before_controller_commands": true,
+    "target_uses_only_current_0x24_for_each_staged_region": true,
+    "target_uses_owner_authorized_12px_diagnostic_probe_only": true
+  },
+  "claim_scope": "machine-only, production-off source-topology diagnostic; no residue, temperature, production, or OLED-like continuity claim",
+  "failures": [],
+  "historical_exclusions": {
+    "accepted_no_union_baseline": "Accepted production-off regression baseline retained; the candidate does not replace or bind it to production expression rendering.",
+    "current_union_old_settle": "Preserved as machine evidence only; the candidate stages disjoint current regions instead of a union rectangle and is compile-time incompatible with it.",
+    "draw_final": "Operator NO_GO for visible residue; the candidate does not use draw-final and is compile-time incompatible with it.",
+    "old_new_0x26": "Preserved as an A/B static artifact; the candidate has no 0x26 and is compile-time incompatible with that candidate.",
+    "removed_black_repair": "Operator NO_GO for enlarged gap; the candidate writes no synthetic black repair and is compile-time incompatible with it.",
+    "slow_motion": "Physical NO_GO for continuous partial residue; it is retained as a negative result, not reused as candidate success evidence."
+  },
+  "physical_gate": {
+    "permitted": false,
+    "reason": "Static source-direction evidence only. A fail-closed runner, current-goal audit, prerequisite checks, machine trace and canonical Chinese operator review are still required before any flash."
+  },
+  "schema_id": "companion.wb55.gdey0154d67_t03.vendor_partial_disjoint_current_stage_static.v1",
+  "source": {
+    "build_script": {
+      "path": "tools/build_nucleo_bringup.ps1",
+      "sha256": "0FB35161A190DCEF4620C4647944517462A04B12DFE7C0B7B3AD1C5374A837C4"
+    },
+    "diagnostic_elf": {
+      "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_vendor_partial_disjoint_current_stage_diagnostic/Companion_Nucleo_WB55RG_VendorPartialDisjointCurrentStageDiagnostic.elf",
+      "sha256": "6129E1DFA01F1D92D82A3CA4B9F3A23D943380E9888D8E31C53C2058C763B010"
+    },
+    "hardware_prerequisite": {
+      "path": "docs/validation/companion-gdey0154d67-t03-vendor-partial-disjoint-current-stage-r2-hardware-prerequisite-20260720.json",
+      "sha256": "668210A350E0BFB848D38FA215DB57F7FF9507ACA8A63C610389185D184854D0"
+    },
+    "hardware_prerequisite_verifier": {
+      "path": "tools/verify_wb55_vendor_partial_disjoint_current_stage_hardware_prerequisite.py",
+      "sha256": "256E24BEB793E2E89BCCF0F32C9084D063FA175F76E8B916A7E9396CDFB2139F"
+    },
+    "historical_candidates": {
+      "accepted_no_union_baseline": {
+        "path": "docs/validation/companion-gdey0154d67-t03-vendor-partial-no-union-settle-operator-20260720.json",
+        "recorded_status": "PASS_OPERATOR_ACCEPTED_PRODUCTION_OFF_NO_UNION_SETTLE_BASELINE",
+        "sha256": "DA2FE11DB4CB1AFC5D433B2798BADBB576FC9C82BB39C472236E084C48F1EC57"
+      },
+      "current_union_old_settle": {
+        "path": "docs/validation/companion-gdey0154d67-t03-vendor-partial-current-union-old-settle-runtime-20260720.json",
+        "recorded_status": "PASS_MACHINE_CURRENT_UNION_OLD_SETTLE_TRACE",
+        "sha256": "FDFC2BAE85F868328E198A68DCF75854713F0A3B6B12B1039522A4F68554F599"
+      },
+      "draw_final": {
+        "path": "docs/validation/companion-gdey0154d67-t03-vendor-partial-draw-final-operator-20260720.json",
+        "recorded_status": "NO_GO_OPERATOR_VISIBLE_RESIDUE_DRAW_FINAL",
+        "sha256": "69FC1FC6A01EBDDD45A10E477270ACC4EC4F22999BB4C3B78EE474E2CAC03B1E"
+      },
+      "old_new_0x26": {
+        "path": "docs/validation/companion-gdey0154d67-t03-vendor-partial-old-new-ram-static-20260720.json",
+        "recorded_status": "PASS_STATIC_OWNER_AUTHORIZED_VENDOR_PARTIAL_OLD_NEW_RAM_AB",
+        "sha256": "A5513A202967593819519593DFD0FBDDF94ADF1413E17DA4A19FBE9313BA6380"
+      },
+      "removed_black_repair": {
+        "path": "docs/validation/companion-gdey0154d67-t03-vendor-partial-removed-black-repair-current-union-operator-20260720.json",
+        "recorded_status": "NO_GO_OPERATOR_VISIBLE_ENLARGED_GAP",
+        "sha256": "2FEBAB3365FE8481760DB0DC6C4180EFD01C24B10D985F751B6CAD9F4E1A2932"
+      },
+      "slow_motion": {
+        "path": "docs/validation/companion-gdey0154d67-t03-vendor-partial-slow-motion-residue-triage-20260720.json",
+        "recorded_status": "NO_GO_PHYSICAL_CONTINUOUS_PARTIAL_RESIDUE",
+        "sha256": "6686459B31E12B0189F6195FC02B2F3EA5166D08C337C5C8F2F195057A9CF033"
+      }
+    },
+    "historical_single_region_trace": {
+      "path": ".cache/validation/wb55-vendor-partial-slow-motion-current-room-20260720/capture/nucleo-serial-raw.log",
+      "sha256": "5D3C60173C95BCCC66215D948EB257A797544EC130BA4EBF67616BFA09C85FEB"
+    },
+    "makefile": {
+      "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile",
+      "sha256": "B10DF8B02EA5D946E931E2B8558F0252E6316F4EB851ED08E390BE62B160B7A7"
+    },
+    "normal_elf": {
+      "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build/Companion_Nucleo_WB55RG_Bringup.elf",
+      "sha256": "ECCD9F386129DF57A8F8D01B55C2B9BD7D2D71A838FB2D636DBDCCC1A5C4A38F"
+    },
+    "normal_hex": {
+      "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build/Companion_Nucleo_WB55RG_Bringup.hex",
+      "sha256": "E1997F29DCB8735899B4BC0B9012CF75025F3CA8D21250485BCC21E4C4691B46"
+    },
+    "observer_elf": {
+      "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_vendor_partial_disjoint_current_stage_operator_loop_diagnostic/Companion_Nucleo_WB55RG_VendorPartialDisjointCurrentStageOperatorLoopDiagnostic.elf",
+      "sha256": "D172B691083C5D485EC4263FEB69CFBB5D9D4A666F0B5E320B86D8B46459C790"
+    },
+    "runner": {
+      "path": "tools/run_wb55_vendor_partial_disjoint_current_stage_diagnostic.ps1",
+      "sha256": "757DA8F21215C66D16886FAA118293C713A5D948B0A3019680B23905759B7F5F"
+    },
+    "serial_capture": {
+      "path": "tools/capture_nucleo_serial.ps1",
+      "sha256": "44A63B0FB6A843782CBBD2B348DA499DDD78A2F45F2CDD1F490EF6A466099CC2"
+    },
+    "target_driver": {
+      "path": "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
+      "sha256": "48303F700B1AA987646CBFC00E43212B7B66AC8BD0B5FA1593068119060C881B"
+    },
+    "vendor_epaper_c": {
+      "path": "C:\\Users\\Billy\\Desktop\\GDEH0154D67-20211203-P-LUT(1s) -1s快刷\\EPD_W21\\EPAPER.c",
+      "sha256": "7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896"
+    }
+  },
+  "source_diff": {
+    "candidate": "The new default-off probe stages generic previous/current byte differences across one to five regions with current-frame 0x24 only, then uses the existing source 0xFF/0x20/BUSY completion once.",
+    "historical_observation": "The prior slow-motion physical trace used the source multi-region path but recorded count=1 for every ball frame, so it did not observe disjoint staging.",
+    "not_claimed": "The supplier function uses one fixed PART_COLUMN/PART_LINE size for all five calls; the target uses bounded actual difference rectangles for integration. This proves command/topology ancestry, not a panel-qualified residue waveform.",
+    "physical_probe": "After the r5 human observation failed because the 1 px step / 4 px excursion probe was not visibly moving, the owner (COMP-REQ-242 addendum 2026-07-21) authorized reusing only the five-anchor geometry: a single fixed 12 px-radius diagnostic ball on the 42 px center/up/right/down/left orbit with eight interpolation steps per segment. This is probe geometry only, not a product-expression binding or a transport/waveform change.",
+    "supplier": "EPD_Dis_Part_myself resets once, locks border once, writes five current 0x24 regions, then calls EPD_Part_Update once."
+  },
+  "status": "PASS_STATIC_SOURCE_EXACT_DISJOINT_CURRENT_STAGE_DEFAULT_OFF",
+  "synthetic_disjoint_probe": {
+    "current_phase": 16,
+    "previous_phase": 0,
+    "probe_radius_px": 12,
+    "region_count": 2,
+    "regions": [
+      {
+        "bytes": 100,
+        "x_byte": [
+          11,
+          14
+        ],
+        "y": [
+          88,
+          112
+        ]
+      },
+      {
+        "bytes": 100,
+        "x_byte": [
+          16,
+          19
+        ],
+        "y": [
+          88,
+          112
+        ]
+      }
+    ],
+    "strictly_smaller_than_union": true,
+    "total_bytes": 200,
+    "union_bytes": 225
+  },
+  "synthetic_five_anchor_orbit": {
+    "all_centers_on_panel": true,
+    "anchors": [
+      [
+        100,
+        100
+      ],
+      [
+        100,
+        58
+      ],
+      [
+        142,
+        100
+      ],
+      [
+        100,
+        142
+      ],
+      [
+        58,
+        100
+      ]
+    ],
+    "centers": [
+      [
+        100,
+        100
+      ],
+      [
+        100,
+        96
+      ],
+      [
+        100,
+        90
+      ],
+      [
+        100,
+        85
+      ],
+      [
+        100,
+        80
+      ],
+      [
+        100,
+        75
+      ],
+      [
+        100,
+        69
+      ],
+      [
+        100,
+        64
+      ],
+      [
+        100,
+        58
+      ],
+      [
+        105,
+        63
+      ],
+      [
+        111,
+        69
+      ],
+      [
+        116,
+        74
+      ],
+      [
+        121,
+        79
+      ],
+      [
+        126,
+        84
+      ],
+      [
+        132,
+        90
+      ],
+      [
+        137,
+        95
+      ],
+      [
+        142,
+        100
+      ],
+      [
+        138,
+        105
+      ],
+      [
+        132,
+        111
+      ],
+      [
+        127,
+        116
+      ],
+      [
+        122,
+        121
+      ],
+      [
+        117,
+        126
+      ],
+      [
+        111,
+        132
+      ],
+      [
+        106,
+        137
+      ],
+      [
+        100,
+        142
+      ],
+      [
+        96,
+        138
+      ],
+      [
+        90,
+        132
+      ],
+      [
+        85,
+        127
+      ],
+      [
+        80,
+        122
+      ],
+      [
+        75,
+        117
+      ],
+      [
+        69,
+        111
+      ],
+      [
+        64,
+        106
+      ],
+      [
+        58,
+        100
+      ],
+      [
+        63,
+        100
+      ],
+      [
+        69,
+        100
+      ],
+      [
+        74,
+        100
+      ],
+      [
+        79,
+        100
+      ],
+      [
+        84,
+        100
+      ],
+      [
+        90,
+        100
+      ],
+      [
+        95,
+        100
+      ]
+    ],
+    "max_center_x": 142,
+    "max_center_y": 142,
+    "min_center_x": 58,
+    "min_center_y": 58,
+    "phase_count": 40,
+    "probe_radius_px": 12,
+    "steps_per_segment": 8
+  },
+  "synthetic_identical_frame_probe": {
+    "current_phase": 0,
+    "expected_controller_activations": 0,
+    "previous_phase": 0,
+    "region_count": 0,
+    "total_bytes": 0
+  }
+}

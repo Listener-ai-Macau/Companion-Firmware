@@ -1,0 +1,29 @@
+{
+  "schema_id": "companion.wb55.ssd1681.r10_native_two_pass_fine_stride.static.v2",
+  "status": "PASS",
+  "cases": {
+    "default_off": true,
+    "qualification_16": true,
+    "activation_32": true,
+    "production_off": true,
+    "source_ff": true,
+    "native_gpio_init_guard": true,
+    "source_bound_reset": true,
+    "source_bound_border_window": true,
+    "generic_window_removed": true,
+    "startup_command_12_removed": true,
+    "baseline_one_source_activation": true,
+    "movement_two_source_activations": true,
+    "busy_timer_after_stage": true,
+    "runner_native_counts": true,
+    "payload_table_exact_wire_sha": true
+  },
+  "payload_table_rows": 32,
+  "negative_fixtures": {
+    "motion_0x26": true,
+    "custom_lut": true,
+    "third_activation": true,
+    "generic_window": true
+  },
+  "errors": []
+}

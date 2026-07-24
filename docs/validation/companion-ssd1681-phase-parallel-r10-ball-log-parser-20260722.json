@@ -1,0 +1,198 @@
+{
+  "negative_fixtures": [
+    {
+      "name": "missing_frame",
+      "reason": "expected 16 qualification frames, found 15",
+      "result": "rejected"
+    },
+    {
+      "name": "extra_frame",
+      "reason": "expected 16 qualification frames, found 17",
+      "result": "rejected"
+    },
+    {
+      "name": "wrong_position",
+      "reason": "qualification_frame=1: current_x='40', expected '32'",
+      "result": "rejected"
+    },
+    {
+      "name": "wrong_step",
+      "reason": "qualification_frame=2: current_x='48', expected '40'",
+      "result": "rejected"
+    },
+    {
+      "name": "wrong_window",
+      "reason": "qualification_frame=1: window_x_bytes='4-4', expected '4-5'",
+      "result": "rejected"
+    },
+    {
+      "name": "clipped_disk",
+      "reason": "qualification_frame=1: changed_pixels='111', expected '112'",
+      "result": "rejected"
+    },
+    {
+      "name": "square_payload",
+      "reason": "qualification_frame=1: current_payload_sha256='0000000000000000000000000000000000000000000000000000000000000000', expected '15C1A7E76242A2D1A91BAB445FF2CB7669A9776E22E6281D99ED01A327384763'",
+      "result": "rejected"
+    },
+    {
+      "name": "wrong_previous_frame_hash",
+      "reason": "qualification_frame=1: previous_frame_sha256='0000000000000000000000000000000000000000000000000000000000000000', expected 'D41BF2913D4C6ED6E9EF11EB8B9064AC3125A7A95B48F60E305DACF048D15C2B'",
+      "result": "rejected"
+    },
+    {
+      "name": "wrong_current_frame_hash",
+      "reason": "qualification_frame=1: current_frame_sha256='0000000000000000000000000000000000000000000000000000000000000000', expected 'FD4063FBC8A62425D84B9D04E8E1DE703C97F9175E98057B5B80C6FBFBD0D7C8'",
+      "result": "rejected"
+    },
+    {
+      "name": "wrong_previous_payload_hash",
+      "reason": "qualification_frame=1: previous_payload_sha256='0000000000000000000000000000000000000000000000000000000000000000', expected '44A5F7891570E5631E8C91C85186E6633F4AB5364F644040B2A00126A07985B6'",
+      "result": "rejected"
+    },
+    {
+      "name": "wrong_current_payload_hash",
+      "reason": "qualification_frame=1: current_payload_sha256='FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF', expected '15C1A7E76242A2D1A91BAB445FF2CB7669A9776E22E6281D99ED01A327384763'",
+      "result": "rejected"
+    },
+    {
+      "name": "wrong_class_count",
+      "reason": "qualification_frame=1: ww='81', expected '80'",
+      "result": "rejected"
+    },
+    {
+      "name": "missing_0x26",
+      "reason": "qualification_frame=1: old_writes='0', expected '1'",
+      "result": "rejected"
+    },
+    {
+      "name": "extra_0x26",
+      "reason": "qualification_frame=1: old_writes='2', expected '1'",
+      "result": "rejected"
+    },
+    {
+      "name": "missing_staged_0x24",
+      "reason": "qualification_frame=1: stage_writes_24='0', expected '1'",
+      "result": "rejected"
+    },
+    {
+      "name": "extra_staged_0x24",
+      "reason": "qualification_frame=1: stage_writes_24='2', expected '1'",
+      "result": "rejected"
+    },
+    {
+      "name": "missing_post_sync_0x24",
+      "reason": "qualification_frame=1: post_sync_writes='0', expected '1'",
+      "result": "rejected"
+    },
+    {
+      "name": "extra_post_sync_0x24",
+      "reason": "qualification_frame=1: post_sync_writes='2', expected '1'",
+      "result": "rejected"
+    },
+    {
+      "name": "missing_cf",
+      "reason": "qualification_frame=1: controls_cf='0', expected '1'",
+      "result": "rejected"
+    },
+    {
+      "name": "extra_cf",
+      "reason": "qualification_frame=1: controls_cf='2', expected '1'",
+      "result": "rejected"
+    },
+    {
+      "name": "missing_0x20",
+      "reason": "qualification_frame=1: refresh_20='0', expected '1'",
+      "result": "rejected"
+    },
+    {
+      "name": "extra_0x20",
+      "reason": "qualification_frame=1: refresh_20='2', expected '1'",
+      "result": "rejected"
+    },
+    {
+      "name": "busy_over_600",
+      "reason": "qualification_frame=1: BUSY elapsed 601 exceeds 600 ms",
+      "result": "rejected"
+    },
+    {
+      "name": "second_activation",
+      "reason": "start: second_activations='1', expected '0'",
+      "result": "rejected"
+    },
+    {
+      "name": "full_frame_write",
+      "reason": "start: full_frame_writes='1', expected '0'",
+      "result": "rejected"
+    },
+    {
+      "name": "control_f7",
+      "reason": "start: controls_f7='1', expected '0'",
+      "result": "rejected"
+    },
+    {
+      "name": "control_c7",
+      "reason": "start: controls_c7='1', expected '0'",
+      "result": "rejected"
+    },
+    {
+      "name": "control_ff",
+      "reason": "start: controls_ff='1', expected '0'",
+      "result": "rejected"
+    },
+    {
+      "name": "control_37",
+      "reason": "start: controls_37='1', expected '0'",
+      "result": "rejected"
+    },
+    {
+      "name": "retry",
+      "reason": "retry counter is nonzero",
+      "result": "rejected"
+    },
+    {
+      "name": "non_contiguous_loop",
+      "reason": "loop_iteration sequence is not contiguous",
+      "result": "rejected"
+    },
+    {
+      "name": "qualification_failure_followed_by_observation",
+      "reason": "qualification_result: qualification_result='no_go', expected 'ok'",
+      "result": "rejected"
+    },
+    {
+      "name": "unbounded_storage",
+      "reason": "telemetry storage is not the fixed 65536-byte ring",
+      "result": "rejected"
+    },
+    {
+      "name": "popup_on_routine_path",
+      "reason": "popup is forbidden on machine/routine/fault path: popup_commands",
+      "result": "rejected"
+    },
+    {
+      "name": "popup_on_fault_path",
+      "reason": "popup is forbidden on machine/routine/fault path: popup_commands",
+      "result": "rejected"
+    },
+    {
+      "name": "stale_r9_marker",
+      "reason": "stale R9 marker is not accepted",
+      "result": "rejected"
+    }
+  ],
+  "positive": {
+    "busy_max_ms": 500,
+    "busy_within_600_ms": true,
+    "hardware_contact": 0,
+    "log_sha256": "F9F1E281CAC09EA3FE88E54B149B6456437B7AFAC75EA128004ACCA6DEDAAE6C",
+    "loop_iterations": 8,
+    "popup_commands": 0,
+    "qualification_frames": 16,
+    "retry_count": 0,
+    "ring_bytes": 65536,
+    "status": "PASS_R10_BALL_LOG"
+  },
+  "schema_id": "companion.wb55.ssd1681.r10_ball_log_parser.v1",
+  "status": "PASS_R10_BALL_LOG_PARSER"
+}

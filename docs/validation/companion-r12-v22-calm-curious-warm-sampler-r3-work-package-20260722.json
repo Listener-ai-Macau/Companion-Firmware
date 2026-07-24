@@ -1,0 +1,96 @@
+{
+  "schema": "companion.r12_v22_calm_curious_warm_sampler.r3_work_package.v1",
+  "status": "AUTHORIZED_OFFLINE_IMPLEMENTATION_ONLY",
+  "requirement": "COMP-REQ-375",
+  "candidate": "r12_v22_calm_curious_warm_sampler",
+  "implementation_owner": "luna",
+  "history": {
+    "r2_machine_ready": "docs/validation/companion-ssd1681-r12-v22-calm-curious-warm-sampler-r2-machine-ready-20260722.json",
+    "r2_machine_ready_sha256": "8D8BE1F528B79B66B885BF91FE04B6094C7BF74A374F76F49F3CF3A8DF68E60A",
+    "r2_root": ".cache/validation/wb55-r12-v22-calm-curious-warm-sampler-execute-20260722-r2",
+    "r2_fault": "[r12] fault schema=v2 phase=qualification index=1 reason=transaction t=463 b=443 d=0",
+    "r2_disposition": "NO_GO_R12_V22_CALM_CURIOUS_WARM_SAMPLER_SAFETY_FAULT_RESTORED",
+    "r2_restore_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C"
+  },
+  "only_variable": {
+    "name": "fixed_corridor_window_cache",
+    "target_transaction_saving_ms": 3,
+    "hard_transaction_limit_ms": 460,
+    "one_time_setup": {
+      "position": "after_successful_baseline_before_qualification",
+      "commands": ["0x44", "0x45"],
+      "count": 1,
+      "ram_writes": 0,
+      "refreshes": 0,
+      "border_writes": 0
+    },
+    "movement": {
+      "ready_checks": 1,
+      "counter_commands": ["0x4E", "0x4F"],
+      "counter_command_counts": {"0x4E": 1, "0x4F": 1},
+      "forbidden_commands": ["0x3C", "0x44", "0x45"]
+    }
+  },
+  "source_contract": {
+    "frames": ["calm", "curious", "warm"],
+    "source_sha256": [
+      "DCDE74BE44CD33E881F33BC4FC6397D6269A4749BE90BCD7A1999A53D44D4B79",
+      "C8D856E609C82AA88BF45EAC506BAC153AEF081A49289138F80E08813582F78F",
+      "8A822CA758361B7956371C6DF7A750E5DFC01947E454F14B289AE5B1BA381356"
+    ],
+    "controller_frame_sha256": [
+      "BBE5EBE794D8375855EC3108D25D25CF999288F3FB4C389FC90638A0C85F679F",
+      "99DB877B39968AA9021FF427CD5A3DAC8E09A16F5F2B19CC2BE7EF00F82DBFF8",
+      "563E9B89CB02FF0883E793281507C0392E186E514DCFA7808AB3173838D03B8B"
+    ],
+    "corridor_payload_sha256": [
+      "0649D2E5B3446C93CFCF4C8CB3A826F31349F31F00E8FF6FCEB7B400CE1577BE",
+      "30DD44898CA499C4658C85B7FF480426F90828DC4160B07753D4376AC6DFBD9A",
+      "3A6ED64C5866137A7B1B67578A85989B75C25095A7D7CD70F6028B96E399E287"
+    ],
+    "path": [0, 1, 2, 1, 0],
+    "qualification_transitions": 16
+  },
+  "transport_contract": {
+    "baseline": {"window": "0-24,0-199", "bytes": 5000, "reset": 1, "command": "0x24", "control": "0xFF", "refresh": "0x20", "activations": 1},
+    "movement": {"window": "4-21,72-177", "bytes": 1908, "reset": 0, "command": "0x24", "data_calls": 1, "control": "0xCF", "refresh": "0x20", "activations": 1, "payload_transport": "deterministic_row_order_pack"},
+    "spi_hz": 2000000,
+    "busy_limit_ms": 600,
+    "transaction_limit_ms": 460,
+    "cadence_accept_ms": "1..480",
+    "ring_bytes": 65536,
+    "telemetry_max_bytes_including_crlf": 192
+  },
+  "setup_fault_contract": {
+    "terminal": true,
+    "phase": "qualification",
+    "index": 1,
+    "reason": "activation",
+    "real_transaction_ms": true,
+    "busy_ms": 0,
+    "start_delta_ms": 0,
+    "popup_eligible": false
+  },
+  "static_negative_fixtures": [
+    "missing_counter",
+    "duplicate_setup",
+    "movement_resends_window",
+    "movement_resends_border",
+    "setup_ram_write",
+    "setup_refresh"
+  ],
+  "lifecycle_contract": {
+    "production_enabled": false,
+    "hardware_authorized": false,
+    "checkonly_hardware_contact": 0,
+    "checkonly_writes": 0,
+    "popup_count": 0,
+    "restore_bytes": 524288,
+    "restore_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "future_authorization_requirement": "COMP-REQ-376"
+  },
+  "must_not_change": ["source_art", "V9", "V22", "Rig", "CRIG", "browser", "touch", "production", "vendor", "R11", "protected_owner_acceptance"],
+  "execute": false,
+  "claim_only": false,
+  "hardware_contact": false
+}

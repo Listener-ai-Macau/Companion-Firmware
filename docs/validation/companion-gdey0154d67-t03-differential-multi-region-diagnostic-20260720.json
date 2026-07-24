@@ -1,0 +1,51 @@
+{
+  "checks": {
+    "build_switch_is_isolated_and_forwards_the_c_macro": true,
+    "supplier_stages_exactly_five_regions_before_one_existing_partial_activation": true,
+    "target_derives_regions_from_actual_previous_and_current_frame": true,
+    "target_macro_defaults_off_and_is_binary_guarded": true,
+    "target_never_exceeds_supplier_five_region_bound": true,
+    "target_reuses_existing_single_partial_activation_without_lut_mutation": true,
+    "target_writes_old_and_new_plane_for_every_selected_region": true
+  },
+  "claim_scope": "machine-only verification of a default-off, source-bounded multi-window data diagnostic; it makes no physical, no-residue, LUT, temperature, or production claim",
+  "diagnostic_contract": {
+    "activation": "one existing differential 0xFC/0x20/BUSY sequence after all selected regions",
+    "default_compilation": "off",
+    "lut_policy": "no LUT byte was added, changed, or selected by this diagnostic",
+    "maximum_disjoint_regions": 5,
+    "per_region_ram_payload": "old 0x26 then new 0x24",
+    "physical_policy": "not flashed; panel identity and White-rail prerequisites remain controlling",
+    "region_selection": "actual previous/current framebuffer byte differences; use multiple regions only when their total payload is smaller than one bounding window"
+  },
+  "disposition": {
+    "allowed_next_step": "only a gate-authorized physical diagnostic with canonical operator evidence after identity and White-rail prerequisites",
+    "observed_residue": "unresolved; smaller payload cannot replace a panel-bound residue-recovery waveform",
+    "production_dynamic_expression": "NO_GO"
+  },
+  "failures": [],
+  "schema_id": "companion.gdey0154d67_t03.differential_multi_region_diagnostic.v1",
+  "source": {
+    "build_script": {
+      "path": "tools/build_nucleo_bringup.ps1",
+      "sha256": "0FB35161A190DCEF4620C4647944517462A04B12DFE7C0B7B3AD1C5374A837C4"
+    },
+    "diagnostic_elf": {
+      "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_differential_multi_region_diagnostic/Companion_Nucleo_WB55RG_DifferentialMultiRegionDiagnostic.elf",
+      "sha256": "0B65C04F69C7AE23B4E7411B591366DBEAEB07AA5B718FC7F8844701DA9CFB48"
+    },
+    "makefile": {
+      "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile",
+      "sha256": "B10DF8B02EA5D946E931E2B8558F0252E6316F4EB851ED08E390BE62B160B7A7"
+    },
+    "target_driver": {
+      "path": "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
+      "sha256": "11CB38E75DE7FB121659660CF30DB06AE558CDE110F9B014C16211B443A77E29"
+    },
+    "vendor_epaper_c": {
+      "path": "C:\\Users\\Billy\\Desktop\\GDEH0154D67-20211203-P-LUT(1s) -1s快刷\\EPD_W21\\EPAPER.c",
+      "sha256": "7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896"
+    }
+  },
+  "status": "PASS_MACHINE_SOURCE_BOUND_DIAGNOSTIC_DEFAULT_OFF"
+}

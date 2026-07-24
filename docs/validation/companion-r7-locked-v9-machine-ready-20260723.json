@@ -1,0 +1,57 @@
+{
+  "assembly_payload_path_proven": true,
+  "authorization_created": false,
+  "build_recipe": "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1 -EpaperSsd1681R7LockedV9ChoreographyDiagnostic -Optimization O2 -Force",
+  "checkonly_counters": {
+    "hardware_contact": 0,
+    "popup": 0,
+    "programmer": 0,
+    "refresh": 0,
+    "reset": 0,
+    "retry": 0,
+    "serial": 0,
+    "write": 0
+  },
+  "checkonly_root": ".cache/validation/wb55-ssd1681-r7-locked-v9-checkonly-20260723-r3",
+  "cleanup_machine_ready_sha256": "B7E892DC7D2BF7851DD43D0537010848DAEDE3C54ADB88596622782F561E1DD7",
+  "graph_sha256": "380F7D72450ACA7EC26D4694B0CC1AD18C66F51260DC7C30E5B1E4272CD55524",
+  "hashes": {
+    "driver": "5BDCAAD81C1B5C2A1A93C93AA7D6F918A0E6EACE51CC4179925904FAFF112732",
+    "elf": "53A72F4A3115EB9DC26F75F0DB49253BDC5CE684A7A646C0F1464CF70DB255FF",
+    "generator": "9427A6FF119344425E954BD803090005955221D3E5E84E248343DC8950B6F15F",
+    "header": "F34E7B539ACC8ED0D7E01C846F573E52FB5C8B06574856CE7EDD976A5E0BD163",
+    "hex": "332E7B0557D64FE99FAB07C3BB5D3A81FAEEAB156C3DA327952F107DDD65F3B0",
+    "launcher": "D7FA88CFDA6AE59C4B9D10454FAE6287CE17E1F7A5B1398454E47EF73BA96B27",
+    "lifecycle": "5C56CA967C20816004FBC388F3882DCF3E8B009C2849B831F4D59D3B7FFF8B0A",
+    "monitor": "E05ACCFBF0A4727A64EA2F084036A1BFFBAAB674FE532833B7CFB0B9F4152FE2",
+    "oracle": "C5E825BC70C3E414C84EB6F0A7C4C44E4DD4598CC5235BD592C057B30F2054EE",
+    "parser": "81DA9BB0AC862819DB257EE19F5969CA9D3E7B219667C7E9E6910E7BA32AF3DE",
+    "runner": "9C9FECC218358E8A945424060C484B603F07054C76F3A20F5E2C1E429E11E59E",
+    "static": "1CAC963055126362D6185E0E5DB05716AEADE6BE55B86C71EF4D7F1DECF74B58",
+    "supervisor": "D38CCA411B5CC735690673C60AEE90EDBC5CEEA4FA52B24DCCF4788AA7E776C2"
+  },
+  "lifecycle_sha256": "F96DCBFE2D1D3427A45551DB9E762AE781A84BE3F6D5D26A7092FE9415D3CB59",
+  "manifest_sha256": "9B55E24EF3E07F4A0832D879F563183728386FE288219D628F7AAF58EB60ABB8",
+  "offline_only": true,
+  "requirement": "COMP-REQ-410",
+  "simulation_fixture_not_timing_evidence": true,
+  "status": "MACHINE_READY",
+  "thresholds": {
+    "busy_ms": 600,
+    "start_delta_ms": "1..480",
+    "transaction_ms": 460
+  },
+  "unproven": [
+    "physical measured timing",
+    "physical visual acceptance and flash count"
+  ],
+  "upper_pass_artifact_sha256": "A88393709E48928FAF5B3AB0470B18D82729AF3F37C57E301F887E28BF118734",
+  "window": {
+    "bytes": 2610,
+    "command_45": "AD 00 1D 00",
+    "controller_y": "173..29",
+    "counter_4f": "AD 00",
+    "logical_y": "26..170",
+    "x_bytes": "4..21"
+  }
+}

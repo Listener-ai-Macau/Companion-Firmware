@@ -1,0 +1,98 @@
+{
+  "schema_id": "companion.wb55.ssd1681_custom_mode2_transition_safety_machine_ready.v3",
+  "status": "MACHINE_READY_CUSTOM_MODE2_MINIMUM_INTEGER_TP19_R3",
+  "requirements": [
+    "COMP-REQ-285",
+    "COMP-REQ-289",
+    "COMP-REQ-291"
+  ],
+  "goal_action": "none; the root thread owns the active Codex Goal and this child scope did not create, replace, complete, block, or delete it",
+  "hardware_contact": 0,
+  "production_enabled": false,
+  "r2_rerun_allowed": false,
+  "research_conclusion": {
+    "direction_can_continue": true,
+    "single_new_mechanism_variable": "decrement LUT offset 74 from 0x02 to 0x01 so total active TP frame-counts change from 20 to 19",
+    "preserved": "all other LUT bytes, stationary-pixel suppression, explicit old/new RAM, BW/WB/SR/RP/FR/XON, protected voltage tail, RAM windows and CF/20/BUSY topology",
+    "two_point_model": {
+      "r1_tp50_busy_mean_ms": 1284.889,
+      "r2_tp20_busy_ms": 602.0,
+      "predicted_r3_tp19_busy_ms": 579.237,
+      "predicted_margin_ms": 20.763,
+      "busy_limit_ms": 600,
+      "authority": "candidate selection only; per-activation hardware BUSY is authoritative"
+    },
+    "automatic_rejection": "any candidate activation above 600 ms is NO_GO before physical review",
+    "not_claimed": [
+      "production waveform",
+      "complete temperature CWF1 profile",
+      "residue-free or visually continuous motion before physical review"
+    ]
+  },
+  "candidate": {
+    "name": "stationary_suppression_tp19_r3",
+    "lut_sha256": "CFE301B8FAA15C09B55509C9110E014FB49B959AD40FDF73F062A84D9D6769D3",
+    "hex_sha256": "2679A542AF71208B33A8AFCC5478DD5F8AED59D022035C4D3AEC5BFFBE4391E5",
+    "elf_sha256": "46D5696B30EBFCA56D70E6282B2767EE50B6D4E465649BCCC1395163F44FD47A",
+    "protected_tail_hex": "221741A83258",
+    "changed_from_r2_offsets": [74],
+    "local_activations": 9,
+    "transition_classes": ["WW", "WB", "BW", "BB"],
+    "busy_per_activation_max_ms": 600,
+    "full_frame_candidate_activations": 0,
+    "motion_120_frame_admitted": false
+  },
+  "runner_contract": {
+    "execute_launcher": "tools/start_wb55_ssd1681_custom_mode2_transition_safety.ps1",
+    "detached_durable_stdout_stderr": true,
+    "output_directory_reuse_forbidden": true,
+    "canonical_pre_execute_title": "Companion R3 局刷实验开始确认",
+    "start_selection_required": "开始实验",
+    "cancel_or_timeout_hardware_contact": 0,
+    "deterministic_white_preclean_first": true,
+    "selected_preclean_profile": "official_0x24_f7_white",
+    "preclean_failure_forbids_candidate": true,
+    "post_run_restore": "one exact captured-raw restore/readback/normal-resume proof"
+  },
+  "machine_gates": [
+    {
+      "name": "r3_two_point_timing_workbench",
+      "status": "PASS_WORKBENCH_ADMIT_MINIMUM_INTEGER_TP19_MODE2_R3",
+      "artifact_sha256": "CCFB9EF0AE1CBF1038A7ED4E188D3A6DF8303CFF5E18C4391418A20310C16124"
+    },
+    {
+      "name": "custom_static_default_off_preclean_restore",
+      "status": "PASS_STATIC_CUSTOM_MODE2_TRANSITION_SAFETY_DEFAULT_OFF_RAW_RESTORE",
+      "artifact_sha256": "1109FEC997E74D705721060021A34628074D3F3BF2366971D8CCFD5EF060D81A"
+    },
+    {
+      "name": "detached_launcher_negative_fixtures",
+      "status": "PASS_DETACHED_LAUNCHER_DURABLE_STREAMS_AND_NEGATIVE_FIXTURES",
+      "artifact_sha256": "FFB52AAED746EE3387B3E44EC807EB41527B0D6A0E00644BCA17A4CECFD18ECB"
+    },
+    {
+      "name": "detached_runner_check_only",
+      "status": "READY_NO_HARDWARE_CONTACT",
+      "hardware_contact": 0,
+      "launch_artifact_sha256": "C53A4A85198032835077BCE77239581D3019C0B3D629BA36BE9D8B85B8C79040",
+      "stage_artifact_sha256": "342FEEC67883261DA537F552E8BF4868540500460527B11F5CC40D2D701DCBAC"
+    },
+    {"name": "diagnostic_force_build", "status": "PASS"},
+    {"name": "parser_positive_negative_matrix", "status": "PASS"},
+    {"name": "product_registry", "status": "PASS"},
+    {
+      "name": "current_goal_audit",
+      "status": "PASS",
+      "artifact_sha256": "E5D2EF9F41EB9EE28171F269A1085E02DF5A7ECA8D21190B4C4D157C117ECFFD"
+    },
+    {"name": "git_diff_check", "status": "PASS_WITH_LINE_ENDING_WARNINGS_ONLY"}
+  ],
+  "protected_inputs": {
+    "supplier_epaper_c_sha256": "7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896",
+    "owner_acceptance_sha256": "8A3BDF4BD1254B0D0F4DE13A7F293C3D74587C800339ABD4C61FEB0B7737E227",
+    "captured_raw_baseline_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "source_audit_sha256": "29D33F74DCD58624EB5AC56B8F11B01BD6FC1A2C4B1C65B2AE771407CA1C812F"
+  },
+  "next_action": "under the existing active Goal, invoke exactly one detached R3 Execute with a new output directory; after owner selects 开始实验, run White preclean, at most nine local transitions, exact raw restore/readback/normal resume, and only after machine PASS open focused physical review",
+  "goal_terminal": false
+}

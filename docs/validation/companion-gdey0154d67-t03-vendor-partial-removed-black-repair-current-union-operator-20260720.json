@@ -1,0 +1,51 @@
+{
+  "schema_id": "companion.wb55.gdey0154d67_t03.vendor_partial_removed_black_repair_current_union_operator.v1",
+  "status": "NO_GO_OPERATOR_VISIBLE_ENLARGED_GAP",
+  "claim_scope": "production-off physical disposition of one source-bound local repair ordering; no production, panel-identity, LUT, temperature, or waveform claim",
+  "review": {
+    "method": "canonical aiw operator-prompt Chinese review window",
+    "selection": "失败",
+    "observation": "你这个局部修复好像修反了，以前是消失一小节，现在是消失一大节，你看一下吧。",
+    "criteria": [
+      "no old-position residual",
+      "no cumulative content loss",
+      "no leading-edge degradation relative to the accepted no-union baseline",
+      "no full-screen flash"
+    ],
+    "failed_criterion": "The source-local removed-black first activation enlarged the visible missing portion; it is worse than the accepted baseline's small leading-edge cutoff."
+  },
+  "controlled_behavior": {
+    "profile": "good_display_vendor_partial_removed_black_repair_current_union",
+    "pass_1": "source reset/border, generic old_black_removed=(~previous)&current byte-aligned window, current-frame 0x24 bytes, 0xFF, 0x20, BUSY",
+    "pass_2": "source reset/border, ordinary previous/current difference union window, current-frame 0x24 bytes, 0xFF, 0x20, BUSY",
+    "machine_trace": "PASS: two source-bound 0xFF/0x20/BUSY activations per bounded frame, no C7, no full local-motion write, no old-or-current union payload",
+    "physical_disposition": "NO_GO: do not retry, promote, or bind this ordering to dynamic expressions"
+  },
+  "causal_conclusion": "The first activation necessarily makes the old-exclusive strip white before the later activation supplies the current-only leading strip. Restricting the first window to only removed-black bits did not hide this temporal phase on the observed panel; it enlarged the visible missing region. This is an optical result, not a failed source-hash, BUSY, rail, or command-transport check.",
+  "normal_firmware_restore": {
+    "status": "PASS",
+    "image": "cubeide/Companion_Nucleo_WB55RG_Bringup/build/Companion_Nucleo_WB55RG_Bringup.hex",
+    "image_sha256": "E1997F29DCB8735899B4BC0B9012CF75025F3CA8D21250485BCC21E4C4691B46",
+    "programmer_stdout": ".cache/validation/flash-nucleo/stm32-programmer-20260720-223717-28264.stdout.log",
+    "programmer_stdout_sha256": "6CE50652CBEB1FCB890A83BF74845AC1620EE278A4ADF73E5F3723B817BAED95"
+  },
+  "evidence": {
+    "static_gate": {
+      "path": "docs/validation/companion-gdey0154d67-t03-vendor-partial-removed-black-repair-current-union-static-20260720.json",
+      "sha256": "E90394A38C0BCB3B42C8120FE4014B6F178D9DBD6308A4D0C64CBF25A9BF44FB"
+    },
+    "runtime_trace": {
+      "path": "docs/validation/companion-gdey0154d67-t03-vendor-partial-removed-black-repair-current-union-runtime-20260720.json",
+      "sha256": "69DBA2FC6B51DD2DCC762975F109C1A84B980A98F08961859D463C6E0F34D929"
+    },
+    "canonical_operator_observation": {
+      "path": ".cache/validation/wb55-vendor-partial-removed-black-repair-current-union-r1-20260720/operator/operator-observation.json",
+      "sha256": "DE1091BAB9CD72E91A75800F1B2FBEE32D43528A04159B043624075D696D909B"
+    },
+    "operator_capture_summary": {
+      "path": ".cache/validation/wb55-vendor-partial-removed-black-repair-current-union-r1-20260720/operator/nucleo-serial-summary.json",
+      "sha256": "E6EC0E01F839AAE74E6F0E5B7ABDE3F11C7DB1A4250F0E27421BD7EBDEB7A0C7"
+    },
+    "supplier_epaper_c_sha256": "7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896"
+  }
+}

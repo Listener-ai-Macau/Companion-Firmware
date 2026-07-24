@@ -1,0 +1,326 @@
+{
+  "schema": "companion.v9_expression_rig_goal_machine_closure.v1",
+  "status": "PASS_GOAL_MACHINE_CLOSURE_V22_EXTERNAL_NOR_PARITY_SCREEN_ACCEPTED_EXTERNAL_GATES_PENDING",
+  "locked_v9_source": "docs/art/iterations/companion-pet-expression-v9/generated_pet_expression_sheet_v9_candidate.png",
+  "locked_v9_source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "protected_owner_acceptance_sha256": "8A3BDF4BD1254B0D0F4DE13A7F293C3D74587C800339ABD4C61FEB0B7737E227",
+  "commands": [
+    {
+      "name": "profile",
+      "command": [
+        "C:\\Users\\Billy\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "tools/generate_companion_v9_expression_rig_profile.py",
+        "--check"
+      ],
+      "returncode": 0,
+      "duration_ms": 93,
+      "stdout_sha256": "589C98AF9E09B65F211FEB836231A87B81B81E62AB945EEB15FC8780D44907B2",
+      "output_tail": "PASS: v9 Rig profile is generated deterministically from the audited layout.\n"
+    },
+    {
+      "name": "render",
+      "command": [
+        "C:\\Users\\Billy\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "tools/render_companion_v9_expression_rig.py",
+        "--layout",
+        "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rig-layout.json",
+        "--output-dir",
+        "docs/art/iterations/companion-pet-expression-v9-rig-v1/candidate/rendered-200x200",
+        "--report",
+        "docs/validation/companion-v9-expression-rig-render-20260717.json"
+      ],
+      "returncode": 0,
+      "duration_ms": 1016,
+      "stdout_sha256": "8FC9CEC60F3A0885EF6F18B6F8C8040520265626B0DC558B4EB5DF8817C15BDA",
+      "output_tail": "PASS: v9 Rig composed deterministic non-card state-matrix frames and a pending CEMP candidate.\n"
+    },
+    {
+      "name": "rig_verify",
+      "command": [
+        "C:\\Users\\Billy\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "tools/verify_companion_v9_expression_rig.py",
+        "--report",
+        "docs/validation/companion-v9-expression-rig-render-20260717.json",
+        "--write",
+        "docs/validation/companion-v9-expression-rig-cemp-20260717.json"
+      ],
+      "returncode": 0,
+      "duration_ms": 328,
+      "stdout_sha256": "971162DB2DDA458D01A526D21AA315B61569F999A6E7A945681B040A6B8A94AF",
+      "output_tail": "PASS: v9 Rig preserves source-derived components, deterministic diversity, recovery and CEMP decode without activation.\n"
+    },
+    {
+      "name": "rig_host",
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "tools/test_expression_rig_host.ps1"
+      ],
+      "returncode": 0,
+      "duration_ms": 5047,
+      "stdout_sha256": "7DE71CB04A77A0E32849CDBAB6E2473B814D0C278F2DF876BD18E04A3502F59F",
+      "output_tail": "test_expression_rig.c\nexpression_rig.c\n正在生成代码...\nPASS: expression Rig builds deterministic component plans and composes source masks without drawing a face\ntest_expression_rig_performance_score.c\nexpression_rig.c\nexpression_rig_performance_score.c\nexpression_rig_v9_candidate_profile.c\n正在生成代码...\nPASS: generated Daily performance scores move legal source primary reflections without moving eye bodies or sparkles\n"
+    },
+    {
+      "name": "choreographer_host",
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "tools/test_expression_choreographer_host.ps1",
+        "-EvidencePath",
+        "docs/validation/companion-v9-expression-choreographer-20260719-deterministic-behavior.json"
+      ],
+      "returncode": 0,
+      "duration_ms": 2844,
+      "stdout_sha256": "41D6DC746DDDC04351A2CB82235FF9853E913A8F02DB04434910C88334EDDFAA",
+      "output_tail": "PASS: v9 Rig profile is generated deterministically from the audited layout.\ntest_expression_choreographer.c\nexpression_choreographer.c\nexpression_rig.c\nexpression_rig_performance_score.c\nexpression_rig_v9_candidate_profile.c\n正在生成代码...\nPASS: deterministic behavior arbitration maps causal event, attention, energy and memory to legal v9 Rig plans with fail-closed special scenes\n"
+    },
+    {
+      "name": "wba_mount_host",
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "tools/test_wba_v9_expression_rig_asset_mount_host.ps1"
+      ],
+      "returncode": 0,
+      "duration_ms": 3015,
+      "stdout_sha256": "84C908AD6134060786A774361C8C5FA105EBD52931A99576D81960E62C2A15F6",
+      "output_tail": "PASS: v9 Rig profile is generated deterministically from the audited layout.\ntest_wba_v9_expression_rig_asset_mount.c\nasset_store.c\nexpression_rig.c\nexpression_rig_asset_pack.c\nexpression_rig_v9_candidate_profile.c\nscreen_assets_stm32wba.c\n正在生成代码...\nPASS: WBA55/WBA65 callback-only external NOR reconstructs the source-derived v9 Rig face\n"
+    },
+    {
+      "name": "motion_coordinator_host",
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "tools/test_motion_coordinator_host.ps1"
+      ],
+      "returncode": 0,
+      "duration_ms": 2735,
+      "stdout_sha256": "DECE5CC93D21C6F2CF00504762CB0B1847F4CB64C8DB7C16ABBE0EBBDA60BBE7",
+      "output_tail": "test_motion_coordinator.c\nmotion_coordinator.c\n正在生成代码...\nPASS: daily expression coordinator preserves dwell, order, cancellation and idle timeout\n"
+    },
+    {
+      "name": "motion_queue_host",
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "tools/test_motion_display_queue_host.ps1"
+      ],
+      "returncode": 0,
+      "duration_ms": 2765,
+      "stdout_sha256": "18DF34C05970D58F5751DCDF1DFCFEA89FD86F3E92616112EA151EACAE78F5AA",
+      "output_tail": "test_motion_display_queue.c\ndisplay_queue.c\nexpression_state.c\n正在生成代码...\nPASS: automatic display frames are selectively removable without dropping events\n"
+    },
+    {
+      "name": "pipeline",
+      "command": [
+        "C:\\Users\\Billy\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "tools/test_v9_expression_rig_pipeline.py"
+      ],
+      "returncode": 0,
+      "duration_ms": 23969,
+      "stdout_sha256": "5FFB7BFDF75980D1C6EB8613502FD1C09F8C0C7B3369E1563D4CB42F9B28B0B6",
+      "output_tail": "PASS: v9 Rig composes source-derived state diversity and state-bound component previews.\n"
+    },
+    {
+      "name": "display_queue_static",
+      "command": [
+        "C:\\Users\\Billy\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "tools/verify_display_queue_static.py"
+      ],
+      "returncode": 0,
+      "duration_ms": 578,
+      "stdout_sha256": "8052ED55FC72F3407E88FBD4B5F4F7B7D166EA35A17023689AD5E6295F4AE8C9",
+      "output_tail": "PASS: Companion WB55 display queue boundary verified.\n"
+    },
+    {
+      "name": "art_lineage",
+      "command": [
+        "C:\\Users\\Billy\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "tools/verify_companion_v9_art_lineage.py",
+        "--write",
+        "docs/validation/companion-v9-art-lineage-machine-20260718.json"
+      ],
+      "returncode": 0,
+      "duration_ms": 172,
+      "stdout_sha256": "046240A42CFD76FCBCFE1A6F7A157A46FDCC28C1B034DB20E8383BB0E99FF89D",
+      "output_tail": "PASS: PASS_ART_LINEAGE\n"
+    },
+    {
+      "name": "expanded_export",
+      "command": [
+        "C:\\Users\\Billy\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "tools/export_companion_v9_expanded_expression_rig.py",
+        "--clean"
+      ],
+      "returncode": 0,
+      "duration_ms": 8344,
+      "stdout_sha256": "CF8AADE4939DEA6ACC5F6E2D411543A0F8114793F6C284D4F5B9A001395CE7E0",
+      "output_tail": "PASS: exported 96 source masks for 15 expanded Rig states\n"
+    },
+    {
+      "name": "expanded_profile",
+      "command": [
+        "C:\\Users\\Billy\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "tools/generate_companion_v9_expanded_expression_rig_profile.py",
+        "--check"
+      ],
+      "returncode": 0,
+      "duration_ms": 109,
+      "stdout_sha256": "E6B911BB41CDA8DE6DC288C9C3C24E8846BD6F58E57A1588254E3F659F551D22",
+      "output_tail": "PASS: expanded V9 Rig profile is generated deterministically from the registered source-mask layout.\n"
+    },
+    {
+      "name": "expanded_rig_verify",
+      "command": [
+        "C:\\Users\\Billy\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "tools/verify_companion_v9_expanded_expression_rig.py",
+        "--write",
+        "docs/validation/companion-v9-expanded-expression-rig-export-20260719.json"
+      ],
+      "returncode": 0,
+      "duration_ms": 9641,
+      "stdout_sha256": "5FF3FEC2E82EE74FCD40D43BB29E7F38E8B9EEB1D63F8C6FCDCAFB86CB96257F",
+      "output_tail": "PASS: expanded Rig contains only approved source masks, deferred accents and component-level choreography\n"
+    },
+    {
+      "name": "expanded_wba_mount_host",
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "tools/test_wba_v9_expanded_expression_rig_asset_mount_host.ps1"
+      ],
+      "returncode": 0,
+      "duration_ms": 3765,
+      "stdout_sha256": "CC9F9CCF986DDDD93AA097D1BFF56959E4D4CB2C5BC9C8A08AC2512C642A5E13",
+      "output_tail": "PASS: expanded V9 Rig profile is generated deterministically from the registered source-mask layout.\ntest_wba_v9_expanded_expression_rig_asset_mount.c\nasset_store.c\nexpression_choreographer.c\nexpression_rig_performance_score.c\nexpression_rig.c\nexpression_rig_asset_pack.c\nexpression_rig_v9_expanded_candidate_profile.c\nscreen_assets_stm32wba.c\n正在生成代码...\nPASS: WBA55/WBA65 reconstruct registered expanded V9 source-mask audit states, selected-state presence samples and directed emotion bridges from external NOR; unbound special events remain fail-closed\n"
+    },
+    {
+      "name": "expanded_emotion_bridge_browser",
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "tools/capture_companion_v9_expanded_expression_rig_emotion_bridge_browser.ps1"
+      ],
+      "returncode": 0,
+      "duration_ms": 7375,
+      "stdout_sha256": "7C1CE5677D27DD954991429B378EBA0C74BB0087D3A4416211483C120FC6B05C",
+      "output_tail": "PASS: captured one directed expanded Rig emotion bridge in the browser from the same component plan used by WBA.\n"
+    },
+    {
+      "name": "v22_target_rig_profile",
+      "command": [
+        "C:\\Users\\Billy\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "tools/generate_companion_v22_emotion_separation_target_rig.py",
+        "--check"
+      ],
+      "returncode": 0,
+      "duration_ms": 282,
+      "stdout_sha256": "2DC1B10865C198DD5A9C5B20866373013F69532254BE65B1DECE66DD7BDBB8AA",
+      "output_tail": "PASS: V22 external-NOR CRIG and target bridge profile are generated from the accepted component plan.\n"
+    },
+    {
+      "name": "v22_target_rig_wba_mount_host",
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "tools/test_wba_v22_emotion_separation_rig_asset_mount_host.ps1"
+      ],
+      "returncode": 0,
+      "duration_ms": 3812,
+      "stdout_sha256": "24736E74E5A273B4D54FD6937EBF0A0787A83089BCD74067DD41E16248C2A540",
+      "output_tail": "PASS: V22 external-NOR CRIG and target bridge profile are generated from the accepted component plan.\ntest_wba_v22_emotion_separation_rig_asset_mount.c\nasset_store.c\nexpression_rig_performance_score.c\nexpression_rig.c\nexpression_rig_asset_pack.c\nexpression_rig_v22_emotion_separation_candidate_profile.c\nscreen_assets_stm32wba.c\n正在生成代码...\nPASS: WBA55/WBA65 rebuild every owner-accepted V22 directed component bridge from external NOR; special events remain fail-closed\nPASS: V22 WBA external-NOR bridge replay evidence written to C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\companion-v22-emotion-separation-target-rig-wba-host-20260719.json\n"
+    },
+    {
+      "name": "v22_target_rig_verify",
+      "command": [
+        "C:\\Users\\Billy\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+        "tools/verify_companion_v22_emotion_separation_target_rig.py",
+        "--write",
+        "docs/validation/companion-v22-emotion-separation-target-rig-gate-20260719.json"
+      ],
+      "returncode": 0,
+      "duration_ms": 250,
+      "stdout_sha256": "E8E3DD975606E736A8CCB51BE6553A6FA010D6506B53B21D0718F2CED75A0398",
+      "output_tail": "PASS: V22 owner-accepted browser/PBM component plan replays from external NOR on both WBA targets.\n"
+    },
+    {
+      "name": "v22_wb55_production_off_demo_build",
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "tools/test_wb55_v22_emotion_separation_demo_build.ps1"
+      ],
+      "returncode": 0,
+      "duration_ms": 36516,
+      "stdout_sha256": "03ED079FC60EF6BA48A96EABC5B3687E96B0D010979A515D3B4ADAEA78523C2F",
+      "output_tail": "      |                                                                      ~~~~~~~~~^~~~~~\n../../app/companion_pendant/epaper/expression_rig_performance_score.c: In function 'comp_expression_rig_apply_score_step':\n../../app/companion_pendant/epaper/expression_rig_performance_score.c:89:56: warning: suggest parentheses around '&&' within '||' [-Wparentheses]\n   89 |         step->duration_ms < 80u || step->poses == NULL && step->pose_count != 0u) {\n      |                                    ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~\n../../app/companion_pendant/epaper/expression_rig_performance_score.c:101:69: warning: suggest parentheses around '&&' within '||' [-Wparentheses]\n  100 |             (component->role == COMP_EXPRESSION_RIG_ROLE_LEFT_EYE ||\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \n  101 |              component->role == COMP_EXPRESSION_RIG_ROLE_RIGHT_EYE) &&\n      |              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~\n  102 |                 (pose->offset_x != layer->offset_x || pose->offset_y != layer->offset_y)) {\n      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"
+    },
+    {
+      "name": "v22_wb55_observed_trace_contract",
+      "command": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "tools/test_v22_wb55_emotion_bridge_trace.ps1"
+      ],
+      "returncode": 0,
+      "duration_ms": 2187,
+      "stdout_sha256": "3B052A247DBC7F9D6E9909455A8110F4286BD1FF985FF977F624CC0D0C880DC1",
+      "output_tail": "PASS: the V22 WB55 trace preserves every registered component step and exports observed browser replay timing without a panel claim.\nPASS: V22 WB55 trace contract self-test written to C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\companion-v22-emotion-separation-wb55-trace-contract-20260719.json\n"
+    }
+  ],
+  "art_reports": {
+    "rig_cemp": "PASS_MACHINE_CANDIDATE_NOT_ACTIVATED",
+    "art_lineage": "PASS_ART_LINEAGE",
+    "full_source_bundle_owner_art": "通过",
+    "v22_component_bridge_gate": "PASS_V22_EMOTION_SEPARATION_COMPONENT_BRIDGE_GATE",
+    "v22_owner_art_screen_review": "PASS_OWNER_V22_EMOTION_SEPARATION_COMPONENT_BRIDGE_ACCEPTED_RUNTIME_INACTIVE",
+    "v22_runtime_resource_activated": false,
+    "v22_target_rig_gate": "PASS_V22_EMOTION_SEPARATION_TARGET_RIG_GATE",
+    "v22_target_rig_wba_external_nor_host": "PASS_V22_EMOTION_SEPARATION_TARGET_RIG_WBA_EXTERNAL_NOR_PARITY",
+    "v22_target_rig_component_count": 37,
+    "v22_target_rig_bridge_frame_count": 72,
+    "v22_wb55_production_off_demo_build": "PASS_V22_EMOTION_SEPARATION_WB55_PRODUCTION_OFF_DEMO_BUILD_GATE",
+    "v22_wb55_demo_runtime_resource_activated": false,
+    "v22_wb55_demo_firmware_flashed": false,
+    "v22_wb55_demo_panel_observed": false,
+    "v22_wb55_trace_contract": "PASS_V22_EMOTION_SEPARATION_WB55_TRACE_CONTRACT",
+    "v22_wb55_trace_origin": "synthetic_self_test_no_flash_no_panel",
+    "v22_wb55_trace_panel_observed": false,
+    "deterministic_behavior_arbitration": "PASS",
+    "deterministic_behavior_intent": "alert_response",
+    "deterministic_behavior_reason": "event_appraisal",
+    "expanded_component_rig": "PASS_EXPANDED_COMPONENT_RIG_MACHINE_GATE",
+    "expanded_state_count": 15,
+    "expanded_component_count": 96,
+    "expanded_performance_frame_count": 105,
+    "expanded_presence_frame_count": 120,
+    "expanded_emotion_bridge_count": 45,
+    "expanded_emotion_bridge_frame_count": 315,
+    "expanded_browser_component_preview_parity_frames": 540,
+    "expanded_presence_browser_component_preview_parity_frames": 120,
+    "expanded_emotion_bridge_browser_component_preview_parity_frames": 315,
+    "expanded_component_occlusion": "PASS_ZERO_PROTECTED_FEATURE_OVERLAP",
+    "expanded_occlusion_frame_count": 540,
+    "expanded_performance_contact_sheet_count": 15,
+    "expanded_presence_contact_sheet_count": 15,
+    "expanded_emotion_bridge_contact_sheet_count": 45,
+    "emotion_bridge_browser_capture": "PASS_EXPANDED_COMPONENT_EMOTION_BRIDGE_BROWSER_CAPTURE",
+    "emotion_bridge_browser_capture_preview_sha256": "8B0A211063EBBF7DF0D5D57764EDD11FDC22F5256CF55AD3F876135A099287A6",
+    "expanded_runtime_resource_activated": false
+  },
+  "runtime_resource_activated": false,
+  "charging_error": "fail_closed_no_registered_components",
+  "owner_screen_review": "V22 daily component choreography is owner accepted and remains runtime inactive. Its exact browser/PBM plan now replays from an external-NOR CRIG on WBA55/WBA65 host adapters and a separately compiled production-off WB55 single-bridge demo. Behavior arbitration is deterministic and causal: idle preserves its selected baseline, events select one ranked intent and only a higher-priority event may cancel it. A self-tested parser turns a future exact WB55 trace into a component-only browser replay clock whose next stable face waits for the following observed refresh completion, but this closure has no physical trace, waveform, flash, or panel claim; the broader G1-G8 physical/hardware acceptance and unbound special-function source-art gates remain pending.",
+  "errors": []
+}

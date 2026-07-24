@@ -1,0 +1,53 @@
+{
+  "schema_id": "companion.wb55.ssd1681_fast_point_probe_inverse_seed_static.v1",
+  "status": "PASS_STATIC_SSD1681_FAST_POINT_PROBE_INVERSE_SEED_RAW_RESTORE_DEFAULT_OFF",
+  "checks": {
+    "inputs": true,
+    "hash_companion-ssd1681-ram-ping-pong-fingerprint-machine-20260721.json": true,
+    "hash_companion-ssd1681-fast-point-probe-round1-diagnosis-20260721.json": true,
+    "hash_companion-pet-special-system-owner-acceptance-20260717.json": true,
+    "hash_Display_EPD_W21.c": true,
+    "hash_backup-a.bin": true,
+    "hash_backup-b.bin": true,
+    "hash_panel_target_stm32wb_ssd1681.c": true,
+    "hash_Makefile": true,
+    "hash_build_nucleo_bringup.ps1": true,
+    "hash_verify_wb55_ssd1681_fast_point_probe_inverse_seed_log.py": true,
+    "hash_run_wb55_ssd1681_read_only_controller_state_raw_restore.ps1": true,
+    "hash_Companion_Nucleo_WB55RG_Ssd1681FastPointProbeInverseSeed.hex": true,
+    "hash_Companion_Nucleo_WB55RG_Ssd1681FastPointProbeInverseSeed.elf": true,
+    "hash_STM32_Programmer_CLI.exe": true,
+    "registry": true,
+    "diagnosis": true,
+    "ram_phase": true,
+    "raw_restore": true,
+    "default_off": true,
+    "single_variable_seed": true,
+    "first_frame_corridor": true,
+    "unchanged_motion_topology": true,
+    "zero_forbidden": true,
+    "cadence_trajectory": true,
+    "isolated_build": true,
+    "candidate_marker": true,
+    "runner_binding": true,
+    "one_attempt": true,
+    "finally_restore": true,
+    "parser_self_test": true,
+    "restore_self_test": true,
+    "normal_self_test": true,
+    "runner_parse": true,
+    "programmer": true
+  },
+  "failures": [],
+  "single_variable": "first_frame_previous_plane_seed",
+  "candidate": {
+    "hex_sha256": "F7E20B26A479F690064F95FED25B18F632B3CDBC2AEDDD842645377CA0EBB2E9",
+    "elf_sha256": "D5D61FCFAAFFCD1FBAC3199E5864C9660B1759E1BDC683C1BE5E4A5B7A5B2FF2"
+  },
+  "host_tests": {
+    "parser": "PASS: inverse-seed parser positive/seed/frame/timing fixtures",
+    "restore": "PASS: WB55 raw application restore positive/negative self-test",
+    "normal": "PASS: WB55 normal-resume parser positive/negative self-test"
+  },
+  "claim_scope": "Machine-ready evidence only; hardware_contact=0 and no visual claim."
+}

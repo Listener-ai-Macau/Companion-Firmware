@@ -1,0 +1,57 @@
+{
+  "schema": "companion.v9_full_expression_source_bundle_gate.v1",
+  "status": "PASS_FULL_EXPRESSION_SOURCE_BUNDLE_GATE",
+  "manifest": "docs/art/iterations/companion-pet-expression-v9-extension-v11-secondary-detail-kit/full-source-bundle-manifest.json",
+  "locked_v9_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "face_sources": [
+    {
+      "iteration_id": "companion-pet-expression-v9-extension-v9-expanded-daily-direction-strip-20260718",
+      "candidate": "docs/art/iterations/companion-pet-expression-v9-extension-v9-expanded-daily-direction-strip/generated_pet_expression_extension_v9_expanded_daily_direction_strip_candidate.png",
+      "sha256": "06482F6401DF63ED16369660A3D2E4337A37C470F0007C0EAF8CBC90E6D768C5",
+      "states": [
+        "daily_attention_left",
+        "daily_attention_right",
+        "daily_attention_up",
+        "daily_attention_down"
+      ]
+    },
+    {
+      "iteration_id": "companion-pet-expression-v9-extension-v10-expanded-emotion-panel-20260718",
+      "candidate": "docs/art/iterations/companion-pet-expression-v9-extension-v10-expanded-emotion-panel/generated_pet_expression_extension_v10_expanded_emotion_panel_candidate.png",
+      "sha256": "9475CEF565608ED70258980815B31AEEA785CB431AE5B25515FE3790ADE4DD31",
+      "states": [
+        "calm_content",
+        "curious_question",
+        "alert_surprised",
+        "joyful_spark",
+        "affectionate_warm",
+        "playful_bright",
+        "anticipatory_notice",
+        "puzzled_processing",
+        "recording_focus",
+        "listening_focus",
+        "menu_thinking",
+        "sleep_rest_no_moon"
+      ]
+    }
+  ],
+  "detail_source": {
+    "iteration_id": "companion-pet-expression-v9-extension-v11-secondary-detail-kit-20260718",
+    "candidate": "docs/art/iterations/companion-pet-expression-v9-extension-v11-secondary-detail-kit/generated_pet_expression_extension_v11_secondary_detail_kit_candidate.png",
+    "sha256": "76B0BE9F683349490C262DD4725BDDC2252DEEDFD2B675D4EF53745D8B7C1622",
+    "components": [
+      "cheek_detail_left",
+      "cheek_detail_right",
+      "cheek_dot_pair",
+      "charm_sparkle",
+      "charm_heart",
+      "charm_question",
+      "charm_exclamation",
+      "detail_listening_arcs"
+    ]
+  },
+  "runtime_resource_activated": false,
+  "component_export_eligible": false,
+  "full_face_source_card_playback": "forbidden",
+  "errors": []
+}

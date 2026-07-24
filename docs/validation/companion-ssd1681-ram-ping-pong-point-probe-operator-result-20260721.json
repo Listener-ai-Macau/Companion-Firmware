@@ -1,0 +1,57 @@
+{
+  "schema_id": "companion.ssd1681.ram_ping_pong_point_probe.operator_review.v1",
+  "requirement_id": "COMP-REQ-271",
+  "status": "INCONCLUSIVE_MOTION_NOT_OBSERVED_WITH_DIRTY_SCREEN_REPORTED",
+  "selected": "失败",
+  "operator_note_verbatim": "不太行, 没有看见移动, 另外整个屏幕都很脏",
+  "operator_note_recorded_at_utc": "2026-07-21T07:06:42.6498641Z",
+  "ordered_owner_steering": [
+    {
+      "order": 1,
+      "text_verbatim": "不太行, 没有看见移动, 另外整个屏幕都很脏",
+      "effect": "The physical run is not accepted."
+    },
+    {
+      "order": 2,
+      "text_verbatim": "也不是说不行，只是我没有看到而已，要不你再试一次。",
+      "effect": "Supersedes permanent topology rejection; requests a separately authorized re-observation."
+    },
+    {
+      "order": 3,
+      "text_verbatim": "不需要停留更久，你需要很快的移动才行。",
+      "effect": "Supersedes the longer-dwell request; successor re-observation must target fast motion."
+    }
+  ],
+  "reviewed_artifact": "docs/validation/companion-ssd1681-ram-ping-pong-point-probe-machine-20260721.json",
+  "raw_note_artifact": "docs/validation/companion-ssd1681-ram-ping-pong-point-probe-operator-20260721.json",
+  "review_scope": "The just-completed single 24-frame production-off physical run only.",
+  "machine_result": "PASS_MACHINE_RAM_PING_PONG_POINT_PROBE_RESTORED",
+  "human_result_blocks_visual_admission": true,
+  "permanent_topology_rejection": false,
+  "candidate_remains_default_off": true,
+  "candidate_remains_production_off": true,
+  "automatic_retry_allowed_in_current_goal": false,
+  "current_goal_execute_budget_exhausted": true,
+  "restore": {
+    "status": "PASS_RESTORE_EQUALS_CAPTURED_PRE_RUN_APPLICATION_BYTES",
+    "sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "normal_resume": "PASS_APPLICATION_RESUMED_AFTER_BACKUP"
+  },
+  "causal_triage": {
+    "status": "UNPROVEN_INFERENCE_ONLY",
+    "inference": "No visible motion plus a dirty whole screen could be consistent with the post-activation 0x24 current sync removing the old/current differential needed by a later Mode2 frame, but the owner did not observe the intended motion and explicitly declined a permanent rejection, so this run cannot prove that cause."
+  },
+  "requested_successor_observation": {
+    "requires_new_goal_and_requirement": true,
+    "somewhat_larger_but_local_displacement": true,
+    "longer_dwell": false,
+    "explicit_visible_countdown_and_start_marker": "one pre-loop marker only",
+    "target_frame_ms": [450, 550],
+    "target_condition": "Only if measured BUSY permits.",
+    "per_frame_compensating_dwell": false,
+    "second_activation": false,
+    "refresh_0x20_per_frame": 1,
+    "underlying_sequence_unchanged": "one 0xFF/0x20/BUSY plus one post-activation current-only 0x24 sync without refresh per logical frame"
+  },
+  "disposition": "INCONCLUSIVE_MOTION_NOT_OBSERVED_WITH_DIRTY_SCREEN_REPORTED. No PASS or promotion. No second Execute is permitted under COMP-REQ-266; any re-observation must be a fresh separately contracted Goal after the exact restore."
+}

@@ -1,0 +1,81 @@
+{
+  "schema_id": "companion.wb55.ssd1681_phase_parallel_r9_continuous_r2_launcher_static.v1",
+  "status": "PASS_STATIC_R9_CONTINUOUS_R2_LAUNCHER",
+  "requirement": "COMP-REQ-316",
+  "hardware_contact": 0,
+  "errors": [],
+  "checks": {
+    "locked_hashes_match_every_input": true,
+    "positive_checkonly_exit_zero": true,
+    "positive_stage_ready": true,
+    "positive_zero_hardware": true,
+    "positive_zero_writes": true,
+    "positive_zero_popup_invocations": true,
+    "one_acceptance_policy_preserved": true,
+    "missing_authorization_rejected_before_output": true,
+    "consumed_authorization_rejected_before_output": true,
+    "mixed_check_execute_rejected_before_output": true,
+    "child_failure_propagated": true,
+    "child_failure_zero_hardware": true,
+    "output_reuse_rejected": true,
+    "execute_requires_new_root_after_comp_req_316": true,
+    "detached_execute_has_durable_streams": true,
+    "launcher_never_calls_prompt": true
+  },
+  "launcher_sha256": "E0537D31A73C3792533F1DA28C9C7B3F75B3F2DAC8C01860D1A7789AB1311CC3",
+  "locked_hashes": {
+    "runner": "F608E9F1EF018EA215BD7189E415AF7490C21605C5BAE3FA8886EEC74004903A",
+    "candidate_hex": "3B416BFF08B630D23BDB6107B2C17DFE9FBBFAAA7D5CFBCA5063AE68E62B79C5",
+    "static_verifier": "DC8ED8C3D25556CD436BD6DC54E904DDFCF9A14E1BC24E16888D664D00E5B415",
+    "parser": "859F1E3868464676859821209C765E48B8A60BCFE2E4F8E17EDC9EBE0B963A34",
+    "monitor": "FF60FEEA483F6844DA7B252B8910D22D6240EABCB9C42AFAE2362122C7026920",
+    "prompt_supervisor": "39ACC31A561413717B77ACAFE5E7E562B0C44734F07D72007B46C900C85883D2",
+    "historical_runner": "0B0A536E7B03DD5F2A4F9CF7B2B76A1B0DB3F34745172E352CB0B4726011B34B",
+    "historical_candidate_hex": "724DA17F385756BA779739E73DA47131F563E0C071A2EB173F5F77871F3CADDF",
+    "workbench": "E7311523D6FE571434F0C1F2D5EC76B7ED9B64DC725B0726DDEC023421D7E4EF"
+  },
+  "positive_checkonly": {
+    "exit_code": 0,
+    "artifact": {
+      "status": "READY_NO_HARDWARE_CONTACT",
+      "hardware_contact": 0,
+      "write_counter_sum": 0,
+      "popup_count": 0,
+      "locked_hashes": {
+        "runner": "F608E9F1EF018EA215BD7189E415AF7490C21605C5BAE3FA8886EEC74004903A",
+        "candidate_hex": "3B416BFF08B630D23BDB6107B2C17DFE9FBBFAAA7D5CFBCA5063AE68E62B79C5",
+        "static_verifier": "DC8ED8C3D25556CD436BD6DC54E904DDFCF9A14E1BC24E16888D664D00E5B415",
+        "parser": "859F1E3868464676859821209C765E48B8A60BCFE2E4F8E17EDC9EBE0B963A34",
+        "monitor": "FF60FEEA483F6844DA7B252B8910D22D6240EABCB9C42AFAE2362122C7026920",
+        "prompt_supervisor": "39ACC31A561413717B77ACAFE5E7E562B0C44734F07D72007B46C900C85883D2",
+        "historical_runner": "0B0A536E7B03DD5F2A4F9CF7B2B76A1B0DB3F34745172E352CB0B4726011B34B",
+        "historical_candidate_hex": "724DA17F385756BA779739E73DA47131F563E0C071A2EB173F5F77871F3CADDF",
+        "workbench": "E7311523D6FE571434F0C1F2D5EC76B7ED9B64DC725B0726DDEC023421D7E4EF"
+      }
+    },
+    "stage_status": "READY_NO_HARDWARE_CONTACT"
+  },
+  "negative_cases": {
+    "missing_authorization": {
+      "exit_code_nonzero": true,
+      "output_created": false
+    },
+    "consumed_authorization": {
+      "exit_code_nonzero": true,
+      "output_created": false
+    },
+    "mixed_modes": {
+      "exit_code_nonzero": true,
+      "output_created": false
+    },
+    "child_failure": {
+      "exit_code_nonzero": true,
+      "status": "NO_GO_CHECK_CHILD_EXIT",
+      "hardware_contact": 0
+    },
+    "reuse": {
+      "exit_code_nonzero": true
+    }
+  },
+  "authorization": "COMP-REQ-316 R2 MACHINE_READY only; no Execute"
+}

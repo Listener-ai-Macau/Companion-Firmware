@@ -1,0 +1,58 @@
+{
+  "schema_id": "companion.wb55.gdey0154d67_t03.vendor_partial_no_union_settle_operator.v1",
+  "status": "PASS_OPERATOR_ACCEPTED_PRODUCTION_OFF_NO_UNION_SETTLE_BASELINE",
+  "generated_at": "2026-07-20T21:53:55+08:00",
+  "claim_scope": "Current-room, production-off physical observation of the source-bound no-old-or-current-union diagnostic only. This is neither a production promotion nor a temperature, panel-identity, custom-waveform, or OLED-equivalent motion claim.",
+  "machine_prerequisites": {
+    "static_gate": {
+      "path": "docs/validation/companion-gdey0154d67-t03-vendor-partial-no-union-settle-static-20260720.json",
+      "sha256": "0AAA8C8E20483A5CDBBA176E1A66332DE8BCCEB40D84BCA3E01759C54A40389F",
+      "status": "PASS_STATIC_PRODUCTION_OFF_VENDOR_PARTIAL_NO_UNION_SETTLE"
+    },
+    "runtime_trace": {
+      "path": "docs/validation/companion-gdey0154d67-t03-vendor-partial-no-union-settle-runtime-20260720.json",
+      "sha256": "AE50830D1DB091AD2E526A132D55A7D512EA55E09D534F66CA7E71DB81BFF814",
+      "status": "PASS_MACHINE_NO_UNION_SETTLE_TRACE",
+      "observed_partial_frames": 48,
+      "per_motion_activation_count": 2,
+      "control": "0xFF",
+      "forbidden_control": "0xC7",
+      "old_window_bytes": "63..84",
+      "union_window_bytes": "75..135"
+    }
+  },
+  "operator_review": {
+    "tool": "aiw operator-prompt",
+    "selection": "通过",
+    "artifact": {
+      "path": ".cache/validation/wb55-vendor-partial-no-union-settle-r1-20260720/operator/operator-observation.json",
+      "sha256": "F5F3D6309828ECE14CC519E3312FC06F5AA1B61CA65DCBBBE7CCEE819A188228"
+    },
+    "note": "好很多, 就是移动的时候移动方向会切掉一点, 随后还原, 能优化吗",
+    "accepted_behavior": [
+      "The recurring hatch-like old-position residual visible in the supplied video no longer appears during the bounded loop.",
+      "No whole-screen black flash was observed."
+    ],
+    "remaining_issue": "The leading edge of the moving point is briefly cut, then restored by the second source-local current-frame pass."
+  },
+  "implementation_binding": {
+    "driver": {
+      "path": "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
+      "sha256": "84A3EA2158D57D3186AD7F0B1209F3138B7679F493896C39006D3A8C13849585"
+    },
+    "diagnostic_image": {
+      "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_vendor_partial_no_union_settle_operator_loop_diagnostic/Companion_Nucleo_WB55RG_VendorPartialNoUnionSettleOperatorLoopDiagnostic.hex",
+      "sha256": "E503FFA5DA9CA8FE25FDD17E5824DCC6E571F52CB30172D0C44188C0DB47CE13",
+      "frames": 360
+    },
+    "normal_restore": {
+      "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build/Companion_Nucleo_WB55RG_Bringup.hex",
+      "sha256": "E1997F29DCB8735899B4BC0B9012CF75025F3CA8D21250485BCC21E4C4691B46",
+      "flash_stdout": ".cache/validation/flash-nucleo/stm32-programmer-20260720-215411-23716.stdout.log",
+      "flash_stdout_sha256": "6669D1538DBCBEEED4DA2755DF1080F03C0B8FC1115CDC121F50011FC2DAD674",
+      "verified": true
+    }
+  },
+  "regression_contract": "Future lower-driver work must preserve the absence of recurring hatch-like old-position residue and whole-screen black flash observed here unless a later canonical operator review explicitly supersedes it.",
+  "next_boundary": "Only the separately registered reversed-order current-union then old-window-current comparator may be evaluated next. It remains production-off and must fail on any recurring visible residue, dirtiness or whole-screen flash."
+}

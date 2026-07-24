@@ -1,0 +1,84 @@
+{
+  "schema_id": "companion.wb55.hotplug_backup_controller_state_completion_audit.v1",
+  "status": "FINAL_NO_GO_DUAL_BACKUP_ZERO_WRITES",
+  "requirement_id": "COMP-REQ-259",
+  "summary": "The default-off recovery and controller-state path was fully gated, then its sole locked Execute stopped on the first HOTPLUG application upload. No application or panel write occurred, no retry occurred, and controller state was not read.",
+  "machine_result": {
+    "status": "NO_GO_DUAL_BACKUP_ZERO_WRITES",
+    "hardware_contact": 1,
+    "successful_application_backups": 0,
+    "candidate_write_calls": 0,
+    "restore_write_calls": 0,
+    "display_commands": 0,
+    "automatic_retries": 0,
+    "operator_prompt_required": false
+  },
+  "verification": [
+    {
+      "command": "python tools/verify_companion_product_requirements.py",
+      "exit_code": 0,
+      "result": "PASS through COMP-REQ-259"
+    },
+    {
+      "command": "python tools/verify_companion_current_goal_audit.py",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "command": "python tools/verify_wb55_hotplug_application_backup.py --self-test",
+      "exit_code": 0,
+      "result": "PASS positive/negative matrix"
+    },
+    {
+      "command": "python tools/verify_wb55_ssd1681_read_only_controller_state_log.py --self-test",
+      "exit_code": 0,
+      "result": "PASS positive/negative matrix"
+    },
+    {
+      "command": "python tools/verify_wb55_hotplug_backup_controller_state_diagnostic.py",
+      "exit_code": 0,
+      "result": "PASS_STATIC_HOTPLUG_BACKUP_CONTROLLER_STATE_DEFAULT_OFF"
+    },
+    {
+      "command": "pwsh -NoProfile -File tools/run_wb55_hotplug_backup_controller_state.ps1 -CheckOnly -OutRoot .cache/validation/wb55-hotplug-backup-controller-state-check-20260721",
+      "exit_code": 0,
+      "result": "READY_NO_HARDWARE_CONTACT"
+    },
+    {
+      "command": "pwsh -NoProfile -File tools/run_wb55_hotplug_backup_controller_state.ps1 -Execute -OutRoot .cache/validation/wb55-hotplug-backup-controller-state-execute-20260721-r1",
+      "exit_code": 1,
+      "result": "EXPECTED_FAIL_CLOSED_NO_GO_DUAL_BACKUP_ZERO_WRITES"
+    },
+    {
+      "command": "python -m py_compile tools/verify_wb55_hotplug_application_backup.py tools/verify_wb55_hotplug_backup_controller_state_diagnostic.py tools/verify_wb55_ssd1681_read_only_controller_state_log.py",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "result": "PASS; line-ending warnings only"
+    }
+  ],
+  "artifact_hashes": {
+    "research_sha256": "90C2495C61D7AE75F2A7C75D5CFAAD61F87DE2CF682B84BE0346B4D271C89029",
+    "static_sha256": "3A80D2ABB3BD91A835911344C3458264A09C683ED4CAB055106EF76F61B954F0",
+    "machine_sha256": "1A830C5F0F574E9B6A85534A56298E32DD58243340E219D00C3EEA4513746A32",
+    "check_only_stage_run_sha256": "7705A9A6C0BBA149C0913C192609100F8EEA3E70B1ACA151F89BF8E78F66333D",
+    "execute_stage_run_sha256": "4B25108021772E17473DCE7CCDEE6AF14768651933988052BB563F8F0D577C3B",
+    "programmer_stdout_sha256": "543B370F35C91A2AF18B0BBC2CA2773B513829EB65C88EA142248F58AB636A32",
+    "runner_sha256": "5E3AC78C628020377A8EA606CCD9FF7933AD0229214302D13DF301FCCD392E45",
+    "backup_verifier_sha256": "2B99E9663F681BBB5D3CCAD89165E94E2D1EDBD0D8C20FC593E0E13A8B9C7DF8",
+    "static_verifier_sha256": "BC2883269B2B0A322428644AE8180422AB9D599382C044E16C708FA15D1EFCDF"
+  },
+  "protected_boundaries": {
+    "v9_or_upper_expression_files_edited_by_this_goal": false,
+    "locked_owner_acceptance_edited": false,
+    "supplier_input_edited_moved_or_deleted": false,
+    "raw_application_backup_published": false,
+    "waveform_or_temperature_claimed": false,
+    "board_application_modified": false,
+    "panel_refreshed": false
+  },
+  "final_boundary": "COMP-REQ-259 is a machine NO_GO and must not be retried under this Goal. A later Goal must explicitly authorize any alternate SWD connection or reset strategy and preserve the current application before any candidate write."
+}

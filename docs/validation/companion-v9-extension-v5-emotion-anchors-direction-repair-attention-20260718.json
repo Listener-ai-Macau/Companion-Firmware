@@ -1,0 +1,44 @@
+{
+  "schema": "companion.v9_daily_attention_proof_gate.v1",
+  "status": "FAIL_DAILY_ATTENTION_PROOF_GATE",
+  "candidate": "docs/art/iterations/companion-pet-expression-v9-extension-v5-emotion-anchors-direction-repair/generated_pet_expression_extension_v5_emotion_anchors_direction_repair_candidate.png",
+  "candidate_sha256": "36EC77426A2AE94C440B8C871880E15702242C84173C7BDFFE93B4BDDD93C819",
+  "grid": [
+    3,
+    4
+  ],
+  "direction_cells": {
+    "left": "0,0",
+    "right": "0,1",
+    "up": "0,2",
+    "down": "0,3"
+  },
+  "direction_primary_positions": {
+    "left": {
+      "primary_reflection_x": 0.3523,
+      "primary_reflection_y": 0.2675
+    },
+    "right": {
+      "primary_reflection_x": 0.624,
+      "primary_reflection_y": 0.2695
+    },
+    "up": {
+      "primary_reflection_x": 0.3737,
+      "primary_reflection_y": 0.2417
+    },
+    "down": {
+      "primary_reflection_x": 0.3507,
+      "primary_reflection_y": 0.3507
+    }
+  },
+  "minimum_pair_pixel_difference": 100,
+  "direction_thresholds": {
+    "left_max_primary_x": 0.47,
+    "right_min_primary_x": 0.53,
+    "up_max_primary_y": 0.43,
+    "down_min_primary_y": 0.57
+  },
+  "errors": [
+    "down: primary reflection is not visibly lower-biased"
+  ]
+}

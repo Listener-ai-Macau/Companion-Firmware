@@ -1,0 +1,85 @@
+{
+  "schema": "companion.v9_rig_touch_emotion_machine_parity.v1",
+  "status": "PASS_TOUCH_EMOTION_BROWSER_TARGET_PARITY_RUNTIME_INACTIVE",
+  "claim_scope": "simulated_touch_to_runtime_inactive_component_rig_trace_not_flash_or_physical_acceptance",
+  "checks": {
+    "target_trace_passes_runtime_inactive_loop": true,
+    "preview_is_runtime_inactive_component_player": true,
+    "locked_v9_source_is_preserved": true,
+    "touch_fixture_is_single_right_tap_with_familiar_memory": true,
+    "causal_emotion_route_is_calm_curious_affectionate": true,
+    "refresh_sequence_rejects_early_next_frame_and_retries_same_plan": true,
+    "notice_score_is_coalesced_to_epaper_safe_component_keyframes": true,
+    "special_system_states_remain_fail_closed": true,
+    "forbidden_paths_are_preserved": true,
+    "browser_target_frame_count_matches": true,
+    "browser_target_state_component_offset_order_matches": true,
+    "frame_semantics_follow_causal_route": true,
+    "browser_player_hash_is_bound": true,
+    "browser_player_is_single_causal_run_with_target_hold_timing": true,
+    "entry_and_settle_reconstruct_accepted_daily_static_composition": true,
+    "browser_presents_native_200x200_component_composition": true
+  },
+  "failures": [],
+  "target_trace": {
+    "path": "docs/validation/companion-v9-rig-touch-emotion-machine-20260719.json",
+    "sha256": "9B786B2EEC9A06BA6142981AC9336DDDE5BEAEF8B3E3FB595C76580928E5FA60"
+  },
+  "browser_preview": {
+    "path": "docs/validation/companion-v9-rig-touch-emotion-machine-preview-r2-20260720.json",
+    "sha256": "CA7B7640DBE2E7E1CD3195C64ACD576697327821EFF33A289F9F4E1E64BAC8C8"
+  },
+  "accepted_browser_baseline": {
+    "status": "not_yet_accepted"
+  },
+  "parity_frames": [
+    {
+      "index": 0,
+      "state_match": true,
+      "component_offset_order_match": true,
+      "frame_metadata_match": true
+    },
+    {
+      "index": 1,
+      "state_match": true,
+      "component_offset_order_match": true,
+      "frame_metadata_match": true
+    },
+    {
+      "index": 2,
+      "state_match": true,
+      "component_offset_order_match": true,
+      "frame_metadata_match": true
+    },
+    {
+      "index": 3,
+      "state_match": true,
+      "component_offset_order_match": true,
+      "frame_metadata_match": true
+    },
+    {
+      "index": 4,
+      "state_match": true,
+      "component_offset_order_match": true,
+      "frame_metadata_match": true
+    },
+    {
+      "index": 5,
+      "state_match": true,
+      "component_offset_order_match": true,
+      "frame_metadata_match": true
+    },
+    {
+      "index": 6,
+      "state_match": true,
+      "component_offset_order_match": true,
+      "frame_metadata_match": true
+    },
+    {
+      "index": 7,
+      "state_match": true,
+      "component_offset_order_match": true,
+      "frame_metadata_match": true
+    }
+  ]
+}

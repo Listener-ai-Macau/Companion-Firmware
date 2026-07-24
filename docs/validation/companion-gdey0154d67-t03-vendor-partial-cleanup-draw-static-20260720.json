@@ -1,0 +1,51 @@
+{
+  "checks": {
+    "build_profile_is_fixed_isolated_and_traceable": true,
+    "cleanup_draw_suppresses_the_generic_third_partial_activation": true,
+    "cleanup_payload_is_local_and_byte_aligned": true,
+    "diagnostic_is_default_off_and_requires_source_partial_loop": true,
+    "each_partial_motion_has_two_source_equivalent_local_passes": true,
+    "owner_explicitly_authorized_only_production_off_cleanup_draw": true,
+    "public_gdeh_reference_correlates_local_0xff_sequence": true,
+    "r2_recovery_evidence_is_current_fpc_and_official_full_only": true,
+    "supplier_partial_route_is_not_the_159_byte_c7_route": true,
+    "supplier_source_hash_is_the_frozen_input": true
+  },
+  "claim_scope": "compile-time-disabled source-bound local cleanup/draw diagnostic; no optical or production claim",
+  "controlled_behavior": {
+    "baseline": "supplier base-map 0x24 then 0x26, full 0xF7",
+    "forbidden": [
+      "0xC7",
+      "full-frame local-motion write",
+      "LUT byte change",
+      "production promotion"
+    ],
+    "motion_pass_1": "source-style reset/border/local 0x24 white then 0xFF, 0x20, BUSY",
+    "motion_pass_2": "source-style reset/border/same local 0x24 final pixels then 0xFF, 0x20, BUSY",
+    "production_default": "disabled"
+  },
+  "failures": [],
+  "hardware_admission": {
+    "allowed": true,
+    "p0_closure_status": "PASS_P0_OFFICIAL_FULL_RETEST_LUT_PROMOTION_NO_GO",
+    "reason": "The isolated candidate may flash only because r2 binds the replacement FPC, official White/Black, and +20/-20 V rails. This is not a promotion of the candidate source, its local optical result, or the 159-byte LUT.",
+    "recovery_gate_status": "PASS_CURRENT_FPC_OFFICIAL_WHITE_BLACK_RETEST"
+  },
+  "machine_status": "PASS_STATIC_HARDWARE_ADMITTED",
+  "schema_id": "companion.wb55.gdey0154d67_t03.vendor_partial_cleanup_draw_static.v1",
+  "source_manifest": {
+    "driver": {
+      "path": "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
+      "sha256": "4F1CA496202D7AC674AF2960F2E72F40918AD1F71D5E115B213B70B7460F8921"
+    },
+    "public_gdeh_reference_c": {
+      "path": ".cache/reference/good-display-gdeh0154d67/extracted/S-GDEH0154D67-20221011/HARDWARE/EPD/Display_EPD_W21.c",
+      "sha256": "0A3786E84C05A3FE7817F6364AEC0047517D77B6A953C1CDCC4D0767F1589422"
+    },
+    "supplier_epaper_c": {
+      "path": "C:/Users/Billy/Desktop/GDEH0154D67-20211203-P-LUT(1s) -1s\u5feb\u5237/EPD_W21/EPAPER.c",
+      "sha256": "7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896"
+    }
+  },
+  "status": "PASS_STATIC_PRODUCTION_OFF_VENDOR_PARTIAL_CLEANUP_DRAW"
+}

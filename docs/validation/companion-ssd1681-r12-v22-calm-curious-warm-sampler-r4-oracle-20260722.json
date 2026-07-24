@@ -1,0 +1,181 @@
+{
+  "driver_sha256": "6033148F5E4705CA7E756500CBAE9DBCD4F13EB5B79954D8A6BD3C78334063D1",
+  "errors": [],
+  "negative_fixtures": {
+    "fast_helper_used_by_baseline": {
+      "base_invariants_true": true,
+      "expected_false_invariants": [
+        "helper_not_used_by_baseline",
+        "helper_used_by_r12_payload_only"
+      ],
+      "mutated_invariants": {
+        "helper_not_used_by_baseline": false,
+        "helper_used_by_r12_payload_only": false
+      },
+      "rejected": true
+    },
+    "fast_helper_used_by_command": {
+      "base_invariants_true": true,
+      "expected_false_invariants": [
+        "helper_not_used_by_command",
+        "helper_used_by_r12_payload_only"
+      ],
+      "mutated_invariants": {
+        "helper_not_used_by_command": false,
+        "helper_used_by_r12_payload_only": false
+      },
+      "rejected": true
+    },
+    "fast_helper_used_outside_r12": {
+      "base_invariants_true": true,
+      "expected_false_invariants": [
+        "helper_call_within_r12_guard",
+        "helper_used_by_r12_payload_only"
+      ],
+      "mutated_invariants": {
+        "helper_call_within_r12_guard": false,
+        "helper_used_by_r12_payload_only": false
+      },
+      "rejected": true
+    },
+    "lsb_first": {
+      "base_invariants_true": true,
+      "expected_false_invariants": [
+        "msb_first",
+        "edge_order_low_data_nops_high_nops_shift",
+        "frequency_proof_32_div_8_is_4_below_20"
+      ],
+      "mutated_invariants": {
+        "edge_order_low_data_nops_high_nops_shift": false,
+        "frequency_proof_32_div_8_is_4_below_20": false,
+        "msb_first": false
+      },
+      "rejected": true
+    },
+    "missing_high_phase_nop": {
+      "base_invariants_true": true,
+      "expected_false_invariants": [
+        "high_phase_has_two_nops",
+        "explicit_minimum_operation_count_is_8",
+        "frequency_proof_32_div_8_is_4_below_20"
+      ],
+      "mutated_invariants": {
+        "explicit_minimum_operation_count_is_8": false,
+        "frequency_proof_32_div_8_is_4_below_20": false,
+        "high_phase_has_two_nops": false
+      },
+      "rejected": true
+    },
+    "missing_low_phase_nop": {
+      "base_invariants_true": true,
+      "expected_false_invariants": [
+        "low_phase_has_two_nops",
+        "explicit_minimum_operation_count_is_8",
+        "frequency_proof_32_div_8_is_4_below_20"
+      ],
+      "mutated_invariants": {
+        "explicit_minimum_operation_count_is_8": false,
+        "frequency_proof_32_div_8_is_4_below_20": false,
+        "low_phase_has_two_nops": false
+      },
+      "rejected": true
+    },
+    "payload_bytes_changed": {
+      "base_invariants_true": true,
+      "expected_false_invariants": [
+        "payload_bytes_come_from_row_copy"
+      ],
+      "mutated_invariants": {
+        "payload_bytes_come_from_row_copy": false
+      },
+      "rejected": true
+    },
+    "payload_length_not_1908": {
+      "base_invariants_true": true,
+      "expected_false_invariants": [
+        "exact_1908_length"
+      ],
+      "mutated_invariants": {
+        "exact_1908_length": false
+      },
+      "rejected": true
+    },
+    "wrong_edge_order": {
+      "base_invariants_true": true,
+      "expected_false_invariants": [
+        "edge_order_low_data_nops_high_nops_shift",
+        "frequency_proof_32_div_8_is_4_below_20"
+      ],
+      "mutated_invariants": {
+        "edge_order_low_data_nops_high_nops_shift": false,
+        "frequency_proof_32_div_8_is_4_below_20": false
+      },
+      "rejected": true
+    }
+  },
+  "pixel_payload_oracle": "r3_base_oracle_pass",
+  "schema_id": "companion.wb55.ssd1681.r12_v22_calm_curious_warm_sampler.oracle.v5",
+  "status": "PASS",
+  "transport_checks": {
+    "commands_remain_software_vendor_edges": true,
+    "edge_order_low_data_nops_high_nops_shift": true,
+    "exact_1908_length": true,
+    "explicit_minimum_operation_count_is_8": true,
+    "final_scl_low": true,
+    "frequency_proof_32_div_8_is_4_below_20": true,
+    "helper_call_after_0x24": true,
+    "helper_call_fixed_buffer_and_sizeof": true,
+    "helper_call_only_in_r12_writer": true,
+    "helper_call_within_r12_guard": true,
+    "helper_not_used_by_baseline": true,
+    "helper_not_used_by_command": true,
+    "helper_reference_count_definition_plus_one_call": true,
+    "helper_used_by_r12_payload_only": true,
+    "high_phase_has_two_nops": true,
+    "low_phase_has_two_nops": true,
+    "msb_first": true,
+    "payload_bytes_come_from_row_copy": true,
+    "r12_scoped_helper_definition": true,
+    "ssd1681_rev013_pdf_hash_matches": true
+  },
+  "transport_evidence": {
+    "conservative_scl_upper_bound_mhz": 4.0,
+    "controller_write_limit_mhz": 20,
+    "explicit_minimum_instruction_cycles_per_bit": 8,
+    "explicit_operations_per_bit": [
+      "SCL_LOW_BSRR",
+      "SDA_DATA_BSRR",
+      "LOW_NOP",
+      "LOW_NOP",
+      "SCL_HIGH_BSRR",
+      "HIGH_NOP",
+      "HIGH_NOP",
+      "SHIFT_LEFT"
+    ],
+    "helper_references": {
+      "all_calls_in_r12_guard": true,
+      "all_calls_in_writer": true,
+      "call_after_0x24": true,
+      "call_count": 1,
+      "call_fixed_buffer_and_sizeof": true,
+      "call_not_in_baseline": true,
+      "call_not_in_command": true,
+      "call_positions": [
+        202610
+      ],
+      "definition_position": 200250,
+      "guard_end": 202766,
+      "guard_start": 199787,
+      "reference_count": 2,
+      "writer_end": 202760,
+      "writer_start": 201096
+    },
+    "mcu_clock_mhz": 32,
+    "ssd1681_rev013_pdf_path": ".cache/validation/ssd1681-read-only-research/ssd1681-rev013-2.pdf",
+    "ssd1681_rev013_pdf_sha256": "2989DB3DBBCE190F6E1F065A169479BF4FE911896FF8805894549F792FE9B53B",
+    "writer_source_span": [
+      201096,
+      202760
+    ]
+  }
+}

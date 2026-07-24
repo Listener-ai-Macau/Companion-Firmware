@@ -1,0 +1,120 @@
+{
+  "schema_id": "companion.wb55.ssd1681_custom_mode2_transition_timing_workbench.v1",
+  "status": "PASS_WORKBENCH_ADMIT_TP_DURATION_SCALE_MODE2_R2",
+  "errors": [],
+  "hardware_contact": 0,
+  "requirements": [
+    "COMP-REQ-285",
+    "COMP-REQ-289"
+  ],
+  "evidence_basis": {
+    "r1_status": "NO_GO_BUSY_OVER_LIMIT_AND_OPERATOR_FAILED_RESTORED",
+    "r1_busy_elapsed_ms": [
+      1284,
+      1285,
+      1285,
+      1285,
+      1285,
+      1285,
+      1285,
+      1285,
+      1285
+    ],
+    "r1_busy_limit_ms": 600,
+    "white_recovery_status": "PASS_OFFICIAL_WHITE_CLEAN_EXACT_RAW_RESTORED"
+  },
+  "candidate": {
+    "name": "stationary_suppression_tp_scale_r2",
+    "single_mechanism_variable": "scale only active TP phase durations; voltage-state tables, SR, RP, FR, XON and voltage tail remain R1-exact",
+    "r1_lut_sha256": "B0C729D4157054C4EA69521C3E4837B75B2E6A7740A48C5C754714A84925722E",
+    "r2_lut_hex": "0000000000000000000000005410A8200000000000000000AA8055400000000000000000000000000000000000000000000000000000000000000000020200020200000101000000000002020002020000010100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000222222222222000000221741A83258",
+    "r2_lut_sha256": "EBF88D6FB0BEB39AB2428C98BBDF1DC04308CEA156AF61D14C2B1591902B64C7",
+    "byte_differences_from_r1": [
+      {
+        "offset": 60,
+        "r1_hex": "05",
+        "r2_hex": "02"
+      },
+      {
+        "offset": 61,
+        "r1_hex": "05",
+        "r2_hex": "02"
+      },
+      {
+        "offset": 63,
+        "r1_hex": "05",
+        "r2_hex": "02"
+      },
+      {
+        "offset": 64,
+        "r1_hex": "05",
+        "r2_hex": "02"
+      },
+      {
+        "offset": 67,
+        "r1_hex": "03",
+        "r2_hex": "01"
+      },
+      {
+        "offset": 68,
+        "r1_hex": "02",
+        "r2_hex": "01"
+      },
+      {
+        "offset": 74,
+        "r1_hex": "05",
+        "r2_hex": "02"
+      },
+      {
+        "offset": 75,
+        "r1_hex": "05",
+        "r2_hex": "02"
+      },
+      {
+        "offset": 77,
+        "r1_hex": "05",
+        "r2_hex": "02"
+      },
+      {
+        "offset": 78,
+        "r1_hex": "05",
+        "r2_hex": "02"
+      },
+      {
+        "offset": 81,
+        "r1_hex": "03",
+        "r2_hex": "01"
+      },
+      {
+        "offset": 82,
+        "r1_hex": "02",
+        "r2_hex": "01"
+      }
+    ],
+    "r1_active_tp_frame_counts": 50,
+    "r2_active_tp_frame_counts": 20,
+    "duration_ratio": 0.4,
+    "protected_tail_hex": "221741A83258"
+  },
+  "machine_limits": {
+    "safety_activations": 9,
+    "busy_per_activation_max_ms": 600,
+    "full_frame_candidate_activations": 0,
+    "motion_120_frame_admitted": false
+  },
+  "future_runner_contract": {
+    "canonical_pre_execute_candidate_prompt": true,
+    "prompt_discloses_official_white_preclean_first": true,
+    "official_white_preclean": "one 5000-byte 0x24 + F7/20/BUSY source/hash-bound stage",
+    "preclean_excluded_from_candidate_metrics": true,
+    "preclean_cannot_mask_post_candidate_residue": true,
+    "exact_raw_restore_readback_normal_resume": true
+  },
+  "source_hashes": {
+    "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\companion-ssd1681-custom-mode2-transition-workbench-20260721.json": "8653B6ABD0E299E6C99B50C5A086EE840E38CED37F358F7AA326B37F7933CF05",
+    "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\companion-ssd1681-custom-mode2-transition-safety-r1-disposition-20260721.json": "F99762508C6B2C94A19CE1E3D2DA2901D56884220544C8B725D5F129D05D1901",
+    "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\companion-ssd1681-official-white-clean-recovery-r1-20260721.json": "77A30C9151B34C59FA48D193F30D59939ABC901E88083E55DB91BDC6FDC8E17C"
+  },
+  "production_allowed": false,
+  "goal_terminal": false
+}

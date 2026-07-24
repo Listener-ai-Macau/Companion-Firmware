@@ -1,0 +1,14 @@
+{
+  "schema_id": "companion.wb55.ssd1681_custom_mode2_detached_launcher_static.v1",
+  "status": "PASS_DETACHED_LAUNCHER_DURABLE_STREAMS_AND_NEGATIVE_FIXTURES",
+  "errors": [],
+  "checks": {
+    "durable_stdout_stderr": "missing either redirect is rejected",
+    "output_directory_reuse": "existing output root is rejected before child start",
+    "custom_mode_only": true,
+    "check_only_waits_and_verifies_zero_contact": true,
+    "execute_returns_after_start": true,
+    "negative_fixture_count": 4
+  },
+  "hardware_contact": 0
+}

@@ -1,0 +1,77 @@
+{
+  "schema_id": "companion.wb55.ssd1681.r10_native_two_pass_fine_stride.parser.v3",
+  "status": "PASS",
+  "fixture_counts": {
+    "qualification_frames": 16,
+    "movement_records": 32,
+    "r6_r2_bounded_ring_records": 52,
+    "historical_r1_qualification_frames": 16
+  },
+  "fixtures": {
+    "hardware_style_validate_loop_line_subprocess": {
+      "executed": true,
+      "accepted": true,
+      "exit_code": 0
+    },
+    "qualification_16_frames": {
+      "executed": true,
+      "accepted": true
+    },
+    "movement_32_activations": {
+      "executed": true,
+      "accepted": true
+    },
+    "r6_r2_bounded_ring_52_loops": {
+      "executed": true,
+      "accepted": true
+    },
+    "historical_r1_telemetry_ring_qualification": {
+      "executed": true,
+      "accepted": true
+    },
+    "missing_qualification": {
+      "executed": true,
+      "rejected": true
+    },
+    "duplicate_qualification": {
+      "executed": true,
+      "rejected": true
+    },
+    "mutated_qualification": {
+      "executed": true,
+      "rejected": true
+    },
+    "wrong_prefix": {
+      "executed": true,
+      "rejected": true
+    },
+    "wrong_schema": {
+      "executed": true,
+      "rejected": true
+    },
+    "payload_sha_mutation": {
+      "executed": true,
+      "rejected": true
+    },
+    "wrong_complete_window": {
+      "executed": true,
+      "rejected": true
+    },
+    "busy_601": {
+      "executed": true,
+      "rejected": true
+    },
+    "source_count_mutation": {
+      "executed": true,
+      "rejected": true
+    },
+    "newline_complete_malformed": {
+      "executed": true,
+      "rejected": true
+    },
+    "trailing_partial_one_fragment": {
+      "executed": true,
+      "accepted": true
+    }
+  }
+}

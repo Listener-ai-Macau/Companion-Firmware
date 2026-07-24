@@ -1,0 +1,110 @@
+{
+  "schema_id": "companion.wb55.ssd1681_reset_read_controller_state.machine.v1",
+  "requirement_id": "COMP-REQ-265",
+  "status": "PASS_MACHINE_RESET_READ_CONTROLLER_STATE_RESTORED",
+  "claim_scope": "One production-off hard-reset/read-only controller capture and one exact raw application restore. This is controller evidence only, not waveform, visual, residue, temperature, panel-production, or animation acceptance.",
+  "execution": {
+    "run_root": ".cache/validation/wb55-reset-read-controller-execute-20260721-r1",
+    "hardware_contact": 1,
+    "candidate_programmer_processes": 1,
+    "candidate_write_calls": 1,
+    "panel_hard_resets": 1,
+    "panel_busy_waits": 1,
+    "controller_read_groups": 3,
+    "panel_writes": 0,
+    "panel_refresh_commands": 0,
+    "automatic_retries": 0,
+    "restore_programmer_processes": 1,
+    "restore_write_calls": 1,
+    "restore_verify_operations": 1,
+    "restore_upload_calls": 1,
+    "restore_reset_arguments": 1
+  },
+  "controller_capture": {
+    "status": "PASS_MACHINE_RESET_READ_CONTROLLER_STATE",
+    "hard_reset": {
+      "low_ms": 100,
+      "high_ms": 100
+    },
+    "busy": {
+      "initial_level": 0,
+      "final_level": 0,
+      "ready": true,
+      "ready_elapsed_ms": 0,
+      "timeout_ms": 5000
+    },
+    "raw_groups": [
+      { "group": 1, "command_0x2f_hex": "01", "command_0x2d_hex": "0028402010004003000000", "gpio_restore": true, "sda_output_low": true, "sck_low": true, "cs_high": true },
+      { "group": 2, "command_0x2f_hex": "01", "command_0x2d_hex": "0028402010004003000000", "gpio_restore": true, "sda_output_low": true, "sck_low": true, "cs_high": true },
+      { "group": 3, "command_0x2f_hex": "01", "command_0x2d_hex": "0028402010004003000000", "gpio_restore": true, "sda_output_low": true, "sck_low": true, "cs_high": true }
+    ],
+    "payload_sha256": "7C4BFE5C19AE405A24E3EF820253700F3870CEAC339B56AA55EB672865BF1D44",
+    "decoded": {
+      "chip_status_hex": "01",
+      "chip_id_bits_1_0": 1,
+      "busy_bit_2": 0,
+      "vcom_otp_selection_hex": "00",
+      "vcom_register_hex": "28",
+      "display_option_0x37_b_through_f_hex": "4020100040",
+      "f6_mode2_ram_ping_pong_enabled": true,
+      "waveform_version_hex": "03000000"
+    },
+    "allowed_commands": ["0x2F", "0x2D"],
+    "forbidden_command_count": 0,
+    "writes": 0,
+    "refreshes": 0
+  },
+  "root_cause_conclusion": {
+    "proven": [
+      "The connected FTS02 PC1/SDI reverse path returns stable controller bytes with the audited read edge.",
+      "One hardware reset plus bounded readiness changes the previous all-FF result into three valid identical groups while the read commands, byte counts, GPIO direction, and sampling edge remain the same.",
+      "The previous all-FF capture therefore did not prove a broken reverse path or absent controller state."
+    ],
+    "strong_inference": "The prior all-FF capture was caused by the missing panel reset/readiness prerequisite, consistent with SSD1681 Deep Sleep or another not-ready retained state.",
+    "not_proven": "The capture does not identify or authorize a partial-refresh waveform, temperature table, LUT write, 0x37 write, RAM fingerprint, or residue fix."
+  },
+  "restore": {
+    "status": "PASS_RESTORE_EQUALS_CAPTURED_PRE_RUN_APPLICATION_BYTES",
+    "restore_identity": "RESTORED_TO_CAPTURED_PRE_RUN_APPLICATION_BYTES",
+    "address_hex": "0x08000000",
+    "length_bytes": 524288,
+    "baseline_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "restore_upload_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "byte_identical": true,
+    "e199_hex_reproduction": false
+  },
+  "normal_resume": {
+    "status": "PASS_APPLICATION_RESUMED_AFTER_BACKUP",
+    "normal_boot_count": 1,
+    "normal_ready_count": 1,
+    "ready_after_boot": true,
+    "controller_diagnostic_markers": [],
+    "panel_error_markers": [],
+    "hardfault_markers": []
+  },
+  "artifact_hashes": {
+    ".cache/validation/wb55-reset-read-controller-execute-20260721-r1/stage-run.json": "49D104ED7FC016BBF497F73D6EC6AA770B409BB58C08C465AFEF27A2E1C5F725",
+    ".cache/validation/wb55-reset-read-controller-execute-20260721-r1/controller-state.json": "4377787B4601D817AEB7260E05CEAE7AEF703361C73B1B3CB2DB9D26A0E086D5",
+    ".cache/validation/wb55-reset-read-controller-execute-20260721-r1/restore-gate.json": "8BF6F01883B956946FC03AA0C89CA98434BBFCD2B3DE2E8488FAF20CC76CEB3C",
+    ".cache/validation/wb55-reset-read-controller-execute-20260721-r1/normal-resume.json": "490AD482F7F138ADED992F4AF6897F21B8E884996D488DC97BDC29E2F5F57728",
+    ".cache/validation/wb55-reset-read-controller-execute-20260721-r1/candidate-capture/nucleo-serial-raw.log": "96FD487B06E79A93947E6E3C98ED381B7EB3BB694D7353A062CA3AA4B596D344",
+    ".cache/validation/wb55-reset-read-controller-execute-20260721-r1/normal-capture/nucleo-serial-raw.log": "CB3216956D17EB31CAA95F53F86E3C9A6D3DFC483626A46AA5DE5502F8D78EF5",
+    ".cache/validation/wb55-reset-read-controller-execute-20260721-r1/candidate-write.stdout.log": "DADDE7A53F2833DB17E52186F2A0E8FB365EA89EC5E429AD691EF5D5DD8048AC",
+    ".cache/validation/wb55-reset-read-controller-execute-20260721-r1/restore-write-verify-upload.stdout.log": "25ED182832B8A527AF5042E6ACE6BBB2DF9D8614CF47CC9D44BAC48E771FB955",
+    "docs/validation/companion-ssd1681-reset-read-controller-state-static-20260721.json": "D7106C399092602B68B1694ABC7DFE8F4827A8274B422805B66332EE9DBBAC04",
+    "docs/validation/companion-ssd1681-reset-read-controller-state-machine-ready-20260721.json": "454B312774D625AC1897E886AB63B1BF213C0CC38A0E4A10147CCFF7315D3568"
+  },
+  "human_boundary": {
+    "visual_prompt_permitted": false,
+    "visual_prompt_opened": false,
+    "reason": "COMP-REQ-265 has no visual acceptance; restore/application passed, so no NEED_HUMAN recovery prompt was allowed."
+  },
+  "protected_boundaries": {
+    "supplier_read_only_input_modified": false,
+    "v9_or_owner_acceptance_modified": false,
+    "rig_crig_browser_dynamic_binding_modified": false,
+    "waveform_lut_temperature_visual_work_performed": false,
+    "production_promoted": false
+  },
+  "future_boundary": "A future separately contracted Goal may use this valid controller evidence for further read-only research, but this result alone authorizes no 0x27/0x37/0x41 access, panel refresh, waveform change, production path, or visual claim."
+}

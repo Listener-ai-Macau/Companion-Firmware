@@ -1,0 +1,67 @@
+{
+  "schema": "companion.v9_special_expression_internal_visual_preflight.v2",
+  "status": "PASS_INTERNAL_VISUAL_PREFLIGHT_V27_FACE_ACTION_GESTURES",
+  "date": "2026-07-20",
+  "candidate": "V27 face-action-gesture special-expression source",
+  "purpose": "Internal native-200x200 semantic reading gate required before any canonical Chinese owner-art window. This visual-semantic decision follows, and does not replace, the passing component and browser-target machine gates.",
+  "machine_evidence": {
+    "source_gate": "docs/validation/companion-v27-face-action-gesture-special-expression-source-gate-20260720.json",
+    "component_export_gate": "docs/validation/companion-v27-face-action-gesture-special-expression-component-export-gate-20260720.json",
+    "component_performance_preview": "docs/validation/companion-v27-face-action-gesture-special-expression-component-performance-preview-20260720.json",
+    "browser_target_plan_parity": "docs/validation/companion-v27-face-action-gesture-special-expression-component-performance-parity-20260720.json",
+    "browser_render": "docs/validation/companion-v27-face-action-gesture-special-expression-component-browser-render-20260720.json",
+    "machine_closure": "docs/validation/companion-v27-face-action-gesture-special-expression-machine-closure-20260720.json"
+  },
+  "inspection_contract": {
+    "native_target_size": [200, 200],
+    "labels_hidden_for_reading": true,
+    "evaluated_artifacts": [
+      "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/perf/browser-menu-hold-native-200x200-20260720.png",
+      "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/perf/browser-recording-hold-native-200x200-20260720.png",
+      "docs/art/iterations/companion-pet-expression-v9-extension-v27-face-action-gesture-special-expression-source/candidate/perf/browser-charging-hold-native-200x200-20260720.png"
+    ],
+    "causal_playback_reviewed": true,
+    "whole_face_playback": false,
+    "runtime_resource_activated": false
+  },
+  "state_reading": [
+    {
+      "state": "menu_active",
+      "intended_read": "purposeful browse/select attention",
+      "observed_unlabeled_read": "focused deliberate choice: the low horizontal-plus-upturned brow pair and inward cheek sweeps read as attention narrowing rather than worry or generic neutral",
+      "causal_choreography_read": "the deterministic highlight scan and final brow-mouth-gesture landing reinforce selection without changing to another whole face",
+      "result": "PASS_UNIQUE_ACTION_READ"
+    },
+    {
+      "state": "recording_active",
+      "intended_read": "active listening and quiet response",
+      "observed_unlabeled_read": "active listening: low receptive brows, closed acknowledgement mouth and the two face-hugging single folds read as listening rather than concern or surprise",
+      "causal_choreography_read": "one restrained outward fold pulse followed by a still hold reads as receiving and acknowledging, not broadcast or random motion",
+      "result": "PASS_UNIQUE_ACTION_READ"
+    },
+    {
+      "state": "charging_active",
+      "intended_read": "settled restorative replenishment",
+      "observed_unlabeled_read": "quiet relief and recovery: released low brows, a compact closed smile and lower-cheek exhale curves read more restful than ordinary happy excitement",
+      "causal_choreography_read": "the joint release, quiet hold and exact reverse distinguish recovery from the Daily micro-beat",
+      "result": "PASS_UNIQUE_ACTION_READ"
+    }
+  ],
+  "decision": {
+    "owner_operator_prompt_opened": false,
+    "human_art_acceptance_requested": true,
+    "candidate_disposition": "PENDING_CANONICAL_OWNER_ART_REVIEW",
+    "forbidden_as_future_prompt_or_reference_input": false,
+    "runtime_resource_activated": false,
+    "active_candidate_binding": "forbidden",
+    "still_forbidden_before_owner_acceptance": [
+      "CRIG_export",
+      "profile_generation",
+      "event_binding",
+      "firmware_flash",
+      "physical_panel_claim",
+      "whole_face_fallback"
+    ],
+    "owner_fail_route": "Freeze V27 as audit-only, preserve all passing technical artifacts, forbid it as future visual prompt/reference input, and return to a new locked-V9-only source direction."
+  }
+}

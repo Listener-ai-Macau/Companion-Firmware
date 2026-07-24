@@ -1,0 +1,132 @@
+{
+  "schema_id": "companion.wb55.ssd1681_read_only_controller_state_raw_restore_research.v1",
+  "status": "PASS_RESEARCH_AUTHORIZES_ONE_READ_ONLY_CONTROLLER_CAPTURE_AND_RAW_RESTORE",
+  "generated_at": "2026-07-21T13:40:00+08:00",
+  "requirement_id": "COMP-REQ-264",
+  "scope": "One locked production-off 0x2F/0x2D read-only candidate execution followed by one exact restore to the captured COMP-REQ-260 application bytes.",
+  "source_manifest": {
+    "comp_req_260_machine": {
+      "path": "docs/validation/companion-wb55-ur-dual-application-backup-machine-20260721.json",
+      "sha256": "88C40CA71343933EABCC1BAFDD7227DCDCE6034F98BFCA99DFAC621159A018DD"
+    },
+    "comp_req_260_completion": {
+      "path": "docs/validation/companion-wb55-ur-dual-application-backup-completion-audit-20260721.json",
+      "sha256": "18BD912B4CFC49591D9D9866C3FD3010A4F71D5C55AC34C1E098DA252F9A3D62"
+    },
+    "baseline_a": {
+      "path": ".cache/validation/wb55-ur-dual-application-backup-execute-20260721-r1/private/backup-a.bin",
+      "bytes": 524288,
+      "sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+      "storage": "private-cache-only"
+    },
+    "baseline_b": {
+      "path": ".cache/validation/wb55-ur-dual-application-backup-execute-20260721-r1/private/backup-b.bin",
+      "bytes": 524288,
+      "sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+      "storage": "private-cache-only"
+    },
+    "candidate_hex": {
+      "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_read_only_controller_state/Companion_Nucleo_WB55RG_Ssd1681ReadOnlyControllerState.hex",
+      "bytes": 328678,
+      "sha256": "52D79CB3BC55D9738EFA580B95D3930216C23FD8825356F7860B7C1718C0C6AD",
+      "rebuilt_in_this_goal": false
+    },
+    "candidate_elf": {
+      "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_read_only_controller_state/Companion_Nucleo_WB55RG_Ssd1681ReadOnlyControllerState.elf",
+      "sha256": "2C37D2416EF3EABBECFE08BAC1F5886DFC93D7FFDCC24486F9A8E26E21E5CDB6"
+    },
+    "driver": {
+      "path": "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
+      "sha256": "BAE2FAEA0656ABBCFAA5765C0E6465183D5E9235E1B4FE50CDB7107BD727EB3D"
+    },
+    "decoder_c": {
+      "path": "app/companion_pendant/epaper/ssd1681_read_only_controller_state.c",
+      "sha256": "661AEA992BF152A5A994FF592988535AD59740F05F5DF6FAB16116749B94EDBB"
+    },
+    "decoder_h": {
+      "path": "app/companion_pendant/epaper/ssd1681_read_only_controller_state.h",
+      "sha256": "8272392B14925E7655891F65E609BE4105EA9DFC69661A208EE4DEFCA7890E97"
+    },
+    "decoder_host_test": {
+      "path": "tools/test_ssd1681_read_only_controller_state.c",
+      "sha256": "23D1BC4039FAB3A50B823CD3058EDBF1ECFD05732D40831DB826A9D80A4A157C"
+    },
+    "log_parser": {
+      "path": "tools/verify_wb55_ssd1681_read_only_controller_state_log.py",
+      "sha256": "4D173912345257191370DE703EBFDBB790883922D192CBF1FF3C1A5B7060AB01"
+    },
+    "prior_static_verifier": {
+      "path": "tools/verify_wb55_ssd1681_read_only_controller_state_diagnostic.py",
+      "sha256": "F1B855F08D4CF9D89A80C1B5F370509A36EF0969985DB1A5E86F594EAE36333B"
+    },
+    "prior_runner": {
+      "path": "tools/run_wb55_ssd1681_read_only_controller_state.ps1",
+      "sha256": "FFE2121FBDE58A268F63883E8263D001B6290F0EFD6A6919842712E5138D8482"
+    },
+    "prior_research": {
+      "path": "docs/validation/companion-ssd1681-read-only-controller-state-research-source-hash-20260721.json",
+      "sha256": "BD43C9FD65703CE5CAE89573F5846436BF425475C74D0F96E7F43CC1E915662C"
+    },
+    "serial_capture": {
+      "path": "tools/capture_nucleo_serial.ps1",
+      "sha256": "59677805F4CA7FBD181C1A19350CE89E957FCCE3F2ACB6682099D585C3789FB1"
+    },
+    "normal_resume_parser": {
+      "path": "tools/verify_wb55_normal_resume_after_ur_backup_log.py",
+      "sha256": "27C64C6B59ACEC7C8BA7C0A51BC3D3EBC5A38C03D5D53CC074504A88B1E70A3C"
+    },
+    "baseline_verifier": {
+      "path": "tools/verify_wb55_ur_application_backup.py",
+      "sha256": "5CB48DAFFC70073E3BDA290A0252946393939005DE1188936C7EF3FA97F98F32"
+    },
+    "hardware_lock": {
+      "path": "tools/companion_wb55_lock.ps1",
+      "sha256": "E688A06E6F6BD5DAA8D03A2E342ABF33B525FDA45F97A23AD59A56FF501F73C5"
+    },
+    "programmer": {
+      "path": "C:/ST/STM32CubeIDE_2.1.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.cubeprogrammer.win32_2.2.400.202601091506/tools/bin/STM32_Programmer_CLI.exe",
+      "version": "2.22.0",
+      "sha256": "BD520005962377155515A2C9E8FEAB73F304A696AAE1698F3B7760672160FD5E"
+    }
+  },
+  "PROVEN": [
+    "COMP-REQ-260 captured two independent 524288-byte application reads with identical raw SHA-256 223F6E... and a valid Cortex-M vector table, then proved the same normal application booted.",
+    "The locked candidate HEX and ELF remain byte-identical to the prior default-off build; this Goal does not rebuild them from the concurrently changing upper-layer tree.",
+    "The prior static audit proved all controller-side checks except the superseded missing E199 restore file: early return before normal panel init, only 0x2F/0x2D reads, three groups, bounded lengths, forbidden commands absent and GPIO restoration.",
+    "The decoder and parser already encode chip ID, busy, consistency, nontrivial payload, VCOM, 0x37 B..F, F6 Mode2 and waveform-version evidence.",
+    "The restore identity can now be tested directly by uploading 0x80000 bytes after programmer write/verify and comparing every byte to backup-a."
+  ],
+  "INFERENCE": [
+    "The captured raw baseline is a stronger future restore identity than the lost E199 Intel HEX filename/hash because it is the exact pre-run byte range on the board; it still does not reproduce the E199 file container.",
+    "A successful candidate parser result followed by exact raw restore and normal boot is sufficient for the bounded controller-state evidence claim, but not for any display waveform or physical residue claim.",
+    "The existing candidate may leave the display visually unchanged because it issues no refresh or panel reset; MCU programming and restored normal boot can still produce existing application display behavior."
+  ],
+  "UNKNOWN": [
+    "The actual 0x2F and 0x2D values remain unknown until the sole candidate execution.",
+    "The physical panel's waveform/temperature binding and RAM ping-pong semantics remain unknown even if F6 is read.",
+    "Physical screen appearance during candidate/restore MCU resets is outside this machine-only Goal."
+  ],
+  "RISK": [
+    "Any candidate attempt requires the finally restore path even when flashing, serial capture or controller parsing fails.",
+    "A restore write/verify/upload mismatch or missing normal boot leaves application recovery unproven and requires immediate human escalation without a second write, reset or connection.",
+    "Changing or rebuilding the candidate would invalidate the locked static evidence and is forbidden.",
+    "Publishing raw application binaries in docs or Git would violate the private-baseline boundary."
+  ],
+  "ADMISSION": {
+    "pre_hardware": "Revalidate backup-a and backup-b length/hash/bytes/vector, candidate hash, static/host/parser gates, serial and both locks before the first write.",
+    "candidate": "At most one programmer process/write of locked 52D79C... candidate after serial ready.",
+    "controller": "Exactly three 0x2F/1-byte plus 0x2D/11-byte groups; parser determines valid or invalid without retry.",
+    "restore": "Once candidate is attempted, exactly one programmer process with one backup-a write at 0x08000000, verify, one 0x80000 upload to private restore-verify.bin and one reset; uploaded bytes must equal baseline.",
+    "normal_resume": "One bounded post-restore serial window with normal boot and ready, and no diagnostic residue, panel error or hardfault.",
+    "pass_status": "PASS_MACHINE_READ_ONLY_CONTROLLER_STATE_RESTORED",
+    "invalid_read_status": "NO_GO_CONTROLLER_READ_RESTORED",
+    "restore_or_resume_failure": "NEED_HUMAN",
+    "restore_identity": "RESTORED_TO_CAPTURED_PRE_RUN_APPLICATION_BYTES"
+  },
+  "non_goals": [
+    "Rebuild candidate or reconstruct E199 Intel HEX",
+    "Read 0x41, 0x27, panel RAM, wireless stack, option bytes, keys, OTP or memory above the application baseline",
+    "Issue panel refresh, hard reset, initialization, high voltage, RAM/LUT/OTP/0x37 write or forbidden SSD1681 command",
+    "Perform visual, residue, White/Black, rail, temperature, animation, waveform, production, touch or BLE work"
+  ]
+}

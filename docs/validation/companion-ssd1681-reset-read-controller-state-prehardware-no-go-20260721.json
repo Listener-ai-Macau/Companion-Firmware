@@ -1,0 +1,55 @@
+{
+  "schema_id": "companion.wb55.ssd1681_reset_read_controller_state.prehardware_no_go.v1",
+  "requirement_id": "COMP-REQ-265",
+  "created_at_local": "2026-07-21",
+  "status": "NEED_HUMAN_WIRING_PREREQUISITE_FAIL_CLOSED",
+  "machine_stage": "PREHARDWARE",
+  "owner_steering": {
+    "verbatim": "PB1/RES 貌似没有接",
+    "interpretation": "The checklist's documented mapping is not evidence that the current physical RES wire is present. The reset-read candidate therefore has no admissible hardware prerequisite yet."
+  },
+  "required_human_action": {
+    "power_state": "Power the NUCLEO and FTS02 off before touching wires.",
+    "connect": "FTS02 P9 pin 6 / T5 / RES -> NUCLEO CN10 pin 24 / PB1",
+    "visually_confirm": "FTS02 P9 pin 5 / T4 / BUSY -> NUCLEO CN7 pin 3 / PC5",
+    "do_not_do": [
+      "Do not remeasure voltage rails.",
+      "Do not touch, reseat, move, or remove the display FPC."
+    ]
+  },
+  "fail_closed_gate": {
+    "candidate_flash_attempts": 0,
+    "controller_read_attempts": 0,
+    "panel_hard_resets": 0,
+    "panel_spi_commands": 0,
+    "normal_image_restore_attempts": 0,
+    "hardware_contact_performed": false,
+    "continue_condition": "A canonical Chinese aiw operator-prompt result explicitly confirms both RES connected and BUSY visually confirmed after power-off wiring work.",
+    "failure_rule": "Until that result exists, do not flash, reset, read, refresh, or otherwise contact the hardware."
+  },
+  "evidence": {
+    "checklist": {
+      "path": "docs/companion_devboard_physical_checklist.md",
+      "sha256": "D0027B4374746D16F906FAFBBD179142C8887C41321543A02FCC87D935B96D41",
+      "documented_res_mapping": "P9 pin 6 / T5 / RES -> CN10 pin 24 / PB1",
+      "documented_busy_mapping": "P9 pin 5 / T4 / BUSY -> CN7 pin 3 / PC5",
+      "physical_presence_status": "UNPROVEN_STALE_AFTER_OWNER_STEERING"
+    },
+    "product_registry": {
+      "path": "docs/companion_product_requirements.md",
+      "sha256": "078E2FFA827793B0D9F8E51304E4F0C9EE6AD4C81CEC833602E2DFE19553EA7B"
+    },
+    "last_exact_restore_machine_artifact": {
+      "path": "docs/validation/companion-ssd1681-read-only-controller-state-raw-restore-machine-20260721.json",
+      "sha256": "27F90202D5D1FA82871AAEDA72F7BEFAA3EEAE4DD4B3095857CEBE2652BDD92C",
+      "restored_raw_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C"
+    }
+  },
+  "operator_result_path": "docs/validation/companion-ssd1681-reset-read-controller-state-prehardware-wiring-operator-20260721.json",
+  "admission": "NEED_HUMAN",
+  "forbidden_claims": [
+    "No claim that PB1/RES or PC5/BUSY is physically connected before the operator result.",
+    "No controller-read, waveform, visual, residue, temperature, production, or panel-identity acceptance.",
+    "No hardware candidate execution before both wiring prerequisites are confirmed."
+  ]
+}

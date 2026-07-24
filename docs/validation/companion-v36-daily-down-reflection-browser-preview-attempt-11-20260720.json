@@ -1,0 +1,634 @@
+{
+  "schema": "companion.v36_directional_reflection_browser_preview_gate.v1",
+  "status": "PASS_COMPONENT_ONLY_DIRECTIONAL_BROWSER_PREVIEW_GATE",
+  "direction": "down",
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden",
+  "source_gate": "docs/validation/companion-v36-daily-down-reflection-source-gate-attempt-11-20260720.json",
+  "source_gate_sha256": "68379919F0E80A328D2F2CB70D469F8B719FB74BA3A4EA5B004D8E1CA621C46A",
+  "player": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/component-export-attempt-11/preview/daily-down-reflection-player.html",
+  "player_sha256": "39B734476AAA71FE4B9872509826CAE56C6C4A5BB5C5B2DDC633A0721DAAB4E3",
+  "data": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/component-export-attempt-11/preview/daily-down-reflection-player-data.json",
+  "data_sha256": "B193BEE53E0BE8B78F94B7B448701C923AAC490F273EF1BF78C6C5298C2D2156",
+  "canvas": {
+    "width": 200,
+    "height": 200
+  },
+  "component_only": true,
+  "full_face_cards": false,
+  "random_motion": false,
+  "frame_replay": [
+    {
+      "phase": "rest",
+      "duration_ms": 2200,
+      "reason": "daily_relaxed_baseline",
+      "path": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/component-export-attempt-11/preview/frames/00-rest-200x200.png",
+      "sha256": "80384C9662915613F2015350440AD4021CCDE27675B331CDC25FCC1CE8958664",
+      "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/component-export-attempt-11/preview/pbm/00-rest-200x200.pbm",
+      "target_pbm_sha256": "B3847DF9CE2D20693C60C9CC7BC1EC8D8B8A3E23641F4521EE71508ABE13CB9E",
+      "layers": [
+        {
+          "asset": "star",
+          "position": [
+            96,
+            31
+          ]
+        },
+        {
+          "asset": "left_brow",
+          "position": [
+            47,
+            85
+          ]
+        },
+        {
+          "asset": "right_brow",
+          "position": [
+            132,
+            85
+          ]
+        },
+        {
+          "asset": "left_eye_body",
+          "position": [
+            42,
+            112
+          ]
+        },
+        {
+          "asset": "right_eye_body",
+          "position": [
+            125,
+            112
+          ]
+        },
+        {
+          "asset": "left_cheek",
+          "position": [
+            33,
+            160
+          ]
+        },
+        {
+          "asset": "right_cheek",
+          "position": [
+            154,
+            160
+          ]
+        },
+        {
+          "asset": "nose",
+          "position": [
+            94,
+            148
+          ]
+        },
+        {
+          "asset": "mouth",
+          "position": [
+            86,
+            160
+          ]
+        },
+        {
+          "asset": "v9_left_primary",
+          "position": [
+            42,
+            112
+          ]
+        },
+        {
+          "asset": "v9_left_sparkle",
+          "position": [
+            42,
+            112
+          ]
+        },
+        {
+          "asset": "v9_right_primary",
+          "position": [
+            125,
+            112
+          ]
+        },
+        {
+          "asset": "v9_right_sparkle",
+          "position": [
+            125,
+            112
+          ]
+        }
+      ]
+    },
+    {
+      "phase": "eyes_lower_1",
+      "duration_ms": 140,
+      "reason": "attention_gaze_lead",
+      "path": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/component-export-attempt-11/preview/frames/01-eyes_lower_1-200x200.png",
+      "sha256": "ADEB29192717A5A936E3AF9C1FAE8D282895D32DFF811E337B221FA5D030EF48",
+      "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/component-export-attempt-11/preview/pbm/01-eyes_lower_1-200x200.pbm",
+      "target_pbm_sha256": "FFC8B6FE611F3796E9372E272EF74761CECBBDEDF65A00C722EB1A2241E84BBE",
+      "layers": [
+        {
+          "asset": "star",
+          "position": [
+            96,
+            31
+          ]
+        },
+        {
+          "asset": "left_brow",
+          "position": [
+            47,
+            85
+          ]
+        },
+        {
+          "asset": "right_brow",
+          "position": [
+            132,
+            85
+          ]
+        },
+        {
+          "asset": "left_eye_body",
+          "position": [
+            42,
+            112
+          ]
+        },
+        {
+          "asset": "right_eye_body",
+          "position": [
+            125,
+            112
+          ]
+        },
+        {
+          "asset": "left_cheek",
+          "position": [
+            33,
+            160
+          ]
+        },
+        {
+          "asset": "right_cheek",
+          "position": [
+            154,
+            160
+          ]
+        },
+        {
+          "asset": "nose",
+          "position": [
+            94,
+            148
+          ]
+        },
+        {
+          "asset": "mouth",
+          "position": [
+            86,
+            160
+          ]
+        },
+        {
+          "asset": "v9_left_primary",
+          "position": [
+            42,
+            116
+          ]
+        },
+        {
+          "asset": "v9_left_sparkle",
+          "position": [
+            42,
+            116
+          ]
+        },
+        {
+          "asset": "v9_right_primary",
+          "position": [
+            125,
+            116
+          ]
+        },
+        {
+          "asset": "v9_right_sparkle",
+          "position": [
+            125,
+            116
+          ]
+        }
+      ]
+    },
+    {
+      "phase": "eyes_lower_2",
+      "duration_ms": 160,
+      "reason": "attention_gaze_track",
+      "path": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/component-export-attempt-11/preview/frames/02-eyes_lower_2-200x200.png",
+      "sha256": "D65305CB50C99623520EB9A354D6B0EF6BC1389C96CA8D6263BB4F765BBD9302",
+      "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/component-export-attempt-11/preview/pbm/02-eyes_lower_2-200x200.pbm",
+      "target_pbm_sha256": "0DFC6DB151C666A2D1F828049C95D88A8467293CEF3AD9D66CA13F43C07543C6",
+      "layers": [
+        {
+          "asset": "star",
+          "position": [
+            96,
+            31
+          ]
+        },
+        {
+          "asset": "left_brow",
+          "position": [
+            47,
+            85
+          ]
+        },
+        {
+          "asset": "right_brow",
+          "position": [
+            132,
+            85
+          ]
+        },
+        {
+          "asset": "left_eye_body",
+          "position": [
+            42,
+            112
+          ]
+        },
+        {
+          "asset": "right_eye_body",
+          "position": [
+            125,
+            112
+          ]
+        },
+        {
+          "asset": "left_cheek",
+          "position": [
+            33,
+            160
+          ]
+        },
+        {
+          "asset": "right_cheek",
+          "position": [
+            154,
+            160
+          ]
+        },
+        {
+          "asset": "nose",
+          "position": [
+            94,
+            148
+          ]
+        },
+        {
+          "asset": "mouth",
+          "position": [
+            86,
+            160
+          ]
+        },
+        {
+          "asset": "v9_left_primary",
+          "position": [
+            42,
+            120
+          ]
+        },
+        {
+          "asset": "v9_left_sparkle",
+          "position": [
+            42,
+            120
+          ]
+        },
+        {
+          "asset": "v9_right_primary",
+          "position": [
+            125,
+            120
+          ]
+        },
+        {
+          "asset": "v9_right_sparkle",
+          "position": [
+            125,
+            120
+          ]
+        }
+      ]
+    },
+    {
+      "phase": "down_hold",
+      "duration_ms": 900,
+      "reason": "selected_down_source_endpoint",
+      "path": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/component-export-attempt-11/preview/frames/03-down_hold-200x200.png",
+      "sha256": "22ADFE49741CAFF04D3632E618C89E9988C7D7DCFB4AD5CC05D9B30DA3A87206",
+      "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/component-export-attempt-11/preview/pbm/03-down_hold-200x200.pbm",
+      "target_pbm_sha256": "4B8974969AA678704C1EA1FC45FA0E61682415461EA4EED85F428A5C1406867E",
+      "layers": [
+        {
+          "asset": "star",
+          "position": [
+            96,
+            31
+          ]
+        },
+        {
+          "asset": "left_brow",
+          "position": [
+            47,
+            85
+          ]
+        },
+        {
+          "asset": "right_brow",
+          "position": [
+            132,
+            85
+          ]
+        },
+        {
+          "asset": "left_eye_body",
+          "position": [
+            42,
+            112
+          ]
+        },
+        {
+          "asset": "right_eye_body",
+          "position": [
+            125,
+            112
+          ]
+        },
+        {
+          "asset": "left_cheek",
+          "position": [
+            33,
+            160
+          ]
+        },
+        {
+          "asset": "right_cheek",
+          "position": [
+            154,
+            160
+          ]
+        },
+        {
+          "asset": "nose",
+          "position": [
+            94,
+            148
+          ]
+        },
+        {
+          "asset": "mouth",
+          "position": [
+            86,
+            160
+          ]
+        },
+        {
+          "asset": "down_left_primary",
+          "position": [
+            42,
+            112
+          ]
+        },
+        {
+          "asset": "down_left_sparkle",
+          "position": [
+            42,
+            112
+          ]
+        },
+        {
+          "asset": "down_right_primary",
+          "position": [
+            125,
+            112
+          ]
+        },
+        {
+          "asset": "down_right_sparkle",
+          "position": [
+            125,
+            112
+          ]
+        }
+      ]
+    },
+    {
+      "phase": "eyes_return",
+      "duration_ms": 180,
+      "reason": "attention_release",
+      "path": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/component-export-attempt-11/preview/frames/04-eyes_return-200x200.png",
+      "sha256": "ADEB29192717A5A936E3AF9C1FAE8D282895D32DFF811E337B221FA5D030EF48",
+      "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/component-export-attempt-11/preview/pbm/04-eyes_return-200x200.pbm",
+      "target_pbm_sha256": "FFC8B6FE611F3796E9372E272EF74761CECBBDEDF65A00C722EB1A2241E84BBE",
+      "layers": [
+        {
+          "asset": "star",
+          "position": [
+            96,
+            31
+          ]
+        },
+        {
+          "asset": "left_brow",
+          "position": [
+            47,
+            85
+          ]
+        },
+        {
+          "asset": "right_brow",
+          "position": [
+            132,
+            85
+          ]
+        },
+        {
+          "asset": "left_eye_body",
+          "position": [
+            42,
+            112
+          ]
+        },
+        {
+          "asset": "right_eye_body",
+          "position": [
+            125,
+            112
+          ]
+        },
+        {
+          "asset": "left_cheek",
+          "position": [
+            33,
+            160
+          ]
+        },
+        {
+          "asset": "right_cheek",
+          "position": [
+            154,
+            160
+          ]
+        },
+        {
+          "asset": "nose",
+          "position": [
+            94,
+            148
+          ]
+        },
+        {
+          "asset": "mouth",
+          "position": [
+            86,
+            160
+          ]
+        },
+        {
+          "asset": "v9_left_primary",
+          "position": [
+            42,
+            116
+          ]
+        },
+        {
+          "asset": "v9_left_sparkle",
+          "position": [
+            42,
+            116
+          ]
+        },
+        {
+          "asset": "v9_right_primary",
+          "position": [
+            125,
+            116
+          ]
+        },
+        {
+          "asset": "v9_right_sparkle",
+          "position": [
+            125,
+            116
+          ]
+        }
+      ]
+    },
+    {
+      "phase": "rest_dwell",
+      "duration_ms": 3000,
+      "reason": "exact_v9_daily_return",
+      "path": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/component-export-attempt-11/preview/frames/05-rest_dwell-200x200.png",
+      "sha256": "80384C9662915613F2015350440AD4021CCDE27675B331CDC25FCC1CE8958664",
+      "target_pbm": "docs/art/iterations/companion-pet-expression-v9-extension-v36-directional-eye-gaze-source/candidate/component-export-attempt-11/preview/pbm/05-rest_dwell-200x200.pbm",
+      "target_pbm_sha256": "B3847DF9CE2D20693C60C9CC7BC1EC8D8B8A3E23641F4521EE71508ABE13CB9E",
+      "layers": [
+        {
+          "asset": "star",
+          "position": [
+            96,
+            31
+          ]
+        },
+        {
+          "asset": "left_brow",
+          "position": [
+            47,
+            85
+          ]
+        },
+        {
+          "asset": "right_brow",
+          "position": [
+            132,
+            85
+          ]
+        },
+        {
+          "asset": "left_eye_body",
+          "position": [
+            42,
+            112
+          ]
+        },
+        {
+          "asset": "right_eye_body",
+          "position": [
+            125,
+            112
+          ]
+        },
+        {
+          "asset": "left_cheek",
+          "position": [
+            33,
+            160
+          ]
+        },
+        {
+          "asset": "right_cheek",
+          "position": [
+            154,
+            160
+          ]
+        },
+        {
+          "asset": "nose",
+          "position": [
+            94,
+            148
+          ]
+        },
+        {
+          "asset": "mouth",
+          "position": [
+            86,
+            160
+          ]
+        },
+        {
+          "asset": "v9_left_primary",
+          "position": [
+            42,
+            112
+          ]
+        },
+        {
+          "asset": "v9_left_sparkle",
+          "position": [
+            42,
+            112
+          ]
+        },
+        {
+          "asset": "v9_right_primary",
+          "position": [
+            125,
+            112
+          ]
+        },
+        {
+          "asset": "v9_right_sparkle",
+          "position": [
+            125,
+            112
+          ]
+        }
+      ]
+    }
+  ]
+}

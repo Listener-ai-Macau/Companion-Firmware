@@ -1,0 +1,43 @@
+{
+  "schema": "companion.v9_v22_touch_emotion_browser_render_inspection.v1",
+  "status": "PASS_BROWSER_RENDER_INSPECTION_NATIVE_200X200",
+  "claim_scope": "actual_browser_render_screenshots_for_runtime_inactive_candidate_not_runtime_binding_flash_or_physical_acceptance",
+  "route": {
+    "path": "docs/validation/companion-v9-v22-touch-emotion-route-preview-r2-20260720.json",
+    "sha256": "E59357CF34C3B58F06AF56A5220B7494A06F05649766C306D9E5E6C0AE171E32"
+  },
+  "player": {
+    "path": "docs/validation/artifacts/companion-v9-v22-touch-emotion-route-r2-20260720/v9-v22-touch-emotion-route-player.html",
+    "sha256": "F89A34E7F06B79DA3D81BD7F48EA4C5F6275FBD5DA4FDB9712494428B528D920"
+  },
+  "screenshots": [
+    {
+      "scene": "daily_micro",
+      "virtual_time_ms": 2000,
+      "autoplay": false,
+      "expected_art_pose": "v9_daily",
+      "edge_exit_code": null,
+      "edge_terminated_after_screenshot": true,
+      "path": "docs/validation/artifacts/companion-v9-v22-touch-emotion-route-r2-20260720/browser-daily-200x200-20260720.png",
+      "sha256": "986E3FC861E746A0DE9430419850A11484EE7A439DBE1E6DD13777A2ABD8D8DF"
+    },
+    {
+      "scene": "familiar_touch",
+      "virtual_time_ms": 11000,
+      "autoplay": true,
+      "expected_art_pose": "v22_warm",
+      "edge_exit_code": null,
+      "edge_terminated_after_screenshot": true,
+      "path": "docs/validation/artifacts/companion-v9-v22-touch-emotion-route-r2-20260720/browser-familiar-touch-warm-200x200-11000ms-20260720.png",
+      "sha256": "B4EF3A35C97870131906EB621D85B463F2E490B713A8B5990F9F1274E3FAC5F1"
+    }
+  ],
+  "checks": {
+    "route_is_runtime_inactive_candidate": true,
+    "native_200x200_component_stage": true,
+    "explicit_event_player": true,
+    "daily_screenshot_written": true,
+    "familiar_touch_warm_screenshot_written": true
+  },
+  "failures": []
+}

@@ -1,0 +1,106 @@
+{
+  "schema_id": "companion.wb55.ur_dual_application_backup_machine.v1",
+  "status": "PASS_MACHINE_UR_DUAL_APPLICATION_BACKUP_NORMAL_RESUMED_ZERO_WRITES",
+  "requirement_id": "COMP-REQ-260",
+  "generated_at": "2026-07-21T05:17:18.8558221Z",
+  "claim_scope": "One production-off under-reset dual read-only application backup and bounded proof that the pre-existing normal application resumed.",
+  "execution": {
+    "runner_mode": "execute",
+    "hardware_contact": 1,
+    "programmer_processes": 1,
+    "programmer_connections": 1,
+    "under_reset_connections": 1,
+    "upload_commands": 2,
+    "successful_uploads": 2,
+    "explicit_reset_commands": 1,
+    "observed_mcu_resets": 1,
+    "application_write_commands": 0,
+    "erase_commands": 0,
+    "panel_commands": 0,
+    "automatic_retries": 0,
+    "second_connections": 0
+  },
+  "programmer": {
+    "version": "2.22.0",
+    "sha256": "BD520005962377155515A2C9E8FEAB73F304A696AAE1698F3B7760672160FD5E",
+    "st_link_serial": "066EFF535570514867221931",
+    "st_link_firmware": "V2J39M27",
+    "board": "NUCLEO-WB55RG",
+    "voltage_v": 3.24,
+    "swd_frequency_khz": 4000,
+    "connect_mode": "Under Reset",
+    "reset_mode": "Hardware reset",
+    "device_id": "0x495",
+    "device_name": "STM32WB5x/35xx",
+    "device_cpu": "Cortex-M4",
+    "sole_argument_shape": "-c port=SWD mode=UR reset=HWrst freq=4000 -u 0x08000000 0x80000 <private-a> -u 0x08000000 0x80000 <private-b> -rst",
+    "read_elapsed_seconds": [
+      3.479,
+      3.49
+    ]
+  },
+  "application_backup": {
+    "address_hex": "0x08000000",
+    "length_hex": "0x80000",
+    "bytes_each": 524288,
+    "file_count": 2,
+    "byte_identical": true,
+    "shared_raw_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "all_zero": false,
+    "all_ff": false,
+    "vector": {
+      "msp_hex": "0x20030000",
+      "msp_8_byte_aligned": true,
+      "reset_vector_hex": "0x08015AAD",
+      "reset_vector_thumb": true,
+      "reset_address_hex": "0x08015AAC"
+    },
+    "programmed_content": {
+      "first_non_ff_offset": 0,
+      "last_non_ff_offset": 523563,
+      "span_bytes": 523564,
+      "non_ff_bytes": 423805
+    },
+    "storage": "Two raw binaries remain only in the private .cache validation run; neither is copied to docs or Git.",
+    "identity_claim": "CAPTURED_PRE_RUN_APPLICATION_BYTES_NOT_E199_HEX_REPRODUCTION",
+    "future_use": "Restore baseline only for a separately authorized future Goal."
+  },
+  "normal_resume": {
+    "status": "PASS_APPLICATION_RESUMED_AFTER_BACKUP",
+    "capture_window_seconds": 30,
+    "normal_boot_identity": "[boot] Companion NUCLEO-WB55RG bringup",
+    "normal_boot_count": 1,
+    "normal_ready_marker": "[boot] boot_selftests=skipped reason=production_ble_path",
+    "normal_ready_count": 1,
+    "ready_after_boot": true,
+    "controller_diagnostic_markers": 0,
+    "panel_error_markers": 0,
+    "hardfault_markers": 0,
+    "raw_log_bytes": 3052,
+    "raw_log_sha256": "8270836CAA3675077F8F177E956B767A699C32C4FB142B1A9EF87AFD52C1A2B3",
+    "decoded_utf8_sha256": "BB39719EC70D20624FABA5DDE9ADAD43CBD9F8A04BAFE9108DF24E14150B35DF"
+  },
+  "artifact_hashes": {
+    "research_sha256": "CD997124E365D0D15C9557C51FEAC19B3FA9C15632B934BDFE435019E32C750F",
+    "static_sha256_at_execute": "326C26D9759E69FA223A9DF51D5A8534A2A1B15C270FB0492AD77D3311337E24",
+    "check_only_stage_run_sha256": "1F93F0F2F555FB2120A9305359085705358E9D6D801C3BA0175BFE39CB5DF2F9",
+    "execute_stage_run_sha256": "BCC7132E669FFD8C4AB4AC7ED14CE33FBE596D6C0429DF9F3FDCC8D3B7B19DE2",
+    "programmer_stdout_sha256": "A77B60660B0BC5907B63270CEDA087F8EA1D80B96D4F027DE6FB525CD4F833B8",
+    "backup_gate_sha256": "E602FBC63B814A97BDB166455E99626ED124F3691959BB0B2C43268DDBD2BB3A",
+    "normal_resume_artifact_sha256": "0E76C1FA98BB143E2CEEA19E904223FDC5AD15ECBCCA37CCF696A285985DA621"
+  },
+  "protected_boundaries": {
+    "hotplug_retried": false,
+    "controller_candidate_flashed": false,
+    "controller_registers_read": false,
+    "application_or_restore_written": false,
+    "panel_command_sent_by_runner": false,
+    "screen_visual_acceptance_claimed": false,
+    "e199_hex_reproduction_claimed": false,
+    "supplier_v9_acceptance_rig_crig_browser_binding_art_edited": false
+  },
+  "human_boundary": {
+    "operator_prompt_required": false,
+    "reason": "Both backup and normal-resume machine gates passed. This Goal has no visual acceptance step."
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "schema": "companion.v41_directional_gaze_owner_review.v1",
+  "status": "REJECTED_OWNER_REVIEW_DELIVERY_STEERING",
+  "reviewed_at": "2026-07-21",
+  "review_method": "canonical_aiw_operator_prompt",
+  "related_machine_artifact": "docs/validation/companion-v41-directional-gaze-total-machine-audit-20260721.json",
+  "selected": "失败",
+  "operator_note_path": "docs/validation/companion-v41-directional-gaze-total-machine-audit-20260721.owner-review.note.txt",
+  "operator_note": "应该是你开这个浏览器给我看，不是我开。",
+  "disposition": {
+    "v41_candidate": "preserve_as_rejected_inactive_evidence_until_review_is_represented_correctly",
+    "runtime_binding": "forbidden",
+    "required_repair": "The agent must open the generated local browser preview for the owner before the next canonical review; do not require the owner to locate or open an artifact path.",
+    "next_review": "show_the_same_generated_V41_preview_then_reopen_canonical_review"
+  },
+  "non_claims": [
+    "no_human_acceptance",
+    "no_runtime_binding",
+    "no_firmware_flash",
+    "no_panel_or_driver_change"
+  ]
+}
