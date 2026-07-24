@@ -44,6 +44,10 @@
 #include "companion_v1_features.h"
 #include "diag_log.h"
 #include "diag_log_export.h"
+#include "companion_platform_adapters.h"
+#include "companion_product_entry_glue.h"
+#include "companion_product_identity.h"
+#include "companion_product_transport.h"
 #include "display_queue.h"
 #include "asset_store.h"
 #include "emote_asset_pack.h"
@@ -67,6 +71,17 @@
 #include "screen_presentation.h"
 #include "screen_runtime.h"
 #include "v9_candidate_resource_binding.h"
+
+/* The bring-up image does not link the resident loader.  A linked loader may
+ * provide this boundary; the weak default deliberately leaves OTA blocked. */
+__attribute__((weak)) bool Companion_Ota_V1_ReadCandidate(
+    uint32_t *image_size, uint32_t *partition_size, bool *pending_verify,
+    bool *post_update_self_check)
+{
+  (void)image_size; (void)partition_size; (void)pending_verify;
+  (void)post_update_self_check;
+  return false;
+}
 
 #ifndef COMPANION_SCREEN_MENU_ENABLED
 #define COMPANION_SCREEN_MENU_ENABLED 0
@@ -417,6 +432,14 @@ static companion_gatt_settings_v1_t s_companion_gatt_settings = {
     .display_brightness = 80u,
     .recorder_profile_id = 1u,
 };
+static const companion_gatt_settings_v1_t *s_platform_pending_settings;
+static const companion_gatt_meeting_control_v1_t *s_platform_pending_meeting;
+static uint32_t s_platform_pending_now_ms;
+static companion_v1_result_t s_platform_invoke_result =
+    COMPANION_V1_RESULT_UNSUPPORTED_COMMAND;
+static companion_product_entry_glue_t s_platform_product_entry;
+static companion_settings_transport_t s_platform_settings_transport;
+static companion_meeting_transport_t s_platform_meeting_transport;
 static companion_v1_features_t s_companion_v1_features;
 static uint32_t s_companion_audio_notify_enabled_count = 0u;
 static uint32_t s_companion_audio_notify_disabled_count = 0u;
@@ -446,6 +469,15 @@ static void Companion_Gatt_Task(void);
 static void Companion_Display_Task(void);
 static void Companion_Gatt_HandleEvent(const companion_gatt_event_t *event,
                                        void *context);
+static bool Companion_Platform_ReadCapabilities(void *context,
+                                                uint64_t operation_id,
+                                                uint64_t idempotency_key,
+                                                uint32_t *revision,
+                                                uint64_t *mask);
+static bool Companion_Platform_ReadSettings(void *context, uint64_t, uint64_t, uint32_t *revision);
+static bool Companion_Platform_WriteSettings(void *context, uint64_t, uint64_t, uint32_t expected,
+                                             uint32_t *ack_revision);
+static bool Companion_Platform_Invoke(void *context, uint64_t, uint64_t, uint32_t command);
 static void Companion_Gatt_PublishInitialState(void);
 static void Companion_Gatt_PublishCurrent(companion_gatt_char_id_t char_id);
 static void Companion_Gatt_PublishDeviceStatus(bool apply_expression_hint);
@@ -1244,9 +1276,112 @@ static void Companion_Ble_Button3Task(void)
                                  7u);
 }
 
+static bool Companion_Platform_ReadCapabilities(void *context,
+                                                uint64_t operation_id,
+                                                uint64_t idempotency_key,
+                                                uint32_t *revision,
+                                                uint64_t *mask)
+{
+  (void)context; (void)operation_id; (void)idempotency_key;
+  if (revision == NULL || mask == NULL)
+  {
+    return false;
+  }
+  *revision = s_platform_settings_transport.revision;
+  *mask = (UINT64_C(1) << COMPANION_GATT_CHAR_COUNT) - 1u;
+  return true;
+}
+
+static bool Companion_Platform_ReadSettings(void *context, uint64_t operation_id,
+                                            uint64_t idempotency_key, uint32_t *revision)
+{
+  (void)context; (void)operation_id; (void)idempotency_key;
+  if (revision == NULL)
+  {
+    return false;
+  }
+  *revision = s_platform_settings_transport.revision;
+  return true;
+}
+
+static bool Companion_Platform_WriteSettings(void *context, uint64_t operation_id,
+                                             uint64_t idempotency_key, uint32_t expected,
+                                             uint32_t *ack_revision)
+{
+  (void)context; (void)idempotency_key;
+  return s_platform_pending_settings != NULL && ack_revision != NULL &&
+      expected != 0u && companion_settings_transport_apply(
+          &s_platform_settings_transport, HAL_GetTick(), operation_id, idempotency_key, expected,
+          s_platform_pending_settings, ack_revision);
+}
+
+static bool Companion_Platform_Invoke(void *context, uint64_t operation_id,
+                                      uint64_t idempotency_key, uint32_t command)
+{
+  (void)context; (void)idempotency_key;
+  if (s_platform_pending_meeting == NULL ||
+      command != s_platform_pending_meeting->command)
+  {
+    return false;
+  }
+  return companion_meeting_transport_apply(&s_platform_meeting_transport,
+                                            s_platform_pending_now_ms, operation_id, idempotency_key,
+                                            s_platform_pending_meeting);
+}
+
+static bool Companion_Product_ApplyMeeting(void *context, uint64_t request_id)
+{
+  (void)context;
+  s_platform_invoke_result = companion_v1_apply_meeting_control(
+      &s_companion_v1_features, s_platform_pending_meeting,
+      s_platform_pending_now_ms);
+  (void)request_id;
+  return s_platform_invoke_result == COMPANION_V1_RESULT_OK;
+}
+
+static bool Companion_Product_BeginSettings(void *context, uint32_t now_ms,
+                                            uint64_t request_id,
+                                            uint64_t idempotency_key,
+                                            uint32_t expected_revision,
+                                            const void *payload,
+                                            uint32_t *ack_revision)
+{
+  (void)context;
+  (void)payload;
+  return companion_platform_device_control_settings_event(
+      now_ms, request_id, idempotency_key, expected_revision, ack_revision);
+}
+
+static bool Companion_Product_BeginMeeting(void *context, uint32_t now_ms,
+                                           uint64_t request_id,
+                                           uint64_t idempotency_key,
+                                           const void *payload)
+{
+  (void)context;
+  (void)payload;
+  s_platform_pending_now_ms = now_ms;
+  return companion_platform_device_control_invoke_event(
+      now_ms, request_id, idempotency_key, s_platform_pending_meeting->command);
+}
+
 static void Companion_Gatt_Init(void)
 {
   companion_v1_features_init(&s_companion_v1_features, HAL_GetTick());
+  s_platform_settings_transport.current = &s_companion_gatt_settings;
+  s_platform_settings_transport.size = sizeof(s_companion_gatt_settings);
+  s_platform_settings_transport.revision = 1u;
+  s_platform_meeting_transport.apply = Companion_Product_ApplyMeeting;
+  s_platform_meeting_transport.apply_context = NULL;
+  const companion_device_control_transport_t transport = {
+      NULL,
+      Companion_Platform_ReadCapabilities,
+      Companion_Platform_ReadSettings,
+      Companion_Platform_WriteSettings,
+      Companion_Platform_Invoke};
+  companion_platform_device_control_bind(&transport);
+  companion_product_entry_glue_init(&s_platform_product_entry, NULL,
+                                     Companion_Product_BeginSettings,
+                                     Companion_Product_BeginMeeting);
 
   tBleStatus status = companion_gatt_stm32wb_init();
   if (status != BLE_STATUS_SUCCESS)
@@ -3642,7 +3777,21 @@ static void Companion_Gatt_HandleEvent(const companion_gatt_event_t *event,
                                            &request) ==
           COMPANION_GATT_PARSE_OK)
       {
-        s_companion_gatt_settings = request;
+        uint32_t acknowledged_revision = 0u;
+        bool replayed = false;
+        uint32_t now_ms = HAL_GetTick();
+        s_platform_pending_settings = &request;
+        companion_product_identity_t identity;
+        if (companion_product_identity_derive(
+                "companion.settings", 0u, &request, sizeof(request), &identity) &&
+            companion_product_entry_settings(
+                &s_platform_product_entry, identity.operation_id, identity.idempotency_key,
+                now_ms, now_ms + 1000u, s_platform_settings_transport.revision,
+                &request, &acknowledged_revision, &replayed))
+        {
+          (void)acknowledged_revision;
+        }
+        s_platform_pending_settings = NULL;
         Companion_Gatt_PublishSettings();
         Companion_Display_ApplySettingsExpressionHint(&s_companion_gatt_settings);
       }
@@ -3672,10 +3821,25 @@ static void Companion_Gatt_HandleEvent(const companion_gatt_event_t *event,
                                                   &request) ==
           COMPANION_GATT_PARSE_OK)
       {
-        companion_v1_result_t result =
-            companion_v1_apply_meeting_control(&s_companion_v1_features,
-                                               &request,
-                                               HAL_GetTick());
+        s_platform_pending_meeting = &request;
+        s_platform_pending_now_ms = HAL_GetTick();
+        s_platform_invoke_result = COMPANION_V1_RESULT_UNSUPPORTED_COMMAND;
+        bool replayed = false;
+        companion_product_identity_t identity;
+        bool invoked = companion_product_identity_derive(
+            "companion.meeting", request.request_id, &request, sizeof(request), &identity) &&
+            companion_product_entry_meeting(
+            &s_platform_product_entry, identity.operation_id, identity.idempotency_key,
+            s_platform_pending_now_ms, s_platform_pending_now_ms + 1000u,
+            &request, &replayed);
+        s_platform_pending_meeting = NULL;
+        if (replayed && invoked)
+        {
+          s_platform_invoke_result = COMPANION_V1_RESULT_OK;
+        }
+        companion_v1_result_t result = invoked
+            ? s_platform_invoke_result
+            : COMPANION_V1_RESULT_UNSUPPORTED_COMMAND;
         if (result != COMPANION_V1_RESULT_OK)
         {
           Companion_Diag_RecordAndEnqueueExpression(COMP_DIAG_EVT_MEETING_REJECTED,
@@ -3922,6 +4086,14 @@ static void Companion_Gatt_PublishDeviceStatus(bool apply_expression_hint)
       .board_id = 0xB55A0001u,
       .uptime_ms = HAL_GetTick(),
   };
+  uint32_t capability_revision = 0u;
+  uint64_t capability_mask = 0u;
+  if (!companion_platform_device_control_capabilities_event(
+          status.uptime_ms, 1u, 0xC001u,
+          &capability_revision, &capability_mask))
+  {
+    status.fault_bitmap |= 0x0001u;
+  }
 
   (void)companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_DEVICE_STATUS,
                                        (const uint8_t *)&status,
@@ -4149,12 +4321,83 @@ static void Companion_Gatt_PublishWakeWordStatus(bool apply_expression_hint)
   }
 }
 
+typedef struct
+{
+  comp_diag_log_export_request_t request;
+  uint8_t packet[COMPANION_GATT_MAX_PAYLOAD_BYTES];
+  size_t packet_bytes;
+  uint16_t available_events;
+  bool stopped;
+} Companion_PlatformDiagExport_t;
+
+static bool Companion_PlatformDiag_Count(void *context, uint16_t *count)
+{
+  Companion_PlatformDiagExport_t *export_context =
+      (Companion_PlatformDiagExport_t *)context;
+  comp_diag_log_export_packet_t response;
+  size_t response_bytes = 0u;
+  if (export_context == NULL || count == NULL ||
+      !comp_diag_log_export_build(&export_context->request, &response,
+                                  &response_bytes))
+  {
+    return false;
+  }
+  export_context->available_events = response.total_available;
+  *count = response.total_available;
+  return true;
+}
+
+static bool Companion_PlatformDiag_Start(void *context)
+{
+  return context != NULL;
+}
+
+static bool Companion_PlatformDiag_Read(void *context, uint32_t offset,
+                                        uint8_t *packet, size_t capacity,
+                                        size_t *packet_bytes)
+{
+  Companion_PlatformDiagExport_t *export_context =
+      (Companion_PlatformDiagExport_t *)context;
+  comp_diag_log_export_packet_t response;
+  size_t response_bytes = 0u;
+  if (export_context == NULL || packet == NULL || packet_bytes == NULL)
+  {
+    return false;
+  }
+  export_context->request.cursor = offset;
+  if (!comp_diag_log_export_build(&export_context->request, &response,
+                                  &response_bytes) ||
+      response_bytes > COMPANION_GATT_MAX_PAYLOAD_BYTES)
+  {
+    return false;
+  }
+  bool encoded = companion_platform_diag_encode_chunk(
+      offset, response.event_count, (const uint8_t *)response.events,
+      (size_t)response.event_count * sizeof(response.events[0]), packet,
+      capacity, packet_bytes);
+  if (encoded)
+  {
+    export_context->packet_bytes = *packet_bytes;
+    memcpy(export_context->packet, packet, *packet_bytes);
+  }
+  return encoded;
+}
+
+static bool Companion_PlatformDiag_Stop(void *context)
+{
+  Companion_PlatformDiagExport_t *export_context =
+      (Companion_PlatformDiagExport_t *)context;
+  if (export_context == NULL) return false;
+  export_context->stopped = true;
+  return true;
+}
+
 static void Companion_Gatt_PublishDiagLogResponse(
     const companion_gatt_diag_log_pull_v1_t *request)
 {
-  comp_diag_log_export_request_t export_request;
-  comp_diag_log_export_packet_t response;
-  size_t response_bytes = 0u;
+  Companion_PlatformDiagExport_t export_context;
+  companion_diag_transport_t transport;
+  companion_diag_result_t result;
 
   if (request == NULL)
   {
@@ -4169,22 +4412,25 @@ static void Companion_Gatt_PublishDiagLogResponse(
                             ((uint32_t)request->severity_mask << 8u) |
                                 request->source_mask);
 
-  export_request.cursor = request->cursor;
-  export_request.source_mask = request->source_mask;
-  export_request.severity_mask = request->severity_mask;
-  export_request.max_events = request->max_events;
-  export_request.max_bytes = request->max_bytes;
-  if (!comp_diag_log_export_build(&export_request,
-                                  &response,
-                                  &response_bytes) ||
-      response_bytes > COMPANION_GATT_MAX_PAYLOAD_BYTES)
+  memset(&export_context, 0, sizeof(export_context));
+  export_context.request.cursor = request->cursor;
+  export_context.request.source_mask = request->source_mask;
+  export_context.request.severity_mask = request->severity_mask;
+  export_context.request.max_events = request->max_events;
+  export_context.request.max_bytes = request->max_bytes;
+  transport.context = &export_context;
+  transport.count = Companion_PlatformDiag_Count;
+  transport.start = Companion_PlatformDiag_Start;
+  transport.read = Companion_PlatformDiag_Read;
+  transport.stop = Companion_PlatformDiag_Stop;
+  if (!companion_diag_log_pull(&transport, &result) ||
+      !export_context.stopped || export_context.packet_bytes == 0u)
   {
     return;
   }
-
   (void)companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_DIAGNOSTICS_LOG_PULL,
-                                       (const uint8_t *)&response,
-                                       (uint16_t)response_bytes);
+                                       export_context.packet,
+                                       (uint16_t)export_context.packet_bytes);
 }
 
 static void Companion_Gatt_PublishDeletePrivacyStatus(
@@ -4213,20 +4459,39 @@ static void Companion_Gatt_PublishDeletePrivacyStatus(
 
 static void Companion_Gatt_PublishOtaReadiness(bool apply_expression_hint)
 {
-  static const uint8_t sha_prefix[8] = {
-      0xBEu, 0xFAu, 0xEBu, 0x26u, 0x11u, 0x66u, 0x0Du, 0x9Eu,
-  };
+  uint32_t image_size = 0u;
+  uint32_t partition_size = 0u;
+  bool pending_verify = false;
+  bool post_update_self_check = false;
+  bool candidate_available = Companion_Ota_V1_ReadCandidate(
+      &image_size, &partition_size, &pending_verify, &post_update_self_check);
   companion_gatt_ota_readiness_v1_t readiness = {
       .schema_version = 1u,
-      .ready_state = 1u,
+      .ready_state = 0u,
       .boot_slot = 0u,
-      .battery_percent = 100u,
+      .battery_percent = 0u,
       .minimum_required_mv = 3700u,
       .blocker_bitmap = 0x0010u,
-      .manifest_version = 1u,
-      .image_size = 68240u,
+      .manifest_version = 2u,
+      .image_size = image_size,
   };
-  memcpy(readiness.image_sha256_prefix, sha_prefix, sizeof(sha_prefix));
+
+  companion_ota_admission_result_t ota_admission =
+      companion_platform_ota_readiness_event(false,
+                                              s_companion_audio_stream.session_active,
+                                              false, readiness.battery_percent,
+                                              candidate_available, image_size,
+                                              partition_size, pending_verify,
+                                              post_update_self_check);
+  if (ota_admission.accepted)
+  {
+    readiness.ready_state = 1u;
+    readiness.blocker_bitmap = 0u;
+  }
+  else
+  {
+    readiness.blocker_bitmap = (uint16_t)(1u << (uint8_t)ota_admission.blocker);
+  }
 
   (void)companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_OTA_READINESS,
                                        (const uint8_t *)&readiness,

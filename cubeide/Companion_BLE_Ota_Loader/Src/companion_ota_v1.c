@@ -121,6 +121,25 @@ void Companion_Ota_V1_Init(void)
   Companion_Ota_V1_Update_Status();
 }
 
+bool Companion_Ota_V1_ReadCandidate(
+    uint32_t *image_size, uint32_t *partition_size, bool *pending_verify,
+    bool *post_update_self_check)
+{
+  uint32_t configured_partition =
+      (uint32_t)CFG_OTA_NBR_OF_SECTOR_VAL_MSG * FLASH_PAGE_SIZE;
+  if (image_size == NULL || partition_size == NULL || pending_verify == NULL ||
+      post_update_self_check == NULL || configured_partition == 0u)
+  {
+    return false;
+  }
+  *image_size = CompanionOtaV1Context.expected_size;
+  *partition_size = configured_partition;
+  *pending_verify = CompanionOtaV1Context.expected_size != 0u;
+  *post_update_self_check =
+      CompanionOtaV1Context.state == DENZIC_OTA_V1_STATE_COMPLETE;
+  return *image_size != 0u;
+}
+
 void SVCCTL_SvcInit(void)
 {
   Companion_Ota_V1_Init();

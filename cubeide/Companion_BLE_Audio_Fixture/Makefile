@@ -34,6 +34,11 @@ INC_DIRS := \
 	$(CUBE)/Middlewares/ST/STM32_WPAN/utilities \
 	$(CUBE)/Middlewares/ST/STM32_WPAN/ble \
 	$(AUDIO) \
+	$(ROOT)/app/companion_pendant/platform \
+	$(ROOT)/third_party/denzic-platform/audio/embedded/c/include \
+	$(ROOT)/third_party/denzic-platform/device_control/embedded/c/include \
+	$(ROOT)/third_party/denzic-platform/observability/embedded/c/include \
+	$(ROOT)/third_party/denzic-platform/ota/embedded/c/include \
 	$(CUBE)/Drivers/CMSIS/Include
 
 INCLUDES := $(addprefix -I,$(INC_DIRS))
@@ -50,6 +55,15 @@ C_SOURCES := \
 	$(P2P)/Core/Src/system_stm32wbxx.c \
 	$(AUDIO)/audio_stream.c \
 	$(AUDIO)/audio_stream_stm32wb.c \
+	$(ROOT)/app/companion_pendant/platform/companion_platform_contracts.c \
+	$(ROOT)/app/companion_pendant/gatt/companion_gatt_stm32wb.c \
+	$(ROOT)/app/companion_pendant/platform/companion_product_entry_glue.c \
+	$(ROOT)/app/companion_pendant/platform/companion_product_identity.c \
+	$(ROOT)/app/companion_pendant/platform/companion_product_transport.c \
+	$(ROOT)/third_party/denzic-platform/audio/embedded/c/src/denzic_audio_transport_v1.c \
+	$(ROOT)/third_party/denzic-platform/device_control/embedded/c/src/denzic_device_control_v1.c \
+	$(ROOT)/third_party/denzic-platform/observability/embedded/c/src/denzic_diag_log_gatt_v1.c \
+	$(ROOT)/third_party/denzic-platform/ota/embedded/c/src/denzic_ota_orchestration_v1.c \
 	$(P2P)/STM32_WPAN/Target/hw_ipcc.c \
 	$(P2P)/STM32CubeIDE/Application/Core/syscalls.c \
 	$(P2P)/STM32CubeIDE/Application/Core/sysmem.c \

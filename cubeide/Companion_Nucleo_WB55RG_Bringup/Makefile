@@ -430,6 +430,10 @@ INC_DIRS := \
 	$(ROOT)/app/companion_pendant/recording \
 	$(ROOT)/app/companion_pendant/storage \
 	$(ROOT)/third_party/denzic-platform/audio/embedded/c/include \
+	$(ROOT)/third_party/denzic-platform/device_control/embedded/c/include \
+	$(ROOT)/third_party/denzic-platform/observability/embedded/c/include \
+	$(ROOT)/third_party/denzic-platform/ota/embedded/c/include \
+	$(ROOT)/app/companion_pendant/platform \
 	$(ROOT)/app/companion_pendant/touch \
 	$(ROOT)/app/companion_pendant/v1_features
 
@@ -536,7 +540,16 @@ C_SOURCES := \
 	$(ROOT)/app/companion_pendant/power/power_policy.c \
 	$(ROOT)/app/companion_pendant/recording/microphone.c \
 	$(ROOT)/app/companion_pendant/recording/recording_fsm.c \
+	$(ROOT)/app/companion_pendant/platform/companion_platform_contracts.c \
+	$(ROOT)/app/companion_pendant/platform/companion_platform_adapters.c \
+	$(ROOT)/app/companion_pendant/platform/companion_product_entry_glue.c \
+	$(ROOT)/app/companion_pendant/platform/companion_product_identity.c \
+	$(ROOT)/app/companion_pendant/platform/companion_product_transport.c \
+	$(ROOT)/third_party/denzic-platform/audio/embedded/c/src/denzic_audio_transport_v1.c \
 	$(ROOT)/third_party/denzic-platform/audio/embedded/c/src/denzic_audio_recording_v1.c \
+	$(ROOT)/third_party/denzic-platform/device_control/embedded/c/src/denzic_device_control_v1.c \
+	$(ROOT)/third_party/denzic-platform/observability/embedded/c/src/denzic_diag_log_gatt_v1.c \
+	$(ROOT)/third_party/denzic-platform/ota/embedded/c/src/denzic_ota_orchestration_v1.c \
 	$(ROOT)/app/companion_pendant/touch/ft6336.c \
 	$(ROOT)/app/companion_pendant/touch/touch_gesture.c \
 	$(ROOT)/app/companion_pendant/touch/touch_visual_decision.c \
