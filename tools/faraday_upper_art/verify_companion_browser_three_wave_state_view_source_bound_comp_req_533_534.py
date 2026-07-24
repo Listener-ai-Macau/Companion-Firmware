@@ -11,16 +11,15 @@ from pathlib import Path
 from typing import Any
 
 
-SOURCE_COMMIT = "235bc31c64ff82c99f2a2ba9783eef353754cbd5"
-TOOL_COMMIT = "bc4049d5cfd957d22b408ab32d5ae196f683458b"
+MAIN_BASE_COMMIT = "4338f0c1614a58a334008c992c9bb61a73071718"
+SOURCE_COMMIT = MAIN_BASE_COMMIT
+TOOL_COMMIT = MAIN_BASE_COMMIT
 PAGE_PATH = (
     "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/"
     "candidate/wb55-browser-parity-attempt-01/index.html"
 )
-PAGE_SHA256 = "0C29D5FF40D80C41461F0738C1C747A6C2B27A5DA74B5C79E166621A7566D9DA"
-PAGE_COMMITTED_SHA256 = (
-    "8F8FC05C5DAA3A95C7A2E80D677B56A831CF620A752EABB1DCB535F01705AB9D"
-)
+PAGE_SHA256 = "8F8FC05C5DAA3A95C7A2E80D677B56A831CF620A752EABB1DCB535F01705AB9D"
+PAGE_COMMITTED_SHA256 = PAGE_SHA256
 PAGE_GIT_BLOB = "fdf6c7c8e9ad7293dfd1115e7f42cca015d9a15e"
 URL = "http://127.0.0.1:4173/" + PAGE_PATH
 VALIDATION_DIR = (
@@ -34,49 +33,49 @@ BOUND_FILES = {
         "tools/faraday_upper_art/"
         "verify_companion_browser_three_wave_state_view_comp_req_533_534.mjs",
         "F6C43D2D4C7F893D5B59013A3FB4FB679C7F3ED3448D7290EC2202C3E5FA21D4",
-        TOOL_COMMIT,
+        "00e9fabe1eb3fba01a886016d282debf30bb5b83",
     ),
     "replay_tool": (
         "tools/faraday_upper_art/"
         "replay_companion_browser_three_wave_state_view_comp_req_533_534.mjs",
-        "EC9E0F9C6370F4244532CFF157AD15CCC2295A31901BE790F53AF5D051C3C86A",
-        TOOL_COMMIT,
+        "17BEF0230EA0E0FD715A6B0212BCF5A421BA5041AC950DA4EE6F525999783ACD",
+        "b3d83b5e085c4e765fc763c9f799b4ff2fc35a5c",
     ),
     "determinism_tool": (
         "tools/faraday_upper_art/"
         "run_companion_browser_three_wave_state_view_determinism_comp_req_533_534.py",
         "40FBE5CC57CBC5ECAF84EB0A311D7FE7AAD5203CE82CF8F6BBF64E346145147A",
-        TOOL_COMMIT,
+        "0e18d6b78682cc07085f92283fd4f871d0be0db2",
     ),
     "before_oracle": (
         f"{VALIDATION_DIR}/before-fix/geometry-temporal-state-oracle.json",
         "D6C6D0952BD7E985467E629F17AECEE216C23E46BDED86ACC1419B16EAE6F356",
-        None,
+        "3fa1c51c049516ab6d098da85ec48d9579f3d45c",
     ),
     "after_oracle": (
         f"{VALIDATION_DIR}/after-fix/geometry-temporal-state-oracle.json",
         "9FC4A390A71A431029A3B50E6DC117D441D832694E7BDEA5E53A11A306DE7626",
-        None,
+        "7797edcfc3bba8fd7679e60bc2e3fe496cc4bf0b",
     ),
     "replay": (
         f"{VALIDATION_DIR}/determinism-run/browser-replay-result.json",
         "842073FF357B7ADF03775B432E87C67B45824F6EC271FE59D5B7CE46A05CF94C",
-        None,
+        "6ebbf0882fcc794562d1f5d07e29aae894b15b8d",
     ),
     "pixel": (
         f"{VALIDATION_DIR}/determinism-run/pixel-dom-route-artifact.json",
         "21CA3E864CE8523C497F38ABC758B1ADE34BB92EF755F63D9DFA2FC7A4F5B4F6",
-        None,
+        "f29e86ebbe53e1e27759be65d5c3cfa5743f2b4b",
     ),
     "screenshots": (
         f"{VALIDATION_DIR}/determinism-run/screenshot-manifest.json",
         "4806A36D7E0BA0C456CA588888E237911D8D5B46B55F0B9E1B6DA238976A8BC5",
-        None,
+        "bbe8db4070b82a1c034d98e0e3edf55b37d16e62",
     ),
     "determinism": (
         f"{VALIDATION_DIR}/deterministic-replay-receipt.json",
         "7A65317B4FF4296543AF94D0D16662C6D4464726328BB9F172BE0ACFEA3674A7",
-        None,
+        "4554fc310726fadd567d98606b5f206ff4500810",
     ),
 }
 
@@ -126,6 +125,13 @@ def sha256_bytes(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest().upper()
 
 
+def canonical_lf_bytes(data: bytes) -> bytes:
+    normalized = data.replace(b"\r\n", b"\n")
+    if b"\r" in normalized:
+        raise ValueError("text contains a bare carriage return")
+    return normalized
+
+
 def canonical_bytes(value: Any) -> bytes:
     return (
         json.dumps(value, ensure_ascii=True, indent=2, sort_keys=True) + "\n"
@@ -171,6 +177,25 @@ def git_text(root: Path, *args: str) -> str | None:
     return result.stdout.strip() if result.returncode == 0 else None
 
 
+def git_bytes(root: Path, *args: str) -> bytes | None:
+    result = subprocess.run(
+        ["git", *args],
+        cwd=root,
+        check=False,
+        capture_output=True,
+    )
+    return result.stdout if result.returncode == 0 else None
+
+
+def git_ok(root: Path, *args: str) -> bool:
+    return subprocess.run(
+        ["git", *args],
+        cwd=root,
+        check=False,
+        capture_output=True,
+    ).returncode == 0
+
+
 def require(
     failures: list[str],
     label: str,
@@ -206,36 +231,44 @@ def evaluate(
 
     require(
         failures,
-        "source commit",
+        "main source commit",
         git_text(root, "rev-parse", f"{source_commit}^{{commit}}"),
-        SOURCE_COMMIT,
+        MAIN_BASE_COMMIT,
     )
     require(
         failures,
-        "tool commit",
+        "main tool commit",
         git_text(root, "rev-parse", f"{tool_commit}^{{commit}}"),
-        TOOL_COMMIT,
+        MAIN_BASE_COMMIT,
     )
+    if not git_ok(root, "merge-base", "--is-ancestor", MAIN_BASE_COMMIT, "HEAD"):
+        failures.append("exact main base is not an ancestor of HEAD")
     require(
         failures,
         "page git blob",
         git_text(root, "rev-parse", f"{source_commit}:{PAGE_PATH}"),
         PAGE_GIT_BLOB,
     )
-    committed_page = subprocess.run(
-        ["git", "show", f"{source_commit}:{PAGE_PATH}"],
-        cwd=root,
-        check=False,
-        capture_output=True,
-    )
+    committed_page = git_bytes(root, "cat-file", "blob", PAGE_GIT_BLOB)
     require(
         failures,
         "committed page sha256",
-        sha256_bytes(committed_page.stdout) if committed_page.returncode == 0 else None,
+        sha256_bytes(committed_page) if committed_page is not None else None,
         PAGE_COMMITTED_SHA256,
     )
-    page = read_bytes(root, PAGE_PATH, overlay)
-    require(failures, "worktree page sha256", sha256_bytes(page), PAGE_SHA256)
+    page_raw = read_bytes(root, PAGE_PATH, overlay)
+    try:
+        page = canonical_lf_bytes(page_raw)
+    except ValueError as exc:
+        failures.append(f"page canonical LF: {exc}")
+        page = page_raw
+    require(failures, "page canonical sha256", sha256_bytes(page), PAGE_SHA256)
+    require(
+        failures,
+        "page checkout git blob",
+        git_text(root, "hash-object", "--path", PAGE_PATH, PAGE_PATH),
+        PAGE_GIT_BLOB,
+    )
     page_text = page.decode("utf-8", errors="replace")
     for token in (
         "stepMs:480",
@@ -252,27 +285,47 @@ def evaluate(
         failures.append("page contains microphone request")
 
     parsed: dict[str, dict[str, Any]] = {}
-    for name, (relative, expected_sha, commit) in BOUND_FILES.items():
-        data = read_bytes(root, relative, overlay)
+    for name, (relative, expected_sha, expected_blob) in BOUND_FILES.items():
+        raw_data = read_bytes(root, relative, overlay)
+        try:
+            data = canonical_lf_bytes(raw_data)
+        except ValueError as exc:
+            failures.append(f"{name} canonical LF: {exc}")
+            data = raw_data
         observed_sha = sha256_bytes(data)
-        require(failures, f"{name} sha256", observed_sha, expected_sha)
-        if commit is not None:
-            require(
-                failures,
-                f"{name} committed blob",
-                git_text(root, "rev-parse", f"{commit}:{relative}"),
-                git_text(root, "hash-object", "--path", relative, relative),
-            )
+        require(failures, f"{name} canonical sha256", observed_sha, expected_sha)
+        require(
+            failures,
+            f"{name} main git blob",
+            git_text(root, "rev-parse", f"{MAIN_BASE_COMMIT}:{relative}"),
+            expected_blob,
+        )
+        require(
+            failures,
+            f"{name} checkout git blob",
+            git_text(root, "hash-object", "--path", relative, relative),
+            expected_blob,
+        )
+        blob_data = git_bytes(root, "cat-file", "blob", expected_blob)
+        require(
+            failures,
+            f"{name} git blob canonical sha256",
+            sha256_bytes(blob_data) if blob_data is not None else None,
+            expected_sha,
+        )
         if relative.endswith(".json"):
             value = parse_json(failures, name, data)
             if value is not None:
                 parsed[name] = value
         identities.append(
             {
-                "bytes": len(data),
+                "canonical_bytes": len(data),
+                "checkout_bytes": len(raw_data),
+                "git_blob": expected_blob,
+                "identity_basis": "git_blob_plus_canonical_lf_sha256",
                 "id": name,
                 "path": relative,
-                "sha256": observed_sha,
+                "canonical_sha256": observed_sha,
             }
         )
 
@@ -437,12 +490,10 @@ def evaluate(
         "status": "MACHINE_READY" if not failures else "NO_GO",
         "failed_checks": failures,
         "source": {
-            "base_commit": "ec626c7f4a18bda1f3ace14ba5e6574942218a38",
-            "source_commit": SOURCE_COMMIT,
-            "tool_commit": TOOL_COMMIT,
+            "main_base_commit": MAIN_BASE_COMMIT,
+            "identity_basis": "git_blob_plus_canonical_lf_sha256",
             "page_path": PAGE_PATH,
-            "page_sha256": PAGE_SHA256,
-            "page_committed_sha256": PAGE_COMMITTED_SHA256,
+            "page_canonical_sha256": PAGE_SHA256,
             "page_git_blob": PAGE_GIT_BLOB,
         },
         "url": URL,
@@ -494,7 +545,9 @@ def main() -> int:
     output.write_bytes(canonical_bytes(result))
     print(json.dumps({
         "output": output.relative_to(root).as_posix(),
-        "sha256": sha256_bytes(output.read_bytes()),
+        "canonical_sha256": sha256_bytes(
+            canonical_lf_bytes(output.read_bytes())
+        ),
         "status": result["status"],
         "failed_check_count": len(result["failed_checks"]),
     }))

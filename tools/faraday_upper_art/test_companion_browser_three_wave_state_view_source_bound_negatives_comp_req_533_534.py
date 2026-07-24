@@ -75,6 +75,20 @@ def build(root: Path) -> dict[str, Any]:
     screenshot_path = screenshot_manifest["screenshots"][0]["path"]
 
     clean = run_case(root, "clean")
+    newline_overlay = {
+        gate.PAGE_PATH: (
+            root / gate.PAGE_PATH
+        ).read_bytes().replace(b"\r\n", b"\n")
+    }
+    for relative, _, _ in gate.BOUND_FILES.values():
+        newline_overlay[relative] = (
+            root / relative
+        ).read_bytes().replace(b"\r\n", b"\n")
+    newline_equivalence = run_case(
+        root,
+        "canonical_lf_equivalent_checkout",
+        newline_overlay,
+    )
     negative_cases = [
         run_case(
             root,
@@ -223,6 +237,7 @@ def build(root: Path) -> dict[str, Any]:
     status = (
         "PASS"
         if clean["status"] == "MACHINE_READY"
+        and newline_equivalence["status"] == "MACHINE_READY"
         and rejected == len(negative_cases)
         else "NO_GO"
     )
@@ -231,6 +246,8 @@ def build(root: Path) -> dict[str, Any]:
         "requirements": ["COMP-REQ-533", "COMP-REQ-534"],
         "status": status,
         "clean": clean,
+        "newline_equivalence": newline_equivalence,
+        "identity_basis": "git_blob_plus_canonical_lf_sha256",
         "negative_case_count": len(negative_cases),
         "rejected_negative_count": rejected,
         "cases": negative_cases,
@@ -260,7 +277,9 @@ def main() -> int:
         "status": result["status"],
         "negative_case_count": result["negative_case_count"],
         "rejected_negative_count": result["rejected_negative_count"],
-        "sha256": sha256_bytes(output.read_bytes()),
+        "canonical_sha256": sha256_bytes(
+            gate.canonical_lf_bytes(output.read_bytes())
+        ),
     }))
     return 0 if result["status"] == "PASS" else 1
 

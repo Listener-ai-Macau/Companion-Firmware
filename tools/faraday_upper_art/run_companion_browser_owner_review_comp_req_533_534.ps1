@@ -35,9 +35,9 @@ $validationRelative = "docs\validation\companion-browser-three-wave-state-view-s
 $validationDir = Join-Path $repoRoot $validationRelative
 $pageRelative = "docs\art\iterations\companion-pet-expression-v9-two-track-rig-v7\candidate\wb55-browser-parity-attempt-01\index.html"
 $reviewUrl = "http://127.0.0.1:4173/docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html"
-$pageSha = "0C29D5FF40D80C41461F0738C1C747A6C2B27A5DA74B5C79E166621A7566D9DA"
-$machineSha = "97F757617A7828B61B11FEC3621861820C088C8047CD1836EC473680844BBB8A"
-$negativeSha = "44581B66DD0D4662A7B99DE281D433C2CDB05D8DFD400CBE3B4C566DD99616DC"
+$pageSha = "8F8FC05C5DAA3A95C7A2E80D677B56A831CF620A752EABB1DCB535F01705AB9D"
+$machineSha = "F35D392C68AB660014E6DFAC861DE013090BBA02BAE8B2ADF2895478D68A9D6F"
+$negativeSha = "4FF9EAB610BFEB10757D30D6BAC2F8B9D51EE30A641686E3FDB992467E5E159B"
 $replaySha = "842073FF357B7ADF03775B432E87C67B45824F6EC271FE59D5B7CE46A05CF94C"
 $pixelSha = "21CA3E864CE8523C497F38ABC758B1ADE34BB92EF755F63D9DFA2FC7A4F5B4F6"
 $screenshotSha = "4806A36D7E0BA0C456CA588888E237911D8D5B46B55F0B9E1B6DA238976A8BC5"
@@ -68,6 +68,32 @@ $promptContract = [ordered]@{
 function Get-Sha256 {
     param([Parameter(Mandatory = $true)][string] $Path)
     return (Get-FileHash -Algorithm SHA256 -LiteralPath $Path).Hash.ToUpperInvariant()
+}
+
+function Get-CanonicalTextSha256 {
+    param([Parameter(Mandatory = $true)][byte[]] $Bytes)
+    $stream = [IO.MemoryStream]::new()
+    try {
+        for ($index = 0; $index -lt $Bytes.Length; $index++) {
+            if ($Bytes[$index] -eq 13) {
+                if ($index + 1 -ge $Bytes.Length -or $Bytes[$index + 1] -ne 10) {
+                    throw "Text identity contains a bare carriage return."
+                }
+                continue
+            }
+            $stream.WriteByte($Bytes[$index])
+        }
+        return [Convert]::ToHexString(
+            [Security.Cryptography.SHA256]::HashData($stream.ToArray())
+        )
+    } finally {
+        $stream.Dispose()
+    }
+}
+
+function Get-CanonicalFileSha256 {
+    param([Parameter(Mandatory = $true)][string] $Path)
+    return Get-CanonicalTextSha256 -Bytes ([IO.File]::ReadAllBytes($Path))
 }
 
 function Resolve-WorkflowRoot {
@@ -102,7 +128,7 @@ function Get-Readiness {
     foreach ($entry in $bindings.GetEnumerator()) {
         $path = Join-Path $repoRoot $entry.Value[0]
         $observed = if (Test-Path -LiteralPath $path -PathType Leaf) {
-            Get-Sha256 -Path $path
+            Get-CanonicalFileSha256 -Path $path
         } else {
             $null
         }
@@ -112,8 +138,9 @@ function Get-Readiness {
         $identities.Add([ordered]@{
             id = $entry.Key
             path = $entry.Value[0].Replace("\", "/")
-            expected_sha256 = $entry.Value[1]
-            observed_sha256 = $observed
+            identity_basis = "git_blob_plus_canonical_lf_sha256"
+            expected_canonical_sha256 = $entry.Value[1]
+            observed_canonical_sha256 = $observed
             match = $observed -eq $entry.Value[1]
         })
     }
@@ -197,10 +224,8 @@ try {
         throw ($readiness.failures -join "; ")
     }
     $response = Invoke-WebRequest -UseBasicParsing -Uri $reviewUrl -TimeoutSec 8
-    $servedSha = [Convert]::ToHexString(
-        [Security.Cryptography.SHA256]::HashData(
-            [Text.Encoding]::UTF8.GetBytes($response.Content)
-        )
+    $servedSha = Get-CanonicalTextSha256 -Bytes (
+        [Text.Encoding]::UTF8.GetBytes($response.Content)
     )
     if ($response.StatusCode -ne 200 -or $servedSha -ne $pageSha) {
         throw "Exact 4173 successor page is not reachable."
@@ -252,8 +277,8 @@ try {
         note = $note
         note_sha256 = Get-Sha256 -Path $ownerNotePath
         raw_sha256 = Get-Sha256 -Path $ownerRawPath
-        machine_ready_sha256 = $machineSha
-        page_sha256 = $pageSha
+        machine_ready_canonical_sha256 = $machineSha
+        page_canonical_sha256 = $pageSha
         url = $reviewUrl
         prompt_contract = $promptContract
     }
@@ -269,7 +294,7 @@ try {
             prompt_attempted = $promptAttempted
             raw_exists = Test-Path -LiteralPath $ownerRawPath
             note_exists = Test-Path -LiteralPath $ownerNotePath
-            machine_ready_sha256 = $machineSha
+            machine_ready_canonical_sha256 = $machineSha
         }
         $fault | ConvertTo-Json -Depth 6 |
             Set-Content -LiteralPath $ownerFaultPath -Encoding utf8NoBOM

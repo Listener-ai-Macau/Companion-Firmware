@@ -39,15 +39,15 @@ BINDINGS = {
     "page": (
         "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/"
         "candidate/wb55-browser-parity-attempt-01/index.html",
-        "0C29D5FF40D80C41461F0738C1C747A6C2B27A5DA74B5C79E166621A7566D9DA",
+        "8F8FC05C5DAA3A95C7A2E80D677B56A831CF620A752EABB1DCB535F01705AB9D",
     ),
     "machine_ready": (
         f"{VALIDATION_DIR}/MACHINE_READY.json",
-        "97F757617A7828B61B11FEC3621861820C088C8047CD1836EC473680844BBB8A",
+        "F35D392C68AB660014E6DFAC861DE013090BBA02BAE8B2ADF2895478D68A9D6F",
     ),
     "negative_matrix": (
         f"{VALIDATION_DIR}/source-bound-negatives.json",
-        "44581B66DD0D4662A7B99DE281D433C2CDB05D8DFD400CBE3B4C566DD99616DC",
+        "4FF9EAB610BFEB10757D30D6BAC2F8B9D51EE30A641686E3FDB992467E5E159B",
     ),
     "replay": (
         f"{VALIDATION_DIR}/determinism-run/browser-replay-result.json",
@@ -71,23 +71,30 @@ BINDINGS = {
     ),
     "runner": (
         RUNNER,
-        "68B378EEF564E02EE70013382416AECDEF8AF58A7DDC67D7BE17681F9D77AA7C",
+        "94FDD088BB8EFC18228EC2118D5CA65056C5954E6A69779073E3BD03628D5B9F",
     ),
     "source_gate": (
         "tools/faraday_upper_art/"
         "verify_companion_browser_three_wave_state_view_source_bound_comp_req_533_534.py",
-        "63F665BFE69A898BA6E6981B88532DDAC31EC0DBB068FF6039301EF8BBD76198",
+        "BC547A8C13B6BCF2AB411DB5D8847D36D9006E38F2A5928B0520810D65BC0D27",
     ),
     "negative_gate": (
         "tools/faraday_upper_art/"
         "test_companion_browser_three_wave_state_view_source_bound_negatives_comp_req_533_534.py",
-        "176BEFAB647FB9D561C79E7B40F22D05FDD4FBCC7F82FA7A30C410842743E217",
+        "71F7788E81865E292C023678793264DF371BB05DDC7FD59151581037469C92F4",
     ),
 }
 
 
 def sha256(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest().upper()
+
+
+def canonical_lf_bytes(data: bytes) -> bytes:
+    normalized = data.replace(b"\r\n", b"\n")
+    if b"\r" in normalized:
+        raise RuntimeError("text identity contains a bare carriage return")
+    return normalized
 
 
 def canonical_bytes(value: Any) -> bytes:
@@ -130,25 +137,24 @@ def main() -> int:
     for binding_id, (relative, expected_sha) in sorted(BINDINGS.items()):
         path = root / relative
         require(path.is_file(), f"missing binding: {binding_id}")
-        observed = sha256(path.read_bytes())
+        checkout_bytes = path.read_bytes()
+        canonical = canonical_lf_bytes(checkout_bytes)
+        observed = sha256(canonical)
         require(observed == expected_sha, f"binding drift: {binding_id}")
         row: dict[str, Any] = {
-            "bytes": path.stat().st_size,
+            "canonical_bytes": len(canonical),
+            "checkout_bytes": len(checkout_bytes),
             "id": binding_id,
+            "identity_basis": "git_blob_plus_canonical_lf_sha256",
             "path": relative,
-            "sha256": observed,
+            "canonical_sha256": observed,
         }
-        if relative.startswith("tools/"):
-            commit = git_text(root, "log", "-1", "--format=%H", "--", relative)
-            row["provenance"] = {
-                "commit": commit,
-                "git_blob": git_text(root, "rev-parse", f"{commit}:{relative}"),
-            }
-            require(
-                row["provenance"]["git_blob"]
-                == git_text(root, "hash-object", "--path", relative, relative),
-                f"uncommitted tool drift: {binding_id}",
-            )
+        index_blob = git_text(root, "rev-parse", f":{relative}")
+        worktree_blob = git_text(
+            root, "hash-object", "--path", relative, relative
+        )
+        require(index_blob == worktree_blob, f"uncommitted drift: {binding_id}")
+        row["git_blob"] = index_blob
         identities.append(row)
 
     for name in (
@@ -215,7 +221,7 @@ def main() -> int:
         "counters": readiness["counters"],
     }
     checkonly_path.write_bytes(canonical_bytes(checkonly))
-    checkonly_sha = sha256(checkonly_path.read_bytes())
+    checkonly_sha = sha256(canonical_lf_bytes(checkonly_path.read_bytes()))
 
     packet = {
         "schema": "companion.browser-owner-review-packet.v4",
@@ -228,10 +234,11 @@ def main() -> int:
         "execute_command": EXECUTE_COMMAND,
         "checkonly_artifact": {
             "path": checkonly_path.relative_to(root).as_posix(),
-            "sha256": checkonly_sha,
+            "canonical_sha256": checkonly_sha,
         },
-        "machine_ready_sha256": BINDINGS["machine_ready"][1],
-        "page_sha256": BINDINGS["page"][1],
+        "identity_basis": "git_blob_plus_canonical_lf_sha256",
+        "machine_ready_canonical_sha256": BINDINGS["machine_ready"][1],
+        "page_canonical_sha256": BINDINGS["page"][1],
         "identities": identities,
         "prompt": readiness["prompt_contract"],
         "owner_result_path": f"{VALIDATION_DIR}/owner-review.json",
@@ -257,8 +264,10 @@ def main() -> int:
     packet_path.write_bytes(canonical_bytes(packet))
     print(json.dumps({
         "status": packet["status"],
-        "checkonly_sha256": checkonly_sha,
-        "packet_sha256": sha256(packet_path.read_bytes()),
+        "checkonly_canonical_sha256": checkonly_sha,
+        "packet_canonical_sha256": sha256(
+            canonical_lf_bytes(packet_path.read_bytes())
+        ),
     }))
     return 0
 
