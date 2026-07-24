@@ -1,0 +1,83 @@
+{
+  "command": "pwsh -NoProfile -File .\\tools\\faraday_upper_art\\run_companion_browser_owner_review_comp_req_510.ps1 -CheckOnly",
+  "default_off": true,
+  "execute_performed": false,
+  "filesystem_diff_count": 0,
+  "identities": [
+    {
+      "bytes": 29653,
+      "id": "determinism",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-508/clean-replay-determinism.json",
+      "sha256": "EAE756749EDC2030D18CB349137598F2C33642BB381DD64F6CD12C4DE73A51DB"
+    },
+    {
+      "bytes": 10742,
+      "id": "machine_ready",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-508/MACHINE_READY.json",
+      "sha256": "94962CA64121D0BBE9BF69D45BAA6D20D4EEE4B54C8C7F6CB8868C69DB6BA911"
+    },
+    {
+      "bytes": 25569,
+      "id": "negative_matrix",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-508/source-bound-negative-result.json",
+      "sha256": "0656B0362536C1B029D1BB3154E0C5A567B08ABF8C61F3BBC1F5B3FD4680469F"
+    },
+    {
+      "bytes": 124806,
+      "id": "page",
+      "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html",
+      "sha256": "9990C4316AF8F4D656F2C2B057AB789846A10CD21E18367336FC6BD277631EB7"
+    },
+    {
+      "bytes": 1659609,
+      "id": "pixel_dom_route",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-508/pixel-dom-route-artifact.json",
+      "sha256": "91E6793F01B8368933E61115E93AD7280B435A9A1429D4B2DE743B61878BD1F3"
+    },
+    {
+      "bytes": 3848,
+      "id": "replay",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-508/browser-replay-result.json",
+      "sha256": "8FCAD0AC4C5370EFBBBC6C3785B6E115AA1E77C69EA81C0E137207AC1D33721C"
+    },
+    {
+      "bytes": 11884,
+      "id": "runner",
+      "path": "tools/faraday_upper_art/run_companion_browser_owner_review_comp_req_510.ps1",
+      "sha256": "4E4588AB3402F2CF3F0F9EB5A9F0FC547EA55E4467C8C0A7278DB023C5F8C2FC"
+    },
+    {
+      "bytes": 16667,
+      "id": "screenshots",
+      "path": "docs/validation/companion-browser-owner-review-ready-comp-req-508/screenshot-manifest.json",
+      "sha256": "1886C6193AE846C11116462A20A1DCDC093DB4BD65BED36C9B19CB762965460A"
+    }
+  ],
+  "owner_result_exists": false,
+  "prompt_contract": {
+    "buttons": [
+      "\u901a\u8fc7",
+      "\u5931\u8d25"
+    ],
+    "instance_count": 1,
+    "note_allowed": true,
+    "title": "Companion \u6d4f\u89c8\u5668\u603b\u4f53\u4f53\u9a8c\u9a8c\u6536"
+  },
+  "requirements": [
+    "COMP-REQ-508",
+    "COMP-REQ-509",
+    "COMP-REQ-510"
+  ],
+  "schema": "companion.browser-owner-review-checkonly.v2",
+  "side_effect_counters": {
+    "browser": 0,
+    "hardware": 0,
+    "microphone_permission_request": 0,
+    "owner_prompt": 0,
+    "popup": 0,
+    "process": 0,
+    "server_start": 0,
+    "write": 0
+  },
+  "status": "PASS_CHECKONLY_NO_EXECUTE"
+}
