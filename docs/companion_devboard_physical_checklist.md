@@ -63,6 +63,20 @@ FPC 插入 `P6`。开发板从转接板背面的树莓派兼容 `P1` 40 针接�
 它们是 FTS02 的电子纸升压测试点；无升压时检查 P3、P5 和控制信号，有升压而仍无
 图像时再检查 P5/FPC 的接触与面板本体。
 
+#### P0 更换显示 FPC 后的 White/Black 复测记录
+
+历史 White 失败发生在旧显示 FPC 已断的状态，不能再被当作当前 FTS02 或面板故障诊断。
+本次 White 只接受版本化的 `replacement-display-FPC` 证据：当前 FPC 已更换、照片所见
+面板标记为 `0154BN-D67-D2 N524110506`，且正常动态表情当前可见。它仅授权现有官方
+`0x24` 单 5000-byte plane、`0x22=0xF7`、`0x20`、BUSY 的 White 复测；不授权
+`0xC7`/一秒 LUT、生产刷新策略、猜测波形或直接进入 Black。
+
+White 通过机器日志和中文可见帧复核后，仍须在一个新的、复位边界清晰的 White rail
+session 中，以 `GND1` 为公共端测得 `PREVGH1` 为正、`PREVGL1` 为负。通过的 rail
+artifact 必须由 `tools/verify_wb55_official_full_rail_measurement.py` 生成且状态为
+`PASS_MACHINE_AND_RAILS_ESTABLISHED_WHITE`。只有传入该 artifact，runner 才会允许
+`-Execute -Stage Black`。这不是通用 LUT、重刷或日常表情的替代路径。
+
 ### 本次接线总表
 
 当前实际接好下列 `11` 根线。前 `8` 根用于电子纸，最后 `3` 根用于触摸和中断。
