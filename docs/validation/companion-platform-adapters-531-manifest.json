@@ -1,0 +1,31 @@
+{
+  "schema": "companion.platform_adapters.comp_req_531.immutable_manifest.v1",
+  "source_commit": "1f0ce7ad07d067eeb23dd150009cd96f67e95708",
+  "verifier_commit": "1f0ce7ad07d067eeb23dd150009cd96f67e95708",
+  "platform_pin": "d311af3db60e118a6d2c6e68873b2d00f2647a96",
+  "source_provenance": {
+    "accepted_firmware_receipt": "639edd2a0ba945a71ef2985b104faca36d14dfcb",
+    "integration_parent": "abbc137"
+  },
+  "settings_contract": {
+    "wire_type": "companion_gatt_settings_v1_t",
+    "parser": "companion_gatt_parse_settings_v1",
+    "wire_bytes": 10,
+    "legacy_fnv32": 3439285753,
+    "collision_payload_a": "0101000000009a000286",
+    "collision_payload_b": "0104000000006e2a13f2",
+    "same_operation_different_key": "callback delta=0 mutation delta=0"
+  },
+  "run_artifact_contract": {
+    "root_is_external_to_repository": true,
+    "double_run_byte_identity": true,
+    "tracked_status_before_after_must_be_empty_and_equal": true,
+    "tamper_negatives_required": true
+  },
+  "physical_gates": {
+    "hardware": "CLOSED_NOT_AUTHORIZED",
+    "real_ble": "CLOSED_NOT_AUTHORIZED",
+    "ota_transfer_apply": "CLOSED_NOT_AUTHORIZED",
+    "push": "CLOSED_NOT_AUTHORIZED"
+  }
+}
