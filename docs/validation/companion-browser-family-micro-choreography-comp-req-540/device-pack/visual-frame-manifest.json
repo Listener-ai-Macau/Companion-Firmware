@@ -1,0 +1,4710 @@
+{
+  "files": {
+    "c": {
+      "path": "companion_browser_family_micro_pack.c",
+      "sha256": "6F312484D5995EC5CD648CEF36F22DE3F540289DE5C67CCD5EA37FA441EF2A23"
+    },
+    "frames": {
+      "bytes": 435000,
+      "path": "frames.bin",
+      "sha256": "CE3F686A5E5669C56A52D0C875083BAB289215E0A23AE4AC4D97569D9F7917FB"
+    },
+    "h": {
+      "path": "companion_browser_family_micro_pack.h",
+      "sha256": "E91C0F915CE3F17ABB8EB3713A01576676074009DE41E494B18586694E2CD702"
+    }
+  },
+  "format": {
+    "bits_per_pixel": 1,
+    "black_bit": 1,
+    "frame_bytes": 5000,
+    "height": 200,
+    "orientation": {
+      "device_transform": "identity",
+      "positive_x": "right",
+      "positive_y": "down",
+      "screen_origin": "top_left"
+    },
+    "row_stride_bytes": 25,
+    "white_bit": 0,
+    "width": 200
+  },
+  "invariants": {
+    "all_states_are_5000_bytes": true,
+    "browser_to_c_pixel_diff": 0,
+    "cadence_ms": 480,
+    "default_off": true,
+    "device_transform": "identity",
+    "emotion_count": 10,
+    "meter_state_count": 8,
+    "recording_composed_emotion_count": 10,
+    "state_count": 111,
+    "unique_frame_count": 87
+  },
+  "schema": "companion.comp-req-540-browser-device-parity.v1",
+  "source": {
+    "embedded_manifest": {
+      "blink": {
+        "ordered_frame_indices": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "registered_event_only": true,
+        "reopen_frame_index": 4,
+        "story": "calm_presence"
+      },
+      "cadence_ms": 480,
+      "emotion_choreography": {
+        "legal_edges": [
+          [
+            "calm",
+            "curious"
+          ],
+          [
+            "curious",
+            "warm"
+          ],
+          [
+            "warm",
+            "playful"
+          ],
+          [
+            "playful",
+            "playful"
+          ],
+          [
+            "puzzled",
+            "calm"
+          ],
+          [
+            "puzzled",
+            "alert"
+          ],
+          [
+            "alert",
+            "puzzled"
+          ]
+        ],
+        "max_post_source_changed_frames": 3,
+        "ordered_phases": [
+          "source_hold",
+          "gaze_highlight_orient",
+          "brow_eye_reply",
+          "lower_face_reply",
+          "target_hold"
+        ],
+        "states": [
+          {
+            "brow": 1,
+            "hold": 4,
+            "lower": 4,
+            "source": 4,
+            "state": "calm",
+            "story": "calm_presence"
+          },
+          {
+            "brow": 1,
+            "hold": 2,
+            "lower": 2,
+            "source": 0,
+            "state": "curious",
+            "story": "curious_question"
+          },
+          {
+            "brow": 1,
+            "hold": 2,
+            "lower": 2,
+            "source": 0,
+            "state": "warm",
+            "story": "warm_presence"
+          },
+          {
+            "brow": 1,
+            "hold": 2,
+            "lower": 2,
+            "source": 0,
+            "state": "playful",
+            "story": "playful_presence"
+          },
+          {
+            "brow": 1,
+            "hold": 2,
+            "lower": 2,
+            "source": 0,
+            "state": "sleepy",
+            "story": "sleepy_presence"
+          },
+          {
+            "brow": 1,
+            "hold": 2,
+            "lower": 2,
+            "source": 0,
+            "state": "delighted",
+            "story": "delighted_presence"
+          },
+          {
+            "brow": 1,
+            "hold": 2,
+            "lower": 2,
+            "source": 0,
+            "state": "bashful",
+            "story": "bashful_presence"
+          },
+          {
+            "brow": 1,
+            "hold": 2,
+            "lower": 2,
+            "source": 0,
+            "state": "thoughtful",
+            "story": "thoughtful_presence"
+          },
+          {
+            "brow": 1,
+            "hold": 2,
+            "lower": 2,
+            "source": 0,
+            "state": "focused",
+            "story": "focused_presence"
+          },
+          {
+            "brow": 1,
+            "hold": 2,
+            "lower": 2,
+            "source": 0,
+            "state": "alert",
+            "story": "alert_exclamation"
+          }
+        ],
+        "target_hold_refresh": false
+      },
+      "family_micro_choreography": {
+        "cadence_ms": 480,
+        "css_intermediate_frames": false,
+        "exact_family_baseline_return": true,
+        "first_beat_max_ms": 2880,
+        "max_changed_frames": 3,
+        "max_component_step_px": 2,
+        "minimum_component_classes": 2,
+        "plans": [
+          {
+            "baseline_frame": 4,
+            "beat": [
+              {
+                "components": [
+                  "eyelid",
+                  "gaze_highlight"
+                ],
+                "frame": 2,
+                "gaze": "0,0,0,0",
+                "max_step_px": 1
+              },
+              {
+                "components": [
+                  "eyelid",
+                  "gaze_highlight"
+                ],
+                "frame": 3,
+                "gaze": "1,-1,1,-1",
+                "max_step_px": 1
+              }
+            ],
+            "description": "soft_blink_glint_settle",
+            "state": "calm",
+            "story": "calm_presence"
+          },
+          {
+            "baseline_frame": 2,
+            "beat": [
+              {
+                "components": [
+                  "brow",
+                  "gaze_highlight"
+                ],
+                "frame": 1,
+                "gaze": "2,-1,2,-1",
+                "max_step_px": 1
+              },
+              {
+                "components": [
+                  "brow",
+                  "mouth",
+                  "gaze_highlight"
+                ],
+                "frame": 2,
+                "gaze": "3,-1,3,-1",
+                "max_step_px": 1
+              }
+            ],
+            "description": "listening_side_gaze_brow_answer",
+            "state": "curious",
+            "story": "curious_question"
+          },
+          {
+            "baseline_frame": 2,
+            "beat": [
+              {
+                "components": [
+                  "eyelid",
+                  "brow",
+                  "gaze_highlight"
+                ],
+                "frame": 1,
+                "gaze": "1,1,1,1",
+                "max_step_px": 1,
+                "transplants": [
+                  {
+                    "frame": 3,
+                    "rect": [
+                      38,
+                      108,
+                      44,
+                      52
+                    ],
+                    "story": "calm_presence"
+                  },
+                  {
+                    "frame": 3,
+                    "rect": [
+                      120,
+                      108,
+                      44,
+                      52
+                    ],
+                    "story": "calm_presence"
+                  }
+                ]
+              },
+              {
+                "components": [
+                  "mouth",
+                  "cheek",
+                  "gaze_highlight"
+                ],
+                "frame": 2,
+                "gaze": "0,1,0,1",
+                "max_step_px": 1
+              }
+            ],
+            "description": "soft_blink_smile_cheek_settle",
+            "state": "warm",
+            "story": "warm_presence"
+          },
+          {
+            "baseline_frame": 2,
+            "beat": [
+              {
+                "components": [
+                  "brow",
+                  "gaze_highlight"
+                ],
+                "frame": 1,
+                "gaze": "2,0,2,1",
+                "max_step_px": 1
+              },
+              {
+                "components": [
+                  "brow",
+                  "mouth",
+                  "gaze_highlight"
+                ],
+                "frame": 2,
+                "gaze": "3,-1,3,-1",
+                "max_step_px": 2
+              }
+            ],
+            "description": "asymmetric_glance_brow_reply",
+            "state": "playful",
+            "story": "playful_presence"
+          },
+          {
+            "baseline_frame": 2,
+            "beat": [
+              {
+                "components": [
+                  "eyelid",
+                  "brow",
+                  "gaze_highlight"
+                ],
+                "frame": 1,
+                "gaze": "1,1,1,2",
+                "max_step_px": 2
+              },
+              {
+                "components": [
+                  "eyelid",
+                  "sleep_symbol",
+                  "gaze_highlight"
+                ],
+                "frame": 2,
+                "gaze": "0,2,0,2",
+                "max_step_px": 1
+              }
+            ],
+            "description": "slow_lid_settle",
+            "state": "sleepy",
+            "story": "sleepy_presence"
+          },
+          {
+            "baseline_frame": 2,
+            "beat": [
+              {
+                "components": [
+                  "brow",
+                  "cheek",
+                  "gaze_highlight"
+                ],
+                "frame": 2,
+                "gaze": "1,-1,1,-2",
+                "max_step_px": 2,
+                "shifts": [
+                  {
+                    "delta": [
+                      0,
+                      -1
+                    ],
+                    "rect": [
+                      40,
+                      76,
+                      38,
+                      28
+                    ]
+                  },
+                  {
+                    "delta": [
+                      0,
+                      -1
+                    ],
+                    "rect": [
+                      120,
+                      76,
+                      38,
+                      28
+                    ]
+                  },
+                  {
+                    "delta": [
+                      0,
+                      -1
+                    ],
+                    "rect": [
+                      27,
+                      150,
+                      27,
+                      23
+                    ]
+                  },
+                  {
+                    "delta": [
+                      0,
+                      -1
+                    ],
+                    "rect": [
+                      147,
+                      150,
+                      27,
+                      23
+                    ]
+                  }
+                ]
+              },
+              {
+                "components": [
+                  "cheek",
+                  "gaze_highlight"
+                ],
+                "frame": 2,
+                "gaze": "0,-1,0,-1",
+                "max_step_px": 1,
+                "shifts": [
+                  {
+                    "delta": [
+                      0,
+                      -1
+                    ],
+                    "rect": [
+                      27,
+                      150,
+                      27,
+                      23
+                    ]
+                  },
+                  {
+                    "delta": [
+                      0,
+                      -1
+                    ],
+                    "rect": [
+                      147,
+                      150,
+                      27,
+                      23
+                    ]
+                  }
+                ]
+              }
+            ],
+            "description": "compact_brow_cheek_lift",
+            "state": "delighted",
+            "story": "delighted_presence"
+          },
+          {
+            "baseline_frame": 2,
+            "beat": [
+              {
+                "components": [
+                  "brow",
+                  "gaze_highlight"
+                ],
+                "frame": 1,
+                "gaze": "0,1,0,2",
+                "max_step_px": 2
+              },
+              {
+                "components": [
+                  "mouth",
+                  "cheek",
+                  "gaze_highlight"
+                ],
+                "frame": 2,
+                "gaze": "1,2,1,2",
+                "max_step_px": 1
+              }
+            ],
+            "description": "down_gaze_cheek_settle",
+            "state": "bashful",
+            "story": "bashful_presence"
+          },
+          {
+            "baseline_frame": 2,
+            "beat": [
+              {
+                "components": [
+                  "brow",
+                  "gaze_highlight"
+                ],
+                "frame": 1,
+                "gaze": "0,0,0,0",
+                "max_step_px": 1
+              },
+              {
+                "components": [
+                  "brow",
+                  "mouth",
+                  "gaze_highlight"
+                ],
+                "frame": 2,
+                "gaze": "0,-1,0,-1",
+                "max_step_px": 1
+              }
+            ],
+            "description": "measured_side_gaze_brow_settle",
+            "state": "thoughtful",
+            "story": "thoughtful_presence"
+          },
+          {
+            "baseline_frame": 2,
+            "beat": [
+              {
+                "components": [
+                  "eyelid",
+                  "brow",
+                  "gaze_highlight"
+                ],
+                "frame": 2,
+                "gaze": "1,-1,1,-1",
+                "max_step_px": 1,
+                "transplants": [
+                  {
+                    "frame": 3,
+                    "rect": [
+                      38,
+                      108,
+                      44,
+                      52
+                    ],
+                    "story": "calm_presence"
+                  },
+                  {
+                    "frame": 3,
+                    "rect": [
+                      120,
+                      108,
+                      44,
+                      52
+                    ],
+                    "story": "calm_presence"
+                  }
+                ]
+              },
+              {
+                "components": [
+                  "eyelid",
+                  "mouth",
+                  "gaze_highlight"
+                ],
+                "frame": 2,
+                "gaze": "0,-1,0,-1",
+                "max_step_px": 1
+              }
+            ],
+            "description": "narrow_blink_centered_return",
+            "state": "focused",
+            "story": "focused_presence"
+          },
+          {
+            "baseline_frame": 2,
+            "beat": [
+              {
+                "components": [
+                  "brow",
+                  "gaze_highlight"
+                ],
+                "frame": 1,
+                "gaze": "2,-1,2,-1",
+                "max_step_px": 1
+              },
+              {
+                "components": [
+                  "brow",
+                  "mouth",
+                  "gaze_highlight"
+                ],
+                "frame": 2,
+                "gaze": "2,0,2,0",
+                "max_step_px": 1
+              }
+            ],
+            "description": "short_brow_eye_brace",
+            "state": "alert",
+            "story": "alert_exclamation"
+          }
+        ],
+        "random_choice": false
+      },
+      "format": {
+        "bits_per_pixel": 1,
+        "black_bit": 1,
+        "frame_bytes": 5000,
+        "height": 200,
+        "orientation": {
+          "device_transform": "identity",
+          "positive_x": "right",
+          "positive_y": "down",
+          "screen_origin": "top_left"
+        },
+        "row_stride_bytes": 25,
+        "white_bit": 0,
+        "width": 200
+      },
+      "gaze_samples": [
+        {
+          "key": "1,0,1,0",
+          "state": "gaze_center"
+        },
+        {
+          "key": "-2,0,-6,0",
+          "state": "gaze_left"
+        },
+        {
+          "key": "1,-3,1,-6",
+          "state": "gaze_up"
+        },
+        {
+          "key": "5,0,5,0",
+          "state": "gaze_right"
+        },
+        {
+          "key": "1,4,1,6",
+          "state": "gaze_down"
+        }
+      ],
+      "idle_glint": {
+        "active_steps": [
+          2,
+          3
+        ],
+        "baseline_key": "1,0,1,0",
+        "baseline_return_step": 4,
+        "changed_frames_per_beat": 3,
+        "cycle_steps": 12,
+        "family_specific": true,
+        "first_nonbaseline_max_ms": 960,
+        "interrupt_policy": "cancel_once_then_family_baseline",
+        "ordered_keys": [
+          "1,0,1,0",
+          "1,0,1,0",
+          "0,0,0,0",
+          "1,-1,1,-1",
+          "1,0,1,0",
+          "1,0,1,0",
+          "1,0,1,0",
+          "1,0,1,0",
+          "1,0,1,0",
+          "1,0,1,0",
+          "1,0,1,0",
+          "1,0,1,0"
+        ],
+        "quiet_steps": 1,
+        "repeat_quiet_steps": 9
+      },
+      "menu_frames": [
+        {
+          "src": "/docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/01-home.png",
+          "state": "menu_roots"
+        },
+        {
+          "src": "/docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/02-voice.png",
+          "state": "menu_voice"
+        },
+        {
+          "src": "/docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/03-device.png",
+          "state": "menu_device"
+        },
+        {
+          "src": "/docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/04-connection.png",
+          "state": "menu_connection"
+        },
+        {
+          "src": "/docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/05-preferences.png",
+          "state": "menu_preferences"
+        }
+      ],
+      "recording_accessory": {
+        "meter": {
+          "center_y": 70,
+          "column_width": 4,
+          "column_x": [
+            170,
+            181,
+            192
+          ],
+          "corridor": [
+            170,
+            62,
+            195,
+            78
+          ],
+          "level_sequence": [
+            6,
+            14,
+            8,
+            16,
+            10,
+            4,
+            12,
+            8
+          ],
+          "listening_point": [
+            158,
+            70
+          ],
+          "pipeline": "outer_insert_shift_inward",
+          "state_count": 8
+        },
+        "meter_only": true,
+        "orthogonal_to_expression": true
+      },
+      "rendering": {
+        "committed_frames_only": true,
+        "css_interpolation": "none",
+        "opacity_tween": false,
+        "subpixel_motion": false
+      },
+      "requirements": [
+        "COMP-REQ-536",
+        "COMP-REQ-537",
+        "COMP-REQ-538",
+        "COMP-REQ-539",
+        "COMP-REQ-540",
+        "COMP-REQ-541"
+      ],
+      "schema": "companion.browser-epaper-visual-manifest.v2"
+    },
+    "page_canonical_sha256": "D3537B7EDE53075DC25091C6F5CFF75408E4975F2A71D0FDF5D1A248C871CBC8",
+    "page_repo_path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html"
+  },
+  "states": [
+    {
+      "black_bounds": [
+        34,
+        87,
+        166,
+        168
+      ],
+      "black_pixels": 2983,
+      "browser_frame_sha256": "C478287951E1DD472CF93C84CF3007D97C65A7ADCBAB84E615F08793F9D7DEAA",
+      "c_reconstructed_sha256": "C478287951E1DD472CF93C84CF3007D97C65A7ADCBAB84E615F08793F9D7DEAA",
+      "gray_input_pixels": 0,
+      "id": "emotion_calm_source",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_calm_source.pbm",
+      "pbm_sha256": "1A05B0C83C98B4F9D1F1DCC2182C450C6F91758F61A09DFC6938D4C1F1E8D36D",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 4,
+        "gaze_key": "1,0,1,0",
+        "story": "calm_presence"
+      },
+      "unique_frame_index": 0
+    },
+    {
+      "black_bounds": [
+        34,
+        87,
+        166,
+        168
+      ],
+      "black_pixels": 1685,
+      "browser_frame_sha256": "D93BF3D7ECC6C678D9EFE7CBA205139F1B3DAF126082A1E5C8FDB7B9B61AFA88",
+      "c_reconstructed_sha256": "D93BF3D7ECC6C678D9EFE7CBA205139F1B3DAF126082A1E5C8FDB7B9B61AFA88",
+      "gray_input_pixels": 0,
+      "id": "emotion_calm_brow",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_calm_brow.pbm",
+      "pbm_sha256": "B46E339B1BF6EF7FD2700A26F113278A74361249CD476051345CCE3709711345",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 1,
+        "gaze_key": "1,0,1,0",
+        "story": "calm_presence"
+      },
+      "unique_frame_index": 1
+    },
+    {
+      "black_bounds": [
+        34,
+        87,
+        166,
+        168
+      ],
+      "black_pixels": 2983,
+      "browser_frame_sha256": "C478287951E1DD472CF93C84CF3007D97C65A7ADCBAB84E615F08793F9D7DEAA",
+      "c_reconstructed_sha256": "C478287951E1DD472CF93C84CF3007D97C65A7ADCBAB84E615F08793F9D7DEAA",
+      "gray_input_pixels": 0,
+      "id": "emotion_calm_lower",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_calm_lower.pbm",
+      "pbm_sha256": "1A05B0C83C98B4F9D1F1DCC2182C450C6F91758F61A09DFC6938D4C1F1E8D36D",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 4,
+        "gaze_key": "1,0,1,0",
+        "story": "calm_presence"
+      },
+      "unique_frame_index": 0
+    },
+    {
+      "black_bounds": [
+        34,
+        87,
+        166,
+        168
+      ],
+      "black_pixels": 2983,
+      "browser_frame_sha256": "C478287951E1DD472CF93C84CF3007D97C65A7ADCBAB84E615F08793F9D7DEAA",
+      "c_reconstructed_sha256": "C478287951E1DD472CF93C84CF3007D97C65A7ADCBAB84E615F08793F9D7DEAA",
+      "gray_input_pixels": 0,
+      "id": "emotion_calm_hold",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_calm_hold.pbm",
+      "pbm_sha256": "1A05B0C83C98B4F9D1F1DCC2182C450C6F91758F61A09DFC6938D4C1F1E8D36D",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 4,
+        "gaze_key": "1,0,1,0",
+        "story": "calm_presence"
+      },
+      "unique_frame_index": 0
+    },
+    {
+      "black_bounds": [
+        32,
+        72,
+        167,
+        168
+      ],
+      "black_pixels": 2756,
+      "browser_frame_sha256": "8F855B5BFE60CB1A7FEF7C159D86A5DEEB04780A58909BFB482FD5AC4A050503",
+      "c_reconstructed_sha256": "8F855B5BFE60CB1A7FEF7C159D86A5DEEB04780A58909BFB482FD5AC4A050503",
+      "gray_input_pixels": 0,
+      "id": "emotion_curious_source",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_curious_source.pbm",
+      "pbm_sha256": "CAFA9151E37EBF2F17F968CB61F9A0059F6EC17D1C07DF2DA171A749A375E810",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 0,
+        "gaze_key": "1,0,1,0",
+        "story": "curious_question"
+      },
+      "unique_frame_index": 2
+    },
+    {
+      "black_bounds": [
+        32,
+        38,
+        167,
+        168
+      ],
+      "black_pixels": 2861,
+      "browser_frame_sha256": "16971F24A52A18ABE8B726B48B86D0FAA996846B5E76993D9C596A9A70B764BE",
+      "c_reconstructed_sha256": "16971F24A52A18ABE8B726B48B86D0FAA996846B5E76993D9C596A9A70B764BE",
+      "gray_input_pixels": 0,
+      "id": "emotion_curious_brow",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_curious_brow.pbm",
+      "pbm_sha256": "98168B066C477EA2028DE80E9A2DCE0EAD43EAEA835BB0EF48E2ACFB2325F731",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 1,
+        "gaze_key": "1,0,1,0",
+        "story": "curious_question"
+      },
+      "unique_frame_index": 3
+    },
+    {
+      "black_bounds": [
+        32,
+        34,
+        167,
+        173
+      ],
+      "black_pixels": 2925,
+      "browser_frame_sha256": "C7FBB44DAF33F2EC7219B13879EC14CE794865DEF20A07C5E5CCDC0F63CDF8BB",
+      "c_reconstructed_sha256": "C7FBB44DAF33F2EC7219B13879EC14CE794865DEF20A07C5E5CCDC0F63CDF8BB",
+      "gray_input_pixels": 0,
+      "id": "emotion_curious_lower",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_curious_lower.pbm",
+      "pbm_sha256": "B6F6E489795106483E42AC696DDA519F7C7769F53D368EE8CFE002A3D6129929",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "curious_question"
+      },
+      "unique_frame_index": 4
+    },
+    {
+      "black_bounds": [
+        32,
+        34,
+        167,
+        173
+      ],
+      "black_pixels": 2925,
+      "browser_frame_sha256": "C7FBB44DAF33F2EC7219B13879EC14CE794865DEF20A07C5E5CCDC0F63CDF8BB",
+      "c_reconstructed_sha256": "C7FBB44DAF33F2EC7219B13879EC14CE794865DEF20A07C5E5CCDC0F63CDF8BB",
+      "gray_input_pixels": 0,
+      "id": "emotion_curious_hold",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_curious_hold.pbm",
+      "pbm_sha256": "B6F6E489795106483E42AC696DDA519F7C7769F53D368EE8CFE002A3D6129929",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "curious_question"
+      },
+      "unique_frame_index": 4
+    },
+    {
+      "black_bounds": [
+        33,
+        86,
+        170,
+        168
+      ],
+      "black_pixels": 3058,
+      "browser_frame_sha256": "D3AAA13AACDA35537239D5A4DE5CDFC2D1728F1CC8F949E5505D186EAD950278",
+      "c_reconstructed_sha256": "D3AAA13AACDA35537239D5A4DE5CDFC2D1728F1CC8F949E5505D186EAD950278",
+      "gray_input_pixels": 0,
+      "id": "emotion_warm_source",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_warm_source.pbm",
+      "pbm_sha256": "2B824B2F439E8FCB9388C2E978D91C32A2EFC656CC71ECD1063E3A93649AFB8B",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 0,
+        "gaze_key": "1,0,1,0",
+        "story": "warm_presence"
+      },
+      "unique_frame_index": 5
+    },
+    {
+      "black_bounds": [
+        33,
+        87,
+        170,
+        168
+      ],
+      "black_pixels": 3072,
+      "browser_frame_sha256": "608F128CF9F18C15643F7AF491E339E2D8A52799EBBCE96257B15E4F695E4D1C",
+      "c_reconstructed_sha256": "608F128CF9F18C15643F7AF491E339E2D8A52799EBBCE96257B15E4F695E4D1C",
+      "gray_input_pixels": 0,
+      "id": "emotion_warm_brow",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_warm_brow.pbm",
+      "pbm_sha256": "E49F75F571B8BAB955231CE9E79B10991BB515F6D732F3A10925ED3FE2A9D996",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 1,
+        "gaze_key": "1,0,1,0",
+        "story": "warm_presence"
+      },
+      "unique_frame_index": 6
+    },
+    {
+      "black_bounds": [
+        33,
+        87,
+        170,
+        177
+      ],
+      "black_pixels": 3255,
+      "browser_frame_sha256": "A90DD97E246AA658E47C2F26E045EAF424FC9DAA67B51DD11F54FC90BD258945",
+      "c_reconstructed_sha256": "A90DD97E246AA658E47C2F26E045EAF424FC9DAA67B51DD11F54FC90BD258945",
+      "gray_input_pixels": 0,
+      "id": "emotion_warm_lower",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_warm_lower.pbm",
+      "pbm_sha256": "B88921224CD54D93C6312D3B8EB819C63D68D26AF518A89501429F77923BBFEA",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "warm_presence"
+      },
+      "unique_frame_index": 7
+    },
+    {
+      "black_bounds": [
+        33,
+        87,
+        170,
+        177
+      ],
+      "black_pixels": 3255,
+      "browser_frame_sha256": "A90DD97E246AA658E47C2F26E045EAF424FC9DAA67B51DD11F54FC90BD258945",
+      "c_reconstructed_sha256": "A90DD97E246AA658E47C2F26E045EAF424FC9DAA67B51DD11F54FC90BD258945",
+      "gray_input_pixels": 0,
+      "id": "emotion_warm_hold",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_warm_hold.pbm",
+      "pbm_sha256": "B88921224CD54D93C6312D3B8EB819C63D68D26AF518A89501429F77923BBFEA",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "warm_presence"
+      },
+      "unique_frame_index": 7
+    },
+    {
+      "black_bounds": [
+        32,
+        83,
+        175,
+        170
+      ],
+      "black_pixels": 3194,
+      "browser_frame_sha256": "FA93F7A5C3813E889DC221D52B6A524C8405B084F63BABB40EA63008E4155B92",
+      "c_reconstructed_sha256": "FA93F7A5C3813E889DC221D52B6A524C8405B084F63BABB40EA63008E4155B92",
+      "gray_input_pixels": 0,
+      "id": "emotion_playful_source",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_playful_source.pbm",
+      "pbm_sha256": "545DD19C85213CAFBFA8C36094ABB3956C7795F79382CEE546C8261270FA2D44",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 0,
+        "gaze_key": "1,0,1,0",
+        "story": "playful_presence"
+      },
+      "unique_frame_index": 8
+    },
+    {
+      "black_bounds": [
+        32,
+        84,
+        175,
+        170
+      ],
+      "black_pixels": 3196,
+      "browser_frame_sha256": "02E517988A4B190721630777575072F3EBFF9BE730E8B074F7CC2241C84BCCBC",
+      "c_reconstructed_sha256": "02E517988A4B190721630777575072F3EBFF9BE730E8B074F7CC2241C84BCCBC",
+      "gray_input_pixels": 0,
+      "id": "emotion_playful_brow",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_playful_brow.pbm",
+      "pbm_sha256": "29C75E76CA3226B678E490E2F010FED421C5BEAFF70A011BB4DBAFC0EF87B5BE",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 1,
+        "gaze_key": "1,0,1,0",
+        "story": "playful_presence"
+      },
+      "unique_frame_index": 9
+    },
+    {
+      "black_bounds": [
+        32,
+        84,
+        175,
+        170
+      ],
+      "black_pixels": 3246,
+      "browser_frame_sha256": "1A447190DEA09939BFD23EFE7EF90530CF816E5486339EBAF0717E59A15958B0",
+      "c_reconstructed_sha256": "1A447190DEA09939BFD23EFE7EF90530CF816E5486339EBAF0717E59A15958B0",
+      "gray_input_pixels": 0,
+      "id": "emotion_playful_lower",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_playful_lower.pbm",
+      "pbm_sha256": "23EC79BA689E69723EDE6AB87F38A9A65E53CA1A600E96DB474C374E2BE2FE8B",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "playful_presence"
+      },
+      "unique_frame_index": 10
+    },
+    {
+      "black_bounds": [
+        32,
+        84,
+        175,
+        170
+      ],
+      "black_pixels": 3246,
+      "browser_frame_sha256": "1A447190DEA09939BFD23EFE7EF90530CF816E5486339EBAF0717E59A15958B0",
+      "c_reconstructed_sha256": "1A447190DEA09939BFD23EFE7EF90530CF816E5486339EBAF0717E59A15958B0",
+      "gray_input_pixels": 0,
+      "id": "emotion_playful_hold",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_playful_hold.pbm",
+      "pbm_sha256": "23EC79BA689E69723EDE6AB87F38A9A65E53CA1A600E96DB474C374E2BE2FE8B",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "playful_presence"
+      },
+      "unique_frame_index": 10
+    },
+    {
+      "black_bounds": [
+        34,
+        87,
+        166,
+        168
+      ],
+      "black_pixels": 2679,
+      "browser_frame_sha256": "B96D4A0A486A06BC41951DE3EE30C7BC452FFD98D543B3D2FDE1F8A114DDC46B",
+      "c_reconstructed_sha256": "B96D4A0A486A06BC41951DE3EE30C7BC452FFD98D543B3D2FDE1F8A114DDC46B",
+      "gray_input_pixels": 0,
+      "id": "emotion_sleepy_source",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_sleepy_source.pbm",
+      "pbm_sha256": "F95F38838BF6FA271AC2A1E3F82E50ACD86F5C4CA4D4EC63350E528CFA0217F8",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 0,
+        "gaze_key": "1,0,1,0",
+        "story": "sleepy_presence"
+      },
+      "unique_frame_index": 11
+    },
+    {
+      "black_bounds": [
+        34,
+        91,
+        166,
+        169
+      ],
+      "black_pixels": 1203,
+      "browser_frame_sha256": "E829627615F42ED6798B56E7F4B6D93C4F89F4B6D67AE18D56D74CC527B47C3F",
+      "c_reconstructed_sha256": "E829627615F42ED6798B56E7F4B6D93C4F89F4B6D67AE18D56D74CC527B47C3F",
+      "gray_input_pixels": 0,
+      "id": "emotion_sleepy_brow",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_sleepy_brow.pbm",
+      "pbm_sha256": "EC5F6115C1E741627FDEBFD107897BB16FA521870BD31FA1B4232570942DC236",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 1,
+        "gaze_key": "1,0,1,0",
+        "story": "sleepy_presence"
+      },
+      "unique_frame_index": 12
+    },
+    {
+      "black_bounds": [
+        34,
+        27,
+        166,
+        169
+      ],
+      "black_pixels": 1435,
+      "browser_frame_sha256": "0A52838E68ACA9E518522D05C364CE2A6DB4125847C2338EDEED79E3EAF156EE",
+      "c_reconstructed_sha256": "0A52838E68ACA9E518522D05C364CE2A6DB4125847C2338EDEED79E3EAF156EE",
+      "gray_input_pixels": 0,
+      "id": "emotion_sleepy_lower",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_sleepy_lower.pbm",
+      "pbm_sha256": "981E67302DCC4222D719872188A8A9F2597BF4C1A93C262BC3ADE4914D857A95",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "sleepy_presence"
+      },
+      "unique_frame_index": 13
+    },
+    {
+      "black_bounds": [
+        34,
+        27,
+        166,
+        169
+      ],
+      "black_pixels": 1435,
+      "browser_frame_sha256": "0A52838E68ACA9E518522D05C364CE2A6DB4125847C2338EDEED79E3EAF156EE",
+      "c_reconstructed_sha256": "0A52838E68ACA9E518522D05C364CE2A6DB4125847C2338EDEED79E3EAF156EE",
+      "gray_input_pixels": 0,
+      "id": "emotion_sleepy_hold",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_sleepy_hold.pbm",
+      "pbm_sha256": "981E67302DCC4222D719872188A8A9F2597BF4C1A93C262BC3ADE4914D857A95",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "sleepy_presence"
+      },
+      "unique_frame_index": 13
+    },
+    {
+      "black_bounds": [
+        33,
+        79,
+        166,
+        168
+      ],
+      "black_pixels": 3141,
+      "browser_frame_sha256": "4DE1106BD4769E458D88E90F97E86F3A42B1B7384FF6C9352517EDB69335040F",
+      "c_reconstructed_sha256": "4DE1106BD4769E458D88E90F97E86F3A42B1B7384FF6C9352517EDB69335040F",
+      "gray_input_pixels": 0,
+      "id": "emotion_delighted_source",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_delighted_source.pbm",
+      "pbm_sha256": "D03CD15D7DF15D90C58242B993B0E1547E1E9F669F9946A4019ED36C4CDFC169",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 0,
+        "gaze_key": "1,0,1,0",
+        "story": "delighted_presence"
+      },
+      "unique_frame_index": 14
+    },
+    {
+      "black_bounds": [
+        33,
+        78,
+        166,
+        168
+      ],
+      "black_pixels": 3141,
+      "browser_frame_sha256": "B6C5699BF1CF63FE008C56884FC8AF5F201E4FDD8039A1A63E40DEB6C6094980",
+      "c_reconstructed_sha256": "B6C5699BF1CF63FE008C56884FC8AF5F201E4FDD8039A1A63E40DEB6C6094980",
+      "gray_input_pixels": 0,
+      "id": "emotion_delighted_brow",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_delighted_brow.pbm",
+      "pbm_sha256": "B0EFA98DEBF1E296A26763AA9B86B379910BDFB1FDE857215CEF841C7642D785",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 1,
+        "gaze_key": "1,0,1,0",
+        "story": "delighted_presence"
+      },
+      "unique_frame_index": 15
+    },
+    {
+      "black_bounds": [
+        33,
+        78,
+        166,
+        169
+      ],
+      "black_pixels": 3212,
+      "browser_frame_sha256": "678C8B5E0C58D716B113ED036233A8C2502DB8F6FCB414B2B8A9500A956C56D6",
+      "c_reconstructed_sha256": "678C8B5E0C58D716B113ED036233A8C2502DB8F6FCB414B2B8A9500A956C56D6",
+      "gray_input_pixels": 0,
+      "id": "emotion_delighted_lower",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_delighted_lower.pbm",
+      "pbm_sha256": "BC31AA6905A024FDDDA3385EE3EA3B9E1DC5CF40FB642A85D113674C46B041B1",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "delighted_presence"
+      },
+      "unique_frame_index": 16
+    },
+    {
+      "black_bounds": [
+        33,
+        78,
+        166,
+        169
+      ],
+      "black_pixels": 3212,
+      "browser_frame_sha256": "678C8B5E0C58D716B113ED036233A8C2502DB8F6FCB414B2B8A9500A956C56D6",
+      "c_reconstructed_sha256": "678C8B5E0C58D716B113ED036233A8C2502DB8F6FCB414B2B8A9500A956C56D6",
+      "gray_input_pixels": 0,
+      "id": "emotion_delighted_hold",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_delighted_hold.pbm",
+      "pbm_sha256": "BC31AA6905A024FDDDA3385EE3EA3B9E1DC5CF40FB642A85D113674C46B041B1",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "delighted_presence"
+      },
+      "unique_frame_index": 16
+    },
+    {
+      "black_bounds": [
+        42,
+        94,
+        158,
+        168
+      ],
+      "black_pixels": 2973,
+      "browser_frame_sha256": "62E830A83196D79ED20C7E4B7975E41FDDE4AB4461A457F56DC7C8BF1856094F",
+      "c_reconstructed_sha256": "62E830A83196D79ED20C7E4B7975E41FDDE4AB4461A457F56DC7C8BF1856094F",
+      "gray_input_pixels": 0,
+      "id": "emotion_bashful_source",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_bashful_source.pbm",
+      "pbm_sha256": "44B0DCA544D35203E5765698B305F3968B7D6A5EED149A748CA3C72FAF3DCB17",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 0,
+        "gaze_key": "1,0,1,0",
+        "story": "bashful_presence"
+      },
+      "unique_frame_index": 17
+    },
+    {
+      "black_bounds": [
+        42,
+        95,
+        158,
+        168
+      ],
+      "black_pixels": 2980,
+      "browser_frame_sha256": "1F5B56F07954C1C81FD578716B9334B0C1DC79810CEF5DEAD7CC7EF6FF9298D5",
+      "c_reconstructed_sha256": "1F5B56F07954C1C81FD578716B9334B0C1DC79810CEF5DEAD7CC7EF6FF9298D5",
+      "gray_input_pixels": 0,
+      "id": "emotion_bashful_brow",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_bashful_brow.pbm",
+      "pbm_sha256": "C136285A75207D2DF143641E6AAA143B9A63A02CE62F1610CB63C368254BEA2F",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 1,
+        "gaze_key": "1,0,1,0",
+        "story": "bashful_presence"
+      },
+      "unique_frame_index": 18
+    },
+    {
+      "black_bounds": [
+        42,
+        95,
+        158,
+        170
+      ],
+      "black_pixels": 2982,
+      "browser_frame_sha256": "1E00600DFB83AE792CCE74BA6C2ADE712879CAE5736819C3187A834FCAA66058",
+      "c_reconstructed_sha256": "1E00600DFB83AE792CCE74BA6C2ADE712879CAE5736819C3187A834FCAA66058",
+      "gray_input_pixels": 0,
+      "id": "emotion_bashful_lower",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_bashful_lower.pbm",
+      "pbm_sha256": "DB6D45195A22F597D22578C8375307D5907ED1A1B73E5F615228FA9050CC2E45",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "bashful_presence"
+      },
+      "unique_frame_index": 19
+    },
+    {
+      "black_bounds": [
+        42,
+        95,
+        158,
+        170
+      ],
+      "black_pixels": 2982,
+      "browser_frame_sha256": "1E00600DFB83AE792CCE74BA6C2ADE712879CAE5736819C3187A834FCAA66058",
+      "c_reconstructed_sha256": "1E00600DFB83AE792CCE74BA6C2ADE712879CAE5736819C3187A834FCAA66058",
+      "gray_input_pixels": 0,
+      "id": "emotion_bashful_hold",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_bashful_hold.pbm",
+      "pbm_sha256": "DB6D45195A22F597D22578C8375307D5907ED1A1B73E5F615228FA9050CC2E45",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "bashful_presence"
+      },
+      "unique_frame_index": 19
+    },
+    {
+      "black_bounds": [
+        33,
+        77,
+        158,
+        168
+      ],
+      "black_pixels": 2948,
+      "browser_frame_sha256": "AF0EA685516507F8040BAF9572F6B23B6A032BD0424755736D647BAB4BD2698F",
+      "c_reconstructed_sha256": "AF0EA685516507F8040BAF9572F6B23B6A032BD0424755736D647BAB4BD2698F",
+      "gray_input_pixels": 0,
+      "id": "emotion_thoughtful_source",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_thoughtful_source.pbm",
+      "pbm_sha256": "0F959954297ABB7361A3F685253BDD73D799AA151774D58A44D046B5AB6491E4",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 0,
+        "gaze_key": "1,0,1,0",
+        "story": "thoughtful_presence"
+      },
+      "unique_frame_index": 20
+    },
+    {
+      "black_bounds": [
+        33,
+        76,
+        158,
+        168
+      ],
+      "black_pixels": 2952,
+      "browser_frame_sha256": "D72A366F0987EBBFB81BF7E1F32B689426258363A686D9546204874B8A486D59",
+      "c_reconstructed_sha256": "D72A366F0987EBBFB81BF7E1F32B689426258363A686D9546204874B8A486D59",
+      "gray_input_pixels": 0,
+      "id": "emotion_thoughtful_brow",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_thoughtful_brow.pbm",
+      "pbm_sha256": "9B2FBB2B62BC179FF53253489768B673D4934CD52F950C3DEF3CD6E5F9B011ED",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 1,
+        "gaze_key": "1,0,1,0",
+        "story": "thoughtful_presence"
+      },
+      "unique_frame_index": 21
+    },
+    {
+      "black_bounds": [
+        33,
+        76,
+        158,
+        167
+      ],
+      "black_pixels": 2982,
+      "browser_frame_sha256": "7709EDCB05C4C3FE12C145276F590BDD97F7C6E49573626C84C2E182993D4DFE",
+      "c_reconstructed_sha256": "7709EDCB05C4C3FE12C145276F590BDD97F7C6E49573626C84C2E182993D4DFE",
+      "gray_input_pixels": 0,
+      "id": "emotion_thoughtful_lower",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_thoughtful_lower.pbm",
+      "pbm_sha256": "B0B1CB2C457964F3FBF48BF94DA8FEB0737CB52A5C9FD0217D75DFCECB3BBA13",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "thoughtful_presence"
+      },
+      "unique_frame_index": 22
+    },
+    {
+      "black_bounds": [
+        33,
+        76,
+        158,
+        167
+      ],
+      "black_pixels": 2982,
+      "browser_frame_sha256": "7709EDCB05C4C3FE12C145276F590BDD97F7C6E49573626C84C2E182993D4DFE",
+      "c_reconstructed_sha256": "7709EDCB05C4C3FE12C145276F590BDD97F7C6E49573626C84C2E182993D4DFE",
+      "gray_input_pixels": 0,
+      "id": "emotion_thoughtful_hold",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_thoughtful_hold.pbm",
+      "pbm_sha256": "B0B1CB2C457964F3FBF48BF94DA8FEB0737CB52A5C9FD0217D75DFCECB3BBA13",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "thoughtful_presence"
+      },
+      "unique_frame_index": 22
+    },
+    {
+      "black_bounds": [
+        33,
+        95,
+        164,
+        168
+      ],
+      "black_pixels": 2928,
+      "browser_frame_sha256": "7F8F344350090C5174AD53F2CCA5AF5120156A190E84C42632EFE209A1629521",
+      "c_reconstructed_sha256": "7F8F344350090C5174AD53F2CCA5AF5120156A190E84C42632EFE209A1629521",
+      "gray_input_pixels": 0,
+      "id": "emotion_focused_source",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_focused_source.pbm",
+      "pbm_sha256": "3606A7D9A49654E8A62A1F4A3270B57722355C66808DAEB013BA8040C51EEB91",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 0,
+        "gaze_key": "1,0,1,0",
+        "story": "focused_presence"
+      },
+      "unique_frame_index": 23
+    },
+    {
+      "black_bounds": [
+        33,
+        96,
+        164,
+        168
+      ],
+      "black_pixels": 2946,
+      "browser_frame_sha256": "5752E54651E3F005E5DE0AD29E496A0A6314C332DF9156DA46A5B64E604C4796",
+      "c_reconstructed_sha256": "5752E54651E3F005E5DE0AD29E496A0A6314C332DF9156DA46A5B64E604C4796",
+      "gray_input_pixels": 0,
+      "id": "emotion_focused_brow",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_focused_brow.pbm",
+      "pbm_sha256": "F9FA17B65CD22A16E446CF37F29601B3E5B66365E622BD053B24478E1F23ED0B",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 1,
+        "gaze_key": "1,0,1,0",
+        "story": "focused_presence"
+      },
+      "unique_frame_index": 24
+    },
+    {
+      "black_bounds": [
+        33,
+        96,
+        164,
+        169
+      ],
+      "black_pixels": 2961,
+      "browser_frame_sha256": "44626DAB00F8DD98BA55635DB25028874969B9010AD5BF57FD35A07E13293519",
+      "c_reconstructed_sha256": "44626DAB00F8DD98BA55635DB25028874969B9010AD5BF57FD35A07E13293519",
+      "gray_input_pixels": 0,
+      "id": "emotion_focused_lower",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_focused_lower.pbm",
+      "pbm_sha256": "8A6DC06823EBC519331BC7C886FA72531282B1B0ED9492B7E2AE60E0AE3D7DCF",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "focused_presence"
+      },
+      "unique_frame_index": 25
+    },
+    {
+      "black_bounds": [
+        33,
+        96,
+        164,
+        169
+      ],
+      "black_pixels": 2961,
+      "browser_frame_sha256": "44626DAB00F8DD98BA55635DB25028874969B9010AD5BF57FD35A07E13293519",
+      "c_reconstructed_sha256": "44626DAB00F8DD98BA55635DB25028874969B9010AD5BF57FD35A07E13293519",
+      "gray_input_pixels": 0,
+      "id": "emotion_focused_hold",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_focused_hold.pbm",
+      "pbm_sha256": "8A6DC06823EBC519331BC7C886FA72531282B1B0ED9492B7E2AE60E0AE3D7DCF",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "focused_presence"
+      },
+      "unique_frame_index": 25
+    },
+    {
+      "black_bounds": [
+        33,
+        84,
+        167,
+        168
+      ],
+      "black_pixels": 2740,
+      "browser_frame_sha256": "968597CFE0FABA3A045D2CD1DB74659AC1371F3E17787053A64AB49DAD1AB459",
+      "c_reconstructed_sha256": "968597CFE0FABA3A045D2CD1DB74659AC1371F3E17787053A64AB49DAD1AB459",
+      "gray_input_pixels": 0,
+      "id": "emotion_alert_source",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_alert_source.pbm",
+      "pbm_sha256": "05D042A1AF28D7B395B97D60904DC23ECFDB6AA6F369F61DA1B95AAE9C2EF2BA",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 0,
+        "gaze_key": "1,0,1,0",
+        "story": "alert_exclamation"
+      },
+      "unique_frame_index": 26
+    },
+    {
+      "black_bounds": [
+        33,
+        42,
+        167,
+        168
+      ],
+      "black_pixels": 2823,
+      "browser_frame_sha256": "7B84ABE4E40FE9F0AD479400C6CE02D0B72760AE8EB2D6196CEC4EE27E6ADCFC",
+      "c_reconstructed_sha256": "7B84ABE4E40FE9F0AD479400C6CE02D0B72760AE8EB2D6196CEC4EE27E6ADCFC",
+      "gray_input_pixels": 0,
+      "id": "emotion_alert_brow",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_alert_brow.pbm",
+      "pbm_sha256": "3E0B62936EAD668E69BB91E1F70631A5B15880FA1A23EE55B5A20219E6D437E3",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 1,
+        "gaze_key": "1,0,1,0",
+        "story": "alert_exclamation"
+      },
+      "unique_frame_index": 27
+    },
+    {
+      "black_bounds": [
+        33,
+        35,
+        167,
+        176
+      ],
+      "black_pixels": 2942,
+      "browser_frame_sha256": "F5D08D9D28C37E4BC0ABE6EC1756C5CC2D40CE3EDDFFE4448400778242969DF9",
+      "c_reconstructed_sha256": "F5D08D9D28C37E4BC0ABE6EC1756C5CC2D40CE3EDDFFE4448400778242969DF9",
+      "gray_input_pixels": 0,
+      "id": "emotion_alert_lower",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_alert_lower.pbm",
+      "pbm_sha256": "CBEDA51F5BC39250F4535975C889C30985AC31AD2B6F403A5630695748A1EE37",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "alert_exclamation"
+      },
+      "unique_frame_index": 28
+    },
+    {
+      "black_bounds": [
+        33,
+        35,
+        167,
+        176
+      ],
+      "black_pixels": 2942,
+      "browser_frame_sha256": "F5D08D9D28C37E4BC0ABE6EC1756C5CC2D40CE3EDDFFE4448400778242969DF9",
+      "c_reconstructed_sha256": "F5D08D9D28C37E4BC0ABE6EC1756C5CC2D40CE3EDDFFE4448400778242969DF9",
+      "gray_input_pixels": 0,
+      "id": "emotion_alert_hold",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/emotion_alert_hold.pbm",
+      "pbm_sha256": "CBEDA51F5BC39250F4535975C889C30985AC31AD2B6F403A5630695748A1EE37",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "alert_exclamation"
+      },
+      "unique_frame_index": 28
+    },
+    {
+      "black_bounds": [
+        34,
+        87,
+        166,
+        168
+      ],
+      "black_pixels": 2679,
+      "browser_frame_sha256": "36424017FB152D6984F576F2BBD9F027FD8D6377793A02EC96D3AC2B949AF987",
+      "c_reconstructed_sha256": "36424017FB152D6984F576F2BBD9F027FD8D6377793A02EC96D3AC2B949AF987",
+      "gray_input_pixels": 0,
+      "id": "family_micro_calm_step_0",
+      "kind": "micro",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/family_micro_calm_step_0.pbm",
+      "pbm_sha256": "AAB1B8D8D0B99938A0CE6DA32BBFED50C0BE1884593309C4562E21CCCA676B7C",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "family": "calm",
+        "micro_step": 0
+      },
+      "unique_frame_index": 29
+    },
+    {
+      "black_bounds": [
+        34,
+        87,
+        166,
+        168
+      ],
+      "black_pixels": 901,
+      "browser_frame_sha256": "96DA1A60D701EFDD1593030C9CF8F2227CCE554F9EC424B762105729B8ED0C39",
+      "c_reconstructed_sha256": "96DA1A60D701EFDD1593030C9CF8F2227CCE554F9EC424B762105729B8ED0C39",
+      "gray_input_pixels": 0,
+      "id": "family_micro_calm_step_2",
+      "kind": "micro",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/family_micro_calm_step_2.pbm",
+      "pbm_sha256": "9C90FA1796596D5D373503ABE0B802C96E6F07D9E499A6A12284D2F237072332",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "family": "calm",
+        "micro_step": 2
+      },
+      "unique_frame_index": 30
+    },
+    {
+      "black_bounds": [
+        34,
+        87,
+        166,
+        168
+      ],
+      "black_pixels": 1654,
+      "browser_frame_sha256": "00E7E45E85D45A0884B2EACEC3A9C1CA2A548F61DBCD2AC9803181A1EE605B5C",
+      "c_reconstructed_sha256": "00E7E45E85D45A0884B2EACEC3A9C1CA2A548F61DBCD2AC9803181A1EE605B5C",
+      "gray_input_pixels": 0,
+      "id": "family_micro_calm_step_3",
+      "kind": "micro",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/family_micro_calm_step_3.pbm",
+      "pbm_sha256": "477A087C7E04B98B8FC009865FFB8C701D98118A3837EFE955285A67D04C57EE",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "family": "calm",
+        "micro_step": 3
+      },
+      "unique_frame_index": 31
+    },
+    {
+      "black_bounds": [
+        34,
+        87,
+        166,
+        168
+      ],
+      "black_pixels": 2679,
+      "browser_frame_sha256": "36424017FB152D6984F576F2BBD9F027FD8D6377793A02EC96D3AC2B949AF987",
+      "c_reconstructed_sha256": "36424017FB152D6984F576F2BBD9F027FD8D6377793A02EC96D3AC2B949AF987",
+      "gray_input_pixels": 0,
+      "id": "family_micro_calm_step_4",
+      "kind": "micro",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/family_micro_calm_step_4.pbm",
+      "pbm_sha256": "AAB1B8D8D0B99938A0CE6DA32BBFED50C0BE1884593309C4562E21CCCA676B7C",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "family": "calm",
+        "micro_step": 4
+      },
+      "unique_frame_index": 29
+    },
+    {
+      "black_bounds": [
+        32,
+        34,
+        167,
+        173
+      ],
+      "black_pixels": 2925,
+      "browser_frame_sha256": "BF1A2E9BF65D5C708779BA9C152C76B239E61749BA26635DF53164B413EEF741",
+      "c_reconstructed_sha256": "BF1A2E9BF65D5C708779BA9C152C76B239E61749BA26635DF53164B413EEF741",
+      "gray_input_pixels": 0,
+      "id": "family_micro_curious_step_0",
+      "kind": "micro",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/family_micro_curious_step_0.pbm",
+      "pbm_sha256": "6A6914F62ED8A71373826F855EB8918D2A53B6DEF26F4CF9B80CFBE16B658F03",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "family": "curious",
+        "micro_step": 0
+      },
+      "unique_frame_index": 32
+    },
+    {
+      "black_bounds": [
+        32,
+        38,
+        167,
+        168
+      ],
+      "black_pixels": 2861,
+      "browser_frame_sha256": "D555BC603BB073058A3EEBAC45777BD47DABC33E42BBA4DC1764604F74E18004",
+      "c_reconstructed_sha256": "D555BC603BB073058A3EEBAC45777BD47DABC33E42BBA4DC1764604F74E18004",
+      "gray_input_pixels": 0,
+      "id": "family_micro_curious_step_2",
+      "kind": "micro",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/family_micro_curious_step_2.pbm",
+      "pbm_sha256": "A0AA1E93FE21438F0BC56EE8EFBD8FF4B7BC91B2E06AD7F1770B006A18CEF2C9",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "family": "curious",
+        "micro_step": 2
+      },
+      "unique_frame_index": 33
+    },
+    {
+      "black_bounds": [
+        32,
+        34,
+        167,
+        173
+      ],
+      "black_pixels": 2925,
+      "browser_frame_sha256": "7E2AED6206BFEF9C2A4CC7A606AD9BA40943D6E94D6F92C90B8C4F1614EA23E5",
+      "c_reconstructed_sha256": "7E2AED6206BFEF9C2A4CC7A606AD9BA40943D6E94D6F92C90B8C4F1614EA23E5",
+      "gray_input_pixels": 0,
+      "id": "family_micro_curious_step_3",
+      "kind": "micro",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/family_micro_curious_step_3.pbm",
+      "pbm_sha256": "F9335F9FCE0A8B5464A6570593BC6179229D3A6336B1E861C48936DE7A9413DE",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "family": "curious",
+        "micro_step": 3
+      },
+      "unique_frame_index": 34
+    },
+    {
+      "black_bounds": [
+        32,
+        34,
+        167,
+        173
+      ],
+      "black_pixels": 2925,
+      "browser_frame_sha256": "BF1A2E9BF65D5C708779BA9C152C76B239E61749BA26635DF53164B413EEF741",
+      "c_reconstructed_sha256": "BF1A2E9BF65D5C708779BA9C152C76B239E61749BA26635DF53164B413EEF741",
+      "gray_input_pixels": 0,
+      "id": "family_micro_curious_step_4",
+      "kind": "micro",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/family_micro_curious_step_4.pbm",
+      "pbm_sha256": "6A6914F62ED8A71373826F855EB8918D2A53B6DEF26F4CF9B80CFBE16B658F03",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "family": "curious",
+        "micro_step": 4
+      },
+      "unique_frame_index": 32
+    },
+    {
+      "black_bounds": [
+        33,
+        87,
+        170,
+        177
+      ],
+      "black_pixels": 2998,
+      "browser_frame_sha256": "1F68BBB796B33AD0D2CF839FAB50CF1474FDDEF45DC282F8645E905E1268F70D",
+      "c_reconstructed_sha256": "1F68BBB796B33AD0D2CF839FAB50CF1474FDDEF45DC282F8645E905E1268F70D",
+      "gray_input_pixels": 0,
+      "id": "family_micro_warm_step_0",
+      "kind": "micro",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/family_micro_warm_step_0.pbm",
+      "pbm_sha256": "5950A58EC14A2DCAE48B35E2CBED317075E92CC4B551B505717550F121735FB9",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "family": "warm",
+        "micro_step": 0
+      },
+      "unique_frame_index": 35
+    },
+    {
+      "black_bounds": [
+        33,
+        87,
+        170,
+        168
+      ],
+      "black_pixels": 1687,
+      "browser_frame_sha256": "A5033727BB5B88AEE7772BAF1AF370818284314D489EDCC7F76D7DD6A0688E02",
+      "c_reconstructed_sha256": "A5033727BB5B88AEE7772BAF1AF370818284314D489EDCC7F76D7DD6A0688E02",
+      "gray_input_pixels": 0,
+      "id": "family_micro_warm_step_2",
+      "kind": "micro",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/family_micro_warm_step_2.pbm",
+      "pbm_sha256": "B5839FC6A9F04E2220CBE38EED0FA86244016CE56D13917C2E4C22E2CDD12F6E",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "family": "warm",
+        "micro_step": 2
+      },
+      "unique_frame_index": 36
+    },
+    {
+      "black_bounds": [
+        33,
+        87,
+        170,
+        177
+      ],
+      "black_pixels": 2998,
+      "browser_frame_sha256": "6BB0BB0E4A8B364765AEC6C3D03F613F1D162E3F3B3F6A99148540CDAA452750",
+      "c_reconstructed_sha256": "6BB0BB0E4A8B364765AEC6C3D03F613F1D162E3F3B3F6A99148540CDAA452750",
+      "gray_input_pixels": 0,
+      "id": "family_micro_warm_step_3",
+      "kind": "micro",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/family_micro_warm_step_3.pbm",
+      "pbm_sha256": "35B2BCCF7E2325B2CF2581C2AEED32B92026BE06AEB46A3575292E6AA133EE3C",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "family": "warm",
+        "micro_step": 3
+      },
+      "unique_frame_index": 37
+    },
+    {
+      "black_bounds": [
+        33,
+        87,
+        170,
+        177
+      ],
+      "black_pixels": 2998,
+      "browser_frame_sha256": "1F68BBB796B33AD0D2CF839FAB50CF1474FDDEF45DC282F8645E905E1268F70D",
+      "c_reconstructed_sha256": "1F68BBB796B33AD0D2CF839FAB50CF1474FDDEF45DC282F8645E905E1268F70D",
+      "gray_input_pixels": 0,
+      "id": "family_micro_warm_step_4",
+      "kind": "micro",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/family_micro_warm_step_4.pbm",
+      "pbm_sha256": "5950A58EC14A2DCAE48B35E2CBED317075E92CC4B551B505717550F121735FB9",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "family": "warm",
+        "micro_step": 4
+      },
+      "unique_frame_index": 35
+    },
+    {
+      "black_bounds": [
+        32,
+        84,
+        175,
+        170
+      ],
+      "black_pixels": 2904,
+      "browser_frame_sha256": "420CD8C450221817BC01CE7A09E202AF32CD81FDA5163FF68AA44EDEE04D76AA",
+      "c_reconstructed_sha256": "420CD8C450221817BC01CE7A09E202AF32CD81FDA5163FF68AA44EDEE04D76AA",
+      "gray_input_pixels": 0,
+      "id": "family_micro_playful_step_0",
+      "kind": "micro",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/family_micro_playful_step_0.pbm",
+      "pbm_sha256": "2B155901A64988D3DE15B55758D4607D4BE78802A0E81C8715F454F6AFCB0C38",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "family": "playful",
+        "micro_step": 0
+      },
+      "unique_frame_index": 38
+    },
+    {
+      "black_bounds": [
+        32,
+        84,
+        175,
+        170
+      ],
+      "black_pixels": 2854,
+      "browser_frame_sha256": "733F890ECBE212490788D15E6055E2250EB7AB6E2CB8B6E99E22AB9A9DB5ABB1",
+      "c_reconstructed_sha256": "733F890ECBE212490788D15E6055E2250EB7AB6E2CB8B6E99E22AB9A9DB5ABB1",
+      "gray_input_pixels": 0,
+      "id": "family_micro_playful_step_2",
+      "kind": "micro",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/family_micro_playful_step_2.pbm",
+      "pbm_sha256": "5A9CA344D4A97348546F006309C06F537A99822F6ECF7F44A0E96D4B2F856D92",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "family": "playful",
+        "micro_step": 2
+      },
+      "unique_frame_index": 39
+    },
+    {
+      "black_bounds": [
+        32,
+        84,
+        175,
+        170
+      ],
+      "black_pixels": 2904,
+      "browser_frame_sha256": "708F4EFBFDB7815320FC03189348F9F41BD706C467F98A7234BA37443DD7B92E",
+      "c_reconstructed_sha256": "708F4EFBFDB7815320FC03189348F9F41BD706C467F98A7234BA37443DD7B92E",
+      "gray_input_pixels": 0,
+      "id": "family_micro_playful_step_3",
+      "kind": "micro",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/family_micro_playful_step_3.pbm",
+      "pbm_sha256": "E60B6DE3BE2A76704E239321FC06CAEBADCF92510233BC5E1EDDE814F12071BB",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "family": "playful",
+        "micro_step": 3
+      },
+      "unique_frame_index": 40
+    },
+    {
+      "black_bounds": [
+        32,
+        84,
+        175,
+        170
+      ],
+      "black_pixels": 2904,
+      "browser_frame_sha256": "420CD8C450221817BC01CE7A09E202AF32CD81FDA5163FF68AA44EDEE04D76AA",
+      "c_reconstructed_sha256": "420CD8C450221817BC01CE7A09E202AF32CD81FDA5163FF68AA44EDEE04D76AA",
+      "gray_input_pixels": 0,
+      "id": "family_micro_playful_step_4",
+      "kind": "micro",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/family_micro_playful_step_4.pbm",
+      "pbm_sha256": "2B155901A64988D3DE15B55758D4607D4BE78802A0E81C8715F454F6AFCB0C38",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "family": "playful",
+        "micro_step": 4
+      },
+      "unique_frame_index": 38
+    },
+    {
+      "black_bounds": [
+        34,
+        27,
+        166,
+        169
+      ],
+      "black_pixels": 1451,
+      "browser_frame_sha256": "CDF4BA78EC1F177F66EC5658FDF8F35A13638FF94BBA099292B54C490B5A235E",
+      "c_reconstructed_sha256": "CDF4BA78EC1F177F66EC5658FDF8F35A13638FF94BBA099292B54C490B5A235E",
+      "gray_input_pixels": 0,
+      "id": "family_micro_sleepy_step_0",
+      "kind": "micro",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/family_micro_sleepy_step_0.pbm",
+      "pbm_sha256": "A8F7991B78EF057A4011814E7C0055C5AF767789873AA3F1AD05272428CF72CB",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "family": "sleepy",
+        "micro_step": 0
+      },
+      "unique_frame_index": 41
+    },
+    {
+      "black_bounds": [
+        34,
+        91,
+        166,
+        169
+      ],
+      "black_pixels": 1244,
+      "browser_frame_sha256": "5755183179A23169A4C6C8B6D1C1C9B1F16B736871DB91598C3190E610281105",
+      "c_reconstructed_sha256": "5755183179A23169A4C6C8B6D1C1C9B1F16B736871DB91598C3190E610281105",
+      "gray_input_pixels": 0,
+      "id": "family_micro_sleepy_step_2",
+      "kind": "micro",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/family_micro_sleepy_step_2.pbm",
+      "pbm_sha256": "E67B796CF62CE477AF1CD34352AC6F01D425C226B2CC1727FF07A04FB5AA2964",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "family": "sleepy",
+        "micro_step": 2
+      },
+      "unique_frame_index": 42
+    },
+    {
+      "black_bounds": [
+        34,
+        27,
+        166,
+        169
+      ],
+      "black_pixels": 1498,
+      "browser_frame_sha256": "BE039A1B4FA2AB2282291469DA97751D25EBDD7845682C51AA61BC12FF85CFE7",
+      "c_reconstructed_sha256": "BE039A1B4FA2AB2282291469DA97751D25EBDD7845682C51AA61BC12FF85CFE7",
+      "gray_input_pixels": 0,
+      "id": "family_micro_sleepy_step_3",
+      "kind": "micro",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/family_micro_sleepy_step_3.pbm",
+      "pbm_sha256": "71C439BB789B3862551F0F10DF6E316720CDD398134AF13CCA3C7D6B869DB878",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "family": "sleepy",
+        "micro_step": 3
+      },
+      "unique_frame_index": 43
+    },
+    {
+      "black_bounds": [
+        34,
+        27,
+        166,
+        169
+      ],
+      "black_pixels": 1451,
+      "browser_frame_sha256": "CDF4BA78EC1F177F66EC5658FDF8F35A13638FF94BBA099292B54C490B5A235E",
+      "c_reconstructed_sha256": "CDF4BA78EC1F177F66EC5658FDF8F35A13638FF94BBA099292B54C490B5A235E",
+      "gray_input_pixels": 0,
+      "id": "family_micro_sleepy_step_4",
+      "kind": "micro",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/family_micro_sleepy_step_4.pbm",
+      "pbm_sha256": "A8F7991B78EF057A4011814E7C0055C5AF767789873AA3F1AD05272428CF72CB",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "family": "sleepy",
+        "micro_step": 4
+      },
+      "unique_frame_index": 41
+    },
+    {
+      "black_bounds": [
+        33,
+        78,
+        166,
+        169
+      ],
+      "black_pixels": 2860,
+      "browser_frame_sha256": "070126239AF174431186267882B46888A0CFD930F8F8A10DB67AE4B5FDD8A465",
+      "c_reconstructed_sha256": "070126239AF174431186267882B46888A0CFD930F8F8A10DB67AE4B5FDD8A465",
+      "gray_input_pixels": 0,
+      "id": "family_micro_delighted_step_0",
+      "kind": "micro",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/family_micro_delighted_step_0.pbm",
+      "pbm_sha256": "566A2DB07D01E2BC46AC28416AC56448A99D8942408B4A92B3AA6B6B5AE34BC4",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "family": "delighted",
+        "micro_step": 0
+      },
+      "unique_frame_index": 44
+    },
+    {
+      "black_bounds": [
+        33,
+        77,
+        166,
+        169
+      ],
+      "black_pixels": 2844,
+      "browser_frame_sha256": "DBBB1A8B01B7D8DB909D31D144D1CAB76245808D89AA7F826FC582B8377B64A9",
+      "c_reconstructed_sha256": "DBBB1A8B01B7D8DB909D31D144D1CAB76245808D89AA7F826FC582B8377B64A9",
+      "gray_input_pixels": 0,
+      "id": "family_micro_delighted_step_2",
+      "kind": "micro",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/family_micro_delighted_step_2.pbm",
+      "pbm_sha256": "F2FE7F145766407EBFAF1E869EA95353B2971AFAC139F60DAF9FC637A3F12889",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "family": "delighted",
+        "micro_step": 2
+      },
+      "unique_frame_index": 45
+    },
+    {
+      "black_bounds": [
+        33,
+        78,
+        166,
+        169
+      ],
+      "black_pixels": 2844,
+      "browser_frame_sha256": "6D5006D72EB354DBADC892C2DA76789A5305D2071F5AFB6A130E11BED20A03AA",
+      "c_reconstructed_sha256": "6D5006D72EB354DBADC892C2DA76789A5305D2071F5AFB6A130E11BED20A03AA",
+      "gray_input_pixels": 0,
+      "id": "family_micro_delighted_step_3",
+      "kind": "micro",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/family_micro_delighted_step_3.pbm",
+      "pbm_sha256": "34E82A267337108ADDAEBA6A6962CC7033B4DDD5861B5B71840A965BE4986399",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "family": "delighted",
+        "micro_step": 3
+      },
+      "unique_frame_index": 46
+    },
+    {
+      "black_bounds": [
+        33,
+        78,
+        166,
+        169
+      ],
+      "black_pixels": 2860,
+      "browser_frame_sha256": "070126239AF174431186267882B46888A0CFD930F8F8A10DB67AE4B5FDD8A465",
+      "c_reconstructed_sha256": "070126239AF174431186267882B46888A0CFD930F8F8A10DB67AE4B5FDD8A465",
+      "gray_input_pixels": 0,
+      "id": "family_micro_delighted_step_4",
+      "kind": "micro",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/family_micro_delighted_step_4.pbm",
+      "pbm_sha256": "566A2DB07D01E2BC46AC28416AC56448A99D8942408B4A92B3AA6B6B5AE34BC4",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "family": "delighted",
+        "micro_step": 4
+      },
+      "unique_frame_index": 44
+    },
+    {
+      "black_bounds": [
+        42,
+        95,
+        158,
+        170
+      ],
+      "black_pixels": 2653,
+      "browser_frame_sha256": "517C4D13CA0991130FE8F365748889BA8C277A67CACF67E4D26C205D98A24057",
+      "c_reconstructed_sha256": "517C4D13CA0991130FE8F365748889BA8C277A67CACF67E4D26C205D98A24057",
+      "gray_input_pixels": 0,
+      "id": "family_micro_bashful_step_0",
+      "kind": "micro",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/family_micro_bashful_step_0.pbm",
+      "pbm_sha256": "261BE516B62BF45A2172273991912DEABB6FD75EF4E7FDE3A8D7073F3F6CB56E",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "family": "bashful",
+        "micro_step": 0
+      },
+      "unique_frame_index": 47
+    },
+    {
+      "black_bounds": [
+        42,
+        95,
+        158,
+        168
+      ],
+      "black_pixels": 2651,
+      "browser_frame_sha256": "60E67CCB29309E2492B4019DC541445815707FDFFABF48381285C8C8C0E4AD69",
+      "c_reconstructed_sha256": "60E67CCB29309E2492B4019DC541445815707FDFFABF48381285C8C8C0E4AD69",
+      "gray_input_pixels": 0,
+      "id": "family_micro_bashful_step_2",
+      "kind": "micro",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/family_micro_bashful_step_2.pbm",
+      "pbm_sha256": "64006CBD65DC4CC57441C0A358F485241F6494CB12CFA926E3DF3A183CE3ECCF",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "family": "bashful",
+        "micro_step": 2
+      },
+      "unique_frame_index": 48
+    },
+    {
+      "black_bounds": [
+        42,
+        95,
+        158,
+        170
+      ],
+      "black_pixels": 2653,
+      "browser_frame_sha256": "CE65A4B895849405BDE096531A1609C70398A68458DD04B79840B955F8B13646",
+      "c_reconstructed_sha256": "CE65A4B895849405BDE096531A1609C70398A68458DD04B79840B955F8B13646",
+      "gray_input_pixels": 0,
+      "id": "family_micro_bashful_step_3",
+      "kind": "micro",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/family_micro_bashful_step_3.pbm",
+      "pbm_sha256": "72C3F58DE59E0BA6E3CE5FE7774EEBD73952489EB35B0B49F1D5AEA7B7B69EAC",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "family": "bashful",
+        "micro_step": 3
+      },
+      "unique_frame_index": 49
+    },
+    {
+      "black_bounds": [
+        42,
+        95,
+        158,
+        170
+      ],
+      "black_pixels": 2653,
+      "browser_frame_sha256": "517C4D13CA0991130FE8F365748889BA8C277A67CACF67E4D26C205D98A24057",
+      "c_reconstructed_sha256": "517C4D13CA0991130FE8F365748889BA8C277A67CACF67E4D26C205D98A24057",
+      "gray_input_pixels": 0,
+      "id": "family_micro_bashful_step_4",
+      "kind": "micro",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/family_micro_bashful_step_4.pbm",
+      "pbm_sha256": "261BE516B62BF45A2172273991912DEABB6FD75EF4E7FDE3A8D7073F3F6CB56E",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "family": "bashful",
+        "micro_step": 4
+      },
+      "unique_frame_index": 47
+    },
+    {
+      "black_bounds": [
+        33,
+        76,
+        158,
+        167
+      ],
+      "black_pixels": 2677,
+      "browser_frame_sha256": "6EA32436730DC27D87DE48D923CF4789E7D4D030998FA525EE15ABB924E84530",
+      "c_reconstructed_sha256": "6EA32436730DC27D87DE48D923CF4789E7D4D030998FA525EE15ABB924E84530",
+      "gray_input_pixels": 0,
+      "id": "family_micro_thoughtful_step_0",
+      "kind": "micro",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/family_micro_thoughtful_step_0.pbm",
+      "pbm_sha256": "800C99C3513FDFA44443F8A06DFDF04632742E9A0ACA6B56175EB6F980C18ED6",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "family": "thoughtful",
+        "micro_step": 0
+      },
+      "unique_frame_index": 50
+    },
+    {
+      "black_bounds": [
+        33,
+        76,
+        158,
+        168
+      ],
+      "black_pixels": 2647,
+      "browser_frame_sha256": "8082BFABF9AFFBACB55F9C6DC67E6C38E72EA40328E81541681C35C866B07B6B",
+      "c_reconstructed_sha256": "8082BFABF9AFFBACB55F9C6DC67E6C38E72EA40328E81541681C35C866B07B6B",
+      "gray_input_pixels": 0,
+      "id": "family_micro_thoughtful_step_2",
+      "kind": "micro",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/family_micro_thoughtful_step_2.pbm",
+      "pbm_sha256": "EC3948898C6966B486152B33A3238D18F63985FD725732C1C92FF925494A3AD5",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "family": "thoughtful",
+        "micro_step": 2
+      },
+      "unique_frame_index": 51
+    },
+    {
+      "black_bounds": [
+        33,
+        76,
+        158,
+        167
+      ],
+      "black_pixels": 2677,
+      "browser_frame_sha256": "52DCFD4B6C6B8C6C57E1A307CD404D1C18DB3B38181EF4B10925E4B1EE183F23",
+      "c_reconstructed_sha256": "52DCFD4B6C6B8C6C57E1A307CD404D1C18DB3B38181EF4B10925E4B1EE183F23",
+      "gray_input_pixels": 0,
+      "id": "family_micro_thoughtful_step_3",
+      "kind": "micro",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/family_micro_thoughtful_step_3.pbm",
+      "pbm_sha256": "2278A38CCADFEECB550921844B3DB1038F914AB529BE4B8DE611F0A0728BD3EF",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "family": "thoughtful",
+        "micro_step": 3
+      },
+      "unique_frame_index": 52
+    },
+    {
+      "black_bounds": [
+        33,
+        76,
+        158,
+        167
+      ],
+      "black_pixels": 2677,
+      "browser_frame_sha256": "6EA32436730DC27D87DE48D923CF4789E7D4D030998FA525EE15ABB924E84530",
+      "c_reconstructed_sha256": "6EA32436730DC27D87DE48D923CF4789E7D4D030998FA525EE15ABB924E84530",
+      "gray_input_pixels": 0,
+      "id": "family_micro_thoughtful_step_4",
+      "kind": "micro",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/family_micro_thoughtful_step_4.pbm",
+      "pbm_sha256": "800C99C3513FDFA44443F8A06DFDF04632742E9A0ACA6B56175EB6F980C18ED6",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "family": "thoughtful",
+        "micro_step": 4
+      },
+      "unique_frame_index": 50
+    },
+    {
+      "black_bounds": [
+        33,
+        96,
+        164,
+        169
+      ],
+      "black_pixels": 2661,
+      "browser_frame_sha256": "04ACD78F184C031FB686808CBF8CC049AC2D323E29B1F69B9CA86FD849600B5D",
+      "c_reconstructed_sha256": "04ACD78F184C031FB686808CBF8CC049AC2D323E29B1F69B9CA86FD849600B5D",
+      "gray_input_pixels": 0,
+      "id": "family_micro_focused_step_0",
+      "kind": "micro",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/family_micro_focused_step_0.pbm",
+      "pbm_sha256": "2446715AEDD53282AFC5990CEE1E313F09E3AACC91FB30341079C02643F04460",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "family": "focused",
+        "micro_step": 0
+      },
+      "unique_frame_index": 53
+    },
+    {
+      "black_bounds": [
+        33,
+        96,
+        164,
+        169
+      ],
+      "black_pixels": 1630,
+      "browser_frame_sha256": "4FB87ABC4400ABC3146445A0DA675170A1C4F9DA9FB7746CDDF7D0B5E1249C49",
+      "c_reconstructed_sha256": "4FB87ABC4400ABC3146445A0DA675170A1C4F9DA9FB7746CDDF7D0B5E1249C49",
+      "gray_input_pixels": 0,
+      "id": "family_micro_focused_step_2",
+      "kind": "micro",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/family_micro_focused_step_2.pbm",
+      "pbm_sha256": "D56F3FA37300D7BAD99BE30BDA741916A9A7A30E1FE9CAEBD263BD5506434A0D",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "family": "focused",
+        "micro_step": 2
+      },
+      "unique_frame_index": 54
+    },
+    {
+      "black_bounds": [
+        33,
+        96,
+        164,
+        169
+      ],
+      "black_pixels": 2661,
+      "browser_frame_sha256": "3167CCAD65D4465778C0DCEF2018BA2496886A9EA4AF463583AF54D8D99C944B",
+      "c_reconstructed_sha256": "3167CCAD65D4465778C0DCEF2018BA2496886A9EA4AF463583AF54D8D99C944B",
+      "gray_input_pixels": 0,
+      "id": "family_micro_focused_step_3",
+      "kind": "micro",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/family_micro_focused_step_3.pbm",
+      "pbm_sha256": "8B2318A7EB5F11229B8CA8C8D9A3538496425FA0AE7532F1E248404D349621BD",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "family": "focused",
+        "micro_step": 3
+      },
+      "unique_frame_index": 55
+    },
+    {
+      "black_bounds": [
+        33,
+        96,
+        164,
+        169
+      ],
+      "black_pixels": 2661,
+      "browser_frame_sha256": "04ACD78F184C031FB686808CBF8CC049AC2D323E29B1F69B9CA86FD849600B5D",
+      "c_reconstructed_sha256": "04ACD78F184C031FB686808CBF8CC049AC2D323E29B1F69B9CA86FD849600B5D",
+      "gray_input_pixels": 0,
+      "id": "family_micro_focused_step_4",
+      "kind": "micro",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/family_micro_focused_step_4.pbm",
+      "pbm_sha256": "2446715AEDD53282AFC5990CEE1E313F09E3AACC91FB30341079C02643F04460",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "family": "focused",
+        "micro_step": 4
+      },
+      "unique_frame_index": 53
+    },
+    {
+      "black_bounds": [
+        33,
+        35,
+        167,
+        176
+      ],
+      "black_pixels": 2940,
+      "browser_frame_sha256": "4B8742236E5FB5170C172C227F3E2CB1A9E81483701A47F530B070BAD0F7A17F",
+      "c_reconstructed_sha256": "4B8742236E5FB5170C172C227F3E2CB1A9E81483701A47F530B070BAD0F7A17F",
+      "gray_input_pixels": 0,
+      "id": "family_micro_alert_step_0",
+      "kind": "micro",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/family_micro_alert_step_0.pbm",
+      "pbm_sha256": "4BB6827E520BD69487FEE508E033334A496C0A14DF6C9150ACD966B60DBC4289",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "family": "alert",
+        "micro_step": 0
+      },
+      "unique_frame_index": 56
+    },
+    {
+      "black_bounds": [
+        33,
+        42,
+        167,
+        168
+      ],
+      "black_pixels": 2821,
+      "browser_frame_sha256": "21727EE2E3765B298DB40461B7B9C4F55C21A5C3991F58ACE5A3A3F27B2511D9",
+      "c_reconstructed_sha256": "21727EE2E3765B298DB40461B7B9C4F55C21A5C3991F58ACE5A3A3F27B2511D9",
+      "gray_input_pixels": 0,
+      "id": "family_micro_alert_step_2",
+      "kind": "micro",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/family_micro_alert_step_2.pbm",
+      "pbm_sha256": "7E0C0B4F65C850EAA14A4DAB6E027935A8E334AC7290776FEA2F44BFE67E33A3",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "family": "alert",
+        "micro_step": 2
+      },
+      "unique_frame_index": 57
+    },
+    {
+      "black_bounds": [
+        33,
+        35,
+        167,
+        176
+      ],
+      "black_pixels": 2940,
+      "browser_frame_sha256": "F5727E558F9CE1DF794370D311C00EC5BB386B943D50296BE49D4F8E2B323248",
+      "c_reconstructed_sha256": "F5727E558F9CE1DF794370D311C00EC5BB386B943D50296BE49D4F8E2B323248",
+      "gray_input_pixels": 0,
+      "id": "family_micro_alert_step_3",
+      "kind": "micro",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/family_micro_alert_step_3.pbm",
+      "pbm_sha256": "386D3020A581B4129E5CF15D85A4D2921A3C15D0356B7F5E1BF6AEF680DACCE3",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "family": "alert",
+        "micro_step": 3
+      },
+      "unique_frame_index": 58
+    },
+    {
+      "black_bounds": [
+        33,
+        35,
+        167,
+        176
+      ],
+      "black_pixels": 2940,
+      "browser_frame_sha256": "4B8742236E5FB5170C172C227F3E2CB1A9E81483701A47F530B070BAD0F7A17F",
+      "c_reconstructed_sha256": "4B8742236E5FB5170C172C227F3E2CB1A9E81483701A47F530B070BAD0F7A17F",
+      "gray_input_pixels": 0,
+      "id": "family_micro_alert_step_4",
+      "kind": "micro",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/family_micro_alert_step_4.pbm",
+      "pbm_sha256": "4BB6827E520BD69487FEE508E033334A496C0A14DF6C9150ACD966B60DBC4289",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "family": "alert",
+        "micro_step": 4
+      },
+      "unique_frame_index": 56
+    },
+    {
+      "black_bounds": [
+        34,
+        87,
+        166,
+        168
+      ],
+      "black_pixels": 2983,
+      "browser_frame_sha256": "C478287951E1DD472CF93C84CF3007D97C65A7ADCBAB84E615F08793F9D7DEAA",
+      "c_reconstructed_sha256": "C478287951E1DD472CF93C84CF3007D97C65A7ADCBAB84E615F08793F9D7DEAA",
+      "gray_input_pixels": 0,
+      "id": "gaze_center",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/gaze_center.pbm",
+      "pbm_sha256": "1A05B0C83C98B4F9D1F1DCC2182C450C6F91758F61A09DFC6938D4C1F1E8D36D",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 4,
+        "gaze_key": "1,0,1,0",
+        "story": "calm_presence"
+      },
+      "unique_frame_index": 0
+    },
+    {
+      "black_bounds": [
+        34,
+        87,
+        166,
+        168
+      ],
+      "black_pixels": 2975,
+      "browser_frame_sha256": "824379CAC9A6AD351088AF20289B90427449FDD5333190651F1E17FFF0F5BDD5",
+      "c_reconstructed_sha256": "824379CAC9A6AD351088AF20289B90427449FDD5333190651F1E17FFF0F5BDD5",
+      "gray_input_pixels": 0,
+      "id": "gaze_left",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/gaze_left.pbm",
+      "pbm_sha256": "DD707BA705595F9BAF961D3278F4F75A1D7DDDA246C2E8301D3F228097090526",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 4,
+        "gaze_key": "-2,0,-6,0",
+        "story": "calm_presence"
+      },
+      "unique_frame_index": 59
+    },
+    {
+      "black_bounds": [
+        34,
+        87,
+        166,
+        168
+      ],
+      "black_pixels": 2914,
+      "browser_frame_sha256": "512448B7A7C133010659395DF2C6501A22EB1E6A3940541C7BBF1D42990FD377",
+      "c_reconstructed_sha256": "512448B7A7C133010659395DF2C6501A22EB1E6A3940541C7BBF1D42990FD377",
+      "gray_input_pixels": 0,
+      "id": "gaze_up",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/gaze_up.pbm",
+      "pbm_sha256": "49376DF54BF0DBC5A783114C03C09B628C2A240047E07C9F5E7FA39049C0A055",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 4,
+        "gaze_key": "1,-3,1,-6",
+        "story": "calm_presence"
+      },
+      "unique_frame_index": 60
+    },
+    {
+      "black_bounds": [
+        34,
+        87,
+        166,
+        168
+      ],
+      "black_pixels": 2978,
+      "browser_frame_sha256": "4336947CD5474FE82365695FD058F6A185CE55F4A581036A36DBC0169CF8A267",
+      "c_reconstructed_sha256": "4336947CD5474FE82365695FD058F6A185CE55F4A581036A36DBC0169CF8A267",
+      "gray_input_pixels": 0,
+      "id": "gaze_right",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/gaze_right.pbm",
+      "pbm_sha256": "CA755637942B1B795CF5E16D13AAD7C4AAD50B538201965211135844EB8C9862",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 4,
+        "gaze_key": "5,0,5,0",
+        "story": "calm_presence"
+      },
+      "unique_frame_index": 61
+    },
+    {
+      "black_bounds": [
+        34,
+        87,
+        166,
+        168
+      ],
+      "black_pixels": 3007,
+      "browser_frame_sha256": "E455ECCB48EED186B26384CF268A0F8A4D8D485321176FF4934C80501AA55ED7",
+      "c_reconstructed_sha256": "E455ECCB48EED186B26384CF268A0F8A4D8D485321176FF4934C80501AA55ED7",
+      "gray_input_pixels": 0,
+      "id": "gaze_down",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/gaze_down.pbm",
+      "pbm_sha256": "1659C4B97D3519246735B21E4C43B9F3B1060D04B0B5E3DA502422ECB385752F",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 4,
+        "gaze_key": "1,4,1,6",
+        "story": "calm_presence"
+      },
+      "unique_frame_index": 62
+    },
+    {
+      "black_bounds": [
+        34,
+        87,
+        166,
+        168
+      ],
+      "black_pixels": 1685,
+      "browser_frame_sha256": "D93BF3D7ECC6C678D9EFE7CBA205139F1B3DAF126082A1E5C8FDB7B9B61AFA88",
+      "c_reconstructed_sha256": "D93BF3D7ECC6C678D9EFE7CBA205139F1B3DAF126082A1E5C8FDB7B9B61AFA88",
+      "gray_input_pixels": 0,
+      "id": "blink_0",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/blink_0.pbm",
+      "pbm_sha256": "B46E339B1BF6EF7FD2700A26F113278A74361249CD476051345CCE3709711345",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 1,
+        "gaze_key": "1,0,1,0",
+        "story": "calm_presence"
+      },
+      "unique_frame_index": 1
+    },
+    {
+      "black_bounds": [
+        34,
+        87,
+        166,
+        168
+      ],
+      "black_pixels": 864,
+      "browser_frame_sha256": "7B3C5C8A3D7D5514BE16F67BD248E001261BA2838BE2809CF581DCBEF1B9BE57",
+      "c_reconstructed_sha256": "7B3C5C8A3D7D5514BE16F67BD248E001261BA2838BE2809CF581DCBEF1B9BE57",
+      "gray_input_pixels": 0,
+      "id": "blink_1",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/blink_1.pbm",
+      "pbm_sha256": "9F785BCF1D05B0732E5692FC20EEFE91FEF61380343D194464FD241D169F46BA",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 2,
+        "gaze_key": "1,0,1,0",
+        "story": "calm_presence"
+      },
+      "unique_frame_index": 63
+    },
+    {
+      "black_bounds": [
+        34,
+        87,
+        166,
+        168
+      ],
+      "black_pixels": 1686,
+      "browser_frame_sha256": "9A2679B975E59D19FE122116AFAA8544D252DAA316D37B06D312FFFE34E23915",
+      "c_reconstructed_sha256": "9A2679B975E59D19FE122116AFAA8544D252DAA316D37B06D312FFFE34E23915",
+      "gray_input_pixels": 0,
+      "id": "blink_2",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/blink_2.pbm",
+      "pbm_sha256": "053387BCC6D8D54362EB863594F2F169512E5A2196AF84BC092059A3C52482CA",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 3,
+        "gaze_key": "1,0,1,0",
+        "story": "calm_presence"
+      },
+      "unique_frame_index": 64
+    },
+    {
+      "black_bounds": [
+        34,
+        87,
+        166,
+        168
+      ],
+      "black_pixels": 2983,
+      "browser_frame_sha256": "C478287951E1DD472CF93C84CF3007D97C65A7ADCBAB84E615F08793F9D7DEAA",
+      "c_reconstructed_sha256": "C478287951E1DD472CF93C84CF3007D97C65A7ADCBAB84E615F08793F9D7DEAA",
+      "gray_input_pixels": 0,
+      "id": "blink_3",
+      "kind": "expression",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/blink_3.pbm",
+      "pbm_sha256": "1A05B0C83C98B4F9D1F1DCC2182C450C6F91758F61A09DFC6938D4C1F1E8D36D",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "frame_index": 4,
+        "gaze_key": "1,0,1,0",
+        "story": "calm_presence"
+      },
+      "unique_frame_index": 0
+    },
+    {
+      "black_bounds": [
+        0,
+        2,
+        199,
+        198
+      ],
+      "black_pixels": 3144,
+      "browser_frame_sha256": "EA85CFB199657D7829D181DD3D62BF19612F995E47C58112FFA7E713790DEFA0",
+      "c_reconstructed_sha256": "EA85CFB199657D7829D181DD3D62BF19612F995E47C58112FFA7E713790DEFA0",
+      "gray_input_pixels": 0,
+      "id": "menu_roots",
+      "kind": "menu",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/menu_roots.pbm",
+      "pbm_sha256": "8A469694911F60EE709BA63F8DDFE8C6BE1979914E4D9448200EC611471444E0",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "src": "/docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/01-home.png"
+      },
+      "unique_frame_index": 65
+    },
+    {
+      "black_bounds": [
+        0,
+        1,
+        199,
+        198
+      ],
+      "black_pixels": 3280,
+      "browser_frame_sha256": "7B3C8FAAF42DFEC2F309F43A6D769A8A1F5A4789BCD0CF46D0555F89A9A7169A",
+      "c_reconstructed_sha256": "7B3C8FAAF42DFEC2F309F43A6D769A8A1F5A4789BCD0CF46D0555F89A9A7169A",
+      "gray_input_pixels": 0,
+      "id": "menu_voice",
+      "kind": "menu",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/menu_voice.pbm",
+      "pbm_sha256": "73EE2C66AB7F098EA3A33017FAF8625449F981F67D8B21609D6220621DF257F8",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "src": "/docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/02-voice.png"
+      },
+      "unique_frame_index": 66
+    },
+    {
+      "black_bounds": [
+        6,
+        0,
+        194,
+        199
+      ],
+      "black_pixels": 4118,
+      "browser_frame_sha256": "6C237EFA7573A35578849CE3E337FE2156CCDE2125AD4BB9D252830ECF3F677A",
+      "c_reconstructed_sha256": "6C237EFA7573A35578849CE3E337FE2156CCDE2125AD4BB9D252830ECF3F677A",
+      "gray_input_pixels": 0,
+      "id": "menu_device",
+      "kind": "menu",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/menu_device.pbm",
+      "pbm_sha256": "47DCA8921A432E6F76DD88A5742451FBEE0FF44F40BEB6B531C1DB4B279B0960",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "src": "/docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/03-device.png"
+      },
+      "unique_frame_index": 67
+    },
+    {
+      "black_bounds": [
+        6,
+        0,
+        194,
+        199
+      ],
+      "black_pixels": 3027,
+      "browser_frame_sha256": "F103D49AF3A8B315CE6B2D8CDB4474CD3F2D62C19C7E1F8105DA43AE32C3FC15",
+      "c_reconstructed_sha256": "F103D49AF3A8B315CE6B2D8CDB4474CD3F2D62C19C7E1F8105DA43AE32C3FC15",
+      "gray_input_pixels": 0,
+      "id": "menu_connection",
+      "kind": "menu",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/menu_connection.pbm",
+      "pbm_sha256": "94327696B2304E1B85AE60AEAECBE1852B38FF2EB0DA1FB0D13F249352A84C76",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "src": "/docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/04-connection.png"
+      },
+      "unique_frame_index": 68
+    },
+    {
+      "black_bounds": [
+        5,
+        0,
+        193,
+        199
+      ],
+      "black_pixels": 3871,
+      "browser_frame_sha256": "AE0BC022B83A98AC42D7B54819718136FF745A4A1A4EF036E3D33655E43EB29C",
+      "c_reconstructed_sha256": "AE0BC022B83A98AC42D7B54819718136FF745A4A1A4EF036E3D33655E43EB29C",
+      "gray_input_pixels": 0,
+      "id": "menu_preferences",
+      "kind": "menu",
+      "meter": null,
+      "orientation_transform": "identity",
+      "pbm_file": "frames/menu_preferences.pbm",
+      "pbm_sha256": "2E9EB6A6B5F866DFDE450C0388D83BEF3C0D6C71138645B9E84C532AC0744970",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "src": "/docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/05-preferences.png"
+      },
+      "unique_frame_index": 69
+    },
+    {
+      "black_bounds": [
+        34,
+        63,
+        195,
+        168
+      ],
+      "black_pixels": 2791,
+      "browser_frame_sha256": "2BD488C7F9775666EDEB525C5BE52A26001C676A44FB04FDA8BCF59CCA571D6F",
+      "c_reconstructed_sha256": "2BD488C7F9775666EDEB525C5BE52A26001C676A44FB04FDA8BCF59CCA571D6F",
+      "gray_input_pixels": 0,
+      "id": "recording_calm_hold_meter_0",
+      "kind": "micro",
+      "meter": {
+        "column_count": 3,
+        "columns": [
+          {
+            "bounds": {
+              "x_max": 173,
+              "x_min": 170,
+              "y_max": 72,
+              "y_min": 67
+            },
+            "direction": "toward_listening_point",
+            "energy_level": 6,
+            "geometry": {
+              "height": 6,
+              "width": 4
+            },
+            "slot": 0
+          },
+          {
+            "bounds": {
+              "x_max": 184,
+              "x_min": 181,
+              "y_max": 76,
+              "y_min": 63
+            },
+            "direction": "toward_listening_point",
+            "energy_level": 14,
+            "geometry": {
+              "height": 14,
+              "width": 4
+            },
+            "slot": 1
+          },
+          {
+            "bounds": {
+              "x_max": 195,
+              "x_min": 192,
+              "y_max": 73,
+              "y_min": 66
+            },
+            "direction": "outer_input",
+            "energy_level": 8,
+            "geometry": {
+              "height": 8,
+              "width": 4
+            },
+            "slot": 2
+          }
+        ],
+        "cycle": 0,
+        "gray_pixels": 0,
+        "ink_pixels": 112,
+        "listening_point": {
+          "x": 158,
+          "y": 70
+        },
+        "samples": [
+          6,
+          14,
+          8
+        ],
+        "step": 0,
+        "transition": {
+          "absorbed": null,
+          "inserted": null,
+          "shifted": []
+        }
+      },
+      "orientation_transform": "identity",
+      "pbm_file": "frames/recording_calm_hold_meter_0.pbm",
+      "pbm_sha256": "6C9852448B9374A1BEBCC4835E802A1E9FC4E617337770E79DD9D55C19E3C933",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "accessory": true,
+        "family": "calm",
+        "meter_step": 0,
+        "micro_step": 0
+      },
+      "unique_frame_index": 70
+    },
+    {
+      "black_bounds": [
+        32,
+        34,
+        195,
+        173
+      ],
+      "black_pixels": 3037,
+      "browser_frame_sha256": "BE7E467D042F0C6F4EAD60DC48D1C7E0AAE1DFB8FADFF83985B32E64EFCA605D",
+      "c_reconstructed_sha256": "BE7E467D042F0C6F4EAD60DC48D1C7E0AAE1DFB8FADFF83985B32E64EFCA605D",
+      "gray_input_pixels": 0,
+      "id": "recording_curious_hold_meter_0",
+      "kind": "micro",
+      "meter": {
+        "column_count": 3,
+        "columns": [
+          {
+            "bounds": {
+              "x_max": 173,
+              "x_min": 170,
+              "y_max": 72,
+              "y_min": 67
+            },
+            "direction": "toward_listening_point",
+            "energy_level": 6,
+            "geometry": {
+              "height": 6,
+              "width": 4
+            },
+            "slot": 0
+          },
+          {
+            "bounds": {
+              "x_max": 184,
+              "x_min": 181,
+              "y_max": 76,
+              "y_min": 63
+            },
+            "direction": "toward_listening_point",
+            "energy_level": 14,
+            "geometry": {
+              "height": 14,
+              "width": 4
+            },
+            "slot": 1
+          },
+          {
+            "bounds": {
+              "x_max": 195,
+              "x_min": 192,
+              "y_max": 73,
+              "y_min": 66
+            },
+            "direction": "outer_input",
+            "energy_level": 8,
+            "geometry": {
+              "height": 8,
+              "width": 4
+            },
+            "slot": 2
+          }
+        ],
+        "cycle": 0,
+        "gray_pixels": 0,
+        "ink_pixels": 112,
+        "listening_point": {
+          "x": 158,
+          "y": 70
+        },
+        "samples": [
+          6,
+          14,
+          8
+        ],
+        "step": 0,
+        "transition": {
+          "absorbed": null,
+          "inserted": null,
+          "shifted": []
+        }
+      },
+      "orientation_transform": "identity",
+      "pbm_file": "frames/recording_curious_hold_meter_0.pbm",
+      "pbm_sha256": "A7A07710270C9D0CD0B917BE447E031E92CA436BAF0B4B982D4A499B1C814D3F",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "accessory": true,
+        "family": "curious",
+        "meter_step": 0,
+        "micro_step": 0
+      },
+      "unique_frame_index": 71
+    },
+    {
+      "black_bounds": [
+        33,
+        63,
+        195,
+        177
+      ],
+      "black_pixels": 3110,
+      "browser_frame_sha256": "513E57ED165C9B135C396AE5036F00B0A1275EDBF33FCE029B47E0A3F2489161",
+      "c_reconstructed_sha256": "513E57ED165C9B135C396AE5036F00B0A1275EDBF33FCE029B47E0A3F2489161",
+      "gray_input_pixels": 0,
+      "id": "recording_warm_hold_meter_0",
+      "kind": "micro",
+      "meter": {
+        "column_count": 3,
+        "columns": [
+          {
+            "bounds": {
+              "x_max": 173,
+              "x_min": 170,
+              "y_max": 72,
+              "y_min": 67
+            },
+            "direction": "toward_listening_point",
+            "energy_level": 6,
+            "geometry": {
+              "height": 6,
+              "width": 4
+            },
+            "slot": 0
+          },
+          {
+            "bounds": {
+              "x_max": 184,
+              "x_min": 181,
+              "y_max": 76,
+              "y_min": 63
+            },
+            "direction": "toward_listening_point",
+            "energy_level": 14,
+            "geometry": {
+              "height": 14,
+              "width": 4
+            },
+            "slot": 1
+          },
+          {
+            "bounds": {
+              "x_max": 195,
+              "x_min": 192,
+              "y_max": 73,
+              "y_min": 66
+            },
+            "direction": "outer_input",
+            "energy_level": 8,
+            "geometry": {
+              "height": 8,
+              "width": 4
+            },
+            "slot": 2
+          }
+        ],
+        "cycle": 0,
+        "gray_pixels": 0,
+        "ink_pixels": 112,
+        "listening_point": {
+          "x": 158,
+          "y": 70
+        },
+        "samples": [
+          6,
+          14,
+          8
+        ],
+        "step": 0,
+        "transition": {
+          "absorbed": null,
+          "inserted": null,
+          "shifted": []
+        }
+      },
+      "orientation_transform": "identity",
+      "pbm_file": "frames/recording_warm_hold_meter_0.pbm",
+      "pbm_sha256": "DFE166B2E0C26D210AD88E7FE45314215A75FBC87CA9C9A381C3CB2643F20402",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "accessory": true,
+        "family": "warm",
+        "meter_step": 0,
+        "micro_step": 0
+      },
+      "unique_frame_index": 72
+    },
+    {
+      "black_bounds": [
+        32,
+        63,
+        195,
+        170
+      ],
+      "black_pixels": 3016,
+      "browser_frame_sha256": "13978276AE1F8A8B4F6E217073306EDD976F3611C4CD8FAF73D86E78C61BE10A",
+      "c_reconstructed_sha256": "13978276AE1F8A8B4F6E217073306EDD976F3611C4CD8FAF73D86E78C61BE10A",
+      "gray_input_pixels": 0,
+      "id": "recording_playful_hold_meter_0",
+      "kind": "micro",
+      "meter": {
+        "column_count": 3,
+        "columns": [
+          {
+            "bounds": {
+              "x_max": 173,
+              "x_min": 170,
+              "y_max": 72,
+              "y_min": 67
+            },
+            "direction": "toward_listening_point",
+            "energy_level": 6,
+            "geometry": {
+              "height": 6,
+              "width": 4
+            },
+            "slot": 0
+          },
+          {
+            "bounds": {
+              "x_max": 184,
+              "x_min": 181,
+              "y_max": 76,
+              "y_min": 63
+            },
+            "direction": "toward_listening_point",
+            "energy_level": 14,
+            "geometry": {
+              "height": 14,
+              "width": 4
+            },
+            "slot": 1
+          },
+          {
+            "bounds": {
+              "x_max": 195,
+              "x_min": 192,
+              "y_max": 73,
+              "y_min": 66
+            },
+            "direction": "outer_input",
+            "energy_level": 8,
+            "geometry": {
+              "height": 8,
+              "width": 4
+            },
+            "slot": 2
+          }
+        ],
+        "cycle": 0,
+        "gray_pixels": 0,
+        "ink_pixels": 112,
+        "listening_point": {
+          "x": 158,
+          "y": 70
+        },
+        "samples": [
+          6,
+          14,
+          8
+        ],
+        "step": 0,
+        "transition": {
+          "absorbed": null,
+          "inserted": null,
+          "shifted": []
+        }
+      },
+      "orientation_transform": "identity",
+      "pbm_file": "frames/recording_playful_hold_meter_0.pbm",
+      "pbm_sha256": "D64572BB9E94CEC8A87A568922E85D6793089704310790FB393C5F076E73B8E0",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "accessory": true,
+        "family": "playful",
+        "meter_step": 0,
+        "micro_step": 0
+      },
+      "unique_frame_index": 73
+    },
+    {
+      "black_bounds": [
+        34,
+        27,
+        195,
+        169
+      ],
+      "black_pixels": 1563,
+      "browser_frame_sha256": "0B242A823B8AA0AE416DC2BA87CAFC9BE403BD240FFE5E259F8E174DEE37D9D7",
+      "c_reconstructed_sha256": "0B242A823B8AA0AE416DC2BA87CAFC9BE403BD240FFE5E259F8E174DEE37D9D7",
+      "gray_input_pixels": 0,
+      "id": "recording_sleepy_hold_meter_0",
+      "kind": "micro",
+      "meter": {
+        "column_count": 3,
+        "columns": [
+          {
+            "bounds": {
+              "x_max": 173,
+              "x_min": 170,
+              "y_max": 72,
+              "y_min": 67
+            },
+            "direction": "toward_listening_point",
+            "energy_level": 6,
+            "geometry": {
+              "height": 6,
+              "width": 4
+            },
+            "slot": 0
+          },
+          {
+            "bounds": {
+              "x_max": 184,
+              "x_min": 181,
+              "y_max": 76,
+              "y_min": 63
+            },
+            "direction": "toward_listening_point",
+            "energy_level": 14,
+            "geometry": {
+              "height": 14,
+              "width": 4
+            },
+            "slot": 1
+          },
+          {
+            "bounds": {
+              "x_max": 195,
+              "x_min": 192,
+              "y_max": 73,
+              "y_min": 66
+            },
+            "direction": "outer_input",
+            "energy_level": 8,
+            "geometry": {
+              "height": 8,
+              "width": 4
+            },
+            "slot": 2
+          }
+        ],
+        "cycle": 0,
+        "gray_pixels": 0,
+        "ink_pixels": 112,
+        "listening_point": {
+          "x": 158,
+          "y": 70
+        },
+        "samples": [
+          6,
+          14,
+          8
+        ],
+        "step": 0,
+        "transition": {
+          "absorbed": null,
+          "inserted": null,
+          "shifted": []
+        }
+      },
+      "orientation_transform": "identity",
+      "pbm_file": "frames/recording_sleepy_hold_meter_0.pbm",
+      "pbm_sha256": "92FC9804537D689913AC3164E69DB60D6B00F7B52C7D5187BCCD52D47B6CE8A8",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "accessory": true,
+        "family": "sleepy",
+        "meter_step": 0,
+        "micro_step": 0
+      },
+      "unique_frame_index": 74
+    },
+    {
+      "black_bounds": [
+        33,
+        63,
+        195,
+        169
+      ],
+      "black_pixels": 2972,
+      "browser_frame_sha256": "FC384E9DAE82B71C87A93E88569C9063916F7CE290A367EDFE55B99C02D5E163",
+      "c_reconstructed_sha256": "FC384E9DAE82B71C87A93E88569C9063916F7CE290A367EDFE55B99C02D5E163",
+      "gray_input_pixels": 0,
+      "id": "recording_delighted_hold_meter_0",
+      "kind": "micro",
+      "meter": {
+        "column_count": 3,
+        "columns": [
+          {
+            "bounds": {
+              "x_max": 173,
+              "x_min": 170,
+              "y_max": 72,
+              "y_min": 67
+            },
+            "direction": "toward_listening_point",
+            "energy_level": 6,
+            "geometry": {
+              "height": 6,
+              "width": 4
+            },
+            "slot": 0
+          },
+          {
+            "bounds": {
+              "x_max": 184,
+              "x_min": 181,
+              "y_max": 76,
+              "y_min": 63
+            },
+            "direction": "toward_listening_point",
+            "energy_level": 14,
+            "geometry": {
+              "height": 14,
+              "width": 4
+            },
+            "slot": 1
+          },
+          {
+            "bounds": {
+              "x_max": 195,
+              "x_min": 192,
+              "y_max": 73,
+              "y_min": 66
+            },
+            "direction": "outer_input",
+            "energy_level": 8,
+            "geometry": {
+              "height": 8,
+              "width": 4
+            },
+            "slot": 2
+          }
+        ],
+        "cycle": 0,
+        "gray_pixels": 0,
+        "ink_pixels": 112,
+        "listening_point": {
+          "x": 158,
+          "y": 70
+        },
+        "samples": [
+          6,
+          14,
+          8
+        ],
+        "step": 0,
+        "transition": {
+          "absorbed": null,
+          "inserted": null,
+          "shifted": []
+        }
+      },
+      "orientation_transform": "identity",
+      "pbm_file": "frames/recording_delighted_hold_meter_0.pbm",
+      "pbm_sha256": "6968A3054B334E94ED6CACD3D825334ED40D010A3161AF04A3027EB225A1CC7B",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "accessory": true,
+        "family": "delighted",
+        "meter_step": 0,
+        "micro_step": 0
+      },
+      "unique_frame_index": 75
+    },
+    {
+      "black_bounds": [
+        42,
+        63,
+        195,
+        170
+      ],
+      "black_pixels": 2765,
+      "browser_frame_sha256": "3840B54301A8224F187F57E5142983C08E83E1688AA7259B7DC677ED123AD61C",
+      "c_reconstructed_sha256": "3840B54301A8224F187F57E5142983C08E83E1688AA7259B7DC677ED123AD61C",
+      "gray_input_pixels": 0,
+      "id": "recording_bashful_hold_meter_0",
+      "kind": "micro",
+      "meter": {
+        "column_count": 3,
+        "columns": [
+          {
+            "bounds": {
+              "x_max": 173,
+              "x_min": 170,
+              "y_max": 72,
+              "y_min": 67
+            },
+            "direction": "toward_listening_point",
+            "energy_level": 6,
+            "geometry": {
+              "height": 6,
+              "width": 4
+            },
+            "slot": 0
+          },
+          {
+            "bounds": {
+              "x_max": 184,
+              "x_min": 181,
+              "y_max": 76,
+              "y_min": 63
+            },
+            "direction": "toward_listening_point",
+            "energy_level": 14,
+            "geometry": {
+              "height": 14,
+              "width": 4
+            },
+            "slot": 1
+          },
+          {
+            "bounds": {
+              "x_max": 195,
+              "x_min": 192,
+              "y_max": 73,
+              "y_min": 66
+            },
+            "direction": "outer_input",
+            "energy_level": 8,
+            "geometry": {
+              "height": 8,
+              "width": 4
+            },
+            "slot": 2
+          }
+        ],
+        "cycle": 0,
+        "gray_pixels": 0,
+        "ink_pixels": 112,
+        "listening_point": {
+          "x": 158,
+          "y": 70
+        },
+        "samples": [
+          6,
+          14,
+          8
+        ],
+        "step": 0,
+        "transition": {
+          "absorbed": null,
+          "inserted": null,
+          "shifted": []
+        }
+      },
+      "orientation_transform": "identity",
+      "pbm_file": "frames/recording_bashful_hold_meter_0.pbm",
+      "pbm_sha256": "6A09A7B64DDA0BC4A716DBBDA1AA07B806DE4058FB37F4BABEF9F73FA871653B",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "accessory": true,
+        "family": "bashful",
+        "meter_step": 0,
+        "micro_step": 0
+      },
+      "unique_frame_index": 76
+    },
+    {
+      "black_bounds": [
+        33,
+        63,
+        195,
+        167
+      ],
+      "black_pixels": 2789,
+      "browser_frame_sha256": "8AB58CAC258A95F0AA40B1596358D1EA06BC3BCB63D60C76BE046AC96C60AC7A",
+      "c_reconstructed_sha256": "8AB58CAC258A95F0AA40B1596358D1EA06BC3BCB63D60C76BE046AC96C60AC7A",
+      "gray_input_pixels": 0,
+      "id": "recording_thoughtful_hold_meter_0",
+      "kind": "micro",
+      "meter": {
+        "column_count": 3,
+        "columns": [
+          {
+            "bounds": {
+              "x_max": 173,
+              "x_min": 170,
+              "y_max": 72,
+              "y_min": 67
+            },
+            "direction": "toward_listening_point",
+            "energy_level": 6,
+            "geometry": {
+              "height": 6,
+              "width": 4
+            },
+            "slot": 0
+          },
+          {
+            "bounds": {
+              "x_max": 184,
+              "x_min": 181,
+              "y_max": 76,
+              "y_min": 63
+            },
+            "direction": "toward_listening_point",
+            "energy_level": 14,
+            "geometry": {
+              "height": 14,
+              "width": 4
+            },
+            "slot": 1
+          },
+          {
+            "bounds": {
+              "x_max": 195,
+              "x_min": 192,
+              "y_max": 73,
+              "y_min": 66
+            },
+            "direction": "outer_input",
+            "energy_level": 8,
+            "geometry": {
+              "height": 8,
+              "width": 4
+            },
+            "slot": 2
+          }
+        ],
+        "cycle": 0,
+        "gray_pixels": 0,
+        "ink_pixels": 112,
+        "listening_point": {
+          "x": 158,
+          "y": 70
+        },
+        "samples": [
+          6,
+          14,
+          8
+        ],
+        "step": 0,
+        "transition": {
+          "absorbed": null,
+          "inserted": null,
+          "shifted": []
+        }
+      },
+      "orientation_transform": "identity",
+      "pbm_file": "frames/recording_thoughtful_hold_meter_0.pbm",
+      "pbm_sha256": "480F8CFFD21F92377437EA1A00B107D3CF1889BA2C256198F698FEB7B5113ACD",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "accessory": true,
+        "family": "thoughtful",
+        "meter_step": 0,
+        "micro_step": 0
+      },
+      "unique_frame_index": 77
+    },
+    {
+      "black_bounds": [
+        33,
+        63,
+        195,
+        169
+      ],
+      "black_pixels": 2773,
+      "browser_frame_sha256": "E384D98BCDB9EE99E5717C1F8D897BD32ED6B0003C4E57781D6D1F56F2D27569",
+      "c_reconstructed_sha256": "E384D98BCDB9EE99E5717C1F8D897BD32ED6B0003C4E57781D6D1F56F2D27569",
+      "gray_input_pixels": 0,
+      "id": "recording_focused_hold_meter_0",
+      "kind": "micro",
+      "meter": {
+        "column_count": 3,
+        "columns": [
+          {
+            "bounds": {
+              "x_max": 173,
+              "x_min": 170,
+              "y_max": 72,
+              "y_min": 67
+            },
+            "direction": "toward_listening_point",
+            "energy_level": 6,
+            "geometry": {
+              "height": 6,
+              "width": 4
+            },
+            "slot": 0
+          },
+          {
+            "bounds": {
+              "x_max": 184,
+              "x_min": 181,
+              "y_max": 76,
+              "y_min": 63
+            },
+            "direction": "toward_listening_point",
+            "energy_level": 14,
+            "geometry": {
+              "height": 14,
+              "width": 4
+            },
+            "slot": 1
+          },
+          {
+            "bounds": {
+              "x_max": 195,
+              "x_min": 192,
+              "y_max": 73,
+              "y_min": 66
+            },
+            "direction": "outer_input",
+            "energy_level": 8,
+            "geometry": {
+              "height": 8,
+              "width": 4
+            },
+            "slot": 2
+          }
+        ],
+        "cycle": 0,
+        "gray_pixels": 0,
+        "ink_pixels": 112,
+        "listening_point": {
+          "x": 158,
+          "y": 70
+        },
+        "samples": [
+          6,
+          14,
+          8
+        ],
+        "step": 0,
+        "transition": {
+          "absorbed": null,
+          "inserted": null,
+          "shifted": []
+        }
+      },
+      "orientation_transform": "identity",
+      "pbm_file": "frames/recording_focused_hold_meter_0.pbm",
+      "pbm_sha256": "7655A70567D95C6E2C9C17648CB6D2844D3734BBABE9AB9BBDAD8249C94A7B3D",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "accessory": true,
+        "family": "focused",
+        "meter_step": 0,
+        "micro_step": 0
+      },
+      "unique_frame_index": 78
+    },
+    {
+      "black_bounds": [
+        33,
+        35,
+        195,
+        176
+      ],
+      "black_pixels": 3052,
+      "browser_frame_sha256": "127902B118A131D73C16BA4B81297A989DF0FF430A865FA9C8DDA8DE5FB58E06",
+      "c_reconstructed_sha256": "127902B118A131D73C16BA4B81297A989DF0FF430A865FA9C8DDA8DE5FB58E06",
+      "gray_input_pixels": 0,
+      "id": "recording_alert_hold_meter_0",
+      "kind": "micro",
+      "meter": {
+        "column_count": 3,
+        "columns": [
+          {
+            "bounds": {
+              "x_max": 173,
+              "x_min": 170,
+              "y_max": 72,
+              "y_min": 67
+            },
+            "direction": "toward_listening_point",
+            "energy_level": 6,
+            "geometry": {
+              "height": 6,
+              "width": 4
+            },
+            "slot": 0
+          },
+          {
+            "bounds": {
+              "x_max": 184,
+              "x_min": 181,
+              "y_max": 76,
+              "y_min": 63
+            },
+            "direction": "toward_listening_point",
+            "energy_level": 14,
+            "geometry": {
+              "height": 14,
+              "width": 4
+            },
+            "slot": 1
+          },
+          {
+            "bounds": {
+              "x_max": 195,
+              "x_min": 192,
+              "y_max": 73,
+              "y_min": 66
+            },
+            "direction": "outer_input",
+            "energy_level": 8,
+            "geometry": {
+              "height": 8,
+              "width": 4
+            },
+            "slot": 2
+          }
+        ],
+        "cycle": 0,
+        "gray_pixels": 0,
+        "ink_pixels": 112,
+        "listening_point": {
+          "x": 158,
+          "y": 70
+        },
+        "samples": [
+          6,
+          14,
+          8
+        ],
+        "step": 0,
+        "transition": {
+          "absorbed": null,
+          "inserted": null,
+          "shifted": []
+        }
+      },
+      "orientation_transform": "identity",
+      "pbm_file": "frames/recording_alert_hold_meter_0.pbm",
+      "pbm_sha256": "481ADD52688B4A3F83D3C6A7714919590C02CC926CF7B9DA75CD0120D5BFEB79",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "accessory": true,
+        "family": "alert",
+        "meter_step": 0,
+        "micro_step": 0
+      },
+      "unique_frame_index": 79
+    },
+    {
+      "black_bounds": [
+        34,
+        62,
+        195,
+        168
+      ],
+      "black_pixels": 2831,
+      "browser_frame_sha256": "0379B415DDE09804C4E865E53D5C79C5C8405EFB831F3488B24B6009A79BDFD6",
+      "c_reconstructed_sha256": "0379B415DDE09804C4E865E53D5C79C5C8405EFB831F3488B24B6009A79BDFD6",
+      "gray_input_pixels": 0,
+      "id": "recording_calm_hold_meter_1",
+      "kind": "micro",
+      "meter": {
+        "column_count": 3,
+        "columns": [
+          {
+            "bounds": {
+              "x_max": 173,
+              "x_min": 170,
+              "y_max": 76,
+              "y_min": 63
+            },
+            "direction": "toward_listening_point",
+            "energy_level": 14,
+            "geometry": {
+              "height": 14,
+              "width": 4
+            },
+            "slot": 0
+          },
+          {
+            "bounds": {
+              "x_max": 184,
+              "x_min": 181,
+              "y_max": 73,
+              "y_min": 66
+            },
+            "direction": "toward_listening_point",
+            "energy_level": 8,
+            "geometry": {
+              "height": 8,
+              "width": 4
+            },
+            "slot": 1
+          },
+          {
+            "bounds": {
+              "x_max": 195,
+              "x_min": 192,
+              "y_max": 77,
+              "y_min": 62
+            },
+            "direction": "outer_input",
+            "energy_level": 16,
+            "geometry": {
+              "height": 16,
+              "width": 4
+            },
+            "slot": 2
+          }
+        ],
+        "cycle": 0,
+        "gray_pixels": 0,
+        "ink_pixels": 152,
+        "listening_point": {
+          "x": 158,
+          "y": 70
+        },
+        "samples": [
+          14,
+          8,
+          16
+        ],
+        "step": 1,
+        "transition": {
+          "absorbed": 6,
+          "inserted": {
+            "level": 16,
+            "slot": 2
+          },
+          "shifted": [
+            {
+              "from": 1,
+              "level": 14,
+              "to": 0
+            },
+            {
+              "from": 2,
+              "level": 8,
+              "to": 1
+            }
+          ]
+        }
+      },
+      "orientation_transform": "identity",
+      "pbm_file": "frames/recording_calm_hold_meter_1.pbm",
+      "pbm_sha256": "6D6F29B71CA00DAE0A13D9FBB5536012BD23A217DB917DF780DBD1E113FFC2EA",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "accessory": true,
+        "family": "calm",
+        "meter_step": 1,
+        "micro_step": 0
+      },
+      "unique_frame_index": 80
+    },
+    {
+      "black_bounds": [
+        34,
+        62,
+        195,
+        168
+      ],
+      "black_pixels": 2815,
+      "browser_frame_sha256": "AF040DF52F6EA70E4C4786565E43F4936D3EE008A9E917F16D21B8A09C5EB1AA",
+      "c_reconstructed_sha256": "AF040DF52F6EA70E4C4786565E43F4936D3EE008A9E917F16D21B8A09C5EB1AA",
+      "gray_input_pixels": 0,
+      "id": "recording_calm_hold_meter_2",
+      "kind": "micro",
+      "meter": {
+        "column_count": 3,
+        "columns": [
+          {
+            "bounds": {
+              "x_max": 173,
+              "x_min": 170,
+              "y_max": 73,
+              "y_min": 66
+            },
+            "direction": "toward_listening_point",
+            "energy_level": 8,
+            "geometry": {
+              "height": 8,
+              "width": 4
+            },
+            "slot": 0
+          },
+          {
+            "bounds": {
+              "x_max": 184,
+              "x_min": 181,
+              "y_max": 77,
+              "y_min": 62
+            },
+            "direction": "toward_listening_point",
+            "energy_level": 16,
+            "geometry": {
+              "height": 16,
+              "width": 4
+            },
+            "slot": 1
+          },
+          {
+            "bounds": {
+              "x_max": 195,
+              "x_min": 192,
+              "y_max": 74,
+              "y_min": 65
+            },
+            "direction": "outer_input",
+            "energy_level": 10,
+            "geometry": {
+              "height": 10,
+              "width": 4
+            },
+            "slot": 2
+          }
+        ],
+        "cycle": 0,
+        "gray_pixels": 0,
+        "ink_pixels": 136,
+        "listening_point": {
+          "x": 158,
+          "y": 70
+        },
+        "samples": [
+          8,
+          16,
+          10
+        ],
+        "step": 2,
+        "transition": {
+          "absorbed": 14,
+          "inserted": {
+            "level": 10,
+            "slot": 2
+          },
+          "shifted": [
+            {
+              "from": 1,
+              "level": 8,
+              "to": 0
+            },
+            {
+              "from": 2,
+              "level": 16,
+              "to": 1
+            }
+          ]
+        }
+      },
+      "orientation_transform": "identity",
+      "pbm_file": "frames/recording_calm_hold_meter_2.pbm",
+      "pbm_sha256": "E202EF77D3856235F37841D0E33299A85E50A038D221339A0F166C547C04A636",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "accessory": true,
+        "family": "calm",
+        "meter_step": 2,
+        "micro_step": 0
+      },
+      "unique_frame_index": 81
+    },
+    {
+      "black_bounds": [
+        34,
+        62,
+        195,
+        168
+      ],
+      "black_pixels": 2799,
+      "browser_frame_sha256": "402ECE3BD77D689D5D63B396FA0CA3817AA549DEB5EBEADD8B295B7CA15FF679",
+      "c_reconstructed_sha256": "402ECE3BD77D689D5D63B396FA0CA3817AA549DEB5EBEADD8B295B7CA15FF679",
+      "gray_input_pixels": 0,
+      "id": "recording_calm_hold_meter_3",
+      "kind": "micro",
+      "meter": {
+        "column_count": 3,
+        "columns": [
+          {
+            "bounds": {
+              "x_max": 173,
+              "x_min": 170,
+              "y_max": 77,
+              "y_min": 62
+            },
+            "direction": "toward_listening_point",
+            "energy_level": 16,
+            "geometry": {
+              "height": 16,
+              "width": 4
+            },
+            "slot": 0
+          },
+          {
+            "bounds": {
+              "x_max": 184,
+              "x_min": 181,
+              "y_max": 74,
+              "y_min": 65
+            },
+            "direction": "toward_listening_point",
+            "energy_level": 10,
+            "geometry": {
+              "height": 10,
+              "width": 4
+            },
+            "slot": 1
+          },
+          {
+            "bounds": {
+              "x_max": 195,
+              "x_min": 192,
+              "y_max": 71,
+              "y_min": 68
+            },
+            "direction": "outer_input",
+            "energy_level": 4,
+            "geometry": {
+              "height": 4,
+              "width": 4
+            },
+            "slot": 2
+          }
+        ],
+        "cycle": 0,
+        "gray_pixels": 0,
+        "ink_pixels": 120,
+        "listening_point": {
+          "x": 158,
+          "y": 70
+        },
+        "samples": [
+          16,
+          10,
+          4
+        ],
+        "step": 3,
+        "transition": {
+          "absorbed": 8,
+          "inserted": {
+            "level": 4,
+            "slot": 2
+          },
+          "shifted": [
+            {
+              "from": 1,
+              "level": 16,
+              "to": 0
+            },
+            {
+              "from": 2,
+              "level": 10,
+              "to": 1
+            }
+          ]
+        }
+      },
+      "orientation_transform": "identity",
+      "pbm_file": "frames/recording_calm_hold_meter_3.pbm",
+      "pbm_sha256": "30064087B1DDE4A6C270D56AB0AFA4A0B0DB2BE40D1C64AD260BB93B70B6217B",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "accessory": true,
+        "family": "calm",
+        "meter_step": 3,
+        "micro_step": 0
+      },
+      "unique_frame_index": 82
+    },
+    {
+      "black_bounds": [
+        34,
+        64,
+        195,
+        168
+      ],
+      "black_pixels": 2783,
+      "browser_frame_sha256": "2AA6464BEB28C383142FC72B316D5EFE3D466902F1AFB6B0D947C6B5F04617A7",
+      "c_reconstructed_sha256": "2AA6464BEB28C383142FC72B316D5EFE3D466902F1AFB6B0D947C6B5F04617A7",
+      "gray_input_pixels": 0,
+      "id": "recording_calm_hold_meter_4",
+      "kind": "micro",
+      "meter": {
+        "column_count": 3,
+        "columns": [
+          {
+            "bounds": {
+              "x_max": 173,
+              "x_min": 170,
+              "y_max": 74,
+              "y_min": 65
+            },
+            "direction": "toward_listening_point",
+            "energy_level": 10,
+            "geometry": {
+              "height": 10,
+              "width": 4
+            },
+            "slot": 0
+          },
+          {
+            "bounds": {
+              "x_max": 184,
+              "x_min": 181,
+              "y_max": 71,
+              "y_min": 68
+            },
+            "direction": "toward_listening_point",
+            "energy_level": 4,
+            "geometry": {
+              "height": 4,
+              "width": 4
+            },
+            "slot": 1
+          },
+          {
+            "bounds": {
+              "x_max": 195,
+              "x_min": 192,
+              "y_max": 75,
+              "y_min": 64
+            },
+            "direction": "outer_input",
+            "energy_level": 12,
+            "geometry": {
+              "height": 12,
+              "width": 4
+            },
+            "slot": 2
+          }
+        ],
+        "cycle": 0,
+        "gray_pixels": 0,
+        "ink_pixels": 104,
+        "listening_point": {
+          "x": 158,
+          "y": 70
+        },
+        "samples": [
+          10,
+          4,
+          12
+        ],
+        "step": 4,
+        "transition": {
+          "absorbed": 16,
+          "inserted": {
+            "level": 12,
+            "slot": 2
+          },
+          "shifted": [
+            {
+              "from": 1,
+              "level": 10,
+              "to": 0
+            },
+            {
+              "from": 2,
+              "level": 4,
+              "to": 1
+            }
+          ]
+        }
+      },
+      "orientation_transform": "identity",
+      "pbm_file": "frames/recording_calm_hold_meter_4.pbm",
+      "pbm_sha256": "8EE11BB825BC4D1582BBDC3A7841C0C54AB2306E1E940717C2F41D6D54580C6C",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "accessory": true,
+        "family": "calm",
+        "meter_step": 4,
+        "micro_step": 0
+      },
+      "unique_frame_index": 83
+    },
+    {
+      "black_bounds": [
+        34,
+        64,
+        195,
+        168
+      ],
+      "black_pixels": 2775,
+      "browser_frame_sha256": "76E818160B94E8C70ADE425CF7008BEA02AD758FB807B1F82B9A23EBA4781E4D",
+      "c_reconstructed_sha256": "76E818160B94E8C70ADE425CF7008BEA02AD758FB807B1F82B9A23EBA4781E4D",
+      "gray_input_pixels": 0,
+      "id": "recording_calm_hold_meter_5",
+      "kind": "micro",
+      "meter": {
+        "column_count": 3,
+        "columns": [
+          {
+            "bounds": {
+              "x_max": 173,
+              "x_min": 170,
+              "y_max": 71,
+              "y_min": 68
+            },
+            "direction": "toward_listening_point",
+            "energy_level": 4,
+            "geometry": {
+              "height": 4,
+              "width": 4
+            },
+            "slot": 0
+          },
+          {
+            "bounds": {
+              "x_max": 184,
+              "x_min": 181,
+              "y_max": 75,
+              "y_min": 64
+            },
+            "direction": "toward_listening_point",
+            "energy_level": 12,
+            "geometry": {
+              "height": 12,
+              "width": 4
+            },
+            "slot": 1
+          },
+          {
+            "bounds": {
+              "x_max": 195,
+              "x_min": 192,
+              "y_max": 73,
+              "y_min": 66
+            },
+            "direction": "outer_input",
+            "energy_level": 8,
+            "geometry": {
+              "height": 8,
+              "width": 4
+            },
+            "slot": 2
+          }
+        ],
+        "cycle": 0,
+        "gray_pixels": 0,
+        "ink_pixels": 96,
+        "listening_point": {
+          "x": 158,
+          "y": 70
+        },
+        "samples": [
+          4,
+          12,
+          8
+        ],
+        "step": 5,
+        "transition": {
+          "absorbed": 10,
+          "inserted": {
+            "level": 8,
+            "slot": 2
+          },
+          "shifted": [
+            {
+              "from": 1,
+              "level": 4,
+              "to": 0
+            },
+            {
+              "from": 2,
+              "level": 12,
+              "to": 1
+            }
+          ]
+        }
+      },
+      "orientation_transform": "identity",
+      "pbm_file": "frames/recording_calm_hold_meter_5.pbm",
+      "pbm_sha256": "BE74A4F89C79B44042A8374609C323D30712F99C2184C7716B8013FCBB4CE23E",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "accessory": true,
+        "family": "calm",
+        "meter_step": 5,
+        "micro_step": 0
+      },
+      "unique_frame_index": 84
+    },
+    {
+      "black_bounds": [
+        34,
+        64,
+        195,
+        168
+      ],
+      "black_pixels": 2783,
+      "browser_frame_sha256": "47706FC3BFC51CBF660BAE494258BF66A67BC5A3DE7602F0D48F9D58F8B279AA",
+      "c_reconstructed_sha256": "47706FC3BFC51CBF660BAE494258BF66A67BC5A3DE7602F0D48F9D58F8B279AA",
+      "gray_input_pixels": 0,
+      "id": "recording_calm_hold_meter_6",
+      "kind": "micro",
+      "meter": {
+        "column_count": 3,
+        "columns": [
+          {
+            "bounds": {
+              "x_max": 173,
+              "x_min": 170,
+              "y_max": 75,
+              "y_min": 64
+            },
+            "direction": "toward_listening_point",
+            "energy_level": 12,
+            "geometry": {
+              "height": 12,
+              "width": 4
+            },
+            "slot": 0
+          },
+          {
+            "bounds": {
+              "x_max": 184,
+              "x_min": 181,
+              "y_max": 73,
+              "y_min": 66
+            },
+            "direction": "toward_listening_point",
+            "energy_level": 8,
+            "geometry": {
+              "height": 8,
+              "width": 4
+            },
+            "slot": 1
+          },
+          {
+            "bounds": {
+              "x_max": 195,
+              "x_min": 192,
+              "y_max": 72,
+              "y_min": 67
+            },
+            "direction": "outer_input",
+            "energy_level": 6,
+            "geometry": {
+              "height": 6,
+              "width": 4
+            },
+            "slot": 2
+          }
+        ],
+        "cycle": 0,
+        "gray_pixels": 0,
+        "ink_pixels": 104,
+        "listening_point": {
+          "x": 158,
+          "y": 70
+        },
+        "samples": [
+          12,
+          8,
+          6
+        ],
+        "step": 6,
+        "transition": {
+          "absorbed": 4,
+          "inserted": {
+            "level": 6,
+            "slot": 2
+          },
+          "shifted": [
+            {
+              "from": 1,
+              "level": 12,
+              "to": 0
+            },
+            {
+              "from": 2,
+              "level": 8,
+              "to": 1
+            }
+          ]
+        }
+      },
+      "orientation_transform": "identity",
+      "pbm_file": "frames/recording_calm_hold_meter_6.pbm",
+      "pbm_sha256": "68A6D1B98A0AB8C08DE6781FA532E0EB8E2FABD2CAD98A5AB7324729B03A5E10",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "accessory": true,
+        "family": "calm",
+        "meter_step": 6,
+        "micro_step": 0
+      },
+      "unique_frame_index": 85
+    },
+    {
+      "black_bounds": [
+        34,
+        63,
+        195,
+        168
+      ],
+      "black_pixels": 2791,
+      "browser_frame_sha256": "B3619E995A7311900DCD89C2DAB910034CADEA5CD7855187D59968BC750500C8",
+      "c_reconstructed_sha256": "B3619E995A7311900DCD89C2DAB910034CADEA5CD7855187D59968BC750500C8",
+      "gray_input_pixels": 0,
+      "id": "recording_calm_hold_meter_7",
+      "kind": "micro",
+      "meter": {
+        "column_count": 3,
+        "columns": [
+          {
+            "bounds": {
+              "x_max": 173,
+              "x_min": 170,
+              "y_max": 73,
+              "y_min": 66
+            },
+            "direction": "toward_listening_point",
+            "energy_level": 8,
+            "geometry": {
+              "height": 8,
+              "width": 4
+            },
+            "slot": 0
+          },
+          {
+            "bounds": {
+              "x_max": 184,
+              "x_min": 181,
+              "y_max": 72,
+              "y_min": 67
+            },
+            "direction": "toward_listening_point",
+            "energy_level": 6,
+            "geometry": {
+              "height": 6,
+              "width": 4
+            },
+            "slot": 1
+          },
+          {
+            "bounds": {
+              "x_max": 195,
+              "x_min": 192,
+              "y_max": 76,
+              "y_min": 63
+            },
+            "direction": "outer_input",
+            "energy_level": 14,
+            "geometry": {
+              "height": 14,
+              "width": 4
+            },
+            "slot": 2
+          }
+        ],
+        "cycle": 0,
+        "gray_pixels": 0,
+        "ink_pixels": 112,
+        "listening_point": {
+          "x": 158,
+          "y": 70
+        },
+        "samples": [
+          8,
+          6,
+          14
+        ],
+        "step": 7,
+        "transition": {
+          "absorbed": 12,
+          "inserted": {
+            "level": 14,
+            "slot": 2
+          },
+          "shifted": [
+            {
+              "from": 1,
+              "level": 8,
+              "to": 0
+            },
+            {
+              "from": 2,
+              "level": 6,
+              "to": 1
+            }
+          ]
+        }
+      },
+      "orientation_transform": "identity",
+      "pbm_file": "frames/recording_calm_hold_meter_7.pbm",
+      "pbm_sha256": "DE153D3D29D4707F409F1D7D7BC267E989C2CB4E48C2FA5961DE2EEA4F7CE45C",
+      "pixel_diff_after_registered_transform": 0,
+      "source": {
+        "accessory": true,
+        "family": "calm",
+        "meter_step": 7,
+        "micro_step": 0
+      },
+      "unique_frame_index": 86
+    }
+  ],
+  "status": "PASS"
+}
