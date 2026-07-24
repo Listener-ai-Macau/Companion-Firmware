@@ -29,7 +29,7 @@ const pageRepoPath = [
 ].join("/");
 const pagePath = path.join(repoRoot, ...pageRepoPath.split("/"));
 const acceptedPageSha256 =
-  "4FFF18454C7E1B8B0AA860D8EAE7C65D9B714FB8DE44B2A112D51E0869D2C725";
+  "24B5720F14B6793B201C4E74AD8BDB2219EE4F8CC941454983876979DA9ADAB1";
 const acceptedCenteredRestPngSha256 =
   "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31";
 const overallUrl =
@@ -179,11 +179,22 @@ async function capture(page, id, kind = "stage") {
   const target = path.join(screenshotRoot, name);
   expectedScreenshotNames.add(name);
   if (kind === "layout") {
-    await page.screenshot({
-      path: target,
-      fullPage: false,
-      animations: "disabled",
-    });
+    let previous = null;
+    let stable = null;
+    for (let attempt = 0; attempt < 12; attempt += 1) {
+      const current = await page.screenshot({
+        fullPage: false,
+        animations: "disabled",
+      });
+      if (previous && current.equals(previous)) {
+        stable = current;
+        break;
+      }
+      previous = current;
+      await sleep(60);
+    }
+    assert(stable, `${id}: layout did not reach two byte-identical captures`);
+    fs.writeFileSync(target, stable);
   } else {
     const box = await page.locator("#overall-viewport").boundingBox();
     assert(box, `${id}: stage screenshot box missing`);
@@ -824,29 +835,117 @@ async function freezeNonOverallStories(page) {
       state.touching = true;
       state.request += 1;
       state.gazeRequest += 1;
+      const story = storyByName.get(state.storyName);
+      const item = story?.frames[0];
+      const stage = document.querySelector(
+        `[data-viewport-story="${CSS.escape(name)}"]`,
+      );
+      const frame = stage?.querySelector(".viewport-frame");
+      const gaze = stage?.querySelector(".viewport-gaze");
+      if (item && frame && gaze) {
+        const offset = touchData.story_offsets[state.storyName] || [0, 0];
+        state.frameIndex = 1;
+        state.activeFrame = item;
+        state.activeFrameIndex = 0;
+        state.activeBaseSrc = item.touch_base || item.src;
+        frame.src = cached(state.activeBaseSrc);
+        gaze.src = cached(touchData.overlays[touchData.center_key]);
+        gaze.style.transform = `translate(${offset[0]}px,${offset[1]}px)`;
+        frame.hidden = false;
+        gaze.hidden = false;
+        stage.querySelector(".viewport-staging").hidden = true;
+      }
     }
   });
 }
 
 async function waitForVisibleImages(page) {
-  await page.waitForFunction(() => {
-    const stage = document.querySelector("#overall-viewport");
-    if (!stage) {
-      return false;
-    }
-    return [...stage.querySelectorAll("img")]
-      .filter((image) => !image.hidden && !image.closest("[hidden]"))
-      .every((image) => image.complete && image.naturalWidth === 200);
-  }, null, { timeout: 8000 });
+  try {
+    await page.waitForFunction(() => {
+      const stage = document.querySelector("#overall-viewport");
+      if (!stage) {
+        return false;
+      }
+      const visible = [...stage.querySelectorAll("img")]
+        .filter((image) => !image.hidden && !image.closest("[hidden]"));
+      const mode = window.__touchContractState?.().mode;
+      const expectedClasses = mode === "menu"
+        ? ["integrated-menu-image"]
+        : ["viewport-frame", "viewport-gaze"];
+      return (
+        visible.length === expectedClasses.length
+        && expectedClasses.every(
+          (className) => visible.some((image) => image.classList.contains(className)),
+        )
+        && visible.every(
+          (image) => image.complete && image.naturalWidth === 200,
+        )
+      );
+    }, null, { timeout: 8000 });
+  } catch (error) {
+    const imageState = await page.evaluate(() => {
+      const stage = document.querySelector("#overall-viewport");
+      return [...(stage?.querySelectorAll("img") || [])].map((image) => ({
+        class_name: image.className,
+        complete: image.complete,
+        hidden: image.hidden,
+        hidden_ancestor: Boolean(image.closest("[hidden]")),
+        natural_height: image.naturalHeight,
+        natural_width: image.naturalWidth,
+        src: image.getAttribute("src") || "",
+      }));
+    });
+    throw new Error(
+      `overall visible image decode timeout: ${JSON.stringify(imageState)}`,
+      { cause: error },
+    );
+  }
   await sleep(60);
 }
 
-async function resetRest(page) {
-  await page.evaluate(() => returnToExpression());
-  await page.waitForFunction(() => (
-    window.__touchContractState().mode === "expression"
-    && location.hash === "#expression"
-  ));
+async function initializeOverallRest(page) {
+  await page.evaluate(() => {
+    const state = window.__companionViewportStates.overall;
+    const storyName = "calm_presence";
+    const story = storyByName.get(storyName);
+    const item = story.frames[0];
+    const offset = touchData.story_offsets[storyName] || [0, 0];
+
+    clearTimeout(state.timer);
+    state.timer = 0;
+    state.request += 1;
+    state.gazeRequest += 1;
+    gazeEpoch += 1;
+    state.storyName = storyName;
+    state.frameIndex = 1;
+    state.activeFrame = item;
+    state.activeFrameIndex = 0;
+    state.activeBaseSrc = item.touch_base || item.src;
+    state.activeFrameStartedAt = performance.now();
+    state.activeFrameDurationMs = item.duration_ms;
+    state.pausedRemainingMs = item.duration_ms;
+    state.touching = false;
+    touchStoryPaused = false;
+    touchResponsePoint = null;
+    interactionMode = "expression";
+    integratedMenu.hidden = true;
+    interactionActions.hidden = true;
+    interactionActions.replaceChildren();
+    recordingWaves.hidden = true;
+    recordingIndicator.hidden = true;
+    recordingIndicator.dataset.recordingStatus = "inactive";
+    holdProgress.hidden = true;
+    holdFill.style.width = "0%";
+    overallFrame.dataset.gazeCleared = "true";
+    overallFrame.src = cached(state.activeBaseSrc);
+    overallGaze.style.transform = `translate(${offset[0]}px,${offset[1]}px)`;
+    overallGaze.src = cached(touchData.overlays[touchData.center_key]);
+    overallFrame.hidden = false;
+    overallGaze.hidden = false;
+    overallStaging.hidden = true;
+    naturalResetToCalm();
+    history.replaceState(null, "", "#expression");
+  });
   await waitForVisibleImages(page);
 }
 
@@ -908,8 +1007,7 @@ async function openPage(browser, viewport) {
     && document.body.classList.contains("expression-open")
   ));
   await freezeNonOverallStories(page);
-  await waitForVisibleImages(page);
-  await resetRest(page);
+  await initializeOverallRest(page);
   return {
     close: async () => context.close(),
     documentRequests: () => documentRequests,
@@ -1874,6 +1972,11 @@ async function captureLayout(browser, viewport) {
       }
       window.scrollTo(0, 0);
     });
+    await session.page.waitForFunction(() => (
+      [...document.querySelectorAll(".story-wall .live-viewport img")]
+        .filter((image) => !image.hidden && !image.closest("[hidden]"))
+        .every((image) => image.complete && image.naturalWidth === 200)
+    ), null, { timeout: 12000 });
     await capture(session.page, `${viewport.name}-layout`, "layout");
     assert(session.documentRequests() === 1, "layout document count");
     assert(session.errors.length === 0, "layout page errors");

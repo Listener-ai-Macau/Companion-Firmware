@@ -12,17 +12,17 @@ from pathlib import Path
 from typing import Any
 
 
-CANDIDATE_COMMIT = "a403cf294d6668fde9ce236429f22353548e6a9f"
+CANDIDATE_COMMIT = "119c0b8c873d7817c64edec31391b393e00b09ac"
 PAGE_PATH = (
     "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/"
     "candidate/wb55-browser-parity-attempt-01/index.html"
 )
-PAGE_SHA256 = "4FFF18454C7E1B8B0AA860D8EAE7C65D9B714FB8DE44B2A112D51E0869D2C725"
+PAGE_SHA256 = "24B5720F14B6793B201C4E74AD8BDB2219EE4F8CC941454983876979DA9ADAB1"
 REPLAY_TOOL_PATH = (
     "tools/faraday_upper_art/"
     "replay_companion_browser_natural_expression_successor_comp_req_521.mjs"
 )
-REPLAY_TOOL_SHA256 = "E8DE52D47B7CED1F07BC6C94213299B40E61221A0FA5BD0D4AEC58B7FA412160"
+REPLAY_TOOL_SHA256 = "3BF371C0684328D9B2259BE4420EC0329DEFC3C4B6B58251BAC0D0ADC2923AA7"
 REVIEW_URL = (
     "http://127.0.0.1:4173/docs/art/iterations/"
     "companion-pet-expression-v9-two-track-rig-v7/candidate/"
