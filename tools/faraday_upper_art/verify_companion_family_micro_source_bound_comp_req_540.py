@@ -429,8 +429,9 @@ def bound_paths(documents: dict[str, Any]) -> dict[str, Path]:
         for index, row in enumerate(
             documents[document_name].get("screenshots", [])
         ):
+            screenshot_path = row["path"] if isinstance(row, dict) else row
             paths[f"{document_name}_screenshot_{index:02d}"] = Path(
-                row["path"]
+                screenshot_path
             )
     for index, state in enumerate(documents["manifest"].get("states", [])):
         paths[f"pbm_{index:03d}"] = (
