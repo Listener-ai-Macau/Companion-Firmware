@@ -6,8 +6,8 @@ from pathlib import Path
 import subprocess
 
 PIN = "d311af3db60e118a6d2c6e68873b2d00f2647a96"
-SCHEMA = "companion.platform_adapters.comp_req_514.receipt.v1"
-MANIFEST_PATH = "docs/validation/companion-platform-adapters-505-manifest.json"
+SCHEMA = "companion.platform_adapters.comp_req_531.receipt.v1"
+MANIFEST_PATH = "docs/validation/companion-platform-adapters-531-manifest.json"
 VERIFIER_PATH = "tools/verify_companion_platform_integration_fresh.py"
 VALIDATOR_PATH = "tools/verify_companion_platform_adapters_505_receipt.py"
 NEGATIVE_NAMES = (
@@ -149,10 +149,10 @@ def create(ns):
     for path in art["build_outputs_sha256"]:
         build_files.append(file_record(ROOT / path))
     for path in [
-        "cubeide/Companion_Nucleo_WB55RG_Bringup/build/app_ble.o",
-        "cubeide/Companion_Nucleo_WB55RG_Bringup/build/companion_platform_adapters.o",
-        "cubeide/Companion_Nucleo_WB55RG_Bringup/build/companion_product_entry_glue.o",
-        "cubeide/Companion_Nucleo_WB55RG_Bringup/build/companion_product_transport.o",
+        "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime/app_ble.o",
+        "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime/companion_platform_adapters.o",
+        "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime/companion_product_entry_glue.o",
+        "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime/companion_product_transport.o",
         "cubeide/Companion_BLE_Audio_Fixture/build/companion_product_entry_glue.o",
         "cubeide/Companion_BLE_Audio_Fixture/build/companion_product_transport.o",
     ]:
@@ -227,7 +227,7 @@ def main():
     ap.add_argument("--create", action="store_true")
     ap.add_argument("--run-a"); ap.add_argument("--run-b"); ap.add_argument("--validator-commit")
     ap.add_argument("--output", type=Path); ap.add_argument("--receipt", type=Path)
-    ap.add_argument("--receipt-commit"); ap.add_argument("--receipt-path", default="docs/validation/companion-platform-adapters-514-receipt.json")
+    ap.add_argument("--receipt-commit"); ap.add_argument("--receipt-path", default="docs/validation/companion-platform-adapters-531-receipt.json")
     ap.add_argument("--self-test", action="store_true")
     ns = ap.parse_args()
     if ns.create:
