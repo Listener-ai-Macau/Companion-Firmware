@@ -12,17 +12,17 @@ from pathlib import Path
 from typing import Any
 
 
-CANDIDATE_COMMIT = "129bbf5ce9f50e893f51349721df05b4b32bb938"
+CANDIDATE_COMMIT = "6e6e521fddcdb9a99af0608fa86714df199e6c9c"
 PAGE_PATH = (
     "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/"
     "candidate/wb55-browser-parity-attempt-01/index.html"
 )
-PAGE_SHA256 = "0D3F928AB66A04DF0397F5ACA04AEDB3423FE0768770B6841C3DD3394FAEBAD4"
+PAGE_SHA256 = "9990C4316AF8F4D656F2C2B057AB789846A10CD21E18367336FC6BD277631EB7"
 REPLAY_TOOL_PATH = (
     "tools/faraday_upper_art/"
     "replay_companion_browser_owner_review_ready_comp_req_508.mjs"
 )
-REPLAY_TOOL_SHA256 = "5B807E97F17926101150A6D6751A700B43A788C332B1F7C49AF1E179F00FE7EE"
+REPLAY_TOOL_SHA256 = "304575095583ACACDD45F4E218315F5829B0E2D0E68061403AD70287DDC9DE64"
 REVIEW_URL = (
     "http://127.0.0.1:4173/docs/art/iterations/"
     "companion-pet-expression-v9-two-track-rig-v7/candidate/"
@@ -79,6 +79,7 @@ def run_replay(repo_root: Path, output_dir: Path) -> dict[str, Any]:
         capture_output=True,
         text=True,
         encoding="utf-8",
+        timeout=180,
     )
     if completed.returncode != 0:
         raise RuntimeError(
@@ -128,6 +129,8 @@ def main() -> int:
             "COMP-REQ-442",
             "COMP-REQ-471",
             "COMP-REQ-508",
+            "COMP-REQ-509",
+            "COMP-REQ-510",
         ],
         "status": (
             "PASS_TWO_CLEAN_REPLAYS_BYTE_IDENTICAL"

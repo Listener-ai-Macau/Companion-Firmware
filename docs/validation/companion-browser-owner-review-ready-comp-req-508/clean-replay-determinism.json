@@ -1,6 +1,6 @@
 {
   "byte_identical": true,
-  "candidate_commit": "129bbf5ce9f50e893f51349721df05b4b32bb938",
+  "candidate_commit": "6e6e521fddcdb9a99af0608fa86714df199e6c9c",
   "command": [
     "node",
     "tools/faraday_upper_art/replay_companion_browser_owner_review_ready_comp_req_508.mjs",
@@ -8,36 +8,38 @@
   ],
   "http_status": 200,
   "page_path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html",
-  "page_sha256": "0D3F928AB66A04DF0397F5ACA04AEDB3423FE0768770B6841C3DD3394FAEBAD4",
+  "page_sha256": "9990C4316AF8F4D656F2C2B057AB789846A10CD21E18367336FC6BD277631EB7",
   "replay_tool": {
     "path": "tools/faraday_upper_art/replay_companion_browser_owner_review_ready_comp_req_508.mjs",
-    "sha256": "5B807E97F17926101150A6D6751A700B43A788C332B1F7C49AF1E179F00FE7EE"
+    "sha256": "304575095583ACACDD45F4E218315F5829B0E2D0E68061403AD70287DDC9DE64"
   },
   "requirements": [
     "COMP-REQ-440",
     "COMP-REQ-441",
     "COMP-REQ-442",
     "COMP-REQ-471",
-    "COMP-REQ-508"
+    "COMP-REQ-508",
+    "COMP-REQ-509",
+    "COMP-REQ-510"
   ],
   "run_a": {
-    "aggregate_sha256": "655FF79C12CEC934328F865F868D294BF1F4AB327A4F30A890C2E1FE3017BC62",
+    "aggregate_sha256": "3F9D675B09423229E13C9A5349FEC03F2E90E950349C492C97840D8D37404930",
     "file_count": 53,
     "files": [
       {
-        "bytes": 3197,
+        "bytes": 3848,
         "path": "docs/validation/companion-browser-owner-review-ready-comp-req-508/browser-replay-result.json",
-        "sha256": "6353B885917C10D45D24A25CBABF3385FC3129CC15770AB57A31C409ACAE9685"
+        "sha256": "8FCAD0AC4C5370EFBBBC6C3785B6E115AA1E77C69EA81C0E137207AC1D33721C"
       },
       {
-        "bytes": 785299,
+        "bytes": 1659609,
         "path": "docs/validation/companion-browser-owner-review-ready-comp-req-508/pixel-dom-route-artifact.json",
-        "sha256": "36E40990F793C45643CFCF79985FF3F363AFBC2F052F7BD2086E769938A9F31B"
+        "sha256": "91E6793F01B8368933E61115E93AD7280B435A9A1429D4B2DE743B61878BD1F3"
       },
       {
-        "bytes": 16616,
+        "bytes": 16667,
         "path": "docs/validation/companion-browser-owner-review-ready-comp-req-508/screenshot-manifest.json",
-        "sha256": "38F8603FFB9CAAAEB19A7AE19B7D81CB2F7758AE6AAEA21E069CEF7CBEF3C342"
+        "sha256": "1886C6193AE846C11116462A20A1DCDC093DB4BD65BED36C9B19CB762965460A"
       },
       {
         "bytes": 42806,
@@ -70,9 +72,9 @@
         "sha256": "BB050DA00019428E73E3DF2C45ED7BECC248E3015B45C4787FE3D35E8C3E2CA4"
       },
       {
-        "bytes": 1358,
+        "bytes": 1774,
         "path": "docs/validation/companion-browser-owner-review-ready-comp-req-508/screenshots/desktop-mouse-recording-return-entry.png",
-        "sha256": "54A9E1CE3A1DA160B0747124FF117357677827B648796FFCAAB857D447C820D6"
+        "sha256": "D52DEC34C2DF951A2881CECCBF17E2D7919F5DA2B2E4589487D1777ACDDE54D5"
       },
       {
         "bytes": 1269,
@@ -110,9 +112,9 @@
         "sha256": "BB050DA00019428E73E3DF2C45ED7BECC248E3015B45C4787FE3D35E8C3E2CA4"
       },
       {
-        "bytes": 1358,
+        "bytes": 1774,
         "path": "docs/validation/companion-browser-owner-review-ready-comp-req-508/screenshots/desktop-pen-recording-return-entry.png",
-        "sha256": "54A9E1CE3A1DA160B0747124FF117357677827B648796FFCAAB857D447C820D6"
+        "sha256": "D52DEC34C2DF951A2881CECCBF17E2D7919F5DA2B2E4589487D1777ACDDE54D5"
       },
       {
         "bytes": 1269,
@@ -150,9 +152,9 @@
         "sha256": "BB050DA00019428E73E3DF2C45ED7BECC248E3015B45C4787FE3D35E8C3E2CA4"
       },
       {
-        "bytes": 1358,
+        "bytes": 1774,
         "path": "docs/validation/companion-browser-owner-review-ready-comp-req-508/screenshots/desktop-touch-recording-return-entry.png",
-        "sha256": "54A9E1CE3A1DA160B0747124FF117357677827B648796FFCAAB857D447C820D6"
+        "sha256": "D52DEC34C2DF951A2881CECCBF17E2D7919F5DA2B2E4589487D1777ACDDE54D5"
       },
       {
         "bytes": 1269,
@@ -195,9 +197,9 @@
         "sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31"
       },
       {
-        "bytes": 1350,
+        "bytes": 1770,
         "path": "docs/validation/companion-browser-owner-review-ready-comp-req-508/screenshots/mobile-mouse-recording-return-entry.png",
-        "sha256": "EA4B8A3ECF89EEF37036526FA6F8026AF0A771CF24CD0B36125E4397F8C12E90"
+        "sha256": "07EC8E9CEE0532AC1E73BFDB669844CA555247004636567DA267B74AC087A201"
       },
       {
         "bytes": 1261,
@@ -235,9 +237,9 @@
         "sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31"
       },
       {
-        "bytes": 1350,
+        "bytes": 1770,
         "path": "docs/validation/companion-browser-owner-review-ready-comp-req-508/screenshots/mobile-pen-recording-return-entry.png",
-        "sha256": "EA4B8A3ECF89EEF37036526FA6F8026AF0A771CF24CD0B36125E4397F8C12E90"
+        "sha256": "07EC8E9CEE0532AC1E73BFDB669844CA555247004636567DA267B74AC087A201"
       },
       {
         "bytes": 1261,
@@ -275,9 +277,9 @@
         "sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31"
       },
       {
-        "bytes": 1350,
+        "bytes": 1770,
         "path": "docs/validation/companion-browser-owner-review-ready-comp-req-508/screenshots/mobile-touch-recording-return-entry.png",
-        "sha256": "EA4B8A3ECF89EEF37036526FA6F8026AF0A771CF24CD0B36125E4397F8C12E90"
+        "sha256": "07EC8E9CEE0532AC1E73BFDB669844CA555247004636567DA267B74AC087A201"
       },
       {
         "bytes": 1261,
@@ -292,23 +294,23 @@
     ]
   },
   "run_b": {
-    "aggregate_sha256": "655FF79C12CEC934328F865F868D294BF1F4AB327A4F30A890C2E1FE3017BC62",
+    "aggregate_sha256": "3F9D675B09423229E13C9A5349FEC03F2E90E950349C492C97840D8D37404930",
     "file_count": 53,
     "files": [
       {
-        "bytes": 3197,
+        "bytes": 3848,
         "path": "docs/validation/companion-browser-owner-review-ready-comp-req-508/browser-replay-result.json",
-        "sha256": "6353B885917C10D45D24A25CBABF3385FC3129CC15770AB57A31C409ACAE9685"
+        "sha256": "8FCAD0AC4C5370EFBBBC6C3785B6E115AA1E77C69EA81C0E137207AC1D33721C"
       },
       {
-        "bytes": 785299,
+        "bytes": 1659609,
         "path": "docs/validation/companion-browser-owner-review-ready-comp-req-508/pixel-dom-route-artifact.json",
-        "sha256": "36E40990F793C45643CFCF79985FF3F363AFBC2F052F7BD2086E769938A9F31B"
+        "sha256": "91E6793F01B8368933E61115E93AD7280B435A9A1429D4B2DE743B61878BD1F3"
       },
       {
-        "bytes": 16616,
+        "bytes": 16667,
         "path": "docs/validation/companion-browser-owner-review-ready-comp-req-508/screenshot-manifest.json",
-        "sha256": "38F8603FFB9CAAAEB19A7AE19B7D81CB2F7758AE6AAEA21E069CEF7CBEF3C342"
+        "sha256": "1886C6193AE846C11116462A20A1DCDC093DB4BD65BED36C9B19CB762965460A"
       },
       {
         "bytes": 42806,
@@ -341,9 +343,9 @@
         "sha256": "BB050DA00019428E73E3DF2C45ED7BECC248E3015B45C4787FE3D35E8C3E2CA4"
       },
       {
-        "bytes": 1358,
+        "bytes": 1774,
         "path": "docs/validation/companion-browser-owner-review-ready-comp-req-508/screenshots/desktop-mouse-recording-return-entry.png",
-        "sha256": "54A9E1CE3A1DA160B0747124FF117357677827B648796FFCAAB857D447C820D6"
+        "sha256": "D52DEC34C2DF951A2881CECCBF17E2D7919F5DA2B2E4589487D1777ACDDE54D5"
       },
       {
         "bytes": 1269,
@@ -381,9 +383,9 @@
         "sha256": "BB050DA00019428E73E3DF2C45ED7BECC248E3015B45C4787FE3D35E8C3E2CA4"
       },
       {
-        "bytes": 1358,
+        "bytes": 1774,
         "path": "docs/validation/companion-browser-owner-review-ready-comp-req-508/screenshots/desktop-pen-recording-return-entry.png",
-        "sha256": "54A9E1CE3A1DA160B0747124FF117357677827B648796FFCAAB857D447C820D6"
+        "sha256": "D52DEC34C2DF951A2881CECCBF17E2D7919F5DA2B2E4589487D1777ACDDE54D5"
       },
       {
         "bytes": 1269,
@@ -421,9 +423,9 @@
         "sha256": "BB050DA00019428E73E3DF2C45ED7BECC248E3015B45C4787FE3D35E8C3E2CA4"
       },
       {
-        "bytes": 1358,
+        "bytes": 1774,
         "path": "docs/validation/companion-browser-owner-review-ready-comp-req-508/screenshots/desktop-touch-recording-return-entry.png",
-        "sha256": "54A9E1CE3A1DA160B0747124FF117357677827B648796FFCAAB857D447C820D6"
+        "sha256": "D52DEC34C2DF951A2881CECCBF17E2D7919F5DA2B2E4589487D1777ACDDE54D5"
       },
       {
         "bytes": 1269,
@@ -466,9 +468,9 @@
         "sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31"
       },
       {
-        "bytes": 1350,
+        "bytes": 1770,
         "path": "docs/validation/companion-browser-owner-review-ready-comp-req-508/screenshots/mobile-mouse-recording-return-entry.png",
-        "sha256": "EA4B8A3ECF89EEF37036526FA6F8026AF0A771CF24CD0B36125E4397F8C12E90"
+        "sha256": "07EC8E9CEE0532AC1E73BFDB669844CA555247004636567DA267B74AC087A201"
       },
       {
         "bytes": 1261,
@@ -506,9 +508,9 @@
         "sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31"
       },
       {
-        "bytes": 1350,
+        "bytes": 1770,
         "path": "docs/validation/companion-browser-owner-review-ready-comp-req-508/screenshots/mobile-pen-recording-return-entry.png",
-        "sha256": "EA4B8A3ECF89EEF37036526FA6F8026AF0A771CF24CD0B36125E4397F8C12E90"
+        "sha256": "07EC8E9CEE0532AC1E73BFDB669844CA555247004636567DA267B74AC087A201"
       },
       {
         "bytes": 1261,
@@ -546,9 +548,9 @@
         "sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31"
       },
       {
-        "bytes": 1350,
+        "bytes": 1770,
         "path": "docs/validation/companion-browser-owner-review-ready-comp-req-508/screenshots/mobile-touch-recording-return-entry.png",
-        "sha256": "EA4B8A3ECF89EEF37036526FA6F8026AF0A771CF24CD0B36125E4397F8C12E90"
+        "sha256": "07EC8E9CEE0532AC1E73BFDB669844CA555247004636567DA267B74AC087A201"
       },
       {
         "bytes": 1261,
@@ -564,7 +566,7 @@
   },
   "run_count": 2,
   "schema": "companion.browser-clean-replay-determinism.v2",
-  "served_page_sha256": "0D3F928AB66A04DF0397F5ACA04AEDB3423FE0768770B6841C3DD3394FAEBAD4",
+  "served_page_sha256": "9990C4316AF8F4D656F2C2B057AB789846A10CD21E18367336FC6BD277631EB7",
   "side_effect_counters": {
     "browser_window_open": 0,
     "evidence_artifact_write": 1,

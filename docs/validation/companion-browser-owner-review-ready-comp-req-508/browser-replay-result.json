@@ -2,11 +2,11 @@
   "artifacts": {
     "pixel_dom_route": {
       "path": "docs/validation/companion-browser-owner-review-ready-comp-req-508/pixel-dom-route-artifact.json",
-      "sha256": "36E40990F793C45643CFCF79985FF3F363AFBC2F052F7BD2086E769938A9F31B"
+      "sha256": "91E6793F01B8368933E61115E93AD7280B435A9A1429D4B2DE743B61878BD1F3"
     },
     "screenshot_manifest": {
       "path": "docs/validation/companion-browser-owner-review-ready-comp-req-508/screenshot-manifest.json",
-      "sha256": "38F8603FFB9CAAAEB19A7AE19B7D81CB2F7758AE6AAEA21E069CEF7CBEF3C342"
+      "sha256": "1886C6193AE846C11116462A20A1DCDC093DB4BD65BED36C9B19CB762965460A"
     }
   },
   "checks": {
@@ -22,15 +22,21 @@
     "menu_roots_24_of_24": true,
     "mouse_touch_pen_6_of_6": true,
     "no_404_overlap_bounds_or_stale": true,
+    "no_false_recording_toggle_54_of_54": true,
+    "no_microphone_glyph_pixels": true,
     "no_microphone_request": true,
+    "ordered_recording_phases_12_of_12": true,
+    "recording_double_tap_enter_exit_reenter_6_of_6": true,
+    "recording_inward_wave_cycle_6_of_6": true,
     "route_activation_exactly_once": true,
     "single_tap_once_6_of_6": true,
     "stale_pupil_oracle_all_expression_states": true
   },
   "page": {
-    "accepted_sha256": "0D3F928AB66A04DF0397F5ACA04AEDB3423FE0768770B6841C3DD3394FAEBAD4",
-    "observed_sha256": "0D3F928AB66A04DF0397F5ACA04AEDB3423FE0768770B6841C3DD3394FAEBAD4",
+    "accepted_sha256": "9990C4316AF8F4D656F2C2B057AB789846A10CD21E18367336FC6BD277631EB7",
+    "observed_sha256": "9990C4316AF8F4D656F2C2B057AB789846A10CD21E18367336FC6BD277631EB7",
     "repo_path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html",
+    "runtime_url": "http://127.0.0.1:4173/docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html",
     "url": "http://127.0.0.1:4173/docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html"
   },
   "requirements": [
@@ -38,7 +44,9 @@
     "COMP-REQ-441",
     "COMP-REQ-442",
     "COMP-REQ-471",
-    "COMP-REQ-508"
+    "COMP-REQ-508",
+    "COMP-REQ-509",
+    "COMP-REQ-510"
   ],
   "runtime": {
     "browser": "chromium",
@@ -47,7 +55,7 @@
     "playwright_package_sha256": "6B840268612656F0639FB7D68782E8353BDF11518589D30DDF66F283C2670ED5",
     "playwright_version": "1.61.1"
   },
-  "schema": "companion.browser-owner-review-replay.v2",
+  "schema": "companion.browser-owner-review-replay.v3",
   "side_effect_counters": {
     "browser_processes": 1,
     "hardware": 0,
@@ -72,15 +80,21 @@
     "document_requests": 44,
     "http_404_count": 0,
     "menu_root_visits": 24,
+    "mic_glyph_pixel_count": 0,
     "microphone_requests": 0,
     "out_of_bounds_count": 0,
     "outside_black_pixel_count": 0,
     "page_error_count": 0,
+    "recording_negative_checks": 54,
+    "recording_ordered_phase_traces": 12,
+    "recording_reentries": 6,
+    "recording_wave_cycles": 6,
     "replay_combinations": 6,
     "route_menu_entries": 6,
-    "route_recording_entries": 6,
+    "route_recording_entries": 12,
+    "route_recording_exits": 12,
     "scenario_count": 42,
-    "snapshot_count": 192,
+    "snapshot_count": 252,
     "stale_layer_count": 0,
     "stale_pupil_pixel_count": 0,
     "stale_pupil_state_count": 0
