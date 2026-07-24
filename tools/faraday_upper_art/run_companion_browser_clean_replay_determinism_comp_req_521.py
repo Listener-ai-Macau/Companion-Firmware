@@ -22,7 +22,7 @@ REPLAY_TOOL_PATH = (
     "tools/faraday_upper_art/"
     "replay_companion_browser_natural_expression_successor_comp_req_521.mjs"
 )
-REPLAY_TOOL_SHA256 = "DECF2413D17E05F12D1D86D8EE3AE8C3F8151F2CE2E33B7223CF75301870C22E"
+REPLAY_TOOL_SHA256 = "E8DE52D47B7CED1F07BC6C94213299B40E61221A0FA5BD0D4AEC58B7FA412160"
 REVIEW_URL = (
     "http://127.0.0.1:4173/docs/art/iterations/"
     "companion-pet-expression-v9-two-track-rig-v7/candidate/"

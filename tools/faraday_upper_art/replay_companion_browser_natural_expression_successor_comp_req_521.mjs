@@ -908,6 +908,7 @@ async function openPage(browser, viewport) {
     && document.body.classList.contains("expression-open")
   ));
   await freezeNonOverallStories(page);
+  await waitForVisibleImages(page);
   await resetRest(page);
   return {
     close: async () => context.close(),
