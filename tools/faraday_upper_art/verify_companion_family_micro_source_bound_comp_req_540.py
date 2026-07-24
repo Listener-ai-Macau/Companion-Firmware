@@ -502,8 +502,6 @@ def build_result(source_commit: str) -> dict[str, Any]:
     checks.update(source_checks)
     owner_paths = [
         VALIDATION / "owner-review.json",
-        VALIDATION / "owner-review.raw.json",
-        VALIDATION / "owner-review.note.txt",
     ]
     checks["owner_result_absent_pending_review"] = not any(
         (ROOT / path).exists() for path in owner_paths

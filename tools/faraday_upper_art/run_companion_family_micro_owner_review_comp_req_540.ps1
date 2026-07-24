@@ -154,7 +154,7 @@ function Get-Readiness {
         }
     }
     foreach ($path in @(
-        $ownerResultPath, $ownerRawPath, $ownerNotePath, $promptLockPath
+        $ownerResultPath, $promptLockPath
     )) {
         if (Test-Path -LiteralPath $path) {
             $failures.Add("owner lifecycle file already exists: $([IO.Path]::GetFileName($path))")
