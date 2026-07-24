@@ -1,0 +1,158 @@
+{
+  "count": 19,
+  "requirements": [
+    "COMP-REQ-540",
+    "COMP-REQ-541"
+  ],
+  "rows": [
+    {
+      "failed_checks": [
+        "focused_four_family_pass"
+      ],
+      "id": "focused_status",
+      "rejected": true
+    },
+    {
+      "failed_checks": [
+        "page_identity_exact"
+      ],
+      "id": "focused_page_hash",
+      "rejected": true
+    },
+    {
+      "failed_checks": [
+        "ten_family_static_pass"
+      ],
+      "id": "ten_family_missing",
+      "rejected": true
+    },
+    {
+      "failed_checks": [
+        "ten_family_distinct_registered_micro",
+        "ten_family_static_pass"
+      ],
+      "id": "two_component_claim",
+      "rejected": true
+    },
+    {
+      "failed_checks": [
+        "real_clock_parallel_10x2x120"
+      ],
+      "id": "clock_cadence_count",
+      "rejected": true
+    },
+    {
+      "failed_checks": [
+        "real_clock_parallel_10x2x120"
+      ],
+      "id": "clock_trace_divergence",
+      "rejected": true
+    },
+    {
+      "failed_checks": [
+        "real_clock_parallel_10x2x120"
+      ],
+      "id": "clock_first_beat_late",
+      "rejected": true
+    },
+    {
+      "failed_checks": [
+        "protected_539_progress_gesture_meter",
+        "replay_6x7_42_pass"
+      ],
+      "id": "replay_scenario_count",
+      "rejected": true
+    },
+    {
+      "failed_checks": [
+        "replay_zero_mic_404_side_effect"
+      ],
+      "id": "microphone_request",
+      "rejected": true
+    },
+    {
+      "failed_checks": [
+        "pixel_dom_route_pass",
+        "protected_539_progress_gesture_meter"
+      ],
+      "id": "pixel_duplicate_indicator",
+      "rejected": true
+    },
+    {
+      "failed_checks": [
+        "screenshots_12_exact"
+      ],
+      "id": "screenshot_hash",
+      "rejected": true
+    },
+    {
+      "failed_checks": [
+        "parity_111_states_87_unique"
+      ],
+      "id": "parity_state_count",
+      "rejected": true
+    },
+    {
+      "failed_checks": [
+        "parity_111_states_87_unique"
+      ],
+      "id": "parity_zero_diff_claim",
+      "rejected": true
+    },
+    {
+      "failed_checks": [
+        "manifest_one_bit_zero_diff"
+      ],
+      "id": "manifest_unique_count",
+      "rejected": true
+    },
+    {
+      "failed_checks": [
+        "manifest_one_bit_zero_diff"
+      ],
+      "id": "manifest_polarity",
+      "rejected": true
+    },
+    {
+      "failed_checks": [
+        "manifest_one_bit_zero_diff"
+      ],
+      "id": "pbm_pixel_diff",
+      "rejected": true
+    },
+    {
+      "failed_checks": [
+        "family_contract_bounded_deterministic"
+      ],
+      "id": "micro_random_choice",
+      "rejected": true
+    },
+    {
+      "failed_checks": [
+        "page_identity_exact",
+        "recording_dot_absent_meter_single"
+      ],
+      "id": "page_recording_indicator_injection",
+      "rejected": true
+    },
+    {
+      "failed_checks": [
+        "all_bound_paths_committed",
+        "page_git_blob_matches_expected",
+        "source_commit_exists",
+        "source_commit_is_head_ancestor",
+        "working_content_matches_git_blobs"
+      ],
+      "id": "stale_or_missing_source_commit",
+      "rejected": true
+    }
+  ],
+  "schema": "companion.comp-req-540-source-bound-negatives.v1",
+  "side_effects": {
+    "browser_start": 0,
+    "hardware": 0,
+    "owner_prompt": 0,
+    "production_write": 0
+  },
+  "status": "PASS"
+}
