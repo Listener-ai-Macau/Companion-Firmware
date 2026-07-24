@@ -25,16 +25,26 @@ def main() -> int:
     build = (ROOT / "tools/build_nucleo_bringup.ps1").read_text(encoding="utf-8")
 
     require(registry, "COMP-REQ-086", "owner motion-baseline requirement", errors)
+    require(registry, "COMP-REQ-088", "owner orbit-diagnostic requirement", errors)
     for token, label in (
-        ("COMP_EPAPER_BALL_MOTION_DIAGNOSTIC_PARTIAL_STEPS 6u", "six interactive steps"),
+        ("COMP_EPAPER_BALL_MOTION_DIAGNOSTIC_PARTIAL_STEPS 6u", "six motion steps including settle"),
+        ("COMP_EPAPER_BALL_MOTION_DIAGNOSTIC_CENTER_X 100u", "shared horizontal center"),
+        ("COMP_EPAPER_BALL_MOTION_DIAGNOSTIC_CENTER_Y 100u", "shared vertical center"),
+        ("COMP_EPAPER_BALL_MOTION_DIAGNOSTIC_ORBIT_OFFSET 42u", "fixed orbit offset"),
         ("COMP_EPAPER_BALL_MOTION_DIAGNOSTIC_RADIUS 10u", "fixed ball radius"),
         ("comp_epaper_ball_motion_diagnostic_center_x", "shared center mapping"),
+        ("comp_epaper_ball_motion_diagnostic_center_y", "shared vertical mapping"),
+        ("comp_epaper_ball_motion_diagnostic_position_name", "shared orbit labels"),
+        ('return "up";', "up orbit point"),
+        ('return "right";', "right orbit point"),
+        ('return "down";', "down orbit point"),
+        ('return "left";', "left orbit point"),
     ):
         require(header, token, label, errors)
     for token, label in (
         ("COMPANION_EPAPER_SSD1681_BALL_MOTION_DIAGNOSTIC 0", "production-off driver switch"),
         ("frame_ball_motion", "ball raster function"),
-        ("ball_motion step=%u center=%u,%u radius=%u", "per-frame geometry log"),
+        ("ball_motion step=%u pose=%s center=%u,%u radius=%u", "per-frame orbit geometry log"),
         ("COMPANION_EPAPER_SSD1681_DIAGNOSTIC_PATTERN == 4u", "reserved ball pattern"),
         ("COMPANION_EPAPER_SSD1681_BALL_MOTION_DIAGNOSTIC == 0", "no boot auto-run for touch diagnostic"),
     ):
@@ -45,7 +55,8 @@ def main() -> int:
         ("Companion_Screen_BallMotionDiagnosticStart", "touch start entry"),
         ("COMP_EPAPER_REFRESH_FULL", "full baseline request"),
         ("COMP_EPAPER_REFRESH_PARTIAL_INTERACTIVE", "current-profile motion request"),
-        ("ball_motion_diagnostic done interactive_steps=%u cleanup_expected=1", "completion marker"),
+        ("path=center_up_right_down_left_center", "orbit start marker"),
+        ("ball_motion_diagnostic done orbit=up_right_down_left return_center=1 cleanup_expected=1", "orbit completion marker"),
         ("Companion_Display_AdvanceBallMotionDiagnostic(&request, panel_result)", "post-refresh sequencer"),
         ("comp_epaper_display_queue_pending(&s_companion_display_queue)", "live queue re-schedule"),
     ):

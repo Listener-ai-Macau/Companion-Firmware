@@ -43,7 +43,7 @@ try {
     if ($LASTEXITCODE -ne 0) {
         throw "Native WBA CEMP replay compile failed with exit code $LASTEXITCODE."
     }
-    & $exePath $candidatePack
+    & $exePath $candidatePack "companion-v9-expression-candidate-200x200" 90 13 39
     if ($LASTEXITCODE -ne 0) {
         throw "Native WBA CEMP replay test failed with exit code $LASTEXITCODE."
     }

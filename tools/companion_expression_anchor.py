@@ -25,7 +25,7 @@ def threshold(image: Image.Image) -> Image.Image:
 
 
 def translate(image: Image.Image, offset: tuple[int, int]) -> Image.Image:
-    result = Image.new("1", CANVAS, 1)
+    result = Image.new("1", CANVAS, 255)
     result.paste(image.convert("1"), offset)
     return result
 

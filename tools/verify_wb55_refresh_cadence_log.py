@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the six-request WB55 e-paper refresh-cadence diagnostic trace."""
+"""Validate one or more bounded WB55 e-paper refresh-cadence groups."""
 
 from __future__ import annotations
 
@@ -40,18 +40,26 @@ PARTIAL_REFRESH = re.compile(
     r"\[epaper\] refresh mode=differential profile=(?P<profile>\S+) "
     r"control=0x(?P<control>[0-9A-F]+)"
 )
+MICRO_MOTION = re.compile(
+    r"\[epaper\] cadence_micro_motion step=(?P<step>\d+) "
+    r"origin=(?P<x>\d+),(?P<y>\d+) size=(?P<size>\d+) "
+    r"delta_x=(?P<delta_x>\d+)"
+)
 
 
 def scoped_log(log: str) -> str:
     start = "[screen] refresh_cadence_diagnostic start requests=6"
-    end = "[screen] refresh_cadence_diagnostic done interactive_requests=6 cleanup_expected=1"
     start_index = log.find(start)
     if start_index < 0:
         return ""
-    end_index = log.find(end, start_index)
-    if end_index < 0:
+    end_match = re.search(
+        r"\[screen\] refresh_cadence_diagnostic done interactive_requests=6 "
+        r"cleanup_expected=1(?: groups=\d+)?",
+        log[start_index:],
+    )
+    if end_match is None:
         return log[start_index:]
-    return log[start_index : end_index + len(end)]
+    return log[start_index : start_index + end_match.end()]
 
 
 def evaluate(
@@ -59,6 +67,8 @@ def evaluate(
     log_path: str,
     partial_profile: str = "differential",
     transport_profile: str = "vendor_edges",
+    groups: int = 1,
+    micro_motion: bool = False,
 ) -> dict[str, Any]:
     expected = PARTIAL_PROFILES[partial_profile]
     expected_transport = TRANSPORT_PROFILES[transport_profile]
@@ -80,6 +90,20 @@ def evaluate(
     completed = [
         int(match.group("step"))
         for match in re.finditer(r"refresh_cadence_diagnostic complete step=(?P<step>\d+)", scoped)
+    ]
+    group_starts = [
+        int(match.group("group"))
+        for match in re.finditer(
+            r"refresh_cadence_diagnostic group_start group=(?P<group>\d+)",
+            scoped,
+        )
+    ]
+    group_completions = [
+        int(match.group("group"))
+        for match in re.finditer(
+            r"refresh_cadence_diagnostic group_complete group=(?P<group>\d+)",
+            scoped,
+        )
     ]
     interactive = policies[1:] if policies and policies[0]["selected"] == "full" else []
     differential = [
@@ -106,40 +130,84 @@ def evaluate(
         {"profile": match.group("profile"), "control": match.group("control")}
         for match in PARTIAL_REFRESH.finditer(scoped)
     ]
+    maintenance_refreshes = re.findall(
+        r"refresh mode=maintenance profile=good_display_mode1 control=0xC7",
+        scoped,
+    )
+    expected_steps = list(range(1, REQUEST_COUNT + 1)) * groups
+    expected_differential_counts = list(range(0, REQUEST_COUNT - 1)) * groups
+    micro_motion_records = [
+        {
+            "step": int(match.group("step")),
+            "x": int(match.group("x")),
+            "y": int(match.group("y")),
+            "size": int(match.group("size")),
+            "delta_x": int(match.group("delta_x")),
+        }
+        for match in MICRO_MOTION.finditer(scoped)
+    ]
+    def micro_origin_x(step: int) -> int:
+        phase = step % 8
+        return 96 + (phase if phase <= 4 else 8 - phase)
+
+    expected_micro_motion = [{"step": 0, "x": 96, "y": 98, "size": 4, "delta_x": 1}]
+    expected_micro_motion.extend(
+        {
+            "step": step,
+            "x": micro_origin_x(step),
+            "y": 98,
+            "size": 4,
+            "delta_x": 1,
+        }
+        for step in range(1, groups * REQUEST_COUNT + 1)
+    )
     checks = {
         "diagnostic_started": bool(scoped),
         "baseline_full": bool(policies)
         and policies[0]["selected"] == "full"
         and policies[0]["reason"] == 3,
-        "six_steps_queued": queued == list(range(1, REQUEST_COUNT + 1)),
-        "six_steps_completed": completed == list(range(1, REQUEST_COUNT + 1)),
-        "five_differential_requests": differential == [0, 1, 2, 3, 4],
-        "one_sixth_request_maintenance": len(maintenance) == 1
-        and maintenance[0]["partial_count"] == 5
-        and maintenance[0]["reason"] == 4
-        and maintenance[0]["limit"] == 5,
-        "differential_waveform": len(partial_refreshes) >= 5
+        "expected_groups_started": group_starts == list(range(1, groups + 1)),
+        "expected_groups_completed": group_completions == list(range(1, groups + 1)),
+        "six_steps_queued": queued == expected_steps,
+        "six_steps_completed": completed == expected_steps,
+        "five_differential_requests": differential == expected_differential_counts,
+        "one_sixth_request_maintenance": len(maintenance) == groups
+        and all(
+            policy["partial_count"] == 5
+            and policy["reason"] == 4
+            and policy["limit"] == 5
+            for policy in maintenance
+        ),
+        "differential_waveform": len(partial_refreshes) == 5 * groups
         and all(
             refresh["control"] == expected["control"]
             and refresh["profile"] == expected["profile"]
             for refresh in partial_refreshes
         ),
-        "correct_data_plane_count": len(differential_timings) >= 5
+        "correct_data_plane_count": len(differential_timings) == 5 * groups
         and all(
             timing["data_planes"] == expected["data_planes"]
             for timing in differential_timings
         ),
-        "correct_transport_profile": len(differential_timings) >= 5
+        "correct_transport_profile": len(differential_timings) == 5 * groups
         and all(
             timing["transport"] == expected_transport
             for timing in differential_timings
         ),
-        "no_post_waveform_transfer": len(differential_timings) >= 5
+        "no_post_waveform_transfer": len(differential_timings) == 5 * groups
         and all(timing["after_ms"] == 0 for timing in differential_timings),
-        "mode1_waveform": "refresh mode=fast control=0xC7" in scoped,
+        "micro_motion_sequence": not micro_motion
+        or micro_motion_records == expected_micro_motion,
+        "micro_motion_local_window": not micro_motion
+        or len(differential_timings) == 5 * groups
+        and all(timing["window_bytes"] == 4 for timing in differential_timings),
+        "mode1_waveform": (
+            scoped.count("fast_profile=good_display_mode1") == groups
+            and len(maintenance_refreshes) == groups
+        ),
         "diagnostic_completed": (
             "[screen] refresh_cadence_diagnostic done "
-            "interactive_requests=6 cleanup_expected=1"
+            f"interactive_requests=6 cleanup_expected=1 groups={groups}"
         ) in scoped,
         "no_obsolete_delayed_maintenance": "screen_maintenance" not in scoped
         and "quiet_ms=1200" not in scoped,
@@ -151,6 +219,8 @@ def evaluate(
         "status": status,
         "partial_profile": partial_profile,
         "transport_profile": transport_profile,
+        "groups": groups,
+        "micro_motion": micro_motion,
         "claim_scope": "reset-bounded serial evidence for the diagnostic image only; no human visual or current claim",
         "log": log_path,
         "checks": checks,
@@ -158,8 +228,11 @@ def evaluate(
             "policy_records": policies,
             "queued_steps": queued,
             "completed_steps": completed,
+            "group_starts": group_starts,
+            "group_completions": group_completions,
             "differential_timings": differential_timings,
             "partial_refreshes": partial_refreshes,
+            "micro_motion_records": micro_motion_records,
         },
         "next_action": (
             "Run the focused ACPT-01 visual review; this trace does not prove residual-image quality or touch feel."
@@ -169,43 +242,74 @@ def evaluate(
     }
 
 
-def self_test(partial_profile: str, transport_profile: str) -> dict[str, Any]:
+def self_test(
+    partial_profile: str,
+    transport_profile: str,
+    groups: int = 1,
+    micro_motion: bool = False,
+) -> dict[str, Any]:
     expected = PARTIAL_PROFILES[partial_profile]
     expected_transport = TRANSPORT_PROFILES[transport_profile]
     lines = [
-        "[screen] refresh_cadence_diagnostic start requests=6",
+        f"[screen] refresh_cadence_diagnostic start requests=6 groups={groups}",
         "[epaper] policy requested=3 selected=full reason=3 partial_count=0 limit=5 baseline=0",
         "[epaper] refresh mode=full control=0xF7",
         "[screen] refresh_cadence_diagnostic baseline_complete=1",
     ]
-    for step in range(1, 6):
+    if micro_motion:
+        lines.append("[epaper] cadence_micro_motion step=0 origin=96,98 size=4 delta_x=1")
+    for group in range(1, groups + 1):
+        lines.append(f"[screen] refresh_cadence_diagnostic group_start group={group}")
+        for step in range(1, 6):
+            micro_step = (group - 1) * REQUEST_COUNT + step
+            micro_phase = micro_step % 8
+            micro_x = 96 + (micro_phase if micro_phase <= 4 else 8 - micro_phase)
+            lines.extend(
+                [
+                    f"[screen] refresh_cadence_diagnostic queue step={step} item={step - 1} refresh=interactive",
+                    f"[epaper] policy requested=3 selected=differential reason=1 partial_count={step - 1} limit=5 baseline=1",
+                    "[epaper] refresh mode=differential "
+                    f"profile={expected['profile']} control=0x{expected['control']}",
+                    "[epaper] timing mode=differential prepare_ms=0 setup_ms=0 "
+                    "transfer_before_waveform_ms=53 transfer_after_waveform_ms=0 "
+                    f"bytes={4 if micro_motion else 2552} data_planes={expected['data_planes']} "
+                    f"spi={expected_transport}",
+                    f"[screen] refresh_cadence_diagnostic complete step={step}",
+                ]
+            )
+            if micro_motion:
+                lines.insert(
+                    len(lines) - 1,
+                    f"[epaper] cadence_micro_motion step={micro_step} origin={micro_x},98 size=4 delta_x=1",
+                )
+        micro_step = group * REQUEST_COUNT
+        micro_phase = micro_step % 8
+        micro_x = 96 + (micro_phase if micro_phase <= 4 else 8 - micro_phase)
         lines.extend(
             [
-                f"[screen] refresh_cadence_diagnostic queue step={step} item={step - 1} refresh=interactive",
-                f"[epaper] policy requested=3 selected=differential reason=1 partial_count={step - 1} limit=5 baseline=1",
-                "[epaper] refresh mode=differential "
-                f"profile={expected['profile']} control=0x{expected['control']}",
-                "[epaper] timing mode=differential prepare_ms=0 setup_ms=0 "
-                "transfer_before_waveform_ms=53 transfer_after_waveform_ms=0 "
-                f"bytes=2552 data_planes={expected['data_planes']} "
-                f"spi={expected_transport}",
-                f"[screen] refresh_cadence_diagnostic complete step={step}",
+                "[screen] refresh_cadence_diagnostic queue step=6 item=5 refresh=interactive",
+                "[epaper] policy requested=3 selected=maintenance reason=4 partial_count=5 limit=5 baseline=1",
+                "[epaper] fast_profile=good_display_mode1 temp_sensor=1 temp_load=1 temp_reg=0x0064 lut_mode1=1",
+                "[epaper] refresh mode=maintenance profile=good_display_mode1 control=0xC7",
+                "[screen] refresh_cadence_diagnostic complete step=6",
+                f"[screen] refresh_cadence_diagnostic group_complete group={group}",
             ]
         )
-    lines.extend(
-        [
-            "[screen] refresh_cadence_diagnostic queue step=6 item=5 refresh=interactive",
-            "[epaper] policy requested=3 selected=maintenance reason=4 partial_count=5 limit=5 baseline=1",
-            "[epaper] refresh mode=fast control=0xC7",
-            "[screen] refresh_cadence_diagnostic complete step=6",
-            "[screen] refresh_cadence_diagnostic done interactive_requests=6 cleanup_expected=1",
-        ]
+        if micro_motion:
+            lines.insert(
+                len(lines) - 2,
+                f"[epaper] cadence_micro_motion step={micro_step} origin={micro_x},98 size=4 delta_x=1",
+            )
+    lines.append(
+        f"[screen] refresh_cadence_diagnostic done interactive_requests=6 cleanup_expected=1 groups={groups}"
     )
     report = evaluate(
         "\n".join(lines),
         "synthetic-self-test",
         partial_profile,
         transport_profile,
+        groups,
+        micro_motion,
     )
     report["status"] = "PASS_STATIC_PARSER" if report["status"] == "PASS" else "FAIL_STATIC_PARSER"
     report["claim_scope"] = "synthetic parser self-test; no hardware claim"
@@ -219,10 +323,17 @@ def main() -> int:
     parser.add_argument("--self-test", action="store_true")
     parser.add_argument("--partial-profile", choices=PARTIAL_PROFILES, default="differential")
     parser.add_argument("--transport-profile", choices=TRANSPORT_PROFILES, default="vendor_edges")
+    parser.add_argument("--groups", type=int, choices=range(1, 41), default=1)
+    parser.add_argument("--micro-motion", action="store_true")
     args = parser.parse_args()
 
     if args.self_test:
-        report = self_test(args.partial_profile, args.transport_profile)
+        report = self_test(
+            args.partial_profile,
+            args.transport_profile,
+            args.groups,
+            args.micro_motion,
+        )
     elif args.log is not None:
         if not args.log.is_file():
             parser.error(f"serial log not found: {args.log}")
@@ -231,6 +342,8 @@ def main() -> int:
             str(args.log),
             args.partial_profile,
             args.transport_profile,
+            args.groups,
+            args.micro_motion,
         )
     else:
         parser.error("pass --log PATH or --self-test")

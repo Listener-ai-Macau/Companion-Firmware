@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify the staged WB55 FTS02 replacement recovery runner."""
+"""Verify the staged WB55 replacement-display-FPC recovery runner."""
 
 from __future__ import annotations
 
@@ -13,14 +13,22 @@ from typing import Any
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 RUNNER = ROOT / "tools/run_wb55_screen_hardware_recovery.ps1"
+LOCK_HELPER = ROOT / "tools/companion_wb55_lock.ps1"
+LOCK_HOST_TEST = ROOT / "tools/test_companion_wb55_lock_host.ps1"
+FLASH_RUNNER = ROOT / "tools/flash_nucleo_bringup.ps1"
+SERIAL_RUNNER = ROOT / "tools/capture_nucleo_serial.ps1"
 PARSER = ROOT / "tools/verify_wb55_official_full_diagnostic_log.py"
+RAIL_PARSER = ROOT / "tools/verify_wb55_official_full_rail_measurement.py"
+SOURCE_AUDIT = ROOT / "docs/validation/companion-gdey0154d67-t03-vendor-1s-source-audit-20260720.json"
+FPC_EVIDENCE = ROOT / "docs/validation/companion-screen-wb55-replacement-fpc-evidence-20260720.json"
 BUILD_WRAPPER = ROOT / "tools/build_nucleo_bringup.ps1"
 PANEL_TARGET = ROOT / "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c"
 DEFAULT_FIXTURE = ROOT / "docs/validation/companion-screen-wb55-hardware-recovery-runner.json"
-CHECK_ROOT = ROOT / ".cache/validation/wb55-fts02-recovery-preflight"
-RECOVERY_ROOT = ROOT / ".cache/validation/wb55-fts02-recovery-selftest"
-OPERATOR_REJECT_ROOT = ROOT / ".cache/validation/wb55-fts02-operator-reject-selftest"
-OPERATOR_PASS_ROOT = ROOT / ".cache/validation/wb55-fts02-operator-pass-selftest"
+CHECK_ROOT = ROOT / ".cache/validation/wb55-display-fpc-recovery-preflight"
+RECOVERY_ROOT = ROOT / ".cache/validation/wb55-display-fpc-recovery-selftest"
+OPERATOR_REJECT_ROOT = ROOT / ".cache/validation/wb55-display-fpc-operator-reject-selftest"
+OPERATOR_PASS_ROOT = ROOT / ".cache/validation/wb55-display-fpc-operator-pass-selftest"
+PRESERVE_ROOT = ROOT / ".cache/validation/wb55-display-fpc-checkonly-preservation-selftest"
 STUB_IMAGE_ROOT = CHECK_ROOT / "images"
 SCHEMA_ID = "companion.screen.wb55_hardware_recovery_runner.v1"
 PREPARATION_COMMANDS = (
@@ -30,6 +38,8 @@ PREPARATION_COMMANDS = (
     "-EpaperSsd1681OfficialFullDiagnostic -EpaperSsd1681DiagnosticPattern white -Force",
     "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1 "
     "-EpaperSsd1681OfficialFullDiagnostic -EpaperSsd1681DiagnosticPattern black -Force",
+    "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1 "
+    "-EpaperSsd1681OfficialWhiteRailProbe -Force",
 )
 
 
@@ -60,6 +70,8 @@ def load_report(root: pathlib.Path, stage: str) -> dict[str, Any]:
 
 def build_snapshot() -> dict[str, Any]:
     runner_text = RUNNER.read_text(encoding="utf-8-sig")
+    flash_runner_text = FLASH_RUNNER.read_text(encoding="utf-8-sig")
+    serial_runner_text = SERIAL_RUNNER.read_text(encoding="utf-8-sig")
     build_wrapper_text = BUILD_WRAPPER.read_text(encoding="utf-8-sig")
     official_start = build_wrapper_text.find("if ($EpaperSsd1681OfficialFullDiagnostic)")
     official_end = (
@@ -73,6 +85,7 @@ def build_snapshot() -> dict[str, Any]:
         else ""
     )
     panel_target_text = PANEL_TARGET.read_text(encoding="utf-8-sig")
+    source_audit = json.loads(SOURCE_AUDIT.read_text(encoding="utf-8")) if SOURCE_AUDIT.is_file() else {}
     stub_images = {
         name: STUB_IMAGE_ROOT / f"{name}.hex"
         for name in ("normal", "white", "black")
@@ -80,13 +93,34 @@ def build_snapshot() -> dict[str, Any]:
     STUB_IMAGE_ROOT.mkdir(parents=True, exist_ok=True)
     for image in stub_images.values():
         image.write_text(":00000001FF\n", encoding="ascii")
+    if not FPC_EVIDENCE.is_file():
+        raise FileNotFoundError(f"missing replacement display-FPC evidence: {rel(FPC_EVIDENCE)}")
     image_args = [
         "-NormalImagePath", str(stub_images["normal"]),
         "-WhiteImagePath", str(stub_images["white"]),
         "-BlackImagePath", str(stub_images["black"]),
+        "-DisplayFpcReplacementEvidencePath", str(FPC_EVIDENCE),
     ]
     parser = subprocess.run(
         ["python", str(PARSER), "--self-test"],
+        cwd=ROOT,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        timeout=30,
+        check=False,
+    )
+    rail_parser = subprocess.run(
+        ["python", str(RAIL_PARSER), "--self-test"],
+        cwd=ROOT,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        timeout=30,
+        check=False,
+    )
+    lock_host_test = subprocess.run(
+        ["pwsh", "-NoProfile", "-File", str(LOCK_HOST_TEST)],
         cwd=ROOT,
         text=True,
         stdout=subprocess.PIPE,
@@ -109,10 +143,54 @@ def build_snapshot() -> dict[str, Any]:
             "image": report.get("image"),
             "safety": report.get("safety", {}),
             "operator_review": report.get("operator_review", {}),
+            "prerequisites": report.get("prerequisites", {}),
         }
 
-    negative = run("-Execute", "-Stage", "White", timeout=30)
+    protected_report = PRESERVE_ROOT / "white" / "stage-run.json"
+    protected_report.parent.mkdir(parents=True, exist_ok=True)
+    protected_report.write_text(
+        json.dumps(
+            {
+                "schema_id": "companion.wb55.screen_recovery_stage_run.v2",
+                "status": "PASS_MACHINE_AND_VISIBLE_FRAME_NORMAL_RESTORED_PENDING_VOLTAGE_RAILS",
+                "claim_scope": "machine_digital_trace_pending_operator_visual_gate",
+                "evidence_marker": "must-survive-checkonly",
+            },
+            ensure_ascii=False,
+            sort_keys=True,
+        ) + "\n",
+        encoding="utf-8",
+    )
+    protected_before = protected_report.read_bytes()
+    protected_check = run(
+        "-CheckOnly", "-Stage", "White", "-OutRoot", str(PRESERVE_ROOT), *image_args
+    )
+    protected_text = protected_check["stdout"] + protected_check["stderr"]
+    protected_after = protected_report.read_bytes()
+
+    negative = run(
+        "-Execute",
+        "-Stage",
+        "White",
+        "-DisplayFpcReplacementEvidencePath",
+        str(CHECK_ROOT / "missing-display-fpc.json"),
+        timeout=30,
+    )
     negative_text = negative["stdout"] + negative["stderr"]
+    locked_missing_fpc = run(
+        "-Execute", "-WorkflowLockHeld", "-Stage", "White",
+        "-DisplayFpcReplacementEvidencePath", str(CHECK_ROOT / "missing-display-fpc.json"),
+        timeout=30,
+    )
+    locked_missing_fpc_text = locked_missing_fpc["stdout"] + locked_missing_fpc["stderr"]
+    black_missing_white_rail = run(
+        "-Execute",
+        "-WorkflowLockHeld",
+        "-Stage",
+        "Black",
+        timeout=30,
+    )
+    black_missing_white_rail_text = black_missing_white_rail["stdout"] + black_missing_white_rail["stderr"]
     recovery = run("-SelfTestRecovery", "-OutRoot", str(RECOVERY_ROOT), timeout=30)
     recovery_text = recovery["stdout"] + recovery["stderr"]
     recovery_report = load_report(RECOVERY_ROOT, "selftest")
@@ -157,8 +235,21 @@ def build_snapshot() -> dict[str, Any]:
                 '"EPAPER_SSD1681_OFFICIAL_FULL_DIAGNOSTIC=1"' in official_block
             ),
             "runtime_marker_records_pattern_and_official_path": (
-                '"[epaper] boot_diag pattern=%u official=%u cycle=%u result=%u bytes=%lu busy=%d\\r\\n"'
+                '"[epaper] boot_diag pattern=%u official=%u cycle=%u result=%u bytes=%lu busy=%d'
                 in panel_target_text
+                and "(unsigned)COMPANION_EPAPER_SSD1681_OFFICIAL_FULL_DIAGNOSTIC" in panel_target_text
+            ),
+            "isolated_white_rail_probe_profile": all(
+                token in build_wrapper_text
+                for token in (
+                    "$EpaperSsd1681OfficialWhiteRailProbe",
+                    "EPAPER_SSD1681_OFFICIAL_FULL_DIAGNOSTIC=1",
+                    "EPAPER_SSD1681_DIAGNOSTIC_PATTERN=1",
+                    "EPAPER_SSD1681_DIAGNOSTIC_REPEATS=30",
+                    "EPAPER_SSD1681_DIAGNOSTIC_INTERVAL_MS=5000",
+                    "BUILD_DIR=build_official_full_rail_probe_white",
+                    "TARGET=Companion_Nucleo_WB55RG_OfficialFullRailProbeWhite",
+                )
             ),
         },
         "operator_prompt_contract": {
@@ -170,19 +261,103 @@ def build_snapshot() -> dict[str, Any]:
                 runner_text.find("foreach ($step in $steps)")
                 < runner_text.find("Invoke-OperatorReview -ReviewStage")
             ),
-            "normal_restore_after_review_present": "flash_normal_restore_after_review" in runner_text,
+        "normal_restore_after_review_present": "flash_normal_restore_after_review" in runner_text,
+        "nonempty_operator_observation_required": "without the required physical observation note" in runner_text,
+        "operator_observation_template_present": "-DefaultText $Spec.default_note" in runner_text,
+        },
+        "prerequisite_guard_contract": {
+            "replacement_display_fpc_schema_guard_present": "companion.wb55.display_fpc_replacement_evidence.v1" in runner_text,
+            "white_execute_requires_replacement_display_fpc": "Assert-DisplayFpcReplacementEvidence" in runner_text,
+            "black_execute_requires_white_rail": "Assert-WhiteRailEvidence" in runner_text,
+            "white_rail_schema_guard_present": "companion.wb55.official_full_rail_measurement.v1" in runner_text,
+            "vendor_source_audit_guard_present": "Assert-VendorSourceAudit" in runner_text,
+            "checkonly_preserves_completed_evidence": (
+                "Assert-CheckOnlyWillNotOverwriteCompletedEvidence" in runner_text
+            ),
+        },
+        "hardware_lock_contract": {
+            "helper": rel(LOCK_HELPER),
+            "helper_exists": LOCK_HELPER.is_file(),
+            "runner_imports_helper": "companion_wb55_lock.ps1" in runner_text,
+            "runner_acquires_before_steps": "Enter-CompanionWb55Lock -Purpose \"official full $Stage recovery\"" in runner_text,
+            "child_grant_is_recorded": "Get-CompanionWb55LockEvidenceSummary" in runner_text,
+            "legacy_boolean_is_not_authority": "legacy_workflow_lock_boolean_is_not_authority" in runner_text,
+            "flash_child_imports_and_uses_helper": (
+                "companion_wb55_lock.ps1" in flash_runner_text
+                and "Enter-CompanionWb55Lock" in flash_runner_text
+                and "Exit-CompanionWb55Lock" in flash_runner_text
+            ),
+            "serial_child_imports_and_uses_helper": (
+                "companion_wb55_lock.ps1" in serial_runner_text
+                and "Enter-CompanionWb55Lock" in serial_runner_text
+                and "Exit-CompanionWb55Lock" in serial_runner_text
+            ),
+            "runner_does_not_forward_legacy_boolean_to_serial_child": (
+                '"-Execute", "-WorkflowLockHeld"' not in runner_text
+            ),
+            "mutex_spans_step_sequence_and_restore": (
+                runner_text.find("Enter-CompanionWb55Lock -Purpose \"official full $Stage recovery\"")
+                < runner_text.rfind("Exit-CompanionWb55Lock")
+            ),
+            "host_mutex_test_returncode": lock_host_test.returncode,
+            "host_mutex_test_passed": (
+                lock_host_test.returncode == 0
+                and "PASS: Companion-WB55 host mutex rejects contention and releases cleanly." in lock_host_test.stdout
+            ),
+        },
+        "source_audit_contract": {
+            "path": rel(SOURCE_AUDIT) if SOURCE_AUDIT.is_file() else None,
+            "schema_id": source_audit.get("schema_id"),
+            "machine_status": source_audit.get("machine_status"),
+            "promotion_status": source_audit.get("promotion_status"),
+            "production_lut_reference_absent": source_audit.get("command_evidence", {}).get("production_lut_reference_absent"),
+            "runner_binds_parser_audit_argument": "--source-audit" in runner_text,
+            "runner_rehashes_audited_sources_before_execute": "Get-FileHash" in runner_text,
         },
         "parser_selftest": {
             "returncode": parser.returncode,
             "passed": parser.returncode == 0 and "PASS: official full diagnostic parser self-test" in parser.stdout,
         },
+        "rail_measurement_parser_selftest": {
+            "path": rel(RAIL_PARSER),
+            "returncode": rail_parser.returncode,
+            "passed": rail_parser.returncode == 0
+            and "PASS: official full rail measurement parser self-test" in rail_parser.stdout,
+        },
         "stages": stage_results,
-        "execute_without_lock_negative": {
+        "checkonly_preserves_completed_evidence": {
+            "returncode": protected_check["returncode"],
+            "refused_before_commands": (
+                protected_check["returncode"] != 0
+                and "Refusing CheckOnly to overwrite completed or non-preflight stage evidence"
+                in protected_text
+                and "CHECK:" not in protected_text
+                and "RUN:" not in protected_text
+            ),
+            "artifact_bytes_unchanged": protected_before == protected_after,
+        },
+        "execute_missing_replacement_display_fpc_negative": {
             "returncode": negative["returncode"],
             "refused_before_hardware": (
                 negative["returncode"] != 0
-                and "Refusing WB55 FTS02 recovery execution without workflow lock acknowledgement" in negative_text
+                and "Missing replacement display-FPC evidence file." in negative_text
                 and "RUN:" not in negative_text
+            ),
+        },
+        "execute_with_lock_missing_replacement_display_fpc_negative": {
+            "returncode": locked_missing_fpc["returncode"],
+            "refused_before_hardware": (
+                locked_missing_fpc["returncode"] != 0
+                and "Missing replacement display-FPC evidence file." in locked_missing_fpc_text
+                and "RUN:" not in locked_missing_fpc_text
+            ),
+        },
+        "black_without_white_rail_negative": {
+            "returncode": black_missing_white_rail["returncode"],
+            "refused_before_hardware": (
+                black_missing_white_rail["returncode"] != 0
+                and "Missing post-White rail evidence file." in black_missing_white_rail_text
+                and "RUN:" not in black_missing_white_rail_text
             ),
         },
         "recovery_selftest": {
@@ -217,8 +392,8 @@ def build_snapshot() -> dict[str, Any]:
         },
         "preparation_commands": list(PREPARATION_COMMANDS),
         "operator_sequence": [
-            "Run White under Companion-WB55 lock, then record one focused visible-frame decision.",
-            "Only after White PASS, run Black and record one focused visible-frame decision.",
+            "Run White only after the versioned replacement-display-FPC evidence passes; the runner holds the Companion-WB55 firmware mutex across flash, capture, review and restore.",
+            "Only after White rail evidence passes, run Black and record one focused visible-frame decision.",
             "Run RestoreNormal before any product interaction or runtime-resource acceptance.",
             "If either visible frame fails, measure PREVGH1/PREVGL1 during that verified refresh and stop software changes.",
         ],
@@ -228,6 +403,8 @@ def build_snapshot() -> dict[str, Any]:
         ),
         "validation_commands": [
             "python .\\tools\\verify_wb55_official_full_diagnostic_log.py --self-test",
+            "python .\\tools\\verify_wb55_official_full_rail_measurement.py --self-test",
+            "pwsh -NoProfile -File .\\tools\\test_companion_wb55_lock_host.ps1",
             "python .\\tools\\verify_wb55_screen_hardware_recovery_runner.py",
             "pwsh -NoProfile -File .\\tools\\run_wb55_screen_hardware_recovery.ps1 -CheckOnly -Stage White",
             "pwsh -NoProfile -File .\\tools\\run_wb55_screen_hardware_recovery.ps1 -CheckOnly -Stage Black",
@@ -247,6 +424,7 @@ def verify(snapshot: dict[str, Any]) -> list[str]:
         "official_mode_enables_ssd1681_driver",
         "official_mode_enables_single_plane_path",
         "runtime_marker_records_pattern_and_official_path",
+        "isolated_white_rail_probe_profile",
     ):
         if image_contract.get(key) is not True:
             errors.append(f"diagnostic image contract failed: {key}")
@@ -258,11 +436,51 @@ def verify(snapshot: dict[str, Any]) -> list[str]:
         "four_result_buttons_present",
         "prompt_after_machine_steps",
         "normal_restore_after_review_present",
+        "nonempty_operator_observation_required",
+        "operator_observation_template_present",
     ):
         if prompt_contract.get(key) is not True:
             errors.append(f"operator prompt contract failed: {key}")
+    prerequisite_contract = snapshot.get("prerequisite_guard_contract", {})
+    for key in (
+        "replacement_display_fpc_schema_guard_present",
+        "white_execute_requires_replacement_display_fpc",
+        "black_execute_requires_white_rail",
+        "white_rail_schema_guard_present",
+        "vendor_source_audit_guard_present",
+        "checkonly_preserves_completed_evidence",
+    ):
+        if prerequisite_contract.get(key) is not True:
+            errors.append(f"prerequisite guard contract failed: {key}")
+    hardware_lock = snapshot.get("hardware_lock_contract", {})
+    for key in (
+        "helper_exists",
+        "runner_imports_helper",
+        "runner_acquires_before_steps",
+        "child_grant_is_recorded",
+        "legacy_boolean_is_not_authority",
+        "flash_child_imports_and_uses_helper",
+        "serial_child_imports_and_uses_helper",
+        "runner_does_not_forward_legacy_boolean_to_serial_child",
+        "mutex_spans_step_sequence_and_restore",
+        "host_mutex_test_passed",
+    ):
+        if hardware_lock.get(key) is not True:
+            errors.append(f"hardware lock contract failed: {key}")
+    if snapshot.get("source_audit_contract") != {
+        "path": "docs/validation/companion-gdey0154d67-t03-vendor-1s-source-audit-20260720.json",
+        "schema_id": "companion.gdey0154d67_t03.vendor_1s_source_audit.v1",
+        "machine_status": "PASS_AUDIT_COMPLETE",
+        "promotion_status": "NO_GO_PANEL_IDENTITY_UNPROVEN",
+        "production_lut_reference_absent": True,
+        "runner_binds_parser_audit_argument": True,
+        "runner_rehashes_audited_sources_before_execute": True,
+    }:
+        errors.append("source-audit binding contract drifted")
     if snapshot.get("parser_selftest", {}).get("passed") is not True:
         errors.append("official diagnostic parser self-test must pass")
+    if snapshot.get("rail_measurement_parser_selftest", {}).get("passed") is not True:
+        errors.append("official rail measurement parser self-test must pass")
     if snapshot.get("preparation_commands") != list(PREPARATION_COMMANDS):
         errors.append("diagnostic preparation command sequence drifted")
     expected_steps = {
@@ -271,9 +489,9 @@ def verify(snapshot: dict[str, Any]) -> list[str]:
         "restorenormal": ["flash_normal_restore"],
     }
     expected_images = {
-        "white": ".cache/validation/wb55-fts02-recovery-preflight/images/white.hex",
-        "black": ".cache/validation/wb55-fts02-recovery-preflight/images/black.hex",
-        "restorenormal": ".cache/validation/wb55-fts02-recovery-preflight/images/normal.hex",
+        "white": ".cache/validation/wb55-display-fpc-recovery-preflight/images/white.hex",
+        "black": ".cache/validation/wb55-display-fpc-recovery-preflight/images/black.hex",
+        "restorenormal": ".cache/validation/wb55-display-fpc-recovery-preflight/images/normal.hex",
     }
     expected_operator_reviews = {
         "white": {
@@ -281,14 +499,14 @@ def verify(snapshot: dict[str, Any]) -> list[str]:
             "invoked": False,
             "style": "aiw_operator_prompt_v1",
             "progress_text": "1/2（本次 1/1）",
-            "output_path": ".cache/validation/wb55-fts02-recovery-preflight/white/operator-prompt-observation.txt",
+            "output_path": ".cache/validation/wb55-display-fpc-recovery-preflight/white/operator-prompt-observation.txt",
         },
         "black": {
             "required": True,
             "invoked": False,
             "style": "aiw_operator_prompt_v1",
             "progress_text": "2/2（本次 1/1）",
-            "output_path": ".cache/validation/wb55-fts02-recovery-preflight/black/operator-prompt-observation.txt",
+            "output_path": ".cache/validation/wb55-display-fpc-recovery-preflight/black/operator-prompt-observation.txt",
         },
         "restorenormal": {
             "required": False,
@@ -296,6 +514,41 @@ def verify(snapshot: dict[str, Any]) -> list[str]:
             "style": None,
             "progress_text": None,
             "output_path": None,
+        },
+    }
+    expected_prerequisites = {
+        "white": {
+            "replacement_display_fpc_required": True,
+            "replacement_display_fpc_path": "docs/validation/companion-screen-wb55-replacement-fpc-evidence-20260720.json",
+            "replacement_display_fpc_validated": False,
+            "post_white_rail_required": False,
+            "post_white_rail_path": None,
+            "post_white_rail_validated": False,
+            "vendor_source_audit_required": True,
+            "vendor_source_audit_path": "docs/validation/companion-gdey0154d67-t03-vendor-1s-source-audit-20260720.json",
+            "vendor_source_audit_validated": False,
+        },
+        "black": {
+            "replacement_display_fpc_required": False,
+            "replacement_display_fpc_path": None,
+            "replacement_display_fpc_validated": False,
+            "post_white_rail_required": True,
+            "post_white_rail_path": None,
+            "post_white_rail_validated": False,
+            "vendor_source_audit_required": True,
+            "vendor_source_audit_path": "docs/validation/companion-gdey0154d67-t03-vendor-1s-source-audit-20260720.json",
+            "vendor_source_audit_validated": False,
+        },
+        "restorenormal": {
+            "replacement_display_fpc_required": False,
+            "replacement_display_fpc_path": None,
+            "replacement_display_fpc_validated": False,
+            "post_white_rail_required": False,
+            "post_white_rail_path": None,
+            "post_white_rail_validated": False,
+            "vendor_source_audit_required": False,
+            "vendor_source_audit_path": None,
+            "vendor_source_audit_validated": False,
         },
     }
     for stage, step_ids in expected_steps.items():
@@ -310,6 +563,8 @@ def verify(snapshot: dict[str, Any]) -> list[str]:
             errors.append(f"{stage} CheckOnly did not use its isolated stub image")
         if not all(result.get("safety", {}).values()):
             errors.append(f"{stage} safety contract is incomplete")
+        if result.get("prerequisites") != expected_prerequisites[stage]:
+            errors.append(f"{stage} prerequisite declaration drifted")
         review = result.get("operator_review", {})
         for key, expected in expected_operator_reviews[stage].items():
             if review.get(key) != expected:
@@ -320,9 +575,20 @@ def verify(snapshot: dict[str, Any]) -> list[str]:
                 for key in ("title", "scope_text", "message", "expected_text")
             ):
                 errors.append(f"{stage} operator review text is incomplete")
-    negative = snapshot.get("execute_without_lock_negative", {})
+    negative = snapshot.get("execute_missing_replacement_display_fpc_negative", {})
     if negative.get("returncode") == 0 or negative.get("refused_before_hardware") is not True:
-        errors.append("Execute must refuse before hardware without Companion-WB55 lock acknowledgement")
+        errors.append("White Execute must refuse before hardware when replacement display-FPC evidence is absent")
+    locked_missing_fpc = snapshot.get("execute_with_lock_missing_replacement_display_fpc_negative", {})
+    if locked_missing_fpc.get("returncode") == 0 or locked_missing_fpc.get("refused_before_hardware") is not True:
+        errors.append("White Execute must refuse before hardware when replacement display-FPC evidence is absent")
+    black_missing_rail = snapshot.get("black_without_white_rail_negative", {})
+    if black_missing_rail.get("returncode") == 0 or black_missing_rail.get("refused_before_hardware") is not True:
+        errors.append("Black Execute must refuse before hardware when White rail evidence is absent")
+    preserved = snapshot.get("checkonly_preserves_completed_evidence", {})
+    if preserved.get("returncode") == 0 or preserved.get("refused_before_commands") is not True:
+        errors.append("CheckOnly must refuse before command output when a completed stage report exists")
+    if preserved.get("artifact_bytes_unchanged") is not True:
+        errors.append("CheckOnly must preserve a completed stage report byte-for-byte")
     recovery = snapshot.get("recovery_selftest", {})
     if recovery.get("returncode") == 0 or recovery.get("stdout_has_recovery") is not True:
         errors.append("recovery self-test must fail and invoke normal restore")
@@ -371,6 +637,8 @@ def verify(snapshot: dict[str, Any]) -> list[str]:
         errors.append("operator PASS must persist the result beside its stage report")
     if passed_review.get("invoked") is not True or passed_review.get("selected") != "通过":
         errors.append("operator PASS report did not retain the selected button")
+    if not isinstance(passed_review.get("note"), str) or not passed_review["note"].strip():
+        errors.append("operator PASS report must retain a nonempty physical observation note")
     if passed.get("result_ids") != [
         "flash_white", "capture_white", "parse_white", "flash_normal_restore_after_review"
     ]:
@@ -402,11 +670,11 @@ def main(argv: list[str]) -> int:
     elif fixture.read_text(encoding="utf-8") != rendered:
         errors.append(f"stale fixture {rel(fixture)}; rerun with --write")
     if errors:
-        print("FAIL: WB55 FTS02 recovery runner preflight failed:", file=sys.stderr)
+        print("FAIL: WB55 replacement-display-FPC recovery runner preflight failed:", file=sys.stderr)
         for error in errors:
             print(f" - {error}", file=sys.stderr)
         return 1
-    print(f"PASS: WB55 staged FTS02 recovery runner verified -> {rel(fixture)}")
+    print(f"PASS: WB55 staged replacement-display-FPC recovery runner verified -> {rel(fixture)}")
     return 0
 
 

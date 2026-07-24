@@ -15,7 +15,7 @@ FIXTURE = ROOT / "docs" / "validation" / "companion-product-requirements.json"
 
 REQUIRED_ANCHORS = (
     "Companion Product Requirement Registry",
-    "Current Goal Precedence (2026-07-17)",
+    "Current Goal Precedence (2026-07-19)",
     "Steering Intake Rule",
     "companion-screen-product-integration",
     "COMP-REQ-001",
@@ -60,6 +60,8 @@ REQUIRED_ANCHORS = (
     "COMP-REQ-076",
     "COMP-REQ-077",
     "COMP-REQ-078",
+    "COMP-REQ-157",
+    "COMP-REQ-158",
     "PC6/EXTI",
     "<=1 mA",
     "external-Flash first",
@@ -96,6 +98,16 @@ REQUIRED_ANCHORS = (
     "historical API identifiers only",
     "reactivate any image, prompt, PBM, CEMP, menu layout, or visual validation path",
     "some Companion expressions appear truncated at the lower edge",
+    "new `GDEH0154D67-20211203-P-LUT(1s) -1s快刷` package",
+    "NO_GO_PANEL_IDENTITY_UNPROVEN",
+    "OLED-like perceived responsiveness",
+    "COMP-REQ-161",
+    "0154BN-D67-D2 N524110506",
+    "PASS_OWNER_PHOTO_LABEL_OBSERVED_UNARCHIVED",
+    "COMP-REQ-163",
+    "NO_GO_CURRENT_WHITE_BLACK_UNRETESTED_AFTER_FPC_REPLACEMENT",
+    "COMP-REQ-164",
+    "replacement-display-FPC evidence artifact",
 )
 
 
@@ -116,7 +128,7 @@ def main() -> int:
         "registry": str(REGISTRY.relative_to(ROOT)).replace("\\", "/"),
         "workflow_plan": "companion-screen-product-integration",
         "requirement_ids": [f"COMP-REQ-{number}" for number in requirement_ids],
-        "current_focus": "Active Codex Goal: v9 renderer-first UI, four-root menu source review, protected touch/three-minute idle behavior, WBA external-SPI-NOR boundary, and vendor waveform freeze",
+        "current_focus": "Active Codex Goal: physical White/Black recovery before V9 component-Rig screen activation, with deterministic behavior and vendor waveform freeze protected",
         "active_parallel_track": "WB55 FTS02/panel recovery, real touch/Stop/current and final physical review remain hardware gates; daily art validation does not require a camera",
         "current_goal_audit": "docs/validation/companion-current-goal-audit-20260717.json",
         "errors": errors,

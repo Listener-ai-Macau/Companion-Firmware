@@ -2,7 +2,11 @@ param(
     [switch] $CheckOnly,
     [switch] $Execute,
     [switch] $SelfTestRecovery,
-    [switch] $WorkflowLockHeld,
+    [switch] $HardwareAcknowledged,
+    [ValidateSet("all", "differential", "direct_bsrr", "vendor_partial")]
+    [string] $Profile = "all",
+    [ValidateRange(1, 40)]
+    [int] $CadenceGroups = 1,
     [string] $Port,
     [ValidateRange(10, 120)]
     [int] $CaptureSeconds = 15,
@@ -19,6 +23,17 @@ $flashRunner = Join-Path $PSScriptRoot "flash_nucleo_bringup.ps1"
 $serialRunner = Join-Path $PSScriptRoot "capture_nucleo_serial.ps1"
 $logVerifier = Join-Path $PSScriptRoot "verify_wb55_refresh_cadence_log.py"
 $normalImage = Join-Path $repoRoot "cubeide\Companion_Nucleo_WB55RG_Bringup\build\Companion_Nucleo_WB55RG_Bringup.hex"
+$cadenceBuildDir = if ($CadenceGroups -eq 1) {
+    "build_refresh_cadence_diagnostic"
+} else {
+    "build_refresh_cadence_diagnostic_g$CadenceGroups"
+}
+$cadenceTarget = if ($CadenceGroups -eq 1) {
+    "Companion_Nucleo_WB55RG_RefreshCadenceDiagnostic"
+} else {
+    "Companion_Nucleo_WB55RG_RefreshCadenceDiagnosticG$CadenceGroups"
+}
+$cadenceImage = Join-Path $repoRoot "cubeide\Companion_Nucleo_WB55RG_Bringup\$cadenceBuildDir\$cadenceTarget.hex"
 $defaultOutRoot = Join-Path $repoRoot ".cache\validation\companion-performance\refresh-ab-current"
 $runRoot = if ([string]::IsNullOrWhiteSpace($OutRoot)) { $defaultOutRoot } else { $OutRoot }
 $runReport = Join-Path $runRoot "refresh-ab-run.json"
@@ -62,15 +77,15 @@ $selectedModes = @($CheckOnly.IsPresent, $Execute.IsPresent, $SelfTestRecovery.I
 if (@($selectedModes).Count -ne 1) {
     throw "Use exactly one of -CheckOnly, -Execute, or -SelfTestRecovery."
 }
-if ($Execute -and -not $WorkflowLockHeld) {
-    throw "Refusing WB55 refresh A/B execution without workflow lock acknowledgement. Run through aiw with-lock -Resource Companion-WB55 and pass -WorkflowLockHeld inside the locked command."
+if ($Execute -and -not $HardwareAcknowledged) {
+    throw "Refusing WB55 refresh A/B execution without explicit hardware acknowledgement. Pass -HardwareAcknowledged only after the owner has started this physical diagnostic."
 }
 
-$profiles = @(
+$allProfiles = @(
     [ordered]@{
         id = "differential"
         label = "verified two-plane differential"
-        image = Join-Path $repoRoot "cubeide\Companion_Nucleo_WB55RG_Bringup\build_refresh_cadence_diagnostic\Companion_Nucleo_WB55RG_RefreshCadenceDiagnostic.hex"
+        image = $cadenceImage
         partial_profile = "differential"
         transport_profile = "vendor_edges"
         expected_control = "0xFC"
@@ -96,7 +111,13 @@ $profiles = @(
     }
 )
 
-if (-not $SelfTestRecovery) {
+$profiles = if ($Profile -eq "all") {
+    $allProfiles
+} else {
+    @($allProfiles | Where-Object { $_.id -eq $Profile })
+}
+
+if (-not $SelfTestRecovery -and -not $CheckOnly) {
     foreach ($path in @($flashRunner, $serialRunner, $logVerifier, $normalImage) + @($profiles | ForEach-Object { $_.image })) {
         if (-not (Test-Path -LiteralPath $path)) {
             throw "Required refresh A/B artifact is missing: $path. Rebuild the named diagnostic before opening a hardware lock."
@@ -110,30 +131,36 @@ if (-not [string]::IsNullOrWhiteSpace($Port)) {
 }
 
 $steps = @()
-foreach ($profile in $profiles) {
-    $captureDir = Join-Path $runRoot $profile.id
+foreach ($entry in $profiles) {
+    $captureDir = Join-Path $runRoot $entry.id
     $rawLog = Join-Path $captureDir "nucleo-serial-raw.log"
     $parsedResult = Join-Path $captureDir "refresh-cadence-result.json"
-    $steps += Build-Step -Id "flash_$($profile.id)" -Command "pwsh" -Arguments @(
+    $entryCadenceGroups = if ($entry.id -eq "differential") { $CadenceGroups } else { 1 }
+    $parseArguments = @(
+        $logVerifier,
+        "--partial-profile", $entry.partial_profile,
+        "--transport-profile", $entry.transport_profile,
+        "--groups", "$entryCadenceGroups",
+        "--log", $rawLog,
+        "--out", $parsedResult
+    )
+    if ($entry.id -eq "differential") {
+        $parseArguments += "--micro-motion"
+    }
+    $steps += Build-Step -Id "flash_$($entry.id)" -Command "pwsh" -Arguments @(
         "-NoProfile", "-File", $flashRunner,
-        "-ImagePath", $profile.image,
+        "-ImagePath", $entry.image,
         "-ProgrammerRoot", $ProgrammerRoot
-    ) -Purpose "Flash the $($profile.label) image."
+    ) -Purpose "Flash the $($entry.label) image."
     $captureArgs = @(
         "-NoProfile", "-File", $serialRunner,
-        "-Execute", "-WorkflowLockHeld",
+        "-Execute",
         "-Seconds", "$CaptureSeconds",
         "-ResetAfterOpen",
         "-OutDir", $captureDir
     ) + $portArgs
-    $steps += Build-Step -Id "capture_$($profile.id)" -Command "pwsh" -Arguments $captureArgs -Purpose "Capture one reset-bounded trace for $($profile.id)."
-    $steps += Build-Step -Id "parse_$($profile.id)" -Command "python" -Arguments @(
-        $logVerifier,
-        "--partial-profile", $profile.partial_profile,
-        "--transport-profile", $profile.transport_profile,
-        "--log", $rawLog,
-        "--out", $parsedResult
-    ) -Purpose "Reject an incomplete waveform, wrong transport, or stale diagnostic trace."
+    $steps += Build-Step -Id "capture_$($entry.id)" -Command "pwsh" -Arguments $captureArgs -Purpose "Capture one reset-bounded trace for $($entry.id)."
+    $steps += Build-Step -Id "parse_$($entry.id)" -Command "python" -Arguments $parseArguments -Purpose "Reject an incomplete waveform, wrong transport, stale trace, or non-local micro-motion window."
 }
 
 $normalRestoreStep = Build-Step -Id "flash_normal_restore" -Command "pwsh" -Arguments @(
@@ -164,6 +191,7 @@ $report = [ordered]@{
     generated_at = (Get-Date).ToString("o")
     target = "NUCLEO-WB55RG + GDEY0154D67-T03 + FT6336U"
     capture_seconds = $CaptureSeconds
+    cadence_groups = $CadenceGroups
     output = [ordered]@{
         root = RelPath $runRoot
         run_report = RelPath $runReport
@@ -181,8 +209,8 @@ $report = [ordered]@{
     })
     steps = @($steps)
     notes = @(
-        "Run only after the owner explicitly starts hardware acceptance and while the Companion-WB55 workflow lock is held.",
-        "All three diagnostics use the same six-frame cadence; parser success is required before comparing timing or visible residuals.",
+        "Run only after the owner explicitly starts hardware acceptance; every flash and capture independently acquires the Companion-WB55 mutex.",
+        "The selected differential diagnostic uses $CadenceGroups bounded six-frame cadence group(s); parser success is required before comparing timing or visible residuals.",
         "The direct-BSRR and vendor-partial images are diagnostic-only and must not become production behavior from serial timing alone.",
         "Any failure after a diagnostic flash attempts to restore the normal quiet production image before the lock is released.",
         "This runner collects machine traces only. It does not replace the focused ACPT-01 visual and touch review."
@@ -192,12 +220,12 @@ $report = [ordered]@{
 if ($CheckOnly) {
     $report.completed_at = (Get-Date).ToString("o")
     $report.results = @()
-    Write-Output "CHECK: WB55 refresh A/B sequence profiles=$($profiles.id -join ',') capture_seconds=$CaptureSeconds"
+    Write-Output "CHECK: WB55 refresh A/B sequence profile=$Profile selected=$($profiles.id -join ',') cadence_groups=$CadenceGroups capture_seconds=$CaptureSeconds"
     foreach ($step in $steps) {
         Write-Output "CHECK: $($step.id): $($step.command) $($step.arguments -join ' ')"
     }
-    Write-Output "CHECK: execute with workflow lock:"
-    Write-Output "  pwsh -NoProfile -File C:\Users\Billy\Desktop\Denzic\ai-collaboration-workflow\scripts\aiw.ps1 with-lock -Resource Companion-WB55 -Purpose 'Companion WB55 refresh A/B' -Run pwsh -NoProfile -File .\tools\run_wb55_refresh_ab.ps1 -Execute -WorkflowLockHeld"
+    Write-Output "CHECK: execute after explicit owner-started hardware acknowledgement:"
+    Write-Output "  pwsh -NoProfile -File .\tools\run_wb55_refresh_ab.ps1 -Execute -HardwareAcknowledged -Profile differential -CadenceGroups $CadenceGroups"
     Write-RunReport -Report $report
     Write-Output ($report | ConvertTo-Json -Depth 10)
     exit 0

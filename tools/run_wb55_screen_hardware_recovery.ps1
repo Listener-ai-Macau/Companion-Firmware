@@ -16,6 +16,9 @@ param(
     [string] $NormalImagePath,
     [string] $WhiteImagePath,
     [string] $BlackImagePath,
+    [string] $DisplayFpcReplacementEvidencePath,
+    [string] $WhiteRailArtifactPath,
+    [string] $VendorSourceAuditPath,
     [string] $ProgrammerRoot = "C:\ST\STM32CubeIDE_2.1.1\STM32CubeIDE\plugins"
 )
 
@@ -24,13 +27,16 @@ Set-StrictMode -Version Latest
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
+. (Join-Path $PSScriptRoot "companion_wb55_lock.ps1")
 $flashRunner = Join-Path $PSScriptRoot "flash_nucleo_bringup.ps1"
 $serialRunner = Join-Path $PSScriptRoot "capture_nucleo_serial.ps1"
 $logVerifier = Join-Path $PSScriptRoot "verify_wb55_official_full_diagnostic_log.py"
 $normalImageDefault = Join-Path $repoRoot "cubeide\Companion_Nucleo_WB55RG_Bringup\build\Companion_Nucleo_WB55RG_Bringup.hex"
 $whiteImageDefault = Join-Path $repoRoot "cubeide\Companion_Nucleo_WB55RG_Bringup\build_official_full_diagnostic_white\Companion_Nucleo_WB55RG_OfficialFullDiagnostic_white.hex"
 $blackImageDefault = Join-Path $repoRoot "cubeide\Companion_Nucleo_WB55RG_Bringup\build_official_full_diagnostic_black\Companion_Nucleo_WB55RG_OfficialFullDiagnostic_black.hex"
-$defaultOutRoot = Join-Path $repoRoot ".cache\validation\wb55-fts02-recovery-current"
+$vendorSourceAuditDefault = Join-Path $repoRoot "docs\validation\companion-gdey0154d67-t03-vendor-1s-source-audit-20260720.json"
+$displayFpcEvidenceDefault = Join-Path $repoRoot "docs\validation\companion-screen-wb55-replacement-fpc-evidence-20260720.json"
+$defaultOutRoot = Join-Path $repoRoot ".cache\validation\wb55-screen-recovery-current"
 $runRoot = if ([string]::IsNullOrWhiteSpace($OutRoot)) { $defaultOutRoot } else { $OutRoot }
 $stageKey = if ([string]::IsNullOrWhiteSpace($Stage)) { "selftest" } else { $Stage.ToLowerInvariant() }
 $stageRoot = Join-Path $runRoot $stageKey
@@ -52,9 +58,141 @@ function Resolve-ImagePath {
     return [System.IO.Path]::GetFullPath((Join-Path $repoRoot $Override))
 }
 
+function Resolve-OptionalPath {
+    param([string] $Value)
+
+    if ([string]::IsNullOrWhiteSpace($Value)) {
+        return $null
+    }
+    if ([System.IO.Path]::IsPathRooted($Value)) {
+        return [System.IO.Path]::GetFullPath($Value)
+    }
+    return [System.IO.Path]::GetFullPath((Join-Path $repoRoot $Value))
+}
+
+function Read-JsonEvidence {
+    param(
+        [string] $Path,
+        [string] $Label
+    )
+
+    if ([string]::IsNullOrWhiteSpace($Path) -or -not (Test-Path -LiteralPath $Path -PathType Leaf)) {
+        throw "Missing $Label evidence file."
+    }
+    try {
+        return Get-Content -Raw -LiteralPath $Path | ConvertFrom-Json -AsHashtable
+    } catch {
+        throw "$Label evidence is not valid JSON: $($_.Exception.Message)"
+    }
+}
+
+function Assert-DisplayFpcReplacementEvidence {
+    param([string] $Path)
+
+    $evidence = Read-JsonEvidence -Path $Path -Label "replacement display-FPC"
+    $observation = $evidence.owner_observation
+    $authorization = $evidence.authorization
+    $errors = @()
+    if ($evidence.schema_id -ne "companion.wb55.display_fpc_replacement_evidence.v1") {
+        $errors += "schema_id"
+    }
+    if ($evidence.status -ne "PASS_OWNER_REPORTED_REPLACEMENT_FPC_CURRENT_PANEL_VISIBLE") {
+        $errors += "status"
+    }
+    if ($evidence.target -ne "NUCLEO-WB55RG + ESP32-FTS02 + GDEY0154D67-T03") {
+        $errors += "target"
+    }
+    foreach ($field in @("replacement_display_fpc_installed", "current_dynamic_expressions_visible", "photo_observed_in_conversation")) {
+        if ($null -eq $observation -or $observation[$field] -ne $true) {
+            $errors += "owner_observation.$field"
+        }
+    }
+    if ($null -eq $authorization -or $authorization.allowed_stage -ne "White") {
+        $errors += "authorization.allowed_stage"
+    }
+    if ($errors.Count -gt 0) {
+        throw "Replacement display-FPC evidence is incomplete: $($errors -join ', ')."
+    }
+    return $evidence
+}
+
+function Assert-WhiteRailEvidence {
+    param([string] $Path)
+
+    $evidence = Read-JsonEvidence -Path $Path -Label "post-White rail"
+    $checks = $evidence.checks
+    $measurement = $evidence.measurement
+    $errors = @()
+    if ($evidence.schema_id -ne "companion.wb55.official_full_rail_measurement.v1") {
+        $errors += "schema_id"
+    }
+    if ($evidence.status -ne "PASS_MACHINE_AND_RAILS_ESTABLISHED_WHITE") {
+        $errors += "status"
+    }
+    foreach ($field in @("official_current_plane_only", "every_observed_cycle_transfers_one_5000_byte_plane", "refresh_within_5000_ms", "activation_0x20_sent", "source_audit_bound", "no_panel_error_marker", "operator_selected_pass", "screen_observation_declares_uniform_white", "positive_and_negative_refresh_rails_established")) {
+        if ($null -eq $checks -or $checks[$field] -ne $true) {
+            $errors += "checks.$field"
+        }
+    }
+    if ($null -eq $measurement -or $measurement.operator_selected -ne "通过" -or $measurement.screen_observation -ne "uniform_white") {
+        $errors += "measurement.white_operator_observation"
+    }
+    if ($errors.Count -gt 0) {
+        throw "Post-White rail evidence is incomplete: $($errors -join ', ')."
+    }
+    return $evidence
+}
+
+function Assert-VendorSourceAudit {
+    param([string] $Path)
+
+    $evidence = Read-JsonEvidence -Path $Path -Label "vendor source audit"
+    $commandEvidence = $evidence.command_evidence
+    $criticalSources = $evidence.source_manifest.critical_sources
+    $errors = @()
+    if ($evidence.schema_id -ne "companion.gdey0154d67_t03.vendor_1s_source_audit.v1") {
+        $errors += "schema_id"
+    }
+    if ($evidence.machine_status -ne "PASS_AUDIT_COMPLETE") {
+        $errors += "machine_status"
+    }
+    if ($evidence.promotion_status -ne "NO_GO_PANEL_IDENTITY_UNPROVEN") {
+        $errors += "promotion_status"
+    }
+    if ($null -eq $commandEvidence -or $commandEvidence.production_lut_reference_absent -ne $true) {
+        $errors += "command_evidence.production_lut_reference_absent"
+    }
+    foreach ($field in @("epaper_c", "current_ssd1681_target")) {
+        $source = if ($null -eq $criticalSources) { $null } else { $criticalSources[$field] }
+        if ($null -eq $source -or [string]::IsNullOrWhiteSpace([string]$source.sha256) -or [string]::IsNullOrWhiteSpace([string]$source.path)) {
+            $errors += "source_manifest.critical_sources.$field"
+            continue
+        }
+        $sourcePath = [string]$source.path
+        if (-not [System.IO.Path]::IsPathRooted($sourcePath)) {
+            $sourcePath = Join-Path $repoRoot $sourcePath
+        }
+        if (-not (Test-Path -LiteralPath $sourcePath -PathType Leaf)) {
+            $errors += "source_manifest.critical_sources.$field.path"
+            continue
+        }
+        $actualHash = (Get-FileHash -LiteralPath $sourcePath -Algorithm SHA256).Hash.ToUpperInvariant()
+        if ($actualHash -ne ([string]$source.sha256).ToUpperInvariant()) {
+            $errors += "source_manifest.critical_sources.$field.sha256_drift"
+        }
+    }
+    if ($errors.Count -gt 0) {
+        throw "Vendor source audit is incomplete or permits LUT promotion: $($errors -join ', ')."
+    }
+    return $evidence
+}
+
 $normalImage = Resolve-ImagePath -Override $NormalImagePath -Default $normalImageDefault
 $whiteImage = Resolve-ImagePath -Override $WhiteImagePath -Default $whiteImageDefault
 $blackImage = Resolve-ImagePath -Override $BlackImagePath -Default $blackImageDefault
+$displayFpcReplacementEvidence = Resolve-ImagePath -Override $DisplayFpcReplacementEvidencePath -Default $displayFpcEvidenceDefault
+$whiteRailArtifact = Resolve-OptionalPath -Value $WhiteRailArtifactPath
+$vendorSourceAudit = Resolve-ImagePath -Override $VendorSourceAuditPath -Default $vendorSourceAuditDefault
 
 function RelPath {
     param([string] $Path)
@@ -102,20 +240,22 @@ function Build-OperatorReviewSpec {
     switch ($ReviewStage) {
         "White" {
             return [ordered]@{
-                title = "Companion FTS02 纯白恢复验收"
+                title = "Companion 屏幕纯白复测验收"
                 progress_text = "1/2（本次 1/1）"
-                scope_text = "FTS02 基础恢复共 2 项；当前只验纯白画面。机器已确认官方单平面路径和 BUSY 完成。"
+                scope_text = "更换显示 FPC 后的官方复测共 2 项；当前只验纯白画面。机器已确认官方单平面路径和 BUSY 完成。"
                 message = "请观察 GDEY0154D67-T03：整个有效显示区域应稳定、均匀地呈纯白色。不要把黑白颗粒、局部脏块、旧图残留或没有变化判为通过。"
                 expected_text = "通过标准：全屏纯白、无黑白颗粒、无明显旧图残留，并且确实发生过本次刷新。任何异常请选择失败并完整备注。"
+                default_note = "全白均匀；无黑白颗粒、无旧图残留。"
             }
         }
         "Black" {
             return [ordered]@{
-                title = "Companion FTS02 纯黑恢复验收"
+                title = "Companion 屏幕纯黑复测验收"
                 progress_text = "2/2（本次 1/1）"
-                scope_text = "FTS02 基础恢复共 2 项；当前只验纯黑画面。机器已确认官方单平面路径和 BUSY 完成。"
+                scope_text = "更换显示 FPC 后的官方复测共 2 项；当前只验纯黑画面。机器已确认官方单平面路径和 BUSY 完成。"
                 message = "请观察 GDEY0154D67-T03：整个有效显示区域应稳定、均匀地呈纯黑色。不要把黑白颗粒、局部灰白、旧图残留或没有变化判为通过。"
                 expected_text = "通过标准：全屏纯黑、无黑白颗粒、无明显旧图残留，并且确实发生过本次刷新。任何异常请选择失败并完整备注。"
+                default_note = "全黑均匀；无灰白颗粒、无旧图残留。"
             }
         }
         default {
@@ -147,6 +287,7 @@ function Invoke-OperatorReview {
         -ScopeText $Spec.scope_text `
         -Message $Spec.message `
         -ExpectedText $Spec.expected_text `
+        -DefaultText $Spec.default_note `
         -ReviewStyle -Input -Buttons "通过,失败,跳过,中止" `
         -OutputPath $operatorResultPath `
         -TimeoutSeconds $OperatorTimeoutSeconds -Json
@@ -169,7 +310,22 @@ function Write-RunReport {
 
     New-Item -ItemType Directory -Force -Path $stageRoot | Out-Null
     $Report | ConvertTo-Json -Depth 12 | Set-Content -LiteralPath $runReport -Encoding UTF8
-    Write-Output "FTS02 recovery stage report: $(RelPath $runReport)"
+    Write-Output "Screen recovery stage report: $(RelPath $runReport)"
+}
+
+function Assert-CheckOnlyWillNotOverwriteCompletedEvidence {
+    if (-not $CheckOnly -or -not (Test-Path -LiteralPath $runReport -PathType Leaf)) {
+        return
+    }
+    try {
+        $existing = Get-Content -Raw -LiteralPath $runReport | ConvertFrom-Json -AsHashtable
+    } catch {
+        throw "Refusing CheckOnly to overwrite an unreadable existing stage report: $runReport"
+    }
+    if ($existing.status -ne "DRY-RUN" -or
+        $existing.claim_scope -ne "preflight_only_no_hardware_claim") {
+        throw "Refusing CheckOnly to overwrite completed or non-preflight stage evidence: $runReport"
+    }
 }
 
 $selectedModes = @($CheckOnly.IsPresent, $Execute.IsPresent, $SelfTestRecovery.IsPresent) |
@@ -183,8 +339,30 @@ if (-not $SelfTestRecovery -and [string]::IsNullOrWhiteSpace($Stage)) {
 if (-not $SelfTestRecovery -and -not [string]::IsNullOrWhiteSpace($SelfTestOperatorSelection)) {
     throw "-SelfTestOperatorSelection is valid only with -SelfTestRecovery."
 }
-if ($Execute -and -not $WorkflowLockHeld) {
-    throw "Refusing WB55 FTS02 recovery execution without workflow lock acknowledgement."
+Assert-CheckOnlyWillNotOverwriteCompletedEvidence
+
+$prerequisites = [ordered]@{
+    replacement_display_fpc_required = $Stage -eq "White"
+    replacement_display_fpc_path = if ($Stage -eq "White") { RelPath $displayFpcReplacementEvidence } else { $null }
+    replacement_display_fpc_validated = $false
+    post_white_rail_required = $Stage -eq "Black"
+    post_white_rail_path = if ($whiteRailArtifact) { RelPath $whiteRailArtifact } else { $null }
+    post_white_rail_validated = $false
+    vendor_source_audit_required = $Stage -in @("White", "Black")
+    vendor_source_audit_path = if ($Stage -in @("White", "Black")) { RelPath $vendorSourceAudit } else { $null }
+    vendor_source_audit_validated = $false
+}
+if ($Execute -and -not $SelfTestRecovery -and $Stage -in @("White", "Black")) {
+    if ($Stage -eq "White") {
+        $null = Assert-DisplayFpcReplacementEvidence -Path $displayFpcReplacementEvidence
+        $prerequisites.replacement_display_fpc_validated = $true
+    }
+    if ($Stage -eq "Black") {
+        $null = Assert-WhiteRailEvidence -Path $whiteRailArtifact
+        $prerequisites.post_white_rail_validated = $true
+    }
+    $null = Assert-VendorSourceAudit -Path $vendorSourceAudit
+    $prerequisites.vendor_source_audit_validated = $true
 }
 
 $image = switch ($Stage) {
@@ -197,11 +375,11 @@ $image = switch ($Stage) {
 if (-not $SelfTestRecovery) {
     $required = @($flashRunner, $normalImage, $image)
     if ($Stage -ne "RestoreNormal") {
-        $required += @($serialRunner, $logVerifier)
+        $required += @($serialRunner, $logVerifier, $vendorSourceAudit)
     }
     foreach ($path in $required | Select-Object -Unique) {
         if (-not (Test-Path -LiteralPath $path -PathType Leaf)) {
-            throw "Required FTS02 recovery artifact is missing: $path"
+            throw "Required screen recovery artifact is missing: $path"
         }
     }
 }
@@ -231,7 +409,7 @@ if ($Stage -eq "RestoreNormal") {
     ) -Purpose "Flash the official one-plane $pattern diagnostic."
     $captureArguments = @(
         "-NoProfile", "-File", $serialRunner,
-        "-Execute", "-WorkflowLockHeld",
+        "-Execute",
         "-Seconds", "$CaptureSeconds",
         "-ResetAfterOpen",
         "-OutDir", $captureDir
@@ -241,8 +419,9 @@ if ($Stage -eq "RestoreNormal") {
         $logVerifier,
         "--pattern", $pattern,
         "--log", $rawLog,
-        "--out", $parsedLog
-    ) -Purpose "Require the selected pattern marker, official 0x24 path, BUSY assertion, and one completed plane."
+        "--out", $parsedLog,
+        "--source-audit", $vendorSourceAudit
+    ) -Purpose "Require source-hash binding, selected pattern, official 0x24 path, 0x20 activation, BUSY assertion, elapsed time, and one completed plane."
 }
 
 if ($SelfTestRecovery) {
@@ -279,11 +458,11 @@ $operatorReviewSpec = Build-OperatorReviewSpec -ReviewStage $Stage
 $operatorReviewRequired = $Stage -in @("White", "Black")
 
 $report = [ordered]@{
-    schema_id = "companion.wb55.fts02_recovery_stage_run.v1"
+    schema_id = "companion.wb55.screen_recovery_stage_run.v2"
     status = if ($CheckOnly) { "DRY-RUN" } elseif ($SelfTestRecovery) { "SELFTEST_RUNNING" } else { "RUNNING" }
     claim_scope = if ($CheckOnly) { "preflight_only_no_hardware_claim" } elseif ($SelfTestRecovery) { "stubbed_failure_recovery_no_hardware_claim" } else { "machine_digital_trace_pending_operator_visual_gate" }
     generated_at = (Get-Date).ToString("o")
-    target = "NUCLEO-WB55RG + replacement/cross-swapped ESP32-FTS02 + GDEY0154D67-T03"
+    target = "NUCLEO-WB55RG + ESP32-FTS02 + replacement display FPC + GDEY0154D67-T03"
     stage = $Stage
     capture_seconds = $CaptureSeconds
     image = RelPath $image
@@ -304,26 +483,37 @@ $report = [ordered]@{
         selected = $null
         note = $null
     }
+    prerequisites = $prerequisites
+    source_audit = [ordered]@{
+        path = if ($Stage -in @("White", "Black")) { RelPath $vendorSourceAudit } else { $null }
+        promotion_status_required = "NO_GO_PANEL_IDENTITY_UNPROVEN"
+        production_lut_reference_required_absent = $true
+    }
     steps = @($steps)
     safety = [ordered]@{
         execute_requires_companion_wb55_lock = $true
+        execute_uses_firmware_owned_exclusive_mutex = $true
+        legacy_workflow_lock_boolean_is_not_authority = $true
         diagnostic_failure_restores_normal = $true
         successful_diagnostic_waits_for_focused_operator_visual_result = $true
         successful_review_restores_normal_firmware = $true
         machine_pass_is_not_visual_or_voltage_acceptance = $true
     }
     notes = @(
-        "Run a diagnostic stage only after FTS02 replacement/cross-swap and explicit owner acceptance start.",
+        "Run a diagnostic stage only after the owner-authorized replacement display-FPC evidence and explicit owner acceptance start.",
+        "White Execute requires validated replacement display-FPC evidence; Black Execute additionally requires a PASS post-White rail artifact.",
+        "The installed AIW exposes the canonical operator-prompt but no with-lock command. This runner holds the Companion-WB55 firmware mutex across flash, capture, parser, review and normal restore; child flash/capture processes verify its inherited grant.",
         "White and Black stages open exactly one focused operator review only after machine PASS.",
         "Every completed or rejected review attempts to restore the normal firmware before returning.",
-        "A machine PASS proves only the digital command/BUSY trace; PREVGH/PREVGL and visible-frame acceptance remain physical gates."
+        "A machine PASS proves only the source-bound digital command/BUSY trace; PREVGH/PREVGL and visible-frame acceptance remain physical gates.",
+        "The audited one-second LUT remains identity-NO_GO and absent from production; this runner only binds its source audit while exercising the existing matched official full path."
     )
 }
 
 if ($CheckOnly) {
     $report.completed_at = (Get-Date).ToString("o")
     $report.results = @()
-    Write-Output "CHECK: WB55 FTS02 recovery stage=$Stage capture_seconds=$CaptureSeconds"
+    Write-Output "CHECK: WB55 screen recovery stage=$Stage capture_seconds=$CaptureSeconds"
     foreach ($step in $steps) {
         Write-Output "CHECK: $($step.id): $($step.command) $($step.arguments -join ' ')"
     }
@@ -335,7 +525,13 @@ if ($CheckOnly) {
 $results = @()
 $diagnosticFlashed = $false
 $normalRestored = $false
+$hardwareLock = $null
 try {
+    if ($Execute) {
+        $hardwareLock = Enter-CompanionWb55Lock -Purpose "official full $Stage recovery"
+        $report.execution_lock = Get-CompanionWb55LockEvidenceSummary -Context $hardwareLock
+        Write-Output "LOCK: Companion-WB55 $($hardwareLock.mode) run=$($hardwareLock.run_id)"
+    }
     foreach ($step in $steps) {
         $started = Get-Date
         Write-Output "RUN: $($step.id)"
@@ -366,6 +562,9 @@ try {
         $report.operator_review.note = [string]$promptResult.text
         if ($report.operator_review.selected -ne "通过") {
             throw "Operator did not pass the $Stage frame: selected=$($report.operator_review.selected)."
+        }
+        if ([string]::IsNullOrWhiteSpace($report.operator_review.note)) {
+            throw "Operator passed the $Stage frame without the required physical observation note."
         }
 
         $restoreStarted = Get-Date
@@ -409,6 +608,16 @@ try {
     }
     throw
 } finally {
+    if ($hardwareLock) {
+        try {
+            Exit-CompanionWb55Lock
+        } catch {
+            $report.lock_release_error = $_.Exception.Message
+            if ($report.status -like "PASS_*") {
+                $report.status = "FAIL"
+            }
+        }
+    }
     $report.normal_firmware_restored = [bool]$normalRestored
     $report.diagnostic_left_installed = [bool]($diagnosticFlashed -and -not $normalRestored -and $report.status -like "PASS_*")
     $report.completed_at = (Get-Date).ToString("o")

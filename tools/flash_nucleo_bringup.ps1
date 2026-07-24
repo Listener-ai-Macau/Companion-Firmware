@@ -10,6 +10,7 @@ param(
 $ErrorActionPreference = 'Stop'
 
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
+. (Join-Path $PSScriptRoot 'companion_wb55_lock.ps1')
 $normalImagePath = Join-Path $PSScriptRoot '..\cubeide\Companion_Nucleo_WB55RG_Bringup\build\Companion_Nucleo_WB55RG_Bringup.hex'
 $provisionImagePath = Join-Path $PSScriptRoot '..\cubeide\Companion_Nucleo_WB55RG_Bringup\build_screen_asset_provision\Companion_Nucleo_WB55RG_ScreenAssetProvision.hex'
 
@@ -90,7 +91,16 @@ if ($CheckOnly) {
 }
 
 $programmerArgs = @("-c", "port=SWD", "mode=UR", "reset=HWrst", "freq=4000", "-w", $ImagePath, "-v", "-rst")
-$flashExitCode = Invoke-ProgrammerWithTimeout -Programmer $programmer -Arguments $programmerArgs -TimeoutSeconds $FlashTimeoutSeconds
-if ($flashExitCode -ne 0) {
-    throw "flash failed with exit code $flashExitCode"
+$hardwareLock = $null
+try {
+    $hardwareLock = Enter-CompanionWb55Lock -Purpose "flash $([System.IO.Path]::GetFileName($ImagePath))"
+    Write-Host "LOCK: Companion-WB55 $($hardwareLock.mode) run=$($hardwareLock.run_id)"
+    $flashExitCode = Invoke-ProgrammerWithTimeout -Programmer $programmer -Arguments $programmerArgs -TimeoutSeconds $FlashTimeoutSeconds
+    if ($flashExitCode -ne 0) {
+        throw "flash failed with exit code $flashExitCode"
+    }
+} finally {
+    if ($hardwareLock) {
+        Exit-CompanionWb55Lock
+    }
 }

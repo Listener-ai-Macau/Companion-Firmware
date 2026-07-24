@@ -58,12 +58,12 @@ def run_runner(*args: str, timeout: int = 60) -> dict[str, Any]:
 def source_safety_contract(text: str) -> dict[str, bool]:
     return {
         "check_only_is_non_hardware": all(token in text for token in ("if ($CheckOnly)", "DRY-RUN", "exit 0")),
-        "execute_requires_workflow_lock": all(
+        "execute_requires_explicit_hardware_acknowledgement": all(
             token in text
             for token in (
-                "if ($Execute -and -not $WorkflowLockHeld)",
-                "Refusing WB55 refresh A/B execution without workflow lock acknowledgement",
-                "aiw with-lock -Resource Companion-WB55",
+                "if ($Execute -and -not $HardwareAcknowledged)",
+                "Refusing WB55 refresh A/B execution without explicit hardware acknowledgement",
+                "-Execute -HardwareAcknowledged -Profile differential",
             )
         ),
         "all_three_profiles_are_explicit": all(
@@ -76,6 +76,15 @@ def source_safety_contract(text: str) -> dict[str, bool]:
                 'expected_control = "0xFF"',
             )
         ),
+        "single_profile_does_not_schedule_other_images": all(
+            token in text
+            for token in (
+                '[ValidateSet("all", "differential", "direct_bsrr", "vendor_partial")]',
+                '[string] $Profile = "all"',
+                '$profiles = if ($Profile -eq "all")',
+                'Where-Object { $_.id -eq $Profile }',
+            )
+        ),
         "each_capture_is_reset_bounded": all(
             token in text for token in ("-ResetAfterOpen", "nucleo-serial-raw.log", "-Seconds", "$CaptureSeconds")
         ),
@@ -85,7 +94,18 @@ def source_safety_contract(text: str) -> dict[str, bool]:
                 "verify_wb55_refresh_cadence_log.py",
                 "--partial-profile",
                 "--transport-profile",
+                "--groups",
+                "--micro-motion",
                 "refresh-cadence-result.json",
+            )
+        ),
+        "bounded_cadence_loop_is_explicit": all(
+            token in text
+            for token in (
+                "[int] $CadenceGroups = 1",
+                "[ValidateRange(1, 40)]",
+                "$cadenceImage",
+                "cadence_groups = $CadenceGroups",
             )
         ),
         "restores_normal_firmware_after_failure": all(
@@ -114,6 +134,26 @@ def build_snapshot() -> dict[str, Any]:
     check_text = check["stdout"] + check["stderr"]
     check_report = load_json(CHECK_ROOT / "refresh-ab-run.json")
 
+    differential_root = CHECK_ROOT.parent / "refresh-ab-differential-checkonly"
+    differential = run_runner(
+        "-CheckOnly", "-Profile", "differential", "-OutRoot", str(differential_root)
+    )
+    differential_text = differential["stdout"] + differential["stderr"]
+    differential_report = load_json(differential_root / "refresh-ab-run.json")
+
+    loop_root = CHECK_ROOT.parent / "refresh-ab-differential-loop-checkonly"
+    loop = run_runner(
+        "-CheckOnly",
+        "-Profile",
+        "differential",
+        "-CadenceGroups",
+        "3",
+        "-OutRoot",
+        str(loop_root),
+    )
+    loop_text = loop["stdout"] + loop["stderr"]
+    loop_report = load_json(loop_root / "refresh-ab-run.json")
+
     negative = run_runner("-Execute", timeout=30)
     negative_text = negative["stdout"] + negative["stderr"]
 
@@ -138,7 +178,7 @@ def build_snapshot() -> dict[str, Any]:
         "safety_contract": source_safety_contract(runner_text),
         "check_only": {
             "returncode": check["returncode"],
-            "sequence_banner": "CHECK: WB55 refresh A/B sequence profiles=differential,direct_bsrr,vendor_partial" in check_text,
+            "sequence_banner": "CHECK: WB55 refresh A/B sequence profile=all selected=differential,direct_bsrr,vendor_partial" in check_text,
             "report_path": rel(CHECK_ROOT / "refresh-ab-run.json"),
             "report_exists": (CHECK_ROOT / "refresh-ab-run.json").exists(),
             "report_schema": check_report.get("schema_id"),
@@ -150,14 +190,43 @@ def build_snapshot() -> dict[str, Any]:
             ],
             "profiles": check_report.get("profiles", []),
         },
+        "differential_check_only": {
+            "returncode": differential["returncode"],
+            "sequence_banner": "CHECK: WB55 refresh A/B sequence profile=differential selected=differential" in differential_text,
+            "report_exists": (differential_root / "refresh-ab-run.json").exists(),
+            "profile_ids": [
+                str(item.get("id"))
+                for item in differential_report.get("profiles", [])
+                if isinstance(item, dict)
+            ],
+            "step_ids": [
+                str(item.get("id"))
+                for item in differential_report.get("steps", [])
+                if isinstance(item, dict)
+            ],
+            "claim_scope": differential_report.get("claim_scope"),
+        },
+        "loop_check_only": {
+            "returncode": loop["returncode"],
+            "sequence_banner": "cadence_groups=3" in loop_text,
+            "report_exists": (loop_root / "refresh-ab-run.json").exists(),
+            "cadence_groups": loop_report.get("cadence_groups"),
+            "image": (
+                loop_report.get("profiles", [{}])[0].get("image")
+                if isinstance(loop_report.get("profiles"), list)
+                and loop_report.get("profiles")
+                else None
+            ),
+        },
         "execute_without_lock_negative": {
             "returncode": negative["returncode"],
             "refused_before_hardware": (
                 negative["returncode"] != 0
-                and "Refusing WB55 refresh A/B execution without workflow lock acknowledgement" in negative_text
+                and "Refusing WB55 refresh A/B execution without explicit hardware acknowledgement"
+                in negative_text
                 and "RUN:" not in negative_text
             ),
-            "claim_scope": "negative_execute_lock_guard_no_hardware_claim",
+            "claim_scope": "negative_execute_acknowledgement_guard_no_hardware_claim",
         },
         "recovery_selftest": {
             "returncode": recovery["returncode"],
@@ -174,7 +243,7 @@ def build_snapshot() -> dict[str, Any]:
         "commands": [
             "pwsh -NoProfile -File .\\tools\\run_wb55_refresh_ab.ps1 -CheckOnly",
             "pwsh -NoProfile -File .\\tools\\run_wb55_refresh_ab.ps1 -SelfTestRecovery",
-            "pwsh -NoProfile -File C:\\Users\\Billy\\Desktop\\Denzic\\ai-collaboration-workflow\\scripts\\aiw.ps1 with-lock -Resource Companion-WB55 -Purpose \"Companion WB55 refresh A/B\" -Run pwsh -NoProfile -File .\\tools\\run_wb55_refresh_ab.ps1 -Execute -WorkflowLockHeld",
+            "pwsh -NoProfile -File .\\tools\\run_wb55_refresh_ab.ps1 -Execute -HardwareAcknowledged -Profile differential",
         ],
     }
 
@@ -224,9 +293,38 @@ def verify(snapshot: dict[str, Any]) -> list[str]:
     if observed_profiles != expected_profiles:
         errors.append("refresh A/B profile matrix drifted")
 
+    differential = snapshot.get("differential_check_only", {})
+    if differential.get("returncode") != 0 or differential.get("sequence_banner") is not True:
+        errors.append("single differential check-only must complete without unrelated images")
+    if differential.get("report_exists") is not True:
+        errors.append("single differential check-only must write a dry-run report")
+    if differential.get("profile_ids") != ["differential"]:
+        errors.append("single differential check-only must select only the differential profile")
+    if differential.get("step_ids") != [
+        "flash_differential",
+        "capture_differential",
+        "parse_differential",
+        "flash_normal_restore",
+    ]:
+        errors.append("single differential check-only step order drifted")
+    if differential.get("claim_scope") != "preflight_only_no_hardware_claim":
+        errors.append("single differential check-only must retain the no-hardware claim scope")
+
+    loop = snapshot.get("loop_check_only", {})
+    if loop.get("returncode") != 0 or loop.get("sequence_banner") is not True:
+        errors.append("bounded cadence loop check-only must complete and report its group count")
+    if loop.get("report_exists") is not True or loop.get("cadence_groups") != 3:
+        errors.append("bounded cadence loop check-only must write its group count")
+    if loop.get("image") != (
+        "cubeide/Companion_Nucleo_WB55RG_Bringup/"
+        "build_refresh_cadence_diagnostic_g3/"
+        "Companion_Nucleo_WB55RG_RefreshCadenceDiagnosticG3.hex"
+    ):
+        errors.append("bounded cadence loop must use an isolated image path")
+
     negative = snapshot.get("execute_without_lock_negative", {})
     if negative.get("returncode") == 0 or negative.get("refused_before_hardware") is not True:
-        errors.append("runner -Execute must refuse before hardware without a workflow lock")
+        errors.append("runner -Execute must refuse before hardware without explicit acknowledgement")
 
     recovery = snapshot.get("recovery_selftest", {})
     if recovery.get("returncode") == 0 or recovery.get("stdout_has_recovery") is not True:

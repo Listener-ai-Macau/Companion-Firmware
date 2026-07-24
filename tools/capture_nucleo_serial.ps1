@@ -3,13 +3,17 @@ param(
     [switch] $Execute,
     [switch] $SelfTestEmptyCapture,
     [switch] $SelfTestResetTimeout,
+    [switch] $SelfTestSerialOpenRetry,
     [switch] $WorkflowLockHeld,
     [string] $Port,
     [int] $BaudRate = 115200,
     [int] $Seconds = 15,
     [switch] $ResetAfterOpen,
+    [string] $ReadySignalPath,
     [ValidateRange(5, 60)]
     [int] $ResetTimeoutSeconds = 15,
+    [ValidateRange(1, 60)]
+    [int] $SerialOpenRetrySeconds = 15,
     [string] $ProgrammerPath,
     [string] $ProgrammerRoot = "C:\ST\STM32CubeIDE_2.1.1\STM32CubeIDE\plugins",
     [switch] $PromptOperator,
@@ -29,6 +33,7 @@ Set-StrictMode -Version Latest
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
+. (Join-Path $PSScriptRoot "companion_wb55_lock.ps1")
 $stamp = Get-Date -Format "yyyyMMdd-HHmmss"
 $outputDir = if ($OutDir) {
     New-Item -ItemType Directory -Force -Path $OutDir | Out-Null
@@ -58,8 +63,6 @@ $operatorPromptExpectedText = if ([string]::IsNullOrWhiteSpace($PromptExpectedTe
 } else {
     $PromptExpectedText
 }
-$lockCommand = "pwsh -NoProfile -File C:\Users\Billy\Desktop\Denzic\ai-collaboration-workflow\scripts\aiw.ps1 with-lock -Resource Companion-WB55 -Purpose `"Companion NUCLEO serial capture`" -Run pwsh -NoProfile -File .\tools\capture_nucleo_serial.ps1 -Execute -WorkflowLockHeld -Seconds $Seconds -ResetAfterOpen"
-
 function Find-CubeProgrammerCli {
     param([string] $RequestedPath)
 
@@ -223,6 +226,8 @@ function Write-Summary {
         seconds = $Seconds
         reset_after_open = [bool]$ResetAfterOpen
         reset_timeout_seconds = $ResetTimeoutSeconds
+        serial_open_retry_seconds = $SerialOpenRetrySeconds
+        serial_open_attempts = $script:serialOpenAttempts
         prompt_operator = [bool]$PromptOperator
         prompt_title = $PromptTitle
         prompt_message = if ($PromptOperator) { $operatorPromptText } else { $null }
@@ -252,6 +257,35 @@ function Read-SerialAvailable {
     Write-Host -NoNewline $text
     Add-Content -LiteralPath $rawLog -Value $text -NoNewline
     return [System.Text.Encoding]::UTF8.GetByteCount($text)
+}
+
+function Open-SerialWithRetry {
+    param(
+        [Parameter(Mandatory = $true)][scriptblock] $OpenAction,
+        [Parameter(Mandatory = $true)][string] $PortName,
+        [Parameter(Mandatory = $true)][int] $RetrySeconds
+    )
+
+    $deadline = [DateTime]::UtcNow.AddSeconds($RetrySeconds)
+    $lastError = $null
+    $attempts = 0
+    while ($true) {
+        $attempts++
+        try {
+            & $OpenAction
+            $script:serialOpenAttempts = $attempts
+            return
+        } catch [System.IO.IOException] {
+            $lastError = $_.Exception.Message
+        } catch [System.UnauthorizedAccessException] {
+            $lastError = $_.Exception.Message
+        }
+        if ([DateTime]::UtcNow -ge $deadline) {
+            $script:serialOpenAttempts = $attempts
+            throw "Could not open serial port $PortName after $attempts attempt(s) across $RetrySeconds second(s): $lastError"
+        }
+        Start-Sleep -Milliseconds 250
+    }
 }
 
 function Invoke-ProgrammerResetWithTimeout {
@@ -316,10 +350,11 @@ $resolved = $null
 $programmer = Find-CubeProgrammerCli -RequestedPath $ProgrammerPath
 $errors = [System.Collections.Generic.List[string]]::new()
 $bytesRead = 0
+$script:serialOpenAttempts = 0
 
 if ($SelfTestEmptyCapture) {
-    if ($CheckOnly -or $Execute -or $SelfTestResetTimeout) {
-        throw "Use only one of -CheckOnly, -Execute, -SelfTestEmptyCapture, or -SelfTestResetTimeout."
+    if ($CheckOnly -or $Execute -or $SelfTestResetTimeout -or $SelfTestSerialOpenRetry) {
+        throw "Use only one of -CheckOnly, -Execute, -SelfTestEmptyCapture, -SelfTestResetTimeout, or -SelfTestSerialOpenRetry."
     }
     "" | Set-Content -LiteralPath $rawLog -Encoding UTF8
     $errors.Add("No serial bytes captured during $Seconds second(s); refusing empty runtime evidence.") | Out-Null
@@ -328,8 +363,8 @@ if ($SelfTestEmptyCapture) {
 }
 
 if ($SelfTestResetTimeout) {
-    if ($CheckOnly -or $Execute -or $SelfTestEmptyCapture) {
-        throw "Use only one of -CheckOnly, -Execute, -SelfTestEmptyCapture, or -SelfTestResetTimeout."
+    if ($CheckOnly -or $Execute -or $SelfTestEmptyCapture -or $SelfTestSerialOpenRetry) {
+        throw "Use only one of -CheckOnly, -Execute, -SelfTestEmptyCapture, -SelfTestResetTimeout, or -SelfTestSerialOpenRetry."
     }
     "" | Set-Content -LiteralPath $rawLog -Encoding UTF8
     try {
@@ -340,6 +375,25 @@ if ($SelfTestResetTimeout) {
     }
     Write-Summary -Status "FAIL" -PortName "SELFTEST" -Candidates @() -AvailablePorts @() -BytesRead 0 -Errors @($errors) -Mode "selftest-reset-timeout"
     throw "Companion NUCLEO serial reset-timeout self-test failed as expected. See $summaryJson"
+}
+
+if ($SelfTestSerialOpenRetry) {
+    if ($CheckOnly -or $Execute -or $SelfTestEmptyCapture -or $SelfTestResetTimeout) {
+        throw "Use only one of -CheckOnly, -Execute, -SelfTestEmptyCapture, -SelfTestResetTimeout, or -SelfTestSerialOpenRetry."
+    }
+    $script:simulatedSerialOpenAttempts = 0
+    Open-SerialWithRetry -PortName "SELFTEST" -RetrySeconds 1 -OpenAction {
+        $script:simulatedSerialOpenAttempts++
+        if ($script:simulatedSerialOpenAttempts -lt 3) {
+            throw [System.IO.IOException]::new("simulated temporary VCP absence")
+        }
+    }
+    if ($script:simulatedSerialOpenAttempts -ne 3 -or $script:serialOpenAttempts -ne 3) {
+        throw "Serial-open retry self-test did not make exactly three attempts."
+    }
+    "serial-open retry self-test passed after $script:simulatedSerialOpenAttempts attempts" | Set-Content -LiteralPath $rawLog -Encoding UTF8
+    Write-Summary -Status "PASS" -PortName "SELFTEST" -Candidates @() -AvailablePorts @() -BytesRead 0 -Errors @() -Mode "selftest-serial-open-retry"
+    exit 0
 }
 
 try {
@@ -369,8 +423,7 @@ if ($CheckOnly -and -not $Execute) {
     }
     Write-Output "CHECK: STM32CubeProgrammer CLI found: $([bool]$programmer)"
     if ($programmer) { Write-Output "CHECK: Programmer: $programmer" }
-    Write-Output "CHECK: Real serial capture must run inside workflow lock:"
-    Write-Output "  $lockCommand"
+    Write-Output "CHECK: Real serial capture acquires the Companion-WB55 exclusive mutex and writes a lock-evidence artifact."
     Write-Output "CHECK: Add -PromptOperator only when the capture is waiting for a real human action or observation."
     Write-Summary -Status "DRY-RUN" -PortName $resolved.port -Candidates @($resolved.candidates) -AvailablePorts @($resolved.available_ports) -BytesRead 0 -Errors @() -Mode "check-only"
     exit 0
@@ -380,23 +433,45 @@ if (-not $Execute) {
     throw "Refusing to open Companion NUCLEO serial port without -Execute. Use -CheckOnly for dry-run output."
 }
 
-if (-not $WorkflowLockHeld) {
-    throw "Refusing to open Companion NUCLEO serial port without workflow lock acknowledgement. Run through aiw with-lock -Resource Companion-WB55 and pass -WorkflowLockHeld inside the locked command."
-}
-
 if ($ResetAfterOpen -and -not $programmer) {
     throw "STM32CubeProgrammer CLI not found. Pass -ProgrammerPath, set STM32CUBEPROGRAMMER_CLI, or omit -ResetAfterOpen."
 }
 
-$serial = [System.IO.Ports.SerialPort]::new($resolved.port, $BaudRate, [System.IO.Ports.Parity]::None, 8, [System.IO.Ports.StopBits]::One)
-$serial.ReadTimeout = 250
-$serial.NewLine = "`n"
+$hardwareLock = $null
+try {
+    $hardwareLock = Enter-CompanionWb55Lock -Purpose "serial capture $($resolved.port)"
+    Write-Output "LOCK: Companion-WB55 $($hardwareLock.mode) run=$($hardwareLock.run_id)"
+} catch {
+    $errors.Add($_.Exception.Message) | Out-Null
+    Write-Summary -Status "FAIL" -PortName $resolved.port -Candidates @($resolved.candidates) -AvailablePorts @($resolved.available_ports) -BytesRead 0 -Errors @($errors) -Mode "lock"
+    throw
+}
+
+$serial = $null
 
 try {
+    $serial = [System.IO.Ports.SerialPort]::new($resolved.port, $BaudRate, [System.IO.Ports.Parity]::None, 8, [System.IO.Ports.StopBits]::One)
+    $serial.ReadTimeout = 250
+    $serial.NewLine = "`n"
     "" | Set-Content -LiteralPath $rawLog -Encoding UTF8
-    $serial.Open()
+    Open-SerialWithRetry -PortName $resolved.port -RetrySeconds $SerialOpenRetrySeconds -OpenAction {
+        $serial.Open()
+    }
     $serial.DiscardInBuffer()
     $serial.DiscardOutBuffer()
+    if (-not [string]::IsNullOrWhiteSpace($ReadySignalPath)) {
+        $readyParent = Split-Path -Parent ([System.IO.Path]::GetFullPath($ReadySignalPath))
+        if (-not [string]::IsNullOrWhiteSpace($readyParent)) {
+            New-Item -ItemType Directory -Force -Path $readyParent | Out-Null
+        }
+        [ordered]@{
+            schema_id = "companion.nucleo.serial_ready.v1"
+            status = "READY"
+            port = $resolved.port
+            process_id = $PID
+            ready_at = (Get-Date).ToUniversalTime().ToString("o")
+        } | ConvertTo-Json | Set-Content -LiteralPath $ReadySignalPath -Encoding UTF8
+    }
     if ($ResetAfterOpen) {
         $resetArgs = @("-c", "port=SWD", "mode=UR", "reset=HWrst", "freq=4000", "-rst")
         $resetExitCode = Invoke-ProgrammerResetWithTimeout -Programmer $programmer -Arguments $resetArgs -TimeoutSeconds $ResetTimeoutSeconds
@@ -434,10 +509,15 @@ try {
 } catch {
     $errors.Add($_.Exception.Message) | Out-Null
 } finally {
-    if ($serial.IsOpen) {
+    if ($serial -and $serial.IsOpen) {
         $serial.Close()
     }
-    $serial.Dispose()
+    if ($serial) {
+        $serial.Dispose()
+    }
+    if ($hardwareLock) {
+        Exit-CompanionWb55Lock
+    }
 }
 
 if ($errors.Count -eq 0 -and $bytesRead -le 0) {

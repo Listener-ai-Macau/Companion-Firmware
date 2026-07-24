@@ -1,0 +1,115 @@
+#!/usr/bin/env python3
+"""Verify that the V12 sleep source export reassembles only registered source masks."""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+from pathlib import Path
+
+from PIL import Image
+
+from verify_companion_v12_sleep_anchor import REQUIRED_COMPONENTS, sha256
+
+
+ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_CANDIDATE = ROOT / "docs/art/iterations/companion-pet-expression-v9-extension-v12-sleep-anchor-repair/candidate"
+
+
+def rel(path: Path) -> str:
+    return path.resolve().relative_to(ROOT).as_posix()
+
+
+def has_ink(image: Image.Image) -> bool:
+    return any(value == 0 for value in image.convert("1").getdata())
+
+
+def difference(left: Image.Image, right: Image.Image) -> int:
+    if left.size != right.size:
+        return -1
+    return sum((a ^ b).bit_count() for a, b in zip(left.convert("1").tobytes(), right.convert("1").tobytes()))
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--candidate", type=Path, default=DEFAULT_CANDIDATE)
+    parser.add_argument("--write", type=Path, required=True)
+    args = parser.parse_args()
+    candidate = args.candidate.resolve()
+    errors: list[str] = []
+    layout_path = candidate / "sleep-anchor-component-layout.json"
+    report_path = candidate / "export-report.json"
+    try:
+        layout = json.loads(layout_path.read_text(encoding="utf-8"))
+        export = json.loads(report_path.read_text(encoding="utf-8"))
+        components = layout.get("components") if isinstance(layout, dict) else None
+        errors.extend([] if isinstance(layout, dict) and
+                      layout.get("status") == "CANDIDATE_SOURCE_COMPONENT_EXPORT_PENDING_OWNER_ART_REVIEW" and
+                      layout.get("runtime_resource_activated") is False and
+                      layout.get("active_candidate_binding") == "forbidden" else
+                      ["layout is not an unbound runtime-inactive V12 candidate"])
+        errors.extend([] if isinstance(export, dict) and
+                      export.get("status") == "PASS_V12_SLEEP_SOURCE_MASK_EXPORT_RUNTIME_INACTIVE" and
+                      export.get("component_count") == 8 and
+                      export.get("runtime_resource_activated") is False and
+                      export.get("active_candidate_binding") == "forbidden" else
+                      ["export metadata does not preserve the unbound V12 policy"])
+        if not isinstance(components, list) or [item.get("name") for item in components if isinstance(item, dict)] != list(REQUIRED_COMPONENTS):
+            errors.append("V12 component vocabulary drifted")
+            components = []
+        normalized = ROOT / str(layout.get("normalization", {}).get("normalized", ""))
+        if not normalized.is_file():
+            errors.append("V12 normalized source is missing")
+            reference = Image.new("1", (200, 200), 1)
+        else:
+            reference = Image.open(normalized).convert("1")
+        canvas = Image.new("1", (200, 200), 1)
+        for item in components:
+            if not isinstance(item, dict):
+                continue
+            mask = ROOT / str(item.get("mask", ""))
+            position = item.get("base_position")
+            if not mask.is_file() or not isinstance(position, list) or len(position) != 2:
+                errors.append(f"component artifact is missing: {item.get('name')}")
+                continue
+            image = Image.open(mask).convert("1")
+            if not has_ink(image) or item.get("mask_sha256") != sha256(mask):
+                errors.append(f"component source mask drifted: {item.get('name')}")
+                continue
+            canvas.paste(image, (int(position[0]), int(position[1])))
+        rendered = candidate / "reassembled-sleep-anchor-200x200.pbm"
+        rendered.parent.mkdir(parents=True, exist_ok=True)
+        canvas.save(rendered)
+        pixel_difference = difference(reference, canvas)
+        if pixel_difference != 0:
+            errors.append("registered V12 source masks do not reassemble to the normalized sleep anchor")
+    except (OSError, ValueError, json.JSONDecodeError) as exc:
+        errors.append(str(exc))
+        pixel_difference = -1
+        rendered = candidate / "reassembled-sleep-anchor-200x200.pbm"
+    result = {
+        "schema": "companion.v12_sleep_anchor_component_export_gate.v1",
+        "status": "PASS_V12_SLEEP_SOURCE_MASK_EXPORT_GATE" if not errors else "FAIL_V12_SLEEP_SOURCE_MASK_EXPORT_GATE",
+        "candidate": rel(candidate),
+        "component_count": 8,
+        "reassembled": rel(rendered),
+        "reassembled_sha256": sha256(rendered) if rendered.is_file() else None,
+        "pixel_difference_from_normalized_source": pixel_difference,
+        "runtime_resource_activated": False,
+        "active_candidate_binding": "forbidden",
+        "full_face_source_card_playback": "forbidden",
+        "errors": errors,
+    }
+    args.write.parent.mkdir(parents=True, exist_ok=True)
+    args.write.write_text(json.dumps(result, indent=2) + "\n", encoding="ascii")
+    if errors:
+        for error in errors:
+            print(f"ERROR: {error}")
+        return 1
+    print("PASS: V12 sleep reassembly uses exactly eight registered generated source masks and remains unbound.")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

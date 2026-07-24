@@ -21,6 +21,10 @@ PANEL_TARGET_STM32WB_HEADER = REPO_ROOT / "app" / "companion_pendant" / "epaper"
 PANEL_TARGET_STM32WB_SOURCE = REPO_ROOT / "app" / "companion_pendant" / "epaper" / "panel_target_stm32wb.c"
 SCREEN_RUNTIME_HEADER = REPO_ROOT / "app" / "companion_pendant" / "epaper" / "screen_runtime.h"
 SCREEN_RUNTIME_SOURCE = REPO_ROOT / "app" / "companion_pendant" / "epaper" / "screen_runtime.c"
+MOTION_HEADER = REPO_ROOT / "app" / "companion_pendant" / "epaper" / "motion_coordinator.h"
+MOTION_SOURCE = REPO_ROOT / "app" / "companion_pendant" / "epaper" / "motion_coordinator.c"
+EXPRESSION_CHOREOGRAPHER_HEADER = REPO_ROOT / "app" / "companion_pendant" / "epaper" / "expression_choreographer.h"
+EXPRESSION_CHOREOGRAPHER_SOURCE = REPO_ROOT / "app" / "companion_pendant" / "epaper" / "expression_choreographer.c"
 APP_BLE = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Core" / "Src" / "app_ble.c"
 APP_CONF = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Core" / "Inc" / "app_conf.h"
 MAKEFILE = REPO_ROOT / "cubeide" / "Companion_Nucleo_WB55RG_Bringup" / "Makefile"
@@ -339,6 +343,120 @@ def check_screen_runtime(errors: list[str]) -> None:
         )
 
 
+def check_motion_coordinator(errors: list[str]) -> None:
+    header = read(MOTION_HEADER)
+    source = read(MOTION_SOURCE)
+    app_ble = read(APP_BLE)
+    makefile = read(MAKEFILE)
+    for token in [
+        "COMP_EPAPER_MOTION_FRAME_DWELL_MS 3000u",
+        "COMP_EPAPER_MOTION_STORY_REST_MS 8000u",
+        "COMP_EPAPER_MOTION_IDLE_TIMEOUT_MS 180000u",
+        "COMP_EPAPER_MOTION_PHASE_ENTRY",
+        "COMP_EPAPER_MOTION_PHASE_SUSTAIN",
+        "COMP_EPAPER_MOTION_PHASE_SETTLE",
+        "COMP_EPAPER_MOTION_CANCEL_TOUCH",
+        "COMP_EPAPER_MOTION_CANCEL_MENU",
+        "COMP_EPAPER_MOTION_CANCEL_RECORDING",
+        "COMP_EPAPER_MOTION_CANCEL_LOW_POWER",
+        "COMP_EPAPER_MOTION_CANCEL_ERROR",
+        "COMP_EPAPER_MOTION_CANCEL_HIGH_PRIORITY",
+        "comp_epaper_motion_coordinator_take_request",
+        "comp_epaper_motion_coordinator_complete_request",
+    ]:
+        require(token in header, f"motion_coordinator.h missing {token}", errors)
+    for token in [
+        "coordinator->next_phase = COMP_EPAPER_MOTION_PHASE_ENTRY",
+        "coordinator->next_request_ms = now_ms",
+        "coordinator->request_outstanding = true",
+        "coordinator->outstanding_token = token",
+        "motion_schedule_next(coordinator, now_ms)",
+        "coordinator->failed_requests++",
+        "coordinator->stale_completion_count++",
+    ]:
+        require(token in source, f"motion_coordinator.c missing {token}", errors)
+    for forbidden in ["HAL_", "GPIO", "SPI", "QSPI", "stm32", "STMWPAN", "UTIL_SEQ"]:
+        require(forbidden.lower() not in (header + source).lower(),
+                f"motion coordinator must stay platform-free: {forbidden}", errors)
+    for token in [
+        '#include "motion_coordinator.h"',
+        "COMP_EPAPER_DISPLAY_FLAG_AUTO_MOTION",
+        "Companion_Display_EmitAutomaticMotionFrame",
+        "Companion_Display_ProcessAutomaticMotion",
+        "Companion_Display_CancelAutomaticMotion",
+        "daily_auto_resume",
+        "Companion_Screen_StartExpressionMode(",
+        "comp_epaper_motion_coordinator_complete_request",
+        "if (!completed)",
+        "comp_epaper_display_queue_discard_display_flags",
+        "COMP_EPAPER_MOTION_CANCEL_TOUCH",
+        "COMP_EPAPER_MOTION_CANCEL_MENU",
+        "COMP_EPAPER_MOTION_CANCEL_RECORDING",
+        "COMP_EPAPER_MOTION_CANCEL_LOW_POWER",
+        "COMP_EPAPER_MOTION_CANCEL_ERROR",
+        "COMP_EPAPER_MOTION_CANCEL_HIGH_PRIORITY",
+        "COMP_EPAPER_REFRESH_PARTIAL_INTERACTIVE, motion_request",
+    ]:
+        require(token in app_ble, f"app_ble.c missing automatic-motion guard {token}", errors)
+    automatic_section = slice_between(
+        app_ble,
+        "static bool Companion_Display_EmitAutomaticMotionFrame(\n"
+        "    const comp_epaper_motion_request_t *motion_request)\n"
+        "{\n"
+        "  uint32_t frame_wait_ms;",
+        "static void Companion_Display_ScheduleExpressionTick",
+    )
+    for forbidden in ["ball_motion", "LUT", "COMP_EPAPER_REFRESH_FULL"]:
+        require(forbidden.lower() not in automatic_section.lower(),
+                f"automatic expression path must not use {forbidden}", errors)
+    require("$(ROOT)/app/companion_pendant/epaper/motion_coordinator.c" in makefile,
+            "Makefile missing motion_coordinator.c", errors)
+
+
+def check_expression_choreographer(errors: list[str]) -> None:
+    header = read(EXPRESSION_CHOREOGRAPHER_HEADER)
+    source = read(EXPRESSION_CHOREOGRAPHER_SOURCE)
+    makefile = read(MAKEFILE)
+    for token in [
+        '#include "expression_rig.h"',
+        "COMP_EXPRESSION_RIG_EVENT_DAILY_AUTO",
+        "COMP_EXPRESSION_RIG_EVENT_TOUCH_TAP",
+        "COMP_EXPRESSION_RIG_EVENT_TOUCH_SWIPE",
+        "COMP_EXPRESSION_RIG_EVENT_RECORDING_ACTIVE",
+        "COMP_EXPRESSION_RIG_EVENT_MENU_HOLD",
+        "COMP_EXPRESSION_RIG_EVENT_SLEEP",
+        "COMP_EXPRESSION_RIG_EVENT_WAKE",
+        "COMP_EXPRESSION_RIG_EVENT_CHARGING",
+        "COMP_EXPRESSION_RIG_EVENT_ERROR",
+        "comp_expression_rig_choreography_input_t",
+        "comp_expression_rig_behavior_state_t",
+        "comp_expression_rig_behavior_decision_t",
+        "comp_expression_rig_resolve_behavior",
+        "comp_expression_rig_choreograph",
+        "comp_expression_rig_choreograph_plan",
+    ]:
+        require(token in header, f"expression_choreographer.h missing {token}", errors)
+    for token in [
+        "profile_supports_scene(profile, story_state.scene)",
+        "COMP_EXPRESSION_RIG_SCENE_CHARGING",
+        "COMP_EXPRESSION_RIG_SCENE_ERROR",
+        "COMP_EXPRESSION_RIG_INTENT_REASON_IDLE_PRESENCE",
+        "COMP_EXPRESSION_RIG_INTENT_REASON_ACTIVE_INTENT_HOLD",
+        "comp_expression_rig_resolve_behavior",
+        "comp_expression_rig_story_state",
+        "comp_expression_rig_build_plan(profile, &state, out_plan)",
+    ]:
+        require(token in source, f"expression_choreographer.c missing {token}", errors)
+    for forbidden in ["HAL_", "GPIO", "SPI", "QSPI", "stm32", "STMWPAN", "UTIL_SEQ", "CEMP", "LUT"]:
+        require(forbidden.lower() not in (header + source).lower(),
+                f"expression choreographer must stay portable and non-rendering: {forbidden}", errors)
+    for forbidden in ["seeded_attention", "1664525", "1013904223"]:
+        require(forbidden not in source,
+                f"expression choreographer must not use random behavior selection: {forbidden}", errors)
+    require("$(ROOT)/app/companion_pendant/epaper/expression_choreographer.c" in makefile,
+            "Makefile missing expression_choreographer.c", errors)
+
+
 def check_wb55_integration(errors: list[str]) -> None:
     app_ble = read(APP_BLE)
     app_conf = read(APP_CONF)
@@ -565,6 +683,10 @@ def main() -> int:
         PANEL_TARGET_STM32WB_SOURCE,
         SCREEN_RUNTIME_HEADER,
         SCREEN_RUNTIME_SOURCE,
+        MOTION_HEADER,
+        MOTION_SOURCE,
+        EXPRESSION_CHOREOGRAPHER_HEADER,
+        EXPRESSION_CHOREOGRAPHER_SOURCE,
         APP_BLE,
         APP_CONF,
         MAKEFILE,
@@ -579,6 +701,8 @@ def main() -> int:
         check_panel_adapter(errors)
         check_panel_target_stm32wb(errors)
         check_screen_runtime(errors)
+        check_motion_coordinator(errors)
+        check_expression_choreographer(errors)
         check_wb55_integration(errors)
         check_docs(errors)
         check_third_party_clean(errors)
