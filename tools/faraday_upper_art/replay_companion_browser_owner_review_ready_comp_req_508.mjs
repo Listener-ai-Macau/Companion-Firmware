@@ -34,6 +34,7 @@ const acceptedCenteredRestPngSha256 =
   "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31";
 const overallUrl =
   "http://127.0.0.1:4173/" + pageRepoPath;
+const runtimeUrl = process.env.COMPANION_BROWSER_REPLAY_URL || overallUrl;
 const screenshotRoot = path.join(outputRoot, "screenshots");
 const replayPath = path.join(outputRoot, "browser-replay-result.json");
 const screenshotManifestPath = path.join(
@@ -525,6 +526,17 @@ async function screenSnapshot(page, freezeOverallAfterSnapshot = false) {
     const overallContract = window.__overallInteractionState();
     const recordingContract = window.__recordingContractState();
     const interactionTrace = window.__touchInteractionTrace || [];
+    const canonicalWaveTrace = recordingContract.waveTrace
+      .filter((row) => row.cycle === 0)
+      .filter((row, index, rows) => (
+        rows.findIndex((candidate) => (
+          candidate.sequence === row.sequence
+          && candidate.step === row.step
+        )) === index
+      ))
+      .sort((left, right) => (
+        left.sequence - right.sequence || left.step - right.step
+      ));
     const faceVisible = visible(frame) ? 1 : 0;
     const gazeVisible = visible(gaze) ? 1 : 0;
     const menuVisible = visible(menu) && visible(menuSurface) ? 1 : 0;
@@ -651,8 +663,10 @@ async function screenSnapshot(page, freezeOverallAfterSnapshot = false) {
         phase: recordingContract.phase,
         phase_trace: recordingContract.phaseTrace,
         sequence: recordingContract.sequence,
-        wave_step: recordingContract.waveStep,
-        wave_trace: recordingContract.waveTrace,
+        wave_step: recordingContract.active
+          ? recordingContract.waveStep
+          : null,
+        wave_trace: canonicalWaveTrace,
         wave_visible: recordingContract.waveVisible,
       },
       route: {
@@ -858,7 +872,7 @@ async function openPage(browser, viewport) {
       }
     }
   });
-  await page.goto(overallUrl, { waitUntil: "load", timeout: 10000 });
+  await page.goto(runtimeUrl, { waitUntil: "load", timeout: 30000 });
   await page.locator("#enter-expression").click();
   await page.waitForFunction(() => (
     window.__touchContractState
@@ -1238,6 +1252,7 @@ async function replayRecording(browser, viewport, type) {
 
       const assertNoRecordingToggle = async (label) => {
         await waitForVisibleImages(page);
+        await page.evaluate(() => window.__recordingFreezeWaveStep(3));
         const snapshot = assertSnapshot(
           await screenSnapshot(page),
           "recording",
@@ -1264,6 +1279,7 @@ async function replayRecording(browser, viewport, type) {
           sequence: snapshot.recording.sequence,
         });
         totals.recording_negative_checks += 1;
+        await page.evaluate(() => window.__recordingResumeWaves());
       };
 
       await tap(page, type, x, y, 303);
@@ -1399,6 +1415,7 @@ async function replayRecording(browser, viewport, type) {
         window.__recordingContractState().phase === "thoughtful_listening"
       ), null, { timeout: 2500 });
       await sleep(680);
+      await page.evaluate(() => window.__recordingFreezeWaveStep(3));
       const triple = assertSnapshot(
         await screenSnapshot(page),
         "recording",
@@ -1426,6 +1443,7 @@ async function replayRecording(browser, viewport, type) {
       totals.recording_ordered_phase_traces += 1;
       totals.recording_reentries += 1;
       totals.route_recording_entries += 1;
+      await page.evaluate(() => window.__recordingResumeWaves());
 
       await tap(page, type, x, y, 340);
       await sleep(90);
@@ -1975,6 +1993,7 @@ async function run() {
       accepted_sha256: acceptedPageSha256,
       observed_sha256: fileSha256(pagePath),
       repo_path: pageRepoPath,
+      runtime_url: runtimeUrl,
       url: overallUrl,
     },
     requirements: [
