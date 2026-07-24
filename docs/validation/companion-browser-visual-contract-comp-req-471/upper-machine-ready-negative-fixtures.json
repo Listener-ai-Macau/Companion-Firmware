@@ -1,0 +1,167 @@
+{
+  "bound_files_mutated": false,
+  "mutations": [
+    {
+      "binding_class": "browser_page",
+      "expected_check": "file_hash.page",
+      "id": "page_hash_drift",
+      "target": "files.page.sha256",
+      "value": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    {
+      "binding_class": "machine_result",
+      "expected_check": "machine.structure",
+      "id": "machine_frame_count_drift",
+      "target": "machine.frames",
+      "value": 16
+    },
+    {
+      "binding_class": "capture",
+      "expected_check": "capture.structure",
+      "id": "capture_stale_layer",
+      "target": "capture.stale_count",
+      "value": 1
+    },
+    {
+      "binding_class": "pointer",
+      "expected_check": "pointer.structure",
+      "id": "pointer_negative_false",
+      "target": "pointer.negative_all_true",
+      "value": false
+    },
+    {
+      "binding_class": "per_file_rehash",
+      "expected_check": "rehash.all_bound_files",
+      "id": "bound_child_hash_drift",
+      "target": "rehash.mismatch_count",
+      "value": 1
+    },
+    {
+      "binding_class": "17_state_frames",
+      "expected_check": "frames.structure",
+      "id": "frame_count_drift",
+      "target": "frames.frame_count",
+      "value": 16
+    },
+    {
+      "binding_class": "c_asset_pack",
+      "expected_check": "c_pack.structure",
+      "id": "pack_unique_count_drift",
+      "target": "c_pack.unique_frame_count",
+      "value": 12
+    },
+    {
+      "binding_class": "c_asset_pack",
+      "expected_check": "c_pack.structure",
+      "id": "pack_payload_capacity_drift",
+      "target": "c_pack.payload_bytes",
+      "value": 64999
+    },
+    {
+      "binding_class": "expanded_window_oracle",
+      "expected_check": "oracle.structure",
+      "id": "oracle_pair_count_drift",
+      "target": "oracle.pair_count",
+      "value": 58
+    },
+    {
+      "binding_class": "expanded_window_oracle",
+      "expected_check": "oracle.structure",
+      "id": "oracle_noop_count_drift",
+      "target": "oracle.pixel_noop_pair_count",
+      "value": 9
+    },
+    {
+      "binding_class": "expanded_window_oracle",
+      "expected_check": "oracle.structure",
+      "id": "oracle_menu_full_count_drift",
+      "target": "oracle.menu_full_frame_pair_count",
+      "value": 9
+    },
+    {
+      "binding_class": "expanded_window_oracle",
+      "expected_check": "oracle.structure",
+      "id": "oracle_nonmenu_full_frame",
+      "target": "oracle.nonmenu_full_frame_pair_count",
+      "value": 1
+    },
+    {
+      "binding_class": "physical_consumer_boundary",
+      "expected_check": "physical_boundary.structure",
+      "id": "physical_guard_collapse",
+      "target": "physical_boundary.guards_separated",
+      "value": false
+    },
+    {
+      "binding_class": "owner_review_runner",
+      "expected_check": "file_hash.owner_runner",
+      "id": "owner_runner_hash_drift",
+      "target": "files.owner_runner.sha256",
+      "value": "1111111111111111111111111111111111111111111111111111111111111111"
+    },
+    {
+      "binding_class": "owner_review_supervisor",
+      "expected_check": "file_hash.owner_supervisor",
+      "id": "owner_supervisor_hash_drift",
+      "target": "files.owner_supervisor.sha256",
+      "value": "2222222222222222222222222222222222222222222222222222222222222222"
+    },
+    {
+      "binding_class": "owner_review_checkonly",
+      "expected_check": "file_hash.owner_checkonly",
+      "id": "owner_checkonly_hash_drift",
+      "target": "files.owner_checkonly.sha256",
+      "value": "3333333333333333333333333333333333333333333333333333333333333333"
+    },
+    {
+      "binding_class": "owner_review_checkonly",
+      "expected_check": "owner_review.checkonly",
+      "id": "owner_checkonly_duplicate_button",
+      "target": "owner_review.prompt_contract_exact",
+      "value": false
+    },
+    {
+      "binding_class": "protected_owner_acceptance",
+      "expected_check": "file_hash.protected_owner_acceptance",
+      "id": "protected_owner_acceptance_hash_drift",
+      "target": "files.protected_owner_acceptance.sha256",
+      "value": "4444444444444444444444444444444444444444444444444444444444444444"
+    },
+    {
+      "binding_class": "owner_result_absence",
+      "expected_check": "owner_review.result_absent",
+      "id": "owner_result_exists",
+      "target": "owner_review.owner_result_count",
+      "value": 1
+    },
+    {
+      "binding_class": "side_effect_counters",
+      "expected_check": "side_effects.zero",
+      "id": "execute_counter_nonzero",
+      "target": "side_effects.execute",
+      "value": 1
+    },
+    {
+      "binding_class": "side_effect_counters",
+      "expected_check": "side_effects.zero",
+      "id": "prompt_counter_nonzero",
+      "target": "side_effects.prompt",
+      "value": 1
+    },
+    {
+      "binding_class": "side_effect_counters",
+      "expected_check": "side_effects.zero",
+      "id": "server_counter_nonzero",
+      "target": "side_effects.server",
+      "value": 1
+    },
+    {
+      "binding_class": "side_effect_counters",
+      "expected_check": "side_effects.zero",
+      "id": "hardware_counter_nonzero",
+      "target": "side_effects.hardware",
+      "value": 1
+    }
+  ],
+  "schema": "companion.upper-machine-ready-negative-fixtures.v1"
+}

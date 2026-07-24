@@ -1,0 +1,490 @@
+{
+  "schema_id": "companion.wb55.ssd1681_phase_parallel_r9_continuous_observation_raw_restore_stage_run.v1",
+  "status": "NO_GO_R9_CONTINUOUS_VISUAL_NOT_PASSED_RESTORED",
+  "generated_at": "2026-07-21T13:30:06.0502171Z",
+  "mode": "execute",
+  "claim_scope": "one production-off R9 continuous observation extension: promptless dual-plane all-White pre-clean, unchanged initial 16-step fixed-bank local qualification, then one canonical Chinese PASS/FAIL acceptance popup concurrent with an automatic no-preset-limit W/A/B local CF/20 loop using BUSY <=600 ms and post-BUSY 0x24 sync; host UART evidence is a fixed 65536-byte ring; any BUSY, disconnect, prompt, storage, or emergency fault fails closed into promptless postclean and exact 524288-byte restore/readback/normal resume; this is not 120-frame product motion",
+  "hardware_contact": 1,
+  "error": "Concurrent acceptance supervisor failed closed with exit code 1.",
+  "controller_error": "Concurrent acceptance supervisor failed closed with exit code 1.",
+  "restore_error": null,
+  "counters": {
+    "serial_capture_processes": 4,
+    "preclean_programmer_processes": 1,
+    "preclean_write_calls": 1,
+    "preclean_panel_writes": 2,
+    "preclean_panel_refresh_commands": 1,
+    "preclean_panel_busy_waits": 1,
+    "postclean_programmer_processes": 1,
+    "postclean_write_calls": 1,
+    "postclean_panel_writes": 2,
+    "postclean_panel_refresh_commands": 1,
+    "postclean_panel_busy_waits": 1,
+    "candidate_programmer_processes": 1,
+    "candidate_write_calls": 1,
+    "restore_programmer_processes": 1,
+    "restore_write_calls": 1,
+    "restore_verify_operations": 1,
+    "restore_upload_calls": 1,
+    "restore_reset_arguments": 1,
+    "panel_writes": 0,
+    "panel_refresh_commands": 0,
+    "panel_hard_resets": 0,
+    "panel_busy_waits": 0,
+    "automatic_retries": 0
+  },
+  "images": {
+    "preclean": {
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\cubeide\\Companion_Nucleo_WB55RG_Bringup\\build_ssd1681_dual_plane_white_clean\\Companion_Nucleo_WB55RG_Ssd1681DualPlaneWhiteClean.hex",
+      "sha256": "3AC4E52E37E15DC3CC058A4B0B0E6A3227D23E6C6DEFAEDCB786C08497888AAD",
+      "required_sha256": "3AC4E52E37E15DC3CC058A4B0B0E6A3227D23E6C6DEFAEDCB786C08497888AAD",
+      "profile": "supplier_basemap_0x24_0x26_f7_white_readback",
+      "custom_lut_used": false
+    },
+    "candidate": {
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\cubeide\\Companion_Nucleo_WB55RG_Bringup\\build_ssd1681_phase_parallel_r9_continuous_observation\\Companion_Nucleo_WB55RG_Ssd1681PhaseParallelR9ContinuousObservation.hex",
+      "sha256": "3B416BFF08B630D23BDB6107B2C17DFE9FBBFAAA7D5CFBCA5063AE68E62B79C5",
+      "required_sha256": "3B416BFF08B630D23BDB6107B2C17DFE9FBBFAAA7D5CFBCA5063AE68E62B79C5"
+    },
+    "baseline_a": {
+      "bytes": 524288,
+      "sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C"
+    },
+    "baseline_b": {
+      "bytes": 524288,
+      "sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C"
+    },
+    "restore_verify": {
+      "bytes": 524288,
+      "sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+      "private": true
+    }
+  },
+  "locks": {
+    "companion_wb55": {
+      "mechanism": "Local\\\\Companion-WB55-Hardware-Exclusive-v1",
+      "mode": "owner",
+      "run_id": "e5d0cc644d564c568b7efc159dcd4515",
+      "evidence_path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-locks\\companion-wb55-lock-e5d0cc644d564c568b7efc159dcd4515.json",
+      "owner_process_id": 32136,
+      "purpose": "one R9 continuous local observation after unchanged 16-step qualification and exact raw restore"
+    },
+    "swd_com": {
+      "mechanism": "Local\\\\Companion-WB55-SWD-COM-Exclusive-v1",
+      "acquired": true,
+      "evidence": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-r9-continuous-execute-20260721-r1\\swd-com-lock.json"
+    }
+  },
+  "programmer": {
+    "executable": "C:\\ST\\STM32CubeIDE_2.1.1\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltools.cubeprogrammer.win32_2.2.400.202601091506\\tools\\bin\\STM32_Programmer_CLI.exe",
+    "sha256": "BD520005962377155515A2C9E8FEAB73F304A696AAE1698F3B7760672160FD5E"
+  },
+  "authorization": {
+    "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\companion-ssd1681-phase-parallel-r9-continuous-execute-authorization-20260721.json",
+    "sha256": "8183D7803AC4177B86042805BD8CB98912FE4DC72674E88D8F8B87E5C5064306",
+    "status": "AUTHORIZED_R9_CONTINUOUS_OBSERVATION_ONCE",
+    "requirement_id": "COMP-REQ-313"
+  },
+  "programmer_calls": [
+    {
+      "operation": "preclean-white-write",
+      "arguments": [
+        "-c",
+        "port=SWD",
+        "mode=UR",
+        "reset=HWrst",
+        "freq=4000",
+        "-w",
+        "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\cubeide\\Companion_Nucleo_WB55RG_Bringup\\build_ssd1681_dual_plane_white_clean\\Companion_Nucleo_WB55RG_Ssd1681DualPlaneWhiteClean.hex",
+        "-v",
+        "-rst"
+      ],
+      "stdout": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-r9-continuous-execute-20260721-r1\\preclean-white-write.stdout.log",
+      "stderr": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-r9-continuous-execute-20260721-r1\\preclean-white-write.stderr.log"
+    },
+    {
+      "operation": "continuous-candidate-write",
+      "arguments": [
+        "-c",
+        "port=SWD",
+        "mode=UR",
+        "reset=HWrst",
+        "freq=4000",
+        "-w",
+        "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\cubeide\\Companion_Nucleo_WB55RG_Bringup\\build_ssd1681_phase_parallel_r9_continuous_observation\\Companion_Nucleo_WB55RG_Ssd1681PhaseParallelR9ContinuousObservation.hex",
+        "-v",
+        "-rst"
+      ],
+      "stdout": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-r9-continuous-execute-20260721-r1\\continuous-candidate-write.stdout.log",
+      "stderr": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-r9-continuous-execute-20260721-r1\\continuous-candidate-write.stderr.log"
+    },
+    {
+      "operation": "postclean-white-write",
+      "arguments": [
+        "-c",
+        "port=SWD",
+        "mode=UR",
+        "reset=HWrst",
+        "freq=4000",
+        "-w",
+        "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\cubeide\\Companion_Nucleo_WB55RG_Bringup\\build_ssd1681_dual_plane_white_clean\\Companion_Nucleo_WB55RG_Ssd1681DualPlaneWhiteClean.hex",
+        "-v",
+        "-rst"
+      ],
+      "stdout": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-r9-continuous-execute-20260721-r1\\postclean-white-write.stdout.log",
+      "stderr": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-r9-continuous-execute-20260721-r1\\postclean-white-write.stderr.log"
+    },
+    {
+      "operation": "restore-write-verify-upload",
+      "arguments": [
+        "-c",
+        "port=SWD",
+        "mode=UR",
+        "reset=HWrst",
+        "freq=4000",
+        "-w",
+        "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-ur-dual-application-backup-execute-20260721-r1\\private\\backup-a.bin",
+        "0x08000000",
+        "-v",
+        "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-ur-dual-application-backup-execute-20260721-r1\\private\\backup-a.bin",
+        "0x08000000",
+        "-u",
+        "0x08000000",
+        "0x80000",
+        "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-r9-continuous-execute-20260721-r1\\private\\restore-verify.bin",
+        "-rst"
+      ],
+      "stdout": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-r9-continuous-execute-20260721-r1\\restore-write-verify-upload.stdout.log",
+      "stderr": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-r9-continuous-execute-20260721-r1\\restore-write-verify-upload.stderr.log"
+    }
+  ],
+  "baseline": {
+    "schema_id": "companion.wb55.ur_application_backup.v1",
+    "status": "PASS_DUAL_UR_APPLICATION_BACKUP",
+    "address_hex": "0x08000000",
+    "length_hex": "0x80000",
+    "length_bytes": 524288,
+    "backup_a": {
+      "bytes": 524288,
+      "sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+      "vector": {
+        "msp_hex": "0x20030000",
+        "msp_8_byte_aligned": true,
+        "reset_vector_hex": "0x08015AAD",
+        "reset_vector_thumb": true,
+        "reset_address_hex": "0x08015AAC"
+      },
+      "programmed_content": {
+        "first_non_ff_offset": 0,
+        "last_non_ff_offset": 523563,
+        "span_bytes": 523564,
+        "non_ff_bytes": 423805,
+        "minimum_span_bytes": 4096,
+        "minimum_non_ff_bytes": 1024
+      }
+    },
+    "backup_b": {
+      "bytes": 524288,
+      "sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+      "vector": {
+        "msp_hex": "0x20030000",
+        "msp_8_byte_aligned": true,
+        "reset_vector_hex": "0x08015AAD",
+        "reset_vector_thumb": true,
+        "reset_address_hex": "0x08015AAC"
+      },
+      "programmed_content": {
+        "first_non_ff_offset": 0,
+        "last_non_ff_offset": 523563,
+        "span_bytes": 523564,
+        "non_ff_bytes": 423805,
+        "minimum_span_bytes": 4096,
+        "minimum_non_ff_bytes": 1024
+      }
+    },
+    "byte_identical": true,
+    "shared_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "identity_claim": "CAPTURED_PRE_RUN_APPLICATION_BYTES_NOT_E199_HEX_REPRODUCTION",
+    "private_files": {
+      "backup_a": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-ur-dual-application-backup-execute-20260721-r1\\private\\backup-a.bin",
+      "backup_b": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-ur-dual-application-backup-execute-20260721-r1\\private\\backup-b.bin"
+    }
+  },
+  "popup_policy": {
+    "pre_execute": 0,
+    "cleanup": 0,
+    "recovery_or_fault_acknowledgement": 0,
+    "machine_only_r8_total": null,
+    "visual_acceptance": 1
+  },
+  "pre_execute_prompt": {
+    "required": false,
+    "invoked": false,
+    "selected": null,
+    "note": null,
+    "artifact": null,
+    "superseded_by": "COMP-REQ-305"
+  },
+  "preclean": {
+    "required": true,
+    "promptless": true,
+    "profile": "supplier_basemap_0x24_0x26_f7_white_readback",
+    "excluded_from_candidate_metrics": true,
+    "result": {
+      "schema_id": "companion.wb55.ssd1681_dual_plane_white_clean_trace.v1",
+      "status": "PASS_MACHINE_DUAL_PLANE_WHITE_CLEAN_BOTH_BANKS_READBACK_WHITE",
+      "errors": [],
+      "contract": {
+        "source_sha256": "7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896",
+        "write_order": [
+          "0x24",
+          "0x26"
+        ],
+        "bytes_per_plane": 5000,
+        "control": "0xF7",
+        "refresh": "0x20",
+        "selectors": {
+          "0": "0x24",
+          "1": "0x26"
+        },
+        "repeats_per_selector": 2,
+        "read_bytes": 5001,
+        "payload_bytes": 5000,
+        "window_and_counter_reprogrammed_before_every_read": true
+      },
+      "observed": {
+        "busy_elapsed_ms": 1289,
+        "reads": [
+          {
+            "selector": 0,
+            "bank": "0x24",
+            "repeat": 1,
+            "dummy_hex": "FF",
+            "response_sha256": "607413F338D9B2DE2CD235087D4D8F9FAD2DDC906D7C249EB3172074776920C6",
+            "payload_sha256": "D41BF2913D4C6ED6E9EF11EB8B9064AC3125A7A95B48F60E305DACF048D15C2B",
+            "payload_all_white": true
+          },
+          {
+            "selector": 0,
+            "bank": "0x24",
+            "repeat": 2,
+            "dummy_hex": "FF",
+            "response_sha256": "607413F338D9B2DE2CD235087D4D8F9FAD2DDC906D7C249EB3172074776920C6",
+            "payload_sha256": "D41BF2913D4C6ED6E9EF11EB8B9064AC3125A7A95B48F60E305DACF048D15C2B",
+            "payload_all_white": true
+          },
+          {
+            "selector": 1,
+            "bank": "0x26",
+            "repeat": 1,
+            "dummy_hex": "FF",
+            "response_sha256": "607413F338D9B2DE2CD235087D4D8F9FAD2DDC906D7C249EB3172074776920C6",
+            "payload_sha256": "D41BF2913D4C6ED6E9EF11EB8B9064AC3125A7A95B48F60E305DACF048D15C2B",
+            "payload_all_white": true
+          },
+          {
+            "selector": 1,
+            "bank": "0x26",
+            "repeat": 2,
+            "dummy_hex": "FF",
+            "response_sha256": "607413F338D9B2DE2CD235087D4D8F9FAD2DDC906D7C249EB3172074776920C6",
+            "payload_sha256": "D41BF2913D4C6ED6E9EF11EB8B9064AC3125A7A95B48F60E305DACF048D15C2B",
+            "payload_all_white": true
+          }
+        ]
+      },
+      "hardware_contact": 1,
+      "production_allowed": false
+    }
+  },
+  "postclean": {
+    "required": true,
+    "promptless": true,
+    "profile": "supplier_basemap_0x24_0x26_f7_white_readback",
+    "result": {
+      "schema_id": "companion.wb55.ssd1681_dual_plane_white_clean_trace.v1",
+      "status": "PASS_MACHINE_DUAL_PLANE_WHITE_CLEAN_BOTH_BANKS_READBACK_WHITE",
+      "errors": [],
+      "contract": {
+        "source_sha256": "7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896",
+        "write_order": [
+          "0x24",
+          "0x26"
+        ],
+        "bytes_per_plane": 5000,
+        "control": "0xF7",
+        "refresh": "0x20",
+        "selectors": {
+          "0": "0x24",
+          "1": "0x26"
+        },
+        "repeats_per_selector": 2,
+        "read_bytes": 5001,
+        "payload_bytes": 5000,
+        "window_and_counter_reprogrammed_before_every_read": true
+      },
+      "observed": {
+        "busy_elapsed_ms": 1289,
+        "reads": [
+          {
+            "selector": 0,
+            "bank": "0x24",
+            "repeat": 1,
+            "dummy_hex": "FF",
+            "response_sha256": "607413F338D9B2DE2CD235087D4D8F9FAD2DDC906D7C249EB3172074776920C6",
+            "payload_sha256": "D41BF2913D4C6ED6E9EF11EB8B9064AC3125A7A95B48F60E305DACF048D15C2B",
+            "payload_all_white": true
+          },
+          {
+            "selector": 0,
+            "bank": "0x24",
+            "repeat": 2,
+            "dummy_hex": "FF",
+            "response_sha256": "607413F338D9B2DE2CD235087D4D8F9FAD2DDC906D7C249EB3172074776920C6",
+            "payload_sha256": "D41BF2913D4C6ED6E9EF11EB8B9064AC3125A7A95B48F60E305DACF048D15C2B",
+            "payload_all_white": true
+          },
+          {
+            "selector": 1,
+            "bank": "0x26",
+            "repeat": 1,
+            "dummy_hex": "FF",
+            "response_sha256": "607413F338D9B2DE2CD235087D4D8F9FAD2DDC906D7C249EB3172074776920C6",
+            "payload_sha256": "D41BF2913D4C6ED6E9EF11EB8B9064AC3125A7A95B48F60E305DACF048D15C2B",
+            "payload_all_white": true
+          },
+          {
+            "selector": 1,
+            "bank": "0x26",
+            "repeat": 2,
+            "dummy_hex": "FF",
+            "response_sha256": "607413F338D9B2DE2CD235087D4D8F9FAD2DDC906D7C249EB3172074776920C6",
+            "payload_sha256": "D41BF2913D4C6ED6E9EF11EB8B9064AC3125A7A95B48F60E305DACF048D15C2B",
+            "payload_all_white": true
+          }
+        ]
+      },
+      "hardware_contact": 1,
+      "production_allowed": false
+    }
+  },
+  "controller_state": {
+    "schema_id": "companion.wb55.ssd1681_phase_parallel_r9_continuous_trace.v1",
+    "status": "PASS_MACHINE_R9_CONTINUOUS_TRACE",
+    "errors": [],
+    "hardware_contact": 1,
+    "qualification": {
+      "historical_r9_result_changed": false,
+      "activations": 16,
+      "elapsed_ms": 9633,
+      "busy_max_ms": 599,
+      "passed_before_loop": true
+    },
+    "loop": {
+      "preset_iteration_limit": null,
+      "records_in_ring": 0,
+      "first_iteration": null,
+      "last_iteration": null,
+      "busy_max_ms": null,
+      "fixed_bank": {
+        "old_command": "0x26",
+        "old_selector": 1,
+        "new_command": "0x24",
+        "new_selector": 0
+      },
+      "control": "0xCF",
+      "refresh": "0x20",
+      "post_sync": "0x24"
+    },
+    "candidate": {
+      "lut_sha256": "9BCBAC1A07ED0A112D26409FBCDB8F5FE27CE07D922C2E18881C10A53229DDCD",
+      "workbench_sha256": "E7311523D6FE571434F0C1F2D5EC76B7ED9B64DC725B0726DDEC023421D7E4EF"
+    },
+    "forbidden": {
+      "full_frame": 0,
+      "0xF7": 0,
+      "0xC7": 0,
+      "0xFF": 0,
+      "retry": 0,
+      "motion_120_frame": 0
+    },
+    "production_allowed": false
+  },
+  "restore": {
+    "schema_id": "companion.wb55.raw_application_restore.v1",
+    "status": "PASS_RESTORE_EQUALS_CAPTURED_PRE_RUN_APPLICATION_BYTES",
+    "address_hex": "0x08000000",
+    "length_hex": "0x80000",
+    "length_bytes": 524288,
+    "baseline_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "restore_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "byte_identical": true,
+    "restore_vector": {
+      "msp_hex": "0x20030000",
+      "msp_8_byte_aligned": true,
+      "reset_vector_hex": "0x08015AAD",
+      "reset_vector_thumb": true,
+      "reset_address_hex": "0x08015AAC"
+    },
+    "restore_programmed_content": {
+      "first_non_ff_offset": 0,
+      "last_non_ff_offset": 523563,
+      "span_bytes": 523564,
+      "non_ff_bytes": 423805,
+      "minimum_span_bytes": 4096,
+      "minimum_non_ff_bytes": 1024
+    },
+    "restore_identity": "RESTORED_TO_CAPTURED_PRE_RUN_APPLICATION_BYTES",
+    "e199_hex_reproduction": false,
+    "private_files": {
+      "backup_a": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-ur-dual-application-backup-execute-20260721-r1\\private\\backup-a.bin",
+      "backup_b": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-ur-dual-application-backup-execute-20260721-r1\\private\\backup-b.bin",
+      "restore_verify": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-r9-continuous-execute-20260721-r1\\private\\restore-verify.bin"
+    }
+  },
+  "normal_resume": {
+    "schema_id": "companion.wb55.normal_resume_after_ur_backup.v1",
+    "status": "PASS_APPLICATION_RESUMED_AFTER_BACKUP",
+    "bytes_utf8": 3022,
+    "sha256_utf8": "BB39719EC70D20624FABA5DDE9ADAD43CBD9F8A04BAFE9108DF24E14150B35DF",
+    "normal_boot_identity": "[boot] Companion NUCLEO-WB55RG bringup",
+    "normal_boot_count": 1,
+    "normal_ready_marker": "[boot] boot_selftests=skipped reason=production_ble_path",
+    "normal_ready_count": 1,
+    "ready_after_boot": true,
+    "controller_diagnostic_markers": [],
+    "panel_error_markers": [],
+    "hardfault_markers": [],
+    "source_log": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-r9-continuous-execute-20260721-r1\\normal-capture\\nucleo-serial-raw.log"
+  },
+  "restore_identity": "RESTORED_TO_CAPTURED_PRE_RUN_APPLICATION_BYTES",
+  "operator_prompt": {
+    "required": true,
+    "invoked": true,
+    "selected": null,
+    "note": null,
+    "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-r9-continuous-execute-20260721-r1\\operator-review.json",
+    "note_path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-r9-continuous-execute-20260721-r1\\operator-note.txt",
+    "error": null,
+    "policy": "one_canonical_chinese_pass_fail_concurrent_with_unbounded_local_loop_after_initial_16_pass"
+  },
+  "outputs": {
+    "baseline_gate": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-r9-continuous-execute-20260721-r1\\baseline-gate.json",
+    "preclean_raw_log": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-r9-continuous-execute-20260721-r1\\preclean-capture\\nucleo-serial-raw.log",
+    "preclean_result": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-r9-continuous-execute-20260721-r1\\preclean-white.json",
+    "postclean_raw_log": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-r9-continuous-execute-20260721-r1\\postclean-capture\\nucleo-serial-raw.log",
+    "postclean_result": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-r9-continuous-execute-20260721-r1\\postclean-white.json",
+    "candidate_raw_log": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-r9-continuous-execute-20260721-r1\\candidate-capture\\nucleo-serial-raw.log",
+    "controller_state": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-r9-continuous-execute-20260721-r1\\controller-state.json",
+    "restore_gate": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-r9-continuous-execute-20260721-r1\\restore-gate.json",
+    "normal_raw_log": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-r9-continuous-execute-20260721-r1\\normal-capture\\nucleo-serial-raw.log",
+    "normal_resume": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-r9-continuous-execute-20260721-r1\\normal-resume.json",
+    "operator_review": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-r9-continuous-execute-20260721-r1\\operator-review.json",
+    "operator_note": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-r9-continuous-execute-20260721-r1\\operator-note.txt",
+    "report": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-r9-continuous-execute-20260721-r1\\stage-run.json",
+    "continuous_monitor_result": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-r9-continuous-execute-20260721-r1\\continuous-monitor\\monitor-result.json",
+    "continuous_qualification_ready": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-r9-continuous-execute-20260721-r1\\continuous-qualification-ready.json",
+    "continuous_stop_signal": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-r9-continuous-execute-20260721-r1\\continuous-stop.json"
+  },
+  "completed_at": "2026-07-21T13:31:39.6996910Z"
+}

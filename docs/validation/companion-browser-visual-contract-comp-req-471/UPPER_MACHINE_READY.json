@@ -1,0 +1,1895 @@
+{
+  "bound_file_rehash": {
+    "count": 105,
+    "mismatch_count": 0,
+    "records": [
+      {
+        "bindings": [
+          "owner_checkonly:identity",
+          "primary:c_pack_handoff"
+        ],
+        "bytes": 1303,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "982B582FAEDDF956AF8557A9A333362A0D91DD7CA92FB3E0E7A37FC3D79F14D9",
+        "match": true,
+        "parser": "json",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/c-asset-pack-handoff.json",
+        "sha256": "982B582FAEDDF956AF8557A9A333362A0D91DD7CA92FB3E0E7A37FC3D79F14D9"
+      },
+      {
+        "bindings": [
+          "owner_checkonly:identity",
+          "primary:c_pack_result"
+        ],
+        "bytes": 13500,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "17B71D7AC5FC777FEB301EED39E70431CC65BEFF8CC25FD7EEC613206280CD1E",
+        "match": true,
+        "parser": "json",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/c-asset-pack-machine-result.json",
+        "sha256": "17B71D7AC5FC777FEB301EED39E70431CC65BEFF8CC25FD7EEC613206280CD1E"
+      },
+      {
+        "bindings": [
+          "owner_checkonly:identity",
+          "primary:c_pack_manifest"
+        ],
+        "bytes": 21714,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "0F0FE7B91707F20CF942A0B994BD776B69D404A004D9985B98EC6838CA752DBA",
+        "match": true,
+        "parser": "json",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/c-asset-pack-manifest.json",
+        "sha256": "0F0FE7B91707F20CF942A0B994BD776B69D404A004D9985B98EC6838CA752DBA"
+      },
+      {
+        "bindings": [
+          "c_pack_manifest:generated_file",
+          "owner_checkonly:identity",
+          "primary:c_pack_source"
+        ],
+        "bytes": 405618,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "1EE7BD5DDB210A3C3F90ADB607BA317CF2F00127099B876C9DB5948C7A5D03A0",
+        "match": true,
+        "parser": "c_source",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/companion_visual_asset_pack.c",
+        "sha256": "1EE7BD5DDB210A3C3F90ADB607BA317CF2F00127099B876C9DB5948C7A5D03A0"
+      },
+      {
+        "bindings": [
+          "c_pack_manifest:generated_file",
+          "owner_checkonly:identity",
+          "primary:c_pack_header"
+        ],
+        "bytes": 5321,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "2180FE281AFF31C8688BCB290740F898CF7E032C90D97FFE679F535689A814F9",
+        "match": true,
+        "parser": "c_header",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/companion_visual_asset_pack.h",
+        "sha256": "2180FE281AFF31C8688BCB290740F898CF7E032C90D97FFE679F535689A814F9"
+      },
+      {
+        "bindings": [
+          "primary:expanded_oracle"
+        ],
+        "bytes": 307682,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "20C270A332F7AD75FAED3C44C9AE3C1D789F7902ABA525C07B0B40F4266C5B2E",
+        "match": true,
+        "parser": "json",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/expanded-window-oracle.json",
+        "sha256": "20C270A332F7AD75FAED3C44C9AE3C1D789F7902ABA525C07B0B40F4266C5B2E"
+      },
+      {
+        "bindings": [
+          "machine:canonical_export",
+          "owner_checkonly:identity",
+          "primary:frames"
+        ],
+        "bytes": 85000,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "D4DA2FCA6863C1B8F5DD28D70566712DCD91AB7383CA486735DFD253F7361E6D",
+        "match": true,
+        "parser": "binary",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/frames.bin",
+        "sha256": "D4DA2FCA6863C1B8F5DD28D70566712DCD91AB7383CA486735DFD253F7361E6D"
+      },
+      {
+        "bindings": [
+          "machine:canonical_export"
+        ],
+        "bytes": 5000,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "66A3E78E692DE2EC813CABB9664778F1D5BF205F59A5FB41B22BDF9B0423EF09",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/frames/centered_rest.bin",
+        "sha256": "66A3E78E692DE2EC813CABB9664778F1D5BF205F59A5FB41B22BDF9B0423EF09"
+      },
+      {
+        "bindings": [
+          "machine:canonical_export"
+        ],
+        "bytes": 5011,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "4EA190DF84DEEBDA6674527CEA47BBCB09D779B369AC02C63321D0296BEACA08",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/frames/centered_rest.pbm",
+        "sha256": "4EA190DF84DEEBDA6674527CEA47BBCB09D779B369AC02C63321D0296BEACA08"
+      },
+      {
+        "bindings": [
+          "machine:canonical_export"
+        ],
+        "bytes": 5000,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "66A3E78E692DE2EC813CABB9664778F1D5BF205F59A5FB41B22BDF9B0423EF09",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/frames/gaze_center.bin",
+        "sha256": "66A3E78E692DE2EC813CABB9664778F1D5BF205F59A5FB41B22BDF9B0423EF09"
+      },
+      {
+        "bindings": [
+          "machine:canonical_export"
+        ],
+        "bytes": 5011,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "4EA190DF84DEEBDA6674527CEA47BBCB09D779B369AC02C63321D0296BEACA08",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/frames/gaze_center.pbm",
+        "sha256": "4EA190DF84DEEBDA6674527CEA47BBCB09D779B369AC02C63321D0296BEACA08"
+      },
+      {
+        "bindings": [
+          "machine:canonical_export"
+        ],
+        "bytes": 5000,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "C4975D1AFF45CBD5C2B284261343728F8EB0DFC1BB5DED1874A42EF78A62337D",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/frames/gaze_down.bin",
+        "sha256": "C4975D1AFF45CBD5C2B284261343728F8EB0DFC1BB5DED1874A42EF78A62337D"
+      },
+      {
+        "bindings": [
+          "machine:canonical_export"
+        ],
+        "bytes": 5011,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "588634C1D603D1727E2DD91475EE99680EBCAF683C89F8D541C693B882BE5D41",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/frames/gaze_down.pbm",
+        "sha256": "588634C1D603D1727E2DD91475EE99680EBCAF683C89F8D541C693B882BE5D41"
+      },
+      {
+        "bindings": [
+          "machine:canonical_export"
+        ],
+        "bytes": 5000,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "90DB3FC32E30B14F50148DA3A09332F47CA31AA25700C3906C1779647292226C",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/frames/gaze_left.bin",
+        "sha256": "90DB3FC32E30B14F50148DA3A09332F47CA31AA25700C3906C1779647292226C"
+      },
+      {
+        "bindings": [
+          "machine:canonical_export"
+        ],
+        "bytes": 5011,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "F78BBD831F2825E07ACD3392FFA5AEF03DA8F4D3718E5F08A813F3CAB2604069",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/frames/gaze_left.pbm",
+        "sha256": "F78BBD831F2825E07ACD3392FFA5AEF03DA8F4D3718E5F08A813F3CAB2604069"
+      },
+      {
+        "bindings": [
+          "machine:canonical_export"
+        ],
+        "bytes": 5000,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "7DD232D99B657C673FBD57BFA6939826D3B6A6B9CF131DD8DA8FC160E0497574",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/frames/gaze_right.bin",
+        "sha256": "7DD232D99B657C673FBD57BFA6939826D3B6A6B9CF131DD8DA8FC160E0497574"
+      },
+      {
+        "bindings": [
+          "machine:canonical_export"
+        ],
+        "bytes": 5011,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "77017158866ED9DFFFE73F5E81ECD2D8B0115D09E115C7F2A1225E8121D6FECF",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/frames/gaze_right.pbm",
+        "sha256": "77017158866ED9DFFFE73F5E81ECD2D8B0115D09E115C7F2A1225E8121D6FECF"
+      },
+      {
+        "bindings": [
+          "machine:canonical_export"
+        ],
+        "bytes": 5000,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "9CB3855BA43A00C707BAE4CA6F78AE7A96D315E43CA6071215A7A297BF711C43",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/frames/gaze_up.bin",
+        "sha256": "9CB3855BA43A00C707BAE4CA6F78AE7A96D315E43CA6071215A7A297BF711C43"
+      },
+      {
+        "bindings": [
+          "machine:canonical_export"
+        ],
+        "bytes": 5011,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "14EF0AA488B61A8F8DF68AEC93E66138D63A72A7772DA29F75A941C8F761B31A",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/frames/gaze_up.pbm",
+        "sha256": "14EF0AA488B61A8F8DF68AEC93E66138D63A72A7772DA29F75A941C8F761B31A"
+      },
+      {
+        "bindings": [
+          "machine:canonical_export"
+        ],
+        "bytes": 5000,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "5545DB4C457AB2A57867B602A3EE216A45CFF7BBD93368156C2A8B21292A34C1",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/frames/hold_feedback_50.bin",
+        "sha256": "5545DB4C457AB2A57867B602A3EE216A45CFF7BBD93368156C2A8B21292A34C1"
+      },
+      {
+        "bindings": [
+          "machine:canonical_export"
+        ],
+        "bytes": 5011,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "CCCFEA77F0935CF607D0C7F1A39909CF984630106A9E19695A27D07A37C7B556",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/frames/hold_feedback_50.pbm",
+        "sha256": "CCCFEA77F0935CF607D0C7F1A39909CF984630106A9E19695A27D07A37C7B556"
+      },
+      {
+        "bindings": [
+          "machine:canonical_export"
+        ],
+        "bytes": 5000,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "F103D49AF3A8B315CE6B2D8CDB4474CD3F2D62C19C7E1F8105DA43AE32C3FC15",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/frames/menu_connection.bin",
+        "sha256": "F103D49AF3A8B315CE6B2D8CDB4474CD3F2D62C19C7E1F8105DA43AE32C3FC15"
+      },
+      {
+        "bindings": [
+          "machine:canonical_export"
+        ],
+        "bytes": 5011,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "94327696B2304E1B85AE60AEAECBE1852B38FF2EB0DA1FB0D13F249352A84C76",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/frames/menu_connection.pbm",
+        "sha256": "94327696B2304E1B85AE60AEAECBE1852B38FF2EB0DA1FB0D13F249352A84C76"
+      },
+      {
+        "bindings": [
+          "machine:canonical_export"
+        ],
+        "bytes": 5000,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "6C237EFA7573A35578849CE3E337FE2156CCDE2125AD4BB9D252830ECF3F677A",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/frames/menu_device.bin",
+        "sha256": "6C237EFA7573A35578849CE3E337FE2156CCDE2125AD4BB9D252830ECF3F677A"
+      },
+      {
+        "bindings": [
+          "machine:canonical_export"
+        ],
+        "bytes": 5011,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "47DCA8921A432E6F76DD88A5742451FBEE0FF44F40BEB6B531C1DB4B279B0960",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/frames/menu_device.pbm",
+        "sha256": "47DCA8921A432E6F76DD88A5742451FBEE0FF44F40BEB6B531C1DB4B279B0960"
+      },
+      {
+        "bindings": [
+          "machine:canonical_export"
+        ],
+        "bytes": 5000,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "66A3E78E692DE2EC813CABB9664778F1D5BF205F59A5FB41B22BDF9B0423EF09",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/frames/menu_device_ui_assets.bin",
+        "sha256": "66A3E78E692DE2EC813CABB9664778F1D5BF205F59A5FB41B22BDF9B0423EF09"
+      },
+      {
+        "bindings": [
+          "machine:canonical_export"
+        ],
+        "bytes": 5011,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "4EA190DF84DEEBDA6674527CEA47BBCB09D779B369AC02C63321D0296BEACA08",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/frames/menu_device_ui_assets.pbm",
+        "sha256": "4EA190DF84DEEBDA6674527CEA47BBCB09D779B369AC02C63321D0296BEACA08"
+      },
+      {
+        "bindings": [
+          "machine:canonical_export"
+        ],
+        "bytes": 5000,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "AE0BC022B83A98AC42D7B54819718136FF745A4A1A4EF036E3D33655E43EB29C",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/frames/menu_preferences.bin",
+        "sha256": "AE0BC022B83A98AC42D7B54819718136FF745A4A1A4EF036E3D33655E43EB29C"
+      },
+      {
+        "bindings": [
+          "machine:canonical_export"
+        ],
+        "bytes": 5011,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "2E9EB6A6B5F866DFDE450C0388D83BEF3C0D6C71138645B9E84C532AC0744970",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/frames/menu_preferences.pbm",
+        "sha256": "2E9EB6A6B5F866DFDE450C0388D83BEF3C0D6C71138645B9E84C532AC0744970"
+      },
+      {
+        "bindings": [
+          "machine:canonical_export"
+        ],
+        "bytes": 5000,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "66A3E78E692DE2EC813CABB9664778F1D5BF205F59A5FB41B22BDF9B0423EF09",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/frames/menu_return_rest.bin",
+        "sha256": "66A3E78E692DE2EC813CABB9664778F1D5BF205F59A5FB41B22BDF9B0423EF09"
+      },
+      {
+        "bindings": [
+          "machine:canonical_export"
+        ],
+        "bytes": 5011,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "4EA190DF84DEEBDA6674527CEA47BBCB09D779B369AC02C63321D0296BEACA08",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/frames/menu_return_rest.pbm",
+        "sha256": "4EA190DF84DEEBDA6674527CEA47BBCB09D779B369AC02C63321D0296BEACA08"
+      },
+      {
+        "bindings": [
+          "machine:canonical_export"
+        ],
+        "bytes": 5000,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "EA85CFB199657D7829D181DD3D62BF19612F995E47C58112FFA7E713790DEFA0",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/frames/menu_roots.bin",
+        "sha256": "EA85CFB199657D7829D181DD3D62BF19612F995E47C58112FFA7E713790DEFA0"
+      },
+      {
+        "bindings": [
+          "machine:canonical_export"
+        ],
+        "bytes": 5011,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "8A469694911F60EE709BA63F8DDFE8C6BE1979914E4D9448200EC611471444E0",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/frames/menu_roots.pbm",
+        "sha256": "8A469694911F60EE709BA63F8DDFE8C6BE1979914E4D9448200EC611471444E0"
+      },
+      {
+        "bindings": [
+          "machine:canonical_export"
+        ],
+        "bytes": 5000,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "7B3C8FAAF42DFEC2F309F43A6D769A8A1F5A4789BCD0CF46D0555F89A9A7169A",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/frames/menu_voice.bin",
+        "sha256": "7B3C8FAAF42DFEC2F309F43A6D769A8A1F5A4789BCD0CF46D0555F89A9A7169A"
+      },
+      {
+        "bindings": [
+          "machine:canonical_export"
+        ],
+        "bytes": 5011,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "73EE2C66AB7F098EA3A33017FAF8625449F981F67D8B21609D6220621DF257F8",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/frames/menu_voice.pbm",
+        "sha256": "73EE2C66AB7F098EA3A33017FAF8625449F981F67D8B21609D6220621DF257F8"
+      },
+      {
+        "bindings": [
+          "machine:canonical_export"
+        ],
+        "bytes": 5000,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "309672C1572F178D4BE17AF3B8958F985C76034521B067447F73AEB0ACEA35DB",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/frames/recording_entry.bin",
+        "sha256": "309672C1572F178D4BE17AF3B8958F985C76034521B067447F73AEB0ACEA35DB"
+      },
+      {
+        "bindings": [
+          "machine:canonical_export"
+        ],
+        "bytes": 5011,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "E673F92ECFDAADC3CB12787F7017CD56ADEE412AC76C8D2A6E8D127D04DFD07D",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/frames/recording_entry.pbm",
+        "sha256": "E673F92ECFDAADC3CB12787F7017CD56ADEE412AC76C8D2A6E8D127D04DFD07D"
+      },
+      {
+        "bindings": [
+          "machine:canonical_export"
+        ],
+        "bytes": 5000,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "66A3E78E692DE2EC813CABB9664778F1D5BF205F59A5FB41B22BDF9B0423EF09",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/frames/recording_return_rest.bin",
+        "sha256": "66A3E78E692DE2EC813CABB9664778F1D5BF205F59A5FB41B22BDF9B0423EF09"
+      },
+      {
+        "bindings": [
+          "machine:canonical_export"
+        ],
+        "bytes": 5011,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "4EA190DF84DEEBDA6674527CEA47BBCB09D779B369AC02C63321D0296BEACA08",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/frames/recording_return_rest.pbm",
+        "sha256": "4EA190DF84DEEBDA6674527CEA47BBCB09D779B369AC02C63321D0296BEACA08"
+      },
+      {
+        "bindings": [
+          "machine:canonical_export"
+        ],
+        "bytes": 5000,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "16F0642E4061CDC22D05EE2A7E08E5DD0777A84E6D5D0052E126FA77E30D066B",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/frames/single_tap_response.bin",
+        "sha256": "16F0642E4061CDC22D05EE2A7E08E5DD0777A84E6D5D0052E126FA77E30D066B"
+      },
+      {
+        "bindings": [
+          "machine:canonical_export"
+        ],
+        "bytes": 5011,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "4A014F2C4F3C3006282699D14F07A3EC7D94F22A3729AB3D895132092AE627A5",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/frames/single_tap_response.pbm",
+        "sha256": "4A014F2C4F3C3006282699D14F07A3EC7D94F22A3729AB3D895132092AE627A5"
+      },
+      {
+        "bindings": [
+          "machine:canonical_export",
+          "owner_checkonly:identity"
+        ],
+        "bytes": 4597,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "E89E3E40EF9DE9466CFBC9664AD16E49E36747F8A600966A6CF0D640EFED1468",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/handoff-manifest.json",
+        "sha256": "E89E3E40EF9DE9466CFBC9664AD16E49E36747F8A600966A6CF0D640EFED1468"
+      },
+      {
+        "bindings": [
+          "primary:physical_boundary"
+        ],
+        "bytes": 2849,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "FE4D44152F51E0496B3AEF0B0594F557995D09FE31A9148440DA98209D119DDC",
+        "match": true,
+        "parser": "json",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/physical-consumer-boundary.json",
+        "sha256": "FE4D44152F51E0496B3AEF0B0594F557995D09FE31A9148440DA98209D119DDC"
+      },
+      {
+        "bindings": [
+          "machine:canonical_export"
+        ],
+        "bytes": 25759,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "701B428731000E753A3F9C5B4E9DF4B93B09AD670CE302849288CB5D7DE7F2BE",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/pixel-oracle.json",
+        "sha256": "701B428731000E753A3F9C5B4E9DF4B93B09AD670CE302849288CB5D7DE7F2BE"
+      },
+      {
+        "bindings": [
+          "machine:canonical_export",
+          "owner_checkonly:identity",
+          "primary:state_transitions"
+        ],
+        "bytes": 5179,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "442F5A9E87988A3F8BE15ECC2A2500CA64537FA2B6DBD96F6FFDDD070DD7F918",
+        "match": true,
+        "parser": "json",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/state-transitions.json",
+        "sha256": "442F5A9E87988A3F8BE15ECC2A2500CA64537FA2B6DBD96F6FFDDD070DD7F918"
+      },
+      {
+        "bindings": [
+          "machine:canonical_export",
+          "owner_checkonly:identity",
+          "primary:visual_contract"
+        ],
+        "bytes": 257114,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "E5C6B30D8BF317FC8321D82E087D3B46552B4523FD8B67FFF3E6ABA89AAE4260",
+        "match": true,
+        "parser": "json",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/visual-contract.json",
+        "sha256": "E5C6B30D8BF317FC8321D82E087D3B46552B4523FD8B67FFF3E6ABA89AAE4260"
+      },
+      {
+        "bindings": [
+          "capture:source_asset"
+        ],
+        "bytes": 927,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "33362E4D2CEF3003559CD0304EEEEBE80CC32018E414EE9CFE32783713528612",
+        "match": true,
+        "parser": "source_asset",
+        "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/01-home.png",
+        "sha256": "33362E4D2CEF3003559CD0304EEEEBE80CC32018E414EE9CFE32783713528612"
+      },
+      {
+        "bindings": [
+          "capture:source_asset"
+        ],
+        "bytes": 1031,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "905DC9102D6C8519231E342C0EBF3317118BFA74B343E38608020AA2E7D15308",
+        "match": true,
+        "parser": "source_asset",
+        "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/02-voice.png",
+        "sha256": "905DC9102D6C8519231E342C0EBF3317118BFA74B343E38608020AA2E7D15308"
+      },
+      {
+        "bindings": [
+          "capture:source_asset"
+        ],
+        "bytes": 977,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "643697B3B9F9C090E1D3F0E40CA7D8F8BAC994D469F90E0B436824B2F5067961",
+        "match": true,
+        "parser": "source_asset",
+        "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/03-device.png",
+        "sha256": "643697B3B9F9C090E1D3F0E40CA7D8F8BAC994D469F90E0B436824B2F5067961"
+      },
+      {
+        "bindings": [
+          "capture:source_asset"
+        ],
+        "bytes": 864,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "E9EB39EE4C4884D04226BDC2216E210DB253565A46CC51A20599286BA85044DF",
+        "match": true,
+        "parser": "source_asset",
+        "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/04-connection.png",
+        "sha256": "E9EB39EE4C4884D04226BDC2216E210DB253565A46CC51A20599286BA85044DF"
+      },
+      {
+        "bindings": [
+          "capture:source_asset"
+        ],
+        "bytes": 1160,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "EE89A9F63CB32967613CFD95C43D9A1391981E1A7274C6AA6EB5D97ED14AA1F8",
+        "match": true,
+        "parser": "source_asset",
+        "path": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200/en/05-preferences.png",
+        "sha256": "EE89A9F63CB32967613CFD95C43D9A1391981E1A7274C6AA6EB5D97ED14AA1F8"
+      },
+      {
+        "bindings": [
+          "owner_checkonly:identity",
+          "primary:page"
+        ],
+        "bytes": 111537,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "BAE21BCCC7BB5FAD4A0922D5E9C42FCB25EF58DD7B8102A7C72656F7B700CF5E",
+        "match": true,
+        "parser": "html",
+        "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html",
+        "sha256": "BAE21BCCC7BB5FAD4A0922D5E9C42FCB25EF58DD7B8102A7C72656F7B700CF5E"
+      },
+      {
+        "bindings": [
+          "capture:source_asset"
+        ],
+        "bytes": 580,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "CACD27828EE8197B46C5B34BFD04F271501698B2F171D37115E88E5590A7AB47",
+        "match": true,
+        "parser": "source_asset",
+        "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/touch-base-calm_presence-04.png",
+        "sha256": "CACD27828EE8197B46C5B34BFD04F271501698B2F171D37115E88E5590A7AB47"
+      },
+      {
+        "bindings": [
+          "capture:source_asset"
+        ],
+        "bytes": 730,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "45F88F8ED0D47E8F20EE9776CFA6FEC99EEB9A4C2096F5C5AADA73FE927CC74E",
+        "match": true,
+        "parser": "source_asset",
+        "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/touch-base-curious_question-03.png",
+        "sha256": "45F88F8ED0D47E8F20EE9776CFA6FEC99EEB9A4C2096F5C5AADA73FE927CC74E"
+      },
+      {
+        "bindings": [
+          "capture:source_asset"
+        ],
+        "bytes": 468,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "72845ECE4EAD76BC9593716C5778EF1E0741B3D5F8A90213D60F0B9464EB9C84",
+        "match": true,
+        "parser": "source_asset",
+        "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/touch-base-recording_with_calm-02.png",
+        "sha256": "72845ECE4EAD76BC9593716C5778EF1E0741B3D5F8A90213D60F0B9464EB9C84"
+      },
+      {
+        "bindings": [
+          "capture:source_asset"
+        ],
+        "bytes": 800,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "99C6C1C9D9FFA8E5F1B9E011C69126E208B8B645A64600D9EA637F734D3B654E",
+        "match": true,
+        "parser": "source_asset",
+        "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/touch-gaze-overlay-069.png",
+        "sha256": "99C6C1C9D9FFA8E5F1B9E011C69126E208B8B645A64600D9EA637F734D3B654E"
+      },
+      {
+        "bindings": [
+          "capture:source_asset"
+        ],
+        "bytes": 795,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "A014BB0F5462463A4B75B9B3E9FB895E39915AF46AFC39343CDBB74CB3EEA3E6",
+        "match": true,
+        "parser": "source_asset",
+        "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/touch-gaze-overlay-183.png",
+        "sha256": "A014BB0F5462463A4B75B9B3E9FB895E39915AF46AFC39343CDBB74CB3EEA3E6"
+      },
+      {
+        "bindings": [
+          "capture:source_asset"
+        ],
+        "bytes": 801,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "CAA97AF4119CA606B1E919D6B1D43D5F772045825144E848F81B5EA9F84988C4",
+        "match": true,
+        "parser": "source_asset",
+        "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/touch-gaze-overlay-189.png",
+        "sha256": "CAA97AF4119CA606B1E919D6B1D43D5F772045825144E848F81B5EA9F84988C4"
+      },
+      {
+        "bindings": [
+          "capture:source_asset"
+        ],
+        "bytes": 802,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "DB0A70D7AA1DD7A88269B85A4D1EBAC25C94A32D4572E58693128AB9024FA85E",
+        "match": true,
+        "parser": "source_asset",
+        "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/touch-gaze-overlay-196.png",
+        "sha256": "DB0A70D7AA1DD7A88269B85A4D1EBAC25C94A32D4572E58693128AB9024FA85E"
+      },
+      {
+        "bindings": [
+          "capture:source_asset"
+        ],
+        "bytes": 797,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "6C40DAE1978914F2B8454A814D5038FA5C623322C76CF02DE2B8DD2F080FF90E",
+        "match": true,
+        "parser": "source_asset",
+        "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/touch-gaze-overlay-227.png",
+        "sha256": "6C40DAE1978914F2B8454A814D5038FA5C623322C76CF02DE2B8DD2F080FF90E"
+      },
+      {
+        "bindings": [
+          "capture:source_asset"
+        ],
+        "bytes": 800,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "9E816FEA5B58AE3D2AA5CD36787EC5CC6003D66D13289D7BE26050A36166E6AF",
+        "match": true,
+        "parser": "source_asset",
+        "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/touch-gaze-overlay-249.png",
+        "sha256": "9E816FEA5B58AE3D2AA5CD36787EC5CC6003D66D13289D7BE26050A36166E6AF"
+      },
+      {
+        "bindings": [
+          "capture:source_asset"
+        ],
+        "bytes": 569,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "B34A34E2A1A8FBD05868D668FCE47D97C56242CC024A7A7610C95F12976B24D2",
+        "match": true,
+        "parser": "source_asset",
+        "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/r7-locked-v9-export-20260723/all-candidates/calm_presence/04-calm_blink_settle.png",
+        "sha256": "B34A34E2A1A8FBD05868D668FCE47D97C56242CC024A7A7610C95F12976B24D2"
+      },
+      {
+        "bindings": [
+          "machine:canonical_capture"
+        ],
+        "bytes": 1261,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/browser-capture/browser/desktop/centered_rest.png",
+        "sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31"
+      },
+      {
+        "bindings": [
+          "machine:canonical_capture"
+        ],
+        "bytes": 1261,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/browser-capture/browser/desktop/gaze_center.png",
+        "sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31"
+      },
+      {
+        "bindings": [
+          "machine:canonical_capture"
+        ],
+        "bytes": 1294,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "1296A78C86A72065EF8B96A4E105A806D5A09C238DC04CBCB70A33FF31B48B51",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/browser-capture/browser/desktop/gaze_down.png",
+        "sha256": "1296A78C86A72065EF8B96A4E105A806D5A09C238DC04CBCB70A33FF31B48B51"
+      },
+      {
+        "bindings": [
+          "machine:canonical_capture"
+        ],
+        "bytes": 1298,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "C1829C919901CBD55A4A942C465BC8E7F00AC2BB1F2813C3181B1566D3EF35B4",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/browser-capture/browser/desktop/gaze_left.png",
+        "sha256": "C1829C919901CBD55A4A942C465BC8E7F00AC2BB1F2813C3181B1566D3EF35B4"
+      },
+      {
+        "bindings": [
+          "machine:canonical_capture"
+        ],
+        "bytes": 1276,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "A81B9C90C16232B0C5A54C72934BF0EA75C66F284946294AC8C07D29CFF44AF7",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/browser-capture/browser/desktop/gaze_right.png",
+        "sha256": "A81B9C90C16232B0C5A54C72934BF0EA75C66F284946294AC8C07D29CFF44AF7"
+      },
+      {
+        "bindings": [
+          "machine:canonical_capture"
+        ],
+        "bytes": 1275,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "960A42DBC94C63ED3906413F3C76B13A6075249C28B1110840CD966F818FC2A7",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/browser-capture/browser/desktop/gaze_up.png",
+        "sha256": "960A42DBC94C63ED3906413F3C76B13A6075249C28B1110840CD966F818FC2A7"
+      },
+      {
+        "bindings": [
+          "machine:canonical_capture"
+        ],
+        "bytes": 1610,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "D4417B43C595A0A123D1BF8D374133621B40813A498A3C62236329F37CB0503C",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/browser-capture/browser/desktop/hold_feedback_50.png",
+        "sha256": "D4417B43C595A0A123D1BF8D374133621B40813A498A3C62236329F37CB0503C"
+      },
+      {
+        "bindings": [
+          "machine:canonical_capture"
+        ],
+        "bytes": 1870,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "BF10A1BC3B93D87EBB4F5945B6525B63B143E4CDCC12FE28BEBF2036D2EDF0B7",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/browser-capture/browser/desktop/menu_connection.png",
+        "sha256": "BF10A1BC3B93D87EBB4F5945B6525B63B143E4CDCC12FE28BEBF2036D2EDF0B7"
+      },
+      {
+        "bindings": [
+          "machine:canonical_capture"
+        ],
+        "bytes": 1916,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "4318AF7671B1B728B25806E8FBC995B05F8841619E65C6243B5A399B6B1DBF07",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/browser-capture/browser/desktop/menu_device.png",
+        "sha256": "4318AF7671B1B728B25806E8FBC995B05F8841619E65C6243B5A399B6B1DBF07"
+      },
+      {
+        "bindings": [
+          "machine:canonical_capture"
+        ],
+        "bytes": 1261,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/browser-capture/browser/desktop/menu_device_ui_assets.png",
+        "sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31"
+      },
+      {
+        "bindings": [
+          "machine:canonical_capture"
+        ],
+        "bytes": 2330,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "1FE11C000D2643D8AF4942903CA80405F70A34167D4A73BF7FC359CC480E90A6",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/browser-capture/browser/desktop/menu_preferences.png",
+        "sha256": "1FE11C000D2643D8AF4942903CA80405F70A34167D4A73BF7FC359CC480E90A6"
+      },
+      {
+        "bindings": [
+          "machine:canonical_capture"
+        ],
+        "bytes": 1261,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/browser-capture/browser/desktop/menu_return_rest.png",
+        "sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31"
+      },
+      {
+        "bindings": [
+          "machine:canonical_capture"
+        ],
+        "bytes": 1909,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "B6A2DAF80493BE09F2F20585CDAE82708E6DD38A285D0D2F9F8132E3FA4D7750",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/browser-capture/browser/desktop/menu_roots.png",
+        "sha256": "B6A2DAF80493BE09F2F20585CDAE82708E6DD38A285D0D2F9F8132E3FA4D7750"
+      },
+      {
+        "bindings": [
+          "machine:canonical_capture"
+        ],
+        "bytes": 2080,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "61D05EE9EFD7F9E91B70D6372352B52856C6A90A18697F119967D282A93F1960",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/browser-capture/browser/desktop/menu_voice.png",
+        "sha256": "61D05EE9EFD7F9E91B70D6372352B52856C6A90A18697F119967D282A93F1960"
+      },
+      {
+        "bindings": [
+          "machine:canonical_capture"
+        ],
+        "bytes": 1165,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "128026CE2FF6FE9B974687C565BAF02E83936830E028E7A770F4ED34B3C4CDEE",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/browser-capture/browser/desktop/recording_entry.png",
+        "sha256": "128026CE2FF6FE9B974687C565BAF02E83936830E028E7A770F4ED34B3C4CDEE"
+      },
+      {
+        "bindings": [
+          "machine:canonical_capture"
+        ],
+        "bytes": 1261,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/browser-capture/browser/desktop/recording_return_rest.png",
+        "sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31"
+      },
+      {
+        "bindings": [
+          "machine:canonical_capture"
+        ],
+        "bytes": 1449,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "F4064D99BE564F15F36F42A5C25C1D0A829FD94688433EA6600EC8C4BBC65D53",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/browser-capture/browser/desktop/single_tap_response.png",
+        "sha256": "F4064D99BE564F15F36F42A5C25C1D0A829FD94688433EA6600EC8C4BBC65D53"
+      },
+      {
+        "bindings": [
+          "machine:canonical_capture"
+        ],
+        "bytes": 1261,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/browser-capture/browser/mobile/centered_rest.png",
+        "sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31"
+      },
+      {
+        "bindings": [
+          "machine:canonical_capture"
+        ],
+        "bytes": 1261,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/browser-capture/browser/mobile/gaze_center.png",
+        "sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31"
+      },
+      {
+        "bindings": [
+          "machine:canonical_capture"
+        ],
+        "bytes": 1294,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "1296A78C86A72065EF8B96A4E105A806D5A09C238DC04CBCB70A33FF31B48B51",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/browser-capture/browser/mobile/gaze_down.png",
+        "sha256": "1296A78C86A72065EF8B96A4E105A806D5A09C238DC04CBCB70A33FF31B48B51"
+      },
+      {
+        "bindings": [
+          "machine:canonical_capture"
+        ],
+        "bytes": 1298,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "C1829C919901CBD55A4A942C465BC8E7F00AC2BB1F2813C3181B1566D3EF35B4",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/browser-capture/browser/mobile/gaze_left.png",
+        "sha256": "C1829C919901CBD55A4A942C465BC8E7F00AC2BB1F2813C3181B1566D3EF35B4"
+      },
+      {
+        "bindings": [
+          "machine:canonical_capture"
+        ],
+        "bytes": 1276,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "A81B9C90C16232B0C5A54C72934BF0EA75C66F284946294AC8C07D29CFF44AF7",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/browser-capture/browser/mobile/gaze_right.png",
+        "sha256": "A81B9C90C16232B0C5A54C72934BF0EA75C66F284946294AC8C07D29CFF44AF7"
+      },
+      {
+        "bindings": [
+          "machine:canonical_capture"
+        ],
+        "bytes": 1275,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "960A42DBC94C63ED3906413F3C76B13A6075249C28B1110840CD966F818FC2A7",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/browser-capture/browser/mobile/gaze_up.png",
+        "sha256": "960A42DBC94C63ED3906413F3C76B13A6075249C28B1110840CD966F818FC2A7"
+      },
+      {
+        "bindings": [
+          "machine:canonical_capture"
+        ],
+        "bytes": 1610,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "D4417B43C595A0A123D1BF8D374133621B40813A498A3C62236329F37CB0503C",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/browser-capture/browser/mobile/hold_feedback_50.png",
+        "sha256": "D4417B43C595A0A123D1BF8D374133621B40813A498A3C62236329F37CB0503C"
+      },
+      {
+        "bindings": [
+          "machine:canonical_capture"
+        ],
+        "bytes": 1870,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "BF10A1BC3B93D87EBB4F5945B6525B63B143E4CDCC12FE28BEBF2036D2EDF0B7",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/browser-capture/browser/mobile/menu_connection.png",
+        "sha256": "BF10A1BC3B93D87EBB4F5945B6525B63B143E4CDCC12FE28BEBF2036D2EDF0B7"
+      },
+      {
+        "bindings": [
+          "machine:canonical_capture"
+        ],
+        "bytes": 1916,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "4318AF7671B1B728B25806E8FBC995B05F8841619E65C6243B5A399B6B1DBF07",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/browser-capture/browser/mobile/menu_device.png",
+        "sha256": "4318AF7671B1B728B25806E8FBC995B05F8841619E65C6243B5A399B6B1DBF07"
+      },
+      {
+        "bindings": [
+          "machine:canonical_capture"
+        ],
+        "bytes": 1261,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/browser-capture/browser/mobile/menu_device_ui_assets.png",
+        "sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31"
+      },
+      {
+        "bindings": [
+          "machine:canonical_capture"
+        ],
+        "bytes": 2330,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "1FE11C000D2643D8AF4942903CA80405F70A34167D4A73BF7FC359CC480E90A6",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/browser-capture/browser/mobile/menu_preferences.png",
+        "sha256": "1FE11C000D2643D8AF4942903CA80405F70A34167D4A73BF7FC359CC480E90A6"
+      },
+      {
+        "bindings": [
+          "machine:canonical_capture"
+        ],
+        "bytes": 1261,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/browser-capture/browser/mobile/menu_return_rest.png",
+        "sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31"
+      },
+      {
+        "bindings": [
+          "machine:canonical_capture"
+        ],
+        "bytes": 1909,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "B6A2DAF80493BE09F2F20585CDAE82708E6DD38A285D0D2F9F8132E3FA4D7750",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/browser-capture/browser/mobile/menu_roots.png",
+        "sha256": "B6A2DAF80493BE09F2F20585CDAE82708E6DD38A285D0D2F9F8132E3FA4D7750"
+      },
+      {
+        "bindings": [
+          "machine:canonical_capture"
+        ],
+        "bytes": 2080,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "61D05EE9EFD7F9E91B70D6372352B52856C6A90A18697F119967D282A93F1960",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/browser-capture/browser/mobile/menu_voice.png",
+        "sha256": "61D05EE9EFD7F9E91B70D6372352B52856C6A90A18697F119967D282A93F1960"
+      },
+      {
+        "bindings": [
+          "machine:canonical_capture"
+        ],
+        "bytes": 1165,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "128026CE2FF6FE9B974687C565BAF02E83936830E028E7A770F4ED34B3C4CDEE",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/browser-capture/browser/mobile/recording_entry.png",
+        "sha256": "128026CE2FF6FE9B974687C565BAF02E83936830E028E7A770F4ED34B3C4CDEE"
+      },
+      {
+        "bindings": [
+          "machine:canonical_capture"
+        ],
+        "bytes": 1261,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/browser-capture/browser/mobile/recording_return_rest.png",
+        "sha256": "3269679155DE09F2FCEDFF3DC059DE4C9AC1E811400258B3B110F839646A0E31"
+      },
+      {
+        "bindings": [
+          "machine:canonical_capture"
+        ],
+        "bytes": 1449,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "F4064D99BE564F15F36F42A5C25C1D0A829FD94688433EA6600EC8C4BBC65D53",
+        "match": true,
+        "parser": "artifact",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/browser-capture/browser/mobile/single_tap_response.png",
+        "sha256": "F4064D99BE564F15F36F42A5C25C1D0A829FD94688433EA6600EC8C4BBC65D53"
+      },
+      {
+        "bindings": [
+          "machine:canonical_capture",
+          "owner_checkonly:identity",
+          "primary:capture"
+        ],
+        "bytes": 258544,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "1BEA10C8B988F72F48886012859F1D6C8801B15AFA18E89171235B7E33D2C815",
+        "match": true,
+        "parser": "json",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/browser-capture/capture-manifest.json",
+        "sha256": "1BEA10C8B988F72F48886012859F1D6C8801B15AFA18E89171235B7E33D2C815"
+      },
+      {
+        "bindings": [
+          "primary:expanded_oracle_result"
+        ],
+        "bytes": 6928,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "4846266B1AE7DE40489598B7FFB05711F52110898D1C5938EC6FD3EB662FB957",
+        "match": true,
+        "parser": "json",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/expanded-window-oracle-machine-result.json",
+        "sha256": "4846266B1AE7DE40489598B7FFB05711F52110898D1C5938EC6FD3EB662FB957"
+      },
+      {
+        "bindings": [
+          "owner_checkonly:identity",
+          "primary:machine"
+        ],
+        "bytes": 11360,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "6A7EDAC4A9624842B154B717C090441E745AC6F65F8E73BC235E8E3C16D11EBD",
+        "match": true,
+        "parser": "json",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/machine-result.json",
+        "sha256": "6A7EDAC4A9624842B154B717C090441E745AC6F65F8E73BC235E8E3C16D11EBD"
+      },
+      {
+        "bindings": [
+          "owner_checkonly:identity",
+          "primary:measured_diagnostic"
+        ],
+        "bytes": 194915,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "652C33E7BFB155974FD369DB069800E14595C26F5F1D7B6A7322ED30320CCA76",
+        "match": true,
+        "parser": "json",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/measured-diagnostic.json",
+        "sha256": "652C33E7BFB155974FD369DB069800E14595C26F5F1D7B6A7322ED30320CCA76"
+      },
+      {
+        "bindings": [
+          "primary:owner_checkonly"
+        ],
+        "bytes": 10396,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "21FCE148BBD11C68074F98EE10E8F1A75A0DD4D86FAC4F65EE7CB03CFFABDCC7",
+        "match": true,
+        "parser": "json",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/owner-review-checkonly.json",
+        "sha256": "21FCE148BBD11C68074F98EE10E8F1A75A0DD4D86FAC4F65EE7CB03CFFABDCC7"
+      },
+      {
+        "bindings": [
+          "owner_checkonly:identity",
+          "primary:pointer"
+        ],
+        "bytes": 322084,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "082344F03017DC54E0A385E5CFF8BB7F4031889A602476FFD2589B130CFFE09F",
+        "match": true,
+        "parser": "json",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/pointer-contract/touch-pointer-contract-result.json",
+        "sha256": "082344F03017DC54E0A385E5CFF8BB7F4031889A602476FFD2589B130CFFE09F"
+      },
+      {
+        "bindings": [
+          "primary:protected_owner_acceptance"
+        ],
+        "bytes": 55,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "8A3BDF4BD1254B0D0F4DE13A7F293C3D74587C800339ABD4C61FEB0B7737E227",
+        "match": true,
+        "parser": "raw_owner_note",
+        "path": "docs/validation/companion-pet-special-system-owner-acceptance-20260717.json",
+        "sha256": "8A3BDF4BD1254B0D0F4DE13A7F293C3D74587C800339ABD4C61FEB0B7737E227"
+      },
+      {
+        "bindings": [
+          "primary:owner_runner"
+        ],
+        "bytes": 32049,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "6739E7BDF6CEB8118CC8ED9E660D5FB193F110D36E5D84F3C152753D9A424C81",
+        "match": true,
+        "parser": "powershell",
+        "path": "tools/faraday_upper_art/run_companion_browser_owner_review_comp_req_471.ps1",
+        "sha256": "6739E7BDF6CEB8118CC8ED9E660D5FB193F110D36E5D84F3C152753D9A424C81"
+      },
+      {
+        "bindings": [
+          "primary:owner_supervisor"
+        ],
+        "bytes": 5844,
+        "exists": true,
+        "expected_hash_conflict": false,
+        "expected_sha256": "E7E599F906886030B95B47A17B0ADA88F8648A232F2A45D0C86C901AD9096F87",
+        "match": true,
+        "parser": "powershell",
+        "path": "tools/faraday_upper_art/supervise_companion_browser_owner_review_comp_req_471.ps1",
+        "sha256": "E7E599F906886030B95B47A17B0ADA88F8648A232F2A45D0C86C901AD9096F87"
+      }
+    ]
+  },
+  "checks": {
+    "c_pack.structure": true,
+    "capture.structure": true,
+    "file_hash.c_pack_handoff": true,
+    "file_hash.c_pack_header": true,
+    "file_hash.c_pack_manifest": true,
+    "file_hash.c_pack_result": true,
+    "file_hash.c_pack_source": true,
+    "file_hash.capture": true,
+    "file_hash.expanded_oracle": true,
+    "file_hash.expanded_oracle_result": true,
+    "file_hash.frames": true,
+    "file_hash.machine": true,
+    "file_hash.measured_diagnostic": true,
+    "file_hash.owner_checkonly": true,
+    "file_hash.owner_runner": true,
+    "file_hash.owner_supervisor": true,
+    "file_hash.page": true,
+    "file_hash.physical_boundary": true,
+    "file_hash.pointer": true,
+    "file_hash.protected_owner_acceptance": true,
+    "file_hash.state_transitions": true,
+    "file_hash.visual_contract": true,
+    "fixtures.canonical": true,
+    "frames.structure": true,
+    "machine.structure": true,
+    "oracle.structure": true,
+    "owner_review.checkonly": true,
+    "owner_review.result_absent": true,
+    "physical_boundary.structure": true,
+    "pointer.structure": true,
+    "protected_owner_acceptance.structure": true,
+    "rehash.all_bound_files": true,
+    "side_effects.zero": true
+  },
+  "computed": {
+    "c_asset_pack": {
+      "alias_valid": true,
+      "compile_return_codes": [
+        0,
+        0
+      ],
+      "default_off": true,
+      "deterministic_zero_diff": true,
+      "direct_error_count": 0,
+      "dynamic_allocation": false,
+      "handoff_default_off": true,
+      "manifest_payload_bytes": 65000,
+      "manifest_status": "PASS",
+      "payload_budget_bytes": 85000,
+      "payload_bytes": 65000,
+      "reconstructed_count": 17,
+      "result_all_checks_true": true,
+      "result_error_count": 0,
+      "result_status": "PASS",
+      "state_count": 17,
+      "state_ids_match": true,
+      "transition_count": 21,
+      "unique_frame_count": 13
+    },
+    "capture": {
+      "check_items_all_true": true,
+      "checks_passed": 54,
+      "checks_total": 54,
+      "dimensions": [
+        200,
+        200
+      ],
+      "errors": 0,
+      "gesture_constants": {
+        "double_tap_gap_ms": 350,
+        "double_tap_move_px": 32,
+        "drag_move_px": 44,
+        "menu_hold_ms": 700
+      },
+      "http_404": 0,
+      "overlap_count": 0,
+      "page_sha256": "BAE21BCCC7BB5FAD4A0922D5E9C42FCB25EF58DD7B8102A7C72656F7B700CF5E",
+      "real_hold_exact": true,
+      "rendered_frame_count": 34,
+      "returns_equal_rest": true,
+      "route_activation_exact": true,
+      "semantic_errors": 0,
+      "stale_count": 0,
+      "state_count": 17,
+      "state_records": 34,
+      "status": "PASS",
+      "url": "http://127.0.0.1:4173/docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html",
+      "viewport_count": 2
+    },
+    "expanded_window_oracle": {
+      "declared_pair_count": 59,
+      "deterministic_zero_diff": true,
+      "direct_error_count": 0,
+      "full_frame_pair_count": 10,
+      "ids_unique": true,
+      "machine_all_checks_true": true,
+      "machine_mutations": "5/5",
+      "machine_status": "PASS",
+      "machine_validation_errors": 0,
+      "menu_full_frame_pair_count": 10,
+      "nonmenu_full_frame_pair_count": 0,
+      "pair_count": 59,
+      "pixel_noop_pair_count": 10,
+      "side_effect_counters_zero": true,
+      "state_count": 17,
+      "status": "PASS",
+      "transition_mask_count": 21
+    },
+    "frames": {
+      "combined_bytes": 85000,
+      "combined_sha256": "D4DA2FCA6863C1B8F5DD28D70566712DCD91AB7383CA486735DFD253F7361E6D",
+      "direct_error_count": 0,
+      "frame_bytes": 5000,
+      "frame_count": 17,
+      "frame_records": 17,
+      "ids_unique": true,
+      "measured_overlap": 0,
+      "measured_stale": 0,
+      "page_sha256": "BAE21BCCC7BB5FAD4A0922D5E9C42FCB25EF58DD7B8102A7C72656F7B700CF5E",
+      "policy_clipping_violation": 0,
+      "return_pixels_equal": true,
+      "status": "PASS"
+    },
+    "machine": {
+      "all_checks_true": true,
+      "artifacts_match": true,
+      "boundary_counters_zero": true,
+      "clipping_policy_violation": 0,
+      "failed_count": 0,
+      "frames": 17,
+      "fresh_passed": 54,
+      "fresh_total": 54,
+      "http_404": 0,
+      "measured_parse_errors": 0,
+      "measured_status": "PASS",
+      "overlap": 0,
+      "page_sha256": "BAE21BCCC7BB5FAD4A0922D5E9C42FCB25EF58DD7B8102A7C72656F7B700CF5E",
+      "pointer_matrix_all_true": true,
+      "route_counts_exact": true,
+      "stale": 0,
+      "states": 17,
+      "status": "PASS",
+      "transitions": 21
+    },
+    "owner_review_checkonly": {
+      "canonical_aiw_invoked": false,
+      "checkonly_counters_zero": true,
+      "checkonly_early_return": true,
+      "default_off": true,
+      "execute_performed": false,
+      "identity_count": 14,
+      "identity_matches": true,
+      "mode": "CheckOnly",
+      "network_checked": false,
+      "owner_result_count": 0,
+      "owner_result_written": false,
+      "prompt_contract_exact": true,
+      "runner_cleanup_exact_pid_bounded": true,
+      "server_checked": false,
+      "status": "PASS_READY_FOR_OWNER_BROWSER_REVIEW_CHECKONLY_NO_EXECUTE",
+      "supervisor_default_off": true,
+      "url": "http://127.0.0.1:4173/docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html",
+      "url_string_only": true
+    },
+    "physical_consumer_boundary": {
+      "browser_guards": {
+        "double_tap_gap_ms": 350,
+        "double_tap_move_px": 32,
+        "drag_move_px": 44,
+        "hold_menu_ms": 700
+      },
+      "default_off": true,
+      "guards_separated": true,
+      "integration_authorized": false,
+      "physical_guards": {
+        "double_tap_gap_ms": 650,
+        "double_tap_move_px_max": 40,
+        "hold_feedback_ms": 650,
+        "menu_entry_ms": 3000
+      },
+      "shared_pixels_match": true,
+      "status": "PASS_BOUNDARY_ONLY_NOT_INTEGRATED"
+    },
+    "pointer": {
+      "layout_exact": true,
+      "negative_all_true": true,
+      "page_sha256": "BAE21BCCC7BB5FAD4A0922D5E9C42FCB25EF58DD7B8102A7C72656F7B700CF5E",
+      "scenario_error_count": 0,
+      "scenario_keys_exact": true,
+      "status": "PASS",
+      "top_error_count": 0,
+      "url": "http://127.0.0.1:4173/docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html"
+    },
+    "protected_owner_acceptance": {
+      "contains_truncation_term": true,
+      "declared_extension": ".json",
+      "json_parseable": false,
+      "observed_content_type": "raw_owner_note_utf8_text",
+      "parsed_as_registry_raw_owner_note": true,
+      "utf8_bytes": 55,
+      "utf8_line_count": 1
+    }
+  },
+  "default_off": true,
+  "external_mutation_fixtures": {
+    "all_fail_closed": true,
+    "bound_files_mutated": false,
+    "items": [
+      {
+        "binding_class": "browser_page",
+        "bound_files_mutated": false,
+        "expected_check": "file_hash.page",
+        "fail_closed": true,
+        "id": "page_hash_drift",
+        "observed_failed_checks": [
+          "file_hash.page"
+        ],
+        "target": "files.page.sha256"
+      },
+      {
+        "binding_class": "machine_result",
+        "bound_files_mutated": false,
+        "expected_check": "machine.structure",
+        "fail_closed": true,
+        "id": "machine_frame_count_drift",
+        "observed_failed_checks": [
+          "machine.structure"
+        ],
+        "target": "machine.frames"
+      },
+      {
+        "binding_class": "capture",
+        "bound_files_mutated": false,
+        "expected_check": "capture.structure",
+        "fail_closed": true,
+        "id": "capture_stale_layer",
+        "observed_failed_checks": [
+          "capture.structure"
+        ],
+        "target": "capture.stale_count"
+      },
+      {
+        "binding_class": "pointer",
+        "bound_files_mutated": false,
+        "expected_check": "pointer.structure",
+        "fail_closed": true,
+        "id": "pointer_negative_false",
+        "observed_failed_checks": [
+          "pointer.structure"
+        ],
+        "target": "pointer.negative_all_true"
+      },
+      {
+        "binding_class": "per_file_rehash",
+        "bound_files_mutated": false,
+        "expected_check": "rehash.all_bound_files",
+        "fail_closed": true,
+        "id": "bound_child_hash_drift",
+        "observed_failed_checks": [
+          "rehash.all_bound_files"
+        ],
+        "target": "rehash.mismatch_count"
+      },
+      {
+        "binding_class": "17_state_frames",
+        "bound_files_mutated": false,
+        "expected_check": "frames.structure",
+        "fail_closed": true,
+        "id": "frame_count_drift",
+        "observed_failed_checks": [
+          "frames.structure"
+        ],
+        "target": "frames.frame_count"
+      },
+      {
+        "binding_class": "c_asset_pack",
+        "bound_files_mutated": false,
+        "expected_check": "c_pack.structure",
+        "fail_closed": true,
+        "id": "pack_unique_count_drift",
+        "observed_failed_checks": [
+          "c_pack.structure"
+        ],
+        "target": "c_pack.unique_frame_count"
+      },
+      {
+        "binding_class": "c_asset_pack",
+        "bound_files_mutated": false,
+        "expected_check": "c_pack.structure",
+        "fail_closed": true,
+        "id": "pack_payload_capacity_drift",
+        "observed_failed_checks": [
+          "c_pack.structure"
+        ],
+        "target": "c_pack.payload_bytes"
+      },
+      {
+        "binding_class": "expanded_window_oracle",
+        "bound_files_mutated": false,
+        "expected_check": "oracle.structure",
+        "fail_closed": true,
+        "id": "oracle_pair_count_drift",
+        "observed_failed_checks": [
+          "oracle.structure"
+        ],
+        "target": "oracle.pair_count"
+      },
+      {
+        "binding_class": "expanded_window_oracle",
+        "bound_files_mutated": false,
+        "expected_check": "oracle.structure",
+        "fail_closed": true,
+        "id": "oracle_noop_count_drift",
+        "observed_failed_checks": [
+          "oracle.structure"
+        ],
+        "target": "oracle.pixel_noop_pair_count"
+      },
+      {
+        "binding_class": "expanded_window_oracle",
+        "bound_files_mutated": false,
+        "expected_check": "oracle.structure",
+        "fail_closed": true,
+        "id": "oracle_menu_full_count_drift",
+        "observed_failed_checks": [
+          "oracle.structure"
+        ],
+        "target": "oracle.menu_full_frame_pair_count"
+      },
+      {
+        "binding_class": "expanded_window_oracle",
+        "bound_files_mutated": false,
+        "expected_check": "oracle.structure",
+        "fail_closed": true,
+        "id": "oracle_nonmenu_full_frame",
+        "observed_failed_checks": [
+          "oracle.structure"
+        ],
+        "target": "oracle.nonmenu_full_frame_pair_count"
+      },
+      {
+        "binding_class": "physical_consumer_boundary",
+        "bound_files_mutated": false,
+        "expected_check": "physical_boundary.structure",
+        "fail_closed": true,
+        "id": "physical_guard_collapse",
+        "observed_failed_checks": [
+          "physical_boundary.structure"
+        ],
+        "target": "physical_boundary.guards_separated"
+      },
+      {
+        "binding_class": "owner_review_runner",
+        "bound_files_mutated": false,
+        "expected_check": "file_hash.owner_runner",
+        "fail_closed": true,
+        "id": "owner_runner_hash_drift",
+        "observed_failed_checks": [
+          "file_hash.owner_runner"
+        ],
+        "target": "files.owner_runner.sha256"
+      },
+      {
+        "binding_class": "owner_review_supervisor",
+        "bound_files_mutated": false,
+        "expected_check": "file_hash.owner_supervisor",
+        "fail_closed": true,
+        "id": "owner_supervisor_hash_drift",
+        "observed_failed_checks": [
+          "file_hash.owner_supervisor"
+        ],
+        "target": "files.owner_supervisor.sha256"
+      },
+      {
+        "binding_class": "owner_review_checkonly",
+        "bound_files_mutated": false,
+        "expected_check": "file_hash.owner_checkonly",
+        "fail_closed": true,
+        "id": "owner_checkonly_hash_drift",
+        "observed_failed_checks": [
+          "file_hash.owner_checkonly"
+        ],
+        "target": "files.owner_checkonly.sha256"
+      },
+      {
+        "binding_class": "owner_review_checkonly",
+        "bound_files_mutated": false,
+        "expected_check": "owner_review.checkonly",
+        "fail_closed": true,
+        "id": "owner_checkonly_duplicate_button",
+        "observed_failed_checks": [
+          "owner_review.checkonly"
+        ],
+        "target": "owner_review.prompt_contract_exact"
+      },
+      {
+        "binding_class": "protected_owner_acceptance",
+        "bound_files_mutated": false,
+        "expected_check": "file_hash.protected_owner_acceptance",
+        "fail_closed": true,
+        "id": "protected_owner_acceptance_hash_drift",
+        "observed_failed_checks": [
+          "file_hash.protected_owner_acceptance"
+        ],
+        "target": "files.protected_owner_acceptance.sha256"
+      },
+      {
+        "binding_class": "owner_result_absence",
+        "bound_files_mutated": false,
+        "expected_check": "owner_review.result_absent",
+        "fail_closed": true,
+        "id": "owner_result_exists",
+        "observed_failed_checks": [
+          "owner_review.result_absent"
+        ],
+        "target": "owner_review.owner_result_count"
+      },
+      {
+        "binding_class": "side_effect_counters",
+        "bound_files_mutated": false,
+        "expected_check": "side_effects.zero",
+        "fail_closed": true,
+        "id": "execute_counter_nonzero",
+        "observed_failed_checks": [
+          "side_effects.zero"
+        ],
+        "target": "side_effects.execute"
+      },
+      {
+        "binding_class": "side_effect_counters",
+        "bound_files_mutated": false,
+        "expected_check": "side_effects.zero",
+        "fail_closed": true,
+        "id": "prompt_counter_nonzero",
+        "observed_failed_checks": [
+          "side_effects.zero"
+        ],
+        "target": "side_effects.prompt"
+      },
+      {
+        "binding_class": "side_effect_counters",
+        "bound_files_mutated": false,
+        "expected_check": "side_effects.zero",
+        "fail_closed": true,
+        "id": "server_counter_nonzero",
+        "observed_failed_checks": [
+          "side_effects.zero"
+        ],
+        "target": "side_effects.server"
+      },
+      {
+        "binding_class": "side_effect_counters",
+        "bound_files_mutated": false,
+        "expected_check": "side_effects.zero",
+        "fail_closed": true,
+        "id": "hardware_counter_nonzero",
+        "observed_failed_checks": [
+          "side_effects.zero"
+        ],
+        "target": "side_effects.hardware"
+      }
+    ],
+    "path": "docs/validation/companion-browser-visual-contract-comp-req-471/upper-machine-ready-negative-fixtures.json",
+    "result": "23/23",
+    "sha256": "0B4242006DB4FD6F28D0224D44CC1235A088972E9D6AEAE27C06C78B2962F9F0"
+  },
+  "failed": [],
+  "integration_authorized": false,
+  "owner_boundary": {
+    "execute_authorized": false,
+    "operator_prompt_invoked": false,
+    "owner_result_exists": false,
+    "server_or_browser_started": false
+  },
+  "remaining_gates": [
+    "COMP-REQ-471 browser owner review has not been executed; owner-review.json must remain absent until an explicit owner start.",
+    "COMP-REQ-472 physical consumer integration and physical timing validation remain outside this upper-only artifact.",
+    "No production, lower-driver, Platform, firmware build wiring, hardware, popup, Execute, or push authorization is granted."
+  ],
+  "requirement": "COMP-REQ-467/471/472",
+  "schema": "companion.upper-machine-ready.v1",
+  "scope": "offline_upper_art_browser_export_only",
+  "side_effect_counters": {
+    "browser": 0,
+    "evidence_artifact_write": 2,
+    "evidence_artifact_write_excluded_from_product_write": true,
+    "execute": 0,
+    "hardware": 0,
+    "owner_result": 0,
+    "process": 0,
+    "product_write": 0,
+    "production": 0,
+    "prompt": 0,
+    "server": 0
+  },
+  "status": "UPPER_MACHINE_READY",
+  "verifier": {
+    "mode": "offline_fail_closed",
+    "path": "tools/faraday_upper_art/verify_companion_upper_machine_ready.py",
+    "sha256": "91AB4D0464D1EFADDA943DB06AB32148F4E0C2570B66439FFBDA66AD36E1EAB5"
+  }
+}

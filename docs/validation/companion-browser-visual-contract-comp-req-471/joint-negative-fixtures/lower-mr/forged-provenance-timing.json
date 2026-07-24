@@ -1,0 +1,129 @@
+{
+  "artifacts": {
+    "bounded_elf": {
+      "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime/Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntime.elf",
+      "sha256": "2CA84636BC1FF86B84E690E51C39AF37E0FE4F1EE9FB8329EA2BA63C4DBE0E4B"
+    },
+    "bounded_hex": {
+      "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime/Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntime.hex",
+      "sha256": "2CF7B8FF9FA73F253BA0261BA9A02BF3D7DC087EC056B7AD53E5A9DAC0966DC4"
+    },
+    "bounded_log": {
+      "path": ".cache/validation/comp-req-486/bounded-2.log",
+      "sha256": "38F7178A0FF22DE6BBD850854F3BD71001E8B0DE33E5A1749632B8BD5FA349FA"
+    },
+    "live_elf": {
+      "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime_continuous/Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntimeContinuous.elf",
+      "sha256": "671DC0F8872BA8BD14D9404ABE8E39E8405E37C7350E2DE906AA2A359C753B03"
+    },
+    "live_hex": {
+      "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime_continuous/Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntimeContinuous.hex",
+      "sha256": "8B30A258719D06B63437C14B95BA5A216E7BC94BF80B5A6378E70983CCDEB726"
+    },
+    "live_log": {
+      "path": ".cache/validation/comp-req-486/live-2.log",
+      "sha256": "508607B3F8065ED37D7BA65FCF534872BC3DD600D6B6FB3449960405E9291FB5"
+    },
+    "original_verifier_log": {
+      "path": ".cache/validation/comp-req-486/verifier.log",
+      "sha256": "0EBCEBFDA4F26C56C2CAF1B70646A8DA5790D4774542BA192B2D2C53F6FF6B03"
+    },
+    "runner": {
+      "path": "tools/run_wb55_ssd1681_r7_locked_v9.ps1",
+      "sha256": "959727E4556FD314083174E6D8B1D8E8E4F335A12EBF254CA3D05EABB8A5711E"
+    },
+    "supervisor": {
+      "path": "tools/supervise_wb55_ssd1681_r7_locked_v9.ps1",
+      "sha256": "AB75942496AFDBDE20D810066A752C7D66CAFC658625BA21603543D9E0893F44"
+    }
+  },
+  "bounds": {
+    "busy_max_ms": 600,
+    "cadence": "1..480",
+    "physical_timing": "unproven",
+    "retry": 0,
+    "transaction_max_ms": 481
+  },
+  "builds": {
+    "bounded": {
+      "fresh": true,
+      "log": {
+        "path": ".cache/validation/comp-req-486/bounded-2.log",
+        "sha256": "38F7178A0FF22DE6BBD850854F3BD71001E8B0DE33E5A1749632B8BD5FA349FA"
+      },
+      "optimization": "O2",
+      "runs": 2
+    },
+    "live": {
+      "fresh": true,
+      "log": {
+        "path": ".cache/validation/comp-req-486/live-2.log",
+        "sha256": "508607B3F8065ED37D7BA65FCF534872BC3DD600D6B6FB3449960405E9291FB5"
+      },
+      "optimization": "O2",
+      "runs": 2
+    }
+  },
+  "checkonly": {
+    "hardware_contact": 0,
+    "popup": 0,
+    "programmer": 0,
+    "refresh": 0,
+    "reset": 0,
+    "retry": 0,
+    "serial": 0,
+    "write": 0
+  },
+  "modes": {
+    "bounded": 0,
+    "live": 1
+  },
+  "negative_fixtures": {
+    "busy_601": true,
+    "cadence_0": true,
+    "cadence_481": true,
+    "forged_physical_timing": true,
+    "hardware_contact_1": true,
+    "missing_artifact": true,
+    "retry_1": true,
+    "superseded_sha": true,
+    "transaction_481": true
+  },
+  "protected": {
+    "driver_blob": "f856d7ce0b8915e5059620c3faa97aa06b06eb4e",
+    "driver_physical": "F52A7E853BFE2E66680F08420941265CFF163FB579B2D3870128FC72C79E035F",
+    "header_blob": "2220da0c1113a5cdad7028aeae578d9fe26e936f",
+    "header_physical": "9571CF9F896B6C14451BAA7348CB717643B4963AE834B0A554E0C2ED2C7E8D35"
+  },
+  "requirement_id": "COMP-REQ-488",
+  "side_effects": {
+    "hardware_contact": 0,
+    "popup": 0,
+    "programmer": 0,
+    "refresh": 0,
+    "reset": 0,
+    "retry": 0,
+    "serial": 0,
+    "write": 0
+  },
+  "source_commit": "4ddf9709034d307b333510c27e3e0a45c7ed6d15",
+  "status": "MACHINE_READY",
+  "superseded": {
+    "sha256": "1C45046173BA3985F57CD5B51687906107E28BCF1DCF79E08C8D3C12E94F50AF",
+    "status": "stale"
+  },
+  "tamper_negatives": {
+    "busy_601": true,
+    "cadence_0": true,
+    "cadence_481": true,
+    "driver_physical": true,
+    "forged_physical_timing": true,
+    "hardware_contact_1": true,
+    "header_blob": true,
+    "missing_hex": true,
+    "retry_1": true,
+    "superseded_sha": true,
+    "transaction_481": true,
+    "wrong_artifact_path": true
+  }
+}

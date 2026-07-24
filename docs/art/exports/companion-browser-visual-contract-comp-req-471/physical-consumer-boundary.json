@@ -1,0 +1,81 @@
+{
+  "schema": "companion.physical-consumer-boundary.v1",
+  "requirement": "COMP-REQ-471/472",
+  "status": "PASS_BOUNDARY_ONLY_NOT_INTEGRATED",
+  "default_off": true,
+  "integration_authorized": false,
+  "shared_contract": {
+    "state_count": 17,
+    "state_ids": [
+      "centered_rest",
+      "gaze_left",
+      "gaze_up",
+      "gaze_right",
+      "gaze_down",
+      "gaze_center",
+      "single_tap_response",
+      "hold_feedback_50",
+      "menu_roots",
+      "menu_voice",
+      "menu_device",
+      "menu_connection",
+      "menu_preferences",
+      "menu_device_ui_assets",
+      "menu_return_rest",
+      "recording_entry",
+      "recording_return_rest"
+    ],
+    "pixels": {
+      "frames_bin_sha256": "D4DA2FCA6863C1B8F5DD28D70566712DCD91AB7383CA486735DFD253F7361E6D",
+      "visual_contract_sha256": "E5C6B30D8BF317FC8321D82E087D3B46552B4523FD8B67FFF3E6ABA89AAE4260",
+      "expanded_window_oracle_sha256": "20C270A332F7AD75FAED3C44C9AE3C1D789F7902ABA525C07B0B40F4266C5B2E",
+      "width": 200,
+      "height": 200,
+      "stride_bytes": 25,
+      "frame_bytes": 5000
+    },
+    "only_shared_surface": "17 semantic state identities and their exact 200x200 1bpp pixels"
+  },
+  "browser_only_not_for_physical_firmware": {
+    "double_tap_gap_ms": 350,
+    "double_tap_move_px": 32,
+    "hold_menu_ms": 700,
+    "drag_move_px": 44,
+    "source": "state-transitions.json accepted_gesture_constants and guards",
+    "must_not_be_copied_to_physical_adapter": true
+  },
+  "physical_comp_req_472_mapping": {
+    "double_tap_gap_ms": 650,
+    "double_tap_move_px_max": 40,
+    "hold_feedback_ms": 650,
+    "menu_entry_ms": 3000,
+    "drag_cancel_consumed_until_release": "preserve existing COMP-REQ-472 semantics",
+    "semantic_state_mapping": {
+      "directional_gaze": [
+        "gaze_left",
+        "gaze_up",
+        "gaze_right",
+        "gaze_down",
+        "gaze_center"
+      ],
+      "single_tap": "single_tap_response",
+      "hold_feedback": "hold_feedback_50",
+      "stationary_hold_complete": "menu_roots",
+      "double_tap": "recording_entry",
+      "recording_return": "recording_return_rest",
+      "menu_return": "menu_return_rest"
+    }
+  },
+  "consumer_rules": [
+    "derive the exact byte-aligned X and exact-row Y window from complete previous/current 5000-byte frames",
+    "write only the oracle current slice for gaze, tap, and recording transitions",
+    "allow a 5000-byte window only for a menu-related pair whose exact oracle window is full frame",
+    "retain state identity for pixel no-op pairs; shared pixels do not erase semantic transitions",
+    "do not use browser transition guards as physical gesture thresholds"
+  ],
+  "non_goals": [
+    "no C asset pack modification",
+    "no lower-driver or firmware integration",
+    "no Platform, vendor, production, hardware, prompt, or acceptance change"
+  ]
+}

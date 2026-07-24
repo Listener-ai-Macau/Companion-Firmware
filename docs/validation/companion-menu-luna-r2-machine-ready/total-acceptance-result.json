@@ -1,0 +1,33 @@
+{
+  "status": "PASS",
+  "overall": "http://127.0.0.1:4173/docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html",
+  "menu": "http://127.0.0.1:4173/docs/validation/companion-menu-luna-r2-machine-ready/index.html",
+  "screenshots": [
+    "total-home-desktop.png",
+    "total-expression-desktop.png",
+    "total-menu-expression-desktop.png",
+    "total-home-mobile.png",
+    "total-menu-mobile.png"
+  ],
+  "checks": {
+    "home": true,
+    "home_entries": true,
+    "home_hides_expression": true,
+    "expression_entry": true,
+    "expression_return": true,
+    "menu_entry": true,
+    "four_roots": true,
+    "root_voice": true,
+    "root_connection": true,
+    "root_preferences": true,
+    "device_ui_assets": true,
+    "expression_calm": true,
+    "expression_curious": true,
+    "expression_warm": true,
+    "menu_back": true,
+    "menu_return_home": true,
+    "mobile_menu_visible": true,
+    "no_404": true
+  },
+  "failures": []
+}

@@ -1,0 +1,42 @@
+{
+  "schema_id": "companion.wb55.ssd1681_phase_parallel_r9_continuous_trace.v1",
+  "status": "PASS_MACHINE_R9_CONTINUOUS_TRACE",
+  "errors": [],
+  "hardware_contact": 1,
+  "qualification": {
+    "historical_r9_result_changed": false,
+    "activations": 16,
+    "elapsed_ms": 9633,
+    "busy_max_ms": 599,
+    "passed_before_loop": true
+  },
+  "loop": {
+    "preset_iteration_limit": null,
+    "records_in_ring": 1,
+    "first_iteration": 1,
+    "last_iteration": 1,
+    "busy_max_ms": 597,
+    "fixed_bank": {
+      "old_command": "0x26",
+      "old_selector": 1,
+      "new_command": "0x24",
+      "new_selector": 0
+    },
+    "control": "0xCF",
+    "refresh": "0x20",
+    "post_sync": "0x24"
+  },
+  "candidate": {
+    "lut_sha256": "9BCBAC1A07ED0A112D26409FBCDB8F5FE27CE07D922C2E18881C10A53229DDCD",
+    "workbench_sha256": "E7311523D6FE571434F0C1F2D5EC76B7ED9B64DC725B0726DDEC023421D7E4EF"
+  },
+  "forbidden": {
+    "full_frame": 0,
+    "0xF7": 0,
+    "0xC7": 0,
+    "0xFF": 0,
+    "retry": 0,
+    "motion_120_frame": 0
+  },
+  "production_allowed": false
+}

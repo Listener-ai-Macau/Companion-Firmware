@@ -1,0 +1,42 @@
+{
+  "schema_id": "companion.wb55.ssd1681_phase_parallel_r9.persistent_launch.v1",
+  "status": "STARTED_DETACHED",
+  "generated_at": "2026-07-21T12:36:14.9727903Z",
+  "mode": "execute",
+  "process_id": 9428,
+  "parent_process_id": 24220,
+  "runner": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\tools\\run_wb55_ssd1681_custom_mode2_observable_r6_raw_restore.ps1",
+  "arguments": [
+    "-NoProfile",
+    "-File",
+    "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\tools\\run_wb55_ssd1681_custom_mode2_observable_r6_raw_restore.ps1",
+    "-Execute",
+    "-PhaseParallelR9",
+    "-OutRoot",
+    "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-phase-parallel-r9-persistent-execute-20260721-r1",
+    "-HumanPromptTimeoutSeconds",
+    "900",
+    "-ProgrammerRoot",
+    "C:\\ST\\STM32CubeIDE_2.1.1\\STM32CubeIDE\\plugins"
+  ],
+  "out_root": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-phase-parallel-r9-persistent-execute-20260721-r1",
+  "stage_run": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-phase-parallel-r9-persistent-execute-20260721-r1\\stage-run.json",
+  "stdout": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-phase-parallel-r9-persistent-execute-20260721-r1\\runner.stdout.log",
+  "stderr": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-phase-parallel-r9-persistent-execute-20260721-r1\\runner.stderr.log",
+  "durable_stdout_redirected": true,
+  "durable_stderr_redirected": true,
+  "hidden_child": true,
+  "persistent_child": true,
+  "output_directory_reuse_forbidden": true,
+  "observer_may_exit_without_closing_runner_streams": true,
+  "locked_hashes": {
+    "runner": "0B0A536E7B03DD5F2A4F9CF7B2B76A1B0DB3F34745172E352CB0B4726011B34B",
+    "candidate_hex": "724DA17F385756BA779739E73DA47131F563E0C071A2EB173F5F77871F3CADDF",
+    "workbench": "E7311523D6FE571434F0C1F2D5EC76B7ED9B64DC725B0726DDEC023421D7E4EF",
+    "final_visual_prompt": "56794D5856248E1D868DEF23DC9CE983F7069CF4C15A59308F2F011BC9164E15"
+  },
+  "hardware_contact": null,
+  "write_counter_sum": null,
+  "lifecycle_self_test_failure": false,
+  "authorization_boundary": "COMP-REQ-309 authorizes CheckOnly and MACHINE_READY only; Execute requires a later explicit root contract"
+}

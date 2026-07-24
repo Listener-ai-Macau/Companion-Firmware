@@ -1,0 +1,1682 @@
+{
+  "adapter_observations": {
+    "build_window_returns_false_for_pixel_noop": true,
+    "continuous_pointer_event_exposed": false,
+    "direct_touch_mapping": {
+      "hold_complete": true,
+      "second_short_tap": true,
+      "single_tap_commit": true,
+      "stationary_pointerdown": true
+    },
+    "exported_functions": [
+      "companion_visual_runtime_init",
+      "companion_visual_runtime_enqueue",
+      "companion_visual_runtime_pop",
+      "companion_visual_runtime_build_window",
+      "companion_visual_runtime_emit_window",
+      "companion_visual_runtime_map_touch"
+    ],
+    "gaze_queue_coalesces_latest": true,
+    "isolated_fixture_accepts_noop_without_transport": true,
+    "isolated_fixture_expands_59_pairs": true,
+    "main_frame_link_call_count": 1,
+    "main_processing_call_count": 0,
+    "main_processing_call_counts": {
+      "companion_visual_runtime_build_window": 0,
+      "companion_visual_runtime_emit_window": 0,
+      "companion_visual_runtime_enqueue": 0,
+      "companion_visual_runtime_map_touch": 0,
+      "companion_visual_runtime_pop": 0
+    },
+    "main_runtime_init_call_count": 1,
+    "main_transport_link_reference_count": 1,
+    "map_touch_none_to_rest": true,
+    "runtime_current_state_write_count": 0,
+    "source_locations": {
+      "fixture_noop_acceptance": {
+        "line": 221,
+        "path": "tools/comp_req_472_visual_runtime_fixture.c"
+      },
+      "gaze_coalesce": {
+        "line": 43,
+        "path": "app/companion_pendant/epaper/companion_visual_runtime_adapter.c"
+      },
+      "main_link_only": {
+        "line": 1663,
+        "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/main.c"
+      },
+      "map_touch": {
+        "line": 149,
+        "path": "app/companion_pendant/epaper/companion_visual_runtime_adapter.c"
+      },
+      "noop_false": {
+        "line": 106,
+        "path": "app/companion_pendant/epaper/companion_visual_runtime_adapter.c"
+      }
+    },
+    "swipe_cases_present": true,
+    "swipe_uses_caller_supplied_gaze_state": true,
+    "touch_gesture_none_is_not_emitted": true
+  },
+  "audit_errors": [],
+  "checks": {
+    "adapter_api_parsed": true,
+    "all_states_events_pairs_enumerated": true,
+    "fail_closed_status_rule_applied": true,
+    "fixture_claims_59_10_49_parsed": true,
+    "lower_commit_exact": true,
+    "lower_pack_source_matches_upper": true,
+    "lower_sources_all_read_from_commit": true,
+    "main_call_path_measured": true,
+    "no_op_semantic_gap_measured": true,
+    "oracle_identity_59_pairs_10_noops": true,
+    "physical_boundary_exact_and_separate": true,
+    "state_identity_17_of_17": true,
+    "transition_identity_21_of_21": true,
+    "upper_hashes_exact": true,
+    "upper_machine_ready_still_pass": true
+  },
+  "compatibility_blockers": [
+    "21/21 accepted events lack a realizable application lower path",
+    "main.c never calls map_touch/enqueue/pop/build_window/emit_window",
+    "10/10 pixel-noop pairs have no semantic current_state commit",
+    "9 accepted events have no adapter semantic mapping",
+    "8 accepted events have ambiguous adapter mapping"
+  ],
+  "event_compatibility": [
+    {
+      "adapter_evidence": "all swipe cases share caller-provided gaze_state; direction is not bound to one accepted gaze identity",
+      "adapter_mapping_status": "ambiguous",
+      "application_call_path": "missing",
+      "effect": "replace_current_gaze",
+      "event": "pointer_drag_left",
+      "from_states": [
+        "centered_rest"
+      ],
+      "index": 0,
+      "pair_count": 1,
+      "pixel_noop_pair_count": 0,
+      "realizable_lower_path": false,
+      "to_states": [
+        "gaze_left"
+      ]
+    },
+    {
+      "adapter_evidence": "all swipe cases share caller-provided gaze_state; direction is not bound to one accepted gaze identity",
+      "adapter_mapping_status": "ambiguous",
+      "application_call_path": "missing",
+      "effect": "replace_current_gaze",
+      "event": "pointer_drag_up",
+      "from_states": [
+        "centered_rest"
+      ],
+      "index": 1,
+      "pair_count": 1,
+      "pixel_noop_pair_count": 0,
+      "realizable_lower_path": false,
+      "to_states": [
+        "gaze_up"
+      ]
+    },
+    {
+      "adapter_evidence": "all swipe cases share caller-provided gaze_state; direction is not bound to one accepted gaze identity",
+      "adapter_mapping_status": "ambiguous",
+      "application_call_path": "missing",
+      "effect": "replace_current_gaze",
+      "event": "pointer_drag_right",
+      "from_states": [
+        "centered_rest"
+      ],
+      "index": 2,
+      "pair_count": 1,
+      "pixel_noop_pair_count": 0,
+      "realizable_lower_path": false,
+      "to_states": [
+        "gaze_right"
+      ]
+    },
+    {
+      "adapter_evidence": "all swipe cases share caller-provided gaze_state; direction is not bound to one accepted gaze identity",
+      "adapter_mapping_status": "ambiguous",
+      "application_call_path": "missing",
+      "effect": "replace_current_gaze",
+      "event": "pointer_drag_down",
+      "from_states": [
+        "centered_rest"
+      ],
+      "index": 3,
+      "pair_count": 1,
+      "pixel_noop_pair_count": 0,
+      "realizable_lower_path": false,
+      "to_states": [
+        "gaze_down"
+      ]
+    },
+    {
+      "adapter_evidence": "no event-specific map_touch case or exported semantic function",
+      "adapter_mapping_status": "missing",
+      "application_call_path": "missing",
+      "effect": "replace_current_gaze",
+      "event": "pointer_drag_center",
+      "from_states": [
+        "centered_rest"
+      ],
+      "index": 4,
+      "pair_count": 1,
+      "pixel_noop_pair_count": 1,
+      "realizable_lower_path": false,
+      "to_states": [
+        "gaze_center"
+      ]
+    },
+    {
+      "adapter_evidence": "GAZE queue entries coalesce, but no continuous coordinate/move event is exposed by touch_gesture or map_touch",
+      "adapter_mapping_status": "ambiguous",
+      "application_call_path": "missing",
+      "effect": "replace_current_gaze",
+      "event": "pointer_move",
+      "from_states": [
+        "gaze_left",
+        "gaze_up",
+        "gaze_right",
+        "gaze_down",
+        "gaze_center"
+      ],
+      "index": 5,
+      "pair_count": 25,
+      "pixel_noop_pair_count": 5,
+      "realizable_lower_path": false,
+      "to_states": [
+        "gaze_left",
+        "gaze_up",
+        "gaze_right",
+        "gaze_down",
+        "gaze_center"
+      ]
+    },
+    {
+      "adapter_evidence": "map_touch(NONE) selects centered_rest, but NONE is not emitted as a gesture and no cancel/settle API exists",
+      "adapter_mapping_status": "ambiguous",
+      "application_call_path": "missing",
+      "effect": "center_then_resume_story",
+      "event": "pointer_up_or_cancel",
+      "from_states": [
+        "gaze_left",
+        "gaze_up",
+        "gaze_right",
+        "gaze_down",
+        "gaze_center"
+      ],
+      "index": 6,
+      "pair_count": 5,
+      "pixel_noop_pair_count": 1,
+      "realizable_lower_path": false,
+      "to_states": [
+        "centered_rest"
+      ]
+    },
+    {
+      "adapter_evidence": "direct map_touch gesture case selects target state",
+      "adapter_mapping_status": "mapped",
+      "application_call_path": "missing",
+      "effect": "one_deterministic_touch_tap_response",
+      "event": "single_tap_commit",
+      "from_states": [
+        "centered_rest"
+      ],
+      "index": 7,
+      "pair_count": 1,
+      "pixel_noop_pair_count": 0,
+      "realizable_lower_path": false,
+      "to_states": [
+        "single_tap_response"
+      ]
+    },
+    {
+      "adapter_evidence": "direct map_touch gesture case selects target state",
+      "adapter_mapping_status": "mapped",
+      "application_call_path": "missing",
+      "effect": "show_accepted_hold_ornament",
+      "event": "stationary_pointerdown",
+      "from_states": [
+        "centered_rest"
+      ],
+      "index": 8,
+      "pair_count": 1,
+      "pixel_noop_pair_count": 0,
+      "realizable_lower_path": false,
+      "to_states": [
+        "hold_feedback_50"
+      ]
+    },
+    {
+      "adapter_evidence": "direct map_touch gesture case selects target state",
+      "adapter_mapping_status": "mapped",
+      "application_call_path": "missing",
+      "effect": "activate_menu_once",
+      "event": "hold_complete",
+      "from_states": [
+        "hold_feedback_50"
+      ],
+      "index": 9,
+      "pair_count": 1,
+      "pixel_noop_pair_count": 0,
+      "realizable_lower_path": false,
+      "to_states": [
+        "menu_roots"
+      ]
+    },
+    {
+      "adapter_evidence": "map_touch(NONE) selects centered_rest, but NONE is not emitted as a gesture and no cancel/settle API exists",
+      "adapter_mapping_status": "ambiguous",
+      "application_call_path": "missing",
+      "effect": "clear_hold_feedback",
+      "event": "early_up_cancel_blur_or_drag",
+      "from_states": [
+        "hold_feedback_50"
+      ],
+      "index": 10,
+      "pair_count": 1,
+      "pixel_noop_pair_count": 0,
+      "realizable_lower_path": false,
+      "to_states": [
+        "centered_rest"
+      ]
+    },
+    {
+      "adapter_evidence": "direct map_touch gesture case selects target state",
+      "adapter_mapping_status": "mapped",
+      "application_call_path": "missing",
+      "effect": "activate_recording_once",
+      "event": "second_short_tap",
+      "from_states": [
+        "centered_rest"
+      ],
+      "index": 11,
+      "pair_count": 1,
+      "pixel_noop_pair_count": 0,
+      "realizable_lower_path": false,
+      "to_states": [
+        "recording_entry"
+      ]
+    },
+    {
+      "adapter_evidence": "no event-specific map_touch case or exported semantic function",
+      "adapter_mapping_status": "missing",
+      "application_call_path": "missing",
+      "effect": "clear_transients_and_center",
+      "event": "recording_return",
+      "from_states": [
+        "recording_entry"
+      ],
+      "index": 12,
+      "pair_count": 1,
+      "pixel_noop_pair_count": 0,
+      "realizable_lower_path": false,
+      "to_states": [
+        "recording_return_rest"
+      ]
+    },
+    {
+      "adapter_evidence": "no event-specific map_touch case or exported semantic function",
+      "adapter_mapping_status": "missing",
+      "application_call_path": "missing",
+      "effect": "replace_exclusive_menu_surface",
+      "event": "select_voice",
+      "from_states": [
+        "menu_roots"
+      ],
+      "index": 13,
+      "pair_count": 1,
+      "pixel_noop_pair_count": 0,
+      "realizable_lower_path": false,
+      "to_states": [
+        "menu_voice"
+      ]
+    },
+    {
+      "adapter_evidence": "no event-specific map_touch case or exported semantic function",
+      "adapter_mapping_status": "missing",
+      "application_call_path": "missing",
+      "effect": "replace_exclusive_menu_surface",
+      "event": "select_device",
+      "from_states": [
+        "menu_roots"
+      ],
+      "index": 14,
+      "pair_count": 1,
+      "pixel_noop_pair_count": 0,
+      "realizable_lower_path": false,
+      "to_states": [
+        "menu_device"
+      ]
+    },
+    {
+      "adapter_evidence": "no event-specific map_touch case or exported semantic function",
+      "adapter_mapping_status": "missing",
+      "application_call_path": "missing",
+      "effect": "replace_exclusive_menu_surface",
+      "event": "select_connection",
+      "from_states": [
+        "menu_roots"
+      ],
+      "index": 15,
+      "pair_count": 1,
+      "pixel_noop_pair_count": 0,
+      "realizable_lower_path": false,
+      "to_states": [
+        "menu_connection"
+      ]
+    },
+    {
+      "adapter_evidence": "no event-specific map_touch case or exported semantic function",
+      "adapter_mapping_status": "missing",
+      "application_call_path": "missing",
+      "effect": "replace_exclusive_menu_surface",
+      "event": "select_preferences",
+      "from_states": [
+        "menu_roots"
+      ],
+      "index": 16,
+      "pair_count": 1,
+      "pixel_noop_pair_count": 0,
+      "realizable_lower_path": false,
+      "to_states": [
+        "menu_preferences"
+      ]
+    },
+    {
+      "adapter_evidence": "no event-specific map_touch case or exported semantic function",
+      "adapter_mapping_status": "missing",
+      "application_call_path": "missing",
+      "effect": "replace_with_accepted_v9_face_asset",
+      "event": "select_ui_assets",
+      "from_states": [
+        "menu_device"
+      ],
+      "index": 17,
+      "pair_count": 1,
+      "pixel_noop_pair_count": 0,
+      "realizable_lower_path": false,
+      "to_states": [
+        "menu_device_ui_assets"
+      ]
+    },
+    {
+      "adapter_evidence": "no event-specific map_touch case or exported semantic function",
+      "adapter_mapping_status": "missing",
+      "application_call_path": "missing",
+      "effect": "replace_exclusive_menu_surface",
+      "event": "menu_back",
+      "from_states": [
+        "menu_voice",
+        "menu_device",
+        "menu_connection",
+        "menu_preferences"
+      ],
+      "index": 18,
+      "pair_count": 4,
+      "pixel_noop_pair_count": 0,
+      "realizable_lower_path": false,
+      "to_states": [
+        "menu_roots"
+      ]
+    },
+    {
+      "adapter_evidence": "no event-specific map_touch case or exported semantic function",
+      "adapter_mapping_status": "missing",
+      "application_call_path": "missing",
+      "effect": "clear_transients_and_center",
+      "event": "menu_return",
+      "from_states": [
+        "menu_roots",
+        "menu_voice",
+        "menu_device",
+        "menu_connection",
+        "menu_preferences",
+        "menu_device_ui_assets"
+      ],
+      "index": 19,
+      "pair_count": 6,
+      "pixel_noop_pair_count": 1,
+      "realizable_lower_path": false,
+      "to_states": [
+        "menu_return_rest"
+      ]
+    },
+    {
+      "adapter_evidence": "map_touch(NONE) selects centered_rest, but NONE is not emitted as a gesture and no cancel/settle API exists",
+      "adapter_mapping_status": "ambiguous",
+      "application_call_path": "missing",
+      "effect": "resume_bounded_story",
+      "event": "settle",
+      "from_states": [
+        "single_tap_response",
+        "menu_return_rest",
+        "recording_return_rest"
+      ],
+      "index": 20,
+      "pair_count": 3,
+      "pixel_noop_pair_count": 2,
+      "realizable_lower_path": false,
+      "to_states": [
+        "centered_rest"
+      ]
+    }
+  ],
+  "generator": {
+    "path": "tools/faraday_upper_art/audit_companion_upper_lower_compatibility_comp_req_474.py",
+    "sha256": "D76B9A2E3141878706DD8A9D1907DAAEB0C17A7696DFFC9156DBB639E80B29C4"
+  },
+  "lower_binding": {
+    "commit": "c1733e4e40bb3374b4ee2ec81a7057eb90a03c10",
+    "commit_match": true,
+    "expected_commit": "c1733e4e40bb3374b4ee2ec81a7057eb90a03c10",
+    "requested_revision": "c1733e4",
+    "source_blobs_sha256": [
+      {
+        "bytes": 7813,
+        "path": "app/companion_pendant/epaper/companion_visual_runtime_adapter.c",
+        "sha256": "F4D986A25DF0023E53ACF6B96312FBDF6BD0A3CB1FA2E51D147AF9F66E5C97D4"
+      },
+      {
+        "bytes": 2711,
+        "path": "app/companion_pendant/epaper/companion_visual_runtime_adapter.h",
+        "sha256": "DFF63B9481E5136F0C7587D9AB2ADE21264853382717E9403DC760F67EC536FD"
+      },
+      {
+        "bytes": 405618,
+        "path": "app/companion_pendant/epaper/companion_visual_asset_pack.c",
+        "sha256": "1EE7BD5DDB210A3C3F90ADB607BA317CF2F00127099B876C9DB5948C7A5D03A0"
+      },
+      {
+        "bytes": 5321,
+        "path": "app/companion_pendant/epaper/companion_visual_asset_pack.h",
+        "sha256": "2180FE281AFF31C8688BCB290740F898CF7E032C90D97FFE679F535689A814F9"
+      },
+      {
+        "bytes": 14750,
+        "path": "app/companion_pendant/epaper/r7_runtime_bridge_stm32wb.c",
+        "sha256": "6E023E6239BAF3A4FD089FB4CF69D1281ADC33E7B633DD3F67997A06D9177DBB"
+      },
+      {
+        "bytes": 1075,
+        "path": "app/companion_pendant/epaper/r7_runtime_bridge_stm32wb.h",
+        "sha256": "271A084F12EE22B92654068AB21D525B222F3C9D68F23091027F87BCD7784A55"
+      },
+      {
+        "bytes": 30237,
+        "path": "app/companion_pendant/touch/touch_gesture.c",
+        "sha256": "F4E960CB7607D22C7F743F6601D77C7E1DA08ACEC6C7E9325CAF63EE1A597437"
+      },
+      {
+        "bytes": 3157,
+        "path": "app/companion_pendant/touch/touch_gesture.h",
+        "sha256": "4D0C23C6BFF68BF69DEA814EDBE5AEC14A992BA2C91ABA0B66C297AC1C1D1CE5"
+      },
+      {
+        "bytes": 235090,
+        "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/main.c",
+        "sha256": "8A8DD9A60DE2F49DEE1B1AF7B6F92EBE7A638A6CA62973A31B2A078E9CD134E9"
+      },
+      {
+        "bytes": 32388,
+        "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile",
+        "sha256": "D2A31452CD14F1B41310A50B262F297E2BD7FC10E32DA25704020952FF457D89"
+      },
+      {
+        "bytes": 13349,
+        "path": "tools/comp_req_472_visual_runtime_fixture.c",
+        "sha256": "621A5C0C9E79D4978A30CE01D81A1F670177A628AE93ED5344E4BCA77F07BA3A"
+      },
+      {
+        "bytes": 21714,
+        "path": "tools/comp_req_472_visual_runtime_input_manifest.json",
+        "sha256": "0F0FE7B91707F20CF942A0B994BD776B69D404A004D9985B98EC6838CA752DBA"
+      },
+      {
+        "bytes": 10159,
+        "path": "tools/verify_comp_req_472_visual_runtime.py",
+        "sha256": "3D399C36891425400472FA348DD01C19120736814EE206906F01DDA05FC42053"
+      }
+    ]
+  },
+  "pair_compatibility": [
+    {
+      "application_call_path": "missing",
+      "event": "pointer_drag_left",
+      "from_state": "centered_rest",
+      "id": "T00-P00-centered_rest--gaze_left",
+      "lower_transition_declared": true,
+      "payload_bytes": 322,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "gaze_left"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "pointer_drag_up",
+      "from_state": "centered_rest",
+      "id": "T01-P00-centered_rest--gaze_up",
+      "lower_transition_declared": true,
+      "payload_bytes": 266,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "gaze_up"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "pointer_drag_right",
+      "from_state": "centered_rest",
+      "id": "T02-P00-centered_rest--gaze_right",
+      "lower_transition_declared": true,
+      "payload_bytes": 299,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "gaze_right"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "pointer_drag_down",
+      "from_state": "centered_rest",
+      "id": "T03-P00-centered_rest--gaze_down",
+      "lower_transition_declared": true,
+      "payload_bytes": 252,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "gaze_down"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "pointer_drag_center",
+      "from_state": "centered_rest",
+      "id": "T04-P00-centered_rest--gaze_center",
+      "lower_transition_declared": true,
+      "payload_bytes": 0,
+      "pixel_noop": true,
+      "pixel_window_path": "no_transport_expected",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "gaze_center"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "pointer_move",
+      "from_state": "gaze_left",
+      "id": "T05-P00-gaze_left--gaze_left",
+      "lower_transition_declared": true,
+      "payload_bytes": 0,
+      "pixel_noop": true,
+      "pixel_window_path": "no_transport_expected",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "gaze_left"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "pointer_move",
+      "from_state": "gaze_left",
+      "id": "T05-P01-gaze_left--gaze_up",
+      "lower_transition_declared": true,
+      "payload_bytes": 375,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "gaze_up"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "pointer_move",
+      "from_state": "gaze_left",
+      "id": "T05-P02-gaze_left--gaze_right",
+      "lower_transition_declared": true,
+      "payload_bytes": 345,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "gaze_right"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "pointer_move",
+      "from_state": "gaze_left",
+      "id": "T05-P03-gaze_left--gaze_down",
+      "lower_transition_declared": true,
+      "payload_bytes": 405,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "gaze_down"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "pointer_move",
+      "from_state": "gaze_left",
+      "id": "T05-P04-gaze_left--gaze_center",
+      "lower_transition_declared": true,
+      "payload_bytes": 322,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "gaze_center"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "pointer_move",
+      "from_state": "gaze_up",
+      "id": "T05-P05-gaze_up--gaze_left",
+      "lower_transition_declared": true,
+      "payload_bytes": 375,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "gaze_left"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "pointer_move",
+      "from_state": "gaze_up",
+      "id": "T05-P06-gaze_up--gaze_up",
+      "lower_transition_declared": true,
+      "payload_bytes": 0,
+      "pixel_noop": true,
+      "pixel_window_path": "no_transport_expected",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "gaze_up"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "pointer_move",
+      "from_state": "gaze_up",
+      "id": "T05-P07-gaze_up--gaze_right",
+      "lower_transition_declared": true,
+      "payload_bytes": 350,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "gaze_right"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "pointer_move",
+      "from_state": "gaze_up",
+      "id": "T05-P08-gaze_up--gaze_down",
+      "lower_transition_declared": true,
+      "payload_bytes": 406,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "gaze_down"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "pointer_move",
+      "from_state": "gaze_up",
+      "id": "T05-P09-gaze_up--gaze_center",
+      "lower_transition_declared": true,
+      "payload_bytes": 266,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "gaze_center"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "pointer_move",
+      "from_state": "gaze_right",
+      "id": "T05-P10-gaze_right--gaze_left",
+      "lower_transition_declared": true,
+      "payload_bytes": 345,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "gaze_left"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "pointer_move",
+      "from_state": "gaze_right",
+      "id": "T05-P11-gaze_right--gaze_up",
+      "lower_transition_declared": true,
+      "payload_bytes": 350,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "gaze_up"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "pointer_move",
+      "from_state": "gaze_right",
+      "id": "T05-P12-gaze_right--gaze_right",
+      "lower_transition_declared": true,
+      "payload_bytes": 0,
+      "pixel_noop": true,
+      "pixel_window_path": "no_transport_expected",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "gaze_right"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "pointer_move",
+      "from_state": "gaze_right",
+      "id": "T05-P13-gaze_right--gaze_down",
+      "lower_transition_declared": true,
+      "payload_bytes": 378,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "gaze_down"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "pointer_move",
+      "from_state": "gaze_right",
+      "id": "T05-P14-gaze_right--gaze_center",
+      "lower_transition_declared": true,
+      "payload_bytes": 299,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "gaze_center"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "pointer_move",
+      "from_state": "gaze_down",
+      "id": "T05-P15-gaze_down--gaze_left",
+      "lower_transition_declared": true,
+      "payload_bytes": 405,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "gaze_left"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "pointer_move",
+      "from_state": "gaze_down",
+      "id": "T05-P16-gaze_down--gaze_up",
+      "lower_transition_declared": true,
+      "payload_bytes": 406,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "gaze_up"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "pointer_move",
+      "from_state": "gaze_down",
+      "id": "T05-P17-gaze_down--gaze_right",
+      "lower_transition_declared": true,
+      "payload_bytes": 378,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "gaze_right"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "pointer_move",
+      "from_state": "gaze_down",
+      "id": "T05-P18-gaze_down--gaze_down",
+      "lower_transition_declared": true,
+      "payload_bytes": 0,
+      "pixel_noop": true,
+      "pixel_window_path": "no_transport_expected",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "gaze_down"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "pointer_move",
+      "from_state": "gaze_down",
+      "id": "T05-P19-gaze_down--gaze_center",
+      "lower_transition_declared": true,
+      "payload_bytes": 252,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "gaze_center"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "pointer_move",
+      "from_state": "gaze_center",
+      "id": "T05-P20-gaze_center--gaze_left",
+      "lower_transition_declared": true,
+      "payload_bytes": 322,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "gaze_left"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "pointer_move",
+      "from_state": "gaze_center",
+      "id": "T05-P21-gaze_center--gaze_up",
+      "lower_transition_declared": true,
+      "payload_bytes": 266,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "gaze_up"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "pointer_move",
+      "from_state": "gaze_center",
+      "id": "T05-P22-gaze_center--gaze_right",
+      "lower_transition_declared": true,
+      "payload_bytes": 299,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "gaze_right"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "pointer_move",
+      "from_state": "gaze_center",
+      "id": "T05-P23-gaze_center--gaze_down",
+      "lower_transition_declared": true,
+      "payload_bytes": 252,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "gaze_down"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "pointer_move",
+      "from_state": "gaze_center",
+      "id": "T05-P24-gaze_center--gaze_center",
+      "lower_transition_declared": true,
+      "payload_bytes": 0,
+      "pixel_noop": true,
+      "pixel_window_path": "no_transport_expected",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "gaze_center"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "pointer_up_or_cancel",
+      "from_state": "gaze_left",
+      "id": "T06-P00-gaze_left--centered_rest",
+      "lower_transition_declared": true,
+      "payload_bytes": 322,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "centered_rest"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "pointer_up_or_cancel",
+      "from_state": "gaze_up",
+      "id": "T06-P01-gaze_up--centered_rest",
+      "lower_transition_declared": true,
+      "payload_bytes": 266,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "centered_rest"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "pointer_up_or_cancel",
+      "from_state": "gaze_right",
+      "id": "T06-P02-gaze_right--centered_rest",
+      "lower_transition_declared": true,
+      "payload_bytes": 299,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "centered_rest"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "pointer_up_or_cancel",
+      "from_state": "gaze_down",
+      "id": "T06-P03-gaze_down--centered_rest",
+      "lower_transition_declared": true,
+      "payload_bytes": 252,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "centered_rest"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "pointer_up_or_cancel",
+      "from_state": "gaze_center",
+      "id": "T06-P04-gaze_center--centered_rest",
+      "lower_transition_declared": true,
+      "payload_bytes": 0,
+      "pixel_noop": true,
+      "pixel_window_path": "no_transport_expected",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "centered_rest"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "single_tap_commit",
+      "from_state": "centered_rest",
+      "id": "T07-P00-centered_rest--single_tap_response",
+      "lower_transition_declared": true,
+      "payload_bytes": 2610,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "single_tap_response"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "stationary_pointerdown",
+      "from_state": "centered_rest",
+      "id": "T08-P00-centered_rest--hold_feedback_50",
+      "lower_transition_declared": true,
+      "payload_bytes": 231,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "hold_feedback_50"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "hold_complete",
+      "from_state": "hold_feedback_50",
+      "id": "T09-P00-hold_feedback_50--menu_roots",
+      "lower_transition_declared": true,
+      "payload_bytes": 4925,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "menu_roots"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "early_up_cancel_blur_or_drag",
+      "from_state": "hold_feedback_50",
+      "id": "T10-P00-hold_feedback_50--centered_rest",
+      "lower_transition_declared": true,
+      "payload_bytes": 231,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "centered_rest"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "second_short_tap",
+      "from_state": "centered_rest",
+      "id": "T11-P00-centered_rest--recording_entry",
+      "lower_transition_declared": true,
+      "payload_bytes": 1722,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "recording_entry"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "recording_return",
+      "from_state": "recording_entry",
+      "id": "T12-P00-recording_entry--recording_return_rest",
+      "lower_transition_declared": true,
+      "payload_bytes": 1722,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "recording_return_rest"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "select_voice",
+      "from_state": "menu_roots",
+      "id": "T13-P00-menu_roots--menu_voice",
+      "lower_transition_declared": true,
+      "payload_bytes": 4950,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "menu_voice"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "select_device",
+      "from_state": "menu_roots",
+      "id": "T14-P00-menu_roots--menu_device",
+      "lower_transition_declared": true,
+      "payload_bytes": 5000,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "menu_device"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "select_connection",
+      "from_state": "menu_roots",
+      "id": "T15-P00-menu_roots--menu_connection",
+      "lower_transition_declared": true,
+      "payload_bytes": 5000,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "menu_connection"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "select_preferences",
+      "from_state": "menu_roots",
+      "id": "T16-P00-menu_roots--menu_preferences",
+      "lower_transition_declared": true,
+      "payload_bytes": 5000,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "menu_preferences"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "select_ui_assets",
+      "from_state": "menu_device",
+      "id": "T17-P00-menu_device--menu_device_ui_assets",
+      "lower_transition_declared": true,
+      "payload_bytes": 5000,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "menu_device_ui_assets"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "menu_back",
+      "from_state": "menu_voice",
+      "id": "T18-P00-menu_voice--menu_roots",
+      "lower_transition_declared": true,
+      "payload_bytes": 4950,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "menu_roots"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "menu_back",
+      "from_state": "menu_device",
+      "id": "T18-P01-menu_device--menu_roots",
+      "lower_transition_declared": true,
+      "payload_bytes": 5000,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "menu_roots"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "menu_back",
+      "from_state": "menu_connection",
+      "id": "T18-P02-menu_connection--menu_roots",
+      "lower_transition_declared": true,
+      "payload_bytes": 5000,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "menu_roots"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "menu_back",
+      "from_state": "menu_preferences",
+      "id": "T18-P03-menu_preferences--menu_roots",
+      "lower_transition_declared": true,
+      "payload_bytes": 5000,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "menu_roots"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "menu_return",
+      "from_state": "menu_roots",
+      "id": "T19-P00-menu_roots--menu_return_rest",
+      "lower_transition_declared": true,
+      "payload_bytes": 4925,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "menu_return_rest"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "menu_return",
+      "from_state": "menu_voice",
+      "id": "T19-P01-menu_voice--menu_return_rest",
+      "lower_transition_declared": true,
+      "payload_bytes": 4950,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "menu_return_rest"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "menu_return",
+      "from_state": "menu_device",
+      "id": "T19-P02-menu_device--menu_return_rest",
+      "lower_transition_declared": true,
+      "payload_bytes": 5000,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "menu_return_rest"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "menu_return",
+      "from_state": "menu_connection",
+      "id": "T19-P03-menu_connection--menu_return_rest",
+      "lower_transition_declared": true,
+      "payload_bytes": 5000,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "menu_return_rest"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "menu_return",
+      "from_state": "menu_preferences",
+      "id": "T19-P04-menu_preferences--menu_return_rest",
+      "lower_transition_declared": true,
+      "payload_bytes": 5000,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "menu_return_rest"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "menu_return",
+      "from_state": "menu_device_ui_assets",
+      "id": "T19-P05-menu_device_ui_assets--menu_return_rest",
+      "lower_transition_declared": true,
+      "payload_bytes": 0,
+      "pixel_noop": true,
+      "pixel_window_path": "no_transport_expected",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "menu_return_rest"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "settle",
+      "from_state": "single_tap_response",
+      "id": "T20-P00-single_tap_response--centered_rest",
+      "lower_transition_declared": true,
+      "payload_bytes": 2610,
+      "pixel_noop": false,
+      "pixel_window_path": "isolated_fixture_mapped",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "centered_rest"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "settle",
+      "from_state": "menu_return_rest",
+      "id": "T20-P01-menu_return_rest--centered_rest",
+      "lower_transition_declared": true,
+      "payload_bytes": 0,
+      "pixel_noop": true,
+      "pixel_window_path": "no_transport_expected",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "centered_rest"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "settle",
+      "from_state": "recording_return_rest",
+      "id": "T20-P02-recording_return_rest--centered_rest",
+      "lower_transition_declared": true,
+      "payload_bytes": 0,
+      "pixel_noop": true,
+      "pixel_window_path": "no_transport_expected",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "centered_rest"
+    }
+  ],
+  "pixel_noop_transitions": [
+    {
+      "application_call_path": "missing",
+      "event": "pointer_drag_center",
+      "from_state": "centered_rest",
+      "id": "T04-P00-centered_rest--gaze_center",
+      "lower_transition_declared": true,
+      "payload_bytes": 0,
+      "pixel_noop": true,
+      "pixel_window_path": "no_transport_expected",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "gaze_center"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "pointer_move",
+      "from_state": "gaze_left",
+      "id": "T05-P00-gaze_left--gaze_left",
+      "lower_transition_declared": true,
+      "payload_bytes": 0,
+      "pixel_noop": true,
+      "pixel_window_path": "no_transport_expected",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "gaze_left"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "pointer_move",
+      "from_state": "gaze_up",
+      "id": "T05-P06-gaze_up--gaze_up",
+      "lower_transition_declared": true,
+      "payload_bytes": 0,
+      "pixel_noop": true,
+      "pixel_window_path": "no_transport_expected",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "gaze_up"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "pointer_move",
+      "from_state": "gaze_right",
+      "id": "T05-P12-gaze_right--gaze_right",
+      "lower_transition_declared": true,
+      "payload_bytes": 0,
+      "pixel_noop": true,
+      "pixel_window_path": "no_transport_expected",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "gaze_right"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "pointer_move",
+      "from_state": "gaze_down",
+      "id": "T05-P18-gaze_down--gaze_down",
+      "lower_transition_declared": true,
+      "payload_bytes": 0,
+      "pixel_noop": true,
+      "pixel_window_path": "no_transport_expected",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "gaze_down"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "pointer_move",
+      "from_state": "gaze_center",
+      "id": "T05-P24-gaze_center--gaze_center",
+      "lower_transition_declared": true,
+      "payload_bytes": 0,
+      "pixel_noop": true,
+      "pixel_window_path": "no_transport_expected",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "gaze_center"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "pointer_up_or_cancel",
+      "from_state": "gaze_center",
+      "id": "T06-P04-gaze_center--centered_rest",
+      "lower_transition_declared": true,
+      "payload_bytes": 0,
+      "pixel_noop": true,
+      "pixel_window_path": "no_transport_expected",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "centered_rest"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "menu_return",
+      "from_state": "menu_device_ui_assets",
+      "id": "T19-P05-menu_device_ui_assets--menu_return_rest",
+      "lower_transition_declared": true,
+      "payload_bytes": 0,
+      "pixel_noop": true,
+      "pixel_window_path": "no_transport_expected",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "menu_return_rest"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "settle",
+      "from_state": "menu_return_rest",
+      "id": "T20-P01-menu_return_rest--centered_rest",
+      "lower_transition_declared": true,
+      "payload_bytes": 0,
+      "pixel_noop": true,
+      "pixel_window_path": "no_transport_expected",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "centered_rest"
+    },
+    {
+      "application_call_path": "missing",
+      "event": "settle",
+      "from_state": "recording_return_rest",
+      "id": "T20-P02-recording_return_rest--centered_rest",
+      "lower_transition_declared": true,
+      "payload_bytes": 0,
+      "pixel_noop": true,
+      "pixel_window_path": "no_transport_expected",
+      "realizable_lower_path": false,
+      "semantic_state_commit": "missing",
+      "to_state": "centered_rest"
+    }
+  ],
+  "requirement": "COMP-REQ-474",
+  "schema": "companion.upper-lower-compatibility-audit.v1",
+  "scope": "upper_owned_read_only_commit_audit",
+  "side_effect_counters": {
+    "browser_start": 0,
+    "hardware": 0,
+    "lower_write": 0,
+    "operator_execute": 0,
+    "operator_prompt": 0,
+    "platform_write": 0,
+    "popup": 0,
+    "production_write": 0,
+    "read_only_git_processes": 14,
+    "server_probe": 0,
+    "server_start": 0,
+    "upper_evidence_write": 1
+  },
+  "state_compatibility": [
+    {
+      "application_reachable": false,
+      "identity_status": "mapped",
+      "index": 0,
+      "lower_enum": "COMPANION_VISUAL_STATE_CENTERED_REST",
+      "state": "centered_rest",
+      "target_exposure": "map_touch_none_target_but_none_not_emitted"
+    },
+    {
+      "application_reachable": false,
+      "identity_status": "mapped",
+      "index": 1,
+      "lower_enum": "COMPANION_VISUAL_STATE_GAZE_LEFT",
+      "state": "gaze_left",
+      "target_exposure": "caller_supplied_gaze_target"
+    },
+    {
+      "application_reachable": false,
+      "identity_status": "mapped",
+      "index": 2,
+      "lower_enum": "COMPANION_VISUAL_STATE_GAZE_UP",
+      "state": "gaze_up",
+      "target_exposure": "caller_supplied_gaze_target"
+    },
+    {
+      "application_reachable": false,
+      "identity_status": "mapped",
+      "index": 3,
+      "lower_enum": "COMPANION_VISUAL_STATE_GAZE_RIGHT",
+      "state": "gaze_right",
+      "target_exposure": "caller_supplied_gaze_target"
+    },
+    {
+      "application_reachable": false,
+      "identity_status": "mapped",
+      "index": 4,
+      "lower_enum": "COMPANION_VISUAL_STATE_GAZE_DOWN",
+      "state": "gaze_down",
+      "target_exposure": "caller_supplied_gaze_target"
+    },
+    {
+      "application_reachable": false,
+      "identity_status": "mapped",
+      "index": 5,
+      "lower_enum": "COMPANION_VISUAL_STATE_GAZE_CENTER",
+      "state": "gaze_center",
+      "target_exposure": "caller_supplied_gaze_target"
+    },
+    {
+      "application_reachable": false,
+      "identity_status": "mapped",
+      "index": 6,
+      "lower_enum": "COMPANION_VISUAL_STATE_SINGLE_TAP_RESPONSE",
+      "state": "single_tap_response",
+      "target_exposure": "direct_map_touch_target"
+    },
+    {
+      "application_reachable": false,
+      "identity_status": "mapped",
+      "index": 7,
+      "lower_enum": "COMPANION_VISUAL_STATE_HOLD_FEEDBACK_50",
+      "state": "hold_feedback_50",
+      "target_exposure": "direct_map_touch_target"
+    },
+    {
+      "application_reachable": false,
+      "identity_status": "mapped",
+      "index": 8,
+      "lower_enum": "COMPANION_VISUAL_STATE_MENU_ROOTS",
+      "state": "menu_roots",
+      "target_exposure": "direct_map_touch_target"
+    },
+    {
+      "application_reachable": false,
+      "identity_status": "mapped",
+      "index": 9,
+      "lower_enum": "COMPANION_VISUAL_STATE_MENU_VOICE",
+      "state": "menu_voice",
+      "target_exposure": "generic_enqueue_only"
+    },
+    {
+      "application_reachable": false,
+      "identity_status": "mapped",
+      "index": 10,
+      "lower_enum": "COMPANION_VISUAL_STATE_MENU_DEVICE",
+      "state": "menu_device",
+      "target_exposure": "generic_enqueue_only"
+    },
+    {
+      "application_reachable": false,
+      "identity_status": "mapped",
+      "index": 11,
+      "lower_enum": "COMPANION_VISUAL_STATE_MENU_CONNECTION",
+      "state": "menu_connection",
+      "target_exposure": "generic_enqueue_only"
+    },
+    {
+      "application_reachable": false,
+      "identity_status": "mapped",
+      "index": 12,
+      "lower_enum": "COMPANION_VISUAL_STATE_MENU_PREFERENCES",
+      "state": "menu_preferences",
+      "target_exposure": "generic_enqueue_only"
+    },
+    {
+      "application_reachable": false,
+      "identity_status": "mapped",
+      "index": 13,
+      "lower_enum": "COMPANION_VISUAL_STATE_MENU_DEVICE_UI_ASSETS",
+      "state": "menu_device_ui_assets",
+      "target_exposure": "generic_enqueue_only"
+    },
+    {
+      "application_reachable": false,
+      "identity_status": "mapped",
+      "index": 14,
+      "lower_enum": "COMPANION_VISUAL_STATE_MENU_RETURN_REST",
+      "state": "menu_return_rest",
+      "target_exposure": "generic_enqueue_only"
+    },
+    {
+      "application_reachable": false,
+      "identity_status": "mapped",
+      "index": 15,
+      "lower_enum": "COMPANION_VISUAL_STATE_RECORDING_ENTRY",
+      "state": "recording_entry",
+      "target_exposure": "direct_map_touch_target"
+    },
+    {
+      "application_reachable": false,
+      "identity_status": "mapped",
+      "index": 16,
+      "lower_enum": "COMPANION_VISUAL_STATE_RECORDING_RETURN_REST",
+      "state": "recording_return_rest",
+      "target_exposure": "generic_enqueue_only"
+    }
+  ],
+  "status": "NO_GO_UPPER_LOWER_EVENT_PATH_GAPS",
+  "status_rule": "NO_GO when any accepted event or expanded pair lacks a realizable lower application path; enum/table/window fixture identity alone is insufficient.",
+  "summary": {
+    "events": {
+      "adapter_ambiguous": 8,
+      "adapter_mapped": 4,
+      "adapter_missing": 9,
+      "realizable_lower_path": 0,
+      "total": 21,
+      "unrealizable_lower_path": 21
+    },
+    "pairs": {
+      "isolated_window_path": 49,
+      "pixel_changing": 49,
+      "pixel_noop": 10,
+      "realizable_lower_path": 0,
+      "semantic_noop_commit_missing": 10,
+      "total": 59,
+      "unrealizable_lower_path": 59
+    },
+    "states": {
+      "application_reachable": 0,
+      "identity_mapped": 17,
+      "total": 17
+    }
+  },
+  "upper_bindings": {
+    "expanded_window_oracle": {
+      "expected_sha256": "20C270A332F7AD75FAED3C44C9AE3C1D789F7902ABA525C07B0B40F4266C5B2E",
+      "match": true,
+      "observed_sha256": "20C270A332F7AD75FAED3C44C9AE3C1D789F7902ABA525C07B0B40F4266C5B2E",
+      "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/expanded-window-oracle.json"
+    },
+    "frames": {
+      "expected_sha256": "D4DA2FCA6863C1B8F5DD28D70566712DCD91AB7383CA486735DFD253F7361E6D",
+      "match": true,
+      "observed_sha256": "D4DA2FCA6863C1B8F5DD28D70566712DCD91AB7383CA486735DFD253F7361E6D",
+      "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/frames.bin"
+    },
+    "owner_review_scope": {
+      "expected_sha256": "245B8BDB94A00A23224CF1E9A7F43CA65936CCC16518D3067D48BD98A5E61D80",
+      "match": true,
+      "observed_sha256": "245B8BDB94A00A23224CF1E9A7F43CA65936CCC16518D3067D48BD98A5E61D80",
+      "path": "docs/validation/companion-browser-visual-contract-comp-req-471/owner-review-scope.json"
+    },
+    "physical_consumer_boundary": {
+      "expected_sha256": "FE4D44152F51E0496B3AEF0B0594F557995D09FE31A9148440DA98209D119DDC",
+      "match": true,
+      "observed_sha256": "FE4D44152F51E0496B3AEF0B0594F557995D09FE31A9148440DA98209D119DDC",
+      "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/physical-consumer-boundary.json"
+    },
+    "state_transitions": {
+      "expected_sha256": "442F5A9E87988A3F8BE15ECC2A2500CA64537FA2B6DBD96F6FFDDD070DD7F918",
+      "match": true,
+      "observed_sha256": "442F5A9E87988A3F8BE15ECC2A2500CA64537FA2B6DBD96F6FFDDD070DD7F918",
+      "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/state-transitions.json"
+    },
+    "upper_machine_ready": {
+      "expected_sha256": "EAD7000FEB32CD7915FEAD82A49D23FD66755412AEDFA53B4B7A264CABA3BB69",
+      "match": true,
+      "observed_sha256": "EAD7000FEB32CD7915FEAD82A49D23FD66755412AEDFA53B4B7A264CABA3BB69",
+      "path": "docs/validation/companion-browser-visual-contract-comp-req-471/UPPER_MACHINE_READY.json"
+    },
+    "upper_pack_header": {
+      "expected_sha256": "2180FE281AFF31C8688BCB290740F898CF7E032C90D97FFE679F535689A814F9",
+      "match": true,
+      "observed_sha256": "2180FE281AFF31C8688BCB290740F898CF7E032C90D97FFE679F535689A814F9",
+      "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/companion_visual_asset_pack.h"
+    },
+    "upper_pack_source": {
+      "expected_sha256": "1EE7BD5DDB210A3C3F90ADB607BA317CF2F00127099B876C9DB5948C7A5D03A0",
+      "match": true,
+      "observed_sha256": "1EE7BD5DDB210A3C3F90ADB607BA317CF2F00127099B876C9DB5948C7A5D03A0",
+      "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/companion_visual_asset_pack.c"
+    },
+    "visual_contract": {
+      "expected_sha256": "E5C6B30D8BF317FC8321D82E087D3B46552B4523FD8B67FFF3E6ABA89AAE4260",
+      "match": true,
+      "observed_sha256": "E5C6B30D8BF317FC8321D82E087D3B46552B4523FD8B67FFF3E6ABA89AAE4260",
+      "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/visual-contract.json"
+    }
+  }
+}

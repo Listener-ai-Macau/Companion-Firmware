@@ -1,0 +1,869 @@
+{
+  "schema": "companion.visual-c-asset-pack.v1",
+  "requirement": "COMP-REQ-467/471",
+  "status": "PASS",
+  "default_off": {
+    "macro": "COMPANION_VISUAL_ASSET_PACK_ENABLE",
+    "default": 0,
+    "app_or_build_wiring_changed": false
+  },
+  "source": {
+    "visual_contract_file": "visual-contract.json",
+    "visual_contract_sha256": "E5C6B30D8BF317FC8321D82E087D3B46552B4523FD8B67FFF3E6ABA89AAE4260",
+    "state_transitions_file": "state-transitions.json",
+    "state_transitions_sha256": "442F5A9E87988A3F8BE15ECC2A2500CA64537FA2B6DBD96F6FFDDD070DD7F918",
+    "frames_bin_sha256": "D4DA2FCA6863C1B8F5DD28D70566712DCD91AB7383CA486735DFD253F7361E6D"
+  },
+  "format": {
+    "width": 200,
+    "height": 200,
+    "stride_bytes": 25,
+    "frame_bytes": 5000,
+    "bits_per_pixel": 1,
+    "bit_order": "MSB_first_within_each_byte",
+    "row_order": "top_to_bottom"
+  },
+  "capacity": {
+    "allocation": "static_const",
+    "dynamic_allocation": false,
+    "state_count": 17,
+    "unique_frame_count": 13,
+    "unduplicated_payload_bytes": 85000,
+    "packed_payload_bytes": 65000,
+    "payload_budget_bytes": 85000,
+    "deduplicated_bytes": 20000,
+    "within_budget": true,
+    "payload_sha256": "FA97DD637CD3F527FF126EEAACFB17C45870729A59F97C85A137EAF0B08E5E95"
+  },
+  "states": [
+    {
+      "index": 0,
+      "id": "centered_rest",
+      "c_enum": "COMPANION_VISUAL_STATE_CENTERED_REST",
+      "unique_frame_index": 0,
+      "frame_sha256": "66A3E78E692DE2EC813CABB9664778F1D5BF205F59A5FB41B22BDF9B0423EF09",
+      "width": 200,
+      "height": 200,
+      "stride_bytes": 25,
+      "orientation": {
+        "screen_origin": "top_left",
+        "positive_x": "right",
+        "positive_y": "down",
+        "semantic": "center",
+        "browser_contact_px": [
+          100,
+          100
+        ]
+      }
+    },
+    {
+      "index": 1,
+      "id": "gaze_left",
+      "c_enum": "COMPANION_VISUAL_STATE_GAZE_LEFT",
+      "unique_frame_index": 1,
+      "frame_sha256": "90DB3FC32E30B14F50148DA3A09332F47CA31AA25700C3906C1779647292226C",
+      "width": 200,
+      "height": 200,
+      "stride_bytes": 25,
+      "orientation": {
+        "screen_origin": "top_left",
+        "positive_x": "right",
+        "positive_y": "down",
+        "semantic": "left",
+        "browser_contact_px": [
+          28,
+          100
+        ]
+      }
+    },
+    {
+      "index": 2,
+      "id": "gaze_up",
+      "c_enum": "COMPANION_VISUAL_STATE_GAZE_UP",
+      "unique_frame_index": 2,
+      "frame_sha256": "9CB3855BA43A00C707BAE4CA6F78AE7A96D315E43CA6071215A7A297BF711C43",
+      "width": 200,
+      "height": 200,
+      "stride_bytes": 25,
+      "orientation": {
+        "screen_origin": "top_left",
+        "positive_x": "right",
+        "positive_y": "down",
+        "semantic": "up",
+        "browser_contact_px": [
+          100,
+          28
+        ]
+      }
+    },
+    {
+      "index": 3,
+      "id": "gaze_right",
+      "c_enum": "COMPANION_VISUAL_STATE_GAZE_RIGHT",
+      "unique_frame_index": 3,
+      "frame_sha256": "7DD232D99B657C673FBD57BFA6939826D3B6A6B9CF131DD8DA8FC160E0497574",
+      "width": 200,
+      "height": 200,
+      "stride_bytes": 25,
+      "orientation": {
+        "screen_origin": "top_left",
+        "positive_x": "right",
+        "positive_y": "down",
+        "semantic": "right",
+        "browser_contact_px": [
+          172,
+          100
+        ]
+      }
+    },
+    {
+      "index": 4,
+      "id": "gaze_down",
+      "c_enum": "COMPANION_VISUAL_STATE_GAZE_DOWN",
+      "unique_frame_index": 4,
+      "frame_sha256": "C4975D1AFF45CBD5C2B284261343728F8EB0DFC1BB5DED1874A42EF78A62337D",
+      "width": 200,
+      "height": 200,
+      "stride_bytes": 25,
+      "orientation": {
+        "screen_origin": "top_left",
+        "positive_x": "right",
+        "positive_y": "down",
+        "semantic": "down",
+        "browser_contact_px": [
+          100,
+          172
+        ]
+      }
+    },
+    {
+      "index": 5,
+      "id": "gaze_center",
+      "c_enum": "COMPANION_VISUAL_STATE_GAZE_CENTER",
+      "unique_frame_index": 0,
+      "frame_sha256": "66A3E78E692DE2EC813CABB9664778F1D5BF205F59A5FB41B22BDF9B0423EF09",
+      "width": 200,
+      "height": 200,
+      "stride_bytes": 25,
+      "orientation": {
+        "screen_origin": "top_left",
+        "positive_x": "right",
+        "positive_y": "down",
+        "semantic": "center",
+        "browser_contact_px": [
+          100,
+          100
+        ]
+      }
+    },
+    {
+      "index": 6,
+      "id": "single_tap_response",
+      "c_enum": "COMPANION_VISUAL_STATE_SINGLE_TAP_RESPONSE",
+      "unique_frame_index": 5,
+      "frame_sha256": "16F0642E4061CDC22D05EE2A7E08E5DD0777A84E6D5D0052E126FA77E30D066B",
+      "width": 200,
+      "height": 200,
+      "stride_bytes": 25,
+      "orientation": {
+        "screen_origin": "top_left",
+        "positive_x": "right",
+        "positive_y": "down",
+        "semantic": "right_up",
+        "browser_contact_px": [
+          158,
+          82
+        ]
+      }
+    },
+    {
+      "index": 7,
+      "id": "hold_feedback_50",
+      "c_enum": "COMPANION_VISUAL_STATE_HOLD_FEEDBACK_50",
+      "unique_frame_index": 6,
+      "frame_sha256": "5545DB4C457AB2A57867B602A3EE216A45CFF7BBD93368156C2A8B21292A34C1",
+      "width": 200,
+      "height": 200,
+      "stride_bytes": 25,
+      "orientation": {
+        "screen_origin": "top_left",
+        "positive_x": "right",
+        "positive_y": "down",
+        "semantic": "center",
+        "browser_contact_px": [
+          100,
+          100
+        ]
+      }
+    },
+    {
+      "index": 8,
+      "id": "menu_roots",
+      "c_enum": "COMPANION_VISUAL_STATE_MENU_ROOTS",
+      "unique_frame_index": 7,
+      "frame_sha256": "EA85CFB199657D7829D181DD3D62BF19612F995E47C58112FFA7E713790DEFA0",
+      "width": 200,
+      "height": 200,
+      "stride_bytes": 25,
+      "orientation": {
+        "screen_origin": "top_left",
+        "positive_x": "right",
+        "positive_y": "down",
+        "semantic": "browser",
+        "browser_contact_px": null
+      }
+    },
+    {
+      "index": 9,
+      "id": "menu_voice",
+      "c_enum": "COMPANION_VISUAL_STATE_MENU_VOICE",
+      "unique_frame_index": 8,
+      "frame_sha256": "7B3C8FAAF42DFEC2F309F43A6D769A8A1F5A4789BCD0CF46D0555F89A9A7169A",
+      "width": 200,
+      "height": 200,
+      "stride_bytes": 25,
+      "orientation": {
+        "screen_origin": "top_left",
+        "positive_x": "right",
+        "positive_y": "down",
+        "semantic": "browser",
+        "browser_contact_px": null
+      }
+    },
+    {
+      "index": 10,
+      "id": "menu_device",
+      "c_enum": "COMPANION_VISUAL_STATE_MENU_DEVICE",
+      "unique_frame_index": 9,
+      "frame_sha256": "6C237EFA7573A35578849CE3E337FE2156CCDE2125AD4BB9D252830ECF3F677A",
+      "width": 200,
+      "height": 200,
+      "stride_bytes": 25,
+      "orientation": {
+        "screen_origin": "top_left",
+        "positive_x": "right",
+        "positive_y": "down",
+        "semantic": "browser",
+        "browser_contact_px": null
+      }
+    },
+    {
+      "index": 11,
+      "id": "menu_connection",
+      "c_enum": "COMPANION_VISUAL_STATE_MENU_CONNECTION",
+      "unique_frame_index": 10,
+      "frame_sha256": "F103D49AF3A8B315CE6B2D8CDB4474CD3F2D62C19C7E1F8105DA43AE32C3FC15",
+      "width": 200,
+      "height": 200,
+      "stride_bytes": 25,
+      "orientation": {
+        "screen_origin": "top_left",
+        "positive_x": "right",
+        "positive_y": "down",
+        "semantic": "browser",
+        "browser_contact_px": null
+      }
+    },
+    {
+      "index": 12,
+      "id": "menu_preferences",
+      "c_enum": "COMPANION_VISUAL_STATE_MENU_PREFERENCES",
+      "unique_frame_index": 11,
+      "frame_sha256": "AE0BC022B83A98AC42D7B54819718136FF745A4A1A4EF036E3D33655E43EB29C",
+      "width": 200,
+      "height": 200,
+      "stride_bytes": 25,
+      "orientation": {
+        "screen_origin": "top_left",
+        "positive_x": "right",
+        "positive_y": "down",
+        "semantic": "browser",
+        "browser_contact_px": null
+      }
+    },
+    {
+      "index": 13,
+      "id": "menu_device_ui_assets",
+      "c_enum": "COMPANION_VISUAL_STATE_MENU_DEVICE_UI_ASSETS",
+      "unique_frame_index": 0,
+      "frame_sha256": "66A3E78E692DE2EC813CABB9664778F1D5BF205F59A5FB41B22BDF9B0423EF09",
+      "width": 200,
+      "height": 200,
+      "stride_bytes": 25,
+      "orientation": {
+        "screen_origin": "top_left",
+        "positive_x": "right",
+        "positive_y": "down",
+        "semantic": "browser",
+        "browser_contact_px": null
+      }
+    },
+    {
+      "index": 14,
+      "id": "menu_return_rest",
+      "c_enum": "COMPANION_VISUAL_STATE_MENU_RETURN_REST",
+      "unique_frame_index": 0,
+      "frame_sha256": "66A3E78E692DE2EC813CABB9664778F1D5BF205F59A5FB41B22BDF9B0423EF09",
+      "width": 200,
+      "height": 200,
+      "stride_bytes": 25,
+      "orientation": {
+        "screen_origin": "top_left",
+        "positive_x": "right",
+        "positive_y": "down",
+        "semantic": "center",
+        "browser_contact_px": null
+      }
+    },
+    {
+      "index": 15,
+      "id": "recording_entry",
+      "c_enum": "COMPANION_VISUAL_STATE_RECORDING_ENTRY",
+      "unique_frame_index": 12,
+      "frame_sha256": "309672C1572F178D4BE17AF3B8958F985C76034521B067447F73AEB0ACEA35DB",
+      "width": 200,
+      "height": 200,
+      "stride_bytes": 25,
+      "orientation": {
+        "screen_origin": "top_left",
+        "positive_x": "right",
+        "positive_y": "down",
+        "semantic": "browser",
+        "browser_contact_px": null
+      }
+    },
+    {
+      "index": 16,
+      "id": "recording_return_rest",
+      "c_enum": "COMPANION_VISUAL_STATE_RECORDING_RETURN_REST",
+      "unique_frame_index": 0,
+      "frame_sha256": "66A3E78E692DE2EC813CABB9664778F1D5BF205F59A5FB41B22BDF9B0423EF09",
+      "width": 200,
+      "height": 200,
+      "stride_bytes": 25,
+      "orientation": {
+        "screen_origin": "top_left",
+        "positive_x": "right",
+        "positive_y": "down",
+        "semantic": "center",
+        "browser_contact_px": null
+      }
+    }
+  ],
+  "unique_frames": [
+    {
+      "index": 0,
+      "offset": 0,
+      "bytes": 5000,
+      "sha256": "66A3E78E692DE2EC813CABB9664778F1D5BF205F59A5FB41B22BDF9B0423EF09",
+      "states": [
+        "centered_rest",
+        "gaze_center",
+        "menu_device_ui_assets",
+        "menu_return_rest",
+        "recording_return_rest"
+      ]
+    },
+    {
+      "index": 1,
+      "offset": 5000,
+      "bytes": 5000,
+      "sha256": "90DB3FC32E30B14F50148DA3A09332F47CA31AA25700C3906C1779647292226C",
+      "states": [
+        "gaze_left"
+      ]
+    },
+    {
+      "index": 2,
+      "offset": 10000,
+      "bytes": 5000,
+      "sha256": "9CB3855BA43A00C707BAE4CA6F78AE7A96D315E43CA6071215A7A297BF711C43",
+      "states": [
+        "gaze_up"
+      ]
+    },
+    {
+      "index": 3,
+      "offset": 15000,
+      "bytes": 5000,
+      "sha256": "7DD232D99B657C673FBD57BFA6939826D3B6A6B9CF131DD8DA8FC160E0497574",
+      "states": [
+        "gaze_right"
+      ]
+    },
+    {
+      "index": 4,
+      "offset": 20000,
+      "bytes": 5000,
+      "sha256": "C4975D1AFF45CBD5C2B284261343728F8EB0DFC1BB5DED1874A42EF78A62337D",
+      "states": [
+        "gaze_down"
+      ]
+    },
+    {
+      "index": 5,
+      "offset": 25000,
+      "bytes": 5000,
+      "sha256": "16F0642E4061CDC22D05EE2A7E08E5DD0777A84E6D5D0052E126FA77E30D066B",
+      "states": [
+        "single_tap_response"
+      ]
+    },
+    {
+      "index": 6,
+      "offset": 30000,
+      "bytes": 5000,
+      "sha256": "5545DB4C457AB2A57867B602A3EE216A45CFF7BBD93368156C2A8B21292A34C1",
+      "states": [
+        "hold_feedback_50"
+      ]
+    },
+    {
+      "index": 7,
+      "offset": 35000,
+      "bytes": 5000,
+      "sha256": "EA85CFB199657D7829D181DD3D62BF19612F995E47C58112FFA7E713790DEFA0",
+      "states": [
+        "menu_roots"
+      ]
+    },
+    {
+      "index": 8,
+      "offset": 40000,
+      "bytes": 5000,
+      "sha256": "7B3C8FAAF42DFEC2F309F43A6D769A8A1F5A4789BCD0CF46D0555F89A9A7169A",
+      "states": [
+        "menu_voice"
+      ]
+    },
+    {
+      "index": 9,
+      "offset": 45000,
+      "bytes": 5000,
+      "sha256": "6C237EFA7573A35578849CE3E337FE2156CCDE2125AD4BB9D252830ECF3F677A",
+      "states": [
+        "menu_device"
+      ]
+    },
+    {
+      "index": 10,
+      "offset": 50000,
+      "bytes": 5000,
+      "sha256": "F103D49AF3A8B315CE6B2D8CDB4474CD3F2D62C19C7E1F8105DA43AE32C3FC15",
+      "states": [
+        "menu_connection"
+      ]
+    },
+    {
+      "index": 11,
+      "offset": 55000,
+      "bytes": 5000,
+      "sha256": "AE0BC022B83A98AC42D7B54819718136FF745A4A1A4EF036E3D33655E43EB29C",
+      "states": [
+        "menu_preferences"
+      ]
+    },
+    {
+      "index": 12,
+      "offset": 60000,
+      "bytes": 5000,
+      "sha256": "309672C1572F178D4BE17AF3B8958F985C76034521B067447F73AEB0ACEA35DB",
+      "states": [
+        "recording_entry"
+      ]
+    }
+  ],
+  "transitions": [
+    {
+      "index": 0,
+      "from_states": [
+        "centered_rest"
+      ],
+      "to_states": [
+        "gaze_left"
+      ],
+      "from_mask": 1,
+      "to_mask": 2,
+      "event": "pointer_drag_left",
+      "event_index": 0,
+      "guard": "movement_px>44",
+      "guard_index": 0,
+      "effect": "replace_current_gaze",
+      "effect_index": 0
+    },
+    {
+      "index": 1,
+      "from_states": [
+        "centered_rest"
+      ],
+      "to_states": [
+        "gaze_up"
+      ],
+      "from_mask": 1,
+      "to_mask": 4,
+      "event": "pointer_drag_up",
+      "event_index": 1,
+      "guard": "movement_px>44",
+      "guard_index": 0,
+      "effect": "replace_current_gaze",
+      "effect_index": 0
+    },
+    {
+      "index": 2,
+      "from_states": [
+        "centered_rest"
+      ],
+      "to_states": [
+        "gaze_right"
+      ],
+      "from_mask": 1,
+      "to_mask": 8,
+      "event": "pointer_drag_right",
+      "event_index": 2,
+      "guard": "movement_px>44",
+      "guard_index": 0,
+      "effect": "replace_current_gaze",
+      "effect_index": 0
+    },
+    {
+      "index": 3,
+      "from_states": [
+        "centered_rest"
+      ],
+      "to_states": [
+        "gaze_down"
+      ],
+      "from_mask": 1,
+      "to_mask": 16,
+      "event": "pointer_drag_down",
+      "event_index": 3,
+      "guard": "movement_px>44",
+      "guard_index": 0,
+      "effect": "replace_current_gaze",
+      "effect_index": 0
+    },
+    {
+      "index": 4,
+      "from_states": [
+        "centered_rest"
+      ],
+      "to_states": [
+        "gaze_center"
+      ],
+      "from_mask": 1,
+      "to_mask": 32,
+      "event": "pointer_drag_center",
+      "event_index": 4,
+      "guard": "movement_px>44",
+      "guard_index": 0,
+      "effect": "replace_current_gaze",
+      "effect_index": 0
+    },
+    {
+      "index": 5,
+      "from_states": [
+        "gaze_left",
+        "gaze_up",
+        "gaze_right",
+        "gaze_down",
+        "gaze_center"
+      ],
+      "to_states": [
+        "gaze_left",
+        "gaze_up",
+        "gaze_right",
+        "gaze_down",
+        "gaze_center"
+      ],
+      "from_mask": 62,
+      "to_mask": 62,
+      "event": "pointer_move",
+      "event_index": 5,
+      "guard": "active_pointer",
+      "guard_index": 1,
+      "effect": "replace_current_gaze",
+      "effect_index": 0
+    },
+    {
+      "index": 6,
+      "from_states": [
+        "gaze_left",
+        "gaze_up",
+        "gaze_right",
+        "gaze_down",
+        "gaze_center"
+      ],
+      "to_states": [
+        "centered_rest"
+      ],
+      "from_mask": 62,
+      "to_mask": 1,
+      "event": "pointer_up_or_cancel",
+      "event_index": 6,
+      "guard": "always",
+      "guard_index": 2,
+      "effect": "center_then_resume_story",
+      "effect_index": 1
+    },
+    {
+      "index": 7,
+      "from_states": [
+        "centered_rest"
+      ],
+      "to_states": [
+        "single_tap_response"
+      ],
+      "from_mask": 1,
+      "to_mask": 64,
+      "event": "single_tap_commit",
+      "event_index": 7,
+      "guard": "no_second_tap_for_350_ms",
+      "guard_index": 3,
+      "effect": "one_deterministic_touch_tap_response",
+      "effect_index": 2
+    },
+    {
+      "index": 8,
+      "from_states": [
+        "centered_rest"
+      ],
+      "to_states": [
+        "hold_feedback_50"
+      ],
+      "from_mask": 1,
+      "to_mask": 128,
+      "event": "stationary_pointerdown",
+      "event_index": 8,
+      "guard": "movement_px<=44",
+      "guard_index": 4,
+      "effect": "show_accepted_hold_ornament",
+      "effect_index": 3
+    },
+    {
+      "index": 9,
+      "from_states": [
+        "hold_feedback_50"
+      ],
+      "to_states": [
+        "menu_roots"
+      ],
+      "from_mask": 128,
+      "to_mask": 256,
+      "event": "hold_complete",
+      "event_index": 9,
+      "guard": "elapsed_ms>=700",
+      "guard_index": 5,
+      "effect": "activate_menu_once",
+      "effect_index": 4
+    },
+    {
+      "index": 10,
+      "from_states": [
+        "hold_feedback_50"
+      ],
+      "to_states": [
+        "centered_rest"
+      ],
+      "from_mask": 128,
+      "to_mask": 1,
+      "event": "early_up_cancel_blur_or_drag",
+      "event_index": 10,
+      "guard": "elapsed_ms<700",
+      "guard_index": 6,
+      "effect": "clear_hold_feedback",
+      "effect_index": 5
+    },
+    {
+      "index": 11,
+      "from_states": [
+        "centered_rest"
+      ],
+      "to_states": [
+        "recording_entry"
+      ],
+      "from_mask": 1,
+      "to_mask": 32768,
+      "event": "second_short_tap",
+      "event_index": 11,
+      "guard": "gap_ms<=350 and distance_px<=32",
+      "guard_index": 7,
+      "effect": "activate_recording_once",
+      "effect_index": 6
+    },
+    {
+      "index": 12,
+      "from_states": [
+        "recording_entry"
+      ],
+      "to_states": [
+        "recording_return_rest"
+      ],
+      "from_mask": 32768,
+      "to_mask": 65536,
+      "event": "recording_return",
+      "event_index": 12,
+      "guard": "always",
+      "guard_index": 2,
+      "effect": "clear_transients_and_center",
+      "effect_index": 7
+    },
+    {
+      "index": 13,
+      "from_states": [
+        "menu_roots"
+      ],
+      "to_states": [
+        "menu_voice"
+      ],
+      "from_mask": 256,
+      "to_mask": 512,
+      "event": "select_voice",
+      "event_index": 13,
+      "guard": "always",
+      "guard_index": 2,
+      "effect": "replace_exclusive_menu_surface",
+      "effect_index": 8
+    },
+    {
+      "index": 14,
+      "from_states": [
+        "menu_roots"
+      ],
+      "to_states": [
+        "menu_device"
+      ],
+      "from_mask": 256,
+      "to_mask": 1024,
+      "event": "select_device",
+      "event_index": 14,
+      "guard": "always",
+      "guard_index": 2,
+      "effect": "replace_exclusive_menu_surface",
+      "effect_index": 8
+    },
+    {
+      "index": 15,
+      "from_states": [
+        "menu_roots"
+      ],
+      "to_states": [
+        "menu_connection"
+      ],
+      "from_mask": 256,
+      "to_mask": 2048,
+      "event": "select_connection",
+      "event_index": 15,
+      "guard": "always",
+      "guard_index": 2,
+      "effect": "replace_exclusive_menu_surface",
+      "effect_index": 8
+    },
+    {
+      "index": 16,
+      "from_states": [
+        "menu_roots"
+      ],
+      "to_states": [
+        "menu_preferences"
+      ],
+      "from_mask": 256,
+      "to_mask": 4096,
+      "event": "select_preferences",
+      "event_index": 16,
+      "guard": "always",
+      "guard_index": 2,
+      "effect": "replace_exclusive_menu_surface",
+      "effect_index": 8
+    },
+    {
+      "index": 17,
+      "from_states": [
+        "menu_device"
+      ],
+      "to_states": [
+        "menu_device_ui_assets"
+      ],
+      "from_mask": 1024,
+      "to_mask": 8192,
+      "event": "select_ui_assets",
+      "event_index": 17,
+      "guard": "always",
+      "guard_index": 2,
+      "effect": "replace_with_accepted_v9_face_asset",
+      "effect_index": 9
+    },
+    {
+      "index": 18,
+      "from_states": [
+        "menu_voice",
+        "menu_device",
+        "menu_connection",
+        "menu_preferences"
+      ],
+      "to_states": [
+        "menu_roots"
+      ],
+      "from_mask": 7680,
+      "to_mask": 256,
+      "event": "menu_back",
+      "event_index": 18,
+      "guard": "always",
+      "guard_index": 2,
+      "effect": "replace_exclusive_menu_surface",
+      "effect_index": 8
+    },
+    {
+      "index": 19,
+      "from_states": [
+        "menu_roots",
+        "menu_voice",
+        "menu_device",
+        "menu_connection",
+        "menu_preferences",
+        "menu_device_ui_assets"
+      ],
+      "to_states": [
+        "menu_return_rest"
+      ],
+      "from_mask": 16128,
+      "to_mask": 16384,
+      "event": "menu_return",
+      "event_index": 19,
+      "guard": "always",
+      "guard_index": 2,
+      "effect": "clear_transients_and_center",
+      "effect_index": 7
+    },
+    {
+      "index": 20,
+      "from_states": [
+        "single_tap_response",
+        "menu_return_rest",
+        "recording_return_rest"
+      ],
+      "to_states": [
+        "centered_rest"
+      ],
+      "from_mask": 81984,
+      "to_mask": 1,
+      "event": "settle",
+      "event_index": 20,
+      "guard": "always",
+      "guard_index": 2,
+      "effect": "resume_bounded_story",
+      "effect_index": 10
+    }
+  ],
+  "generated_files": {
+    "companion_visual_asset_pack.h": "2180FE281AFF31C8688BCB290740F898CF7E032C90D97FFE679F535689A814F9",
+    "companion_visual_asset_pack.c": "1EE7BD5DDB210A3C3F90ADB607BA317CF2F00127099B876C9DB5948C7A5D03A0"
+  },
+  "invariants": {
+    "state_identity_count": 17,
+    "state_to_unique_mapping_count": 17,
+    "same_sha_shares_unique_frame": true,
+    "different_sha_never_aliases": true,
+    "transition_targets_exist": true,
+    "frame_reconstruction_expected": "17/17"
+  }
+}

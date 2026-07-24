@@ -1,0 +1,58 @@
+{
+  "schema": "companion.browser-owner-review.v1",
+  "requirement": "COMP-REQ-471",
+  "status": "FAIL_OWNER_BROWSER_EXPERIENCE_RETURN_TO_ITERATION",
+  "selected": "失败",
+  "note": "\r\n",
+  "raw_result": {
+    "path": "docs\\validation\\companion-browser-visual-contract-comp-req-471/owner-review.raw.json",
+    "sha256": "065F5F1E298550DE2FFE170116F5791D19D3156570265DDB0A08FF3C5039FD2B"
+  },
+  "note_artifact": {
+    "path": "docs\\validation\\companion-browser-visual-contract-comp-req-471/owner-review.note.txt",
+    "sha256": "7EB70257593DA06F682A3DDDA54A9D260D4FC514F645237F5CA74B08F8DA61A6"
+  },
+  "machine_result": {
+    "path": "docs\\validation\\companion-browser-visual-contract-comp-req-471/machine-result.json",
+    "sha256": "6A7EDAC4A9624842B154B717C090441E745AC6F65F8E73BC235E8E3C16D11EBD",
+    "status_preserved": "PASS"
+  },
+  "page": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html",
+    "sha256": "BAE21BCCC7BB5FAD4A0922D5E9C42FCB25EF58DD7B8102A7C72656F7B700CF5E",
+    "url": "http://127.0.0.1:4173/docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html"
+  },
+  "prompt_contract": {
+    "instance_count": 1,
+    "title": "Companion 浏览器总体体验验收",
+    "buttons": [
+      "通过",
+      "失败"
+    ],
+    "note_allowed": true,
+    "progress_text": "1/1 浏览器总体体验",
+    "scope_text": "仅验收同一 4173 总体页面中的表情、菜单与录音预览；browser-only，不接触硬件或 production。",
+    "message": "请在已打开的总体页面实际操作：\n1. 单点屏幕，确认表情与眼神朝触点做一次响应且仍在表情页。\n2. 向左、右、上、下连续拖动并回中心，确认始终只有一套脸、眼睛、眼珠和高光，没有旧 gaze 残留。\n3. 原地长按直到进入菜单，依次点击四根菜单、Device > UI assets，再返回表情页。\n4. 双击进入录音预览并返回，再次长按进入菜单，确认各路径可重复。\n5. 判断 200x200 屏幕方向与居中正确，无叠加、无丢眼珠、无 404、无多余调试参数。",
+    "expected_text": "选择通过表示上述 browser-only 总体体验可作为 COMP-REQ-471 的人工回归合同；选择失败会保留机器 PASS 原样并返回上层页面迭代。备注允许留空。"
+  },
+  "execution": {
+    "server_started_by_this_execute": false,
+    "server_pid": null,
+    "preexisting_4173_preserved": true,
+    "browser_opened": true,
+    "canonical_prompt_count": 1,
+    "process_count": 2,
+    "browser_count": 1,
+    "popup_count": 1,
+    "hardware_count": 0,
+    "cleanup": {
+      "server_stop_requested": false,
+      "server_pid_exact_match": false,
+      "server_cleanup_attempted": false,
+      "server_exited_bounded": false,
+      "prompt_sentinel_removed": true,
+      "preexisting_4173_preserved": true
+    }
+  },
+  "next_step": "Return to upper browser/art iteration; do not alter the existing machine PASS."
+}

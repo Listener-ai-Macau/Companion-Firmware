@@ -1,0 +1,80 @@
+{
+  "schema": "companion.browser-owner-review-negative-fixture-result.v1",
+  "requirement": "COMP-REQ-471",
+  "status": "PASS_ALL_OWNER_REVIEW_READINESS_NEGATIVES_FAIL_CLOSED",
+  "fixture_manifest": {
+    "path": "docs/validation/companion-browser-visual-contract-comp-req-471/owner-review-negative-fixtures.json",
+    "sha256": "A25EA8AEA013F7DA668AFFBE481EC8F564C794BEDC08220E91BA706ECDCFBB75"
+  },
+  "fixture_count": 7,
+  "passed_count": 7,
+  "results": [
+    {
+      "id": "page_missing",
+      "expected_error": "required page/artifact file missing: page",
+      "observed_error": "READINESS_FAIL_CLOSED[page_missing]: required page/artifact file missing: page",
+      "failed_closed": true,
+      "expected_error_observed": true,
+      "pass": true
+    },
+    {
+      "id": "page_hash_drift",
+      "expected_error": "artifact SHA mismatch: page",
+      "observed_error": "READINESS_FAIL_CLOSED[page_hash_drift]: artifact SHA mismatch: page",
+      "failed_closed": true,
+      "expected_error_observed": true,
+      "pass": true
+    },
+    {
+      "id": "machine_status_not_pass",
+      "expected_error": "machine status must be PASS",
+      "observed_error": "READINESS_FAIL_CLOSED[machine_status_not_pass]: machine status must be PASS",
+      "failed_closed": true,
+      "expected_error_observed": true,
+      "pass": true
+    },
+    {
+      "id": "frames_artifact_drift",
+      "expected_error": "artifact SHA mismatch: frames_bin",
+      "observed_error": "READINESS_FAIL_CLOSED[frames_artifact_drift]: artifact SHA mismatch: frames_bin",
+      "failed_closed": true,
+      "expected_error_observed": true,
+      "pass": true
+    },
+    {
+      "id": "duplicate_prompt",
+      "expected_error": "duplicate prompt contract detected",
+      "observed_error": "READINESS_FAIL_CLOSED[duplicate_prompt]: duplicate prompt contract detected",
+      "failed_closed": true,
+      "expected_error_observed": true,
+      "pass": true
+    },
+    {
+      "id": "checkonly_process_attempt",
+      "expected_error": "CheckOnly process counter must remain zero behind an early return",
+      "observed_error": "READINESS_FAIL_CLOSED[checkonly_process_attempt]: CheckOnly process counter must remain zero behind an early return",
+      "failed_closed": true,
+      "expected_error_observed": true,
+      "pass": true
+    },
+    {
+      "id": "execute_cleanup_unbounded",
+      "expected_error": "Execute cleanup path must be bounded and exact-PID",
+      "observed_error": "READINESS_FAIL_CLOSED[execute_cleanup_unbounded]: Execute cleanup path must be bounded and exact-PID",
+      "failed_closed": true,
+      "expected_error_observed": true,
+      "pass": true
+    }
+  ],
+  "counters": {
+    "process": 0,
+    "browser": 0,
+    "popup": 0,
+    "hardware": 0,
+    "write": 0
+  },
+  "execute_performed": false,
+  "owner_result_written": false,
+  "evidence_artifact_write_count": 1,
+  "evidence_artifact_write_excluded_from_product_write_counter": true
+}

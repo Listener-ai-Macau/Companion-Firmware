@@ -1,15 +1,43 @@
 {
+  "black_without_white_rail_negative": {
+    "refused_before_hardware": true,
+    "returncode": 1
+  },
+  "checkonly_preserves_completed_evidence": {
+    "artifact_bytes_unchanged": true,
+    "refused_before_commands": true,
+    "returncode": 1
+  },
   "claim_scope": "static_and_stubbed_recovery_no_hardware_claim",
   "diagnostic_image_contract": {
     "build_wrapper": "tools/build_nucleo_bringup.ps1",
+    "isolated_white_rail_probe_profile": true,
     "official_mode_enables_single_plane_path": true,
     "official_mode_enables_ssd1681_driver": true,
     "panel_target": "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
     "runtime_marker_records_pattern_and_official_path": true
   },
-  "execute_without_lock_negative": {
+  "execute_missing_replacement_display_fpc_negative": {
     "refused_before_hardware": true,
     "returncode": 1
+  },
+  "execute_with_lock_missing_replacement_display_fpc_negative": {
+    "refused_before_hardware": true,
+    "returncode": 1
+  },
+  "hardware_lock_contract": {
+    "child_grant_is_recorded": true,
+    "flash_child_imports_and_uses_helper": true,
+    "helper": "tools/companion_wb55_lock.ps1",
+    "helper_exists": true,
+    "host_mutex_test_passed": true,
+    "host_mutex_test_returncode": 0,
+    "legacy_boolean_is_not_authority": true,
+    "mutex_spans_step_sequence_and_restore": true,
+    "runner_acquires_before_steps": true,
+    "runner_does_not_forward_legacy_boolean_to_serial_child": true,
+    "runner_imports_helper": true,
+    "serial_child_imports_and_uses_helper": true
   },
   "operator_pass_selftest": {
     "diagnostic_left_installed": false,
@@ -20,13 +48,13 @@
       "invoked": true,
       "message": "请观察 GDEY0154D67-T03：整个有效显示区域应稳定、均匀地呈纯白色。不要把黑白颗粒、局部脏块、旧图残留或没有变化判为通过。",
       "note": "SELFTEST operator selection: 通过",
-      "output_path": ".cache/validation/wb55-fts02-operator-pass-selftest/selftest/operator-prompt-observation.txt",
+      "output_path": ".cache/validation/wb55-display-fpc-operator-pass-selftest/selftest/operator-prompt-observation.txt",
       "progress_text": "1/2（本次 1/1）",
       "required": true,
-      "scope_text": "FTS02 基础恢复共 2 项；当前只验纯白画面。机器已确认官方单平面路径和 BUSY 完成。",
+      "scope_text": "更换显示 FPC 后的官方复测共 2 项；当前只验纯白画面。机器已确认官方单平面路径和 BUSY 完成。",
       "selected": "通过",
       "style": "aiw_operator_prompt_v1",
-      "title": "Companion FTS02 纯白恢复验收"
+      "title": "Companion 屏幕纯白复测验收"
     },
     "report_status": "PASS_MACHINE_AND_VISIBLE_FRAME_NORMAL_RESTORED_PENDING_VOLTAGE_RAILS",
     "result_ids": [
@@ -47,7 +75,9 @@
     "canonical_aiw_command_present": true,
     "durable_output_path_present": true,
     "four_result_buttons_present": true,
+    "nonempty_operator_observation_required": true,
     "normal_restore_after_review_present": true,
+    "operator_observation_template_present": true,
     "prompt_after_machine_steps": true,
     "review_style_present": true
   },
@@ -60,13 +90,13 @@
       "invoked": true,
       "message": "请观察 GDEY0154D67-T03：整个有效显示区域应稳定、均匀地呈纯白色。不要把黑白颗粒、局部脏块、旧图残留或没有变化判为通过。",
       "note": "SELFTEST operator selection: 失败",
-      "output_path": ".cache/validation/wb55-fts02-operator-reject-selftest/selftest/operator-prompt-observation.txt",
+      "output_path": ".cache/validation/wb55-display-fpc-operator-reject-selftest/selftest/operator-prompt-observation.txt",
       "progress_text": "1/2（本次 1/1）",
       "required": true,
-      "scope_text": "FTS02 基础恢复共 2 项；当前只验纯白画面。机器已确认官方单平面路径和 BUSY 完成。",
+      "scope_text": "更换显示 FPC 后的官方复测共 2 项；当前只验纯白画面。机器已确认官方单平面路径和 BUSY 完成。",
       "selected": "失败",
       "style": "aiw_operator_prompt_v1",
-      "title": "Companion FTS02 纯白恢复验收"
+      "title": "Companion 屏幕纯白复测验收"
     },
     "report_status": "FAIL",
     "result_ids": [
@@ -85,8 +115,8 @@
     "stdout_has_recovery": true
   },
   "operator_sequence": [
-    "Run White under Companion-WB55 lock, then record one focused visible-frame decision.",
-    "Only after White PASS, run Black and record one focused visible-frame decision.",
+    "Run White only after the versioned replacement-display-FPC evidence passes; the runner holds the Companion-WB55 firmware mutex across flash, capture, review and restore.",
+    "Only after White rail evidence passes, run Black and record one focused visible-frame decision.",
     "Run RestoreNormal before any product interaction or runtime-resource acceptance.",
     "If either visible frame fails, measure PREVGH1/PREVGL1 during that verified refresh and stop software changes."
   ],
@@ -98,8 +128,22 @@
   "preparation_commands": [
     "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1 -EpaperSsd1681Bringup -Force",
     "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1 -EpaperSsd1681OfficialFullDiagnostic -EpaperSsd1681DiagnosticPattern white -Force",
-    "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1 -EpaperSsd1681OfficialFullDiagnostic -EpaperSsd1681DiagnosticPattern black -Force"
+    "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1 -EpaperSsd1681OfficialFullDiagnostic -EpaperSsd1681DiagnosticPattern black -Force",
+    "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1 -EpaperSsd1681OfficialWhiteRailProbe -Force"
   ],
+  "prerequisite_guard_contract": {
+    "black_execute_requires_white_rail": true,
+    "checkonly_preserves_completed_evidence": true,
+    "replacement_display_fpc_schema_guard_present": true,
+    "vendor_source_audit_guard_present": true,
+    "white_execute_requires_replacement_display_fpc": true,
+    "white_rail_schema_guard_present": true
+  },
+  "rail_measurement_parser_selftest": {
+    "passed": true,
+    "path": "tools/verify_wb55_official_full_rail_measurement.py",
+    "returncode": 0
+  },
   "recovery_selftest": {
     "claim_scope": "stubbed_failure_recovery_no_hardware_claim",
     "normal_firmware_restored": true,
@@ -119,22 +163,42 @@
   },
   "runner": "tools/run_wb55_screen_hardware_recovery.ps1",
   "schema_id": "companion.screen.wb55_hardware_recovery_runner.v1",
+  "source_audit_contract": {
+    "machine_status": "PASS_AUDIT_COMPLETE",
+    "path": "docs/validation/companion-gdey0154d67-t03-vendor-1s-source-audit-20260720.json",
+    "production_lut_reference_absent": true,
+    "promotion_status": "NO_GO_PANEL_IDENTITY_UNPROVEN",
+    "runner_binds_parser_audit_argument": true,
+    "runner_rehashes_audited_sources_before_execute": true,
+    "schema_id": "companion.gdey0154d67_t03.vendor_1s_source_audit.v1"
+  },
   "stages": {
     "black": {
       "claim_scope": "preflight_only_no_hardware_claim",
-      "image": ".cache/validation/wb55-fts02-recovery-preflight/images/black.hex",
+      "image": ".cache/validation/wb55-display-fpc-recovery-preflight/images/black.hex",
       "operator_review": {
         "expected_text": "通过标准：全屏纯黑、无黑白颗粒、无明显旧图残留，并且确实发生过本次刷新。任何异常请选择失败并完整备注。",
         "invoked": false,
         "message": "请观察 GDEY0154D67-T03：整个有效显示区域应稳定、均匀地呈纯黑色。不要把黑白颗粒、局部灰白、旧图残留或没有变化判为通过。",
         "note": null,
-        "output_path": ".cache/validation/wb55-fts02-recovery-preflight/black/operator-prompt-observation.txt",
+        "output_path": ".cache/validation/wb55-display-fpc-recovery-preflight/black/operator-prompt-observation.txt",
         "progress_text": "2/2（本次 1/1）",
         "required": true,
-        "scope_text": "FTS02 基础恢复共 2 项；当前只验纯黑画面。机器已确认官方单平面路径和 BUSY 完成。",
+        "scope_text": "更换显示 FPC 后的官方复测共 2 项；当前只验纯黑画面。机器已确认官方单平面路径和 BUSY 完成。",
         "selected": null,
         "style": "aiw_operator_prompt_v1",
-        "title": "Companion FTS02 纯黑恢复验收"
+        "title": "Companion 屏幕纯黑复测验收"
+      },
+      "prerequisites": {
+        "post_white_rail_path": null,
+        "post_white_rail_required": true,
+        "post_white_rail_validated": false,
+        "replacement_display_fpc_path": null,
+        "replacement_display_fpc_required": false,
+        "replacement_display_fpc_validated": false,
+        "vendor_source_audit_path": "docs/validation/companion-gdey0154d67-t03-vendor-1s-source-audit-20260720.json",
+        "vendor_source_audit_required": true,
+        "vendor_source_audit_validated": false
       },
       "report_status": "DRY-RUN",
       "result_count": 0,
@@ -142,6 +206,8 @@
       "safety": {
         "diagnostic_failure_restores_normal": true,
         "execute_requires_companion_wb55_lock": true,
+        "execute_uses_firmware_owned_exclusive_mutex": true,
+        "legacy_workflow_lock_boolean_is_not_authority": true,
         "machine_pass_is_not_visual_or_voltage_acceptance": true,
         "successful_diagnostic_waits_for_focused_operator_visual_result": true,
         "successful_review_restores_normal_firmware": true
@@ -154,7 +220,7 @@
     },
     "restorenormal": {
       "claim_scope": "preflight_only_no_hardware_claim",
-      "image": ".cache/validation/wb55-fts02-recovery-preflight/images/normal.hex",
+      "image": ".cache/validation/wb55-display-fpc-recovery-preflight/images/normal.hex",
       "operator_review": {
         "expected_text": null,
         "invoked": false,
@@ -168,12 +234,25 @@
         "style": null,
         "title": null
       },
+      "prerequisites": {
+        "post_white_rail_path": null,
+        "post_white_rail_required": false,
+        "post_white_rail_validated": false,
+        "replacement_display_fpc_path": null,
+        "replacement_display_fpc_required": false,
+        "replacement_display_fpc_validated": false,
+        "vendor_source_audit_path": null,
+        "vendor_source_audit_required": false,
+        "vendor_source_audit_validated": false
+      },
       "report_status": "DRY-RUN",
       "result_count": 0,
       "returncode": 0,
       "safety": {
         "diagnostic_failure_restores_normal": true,
         "execute_requires_companion_wb55_lock": true,
+        "execute_uses_firmware_owned_exclusive_mutex": true,
+        "legacy_workflow_lock_boolean_is_not_authority": true,
         "machine_pass_is_not_visual_or_voltage_acceptance": true,
         "successful_diagnostic_waits_for_focused_operator_visual_result": true,
         "successful_review_restores_normal_firmware": true
@@ -184,19 +263,30 @@
     },
     "white": {
       "claim_scope": "preflight_only_no_hardware_claim",
-      "image": ".cache/validation/wb55-fts02-recovery-preflight/images/white.hex",
+      "image": ".cache/validation/wb55-display-fpc-recovery-preflight/images/white.hex",
       "operator_review": {
         "expected_text": "通过标准：全屏纯白、无黑白颗粒、无明显旧图残留，并且确实发生过本次刷新。任何异常请选择失败并完整备注。",
         "invoked": false,
         "message": "请观察 GDEY0154D67-T03：整个有效显示区域应稳定、均匀地呈纯白色。不要把黑白颗粒、局部脏块、旧图残留或没有变化判为通过。",
         "note": null,
-        "output_path": ".cache/validation/wb55-fts02-recovery-preflight/white/operator-prompt-observation.txt",
+        "output_path": ".cache/validation/wb55-display-fpc-recovery-preflight/white/operator-prompt-observation.txt",
         "progress_text": "1/2（本次 1/1）",
         "required": true,
-        "scope_text": "FTS02 基础恢复共 2 项；当前只验纯白画面。机器已确认官方单平面路径和 BUSY 完成。",
+        "scope_text": "更换显示 FPC 后的官方复测共 2 项；当前只验纯白画面。机器已确认官方单平面路径和 BUSY 完成。",
         "selected": null,
         "style": "aiw_operator_prompt_v1",
-        "title": "Companion FTS02 纯白恢复验收"
+        "title": "Companion 屏幕纯白复测验收"
+      },
+      "prerequisites": {
+        "post_white_rail_path": null,
+        "post_white_rail_required": false,
+        "post_white_rail_validated": false,
+        "replacement_display_fpc_path": "docs/validation/companion-screen-wb55-replacement-fpc-evidence-20260720.json",
+        "replacement_display_fpc_required": true,
+        "replacement_display_fpc_validated": false,
+        "vendor_source_audit_path": "docs/validation/companion-gdey0154d67-t03-vendor-1s-source-audit-20260720.json",
+        "vendor_source_audit_required": true,
+        "vendor_source_audit_validated": false
       },
       "report_status": "DRY-RUN",
       "result_count": 0,
@@ -204,6 +294,8 @@
       "safety": {
         "diagnostic_failure_restores_normal": true,
         "execute_requires_companion_wb55_lock": true,
+        "execute_uses_firmware_owned_exclusive_mutex": true,
+        "legacy_workflow_lock_boolean_is_not_authority": true,
         "machine_pass_is_not_visual_or_voltage_acceptance": true,
         "successful_diagnostic_waits_for_focused_operator_visual_result": true,
         "successful_review_restores_normal_firmware": true
@@ -218,6 +310,8 @@
   "status": "PASS_MACHINE_PREFLIGHT",
   "validation_commands": [
     "python .\\tools\\verify_wb55_official_full_diagnostic_log.py --self-test",
+    "python .\\tools\\verify_wb55_official_full_rail_measurement.py --self-test",
+    "pwsh -NoProfile -File .\\tools\\test_companion_wb55_lock_host.ps1",
     "python .\\tools\\verify_wb55_screen_hardware_recovery_runner.py",
     "pwsh -NoProfile -File .\\tools\\run_wb55_screen_hardware_recovery.ps1 -CheckOnly -Stage White",
     "pwsh -NoProfile -File .\\tools\\run_wb55_screen_hardware_recovery.ps1 -CheckOnly -Stage Black",

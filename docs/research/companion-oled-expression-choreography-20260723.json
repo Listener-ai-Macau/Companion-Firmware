@@ -1,0 +1,50 @@
+{
+  "report": "docs/research/companion-oled-expression-choreography-20260723.md",
+  "researcher": "Luna",
+  "access_date": "2026-07-23",
+  "scope": "联网 primary-source research and new disjoint report only; no product, art, driver, menu, production, or hardware changes",
+  "requirements": ["COMP-REQ-405", "COMP-REQ-406", "COMP-REQ-407"],
+  "constraints": {
+    "display": "200x200 1bpp",
+    "cadence_ms_approx": 470,
+    "assets": "locked-V9 source components only",
+    "single_complete_expression": true,
+    "preserve_white_eye_highlight_and_sparkle": true,
+    "randomness": false,
+    "physical_run_authorized": false
+  },
+  "sources": [
+    {"id":"roboeyes","title":"FluxGarage RoboEyes","url":"https://github.com/FluxGarage/RoboEyes","source_type":"official author open-source repository","accessed":"2026-07-23","evidence":"Mood, position, blink, idle, oneshot animations, current/next geometry and max framerate update are documented/source-visible.","oled_dependency":"50 fps continuous interpolation and random interval variation","companion_transfer":"semantic targets, finite channels, fixed deterministic keyframes"},
+    {"id":"uncanny_eyes_repo","title":"Adafruit Uncanny_Eyes","url":"https://github.com/adafruit/Uncanny_Eyes","source_type":"manufacturer official repository","accessed":"2026-07-23","evidence":"Official repo supports 1.5in OLED/1.44in TFT, generated graphics headers and ARM-specific rendering path.","oled_dependency":"high-speed ARM/SPI and per-frame graphics","companion_transfer":"pre-generated component/frame authoring, not color or continuous threshold animation"},
+    {"id":"uncanny_eyes_guide","title":"Adafruit Electronic Animated Eyes guide","url":"https://learn.adafruit.com/animated-electronic-eyes?view=all","source_type":"manufacturer official documentation","accessed":"2026-07-23","evidence":"Documents OLED/TFT hardware, optional joystick/button/photocell inputs and eyelid threshold-based blink rendering.","oled_dependency":"threshold sampling and high refresh","companion_transfer":"input-to-target mapping and legal component authoring"},
+    {"id":"misty","title":"Misty II Interaction System","url":"https://docs.mistyrobotics.com/misty-ii/interaction-system/overview/","source_type":"official manufacturer/SDK documentation","accessed":"2026-07-23","evidence":"Action language includes PAUSE, STOP, HALT, RESET-LAYERS, RESET-EYES, IMAGE, VIDEO, LED and head commands.","oled_dependency":"none for scheduling concept; display is color/layered","companion_transfer":"bounded scripts, cleanup, interruption and recovery semantics"},
+    {"id":"icat","title":"Gaze behaviour, believability, likability and the iCat","url":"https://link.springer.com/article/10.1007/s00146-009-0198-1","source_type":"original research paper","accessed":"2026-07-23","evidence":"10 fps fixed animation engine, merge/fade channels, gaze target input and modular gaze subsystems for gaze shift, pursuit, VOR and vergence.","oled_dependency":"10 fps actuator rendering and continuous movement models","companion_transfer":"state-vector architecture, channel separation, target-to-settle scheduling"},
+    {"id":"anticipatory_gaze","title":"I Reach Faster When I See You Look","url":"https://pmc.ncbi.nlm.nih.gov/articles/PMC3342577/","source_type":"original HRI research paper","accessed":"2026-07-23","evidence":"Full robot gaze preceded speech and produced anticipatory human action; eye occlusion changed timing and required waiting for head motion.","oled_dependency":"none as a principle","companion_transfer":"gaze lead before semantic peak, with fixed measurable ordering"},
+    {"id":"turn_taking","title":"Analysis of Timing and Effect of Visual Cue on Turn-Taking in HRI","url":"https://www.jstage.jst.go.jp/article/jrobomech/34/1/34_55/_pdf/-char/ja","source_type":"original research paper","accessed":"2026-07-23","evidence":"Direct study of visual cue timing, gaze/face cue sequencing and turn-taking risk when timing is missed.","oled_dependency":"none as a principle","companion_transfer":"fixed cue order and hold windows, tested in discrete traces"}
+  ],
+  "r6_local_evidence": {
+    "registry": "docs/companion_product_requirements.md",
+    "static_artifact": "docs/validation/companion-ssd1681-r12-v22-calm-curious-warm-sampler-r6-static-20260723.json",
+    "static_status": "PASS",
+    "controller_window_artifact": "docs/validation/companion-r12-controller-window-r6-artifact-20260723.json",
+    "controller_window_status": "PASS_OFFLINE_CONTROLLER_WINDOW",
+    "driver_sha256": "92C3302096CBD826F74952BEA976C91BD2EB9521BBEFB530CCC997AFE99F0FB5",
+    "hex_sha256": "25E826AE96E4D4242E2CD5E936D0F337F51DD99EACC63D222D5592E763249515",
+    "elf_sha256": "EAFDF99C968C779AFAAE952BE2E2B5325AC0BA9BC723BEAA71A994D5713E1916",
+    "corridor_bytes": 1908,
+    "protected_sequence": ["0x24", "0xCF", "0x20", "BUSY"],
+    "mapping": "controller_y=199-logical_y",
+    "evidence_summary": "R6 accepted clean-refresh baseline and offline controller-window/pixel-parity artifacts are treated as immutable regression constraints; this report did not edit them."
+  },
+  "ranked_rules": [
+    "single complete 200x200 1bpp frame per tick",
+    "locked-V9 components only; preserve white highlight and sparkle",
+    "fixed lead/attack/hold/settle/recovery state graph",
+    "gaze lead precedes semantic peak",
+    "bounded micro-action channels with no transient residue",
+    "fixed priority: cleanup/safety > touch > semantic emotion > idle",
+    "deterministic idle with no randomness",
+    "R6 lower-driver and offline parity invariants remain protected"
+  ],
+  "non_goals": ["automatic rule adoption", "registry edits", "physical run", "new face geometry", "product or hardware changes"]
+}

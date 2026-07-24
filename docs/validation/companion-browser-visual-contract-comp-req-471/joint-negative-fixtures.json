@@ -1,0 +1,136 @@
+{
+  "compatibility_auditor": {
+    "path": "tools/faraday_upper_art/audit_companion_upper_lower_compatibility_comp_req_474.py",
+    "sha256": "2623ADF6FF6112C65D44413388F13D17FD6FA3D28BF1ACEA70DA510E13C62C19"
+  },
+  "fixtures": [
+    {
+      "commit": "a96368d5859c54d3eaee4c9846386c6091dc73a0",
+      "expected_failed_checks": [
+        "lower_mr.file_exists_and_bounded"
+      ],
+      "id": "missing_lower_mr",
+      "machine_ready_path": "C:/Users/Billy/Desktop/Denzic/Companion/Companion-Firmware/docs/validation/companion-browser-visual-contract-comp-req-471/joint-negative-fixtures/lower-mr/missing-lower-machine-ready.json",
+      "machine_ready_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    {
+      "commit": "c1733e4e40bb3374b4ee2ec81a7057eb90a03c10",
+      "expected_failed_checks": [
+        "compatibility.full_21_59_10"
+      ],
+      "id": "legacy_c173",
+      "machine_ready_path": "C:/Users/Billy/Desktop/Denzic/Companion/Companion-Firmware/docs/validation/companion-browser-visual-contract-comp-req-471/joint-negative-fixtures/lower-mr/missing-lower-machine-ready.json",
+      "machine_ready_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    {
+      "commit": "c692339edb3182f30e651161afdc48885cea2ef4",
+      "expected_failed_checks": [
+        "compatibility.full_21_59_10"
+      ],
+      "id": "legacy_c692",
+      "machine_ready_path": "C:/Users/Billy/Desktop/Denzic/Companion/Companion-Firmware/docs/validation/companion-browser-visual-contract-comp-req-471/joint-negative-fixtures/lower-mr/missing-lower-machine-ready.json",
+      "machine_ready_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    {
+      "commit": "b9a2c5aea409cdcd3a88afdc19373ef6f3dd4160",
+      "expected_failed_checks": [
+        "compatibility.full_21_59_10"
+      ],
+      "id": "legacy_b9",
+      "machine_ready_path": "C:/Users/Billy/Desktop/Denzic/Companion/Companion-Firmware/docs/validation/companion-browser-visual-contract-comp-req-471/joint-negative-fixtures/lower-mr/missing-lower-machine-ready.json",
+      "machine_ready_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    {
+      "commit": "a96368d5859c54d3eaee4c9846386c6091dc73a0",
+      "expected_failed_checks": [
+        "lower_mr.hash_exact"
+      ],
+      "id": "lower_mr_hash_drift",
+      "machine_ready_path": "C:/Users/Billy/Desktop/Denzic/Companion/.cache/comp-req-466-r7-runtime/.cache/validation/comp-req-472-visual-runtime/MACHINE_READY.json",
+      "machine_ready_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    {
+      "commit": "a96368d5859c54d3eaee4c9846386c6091dc73a0",
+      "expected_failed_checks": [
+        "compatibility.full_21_59_10",
+        "lower_claims_match_observed_compatibility"
+      ],
+      "id": "forged_pass_counts",
+      "machine_ready_path": "C:/Users/Billy/Desktop/Denzic/Companion/Companion-Firmware/docs/validation/companion-browser-visual-contract-comp-req-471/joint-negative-fixtures/lower-mr/synthetic-b9-pass-claim.json",
+      "machine_ready_sha256": "19549261259F6DE7F19650EE9AF967EC16A72C231F5F013C4C6F0D1269F35539"
+    },
+    {
+      "commit": "a96368d5859c54d3eaee4c9846386c6091dc73a0",
+      "expected_failed_checks": [
+        "lower_mr.all_sources_recomputed"
+      ],
+      "id": "source_hash_drift",
+      "machine_ready_path": "C:/Users/Billy/Desktop/Denzic/Companion/Companion-Firmware/docs/validation/companion-browser-visual-contract-comp-req-471/joint-negative-fixtures/lower-mr/source-hash-drift.json",
+      "machine_ready_sha256": "A909596ED203C9F428DF79D198C45104847C2A57D6808898224B82FBE943FAAE"
+    },
+    {
+      "commit": "a96368d5859c54d3eaee4c9846386c6091dc73a0",
+      "expected_failed_checks": [
+        "lower_mr.hex_hashes_explicit_match"
+      ],
+      "id": "artifact_hash_drift",
+      "machine_ready_path": "C:/Users/Billy/Desktop/Denzic/Companion/Companion-Firmware/docs/validation/companion-browser-visual-contract-comp-req-471/joint-negative-fixtures/lower-mr/artifact-hash-drift.json",
+      "machine_ready_sha256": "A93E64CF8D367D94C322D52FBDFEC13466296E7CA88C84F2CCD500109EEBDBC6"
+    },
+    {
+      "commit": "a96368d5859c54d3eaee4c9846386c6091dc73a0",
+      "expected_failed_checks": [
+        "lower_mr.schema_exact"
+      ],
+      "id": "schema_drift",
+      "machine_ready_path": "C:/Users/Billy/Desktop/Denzic/Companion/Companion-Firmware/docs/validation/companion-browser-visual-contract-comp-req-471/joint-negative-fixtures/lower-mr/schema-drift.json",
+      "machine_ready_sha256": "10EAE7F5875168C739B37EAA2B86AB8C67632E29F03E8BB969CD3BEA026F3E9A"
+    },
+    {
+      "commit": "a96368d5859c54d3eaee4c9846386c6091dc73a0",
+      "expected_failed_checks": [
+        "lower_mr.timing_within_limits",
+        "lower_mr.protected_hashes_exact"
+      ],
+      "id": "timing_protected_drift",
+      "machine_ready_path": "C:/Users/Billy/Desktop/Denzic/Companion/Companion-Firmware/docs/validation/companion-browser-visual-contract-comp-req-471/joint-negative-fixtures/lower-mr/timing-protected-drift.json",
+      "machine_ready_sha256": "17C8F4A82CF819C66AA3656925F126AF4543E65D51EB3399A28482FF1934B8B5"
+    },
+    {
+      "commit": "a96368d5859c54d3eaee4c9846386c6091dc73a0",
+      "expected_failed_checks": [
+        "lower_mr.side_effects_zero"
+      ],
+      "id": "nonzero_side_effect",
+      "machine_ready_path": "C:/Users/Billy/Desktop/Denzic/Companion/Companion-Firmware/docs/validation/companion-browser-visual-contract-comp-req-471/joint-negative-fixtures/lower-mr/nonzero-side-effect.json",
+      "machine_ready_sha256": "AA85CF3B1E4A541AB533F4049D5BC5637E9028692929591ED6CE365A9322152D"
+    },
+    {
+      "commit": "a96368d5859c54d3eaee4c9846386c6091dc73a0",
+      "expected_failed_checks": [
+        "lower_mr.arm_modes_exact_0_1",
+        "lower_mr.comp_req_478_fixture_contract"
+      ],
+      "id": "comp_req_478_drift",
+      "machine_ready_path": "C:/Users/Billy/Desktop/Denzic/Companion/Companion-Firmware/docs/validation/companion-browser-visual-contract-comp-req-471/joint-negative-fixtures/lower-mr/comp-req-478-drift.json",
+      "machine_ready_sha256": "AF4FF9BC2ED8404812F237C6E70C451445379909D92A8E0C0FC1AB9AC472C642"
+    }
+  ],
+  "lower": {
+    "actual_machine_ready": "C:/Users/Billy/Desktop/Denzic/Companion/.cache/comp-req-466-r7-runtime/.cache/validation/comp-req-472-visual-runtime/MACHINE_READY.json",
+    "claimed_machine_ready_match": false,
+    "claimed_machine_ready_sha256": "405F0A9F53597CA4E3BE225149A3117B5A311FB229CB87C950B9DF12A2FD8A9B",
+    "commit": "a96368d5859c54d3eaee4c9846386c6091dc73a0",
+    "observed_machine_ready_sha256": "2F747B6E15A1ED8247B5FDBE54654F99ABE414434BD280403B74F1C5804B0C55",
+    "root": "C:/Users/Billy/Desktop/Denzic/Companion/.cache/comp-req-466-r7-runtime"
+  },
+  "requirements": [
+    "COMP-REQ-479",
+    "COMP-REQ-480"
+  ],
+  "runner": {
+    "path": "tools/faraday_upper_art/run_companion_joint_offline_gate_comp_req_479.py",
+    "sha256": "BE3884C261439FDF0BFEE9E7758CDA282226A502D23BF702644B8DDA4387A734"
+  },
+  "schema": "companion.joint-offline-negative-fixtures.v1"
+}

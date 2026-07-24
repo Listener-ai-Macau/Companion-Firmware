@@ -1,0 +1,36 @@
+{
+  "status": "PASS",
+  "url": "http://127.0.0.1:4173/docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html",
+  "checks": {
+    "screen_200x200": true,
+    "unique_gaze_nodes": true,
+    "gaze_right": true,
+    "gaze_left": true,
+    "gaze_up": true,
+    "gaze_down": true,
+    "gaze_center": true,
+    "single_tap_stays_expression": true,
+    "half_hold_no_route": true,
+    "drag_no_route": true,
+    "hold_enters_menu_once": true,
+    "menu_single_screen": true,
+    "device_ui_assets_same_url": true,
+    "menu_return_expression": true,
+    "mouse_doubletap_recording": true,
+    "recording_return_then_hold": true,
+    "touch_doubletap_recording": true,
+    "touch_single_stays_expression": true,
+    "touch_drag_no_recording": true,
+    "no_404": true
+  },
+  "screenshots": [
+    "interaction-gaze-right.png",
+    "interaction-gaze-left.png",
+    "interaction-gaze-up.png",
+    "interaction-gaze-down.png",
+    "interaction-gaze-center.png",
+    "interaction-menu-desktop.png",
+    "interaction-mobile.png"
+  ],
+  "failures": []
+}

@@ -1,0 +1,216 @@
+{
+  "schema": "companion.browser-owner-review-checkonly.v1",
+  "requirement": "COMP-REQ-471",
+  "status": "PASS_READY_FOR_OWNER_BROWSER_REVIEW_CHECKONLY_NO_EXECUTE",
+  "mode": "CheckOnly",
+  "default_off": true,
+  "execute_performed": false,
+  "readiness": {
+    "schema": "companion.browser-owner-review-readiness.v1",
+    "requirement": "COMP-REQ-471",
+    "status": "PASS_READY_FOR_OWNER_BROWSER_REVIEW_CHECKONLY_NO_EXECUTE",
+    "mode": "CheckOnly",
+    "default_off": true,
+    "fixture_id": null,
+    "identities": [
+      {
+        "id": "page",
+        "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html",
+        "expected_sha256": "BAE21BCCC7BB5FAD4A0922D5E9C42FCB25EF58DD7B8102A7C72656F7B700CF5E",
+        "observed_sha256": "BAE21BCCC7BB5FAD4A0922D5E9C42FCB25EF58DD7B8102A7C72656F7B700CF5E",
+        "exists": true,
+        "match": true
+      },
+      {
+        "id": "machine_result",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/machine-result.json",
+        "expected_sha256": "6A7EDAC4A9624842B154B717C090441E745AC6F65F8E73BC235E8E3C16D11EBD",
+        "observed_sha256": "6A7EDAC4A9624842B154B717C090441E745AC6F65F8E73BC235E8E3C16D11EBD",
+        "exists": true,
+        "match": true
+      },
+      {
+        "id": "measured_diagnostic",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/measured-diagnostic.json",
+        "expected_sha256": "652C33E7BFB155974FD369DB069800E14595C26F5F1D7B6A7322ED30320CCA76",
+        "observed_sha256": "652C33E7BFB155974FD369DB069800E14595C26F5F1D7B6A7322ED30320CCA76",
+        "exists": true,
+        "match": true
+      },
+      {
+        "id": "capture_manifest",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/browser-capture/capture-manifest.json",
+        "expected_sha256": "1BEA10C8B988F72F48886012859F1D6C8801B15AFA18E89171235B7E33D2C815",
+        "observed_sha256": "1BEA10C8B988F72F48886012859F1D6C8801B15AFA18E89171235B7E33D2C815",
+        "exists": true,
+        "match": true
+      },
+      {
+        "id": "pointer_result",
+        "path": "docs/validation/companion-browser-visual-contract-comp-req-471/pointer-contract/touch-pointer-contract-result.json",
+        "expected_sha256": "082344F03017DC54E0A385E5CFF8BB7F4031889A602476FFD2589B130CFFE09F",
+        "observed_sha256": "082344F03017DC54E0A385E5CFF8BB7F4031889A602476FFD2589B130CFFE09F",
+        "exists": true,
+        "match": true
+      },
+      {
+        "id": "c_pack_result",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/c-asset-pack-machine-result.json",
+        "expected_sha256": "17B71D7AC5FC777FEB301EED39E70431CC65BEFF8CC25FD7EEC613206280CD1E",
+        "observed_sha256": "17B71D7AC5FC777FEB301EED39E70431CC65BEFF8CC25FD7EEC613206280CD1E",
+        "exists": true,
+        "match": true
+      },
+      {
+        "id": "frames_bin",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/frames.bin",
+        "expected_sha256": "D4DA2FCA6863C1B8F5DD28D70566712DCD91AB7383CA486735DFD253F7361E6D",
+        "observed_sha256": "D4DA2FCA6863C1B8F5DD28D70566712DCD91AB7383CA486735DFD253F7361E6D",
+        "exists": true,
+        "match": true
+      },
+      {
+        "id": "visual_contract",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/visual-contract.json",
+        "expected_sha256": "E5C6B30D8BF317FC8321D82E087D3B46552B4523FD8B67FFF3E6ABA89AAE4260",
+        "observed_sha256": "E5C6B30D8BF317FC8321D82E087D3B46552B4523FD8B67FFF3E6ABA89AAE4260",
+        "exists": true,
+        "match": true
+      },
+      {
+        "id": "state_transitions",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/state-transitions.json",
+        "expected_sha256": "442F5A9E87988A3F8BE15ECC2A2500CA64537FA2B6DBD96F6FFDDD070DD7F918",
+        "observed_sha256": "442F5A9E87988A3F8BE15ECC2A2500CA64537FA2B6DBD96F6FFDDD070DD7F918",
+        "exists": true,
+        "match": true
+      },
+      {
+        "id": "handoff_manifest",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/handoff-manifest.json",
+        "expected_sha256": "E89E3E40EF9DE9466CFBC9664AD16E49E36747F8A600966A6CF0D640EFED1468",
+        "observed_sha256": "E89E3E40EF9DE9466CFBC9664AD16E49E36747F8A600966A6CF0D640EFED1468",
+        "exists": true,
+        "match": true
+      },
+      {
+        "id": "c_pack_manifest",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/c-asset-pack-manifest.json",
+        "expected_sha256": "0F0FE7B91707F20CF942A0B994BD776B69D404A004D9985B98EC6838CA752DBA",
+        "observed_sha256": "0F0FE7B91707F20CF942A0B994BD776B69D404A004D9985B98EC6838CA752DBA",
+        "exists": true,
+        "match": true
+      },
+      {
+        "id": "c_pack_header",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/companion_visual_asset_pack.h",
+        "expected_sha256": "2180FE281AFF31C8688BCB290740F898CF7E032C90D97FFE679F535689A814F9",
+        "observed_sha256": "2180FE281AFF31C8688BCB290740F898CF7E032C90D97FFE679F535689A814F9",
+        "exists": true,
+        "match": true
+      },
+      {
+        "id": "c_pack_source",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/companion_visual_asset_pack.c",
+        "expected_sha256": "1EE7BD5DDB210A3C3F90ADB607BA317CF2F00127099B876C9DB5948C7A5D03A0",
+        "observed_sha256": "1EE7BD5DDB210A3C3F90ADB607BA317CF2F00127099B876C9DB5948C7A5D03A0",
+        "exists": true,
+        "match": true
+      },
+      {
+        "id": "c_pack_handoff",
+        "path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/c-asset-pack-handoff.json",
+        "expected_sha256": "982B582FAEDDF956AF8557A9A333362A0D91DD7CA92FB3E0E7A37FC3D79F14D9",
+        "observed_sha256": "982B582FAEDDF956AF8557A9A333362A0D91DD7CA92FB3E0E7A37FC3D79F14D9",
+        "exists": true,
+        "match": true
+      }
+    ],
+    "machine": {
+      "result_status": "PASS",
+      "all_checks_true": true,
+      "c_pack_result_status": "PASS",
+      "c_pack_all_checks_true": true,
+      "frame_reconstruction": "17/17",
+      "frame_count": 17
+    },
+    "url": {
+      "value": "http://127.0.0.1:4173/docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html",
+      "string_match_only": true,
+      "network_checked": false,
+      "server_checked": false
+    },
+    "prompt_contract": {
+      "instance_count": 1,
+      "title": "Companion 浏览器总体体验验收",
+      "buttons": [
+        "通过",
+        "失败"
+      ],
+      "note_allowed": true,
+      "progress_text": "1/1 浏览器总体体验",
+      "scope_text": "仅验收同一 4173 总体页面中的表情、菜单与录音预览；browser-only，不接触硬件或 production。",
+      "message": "请在已打开的总体页面实际操作：\n1. 单点屏幕，确认表情与眼神朝触点做一次响应且仍在表情页。\n2. 向左、右、上、下连续拖动并回中心，确认始终只有一套脸、眼睛、眼珠和高光，没有旧 gaze 残留。\n3. 原地长按直到进入菜单，依次点击四根菜单、Device > UI assets，再返回表情页。\n4. 双击进入录音预览并返回，再次长按进入菜单，确认各路径可重复。\n5. 判断 200x200 屏幕方向与居中正确，无叠加、无丢眼珠、无 404、无多余调试参数。",
+      "expected_text": "选择通过表示上述 browser-only 总体体验可作为 COMP-REQ-471 的人工回归合同；选择失败会保留机器 PASS 原样并返回上层页面迭代。备注允许留空。"
+    },
+    "canonical_aiw": {
+      "path": "scripts/aiw.ps1",
+      "sha256": "771DF92AC5C9FB330D97022B6C2F9CFDDE529141DEE626D92E618A4CDC2CA601",
+      "invoked": false
+    },
+    "lifecycle_static": {
+      "checkonly_guard_offset": 15175,
+      "checkonly_return_offset": 15383,
+      "first_execute_side_effect_offset": 15546.0,
+      "checkonly_returns_before_process_network_browser_prompt": true,
+      "checkonly_process_count": 0,
+      "execute_cleanup_bounded_exact_pid": true,
+      "cleanup_tokens_missing": [],
+      "self_started_server_only": true,
+      "preexisting_4173_preserved": true,
+      "prompt_failure_fault_artifact": true
+    },
+    "counters": {
+      "process": 0,
+      "browser": 0,
+      "popup": 0,
+      "hardware": 0,
+      "write": 0,
+      "server_probe": 0,
+      "network_request": 0,
+      "owner_result": 0
+    },
+    "future_execute_command": "pwsh -NoProfile -File .\\tools\\faraday_upper_art\\supervise_companion_browser_owner_review_comp_req_471.ps1 -Execute -OwnerStartAcknowledged"
+  },
+  "scripts": {
+    "runner": {
+      "path": "tools/faraday_upper_art/run_companion_browser_owner_review_comp_req_471.ps1",
+      "sha256": "6739E7BDF6CEB8118CC8ED9E660D5FB193F110D36E5D84F3C152753D9A424C81"
+    },
+    "supervisor": {
+      "path": "tools/faraday_upper_art/supervise_companion_browser_owner_review_comp_req_471.ps1",
+      "sha256": "E7E599F906886030B95B47A17B0ADA88F8648A232F2A45D0C86C901AD9096F87"
+    }
+  },
+  "negative_fixture_evidence": {
+    "fixture_manifest": {
+      "path": "docs/validation/companion-browser-visual-contract-comp-req-471/owner-review-negative-fixtures.json",
+      "sha256": "A25EA8AEA013F7DA668AFFBE481EC8F564C794BEDC08220E91BA706ECDCFBB75"
+    },
+    "result": {
+      "path": "docs/validation/companion-browser-visual-contract-comp-req-471/owner-review-negative-fixture-result.json",
+      "sha256": "0A630F778486B2CA4A580E91B23E7833E2B501AE312B8C63C605D398BEA74AC3"
+    }
+  },
+  "counters": {
+    "process": 0,
+    "browser": 0,
+    "popup": 0,
+    "hardware": 0,
+    "write": 0
+  },
+  "evidence_artifact_write_count": 1,
+  "evidence_artifact_write_excluded_from_product_write_counter": true,
+  "owner_result_written": false,
+  "exact_future_execute_command": "pwsh -NoProfile -File .\\tools\\faraday_upper_art\\supervise_companion_browser_owner_review_comp_req_471.ps1 -Execute -OwnerStartAcknowledged"
+}

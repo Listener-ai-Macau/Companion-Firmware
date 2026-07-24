@@ -1,0 +1,140 @@
+{
+  "schema": "companion.comp-req-466-visual-handoff.v1",
+  "requirement": "COMP-REQ-471",
+  "consumer_requirement": "COMP-REQ-466",
+  "status": "PASS",
+  "integration_authorized": false,
+  "hardware_contact": 0,
+  "source_page_sha256": "BAE21BCCC7BB5FAD4A0922D5E9C42FCB25EF58DD7B8102A7C72656F7B700CF5E",
+  "format": {
+    "width": 200,
+    "height": 200,
+    "bits_per_pixel": 1,
+    "black_bit": 1,
+    "white_bit": 0,
+    "bit_order": "MSB_first_within_each_byte",
+    "row_order": "top_to_bottom",
+    "row_stride_bytes": 25,
+    "frame_bytes": 5000,
+    "threshold": "integer_BT601_luminance_below_128_is_black"
+  },
+  "frames_file": "frames.bin",
+  "frames_file_sha256": "D4DA2FCA6863C1B8F5DD28D70566712DCD91AB7383CA486735DFD253F7361E6D",
+  "frame_count": 17,
+  "state_transition_file": "state-transitions.json",
+  "state_transition_sha256": "442F5A9E87988A3F8BE15ECC2A2500CA64537FA2B6DBD96F6FFDDD070DD7F918",
+  "visual_contract_file": "visual-contract.json",
+  "visual_contract_sha256": "E5C6B30D8BF317FC8321D82E087D3B46552B4523FD8B67FFF3E6ABA89AAE4260",
+  "pixel_oracle_file": "pixel-oracle.json",
+  "pixel_oracle_sha256": "701B428731000E753A3F9C5B4E9DF4B93B09AD670CE302849288CB5D7DE7F2BE",
+  "index": [
+    {
+      "state": "centered_rest",
+      "offset": 0,
+      "bytes": 5000,
+      "sha256": "66A3E78E692DE2EC813CABB9664778F1D5BF205F59A5FB41B22BDF9B0423EF09"
+    },
+    {
+      "state": "gaze_left",
+      "offset": 5000,
+      "bytes": 5000,
+      "sha256": "90DB3FC32E30B14F50148DA3A09332F47CA31AA25700C3906C1779647292226C"
+    },
+    {
+      "state": "gaze_up",
+      "offset": 10000,
+      "bytes": 5000,
+      "sha256": "9CB3855BA43A00C707BAE4CA6F78AE7A96D315E43CA6071215A7A297BF711C43"
+    },
+    {
+      "state": "gaze_right",
+      "offset": 15000,
+      "bytes": 5000,
+      "sha256": "7DD232D99B657C673FBD57BFA6939826D3B6A6B9CF131DD8DA8FC160E0497574"
+    },
+    {
+      "state": "gaze_down",
+      "offset": 20000,
+      "bytes": 5000,
+      "sha256": "C4975D1AFF45CBD5C2B284261343728F8EB0DFC1BB5DED1874A42EF78A62337D"
+    },
+    {
+      "state": "gaze_center",
+      "offset": 25000,
+      "bytes": 5000,
+      "sha256": "66A3E78E692DE2EC813CABB9664778F1D5BF205F59A5FB41B22BDF9B0423EF09"
+    },
+    {
+      "state": "single_tap_response",
+      "offset": 30000,
+      "bytes": 5000,
+      "sha256": "16F0642E4061CDC22D05EE2A7E08E5DD0777A84E6D5D0052E126FA77E30D066B"
+    },
+    {
+      "state": "hold_feedback_50",
+      "offset": 35000,
+      "bytes": 5000,
+      "sha256": "5545DB4C457AB2A57867B602A3EE216A45CFF7BBD93368156C2A8B21292A34C1"
+    },
+    {
+      "state": "menu_roots",
+      "offset": 40000,
+      "bytes": 5000,
+      "sha256": "EA85CFB199657D7829D181DD3D62BF19612F995E47C58112FFA7E713790DEFA0"
+    },
+    {
+      "state": "menu_voice",
+      "offset": 45000,
+      "bytes": 5000,
+      "sha256": "7B3C8FAAF42DFEC2F309F43A6D769A8A1F5A4789BCD0CF46D0555F89A9A7169A"
+    },
+    {
+      "state": "menu_device",
+      "offset": 50000,
+      "bytes": 5000,
+      "sha256": "6C237EFA7573A35578849CE3E337FE2156CCDE2125AD4BB9D252830ECF3F677A"
+    },
+    {
+      "state": "menu_connection",
+      "offset": 55000,
+      "bytes": 5000,
+      "sha256": "F103D49AF3A8B315CE6B2D8CDB4474CD3F2D62C19C7E1F8105DA43AE32C3FC15"
+    },
+    {
+      "state": "menu_preferences",
+      "offset": 60000,
+      "bytes": 5000,
+      "sha256": "AE0BC022B83A98AC42D7B54819718136FF745A4A1A4EF036E3D33655E43EB29C"
+    },
+    {
+      "state": "menu_device_ui_assets",
+      "offset": 65000,
+      "bytes": 5000,
+      "sha256": "66A3E78E692DE2EC813CABB9664778F1D5BF205F59A5FB41B22BDF9B0423EF09"
+    },
+    {
+      "state": "menu_return_rest",
+      "offset": 70000,
+      "bytes": 5000,
+      "sha256": "66A3E78E692DE2EC813CABB9664778F1D5BF205F59A5FB41B22BDF9B0423EF09"
+    },
+    {
+      "state": "recording_entry",
+      "offset": 75000,
+      "bytes": 5000,
+      "sha256": "309672C1572F178D4BE17AF3B8958F985C76034521B067447F73AEB0ACEA35DB"
+    },
+    {
+      "state": "recording_return_rest",
+      "offset": 80000,
+      "bytes": 5000,
+      "sha256": "66A3E78E692DE2EC813CABB9664778F1D5BF205F59A5FB41B22BDF9B0423EF09"
+    }
+  ],
+  "consumer_rules": [
+    "read exactly 5000 bytes per frame",
+    "replace the current 200x200 framebuffer; never append a face or gaze plane",
+    "use the bounded transition IDs without changing accepted gesture constants",
+    "do not treat this machine contract as hardware or production authorization"
+  ]
+}

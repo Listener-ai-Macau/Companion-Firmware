@@ -1,0 +1,1016 @@
+{
+  "checks": {
+    "auditor.file_exists": true,
+    "auditor.hash_exact": true,
+    "compatibility.artifact_parsed": true,
+    "compatibility.full_21_59_10": false,
+    "compatibility.invoked": true,
+    "compatibility.polarity_terminal_qualification": true,
+    "compatibility.side_effects_zero": true,
+    "compatibility.subprocess_consistent": true,
+    "input.expected_oracle_hash_is_accepted": true,
+    "input.expected_upper_hash_is_accepted": true,
+    "input.oracle_path_exact": true,
+    "input.upper_path_exact": true,
+    "lower.build_identity_changes_with_active_sources": true,
+    "lower.build_outputs_fresh_and_rehashed": false,
+    "lower.commit_exact": true,
+    "lower.commit_object_recomputed": true,
+    "lower.root_is_exact_toplevel": true,
+    "lower.source_comp_req_478_contract": true,
+    "lower.source_comp_req_484_contract": true,
+    "lower_claims_match_observed_compatibility": false,
+    "lower_mr.all_provenance_bindings_rehashed": true,
+    "lower_mr.all_sources_recomputed": true,
+    "lower_mr.arm_modes_exact_0_1": true,
+    "lower_mr.build_logs_rehashed_and_complete": false,
+    "lower_mr.checkonly_zero": true,
+    "lower_mr.commit_exact": true,
+    "lower_mr.comp_req_478_fixture_contract": true,
+    "lower_mr.comp_req_478_mode_fault_claims": true,
+    "lower_mr.comp_req_484_fixture_contract": true,
+    "lower_mr.comp_req_486_negative_contract": true,
+    "lower_mr.comp_req_488_tamper_claims_complete": true,
+    "lower_mr.compatibility_claims_complete": true,
+    "lower_mr.elf_files_rehashed": true,
+    "lower_mr.elf_hashes_explicit_match": true,
+    "lower_mr.elf_paths_declared": true,
+    "lower_mr.file_exists_and_bounded": true,
+    "lower_mr.hash_exact": true,
+    "lower_mr.hex_files_rehashed": true,
+    "lower_mr.hex_hashes_explicit_match": true,
+    "lower_mr.hex_paths_declared": true,
+    "lower_mr.json_object": true,
+    "lower_mr.protected_hashes_exact": false,
+    "lower_mr.provenance_contract_fixed_values": true,
+    "lower_mr.required_sources_declared": true,
+    "lower_mr.runner_rehashed": true,
+    "lower_mr.schema_exact": true,
+    "lower_mr.side_effect_contract_complete": true,
+    "lower_mr.side_effects_zero": true,
+    "lower_mr.sources_declared_and_bounded": true,
+    "lower_mr.status_exact": true,
+    "lower_mr.supervisor_rehashed": true,
+    "lower_mr.timing_within_limits": false,
+    "oracle.file_exists": true,
+    "oracle.hash_exact": true,
+    "oracle.structure_59_10_pass": true,
+    "upper.all_machine_checks_true": true,
+    "upper.file_exists": true,
+    "upper.hash_exact": true,
+    "upper.runtime_side_effects_zero": true,
+    "upper.schema_status_pass": true
+  },
+  "compatibility": {
+    "artifact_path": "C:/Users/Billy/Desktop/Denzic/Companion/Companion-Firmware/docs/validation/companion-browser-visual-contract-comp-req-471/joint-negative-fixtures/compatibility/upper-lower-compatibility-timing_protected_drift.json",
+    "artifact_sha256": "F6504C998C5127355DA63C28B8910D8126650D6319779A95C4DEC604B1779104",
+    "process": {
+      "invoked": true,
+      "return_code": 1,
+      "stderr": "",
+      "stdout": "{\"artifact_sha256\": \"F6504C998C5127355DA63C28B8910D8126650D6319779A95C4DEC604B1779104\", \"c692_expected_no_go_signature\": false, \"events_realizable\": \"17/21\", \"mode\": \"comparison\", \"noops_realizable\": \"8/10\", \"pairs_realizable\": \"51/59\", \"polarity_bridge\": true, \"qualification_valid\": true, \"status\": \"NO_GO_UPPER_LOWER_EVENT_PATH_GAPS\", \"terminal_retention\": true}"
+    },
+    "status": "NO_GO_UPPER_LOWER_EVENT_PATH_GAPS",
+    "summary": {
+      "c173_no_go_preserved_when_selected": null,
+      "c692_expected_no_go_signature": false,
+      "comparison_complete": false,
+      "emit_failure_terminal_latched": true,
+      "events": {
+        "mapping_ambiguous": 1,
+        "mapping_mapped": 17,
+        "mapping_missing": 3,
+        "realizable": 17,
+        "total": 21
+      },
+      "pairs": {
+        "pixel_noop": 10,
+        "realizable": 51,
+        "semantic_noop_realizable": 8,
+        "total": 59
+      },
+      "polarity_bridge_realizable": true,
+      "pretransport_build_failure_terminal_latched": true,
+      "pretransport_frame_lookup_failure_terminal_latched": true,
+      "qualification_valid": true,
+      "states": {
+        "identity_mapped": 17,
+        "total": 17
+      },
+      "terminal_retention": true
+    }
+  },
+  "default_off": true,
+  "failed_checks": [
+    "compatibility.full_21_59_10",
+    "lower.build_outputs_fresh_and_rehashed",
+    "lower_claims_match_observed_compatibility",
+    "lower_mr.build_logs_rehashed_and_complete",
+    "lower_mr.protected_hashes_exact",
+    "lower_mr.timing_within_limits"
+  ],
+  "generator": {
+    "path": "tools/faraday_upper_art/run_companion_joint_offline_gate_comp_req_479.py",
+    "sha256": "9FFE3A8E140791309C73CCF39A0BD0B63CC22387440E519F949BBCDBEB3C4948"
+  },
+  "inputs": {
+    "compatibility_auditor": {
+      "expected_sha256": "4A8A23D8E72D5B04290E5788B9486F540E41722AFB40A1C7C5C795BED5A168D7",
+      "observed_sha256": "4A8A23D8E72D5B04290E5788B9486F540E41722AFB40A1C7C5C795BED5A168D7",
+      "path": "C:/Users/Billy/Desktop/Denzic/Companion/Companion-Firmware/tools/faraday_upper_art/audit_companion_upper_lower_compatibility_comp_req_474.py"
+    },
+    "expanded_oracle": {
+      "expected_sha256": "20C270A332F7AD75FAED3C44C9AE3C1D789F7902ABA525C07B0B40F4266C5B2E",
+      "observed_sha256": "20C270A332F7AD75FAED3C44C9AE3C1D789F7902ABA525C07B0B40F4266C5B2E",
+      "path": "C:/Users/Billy/Desktop/Denzic/Companion/Companion-Firmware/docs/art/exports/companion-browser-visual-contract-comp-req-471/expanded-window-oracle.json"
+    },
+    "lower": {
+      "expected_commit": "4ddf9709034d307b333510c27e3e0a45c7ed6d15",
+      "expected_elf_sha256": [
+        "1EFA2168F6E1658E29EA9C1E6EB90369F4E8665314A5869963F464887B5E890D",
+        "F00EA4DE0C999C6F4CC344E171457C5252B2D7DA390F139F8C792F088DA3BFC0"
+      ],
+      "expected_hex_sha256": [
+        "0DD0671613949CF089E02CA873776D3135745C2C130905CC2921A3F1D14D84A9",
+        "4D9A052EB369E6ABD189A6DA26D9257208BD28590AB788BCD506881C3D5E58B6"
+      ],
+      "expected_machine_ready_sha256": "D3D7191C81E4CB9E6021FBA9209F950B3A6F48AA962CB9432BDD4CFE220F950B",
+      "expected_runner_sha256": "959727E4556FD314083174E6D8B1D8E8E4F335A12EBF254CA3D05EABB8A5711E",
+      "expected_supervisor_sha256": "AB75942496AFDBDE20D810066A752C7D66CAFC658625BA21603543D9E0893F44",
+      "machine_ready_path": "C:/Users/Billy/Desktop/Denzic/Companion/Companion-Firmware/docs/validation/companion-browser-visual-contract-comp-req-471/joint-negative-fixtures/lower-mr/timing-protected-drift.json",
+      "observed_machine_ready_sha256": "D3D7191C81E4CB9E6021FBA9209F950B3A6F48AA962CB9432BDD4CFE220F950B",
+      "resolved_commit": "4ddf9709034d307b333510c27e3e0a45c7ed6d15",
+      "root": "C:/Users/Billy/Desktop/Denzic/Companion/.cache/comp-req-466-r7-runtime"
+    },
+    "upper_machine_ready": {
+      "expected_sha256": "EAD7000FEB32CD7915FEAD82A49D23FD66755412AEDFA53B4B7A264CABA3BB69",
+      "observed_sha256": "EAD7000FEB32CD7915FEAD82A49D23FD66755412AEDFA53B4B7A264CABA3BB69",
+      "path": "C:/Users/Billy/Desktop/Denzic/Companion/Companion-Firmware/docs/validation/companion-browser-visual-contract-comp-req-471/UPPER_MACHINE_READY.json"
+    }
+  },
+  "lower_machine_ready_contract": {
+    "artifact_descriptors": "artifacts.hex[]/elf[]/runner/supervisor require path+sha256",
+    "comp_req_478": {
+      "fixture_tokens": [
+        "bounded_16_cleanup_closed=pass",
+        "busy_negative_601=pass",
+        "cadence_negative_0=pass",
+        "cadence_negative_481=pass",
+        "command_stage_failures=pass",
+        "idle_new_burst=pass",
+        "live_cleanup_closed=pass",
+        "physical_mapping=650/40/650/3000",
+        "physical_timing=unproven",
+        "post_cleanup_event_retained=pass",
+        "post_cleanup_zero_commands=pass",
+        "retry=0",
+        "second_service_activation_unchanged=pass",
+        "timing=host_synthetic",
+        "transaction_negative_481=pass"
+      ],
+      "mode_and_fault_flags": [
+        "bounded_seeds_only_when_not_continuous",
+        "bridge_terminal_fault_latch",
+        "continuous_has_no_synthetic_enqueue",
+        "host_synthetic_label",
+        "no_browser_guard_in_adapter",
+        "physical_double_tap_guard",
+        "runtime_terminal_fault_latch",
+        "single_tap_window_guard"
+      ],
+      "mode_values": {
+        "bounded": 0,
+        "continuous": 1
+      },
+      "source_contract_required": true
+    },
+    "comp_req_484": {
+      "active_build_source_paths": [
+        "app/companion_pendant/epaper/companion_visual_runtime_adapter.c",
+        "app/companion_pendant/epaper/companion_visual_runtime_adapter.h",
+        "app/companion_pendant/epaper/r7_runtime_bridge_stm32wb.c",
+        "app/companion_pendant/epaper/r7_runtime_bridge_stm32wb.h",
+        "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/main.c",
+        "cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile"
+      ],
+      "fixture_tokens": [
+        "bounded_15_deltas=pass",
+        "busy_captured_gaze_same_burst=pass",
+        "hold_650_menu_3000=pass",
+        "menu_idle_481_selection=pass",
+        "recording_idle_481_return=pass"
+      ],
+      "freshness_baseline_commit": "a96368d5859c54d3eaee4c9846386c6091dc73a0",
+      "source_contract_required": true,
+      "source_object_elf_hex_log_order_required": true
+    },
+    "comp_req_486_488": {
+      "candidate_self_report_is_not_authoritative": true,
+      "pretransport_failure_terminal_latch_required": true,
+      "protected_hashes_recomputed_from_commit_and_worktree": true,
+      "provenance_contract_fixed_values": {
+        "baseline_panel": "EF4CDB579CC2C43645E0E3585D8C40CA65763112619E5EB9FBC583EAF3E28DBD",
+        "busy_max_ms": 600,
+        "cadence": "1..480",
+        "cleanup": "single_flash_white",
+        "expanded_pairs": 59,
+        "physical_timing": "unproven",
+        "pixel_noops": 10,
+        "polarity": "logical_black1_panel_white1",
+        "retry": 0,
+        "states": 17,
+        "transaction_max_ms": 480,
+        "transition_rows": 21
+      }
+    },
+    "compatibility_counts": {
+      "events": 21,
+      "pairs": 59,
+      "semantic_noops": 10
+    },
+    "required_side_effect_keys": [
+      "browser",
+      "execute",
+      "flash",
+      "hardware",
+      "popup",
+      "production",
+      "programmer",
+      "prompt",
+      "push",
+      "serial",
+      "server",
+      "write"
+    ],
+    "required_source_paths": [
+      "app/companion_pendant/epaper/companion_visual_runtime_adapter.c",
+      "app/companion_pendant/epaper/companion_visual_runtime_adapter.h",
+      "app/companion_pendant/epaper/panel_target_stm32wb.c",
+      "app/companion_pendant/epaper/r7_runtime_bridge_stm32wb.c",
+      "app/companion_pendant/epaper/r7_runtime_bridge_stm32wb.h",
+      "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c",
+      "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/main.c",
+      "cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile",
+      "tools/comp_req_472_visual_runtime_fixture.c",
+      "tools/run_comp_req_472_visual_runtime_fixture.ps1",
+      "tools/verify_comp_req_472_visual_runtime.py"
+    ],
+    "schema": "companion.lower-visual-runtime-machine-ready.v1",
+    "status": "LOWER_MACHINE_READY",
+    "timing_limits_ms": {
+      "busy": 600,
+      "cadence": 480,
+      "transaction": 480
+    }
+  },
+  "observations": {
+    "auditor.hash_exact": "4A8A23D8E72D5B04290E5788B9486F540E41722AFB40A1C7C5C795BED5A168D7",
+    "compatibility.artifact_parsed": "F6504C998C5127355DA63C28B8910D8126650D6319779A95C4DEC604B1779104",
+    "compatibility.full_21_59_10": {
+      "c173_no_go_preserved_when_selected": null,
+      "c692_expected_no_go_signature": false,
+      "comparison_complete": false,
+      "emit_failure_terminal_latched": true,
+      "events": {
+        "mapping_ambiguous": 1,
+        "mapping_mapped": 17,
+        "mapping_missing": 3,
+        "realizable": 17,
+        "total": 21
+      },
+      "pairs": {
+        "pixel_noop": 10,
+        "realizable": 51,
+        "semantic_noop_realizable": 8,
+        "total": 59
+      },
+      "polarity_bridge_realizable": true,
+      "pretransport_build_failure_terminal_latched": true,
+      "pretransport_frame_lookup_failure_terminal_latched": true,
+      "qualification_valid": true,
+      "states": {
+        "identity_mapped": 17,
+        "total": 17
+      },
+      "terminal_retention": true
+    },
+    "compatibility.side_effects_zero": {},
+    "compatibility.subprocess_consistent": {
+      "invoked": true,
+      "return_code": 1,
+      "stderr": "",
+      "stdout": "{\"artifact_sha256\": \"F6504C998C5127355DA63C28B8910D8126650D6319779A95C4DEC604B1779104\", \"c692_expected_no_go_signature\": false, \"events_realizable\": \"17/21\", \"mode\": \"comparison\", \"noops_realizable\": \"8/10\", \"pairs_realizable\": \"51/59\", \"polarity_bridge\": true, \"qualification_valid\": true, \"status\": \"NO_GO_UPPER_LOWER_EVENT_PATH_GAPS\", \"terminal_retention\": true}"
+    },
+    "input.oracle_path_exact": "C:/Users/Billy/Desktop/Denzic/Companion/Companion-Firmware/docs/art/exports/companion-browser-visual-contract-comp-req-471/expanded-window-oracle.json",
+    "input.upper_path_exact": "C:/Users/Billy/Desktop/Denzic/Companion/Companion-Firmware/docs/validation/companion-browser-visual-contract-comp-req-471/UPPER_MACHINE_READY.json",
+    "lower.build_identity_changes_with_active_sources": {
+      "active_source_deltas": [
+        "app/companion_pendant/epaper/companion_visual_runtime_adapter.c",
+        "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/main.c"
+      ],
+      "baseline_commit": "a96368d5859c54d3eaee4c9846386c6091dc73a0",
+      "baseline_is_ancestor": true,
+      "baseline_resolved": "a96368d5859c54d3eaee4c9846386c6091dc73a0",
+      "expected_elf_sha256": [
+        "1EFA2168F6E1658E29EA9C1E6EB90369F4E8665314A5869963F464887B5E890D",
+        "F00EA4DE0C999C6F4CC344E171457C5252B2D7DA390F139F8C792F088DA3BFC0"
+      ],
+      "expected_hex_sha256": [
+        "0DD0671613949CF089E02CA873776D3135745C2C130905CC2921A3F1D14D84A9",
+        "4D9A052EB369E6ABD189A6DA26D9257208BD28590AB788BCD506881C3D5E58B6"
+      ],
+      "reused_baseline_build_identity": false,
+      "stale_against_changed_sources": false
+    },
+    "lower.build_outputs_fresh_and_rehashed": {
+      "bounded": {
+        "build_log": {
+          "compile_index": -1,
+          "complete": false,
+          "declared_sha256": null,
+          "expected_path": "C:/Users/Billy/Desktop/Denzic/Companion/.cache/comp-req-466-r7-runtime/.cache/comp472-arm-bounded.log",
+          "forbidden_define_absent": true,
+          "hash_matches": false,
+          "hex_index": -1,
+          "link_index": -1,
+          "mtime_ns": null,
+          "observed_sha256": null,
+          "path": null,
+          "required_define_present": false
+        },
+        "declared": {
+          "elf_sha256": "F00EA4DE0C999C6F4CC344E171457C5252B2D7DA390F139F8C792F088DA3BFC0",
+          "hex_sha256": "4D9A052EB369E6ABD189A6DA26D9257208BD28590AB788BCD506881C3D5E58B6"
+        },
+        "pass": false,
+        "physical": {
+          "elf": {
+            "exists": true,
+            "mtime_ns": 1784818616563934400,
+            "path": "C:/Users/Billy/Desktop/Denzic/Companion/.cache/comp-req-466-r7-runtime/cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime/Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntime.elf",
+            "sha256": "F00EA4DE0C999C6F4CC344E171457C5252B2D7DA390F139F8C792F088DA3BFC0"
+          },
+          "hex": {
+            "exists": true,
+            "mtime_ns": 1784818616596452800,
+            "path": "C:/Users/Billy/Desktop/Denzic/Companion/.cache/comp-req-466-r7-runtime/cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime/Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntime.hex",
+            "sha256": "4D9A052EB369E6ABD189A6DA26D9257208BD28590AB788BCD506881C3D5E58B6"
+          },
+          "main_object": {
+            "exists": true,
+            "mtime_ns": 1784818577992574900,
+            "path": "C:/Users/Billy/Desktop/Denzic/Companion/.cache/comp-req-466-r7-runtime/cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime/main.o",
+            "sha256": "51090D80573755BEAFC4024DF1752765E723AD8726BF8B1EFBBB31B76A8E92B3"
+          }
+        },
+        "physical_hashes_match_claim": true,
+        "source": {
+          "matches_commit_binding": true,
+          "mtime_ns": 1784812820641868800,
+          "path": "C:/Users/Billy/Desktop/Denzic/Companion/.cache/comp-req-466-r7-runtime/cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/main.c",
+          "sha256": "9760495C1B42AB9410C8A5D24AEF519DAB017BCF97A9012D2952C3E6EC9C58F2"
+        },
+        "source_object_output_log_order": false
+      },
+      "continuous": {
+        "build_log": {
+          "compile_index": -1,
+          "complete": false,
+          "declared_sha256": null,
+          "expected_path": "C:/Users/Billy/Desktop/Denzic/Companion/.cache/comp-req-466-r7-runtime/.cache/comp472-arm-continuous.log",
+          "forbidden_define_absent": true,
+          "hash_matches": false,
+          "hex_index": -1,
+          "link_index": -1,
+          "mtime_ns": null,
+          "observed_sha256": null,
+          "path": null,
+          "required_define_present": false
+        },
+        "declared": {
+          "elf_sha256": "1EFA2168F6E1658E29EA9C1E6EB90369F4E8665314A5869963F464887B5E890D",
+          "hex_sha256": "0DD0671613949CF089E02CA873776D3135745C2C130905CC2921A3F1D14D84A9"
+        },
+        "pass": false,
+        "physical": {
+          "elf": {
+            "exists": true,
+            "mtime_ns": 1784818657197099900,
+            "path": "C:/Users/Billy/Desktop/Denzic/Companion/.cache/comp-req-466-r7-runtime/cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime_continuous/Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntimeContinuous.elf",
+            "sha256": "1EFA2168F6E1658E29EA9C1E6EB90369F4E8665314A5869963F464887B5E890D"
+          },
+          "hex": {
+            "exists": true,
+            "mtime_ns": 1784818657227216200,
+            "path": "C:/Users/Billy/Desktop/Denzic/Companion/.cache/comp-req-466-r7-runtime/cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime_continuous/Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntimeContinuous.hex",
+            "sha256": "0DD0671613949CF089E02CA873776D3135745C2C130905CC2921A3F1D14D84A9"
+          },
+          "main_object": {
+            "exists": true,
+            "mtime_ns": 1784818620643736400,
+            "path": "C:/Users/Billy/Desktop/Denzic/Companion/.cache/comp-req-466-r7-runtime/cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime_continuous/main.o",
+            "sha256": "D8205826BCA5C90DD2EC117A68D8B08445AD3C82BF15FACFE1B7866621B00DDA"
+          }
+        },
+        "physical_hashes_match_claim": true,
+        "source": {
+          "matches_commit_binding": true,
+          "mtime_ns": 1784812820641868800,
+          "path": "C:/Users/Billy/Desktop/Denzic/Companion/.cache/comp-req-466-r7-runtime/cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/main.c",
+          "sha256": "9760495C1B42AB9410C8A5D24AEF519DAB017BCF97A9012D2952C3E6EC9C58F2"
+        },
+        "source_object_output_log_order": false
+      }
+    },
+    "lower.commit_exact": "4ddf9709034d307b333510c27e3e0a45c7ed6d15",
+    "lower.commit_object_recomputed": "4ddf9709034d307b333510c27e3e0a45c7ed6d15",
+    "lower.root_is_exact_toplevel": "C:/Users/Billy/Desktop/Denzic/Companion/.cache/comp-req-466-r7-runtime",
+    "lower.source_comp_req_478_contract": {
+      "bounded_continuous_split": true,
+      "build_modes_declared": true,
+      "burst_state_drives_transport": true,
+      "converted_centered_initialization": true,
+      "peek_then_discard_retention": true,
+      "physical_gesture_constants": true,
+      "same_burst_cadence_and_idle_reset": true,
+      "transaction_busy_limits": true,
+      "transport_fault_and_close_latches": true
+    },
+    "lower.source_comp_req_484_contract": {
+      "post_enqueue_burst_refresh": true,
+      "queued_work_only_burst_state": true
+    },
+    "lower_mr.all_provenance_bindings_rehashed": [
+      {
+        "declared_sha256": "959727E4556FD314083174E6D8B1D8E8E4F335A12EBF254CA3D05EABB8A5711E",
+        "inside_lower_root": true,
+        "match": true,
+        "name": "runner",
+        "observed_sha256": "959727E4556FD314083174E6D8B1D8E8E4F335A12EBF254CA3D05EABB8A5711E",
+        "path": "C:/Users/Billy/Desktop/Denzic/Companion/.cache/comp-req-466-r7-runtime/tools/run_wb55_ssd1681_r7_locked_v9.ps1"
+      },
+      {
+        "declared_sha256": "AB75942496AFDBDE20D810066A752C7D66CAFC658625BA21603543D9E0893F44",
+        "inside_lower_root": true,
+        "match": true,
+        "name": "supervisor",
+        "observed_sha256": "AB75942496AFDBDE20D810066A752C7D66CAFC658625BA21603543D9E0893F44",
+        "path": "C:/Users/Billy/Desktop/Denzic/Companion/.cache/comp-req-466-r7-runtime/tools/supervise_wb55_ssd1681_r7_locked_v9.ps1"
+      }
+    ],
+    "lower_mr.all_sources_recomputed": [
+      {
+        "blob_match": true,
+        "commit_blob_sha256": "B510A1FE95967B8F4F615B1DACA992BBCD2B574445F3E79A6A11BE5BC857D509",
+        "declared_matches_physical": true,
+        "declared_sha256": "B510A1FE95967B8F4F615B1DACA992BBCD2B574445F3E79A6A11BE5BC857D509",
+        "git_blob_object": "4afe8b3116ecc9a9ed208d1a03421f3bc577b84e",
+        "path": "app/companion_pendant/epaper/companion_visual_runtime_adapter.c",
+        "physical_sha256": "B510A1FE95967B8F4F615B1DACA992BBCD2B574445F3E79A6A11BE5BC857D509",
+        "recomputed_git_blob_object": "4afe8b3116ecc9a9ed208d1a03421f3bc577b84e",
+        "safe_commit_path": true,
+        "worktree_clean_against_commit": true
+      },
+      {
+        "blob_match": true,
+        "commit_blob_sha256": "D99C5A929FB6F4BBBC8C2390884BAB9441BF10F17D29B3E925948EE7AF106384",
+        "declared_matches_physical": true,
+        "declared_sha256": "D99C5A929FB6F4BBBC8C2390884BAB9441BF10F17D29B3E925948EE7AF106384",
+        "git_blob_object": "d41c3b38090ab0764138075d883bab3af1a8c286",
+        "path": "app/companion_pendant/epaper/companion_visual_runtime_adapter.h",
+        "physical_sha256": "D99C5A929FB6F4BBBC8C2390884BAB9441BF10F17D29B3E925948EE7AF106384",
+        "recomputed_git_blob_object": "d41c3b38090ab0764138075d883bab3af1a8c286",
+        "safe_commit_path": true,
+        "worktree_clean_against_commit": true
+      },
+      {
+        "blob_match": true,
+        "commit_blob_sha256": "D6018EFF305AC4E9E84D08F8C47A486E02FD7275B3E44A6E84D7B6BC06184B6E",
+        "declared_matches_physical": true,
+        "declared_sha256": "88EF359F5AB1B349B6CA17CACBA7F3366F93B31B96446D31FCD5DDE0B71FC187",
+        "git_blob_object": "bbc2a181e81dc57d646c365da2c8e6e3d9751a03",
+        "path": "app/companion_pendant/epaper/panel_target_stm32wb.c",
+        "physical_sha256": "88EF359F5AB1B349B6CA17CACBA7F3366F93B31B96446D31FCD5DDE0B71FC187",
+        "recomputed_git_blob_object": "bbc2a181e81dc57d646c365da2c8e6e3d9751a03",
+        "safe_commit_path": true,
+        "worktree_clean_against_commit": true
+      },
+      {
+        "blob_match": true,
+        "commit_blob_sha256": "F098E6A4CEDDAC030B906F942884FC27AFF3897322BD0DB405519227A702999E",
+        "declared_matches_physical": true,
+        "declared_sha256": "F098E6A4CEDDAC030B906F942884FC27AFF3897322BD0DB405519227A702999E",
+        "git_blob_object": "fc532d25bbfea6169b1274f3252d428fbe266667",
+        "path": "app/companion_pendant/epaper/r7_runtime_bridge_stm32wb.c",
+        "physical_sha256": "F098E6A4CEDDAC030B906F942884FC27AFF3897322BD0DB405519227A702999E",
+        "recomputed_git_blob_object": "fc532d25bbfea6169b1274f3252d428fbe266667",
+        "safe_commit_path": true,
+        "worktree_clean_against_commit": true
+      },
+      {
+        "blob_match": true,
+        "commit_blob_sha256": "C0181D40604B36EB061EB4183CD3B8471D7284D47E7704756C30D7E68D7861A6",
+        "declared_matches_physical": true,
+        "declared_sha256": "C0181D40604B36EB061EB4183CD3B8471D7284D47E7704756C30D7E68D7861A6",
+        "git_blob_object": "fce28f08f337996bbe7279d67a74e70cf24b6afb",
+        "path": "app/companion_pendant/epaper/r7_runtime_bridge_stm32wb.h",
+        "physical_sha256": "C0181D40604B36EB061EB4183CD3B8471D7284D47E7704756C30D7E68D7861A6",
+        "recomputed_git_blob_object": "fce28f08f337996bbe7279d67a74e70cf24b6afb",
+        "safe_commit_path": true,
+        "worktree_clean_against_commit": true
+      },
+      {
+        "blob_match": true,
+        "commit_blob_sha256": "9717DFCD24FEECE9910CF21A629C00E849E9C9926E605E3F4848B2B1E711E90F",
+        "declared_matches_physical": true,
+        "declared_sha256": "1D6D9F9323ED218F157D5F7C0BA38784F84F0F0B4FD3CB14BD3D13CC9E94A773",
+        "git_blob_object": "055662d569134a2b765cc9f338249b8461503af9",
+        "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c",
+        "physical_sha256": "1D6D9F9323ED218F157D5F7C0BA38784F84F0F0B4FD3CB14BD3D13CC9E94A773",
+        "recomputed_git_blob_object": "055662d569134a2b765cc9f338249b8461503af9",
+        "safe_commit_path": true,
+        "worktree_clean_against_commit": true
+      },
+      {
+        "blob_match": true,
+        "commit_blob_sha256": "B3F53EC885EB892E456A1B3E88F762D8725C3B9D9EE03D94595D3DAB07F8B83C",
+        "declared_matches_physical": true,
+        "declared_sha256": "9760495C1B42AB9410C8A5D24AEF519DAB017BCF97A9012D2952C3E6EC9C58F2",
+        "git_blob_object": "107ad7d2678e296228a6e3c3f9553d28d1ea8bbc",
+        "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/main.c",
+        "physical_sha256": "9760495C1B42AB9410C8A5D24AEF519DAB017BCF97A9012D2952C3E6EC9C58F2",
+        "recomputed_git_blob_object": "107ad7d2678e296228a6e3c3f9553d28d1ea8bbc",
+        "safe_commit_path": true,
+        "worktree_clean_against_commit": true
+      },
+      {
+        "blob_match": true,
+        "commit_blob_sha256": "2A58A7652CF451ECC76BF87BA07CCD616D3B9FFCB7AF99FCC62F29515C81097A",
+        "declared_matches_physical": true,
+        "declared_sha256": "0CD623F3D3CEE485C706979EF413B3B3453EEEB3C5E23A093C88F51D9719A885",
+        "git_blob_object": "864c93dbb8ef4391006c17fe13acb7c7eb47900a",
+        "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile",
+        "physical_sha256": "0CD623F3D3CEE485C706979EF413B3B3453EEEB3C5E23A093C88F51D9719A885",
+        "recomputed_git_blob_object": "864c93dbb8ef4391006c17fe13acb7c7eb47900a",
+        "safe_commit_path": true,
+        "worktree_clean_against_commit": true
+      },
+      {
+        "blob_match": true,
+        "commit_blob_sha256": "C47C2C69A2FA8F21F41F65D32DA3E276091434F52F02541A0032C7A354E564CC",
+        "declared_matches_physical": true,
+        "declared_sha256": "C47C2C69A2FA8F21F41F65D32DA3E276091434F52F02541A0032C7A354E564CC",
+        "git_blob_object": "9af25d365e56baf0be1438d0a0f92985cc729a61",
+        "path": "tools/comp_req_472_visual_runtime_fixture.c",
+        "physical_sha256": "C47C2C69A2FA8F21F41F65D32DA3E276091434F52F02541A0032C7A354E564CC",
+        "recomputed_git_blob_object": "9af25d365e56baf0be1438d0a0f92985cc729a61",
+        "safe_commit_path": true,
+        "worktree_clean_against_commit": true
+      },
+      {
+        "blob_match": true,
+        "commit_blob_sha256": "D776A36F93D04D33E08D0F290E870F64BD8C16D073365087D5DA124ECE810273",
+        "declared_matches_physical": true,
+        "declared_sha256": "D776A36F93D04D33E08D0F290E870F64BD8C16D073365087D5DA124ECE810273",
+        "git_blob_object": "ae0197588a639ac4d60350561979a2b1a476db47",
+        "path": "tools/run_comp_req_472_visual_runtime_fixture.ps1",
+        "physical_sha256": "D776A36F93D04D33E08D0F290E870F64BD8C16D073365087D5DA124ECE810273",
+        "recomputed_git_blob_object": "ae0197588a639ac4d60350561979a2b1a476db47",
+        "safe_commit_path": true,
+        "worktree_clean_against_commit": true
+      },
+      {
+        "blob_match": true,
+        "commit_blob_sha256": "0B08F7444ACA3D67782FCE19F3B135AD7255120555A1F8812DE7C3C486D2DF0D",
+        "declared_matches_physical": true,
+        "declared_sha256": "0B08F7444ACA3D67782FCE19F3B135AD7255120555A1F8812DE7C3C486D2DF0D",
+        "git_blob_object": "a328fba075b1de279577ab382969bfab2c9f3699",
+        "path": "tools/verify_comp_req_472_visual_runtime.py",
+        "physical_sha256": "0B08F7444ACA3D67782FCE19F3B135AD7255120555A1F8812DE7C3C486D2DF0D",
+        "recomputed_git_blob_object": "a328fba075b1de279577ab382969bfab2c9f3699",
+        "safe_commit_path": true,
+        "worktree_clean_against_commit": true
+      }
+    ],
+    "lower_mr.arm_modes_exact_0_1": {
+      "bounded": {
+        "proven": true,
+        "value": 0
+      },
+      "continuous": {
+        "proven": true,
+        "value": 1
+      }
+    },
+    "lower_mr.build_logs_rehashed_and_complete": {
+      "bounded": {
+        "build_log": {
+          "compile_index": -1,
+          "complete": false,
+          "declared_sha256": null,
+          "expected_path": "C:/Users/Billy/Desktop/Denzic/Companion/.cache/comp-req-466-r7-runtime/.cache/comp472-arm-bounded.log",
+          "forbidden_define_absent": true,
+          "hash_matches": false,
+          "hex_index": -1,
+          "link_index": -1,
+          "mtime_ns": null,
+          "observed_sha256": null,
+          "path": null,
+          "required_define_present": false
+        },
+        "declared": {
+          "elf_sha256": "F00EA4DE0C999C6F4CC344E171457C5252B2D7DA390F139F8C792F088DA3BFC0",
+          "hex_sha256": "4D9A052EB369E6ABD189A6DA26D9257208BD28590AB788BCD506881C3D5E58B6"
+        },
+        "pass": false,
+        "physical": {
+          "elf": {
+            "exists": true,
+            "mtime_ns": 1784818616563934400,
+            "path": "C:/Users/Billy/Desktop/Denzic/Companion/.cache/comp-req-466-r7-runtime/cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime/Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntime.elf",
+            "sha256": "F00EA4DE0C999C6F4CC344E171457C5252B2D7DA390F139F8C792F088DA3BFC0"
+          },
+          "hex": {
+            "exists": true,
+            "mtime_ns": 1784818616596452800,
+            "path": "C:/Users/Billy/Desktop/Denzic/Companion/.cache/comp-req-466-r7-runtime/cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime/Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntime.hex",
+            "sha256": "4D9A052EB369E6ABD189A6DA26D9257208BD28590AB788BCD506881C3D5E58B6"
+          },
+          "main_object": {
+            "exists": true,
+            "mtime_ns": 1784818577992574900,
+            "path": "C:/Users/Billy/Desktop/Denzic/Companion/.cache/comp-req-466-r7-runtime/cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime/main.o",
+            "sha256": "51090D80573755BEAFC4024DF1752765E723AD8726BF8B1EFBBB31B76A8E92B3"
+          }
+        },
+        "physical_hashes_match_claim": true,
+        "source": {
+          "matches_commit_binding": true,
+          "mtime_ns": 1784812820641868800,
+          "path": "C:/Users/Billy/Desktop/Denzic/Companion/.cache/comp-req-466-r7-runtime/cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/main.c",
+          "sha256": "9760495C1B42AB9410C8A5D24AEF519DAB017BCF97A9012D2952C3E6EC9C58F2"
+        },
+        "source_object_output_log_order": false
+      },
+      "continuous": {
+        "build_log": {
+          "compile_index": -1,
+          "complete": false,
+          "declared_sha256": null,
+          "expected_path": "C:/Users/Billy/Desktop/Denzic/Companion/.cache/comp-req-466-r7-runtime/.cache/comp472-arm-continuous.log",
+          "forbidden_define_absent": true,
+          "hash_matches": false,
+          "hex_index": -1,
+          "link_index": -1,
+          "mtime_ns": null,
+          "observed_sha256": null,
+          "path": null,
+          "required_define_present": false
+        },
+        "declared": {
+          "elf_sha256": "1EFA2168F6E1658E29EA9C1E6EB90369F4E8665314A5869963F464887B5E890D",
+          "hex_sha256": "0DD0671613949CF089E02CA873776D3135745C2C130905CC2921A3F1D14D84A9"
+        },
+        "pass": false,
+        "physical": {
+          "elf": {
+            "exists": true,
+            "mtime_ns": 1784818657197099900,
+            "path": "C:/Users/Billy/Desktop/Denzic/Companion/.cache/comp-req-466-r7-runtime/cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime_continuous/Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntimeContinuous.elf",
+            "sha256": "1EFA2168F6E1658E29EA9C1E6EB90369F4E8665314A5869963F464887B5E890D"
+          },
+          "hex": {
+            "exists": true,
+            "mtime_ns": 1784818657227216200,
+            "path": "C:/Users/Billy/Desktop/Denzic/Companion/.cache/comp-req-466-r7-runtime/cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime_continuous/Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntimeContinuous.hex",
+            "sha256": "0DD0671613949CF089E02CA873776D3135745C2C130905CC2921A3F1D14D84A9"
+          },
+          "main_object": {
+            "exists": true,
+            "mtime_ns": 1784818620643736400,
+            "path": "C:/Users/Billy/Desktop/Denzic/Companion/.cache/comp-req-466-r7-runtime/cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime_continuous/main.o",
+            "sha256": "D8205826BCA5C90DD2EC117A68D8B08445AD3C82BF15FACFE1B7866621B00DDA"
+          }
+        },
+        "physical_hashes_match_claim": true,
+        "source": {
+          "matches_commit_binding": true,
+          "mtime_ns": 1784812820641868800,
+          "path": "C:/Users/Billy/Desktop/Denzic/Companion/.cache/comp-req-466-r7-runtime/cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/main.c",
+          "sha256": "9760495C1B42AB9410C8A5D24AEF519DAB017BCF97A9012D2952C3E6EC9C58F2"
+        },
+        "source_object_output_log_order": false
+      }
+    },
+    "lower_mr.checkonly_zero": {
+      "hardware_contact": 0,
+      "popup": 0,
+      "programmer": 0,
+      "refresh": 0,
+      "reset": 0,
+      "retry": 0,
+      "serial": 0,
+      "write": 0
+    },
+    "lower_mr.commit_exact": {
+      "exact_source_commit": null,
+      "source_commit": "4ddf9709034d307b333510c27e3e0a45c7ed6d15"
+    },
+    "lower_mr.comp_req_478_fixture_contract": {
+      "retry": 0,
+      "tokens": {
+        "bounded_16_cleanup_closed=pass": true,
+        "busy_negative_601=pass": true,
+        "cadence_negative_0=pass": true,
+        "cadence_negative_481=pass": true,
+        "command_stage_failures=pass": true,
+        "idle_new_burst=pass": true,
+        "live_cleanup_closed=pass": true,
+        "physical_mapping=650/40/650/3000": true,
+        "physical_timing=unproven": true,
+        "post_cleanup_event_retained=pass": true,
+        "post_cleanup_zero_commands=pass": true,
+        "retry=0": true,
+        "second_service_activation_unchanged=pass": true,
+        "timing=host_synthetic": true,
+        "transaction_negative_481=pass": true
+      }
+    },
+    "lower_mr.comp_req_478_mode_fault_claims": {
+      "bounded_seeds_only_when_not_continuous": true,
+      "bridge_terminal_fault_latch": true,
+      "continuous_has_no_synthetic_enqueue": true,
+      "host_synthetic_label": true,
+      "no_browser_guard_in_adapter": true,
+      "physical_double_tap_guard": true,
+      "runtime_terminal_fault_latch": true,
+      "single_tap_window_guard": true
+    },
+    "lower_mr.comp_req_484_fixture_contract": {
+      "retry": 0,
+      "tokens": {
+        "bounded_15_deltas=pass": true,
+        "busy_captured_gaze_same_burst=pass": true,
+        "hold_650_menu_3000=pass": true,
+        "menu_idle_481_selection=pass": true,
+        "recording_idle_481_return=pass": true
+      }
+    },
+    "lower_mr.comp_req_486_negative_contract": {
+      "activation_unchanged": null,
+      "build_failure_first_fail": null,
+      "failed_events_unchanged": null,
+      "invalid_current_state": null,
+      "retained_event": null,
+      "retry": null,
+      "ring_unchanged": null,
+      "second_service_no_lookup_build_transport": null,
+      "terminal_latched": null,
+      "unsupported_transition_build_window": null,
+      "zero_commands": null
+    },
+    "lower_mr.comp_req_488_tamper_claims_complete": {
+      "authoritative": false,
+      "observed": {
+        "busy_601": true,
+        "cadence_0": true,
+        "cadence_481": true,
+        "driver_physical": true,
+        "forged_physical_timing": true,
+        "hardware_contact_1": true,
+        "header_blob": true,
+        "missing_hex": true,
+        "retry_1": true,
+        "superseded_sha": true,
+        "transaction_481": true,
+        "wrong_artifact_path": true
+      },
+      "required": [
+        "busy_601",
+        "cadence_0",
+        "cadence_481",
+        "driver_physical",
+        "forged_physical_timing",
+        "hardware_contact_1",
+        "header_blob",
+        "missing_hex",
+        "retry_1",
+        "superseded_sha",
+        "transaction_481",
+        "wrong_artifact_path"
+      ]
+    },
+    "lower_mr.compatibility_claims_complete": {
+      "converted_centered_sha256": "EF4CDB579CC2C43645E0E3585D8C40CA65763112619E5EB9FBC583EAF3E28DBD",
+      "events_realizable": 21,
+      "pairs_realizable": 59,
+      "polarity_bridge": true,
+      "qualification_valid": true,
+      "semantic_noops_realizable": 10,
+      "terminal_retention": true
+    },
+    "lower_mr.elf_files_rehashed": [
+      {
+        "bytes": 3197120,
+        "declared_sha256": "F00EA4DE0C999C6F4CC344E171457C5252B2D7DA390F139F8C792F088DA3BFC0",
+        "inside_lower_root": true,
+        "match": true,
+        "observed_sha256": "F00EA4DE0C999C6F4CC344E171457C5252B2D7DA390F139F8C792F088DA3BFC0",
+        "path": "C:/Users/Billy/Desktop/Denzic/Companion/.cache/comp-req-466-r7-runtime/cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime/Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntime.elf"
+      },
+      {
+        "bytes": 3188264,
+        "declared_sha256": "1EFA2168F6E1658E29EA9C1E6EB90369F4E8665314A5869963F464887B5E890D",
+        "inside_lower_root": true,
+        "match": true,
+        "observed_sha256": "1EFA2168F6E1658E29EA9C1E6EB90369F4E8665314A5869963F464887B5E890D",
+        "path": "C:/Users/Billy/Desktop/Denzic/Companion/.cache/comp-req-466-r7-runtime/cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime_continuous/Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntimeContinuous.elf"
+      }
+    ],
+    "lower_mr.elf_hashes_explicit_match": {
+      "declared": [
+        "1EFA2168F6E1658E29EA9C1E6EB90369F4E8665314A5869963F464887B5E890D",
+        "F00EA4DE0C999C6F4CC344E171457C5252B2D7DA390F139F8C792F088DA3BFC0"
+      ],
+      "expected": [
+        "1EFA2168F6E1658E29EA9C1E6EB90369F4E8665314A5869963F464887B5E890D",
+        "F00EA4DE0C999C6F4CC344E171457C5252B2D7DA390F139F8C792F088DA3BFC0"
+      ]
+    },
+    "lower_mr.file_exists_and_bounded": {
+      "bytes": 8102,
+      "path": "C:/Users/Billy/Desktop/Denzic/Companion/Companion-Firmware/docs/validation/companion-browser-visual-contract-comp-req-471/joint-negative-fixtures/lower-mr/timing-protected-drift.json"
+    },
+    "lower_mr.hash_exact": "D3D7191C81E4CB9E6021FBA9209F950B3A6F48AA962CB9432BDD4CFE220F950B",
+    "lower_mr.hex_files_rehashed": [
+      {
+        "bytes": 537336,
+        "declared_sha256": "4D9A052EB369E6ABD189A6DA26D9257208BD28590AB788BCD506881C3D5E58B6",
+        "inside_lower_root": true,
+        "match": true,
+        "observed_sha256": "4D9A052EB369E6ABD189A6DA26D9257208BD28590AB788BCD506881C3D5E58B6",
+        "path": "C:/Users/Billy/Desktop/Denzic/Companion/.cache/comp-req-466-r7-runtime/cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime/Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntime.hex"
+      },
+      {
+        "bytes": 521075,
+        "declared_sha256": "0DD0671613949CF089E02CA873776D3135745C2C130905CC2921A3F1D14D84A9",
+        "inside_lower_root": true,
+        "match": true,
+        "observed_sha256": "0DD0671613949CF089E02CA873776D3135745C2C130905CC2921A3F1D14D84A9",
+        "path": "C:/Users/Billy/Desktop/Denzic/Companion/.cache/comp-req-466-r7-runtime/cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime_continuous/Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntimeContinuous.hex"
+      }
+    ],
+    "lower_mr.hex_hashes_explicit_match": {
+      "declared": [
+        "0DD0671613949CF089E02CA873776D3135745C2C130905CC2921A3F1D14D84A9",
+        "4D9A052EB369E6ABD189A6DA26D9257208BD28590AB788BCD506881C3D5E58B6"
+      ],
+      "expected": [
+        "0DD0671613949CF089E02CA873776D3135745C2C130905CC2921A3F1D14D84A9",
+        "4D9A052EB369E6ABD189A6DA26D9257208BD28590AB788BCD506881C3D5E58B6"
+      ]
+    },
+    "lower_mr.protected_hashes_exact": {
+      "panel_driver": {
+        "commit_blob_sha256": "04FA982C3BCB12D98A8F73F2580E9E56BFBDB33DEF5345A5660C3543E1848018",
+        "declared_git_blob": "f856d7ce0b8915e5059620c3faa97aa06b06eb4e",
+        "declared_observed_git_blob": null,
+        "declared_physical_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "expected_git_blob": "f856d7ce0b8915e5059620c3faa97aa06b06eb4e",
+        "observed_git_blob": "f856d7ce0b8915e5059620c3faa97aa06b06eb4e",
+        "pass": false,
+        "path": "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
+        "physical_sha256": "F52A7E853BFE2E66680F08420941265CFF163FB579B2D3870128FC72C79E035F",
+        "worktree_clean_against_commit": true
+      },
+      "r7_header": {
+        "commit_blob_sha256": "FF079D99296143156919D542D540441C02273F7F6BA9F1E8FC4EE405165AEC92",
+        "declared_git_blob": "2220da0c1113a5cdad7028aeae578d9fe26e936f",
+        "declared_observed_git_blob": null,
+        "declared_physical_sha256": "9571CF9F896B6C14451BAA7348CB717643B4963AE834B0A554E0C2ED2C7E8D35",
+        "expected_git_blob": "2220da0c1113a5cdad7028aeae578d9fe26e936f",
+        "observed_git_blob": "2220da0c1113a5cdad7028aeae578d9fe26e936f",
+        "pass": false,
+        "path": "app/companion_pendant/epaper/companion_r7_locked_v9_frames.h",
+        "physical_sha256": "9571CF9F896B6C14451BAA7348CB717643B4963AE834B0A554E0C2ED2C7E8D35",
+        "worktree_clean_against_commit": true
+      }
+    },
+    "lower_mr.provenance_contract_fixed_values": {
+      "expected": {
+        "busy_max_ms": 600,
+        "cadence": "1..480",
+        "physical_timing": "unproven",
+        "retry": 0,
+        "transaction_max_ms": 480
+      },
+      "observed": {
+        "busy_max_ms": 600,
+        "cadence": "1..480",
+        "physical_timing": "unproven",
+        "retry": 0,
+        "transaction_max_ms": 480
+      }
+    },
+    "lower_mr.required_sources_declared": {
+      "legacy_missing": [],
+      "provenance_missing": [
+        "adapter",
+        "fixture",
+        "verifier"
+      ]
+    },
+    "lower_mr.runner_rehashed": {
+      "declared_sha256": "959727E4556FD314083174E6D8B1D8E8E4F335A12EBF254CA3D05EABB8A5711E",
+      "expected_sha256": "959727E4556FD314083174E6D8B1D8E8E4F335A12EBF254CA3D05EABB8A5711E",
+      "inside_lower_root": true,
+      "observed_sha256": "959727E4556FD314083174E6D8B1D8E8E4F335A12EBF254CA3D05EABB8A5711E",
+      "path": "C:/Users/Billy/Desktop/Denzic/Companion/.cache/comp-req-466-r7-runtime/tools/run_wb55_ssd1681_r7_locked_v9.ps1"
+    },
+    "lower_mr.schema_exact": {
+      "requirement_id": "COMP-REQ-488",
+      "schema": "companion.lower-visual-runtime-machine-ready.v1"
+    },
+    "lower_mr.side_effect_contract_complete": {
+      "missing_legacy_keys": []
+    },
+    "lower_mr.side_effects_zero": {
+      "nonzero": {},
+      "observed": {
+        "browser": 0,
+        "execute": 0,
+        "flash": 0,
+        "hardware": 0,
+        "popup": 0,
+        "production": 0,
+        "programmer": 0,
+        "prompt": 0,
+        "push": 0,
+        "serial": 0,
+        "server": 0,
+        "write": 0
+      }
+    },
+    "lower_mr.sources_declared_and_bounded": {
+      "count": 11
+    },
+    "lower_mr.status_exact": "LOWER_MACHINE_READY",
+    "lower_mr.supervisor_rehashed": {
+      "declared_sha256": "AB75942496AFDBDE20D810066A752C7D66CAFC658625BA21603543D9E0893F44",
+      "expected_sha256": "AB75942496AFDBDE20D810066A752C7D66CAFC658625BA21603543D9E0893F44",
+      "inside_lower_root": true,
+      "observed_sha256": "AB75942496AFDBDE20D810066A752C7D66CAFC658625BA21603543D9E0893F44",
+      "path": "C:/Users/Billy/Desktop/Denzic/Companion/.cache/comp-req-466-r7-runtime/tools/supervise_wb55_ssd1681_r7_locked_v9.ps1"
+    },
+    "lower_mr.timing_within_limits": {
+      "fixed_bounds": {
+        "busy_max_ms": 600,
+        "cadence": "1..480",
+        "physical_timing": "unproven",
+        "retry": 0,
+        "transaction_max_ms": 480
+      },
+      "measured": {
+        "busy_ms": 2,
+        "cadence_ms": 12,
+        "transaction_ms": 481
+      }
+    },
+    "oracle.hash_exact": "20C270A332F7AD75FAED3C44C9AE3C1D789F7902ABA525C07B0B40F4266C5B2E",
+    "upper.hash_exact": "EAD7000FEB32CD7915FEAD82A49D23FD66755412AEDFA53B4B7A264CABA3BB69",
+    "upper.runtime_side_effects_zero": {
+      "browser": 0,
+      "execute": 0,
+      "hardware": 0,
+      "process": 0,
+      "product_write": 0,
+      "production": 0,
+      "prompt": 0,
+      "server": 0
+    }
+  },
+  "requirements": [
+    "COMP-REQ-479",
+    "COMP-REQ-480",
+    "COMP-REQ-484",
+    "COMP-REQ-486",
+    "COMP-REQ-488"
+  ],
+  "schema": "companion.joint-upper-lower-offline-gate.v1",
+  "scope": "upper_owned_read_only_joint_gate",
+  "side_effect_counters": {
+    "browser": 0,
+    "execute": 0,
+    "hardware": 0,
+    "lower_write": 0,
+    "platform_write": 0,
+    "popup": 0,
+    "production_write": 0,
+    "prompt": 0,
+    "push": 0,
+    "read_only_compatibility_subprocess": 1,
+    "server": 0,
+    "upper_evidence_write": 2
+  },
+  "status": "NO_GO"
+}

@@ -1,0 +1,279 @@
+{
+  "bound_files_mutated": false,
+  "fixture_manifest_path": "docs/validation/companion-browser-visual-contract-comp-req-471/upper-machine-ready-negative-fixtures.json",
+  "fixture_manifest_sha256": "0B4242006DB4FD6F28D0224D44CC1235A088972E9D6AEAE27C06C78B2962F9F0",
+  "items": [
+    {
+      "binding_class": "browser_page",
+      "bound_files_mutated": false,
+      "expected_check": "file_hash.page",
+      "fail_closed": true,
+      "id": "page_hash_drift",
+      "observed_failed_checks": [
+        "file_hash.page"
+      ],
+      "target": "files.page.sha256"
+    },
+    {
+      "binding_class": "machine_result",
+      "bound_files_mutated": false,
+      "expected_check": "machine.structure",
+      "fail_closed": true,
+      "id": "machine_frame_count_drift",
+      "observed_failed_checks": [
+        "machine.structure"
+      ],
+      "target": "machine.frames"
+    },
+    {
+      "binding_class": "capture",
+      "bound_files_mutated": false,
+      "expected_check": "capture.structure",
+      "fail_closed": true,
+      "id": "capture_stale_layer",
+      "observed_failed_checks": [
+        "capture.structure"
+      ],
+      "target": "capture.stale_count"
+    },
+    {
+      "binding_class": "pointer",
+      "bound_files_mutated": false,
+      "expected_check": "pointer.structure",
+      "fail_closed": true,
+      "id": "pointer_negative_false",
+      "observed_failed_checks": [
+        "pointer.structure"
+      ],
+      "target": "pointer.negative_all_true"
+    },
+    {
+      "binding_class": "per_file_rehash",
+      "bound_files_mutated": false,
+      "expected_check": "rehash.all_bound_files",
+      "fail_closed": true,
+      "id": "bound_child_hash_drift",
+      "observed_failed_checks": [
+        "rehash.all_bound_files"
+      ],
+      "target": "rehash.mismatch_count"
+    },
+    {
+      "binding_class": "17_state_frames",
+      "bound_files_mutated": false,
+      "expected_check": "frames.structure",
+      "fail_closed": true,
+      "id": "frame_count_drift",
+      "observed_failed_checks": [
+        "frames.structure"
+      ],
+      "target": "frames.frame_count"
+    },
+    {
+      "binding_class": "c_asset_pack",
+      "bound_files_mutated": false,
+      "expected_check": "c_pack.structure",
+      "fail_closed": true,
+      "id": "pack_unique_count_drift",
+      "observed_failed_checks": [
+        "c_pack.structure"
+      ],
+      "target": "c_pack.unique_frame_count"
+    },
+    {
+      "binding_class": "c_asset_pack",
+      "bound_files_mutated": false,
+      "expected_check": "c_pack.structure",
+      "fail_closed": true,
+      "id": "pack_payload_capacity_drift",
+      "observed_failed_checks": [
+        "c_pack.structure"
+      ],
+      "target": "c_pack.payload_bytes"
+    },
+    {
+      "binding_class": "expanded_window_oracle",
+      "bound_files_mutated": false,
+      "expected_check": "oracle.structure",
+      "fail_closed": true,
+      "id": "oracle_pair_count_drift",
+      "observed_failed_checks": [
+        "oracle.structure"
+      ],
+      "target": "oracle.pair_count"
+    },
+    {
+      "binding_class": "expanded_window_oracle",
+      "bound_files_mutated": false,
+      "expected_check": "oracle.structure",
+      "fail_closed": true,
+      "id": "oracle_noop_count_drift",
+      "observed_failed_checks": [
+        "oracle.structure"
+      ],
+      "target": "oracle.pixel_noop_pair_count"
+    },
+    {
+      "binding_class": "expanded_window_oracle",
+      "bound_files_mutated": false,
+      "expected_check": "oracle.structure",
+      "fail_closed": true,
+      "id": "oracle_menu_full_count_drift",
+      "observed_failed_checks": [
+        "oracle.structure"
+      ],
+      "target": "oracle.menu_full_frame_pair_count"
+    },
+    {
+      "binding_class": "expanded_window_oracle",
+      "bound_files_mutated": false,
+      "expected_check": "oracle.structure",
+      "fail_closed": true,
+      "id": "oracle_nonmenu_full_frame",
+      "observed_failed_checks": [
+        "oracle.structure"
+      ],
+      "target": "oracle.nonmenu_full_frame_pair_count"
+    },
+    {
+      "binding_class": "physical_consumer_boundary",
+      "bound_files_mutated": false,
+      "expected_check": "physical_boundary.structure",
+      "fail_closed": true,
+      "id": "physical_guard_collapse",
+      "observed_failed_checks": [
+        "physical_boundary.structure"
+      ],
+      "target": "physical_boundary.guards_separated"
+    },
+    {
+      "binding_class": "owner_review_runner",
+      "bound_files_mutated": false,
+      "expected_check": "file_hash.owner_runner",
+      "fail_closed": true,
+      "id": "owner_runner_hash_drift",
+      "observed_failed_checks": [
+        "file_hash.owner_runner"
+      ],
+      "target": "files.owner_runner.sha256"
+    },
+    {
+      "binding_class": "owner_review_supervisor",
+      "bound_files_mutated": false,
+      "expected_check": "file_hash.owner_supervisor",
+      "fail_closed": true,
+      "id": "owner_supervisor_hash_drift",
+      "observed_failed_checks": [
+        "file_hash.owner_supervisor"
+      ],
+      "target": "files.owner_supervisor.sha256"
+    },
+    {
+      "binding_class": "owner_review_checkonly",
+      "bound_files_mutated": false,
+      "expected_check": "file_hash.owner_checkonly",
+      "fail_closed": true,
+      "id": "owner_checkonly_hash_drift",
+      "observed_failed_checks": [
+        "file_hash.owner_checkonly"
+      ],
+      "target": "files.owner_checkonly.sha256"
+    },
+    {
+      "binding_class": "owner_review_checkonly",
+      "bound_files_mutated": false,
+      "expected_check": "owner_review.checkonly",
+      "fail_closed": true,
+      "id": "owner_checkonly_duplicate_button",
+      "observed_failed_checks": [
+        "owner_review.checkonly"
+      ],
+      "target": "owner_review.prompt_contract_exact"
+    },
+    {
+      "binding_class": "protected_owner_acceptance",
+      "bound_files_mutated": false,
+      "expected_check": "file_hash.protected_owner_acceptance",
+      "fail_closed": true,
+      "id": "protected_owner_acceptance_hash_drift",
+      "observed_failed_checks": [
+        "file_hash.protected_owner_acceptance"
+      ],
+      "target": "files.protected_owner_acceptance.sha256"
+    },
+    {
+      "binding_class": "owner_result_absence",
+      "bound_files_mutated": false,
+      "expected_check": "owner_review.result_absent",
+      "fail_closed": true,
+      "id": "owner_result_exists",
+      "observed_failed_checks": [
+        "owner_review.result_absent"
+      ],
+      "target": "owner_review.owner_result_count"
+    },
+    {
+      "binding_class": "side_effect_counters",
+      "bound_files_mutated": false,
+      "expected_check": "side_effects.zero",
+      "fail_closed": true,
+      "id": "execute_counter_nonzero",
+      "observed_failed_checks": [
+        "side_effects.zero"
+      ],
+      "target": "side_effects.execute"
+    },
+    {
+      "binding_class": "side_effect_counters",
+      "bound_files_mutated": false,
+      "expected_check": "side_effects.zero",
+      "fail_closed": true,
+      "id": "prompt_counter_nonzero",
+      "observed_failed_checks": [
+        "side_effects.zero"
+      ],
+      "target": "side_effects.prompt"
+    },
+    {
+      "binding_class": "side_effect_counters",
+      "bound_files_mutated": false,
+      "expected_check": "side_effects.zero",
+      "fail_closed": true,
+      "id": "server_counter_nonzero",
+      "observed_failed_checks": [
+        "side_effects.zero"
+      ],
+      "target": "side_effects.server"
+    },
+    {
+      "binding_class": "side_effect_counters",
+      "bound_files_mutated": false,
+      "expected_check": "side_effects.zero",
+      "fail_closed": true,
+      "id": "hardware_counter_nonzero",
+      "observed_failed_checks": [
+        "side_effects.zero"
+      ],
+      "target": "side_effects.hardware"
+    }
+  ],
+  "requirement": "COMP-REQ-467/471/472",
+  "result": "23/23",
+  "schema": "companion.upper-machine-ready-negative-result.v1",
+  "side_effect_counters": {
+    "browser": 0,
+    "execute": 0,
+    "hardware": 0,
+    "owner_result": 0,
+    "process": 0,
+    "product_write": 0,
+    "production": 0,
+    "prompt": 0,
+    "server": 0
+  },
+  "status": "PASS",
+  "upper_machine_ready_path": "docs/validation/companion-browser-visual-contract-comp-req-471/UPPER_MACHINE_READY.json",
+  "upper_machine_ready_sha256": "EAD7000FEB32CD7915FEAD82A49D23FD66755412AEDFA53B4B7A264CABA3BB69",
+  "verifier_path": "tools/faraday_upper_art/verify_companion_upper_machine_ready.py",
+  "verifier_sha256": "91AB4D0464D1EFADDA943DB06AB32148F4E0C2570B66439FFBDA66AD36E1EAB5"
+}

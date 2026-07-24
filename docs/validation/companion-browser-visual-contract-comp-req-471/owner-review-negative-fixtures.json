@@ -1,0 +1,69 @@
+{
+  "schema": "companion.browser-owner-review-negative-fixtures.v1",
+  "requirement": "COMP-REQ-471",
+  "fixtures": [
+    {
+      "id": "page_missing",
+      "expected_error": "required page/artifact file missing: page",
+      "overrides": {
+        "file_exists": {
+          "page": false
+        }
+      }
+    },
+    {
+      "id": "page_hash_drift",
+      "expected_error": "artifact SHA mismatch: page",
+      "overrides": {
+        "sha256": {
+          "page": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      }
+    },
+    {
+      "id": "machine_status_not_pass",
+      "expected_error": "machine status must be PASS",
+      "overrides": {
+        "json": {
+          "machine_status": "NO_GO"
+        }
+      }
+    },
+    {
+      "id": "frames_artifact_drift",
+      "expected_error": "artifact SHA mismatch: frames_bin",
+      "overrides": {
+        "sha256": {
+          "frames_bin": "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+        }
+      }
+    },
+    {
+      "id": "duplicate_prompt",
+      "expected_error": "duplicate prompt contract detected",
+      "overrides": {
+        "contract": {
+          "active_prompt_count": 1
+        }
+      }
+    },
+    {
+      "id": "checkonly_process_attempt",
+      "expected_error": "CheckOnly process counter must remain zero behind an early return",
+      "overrides": {
+        "contract": {
+          "checkonly_process_count": 1
+        }
+      }
+    },
+    {
+      "id": "execute_cleanup_unbounded",
+      "expected_error": "Execute cleanup path must be bounded and exact-PID",
+      "overrides": {
+        "contract": {
+          "execute_cleanup_bounded": false
+        }
+      }
+    }
+  ]
+}

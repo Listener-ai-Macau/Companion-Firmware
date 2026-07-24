@@ -1,0 +1,35 @@
+{
+  "status": "PASS",
+  "evidence": [
+    {
+      "viewport": "desktop",
+      "screen": [
+        200,
+        200
+      ],
+      "menu": "passed",
+      "expression": "warm",
+      "back": "passed",
+      "pointer_drag": "passed"
+    },
+    {
+      "viewport": "mobile",
+      "screen": [
+        200,
+        200
+      ],
+      "menu": "passed",
+      "expression": "warm",
+      "back": "passed",
+      "pointer_drag": "passed"
+    }
+  ],
+  "screenshots": [
+    "desktop-back.png",
+    "desktop-expression-warm.png",
+    "desktop-menu.png",
+    "mobile-back.png",
+    "mobile-expression-warm.png",
+    "mobile-menu.png"
+  ]
+}

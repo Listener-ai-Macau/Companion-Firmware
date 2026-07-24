@@ -1,0 +1,23 @@
+{
+  "schema": "companion.menu_luna.r2.owner_review.v1",
+  "title": "Companion 菜单浏览器验收",
+  "selected": "失败",
+  "note": "这个现在浏览器验收? 还是在哪里验收",
+  "selected_sha256": "28384D7AFD2E4FA66084F6803B9D3CB3B1C1EBB0A4ECC4CC97706745405E5DF4",
+  "note_sha256": "7361AA8746277F77B25CC4AAF4ABEF811951C9CB42CE6663B3F4FFDADCAE5DEF",
+  "url": "http://127.0.0.1:4173/docs/validation/companion-menu-luna-r2-machine-ready/index.html",
+  "page_reachability": "HTTP 200",
+  "machine_manifest": "machine-manifest.json",
+  "machine_manifest_sha256": "4EEB974FCF7831692CA34A1A0743583088D80F8DEB38C23BC4DB6FF4BB6C78E7",
+  "prompt_observation": "operator-prompt-observation.json",
+  "prompt_observation_sha256": "C21999F54897D0D7826B4437F244EC96608FE4361A49DDCF72F50C32BD77AC3D",
+  "registry_first": [
+    "COMP-REQ-403",
+    "COMP-REQ-394",
+    "COMP-REQ-402",
+    "COMP-REQ-408"
+  ],
+  "hardware_touched": false,
+  "production_touched": false,
+  "second_prompt_created": false
+}

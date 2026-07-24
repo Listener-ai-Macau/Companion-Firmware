@@ -1,0 +1,1207 @@
+{
+  "catalog": {
+    "path": "docs/validation/companion-browser-visual-contract-comp-req-471/joint-negative-fixtures-catalog.json",
+    "sha256": "9EDB504E528ED220D687C6AFBC13CA9303E3FADEF91EA5B6ADC93EB8E8BD3B04"
+  },
+  "generator": {
+    "path": "tools/faraday_upper_art/validate_companion_joint_offline_gate_comp_req_479.py",
+    "sha256": "BAF90397CD9B4A70D81305E11CC38B81ACF45951E2F0B81B4D5B233F3C549929"
+  },
+  "lower_read_only_snapshot": {
+    "after": {
+      "build_artifacts": {
+        "elf": [
+          {
+            "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime/Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntime.elf",
+            "sha256": "2CA84636BC1FF86B84E690E51C39AF37E0FE4F1EE9FB8329EA2BA63C4DBE0E4B"
+          },
+          {
+            "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime_continuous/Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntimeContinuous.elf",
+            "sha256": "671DC0F8872BA8BD14D9404ABE8E39E8405E37C7350E2DE906AA2A359C753B03"
+          }
+        ],
+        "hex": [
+          {
+            "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime/Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntime.hex",
+            "sha256": "2CF7B8FF9FA73F253BA0261BA9A02BF3D7DC087EC056B7AD53E5A9DAC0966DC4"
+          },
+          {
+            "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime_continuous/Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntimeContinuous.hex",
+            "sha256": "8B30A258719D06B63437C14B95BA5A216E7BC94BF80B5A6378E70983CCDEB726"
+          }
+        ]
+      },
+      "head": "4ddf9709034d307b333510c27e3e0a45c7ed6d15",
+      "machine_ready_sha256": "8BD2C5F3F9CEFD4794DEC29C6C244A66C0A7F99D495E9A221465019C355FB04F",
+      "tracked_diff_sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "tracked_status_sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "after_sha256": "070C9D438383C2BBBFD55E2AAB1073CB2887F370BA2035717DEA375E35F6FCA5",
+    "before": {
+      "build_artifacts": {
+        "elf": [
+          {
+            "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime/Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntime.elf",
+            "sha256": "2CA84636BC1FF86B84E690E51C39AF37E0FE4F1EE9FB8329EA2BA63C4DBE0E4B"
+          },
+          {
+            "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime_continuous/Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntimeContinuous.elf",
+            "sha256": "671DC0F8872BA8BD14D9404ABE8E39E8405E37C7350E2DE906AA2A359C753B03"
+          }
+        ],
+        "hex": [
+          {
+            "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime/Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntime.hex",
+            "sha256": "2CF7B8FF9FA73F253BA0261BA9A02BF3D7DC087EC056B7AD53E5A9DAC0966DC4"
+          },
+          {
+            "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime_continuous/Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntimeContinuous.hex",
+            "sha256": "8B30A258719D06B63437C14B95BA5A216E7BC94BF80B5A6378E70983CCDEB726"
+          }
+        ]
+      },
+      "head": "4ddf9709034d307b333510c27e3e0a45c7ed6d15",
+      "machine_ready_sha256": "8BD2C5F3F9CEFD4794DEC29C6C244A66C0A7F99D495E9A221465019C355FB04F",
+      "tracked_diff_sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "tracked_status_sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    "before_sha256": "070C9D438383C2BBBFD55E2AAB1073CB2887F370BA2035717DEA375E35F6FCA5",
+    "unchanged": true
+  },
+  "requirements": [
+    "COMP-REQ-479",
+    "COMP-REQ-480",
+    "COMP-REQ-484",
+    "COMP-REQ-486",
+    "COMP-REQ-488"
+  ],
+  "results": [
+    {
+      "deterministic_two_runs": true,
+      "expected_failed_checks_observed": true,
+      "id": "missing_lower_mr",
+      "run_1": {
+        "artifact_sha256": "891E6968272D45C1320D4F654C7E3BB9F20525687EE1A224F182AB3F71278C59",
+        "exit_code": 1,
+        "failed_checks": [
+          "compatibility.full_21_59_10",
+          "compatibility.polarity_terminal_qualification",
+          "lower.build_outputs_fresh_and_rehashed",
+          "lower_claims_match_observed_compatibility",
+          "lower_mr.all_sources_recomputed",
+          "lower_mr.arm_modes_exact_0_1",
+          "lower_mr.build_logs_rehashed_and_complete",
+          "lower_mr.commit_exact",
+          "lower_mr.comp_req_478_fixture_contract",
+          "lower_mr.comp_req_478_mode_fault_claims",
+          "lower_mr.comp_req_484_fixture_contract",
+          "lower_mr.compatibility_claims_complete",
+          "lower_mr.elf_files_rehashed",
+          "lower_mr.elf_hashes_explicit_match",
+          "lower_mr.elf_paths_declared",
+          "lower_mr.file_exists_and_bounded",
+          "lower_mr.hash_exact",
+          "lower_mr.hex_files_rehashed",
+          "lower_mr.hex_hashes_explicit_match",
+          "lower_mr.hex_paths_declared",
+          "lower_mr.json_object",
+          "lower_mr.protected_hashes_exact",
+          "lower_mr.required_sources_declared",
+          "lower_mr.runner_rehashed",
+          "lower_mr.schema_exact",
+          "lower_mr.side_effect_contract_complete",
+          "lower_mr.side_effects_zero",
+          "lower_mr.sources_declared_and_bounded",
+          "lower_mr.status_exact",
+          "lower_mr.supervisor_rehashed",
+          "lower_mr.timing_within_limits"
+        ],
+        "status": "NO_GO",
+        "stderr": "",
+        "stdout": "{\"artifact_sha256\": \"891E6968272D45C1320D4F654C7E3BB9F20525687EE1A224F182AB3F71278C59\", \"compatibility_status\": \"NO_GO_UPPER_LOWER_POLARITY_EVENT_TERMINAL_GAPS\", \"failed_check_count\": 31, \"status\": \"NO_GO\"}"
+      },
+      "run_2": {
+        "artifact_sha256": "891E6968272D45C1320D4F654C7E3BB9F20525687EE1A224F182AB3F71278C59",
+        "exit_code": 1,
+        "failed_checks": [
+          "compatibility.full_21_59_10",
+          "compatibility.polarity_terminal_qualification",
+          "lower.build_outputs_fresh_and_rehashed",
+          "lower_claims_match_observed_compatibility",
+          "lower_mr.all_sources_recomputed",
+          "lower_mr.arm_modes_exact_0_1",
+          "lower_mr.build_logs_rehashed_and_complete",
+          "lower_mr.commit_exact",
+          "lower_mr.comp_req_478_fixture_contract",
+          "lower_mr.comp_req_478_mode_fault_claims",
+          "lower_mr.comp_req_484_fixture_contract",
+          "lower_mr.compatibility_claims_complete",
+          "lower_mr.elf_files_rehashed",
+          "lower_mr.elf_hashes_explicit_match",
+          "lower_mr.elf_paths_declared",
+          "lower_mr.file_exists_and_bounded",
+          "lower_mr.hash_exact",
+          "lower_mr.hex_files_rehashed",
+          "lower_mr.hex_hashes_explicit_match",
+          "lower_mr.hex_paths_declared",
+          "lower_mr.json_object",
+          "lower_mr.protected_hashes_exact",
+          "lower_mr.required_sources_declared",
+          "lower_mr.runner_rehashed",
+          "lower_mr.schema_exact",
+          "lower_mr.side_effect_contract_complete",
+          "lower_mr.side_effects_zero",
+          "lower_mr.sources_declared_and_bounded",
+          "lower_mr.status_exact",
+          "lower_mr.supervisor_rehashed",
+          "lower_mr.timing_within_limits"
+        ],
+        "status": "NO_GO",
+        "stderr": "",
+        "stdout": "{\"artifact_sha256\": \"891E6968272D45C1320D4F654C7E3BB9F20525687EE1A224F182AB3F71278C59\", \"compatibility_status\": \"NO_GO_UPPER_LOWER_POLARITY_EVENT_TERMINAL_GAPS\", \"failed_check_count\": 31, \"status\": \"NO_GO\"}"
+      },
+      "status": "PASS_NEGATIVE"
+    },
+    {
+      "deterministic_two_runs": true,
+      "expected_failed_checks_observed": true,
+      "id": "legacy_c173",
+      "run_1": {
+        "artifact_sha256": "D8D6E2D61F7EAA9692DC4E44D75D11259AFA79A8DBB402772069629A5D557F05",
+        "exit_code": 1,
+        "failed_checks": [
+          "compatibility.full_21_59_10",
+          "compatibility.polarity_terminal_qualification",
+          "lower.build_outputs_fresh_and_rehashed",
+          "lower.source_comp_req_478_contract",
+          "lower.source_comp_req_484_contract",
+          "lower_claims_match_observed_compatibility",
+          "lower_mr.all_sources_recomputed",
+          "lower_mr.arm_modes_exact_0_1",
+          "lower_mr.build_logs_rehashed_and_complete",
+          "lower_mr.commit_exact",
+          "lower_mr.comp_req_478_fixture_contract",
+          "lower_mr.comp_req_478_mode_fault_claims",
+          "lower_mr.comp_req_484_fixture_contract",
+          "lower_mr.compatibility_claims_complete",
+          "lower_mr.elf_files_rehashed",
+          "lower_mr.elf_hashes_explicit_match",
+          "lower_mr.elf_paths_declared",
+          "lower_mr.file_exists_and_bounded",
+          "lower_mr.hash_exact",
+          "lower_mr.hex_files_rehashed",
+          "lower_mr.hex_hashes_explicit_match",
+          "lower_mr.hex_paths_declared",
+          "lower_mr.json_object",
+          "lower_mr.protected_hashes_exact",
+          "lower_mr.required_sources_declared",
+          "lower_mr.runner_rehashed",
+          "lower_mr.schema_exact",
+          "lower_mr.side_effect_contract_complete",
+          "lower_mr.side_effects_zero",
+          "lower_mr.sources_declared_and_bounded",
+          "lower_mr.status_exact",
+          "lower_mr.supervisor_rehashed",
+          "lower_mr.timing_within_limits"
+        ],
+        "status": "NO_GO",
+        "stderr": "",
+        "stdout": "{\"artifact_sha256\": \"D8D6E2D61F7EAA9692DC4E44D75D11259AFA79A8DBB402772069629A5D557F05\", \"compatibility_status\": \"NO_GO_UPPER_LOWER_POLARITY_EVENT_TERMINAL_GAPS\", \"failed_check_count\": 33, \"status\": \"NO_GO\"}"
+      },
+      "run_2": {
+        "artifact_sha256": "D8D6E2D61F7EAA9692DC4E44D75D11259AFA79A8DBB402772069629A5D557F05",
+        "exit_code": 1,
+        "failed_checks": [
+          "compatibility.full_21_59_10",
+          "compatibility.polarity_terminal_qualification",
+          "lower.build_outputs_fresh_and_rehashed",
+          "lower.source_comp_req_478_contract",
+          "lower.source_comp_req_484_contract",
+          "lower_claims_match_observed_compatibility",
+          "lower_mr.all_sources_recomputed",
+          "lower_mr.arm_modes_exact_0_1",
+          "lower_mr.build_logs_rehashed_and_complete",
+          "lower_mr.commit_exact",
+          "lower_mr.comp_req_478_fixture_contract",
+          "lower_mr.comp_req_478_mode_fault_claims",
+          "lower_mr.comp_req_484_fixture_contract",
+          "lower_mr.compatibility_claims_complete",
+          "lower_mr.elf_files_rehashed",
+          "lower_mr.elf_hashes_explicit_match",
+          "lower_mr.elf_paths_declared",
+          "lower_mr.file_exists_and_bounded",
+          "lower_mr.hash_exact",
+          "lower_mr.hex_files_rehashed",
+          "lower_mr.hex_hashes_explicit_match",
+          "lower_mr.hex_paths_declared",
+          "lower_mr.json_object",
+          "lower_mr.protected_hashes_exact",
+          "lower_mr.required_sources_declared",
+          "lower_mr.runner_rehashed",
+          "lower_mr.schema_exact",
+          "lower_mr.side_effect_contract_complete",
+          "lower_mr.side_effects_zero",
+          "lower_mr.sources_declared_and_bounded",
+          "lower_mr.status_exact",
+          "lower_mr.supervisor_rehashed",
+          "lower_mr.timing_within_limits"
+        ],
+        "status": "NO_GO",
+        "stderr": "",
+        "stdout": "{\"artifact_sha256\": \"D8D6E2D61F7EAA9692DC4E44D75D11259AFA79A8DBB402772069629A5D557F05\", \"compatibility_status\": \"NO_GO_UPPER_LOWER_POLARITY_EVENT_TERMINAL_GAPS\", \"failed_check_count\": 33, \"status\": \"NO_GO\"}"
+      },
+      "status": "PASS_NEGATIVE"
+    },
+    {
+      "deterministic_two_runs": true,
+      "expected_failed_checks_observed": true,
+      "id": "legacy_c692",
+      "run_1": {
+        "artifact_sha256": "5ED44B5C15C27626D99EFE1F0DE3B61337BD4061CF3F5E34D05DEE17BC4264B2",
+        "exit_code": 1,
+        "failed_checks": [
+          "compatibility.full_21_59_10",
+          "compatibility.polarity_terminal_qualification",
+          "lower.build_outputs_fresh_and_rehashed",
+          "lower.source_comp_req_478_contract",
+          "lower.source_comp_req_484_contract",
+          "lower_claims_match_observed_compatibility",
+          "lower_mr.all_sources_recomputed",
+          "lower_mr.arm_modes_exact_0_1",
+          "lower_mr.build_logs_rehashed_and_complete",
+          "lower_mr.commit_exact",
+          "lower_mr.comp_req_478_fixture_contract",
+          "lower_mr.comp_req_478_mode_fault_claims",
+          "lower_mr.comp_req_484_fixture_contract",
+          "lower_mr.compatibility_claims_complete",
+          "lower_mr.elf_files_rehashed",
+          "lower_mr.elf_hashes_explicit_match",
+          "lower_mr.elf_paths_declared",
+          "lower_mr.file_exists_and_bounded",
+          "lower_mr.hash_exact",
+          "lower_mr.hex_files_rehashed",
+          "lower_mr.hex_hashes_explicit_match",
+          "lower_mr.hex_paths_declared",
+          "lower_mr.json_object",
+          "lower_mr.protected_hashes_exact",
+          "lower_mr.required_sources_declared",
+          "lower_mr.runner_rehashed",
+          "lower_mr.schema_exact",
+          "lower_mr.side_effect_contract_complete",
+          "lower_mr.side_effects_zero",
+          "lower_mr.sources_declared_and_bounded",
+          "lower_mr.status_exact",
+          "lower_mr.supervisor_rehashed",
+          "lower_mr.timing_within_limits"
+        ],
+        "status": "NO_GO",
+        "stderr": "",
+        "stdout": "{\"artifact_sha256\": \"5ED44B5C15C27626D99EFE1F0DE3B61337BD4061CF3F5E34D05DEE17BC4264B2\", \"compatibility_status\": \"NO_GO_UPPER_LOWER_POLARITY_EVENT_TERMINAL_GAPS\", \"failed_check_count\": 33, \"status\": \"NO_GO\"}"
+      },
+      "run_2": {
+        "artifact_sha256": "5ED44B5C15C27626D99EFE1F0DE3B61337BD4061CF3F5E34D05DEE17BC4264B2",
+        "exit_code": 1,
+        "failed_checks": [
+          "compatibility.full_21_59_10",
+          "compatibility.polarity_terminal_qualification",
+          "lower.build_outputs_fresh_and_rehashed",
+          "lower.source_comp_req_478_contract",
+          "lower.source_comp_req_484_contract",
+          "lower_claims_match_observed_compatibility",
+          "lower_mr.all_sources_recomputed",
+          "lower_mr.arm_modes_exact_0_1",
+          "lower_mr.build_logs_rehashed_and_complete",
+          "lower_mr.commit_exact",
+          "lower_mr.comp_req_478_fixture_contract",
+          "lower_mr.comp_req_478_mode_fault_claims",
+          "lower_mr.comp_req_484_fixture_contract",
+          "lower_mr.compatibility_claims_complete",
+          "lower_mr.elf_files_rehashed",
+          "lower_mr.elf_hashes_explicit_match",
+          "lower_mr.elf_paths_declared",
+          "lower_mr.file_exists_and_bounded",
+          "lower_mr.hash_exact",
+          "lower_mr.hex_files_rehashed",
+          "lower_mr.hex_hashes_explicit_match",
+          "lower_mr.hex_paths_declared",
+          "lower_mr.json_object",
+          "lower_mr.protected_hashes_exact",
+          "lower_mr.required_sources_declared",
+          "lower_mr.runner_rehashed",
+          "lower_mr.schema_exact",
+          "lower_mr.side_effect_contract_complete",
+          "lower_mr.side_effects_zero",
+          "lower_mr.sources_declared_and_bounded",
+          "lower_mr.status_exact",
+          "lower_mr.supervisor_rehashed",
+          "lower_mr.timing_within_limits"
+        ],
+        "status": "NO_GO",
+        "stderr": "",
+        "stdout": "{\"artifact_sha256\": \"5ED44B5C15C27626D99EFE1F0DE3B61337BD4061CF3F5E34D05DEE17BC4264B2\", \"compatibility_status\": \"NO_GO_UPPER_LOWER_POLARITY_EVENT_TERMINAL_GAPS\", \"failed_check_count\": 33, \"status\": \"NO_GO\"}"
+      },
+      "status": "PASS_NEGATIVE"
+    },
+    {
+      "deterministic_two_runs": true,
+      "expected_failed_checks_observed": true,
+      "id": "legacy_b9",
+      "run_1": {
+        "artifact_sha256": "98277B01D2E39338E9AAFE36C58A04205320CF337BE9A3714239B54D1D42522E",
+        "exit_code": 1,
+        "failed_checks": [
+          "compatibility.full_21_59_10",
+          "compatibility.polarity_terminal_qualification",
+          "lower.build_outputs_fresh_and_rehashed",
+          "lower.source_comp_req_478_contract",
+          "lower.source_comp_req_484_contract",
+          "lower_claims_match_observed_compatibility",
+          "lower_mr.all_sources_recomputed",
+          "lower_mr.arm_modes_exact_0_1",
+          "lower_mr.build_logs_rehashed_and_complete",
+          "lower_mr.commit_exact",
+          "lower_mr.comp_req_478_fixture_contract",
+          "lower_mr.comp_req_478_mode_fault_claims",
+          "lower_mr.comp_req_484_fixture_contract",
+          "lower_mr.compatibility_claims_complete",
+          "lower_mr.elf_files_rehashed",
+          "lower_mr.elf_hashes_explicit_match",
+          "lower_mr.elf_paths_declared",
+          "lower_mr.file_exists_and_bounded",
+          "lower_mr.hash_exact",
+          "lower_mr.hex_files_rehashed",
+          "lower_mr.hex_hashes_explicit_match",
+          "lower_mr.hex_paths_declared",
+          "lower_mr.json_object",
+          "lower_mr.protected_hashes_exact",
+          "lower_mr.required_sources_declared",
+          "lower_mr.runner_rehashed",
+          "lower_mr.schema_exact",
+          "lower_mr.side_effect_contract_complete",
+          "lower_mr.side_effects_zero",
+          "lower_mr.sources_declared_and_bounded",
+          "lower_mr.status_exact",
+          "lower_mr.supervisor_rehashed",
+          "lower_mr.timing_within_limits"
+        ],
+        "status": "NO_GO",
+        "stderr": "",
+        "stdout": "{\"artifact_sha256\": \"98277B01D2E39338E9AAFE36C58A04205320CF337BE9A3714239B54D1D42522E\", \"compatibility_status\": \"NO_GO_UPPER_LOWER_POLARITY_EVENT_TERMINAL_GAPS\", \"failed_check_count\": 33, \"status\": \"NO_GO\"}"
+      },
+      "run_2": {
+        "artifact_sha256": "98277B01D2E39338E9AAFE36C58A04205320CF337BE9A3714239B54D1D42522E",
+        "exit_code": 1,
+        "failed_checks": [
+          "compatibility.full_21_59_10",
+          "compatibility.polarity_terminal_qualification",
+          "lower.build_outputs_fresh_and_rehashed",
+          "lower.source_comp_req_478_contract",
+          "lower.source_comp_req_484_contract",
+          "lower_claims_match_observed_compatibility",
+          "lower_mr.all_sources_recomputed",
+          "lower_mr.arm_modes_exact_0_1",
+          "lower_mr.build_logs_rehashed_and_complete",
+          "lower_mr.commit_exact",
+          "lower_mr.comp_req_478_fixture_contract",
+          "lower_mr.comp_req_478_mode_fault_claims",
+          "lower_mr.comp_req_484_fixture_contract",
+          "lower_mr.compatibility_claims_complete",
+          "lower_mr.elf_files_rehashed",
+          "lower_mr.elf_hashes_explicit_match",
+          "lower_mr.elf_paths_declared",
+          "lower_mr.file_exists_and_bounded",
+          "lower_mr.hash_exact",
+          "lower_mr.hex_files_rehashed",
+          "lower_mr.hex_hashes_explicit_match",
+          "lower_mr.hex_paths_declared",
+          "lower_mr.json_object",
+          "lower_mr.protected_hashes_exact",
+          "lower_mr.required_sources_declared",
+          "lower_mr.runner_rehashed",
+          "lower_mr.schema_exact",
+          "lower_mr.side_effect_contract_complete",
+          "lower_mr.side_effects_zero",
+          "lower_mr.sources_declared_and_bounded",
+          "lower_mr.status_exact",
+          "lower_mr.supervisor_rehashed",
+          "lower_mr.timing_within_limits"
+        ],
+        "status": "NO_GO",
+        "stderr": "",
+        "stdout": "{\"artifact_sha256\": \"98277B01D2E39338E9AAFE36C58A04205320CF337BE9A3714239B54D1D42522E\", \"compatibility_status\": \"NO_GO_UPPER_LOWER_POLARITY_EVENT_TERMINAL_GAPS\", \"failed_check_count\": 33, \"status\": \"NO_GO\"}"
+      },
+      "status": "PASS_NEGATIVE"
+    },
+    {
+      "deterministic_two_runs": true,
+      "expected_failed_checks_observed": true,
+      "id": "legacy_f142",
+      "run_1": {
+        "artifact_sha256": "07F1CD7B03653A580E9581F51AA9055D54610947F6BD37E6B0996AC405742F46",
+        "exit_code": 1,
+        "failed_checks": [
+          "compatibility.full_21_59_10",
+          "compatibility.polarity_terminal_qualification",
+          "lower.build_outputs_fresh_and_rehashed",
+          "lower.source_comp_req_478_contract",
+          "lower.source_comp_req_484_contract",
+          "lower_claims_match_observed_compatibility",
+          "lower_mr.all_sources_recomputed",
+          "lower_mr.arm_modes_exact_0_1",
+          "lower_mr.build_logs_rehashed_and_complete",
+          "lower_mr.commit_exact",
+          "lower_mr.comp_req_478_fixture_contract",
+          "lower_mr.comp_req_478_mode_fault_claims",
+          "lower_mr.comp_req_484_fixture_contract",
+          "lower_mr.compatibility_claims_complete",
+          "lower_mr.elf_files_rehashed",
+          "lower_mr.elf_hashes_explicit_match",
+          "lower_mr.elf_paths_declared",
+          "lower_mr.file_exists_and_bounded",
+          "lower_mr.hash_exact",
+          "lower_mr.hex_files_rehashed",
+          "lower_mr.hex_hashes_explicit_match",
+          "lower_mr.hex_paths_declared",
+          "lower_mr.json_object",
+          "lower_mr.protected_hashes_exact",
+          "lower_mr.required_sources_declared",
+          "lower_mr.runner_rehashed",
+          "lower_mr.schema_exact",
+          "lower_mr.side_effect_contract_complete",
+          "lower_mr.side_effects_zero",
+          "lower_mr.sources_declared_and_bounded",
+          "lower_mr.status_exact",
+          "lower_mr.supervisor_rehashed",
+          "lower_mr.timing_within_limits"
+        ],
+        "status": "NO_GO",
+        "stderr": "",
+        "stdout": "{\"artifact_sha256\": \"07F1CD7B03653A580E9581F51AA9055D54610947F6BD37E6B0996AC405742F46\", \"compatibility_status\": \"NO_GO_UPPER_LOWER_POLARITY_EVENT_TERMINAL_GAPS\", \"failed_check_count\": 33, \"status\": \"NO_GO\"}"
+      },
+      "run_2": {
+        "artifact_sha256": "07F1CD7B03653A580E9581F51AA9055D54610947F6BD37E6B0996AC405742F46",
+        "exit_code": 1,
+        "failed_checks": [
+          "compatibility.full_21_59_10",
+          "compatibility.polarity_terminal_qualification",
+          "lower.build_outputs_fresh_and_rehashed",
+          "lower.source_comp_req_478_contract",
+          "lower.source_comp_req_484_contract",
+          "lower_claims_match_observed_compatibility",
+          "lower_mr.all_sources_recomputed",
+          "lower_mr.arm_modes_exact_0_1",
+          "lower_mr.build_logs_rehashed_and_complete",
+          "lower_mr.commit_exact",
+          "lower_mr.comp_req_478_fixture_contract",
+          "lower_mr.comp_req_478_mode_fault_claims",
+          "lower_mr.comp_req_484_fixture_contract",
+          "lower_mr.compatibility_claims_complete",
+          "lower_mr.elf_files_rehashed",
+          "lower_mr.elf_hashes_explicit_match",
+          "lower_mr.elf_paths_declared",
+          "lower_mr.file_exists_and_bounded",
+          "lower_mr.hash_exact",
+          "lower_mr.hex_files_rehashed",
+          "lower_mr.hex_hashes_explicit_match",
+          "lower_mr.hex_paths_declared",
+          "lower_mr.json_object",
+          "lower_mr.protected_hashes_exact",
+          "lower_mr.required_sources_declared",
+          "lower_mr.runner_rehashed",
+          "lower_mr.schema_exact",
+          "lower_mr.side_effect_contract_complete",
+          "lower_mr.side_effects_zero",
+          "lower_mr.sources_declared_and_bounded",
+          "lower_mr.status_exact",
+          "lower_mr.supervisor_rehashed",
+          "lower_mr.timing_within_limits"
+        ],
+        "status": "NO_GO",
+        "stderr": "",
+        "stdout": "{\"artifact_sha256\": \"07F1CD7B03653A580E9581F51AA9055D54610947F6BD37E6B0996AC405742F46\", \"compatibility_status\": \"NO_GO_UPPER_LOWER_POLARITY_EVENT_TERMINAL_GAPS\", \"failed_check_count\": 33, \"status\": \"NO_GO\"}"
+      },
+      "status": "PASS_NEGATIVE"
+    },
+    {
+      "deterministic_two_runs": true,
+      "expected_failed_checks_observed": true,
+      "id": "legacy_a963",
+      "run_1": {
+        "artifact_sha256": "BDCF2A3B412055091E459123D77985E7DF2E8BB68F248DFF148BB55E58DEDEAF",
+        "exit_code": 1,
+        "failed_checks": [
+          "compatibility.full_21_59_10",
+          "compatibility.polarity_terminal_qualification",
+          "lower.build_outputs_fresh_and_rehashed",
+          "lower.source_comp_req_484_contract",
+          "lower_claims_match_observed_compatibility",
+          "lower_mr.all_sources_recomputed",
+          "lower_mr.arm_modes_exact_0_1",
+          "lower_mr.build_logs_rehashed_and_complete",
+          "lower_mr.commit_exact",
+          "lower_mr.comp_req_478_fixture_contract",
+          "lower_mr.comp_req_478_mode_fault_claims",
+          "lower_mr.comp_req_484_fixture_contract",
+          "lower_mr.compatibility_claims_complete",
+          "lower_mr.elf_files_rehashed",
+          "lower_mr.elf_hashes_explicit_match",
+          "lower_mr.elf_paths_declared",
+          "lower_mr.file_exists_and_bounded",
+          "lower_mr.hash_exact",
+          "lower_mr.hex_files_rehashed",
+          "lower_mr.hex_hashes_explicit_match",
+          "lower_mr.hex_paths_declared",
+          "lower_mr.json_object",
+          "lower_mr.protected_hashes_exact",
+          "lower_mr.required_sources_declared",
+          "lower_mr.runner_rehashed",
+          "lower_mr.schema_exact",
+          "lower_mr.side_effect_contract_complete",
+          "lower_mr.side_effects_zero",
+          "lower_mr.sources_declared_and_bounded",
+          "lower_mr.status_exact",
+          "lower_mr.supervisor_rehashed",
+          "lower_mr.timing_within_limits"
+        ],
+        "status": "NO_GO",
+        "stderr": "",
+        "stdout": "{\"artifact_sha256\": \"BDCF2A3B412055091E459123D77985E7DF2E8BB68F248DFF148BB55E58DEDEAF\", \"compatibility_status\": \"NO_GO_UPPER_LOWER_POLARITY_EVENT_TERMINAL_GAPS\", \"failed_check_count\": 32, \"status\": \"NO_GO\"}"
+      },
+      "run_2": {
+        "artifact_sha256": "BDCF2A3B412055091E459123D77985E7DF2E8BB68F248DFF148BB55E58DEDEAF",
+        "exit_code": 1,
+        "failed_checks": [
+          "compatibility.full_21_59_10",
+          "compatibility.polarity_terminal_qualification",
+          "lower.build_outputs_fresh_and_rehashed",
+          "lower.source_comp_req_484_contract",
+          "lower_claims_match_observed_compatibility",
+          "lower_mr.all_sources_recomputed",
+          "lower_mr.arm_modes_exact_0_1",
+          "lower_mr.build_logs_rehashed_and_complete",
+          "lower_mr.commit_exact",
+          "lower_mr.comp_req_478_fixture_contract",
+          "lower_mr.comp_req_478_mode_fault_claims",
+          "lower_mr.comp_req_484_fixture_contract",
+          "lower_mr.compatibility_claims_complete",
+          "lower_mr.elf_files_rehashed",
+          "lower_mr.elf_hashes_explicit_match",
+          "lower_mr.elf_paths_declared",
+          "lower_mr.file_exists_and_bounded",
+          "lower_mr.hash_exact",
+          "lower_mr.hex_files_rehashed",
+          "lower_mr.hex_hashes_explicit_match",
+          "lower_mr.hex_paths_declared",
+          "lower_mr.json_object",
+          "lower_mr.protected_hashes_exact",
+          "lower_mr.required_sources_declared",
+          "lower_mr.runner_rehashed",
+          "lower_mr.schema_exact",
+          "lower_mr.side_effect_contract_complete",
+          "lower_mr.side_effects_zero",
+          "lower_mr.sources_declared_and_bounded",
+          "lower_mr.status_exact",
+          "lower_mr.supervisor_rehashed",
+          "lower_mr.timing_within_limits"
+        ],
+        "status": "NO_GO",
+        "stderr": "",
+        "stdout": "{\"artifact_sha256\": \"BDCF2A3B412055091E459123D77985E7DF2E8BB68F248DFF148BB55E58DEDEAF\", \"compatibility_status\": \"NO_GO_UPPER_LOWER_POLARITY_EVENT_TERMINAL_GAPS\", \"failed_check_count\": 32, \"status\": \"NO_GO\"}"
+      },
+      "status": "PASS_NEGATIVE"
+    },
+    {
+      "deterministic_two_runs": true,
+      "expected_failed_checks_observed": true,
+      "id": "stale_a963_build_identity_after_active_source_change",
+      "run_1": {
+        "artifact_sha256": "759272D4AC62E6450C0D61CE03B70F895513C5172F338573D3487E65BB698BC3",
+        "exit_code": 1,
+        "failed_checks": [
+          "compatibility.full_21_59_10",
+          "compatibility.polarity_terminal_qualification",
+          "lower.build_identity_changes_with_active_sources",
+          "lower.build_outputs_fresh_and_rehashed",
+          "lower_claims_match_observed_compatibility",
+          "lower_mr.all_sources_recomputed",
+          "lower_mr.arm_modes_exact_0_1",
+          "lower_mr.build_logs_rehashed_and_complete",
+          "lower_mr.commit_exact",
+          "lower_mr.comp_req_478_fixture_contract",
+          "lower_mr.comp_req_478_mode_fault_claims",
+          "lower_mr.comp_req_484_fixture_contract",
+          "lower_mr.compatibility_claims_complete",
+          "lower_mr.elf_files_rehashed",
+          "lower_mr.elf_hashes_explicit_match",
+          "lower_mr.elf_paths_declared",
+          "lower_mr.file_exists_and_bounded",
+          "lower_mr.hash_exact",
+          "lower_mr.hex_files_rehashed",
+          "lower_mr.hex_hashes_explicit_match",
+          "lower_mr.hex_paths_declared",
+          "lower_mr.json_object",
+          "lower_mr.protected_hashes_exact",
+          "lower_mr.required_sources_declared",
+          "lower_mr.runner_rehashed",
+          "lower_mr.schema_exact",
+          "lower_mr.side_effect_contract_complete",
+          "lower_mr.side_effects_zero",
+          "lower_mr.sources_declared_and_bounded",
+          "lower_mr.status_exact",
+          "lower_mr.supervisor_rehashed",
+          "lower_mr.timing_within_limits"
+        ],
+        "status": "NO_GO",
+        "stderr": "",
+        "stdout": "{\"artifact_sha256\": \"759272D4AC62E6450C0D61CE03B70F895513C5172F338573D3487E65BB698BC3\", \"compatibility_status\": \"NO_GO_UPPER_LOWER_POLARITY_EVENT_TERMINAL_GAPS\", \"failed_check_count\": 32, \"status\": \"NO_GO\"}"
+      },
+      "run_2": {
+        "artifact_sha256": "759272D4AC62E6450C0D61CE03B70F895513C5172F338573D3487E65BB698BC3",
+        "exit_code": 1,
+        "failed_checks": [
+          "compatibility.full_21_59_10",
+          "compatibility.polarity_terminal_qualification",
+          "lower.build_identity_changes_with_active_sources",
+          "lower.build_outputs_fresh_and_rehashed",
+          "lower_claims_match_observed_compatibility",
+          "lower_mr.all_sources_recomputed",
+          "lower_mr.arm_modes_exact_0_1",
+          "lower_mr.build_logs_rehashed_and_complete",
+          "lower_mr.commit_exact",
+          "lower_mr.comp_req_478_fixture_contract",
+          "lower_mr.comp_req_478_mode_fault_claims",
+          "lower_mr.comp_req_484_fixture_contract",
+          "lower_mr.compatibility_claims_complete",
+          "lower_mr.elf_files_rehashed",
+          "lower_mr.elf_hashes_explicit_match",
+          "lower_mr.elf_paths_declared",
+          "lower_mr.file_exists_and_bounded",
+          "lower_mr.hash_exact",
+          "lower_mr.hex_files_rehashed",
+          "lower_mr.hex_hashes_explicit_match",
+          "lower_mr.hex_paths_declared",
+          "lower_mr.json_object",
+          "lower_mr.protected_hashes_exact",
+          "lower_mr.required_sources_declared",
+          "lower_mr.runner_rehashed",
+          "lower_mr.schema_exact",
+          "lower_mr.side_effect_contract_complete",
+          "lower_mr.side_effects_zero",
+          "lower_mr.sources_declared_and_bounded",
+          "lower_mr.status_exact",
+          "lower_mr.supervisor_rehashed",
+          "lower_mr.timing_within_limits"
+        ],
+        "status": "NO_GO",
+        "stderr": "",
+        "stdout": "{\"artifact_sha256\": \"759272D4AC62E6450C0D61CE03B70F895513C5172F338573D3487E65BB698BC3\", \"compatibility_status\": \"NO_GO_UPPER_LOWER_POLARITY_EVENT_TERMINAL_GAPS\", \"failed_check_count\": 32, \"status\": \"NO_GO\"}"
+      },
+      "status": "PASS_NEGATIVE"
+    },
+    {
+      "deterministic_two_runs": true,
+      "expected_failed_checks_observed": true,
+      "id": "d660_comp_req_486_pretransport_terminal_latch",
+      "run_1": {
+        "artifact_sha256": "A75BFD6D3B4F482E062626188258993F699257CCAC800ADF7B380526DBA3B80D",
+        "exit_code": 1,
+        "failed_checks": [
+          "compatibility.full_21_59_10",
+          "compatibility.polarity_terminal_qualification",
+          "lower.build_outputs_fresh_and_rehashed",
+          "lower_mr.all_provenance_bindings_rehashed",
+          "lower_mr.arm_modes_exact_0_1",
+          "lower_mr.elf_files_rehashed",
+          "lower_mr.hex_files_rehashed",
+          "lower_mr.provenance_contract_fixed_values",
+          "lower_mr.required_sources_declared",
+          "lower_mr.timing_within_limits"
+        ],
+        "status": "NO_GO",
+        "stderr": "",
+        "stdout": "{\"artifact_sha256\": \"A75BFD6D3B4F482E062626188258993F699257CCAC800ADF7B380526DBA3B80D\", \"compatibility_status\": \"NO_GO_UPPER_LOWER_POLARITY_EVENT_TERMINAL_GAPS\", \"failed_check_count\": 10, \"status\": \"NO_GO\"}"
+      },
+      "run_2": {
+        "artifact_sha256": "A75BFD6D3B4F482E062626188258993F699257CCAC800ADF7B380526DBA3B80D",
+        "exit_code": 1,
+        "failed_checks": [
+          "compatibility.full_21_59_10",
+          "compatibility.polarity_terminal_qualification",
+          "lower.build_outputs_fresh_and_rehashed",
+          "lower_mr.all_provenance_bindings_rehashed",
+          "lower_mr.arm_modes_exact_0_1",
+          "lower_mr.elf_files_rehashed",
+          "lower_mr.hex_files_rehashed",
+          "lower_mr.provenance_contract_fixed_values",
+          "lower_mr.required_sources_declared",
+          "lower_mr.timing_within_limits"
+        ],
+        "status": "NO_GO",
+        "stderr": "",
+        "stdout": "{\"artifact_sha256\": \"A75BFD6D3B4F482E062626188258993F699257CCAC800ADF7B380526DBA3B80D\", \"compatibility_status\": \"NO_GO_UPPER_LOWER_POLARITY_EVENT_TERMINAL_GAPS\", \"failed_check_count\": 10, \"status\": \"NO_GO\"}"
+      },
+      "status": "PASS_NEGATIVE"
+    },
+    {
+      "deterministic_two_runs": true,
+      "expected_failed_checks_observed": true,
+      "id": "lower_mr_hash_drift",
+      "run_1": {
+        "artifact_sha256": "24F4AB23742BC95F98ABDB26E54B67255152D9A22650221E49C336C267F97A44",
+        "exit_code": 1,
+        "failed_checks": [
+          "compatibility.full_21_59_10",
+          "compatibility.polarity_terminal_qualification",
+          "lower_mr.hash_exact",
+          "lower_mr.supervisor_rehashed"
+        ],
+        "status": "NO_GO",
+        "stderr": "",
+        "stdout": "{\"artifact_sha256\": \"24F4AB23742BC95F98ABDB26E54B67255152D9A22650221E49C336C267F97A44\", \"compatibility_status\": \"NO_GO_UPPER_LOWER_POLARITY_EVENT_TERMINAL_GAPS\", \"failed_check_count\": 4, \"status\": \"NO_GO\"}"
+      },
+      "run_2": {
+        "artifact_sha256": "24F4AB23742BC95F98ABDB26E54B67255152D9A22650221E49C336C267F97A44",
+        "exit_code": 1,
+        "failed_checks": [
+          "compatibility.full_21_59_10",
+          "compatibility.polarity_terminal_qualification",
+          "lower_mr.hash_exact",
+          "lower_mr.supervisor_rehashed"
+        ],
+        "status": "NO_GO",
+        "stderr": "",
+        "stdout": "{\"artifact_sha256\": \"24F4AB23742BC95F98ABDB26E54B67255152D9A22650221E49C336C267F97A44\", \"compatibility_status\": \"NO_GO_UPPER_LOWER_POLARITY_EVENT_TERMINAL_GAPS\", \"failed_check_count\": 4, \"status\": \"NO_GO\"}"
+      },
+      "status": "PASS_NEGATIVE"
+    },
+    {
+      "deterministic_two_runs": true,
+      "expected_failed_checks_observed": true,
+      "id": "forged_pass_counts",
+      "run_1": {
+        "artifact_sha256": "384AE14972811DC285B19948D7EFBDFDD91FA52C9A6F43B4ACF07AD1807433AA",
+        "exit_code": 1,
+        "failed_checks": [
+          "compatibility.full_21_59_10",
+          "compatibility.polarity_terminal_qualification",
+          "lower.build_outputs_fresh_and_rehashed",
+          "lower_claims_match_observed_compatibility",
+          "lower_mr.build_logs_rehashed_and_complete",
+          "lower_mr.protected_hashes_exact"
+        ],
+        "status": "NO_GO",
+        "stderr": "",
+        "stdout": "{\"artifact_sha256\": \"384AE14972811DC285B19948D7EFBDFDD91FA52C9A6F43B4ACF07AD1807433AA\", \"compatibility_status\": \"NO_GO_UPPER_LOWER_POLARITY_EVENT_TERMINAL_GAPS\", \"failed_check_count\": 6, \"status\": \"NO_GO\"}"
+      },
+      "run_2": {
+        "artifact_sha256": "384AE14972811DC285B19948D7EFBDFDD91FA52C9A6F43B4ACF07AD1807433AA",
+        "exit_code": 1,
+        "failed_checks": [
+          "compatibility.full_21_59_10",
+          "compatibility.polarity_terminal_qualification",
+          "lower.build_outputs_fresh_and_rehashed",
+          "lower_claims_match_observed_compatibility",
+          "lower_mr.build_logs_rehashed_and_complete",
+          "lower_mr.protected_hashes_exact"
+        ],
+        "status": "NO_GO",
+        "stderr": "",
+        "stdout": "{\"artifact_sha256\": \"384AE14972811DC285B19948D7EFBDFDD91FA52C9A6F43B4ACF07AD1807433AA\", \"compatibility_status\": \"NO_GO_UPPER_LOWER_POLARITY_EVENT_TERMINAL_GAPS\", \"failed_check_count\": 6, \"status\": \"NO_GO\"}"
+      },
+      "status": "PASS_NEGATIVE"
+    },
+    {
+      "deterministic_two_runs": true,
+      "expected_failed_checks_observed": true,
+      "id": "source_hash_drift",
+      "run_1": {
+        "artifact_sha256": "485EBD84FDAB9387E4580B461C6A89153B02E9A5440F55769CC8C12829357578",
+        "exit_code": 1,
+        "failed_checks": [
+          "compatibility.full_21_59_10",
+          "compatibility.polarity_terminal_qualification",
+          "lower.build_outputs_fresh_and_rehashed",
+          "lower_claims_match_observed_compatibility",
+          "lower_mr.all_sources_recomputed",
+          "lower_mr.build_logs_rehashed_and_complete",
+          "lower_mr.protected_hashes_exact"
+        ],
+        "status": "NO_GO",
+        "stderr": "",
+        "stdout": "{\"artifact_sha256\": \"485EBD84FDAB9387E4580B461C6A89153B02E9A5440F55769CC8C12829357578\", \"compatibility_status\": \"NO_GO_UPPER_LOWER_POLARITY_EVENT_TERMINAL_GAPS\", \"failed_check_count\": 7, \"status\": \"NO_GO\"}"
+      },
+      "run_2": {
+        "artifact_sha256": "485EBD84FDAB9387E4580B461C6A89153B02E9A5440F55769CC8C12829357578",
+        "exit_code": 1,
+        "failed_checks": [
+          "compatibility.full_21_59_10",
+          "compatibility.polarity_terminal_qualification",
+          "lower.build_outputs_fresh_and_rehashed",
+          "lower_claims_match_observed_compatibility",
+          "lower_mr.all_sources_recomputed",
+          "lower_mr.build_logs_rehashed_and_complete",
+          "lower_mr.protected_hashes_exact"
+        ],
+        "status": "NO_GO",
+        "stderr": "",
+        "stdout": "{\"artifact_sha256\": \"485EBD84FDAB9387E4580B461C6A89153B02E9A5440F55769CC8C12829357578\", \"compatibility_status\": \"NO_GO_UPPER_LOWER_POLARITY_EVENT_TERMINAL_GAPS\", \"failed_check_count\": 7, \"status\": \"NO_GO\"}"
+      },
+      "status": "PASS_NEGATIVE"
+    },
+    {
+      "deterministic_two_runs": true,
+      "expected_failed_checks_observed": true,
+      "id": "artifact_hash_drift",
+      "run_1": {
+        "artifact_sha256": "3D37DE1261E42E683683612075E79F88A51A2640A1C74F2A4271633485F53C21",
+        "exit_code": 1,
+        "failed_checks": [
+          "compatibility.full_21_59_10",
+          "compatibility.polarity_terminal_qualification",
+          "lower.build_outputs_fresh_and_rehashed",
+          "lower_claims_match_observed_compatibility",
+          "lower_mr.build_logs_rehashed_and_complete",
+          "lower_mr.hex_files_rehashed",
+          "lower_mr.hex_hashes_explicit_match",
+          "lower_mr.protected_hashes_exact"
+        ],
+        "status": "NO_GO",
+        "stderr": "",
+        "stdout": "{\"artifact_sha256\": \"3D37DE1261E42E683683612075E79F88A51A2640A1C74F2A4271633485F53C21\", \"compatibility_status\": \"NO_GO_UPPER_LOWER_POLARITY_EVENT_TERMINAL_GAPS\", \"failed_check_count\": 8, \"status\": \"NO_GO\"}"
+      },
+      "run_2": {
+        "artifact_sha256": "3D37DE1261E42E683683612075E79F88A51A2640A1C74F2A4271633485F53C21",
+        "exit_code": 1,
+        "failed_checks": [
+          "compatibility.full_21_59_10",
+          "compatibility.polarity_terminal_qualification",
+          "lower.build_outputs_fresh_and_rehashed",
+          "lower_claims_match_observed_compatibility",
+          "lower_mr.build_logs_rehashed_and_complete",
+          "lower_mr.hex_files_rehashed",
+          "lower_mr.hex_hashes_explicit_match",
+          "lower_mr.protected_hashes_exact"
+        ],
+        "status": "NO_GO",
+        "stderr": "",
+        "stdout": "{\"artifact_sha256\": \"3D37DE1261E42E683683612075E79F88A51A2640A1C74F2A4271633485F53C21\", \"compatibility_status\": \"NO_GO_UPPER_LOWER_POLARITY_EVENT_TERMINAL_GAPS\", \"failed_check_count\": 8, \"status\": \"NO_GO\"}"
+      },
+      "status": "PASS_NEGATIVE"
+    },
+    {
+      "deterministic_two_runs": true,
+      "expected_failed_checks_observed": true,
+      "id": "schema_drift",
+      "run_1": {
+        "artifact_sha256": "ACE5937677BEAE09C4EB24FDFC01F86B6FE419AAFE31639C6F85F1A88E650C74",
+        "exit_code": 1,
+        "failed_checks": [
+          "compatibility.full_21_59_10",
+          "compatibility.polarity_terminal_qualification",
+          "lower.build_outputs_fresh_and_rehashed",
+          "lower_claims_match_observed_compatibility",
+          "lower_mr.build_logs_rehashed_and_complete",
+          "lower_mr.protected_hashes_exact",
+          "lower_mr.schema_exact"
+        ],
+        "status": "NO_GO",
+        "stderr": "",
+        "stdout": "{\"artifact_sha256\": \"ACE5937677BEAE09C4EB24FDFC01F86B6FE419AAFE31639C6F85F1A88E650C74\", \"compatibility_status\": \"NO_GO_UPPER_LOWER_POLARITY_EVENT_TERMINAL_GAPS\", \"failed_check_count\": 7, \"status\": \"NO_GO\"}"
+      },
+      "run_2": {
+        "artifact_sha256": "ACE5937677BEAE09C4EB24FDFC01F86B6FE419AAFE31639C6F85F1A88E650C74",
+        "exit_code": 1,
+        "failed_checks": [
+          "compatibility.full_21_59_10",
+          "compatibility.polarity_terminal_qualification",
+          "lower.build_outputs_fresh_and_rehashed",
+          "lower_claims_match_observed_compatibility",
+          "lower_mr.build_logs_rehashed_and_complete",
+          "lower_mr.protected_hashes_exact",
+          "lower_mr.schema_exact"
+        ],
+        "status": "NO_GO",
+        "stderr": "",
+        "stdout": "{\"artifact_sha256\": \"ACE5937677BEAE09C4EB24FDFC01F86B6FE419AAFE31639C6F85F1A88E650C74\", \"compatibility_status\": \"NO_GO_UPPER_LOWER_POLARITY_EVENT_TERMINAL_GAPS\", \"failed_check_count\": 7, \"status\": \"NO_GO\"}"
+      },
+      "status": "PASS_NEGATIVE"
+    },
+    {
+      "deterministic_two_runs": true,
+      "expected_failed_checks_observed": true,
+      "id": "timing_protected_drift",
+      "run_1": {
+        "artifact_sha256": "9889A373B1EDB38D647A315CF1EFEA7915DFF62E848BC0535A649AAB9328187E",
+        "exit_code": 1,
+        "failed_checks": [
+          "compatibility.full_21_59_10",
+          "compatibility.polarity_terminal_qualification",
+          "lower.build_outputs_fresh_and_rehashed",
+          "lower_claims_match_observed_compatibility",
+          "lower_mr.build_logs_rehashed_and_complete",
+          "lower_mr.protected_hashes_exact",
+          "lower_mr.timing_within_limits"
+        ],
+        "status": "NO_GO",
+        "stderr": "",
+        "stdout": "{\"artifact_sha256\": \"9889A373B1EDB38D647A315CF1EFEA7915DFF62E848BC0535A649AAB9328187E\", \"compatibility_status\": \"NO_GO_UPPER_LOWER_POLARITY_EVENT_TERMINAL_GAPS\", \"failed_check_count\": 7, \"status\": \"NO_GO\"}"
+      },
+      "run_2": {
+        "artifact_sha256": "9889A373B1EDB38D647A315CF1EFEA7915DFF62E848BC0535A649AAB9328187E",
+        "exit_code": 1,
+        "failed_checks": [
+          "compatibility.full_21_59_10",
+          "compatibility.polarity_terminal_qualification",
+          "lower.build_outputs_fresh_and_rehashed",
+          "lower_claims_match_observed_compatibility",
+          "lower_mr.build_logs_rehashed_and_complete",
+          "lower_mr.protected_hashes_exact",
+          "lower_mr.timing_within_limits"
+        ],
+        "status": "NO_GO",
+        "stderr": "",
+        "stdout": "{\"artifact_sha256\": \"9889A373B1EDB38D647A315CF1EFEA7915DFF62E848BC0535A649AAB9328187E\", \"compatibility_status\": \"NO_GO_UPPER_LOWER_POLARITY_EVENT_TERMINAL_GAPS\", \"failed_check_count\": 7, \"status\": \"NO_GO\"}"
+      },
+      "status": "PASS_NEGATIVE"
+    },
+    {
+      "deterministic_two_runs": true,
+      "expected_failed_checks_observed": true,
+      "id": "nonzero_side_effect",
+      "run_1": {
+        "artifact_sha256": "91EC6D94A574C776459B733B51C953E5D4333DB95FCF5172538436441A2C9484",
+        "exit_code": 1,
+        "failed_checks": [
+          "compatibility.full_21_59_10",
+          "compatibility.polarity_terminal_qualification",
+          "lower.build_outputs_fresh_and_rehashed",
+          "lower_claims_match_observed_compatibility",
+          "lower_mr.build_logs_rehashed_and_complete",
+          "lower_mr.protected_hashes_exact",
+          "lower_mr.side_effects_zero"
+        ],
+        "status": "NO_GO",
+        "stderr": "",
+        "stdout": "{\"artifact_sha256\": \"91EC6D94A574C776459B733B51C953E5D4333DB95FCF5172538436441A2C9484\", \"compatibility_status\": \"NO_GO_UPPER_LOWER_POLARITY_EVENT_TERMINAL_GAPS\", \"failed_check_count\": 7, \"status\": \"NO_GO\"}"
+      },
+      "run_2": {
+        "artifact_sha256": "91EC6D94A574C776459B733B51C953E5D4333DB95FCF5172538436441A2C9484",
+        "exit_code": 1,
+        "failed_checks": [
+          "compatibility.full_21_59_10",
+          "compatibility.polarity_terminal_qualification",
+          "lower.build_outputs_fresh_and_rehashed",
+          "lower_claims_match_observed_compatibility",
+          "lower_mr.build_logs_rehashed_and_complete",
+          "lower_mr.protected_hashes_exact",
+          "lower_mr.side_effects_zero"
+        ],
+        "status": "NO_GO",
+        "stderr": "",
+        "stdout": "{\"artifact_sha256\": \"91EC6D94A574C776459B733B51C953E5D4333DB95FCF5172538436441A2C9484\", \"compatibility_status\": \"NO_GO_UPPER_LOWER_POLARITY_EVENT_TERMINAL_GAPS\", \"failed_check_count\": 7, \"status\": \"NO_GO\"}"
+      },
+      "status": "PASS_NEGATIVE"
+    },
+    {
+      "deterministic_two_runs": true,
+      "expected_failed_checks_observed": true,
+      "id": "comp_req_478_drift",
+      "run_1": {
+        "artifact_sha256": "1C45FB52D5CC2D9DF39B8E094DC6030ABECE0F6E23F7657AEE08AB106D9E8C84",
+        "exit_code": 1,
+        "failed_checks": [
+          "compatibility.full_21_59_10",
+          "compatibility.polarity_terminal_qualification",
+          "lower.build_outputs_fresh_and_rehashed",
+          "lower_claims_match_observed_compatibility",
+          "lower_mr.arm_modes_exact_0_1",
+          "lower_mr.build_logs_rehashed_and_complete",
+          "lower_mr.comp_req_478_fixture_contract",
+          "lower_mr.protected_hashes_exact"
+        ],
+        "status": "NO_GO",
+        "stderr": "",
+        "stdout": "{\"artifact_sha256\": \"1C45FB52D5CC2D9DF39B8E094DC6030ABECE0F6E23F7657AEE08AB106D9E8C84\", \"compatibility_status\": \"NO_GO_UPPER_LOWER_POLARITY_EVENT_TERMINAL_GAPS\", \"failed_check_count\": 8, \"status\": \"NO_GO\"}"
+      },
+      "run_2": {
+        "artifact_sha256": "1C45FB52D5CC2D9DF39B8E094DC6030ABECE0F6E23F7657AEE08AB106D9E8C84",
+        "exit_code": 1,
+        "failed_checks": [
+          "compatibility.full_21_59_10",
+          "compatibility.polarity_terminal_qualification",
+          "lower.build_outputs_fresh_and_rehashed",
+          "lower_claims_match_observed_compatibility",
+          "lower_mr.arm_modes_exact_0_1",
+          "lower_mr.build_logs_rehashed_and_complete",
+          "lower_mr.comp_req_478_fixture_contract",
+          "lower_mr.protected_hashes_exact"
+        ],
+        "status": "NO_GO",
+        "stderr": "",
+        "stdout": "{\"artifact_sha256\": \"1C45FB52D5CC2D9DF39B8E094DC6030ABECE0F6E23F7657AEE08AB106D9E8C84\", \"compatibility_status\": \"NO_GO_UPPER_LOWER_POLARITY_EVENT_TERMINAL_GAPS\", \"failed_check_count\": 8, \"status\": \"NO_GO\"}"
+      },
+      "status": "PASS_NEGATIVE"
+    },
+    {
+      "deterministic_two_runs": true,
+      "expected_failed_checks_observed": true,
+      "id": "comp_req_484_drift",
+      "run_1": {
+        "artifact_sha256": "2D30B6A7FA07AF2B2AE07CD09D15D34A8DBDB56500E542A6F783FA294B9F1288",
+        "exit_code": 1,
+        "failed_checks": [
+          "compatibility.full_21_59_10",
+          "compatibility.polarity_terminal_qualification",
+          "lower.build_outputs_fresh_and_rehashed",
+          "lower_claims_match_observed_compatibility",
+          "lower_mr.build_logs_rehashed_and_complete",
+          "lower_mr.comp_req_484_fixture_contract",
+          "lower_mr.protected_hashes_exact"
+        ],
+        "status": "NO_GO",
+        "stderr": "",
+        "stdout": "{\"artifact_sha256\": \"2D30B6A7FA07AF2B2AE07CD09D15D34A8DBDB56500E542A6F783FA294B9F1288\", \"compatibility_status\": \"NO_GO_UPPER_LOWER_POLARITY_EVENT_TERMINAL_GAPS\", \"failed_check_count\": 7, \"status\": \"NO_GO\"}"
+      },
+      "run_2": {
+        "artifact_sha256": "2D30B6A7FA07AF2B2AE07CD09D15D34A8DBDB56500E542A6F783FA294B9F1288",
+        "exit_code": 1,
+        "failed_checks": [
+          "compatibility.full_21_59_10",
+          "compatibility.polarity_terminal_qualification",
+          "lower.build_outputs_fresh_and_rehashed",
+          "lower_claims_match_observed_compatibility",
+          "lower_mr.build_logs_rehashed_and_complete",
+          "lower_mr.comp_req_484_fixture_contract",
+          "lower_mr.protected_hashes_exact"
+        ],
+        "status": "NO_GO",
+        "stderr": "",
+        "stdout": "{\"artifact_sha256\": \"2D30B6A7FA07AF2B2AE07CD09D15D34A8DBDB56500E542A6F783FA294B9F1288\", \"compatibility_status\": \"NO_GO_UPPER_LOWER_POLARITY_EVENT_TERMINAL_GAPS\", \"failed_check_count\": 7, \"status\": \"NO_GO\"}"
+      },
+      "status": "PASS_NEGATIVE"
+    },
+    {
+      "deterministic_two_runs": true,
+      "expected_failed_checks_observed": true,
+      "id": "missing_dependency_binding",
+      "run_1": {
+        "artifact_sha256": "3CF97975077B772F66D89036F9276635FBC94344384F9A8A34E126AC14C9FFDE",
+        "exit_code": 1,
+        "failed_checks": [
+          "compatibility.full_21_59_10",
+          "compatibility.polarity_terminal_qualification",
+          "lower.build_outputs_fresh_and_rehashed",
+          "lower_claims_match_observed_compatibility",
+          "lower_mr.build_logs_rehashed_and_complete",
+          "lower_mr.protected_hashes_exact",
+          "lower_mr.required_sources_declared"
+        ],
+        "status": "NO_GO",
+        "stderr": "",
+        "stdout": "{\"artifact_sha256\": \"3CF97975077B772F66D89036F9276635FBC94344384F9A8A34E126AC14C9FFDE\", \"compatibility_status\": \"NO_GO_UPPER_LOWER_POLARITY_EVENT_TERMINAL_GAPS\", \"failed_check_count\": 7, \"status\": \"NO_GO\"}"
+      },
+      "run_2": {
+        "artifact_sha256": "3CF97975077B772F66D89036F9276635FBC94344384F9A8A34E126AC14C9FFDE",
+        "exit_code": 1,
+        "failed_checks": [
+          "compatibility.full_21_59_10",
+          "compatibility.polarity_terminal_qualification",
+          "lower.build_outputs_fresh_and_rehashed",
+          "lower_claims_match_observed_compatibility",
+          "lower_mr.build_logs_rehashed_and_complete",
+          "lower_mr.protected_hashes_exact",
+          "lower_mr.required_sources_declared"
+        ],
+        "status": "NO_GO",
+        "stderr": "",
+        "stdout": "{\"artifact_sha256\": \"3CF97975077B772F66D89036F9276635FBC94344384F9A8A34E126AC14C9FFDE\", \"compatibility_status\": \"NO_GO_UPPER_LOWER_POLARITY_EVENT_TERMINAL_GAPS\", \"failed_check_count\": 7, \"status\": \"NO_GO\"}"
+      },
+      "status": "PASS_NEGATIVE"
+    },
+    {
+      "deterministic_two_runs": true,
+      "expected_failed_checks_observed": true,
+      "id": "forged_provenance_timing",
+      "run_1": {
+        "artifact_sha256": "3083536C83B4FEADA814BF695D8B3EEFF24598A8A158BC35A98CC1D6DCC644F9",
+        "exit_code": 1,
+        "failed_checks": [
+          "compatibility.full_21_59_10",
+          "compatibility.polarity_terminal_qualification",
+          "lower_mr.provenance_contract_fixed_values",
+          "lower_mr.timing_within_limits"
+        ],
+        "status": "NO_GO",
+        "stderr": "",
+        "stdout": "{\"artifact_sha256\": \"3083536C83B4FEADA814BF695D8B3EEFF24598A8A158BC35A98CC1D6DCC644F9\", \"compatibility_status\": \"NO_GO_UPPER_LOWER_POLARITY_EVENT_TERMINAL_GAPS\", \"failed_check_count\": 4, \"status\": \"NO_GO\"}"
+      },
+      "run_2": {
+        "artifact_sha256": "3083536C83B4FEADA814BF695D8B3EEFF24598A8A158BC35A98CC1D6DCC644F9",
+        "exit_code": 1,
+        "failed_checks": [
+          "compatibility.full_21_59_10",
+          "compatibility.polarity_terminal_qualification",
+          "lower_mr.provenance_contract_fixed_values",
+          "lower_mr.timing_within_limits"
+        ],
+        "status": "NO_GO",
+        "stderr": "",
+        "stdout": "{\"artifact_sha256\": \"3083536C83B4FEADA814BF695D8B3EEFF24598A8A158BC35A98CC1D6DCC644F9\", \"compatibility_status\": \"NO_GO_UPPER_LOWER_POLARITY_EVENT_TERMINAL_GAPS\", \"failed_check_count\": 4, \"status\": \"NO_GO\"}"
+      },
+      "status": "PASS_NEGATIVE"
+    },
+    {
+      "deterministic_two_runs": true,
+      "expected_failed_checks_observed": true,
+      "id": "forged_provenance_protected",
+      "run_1": {
+        "artifact_sha256": "C522977FC9030E2B4139AE84BEC52C358FBC76B3FAD5C3C843C650A3F78BA0EE",
+        "exit_code": 1,
+        "failed_checks": [
+          "compatibility.full_21_59_10",
+          "compatibility.polarity_terminal_qualification",
+          "lower_mr.protected_hashes_exact"
+        ],
+        "status": "NO_GO",
+        "stderr": "",
+        "stdout": "{\"artifact_sha256\": \"C522977FC9030E2B4139AE84BEC52C358FBC76B3FAD5C3C843C650A3F78BA0EE\", \"compatibility_status\": \"NO_GO_UPPER_LOWER_POLARITY_EVENT_TERMINAL_GAPS\", \"failed_check_count\": 3, \"status\": \"NO_GO\"}"
+      },
+      "run_2": {
+        "artifact_sha256": "C522977FC9030E2B4139AE84BEC52C358FBC76B3FAD5C3C843C650A3F78BA0EE",
+        "exit_code": 1,
+        "failed_checks": [
+          "compatibility.full_21_59_10",
+          "compatibility.polarity_terminal_qualification",
+          "lower_mr.protected_hashes_exact"
+        ],
+        "status": "NO_GO",
+        "stderr": "",
+        "stdout": "{\"artifact_sha256\": \"C522977FC9030E2B4139AE84BEC52C358FBC76B3FAD5C3C843C650A3F78BA0EE\", \"compatibility_status\": \"NO_GO_UPPER_LOWER_POLARITY_EVENT_TERMINAL_GAPS\", \"failed_check_count\": 3, \"status\": \"NO_GO\"}"
+      },
+      "status": "PASS_NEGATIVE"
+    }
+  ],
+  "schema": "companion.joint-offline-negative-result.v1",
+  "side_effect_counters": {
+    "browser": 0,
+    "execute": 0,
+    "hardware": 0,
+    "lower_write": 0,
+    "platform_write": 0,
+    "popup": 0,
+    "production_write": 0,
+    "prompt": 0,
+    "push": 0,
+    "server": 0,
+    "upper_fixture_writes": 53
+  },
+  "status": "PASS_NEGATIVE_FIXTURES",
+  "summary": {
+    "all_two_run_byte_stable": true,
+    "claimed_lower_machine_ready_match": true,
+    "fixture_count": 20,
+    "joint_ready_count": 0,
+    "lower_tracked_status_unchanged": true,
+    "negative_pass_count": 20
+  }
+}

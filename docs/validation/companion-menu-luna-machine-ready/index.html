@@ -1,0 +1,47 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Companion menu Luna candidate</title>
+<style>
+:root{font-family:Arial,sans-serif;color:#111;background:#eee}body{margin:0;min-height:100vh;display:grid;place-items:center}#shell{display:grid;gap:12px;justify-items:center}.screen{position:relative;width:200px;height:200px;background:#fff;overflow:hidden;border:1px solid #111;touch-action:none}.screen img{display:block;width:200px;height:200px;user-select:none;pointer-events:none}.hit{position:absolute;left:0;width:200px;border:0;background:transparent;padding:0;cursor:pointer}.root-hit{height:40px}.detail-hit{height:36px}.hit:focus-visible,.hit[data-focus="true"]{outline:2px solid #111;outline-offset:-3px;background:rgba(255,255,255,.18)}#trace{width:200px;min-height:34px;font:11px/1.3 monospace;white-space:pre-wrap}#closed{position:absolute;inset:0;background:#fff;display:grid;place-items:center;font-weight:bold}#closed[hidden]{display:none}.meta{font-size:12px;color:#444}button.reset{font:12px sans-serif;padding:4px 8px}
+</style>
+<main id="shell" data-testid="menu-browser">
+  <section class="screen" id="screen" aria-label="Companion 200 by 200 menu" data-screen="roots">
+    <img id="art" alt="" aria-hidden="true">
+    <div id="hits"></div><div id="closed" hidden>Menu closed</div>
+  </section>
+  <div class="meta" id="state" data-testid="state"></div>
+  <pre id="trace" data-testid="trace"></pre>
+  <button class="reset" id="reset" type="button">Reset</button>
+</main>
+<script>
+const ROOTS=['Voice','Device','Connection','Preferences'];
+const ROOTS_ZH=['语音','设备','连接','偏好设置'];
+const DETAIL_COUNTS=[3,4,3,5];
+const DETAIL_EN=[['Recording','History','Wake word'],['E-paper','Touch','Battery','UI assets'],['Pair new device','Link status','Reconnect'],['Language','Gesture policy','Refresh policy','Diagnostics','About']];
+const DETAIL_ZH=[['录音','历史记录','唤醒词'],['电子纸','触摸','电池','界面资源'],['配对新设备','连接状态','重新连接'],['语言','手势策略','刷新策略','诊断','关于']];
+const ART_ROOT='../../art/iterations/companion-menu-v7-screen-family/review-200x200/';
+const ART_EN=['en/01-home.png','en/02-voice.png','en/03-device.png','en/04-connection.png','en/05-preferences.png'];
+const ART_ZH=['zh_cn/01-home.png','zh_cn/02-voice.png','zh_cn/03-device.png','zh_cn/04-connection.png','zh_cn/05-preferences.png'];
+const ART_ALL=[...ART_EN,...ART_ZH];
+const TH={tapMaxMove:32,tapMaxDuration:2000,swipeMinMove:40,swipeMaxDuration:1200,axisLockMinMove:14,axisSlop:24,dominance:140,hold:650,longPress:3000,longPressMaxMove:44};
+const s={view:'roots',root:0,language:'en',scroll:0,revision:1,focus:null,closed:false,trace:[],pointer:null,axis:null,holdSent:false,consumed:false,ready:false};
+const el=id=>document.getElementById(id), art=el('art'), hits=el('hits');
+const decoded=new Map();
+function assetPath(path){return ART_ROOT+path}
+async function preloadAssets(){await Promise.all(ART_ALL.map(path=>new Promise((resolve,reject)=>{const image=new Image();image.onload=()=>{if(image.naturalWidth!==200||image.naturalHeight!==200)return reject(new Error(`bad dimensions ${path}`));decoded.set(path,image);resolve()};image.onerror=()=>reject(new Error(`undecoded ${path}`));image.src=assetPath(path)})));s.ready=true}
+function boundedTrace(e){s.trace.push(e);if(s.trace.length>32)s.trace.shift();el('trace').textContent=s.trace.join('\n')}
+function move(a,b){return Math.abs(a-b)}
+function axisLock(p){if(s.axis)return;let sx=move(p.x,s.pointer.sx),sy=move(p.y,s.pointer.sy);if(sx<TH.axisLockMinMove&&sy<TH.axisLockMinMove)return;if(sx>=sy+TH.axisSlop&&sx*100>=sy*TH.dominance)s.axis='horizontal';else if(sy>=sx+TH.axisSlop&&sy*100>=sx*TH.dominance)s.axis='vertical'}
+function render(){if(!s.ready)return;let zh=s.language==='zh', detail=s.view==='details';let path=(zh?ART_ZH:ART_EN)[detail?s.root+1:0];let source=decoded.get(path);if(!source||source.naturalWidth!==200||source.naturalHeight!==200)throw new Error(`not-ready ${path}`);art.src=source.src;art.dataset.asset=path;art.dataset.revision=String(s.revision);hits.replaceChildren();s.focus=null;if(detail){let backButton=document.createElement('button');backButton.className='hit detail-hit';backButton.style.top='0px';backButton.dataset.header='true';backButton.dataset.testid='detail-header';backButton.setAttribute('aria-label','Back');backButton.addEventListener('pointerdown',onDown);backButton.addEventListener('pointermove',onMove);backButton.addEventListener('pointerup',onUp);backButton.addEventListener('pointercancel',onCancel);hits.append(backButton)}let labels=detail?(zh?DETAIL_ZH[s.root]:DETAIL_EN[s.root]):(zh?ROOTS_ZH:ROOTS);let top=detail?40:40;labels.forEach((label,i)=>{let b=document.createElement('button');b.className='hit '+(detail?'detail-hit':'root-hit');b.style.top=(top+i*(detail?36:40))+'px';b.dataset.index=i;b.dataset.testid=detail?'detail-row':'root-row';b.setAttribute('aria-label',label);b.addEventListener('pointerdown',onDown);b.addEventListener('pointermove',onMove);b.addEventListener('pointerup',onUp);b.addEventListener('pointercancel',onCancel);hits.append(b)});el('screen').dataset.screen=s.closed?'closed':s.view;s.closed?el('closed').removeAttribute('hidden'):el('closed').setAttribute('hidden','');el('state').textContent=`${s.closed?'closed':s.view} root=${s.root} scroll=${s.scroll} rev=${s.revision} lang=${s.language}`;el('screen').dispatchEvent(new CustomEvent('menu-ready',{detail:{revision:s.revision,asset:path}}))}
+function point(ev){let r=el('screen').getBoundingClientRect();return{x:Math.round(ev.clientX-r.left),y:Math.round(ev.clientY-r.top)}}
+function onDown(ev){if(s.closed)return;let p=point(ev);s.pointer={sx:p.x,sy:p.y,x:p.x,y:p.y,t:performance.now(),target:ev.currentTarget};s.axis=null;s.holdSent=false;ev.currentTarget.setPointerCapture(ev.pointerId);s.focus=Number(ev.currentTarget.dataset.index);ev.currentTarget.dataset.focus='true';boundedTrace(`press x=${p.x} y=${p.y}`);renderFocus()}
+function renderFocus(){for(const b of hits.children)b.dataset.focus=Number(b.dataset.index)===s.focus?'true':'false';el('state').textContent=`${s.view} root=${s.root} scroll=${s.scroll} rev=${s.revision} lang=${s.language} focus=${s.focus??'-'}`}
+function onMove(ev){if(!s.pointer||s.consumed)return;let p=point(ev),q=s.pointer;s.pointer.x=p.x;s.pointer.y=p.y;let dt=Math.round(performance.now()-q.t),dx=move(p.x,q.sx),dy=move(p.y,q.sy);axisLock(p);if(!s.holdSent&&dt>=TH.hold&&dx<=TH.longPressMaxMove&&dy<=TH.longPressMaxMove){s.holdSent=true;boundedTrace(`hold ${dt}ms`)}if(s.view==='details'&&s.axis==='vertical'){let before=s.scroll;s.scroll=Math.max(0,Math.min(maxScroll(),s.scroll-(p.y-q.y)));if(s.scroll!==before){s.revision++;boundedTrace(`drag finger_delta_y=${p.y-q.y} scroll=${s.scroll}`);render()}}if(s.axis==='horizontal'&&dx>=TH.swipeMinMove&&dt<=TH.swipeMaxDuration){s.consumed=true;let dir=p.x<q.sx?'left':'right';boundedTrace(`swipe_${dir} ${dx}px ${dt}ms`);if(dir==='right')closeMenu();}}
+function maxScroll(){return Math.max(0,DETAIL_COUNTS[s.root]*36-160)}
+function onUp(ev){if(!s.pointer)return;let p=point(ev),q=s.pointer,dt=Math.round(performance.now()-q.t),dx=move(p.x,q.sx),dy=move(p.y,q.sy);s.pointer=null;if(s.consumed){s.consumed=false;render();return}let kind='none';if(dt>=TH.longPress&&dx<=TH.longPressMaxMove&&dy<=TH.longPressMaxMove)kind='long_press';else if(dt<=TH.tapMaxDuration&&dx<=TH.tapMaxMove&&dy<=TH.tapMaxMove)kind='tap';else if(dt<=TH.swipeMaxDuration&&s.axis==='vertical'&&dy>=TH.swipeMinMove)kind=p.y<q.sy?'swipe_up':'swipe_down';boundedTrace(`${kind} dt=${dt} dx=${dx} dy=${dy}`);if(kind==='tap'){if(q.target.dataset.header)back();else select(Number(q.target.dataset.index))}render()}
+function onCancel(){if(!s.pointer)return;s.pointer=null;s.consumed=false;s.holdSent=false;s.focus=null;boundedTrace('cancel');render()}
+function select(i){if(s.view==='roots'){s.view='details';s.root=i;s.scroll=0;s.revision++;boundedTrace(`root_opened=${ROOTS[i]}`);return}if(i===0&&s.root===3){s.language=s.language==='en'?'zh':'en';s.revision++;boundedTrace(`select=language -> ${s.language}`);return}if(i<DETAIL_COUNTS[s.root]){s.revision++;boundedTrace(`select=${(s.language==='zh'?DETAIL_ZH:DETAIL_EN)[s.root][i]}`)}}
+function back(){if(s.view==='details'){s.view='roots';s.scroll=0;s.revision++;boundedTrace('back=detail_header')}}
+function closeMenu(){s.closed=true;s.pointer=null;s.focus=null;s.revision++;boundedTrace('back=exit_daily');render()}
+el('screen').addEventListener('pointercancel',onCancel);el('reset').addEventListener('click',()=>{Object.assign(s,{view:'roots',root:0,language:'en',scroll:0,revision:1,focus:null,closed:false,trace:[],pointer:null,axis:null,holdSent:false,consumed:false});render()});window.menuState=s;window.menuAuthority={TH,ROOTS,DETAIL_COUNTS,ART_ALL};window.menuReady=preloadAssets().then(()=>{window.menuAssets=decoded;render();return {revision:s.revision,assets:ART_ALL.length}}).catch(error=>{el('state').textContent=`asset error: ${error.message}`;throw error});
+</script>

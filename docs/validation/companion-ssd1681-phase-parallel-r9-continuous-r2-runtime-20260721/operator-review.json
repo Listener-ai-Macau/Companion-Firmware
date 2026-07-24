@@ -1,0 +1,23 @@
+{
+  "schema_id": "companion.wb55.ssd1681_phase_parallel_r9_continuous.operator_review.v1",
+  "status": "NO_GO_OWNER_R9_CONTINUOUS_VISUAL",
+  "generated_at": "2026-07-21T14:41:30.2885293Z",
+  "style": "aiw_operator_prompt_v1",
+  "selected": "失败",
+  "note": "呃，这样子的话就不是一个连续的球在运动，作为那个连续球运动的东西。\r\n",
+  "note_path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-r9-continuous-r2-execute-20260721-r1\\operator-note.txt",
+  "note_sha256": "30DDA3C9CC92110E636C9954652716EA805086DD15E889ED26B4F88D720B5698",
+  "qualification_artifact": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-r9-continuous-r2-execute-20260721-r1\\continuous-monitor\\qualification-and-ring.json",
+  "qualification_sha256": "558A375AE7FCC33BAF25F88F5FE466DB47927BFFF77BEFECB3500E2C42393A0B",
+  "candidate_lut_sha256": "9BCBAC1A07ED0A112D26409FBCDB8F5FE27CE07D922C2E18881C10A53229DDCD",
+  "machine_qualification_steps": 16,
+  "continuous_loop_was_concurrent": true,
+  "simulation_no_hardware": false,
+  "popup_counts": {
+    "start": 0,
+    "cleanup": 0,
+    "recovery": 0,
+    "fault": 0,
+    "final_visual_acceptance": 1
+  }
+}

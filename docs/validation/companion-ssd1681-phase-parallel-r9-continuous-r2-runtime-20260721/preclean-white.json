@@ -1,0 +1,66 @@
+{
+  "schema_id": "companion.wb55.ssd1681_dual_plane_white_clean_trace.v1",
+  "status": "PASS_MACHINE_DUAL_PLANE_WHITE_CLEAN_BOTH_BANKS_READBACK_WHITE",
+  "errors": [],
+  "contract": {
+    "source_sha256": "7EE1F8D5184B7883D1CADF745B724A6C12915E74F82641E4CB31764B07CD9896",
+    "write_order": [
+      "0x24",
+      "0x26"
+    ],
+    "bytes_per_plane": 5000,
+    "control": "0xF7",
+    "refresh": "0x20",
+    "selectors": {
+      "0": "0x24",
+      "1": "0x26"
+    },
+    "repeats_per_selector": 2,
+    "read_bytes": 5001,
+    "payload_bytes": 5000,
+    "window_and_counter_reprogrammed_before_every_read": true
+  },
+  "observed": {
+    "busy_elapsed_ms": 1289,
+    "reads": [
+      {
+        "selector": 0,
+        "bank": "0x24",
+        "repeat": 1,
+        "dummy_hex": "FF",
+        "response_sha256": "607413F338D9B2DE2CD235087D4D8F9FAD2DDC906D7C249EB3172074776920C6",
+        "payload_sha256": "D41BF2913D4C6ED6E9EF11EB8B9064AC3125A7A95B48F60E305DACF048D15C2B",
+        "payload_all_white": true
+      },
+      {
+        "selector": 0,
+        "bank": "0x24",
+        "repeat": 2,
+        "dummy_hex": "FF",
+        "response_sha256": "607413F338D9B2DE2CD235087D4D8F9FAD2DDC906D7C249EB3172074776920C6",
+        "payload_sha256": "D41BF2913D4C6ED6E9EF11EB8B9064AC3125A7A95B48F60E305DACF048D15C2B",
+        "payload_all_white": true
+      },
+      {
+        "selector": 1,
+        "bank": "0x26",
+        "repeat": 1,
+        "dummy_hex": "FF",
+        "response_sha256": "607413F338D9B2DE2CD235087D4D8F9FAD2DDC906D7C249EB3172074776920C6",
+        "payload_sha256": "D41BF2913D4C6ED6E9EF11EB8B9064AC3125A7A95B48F60E305DACF048D15C2B",
+        "payload_all_white": true
+      },
+      {
+        "selector": 1,
+        "bank": "0x26",
+        "repeat": 2,
+        "dummy_hex": "FF",
+        "response_sha256": "607413F338D9B2DE2CD235087D4D8F9FAD2DDC906D7C249EB3172074776920C6",
+        "payload_sha256": "D41BF2913D4C6ED6E9EF11EB8B9064AC3125A7A95B48F60E305DACF048D15C2B",
+        "payload_all_white": true
+      }
+    ]
+  },
+  "hardware_contact": 1,
+  "production_allowed": false
+}

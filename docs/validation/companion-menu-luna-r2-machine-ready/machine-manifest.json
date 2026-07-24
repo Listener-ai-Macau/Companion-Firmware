@@ -1,0 +1,14 @@
+{
+  "schema": "companion.menu_luna.r2.machine_ready.v1",
+  "status": "MACHINE_READY_BROWSER_OWNER_REVIEW_PENDING",
+  "offline_only": true,
+  "entry": "docs/validation/companion-menu-luna-r2-machine-ready/index.html",
+  "menu_source": "docs/art/iterations/companion-menu-v7-screen-family/review-200x200",
+  "menu_contract": ["app/companion_pendant/epaper/menu_v5_contract.c", "app/companion_pendant/epaper/menu_v5_navigation.c", "app/companion_pendant/epaper/menu_v5_localization.c"],
+  "expression_source": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/r7-locked-v9-export-20260723/all-candidates",
+  "expression_entry": "Device > UI assets",
+  "expression_preview_states": ["calm", "curious", "warm"],
+  "target": {"width": 200, "height": 200, "one_coherent_screen": true, "browser_only": true},
+  "interaction_authority": "app/companion_pendant/touch/touch_gesture.c defaults; mouse is future finger",
+  "invariants": ["four roots in registered order", "registered v7 menu PNGs only", "registered R7 expression PNGs only", "menu and expression never share one screen", "desktop/mobile pointer replay", "no debug controls on owner surface"]
+}

@@ -1,0 +1,208 @@
+{
+  "arm_build_evidence": {
+    "bounded": {
+      "elf_sha256": "F00EA4DE0C999C6F4CC344E171457C5252B2D7DA390F139F8C792F088DA3BFC0",
+      "hex_sha256": "4D9A052EB369E6ABD189A6DA26D9257208BD28590AB788BCD506881C3D5E58B6",
+      "visual_runtime_mode_proven": true,
+      "visual_runtime_mode_value": 0
+    },
+    "continuous": {
+      "elf_sha256": "1EFA2168F6E1658E29EA9C1E6EB90369F4E8665314A5869963F464887B5E890D",
+      "hex_sha256": "0DD0671613949CF089E02CA873776D3135745C2C130905CC2921A3F1D14D84A9",
+      "visual_runtime_mode_proven": true,
+      "visual_runtime_mode_value": 1
+    }
+  },
+  "artifacts": {
+    "elf": [
+      {
+        "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime/Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntime.elf",
+        "sha256": "F00EA4DE0C999C6F4CC344E171457C5252B2D7DA390F139F8C792F088DA3BFC0"
+      },
+      {
+        "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime_continuous/Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntimeContinuous.elf",
+        "sha256": "1EFA2168F6E1658E29EA9C1E6EB90369F4E8665314A5869963F464887B5E890D"
+      }
+    ],
+    "hex": [
+      {
+        "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime/Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntime.hex",
+        "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      {
+        "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime_continuous/Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntimeContinuous.hex",
+        "sha256": "0DD0671613949CF089E02CA873776D3135745C2C130905CC2921A3F1D14D84A9"
+      }
+    ],
+    "runner": {
+      "path": "tools/run_wb55_ssd1681_r7_locked_v9.ps1",
+      "sha256": "959727E4556FD314083174E6D8B1D8E8E4F335A12EBF254CA3D05EABB8A5711E"
+    },
+    "supervisor": {
+      "path": "tools/supervise_wb55_ssd1681_r7_locked_v9.ps1",
+      "sha256": "AB75942496AFDBDE20D810066A752C7D66CAFC658625BA21603543D9E0893F44"
+    }
+  },
+  "bounds": {
+    "busy_max_ms": 600,
+    "cadence": "1..480",
+    "physical_timing": "unproven",
+    "retry": 0,
+    "transaction_max_ms": 480
+  },
+  "builds": {
+    "bounded": {
+      "fresh": true,
+      "log": {
+        "path": ".cache/validation/comp-req-486/bounded-2.log",
+        "sha256": "38F7178A0FF22DE6BBD850854F3BD71001E8B0DE33E5A1749632B8BD5FA349FA"
+      },
+      "optimization": "O2",
+      "runs": 2
+    },
+    "live": {
+      "fresh": true,
+      "log": {
+        "path": ".cache/validation/comp-req-486/live-2.log",
+        "sha256": "508607B3F8065ED37D7BA65FCF534872BC3DD600D6B6FB3449960405E9291FB5"
+      },
+      "optimization": "O2",
+      "runs": 2
+    }
+  },
+  "checkonly": {
+    "hardware_contact": 0,
+    "popup": 0,
+    "programmer": 0,
+    "refresh": 0,
+    "reset": 0,
+    "retry": 0,
+    "serial": 0,
+    "write": 0
+  },
+  "compatibility_claims": {
+    "converted_centered_sha256": "EF4CDB579CC2C43645E0E3585D8C40CA65763112619E5EB9FBC583EAF3E28DBD",
+    "events_realizable": 21,
+    "pairs_realizable": 59,
+    "polarity_bridge": true,
+    "qualification_valid": true,
+    "semantic_noops_realizable": 10,
+    "terminal_retention": true
+  },
+  "fixture": {
+    "checkonly": {
+      "retry": 0
+    },
+    "status": "PASS",
+    "stdout": "\nbounded_16_cleanup_closed=pass live_cleanup_closed=pass post_cleanup_zero_commands=pass post_cleanup_event_retained=pass idle_new_burst=pass cadence_negative_0=pass cadence_negative_481=pass transaction_negative_481=pass busy_negative_601=pass command_stage_failures=pass second_service_activation_unchanged=pass retry=0 physical_mapping=650/40/650/3000 timing=host_synthetic physical_timing=unproven bounded_15_deltas=pass hold_650_menu_3000=pass menu_idle_481_selection=pass recording_idle_481_return=pass busy_captured_gaze_same_burst=pass"
+  },
+  "mode_and_fault_evidence": {
+    "bounded_seeds_only_when_not_continuous": true,
+    "bridge_terminal_fault_latch": true,
+    "continuous_has_no_synthetic_enqueue": true,
+    "host_synthetic_label": true,
+    "no_browser_guard_in_adapter": true,
+    "physical_double_tap_guard": true,
+    "runtime_terminal_fault_latch": true,
+    "single_tap_window_guard": true
+  },
+  "modes": {
+    "bounded": 0,
+    "live": 1
+  },
+  "negative_fixtures": {
+    "busy_601": true,
+    "cadence_0": true,
+    "cadence_481": true,
+    "forged_physical_timing": true,
+    "hardware_contact_1": true,
+    "missing_artifact": true,
+    "retry_1": true,
+    "superseded_sha": true,
+    "transaction_481": true
+  },
+  "protected": {
+    "driver_blob": "f856d7ce0b8915e5059620c3faa97aa06b06eb4e",
+    "driver_physical": "F52A7E853BFE2E66680F08420941265CFF163FB579B2D3870128FC72C79E035F",
+    "header_blob": "2220da0c1113a5cdad7028aeae578d9fe26e936f",
+    "header_physical": "9571CF9F896B6C14451BAA7348CB717643B4963AE834B0A554E0C2ED2C7E8D35"
+  },
+  "protected_git_blobs": {
+    "panel_driver": "f856d7ce0b8915e5059620c3faa97aa06b06eb4e",
+    "r7_header": "2220da0c1113a5cdad7028aeae578d9fe26e936f"
+  },
+  "protected_observed": {
+    "physical_sha256": {
+      "panel_driver": "F52A7E853BFE2E66680F08420941265CFF163FB579B2D3870128FC72C79E035F",
+      "r7_header": "9571CF9F896B6C14451BAA7348CB717643B4963AE834B0A554E0C2ED2C7E8D35"
+    }
+  },
+  "requirement_id": "COMP-REQ-488",
+  "runner_sha256": "959727E4556FD314083174E6D8B1D8E8E4F335A12EBF254CA3D05EABB8A5711E",
+  "schema": "companion.lower-visual-runtime-machine-ready.v1",
+  "side_effect_counters": {
+    "browser": 0,
+    "execute": 0,
+    "flash": 0,
+    "hardware": 0,
+    "popup": 0,
+    "production": 0,
+    "programmer": 0,
+    "prompt": 0,
+    "push": 0,
+    "serial": 0,
+    "server": 0,
+    "write": 0
+  },
+  "side_effects": {
+    "hardware_contact": 0,
+    "popup": 0,
+    "programmer": 0,
+    "refresh": 0,
+    "reset": 0,
+    "retry": 0,
+    "serial": 0,
+    "write": 0
+  },
+  "source_bindings": {
+    "app/companion_pendant/epaper/companion_visual_runtime_adapter.c": "B510A1FE95967B8F4F615B1DACA992BBCD2B574445F3E79A6A11BE5BC857D509",
+    "app/companion_pendant/epaper/companion_visual_runtime_adapter.h": "D99C5A929FB6F4BBBC8C2390884BAB9441BF10F17D29B3E925948EE7AF106384",
+    "app/companion_pendant/epaper/panel_target_stm32wb.c": "88EF359F5AB1B349B6CA17CACBA7F3366F93B31B96446D31FCD5DDE0B71FC187",
+    "app/companion_pendant/epaper/r7_runtime_bridge_stm32wb.c": "F098E6A4CEDDAC030B906F942884FC27AFF3897322BD0DB405519227A702999E",
+    "app/companion_pendant/epaper/r7_runtime_bridge_stm32wb.h": "C0181D40604B36EB061EB4183CD3B8471D7284D47E7704756C30D7E68D7861A6",
+    "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c": "1D6D9F9323ED218F157D5F7C0BA38784F84F0F0B4FD3CB14BD3D13CC9E94A773",
+    "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/main.c": "9760495C1B42AB9410C8A5D24AEF519DAB017BCF97A9012D2952C3E6EC9C58F2",
+    "cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile": "0CD623F3D3CEE485C706979EF413B3B3453EEEB3C5E23A093C88F51D9719A885",
+    "tools/comp_req_472_visual_runtime_fixture.c": "C47C2C69A2FA8F21F41F65D32DA3E276091434F52F02541A0032C7A354E564CC",
+    "tools/run_comp_req_472_visual_runtime_fixture.ps1": "D776A36F93D04D33E08D0F290E870F64BD8C16D073365087D5DA124ECE810273",
+    "tools/verify_comp_req_472_visual_runtime.py": "0B08F7444ACA3D67782FCE19F3B135AD7255120555A1F8812DE7C3C486D2DF0D"
+  },
+  "source_commit": "4ddf9709034d307b333510c27e3e0a45c7ed6d15",
+  "status": "LOWER_MACHINE_READY",
+  "superseded": {
+    "sha256": "1C45046173BA3985F57CD5B51687906107E28BCF1DCF79E08C8D3C12E94F50AF",
+    "status": "stale"
+  },
+  "supervisor_sha256": "AB75942496AFDBDE20D810066A752C7D66CAFC658625BA21603543D9E0893F44",
+  "tamper_negatives": {
+    "busy_601": true,
+    "cadence_0": true,
+    "cadence_481": true,
+    "driver_physical": true,
+    "forged_physical_timing": true,
+    "hardware_contact_1": true,
+    "header_blob": true,
+    "missing_hex": true,
+    "retry_1": true,
+    "superseded_sha": true,
+    "transaction_481": true,
+    "wrong_artifact_path": true
+  },
+  "timing": {
+    "activation_ms": 1,
+    "busy_ms": 2,
+    "cadence_ms": 12,
+    "transaction_ms": 2,
+    "within_limits": true
+  }
+}

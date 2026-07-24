@@ -1,0 +1,133 @@
+{
+  "status": "PASS",
+  "page_sha256": "C1FFA7102E36EBC510A58F4D730D5B36579075DF8A1EEF20A3A98CCB7BD3CC2F",
+  "visual_source_sha256": "D2D36B1CD51D153758E64C4DCBE0E0B7192F2E3F895D62CD3C432DDFA8476C37",
+  "source_path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\art\\iterations\\companion-menu-v7-screen-family\\generated_menu_screen_family_v7_3_candidate.png",
+  "resource_count": 10,
+  "resources": [
+    {
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\art\\iterations\\companion-menu-v7-screen-family\\review-200x200\\en\\01-home.png",
+      "sha256": "33362E4D2CEF3003559CD0304EEEEBE80CC32018E414EE9CFE32783713528612",
+      "dimensions": [
+        200,
+        200
+      ]
+    },
+    {
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\art\\iterations\\companion-menu-v7-screen-family\\review-200x200\\en\\02-voice.png",
+      "sha256": "905DC9102D6C8519231E342C0EBF3317118BFA74B343E38608020AA2E7D15308",
+      "dimensions": [
+        200,
+        200
+      ]
+    },
+    {
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\art\\iterations\\companion-menu-v7-screen-family\\review-200x200\\en\\03-device.png",
+      "sha256": "643697B3B9F9C090E1D3F0E40CA7D8F8BAC994D469F90E0B436824B2F5067961",
+      "dimensions": [
+        200,
+        200
+      ]
+    },
+    {
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\art\\iterations\\companion-menu-v7-screen-family\\review-200x200\\en\\04-connection.png",
+      "sha256": "E9EB39EE4C4884D04226BDC2216E210DB253565A46CC51A20599286BA85044DF",
+      "dimensions": [
+        200,
+        200
+      ]
+    },
+    {
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\art\\iterations\\companion-menu-v7-screen-family\\review-200x200\\en\\05-preferences.png",
+      "sha256": "EE89A9F63CB32967613CFD95C43D9A1391981E1A7274C6AA6EB5D97ED14AA1F8",
+      "dimensions": [
+        200,
+        200
+      ]
+    },
+    {
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\art\\iterations\\companion-menu-v7-screen-family\\review-200x200\\zh_cn\\01-home.png",
+      "sha256": "CE7EF5EF367CBDCED6A91BB12BB0C6671C1BBE1015A642EF0BF8CC30F09A69A7",
+      "dimensions": [
+        200,
+        200
+      ]
+    },
+    {
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\art\\iterations\\companion-menu-v7-screen-family\\review-200x200\\zh_cn\\02-voice.png",
+      "sha256": "00C2D09C7612178AE864E565F336A8113052F3A793A93CCA9384E2A2CB059B33",
+      "dimensions": [
+        200,
+        200
+      ]
+    },
+    {
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\art\\iterations\\companion-menu-v7-screen-family\\review-200x200\\zh_cn\\03-device.png",
+      "sha256": "902D38638DBF016EDC61329265FDA3332F8446F2D0C87DB16AB579629AE97DC2",
+      "dimensions": [
+        200,
+        200
+      ]
+    },
+    {
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\art\\iterations\\companion-menu-v7-screen-family\\review-200x200\\zh_cn\\04-connection.png",
+      "sha256": "275B93A417DDFE421BC0E4C2DEEEFBCF6A0E09E1F6A3AA476AF38FDE228BBE2C",
+      "dimensions": [
+        200,
+        200
+      ]
+    },
+    {
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\art\\iterations\\companion-menu-v7-screen-family\\review-200x200\\zh_cn\\05-preferences.png",
+      "sha256": "6B70AC940C824857CC7D9C3B0D104BFFB992F7BDEFE73F2A28A385F112F8F938",
+      "dimensions": [
+        200,
+        200
+      ]
+    }
+  ],
+  "bounded_trace": 32,
+  "bounds": [
+    200,
+    200
+  ],
+  "threshold_authority": "app/companion_pendant/touch/touch_gesture.c defaults + app/companion_pendant/epaper/menu_v5_navigation.c/.h",
+  "negative_fixtures": [
+    {
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\companion-menu-luna-machine-ready\\negative-fixtures\\disappearing-content.json",
+      "sha256": "DFDAE8C21543EDD4656940D84FB89839FE85F07044813CD15E706D499F7AD6FA",
+      "asserted_tokens": [
+        "preloadAssets",
+        "menu-ready",
+        "assetPath"
+      ]
+    },
+    {
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\companion-menu-luna-machine-ready\\negative-fixtures\\accidental-double-activation.json",
+      "sha256": "BF32D532262664C77928732E46A6C76C0915B89213651C9A723A4F97E48D4DC4",
+      "asserted_tokens": [
+        "pointerup",
+        "consumed",
+        "select("
+      ]
+    },
+    {
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\companion-menu-luna-machine-ready\\negative-fixtures\\out-of-bounds-swipe.json",
+      "sha256": "823B3BF3AC9C5236486AD2FC8CFF92E6C8AFB1C6C83D7A9F5493162125A9048E",
+      "asserted_tokens": [
+        "Math.max(0",
+        "Math.min(maxScroll()",
+        "finger_delta_y"
+      ]
+    },
+    {
+      "path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\validation\\companion-menu-luna-machine-ready\\negative-fixtures\\expression-menu-stacking.json",
+      "sha256": "8F2047E9483CF723821457059E94AC923F4AD78A3706C68B340C63F92BBB898F",
+      "asserted_tokens": [
+        "alt=\"\"",
+        "aria-hidden=\"true\"",
+        "data-testid=\"menu-browser\""
+      ]
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "schema": "companion.menu_luna.machine_ready.v1",
+  "status": "MACHINE_READY_BROWSER_OWNER_REVIEW_PENDING",
+  "offline_only": true,
+  "target": {"width": 200, "height": 200, "one_coherent_screen": true},
+  "current_visual_source": {
+    "path": "docs/art/iterations/companion-menu-v7-screen-family/generated_menu_screen_family_v7_3_candidate.png",
+    "sha256": "D2D36B1CD51D153758E64C4DCBE0E0B7192F2E3F895D62CD3C432DDFA8476C37",
+    "machine_manifest": "docs/validation/companion-menu-v7-screen-family-preview-20260717.json",
+    "readiness_manifest": "docs/validation/companion-ui-visual-acceptance-manifest-20260717.json",
+    "resource_manifest": {"path": "docs/validation/companion-menu-luna-machine-ready/resource-manifest.json", "sha256": "18C80F42EE2B65FD8EAAD332064E863F6FF72094018C9421F614BFFA841DC830", "count": 10},
+    "owner_acceptance": "docs/companion_goal_acceptance_contract.md G2; no human PASS for v7.3 recorded"
+  },
+  "accepted_behavior_lineage": {
+    "contract": "app/companion_pendant/epaper/menu_v5_contract.c/.h",
+    "navigation": "app/companion_pendant/epaper/menu_v5_navigation.c/.h",
+    "portable_evidence": "docs/validation/companion-menu-v5-function-contract.json",
+    "visual_supersession": "registry COMP-REQ-077: v6 root-only is rejected audit evidence; v7.3 is sole pending visual source"
+  },
+  "gesture_authority": {
+    "path": "app/companion_pendant/touch/touch_gesture.c/.h",
+    "defaults": {"tap_move_px_lte": 32, "tap_duration_ms_lte": 2000, "swipe_move_px_gte": 40, "swipe_duration_ms_lte": 1200, "axis_lock_px_gte": 14, "axis_slop_px": 24, "axis_dominance_percent": 140, "hold_ms": 650, "long_press_ms": 3000, "long_press_move_px_lte": 44},
+    "mouse_is_future_finger": true
+  },
+  "artifacts": {
+    "page": {"path": "docs/validation/companion-menu-luna-machine-ready/index.html", "sha256": "C1FFA7102E36EBC510A58F4D730D5B36579075DF8A1EEF20A3A98CCB7BD3CC2F"},
+    "generator": {"path": "tools/menu_luna/generate_menu_candidate.py", "sha256": "5E4134EA9CA1E2EB691CFBC73035FACD09F9922499AFFEAB563A866351F2C44A"},
+    "verifier": {"path": "tools/menu_luna/verify_menu_candidate.py", "sha256": "61D57EFD5B92785521472194FE14E64F758851D516220823E590DB03BD5B0D32"},
+    "playwright": {"path": "tools/menu_luna/test_menu_candidate.mjs", "sha256": "D6CBED73ED8131F50EF6AA9CE7734F0C13DC4FE8503A32EBD05EB7E92C404245", "result": "PASS desktop + mobile real mouse/pointer + decoded-image/pixel gates"},
+    "screenshots": ["desktop-preferences.png", "desktop-drag.png", "desktop-back.png", "desktop-closed.png", "mobile-preferences.png", "mobile-drag.png", "mobile-back.png", "mobile-closed.png", "ready-1.png through ready-12.png"]
+  },
+  "negative_fixtures": [
+    "negative-fixtures/disappearing-content.json",
+    "negative-fixtures/accidental-double-activation.json",
+    "negative-fixtures/out-of-bounds-swipe.json",
+    "negative-fixtures/expression-menu-stacking.json"
+  ],
+  "bounded_state": {"trace_records": 32, "timers": 0, "unbounded_growth": false},
+  "protected_paths_untouched": ["tools/render_companion_v34_v35_special_decoration_wb55_parity.py", "app/companion_pendant/epaper/generated/expression_rig_v40_two_track_candidate.c", "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c", "production", "vendor", "R12 assets", "owner acceptance files"]
+}

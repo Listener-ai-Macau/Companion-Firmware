@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Companion Menu Preview</title>
+<style>
+:root{font-family:Inter,Segoe UI,Arial,sans-serif;color:#202326;background:#f1f2ef}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px}
+.shell{width:min(760px,100%);display:grid;grid-template-columns:minmax(200px,1fr) 220px;gap:24px;align-items:center}
+.screen-wrap{display:grid;gap:10px;justify-items:center}.screen{position:relative;width:200px;height:200px;background:#fff;border:1px solid #9ba19b;overflow:hidden;touch-action:none;box-shadow:0 8px 24px #20232618}.screen img{display:block;width:200px;height:200px;user-select:none;pointer-events:none}.hits{position:absolute;inset:0}.hit{position:absolute;left:0;width:200px;border:0;background:transparent;padding:0;cursor:pointer;touch-action:none}.root-hit{height:40px}.detail-hit{height:36px}.hit:focus-visible,.hit[data-focus=true]{outline:2px solid #202326;outline-offset:-3px;background:#ffffff28}.screen[data-screen=expression]{border-color:#202326}
+.side{display:grid;gap:14px;align-content:center}.eyebrow{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#69706b}.title{font-size:20px;font-weight:700;margin:0}.selection{font-size:13px;line-height:1.4;color:#4f5751;min-height:38px}.choices{display:grid;gap:8px}.choice,.back{appearance:none;border:1px solid #8e978f;background:#fff;color:#202326;padding:10px 12px;text-align:left;font:inherit;cursor:pointer}.choice:hover,.back:hover,.choice[data-selected=true]{background:#202326;color:#fff}.choice[data-selected=true]{font-weight:700}.back{display:none}.side[data-mode=expression] .back{display:block}.side[data-mode=menu] .choices{display:none}.side[data-mode=menu] .selection{min-height:0}.foot{font-size:11px;color:#69706b;line-height:1.4}.screen-label{font-size:12px;color:#69706b;text-align:center}.screen-label[hidden]{display:none}
+@media(max-width:620px){body{padding:16px}.shell{grid-template-columns:1fr;gap:18px}.side{width:min(360px,100%);justify-self:center}.screen-wrap{order:0}.side{order:1}.choices{grid-template-columns:repeat(3,1fr)}.choice{padding:9px 8px;text-align:center;font-size:12px}}
+</style>
+<style>.overall-link{position:fixed;top:18px;left:18px;color:#202326;font-weight:600;text-decoration:none;border-bottom:1px solid #202326;padding-bottom:3px}.overall-link:hover{background:#202326;color:#fff}@media(max-width:620px){.overall-link{position:static;display:inline-block;margin-bottom:18px}body{display:block;padding:18px}.shell{display:grid;grid-template-columns:1fr;gap:18px}}</style>
+</head>
+<body>
+<a class="overall-link" href="/docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html#home">返回总体验收</a>
+<main class="shell" data-testid="menu-browser-r2">
+  <section class="screen-wrap">
+    <div class="screen" id="screen" data-screen="roots" aria-label="Companion 200 by 200 menu">
+      <img id="art" alt="" aria-hidden="true">
+      <div class="hits" id="hits"></div>
+    </div>
+    <div class="screen-label" id="screen-label">Menu</div>
+  </section>
+  <aside class="side" id="side" data-mode="menu">
+    <div class="eyebrow">Companion</div>
+    <h1 class="title" id="title">Menu</h1>
+    <div class="selection" id="selection">Choose a root to continue.</div>
+    <div class="choices" aria-label="Expression preview choices">
+      <button class="choice" type="button" data-expression="calm" data-testid="expression-calm">Calm</button>
+      <button class="choice" type="button" data-expression="curious" data-testid="expression-curious">Curious</button>
+      <button class="choice" type="button" data-expression="warm" data-testid="expression-warm">Warm</button>
+    </div>
+    <button class="back" type="button" id="back" data-testid="back-to-menu">Back to menu</button>
+    <div class="foot" id="foot">200 x 200 preview</div>
+  </aside>
+</main>
+<script>
+const ROOTS=['Voice','Device','Connection','Preferences'];
+const ROOTS_ZH=['语音','设备','连接','偏好设置'];
+const DETAIL_EN=[['Recording','History','Wake word'],['E-paper','Touch','Battery','UI assets'],['Pair new device','Link status','Reconnect'],['Language','Gesture policy','Refresh policy','Diagnostics','About']];
+const DETAIL_ZH=[['录音状态','录音历史','唤醒词'],['电子纸','触控','电池','界面资源'],['配对新设备','连接状态','重新连接'],['语言','手势','刷新频率','诊断','关于']];
+const MENU_ROOT='../../art/iterations/companion-menu-v7-screen-family/review-200x200/';
+const MENU_EN= ['en/01-home.png','en/02-voice.png','en/03-device.png','en/04-connection.png','en/05-preferences.png'].map(path=>MENU_ROOT+path);
+const MENU_ZH= ['zh_cn/01-home.png','zh_cn/02-voice.png','zh_cn/03-device.png','zh_cn/04-connection.png','zh_cn/05-preferences.png'].map(path=>MENU_ROOT+path);
+const EXPRESSIONS={
+  calm:{label:'Calm',path:'../../art/iterations/companion-pet-expression-v9-two-track-rig-v7/r7-locked-v9-export-20260723/all-candidates/calm_presence/04-calm_blink_settle.png'},
+  curious:{label:'Curious',path:'../../art/iterations/companion-pet-expression-v9-two-track-rig-v7/r7-locked-v9-export-20260723/all-candidates/curious_question/03-question_hold.png'},
+  warm:{label:'Warm',path:'../../art/iterations/companion-pet-expression-v9-two-track-rig-v7/r7-locked-v9-export-20260723/all-candidates/warm_presence/03-warm_hold.png'}
+};
+const TH={tapMovePx:32,tapDurationMs:2000,swipeMovePx:40,swipeDurationMs:1200,axisLockPx:14,axisSlopPx:24,axisDominance:140,holdMs:650,longPressMs:3000,longPressMovePx:44};
+const state={view:'roots',root:0,language:'en',scroll:0,revision:1,expression:'calm',pointer:null,axis:null,consumed:false,ready:false};
+const $=id=>document.getElementById(id),screen=$('screen'),art=$('art'),hits=$('hits'),side=$('side');
+const menuPaths=[...MENU_EN,...MENU_ZH], assetCache=new Map();
+const expressionPaths=Object.values(EXPRESSIONS).map(x=>x.path);
+function load(path){return new Promise((resolve,reject)=>{const image=new Image();image.onload=()=>{if(image.naturalWidth!==200||image.naturalHeight!==200)reject(new Error('asset dimensions'));else{assetCache.set(path,image);resolve(image)}};image.onerror=()=>reject(new Error('asset missing'));image.src=path})}
+async function preload(){await Promise.all([...menuPaths,...expressionPaths].map(load));state.ready=true}
+function currentLanguage(){return state.language==='zh'?DETAIL_ZH:DETAIL_EN}
+function setImage(path){const image=assetCache.get(path);if(!image)throw new Error('asset not loaded');art.src=image.src;art.dataset.asset=path;art.dataset.revision=String(state.revision)}
+function render(){if(!state.ready)return;hits.replaceChildren();screen.dataset.screen=state.view;side.dataset.mode=state.view==='expression'?'expression':'menu';
+  if(state.view==='expression'){const item=EXPRESSIONS[state.expression];setImage(item.path);$('title').textContent=item.label;$('selection').textContent='Expression preview';$('screen-label').textContent=item.label;$('foot').textContent='Registered 200 x 200 frame';for(const button of document.querySelectorAll('.choice'))button.dataset.selected=button.dataset.expression===state.expression?'true':'false';return}
+  const zh=state.language==='zh',detail=state.view==='details';const path=(zh?MENU_ZH:MENU_EN)[detail?state.root+1:0];setImage(path);$('title').textContent=detail?(zh?ROOTS_ZH:ROOTS)[state.root]:'Menu';$('selection').textContent=detail?'Select an item.':'Choose a root to continue.';$('screen-label').textContent=detail?'Menu detail':'Menu';$('foot').textContent='200 x 200 preview';
+  if(detail){const back=document.createElement('button');back.className='hit detail-hit';back.style.top='0px';back.dataset.header='true';back.dataset.testid='detail-header';back.setAttribute('aria-label','Back');bind(back);hits.append(back)}
+  const labels=detail?(zh?DETAIL_ZH:DETAIL_EN)[state.root]:(zh?ROOTS_ZH:ROOTS);const top=40,step=detail?36:40;labels.forEach((label,index)=>{const button=document.createElement('button');button.className='hit '+(detail?'detail-hit':'root-hit');button.style.top=`${top+index*step}px`;button.dataset.index=index;button.dataset.testid=detail?'detail-row':'root-row';button.setAttribute('aria-label',label);bind(button);hits.append(button)});
+}
+function bind(button){button.addEventListener('pointerdown',down);button.addEventListener('pointermove',move);button.addEventListener('pointerup',up);button.addEventListener('pointercancel',cancel)}
+function point(ev){const box=screen.getBoundingClientRect();return{x:Math.round(ev.clientX-box.left),y:Math.round(ev.clientY-box.top)}}
+function down(ev){if(state.view==='expression')return;const p=point(ev);state.pointer={sx:p.x,sy:p.y,x:p.x,y:p.y,t:performance.now(),target:ev.currentTarget};state.axis=null;state.consumed=false;ev.currentTarget.setPointerCapture(ev.pointerId);ev.currentTarget.dataset.focus='true'}
+function move(ev){if(!state.pointer)return;const p=point(ev),q=state.pointer;state.pointer.x=p.x;state.pointer.y=p.y;const dx=Math.abs(p.x-q.sx),dy=Math.abs(p.y-q.sy),dt=performance.now()-q.t;if(!state.axis&&(dx>=TH.axisLockPx||dy>=TH.axisLockPx)){if(dx>=dy+TH.axisSlop&&dx*100>=dy*TH.axisDominance)state.axis='horizontal';else if(dy>=dx+TH.axisSlop&&dy*100>=dx*TH.axisDominance)state.axis='vertical'}if(state.view==='details'&&state.axis==='vertical'){state.scroll=Math.max(0,Math.min(maxScroll(),state.scroll-(p.y-q.y)));state.revision++;render()}if(state.axis==='horizontal'&&dx>=TH.swipeMovePx&&dt<=TH.swipeDurationMs){state.consumed=true;if(p.x<q.sx)backToRoots();else if(state.view==='details')backToRoots()}}
+function maxScroll(){return Math.max(0,(state.root===3?5:state.root===1?4:3)*36-160)}
+function up(ev){if(!state.pointer)return;const p=point(ev),q=state.pointer,dt=performance.now()-q.t,dx=Math.abs(p.x-q.sx),dy=Math.abs(p.y-q.sy);state.pointer=null;if(state.consumed){state.consumed=false;render();return}if(dt<=TH.tapDurationMs&&dx<=TH.tapMovePx&&dy<=TH.tapMovePx){if(q.target.dataset.header)backToRoots();else select(Number(q.target.dataset.index))}}
+function cancel(){state.pointer=null;state.consumed=false;render()}
+function select(index){if(state.view==='roots'){state.view='details';state.root=index;state.scroll=0;state.revision++;render();return}if(state.root===1&&index===3){state.view='expression';state.expression='calm';state.revision++;render();return}if(state.root===3&&index===0){state.language=state.language==='en'?'zh':'en';state.revision++;render()}}
+function chooseExpression(name){if(!EXPRESSIONS[name])return;state.expression=name;state.revision++;render()}
+function backToRoots(){state.view='roots';state.scroll=0;state.revision++;render()}
+document.querySelectorAll('.choice').forEach(button=>button.addEventListener('click',()=>chooseExpression(button.dataset.expression)));$('back').addEventListener('click',backToRoots);screen.addEventListener('pointercancel',cancel);
+window.menuAuthority={ROOTS,DETAIL_EN,DETAIL_ZH,TH,menuPaths,expressionPaths,expressionEntry:'Device > UI assets',oneScreenAtATime:true};window.menuState=state;window.menuReady=preload().then(()=>{render();return true});
+</script>
+</body>
+</html>

@@ -1,0 +1,206 @@
+{
+  "schema": "companion.firmware-visual-state-transitions.v1",
+  "requirement": "COMP-REQ-471",
+  "state_count": 17,
+  "transition_count": 21,
+  "randomness": 0,
+  "unbounded_scheduling": 0,
+  "accepted_gesture_constants": {
+    "menu_hold_ms": 700,
+    "double_tap_gap_ms": 350,
+    "double_tap_move_px": 32,
+    "drag_move_px": 44
+  },
+  "states": [
+    "centered_rest",
+    "gaze_left",
+    "gaze_up",
+    "gaze_right",
+    "gaze_down",
+    "gaze_center",
+    "single_tap_response",
+    "hold_feedback_50",
+    "menu_roots",
+    "menu_voice",
+    "menu_device",
+    "menu_connection",
+    "menu_preferences",
+    "menu_device_ui_assets",
+    "menu_return_rest",
+    "recording_entry",
+    "recording_return_rest"
+  ],
+  "transitions": [
+    {
+      "from": "centered_rest",
+      "event": "pointer_drag_left",
+      "to": "gaze_left",
+      "guard": "movement_px>44",
+      "effect": "replace_current_gaze"
+    },
+    {
+      "from": "centered_rest",
+      "event": "pointer_drag_up",
+      "to": "gaze_up",
+      "guard": "movement_px>44",
+      "effect": "replace_current_gaze"
+    },
+    {
+      "from": "centered_rest",
+      "event": "pointer_drag_right",
+      "to": "gaze_right",
+      "guard": "movement_px>44",
+      "effect": "replace_current_gaze"
+    },
+    {
+      "from": "centered_rest",
+      "event": "pointer_drag_down",
+      "to": "gaze_down",
+      "guard": "movement_px>44",
+      "effect": "replace_current_gaze"
+    },
+    {
+      "from": "centered_rest",
+      "event": "pointer_drag_center",
+      "to": "gaze_center",
+      "guard": "movement_px>44",
+      "effect": "replace_current_gaze"
+    },
+    {
+      "from_any": [
+        "gaze_left",
+        "gaze_up",
+        "gaze_right",
+        "gaze_down",
+        "gaze_center"
+      ],
+      "event": "pointer_move",
+      "to_any": [
+        "gaze_left",
+        "gaze_up",
+        "gaze_right",
+        "gaze_down",
+        "gaze_center"
+      ],
+      "guard": "active_pointer",
+      "effect": "replace_current_gaze"
+    },
+    {
+      "from_any": [
+        "gaze_left",
+        "gaze_up",
+        "gaze_right",
+        "gaze_down",
+        "gaze_center"
+      ],
+      "event": "pointer_up_or_cancel",
+      "to": "centered_rest",
+      "effect": "center_then_resume_story"
+    },
+    {
+      "from": "centered_rest",
+      "event": "single_tap_commit",
+      "to": "single_tap_response",
+      "guard": "no_second_tap_for_350_ms",
+      "effect": "one_deterministic_touch_tap_response"
+    },
+    {
+      "from": "centered_rest",
+      "event": "stationary_pointerdown",
+      "to": "hold_feedback_50",
+      "guard": "movement_px<=44",
+      "effect": "show_accepted_hold_ornament"
+    },
+    {
+      "from": "hold_feedback_50",
+      "event": "hold_complete",
+      "to": "menu_roots",
+      "guard": "elapsed_ms>=700",
+      "effect": "activate_menu_once"
+    },
+    {
+      "from": "hold_feedback_50",
+      "event": "early_up_cancel_blur_or_drag",
+      "to": "centered_rest",
+      "guard": "elapsed_ms<700",
+      "effect": "clear_hold_feedback"
+    },
+    {
+      "from": "centered_rest",
+      "event": "second_short_tap",
+      "to": "recording_entry",
+      "guard": "gap_ms<=350 and distance_px<=32",
+      "effect": "activate_recording_once"
+    },
+    {
+      "from": "recording_entry",
+      "event": "recording_return",
+      "to": "recording_return_rest",
+      "effect": "clear_transients_and_center"
+    },
+    {
+      "from": "menu_roots",
+      "event": "select_voice",
+      "to": "menu_voice",
+      "effect": "replace_exclusive_menu_surface"
+    },
+    {
+      "from": "menu_roots",
+      "event": "select_device",
+      "to": "menu_device",
+      "effect": "replace_exclusive_menu_surface"
+    },
+    {
+      "from": "menu_roots",
+      "event": "select_connection",
+      "to": "menu_connection",
+      "effect": "replace_exclusive_menu_surface"
+    },
+    {
+      "from": "menu_roots",
+      "event": "select_preferences",
+      "to": "menu_preferences",
+      "effect": "replace_exclusive_menu_surface"
+    },
+    {
+      "from": "menu_device",
+      "event": "select_ui_assets",
+      "to": "menu_device_ui_assets",
+      "effect": "replace_with_accepted_v9_face_asset"
+    },
+    {
+      "from_any": [
+        "menu_voice",
+        "menu_device",
+        "menu_connection",
+        "menu_preferences"
+      ],
+      "event": "menu_back",
+      "to": "menu_roots",
+      "effect": "replace_exclusive_menu_surface"
+    },
+    {
+      "from_any": [
+        "menu_roots",
+        "menu_voice",
+        "menu_device",
+        "menu_connection",
+        "menu_preferences",
+        "menu_device_ui_assets"
+      ],
+      "event": "menu_return",
+      "to": "menu_return_rest",
+      "effect": "clear_transients_and_center"
+    },
+    {
+      "from_any": [
+        "single_tap_response",
+        "menu_return_rest",
+        "recording_return_rest"
+      ],
+      "event": "settle",
+      "to": "centered_rest",
+      "effect": "resume_bounded_story"
+    }
+  ]
+}

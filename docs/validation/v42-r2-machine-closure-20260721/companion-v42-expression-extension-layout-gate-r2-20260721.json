@@ -1,0 +1,45 @@
+{
+  "schema": "companion.v42_expression_extension_layout_gate.v1",
+  "status": "PASS_V42_EXPRESSION_EXTENSION_LAYOUT_RUNTIME_INACTIVE",
+  "layout": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v4/candidate/two-track-layout.json",
+  "special_component_layout": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v4/candidate/v42-special-component-layout.json",
+  "locked_v9_source_sha256": "919F344957661DEF2099AD56AB1286CCA9DBA4D8F08B702617B6DF5B1A28E9DA",
+  "component_sources": {
+    "v22_face": 37,
+    "v42_special_source": 48
+  },
+  "added_emotions": [
+    "delighted_presence",
+    "bashful_presence",
+    "thoughtful_presence",
+    "focused_presence"
+  ],
+  "five_gaze_states": [
+    "center",
+    "left",
+    "right",
+    "up",
+    "down"
+  ],
+  "owner_visible_excludes": [
+    "daily_attention_center",
+    "daily_attention_down",
+    "daily_attention_left",
+    "daily_attention_right",
+    "daily_attention_up"
+  ],
+  "functional_face_pixel_overlap": {
+    "recording": 0,
+    "charging": 0
+  },
+  "sleep_zzz_only": true,
+  "runtime_resource_activated": false,
+  "active_candidate_binding": "forbidden_until_v42_machine_audit_and_owner_review",
+  "non_claims": [
+    "no_whole_face_card",
+    "no_code_drawn_feature",
+    "no_runtime_binding",
+    "no_firmware_flash",
+    "no_panel_or_driver_change"
+  ]
+}

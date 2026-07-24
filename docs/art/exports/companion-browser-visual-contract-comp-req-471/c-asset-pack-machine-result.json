@@ -1,0 +1,322 @@
+{
+  "schema": "companion.visual-c-asset-pack-machine-result.v1",
+  "requirement": "COMP-REQ-467/471",
+  "status": "PASS",
+  "checks": {
+    "source_visual_contract_sha": true,
+    "source_transition_sha": true,
+    "state_count": true,
+    "state_identity_unique": true,
+    "state_enum_identity": true,
+    "fixed_geometry_and_capacity_macros": true,
+    "state_descriptor_geometry_orientation": true,
+    "state_sha_table": true,
+    "payload_capacity": true,
+    "fixed_unique_offsets": true,
+    "state_unique_map": true,
+    "frame_reconstruction": true,
+    "no_stale_alias_semantics": true,
+    "transition_targets_exist": true,
+    "transition_c_table": true,
+    "default_off": true,
+    "no_dynamic_allocation": true,
+    "deterministic_rerun": true,
+    "compile_ready_default_off_and_enabled": true
+  },
+  "errors": [],
+  "source": {
+    "visual_contract": {
+      "file": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\art\\exports\\companion-browser-visual-contract-comp-req-471\\visual-contract.json",
+      "sha256": "E5C6B30D8BF317FC8321D82E087D3B46552B4523FD8B67FFF3E6ABA89AAE4260"
+    },
+    "state_transitions": {
+      "file": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\art\\exports\\companion-browser-visual-contract-comp-req-471\\state-transitions.json",
+      "sha256": "442F5A9E87988A3F8BE15ECC2A2500CA64537FA2B6DBD96F6FFDDD070DD7F918"
+    }
+  },
+  "capacity": {
+    "state_count": 17,
+    "unique_frame_count": 13,
+    "frame_bytes": 5000,
+    "packed_payload_bytes": 65000,
+    "payload_budget_bytes": 85000,
+    "capacity_fixed": true,
+    "dynamic_allocation": false
+  },
+  "frame_reconstruction": {
+    "passed": 17,
+    "expected": 17,
+    "result": "17/17",
+    "states": [
+      {
+        "state_index": 0,
+        "state_id": "centered_rest",
+        "unique_frame_index": 0,
+        "source_file": "frames/centered_rest.bin",
+        "source_sha256": "66A3E78E692DE2EC813CABB9664778F1D5BF205F59A5FB41B22BDF9B0423EF09",
+        "reconstructed_sha256": "66A3E78E692DE2EC813CABB9664778F1D5BF205F59A5FB41B22BDF9B0423EF09",
+        "byte_equal": true,
+        "sha_equal": true
+      },
+      {
+        "state_index": 1,
+        "state_id": "gaze_left",
+        "unique_frame_index": 1,
+        "source_file": "frames/gaze_left.bin",
+        "source_sha256": "90DB3FC32E30B14F50148DA3A09332F47CA31AA25700C3906C1779647292226C",
+        "reconstructed_sha256": "90DB3FC32E30B14F50148DA3A09332F47CA31AA25700C3906C1779647292226C",
+        "byte_equal": true,
+        "sha_equal": true
+      },
+      {
+        "state_index": 2,
+        "state_id": "gaze_up",
+        "unique_frame_index": 2,
+        "source_file": "frames/gaze_up.bin",
+        "source_sha256": "9CB3855BA43A00C707BAE4CA6F78AE7A96D315E43CA6071215A7A297BF711C43",
+        "reconstructed_sha256": "9CB3855BA43A00C707BAE4CA6F78AE7A96D315E43CA6071215A7A297BF711C43",
+        "byte_equal": true,
+        "sha_equal": true
+      },
+      {
+        "state_index": 3,
+        "state_id": "gaze_right",
+        "unique_frame_index": 3,
+        "source_file": "frames/gaze_right.bin",
+        "source_sha256": "7DD232D99B657C673FBD57BFA6939826D3B6A6B9CF131DD8DA8FC160E0497574",
+        "reconstructed_sha256": "7DD232D99B657C673FBD57BFA6939826D3B6A6B9CF131DD8DA8FC160E0497574",
+        "byte_equal": true,
+        "sha_equal": true
+      },
+      {
+        "state_index": 4,
+        "state_id": "gaze_down",
+        "unique_frame_index": 4,
+        "source_file": "frames/gaze_down.bin",
+        "source_sha256": "C4975D1AFF45CBD5C2B284261343728F8EB0DFC1BB5DED1874A42EF78A62337D",
+        "reconstructed_sha256": "C4975D1AFF45CBD5C2B284261343728F8EB0DFC1BB5DED1874A42EF78A62337D",
+        "byte_equal": true,
+        "sha_equal": true
+      },
+      {
+        "state_index": 5,
+        "state_id": "gaze_center",
+        "unique_frame_index": 0,
+        "source_file": "frames/gaze_center.bin",
+        "source_sha256": "66A3E78E692DE2EC813CABB9664778F1D5BF205F59A5FB41B22BDF9B0423EF09",
+        "reconstructed_sha256": "66A3E78E692DE2EC813CABB9664778F1D5BF205F59A5FB41B22BDF9B0423EF09",
+        "byte_equal": true,
+        "sha_equal": true
+      },
+      {
+        "state_index": 6,
+        "state_id": "single_tap_response",
+        "unique_frame_index": 5,
+        "source_file": "frames/single_tap_response.bin",
+        "source_sha256": "16F0642E4061CDC22D05EE2A7E08E5DD0777A84E6D5D0052E126FA77E30D066B",
+        "reconstructed_sha256": "16F0642E4061CDC22D05EE2A7E08E5DD0777A84E6D5D0052E126FA77E30D066B",
+        "byte_equal": true,
+        "sha_equal": true
+      },
+      {
+        "state_index": 7,
+        "state_id": "hold_feedback_50",
+        "unique_frame_index": 6,
+        "source_file": "frames/hold_feedback_50.bin",
+        "source_sha256": "5545DB4C457AB2A57867B602A3EE216A45CFF7BBD93368156C2A8B21292A34C1",
+        "reconstructed_sha256": "5545DB4C457AB2A57867B602A3EE216A45CFF7BBD93368156C2A8B21292A34C1",
+        "byte_equal": true,
+        "sha_equal": true
+      },
+      {
+        "state_index": 8,
+        "state_id": "menu_roots",
+        "unique_frame_index": 7,
+        "source_file": "frames/menu_roots.bin",
+        "source_sha256": "EA85CFB199657D7829D181DD3D62BF19612F995E47C58112FFA7E713790DEFA0",
+        "reconstructed_sha256": "EA85CFB199657D7829D181DD3D62BF19612F995E47C58112FFA7E713790DEFA0",
+        "byte_equal": true,
+        "sha_equal": true
+      },
+      {
+        "state_index": 9,
+        "state_id": "menu_voice",
+        "unique_frame_index": 8,
+        "source_file": "frames/menu_voice.bin",
+        "source_sha256": "7B3C8FAAF42DFEC2F309F43A6D769A8A1F5A4789BCD0CF46D0555F89A9A7169A",
+        "reconstructed_sha256": "7B3C8FAAF42DFEC2F309F43A6D769A8A1F5A4789BCD0CF46D0555F89A9A7169A",
+        "byte_equal": true,
+        "sha_equal": true
+      },
+      {
+        "state_index": 10,
+        "state_id": "menu_device",
+        "unique_frame_index": 9,
+        "source_file": "frames/menu_device.bin",
+        "source_sha256": "6C237EFA7573A35578849CE3E337FE2156CCDE2125AD4BB9D252830ECF3F677A",
+        "reconstructed_sha256": "6C237EFA7573A35578849CE3E337FE2156CCDE2125AD4BB9D252830ECF3F677A",
+        "byte_equal": true,
+        "sha_equal": true
+      },
+      {
+        "state_index": 11,
+        "state_id": "menu_connection",
+        "unique_frame_index": 10,
+        "source_file": "frames/menu_connection.bin",
+        "source_sha256": "F103D49AF3A8B315CE6B2D8CDB4474CD3F2D62C19C7E1F8105DA43AE32C3FC15",
+        "reconstructed_sha256": "F103D49AF3A8B315CE6B2D8CDB4474CD3F2D62C19C7E1F8105DA43AE32C3FC15",
+        "byte_equal": true,
+        "sha_equal": true
+      },
+      {
+        "state_index": 12,
+        "state_id": "menu_preferences",
+        "unique_frame_index": 11,
+        "source_file": "frames/menu_preferences.bin",
+        "source_sha256": "AE0BC022B83A98AC42D7B54819718136FF745A4A1A4EF036E3D33655E43EB29C",
+        "reconstructed_sha256": "AE0BC022B83A98AC42D7B54819718136FF745A4A1A4EF036E3D33655E43EB29C",
+        "byte_equal": true,
+        "sha_equal": true
+      },
+      {
+        "state_index": 13,
+        "state_id": "menu_device_ui_assets",
+        "unique_frame_index": 0,
+        "source_file": "frames/menu_device_ui_assets.bin",
+        "source_sha256": "66A3E78E692DE2EC813CABB9664778F1D5BF205F59A5FB41B22BDF9B0423EF09",
+        "reconstructed_sha256": "66A3E78E692DE2EC813CABB9664778F1D5BF205F59A5FB41B22BDF9B0423EF09",
+        "byte_equal": true,
+        "sha_equal": true
+      },
+      {
+        "state_index": 14,
+        "state_id": "menu_return_rest",
+        "unique_frame_index": 0,
+        "source_file": "frames/menu_return_rest.bin",
+        "source_sha256": "66A3E78E692DE2EC813CABB9664778F1D5BF205F59A5FB41B22BDF9B0423EF09",
+        "reconstructed_sha256": "66A3E78E692DE2EC813CABB9664778F1D5BF205F59A5FB41B22BDF9B0423EF09",
+        "byte_equal": true,
+        "sha_equal": true
+      },
+      {
+        "state_index": 15,
+        "state_id": "recording_entry",
+        "unique_frame_index": 12,
+        "source_file": "frames/recording_entry.bin",
+        "source_sha256": "309672C1572F178D4BE17AF3B8958F985C76034521B067447F73AEB0ACEA35DB",
+        "reconstructed_sha256": "309672C1572F178D4BE17AF3B8958F985C76034521B067447F73AEB0ACEA35DB",
+        "byte_equal": true,
+        "sha_equal": true
+      },
+      {
+        "state_index": 16,
+        "state_id": "recording_return_rest",
+        "unique_frame_index": 0,
+        "source_file": "frames/recording_return_rest.bin",
+        "source_sha256": "66A3E78E692DE2EC813CABB9664778F1D5BF205F59A5FB41B22BDF9B0423EF09",
+        "reconstructed_sha256": "66A3E78E692DE2EC813CABB9664778F1D5BF205F59A5FB41B22BDF9B0423EF09",
+        "byte_equal": true,
+        "sha_equal": true
+      }
+    ]
+  },
+  "alias_semantics": {
+    "same_pixels_may_share_storage": true,
+    "state_identity_count": 17,
+    "state_to_unique_mapping_count": 17,
+    "no_stale_alias_semantics": true
+  },
+  "transitions": {
+    "count": 21,
+    "all_targets_exist": true,
+    "c_table_matches": true
+  },
+  "deterministic_rerun": {
+    "result": "0 diff",
+    "files": [
+      {
+        "file": "companion_visual_asset_pack.h",
+        "canonical_sha256": "2180FE281AFF31C8688BCB290740F898CF7E032C90D97FFE679F535689A814F9",
+        "rerun_sha256": "2180FE281AFF31C8688BCB290740F898CF7E032C90D97FFE679F535689A814F9",
+        "byte_equal": true
+      },
+      {
+        "file": "companion_visual_asset_pack.c",
+        "canonical_sha256": "1EE7BD5DDB210A3C3F90ADB607BA317CF2F00127099B876C9DB5948C7A5D03A0",
+        "rerun_sha256": "1EE7BD5DDB210A3C3F90ADB607BA317CF2F00127099B876C9DB5948C7A5D03A0",
+        "byte_equal": true
+      },
+      {
+        "file": "c-asset-pack-manifest.json",
+        "canonical_sha256": "0F0FE7B91707F20CF942A0B994BD776B69D404A004D9985B98EC6838CA752DBA",
+        "rerun_sha256": "0F0FE7B91707F20CF942A0B994BD776B69D404A004D9985B98EC6838CA752DBA",
+        "byte_equal": true
+      },
+      {
+        "file": "c-asset-pack-handoff.json",
+        "canonical_sha256": "982B582FAEDDF956AF8557A9A333362A0D91DD7CA92FB3E0E7A37FC3D79F14D9",
+        "rerun_sha256": "982B582FAEDDF956AF8557A9A333362A0D91DD7CA92FB3E0E7A37FC3D79F14D9",
+        "byte_equal": true
+      }
+    ]
+  },
+  "compile": {
+    "compiler": "C:\\Program Files (x86)\\Arm GNU Toolchain arm-none-eabi\\14.2 rel1\\bin\\arm-none-eabi-gcc.exe",
+    "compiler_sha256": "DFB298D8F9697904A37782CA822CF8B35A973C0F2BA8D368579E5C109959AFE5",
+    "results": [
+      {
+        "mode": "default_off",
+        "command": [
+          "C:\\Program Files (x86)\\Arm GNU Toolchain arm-none-eabi\\14.2 rel1\\bin\\arm-none-eabi-gcc.exe",
+          "-std=c11",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "-ffreestanding",
+          "-fno-common",
+          "-I",
+          "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\art\\exports\\companion-browser-visual-contract-comp-req-471",
+          "-c",
+          "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\art\\exports\\companion-browser-visual-contract-comp-req-471\\companion_visual_asset_pack.c",
+          "-o",
+          "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\companion-visual-c-asset-pack-comp-req-471-compile\\companion_visual_asset_pack.default-off.o"
+        ],
+        "return_code": 0,
+        "stdout": "",
+        "stderr": "",
+        "object_file": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\companion-visual-c-asset-pack-comp-req-471-compile\\companion_visual_asset_pack.default-off.o",
+        "object_sha256": "5B981EE174CD7AFBE8CB1CA05D8CB5523CBA6AEB26A7750908504C8CE8764E10"
+      },
+      {
+        "mode": "enabled",
+        "command": [
+          "C:\\Program Files (x86)\\Arm GNU Toolchain arm-none-eabi\\14.2 rel1\\bin\\arm-none-eabi-gcc.exe",
+          "-std=c11",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "-ffreestanding",
+          "-fno-common",
+          "-DCOMPANION_VISUAL_ASSET_PACK_ENABLE=1",
+          "-I",
+          "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\art\\exports\\companion-browser-visual-contract-comp-req-471",
+          "-c",
+          "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\docs\\art\\exports\\companion-browser-visual-contract-comp-req-471\\companion_visual_asset_pack.c",
+          "-o",
+          "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\companion-visual-c-asset-pack-comp-req-471-compile\\companion_visual_asset_pack.enabled.o"
+        ],
+        "return_code": 0,
+        "stdout": "",
+        "stderr": "",
+        "object_file": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\companion-visual-c-asset-pack-comp-req-471-compile\\companion_visual_asset_pack.enabled.o",
+        "object_sha256": "BA2ACA7FD2F2F87147CB03CDC781DCEAEEA868CFDEA403DE66AAA5E140278D15"
+      }
+    ]
+  },
+  "artifact_sha256": {
+    "companion_visual_asset_pack.h": "2180FE281AFF31C8688BCB290740F898CF7E032C90D97FFE679F535689A814F9",
+    "companion_visual_asset_pack.c": "1EE7BD5DDB210A3C3F90ADB607BA317CF2F00127099B876C9DB5948C7A5D03A0",
+    "c-asset-pack-manifest.json": "0F0FE7B91707F20CF942A0B994BD776B69D404A004D9985B98EC6838CA752DBA",
+    "c-asset-pack-handoff.json": "982B582FAEDDF956AF8557A9A333362A0D91DD7CA92FB3E0E7A37FC3D79F14D9"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "schema_id": "companion.wb55.raw_application_restore.v1",
+  "status": "PASS_RESTORE_EQUALS_CAPTURED_PRE_RUN_APPLICATION_BYTES",
+  "address_hex": "0x08000000",
+  "length_hex": "0x80000",
+  "length_bytes": 524288,
+  "baseline_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+  "restore_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+  "byte_identical": true,
+  "restore_vector": {
+    "msp_hex": "0x20030000",
+    "msp_8_byte_aligned": true,
+    "reset_vector_hex": "0x08015AAD",
+    "reset_vector_thumb": true,
+    "reset_address_hex": "0x08015AAC"
+  },
+  "restore_programmed_content": {
+    "first_non_ff_offset": 0,
+    "last_non_ff_offset": 523563,
+    "span_bytes": 523564,
+    "non_ff_bytes": 423805,
+    "minimum_span_bytes": 4096,
+    "minimum_non_ff_bytes": 1024
+  },
+  "restore_identity": "RESTORED_TO_CAPTURED_PRE_RUN_APPLICATION_BYTES",
+  "e199_hex_reproduction": false,
+  "private_files": {
+    "backup_a": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-ur-dual-application-backup-execute-20260721-r1\\private\\backup-a.bin",
+    "backup_b": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-ur-dual-application-backup-execute-20260721-r1\\private\\backup-b.bin",
+    "restore_verify": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\Companion-Firmware\\.cache\\validation\\wb55-r9-continuous-r2-execute-20260721-r1\\private\\restore-verify.bin"
+  }
+}

@@ -53,12 +53,34 @@
   "commands": [
     "pwsh -NoProfile -File .\\tools\\run_wb55_refresh_ab.ps1 -CheckOnly",
     "pwsh -NoProfile -File .\\tools\\run_wb55_refresh_ab.ps1 -SelfTestRecovery",
-    "pwsh -NoProfile -File C:\\Users\\Billy\\Desktop\\Denzic\\ai-collaboration-workflow\\scripts\\aiw.ps1 with-lock -Resource Companion-WB55 -Purpose \"Companion WB55 refresh A/B\" -Run pwsh -NoProfile -File .\\tools\\run_wb55_refresh_ab.ps1 -Execute -WorkflowLockHeld"
+    "pwsh -NoProfile -File .\\tools\\run_wb55_refresh_ab.ps1 -Execute -HardwareAcknowledged -Profile differential"
   ],
+  "differential_check_only": {
+    "claim_scope": "preflight_only_no_hardware_claim",
+    "profile_ids": [
+      "differential"
+    ],
+    "report_exists": true,
+    "returncode": 0,
+    "sequence_banner": true,
+    "step_ids": [
+      "flash_differential",
+      "capture_differential",
+      "parse_differential",
+      "flash_normal_restore"
+    ]
+  },
   "execute_without_lock_negative": {
-    "claim_scope": "negative_execute_lock_guard_no_hardware_claim",
+    "claim_scope": "negative_execute_acknowledgement_guard_no_hardware_claim",
     "refused_before_hardware": true,
     "returncode": 1
+  },
+  "loop_check_only": {
+    "cadence_groups": 3,
+    "image": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_refresh_cadence_diagnostic_g3/Companion_Nucleo_WB55RG_RefreshCadenceDiagnosticG3.hex",
+    "report_exists": true,
+    "returncode": 0,
+    "sequence_banner": true
   },
   "recovery_selftest": {
     "claim_scope": "stubbed_failure_recovery_no_hardware_claim",
@@ -87,12 +109,14 @@
   "runner": "tools/run_wb55_refresh_ab.ps1",
   "safety_contract": {
     "all_three_profiles_are_explicit": true,
+    "bounded_cadence_loop_is_explicit": true,
     "check_only_is_non_hardware": true,
     "each_capture_is_reset_bounded": true,
     "each_trace_uses_strict_parser": true,
-    "execute_requires_workflow_lock": true,
+    "execute_requires_explicit_hardware_acknowledgement": true,
     "restores_normal_firmware_after_failure": true,
-    "selftest_recovery_is_no_hardware": true
+    "selftest_recovery_is_no_hardware": true,
+    "single_profile_does_not_schedule_other_images": true
   },
   "schema_id": "companion.wb55.refresh_ab_runner_validation.v1",
   "status": "PASS"

@@ -1,0 +1,195 @@
+{
+  "schema": "companion.upper-lower-root-cause-diagnostic.v1",
+  "status": "NO_GO_LOWER_PRODUCTION_EVENT_PATH_GAPS",
+  "requirements": [
+    "COMP-REQ-479",
+    "COMP-REQ-488"
+  ],
+  "exact_input": {
+    "lower_commit": "4ddf9709034d307b333510c27e3e0a45c7ed6d15",
+    "lower_machine_ready_path": ".cache/validation/comp-req-488-lower/MACHINE_READY.json",
+    "lower_machine_ready_sha256": "8BD2C5F3F9CEFD4794DEC29C6C244A66C0A7F99D495E9A221465019C355FB04F",
+    "upper_oracle_path": "docs/art/exports/companion-browser-visual-contract-comp-req-471/expanded-window-oracle.json",
+    "upper_oracle_sha256": "20C270A332F7AD75FAED3C44C9AE3C1D789F7902ABA525C07B0B40F4266C5B2E"
+  },
+  "source_identity": [
+    {
+      "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/main.c",
+      "git_blob": "107ad7d2678e296228a6e3c3f9553d28d1ea8bbc",
+      "sha256": "B3F53EC885EB892E456A1B3E88F762D8725C3B9D9EE03D94595D3DAB07F8B83C",
+      "symbols": [
+        "main:1065",
+        "service_visual_runtime_controller:1726",
+        "submit_visual_runtime_gesture:1767",
+        "observe_visual_runtime_contact:1823",
+        "process_deferred_touch_runtime_action:2437",
+        "handle_touch_menu_sample:2690"
+      ]
+    },
+    {
+      "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c",
+      "git_blob": "055662d569134a2b765cc9f338249b8461503af9",
+      "sha256": "9717DFCD24FEECE9910CF21A629C00E849E9C9926E605E3F4848B2B1E711E90F",
+      "symbols": [
+        "APP_BLE_Init:592",
+        "companion_epaper_panel_stm32wb_init call:748"
+      ]
+    },
+    {
+      "path": "app/companion_pendant/epaper/panel_target_stm32wb.c",
+      "git_blob": "bbc2a181e81dc57d646c365da2c8e6e3d9751a03",
+      "sha256": "D6018EFF305AC4E9E84D08F8C47A486E02FD7275B3E44A6E84D7B6BC06184B6E",
+      "symbols": [
+        "companion_epaper_panel_stm32wb_init:19",
+        "companion_r7_runtime_bridge_init call:30"
+      ]
+    },
+    {
+      "path": "app/companion_pendant/epaper/companion_visual_runtime_adapter.c",
+      "git_blob": "4afe8b3116ecc9a9ed208d1a03421f3bc577b84e",
+      "sha256": "B510A1FE95967B8F4F615B1DACA992BBCD2B574445F3E79A6A11BE5BC857D509",
+      "symbols": [
+        "panel_byte:38",
+        "companion_visual_runtime_copy_panel_frame:43",
+        "companion_visual_runtime_enqueue_visual_event:151",
+        "companion_visual_runtime_build_window:258",
+        "companion_visual_runtime_service:335"
+      ]
+    },
+    {
+      "path": "app/companion_pendant/epaper/r7_runtime_bridge_stm32wb.c",
+      "git_blob": "fc532d25bbfea6169b1274f3252d428fbe266667",
+      "sha256": "F098E6A4CEDDAC030B906F942884FC27AFF3897322BD0DB405519227A702999E",
+      "symbols": [
+        "companion_r7_runtime_bridge_visual_transport:193",
+        "companion_r7_runtime_bridge_init:330",
+        "centered panel-frame copy:351",
+        "converted baseline 0x24 write:359-361"
+      ]
+    },
+    {
+      "path": "tools/comp_req_472_visual_runtime_fixture.c",
+      "git_blob": "9af25d365e56baf0be1438d0a0f92985cc729a61",
+      "sha256": "C47C2C69A2FA8F21F41F65D32DA3E276091434F52F02541A0032C7A354E564CC",
+      "symbols": [
+        "verify_semantic_rows:237",
+        "expanded transition/pair loop:584"
+      ]
+    }
+  ],
+  "original_auditor_result": {
+    "joint_sha256": "D2A08C0DAFF41973B048D5F6902457E1359E5D3EEF0ED70D06221BF6C7094B76",
+    "compatibility_sha256": "34BB174F93392300363BFBB378117A69DC9B71DC77133442853BB3671C3574D3",
+    "events": "0/21",
+    "pairs": "0/59",
+    "semantic_noops": "0/10",
+    "why_all_zero": "Seventeen event pipelines were found, but every event required one global polarity_bridge_realizable flag. The stale initialization reachability test set that flag false. Pair rows then inherited the event result wholesale."
+  },
+  "auditor_defects_corrected": [
+    {
+      "id": "initialization_reachability",
+      "cause": "The source graph considered only functions reachable from main. Cube's asynchronous MX_APPE_Init boundary left APP_BLE_Init outside that set even though APP_BLE_Init has the production panel initialization chain.",
+      "correct_chain": "APP_BLE_Init:592 -> companion_epaper_panel_stm32wb_init:19 -> companion_r7_runtime_bridge_init:330 -> companion_visual_runtime_copy_panel_frame:43 -> panel_byte:38 -> bridge_data visual_baseline:361",
+      "effect": "polarity and accepted centered_rest initialization are realizable"
+    },
+    {
+      "id": "event_wide_pair_inheritance",
+      "cause": "All 25 pointer_move pairs inherited the ambiguous event row, although the live observer realizes 20 directional-target pairs.",
+      "effect": "pair accounting is now pair-specific while the event remains ambiguous until center replacement exists"
+    }
+  ],
+  "not_the_cause": {
+    "comp_req_488_machine_ready_schema_or_fields": "The compatibility auditor does not read lower MACHINE_READY fields or claims.",
+    "legacy_c692_call_site_tokens": "The c692 qualification detector is separate from current event mapping. Exact 4dd qualification, terminal retention, and polarity all pass after the reachability correction."
+  },
+  "recomputed_result": {
+    "status": "NO_GO_UPPER_LOWER_EVENT_PATH_GAPS",
+    "events": "17/21",
+    "pairs": "51/59",
+    "semantic_noops": "8/10",
+    "polarity_bridge": true,
+    "terminal_retention": true,
+    "qualification_valid": true
+  },
+  "production_event_gaps": [
+    {
+      "event": "pointer_drag_center",
+      "classification": "missing",
+      "adapter_case": "companion_visual_runtime_adapter.c:174",
+      "production_evidence": "observe_visual_runtime_contact returns at main.c:1839-1841 when contact returns inside slop; no center event is queued"
+    },
+    {
+      "event": "pointer_move",
+      "classification": "ambiguous",
+      "adapter_case": "companion_visual_runtime_adapter.c:166",
+      "production_evidence": "main.c:1843-1860 queues four directional gaze targets; it has no center-target branch",
+      "realizable_pairs": "20/25"
+    },
+    {
+      "event": "early_up_cancel_blur_or_drag",
+      "classification": "missing",
+      "adapter_case": "companion_visual_runtime_adapter.c:179",
+      "production_evidence": "no exact event token or equivalent hold-feedback cancellation call site is reachable from main"
+    },
+    {
+      "event": "select_ui_assets",
+      "classification": "missing",
+      "adapter_case": "companion_visual_runtime_adapter.c:210",
+      "production_evidence": "menu visual switch at main.c:3022-3049 maps Device/Preferences/Phone/Record/Home but has no Device > UI assets branch"
+    }
+  ],
+  "representative_recomputation": [
+    {
+      "id": "T00-P00-centered_rest--gaze_left",
+      "kind": "event_and_pair",
+      "result": "realizable",
+      "path": "main:1065 -> poll_touch_debug:2312 -> process_touch_debug_sample:2151 -> handle_touch_menu_sample:2690 -> submit_visual_runtime_gesture:1767 -> companion_visual_runtime_enqueue_visual_event:151 -> enqueue:56 -> service:335 -> build:258 -> emit:313"
+    },
+    {
+      "id": "T05-P01-gaze_left--gaze_up",
+      "kind": "continuous_pointer_move_pair",
+      "result": "realizable",
+      "path": "main.c:1823-1860 live observer -> enqueue_gesture:108 -> map_touch:390 -> enqueue:56 -> service:335"
+    },
+    {
+      "id": "T05-P04-gaze_left--gaze_center",
+      "kind": "continuous_pointer_move_center_pair",
+      "result": "missing",
+      "path": "main.c:1839-1841 returns before any enqueue"
+    },
+    {
+      "id": "T05-P00-gaze_left--gaze_left",
+      "kind": "semantic_pixel_noop",
+      "result": "realizable",
+      "path": "live observer enqueue plus service frames_equal:248 and state commit at service:359-363"
+    },
+    {
+      "id": "T04-P00-centered_rest--gaze_center",
+      "kind": "semantic_pixel_noop",
+      "result": "missing",
+      "path": "no production pointer_drag_center enqueue"
+    }
+  ],
+  "minimum_lower_requirements": [
+    "Queue gaze_center when an active dragged contact returns inside the existing center/slop policy, without appending a stale gaze layer.",
+    "Provide a production early_up_cancel_blur_or_drag path that clears hold feedback and commits centered rest.",
+    "Map the Device > UI assets production menu result to SELECT_UI_ASSETS and MENU_DEVICE_UI_ASSETS.",
+    "Preserve the current converted centered_rest initialization, pair payload inversion, terminal latch, retry=0, timing guards, and all accepted identities."
+  ],
+  "new_artifacts": {
+    "compatibility_path": "docs/validation/companion-browser-visual-contract-comp-req-471/upper-lower-compatibility-4ddf970-root-cause.json",
+    "compatibility_sha256": "F6504C998C5127355DA63C28B8910D8126650D6319779A95C4DEC604B1779104",
+    "joint_path": "docs/validation/companion-browser-visual-contract-comp-req-471/joint-upper-lower-4ddf970-root-cause.json",
+    "joint_sha256": "0E810E1294E0619EFF9E4219162A1C1B62926B8F7077E29666CEE7790D8E4030"
+  },
+  "side_effect_counters": {
+    "lower_write": 0,
+    "registry_write": 0,
+    "runtime": 0,
+    "hardware": 0,
+    "server": 0,
+    "browser": 0,
+    "prompt": 0,
+    "push": 0
+  }
+}

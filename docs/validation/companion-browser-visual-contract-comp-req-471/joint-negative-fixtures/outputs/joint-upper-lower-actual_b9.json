@@ -1,0 +1,495 @@
+{
+  "checks": {
+    "auditor.file_exists": true,
+    "auditor.hash_exact": true,
+    "compatibility.artifact_parsed": true,
+    "compatibility.full_21_59_10": false,
+    "compatibility.invoked": true,
+    "compatibility.polarity_terminal_qualification": false,
+    "compatibility.side_effects_zero": true,
+    "compatibility.subprocess_consistent": true,
+    "input.expected_oracle_hash_is_accepted": true,
+    "input.expected_upper_hash_is_accepted": true,
+    "input.oracle_path_exact": true,
+    "input.upper_path_exact": true,
+    "lower.commit_exact": true,
+    "lower.commit_object_recomputed": true,
+    "lower.root_is_exact_toplevel": true,
+    "lower_claims_match_observed_compatibility": false,
+    "lower_mr.all_sources_recomputed": false,
+    "lower_mr.commit_exact": false,
+    "lower_mr.compatibility_claims_complete": false,
+    "lower_mr.elf_files_rehashed": false,
+    "lower_mr.elf_hashes_explicit_match": false,
+    "lower_mr.elf_paths_declared": false,
+    "lower_mr.file_exists_and_bounded": true,
+    "lower_mr.hash_exact": false,
+    "lower_mr.hex_files_rehashed": false,
+    "lower_mr.hex_hashes_explicit_match": false,
+    "lower_mr.hex_paths_declared": false,
+    "lower_mr.json_object": true,
+    "lower_mr.protected_hashes_exact": true,
+    "lower_mr.required_sources_declared": true,
+    "lower_mr.runner_rehashed": true,
+    "lower_mr.schema_exact": false,
+    "lower_mr.side_effect_contract_complete": false,
+    "lower_mr.side_effects_zero": false,
+    "lower_mr.sources_declared_and_bounded": true,
+    "lower_mr.status_exact": false,
+    "lower_mr.supervisor_rehashed": false,
+    "lower_mr.timing_within_limits": true,
+    "oracle.file_exists": true,
+    "oracle.hash_exact": true,
+    "oracle.structure_59_10_pass": true,
+    "upper.all_machine_checks_true": true,
+    "upper.file_exists": true,
+    "upper.hash_exact": true,
+    "upper.runtime_side_effects_zero": true,
+    "upper.schema_status_pass": true
+  },
+  "compatibility": {
+    "artifact_path": "C:/Users/Billy/Desktop/Denzic/Companion/Companion-Firmware/docs/validation/companion-browser-visual-contract-comp-req-471/joint-negative-fixtures/compatibility/upper-lower-compatibility-actual_b9.json",
+    "artifact_sha256": "BFFECE9E7D232EF5173CF06D7110BDF75E92049B234366C9861A3A2D18EA680B",
+    "process": {
+      "invoked": true,
+      "return_code": 1,
+      "stderr": "",
+      "stdout": "{\"artifact_sha256\": \"BFFECE9E7D232EF5173CF06D7110BDF75E92049B234366C9861A3A2D18EA680B\", \"c692_expected_no_go_signature\": false, \"events_realizable\": \"0/21\", \"mode\": \"comparison\", \"noops_realizable\": \"0/10\", \"pairs_realizable\": \"0/59\", \"polarity_bridge\": false, \"qualification_valid\": true, \"status\": \"NO_GO_UPPER_LOWER_POLARITY_EVENT_TERMINAL_GAPS\", \"terminal_retention\": false}"
+    },
+    "status": "NO_GO_UPPER_LOWER_POLARITY_EVENT_TERMINAL_GAPS",
+    "summary": {
+      "c173_no_go_preserved_when_selected": null,
+      "c692_expected_no_go_signature": false,
+      "comparison_complete": false,
+      "events": {
+        "mapping_ambiguous": 1,
+        "mapping_mapped": 8,
+        "mapping_missing": 12,
+        "realizable": 0,
+        "total": 21
+      },
+      "pairs": {
+        "pixel_noop": 10,
+        "realizable": 0,
+        "semantic_noop_realizable": 0,
+        "total": 59
+      },
+      "polarity_bridge_realizable": false,
+      "qualification_valid": true,
+      "states": {
+        "identity_mapped": 17,
+        "total": 17
+      },
+      "terminal_retention": false
+    }
+  },
+  "default_off": true,
+  "failed_checks": [
+    "compatibility.full_21_59_10",
+    "compatibility.polarity_terminal_qualification",
+    "lower_claims_match_observed_compatibility",
+    "lower_mr.all_sources_recomputed",
+    "lower_mr.commit_exact",
+    "lower_mr.compatibility_claims_complete",
+    "lower_mr.elf_files_rehashed",
+    "lower_mr.elf_hashes_explicit_match",
+    "lower_mr.elf_paths_declared",
+    "lower_mr.hash_exact",
+    "lower_mr.hex_files_rehashed",
+    "lower_mr.hex_hashes_explicit_match",
+    "lower_mr.hex_paths_declared",
+    "lower_mr.schema_exact",
+    "lower_mr.side_effect_contract_complete",
+    "lower_mr.side_effects_zero",
+    "lower_mr.status_exact",
+    "lower_mr.supervisor_rehashed"
+  ],
+  "generator": {
+    "path": "tools/faraday_upper_art/run_companion_joint_offline_gate_comp_req_479.py",
+    "sha256": "CEACACDE355BC012CF9DD78F5A1D811FB76149701B6F2D238CD55EAF7A7F72CC"
+  },
+  "inputs": {
+    "compatibility_auditor": {
+      "expected_sha256": "8061D244086889BD2CF3EF62EB271F7347E80FABAE9EA2E62E5AD4976D4A4906",
+      "observed_sha256": "8061D244086889BD2CF3EF62EB271F7347E80FABAE9EA2E62E5AD4976D4A4906",
+      "path": "C:/Users/Billy/Desktop/Denzic/Companion/Companion-Firmware/tools/faraday_upper_art/audit_companion_upper_lower_compatibility_comp_req_474.py"
+    },
+    "expanded_oracle": {
+      "expected_sha256": "20C270A332F7AD75FAED3C44C9AE3C1D789F7902ABA525C07B0B40F4266C5B2E",
+      "observed_sha256": "20C270A332F7AD75FAED3C44C9AE3C1D789F7902ABA525C07B0B40F4266C5B2E",
+      "path": "C:/Users/Billy/Desktop/Denzic/Companion/Companion-Firmware/docs/art/exports/companion-browser-visual-contract-comp-req-471/expanded-window-oracle.json"
+    },
+    "lower": {
+      "expected_commit": "b9a2c5aea409cdcd3a88afdc19373ef6f3dd4160",
+      "expected_elf_sha256": [
+        "6DD5DF319CD227FABF6CE893F34F671F4FFEBA4EB69580B838B34573572C5206",
+        "FE03179E70E14619C729D9B67BE0DAF6FB99F5F14CE92F4E90EBF01148650EE3"
+      ],
+      "expected_hex_sha256": [
+        "AE1849BC3EAAEF871AFC53393BE18A25DC492C92C4FB3093DD059F2C5E82B84A",
+        "E789CCDE7E23989A9CB4FA2009C209D8CB751BAC94C20F16C60BCF6112270DBF"
+      ],
+      "expected_machine_ready_sha256": "5313A9A41DD847B1175C18CDC45D24A2ACF1A37011F1D981ED820A88E6A0A34B",
+      "expected_runner_sha256": "D776A36F93D04D33E08D0F290E870F64BD8C16D073365087D5DA124ECE810273",
+      "expected_supervisor_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "machine_ready_path": "C:/Users/Billy/Desktop/Denzic/Companion/.cache/comp-req-466-r7-runtime/.cache/validation/comp-req-472-visual-runtime/MACHINE_READY.json",
+      "observed_machine_ready_sha256": "BE86429393C95B939F1E5BD4FD06513BB9F9AF6FEE9CE938F84FC51E0867E698",
+      "resolved_commit": "b9a2c5aea409cdcd3a88afdc19373ef6f3dd4160",
+      "root": "C:/Users/Billy/Desktop/Denzic/Companion/.cache/comp-req-466-r7-runtime"
+    },
+    "upper_machine_ready": {
+      "expected_sha256": "EAD7000FEB32CD7915FEAD82A49D23FD66755412AEDFA53B4B7A264CABA3BB69",
+      "observed_sha256": "EAD7000FEB32CD7915FEAD82A49D23FD66755412AEDFA53B4B7A264CABA3BB69",
+      "path": "C:/Users/Billy/Desktop/Denzic/Companion/Companion-Firmware/docs/validation/companion-browser-visual-contract-comp-req-471/UPPER_MACHINE_READY.json"
+    }
+  },
+  "lower_machine_ready_contract": {
+    "artifact_descriptors": "artifacts.hex[]/elf[]/runner/supervisor require path+sha256",
+    "compatibility_counts": {
+      "events": 21,
+      "pairs": 59,
+      "semantic_noops": 10
+    },
+    "required_side_effect_keys": [
+      "browser",
+      "execute",
+      "flash",
+      "hardware",
+      "popup",
+      "production",
+      "programmer",
+      "prompt",
+      "push",
+      "serial",
+      "server",
+      "write"
+    ],
+    "required_source_paths": [
+      "app/companion_pendant/epaper/companion_visual_runtime_adapter.c",
+      "app/companion_pendant/epaper/companion_visual_runtime_adapter.h",
+      "app/companion_pendant/epaper/panel_target_stm32wb.c",
+      "app/companion_pendant/epaper/r7_runtime_bridge_stm32wb.c",
+      "app/companion_pendant/epaper/r7_runtime_bridge_stm32wb.h",
+      "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/main.c",
+      "cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile",
+      "tools/comp_req_472_visual_runtime_fixture.c",
+      "tools/run_comp_req_472_visual_runtime_fixture.ps1",
+      "tools/verify_comp_req_472_visual_runtime.py"
+    ],
+    "schema": "companion.lower-visual-runtime-machine-ready.v1",
+    "status": "LOWER_MACHINE_READY",
+    "timing_limits_ms": {
+      "busy": 600,
+      "cadence": 480,
+      "transaction": 480
+    }
+  },
+  "observations": {
+    "auditor.hash_exact": "8061D244086889BD2CF3EF62EB271F7347E80FABAE9EA2E62E5AD4976D4A4906",
+    "compatibility.artifact_parsed": "BFFECE9E7D232EF5173CF06D7110BDF75E92049B234366C9861A3A2D18EA680B",
+    "compatibility.full_21_59_10": {
+      "c173_no_go_preserved_when_selected": null,
+      "c692_expected_no_go_signature": false,
+      "comparison_complete": false,
+      "events": {
+        "mapping_ambiguous": 1,
+        "mapping_mapped": 8,
+        "mapping_missing": 12,
+        "realizable": 0,
+        "total": 21
+      },
+      "pairs": {
+        "pixel_noop": 10,
+        "realizable": 0,
+        "semantic_noop_realizable": 0,
+        "total": 59
+      },
+      "polarity_bridge_realizable": false,
+      "qualification_valid": true,
+      "states": {
+        "identity_mapped": 17,
+        "total": 17
+      },
+      "terminal_retention": false
+    },
+    "compatibility.side_effects_zero": {},
+    "compatibility.subprocess_consistent": {
+      "invoked": true,
+      "return_code": 1,
+      "stderr": "",
+      "stdout": "{\"artifact_sha256\": \"BFFECE9E7D232EF5173CF06D7110BDF75E92049B234366C9861A3A2D18EA680B\", \"c692_expected_no_go_signature\": false, \"events_realizable\": \"0/21\", \"mode\": \"comparison\", \"noops_realizable\": \"0/10\", \"pairs_realizable\": \"0/59\", \"polarity_bridge\": false, \"qualification_valid\": true, \"status\": \"NO_GO_UPPER_LOWER_POLARITY_EVENT_TERMINAL_GAPS\", \"terminal_retention\": false}"
+    },
+    "input.oracle_path_exact": "C:/Users/Billy/Desktop/Denzic/Companion/Companion-Firmware/docs/art/exports/companion-browser-visual-contract-comp-req-471/expanded-window-oracle.json",
+    "input.upper_path_exact": "C:/Users/Billy/Desktop/Denzic/Companion/Companion-Firmware/docs/validation/companion-browser-visual-contract-comp-req-471/UPPER_MACHINE_READY.json",
+    "lower.commit_exact": "b9a2c5aea409cdcd3a88afdc19373ef6f3dd4160",
+    "lower.commit_object_recomputed": "b9a2c5aea409cdcd3a88afdc19373ef6f3dd4160",
+    "lower.root_is_exact_toplevel": "C:/Users/Billy/Desktop/Denzic/Companion/.cache/comp-req-466-r7-runtime",
+    "lower_mr.all_sources_recomputed": [
+      {
+        "blob_match": true,
+        "commit_blob_sha256": "68C35B2AF0A2E2E996C19AE73DF96AA006D905FC0FCC08FE3B4A0EE86D71F3FC",
+        "declared_matches_physical": true,
+        "declared_sha256": "F2F1F003E13854B1B65769F98CFE9A48C02B891CAB5A7C3AE1BB8D3380277ACD",
+        "git_blob_object": "c03905972993dfad78e3093583bfbf7716e8295b",
+        "path": "app/companion_pendant/epaper/companion_visual_runtime_adapter.c",
+        "physical_sha256": "F2F1F003E13854B1B65769F98CFE9A48C02B891CAB5A7C3AE1BB8D3380277ACD",
+        "recomputed_git_blob_object": "c03905972993dfad78e3093583bfbf7716e8295b",
+        "safe_commit_path": true,
+        "worktree_clean_against_commit": false
+      },
+      {
+        "blob_match": true,
+        "commit_blob_sha256": "97A37ED60B6896EA11301596026EB6AD7C1B9C8873AB2667F741E63F560606C7",
+        "declared_matches_physical": true,
+        "declared_sha256": "D99C5A929FB6F4BBBC8C2390884BAB9441BF10F17D29B3E925948EE7AF106384",
+        "git_blob_object": "f117a66bceee904e6abf2fe253b535ee73f0511a",
+        "path": "app/companion_pendant/epaper/companion_visual_runtime_adapter.h",
+        "physical_sha256": "D99C5A929FB6F4BBBC8C2390884BAB9441BF10F17D29B3E925948EE7AF106384",
+        "recomputed_git_blob_object": "f117a66bceee904e6abf2fe253b535ee73f0511a",
+        "safe_commit_path": true,
+        "worktree_clean_against_commit": false
+      },
+      {
+        "blob_match": true,
+        "commit_blob_sha256": "D6018EFF305AC4E9E84D08F8C47A486E02FD7275B3E44A6E84D7B6BC06184B6E",
+        "declared_matches_physical": true,
+        "declared_sha256": "88EF359F5AB1B349B6CA17CACBA7F3366F93B31B96446D31FCD5DDE0B71FC187",
+        "git_blob_object": "bbc2a181e81dc57d646c365da2c8e6e3d9751a03",
+        "path": "app/companion_pendant/epaper/panel_target_stm32wb.c",
+        "physical_sha256": "88EF359F5AB1B349B6CA17CACBA7F3366F93B31B96446D31FCD5DDE0B71FC187",
+        "recomputed_git_blob_object": "bbc2a181e81dc57d646c365da2c8e6e3d9751a03",
+        "safe_commit_path": true,
+        "worktree_clean_against_commit": true
+      },
+      {
+        "blob_match": true,
+        "commit_blob_sha256": "C0749C856D1CC955E6DCA8BF1845EE6F0349E7CDCE5E4407D694D9FCA7D150B8",
+        "declared_matches_physical": true,
+        "declared_sha256": "0CEB2B7C2F611C17E823A0F4F7579CD923F18E8433924B9560345592203499F1",
+        "git_blob_object": "bd38c4885edebe82fdc9905f77feec0031b62f12",
+        "path": "app/companion_pendant/epaper/r7_runtime_bridge_stm32wb.c",
+        "physical_sha256": "0CEB2B7C2F611C17E823A0F4F7579CD923F18E8433924B9560345592203499F1",
+        "recomputed_git_blob_object": "bd38c4885edebe82fdc9905f77feec0031b62f12",
+        "safe_commit_path": true,
+        "worktree_clean_against_commit": false
+      },
+      {
+        "blob_match": true,
+        "commit_blob_sha256": "473CE2138533BB36CFFD80844ABF387C82EB3EC16D0B196819A2A39005542FFC",
+        "declared_matches_physical": true,
+        "declared_sha256": "0B7AB5E433E9632B46F19CC38D8F3AFE690E0F2100DCE54523189DCFFCB350C7",
+        "git_blob_object": "4dc1f2dc2833b38d070b004ba19de9f656c2ac56",
+        "path": "app/companion_pendant/epaper/r7_runtime_bridge_stm32wb.h",
+        "physical_sha256": "0B7AB5E433E9632B46F19CC38D8F3AFE690E0F2100DCE54523189DCFFCB350C7",
+        "recomputed_git_blob_object": "4dc1f2dc2833b38d070b004ba19de9f656c2ac56",
+        "safe_commit_path": true,
+        "worktree_clean_against_commit": false
+      },
+      {
+        "blob_match": true,
+        "commit_blob_sha256": "138C347D91EECDA2919901BAA10D1DDD16D32E903F7FFDAE3ED9462183073A5C",
+        "declared_matches_physical": true,
+        "declared_sha256": "B297D0C227DA89A68F0DFA72A9A4506A252F5906AAFD7F73FDF76D6FA0A4A835",
+        "git_blob_object": "16d0d531d6556940e239811bcca38b4b95ea2aad",
+        "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/main.c",
+        "physical_sha256": "B297D0C227DA89A68F0DFA72A9A4506A252F5906AAFD7F73FDF76D6FA0A4A835",
+        "recomputed_git_blob_object": "16d0d531d6556940e239811bcca38b4b95ea2aad",
+        "safe_commit_path": true,
+        "worktree_clean_against_commit": false
+      },
+      {
+        "blob_match": true,
+        "commit_blob_sha256": "D2A31452CD14F1B41310A50B262F297E2BD7FC10E32DA25704020952FF457D89",
+        "declared_matches_physical": true,
+        "declared_sha256": "FDFE319C4378FDC2213CFE88E01D481B0EB4D7343B037D4A180F38A4BFE7EB91",
+        "git_blob_object": "eaea0ead0e7a7d35e13d1b325a2d10f4bd59b849",
+        "path": "cubeide/Companion_Nucleo_WB55RG_Bringup/Makefile",
+        "physical_sha256": "FDFE319C4378FDC2213CFE88E01D481B0EB4D7343B037D4A180F38A4BFE7EB91",
+        "recomputed_git_blob_object": "eaea0ead0e7a7d35e13d1b325a2d10f4bd59b849",
+        "safe_commit_path": true,
+        "worktree_clean_against_commit": true
+      },
+      {
+        "blob_match": true,
+        "commit_blob_sha256": "0095837123DD5BD2A6FA37D9AF644FB9691BC2306A568365D4ABA84E79CE45D5",
+        "declared_matches_physical": true,
+        "declared_sha256": "C12F04205236590116B7113FA85258AB782E683142F9C65254CFB40B45A18F5F",
+        "git_blob_object": "cee93c237523ddddea1e840c3b89d5d847ad41b6",
+        "path": "tools/build_nucleo_bringup.ps1",
+        "physical_sha256": "C12F04205236590116B7113FA85258AB782E683142F9C65254CFB40B45A18F5F",
+        "recomputed_git_blob_object": "cee93c237523ddddea1e840c3b89d5d847ad41b6",
+        "safe_commit_path": true,
+        "worktree_clean_against_commit": true
+      },
+      {
+        "blob_match": true,
+        "commit_blob_sha256": "8647F4BACBC59BE07982366DFCC9AA0C2324F9D3DBCBD08546FCEC36647B1651",
+        "declared_matches_physical": true,
+        "declared_sha256": "D3C14F9BBF2A47898F894193265D497839CD04EAD9BB94821C8B4E660542D5C5",
+        "git_blob_object": "405aca2cfd0a5cf2f7e4cc2887e28c8a8b976839",
+        "path": "tools/comp_req_472_visual_runtime_fixture.c",
+        "physical_sha256": "D3C14F9BBF2A47898F894193265D497839CD04EAD9BB94821C8B4E660542D5C5",
+        "recomputed_git_blob_object": "405aca2cfd0a5cf2f7e4cc2887e28c8a8b976839",
+        "safe_commit_path": true,
+        "worktree_clean_against_commit": false
+      },
+      {
+        "blob_match": true,
+        "commit_blob_sha256": "D776A36F93D04D33E08D0F290E870F64BD8C16D073365087D5DA124ECE810273",
+        "declared_matches_physical": true,
+        "declared_sha256": "D776A36F93D04D33E08D0F290E870F64BD8C16D073365087D5DA124ECE810273",
+        "git_blob_object": "ae0197588a639ac4d60350561979a2b1a476db47",
+        "path": "tools/run_comp_req_472_visual_runtime_fixture.ps1",
+        "physical_sha256": "D776A36F93D04D33E08D0F290E870F64BD8C16D073365087D5DA124ECE810273",
+        "recomputed_git_blob_object": "ae0197588a639ac4d60350561979a2b1a476db47",
+        "safe_commit_path": true,
+        "worktree_clean_against_commit": true
+      },
+      {
+        "blob_match": true,
+        "commit_blob_sha256": "FEF5370814103B253B7D720C168A42780D480047107F109646CC63DC787D82AD",
+        "declared_matches_physical": true,
+        "declared_sha256": "CEE04639B2E0630188B7B05E92ECBD19CF0B52C8DE046D505591DE6083CD8C66",
+        "git_blob_object": "eb512b004267701b8bee3cb8c924be9ada55f1a6",
+        "path": "tools/verify_comp_req_472_visual_runtime.py",
+        "physical_sha256": "CEE04639B2E0630188B7B05E92ECBD19CF0B52C8DE046D505591DE6083CD8C66",
+        "recomputed_git_blob_object": "eb512b004267701b8bee3cb8c924be9ada55f1a6",
+        "safe_commit_path": true,
+        "worktree_clean_against_commit": false
+      }
+    ],
+    "lower_mr.commit_exact": "f14254b1e535f94a4fe0bb1223e26cfe66638ca8",
+    "lower_mr.compatibility_claims_complete": {},
+    "lower_mr.elf_files_rehashed": [],
+    "lower_mr.elf_hashes_explicit_match": {
+      "declared": [
+        "0D3B8A1E8A3771C8D14D4BF9B4919687739AA7AE059170C831C14F8CD5126F92",
+        "4FA58DB2752E056EF200ADC41EB1B85D78BCE307E22BBFA4AFB59F26EB5E92F8"
+      ],
+      "expected": [
+        "6DD5DF319CD227FABF6CE893F34F671F4FFEBA4EB69580B838B34573572C5206",
+        "FE03179E70E14619C729D9B67BE0DAF6FB99F5F14CE92F4E90EBF01148650EE3"
+      ]
+    },
+    "lower_mr.file_exists_and_bounded": {
+      "bytes": 14806,
+      "path": "C:/Users/Billy/Desktop/Denzic/Companion/.cache/comp-req-466-r7-runtime/.cache/validation/comp-req-472-visual-runtime/MACHINE_READY.json"
+    },
+    "lower_mr.hash_exact": "BE86429393C95B939F1E5BD4FD06513BB9F9AF6FEE9CE938F84FC51E0867E698",
+    "lower_mr.hex_files_rehashed": [],
+    "lower_mr.hex_hashes_explicit_match": {
+      "declared": [
+        "B6F0CED87EFBE8CE4111A3A0F8B8DCD725EC2BFE5184D63093106E5EEE970BE0",
+        "FC5FC15B6EF03717AD260EDA2CC6C0B87686724DD27DAA3B9C0FC6C5AB9D4A54"
+      ],
+      "expected": [
+        "AE1849BC3EAAEF871AFC53393BE18A25DC492C92C4FB3093DD059F2C5E82B84A",
+        "E789CCDE7E23989A9CB4FA2009C209D8CB751BAC94C20F16C60BCF6112270DBF"
+      ]
+    },
+    "lower_mr.protected_hashes_exact": {
+      "panel_driver": {
+        "commit_blob_sha256": "04FA982C3BCB12D98A8F73F2580E9E56BFBDB33DEF5345A5660C3543E1848018",
+        "declared_git_blob": "f856d7ce0b8915e5059620c3faa97aa06b06eb4e",
+        "declared_observed_git_blob": "f856d7ce0b8915e5059620c3faa97aa06b06eb4e",
+        "declared_physical_sha256": "F52A7E853BFE2E66680F08420941265CFF163FB579B2D3870128FC72C79E035F",
+        "expected_git_blob": "f856d7ce0b8915e5059620c3faa97aa06b06eb4e",
+        "observed_git_blob": "f856d7ce0b8915e5059620c3faa97aa06b06eb4e",
+        "pass": true,
+        "path": "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
+        "physical_sha256": "F52A7E853BFE2E66680F08420941265CFF163FB579B2D3870128FC72C79E035F",
+        "worktree_clean_against_commit": true
+      },
+      "r7_header": {
+        "commit_blob_sha256": "FF079D99296143156919D542D540441C02273F7F6BA9F1E8FC4EE405165AEC92",
+        "declared_git_blob": "2220da0c1113a5cdad7028aeae578d9fe26e936f",
+        "declared_observed_git_blob": "2220da0c1113a5cdad7028aeae578d9fe26e936f",
+        "declared_physical_sha256": "9571CF9F896B6C14451BAA7348CB717643B4963AE834B0A554E0C2ED2C7E8D35",
+        "expected_git_blob": "2220da0c1113a5cdad7028aeae578d9fe26e936f",
+        "observed_git_blob": "2220da0c1113a5cdad7028aeae578d9fe26e936f",
+        "pass": true,
+        "path": "app/companion_pendant/epaper/companion_r7_locked_v9_frames.h",
+        "physical_sha256": "9571CF9F896B6C14451BAA7348CB717643B4963AE834B0A554E0C2ED2C7E8D35",
+        "worktree_clean_against_commit": true
+      }
+    },
+    "lower_mr.required_sources_declared": {
+      "missing": []
+    },
+    "lower_mr.runner_rehashed": {
+      "declared_sha256": "D776A36F93D04D33E08D0F290E870F64BD8C16D073365087D5DA124ECE810273",
+      "expected_sha256": "D776A36F93D04D33E08D0F290E870F64BD8C16D073365087D5DA124ECE810273",
+      "inside_lower_root": true,
+      "observed_sha256": "D776A36F93D04D33E08D0F290E870F64BD8C16D073365087D5DA124ECE810273",
+      "path": "C:/Users/Billy/Desktop/Denzic/Companion/.cache/comp-req-466-r7-runtime/tools/run_comp_req_472_visual_runtime_fixture.ps1"
+    },
+    "lower_mr.side_effect_contract_complete": {
+      "missing": [
+        "browser",
+        "execute",
+        "flash",
+        "production",
+        "prompt",
+        "push",
+        "server"
+      ]
+    },
+    "lower_mr.side_effects_zero": {
+      "nonzero": {},
+      "observed": {
+        "hardware": 0,
+        "popup": 0,
+        "programmer": 0,
+        "serial": 0,
+        "write": 0
+      }
+    },
+    "lower_mr.sources_declared_and_bounded": {
+      "count": 11
+    },
+    "lower_mr.status_exact": "PASS",
+    "lower_mr.supervisor_rehashed": {
+      "descriptor": null,
+      "expected_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "observed_sha256": null
+    },
+    "lower_mr.timing_within_limits": {
+      "busy_ms": 2,
+      "cadence_ms": 12,
+      "transaction_ms": 2
+    },
+    "oracle.hash_exact": "20C270A332F7AD75FAED3C44C9AE3C1D789F7902ABA525C07B0B40F4266C5B2E",
+    "upper.hash_exact": "EAD7000FEB32CD7915FEAD82A49D23FD66755412AEDFA53B4B7A264CABA3BB69",
+    "upper.runtime_side_effects_zero": {
+      "browser": 0,
+      "execute": 0,
+      "hardware": 0,
+      "process": 0,
+      "product_write": 0,
+      "production": 0,
+      "prompt": 0,
+      "server": 0
+    }
+  },
+  "requirements": [
+    "COMP-REQ-479",
+    "COMP-REQ-480"
+  ],
+  "schema": "companion.joint-upper-lower-offline-gate.v1",
+  "scope": "upper_owned_read_only_joint_gate",
+  "side_effect_counters": {
+    "browser": 0,
+    "execute": 0,
+    "hardware": 0,
+    "lower_write": 0,
+    "platform_write": 0,
+    "popup": 0,
+    "production_write": 0,
+    "prompt": 0,
+    "push": 0,
+    "read_only_compatibility_subprocess": 1,
+    "server": 0,
+    "upper_evidence_write": 2
+  },
+  "status": "NO_GO"
+}

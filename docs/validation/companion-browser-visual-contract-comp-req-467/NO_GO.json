@@ -1,0 +1,118 @@
+{
+  "schema": "companion.comp-req-467-no-go-result.v1",
+  "requirement": "COMP-REQ-467/469",
+  "status": "NO_GO_BROWSER_SOURCE_MENU_RETURN_STALE",
+  "source": {
+    "page_sha256": "D68478DAB33D4B2F13E5A62B63A65F1A9B37593C3551D8B19444731EA6C22116",
+    "prior_20_of_20_sha256": "9A831B882E24D5C1726B674BA40D8187F5E726E00A234BA3FFDACD33AD215123"
+  },
+  "reason": "The accepted page leaves exclusive_menu visible after returnToExpression; desktop and mobile each render face_base, gaze_highlight, and exclusive_menu together.",
+  "fresh_capture": {
+    "passed": 46,
+    "total": 48,
+    "failed_checks": [
+      "desktop.menu_return",
+      "mobile.menu_return"
+    ],
+    "http_404": 0
+  },
+  "measured": {
+    "state_viewport_records": 34,
+    "stale_layer_count": 2,
+    "observed_layer_rect_clip_count": 22,
+    "source_black_pixels_outside_stage": 0,
+    "conflicting_surface_overlap_count": 2
+  },
+  "policy_derived": {
+    "clipping_violation_count": 2,
+    "no_global_edge_policy": true
+  },
+  "hold_feedback_binding": {
+    "deterministic_frame": "hold_feedback_50",
+    "real_pointer_regressions": [
+      {
+        "viewport": "desktop",
+        "pointer_type": "mouse",
+        "real_stationary_pointer_hold": true,
+        "accepted_hold_threshold_ms": 700,
+        "resulting_mode": "menu",
+        "menu_entries": 1,
+        "recording_entries": 0,
+        "route_exactly_once": true
+      },
+      {
+        "viewport": "mobile",
+        "pointer_type": "touch",
+        "real_stationary_pointer_hold": true,
+        "accepted_hold_threshold_ms": 700,
+        "resulting_mode": "menu",
+        "menu_entries": 1,
+        "recording_entries": 0,
+        "route_exactly_once": true
+      }
+    ]
+  },
+  "blockers": [
+    {
+      "viewport": "desktop",
+      "state": "menu_return_rest",
+      "stale": 1,
+      "clipping": 1,
+      "overlap": 1,
+      "visible_roles": [
+        "face_base",
+        "gaze_highlight",
+        "exclusive_menu"
+      ]
+    },
+    {
+      "viewport": "mobile",
+      "state": "menu_return_rest",
+      "stale": 1,
+      "clipping": 1,
+      "overlap": 1,
+      "visible_roles": [
+        "face_base",
+        "gaze_highlight",
+        "exclusive_menu"
+      ]
+    }
+  ],
+  "deterministic_rerun": {
+    "file_count": 35,
+    "mismatches": []
+  },
+  "pointer_result": {
+    "status": "PASS",
+    "sha256": "2010F8B7DDAA0A1733E203959A9125E60044685B0C88D298D17254C98FB7657E",
+    "viewports": [
+      "desktop",
+      "mobile"
+    ]
+  },
+  "firmware_visual_contract_emitted": false,
+  "evidence_checks": {
+    "accepted_page_identity": true,
+    "accepted_prior_20_of_20_identity": true,
+    "deterministic_capture_rerun_byte_equal": true,
+    "exact_two_menu_return_failures": true,
+    "measured_blocker_exact": true,
+    "measured_source_black_pixels_outside_zero": true,
+    "measured_stale_and_overlap_two": true,
+    "state_specific_edge_policy": true,
+    "policy_clipping_violations_two": true,
+    "real_hold_route_exactly_once": true,
+    "fresh_pointer_mouse_touch_pen_pass": true,
+    "http_404_zero": true,
+    "firmware_contract_not_emitted": true
+  },
+  "evidence_check_failures": [],
+  "boundaries": {
+    "accepted_page_modified": false,
+    "firmware_driver_hardware_platform_production_changes": 0,
+    "hardware_contact": 0,
+    "operator_prompt_count": 0,
+    "push_count": 0
+  },
+  "required_next_action": "A separately reviewed browser-source correction must hide #integrated-menu on menu return, then COMP-REQ-467 must be rerun from the newly accepted page identity."
+}

@@ -1,0 +1,32 @@
+{
+  "schema": "companion.lower-driver-c-asset-pack-handoff.v1",
+  "requirement": "COMP-REQ-467/471",
+  "status": "PASS",
+  "integration_authorized": false,
+  "default_off_macro": "COMPANION_VISUAL_ASSET_PACK_ENABLE",
+  "header": {
+    "file": "companion_visual_asset_pack.h",
+    "sha256": "2180FE281AFF31C8688BCB290740F898CF7E032C90D97FFE679F535689A814F9"
+  },
+  "source": {
+    "file": "companion_visual_asset_pack.c",
+    "sha256": "1EE7BD5DDB210A3C3F90ADB607BA317CF2F00127099B876C9DB5948C7A5D03A0"
+  },
+  "pack_manifest": {
+    "file": "c-asset-pack-manifest.json",
+    "sha256": "0F0FE7B91707F20CF942A0B994BD776B69D404A004D9985B98EC6838CA752DBA"
+  },
+  "state_count": 17,
+  "unique_frame_count": 13,
+  "transition_count": 21,
+  "frame_bytes": 5000,
+  "payload_bytes": 65000,
+  "payload_budget_bytes": 85000,
+  "consumer_notes": [
+    "define COMPANION_VISUAL_ASSET_PACK_ENABLE=1 only in a separately authorized lower-driver target",
+    "use companion_visual_state_t as the stable state identity",
+    "resolve pixels through companion_visual_frame_for_state; identical pixels may share storage",
+    "do not modify the generated payload, state map, transition masks, orientation, or geometry",
+    "this pack does not modify app build wiring and is not production or hardware authorization"
+  ]
+}

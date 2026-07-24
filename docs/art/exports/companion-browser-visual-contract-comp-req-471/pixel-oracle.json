@@ -1,0 +1,790 @@
+{
+  "schema": "companion.browser-to-1bpp-pixel-oracle.v1",
+  "requirement": "COMP-REQ-471",
+  "status": "PASS",
+  "capture_manifest_sha256": "1BEA10C8B988F72F48886012859F1D6C8801B15AFA18E89171235B7E33D2C815",
+  "threshold": "integer_BT601_luminance_below_128_is_black",
+  "frame_count": 17,
+  "hold_feedback_binding": {
+    "deterministic_frame": "hold_feedback_50",
+    "real_pointer_regressions": [
+      {
+        "viewport": "desktop",
+        "pointer_type": "mouse",
+        "real_stationary_pointer_hold": true,
+        "accepted_hold_threshold_ms": 700,
+        "resulting_mode": "menu",
+        "menu_entries": 1,
+        "recording_entries": 0,
+        "route_exactly_once": true
+      },
+      {
+        "viewport": "mobile",
+        "pointer_type": "touch",
+        "real_stationary_pointer_hold": true,
+        "accepted_hold_threshold_ms": 700,
+        "resulting_mode": "menu",
+        "menu_entries": 1,
+        "recording_entries": 0,
+        "route_exactly_once": true
+      }
+    ]
+  },
+  "total_desktop_to_raw_mismatch_bits": 0,
+  "total_mobile_to_raw_mismatch_bits": 0,
+  "total_desktop_mobile_mismatch_bits": 0,
+  "frames": [
+    {
+      "id": "centered_rest",
+      "browser_desktop_to_raw_mismatch_bits": 0,
+      "browser_mobile_to_raw_mismatch_bits": 0,
+      "desktop_mobile_mismatch_bits": 0,
+      "browser_black_pixels": 2679,
+      "raw_black_pixels": 2679,
+      "measured": {
+        "desktop_black_bounds_inclusive": [
+          34,
+          60,
+          166,
+          141
+        ],
+        "mobile_black_bounds_inclusive": [
+          34,
+          60,
+          166,
+          141
+        ],
+        "desktop_edge_touch_sides": [],
+        "mobile_edge_touch_sides": [],
+        "desktop_source_black_pixels_outside_stage": 0,
+        "mobile_source_black_pixels_outside_stage": 0,
+        "desktop_conflicting_surface_overlap_count": 0,
+        "mobile_conflicting_surface_overlap_count": 0
+      },
+      "policy_derived": {
+        "edge_contact_policy": {
+          "allowed_sides": [],
+          "reason": "face, gaze, hold, recording, and return ink must remain inside the 200x200 boundary"
+        },
+        "desktop_forbidden_edge_touch_sides": [],
+        "mobile_forbidden_edge_touch_sides": [],
+        "transparent_layer_rect_clip_allowed_only_when_black_pixels_outside_stage_is_zero": true,
+        "clipping_violation_count": 0,
+        "conflicting_surface_overlap_count": 0,
+        "verdict": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "gaze_left",
+      "browser_desktop_to_raw_mismatch_bits": 0,
+      "browser_mobile_to_raw_mismatch_bits": 0,
+      "desktop_mobile_mismatch_bits": 0,
+      "browser_black_pixels": 2561,
+      "raw_black_pixels": 2561,
+      "measured": {
+        "desktop_black_bounds_inclusive": [
+          34,
+          60,
+          166,
+          141
+        ],
+        "mobile_black_bounds_inclusive": [
+          34,
+          60,
+          166,
+          141
+        ],
+        "desktop_edge_touch_sides": [],
+        "mobile_edge_touch_sides": [],
+        "desktop_source_black_pixels_outside_stage": 0,
+        "mobile_source_black_pixels_outside_stage": 0,
+        "desktop_conflicting_surface_overlap_count": 0,
+        "mobile_conflicting_surface_overlap_count": 0
+      },
+      "policy_derived": {
+        "edge_contact_policy": {
+          "allowed_sides": [],
+          "reason": "face, gaze, hold, recording, and return ink must remain inside the 200x200 boundary"
+        },
+        "desktop_forbidden_edge_touch_sides": [],
+        "mobile_forbidden_edge_touch_sides": [],
+        "transparent_layer_rect_clip_allowed_only_when_black_pixels_outside_stage_is_zero": true,
+        "clipping_violation_count": 0,
+        "conflicting_surface_overlap_count": 0,
+        "verdict": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "gaze_up",
+      "browser_desktop_to_raw_mismatch_bits": 0,
+      "browser_mobile_to_raw_mismatch_bits": 0,
+      "desktop_mobile_mismatch_bits": 0,
+      "browser_black_pixels": 2584,
+      "raw_black_pixels": 2584,
+      "measured": {
+        "desktop_black_bounds_inclusive": [
+          34,
+          60,
+          166,
+          141
+        ],
+        "mobile_black_bounds_inclusive": [
+          34,
+          60,
+          166,
+          141
+        ],
+        "desktop_edge_touch_sides": [],
+        "mobile_edge_touch_sides": [],
+        "desktop_source_black_pixels_outside_stage": 0,
+        "mobile_source_black_pixels_outside_stage": 0,
+        "desktop_conflicting_surface_overlap_count": 0,
+        "mobile_conflicting_surface_overlap_count": 0
+      },
+      "policy_derived": {
+        "edge_contact_policy": {
+          "allowed_sides": [],
+          "reason": "face, gaze, hold, recording, and return ink must remain inside the 200x200 boundary"
+        },
+        "desktop_forbidden_edge_touch_sides": [],
+        "mobile_forbidden_edge_touch_sides": [],
+        "transparent_layer_rect_clip_allowed_only_when_black_pixels_outside_stage_is_zero": true,
+        "clipping_violation_count": 0,
+        "conflicting_surface_overlap_count": 0,
+        "verdict": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "gaze_right",
+      "browser_desktop_to_raw_mismatch_bits": 0,
+      "browser_mobile_to_raw_mismatch_bits": 0,
+      "desktop_mobile_mismatch_bits": 0,
+      "browser_black_pixels": 2546,
+      "raw_black_pixels": 2546,
+      "measured": {
+        "desktop_black_bounds_inclusive": [
+          34,
+          60,
+          166,
+          141
+        ],
+        "mobile_black_bounds_inclusive": [
+          34,
+          60,
+          166,
+          141
+        ],
+        "desktop_edge_touch_sides": [],
+        "mobile_edge_touch_sides": [],
+        "desktop_source_black_pixels_outside_stage": 0,
+        "mobile_source_black_pixels_outside_stage": 0,
+        "desktop_conflicting_surface_overlap_count": 0,
+        "mobile_conflicting_surface_overlap_count": 0
+      },
+      "policy_derived": {
+        "edge_contact_policy": {
+          "allowed_sides": [],
+          "reason": "face, gaze, hold, recording, and return ink must remain inside the 200x200 boundary"
+        },
+        "desktop_forbidden_edge_touch_sides": [],
+        "mobile_forbidden_edge_touch_sides": [],
+        "transparent_layer_rect_clip_allowed_only_when_black_pixels_outside_stage_is_zero": true,
+        "clipping_violation_count": 0,
+        "conflicting_surface_overlap_count": 0,
+        "verdict": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "gaze_down",
+      "browser_desktop_to_raw_mismatch_bits": 0,
+      "browser_mobile_to_raw_mismatch_bits": 0,
+      "desktop_mobile_mismatch_bits": 0,
+      "browser_black_pixels": 2559,
+      "raw_black_pixels": 2559,
+      "measured": {
+        "desktop_black_bounds_inclusive": [
+          34,
+          60,
+          166,
+          141
+        ],
+        "mobile_black_bounds_inclusive": [
+          34,
+          60,
+          166,
+          141
+        ],
+        "desktop_edge_touch_sides": [],
+        "mobile_edge_touch_sides": [],
+        "desktop_source_black_pixels_outside_stage": 0,
+        "mobile_source_black_pixels_outside_stage": 0,
+        "desktop_conflicting_surface_overlap_count": 0,
+        "mobile_conflicting_surface_overlap_count": 0
+      },
+      "policy_derived": {
+        "edge_contact_policy": {
+          "allowed_sides": [],
+          "reason": "face, gaze, hold, recording, and return ink must remain inside the 200x200 boundary"
+        },
+        "desktop_forbidden_edge_touch_sides": [],
+        "mobile_forbidden_edge_touch_sides": [],
+        "transparent_layer_rect_clip_allowed_only_when_black_pixels_outside_stage_is_zero": true,
+        "clipping_violation_count": 0,
+        "conflicting_surface_overlap_count": 0,
+        "verdict": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "gaze_center",
+      "browser_desktop_to_raw_mismatch_bits": 0,
+      "browser_mobile_to_raw_mismatch_bits": 0,
+      "desktop_mobile_mismatch_bits": 0,
+      "browser_black_pixels": 2679,
+      "raw_black_pixels": 2679,
+      "measured": {
+        "desktop_black_bounds_inclusive": [
+          34,
+          60,
+          166,
+          141
+        ],
+        "mobile_black_bounds_inclusive": [
+          34,
+          60,
+          166,
+          141
+        ],
+        "desktop_edge_touch_sides": [],
+        "mobile_edge_touch_sides": [],
+        "desktop_source_black_pixels_outside_stage": 0,
+        "mobile_source_black_pixels_outside_stage": 0,
+        "desktop_conflicting_surface_overlap_count": 0,
+        "mobile_conflicting_surface_overlap_count": 0
+      },
+      "policy_derived": {
+        "edge_contact_policy": {
+          "allowed_sides": [],
+          "reason": "face, gaze, hold, recording, and return ink must remain inside the 200x200 boundary"
+        },
+        "desktop_forbidden_edge_touch_sides": [],
+        "mobile_forbidden_edge_touch_sides": [],
+        "transparent_layer_rect_clip_allowed_only_when_black_pixels_outside_stage_is_zero": true,
+        "clipping_violation_count": 0,
+        "conflicting_surface_overlap_count": 0,
+        "verdict": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "single_tap_response",
+      "browser_desktop_to_raw_mismatch_bits": 0,
+      "browser_mobile_to_raw_mismatch_bits": 0,
+      "desktop_mobile_mismatch_bits": 0,
+      "browser_black_pixels": 2887,
+      "raw_black_pixels": 2887,
+      "measured": {
+        "desktop_black_bounds_inclusive": [
+          33,
+          26,
+          168,
+          170
+        ],
+        "mobile_black_bounds_inclusive": [
+          33,
+          26,
+          168,
+          170
+        ],
+        "desktop_edge_touch_sides": [],
+        "mobile_edge_touch_sides": [],
+        "desktop_source_black_pixels_outside_stage": 0,
+        "mobile_source_black_pixels_outside_stage": 0,
+        "desktop_conflicting_surface_overlap_count": 0,
+        "mobile_conflicting_surface_overlap_count": 0
+      },
+      "policy_derived": {
+        "edge_contact_policy": {
+          "allowed_sides": [],
+          "reason": "face, gaze, hold, recording, and return ink must remain inside the 200x200 boundary"
+        },
+        "desktop_forbidden_edge_touch_sides": [],
+        "mobile_forbidden_edge_touch_sides": [],
+        "transparent_layer_rect_clip_allowed_only_when_black_pixels_outside_stage_is_zero": true,
+        "clipping_violation_count": 0,
+        "conflicting_surface_overlap_count": 0,
+        "verdict": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "hold_feedback_50",
+      "browser_desktop_to_raw_mismatch_bits": 0,
+      "browser_mobile_to_raw_mismatch_bits": 0,
+      "desktop_mobile_mismatch_bits": 0,
+      "browser_black_pixels": 3011,
+      "raw_black_pixels": 3011,
+      "measured": {
+        "desktop_black_bounds_inclusive": [
+          34,
+          60,
+          166,
+          189
+        ],
+        "mobile_black_bounds_inclusive": [
+          34,
+          60,
+          166,
+          189
+        ],
+        "desktop_edge_touch_sides": [],
+        "mobile_edge_touch_sides": [],
+        "desktop_source_black_pixels_outside_stage": 0,
+        "mobile_source_black_pixels_outside_stage": 0,
+        "desktop_conflicting_surface_overlap_count": 0,
+        "mobile_conflicting_surface_overlap_count": 0
+      },
+      "policy_derived": {
+        "edge_contact_policy": {
+          "allowed_sides": [],
+          "reason": "face, gaze, hold, recording, and return ink must remain inside the 200x200 boundary"
+        },
+        "desktop_forbidden_edge_touch_sides": [],
+        "mobile_forbidden_edge_touch_sides": [],
+        "transparent_layer_rect_clip_allowed_only_when_black_pixels_outside_stage_is_zero": true,
+        "clipping_violation_count": 0,
+        "conflicting_surface_overlap_count": 0,
+        "verdict": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "menu_roots",
+      "browser_desktop_to_raw_mismatch_bits": 0,
+      "browser_mobile_to_raw_mismatch_bits": 0,
+      "desktop_mobile_mismatch_bits": 0,
+      "browser_black_pixels": 3144,
+      "raw_black_pixels": 3144,
+      "measured": {
+        "desktop_black_bounds_inclusive": [
+          0,
+          2,
+          199,
+          198
+        ],
+        "mobile_black_bounds_inclusive": [
+          0,
+          2,
+          199,
+          198
+        ],
+        "desktop_edge_touch_sides": [
+          "left",
+          "right"
+        ],
+        "mobile_edge_touch_sides": [
+          "left",
+          "right"
+        ],
+        "desktop_source_black_pixels_outside_stage": 0,
+        "mobile_source_black_pixels_outside_stage": 0,
+        "desktop_conflicting_surface_overlap_count": 0,
+        "mobile_conflicting_surface_overlap_count": 0
+      },
+      "policy_derived": {
+        "edge_contact_policy": {
+          "allowed_sides": [
+            "left",
+            "top",
+            "right",
+            "bottom"
+          ],
+          "reason": "accepted full-screen menu frame intentionally owns the complete 200x200 boundary"
+        },
+        "desktop_forbidden_edge_touch_sides": [],
+        "mobile_forbidden_edge_touch_sides": [],
+        "transparent_layer_rect_clip_allowed_only_when_black_pixels_outside_stage_is_zero": true,
+        "clipping_violation_count": 0,
+        "conflicting_surface_overlap_count": 0,
+        "verdict": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "menu_voice",
+      "browser_desktop_to_raw_mismatch_bits": 0,
+      "browser_mobile_to_raw_mismatch_bits": 0,
+      "desktop_mobile_mismatch_bits": 0,
+      "browser_black_pixels": 3280,
+      "raw_black_pixels": 3280,
+      "measured": {
+        "desktop_black_bounds_inclusive": [
+          0,
+          1,
+          199,
+          198
+        ],
+        "mobile_black_bounds_inclusive": [
+          0,
+          1,
+          199,
+          198
+        ],
+        "desktop_edge_touch_sides": [
+          "left",
+          "right"
+        ],
+        "mobile_edge_touch_sides": [
+          "left",
+          "right"
+        ],
+        "desktop_source_black_pixels_outside_stage": 0,
+        "mobile_source_black_pixels_outside_stage": 0,
+        "desktop_conflicting_surface_overlap_count": 0,
+        "mobile_conflicting_surface_overlap_count": 0
+      },
+      "policy_derived": {
+        "edge_contact_policy": {
+          "allowed_sides": [
+            "left",
+            "top",
+            "right",
+            "bottom"
+          ],
+          "reason": "accepted full-screen menu frame intentionally owns the complete 200x200 boundary"
+        },
+        "desktop_forbidden_edge_touch_sides": [],
+        "mobile_forbidden_edge_touch_sides": [],
+        "transparent_layer_rect_clip_allowed_only_when_black_pixels_outside_stage_is_zero": true,
+        "clipping_violation_count": 0,
+        "conflicting_surface_overlap_count": 0,
+        "verdict": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "menu_device",
+      "browser_desktop_to_raw_mismatch_bits": 0,
+      "browser_mobile_to_raw_mismatch_bits": 0,
+      "desktop_mobile_mismatch_bits": 0,
+      "browser_black_pixels": 4118,
+      "raw_black_pixels": 4118,
+      "measured": {
+        "desktop_black_bounds_inclusive": [
+          6,
+          0,
+          194,
+          199
+        ],
+        "mobile_black_bounds_inclusive": [
+          6,
+          0,
+          194,
+          199
+        ],
+        "desktop_edge_touch_sides": [
+          "top",
+          "bottom"
+        ],
+        "mobile_edge_touch_sides": [
+          "top",
+          "bottom"
+        ],
+        "desktop_source_black_pixels_outside_stage": 0,
+        "mobile_source_black_pixels_outside_stage": 0,
+        "desktop_conflicting_surface_overlap_count": 0,
+        "mobile_conflicting_surface_overlap_count": 0
+      },
+      "policy_derived": {
+        "edge_contact_policy": {
+          "allowed_sides": [
+            "left",
+            "top",
+            "right",
+            "bottom"
+          ],
+          "reason": "accepted full-screen menu frame intentionally owns the complete 200x200 boundary"
+        },
+        "desktop_forbidden_edge_touch_sides": [],
+        "mobile_forbidden_edge_touch_sides": [],
+        "transparent_layer_rect_clip_allowed_only_when_black_pixels_outside_stage_is_zero": true,
+        "clipping_violation_count": 0,
+        "conflicting_surface_overlap_count": 0,
+        "verdict": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "menu_connection",
+      "browser_desktop_to_raw_mismatch_bits": 0,
+      "browser_mobile_to_raw_mismatch_bits": 0,
+      "desktop_mobile_mismatch_bits": 0,
+      "browser_black_pixels": 3027,
+      "raw_black_pixels": 3027,
+      "measured": {
+        "desktop_black_bounds_inclusive": [
+          6,
+          0,
+          194,
+          199
+        ],
+        "mobile_black_bounds_inclusive": [
+          6,
+          0,
+          194,
+          199
+        ],
+        "desktop_edge_touch_sides": [
+          "top",
+          "bottom"
+        ],
+        "mobile_edge_touch_sides": [
+          "top",
+          "bottom"
+        ],
+        "desktop_source_black_pixels_outside_stage": 0,
+        "mobile_source_black_pixels_outside_stage": 0,
+        "desktop_conflicting_surface_overlap_count": 0,
+        "mobile_conflicting_surface_overlap_count": 0
+      },
+      "policy_derived": {
+        "edge_contact_policy": {
+          "allowed_sides": [
+            "left",
+            "top",
+            "right",
+            "bottom"
+          ],
+          "reason": "accepted full-screen menu frame intentionally owns the complete 200x200 boundary"
+        },
+        "desktop_forbidden_edge_touch_sides": [],
+        "mobile_forbidden_edge_touch_sides": [],
+        "transparent_layer_rect_clip_allowed_only_when_black_pixels_outside_stage_is_zero": true,
+        "clipping_violation_count": 0,
+        "conflicting_surface_overlap_count": 0,
+        "verdict": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "menu_preferences",
+      "browser_desktop_to_raw_mismatch_bits": 0,
+      "browser_mobile_to_raw_mismatch_bits": 0,
+      "desktop_mobile_mismatch_bits": 0,
+      "browser_black_pixels": 3871,
+      "raw_black_pixels": 3871,
+      "measured": {
+        "desktop_black_bounds_inclusive": [
+          5,
+          0,
+          193,
+          199
+        ],
+        "mobile_black_bounds_inclusive": [
+          5,
+          0,
+          193,
+          199
+        ],
+        "desktop_edge_touch_sides": [
+          "top",
+          "bottom"
+        ],
+        "mobile_edge_touch_sides": [
+          "top",
+          "bottom"
+        ],
+        "desktop_source_black_pixels_outside_stage": 0,
+        "mobile_source_black_pixels_outside_stage": 0,
+        "desktop_conflicting_surface_overlap_count": 0,
+        "mobile_conflicting_surface_overlap_count": 0
+      },
+      "policy_derived": {
+        "edge_contact_policy": {
+          "allowed_sides": [
+            "left",
+            "top",
+            "right",
+            "bottom"
+          ],
+          "reason": "accepted full-screen menu frame intentionally owns the complete 200x200 boundary"
+        },
+        "desktop_forbidden_edge_touch_sides": [],
+        "mobile_forbidden_edge_touch_sides": [],
+        "transparent_layer_rect_clip_allowed_only_when_black_pixels_outside_stage_is_zero": true,
+        "clipping_violation_count": 0,
+        "conflicting_surface_overlap_count": 0,
+        "verdict": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "menu_device_ui_assets",
+      "browser_desktop_to_raw_mismatch_bits": 0,
+      "browser_mobile_to_raw_mismatch_bits": 0,
+      "desktop_mobile_mismatch_bits": 0,
+      "browser_black_pixels": 2679,
+      "raw_black_pixels": 2679,
+      "measured": {
+        "desktop_black_bounds_inclusive": [
+          34,
+          60,
+          166,
+          141
+        ],
+        "mobile_black_bounds_inclusive": [
+          34,
+          60,
+          166,
+          141
+        ],
+        "desktop_edge_touch_sides": [],
+        "mobile_edge_touch_sides": [],
+        "desktop_source_black_pixels_outside_stage": 0,
+        "mobile_source_black_pixels_outside_stage": 0,
+        "desktop_conflicting_surface_overlap_count": 0,
+        "mobile_conflicting_surface_overlap_count": 0
+      },
+      "policy_derived": {
+        "edge_contact_policy": {
+          "allowed_sides": [],
+          "reason": "face, gaze, hold, recording, and return ink must remain inside the 200x200 boundary"
+        },
+        "desktop_forbidden_edge_touch_sides": [],
+        "mobile_forbidden_edge_touch_sides": [],
+        "transparent_layer_rect_clip_allowed_only_when_black_pixels_outside_stage_is_zero": true,
+        "clipping_violation_count": 0,
+        "conflicting_surface_overlap_count": 0,
+        "verdict": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "menu_return_rest",
+      "browser_desktop_to_raw_mismatch_bits": 0,
+      "browser_mobile_to_raw_mismatch_bits": 0,
+      "desktop_mobile_mismatch_bits": 0,
+      "browser_black_pixels": 2679,
+      "raw_black_pixels": 2679,
+      "measured": {
+        "desktop_black_bounds_inclusive": [
+          34,
+          60,
+          166,
+          141
+        ],
+        "mobile_black_bounds_inclusive": [
+          34,
+          60,
+          166,
+          141
+        ],
+        "desktop_edge_touch_sides": [],
+        "mobile_edge_touch_sides": [],
+        "desktop_source_black_pixels_outside_stage": 0,
+        "mobile_source_black_pixels_outside_stage": 0,
+        "desktop_conflicting_surface_overlap_count": 0,
+        "mobile_conflicting_surface_overlap_count": 0
+      },
+      "policy_derived": {
+        "edge_contact_policy": {
+          "allowed_sides": [],
+          "reason": "face, gaze, hold, recording, and return ink must remain inside the 200x200 boundary"
+        },
+        "desktop_forbidden_edge_touch_sides": [],
+        "mobile_forbidden_edge_touch_sides": [],
+        "transparent_layer_rect_clip_allowed_only_when_black_pixels_outside_stage_is_zero": true,
+        "clipping_violation_count": 0,
+        "conflicting_surface_overlap_count": 0,
+        "verdict": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "recording_entry",
+      "browser_desktop_to_raw_mismatch_bits": 0,
+      "browser_mobile_to_raw_mismatch_bits": 0,
+      "desktop_mobile_mismatch_bits": 0,
+      "browser_black_pixels": 1078,
+      "raw_black_pixels": 1078,
+      "measured": {
+        "desktop_black_bounds_inclusive": [
+          22,
+          60,
+          178,
+          141
+        ],
+        "mobile_black_bounds_inclusive": [
+          22,
+          60,
+          178,
+          141
+        ],
+        "desktop_edge_touch_sides": [],
+        "mobile_edge_touch_sides": [],
+        "desktop_source_black_pixels_outside_stage": 0,
+        "mobile_source_black_pixels_outside_stage": 0,
+        "desktop_conflicting_surface_overlap_count": 0,
+        "mobile_conflicting_surface_overlap_count": 0
+      },
+      "policy_derived": {
+        "edge_contact_policy": {
+          "allowed_sides": [],
+          "reason": "face, gaze, hold, recording, and return ink must remain inside the 200x200 boundary"
+        },
+        "desktop_forbidden_edge_touch_sides": [],
+        "mobile_forbidden_edge_touch_sides": [],
+        "transparent_layer_rect_clip_allowed_only_when_black_pixels_outside_stage_is_zero": true,
+        "clipping_violation_count": 0,
+        "conflicting_surface_overlap_count": 0,
+        "verdict": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "recording_return_rest",
+      "browser_desktop_to_raw_mismatch_bits": 0,
+      "browser_mobile_to_raw_mismatch_bits": 0,
+      "desktop_mobile_mismatch_bits": 0,
+      "browser_black_pixels": 2679,
+      "raw_black_pixels": 2679,
+      "measured": {
+        "desktop_black_bounds_inclusive": [
+          34,
+          60,
+          166,
+          141
+        ],
+        "mobile_black_bounds_inclusive": [
+          34,
+          60,
+          166,
+          141
+        ],
+        "desktop_edge_touch_sides": [],
+        "mobile_edge_touch_sides": [],
+        "desktop_source_black_pixels_outside_stage": 0,
+        "mobile_source_black_pixels_outside_stage": 0,
+        "desktop_conflicting_surface_overlap_count": 0,
+        "mobile_conflicting_surface_overlap_count": 0
+      },
+      "policy_derived": {
+        "edge_contact_policy": {
+          "allowed_sides": [],
+          "reason": "face, gaze, hold, recording, and return ink must remain inside the 200x200 boundary"
+        },
+        "desktop_forbidden_edge_touch_sides": [],
+        "mobile_forbidden_edge_touch_sides": [],
+        "transparent_layer_rect_clip_allowed_only_when_black_pixels_outside_stage_is_zero": true,
+        "clipping_violation_count": 0,
+        "conflicting_surface_overlap_count": 0,
+        "verdict": "PASS"
+      },
+      "status": "PASS"
+    }
+  ]
+}

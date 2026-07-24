@@ -1,0 +1,157 @@
+{
+  "boundaries": [
+    "This artifact is browser owner-review readiness, not owner PASS.",
+    "Only a future existing hash-bound canonical owner-review.json may carry owner selection.",
+    "No server, browser, popup, prompt, hardware, lower, Platform, production, or redraw action is authorized."
+  ],
+  "canonical_single_prompt": {
+    "aiw_subcommand": "operator-prompt",
+    "buttons": [
+      "\u901a\u8fc7",
+      "\u5931\u8d25"
+    ],
+    "command_executed": false,
+    "instance_count": 1,
+    "message": "\u8bf7\u5728\u5df2\u6253\u5f00\u7684\u603b\u4f53\u9875\u9762\u5b9e\u9645\u64cd\u4f5c\uff1a\n1. \u5355\u70b9\u5c4f\u5e55\uff0c\u786e\u8ba4\u8868\u60c5\u4e0e\u773c\u795e\u671d\u89e6\u70b9\u505a\u4e00\u6b21\u54cd\u5e94\u4e14\u4ecd\u5728\u8868\u60c5\u9875\u3002\n2. \u5411\u5de6\u3001\u53f3\u3001\u4e0a\u3001\u4e0b\u8fde\u7eed\u62d6\u52a8\u5e76\u56de\u4e2d\u5fc3\uff0c\u786e\u8ba4\u59cb\u7ec8\u53ea\u6709\u4e00\u5957\u8138\u3001\u773c\u775b\u3001\u773c\u73e0\u548c\u9ad8\u5149\uff0c\u6ca1\u6709\u65e7 gaze \u6b8b\u7559\u3002\n3. \u539f\u5730\u957f\u6309\u76f4\u5230\u8fdb\u5165\u83dc\u5355\uff0c\u4f9d\u6b21\u70b9\u51fb\u56db\u6839\u83dc\u5355\u3001Device > UI assets\uff0c\u518d\u8fd4\u56de\u8868\u60c5\u9875\u3002\n4. \u53cc\u51fb\u8fdb\u5165\u5f55\u97f3\u9884\u89c8\u5e76\u8fd4\u56de\uff0c\u518d\u6b21\u957f\u6309\u8fdb\u5165\u83dc\u5355\uff0c\u786e\u8ba4\u5404\u8def\u5f84\u53ef\u91cd\u590d\u3002\n5. \u5224\u65ad 200x200 \u5c4f\u5e55\u65b9\u5411\u4e0e\u5c45\u4e2d\u6b63\u786e\uff0c\u65e0\u53e0\u52a0\u3001\u65e0\u4e22\u773c\u73e0\u3001\u65e0 404\u3001\u65e0\u591a\u4f59\u8c03\u8bd5\u53c2\u6570\u3002",
+    "note_allowed": true,
+    "supervised_future_command": "pwsh -NoProfile -File .\\tools\\faraday_upper_art\\supervise_companion_browser_owner_review_comp_req_471.ps1 -Execute -OwnerStartAcknowledged",
+    "title": "Companion \u6d4f\u89c8\u5668\u603b\u4f53\u4f53\u9a8c\u9a8c\u6536"
+  },
+  "checks": {
+    "all_identities_match": true,
+    "canonical_single_chinese_prompt_contract": true,
+    "drifted_result_rejected": true,
+    "failure_selection_rejected": true,
+    "no_execute_or_runtime_side_effect": true,
+    "owner_pass_not_claimed": true,
+    "owner_pass_requires_existing_result": true,
+    "owner_result_absent": true,
+    "upper_is_exact_offline_machine_pass": true,
+    "visible_scope_is_fixed_five_checks": true
+  },
+  "default_off": true,
+  "fail_closed_probes": [
+    {
+      "accepted": false,
+      "id": "fabricated_pass_without_owner_result_file",
+      "pass": true,
+      "reason": "matching owner-review.json is required"
+    },
+    {
+      "accepted": false,
+      "id": "pass_with_drifted_upper_binding",
+      "pass": true,
+      "reason": "owner result identity binding mismatch"
+    },
+    {
+      "accepted": false,
+      "id": "canonical_failure_selection",
+      "pass": true,
+      "reason": "canonical owner selection is not pass"
+    }
+  ],
+  "failed": [],
+  "generator": {
+    "path": "tools/faraday_upper_art/generate_companion_owner_review_scope_comp_req_473.py",
+    "sha256": "1FBE89ABEF0C6F50B79FC4FA2ACF87FCB09003E995B1AED859F96DA627B9A2AB"
+  },
+  "generator_static_boundary": {
+    "evidence_write_call_count": 1,
+    "forbidden_calls_found": [],
+    "forbidden_imports_found": [],
+    "offline_source_only": true
+  },
+  "human_visible_checks": [
+    {
+      "action": "Open the overall browser surface and inspect the centered rest face.",
+      "id": "center_orientation_identity",
+      "pass_condition": "The 200x200 screen is centered and oriented like the real display; the accepted V9 identity, pupils, and white highlights are intact."
+    },
+    {
+      "action": "Single-tap, then drag left/right/up/down and back to center.",
+      "id": "tap_drag_replacement",
+      "pass_condition": "Tap gives one deterministic expression/gaze response; drag continuously replaces the current gaze with no stale face, pupil, or highlight layer."
+    },
+    {
+      "action": "Double-tap with mouse or touch.",
+      "id": "double_tap_recording",
+      "pass_condition": "Recording preview is entered exactly once without microphone permission and exposes the accepted return path."
+    },
+    {
+      "action": "Hold stationary through the ornament progress, then use the four root menu rows and Device > UI assets.",
+      "id": "hold_progress_menu",
+      "pass_condition": "Progress remains compact and continuous; the completed hold enters the menu exactly once with the accepted menu assets."
+    },
+    {
+      "action": "Return from both menu and recording to the expression face.",
+      "id": "return_exclusivity",
+      "pass_condition": "Each return restores one centered face and at most one gaze/highlight; inactive menu and recording surfaces are absent."
+    }
+  ],
+  "identities": {
+    "checkonly": {
+      "expected_sha256": "21FCE148BBD11C68074F98EE10E8F1A75A0DD4D86FAC4F65EE7CB03CFFABDCC7",
+      "match": true,
+      "observed_sha256": "21FCE148BBD11C68074F98EE10E8F1A75A0DD4D86FAC4F65EE7CB03CFFABDCC7",
+      "path": "docs/validation/companion-browser-visual-contract-comp-req-471/owner-review-checkonly.json"
+    },
+    "runner": {
+      "expected_sha256": "6739E7BDF6CEB8118CC8ED9E660D5FB193F110D36E5D84F3C152753D9A424C81",
+      "match": true,
+      "observed_sha256": "6739E7BDF6CEB8118CC8ED9E660D5FB193F110D36E5D84F3C152753D9A424C81",
+      "path": "tools/faraday_upper_art/run_companion_browser_owner_review_comp_req_471.ps1"
+    },
+    "supervisor": {
+      "expected_sha256": "E7E599F906886030B95B47A17B0ADA88F8648A232F2A45D0C86C901AD9096F87",
+      "match": true,
+      "observed_sha256": "E7E599F906886030B95B47A17B0ADA88F8648A232F2A45D0C86C901AD9096F87",
+      "path": "tools/faraday_upper_art/supervise_companion_browser_owner_review_comp_req_471.ps1"
+    },
+    "upper_machine_ready": {
+      "expected_sha256": "EAD7000FEB32CD7915FEAD82A49D23FD66755412AEDFA53B4B7A264CABA3BB69",
+      "match": true,
+      "observed_sha256": "EAD7000FEB32CD7915FEAD82A49D23FD66755412AEDFA53B4B7A264CABA3BB69",
+      "path": "docs/validation/companion-browser-visual-contract-comp-req-471/UPPER_MACHINE_READY.json"
+    }
+  },
+  "owner_acceptance_status": "NOT_RUN",
+  "owner_pass": false,
+  "owner_pass_gate": {
+    "actual_owner_pass_allowed": false,
+    "actual_reason": "matching owner-review.json is required",
+    "required_existing_runner_result_fields": {
+      "canonical_prompt_count": 1,
+      "hardware_count": 0,
+      "machine_result_sha256": "6A7EDAC4A9624842B154B717C090441E745AC6F65F8E73BC235E8E3C16D11EBD",
+      "page_sha256": "BAE21BCCC7BB5FAD4A0922D5E9C42FCB25EF58DD7B8102A7C72656F7B700CF5E",
+      "requirement": "COMP-REQ-471",
+      "schema": "companion.browser-owner-review.v1",
+      "status": "PASS_OWNER_BROWSER_EXPERIENCE_ACCEPTED"
+    },
+    "required_scope_identities": {
+      "runner_sha256": "6739E7BDF6CEB8118CC8ED9E660D5FB193F110D36E5D84F3C152753D9A424C81",
+      "supervisor_sha256": "E7E599F906886030B95B47A17B0ADA88F8648A232F2A45D0C86C901AD9096F87",
+      "upper_machine_ready_sha256": "EAD7000FEB32CD7915FEAD82A49D23FD66755412AEDFA53B4B7A264CABA3BB69"
+    },
+    "required_selection": "\u901a\u8fc7",
+    "result_exists": false,
+    "result_path": "docs/validation/companion-browser-visual-contract-comp-req-471/owner-review.json"
+  },
+  "requirement": "COMP-REQ-473",
+  "schema": "companion.browser-owner-review-scope.v1",
+  "side_effect_counters": {
+    "browser_start": 0,
+    "evidence_artifact_write": 1,
+    "execute": 0,
+    "hardware": 0,
+    "lower_write": 0,
+    "operator_prompt": 0,
+    "platform_write": 0,
+    "popup": 0,
+    "process": 0,
+    "production_write": 0,
+    "server_probe": 0,
+    "server_start": 0
+  },
+  "status": "READY_FOR_SINGLE_OWNER_REVIEW_NOT_OWNER_PASS"
+}
