@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import Any
 
 
-CANDIDATE_COMMIT = "129bbf55b258f76c37e4b61f4f513161c87384a9"
+CANDIDATE_COMMIT = "129bbf5ce9f50e893f51349721df05b4b32bb938"
 PAGE_PATH = (
     "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/"
     "candidate/wb55-browser-parity-attempt-01/index.html"
