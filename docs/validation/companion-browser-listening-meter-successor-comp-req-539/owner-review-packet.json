@@ -1,0 +1,118 @@
+{
+  "bindings": [
+    {
+      "git_blob": "beafabd53197c786b8abcf5c0fbd7f785ea8f1e8",
+      "id": "page",
+      "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html",
+      "sha256": "28E9971C068749F67811AD14BF7B81D93E42BE53526243B2B4DE43FA585E52F6"
+    },
+    {
+      "git_blob": "b62892810825e14c58e402096a69193c35f8b1ac",
+      "id": "runner",
+      "path": "tools/faraday_upper_art/run_companion_browser_listening_meter_owner_review_comp_req_539.ps1",
+      "sha256": "345CC5C98CF08074DBD55FC60289665D02A2C88886C990CEA95CDFE3B74547F5"
+    },
+    {
+      "git_blob": "7e6ad2e50918b7bac7393a6b7cb14e76ec37bea7",
+      "id": "source_gate",
+      "path": "tools/faraday_upper_art/verify_companion_browser_listening_meter_source_bound_comp_req_539.py",
+      "sha256": "228EC5CFBCD746D3C0499DB2C5498D28545F841171FB521FD3D23006850C80EA"
+    },
+    {
+      "git_blob": "e2a33b19884fdd64e3208fa3e59e2b9d5fa50898",
+      "id": "negative_gate",
+      "path": "tools/faraday_upper_art/test_companion_browser_listening_meter_source_bound_negatives_comp_req_539.py",
+      "sha256": "D7C95813F41AA4F2E2A8A14F2F75284CE8BBA23B8159AD8558B56F37B0B28E3A"
+    },
+    {
+      "git_blob": "95e892a8a8bacde41b44d8a2d17badbc122f7250",
+      "id": "packet_tool",
+      "path": "tools/faraday_upper_art/prepare_companion_browser_listening_meter_owner_packet_comp_req_539.py",
+      "sha256": "5C3B090CF5E2C459AFE2FFB470E75EC965807A572D743A7E99B08757FDC765D4"
+    },
+    {
+      "id": "machine",
+      "path": "docs/validation/companion-browser-listening-meter-successor-comp-req-539/MACHINE_READY.json",
+      "sha256": "0E4B6ADC21DEE9451CDABD80533C3ED5189FBA336FA9329FE248C3721C93F236"
+    },
+    {
+      "id": "negatives",
+      "path": "docs/validation/companion-browser-listening-meter-successor-comp-req-539/source-bound-negatives.json",
+      "sha256": "8524AB5B0832A4D629A7484AC0AE6855F8580E3FA90E5905AB6A1D38DF81C60F"
+    },
+    {
+      "id": "focused",
+      "path": "docs/validation/companion-browser-listening-meter-successor-comp-req-539/focused-oracle.json",
+      "sha256": "D8C6F9C5FFFC4F3B6E7B1B91A4FD06A11E9361D917D888DCB485F03E71AF684B"
+    },
+    {
+      "id": "replay",
+      "path": "docs/validation/companion-browser-listening-meter-successor-comp-req-539/replay-run/browser-replay-result.json",
+      "sha256": "F60D7996442C5093D3C03DFE534A863702CE76B34DE6CEA5419EC28F56FCBB97"
+    },
+    {
+      "id": "pixel",
+      "path": "docs/validation/companion-browser-listening-meter-successor-comp-req-539/replay-run/pixel-dom-route-artifact.json",
+      "sha256": "F98958C43E8339D3CEF6B8F235DB001FA6705179E00E7ACED35DA9389A599EF1"
+    },
+    {
+      "id": "screenshots",
+      "path": "docs/validation/companion-browser-listening-meter-successor-comp-req-539/replay-run/screenshot-manifest.json",
+      "sha256": "4E4E0A46BA5F1FF9E91974B6C55F4EA2B8AC34CFBC340EC5F58D95D4B58ED889"
+    },
+    {
+      "id": "parity",
+      "path": "docs/validation/companion-browser-listening-meter-successor-comp-req-539/parity-verifier.json",
+      "sha256": "B6ED76051E056516697E813C983452686A62116C4223A68B2FE6D9BC7AEA1388"
+    },
+    {
+      "id": "manifest",
+      "path": "docs/art/exports/companion-browser-listening-meter-comp-req-539/visual-frame-manifest.json",
+      "sha256": "F537175D8CA8D556A16A1A7A5FD67D9FB817621E5FBF2D35334EEF146E9A48A7"
+    },
+    {
+      "id": "frames",
+      "path": "docs/art/exports/companion-browser-listening-meter-comp-req-539/frames.bin",
+      "sha256": "61D36981E3C326AF3040242B242934281F67B860FBE300DF71C94EC659687882"
+    },
+    {
+      "id": "c_pack",
+      "path": "docs/art/exports/companion-browser-listening-meter-comp-req-539/companion_browser_listening_meter_pack.c",
+      "sha256": "B0DF346F79BBE8E8E84F34A09376101CD233802CA1BED734B62001F701A1191E"
+    },
+    {
+      "id": "h_pack",
+      "path": "docs/art/exports/companion-browser-listening-meter-comp-req-539/companion_browser_listening_meter_pack.h",
+      "sha256": "821624F2F5D527BD74244C0F01D02209037DB4A916D5F83EA7877B97C85E7D6F"
+    }
+  ],
+  "lifecycle": {
+    "default_off": true,
+    "execute_performed": false,
+    "hardware": 0,
+    "microphone_permission_request": 0,
+    "single_prompt": true
+  },
+  "owner_result": {
+    "must_not_exist_before_execute": true,
+    "path": "docs/validation/companion-browser-listening-meter-successor-comp-req-539/owner-review.json"
+  },
+  "prompt_contract": {
+    "buttons": [
+      "\u901a\u8fc7",
+      "\u5931\u8d25"
+    ],
+    "expected_text": "\u9009\u62e9\u901a\u8fc7\u8868\u793a COMP-REQ-539 browser-only successor \u6210\u4e3a\u4eba\u5de5\u56de\u5f52\u5408\u540c\uff1b\u9009\u62e9\u5931\u8d25\u4f1a\u4fdd\u7559\u673a\u5668\u8bc1\u636e\u5e76\u8fd4\u56de Faraday \u8fed\u4ee3\u3002\u5907\u6ce8\u5141\u8bb8\u7559\u7a7a\u3002",
+    "message": "\u8bf7\u5728\u603b\u4f53\u9875\u9762\u6309\u6b63\u5e38\u901f\u5ea6\u5b9e\u9645\u64cd\u4f5c\uff1a\n1. \u65e0\u64cd\u4f5c\u65f6\u89c2\u5bdf\u786e\u5b9a\u6027\u9ad8\u5149\u5c0f\u52a8\u4f5c\uff1a\u8fdb\u5165 eligible \u540e 960 ms \u5185\u51fa\u73b0\uff0c\u7ea6\u6bcf 480 ms \u79bb\u6563\u4e00\u6b65\u5e76\u7cbe\u786e\u56de\u5230\u57fa\u7ebf\uff1b\u6ca1\u6709\u5e73\u6ed1\u63d2\u503c\u6216\u968f\u673a\u95ea\u70c1\u3002\n2. \u6309\u4f4f\u8868\u60c5\u4e3b\u5c4f 3000 ms \u5e94\u76f4\u63a5\u8fdb\u5165\u83dc\u5355\uff1b\u6309\u4e0b\u3001\u77ed\u6309\u3001\u63d0\u524d\u677e\u5f00\u3001\u62d6\u52a8\u548c\u53d6\u6d88\u90fd\u4e0d\u5e94\u51fa\u73b0\u8fdb\u5ea6\u6761\u3001\u8fdb\u5ea6\u9970\u54c1\u6216\u6b8b\u7559\u50cf\u7d20\u3002\n3. \u4e25\u683c\u53cc\u51fb\u5f00\u542f\u5f55\u97f3\u9644\u4ef6\uff1a\u53ea\u589e\u52a0\u4e00\u4e2a\u5c0f\u5f55\u97f3\u70b9\u548c\u4e09\u6839\u7b49\u5bbd\u79bb\u6563\u7ad6\u5217\uff1b\u6bcf\u6b65\u5916\u5217\u5199\u5165\u65b0\u91cf\u5316\u80fd\u91cf\uff0c\u65e7\u6837\u672c\u9010\u5217\u5411\u8138\u65c1\u542c\u89c9\u70b9\u79fb\u52a8\u3002\u4e0d\u5f97\u51fa\u73b0\u5f27\u7ebf\u3001\u62ec\u53f7\u3001\u91cd\u590d\u56fe\u6807\u6216\u5e73\u6ed1\u4e2d\u95f4\u5e27\u3002\n4. \u5f55\u97f3\u5f00\u542f\u65f6\u7ee7\u7eed\u5355\u70b9\u548c\u62d6\u52a8\uff0c\u786e\u8ba4\u5e95\u5c42\u8868\u60c5\u3001\u773c\u795e\u3001\u7728\u773c\u4e0e idle \u6b63\u5e38\u6f14\u8fdb\u4e14\u9644\u4ef6\u53ea\u51fa\u73b0\u4e00\u4efd\uff1b\u518d\u6b21\u53cc\u51fb\u53ea\u79fb\u9664\u9644\u4ef6\uff0c\u4fdd\u7559\u5f53\u524d\u8868\u60c5\u4e0e\u773c\u795e\u3002\n5. \u68c0\u67e5\u56db\u6839\u83dc\u5355\u3001Device > UI assets\u3001\u8fd4\u56de\uff1b\u59cb\u7ec8\u5c45\u4e2d\u3001\u65b9\u5411\u6b63\u786e\u3001\u65e0\u65e7\u5c42\u3001\u88c1\u5207\u3001404\u3001\u91cd\u53e0\u3001\u8c03\u8bd5\u53c2\u6570\u6216\u9ea6\u514b\u98ce\u6743\u9650\u8bf7\u6c42\u3002",
+    "progress_text": "1/1 \u6d4f\u89c8\u5668\u603b\u4f53\u4f53\u9a8c",
+    "scope_text": "\u4ec5\u9a8c\u6536\u540c\u4e00 4173 \u603b\u4f53\u9875\u9762\u4e2d\u7684\u8868\u60c5\u3001\u83dc\u5355\u3001\u5f55\u97f3\u9644\u4ef6\u4e0e 200x200 \u58a8\u6c34\u5c4f\u9884\u89c8\uff1bbrowser-only\u3002",
+    "title": "Companion \u6d4f\u89c8\u5668\u603b\u4f53\u4f53\u9a8c\u9a8c\u6536"
+  },
+  "requirements": [
+    "COMP-REQ-539"
+  ],
+  "schema": "companion.comp-req-539-owner-review-packet.v1",
+  "source_commit": "72be0f4ac2136ebd8dbc380269445911315530b0",
+  "status": "READY_DEFAULT_OFF",
+  "url": "http://127.0.0.1:4173/docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html"
+}

@@ -1,0 +1,253 @@
+{
+  "checks": {
+    "all_bound_paths_committed": true,
+    "committed_480ms_no_intermediate": true,
+    "focused_all_checks_true": true,
+    "hold_3000_direct_menu_once": true,
+    "hold_progress_absent_all_paths": true,
+    "idle_real_clock_60x2_deterministic": true,
+    "idle_returns_to_baseline_and_repeats": true,
+    "idle_scheduler_live_and_bounded": true,
+    "manifest_82_states_59_unique": true,
+    "meter_shift_inward_outer_insert": true,
+    "meter_three_equal_discrete_columns": true,
+    "no_arc_or_legacy_renderer": true,
+    "one_bit_identity_orientation": true,
+    "parity_independently_passes": true,
+    "pixel_dom_route_pass": true,
+    "recording_accessory_orthogonal_exit_only": true,
+    "replay_6x7_42_pass": true,
+    "replay_zero_mic_404_and_side_effects": true,
+    "screenshots_12_exact": true,
+    "source_commit_exact_40_hex": true,
+    "source_commit_exists": true,
+    "source_commit_is_head_ancestor": true,
+    "worktree_content_matches_git_blobs": true
+  },
+  "failed_checks": [],
+  "identities": [
+    {
+      "canonical_lf": true,
+      "git_blob": "beafabd53197c786b8abcf5c0fbd7f785ea8f1e8",
+      "id": "page",
+      "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html",
+      "sha256": "28E9971C068749F67811AD14BF7B81D93E42BE53526243B2B4DE43FA585E52F6"
+    },
+    {
+      "canonical_lf": true,
+      "git_blob": "9f51e01852d6a1fa592f345eaaf78a558af47d9f",
+      "id": "focused_tool",
+      "path": "tools/faraday_upper_art/verify_companion_browser_listening_meter_comp_req_539.mjs",
+      "sha256": "0FA0FEFD612C20710F1A963CE3CC4F15027AB474BF9BDECCF5C6AD3664E500AE"
+    },
+    {
+      "canonical_lf": true,
+      "git_blob": "cb44377eae3955148e9b559748626b156865bdec",
+      "id": "replay_tool",
+      "path": "tools/faraday_upper_art/replay_companion_browser_listening_meter_comp_req_539.mjs",
+      "sha256": "FAE04F583870933146E657466A771258B11215852BD60AFED2861F4A7676F948"
+    },
+    {
+      "canonical_lf": true,
+      "git_blob": "916c3d18d7dc2bac5e352d29920e1b3172b0376a",
+      "id": "generator",
+      "path": "tools/faraday_upper_art/generate_companion_browser_listening_meter_parity_comp_req_539.mjs",
+      "sha256": "C92FAD86F9038BECB35C56DC008C345A17124506FE36797B6F05D5E31B5F9F28"
+    },
+    {
+      "canonical_lf": true,
+      "git_blob": "06d9386fb9d0eb75ab16f3e23f69f7333b282037",
+      "id": "parity_tool",
+      "path": "tools/faraday_upper_art/verify_companion_browser_listening_meter_parity_comp_req_539.py",
+      "sha256": "0A53FB0BBB52AD4D1EE2689A8B9A7DF7A9BF1019A76E26786EA3502E24F8122D"
+    },
+    {
+      "canonical_lf": true,
+      "git_blob": "7e6ad2e50918b7bac7393a6b7cb14e76ec37bea7",
+      "id": "source_gate",
+      "path": "tools/faraday_upper_art/verify_companion_browser_listening_meter_source_bound_comp_req_539.py",
+      "sha256": "228EC5CFBCD746D3C0499DB2C5498D28545F841171FB521FD3D23006850C80EA"
+    },
+    {
+      "canonical_lf": true,
+      "git_blob": "e2a33b19884fdd64e3208fa3e59e2b9d5fa50898",
+      "id": "negative_gate",
+      "path": "tools/faraday_upper_art/test_companion_browser_listening_meter_source_bound_negatives_comp_req_539.py",
+      "sha256": "D7C95813F41AA4F2E2A8A14F2F75284CE8BBA23B8159AD8558B56F37B0B28E3A"
+    },
+    {
+      "canonical_lf": true,
+      "git_blob": "95e892a8a8bacde41b44d8a2d17badbc122f7250",
+      "id": "packet_tool",
+      "path": "tools/faraday_upper_art/prepare_companion_browser_listening_meter_owner_packet_comp_req_539.py",
+      "sha256": "5C3B090CF5E2C459AFE2FFB470E75EC965807A572D743A7E99B08757FDC765D4"
+    },
+    {
+      "canonical_lf": true,
+      "git_blob": "b62892810825e14c58e402096a69193c35f8b1ac",
+      "id": "owner_runner",
+      "path": "tools/faraday_upper_art/run_companion_browser_listening_meter_owner_review_comp_req_539.ps1",
+      "sha256": "345CC5C98CF08074DBD55FC60289665D02A2C88886C990CEA95CDFE3B74547F5"
+    },
+    {
+      "canonical_lf": true,
+      "git_blob": "0ded7ced969633776caa53c3a2c3d72e640f7f16",
+      "id": "focused",
+      "path": "docs/validation/companion-browser-listening-meter-successor-comp-req-539/focused-oracle.json",
+      "sha256": "D8C6F9C5FFFC4F3B6E7B1B91A4FD06A11E9361D917D888DCB485F03E71AF684B"
+    },
+    {
+      "canonical_lf": true,
+      "git_blob": "ce397e168f1db5b7703f72fc5fe38056f75e12fa",
+      "id": "replay",
+      "path": "docs/validation/companion-browser-listening-meter-successor-comp-req-539/replay-run/browser-replay-result.json",
+      "sha256": "F60D7996442C5093D3C03DFE534A863702CE76B34DE6CEA5419EC28F56FCBB97"
+    },
+    {
+      "canonical_lf": true,
+      "git_blob": "2baf3b742ce0ee4d75d6f083688d3b0925a45010",
+      "id": "pixel",
+      "path": "docs/validation/companion-browser-listening-meter-successor-comp-req-539/replay-run/pixel-dom-route-artifact.json",
+      "sha256": "F98958C43E8339D3CEF6B8F235DB001FA6705179E00E7ACED35DA9389A599EF1"
+    },
+    {
+      "canonical_lf": true,
+      "git_blob": "0e89e86d8ba2358e6c421518be7e9f2e9b59af8e",
+      "id": "screenshots",
+      "path": "docs/validation/companion-browser-listening-meter-successor-comp-req-539/replay-run/screenshot-manifest.json",
+      "sha256": "4E4E0A46BA5F1FF9E91974B6C55F4EA2B8AC34CFBC340EC5F58D95D4B58ED889"
+    },
+    {
+      "canonical_lf": true,
+      "git_blob": "3a39e2eab4dcf910a098553b28b4c9c06faf457f",
+      "id": "parity",
+      "path": "docs/validation/companion-browser-listening-meter-successor-comp-req-539/parity-verifier.json",
+      "sha256": "B6ED76051E056516697E813C983452686A62116C4223A68B2FE6D9BC7AEA1388"
+    },
+    {
+      "canonical_lf": true,
+      "git_blob": "431c12f55d09cbef39012a0709a296ddf27e84f9",
+      "id": "manifest",
+      "path": "docs/art/exports/companion-browser-listening-meter-comp-req-539/visual-frame-manifest.json",
+      "sha256": "F537175D8CA8D556A16A1A7A5FD67D9FB817621E5FBF2D35334EEF146E9A48A7"
+    },
+    {
+      "canonical_lf": false,
+      "git_blob": "b5c531bed811b520768ed7847bb27df98b591f43",
+      "id": "frames",
+      "path": "docs/art/exports/companion-browser-listening-meter-comp-req-539/frames.bin",
+      "sha256": "61D36981E3C326AF3040242B242934281F67B860FBE300DF71C94EC659687882"
+    },
+    {
+      "canonical_lf": true,
+      "git_blob": "1188a221b6e903123ff577898fc9480f8f589303",
+      "id": "c_pack",
+      "path": "docs/art/exports/companion-browser-listening-meter-comp-req-539/companion_browser_listening_meter_pack.c",
+      "sha256": "B0DF346F79BBE8E8E84F34A09376101CD233802CA1BED734B62001F701A1191E"
+    },
+    {
+      "canonical_lf": true,
+      "git_blob": "56476fd35eb288bcb6b423b145fe6383d4bd72d0",
+      "id": "h_pack",
+      "path": "docs/art/exports/companion-browser-listening-meter-comp-req-539/companion_browser_listening_meter_pack.h",
+      "sha256": "821624F2F5D527BD74244C0F01D02209037DB4A916D5F83EA7877B97C85E7D6F"
+    },
+    {
+      "canonical_lf": false,
+      "git_blob": "c840a4b0a92059fd19d7f014fa49d342409fe75c",
+      "id": "screenshot_00",
+      "path": "docs/validation/companion-browser-listening-meter-successor-comp-req-539/replay-run/screenshots/desktop-mouse-recording.png",
+      "sha256": "7031E9B17E4E9BEADFD96E78159EC087757CAEB248A508B9B404982A2BA8BDA8"
+    },
+    {
+      "canonical_lf": false,
+      "git_blob": "34ebb9ca609f82e98b363116912a3c187087c5f5",
+      "id": "screenshot_01",
+      "path": "docs/validation/companion-browser-listening-meter-successor-comp-req-539/replay-run/screenshots/desktop-mouse-exit.png",
+      "sha256": "1002EF109013FF304D55ABA5E39BFB4DEDAEC1CFAC9BA883D73CF5797A724802"
+    },
+    {
+      "canonical_lf": false,
+      "git_blob": "c840a4b0a92059fd19d7f014fa49d342409fe75c",
+      "id": "screenshot_02",
+      "path": "docs/validation/companion-browser-listening-meter-successor-comp-req-539/replay-run/screenshots/desktop-touch-recording.png",
+      "sha256": "7031E9B17E4E9BEADFD96E78159EC087757CAEB248A508B9B404982A2BA8BDA8"
+    },
+    {
+      "canonical_lf": false,
+      "git_blob": "34ebb9ca609f82e98b363116912a3c187087c5f5",
+      "id": "screenshot_03",
+      "path": "docs/validation/companion-browser-listening-meter-successor-comp-req-539/replay-run/screenshots/desktop-touch-exit.png",
+      "sha256": "1002EF109013FF304D55ABA5E39BFB4DEDAEC1CFAC9BA883D73CF5797A724802"
+    },
+    {
+      "canonical_lf": false,
+      "git_blob": "c840a4b0a92059fd19d7f014fa49d342409fe75c",
+      "id": "screenshot_04",
+      "path": "docs/validation/companion-browser-listening-meter-successor-comp-req-539/replay-run/screenshots/desktop-pen-recording.png",
+      "sha256": "7031E9B17E4E9BEADFD96E78159EC087757CAEB248A508B9B404982A2BA8BDA8"
+    },
+    {
+      "canonical_lf": false,
+      "git_blob": "34ebb9ca609f82e98b363116912a3c187087c5f5",
+      "id": "screenshot_05",
+      "path": "docs/validation/companion-browser-listening-meter-successor-comp-req-539/replay-run/screenshots/desktop-pen-exit.png",
+      "sha256": "1002EF109013FF304D55ABA5E39BFB4DEDAEC1CFAC9BA883D73CF5797A724802"
+    },
+    {
+      "canonical_lf": false,
+      "git_blob": "b419078e2315e1cfb6925ee6866557d774af8074",
+      "id": "screenshot_06",
+      "path": "docs/validation/companion-browser-listening-meter-successor-comp-req-539/replay-run/screenshots/mobile-mouse-recording.png",
+      "sha256": "F7CC42A6DE3AA9D67066225E1E8C31D8ACFA2754C5EB570A9F151351CD5C3512"
+    },
+    {
+      "canonical_lf": false,
+      "git_blob": "85ff47d5ee2986007db87b46566cb5600b8c75c9",
+      "id": "screenshot_07",
+      "path": "docs/validation/companion-browser-listening-meter-successor-comp-req-539/replay-run/screenshots/mobile-mouse-exit.png",
+      "sha256": "A4A645068F37BD10CA3D2B2C3F963871C0908634FF0B8FF595C55F18A6D52048"
+    },
+    {
+      "canonical_lf": false,
+      "git_blob": "b419078e2315e1cfb6925ee6866557d774af8074",
+      "id": "screenshot_08",
+      "path": "docs/validation/companion-browser-listening-meter-successor-comp-req-539/replay-run/screenshots/mobile-touch-recording.png",
+      "sha256": "F7CC42A6DE3AA9D67066225E1E8C31D8ACFA2754C5EB570A9F151351CD5C3512"
+    },
+    {
+      "canonical_lf": false,
+      "git_blob": "85ff47d5ee2986007db87b46566cb5600b8c75c9",
+      "id": "screenshot_09",
+      "path": "docs/validation/companion-browser-listening-meter-successor-comp-req-539/replay-run/screenshots/mobile-touch-exit.png",
+      "sha256": "A4A645068F37BD10CA3D2B2C3F963871C0908634FF0B8FF595C55F18A6D52048"
+    },
+    {
+      "canonical_lf": false,
+      "git_blob": "b419078e2315e1cfb6925ee6866557d774af8074",
+      "id": "screenshot_10",
+      "path": "docs/validation/companion-browser-listening-meter-successor-comp-req-539/replay-run/screenshots/mobile-pen-recording.png",
+      "sha256": "F7CC42A6DE3AA9D67066225E1E8C31D8ACFA2754C5EB570A9F151351CD5C3512"
+    },
+    {
+      "canonical_lf": false,
+      "git_blob": "85ff47d5ee2986007db87b46566cb5600b8c75c9",
+      "id": "screenshot_11",
+      "path": "docs/validation/companion-browser-listening-meter-successor-comp-req-539/replay-run/screenshots/mobile-pen-exit.png",
+      "sha256": "A4A645068F37BD10CA3D2B2C3F963871C0908634FF0B8FF595C55F18A6D52048"
+    }
+  ],
+  "owner_gate": "PENDING",
+  "requirements": [
+    "COMP-REQ-539"
+  ],
+  "schema": "companion.comp-req-539-source-bound-machine-ready.v1",
+  "side_effects": {
+    "browser": 0,
+    "hardware": 0,
+    "owner_prompt": 0,
+    "production_write": 0
+  },
+  "source_commit": "72be0f4ac2136ebd8dbc380269445911315530b0",
+  "status": "MACHINE_READY"
+}

@@ -1,0 +1,144 @@
+{
+  "case_count": 21,
+  "cases": [
+    {
+      "expected_failed_check": "focused_all_checks_true",
+      "name": "focused_status_forged",
+      "observed": false,
+      "pass": true
+    },
+    {
+      "expected_failed_check": "idle_scheduler_live_and_bounded",
+      "name": "scheduler_inert",
+      "observed": false,
+      "pass": true
+    },
+    {
+      "expected_failed_check": "idle_scheduler_live_and_bounded",
+      "name": "scheduler_first_change_late",
+      "observed": false,
+      "pass": true
+    },
+    {
+      "expected_failed_check": "idle_real_clock_60x2_deterministic",
+      "name": "scheduler_nondeterministic",
+      "observed": false,
+      "pass": true
+    },
+    {
+      "expected_failed_check": "hold_progress_absent_all_paths",
+      "name": "progress_dom_returned",
+      "observed": false,
+      "pass": true
+    },
+    {
+      "expected_failed_check": "hold_progress_absent_all_paths",
+      "name": "progress_node_observed",
+      "observed": false,
+      "pass": true
+    },
+    {
+      "expected_failed_check": "hold_3000_direct_menu_once",
+      "name": "hold_threshold_drift",
+      "observed": false,
+      "pass": true
+    },
+    {
+      "expected_failed_check": "no_arc_or_legacy_renderer",
+      "name": "residual_arc_pixels",
+      "observed": false,
+      "pass": true
+    },
+    {
+      "expected_failed_check": "no_arc_or_legacy_renderer",
+      "name": "legacy_arc_renderer_returned",
+      "observed": false,
+      "pass": true
+    },
+    {
+      "expected_failed_check": "committed_480ms_no_intermediate",
+      "name": "browser_intermediate_frame",
+      "observed": false,
+      "pass": true
+    },
+    {
+      "expected_failed_check": "meter_three_equal_discrete_columns",
+      "name": "meter_column_count_forged",
+      "observed": false,
+      "pass": true
+    },
+    {
+      "expected_failed_check": "meter_shift_inward_outer_insert",
+      "name": "meter_shift_reversed",
+      "observed": false,
+      "pass": true
+    },
+    {
+      "expected_failed_check": "recording_accessory_orthogonal_exit_only",
+      "name": "recording_freezes_affect",
+      "observed": false,
+      "pass": true
+    },
+    {
+      "expected_failed_check": "replay_6x7_42_pass",
+      "name": "replay_aggregate_forged",
+      "observed": false,
+      "pass": true
+    },
+    {
+      "expected_failed_check": "replay_zero_mic_404_and_side_effects",
+      "name": "microphone_request",
+      "observed": false,
+      "pass": true
+    },
+    {
+      "expected_failed_check": "screenshots_12_exact",
+      "name": "screenshot_hash_drift",
+      "observed": false,
+      "pass": true
+    },
+    {
+      "expected_failed_check": "parity_independently_passes",
+      "name": "parity_count_forged",
+      "observed": false,
+      "pass": true
+    },
+    {
+      "expected_failed_check": "manifest_82_states_59_unique",
+      "name": "manifest_pixel_diff_forged",
+      "observed": false,
+      "pass": true
+    },
+    {
+      "expected_failed_check": "one_bit_identity_orientation",
+      "name": "polarity_drift",
+      "observed": false,
+      "pass": true
+    },
+    {
+      "expected_failed_check": null,
+      "name": "current_source_identity_control",
+      "observed": true,
+      "pass": true
+    },
+    {
+      "expected_failed_check": "source_identity",
+      "name": "stale_source_commit",
+      "observed": false,
+      "pass": true
+    }
+  ],
+  "failed": [],
+  "inputs": {
+    "source_commit": "72be0f4ac2136ebd8dbc380269445911315530b0",
+    "stale_commit": "878c7ec7cbfc10a3770f5751df680f0c7b9241a7"
+  },
+  "schema": "companion.comp-req-539-source-bound-negatives.v1",
+  "side_effects": {
+    "browser": 0,
+    "hardware": 0,
+    "owner_prompt": 0,
+    "production_write": 0
+  },
+  "status": "PASS"
+}

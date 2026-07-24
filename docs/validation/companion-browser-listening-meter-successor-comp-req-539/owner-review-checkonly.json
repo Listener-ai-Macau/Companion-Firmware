@@ -1,0 +1,147 @@
+{
+  "schema": "companion.comp-req-539-owner-review-checkonly.v1",
+  "status": "PASS_CHECKONLY_NO_EXECUTE",
+  "default_off": true,
+  "execute_performed": false,
+  "requirements": [
+    "COMP-REQ-539"
+  ],
+  "url": "http://127.0.0.1:4173/docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html",
+  "packet_sha256": "77A11F05773010FC1DF11DF26BA51258EF0DE2F062167F59FA3F8324938A9327",
+  "prompt_contract": {
+    "buttons": [
+      "通过",
+      "失败"
+    ],
+    "expected_text": "选择通过表示 COMP-REQ-539 browser-only successor 成为人工回归合同；选择失败会保留机器证据并返回 Faraday 迭代。备注允许留空。",
+    "message": "请在总体页面按正常速度实际操作：\n1. 无操作时观察确定性高光小动作：进入 eligible 后 960 ms 内出现，约每 480 ms 离散一步并精确回到基线；没有平滑插值或随机闪烁。\n2. 按住表情主屏 3000 ms 应直接进入菜单；按下、短按、提前松开、拖动和取消都不应出现进度条、进度饰品或残留像素。\n3. 严格双击开启录音附件：只增加一个小录音点和三根等宽离散竖列；每步外列写入新量化能量，旧样本逐列向脸旁听觉点移动。不得出现弧线、括号、重复图标或平滑中间帧。\n4. 录音开启时继续单点和拖动，确认底层表情、眼神、眨眼与 idle 正常演进且附件只出现一份；再次双击只移除附件，保留当前表情与眼神。\n5. 检查四根菜单、Device > UI assets、返回；始终居中、方向正确、无旧层、裁切、404、重叠、调试参数或麦克风权限请求。",
+    "progress_text": "1/1 浏览器总体体验",
+    "scope_text": "仅验收同一 4173 总体页面中的表情、菜单、录音附件与 200x200 墨水屏预览；browser-only。",
+    "title": "Companion 浏览器总体体验验收"
+  },
+  "identities": [
+    {
+      "id": "page",
+      "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html",
+      "expected_sha256": "28E9971C068749F67811AD14BF7B81D93E42BE53526243B2B4DE43FA585E52F6",
+      "observed_sha256": "28E9971C068749F67811AD14BF7B81D93E42BE53526243B2B4DE43FA585E52F6",
+      "match": true
+    },
+    {
+      "id": "runner",
+      "path": "tools/faraday_upper_art/run_companion_browser_listening_meter_owner_review_comp_req_539.ps1",
+      "expected_sha256": "345CC5C98CF08074DBD55FC60289665D02A2C88886C990CEA95CDFE3B74547F5",
+      "observed_sha256": "345CC5C98CF08074DBD55FC60289665D02A2C88886C990CEA95CDFE3B74547F5",
+      "match": true
+    },
+    {
+      "id": "source_gate",
+      "path": "tools/faraday_upper_art/verify_companion_browser_listening_meter_source_bound_comp_req_539.py",
+      "expected_sha256": "228EC5CFBCD746D3C0499DB2C5498D28545F841171FB521FD3D23006850C80EA",
+      "observed_sha256": "228EC5CFBCD746D3C0499DB2C5498D28545F841171FB521FD3D23006850C80EA",
+      "match": true
+    },
+    {
+      "id": "negative_gate",
+      "path": "tools/faraday_upper_art/test_companion_browser_listening_meter_source_bound_negatives_comp_req_539.py",
+      "expected_sha256": "D7C95813F41AA4F2E2A8A14F2F75284CE8BBA23B8159AD8558B56F37B0B28E3A",
+      "observed_sha256": "D7C95813F41AA4F2E2A8A14F2F75284CE8BBA23B8159AD8558B56F37B0B28E3A",
+      "match": true
+    },
+    {
+      "id": "packet_tool",
+      "path": "tools/faraday_upper_art/prepare_companion_browser_listening_meter_owner_packet_comp_req_539.py",
+      "expected_sha256": "5C3B090CF5E2C459AFE2FFB470E75EC965807A572D743A7E99B08757FDC765D4",
+      "observed_sha256": "5C3B090CF5E2C459AFE2FFB470E75EC965807A572D743A7E99B08757FDC765D4",
+      "match": true
+    },
+    {
+      "id": "machine",
+      "path": "docs/validation/companion-browser-listening-meter-successor-comp-req-539/MACHINE_READY.json",
+      "expected_sha256": "0E4B6ADC21DEE9451CDABD80533C3ED5189FBA336FA9329FE248C3721C93F236",
+      "observed_sha256": "0E4B6ADC21DEE9451CDABD80533C3ED5189FBA336FA9329FE248C3721C93F236",
+      "match": true
+    },
+    {
+      "id": "negatives",
+      "path": "docs/validation/companion-browser-listening-meter-successor-comp-req-539/source-bound-negatives.json",
+      "expected_sha256": "8524AB5B0832A4D629A7484AC0AE6855F8580E3FA90E5905AB6A1D38DF81C60F",
+      "observed_sha256": "8524AB5B0832A4D629A7484AC0AE6855F8580E3FA90E5905AB6A1D38DF81C60F",
+      "match": true
+    },
+    {
+      "id": "focused",
+      "path": "docs/validation/companion-browser-listening-meter-successor-comp-req-539/focused-oracle.json",
+      "expected_sha256": "D8C6F9C5FFFC4F3B6E7B1B91A4FD06A11E9361D917D888DCB485F03E71AF684B",
+      "observed_sha256": "D8C6F9C5FFFC4F3B6E7B1B91A4FD06A11E9361D917D888DCB485F03E71AF684B",
+      "match": true
+    },
+    {
+      "id": "replay",
+      "path": "docs/validation/companion-browser-listening-meter-successor-comp-req-539/replay-run/browser-replay-result.json",
+      "expected_sha256": "F60D7996442C5093D3C03DFE534A863702CE76B34DE6CEA5419EC28F56FCBB97",
+      "observed_sha256": "F60D7996442C5093D3C03DFE534A863702CE76B34DE6CEA5419EC28F56FCBB97",
+      "match": true
+    },
+    {
+      "id": "pixel",
+      "path": "docs/validation/companion-browser-listening-meter-successor-comp-req-539/replay-run/pixel-dom-route-artifact.json",
+      "expected_sha256": "F98958C43E8339D3CEF6B8F235DB001FA6705179E00E7ACED35DA9389A599EF1",
+      "observed_sha256": "F98958C43E8339D3CEF6B8F235DB001FA6705179E00E7ACED35DA9389A599EF1",
+      "match": true
+    },
+    {
+      "id": "screenshots",
+      "path": "docs/validation/companion-browser-listening-meter-successor-comp-req-539/replay-run/screenshot-manifest.json",
+      "expected_sha256": "4E4E0A46BA5F1FF9E91974B6C55F4EA2B8AC34CFBC340EC5F58D95D4B58ED889",
+      "observed_sha256": "4E4E0A46BA5F1FF9E91974B6C55F4EA2B8AC34CFBC340EC5F58D95D4B58ED889",
+      "match": true
+    },
+    {
+      "id": "parity",
+      "path": "docs/validation/companion-browser-listening-meter-successor-comp-req-539/parity-verifier.json",
+      "expected_sha256": "B6ED76051E056516697E813C983452686A62116C4223A68B2FE6D9BC7AEA1388",
+      "observed_sha256": "B6ED76051E056516697E813C983452686A62116C4223A68B2FE6D9BC7AEA1388",
+      "match": true
+    },
+    {
+      "id": "manifest",
+      "path": "docs/art/exports/companion-browser-listening-meter-comp-req-539/visual-frame-manifest.json",
+      "expected_sha256": "F537175D8CA8D556A16A1A7A5FD67D9FB817621E5FBF2D35334EEF146E9A48A7",
+      "observed_sha256": "F537175D8CA8D556A16A1A7A5FD67D9FB817621E5FBF2D35334EEF146E9A48A7",
+      "match": true
+    },
+    {
+      "id": "frames",
+      "path": "docs/art/exports/companion-browser-listening-meter-comp-req-539/frames.bin",
+      "expected_sha256": "61D36981E3C326AF3040242B242934281F67B860FBE300DF71C94EC659687882",
+      "observed_sha256": "61D36981E3C326AF3040242B242934281F67B860FBE300DF71C94EC659687882",
+      "match": true
+    },
+    {
+      "id": "c_pack",
+      "path": "docs/art/exports/companion-browser-listening-meter-comp-req-539/companion_browser_listening_meter_pack.c",
+      "expected_sha256": "B0DF346F79BBE8E8E84F34A09376101CD233802CA1BED734B62001F701A1191E",
+      "observed_sha256": "B0DF346F79BBE8E8E84F34A09376101CD233802CA1BED734B62001F701A1191E",
+      "match": true
+    },
+    {
+      "id": "h_pack",
+      "path": "docs/art/exports/companion-browser-listening-meter-comp-req-539/companion_browser_listening_meter_pack.h",
+      "expected_sha256": "821624F2F5D527BD74244C0F01D02209037DB4A916D5F83EA7877B97C85E7D6F",
+      "observed_sha256": "821624F2F5D527BD74244C0F01D02209037DB4A916D5F83EA7877B97C85E7D6F",
+      "match": true
+    }
+  ],
+  "failures": [],
+  "counters": {
+    "process": 0,
+    "browser": 0,
+    "popup": 0,
+    "server": 0,
+    "owner_prompt": 0,
+    "hardware": 0,
+    "write": 0,
+    "microphone_permission_request": 0
+  }
+}
