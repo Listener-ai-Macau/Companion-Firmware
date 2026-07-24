@@ -1,0 +1,130 @@
+{
+  "checks": {
+    "browser_pbm_c_parity": true,
+    "focused_smoke": true,
+    "full_replay_6x7": true,
+    "pixel_dom_route": true,
+    "screenshots": true,
+    "source_and_git_blob_bound": true
+  },
+  "failed_checks": [],
+  "identities": [
+    {
+      "canonical_lf": true,
+      "git_blob": "8352264ac8a1359f1c0650f07589e76da1999665",
+      "id": "page",
+      "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html",
+      "sha256": "6176B9B3A7948291F430B5C47EBB5CDB2DA339BEEA86FBD1C72920D74438DD10"
+    },
+    {
+      "canonical_lf": true,
+      "git_blob": "fc79959a833b822fd111a3d84b19e95116307798",
+      "id": "focused_tool",
+      "path": "tools/faraday_upper_art/verify_companion_browser_epaper_accessory_comp_req_536_538.mjs",
+      "sha256": "1C527DAEEF5356670C18FA698B0B3F379FDCC05AC3856CE2B894B9FB51637C1D"
+    },
+    {
+      "canonical_lf": true,
+      "git_blob": "89d744583ef218b92ff216520e7741adae0e2be8",
+      "id": "generator",
+      "path": "tools/faraday_upper_art/generate_companion_browser_epaper_parity_comp_req_536_538.mjs",
+      "sha256": "7083B353A91A3548BA7ACAED231119FB29F59DEEEDFFE4A7CBCDB321EB0E9599"
+    },
+    {
+      "canonical_lf": true,
+      "git_blob": "d98be80640cfbe8a1c75aec708e654ab50923d73",
+      "id": "replay_tool",
+      "path": "tools/faraday_upper_art/replay_companion_browser_epaper_accessory_comp_req_536_538.mjs",
+      "sha256": "A63A2F90F4A3A48F37484B3D96CB4AC3FDCF49913CB4FB4AE62B2C5B73DB204F"
+    },
+    {
+      "canonical_lf": true,
+      "git_blob": "986628d3a2399f6262972594d2bed72a500d1ad7",
+      "id": "parity_tool",
+      "path": "tools/faraday_upper_art/verify_companion_browser_epaper_parity_comp_req_536_538.py",
+      "sha256": "DBCA696ECC134545CB5627362F5E07B5801810A52496C33C1A48E4EA75F8D683"
+    },
+    {
+      "canonical_lf": true,
+      "git_blob": "31eb2cdb8f3b28c38efbc7a18ce7381d43c3052c",
+      "id": "focused",
+      "path": "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/focused-oracle.json",
+      "sha256": "6F3E806C4703E677DE9E2D108F8D3241546D87D41D05D099731A89BCD1603271"
+    },
+    {
+      "canonical_lf": true,
+      "git_blob": "87a035125d16411175f10e1dbf4754db0fee561e",
+      "id": "replay",
+      "path": "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/replay-run/browser-replay-result.json",
+      "sha256": "4108424DA67141EA31F7755CF3974CA982093B1D7B1FEE8A8263B25B9CDD5B26"
+    },
+    {
+      "canonical_lf": true,
+      "git_blob": "d7cb8e8bd98ff7c19220abcd559c77d7393c3c7f",
+      "id": "pixel",
+      "path": "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/replay-run/pixel-dom-route-artifact.json",
+      "sha256": "C44BB53F2D07BE61D5EE27521E9237412EC1CFADCFEE57D6C9ED3636BEBBBE2F"
+    },
+    {
+      "canonical_lf": true,
+      "git_blob": "8381c449e4256a40a97537305eb6bbae83b8e3eb",
+      "id": "screenshots",
+      "path": "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/replay-run/screenshot-manifest.json",
+      "sha256": "81C10D5E17A633AC8F2411C82658C3A05F60963BDDBB36D592DADE19C901512C"
+    },
+    {
+      "canonical_lf": true,
+      "git_blob": "09738ff0da616d4b6095aa442ca57c7ea8e28630",
+      "id": "parity",
+      "path": "docs/validation/companion-browser-epaper-parity-successor-comp-req-536-538/parity-verifier.json",
+      "sha256": "D8CDA1082AC334FB4CEABB097D52EF8D6EFB9374455A8369A6720A848DC2EACB"
+    },
+    {
+      "canonical_lf": true,
+      "git_blob": "a7d5dfb990d5aa864e9bf546bada5b4b7ddcb2ce",
+      "id": "manifest",
+      "path": "docs/art/exports/companion-browser-epaper-parity-comp-req-536-538/visual-frame-manifest.json",
+      "sha256": "198ED5AFBA59F06BE507E0BC6C1778363DB1E401AF17A8859A2A3D0665DB36DB"
+    },
+    {
+      "canonical_lf": false,
+      "git_blob": "6be109225a5bafff958999aa38fce5574cfee233",
+      "id": "frames",
+      "path": "docs/art/exports/companion-browser-epaper-parity-comp-req-536-538/frames.bin",
+      "sha256": "27226B06DDDB5C3614A0575738344CE1DB45CC60C90BE5FA8F32A7EB891DF514"
+    },
+    {
+      "canonical_lf": true,
+      "git_blob": "7243e261e1442c323864d71af64cbae5fb16f30d",
+      "id": "c_pack",
+      "path": "docs/art/exports/companion-browser-epaper-parity-comp-req-536-538/companion_browser_epaper_visual_pack.c",
+      "sha256": "BAC08B23D336AEC7E06EFD3BF4C9A82F836433791336486AB9C30CA8E0680E3F"
+    },
+    {
+      "canonical_lf": true,
+      "git_blob": "f619712d2e07b4d222a0222c3989cef0a8f8c0dd",
+      "id": "h_pack",
+      "path": "docs/art/exports/companion-browser-epaper-parity-comp-req-536-538/companion_browser_epaper_visual_pack.h",
+      "sha256": "26073FA87A70E05ECA9EE7146A2656536DE4ECD7BF212A562607820580164CFE"
+    }
+  ],
+  "owner_gate": "PENDING",
+  "page_canonical_sha256": "6176B9B3A7948291F430B5C47EBB5CDB2DA339BEEA86FBD1C72920D74438DD10",
+  "requirements": [
+    "COMP-REQ-521",
+    "COMP-REQ-536",
+    "COMP-REQ-537",
+    "COMP-REQ-538"
+  ],
+  "schema": "companion.browser-epaper-source-bound-machine-ready.v1",
+  "side_effects": {
+    "browser": 0,
+    "hardware": 0,
+    "microphone_request": 0,
+    "owner_prompt": 0,
+    "production_write": 0,
+    "server": 0
+  },
+  "source_commit": "985c91d12c0210952fd4ede5812a65328157048d",
+  "status": "MACHINE_READY"
+}

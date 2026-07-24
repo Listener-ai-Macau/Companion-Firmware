@@ -1,0 +1,105 @@
+{
+  "cases": [
+    {
+      "failure_count": 1,
+      "id": "page_byte_drift",
+      "rejected": true
+    },
+    {
+      "failure_count": 2,
+      "id": "focused_css_interpolation",
+      "rejected": true
+    },
+    {
+      "failure_count": 2,
+      "id": "focused_idle_nondeterminism",
+      "rejected": true
+    },
+    {
+      "failure_count": 2,
+      "id": "focused_wave_count",
+      "rejected": true
+    },
+    {
+      "failure_count": 2,
+      "id": "replay_claimed_total",
+      "rejected": true
+    },
+    {
+      "failure_count": 2,
+      "id": "replay_microphone_request",
+      "rejected": true
+    },
+    {
+      "failure_count": 2,
+      "id": "replay_scenario_record",
+      "rejected": true
+    },
+    {
+      "failure_count": 2,
+      "id": "pixel_orthogonality",
+      "rejected": true
+    },
+    {
+      "failure_count": 1,
+      "id": "screenshot_bytes",
+      "rejected": true
+    },
+    {
+      "failure_count": 2,
+      "id": "screenshot_claim",
+      "rejected": true
+    },
+    {
+      "failure_count": 2,
+      "id": "parity_pixel_diff",
+      "rejected": true
+    },
+    {
+      "failure_count": 2,
+      "id": "manifest_claimed_state_count",
+      "rejected": true
+    },
+    {
+      "failure_count": 2,
+      "id": "frames_payload",
+      "rejected": true
+    },
+    {
+      "failure_count": 2,
+      "id": "c_pack",
+      "rejected": true
+    },
+    {
+      "failure_count": 2,
+      "id": "h_pack",
+      "rejected": true
+    },
+    {
+      "failure_count": 1,
+      "id": "pbm_payload",
+      "rejected": true
+    },
+    {
+      "failure_count": 1,
+      "id": "stale_source_commit",
+      "rejected": true
+    }
+  ],
+  "negative_case_count": 17,
+  "rejected_negative_count": 17,
+  "requirements": [
+    "COMP-REQ-536",
+    "COMP-REQ-537",
+    "COMP-REQ-538"
+  ],
+  "schema": "companion.browser-epaper-source-bound-negatives.v1",
+  "side_effects": {
+    "browser": 0,
+    "hardware": 0,
+    "owner_prompt": 0,
+    "production_write": 0,
+    "server": 0
+  },
+  "status": "PASS"
+}
