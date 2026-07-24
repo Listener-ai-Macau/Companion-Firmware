@@ -21,6 +21,10 @@ param(
     [int]$FlashRecordingStageBlocks = -1,
     [switch]$BleAudioStreamFlashRecordings,
     [switch]$EpaperSsd1681Bringup,
+    [switch]$EpaperSsd1681R7RuntimeBridgeDiagnostic,
+    [switch]$EpaperSsd1681R7RuntimeContinuousDiagnostic,
+    [switch]$EpaperSsd1681R7VisualRuntimeDiagnostic,
+    [switch]$EpaperSsd1681R7VisualRuntimeContinuousDiagnostic,
     [string]$EpaperSsd1681CsPort = '',
     [string]$EpaperSsd1681CsPin = '',
     [string]$EpaperSsd1681DcPort = '',
@@ -813,6 +817,45 @@ if ($EpaperSsd1681R7LockedV9ChoreographyDiagnostic) {
         "EPAPER_SSD1681_R7_LOCKED_V9_CHOREOGRAPHY_DIAGNOSTIC=1",
         "BUILD_DIR=build_ssd1681_r7_locked_v9_choreography",
         "TARGET=Companion_Nucleo_WB55RG_Ssd1681R7LockedV9Choreography"
+    )
+}
+if ($EpaperSsd1681R7RuntimeBridgeDiagnostic) {
+    $makeArgs += @(
+        "EPAPER_SSD1681_BRINGUP=1",
+        "EPAPER_SSD1681_R7_RUNTIME_BRIDGE_DIAGNOSTIC=1",
+        "EPAPER_SSD1681_HAS_BUSY=1",
+        "BUILD_DIR=build_ssd1681_r7_runtime_bridge",
+        "TARGET=Companion_Nucleo_WB55RG_Ssd1681RuntimeBridge"
+    )
+}
+if ($EpaperSsd1681R7RuntimeContinuousDiagnostic) {
+    $makeArgs += @(
+        "EPAPER_SSD1681_BRINGUP=1",
+        "EPAPER_SSD1681_R7_RUNTIME_BRIDGE_DIAGNOSTIC=1",
+        "EPAPER_SSD1681_R7_RUNTIME_CONTINUOUS_DIAGNOSTIC=1",
+        "EPAPER_SSD1681_HAS_BUSY=1",
+        "BUILD_DIR=build_ssd1681_r7_runtime_continuous",
+        "TARGET=Companion_Nucleo_WB55RG_Ssd1681RuntimeContinuous"
+    )
+}
+if ($EpaperSsd1681R7VisualRuntimeDiagnostic) {
+    $makeArgs += @(
+        "EPAPER_SSD1681_BRINGUP=1",
+        "EPAPER_MENU=1",
+        "EPAPER_SSD1681_R7_VISUAL_RUNTIME_DIAGNOSTIC=1",
+        "EPAPER_SSD1681_HAS_BUSY=1",
+        "BUILD_DIR=build_ssd1681_r7_visual_runtime",
+        "TARGET=Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntime"
+    )
+}
+if ($EpaperSsd1681R7VisualRuntimeContinuousDiagnostic) {
+    $makeArgs += @(
+        "EPAPER_SSD1681_BRINGUP=1",
+        "EPAPER_MENU=1",
+        "EPAPER_SSD1681_R7_VISUAL_RUNTIME_CONTINUOUS_DIAGNOSTIC=1",
+        "EPAPER_SSD1681_HAS_BUSY=1",
+        "BUILD_DIR=build_ssd1681_r7_visual_runtime_continuous",
+        "TARGET=Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntimeContinuous"
     )
 }
 if ($EpaperSsd1681VendorPartialDiagnostic) {

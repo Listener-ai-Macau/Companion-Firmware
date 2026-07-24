@@ -27,6 +27,8 @@ void comp_touch_gesture_init(comp_touch_gesture_state_t *state,
         .swipe_max_duration_ms = 1200u,
         .hold_feedback_min_duration_ms = 650u,
         .long_press_min_duration_ms = 3000u,
+        /* Portable defaults stay conservative. WB55 supplies its wider
+         * BUSY-tolerant window explicitly from main and host fixtures. */
         .double_tap_max_gap_ms = 350u,
         .double_tap_max_move_px = 32u,
         .axis_dominance_percent = 140u,
@@ -260,6 +262,11 @@ bool comp_touch_gesture_process(comp_touch_gesture_state_t *state,
 
     duration_ms = now_ms - state->start_ms;
     released_type = classify(state, duration_ms);
+    /* A feedback hold that ends before the deliberate long-press threshold is
+     * a cancelled interaction, never a late single tap. */
+    if (state->hold_feedback_sent && released_type == COMP_TOUCH_GESTURE_TAP) {
+        released_type = COMP_TOUCH_GESTURE_NONE;
+    }
     fill_event(state, released_type, duration_ms, out_event);
     if (released_type == COMP_TOUCH_GESTURE_TAP) {
         if (state->tap_pending &&
@@ -301,6 +308,14 @@ bool comp_touch_gesture_restart_contact(comp_touch_gesture_state_t *state,
     }
     memset(out_event, 0, sizeof(*out_event));
 
+    /* A gesture that already fired (double tap, horizontal swipe, or menu
+     * long press) owns the contact until an actual release/cancel report.
+     * The main-loop DOWN boundary helper is also called for this state; it
+     * must not turn a repeated DOWN into a fresh contact. */
+    if (state->consumed_until_release && !state->active) {
+        return false;
+    }
+
     /* FT6x36 can report the next DOWN without an intervening zero-contact
      * sample during a fast double tap. Treat that DOWN as proof that the old
      * lifecycle ended, while preserving its pending tap for double matching. */
@@ -324,7 +339,9 @@ bool comp_touch_gesture_restart_contact(comp_touch_gesture_state_t *state,
         state->release_samples = 0u;
         return true;
     }
-    state->consumed_until_release = false;
+    if (state->consumed_until_release) {
+        return false;
+    }
     state->release_samples = 0u;
     (void)comp_touch_gesture_process(state,
                                      true,

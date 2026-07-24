@@ -168,6 +168,23 @@ endif
 ifeq ($(EPAPER_SSD1681_R7_LOCKED_V9_CHOREOGRAPHY_DIAGNOSTIC),1)
 DEFS += -DCOMPANION_EPAPER_SSD1681_R7_LOCKED_V9_CHOREOGRAPHY_DIAGNOSTIC=1
 endif
+ifeq ($(EPAPER_SSD1681_R7_RUNTIME_BRIDGE_DIAGNOSTIC),1)
+DEFS += -DCOMPANION_EPAPER_SSD1681_R7_RUNTIME_BRIDGE_DIAGNOSTIC=1
+endif
+ifeq ($(EPAPER_SSD1681_R7_RUNTIME_CONTINUOUS_DIAGNOSTIC),1)
+DEFS += -DCOMPANION_EPAPER_SSD1681_R7_RUNTIME_CONTINUOUS_DIAGNOSTIC=1
+endif
+ifeq ($(EPAPER_SSD1681_R7_VISUAL_RUNTIME_DIAGNOSTIC),1)
+DEFS += -DCOMPANION_VISUAL_ASSET_PACK_ENABLE=1
+DEFS += -DCOMPANION_EPAPER_SSD1681_R7_RUNTIME_BRIDGE_DIAGNOSTIC=1
+DEFS += -DCOMPANION_EPAPER_SSD1681_R7_VISUAL_RUNTIME_DIAGNOSTIC=1
+endif
+ifeq ($(EPAPER_SSD1681_R7_VISUAL_RUNTIME_CONTINUOUS_DIAGNOSTIC),1)
+DEFS += -DCOMPANION_VISUAL_ASSET_PACK_ENABLE=1
+DEFS += -DCOMPANION_EPAPER_SSD1681_R7_RUNTIME_BRIDGE_DIAGNOSTIC=1
+DEFS += -DCOMPANION_EPAPER_SSD1681_R7_RUNTIME_CONTINUOUS_DIAGNOSTIC=1
+DEFS += -DCOMPANION_EPAPER_SSD1681_R7_VISUAL_RUNTIME_CONTINUOUS_DIAGNOSTIC=1
+endif
 ifeq ($(EPAPER_MENU),1)
 DEFS += -DCOMPANION_SCREEN_MENU_ENABLED=1
 endif
@@ -522,7 +539,9 @@ C_SOURCES := \
 	$(ROOT)/third_party/denzic-platform/audio/embedded/c/src/denzic_audio_recording_v1.c \
 	$(ROOT)/app/companion_pendant/touch/ft6336.c \
 	$(ROOT)/app/companion_pendant/touch/touch_gesture.c \
+	$(ROOT)/app/companion_pendant/touch/touch_visual_decision.c \
 	$(ROOT)/app/companion_pendant/touch/touch_tap_arbiter.c \
+	$(ROOT)/app/companion_pendant/touch/touch_recording_boundary.c \
 	$(ROOT)/app/companion_pendant/touch/touch_target_stm32wb_ft6336.c \
 	$(ROOT)/app/companion_pendant/v1_features/companion_v1_features.c
 
@@ -537,6 +556,23 @@ endif
 C_SOURCES += $(SYSTEM_SOURCE)
 ifeq ($(EPAPER_SSD1681_BRINGUP),1)
 C_SOURCES += $(ROOT)/app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c
+endif
+ifeq ($(EPAPER_SSD1681_R7_RUNTIME_BRIDGE_DIAGNOSTIC),1)
+C_SOURCES += $(ROOT)/app/companion_pendant/epaper/r7_runtime_bridge_stm32wb.c
+endif
+ifeq ($(EPAPER_SSD1681_R7_VISUAL_RUNTIME_DIAGNOSTIC),1)
+C_SOURCES += $(ROOT)/app/companion_pendant/epaper/companion_visual_runtime_adapter.c
+C_SOURCES += $(ROOT)/app/companion_pendant/epaper/companion_visual_runtime_controller.c
+C_SOURCES += $(ROOT)/app/companion_pendant/epaper/companion_visual_asset_pack.c
+C_SOURCES += $(ROOT)/app/companion_pendant/epaper/r7_runtime_bridge_stm32wb.c
+C_SOURCES += $(ROOT)/app/companion_pendant/touch/touch_visual_board_dispatch.c
+endif
+ifeq ($(EPAPER_SSD1681_R7_VISUAL_RUNTIME_CONTINUOUS_DIAGNOSTIC),1)
+C_SOURCES += $(ROOT)/app/companion_pendant/epaper/companion_visual_runtime_adapter.c
+C_SOURCES += $(ROOT)/app/companion_pendant/epaper/companion_visual_runtime_controller.c
+C_SOURCES += $(ROOT)/app/companion_pendant/epaper/companion_visual_asset_pack.c
+C_SOURCES += $(ROOT)/app/companion_pendant/epaper/r7_runtime_bridge_stm32wb.c
+C_SOURCES += $(ROOT)/app/companion_pendant/touch/touch_visual_board_dispatch.c
 endif
 ifeq ($(EPAPER_SSD1681_READ_ONLY_CONTROLLER_STATE_DIAGNOSTIC),1)
 C_SOURCES += $(ROOT)/app/companion_pendant/epaper/ssd1681_read_only_controller_state.c

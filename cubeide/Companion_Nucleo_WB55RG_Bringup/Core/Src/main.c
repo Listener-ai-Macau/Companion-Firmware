@@ -8,12 +8,24 @@
 #include "companion_screen_ui.h"
 #include "diag_log.h"
 #include "panel_target_stm32wb_ssd1681.h"
+#if defined(COMPANION_EPAPER_SSD1681_R7_RUNTIME_BRIDGE_DIAGNOSTIC) && \
+    COMPANION_EPAPER_SSD1681_R7_RUNTIME_BRIDGE_DIAGNOSTIC
+#include "r7_runtime_bridge_stm32wb.h"
+#endif
+#if defined(COMPANION_VISUAL_ASSET_PACK_ENABLE) && COMPANION_VISUAL_ASSET_PACK_ENABLE
+#include "companion_visual_runtime_adapter.h"
+#include "companion_visual_runtime_controller.h"
+#include "touch_visual_board_dispatch.h"
+#include "companion_visual_asset_pack.h"
+#endif
 #include "power_policy.h"
 #include "recording_fsm.h"
 #include "screen_menu.h"
 #include "stm32_lpm.h"
 #include "touch_target_stm32wb_ft6336.h"
 #include "touch_tap_arbiter.h"
+#include "touch_recording_boundary.h"
+#include "touch_visual_decision.h"
 #include "hw_if.h"
 
 #include <limits.h>
@@ -26,6 +38,15 @@
 #endif
 #ifndef COMPANION_EPAPER_PANEL_SSD1681_BRINGUP
 #define COMPANION_EPAPER_PANEL_SSD1681_BRINGUP 0
+#endif
+#ifndef COMPANION_EPAPER_SSD1681_R7_RUNTIME_BRIDGE_DIAGNOSTIC
+#define COMPANION_EPAPER_SSD1681_R7_RUNTIME_BRIDGE_DIAGNOSTIC 0
+#endif
+#ifndef COMPANION_VISUAL_ASSET_PACK_ENABLE
+#define COMPANION_VISUAL_ASSET_PACK_ENABLE 0
+#endif
+#ifndef COMPANION_EPAPER_SSD1681_R7_VISUAL_RUNTIME_CONTINUOUS_DIAGNOSTIC
+#define COMPANION_EPAPER_SSD1681_R7_VISUAL_RUNTIME_CONTINUOUS_DIAGNOSTIC 0
 #endif
 #ifndef COMPANION_TOUCH_VERBOSE_TRACE
 #define COMPANION_TOUCH_VERBOSE_TRACE 0
@@ -487,6 +508,7 @@ SPI_HandleTypeDef hspi1;
 SPI_HandleTypeDef hspi2;
 
 static comp_recording_fsm_t s_recording_fsm;
+static comp_touch_recording_boundary_t s_touch_recording_boundary;
 static comp_power_policy_t s_power_policy;
 static comp_power_idle_settings_t s_power_idle_settings;
 static bool s_power_policy_ready;
@@ -676,6 +698,28 @@ static void process_daily_tap_reaction(uint32_t now_ms);
 static bool defer_touch_runtime_action(comp_touch_runtime_action_t action,
                                        uint32_t now_ms);
 static void process_deferred_touch_runtime_action(void);
+static bool board_touch_recording_menu_sink(
+    void *context, const comp_touch_visual_decision_t *decision,
+    const comp_screen_menu_t *menu, uint32_t now_ms);
+#if COMPANION_VISUAL_ASSET_PACK_ENABLE
+static void init_visual_runtime_controller(void);
+static void service_visual_runtime_controller(void);
+static void observe_visual_runtime_contact(uint32_t now_ms);
+#if COMPANION_SCREEN_BALL_MOTION_DIAGNOSTIC
+static void submit_visual_runtime_gesture(
+    const comp_touch_gesture_event_t *gesture);
+#endif
+static bool dispatch_board_visual_event(
+    void *context, companion_visual_event_t event, uint32_t elapsed_ms,
+    uint16_t move_px, uint8_t target_state);
+static void dispatch_board_visual_route(
+    void *context, const comp_screen_menu_result_t *result);
+static void dispatch_board_visual_render(
+    void *context, const comp_screen_menu_t *menu);
+static bool dispatch_board_visual_decision(
+    const comp_touch_visual_decision_t *decision,
+    const comp_screen_menu_t *menu);
+#endif
 static void process_touch_menu_phone_reconnect(void);
 static void init_low_power_idle_timer(void);
 static void low_power_idle_timer_elapsed(void);
@@ -690,6 +734,9 @@ static void cancel_recording(comp_recording_source_t source, const char *reason)
 static void start_user_recording(comp_recording_source_t source, const char *reason);
 static void stop_user_recording(comp_recording_source_t source, const char *reason);
 static void toggle_touch_recording(void);
+static bool execute_touch_recording_boundary_action(
+    void *context, comp_touch_recording_action_t action,
+    comp_recording_state_t state_before);
 static void start_manual_recording(void);
 static void stop_manual_recording(const char *reason);
 static void cancel_manual_recording(void);
@@ -1099,6 +1146,15 @@ int main(void)
     comp_diag_log_init();
     comp_diag_log_set_clock(diag_clock_ms, NULL);
     comp_recording_fsm_init(&s_recording_fsm);
+    {
+        const comp_touch_recording_boundary_sinks_t sinks = {
+            .execute = execute_touch_recording_boundary_action,
+            .menu = board_touch_recording_menu_sink,
+            .context = NULL,
+        };
+        comp_touch_recording_boundary_init(&s_touch_recording_boundary,
+                                           &sinks);
+    }
 
     comp_diag_log_record_code(COMP_DIAG_EVT_BOOT_START,
                               COMP_DIAG_SEV_INFO,
@@ -1193,6 +1249,16 @@ int main(void)
     s_maintenance_diagnostic_enqueued = false;
 #endif
     while (1) {
+#if COMPANION_EPAPER_SSD1681_R7_RUNTIME_BRIDGE_DIAGNOSTIC
+#if COMPANION_VISUAL_ASSET_PACK_ENABLE
+        /* Visual builds use the real gesture-backed controller.  The legacy
+         * locked choreography is deliberately excluded from this path. */
+        service_visual_runtime_controller();
+#else
+        /* One movement per pass keeps touch and BLE work on the main loop. */
+        (void)companion_r7_runtime_bridge_service();
+#endif
+#endif
         /* A panel wait callback only classifies touch. Run any recording or
          * BLE side effect here, after the synchronous BUSY waveform returns. */
         process_deferred_touch_runtime_action();
@@ -1608,10 +1674,17 @@ static void init_touch_debug(void)
     companion_touch_ft6336_stm32wb_init(&s_touch, &hi2c3);
     s_touch_wait_buffer_selftest_pass = touch_wait_buffer_self_test();
 #if COMPANION_EPAPER_PANEL_SSD1681_BRINGUP
+#if COMPANION_EPAPER_SSD1681_R7_RUNTIME_BRIDGE_DIAGNOSTIC
+    companion_r7_runtime_bridge_set_wait_service(
+        capture_touch_during_display_wait,
+        NULL,
+        TOUCH_REFRESH_POLL_MS);
+#else
     companion_epaper_panel_stm32wb_ssd1681_set_wait_service(
         capture_touch_during_display_wait,
         NULL,
         TOUCH_REFRESH_POLL_MS);
+#endif
 #endif
     printf("[touch] ft6336 decoder=%s gesture=%s addr=0x%02X probe=%s probes=%lu irq_mode=%s irq_cfg_errors=%lu tuning=%s threshold=0x%02X period=%u/%u tuning_errors=%lu poll_ms=%u/%u irq=PC6 wired=%u reset=PC10 wired=%u refresh_poll_ms=%u\r\n",
            comp_ft6336_decoder_self_test() ? "pass" : "fail",
@@ -1633,7 +1706,217 @@ static void init_touch_debug(void)
            (unsigned)TOUCH_REFRESH_POLL_MS);
     printf("[touch] tap_arbiter=%s contract=confirmed_single_before_display\r\n",
            comp_touch_tap_arbiter_self_test() ? "pass" : "fail");
+#if COMPANION_VISUAL_ASSET_PACK_ENABLE
+    init_visual_runtime_controller();
+#endif
 }
+
+#if COMPANION_VISUAL_ASSET_PACK_ENABLE
+static companion_visual_runtime_t s_visual_runtime;
+static comp_touch_visual_runtime_t s_touch_visual_runtime = {
+    COMPANION_VISUAL_STATE_CENTERED_REST, false};
+static bool s_visual_runtime_cleanup_done;
+static uint8_t s_visual_path_index;
+static uint32_t s_visual_last_serviced;
+static uint8_t s_visual_last_gaze_state;
+static const uint8_t s_visual_qualification_path[17] = {
+    COMPANION_VISUAL_STATE_CENTERED_REST,
+    COMPANION_VISUAL_STATE_GAZE_LEFT,
+    COMPANION_VISUAL_STATE_GAZE_UP,
+    COMPANION_VISUAL_STATE_GAZE_RIGHT,
+    COMPANION_VISUAL_STATE_GAZE_DOWN,
+    COMPANION_VISUAL_STATE_GAZE_CENTER,
+    COMPANION_VISUAL_STATE_GAZE_LEFT,
+    COMPANION_VISUAL_STATE_CENTERED_REST,
+    COMPANION_VISUAL_STATE_SINGLE_TAP_RESPONSE,
+    COMPANION_VISUAL_STATE_CENTERED_REST,
+    COMPANION_VISUAL_STATE_HOLD_FEEDBACK_50,
+    COMPANION_VISUAL_STATE_MENU_ROOTS,
+    COMPANION_VISUAL_STATE_MENU_VOICE,
+    COMPANION_VISUAL_STATE_MENU_ROOTS,
+    COMPANION_VISUAL_STATE_MENU_DEVICE,
+    COMPANION_VISUAL_STATE_MENU_DEVICE_UI_ASSETS,
+    COMPANION_VISUAL_STATE_MENU_RETURN_REST,
+};
+
+static void init_visual_runtime_controller(void)
+{
+    companion_visual_runtime_init(&s_visual_runtime);
+    s_visual_runtime_cleanup_done = false;
+    s_visual_path_index = 0u;
+    s_visual_last_serviced = 0u;
+    s_visual_last_gaze_state = COMPANION_VISUAL_STATE_GAZE_CENTER;
+#if !COMPANION_EPAPER_SSD1681_R7_VISUAL_RUNTIME_CONTINUOUS_DIAGNOSTIC
+    /* Bounded qualification supplies one declared event at a time. */
+    (void)companion_visual_runtime_enqueue(
+        &s_visual_runtime, COMPANION_VISUAL_RUNTIME_EVENT_GAZE,
+        s_visual_qualification_path[1u]);
+#endif
+    printf("[visual-runtime] controller=ready initial_state=%u qualification=16 mode=%s ring=%u\r\n",
+           (unsigned)COMPANION_VISUAL_STATE_CENTERED_REST,
+           COMPANION_EPAPER_SSD1681_R7_VISUAL_RUNTIME_CONTINUOUS_DIAGNOSTIC
+               ? "continuous" : "bounded",
+           (unsigned)s_visual_runtime.ring_count);
+}
+
+static void service_visual_runtime_controller(void)
+{
+    /* Cadence belongs to queued visual work, not to passive UI/contact state.
+     * A queued event keeps the current burst alive; an empty queue starts the
+     * next event as a fresh burst even when a finger, menu, or recording mode
+     * remains active. */
+    companion_r7_runtime_bridge_visual_set_burst_active(
+        s_visual_runtime.ring_count != 0u);
+    if (s_visual_runtime.ring_count != 0u) {
+        (void)companion_visual_runtime_service(
+            &s_visual_runtime,
+            companion_r7_runtime_bridge_visual_transport,
+            NULL);
+    }
+    if (s_visual_runtime.serviced_events != s_visual_last_serviced) {
+        s_visual_last_serviced = s_visual_runtime.serviced_events;
+        s_visual_path_index = (uint8_t)((s_visual_path_index + 1u) % 17u);
+        if (!COMPANION_EPAPER_SSD1681_R7_VISUAL_RUNTIME_CONTINUOUS_DIAGNOSTIC &&
+            s_visual_runtime.serviced_events < 16u) {
+            uint8_t next_index = (uint8_t)((s_visual_path_index + 1u) % 17u);
+            (void)companion_visual_runtime_enqueue(
+                &s_visual_runtime, COMPANION_VISUAL_RUNTIME_EVENT_GAZE,
+                s_visual_qualification_path[next_index]);
+        }
+    }
+    /* Set burst state only after deterministic next-state enqueue.  This is
+     * what makes bounded qualification enforce all 15 inter-start deltas. */
+    companion_r7_runtime_bridge_visual_set_burst_active(
+        s_visual_runtime.ring_count != 0u);
+#if !COMPANION_EPAPER_SSD1681_R7_VISUAL_RUNTIME_CONTINUOUS_DIAGNOSTIC
+    if (!COMPANION_EPAPER_SSD1681_R7_VISUAL_RUNTIME_CONTINUOUS_DIAGNOSTIC &&
+        !s_visual_runtime_cleanup_done &&
+        s_visual_runtime.serviced_events >= 16u &&
+        s_visual_runtime.ring_count == 0u) {
+        s_visual_runtime_cleanup_done = true;
+        (void)companion_r7_runtime_bridge_exit_cleanup();
+        printf("[visual-runtime] qualification=complete cleanup=single_flash\r\n");
+    }
+#endif
+}
+
+static bool dispatch_board_visual_event(
+    void *context, companion_visual_event_t event, uint32_t elapsed_ms,
+    uint16_t move_px, uint8_t target_state)
+{
+    (void)context;
+    return companion_visual_runtime_enqueue_visual_event(
+        &s_visual_runtime, event, elapsed_ms, move_px, 0u, false,
+        target_state);
+}
+
+static void dispatch_board_visual_route(
+    void *context, const comp_screen_menu_result_t *result)
+{
+    (void)context;
+    if (result != NULL)
+        comp_screen_menu_set_flags(&s_screen_menu,
+                                   Companion_Screen_RuntimeMenuFlags());
+}
+
+static void dispatch_board_visual_render(
+    void *context, const comp_screen_menu_t *menu)
+{
+    (void)context;
+    if (menu != NULL)
+        Companion_Screen_MenuRequest(menu->view, menu->flags,
+                                     menu->language, menu->home_page);
+}
+
+static bool dispatch_board_visual_decision(
+    const comp_touch_visual_decision_t *decision,
+    const comp_screen_menu_t *menu)
+{
+    const comp_touch_visual_board_dispatch_sinks_t sinks = {
+        dispatch_board_visual_event,
+        dispatch_board_visual_route,
+        dispatch_board_visual_render,
+        NULL,
+        NULL};
+    return comp_touch_visual_board_dispatch(decision, menu, &sinks);
+}
+
+#if COMPANION_SCREEN_BALL_MOTION_DIAGNOSTIC
+static void submit_visual_runtime_gesture(
+    const comp_touch_gesture_event_t *gesture)
+{
+    uint16_t dx;
+    uint16_t dy;
+    uint16_t move;
+
+    if (gesture == NULL) return;
+    dx = gesture->start_x > gesture->end_x
+             ? (uint16_t)(gesture->start_x - gesture->end_x)
+             : (uint16_t)(gesture->end_x - gesture->start_x);
+    dy = gesture->start_y > gesture->end_y
+             ? (uint16_t)(gesture->start_y - gesture->end_y)
+             : (uint16_t)(gesture->end_y - gesture->start_y);
+    move = dx > dy ? dx : dy;
+    if (gesture->type == COMP_TOUCH_GESTURE_NONE) {
+        (void)companion_visual_controller_hold_cancel(
+            &s_visual_runtime, gesture->duration_ms, move);
+        return;
+    }
+    if (gesture->type == COMP_TOUCH_GESTURE_SWIPE_LEFT ||
+        gesture->type == COMP_TOUCH_GESTURE_SWIPE_RIGHT ||
+        gesture->type == COMP_TOUCH_GESTURE_SWIPE_UP ||
+        gesture->type == COMP_TOUCH_GESTURE_SWIPE_DOWN) {
+        uint8_t gaze_state = COMPANION_VISUAL_STATE_GAZE_CENTER;
+        if (gesture->type == COMP_TOUCH_GESTURE_SWIPE_LEFT)
+            gaze_state = COMPANION_VISUAL_STATE_GAZE_LEFT;
+        else if (gesture->type == COMP_TOUCH_GESTURE_SWIPE_RIGHT)
+            gaze_state = COMPANION_VISUAL_STATE_GAZE_RIGHT;
+        else if (gesture->type == COMP_TOUCH_GESTURE_SWIPE_UP)
+            gaze_state = COMPANION_VISUAL_STATE_GAZE_UP;
+        else if (gesture->type == COMP_TOUCH_GESTURE_SWIPE_DOWN)
+            gaze_state = COMPANION_VISUAL_STATE_GAZE_DOWN;
+        (void)companion_visual_runtime_enqueue_visual_event(
+            &s_visual_runtime,
+            gesture->type == COMP_TOUCH_GESTURE_SWIPE_LEFT
+                ? COMPANION_VISUAL_EVENT_POINTER_DRAG_LEFT
+                : gesture->type == COMP_TOUCH_GESTURE_SWIPE_RIGHT
+                      ? COMPANION_VISUAL_EVENT_POINTER_DRAG_RIGHT
+                      : gesture->type == COMP_TOUCH_GESTURE_SWIPE_UP
+                            ? COMPANION_VISUAL_EVENT_POINTER_DRAG_UP
+                            : COMPANION_VISUAL_EVENT_POINTER_DRAG_DOWN,
+            gesture->duration_ms, move, 0u, false, gaze_state);
+        (void)companion_visual_runtime_enqueue_visual_event(
+            &s_visual_runtime, COMPANION_VISUAL_EVENT_POINTER_UP_OR_CANCEL,
+            gesture->duration_ms, move, 0u, false,
+            COMPANION_VISUAL_STATE_CENTERED_REST);
+        s_visual_last_gaze_state = COMPANION_VISUAL_STATE_CENTERED_REST;
+        return; /* continuous contact observation owns gaze updates */
+    }
+    (void)companion_visual_runtime_enqueue_gesture(
+        &s_visual_runtime, gesture->type, gesture->duration_ms, move,
+        COMPANION_VISUAL_STATE_GAZE_CENTER);
+}
+#endif
+
+static void observe_visual_runtime_contact(uint32_t now_ms)
+{
+    uint8_t target_state;
+    uint8_t gaze_state;
+
+    if (!s_touch_gesture.active || s_touch_gesture.contact_samples == 0u) {
+        return;
+    }
+    target_state = comp_touch_visual_target_partition(
+        s_touch_gesture.latest_x, s_touch_gesture.latest_y);
+    gaze_state = target_state;
+    if (s_visual_last_gaze_state == gaze_state) return;
+    (void)companion_visual_runtime_enqueue_visual_event(
+        &s_visual_runtime, COMPANION_VISUAL_EVENT_POINTER_MOVE,
+        now_ms - s_touch_gesture.start_ms, 41u, 0u, true, gaze_state);
+    s_visual_last_gaze_state = gaze_state;
+}
+
+#endif
 
 static void reset_touch_controller(void)
 {
@@ -1992,6 +2275,9 @@ static void process_touch_debug_sample(const comp_ft6336_touch_sample_t *sample,
         request_low_power_touch_wake();
     }
     handle_touch_menu_sample(sample, logical_x, logical_y, now_ms);
+#if COMPANION_VISUAL_ASSET_PACK_ENABLE
+    observe_visual_runtime_contact(now_ms);
+#endif
     if (!s_touch_contact_active) {
         /* Keep the wake transaction visible to the release classifier. A
          * touch_count=0 report is the normal FT6336 release path, not a
@@ -2207,6 +2493,13 @@ static void process_touch_menu_phone_reconnect(void)
 
 static void process_deferred_touch_runtime_action(void)
 {
+    /* The recording decision boundary owns touch double-taps.  It is serviced
+     * here, after a panel BUSY callback returns, so the board and host use the
+     * same bounded deferred ordering. */
+    if (comp_touch_recording_boundary_pending(&s_touch_recording_boundary) != 0u) {
+        (void)comp_touch_recording_boundary_service(
+            &s_touch_recording_boundary, s_recording_fsm.state);
+    }
     comp_touch_runtime_action_t action = s_touch_deferred_action;
     uint32_t queued_ms = s_touch_deferred_action_queued_ms;
 
@@ -2231,6 +2524,11 @@ static void process_deferred_touch_runtime_action(void)
     case COMP_TOUCH_RUNTIME_ACTION_MENU_RECORD_STOP:
         comp_screen_menu_set_flags(&s_screen_menu, Companion_Screen_RuntimeMenuFlags());
         stop_manual_recording("touch-menu");
+#if COMPANION_VISUAL_ASSET_PACK_ENABLE
+        (void)companion_visual_runtime_enqueue_visual_event(
+            &s_visual_runtime, COMPANION_VISUAL_EVENT_RECORDING_RETURN,
+            0u, 0u, 0u, false, COMPANION_VISUAL_STATE_CENTERED_REST);
+#endif
         break;
     case COMP_TOUCH_RUNTIME_ACTION_PHONE_RECONNECT:
         process_touch_menu_phone_reconnect();
@@ -2458,45 +2756,48 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
                                      uint16_t logical_y,
                                      uint32_t now_ms)
 {
+#if COMPANION_VISUAL_ASSET_PACK_ENABLE && !COMPANION_SCREEN_MENU_ENABLED
+    comp_touch_visual_decision_t visual_decision;
+
+    if (sample == NULL) return;
+    if (comp_touch_visual_process_raw(sample, logical_x, logical_y, now_ms,
+                                      &s_touch_gesture, &s_touch_visual_runtime,
+                                      &visual_decision)) {
+        (void)dispatch_board_visual_decision(&visual_decision, NULL);
+    }
+    return;
+#endif
 #if COMPANION_SCREEN_MENU_ENABLED
     bool contact_now;
-    bool explicit_release;
     bool gesture_ready;
     bool home_press_was_active = false;
     uint8_t home_press_item = 0u;
     comp_touch_gesture_event_t gesture;
     comp_screen_menu_result_t menu_result;
+    comp_screen_menu_view_t previous_view;
+    comp_touch_visual_decision_t visual_decision;
 
     if (sample == NULL) {
         return;
     }
+    gesture_ready = comp_touch_visual_process_raw(
+        sample, logical_x, logical_y, now_ms, &s_touch_gesture,
+        &s_touch_visual_runtime, &visual_decision);
+    gesture = visual_decision.gesture;
+    if (!Companion_Screen_IsMenuVisible())
+        (void)comp_touch_recording_boundary_dispatch(
+            &s_touch_recording_boundary, &visual_decision, false, NULL,
+            s_recording_fsm.state, now_ms);
     contact_now = sample->touch_count > 0u &&
                   sample->event != COMP_FT6336_TOUCH_EVENT_UP;
-    explicit_release = sample->touch_count > 0u &&
-                       sample->event == COMP_FT6336_TOUCH_EVENT_UP;
-
-    if (contact_now && sample->event == COMP_FT6336_TOUCH_EVENT_DOWN &&
-        (s_touch_gesture.active || s_touch_gesture.consumed_until_release)) {
-        gesture_ready = comp_touch_gesture_restart_contact(&s_touch_gesture,
-                                                           logical_x,
-                                                           logical_y,
-                                                           now_ms,
-                                                           &gesture);
+    if (sample->touch_count > 0u && sample->event != COMP_FT6336_TOUCH_EVENT_UP) {
         TOUCH_VERBOSE_TRACE("[touch-ui] recontact_boundary previous=%s ready=%u next=%u,%u\r\n",
                comp_touch_gesture_name(gesture.type),
                gesture_ready ? 1u : 0u,
                (unsigned)logical_x,
                (unsigned)logical_y);
-    } else {
-        gesture_ready = comp_touch_gesture_process(&s_touch_gesture,
-                                                   contact_now,
-                                                   explicit_release,
-                                                   logical_x,
-                                                   logical_y,
-                                                   now_ms,
-                                                   &gesture);
     }
-    if (!contact_now && s_low_power_touch_wake_requested) {
+    if (sample->touch_count == 0u && s_low_power_touch_wake_requested) {
         /* Trace every low-power release outcome. The normal image compiles
          * this out; the diagnostic must distinguish a pending debounce from
          * a classified none/tap without relying on screen observation. */
@@ -2511,6 +2812,12 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
                (unsigned)s_touch_gesture.config.release_debounce_samples,
                s_touch_gesture.tap_pending ? 1u : 0u);
     }
+    if (visual_decision.cancellation) {
+#if COMPANION_VISUAL_ASSET_PACK_ENABLE
+        (void)dispatch_board_visual_decision(&visual_decision, NULL);
+#endif
+        return;
+    }
 #if COMPANION_SCREEN_BALL_MOTION_DIAGNOSTIC
     /* This isolated image verifies the motion coordinator, not product menu
      * affordances.  It must own the contact before the home press cue can
@@ -2520,6 +2827,9 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
     if (!gesture_ready) {
         return;
     }
+#if COMPANION_VISUAL_ASSET_PACK_ENABLE
+    submit_visual_runtime_gesture(&gesture);
+#endif
     cancel_daily_tap_reaction("ball_motion_diagnostic");
     if (Companion_Screen_BallMotionDiagnosticIsActive()) {
         TOUCH_VERBOSE_TRACE("[touch-ui] ball_motion_diagnostic gesture=%s action=ignored active=1\r\n",
@@ -2600,6 +2910,10 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
                 }
             }
         }
+#if COMPANION_VISUAL_ASSET_PACK_ENABLE
+        if (visual_decision.visual_event_valid)
+            (void)dispatch_board_visual_decision(&visual_decision, NULL);
+#endif
         return;
     }
     if (!contact_now) {
@@ -2627,6 +2941,10 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
     }
 #endif
     if (!Companion_Screen_IsMenuVisible()) {
+#if COMPANION_VISUAL_ASSET_PACK_ENABLE
+        if (visual_decision.visual_event_valid)
+            (void)dispatch_board_visual_decision(&visual_decision, NULL);
+#endif
         if (s_recording_fsm.state == COMP_RECORDING_STATE_RECORDING &&
             gesture.type != COMP_TOUCH_GESTURE_DOUBLE_TAP) {
             /* The first tap remains provisional for the stop double tap.
@@ -2659,15 +2977,13 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
                                                      s_screen_menu.home_page);
         } else if (gesture.type == COMP_TOUCH_GESTURE_DOUBLE_TAP) {
             /* Recording owns the next visual beat and is deferred until the
-             * active panel waveform has completed. */
+             * active panel waveform has completed.  The shared boundary
+             * deduplicates repeated reports instead of overwriting a live
+             * action in the legacy single-slot queue. */
             TOUCH_VERBOSE_TRACE("[touch-ui] daily_double_tap_recording x=%u y=%u state=%s\r\n",
                    (unsigned)gesture.end_x,
                    (unsigned)gesture.end_y,
                    comp_recording_state_name(s_recording_fsm.state));
-            if (!defer_touch_runtime_action(
-                    COMP_TOUCH_RUNTIME_ACTION_TOGGLE_RECORDING, now_ms)) {
-                toggle_touch_recording();
-            }
         } else if (gesture.type == COMP_TOUCH_GESTURE_TAP) {
             schedule_daily_tap_reaction(gesture.end_x,
                                         gesture.end_y,
@@ -2703,6 +3019,13 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
                (unsigned)gesture.end_x,
                (unsigned)gesture.end_y);
         (void)Companion_Screen_ShowDailyClean();
+#if COMPANION_VISUAL_ASSET_PACK_ENABLE
+        (void)comp_touch_visual_apply_menu(&s_screen_menu, &visual_decision);
+        (void)comp_touch_recording_boundary_dispatch(
+            &s_touch_recording_boundary, &visual_decision, true,
+            &s_screen_menu,
+            s_recording_fsm.state, now_ms);
+#endif
         return;
     }
     if (s_screen_menu.view == COMP_SCREEN_MENU_VIEW_HOME &&
@@ -2745,14 +3068,21 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
                                      s_screen_menu.home_page);
     }
     comp_screen_menu_set_flags(&s_screen_menu, Companion_Screen_RuntimeMenuFlags());
-    menu_result = gesture.type == COMP_TOUCH_GESTURE_TAP
-                      ? comp_screen_menu_tap(&s_screen_menu,
-                                             gesture.end_x,
-                                             gesture.end_y)
-                      : comp_screen_menu_gesture(&s_screen_menu, &gesture);
-    if (!menu_result.changed) {
+    previous_view = s_screen_menu.view;
+    visual_decision.gesture_ready = gesture_ready;
+    (void)comp_touch_visual_apply_menu(&s_screen_menu, &visual_decision);
+    (void)comp_touch_recording_boundary_dispatch(
+        &s_touch_recording_boundary, &visual_decision, true,
+        &s_screen_menu,
+        s_recording_fsm.state, now_ms);
+    menu_result = visual_decision.menu_result;
+#if COMPANION_VISUAL_ASSET_PACK_ENABLE
+    (void)previous_view;
+#endif
+    if (!menu_result.changed && !visual_decision.ui_assets_selected) {
         return;
     }
+    /* The shared recording boundary has consumed this menu result once. */
     TOUCH_VERBOSE_TRACE("[touch-ui] navigate view=%u page=%u language=%u action=%u revision=%lu\r\n",
            (unsigned)menu_result.view,
            (unsigned)menu_result.home_page,
@@ -2778,11 +3108,6 @@ static void handle_touch_menu_sample(const comp_ft6336_touch_sample_t *sample,
                 COMP_TOUCH_RUNTIME_ACTION_PHONE_RECONNECT, now_ms)) {
             process_touch_menu_phone_reconnect();
         }
-    } else {
-        Companion_Screen_MenuRequest(menu_result.view,
-                                     menu_result.flags,
-                                     menu_result.language,
-                                     menu_result.home_page);
     }
 #else
     (void)sample;
@@ -3174,6 +3499,26 @@ static void toggle_touch_recording(void)
         return;
     }
     start_user_recording(COMP_RECORDING_SOURCE_USER_TOUCH, "touch_double_tap");
+}
+
+static bool execute_touch_recording_boundary_action(
+    void *context, comp_touch_recording_action_t action,
+    comp_recording_state_t state_before)
+{
+    (void)context;
+    (void)state_before;
+    if (action != COMP_TOUCH_RECORDING_ACTION_TOGGLE) return false;
+    toggle_touch_recording();
+    return true;
+}
+
+static bool board_touch_recording_menu_sink(
+    void *context, const comp_touch_visual_decision_t *decision,
+    const comp_screen_menu_t *menu, uint32_t now_ms)
+{
+    (void)context;
+    (void)now_ms;
+    return dispatch_board_visual_decision(decision, menu);
 }
 
 static void start_manual_recording(void)
