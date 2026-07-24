@@ -1,0 +1,581 @@
+{
+  "byte_identical": true,
+  "http_status": 200,
+  "owner_review_url": "http://127.0.0.1:4173/docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html",
+  "page": {
+    "committed_sha256": "8F8FC05C5DAA3A95C7A2E80D677B56A831CF620A752EABB1DCB535F01705AB9D",
+    "git_blob": "fdf6c7c8e9ad7293dfd1115e7f42cca015d9a15e",
+    "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html",
+    "sha256": "0C29D5FF40D80C41461F0738C1C747A6C2B27A5DA74B5C79E166621A7566D9DA"
+  },
+  "replay_tool": {
+    "path": "tools/faraday_upper_art/replay_companion_browser_three_wave_state_view_comp_req_533_534.mjs",
+    "sha256": "EC9E0F9C6370F4244532CFF157AD15CCC2295A31901BE790F53AF5D051C3C86A"
+  },
+  "requirements": [
+    "COMP-REQ-533",
+    "COMP-REQ-534"
+  ],
+  "run_a": {
+    "aggregate_sha256": "C2BF9818D5B3865145ED6E72CB2CC5AC14A24E554C851FA3CA54DCDA874A2327",
+    "file_count": 53,
+    "files": [
+      {
+        "bytes": 4282,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/browser-replay-result.json",
+        "sha256": "842073FF357B7ADF03775B432E87C67B45824F6EC271FE59D5B7CE46A05CF94C"
+      },
+      {
+        "bytes": 1952726,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/pixel-dom-route-artifact.json",
+        "sha256": "21CA3E864CE8523C497F38ABC758B1ADE34BB92EF755F63D9DFA2FC7A4F5B4F6"
+      },
+      {
+        "bytes": 18297,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshot-manifest.json",
+        "sha256": "4806A36D7E0BA0C456CA588888E237911D8D5B46B55F0B9E1B6DA238976A8BC5"
+      },
+      {
+        "bytes": 50531,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-layout.png",
+        "sha256": "0002E2B36999BA057EEBBE7B2B3BB5816F5E8D112BEF436685E1B7B63F734A48"
+      },
+      {
+        "bytes": 1179,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-mouse-drag-center-held.png",
+        "sha256": "0456FFBFCDCC227549BE80588CBB0486BE7C9323DE9AB9B9968135C7C85A62C9"
+      },
+      {
+        "bytes": 1386,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-mouse-hold-menu-return-device-ui-assets.png",
+        "sha256": "7FD9AC2D1C59C380EB9A4ECFFD4C9E374D240ED2B67CF93CEEDE6F88F372B27B"
+      },
+      {
+        "bytes": 1526,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-mouse-hold-menu-return-hold-50.png",
+        "sha256": "ADE50CA8C5C971F76B25BCE21B16A8BAADF39DD4E58481024D33C9D897C47DBF"
+      },
+      {
+        "bytes": 1916,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-mouse-hold-menu-return-menu-roots.png",
+        "sha256": "265CAAE45F5E94AE592899F4DF1598B02DDD7664CB3C32124FA51E6C70B33A0B"
+      },
+      {
+        "bytes": 1179,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-mouse-hold-menu-return-returned.png",
+        "sha256": "0456FFBFCDCC227549BE80588CBB0486BE7C9323DE9AB9B9968135C7C85A62C9"
+      },
+      {
+        "bytes": 2469,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-mouse-recording-return-entry.png",
+        "sha256": "0B551318B6CF302AC0BA370A336B146ED2A01C18007A23ABD135801C39D53AA6"
+      },
+      {
+        "bytes": 1179,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-mouse-recording-return-returned.png",
+        "sha256": "0456FFBFCDCC227549BE80588CBB0486BE7C9323DE9AB9B9968135C7C85A62C9"
+      },
+      {
+        "bytes": 1439,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-mouse-single-tap-response.png",
+        "sha256": "AF3E46D365879FCA60F0A7916EFF575D3A356C07F78004602F8194C79BEB3487"
+      },
+      {
+        "bytes": 1179,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-pen-drag-center-held.png",
+        "sha256": "0456FFBFCDCC227549BE80588CBB0486BE7C9323DE9AB9B9968135C7C85A62C9"
+      },
+      {
+        "bytes": 1386,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-pen-hold-menu-return-device-ui-assets.png",
+        "sha256": "7FD9AC2D1C59C380EB9A4ECFFD4C9E374D240ED2B67CF93CEEDE6F88F372B27B"
+      },
+      {
+        "bytes": 1526,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-pen-hold-menu-return-hold-50.png",
+        "sha256": "ADE50CA8C5C971F76B25BCE21B16A8BAADF39DD4E58481024D33C9D897C47DBF"
+      },
+      {
+        "bytes": 1916,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-pen-hold-menu-return-menu-roots.png",
+        "sha256": "265CAAE45F5E94AE592899F4DF1598B02DDD7664CB3C32124FA51E6C70B33A0B"
+      },
+      {
+        "bytes": 1179,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-pen-hold-menu-return-returned.png",
+        "sha256": "0456FFBFCDCC227549BE80588CBB0486BE7C9323DE9AB9B9968135C7C85A62C9"
+      },
+      {
+        "bytes": 2469,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-pen-recording-return-entry.png",
+        "sha256": "0B551318B6CF302AC0BA370A336B146ED2A01C18007A23ABD135801C39D53AA6"
+      },
+      {
+        "bytes": 1179,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-pen-recording-return-returned.png",
+        "sha256": "0456FFBFCDCC227549BE80588CBB0486BE7C9323DE9AB9B9968135C7C85A62C9"
+      },
+      {
+        "bytes": 1439,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-pen-single-tap-response.png",
+        "sha256": "AF3E46D365879FCA60F0A7916EFF575D3A356C07F78004602F8194C79BEB3487"
+      },
+      {
+        "bytes": 1179,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-touch-drag-center-held.png",
+        "sha256": "0456FFBFCDCC227549BE80588CBB0486BE7C9323DE9AB9B9968135C7C85A62C9"
+      },
+      {
+        "bytes": 1386,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-touch-hold-menu-return-device-ui-assets.png",
+        "sha256": "7FD9AC2D1C59C380EB9A4ECFFD4C9E374D240ED2B67CF93CEEDE6F88F372B27B"
+      },
+      {
+        "bytes": 1526,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-touch-hold-menu-return-hold-50.png",
+        "sha256": "ADE50CA8C5C971F76B25BCE21B16A8BAADF39DD4E58481024D33C9D897C47DBF"
+      },
+      {
+        "bytes": 1916,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-touch-hold-menu-return-menu-roots.png",
+        "sha256": "265CAAE45F5E94AE592899F4DF1598B02DDD7664CB3C32124FA51E6C70B33A0B"
+      },
+      {
+        "bytes": 1179,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-touch-hold-menu-return-returned.png",
+        "sha256": "0456FFBFCDCC227549BE80588CBB0486BE7C9323DE9AB9B9968135C7C85A62C9"
+      },
+      {
+        "bytes": 2469,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-touch-recording-return-entry.png",
+        "sha256": "0B551318B6CF302AC0BA370A336B146ED2A01C18007A23ABD135801C39D53AA6"
+      },
+      {
+        "bytes": 1179,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-touch-recording-return-returned.png",
+        "sha256": "0456FFBFCDCC227549BE80588CBB0486BE7C9323DE9AB9B9968135C7C85A62C9"
+      },
+      {
+        "bytes": 1439,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-touch-single-tap-response.png",
+        "sha256": "AF3E46D365879FCA60F0A7916EFF575D3A356C07F78004602F8194C79BEB3487"
+      },
+      {
+        "bytes": 33330,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-layout.png",
+        "sha256": "7F146AE51D81F933129BE2FE6FFA5B3F80C5E6446A3A9E2272C9C8221DF4D5A3"
+      },
+      {
+        "bytes": 1172,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-mouse-drag-center-held.png",
+        "sha256": "9DFD4D0BE2C9B2ABBA4CF351D1021543D57AA4F58D05917647AE821788CDE2E5"
+      },
+      {
+        "bytes": 1377,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-mouse-hold-menu-return-device-ui-assets.png",
+        "sha256": "81CCDF57957EB60AE93A6978CA6C958CF35FECAA9781AD1F465D8B401F659539"
+      },
+      {
+        "bytes": 1520,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-mouse-hold-menu-return-hold-50.png",
+        "sha256": "4DED57E94476143A37FF3171ADFF0E496B7248F1F41D12D268377CB7657C4F9F"
+      },
+      {
+        "bytes": 1909,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-mouse-hold-menu-return-menu-roots.png",
+        "sha256": "B6A2DAF80493BE09F2F20585CDAE82708E6DD38A285D0D2F9F8132E3FA4D7750"
+      },
+      {
+        "bytes": 1172,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-mouse-hold-menu-return-returned.png",
+        "sha256": "9DFD4D0BE2C9B2ABBA4CF351D1021543D57AA4F58D05917647AE821788CDE2E5"
+      },
+      {
+        "bytes": 2468,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-mouse-recording-return-entry.png",
+        "sha256": "21426CDDC79C38B5E6A1CA7E4C2CAF43551EBE40B0E8D4A0A8D95735FBC2B503"
+      },
+      {
+        "bytes": 1172,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-mouse-recording-return-returned.png",
+        "sha256": "9DFD4D0BE2C9B2ABBA4CF351D1021543D57AA4F58D05917647AE821788CDE2E5"
+      },
+      {
+        "bytes": 1431,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-mouse-single-tap-response.png",
+        "sha256": "D069CA619DCAC728D7FC28598F393E1C185F7D3E7228AA059779E132F035B18D"
+      },
+      {
+        "bytes": 1172,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-pen-drag-center-held.png",
+        "sha256": "9DFD4D0BE2C9B2ABBA4CF351D1021543D57AA4F58D05917647AE821788CDE2E5"
+      },
+      {
+        "bytes": 1377,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-pen-hold-menu-return-device-ui-assets.png",
+        "sha256": "81CCDF57957EB60AE93A6978CA6C958CF35FECAA9781AD1F465D8B401F659539"
+      },
+      {
+        "bytes": 1520,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-pen-hold-menu-return-hold-50.png",
+        "sha256": "4DED57E94476143A37FF3171ADFF0E496B7248F1F41D12D268377CB7657C4F9F"
+      },
+      {
+        "bytes": 1909,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-pen-hold-menu-return-menu-roots.png",
+        "sha256": "B6A2DAF80493BE09F2F20585CDAE82708E6DD38A285D0D2F9F8132E3FA4D7750"
+      },
+      {
+        "bytes": 1172,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-pen-hold-menu-return-returned.png",
+        "sha256": "9DFD4D0BE2C9B2ABBA4CF351D1021543D57AA4F58D05917647AE821788CDE2E5"
+      },
+      {
+        "bytes": 2468,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-pen-recording-return-entry.png",
+        "sha256": "21426CDDC79C38B5E6A1CA7E4C2CAF43551EBE40B0E8D4A0A8D95735FBC2B503"
+      },
+      {
+        "bytes": 1172,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-pen-recording-return-returned.png",
+        "sha256": "9DFD4D0BE2C9B2ABBA4CF351D1021543D57AA4F58D05917647AE821788CDE2E5"
+      },
+      {
+        "bytes": 1431,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-pen-single-tap-response.png",
+        "sha256": "D069CA619DCAC728D7FC28598F393E1C185F7D3E7228AA059779E132F035B18D"
+      },
+      {
+        "bytes": 1172,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-touch-drag-center-held.png",
+        "sha256": "9DFD4D0BE2C9B2ABBA4CF351D1021543D57AA4F58D05917647AE821788CDE2E5"
+      },
+      {
+        "bytes": 1377,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-touch-hold-menu-return-device-ui-assets.png",
+        "sha256": "81CCDF57957EB60AE93A6978CA6C958CF35FECAA9781AD1F465D8B401F659539"
+      },
+      {
+        "bytes": 1520,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-touch-hold-menu-return-hold-50.png",
+        "sha256": "4DED57E94476143A37FF3171ADFF0E496B7248F1F41D12D268377CB7657C4F9F"
+      },
+      {
+        "bytes": 1909,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-touch-hold-menu-return-menu-roots.png",
+        "sha256": "B6A2DAF80493BE09F2F20585CDAE82708E6DD38A285D0D2F9F8132E3FA4D7750"
+      },
+      {
+        "bytes": 1172,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-touch-hold-menu-return-returned.png",
+        "sha256": "9DFD4D0BE2C9B2ABBA4CF351D1021543D57AA4F58D05917647AE821788CDE2E5"
+      },
+      {
+        "bytes": 2468,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-touch-recording-return-entry.png",
+        "sha256": "21426CDDC79C38B5E6A1CA7E4C2CAF43551EBE40B0E8D4A0A8D95735FBC2B503"
+      },
+      {
+        "bytes": 1172,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-touch-recording-return-returned.png",
+        "sha256": "9DFD4D0BE2C9B2ABBA4CF351D1021543D57AA4F58D05917647AE821788CDE2E5"
+      },
+      {
+        "bytes": 1431,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-touch-single-tap-response.png",
+        "sha256": "D069CA619DCAC728D7FC28598F393E1C185F7D3E7228AA059779E132F035B18D"
+      }
+    ]
+  },
+  "run_b": {
+    "aggregate_sha256": "C2BF9818D5B3865145ED6E72CB2CC5AC14A24E554C851FA3CA54DCDA874A2327",
+    "file_count": 53,
+    "files": [
+      {
+        "bytes": 4282,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/browser-replay-result.json",
+        "sha256": "842073FF357B7ADF03775B432E87C67B45824F6EC271FE59D5B7CE46A05CF94C"
+      },
+      {
+        "bytes": 1952726,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/pixel-dom-route-artifact.json",
+        "sha256": "21CA3E864CE8523C497F38ABC758B1ADE34BB92EF755F63D9DFA2FC7A4F5B4F6"
+      },
+      {
+        "bytes": 18297,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshot-manifest.json",
+        "sha256": "4806A36D7E0BA0C456CA588888E237911D8D5B46B55F0B9E1B6DA238976A8BC5"
+      },
+      {
+        "bytes": 50531,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-layout.png",
+        "sha256": "0002E2B36999BA057EEBBE7B2B3BB5816F5E8D112BEF436685E1B7B63F734A48"
+      },
+      {
+        "bytes": 1179,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-mouse-drag-center-held.png",
+        "sha256": "0456FFBFCDCC227549BE80588CBB0486BE7C9323DE9AB9B9968135C7C85A62C9"
+      },
+      {
+        "bytes": 1386,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-mouse-hold-menu-return-device-ui-assets.png",
+        "sha256": "7FD9AC2D1C59C380EB9A4ECFFD4C9E374D240ED2B67CF93CEEDE6F88F372B27B"
+      },
+      {
+        "bytes": 1526,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-mouse-hold-menu-return-hold-50.png",
+        "sha256": "ADE50CA8C5C971F76B25BCE21B16A8BAADF39DD4E58481024D33C9D897C47DBF"
+      },
+      {
+        "bytes": 1916,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-mouse-hold-menu-return-menu-roots.png",
+        "sha256": "265CAAE45F5E94AE592899F4DF1598B02DDD7664CB3C32124FA51E6C70B33A0B"
+      },
+      {
+        "bytes": 1179,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-mouse-hold-menu-return-returned.png",
+        "sha256": "0456FFBFCDCC227549BE80588CBB0486BE7C9323DE9AB9B9968135C7C85A62C9"
+      },
+      {
+        "bytes": 2469,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-mouse-recording-return-entry.png",
+        "sha256": "0B551318B6CF302AC0BA370A336B146ED2A01C18007A23ABD135801C39D53AA6"
+      },
+      {
+        "bytes": 1179,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-mouse-recording-return-returned.png",
+        "sha256": "0456FFBFCDCC227549BE80588CBB0486BE7C9323DE9AB9B9968135C7C85A62C9"
+      },
+      {
+        "bytes": 1439,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-mouse-single-tap-response.png",
+        "sha256": "AF3E46D365879FCA60F0A7916EFF575D3A356C07F78004602F8194C79BEB3487"
+      },
+      {
+        "bytes": 1179,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-pen-drag-center-held.png",
+        "sha256": "0456FFBFCDCC227549BE80588CBB0486BE7C9323DE9AB9B9968135C7C85A62C9"
+      },
+      {
+        "bytes": 1386,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-pen-hold-menu-return-device-ui-assets.png",
+        "sha256": "7FD9AC2D1C59C380EB9A4ECFFD4C9E374D240ED2B67CF93CEEDE6F88F372B27B"
+      },
+      {
+        "bytes": 1526,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-pen-hold-menu-return-hold-50.png",
+        "sha256": "ADE50CA8C5C971F76B25BCE21B16A8BAADF39DD4E58481024D33C9D897C47DBF"
+      },
+      {
+        "bytes": 1916,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-pen-hold-menu-return-menu-roots.png",
+        "sha256": "265CAAE45F5E94AE592899F4DF1598B02DDD7664CB3C32124FA51E6C70B33A0B"
+      },
+      {
+        "bytes": 1179,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-pen-hold-menu-return-returned.png",
+        "sha256": "0456FFBFCDCC227549BE80588CBB0486BE7C9323DE9AB9B9968135C7C85A62C9"
+      },
+      {
+        "bytes": 2469,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-pen-recording-return-entry.png",
+        "sha256": "0B551318B6CF302AC0BA370A336B146ED2A01C18007A23ABD135801C39D53AA6"
+      },
+      {
+        "bytes": 1179,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-pen-recording-return-returned.png",
+        "sha256": "0456FFBFCDCC227549BE80588CBB0486BE7C9323DE9AB9B9968135C7C85A62C9"
+      },
+      {
+        "bytes": 1439,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-pen-single-tap-response.png",
+        "sha256": "AF3E46D365879FCA60F0A7916EFF575D3A356C07F78004602F8194C79BEB3487"
+      },
+      {
+        "bytes": 1179,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-touch-drag-center-held.png",
+        "sha256": "0456FFBFCDCC227549BE80588CBB0486BE7C9323DE9AB9B9968135C7C85A62C9"
+      },
+      {
+        "bytes": 1386,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-touch-hold-menu-return-device-ui-assets.png",
+        "sha256": "7FD9AC2D1C59C380EB9A4ECFFD4C9E374D240ED2B67CF93CEEDE6F88F372B27B"
+      },
+      {
+        "bytes": 1526,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-touch-hold-menu-return-hold-50.png",
+        "sha256": "ADE50CA8C5C971F76B25BCE21B16A8BAADF39DD4E58481024D33C9D897C47DBF"
+      },
+      {
+        "bytes": 1916,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-touch-hold-menu-return-menu-roots.png",
+        "sha256": "265CAAE45F5E94AE592899F4DF1598B02DDD7664CB3C32124FA51E6C70B33A0B"
+      },
+      {
+        "bytes": 1179,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-touch-hold-menu-return-returned.png",
+        "sha256": "0456FFBFCDCC227549BE80588CBB0486BE7C9323DE9AB9B9968135C7C85A62C9"
+      },
+      {
+        "bytes": 2469,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-touch-recording-return-entry.png",
+        "sha256": "0B551318B6CF302AC0BA370A336B146ED2A01C18007A23ABD135801C39D53AA6"
+      },
+      {
+        "bytes": 1179,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-touch-recording-return-returned.png",
+        "sha256": "0456FFBFCDCC227549BE80588CBB0486BE7C9323DE9AB9B9968135C7C85A62C9"
+      },
+      {
+        "bytes": 1439,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/desktop-touch-single-tap-response.png",
+        "sha256": "AF3E46D365879FCA60F0A7916EFF575D3A356C07F78004602F8194C79BEB3487"
+      },
+      {
+        "bytes": 33330,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-layout.png",
+        "sha256": "7F146AE51D81F933129BE2FE6FFA5B3F80C5E6446A3A9E2272C9C8221DF4D5A3"
+      },
+      {
+        "bytes": 1172,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-mouse-drag-center-held.png",
+        "sha256": "9DFD4D0BE2C9B2ABBA4CF351D1021543D57AA4F58D05917647AE821788CDE2E5"
+      },
+      {
+        "bytes": 1377,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-mouse-hold-menu-return-device-ui-assets.png",
+        "sha256": "81CCDF57957EB60AE93A6978CA6C958CF35FECAA9781AD1F465D8B401F659539"
+      },
+      {
+        "bytes": 1520,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-mouse-hold-menu-return-hold-50.png",
+        "sha256": "4DED57E94476143A37FF3171ADFF0E496B7248F1F41D12D268377CB7657C4F9F"
+      },
+      {
+        "bytes": 1909,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-mouse-hold-menu-return-menu-roots.png",
+        "sha256": "B6A2DAF80493BE09F2F20585CDAE82708E6DD38A285D0D2F9F8132E3FA4D7750"
+      },
+      {
+        "bytes": 1172,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-mouse-hold-menu-return-returned.png",
+        "sha256": "9DFD4D0BE2C9B2ABBA4CF351D1021543D57AA4F58D05917647AE821788CDE2E5"
+      },
+      {
+        "bytes": 2468,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-mouse-recording-return-entry.png",
+        "sha256": "21426CDDC79C38B5E6A1CA7E4C2CAF43551EBE40B0E8D4A0A8D95735FBC2B503"
+      },
+      {
+        "bytes": 1172,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-mouse-recording-return-returned.png",
+        "sha256": "9DFD4D0BE2C9B2ABBA4CF351D1021543D57AA4F58D05917647AE821788CDE2E5"
+      },
+      {
+        "bytes": 1431,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-mouse-single-tap-response.png",
+        "sha256": "D069CA619DCAC728D7FC28598F393E1C185F7D3E7228AA059779E132F035B18D"
+      },
+      {
+        "bytes": 1172,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-pen-drag-center-held.png",
+        "sha256": "9DFD4D0BE2C9B2ABBA4CF351D1021543D57AA4F58D05917647AE821788CDE2E5"
+      },
+      {
+        "bytes": 1377,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-pen-hold-menu-return-device-ui-assets.png",
+        "sha256": "81CCDF57957EB60AE93A6978CA6C958CF35FECAA9781AD1F465D8B401F659539"
+      },
+      {
+        "bytes": 1520,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-pen-hold-menu-return-hold-50.png",
+        "sha256": "4DED57E94476143A37FF3171ADFF0E496B7248F1F41D12D268377CB7657C4F9F"
+      },
+      {
+        "bytes": 1909,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-pen-hold-menu-return-menu-roots.png",
+        "sha256": "B6A2DAF80493BE09F2F20585CDAE82708E6DD38A285D0D2F9F8132E3FA4D7750"
+      },
+      {
+        "bytes": 1172,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-pen-hold-menu-return-returned.png",
+        "sha256": "9DFD4D0BE2C9B2ABBA4CF351D1021543D57AA4F58D05917647AE821788CDE2E5"
+      },
+      {
+        "bytes": 2468,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-pen-recording-return-entry.png",
+        "sha256": "21426CDDC79C38B5E6A1CA7E4C2CAF43551EBE40B0E8D4A0A8D95735FBC2B503"
+      },
+      {
+        "bytes": 1172,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-pen-recording-return-returned.png",
+        "sha256": "9DFD4D0BE2C9B2ABBA4CF351D1021543D57AA4F58D05917647AE821788CDE2E5"
+      },
+      {
+        "bytes": 1431,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-pen-single-tap-response.png",
+        "sha256": "D069CA619DCAC728D7FC28598F393E1C185F7D3E7228AA059779E132F035B18D"
+      },
+      {
+        "bytes": 1172,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-touch-drag-center-held.png",
+        "sha256": "9DFD4D0BE2C9B2ABBA4CF351D1021543D57AA4F58D05917647AE821788CDE2E5"
+      },
+      {
+        "bytes": 1377,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-touch-hold-menu-return-device-ui-assets.png",
+        "sha256": "81CCDF57957EB60AE93A6978CA6C958CF35FECAA9781AD1F465D8B401F659539"
+      },
+      {
+        "bytes": 1520,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-touch-hold-menu-return-hold-50.png",
+        "sha256": "4DED57E94476143A37FF3171ADFF0E496B7248F1F41D12D268377CB7657C4F9F"
+      },
+      {
+        "bytes": 1909,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-touch-hold-menu-return-menu-roots.png",
+        "sha256": "B6A2DAF80493BE09F2F20585CDAE82708E6DD38A285D0D2F9F8132E3FA4D7750"
+      },
+      {
+        "bytes": 1172,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-touch-hold-menu-return-returned.png",
+        "sha256": "9DFD4D0BE2C9B2ABBA4CF351D1021543D57AA4F58D05917647AE821788CDE2E5"
+      },
+      {
+        "bytes": 2468,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-touch-recording-return-entry.png",
+        "sha256": "21426CDDC79C38B5E6A1CA7E4C2CAF43551EBE40B0E8D4A0A8D95735FBC2B503"
+      },
+      {
+        "bytes": 1172,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-touch-recording-return-returned.png",
+        "sha256": "9DFD4D0BE2C9B2ABBA4CF351D1021543D57AA4F58D05917647AE821788CDE2E5"
+      },
+      {
+        "bytes": 1431,
+        "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshots/mobile-touch-single-tap-response.png",
+        "sha256": "D069CA619DCAC728D7FC28598F393E1C185F7D3E7228AA059779E132F035B18D"
+      }
+    ]
+  },
+  "run_count": 2,
+  "runtime_url": "http://127.0.0.1:4174/docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html",
+  "schema": "companion.browser-three-wave-state-view-determinism.v1",
+  "served_page_sha256": "0C29D5FF40D80C41461F0738C1C747A6C2B27A5DA74B5C79E166621A7566D9DA",
+  "side_effect_counters": {
+    "evidence_artifact_write": 1,
+    "hardware": 0,
+    "headless_browser_replay_runs": 2,
+    "lower_write": 0,
+    "microphone_permission_request": 0,
+    "operator_prompt": 0,
+    "platform_write": 0,
+    "popup": 0,
+    "production_write": 0,
+    "registry_write": 0,
+    "server_start": 0,
+    "visible_browser": 0
+  },
+  "source_commit": "235bc31c64ff82c99f2a2ba9783eef353754cbd5",
+  "status": "PASS_TWO_CLEAN_REPLAYS_BYTE_IDENTICAL"
+}

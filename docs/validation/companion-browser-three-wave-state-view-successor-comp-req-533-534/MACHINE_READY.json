@@ -1,0 +1,103 @@
+{
+  "failed_checks": [],
+  "identities": [
+    {
+      "bytes": 19296,
+      "id": "focused_tool",
+      "path": "tools/faraday_upper_art/verify_companion_browser_three_wave_state_view_comp_req_533_534.mjs",
+      "sha256": "F6C43D2D4C7F893D5B59013A3FB4FB679C7F3ED3448D7290EC2202C3E5FA21D4"
+    },
+    {
+      "bytes": 80696,
+      "id": "replay_tool",
+      "path": "tools/faraday_upper_art/replay_companion_browser_three_wave_state_view_comp_req_533_534.mjs",
+      "sha256": "EC9E0F9C6370F4244532CFF157AD15CCC2295A31901BE790F53AF5D051C3C86A"
+    },
+    {
+      "bytes": 6744,
+      "id": "determinism_tool",
+      "path": "tools/faraday_upper_art/run_companion_browser_three_wave_state_view_determinism_comp_req_533_534.py",
+      "sha256": "40FBE5CC57CBC5ECAF84EB0A311D7FE7AAD5203CE82CF8F6BBF64E346145147A"
+    },
+    {
+      "bytes": 12730,
+      "id": "before_oracle",
+      "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/before-fix/geometry-temporal-state-oracle.json",
+      "sha256": "D6C6D0952BD7E985467E629F17AECEE216C23E46BDED86ACC1419B16EAE6F356"
+    },
+    {
+      "bytes": 26381,
+      "id": "after_oracle",
+      "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/after-fix/geometry-temporal-state-oracle.json",
+      "sha256": "9FC4A390A71A431029A3B50E6DC117D441D832694E7BDEA5E53A11A306DE7626"
+    },
+    {
+      "bytes": 4282,
+      "id": "replay",
+      "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/browser-replay-result.json",
+      "sha256": "842073FF357B7ADF03775B432E87C67B45824F6EC271FE59D5B7CE46A05CF94C"
+    },
+    {
+      "bytes": 1952726,
+      "id": "pixel",
+      "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/pixel-dom-route-artifact.json",
+      "sha256": "21CA3E864CE8523C497F38ABC758B1ADE34BB92EF755F63D9DFA2FC7A4F5B4F6"
+    },
+    {
+      "bytes": 18297,
+      "id": "screenshots",
+      "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/determinism-run/screenshot-manifest.json",
+      "sha256": "4806A36D7E0BA0C456CA588888E237911D8D5B46B55F0B9E1B6DA238976A8BC5"
+    },
+    {
+      "bytes": 33198,
+      "id": "determinism",
+      "path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/deterministic-replay-receipt.json",
+      "sha256": "7A65317B4FF4296543AF94D0D16662C6D4464726328BB9F172BE0ACFEA3674A7"
+    }
+  ],
+  "owner_gate": {
+    "may_claim_owner_pass": false,
+    "result_path": "docs/validation/companion-browser-three-wave-state-view-successor-comp-req-533-534/owner-review.json",
+    "status": "PENDING"
+  },
+  "proof": {
+    "byte_identical": true,
+    "clean_replays": 2,
+    "focused_checks": 23,
+    "matrix_rows": 42,
+    "natural_bridge_commits": 6,
+    "natural_bridge_ordered": 6,
+    "screenshots": 50,
+    "state_snapshots": 258
+  },
+  "requirements": [
+    "COMP-REQ-521",
+    "COMP-REQ-533",
+    "COMP-REQ-534"
+  ],
+  "schema": "companion.browser-three-wave-state-view-source-bound.v1",
+  "side_effect_counters": {
+    "hardware": 0,
+    "lower_write": 0,
+    "microphone_permission_request": 0,
+    "operator_prompt": 0,
+    "platform_write": 0,
+    "popup": 0,
+    "production_write": 0,
+    "registry_write": 0,
+    "server_start": 0,
+    "visible_browser": 0
+  },
+  "source": {
+    "base_commit": "ec626c7f4a18bda1f3ace14ba5e6574942218a38",
+    "page_committed_sha256": "8F8FC05C5DAA3A95C7A2E80D677B56A831CF620A752EABB1DCB535F01705AB9D",
+    "page_git_blob": "fdf6c7c8e9ad7293dfd1115e7f42cca015d9a15e",
+    "page_path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html",
+    "page_sha256": "0C29D5FF40D80C41461F0738C1C747A6C2B27A5DA74B5C79E166621A7566D9DA",
+    "source_commit": "235bc31c64ff82c99f2a2ba9783eef353754cbd5",
+    "tool_commit": "bc4049d5cfd957d22b408ab32d5ae196f683458b"
+  },
+  "status": "MACHINE_READY",
+  "url": "http://127.0.0.1:4173/docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html"
+}

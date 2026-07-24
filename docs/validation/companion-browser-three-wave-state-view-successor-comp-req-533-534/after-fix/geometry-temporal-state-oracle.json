@@ -1,0 +1,1054 @@
+{
+  "checks": {
+    "displayed_edge_is_legal": true,
+    "every_arc_convex_toward_listening_point": true,
+    "every_arc_inside_200x200": true,
+    "exactly_three_pixel_arcs_every_step": true,
+    "forged_edges_rejected": true,
+    "identity_motion_inward_or_absorb_spawn": true,
+    "legal_edges_complete": true,
+    "no_css_interpolation": true,
+    "no_http_or_page_errors": true,
+    "no_intermediate_visible_frame": true,
+    "no_microphone_request": true,
+    "observed_boundary_bounded": true,
+    "observed_boundary_not_early": true,
+    "one_change_at_physical_boundary": true,
+    "optical_centroid_centered": true,
+    "optical_envelope_centered": true,
+    "optical_no_clipping": true,
+    "optical_samples_complete": true,
+    "page_identity_exact": true,
+    "physical_step_contract_480_ms": true,
+    "state_view_exists_outside_screen": true,
+    "state_view_uses_single_runtime_source": true,
+    "three_runtime_arc_identities": true
+  },
+  "failed_checks": [],
+  "observed": {
+    "arcIdentities": [
+      "wave_a",
+      "wave_b",
+      "wave_c"
+    ],
+    "canvasTransitionDuration": "0s",
+    "contractStepMs": 480,
+    "edgeChecks": {
+      "forged": [
+        {
+          "allowed": false,
+          "event": "touch_tap",
+          "from": "calm",
+          "memory": 2,
+          "to": "alert"
+        },
+        {
+          "allowed": false,
+          "event": "touch_tap",
+          "from": "curious",
+          "memory": 2,
+          "to": "playful"
+        },
+        {
+          "allowed": false,
+          "event": "touch_tap",
+          "from": "warm",
+          "memory": 2,
+          "to": "calm"
+        },
+        {
+          "allowed": false,
+          "event": "touch_tap",
+          "from": "alert",
+          "memory": 2,
+          "to": "playful"
+        },
+        {
+          "allowed": false,
+          "event": "ambiguity_resolved",
+          "from": "puzzled",
+          "memory": 0,
+          "to": "warm"
+        }
+      ],
+      "legal": [
+        {
+          "allowed": true,
+          "event": "touch_tap",
+          "from": "calm",
+          "memory": 1,
+          "to": "curious"
+        },
+        {
+          "allowed": true,
+          "event": "touch_tap",
+          "from": "curious",
+          "memory": 2,
+          "to": "warm"
+        },
+        {
+          "allowed": true,
+          "event": "touch_tap",
+          "from": "warm",
+          "memory": 2,
+          "to": "playful"
+        },
+        {
+          "allowed": true,
+          "event": "touch_tap",
+          "from": "playful",
+          "memory": 2,
+          "to": "playful"
+        },
+        {
+          "allowed": true,
+          "event": "ambiguity_resolved",
+          "from": "puzzled",
+          "memory": 0,
+          "to": "calm"
+        },
+        {
+          "allowed": true,
+          "event": "high_salience",
+          "from": "puzzled",
+          "memory": 0,
+          "to": "alert"
+        },
+        {
+          "allowed": true,
+          "event": "salience_reduced",
+          "from": "alert",
+          "memory": 0,
+          "to": "puzzled"
+        }
+      ]
+    },
+    "errors": [],
+    "firstObservedChangeMs": 529,
+    "identityTransitions": [
+      {
+        "arc_id": "wave_a",
+        "current_distance": 24,
+        "current_lifecycle": "front",
+        "kind": "inward",
+        "previous_distance": 32,
+        "previous_lifecycle": "spawn"
+      },
+      {
+        "arc_id": "wave_b",
+        "current_distance": 16,
+        "current_lifecycle": "front",
+        "kind": "inward",
+        "previous_distance": 24,
+        "previous_lifecycle": "front"
+      },
+      {
+        "arc_id": "wave_c",
+        "current_distance": 8,
+        "current_lifecycle": "absorbed",
+        "kind": "inward",
+        "previous_distance": 16,
+        "previous_lifecycle": "front"
+      },
+      {
+        "arc_id": "wave_a",
+        "current_distance": 16,
+        "current_lifecycle": "front",
+        "kind": "inward",
+        "previous_distance": 24,
+        "previous_lifecycle": "front"
+      },
+      {
+        "arc_id": "wave_b",
+        "current_distance": 8,
+        "current_lifecycle": "absorbed",
+        "kind": "inward",
+        "previous_distance": 16,
+        "previous_lifecycle": "front"
+      },
+      {
+        "arc_id": "wave_c",
+        "current_distance": 32,
+        "current_lifecycle": "spawn",
+        "kind": "spawn_after_absorption",
+        "previous_distance": 8,
+        "previous_lifecycle": "absorbed"
+      },
+      {
+        "arc_id": "wave_a",
+        "current_distance": 8,
+        "current_lifecycle": "absorbed",
+        "kind": "inward",
+        "previous_distance": 16,
+        "previous_lifecycle": "front"
+      },
+      {
+        "arc_id": "wave_b",
+        "current_distance": 32,
+        "current_lifecycle": "spawn",
+        "kind": "spawn_after_absorption",
+        "previous_distance": 8,
+        "previous_lifecycle": "absorbed"
+      },
+      {
+        "arc_id": "wave_c",
+        "current_distance": 24,
+        "current_lifecycle": "front",
+        "kind": "inward",
+        "previous_distance": 32,
+        "previous_lifecycle": "spawn"
+      }
+    ],
+    "mediaRequestCount": 0,
+    "naturalState": {
+      "affect_after": {
+        "affinity": 0,
+        "arousal": 1,
+        "valence": 0
+      },
+      "base_affect": "calm",
+      "bridge": null,
+      "changed_frame_count": 0,
+      "coalesced_pending": null,
+      "contract": {
+        "bridgeWindowMs": 480,
+        "explicitResolveEdges": {
+          "ambiguity_resolved": [
+            "puzzled",
+            "calm"
+          ],
+          "high_salience": [
+            "puzzled",
+            "alert"
+          ],
+          "salience_reduced": [
+            "alert",
+            "puzzled"
+          ]
+        },
+        "legalTapEdges": {
+          "calm": "curious",
+          "curious": "warm",
+          "warm": "playful"
+        },
+        "maxCoalescedPending": 1,
+        "maxPostSourceChangedFrames": 3,
+        "priority": [
+          "error",
+          "alert",
+          "menu",
+          "recording",
+          "drag",
+          "single_tap",
+          "ambient"
+        ],
+        "stateStories": {
+          "alert": "alert_exclamation",
+          "calm": "calm_presence",
+          "curious": "curious_question",
+          "playful": "playful_presence",
+          "puzzled": "curious_question",
+          "warm": "warm_presence"
+        },
+        "tapDiscriminatorMs": 650
+      },
+      "gaze_target": {
+        "key": "1,0,1,0",
+        "x": 100,
+        "y": 100
+      },
+      "interaction_memory": 0,
+      "mode_override": "recording",
+      "pending_orient": null,
+      "reaction_phase": "listening",
+      "route_count": 0,
+      "trace": [
+        {
+          "base_affect": "calm",
+          "gaze_target": {
+            "key": "1,0,1,0",
+            "x": 100,
+            "y": 100
+          },
+          "kind": "source_hold",
+          "mode_override": "none",
+          "reaction_phase": "gaze_highlight_lead",
+          "release_event_id": "upper-0002",
+          "sequence": 1
+        },
+        {
+          "base_affect": "calm",
+          "changed_frame": 1,
+          "gaze_target": {
+            "key": "1,0,1,0",
+            "x": 100,
+            "y": 100
+          },
+          "kind": "gaze_highlight_lead",
+          "mode_override": "none",
+          "reaction_phase": "gaze_highlight_lead",
+          "release_event_id": "upper-0002",
+          "sequence": 2,
+          "target": {
+            "key": "1,0,1,0",
+            "x": 100,
+            "y": 100
+          }
+        },
+        {
+          "base_affect": "calm",
+          "gaze_target": {
+            "key": "1,0,1,0",
+            "x": 100,
+            "y": 100
+          },
+          "kind": "pending_canceled",
+          "mode_override": "none",
+          "reaction_phase": "steady",
+          "reason": "double_tap_toggle",
+          "sequence": 3
+        },
+        {
+          "base_affect": "calm",
+          "captured": true,
+          "gaze_target": {
+            "key": "1,0,1,0",
+            "x": 100,
+            "y": 100
+          },
+          "kind": "mode_override_enter",
+          "mode_override": "recording",
+          "override": "recording",
+          "reaction_phase": "listening",
+          "sequence": 4
+        }
+      ]
+    },
+    "optical": {
+      "anchor": {
+        "x": 100,
+        "y": 135
+      },
+      "centroid_tolerance": {
+        "x": 2,
+        "y": 3
+      },
+      "envelope_tolerance": {
+        "x": 4,
+        "y": 24
+      },
+      "face_roi": {
+        "x_max": 175,
+        "x_min": 25,
+        "y_max": 175,
+        "y_min": 75
+      },
+      "registered_component_offsets": {
+        "alert_exclamation": [
+          0,
+          -5
+        ],
+        "bashful_presence": [
+          0,
+          -32
+        ],
+        "calm_presence": [
+          0,
+          -27
+        ],
+        "charging_with_calm": [
+          0,
+          -42
+        ],
+        "curious_question": [
+          1,
+          -3
+        ],
+        "delighted_presence": [
+          1,
+          -23
+        ],
+        "error_with_calm": [
+          0,
+          14
+        ],
+        "focused_presence": [
+          2,
+          -32
+        ],
+        "menu_entry_notice": [
+          0,
+          -7
+        ],
+        "playful_presence": [
+          -3,
+          -27
+        ],
+        "recording_with_calm": [
+          -12,
+          -27
+        ],
+        "recording_with_warm": [
+          -11,
+          -32
+        ],
+        "sleepy_presence": [
+          0,
+          2
+        ],
+        "thoughtful_presence": [
+          5,
+          -21
+        ],
+        "upgrade_with_playful": [
+          -3,
+          9
+        ],
+        "warm_presence": [
+          -1,
+          -32
+        ]
+      },
+      "samples": [
+        {
+          "bounds": {
+            "x_max": 166,
+            "x_min": 34,
+            "y_max": 168,
+            "y_min": 87
+          },
+          "centroid": {
+            "x": 99.931,
+            "y": 134.238
+          },
+          "envelope_center": {
+            "x": 100,
+            "y": 127.5
+          },
+          "ink_pixels": 2679,
+          "src": "calm_presence-04-calm_blink_settle.png",
+          "state": "calm",
+          "story": "calm_presence"
+        },
+        {
+          "bounds": {
+            "x_max": 167,
+            "x_min": 32,
+            "y_max": 173,
+            "y_min": 75
+          },
+          "centroid": {
+            "x": 100.234,
+            "y": 134.803
+          },
+          "envelope_center": {
+            "x": 99.5,
+            "y": 124
+          },
+          "ink_pixels": 2703,
+          "src": "curious_question-02-question_mouth_arrive.png",
+          "state": "curious",
+          "story": "curious_question"
+        },
+        {
+          "bounds": {
+            "x_max": 170,
+            "x_min": 33,
+            "y_max": 175,
+            "y_min": 87
+          },
+          "centroid": {
+            "x": 100.15,
+            "y": 136.944
+          },
+          "envelope_center": {
+            "x": 101.5,
+            "y": 131
+          },
+          "ink_pixels": 2979,
+          "src": "warm_presence-02-warm_smile_arrive.png",
+          "state": "warm",
+          "story": "warm_presence"
+        },
+        {
+          "bounds": {
+            "x_max": 175,
+            "x_min": 32,
+            "y_max": 170,
+            "y_min": 84
+          },
+          "centroid": {
+            "x": 100.86,
+            "y": 135.252
+          },
+          "envelope_center": {
+            "x": 103.5,
+            "y": 127
+          },
+          "ink_pixels": 2904,
+          "src": "playful_presence-02-playful_smile_arrive.png",
+          "state": "playful",
+          "story": "playful_presence"
+        },
+        {
+          "bounds": {
+            "x_max": 167,
+            "x_min": 32,
+            "y_max": 173,
+            "y_min": 75
+          },
+          "centroid": {
+            "x": 100.234,
+            "y": 134.803
+          },
+          "envelope_center": {
+            "x": 99.5,
+            "y": 124
+          },
+          "ink_pixels": 2703,
+          "src": "curious_question-02-question_mouth_arrive.png",
+          "state": "puzzled",
+          "story": "curious_question"
+        },
+        {
+          "bounds": {
+            "x_max": 167,
+            "x_min": 33,
+            "y_max": 175,
+            "y_min": 83
+          },
+          "centroid": {
+            "x": 100.131,
+            "y": 134.809
+          },
+          "envelope_center": {
+            "x": 100,
+            "y": 129
+          },
+          "ink_pixels": 2789,
+          "src": "alert_exclamation-02-exclamation_mouth_arrive.png",
+          "state": "alert",
+          "story": "alert_exclamation"
+        },
+        {
+          "bounds": {
+            "x_max": 164,
+            "x_min": 33,
+            "y_max": 168,
+            "y_min": 96
+          },
+          "centroid": {
+            "x": 99.784,
+            "y": 136.203
+          },
+          "envelope_center": {
+            "x": 98.5,
+            "y": 132
+          },
+          "ink_pixels": 2646,
+          "src": "focused_presence-01-focused_brow_lead.png",
+          "state": "listening",
+          "story": "focused_presence"
+        }
+      ]
+    },
+    "postBoundarySignatures": [
+      "b9ad13c8"
+    ],
+    "preBoundarySignatures": [
+      "f5fd960d"
+    ],
+    "stateView": {
+      "affect": "calm",
+      "displayed_edge_legal": true,
+      "event": "recording_phase",
+      "exists": true,
+      "interaction_mode": "recording",
+      "mode": "recording",
+      "next": [
+        {
+          "event": "touch_tap",
+          "from": "calm",
+          "label": "好奇",
+          "legal": true,
+          "to": "curious"
+        },
+        {
+          "event": "recording",
+          "from": "calm",
+          "label": "倾听",
+          "legal": true,
+          "to": "listening"
+        },
+        {
+          "event": "menu",
+          "from": "calm",
+          "label": "平静",
+          "legal": true,
+          "to": "calm"
+        }
+      ],
+      "outside_screen": true,
+      "phase": "listening",
+      "source_identity": "naturalState",
+      "source_sequence": 4,
+      "timeline": [
+        {
+          "label": "触点定向 · 平静",
+          "sequence": 1
+        },
+        {
+          "label": "眼神先行 · 平静",
+          "sequence": 2
+        },
+        {
+          "label": "取消等待 · 平静",
+          "sequence": 3
+        },
+        {
+          "label": "进入模式 · 平静",
+          "sequence": 4
+        }
+      ],
+      "visible": true
+    },
+    "steps": [
+      {
+        "components": [
+          {
+            "bounds": {
+              "x_max": 195,
+              "x_min": 191,
+              "y_max": 87,
+              "y_min": 52
+            },
+            "center_x": 192,
+            "centroid": {
+              "x": 192.934,
+              "y": 69.632
+            },
+            "closest_distance": 33,
+            "convex_toward_listening": true,
+            "edge_x": 194.125,
+            "ink_pixels": 106
+          },
+          {
+            "bounds": {
+              "x_max": 187,
+              "x_min": 183,
+              "y_max": 85,
+              "y_min": 54
+            },
+            "center_x": 184,
+            "centroid": {
+              "x": 184.915,
+              "y": 69.691
+            },
+            "closest_distance": 25,
+            "convex_toward_listening": true,
+            "edge_x": 186.125,
+            "ink_pixels": 94
+          },
+          {
+            "bounds": {
+              "x_max": 179,
+              "x_min": 175,
+              "y_max": 82,
+              "y_min": 57
+            },
+            "center_x": 176,
+            "centroid": {
+              "x": 176.963,
+              "y": 69.378
+            },
+            "closest_distance": 17,
+            "convex_toward_listening": true,
+            "edge_x": 178,
+            "ink_pixels": 82
+          }
+        ],
+        "runtime": {
+          "arc_count": 3,
+          "arcs": [
+            {
+              "arc_id": "wave_a",
+              "convex_direction": "toward_listening_point",
+              "distance_to_listening_point": 32,
+              "lifecycle": "spawn",
+              "phase_index": 0,
+              "previous_lifecycle": "absorbed"
+            },
+            {
+              "arc_id": "wave_b",
+              "convex_direction": "toward_listening_point",
+              "distance_to_listening_point": 24,
+              "lifecycle": "front",
+              "phase_index": 1,
+              "previous_lifecycle": "spawn"
+            },
+            {
+              "arc_id": "wave_c",
+              "convex_direction": "toward_listening_point",
+              "distance_to_listening_point": 16,
+              "lifecycle": "front",
+              "phase_index": 2,
+              "previous_lifecycle": "front"
+            }
+          ],
+          "centroid": {
+            "x": 185.617,
+            "y": 69.578
+          },
+          "cycle": 0,
+          "ink_pixels": 282,
+          "listening_point": {
+            "x": 158,
+            "y": 70
+          },
+          "step": 0
+        },
+        "step": 0
+      },
+      {
+        "components": [
+          {
+            "bounds": {
+              "x_max": 187,
+              "x_min": 183,
+              "y_max": 85,
+              "y_min": 54
+            },
+            "center_x": 184,
+            "centroid": {
+              "x": 184.915,
+              "y": 69.691
+            },
+            "closest_distance": 25,
+            "convex_toward_listening": true,
+            "edge_x": 186.125,
+            "ink_pixels": 94
+          },
+          {
+            "bounds": {
+              "x_max": 179,
+              "x_min": 175,
+              "y_max": 82,
+              "y_min": 57
+            },
+            "center_x": 176,
+            "centroid": {
+              "x": 176.963,
+              "y": 69.378
+            },
+            "closest_distance": 17,
+            "convex_toward_listening": true,
+            "edge_x": 178,
+            "ink_pixels": 82
+          },
+          {
+            "bounds": {
+              "x_max": 171,
+              "x_min": 167,
+              "y_max": 80,
+              "y_min": 59
+            },
+            "center_x": 168,
+            "centroid": {
+              "x": 168.942,
+              "y": 69.435
+            },
+            "closest_distance": 9,
+            "convex_toward_listening": true,
+            "edge_x": 170,
+            "ink_pixels": 69
+          }
+        ],
+        "runtime": {
+          "arc_count": 3,
+          "arcs": [
+            {
+              "arc_id": "wave_a",
+              "convex_direction": "toward_listening_point",
+              "distance_to_listening_point": 24,
+              "lifecycle": "front",
+              "phase_index": 1,
+              "previous_lifecycle": "spawn"
+            },
+            {
+              "arc_id": "wave_b",
+              "convex_direction": "toward_listening_point",
+              "distance_to_listening_point": 16,
+              "lifecycle": "front",
+              "phase_index": 2,
+              "previous_lifecycle": "front"
+            },
+            {
+              "arc_id": "wave_c",
+              "convex_direction": "toward_listening_point",
+              "distance_to_listening_point": 8,
+              "lifecycle": "absorbed",
+              "phase_index": 3,
+              "previous_lifecycle": "front"
+            }
+          ],
+          "centroid": {
+            "x": 177.755,
+            "y": 69.514
+          },
+          "cycle": 0,
+          "ink_pixels": 245,
+          "listening_point": {
+            "x": 158,
+            "y": 70
+          },
+          "step": 1
+        },
+        "step": 1
+      },
+      {
+        "components": [
+          {
+            "bounds": {
+              "x_max": 195,
+              "x_min": 191,
+              "y_max": 87,
+              "y_min": 52
+            },
+            "center_x": 192,
+            "centroid": {
+              "x": 192.934,
+              "y": 69.632
+            },
+            "closest_distance": 33,
+            "convex_toward_listening": true,
+            "edge_x": 194.125,
+            "ink_pixels": 106
+          },
+          {
+            "bounds": {
+              "x_max": 179,
+              "x_min": 175,
+              "y_max": 82,
+              "y_min": 57
+            },
+            "center_x": 176,
+            "centroid": {
+              "x": 176.963,
+              "y": 69.378
+            },
+            "closest_distance": 17,
+            "convex_toward_listening": true,
+            "edge_x": 178,
+            "ink_pixels": 82
+          },
+          {
+            "bounds": {
+              "x_max": 171,
+              "x_min": 167,
+              "y_max": 80,
+              "y_min": 59
+            },
+            "center_x": 168,
+            "centroid": {
+              "x": 168.942,
+              "y": 69.435
+            },
+            "closest_distance": 9,
+            "convex_toward_listening": true,
+            "edge_x": 170,
+            "ink_pixels": 69
+          }
+        ],
+        "runtime": {
+          "arc_count": 3,
+          "arcs": [
+            {
+              "arc_id": "wave_a",
+              "convex_direction": "toward_listening_point",
+              "distance_to_listening_point": 16,
+              "lifecycle": "front",
+              "phase_index": 2,
+              "previous_lifecycle": "front"
+            },
+            {
+              "arc_id": "wave_b",
+              "convex_direction": "toward_listening_point",
+              "distance_to_listening_point": 8,
+              "lifecycle": "absorbed",
+              "phase_index": 3,
+              "previous_lifecycle": "front"
+            },
+            {
+              "arc_id": "wave_c",
+              "convex_direction": "toward_listening_point",
+              "distance_to_listening_point": 32,
+              "lifecycle": "spawn",
+              "phase_index": 0,
+              "previous_lifecycle": "absorbed"
+            }
+          ],
+          "centroid": {
+            "x": 181.397,
+            "y": 69.498
+          },
+          "cycle": 0,
+          "ink_pixels": 257,
+          "listening_point": {
+            "x": 158,
+            "y": 70
+          },
+          "step": 2
+        },
+        "step": 2
+      },
+      {
+        "components": [
+          {
+            "bounds": {
+              "x_max": 195,
+              "x_min": 191,
+              "y_max": 87,
+              "y_min": 52
+            },
+            "center_x": 192,
+            "centroid": {
+              "x": 192.934,
+              "y": 69.632
+            },
+            "closest_distance": 33,
+            "convex_toward_listening": true,
+            "edge_x": 194.125,
+            "ink_pixels": 106
+          },
+          {
+            "bounds": {
+              "x_max": 187,
+              "x_min": 183,
+              "y_max": 85,
+              "y_min": 54
+            },
+            "center_x": 184,
+            "centroid": {
+              "x": 184.915,
+              "y": 69.691
+            },
+            "closest_distance": 25,
+            "convex_toward_listening": true,
+            "edge_x": 186.125,
+            "ink_pixels": 94
+          },
+          {
+            "bounds": {
+              "x_max": 171,
+              "x_min": 167,
+              "y_max": 80,
+              "y_min": 59
+            },
+            "center_x": 168,
+            "centroid": {
+              "x": 168.942,
+              "y": 69.435
+            },
+            "closest_distance": 9,
+            "convex_toward_listening": true,
+            "edge_x": 170,
+            "ink_pixels": 69
+          }
+        ],
+        "runtime": {
+          "arc_count": 3,
+          "arcs": [
+            {
+              "arc_id": "wave_a",
+              "convex_direction": "toward_listening_point",
+              "distance_to_listening_point": 8,
+              "lifecycle": "absorbed",
+              "phase_index": 3,
+              "previous_lifecycle": "front"
+            },
+            {
+              "arc_id": "wave_b",
+              "convex_direction": "toward_listening_point",
+              "distance_to_listening_point": 32,
+              "lifecycle": "spawn",
+              "phase_index": 0,
+              "previous_lifecycle": "absorbed"
+            },
+            {
+              "arc_id": "wave_c",
+              "convex_direction": "toward_listening_point",
+              "distance_to_listening_point": 24,
+              "lifecycle": "front",
+              "phase_index": 1,
+              "previous_lifecycle": "spawn"
+            }
+          ],
+          "centroid": {
+            "x": 183.978,
+            "y": 69.602
+          },
+          "cycle": 0,
+          "ink_pixels": 269,
+          "listening_point": {
+            "x": 158,
+            "y": 70
+          },
+          "step": 3
+        },
+        "step": 3
+      }
+    ],
+    "timingSamples": [
+      {
+        "elapsed_ms": 95,
+        "signature": "f5fd960d"
+      },
+      {
+        "elapsed_ms": 186,
+        "signature": "f5fd960d"
+      },
+      {
+        "elapsed_ms": 268,
+        "signature": "f5fd960d"
+      },
+      {
+        "elapsed_ms": 358,
+        "signature": "f5fd960d"
+      },
+      {
+        "elapsed_ms": 445,
+        "signature": "f5fd960d"
+      },
+      {
+        "elapsed_ms": 529,
+        "signature": "b9ad13c8"
+      },
+      {
+        "elapsed_ms": 622,
+        "signature": "b9ad13c8"
+      },
+      {
+        "elapsed_ms": 711,
+        "signature": "b9ad13c8"
+      }
+    ]
+  },
+  "page": {
+    "expected_sha256": "0C29D5FF40D80C41461F0738C1C747A6C2B27A5DA74B5C79E166621A7566D9DA",
+    "observed_sha256": "0C29D5FF40D80C41461F0738C1C747A6C2B27A5DA74B5C79E166621A7566D9DA",
+    "url": "http://127.0.0.1:4174/docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html"
+  },
+  "playwright": {
+    "module_path": "C:/Users/Billy/AppData/Local/npm-cache/_npx/420ff84f11983ee5/node_modules/playwright",
+    "package_sha256": "6B840268612656F0639FB7D68782E8353BDF11518589D30DDF66F283C2670ED5",
+    "version": "1.61.1"
+  },
+  "runtime_effects": {
+    "browser_process_started": 1,
+    "hardware_access": 0,
+    "microphone_requests": 0,
+    "owner_prompt_opened": 0
+  },
+  "schema": "companion.browser_three_wave_state_view_oracle.v1",
+  "status": "PASS"
+}

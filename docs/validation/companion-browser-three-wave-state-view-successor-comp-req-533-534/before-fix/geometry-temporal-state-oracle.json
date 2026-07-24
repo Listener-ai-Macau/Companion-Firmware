@@ -1,0 +1,510 @@
+{
+  "checks": {
+    "displayed_edge_is_legal": false,
+    "every_arc_convex_toward_listening_point": false,
+    "every_arc_inside_200x200": true,
+    "exactly_three_pixel_arcs_every_step": false,
+    "forged_edges_rejected": true,
+    "identity_motion_inward_or_absorb_spawn": true,
+    "legal_edges_complete": true,
+    "no_css_interpolation": true,
+    "no_http_or_page_errors": true,
+    "no_intermediate_visible_frame": false,
+    "no_microphone_request": true,
+    "observed_boundary_bounded": true,
+    "observed_boundary_not_early": false,
+    "one_change_at_physical_boundary": false,
+    "optical_centroid_centered": true,
+    "optical_envelope_centered": true,
+    "optical_no_clipping": true,
+    "optical_samples_complete": false,
+    "page_identity_exact": true,
+    "physical_step_contract_480_ms": false,
+    "state_view_exists_outside_screen": false,
+    "state_view_uses_single_runtime_source": false,
+    "three_runtime_arc_identities": false
+  },
+  "failed_checks": [
+    "exactly_three_pixel_arcs_every_step",
+    "every_arc_convex_toward_listening_point",
+    "three_runtime_arc_identities",
+    "physical_step_contract_480_ms",
+    "no_intermediate_visible_frame",
+    "one_change_at_physical_boundary",
+    "observed_boundary_not_early",
+    "state_view_exists_outside_screen",
+    "state_view_uses_single_runtime_source",
+    "displayed_edge_is_legal",
+    "optical_samples_complete"
+  ],
+  "observed": {
+    "arcIdentities": [],
+    "canvasTransitionDuration": "0s",
+    "contractStepMs": 120,
+    "edgeChecks": {
+      "forged": [],
+      "legal": []
+    },
+    "errors": [],
+    "firstObservedChangeMs": 163,
+    "identityTransitions": [],
+    "mediaRequestCount": 0,
+    "naturalState": {
+      "affect_after": {
+        "affinity": 0,
+        "arousal": 1,
+        "valence": 0
+      },
+      "base_affect": "calm",
+      "bridge": null,
+      "changed_frame_count": 0,
+      "coalesced_pending": null,
+      "contract": {
+        "bridgeWindowMs": 480,
+        "explicitResolveEdges": {
+          "ambiguity_resolved": [
+            "puzzled",
+            "calm"
+          ],
+          "high_salience": [
+            "puzzled",
+            "alert"
+          ],
+          "salience_reduced": [
+            "alert",
+            "puzzled"
+          ]
+        },
+        "legalTapEdges": {
+          "calm": "curious",
+          "curious": "warm",
+          "warm": "playful"
+        },
+        "maxCoalescedPending": 1,
+        "maxPostSourceChangedFrames": 3,
+        "priority": [
+          "error",
+          "alert",
+          "menu",
+          "recording",
+          "drag",
+          "single_tap",
+          "ambient"
+        ],
+        "stateStories": {
+          "alert": "alert_exclamation",
+          "calm": "calm_presence",
+          "curious": "curious_question",
+          "playful": "playful_presence",
+          "puzzled": "curious_question",
+          "warm": "warm_presence"
+        },
+        "tapDiscriminatorMs": 650
+      },
+      "gaze_target": {
+        "key": "1,0,1,0",
+        "x": 100,
+        "y": 100
+      },
+      "interaction_memory": 0,
+      "mode_override": "recording",
+      "pending_orient": null,
+      "reaction_phase": "listening",
+      "route_count": 0,
+      "trace": [
+        {
+          "base_affect": "calm",
+          "gaze_target": {
+            "key": "1,0,1,0",
+            "x": 100,
+            "y": 100
+          },
+          "kind": "source_hold",
+          "mode_override": "none",
+          "reaction_phase": "gaze_highlight_lead",
+          "release_event_id": "upper-0002",
+          "sequence": 1
+        },
+        {
+          "base_affect": "calm",
+          "changed_frame": 1,
+          "gaze_target": {
+            "key": "1,0,1,0",
+            "x": 100,
+            "y": 100
+          },
+          "kind": "gaze_highlight_lead",
+          "mode_override": "none",
+          "reaction_phase": "gaze_highlight_lead",
+          "release_event_id": "upper-0002",
+          "sequence": 2,
+          "target": {
+            "key": "1,0,1,0",
+            "x": 100,
+            "y": 100
+          }
+        },
+        {
+          "base_affect": "calm",
+          "gaze_target": {
+            "key": "1,0,1,0",
+            "x": 100,
+            "y": 100
+          },
+          "kind": "pending_canceled",
+          "mode_override": "none",
+          "reaction_phase": "steady",
+          "reason": "double_tap_toggle",
+          "sequence": 3
+        },
+        {
+          "base_affect": "calm",
+          "captured": true,
+          "gaze_target": {
+            "key": "1,0,1,0",
+            "x": 100,
+            "y": 100
+          },
+          "kind": "mode_override_enter",
+          "mode_override": "recording",
+          "override": "recording",
+          "reaction_phase": "listening",
+          "sequence": 4
+        }
+      ]
+    },
+    "optical": {
+      "anchor": {
+        "x": 100,
+        "y": 135
+      },
+      "centroid_tolerance": {
+        "x": 0,
+        "y": 0
+      },
+      "envelope_tolerance": {
+        "x": 0,
+        "y": 0
+      },
+      "face_roi": {
+        "x_max": 175,
+        "x_min": 25,
+        "y_max": 175,
+        "y_min": 75
+      },
+      "samples": []
+    },
+    "postBoundarySignatures": [
+      "13b05e8c",
+      "ddbaf9bb"
+    ],
+    "preBoundarySignatures": [
+      "1a948f29",
+      "2b471706",
+      "c3e07ba3",
+      "cfafea51"
+    ],
+    "stateView": {
+      "affect": null,
+      "displayed_edge_legal": false,
+      "exists": false,
+      "mode": null,
+      "outside_screen": false,
+      "phase": null,
+      "source_identity": null,
+      "visible": false
+    },
+    "steps": [
+      {
+        "components": [
+          {
+            "bounds": {
+              "x_max": 197,
+              "x_min": 191,
+              "y_max": 87,
+              "y_min": 52
+            },
+            "center_x": 196,
+            "centroid": {
+              "x": 194.14,
+              "y": 69.623
+            },
+            "closest_distance": 33,
+            "convex_toward_listening": false,
+            "edge_x": 191.941,
+            "ink_pixels": 114
+          }
+        ],
+        "runtime": {
+          "centroid": {
+            "x": 194.14,
+            "y": 69.623
+          },
+          "distance_to_listening_point": 36.142,
+          "front_visible": true,
+          "ink_pixels": 114,
+          "lifecycle": "spawn",
+          "listening_point": {
+            "x": 158,
+            "y": 70
+          },
+          "step": 0
+        },
+        "step": 0
+      },
+      {
+        "components": [
+          {
+            "bounds": {
+              "x_max": 191,
+              "x_min": 185,
+              "y_max": 84,
+              "y_min": 55
+            },
+            "center_x": 189.714,
+            "centroid": {
+              "x": 188.196,
+              "y": 69.423
+            },
+            "closest_distance": 27,
+            "convex_toward_listening": false,
+            "edge_x": 186.5,
+            "ink_pixels": 97
+          }
+        ],
+        "runtime": {
+          "centroid": {
+            "x": 188.196,
+            "y": 69.423
+          },
+          "distance_to_listening_point": 30.202,
+          "front_visible": true,
+          "ink_pixels": 97,
+          "lifecycle": "front",
+          "listening_point": {
+            "x": 158,
+            "y": 70
+          },
+          "step": 1
+        },
+        "step": 1
+      },
+      {
+        "components": [
+          {
+            "bounds": {
+              "x_max": 185,
+              "x_min": 180,
+              "y_max": 82,
+              "y_min": 57
+            },
+            "center_x": 183.5,
+            "centroid": {
+              "x": 182.313,
+              "y": 69.575
+            },
+            "closest_distance": 22,
+            "convex_toward_listening": false,
+            "edge_x": 180.941,
+            "ink_pixels": 80
+          }
+        ],
+        "runtime": {
+          "centroid": {
+            "x": 182.313,
+            "y": 69.575
+          },
+          "distance_to_listening_point": 24.317,
+          "front_visible": true,
+          "ink_pixels": 80,
+          "lifecycle": "front",
+          "listening_point": {
+            "x": 158,
+            "y": 70
+          },
+          "step": 2
+        },
+        "step": 2
+      },
+      {
+        "components": [
+          {
+            "bounds": {
+              "x_max": 179,
+              "x_min": 175,
+              "y_max": 79,
+              "y_min": 60
+            },
+            "center_x": 177.385,
+            "centroid": {
+              "x": 176.645,
+              "y": 69.403
+            },
+            "closest_distance": 17,
+            "convex_toward_listening": false,
+            "edge_x": 175.875,
+            "ink_pixels": 62
+          }
+        ],
+        "runtime": {
+          "centroid": {
+            "x": 176.645,
+            "y": 69.403
+          },
+          "distance_to_listening_point": 18.655,
+          "front_visible": true,
+          "ink_pixels": 62,
+          "lifecycle": "front",
+          "listening_point": {
+            "x": 158,
+            "y": 70
+          },
+          "step": 3
+        },
+        "step": 3
+      },
+      {
+        "components": [
+          {
+            "bounds": {
+              "x_max": 173,
+              "x_min": 169,
+              "y_max": 77,
+              "y_min": 62
+            },
+            "center_x": 171.385,
+            "centroid": {
+              "x": 170.809,
+              "y": 69.489
+            },
+            "closest_distance": 11,
+            "convex_toward_listening": false,
+            "edge_x": 170.125,
+            "ink_pixels": 47
+          }
+        ],
+        "runtime": {
+          "centroid": {
+            "x": 170.809,
+            "y": 69.489
+          },
+          "distance_to_listening_point": 12.819,
+          "front_visible": true,
+          "ink_pixels": 47,
+          "lifecycle": "front",
+          "listening_point": {
+            "x": 158,
+            "y": 70
+          },
+          "step": 4
+        },
+        "step": 4
+      },
+      {
+        "components": [
+          {
+            "bounds": {
+              "x_max": 167,
+              "x_min": 164,
+              "y_max": 74,
+              "y_min": 65
+            },
+            "center_x": 165.154,
+            "centroid": {
+              "x": 165.033,
+              "y": 69.633
+            },
+            "closest_distance": 6,
+            "convex_toward_listening": false,
+            "edge_x": 164.941,
+            "ink_pixels": 30
+          }
+        ],
+        "runtime": {
+          "centroid": {
+            "x": 165.033,
+            "y": 69.633
+          },
+          "distance_to_listening_point": 7.043,
+          "front_visible": true,
+          "ink_pixels": 30,
+          "lifecycle": "front",
+          "listening_point": {
+            "x": 158,
+            "y": 70
+          },
+          "step": 5
+        },
+        "step": 5
+      },
+      {
+        "components": [],
+        "runtime": {
+          "centroid": null,
+          "distance_to_listening_point": null,
+          "front_visible": false,
+          "ink_pixels": 0,
+          "lifecycle": "absorbed",
+          "listening_point": {
+            "x": 158,
+            "y": 70
+          },
+          "step": 6
+        },
+        "step": 6
+      }
+    ],
+    "timingSamples": [
+      {
+        "elapsed_ms": 81,
+        "signature": "1a948f29"
+      },
+      {
+        "elapsed_ms": 163,
+        "signature": "2b471706"
+      },
+      {
+        "elapsed_ms": 244,
+        "signature": "2b471706"
+      },
+      {
+        "elapsed_ms": 332,
+        "signature": "c3e07ba3"
+      },
+      {
+        "elapsed_ms": 413,
+        "signature": "cfafea51"
+      },
+      {
+        "elapsed_ms": 499,
+        "signature": "13b05e8c"
+      },
+      {
+        "elapsed_ms": 582,
+        "signature": "13b05e8c"
+      },
+      {
+        "elapsed_ms": 665,
+        "signature": "ddbaf9bb"
+      }
+    ]
+  },
+  "page": {
+    "expected_sha256": "24B5720F14B6793B201C4E74AD8BDB2219EE4F8CC941454983876979DA9ADAB1",
+    "observed_sha256": "24B5720F14B6793B201C4E74AD8BDB2219EE4F8CC941454983876979DA9ADAB1",
+    "url": "http://127.0.0.1:4173/docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html"
+  },
+  "playwright": {
+    "module_path": "C:/Users/Billy/AppData/Local/npm-cache/_npx/420ff84f11983ee5/node_modules/playwright",
+    "package_sha256": "6B840268612656F0639FB7D68782E8353BDF11518589D30DDF66F283C2670ED5",
+    "version": "1.61.1"
+  },
+  "runtime_effects": {
+    "browser_process_started": 1,
+    "hardware_access": 0,
+    "microphone_requests": 0,
+    "owner_prompt_opened": 0
+  },
+  "schema": "companion.browser_three_wave_state_view_oracle.v1",
+  "status": "NO_GO"
+}
