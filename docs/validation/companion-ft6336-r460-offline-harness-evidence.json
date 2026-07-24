@@ -1,0 +1,59 @@
+{
+  "base_commit": "3a8184b2798cf2075f5eb3e3195b2b36901900d7",
+  "checkonly": {
+    "canonical_aiw_prompt": "future_after_machine_gates_only",
+    "popup": 0,
+    "programmer": 0,
+    "refresh": 0,
+    "reset": 0,
+    "retry": 0,
+    "serial": 0,
+    "write": 0
+  },
+  "final_integration": "pending_COMP_REQ_458_hex_elf",
+  "firmware_parameter": {
+    "elf": null,
+    "elf_sha256": null,
+    "hex": null,
+    "hex_sha256": null
+  },
+  "fixture": ".cache/validation/companion-ft6336-r460-offline/touch-recording-fixture.json",
+  "parser": {
+    "canonical_popup_eligible": false,
+    "errors": [],
+    "hardware_contact": 0,
+    "qualified_traces": [
+      "busy_touch_service",
+      "finger_center_gaze",
+      "hold_feedback_and_menu",
+      "recording_double_tap"
+    ],
+    "status": "PASS"
+  },
+  "parser_result": ".cache/validation/companion-ft6336-r460-offline/parser-result.json",
+  "physical_machine_ready": false,
+  "r7_contract": {
+    "preclean_hex_sha256": "1EF9AD150BD72E694CFC4E09E76CA445749FEFEDA63DB7485E1675280089E8D6",
+    "process_release_required": true,
+    "restore_bytes": 524288,
+    "restore_sha256": "223F6E7A7DB8E5562D0F7C34ED4F023DA7E37F5266505A6C84D5BD6FE304CD7C",
+    "transaction_max_ms": 480
+  },
+  "requirement_id": "COMP-REQ-460",
+  "reused_recording_parser_selftest": {
+    "hardware_contact": 0,
+    "status": "PASS_STATIC_PARSER"
+  },
+  "schema": "companion.ft6336.comp_req_460.offline_harness_machine_evidence.v1",
+  "source_hashes": {
+    "r7_runner": "959727E4556FD314083174E6D8B1D8E8E4F335A12EBF254CA3D05EABB8A5711E",
+    "r7_supervisor": "AB75942496AFDBDE20D810066A752C7D66CAFC658625BA21603543D9E0893F44",
+    "recording_chain": "8492F28B86825036E746AD19AC36C6D6115F5A5CDC16A6BEAD770F0A53F62206"
+  },
+  "status": "READY_OFFLINE_HARNESS_FINAL_INTEGRATION_PENDING",
+  "unproven": [
+    "COMP-REQ-458 final HEX/ELF integration",
+    "physical FT6336 behavior",
+    "popup selection"
+  ]
+}
