@@ -65,8 +65,8 @@ C_SOURCES := \
 	$(ROOT)/third_party/denzic-platform/observability/embedded/c/src/denzic_diag_log_gatt_v1.c \
 	$(ROOT)/third_party/denzic-platform/ota/embedded/c/src/denzic_ota_orchestration_v1.c \
 	$(P2P)/STM32_WPAN/Target/hw_ipcc.c \
-	$(P2P)/STM32CubeIDE/Application/Core/syscalls.c \
-	$(P2P)/STM32CubeIDE/Application/Core/sysmem.c \
+	$(P2P)/STM32CubeIDE/Application/User/Core/syscalls.c \
+	$(P2P)/STM32CubeIDE/Application/User/Core/sysmem.c \
 	$(CUBE)/Utilities/lpm/tiny_lpm/stm32_lpm.c \
 	$(CUBE)/Utilities/sequencer/stm32_seq.c \
 	$(CUBE)/Drivers/STM32WBxx_HAL_Driver/Src/stm32wbxx_hal.c \
