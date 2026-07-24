@@ -1,0 +1,27 @@
+{
+  "schema": "companion.browser-owner-review.v4",
+  "requirements": [
+    "COMP-REQ-521",
+    "COMP-REQ-533",
+    "COMP-REQ-534"
+  ],
+  "status": "FAIL_OWNER_BROWSER_EXPERIENCE_REJECTED",
+  "selected": "失败",
+  "note": "\r\n",
+  "note_sha256": "7EB70257593DA06F682A3DDDA54A9D260D4FC514F645237F5CA74B08F8DA61A6",
+  "raw_sha256": "20FCCE96FF6FF7C551D8769DAE36B1A395A8905C4D86F2A4AE7134346937122F",
+  "machine_ready_canonical_sha256": "F35D392C68AB660014E6DFAC861DE013090BBA02BAE8B2ADF2895478D68A9D6F",
+  "page_canonical_sha256": "8F8FC05C5DAA3A95C7A2E80D677B56A831CF620A752EABB1DCB535F01705AB9D",
+  "url": "http://127.0.0.1:4173/docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html",
+  "prompt_contract": {
+    "title": "Companion 浏览器总体体验验收",
+    "buttons": [
+      "通过",
+      "失败"
+    ],
+    "progress_text": "1/1 浏览器总体体验",
+    "scope_text": "仅验收同一 4173 总体页面中的表情、菜单与录音预览；browser-only，不接触硬件或 production。",
+    "message": "请在总体页面按正常速度实际操作：\r\n1. 严格双击进入录音，确认全程是同一张稳定倾听脸，只有一个小型录音状态图标。\r\n2. 确认每个录音帧恰好三道黑白波弧；每道凸面朝脸旁倾听点，约每 480 ms 离散向内一步，吸收后才从外缘重启，没有平滑插值或向外跳。\r\n3. 再次严格双击退出，确认精确恢复进入前的表情和眼神；单点、拖动、长按菜单、Device > UI assets 与菜单返回保持原行为。\r\n4. 查看 200x200 真屏旁的中文状态图：持续情感、交互模式、过渡阶段、触发事件、合法后续与页面实际变化同步；真屏内部无说明和调试参数。\r\n5. 判断所有表情共享同一视觉锚点，切换不跳位、不裁切，始终一张脸、一套眼珠与高光，无旧层、404、重叠或麦克风权限请求。",
+    "expected_text": "选择通过表示 COMP-REQ-533/534 browser-only successor 成为人工回归合同；选择失败会保留机器证据并返回 Faraday 迭代。备注允许留空。"
+  }
+}
