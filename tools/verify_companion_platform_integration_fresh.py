@@ -128,7 +128,7 @@ def main():
         (validation / "comp-req-485-host.compile.stdout.txt").write_text(compile.stdout, encoding="utf-8")
         (validation / "comp-req-485-host.compile.stderr.txt").write_text(compile.stderr, encoding="utf-8")
         wrapper_commands = [
-            ["pwsh", "-NoProfile", "-File", "tools/build_nucleo_bringup.ps1", "-Force", "-Optimization", "O2"],
+            ["pwsh", "-NoProfile", "-File", "tools/build_nucleo_bringup.ps1", "-EpaperSsd1681R7VisualRuntimeDiagnostic", "-Force", "-Optimization", "O2"],
             ["pwsh", "-NoProfile", "-File", "tools/build_companion_ble_audio_fixture.ps1", "-Force"],
         ]
         wrappers = []
@@ -142,8 +142,8 @@ def main():
                              "stderr_sha256": hashlib.sha256(result.stderr.encode()).hexdigest().upper()})
         outputs = {}
         for directory, names in [
-            (ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/build",
-             ["Companion_Nucleo_WB55RG_Bringup.elf", "Companion_Nucleo_WB55RG_Bringup.hex", "Companion_Nucleo_WB55RG_Bringup.map"]),
+            (ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime",
+             ["Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntime.elf", "Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntime.hex", "Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntime.map"]),
             (ROOT / "cubeide/Companion_BLE_Audio_Fixture/build",
              ["Companion_BLE_Audio_Fixture.elf", "Companion_BLE_Audio_Fixture.hex", "Companion_BLE_Audio_Fixture.map"]),
         ]:
@@ -155,11 +155,11 @@ def main():
             r = run(["python", f"third_party/denzic-platform/tools/{name}", "--check"])
             generators[name] = r.returncode == 0
         object_paths = {
-            "wb55_app_ble_o": ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/build/app_ble.o",
-            "wb55_adapter_o": ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/build/companion_platform_adapters.o",
-            "wb55_glue_o": ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/build/companion_product_entry_glue.o",
+            "wb55_app_ble_o": ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime/app_ble.o",
+            "wb55_adapter_o": ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime/companion_platform_adapters.o",
+            "wb55_glue_o": ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime/companion_product_entry_glue.o",
             "ble_glue_o": ROOT / "cubeide/Companion_BLE_Audio_Fixture/build/companion_product_entry_glue.o",
-            "wb55_transport_o": ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/build/companion_product_transport.o",
+            "wb55_transport_o": ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime/companion_product_transport.o",
             "ble_transport_o": ROOT / "cubeide/Companion_BLE_Audio_Fixture/build/companion_product_transport.o",
         }
         object_hashes = {name: sha(path) if path.exists() else None for name, path in object_paths.items()}
@@ -182,7 +182,7 @@ def main():
             "observed_traces": all(x in stdout for x in ["diag positive", "device terminal_count", "ota positive", "adapter_observer begin=", "ordered_trace=begin>callback>mutation>readback>terminal"]),
             "verifier_blob_exact": bool(verifier_blob) and verifier_blob == verifier_worktree_blob,
             "transport_object_outputs": all(object_hashes.get(k) for k in ("wb55_transport_o", "ble_transport_o")),
-            "transport_map_binding": all("companion_product_transport.o" in (ROOT / p).read_text(encoding="utf-8") for p in ("cubeide/Companion_Nucleo_WB55RG_Bringup/build/Companion_Nucleo_WB55RG_Bringup.map", "cubeide/Companion_BLE_Audio_Fixture/build/Companion_BLE_Audio_Fixture.map")),
+            "transport_map_binding": all("companion_product_transport.o" in (ROOT / p).read_text(encoding="utf-8") for p in ("cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime/Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntime.map", "cubeide/Companion_BLE_Audio_Fixture/build/Companion_BLE_Audio_Fixture.map")),
             "generators_clean": all(generators.values()),
             "wb55_wrapper": wrappers[0]["exit"] == 0,
             "ble_wrapper": wrappers[1]["exit"] == 0,
@@ -211,7 +211,7 @@ def main():
             "build_outputs_sha256": outputs,
             "object_outputs_sha256": object_hashes,
             "map_bindings": {
-                "wb55_transport_object": "companion_product_transport.o" in (ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/build/Companion_Nucleo_WB55RG_Bringup.map").read_text(encoding="utf-8"),
+                "wb55_transport_object": "companion_product_transport.o" in (ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime/Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntime.map").read_text(encoding="utf-8"),
                 "ble_transport_object": "companion_product_transport.o" in (ROOT / "cubeide/Companion_BLE_Audio_Fixture/build/Companion_BLE_Audio_Fixture.map").read_text(encoding="utf-8"),
             },
             "retained_logs_sha256": {
