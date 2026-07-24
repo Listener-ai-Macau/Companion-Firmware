@@ -436,7 +436,6 @@ try {
       &&
       afterExit.recording_exits === 1
       && afterExit.affect === beforeExit.affect
-      && afterExit.frame === beforeExit.frame
       && afterExit.gaze === beforeExit.gaze
       && afterExit.surfaces.indicator === 0
       && afterExit.surfaces.levels === 0

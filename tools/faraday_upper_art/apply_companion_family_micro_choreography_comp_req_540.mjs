@@ -22,6 +22,8 @@ const COMPONENT_PRE_FIX_CANONICAL_SHA256 =
   "D33950E3771649A2AB3F980F51351FA77FEE306436A58FC2C7170F40F0BD0507";
 const SUCCESSOR_CANONICAL_SHA256 =
   "D3537B7EDE53075DC25091C6F5CFF75408E4975F2A71D0FDF5D1A248C871CBC8";
+const COMP_REQ_543_PREVIEW_SHA256 =
+  "D91C6A2440FC75A2FE8CCD7626FA28B7CE588219EFC960B1F6CDFF907E1954CC";
 
 const FAMILY_PLANS = [
   {
@@ -32,6 +34,9 @@ const FAMILY_PLANS = [
     beat: [
       { frame: 2, gaze: "0,0,0,0", components: ["eyelid", "gaze_highlight"], max_step_px: 1 },
       { frame: 3, gaze: "1,-1,1,-1", components: ["eyelid", "gaze_highlight"], max_step_px: 1 },
+      { frame: 2, gaze: "0,0,0,0", components: ["eyelid", "gaze_highlight"], max_step_px: 1 },
+      { frame: 3, gaze: "1,-1,1,-1", components: ["eyelid", "gaze_highlight"], max_step_px: 1 },
+      { frame: 2, gaze: "0,0,0,0", components: ["eyelid", "gaze_highlight"], max_step_px: 1 },
     ],
   },
   {
@@ -42,6 +47,9 @@ const FAMILY_PLANS = [
     beat: [
       { frame: 1, gaze: "2,-1,2,-1", components: ["brow", "gaze_highlight"], max_step_px: 1 },
       { frame: 2, gaze: "3,-1,3,-1", components: ["brow", "mouth", "gaze_highlight"], max_step_px: 1 },
+      { frame: 1, gaze: "2,-1,2,-1", components: ["brow", "gaze_highlight"], max_step_px: 1 },
+      { frame: 2, gaze: "3,-1,3,-1", components: ["brow", "mouth", "gaze_highlight"], max_step_px: 1 },
+      { frame: 1, gaze: "2,-1,2,-1", components: ["brow", "gaze_highlight"], max_step_px: 1 },
     ],
   },
   {
@@ -61,6 +69,18 @@ const FAMILY_PLANS = [
         ],
       },
       { frame: 2, gaze: "0,1,0,1", components: ["mouth", "cheek", "gaze_highlight"], max_step_px: 1 },
+      {
+        frame: 1,
+        gaze: "1,1,1,1",
+        components: ["eyelid", "brow", "gaze_highlight"],
+        max_step_px: 1,
+        transplants: [
+          { story: "calm_presence", frame: 3, rect: [38, 108, 44, 52] },
+          { story: "calm_presence", frame: 3, rect: [120, 108, 44, 52] },
+        ],
+      },
+      { frame: 2, gaze: "0,1,0,1", components: ["mouth", "cheek", "gaze_highlight"], max_step_px: 1 },
+      { frame: 1, gaze: "1,1,1,1", components: ["eyelid", "brow", "gaze_highlight"], max_step_px: 1 },
     ],
   },
   {
@@ -71,6 +91,9 @@ const FAMILY_PLANS = [
     beat: [
       { frame: 1, gaze: "2,0,2,1", components: ["brow", "gaze_highlight"], max_step_px: 1 },
       { frame: 2, gaze: "3,-1,3,-1", components: ["brow", "mouth", "gaze_highlight"], max_step_px: 2 },
+      { frame: 1, gaze: "2,0,2,1", components: ["brow", "gaze_highlight"], max_step_px: 1 },
+      { frame: 2, gaze: "3,-1,3,-1", components: ["brow", "mouth", "gaze_highlight"], max_step_px: 2 },
+      { frame: 1, gaze: "2,0,2,1", components: ["brow", "gaze_highlight"], max_step_px: 1 },
     ],
   },
   {
@@ -81,6 +104,9 @@ const FAMILY_PLANS = [
     beat: [
       { frame: 1, gaze: "1,1,1,2", components: ["eyelid", "brow", "gaze_highlight"], max_step_px: 2 },
       { frame: 2, gaze: "0,2,0,2", components: ["eyelid", "sleep_symbol", "gaze_highlight"], max_step_px: 1 },
+      { frame: 1, gaze: "1,1,1,2", components: ["eyelid", "brow", "gaze_highlight"], max_step_px: 2 },
+      { frame: 2, gaze: "0,2,0,2", components: ["eyelid", "sleep_symbol", "gaze_highlight"], max_step_px: 1 },
+      { frame: 1, gaze: "1,1,1,2", components: ["eyelid", "brow", "gaze_highlight"], max_step_px: 2 },
     ],
   },
   {
@@ -103,6 +129,16 @@ const FAMILY_PLANS = [
       },
       {
         frame: 2,
+        gaze: "1,-1,1,-2",
+        components: ["brow", "cheek", "gaze_highlight"],
+        max_step_px: 2,
+        shifts: [
+          { rect: [40, 76, 38, 28], delta: [0, -1] },
+          { rect: [120, 76, 38, 28], delta: [0, -1] },
+        ],
+      },
+      {
+        frame: 2,
         gaze: "0,-1,0,-1",
         components: ["cheek", "gaze_highlight"],
         max_step_px: 1,
@@ -121,6 +157,9 @@ const FAMILY_PLANS = [
     beat: [
       { frame: 1, gaze: "0,1,0,2", components: ["brow", "gaze_highlight"], max_step_px: 2 },
       { frame: 2, gaze: "1,2,1,2", components: ["mouth", "cheek", "gaze_highlight"], max_step_px: 1 },
+      { frame: 1, gaze: "0,1,0,2", components: ["brow", "gaze_highlight"], max_step_px: 2 },
+      { frame: 2, gaze: "1,2,1,2", components: ["mouth", "cheek", "gaze_highlight"], max_step_px: 1 },
+      { frame: 1, gaze: "0,1,0,2", components: ["brow", "gaze_highlight"], max_step_px: 2 },
     ],
   },
   {
@@ -131,6 +170,9 @@ const FAMILY_PLANS = [
     beat: [
       { frame: 1, gaze: "0,0,0,0", components: ["brow", "gaze_highlight"], max_step_px: 1 },
       { frame: 2, gaze: "0,-1,0,-1", components: ["brow", "mouth", "gaze_highlight"], max_step_px: 1 },
+      { frame: 1, gaze: "0,0,0,0", components: ["brow", "gaze_highlight"], max_step_px: 1 },
+      { frame: 2, gaze: "0,-1,0,-1", components: ["brow", "mouth", "gaze_highlight"], max_step_px: 1 },
+      { frame: 1, gaze: "0,0,0,0", components: ["brow", "gaze_highlight"], max_step_px: 1 },
     ],
   },
   {
@@ -150,6 +192,9 @@ const FAMILY_PLANS = [
         ],
       },
       { frame: 2, gaze: "0,-1,0,-1", components: ["eyelid", "mouth", "gaze_highlight"], max_step_px: 1 },
+      { frame: 2, gaze: "1,-1,1,-1", components: ["eyelid", "brow", "gaze_highlight"], max_step_px: 1 },
+      { frame: 2, gaze: "0,-1,0,-1", components: ["eyelid", "mouth", "gaze_highlight"], max_step_px: 1 },
+      { frame: 2, gaze: "1,-1,1,-1", components: ["eyelid", "brow", "gaze_highlight"], max_step_px: 1 },
     ],
   },
   {
@@ -160,6 +205,9 @@ const FAMILY_PLANS = [
     beat: [
       { frame: 1, gaze: "2,-1,2,-1", components: ["brow", "gaze_highlight"], max_step_px: 1 },
       { frame: 2, gaze: "2,0,2,0", components: ["brow", "mouth", "gaze_highlight"], max_step_px: 1 },
+      { frame: 1, gaze: "2,-1,2,-1", components: ["brow", "gaze_highlight"], max_step_px: 1 },
+      { frame: 2, gaze: "2,0,2,0", components: ["brow", "mouth", "gaze_highlight"], max_step_px: 1 },
+      { frame: 1, gaze: "2,-1,2,-1", components: ["brow", "gaze_highlight"], max_step_px: 1 },
     ],
   },
 ];
@@ -201,6 +249,7 @@ if (
   && initialSha256 !== THOUGHTFUL_PRE_FIX_CANONICAL_SHA256
   && initialSha256 !== COMPONENT_PRE_FIX_CANONICAL_SHA256
   && initialSha256 !== SUCCESSOR_CANONICAL_SHA256
+  && initialSha256 !== COMP_REQ_543_PREVIEW_SHA256
 ) {
   throw new Error(`unexpected predecessor page SHA-256 ${sha256(page)}`);
 }
@@ -230,11 +279,11 @@ page = page.replace(
     ];
     manifest.idle_glint = {
       quiet_steps: 1,
-      cycle_steps: 12,
-      active_steps: [2, 3],
-      baseline_return_step: 4,
+      cycle_steps: 10,
+      active_steps: [1, 3, 5, 7, 8],
+      baseline_return_step: 9,
       first_nonbaseline_max_ms: 960,
-      repeat_quiet_steps: 9,
+      repeat_quiet_steps: 1,
       baseline_key: "1,0,1,0",
       ordered_keys: [
         "1,0,1,0",
@@ -250,7 +299,7 @@ page = page.replace(
         "1,0,1,0",
         "1,0,1,0",
       ],
-      changed_frames_per_beat: 3,
+      changed_frames_per_beat: 5,
       interrupt_policy: "cancel_once_then_family_baseline",
       family_specific: true,
     };
@@ -261,8 +310,8 @@ page = page.replace(
     };
     manifest.family_micro_choreography = {
       cadence_ms: 480,
-      first_beat_max_ms: 2880,
-      max_changed_frames: 3,
+      first_beat_max_ms: 960,
+      max_changed_frames: 5,
       max_component_step_px: 2,
       minimum_component_classes: 2,
       exact_family_baseline_return: true,
@@ -426,6 +475,23 @@ if (initialSha256 === COMPONENT_PRE_FIX_CANONICAL_SHA256) {
     "registered component micro runtime",
   );
 }
+
+// The successor page is a generated single-line artifact. Keep its live manifest
+// and runtime aligned when applying this source to that already-bound candidate.
+page = page.replace(
+  '"cycle_steps":12,"active_steps":[2,3],"baseline_return_step":4,"first_nonbaseline_max_ms":960,"repeat_quiet_steps":9',
+  '"cycle_steps":10,"active_steps":[1,3,5,7,8],"baseline_return_step":9,"first_nonbaseline_max_ms":960,"repeat_quiet_steps":1',
+);
+page = page.replace('"changed_frames_per_beat":3,"interrupt_policy"', '"changed_frames_per_beat":5,"interrupt_policy"');
+page = page.replace('"first_beat_max_ms":2880,"max_changed_frames":3', '"first_beat_max_ms":960,"max_changed_frames":5');
+page = page.replace(
+  'beat=beatIndex>=0?plan.beat[beatIndex]:null',
+  'beat=beatIndex>=0?plan.beat[(beatIndex+1)%plan.beat.length]:null',
+);
+page = page.replace(
+  'beat=beatIndex>=0?plan.beat[beatIndex%plan.beat.length]:null',
+  'beat=beatIndex>=0?plan.beat[(beatIndex+1)%plan.beat.length]:null',
+);
 
 if (page.includes("recording-indicator")) {
   throw new Error("recording-indicator source survived");

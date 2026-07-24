@@ -352,7 +352,7 @@ try {
     );
     assert(selected.presented, `${family} baseline presentation failed`);
     const phases = [];
-    for (const step of [0, 2, 3, 4]) {
+    for (const step of [0, 1, 3, 8, 9, 0]) {
       if (step !== 0) {
         const row = await page.evaluate(
           (value) => window.__epaperFreezeIdleGlintStep(value),
@@ -489,6 +489,12 @@ try {
     const tracesEqual = runs[0].trace_sha256 === runs[1].trace_sha256;
     const firstChanged = runs[0].trace.findIndex((row) => row.changed);
     const changedRows = runs[0].trace.filter((row) => row.changed);
+    const maxUnchangedRun = runs[0].trace.reduce(
+      (state, row) => row.changed
+        ? { current: 0, max: Math.max(state.max, state.current) }
+        : { current: state.current + 1, max: state.max },
+      { current: 0, max: 0 },
+    ).max;
     const baselineReturns = runs[0].trace.filter(
       (row) => row.phase === "baseline_return",
     );
@@ -529,6 +535,7 @@ try {
             return next < 0 ? realClockCadences - index - 1 : next;
           }),
       ),
+      max_unchanged_run: maxUnchangedRun,
     };
   });
   const recording = await page.evaluate(() => window.__recordingContractState());
@@ -568,7 +575,7 @@ try {
     ),
     real_clock_first_beat_bounded: (
       realClockCadences === 0
-      || realClock.every((family) => family.first_changed_derived_ms <= 2880)
+      || realClock.every((family) => family.first_changed_derived_ms <= 960)
     ),
     real_clock_two_component_classes: (
       realClockCadences === 0
@@ -578,9 +585,9 @@ try {
       realClockCadences === 0
       || realClock.every((family) => family.exact_baseline_returns)
     ),
-    real_clock_minimum_four_quiet_slots: (
+    real_clock_max_unchanged_two_slots: (
       realClockCadences === 0
-      || realClock.every((family) => family.minimum_quiet_gap >= 4)
+      || realClock.every((family) => family.max_unchanged_run <= 2)
     ),
     real_clock_no_unregistered_refresh: (
       realClockCadences === 0

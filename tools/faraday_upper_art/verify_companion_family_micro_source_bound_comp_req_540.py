@@ -91,7 +91,7 @@ PACK_PATHS = {
 }
 TEXT_SUFFIXES = {".c", ".h", ".html", ".json", ".mjs", ".py", ".ps1"}
 EXPECTED_PAGE_SHA = (
-    "D3537B7EDE53075DC25091C6F5CFF75408E4975F2A71D0FDF5D1A248C871CBC8"
+    "613A5C54AAC7BD0C685E3AF75AA9BD4B4F39B0E0E79A2D76EABF7DB2AC40D8E0"
 )
 FAMILIES = {
     "calm",
@@ -178,7 +178,7 @@ def semantic_checks(
             and row.get("traces_equal") is True
             and row.get("exact_baseline_returns") is True
             and row.get("first_changed_cadence") <= 6
-            and row.get("minimum_quiet_gap", 0) >= 4
+            and row.get("max_unchanged_run", 99) <= 2
             and len(row.get("component_classes", [])) >= 2
             and row.get("all_refreshes_source_backed") is True
             for row in clock_rows
@@ -216,7 +216,7 @@ def semantic_checks(
             and len(static.get("screenshots", [])) == 40
             and all(
                 row.get("exact_baseline_return") is True
-                and len(row.get("deltas", [])) == 3
+                and len(row.get("deltas", [])) == 5
                 for row in static.get("families", [])
             )
         ),
@@ -252,7 +252,7 @@ def semantic_checks(
         ),
         "family_contract_bounded_deterministic": (
             micro.get("cadence_ms") == 480
-            and micro.get("max_changed_frames") == 3
+            and micro.get("max_changed_frames") == 5
             and micro.get("max_component_step_px") == 2
             and micro.get("minimum_component_classes") == 2
             and micro.get("exact_family_baseline_return") is True
@@ -318,7 +318,7 @@ def semantic_checks(
             and all(parity.get("checks", {}).values())
             and parity.get("observed", {}).get("state_count") == 111
             and parity.get("observed", {}).get("pbm_reconstructed") == 111
-            and parity.get("observed", {}).get("unique_frame_count") == 87
+            and parity.get("observed", {}).get("unique_frame_count") == 77
             and parity.get("observed", {}).get("meter_state_count") == 17
         ),
         "manifest_one_bit_zero_diff": (
@@ -327,7 +327,7 @@ def semantic_checks(
             and manifest.get("invariants", {}).get(
                 "unique_frame_count"
             )
-            == 87
+            == 77
             and manifest.get("invariants", {}).get(
                 "browser_to_c_pixel_diff"
             )
