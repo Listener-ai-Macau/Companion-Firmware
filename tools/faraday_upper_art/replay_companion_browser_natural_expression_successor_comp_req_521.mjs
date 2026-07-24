@@ -986,6 +986,7 @@ async function clickStageTarget(page, type, selector, pointerId) {
   await sleep(20);
   await release(page, type, x, y, pointerId);
   await sleep(60);
+  await waitForVisibleImages(page);
 }
 
 async function withScenario(browser, viewport, type, scenario, callback) {
@@ -1696,6 +1697,7 @@ async function replayHoldMenu(browser, viewport, type) {
       );
       await capture(page, `${id}-device-ui-assets`);
       await page.locator('[data-testid="integrated-menu-back"]').click();
+      await waitForVisibleImages(page);
       assert(
         (await screenSnapshot(page)).contract.menu_view === "roots",
         `${id}: UI assets back unavailable`,
