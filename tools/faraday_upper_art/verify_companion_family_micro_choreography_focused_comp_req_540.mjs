@@ -352,7 +352,7 @@ try {
     );
     assert(selected.presented, `${family} baseline presentation failed`);
     const phases = [];
-    for (const step of [0, 1, 3, 8, 9, 0]) {
+    for (const step of [0, 2, 4, 6, 8, 9, 0]) {
       if (step !== 0) {
         const row = await page.evaluate(
           (value) => window.__epaperFreezeIdleGlintStep(value),

@@ -1,0 +1,30 @@
+{
+  "schema": "companion.family-blink-cadence.comp-req-544.v1",
+  "status": "PASS",
+  "page": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html",
+    "canonical_sha256": "72C683ED2F68F8B91562049172DDA8B1932227DF9CBCB45F5C1D0842521DF469"
+  },
+  "normal": {
+    "first_blink_interval_ms": 8054,
+    "duration_ms": 1920,
+    "phases": [
+      "close",
+      "closed",
+      "reopen",
+      "hold"
+    ]
+  },
+  "interruption": {
+    "deferred": 1,
+    "blink_frames_before_resume": 0,
+    "family_changed_after_resume": true
+  },
+  "checks": {
+    "sparse_interval_ge_8000": true,
+    "four_committed_phases": true,
+    "duration_1440_to_1920": true,
+    "interruption_defers_once": true,
+    "family_resumes": true
+  }
+}

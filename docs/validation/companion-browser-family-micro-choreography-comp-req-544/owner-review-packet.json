@@ -1,0 +1,52 @@
+{
+  "bindings": [
+    {
+      "id": "machine",
+      "path": "docs/validation/companion-browser-family-micro-choreography-comp-req-544/MACHINE_READY.json",
+      "sha256": "FE360A614F29ADA888DD573445305B71BE95163D7D13CDFDE070B28631A2B00D"
+    },
+    {
+      "id": "focused",
+      "path": "docs/validation/companion-browser-family-micro-choreography-comp-req-544/focused-smoke-result.json",
+      "sha256": "5F351ED8ED04BB12A8568B6FF31682D7EC2031ED299C6FE5A13FEABC4E7C8B62"
+    },
+    {
+      "id": "clock",
+      "path": "docs/validation/companion-browser-family-micro-choreography-comp-req-544/full-family-real-clock-result.json",
+      "sha256": "BFE946C0381B5BC5C9AF9B2CB6A65FE81AF7C63C0688437A526F4B7B78A366F3"
+    },
+    {
+      "id": "blink",
+      "path": "docs/validation/companion-browser-family-micro-choreography-comp-req-544/blink-cadence-result.json",
+      "sha256": "A748A3D5030DE335C9D0E420301155139649A51131D276753F4D7C59856596CD"
+    },
+    {
+      "id": "parity",
+      "path": "docs/validation/companion-browser-family-micro-choreography-comp-req-544/parity-verifier-result.json",
+      "sha256": "D48E09A1079D358047616326E8A1CE3927FD0B1937A9C9225E711C5FB23BED07"
+    },
+    {
+      "id": "device_pack",
+      "path": "docs/validation/companion-browser-family-micro-choreography-comp-req-544/device-pack/visual-frame-manifest.json",
+      "sha256": "B9E8C4A7DB68A7F883A64EF1D5AE10C430015CB31F34EEE9DBFB8EAD9D9382EE"
+    },
+    {
+      "id": "candidate",
+      "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html",
+      "sha256": "72C683ED2F68F8B91562049172DDA8B1932227DF9CBCB45F5C1D0842521DF469"
+    }
+  ],
+  "candidate_sha256": "72C683ED2F68F8B91562049172DDA8B1932227DF9CBCB45F5C1D0842521DF469",
+  "execute_authorized": false,
+  "human_boundary": "\u672c\u8f6e\u4e0d\u6253\u5f00\u4eba\u5de5\u9a8c\u6536\u7a97\uff1b\u4ec5 owner \u540e\u7eed\u660e\u786e\u6388\u6743\u65f6\u624d\u53ef\u89c2\u5bdf\u3002",
+  "machine_ready_sha256": "FE360A614F29ADA888DD573445305B71BE95163D7D13CDFDE070B28631A2B00D",
+  "owner_gate": "PENDING",
+  "physical_gates": {
+    "flash": false,
+    "hardware": false,
+    "production": false
+  },
+  "requirement": "COMP-REQ-544",
+  "schema": "companion.family-micro-owner-review-packet.comp-req-544.v1",
+  "status": "READY_DEFAULT_OFF"
+}

@@ -1,0 +1,72 @@
+{
+  "bound": {
+    "evidence": {
+      "blink-cadence-result.json": {
+        "path": "docs/validation/companion-browser-family-micro-choreography-comp-req-544/blink-cadence-result.json",
+        "sha256": "A748A3D5030DE335C9D0E420301155139649A51131D276753F4D7C59856596CD"
+      },
+      "focused-smoke-result.json": {
+        "path": "docs/validation/companion-browser-family-micro-choreography-comp-req-544/focused-smoke-result.json",
+        "sha256": "5F351ED8ED04BB12A8568B6FF31682D7EC2031ED299C6FE5A13FEABC4E7C8B62"
+      },
+      "full-family-real-clock-result.json": {
+        "path": "docs/validation/companion-browser-family-micro-choreography-comp-req-544/full-family-real-clock-result.json",
+        "sha256": "BFE946C0381B5BC5C9AF9B2CB6A65FE81AF7C63C0688437A526F4B7B78A366F3"
+      },
+      "parity-verifier-result.json": {
+        "path": "docs/validation/companion-browser-family-micro-choreography-comp-req-544/parity-verifier-result.json",
+        "sha256": "D48E09A1079D358047616326E8A1CE3927FD0B1937A9C9225E711C5FB23BED07"
+      }
+    },
+    "generator": {
+      "path": "tools/faraday_upper_art/apply_companion_family_micro_choreography_comp_req_540.mjs",
+      "sha256": "0AA2ADD682DB33BD1A68CFE6131F99299886BFEFD67D9C496B2A4C9DBFA358ED"
+    },
+    "page": {
+      "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html",
+      "sha256": "72C683ED2F68F8B91562049172DDA8B1932227DF9CBCB45F5C1D0842521DF469"
+    }
+  },
+  "checks": {
+    "all_plan_samples": true,
+    "blink_duration": true,
+    "blink_interruption": true,
+    "blink_pass": true,
+    "blink_sparse": true,
+    "clock_120_cadences": true,
+    "clock_baseline_return": true,
+    "clock_bounded_unchanged": true,
+    "clock_deterministic": true,
+    "clock_pass": true,
+    "clock_ten_families": true,
+    "focused_interruption": true,
+    "focused_pass": true,
+    "focused_ten_families": true,
+    "parity_pass": true,
+    "source_hold_mapping": true,
+    "source_no_css_random": true,
+    "source_no_lower_contact": true,
+    "source_split_timelines": true
+  },
+  "non_goals": [
+    "hardware",
+    "lower",
+    "touch",
+    "Platform",
+    "vendor",
+    "production",
+    "owner_window"
+  ],
+  "owner_gate": "PENDING",
+  "requirement": "COMP-REQ-544",
+  "schema": "companion.family-micro-machine-ready.comp-req-544.v1",
+  "side_effects": {
+    "hardware_contact": 0,
+    "microphone_permission_request": 0,
+    "owner_prompt": 0,
+    "popup": 0,
+    "write": 0
+  },
+  "source_commit": "302e239",
+  "status": "MACHINE_READY"
+}
