@@ -1,0 +1,50 @@
+{
+  "fixtures": [
+    {
+      "name": "source_hash_mutation",
+      "expected": "REJECT",
+      "observed": true
+    },
+    {
+      "name": "clipped_bbox",
+      "expected": "REJECT",
+      "observed": true
+    },
+    {
+      "name": "stacked_whole_frame_duplicate",
+      "expected": "REJECT",
+      "observed": true
+    },
+    {
+      "name": "duplicate_identical_activation",
+      "expected": "REJECT",
+      "observed": true
+    },
+    {
+      "name": "two_white_listed_intermediates",
+      "expected": "REJECT",
+      "observed": true
+    },
+    {
+      "name": "random_idle_rng",
+      "expected": "REJECT",
+      "observed": true
+    },
+    {
+      "name": "oled_30_60fps_interpolation",
+      "expected": "REJECT",
+      "observed": true
+    },
+    {
+      "name": "runtime_geometry_mutation",
+      "expected": "REJECT",
+      "observed": true
+    },
+    {
+      "name": "transient_residue",
+      "expected": "REJECT",
+      "observed": true
+    }
+  ],
+  "all_rejected": true
+}

@@ -1,0 +1,71 @@
+{
+  "requirement": "COMP-REQ-410",
+  "fixtures": [
+    {
+      "name": "source_hash_mutation",
+      "expected": "REJECT",
+      "observed": true
+    },
+    {
+      "name": "clipped_bbox",
+      "expected": "REJECT",
+      "observed": true
+    },
+    {
+      "name": "stacked_whole_frame_duplicate",
+      "expected": "REJECT",
+      "observed": true
+    },
+    {
+      "name": "duplicate_identical_activation",
+      "expected": "REJECT",
+      "observed": true
+    },
+    {
+      "name": "two_white_listed_intermediates",
+      "expected": "REJECT",
+      "observed": true
+    },
+    {
+      "name": "random_idle_rng",
+      "expected": "REJECT",
+      "observed": true
+    },
+    {
+      "name": "oled_30_60fps_interpolation",
+      "expected": "REJECT",
+      "observed": true
+    },
+    {
+      "name": "runtime_geometry_mutation",
+      "expected": "REJECT",
+      "observed": true
+    },
+    {
+      "name": "transient_residue",
+      "expected": "REJECT",
+      "observed": true
+    },
+    {
+      "name": "legacy_r6_y22_y127_crop",
+      "expected": "REJECT",
+      "observed": true
+    },
+    {
+      "name": "larger_than_comp_req_410_union",
+      "expected": "REJECT",
+      "observed": true
+    },
+    {
+      "name": "per_frame_dynamic_window",
+      "expected": "REJECT",
+      "observed": true
+    },
+    {
+      "name": "wrong_controller_mapping",
+      "expected": "REJECT",
+      "observed": true
+    }
+  ],
+  "all_rejected": true
+}
