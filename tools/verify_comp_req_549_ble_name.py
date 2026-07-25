@@ -18,6 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]
 GATE_FILE = ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c"
 SOURCES = [
     ROOT / "tools/comp_req_549_ble_name_host_fixture.c",
+    ROOT / "tools/fixtures/companion_gatt_host_stubs.c",
     ROOT / "app/companion_pendant/platform/companion_ble_name.c",
     ROOT / "app/companion_pendant/platform/companion_ble_name_entry.c",
     ROOT / "app/companion_pendant/gatt/companion_gatt_stm32wb.c",
@@ -31,10 +32,15 @@ INCLUDES = [
     ROOT / "third_party/STM32CubeWB/Middlewares/ST/STM32_WPAN/ble/core",
     ROOT / "third_party/STM32CubeWB/Middlewares/ST/STM32_WPAN/ble",
     ROOT / "third_party/STM32CubeWB/Middlewares/ST/STM32_WPAN/interface/patterns/ble_thread",
+    ROOT / "third_party/STM32CubeWB/Middlewares/ST/STM32_WPAN/interface/patterns/ble_thread/tl",
+    ROOT / "third_party/STM32CubeWB/Middlewares/ST/STM32_WPAN/utilities",
     ROOT / "third_party/STM32CubeWB/Middlewares/ST/STM32_WPAN",
     ROOT / "third_party/STM32CubeWB/Middlewares/ST/STM32_WPAN/ble/svc/Src",
+    ROOT / "third_party/STM32CubeWB/Middlewares/ST/STM32_WPAN/ble/svc/Inc",
     ROOT / "third_party/STM32CubeWB/Drivers/CMSIS/Core/Include",
     ROOT / "third_party/STM32CubeWB/Drivers/CMSIS/Include",
+    ROOT / "third_party/STM32CubeWB/Drivers/CMSIS/Device/ST/STM32WBxx/Include",
+    ROOT / "third_party/STM32CubeWB/Drivers/STM32WBxx_HAL_Driver/Inc",
     ROOT / "third_party/STM32CubeWB/Projects/P-NUCLEO-WB55.Nucleo/Applications/BLE/BLE_p2pServer/Core/Inc",
     ROOT / "third_party/STM32CubeWB/Projects/P-NUCLEO-WB55.Nucleo/Applications/BLE/BLE_p2pServer/STM32_WPAN/App",
     ROOT / "third_party/STM32CubeWB/Projects/P-NUCLEO-WB55.Nucleo/Applications/BLE/BLE_p2pServer/STM32_WPAN/Target",
@@ -139,25 +145,15 @@ def main() -> int:
     result["compiler"] = "auto-discovered-msvc"
     with tempfile.TemporaryDirectory(prefix="comp-req-549-", dir=ROOT / ".cache") as temp:
         build = Path(temp)
-        (build / "compiler.h").write_text(
-            "#ifndef COMPILER_H__\n#define COMPILER_H__\n"
-            "#define __WEAK\n#define PACKED(decl) decl\n"
-            "#define __PACKED_STRUCT struct\n#define __PACKED_UNION union\n"
-            "#define SECTION(name)\n#define ALIGN_DEF(n)\n#define NO_INIT(var) var\n"
-            "#endif\n", encoding="ascii")
-        (build / "cmsis_compiler.h").write_text(
-            "#ifndef __CMSIS_COMPILER_H\n#define __CMSIS_COMPILER_H\n"
-            "#define __STATIC_INLINE static inline\n"
-            "#define __STATIC_FORCEINLINE static inline\n"
-            "#define __ALIGNED(x)\n#define __WEAK\n"
-            "#endif\n", encoding="ascii")
         objects: list[Path] = []
-        include_args = ["/I", str(build)] + [item for inc in INCLUDES for item in ("/I", str(inc))]
+        include_args = [item for inc in INCLUDES for item in ("/I", str(inc))]
         for index, source in enumerate(SOURCES):
             obj = build / f"source_{index}.obj"
             command = [str(compiler), "/nologo", "/std:c11", "/O2", "/W4", "/WX",
-                       "/Gy", "/D__WEAK=", f"/FI{build / 'compiler.h'}",
-                       f"/FI{build / 'cmsis_compiler.h'}",
+                       "/wd4100", "/wd4311", "/wd4312",
+                       "/Gy", "/D__WEAK=", "/DSTM32WB55xx",
+                       f"/FI{ROOT / 'tools/fixtures/companion_gatt_msvc_compat.h'}",
+                       f"/FI{ROOT / 'third_party/STM32CubeWB/Drivers/STM32WBxx_HAL_Driver/Inc/stm32wbxx_hal_rtc.h'}",
                        *include_args, "/c", str(source),
                        f"/Fo{obj}"]
             code, stdout, stderr = run(command, env, ROOT)
@@ -185,6 +181,7 @@ def main() -> int:
             code, stdout, stderr = run([str(exe)], env, ROOT)
             result["fixture_exit"] = code
             result["fixture_stdout"] = stdout.strip()
+            result["fixture_stderr"] = normalize(stderr)
             result["fixture_stderr_sha256"] = hashlib.sha256(stderr.encode()).hexdigest().upper()
             result["fixture_sha256"] = sha256(exe)
             result["status"] = "PASS" if code == 0 and "BLE_NAME_FIXTURE PASS" in stdout else "NO_GO_FIXTURE"

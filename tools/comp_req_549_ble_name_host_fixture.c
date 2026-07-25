@@ -100,6 +100,9 @@ int main(void)
     if (sink.calls != 1u) failures += 1u;
 
     companion_ble_name_init(&state);
+    sink.calls = 0u;
+    memset(sink.gap_name, 0, sizeof(sink.gap_name));
+    memset(sink.advertising_name, 0, sizeof(sink.advertising_name));
     failures += expect("stage-before-reset", companion_ble_name_product_entry(
         &state, payload, (uint16_t)wire(payload, 13u, 1u, "stale"), 130u,
         counted_restart, &sink), COMPANION_BLE_NAME_OK);
@@ -114,9 +117,15 @@ int main(void)
     if (sink.calls != 1u) failures += 1u;
 
     companion_ble_name_init(&state);
+    sink.calls = 0u;
+    memset(sink.gap_name, 0, sizeof(sink.gap_name));
+    memset(sink.advertising_name, 0, sizeof(sink.advertising_name));
     failures += expect("no-stage", companion_ble_name_product_entry(
         &state, payload, (uint16_t)wire(payload, 4u, 2u, NULL), 40u,
         counted_restart, &sink), COMPANION_BLE_NAME_NO_STAGE);
+    sink.calls = 0u;
+    memset(sink.gap_name, 0, sizeof(sink.gap_name));
+    memset(sink.advertising_name, 0, sizeof(sink.advertising_name));
     companion_ble_name_set_connection(&state, true, false);
     failures += expect("connected", companion_ble_name_product_entry(
         &state, payload, (uint16_t)wire(payload, 5u, 1u, "connected"), 50u,
@@ -124,10 +133,13 @@ int main(void)
     failures += expect("connected-apply", companion_ble_name_product_entry(
         &state, payload, (uint16_t)wire(payload, 6u, 2u, NULL), 60u,
         counted_restart, &sink), COMPANION_BLE_NAME_CONNECTED);
-    if (sink.calls != 1u) failures += 1u;
+    if (sink.calls != 0u) failures += 1u;
     failures += (expect_active(&state, COMPANION_BLE_NAME_DEFAULT) != 0);
 
     companion_ble_name_init(&state);
+    sink.calls = 0u;
+    memset(sink.gap_name, 0, sizeof(sink.gap_name));
+    memset(sink.advertising_name, 0, sizeof(sink.advertising_name));
     companion_ble_name_set_connection(&state, false, true);
     failures += expect("busy", companion_ble_name_product_entry(
         &state, payload, (uint16_t)wire(payload, 7u, 1u, "busy"), 70u,
@@ -138,6 +150,11 @@ int main(void)
     failures += (expect_active(&state, COMPANION_BLE_NAME_DEFAULT) != 0);
 
     companion_ble_name_init(&state);
+    sink.calls = 0u;
+    memcpy(sink.gap_name, COMPANION_BLE_NAME_DEFAULT,
+           sizeof(COMPANION_BLE_NAME_DEFAULT));
+    memcpy(sink.advertising_name, COMPANION_BLE_NAME_DEFAULT,
+           sizeof(COMPANION_BLE_NAME_DEFAULT));
     sink.succeed = false;
     failures += expect("restart-failure", companion_ble_name_product_entry(
         &state, payload, (uint16_t)wire(payload, 9u, 1u, "failed"), 90u,
@@ -155,6 +172,9 @@ int main(void)
 
     sink.succeed = true;
     companion_ble_name_init(&state);
+    sink.calls = 0u;
+    memset(sink.gap_name, 0, sizeof(sink.gap_name));
+    memset(sink.advertising_name, 0, sizeof(sink.advertising_name));
     failures += expect("reset-default", companion_ble_name_product_entry(
         &state, payload, (uint16_t)wire(payload, 11u, 3u, NULL), 110u,
         counted_restart, &sink), COMPANION_BLE_NAME_OK);
