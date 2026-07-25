@@ -3518,7 +3518,13 @@ static bool board_touch_recording_menu_sink(
 {
     (void)context;
     (void)now_ms;
+#if COMPANION_VISUAL_ASSET_PACK_ENABLE
     return dispatch_board_visual_decision(decision, menu);
+#else
+    (void)decision;
+    (void)menu;
+    return false;
+#endif
 }
 
 static void start_manual_recording(void)
