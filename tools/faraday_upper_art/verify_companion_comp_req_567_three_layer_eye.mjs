@@ -71,23 +71,25 @@ function shapeIsLargePupil(points) {
   if (box.maxX - box.minX !== 6 || box.maxY - box.minY !== 10) return false;
   return new Set(points).size === points.length;
 }
-function enclosedWhiteComponents(bits, roi) {
-  const outside = new Uint8Array(40000), seen = new Uint8Array(40000), queue = [];
-  const inside = (p) => { const x = p % 200, y = Math.floor(p / 200); return x >= roi[0] && x < roi[2] && y >= roi[1] && y < roi[3]; };
-  const pushOutside = (p) => { if (bits[p] && !outside[p]) { outside[p] = 1; queue.push(p); } };
-  for (let x = roi[0]; x < roi[2]; x++) { pushOutside(roi[1] * 200 + x); pushOutside((roi[3] - 1) * 200 + x); }
-  for (let y = roi[1]; y < roi[3]; y++) { pushOutside(y * 200 + roi[0]); pushOutside(y * 200 + roi[2] - 1); }
-  while (queue.length) { const p = queue.pop(), x = p % 200, y = Math.floor(p / 200); for (const n of [p - 1, p + 1, p - 200, p + 200]) if (inside(n) && bits[n] && !outside[n]) { outside[n] = 1; queue.push(n); } }
-  const components = [];
-  for (let y = roi[1]; y < roi[3]; y++) for (let x = roi[0]; x < roi[2]; x++) { const start = y * 200 + x; if (!bits[start] || outside[start] || seen[start]) continue; const component = [start]; seen[start] = 1; queue.push(start); while (queue.length) { const p = queue.pop(), px = p % 200, py = Math.floor(p / 200); for (const n of [p - 1, p + 1, p - 200, p + 200]) if (inside(n) && bits[n] && !outside[n] && !seen[n]) { seen[n] = 1; queue.push(n); component.push(n); } } components.push(component); }
-  return components.sort((a, b) => b.length - a.length);
+function envelopePoints(envelope) {
+  return (envelope?.rows || []).flatMap((row) => Array.from({ length: row.maxX - row.minX + 1 }, (_, offset) => row.y * 200 + row.minX + offset));
 }
-function innerBlackComponent(bits, box, anchor = []) {
-  const seen = new Uint8Array(40000), components = [];
-  const inside = (p) => { const x = p % 200, y = Math.floor(p / 200); return x >= box.minX && x <= box.maxX && y >= box.minY && y <= box.maxY; };
-  for (let y = box.minY; y <= box.maxY; y++) for (let x = box.minX; x <= box.maxX; x++) { const start = y * 200 + x; if (!bits[start] || seen[start]) continue; const component = [start], queue = [start]; seen[start] = 1; while (queue.length) { const p = queue.pop(); for (const n of [p - 1, p + 1, p - 200, p + 200]) if (inside(n) && bits[n] && !seen[n]) { seen[n] = 1; queue.push(n); component.push(n); } } components.push(component); }
-  const anchored = components.filter((component) => component.length >= 50 && anchor.some((p) => [p - 1, p + 1, p - 200, p + 200].some((n) => component.includes(n))));
-  return (anchored.length ? anchored : components.filter((component) => component.length >= 50)).sort((a, b) => b.length - a.length)[0] || [];
+function envelopeBySide(sample, side) {
+  return sample.binding?.envelopes?.find((envelope) => envelope.eye === side) || null;
+}
+function envelopeNormalizationOracle(sample, name) {
+  assert.equal(sample.binding?.envelopes?.length, 2, `${name}: missing paired row-span envelopes`);
+  const result = {};
+  for (const side of Object.keys(ROI)) {
+    const envelope = envelopeBySide(sample, side);
+    const points = envelopePoints(envelope);
+    assert(points.length > 0, `${name}/${side}: empty row-span envelope`);
+    assert.equal(points.length, envelope.area, `${name}/${side}: envelope area/rows drift`);
+    const baseWhite = points.filter((p) => sample.base.white[p]);
+    assert.equal(baseWhite.length, 0, `${name}/${side}: bound base retained source white cue inside envelope`);
+    result[side] = { area: points.length, bounds: envelope.bounds, source_white_pixels: envelope.source_white_pixels, bound_base_white_pixels: baseWhite.length, points };
+  }
+  return result;
 }
 function authoredPupilFromGlint(rendered, glintPoints) {
   const glintBox = bounds(glintPoints), x0 = glintBox.minX - 1, y0 = glintBox.minY - 2, glintSet = setOf(glintPoints), points = [];
@@ -95,26 +97,42 @@ function authoredPupilFromGlint(rendered, glintPoints) {
   const expectedGlint = []; for (let y = 0; y < GLINT_PATTERN.length; y++) for (let x = 0; x < GLINT_PATTERN[y].length; x++) if (GLINT_PATTERN[y][x] === "1") expectedGlint.push((y0 + y + 2) * 200 + x0 + x + 1);
   assert.deepEqual([...glintSet].sort((a, b) => a - b), expectedGlint.sort((a, b) => a - b), "glint shape/relative anchor mismatch");
   assert(points.length === 65 && points.filter((p) => !glintSet.has(p)).every((p) => rendered.black[p]), "authored black pupil pixels are missing");
-  return points.filter((p) => !glintSet.has(p));
+  return points;
+}
+function pupilFullyInsetOracle(sample, side, field, pupil, name) {
+  const pupilSet = new Set(pupil), envelopeSet = new Set(envelopePoints(envelopeBySide(sample, side))), ring = new Set();
+  for (const p of pupil) {
+    const x = p % 200, y = Math.floor(p / 200);
+    for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) {
+      if (!dx && !dy) continue;
+      const n = (y + dy) * 200 + x + dx;
+      if (!pupilSet.has(n)) ring.add(n);
+    }
+  }
+  assert([...ring].every((p) => field.has(p) && sample.rendered.white[p]), `${name}/${side}: pupil lacks complete 8-neighbor white separation`);
+  const shell = new Set([...envelopeSet].filter((p) => sample.rendered.black[p] && !pupilSet.has(p)));
+  assert(!pupil.some((p) => { const x = p % 200, y = Math.floor(p / 200); for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) if ((dx || dy) && shell.has((y + dy) * 200 + x + dx)) return true; return false; }), `${name}/${side}: pupil touches envelope black shell`);
+  return { pass: true, white_ring_pixels: ring.size, shell_touch_pixels: 0 };
 }
 function renderedResidualOracle(sample, name) {
+  const normalized = envelopeNormalizationOracle(sample, name);
   const result = {};
-  for (const [side, roi] of Object.entries(ROI)) {
-    const oldWhite = enclosedWhiteComponents(sample.base.white, roi).flat();
-    const current = enclosedWhiteComponents(sample.rendered.white, roi);
-    assert.equal(current.length, 2, `${name}/${side}: rendered enclosed white components are not exactly field + glint ${JSON.stringify({ current: current.map((component) => ({ size: component.length, box: bounds(component), base_white: component.map((p) => sample.base.white[p]) })), old: enclosedWhiteComponents(sample.base.white, roi).map((component) => ({ size: component.length, box: bounds(component) })) })}`);
+  for (const side of Object.keys(ROI)) {
+    const current = pointComponents(normalized[side].points.filter((p) => sample.rendered.white[p]));
+    assert.equal(current.length, 2, `${name}/${side}: rendered envelope white components are not exactly field + glint ${JSON.stringify(current.map((component) => ({ size: component.length, box: bounds(component) })))}`);
     assert(current[0].length >= 100 && current[0].length >= current[1].length, `${name}/${side}: authored field is not the unique large white component ${JSON.stringify(current.map((component) => component.length))}`);
     assert.equal(current[1].length, 7, `${name}/${side}: unique glint is not exactly 7 pixels`);
     const field = setOf(current[0]), glintPoints = current[1], glint = setOf(glintPoints);
-    const residual = oldWhite.filter((p) => sample.rendered.white[p] && !field.has(p) && !glint.has(p));
-    assert.equal(residual.length, 0, `${name}/${side}: residual old enclosed white cue`);
+    const residual = normalized[side].points.filter((p) => sample.rendered.white[p] && !field.has(p) && !glint.has(p));
+    assert.equal(residual.length, 0, `${name}/${side}: residual white cue outside authored field/glint`);
     const box = sample.meta.inner_field_bounds[side === "left" ? 0 : 1];
     const pupil = authoredPupilFromGlint(sample.rendered, glintPoints);
+    const inset = pupilFullyInsetOracle(sample, side, field, pupil, name);
     const fieldMinusPupil = pointComponents(current[0].filter((p) => !pupil.includes(p)));
     assert.equal(fieldMinusPupil.length, 1, `${name}/${side}: field-minus-pupil has isolated white island ${JSON.stringify(fieldMinusPupil.map((component) => ({ size: component.length, box: bounds(component) })))}`);
     const pupilBox = bounds(pupil);
     assert(pupil.length >= 50 && glintPoints.every((p) => { const x = p % 200, y = Math.floor(p / 200); return x >= pupilBox.minX && x <= pupilBox.maxX && y >= pupilBox.minY && y <= pupilBox.maxY; }), `${name}/${side}: glint detached from pupil ${JSON.stringify({ glint: bounds(glintPoints), pupil: pupilBox })}`);
-    result[side] = { old_enclosed_white_pixels: oldWhite.length, rendered_components: current.map((component) => component.length), field_minus_pupil_components: fieldMinusPupil.map((component) => component.length), residual_white_cue: residual.length, field, glint: glintPoints, pupil };
+    result[side] = { source_white_pixels: normalized[side].source_white_pixels, bound_base_white_pixels: 0, rendered_components: current.map((component) => component.length), field_minus_pupil_components: fieldMinusPupil.map((component) => component.length), residual_white_cue: residual.length, field, glint: glintPoints, pupil, inset };
   }
   return result;
 }
@@ -131,11 +149,12 @@ function familyFrameBindingOracle(sample, name) {
   assert.equal(binding.gaze_hidden, true, name + ": closed frame still shows gaze");
   assert.equal(sample.meta, null, name + ": closed/squint frame still exposes gaze metadata");
   assert.equal(sample.gaze_src, "", name + ": closed/squint frame retained a pupil/glint source");
+  const normalized = envelopeNormalizationOracle(sample, name);
   const residual = {};
-  for (const [side, roi] of Object.entries(ROI)) {
-    const components = enclosedWhiteComponents(sample.rendered.white, roi);
-    assert.equal(components.length, 0, name + "/" + side + ": closed frame retained enclosed white cue " + JSON.stringify(components.map((component) => ({ size: component.length, box: bounds(component) }))));
-    residual[side] = { rendered_components: 0, old_white_cue: 0 };
+  for (const side of Object.keys(ROI)) {
+    const white = normalized[side].points.filter((p) => sample.rendered.white[p]);
+    assert.equal(white.length, 0, name + "/" + side + ": closed/squint frame retained white cue inside envelope");
+    residual[side] = { source_white_pixels: normalized[side].source_white_pixels, bound_base_white_pixels: 0, rendered_white_pixels: 0 };
   }
   return { kind: "closed", architecture: null, layers: residual };
 }
@@ -213,15 +232,24 @@ function negativeFixtures(sample, center) {
   results.detached_glint = reject({ ...sample.meta, pupil_glint_rigid: false }, (m) => m.pupil_glint_rigid);
   const switched = { ...sample, binding: { ...sample.binding, frame_src: "switched-family-frame.png" } };
   try { familyFrameBindingOracle(switched, "negative-family-frame-switch"); results.family_frame_switch_without_rebuilding_overlay = false; } catch { results.family_frame_switch_without_rebuilding_overlay = true; }
-  const oldWhite = enclosedWhiteComponents(sample.base.white, ROI.right).flat();
-  const currentRight = enclosedWhiteComponents(sample.rendered.white, ROI.right);
+  const rightEnvelope = envelopePoints(envelopeBySide(sample, "right"));
+  const rightEnvelopeSet = new Set(rightEnvelope);
+  const currentRight = pointComponents(rightEnvelope.filter((p) => sample.rendered.white[p]));
   const currentRightSet = new Set(currentRight.flat());
   const fourNeighbors = (p) => [p - 1, p + 1, p - 200, p + 200];
-  let detached = oldWhite.find((p) => !currentRightSet.has(p));
-  if (detached === undefined) detached = Array.from({ length: 40000 }, (_, p) => p).find((p) => { const x = p % 200, y = Math.floor(p / 200); return x >= ROI.right[0] + 1 && x < ROI.right[2] - 1 && y >= ROI.right[1] + 1 && y < ROI.right[3] - 1 && !currentRightSet.has(p) && sample.rendered.black[p] && fourNeighbors(p).every((n) => sample.rendered.black[n] && !currentRightSet.has(n)); });
+  const detached = rightEnvelope.find((p) => !currentRightSet.has(p) && sample.rendered.black[p] && fourNeighbors(p).every((n) => rightEnvelopeSet.has(n) && sample.rendered.black[n] && !currentRightSet.has(n)));
   const detachedSample = { ...sample, base: { ...sample.base, white: [...sample.base.white] }, rendered: { ...sample.rendered, white: [...sample.rendered.white], black: [...sample.rendered.black] } };
   if (detached !== undefined) { detachedSample.rendered.white[detached] = 1; detachedSample.rendered.black[detached] = 0; }
   try { renderedResidualOracle(detachedSample, "negative-detached-old-glint"); results.detached_old_glint = false; } catch { results.detached_old_glint = detached !== undefined; }
+  const connectedCueSample = { ...sample, base: { ...sample.base, white: [...sample.base.white], black: [...sample.base.black] } };
+  const cue = rightEnvelope.find((p) => sample.base.black[p]);
+  if (cue !== undefined) { connectedCueSample.base.white[cue] = 1; connectedCueSample.base.black[cue] = 0; }
+  try { envelopeNormalizationOracle(connectedCueSample, "negative-boundary-connected-source-cue"); results.boundary_connected_source_cue = false; } catch { results.boundary_connected_source_cue = cue !== undefined; }
+  const rightField = new Set(currentRight[0]), rightPupil = authoredPupilFromGlint(sample.rendered, currentRight[1]), rightPupilSet = new Set(rightPupil);
+  const touching = rightPupil.flatMap((p) => { const x = p % 200, y = Math.floor(p / 200); const out = []; for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) if ((dx || dy) && !rightPupilSet.has((y + dy) * 200 + x + dx)) out.push((y + dy) * 200 + x + dx); return out; }).find((p) => rightField.has(p));
+  const touchingSample = { ...sample, rendered: { ...sample.rendered, white: [...sample.rendered.white], black: [...sample.rendered.black] } };
+  if (touching !== undefined) { touchingSample.rendered.white[touching] = 0; touchingSample.rendered.black[touching] = 1; }
+  try { renderedResidualOracle(touchingSample, "negative-touching-shell"); results.touching_shell = false; } catch { results.touching_shell = touching !== undefined; }
   results.moved_outer_silhouette = reject({ ...sample.meta, field_boundary_fixed: false }, (m) => m.field_boundary_fixed);
   results.stale_pose = reject({ ...sample.meta, old_pose_pixels: 1 }, (m) => m.old_pose_pixels === 0);
   results.missing_pupil_pixel = reject({ ...sample.meta, pupil_area: 119 }, (m) => m.pupil_area >= 120);
