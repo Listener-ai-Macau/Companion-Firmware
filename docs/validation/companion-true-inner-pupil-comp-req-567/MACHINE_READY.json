@@ -1,0 +1,53 @@
+{
+  "schema": "companion.comp-req-567.machine-ready.v1",
+  "requirement": "COMP-REQ-567",
+  "status": "MACHINE_READY_OWNER_PENDING",
+  "generated_at": "2026-07-25T18:49:32.8080433+08:00",
+  "implementation_commit": "b265efd1f2b20127d5a4cdc607d1e7806a49474b",
+  "page": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html",
+    "sha256": "92C5A1FEE52688197C35CEBCA8A9614957064F705D6DE7F189B9EF3020863B7D",
+    "url": "http://127.0.0.1:4173/docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html?rev=comp-req-567-pupil-inset#expression"
+  },
+  "three_layer_eye": {
+    "verifier": "tools/faraday_upper_art/verify_companion_comp_req_567_three_layer_eye.mjs",
+    "verifier_sha256": "468A97E596C11E44A76339EC9C278D1A16FB444A3DF7502DB5F2C52AB78EC855",
+    "report": "docs/validation/companion-true-inner-pupil-comp-req-567/three-layer-eye-report.json",
+    "report_sha256": "A76B44992308AB4422CB90852B2034BB7B2344DAD9BCC0C3C304B213F496AF42",
+    "direct_gaze_directions": 5,
+    "expression_families": 10,
+    "negative_fixtures": 16,
+    "recording_underlying_choreography": "PASS",
+    "gaze_strip_sha256": "3B3E8459138966266AE65AD035192816390BC2FB2CE143D9C955E9EC2CA9E47D",
+    "family_atlas_sha256": "02D43AD84DD2E5A3527EF1A391D9AE18060597E5DFE90E08CCFDF6C5479E0297"
+  },
+  "interaction": {
+    "status": "PASS",
+    "combinations": 6,
+    "scenarios": 42,
+    "report": "docs/validation/companion-true-inner-pupil-comp-req-567/interaction/interaction-successor-result.json",
+    "report_sha256": "272078633728146294D6A85CC78E773F617BA1A9768F2D4DF1C02E7489E98B37",
+    "legacy_replay_sha256": "9575EA2F53666E6A954CE60967032E3D62449865454707725901535CB1B246CA"
+  },
+  "protected_hashes": {
+    "ssd1681_driver_sha256": "F52A7E853BFE2E66680F08420941265CFF163FB579B2D3870128FC72C79E035F",
+    "r7_frame_header_sha256": "9571CF9F896B6C14451BAA7348CB717643B4963AE834B0A554E0C2ED2C7E8D35",
+    "owner_acceptance_sha256": "8A3BDF4BD1254B0D0F4DE13A7F293C3D74587C800339ABD4C61FEB0B7737E227"
+  },
+  "side_effects": {
+    "hardware_contact": 0,
+    "programmer": 0,
+    "serial": 0,
+    "write": 0,
+    "reset": 0,
+    "refresh": 0,
+    "popup": 0,
+    "production_enable": 0,
+    "push": 0
+  },
+  "human_boundary": {
+    "browser_visual_acceptance": "PENDING",
+    "physical_touch_acceptance": "SEPARATE_PENDING",
+    "machine_pass_does_not_imply_owner_acceptance": true
+  }
+}

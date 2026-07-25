@@ -1,0 +1,36 @@
+{
+  "schema": "companion.comp_req_560.interaction_successor.v1",
+  "status": "PASS",
+  "requirements": [
+    "COMP-REQ-540",
+    "COMP-REQ-554",
+    "COMP-REQ-560"
+  ],
+  "page_repo_path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html",
+  "page_canonical_sha256": "92C5A1FEE52688197C35CEBCA8A9614957064F705D6DE7F189B9EF3020863B7D",
+  "combinations": 6,
+  "scenarios": 42,
+  "scenarios_pass_under_current_contract": 42,
+  "inherited_passes": 36,
+  "superseded_recording_entry_passes": 6,
+  "current_recording_entry_contract": {
+    "face_layers": 1,
+    "gaze_layers": 1,
+    "removed_top_left_indicator_layers": 0,
+    "inward_meter_layers": 1,
+    "recording_entries": 1,
+    "menu_layers": 0,
+    "progress_nodes": 0
+  },
+  "errors": 0,
+  "microphone_requests": 0,
+  "side_effects": {
+    "hardware": 0,
+    "owner_prompt": 0,
+    "production_write": 0
+  },
+  "legacy_result_repo_path": "docs/validation/companion-true-inner-pupil-comp-req-567/interaction/legacy-comp-req-539-replay/browser-replay-result.json",
+  "legacy_result_sha256": "9575EA2F53666E6A954CE60967032E3D62449865454707725901535CB1B246CA",
+  "source_verifier_repo_path": "tools/faraday_upper_art/replay_companion_browser_listening_meter_comp_req_539.mjs",
+  "source_verifier_sha256": "6BC1DBB3FD848CBA4DAA947A5854F87C2017571F7D5C933FD8DEF57BD5C90037"
+}
