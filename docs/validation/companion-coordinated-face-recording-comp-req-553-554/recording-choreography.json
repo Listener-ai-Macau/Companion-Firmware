@@ -1,0 +1,812 @@
+{
+  "schema": "companion.comp_req_553_554.coordinated_face_recording.v1",
+  "status": "PASS",
+  "page_sha256": "718D564BEBACCBA4AEFD055C29E3B80E8D7CA5C427153C8194C0137158FEA8E6",
+  "cadence_ms": 480,
+  "steps": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    9
+  ],
+  "idle_distinct_face_hashes": 5,
+  "idle_live_distinct_face_hashes": 5,
+  "recording_live_distinct_face_hashes": 4,
+  "recording_live_distinct_meter_steps": 6,
+  "recording_underlying_face_sequence_equal": true,
+  "paired_eye_steps": 6,
+  "recording_meter_layers": 1,
+  "recording_exit_meter_visible": false,
+  "off": [
+    {
+      "mode": "idle",
+      "step": 0,
+      "face_sha256": "7DCCB20588E1BD4451C1A89C6DA14716F7F67B06E8B0AD4CFD6D0D9DDEA0CE3B",
+      "screenshot": ".cache/validation/comp-req-553-554-recording-final-screens/idle-step-0.png",
+      "screenshot_sha256": "06EF853685448CC82B84FAAFAE42515EB627B896D93C146CF772B1B54C495011",
+      "family_step": 1,
+      "family_cycle": 0,
+      "family_active": false,
+      "recording_active": false,
+      "recording_level_nodes": 1,
+      "meter_step": -1,
+      "eye": {
+        "pass": true,
+        "story": "calm_presence",
+        "frame": "calm_presence-04-calm_blink_settle.png",
+        "open_eye_count": 2,
+        "eye_rows": [
+          {
+            "box": {
+              "minX": 42,
+              "maxX": 74,
+              "minY": 85,
+              "maxY": 129
+            },
+            "primary_components": 1,
+            "rendered_primary_components": 1,
+            "sparkle_components": 1,
+            "sparkle_pixels": 31
+          },
+          {
+            "box": {
+              "minX": 125,
+              "maxX": 158,
+              "minY": 85,
+              "maxY": 129
+            },
+            "primary_components": 1,
+            "rendered_primary_components": 1,
+            "sparkle_components": 1,
+            "sparkle_pixels": 33
+          }
+        ],
+        "paired_sparkles": true,
+        "sparkle_components": 2,
+        "primary_highlight_mismatch_pixels": 0,
+        "changed_pixels": 0,
+        "silhouette_mismatch_pixels": 0,
+        "max_changed_pixels": 136,
+        "moving_component": "paired_small_sparkles",
+        "eye_body_silhouette_fixed": true
+      }
+    },
+    {
+      "mode": "idle",
+      "step": 2,
+      "face_sha256": "A3BE24DAB20E9AE606DA5E0C0194A80A6E211670B19BC21AAE2629B2D408F780",
+      "screenshot": ".cache/validation/comp-req-553-554-recording-final-screens/idle-step-2.png",
+      "screenshot_sha256": "67C1F8D7E42C490DF4CA8721A96CC94C1490FAC7946005115EFD756BDA23B534",
+      "family_step": 2,
+      "family_cycle": 0,
+      "family_active": false,
+      "recording_active": false,
+      "recording_level_nodes": 1,
+      "meter_step": -1,
+      "eye": {
+        "pass": true,
+        "story": "calm_presence",
+        "frame": "calm_presence-04-calm_blink_settle.png",
+        "open_eye_count": 2,
+        "eye_rows": [
+          {
+            "box": {
+              "minX": 42,
+              "maxX": 74,
+              "minY": 85,
+              "maxY": 129
+            },
+            "primary_components": 1,
+            "rendered_primary_components": 1,
+            "sparkle_components": 1,
+            "sparkle_pixels": 31
+          },
+          {
+            "box": {
+              "minX": 125,
+              "maxX": 158,
+              "minY": 85,
+              "maxY": 129
+            },
+            "primary_components": 1,
+            "rendered_primary_components": 1,
+            "sparkle_components": 1,
+            "sparkle_pixels": 33
+          }
+        ],
+        "paired_sparkles": true,
+        "sparkle_components": 2,
+        "primary_highlight_mismatch_pixels": 0,
+        "changed_pixels": 128,
+        "silhouette_mismatch_pixels": 0,
+        "max_changed_pixels": 136,
+        "moving_component": "paired_small_sparkles",
+        "eye_body_silhouette_fixed": true
+      }
+    },
+    {
+      "mode": "idle",
+      "step": 4,
+      "face_sha256": "0ADFAFBC01B6D9B7D4AB6637A702631DE739CFE321E23196DD5E2737E166EA4B",
+      "screenshot": ".cache/validation/comp-req-553-554-recording-final-screens/idle-step-4.png",
+      "screenshot_sha256": "631A18916ED50308B20128240A50409F0315BB188C101C85D2418C1989942FB3",
+      "family_step": 4,
+      "family_cycle": 0,
+      "family_active": false,
+      "recording_active": false,
+      "recording_level_nodes": 1,
+      "meter_step": -1,
+      "eye": {
+        "pass": true,
+        "story": "calm_presence",
+        "frame": "calm_presence-04-calm_blink_settle.png",
+        "open_eye_count": 2,
+        "eye_rows": [
+          {
+            "box": {
+              "minX": 42,
+              "maxX": 74,
+              "minY": 85,
+              "maxY": 129
+            },
+            "primary_components": 1,
+            "rendered_primary_components": 1,
+            "sparkle_components": 1,
+            "sparkle_pixels": 31
+          },
+          {
+            "box": {
+              "minX": 125,
+              "maxX": 158,
+              "minY": 85,
+              "maxY": 129
+            },
+            "primary_components": 1,
+            "rendered_primary_components": 1,
+            "sparkle_components": 1,
+            "sparkle_pixels": 33
+          }
+        ],
+        "paired_sparkles": true,
+        "sparkle_components": 2,
+        "primary_highlight_mismatch_pixels": 0,
+        "changed_pixels": 102,
+        "silhouette_mismatch_pixels": 0,
+        "max_changed_pixels": 136,
+        "moving_component": "paired_small_sparkles",
+        "eye_body_silhouette_fixed": true
+      }
+    },
+    {
+      "mode": "idle",
+      "step": 6,
+      "face_sha256": "664DEFECFB657F7061ECDCEC3CA2D5B2420D03E68058FE73901F56E549626CF9",
+      "screenshot": ".cache/validation/comp-req-553-554-recording-final-screens/idle-step-6.png",
+      "screenshot_sha256": "025D9B37315EC39CAB42283EBF604F8DAE3978445121A5BE02C801F6096FF90A",
+      "family_step": 6,
+      "family_cycle": 0,
+      "family_active": false,
+      "recording_active": false,
+      "recording_level_nodes": 1,
+      "meter_step": -1,
+      "eye": {
+        "pass": true,
+        "story": "calm_presence",
+        "frame": "calm_presence-04-calm_blink_settle.png",
+        "open_eye_count": 2,
+        "eye_rows": [
+          {
+            "box": {
+              "minX": 42,
+              "maxX": 74,
+              "minY": 85,
+              "maxY": 129
+            },
+            "primary_components": 1,
+            "rendered_primary_components": 1,
+            "sparkle_components": 1,
+            "sparkle_pixels": 31
+          },
+          {
+            "box": {
+              "minX": 125,
+              "maxX": 158,
+              "minY": 85,
+              "maxY": 129
+            },
+            "primary_components": 1,
+            "rendered_primary_components": 1,
+            "sparkle_components": 1,
+            "sparkle_pixels": 33
+          }
+        ],
+        "paired_sparkles": true,
+        "sparkle_components": 2,
+        "primary_highlight_mismatch_pixels": 0,
+        "changed_pixels": 114,
+        "silhouette_mismatch_pixels": 0,
+        "max_changed_pixels": 136,
+        "moving_component": "paired_small_sparkles",
+        "eye_body_silhouette_fixed": true
+      }
+    },
+    {
+      "mode": "idle",
+      "step": 8,
+      "face_sha256": "19B730171500D7A33BD024F1CA74A7ABB0AD8401308B939D3FD21863B23F1321",
+      "screenshot": ".cache/validation/comp-req-553-554-recording-final-screens/idle-step-8.png",
+      "screenshot_sha256": "B8F20C4DAA9162B702C692BDE3103B7AF25A710822AA05B9C037C18DBA4DF162",
+      "family_step": 8,
+      "family_cycle": 0,
+      "family_active": false,
+      "recording_active": false,
+      "recording_level_nodes": 1,
+      "meter_step": -1,
+      "eye": {
+        "pass": true,
+        "story": "calm_presence",
+        "frame": "calm_presence-04-calm_blink_settle.png",
+        "open_eye_count": 2,
+        "eye_rows": [
+          {
+            "box": {
+              "minX": 42,
+              "maxX": 74,
+              "minY": 85,
+              "maxY": 129
+            },
+            "primary_components": 1,
+            "rendered_primary_components": 1,
+            "sparkle_components": 1,
+            "sparkle_pixels": 31
+          },
+          {
+            "box": {
+              "minX": 125,
+              "maxX": 158,
+              "minY": 85,
+              "maxY": 129
+            },
+            "primary_components": 1,
+            "rendered_primary_components": 1,
+            "sparkle_components": 1,
+            "sparkle_pixels": 33
+          }
+        ],
+        "paired_sparkles": true,
+        "sparkle_components": 2,
+        "primary_highlight_mismatch_pixels": 0,
+        "changed_pixels": 32,
+        "silhouette_mismatch_pixels": 0,
+        "max_changed_pixels": 136,
+        "moving_component": "paired_small_sparkles",
+        "eye_body_silhouette_fixed": true
+      }
+    },
+    {
+      "mode": "idle",
+      "step": 9,
+      "face_sha256": "7DCCB20588E1BD4451C1A89C6DA14716F7F67B06E8B0AD4CFD6D0D9DDEA0CE3B",
+      "screenshot": ".cache/validation/comp-req-553-554-recording-final-screens/idle-step-9.png",
+      "screenshot_sha256": "06EF853685448CC82B84FAAFAE42515EB627B896D93C146CF772B1B54C495011",
+      "family_step": 9,
+      "family_cycle": 0,
+      "family_active": false,
+      "recording_active": false,
+      "recording_level_nodes": 1,
+      "meter_step": -1,
+      "eye": {
+        "pass": true,
+        "story": "calm_presence",
+        "frame": "calm_presence-04-calm_blink_settle.png",
+        "open_eye_count": 2,
+        "eye_rows": [
+          {
+            "box": {
+              "minX": 42,
+              "maxX": 74,
+              "minY": 85,
+              "maxY": 129
+            },
+            "primary_components": 1,
+            "rendered_primary_components": 1,
+            "sparkle_components": 1,
+            "sparkle_pixels": 31
+          },
+          {
+            "box": {
+              "minX": 125,
+              "maxX": 158,
+              "minY": 85,
+              "maxY": 129
+            },
+            "primary_components": 1,
+            "rendered_primary_components": 1,
+            "sparkle_components": 1,
+            "sparkle_pixels": 33
+          }
+        ],
+        "paired_sparkles": true,
+        "sparkle_components": 2,
+        "primary_highlight_mismatch_pixels": 0,
+        "changed_pixels": 0,
+        "silhouette_mismatch_pixels": 0,
+        "max_changed_pixels": 136,
+        "moving_component": "paired_small_sparkles",
+        "eye_body_silhouette_fixed": true
+      }
+    }
+  ],
+  "live_idle": [
+    {
+      "mode": "日常实时时钟",
+      "step": 0,
+      "face_sha256": "7DCCB20588E1BD4451C1A89C6DA14716F7F67B06E8B0AD4CFD6D0D9DDEA0CE3B",
+      "screenshot": ".cache/validation/comp-req-553-554-recording-final-screens/idle-live-0.png",
+      "screenshot_sha256": "06EF853685448CC82B84FAAFAE42515EB627B896D93C146CF772B1B54C495011",
+      "family_step": 1,
+      "family_cycle": 0
+    },
+    {
+      "mode": "日常实时时钟",
+      "step": 1,
+      "face_sha256": "A3BE24DAB20E9AE606DA5E0C0194A80A6E211670B19BC21AAE2629B2D408F780",
+      "screenshot": ".cache/validation/comp-req-553-554-recording-final-screens/idle-live-1.png",
+      "screenshot_sha256": "67C1F8D7E42C490DF4CA8721A96CC94C1490FAC7946005115EFD756BDA23B534",
+      "family_step": 2,
+      "family_cycle": 0
+    },
+    {
+      "mode": "日常实时时钟",
+      "step": 2,
+      "face_sha256": "A3BE24DAB20E9AE606DA5E0C0194A80A6E211670B19BC21AAE2629B2D408F780",
+      "screenshot": ".cache/validation/comp-req-553-554-recording-final-screens/idle-live-2.png",
+      "screenshot_sha256": "67C1F8D7E42C490DF4CA8721A96CC94C1490FAC7946005115EFD756BDA23B534",
+      "family_step": 3,
+      "family_cycle": 0
+    },
+    {
+      "mode": "日常实时时钟",
+      "step": 3,
+      "face_sha256": "0ADFAFBC01B6D9B7D4AB6637A702631DE739CFE321E23196DD5E2737E166EA4B",
+      "screenshot": ".cache/validation/comp-req-553-554-recording-final-screens/idle-live-3.png",
+      "screenshot_sha256": "631A18916ED50308B20128240A50409F0315BB188C101C85D2418C1989942FB3",
+      "family_step": 4,
+      "family_cycle": 0
+    },
+    {
+      "mode": "日常实时时钟",
+      "step": 4,
+      "face_sha256": "0ADFAFBC01B6D9B7D4AB6637A702631DE739CFE321E23196DD5E2737E166EA4B",
+      "screenshot": ".cache/validation/comp-req-553-554-recording-final-screens/idle-live-4.png",
+      "screenshot_sha256": "631A18916ED50308B20128240A50409F0315BB188C101C85D2418C1989942FB3",
+      "family_step": 5,
+      "family_cycle": 0
+    },
+    {
+      "mode": "日常实时时钟",
+      "step": 5,
+      "face_sha256": "664DEFECFB657F7061ECDCEC3CA2D5B2420D03E68058FE73901F56E549626CF9",
+      "screenshot": ".cache/validation/comp-req-553-554-recording-final-screens/idle-live-5.png",
+      "screenshot_sha256": "025D9B37315EC39CAB42283EBF604F8DAE3978445121A5BE02C801F6096FF90A",
+      "family_step": 7,
+      "family_cycle": 0
+    },
+    {
+      "mode": "日常实时时钟",
+      "step": 6,
+      "face_sha256": "19B730171500D7A33BD024F1CA74A7ABB0AD8401308B939D3FD21863B23F1321",
+      "screenshot": ".cache/validation/comp-req-553-554-recording-final-screens/idle-live-6.png",
+      "screenshot_sha256": "B8F20C4DAA9162B702C692BDE3103B7AF25A710822AA05B9C037C18DBA4DF162",
+      "family_step": 8,
+      "family_cycle": 0
+    },
+    {
+      "mode": "日常实时时钟",
+      "step": 7,
+      "face_sha256": "7DCCB20588E1BD4451C1A89C6DA14716F7F67B06E8B0AD4CFD6D0D9DDEA0CE3B",
+      "screenshot": ".cache/validation/comp-req-553-554-recording-final-screens/idle-live-7.png",
+      "screenshot_sha256": "06EF853685448CC82B84FAAFAE42515EB627B896D93C146CF772B1B54C495011",
+      "family_step": 9,
+      "family_cycle": 0
+    },
+    {
+      "mode": "日常实时时钟",
+      "step": 8,
+      "face_sha256": "7DCCB20588E1BD4451C1A89C6DA14716F7F67B06E8B0AD4CFD6D0D9DDEA0CE3B",
+      "screenshot": ".cache/validation/comp-req-553-554-recording-final-screens/idle-live-8.png",
+      "screenshot_sha256": "06EF853685448CC82B84FAAFAE42515EB627B896D93C146CF772B1B54C495011",
+      "family_step": 0,
+      "family_cycle": 1
+    },
+    {
+      "mode": "日常实时时钟",
+      "step": 9,
+      "face_sha256": "7DCCB20588E1BD4451C1A89C6DA14716F7F67B06E8B0AD4CFD6D0D9DDEA0CE3B",
+      "screenshot": ".cache/validation/comp-req-553-554-recording-final-screens/idle-live-9.png",
+      "screenshot_sha256": "67C1F8D7E42C490DF4CA8721A96CC94C1490FAC7946005115EFD756BDA23B534",
+      "family_step": 1,
+      "family_cycle": 1
+    }
+  ],
+  "live_recording": [
+    {
+      "mode": "录音实时时钟",
+      "step": 0,
+      "face_sha256": "7DCCB20588E1BD4451C1A89C6DA14716F7F67B06E8B0AD4CFD6D0D9DDEA0CE3B",
+      "screenshot": ".cache/validation/comp-req-553-554-recording-final-screens/recording-live-0.png",
+      "screenshot_sha256": "C489A7D4F5FF98119EE0B71C01370299B344BAA8B30331BDD4E068B9991CADF7",
+      "meter_step": 1,
+      "family_step": 1
+    },
+    {
+      "mode": "录音实时时钟",
+      "step": 1,
+      "face_sha256": "A3BE24DAB20E9AE606DA5E0C0194A80A6E211670B19BC21AAE2629B2D408F780",
+      "screenshot": ".cache/validation/comp-req-553-554-recording-final-screens/recording-live-1.png",
+      "screenshot_sha256": "8408E232B243FD9B6B73D3036F48A20BD1BD28EAA46738CC87A54B7B45D83972",
+      "meter_step": 2,
+      "family_step": 2
+    },
+    {
+      "mode": "录音实时时钟",
+      "step": 2,
+      "face_sha256": "A3BE24DAB20E9AE606DA5E0C0194A80A6E211670B19BC21AAE2629B2D408F780",
+      "screenshot": ".cache/validation/comp-req-553-554-recording-final-screens/recording-live-2.png",
+      "screenshot_sha256": "E4FBA8EC0EB3B100DCACC3DF7BA7518208594D94D24301BD72486070132C0D4E",
+      "meter_step": 3,
+      "family_step": 3
+    },
+    {
+      "mode": "录音实时时钟",
+      "step": 3,
+      "face_sha256": "0ADFAFBC01B6D9B7D4AB6637A702631DE739CFE321E23196DD5E2737E166EA4B",
+      "screenshot": ".cache/validation/comp-req-553-554-recording-final-screens/recording-live-3.png",
+      "screenshot_sha256": "E807FD70E9DB7CBD5B673D0ADD42D8EB542F4C956559FA44FAC7BC81DADE7361",
+      "meter_step": 4,
+      "family_step": 4
+    },
+    {
+      "mode": "录音实时时钟",
+      "step": 4,
+      "face_sha256": "0ADFAFBC01B6D9B7D4AB6637A702631DE739CFE321E23196DD5E2737E166EA4B",
+      "screenshot": ".cache/validation/comp-req-553-554-recording-final-screens/recording-live-4.png",
+      "screenshot_sha256": "89DED704CF5F35637B6C835998F928ACA01F7381DE12147F0FBF6CF083B956A5",
+      "meter_step": 5,
+      "family_step": 5
+    },
+    {
+      "mode": "录音实时时钟",
+      "step": 5,
+      "face_sha256": "664DEFECFB657F7061ECDCEC3CA2D5B2420D03E68058FE73901F56E549626CF9",
+      "screenshot": ".cache/validation/comp-req-553-554-recording-final-screens/recording-live-5.png",
+      "screenshot_sha256": "C1E6F2124C4B85BA8AE07ECF227B1171C8B321CBB1E05264F5678813CCDB6443",
+      "meter_step": 7,
+      "family_step": 7
+    }
+  ],
+  "on": [
+    {
+      "mode": "recording",
+      "step": 0,
+      "face_sha256": "7DCCB20588E1BD4451C1A89C6DA14716F7F67B06E8B0AD4CFD6D0D9DDEA0CE3B",
+      "screenshot": ".cache/validation/comp-req-553-554-recording-final-screens/recording-step-0.png",
+      "screenshot_sha256": "21A459CC4173126AE6D1923637E26615D61080DB25E66D7D42B833F191AF8B12",
+      "family_step": 7,
+      "family_cycle": 1,
+      "family_active": false,
+      "recording_active": true,
+      "recording_level_nodes": 1,
+      "meter_step": 7,
+      "eye": {
+        "pass": true,
+        "story": "calm_presence",
+        "frame": "calm_presence-04-calm_blink_settle.png",
+        "open_eye_count": 2,
+        "eye_rows": [
+          {
+            "box": {
+              "minX": 42,
+              "maxX": 74,
+              "minY": 85,
+              "maxY": 129
+            },
+            "primary_components": 1,
+            "rendered_primary_components": 1,
+            "sparkle_components": 1,
+            "sparkle_pixels": 31
+          },
+          {
+            "box": {
+              "minX": 125,
+              "maxX": 158,
+              "minY": 85,
+              "maxY": 129
+            },
+            "primary_components": 1,
+            "rendered_primary_components": 1,
+            "sparkle_components": 1,
+            "sparkle_pixels": 33
+          }
+        ],
+        "paired_sparkles": true,
+        "sparkle_components": 2,
+        "primary_highlight_mismatch_pixels": 0,
+        "changed_pixels": 0,
+        "silhouette_mismatch_pixels": 0,
+        "max_changed_pixels": 136,
+        "moving_component": "paired_small_sparkles",
+        "eye_body_silhouette_fixed": true
+      }
+    },
+    {
+      "mode": "recording",
+      "step": 2,
+      "face_sha256": "A3BE24DAB20E9AE606DA5E0C0194A80A6E211670B19BC21AAE2629B2D408F780",
+      "screenshot": ".cache/validation/comp-req-553-554-recording-final-screens/recording-step-2.png",
+      "screenshot_sha256": "133E4AB521FB37162F13CD1977A2BDE10C9C14F4C6933DE248E7CF9D2E98A3A5",
+      "family_step": 2,
+      "family_cycle": 1,
+      "family_active": false,
+      "recording_active": true,
+      "recording_level_nodes": 1,
+      "meter_step": 7,
+      "eye": {
+        "pass": true,
+        "story": "calm_presence",
+        "frame": "calm_presence-04-calm_blink_settle.png",
+        "open_eye_count": 2,
+        "eye_rows": [
+          {
+            "box": {
+              "minX": 42,
+              "maxX": 74,
+              "minY": 85,
+              "maxY": 129
+            },
+            "primary_components": 1,
+            "rendered_primary_components": 1,
+            "sparkle_components": 1,
+            "sparkle_pixels": 31
+          },
+          {
+            "box": {
+              "minX": 125,
+              "maxX": 158,
+              "minY": 85,
+              "maxY": 129
+            },
+            "primary_components": 1,
+            "rendered_primary_components": 1,
+            "sparkle_components": 1,
+            "sparkle_pixels": 33
+          }
+        ],
+        "paired_sparkles": true,
+        "sparkle_components": 2,
+        "primary_highlight_mismatch_pixels": 0,
+        "changed_pixels": 128,
+        "silhouette_mismatch_pixels": 0,
+        "max_changed_pixels": 136,
+        "moving_component": "paired_small_sparkles",
+        "eye_body_silhouette_fixed": true
+      }
+    },
+    {
+      "mode": "recording",
+      "step": 4,
+      "face_sha256": "0ADFAFBC01B6D9B7D4AB6637A702631DE739CFE321E23196DD5E2737E166EA4B",
+      "screenshot": ".cache/validation/comp-req-553-554-recording-final-screens/recording-step-4.png",
+      "screenshot_sha256": "5AA232028E917EC43BAA398FCB2CADBB7D3270747A69F1870D36C26EEC7F909D",
+      "family_step": 4,
+      "family_cycle": 1,
+      "family_active": false,
+      "recording_active": true,
+      "recording_level_nodes": 1,
+      "meter_step": 7,
+      "eye": {
+        "pass": true,
+        "story": "calm_presence",
+        "frame": "calm_presence-04-calm_blink_settle.png",
+        "open_eye_count": 2,
+        "eye_rows": [
+          {
+            "box": {
+              "minX": 42,
+              "maxX": 74,
+              "minY": 85,
+              "maxY": 129
+            },
+            "primary_components": 1,
+            "rendered_primary_components": 1,
+            "sparkle_components": 1,
+            "sparkle_pixels": 31
+          },
+          {
+            "box": {
+              "minX": 125,
+              "maxX": 158,
+              "minY": 85,
+              "maxY": 129
+            },
+            "primary_components": 1,
+            "rendered_primary_components": 1,
+            "sparkle_components": 1,
+            "sparkle_pixels": 33
+          }
+        ],
+        "paired_sparkles": true,
+        "sparkle_components": 2,
+        "primary_highlight_mismatch_pixels": 0,
+        "changed_pixels": 102,
+        "silhouette_mismatch_pixels": 0,
+        "max_changed_pixels": 136,
+        "moving_component": "paired_small_sparkles",
+        "eye_body_silhouette_fixed": true
+      }
+    },
+    {
+      "mode": "recording",
+      "step": 6,
+      "face_sha256": "664DEFECFB657F7061ECDCEC3CA2D5B2420D03E68058FE73901F56E549626CF9",
+      "screenshot": ".cache/validation/comp-req-553-554-recording-final-screens/recording-step-6.png",
+      "screenshot_sha256": "C1E6F2124C4B85BA8AE07ECF227B1171C8B321CBB1E05264F5678813CCDB6443",
+      "family_step": 6,
+      "family_cycle": 1,
+      "family_active": false,
+      "recording_active": true,
+      "recording_level_nodes": 1,
+      "meter_step": 7,
+      "eye": {
+        "pass": true,
+        "story": "calm_presence",
+        "frame": "calm_presence-04-calm_blink_settle.png",
+        "open_eye_count": 2,
+        "eye_rows": [
+          {
+            "box": {
+              "minX": 42,
+              "maxX": 74,
+              "minY": 85,
+              "maxY": 129
+            },
+            "primary_components": 1,
+            "rendered_primary_components": 1,
+            "sparkle_components": 1,
+            "sparkle_pixels": 31
+          },
+          {
+            "box": {
+              "minX": 125,
+              "maxX": 158,
+              "minY": 85,
+              "maxY": 129
+            },
+            "primary_components": 1,
+            "rendered_primary_components": 1,
+            "sparkle_components": 1,
+            "sparkle_pixels": 33
+          }
+        ],
+        "paired_sparkles": true,
+        "sparkle_components": 2,
+        "primary_highlight_mismatch_pixels": 0,
+        "changed_pixels": 114,
+        "silhouette_mismatch_pixels": 0,
+        "max_changed_pixels": 136,
+        "moving_component": "paired_small_sparkles",
+        "eye_body_silhouette_fixed": true
+      }
+    },
+    {
+      "mode": "recording",
+      "step": 8,
+      "face_sha256": "19B730171500D7A33BD024F1CA74A7ABB0AD8401308B939D3FD21863B23F1321",
+      "screenshot": ".cache/validation/comp-req-553-554-recording-final-screens/recording-step-8.png",
+      "screenshot_sha256": "D70B94E28ECA6B42DF0B0865609617CF2632A81B29A6D55544C70A11E8BCB7D1",
+      "family_step": 8,
+      "family_cycle": 1,
+      "family_active": false,
+      "recording_active": true,
+      "recording_level_nodes": 1,
+      "meter_step": 7,
+      "eye": {
+        "pass": true,
+        "story": "calm_presence",
+        "frame": "calm_presence-04-calm_blink_settle.png",
+        "open_eye_count": 2,
+        "eye_rows": [
+          {
+            "box": {
+              "minX": 42,
+              "maxX": 74,
+              "minY": 85,
+              "maxY": 129
+            },
+            "primary_components": 1,
+            "rendered_primary_components": 1,
+            "sparkle_components": 1,
+            "sparkle_pixels": 31
+          },
+          {
+            "box": {
+              "minX": 125,
+              "maxX": 158,
+              "minY": 85,
+              "maxY": 129
+            },
+            "primary_components": 1,
+            "rendered_primary_components": 1,
+            "sparkle_components": 1,
+            "sparkle_pixels": 33
+          }
+        ],
+        "paired_sparkles": true,
+        "sparkle_components": 2,
+        "primary_highlight_mismatch_pixels": 0,
+        "changed_pixels": 32,
+        "silhouette_mismatch_pixels": 0,
+        "max_changed_pixels": 136,
+        "moving_component": "paired_small_sparkles",
+        "eye_body_silhouette_fixed": true
+      }
+    },
+    {
+      "mode": "recording",
+      "step": 9,
+      "face_sha256": "7DCCB20588E1BD4451C1A89C6DA14716F7F67B06E8B0AD4CFD6D0D9DDEA0CE3B",
+      "screenshot": ".cache/validation/comp-req-553-554-recording-final-screens/recording-step-9.png",
+      "screenshot_sha256": "08FDEA410C5C66CC826DF62D6FEF482D241CF4AFDCF00817922F179269478BA1",
+      "family_step": 9,
+      "family_cycle": 1,
+      "family_active": false,
+      "recording_active": true,
+      "recording_level_nodes": 1,
+      "meter_step": 0,
+      "eye": {
+        "pass": true,
+        "story": "calm_presence",
+        "frame": "calm_presence-04-calm_blink_settle.png",
+        "open_eye_count": 2,
+        "eye_rows": [
+          {
+            "box": {
+              "minX": 42,
+              "maxX": 74,
+              "minY": 85,
+              "maxY": 129
+            },
+            "primary_components": 1,
+            "rendered_primary_components": 1,
+            "sparkle_components": 1,
+            "sparkle_pixels": 31
+          },
+          {
+            "box": {
+              "minX": 125,
+              "maxX": 158,
+              "minY": 85,
+              "maxY": 129
+            },
+            "primary_components": 1,
+            "rendered_primary_components": 1,
+            "sparkle_components": 1,
+            "sparkle_pixels": 33
+          }
+        ],
+        "paired_sparkles": true,
+        "sparkle_components": 2,
+        "primary_highlight_mismatch_pixels": 0,
+        "changed_pixels": 0,
+        "silhouette_mismatch_pixels": 0,
+        "max_changed_pixels": 136,
+        "moving_component": "paired_small_sparkles",
+        "eye_body_silhouette_fixed": true
+      }
+    }
+  ],
+  "contact_sheet": ".cache/validation/comp-req-553-554-recording-final-screens/idle-recording-contact.png",
+  "contact_sheet_sha256": "D94D7E03C3F9ECB1F103054FBF3CC75768466209805F823E3B4058D44256F17B"
+}

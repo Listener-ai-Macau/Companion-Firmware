@@ -1,0 +1,76 @@
+{
+  "schema": "companion.comp_req_553_554.machine_ready.v1",
+  "requirements": [
+    "COMP-REQ-553",
+    "COMP-REQ-554"
+  ],
+  "status": "MACHINE_READY_OWNER_PENDING",
+  "implementation_commit": "4090d0d3ed2a75279001bfc21a0358d5b858f9b5",
+  "page_sha256": "718D564BEBACCBA4AEFD055C29E3B80E8D7CA5C427153C8194C0137158FEA8E6",
+  "verifiers": {
+    "paired_eye_sha256": "D1105E5245A778F317FD3C0D48E07E608878BED0EAB58AE81D88942CD29E7D6A",
+    "recording_choreography_sha256": "4BB55FDC66769A190C2F6E92FACE8C2CC8520FC8815F071383405A37685B3F18"
+  },
+  "paired_eye_integrity": {
+    "status": "PASS",
+    "artifact_sha256": "D94EA8A262FD41D117E67A80C110B54833545DB7EF7885CC0A8D80AB643A5A82",
+    "gaze_keys": 280,
+    "passed_gaze_keys": 280,
+    "sparkles_per_open_eye": 1,
+    "primary_highlight_mismatch_pixels": 0,
+    "silhouette_mismatch_pixels": 0,
+    "max_changed_pixels_observed": 128,
+    "unsafe_full_highlight_negative_rejected": true
+  },
+  "face_choreography": {
+    "status": "PASS",
+    "ten_family_artifact_sha256": "DBDB39BD40065E36DF3ED569EDCA9E914F02AA788B16309EC66EEFC8FF80CBCA",
+    "families": 10,
+    "calm_idle_distinct_face_hashes": 5,
+    "cadence_ms": 480,
+    "exact_baseline_return": true
+  },
+  "recording_choreography": {
+    "status": "PASS",
+    "artifact_sha256": "920F826A3299096E4A3B304C5709700717CA6F7F3A3BDB66493AE6B6DE692F58",
+    "live_distinct_face_hashes": 4,
+    "live_distinct_meter_steps": 6,
+    "underlying_face_sequence_equal_off_on": true,
+    "meter_layers_active": 1,
+    "meter_visible_after_exit": false
+  },
+  "interaction_regression": {
+    "status": "PASS",
+    "artifact_sha256": "3493496D973B0A09D7D542B2861FB2B385D1E5CC2390D1704A134CFAA8D09777",
+    "scenarios": 42,
+    "failed": 0
+  },
+  "main_visual_review": {
+    "status": "PASS",
+    "contact_sheet_sha256": "D94D7E03C3F9ECB1F103054FBF3CC75768466209805F823E3B4058D44256F17B",
+    "idle_live_cycle_inspected": true,
+    "recording_live_cycle_inspected": true,
+    "both_eyes_move": true,
+    "whole_face_choreography_visible": true,
+    "recording_face_not_frozen": true,
+    "duplicate_face_absent": true
+  },
+  "protected_lower": {
+    "driver_sha256": "F52A7E853BFE2E66680F08420941265CFF163FB579B2D3870128FC72C79E035F",
+    "frame_header_sha256": "9571CF9F896B6C14451BAA7348CB717643B4963AE834B0A554E0C2ED2C7E8D35",
+    "changed": false
+  },
+  "checkonly": {
+    "hardware_contact": 0,
+    "programmer": 0,
+    "serial": 0,
+    "write": 0,
+    "reset": 0,
+    "refresh": 0,
+    "popup": 0,
+    "retry": 0,
+    "microphone": 0,
+    "push": 0
+  },
+  "owner_review": "pending"
+}
