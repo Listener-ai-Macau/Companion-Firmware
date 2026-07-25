@@ -542,6 +542,8 @@ C_SOURCES := \
 	$(ROOT)/app/companion_pendant/recording/recording_fsm.c \
 	$(ROOT)/app/companion_pendant/platform/companion_platform_contracts.c \
 	$(ROOT)/app/companion_pendant/platform/companion_platform_adapters.c \
+	$(ROOT)/app/companion_pendant/platform/companion_ble_name.c \
+	$(ROOT)/app/companion_pendant/platform/companion_ble_name_entry.c \
 	$(ROOT)/app/companion_pendant/platform/companion_product_entry_glue.c \
 	$(ROOT)/app/companion_pendant/platform/companion_product_identity.c \
 	$(ROOT)/app/companion_pendant/platform/companion_product_transport.c \
